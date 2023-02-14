@@ -1,15 +1,17 @@
 {
-  "koodistoUri" : "osaamisenhankkimistapa",
-  "versio" : 1,
-  "metadata" : [ {
-    "kieli" : "FI",
-    "nimi" : "Osaamisen hankkimistapa",
-    "kuvaus" : "Osaamisen hankkimistapa"
-  } ],
-  "codesGroupUri" : "koski",
-  "voimassaAlkuPvm" : "2017-11-01",
-  "organisaatioOid" : "1.2.246.562.10.00000000001",
-  "withinCodes" : [ ],
-  "tila" : "LUONNOS",
-  "version" : 4
+  "koodistoUri": "osaamisenhankkimistapa",
+  "versio": 1,
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "Osaamisen hankkimistapa",
+      "kuvaus": "Osaamisen hankkimistapa"
+    }
+  ],
+  "codesGroupUri": "koski",
+  "voimassaAlkuPvm": "2017-11-01",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "withinCodes": [],
+  "tila": "LUONNOS",
+  "version": 4
 }

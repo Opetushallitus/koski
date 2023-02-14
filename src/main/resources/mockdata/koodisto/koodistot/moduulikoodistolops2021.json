@@ -1,23 +1,27 @@
 {
-  "koodistoUri" : "moduulikoodistolops2021",
-  "versio" : 1,
-  "metadata" : [ {
-    "kieli" : "FI",
-    "nimi" : "Moduulikoodisto lops 2021",
-    "kuvaus" : "Moduulikoodisto lops 2021"
-  }, {
-    "kieli" : "SV",
-    "nimi" : "Moduulikoodisto lops 2021",
-    "kuvaus" : "Moduulikoodisto lops 2021"
-  }, {
-    "kieli" : "EN",
-    "nimi" : "Moduulikoodisto lops 2021",
-    "kuvaus" : "Moduulikoodisto lops 2021"
-  } ],
-  "codesGroupUri" : "koulutuskoodistot",
-  "voimassaAlkuPvm" : "2019-08-30",
-  "organisaatioOid" : "1.2.246.562.10.00000000001",
-  "withinCodes" : [ ],
-  "tila" : "LUONNOS",
-  "version" : 3
+  "koodistoUri": "moduulikoodistolops2021",
+  "versio": 1,
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "Moduulikoodisto lops 2021",
+      "kuvaus": "Moduulikoodisto lops 2021"
+    },
+    {
+      "kieli": "SV",
+      "nimi": "Moduulikoodisto lops 2021",
+      "kuvaus": "Moduulikoodisto lops 2021"
+    },
+    {
+      "kieli": "EN",
+      "nimi": "Moduulikoodisto lops 2021",
+      "kuvaus": "Moduulikoodisto lops 2021"
+    }
+  ],
+  "codesGroupUri": "koulutuskoodistot",
+  "voimassaAlkuPvm": "2019-08-30",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "withinCodes": [],
+  "tila": "LUONNOS",
+  "version": 3
 }

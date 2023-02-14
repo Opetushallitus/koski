@@ -1,20 +1,24 @@
 {
-  "koodistoUri" : "dialukukausi",
-  "versio" : 1,
-  "metadata" : [ {
-    "kieli" : "FI",
-    "nimi" : "dia lukukausi"
-  }, {
-    "kieli" : "SV",
-    "nimi" : "dia lukukausi"
-  }, {
-    "kieli" : "EN",
-    "nimi" : "dia lukukausi"
-  } ],
-  "codesGroupUri" : "koski",
-  "voimassaAlkuPvm" : "2019-01-01",
-  "organisaatioOid" : "1.2.246.562.10.00000000001",
-  "withinCodes" : [ ],
-  "tila" : "LUONNOS",
-  "version" : 1
+  "koodistoUri": "dialukukausi",
+  "versio": 1,
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "dia lukukausi"
+    },
+    {
+      "kieli": "SV",
+      "nimi": "dia lukukausi"
+    },
+    {
+      "kieli": "EN",
+      "nimi": "dia lukukausi"
+    }
+  ],
+  "codesGroupUri": "koski",
+  "voimassaAlkuPvm": "2019-01-01",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "withinCodes": [],
+  "tila": "LUONNOS",
+  "version": 1
 }

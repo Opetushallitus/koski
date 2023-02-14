@@ -1,36 +1,6 @@
 {
-  "koodistoRyhmaMetadata": [
-    {
-      "id": 6,
-      "uri": "virta",
-      "nimi": "Virta",
-      "kieli": "SV"
-    },
-    {
-      "id": 6,
-      "uri": "virta",
-      "nimi": "Virta",
-      "kieli": "EN"
-    },
-    {
-      "id": 6,
-      "uri": "virta",
-      "nimi": "Virta",
-      "kieli": "FI"
-    }
-  ],
-  "codesGroupUri": "virta",
-  "resourceUri": "https://virkailija.testiopintopolku.fi/koodisto-service/rest/codes/virtaopiskeluoikeudenluokittelu",
   "koodistoUri": "virtaopiskeluoikeudenluokittelu",
   "versio": 1,
-  "lockingVersion": 2,
-  "organisaatioOid": "1.2.246.562.10.2013112012294919827487",
-  "paivitysPvm": "2016-04-10",
-  "paivittajaOid": null,
-  "voimassaAlkuPvm": "2016-04-27",
-  "voimassaLoppuPvm": null,
-  "omistaja": null,
-  "tila": "LUONNOS",
   "metadata": [
     {
       "kieli": "FI",
@@ -38,10 +8,10 @@
       "kuvaus": "Opiskeluoikeuden luokittelu (ks. https://confluence.csc.fi/display/VIRTA/Tietovarannon+koodistot)"
     }
   ],
-  "koodistoVersio": [
-    1
-  ],
-  "sisaltyyKoodistoihin": [],
-  "sisaltaaKoodistot": [],
-  "rinnastuuKoodistoihin": []
+  "codesGroupUri": "virta",
+  "voimassaAlkuPvm": "2016-04-27",
+  "organisaatioOid": "1.2.246.562.10.2013112012294919827487",
+  "withinCodes": [],
+  "tila": "LUONNOS",
+  "version": 2
 }

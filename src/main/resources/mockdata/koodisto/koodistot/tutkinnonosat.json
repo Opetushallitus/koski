@@ -1,31 +1,38 @@
 {
-  "koodistoUri" : "tutkinnonosat",
-  "versio" : 2,
-  "metadata" : [ {
-    "kieli" : "FI",
-    "nimi" : "tutkinnon osat",
-    "kuvaus" : "tutkinnon osat"
-  }, {
-    "kieli" : "SV",
-    "nimi" : "examensdeler",
-    "kuvaus" : "examensdeler"
-  }, {
-    "kieli" : "EN",
-    "nimi" : "tutkinnon osat",
-    "kuvaus" : "tutkinnon osat"
-  } ],
-  "codesGroupUri" : "koulutuskoodistot",
-  "voimassaAlkuPvm" : "2018-03-02",
-  "organisaatioOid" : "1.2.246.562.10.00000000001",
-  "withinCodes" : [ {
-    "codesUri" : "koulutus",
-    "codesVersion" : 12,
-    "passive" : false
-  }, {
-    "codesUri" : "tutkintonimikkeet",
-    "codesVersion" : 2,
-    "passive" : false
-  } ],
-  "tila" : "LUONNOS",
-  "version" : 61
+  "koodistoUri": "tutkinnonosat",
+  "versio": 2,
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "tutkinnon osat",
+      "kuvaus": "tutkinnon osat"
+    },
+    {
+      "kieli": "SV",
+      "nimi": "examensdelar",
+      "kuvaus": "examensdelar"
+    },
+    {
+      "kieli": "EN",
+      "nimi": "tutkinnon osat",
+      "kuvaus": "tutkinnon osat"
+    }
+  ],
+  "codesGroupUri": "koulutuskoodistot",
+  "voimassaAlkuPvm": "2018-03-02",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "withinCodes": [
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 12,
+      "passive": false
+    },
+    {
+      "codesUri": "tutkintonimikkeet",
+      "codesVersion": 2,
+      "passive": false
+    }
+  ],
+  "tila": "LUONNOS",
+  "version": 62
 }

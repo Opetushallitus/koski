@@ -1,23 +1,27 @@
 {
-  "koodistoUri" : "oppiaineetdia",
-  "versio" : 1,
-  "metadata" : [ {
-    "kieli" : "FI",
-    "nimi" : "Oppiaineet dia",
-    "kuvaus" : "Oppiaineet dia"
-  }, {
-    "kieli" : "SV",
-    "nimi" : "Oppiaineet dia",
-    "kuvaus" : "Oppiaineet dia"
-  }, {
-    "kieli" : "EN",
-    "nimi" : "Oppiaineet dia",
-    "kuvaus" : "Oppiaineet dia"
-  } ],
-  "codesGroupUri" : "koski",
-  "voimassaAlkuPvm" : "2016-09-13",
-  "organisaatioOid" : "1.2.246.562.10.00000000001",
-  "withinCodes" : [ ],
-  "tila" : "LUONNOS",
-  "version" : 1
+  "koodistoUri": "oppiaineetdia",
+  "versio": 1,
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "Oppiaineet dia",
+      "kuvaus": "Oppiaineet dia"
+    },
+    {
+      "kieli": "SV",
+      "nimi": "Oppiaineet dia",
+      "kuvaus": "Oppiaineet dia"
+    },
+    {
+      "kieli": "EN",
+      "nimi": "Oppiaineet dia",
+      "kuvaus": "Oppiaineet dia"
+    }
+  ],
+  "codesGroupUri": "koski",
+  "voimassaAlkuPvm": "2016-09-13",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "withinCodes": [],
+  "tila": "LUONNOS",
+  "version": 1
 }

@@ -1,556 +1,1250 @@
-[ {
-  "koodiUri" : "ammatillisenoppiaineet_ai",
-  "koodiArvo" : "AI",
-  "metadata" : [ {
-    "nimi" : "Äidinkieli ",
-    "lyhytNimi" : "Äidinkieli ",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Modersmål",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "ammatillisenoppiaineet_etk",
-  "koodiArvo" : "ETK",
-  "metadata" : [ {
-    "nimi" : "Etiikka",
-    "lyhytNimi" : "Etiikka",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Etik ",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "ammatillisenoppiaineet_fk",
-  "koodiArvo" : "FK",
-  "metadata" : [ {
-    "nimi" : "Fysiikka ja kemia",
-    "lyhytNimi" : "Fysiikka ja kemia",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Fysik och kemi",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "ammatillisenoppiaineet_ku",
-  "koodiArvo" : "KU",
-  "metadata" : [ {
-    "nimi" : "Kulttuurien tuntemus",
-    "lyhytNimi" : "Kulttuurien tuntemus",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Kännedom om olika kulturer",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "ammatillisenoppiaineet_ma",
-  "koodiArvo" : "MA",
-  "metadata" : [ {
-    "nimi" : "Matematiikka",
-    "lyhytNimi" : "Matematiikka",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Matematik",
-    "lyhytNimi" : "Matematik",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "ammatillisenoppiaineet_mlfk",
-  "koodiArvo" : "MLFK",
-  "metadata" : [ {
-    "nimi" : "Fysikaaliset ja kemialliset ilmiöt ja niiden soveltaminen",
-    "lyhytNimi" : "Fysikaaliset ja kemialliset ilmiöt ja niiden soveltaminen",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Fysikaliska och kemiska fenomen och tillämpning av dem",
-    "lyhytNimi" : "Fysikaliska och kemiska fenomen och tillämpning av dem",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Physical and chemical phenomena and their application",
-    "lyhytNimi" : "Physical and chemical phenomena and their application",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "ammatillisenoppiaineet_mlma",
-  "koodiArvo" : "MLMA",
-  "metadata" : [ {
-    "nimi" : "Matematiikka ja matematiikan soveltaminen",
-    "lyhytNimi" : "Matematiikka ja matematiikan soveltaminen",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Matematik och tillämpad matematik",
-    "lyhytNimi" : "Matematik och tillämpad matematik",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Mathematics and application of mathematics",
-    "lyhytNimi" : "Mathematics and application of mathematics",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "ammatillisenoppiaineet_ps",
-  "koodiArvo" : "PS",
-  "metadata" : [ {
-    "nimi" : "Psykologia",
-    "lyhytNimi" : "Psykologia",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Psykologi",
-    "lyhytNimi" : "Psykologi",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "ammatillisenoppiaineet_tak",
-  "koodiArvo" : "TAK",
-  "metadata" : [ {
-    "nimi" : "Taide ja kulttuuri",
-    "lyhytNimi" : "Taide ja kulttuuri",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Konst och kultur",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "ammatillisenoppiaineet_tet",
-  "koodiArvo" : "TET",
-  "metadata" : [ {
-    "nimi" : "Työelämätaidot",
-    "lyhytNimi" : "Työelämätaidot",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Arbetslivsfärdighet",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "ammatillisenoppiaineet_tk1",
-  "koodiArvo" : "TK1",
-  "metadata" : [ {
-    "nimi" : "Toinen kotimainen kieli, ruotsi",
-    "lyhytNimi" : "Toinen kotimainen kieli, ruotsi",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Andra inhemska språket, svenska",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "ammatillisenoppiaineet_tk2",
-  "koodiArvo" : "TK2",
-  "metadata" : [ {
-    "nimi" : "Toinen kotimainen kieli, suomi",
-    "lyhytNimi" : "Toinen kotimainen kieli, suomi",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Det andra inhemska språket, finska",
-    "lyhytNimi" : "Det andra inhemska språket, finska",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "ammatillisenoppiaineet_tvt",
-  "koodiArvo" : "TVT",
-  "metadata" : [ {
-    "nimi" : "Tieto- ja viestintätekniikka sekä sen hyödyntäminen",
-    "lyhytNimi" : "Tieto- ja viestintätekniikka sekä sen hyödyntäminen",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Informations- och kommunikationsteknik samt användningen av den",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "ammatillisenoppiaineet_tyt",
-  "koodiArvo" : "TYT",
-  "metadata" : [ {
-    "nimi" : "Työkyvyn ylläpitäminen, liikunta ja terveystieto",
-    "lyhytNimi" : "Työkyvyn ylläpitäminen, liikunta ja terveystieto",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Upprätthållande av arbetsförmåga, gymnastik och hälsokunskap",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "ammatillisenoppiaineet_vk",
-  "koodiArvo" : "VK",
-  "metadata" : [ {
-    "nimi" : "Vieraat kielet",
-    "lyhytNimi" : "Vieraat kielet",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Främmande språk",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "ammatillisenoppiaineet_vvai",
-  "koodiArvo" : "VVAI",
-  "metadata" : [ {
-    "nimi" : "Viestintä ja vuorovaikutus äidinkielellä, suomi",
-    "lyhytNimi" : "Viestintä ja vuorovaikutus äidinkielellä, suomi",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Kommunikation och interaktion på modersmålet, svenska",
-    "lyhytNimi" : "Kommunikation och interaktion på modersmålet, svenska",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Communication and interaction in mother tongue, Finnish",
-    "lyhytNimi" : "Communication and interaction in mother tongue, Finnish",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "ammatillisenoppiaineet_vvai11",
-  "koodiArvo" : "VVAI11",
-  "metadata" : [ {
-    "nimi" : "Viestintä ja vuorovaikutus äidinkielellä, suomi viittomakielisille",
-    "lyhytNimi" : "Viestintä ja vuorovaikutus äidinkielellä, suomi viittomakielisille",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Kommunikation och interaktion på modersmålet, svenska för teckenspråkiga",
-    "lyhytNimi" : "Kommunikation och interaktion på modersmålet, svenska för teckenspråkiga",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Communication and interaction in mother tongue, Finnish for sign language users",
-    "lyhytNimi" : "Communication and interaction in mother tongue, Finnish for sign language users",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "ammatillisenoppiaineet_vvai15",
-  "koodiArvo" : "VVAI15",
-  "metadata" : [ {
-    "nimi" : "Viestintä ja vuorovaikutus äidinkielellä, viittomakieli",
-    "lyhytNimi" : "Viestintä ja vuorovaikutus äidinkielellä, viittomakieli",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Kommunikation och interaktion på modersmålet, teckenspråk",
-    "lyhytNimi" : "Kommunikation och interaktion på modersmålet, teckenspråk",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Communication and interaction in mother tongue, sign language",
-    "lyhytNimi" : "Communication and interaction in mother tongue, sign language",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "ammatillisenoppiaineet_vvai16",
-  "koodiArvo" : "VVAI16",
-  "metadata" : [ {
-    "nimi" : "Viestintä ja vuorovaikutus äidinkielellä, opiskelijan äidinkieli",
-    "lyhytNimi" : "Viestintä ja vuorovaikutus äidinkielellä, opiskelijan äidinkieli",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Kommunikation och interaktion på modersmålet, studerandens eget modersmål",
-    "lyhytNimi" : "Kommunikation och interaktion på modersmålet, studerandens eget modersmål",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Communication and interaction in mother tongue, the student’s mother tongue",
-    "lyhytNimi" : "Communication and interaction in mother tongue, the student’s mother tongue",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "ammatillisenoppiaineet_vvai17",
-  "koodiArvo" : "VVAI17",
-  "metadata" : [ {
-    "nimi" : "Kommunikation och interaktion på modersmålet, svenska som andraspråk",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "ammatillisenoppiaineet_vvai22",
-  "koodiArvo" : "VVAI22",
-  "metadata" : [ {
-    "nimi" : "Viestintä ja vuorovaikutus äidinkielellä",
-    "lyhytNimi" : "Viestintä ja vuorovaikutus äidinkielellä",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Kommunikation och interaktion på modersmålet",
-    "lyhytNimi" : "Kommunikation och interaktion på modersmålet",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Communication and interaction in mother tongue",
-    "lyhytNimi" : "Communication and interaction in mother tongue",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "ammatillisenoppiaineet_vvai3",
-  "koodiArvo" : "VVAI3",
-  "metadata" : [ {
-    "nimi" : "Viestintä ja vuorovaikutus äidinkielellä, saame",
-    "lyhytNimi" : "Viestintä ja vuorovaikutus äidinkielellä, saame",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Kommunikation och interaktion på modersmålet, samiska",
-    "lyhytNimi" : "Kommunikation och interaktion på modersmålet, samiska",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Communication and interaction in mother tongue, Sámi",
-    "lyhytNimi" : "Communication and interaction in mother tongue, Sámi",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "ammatillisenoppiaineet_vvai4",
-  "koodiArvo" : "VVAI4",
-  "metadata" : [ {
-    "nimi" : "Viestintä ja vuorovaikutus äidinkielellä, romani",
-    "lyhytNimi" : "Viestintä ja vuorovaikutus äidinkielellä, romani",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Kommunikation och interaktion på modersmålet, romani",
-    "lyhytNimi" : "Kommunikation och interaktion på modersmålet, romani",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Communication and interaction in mother tongue, the Roma language",
-    "lyhytNimi" : "Communication and interaction in mother tongue, the Roma language",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "ammatillisenoppiaineet_vvai7",
-  "koodiArvo" : "VVAI7",
-  "metadata" : [ {
-    "nimi" : "Viestintä ja vuorovaikutus äidinkielellä, suomi toisena kielenä",
-    "lyhytNimi" : "Viestintä ja vuorovaikutus äidinkielellä, suomi toisena kielenä",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Kommunikation och interaktion på modersmålet, finska som andraspråk",
-    "lyhytNimi" : "Kommunikation och interaktion på modersmålet, finska som andraspråk",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Communication and interaction in mother tongue, Finnish as a second language",
-    "lyhytNimi" : "Communication and interaction in mother tongue, Finnish as a second language",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "ammatillisenoppiaineet_vvai8",
-  "koodiArvo" : "VVAI8",
-  "metadata" : [ {
-    "nimi" : "Viestintä ja vuorovaikutus äidinkielellä, ruotsi toisena kielenä",
-    "lyhytNimi" : "Viestintä ja vuorovaikutus äidinkielellä, ruotsi toisena kielenä",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Kommunikation och interaktion på modersmålet, svenska som andraspråk",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "ammatillisenoppiaineet_vvtd",
-  "koodiArvo" : "VVTD",
-  "metadata" : [ {
-    "nimi" : "Toiminta digitaalisessa ympäristössä",
-    "lyhytNimi" : "toiminta digitaalisessa ympäristössä",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Verksamhet i den digitala miljön",
-    "lyhytNimi" : "Verksamhet i den digitala miljön",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Operating in a digital environment",
-    "lyhytNimi" : "Operating in a digital environment",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "ammatillisenoppiaineet_vvtk",
-  "koodiArvo" : "VVTK",
-  "metadata" : [ {
-    "nimi" : "Viestintä ja vuorovaikutus toisella kotimaisella kielellä",
-    "lyhytNimi" : "Viestintä ja vuorovaikutus toisella kotimaisella kielellä",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Kommunikation och interaktion på det andra inhemska språket",
-    "lyhytNimi" : "Kommunikation och interaktion på det andra inhemska språket",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Communication and interaction in the second national language",
-    "lyhytNimi" : "Communication and interaction in the second national language",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "ammatillisenoppiaineet_vvtl",
-  "koodiArvo" : "VVTL",
-  "metadata" : [ {
-    "nimi" : "Taide ja luova ilmaisu",
-    "lyhytNimi" : "Taide ja luova ilmaisu",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Konst och kreativt uttryck",
-    "lyhytNimi" : "Konst och kreativt uttryck",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Art and creative expression",
-    "lyhytNimi" : "Art and creative expression",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "ammatillisenoppiaineet_vvvk",
-  "koodiArvo" : "VVVK",
-  "metadata" : [ {
-    "nimi" : "Viestintä ja vuorovaikutus vieraalla kielellä",
-    "lyhytNimi" : "viestintä ja vuorovaikutus vieraalla kielellä",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Kommunikation och interaktion på ett främmande språk",
-    "lyhytNimi" : "Kommunikation och interaktion på ett främmande språk",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Communication and interaction in a foreign language",
-    "lyhytNimi" : "Communication and interaction in a foreign language",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "ammatillisenoppiaineet_ykt",
-  "koodiArvo" : "YKT",
-  "metadata" : [ {
-    "nimi" : "Yhteiskuntataidot",
-    "lyhytNimi" : "Yhteiskuntataidot",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Samhällsfärdighet",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "ammatillisenoppiaineet_ym",
-  "koodiArvo" : "YM",
-  "metadata" : [ {
-    "nimi" : "Ympäristöosaaminen",
-    "lyhytNimi" : "Ympäristöosaaminen",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Miljökunnande ",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "ammatillisenoppiaineet_ytkk",
-  "koodiArvo" : "YTKK",
-  "metadata" : [ {
-    "nimi" : "Kestävän kehityksen edistäminen",
-    "lyhytNimi" : "Kestävän kehityksen edistäminen",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Främjande av hållbar utveckling",
-    "lyhytNimi" : "Främjande av hållbar utveckling",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Promoting sustainable development",
-    "lyhytNimi" : "Promoting sustainable development",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "ammatillisenoppiaineet_ytou",
-  "koodiArvo" : "YTOU",
-  "metadata" : [ {
-    "nimi" : "Opiskelu- ja urasuunnitteluvalmiudet",
-    "lyhytNimi" : "Opiskelu- ja urasuunnitteluvalmiudet",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Färdigheter i studie- och karriärplanering",
-    "lyhytNimi" : "Färdigheter i studie- och karriärplanering",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Study and career planning capabilities",
-    "lyhytNimi" : "Study and career planning capabilities",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "ammatillisenoppiaineet_ytth",
-  "koodiArvo" : "YTTH",
-  "metadata" : [ {
-    "nimi" : "Työkyvyn ja hyvinvoinnin ylläpitäminen",
-    "lyhytNimi" : "työkyvyn ja hyvinvoinnin ylläpitäminen",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Upprätthållande av arbetsförmågan och välbefinnandet",
-    "lyhytNimi" : "Upprätthållande av arbetsförmågan och välbefinnandet",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Maintaining ability to work and wellbeing at work",
-    "lyhytNimi" : "Maintaining ability to work and wellbeing at work",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "ammatillisenoppiaineet_yttt",
-  "koodiArvo" : "YTTT",
-  "metadata" : [ {
-    "nimi" : "Työelämässä toimiminen",
-    "lyhytNimi" : "Työelämässä toimiminen",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Att verka i arbetslivet",
-    "lyhytNimi" : "Att verka i arbetslivet",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Operating in the world of work",
-    "lyhytNimi" : "Operating in the world of work",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "ammatillisenoppiaineet_ytyk",
-  "koodiArvo" : "YTYK",
-  "metadata" : [ {
-    "nimi" : "Yhteiskunnassa ja kansalaisena toimiminen",
-    "lyhytNimi" : "yhteiskunnassa ja kansalaisena toimiminen",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Att verka i samhället och som medborgare",
-    "lyhytNimi" : "Att verka i samhället och som medborgare",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Operating as a member of society and a citizen",
-    "lyhytNimi" : "Operating as a member of society and a citizen",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "ammatillisenoppiaineet_ytyy",
-  "koodiArvo" : "YTYY",
-  "metadata" : [ {
-    "nimi" : "Yrittäjyys ja yrittäjämäinen toiminta",
-    "lyhytNimi" : "Yrittäjyys ja yrittäjämäinen toiminta",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Företagsamhet och företagarinriktad verksamhet",
-    "lyhytNimi" : "Företagsamhet och företagarinriktad verksamhet",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Entrepreneurship and entrepreneurial activities",
-    "lyhytNimi" : "Entrepreneurship and entrepreneurial activities",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "ammatillisenoppiaineet_yyt",
-  "koodiArvo" : "YYT",
-  "metadata" : [ {
-    "nimi" : "Yrittäjyys ja yritystoiminta",
-    "lyhytNimi" : "Yrittäjyys ja yritystoiminta",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Företagsamhet och företagsverksamhet",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1
-} ]
+[
+  {
+    "koodiUri": "ammatillisenoppiaineet_001",
+    "koodiArvo": "001",
+    "metadata": [
+      {
+        "nimi": "Yhteiskunnassa ja kansalaisena toimiminen",
+        "lyhytNimi": "Yhteiskunnassa ja kansalaisena toimiminen",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Att fungera i samhället och som medborgare",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "To function in society and as a citizen",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "ammatillisenoppiaineet_003",
+    "koodiArvo": "003",
+    "metadata": [
+      {
+        "nimi": "Viestintä- ja vuorovaikutusosaaminen",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Kunnande i kommunikation och interaktion",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Communication and Interaction skills",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "ammatillisenoppiaineet_ai",
+    "koodiArvo": "AI",
+    "metadata": [
+      {
+        "nimi": "Äidinkieli ",
+        "lyhytNimi": "Äidinkieli ",
+        "kuvaus": "Äidinkieli ",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Modersmål",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "tutkinnonosat_101053",
+        "codeElementVersion": 1,
+        "passive": true
+      },
+      {
+        "codeElementUri": "tutkinnonosat_101053",
+        "codeElementVersion": 2,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "ammatillisenoppiaineet_etk",
+    "koodiArvo": "ETK",
+    "metadata": [
+      {
+        "nimi": "Etiikka",
+        "lyhytNimi": "Etiikka",
+        "kuvaus": "Etiikka",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Etik ",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "tutkinnonosat_101056",
+        "codeElementVersion": 1,
+        "passive": true
+      },
+      {
+        "codeElementUri": "tutkinnonosat_101056",
+        "codeElementVersion": 2,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "ammatillisenoppiaineet_fk",
+    "koodiArvo": "FK",
+    "metadata": [
+      {
+        "nimi": "Fysiikka ja kemia",
+        "lyhytNimi": "Fysiikka ja kemia",
+        "kuvaus": "Fysiikka ja kemia",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Fysik och kemi",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "tutkinnonosat_101054",
+        "codeElementVersion": 1,
+        "passive": true
+      },
+      {
+        "codeElementUri": "tutkinnonosat_101054",
+        "codeElementVersion": 2,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "ammatillisenoppiaineet_ku",
+    "koodiArvo": "KU",
+    "metadata": [
+      {
+        "nimi": "Kulttuurien tuntemus",
+        "lyhytNimi": "Kulttuurien tuntemus",
+        "kuvaus": "Kulttuurien tuntemus",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Kännedom om olika kulturer",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "tutkinnonosat_101056",
+        "codeElementVersion": 1,
+        "passive": true
+      },
+      {
+        "codeElementUri": "tutkinnonosat_101056",
+        "codeElementVersion": 2,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "ammatillisenoppiaineet_ma",
+    "koodiArvo": "MA",
+    "metadata": [
+      {
+        "nimi": "Matematiikka",
+        "lyhytNimi": "Matematiikka",
+        "kuvaus": "Matematiikka",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Matematik",
+        "lyhytNimi": "Matematik",
+        "kuvaus": "Matematik",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "tutkinnonosat_101054",
+        "codeElementVersion": 1,
+        "passive": true
+      },
+      {
+        "codeElementUri": "tutkinnonosat_101054",
+        "codeElementVersion": 2,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "ammatillisenoppiaineet_002",
+    "koodiArvo": "MAVA",
+    "metadata": [
+      {
+        "nimi": "Matemaattis-luonnontieteellinen osaaminen",
+        "lyhytNimi": " ",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Kunnande i matematik och naturvetenskaper",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Knowledge in mathematics and natural sciences",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "ammatillisenoppiaineet_mlfk",
+    "koodiArvo": "MLFK",
+    "metadata": [
+      {
+        "nimi": "Fysikaaliset ja kemialliset ilmiöt ja niiden soveltaminen",
+        "lyhytNimi": "Fysikaaliset ja kemialliset ilmiöt ja niiden soveltaminen",
+        "kuvaus": "Käytössä YTO:t",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Fysikaliska och kemiska fenomen och tillämpning av dem",
+        "lyhytNimi": "Fysikaliska och kemiska fenomen och tillämpning av dem",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Physical and chemical phenomena and their application",
+        "lyhytNimi": "Physical and chemical phenomena and their application",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "tutkinnonosat_400013",
+        "codeElementVersion": 2,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "ammatillisenoppiaineet_mlma",
+    "koodiArvo": "MLMA",
+    "metadata": [
+      {
+        "nimi": "Matematiikka ja matematiikan soveltaminen",
+        "lyhytNimi": "Matematiikka ja matematiikan soveltaminen",
+        "kuvaus": "Käytössä YTO:t",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Matematik och tillämpad matematik",
+        "lyhytNimi": "Matematik och tillämpad matematik",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Mathematics and application of mathematics",
+        "lyhytNimi": "Mathematics and application of mathematics",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "tutkinnonosat_400013",
+        "codeElementVersion": 2,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "ammatillisenoppiaineet_ps",
+    "koodiArvo": "PS",
+    "metadata": [
+      {
+        "nimi": "Psykologia",
+        "lyhytNimi": "Psykologia",
+        "kuvaus": "Psykologia",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Psykologi",
+        "lyhytNimi": "Psykologi",
+        "kuvaus": "Psykologi",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "tutkinnonosat_101056",
+        "codeElementVersion": 1,
+        "passive": true
+      },
+      {
+        "codeElementUri": "tutkinnonosat_101056",
+        "codeElementVersion": 2,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "ammatillisenoppiaineet_tak",
+    "koodiArvo": "TAK",
+    "metadata": [
+      {
+        "nimi": "Taide ja kulttuuri",
+        "lyhytNimi": "Taide ja kulttuuri",
+        "kuvaus": "Taide ja kulttuuri",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Konst och kultur",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "tutkinnonosat_101056",
+        "codeElementVersion": 1,
+        "passive": true
+      },
+      {
+        "codeElementUri": "tutkinnonosat_101056",
+        "codeElementVersion": 2,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "ammatillisenoppiaineet_tet",
+    "koodiArvo": "TET",
+    "metadata": [
+      {
+        "nimi": "Työelämätaidot",
+        "lyhytNimi": "Työelämätaidot",
+        "kuvaus": "Työelämätaidot",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Arbetslivsfärdighet",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "tutkinnonosat_101055",
+        "codeElementVersion": 1,
+        "passive": true
+      },
+      {
+        "codeElementUri": "tutkinnonosat_101055",
+        "codeElementVersion": 2,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "ammatillisenoppiaineet_tk1",
+    "koodiArvo": "TK1",
+    "metadata": [
+      {
+        "nimi": "Toinen kotimainen kieli, ruotsi",
+        "lyhytNimi": "Toinen kotimainen kieli, ruotsi",
+        "kuvaus": "Toinen kotimainen kieli, ruotsi",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Andra inhemska språket, svenska",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "tutkinnonosat_101053",
+        "codeElementVersion": 1,
+        "passive": true
+      },
+      {
+        "codeElementUri": "tutkinnonosat_101053",
+        "codeElementVersion": 2,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "ammatillisenoppiaineet_tk2",
+    "koodiArvo": "TK2",
+    "metadata": [
+      {
+        "nimi": "Toinen kotimainen kieli, suomi",
+        "lyhytNimi": "Toinen kotimainen kieli, suomi",
+        "kuvaus": "YTO osa-aluekoodi",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Det andra inhemska språket, finska",
+        "lyhytNimi": "Det andra inhemska språket, finska",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "tutkinnonosat_400012",
+        "codeElementVersion": 2,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "ammatillisenoppiaineet_tvt",
+    "koodiArvo": "TVT",
+    "metadata": [
+      {
+        "nimi": "Tieto- ja viestintätekniikka sekä sen hyödyntäminen",
+        "lyhytNimi": "Tieto- ja viestintätekniikka sekä sen hyödyntäminen",
+        "kuvaus": "Tieto- ja viestintätekniikka sekä sen hyödyntäminen",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Informations- och kommunikationsteknik samt användningen av den",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "tutkinnonosat_101054",
+        "codeElementVersion": 1,
+        "passive": true
+      },
+      {
+        "codeElementUri": "tutkinnonosat_101054",
+        "codeElementVersion": 2,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "ammatillisenoppiaineet_tyt",
+    "koodiArvo": "TYT",
+    "metadata": [
+      {
+        "nimi": "Työkyvyn ylläpitäminen, liikunta ja terveystieto",
+        "lyhytNimi": "Työkyvyn ylläpitäminen, liikunta ja terveystieto",
+        "kuvaus": "Työkyvyn ylläpitäminen, liikunta ja terveystieto",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Upprätthållande av arbetsförmåga, gymnastik och hälsokunskap",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "tutkinnonosat_101055",
+        "codeElementVersion": 1,
+        "passive": true
+      },
+      {
+        "codeElementUri": "tutkinnonosat_101055",
+        "codeElementVersion": 2,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "ammatillisenoppiaineet_vk",
+    "koodiArvo": "VK",
+    "metadata": [
+      {
+        "nimi": "Vieraat kielet",
+        "lyhytNimi": "Vieraat kielet",
+        "kuvaus": "Vieraat kielet",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Främmande språk",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "tutkinnonosat_101053",
+        "codeElementVersion": 1,
+        "passive": true
+      },
+      {
+        "codeElementUri": "tutkinnonosat_101053",
+        "codeElementVersion": 2,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "ammatillisenoppiaineet_vvai",
+    "koodiArvo": "VVAI",
+    "metadata": [
+      {
+        "nimi": "Viestintä ja vuorovaikutus äidinkielellä, suomi",
+        "lyhytNimi": "Viestintä ja vuorovaikutus äidinkielellä, suomi",
+        "kuvaus": "Käytössä  YTO:t",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Kommunikation och interaktion på modersmålet, svenska",
+        "lyhytNimi": "Kommunikation och interaktion på modersmålet, svenska",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Communication and interaction in mother tongue, Finnish",
+        "lyhytNimi": "Communication and interaction in mother tongue, Finnish",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "tutkinnonosat_400012",
+        "codeElementVersion": 2,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "ammatillisenoppiaineet_vvai11",
+    "koodiArvo": "VVAI11",
+    "metadata": [
+      {
+        "nimi": "Viestintä ja vuorovaikutus äidinkielellä, suomi viittomakielisille",
+        "lyhytNimi": "Viestintä ja vuorovaikutus äidinkielellä, suomi viittomakielisille",
+        "kuvaus": "Viestintä ja vuorovaikutus äidinkielellä, suomi viittomakielisille",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Kommunikation och interaktion på modersmålet, svenska för teckenspråkiga",
+        "lyhytNimi": "Kommunikation och interaktion på modersmålet, svenska för teckenspråkiga",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Communication and interaction in mother tongue, Finnish for sign language users",
+        "lyhytNimi": "Communication and interaction in mother tongue, Finnish for sign language users",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "tutkinnonosat_400012",
+        "codeElementVersion": 2,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "ammatillisenoppiaineet_vvai15",
+    "koodiArvo": "VVAI15",
+    "metadata": [
+      {
+        "nimi": "Viestintä ja vuorovaikutus äidinkielellä, viittomakieli",
+        "lyhytNimi": "Viestintä ja vuorovaikutus äidinkielellä, viittomakieli",
+        "kuvaus": "Viestintä ja vuorovaikutus äidinkielellä, suomalainen viittomakieli",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Kommunikation och interaktion på modersmålet, teckenspråk",
+        "lyhytNimi": "Kommunikation och interaktion på modersmålet, teckenspråk",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Communication and interaction in mother tongue, sign language",
+        "lyhytNimi": "Communication and interaction in mother tongue, sign language",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "tutkinnonosat_400012",
+        "codeElementVersion": 2,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "ammatillisenoppiaineet_vvai16",
+    "koodiArvo": "VVAI16",
+    "metadata": [
+      {
+        "nimi": "Viestintä ja vuorovaikutus äidinkielellä, opiskelijan äidinkieli",
+        "lyhytNimi": "Viestintä ja vuorovaikutus äidinkielellä, opiskelijan äidinkieli",
+        "kuvaus": "Viestintä ja vuorovaikutus äidinkielellä, opiskelijan äidinkieli",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Kommunikation och interaktion på modersmålet, studerandens eget modersmål",
+        "lyhytNimi": "Kommunikation och interaktion på modersmålet, studerandens eget modersmål",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Communication and interaction in mother tongue, the student’s mother tongue",
+        "lyhytNimi": "Communication and interaction in mother tongue, the student’s mother tongue",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "tutkinnonosat_400012",
+        "codeElementVersion": 2,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "ammatillisenoppiaineet_vvai17",
+    "koodiArvo": "VVAI17",
+    "metadata": [
+      {
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Kommunikation och interaktion på modersmålet, svenska som andraspråk",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "ammatillisenoppiaineet_vvai22",
+    "koodiArvo": "VVAI22",
+    "metadata": [
+      {
+        "nimi": "Viestintä ja vuorovaikutus äidinkielellä",
+        "lyhytNimi": "Viestintä ja vuorovaikutus äidinkielellä",
+        "kuvaus": "Uusi koodi 1.8.2022 perusteisiin",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Kommunikation och interaktion på modersmålet",
+        "lyhytNimi": "Kommunikation och interaktion på modersmålet",
+        "kuvaus": "Ny kod för grunderna 1.8.2022",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Communication and interaction in mother tongue",
+        "lyhytNimi": "Communication and interaction in mother tongue",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "ammatillisenoppiaineet_vvai3",
+    "koodiArvo": "VVAI3",
+    "metadata": [
+      {
+        "nimi": "Viestintä ja vuorovaikutus äidinkielellä, saame",
+        "lyhytNimi": "Viestintä ja vuorovaikutus äidinkielellä, saame",
+        "kuvaus": "Viestintä ja vuorovaikutus äidinkielellä, saame",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Kommunikation och interaktion på modersmålet, samiska",
+        "lyhytNimi": "Kommunikation och interaktion på modersmålet, samiska",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Communication and interaction in mother tongue, Sámi",
+        "lyhytNimi": "Communication and interaction in mother tongue, Sámi",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "tutkinnonosat_400012",
+        "codeElementVersion": 2,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "ammatillisenoppiaineet_vvai4",
+    "koodiArvo": "VVAI4",
+    "metadata": [
+      {
+        "nimi": "Viestintä ja vuorovaikutus äidinkielellä, romani",
+        "lyhytNimi": "Viestintä ja vuorovaikutus äidinkielellä, romani",
+        "kuvaus": "Viestintä ja vuorovaikutus äidinkielellä, romani",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Kommunikation och interaktion på modersmålet, romani",
+        "lyhytNimi": "Kommunikation och interaktion på modersmålet, romani",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Communication and interaction in mother tongue, the Roma language",
+        "lyhytNimi": "Communication and interaction in mother tongue, the Roma language",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "tutkinnonosat_400012",
+        "codeElementVersion": 2,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "ammatillisenoppiaineet_vvai7",
+    "koodiArvo": "VVAI7",
+    "metadata": [
+      {
+        "nimi": "Viestintä ja vuorovaikutus äidinkielellä, suomi toisena kielenä",
+        "lyhytNimi": "Viestintä ja vuorovaikutus äidinkielellä, suomi toisena kielenä",
+        "kuvaus": "Viestintä ja vuorovaikutus äidinkielellä, suomi toisena kielenä",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Kommunikation och interaktion på modersmålet, finska som andraspråk",
+        "lyhytNimi": "Kommunikation och interaktion på modersmålet, finska som andraspråk",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Communication and interaction in mother tongue, Finnish as a second language",
+        "lyhytNimi": "Communication and interaction in mother tongue, Finnish as a second language",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "ammatillisenoppiaineet_vvai8",
+    "koodiArvo": "VVAI8",
+    "metadata": [
+      {
+        "nimi": "Viestintä ja vuorovaikutus äidinkielellä, ruotsi toisena kielenä",
+        "lyhytNimi": "Viestintä ja vuorovaikutus äidinkielellä, ruotsi toisena kielenä",
+        "kuvaus": "Viestintä ja vuorovaikutus äidinkielellä, ruotsi toisena kielenä",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Kommunikation och interaktion på modersmålet, svenska som andraspråk",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "tutkinnonosat_400012",
+        "codeElementVersion": 2,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "ammatillisenoppiaineet_vvtd",
+    "koodiArvo": "VVTD",
+    "metadata": [
+      {
+        "nimi": "Toiminta digitaalisessa ympäristössä",
+        "lyhytNimi": "toiminta digitaalisessa ympäristössä",
+        "kuvaus": "käytössä YTO:t",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Verksamhet i den digitala miljön",
+        "lyhytNimi": "Verksamhet i den digitala miljön",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Operating in a digital environment",
+        "lyhytNimi": "Operating in a digital environment",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "tutkinnonosat_400012",
+        "codeElementVersion": 2,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "ammatillisenoppiaineet_vvtk",
+    "koodiArvo": "VVTK",
+    "metadata": [
+      {
+        "nimi": "Viestintä ja vuorovaikutus toisella kotimaisella kielellä",
+        "lyhytNimi": "Viestintä ja vuorovaikutus toisella kotimaisella kielellä",
+        "kuvaus": "Käytössä YTO:t",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Kommunikation och interaktion på det andra inhemska språket",
+        "lyhytNimi": "Kommunikation och interaktion på det andra inhemska språket",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Communication and interaction in the second national language",
+        "lyhytNimi": "Communication and interaction in the second national language",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "tutkinnonosat_400012",
+        "codeElementVersion": 2,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "ammatillisenoppiaineet_vvtl",
+    "koodiArvo": "VVTL",
+    "metadata": [
+      {
+        "nimi": "Taide ja luova ilmaisu",
+        "lyhytNimi": "Taide ja luova ilmaisu",
+        "kuvaus": "käytössä YTO:t",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Konst och kreativt uttryck",
+        "lyhytNimi": "Konst och kreativt uttryck",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Art and creative expression",
+        "lyhytNimi": "Art and creative expression",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "tutkinnonosat_400012",
+        "codeElementVersion": 2,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "ammatillisenoppiaineet_vvvk",
+    "koodiArvo": "VVVK",
+    "metadata": [
+      {
+        "nimi": "Viestintä ja vuorovaikutus vieraalla kielellä",
+        "lyhytNimi": "viestintä ja vuorovaikutus vieraalla kielellä",
+        "kuvaus": "Käytössä YTO:t",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Kommunikation och interaktion på ett främmande språk",
+        "lyhytNimi": "Kommunikation och interaktion på ett främmande språk",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Communication and interaction in a foreign language",
+        "lyhytNimi": "Communication and interaction in a foreign language",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "tutkinnonosat_400012",
+        "codeElementVersion": 2,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "ammatillisenoppiaineet_ykt",
+    "koodiArvo": "YKT",
+    "metadata": [
+      {
+        "nimi": "Yhteiskuntataidot",
+        "lyhytNimi": "Yhteiskuntataidot",
+        "kuvaus": "Yhteiskuntataidot",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Samhällsfärdighet",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "tutkinnonosat_101055",
+        "codeElementVersion": 1,
+        "passive": true
+      },
+      {
+        "codeElementUri": "tutkinnonosat_101055",
+        "codeElementVersion": 2,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "ammatillisenoppiaineet_ym",
+    "koodiArvo": "YM",
+    "metadata": [
+      {
+        "nimi": "Ympäristöosaaminen",
+        "lyhytNimi": "Ympäristöosaaminen",
+        "kuvaus": "Ympäristöosaaminen",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Miljökunnande ",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "tutkinnonosat_101056",
+        "codeElementVersion": 1,
+        "passive": true
+      },
+      {
+        "codeElementUri": "tutkinnonosat_101056",
+        "codeElementVersion": 2,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "ammatillisenoppiaineet_ytkk",
+    "koodiArvo": "YTKK",
+    "metadata": [
+      {
+        "nimi": "Kestävän kehityksen edistäminen",
+        "lyhytNimi": "Kestävän kehityksen edistäminen",
+        "kuvaus": "Käytössä YTO:t",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Främjande av hållbar utveckling",
+        "lyhytNimi": "Främjande av hållbar utveckling",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Promoting sustainable development",
+        "lyhytNimi": "Promoting sustainable development",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "tutkinnonosat_400014",
+        "codeElementVersion": 2,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "ammatillisenoppiaineet_ytou",
+    "koodiArvo": "YTOU",
+    "metadata": [
+      {
+        "nimi": "Opiskelu- ja urasuunnitteluvalmiudet",
+        "lyhytNimi": "Opiskelu- ja urasuunnitteluvalmiudet",
+        "kuvaus": "Käytössä YTO:t",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Färdigheter i studie- och karriärplanering",
+        "lyhytNimi": "Färdigheter i studie- och karriärplanering",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Study and career planning capabilities",
+        "lyhytNimi": "Study and career planning capabilities",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "tutkinnonosat_400014",
+        "codeElementVersion": 2,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "ammatillisenoppiaineet_ytth",
+    "koodiArvo": "YTTH",
+    "metadata": [
+      {
+        "nimi": "Työkyvyn ja hyvinvoinnin ylläpitäminen",
+        "lyhytNimi": "työkyvyn ja hyvinvoinnin ylläpitäminen",
+        "kuvaus": "Käytössä YTO:t",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Upprätthållande av arbetsförmågan och välbefinnandet",
+        "lyhytNimi": "Upprätthållande av arbetsförmågan och välbefinnandet",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Maintaining ability to work and wellbeing at work",
+        "lyhytNimi": "Maintaining ability to work and wellbeing at work",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "tutkinnonosat_400014",
+        "codeElementVersion": 2,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "ammatillisenoppiaineet_yttt",
+    "koodiArvo": "YTTT",
+    "metadata": [
+      {
+        "nimi": "Työelämässä toimiminen",
+        "lyhytNimi": "Työelämässä toimiminen",
+        "kuvaus": "Käytössä YTO:t",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Att verka i arbetslivet",
+        "lyhytNimi": "Att verka i arbetslivet",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Operating in the world of work",
+        "lyhytNimi": "Operating in the world of work",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "tutkinnonosat_400014",
+        "codeElementVersion": 2,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "ammatillisenoppiaineet_ytyk",
+    "koodiArvo": "YTYK",
+    "metadata": [
+      {
+        "nimi": "Yhteiskunnassa ja kansalaisena toimiminen",
+        "lyhytNimi": "yhteiskunnassa ja kansalaisena toimiminen",
+        "kuvaus": "Käytössä YTO:t",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Att verka i samhället och som medborgare",
+        "lyhytNimi": "Att verka i samhället och som medborgare",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Operating as a member of society and a citizen",
+        "lyhytNimi": "Operating as a member of society and a citizen",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "tutkinnonosat_400014",
+        "codeElementVersion": 2,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "ammatillisenoppiaineet_ytyy",
+    "koodiArvo": "YTYY",
+    "metadata": [
+      {
+        "nimi": "Yrittäjyys ja yrittäjämäinen toiminta",
+        "lyhytNimi": "Yrittäjyys ja yrittäjämäinen toiminta",
+        "kuvaus": "Käytössä YTO:t",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Företagsamhet och företagarinriktad verksamhet",
+        "lyhytNimi": "Företagsamhet och företagarinriktad verksamhet",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Entrepreneurship and entrepreneurial activities",
+        "lyhytNimi": "Entrepreneurship and entrepreneurial activities",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "tutkinnonosat_400014",
+        "codeElementVersion": 2,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "ammatillisenoppiaineet_yyt",
+    "koodiArvo": "YYT",
+    "metadata": [
+      {
+        "nimi": "Yrittäjyys ja yritystoiminta",
+        "lyhytNimi": "Yrittäjyys ja yritystoiminta",
+        "kuvaus": "Yrittäjyys ja yritystoiminta",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Företagsamhet och företagsverksamhet",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "tutkinnonosat_101055",
+        "codeElementVersion": 1,
+        "passive": true
+      },
+      {
+        "codeElementUri": "tutkinnonosat_101055",
+        "codeElementVersion": 2,
+        "passive": false
+      }
+    ]
+  }
+]

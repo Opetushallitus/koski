@@ -1,31 +1,59 @@
-[ {
-  "koodiUri" : "diapaattokoe_kirjallinenkoe",
-  "koodiArvo" : "kirjallinenkoe",
-  "metadata" : [ {
-    "nimi" : "Kirjallinen koe",
-    "lyhytNimi" : "Kirjallinen",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "diapaattokoe_nayttotutkinto",
-  "koodiArvo" : "nayttotutkinto",
-  "metadata" : [ {
-    "nimi" : "Erityisosaamisen näyttötutkinto",
-    "lyhytNimi" : "Näyttötutkinto",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "diapaattokoe_suullinenkoe",
-  "koodiArvo" : "suullinenkoe",
-  "metadata" : [ {
-    "nimi" : "Suullinen koe",
-    "lyhytNimi" : "Suullinen",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-} ]
+[
+  {
+    "koodiUri": "diapaattokoe_kirjallinenkoe",
+    "koodiArvo": "kirjallinenkoe",
+    "metadata": [
+      {
+        "nimi": "Kirjallinen koe",
+        "lyhytNimi": "Kirjallinen",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "diapaattokoe_nayttotutkinto",
+    "koodiArvo": "nayttotutkinto",
+    "metadata": [
+      {
+        "nimi": "Erityisosaamisen näyttötutkinto",
+        "lyhytNimi": "Näyttötutkinto",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "diapaattokoe_suullinenkoe",
+    "koodiArvo": "suullinenkoe",
+    "metadata": [
+      {
+        "nimi": "Suullinen koe",
+        "lyhytNimi": "Suullinen",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

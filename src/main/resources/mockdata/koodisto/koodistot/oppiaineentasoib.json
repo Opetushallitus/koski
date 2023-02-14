@@ -1,23 +1,27 @@
 {
-  "koodistoUri" : "oppiaineentasoib",
-  "versio" : 1,
-  "metadata" : [ {
-    "kieli" : "FI",
-    "nimi" : "Oppiaineentaso IB",
-    "kuvaus" : "Oppiaineen taso"
-  }, {
-    "kieli" : "SV",
-    "nimi" : "Oppiaineentaso IB",
-    "kuvaus" : "Oppiaineen taso"
-  }, {
-    "kieli" : "EN",
-    "nimi" : "Oppiaineentaso IB",
-    "kuvaus" : "Oppiaineen taso"
-  } ],
-  "codesGroupUri" : "koski",
-  "voimassaAlkuPvm" : "2016-09-13",
-  "organisaatioOid" : "1.2.246.562.10.00000000001",
-  "withinCodes" : [ ],
-  "tila" : "LUONNOS",
-  "version" : 1
+  "koodistoUri": "oppiaineentasoib",
+  "versio": 1,
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "Oppiaineentaso IB",
+      "kuvaus": "Oppiaineen taso"
+    },
+    {
+      "kieli": "SV",
+      "nimi": "Oppiaineentaso IB",
+      "kuvaus": "Oppiaineen taso"
+    },
+    {
+      "kieli": "EN",
+      "nimi": "Oppiaineentaso IB",
+      "kuvaus": "Oppiaineen taso"
+    }
+  ],
+  "codesGroupUri": "koski",
+  "voimassaAlkuPvm": "2016-09-13",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "withinCodes": [],
+  "tila": "LUONNOS",
+  "version": 1
 }

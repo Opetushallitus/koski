@@ -1,223 +1,281 @@
-[ {
-  "koodiUri" : "koskiopiskeluoikeudentila_eronnut",
-  "koodiArvo" : "eronnut",
-  "metadata" : [ {
-    "nimi" : "Eronnut",
-    "lyhytNimi" : "",
-    "kuvaus" : "Opiskeluoikeus päättynyt oppijan toivomuksesta, suoritus ei valmistunut",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Utskriven",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Discontinued",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiopiskeluoikeudentila_hyvaksytystisuoritettu",
-  "koodiArvo" : "hyvaksytystisuoritettu",
-  "metadata" : [ {
-    "nimi" : "Hyväksytysti suoritettu",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Avlagd med godkänt resultat",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Passed",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiopiskeluoikeudentila_katsotaaneronneeksi",
-  "koodiArvo" : "katsotaaneronneeksi",
-  "metadata" : [ {
-    "nimi" : "Katsotaan eronneeksi",
-    "lyhytNimi" : "",
-    "kuvaus" : "Opiskeluoikeus päättynyt, suoritus ei valmistunut. Oppija ei ole suorittanut opintojaan ajallaan, tai ollut poissa ilman pätevää syytä.",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Anses utskriven",
-    "lyhytNimi" : "",
-    "kuvaus" : "Studierätten har upphört. Prestationen är inte slutförd. Den studerande har inte avlagt studierna inom utsatt tid eller har varit frånvarande utan giltig orsak.",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Considered as discontinued",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiopiskeluoikeudentila_keskeytynyt",
-  "koodiArvo" : "keskeytynyt",
-  "metadata" : [ {
-    "nimi" : "Keskeytynyt",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Avbruten",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiopiskeluoikeudentila_lasna",
-  "koodiArvo" : "lasna",
-  "metadata" : [ {
-    "nimi" : "Läsnä",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Närvarande",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Present",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiopiskeluoikeudentila_loma",
-  "koodiArvo" : "loma",
-  "metadata" : [ {
-    "nimi" : "Loma",
-    "lyhytNimi" : "",
-    "kuvaus" : "Ammatillisen koulutuksen opiskelija on yli 4 viikkoa kestävällä lomajaksolla",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Semester",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Vacation",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiopiskeluoikeudentila_mitatoity",
-  "koodiArvo" : "mitatoity",
-  "metadata" : [ {
-    "nimi" : "Mitätöity",
-    "lyhytNimi" : "",
-    "kuvaus" : "Opiskeluoikeus mitätöity",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Annullerad",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Invalidated",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiopiskeluoikeudentila_peruutettu",
-  "koodiArvo" : "peruutettu",
-  "metadata" : [ {
-    "nimi" : "Peruutettu",
-    "lyhytNimi" : "",
-    "kuvaus" : "Opiskeluoikeus peruutettu",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Indragen",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Revocated",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiopiskeluoikeudentila_paattynyt",
-  "koodiArvo" : "paattynyt",
-  "metadata" : [ {
-    "nimi" : "Päättynyt",
-    "lyhytNimi" : "",
-    "kuvaus" : "Opiskeluoikeus on päättynyt.",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Päättynyt",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Päättynyt",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiopiskeluoikeudentila_valiaikaisestikeskeytynyt",
-  "koodiArvo" : "valiaikaisestikeskeytynyt",
-  "metadata" : [ {
-    "nimi" : "Väliaikaisesti keskeytynyt",
-    "lyhytNimi" : "",
-    "kuvaus" : "Opiskeluoikeus keskeytetty määräajaksi. Ei kuluta opiskeluoikeusaikaa.",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Tillfälligt avbruten",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Temporarily suspended",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiopiskeluoikeudentila_valmistunut",
-  "koodiArvo" : "valmistunut",
-  "metadata" : [ {
-    "nimi" : "Valmistunut",
-    "lyhytNimi" : "",
-    "kuvaus" : "Opiskeluoikeus päättynyt suorituksen valmistumiseen",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Utexaminerad",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Graduated",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-} ]
+[
+  {
+    "koodiUri": "koskiopiskeluoikeudentila_eronnut",
+    "koodiArvo": "eronnut",
+    "metadata": [
+      {
+        "nimi": "Eronnut",
+        "lyhytNimi": "",
+        "kuvaus": "Opiskeluoikeus päättynyt oppijan toivomuksesta, suoritus ei valmistunut",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Utskriven",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Discontinued",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiopiskeluoikeudentila_hyvaksytystisuoritettu",
+    "koodiArvo": "hyvaksytystisuoritettu",
+    "metadata": [
+      {
+        "nimi": "Hyväksytysti suoritettu",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Avlagd med godkänt resultat",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Passed",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiopiskeluoikeudentila_katsotaaneronneeksi",
+    "koodiArvo": "katsotaaneronneeksi",
+    "metadata": [
+      {
+        "nimi": "Katsotaan eronneeksi",
+        "lyhytNimi": "",
+        "kuvaus": "Opiskeluoikeus päättynyt, suoritus ei valmistunut. Oppija ei ole suorittanut opintojaan ajallaan, tai ollut poissa ilman pätevää syytä.",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Anses utskriven",
+        "lyhytNimi": "",
+        "kuvaus": "Studierätten har upphört. Prestationen är inte slutförd. Den studerande har inte avlagt studierna inom utsatt tid eller har varit frånvarande utan giltig orsak.",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Considered as discontinued",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiopiskeluoikeudentila_keskeytynyt",
+    "koodiArvo": "keskeytynyt",
+    "metadata": [
+      {
+        "nimi": "Keskeytynyt",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Avbruten",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiopiskeluoikeudentila_lasna",
+    "koodiArvo": "lasna",
+    "metadata": [
+      {
+        "nimi": "Läsnä",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Närvarande",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Present",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiopiskeluoikeudentila_loma",
+    "koodiArvo": "loma",
+    "metadata": [
+      {
+        "nimi": "Loma",
+        "lyhytNimi": "",
+        "kuvaus": "Ammatillisen koulutuksen opiskelija on yli 4 viikkoa kestävällä lomajaksolla",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Semester",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Vacation",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiopiskeluoikeudentila_mitatoity",
+    "koodiArvo": "mitatoity",
+    "metadata": [
+      {
+        "nimi": "Mitätöity",
+        "lyhytNimi": "",
+        "kuvaus": "Opiskeluoikeus mitätöity",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Annullerad",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Invalidated",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiopiskeluoikeudentila_paattynyt",
+    "koodiArvo": "paattynyt",
+    "metadata": [
+      {
+        "nimi": "Päättynyt",
+        "lyhytNimi": "",
+        "kuvaus": "Opiskeluoikeus on päättynyt.",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Päättynyt",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Päättynyt",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiopiskeluoikeudentila_peruutettu",
+    "koodiArvo": "peruutettu",
+    "metadata": [
+      {
+        "nimi": "Peruutettu",
+        "lyhytNimi": "",
+        "kuvaus": "Opiskeluoikeus peruutettu",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Indragen",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Revocated",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiopiskeluoikeudentila_valiaikaisestikeskeytynyt",
+    "koodiArvo": "valiaikaisestikeskeytynyt",
+    "metadata": [
+      {
+        "nimi": "Väliaikaisesti keskeytynyt",
+        "lyhytNimi": "",
+        "kuvaus": "Opiskeluoikeus keskeytetty määräajaksi. Ei kuluta opiskeluoikeusaikaa.",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Tillfälligt avbruten",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Temporarily suspended",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiopiskeluoikeudentila_valmistunut",
+    "koodiArvo": "valmistunut",
+    "metadata": [
+      {
+        "nimi": "Valmistunut",
+        "lyhytNimi": "",
+        "kuvaus": "Opiskeluoikeus päättynyt suorituksen valmistumiseen",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Utexaminerad",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Graduated",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

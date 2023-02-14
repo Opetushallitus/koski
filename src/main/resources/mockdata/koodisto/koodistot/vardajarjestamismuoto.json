@@ -1,19 +1,22 @@
 {
-  "koodistoUri" : "vardajarjestamismuoto",
-  "versio" : 1,
-  "metadata" : [ {
-    "kieli" : "FI",
-    "nimi" : "Varda Järjestämismuoto",
-    "kuvaus" : "Vardan Järjestämismuoto koodisto. Ylläpitäjä Opetushallitus, Varda-tiimi."
-  }, {
-    "kieli" : "SV",
-    "nimi" : "Varda Form för anordnandet",
-    "kuvaus" : "Varda Form för anordnandet"
-  } ],
-  "codesGroupUri" : "varda",
-  "voimassaAlkuPvm" : "2019-01-01",
-  "organisaatioOid" : "1.2.246.562.10.00000000001",
-  "withinCodes" : [ ],
-  "tila" : "LUONNOS",
-  "version" : 2
+  "koodistoUri": "vardajarjestamismuoto",
+  "versio": 1,
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "Varda Järjestämismuoto",
+      "kuvaus": "Vardan Järjestämismuoto koodisto. Ylläpitäjä Opetushallitus, Varda-tiimi."
+    },
+    {
+      "kieli": "SV",
+      "nimi": "Varda Form för anordnandet",
+      "kuvaus": "Varda Form för anordnandet"
+    }
+  ],
+  "codesGroupUri": "varda",
+  "voimassaAlkuPvm": "2019-01-01",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "withinCodes": [],
+  "tila": "LUONNOS",
+  "version": 2
 }

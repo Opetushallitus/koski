@@ -1,15 +1,27 @@
 {
-  "koodistoUri" : "yhteystietojenalkupera",
-  "versio" : 1,
-  "metadata" : [ {
-    "kieli" : "FI",
-    "nimi" : "Yhteystietojen alkuperä",
-    "kuvaus" : "Yhteystietojen alkuperätiedot"
-  } ],
-  "codesGroupUri" : "alueet",
-  "voimassaAlkuPvm" : "2014-09-08",
-  "organisaatioOid" : "1.2.246.562.10.00000000001",
-  "withinCodes" : [ ],
-  "tila" : "LUONNOS",
-  "version" : 2
+  "koodistoUri": "yhteystietojenalkupera",
+  "versio": 1,
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "Yhteystietojen alkuperä",
+      "kuvaus": "Yhteystietojen alkuperätiedot"
+    },
+    {
+      "kieli": "SV",
+      "nimi": "Yhteystietojen alkuperä",
+      "kuvaus": "Yhteystietojen alkuperätiedot"
+    },
+    {
+      "kieli": "EN",
+      "nimi": "Yhteystietojen alkuperä",
+      "kuvaus": "Yhteystietojen alkuperätiedot"
+    }
+  ],
+  "codesGroupUri": "alueet",
+  "voimassaAlkuPvm": "2014-09-08",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "withinCodes": [],
+  "tila": "LUONNOS",
+  "version": 3
 }

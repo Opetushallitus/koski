@@ -1,86 +1,120 @@
-[ {
-  "koodiUri" : "arviointiasteikkoammatillinent1k3_0",
-  "koodiArvo" : "0",
-  "metadata" : [ {
-    "nimi" : "hylätty",
-    "lyhytNimi" : "H",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "underkänd",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "arviointiasteikkoammatillinent1k3_1",
-  "koodiArvo" : "1",
-  "metadata" : [ {
-    "nimi" : "tyydyttävä",
-    "lyhytNimi" : "T1",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "nöjaktig",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "arviointiasteikkoammatillinent1k3_2",
-  "koodiArvo" : "2",
-  "metadata" : [ {
-    "nimi" : "hyvä",
-    "lyhytNimi" : "H2",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "god",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "arviointiasteikkoammatillinent1k3_3",
-  "koodiArvo" : "3",
-  "metadata" : [ {
-    "nimi" : "kiitettävä",
-    "lyhytNimi" : "K3",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "berömlig",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "arviointiasteikkoammatillinent1k3_hyvaksytty",
-  "koodiArvo" : "Hyväksytty",
-  "metadata" : [ {
-    "nimi" : "Hyväksytty",
-    "lyhytNimi" : "Hyväksytty",
-    "kuvaus" : "Hyväksytty",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Godkänd",
-    "lyhytNimi" : "Godkänd",
-    "kuvaus" : "Godkänd",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Pass",
-    "lyhytNimi" : "Pass",
-    "kuvaus" : "Pass",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-} ]
+[
+  {
+    "koodiUri": "arviointiasteikkoammatillinent1k3_0",
+    "koodiArvo": "0",
+    "metadata": [
+      {
+        "nimi": "hylätty",
+        "lyhytNimi": "H",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "underkänd",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "arviointiasteikkoammatillinent1k3_1",
+    "koodiArvo": "1",
+    "metadata": [
+      {
+        "nimi": "tyydyttävä",
+        "lyhytNimi": "T1",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "nöjaktig",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "arviointiasteikkoammatillinent1k3_2",
+    "koodiArvo": "2",
+    "metadata": [
+      {
+        "nimi": "hyvä",
+        "lyhytNimi": "H2",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "god",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "arviointiasteikkoammatillinent1k3_3",
+    "koodiArvo": "3",
+    "metadata": [
+      {
+        "nimi": "kiitettävä",
+        "lyhytNimi": "K3",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "berömlig",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "arviointiasteikkoammatillinent1k3_hyvaksytty",
+    "koodiArvo": "Hyväksytty",
+    "metadata": [
+      {
+        "nimi": "Hyväksytty",
+        "lyhytNimi": "Hyväksytty",
+        "kuvaus": "Hyväksytty",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Godkänd",
+        "lyhytNimi": "Godkänd",
+        "kuvaus": "Godkänd",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Pass",
+        "lyhytNimi": "Pass",
+        "kuvaus": "Pass",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

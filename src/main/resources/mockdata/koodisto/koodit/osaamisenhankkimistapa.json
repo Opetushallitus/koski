@@ -1,49 +1,71 @@
-[ {
-  "koodiUri" : "osaamisenhankkimistapa_koulutussopimus",
-  "koodiArvo" : "koulutussopimus",
-  "metadata" : [ {
-    "nimi" : "Koulutussopimus",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Utbildningsavtal",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "osaamisenhankkimistapa_oppilaitosmuotoinenkoulutus",
-  "koodiArvo" : "oppilaitosmuotoinenkoulutus",
-  "metadata" : [ {
-    "nimi" : "Oppilaitosmuotoinen koulutus",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Utbildningen som när-, distansundervisning eller på en arbetsplats",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "osaamisenhankkimistapa_oppisopimus",
-  "koodiArvo" : "oppisopimus",
-  "metadata" : [ {
-    "nimi" : "Oppisopimus",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Läroavtalsutbildning",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-} ]
+[
+  {
+    "koodiUri": "osaamisenhankkimistapa_koulutussopimus",
+    "koodiArvo": "koulutussopimus",
+    "metadata": [
+      {
+        "nimi": "Koulutussopimus",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Utbildningsavtal",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "osaamisenhankkimistapa_oppilaitosmuotoinenkoulutus",
+    "koodiArvo": "oppilaitosmuotoinenkoulutus",
+    "metadata": [
+      {
+        "nimi": "Oppilaitosmuotoinen koulutus",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Utbildningen som när-, distansundervisning eller på en arbetsplats",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "osaamisenhankkimistapa_oppisopimus",
+    "koodiArvo": "oppisopimus",
+    "metadata": [
+      {
+        "nimi": "Oppisopimus",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Läroavtalsutbildning",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

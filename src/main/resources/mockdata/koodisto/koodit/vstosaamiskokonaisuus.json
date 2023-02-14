@@ -1,113 +1,163 @@
-[ {
-  "koodiUri" : "vstosaamiskokonaisuus_1002",
-  "koodiArvo" : "1002",
-  "metadata" : [ {
-    "nimi" : "Arjen taidot ja elämänhallinta",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Vardagsfärdigheter och livskompetens",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "vstosaamiskokonaisuus_1003",
-  "koodiArvo" : "1003",
-  "metadata" : [ {
-    "nimi" : "Opiskelu-, itsetuntemus- ja työelämätaidot",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Studie- och arbetslivsfärdigheter och självkännedom",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "vstosaamiskokonaisuus_1004",
-  "koodiArvo" : "1004",
-  "metadata" : [ {
-    "nimi" : "Vuorovaikutus- ja viestintätaidot",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Interaktions- och kommunikationsfärdigheter",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "vstosaamiskokonaisuus_1005",
-  "koodiArvo" : "1005",
-  "metadata" : [ {
-    "nimi" : "Matemaattiset perustaidot ja ongelmanratkaisutaidot",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Grundläggande matematiska färdigheter och problemlösningsförmåga",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "vstosaamiskokonaisuus_1006",
-  "koodiArvo" : "1006",
-  "metadata" : [ {
-    "nimi" : "Aktiivinen kansalaisuus",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Aktivt medborgarskap",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "vstosaamiskokonaisuus_1007",
-  "koodiArvo" : "1007",
-  "metadata" : [ {
-    "nimi" : "Opiskelu- ja urasuunnittelutaidot",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Studiefärdigheter och karriärplaneringsfärdigheter",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "vstosaamiskokonaisuus_1008",
-  "koodiArvo" : "1008",
-  "metadata" : [ {
-    "nimi" : "Valinnaiset suuntautumisopinnot",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Inriktade studier",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-} ]
+[
+  {
+    "koodiUri": "vstosaamiskokonaisuus_1002",
+    "koodiArvo": "1002",
+    "metadata": [
+      {
+        "nimi": "Arjen taidot ja elämänhallinta",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Vardagsfärdigheter och livskompetens",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "vstosaamiskokonaisuus_1003",
+    "koodiArvo": "1003",
+    "metadata": [
+      {
+        "nimi": "Opiskelu-, itsetuntemus- ja työelämätaidot",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Studie- och arbetslivsfärdigheter och självkännedom",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "vstosaamiskokonaisuus_1004",
+    "koodiArvo": "1004",
+    "metadata": [
+      {
+        "nimi": "Vuorovaikutus- ja viestintätaidot",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Interaktions- och kommunikationsfärdigheter",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "vstosaamiskokonaisuus_1005",
+    "koodiArvo": "1005",
+    "metadata": [
+      {
+        "nimi": "Matemaattiset perustaidot ja ongelmanratkaisutaidot",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Grundläggande matematiska färdigheter och problemlösningsförmåga",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "vstosaamiskokonaisuus_1006",
+    "koodiArvo": "1006",
+    "metadata": [
+      {
+        "nimi": "Aktiivinen kansalaisuus",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Aktivt medborgarskap",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "vstosaamiskokonaisuus_1007",
+    "koodiArvo": "1007",
+    "metadata": [
+      {
+        "nimi": "Opiskelu- ja urasuunnittelutaidot",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Studiefärdigheter och karriärplaneringsfärdigheter",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "vstosaamiskokonaisuus_1008",
+    "koodiArvo": "1008",
+    "metadata": [
+      {
+        "nimi": "Valinnaiset suuntautumisopinnot",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Inriktade studier",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

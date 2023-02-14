@@ -1,128 +1,172 @@
-[ {
-  "koodiUri" : "koulutuksenosattuva_101",
-  "koodiArvo" : "101",
-  "metadata" : [ {
-    "nimi" : "Opiskelu- ja urasuunnittelutaidot",
-    "lyhytNimi" : "",
-    "kuvaus" : "Käytetään TUVA perusteessa",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Studiefärdigheter och karriärplaneringsfärdigheter",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koulutuksenosattuva_102",
-  "koodiArvo" : "102",
-  "metadata" : [ {
-    "nimi" : "Työelämätaidot ja työelämässä tapahtuva oppiminen",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Arbetslivsfärdigheter och lärande i arbetslivet",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koulutuksenosattuva_103",
-  "koodiArvo" : "103",
-  "metadata" : [ {
-    "nimi" : "Arjen taidot ja yhteiskunnallinen osallisuus",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Vardagskompetens och delaktighet i samhället",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koulutuksenosattuva_104",
-  "koodiArvo" : "104",
-  "metadata" : [ {
-    "nimi" : "Valinnaiset opinnot",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Valbara utbildningsdelar",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koulutuksenosattuva_105",
-  "koodiArvo" : "105",
-  "metadata" : [ {
-    "nimi" : "Ammatillisen koulutuksen opinnot ja niihin valmentautuminen",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Studier inom yrkesutbildning och studier som förbereder för dem",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Ammatillisen koulutuksen opinnot ja niihin valmentautuminen",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koulutuksenosattuva_106",
-  "koodiArvo" : "106",
-  "metadata" : [ {
-    "nimi" : "Lukiokoulutuksen opinnot ja niihin valmentautuminen",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Studier inom gymnasieutbildning och studier som förbereder för dem",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Lukiokoulutuksen opinnot ja niihin valmentautuminen",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koulutuksenosattuva_107",
-  "koodiArvo" : "107",
-  "metadata" : [ {
-    "nimi" : "Perustaitojen vahvistaminen",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Stärkande av grundläggande färdigheter",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Perustaitojen vahvistaminen",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-} ]
+[
+  {
+    "koodiUri": "koulutuksenosattuva_101",
+    "koodiArvo": "101",
+    "metadata": [
+      {
+        "nimi": "Opiskelu- ja urasuunnittelutaidot",
+        "lyhytNimi": "",
+        "kuvaus": "Käytetään TUVA perusteessa",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Studiefärdigheter och karriärplaneringsfärdigheter",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koulutuksenosattuva_102",
+    "koodiArvo": "102",
+    "metadata": [
+      {
+        "nimi": "Työelämätaidot ja työelämässä tapahtuva oppiminen",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Arbetslivsfärdigheter och lärande i arbetslivet",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koulutuksenosattuva_103",
+    "koodiArvo": "103",
+    "metadata": [
+      {
+        "nimi": "Arjen taidot ja yhteiskunnallinen osallisuus",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Vardagskompetens och delaktighet i samhället",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koulutuksenosattuva_104",
+    "koodiArvo": "104",
+    "metadata": [
+      {
+        "nimi": "Valinnaiset opinnot",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Valbara utbildningsdelar",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koulutuksenosattuva_105",
+    "koodiArvo": "105",
+    "metadata": [
+      {
+        "nimi": "Ammatillisen koulutuksen opinnot ja niihin valmentautuminen",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Studier inom yrkesutbildning och studier som förbereder för dem",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Ammatillisen koulutuksen opinnot ja niihin valmentautuminen",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koulutuksenosattuva_106",
+    "koodiArvo": "106",
+    "metadata": [
+      {
+        "nimi": "Lukiokoulutuksen opinnot ja niihin valmentautuminen",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Studier inom gymnasieutbildning och studier som förbereder för dem",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Lukiokoulutuksen opinnot ja niihin valmentautuminen",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koulutuksenosattuva_107",
+    "koodiArvo": "107",
+    "metadata": [
+      {
+        "nimi": "Perustaitojen vahvistaminen",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Stärkande av grundläggande färdigheter",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Perustaitojen vahvistaminen",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

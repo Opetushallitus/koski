@@ -1,170 +1,268 @@
-[ {
-  "koodiUri" : "europeanschoolofhelsinkiluokkaaste_n1",
-  "koodiArvo" : "N1",
-  "metadata" : [ {
-    "nimi" : "N1",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "N1",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "europeanschoolofhelsinkiluokkaaste_n2",
-  "koodiArvo" : "N2",
-  "metadata" : [ {
-    "nimi" : "N2",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "N2",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "europeanschoolofhelsinkiluokkaaste_p1",
-  "koodiArvo" : "P1",
-  "metadata" : [ {
-    "nimi" : "P1",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "P1",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "europeanschoolofhelsinkiluokkaaste_p2",
-  "koodiArvo" : "P2",
-  "metadata" : [ {
-    "nimi" : "P2",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "P2",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "europeanschoolofhelsinkiluokkaaste_p3",
-  "koodiArvo" : "P3",
-  "metadata" : [ {
-    "nimi" : "P3",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "P3",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "europeanschoolofhelsinkiluokkaaste_p4",
-  "koodiArvo" : "P4",
-  "metadata" : [ {
-    "nimi" : "P4",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "P4",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "europeanschoolofhelsinkiluokkaaste_p5",
-  "koodiArvo" : "P5",
-  "metadata" : [ {
-    "nimi" : "P5",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "P5",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "europeanschoolofhelsinkiluokkaaste_s1",
-  "koodiArvo" : "S1",
-  "metadata" : [ {
-    "nimi" : "S1",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "S1",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "europeanschoolofhelsinkiluokkaaste_s2",
-  "koodiArvo" : "S2",
-  "metadata" : [ {
-    "nimi" : "S2",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "S2",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "europeanschoolofhelsinkiluokkaaste_s3",
-  "koodiArvo" : "S3",
-  "metadata" : [ {
-    "nimi" : "S3",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "S3",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "europeanschoolofhelsinkiluokkaaste_s4",
-  "koodiArvo" : "S4",
-  "metadata" : [ {
-    "nimi" : "S4",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "S4",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "europeanschoolofhelsinkiluokkaaste_s5",
-  "koodiArvo" : "S5",
-  "metadata" : [ {
-    "nimi" : "S5",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "S5",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "europeanschoolofhelsinkiluokkaaste_s6",
-  "koodiArvo" : "S6",
-  "metadata" : [ {
-    "nimi" : "S6",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "S6",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "europeanschoolofhelsinkiluokkaaste_s7",
-  "koodiArvo" : "S7",
-  "metadata" : [ {
-    "nimi" : "S7",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "S7",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}
+[
+  {
+    "koodiUri": "europeanschoolofhelsinkiluokkaaste_n1",
+    "koodiArvo": "N1",
+    "metadata": [
+      {
+        "nimi": "N1",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "nimi": "N1",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkiluokkaaste_n2",
+    "koodiArvo": "N2",
+    "metadata": [
+      {
+        "nimi": "N2",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "nimi": "N2",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkiluokkaaste_p1",
+    "koodiArvo": "P1",
+    "metadata": [
+      {
+        "nimi": "P1",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "nimi": "P1",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkiluokkaaste_p2",
+    "koodiArvo": "P2",
+    "metadata": [
+      {
+        "nimi": "P2",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "nimi": "P2",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkiluokkaaste_p3",
+    "koodiArvo": "P3",
+    "metadata": [
+      {
+        "nimi": "P3",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "nimi": "P3",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkiluokkaaste_p4",
+    "koodiArvo": "P4",
+    "metadata": [
+      {
+        "nimi": "P4",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "nimi": "P4",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkiluokkaaste_p5",
+    "koodiArvo": "P5",
+    "metadata": [
+      {
+        "nimi": "P5",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "nimi": "P5",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkiluokkaaste_s1",
+    "koodiArvo": "S1",
+    "metadata": [
+      {
+        "nimi": "S1",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "nimi": "S1",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkiluokkaaste_s2",
+    "koodiArvo": "S2",
+    "metadata": [
+      {
+        "nimi": "S2",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "nimi": "S2",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkiluokkaaste_s3",
+    "koodiArvo": "S3",
+    "metadata": [
+      {
+        "nimi": "S3",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "nimi": "S3",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkiluokkaaste_s4",
+    "koodiArvo": "S4",
+    "metadata": [
+      {
+        "nimi": "S4",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "nimi": "S4",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkiluokkaaste_s5",
+    "koodiArvo": "S5",
+    "metadata": [
+      {
+        "nimi": "S5",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "nimi": "S5",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkiluokkaaste_s6",
+    "koodiArvo": "S6",
+    "metadata": [
+      {
+        "nimi": "S6",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "nimi": "S6",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkiluokkaaste_s7",
+    "koodiArvo": "S7",
+    "metadata": [
+      {
+        "nimi": "S7",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "nimi": "S7",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
 ]

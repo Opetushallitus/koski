@@ -1,38 +1,59 @@
-[ {
-  "koodiUri" : "europeanschoolofhelsinkis7oppiaineenkomponentti_a",
-  "koodiArvo" : "A",
-  "metadata" : [ {
-    "nimi" : "A",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "A",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "europeanschoolofhelsinkis7oppiaineenkomponentti_b",
-  "koodiArvo" : "B",
-  "metadata" : [ {
-    "nimi" : "B",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "B",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "europeanschoolofhelsinkis7oppiaineenkomponentti_yearmark",
-  "koodiArvo" : "yearmark",
-  "metadata" : [ {
-    "nimi" : "Year mark",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Year mark",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}
+[
+  {
+    "koodiUri": "europeanschoolofhelsinkis7oppiaineenkomponentti_a",
+    "koodiArvo": "A",
+    "metadata": [
+      {
+        "nimi": "A",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "nimi": "A",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkis7oppiaineenkomponentti_b",
+    "koodiArvo": "B",
+    "metadata": [
+      {
+        "nimi": "B",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "nimi": "B",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkis7oppiaineenkomponentti_yearmark",
+    "koodiArvo": "yearmark",
+    "metadata": [
+      {
+        "nimi": "Year mark",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Year mark",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
 ]

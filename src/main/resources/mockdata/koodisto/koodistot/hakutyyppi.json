@@ -1,23 +1,27 @@
 {
-  "koodistoUri" : "hakutyyppi",
-  "versio" : 1,
-  "metadata" : [ {
-    "kieli" : "FI",
-    "nimi" : "hakutyyppi",
-    "kuvaus" : "hakutyyppi"
-  }, {
-    "kieli" : "SV",
-    "nimi" : "hakutyyppi",
-    "kuvaus" : "hakutyyppi"
-  }, {
-    "kieli" : "EN",
-    "nimi" : "hakutyyppi",
-    "kuvaus" : "hakutyyppi"
-  } ],
-  "codesGroupUri" : "haunkoodistot",
-  "voimassaAlkuPvm" : "2013-01-01",
-  "organisaatioOid" : "1.2.246.562.10.00000000001",
-  "withinCodes" : [ ],
-  "tila" : "LUONNOS",
-  "version" : 0
+  "koodistoUri": "hakutyyppi",
+  "versio": 1,
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "hakutyyppi",
+      "kuvaus": "hakutyyppi"
+    },
+    {
+      "kieli": "SV",
+      "nimi": "hakutyyppi",
+      "kuvaus": "hakutyyppi"
+    },
+    {
+      "kieli": "EN",
+      "nimi": "hakutyyppi",
+      "kuvaus": "hakutyyppi"
+    }
+  ],
+  "codesGroupUri": "haunkoodistot",
+  "voimassaAlkuPvm": "2013-01-01",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "withinCodes": [],
+  "tila": "LUONNOS",
+  "version": 0
 }

@@ -14,6 +14,9 @@
         "lyhytNimi": "",
         "kuvaus": "",
         "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
       }
     ],
     "versio": 1,
@@ -34,6 +37,9 @@
         "lyhytNimi": "",
         "kuvaus": "",
         "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
       }
     ],
     "versio": 1,
@@ -54,6 +60,9 @@
         "lyhytNimi": "",
         "kuvaus": "",
         "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
       }
     ],
     "versio": 1,
@@ -74,6 +83,9 @@
         "lyhytNimi": "",
         "kuvaus": "",
         "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
       }
     ],
     "versio": 1,
@@ -110,16 +122,20 @@
     "koodiArvo": "14",
     "metadata": [
       {
-        "nimi": "Jatkuvan oppimisen rahoitus (JOTPA)",
+        "nimi": "Jatkuvan oppimisen ja työllisuuden palvelukeskuksen rahoitus",
         "lyhytNimi": "",
-        "kuvaus": "Jatkuvan oppimisen ja työllisyyden palvelukeskuksen rahoittamat koulutukset.",
+        "kuvaus": "Jatkuvan oppimisen ja työllisuuden palvelukeskuksen (JOTPA) valtionavustuksilla tai hankintana rahoittamat koulutukset. Rahoituskoodia käyttävät vain JOTPA:n myöntämällä rahoituksella koulutusta järjestävät ammatillisen koulutuksen, vapaan sivistystyön tai muun kuin säännellyn koulutuksen järjestäjät. ",
         "kieli": "FI"
       },
       {
-        "nimi": "Finansiering av kontinuerligt lärande (JOTPA)",
+        "nimi": "Finansiering av Servicecentret för kontinuerligt lärande och sysselsättning",
         "lyhytNimi": "",
-        "kuvaus": "",
+        "kuvaus": "Finansiering av Servicecentret för kontinuerligt lärande och sysselsättning (JOTPA)",
         "kieli": "SV"
+      },
+      {
+        "nimi": "Jatkuvan oppimisen ja työllisuuden palvelukeskuksen rahoitus",
+        "kieli": "EN"
       }
     ],
     "versio": 1,
@@ -130,16 +146,19 @@
     "koodiArvo": "15",
     "metadata": [
       {
-        "nimi": "Jatkuvan oppimisen uudistuksen rahoitus (RRF)",
-        "lyhytNimi": "",
-        "kuvaus": "Jatkuvan oppimisen ja työllisyyden palvelukeskuksen rahoittamat koulutukset (Jatkuvan oppimisen uudistuksen RRF-rahoitus / Toimenpide: P3C2R1)",
+        "nimi": "Jatkuvan oppimisen ja työllisuuden palvelukeskuksen rahoitus (RRF)",
+        "kuvaus": "Jatkuvan oppimisen ja työllisuuden palvelukeskuksen (JOTPA) valtionavustuksilla tai hankintana rahoittamat koulutukset, jotka on järjestetty JOTPA:n myöntämällä RRF-rahoituksella (Toimenpide: P3C2R1). Rahoituskoodia käyttävät vain JOTPA:n myöntämällä rahoituksella koulutusta järjestävät ammatillisen koulutuksen, vapaan sivistystyön tai muun kuin säännellyn koulutuksen järjestäjät. ",
         "kieli": "FI"
       },
       {
-        "nimi": "Jatkuvan oppimisen uudistuksen rahoitus (RRF)",
-        "lyhytNimi": "",
-        "kuvaus": "Jatkuvan oppimisen ja työllisyyden palvelukeskuksen rahoittamat koulutukset (Jatkuvan oppimisen uudistuksen RRF-rahoitus / Toimenpide: P3C2R1)",
+        "nimi": "Finansiering av Servicecentret för kontinuerligt lärande och sysselsättning (RRF)",
+        "kuvaus": "Jatkuvan oppimisen ja työllisuuden palvelukeskuksen (JOTPA) valtionavustuksilla tai hankintana rahoittamat koulutukset, jotka on järjestetty JOTPA:n myöntämällä RRF-rahoituksella. Koulutuksen järjestäjällä on tästä tieto saamallaan rahoituspäätöksellä (Toimenpide: P3C2R1). Rahoituskoodia käyttävät vain JOTPA:n myöntämällä rahoituksella koulutusta järjestävät ammatillisen koulutuksen, vapaan sivistystyön tai muun kuin säännellyn koulutuksen järjestäjät. ",
         "kieli": "SV"
+      },
+      {
+        "nimi": "Jatkuvan oppimisen ja työllisuuden palvelukeskuksen rahoitus (RRF)",
+        "kuvaus": "Jatkuvan oppimisen ja työllisuuden palvelukeskuksen (JOTPA) valtionavustuksilla tai hankintana rahoittamat koulutukset, jotka on järjestetty JOTPA:n myöntämällä RRF-rahoituksella. Koulutuksen järjestäjällä on tästä tieto saamallaan rahoituspäätöksellä (Toimenpide: P3C2R1). Rahoituskoodia käyttävät vain JOTPA:n myöntämällä rahoituksella koulutusta järjestävät ammatillisen koulutuksen, vapaan sivistystyön tai muun kuin säännellyn koulutuksen järjestäjät. ",
+        "kieli": "EN"
       }
     ],
     "versio": 1,
@@ -160,6 +179,9 @@
         "lyhytNimi": "",
         "kuvaus": "",
         "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
       }
     ],
     "versio": 1,
@@ -180,6 +202,9 @@
         "lyhytNimi": "",
         "kuvaus": "",
         "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
       }
     ],
     "versio": 1,
@@ -200,6 +225,9 @@
         "lyhytNimi": "",
         "kuvaus": "",
         "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
       }
     ],
     "versio": 1,
@@ -220,6 +248,9 @@
         "lyhytNimi": "",
         "kuvaus": "",
         "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
       }
     ],
     "versio": 1,
@@ -240,6 +271,9 @@
         "lyhytNimi": "",
         "kuvaus": "",
         "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
       }
     ],
     "versio": 1,
@@ -260,6 +294,9 @@
         "lyhytNimi": "",
         "kuvaus": "",
         "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
       }
     ],
     "versio": 1,
@@ -280,6 +317,9 @@
         "lyhytNimi": "",
         "kuvaus": "",
         "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
       }
     ],
     "versio": 1,

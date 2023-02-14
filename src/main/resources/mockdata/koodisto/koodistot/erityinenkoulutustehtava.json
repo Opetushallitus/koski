@@ -1,15 +1,17 @@
 {
-  "koodistoUri" : "erityinenkoulutustehtava",
-  "versio" : 2,
-  "metadata" : [ {
-    "kieli" : "FI",
-    "nimi" : "erityinenkoulutustehtava",
-    "kuvaus" : "erityinenkoulutustehtava"
-  } ],
-  "codesGroupUri" : "koski",
-  "voimassaAlkuPvm" : "2020-01-13",
-  "organisaatioOid" : "1.2.246.562.10.00000000001",
-  "withinCodes" : [ ],
-  "tila" : "LUONNOS",
-  "version" : 2
+  "koodistoUri": "erityinenkoulutustehtava",
+  "versio": 2,
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "erityinenkoulutustehtava",
+      "kuvaus": "erityinenkoulutustehtava"
+    }
+  ],
+  "codesGroupUri": "koski",
+  "voimassaAlkuPvm": "2020-01-13",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "withinCodes": [],
+  "tila": "LUONNOS",
+  "version": 2
 }

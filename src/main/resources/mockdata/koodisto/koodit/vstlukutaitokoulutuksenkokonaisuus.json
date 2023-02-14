@@ -1,85 +1,106 @@
-[ {
-  "koodiUri" : "vstlukutaitokoulutuksenkokonaisuus_vstlukutaitokoulutuksennumeeristentaitojenkokonaisuudensuoritus",
-  "koodiArvo" : "vstlukutaitokoulutuksennumeeristentaitojenkokonaisuudensuoritus",
-  "metadata" : [ {
-    "nimi" : "Numeeriset taidot",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Numeriska färdigheter",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Numeeriset taidot",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "vstlukutaitokoulutuksenkokonaisuus_vstlukutaitokoulutuksentekstienkirjoittamisenkokonaisuudensuoritus",
-  "koodiArvo" : "vstlukutaitokoulutuksentekstienkirjoittamisenkokonaisuudensuoritus",
-  "metadata" : [ {
-    "nimi" : "Tekstien kirjoittaminen ja tuottaminen",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Förmåga att skriva och producera texter",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Tekstien kirjoittaminen ja tuottaminen",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "vstlukutaitokoulutuksenkokonaisuus_vstlukutaitokoulutuksentekstienlukemisenkokonaisuudensuoritus",
-  "koodiArvo" : "vstlukutaitokoulutuksentekstienlukemisenkokonaisuudensuoritus",
-  "metadata" : [ {
-    "nimi" : "Tekstien lukeminen ja tulkitseminen",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Förmåga att läsa och tolka texter",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Tekstien lukeminen ja tulkitseminen",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "vstlukutaitokoulutuksenkokonaisuus_vstlukutaitokoulutuksenvuorovaikutustilannekokonaisuudensuoritus",
-  "koodiArvo" : "vstlukutaitokoulutuksenvuorovaikutustilannekokonaisuudensuoritus",
-  "metadata" : [ {
-    "nimi" : "Vuorovaikutustilanteissa toimiminen",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Förmåga att kommunicera",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Vuorovaikutustilanteissa toimiminen",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-} ]
+[
+  {
+    "koodiUri": "vstlukutaitokoulutuksenkokonaisuus_vstlukutaitokoulutuksennumeeristentaitojenkokonaisuudensuoritus",
+    "koodiArvo": "vstlukutaitokoulutuksennumeeristentaitojenkokonaisuudensuoritus",
+    "metadata": [
+      {
+        "nimi": "Numeeriset taidot",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Numeriska färdigheter",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Numeeriset taidot",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "vstlukutaitokoulutuksenkokonaisuus_vstlukutaitokoulutuksentekstienkirjoittamisenkokonaisuudensuoritus",
+    "koodiArvo": "vstlukutaitokoulutuksentekstienkirjoittamisenkokonaisuudensuoritus",
+    "metadata": [
+      {
+        "nimi": "Tekstien kirjoittaminen ja tuottaminen",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Förmåga att skriva och producera texter",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Tekstien kirjoittaminen ja tuottaminen",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "vstlukutaitokoulutuksenkokonaisuus_vstlukutaitokoulutuksentekstienlukemisenkokonaisuudensuoritus",
+    "koodiArvo": "vstlukutaitokoulutuksentekstienlukemisenkokonaisuudensuoritus",
+    "metadata": [
+      {
+        "nimi": "Tekstien lukeminen ja tulkitseminen",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Förmåga att läsa och tolka texter",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Tekstien lukeminen ja tulkitseminen",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "vstlukutaitokoulutuksenkokonaisuus_vstlukutaitokoulutuksenvuorovaikutustilannekokonaisuudensuoritus",
+    "koodiArvo": "vstlukutaitokoulutuksenvuorovaikutustilannekokonaisuudensuoritus",
+    "metadata": [
+      {
+        "nimi": "Vuorovaikutustilanteissa toimiminen",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Förmåga att kommunicera",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Vuorovaikutustilanteissa toimiminen",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

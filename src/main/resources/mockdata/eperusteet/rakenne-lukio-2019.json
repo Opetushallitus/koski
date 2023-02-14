@@ -23,10 +23,7 @@
       "opintoalakoodi": null
     }
   ],
-  "kielet": [
-    "sv",
-    "fi"
-  ],
+  "kielet": ["sv", "fi"],
   "kuvaus": null,
   "maarayskirje": {
     "id": 6835670,
@@ -49,11 +46,7 @@
   "tila": "valmis",
   "tyyppi": "normaali",
   "koulutusvienti": false,
-  "korvattavatDiaarinumerot": [
-    "OPH-887-2018",
-    "OPH-865-2017",
-    "60/011/2015"
-  ],
+  "korvattavatDiaarinumerot": ["OPH-887-2018", "OPH-865-2017", "60/011/2015"],
   "osaamisalat": [],
   "tyotehtavatJoissaVoiToimia": null,
   "suorittaneenOsaaminen": null,

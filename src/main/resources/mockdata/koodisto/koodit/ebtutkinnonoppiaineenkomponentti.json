@@ -1,50 +1,78 @@
-[ {
-  "koodiUri" : "ebtutkinnonoppiaineenkomponentti_preliminary",
-  "koodiArvo" : "Preliminary",
-  "metadata" : [ {
-    "nimi" : "Preliminary",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Preliminary",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "ebtutkinnonoppiaineenkomponentti_written",
-  "koodiArvo" : "Written",
-  "metadata" : [ {
-    "nimi" : "Written",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Written",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "ebtutkinnonoppiaineenkomponentti_oral",
-  "koodiArvo" : "Oral",
-  "metadata" : [ {
-    "nimi" : "Oral",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Oral",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "ebtutkinnonoppiaineenkomponentti_final",
-  "koodiArvo" : "Final",
-  "metadata" : [ {
-    "nimi" : "Final",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Final",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}
+[
+  {
+    "koodiUri": "ebtutkinnonoppiaineenkomponentti_final",
+    "koodiArvo": "Final",
+    "metadata": [
+      {
+        "nimi": "Final",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Final",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "ebtutkinnonoppiaineenkomponentti_oral",
+    "koodiArvo": "Oral",
+    "metadata": [
+      {
+        "nimi": "Oral",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Oral",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "ebtutkinnonoppiaineenkomponentti_preliminary",
+    "koodiArvo": "Preliminary",
+    "metadata": [
+      {
+        "nimi": "Preliminary",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Preliminary",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "ebtutkinnonoppiaineenkomponentti_written",
+    "koodiArvo": "Written",
+    "metadata": [
+      {
+        "nimi": "Written",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Written",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
 ]

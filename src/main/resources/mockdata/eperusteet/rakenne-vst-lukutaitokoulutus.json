@@ -11,9 +11,7 @@
   "koulutustyyppi": "koulutustyyppi_35",
   "toteutus": "vapaasivistystyo",
   "koulutukset": [],
-  "kielet": [
-    "fi"
-  ],
+  "kielet": ["fi"],
   "kuvaus": null,
   "maarayskirje": null,
   "muutosmaaraykset": [],

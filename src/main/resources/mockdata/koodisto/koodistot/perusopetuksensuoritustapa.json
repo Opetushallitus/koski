@@ -1,23 +1,27 @@
 {
-  "koodistoUri" : "perusopetuksensuoritustapa",
-  "versio" : 1,
-  "metadata" : [ {
-    "kieli" : "FI",
-    "nimi" : "Perusopetuksen suoritustapa",
-    "kuvaus" : "Tutkinnon tai tutkinnon osan suoritustapa"
-  }, {
-    "kieli" : "SV",
-    "nimi" : "Perusopetuksen suoritustapa",
-    "kuvaus" : "Tutkinnon tai tutkinnon osan suoritustapa"
-  }, {
-    "kieli" : "EN",
-    "nimi" : "Perusopetuksen suoritustapa",
-    "kuvaus" : "Tutkinnon tai tutkinnon osan suoritustapa"
-  } ],
-  "codesGroupUri" : "koski",
-  "voimassaAlkuPvm" : "2015-11-01",
-  "organisaatioOid" : "1.2.246.562.10.00000000001",
-  "withinCodes" : [ ],
-  "tila" : "LUONNOS",
-  "version" : 1
+  "koodistoUri": "perusopetuksensuoritustapa",
+  "versio": 1,
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "Perusopetuksen suoritustapa",
+      "kuvaus": "Tutkinnon tai tutkinnon osan suoritustapa"
+    },
+    {
+      "kieli": "SV",
+      "nimi": "Perusopetuksen suoritustapa",
+      "kuvaus": "Tutkinnon tai tutkinnon osan suoritustapa"
+    },
+    {
+      "kieli": "EN",
+      "nimi": "Perusopetuksen suoritustapa",
+      "kuvaus": "Tutkinnon tai tutkinnon osan suoritustapa"
+    }
+  ],
+  "codesGroupUri": "koski",
+  "voimassaAlkuPvm": "2015-11-01",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "withinCodes": [],
+  "tila": "LUONNOS",
+  "version": 1
 }

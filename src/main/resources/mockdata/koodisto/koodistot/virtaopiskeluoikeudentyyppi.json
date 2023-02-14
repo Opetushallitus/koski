@@ -1,15 +1,17 @@
 {
-  "koodistoUri" : "virtaopiskeluoikeudentyyppi",
-  "versio" : 1,
-  "metadata" : [ {
-    "kieli" : "FI",
-    "nimi" : "VIRTA Opiskeluoikeuden tyyppi",
-    "kuvaus" : "Opiskeluoikeuden tyyppi (ks. https://confluence.csc.fi/display/VIRTA/Tietovarannon+koodistot)"
-  } ],
-  "codesGroupUri" : "virta",
-  "voimassaAlkuPvm" : "2013-01-01",
-  "organisaatioOid" : "1.2.246.562.10.2013112012294919827487",
-  "withinCodes" : [ ],
-  "tila" : "LUONNOS",
-  "version" : 4
+  "koodistoUri": "virtaopiskeluoikeudentyyppi",
+  "versio": 1,
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "VIRTA Opiskeluoikeuden tyyppi",
+      "kuvaus": "Opiskeluoikeuden tyyppi (ks. https://confluence.csc.fi/display/VIRTA/Tietovarannon+koodistot)"
+    }
+  ],
+  "codesGroupUri": "virta",
+  "voimassaAlkuPvm": "2013-01-01",
+  "organisaatioOid": "1.2.246.562.10.2013112012294919827487",
+  "withinCodes": [],
+  "tila": "LUONNOS",
+  "version": 4
 }

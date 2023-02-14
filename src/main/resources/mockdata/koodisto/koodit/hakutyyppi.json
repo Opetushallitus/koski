@@ -1,40 +1,77 @@
-[ {
-  "koodiUri" : "hakutyyppi_01",
-  "koodiArvo" : "01",
-  "metadata" : [ {
-    "nimi" : "Varsinainen haku",
-    "lyhytNimi" : "VH",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Egentlig ansökan",
-    "lyhytNimi" : "EA",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "hakutyyppi_02",
-  "koodiArvo" : "02",
-  "metadata" : [ {
-    "nimi" : "Täydennyshaku",
-    "lyhytNimi" : "TH",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Tilläggsansögan",
-    "lyhytNimi" : "TA",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "hakutyyppi_03",
-  "koodiArvo" : "03",
-  "metadata" : [ {
-    "nimi" : "Lisähaku",
-    "lyhytNimi" : "LH",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Kompletteringansökan",
-    "lyhytNimi" : "KA",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1
-} ]
+[
+  {
+    "koodiUri": "hakutyyppi_01",
+    "koodiArvo": "01",
+    "metadata": [
+      {
+        "nimi": "Varsinainen haku",
+        "lyhytNimi": "VH",
+        "kuvaus": "Varsinainen haku",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Egentlig ansökan",
+        "lyhytNimi": "EA",
+        "kuvaus": "Egentlig ansökan",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "hakutapa_03",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "hakutyyppi_02",
+    "koodiArvo": "02",
+    "metadata": [
+      {
+        "nimi": "Täydennyshaku",
+        "lyhytNimi": "TH",
+        "kuvaus": "Täydennyshaku",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Tilläggsansögan",
+        "lyhytNimi": "TA",
+        "kuvaus": "Tilläggsansögan",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "hakutyyppi_03",
+    "koodiArvo": "03",
+    "metadata": [
+      {
+        "nimi": "Lisähaku",
+        "lyhytNimi": "LH",
+        "kuvaus": "Lisähaku",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Kompletteringansökan",
+        "lyhytNimi": "KA",
+        "kuvaus": "Kompletteringansökan",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

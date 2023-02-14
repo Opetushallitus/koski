@@ -1,15 +1,17 @@
 {
-  "koodistoUri" : "suorituksentyyppi",
-  "versio" : 1,
-  "metadata" : [ {
-    "kieli" : "FI",
-    "nimi" : "Suorituksen tyyppi",
-    "kuvaus" : ""
-  } ],
-  "codesGroupUri" : "koski",
-  "voimassaAlkuPvm" : "2014-11-01",
-  "organisaatioOid" : "1.2.246.562.10.00000000001",
-  "withinCodes" : [ ],
-  "tila" : "LUONNOS",
-  "version" : 1
+  "koodistoUri": "suorituksentyyppi",
+  "versio": 1,
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "Suorituksen tyyppi",
+      "kuvaus": ""
+    }
+  ],
+  "codesGroupUri": "koski",
+  "voimassaAlkuPvm": "2014-11-01",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "withinCodes": [],
+  "tila": "LUONNOS",
+  "version": 1
 }

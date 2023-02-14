@@ -1,18 +1,22 @@
 {
-  "koodistoUri" : "lukioonvalmistavankoulutuksenkurssit2015",
-  "versio" : 1,
-  "metadata" : [ {
-    "kieli" : "FI",
-    "nimi" : "Lukioon valmistavan koulutuksen kurssit 2015"
-  } ],
-  "codesGroupUri" : "koski",
-  "voimassaAlkuPvm" : "2018-05-11",
-  "organisaatioOid" : "1.2.246.562.10.00000000001",
-  "withinCodes" : [ {
-    "codesUri" : "oppiaineetluva",
-    "codesVersion" : 1,
-    "passive" : false
-  } ],
-  "tila" : "LUONNOS",
-  "version" : 1
+  "koodistoUri": "lukioonvalmistavankoulutuksenkurssit2015",
+  "versio": 1,
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "Lukioon valmistavan koulutuksen kurssit 2015"
+    }
+  ],
+  "codesGroupUri": "koski",
+  "voimassaAlkuPvm": "2018-05-11",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "withinCodes": [
+    {
+      "codesUri": "oppiaineetluva",
+      "codesVersion": 1,
+      "passive": false
+    }
+  ],
+  "tila": "LUONNOS",
+  "version": 1
 }

@@ -1,81 +1,117 @@
-[ {
-  "koodiUri" : "ammatillisennaytonarvioinnistapaattaneet_1",
-  "koodiArvo" : "1",
-  "metadata" : [ {
-    "nimi" : "Opettaja",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Lärare",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "ammatillisennaytonarvioinnistapaattaneet_2",
-  "koodiArvo" : "2",
-  "metadata" : [ {
-    "nimi" : "Työntekijä",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Arbetstagare",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "ammatillisennaytonarvioinnistapaattaneet_3",
-  "koodiArvo" : "3",
-  "metadata" : [ {
-    "nimi" : "Työnantaja/Työelämän edustaja",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Arbetsgivare/Företrädare för arbetslivet",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "ammatillisennaytonarvioinnistapaattaneet_4",
-  "koodiArvo" : "4",
-  "metadata" : [ {
-    "nimi" : "Itsenäinen ammatinharjoittaja",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Självständig yrkesutövare",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "ammatillisennaytonarvioinnistapaattaneet_5",
-  "koodiArvo" : "5",
-  "metadata" : [ {
-    "nimi" : "Muu koulutuksen järjestäjän edustaja",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Annan företrädare för utbildningsanordnaren",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-} ]
+[
+  {
+    "koodiUri": "ammatillisennaytonarvioinnistapaattaneet_1",
+    "koodiArvo": "1",
+    "metadata": [
+      {
+        "nimi": "Opettaja",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Lärare",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "ammatillisennaytonarvioinnistapaattaneet_2",
+    "koodiArvo": "2",
+    "metadata": [
+      {
+        "nimi": "Työntekijä",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Arbetstagare",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "ammatillisennaytonarvioinnistapaattaneet_3",
+    "koodiArvo": "3",
+    "metadata": [
+      {
+        "nimi": "Työnantaja/Työelämän edustaja",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Arbetsgivare/Företrädare för arbetslivet",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "ammatillisennaytonarvioinnistapaattaneet_4",
+    "koodiArvo": "4",
+    "metadata": [
+      {
+        "nimi": "Itsenäinen ammatinharjoittaja",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Självständig yrkesutövare",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "ammatillisennaytonarvioinnistapaattaneet_5",
+    "koodiArvo": "5",
+    "metadata": [
+      {
+        "nimi": "Muu koulutuksen järjestäjän edustaja",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Annan företrädare för utbildningsanordnaren",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

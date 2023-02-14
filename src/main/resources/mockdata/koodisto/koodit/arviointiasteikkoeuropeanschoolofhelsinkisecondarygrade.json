@@ -4,14 +4,17 @@
     "koodiArvo": "A",
     "metadata": [
       {
-        "nimi" : "A",
-        "lyhytNimi" : "A",
-        "kieli" : "FI"
+        "nimi": "A",
+        "lyhytNimi": "A",
+        "kieli": "FI"
       },
       {
-        "nimi" : "A",
-        "lyhytNimi" : "A",
-        "kieli" : "EN"
+        "kieli": "SV"
+      },
+      {
+        "nimi": "A",
+        "lyhytNimi": "A",
+        "kieli": "EN"
       }
     ],
     "versio": 1,
@@ -22,14 +25,17 @@
     "koodiArvo": "B",
     "metadata": [
       {
-        "nimi" : "B",
-        "lyhytNimi" : "B",
-        "kieli" : "FI"
+        "nimi": "B",
+        "lyhytNimi": "B",
+        "kieli": "FI"
       },
       {
-        "nimi" : "B",
-        "lyhytNimi" : "B",
-        "kieli" : "EN"
+        "kieli": "SV"
+      },
+      {
+        "nimi": "B",
+        "lyhytNimi": "B",
+        "kieli": "EN"
       }
     ],
     "versio": 1,
@@ -40,14 +46,17 @@
     "koodiArvo": "C",
     "metadata": [
       {
-        "nimi" : "C",
-        "lyhytNimi" : "C",
-        "kieli" : "FI"
+        "nimi": "C",
+        "lyhytNimi": "C",
+        "kieli": "FI"
       },
       {
-        "nimi" : "C",
-        "lyhytNimi" : "C",
-        "kieli" : "EN"
+        "kieli": "SV"
+      },
+      {
+        "nimi": "C",
+        "lyhytNimi": "C",
+        "kieli": "EN"
       }
     ],
     "versio": 1,
@@ -58,14 +67,17 @@
     "koodiArvo": "D",
     "metadata": [
       {
-        "nimi" : "D",
-        "lyhytNimi" : "D",
-        "kieli" : "FI"
+        "nimi": "D",
+        "lyhytNimi": "D",
+        "kieli": "FI"
       },
       {
-        "nimi" : "D",
-        "lyhytNimi" : "D",
-        "kieli" : "EN"
+        "kieli": "SV"
+      },
+      {
+        "nimi": "D",
+        "lyhytNimi": "D",
+        "kieli": "EN"
       }
     ],
     "versio": 1,
@@ -76,14 +88,17 @@
     "koodiArvo": "E",
     "metadata": [
       {
-        "nimi" : "E",
-        "lyhytNimi" : "E",
-        "kieli" : "FI"
+        "nimi": "E",
+        "lyhytNimi": "E",
+        "kieli": "FI"
       },
       {
-        "nimi" : "E",
-        "lyhytNimi" : "E",
-        "kieli" : "EN"
+        "kieli": "SV"
+      },
+      {
+        "nimi": "E",
+        "lyhytNimi": "E",
+        "kieli": "EN"
       }
     ],
     "versio": 1,
@@ -94,14 +109,17 @@
     "koodiArvo": "F",
     "metadata": [
       {
-        "nimi" : "F",
-        "lyhytNimi" : "F",
-        "kieli" : "FI"
+        "nimi": "F",
+        "lyhytNimi": "F",
+        "kieli": "FI"
       },
       {
-        "nimi" : "F",
-        "lyhytNimi" : "F",
-        "kieli" : "EN"
+        "kieli": "SV"
+      },
+      {
+        "nimi": "F",
+        "lyhytNimi": "F",
+        "kieli": "EN"
       }
     ],
     "versio": 1,
@@ -112,14 +130,17 @@
     "koodiArvo": "FX",
     "metadata": [
       {
-        "nimi" : "FX",
-        "lyhytNimi" : "FX",
-        "kieli" : "FI"
+        "nimi": "FX",
+        "lyhytNimi": "FX",
+        "kieli": "FI"
       },
       {
-        "nimi" : "FX",
-        "lyhytNimi" : "FX",
-        "kieli" : "EN"
+        "kieli": "SV"
+      },
+      {
+        "nimi": "FX",
+        "lyhytNimi": "FX",
+        "kieli": "EN"
       }
     ],
     "versio": 1,

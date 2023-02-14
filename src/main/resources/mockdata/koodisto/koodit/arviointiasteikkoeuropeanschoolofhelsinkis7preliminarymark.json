@@ -9,6 +9,9 @@
         "kieli": "FI"
       },
       {
+        "kieli": "SV"
+      },
+      {
         "nimi": "0",
         "lyhytNimi": "0",
         "kieli": "EN"
@@ -25,6 +28,9 @@
         "nimi": "0.1",
         "lyhytNimi": "0.1",
         "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
       },
       {
         "nimi": "0.1",
@@ -45,6 +51,9 @@
         "kieli": "FI"
       },
       {
+        "kieli": "SV"
+      },
+      {
         "nimi": "0.2",
         "lyhytNimi": "0.2",
         "kieli": "EN"
@@ -61,6 +70,9 @@
         "nimi": "0.3",
         "lyhytNimi": "0.3",
         "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
       },
       {
         "nimi": "0.3",
@@ -81,6 +93,9 @@
         "kieli": "FI"
       },
       {
+        "kieli": "SV"
+      },
+      {
         "nimi": "0.4",
         "lyhytNimi": "0.4",
         "kieli": "EN"
@@ -97,6 +112,9 @@
         "nimi": "0.5",
         "lyhytNimi": "0.5",
         "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
       },
       {
         "nimi": "0.5",
@@ -117,6 +135,9 @@
         "kieli": "FI"
       },
       {
+        "kieli": "SV"
+      },
+      {
         "nimi": "0.6",
         "lyhytNimi": "0.6",
         "kieli": "EN"
@@ -133,6 +154,9 @@
         "nimi": "0.7",
         "lyhytNimi": "0.7",
         "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
       },
       {
         "nimi": "0.7",
@@ -153,6 +177,9 @@
         "kieli": "FI"
       },
       {
+        "kieli": "SV"
+      },
+      {
         "nimi": "0.8",
         "lyhytNimi": "0.8",
         "kieli": "EN"
@@ -169,6 +196,9 @@
         "nimi": "0.9",
         "lyhytNimi": "0.9",
         "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
       },
       {
         "nimi": "0.9",
@@ -189,6 +219,9 @@
         "kieli": "FI"
       },
       {
+        "kieli": "SV"
+      },
+      {
         "nimi": "1.0",
         "lyhytNimi": "1.0",
         "kieli": "EN"
@@ -205,6 +238,9 @@
         "nimi": "1.1",
         "lyhytNimi": "1.1",
         "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
       },
       {
         "nimi": "1.1",
@@ -225,6 +261,9 @@
         "kieli": "FI"
       },
       {
+        "kieli": "SV"
+      },
+      {
         "nimi": "1.2",
         "lyhytNimi": "1.2",
         "kieli": "EN"
@@ -241,6 +280,9 @@
         "nimi": "1.3",
         "lyhytNimi": "1.3",
         "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
       },
       {
         "nimi": "1.3",
@@ -261,6 +303,9 @@
         "kieli": "FI"
       },
       {
+        "kieli": "SV"
+      },
+      {
         "nimi": "1.4",
         "lyhytNimi": "1.4",
         "kieli": "EN"
@@ -277,6 +322,9 @@
         "nimi": "1.5",
         "lyhytNimi": "1.5",
         "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
       },
       {
         "nimi": "1.5",
@@ -297,6 +345,9 @@
         "kieli": "FI"
       },
       {
+        "kieli": "SV"
+      },
+      {
         "nimi": "1.6",
         "lyhytNimi": "1.6",
         "kieli": "EN"
@@ -313,6 +364,9 @@
         "nimi": "1.7",
         "lyhytNimi": "1.7",
         "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
       },
       {
         "nimi": "1.7",
@@ -333,6 +387,9 @@
         "kieli": "FI"
       },
       {
+        "kieli": "SV"
+      },
+      {
         "nimi": "1.8",
         "lyhytNimi": "1.8",
         "kieli": "EN"
@@ -351,8 +408,32 @@
         "kieli": "FI"
       },
       {
+        "kieli": "SV"
+      },
+      {
         "nimi": "1.9",
         "lyhytNimi": "1.9",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_10-1",
+    "koodiArvo": "10",
+    "metadata": [
+      {
+        "nimi": "10",
+        "lyhytNimi": "10",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "nimi": "10",
+        "lyhytNimi": "10",
         "kieli": "EN"
       }
     ],
@@ -367,6 +448,9 @@
         "nimi": "2.0",
         "lyhytNimi": "2.0",
         "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
       },
       {
         "nimi": "2.0",
@@ -387,6 +471,9 @@
         "kieli": "FI"
       },
       {
+        "kieli": "SV"
+      },
+      {
         "nimi": "2.1",
         "lyhytNimi": "2.1",
         "kieli": "EN"
@@ -403,6 +490,9 @@
         "nimi": "2.2",
         "lyhytNimi": "2.2",
         "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
       },
       {
         "nimi": "2.2",
@@ -423,6 +513,9 @@
         "kieli": "FI"
       },
       {
+        "kieli": "SV"
+      },
+      {
         "nimi": "2.3",
         "lyhytNimi": "2.3",
         "kieli": "EN"
@@ -439,6 +532,9 @@
         "nimi": "2.4",
         "lyhytNimi": "2.4",
         "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
       },
       {
         "nimi": "2.4",
@@ -459,6 +555,9 @@
         "kieli": "FI"
       },
       {
+        "kieli": "SV"
+      },
+      {
         "nimi": "2.5",
         "lyhytNimi": "2.5",
         "kieli": "EN"
@@ -475,6 +574,9 @@
         "nimi": "2.6",
         "lyhytNimi": "2.6",
         "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
       },
       {
         "nimi": "2.6",
@@ -495,6 +597,9 @@
         "kieli": "FI"
       },
       {
+        "kieli": "SV"
+      },
+      {
         "nimi": "2.7",
         "lyhytNimi": "2.7",
         "kieli": "EN"
@@ -511,6 +616,9 @@
         "nimi": "2.8",
         "lyhytNimi": "2.8",
         "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
       },
       {
         "nimi": "2.8",
@@ -531,6 +639,9 @@
         "kieli": "FI"
       },
       {
+        "kieli": "SV"
+      },
+      {
         "nimi": "2.9",
         "lyhytNimi": "2.9",
         "kieli": "EN"
@@ -547,6 +658,9 @@
         "nimi": "3.0",
         "lyhytNimi": "3.0",
         "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
       },
       {
         "nimi": "3.0",
@@ -567,6 +681,9 @@
         "kieli": "FI"
       },
       {
+        "kieli": "SV"
+      },
+      {
         "nimi": "3.1",
         "lyhytNimi": "3.1",
         "kieli": "EN"
@@ -583,6 +700,9 @@
         "nimi": "3.2",
         "lyhytNimi": "3.2",
         "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
       },
       {
         "nimi": "3.2",
@@ -603,6 +723,9 @@
         "kieli": "FI"
       },
       {
+        "kieli": "SV"
+      },
+      {
         "nimi": "3.3",
         "lyhytNimi": "3.3",
         "kieli": "EN"
@@ -619,6 +742,9 @@
         "nimi": "3.4",
         "lyhytNimi": "3.4",
         "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
       },
       {
         "nimi": "3.4",
@@ -639,6 +765,9 @@
         "kieli": "FI"
       },
       {
+        "kieli": "SV"
+      },
+      {
         "nimi": "3.5",
         "lyhytNimi": "3.5",
         "kieli": "EN"
@@ -655,6 +784,9 @@
         "nimi": "3.6",
         "lyhytNimi": "3.6",
         "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
       },
       {
         "nimi": "3.6",
@@ -675,6 +807,9 @@
         "kieli": "FI"
       },
       {
+        "kieli": "SV"
+      },
+      {
         "nimi": "3.7",
         "lyhytNimi": "3.7",
         "kieli": "EN"
@@ -691,6 +826,9 @@
         "nimi": "3.8",
         "lyhytNimi": "3.8",
         "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
       },
       {
         "nimi": "3.8",
@@ -711,6 +849,9 @@
         "kieli": "FI"
       },
       {
+        "kieli": "SV"
+      },
+      {
         "nimi": "3.9",
         "lyhytNimi": "3.9",
         "kieli": "EN"
@@ -727,6 +868,9 @@
         "nimi": "4.0",
         "lyhytNimi": "4.0",
         "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
       },
       {
         "nimi": "4.0",
@@ -747,6 +891,9 @@
         "kieli": "FI"
       },
       {
+        "kieli": "SV"
+      },
+      {
         "nimi": "4.1",
         "lyhytNimi": "4.1",
         "kieli": "EN"
@@ -763,6 +910,9 @@
         "nimi": "4.2",
         "lyhytNimi": "4.2",
         "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
       },
       {
         "nimi": "4.2",
@@ -783,6 +933,9 @@
         "kieli": "FI"
       },
       {
+        "kieli": "SV"
+      },
+      {
         "nimi": "4.3",
         "lyhytNimi": "4.3",
         "kieli": "EN"
@@ -799,6 +952,9 @@
         "nimi": "4.4",
         "lyhytNimi": "4.4",
         "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
       },
       {
         "nimi": "4.4",
@@ -819,6 +975,9 @@
         "kieli": "FI"
       },
       {
+        "kieli": "SV"
+      },
+      {
         "nimi": "4.5",
         "lyhytNimi": "4.5",
         "kieli": "EN"
@@ -835,6 +994,9 @@
         "nimi": "4.6",
         "lyhytNimi": "4.6",
         "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
       },
       {
         "nimi": "4.6",
@@ -855,6 +1017,9 @@
         "kieli": "FI"
       },
       {
+        "kieli": "SV"
+      },
+      {
         "nimi": "4.7",
         "lyhytNimi": "4.7",
         "kieli": "EN"
@@ -871,6 +1036,9 @@
         "nimi": "4.8",
         "lyhytNimi": "4.8",
         "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
       },
       {
         "nimi": "4.8",
@@ -891,6 +1059,9 @@
         "kieli": "FI"
       },
       {
+        "kieli": "SV"
+      },
+      {
         "nimi": "4.9",
         "lyhytNimi": "4.9",
         "kieli": "EN"
@@ -907,6 +1078,9 @@
         "nimi": "5.0",
         "lyhytNimi": "5.0",
         "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
       },
       {
         "nimi": "5.0",
@@ -927,6 +1101,9 @@
         "kieli": "FI"
       },
       {
+        "kieli": "SV"
+      },
+      {
         "nimi": "5.1",
         "lyhytNimi": "5.1",
         "kieli": "EN"
@@ -943,6 +1120,9 @@
         "nimi": "5.2",
         "lyhytNimi": "5.2",
         "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
       },
       {
         "nimi": "5.2",
@@ -963,6 +1143,9 @@
         "kieli": "FI"
       },
       {
+        "kieli": "SV"
+      },
+      {
         "nimi": "5.3",
         "lyhytNimi": "5.3",
         "kieli": "EN"
@@ -979,6 +1162,9 @@
         "nimi": "5.4",
         "lyhytNimi": "5.4",
         "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
       },
       {
         "nimi": "5.4",
@@ -999,6 +1185,9 @@
         "kieli": "FI"
       },
       {
+        "kieli": "SV"
+      },
+      {
         "nimi": "5.5",
         "lyhytNimi": "5.5",
         "kieli": "EN"
@@ -1015,6 +1204,9 @@
         "nimi": "5.6",
         "lyhytNimi": "5.6",
         "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
       },
       {
         "nimi": "5.6",
@@ -1035,6 +1227,9 @@
         "kieli": "FI"
       },
       {
+        "kieli": "SV"
+      },
+      {
         "nimi": "5.7",
         "lyhytNimi": "5.7",
         "kieli": "EN"
@@ -1051,6 +1246,9 @@
         "nimi": "5.8",
         "lyhytNimi": "5.8",
         "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
       },
       {
         "nimi": "5.8",
@@ -1071,6 +1269,9 @@
         "kieli": "FI"
       },
       {
+        "kieli": "SV"
+      },
+      {
         "nimi": "5.9",
         "lyhytNimi": "5.9",
         "kieli": "EN"
@@ -1087,6 +1288,9 @@
         "nimi": "6.0",
         "lyhytNimi": "6.0",
         "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
       },
       {
         "nimi": "6.0",
@@ -1107,6 +1311,9 @@
         "kieli": "FI"
       },
       {
+        "kieli": "SV"
+      },
+      {
         "nimi": "6.1",
         "lyhytNimi": "6.1",
         "kieli": "EN"
@@ -1123,6 +1330,9 @@
         "nimi": "6.2",
         "lyhytNimi": "6.2",
         "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
       },
       {
         "nimi": "6.2",
@@ -1143,6 +1353,9 @@
         "kieli": "FI"
       },
       {
+        "kieli": "SV"
+      },
+      {
         "nimi": "6.3",
         "lyhytNimi": "6.3",
         "kieli": "EN"
@@ -1159,6 +1372,9 @@
         "nimi": "6.4",
         "lyhytNimi": "6.4",
         "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
       },
       {
         "nimi": "6.4",
@@ -1179,6 +1395,9 @@
         "kieli": "FI"
       },
       {
+        "kieli": "SV"
+      },
+      {
         "nimi": "6.5",
         "lyhytNimi": "6.5",
         "kieli": "EN"
@@ -1195,6 +1414,9 @@
         "nimi": "6.6",
         "lyhytNimi": "6.6",
         "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
       },
       {
         "nimi": "6.6",
@@ -1215,6 +1437,9 @@
         "kieli": "FI"
       },
       {
+        "kieli": "SV"
+      },
+      {
         "nimi": "6.7",
         "lyhytNimi": "6.7",
         "kieli": "EN"
@@ -1231,6 +1456,9 @@
         "nimi": "6.8",
         "lyhytNimi": "6.8",
         "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
       },
       {
         "nimi": "6.8",
@@ -1251,6 +1479,9 @@
         "kieli": "FI"
       },
       {
+        "kieli": "SV"
+      },
+      {
         "nimi": "6.9",
         "lyhytNimi": "6.9",
         "kieli": "EN"
@@ -1267,6 +1498,9 @@
         "nimi": "7.0",
         "lyhytNimi": "7.0",
         "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
       },
       {
         "nimi": "7.0",
@@ -1287,6 +1521,9 @@
         "kieli": "FI"
       },
       {
+        "kieli": "SV"
+      },
+      {
         "nimi": "7.1",
         "lyhytNimi": "7.1",
         "kieli": "EN"
@@ -1303,6 +1540,9 @@
         "nimi": "7.2",
         "lyhytNimi": "7.2",
         "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
       },
       {
         "nimi": "7.2",
@@ -1323,6 +1563,9 @@
         "kieli": "FI"
       },
       {
+        "kieli": "SV"
+      },
+      {
         "nimi": "7.3",
         "lyhytNimi": "7.3",
         "kieli": "EN"
@@ -1339,6 +1582,9 @@
         "nimi": "7.4",
         "lyhytNimi": "7.4",
         "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
       },
       {
         "nimi": "7.4",
@@ -1359,6 +1605,9 @@
         "kieli": "FI"
       },
       {
+        "kieli": "SV"
+      },
+      {
         "nimi": "7.5",
         "lyhytNimi": "7.5",
         "kieli": "EN"
@@ -1375,6 +1624,9 @@
         "nimi": "7.6",
         "lyhytNimi": "7.6",
         "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
       },
       {
         "nimi": "7.6",
@@ -1395,6 +1647,9 @@
         "kieli": "FI"
       },
       {
+        "kieli": "SV"
+      },
+      {
         "nimi": "7.7",
         "lyhytNimi": "7.7",
         "kieli": "EN"
@@ -1411,6 +1666,9 @@
         "nimi": "7.8",
         "lyhytNimi": "7.8",
         "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
       },
       {
         "nimi": "7.8",
@@ -1431,6 +1689,9 @@
         "kieli": "FI"
       },
       {
+        "kieli": "SV"
+      },
+      {
         "nimi": "7.9",
         "lyhytNimi": "7.9",
         "kieli": "EN"
@@ -1447,6 +1708,9 @@
         "nimi": "8.0",
         "lyhytNimi": "8.0",
         "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
       },
       {
         "nimi": "8.0",
@@ -1467,6 +1731,9 @@
         "kieli": "FI"
       },
       {
+        "kieli": "SV"
+      },
+      {
         "nimi": "8.1",
         "lyhytNimi": "8.1",
         "kieli": "EN"
@@ -1483,6 +1750,9 @@
         "nimi": "8.2",
         "lyhytNimi": "8.2",
         "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
       },
       {
         "nimi": "8.2",
@@ -1503,6 +1773,9 @@
         "kieli": "FI"
       },
       {
+        "kieli": "SV"
+      },
+      {
         "nimi": "8.3",
         "lyhytNimi": "8.3",
         "kieli": "EN"
@@ -1519,6 +1792,9 @@
         "nimi": "8.4",
         "lyhytNimi": "8.4",
         "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
       },
       {
         "nimi": "8.4",
@@ -1539,6 +1815,9 @@
         "kieli": "FI"
       },
       {
+        "kieli": "SV"
+      },
+      {
         "nimi": "8.5",
         "lyhytNimi": "8.5",
         "kieli": "EN"
@@ -1555,6 +1834,9 @@
         "nimi": "8.6",
         "lyhytNimi": "8.6",
         "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
       },
       {
         "nimi": "8.6",
@@ -1575,6 +1857,9 @@
         "kieli": "FI"
       },
       {
+        "kieli": "SV"
+      },
+      {
         "nimi": "8.7",
         "lyhytNimi": "8.7",
         "kieli": "EN"
@@ -1591,6 +1876,9 @@
         "nimi": "8.8",
         "lyhytNimi": "8.8",
         "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
       },
       {
         "nimi": "8.8",
@@ -1611,6 +1899,9 @@
         "kieli": "FI"
       },
       {
+        "kieli": "SV"
+      },
+      {
         "nimi": "8.9",
         "lyhytNimi": "8.9",
         "kieli": "EN"
@@ -1627,6 +1918,9 @@
         "nimi": "9.0",
         "lyhytNimi": "9.0",
         "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
       },
       {
         "nimi": "9.0",
@@ -1647,6 +1941,9 @@
         "kieli": "FI"
       },
       {
+        "kieli": "SV"
+      },
+      {
         "nimi": "9.1",
         "lyhytNimi": "9.1",
         "kieli": "EN"
@@ -1663,6 +1960,9 @@
         "nimi": "9.2",
         "lyhytNimi": "9.2",
         "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
       },
       {
         "nimi": "9.2",
@@ -1683,6 +1983,9 @@
         "kieli": "FI"
       },
       {
+        "kieli": "SV"
+      },
+      {
         "nimi": "9.3",
         "lyhytNimi": "9.3",
         "kieli": "EN"
@@ -1699,6 +2002,9 @@
         "nimi": "9.4",
         "lyhytNimi": "9.4",
         "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
       },
       {
         "nimi": "9.4",
@@ -1719,6 +2025,9 @@
         "kieli": "FI"
       },
       {
+        "kieli": "SV"
+      },
+      {
         "nimi": "9.5",
         "lyhytNimi": "9.5",
         "kieli": "EN"
@@ -1735,6 +2044,9 @@
         "nimi": "9.6",
         "lyhytNimi": "9.6",
         "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
       },
       {
         "nimi": "9.6",
@@ -1755,6 +2067,9 @@
         "kieli": "FI"
       },
       {
+        "kieli": "SV"
+      },
+      {
         "nimi": "9.7",
         "lyhytNimi": "9.7",
         "kieli": "EN"
@@ -1771,6 +2086,9 @@
         "nimi": "9.8",
         "lyhytNimi": "9.8",
         "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
       },
       {
         "nimi": "9.8",
@@ -1791,26 +2109,11 @@
         "kieli": "FI"
       },
       {
-        "nimi": "9.9",
-        "lyhytNimi": "9.9",
-        "kieli": "EN"
-      }
-    ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
-    "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_100",
-    "koodiArvo": "10",
-    "metadata": [
-      {
-        "nimi": "10",
-        "lyhytNimi": "10",
-        "kieli": "FI"
+        "kieli": "SV"
       },
       {
-        "nimi": "10",
-        "lyhytNimi": "10",
+        "nimi": "9.9",
+        "lyhytNimi": "9.9",
         "kieli": "EN"
       }
     ],

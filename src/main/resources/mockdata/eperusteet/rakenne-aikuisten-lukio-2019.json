@@ -12,10 +12,7 @@
   "koulutustyyppi": "koulutustyyppi_14",
   "toteutus": "lops2019",
   "koulutukset": [],
-  "kielet": [
-    "sv",
-    "fi"
-  ],
+  "kielet": ["sv", "fi"],
   "kuvaus": null,
   "maarayskirje": {
     "id": 6854180,
@@ -38,11 +35,7 @@
   "tila": "valmis",
   "tyyppi": "normaali",
   "koulutusvienti": false,
-  "korvattavatDiaarinumerot": [
-    "OPH-888-2018",
-    "OPH-662-2017",
-    "70/011/2015"
-  ],
+  "korvattavatDiaarinumerot": ["OPH-888-2018", "OPH-662-2017", "70/011/2015"],
   "osaamisalat": [],
   "tyotehtavatJoissaVoiToimia": null,
   "suorittaneenOsaaminen": null,

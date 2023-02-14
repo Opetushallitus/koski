@@ -1,15 +1,17 @@
 {
-  "koodistoUri" : "tuvajarjestamislupa",
-  "versio" : 1,
-  "metadata" : [ {
-    "kieli" : "FI",
-    "nimi" : "TUVA-järjestämislupa",
-    "kuvaus" : "Tutkintokoulutukseen valmentavan koulutukseen (TUVA) järjestämislupa"
-  } ],
-  "codesGroupUri" : "koski",
-  "voimassaAlkuPvm" : "2020-01-01",
-  "organisaatioOid" : "1.2.246.562.10.00000000001",
-  "withinCodes" : [ ],
-  "tila" : "LUONNOS",
-  "version" : 0
+  "koodistoUri": "tuvajarjestamislupa",
+  "versio": 1,
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "TUVA-järjestämislupa",
+      "kuvaus": "Tutkintokoulutukseen valmentavan koulutukseen (TUVA) järjestämislupa"
+    }
+  ],
+  "codesGroupUri": "koski",
+  "voimassaAlkuPvm": "2020-01-01",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "withinCodes": [],
+  "tila": "LUONNOS",
+  "version": 0
 }

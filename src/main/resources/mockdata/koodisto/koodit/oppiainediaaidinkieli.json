@@ -1,49 +1,67 @@
-[ {
-  "koodiUri" : "oppiainediaaidinkieli_de",
-  "koodiArvo" : "DE",
-  "metadata" : [ {
-    "nimi" : "saksa",
-    "lyhytNimi" : "saksa",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "tyska",
-    "lyhytNimi" : "tyska",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "German",
-    "lyhytNimi" : "German",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "oppiainediaaidinkieli_fi",
-  "koodiArvo" : "FI",
-  "metadata" : [ {
-    "nimi" : "suomi",
-    "lyhytNimi" : "suomi",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "finska",
-    "lyhytNimi" : "finska",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Finnish",
-    "lyhytNimi" : "Finnish",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "oppiainediaaidinkieli_s2",
-  "koodiArvo" : "S2",
-  "metadata" : [ {
-    "nimi" : "suomi toisena kielenä",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "finska som andraspråk och litteratur",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-} ]
+[
+  {
+    "koodiUri": "oppiainediaaidinkieli_de",
+    "koodiArvo": "DE",
+    "metadata": [
+      {
+        "nimi": "saksa",
+        "lyhytNimi": "saksa",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "tyska",
+        "lyhytNimi": "tyska",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "German",
+        "lyhytNimi": "German",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "oppiainediaaidinkieli_fi",
+    "koodiArvo": "FI",
+    "metadata": [
+      {
+        "nimi": "suomi",
+        "lyhytNimi": "suomi",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "finska",
+        "lyhytNimi": "finska",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Finnish",
+        "lyhytNimi": "Finnish",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "oppiainediaaidinkieli_s2",
+    "koodiArvo": "S2",
+    "metadata": [
+      {
+        "nimi": "suomi toisena kielenä",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "finska som andraspråk och litteratur",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

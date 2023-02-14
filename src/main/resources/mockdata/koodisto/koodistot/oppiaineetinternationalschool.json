@@ -1,23 +1,27 @@
 {
-  "koodistoUri" : "oppiaineetinternationalschool",
-  "versio" : 1,
-  "metadata" : [ {
-    "kieli" : "FI",
-    "nimi" : "Oppiaineet international school",
-    "kuvaus" : "Oppiaineet international school"
-  }, {
-    "kieli" : "SV",
-    "nimi" : "Oppiaineet international school",
-    "kuvaus" : "Oppiaineet international school"
-  }, {
-    "kieli" : "EN",
-    "nimi" : "Oppiaineet international school",
-    "kuvaus" : "Oppiaineet international school"
-  } ],
-  "codesGroupUri" : "koski",
-  "voimassaAlkuPvm" : "2019-04-26",
-  "organisaatioOid" : "1.2.246.562.10.00000000001",
-  "withinCodes" : [ ],
-  "tila" : "LUONNOS",
-  "version" : 0
+  "koodistoUri": "oppiaineetinternationalschool",
+  "versio": 1,
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "Oppiaineet international school",
+      "kuvaus": "Oppiaineet international school"
+    },
+    {
+      "kieli": "SV",
+      "nimi": "Oppiaineet international school",
+      "kuvaus": "Oppiaineet international school"
+    },
+    {
+      "kieli": "EN",
+      "nimi": "Oppiaineet international school",
+      "kuvaus": "Oppiaineet international school"
+    }
+  ],
+  "codesGroupUri": "koski",
+  "voimassaAlkuPvm": "2019-04-26",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "withinCodes": [],
+  "tila": "LUONNOS",
+  "version": 0
 }

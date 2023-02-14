@@ -1,34 +1,19 @@
 [
   {
-    "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkiprimarymark_4",
-    "koodiArvo": "4",
+    "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkiprimarymark_1",
+    "koodiArvo": "1",
     "metadata": [
       {
-        "nimi": "++++",
-        "lyhytNimi": "++++",
+        "nimi": "+",
+        "lyhytNimi": "+",
         "kieli": "FI"
       },
       {
-        "nimi": "++++",
-        "lyhytNimi": "++++",
-        "kieli": "EN"
-      }
-    ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
-    "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkiprimarymark_3",
-    "koodiArvo": "3",
-    "metadata": [
-      {
-        "nimi": "+++",
-        "lyhytNimi": "+++",
-        "kieli": "FI"
+        "kieli": "SV"
       },
       {
-        "nimi": "+++",
-        "lyhytNimi": "+++",
+        "nimi": "+",
+        "lyhytNimi": "+",
         "kieli": "EN"
       }
     ],
@@ -45,6 +30,9 @@
         "kieli": "FI"
       },
       {
+        "kieli": "SV"
+      },
+      {
         "nimi": "++",
         "lyhytNimi": "++",
         "kieli": "EN"
@@ -54,17 +42,41 @@
     "withinCodeElements": []
   },
   {
-    "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkiprimarymark_1",
-    "koodiArvo": "1",
+    "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkiprimarymark_3",
+    "koodiArvo": "3",
     "metadata": [
       {
-        "nimi": "+",
-        "lyhytNimi": "+",
+        "nimi": "+++",
+        "lyhytNimi": "+++",
         "kieli": "FI"
       },
       {
-        "nimi": "+",
-        "lyhytNimi": "+",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "+++",
+        "lyhytNimi": "+++",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkiprimarymark_4",
+    "koodiArvo": "4",
+    "metadata": [
+      {
+        "nimi": "++++",
+        "lyhytNimi": "++++",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "nimi": "++++",
+        "lyhytNimi": "++++",
         "kieli": "EN"
       }
     ],

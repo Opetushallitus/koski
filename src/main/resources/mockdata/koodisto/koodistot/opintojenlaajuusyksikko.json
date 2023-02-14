@@ -1,79 +1,98 @@
 {
-  "koodistoUri" : "opintojenlaajuusyksikko",
-  "versio" : 1,
-  "metadata" : [ {
-    "kieli" : "FI",
-    "nimi" : "opintojen laajuusyksikko",
-    "kuvaus" : "opintojen laajuusyksikko"
-  }, {
-    "kieli" : "SV",
-    "nimi" : "opintojen laajuusyksikko",
-    "kuvaus" : "opintojen laajuusyksikko"
-  }, {
-    "kieli" : "EN",
-    "nimi" : "opintojen laajuusyksikko",
-    "kuvaus" : "opintojen laajuusyksikko"
-  } ],
-  "codesGroupUri" : "koulutuskoodistot",
-  "voimassaAlkuPvm" : "2013-01-01",
-  "organisaatioOid" : "1.2.246.562.10.00000000001",
-  "withinCodes" : [ {
-    "codesUri" : "koulutus",
-    "codesVersion" : 1,
-    "passive" : true
-  }, {
-    "codesUri" : "koulutus",
-    "codesVersion" : 2,
-    "passive" : true
-  }, {
-    "codesUri" : "koulutus",
-    "codesVersion" : 3,
-    "passive" : true
-  }, {
-    "codesUri" : "koulutus",
-    "codesVersion" : 4,
-    "passive" : true
-  }, {
-    "codesUri" : "koulutus",
-    "codesVersion" : 5,
-    "passive" : true
-  }, {
-    "codesUri" : "koulutus",
-    "codesVersion" : 6,
-    "passive" : true
-  }, {
-    "codesUri" : "koulutus",
-    "codesVersion" : 7,
-    "passive" : true
-  }, {
-    "codesUri" : "koulutus",
-    "codesVersion" : 8,
-    "passive" : true
-  }, {
-    "codesUri" : "koulutus",
-    "codesVersion" : 9,
-    "passive" : true
-  }, {
-    "codesUri" : "koulutus",
-    "codesVersion" : 10,
-    "passive" : true
-  }, {
-    "codesUri" : "koulutus",
-    "codesVersion" : 11,
-    "passive" : true
-  }, {
-    "codesUri" : "koulutus",
-    "codesVersion" : 12,
-    "passive" : false
-  }, {
-    "codesUri" : "lukiolinjat",
-    "codesVersion" : 1,
-    "passive" : true
-  }, {
-    "codesUri" : "lukiolinjat",
-    "codesVersion" : 2,
-    "passive" : false
-  } ],
-  "tila" : "LUONNOS",
-  "version" : 0
+  "koodistoUri": "opintojenlaajuusyksikko",
+  "versio": 1,
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "opintojen laajuusyksikko",
+      "kuvaus": "opintojen laajuusyksikko"
+    },
+    {
+      "kieli": "SV",
+      "nimi": "opintojen laajuusyksikko",
+      "kuvaus": "opintojen laajuusyksikko"
+    },
+    {
+      "kieli": "EN",
+      "nimi": "opintojen laajuusyksikko",
+      "kuvaus": "opintojen laajuusyksikko"
+    }
+  ],
+  "codesGroupUri": "koulutuskoodistot",
+  "voimassaAlkuPvm": "2013-01-01",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "withinCodes": [
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 1,
+      "passive": true
+    },
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 2,
+      "passive": true
+    },
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 3,
+      "passive": true
+    },
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 4,
+      "passive": true
+    },
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 5,
+      "passive": true
+    },
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 6,
+      "passive": true
+    },
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 7,
+      "passive": true
+    },
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 8,
+      "passive": true
+    },
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 9,
+      "passive": true
+    },
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 10,
+      "passive": true
+    },
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 11,
+      "passive": true
+    },
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 12,
+      "passive": false
+    },
+    {
+      "codesUri": "lukiolinjat",
+      "codesVersion": 1,
+      "passive": true
+    },
+    {
+      "codesUri": "lukiolinjat",
+      "codesVersion": 2,
+      "passive": false
+    }
+  ],
+  "tila": "LUONNOS",
+  "version": 0
 }

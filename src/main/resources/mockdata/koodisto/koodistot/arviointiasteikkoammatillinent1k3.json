@@ -1,23 +1,27 @@
 {
-  "koodistoUri" : "arviointiasteikkoammatillinent1k3",
-  "versio" : 1,
-  "metadata" : [ {
-    "kieli" : "FI",
-    "nimi" : "Arviointiasteikko ammatillinen T1-K3",
-    "kuvaus" : ""
-  }, {
-    "kieli" : "SV",
-    "nimi" : "Arviointiasteikko ammatillinen T1-K3",
-    "kuvaus" : ""
-  }, {
-    "kieli" : "EN",
-    "nimi" : "Arviointiasteikko ammatillinen T1-K3",
-    "kuvaus" : ""
-  } ],
-  "codesGroupUri" : "koski",
-  "voimassaAlkuPvm" : "2015-10-01",
-  "organisaatioOid" : "1.2.246.562.10.00000000001",
-  "withinCodes" : [ ],
-  "tila" : "LUONNOS",
-  "version" : 1
+  "koodistoUri": "arviointiasteikkoammatillinent1k3",
+  "versio": 1,
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "Arviointiasteikko ammatillinen T1-K3",
+      "kuvaus": ""
+    },
+    {
+      "kieli": "SV",
+      "nimi": "Arviointiasteikko ammatillinen T1-K3",
+      "kuvaus": ""
+    },
+    {
+      "kieli": "EN",
+      "nimi": "Arviointiasteikko ammatillinen T1-K3",
+      "kuvaus": ""
+    }
+  ],
+  "codesGroupUri": "koski",
+  "voimassaAlkuPvm": "2015-10-01",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "withinCodes": [],
+  "tila": "LUONNOS",
+  "version": 1
 }

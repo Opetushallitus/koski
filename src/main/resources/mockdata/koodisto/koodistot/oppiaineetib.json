@@ -1,23 +1,27 @@
 {
-  "koodistoUri" : "oppiaineetib",
-  "versio" : 1,
-  "metadata" : [ {
-    "kieli" : "FI",
-    "nimi" : "Oppiaineet ib",
-    "kuvaus" : "Oppiaineet ib"
-  }, {
-    "kieli" : "SV",
-    "nimi" : "Oppiaineet ib",
-    "kuvaus" : "Oppiaineet ib"
-  }, {
-    "kieli" : "EN",
-    "nimi" : "Oppiaineet ib",
-    "kuvaus" : "Oppiaineet ib"
-  } ],
-  "codesGroupUri" : "koski",
-  "voimassaAlkuPvm" : "2016-09-13",
-  "organisaatioOid" : "1.2.246.562.10.00000000001",
-  "withinCodes" : [ ],
-  "tila" : "LUONNOS",
-  "version" : 0
+  "koodistoUri": "oppiaineetib",
+  "versio": 1,
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "Oppiaineet ib",
+      "kuvaus": "Oppiaineet ib"
+    },
+    {
+      "kieli": "SV",
+      "nimi": "Oppiaineet ib",
+      "kuvaus": "Oppiaineet ib"
+    },
+    {
+      "kieli": "EN",
+      "nimi": "Oppiaineet ib",
+      "kuvaus": "Oppiaineet ib"
+    }
+  ],
+  "codesGroupUri": "koski",
+  "voimassaAlkuPvm": "2016-09-13",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "withinCodes": [],
+  "tila": "LUONNOS",
+  "version": 0
 }

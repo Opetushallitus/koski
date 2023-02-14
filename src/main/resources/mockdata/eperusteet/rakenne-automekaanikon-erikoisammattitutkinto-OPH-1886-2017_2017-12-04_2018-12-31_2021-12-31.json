@@ -25,9 +25,7 @@
       "opintoalakoodi": "opintoalaoph2002_509"
     }
   ],
-  "kielet": [
-    "fi"
-  ],
+  "kielet": ["fi"],
   "kuvaus": {
     "_tunniste": "c8c2ac4d-d989-4e9c-bb4e-32ce0abbb6e3",
     "fi": "<p>Automekaanikon erikoisammattitutkinnon suorittaneella on ajoneuvoalan laajaa asiantuntijuutta edellyttävä ammattitaito. Hän osaa toimia ajoneuvoalan asiantuntijana sekä alan ammattilaisille että kuluttajille. Tutkinnon suorittaneella on vahva kokonaisnäkemys ajoneuvoalasta ja sen kehitysmahdollisuuksista. Hän osaa toimia alan verkostoissa. Tutkinnon suorittanut osaa suunnitella ajoneuvoalan asiantuntijapalvelun kohderyhmälle ja toteuttaa sen.</p>\n\n<p>Tutkinnon suorittaja voi suunnata osaamistaan esimiestehtäviin, yritystoiminnan kehittämiseen, alan teknisiin erityistehtäviin henkilö- ja pakkettiautojen; kuorma- ja linja-autojen tai työkoneiden osalta. Valintojensa mukaisesti tutkinnon suorittanut osaa toimia ajoneuvoalan yrityksessä monipuolisena asiantuntijana tai esimiestehtävissä kehittäen johtamistaitojaan. Hän tuntee alaa koskevan ajoneuvolainsäädännön, työsuojelusäädökset ja määräykset sekä osaa soveltaa niitä. Hän osaa toimia sidosryhmäyhteistyössä. Erikoistuessaan alan teknisiin erityistehtäviin, tutkinnon suorittaja osaa suunnitella ja ratkaista ajoneuvoihin ja niiden toimintaan liittyviä, haastavia ongelmia, jonka osana tarvitaan korkeatasoista vianetsinnän ja niiden teorioiden soveltamista. Testaus- ja kilpailutoiminnan tutkinnon osan suorittanut osaa toimia osana uusien ajoneuvomallien testausryhmää tai kilpa-autoiluun erikoistuneen tiimin asiantuntijajäsenenä, jossa hyödynnetään korkealuokkaista teknistä välineistöä.</p>\n\n<p>Automekaanikon erikoisammattitutkinto muodostuu kolmesta osaamisalasta; henkilöautotekniikan, kuorma- ja linja-autotekniikan sekä työkonetekniikan osaamisalasta. Osaamisalat muodostuvat kahdesta pakollisesta ja kahdesta valinnaisesta tutkinnon osasta. Henkilöautotekniikan osaamisalan ja kuorma- ja linja-autotekniikan osaamisalan pakolliset tutkinnon osat ovat Korjauksen haltuunotto ja Ajoneuvo vianmääritys. Työkonetekniikan osaamisalan pakolliset tutkinnon osat ovat Korjauksen haltuunotto ja Työkoneiden vianmääritykset. Valinnaiset tutkinnon osat ovat Teknisenä asiantuntijana toimiminen, Testaus- ja kilpailutoiminta, Sähköajoneuvojen korjaus, Päälli- ja korirakenteiden asennus sekä korjaus, Alusta- ja järrujärjestelmien asiantuntijana toimiminen, Koneenohjausjärjestelmien ylläpito ja säätäminen sekä Ajoneuvoalan kehitystehtävä. Valinnaisena tutkinnon osana voi valita myös muun tutkinnon osan toisesta ammatti- tai erikoisammattitutkinnosta.</p>",
@@ -50,9 +48,7 @@
   "tila": "valmis",
   "tyyppi": "normaali",
   "koulutusvienti": false,
-  "korvattavatDiaarinumerot": [
-    "38/011/2001"
-  ],
+  "korvattavatDiaarinumerot": ["38/011/2001"],
   "osaamisalat": [
     {
       "nimi": {

@@ -1,23 +1,27 @@
 {
-  "koodistoUri" : "koskiyokokeet",
-  "versio" : 1,
-  "metadata" : [ {
-    "kieli" : "FI",
-    "nimi" : "Koski YO-kokeet",
-    "kuvaus" : "Koski YO-kokeet"
-  }, {
-    "kieli" : "SV",
-    "nimi" : "Koski YO-kokeet",
-    "kuvaus" : "Koski YO-kokeet"
-  }, {
-    "kieli" : "EN",
-    "nimi" : "Koski YO-kokeet",
-    "kuvaus" : "Koski YO-kokeet"
-  } ],
-  "codesGroupUri" : "koski",
-  "voimassaAlkuPvm" : "2013-01-01",
-  "organisaatioOid" : "1.2.246.562.10.00000000001",
-  "withinCodes" : [ ],
-  "tila" : "LUONNOS",
-  "version" : 2
+  "koodistoUri": "koskiyokokeet",
+  "versio": 1,
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "Koski YO-kokeet",
+      "kuvaus": "Koski YO-kokeet"
+    },
+    {
+      "kieli": "SV",
+      "nimi": "Koski YO-kokeet",
+      "kuvaus": "Koski YO-kokeet"
+    },
+    {
+      "kieli": "EN",
+      "nimi": "Koski YO-kokeet",
+      "kuvaus": "Koski YO-kokeet"
+    }
+  ],
+  "codesGroupUri": "koski",
+  "voimassaAlkuPvm": "2013-01-01",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "withinCodes": [],
+  "tila": "LUONNOS",
+  "version": 2
 }

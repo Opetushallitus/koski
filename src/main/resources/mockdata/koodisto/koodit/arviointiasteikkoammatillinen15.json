@@ -1,86 +1,142 @@
-[ {
-  "koodiUri" : "arviointiasteikkoammatillinen15_1",
-  "koodiArvo" : "1",
-  "metadata" : [ {
-    "nimi" : "1",
-    "lyhytNimi" : "1",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "arviointiasteikkoammatillinen15_2",
-  "koodiArvo" : "2",
-  "metadata" : [ {
-    "nimi" : "2",
-    "lyhytNimi" : "2",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "arviointiasteikkoammatillinen15_3",
-  "koodiArvo" : "3",
-  "metadata" : [ {
-    "nimi" : "3",
-    "lyhytNimi" : "3",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "arviointiasteikkoammatillinen15_4",
-  "koodiArvo" : "4",
-  "metadata" : [ {
-    "nimi" : "4",
-    "lyhytNimi" : "4",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "arviointiasteikkoammatillinen15_5",
-  "koodiArvo" : "5",
-  "metadata" : [ {
-    "nimi" : "5",
-    "lyhytNimi" : "5",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "arviointiasteikkoammatillinen15_hylatty",
-  "koodiArvo" : "Hylätty",
-  "metadata" : [ {
-    "nimi" : "Hylätty",
-    "lyhytNimi" : "Hylätty",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Underkänd",
-    "lyhytNimi" : "Underkänd",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Hylätty",
-    "lyhytNimi" : "Hylätty",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "arviointiasteikkoammatillinen15_hyvaksytty",
-  "koodiArvo" : "Hyväksytty",
-  "metadata" : [ {
-    "nimi" : "Hyväksytty",
-    "lyhytNimi" : "Hyväksytty",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Godkänd",
-    "lyhytNimi" : "Godkänd",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Hyväksytty",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-} ]
+[
+  {
+    "koodiUri": "arviointiasteikkoammatillinen15_1",
+    "koodiArvo": "1",
+    "metadata": [
+      {
+        "nimi": "1",
+        "lyhytNimi": "1",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "arviointiasteikkoammatillinen15_2",
+    "koodiArvo": "2",
+    "metadata": [
+      {
+        "nimi": "2",
+        "lyhytNimi": "2",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "arviointiasteikkoammatillinen15_3",
+    "koodiArvo": "3",
+    "metadata": [
+      {
+        "nimi": "3",
+        "lyhytNimi": "3",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "arviointiasteikkoammatillinen15_4",
+    "koodiArvo": "4",
+    "metadata": [
+      {
+        "nimi": "4",
+        "lyhytNimi": "4",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "arviointiasteikkoammatillinen15_5",
+    "koodiArvo": "5",
+    "metadata": [
+      {
+        "nimi": "5",
+        "lyhytNimi": "5",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "arviointiasteikkoammatillinen15_hylatty",
+    "koodiArvo": "Hylätty",
+    "metadata": [
+      {
+        "nimi": "Hylätty",
+        "lyhytNimi": "Hylätty",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Underkänd",
+        "lyhytNimi": "Underkänd",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Hylätty",
+        "lyhytNimi": "Hylätty",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "arviointiasteikkoammatillinen15_hyvaksytty",
+    "koodiArvo": "Hyväksytty",
+    "metadata": [
+      {
+        "nimi": "Hyväksytty",
+        "lyhytNimi": "Hyväksytty",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Godkänd",
+        "lyhytNimi": "Godkänd",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Hyväksytty",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

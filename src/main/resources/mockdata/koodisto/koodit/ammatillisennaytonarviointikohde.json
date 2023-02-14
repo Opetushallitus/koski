@@ -1,65 +1,94 @@
-[ {
-  "koodiUri" : "ammatillisennaytonarviointikohde_1",
-  "koodiArvo" : "1",
-  "metadata" : [ {
-    "nimi" : "Työprosessin hallinta",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Behärskande av arbetsprocessen",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "ammatillisennaytonarviointikohde_2",
-  "koodiArvo" : "2",
-  "metadata" : [ {
-    "nimi" : "Työmenetelmien, -välineiden ja materiaalin hallinta",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Behärskande av arbetsmetoder, -redskap och material",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "ammatillisennaytonarviointikohde_3",
-  "koodiArvo" : "3",
-  "metadata" : [ {
-    "nimi" : "Työn perustana olevan tiedon hallinta",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Behärskande av den kunskap som ligger till grund för arbetet",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "ammatillisennaytonarviointikohde_4",
-  "koodiArvo" : "4",
-  "metadata" : [ {
-    "nimi" : "Elinikäisen oppimisen avaintaidot",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Nyckelkompetenser för livslångt lärande",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-} ]
+[
+  {
+    "koodiUri": "ammatillisennaytonarviointikohde_1",
+    "koodiArvo": "1",
+    "metadata": [
+      {
+        "nimi": "Työprosessin hallinta",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Behärskande av arbetsprocessen",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "ammatillisennaytonarviointikohde_2",
+    "koodiArvo": "2",
+    "metadata": [
+      {
+        "nimi": "Työmenetelmien, -välineiden ja materiaalin hallinta",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Behärskande av arbetsmetoder, -redskap och material",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "ammatillisennaytonarviointikohde_3",
+    "koodiArvo": "3",
+    "metadata": [
+      {
+        "nimi": "Työn perustana olevan tiedon hallinta",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Behärskande av den kunskap som ligger till grund för arbetet",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "ammatillisennaytonarviointikohde_4",
+    "koodiArvo": "4",
+    "metadata": [
+      {
+        "nimi": "Elinikäisen oppimisen avaintaidot",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Nyckelkompetenser för livslångt lärande",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

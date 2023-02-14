@@ -1,103 +1,158 @@
-[ {
-  "koodiUri" : "hakutapa_01",
-  "koodiArvo" : "01",
-  "metadata" : [ {
-    "nimi" : "Yhteishaku",
-    "lyhytNimi" : "YH",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Gemensam ansökan",
-    "lyhytNimi" : "GA",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Joint application",
-    "lyhytNimi" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "hakutapa_02",
-  "koodiArvo" : "02",
-  "metadata" : [ {
-    "nimi" : "Erillishaku",
-    "lyhytNimi" : "EH",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Separata antagningar",
-    "lyhytNimi" : "SA",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Separate application",
-    "lyhytNimi" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "hakutapa_03",
-  "koodiArvo" : "03",
-  "metadata" : [ {
-    "nimi" : "Jatkuva haku",
-    "lyhytNimi" : "JH",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Kontinuerlig ansökan",
-    "lyhytNimi" : "FA",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Rolling admission (upper secondary level)",
-    "lyhytNimi" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "hakutapa_04",
-  "koodiArvo" : "04",
-  "metadata" : [ {
-    "nimi" : "Joustava haku",
-    "lyhytNimi" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Flexibel ansökan",
-    "lyhytNimi" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Rolling admission (higher education)",
-    "lyhytNimi" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "hakutapa_05",
-  "koodiArvo" : "05",
-  "metadata" : [ {
-    "nimi" : "Siirtohaku",
-    "lyhytNimi" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Ansökan om överflyttning",
-    "lyhytNimi" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Transfer application",
-    "lyhytNimi" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "hakutapa_06",
-  "koodiArvo" : "06",
-  "metadata" : [ {
-    "nimi" : "Lisähaku",
-    "lyhytNimi" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Tilläggsansökan",
-    "lyhytNimi" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Supplementary application",
-    "lyhytNimi" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1
-} ]
+[
+  {
+    "koodiUri": "hakutapa_01",
+    "koodiArvo": "01",
+    "metadata": [
+      {
+        "nimi": "Yhteishaku",
+        "lyhytNimi": "YH",
+        "kuvaus": "Yhteishaku",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Gemensam ansökan",
+        "lyhytNimi": "GA",
+        "kuvaus": "Gemensam ansökan",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Joint application",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "hakutapa_02",
+    "koodiArvo": "02",
+    "metadata": [
+      {
+        "nimi": "Erillishaku",
+        "lyhytNimi": "EH",
+        "kuvaus": "Erillishaku",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Separata antagningar",
+        "lyhytNimi": "SA",
+        "kuvaus": "Separata antagningar",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Separate application",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "hakutapa_03",
+    "koodiArvo": "03",
+    "metadata": [
+      {
+        "nimi": "Jatkuva haku",
+        "lyhytNimi": "JH",
+        "kuvaus": "Jatkuva haku",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Kontinuerlig ansökan",
+        "lyhytNimi": "FA",
+        "kuvaus": "Kontinuerlig ansökan",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Rolling admission (upper secondary level)",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "hakutapa_04",
+    "koodiArvo": "04",
+    "metadata": [
+      {
+        "nimi": "Joustava haku",
+        "lyhytNimi": "",
+        "kuvaus": "Uusi tarjonta (kouta), korkeakouluilla käytössä oleva hakutapa",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Flexibel ansökan",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Rolling admission (higher education)",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "hakutapa_05",
+    "koodiArvo": "05",
+    "metadata": [
+      {
+        "nimi": "Siirtohaku",
+        "lyhytNimi": "",
+        "kuvaus": "käytössä kouta",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Ansökan om överflyttning",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Transfer application",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "hakutapa_06",
+    "koodiArvo": "06",
+    "metadata": [
+      {
+        "nimi": "Lisähaku",
+        "lyhytNimi": "",
+        "kuvaus": "käytössä kouta",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Tilläggsansökan",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Supplementary application",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

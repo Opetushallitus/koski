@@ -1,112 +1,156 @@
-[ {
-  "koodiUri" : "arviointiasteikkointernationalschool_achievedoutcomes",
-  "koodiArvo" : "achievedoutcomes",
-  "metadata" : [ {
-    "nimi" : "Achieved Outcomes",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Achieved Outcomes",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "arviointiasteikkointernationalschool_completed",
-  "koodiArvo" : "completed",
-  "metadata" : [ {
-    "nimi" : "Completed",
-    "lyhytNimi" : "Completed",
-    "kuvaus" : "Completed",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Completed",
-    "lyhytNimi" : "Completed",
-    "kuvaus" : "Completed",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Completed",
-    "lyhytNimi" : "Completed",
-    "kuvaus" : "Completed",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "arviointiasteikkointernationalschool_fail",
-  "koodiArvo" : "fail",
-  "metadata" : [ {
-    "nimi" : "Fail",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Fail",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "arviointiasteikkointernationalschool_learningtoward",
-  "koodiArvo" : "learningtoward",
-  "metadata" : [ {
-    "nimi" : "Learning Toward",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Learning Toward",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "arviointiasteikkointernationalschool_learningwithin",
-  "koodiArvo" : "learningwithin",
-  "metadata" : [ {
-    "nimi" : "Learning Within",
-    "lyhytNimi" : "Learning Within",
-    "kuvaus" : "Learning Within",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Learning Within",
-    "lyhytNimi" : "Learning Within",
-    "kuvaus" : "Learning Within",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Learning Within",
-    "lyhytNimi" : "Learning Within",
-    "kuvaus" : "Learning Within",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "arviointiasteikkointernationalschool_needssupport",
-  "koodiArvo" : "needssupport",
-  "metadata" : [ {
-    "nimi" : "Needs Support",
-    "lyhytNimi" : "Needs Support",
-    "kuvaus" : "Needs Support",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Needs Support",
-    "lyhytNimi" : "Needs Support",
-    "kuvaus" : "Needs Support",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Needs Support",
-    "lyhytNimi" : "Needs Support",
-    "kuvaus" : "Needs Support",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "arviointiasteikkointernationalschool_pass",
-  "koodiArvo" : "pass",
-  "metadata" : [ {
-    "nimi" : "Pass",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Pass",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-} ]
+[
+  {
+    "koodiUri": "arviointiasteikkointernationalschool_achievedoutcomes",
+    "koodiArvo": "achievedoutcomes",
+    "metadata": [
+      {
+        "nimi": "Achieved Outcomes",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Achieved Outcomes",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "arviointiasteikkointernationalschool_completed",
+    "koodiArvo": "completed",
+    "metadata": [
+      {
+        "nimi": "Completed",
+        "lyhytNimi": "Completed",
+        "kuvaus": "Completed",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Completed",
+        "lyhytNimi": "Completed",
+        "kuvaus": "Completed",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Completed",
+        "lyhytNimi": "Completed",
+        "kuvaus": "Completed",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "arviointiasteikkointernationalschool_fail",
+    "koodiArvo": "fail",
+    "metadata": [
+      {
+        "nimi": "Fail",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Fail",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "arviointiasteikkointernationalschool_learningtoward",
+    "koodiArvo": "learningtoward",
+    "metadata": [
+      {
+        "nimi": "Learning Toward",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Learning Toward",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "arviointiasteikkointernationalschool_learningwithin",
+    "koodiArvo": "learningwithin",
+    "metadata": [
+      {
+        "nimi": "Learning Within",
+        "lyhytNimi": "Learning Within",
+        "kuvaus": "Learning Within",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Learning Within",
+        "lyhytNimi": "Learning Within",
+        "kuvaus": "Learning Within",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Learning Within",
+        "lyhytNimi": "Learning Within",
+        "kuvaus": "Learning Within",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "arviointiasteikkointernationalschool_needssupport",
+    "koodiArvo": "needssupport",
+    "metadata": [
+      {
+        "nimi": "Needs Support",
+        "lyhytNimi": "Needs Support",
+        "kuvaus": "Needs Support",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Needs Support",
+        "lyhytNimi": "Needs Support",
+        "kuvaus": "Needs Support",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Needs Support",
+        "lyhytNimi": "Needs Support",
+        "kuvaus": "Needs Support",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "arviointiasteikkointernationalschool_pass",
+    "koodiArvo": "pass",
+    "metadata": [
+      {
+        "nimi": "Pass",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Pass",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

@@ -1,15 +1,17 @@
 {
-  "koodistoUri" : "lukionkurssitops2003nuoret",
-  "versio" : 1,
-  "metadata" : [ {
-    "kieli" : "FI",
-    "nimi" : "Lukion kurssit, OPS 2003 nuoret",
-    "kuvaus" : "Lukion kurssit, OPS 2003 nuoret. Sisältää perusteiden kurssikoodit"
-  } ],
-  "codesGroupUri" : "koski",
-  "voimassaAlkuPvm" : "2015-09-22",
-  "organisaatioOid" : "1.2.246.562.10.00000000001",
-  "withinCodes" : [ ],
-  "tila" : "LUONNOS",
-  "version" : 1
+  "koodistoUri": "lukionkurssitops2003nuoret",
+  "versio": 1,
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "Lukion kurssit, OPS 2003 nuoret",
+      "kuvaus": "Lukion kurssit, OPS 2003 nuoret. Sisältää perusteiden kurssikoodit"
+    }
+  ],
+  "codesGroupUri": "koski",
+  "voimassaAlkuPvm": "2015-09-22",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "withinCodes": [],
+  "tila": "LUONNOS",
+  "version": 1
 }

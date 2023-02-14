@@ -1,15 +1,17 @@
 {
-  "koodistoUri" : "opetusryhma",
-  "versio" : 1,
-  "metadata" : [ {
-    "kieli" : "EN",
-    "nimi" : "opetusryhma",
-    "kuvaus" : "Opetusryhmä"
-  } ],
-  "codesGroupUri" : "koski",
-  "voimassaAlkuPvm" : "2015-11-01",
-  "organisaatioOid" : "1.2.246.562.10.00000000001",
-  "withinCodes" : [ ],
-  "tila" : "LUONNOS",
-  "version" : 0
+  "koodistoUri": "opetusryhma",
+  "versio": 1,
+  "metadata": [
+    {
+      "kieli": "EN",
+      "nimi": "opetusryhma",
+      "kuvaus": "Opetusryhmä"
+    }
+  ],
+  "codesGroupUri": "koski",
+  "voimassaAlkuPvm": "2015-11-01",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "withinCodes": [],
+  "tila": "LUONNOS",
+  "version": 0
 }

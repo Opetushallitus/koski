@@ -1,15 +1,17 @@
 {
-  "koodistoUri" : "lukionkurssintyyppi",
-  "versio" : 1,
-  "metadata" : [ {
-    "kieli" : "FI",
-    "nimi" : "Lukion kurssin tyyppi",
-    "kuvaus" : "Lukion kurssin tyypin tiedot"
-  } ],
-  "codesGroupUri" : "koski",
-  "voimassaAlkuPvm" : "2016-09-21",
-  "organisaatioOid" : "1.2.246.562.10.00000000001",
-  "withinCodes" : [ ],
-  "tila" : "LUONNOS",
-  "version" : 0
+  "koodistoUri": "lukionkurssintyyppi",
+  "versio": 1,
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "Lukion kurssin tyyppi",
+      "kuvaus": "Lukion kurssin tyypin tiedot"
+    }
+  ],
+  "codesGroupUri": "koski",
+  "voimassaAlkuPvm": "2016-09-21",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "withinCodes": [],
+  "tila": "LUONNOS",
+  "version": 0
 }

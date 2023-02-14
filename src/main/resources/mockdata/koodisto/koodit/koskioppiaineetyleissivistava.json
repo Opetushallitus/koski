@@ -1,417 +1,619 @@
-[ {
-  "koodiUri" : "koskioppiaineetyleissivistava_a",
-  "koodiArvo" : "A",
-  "metadata" : [ {
-    "nimi" : "A-kieli",
-    "lyhytNimi" : "A-kieli",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "A-språk",
-    "lyhytNimi" : "A-språk",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskioppiaineetyleissivistava_a1",
-  "koodiArvo" : "A1",
-  "metadata" : [ {
-    "nimi" : "A1-kieli",
-    "lyhytNimi" : "A1-kieli",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "A1-språk",
-    "lyhytNimi" : "A1-språk",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskioppiaineetyleissivistava_a2",
-  "koodiArvo" : "A2",
-  "metadata" : [ {
-    "nimi" : "A2-kieli",
-    "lyhytNimi" : "A2-kieli",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "A2-språk",
-    "lyhytNimi" : "A2-språk",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskioppiaineetyleissivistava_ai",
-  "koodiArvo" : "AI",
-  "metadata" : [ {
-    "nimi" : "Äidinkieli ja kirjallisuus",
-    "lyhytNimi" : "Äidinkieli ja kirjallisuus",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Modersmålet och litteratur",
-    "lyhytNimi" : "Modersmålet och litteratur",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskioppiaineetyleissivistava_aom",
-  "koodiArvo" : "AOM",
-  "metadata" : [ {
-    "nimi" : "Äidinkielenomainen kieli",
-    "lyhytNimi" : "Äidinkielenomainen kieli",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Modersmålsinriktat språk",
-    "lyhytNimi" : "Modersmålsinriktat språk",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskioppiaineetyleissivistava_b1",
-  "koodiArvo" : "B1",
-  "metadata" : [ {
-    "nimi" : "B1-kieli",
-    "lyhytNimi" : "B1-kieli",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "B1-språk",
-    "lyhytNimi" : "B1-språk",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskioppiaineetyleissivistava_b2",
-  "koodiArvo" : "B2",
-  "metadata" : [ {
-    "nimi" : "B2-kieli",
-    "lyhytNimi" : "B2-kieli",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "B2-språk",
-    "lyhytNimi" : "B2-språk",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskioppiaineetyleissivistava_b3",
-  "koodiArvo" : "B3",
-  "metadata" : [ {
-    "nimi" : "B3-kieli",
-    "lyhytNimi" : "B3-kieli",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "B3-språk",
-    "lyhytNimi" : "B3-språk",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskioppiaineetyleissivistava_bi",
-  "koodiArvo" : "BI",
-  "metadata" : [ {
-    "nimi" : "Biologia",
-    "lyhytNimi" : "Biologia",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Biologi",
-    "lyhytNimi" : "Biologi",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskioppiaineetyleissivistava_et",
-  "koodiArvo" : "ET",
-  "metadata" : [ {
-    "nimi" : "Uskonto/Elämänkatsomustieto",
-    "lyhytNimi" : "Elämänkatsomustieto",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Religion/Livsåskådningskunskap",
-    "lyhytNimi" : "Livsåskådningskunskap",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskioppiaineetyleissivistava_fi",
-  "koodiArvo" : "FI",
-  "metadata" : [ {
-    "nimi" : "Filosofia",
-    "lyhytNimi" : "Filosofia",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Filosofi",
-    "lyhytNimi" : "Filosofi",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskioppiaineetyleissivistava_fy",
-  "koodiArvo" : "FY",
-  "metadata" : [ {
-    "nimi" : "Fysiikka",
-    "lyhytNimi" : "Fysiikka",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Fysik",
-    "lyhytNimi" : "Fysik",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskioppiaineetyleissivistava_ge",
-  "koodiArvo" : "GE",
-  "metadata" : [ {
-    "nimi" : "Maantieto",
-    "lyhytNimi" : "Maantieto",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Geografi",
-    "lyhytNimi" : "Geografi",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskioppiaineetyleissivistava_hi",
-  "koodiArvo" : "HI",
-  "metadata" : [ {
-    "nimi" : "Historia",
-    "lyhytNimi" : "Historia",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Historia",
-    "lyhytNimi" : "Historia",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskioppiaineetyleissivistava_ke",
-  "koodiArvo" : "KE",
-  "metadata" : [ {
-    "nimi" : "Kemia",
-    "lyhytNimi" : "Kemia",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Kemi",
-    "lyhytNimi" : "Kemi",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskioppiaineetyleissivistava_ko",
-  "koodiArvo" : "KO",
-  "metadata" : [ {
-    "nimi" : "Kotitalous",
-    "lyhytNimi" : "Kotitalous",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Huslig ekonomi",
-    "lyhytNimi" : "Huslig ekonomi",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskioppiaineetyleissivistava_ks",
-  "koodiArvo" : "KS",
-  "metadata" : [ {
-    "nimi" : "Käsityö",
-    "lyhytNimi" : "Käsityö",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Slöjd",
-    "lyhytNimi" : "Slöjd",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskioppiaineetyleissivistava_kt",
-  "koodiArvo" : "KT",
-  "metadata" : [ {
-    "nimi" : "Uskonto/Elämänkatsomustieto",
-    "lyhytNimi" : "Uskonto",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Religion/Livsåskådningskunskap",
-    "lyhytNimi" : "Religion",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskioppiaineetyleissivistava_ku",
-  "koodiArvo" : "KU",
-  "metadata" : [ {
-    "nimi" : "Kuvataide",
-    "lyhytNimi" : "Kuvataide",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Bildkonst",
-    "lyhytNimi" : "Bildkonst",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskioppiaineetyleissivistava_li",
-  "koodiArvo" : "LI",
-  "metadata" : [ {
-    "nimi" : "Liikunta",
-    "lyhytNimi" : "Liikunta",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Gymnastik",
-    "lyhytNimi" : "Gymnastik",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskioppiaineetyleissivistava_ma",
-  "koodiArvo" : "MA",
-  "metadata" : [ {
-    "nimi" : "Matematiikka",
-    "lyhytNimi" : "Matematiikka",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Matematik",
-    "lyhytNimi" : "Matematik",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskioppiaineetyleissivistava_mu",
-  "koodiArvo" : "MU",
-  "metadata" : [ {
-    "nimi" : "Musiikki",
-    "lyhytNimi" : "Musiikki",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Musik",
-    "lyhytNimi" : "Musik",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskioppiaineetyleissivistava_op",
-  "koodiArvo" : "OP",
-  "metadata" : [ {
-    "nimi" : "Opinto-ohjaus",
-    "lyhytNimi" : "Opinto-ohjaus",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Elevhandledning",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskioppiaineetyleissivistava_opa",
-  "koodiArvo" : "OPA",
-  "metadata" : [ {
-    "nimi" : "Opinto-ohjaus ja työelämätaidot",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Studiehandledning och handledning i arbetslivsfärdigheter",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskioppiaineetyleissivistava_ps",
-  "koodiArvo" : "PS",
-  "metadata" : [ {
-    "nimi" : "Psykologia",
-    "lyhytNimi" : "Psykologia",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Psykologi",
-    "lyhytNimi" : "Psykologi",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskioppiaineetyleissivistava_te",
-  "koodiArvo" : "TE",
-  "metadata" : [ {
-    "nimi" : "Terveystieto",
-    "lyhytNimi" : "Terveystieto",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Hälsokunskap",
-    "lyhytNimi" : "Hälsokunskap",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskioppiaineetyleissivistava_xx",
-  "koodiArvo" : "XX",
-  "metadata" : [ {
-    "nimi" : "Ei tiedossa",
-    "kuvaus" : "Oppiaine ei tiedossa. Käytetään KOSKI-palvelussa perusopetuksen ja lukiokoulutuksen aineopinnoissa silloin, kun opiskelija ei vielä opiskeluoikeuden alkuvaiheessa ole tehnyt yhtään ainevalintaa.",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Okänd",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Unknown",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskioppiaineetyleissivistava_yh",
-  "koodiArvo" : "YH",
-  "metadata" : [ {
-    "nimi" : "Yhteiskuntaoppi",
-    "lyhytNimi" : "Yhteiskuntaoppi",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Samhällslära",
-    "lyhytNimi" : "Samhällslära",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskioppiaineetyleissivistava_yl",
-  "koodiArvo" : "YL",
-  "metadata" : [ {
-    "nimi" : "Ympäristöoppi",
-    "lyhytNimi" : "Ympäristöoppi",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Omgivningslära",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-} ]
+[
+  {
+    "koodiUri": "koskioppiaineetyleissivistava_a",
+    "koodiArvo": "A",
+    "metadata": [
+      {
+        "nimi": "A-kieli",
+        "lyhytNimi": "A-kieli",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "A-språk",
+        "lyhytNimi": "A-språk",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskioppiaineetyleissivistava_a1",
+    "koodiArvo": "A1",
+    "metadata": [
+      {
+        "nimi": "A1-kieli",
+        "lyhytNimi": "A1-kieli",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "A1-språk",
+        "lyhytNimi": "A1-språk",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskioppiaineetyleissivistava_a2",
+    "koodiArvo": "A2",
+    "metadata": [
+      {
+        "nimi": "A2-kieli",
+        "lyhytNimi": "A2-kieli",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "A2-språk",
+        "lyhytNimi": "A2-språk",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskioppiaineetyleissivistava_ai",
+    "koodiArvo": "AI",
+    "metadata": [
+      {
+        "nimi": "Äidinkieli ja kirjallisuus",
+        "lyhytNimi": "Äidinkieli ja kirjallisuus",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Modersmålet och litteratur",
+        "lyhytNimi": "Modersmålet och litteratur",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskioppiaineetyleissivistava_aom",
+    "koodiArvo": "AOM",
+    "metadata": [
+      {
+        "nimi": "Äidinkielenomainen kieli",
+        "lyhytNimi": "Äidinkielenomainen kieli",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Modersmålsinriktat språk",
+        "lyhytNimi": "Modersmålsinriktat språk",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskioppiaineetyleissivistava_b1",
+    "koodiArvo": "B1",
+    "metadata": [
+      {
+        "nimi": "B1-kieli",
+        "lyhytNimi": "B1-kieli",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "B1-språk",
+        "lyhytNimi": "B1-språk",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskioppiaineetyleissivistava_b2",
+    "koodiArvo": "B2",
+    "metadata": [
+      {
+        "nimi": "B2-kieli",
+        "lyhytNimi": "B2-kieli",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "B2-språk",
+        "lyhytNimi": "B2-språk",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskioppiaineetyleissivistava_b3",
+    "koodiArvo": "B3",
+    "metadata": [
+      {
+        "nimi": "B3-kieli",
+        "lyhytNimi": "B3-kieli",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "B3-språk",
+        "lyhytNimi": "B3-språk",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskioppiaineetyleissivistava_bi",
+    "koodiArvo": "BI",
+    "metadata": [
+      {
+        "nimi": "Biologia",
+        "lyhytNimi": "Biologia",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Biologi",
+        "lyhytNimi": "Biologi",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskioppiaineetyleissivistava_et",
+    "koodiArvo": "ET",
+    "metadata": [
+      {
+        "nimi": "Uskonto/Elämänkatsomustieto",
+        "lyhytNimi": "Elämänkatsomustieto",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Religion/Livsåskådningskunskap",
+        "lyhytNimi": "Livsåskådningskunskap",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskioppiaineetyleissivistava_fi",
+    "koodiArvo": "FI",
+    "metadata": [
+      {
+        "nimi": "Filosofia",
+        "lyhytNimi": "Filosofia",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Filosofi",
+        "lyhytNimi": "Filosofi",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskioppiaineetyleissivistava_fy",
+    "koodiArvo": "FY",
+    "metadata": [
+      {
+        "nimi": "Fysiikka",
+        "lyhytNimi": "Fysiikka",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Fysik",
+        "lyhytNimi": "Fysik",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskioppiaineetyleissivistava_ge",
+    "koodiArvo": "GE",
+    "metadata": [
+      {
+        "nimi": "Maantieto",
+        "lyhytNimi": "Maantieto",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Geografi",
+        "lyhytNimi": "Geografi",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskioppiaineetyleissivistava_hi",
+    "koodiArvo": "HI",
+    "metadata": [
+      {
+        "nimi": "Historia",
+        "lyhytNimi": "Historia",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Historia",
+        "lyhytNimi": "Historia",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskioppiaineetyleissivistava_ke",
+    "koodiArvo": "KE",
+    "metadata": [
+      {
+        "nimi": "Kemia",
+        "lyhytNimi": "Kemia",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Kemi",
+        "lyhytNimi": "Kemi",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskioppiaineetyleissivistava_ko",
+    "koodiArvo": "KO",
+    "metadata": [
+      {
+        "nimi": "Kotitalous",
+        "lyhytNimi": "Kotitalous",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Huslig ekonomi",
+        "lyhytNimi": "Huslig ekonomi",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskioppiaineetyleissivistava_ks",
+    "koodiArvo": "KS",
+    "metadata": [
+      {
+        "nimi": "Käsityö",
+        "lyhytNimi": "Käsityö",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Slöjd",
+        "lyhytNimi": "Slöjd",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskioppiaineetyleissivistava_kt",
+    "koodiArvo": "KT",
+    "metadata": [
+      {
+        "nimi": "Uskonto/Elämänkatsomustieto",
+        "lyhytNimi": "Uskonto",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Religion/Livsåskådningskunskap",
+        "lyhytNimi": "Religion",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskioppiaineetyleissivistava_ku",
+    "koodiArvo": "KU",
+    "metadata": [
+      {
+        "nimi": "Kuvataide",
+        "lyhytNimi": "Kuvataide",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Bildkonst",
+        "lyhytNimi": "Bildkonst",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskioppiaineetyleissivistava_li",
+    "koodiArvo": "LI",
+    "metadata": [
+      {
+        "nimi": "Liikunta",
+        "lyhytNimi": "Liikunta",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Gymnastik",
+        "lyhytNimi": "Gymnastik",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskioppiaineetyleissivistava_ma",
+    "koodiArvo": "MA",
+    "metadata": [
+      {
+        "nimi": "Matematiikka",
+        "lyhytNimi": "Matematiikka",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Matematik",
+        "lyhytNimi": "Matematik",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskioppiaineetyleissivistava_mu",
+    "koodiArvo": "MU",
+    "metadata": [
+      {
+        "nimi": "Musiikki",
+        "lyhytNimi": "Musiikki",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Musik",
+        "lyhytNimi": "Musik",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskioppiaineetyleissivistava_op",
+    "koodiArvo": "OP",
+    "metadata": [
+      {
+        "nimi": "Opinto-ohjaus",
+        "lyhytNimi": "Opinto-ohjaus",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Elevhandledning",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskioppiaineetyleissivistava_opa",
+    "koodiArvo": "OPA",
+    "metadata": [
+      {
+        "nimi": "Opinto-ohjaus ja työelämätaidot",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Studiehandledning och handledning i arbetslivsfärdigheter",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskioppiaineetyleissivistava_ps",
+    "koodiArvo": "PS",
+    "metadata": [
+      {
+        "nimi": "Psykologia",
+        "lyhytNimi": "Psykologia",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Psykologi",
+        "lyhytNimi": "Psykologi",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskioppiaineetyleissivistava_te",
+    "koodiArvo": "TE",
+    "metadata": [
+      {
+        "nimi": "Terveystieto",
+        "lyhytNimi": "Terveystieto",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Hälsokunskap",
+        "lyhytNimi": "Hälsokunskap",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskioppiaineetyleissivistava_xx",
+    "koodiArvo": "XX",
+    "metadata": [
+      {
+        "nimi": "Ei tiedossa",
+        "kuvaus": "Oppiaine ei tiedossa. Käytetään KOSKI-palvelussa perusopetuksen ja lukiokoulutuksen aineopinnoissa silloin, kun opiskelija ei vielä opiskeluoikeuden alkuvaiheessa ole tehnyt yhtään ainevalintaa.",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Okänd",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Unknown",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskioppiaineetyleissivistava_yh",
+    "koodiArvo": "YH",
+    "metadata": [
+      {
+        "nimi": "Yhteiskuntaoppi",
+        "lyhytNimi": "Yhteiskuntaoppi",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Samhällslära",
+        "lyhytNimi": "Samhällslära",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskioppiaineetyleissivistava_yl",
+    "koodiArvo": "YL",
+    "metadata": [
+      {
+        "nimi": "Ympäristöoppi",
+        "lyhytNimi": "Ympäristöoppi",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Omgivningslära",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

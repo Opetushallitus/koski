@@ -1,18 +1,33 @@
 {
-  "koodistoUri" : "koskikoulutustendiaarinumerot",
-  "versio" : 1,
-  "metadata" : [ {
-    "kieli" : "FI",
-    "nimi" : "Koski - koulutusten diaarinumerot"
-  } ],
-  "codesGroupUri" : "koski",
-  "voimassaAlkuPvm" : "2017-03-23",
-  "organisaatioOid" : "1.2.246.562.10.00000000001",
-  "withinCodes" : [ {
-    "codesUri" : "koulutustyyppi",
-    "codesVersion" : 2,
-    "passive" : false
-  } ],
-  "tila" : "LUONNOS",
-  "version" : 1
+  "koodistoUri": "koskikoulutustendiaarinumerot",
+  "versio": 1,
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "Koski - koulutusten diaarinumerot",
+      "kuvaus": "Koodisto sisältää diaarinumerot, joiden mukaisille perusteille ei Koskessa suoriteta validointeja. Perusteeseen liittyviä validointeja ei haluta suorittaa jos esimerkiksi diaarinumeron mukaista perustetta ei ole saatavilla ePerusteet rajapinnasta."
+    },
+    {
+      "kieli": "SV",
+      "nimi": "Koski - koulutusten diaarinumerot",
+      "kuvaus": "Koodisto sisältää diaarinumerot, joiden mukaisille perusteille ei Koskessa suoriteta validointeja. Perusteeseen liittyviä validointeja ei haluta suorittaa jos esimerkiksi diaarinumeron mukaista perustetta ei ole saatavilla ePerusteet rajapinnasta."
+    },
+    {
+      "kieli": "EN",
+      "nimi": "Koski - koulutusten diaarinumerot",
+      "kuvaus": "Koodisto sisältää diaarinumerot, joiden mukaisille perusteille ei Koskessa suoriteta validointeja. Perusteeseen liittyviä validointeja ei haluta suorittaa jos esimerkiksi diaarinumeron mukaista perustetta ei ole saatavilla ePerusteet rajapinnasta."
+    }
+  ],
+  "codesGroupUri": "koski",
+  "voimassaAlkuPvm": "2017-03-23",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "withinCodes": [
+    {
+      "codesUri": "koulutustyyppi",
+      "codesVersion": 2,
+      "passive": false
+    }
+  ],
+  "tila": "LUONNOS",
+  "version": 2
 }

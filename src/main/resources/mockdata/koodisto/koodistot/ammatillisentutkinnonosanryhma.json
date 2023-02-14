@@ -1,15 +1,17 @@
 {
-  "koodistoUri" : "ammatillisentutkinnonosanryhma",
-  "versio" : 1,
-  "metadata" : [ {
-    "kieli" : "FI",
-    "nimi" : "Ammatillisen tutkinnonosan ryhmä",
-    "kuvaus" : "Ammatillisten tutkintojen osat luokitellaan ryhmiin, joihin ne jaetaan todistuksilla. Yksittäisen tutkinnon osan ryhmä tutkinnossa riippuu oppijan henkilökohtaistetusta opetussuunnitelmasta."
-  } ],
-  "codesGroupUri" : "koski",
-  "voimassaAlkuPvm" : "2016-02-01",
-  "organisaatioOid" : "1.2.246.562.10.00000000001",
-  "withinCodes" : [ ],
-  "tila" : "LUONNOS",
-  "version" : 1
+  "koodistoUri": "ammatillisentutkinnonosanryhma",
+  "versio": 1,
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "Ammatillisen tutkinnonosan ryhmä",
+      "kuvaus": "Ammatillisten tutkintojen osat luokitellaan ryhmiin, joihin ne jaetaan todistuksilla. Yksittäisen tutkinnon osan ryhmä tutkinnossa riippuu oppijan henkilökohtaistetusta opetussuunnitelmasta."
+    }
+  ],
+  "codesGroupUri": "koski",
+  "voimassaAlkuPvm": "2016-02-01",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "withinCodes": [],
+  "tila": "LUONNOS",
+  "version": 1
 }

@@ -1,113 +1,163 @@
-[ {
-  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_a1",
-  "koodiArvo" : "A1",
-  "metadata" : [ {
-    "nimi" : "Vieras kieli",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Främmande språk",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
-  "koodiArvo" : "AI",
-  "metadata" : [ {
-    "nimi" : "Äidinkieli ja kirjallisuus",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Modersmål och litteratur",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ma",
-  "koodiArvo" : "MA",
-  "metadata" : [ {
-    "nimi" : "Matematiikka",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Matematik",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_op",
-  "koodiArvo" : "OP",
-  "metadata" : [ {
-    "nimi" : "Opinto-ohjaus ja työelämän taidot",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Studiehandledning och handledning i arbetslivsfärdigheter",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_te",
-  "koodiArvo" : "TE",
-  "metadata" : [ {
-    "nimi" : "Terveystieto",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Hälsokunskap",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_yh",
-  "koodiArvo" : "YH",
-  "metadata" : [ {
-    "nimi" : "Yhteiskuntatietous ja kulttuurintuntemus",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Samhällskunskap och kulturkännedom",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_yl",
-  "koodiArvo" : "YL",
-  "metadata" : [ {
-    "nimi" : "Ympäristö- ja luonnontieto",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Miljö- och naturkunskap",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-} ]
+[
+  {
+    "koodiUri": "aikuistenperusopetuksenalkuvaiheenoppiaineet_a1",
+    "koodiArvo": "A1",
+    "metadata": [
+      {
+        "nimi": "Vieras kieli",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Främmande språk",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
+    "koodiArvo": "AI",
+    "metadata": [
+      {
+        "nimi": "Äidinkieli ja kirjallisuus",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Modersmål och litteratur",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "aikuistenperusopetuksenalkuvaiheenoppiaineet_ma",
+    "koodiArvo": "MA",
+    "metadata": [
+      {
+        "nimi": "Matematiikka",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Matematik",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "aikuistenperusopetuksenalkuvaiheenoppiaineet_op",
+    "koodiArvo": "OP",
+    "metadata": [
+      {
+        "nimi": "Opinto-ohjaus ja työelämän taidot",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Studiehandledning och handledning i arbetslivsfärdigheter",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "aikuistenperusopetuksenalkuvaiheenoppiaineet_te",
+    "koodiArvo": "TE",
+    "metadata": [
+      {
+        "nimi": "Terveystieto",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Hälsokunskap",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "aikuistenperusopetuksenalkuvaiheenoppiaineet_yh",
+    "koodiArvo": "YH",
+    "metadata": [
+      {
+        "nimi": "Yhteiskuntatietous ja kulttuurintuntemus",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Samhällskunskap och kulturkännedom",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "aikuistenperusopetuksenalkuvaiheenoppiaineet_yl",
+    "koodiArvo": "YL",
+    "metadata": [
+      {
+        "nimi": "Ympäristö- ja luonnontieto",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Miljö- och naturkunskap",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

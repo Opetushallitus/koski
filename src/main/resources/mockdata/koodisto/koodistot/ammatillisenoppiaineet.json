@@ -1,23 +1,28 @@
 {
-  "koodistoUri" : "ammatillisenoppiaineet",
-  "versio" : 1,
-  "metadata" : [ {
-    "kieli" : "FI",
-    "nimi" : "Yhteisten tutkinnon osien osa-alueet",
-    "kuvaus" : "Yhteisten tutkinnon osien osa-alueet"
-  } ],
-  "codesGroupUri" : "koulutuskoodistot",
-  "voimassaAlkuPvm" : "2015-01-01",
-  "organisaatioOid" : "1.2.246.562.10.00000000001",
-  "withinCodes" : [ {
-    "codesUri" : "tutkinnonosat",
-    "codesVersion" : 1,
-    "passive" : true
-  }, {
-    "codesUri" : "tutkinnonosat",
-    "codesVersion" : 2,
-    "passive" : false
-  } ],
-  "tila" : "LUONNOS",
-  "version" : 5
+  "koodistoUri": "ammatillisenoppiaineet",
+  "versio": 1,
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "Yhteisten tutkinnon osien osa-alueet",
+      "kuvaus": "Yhteisten tutkinnon osien osa-alueet"
+    }
+  ],
+  "codesGroupUri": "koulutuskoodistot",
+  "voimassaAlkuPvm": "2015-01-01",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "withinCodes": [
+    {
+      "codesUri": "tutkinnonosat",
+      "codesVersion": 1,
+      "passive": true
+    },
+    {
+      "codesUri": "tutkinnonosat",
+      "codesVersion": 2,
+      "passive": false
+    }
+  ],
+  "tila": "LUONNOS",
+  "version": 5
 }

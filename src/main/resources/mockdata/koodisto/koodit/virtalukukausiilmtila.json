@@ -1,53 +1,94 @@
-[ {
-  "koodiUri" : "virtalukukausiilmtila_1",
-  "koodiArvo" : "1",
-  "metadata" : [ {
-    "nimi" : "Läsnä",
-    "lyhytNimi" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Närvarande",
-    "lyhytNimi" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "virtalukukausiilmtila_2",
-  "koodiArvo" : "2",
-  "metadata" : [ {
-    "nimi" : "Poissa",
-    "lyhytNimi" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Frånvarande",
-    "lyhytNimi" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "virtalukukausiilmtila_3",
-  "koodiArvo" : "3",
-  "metadata" : [ {
-    "nimi" : "Poissa, ei kuluta opintoaikaa",
-    "lyhytNimi" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Frånvarande med lagstadgad orsak",
-    "lyhytNimi" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "virtalukukausiilmtila_4",
-  "koodiArvo" : "4",
-  "metadata" : [ {
-    "nimi" : "Puuttuu",
-    "lyhytNimi" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Saknas",
-    "lyhytNimi" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1
-} ]
+[
+  {
+    "koodiUri": "virtalukukausiilmtila_1",
+    "koodiArvo": "1",
+    "metadata": [
+      {
+        "nimi": "Läsnä",
+        "lyhytNimi": "",
+        "kuvaus": "Lukukausi-ilmoittautumisen tila on läsnä silloin, kun opiskelija on ilmoittautunut korkeakoulun prosessin mukaisesti läsnäolevaksi opiskelijaksi.",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Närvarande",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "virtalukukausiilmtila_2",
+    "koodiArvo": "2",
+    "metadata": [
+      {
+        "nimi": "Poissa",
+        "lyhytNimi": "",
+        "kuvaus": "Lukukausi-ilmoittautumisen tila on poissa silloin, kun opiskelija on ilmoittautunut korkeakoulun prosessin mukaisesti poissaolevaksi opiskelijaksi ja poissaolon syy on muu kuin koodin 3 mukainen lakisääteinen syy.",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Frånvarande",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "virtalukukausiilmtila_3",
+    "koodiArvo": "3",
+    "metadata": [
+      {
+        "nimi": "Poissa, ei kuluta opintoaikaa",
+        "lyhytNimi": "",
+        "kuvaus": "Lukukausi-ilmoittautumisen tila ”poissa, ei kuluta opintoaikaa” koskee sekä ammattikorkeakoulujen että yliopistojen opiskeluoikeutta rajaavissa laeissa määriteltyä poissaoloa, jossa poissaolon syynä on asevelvollisuuslain, siviilipalveluslain tai naisten vapaaehtoisesta asepalveluksesta annetun lain mukaisen palvelun suorittaminen tai äitiys-, isyys- tai vanhempainvapaan pitäminen.",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Frånvarande med lagstadgad orsak",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "virtalukukausiilmtila_4",
+    "koodiArvo": "4",
+    "metadata": [
+      {
+        "nimi": "Puuttuu",
+        "lyhytNimi": "",
+        "kuvaus": "Lukukausi-ilmoittautumisen tila voidaan kirjata koodiarvolle puuttuu silloin, kun opiskeluoikeuteen on liitetty lukukausitieto, mutta ilmoittautumistietoa ei ole (null) tai se on merkitty puuttuvaksi.",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Saknas",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

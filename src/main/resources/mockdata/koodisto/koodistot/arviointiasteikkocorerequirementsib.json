@@ -1,20 +1,24 @@
 {
-  "koodistoUri" : "arviointiasteikkocorerequirementsib",
-  "versio" : 1,
-  "metadata" : [ {
-    "kieli" : "FI",
-    "nimi" : "Arviointiasteikko core requirements ib"
-  }, {
-    "kieli" : "SV",
-    "nimi" : "Arviointiasteikko core requirements ib"
-  }, {
-    "kieli" : "EN",
-    "nimi" : "Arviointiasteikko core requirements ib"
-  } ],
-  "codesGroupUri" : "koski",
-  "voimassaAlkuPvm" : "2016-09-23",
-  "organisaatioOid" : "1.2.246.562.10.00000000001",
-  "withinCodes" : [ ],
-  "tila" : "LUONNOS",
-  "version" : 0
+  "koodistoUri": "arviointiasteikkocorerequirementsib",
+  "versio": 1,
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "Arviointiasteikko core requirements ib"
+    },
+    {
+      "kieli": "SV",
+      "nimi": "Arviointiasteikko core requirements ib"
+    },
+    {
+      "kieli": "EN",
+      "nimi": "Arviointiasteikko core requirements ib"
+    }
+  ],
+  "codesGroupUri": "koski",
+  "voimassaAlkuPvm": "2016-09-23",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "withinCodes": [],
+  "tila": "LUONNOS",
+  "version": 0
 }

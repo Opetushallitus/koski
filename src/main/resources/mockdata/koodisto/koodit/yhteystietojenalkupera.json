@@ -1,57 +1,128 @@
-[ {
-  "koodiUri" : "yhteystietojenalkupera_alkupera1",
-  "koodiArvo" : "alkupera1",
-  "metadata" : [ {
-    "nimi" : "VTJ",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "yhteystietojenalkupera_alkupera2",
-  "koodiArvo" : "alkupera2",
-  "metadata" : [ {
-    "nimi" : "Virkailijan UI",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "yhteystietojenalkupera_alkupera3",
-  "koodiArvo" : "alkupera3",
-  "metadata" : [ {
-    "nimi" : "Omat tiedot UI",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "yhteystietojenalkupera_alkupera4",
-  "koodiArvo" : "alkupera4",
-  "metadata" : [ {
-    "nimi" : "Hakulomake",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "yhteystietojenalkupera_alkupera5",
-  "koodiArvo" : "alkupera5",
-  "metadata" : [ {
-    "nimi" : "Tiedonsiirrot",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "yhteystietojenalkupera_alkupera6",
-  "koodiArvo" : "alkupera6",
-  "metadata" : [ {
-    "nimi" : "Muu alkuperä",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "yhteystietojenalkupera_alkupera7",
-  "koodiArvo" : "alkupera7",
-  "metadata" : [ {
-    "nimi" : "Oikeustulkkirekisteri",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1
-} ]
+[
+  {
+    "koodiUri": "yhteystietojenalkupera_alkupera1",
+    "koodiArvo": "alkupera1",
+    "metadata": [
+      {
+        "nimi": "VTJ",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "yhteystietojenalkupera_alkupera2",
+    "koodiArvo": "alkupera2",
+    "metadata": [
+      {
+        "nimi": "Virkailijan UI",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "yhteystietojenalkupera_alkupera3",
+    "koodiArvo": "alkupera3",
+    "metadata": [
+      {
+        "nimi": "Omat tiedot UI",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "yhteystietojenalkupera_alkupera4",
+    "koodiArvo": "alkupera4",
+    "metadata": [
+      {
+        "nimi": "Hakulomake",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "yhteystietojenalkupera_alkupera5",
+    "koodiArvo": "alkupera5",
+    "metadata": [
+      {
+        "nimi": "Tiedonsiirrot",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "yhteystietojenalkupera_alkupera6",
+    "koodiArvo": "alkupera6",
+    "metadata": [
+      {
+        "nimi": "Muu alkuperä",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "yhteystietojenalkupera_alkupera7",
+    "koodiArvo": "alkupera7",
+    "metadata": [
+      {
+        "nimi": "Oikeustulkkirekisteri",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]
