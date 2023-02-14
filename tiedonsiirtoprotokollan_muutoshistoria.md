@@ -2,6 +2,7 @@
 
 - Taiteen perusopetuksen opiskeluoikeuteen lisätty kenttä koulutuksen toteutustapa.
 - Taiteen perusopetuksen opiskeluoikeuden päätason suoritukselta poistettu arviointi-kenttä.
+- Taiteen perusopetuksen osasuoritusten arvioinneista poistettu arvioijat-kenttä.
 
 ## 8.2.2023
 

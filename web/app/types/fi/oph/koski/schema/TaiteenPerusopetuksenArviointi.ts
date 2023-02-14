@@ -1,6 +1,5 @@
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
-import { Arvioitsija } from './Arvioitsija'
 
 /**
  * TaiteenPerusopetuksenArviointi
@@ -14,7 +13,6 @@ export type TaiteenPerusopetuksenArviointi = {
     'hyvaksytty'
   >
   päivä: string
-  arvioitsijat?: Array<Arvioitsija>
   hyväksytty?: boolean
 }
 
@@ -24,7 +22,6 @@ export const TaiteenPerusopetuksenArviointi = (o: {
     'hyvaksytty'
   >
   päivä: string
-  arvioitsijat?: Array<Arvioitsija>
   hyväksytty?: boolean
 }): TaiteenPerusopetuksenArviointi => ({
   $class: 'fi.oph.koski.schema.TaiteenPerusopetuksenArviointi',

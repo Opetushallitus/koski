@@ -40,11 +40,6 @@ object ExamplesTaiteenPerusopetus {
 
   val arviointiHyväksytty = TaiteenPerusopetuksenArviointi(
     päivä = alkupäivä,
-    arvioitsijat = Some(
-      List(
-        Arvioitsija("Musa Ope")
-      )
-    )
   )
 
   val vahvistus = HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla(

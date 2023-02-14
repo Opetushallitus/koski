@@ -234,9 +234,9 @@ case class TaiteenPerusopetuksenArviointi(
   @KoodistoKoodiarvo("hyvaksytty")
   arvosana: Koodistokoodiviite = Koodistokoodiviite("hyvaksytty", "arviointiasteikkotaiteenperusopetus"),
   päivä: LocalDate,
-  arvioitsijat: Option[List[Arvioitsija]] = None
 ) extends ArviointiPäivämäärällä with KoodistostaLöytyväArviointi {
   override def hyväksytty: Boolean = true
+  override def arvioitsijat: Option[List[Arvioitsija]] = None
 }
 
 /******************************************************************************

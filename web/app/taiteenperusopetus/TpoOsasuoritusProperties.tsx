@@ -76,14 +76,6 @@ export const TpoOsasuoritusProperties: React.FC<
               edit={DateEdit}
             />
           </OsasuoritusSubproperty>
-          <OsasuoritusSubproperty rowNumber={2} label="Arvioitsijat">
-            <FormField
-              form={props.form}
-              path={viimeisinArviointiPath.prop('arvioitsijat').optional()}
-              view={ArvioitsijatView}
-              edit={ArvioitsijatEdit}
-            />
-          </OsasuoritusSubproperty>
         </OsasuoritusProperty>
       )}
       {(tunnustettu || props.form.editMode) && (
