@@ -124,7 +124,7 @@ export const TaiteenPerusopetusEditor = (
     <>
       <OpiskeluoikeusTitle
         opiskeluoikeus={form.state}
-        koulutus={tpoKoulutuksenNimi(form.state)}
+        opiskeluoikeudenNimi={tpoKoulutuksenNimi(form.state)}
       />
 
       <EditorContainer

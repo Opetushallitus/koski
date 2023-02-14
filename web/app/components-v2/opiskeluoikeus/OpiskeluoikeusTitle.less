@@ -16,5 +16,34 @@
   .OpiskeluoikeusTitle__oid {
     text-align: right;
     font-size: 80%;
+
+    .VersiohistoriaButton {
+      position: relative;
+    }
+
+    .VersiohistoriaList {
+      padding: @baseline;
+      margin: 0;
+      width: 100%;
+      text-align: left;
+      list-style-type: none;
+      color: @color-black;
+
+      .VersiohistoriaList__item {
+        width: 100%;
+        padding: @baseline;
+        white-space: nowrap;
+        display: flex;
+        justify-items: center;
+        min-height: 2 * @baseline;
+
+        &.VersiohistoriaList__item--current {
+          background: @color-blue;
+          a {
+            color: white;
+          }
+        }
+      }
+    }
   }
 }

@@ -3,6 +3,7 @@ import React, { useEffect, useMemo } from 'react'
 import {
   ApiMethodHook,
   useApiMethod,
+  useMergedApiData,
   useOnApiSuccess,
   useSafeState
 } from '../../api-fetch'
@@ -15,11 +16,13 @@ import { intersects, last } from '../../util/fp/arrays'
 import { getHenkilöOid } from '../../util/henkilo'
 import {
   fetchOmatTiedotOppija,
+  fetchOpiskeluoikeus,
   fetchOppija,
   fetchSuoritusjako
 } from '../../util/koskiApi'
 import { getOpiskeluoikeusOid } from '../../util/opiskeluoikeus'
 import { OpiskeluoikeudenTyyppiOf } from '../../util/types'
+import { parseQuery } from '../../util/url'
 import { opiskeluoikeusEditors } from './uiAdapters'
 
 export type AdaptedOpiskeluoikeusEditorProps<T extends Opiskeluoikeus> = {
@@ -62,7 +65,8 @@ export type OpiskeluoikeusEditorProps<T extends Opiskeluoikeus> = {
 
 export const useVirkailijaUiAdapter = (oppijaModel: ObjectModel): UiAdapter => {
   const oppijaOid = modelData(oppijaModel, 'henkilö.oid')
-  const oppija = useApiMethod(fetchOppija)
+  const oppijaFetch = useApiMethod(fetchOppija)
+  const opiskeluoikeusFetch = useApiMethod(fetchOpiskeluoikeus)
 
   const ooTyypit: string[] =
     modelData(oppijaModel, 'opiskeluoikeudet')?.map(
@@ -70,8 +74,21 @@ export const useVirkailijaUiAdapter = (oppijaModel: ObjectModel): UiAdapter => {
     ) || []
 
   const fetchData = () => {
-    oppija.call(oppijaOid)
+    oppijaFetch.call(oppijaOid)
+    const query = parseQuery(window.location.search)
+    if (query.opiskeluoikeus && query.versionumero) {
+      opiskeluoikeusFetch.call(
+        query.opiskeluoikeus,
+        parseInt(query.versionumero)
+      )
+    }
   }
+
+  const oppija = useMergedApiData(
+    oppijaFetch,
+    opiskeluoikeusFetch,
+    replaceOppijanOpiskeluoikeus
+  )
 
   return useUiAdapterImpl(
     ooTyypit,
@@ -79,6 +96,22 @@ export const useVirkailijaUiAdapter = (oppijaModel: ObjectModel): UiAdapter => {
     oppija,
     oppijaModel.invalidatable
   )
+}
+
+const replaceOppijanOpiskeluoikeus = (
+  oppija: Oppija,
+  opiskeluoikeus: Opiskeluoikeus | null
+): Oppija => {
+  if (!opiskeluoikeus) {
+    return oppija
+  }
+  const oid = getOpiskeluoikeusOid(opiskeluoikeus)
+  return {
+    ...oppija,
+    opiskeluoikeudet: oppija.opiskeluoikeudet.map((oo) =>
+      getOpiskeluoikeusOid(oo) === oid ? opiskeluoikeus : oo
+    )
+  }
 }
 
 export const useKansalainenUiAdapter = (

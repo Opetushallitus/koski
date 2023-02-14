@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useState } from 'react'
 import { useApiMethod, useOnApiSuccess } from '../../api-fetch'
 import { formatDateRange } from '../../date/date'
 import { Opiskeluoikeus } from '../../types/fi/oph/koski/schema/Opiskeluoikeus'
