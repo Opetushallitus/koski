@@ -42,7 +42,7 @@ export const OpiskeluoikeusTitle = (props: OpiskeluoikeusTitleProps) => {
   const oid: string | undefined = (props.opiskeluoikeus as any).oid
 
   return (
-    <h3 {...common(props, ['OpiskeluoikeusTitle'])}>
+    <h3 {...common(props, ['OpiskeluoikeusTitle', 'darkBackground'])}>
       <span className="OpiskeluoikeusTitle__title">
         {oppilaitosJaKoulutus} {'('}
         <Lowercase>{aikaväliJaTila}</Lowercase>
