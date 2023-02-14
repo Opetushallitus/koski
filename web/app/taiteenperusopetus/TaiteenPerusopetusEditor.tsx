@@ -174,8 +174,8 @@ export const TaiteenPerusopetusEditor = (
 
         {form.editMode && (
           <ColumnRow>
-            <Column span={1} spanPhone={0} />
-            <Column span={15} spanPhone={24}>
+            <Column span={{ default: 1, phone: 0 }} />
+            <Column span={{ default: 15, phone: 24 }}>
               <PaikallinenOsasuoritusSelect
                 tunnisteet={storedOsasuoritustunnisteet}
                 onSelect={onAddOsasuoritus}

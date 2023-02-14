@@ -1,4 +1,5 @@
 import React from 'react'
+import { nonNull } from '../../util/fp/arrays'
 import { common, CommonProps } from '../CommonProps'
 
 export const COLUMN_COUNT = 24
@@ -27,20 +28,23 @@ export const ColumnRow = (props: ColumnRowProps) => {
   )
 }
 
+export type ResponsiveValue<T extends string | number> =
+  | T
+  | {
+      default: T
+      phone?: T
+      small?: T
+      large?: T
+    }
+
 export type ColumnProps = CommonProps<{
   component?: React.ComponentClass | string
   children?: React.ReactNode
-  span?: number
-  spanPhone?: number
-  spanSmall?: number
-  spanLarge?: number
-  start?: number
-  startPhone?: number
-  startSmall?: number
-  startLarge?: number
+  span?: ResponsiveValue<number>
+  start?: ResponsiveValue<number>
   row?: number
-  valign?: 'top' | 'center' | 'bottom'
-  align?: 'left' | 'center' | 'right'
+  valign?: ResponsiveValue<'top' | 'center' | 'bottom'>
+  align?: ResponsiveValue<'left' | 'center' | 'right'>
 }>
 
 export const Column = (props: ColumnProps) => {
@@ -49,23 +53,38 @@ export const Column = (props: ColumnProps) => {
     <Component
       {...common(props, [
         'Column',
-        props.span && `Column-default-span-${props.span}`,
-        props.spanPhone && `Column-phone-span-${props.spanPhone}`,
-        props.spanSmall && `Column-small-span-${props.spanSmall}`,
-        props.spanLarge && `Column-large-span-${props.spanLarge}`,
-        props.start !== undefined && `Column-default-start-${props.start + 1}`,
-        props.startPhone !== undefined &&
-          `Column-phone-start-${props.startPhone + 1}`,
-        props.startSmall !== undefined &&
-          `Column-small-start-${props.startSmall + 1}`,
-        props.startLarge !== undefined &&
-          `Column-large-start-${props.startLarge + 1}`,
-        props.row !== undefined && `Column-row-${props.row + 1}`,
-        props.valign && `Column-valign-${props.valign}`,
-        props.align && `Column-align-${props.align}`
+        ...responsiveClassNames(
+          props.span,
+          (name, span) => `Column-${name}-span-${span}`
+        ),
+        ...responsiveClassNames(
+          props.start,
+          (name, start) => `Column-${name}-start-${start + 1}`
+        ),
+        ...responsiveClassNames(
+          props.align,
+          (name, align) => `Column-${name}-align-${align}`
+        ),
+        ...responsiveClassNames(
+          props.valign,
+          (name, align) => `Column-${name}-valign-${align}`
+        ),
+        props.row !== undefined && `Column-row-${props.row + 1}`
       ])}
     >
       {props.children}
     </Component>
   )
 }
+
+const responsiveClassNames = <T extends string | number>(
+  value: ResponsiveValue<T> | undefined,
+  build: (name: string, value: T) => string
+): string[] =>
+  value === undefined
+    ? []
+    : typeof value === 'object'
+    ? Object.entries(value)
+        .map(([name, t]) => (t ? build(name, t) : null))
+        .filter(nonNull)
+    : [build('default', value)]

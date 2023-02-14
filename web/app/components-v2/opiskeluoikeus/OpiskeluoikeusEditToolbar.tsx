@@ -25,7 +25,7 @@ export const OpiskeluoikeusEditToolbar = (
 
   return (
     <ColumnRow>
-      <Column span={spans[0]} spanPhone={24}>
+      <Column span={{ default: spans[0], phone: 24 }}>
         <Trans>{'Opiskeluoikeuden voimassaoloaika'}</Trans>
         {': '}
         {formatDateRange(
@@ -33,7 +33,10 @@ export const OpiskeluoikeusEditToolbar = (
           props.opiskeluoikeus.päättymispäivä
         )}
       </Column>
-      <Column span={spans[1]} spanPhone={24} align="right">
+      <Column
+        span={{ default: spans[1], phone: 24 }}
+        align={{ default: 'right', phone: 'left' }}
+      >
         <RequiresWriteAccess>
           {props.editMode ? (
             props.invalidatable &&
