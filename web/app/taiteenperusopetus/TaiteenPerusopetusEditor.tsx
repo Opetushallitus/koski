@@ -8,10 +8,6 @@ import {
   EditorContainer,
   usePäätasonSuoritus
 } from '../components-v2/containers/EditorContainer'
-import {
-  KeyValueRow,
-  KeyValueTable
-} from '../components-v2/containers/KeyValueTable'
 import { FormField } from '../components-v2/forms/FormField'
 import { FormModel, FormOptic, useForm } from '../components-v2/forms/FormModel'
 import { AdaptedOpiskeluoikeusEditorProps } from '../components-v2/interoperability/useUiAdapter'
@@ -22,7 +18,6 @@ import {
 } from '../components-v2/opiskeluoikeus/ArvosanaField'
 import {
   LaajuusOpintopisteissäEdit,
-  laajuusSum,
   LaajuusView
 } from '../components-v2/opiskeluoikeus/LaajuusField'
 import { PäätasonSuorituksenSuostumuksenPeruminen } from '../components-v2/opiskeluoikeus/OpiskeluoikeudenSuostumuksenPeruminen'
@@ -43,8 +38,10 @@ import { TaiteenPerusopetuksenPäätasonSuoritus } from '../types/fi/oph/koski/s
 import { TaiteenPerusopetuksenPaikallinenOpintokokonaisuus } from '../types/fi/oph/koski/schema/TaiteenPerusopetuksenPaikallinenOpintokokonaisuus'
 import { TaiteenPerusopetuksenPaikallisenOpintokokonaisuudenSuoritus } from '../types/fi/oph/koski/schema/TaiteenPerusopetuksenPaikallisenOpintokokonaisuudenSuoritus'
 import { append, deleteAt } from '../util/fp/arrays'
+import { TaiteenPerusopetuksenTiedot } from './TaiteenPerusopetuksenTiedot'
 import {
   createTpoArviointi,
+  minimimääräArvioitujaOsasuorituksia,
   taiteenPerusopetuksenSuorituksenNimi
 } from './tpoCommon'
 import { TpoOsasuoritusProperties } from './TpoOsasuoritusProperties'
@@ -59,19 +56,6 @@ export const TaiteenPerusopetusEditor = (
   const form = useForm(props.opiskeluoikeus, false, opiskeluoikeusSchema)
   const [päätasonSuoritus, setPäätasonSuoritus] = usePäätasonSuoritus(form)
   const fillKoodistot = useKoodistoFiller()
-
-  const [osasuorituksetPath, opiskeluoikeudenLaajuusPath] = useMemo(
-    () => [
-      päätasonSuoritus.path.prop('osasuoritukset').optional(),
-      päätasonSuoritus.path.prop('koulutusmoduuli').prop('laajuus')
-    ],
-    [päätasonSuoritus.path]
-  )
-
-  const osasuoritustenLaajuudetPath = useMemo(
-    () => osasuorituksetPath.elems().path('koulutusmoduuli.laajuus'),
-    [osasuorituksetPath]
-  )
 
   const organisaatio =
     props.opiskeluoikeus.oppilaitos || props.opiskeluoikeus.koulutustoimija
@@ -140,7 +124,7 @@ export const TaiteenPerusopetusEditor = (
     <>
       <OpiskeluoikeusTitle
         opiskeluoikeus={form.state}
-        koulutus={tpoKoulutuksenNimi(form.state)}
+        opiskeluoikeudenNimi={tpoKoulutuksenNimi(form.state)}
       />
 
       <EditorContainer
@@ -158,34 +142,19 @@ export const TaiteenPerusopetusEditor = (
           />
         </KansalainenOnly>
 
-        <KeyValueTable>
-          <KeyValueRow name="Taiteenala">
-            <Trans>
-              {päätasonSuoritus.suoritus.koulutusmoduuli.taiteenala.nimi}
-            </Trans>
-          </KeyValueRow>
-          <KeyValueRow name="Oppimäärä">
-            <Trans>{form.state.oppimäärä.nimi}</Trans>
-          </KeyValueRow>
-          <KeyValueRow name="Oppilaitos">
-            <Trans>{form.state.oppilaitos?.nimi}</Trans>
-          </KeyValueRow>
-          <KeyValueRow name="Laajuus">
-            <FormField
-              form={form}
-              path={opiskeluoikeudenLaajuusPath}
-              view={LaajuusView}
-              auto={laajuusSum(osasuoritustenLaajuudetPath, form.state)}
-            />
-          </KeyValueRow>
-        </KeyValueTable>
-
+        <TaiteenPerusopetuksenTiedot
+          form={form}
+          päätasonSuoritus={päätasonSuoritus}
+        />
         <Spacer />
 
         <SuorituksenVahvistusField
           form={form}
           suoritusPath={päätasonSuoritus.path}
           organisaatio={organisaatio}
+          disableAdd={
+            !minimimääräArvioitujaOsasuorituksia(päätasonSuoritus.suoritus)
+          }
         />
 
         {päätasonSuoritus.suoritus.osasuoritukset && (
@@ -205,8 +174,8 @@ export const TaiteenPerusopetusEditor = (
 
         {form.editMode && (
           <ColumnRow>
-            <Column span={1} spanPhone={0} />
-            <Column span={15} spanPhone={24}>
+            <Column span={{ default: 1, phone: 0 }} />
+            <Column span={{ default: 15, phone: 24 }}>
               <PaikallinenOsasuoritusSelect
                 tunnisteet={storedOsasuoritustunnisteet}
                 onSelect={onAddOsasuoritus}

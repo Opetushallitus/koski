@@ -73,6 +73,7 @@ object TaiteenPerusopetusValidation {
         virheIlmoitus
       }
 
+    // Jos päivität näitä arvoja, päivitä myös tpoCommon.ts -> minimilaajuudet
     HttpStatus.fold(
       oo.suoritukset.filter(_.vahvistettu).map {
         case s: TaiteenPerusopetuksenYleisenOppimääränYhteistenOpintojenSuoritus => laajuusVähintään(

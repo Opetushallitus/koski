@@ -69,6 +69,24 @@
     .Column-@{name}-start-@{span} {
       grid-column-start: col-start @span;
     }
+    .Column-@{name}-valign-top {
+      align-self: flex-start;
+    }
+    .Column-@{name}-valign-center {
+      align-self: center;
+    }
+    .Column-@{name}-valign-bottom {
+      align-self: flex-end;
+    }
+    .Column-@{name}-align-left {
+      justify-self: left;
+    }
+    .Column-@{name}-align-center {
+      justify-self: center;
+    }
+    .Column-@{name}-align-right {
+      justify-self: right;
+    }
   }
 }
 
@@ -96,28 +114,4 @@
 
 .ColumnRow-align-right {
   justify-items: right;
-}
-
-.Column-valign-top {
-  align-self: flex-start;
-}
-
-.Column-valign-center {
-  align-self: center;
-}
-
-.Column-valign-bottom {
-  align-self: flex-end;
-}
-
-.Column-align-left {
-  justify-self: left;
-}
-
-.Column-align-center {
-  justify-self: center;
-}
-
-.Column-align-right {
-  justify-self: right;
 }

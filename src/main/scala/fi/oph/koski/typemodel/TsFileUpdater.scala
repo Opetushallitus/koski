@@ -1,5 +1,6 @@
 package fi.oph.koski.typemodel
 
+import fi.oph.koski.history.OpiskeluoikeusHistoryPatch
 import fi.oph.koski.koskiuser.UserWithAccessRights
 import fi.oph.koski.oppija.HenkilönOpiskeluoikeusVersiot
 import fi.oph.koski.organisaatio.OrganisaatioHierarkia
@@ -50,6 +51,7 @@ case class AdditionalExports(
   storablePreference: StorablePreference,
   storablePreferenceKeyValue: KeyValue,
   userWithAccessRights: UserWithAccessRights,
+  opiskeluoikeusHistoryPatch: OpiskeluoikeusHistoryPatch,
 
   // Traitit jotka eivæt automaattisesti exporttaudu skeemasta, koska ne eivät sellaisenaan
   // ole minkään tietomallin jäseniä (ainoastaan niistä periytyvät luokat on mainittu).

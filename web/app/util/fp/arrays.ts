@@ -87,3 +87,10 @@ export const mapTimes = <T>(count: number, fn: (index: number) => T): T[] =>
   new Array(count).fill(undefined).map((_, i) => fn(i))
 
 export const last = <T>(ts: T[]): T | undefined => ts[ts.length - 1]
+
+export const shallowEqual = (as: any[], bs: any[]): boolean => {
+  if (as.length !== bs.length) {
+    return false
+  }
+  return !as.find((a, index) => a !== bs[index])
+}

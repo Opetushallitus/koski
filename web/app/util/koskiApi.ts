@@ -1,4 +1,5 @@
 import { apiDelete, ApiFailure, apiGet, apiPost, apiPut } from '../api-fetch'
+import { OpiskeluoikeusHistoryPatch } from '../types/fi/oph/koski/history/OpiskeluoikeusHistoryPatch'
 import { HenkilönOpiskeluoikeusVersiot } from '../types/fi/oph/koski/oppija/HenkilonOpiskeluoikeusVersiot'
 import { OrganisaatioHierarkia } from '../types/fi/oph/koski/organisaatio/OrganisaatioHierarkia'
 import { KeyValue } from '../types/fi/oph/koski/preferences/KeyValue'
@@ -17,9 +18,23 @@ const apiUrl = (path: string, query?: object): string =>
 export const fetchOppija = (oppijaOid: string) =>
   handleExpiredSession(apiGet<Oppija>(apiUrl(`oppija/${oppijaOid}`)))
 
-export const fetchOpiskeluoikeus = (opiskeluoikeusOid: string) =>
+export const fetchOpiskeluoikeus = (
+  opiskeluoikeusOid: string,
+  version?: number
+) =>
   handleExpiredSession(
-    apiGet<Opiskeluoikeus>(apiUrl(`opiskeluoikeus/${opiskeluoikeusOid}`))
+    apiGet<Opiskeluoikeus>(
+      version === undefined
+        ? apiUrl(`opiskeluoikeus/${opiskeluoikeusOid}`)
+        : apiUrl(`opiskeluoikeus/historia/${opiskeluoikeusOid}/${version}`)
+    )
+  )
+
+export const fetchVersiohistoria = (opiskeluoikeusOid: string) =>
+  handleExpiredSession(
+    apiGet<OpiskeluoikeusHistoryPatch[]>(
+      apiUrl(`opiskeluoikeus/historia/${opiskeluoikeusOid}`)
+    )
   )
 
 export const saveOpiskeluoikeus =

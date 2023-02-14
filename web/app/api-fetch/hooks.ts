@@ -318,3 +318,25 @@ export const useSafeState = <S>(
   const mounted = useMounted()
   return useSafeStateWith(mounted, initialState)
 }
+
+export const useApiData = <T>(a: ApiMethodHook<T, any>): T | null => {
+  return isSuccess(a) ? a.data : null
+}
+
+export const useMergedApiData = <A, B, P extends any[]>(
+  a: ApiMethodHook<A, P>,
+  b: ApiMethodHook<B, any>,
+  merge: (a: A, b: B | null) => A
+): ApiMethodHook<A, P> => {
+  const aData = useApiData(a)
+  const bData = useApiData(b)
+  return useMemo(() => {
+    const newData = aData ? merge(aData, bData) : null
+    return newData !== null && isSuccess(a)
+      ? {
+          ...a,
+          data: newData
+        }
+      : a
+  }, [a, aData, bData, merge])
+}

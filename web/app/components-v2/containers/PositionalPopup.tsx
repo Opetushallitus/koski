@@ -1,13 +1,43 @@
-import React from 'react'
+import React, { useCallback, useEffect, useRef } from 'react'
 import { common, CommonPropsWithChildren } from '../CommonProps'
 
-export type PositionalPopupProps = CommonPropsWithChildren
+export type PositionalPopupAlign = 'left' | 'right'
 
-export const PositionalPopup: React.FC<PositionalPopupProps> = (props) => (
-  <div {...common(props, ['PositionalPopup'])}>
-    <div className="PositionalPopup--overlay">{props.children}</div>
-  </div>
-)
+export type PositionalPopupProps = CommonPropsWithChildren<{
+  onDismiss?: () => void
+  align?: PositionalPopupAlign
+}>
+
+export const PositionalPopup: React.FC<PositionalPopupProps> = (props) => {
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (props.onDismiss) {
+      const clickHandler = (event: MouseEvent) => {
+        if (
+          !(event.target instanceof Element) ||
+          !ref.current?.contains(event.target)
+        ) {
+          props.onDismiss?.()
+        }
+      }
+      document.body.addEventListener('click', clickHandler)
+      return () => document.body.removeEventListener('click', clickHandler)
+    }
+  }, [props, props.onDismiss])
+
+  return (
+    <div
+      {...common(props, [
+        'PositionalPopup',
+        props.align && `PositionalPopup--align-${props.align}`
+      ])}
+      ref={ref}
+    >
+      <div className="PositionalPopup__overlay">{props.children}</div>
+    </div>
+  )
+}
 
 export type PositionalPopupHolderProps = CommonPropsWithChildren
 

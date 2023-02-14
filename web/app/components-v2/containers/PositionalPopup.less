@@ -10,10 +10,21 @@
   top: 28px;
   left: -16px;
   z-index: @z-index-popup + 1;
+
+  &.PositionalPopup--align-right {
+    left: auto;
+    right: -16px;
+    .PositionalPopup__overlay:before {
+      left: auto;
+      right: 10px;
+    }
+  }
 }
 
-.PositionalPopup--overlay {
+.PositionalPopup__overlay {
   background: white;
+  min-width: 100px;
+  min-height: 50px;
 
   &:before {
     content: '';
