@@ -23,7 +23,6 @@ trait Suoritus {
   def alkamispäivä: Option[LocalDate] = None
   @Description("Suorituksen tila, ei käytössä.")
   @KoodistoUri("suorituksentila")
-  @SyntheticProperty
   @ReadOnly("Ei käytössä.")
   @Hidden
   @Deprecated("Ei käytössä.")
