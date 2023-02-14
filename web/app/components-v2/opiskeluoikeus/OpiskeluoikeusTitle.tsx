@@ -9,6 +9,7 @@ import { viimeisinOpiskelujaksonTila } from '../../util/schema'
 import { uncapitalize } from '../../util/strings'
 import { currentQueryWith, parseQuery } from '../../util/url'
 import { common, CommonProps, cx } from '../CommonProps'
+import { Column, ColumnRow } from '../containers/Columns'
 import { PositionalPopup } from '../containers/PositionalPopup'
 import { FlatButton } from '../controls/FlatButton'
 import { Lowercase } from '../texts/Lowercase'
@@ -43,19 +44,29 @@ export const OpiskeluoikeusTitle = (props: OpiskeluoikeusTitleProps) => {
 
   return (
     <h3 {...common(props, ['OpiskeluoikeusTitle', 'darkBackground'])}>
-      <span className="OpiskeluoikeusTitle__title">
-        {oppilaitosJaKoulutus} {'('}
-        <Lowercase>{aikaväliJaTila}</Lowercase>
-        {')'}
-      </span>
-      {oid && (
-        <span className="OpiskeluoikeusTitle__oid">
-          <Trans>{'Opiskeluoikeuden oid'}</Trans>
-          {': '}
-          {oid}
-          <VersiohistoriaButton opiskeluoikeusOid={oid} />
-        </span>
-      )}
+      <ColumnRow>
+        <Column
+          className="OpiskeluoikeusTitle__title"
+          span={{ default: 12, small: 24 }}
+        >
+          {oppilaitosJaKoulutus} {'('}
+          <Lowercase>{aikaväliJaTila}</Lowercase>
+          {')'}
+        </Column>
+
+        {oid && (
+          <Column
+            className="OpiskeluoikeusTitle__oid"
+            span={{ default: 12, small: 24 }}
+            align={{ default: 'right', small: 'left' }}
+          >
+            <Trans>{'Opiskeluoikeuden oid'}</Trans>
+            {': '}
+            {oid}
+            <VersiohistoriaButton opiskeluoikeusOid={oid} />
+          </Column>
+        )}
+      </ColumnRow>
     </h3>
   )
 }
