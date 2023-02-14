@@ -157,7 +157,6 @@ object ExamplesTaiteenPerusopetus {
     val yleistenYhteistenOpintojenSuoritusEiArvioituEiOsasuorituksia = TaiteenPerusopetuksenYleisenOppimääränYhteistenOpintojenSuoritus(
       koulutusmoduuli = Koulutusmoduuli.musiikkiYleinenOppimääräEiLaajuutta,
       toimipiste = varsinaisSuomenKansanopistoToimipiste,
-      arviointi = None,
       vahvistus = None,
       osasuoritukset = None
     )
@@ -165,7 +164,6 @@ object ExamplesTaiteenPerusopetus {
     val yleistenTeemaopintojenSuoritusEiArvioituEiOsasuorituksia = TaiteenPerusopetuksenYleisenOppimääränTeemaopintojenSuoritus(
       koulutusmoduuli = Koulutusmoduuli.musiikkiYleinenOppimääräTeemaopinnot,
       toimipiste = varsinaisSuomenKansanopistoToimipiste,
-      arviointi = None,
       vahvistus = None,
       osasuoritukset = None
     )
@@ -173,7 +171,6 @@ object ExamplesTaiteenPerusopetus {
     val laajojenPerusopintojenSuoritusArvioituJaVahvistettuJaOsasuorituksia = TaiteenPerusopetuksenLaajanOppimääränPerusopintojenSuoritus(
       koulutusmoduuli = Koulutusmoduuli.musiikkiLaajaOppimääräPerusopinnot,
       toimipiste = varsinaisSuomenKansanopistoToimipiste,
-      arviointi = Some(List(arviointiHyväksytty)),
       vahvistus = Some(vahvistus),
       osasuoritukset = Some(List(
         Osasuoritus.tunnustettuOsasuoritusMusiikki("musa1", 10.0),
@@ -185,7 +182,6 @@ object ExamplesTaiteenPerusopetus {
     val laajojenSyventävienOpintojenSuoritusArvioituJaVahvistettuJaOsasuorituksia = TaiteenPerusopetuksenLaajanOppimääränSyventävienOpintojenSuoritus(
       koulutusmoduuli = Koulutusmoduuli.musiikkiLaajaOppimääräSyventävätOpinnot,
       toimipiste = varsinaisSuomenKansanopistoToimipiste,
-      arviointi = Some(List(arviointiHyväksytty)),
       vahvistus = Some(vahvistus),
       osasuoritukset = Some(List(
         Osasuoritus.osasuoritusMusiikki("musa1", 10.0),

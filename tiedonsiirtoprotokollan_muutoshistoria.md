@@ -1,6 +1,7 @@
 ## xx.xx.xxxx
 
 - Taiteen perusopetuksen opiskeluoikeuteen lisätty kenttä koulutuksen toteutustapa.
+- Taiteen perusopetuksen opiskeluoikeuden päätason suoritukselta poistettu arviointi-kenttä.
 
 ## 8.2.2023
 

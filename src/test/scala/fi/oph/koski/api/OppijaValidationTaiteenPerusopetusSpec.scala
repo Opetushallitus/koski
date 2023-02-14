@@ -109,12 +109,11 @@ class OppijaValidationTaiteenPerusopetusSpec
   }
 
   "Suorituksen vahvistaminen" - {
-    "suoritusta ei voi vahvistaa jos sillä on arvioimattomia osasuorituksia" in {
+    "suoritusta ei voi vahvistaa jos osasuoritusta ei ole arvioitu" in {
       val oo = TPO.Opiskeluoikeus.aloitettuYleinenOppimäärä.copy(
         suoritukset = List(
           TPO.PäätasonSuoritus.yleistenYhteistenOpintojenSuoritusEiArvioituEiOsasuorituksia.copy(
             koulutusmoduuli = TPO.PäätasonSuoritus.Koulutusmoduuli.musiikkiYleinenOppimääräYhteisetOpinnot,
-            arviointi = Some(List(TPO.arviointiHyväksytty)),
             vahvistus = Some(TPO.vahvistus),
             osasuoritukset = Some(List(
               TPO.Osasuoritus.osasuoritusMusiikki("Musa 1", 11.1).copy(
@@ -126,23 +125,45 @@ class OppijaValidationTaiteenPerusopetusSpec
       )
 
       putOpiskeluoikeus(oo, henkilö = oppija) {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.keskeneräinenOsasuoritus("Valmiiksi merkityllä suorituksella koulutus/999907 on keskeneräinen osasuoritus Musa 1 (Musiikin kurssi)"))
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vahvistusIlmanArviointia("Suorituksella koulutus/999907 on vahvistus, vaikka arviointi puuttuu"))
       }
     }
 
-    "suorituksen voi vahvistaa jos sillä ei ole yhtään osasuoritusta" in {
+    "suoritusta ei voi vahvistaa jos löytyy yksikin osasuoritus jota ei ole arvioitu" in {
       val oo = TPO.Opiskeluoikeus.aloitettuYleinenOppimäärä.copy(
         suoritukset = List(
           TPO.PäätasonSuoritus.yleistenYhteistenOpintojenSuoritusEiArvioituEiOsasuorituksia.copy(
             koulutusmoduuli = TPO.PäätasonSuoritus.Koulutusmoduuli.musiikkiYleinenOppimääräYhteisetOpinnot,
-            arviointi = Some(List(TPO.arviointiHyväksytty)),
+            vahvistus = Some(TPO.vahvistus),
+            osasuoritukset = Some(List(
+              TPO.Osasuoritus.osasuoritusMusiikki("Musa 1", 3),
+              TPO.Osasuoritus.osasuoritusMusiikki("Musa 2", 3),
+              TPO.Osasuoritus.osasuoritusMusiikki("Musa 3", 3).copy(
+                arviointi = None
+              ),
+              TPO.Osasuoritus.osasuoritusMusiikki("Musa 4", 2.1)
+            ))
+          )
+        )
+      )
+
+      putOpiskeluoikeus(oo, henkilö = oppija) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vahvistusIlmanArviointia("Suorituksella koulutus/999907 on vahvistus, vaikka arviointi puuttuu"))
+      }
+    }
+
+    "suoritusta ei voi vahvistaa jos sillä ei ole yhtään osasuoritusta" in {
+      val oo = TPO.Opiskeluoikeus.aloitettuYleinenOppimäärä.copy(
+        suoritukset = List(
+          TPO.PäätasonSuoritus.yleistenYhteistenOpintojenSuoritusEiArvioituEiOsasuorituksia.copy(
+            koulutusmoduuli = TPO.PäätasonSuoritus.Koulutusmoduuli.musiikkiYleinenOppimääräYhteisetOpinnot,
             vahvistus = Some(TPO.vahvistus)
           )
         )
       )
 
       putOpiskeluoikeus(oo, henkilö = oppija) {
-        verifyResponseStatusOk()
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vahvistusIlmanArviointia("Suorituksella koulutus/999907 on vahvistus, vaikka arviointi puuttuu"))
       }
     }
   }
@@ -186,8 +207,8 @@ class OppijaValidationTaiteenPerusopetusSpec
             koulutusmoduuli = TPO.PäätasonSuoritus.Koulutusmoduuli.musiikkiYleinenOppimääräYhteisetOpinnot.copy(
               laajuus = None
             ),
-            arviointi = Some(List(TPO.arviointiHyväksytty)),
-            vahvistus = Some(TPO.vahvistus)
+            vahvistus = Some(TPO.vahvistus),
+            osasuoritukset = Some(List(TPO.Osasuoritus.osasuoritusMusiikki("MU1", 15.0)))
           )
         )
       )
@@ -205,9 +226,8 @@ class OppijaValidationTaiteenPerusopetusSpec
             koulutusmoduuli = TPO.PäätasonSuoritus.Koulutusmoduuli.musiikkiYleinenOppimääräYhteisetOpinnot.copy(
               laajuus = Some(LaajuusOpintopisteissä(11.09))
             ),
-            arviointi = Some(List(TPO.arviointiHyväksytty)),
             vahvistus = Some(TPO.vahvistus),
-            osasuoritukset = None
+            osasuoritukset = Some(List(TPO.Osasuoritus.osasuoritusMusiikki("MU1", 11.09)))
           )
         )
       )
@@ -224,7 +244,6 @@ class OppijaValidationTaiteenPerusopetusSpec
             koulutusmoduuli = TPO.PäätasonSuoritus.Koulutusmoduuli.musiikkiYleinenOppimääräYhteisetOpinnot.copy(
               laajuus = Some(LaajuusOpintopisteissä(1))
             ),
-            arviointi = None,
             vahvistus = None,
             osasuoritukset = None
           )
@@ -244,9 +263,8 @@ class OppijaValidationTaiteenPerusopetusSpec
             koulutusmoduuli = TPO.PäätasonSuoritus.Koulutusmoduuli.musiikkiYleinenOppimääräTeemaopinnot.copy(
               laajuus = Some(LaajuusOpintopisteissä(7.39))
             ),
-            arviointi = Some(List(TPO.arviointiHyväksytty)),
             vahvistus = Some(TPO.vahvistus),
-            osasuoritukset = None
+            osasuoritukset = Some(List(TPO.Osasuoritus.osasuoritusMusiikki("MU1", 7.39)))
           )
         )
       )
@@ -263,7 +281,7 @@ class OppijaValidationTaiteenPerusopetusSpec
             koulutusmoduuli = TPO.PäätasonSuoritus.Koulutusmoduuli.musiikkiLaajaOppimääräPerusopinnot.copy(
               laajuus = Some(LaajuusOpintopisteissä(29.59))
             ),
-            osasuoritukset = None
+            osasuoritukset = Some(List(TPO.Osasuoritus.osasuoritusMusiikki("MU1", 29.59)))
           ),
           TPO.PäätasonSuoritus.laajojenSyventävienOpintojenSuoritusArvioituJaVahvistettuJaOsasuorituksia
         )
@@ -282,7 +300,7 @@ class OppijaValidationTaiteenPerusopetusSpec
             koulutusmoduuli = TPO.PäätasonSuoritus.Koulutusmoduuli.musiikkiLaajaOppimääräSyventävätOpinnot.copy(
               laajuus = Some(LaajuusOpintopisteissä(18.49))
             ),
-            osasuoritukset = None
+            osasuoritukset = Some(List(TPO.Osasuoritus.osasuoritusMusiikki("MU1", 18.49)))
           )
         )
       )
@@ -311,6 +329,28 @@ class OppijaValidationTaiteenPerusopetusSpec
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.osasuoritustenLaajuuksienSumma ("Suorituksen koulutus/999907 osasuoritusten laajuuksien summa 19.0 ei vastaa suorituksen laajuutta 20.0"))
       }
     }
+
+    "osasuorituksen laajuudet summataan ja summa täsmää päätason suorituksen laajuuteen" in {
+      val oo = TPO.Opiskeluoikeus.hyväksytystiSuoritettuLaajaOppimäärä.copy(
+        suoritukset = List(
+          TPO.PäätasonSuoritus.laajojenPerusopintojenSuoritusArvioituJaVahvistettuJaOsasuorituksia,
+          TPO.PäätasonSuoritus.laajojenSyventävienOpintojenSuoritusArvioituJaVahvistettuJaOsasuorituksia.copy(
+            koulutusmoduuli = TPO.PäätasonSuoritus.Koulutusmoduuli.musiikkiLaajaOppimääräSyventävätOpinnot.copy(
+              laajuus = Some(LaajuusOpintopisteissä(20))
+            ),
+            osasuoritukset = Some(List(
+              TPO.Osasuoritus.osasuoritusMusiikki("musa1", 10.0),
+              TPO.Osasuoritus.osasuoritusMusiikki("musa2", 5.0),
+              TPO.Osasuoritus.osasuoritusMusiikki("musa3", 5.0)
+            ))
+          )
+        )
+      )
+
+      putOpiskeluoikeus(oo, henkilö = oppija) {
+        verifyResponseStatusOk()
+      }
+    }
   }
 
   "Suoritusten tyypit ja taiteenalat" - {
@@ -333,9 +373,8 @@ class OppijaValidationTaiteenPerusopetusSpec
             koulutusmoduuli = TPO.PäätasonSuoritus.Koulutusmoduuli.musiikkiYleinenOppimääräTeemaopinnot.copy(
               laajuus = Some(LaajuusOpintopisteissä(7.4))
             ),
-            arviointi = Some(List(TPO.arviointiHyväksytty)),
             vahvistus = Some(TPO.vahvistus),
-            osasuoritukset = None
+            osasuoritukset = Some(List(TPO.Osasuoritus.osasuoritusMusiikki("MU1", 7.4)))
           )
         )
       )
@@ -785,7 +824,7 @@ class OppijaValidationTaiteenPerusopetusSpec
         TPO.Opiskeluoikeus.aloitettuYleinenOppimäärä.copy(
           suoritukset = List(
             säilytettäväSuoritus.copy(
-              arviointi = Some(List(TPO.arviointiHyväksytty))
+              osasuoritukset = Some(List(TPO.Osasuoritus.osasuoritusMusiikki("MU1", 1.0)))
             )
           )
         ), henkilö = KoskiSpecificMockOppijat.tyhjä
@@ -809,7 +848,7 @@ class OppijaValidationTaiteenPerusopetusSpec
       viimeisinVersio
         .suoritukset
         .find(_.tyyppi.koodiarvo == säilytettäväSuoritus.tyyppi.koodiarvo)
-        .flatMap(_.arviointi) should be(Some(List(TPO.arviointiHyväksytty)))
+        .map(_.osasuoritusLista.flatMap(_.arviointi).flatten) should be(Some(List(TPO.arviointiHyväksytty)))
     }
 
     "opiskeluoikeus poistuu kun sen ainoalta suoritukselta perutaan suostumus - uutta erityyppistä suoritusta ei voi lisätä poistuneelle opiskeluoikeudelle" in {
@@ -837,7 +876,7 @@ class OppijaValidationTaiteenPerusopetusSpec
           oid = oo.oid,
           suoritukset = List(
             lisättäväSuoritus.copy(
-              arviointi = Some(List(TPO.arviointiHyväksytty))
+              osasuoritukset = Some(List(TPO.Osasuoritus.osasuoritusMusiikki("MU1", 1.0)))
             )
           )
         ), henkilö = KoskiSpecificMockOppijat.tyhjä
@@ -870,7 +909,7 @@ class OppijaValidationTaiteenPerusopetusSpec
           oid = oo.oid,
           suoritukset = List(
             suoritus.copy(
-              arviointi = Some(List(TPO.arviointiHyväksytty))
+              osasuoritukset = Some(List(TPO.Osasuoritus.osasuoritusMusiikki("MU1", 1.0)))
             )
           )
         ), henkilö = KoskiSpecificMockOppijat.tyhjä
@@ -907,7 +946,7 @@ class OppijaValidationTaiteenPerusopetusSpec
           oid = oo.oid,
           suoritukset = List(
             poistettavaJaLisättäväSuoritus.copy(
-              arviointi = Some(List(TPO.arviointiHyväksytty))
+              osasuoritukset = Some(List(TPO.Osasuoritus.osasuoritusMusiikki("MU1", 1.0)))
             ),
             säilyväSuoritus
           )
