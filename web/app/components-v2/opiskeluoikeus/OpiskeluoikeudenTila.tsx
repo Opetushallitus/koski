@@ -55,7 +55,7 @@ export const OpiskeluoikeudenTilaView = <T extends OpiskeluoikeudenTila>(
           name={index === 0 ? 'Tila' : undefined}
           key={index}
           className={index === 0 ? 'OpiskeluoikeudenTila-viimeisin' : undefined}
-          columnSpans={[2, '*']}
+          columnSpans={{ default: [2, '*'], phone: [4, '*'] }}
         >
           {[ISO2FinnishDate(jakso.alku), t(jakso.tila.nimi)]}
         </KeyColumnedValuesRow>

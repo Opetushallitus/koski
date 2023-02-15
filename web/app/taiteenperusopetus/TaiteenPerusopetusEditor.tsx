@@ -1,3 +1,4 @@
+import { isNonEmpty } from 'fp-ts/lib/Array'
 import React, { useCallback, useMemo } from 'react'
 import { useSchema } from '../appstate/constraints'
 import { useKoodistoFiller } from '../appstate/koodisto'
@@ -156,26 +157,31 @@ export const TaiteenPerusopetusEditor = (
             !minimimääräArvioitujaOsasuorituksia(päätasonSuoritus.suoritus)
           }
         />
+        <Spacer />
 
-        {päätasonSuoritus.suoritus.osasuoritukset && (
-          <OsasuoritusTable
-            editMode={form.editMode}
-            rows={päätasonSuoritus.suoritus.osasuoritukset.map(
-              (_, osasuoritusIndex) =>
-                osasuoritusToTableRow(
-                  form,
-                  päätasonSuoritus.path,
-                  osasuoritusIndex
-                )
-            )}
-            onRemove={onRemoveOsasuoritus}
-          />
-        )}
+        {päätasonSuoritus.suoritus.osasuoritukset &&
+          isNonEmpty(päätasonSuoritus.suoritus.osasuoritukset) && (
+            <>
+              <OsasuoritusTable
+                editMode={form.editMode}
+                rows={päätasonSuoritus.suoritus.osasuoritukset.map(
+                  (_, osasuoritusIndex) =>
+                    osasuoritusToTableRow(
+                      form,
+                      päätasonSuoritus.path,
+                      osasuoritusIndex
+                    )
+                )}
+                onRemove={onRemoveOsasuoritus}
+              />
+              <Spacer />
+            </>
+          )}
 
         {form.editMode && (
           <ColumnRow>
             <Column span={{ default: 1, phone: 0 }} />
-            <Column span={{ default: 15, phone: 24 }}>
+            <Column span={{ default: 14, small: 10, phone: 24 }}>
               <PaikallinenOsasuoritusSelect
                 tunnisteet={storedOsasuoritustunnisteet}
                 onSelect={onAddOsasuoritus}

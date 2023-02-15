@@ -74,14 +74,16 @@ export const mapRecordValues =
     ) as Record<K, S>
 
 export const mapObjectValues =
-  <T extends { [K in keyof T]: T[K] }>(f: (value: T, key: keyof T) => T) =>
-  (obj: T): T =>
+  <T extends { [K in keyof T]: T[K] }, S extends { [K in keyof T]: S[K] }>(
+    f: (value: T, key: keyof T) => S
+  ) =>
+  (obj: T): S =>
     fromEntries(
       Object.entries(obj).map(([key, value]) => [
         key,
         f(value as T, key as keyof T)
       ])
-    ) as T
+    ) as S
 
 export const deepEqual = (a: any, b: any): boolean => {
   if (a === b) {
