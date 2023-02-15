@@ -11,6 +11,11 @@
   left: -16px;
   z-index: @z-index-popup + 1;
 
+  display: none;
+  &.PositionalPopup--open {
+    display: block;
+  }
+
   &.PositionalPopup--align-right {
     left: auto;
     right: -16px;

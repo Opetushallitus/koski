@@ -31,3 +31,5 @@ export const IconLabel: React.FC<IconLabelProps> = (props) => (
 
 export const CHARCODE_ADD = 'f055'
 export const CHARCODE_REMOVE = 'f1f8'
+export const CHARCODE_OPEN = 'f0fe'
+export const CHARCODE_CLOSE = 'f146'

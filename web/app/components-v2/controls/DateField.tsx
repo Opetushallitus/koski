@@ -14,7 +14,6 @@ import {
 } from '../containers/PositionalPopup'
 import { FieldErrors } from '../forms/FieldErrors'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
-import { invalidDate } from '../forms/validator'
 import { IconButton } from './IconButton'
 
 // Date viewer
@@ -72,18 +71,16 @@ export const DateEdit: React.FC<DateEditProps> = (props) => {
             size="input"
             onClick={toggleDayPicker}
           />
-          {datePickerVisible && (
-            <PositionalPopup>
-              <DayPickerInput
-                initialMonth={date}
-                onDayClick={onDayClick}
-                selectedDays={selectedDays}
-                weekdaysShort={weekdaysShort}
-                months={months}
-                firstDayOfWeek={1}
-              />
-            </PositionalPopup>
-          )}
+          <PositionalPopup open={datePickerVisible}>
+            <DayPickerInput
+              initialMonth={date}
+              onDayClick={onDayClick}
+              selectedDays={selectedDays}
+              weekdaysShort={weekdaysShort}
+              months={months}
+              firstDayOfWeek={1}
+            />
+          </PositionalPopup>
         </PositionalPopupHolder>
       </div>
       <FieldErrors errors={props.errors} />
