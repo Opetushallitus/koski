@@ -1,4 +1,5 @@
 import * as A from 'fp-ts/Array'
+import { pipe } from 'fp-ts/lib/function'
 import * as O from 'fp-ts/Option'
 import { arraysEqual } from './arrays'
 
@@ -101,3 +102,12 @@ export const deepEqual = (a: any, b: any): boolean => {
 
 export const flattenObj = <T>(obj: Record<string, T[]>): T[] =>
   Object.values(obj).flat()
+
+export const filterObjByKey =
+  <T extends object>(fn: (key: keyof T) => boolean) =>
+  (obj: T): Partial<T> =>
+    pipe(
+      Object.entries(obj),
+      A.filter(([key]) => fn(key as keyof T)),
+      (as) => fromEntries(as) as Partial<T>
+    )
