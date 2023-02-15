@@ -5,10 +5,12 @@ JAVA_OPTS="\
 -Xms${JAVA_XMX:-1g} -Xmx${JAVA_XMX:-1g} \
 -XX:+HeapDumpOnOutOfMemoryError \
 -XX:HeapDumpPath=/home/koski/heapdumps/koski-heap.dump \
+-Dcom.sun.management.jmxremote \
 -Dcom.sun.management.jmxremote.ssl=false \
 -Dcom.sun.management.jmxremote.port=5555 \
 -Dcom.sun.management.jmxremote.rmi.port=5555 \
 -Dcom.sun.management.jmxremote.authenticate=false \
+-Dcom.sun.management.jmxremote.local.only=false \
 -Djava.rmi.server.hostname=localhost \
 -Djava.io.tmpdir=/tmp \
 -Dkoski.port=8080 \
