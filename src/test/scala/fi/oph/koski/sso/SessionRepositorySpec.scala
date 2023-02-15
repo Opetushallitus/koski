@@ -16,6 +16,7 @@ class SessionRepositorySpec extends AnyFreeSpec with TestEnvironment with Matche
     val fakeServiceTicket: String = "koski-" + UUID.randomUUID()
     // JDK11 muuttaa ZonedDateTimen toiminnallisuutta, koska se käyttää tarkempaa kelloa kuin JDK8.
     // Tämän takia nanosekunnit on lisättävä aikaleimaan erikseen.
+    // https://bugs.openjdk.org/browse/JDK-8068730
     val epochMillis = dateTime.toInstant.toEpochMilli
     val nanos = dateTime.getNano % 1000000
     val sqlTimestamp = Timestamp.from(Instant.ofEpochMilli(epochMillis).plusNanos(nanos))
