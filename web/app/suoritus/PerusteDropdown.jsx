@@ -85,9 +85,13 @@ export const diaarinumerot = (suoritusTyyppi) =>
       )
     : []
 
-export const setPeruste = (perusteAtom, suoritusTyyppi) => {
+export const setPeruste = (perusteAtom, suoritusTyyppi, defaultDiaari) => {
   diaarinumerot(suoritusTyyppi)
-    .map((options) => options[0])
+    .map((options) =>
+      defaultDiaari
+        ? options.find((o) => o.koodiarvo === defaultDiaari)
+        : options[0]
+    )
     .map('.koodiarvo')
     .onValue((peruste) => {
       const current = perusteAtom.get()
