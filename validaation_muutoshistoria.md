@@ -1,6 +1,6 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
-## xx.xx.xxxx
+## 15.2.2023
 
 - Taiteen perusopetuksen päätason suorituksille saa merkitä vahvistuksen, kun sillä on ainakin yksi arvioitu osasuoritus jolla on myös riittävä laajuus.
 
