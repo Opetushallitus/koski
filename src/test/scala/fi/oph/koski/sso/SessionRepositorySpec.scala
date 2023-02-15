@@ -8,13 +8,17 @@ import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
 import java.sql.Timestamp
-import java.time.ZonedDateTime
+import java.time.{Instant, ZonedDateTime}
 import java.util.UUID
 
 class SessionRepositorySpec extends AnyFreeSpec with TestEnvironment with Matchers with DatabaseTestMethods with BeforeAndAfterAll {
   private def createDummySession(dateTime: ZonedDateTime) = {
     val fakeServiceTicket: String = "koski-" + UUID.randomUUID()
-    val sqlTimestamp = new Timestamp(dateTime.toInstant.toEpochMilli)
+    // JDK11 muuttaa ZonedDateTimen toiminnallisuutta, koska se käyttää tarkempaa kelloa kuin JDK8.
+    // Tämän takia nanosekunnit on lisättävä aikaleimaan erikseen.
+    val epochMillis = dateTime.toInstant.toEpochMilli
+    val nanos = dateTime.getNano % 1000000
+    val sqlTimestamp = Timestamp.from(Instant.ofEpochMilli(epochMillis).plusNanos(nanos))
     runDbSync(KoskiTables.CasServiceTicketSessions += SSOSessionRow(
       fakeServiceTicket, "test", "test", "test", sqlTimestamp, sqlTimestamp, None)
     )
