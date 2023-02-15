@@ -16,6 +16,11 @@ object ExamplesTaiteenPerusopetus {
   val musiikinTaiteenala = Koodistokoodiviite("musiikki", "taiteenperusopetustaiteenala")
   val kuvataiteenTaiteenala = Koodistokoodiviite("kuvataide", "taiteenperusopetustaiteenala")
 
+  lazy val hkiKoulutustoimija = Koulutustoimija(
+    oid = MockOrganisaatiot.helsinginKaupunki,
+    nimi = Some(Finnish(fi = "Helsingin kaupunki"))
+  )
+
   lazy val varsinaisSuomenAikuiskoulutussäätiö: Koulutustoimija = Koulutustoimija(
     oid = MockOrganisaatiot.varsinaisSuomenAikuiskoulutussäätiö,
     nimi = Some(Finnish("Varsinais-Suomen Aikuiskoulutussäätiö sr")),
@@ -35,11 +40,6 @@ object ExamplesTaiteenPerusopetus {
 
   val arviointiHyväksytty = TaiteenPerusopetuksenArviointi(
     päivä = alkupäivä,
-    arvioitsijat = Some(
-      List(
-        Arvioitsija("Musa Ope")
-      )
-    )
   )
 
   val vahvistus = HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla(
@@ -111,6 +111,7 @@ object ExamplesTaiteenPerusopetus {
       koulutustoimija = Some(varsinaisSuomenAikuiskoulutussäätiö),
       tila = tilaLäsnä(),
       oppimäärä = Koodistokoodiviite("yleinenoppimaara", "taiteenperusopetusoppimaara"),
+      koulutuksenToteutustapa = Koodistokoodiviite("itsejarjestettykoulutus", "taiteenperusopetuskoulutuksentoteutustapa"),
       suoritukset = List(
         PäätasonSuoritus.yleistenYhteistenOpintojenSuoritusEiArvioituEiOsasuorituksia,
         PäätasonSuoritus.yleistenTeemaopintojenSuoritusEiArvioituEiOsasuorituksia
@@ -119,28 +120,30 @@ object ExamplesTaiteenPerusopetus {
       arvioituPäättymispäivä = None
     )
 
-    val hyväksytystiSuoritettuLaajaOppimäärä = suoritettuOppimäärä(
-      oppimäärä = "laajaoppimaara",
-      suoritukset = List(
-          PäätasonSuoritus.laajojenPerusopintojenSuoritusArvioituJaVahvistettuJaOsasuorituksia,
-          PäätasonSuoritus.laajojenSyventävienOpintojenSuoritusArvioituJaVahvistettuJaOsasuorituksia
-        )
+    val hyväksytystiSuoritettuLaajaOppimäärä = suoritettuOppimäärä()
+
+    val hankintakoulutuksenaHyväksytystiSuoritettuLaajaOppimäärä = suoritettuOppimäärä().copy(
+      koulutustoimija = Some(hkiKoulutustoimija),
+      koulutuksenToteutustapa = Koodistokoodiviite("hankintakoulutus", "taiteenperusopetuskoulutuksentoteutustapa")
     )
 
-    private def suoritettuOppimäärä(oppimäärä: String, suoritukset: List[TaiteenPerusopetuksenPäätasonSuoritus]) =
-      TaiteenPerusopetuksenOpiskeluoikeus(
-        oid = None,
-        versionumero = None,
-        aikaleima = None,
-        lähdejärjestelmänId = None,
-        oppilaitos = Some(varsinaisSuomenKansanopisto),
-        koulutustoimija = Some(varsinaisSuomenAikuiskoulutussäätiö),
-        tila = tilaHyväksytystiSuoritettu(),
-        oppimäärä = Koodistokoodiviite(oppimäärä, "taiteenperusopetusoppimaara"),
-        suoritukset = suoritukset,
-        organisaatiohistoria = None,
-        arvioituPäättymispäivä = Some(alkupäivä.plusYears(1))
-      )
+    private def suoritettuOppimäärä() = TaiteenPerusopetuksenOpiskeluoikeus(
+      oid = None,
+      versionumero = None,
+      aikaleima = None,
+      lähdejärjestelmänId = None,
+      oppilaitos = Some(varsinaisSuomenKansanopisto),
+      koulutustoimija = Some(varsinaisSuomenAikuiskoulutussäätiö),
+      tila = tilaHyväksytystiSuoritettu(),
+      oppimäärä = Koodistokoodiviite("laajaoppimaara", "taiteenperusopetusoppimaara"),
+      koulutuksenToteutustapa = Koodistokoodiviite("itsejarjestettykoulutus", "taiteenperusopetuskoulutuksentoteutustapa"),
+      suoritukset = List(
+        PäätasonSuoritus.laajojenPerusopintojenSuoritusArvioituJaVahvistettuJaOsasuorituksia,
+        PäätasonSuoritus.laajojenSyventävienOpintojenSuoritusArvioituJaVahvistettuJaOsasuorituksia
+      ),
+      organisaatiohistoria = None,
+      arvioituPäättymispäivä = Some(alkupäivä.plusYears(1))
+    )
 
   }
 
@@ -149,7 +152,6 @@ object ExamplesTaiteenPerusopetus {
     val yleistenYhteistenOpintojenSuoritusEiArvioituEiOsasuorituksia = TaiteenPerusopetuksenYleisenOppimääränYhteistenOpintojenSuoritus(
       koulutusmoduuli = Koulutusmoduuli.musiikkiYleinenOppimääräEiLaajuutta,
       toimipiste = varsinaisSuomenKansanopistoToimipiste,
-      arviointi = None,
       vahvistus = None,
       osasuoritukset = None
     )
@@ -157,7 +159,6 @@ object ExamplesTaiteenPerusopetus {
     val yleistenTeemaopintojenSuoritusEiArvioituEiOsasuorituksia = TaiteenPerusopetuksenYleisenOppimääränTeemaopintojenSuoritus(
       koulutusmoduuli = Koulutusmoduuli.musiikkiYleinenOppimääräTeemaopinnot,
       toimipiste = varsinaisSuomenKansanopistoToimipiste,
-      arviointi = None,
       vahvistus = None,
       osasuoritukset = None
     )
@@ -165,7 +166,6 @@ object ExamplesTaiteenPerusopetus {
     val laajojenPerusopintojenSuoritusArvioituJaVahvistettuJaOsasuorituksia = TaiteenPerusopetuksenLaajanOppimääränPerusopintojenSuoritus(
       koulutusmoduuli = Koulutusmoduuli.musiikkiLaajaOppimääräPerusopinnot,
       toimipiste = varsinaisSuomenKansanopistoToimipiste,
-      arviointi = Some(List(arviointiHyväksytty)),
       vahvistus = Some(vahvistus),
       osasuoritukset = Some(List(
         Osasuoritus.tunnustettuOsasuoritusMusiikki("musa1", 10.0),
@@ -177,7 +177,6 @@ object ExamplesTaiteenPerusopetus {
     val laajojenSyventävienOpintojenSuoritusArvioituJaVahvistettuJaOsasuorituksia = TaiteenPerusopetuksenLaajanOppimääränSyventävienOpintojenSuoritus(
       koulutusmoduuli = Koulutusmoduuli.musiikkiLaajaOppimääräSyventävätOpinnot,
       toimipiste = varsinaisSuomenKansanopistoToimipiste,
-      arviointi = Some(List(arviointiHyväksytty)),
       vahvistus = Some(vahvistus),
       osasuoritukset = Some(List(
         Osasuoritus.osasuoritusMusiikki("musa1", 10.0),

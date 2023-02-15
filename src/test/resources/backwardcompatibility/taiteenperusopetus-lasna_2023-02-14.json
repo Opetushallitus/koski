@@ -1,6 +1,6 @@
 {
   "henkilö" : {
-    "hetu" : "260905A0520",
+    "hetu" : "230405A067H",
     "etunimet" : "Petra",
     "kutsumanimi" : "Petra",
     "sukunimi" : "Taiteilija"
@@ -40,6 +40,10 @@
       "koodiarvo" : "yleinenoppimaara",
       "koodistoUri" : "taiteenperusopetusoppimaara"
     },
+    "koulutuksenToteutustapa" : {
+      "koodiarvo" : "itsejarjestettykoulutus",
+      "koodistoUri" : "taiteenperusopetuskoulutuksentoteutustapa"
+    },
     "suoritukset" : [ {
       "koulutusmoduuli" : {
         "tunniste" : {
@@ -70,7 +74,7 @@
           "koodistoUri" : "taiteenperusopetustaiteenala"
         },
         "laajuus" : {
-          "arvo" : 7.41,
+          "arvo" : 7.4,
           "yksikkö" : {
             "koodiarvo" : "2",
             "nimi" : {

@@ -1,4 +1,3 @@
-import { TaiteenPerusopetuksenArviointi } from './TaiteenPerusopetuksenArviointi'
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
 import { TaiteenPerusopetuksenOpintotaso } from './TaiteenPerusopetuksenOpintotaso'
@@ -13,7 +12,6 @@ import { HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla 
  */
 export type TaiteenPerusopetuksenYleisenOppimääränTeemaopintojenSuoritus = {
   $class: 'fi.oph.koski.schema.TaiteenPerusopetuksenYleisenOppimääränTeemaopintojenSuoritus'
-  arviointi?: Array<TaiteenPerusopetuksenArviointi>
   tyyppi: Koodistokoodiviite<
     'suorituksentyyppi',
     'taiteenperusopetuksenyleisenoppimaaranteemaopinnot'
@@ -27,7 +25,6 @@ export type TaiteenPerusopetuksenYleisenOppimääränTeemaopintojenSuoritus = {
 
 export const TaiteenPerusopetuksenYleisenOppimääränTeemaopintojenSuoritus =
   (o: {
-    arviointi?: Array<TaiteenPerusopetuksenArviointi>
     tyyppi?: Koodistokoodiviite<
       'suorituksentyyppi',
       'taiteenperusopetuksenyleisenoppimaaranteemaopinnot'

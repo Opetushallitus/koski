@@ -1,3 +1,9 @@
+## xx.xx.xxxx
+
+- Taiteen perusopetuksen opiskeluoikeuteen lisätty kenttä koulutuksen toteutustapa.
+- Taiteen perusopetuksen opiskeluoikeuden päätason suoritukselta poistettu arviointi-kenttä.
+- Taiteen perusopetuksen osasuoritusten arvioinneista poistettu arvioijat-kenttä.
+
 ## 8.2.2023
 
 - Ylioppilastutkinnon opiskeluoikeuteen on lisätty valinnaiset kentät sitä ennakoiden, että YO-tutkinnon opiskeluoikeudet
@@ -6,9 +12,11 @@ toimipiste-kentässä palautetaan aina jatkossa Ylioppilastutkintolautakunnan or
 saatavilla.
 
 ## 26.1.2023
+
 - Taiteen perusopetuksen osasuorituksille lisätty valinnainen tunnustettu-rakenne.
 
 ## 19.1.2023
+
 - Jatkuvaan oppimiseen suunnatun vapaan sivistystyön koulutuksen osasuoritusten ja aliosasuoritusten laajuus on muutettu valinnaiseksi kentäksi.
 
 ## 2.1.2023

@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## xx.xx.xxxx
+
+- Taiteen perusopetuksen päätason suorituksille saa merkitä vahvistuksen, kun sillä on ainakin yksi arvioitu osasuoritus jolla on myös riittävä laajuus.
+
 ## 10.2.2023
 
 - Sallittu väliaikaisesti oppilaitoksen vaihto tilanteessa, jossa vaihdetaan oppilaitoksesta 1.2.246.562.10.13857290038 oppilaitokseen 1.2.246.562.10.38485743660
