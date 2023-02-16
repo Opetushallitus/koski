@@ -1,0 +1,22 @@
+{
+  "id" : 6840291,
+  "nimi" : {
+    "_id" : "6907239",
+    "_tunniste" : "2091bf71-4d62-443a-b49c-b99d8adcad06",
+    "fi" : "Aikuisten lukiokoulutuksen opetussuunnitelman perusteet 2019",
+    "sv" : "Grunderna för läroplanen för gymnasieutbildning för vuxna 2019"
+  },
+  "diaarinumero" : "OPH-2267-2019",
+  "koulutustyyppi" : "koulutustyyppi_14",
+  "voimassaoloAlkaa" : "1627765200000",
+  "koulutukset" : [ ],
+  "koulutusvienti" : false,
+  "suoritustavat" : [ {
+    "suoritustapakoodi" : "lukiokoulutus2019",
+    "laajuusYksikko" : "OPINTOPISTE",
+    "tutkinnonOsaViitteet" : [ ]
+  } ],
+  "osaamisalat" : [ ],
+  "luotu" : 1572867140485,
+  "muokattu" : 1671540441309
+}

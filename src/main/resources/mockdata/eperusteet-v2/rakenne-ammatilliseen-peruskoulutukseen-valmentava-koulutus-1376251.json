@@ -1,0 +1,136 @@
+{
+  "id" : 1376251,
+  "nimi" : {
+    "_id" : "1461942",
+    "fi" : "Ammatilliseen peruskoulutukseen valmentava koulutus",
+    "sv" : "Handledande utbildning för grundläggande yrkesutbildning"
+  },
+  "diaarinumero" : "5/011/2015",
+  "koulutustyyppi" : "koulutustyyppi_18",
+  "voimassaoloAlkaa" : "1438376400000",
+  "voimassaoloLoppuu" : "1514671200000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "fi" : "Ammatilliseen peruskoulutukseen valmentava koulutus (VALMA)",
+      "sv" : "Handledande utbildning för grundläggande yrkesutbildning"
+    },
+    "koulutuskoodiArvo" : "039993"
+  } ],
+  "koulutusvienti" : false,
+  "suoritustavat" : [ {
+    "suoritustapakoodi" : "ops",
+    "laajuusYksikko" : "OSAAMISPISTE",
+    "rakenne" : {
+      "osat" : [ {
+        "nimi" : {
+          "_id" : "1461926",
+          "fi" : "Pakollinen koulutuksen osa",
+          "sv" : "Obligatorisk utbildningsdel"
+        },
+        "osat" : [ {
+          "_tutkinnonOsaViite" : "1384921"
+        } ],
+        "rooli" : "määritelty",
+        "muodostumisSaanto" : {
+          "laajuus" : {
+            "minimi" : 10,
+            "maksimi" : 10
+          }
+        }
+      }, {
+        "nimi" : {
+          "_id" : "1469708",
+          "fi" : "Valinnaiset koulutuksen osat",
+          "sv" : "Valbara utbildningsdelar"
+        },
+        "osat" : [ {
+          "_tutkinnonOsaViite" : "1384923"
+        }, {
+          "_tutkinnonOsaViite" : "1384924"
+        }, {
+          "_tutkinnonOsaViite" : "1384925"
+        }, {
+          "nimi" : {
+            "_id" : "1461929",
+            "fi" : "Ammatillisen perustutkinnon tutkinnon osat tai osa-alueet",
+            "sv" : "Examensdelar eller delområden inom en yrkesinriktad grundexamen"
+          },
+          "osat" : [ ],
+          "rooli" : "määrittelemätön",
+          "muodostumisSaanto" : {
+            "laajuus" : {
+              "minimi" : 0,
+              "maksimi" : 10
+            }
+          }
+        }, {
+          "nimi" : {
+            "_id" : "1461941",
+            "fi" : "Vapaasti valittavat koulutuksen osat",
+            "sv" : "Fritt valbara utbildningsdelar"
+          },
+          "osat" : [ ],
+          "rooli" : "määrittelemätön",
+          "muodostumisSaanto" : {
+            "laajuus" : {
+              "minimi" : 0,
+              "maksimi" : 5
+            }
+          }
+        } ],
+        "rooli" : "määritelty",
+        "muodostumisSaanto" : {
+          "laajuus" : {
+            "minimi" : 50,
+            "maksimi" : 50
+          }
+        }
+      } ]
+    },
+    "tutkinnonOsaViitteet" : [ {
+      "id" : 1384921,
+      "_tutkinnonOsa" : "1385351"
+    }, {
+      "id" : 1384925,
+      "_tutkinnonOsa" : "1389913"
+    }, {
+      "id" : 1384923,
+      "_tutkinnonOsa" : "1385357"
+    }, {
+      "id" : 1384924,
+      "_tutkinnonOsa" : "1389912"
+    } ]
+  } ],
+  "tutkinnonOsat" : [ {
+    "id" : 1385351,
+    "nimi" : {
+      "fi" : "Ammatilliseen koulutukseen orientoituminen ja työelämän perusvalmiuksien hankkiminen",
+      "sv" : "Orientering i yrkesutbildningen och grundförutsättningar för arbetslivet"
+    },
+    "koodiArvo" : "300001"
+  }, {
+    "id" : 1385357,
+    "nimi" : {
+      "fi" : "Opiskeluvalmiuksien vahvistaminen",
+      "sv" : "Stärkande av studiefärdigheter"
+    },
+    "koodiArvo" : "300002"
+  }, {
+    "id" : 1389912,
+    "nimi" : {
+      "fi" : "Työssäoppimiseen ja oppisopimuskoulutukseen valmentautuminen",
+      "sv" : "Förberedelse inför inlärning i arbetet och läroavtalsutbildning"
+    },
+    "koodiArvo" : "300003"
+  }, {
+    "id" : 1389913,
+    "nimi" : {
+      "fi" : "Arjen taitojen ja hyvinvoinnin vahvistaminen",
+      "sv" : "Stärkande av förmågan att klara sig i vardagslivet och av välbefinnandet"
+    },
+    "koodiArvo" : "300004"
+  } ],
+  "osaamisalat" : [ ],
+  "luotu" : 1450087428601,
+  "muokattu" : 1513695398386
+}

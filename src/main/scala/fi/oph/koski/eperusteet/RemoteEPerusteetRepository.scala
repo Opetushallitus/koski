@@ -24,6 +24,14 @@ class RemoteEPerusteetRepository(ePerusteetRoot: String, ePerusteetWebBaseUrl: S
     runIO(program).sortBy(_.koulutusvienti)
   }
 
+  def findPerusteentiedot(id: String): EPerusteKokoRakenne = {
+    val program: IO[EPerusteKokoRakenne] = for {
+      (peruste) <- http.get(uri"/api/external/peruste/${id}")(Http.parseJson[EPerusteKokoRakenne])
+    } yield (peruste)
+
+    runIO(program)
+  }
+
   def findPerusteetByKoulutustyyppi(koulutustyypit: Set[Koulutustyyppi]): List[EPerusteRakenne] = if (koulutustyypit.isEmpty) {
     Nil
   } else {

@@ -1,0 +1,2093 @@
+{
+  "id" : 1718932,
+  "nimi" : {
+    "_id" : "289703",
+    "fi" : "Liiketalouden perustutkinto",
+    "sv" : "Grundexamen inom företagsekonomi"
+  },
+  "diaarinumero" : "59/011/2014",
+  "koulutustyyppi" : "koulutustyyppi_1",
+  "voimassaoloAlkaa" : "1469998800000",
+  "voimassaoloLoppuu" : "1532984400000",
+  "siirtymaPaattyy" : "1640901600000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Vocational qualification in Business",
+      "fi" : "Liiketoiminnan perustutkinto",
+      "sv" : "Grundexamen i affärsverksamhet"
+    },
+    "koulutuskoodiArvo" : "331101"
+  } ],
+  "koulutusvienti" : false,
+  "suoritustavat" : [ {
+    "suoritustapakoodi" : "ops",
+    "laajuusYksikko" : "OSAAMISPISTE",
+    "rakenne" : {
+      "osat" : [ {
+        "nimi" : {
+          "_id" : "701840",
+          "fi" : "Ammatilliset tutkinnon osat",
+          "sv" : "Yrkesinriktade examensdelar"
+        },
+        "osat" : [ {
+          "nimi" : {
+            "_id" : "701841",
+            "fi" : "Pakollinen tutkinnon osa",
+            "sv" : "Obligatorisk examensdel"
+          },
+          "osat" : [ {
+            "_tutkinnonOsaViite" : "1719111"
+          } ],
+          "rooli" : "määritelty",
+          "muodostumisSaanto" : {
+            "laajuus" : {
+              "minimi" : 30,
+              "maksimi" : 30
+            }
+          }
+        }, {
+          "nimi" : {
+            "en" : "Specialisation in Customer Services and Sales",
+            "fi" : "Asiakaspalvelun ja myynnin osaamisala",
+            "sv" : "Kompetensområdet för kundbetjäning och försäljning"
+          },
+          "osat" : [ {
+            "nimi" : {
+              "_id" : "701843",
+              "fi" : "Vaihtoehto 1",
+              "sv" : "Alternativ 1"
+            },
+            "osat" : [ {
+              "nimi" : {
+                "_id" : "1073877",
+                "fi" : "Valitaan 60 osp tutkinnon osista",
+                "sv" : "60 kp bör väljas från examensdelarna"
+              },
+              "osat" : [ {
+                "_tutkinnonOsaViite" : "1719115"
+              }, {
+                "_tutkinnonOsaViite" : "1719114"
+              }, {
+                "_tutkinnonOsaViite" : "1719112"
+              }, {
+                "_tutkinnonOsaViite" : "1719116"
+              }, {
+                "_tutkinnonOsaViite" : "1719113"
+              }, {
+                "_tutkinnonOsaViite" : "1719137"
+              } ],
+              "rooli" : "määritelty",
+              "muodostumisSaanto" : {
+                "laajuus" : {
+                  "minimi" : 60,
+                  "maksimi" : 60
+                }
+              }
+            }, {
+              "nimi" : {
+                "_id" : "1073878",
+                "fi" : "Lisäksi valitaan 45 osp tutkinnon osista",
+                "sv" : "Dessutom bör 45 kp väljas från examensdelarna"
+              },
+              "osat" : [ {
+                "_tutkinnonOsaViite" : "1719138"
+              }, {
+                "_tutkinnonOsaViite" : "1719117"
+              }, {
+                "_tutkinnonOsaViite" : "1719118"
+              }, {
+                "_tutkinnonOsaViite" : "1719124"
+              }, {
+                "_tutkinnonOsaViite" : "1719125"
+              }, {
+                "_tutkinnonOsaViite" : "1719126"
+              }, {
+                "_tutkinnonOsaViite" : "1719127"
+              }, {
+                "_tutkinnonOsaViite" : "1719130"
+              }, {
+                "_tutkinnonOsaViite" : "1719140"
+              }, {
+                "_tutkinnonOsaViite" : "1719139"
+              }, {
+                "_tutkinnonOsaViite" : "1719131"
+              }, {
+                "_tutkinnonOsaViite" : "1719023"
+              }, {
+                "nimi" : {
+                  "_id" : "701844",
+                  "fi" : "Tutkinnon osa ammatillisesta perustutkinnosta",
+                  "sv" : "Examensdel från en yrkesinriktad grundexamen"
+                },
+                "osat" : [ ],
+                "rooli" : "määrittelemätön",
+                "muodostumisSaanto" : {
+                  "laajuus" : {
+                    "minimi" : 10,
+                    "maksimi" : 15
+                  }
+                }
+              }, {
+                "nimi" : {
+                  "_id" : "701845",
+                  "fi" : "Tutkinnon osa ammattitutkinnosta tai erikoisammattitutkinnosta",
+                  "sv" : "Examensdel från en yrkesexamen eller en specialyrkesexamen"
+                },
+                "osat" : [ ],
+                "rooli" : "määrittelemätön",
+                "muodostumisSaanto" : {
+                  "laajuus" : {
+                    "minimi" : 15,
+                    "maksimi" : 15
+                  }
+                }
+              }, {
+                "nimi" : {
+                  "_id" : "701846",
+                  "fi" : "Tutkinnon osa ammattikorkeakouluopinnoista",
+                  "sv" : "Examensdel från yrkeshögskolestudier"
+                },
+                "osat" : [ ],
+                "rooli" : "määrittelemätön",
+                "muodostumisSaanto" : {
+                  "laajuus" : {
+                    "minimi" : 15,
+                    "maksimi" : 15
+                  }
+                }
+              }, {
+                "_tutkinnonOsaViite" : "1719024"
+              }, {
+                "_tutkinnonOsaViite" : "1719025"
+              }, {
+                "_tutkinnonOsaViite" : "1719026"
+              }, {
+                "nimi" : {
+                  "_id" : "701848",
+                  "fi" : "Paikallisiin ammattitaitovaatimuksiin perustuvia tutkinnon osia",
+                  "sv" : "Examensdelar som grundar sig på lokala krav på yrkesskicklighet"
+                },
+                "osat" : [ ],
+                "rooli" : "määrittelemätön",
+                "muodostumisSaanto" : {
+                  "laajuus" : {
+                    "minimi" : 5,
+                    "maksimi" : 15
+                  }
+                }
+              }, {
+                "nimi" : {
+                  "_id" : "701890",
+                  "fi" : "Tutkinnon osa vapaasti valittavista tutkinnon osista",
+                  "sv" : "Examensdel från de fritt valbara examensdelarna"
+                },
+                "osat" : [ ],
+                "rooli" : "määrittelemätön",
+                "muodostumisSaanto" : {
+                  "laajuus" : {
+                    "minimi" : 5,
+                    "maksimi" : 15
+                  }
+                }
+              } ],
+              "rooli" : "määritelty",
+              "muodostumisSaanto" : {
+                "laajuus" : {
+                  "minimi" : 45,
+                  "maksimi" : 45
+                }
+              }
+            } ],
+            "rooli" : "määritelty",
+            "muodostumisSaanto" : {
+              "laajuus" : {
+                "minimi" : 105,
+                "maksimi" : 105
+              }
+            }
+          }, {
+            "nimi" : {
+              "_id" : "701891",
+              "fi" : "Vaihtoehto 2",
+              "sv" : "Alternativ 2"
+            },
+            "osat" : [ {
+              "nimi" : {
+                "_id" : "1074112",
+                "fi" : "Valitaan 30 osp",
+                "sv" : "30 kp bör väljas"
+              },
+              "osat" : [ {
+                "_tutkinnonOsaViite" : "1719115"
+              }, {
+                "_tutkinnonOsaViite" : "1719114"
+              }, {
+                "_tutkinnonOsaViite" : "1719112"
+              }, {
+                "_tutkinnonOsaViite" : "1719116"
+              }, {
+                "_tutkinnonOsaViite" : "1719113"
+              }, {
+                "_tutkinnonOsaViite" : "1719137"
+              } ],
+              "rooli" : "määritelty",
+              "muodostumisSaanto" : {
+                "laajuus" : {
+                  "minimi" : 30,
+                  "maksimi" : 30
+                }
+              }
+            }, {
+              "nimi" : {
+                "_id" : "1074115",
+                "fi" : "Lisäksi valitaan 30 osp",
+                "sv" : "Dessutom bör 30 kp väljas"
+              },
+              "osat" : [ {
+                "_tutkinnonOsaViite" : "1719138"
+              }, {
+                "_tutkinnonOsaViite" : "1719117"
+              }, {
+                "_tutkinnonOsaViite" : "1719118"
+              } ],
+              "rooli" : "määritelty",
+              "muodostumisSaanto" : {
+                "laajuus" : {
+                  "minimi" : 30,
+                  "maksimi" : 30
+                }
+              }
+            }, {
+              "nimi" : {
+                "_id" : "1074116",
+                "fi" : "Lisäksi valitaan 15 osp",
+                "sv" : "Dessutom bör 15 kp väljas"
+              },
+              "osat" : [ {
+                "_tutkinnonOsaViite" : "1719124"
+              }, {
+                "_tutkinnonOsaViite" : "1719125"
+              }, {
+                "_tutkinnonOsaViite" : "1719126"
+              }, {
+                "_tutkinnonOsaViite" : "1719127"
+              } ],
+              "rooli" : "määritelty",
+              "muodostumisSaanto" : {
+                "laajuus" : {
+                  "minimi" : 15,
+                  "maksimi" : 15
+                }
+              }
+            }, {
+              "nimi" : {
+                "_id" : "1074117",
+                "fi" : "Edellisten lisäksi valitaan 30 osp",
+                "sv" : "Förutom de föregående bör 30 kp väljas"
+              },
+              "osat" : [ {
+                "_tutkinnonOsaViite" : "1719115"
+              }, {
+                "_tutkinnonOsaViite" : "1719114"
+              }, {
+                "_tutkinnonOsaViite" : "1719112"
+              }, {
+                "_tutkinnonOsaViite" : "1719116"
+              }, {
+                "_tutkinnonOsaViite" : "1719113"
+              }, {
+                "_tutkinnonOsaViite" : "1719137"
+              }, {
+                "_tutkinnonOsaViite" : "1719124"
+              }, {
+                "_tutkinnonOsaViite" : "1719125"
+              }, {
+                "_tutkinnonOsaViite" : "1719126"
+              }, {
+                "_tutkinnonOsaViite" : "1719127"
+              }, {
+                "_tutkinnonOsaViite" : "1719130"
+              }, {
+                "_tutkinnonOsaViite" : "1719140"
+              }, {
+                "_tutkinnonOsaViite" : "1719139"
+              }, {
+                "_tutkinnonOsaViite" : "1719131"
+              }, {
+                "_tutkinnonOsaViite" : "1719023"
+              }, {
+                "nimi" : {
+                  "_id" : "701892",
+                  "fi" : "Tutkinnon osa ammatillisesta perustutkinnosta",
+                  "sv" : "Examensdel från en yrkesinriktad grundexamen"
+                },
+                "osat" : [ ],
+                "rooli" : "määrittelemätön",
+                "muodostumisSaanto" : {
+                  "laajuus" : {
+                    "minimi" : 10,
+                    "maksimi" : 15
+                  }
+                }
+              }, {
+                "nimi" : {
+                  "_id" : "701893",
+                  "fi" : "Tutkinnon osa ammattitutkinnosta tai erikoisammattitutkinnosta",
+                  "sv" : "Examensdel från en yrkesexamen eller en specialyrkesexamen"
+                },
+                "osat" : [ ],
+                "rooli" : "määrittelemätön",
+                "muodostumisSaanto" : {
+                  "laajuus" : {
+                    "minimi" : 15,
+                    "maksimi" : 15
+                  }
+                }
+              }, {
+                "nimi" : {
+                  "_id" : "701896",
+                  "fi" : "Tutkinnon osa ammattikorkeakouluopinnoista",
+                  "sv" : "Examensdel från yrkeshögskolestudier"
+                },
+                "osat" : [ ],
+                "rooli" : "määrittelemätön",
+                "muodostumisSaanto" : {
+                  "laajuus" : {
+                    "minimi" : 15,
+                    "maksimi" : 15
+                  }
+                }
+              }, {
+                "_tutkinnonOsaViite" : "1719024"
+              }, {
+                "_tutkinnonOsaViite" : "1719025"
+              }, {
+                "_tutkinnonOsaViite" : "1719026"
+              }, {
+                "nimi" : {
+                  "_id" : "776588",
+                  "fi" : "Paikallisiin ammattitaitovaatimuksiin perustuvia tutkinnon osia",
+                  "sv" : "Examensdelar som grundar sig på lokala krav på yrkesskicklighet"
+                },
+                "osat" : [ ],
+                "rooli" : "määrittelemätön",
+                "muodostumisSaanto" : {
+                  "laajuus" : {
+                    "minimi" : 5,
+                    "maksimi" : 15
+                  }
+                }
+              }, {
+                "nimi" : {
+                  "_id" : "782524",
+                  "fi" : "Tutkinnon osa vapaasti valittavista tutkinnon osista",
+                  "sv" : "Examensdel från de fritt valbara examensdelarna"
+                },
+                "osat" : [ ],
+                "rooli" : "määrittelemätön",
+                "muodostumisSaanto" : {
+                  "laajuus" : {
+                    "minimi" : 5,
+                    "maksimi" : 15
+                  }
+                }
+              } ],
+              "rooli" : "määritelty",
+              "muodostumisSaanto" : {
+                "laajuus" : {
+                  "minimi" : 30,
+                  "maksimi" : 30
+                }
+              }
+            } ],
+            "rooli" : "määritelty",
+            "muodostumisSaanto" : {
+              "laajuus" : {
+                "minimi" : 105,
+                "maksimi" : 105
+              }
+            }
+          } ],
+          "osaamisala" : {
+            "osaamisalakoodiArvo" : "1625"
+          },
+          "rooli" : "osaamisala",
+          "muodostumisSaanto" : {
+            "laajuus" : {
+              "minimi" : 105,
+              "maksimi" : 105
+            }
+          }
+        }, {
+          "nimi" : {
+            "en" : "Specialisation in Financial and Office Services",
+            "fi" : "Talous- ja toimistopalvelujen osaamisala",
+            "sv" : "Kompetensområdet för ekonomi- och kontorsservice"
+          },
+          "osat" : [ {
+            "nimi" : {
+              "_id" : "701897",
+              "fi" : "Pakollinen tutkinnon osa",
+              "sv" : "Obligatorisk examensdel"
+            },
+            "osat" : [ {
+              "_tutkinnonOsaViite" : "1719138"
+            } ],
+            "rooli" : "määritelty",
+            "muodostumisSaanto" : {
+              "laajuus" : {
+                "minimi" : 30,
+                "maksimi" : 30
+              }
+            }
+          }, {
+            "nimi" : {
+              "_id" : "1074531",
+              "fi" : "Valitaan 30 osp",
+              "sv" : "30 kp bör väljas"
+            },
+            "osat" : [ {
+              "_tutkinnonOsaViite" : "1719117"
+            }, {
+              "_tutkinnonOsaViite" : "1719118"
+            }, {
+              "_tutkinnonOsaViite" : "1719119"
+            } ],
+            "rooli" : "määritelty",
+            "muodostumisSaanto" : {
+              "laajuus" : {
+                "minimi" : 30,
+                "maksimi" : 30
+              }
+            }
+          }, {
+            "nimi" : {
+              "_id" : "1074532",
+              "fi" : "Lisäksi valitaan 45 osp",
+              "sv" : "Dessutom bör 45 kp väljas"
+            },
+            "osat" : [ {
+              "_tutkinnonOsaViite" : "1719115"
+            }, {
+              "_tutkinnonOsaViite" : "1719114"
+            }, {
+              "_tutkinnonOsaViite" : "1719112"
+            }, {
+              "_tutkinnonOsaViite" : "1719116"
+            }, {
+              "_tutkinnonOsaViite" : "1719113"
+            }, {
+              "_tutkinnonOsaViite" : "1719137"
+            }, {
+              "_tutkinnonOsaViite" : "1719117"
+            }, {
+              "_tutkinnonOsaViite" : "1719118"
+            }, {
+              "_tutkinnonOsaViite" : "1719119"
+            }, {
+              "_tutkinnonOsaViite" : "1719125"
+            }, {
+              "_tutkinnonOsaViite" : "1719126"
+            }, {
+              "_tutkinnonOsaViite" : "1719127"
+            }, {
+              "_tutkinnonOsaViite" : "1719128"
+            }, {
+              "_tutkinnonOsaViite" : "1719129"
+            }, {
+              "_tutkinnonOsaViite" : "1719130"
+            }, {
+              "_tutkinnonOsaViite" : "1719140"
+            }, {
+              "_tutkinnonOsaViite" : "1719139"
+            }, {
+              "_tutkinnonOsaViite" : "1719131"
+            }, {
+              "_tutkinnonOsaViite" : "1719023"
+            }, {
+              "nimi" : {
+                "_id" : "1074533",
+                "fi" : "Tutkinnon osa ammatillisesta perustutkinnosta",
+                "sv" : "Examensdel från en yrkesinriktad grundexamen"
+              },
+              "osat" : [ ],
+              "rooli" : "määrittelemätön",
+              "muodostumisSaanto" : {
+                "laajuus" : {
+                  "minimi" : 10,
+                  "maksimi" : 15
+                }
+              }
+            }, {
+              "nimi" : {
+                "_id" : "1074534",
+                "fi" : "Tutkinnon osa ammattitutkinnosta tai erikoisammattitutkinnosta",
+                "sv" : "Examensdel från en yrkesexamen eller en specialyrkesexamen"
+              },
+              "osat" : [ ],
+              "rooli" : "määrittelemätön",
+              "muodostumisSaanto" : {
+                "laajuus" : {
+                  "minimi" : 15,
+                  "maksimi" : 15
+                }
+              }
+            }, {
+              "nimi" : {
+                "_id" : "1074535",
+                "fi" : "Tutkinnon osa ammattikorkeakouluopinnoista",
+                "sv" : "Examensdel från yrkeshögskolestudier"
+              },
+              "osat" : [ ],
+              "rooli" : "määrittelemätön",
+              "muodostumisSaanto" : {
+                "laajuus" : {
+                  "minimi" : 15,
+                  "maksimi" : 15
+                }
+              }
+            }, {
+              "_tutkinnonOsaViite" : "1719024"
+            }, {
+              "_tutkinnonOsaViite" : "1719025"
+            }, {
+              "_tutkinnonOsaViite" : "1719026"
+            }, {
+              "nimi" : {
+                "_id" : "1075074",
+                "fi" : "Paikallisiin ammattitaitovaatimuksiin perutuvia tutkinnon osia",
+                "sv" : "Examensdelar som grundar sig på lokala krav på yrkesskicklighet"
+              },
+              "osat" : [ ],
+              "rooli" : "määrittelemätön",
+              "muodostumisSaanto" : {
+                "laajuus" : {
+                  "minimi" : 5,
+                  "maksimi" : 15
+                }
+              }
+            }, {
+              "nimi" : {
+                "_id" : "1075075",
+                "fi" : "Tutkinnon osa vapaasti valittavista tutkinnon osista",
+                "sv" : "Examensdel från de fritt valbara examensdelarna"
+              },
+              "osat" : [ ],
+              "rooli" : "määrittelemätön",
+              "muodostumisSaanto" : {
+                "laajuus" : {
+                  "minimi" : 5,
+                  "maksimi" : 15
+                }
+              }
+            } ],
+            "rooli" : "määritelty",
+            "muodostumisSaanto" : {
+              "laajuus" : {
+                "minimi" : 45,
+                "maksimi" : 45
+              }
+            }
+          } ],
+          "osaamisala" : {
+            "osaamisalakoodiArvo" : "1626"
+          },
+          "rooli" : "osaamisala",
+          "muodostumisSaanto" : {
+            "laajuus" : {
+              "minimi" : 105,
+              "maksimi" : 105
+            }
+          }
+        }, {
+          "nimi" : {
+            "en" : "Specialisation in Information and Library Services",
+            "fi" : "Tieto- ja kirjastopalvelujen osaamisala",
+            "sv" : "Kompetensområdet för informations- och bibliotekstjänst"
+          },
+          "osat" : [ {
+            "nimi" : {
+              "_id" : "1074536",
+              "fi" : "Pakolliset tutkinnon osat",
+              "sv" : "Obligatoriska examensdelar"
+            },
+            "osat" : [ {
+              "_tutkinnonOsaViite" : "1719120"
+            }, {
+              "_tutkinnonOsaViite" : "1719121"
+            }, {
+              "_tutkinnonOsaViite" : "1719122"
+            }, {
+              "_tutkinnonOsaViite" : "1719123"
+            } ],
+            "rooli" : "määritelty",
+            "muodostumisSaanto" : {
+              "laajuus" : {
+                "minimi" : 75,
+                "maksimi" : 75
+              }
+            }
+          }, {
+            "nimi" : {
+              "_id" : "1074537",
+              "fi" : "Lisäksi valitaan 30 osp",
+              "sv" : "Dessutom bör 30 kp väljas"
+            },
+            "osat" : [ {
+              "_tutkinnonOsaViite" : "1719138"
+            }, {
+              "_tutkinnonOsaViite" : "1719118"
+            }, {
+              "_tutkinnonOsaViite" : "1719124"
+            }, {
+              "_tutkinnonOsaViite" : "1719125"
+            }, {
+              "_tutkinnonOsaViite" : "1719126"
+            }, {
+              "_tutkinnonOsaViite" : "1719127"
+            }, {
+              "_tutkinnonOsaViite" : "1719128"
+            }, {
+              "_tutkinnonOsaViite" : "1719129"
+            }, {
+              "_tutkinnonOsaViite" : "1719130"
+            }, {
+              "_tutkinnonOsaViite" : "1719140"
+            }, {
+              "_tutkinnonOsaViite" : "1719139"
+            }, {
+              "_tutkinnonOsaViite" : "1719131"
+            }, {
+              "_tutkinnonOsaViite" : "1719132"
+            }, {
+              "_tutkinnonOsaViite" : "1719133"
+            }, {
+              "_tutkinnonOsaViite" : "1719134"
+            }, {
+              "_tutkinnonOsaViite" : "1719135"
+            }, {
+              "_tutkinnonOsaViite" : "1719136"
+            }, {
+              "_tutkinnonOsaViite" : "1719023"
+            }, {
+              "nimi" : {
+                "_id" : "1074823",
+                "fi" : "Tutkinnon osa ammatillisesta perustutkinnosta",
+                "sv" : "Examensdel från en yrkesinriktad grundexamen"
+              },
+              "osat" : [ ],
+              "rooli" : "määrittelemätön",
+              "muodostumisSaanto" : {
+                "laajuus" : {
+                  "minimi" : 10,
+                  "maksimi" : 15
+                }
+              }
+            }, {
+              "nimi" : {
+                "_id" : "1074824",
+                "fi" : "Tutkinnon osa ammattitutkinnosta tai erikoisammattitutkinnosta",
+                "sv" : "Examensdel från en yrkesexamen eller en specialyrkesexamen"
+              },
+              "osat" : [ ],
+              "rooli" : "määrittelemätön",
+              "muodostumisSaanto" : {
+                "laajuus" : {
+                  "minimi" : 15,
+                  "maksimi" : 15
+                }
+              }
+            }, {
+              "nimi" : {
+                "_id" : "1074825",
+                "fi" : "Tutkinnon osa ammattikorkeakouluopinnoista",
+                "sv" : "Examensdel från yrkeshögskolestudier"
+              },
+              "osat" : [ ],
+              "rooli" : "määrittelemätön",
+              "muodostumisSaanto" : {
+                "laajuus" : {
+                  "minimi" : 15,
+                  "maksimi" : 15
+                }
+              }
+            }, {
+              "_tutkinnonOsaViite" : "1719024"
+            }, {
+              "_tutkinnonOsaViite" : "1719025"
+            }, {
+              "_tutkinnonOsaViite" : "1719026"
+            }, {
+              "nimi" : {
+                "_id" : "1074826",
+                "fi" : "Paikallisiin ammattitaitovaatimuksiin perustuvia tutkinnon osia",
+                "sv" : "Examensdelar som grundar sig på lokala krav på yrkesskicklighet"
+              },
+              "osat" : [ ],
+              "rooli" : "määrittelemätön",
+              "muodostumisSaanto" : {
+                "laajuus" : {
+                  "minimi" : 5,
+                  "maksimi" : 15
+                }
+              }
+            }, {
+              "nimi" : {
+                "_id" : "1074827",
+                "fi" : "Tutkinnon osa vapaasti valittavista tutkinnon osista",
+                "sv" : "Examensdel från de fritt valbara examensdelarna"
+              },
+              "osat" : [ ],
+              "rooli" : "määrittelemätön",
+              "muodostumisSaanto" : {
+                "laajuus" : {
+                  "minimi" : 5,
+                  "maksimi" : 15
+                }
+              }
+            } ],
+            "rooli" : "määritelty",
+            "muodostumisSaanto" : {
+              "laajuus" : {
+                "minimi" : 30,
+                "maksimi" : 30
+              }
+            }
+          } ],
+          "osaamisala" : {
+            "osaamisalakoodiArvo" : "1563"
+          },
+          "rooli" : "osaamisala",
+          "muodostumisSaanto" : {
+            "laajuus" : {
+              "minimi" : 105,
+              "maksimi" : 105
+            }
+          }
+        } ],
+        "rooli" : "määritelty",
+        "muodostumisSaanto" : {
+          "laajuus" : {
+            "minimi" : 135,
+            "maksimi" : 135
+          }
+        }
+      }, {
+        "nimi" : {
+          "_id" : "1074538",
+          "fi" : "Yhteiset tutkinnon osat",
+          "sv" : "Gemensamma examensdelar"
+        },
+        "osat" : [ {
+          "_tutkinnonOsaViite" : "1719027"
+        }, {
+          "_tutkinnonOsaViite" : "1719028"
+        }, {
+          "_tutkinnonOsaViite" : "1719029"
+        }, {
+          "_tutkinnonOsaViite" : "1719110"
+        } ],
+        "rooli" : "määritelty",
+        "muodostumisSaanto" : {
+          "laajuus" : {
+            "minimi" : 35,
+            "maksimi" : 35
+          }
+        }
+      }, {
+        "nimi" : {
+          "_id" : "1074539",
+          "fi" : "Vapaasti valittavat tutkinnon osat",
+          "sv" : "Fritt valbara examensdelar"
+        },
+        "osat" : [ {
+          "nimi" : {
+            "_id" : "1074828",
+            "fi" : "Ammatillisia tutkinnon osia",
+            "sv" : "Yrkesinriktade examensdelar"
+          },
+          "osat" : [ ],
+          "rooli" : "määrittelemätön",
+          "muodostumisSaanto" : {
+            "laajuus" : {
+              "maksimi" : 10
+            }
+          }
+        }, {
+          "nimi" : {
+            "_id" : "1074829",
+            "fi" : "Paikallisiin ammattitaitovaatimuksiin perustuvia tutkinnon osia",
+            "sv" : "Examensdelar som grundar sig på lokala krav på yrkesskicklighet"
+          },
+          "osat" : [ ],
+          "rooli" : "määrittelemätön",
+          "muodostumisSaanto" : {
+            "laajuus" : {
+              "maksimi" : 10
+            }
+          }
+        }, {
+          "nimi" : {
+            "_id" : "1289764",
+            "fi" : "Yhteisten tutkinnon osien osa-alueita tai lukio-opintoja",
+            "sv" : "Delområden av gemensamma examensdelar eller gymnasiestudier"
+          },
+          "osat" : [ ],
+          "rooli" : "määrittelemätön",
+          "muodostumisSaanto" : {
+            "laajuus" : {
+              "maksimi" : 10
+            }
+          }
+        }, {
+          "nimi" : {
+            "_id" : "1075001",
+            "fi" : "Jatko-opintovalmiuksia tai ammatillista kehittymistä tukevia opintoja",
+            "sv" : "Studier som stöder förutsättningarna för fortsatta studier eller yrkesmässig utveckling"
+          },
+          "osat" : [ ],
+          "rooli" : "määrittelemätön",
+          "muodostumisSaanto" : {
+            "laajuus" : {
+              "maksimi" : 10
+            }
+          }
+        }, {
+          "nimi" : {
+            "_id" : "1075002",
+            "fi" : "Työkokemuksen kautta hankittuun osaamiseen perustuvia yksilöllisiä tutkinnon osia",
+            "sv" : "Individuella examensdelar som baserar sig på kunnande som förvärvats via arbetserfarenhet"
+          },
+          "osat" : [ ],
+          "rooli" : "määrittelemätön",
+          "muodostumisSaanto" : {
+            "laajuus" : {
+              "maksimi" : 10
+            }
+          }
+        } ],
+        "rooli" : "määritelty",
+        "muodostumisSaanto" : {
+          "laajuus" : {
+            "minimi" : 10,
+            "maksimi" : 10
+          }
+        }
+      }, {
+        "nimi" : {
+          "_id" : "1075003",
+          "fi" : "Tutkintoa yksilöllisesti laajentavat tutkinnon osat",
+          "sv" : "Examensdelar som individuellt utvidgar examen"
+        },
+        "osat" : [ ],
+        "rooli" : "määrittelemätön"
+      } ],
+      "rooli" : "määritelty",
+      "muodostumisSaanto" : {
+        "laajuus" : {
+          "minimi" : 180,
+          "maksimi" : 180
+        }
+      }
+    },
+    "tutkinnonOsaViitteet" : [ {
+      "id" : 1719127,
+      "_tutkinnonOsa" : "94804"
+    }, {
+      "id" : 1719114,
+      "_tutkinnonOsa" : "92401"
+    }, {
+      "id" : 1719115,
+      "_tutkinnonOsa" : "92402"
+    }, {
+      "id" : 1719023,
+      "_tutkinnonOsa" : "632"
+    }, {
+      "id" : 1719126,
+      "_tutkinnonOsa" : "94803"
+    }, {
+      "id" : 1719129,
+      "_tutkinnonOsa" : "94806"
+    }, {
+      "id" : 1719125,
+      "_tutkinnonOsa" : "94802"
+    }, {
+      "id" : 1719122,
+      "_tutkinnonOsa" : "92409"
+    }, {
+      "id" : 1719135,
+      "_tutkinnonOsa" : "96732"
+    }, {
+      "id" : 1719128,
+      "_tutkinnonOsa" : "94805"
+    }, {
+      "id" : 1719025,
+      "_tutkinnonOsa" : "634"
+    }, {
+      "id" : 1719139,
+      "_tutkinnonOsa" : "202310"
+    }, {
+      "id" : 1719119,
+      "_tutkinnonOsa" : "92406"
+    }, {
+      "id" : 1719113,
+      "_tutkinnonOsa" : "92400"
+    }, {
+      "id" : 1719116,
+      "_tutkinnonOsa" : "92403"
+    }, {
+      "id" : 1719138,
+      "_tutkinnonOsa" : "200659"
+    }, {
+      "id" : 1719110,
+      "_tutkinnonOsa" : "1784888"
+    }, {
+      "id" : 1719131,
+      "_tutkinnonOsa" : "94808"
+    }, {
+      "id" : 1719134,
+      "_tutkinnonOsa" : "96731"
+    }, {
+      "id" : 1719118,
+      "_tutkinnonOsa" : "92405"
+    }, {
+      "id" : 1719133,
+      "_tutkinnonOsa" : "96730"
+    }, {
+      "id" : 1719027,
+      "_tutkinnonOsa" : "1784884"
+    }, {
+      "id" : 1719137,
+      "_tutkinnonOsa" : "185831"
+    }, {
+      "id" : 1719140,
+      "_tutkinnonOsa" : "202311"
+    }, {
+      "id" : 1719024,
+      "_tutkinnonOsa" : "633"
+    }, {
+      "id" : 1719111,
+      "_tutkinnonOsa" : "91518"
+    }, {
+      "id" : 1719132,
+      "_tutkinnonOsa" : "94809"
+    }, {
+      "id" : 1719029,
+      "_tutkinnonOsa" : "1784887"
+    }, {
+      "id" : 1719120,
+      "_tutkinnonOsa" : "92407"
+    }, {
+      "id" : 1719117,
+      "_tutkinnonOsa" : "92404"
+    }, {
+      "id" : 1719026,
+      "_tutkinnonOsa" : "635"
+    }, {
+      "id" : 1719136,
+      "_tutkinnonOsa" : "96733"
+    }, {
+      "id" : 1719130,
+      "_tutkinnonOsa" : "94807"
+    }, {
+      "id" : 1719124,
+      "_tutkinnonOsa" : "94801"
+    }, {
+      "id" : 1719123,
+      "_tutkinnonOsa" : "94800"
+    }, {
+      "id" : 1719028,
+      "_tutkinnonOsa" : "1784885"
+    }, {
+      "id" : 1719112,
+      "_tutkinnonOsa" : "91519"
+    }, {
+      "id" : 1719121,
+      "_tutkinnonOsa" : "92408"
+    } ]
+  }, {
+    "suoritustapakoodi" : "naytto",
+    "laajuusYksikko" : "OSAAMISPISTE",
+    "rakenne" : {
+      "osat" : [ {
+        "nimi" : {
+          "_id" : "1075636",
+          "fi" : "Ammatilliset tutkinnon osat",
+          "sv" : "Yrkesinriktade examensdelar"
+        },
+        "osat" : [ {
+          "nimi" : {
+            "_id" : "1075637",
+            "fi" : "Pakollinen tutkinnon osa",
+            "sv" : "Obligatorisk examensdel"
+          },
+          "osat" : [ {
+            "_tutkinnonOsaViite" : "1719145"
+          } ],
+          "rooli" : "määritelty",
+          "muodostumisSaanto" : {
+            "koko" : {
+              "minimi" : 1,
+              "maksimi" : 1
+            }
+          }
+        }, {
+          "nimi" : {
+            "en" : "Specialisation in Customer Services and Sales",
+            "fi" : "Asiakaspalvelun ja myynnin osaamisala",
+            "sv" : "Kompetensområdet för kundbetjäning och försäljning"
+          },
+          "osat" : [ {
+            "nimi" : {
+              "_id" : "1075638",
+              "fi" : "Valittava vaihtoehto 1 tai 2",
+              "sv" : "Alternativ 1 eller alternativ 2 bör väljas"
+            },
+            "osat" : [ {
+              "nimi" : {
+                "_id" : "1075639",
+                "fi" : "Vaihtoehto 1",
+                "sv" : "Alternativ 1"
+              },
+              "osat" : [ {
+                "_tutkinnonOsaViite" : "1719146"
+              }, {
+                "_tutkinnonOsaViite" : "1719142"
+              }, {
+                "_tutkinnonOsaViite" : "1719141"
+              }, {
+                "_tutkinnonOsaViite" : "1719147"
+              }, {
+                "_tutkinnonOsaViite" : "1719144"
+              }, {
+                "_tutkinnonOsaViite" : "1719218"
+              }, {
+                "nimi" : {
+                  "_id" : "1076376",
+                  "fi" : "Lisäksi valitaan vaihtoehto A tai B",
+                  "sv" : "Dessutom bör alternativ A eller alternativ B väljas"
+                },
+                "osat" : [ {
+                  "nimi" : {
+                    "_id" : "1076080",
+                    "fi" : "Vaihtoehto A",
+                    "sv" : "Alternativ A"
+                  },
+                  "osat" : [ {
+                    "nimi" : {
+                      "_id" : "1076377",
+                      "fi" : "Valitaan yksi tutkinnon osa",
+                      "sv" : "En examensdel bör väljas"
+                    },
+                    "osat" : [ {
+                      "_tutkinnonOsaViite" : "1719220"
+                    }, {
+                      "_tutkinnonOsaViite" : "1719148"
+                    }, {
+                      "_tutkinnonOsaViite" : "1719149"
+                    } ],
+                    "rooli" : "määritelty",
+                    "muodostumisSaanto" : {
+                      "koko" : {
+                        "minimi" : 1,
+                        "maksimi" : 1
+                      }
+                    }
+                  }, {
+                    "nimi" : {
+                      "_id" : "1076378",
+                      "fi" : "Lisäksi valitaan yksi tutkinnon osa",
+                      "sv" : "Dessutom bör en examensdel väljas"
+                    },
+                    "osat" : [ {
+                      "_tutkinnonOsaViite" : "1719205"
+                    }, {
+                      "_tutkinnonOsaViite" : "1719206"
+                    }, {
+                      "_tutkinnonOsaViite" : "1719207"
+                    }, {
+                      "_tutkinnonOsaViite" : "1719208"
+                    }, {
+                      "_tutkinnonOsaViite" : "1719211"
+                    }, {
+                      "_tutkinnonOsaViite" : "1719221"
+                    }, {
+                      "_tutkinnonOsaViite" : "1719219"
+                    }, {
+                      "_tutkinnonOsaViite" : "1719210"
+                    }, {
+                      "_tutkinnonOsaViite" : "1719143"
+                    }, {
+                      "nimi" : {
+                        "_id" : "1076379",
+                        "fi" : "Tutkinnon osa ammatillisesta perustutkinnosta",
+                        "sv" : "Examensdel från en yrkesinriktad grundexamen"
+                      },
+                      "osat" : [ ],
+                      "rooli" : "määrittelemätön"
+                    }, {
+                      "nimi" : {
+                        "_id" : "1076480",
+                        "fi" : "Tutkinnon osa ammattitutkinnosta tai erikoisammattitutkinnosta",
+                        "sv" : "Examensdel från en yrkesexamen eller en specialyrkesexamen"
+                      },
+                      "osat" : [ ],
+                      "rooli" : "määrittelemätön"
+                    } ],
+                    "rooli" : "määritelty",
+                    "muodostumisSaanto" : {
+                      "koko" : {
+                        "minimi" : 1,
+                        "maksimi" : 1
+                      }
+                    }
+                  } ],
+                  "rooli" : "määritelty"
+                }, {
+                  "nimi" : {
+                    "_id" : "1076481",
+                    "fi" : "Vaihtoehto B",
+                    "sv" : "Alternativ B"
+                  },
+                  "osat" : [ {
+                    "nimi" : {
+                      "_id" : "1076482",
+                      "fi" : "Valitaan kolme tutkinnon osaa",
+                      "sv" : "Tre examensdelar bör väljas"
+                    },
+                    "osat" : [ {
+                      "_tutkinnonOsaViite" : "1719205"
+                    }, {
+                      "_tutkinnonOsaViite" : "1719206"
+                    }, {
+                      "_tutkinnonOsaViite" : "1719207"
+                    }, {
+                      "_tutkinnonOsaViite" : "1719208"
+                    }, {
+                      "_tutkinnonOsaViite" : "1719211"
+                    }, {
+                      "_tutkinnonOsaViite" : "1719221"
+                    }, {
+                      "_tutkinnonOsaViite" : "1719219"
+                    }, {
+                      "_tutkinnonOsaViite" : "1719210"
+                    }, {
+                      "_tutkinnonOsaViite" : "1719143"
+                    }, {
+                      "nimi" : {
+                        "_id" : "1076489",
+                        "fi" : "Tutkinnon osa ammatillisesta perustutkinnosta",
+                        "sv" : "Examensdel från en yrkesinriktad grundexamen"
+                      },
+                      "osat" : [ ],
+                      "rooli" : "määrittelemätön"
+                    }, {
+                      "nimi" : {
+                        "_id" : "1076710",
+                        "fi" : "Tutkinnon osa ammattitutkinnosta tai erikoisammattitutkinnosta",
+                        "sv" : "Examensdel från en yrkesexamen eller en specialyrkesexamen"
+                      },
+                      "osat" : [ ],
+                      "rooli" : "määrittelemätön"
+                    } ],
+                    "rooli" : "määritelty",
+                    "muodostumisSaanto" : {
+                      "koko" : {
+                        "minimi" : 3,
+                        "maksimi" : 3
+                      }
+                    }
+                  } ],
+                  "rooli" : "määritelty"
+                } ],
+                "rooli" : "määritelty"
+              } ],
+              "rooli" : "määritelty",
+              "muodostumisSaanto" : {
+                "koko" : {
+                  "minimi" : 2,
+                  "maksimi" : 2
+                }
+              }
+            }, {
+              "nimi" : {
+                "_id" : "1076081",
+                "fi" : "Vaihtoehto 2",
+                "sv" : "Alternativ 2"
+              },
+              "osat" : [ {
+                "nimi" : {
+                  "_id" : "1076711",
+                  "fi" : "Valitaan yksi tutkinnon osa ryhmästä A, B ja C",
+                  "sv" : "En examensdel bör väljas från grupp A, B och C"
+                },
+                "osat" : [ {
+                  "nimi" : {
+                    "_id" : "1076082",
+                    "fi" : "Ryhmä A",
+                    "sv" : "Grupp A"
+                  },
+                  "osat" : [ {
+                    "_tutkinnonOsaViite" : "1719146"
+                  }, {
+                    "_tutkinnonOsaViite" : "1719142"
+                  }, {
+                    "_tutkinnonOsaViite" : "1719141"
+                  }, {
+                    "_tutkinnonOsaViite" : "1719147"
+                  }, {
+                    "_tutkinnonOsaViite" : "1719144"
+                  }, {
+                    "_tutkinnonOsaViite" : "1719218"
+                  } ],
+                  "rooli" : "määritelty",
+                  "muodostumisSaanto" : {
+                    "koko" : {
+                      "minimi" : 1,
+                      "maksimi" : 1
+                    }
+                  }
+                }, {
+                  "nimi" : {
+                    "_id" : "1076083",
+                    "fi" : "Ryhmä B",
+                    "sv" : "Grupp B"
+                  },
+                  "osat" : [ {
+                    "_tutkinnonOsaViite" : "1719220"
+                  }, {
+                    "_tutkinnonOsaViite" : "1719148"
+                  }, {
+                    "_tutkinnonOsaViite" : "1719149"
+                  } ],
+                  "rooli" : "määritelty",
+                  "muodostumisSaanto" : {
+                    "koko" : {
+                      "minimi" : 1,
+                      "maksimi" : 1
+                    }
+                  }
+                }, {
+                  "nimi" : {
+                    "_id" : "1076084",
+                    "fi" : "Ryhmä C",
+                    "sv" : "Grupp C"
+                  },
+                  "osat" : [ {
+                    "_tutkinnonOsaViite" : "1719205"
+                  }, {
+                    "_tutkinnonOsaViite" : "1719206"
+                  }, {
+                    "_tutkinnonOsaViite" : "1719207"
+                  }, {
+                    "_tutkinnonOsaViite" : "1719208"
+                  }, {
+                    "_tutkinnonOsaViite" : "1719211"
+                  }, {
+                    "_tutkinnonOsaViite" : "1719221"
+                  }, {
+                    "_tutkinnonOsaViite" : "1719219"
+                  }, {
+                    "_tutkinnonOsaViite" : "1719210"
+                  } ],
+                  "rooli" : "määritelty",
+                  "muodostumisSaanto" : {
+                    "koko" : {
+                      "minimi" : 1,
+                      "maksimi" : 1
+                    }
+                  }
+                }, {
+                  "nimi" : {
+                    "_id" : "1076712",
+                    "fi" : "Lisäksi valitaan vaihtoehto 1 tai 2",
+                    "sv" : "Dessutom bör alternativ 1 eller alternativ 2 väljas"
+                  },
+                  "osat" : [ {
+                    "nimi" : {
+                      "_id" : "1076085",
+                      "fi" : "Vaihtoehto 1",
+                      "sv" : "Alternativ 1"
+                    },
+                    "osat" : [ {
+                      "_tutkinnonOsaViite" : "1719146"
+                    }, {
+                      "_tutkinnonOsaViite" : "1719142"
+                    }, {
+                      "_tutkinnonOsaViite" : "1719141"
+                    }, {
+                      "_tutkinnonOsaViite" : "1719147"
+                    }, {
+                      "_tutkinnonOsaViite" : "1719144"
+                    }, {
+                      "_tutkinnonOsaViite" : "1719218"
+                    } ],
+                    "rooli" : "määritelty",
+                    "muodostumisSaanto" : {
+                      "koko" : {
+                        "minimi" : 1,
+                        "maksimi" : 1
+                      }
+                    }
+                  }, {
+                    "nimi" : {
+                      "_id" : "1076086",
+                      "fi" : "Vaihtoehto 2",
+                      "sv" : "Alternativ 2"
+                    },
+                    "osat" : [ {
+                      "_tutkinnonOsaViite" : "1719205"
+                    }, {
+                      "_tutkinnonOsaViite" : "1719206"
+                    }, {
+                      "_tutkinnonOsaViite" : "1719207"
+                    }, {
+                      "_tutkinnonOsaViite" : "1719208"
+                    }, {
+                      "_tutkinnonOsaViite" : "1719211"
+                    }, {
+                      "_tutkinnonOsaViite" : "1719221"
+                    }, {
+                      "_tutkinnonOsaViite" : "1719219"
+                    }, {
+                      "_tutkinnonOsaViite" : "1719210"
+                    }, {
+                      "_tutkinnonOsaViite" : "1719143"
+                    }, {
+                      "nimi" : {
+                        "_id" : "1076715",
+                        "fi" : "Tutkinnon osa ammatillisesta perustutkinnosta",
+                        "sv" : "Examensdel från en yrkesinriktad grundexamen"
+                      },
+                      "osat" : [ ],
+                      "rooli" : "määrittelemätön"
+                    }, {
+                      "nimi" : {
+                        "_id" : "1076716",
+                        "fi" : "Tutkinnon osa ammattitutkinnosta tai erikoisammattitutkinnosta",
+                        "sv" : "Examensdel från en yrkesexamen eller en specialyrkesexamen"
+                      },
+                      "osat" : [ ],
+                      "rooli" : "määrittelemätön"
+                    } ],
+                    "rooli" : "määritelty",
+                    "muodostumisSaanto" : {
+                      "koko" : {
+                        "minimi" : 2,
+                        "maksimi" : 2
+                      }
+                    }
+                  } ],
+                  "rooli" : "määritelty"
+                } ],
+                "rooli" : "määritelty"
+              } ],
+              "rooli" : "määritelty"
+            } ],
+            "rooli" : "määritelty"
+          } ],
+          "osaamisala" : {
+            "osaamisalakoodiArvo" : "1625"
+          },
+          "rooli" : "osaamisala"
+        }, {
+          "nimi" : {
+            "en" : "Specialisation in Financial and Office Services",
+            "fi" : "Talous- ja toimistopalvelujen osaamisala",
+            "sv" : "Kompetensområdet för ekonomi- och kontorsservice"
+          },
+          "osat" : [ {
+            "nimi" : {
+              "_id" : "1076087",
+              "fi" : "Pakollinen tutkinnon osa",
+              "sv" : "Obligatorisk examensdel"
+            },
+            "osat" : [ {
+              "_tutkinnonOsaViite" : "1719220"
+            } ],
+            "rooli" : "määritelty",
+            "muodostumisSaanto" : {
+              "koko" : {
+                "minimi" : 1,
+                "maksimi" : 1
+              }
+            }
+          }, {
+            "nimi" : {
+              "_id" : "1076088",
+              "fi" : "Valitaan yksi tutkinnon osa",
+              "sv" : "En examensdel bör väljas"
+            },
+            "osat" : [ {
+              "_tutkinnonOsaViite" : "1719148"
+            }, {
+              "_tutkinnonOsaViite" : "1719149"
+            }, {
+              "_tutkinnonOsaViite" : "1719200"
+            } ],
+            "rooli" : "määritelty",
+            "muodostumisSaanto" : {
+              "koko" : {
+                "minimi" : 1,
+                "maksimi" : 1
+              }
+            }
+          }, {
+            "nimi" : {
+              "_id" : "1076717",
+              "fi" : "Lisäksi valitaan vaihtoehto 1 tai 2",
+              "sv" : "Dessutom bör alternativ 1 eller 2 väljas"
+            },
+            "osat" : [ {
+              "nimi" : {
+                "_id" : "1076089",
+                "fi" : "Vaihtoehto 1",
+                "sv" : "Alternativ 1"
+              },
+              "osat" : [ {
+                "nimi" : {
+                  "_id" : "1076718",
+                  "fi" : "Valitaan yksi tutkinnon osa",
+                  "sv" : "En examensdel bör väljas"
+                },
+                "osat" : [ {
+                  "_tutkinnonOsaViite" : "1719146"
+                }, {
+                  "_tutkinnonOsaViite" : "1719142"
+                }, {
+                  "_tutkinnonOsaViite" : "1719141"
+                }, {
+                  "_tutkinnonOsaViite" : "1719212"
+                }, {
+                  "_tutkinnonOsaViite" : "1719144"
+                }, {
+                  "_tutkinnonOsaViite" : "1719218"
+                }, {
+                  "_tutkinnonOsaViite" : "1719148"
+                }, {
+                  "_tutkinnonOsaViite" : "1719149"
+                }, {
+                  "_tutkinnonOsaViite" : "1719200"
+                } ],
+                "rooli" : "määritelty"
+              }, {
+                "nimi" : {
+                  "_id" : "1076719",
+                  "fi" : "Valitaan yksi tutkinnon osa",
+                  "sv" : "En examensdel bör väljas"
+                },
+                "osat" : [ {
+                  "_tutkinnonOsaViite" : "1719206"
+                }, {
+                  "_tutkinnonOsaViite" : "1719207"
+                }, {
+                  "_tutkinnonOsaViite" : "1719208"
+                }, {
+                  "_tutkinnonOsaViite" : "1719209"
+                }, {
+                  "_tutkinnonOsaViite" : "1719212"
+                }, {
+                  "_tutkinnonOsaViite" : "1719211"
+                }, {
+                  "_tutkinnonOsaViite" : "1719221"
+                }, {
+                  "_tutkinnonOsaViite" : "1719219"
+                }, {
+                  "_tutkinnonOsaViite" : "1719210"
+                }, {
+                  "_tutkinnonOsaViite" : "1719143"
+                }, {
+                  "nimi" : {
+                    "_id" : "1076984",
+                    "fi" : "Tutkinnon osa ammatillisesta perustutkinnosta",
+                    "sv" : "Examensdel från en yrkesinriktad grundexamen"
+                  },
+                  "osat" : [ ],
+                  "rooli" : "määrittelemätön"
+                }, {
+                  "nimi" : {
+                    "_id" : "1076985",
+                    "fi" : "Tutkinnon osa ammattitutkinnosta tai erikoisammattitutkinnosta",
+                    "sv" : "Examensdel från en yrkesexamen eller en specialyrkesexamen"
+                  },
+                  "osat" : [ ],
+                  "rooli" : "määrittelemätön"
+                } ],
+                "rooli" : "määritelty"
+              } ],
+              "rooli" : "määritelty",
+              "muodostumisSaanto" : {
+                "koko" : {
+                  "minimi" : 2,
+                  "maksimi" : 2
+                }
+              }
+            }, {
+              "nimi" : {
+                "_id" : "1076370",
+                "fi" : "Vaihtoehto 2",
+                "sv" : "Alternativ 2"
+              },
+              "osat" : [ {
+                "nimi" : {
+                  "_id" : "1076980",
+                  "fi" : "Valitaan kolme tutkinnon osaa",
+                  "sv" : "Tre examensdelar bör väljas"
+                },
+                "osat" : [ {
+                  "_tutkinnonOsaViite" : "1719206"
+                }, {
+                  "_tutkinnonOsaViite" : "1719207"
+                }, {
+                  "_tutkinnonOsaViite" : "1719208"
+                }, {
+                  "_tutkinnonOsaViite" : "1719209"
+                }, {
+                  "_tutkinnonOsaViite" : "1719212"
+                }, {
+                  "_tutkinnonOsaViite" : "1719211"
+                }, {
+                  "_tutkinnonOsaViite" : "1719221"
+                }, {
+                  "_tutkinnonOsaViite" : "1719219"
+                }, {
+                  "_tutkinnonOsaViite" : "1719210"
+                }, {
+                  "_tutkinnonOsaViite" : "1719143"
+                }, {
+                  "nimi" : {
+                    "_id" : "1076981",
+                    "fi" : "Tutkinnon osa ammatillisesta perustutkinnosta",
+                    "sv" : "Examensdel från en yrkesinriktad grundexamen"
+                  },
+                  "osat" : [ ],
+                  "rooli" : "määrittelemätön"
+                }, {
+                  "nimi" : {
+                    "_id" : "1076982",
+                    "fi" : "Tutkinnon osa ammattitutkinnosta tai erikoisammattitutkinnosta",
+                    "sv" : "Examensdel från en yrkesexamen eller en specialyrkesexamen"
+                  },
+                  "osat" : [ ],
+                  "rooli" : "määrittelemätön"
+                } ],
+                "rooli" : "määritelty",
+                "muodostumisSaanto" : {
+                  "koko" : {
+                    "minimi" : 3,
+                    "maksimi" : 3
+                  }
+                }
+              } ],
+              "rooli" : "määritelty"
+            } ],
+            "rooli" : "määritelty"
+          } ],
+          "osaamisala" : {
+            "osaamisalakoodiArvo" : "1626"
+          },
+          "rooli" : "osaamisala"
+        }, {
+          "nimi" : {
+            "en" : "Specialisation in Information and Library Services",
+            "fi" : "Tieto- ja kirjastopalvelujen osaamisala",
+            "sv" : "Kompetensområdet för informations- och bibliotekstjänst"
+          },
+          "osat" : [ {
+            "nimi" : {
+              "_id" : "1076371",
+              "fi" : "Pakolliset tutkinnon osat",
+              "sv" : "Obligatoriska examensdelar"
+            },
+            "osat" : [ {
+              "_tutkinnonOsaViite" : "1719203"
+            }, {
+              "_tutkinnonOsaViite" : "1719201"
+            }, {
+              "_tutkinnonOsaViite" : "1719204"
+            }, {
+              "_tutkinnonOsaViite" : "1719202"
+            } ],
+            "rooli" : "määritelty",
+            "muodostumisSaanto" : {
+              "koko" : {
+                "minimi" : 4,
+                "maksimi" : 4
+              }
+            }
+          }, {
+            "nimi" : {
+              "_id" : "1076372",
+              "fi" : "Valitaan yksi tutkinnon osa",
+              "sv" : "En examensdel bör väljas"
+            },
+            "osat" : [ {
+              "_tutkinnonOsaViite" : "1719220"
+            }, {
+              "_tutkinnonOsaViite" : "1719149"
+            } ],
+            "rooli" : "määritelty",
+            "muodostumisSaanto" : {
+              "koko" : {
+                "minimi" : 1,
+                "maksimi" : 1
+              }
+            }
+          }, {
+            "nimi" : {
+              "_id" : "1076373",
+              "fi" : "Valitaan kaksi tutkinnon osaa",
+              "sv" : "Två examensdelar bör väljas"
+            },
+            "osat" : [ {
+              "_tutkinnonOsaViite" : "1719205"
+            }, {
+              "_tutkinnonOsaViite" : "1719206"
+            }, {
+              "_tutkinnonOsaViite" : "1719207"
+            }, {
+              "_tutkinnonOsaViite" : "1719208"
+            }, {
+              "_tutkinnonOsaViite" : "1719209"
+            }, {
+              "_tutkinnonOsaViite" : "1719212"
+            }, {
+              "_tutkinnonOsaViite" : "1719211"
+            }, {
+              "_tutkinnonOsaViite" : "1719221"
+            }, {
+              "_tutkinnonOsaViite" : "1719219"
+            }, {
+              "_tutkinnonOsaViite" : "1719210"
+            }, {
+              "_tutkinnonOsaViite" : "1719213"
+            }, {
+              "_tutkinnonOsaViite" : "1719214"
+            }, {
+              "_tutkinnonOsaViite" : "1719215"
+            }, {
+              "_tutkinnonOsaViite" : "1719216"
+            }, {
+              "_tutkinnonOsaViite" : "1719217"
+            }, {
+              "_tutkinnonOsaViite" : "1719143"
+            }, {
+              "nimi" : {
+                "_id" : "1076374",
+                "fi" : "Tutkinnon osa ammatillisesta perustutkinnosta",
+                "sv" : "Examensdel från en yrkesinriktad grundexamen"
+              },
+              "osat" : [ ],
+              "rooli" : "määrittelemätön"
+            }, {
+              "nimi" : {
+                "_id" : "1076375",
+                "fi" : "Tutkinnon osa ammattitutkinnosta tai erikoisammattitutkinnosta",
+                "sv" : "Examensdel från en yrkesexamen eller en specialyrkesexamen"
+              },
+              "osat" : [ ],
+              "rooli" : "määrittelemätön"
+            } ],
+            "rooli" : "määritelty",
+            "muodostumisSaanto" : {
+              "koko" : {
+                "minimi" : 2,
+                "maksimi" : 2
+              }
+            }
+          } ],
+          "osaamisala" : {
+            "osaamisalakoodiArvo" : "1563"
+          },
+          "rooli" : "osaamisala"
+        } ],
+        "rooli" : "määritelty"
+      } ]
+    },
+    "tutkinnonOsaViitteet" : [ {
+      "id" : 1719207,
+      "_tutkinnonOsa" : "94803"
+    }, {
+      "id" : 1719218,
+      "_tutkinnonOsa" : "185831"
+    }, {
+      "id" : 1719142,
+      "_tutkinnonOsa" : "92401"
+    }, {
+      "id" : 1719206,
+      "_tutkinnonOsa" : "94802"
+    }, {
+      "id" : 1719143,
+      "_tutkinnonOsa" : "632"
+    }, {
+      "id" : 1719217,
+      "_tutkinnonOsa" : "96733"
+    }, {
+      "id" : 1719200,
+      "_tutkinnonOsa" : "92406"
+    }, {
+      "id" : 1719141,
+      "_tutkinnonOsa" : "91519"
+    }, {
+      "id" : 1719145,
+      "_tutkinnonOsa" : "91518"
+    }, {
+      "id" : 1719219,
+      "_tutkinnonOsa" : "202310"
+    }, {
+      "id" : 1719215,
+      "_tutkinnonOsa" : "96731"
+    }, {
+      "id" : 1719205,
+      "_tutkinnonOsa" : "94801"
+    }, {
+      "id" : 1719144,
+      "_tutkinnonOsa" : "92400"
+    }, {
+      "id" : 1719147,
+      "_tutkinnonOsa" : "92403"
+    }, {
+      "id" : 1719211,
+      "_tutkinnonOsa" : "94807"
+    }, {
+      "id" : 1719208,
+      "_tutkinnonOsa" : "94804"
+    }, {
+      "id" : 1719202,
+      "_tutkinnonOsa" : "94800"
+    }, {
+      "id" : 1719146,
+      "_tutkinnonOsa" : "92402"
+    }, {
+      "id" : 1719214,
+      "_tutkinnonOsa" : "96730"
+    }, {
+      "id" : 1719212,
+      "_tutkinnonOsa" : "94806"
+    }, {
+      "id" : 1719204,
+      "_tutkinnonOsa" : "92409"
+    }, {
+      "id" : 1719213,
+      "_tutkinnonOsa" : "94809"
+    }, {
+      "id" : 1719203,
+      "_tutkinnonOsa" : "92407"
+    }, {
+      "id" : 1719221,
+      "_tutkinnonOsa" : "202311"
+    }, {
+      "id" : 1719220,
+      "_tutkinnonOsa" : "200659"
+    }, {
+      "id" : 1719209,
+      "_tutkinnonOsa" : "94805"
+    }, {
+      "id" : 1719148,
+      "_tutkinnonOsa" : "92404"
+    }, {
+      "id" : 1719201,
+      "_tutkinnonOsa" : "92408"
+    }, {
+      "id" : 1719149,
+      "_tutkinnonOsa" : "92405"
+    }, {
+      "id" : 1719210,
+      "_tutkinnonOsa" : "94808"
+    }, {
+      "id" : 1719216,
+      "_tutkinnonOsa" : "96732"
+    } ]
+  } ],
+  "tutkinnonOsat" : [ {
+    "id" : 632,
+    "nimi" : {
+      "fi" : "Yritystoiminnan suunnittelu",
+      "sv" : "Planering av företagsverksamhet"
+    },
+    "koodiArvo" : "101050"
+  }, {
+    "id" : 633,
+    "nimi" : {
+      "fi" : "Työpaikkaohjaajaksi valmentautuminen",
+      "sv" : "Förberedelse för arbetsplatshandledaruppgifter"
+    },
+    "koodiArvo" : "101040"
+  }, {
+    "id" : 634,
+    "nimi" : {
+      "fi" : "Yrityksessä toimiminen",
+      "sv" : "Arbeta i ett företag"
+    },
+    "koodiArvo" : "101052"
+  }, {
+    "id" : 635,
+    "nimi" : {
+      "fi" : "Huippuosaajana toimiminen",
+      "sv" : "Arbete som kräver spetskompetens"
+    },
+    "koodiArvo" : "101051"
+  }, {
+    "id" : 1784884,
+    "nimi" : {
+      "fi" : "Viestintä- ja vuorovaikutusosaaminen",
+      "sv" : "Kunnande i kommunikation och interaktion"
+    },
+    "koodiArvo" : "101053"
+  }, {
+    "id" : 1784885,
+    "nimi" : {
+      "fi" : "Matemaattis-luonnontieteellinen osaaminen",
+      "sv" : "Kunnande i matematik och naturvetenskap"
+    },
+    "koodiArvo" : "101054"
+  }, {
+    "id" : 1784887,
+    "nimi" : {
+      "fi" : "Yhteiskunnassa ja työelämässä tarvittava osaaminen",
+      "sv" : "Kunnande som behövs i samhället och i arbetslivet"
+    },
+    "koodiArvo" : "101055"
+  }, {
+    "id" : 1784888,
+    "nimi" : {
+      "fi" : "Sosiaalinen ja kulttuurinen osaaminen",
+      "sv" : "Socialt och kulturellt kunnande"
+    },
+    "koodiArvo" : "101056"
+  }, {
+    "id" : 91518,
+    "nimi" : {
+      "fi" : "Asiakaspalvelu",
+      "sv" : "Kundservice"
+    },
+    "koodiArvo" : "100359"
+  }, {
+    "id" : 91519,
+    "nimi" : {
+      "fi" : "Visuaalinen myyntityö",
+      "sv" : "Visuellt säljarbete"
+    },
+    "koodiArvo" : "100362"
+  }, {
+    "id" : 92400,
+    "nimi" : {
+      "fi" : "Myynnin tukipalvelut",
+      "sv" : "Stödtjänster inom försäljning"
+    },
+    "koodiArvo" : "100364"
+  }, {
+    "id" : 92401,
+    "nimi" : {
+      "fi" : "Asiakkuuksien hoito",
+      "sv" : "Vård av kundrelationer"
+    },
+    "koodiArvo" : "100361"
+  }, {
+    "id" : 92402,
+    "nimi" : {
+      "fi" : "Kaupan palvelu ja myynti",
+      "sv" : "Butiksservice och -försäljning"
+    },
+    "koodiArvo" : "100360"
+  }, {
+    "id" : 92403,
+    "nimi" : {
+      "fi" : "Kansainvälisen kaupan tukipalvelut",
+      "sv" : "Stödtjänster inom internationell handel"
+    },
+    "koodiArvo" : "100363"
+  }, {
+    "id" : 92404,
+    "nimi" : {
+      "fi" : "Kirjanpito",
+      "sv" : "Bokföring"
+    },
+    "koodiArvo" : "100366"
+  }, {
+    "id" : 92405,
+    "nimi" : {
+      "fi" : "Toimistopalvelut",
+      "sv" : "Kontorstjänster"
+    },
+    "koodiArvo" : "100367"
+  }, {
+    "id" : 92406,
+    "nimi" : {
+      "fi" : "Palkanlaskenta",
+      "sv" : "Löneräkning"
+    },
+    "koodiArvo" : "100368"
+  }, {
+    "id" : 92407,
+    "nimi" : {
+      "fi" : "Tieto- ja kirjastopalvelu",
+      "sv" : "Informations- och biblioteksservice"
+    },
+    "koodiArvo" : "100369"
+  }, {
+    "id" : 92408,
+    "nimi" : {
+      "fi" : "Tiedottaminen sekä kirjastonkäytön ja tiedonhaun opastus",
+      "sv" : "Information och vägledning i biblioteksanvändning och informationssökning"
+    },
+    "koodiArvo" : "100370"
+  }, {
+    "id" : 92409,
+    "nimi" : {
+      "fi" : "Aineiston hankinta ja kokoelman ylläpito",
+      "sv" : "Förvärv till och underhåll av samlingar"
+    },
+    "koodiArvo" : "100371"
+  }, {
+    "id" : 94800,
+    "nimi" : {
+      "fi" : "Aineiston tallentaminen, kuvailu ja esittely",
+      "sv" : "Registrera, beskriva och presentera material"
+    },
+    "koodiArvo" : "100372"
+  }, {
+    "id" : 94801,
+    "nimi" : {
+      "fi" : "Markkinointiviestinnän toimenpiteiden suunnittelu ja toteutus",
+      "sv" : "Planering och genomförande av aktiviteter inom marknadskommunikation"
+    },
+    "koodiArvo" : "100373"
+  }, {
+    "id" : 94802,
+    "nimi" : {
+      "fi" : "Sähköinen kaupankäynti",
+      "sv" : "Elektronisk handel"
+    },
+    "koodiArvo" : "100374"
+  }, {
+    "id" : 94803,
+    "nimi" : {
+      "fi" : "Tuoteneuvonta",
+      "sv" : "Produktrådgivning"
+    },
+    "koodiArvo" : "100375"
+  }, {
+    "id" : 94804,
+    "nimi" : {
+      "fi" : "Toiminnan kannattavuuden suunnittelu",
+      "sv" : "Planering av verksamhetens lönsamhet"
+    },
+    "koodiArvo" : "100376"
+  }, {
+    "id" : 94805,
+    "nimi" : {
+      "fi" : "Tilinpäätöskirjaukset ja yrityksen verotus",
+      "sv" : "Upprättande av bokslut och företagsbeskattning"
+    },
+    "koodiArvo" : "100377"
+  }, {
+    "id" : 94806,
+    "nimi" : {
+      "fi" : "Kansainvälisen kaupan laskutus ja reskontran hoito",
+      "sv" : "Hantering av fakturering och reskontra inom internationell handel"
+    },
+    "koodiArvo" : "100378"
+  }, {
+    "id" : 94807,
+    "nimi" : {
+      "fi" : "Pankki- ja rahoituspalvelut",
+      "sv" : "Bank- och finansieringstjänster"
+    },
+    "koodiArvo" : "101076"
+  }, {
+    "id" : 94808,
+    "nimi" : {
+      "fi" : "Vakuutus- ja eläkepalvelut",
+      "sv" : "Försäkrings- och pensionstjänster"
+    },
+    "koodiArvo" : "101075"
+  }, {
+    "id" : 94809,
+    "nimi" : {
+      "fi" : "Asiakasryhmien kirjastopalvelut",
+      "sv" : "Bibliotekstjänster för kundgrupper"
+    },
+    "koodiArvo" : "100383"
+  }, {
+    "id" : 96730,
+    "nimi" : {
+      "fi" : "Erikoiskirjastopalvelut",
+      "sv" : "Specialbibliotekstjänster"
+    },
+    "koodiArvo" : "100384"
+  }, {
+    "id" : 96731,
+    "nimi" : {
+      "fi" : "Luettelointi ja sisällön kuvailu",
+      "sv" : "Katalogisering och innehållsbeskrivning"
+    },
+    "koodiArvo" : "100385"
+  }, {
+    "id" : 96732,
+    "nimi" : {
+      "fi" : "Käytön tuki tieto- ja kirjastopalvelussa",
+      "sv" : "Användarstöd inom informations- och bibliotekstjänster"
+    },
+    "koodiArvo" : "100386"
+  }, {
+    "id" : 96733,
+    "nimi" : {
+      "fi" : "Verkkopalvelut tieto- ja kirjastopalvelussa",
+      "sv" : "Internettjänster inom informations- och bibliotekstjänster"
+    },
+    "koodiArvo" : "100387"
+  }, {
+    "id" : 185831,
+    "nimi" : {
+      "fi" : "Finanssipalvelut",
+      "sv" : "Finanstjänster"
+    },
+    "koodiArvo" : "101048"
+  }, {
+    "id" : 200659,
+    "nimi" : {
+      "fi" : "Talouspalvelut",
+      "sv" : "Ekonomitjänster"
+    },
+    "koodiArvo" : "100365"
+  }, {
+    "id" : 202310,
+    "nimi" : {
+      "fi" : "Verkkopalvelujen tuottaminen ja ylläpito",
+      "sv" : "Skapande och underhåll av internettjänster"
+    },
+    "koodiArvo" : "100381"
+  }, {
+    "id" : 202311,
+    "nimi" : {
+      "fi" : "Organisaation asiakirjojen hoitaminen",
+      "sv" : "Skötsel av organisationens dokument"
+    },
+    "koodiArvo" : "101064"
+  } ],
+  "osaamisalat" : [ {
+    "nimi" : {
+      "en" : "Specialisation in Customer Services and Sales",
+      "fi" : "Asiakaspalvelun ja myynnin osaamisala",
+      "sv" : "Kompetensområdet för kundbetjäning och försäljning"
+    },
+    "arvo" : "1625"
+  }, {
+    "nimi" : {
+      "en" : "Specialisation in Financial and Office Services",
+      "fi" : "Talous- ja toimistopalvelujen osaamisala",
+      "sv" : "Kompetensområdet för ekonomi- och kontorsservice"
+    },
+    "arvo" : "1626"
+  }, {
+    "nimi" : {
+      "en" : "Specialisation in Information and Library Services",
+      "fi" : "Tieto- ja kirjastopalvelujen osaamisala",
+      "sv" : "Kompetensområdet för informations- och bibliotekstjänst"
+    },
+    "arvo" : "1563"
+  } ],
+  "luotu" : 1466002817813,
+  "muokattu" : 1513688323153
+}

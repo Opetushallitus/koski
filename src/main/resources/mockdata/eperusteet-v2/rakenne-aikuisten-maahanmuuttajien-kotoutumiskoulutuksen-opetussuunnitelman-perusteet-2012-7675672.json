@@ -1,0 +1,16 @@
+{
+  "id" : 7675672,
+  "nimi" : {
+    "_id" : "7925615",
+    "_tunniste" : "7a0a45f5-a296-4c11-a762-80b6db05e4cb",
+    "fi" : "Aikuisten maahanmuuttajien kotoutumiskoulutuksen opetussuunnitelman perusteet 2012"
+  },
+  "diaarinumero" : "1/011/2012",
+  "koulutustyyppi" : "koulutustyyppi_30",
+  "voimassaoloAlkaa" : "1328047200000",
+  "koulutukset" : [ ],
+  "koulutusvienti" : false,
+  "osaamisalat" : [ ],
+  "luotu" : 1619612188823,
+  "muokattu" : 1630568875288
+}

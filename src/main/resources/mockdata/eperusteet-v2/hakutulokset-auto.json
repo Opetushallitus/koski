@@ -1,0 +1,2090 @@
+[ {
+  "id" : 4804100,
+  "nimi" : {
+    "_tunniste" : "50bafbd7-4772-4310-a8a0-029eba6b415c",
+    "_id" : "6148072",
+    "sv" : "Yrkesexamen inom fordonsbranschen",
+    "en" : "Further Vocational Qualification in the Motor Vehicles Sector",
+    "fi" : "Ajoneuvoalan ammattitutkinto"
+  },
+  "diaarinumero" : "OPH-1361-2018",
+  "voimassaoloAlkaa" : "1533070800000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Further vocational qualification in the Motor Vehicles Sector",
+      "fi" : "Ajoneuvoalan ammattitutkinto",
+      "sv" : "Yrkesexamen inom fordonsbranschen"
+    },
+    "koulutuskoodiArvo" : "354345"
+  } ],
+  "luotu" : 1525426388143
+}, {
+  "id" : 4837162,
+  "nimi" : {
+    "_tunniste" : "f92b27fb-5d5c-4e01-bf86-6f04c5cb659b",
+    "_id" : "6396861",
+    "sv" : "Specialyrkesexamen inom fordonsbranschen",
+    "en" : "Specialist vocational qualification in the Motor Vehicles Sector",
+    "fi" : "Ajoneuvoalan erikoisammattitutkinto"
+  },
+  "diaarinumero" : "OPH-2821-2018",
+  "voimassaoloAlkaa" : "1546293600000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Specialist vocational qualification in the Motor Vehicles Sector",
+      "fi" : "Ajoneuvoalan erikoisammattitutkinto",
+      "sv" : "Specialyrkesexamen inom fordonsbranschen"
+    },
+    "koulutuskoodiArvo" : "457341"
+  } ],
+  "luotu" : 1526030766695
+}, {
+  "id" : 7614470,
+  "nimi" : {
+    "_tunniste" : "46e60d6d-4f5c-49f1-b5f0-a9dd0a7dc4c2",
+    "_id" : "8238587",
+    "sv" : "Grundexamen inom fordonsbranschen",
+    "en" : "Vocational qualification in the motor vehicles sector",
+    "fi" : "Ajoneuvoalan perustutkinto"
+  },
+  "diaarinumero" : "OPH-5410-2021",
+  "voimassaoloAlkaa" : "1659301200000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Vocational qualification in the Vehicle Sector",
+      "fi" : "Ajoneuvoalan perustutkinto",
+      "sv" : "Grundexamen inom fordonsbranschen"
+    },
+    "koulutuskoodiArvo" : "351301"
+  } ],
+  "luotu" : 1615448712178
+}, {
+  "id" : 1013058,
+  "nimi" : {
+    "_id" : "2396042",
+    "_tunniste" : "1825d327-6e20-48b7-aadb-0503c8cc9ae6",
+    "fi" : "Autoalan myyjän erikoisammattitutkinto",
+    "sv" : "Specialyrkesexamen för försäljare inom bilbranschen"
+  },
+  "diaarinumero" : "39/011/2001",
+  "voimassaoloAlkaa" : "993934800000",
+  "voimassaoloLoppuu" : "1546207200000",
+  "siirtymaPaattyy" : "1640901600000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "fi" : "Autoalan myyjän erikoisammattitutkinto",
+      "sv" : "Specialyrkesexamen för försäljare inom bilbranschen"
+    },
+    "koulutuskoodiArvo" : "437108"
+  } ],
+  "luotu" : 1430670554475
+}, {
+  "id" : 1536551,
+  "nimi" : {
+    "_id" : "1823859",
+    "fi" : "Autoalan perustutkinto",
+    "sv" : "Grundexamen inom bilbranschen"
+  },
+  "diaarinumero" : "39/011/2014",
+  "voimassaoloAlkaa" : "1469998800000",
+  "voimassaoloLoppuu" : "1532984400000",
+  "siirtymaPaattyy" : "1640901600000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Vocational qualification in the Vehicle Sector",
+      "fi" : "Ajoneuvoalan perustutkinto",
+      "sv" : "Grundexamen inom fordonsbranschen"
+    },
+    "koulutuskoodiArvo" : "351301"
+  } ],
+  "luotu" : 1462277209970
+}, {
+  "id" : 3397336,
+  "nimi" : {
+    "_tunniste" : "7cf67401-93d4-447e-a3dd-1e84b43977f0",
+    "_id" : "6157585",
+    "sv" : "Grundexamen inom bilbranschen",
+    "en" : "Vocational Qualification in the Vehicle Sector",
+    "fi" : "Autoalan perustutkinto"
+  },
+  "diaarinumero" : "OPH-2762-2017",
+  "voimassaoloAlkaa" : "1533070800000",
+  "voimassaoloLoppuu" : "1659214800000",
+  "siirtymaPaattyy" : "1785445200000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Vocational qualification in the Vehicle Sector",
+      "fi" : "Ajoneuvoalan perustutkinto",
+      "sv" : "Grundexamen inom fordonsbranschen"
+    },
+    "koulutuskoodiArvo" : "351301"
+  } ],
+  "luotu" : 1509102669133
+}, {
+  "id" : 1013059,
+  "nimi" : {
+    "_id" : "1116965",
+    "fi" : "Autoalan työnjohdon erikoisammattitutkinto",
+    "sv" : "Specialyrkesexamen för arbetsledning inom bilbranschen"
+  },
+  "diaarinumero" : "40/011/2001",
+  "voimassaoloAlkaa" : "993934800000",
+  "voimassaoloLoppuu" : "1546207200000",
+  "siirtymaPaattyy" : "1640901600000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Specialist vocational qualification for Supervisors in Vehicle Technology",
+      "fi" : "Autoalan työnjohdon erikoisammattitutkinto",
+      "sv" : "Specialyrkesexamen för arbetsledning inom bilbranschen"
+    },
+    "koulutuskoodiArvo" : "457305"
+  } ],
+  "luotu" : 1430670614415
+}, {
+  "id" : 845880,
+  "nimi" : {
+    "_id" : "1188251",
+    "fi" : "Auto- ja kuljetusalan työnjohdon ammattitutkinto",
+    "sv" : "Yrkesexamen för arbetsledning inom bil- och transportbranschen"
+  },
+  "diaarinumero" : "30/011/2015",
+  "voimassaoloAlkaa" : "1438376400000",
+  "voimassaoloLoppuu" : "1532984400000",
+  "siirtymaPaattyy" : "1640901600000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Further Qualification for Motor Vehicle and Transport Sector Managers",
+      "fi" : "Auto- ja kuljetusalan työnjohdon ammattitutkinto",
+      "sv" : "Yrkesexamen för arbetsledning inom bil- och transportbranschen"
+    },
+    "koulutuskoodiArvo" : "354315"
+  } ],
+  "luotu" : 1427450473987
+}, {
+  "id" : 1336409,
+  "nimi" : {
+    "_id" : "6060322",
+    "_tunniste" : "3ec456bc-3e28-4c0d-8c61-7edd14d0a79d",
+    "fi" : "Autokorimekaanikon ammattitutkinto",
+    "sv" : "Yrkesexamen för karosseri- och bilplåtsmekaniker"
+  },
+  "diaarinumero" : "31/011/2015",
+  "voimassaoloAlkaa" : "1438376400000",
+  "voimassaoloLoppuu" : "1532984400000",
+  "siirtymaPaattyy" : "1640901600000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Vehicle Body Mechanic, FQ",
+      "fi" : "Autokorimekaanikon ammattitutkinto",
+      "sv" : "Yrkesexamen för karosseri- och bilplåtsmekaniker"
+    },
+    "koulutuskoodiArvo" : "354302"
+  } ],
+  "luotu" : 1445313699283
+}, {
+  "id" : 2119185,
+  "nimi" : {
+    "_tunniste" : "1bc63327-c7ce-4e7e-8a00-f242dc531112",
+    "_id" : "3027184",
+    "sv" : "Yrkesexamen för karosseri- och bilplåtsmekaniker",
+    "en" : "Vehicle Body Mechanic, FQ",
+    "fi" : "Autokorimekaanikon ammattitutkinto"
+  },
+  "diaarinumero" : "52/011/2002",
+  "voimassaoloAlkaa" : "1034629200000",
+  "voimassaoloLoppuu" : "1438290000000",
+  "siirtymaPaattyy" : "1501448400000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Vehicle Body Mechanic, FQ",
+      "fi" : "Autokorimekaanikon ammattitutkinto",
+      "sv" : "Yrkesexamen för karosseri- och bilplåtsmekaniker"
+    },
+    "koulutuskoodiArvo" : "354302"
+  } ],
+  "luotu" : 1478765804217
+}, {
+  "id" : 1336570,
+  "nimi" : {
+    "_id" : "1639897",
+    "fi" : "Autokorimestarin erikoisammattitutkinto",
+    "sv" : "Specialyrkesexamen för karosseri- och bilplåtsmästare"
+  },
+  "diaarinumero" : "32/011/2015",
+  "voimassaoloAlkaa" : "1438376400000",
+  "voimassaoloLoppuu" : "1546207200000",
+  "siirtymaPaattyy" : "1640901600000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "fi" : "Autokorimestarin erikoisammattitutkinto",
+      "sv" : "Specialyrkesexamen för karosseri- och bilplåtsmästare"
+    },
+    "koulutuskoodiArvo" : "457301"
+  } ],
+  "luotu" : 1445313759155
+}, {
+  "id" : 2119186,
+  "nimi" : {
+    "_id" : "3032437",
+    "_tunniste" : "94dc1e2c-e14f-4119-bfef-9f34ffdca819",
+    "fi" : "Autokorimestarin erikoisammattitutkinto",
+    "sv" : "Specialyrkesexamen för karosseri- och bilplåtsmästare"
+  },
+  "diaarinumero" : "53/011/2002",
+  "voimassaoloAlkaa" : "1034629200000",
+  "voimassaoloLoppuu" : "1438290000000",
+  "siirtymaPaattyy" : "1501448400000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "fi" : "Autokorimestarin erikoisammattitutkinto",
+      "sv" : "Specialyrkesexamen för karosseri- och bilplåtsmästare"
+    },
+    "koulutuskoodiArvo" : "457301"
+  } ],
+  "luotu" : 1478765882547
+}, {
+  "id" : 1336572,
+  "nimi" : {
+    "_id" : "2898220",
+    "_tunniste" : "3f04c520-3f37-43fa-bebc-530b60589554",
+    "fi" : "Automaalarimestarin erikoisammattitutkinto",
+    "sv" : "Specialyrkesexamen för billackerarmästare"
+  },
+  "diaarinumero" : "34/011/2015",
+  "voimassaoloAlkaa" : "1438376400000",
+  "voimassaoloLoppuu" : "1546207200000",
+  "siirtymaPaattyy" : "1640901600000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "fi" : "Automaalarimestarin erikoisammattitutkinto",
+      "sv" : "Specialyrkesexamen för billackerarmästare"
+    },
+    "koulutuskoodiArvo" : "457302"
+  } ],
+  "luotu" : 1445313876927
+}, {
+  "id" : 2119187,
+  "nimi" : {
+    "_id" : "3174587",
+    "_tunniste" : "33ccada8-aa1b-489e-be3b-e82652b365bc",
+    "fi" : "Automaalarimestarin erikoisammattitutkinto",
+    "sv" : "Specialyrkesexamen för arbetsledning inom industrin"
+  },
+  "diaarinumero" : "54/011/2002",
+  "voimassaoloAlkaa" : "1034629200000",
+  "voimassaoloLoppuu" : "1438290000000",
+  "siirtymaPaattyy" : "1501448400000",
+  "koulutukset" : [ ],
+  "luotu" : 1478765957716
+}, {
+  "id" : 1336571,
+  "nimi" : {
+    "_id" : "1469541",
+    "fi" : "Automaalarin ammattitutkinto",
+    "sv" : "Yrkesexamen för billackerare"
+  },
+  "diaarinumero" : "33/011/2015",
+  "voimassaoloAlkaa" : "1438376400000",
+  "voimassaoloLoppuu" : "1532984400000",
+  "siirtymaPaattyy" : "1640901600000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Vehicle Painter, FQ",
+      "fi" : "Automaalarin ammattitutkinto",
+      "sv" : "Yrkesexamen för billackerare"
+    },
+    "koulutuskoodiArvo" : "354307"
+  } ],
+  "luotu" : 1445313827117
+}, {
+  "id" : 515490,
+  "nimi" : {
+    "_id" : "995247",
+    "fi" : "Automaatioasentajan ammattitutkinto",
+    "sv" : "Yrkesexamen för automationsmontör"
+  },
+  "diaarinumero" : "3/011/2013",
+  "voimassaoloAlkaa" : "1370034000000",
+  "voimassaoloLoppuu" : "1546207200000",
+  "siirtymaPaattyy" : "1640901600000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Automation Assembler, FQ",
+      "fi" : "Automaatioasentajan ammattitutkinto",
+      "sv" : "Yrkesexamen för automationsmontör"
+    },
+    "koulutuskoodiArvo" : "354401"
+  } ],
+  "luotu" : 1423769860481
+}, {
+  "id" : 515491,
+  "nimi" : {
+    "_id" : "1152221",
+    "fi" : "Automaatioyliasentajan erikoisammattitutkinto",
+    "sv" : "Specialyrkesexamen för automationsövermontör"
+  },
+  "diaarinumero" : "9/011/2008",
+  "voimassaoloAlkaa" : "1209589200000",
+  "voimassaoloLoppuu" : "1546207200000",
+  "siirtymaPaattyy" : "1640901600000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "fi" : "Automaatioyliasentajan erikoisammattitutkinto",
+      "sv" : "Specialyrkesexamen för automationsövermontör"
+    },
+    "koulutuskoodiArvo" : "457401"
+  } ],
+  "luotu" : 1423769958520
+}, {
+  "id" : 1013360,
+  "nimi" : {
+    "_id" : "3045453",
+    "_tunniste" : "944351a8-a9ce-46e1-b358-f8ccef79f92f",
+    "fi" : "Automekaanikon erikoisammattitutkinto",
+    "sv" : "Specialyrkesexamen för bilmekaniker"
+  },
+  "diaarinumero" : "38/011/2001",
+  "voimassaoloAlkaa" : "993934800000",
+  "voimassaoloLoppuu" : "1512252000000",
+  "siirtymaPaattyy" : "1606946400000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "fi" : "Automekaanikon erikoisammattitutkinto",
+      "sv" : "Specialyrkesexamen för bilmekaniker"
+    },
+    "koulutuskoodiArvo" : "457304"
+  } ],
+  "luotu" : 1430670692914
+}, {
+  "id" : 2434073,
+  "nimi" : {
+    "_id" : "2455864",
+    "_tunniste" : "531fa668-4dd3-4aef-a34d-6d45e91a9ab0",
+    "fi" : "Automekaanikon erikoisammattitutkinto",
+    "sv" : "Specialyrkesexamen för bilmekaniker"
+  },
+  "diaarinumero" : "OPH-1886-2017",
+  "voimassaoloAlkaa" : "1512338400000",
+  "voimassaoloLoppuu" : "1546207200000",
+  "siirtymaPaattyy" : "1640901600000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "fi" : "Automekaanikon erikoisammattitutkinto",
+      "sv" : "Specialyrkesexamen för bilmekaniker"
+    },
+    "koulutuskoodiArvo" : "457304"
+  } ],
+  "luotu" : 1491388585171
+}, {
+  "id" : 1013361,
+  "nimi" : {
+    "_tunniste" : "5c7a245e-359e-4aee-aa61-f03e377d265a",
+    "_id" : "3012235",
+    "sv" : "Yrkesexamen för bilförsäljare",
+    "en" : "Car Salesperson, FQ",
+    "fi" : "Automyyjän ammattitutkinto"
+  },
+  "diaarinumero" : "66/011/2002",
+  "voimassaoloAlkaa" : "1041372000000",
+  "voimassaoloLoppuu" : "1532984400000",
+  "siirtymaPaattyy" : "1640901600000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Car Salesperson, FQ",
+      "fi" : "Automyyjän ammattitutkinto",
+      "sv" : "Yrkesexamen för bilförsäljare"
+    },
+    "koulutuskoodiArvo" : "334101"
+  } ],
+  "luotu" : 1430670739434
+}, {
+  "id" : 6123511,
+  "nimi" : {
+    "_tunniste" : "5990d356-eee9-434e-b428-312dc30a75f3",
+    "_id" : "6146519",
+    "sv" : "Yrkesexamen inom energibranschen",
+    "en" : "Further Vocational Qualification in Energy Technology",
+    "fi" : "Energia-alan ammattitutkinto"
+  },
+  "diaarinumero" : "OPH-851-2018",
+  "voimassaoloAlkaa" : "1546293600000",
+  "voimassaoloLoppuu" : "1661893200000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Further vocational qualification in Energy Technology",
+      "fi" : "Energia-alan ammattitutkinto",
+      "sv" : "Yrkesexamen inom energibranschen"
+    },
+    "koulutuskoodiArvo" : "354446"
+  } ],
+  "luotu" : 1545388611702
+}, {
+  "id" : 3235911,
+  "nimi" : {
+    "_tunniste" : "5990d356-eee9-434e-b428-312dc30a75f3",
+    "_id" : "6147164",
+    "sv" : "Yrkesexamen inom energibranschen",
+    "en" : "Further Vocational Qualification in Energy Technology",
+    "fi" : "Energia-alan ammattitutkinto"
+  },
+  "diaarinumero" : "OPH-851-2018",
+  "voimassaoloAlkaa" : "1533070800000",
+  "voimassaoloLoppuu" : "1546207200000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Further vocational qualification in Energy Technology",
+      "fi" : "Energia-alan ammattitutkinto",
+      "sv" : "Yrkesexamen inom energibranschen"
+    },
+    "koulutuskoodiArvo" : "354446"
+  } ],
+  "luotu" : 1507730170120
+}, {
+  "id" : 8288271,
+  "nimi" : {
+    "_tunniste" : "5990d356-eee9-434e-b428-312dc30a75f3",
+    "_id" : "6146519",
+    "sv" : "Yrkesexamen inom energibranschen",
+    "en" : "Further Vocational Qualification in Energy Technology",
+    "fi" : "Energia-alan ammattitutkinto"
+  },
+  "diaarinumero" : "OPH-851-2018",
+  "voimassaoloAlkaa" : "1661979600000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Further vocational qualification in Energy Technology",
+      "fi" : "Energia-alan ammattitutkinto",
+      "sv" : "Yrkesexamen inom energibranschen"
+    },
+    "koulutuskoodiArvo" : "354446"
+  } ],
+  "luotu" : 1648199299121
+}, {
+  "id" : 1013362,
+  "nimi" : {
+    "_tunniste" : "471974b7-5c24-46ae-8d8b-ce302150e62f",
+    "_id" : "3013116",
+    "sv" : "Yrkesexamen för personbilsmekaniker",
+    "en" : "Car Mechanics, FQ",
+    "fi" : "Henkilöautomekaanikon ammattitutkinto"
+  },
+  "diaarinumero" : "48/011/2006",
+  "voimassaoloAlkaa" : "1167602400000",
+  "voimassaoloLoppuu" : "1532984400000",
+  "siirtymaPaattyy" : "1640901600000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Car Mechanics, FQ",
+      "fi" : "Henkilöautomekaanikon ammattitutkinto",
+      "sv" : "Yrkesexamen för personbilsmekaniker"
+    },
+    "koulutuskoodiArvo" : "354312"
+  } ],
+  "luotu" : 1430670783399
+}, {
+  "id" : 1707616,
+  "nimi" : {
+    "_id" : "1824664",
+    "fi" : "Kaivosalan perustutkinto",
+    "sv" : "Grundexamen inom gruvbranschen"
+  },
+  "diaarinumero" : "45/011/2014",
+  "voimassaoloAlkaa" : "1469998800000",
+  "voimassaoloLoppuu" : "1532984400000",
+  "siirtymaPaattyy" : "1640901600000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Vocational qualification in Mining",
+      "fi" : "Kaivosalan perustutkinto",
+      "sv" : "Grundexamen inom gruvbranschen"
+    },
+    "koulutuskoodiArvo" : "351107"
+  } ],
+  "luotu" : 1466000818809
+}, {
+  "id" : 3328288,
+  "nimi" : {
+    "_tunniste" : "7cf67401-93d4-447e-a3dd-1e84b43977f0",
+    "_id" : "6157705",
+    "sv" : "Grundexamen inom gruvbranschen",
+    "en" : "Vocational Qualification in Mining",
+    "fi" : "Kaivosalan perustutkinto"
+  },
+  "diaarinumero" : "OPH-2610-2017",
+  "voimassaoloAlkaa" : "1533070800000",
+  "voimassaoloLoppuu" : "1596142800000",
+  "siirtymaPaattyy" : "1722373200000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Vocational qualification in Mining",
+      "fi" : "Kaivosalan perustutkinto",
+      "sv" : "Grundexamen inom gruvbranschen"
+    },
+    "koulutuskoodiArvo" : "351107"
+  } ],
+  "luotu" : 1508929978060
+}, {
+  "id" : 2119182,
+  "nimi" : {
+    "_id" : "2327075",
+    "_tunniste" : "fd30eacb-2e0f-4bd5-a176-1150f6b80786",
+    "fi" : "Kemianteollisuuden ammattitutkinto",
+    "sv" : "Yrkesexamen inom kemisk industri"
+  },
+  "diaarinumero" : "31/011/2002",
+  "voimassaoloAlkaa" : "1028149200000",
+  "voimassaoloLoppuu" : "1501448400000",
+  "siirtymaPaattyy" : "1596142800000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Chemical Engineering, FQ",
+      "fi" : "Kemianteollisuuden ammattitutkinto",
+      "sv" : "Yrkesexamen inom kemisk industri"
+    },
+    "koulutuskoodiArvo" : "354601"
+  } ],
+  "luotu" : 1478692021912
+}, {
+  "id" : 509695,
+  "nimi" : {
+    "_id" : "1938622",
+    "fi" : "Kiinteistöpalvelujen ammattitutkinto",
+    "sv" : "Yrkesexamen i fastighetsservice"
+  },
+  "diaarinumero" : "18/011/2013",
+  "voimassaoloAlkaa" : "1375304400000",
+  "voimassaoloLoppuu" : "1514671200000",
+  "siirtymaPaattyy" : "1640901600000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Property Maint. Operative, FQ",
+      "fi" : "Kiinteistöpalvelujen ammattitutkinto",
+      "sv" : "Yrkesexamen för fastighetsservice"
+    },
+    "koulutuskoodiArvo" : "354203"
+  } ],
+  "luotu" : 1423765402478
+}, {
+  "id" : 1715110,
+  "nimi" : {
+    "_id" : "1794295",
+    "fi" : "Kiinteistöpalvelujen perustutkinto",
+    "sv" : "Grundexamen inom fastighetsservice"
+  },
+  "diaarinumero" : "49/011/2014",
+  "voimassaoloAlkaa" : "1469998800000",
+  "voimassaoloLoppuu" : "1532984400000",
+  "siirtymaPaattyy" : "1640901600000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Property Maintenance Serv., VQ",
+      "fi" : "Kiinteistöpalvelujen perustutkinto",
+      "sv" : "Grundexamen inom fastighetsservice"
+    },
+    "koulutuskoodiArvo" : "351204"
+  } ],
+  "luotu" : 1466001868042
+}, {
+  "id" : 7282420,
+  "nimi" : {
+    "_tunniste" : "b1164529-d29f-438d-8663-a11c35a4b207",
+    "_id" : "7566740",
+    "sv" : "Yrkesexamen i maskinmontering och underhåll",
+    "en" : "Further vocational qualification in Machine Mechanics and Maintenance",
+    "fi" : "Koneasennuksen ja kunnossapidon ammattitutkinto"
+  },
+  "diaarinumero" : "OPH-4609-2020",
+  "voimassaoloAlkaa" : "1622494800000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Further vocational qualification in Machine Mechanics and Maintenance",
+      "fi" : "Koneasennuksen ja kunnossapidon ammattitutkinto",
+      "sv" : "Yrkesexamen i maskinmontering och underhåll"
+    },
+    "koulutuskoodiArvo" : "354146"
+  } ],
+  "luotu" : 1592391714397
+}, {
+  "id" : 4556445,
+  "nimi" : {
+    "_tunniste" : "b1164529-d29f-438d-8663-a11c35a4b207",
+    "_id" : "6063080",
+    "sv" : "Yrkesexamen i maskinmontering och underhåll",
+    "en" : "Further vocational qualification in Machine Mechanics and Maintenance",
+    "fi" : "Koneasennuksen ja kunnossapidon ammattitutkinto"
+  },
+  "diaarinumero" : "OPH-1960-2018",
+  "voimassaoloAlkaa" : "1546293600000",
+  "voimassaoloLoppuu" : "1622408400000",
+  "siirtymaPaattyy" : "1748638800000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Further vocational qualification in Machine Mechanics and Maintenance",
+      "fi" : "Koneasennuksen ja kunnossapidon ammattitutkinto",
+      "sv" : "Yrkesexamen i maskinmontering och underhåll"
+    },
+    "koulutuskoodiArvo" : "354146"
+  } ],
+  "luotu" : 1520777189272
+}, {
+  "id" : 4556447,
+  "nimi" : {
+    "_tunniste" : "3f5878fc-08ae-467b-a91d-8abb5f31d0d0",
+    "_id" : "6063086",
+    "sv" : "Specialyrkesexamen i maskinmontering och underhåll",
+    "en" : "Specialist vocational qualification in Machine Mechanics and Maintenance",
+    "fi" : "Koneasennuksen ja kunnossapidon erikoisammattitutkinto"
+  },
+  "diaarinumero" : "OPH-1961-2018",
+  "voimassaoloAlkaa" : "1546293600000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Specialist vocational qualification in Machine Mechanics and Maintenance",
+      "fi" : "Koneasennuksen ja kunnossapidon erikoisammattitutkinto",
+      "sv" : "Specialyrkesexamen i maskinmontering och underhåll"
+    },
+    "koulutuskoodiArvo" : "457141"
+  } ],
+  "luotu" : 1520777287237
+}, {
+  "id" : 515499,
+  "nimi" : {
+    "_id" : "6216230",
+    "_tunniste" : "dbeaee9f-44de-465a-b8bc-b3d416bba32e",
+    "fi" : "Koneenasentajamestarin erikoisammattitutkinto",
+    "sv" : "Specialyrkesexamen för maskinmontörsmästare"
+  },
+  "diaarinumero" : "23/011/2004",
+  "voimassaoloAlkaa" : "1091307600000",
+  "voimassaoloLoppuu" : "1546207200000",
+  "siirtymaPaattyy" : "1640901600000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "fi" : "Koneenasentajamestarin erikoisammattitutkinto",
+      "sv" : "Specialyrkesexamen för maskinmontörsmästare"
+    },
+    "koulutuskoodiArvo" : "457102"
+  } ],
+  "luotu" : 1423770781680
+}, {
+  "id" : 2136532,
+  "nimi" : {
+    "_id" : "2183120",
+    "fi" : "Koneenasentajan ammattitutkinto",
+    "sv" : "Yrkesexamen för maskinmontör"
+  },
+  "diaarinumero" : "46/011/2003",
+  "voimassaoloAlkaa" : "1072908000000",
+  "voimassaoloLoppuu" : "1451512800000",
+  "siirtymaPaattyy" : "1514671200000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Mechanical Fitter, FQ",
+      "fi" : "Koneenasentajan ammattitutkinto",
+      "sv" : "Yrkesexamen för maskinmontör"
+    },
+    "koulutuskoodiArvo" : "354103"
+  } ],
+  "luotu" : 1479381208189
+}, {
+  "id" : 1336579,
+  "nimi" : {
+    "_id" : "1365563",
+    "fi" : "Koneenasentajan ammattitutkinto",
+    "sv" : "Yrkesexamen för maskinmontör"
+  },
+  "diaarinumero" : "62/011/2015",
+  "voimassaoloAlkaa" : "1451599200000",
+  "voimassaoloLoppuu" : "1546207200000",
+  "siirtymaPaattyy" : "1640901600000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Mechanical Fitter, FQ",
+      "fi" : "Koneenasentajan ammattitutkinto",
+      "sv" : "Yrkesexamen för maskinmontör"
+    },
+    "koulutuskoodiArvo" : "354103"
+  } ],
+  "luotu" : 1445314375144
+}, {
+  "id" : 1742260,
+  "nimi" : {
+    "_id" : "2261858",
+    "_tunniste" : "4eb3e975-6aa7-486a-95a7-75ca80d5a762",
+    "fi" : "Kone- ja metallialan perustutkinto",
+    "sv" : "Grundexamen inom maskin- och metallbranschen"
+  },
+  "diaarinumero" : "50/011/2014",
+  "voimassaoloAlkaa" : "1469998800000",
+  "voimassaoloLoppuu" : "1501448400000",
+  "siirtymaPaattyy" : "1596142800000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Metalwork, Machinery, VQ",
+      "fi" : "Kone- ja metallialan perustutkinto",
+      "sv" : "Grundexamen inom maskin- och metallbranschen"
+    },
+    "koulutuskoodiArvo" : "351101"
+  } ],
+  "luotu" : 1466352997164
+}, {
+  "id" : 1135886,
+  "nimi" : {
+    "_id" : "1426610",
+    "fi" : "Kone- ja metallialan perustutkinto, kokeilu",
+    "sv" : "Grundexamen inom maskin- och metallbranschen"
+  },
+  "diaarinumero" : "24/011/2015",
+  "voimassaoloAlkaa" : "1438376400000",
+  "voimassaoloLoppuu" : "1577743200000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Metalwork, Machinery, VQ",
+      "fi" : "Kone- ja metallialan perustutkinto",
+      "sv" : "Grundexamen inom maskin- och metallbranschen"
+    },
+    "koulutuskoodiArvo" : "351101"
+  } ],
+  "luotu" : 1434445243614
+}, {
+  "id" : 7823349,
+  "nimi" : {
+    "_tunniste" : "7cf67401-93d4-447e-a3dd-1e84b43977f0",
+    "_id" : "6158220",
+    "sv" : "Grundexamen i maskin- och produktionsteknik",
+    "en" : "Vocational Qualification in Mechanical Engineering and Production Technology",
+    "fi" : "Kone- ja tuotantotekniikan perustutkinto"
+  },
+  "diaarinumero" : "OPH-4774-2021",
+  "voimassaoloAlkaa" : "1659301200000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Vocational Qualification in Mechanical Engineering and Production Technology",
+      "fi" : "Kone- ja tuotantotekniikan perustutkinto",
+      "sv" : "Grundexamen i maskin- och produktionsteknik"
+    },
+    "koulutuskoodiArvo" : "351108"
+  } ],
+  "luotu" : 1624967139534
+}, {
+  "id" : 3855075,
+  "nimi" : {
+    "_tunniste" : "7cf67401-93d4-447e-a3dd-1e84b43977f0",
+    "_id" : "6158220",
+    "sv" : "Grundexamen i maskin- och produktionsteknik",
+    "en" : "Vocational Qualification in Mechanical Engineering and Production Technology",
+    "fi" : "Kone- ja tuotantotekniikan perustutkinto"
+  },
+  "diaarinumero" : "OPH-2541-2017",
+  "voimassaoloAlkaa" : "1533070800000",
+  "voimassaoloLoppuu" : "1659214800000",
+  "siirtymaPaattyy" : "1785445200000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Vocational Qualification in Mechanical Engineering and Production Technology",
+      "fi" : "Kone- ja tuotantotekniikan perustutkinto",
+      "sv" : "Grundexamen i maskin- och produktionsteknik"
+    },
+    "koulutuskoodiArvo" : "351108"
+  } ],
+  "luotu" : 1511263845070
+}, {
+  "id" : 1978990,
+  "nimi" : {
+    "_id" : "2259888",
+    "_tunniste" : "1cefee3e-17e3-49bd-8095-c63ac1129d28",
+    "fi" : "Kone- ja tuotantotekniikan perustutkinto",
+    "sv" : "Grundexamen inom maskin- och produktionsteknik"
+  },
+  "diaarinumero" : "49/011/2016",
+  "voimassaoloAlkaa" : "1501534800000",
+  "voimassaoloLoppuu" : "1532984400000",
+  "siirtymaPaattyy" : "1640901600000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Vocational Qualification in Mechanical Engineering and Production Technology",
+      "fi" : "Kone- ja tuotantotekniikan perustutkinto",
+      "sv" : "Grundexamen i maskin- och produktionsteknik"
+    },
+    "koulutuskoodiArvo" : "351108"
+  } ],
+  "luotu" : 1476176506787
+}, {
+  "id" : 216544,
+  "nimi" : {
+    "_id" : "2061085",
+    "fi" : "Kunnossapidon ammattitutkinto",
+    "sv" : "Yrkesexamen inom underhåll"
+  },
+  "diaarinumero" : "56/011/2010",
+  "voimassaoloAlkaa" : "1293832800000",
+  "voimassaoloLoppuu" : "1546207200000",
+  "siirtymaPaattyy" : "1640901600000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Maintenance, FQ",
+      "fi" : "Kunnossapidon ammattitutkinto",
+      "sv" : "Underhåll, yrkesexamen"
+    },
+    "koulutuskoodiArvo" : "354115"
+  } ],
+  "luotu" : 1417017635701
+}, {
+  "id" : 229227,
+  "nimi" : {
+    "_id" : "1056224",
+    "fi" : "Kunnossapidon erikoisammattitutkinto",
+    "sv" : "Specialyrkesexamen inom underhåll"
+  },
+  "diaarinumero" : "57/011/2010",
+  "voimassaoloAlkaa" : "1293832800000",
+  "voimassaoloLoppuu" : "1546207200000",
+  "siirtymaPaattyy" : "1640901600000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "fi" : "Kunnossapidon erikoisammattitutkinto",
+      "sv" : "Specialyrkesexamen inom underhåll"
+    },
+    "koulutuskoodiArvo" : "457109"
+  } ],
+  "luotu" : 1417677728761
+}, {
+  "id" : 7846214,
+  "nimi" : {
+    "_tunniste" : "7cf67401-93d4-447e-a3dd-1e84b43977f0",
+    "_id" : "6157811",
+    "sv" : "Grundexamen inom läkemedelsbranschen",
+    "en" : "Vocational Qualification in Pharmaceutics",
+    "fi" : "Lääkealan perustutkinto"
+  },
+  "diaarinumero" : "OPH-5084-2021",
+  "voimassaoloAlkaa" : "1659301200000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Vocational Qualification in Pharmaceutics",
+      "fi" : "Lääkealan perustutkinto",
+      "sv" : "Grundexamen inom läkemedelsbranschen"
+    },
+    "koulutuskoodiArvo" : "371110"
+  } ],
+  "luotu" : 1625047223736
+}, {
+  "id" : 3716623,
+  "nimi" : {
+    "_tunniste" : "7cf67401-93d4-447e-a3dd-1e84b43977f0",
+    "_id" : "6157811",
+    "sv" : "Grundexamen inom läkemedelsbranschen",
+    "en" : "Vocational Qualification in Pharmaceutics",
+    "fi" : "Lääkealan perustutkinto"
+  },
+  "diaarinumero" : "OPH-2630-2017",
+  "voimassaoloAlkaa" : "1533070800000",
+  "voimassaoloLoppuu" : "1659214800000",
+  "siirtymaPaattyy" : "1785445200000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Vocational Qualification in Pharmaceutics",
+      "fi" : "Lääkealan perustutkinto",
+      "sv" : "Grundexamen inom läkemedelsbranschen"
+    },
+    "koulutuskoodiArvo" : "371110"
+  } ],
+  "luotu" : 1510236111494
+}, {
+  "id" : 7276870,
+  "nimi" : {
+    "_tunniste" : "5990d356-eee9-434e-b428-312dc30a75f3",
+    "_id" : "6214035",
+    "sv" : "Yrkesexamen inom laboratorie- och mätningsbranschen",
+    "en" : "Further vocational qualification in Laboratory and Measurement Technology",
+    "fi" : "Laboratorio- ja mittausalan ammattitutkinto"
+  },
+  "diaarinumero" : "OPH-2275-2018",
+  "voimassaoloAlkaa" : "1601499600000",
+  "voimassaoloLoppuu" : "1622408400000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Further vocational qualification in Laboratory and Measurement Technology",
+      "fi" : "Laboratorio- ja mittausalan ammattitutkinto",
+      "sv" : "Yrkesexamen inom laboratorie- och mätningsbranschen"
+    },
+    "koulutuskoodiArvo" : "354645"
+  } ],
+  "luotu" : 1591791012199
+}, {
+  "id" : 7593194,
+  "nimi" : {
+    "_tunniste" : "5990d356-eee9-434e-b428-312dc30a75f3",
+    "_id" : "6214035",
+    "sv" : "Yrkesexamen inom laboratorie- och mätningsbranschen",
+    "en" : "Further vocational qualification in Laboratory and Measurement Technology",
+    "fi" : "Laboratorio- ja mittausalan ammattitutkinto"
+  },
+  "diaarinumero" : "OPH-2275-2018",
+  "voimassaoloAlkaa" : "1622494800000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Further vocational qualification in Laboratory and Measurement Technology",
+      "fi" : "Laboratorio- ja mittausalan ammattitutkinto",
+      "sv" : "Yrkesexamen inom laboratorie- och mätningsbranschen"
+    },
+    "koulutuskoodiArvo" : "354645"
+  } ],
+  "luotu" : 1614159413770
+}, {
+  "id" : 2404840,
+  "nimi" : {
+    "_tunniste" : "5990d356-eee9-434e-b428-312dc30a75f3",
+    "_id" : "6214035",
+    "sv" : "Yrkesexamen inom laboratorie- och mätningsbranschen",
+    "en" : "Further vocational qualification in Laboratory and Measurement Technology",
+    "fi" : "Laboratorio- ja mittausalan ammattitutkinto"
+  },
+  "diaarinumero" : "OPH-2275-2018",
+  "voimassaoloAlkaa" : "1546293600000",
+  "voimassaoloLoppuu" : "1601413200000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Further vocational qualification in Laboratory and Measurement Technology",
+      "fi" : "Laboratorio- ja mittausalan ammattitutkinto",
+      "sv" : "Yrkesexamen inom laboratorie- och mätningsbranschen"
+    },
+    "koulutuskoodiArvo" : "354645"
+  } ],
+  "luotu" : 1489738389588
+}, {
+  "id" : 1180230,
+  "nimi" : {
+    "_id" : "1295031",
+    "fi" : "Lentokoneasennuksen perustutkinto, kokeilu",
+    "sv" : "Grundexamen i flygplansmekanik"
+  },
+  "diaarinumero" : "48/011/2015",
+  "voimassaoloAlkaa" : "1438376400000",
+  "voimassaoloLoppuu" : "1640901600000",
+  "siirtymaPaattyy" : "1767132000000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Vocational qualification in Aircraft Maintenance",
+      "fi" : "Lentokoneasennuksen perustutkinto",
+      "sv" : "Grundexamen i flygplansmekanik"
+    },
+    "koulutuskoodiArvo" : "351307"
+  } ],
+  "luotu" : 1434608427173
+}, {
+  "id" : 1013367,
+  "nimi" : {
+    "_id" : "1500368",
+    "fi" : "Levymestarin erikoisammattitutkinto",
+    "sv" : "Specialyrkesexamen för skivmästare"
+  },
+  "diaarinumero" : "33/011/2008",
+  "voimassaoloAlkaa" : "1230760800000",
+  "voimassaoloLoppuu" : "1546207200000",
+  "siirtymaPaattyy" : "1640901600000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "fi" : "Levymestarin erikoisammattitutkinto",
+      "sv" : "Specialyrkesexamen för skivmästare"
+    },
+    "koulutuskoodiArvo" : "457702"
+  } ],
+  "luotu" : 1431313941898
+}, {
+  "id" : 930367,
+  "nimi" : {
+    "_id" : "1205913",
+    "fi" : "Liikenneopettajan erikoisammattitutkinto",
+    "sv" : "Specialyrkesexamen för trafiklärare"
+  },
+  "diaarinumero" : "8/011/2014",
+  "voimassaoloAlkaa" : "1396299600000",
+  "voimassaoloLoppuu" : "1514671200000",
+  "siirtymaPaattyy" : "1640901600000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Driving Instructors, SQ",
+      "fi" : "Liikenneopettajan erikoisammattitutkinto",
+      "sv" : "Specialyrkesexamen för trafiklärare"
+    },
+    "koulutuskoodiArvo" : "317101"
+  } ],
+  "luotu" : 1429027791087
+}, {
+  "id" : 6355600,
+  "nimi" : {
+    "_tunniste" : "f92b27fb-5d5c-4e01-bf86-6f04c5cb659b",
+    "_id" : "5968964",
+    "sv" : "Specialyrkesexamen för trafiklärare",
+    "en" : "Specialist Vocational Qualification for Driving Instructors",
+    "fi" : "Liikenneopettajan erikoisammattitutkinto"
+  },
+  "diaarinumero" : "OPH-2690-2017",
+  "voimassaoloAlkaa" : "1564606800000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Specialist vocational qualification for Driving Instructors",
+      "fi" : "Liikenneopettajan erikoisammattitutkinto",
+      "sv" : "Specialyrkesexamen för trafiklärare"
+    },
+    "koulutuskoodiArvo" : "417101"
+  } ],
+  "luotu" : 1551706475660
+}, {
+  "id" : 3855073,
+  "nimi" : {
+    "_tunniste" : "f92b27fb-5d5c-4e01-bf86-6f04c5cb659b",
+    "_id" : "5968964",
+    "sv" : "Specialyrkesexamen för trafiklärare",
+    "en" : "Specialist Vocational Qualification for Driving Instructors",
+    "fi" : "Liikenneopettajan erikoisammattitutkinto"
+  },
+  "diaarinumero" : "OPH-2690-2017",
+  "voimassaoloAlkaa" : "1514757600000",
+  "voimassaoloLoppuu" : "1564520400000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Specialist vocational qualification for Driving Instructors",
+      "fi" : "Liikenneopettajan erikoisammattitutkinto",
+      "sv" : "Specialyrkesexamen för trafiklärare"
+    },
+    "koulutuskoodiArvo" : "417101"
+  } ],
+  "luotu" : 1511178668654
+}, {
+  "id" : 930368,
+  "nimi" : {
+    "_id" : "1586737",
+    "fi" : "Linja-autonkuljettajan ammattitutkinto",
+    "sv" : "Yrkesexamen för busschaufför"
+  },
+  "diaarinumero" : "16/011/2008",
+  "voimassaoloAlkaa" : "1206997200000",
+  "voimassaoloLoppuu" : "1514671200000",
+  "siirtymaPaattyy" : "1640901600000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Bus Driver, FQ",
+      "fi" : "Linja-autonkuljettajan ammattitutkinto",
+      "sv" : "Yrkesexamen för busschaufför"
+    },
+    "koulutuskoodiArvo" : "384402"
+  } ],
+  "luotu" : 1429027873282
+}, {
+  "id" : 3489218,
+  "nimi" : {
+    "_tunniste" : "7cf67401-93d4-447e-a3dd-1e84b43977f0",
+    "_id" : "6157958",
+    "sv" : "Grundexamen i logistik",
+    "en" : "Vocational Qualification in Logistics",
+    "fi" : "Logistiikan perustutkinto"
+  },
+  "diaarinumero" : "OPH-2764-2017",
+  "voimassaoloAlkaa" : "1533070800000",
+  "voimassaoloLoppuu" : "1577743200000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Vocational qualification in Logistics",
+      "fi" : "Logistiikan perustutkinto",
+      "sv" : "Grundexamen i logistik"
+    },
+    "koulutuskoodiArvo" : "381408"
+  } ],
+  "luotu" : 1509354402125
+}, {
+  "id" : 7675673,
+  "nimi" : {
+    "_id" : "8142054",
+    "_tunniste" : "46e60d6d-4f5c-49f1-b5f0-a9dd0a7dc4c2",
+    "fi" : "Logistiikan perustutkinto",
+    "sv" : "Grundexamen i logistik"
+  },
+  "diaarinumero" : "OPH-1807-2021",
+  "voimassaoloAlkaa" : "1659301200000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Vocational qualification in Logistics",
+      "fi" : "Logistiikan perustutkinto",
+      "sv" : "Grundexamen i logistik"
+    },
+    "koulutuskoodiArvo" : "381408"
+  } ],
+  "luotu" : 1620124844054
+}, {
+  "id" : 6930620,
+  "nimi" : {
+    "_tunniste" : "7cf67401-93d4-447e-a3dd-1e84b43977f0",
+    "_id" : "6157958",
+    "sv" : "Grundexamen i logistik",
+    "en" : "Vocational Qualification in Logistics",
+    "fi" : "Logistiikan perustutkinto"
+  },
+  "diaarinumero" : "OPH-2764-2017",
+  "voimassaoloAlkaa" : "1577829600000",
+  "voimassaoloLoppuu" : "1659214800000",
+  "siirtymaPaattyy" : "1785445200000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Vocational qualification in Logistics",
+      "fi" : "Logistiikan perustutkinto",
+      "sv" : "Grundexamen i logistik"
+    },
+    "koulutuskoodiArvo" : "381408"
+  } ],
+  "luotu" : 1576236737403
+}, {
+  "id" : 1742261,
+  "nimi" : {
+    "_id" : "286214",
+    "fi" : "Logistiikan perustutkinto",
+    "sv" : "Grundexamen i logistik"
+  },
+  "diaarinumero" : "61/011/2014",
+  "voimassaoloAlkaa" : "1469998800000",
+  "voimassaoloLoppuu" : "1532984400000",
+  "siirtymaPaattyy" : "1640901600000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Vocational qualification in Logistics",
+      "fi" : "Logistiikan perustutkinto",
+      "sv" : "Grundexamen i logistik"
+    },
+    "koulutuskoodiArvo" : "381408"
+  } ],
+  "luotu" : 1466353473517
+}, {
+  "id" : 4914572,
+  "nimi" : {
+    "_tunniste" : "f92b27fb-5d5c-4e01-bf86-6f04c5cb659b",
+    "_id" : "6464379",
+    "sv" : "Specialyrkesexamen inom lantbruksbranschen",
+    "en" : "Specialist vocational qualification in Agriculture",
+    "fi" : "Maatalousalan erikoisammattitutkinto"
+  },
+  "diaarinumero" : "OPH-2494-2018",
+  "voimassaoloAlkaa" : "1546293600000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Specialist vocational qualification in Agriculture",
+      "fi" : "Maatalousalan erikoisammattitutkinto",
+      "sv" : "Specialyrkesexamen inom lantbruksbranschen"
+    },
+    "koulutuskoodiArvo" : "467141"
+  } ],
+  "luotu" : 1527074695042
+}, {
+  "id" : 7657030,
+  "nimi" : {
+    "_tunniste" : "46e60d6d-4f5c-49f1-b5f0-a9dd0a7dc4c2",
+    "_id" : "8171655",
+    "sv" : "Grundexamen inom lantbruksbranschen",
+    "en" : "Vocational Qualification in Agriculture",
+    "fi" : "Maatalousalan perustutkinto"
+  },
+  "diaarinumero" : "OPH-5033-2021",
+  "voimassaoloAlkaa" : "1659301200000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Vocational qualification in Agriculture",
+      "fi" : "Maatalousalan perustutkinto",
+      "sv" : "Grundexamen inom lantbruksbranschen"
+    },
+    "koulutuskoodiArvo" : "361101"
+  } ],
+  "luotu" : 1618463295084
+}, {
+  "id" : 1571580,
+  "nimi" : {
+    "_id" : "1839668",
+    "fi" : "Maatalousalan perustutkinto",
+    "sv" : "Grundexamen inom lantbruksbranschen"
+  },
+  "diaarinumero" : "64/011/2014",
+  "voimassaoloAlkaa" : "1469998800000",
+  "voimassaoloLoppuu" : "1532984400000",
+  "siirtymaPaattyy" : "1640901600000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Vocational qualification in Agriculture",
+      "fi" : "Maatalousalan perustutkinto",
+      "sv" : "Grundexamen inom lantbruksbranschen"
+    },
+    "koulutuskoodiArvo" : "361101"
+  } ],
+  "luotu" : 1463051420084
+}, {
+  "id" : 3328284,
+  "nimi" : {
+    "_tunniste" : "7cf67401-93d4-447e-a3dd-1e84b43977f0",
+    "_id" : "6158100",
+    "sv" : "Grundexamen inom lantbruksbranschen",
+    "en" : "Vocational Qualification in Agriculture",
+    "fi" : "Maatalousalan perustutkinto"
+  },
+  "diaarinumero" : "OPH-2730-2017",
+  "voimassaoloAlkaa" : "1533070800000",
+  "voimassaoloLoppuu" : "1659214800000",
+  "siirtymaPaattyy" : "1785445200000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Vocational qualification in Agriculture",
+      "fi" : "Maatalousalan perustutkinto",
+      "sv" : "Grundexamen inom lantbruksbranschen"
+    },
+    "koulutuskoodiArvo" : "361101"
+  } ],
+  "luotu" : 1508832845027
+}, {
+  "id" : 2202320,
+  "nimi" : {
+    "_id" : "2336940",
+    "_tunniste" : "f937e9ed-067b-4198-b5c7-70ba6a28e6e1",
+    "fi" : "Merenkulkualan perustutkinto",
+    "sv" : "Grundexamen i sjöfart"
+  },
+  "diaarinumero" : "66/011/2014",
+  "voimassaoloAlkaa" : "1501534800000",
+  "voimassaoloLoppuu" : "1532984400000",
+  "siirtymaPaattyy" : "1640901600000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Vocational Qualification in Seafaring",
+      "fi" : "Merenkulkualan perustutkinto",
+      "sv" : "Grundexamen i sjöfart"
+    },
+    "koulutuskoodiArvo" : "381402"
+  } ],
+  "luotu" : 1481206680285
+}, {
+  "id" : 6095800,
+  "nimi" : {
+    "_tunniste" : "7cf67401-93d4-447e-a3dd-1e84b43977f0",
+    "_id" : "6366110",
+    "sv" : "Grundexamen i sjöfart",
+    "en" : "Vocational Qualification in Seafaring",
+    "fi" : "Merenkulkualan perustutkinto"
+  },
+  "diaarinumero" : "OPH-2540-2017",
+  "voimassaoloAlkaa" : "1556658000000",
+  "voimassaoloLoppuu" : "1659214800000",
+  "siirtymaPaattyy" : "1785445200000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Vocational Qualification in Seafaring",
+      "fi" : "Merenkulkualan perustutkinto",
+      "sv" : "Grundexamen i sjöfart"
+    },
+    "koulutuskoodiArvo" : "381402"
+  } ],
+  "luotu" : 1544187147060
+}, {
+  "id" : 3450780,
+  "nimi" : {
+    "_tunniste" : "7cf67401-93d4-447e-a3dd-1e84b43977f0",
+    "_id" : "6158470",
+    "sv" : "Grundexamen i sjöfart",
+    "en" : "Vocational Qualification in Seafaring",
+    "fi" : "Merenkulkualan perustutkinto"
+  },
+  "diaarinumero" : "OPH-2540-2017",
+  "voimassaoloAlkaa" : "1533070800000",
+  "voimassaoloLoppuu" : "1556571600000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Vocational Qualification in Seafaring",
+      "fi" : "Merenkulkualan perustutkinto",
+      "sv" : "Grundexamen i sjöfart"
+    },
+    "koulutuskoodiArvo" : "381402"
+  } ],
+  "luotu" : 1509108975027
+}, {
+  "id" : 1721190,
+  "nimi" : {
+    "_id" : "6061079",
+    "_tunniste" : "ec9a507d-c806-4c2b-aaac-99a0b1e91f72",
+    "fi" : "Merenkulkualan perustutkinto",
+    "sv" : "Grundexamen i sjöfart, i kraft till 31.7.2017"
+  },
+  "diaarinumero" : "66/011/2014",
+  "voimassaoloAlkaa" : "1469998800000",
+  "voimassaoloLoppuu" : "1501448400000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Vocational Qualification in Seafaring",
+      "fi" : "Merenkulkualan perustutkinto",
+      "sv" : "Grundexamen i sjöfart"
+    },
+    "koulutuskoodiArvo" : "381402"
+  } ],
+  "luotu" : 1466003394464
+}, {
+  "id" : 7846217,
+  "nimi" : {
+    "_tunniste" : "7cf67401-93d4-447e-a3dd-1e84b43977f0",
+    "_id" : "6366110",
+    "sv" : "Grundexamen i sjöfart",
+    "en" : "Vocational Qualification in Seafaring",
+    "fi" : "Merenkulkualan perustutkinto"
+  },
+  "diaarinumero" : "OPH-5502-2021",
+  "voimassaoloAlkaa" : "1659301200000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Vocational Qualification in Seafaring",
+      "fi" : "Merenkulkualan perustutkinto",
+      "sv" : "Grundexamen i sjöfart"
+    },
+    "koulutuskoodiArvo" : "381402"
+  } ],
+  "luotu" : 1625051111587
+}, {
+  "id" : 515679,
+  "nimi" : {
+    "_id" : "1219107",
+    "fi" : "Metallien jalostuksen ammattitutkinto",
+    "sv" : "Yrkesexamen i metallförädling"
+  },
+  "diaarinumero" : "23/011/2003",
+  "voimassaoloAlkaa" : "1054414800000",
+  "voimassaoloLoppuu" : "1501448400000",
+  "siirtymaPaattyy" : "1596142800000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Base Metal Industry, FQ",
+      "fi" : "Metallien jalostuksen ammattitutkinto",
+      "sv" : "Yrkesexamen i metallförädling"
+    },
+    "koulutuskoodiArvo" : "354110"
+  } ],
+  "luotu" : 1423772275170
+}, {
+  "id" : 7846218,
+  "nimi" : {
+    "_tunniste" : "7cf67401-93d4-447e-a3dd-1e84b43977f0",
+    "_id" : "6158102",
+    "sv" : "Grundexamen inom skogsbranschen",
+    "en" : "Vocational Qualification in Forestry",
+    "fi" : "Metsäalan perustutkinto"
+  },
+  "diaarinumero" : "OPH-4845-2021",
+  "voimassaoloAlkaa" : "1659301200000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Vocational qualification in Forestry",
+      "fi" : "Metsäalan perustutkinto",
+      "sv" : "Grundexamen inom skogsbranschen"
+    },
+    "koulutuskoodiArvo" : "361301"
+  } ],
+  "luotu" : 1625051757261
+}, {
+  "id" : 1721191,
+  "nimi" : {
+    "_id" : "312163",
+    "fi" : "Metsäalan perustutkinto",
+    "sv" : "Grundexamen inom skogsbranschen"
+  },
+  "diaarinumero" : "67/011/2014",
+  "voimassaoloAlkaa" : "1469998800000",
+  "voimassaoloLoppuu" : "1532984400000",
+  "siirtymaPaattyy" : "1640901600000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Vocational qualification in Forestry",
+      "fi" : "Metsäalan perustutkinto",
+      "sv" : "Grundexamen inom skogsbranschen"
+    },
+    "koulutuskoodiArvo" : "361301"
+  } ],
+  "luotu" : 1466003561040
+}, {
+  "id" : 6930621,
+  "nimi" : {
+    "_tunniste" : "7cf67401-93d4-447e-a3dd-1e84b43977f0",
+    "_id" : "6158102",
+    "sv" : "Grundexamen inom skogsbranschen",
+    "en" : "Vocational Qualification in Forestry",
+    "fi" : "Metsäalan perustutkinto"
+  },
+  "diaarinumero" : "OPH-2539-2017",
+  "voimassaoloAlkaa" : "1577829600000",
+  "voimassaoloLoppuu" : "1659214800000",
+  "siirtymaPaattyy" : "1785445200000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Vocational qualification in Forestry",
+      "fi" : "Metsäalan perustutkinto",
+      "sv" : "Grundexamen inom skogsbranschen"
+    },
+    "koulutuskoodiArvo" : "361301"
+  } ],
+  "luotu" : 1576241784188
+}, {
+  "id" : 4038055,
+  "nimi" : {
+    "_tunniste" : "7cf67401-93d4-447e-a3dd-1e84b43977f0",
+    "_id" : "6158102",
+    "sv" : "Grundexamen inom skogsbranschen",
+    "en" : "Vocational Qualification in Forestry",
+    "fi" : "Metsäalan perustutkinto"
+  },
+  "diaarinumero" : "OPH-2539-2017",
+  "voimassaoloAlkaa" : "1533070800000",
+  "voimassaoloLoppuu" : "1577743200000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Vocational qualification in Forestry",
+      "fi" : "Metsäalan perustutkinto",
+      "sv" : "Grundexamen inom skogsbranschen"
+    },
+    "koulutuskoodiArvo" : "361301"
+  } ],
+  "luotu" : 1512986927571
+}, {
+  "id" : 515850,
+  "nimi" : {
+    "_id" : "878703",
+    "fi" : "Mittaajan ja kalibroijan ammattitutkinto",
+    "sv" : "Yrkesexamen för mätare och kalibrerare"
+  },
+  "diaarinumero" : "45/011/2012",
+  "voimassaoloAlkaa" : "1354312800000",
+  "voimassaoloLoppuu" : "1546207200000",
+  "siirtymaPaattyy" : "1640901600000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Measuring and Calibration, FQ",
+      "fi" : "Mittaajan ja kalibroijan ammattitutkinto",
+      "sv" : "Yrkesexamen för mätare och kalibrerare"
+    },
+    "koulutuskoodiArvo" : "355905"
+  } ],
+  "luotu" : 1423772364922
+}, {
+  "id" : 7919061,
+  "nimi" : {
+    "_id" : "6158848",
+    "_tunniste" : "db5f0a47-b85d-4e68-9452-66a2bc4f613f",
+    "fi" : "Palvelulogistiikan ammattitutkinto",
+    "sv" : "Yrkesexamen i servicelogistik"
+  },
+  "diaarinumero" : "OPH-2916-2017",
+  "voimassaoloAlkaa" : "1640988000000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Further vocational qualification in Service Logistics",
+      "fi" : "Palvelulogistiikan ammattitutkinto",
+      "sv" : "Yrkesexamen i servicelogistik"
+    },
+    "koulutuskoodiArvo" : "334146"
+  } ],
+  "luotu" : 1629956250160
+}, {
+  "id" : 3855071,
+  "nimi" : {
+    "_id" : "6158848",
+    "_tunniste" : "db5f0a47-b85d-4e68-9452-66a2bc4f613f",
+    "fi" : "Palvelulogistiikan ammattitutkinto",
+    "sv" : "Yrkesexamen i servicelogistik"
+  },
+  "diaarinumero" : "OPH-2916-2017",
+  "voimassaoloAlkaa" : "1514757600000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Further vocational qualification in Service Logistics",
+      "fi" : "Palvelulogistiikan ammattitutkinto",
+      "sv" : "Yrkesexamen i servicelogistik"
+    },
+    "koulutuskoodiArvo" : "334146"
+  } ],
+  "luotu" : 1511165037468
+}, {
+  "id" : 2236610,
+  "nimi" : {
+    "_id" : "2374216",
+    "_tunniste" : "4cf158ca-50db-4bdd-8e3b-6b1653142ca8",
+    "fi" : "Paperiteollisuuden ammattitutkinto",
+    "sv" : "Yrkesexamen inom pappersindustrin"
+  },
+  "diaarinumero" : "13/011/2007",
+  "voimassaoloAlkaa" : "1185915600000",
+  "voimassaoloLoppuu" : "1501448400000",
+  "siirtymaPaattyy" : "1596142800000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Paper Industry, FQ",
+      "fi" : "Paperiteollisuuden ammattitutkinto",
+      "sv" : "Yrkesexamen inom pappersindustrin"
+    },
+    "koulutuskoodiArvo" : "354604"
+  } ],
+  "luotu" : 1482310637824
+}, {
+  "id" : 2291719,
+  "nimi" : {
+    "_id" : "2374365",
+    "_tunniste" : "150fed7e-2ea4-4f85-a414-d3bc1b29834f",
+    "fi" : "Paperiteollisuuden erikoisammattitutkinto",
+    "sv" : "Specialyrkesexamen inom pappersindustrin"
+  },
+  "diaarinumero" : "13/011/2007",
+  "voimassaoloAlkaa" : "1185915600000",
+  "voimassaoloLoppuu" : "1501448400000",
+  "siirtymaPaattyy" : "1596142800000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "fi" : "Paperiteollisuuden erikoisammattitutkinto",
+      "sv" : "Specialyrkesexamen inom pappersindustrin"
+    },
+    "koulutuskoodiArvo" : "357602"
+  } ],
+  "luotu" : 1487143295698
+}, {
+  "id" : 931990,
+  "nimi" : {
+    "_tunniste" : "b36e7185-3b95-476d-a4b7-749cc5f753e7",
+    "_id" : "3026580",
+    "sv" : "Yrkesexamen för småmaskinsinstallatör",
+    "en" : "Small Machinery Mechanic, FQ",
+    "fi" : "Pienkonemekaanikon ammattitutkinto"
+  },
+  "diaarinumero" : "19/011/2004",
+  "voimassaoloAlkaa" : "1088629200000",
+  "voimassaoloLoppuu" : "1532984400000",
+  "siirtymaPaattyy" : "1640901600000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Small Machinery Mechanic, FQ",
+      "fi" : "Pienkonemekaanikon ammattitutkinto",
+      "sv" : "Yrkesexamen för småmaskinsinstallatör"
+    },
+    "koulutuskoodiArvo" : "354309"
+  } ],
+  "luotu" : 1429028047058
+}, {
+  "id" : 3716622,
+  "nimi" : {
+    "_tunniste" : "f92b27fb-5d5c-4e01-bf86-6f04c5cb659b",
+    "_id" : "6156874",
+    "sv" : "Specialyrkesexamen inom ytbehandlingsbranschen",
+    "en" : "Specialist vocational qualification in Surface Treatment",
+    "fi" : "Pintakäsittelyalan erikoisammattitutkinto"
+  },
+  "diaarinumero" : "OPH-1670-2018",
+  "voimassaoloAlkaa" : "1546293600000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Pintakäsittelyalan erikoisammattitutkinto",
+      "fi" : "Pintakäsittelyalan erikoisammattitutkinto",
+      "sv" : "Specialyrkesexamen inom ytbehandlingsbranschen"
+    },
+    "koulutuskoodiArvo" : "457841"
+  } ],
+  "luotu" : 1510224988506
+}, {
+  "id" : 3792064,
+  "nimi" : {
+    "_tunniste" : "db5f0a47-b85d-4e68-9452-66a2bc4f613f",
+    "_id" : "6156965",
+    "sv" : "Yrkesexamen inom processindustrin",
+    "en" : "Further Vocational Qualification in the Process Industry",
+    "fi" : "Prosessiteollisuuden ammattitutkinto"
+  },
+  "diaarinumero" : "OPH-2704-2017",
+  "voimassaoloAlkaa" : "1514757600000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Further vocational qualification in the Process Industry",
+      "fi" : "Prosessiteollisuuden ammattitutkinto",
+      "sv" : "Yrkesexamen inom processindustrin"
+    },
+    "koulutuskoodiArvo" : "354646"
+  } ],
+  "luotu" : 1510832859528
+}, {
+  "id" : 1314995,
+  "nimi" : {
+    "_id" : "2712334",
+    "_tunniste" : "64d52585-ba35-4558-978f-47fecc2ef6ab",
+    "fi" : "Prosessiteollisuuden ammattitutkinto",
+    "sv" : "Yrkesexamen inom processindustrin"
+  },
+  "diaarinumero" : "OPH-1377-2017",
+  "voimassaoloAlkaa" : "1501534800000",
+  "voimassaoloLoppuu" : "1514671200000",
+  "siirtymaPaattyy" : "1640901600000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Further vocational qualification in the Process Industry",
+      "fi" : "Prosessiteollisuuden ammattitutkinto",
+      "sv" : "Yrkesexamen inom processindustrin"
+    },
+    "koulutuskoodiArvo" : "354646"
+  } ],
+  "luotu" : 1443695883376
+}, {
+  "id" : 97338,
+  "nimi" : {
+    "_id" : "2392269",
+    "_tunniste" : "2ba90975-ad7e-4983-8a7c-6f11b55aba70",
+    "fi" : "Prosessiteollisuuden perustutkinto",
+    "sv" : "Grundexamen inom processindustrin, i kraft fram till 31.7.2019"
+  },
+  "diaarinumero" : "73/011/2014",
+  "voimassaoloAlkaa" : "1438376400000",
+  "voimassaoloLoppuu" : "1469912400000",
+  "siirtymaPaattyy" : "1564520400000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Vocational qualification in the Process Industry",
+      "fi" : "Prosessiteollisuuden perustutkinto",
+      "sv" : "Grundexamen inom processindustrin"
+    },
+    "koulutuskoodiArvo" : "351605"
+  } ],
+  "luotu" : 1416423782365
+}, {
+  "id" : 1565626,
+  "nimi" : {
+    "_id" : "2259880",
+    "_tunniste" : "2c47414b-728b-43cf-a1ce-5e94c1f11b3a",
+    "fi" : "Prosessiteollisuuden perustutkinto",
+    "sv" : "Grundexamen inom processindustrin, i kraft fr.o.m. 1.8.2016"
+  },
+  "diaarinumero" : "24/011/2016",
+  "voimassaoloAlkaa" : "1469998800000",
+  "voimassaoloLoppuu" : "1532984400000",
+  "siirtymaPaattyy" : "1640901600000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Vocational qualification in the Process Industry",
+      "fi" : "Prosessiteollisuuden perustutkinto",
+      "sv" : "Grundexamen inom processindustrin"
+    },
+    "koulutuskoodiArvo" : "351605"
+  } ],
+  "luotu" : 1463050727402
+}, {
+  "id" : 7854761,
+  "nimi" : {
+    "_tunniste" : "7cf67401-93d4-447e-a3dd-1e84b43977f0",
+    "_id" : "6394554",
+    "sv" : "Grundexamen inom processindustrin",
+    "en" : "Vocational Qualification in the Process Industry",
+    "fi" : "Prosessiteollisuuden perustutkinto"
+  },
+  "diaarinumero" : "OPH-4848-2021",
+  "voimassaoloAlkaa" : "1659301200000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Vocational qualification in the Process Industry",
+      "fi" : "Prosessiteollisuuden perustutkinto",
+      "sv" : "Grundexamen inom processindustrin"
+    },
+    "koulutuskoodiArvo" : "351605"
+  } ],
+  "luotu" : 1625208879743
+}, {
+  "id" : 3855078,
+  "nimi" : {
+    "_tunniste" : "7cf67401-93d4-447e-a3dd-1e84b43977f0",
+    "_id" : "6394554",
+    "sv" : "Grundexamen inom processindustrin",
+    "en" : "Vocational Qualification in the Process Industry",
+    "fi" : "Prosessiteollisuuden perustutkinto"
+  },
+  "diaarinumero" : "OPH-2529-2017",
+  "voimassaoloAlkaa" : "1533070800000",
+  "voimassaoloLoppuu" : "1659214800000",
+  "siirtymaPaattyy" : "1785445200000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Vocational qualification in the Process Industry",
+      "fi" : "Prosessiteollisuuden perustutkinto",
+      "sv" : "Grundexamen inom processindustrin"
+    },
+    "koulutuskoodiArvo" : "351605"
+  } ],
+  "luotu" : 1511359215890
+}, {
+  "id" : 2257060,
+  "nimi" : {
+    "_tunniste" : "3040338f-e0c5-4712-ad99-2154d782810d",
+    "_id" : "6157581",
+    "sv" : "Yrkesexamen inom rengörings- och fastighetsservicebranschen",
+    "en" : "Further Vocational Qualification in Cleaning and Property Services",
+    "fi" : "Puhtaus- ja kiinteistöpalvelualan ammattitutkinto"
+  },
+  "diaarinumero" : "OPH-2442-2017",
+  "voimassaoloAlkaa" : "1514757600000",
+  "voimassaoloLoppuu" : "1582927200000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Further Vocational Qualification in Cleaning and Property Services",
+      "fi" : "Puhtaus- ja kiinteistöpalvelualan ammattitutkinto",
+      "sv" : "Yrkesexamen inom rengörings- och fastighetsservicebranschen"
+    },
+    "koulutuskoodiArvo" : "384145"
+  } ],
+  "luotu" : 1483530104257
+}, {
+  "id" : 7534955,
+  "nimi" : {
+    "_tunniste" : "db5f0a47-b85d-4e68-9452-66a2bc4f613f",
+    "_id" : "7003775",
+    "sv" : "Yrkesexamen inom rengörings- och fastighetsservicebranschen",
+    "en" : "Further Vocational Qualification in Cleaning and Property Services",
+    "fi" : "Puhtaus- ja kiinteistöpalvelualan ammattitutkinto"
+  },
+  "diaarinumero" : "OPH-1787-2021",
+  "voimassaoloAlkaa" : "1630443600000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Further Vocational Qualification in Cleaning and Property Services",
+      "fi" : "Puhtaus- ja kiinteistöpalvelualan ammattitutkinto",
+      "sv" : "Yrkesexamen inom rengörings- och fastighetsservicebranschen"
+    },
+    "koulutuskoodiArvo" : "384145"
+  } ],
+  "luotu" : 1610971551273
+}, {
+  "id" : 4914573,
+  "nimi" : {
+    "_tunniste" : "db5f0a47-b85d-4e68-9452-66a2bc4f613f",
+    "_id" : "7003775",
+    "sv" : "Yrkesexamen inom rengörings- och fastighetsservicebranschen",
+    "en" : "Further Vocational Qualification in Cleaning and Property Services",
+    "fi" : "Puhtaus- ja kiinteistöpalvelualan ammattitutkinto"
+  },
+  "diaarinumero" : "OPH-2442-2017",
+  "voimassaoloAlkaa" : "1583013600000",
+  "voimassaoloLoppuu" : "1630357200000",
+  "siirtymaPaattyy" : "1756587600000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Further Vocational Qualification in Cleaning and Property Services",
+      "fi" : "Puhtaus- ja kiinteistöpalvelualan ammattitutkinto",
+      "sv" : "Yrkesexamen inom rengörings- och fastighetsservicebranschen"
+    },
+    "koulutuskoodiArvo" : "384145"
+  } ],
+  "luotu" : 1527761449278
+}, {
+  "id" : 6749300,
+  "nimi" : {
+    "_tunniste" : "7cf67401-93d4-447e-a3dd-1e84b43977f0",
+    "_id" : "6157583",
+    "sv" : "Grundexamen inom rengörings- och fastighetsservicebranschen",
+    "en" : "Vocational Qualification in Cleaning and Property Services",
+    "fi" : "Puhtaus- ja kiinteistöpalvelualan perustutkinto"
+  },
+  "diaarinumero" : "OPH-2526-2017",
+  "voimassaoloAlkaa" : "1583013600000",
+  "voimassaoloLoppuu" : "1659214800000",
+  "siirtymaPaattyy" : "1785445200000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Vocational qualification in Cleaning and Property Services",
+      "fi" : "Puhtaus- ja kiinteistöpalvelualan perustutkinto",
+      "sv" : "Grundexamen inom rengörings- och fastighetsservicebranschen"
+    },
+    "koulutuskoodiArvo" : "381141"
+  } ],
+  "luotu" : 1565334902855
+}, {
+  "id" : 7584201,
+  "nimi" : {
+    "_tunniste" : "46e60d6d-4f5c-49f1-b5f0-a9dd0a7dc4c2",
+    "_id" : "8131755",
+    "sv" : "Grundexamen inom rengörings- och fastighetsservicebranschen",
+    "en" : "Vocational Qualification in Cleaning and Property Services",
+    "fi" : "Puhtaus- ja kiinteistöpalvelualan perustutkinto"
+  },
+  "diaarinumero" : "OPH-1825-2021",
+  "voimassaoloAlkaa" : "1659301200000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Vocational qualification in Cleaning and Property Services",
+      "fi" : "Puhtaus- ja kiinteistöpalvelualan perustutkinto",
+      "sv" : "Grundexamen inom rengörings- och fastighetsservicebranschen"
+    },
+    "koulutuskoodiArvo" : "381141"
+  } ],
+  "luotu" : 1613637445415
+}, {
+  "id" : 4221361,
+  "nimi" : {
+    "_tunniste" : "7cf67401-93d4-447e-a3dd-1e84b43977f0",
+    "_id" : "6157583",
+    "sv" : "Grundexamen inom rengörings- och fastighetsservicebranschen",
+    "en" : "Vocational Qualification in Cleaning and Property Services",
+    "fi" : "Puhtaus- ja kiinteistöpalvelualan perustutkinto"
+  },
+  "diaarinumero" : "OPH-2526-2017",
+  "voimassaoloAlkaa" : "1533070800000",
+  "voimassaoloLoppuu" : "1582927200000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Vocational qualification in Cleaning and Property Services",
+      "fi" : "Puhtaus- ja kiinteistöpalvelualan perustutkinto",
+      "sv" : "Grundexamen inom rengörings- och fastighetsservicebranschen"
+    },
+    "koulutuskoodiArvo" : "381141"
+  } ],
+  "luotu" : 1513244208296
+}, {
+  "id" : 1721198,
+  "nimi" : {
+    "_id" : "1811143",
+    "fi" : "Puualan perustutkinto",
+    "sv" : "Grundexamen inom träbranschen"
+  },
+  "diaarinumero" : "74/011/2014",
+  "voimassaoloAlkaa" : "1469998800000",
+  "voimassaoloLoppuu" : "1532984400000",
+  "siirtymaPaattyy" : "1640901600000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Wood Prcessing, VQ",
+      "fi" : "Puualan perustutkinto",
+      "sv" : "Grundexamen inom träbranschen"
+    },
+    "koulutuskoodiArvo" : "351701"
+  } ],
+  "luotu" : 1466054358190
+}, {
+  "id" : 1954446,
+  "nimi" : {
+    "_id" : "2333842",
+    "_tunniste" : "4f779aef-e442-4ffe-8e8c-3d2ebc938e55",
+    "fi" : "Puualan perustutkinto, kokeilu",
+    "sv" : "Grundexamen inom träbranschen"
+  },
+  "diaarinumero" : "57/011/2016",
+  "voimassaoloAlkaa" : "1483221600000",
+  "voimassaoloLoppuu" : "1596142800000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Wood Prcessing, VQ",
+      "fi" : "Puualan perustutkinto",
+      "sv" : "Grundexamen inom träbranschen"
+    },
+    "koulutuskoodiArvo" : "351701"
+  } ],
+  "luotu" : 1476096306806
+}, {
+  "id" : 682587,
+  "nimi" : {
+    "_id" : "1304306",
+    "fi" : "Puutavaran autokuljetuksen ammattitutkinto",
+    "sv" : "Yrkesexamen i biltransport av trävaror"
+  },
+  "diaarinumero" : "27/011/2008",
+  "voimassaoloAlkaa" : "1222808400000",
+  "voimassaoloLoppuu" : "1514671200000",
+  "siirtymaPaattyy" : "1640901600000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Timber Lorry Transport, FQ",
+      "fi" : "Puutavaran autokuljetuksen ammattitutkinto",
+      "sv" : "Yrkesexamen i biltransport av trävaror"
+    },
+    "koulutuskoodiArvo" : "364307"
+  } ],
+  "luotu" : 1425301244554
+}, {
+  "id" : 3932281,
+  "nimi" : {
+    "_tunniste" : "7cf67401-93d4-447e-a3dd-1e84b43977f0",
+    "_id" : "6158472",
+    "sv" : "Grundexamen inom träindustrin",
+    "en" : "Vocational Qualification in the Wood Industry",
+    "fi" : "Puuteollisuuden perustutkinto"
+  },
+  "diaarinumero" : "OPH-2455-2017",
+  "voimassaoloAlkaa" : "1533070800000",
+  "voimassaoloLoppuu" : "1659214800000",
+  "siirtymaPaattyy" : "1785445200000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Vocational qualification in the Wood Industry",
+      "fi" : "Puuteollisuuden perustutkinto",
+      "sv" : "Grundexamen inom träindustrin"
+    },
+    "koulutuskoodiArvo" : "351741"
+  } ],
+  "luotu" : 1511422361286
+}, {
+  "id" : 1724170,
+  "nimi" : {
+    "_id" : "623879",
+    "fi" : "Rakennusalan perustutkinto",
+    "sv" : "Grundexamen inom byggnadsbranschen"
+  },
+  "diaarinumero" : "76/011/2014",
+  "voimassaoloAlkaa" : "1469998800000",
+  "voimassaoloLoppuu" : "1532984400000",
+  "siirtymaPaattyy" : "1640901600000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Vocational qualification in Construction",
+      "fi" : "Rakennusalan perustutkinto",
+      "sv" : "Grundexamen inom byggnadsbranschen"
+    },
+    "koulutuskoodiArvo" : "352201"
+  } ],
+  "luotu" : 1466054541976
+}, {
+  "id" : 6945380,
+  "nimi" : {
+    "_tunniste" : "7cf67401-93d4-447e-a3dd-1e84b43977f0",
+    "_id" : "6158952",
+    "sv" : "Grundexamen inom byggnadsbranschen",
+    "en" : "Vocational Qualification in Construction",
+    "fi" : "Rakennusalan perustutkinto"
+  },
+  "diaarinumero" : "OPH-2789-2017",
+  "voimassaoloAlkaa" : "1577829600000",
+  "voimassaoloLoppuu" : "1627678800000",
+  "siirtymaPaattyy" : "1753909200000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Vocational qualification in Construction",
+      "fi" : "Rakennusalan perustutkinto",
+      "sv" : "Grundexamen inom byggnadsbranschen"
+    },
+    "koulutuskoodiArvo" : "352201"
+  } ],
+  "luotu" : 1576765550035
+}, {
+  "id" : 3667905,
+  "nimi" : {
+    "_tunniste" : "7cf67401-93d4-447e-a3dd-1e84b43977f0",
+    "_id" : "6158952",
+    "sv" : "Grundexamen inom byggnadsbranschen",
+    "en" : "Vocational Qualification in Construction",
+    "fi" : "Rakennusalan perustutkinto"
+  },
+  "diaarinumero" : "OPH-2789-2017",
+  "voimassaoloAlkaa" : "1533070800000",
+  "voimassaoloLoppuu" : "1577743200000",
+  "siirtymaPaattyy" : "1753909200000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Vocational qualification in Construction",
+      "fi" : "Rakennusalan perustutkinto",
+      "sv" : "Grundexamen inom byggnadsbranschen"
+    },
+    "koulutuskoodiArvo" : "352201"
+  } ],
+  "luotu" : 1509976832407
+}, {
+  "id" : 931991,
+  "nimi" : {
+    "_tunniste" : "a00ff862-679c-48ea-b306-380d7de74a22",
+    "_id" : "3015799",
+    "sv" : "Yrkesexamen för tungmaterielsmekaniker",
+    "en" : "Heavy Vehicle Mechanic, FQ",
+    "fi" : "Raskaskalustomekaanikon ammattitutkinto"
+  },
+  "diaarinumero" : "21/011/2008",
+  "voimassaoloAlkaa" : "1212267600000",
+  "voimassaoloLoppuu" : "1532984400000",
+  "siirtymaPaattyy" : "1640901600000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Heavy Vehicle Mechanic, FQ",
+      "fi" : "Raskaskalustomekaanikon ammattitutkinto",
+      "sv" : "Yrkesexamen för tungmaterielsmekaniker"
+    },
+    "koulutuskoodiArvo" : "354310"
+  } ],
+  "luotu" : 1429028198571
+}, {
+  "id" : 931992,
+  "nimi" : {
+    "_id" : "2989504",
+    "_tunniste" : "fa33f3c0-717b-4441-9abe-39c86475dd78",
+    "fi" : "Rengasalan ammattitutkinto",
+    "sv" : "Yrkesexamen inom däckbranschen"
+  },
+  "diaarinumero" : "37/011/2012",
+  "voimassaoloAlkaa" : "1349038800000",
+  "voimassaoloLoppuu" : "1532984400000",
+  "siirtymaPaattyy" : "1640901600000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Tyre Industry, FQ",
+      "fi" : "Rengasalan ammattitutkinto",
+      "sv" : "Yrkesexamen inom däckbranschen"
+    },
+    "koulutuskoodiArvo" : "354314"
+  } ],
+  "luotu" : 1429028333567
+}, {
+  "id" : 1912224,
+  "nimi" : {
+    "_id" : "1920806",
+    "fi" : "Saha-alan ammattitutkinto",
+    "sv" : "Yrkesexamen inom sågbranschen"
+  },
+  "diaarinumero" : "24/011/2008",
+  "voimassaoloAlkaa" : "1222808400000",
+  "voimassaoloLoppuu" : "1546207200000",
+  "siirtymaPaattyy" : "1640901600000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Sawmill Industry, FQ",
+      "fi" : "Saha-alan ammattitutkinto",
+      "sv" : "Yrkesexamen inom sågbranschen"
+    },
+    "koulutuskoodiArvo" : "354705"
+  } ],
+  "luotu" : 1473850657629
+}, {
+  "id" : 5917360,
+  "nimi" : {
+    "_tunniste" : "7cf67401-93d4-447e-a3dd-1e84b43977f0",
+    "_id" : "6172824",
+    "sv" : "Grundexamen i maskin- och produktionsteknik",
+    "en" : "Vocational Qualification in Mechanical Engineering and Production Technology",
+    "fi" : "Kone- ja tuotantotekniikan perustutkinnon perusteet, koulutusvientikokeilu"
+  },
+  "diaarinumero" : "OPH-1988-2018",
+  "voimassaoloAlkaa" : "1538686800000",
+  "voimassaoloLoppuu" : "1561669200000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Vocational Qualification in Mechanical Engineering and Production Technology",
+      "fi" : "Kone- ja tuotantotekniikan perustutkinto",
+      "sv" : "Grundexamen i maskin- och produktionsteknik"
+    },
+    "koulutuskoodiArvo" : "351108"
+  } ],
+  "koulutusvienti" : true,
+  "luotu" : 1536731681175
+}, {
+  "id" : 6542661,
+  "nimi" : {
+    "_tunniste" : "7cf67401-93d4-447e-a3dd-1e84b43977f0",
+    "_id" : "6962504",
+    "sv" : "Grundexamen i maskin- och produktionsteknik",
+    "en" : "Vocational Qualification in Mechanical Engineering and Production Technology",
+    "fi" : "Kone- ja tuotantotekniikan perustutkinto, koulutusvientikokeilu"
+  },
+  "diaarinumero" : "OPH-1988-2018",
+  "voimassaoloAlkaa" : "1538686800000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Vocational Qualification in Mechanical Engineering and Production Technology",
+      "fi" : "Kone- ja tuotantotekniikan perustutkinto",
+      "sv" : "Grundexamen i maskin- och produktionsteknik"
+    },
+    "koulutuskoodiArvo" : "351108"
+  } ],
+  "koulutusvienti" : true,
+  "luotu" : 1557990737808
+} ]

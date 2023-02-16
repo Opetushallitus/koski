@@ -1,0 +1,23 @@
+{
+  "id" : 7534950,
+  "nimi" : {
+    "_id" : "7788280",
+    "_tunniste" : "65bbd2eb-4e10-4ed8-b258-11d0b3003c8f",
+    "fi" : "Tutkintokoulutukseen valmentava koulutus",
+    "sv" : "Utbildning som handleder för examensutbildning"
+  },
+  "diaarinumero" : "OPH-1488-2021",
+  "koulutustyyppi" : "koulutustyyppi_40",
+  "voimassaoloAlkaa" : "1659301200000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "fi" : "Tutkintokoulutukseen valmentava koulutus",
+      "sv" : "Utbildning som handleder för examensutbildning"
+    },
+    "koulutuskoodiArvo" : "999908"
+  } ],
+  "koulutusvienti" : false,
+  "osaamisalat" : [ ],
+  "luotu" : 1610688380032,
+  "muokattu" : 1671208008320
+}

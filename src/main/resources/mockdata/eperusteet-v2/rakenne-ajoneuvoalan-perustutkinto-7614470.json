@@ -1,0 +1,2500 @@
+{
+  "id" : 7614470,
+  "nimi" : {
+    "_tunniste" : "46e60d6d-4f5c-49f1-b5f0-a9dd0a7dc4c2",
+    "_id" : "8238587",
+    "sv" : "Grundexamen inom fordonsbranschen",
+    "en" : "Vocational qualification in the motor vehicles sector",
+    "fi" : "Ajoneuvoalan perustutkinto"
+  },
+  "diaarinumero" : "OPH-5410-2021",
+  "koulutustyyppi" : "koulutustyyppi_1",
+  "voimassaoloAlkaa" : "1659301200000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Vocational qualification in the Vehicle Sector",
+      "fi" : "Ajoneuvoalan perustutkinto",
+      "sv" : "Grundexamen inom fordonsbranschen"
+    },
+    "koulutuskoodiArvo" : "351301"
+  } ],
+  "koulutusvienti" : false,
+  "suoritustavat" : [ {
+    "suoritustapakoodi" : "reformi",
+    "laajuusYksikko" : "OSAAMISPISTE",
+    "rakenne" : {
+      "osat" : [ {
+        "nimi" : {
+          "_tunniste" : "e56603e8-3445-4722-bc78-78f5ead2f691",
+          "_id" : "7993697",
+          "sv" : "Yrkesinriktade examensdelar",
+          "en" : "Ammatilliset tutkinnon osat",
+          "fi" : "Ammatilliset tutkinnon osat"
+        },
+        "osat" : [ {
+          "nimi" : {
+            "fi" : "Ajoneuvotekniikan osaamisala",
+            "sv" : "Kompetensområdet för fordonsteknik"
+          },
+          "osat" : [ {
+            "nimi" : {
+              "_tunniste" : "4e32fe06-898a-4e5a-91ec-c3d69d2636a7",
+              "_id" : "7994199",
+              "sv" : "Obligatoriska examensdelar",
+              "en" : "Pakolliset tutkinnon osat",
+              "fi" : "Pakolliset tutkinnon osat"
+            },
+            "osat" : [ {
+              "_tutkinnonOsaViite" : "7895733"
+            }, {
+              "_tutkinnonOsaViite" : "7895735"
+            }, {
+              "_tutkinnonOsaViite" : "7895736"
+            }, {
+              "_tutkinnonOsaViite" : "7895737"
+            } ],
+            "rooli" : "määritelty",
+            "muodostumisSaanto" : {
+              "laajuus" : {
+                "minimi" : 60
+              }
+            }
+          }, {
+            "nimi" : {
+              "fi" : "Automekaanikko",
+              "sv" : "Bilmekaniker"
+            },
+            "osat" : [ {
+              "nimi" : {
+                "_tunniste" : "22a9d01e-992a-41f1-bd56-0a1dfa04cdfb",
+                "_id" : "7998269",
+                "sv" : "Obligatoriska examensdelar",
+                "en" : "Pakolliset tutkinnon osat",
+                "fi" : "Pakolliset tutkinnon osat"
+              },
+              "osat" : [ {
+                "_tutkinnonOsaViite" : "7895734"
+              } ],
+              "rooli" : "määritelty",
+              "muodostumisSaanto" : {
+                "laajuus" : {
+                  "minimi" : 25
+                }
+              }
+            }, {
+              "nimi" : {
+                "_tunniste" : "9d7cc3e5-5f37-43f8-987b-47b452de0e3e",
+                "_id" : "7994431",
+                "sv" : "Valbara examensdelar",
+                "en" : "Valinnaiset tutkinnon osat",
+                "fi" : "Valinnaiset tutkinnon osat"
+              },
+              "osat" : [ {
+                "_tutkinnonOsaViite" : "7913612"
+              }, {
+                "_tutkinnonOsaViite" : "7913616"
+              }, {
+                "_tutkinnonOsaViite" : "7912190"
+              } ],
+              "rooli" : "määritelty",
+              "muodostumisSaanto" : {
+                "laajuus" : {
+                  "minimi" : 30,
+                  "maksimi" : 45
+                }
+              }
+            }, {
+              "nimi" : {
+                "_tunniste" : "3337fd88-3779-42ed-bae4-9c222b6b8502",
+                "_id" : "7996428",
+                "sv" : "Valbara examensdelar",
+                "en" : "Valinnaiset tutkinnon osat",
+                "fi" : "Valinnaiset tutkinnon osat"
+              },
+              "osat" : [ {
+                "_tutkinnonOsaViite" : "7895738"
+              }, {
+                "_tutkinnonOsaViite" : "7912191"
+              }, {
+                "_tutkinnonOsaViite" : "7912193"
+              }, {
+                "_tutkinnonOsaViite" : "7912195"
+              }, {
+                "_tutkinnonOsaViite" : "7636880"
+              }, {
+                "_tutkinnonOsaViite" : "7912196"
+              }, {
+                "_tutkinnonOsaViite" : "7912192"
+              }, {
+                "_tutkinnonOsaViite" : "7913614"
+              }, {
+                "_tutkinnonOsaViite" : "7913615"
+              }, {
+                "_tutkinnonOsaViite" : "7912194"
+              }, {
+                "_tutkinnonOsaViite" : "7912197"
+              }, {
+                "_tutkinnonOsaViite" : "7912199"
+              }, {
+                "_tutkinnonOsaViite" : "7912940"
+              }, {
+                "_tutkinnonOsaViite" : "7912941"
+              }, {
+                "_tutkinnonOsaViite" : "8160155"
+              }, {
+                "_tutkinnonOsaViite" : "8160156"
+              }, {
+                "_tutkinnonOsaViite" : "8160157"
+              }, {
+                "_tutkinnonOsaViite" : "8160158"
+              }, {
+                "_tutkinnonOsaViite" : "8160159"
+              }, {
+                "_tutkinnonOsaViite" : "8167520"
+              }, {
+                "nimi" : {
+                  "_tunniste" : "d6c0f84f-76d7-4b35-9005-35ed2ce79ece",
+                  "_id" : "8128089",
+                  "sv" : "Examensdel som grundar sig på lokala krav på yrkesskicklighet",
+                  "en" : "A unit based on local competence requirements",
+                  "fi" : "Paikallisiin ammattitaitovaatimuksiin perustuva tutkinnon osa"
+                },
+                "osat" : [ ],
+                "rooli" : "määrittelemätön",
+                "muodostumisSaanto" : {
+                  "laajuus" : {
+                    "minimi" : 5,
+                    "maksimi" : 15
+                  }
+                }
+              }, {
+                "nimi" : {
+                  "_tunniste" : "b3466783-ebac-4887-9a92-9855790bd6bd",
+                  "_id" : "8351728",
+                  "sv" : "En examensdel eller examensdelar från kompetensområdena inom denna examen",
+                  "en" : "Tutkinnon osa toisesta ammatillisesta perustutkinnosta, ammattitutkinnosta tai erikoisammattitutkinnosta",
+                  "fi" : "Tutkinnon osa tai osia tämän tutkinnon osaamisalojen tutkinnon osista"
+                },
+                "osat" : [ ],
+                "rooli" : "määrittelemätön",
+                "muodostumisSaanto" : {
+                  "laajuus" : {
+                    "minimi" : 5,
+                    "maksimi" : 15
+                  }
+                }
+              }, {
+                "nimi" : {
+                  "_tunniste" : "b3466783-ebac-4887-9a92-9855790bd6bd",
+                  "_id" : "8351890",
+                  "sv" : "Examensdel från en yrkesinriktad grundexamen, en yrkesexamen eller specialyrkesexamen",
+                  "en" : "Tutkinnon osa toisesta ammatillisesta perustutkinnosta, ammattitutkinnosta tai erikoisammattitutkinnosta",
+                  "fi" : "Tutkinnon osa toisesta ammatillisesta perustutkinnosta, ammattitutkinnosta tai erikoisammattitutkinnosta"
+                },
+                "osat" : [ ],
+                "rooli" : "määrittelemätön",
+                "muodostumisSaanto" : {
+                  "laajuus" : {
+                    "minimi" : 5,
+                    "maksimi" : 15
+                  }
+                }
+              }, {
+                "nimi" : {
+                  "_tunniste" : "559e4418-249f-4d35-8b63-a95d2954f2f2",
+                  "_id" : "7999937",
+                  "sv" : "Högskolestudier",
+                  "en" : "Korkeakouluopinnot",
+                  "fi" : "Korkeakouluopinnot"
+                },
+                "osat" : [ ],
+                "rooli" : "määrittelemätön",
+                "muodostumisSaanto" : {
+                  "laajuus" : {
+                    "minimi" : 5,
+                    "maksimi" : 15
+                  }
+                }
+              }, {
+                "nimi" : {
+                  "_tunniste" : "9e0753c7-c923-4a7b-8c63-69c6040522b9",
+                  "_id" : "7999938",
+                  "sv" : "Delområden av gemensamma examensdelar, gymnasiestudier eller andra studier som stöder förutsättningarna för fortsatta studier",
+                  "en" : "Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja",
+                  "fi" : "Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja"
+                },
+                "osat" : [ ],
+                "rooli" : "määrittelemätön",
+                "muodostumisSaanto" : {
+                  "laajuus" : {
+                    "minimi" : 1,
+                    "maksimi" : 25
+                  }
+                }
+              } ],
+              "rooli" : "määritelty",
+              "muodostumisSaanto" : {
+                "laajuus" : {
+                  "minimi" : 0,
+                  "maksimi" : 30
+                }
+              }
+            } ],
+            "rooli" : "tutkintonimike",
+            "muodostumisSaanto" : {
+              "laajuus" : {
+                "minimi" : 0
+              }
+            }
+          }, {
+            "nimi" : {
+              "fi" : "Diagnoosimekaanikko",
+              "sv" : "Diagnosmekaniker"
+            },
+            "osat" : [ {
+              "nimi" : {
+                "_tunniste" : "a3f8a50f-6b90-4055-9caa-fbfe93a0c621",
+                "_id" : "7999003",
+                "sv" : "Obligatoriska examensdelar",
+                "en" : "Pakolliset tutkinnon osat",
+                "fi" : "Pakolliset tutkinnon osat"
+              },
+              "osat" : [ {
+                "_tutkinnonOsaViite" : "7895734"
+              } ],
+              "rooli" : "määritelty",
+              "muodostumisSaanto" : {
+                "laajuus" : {
+                  "minimi" : 25
+                }
+              }
+            }, {
+              "nimi" : {
+                "_tunniste" : "df445b2a-a600-444b-b1d5-66c73b5c9eaa",
+                "_id" : "7999004",
+                "sv" : "Valbara examensdelar",
+                "en" : "Valinnaiset tutkinnon osat",
+                "fi" : "Valinnaiset tutkinnon osat"
+              },
+              "osat" : [ {
+                "_tutkinnonOsaViite" : "7912190"
+              }, {
+                "_tutkinnonOsaViite" : "7913615"
+              }, {
+                "_tutkinnonOsaViite" : "7895738"
+              }, {
+                "_tutkinnonOsaViite" : "7913614"
+              } ],
+              "rooli" : "määritelty",
+              "muodostumisSaanto" : {
+                "laajuus" : {
+                  "minimi" : 30,
+                  "maksimi" : 60
+                }
+              }
+            }, {
+              "nimi" : {
+                "_tunniste" : "0e0867a4-de1f-4fa3-ad42-188058e1d13e",
+                "_id" : "7999008",
+                "sv" : "Valbara examensdelar",
+                "en" : "Valinnaiset tutkinnon osat",
+                "fi" : "Valinnaiset tutkinnon osat"
+              },
+              "osat" : [ {
+                "_tutkinnonOsaViite" : "7912191"
+              }, {
+                "_tutkinnonOsaViite" : "7912193"
+              }, {
+                "_tutkinnonOsaViite" : "7912195"
+              }, {
+                "_tutkinnonOsaViite" : "7636880"
+              }, {
+                "_tutkinnonOsaViite" : "7912196"
+              }, {
+                "_tutkinnonOsaViite" : "7913612"
+              }, {
+                "_tutkinnonOsaViite" : "7912192"
+              }, {
+                "_tutkinnonOsaViite" : "7912194"
+              }, {
+                "_tutkinnonOsaViite" : "7912197"
+              }, {
+                "_tutkinnonOsaViite" : "7912199"
+              }, {
+                "_tutkinnonOsaViite" : "7912940"
+              }, {
+                "_tutkinnonOsaViite" : "7912941"
+              }, {
+                "_tutkinnonOsaViite" : "7913616"
+              }, {
+                "_tutkinnonOsaViite" : "8160155"
+              }, {
+                "_tutkinnonOsaViite" : "8160156"
+              }, {
+                "_tutkinnonOsaViite" : "8160157"
+              }, {
+                "_tutkinnonOsaViite" : "8160158"
+              }, {
+                "_tutkinnonOsaViite" : "8160159"
+              }, {
+                "_tutkinnonOsaViite" : "8167520"
+              }, {
+                "nimi" : {
+                  "_tunniste" : "d6c0f84f-76d7-4b35-9005-35ed2ce79ece",
+                  "_id" : "8128089",
+                  "sv" : "Examensdel som grundar sig på lokala krav på yrkesskicklighet",
+                  "en" : "A unit based on local competence requirements",
+                  "fi" : "Paikallisiin ammattitaitovaatimuksiin perustuva tutkinnon osa"
+                },
+                "osat" : [ ],
+                "rooli" : "määrittelemätön",
+                "muodostumisSaanto" : {
+                  "laajuus" : {
+                    "minimi" : 5,
+                    "maksimi" : 15
+                  }
+                }
+              }, {
+                "nimi" : {
+                  "_tunniste" : "b3466783-ebac-4887-9a92-9855790bd6bd",
+                  "_id" : "8351893",
+                  "sv" : "En examensdel eller examensdelar från kompetensområdena inom denna examen",
+                  "en" : "Tutkinnon osa toisesta ammatillisesta perustutkinnosta, ammattitutkinnosta tai erikoisammattitutkinnosta",
+                  "fi" : "Tutkinnon osa tai osia tämän tutkinnon osaamisalojen tutkinnon osista"
+                },
+                "osat" : [ ],
+                "rooli" : "määrittelemätön",
+                "muodostumisSaanto" : {
+                  "laajuus" : {
+                    "minimi" : 5,
+                    "maksimi" : 15
+                  }
+                }
+              }, {
+                "nimi" : {
+                  "_tunniste" : "b3466783-ebac-4887-9a92-9855790bd6bd",
+                  "_id" : "8025878",
+                  "sv" : "Examensdel från en yrkesinriktad grundexamen, en yrkesexamen eller specialyrkesexamen",
+                  "en" : "Tutkinnon osa toisesta ammatillisesta perustutkinnosta, ammattitutkinnosta tai erikoisammattitutkinnosta",
+                  "fi" : "Tutkinnon osa toisesta ammatillisesta perustutkinnosta, ammattitutkinnosta tai erikoisammattitutkinnosta"
+                },
+                "osat" : [ ],
+                "rooli" : "määrittelemätön",
+                "muodostumisSaanto" : {
+                  "laajuus" : {
+                    "minimi" : 5,
+                    "maksimi" : 15
+                  }
+                }
+              }, {
+                "nimi" : {
+                  "_tunniste" : "559e4418-249f-4d35-8b63-a95d2954f2f2",
+                  "_id" : "7999937",
+                  "sv" : "Högskolestudier",
+                  "en" : "Korkeakouluopinnot",
+                  "fi" : "Korkeakouluopinnot"
+                },
+                "osat" : [ ],
+                "rooli" : "määrittelemätön",
+                "muodostumisSaanto" : {
+                  "laajuus" : {
+                    "minimi" : 5,
+                    "maksimi" : 15
+                  }
+                }
+              }, {
+                "nimi" : {
+                  "_tunniste" : "9e0753c7-c923-4a7b-8c63-69c6040522b9",
+                  "_id" : "7999938",
+                  "sv" : "Delområden av gemensamma examensdelar, gymnasiestudier eller andra studier som stöder förutsättningarna för fortsatta studier",
+                  "en" : "Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja",
+                  "fi" : "Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja"
+                },
+                "osat" : [ ],
+                "rooli" : "määrittelemätön",
+                "muodostumisSaanto" : {
+                  "laajuus" : {
+                    "minimi" : 1,
+                    "maksimi" : 25
+                  }
+                }
+              } ],
+              "rooli" : "määritelty",
+              "muodostumisSaanto" : {
+                "laajuus" : {
+                  "minimi" : 0,
+                  "maksimi" : 30
+                }
+              }
+            } ],
+            "rooli" : "tutkintonimike",
+            "muodostumisSaanto" : {
+              "laajuus" : {
+                "minimi" : 0
+              }
+            }
+          }, {
+            "nimi" : {
+              "fi" : "Hyötyajoneuvomekaanikko",
+              "sv" : "Nyttofordonsmekaniker"
+            },
+            "osat" : [ {
+              "nimi" : {
+                "_tunniste" : "69f108de-0ed8-4cbd-9002-8c1d78a557d8",
+                "_id" : "7999009",
+                "sv" : "Obligatoriska examensdelar",
+                "en" : "Pakolliset tutkinnon osat",
+                "fi" : "Pakolliset tutkinnon osat"
+              },
+              "osat" : [ {
+                "_tutkinnonOsaViite" : "7895734"
+              } ],
+              "rooli" : "määritelty",
+              "muodostumisSaanto" : {
+                "laajuus" : {
+                  "minimi" : 25
+                }
+              }
+            }, {
+              "nimi" : {
+                "_tunniste" : "4a8d6265-dc04-4b06-9fcd-fe6ea76cbb4c",
+                "_id" : "7999380",
+                "sv" : "Valbara examensdelar",
+                "en" : "Valinnaiset tutkinnon osat",
+                "fi" : "Valinnaiset tutkinnon osat"
+              },
+              "osat" : [ {
+                "_tutkinnonOsaViite" : "7913612"
+              }, {
+                "_tutkinnonOsaViite" : "7912191"
+              }, {
+                "_tutkinnonOsaViite" : "7912194"
+              }, {
+                "_tutkinnonOsaViite" : "7912192"
+              }, {
+                "_tutkinnonOsaViite" : "7912193"
+              } ],
+              "rooli" : "määritelty",
+              "muodostumisSaanto" : {
+                "laajuus" : {
+                  "minimi" : 30,
+                  "maksimi" : 60
+                }
+              }
+            }, {
+              "nimi" : {
+                "_tunniste" : "fcde62b6-df2a-435a-94e2-13c422eb361f",
+                "_id" : "7999381",
+                "sv" : "Valbara examensdelar",
+                "en" : "Valinnaiset tutkinnon osat",
+                "fi" : "Valinnaiset tutkinnon osat"
+              },
+              "osat" : [ {
+                "_tutkinnonOsaViite" : "7895738"
+              }, {
+                "_tutkinnonOsaViite" : "7875635"
+              }, {
+                "_tutkinnonOsaViite" : "7912195"
+              }, {
+                "_tutkinnonOsaViite" : "7636880"
+              }, {
+                "_tutkinnonOsaViite" : "7912196"
+              }, {
+                "_tutkinnonOsaViite" : "7912190"
+              }, {
+                "_tutkinnonOsaViite" : "7913614"
+              }, {
+                "_tutkinnonOsaViite" : "7913615"
+              }, {
+                "_tutkinnonOsaViite" : "7912197"
+              }, {
+                "_tutkinnonOsaViite" : "7912199"
+              }, {
+                "_tutkinnonOsaViite" : "7912940"
+              }, {
+                "_tutkinnonOsaViite" : "7912941"
+              }, {
+                "_tutkinnonOsaViite" : "7913616"
+              }, {
+                "_tutkinnonOsaViite" : "8160155"
+              }, {
+                "_tutkinnonOsaViite" : "8160156"
+              }, {
+                "_tutkinnonOsaViite" : "8160157"
+              }, {
+                "_tutkinnonOsaViite" : "8160158"
+              }, {
+                "_tutkinnonOsaViite" : "8160159"
+              }, {
+                "_tutkinnonOsaViite" : "8167520"
+              }, {
+                "nimi" : {
+                  "_tunniste" : "d6c0f84f-76d7-4b35-9005-35ed2ce79ece",
+                  "_id" : "8128089",
+                  "sv" : "Examensdel som grundar sig på lokala krav på yrkesskicklighet",
+                  "en" : "A unit based on local competence requirements",
+                  "fi" : "Paikallisiin ammattitaitovaatimuksiin perustuva tutkinnon osa"
+                },
+                "osat" : [ ],
+                "rooli" : "määrittelemätön",
+                "muodostumisSaanto" : {
+                  "laajuus" : {
+                    "minimi" : 5,
+                    "maksimi" : 15
+                  }
+                }
+              }, {
+                "nimi" : {
+                  "_tunniste" : "b3466783-ebac-4887-9a92-9855790bd6bd",
+                  "_id" : "8351896",
+                  "sv" : "En examensdel eller examensdelar från kompetensområdena inom denna examen",
+                  "en" : "Tutkinnon osa toisesta ammatillisesta perustutkinnosta, ammattitutkinnosta tai erikoisammattitutkinnosta",
+                  "fi" : "Tutkinnon osa tai osia tämän tutkinnon osaamisalojen tutkinnon osista"
+                },
+                "osat" : [ ],
+                "rooli" : "määrittelemätön",
+                "muodostumisSaanto" : {
+                  "laajuus" : {
+                    "minimi" : 5,
+                    "maksimi" : 15
+                  }
+                }
+              }, {
+                "nimi" : {
+                  "_tunniste" : "b3466783-ebac-4887-9a92-9855790bd6bd",
+                  "_id" : "8025878",
+                  "sv" : "Examensdel från en yrkesinriktad grundexamen, en yrkesexamen eller specialyrkesexamen",
+                  "en" : "Tutkinnon osa toisesta ammatillisesta perustutkinnosta, ammattitutkinnosta tai erikoisammattitutkinnosta",
+                  "fi" : "Tutkinnon osa toisesta ammatillisesta perustutkinnosta, ammattitutkinnosta tai erikoisammattitutkinnosta"
+                },
+                "osat" : [ ],
+                "rooli" : "määrittelemätön",
+                "muodostumisSaanto" : {
+                  "laajuus" : {
+                    "minimi" : 5,
+                    "maksimi" : 15
+                  }
+                }
+              }, {
+                "nimi" : {
+                  "_tunniste" : "559e4418-249f-4d35-8b63-a95d2954f2f2",
+                  "_id" : "7999937",
+                  "sv" : "Högskolestudier",
+                  "en" : "Korkeakouluopinnot",
+                  "fi" : "Korkeakouluopinnot"
+                },
+                "osat" : [ ],
+                "rooli" : "määrittelemätön",
+                "muodostumisSaanto" : {
+                  "laajuus" : {
+                    "minimi" : 5,
+                    "maksimi" : 15
+                  }
+                }
+              }, {
+                "nimi" : {
+                  "_tunniste" : "9e0753c7-c923-4a7b-8c63-69c6040522b9",
+                  "_id" : "7999938",
+                  "sv" : "Delområden av gemensamma examensdelar, gymnasiestudier eller andra studier som stöder förutsättningarna för fortsatta studier",
+                  "en" : "Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja",
+                  "fi" : "Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja"
+                },
+                "osat" : [ ],
+                "rooli" : "määrittelemätön",
+                "muodostumisSaanto" : {
+                  "laajuus" : {
+                    "minimi" : 1,
+                    "maksimi" : 25
+                  }
+                }
+              } ],
+              "rooli" : "määritelty",
+              "muodostumisSaanto" : {
+                "laajuus" : {
+                  "minimi" : 0,
+                  "maksimi" : 30
+                }
+              }
+            } ],
+            "rooli" : "tutkintonimike",
+            "muodostumisSaanto" : {
+              "laajuus" : {
+                "minimi" : 0
+              }
+            }
+          }, {
+            "nimi" : {
+              "fi" : "Pienkonemekaanikko",
+              "sv" : "Småmaskinsmekaniker"
+            },
+            "osat" : [ {
+              "nimi" : {
+                "_tunniste" : "c488b6c1-71fa-400a-a392-919a96800582",
+                "_id" : "7999382",
+                "sv" : "Obligatoriska examensdelar",
+                "en" : "Pakolliset tutkinnon osat",
+                "fi" : "Pakolliset tutkinnon osat"
+              },
+              "osat" : [ {
+                "_tutkinnonOsaViite" : "7912198"
+              } ],
+              "rooli" : "määritelty",
+              "muodostumisSaanto" : {
+                "laajuus" : {
+                  "minimi" : 30
+                }
+              }
+            }, {
+              "nimi" : {
+                "_tunniste" : "fa3d2691-82b4-4cdc-8cbd-6dd42c9212cb",
+                "_id" : "7999383",
+                "sv" : "Valbara examensdelar",
+                "en" : "Valinnaiset tutkinnon osat",
+                "fi" : "Valinnaiset tutkinnon osat"
+              },
+              "osat" : [ {
+                "_tutkinnonOsaViite" : "7636880"
+              }, {
+                "_tutkinnonOsaViite" : "7912195"
+              }, {
+                "_tutkinnonOsaViite" : "7912940"
+              }, {
+                "_tutkinnonOsaViite" : "7912941"
+              }, {
+                "_tutkinnonOsaViite" : "7912197"
+              }, {
+                "_tutkinnonOsaViite" : "7912199"
+              }, {
+                "_tutkinnonOsaViite" : "7912196"
+              } ],
+              "rooli" : "määritelty",
+              "muodostumisSaanto" : {
+                "laajuus" : {
+                  "minimi" : 30,
+                  "maksimi" : 60
+                }
+              }
+            }, {
+              "nimi" : {
+                "_tunniste" : "b7e083df-9eee-4342-8e16-421b56082c9e",
+                "_id" : "7999384",
+                "sv" : "Valbara examensdelar",
+                "en" : "Valinnaiset tutkinnon osat",
+                "fi" : "Valinnaiset tutkinnon osat"
+              },
+              "osat" : [ {
+                "_tutkinnonOsaViite" : "7895738"
+              }, {
+                "_tutkinnonOsaViite" : "7912191"
+              }, {
+                "_tutkinnonOsaViite" : "7912193"
+              }, {
+                "_tutkinnonOsaViite" : "7913612"
+              }, {
+                "_tutkinnonOsaViite" : "7912192"
+              }, {
+                "_tutkinnonOsaViite" : "7912190"
+              }, {
+                "_tutkinnonOsaViite" : "7913614"
+              }, {
+                "_tutkinnonOsaViite" : "7913615"
+              }, {
+                "_tutkinnonOsaViite" : "7912194"
+              }, {
+                "_tutkinnonOsaViite" : "7913616"
+              }, {
+                "_tutkinnonOsaViite" : "8160155"
+              }, {
+                "_tutkinnonOsaViite" : "8160156"
+              }, {
+                "_tutkinnonOsaViite" : "8160157"
+              }, {
+                "_tutkinnonOsaViite" : "8160158"
+              }, {
+                "_tutkinnonOsaViite" : "8160159"
+              }, {
+                "_tutkinnonOsaViite" : "8167520"
+              }, {
+                "nimi" : {
+                  "_tunniste" : "d6c0f84f-76d7-4b35-9005-35ed2ce79ece",
+                  "_id" : "8128089",
+                  "sv" : "Examensdel som grundar sig på lokala krav på yrkesskicklighet",
+                  "en" : "A unit based on local competence requirements",
+                  "fi" : "Paikallisiin ammattitaitovaatimuksiin perustuva tutkinnon osa"
+                },
+                "osat" : [ ],
+                "rooli" : "määrittelemätön",
+                "muodostumisSaanto" : {
+                  "laajuus" : {
+                    "minimi" : 5,
+                    "maksimi" : 15
+                  }
+                }
+              }, {
+                "nimi" : {
+                  "_tunniste" : "b3466783-ebac-4887-9a92-9855790bd6bd",
+                  "_id" : "8351899",
+                  "sv" : "En examensdel eller examensdelar från kompetensområdena inom denna examen",
+                  "en" : "Tutkinnon osa toisesta ammatillisesta perustutkinnosta, ammattitutkinnosta tai erikoisammattitutkinnosta",
+                  "fi" : "Tutkinnon osa tai osia tämän tutkinnon osaamisalojen tutkinnon osista"
+                },
+                "osat" : [ ],
+                "rooli" : "määrittelemätön",
+                "muodostumisSaanto" : {
+                  "laajuus" : {
+                    "minimi" : 5,
+                    "maksimi" : 15
+                  }
+                }
+              }, {
+                "nimi" : {
+                  "_tunniste" : "b3466783-ebac-4887-9a92-9855790bd6bd",
+                  "_id" : "8025878",
+                  "sv" : "Examensdel från en yrkesinriktad grundexamen, en yrkesexamen eller specialyrkesexamen",
+                  "en" : "Tutkinnon osa toisesta ammatillisesta perustutkinnosta, ammattitutkinnosta tai erikoisammattitutkinnosta",
+                  "fi" : "Tutkinnon osa toisesta ammatillisesta perustutkinnosta, ammattitutkinnosta tai erikoisammattitutkinnosta"
+                },
+                "osat" : [ ],
+                "rooli" : "määrittelemätön",
+                "muodostumisSaanto" : {
+                  "laajuus" : {
+                    "minimi" : 5,
+                    "maksimi" : 15
+                  }
+                }
+              }, {
+                "nimi" : {
+                  "_tunniste" : "559e4418-249f-4d35-8b63-a95d2954f2f2",
+                  "_id" : "7999937",
+                  "sv" : "Högskolestudier",
+                  "en" : "Korkeakouluopinnot",
+                  "fi" : "Korkeakouluopinnot"
+                },
+                "osat" : [ ],
+                "rooli" : "määrittelemätön",
+                "muodostumisSaanto" : {
+                  "laajuus" : {
+                    "minimi" : 5,
+                    "maksimi" : 15
+                  }
+                }
+              }, {
+                "nimi" : {
+                  "_tunniste" : "9e0753c7-c923-4a7b-8c63-69c6040522b9",
+                  "_id" : "7999938",
+                  "sv" : "Delområden av gemensamma examensdelar, gymnasiestudier eller andra studier som stöder förutsättningarna för fortsatta studier",
+                  "en" : "Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja",
+                  "fi" : "Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja"
+                },
+                "osat" : [ ],
+                "rooli" : "määrittelemätön",
+                "muodostumisSaanto" : {
+                  "laajuus" : {
+                    "minimi" : 1,
+                    "maksimi" : 25
+                  }
+                }
+              } ],
+              "rooli" : "määritelty",
+              "muodostumisSaanto" : {
+                "laajuus" : {
+                  "minimi" : 0,
+                  "maksimi" : 30
+                }
+              }
+            } ],
+            "rooli" : "tutkintonimike",
+            "muodostumisSaanto" : {
+              "laajuus" : {
+                "minimi" : 0
+              }
+            }
+          }, {
+            "nimi" : {
+              "_tunniste" : "778d1767-a8a1-41b8-8c73-b1194daac382",
+              "_id" : "7999388",
+              "sv" : "Valbara examensdelar",
+              "en" : "Valinnaiset tutkinnon osat",
+              "fi" : "Valinnaiset tutkinnon osat"
+            },
+            "osat" : [ {
+              "_tutkinnonOsaViite" : "7912943"
+            }, {
+              "_tutkinnonOsaViite" : "7912944"
+            }, {
+              "_tutkinnonOsaViite" : "7912945"
+            }, {
+              "_tutkinnonOsaViite" : "7846182"
+            }, {
+              "_tutkinnonOsaViite" : "7912946"
+            }, {
+              "_tutkinnonOsaViite" : "7895739"
+            }, {
+              "_tutkinnonOsaViite" : "7912947"
+            }, {
+              "_tutkinnonOsaViite" : "7912948"
+            }, {
+              "_tutkinnonOsaViite" : "7912949"
+            }, {
+              "_tutkinnonOsaViite" : "7913610"
+            }, {
+              "_tutkinnonOsaViite" : "7913611"
+            }, {
+              "_tutkinnonOsaViite" : "7913613"
+            }, {
+              "_tutkinnonOsaViite" : "7774000"
+            }, {
+              "_tutkinnonOsaViite" : "7912942"
+            }, {
+              "_tutkinnonOsaViite" : "7826624"
+            }, {
+              "_tutkinnonOsaViite" : "8160155"
+            }, {
+              "_tutkinnonOsaViite" : "8160156"
+            }, {
+              "_tutkinnonOsaViite" : "8160157"
+            }, {
+              "_tutkinnonOsaViite" : "8160158"
+            }, {
+              "_tutkinnonOsaViite" : "8160159"
+            }, {
+              "_tutkinnonOsaViite" : "8167520"
+            }, {
+              "nimi" : {
+                "_tunniste" : "d6c0f84f-76d7-4b35-9005-35ed2ce79ece",
+                "_id" : "8128089",
+                "sv" : "Examensdel som grundar sig på lokala krav på yrkesskicklighet",
+                "en" : "A unit based on local competence requirements",
+                "fi" : "Paikallisiin ammattitaitovaatimuksiin perustuva tutkinnon osa"
+              },
+              "osat" : [ ],
+              "rooli" : "määrittelemätön",
+              "muodostumisSaanto" : {
+                "laajuus" : {
+                  "minimi" : 5,
+                  "maksimi" : 15
+                }
+              }
+            }, {
+              "nimi" : {
+                "_tunniste" : "b3466783-ebac-4887-9a92-9855790bd6bd",
+                "_id" : "8351554",
+                "sv" : "En examensdel eller examensdelar från kompetensområdena inom denna examen",
+                "en" : "Tutkinnon osa toisesta ammatillisesta perustutkinnosta, ammattitutkinnosta tai erikoisammattitutkinnosta",
+                "fi" : "Tutkinnon osa tai osia tämän tutkinnon osaamisalojen tutkinnon osista"
+              },
+              "osat" : [ ],
+              "rooli" : "määrittelemätön",
+              "muodostumisSaanto" : {
+                "laajuus" : {
+                  "minimi" : 5,
+                  "maksimi" : 15
+                }
+              }
+            }, {
+              "nimi" : {
+                "_tunniste" : "b3466783-ebac-4887-9a92-9855790bd6bd",
+                "_id" : "8025878",
+                "sv" : "Examensdel från en yrkesinriktad grundexamen, en yrkesexamen eller specialyrkesexamen",
+                "en" : "Tutkinnon osa toisesta ammatillisesta perustutkinnosta, ammattitutkinnosta tai erikoisammattitutkinnosta",
+                "fi" : "Tutkinnon osa toisesta ammatillisesta perustutkinnosta, ammattitutkinnosta tai erikoisammattitutkinnosta"
+              },
+              "osat" : [ ],
+              "rooli" : "määrittelemätön",
+              "muodostumisSaanto" : {
+                "laajuus" : {
+                  "minimi" : 5,
+                  "maksimi" : 15
+                }
+              }
+            }, {
+              "nimi" : {
+                "_tunniste" : "559e4418-249f-4d35-8b63-a95d2954f2f2",
+                "_id" : "7999937",
+                "sv" : "Högskolestudier",
+                "en" : "Korkeakouluopinnot",
+                "fi" : "Korkeakouluopinnot"
+              },
+              "osat" : [ ],
+              "rooli" : "määrittelemätön",
+              "muodostumisSaanto" : {
+                "laajuus" : {
+                  "minimi" : 5,
+                  "maksimi" : 15
+                }
+              }
+            }, {
+              "nimi" : {
+                "_tunniste" : "9e0753c7-c923-4a7b-8c63-69c6040522b9",
+                "_id" : "7999938",
+                "sv" : "Delområden av gemensamma examensdelar, gymnasiestudier eller andra studier som stöder förutsättningarna för fortsatta studier",
+                "en" : "Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja",
+                "fi" : "Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja"
+              },
+              "osat" : [ ],
+              "rooli" : "määrittelemätön",
+              "muodostumisSaanto" : {
+                "laajuus" : {
+                  "minimi" : 1,
+                  "maksimi" : 25
+                }
+              }
+            } ],
+            "rooli" : "määritelty",
+            "muodostumisSaanto" : {
+              "laajuus" : {
+                "minimi" : 0,
+                "maksimi" : 30
+              }
+            }
+          } ],
+          "osaamisala" : {
+            "osaamisalakoodiArvo" : "1008"
+          },
+          "rooli" : "osaamisala",
+          "muodostumisSaanto" : {
+            "laajuus" : {
+              "minimi" : 145
+            }
+          }
+        }, {
+          "nimi" : {
+            "fi" : "Myynnin osaamisala",
+            "sv" : "Kompetensområdet för försäljning"
+          },
+          "osat" : [ {
+            "nimi" : {
+              "_tunniste" : "ca004dee-f441-418a-b915-cb68f628c168",
+              "_id" : "7999389",
+              "sv" : "Obligatoriska examensdelar",
+              "en" : "Pakolliset tutkinnon osat",
+              "fi" : "Pakolliset tutkinnon osat"
+            },
+            "osat" : [ {
+              "_tutkinnonOsaViite" : "7811623"
+            }, {
+              "_tutkinnonOsaViite" : "7823570"
+            }, {
+              "_tutkinnonOsaViite" : "7823572"
+            }, {
+              "_tutkinnonOsaViite" : "7823576"
+            } ],
+            "rooli" : "määritelty",
+            "muodostumisSaanto" : {
+              "laajuus" : {
+                "minimi" : 85,
+                "maksimi" : 85
+              }
+            }
+          }, {
+            "nimi" : {
+              "fi" : "Ajoneuvomyyjä",
+              "sv" : "Fordonsförsäljare"
+            },
+            "osat" : [ {
+              "nimi" : {
+                "_tunniste" : "698b6bf5-2da0-4176-89a4-fcb4bc4db276",
+                "_id" : "7999670",
+                "sv" : "Obligatoriska examensdelar",
+                "en" : "Pakolliset tutkinnon osat",
+                "fi" : "Pakolliset tutkinnon osat"
+              },
+              "osat" : [ {
+                "_tutkinnonOsaViite" : "7823574"
+              }, {
+                "_tutkinnonOsaViite" : "7823575"
+              } ],
+              "rooli" : "määritelty",
+              "muodostumisSaanto" : {
+                "laajuus" : {
+                  "minimi" : 30,
+                  "maksimi" : 30
+                }
+              }
+            } ],
+            "rooli" : "tutkintonimike",
+            "muodostumisSaanto" : {
+              "laajuus" : {
+                "minimi" : 0
+              }
+            }
+          }, {
+            "nimi" : {
+              "fi" : "Huoltomyyjä",
+              "sv" : "Serviceförsäljare"
+            },
+            "osat" : [ {
+              "nimi" : {
+                "_tunniste" : "c769494d-e1eb-457e-933e-7ed31798c86a",
+                "_id" : "7999671",
+                "sv" : "Obligatoriska examensdelar",
+                "en" : "Pakolliset tutkinnon osat",
+                "fi" : "Pakolliset tutkinnon osat"
+              },
+              "osat" : [ {
+                "_tutkinnonOsaViite" : "7823579"
+              }, {
+                "_tutkinnonOsaViite" : "7823578"
+              } ],
+              "rooli" : "määritelty",
+              "muodostumisSaanto" : {
+                "laajuus" : {
+                  "minimi" : 30,
+                  "maksimi" : 30
+                }
+              }
+            } ],
+            "rooli" : "tutkintonimike",
+            "muodostumisSaanto" : {
+              "laajuus" : {
+                "minimi" : 0
+              }
+            }
+          }, {
+            "nimi" : {
+              "fi" : "Varaosamyyjä",
+              "sv" : "Reservdelsförsäljare"
+            },
+            "osat" : [ {
+              "nimi" : {
+                "_tunniste" : "553ac492-6fe2-4a0d-8567-87ece7b2bba1",
+                "_id" : "7999676",
+                "sv" : "Obligatoriska examensdelar",
+                "en" : "Pakolliset tutkinnon osat",
+                "fi" : "Pakolliset tutkinnon osat"
+              },
+              "osat" : [ {
+                "_tutkinnonOsaViite" : "7823577"
+              }, {
+                "_tutkinnonOsaViite" : "7823578"
+              } ],
+              "rooli" : "määritelty",
+              "muodostumisSaanto" : {
+                "laajuus" : {
+                  "minimi" : 30,
+                  "maksimi" : 30
+                }
+              }
+            } ],
+            "rooli" : "tutkintonimike",
+            "muodostumisSaanto" : {
+              "laajuus" : {
+                "minimi" : 0
+              }
+            }
+          }, {
+            "nimi" : {
+              "_tunniste" : "3394c169-017c-438d-af3f-d0b16eafe554",
+              "_id" : "8234835",
+              "sv" : "Valbara examensdelar",
+              "en" : "Valinnaiset tutkinnon osat",
+              "fi" : "Valinnaiset tutkinnon osat"
+            },
+            "osat" : [ {
+              "_tutkinnonOsaViite" : "7826621"
+            }, {
+              "_tutkinnonOsaViite" : "7826622"
+            }, {
+              "_tutkinnonOsaViite" : "7826620"
+            }, {
+              "_tutkinnonOsaViite" : "7826623"
+            }, {
+              "_tutkinnonOsaViite" : "7912947"
+            }, {
+              "_tutkinnonOsaViite" : "7963140"
+            }, {
+              "_tutkinnonOsaViite" : "7826624"
+            }, {
+              "_tutkinnonOsaViite" : "8160155"
+            }, {
+              "_tutkinnonOsaViite" : "8160156"
+            }, {
+              "_tutkinnonOsaViite" : "8160157"
+            }, {
+              "_tutkinnonOsaViite" : "8160158"
+            }, {
+              "_tutkinnonOsaViite" : "8160159"
+            }, {
+              "_tutkinnonOsaViite" : "8167520"
+            }, {
+              "nimi" : {
+                "_tunniste" : "d6c0f84f-76d7-4b35-9005-35ed2ce79ece",
+                "_id" : "8128089",
+                "sv" : "Examensdel som grundar sig på lokala krav på yrkesskicklighet",
+                "en" : "A unit based on local competence requirements",
+                "fi" : "Paikallisiin ammattitaitovaatimuksiin perustuva tutkinnon osa"
+              },
+              "osat" : [ ],
+              "rooli" : "määrittelemätön",
+              "muodostumisSaanto" : {
+                "laajuus" : {
+                  "minimi" : 5,
+                  "maksimi" : 15
+                }
+              }
+            }, {
+              "nimi" : {
+                "_tunniste" : "b3466783-ebac-4887-9a92-9855790bd6bd",
+                "_id" : "8351720",
+                "sv" : "En examensdel eller examensdelar från kompetensområdena inom denna examen",
+                "en" : "Tutkinnon osa toisesta ammatillisesta perustutkinnosta, ammattitutkinnosta tai erikoisammattitutkinnosta",
+                "fi" : "Tutkinnon osa tai osia tämän tutkinnon osaamisalojen tutkinnon osista"
+              },
+              "osat" : [ ],
+              "rooli" : "määrittelemätön",
+              "muodostumisSaanto" : {
+                "laajuus" : {
+                  "minimi" : 5,
+                  "maksimi" : 15
+                }
+              }
+            }, {
+              "nimi" : {
+                "_tunniste" : "b3466783-ebac-4887-9a92-9855790bd6bd",
+                "_id" : "8025878",
+                "sv" : "Examensdel från en yrkesinriktad grundexamen, en yrkesexamen eller specialyrkesexamen",
+                "en" : "Tutkinnon osa toisesta ammatillisesta perustutkinnosta, ammattitutkinnosta tai erikoisammattitutkinnosta",
+                "fi" : "Tutkinnon osa toisesta ammatillisesta perustutkinnosta, ammattitutkinnosta tai erikoisammattitutkinnosta"
+              },
+              "osat" : [ ],
+              "rooli" : "määrittelemätön",
+              "muodostumisSaanto" : {
+                "laajuus" : {
+                  "minimi" : 5,
+                  "maksimi" : 15
+                }
+              }
+            }, {
+              "nimi" : {
+                "_tunniste" : "559e4418-249f-4d35-8b63-a95d2954f2f2",
+                "_id" : "7999937",
+                "sv" : "Högskolestudier",
+                "en" : "Korkeakouluopinnot",
+                "fi" : "Korkeakouluopinnot"
+              },
+              "osat" : [ ],
+              "rooli" : "määrittelemätön",
+              "muodostumisSaanto" : {
+                "laajuus" : {
+                  "minimi" : 5,
+                  "maksimi" : 15
+                }
+              }
+            }, {
+              "nimi" : {
+                "_tunniste" : "9e0753c7-c923-4a7b-8c63-69c6040522b9",
+                "_id" : "7999938",
+                "sv" : "Delområden av gemensamma examensdelar, gymnasiestudier eller andra studier som stöder förutsättningarna för fortsatta studier",
+                "en" : "Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja",
+                "fi" : "Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja"
+              },
+              "osat" : [ ],
+              "rooli" : "määrittelemätön",
+              "muodostumisSaanto" : {
+                "laajuus" : {
+                  "minimi" : 1,
+                  "maksimi" : 25
+                }
+              }
+            } ],
+            "rooli" : "määritelty",
+            "muodostumisSaanto" : {
+              "laajuus" : {
+                "minimi" : 30,
+                "maksimi" : 30
+              }
+            }
+          } ],
+          "osaamisala" : {
+            "osaamisalakoodiArvo" : "1007"
+          },
+          "rooli" : "osaamisala",
+          "muodostumisSaanto" : {
+            "laajuus" : {
+              "minimi" : 145
+            }
+          }
+        }, {
+          "nimi" : {
+            "en" : "Competence area of Damage Repairs",
+            "fi" : "Vauriokorjauksen osaamisala",
+            "sv" : "Kompetensområdet för skadereparation"
+          },
+          "osat" : [ {
+            "nimi" : {
+              "_tunniste" : "24b12842-882e-4bcb-8af7-1242508938f5",
+              "_id" : "7999679",
+              "sv" : "Obligatoriska examensdelar",
+              "en" : "Pakolliset tutkinnon osat",
+              "fi" : "Pakolliset tutkinnon osat"
+            },
+            "osat" : [ {
+              "_tutkinnonOsaViite" : "7839269"
+            }, {
+              "_tutkinnonOsaViite" : "7846185"
+            }, {
+              "_tutkinnonOsaViite" : "7875637"
+            } ],
+            "rooli" : "määritelty",
+            "muodostumisSaanto" : {
+              "laajuus" : {
+                "minimi" : 25,
+                "maksimi" : 25
+              }
+            }
+          }, {
+            "nimi" : {
+              "fi" : "Autokorimekaanikko",
+              "sv" : "Karosseri- och bilplåtsmekaniker"
+            },
+            "osat" : [ {
+              "nimi" : {
+                "_tunniste" : "378e9ead-342d-4cec-aaa1-03003fc5e374",
+                "_id" : "7999930",
+                "sv" : "Valbara examensdelar",
+                "en" : "Valinnaiset tutkinnon osat",
+                "fi" : "Valinnaiset tutkinnon osat"
+              },
+              "osat" : [ {
+                "_tutkinnonOsaViite" : "7611295"
+              }, {
+                "_tutkinnonOsaViite" : "7875632"
+              }, {
+                "_tutkinnonOsaViite" : "7895730"
+              }, {
+                "_tutkinnonOsaViite" : "7875630"
+              }, {
+                "_tutkinnonOsaViite" : "7875633"
+              }, {
+                "_tutkinnonOsaViite" : "7863263"
+              } ],
+              "rooli" : "määritelty",
+              "muodostumisSaanto" : {
+                "laajuus" : {
+                  "minimi" : 90,
+                  "maksimi" : 120
+                }
+              }
+            }, {
+              "nimi" : {
+                "_tunniste" : "0fb8c18e-cde4-46f1-8fbd-4e0b3a6bf0d4",
+                "_id" : "7999931",
+                "sv" : "Valbara examensdelar",
+                "en" : "Valinnaiset tutkinnon osat",
+                "fi" : "Valinnaiset tutkinnon osat"
+              },
+              "osat" : [ {
+                "_tutkinnonOsaViite" : "7846181"
+              }, {
+                "_tutkinnonOsaViite" : "7912944"
+              }, {
+                "_tutkinnonOsaViite" : "7912945"
+              }, {
+                "_tutkinnonOsaViite" : "7846182"
+              }, {
+                "_tutkinnonOsaViite" : "7846184"
+              }, {
+                "_tutkinnonOsaViite" : "7875635"
+              }, {
+                "_tutkinnonOsaViite" : "7875634"
+              }, {
+                "_tutkinnonOsaViite" : "7875636"
+              }, {
+                "_tutkinnonOsaViite" : "7842036"
+              }, {
+                "_tutkinnonOsaViite" : "7842037"
+              }, {
+                "_tutkinnonOsaViite" : "7846183"
+              }, {
+                "_tutkinnonOsaViite" : "8160155"
+              }, {
+                "_tutkinnonOsaViite" : "8160156"
+              }, {
+                "_tutkinnonOsaViite" : "8160157"
+              }, {
+                "_tutkinnonOsaViite" : "8160158"
+              }, {
+                "_tutkinnonOsaViite" : "8160159"
+              }, {
+                "_tutkinnonOsaViite" : "8167520"
+              }, {
+                "nimi" : {
+                  "_tunniste" : "d6c0f84f-76d7-4b35-9005-35ed2ce79ece",
+                  "_id" : "8128089",
+                  "sv" : "Examensdel som grundar sig på lokala krav på yrkesskicklighet",
+                  "en" : "A unit based on local competence requirements",
+                  "fi" : "Paikallisiin ammattitaitovaatimuksiin perustuva tutkinnon osa"
+                },
+                "osat" : [ ],
+                "rooli" : "määrittelemätön",
+                "muodostumisSaanto" : {
+                  "laajuus" : {
+                    "minimi" : 5,
+                    "maksimi" : 15
+                  }
+                }
+              }, {
+                "nimi" : {
+                  "_tunniste" : "b3466783-ebac-4887-9a92-9855790bd6bd",
+                  "_id" : "8352037",
+                  "sv" : "En examensdel eller examensdelar från kompetensområdena inom denna examen",
+                  "en" : "Tutkinnon osa toisesta ammatillisesta perustutkinnosta, ammattitutkinnosta tai erikoisammattitutkinnosta",
+                  "fi" : "Tutkinnon osa tai osia tämän tutkinnon osaamisalojen tutkinnon osista"
+                },
+                "osat" : [ ],
+                "rooli" : "määrittelemätön",
+                "muodostumisSaanto" : {
+                  "laajuus" : {
+                    "minimi" : 5,
+                    "maksimi" : 15
+                  }
+                }
+              }, {
+                "nimi" : {
+                  "_tunniste" : "b3466783-ebac-4887-9a92-9855790bd6bd",
+                  "_id" : "8025878",
+                  "sv" : "Examensdel från en yrkesinriktad grundexamen, en yrkesexamen eller specialyrkesexamen",
+                  "en" : "Tutkinnon osa toisesta ammatillisesta perustutkinnosta, ammattitutkinnosta tai erikoisammattitutkinnosta",
+                  "fi" : "Tutkinnon osa toisesta ammatillisesta perustutkinnosta, ammattitutkinnosta tai erikoisammattitutkinnosta"
+                },
+                "osat" : [ ],
+                "rooli" : "määrittelemätön",
+                "muodostumisSaanto" : {
+                  "laajuus" : {
+                    "minimi" : 5,
+                    "maksimi" : 15
+                  }
+                }
+              }, {
+                "nimi" : {
+                  "_tunniste" : "559e4418-249f-4d35-8b63-a95d2954f2f2",
+                  "_id" : "7999937",
+                  "sv" : "Högskolestudier",
+                  "en" : "Korkeakouluopinnot",
+                  "fi" : "Korkeakouluopinnot"
+                },
+                "osat" : [ ],
+                "rooli" : "määrittelemätön",
+                "muodostumisSaanto" : {
+                  "laajuus" : {
+                    "minimi" : 5,
+                    "maksimi" : 15
+                  }
+                }
+              }, {
+                "nimi" : {
+                  "_tunniste" : "9e0753c7-c923-4a7b-8c63-69c6040522b9",
+                  "_id" : "7999938",
+                  "sv" : "Delområden av gemensamma examensdelar, gymnasiestudier eller andra studier som stöder förutsättningarna för fortsatta studier",
+                  "en" : "Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja",
+                  "fi" : "Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja"
+                },
+                "osat" : [ ],
+                "rooli" : "määrittelemätön",
+                "muodostumisSaanto" : {
+                  "laajuus" : {
+                    "minimi" : 1,
+                    "maksimi" : 25
+                  }
+                }
+              } ],
+              "rooli" : "määritelty",
+              "muodostumisSaanto" : {
+                "laajuus" : {
+                  "minimi" : 0,
+                  "maksimi" : 30
+                }
+              }
+            } ],
+            "rooli" : "tutkintonimike",
+            "muodostumisSaanto" : {
+              "laajuus" : {
+                "minimi" : 0
+              }
+            }
+          }, {
+            "nimi" : {
+              "fi" : "Automaalari",
+              "sv" : "Billackerare"
+            },
+            "osat" : [ {
+              "nimi" : {
+                "_tunniste" : "448b9f67-fb85-4b1c-bd90-264fd47953ab",
+                "_id" : "7999933",
+                "sv" : "Valbara examensdelar",
+                "en" : "Valinnaiset tutkinnon osat",
+                "fi" : "Valinnaiset tutkinnon osat"
+              },
+              "osat" : [ {
+                "_tutkinnonOsaViite" : "7842036"
+              }, {
+                "_tutkinnonOsaViite" : "7842037"
+              }, {
+                "_tutkinnonOsaViite" : "7611295"
+              }, {
+                "_tutkinnonOsaViite" : "7875636"
+              }, {
+                "_tutkinnonOsaViite" : "7875632"
+              } ],
+              "rooli" : "määritelty",
+              "muodostumisSaanto" : {
+                "laajuus" : {
+                  "minimi" : 90,
+                  "maksimi" : 105
+                }
+              }
+            }, {
+              "nimi" : {
+                "_tunniste" : "5c776367-6bf4-4738-b2a4-9d36abb3a43f",
+                "_id" : "7999934",
+                "sv" : "Valbara examensdelar",
+                "en" : "Valinnaiset tutkinnon osat",
+                "fi" : "Valinnaiset tutkinnon osat"
+              },
+              "osat" : [ {
+                "_tutkinnonOsaViite" : "7846181"
+              }, {
+                "_tutkinnonOsaViite" : "7912944"
+              }, {
+                "_tutkinnonOsaViite" : "7895730"
+              }, {
+                "_tutkinnonOsaViite" : "7912945"
+              }, {
+                "_tutkinnonOsaViite" : "7846182"
+              }, {
+                "_tutkinnonOsaViite" : "7863263"
+              }, {
+                "_tutkinnonOsaViite" : "7846184"
+              }, {
+                "_tutkinnonOsaViite" : "7875635"
+              }, {
+                "_tutkinnonOsaViite" : "7875630"
+              }, {
+                "_tutkinnonOsaViite" : "7875634"
+              }, {
+                "_tutkinnonOsaViite" : "7875633"
+              }, {
+                "_tutkinnonOsaViite" : "7846183"
+              }, {
+                "_tutkinnonOsaViite" : "8160155"
+              }, {
+                "_tutkinnonOsaViite" : "8160156"
+              }, {
+                "_tutkinnonOsaViite" : "8160157"
+              }, {
+                "_tutkinnonOsaViite" : "8160158"
+              }, {
+                "_tutkinnonOsaViite" : "8160159"
+              }, {
+                "_tutkinnonOsaViite" : "8167520"
+              }, {
+                "nimi" : {
+                  "_tunniste" : "d6c0f84f-76d7-4b35-9005-35ed2ce79ece",
+                  "_id" : "8128089",
+                  "sv" : "Examensdel som grundar sig på lokala krav på yrkesskicklighet",
+                  "en" : "A unit based on local competence requirements",
+                  "fi" : "Paikallisiin ammattitaitovaatimuksiin perustuva tutkinnon osa"
+                },
+                "osat" : [ ],
+                "rooli" : "määrittelemätön",
+                "muodostumisSaanto" : {
+                  "laajuus" : {
+                    "minimi" : 5,
+                    "maksimi" : 15
+                  }
+                }
+              }, {
+                "nimi" : {
+                  "_tunniste" : "b3466783-ebac-4887-9a92-9855790bd6bd",
+                  "_id" : "8352140",
+                  "sv" : "En examensdel eller examensdelar från kompetensområdena inom denna examen",
+                  "en" : "Tutkinnon osa toisesta ammatillisesta perustutkinnosta, ammattitutkinnosta tai erikoisammattitutkinnosta",
+                  "fi" : "Tutkinnon osa tai osia tämän tutkinnon osaamisalojen tutkinnon osista"
+                },
+                "osat" : [ ],
+                "rooli" : "määrittelemätön",
+                "muodostumisSaanto" : {
+                  "laajuus" : {
+                    "minimi" : 5,
+                    "maksimi" : 15
+                  }
+                }
+              }, {
+                "nimi" : {
+                  "_tunniste" : "b3466783-ebac-4887-9a92-9855790bd6bd",
+                  "_id" : "8025878",
+                  "sv" : "Examensdel från en yrkesinriktad grundexamen, en yrkesexamen eller specialyrkesexamen",
+                  "en" : "Tutkinnon osa toisesta ammatillisesta perustutkinnosta, ammattitutkinnosta tai erikoisammattitutkinnosta",
+                  "fi" : "Tutkinnon osa toisesta ammatillisesta perustutkinnosta, ammattitutkinnosta tai erikoisammattitutkinnosta"
+                },
+                "osat" : [ ],
+                "rooli" : "määrittelemätön",
+                "muodostumisSaanto" : {
+                  "laajuus" : {
+                    "minimi" : 5,
+                    "maksimi" : 15
+                  }
+                }
+              }, {
+                "nimi" : {
+                  "_tunniste" : "559e4418-249f-4d35-8b63-a95d2954f2f2",
+                  "_id" : "7999937",
+                  "sv" : "Högskolestudier",
+                  "en" : "Korkeakouluopinnot",
+                  "fi" : "Korkeakouluopinnot"
+                },
+                "osat" : [ ],
+                "rooli" : "määrittelemätön",
+                "muodostumisSaanto" : {
+                  "laajuus" : {
+                    "minimi" : 5,
+                    "maksimi" : 15
+                  }
+                }
+              }, {
+                "nimi" : {
+                  "_tunniste" : "9e0753c7-c923-4a7b-8c63-69c6040522b9",
+                  "_id" : "7999938",
+                  "sv" : "Delområden av gemensamma examensdelar, gymnasiestudier eller andra studier som stöder förutsättningarna för fortsatta studier",
+                  "en" : "Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja",
+                  "fi" : "Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja"
+                },
+                "osat" : [ ],
+                "rooli" : "määrittelemätön",
+                "muodostumisSaanto" : {
+                  "laajuus" : {
+                    "minimi" : 1,
+                    "maksimi" : 25
+                  }
+                }
+              } ],
+              "rooli" : "määritelty",
+              "muodostumisSaanto" : {
+                "laajuus" : {
+                  "minimi" : 0,
+                  "maksimi" : 30
+                }
+              }
+            } ],
+            "rooli" : "tutkintonimike",
+            "muodostumisSaanto" : {
+              "laajuus" : {
+                "minimi" : 0
+              }
+            }
+          } ],
+          "osaamisala" : {
+            "osaamisalakoodiArvo" : "3181"
+          },
+          "rooli" : "osaamisala",
+          "muodostumisSaanto" : {
+            "laajuus" : {
+              "minimi" : 145
+            }
+          }
+        }, {
+          "nimi" : {
+            "_tunniste" : "5c776367-6bf4-4738-b2a4-9d36abb3a43f",
+            "_id" : "7999934",
+            "sv" : "Valbara examensdelar",
+            "en" : "Valinnaiset tutkinnon osat",
+            "fi" : "Valinnaiset tutkinnon osat"
+          },
+          "osat" : [ {
+            "_tutkinnonOsaViite" : "7846181"
+          }, {
+            "_tutkinnonOsaViite" : "7912944"
+          }, {
+            "_tutkinnonOsaViite" : "7895730"
+          }, {
+            "_tutkinnonOsaViite" : "7912945"
+          }, {
+            "_tutkinnonOsaViite" : "7846182"
+          }, {
+            "_tutkinnonOsaViite" : "7863263"
+          }, {
+            "_tutkinnonOsaViite" : "7846184"
+          }, {
+            "_tutkinnonOsaViite" : "7875635"
+          }, {
+            "_tutkinnonOsaViite" : "7875630"
+          }, {
+            "_tutkinnonOsaViite" : "7875634"
+          }, {
+            "_tutkinnonOsaViite" : "7875633"
+          }, {
+            "_tutkinnonOsaViite" : "7846183"
+          } ],
+          "rooli" : "määritelty",
+          "muodostumisSaanto" : {
+            "laajuus" : {
+              "minimi" : 0,
+              "maksimi" : 30
+            }
+          }
+        } ],
+        "rooli" : "määritelty",
+        "muodostumisSaanto" : {
+          "laajuus" : {
+            "minimi" : 145
+          }
+        }
+      }, {
+        "nimi" : {
+          "_tunniste" : "0740f149-a6de-4d85-96da-8141e6722df0",
+          "_id" : "8237875",
+          "sv" : "Gemensamma examensdelar",
+          "en" : "Yhteiset tutkinnon osat",
+          "fi" : "Yhteiset tutkinnon osat"
+        },
+        "osat" : [ {
+          "_tutkinnonOsaViite" : "8167522"
+        }, {
+          "_tutkinnonOsaViite" : "8167521"
+        }, {
+          "_tutkinnonOsaViite" : "8167523"
+        }, {
+          "nimi" : {
+            "_id" : "8026130",
+            "_tunniste" : "beb78bde-6022-4554-b42f-ab142e68a9ad",
+            "fi" : "Yhteisten tutkinnon osien valinnaiset osaamistavoitteet",
+            "sv" : "Valbara mål för kunnandet inom de gemensamma examensdelarna"
+          },
+          "osat" : [ ],
+          "rooli" : "määrittelemätön",
+          "muodostumisSaanto" : {
+            "laajuus" : {
+              "minimi" : 9
+            }
+          }
+        } ],
+        "rooli" : "vieras",
+        "muodostumisSaanto" : {
+          "laajuus" : {
+            "minimi" : 35
+          }
+        }
+      } ],
+      "rooli" : "määritelty",
+      "muodostumisSaanto" : {
+        "laajuus" : {
+          "minimi" : 180,
+          "maksimi" : 180
+        }
+      }
+    },
+    "tutkinnonOsaViitteet" : [ {
+      "id" : 8160155,
+      "_tutkinnonOsa" : "7283253"
+    }, {
+      "id" : 7846181,
+      "_tutkinnonOsa" : "7846820"
+    }, {
+      "id" : 7895737,
+      "_tutkinnonOsa" : "7892678"
+    }, {
+      "id" : 7912945,
+      "_tutkinnonOsa" : "7912828"
+    }, {
+      "id" : 7826622,
+      "_tutkinnonOsa" : "7826095"
+    }, {
+      "id" : 7842037,
+      "_tutkinnonOsa" : "7840777"
+    }, {
+      "id" : 7912199,
+      "_tutkinnonOsa" : "7912821"
+    }, {
+      "id" : 7839269,
+      "_tutkinnonOsa" : "7839279"
+    }, {
+      "id" : 7895739,
+      "_tutkinnonOsa" : "7911981"
+    }, {
+      "id" : 7826621,
+      "_tutkinnonOsa" : "7826094"
+    }, {
+      "id" : 7875634,
+      "_tutkinnonOsa" : "7875644"
+    }, {
+      "id" : 7895735,
+      "_tutkinnonOsa" : "7892676"
+    }, {
+      "id" : 7913616,
+      "_tutkinnonOsa" : "7913439"
+    }, {
+      "id" : 7842036,
+      "_tutkinnonOsa" : "7840776"
+    }, {
+      "id" : 7823570,
+      "_tutkinnonOsa" : "7823580"
+    }, {
+      "id" : 7913613,
+      "_tutkinnonOsa" : "7913436"
+    }, {
+      "id" : 8167522,
+      "_tutkinnonOsa" : "7611160"
+    }, {
+      "id" : 8160157,
+      "_tutkinnonOsa" : "7875648"
+    }, {
+      "id" : 8160156,
+      "_tutkinnonOsa" : "7283257"
+    }, {
+      "id" : 8167521,
+      "_tutkinnonOsa" : "7599361"
+    }, {
+      "id" : 7875635,
+      "_tutkinnonOsa" : "7875645"
+    }, {
+      "id" : 7912944,
+      "_tutkinnonOsa" : "7912827"
+    }, {
+      "id" : 7912191,
+      "_tutkinnonOsa" : "7911983"
+    }, {
+      "id" : 7895736,
+      "_tutkinnonOsa" : "7892677"
+    }, {
+      "id" : 7774000,
+      "_tutkinnonOsa" : "7773832"
+    }, {
+      "id" : 7863263,
+      "_tutkinnonOsa" : "7866672"
+    }, {
+      "id" : 7611295,
+      "_tutkinnonOsa" : "7611306"
+    }, {
+      "id" : 7912190,
+      "_tutkinnonOsa" : "7911982"
+    }, {
+      "id" : 7846182,
+      "_tutkinnonOsa" : "7846821"
+    }, {
+      "id" : 7823574,
+      "_tutkinnonOsa" : "7823587"
+    }, {
+      "id" : 7912196,
+      "_tutkinnonOsa" : "7911988"
+    }, {
+      "id" : 7846185,
+      "_tutkinnonOsa" : "7846824"
+    }, {
+      "id" : 7823575,
+      "_tutkinnonOsa" : "7823588"
+    }, {
+      "id" : 7912941,
+      "_tutkinnonOsa" : "7912823"
+    }, {
+      "id" : 7912192,
+      "_tutkinnonOsa" : "7911984"
+    }, {
+      "id" : 7912947,
+      "_tutkinnonOsa" : "7913430"
+    }, {
+      "id" : 8167523,
+      "_tutkinnonOsa" : "7649464"
+    }, {
+      "id" : 7912943,
+      "_tutkinnonOsa" : "7912826"
+    }, {
+      "id" : 7826624,
+      "_tutkinnonOsa" : "7826097"
+    }, {
+      "id" : 7912198,
+      "_tutkinnonOsa" : "7912820"
+    }, {
+      "id" : 7895730,
+      "_tutkinnonOsa" : "7892671"
+    }, {
+      "id" : 7811623,
+      "_tutkinnonOsa" : "7819860"
+    }, {
+      "id" : 7912193,
+      "_tutkinnonOsa" : "7911985"
+    }, {
+      "id" : 7875637,
+      "_tutkinnonOsa" : "7875647"
+    }, {
+      "id" : 7913611,
+      "_tutkinnonOsa" : "7913434"
+    }, {
+      "id" : 7823572,
+      "_tutkinnonOsa" : "7823585"
+    }, {
+      "id" : 7875630,
+      "_tutkinnonOsa" : "7875640"
+    }, {
+      "id" : 7913610,
+      "_tutkinnonOsa" : "7913433"
+    }, {
+      "id" : 7912946,
+      "_tutkinnonOsa" : "7912829"
+    }, {
+      "id" : 8167520,
+      "_tutkinnonOsa" : "7306547"
+    }, {
+      "id" : 7875633,
+      "_tutkinnonOsa" : "7875643"
+    }, {
+      "id" : 7823577,
+      "_tutkinnonOsa" : "7826090"
+    }, {
+      "id" : 7823578,
+      "_tutkinnonOsa" : "7826091"
+    }, {
+      "id" : 7826623,
+      "_tutkinnonOsa" : "7826096"
+    }, {
+      "id" : 7826620,
+      "_tutkinnonOsa" : "7826093"
+    }, {
+      "id" : 7912948,
+      "_tutkinnonOsa" : "7913431"
+    }, {
+      "id" : 7895733,
+      "_tutkinnonOsa" : "7892674"
+    }, {
+      "id" : 7913615,
+      "_tutkinnonOsa" : "7913438"
+    }, {
+      "id" : 7912940,
+      "_tutkinnonOsa" : "7912822"
+    }, {
+      "id" : 7823576,
+      "_tutkinnonOsa" : "7823589"
+    }, {
+      "id" : 7912942,
+      "_tutkinnonOsa" : "7912824"
+    }, {
+      "id" : 7636880,
+      "_tutkinnonOsa" : "7636890"
+    }, {
+      "id" : 7912195,
+      "_tutkinnonOsa" : "7911987"
+    }, {
+      "id" : 7846184,
+      "_tutkinnonOsa" : "7846823"
+    }, {
+      "id" : 7913612,
+      "_tutkinnonOsa" : "7913435"
+    }, {
+      "id" : 7846183,
+      "_tutkinnonOsa" : "7846822"
+    }, {
+      "id" : 7913614,
+      "_tutkinnonOsa" : "7913437"
+    }, {
+      "id" : 8160159,
+      "_tutkinnonOsa" : "7306545"
+    }, {
+      "id" : 7895738,
+      "_tutkinnonOsa" : "7911980"
+    }, {
+      "id" : 7912194,
+      "_tutkinnonOsa" : "7911986"
+    }, {
+      "id" : 7912949,
+      "_tutkinnonOsa" : "7913432"
+    }, {
+      "id" : 7875632,
+      "_tutkinnonOsa" : "7875642"
+    }, {
+      "id" : 7912197,
+      "_tutkinnonOsa" : "7911989"
+    }, {
+      "id" : 7823579,
+      "_tutkinnonOsa" : "7826092"
+    }, {
+      "id" : 7963140,
+      "_tutkinnonOsa" : "7963150"
+    }, {
+      "id" : 7895734,
+      "_tutkinnonOsa" : "7892675"
+    }, {
+      "id" : 8160158,
+      "_tutkinnonOsa" : "7283254"
+    }, {
+      "id" : 7875636,
+      "_tutkinnonOsa" : "7875646"
+    } ]
+  } ],
+  "tutkinnonOsat" : [ {
+    "id" : 7892674,
+    "nimi" : {
+      "fi" : "Ajoneuvon huoltotyöt",
+      "sv" : "Fordonsservice"
+    },
+    "koodiArvo" : "106945"
+  }, {
+    "id" : 7892676,
+    "nimi" : {
+      "fi" : "Alustan korjaustyöt",
+      "sv" : "Reparation av chassi"
+    },
+    "koodiArvo" : "106877"
+  }, {
+    "id" : 7892677,
+    "nimi" : {
+      "fi" : "Jarrujen korjaus",
+      "sv" : "Bromsreparationer"
+    },
+    "koodiArvo" : "106878"
+  }, {
+    "id" : 7892678,
+    "nimi" : {
+      "fi" : "Sähköjärjestelmän kunnon määrittäminen",
+      "sv" : "Fastställande av skicket i ett elsystem"
+    },
+    "koodiArvo" : "106879"
+  }, {
+    "id" : 7892675,
+    "nimi" : {
+      "fi" : "Ajoneuvon määräaikaishuolto",
+      "sv" : "Periodiskt underhåll av fordon"
+    },
+    "koodiArvo" : "106880"
+  }, {
+    "id" : 7913435,
+    "nimi" : {
+      "fi" : "Polttomoottorin korjaus",
+      "sv" : "Reparation av en förbränningsmotor"
+    },
+    "koodiArvo" : "106881"
+  }, {
+    "id" : 7913439,
+    "nimi" : {
+      "fi" : "Voimansiirron korjaus",
+      "sv" : "Reparation av kraftöverföring"
+    },
+    "koodiArvo" : "106882"
+  }, {
+    "id" : 7911982,
+    "nimi" : {
+      "fi" : "Sähkö- ja hybridiajoneuvon huoltotyö",
+      "sv" : "Service av el- och hybridfordon"
+    },
+    "koodiArvo" : "106883"
+  }, {
+    "id" : 7911980,
+    "nimi" : {
+      "fi" : "Ajoneuvon korkeajännitejärjestelmän korjaustyö",
+      "sv" : "Reparation av högspänningssystem i ett fordon"
+    },
+    "koodiArvo" : "106884"
+  }, {
+    "id" : 7911983,
+    "nimi" : {
+      "fi" : "Hyötyajoneuvojen korjaus",
+      "sv" : "Reparation av nyttofordon"
+    },
+    "koodiArvo" : "106885"
+  }, {
+    "id" : 7911985,
+    "nimi" : {
+      "fi" : "Perävaunujen korjaustyöt",
+      "sv" : "Reparation av släpvagnar"
+    },
+    "koodiArvo" : "106886"
+  }, {
+    "id" : 7911987,
+    "nimi" : {
+      "fi" : "Metsä- ja puutarhakoneiden huolto",
+      "sv" : "Service av skogs- och trädgårdsmaskiner"
+    },
+    "koodiArvo" : "106887"
+  }, {
+    "id" : 7636890,
+    "nimi" : {
+      "fi" : "Moottoripyörien huolto",
+      "sv" : "Service av motorcyklar"
+    },
+    "koodiArvo" : "106888"
+  }, {
+    "id" : 7911988,
+    "nimi" : {
+      "fi" : "Polkupyörän huolto",
+      "sv" : "Service av cykel"
+    },
+    "koodiArvo" : "106889"
+  }, {
+    "id" : 7911984,
+    "nimi" : {
+      "fi" : "Päällirakenteiden korjaustyöt",
+      "sv" : "Reparation av påbyggnader"
+    },
+    "koodiArvo" : "106890"
+  }, {
+    "id" : 7913437,
+    "nimi" : {
+      "fi" : "Sähkö- ja ohjausjärjestelmien diagnostiikka",
+      "sv" : "Diagnostik av el- och styrsystem"
+    },
+    "koodiArvo" : "106891"
+  }, {
+    "id" : 7913438,
+    "nimi" : {
+      "fi" : "Sähköjärjestelmien mittaaminen",
+      "sv" : "Mätningar i elsystem"
+    },
+    "koodiArvo" : "106892"
+  }, {
+    "id" : 7911986,
+    "nimi" : {
+      "fi" : "Työkoneiden korjaus",
+      "sv" : "Reparation av arbetsmaskiner"
+    },
+    "koodiArvo" : "106893"
+  }, {
+    "id" : 7911989,
+    "nimi" : {
+      "fi" : "Uusien tuotteiden varustelu ja kokoaminen",
+      "sv" : "Utrustning och montering av nya produkter"
+    },
+    "koodiArvo" : "106894"
+  }, {
+    "id" : 7912821,
+    "nimi" : {
+      "fi" : "Vapaa-ajan ajoneuvojen ja varaosien myyntityö",
+      "sv" : "Försäljning av fritidsfordon och reservdelar"
+    },
+    "koodiArvo" : "106895"
+  }, {
+    "id" : 7912822,
+    "nimi" : {
+      "fi" : "Veneiden huolto",
+      "sv" : "Båtservice"
+    },
+    "koodiArvo" : "106896"
+  }, {
+    "id" : 7912823,
+    "nimi" : {
+      "fi" : "Veneiden telakointi",
+      "sv" : "Dockning av båt"
+    },
+    "koodiArvo" : "106897"
+  }, {
+    "id" : 7283253,
+    "nimi" : {
+      "en" : "Working as a top expert",
+      "fi" : "Huippuosaajana toimiminen",
+      "sv" : "Arbete som kräver spetskompetens"
+    },
+    "koodiArvo" : "106730"
+  }, {
+    "id" : 7283257,
+    "nimi" : {
+      "en" : "Working with climate responsibility",
+      "fi" : "Ilmastovastuullinen toiminta",
+      "sv" : "Verksamhet med ansvar för klimatet"
+    },
+    "koodiArvo" : "106735"
+  }, {
+    "id" : 7875648,
+    "nimi" : {
+      "en" : "Working in an international work environment",
+      "fi" : "Kansainvälisessä työympäristössä toimiminen",
+      "sv" : "Att fungera i en internationell arbetsmiljö"
+    },
+    "koodiArvo" : "106734"
+  }, {
+    "id" : 7283254,
+    "nimi" : {
+      "en" : "Workplace instructor training",
+      "fi" : "Työpaikkaohjaajaksi valmentautuminen",
+      "sv" : "Förberedelse för arbetsplatshandledaruppgifter"
+    },
+    "koodiArvo" : "106731"
+  }, {
+    "id" : 7306545,
+    "nimi" : {
+      "en" : "Working in an enterprise",
+      "fi" : "Yrityksessä toimiminen",
+      "sv" : "Arbeta i ett företag"
+    },
+    "koodiArvo" : "106733"
+  }, {
+    "id" : 7306547,
+    "nimi" : {
+      "en" : "Planning a business",
+      "fi" : "Yritystoiminnan suunnittelu",
+      "sv" : "Planering av företagsverksamhet"
+    },
+    "koodiArvo" : "106732"
+  }, {
+    "id" : 7875645,
+    "nimi" : {
+      "fi" : "Hyötyajoneuvojen vauriokorjaus",
+      "sv" : "Reparation av skador på nyttofordon"
+    },
+    "koodiArvo" : "106898"
+  }, {
+    "id" : 7912820,
+    "nimi" : {
+      "fi" : "Vapaa-ajan ajoneuvojen huolto",
+      "sv" : "Service av fritidsfordon"
+    },
+    "koodiArvo" : "106899"
+  }, {
+    "id" : 7912826,
+    "nimi" : {
+      "fi" : "Ajoneuvon korroosiovauriokorjaus",
+      "sv" : "Reparation av korrosionsskador på fordon"
+    },
+    "koodiArvo" : "106900"
+  }, {
+    "id" : 7912827,
+    "nimi" : {
+      "fi" : "Ajoneuvon lisävarustetyöt",
+      "sv" : "Arbete med tilläggsutrustning på fordon"
+    },
+    "koodiArvo" : "106901"
+  }, {
+    "id" : 7912828,
+    "nimi" : {
+      "fi" : "Ajoneuvon ruostesuojaus",
+      "sv" : "Rostskyddsbehandling av fordon"
+    },
+    "koodiArvo" : "106902"
+  }, {
+    "id" : 7846821,
+    "nimi" : {
+      "fi" : "Ajoneuvon siistiminen",
+      "sv" : "Tvätt och städning av fordon"
+    },
+    "koodiArvo" : "106903"
+  }, {
+    "id" : 7912829,
+    "nimi" : {
+      "fi" : "Ajoneuvotelematiikan neuvontatyöt",
+      "sv" : "Arbete med rådgivning inom fordonstelematik"
+    },
+    "koodiArvo" : "106904"
+  }, {
+    "id" : 7911981,
+    "nimi" : {
+      "fi" : "Alustan vianhaku",
+      "sv" : "Felsökning i chassit"
+    },
+    "koodiArvo" : "106905"
+  }, {
+    "id" : 7913430,
+    "nimi" : {
+      "fi" : "Kierrätysosien myyntitoiminnot",
+      "sv" : "Försäljning av återvinningsdelar"
+    },
+    "koodiArvo" : "106906"
+  }, {
+    "id" : 7913431,
+    "nimi" : {
+      "fi" : "Kierrätysosien talteenotto",
+      "sv" : "Tillvaratagande av delar som kan återvinnas"
+    },
+    "koodiArvo" : "106907"
+  }, {
+    "id" : 7913432,
+    "nimi" : {
+      "fi" : "Kilpa-ajoneuvomekaanikkona toimiminen",
+      "sv" : "Arbete som tävlingsfordonsmekaniker"
+    },
+    "koodiArvo" : "106908"
+  }, {
+    "id" : 7913433,
+    "nimi" : {
+      "fi" : "Korjaamon tietojärjestelmien ylläpito",
+      "sv" : "Underhåll av datasystem i en verkstad"
+    },
+    "koodiArvo" : "106909"
+  }, {
+    "id" : 7913434,
+    "nimi" : {
+      "fi" : "Lämmönhallintajärjestelmän korjaustyöt",
+      "sv" : "Reparation av temperaturregleringssystemet"
+    },
+    "koodiArvo" : "106910"
+  }, {
+    "id" : 7913436,
+    "nimi" : {
+      "fi" : "Rengastyöt",
+      "sv" : "Däckarbeten"
+    },
+    "koodiArvo" : "106911"
+  }, {
+    "id" : 7773832,
+    "nimi" : {
+      "fi" : "Romuajoneuvojen esikäsittely",
+      "sv" : "Förbehandling av skrotfordon"
+    },
+    "koodiArvo" : "106720"
+  }, {
+    "id" : 7912824,
+    "nimi" : {
+      "fi" : "Teollisuuden asennustyöt",
+      "sv" : "Industriella installationsarbeten"
+    },
+    "koodiArvo" : "106912"
+  }, {
+    "id" : 7826097,
+    "nimi" : {
+      "fi" : "Videomyyntityö",
+      "sv" : "Försäljningsarbete med video"
+    },
+    "koodiArvo" : "106913"
+  }, {
+    "id" : 7819860,
+    "nimi" : {
+      "fi" : "Ajoneuvokaupan myyntitehtävissä toimiminen",
+      "sv" : "Arbete inom försäljning av fordon"
+    },
+    "koodiArvo" : "106915"
+  }, {
+    "id" : 7823580,
+    "nimi" : {
+      "fi" : "Tekninen neuvonta ja tuotetuntemus",
+      "sv" : "Teknisk rådgivning och produktkännedom"
+    },
+    "koodiArvo" : "106916"
+  }, {
+    "id" : 7823585,
+    "nimi" : {
+      "fi" : "Toimiminen ajoneuvoalan liiketoimintaympäristössä",
+      "sv" : "Arbete i en affärsmiljö inom fordonsbranschen"
+    },
+    "koodiArvo" : "106917"
+  }, {
+    "id" : 7823589,
+    "nimi" : {
+      "fi" : "Ajoneuvokaupan sidosryhmien kanssa toimiminen",
+      "sv" : "Samarbete med intressegrupper inom fordonshandel"
+    },
+    "koodiArvo" : "106918"
+  }, {
+    "id" : 7823587,
+    "nimi" : {
+      "fi" : "Ajoneuvon myyntiprosessin toteuttaminen",
+      "sv" : "Genomförande av en försäljningsprocess av för fordon"
+    },
+    "koodiArvo" : "106919"
+  }, {
+    "id" : 7823588,
+    "nimi" : {
+      "fi" : "Automerkkien ja -markkinoiden tunnistaminen",
+      "sv" : "Kännedom om bilmärken och -marknaden"
+    },
+    "koodiArvo" : "106920"
+  }, {
+    "id" : 7826092,
+    "nimi" : {
+      "fi" : "Huoltopalvelujen myyntiprosessin toteuttaminen",
+      "sv" : "Genomförande av en försäljningsprocess för servicetjänster"
+    },
+    "koodiArvo" : "106921"
+  }, {
+    "id" : 7826091,
+    "nimi" : {
+      "fi" : "Varaosavarastossa toimiminen",
+      "sv" : "Arbete i ett reservdelslager"
+    },
+    "koodiArvo" : "106922"
+  }, {
+    "id" : 7826090,
+    "nimi" : {
+      "fi" : "Varaosien myyntiprosessi ja tuotetuntemus",
+      "sv" : "Försäljningsprocessen för reservdelar och produktkännedom"
+    },
+    "koodiArvo" : "106923"
+  }, {
+    "id" : 7826094,
+    "nimi" : {
+      "fi" : "Uusien ajoneuvojen myyjänä toimiminen",
+      "sv" : "Arbete som försäljare av nya bilar"
+    },
+    "koodiArvo" : "106924"
+  }, {
+    "id" : 7826095,
+    "nimi" : {
+      "fi" : "Käytettyjen ajoneuvojen myyjänä toimiminen",
+      "sv" : "Arbete som försäljare av begagnade bilar"
+    },
+    "koodiArvo" : "106925"
+  }, {
+    "id" : 7826093,
+    "nimi" : {
+      "fi" : "Rengas- ja vannemyyntityö",
+      "sv" : "Försäljning av däck och fälgar"
+    },
+    "koodiArvo" : "106926"
+  }, {
+    "id" : 7826096,
+    "nimi" : {
+      "fi" : "Korjaamoprosessissa toimiminen",
+      "sv" : "Arbete i en verkstadsprocess"
+    },
+    "koodiArvo" : "106927"
+  }, {
+    "id" : 7963150,
+    "nimi" : {
+      "fi" : "Lisävarusteiden myyntityö",
+      "sv" : "Försäljning av tilläggsutrustning"
+    },
+    "koodiArvo" : "106928"
+  }, {
+    "id" : 7839279,
+    "nimi" : {
+      "fi" : "Vauriokorjaustyön aloitus",
+      "sv" : "Att inleda ett skadereparationsarbete"
+    },
+    "koodiArvo" : "106929"
+  }, {
+    "id" : 7846824,
+    "nimi" : {
+      "fi" : "Ajoneuvon korinosien irrotus ja asennustyöt",
+      "sv" : "Lösgöring och montering av karossdelar på ett fordon"
+    },
+    "koodiArvo" : "106930"
+  }, {
+    "id" : 7875647,
+    "nimi" : {
+      "fi" : "Muovikorjaus",
+      "sv" : "Plastreparation"
+    },
+    "koodiArvo" : "106931"
+  }, {
+    "id" : 7611306,
+    "nimi" : {
+      "fi" : "Lasien vaihto ja kiveniskemän korjaus",
+      "sv" : "Byte av rutor och reparation av stenskott"
+    },
+    "koodiArvo" : "106932"
+  }, {
+    "id" : 7875642,
+    "nimi" : {
+      "fi" : "Korivaurion määrittely",
+      "sv" : "Fastställande av skada på kaross"
+    },
+    "koodiArvo" : "106933"
+  }, {
+    "id" : 7892671,
+    "nimi" : {
+      "fi" : "Ajoneuvon pintaosien vaihto-, korjaus- ja oikaisutyöt",
+      "sv" : "Byte, reparation och riktning av ytdelar på ett fordon"
+    },
+    "koodiArvo" : "106934"
+  }, {
+    "id" : 7875640,
+    "nimi" : {
+      "fi" : "Korin kiinteiden pintaosien vaihtotyö",
+      "sv" : "Byte av karossens fasta ytdelar"
+    },
+    "koodiArvo" : "106935"
+  }, {
+    "id" : 7875643,
+    "nimi" : {
+      "fi" : "Kuljettajaa avustavien  järjestelmien toimintakuntoon saattaminen",
+      "sv" : "Att få förarstödssystem i funktionsdugligt skick"
+    },
+    "koodiArvo" : "106936"
+  }, {
+    "id" : 7866672,
+    "nimi" : {
+      "fi" : "Alumiinisten osien korjaustyöt",
+      "sv" : "Reparation av aluminiumdelar"
+    },
+    "koodiArvo" : "106937"
+  }, {
+    "id" : 7846820,
+    "nimi" : {
+      "fi" : "Ajoneuvon kalvotus ja teippaus",
+      "sv" : "Foliering och tejpning av fordon"
+    },
+    "koodiArvo" : "106938"
+  }, {
+    "id" : 7846823,
+    "nimi" : {
+      "fi" : "Eri materiaalien korjaustyö",
+      "sv" : "Reparation av olika material"
+    },
+    "koodiArvo" : "106939"
+  }, {
+    "id" : 7875644,
+    "nimi" : {
+      "fi" : "Korirakenteen korjaaminen",
+      "sv" : "Reparation av karosskonstruktion"
+    },
+    "koodiArvo" : "106940"
+  }, {
+    "id" : 7875646,
+    "nimi" : {
+      "fi" : "Pienten alueiden erikoiskorjaukset",
+      "sv" : "Specialreparationer av små områden"
+    },
+    "koodiArvo" : "106941"
+  }, {
+    "id" : 7840776,
+    "nimi" : {
+      "fi" : "Pohjustustyöt",
+      "sv" : "Grundningsarbeten"
+    },
+    "koodiArvo" : "106942"
+  }, {
+    "id" : 7840777,
+    "nimi" : {
+      "fi" : "Ruiskumaalaustyöt",
+      "sv" : "Sprutlackeringsarbeten"
+    },
+    "koodiArvo" : "106943"
+  }, {
+    "id" : 7846822,
+    "nimi" : {
+      "fi" : "Tarratekstien asemointi, kuvionmaalaus ja erikoismaalaus",
+      "sv" : "Montering av dekaltext, mönstermålning och specialmålning"
+    },
+    "koodiArvo" : "106944"
+  }, {
+    "id" : 7611160,
+    "nimi" : {
+      "en" : "Communication and interaction competence",
+      "fi" : "Viestintä- ja vuorovaikutusosaaminen",
+      "sv" : "Kunnande i kommunikation och interaktion"
+    },
+    "koodiArvo" : "106727"
+  }, {
+    "id" : 7599361,
+    "nimi" : {
+      "en" : "Mathematics and science competence",
+      "fi" : "Matemaattis-luonnontieteellinen osaaminen",
+      "sv" : "Kunnande i matematik och naturvetenskaper"
+    },
+    "koodiArvo" : "106728"
+  }, {
+    "id" : 7649464,
+    "nimi" : {
+      "en" : "Citizenship and working life competence",
+      "fi" : "Yhteiskunta- ja työelämäosaaminen",
+      "sv" : "Kunnande om samhälle och arbetsliv"
+    },
+    "koodiArvo" : "106729"
+  } ],
+  "osaamisalat" : [ {
+    "nimi" : {
+      "fi" : "Ajoneuvotekniikan osaamisala",
+      "sv" : "Kompetensområdet för fordonsteknik"
+    },
+    "arvo" : "1008"
+  }, {
+    "nimi" : {
+      "fi" : "Myynnin osaamisala",
+      "sv" : "Kompetensområdet för försäljning"
+    },
+    "arvo" : "1007"
+  }, {
+    "nimi" : {
+      "en" : "Competence area of Damage Repairs",
+      "fi" : "Vauriokorjauksen osaamisala",
+      "sv" : "Kompetensområdet för skadereparation"
+    },
+    "arvo" : "3181"
+  } ],
+  "luotu" : 1615448712178,
+  "muokattu" : 1653308149665
+}

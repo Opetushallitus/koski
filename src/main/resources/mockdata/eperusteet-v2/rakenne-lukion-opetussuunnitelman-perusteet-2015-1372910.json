@@ -1,0 +1,921 @@
+{
+  "id" : 1372910,
+  "nimi" : {
+    "_id" : "1431924",
+    "fi" : "Lukion opetussuunnitelman perusteet 2015",
+    "sv" : "Grunderna för gymnasiets läroplan 2015"
+  },
+  "diaarinumero" : "60/011/2015",
+  "koulutustyyppi" : "koulutustyyppi_2",
+  "voimassaoloAlkaa" : "1469998800000",
+  "koulutukset" : [ ],
+  "koulutusvienti" : false,
+  "suoritustavat" : [ {
+    "suoritustapakoodi" : "lukiokoulutus",
+    "laajuusYksikko" : "KURSSI"
+  } ],
+  "osaamisalat" : [ ],
+  "lukiokoulutus" : {
+    "rakenne" : {
+      "oppiaineet" : [ {
+        "koodiArvo" : "AI",
+        "oppimaarat" : [ {
+          "koodiArvo" : "AI1",
+          "kurssit" : [ {
+            "koodiArvo" : "ÄI1"
+          }, {
+            "koodiArvo" : "ÄI2"
+          }, {
+            "koodiArvo" : "ÄI3"
+          }, {
+            "koodiArvo" : "ÄI4"
+          }, {
+            "koodiArvo" : "ÄI5"
+          }, {
+            "koodiArvo" : "ÄI6"
+          }, {
+            "koodiArvo" : "ÄI7"
+          }, {
+            "koodiArvo" : "ÄI8"
+          }, {
+            "koodiArvo" : "ÄI9"
+          } ]
+        }, {
+          "koodiArvo" : "AI2",
+          "kurssit" : [ {
+            "koodiArvo" : "MO1"
+          }, {
+            "koodiArvo" : "MO2"
+          }, {
+            "koodiArvo" : "MO3"
+          }, {
+            "koodiArvo" : "MO4"
+          }, {
+            "koodiArvo" : "MO5"
+          }, {
+            "koodiArvo" : "MO6"
+          }, {
+            "koodiArvo" : "MO7"
+          }, {
+            "koodiArvo" : "MO8"
+          }, {
+            "koodiArvo" : "MO9"
+          } ]
+        }, {
+          "koodiArvo" : "AI3",
+          "kurssit" : [ {
+            "koodiArvo" : "ÄIS1"
+          }, {
+            "koodiArvo" : "ÄIS2"
+          }, {
+            "koodiArvo" : "ÄIS3"
+          }, {
+            "koodiArvo" : "ÄIS4"
+          }, {
+            "koodiArvo" : "ÄIS5"
+          }, {
+            "koodiArvo" : "ÄIS6"
+          }, {
+            "koodiArvo" : "ÄIS7"
+          }, {
+            "koodiArvo" : "ÄIS8"
+          }, {
+            "koodiArvo" : "ÄIS9"
+          } ]
+        }, {
+          "koodiArvo" : "AI4",
+          "kurssit" : [ {
+            "koodiArvo" : "ÄIR1"
+          }, {
+            "koodiArvo" : "ÄIR2"
+          }, {
+            "koodiArvo" : "ÄIR3"
+          }, {
+            "koodiArvo" : "ÄIR4"
+          }, {
+            "koodiArvo" : "ÄIR5"
+          }, {
+            "koodiArvo" : "ÄIR6"
+          }, {
+            "koodiArvo" : "ÄIR7"
+          }, {
+            "koodiArvo" : "ÄIR8"
+          }, {
+            "koodiArvo" : "ÄIR9"
+          } ]
+        }, {
+          "koodiArvo" : "AI5",
+          "kurssit" : [ {
+            "koodiArvo" : "ÄIV1"
+          }, {
+            "koodiArvo" : "ÄIV2"
+          }, {
+            "koodiArvo" : "ÄIV3"
+          }, {
+            "koodiArvo" : "ÄIV4"
+          }, {
+            "koodiArvo" : "ÄIV5"
+          }, {
+            "koodiArvo" : "ÄIV6"
+          }, {
+            "koodiArvo" : "ÄIV7"
+          }, {
+            "koodiArvo" : "ÄIV8"
+          }, {
+            "koodiArvo" : "ÄIV9"
+          } ]
+        }, {
+          "koodiArvo" : "AI7",
+          "kurssit" : [ {
+            "koodiArvo" : "S21"
+          }, {
+            "koodiArvo" : "S22"
+          }, {
+            "koodiArvo" : "S23"
+          }, {
+            "koodiArvo" : "S24"
+          }, {
+            "koodiArvo" : "S25"
+          }, {
+            "koodiArvo" : "S26"
+          }, {
+            "koodiArvo" : "S27"
+          }, {
+            "koodiArvo" : "S28"
+          }, {
+            "koodiArvo" : "S29"
+          } ]
+        }, {
+          "koodiArvo" : "AI8",
+          "kurssit" : [ {
+            "koodiArvo" : "SV21"
+          }, {
+            "koodiArvo" : "SV22"
+          }, {
+            "koodiArvo" : "SV23"
+          }, {
+            "koodiArvo" : "SV24"
+          }, {
+            "koodiArvo" : "SV25"
+          }, {
+            "koodiArvo" : "SV26"
+          }, {
+            "koodiArvo" : "SV27"
+          }, {
+            "koodiArvo" : "SV28"
+          }, {
+            "koodiArvo" : "SV29"
+          } ]
+        }, {
+          "koodiArvo" : "AI9",
+          "kurssit" : [ ]
+        }, {
+          "koodiArvo" : "AI10",
+          "kurssit" : [ ]
+        }, {
+          "koodiArvo" : "AI11",
+          "kurssit" : [ ]
+        }, {
+          "koodiArvo" : "AI12",
+          "kurssit" : [ ]
+        }, {
+          "koodiArvo" : "AI6",
+          "kurssit" : [ ]
+        } ],
+        "kurssit" : [ ]
+      }, {
+        "koodiArvo" : "TK1",
+        "oppimaarat" : [ {
+          "koodiArvo" : "RUA",
+          "kurssit" : [ {
+            "koodiArvo" : "RUA1"
+          }, {
+            "koodiArvo" : "RUA2"
+          }, {
+            "koodiArvo" : "RUA3"
+          }, {
+            "koodiArvo" : "RUA4"
+          }, {
+            "koodiArvo" : "RUA5"
+          }, {
+            "koodiArvo" : "RUA6"
+          }, {
+            "koodiArvo" : "RUA7"
+          }, {
+            "koodiArvo" : "RUA8"
+          } ]
+        }, {
+          "koodiArvo" : "RUB1",
+          "kurssit" : [ {
+            "koodiArvo" : "RUB11"
+          }, {
+            "koodiArvo" : "RUB12"
+          }, {
+            "koodiArvo" : "RUB13"
+          }, {
+            "koodiArvo" : "RUB14"
+          }, {
+            "koodiArvo" : "RUB15"
+          }, {
+            "koodiArvo" : "RUB16"
+          }, {
+            "koodiArvo" : "RUB17"
+          } ]
+        }, {
+          "koodiArvo" : "RUB3",
+          "kurssit" : [ {
+            "koodiArvo" : "RUB31"
+          }, {
+            "koodiArvo" : "RUB32"
+          }, {
+            "koodiArvo" : "RUB33"
+          }, {
+            "koodiArvo" : "RUB34"
+          }, {
+            "koodiArvo" : "RUB35"
+          }, {
+            "koodiArvo" : "RUB36"
+          }, {
+            "koodiArvo" : "RUB37"
+          }, {
+            "koodiArvo" : "RUB38"
+          } ]
+        }, {
+          "koodiArvo" : "RUAI",
+          "kurssit" : [ {
+            "koodiArvo" : "RUÄO1"
+          }, {
+            "koodiArvo" : "RUÄO2"
+          }, {
+            "koodiArvo" : "RUÄO3"
+          }, {
+            "koodiArvo" : "RUÄO4"
+          }, {
+            "koodiArvo" : "RUÄO5"
+          }, {
+            "koodiArvo" : "RUÄO6"
+          }, {
+            "koodiArvo" : "RUÄO7"
+          }, {
+            "koodiArvo" : "RUÄO8"
+          } ]
+        } ],
+        "kurssit" : [ ]
+      }, {
+        "koodiArvo" : "TK2",
+        "oppimaarat" : [ {
+          "koodiArvo" : "TKAI",
+          "kurssit" : [ {
+            "koodiArvo" : "FINA1"
+          }, {
+            "koodiArvo" : "FINA2"
+          }, {
+            "koodiArvo" : "FINA3"
+          }, {
+            "koodiArvo" : "FINA4"
+          }, {
+            "koodiArvo" : "FINA5"
+          }, {
+            "koodiArvo" : "FINA6"
+          }, {
+            "koodiArvo" : "FINA7"
+          }, {
+            "koodiArvo" : "FINA8"
+          } ]
+        }, {
+          "koodiArvo" : "TKB1",
+          "kurssit" : [ {
+            "koodiArvo" : "FINB11"
+          }, {
+            "koodiArvo" : "FINB12"
+          }, {
+            "koodiArvo" : "FINB13"
+          }, {
+            "koodiArvo" : "FINB14"
+          }, {
+            "koodiArvo" : "FINB15"
+          }, {
+            "koodiArvo" : "FINB16"
+          }, {
+            "koodiArvo" : "FINB17"
+          } ]
+        }, {
+          "koodiArvo" : "TKB3",
+          "kurssit" : [ {
+            "koodiArvo" : "FINB31"
+          }, {
+            "koodiArvo" : "FINB32"
+          }, {
+            "koodiArvo" : "FINB33"
+          }, {
+            "koodiArvo" : "FINB34"
+          }, {
+            "koodiArvo" : "FINB35"
+          }, {
+            "koodiArvo" : "FINB36"
+          }, {
+            "koodiArvo" : "FINB37"
+          }, {
+            "koodiArvo" : "FINB38"
+          } ]
+        }, {
+          "koodiArvo" : "AIAI",
+          "kurssit" : [ {
+            "koodiArvo" : "FIM1"
+          }, {
+            "koodiArvo" : "FIM2"
+          }, {
+            "koodiArvo" : "FIM3"
+          }, {
+            "koodiArvo" : "FIM4"
+          }, {
+            "koodiArvo" : "FIM5"
+          }, {
+            "koodiArvo" : "FIM6"
+          }, {
+            "koodiArvo" : "FIM7"
+          }, {
+            "koodiArvo" : "FIM8"
+          } ]
+        } ],
+        "kurssit" : [ ]
+      }, {
+        "koodiArvo" : "VK",
+        "oppimaarat" : [ {
+          "koodiArvo" : "ENA",
+          "kurssit" : [ {
+            "koodiArvo" : "ENA1"
+          }, {
+            "koodiArvo" : "ENA2"
+          }, {
+            "koodiArvo" : "ENA3"
+          }, {
+            "koodiArvo" : "ENA4"
+          }, {
+            "koodiArvo" : "ENA5"
+          }, {
+            "koodiArvo" : "ENA6"
+          }, {
+            "koodiArvo" : "ENA7"
+          }, {
+            "koodiArvo" : "ENA8"
+          } ]
+        }, {
+          "koodiArvo" : "A1",
+          "kurssit" : [ {
+            "koodiArvo" : "VKA1"
+          }, {
+            "koodiArvo" : "VKA2"
+          }, {
+            "koodiArvo" : "VKA3"
+          }, {
+            "koodiArvo" : "VKA4"
+          }, {
+            "koodiArvo" : "VKA5"
+          }, {
+            "koodiArvo" : "VKA6"
+          }, {
+            "koodiArvo" : "VKA7"
+          }, {
+            "koodiArvo" : "VKA8"
+          } ]
+        }, {
+          "koodiArvo" : "B1",
+          "kurssit" : [ {
+            "koodiArvo" : "VKB1"
+          }, {
+            "koodiArvo" : "VKB2"
+          }, {
+            "koodiArvo" : "VKB3"
+          }, {
+            "koodiArvo" : "VKB4"
+          }, {
+            "koodiArvo" : "VKB5"
+          }, {
+            "koodiArvo" : "VKB6"
+          }, {
+            "koodiArvo" : "VKB7"
+          } ]
+        }, {
+          "koodiArvo" : "B2",
+          "kurssit" : [ {
+            "koodiArvo" : "VKB21"
+          }, {
+            "koodiArvo" : "VKB22"
+          }, {
+            "koodiArvo" : "VKB23"
+          }, {
+            "koodiArvo" : "VKB24"
+          }, {
+            "koodiArvo" : "VKB25"
+          }, {
+            "koodiArvo" : "VKB26"
+          }, {
+            "koodiArvo" : "VKB27"
+          }, {
+            "koodiArvo" : "VKB28"
+          } ]
+        }, {
+          "koodiArvo" : "B3",
+          "kurssit" : [ {
+            "koodiArvo" : "VKB31"
+          }, {
+            "koodiArvo" : "VKB32"
+          }, {
+            "koodiArvo" : "VKB33"
+          }, {
+            "koodiArvo" : "VKB34"
+          }, {
+            "koodiArvo" : "VKB35"
+          }, {
+            "koodiArvo" : "VKB36"
+          }, {
+            "koodiArvo" : "VKB37"
+          }, {
+            "koodiArvo" : "VKB38"
+          } ]
+        }, {
+          "koodiArvo" : "AAB3",
+          "kurssit" : [ {
+            "koodiArvo" : "VKAA1"
+          }, {
+            "koodiArvo" : "VKAA2"
+          }, {
+            "koodiArvo" : "VKAA3"
+          }, {
+            "koodiArvo" : "VKAA4"
+          }, {
+            "koodiArvo" : "VKAA5"
+          }, {
+            "koodiArvo" : "VKAA6"
+          }, {
+            "koodiArvo" : "VKAA7"
+          }, {
+            "koodiArvo" : "VKAA8"
+          } ]
+        }, {
+          "koodiArvo" : "SMA",
+          "kurssit" : [ {
+            "koodiArvo" : "SMA1"
+          }, {
+            "koodiArvo" : "SMA2"
+          }, {
+            "koodiArvo" : "SMA3"
+          }, {
+            "koodiArvo" : "SMA4"
+          }, {
+            "koodiArvo" : "SMA5"
+          }, {
+            "koodiArvo" : "SMA6"
+          }, {
+            "koodiArvo" : "SMA7"
+          }, {
+            "koodiArvo" : "SMA8"
+          } ]
+        }, {
+          "koodiArvo" : "SMB2",
+          "kurssit" : [ {
+            "koodiArvo" : "SMB21"
+          }, {
+            "koodiArvo" : "SMB22"
+          }, {
+            "koodiArvo" : "SMB23"
+          }, {
+            "koodiArvo" : "SMB24"
+          }, {
+            "koodiArvo" : "SMB25"
+          }, {
+            "koodiArvo" : "SMB26"
+          }, {
+            "koodiArvo" : "SMB27"
+          }, {
+            "koodiArvo" : "SMB28"
+          } ]
+        }, {
+          "koodiArvo" : "SMB3",
+          "kurssit" : [ {
+            "koodiArvo" : "SMB31"
+          }, {
+            "koodiArvo" : "SMB32"
+          }, {
+            "koodiArvo" : "SMB33"
+          }, {
+            "koodiArvo" : "SMB34"
+          }, {
+            "koodiArvo" : "SMB35"
+          }, {
+            "koodiArvo" : "SMB36"
+          }, {
+            "koodiArvo" : "SMB37"
+          }, {
+            "koodiArvo" : "SMB38"
+          } ]
+        }, {
+          "koodiArvo" : "LAB2",
+          "kurssit" : [ {
+            "koodiArvo" : "LAB21"
+          }, {
+            "koodiArvo" : "LAB22"
+          }, {
+            "koodiArvo" : "LAB23"
+          }, {
+            "koodiArvo" : "LAB24"
+          }, {
+            "koodiArvo" : "LAB25"
+          }, {
+            "koodiArvo" : "LAB26"
+          }, {
+            "koodiArvo" : "LAB27"
+          }, {
+            "koodiArvo" : "LAB28"
+          } ]
+        }, {
+          "koodiArvo" : "LAB3",
+          "kurssit" : [ {
+            "koodiArvo" : "LAB31"
+          }, {
+            "koodiArvo" : "LAB32"
+          }, {
+            "koodiArvo" : "LAB33"
+          }, {
+            "koodiArvo" : "LAB34"
+          }, {
+            "koodiArvo" : "LAB35"
+          }, {
+            "koodiArvo" : "LAB36"
+          }, {
+            "koodiArvo" : "LAB37"
+          }, {
+            "koodiArvo" : "LAB38"
+          } ]
+        } ],
+        "kurssit" : [ ]
+      }, {
+        "koodiArvo" : "MA",
+        "oppimaarat" : [ {
+          "koodiArvo" : "MAY",
+          "kurssit" : [ {
+            "koodiArvo" : "MAY1"
+          } ]
+        }, {
+          "koodiArvo" : "MAA",
+          "kurssit" : [ {
+            "koodiArvo" : "MAY1"
+          }, {
+            "koodiArvo" : "MAA2"
+          }, {
+            "koodiArvo" : "MAA3"
+          }, {
+            "koodiArvo" : "MAA4"
+          }, {
+            "koodiArvo" : "MAA5"
+          }, {
+            "koodiArvo" : "MAA6"
+          }, {
+            "koodiArvo" : "MAA7"
+          }, {
+            "koodiArvo" : "MAA8"
+          }, {
+            "koodiArvo" : "MAA9"
+          }, {
+            "koodiArvo" : "MAA10"
+          }, {
+            "koodiArvo" : "MAA11"
+          }, {
+            "koodiArvo" : "MAA12"
+          }, {
+            "koodiArvo" : "MAA13"
+          } ]
+        }, {
+          "koodiArvo" : "MAB",
+          "kurssit" : [ {
+            "koodiArvo" : "MAY1"
+          }, {
+            "koodiArvo" : "MAB2"
+          }, {
+            "koodiArvo" : "MAB3"
+          }, {
+            "koodiArvo" : "MAB4"
+          }, {
+            "koodiArvo" : "MAB5"
+          }, {
+            "koodiArvo" : "MAB6"
+          }, {
+            "koodiArvo" : "MAB7"
+          }, {
+            "koodiArvo" : "MAB8"
+          } ]
+        } ],
+        "kurssit" : [ ]
+      }, {
+        "koodiArvo" : "BI",
+        "oppimaarat" : [ ],
+        "kurssit" : [ {
+          "koodiArvo" : "BI1"
+        }, {
+          "koodiArvo" : "BI2"
+        }, {
+          "koodiArvo" : "BI3"
+        }, {
+          "koodiArvo" : "BI4"
+        }, {
+          "koodiArvo" : "BI5"
+        } ]
+      }, {
+        "koodiArvo" : "GE",
+        "oppimaarat" : [ ],
+        "kurssit" : [ {
+          "koodiArvo" : "GE1"
+        }, {
+          "koodiArvo" : "GE2"
+        }, {
+          "koodiArvo" : "GE3"
+        }, {
+          "koodiArvo" : "GE4"
+        } ]
+      }, {
+        "koodiArvo" : "FY",
+        "oppimaarat" : [ ],
+        "kurssit" : [ {
+          "koodiArvo" : "FY1"
+        }, {
+          "koodiArvo" : "FY2"
+        }, {
+          "koodiArvo" : "FY3"
+        }, {
+          "koodiArvo" : "FY4"
+        }, {
+          "koodiArvo" : "FY5"
+        }, {
+          "koodiArvo" : "FY6"
+        }, {
+          "koodiArvo" : "FY7"
+        } ]
+      }, {
+        "koodiArvo" : "KE",
+        "oppimaarat" : [ ],
+        "kurssit" : [ {
+          "koodiArvo" : "KE1"
+        }, {
+          "koodiArvo" : "KE2"
+        }, {
+          "koodiArvo" : "KE3"
+        }, {
+          "koodiArvo" : "KE4"
+        }, {
+          "koodiArvo" : "KE5"
+        } ]
+      }, {
+        "koodiArvo" : "FI",
+        "oppimaarat" : [ ],
+        "kurssit" : [ {
+          "koodiArvo" : "FI1"
+        }, {
+          "koodiArvo" : "FI2"
+        }, {
+          "koodiArvo" : "FI3"
+        }, {
+          "koodiArvo" : "FI4"
+        } ]
+      }, {
+        "koodiArvo" : "PS",
+        "oppimaarat" : [ ],
+        "kurssit" : [ {
+          "koodiArvo" : "PS1"
+        }, {
+          "koodiArvo" : "PS2"
+        }, {
+          "koodiArvo" : "PS3"
+        }, {
+          "koodiArvo" : "PS4"
+        }, {
+          "koodiArvo" : "PS5"
+        } ]
+      }, {
+        "koodiArvo" : "HI",
+        "oppimaarat" : [ ],
+        "kurssit" : [ {
+          "koodiArvo" : "HI1"
+        }, {
+          "koodiArvo" : "HI2"
+        }, {
+          "koodiArvo" : "HI3"
+        }, {
+          "koodiArvo" : "HI4"
+        }, {
+          "koodiArvo" : "HI5"
+        }, {
+          "koodiArvo" : "HI6"
+        } ]
+      }, {
+        "koodiArvo" : "YH",
+        "oppimaarat" : [ ],
+        "kurssit" : [ {
+          "koodiArvo" : "YH1"
+        }, {
+          "koodiArvo" : "YH2"
+        }, {
+          "koodiArvo" : "YH3"
+        }, {
+          "koodiArvo" : "YH4"
+        } ]
+      }, {
+        "koodiArvo" : "KT",
+        "oppimaarat" : [ {
+          "koodiArvo" : "KT1",
+          "kurssit" : [ {
+            "koodiArvo" : "UE1"
+          }, {
+            "koodiArvo" : "UE2"
+          }, {
+            "koodiArvo" : "UE3"
+          }, {
+            "koodiArvo" : "UE4"
+          }, {
+            "koodiArvo" : "UE5"
+          }, {
+            "koodiArvo" : "UE6"
+          } ]
+        }, {
+          "koodiArvo" : "KT2",
+          "kurssit" : [ {
+            "koodiArvo" : "UO1"
+          }, {
+            "koodiArvo" : "UO2"
+          }, {
+            "koodiArvo" : "UO3"
+          }, {
+            "koodiArvo" : "UO4"
+          }, {
+            "koodiArvo" : "UO5"
+          }, {
+            "koodiArvo" : "UO6"
+          } ]
+        }, {
+          "koodiArvo" : "KT3",
+          "kurssit" : [ {
+            "koodiArvo" : "UK1"
+          }, {
+            "koodiArvo" : "UK2"
+          }, {
+            "koodiArvo" : "UK3"
+          }, {
+            "koodiArvo" : "UK4"
+          }, {
+            "koodiArvo" : "UK5"
+          }, {
+            "koodiArvo" : "UK6"
+          } ]
+        }, {
+          "koodiArvo" : "KT4",
+          "kurssit" : [ {
+            "koodiArvo" : "UI1"
+          }, {
+            "koodiArvo" : "UI2"
+          }, {
+            "koodiArvo" : "UI3"
+          }, {
+            "koodiArvo" : "UI4"
+          }, {
+            "koodiArvo" : "UI5"
+          }, {
+            "koodiArvo" : "UI6"
+          } ]
+        }, {
+          "koodiArvo" : "KT5",
+          "kurssit" : [ {
+            "koodiArvo" : "UJ1"
+          }, {
+            "koodiArvo" : "UJ2"
+          }, {
+            "koodiArvo" : "UJ3"
+          }, {
+            "koodiArvo" : "UJ4"
+          }, {
+            "koodiArvo" : "UJ5"
+          }, {
+            "koodiArvo" : "UJ6"
+          } ]
+        }, {
+          "koodiArvo" : "UX",
+          "kurssit" : [ ]
+        } ],
+        "kurssit" : [ ]
+      }, {
+        "koodiArvo" : "ET",
+        "oppimaarat" : [ ],
+        "kurssit" : [ {
+          "koodiArvo" : "ET1"
+        }, {
+          "koodiArvo" : "ET2"
+        }, {
+          "koodiArvo" : "ET3"
+        }, {
+          "koodiArvo" : "ET4"
+        }, {
+          "koodiArvo" : "ET5"
+        }, {
+          "koodiArvo" : "ET6"
+        } ]
+      }, {
+        "koodiArvo" : "TE",
+        "oppimaarat" : [ ],
+        "kurssit" : [ {
+          "koodiArvo" : "TE1"
+        }, {
+          "koodiArvo" : "TE2"
+        }, {
+          "koodiArvo" : "TE3"
+        } ]
+      }, {
+        "koodiArvo" : "LI",
+        "oppimaarat" : [ ],
+        "kurssit" : [ {
+          "koodiArvo" : "LI1"
+        }, {
+          "koodiArvo" : "LI2"
+        }, {
+          "koodiArvo" : "LI3"
+        }, {
+          "koodiArvo" : "LI4"
+        }, {
+          "koodiArvo" : "LI5"
+        } ]
+      }, {
+        "koodiArvo" : "MU",
+        "oppimaarat" : [ ],
+        "kurssit" : [ {
+          "koodiArvo" : "MU1"
+        }, {
+          "koodiArvo" : "MU2"
+        }, {
+          "koodiArvo" : "MU3"
+        }, {
+          "koodiArvo" : "MU4"
+        } ]
+      }, {
+        "koodiArvo" : "KU",
+        "oppimaarat" : [ ],
+        "kurssit" : [ {
+          "koodiArvo" : "KU1"
+        }, {
+          "koodiArvo" : "KU2"
+        }, {
+          "koodiArvo" : "KU3"
+        }, {
+          "koodiArvo" : "KU4"
+        } ]
+      }, {
+        "koodiArvo" : "OP",
+        "oppimaarat" : [ ],
+        "kurssit" : [ {
+          "koodiArvo" : "OP1"
+        }, {
+          "koodiArvo" : "OP2"
+        } ]
+      }, {
+        "koodiArvo" : "TO",
+        "oppimaarat" : [ ],
+        "kurssit" : [ {
+          "koodiArvo" : "TO1"
+        }, {
+          "koodiArvo" : "TO2"
+        }, {
+          "koodiArvo" : "TO3"
+        } ]
+      }, {
+        "koodiArvo" : "LD",
+        "oppimaarat" : [ ],
+        "kurssit" : [ {
+          "koodiArvo" : "KOLD1"
+        }, {
+          "koodiArvo" : "KULD2"
+        }, {
+          "koodiArvo" : "KÄLD3"
+        }, {
+          "koodiArvo" : "LILD4"
+        }, {
+          "koodiArvo" : "MELD5"
+        }, {
+          "koodiArvo" : "MULD6"
+        }, {
+          "koodiArvo" : "TALD7"
+        }, {
+          "koodiArvo" : "TELD8"
+        } ]
+      }, {
+        "koodiArvo" : "TVK",
+        "oppimaarat" : [ ],
+        "kurssit" : [ {
+          "koodiArvo" : "TA1"
+        }, {
+          "koodiArvo" : "TA2"
+        }, {
+          "koodiArvo" : "TA3"
+        } ]
+      } ]
+    }
+  },
+  "luotu" : 1449736763749,
+  "muokattu" : 1525271279758
+}

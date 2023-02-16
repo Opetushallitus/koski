@@ -1,0 +1,16 @@
+{
+  "id" : 1541511,
+  "nimi" : {
+    "_id" : "1636536",
+    "fi" : "Perusopetukseen valmistavan opetuksen opetussuunnitelman perusteet 2015",
+    "sv" : "Grunderna för läroplanen för den undervisning som förbereder för den grundläggande utbildningen 2015"
+  },
+  "diaarinumero" : "57/011/2015",
+  "koulutustyyppi" : "koulutustyyppi_22",
+  "voimassaoloAlkaa" : "1469998800000",
+  "koulutukset" : [ ],
+  "koulutusvienti" : false,
+  "osaamisalat" : [ ],
+  "luotu" : 1462364454865,
+  "muokattu" : 1671205981235
+}

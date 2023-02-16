@@ -1,0 +1,17 @@
+{
+  "id" : 7512390,
+  "nimi" : {
+    "_id" : "7526380",
+    "_tunniste" : "1406f8a1-6ec8-4de3-82c6-fe37b1871e37",
+    "fi" : "Kansanopistojen oppivelvollisille suunnatun vapaan sivistystyön koulutuksen opetussuunnitelman perusteet 2021",
+    "sv" : "Grunderna för läroplanen för folkhögskolornas utbildning inom det fria bildningsarbetet som riktar sig till läropliktiga 2021"
+  },
+  "diaarinumero" : "OPH-58-2021",
+  "koulutustyyppi" : "koulutustyyppi_10",
+  "voimassaoloAlkaa" : "1627765200000",
+  "koulutukset" : [ ],
+  "koulutusvienti" : false,
+  "osaamisalat" : [ ],
+  "luotu" : 1608530165217,
+  "muokattu" : 1653284084391
+}

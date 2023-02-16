@@ -1,0 +1,122 @@
+{
+  "id" : 2434074,
+  "nimi" : {
+    "_id" : "3276560",
+    "_tunniste" : "2d097028-15f7-4b91-83b9-344c45a53094",
+    "fi" : "Koulunkäynnin ja aamu- ja iltapäivätoiminnan ohjauksen ammattitutkinto, koulutusvientikokeilu",
+    "sv" : "Yrkesexamen för ledare för skolgång och morgon- och eftermiddagsverksamhet"
+  },
+  "diaarinumero" : "OPH-1092-2017",
+  "koulutustyyppi" : "koulutustyyppi_11",
+  "voimassaoloAlkaa" : "1494795600000",
+  "voimassaoloLoppuu" : "1546207200000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Further vocational qualification in Learning Support and Morning and Afternoon Club Activity / Instruction at School",
+      "fi" : "Koulunkäynnin ja aamu- ja iltapäivätoiminnan ohjauksen ammattitutkinto",
+      "sv" : "Yrkesexamen för ledare för skolgång och morgon- och eftermiddagsverksamhet"
+    },
+    "koulutuskoodiArvo" : "374124"
+  } ],
+  "koulutusvienti" : true,
+  "suoritustavat" : [ {
+    "suoritustapakoodi" : "reformi",
+    "laajuusYksikko" : "OSAAMISPISTE",
+    "rakenne" : {
+      "osat" : [ {
+        "nimi" : {
+          "_id" : "2455426",
+          "_tunniste" : "3441b8b9-e2e3-4fe6-a2cf-2501c591aa77",
+          "fi" : "Pakolliset tutkinnon osat"
+        },
+        "osat" : [ {
+          "_tutkinnonOsaViite" : "2454494"
+        }, {
+          "_tutkinnonOsaViite" : "2454495"
+        }, {
+          "_tutkinnonOsaViite" : "2454491"
+        }, {
+          "_tutkinnonOsaViite" : "2454493"
+        } ],
+        "rooli" : "määritelty",
+        "muodostumisSaanto" : {
+          "koko" : {
+            "minimi" : 4,
+            "maksimi" : 4
+          }
+        }
+      }, {
+        "nimi" : {
+          "_id" : "2455427",
+          "_tunniste" : "8ced5156-f615-4e02-947b-df320d74d3d4",
+          "fi" : "Valinnaiset tutkinnon osat"
+        },
+        "osat" : [ {
+          "_tutkinnonOsaViite" : "2454492"
+        } ],
+        "rooli" : "määritelty",
+        "muodostumisSaanto" : {
+          "koko" : {
+            "minimi" : 0,
+            "maksimi" : 1
+          }
+        }
+      } ]
+    },
+    "tutkinnonOsaViitteet" : [ {
+      "id" : 2454495,
+      "_tutkinnonOsa" : "2454247"
+    }, {
+      "id" : 2454491,
+      "_tutkinnonOsa" : "2454248"
+    }, {
+      "id" : 2454493,
+      "_tutkinnonOsa" : "2454249"
+    }, {
+      "id" : 2454494,
+      "_tutkinnonOsa" : "2454246"
+    }, {
+      "id" : 2454492,
+      "_tutkinnonOsa" : "222337"
+    } ]
+  } ],
+  "tutkinnonOsat" : [ {
+    "id" : 2454246,
+    "nimi" : {
+      "fi" : "Ammatissa toimiminen",
+      "sv" : "Att vara verksam i yrket"
+    },
+    "koodiArvo" : "101786"
+  }, {
+    "id" : 2454247,
+    "nimi" : {
+      "fi" : "Kasvun ja kehityksen tukeminen ja ohjaaminen",
+      "sv" : "Att ge stöd och handledning som främjar växande och utveckling"
+    },
+    "koodiArvo" : "101787"
+  }, {
+    "id" : 2454248,
+    "nimi" : {
+      "fi" : "Oppimisen ja toiminnan tukeminen ja ohjaaminen",
+      "sv" : "Att ge stöd och handledning som främjar lärandet och verksamheten"
+    },
+    "koodiArvo" : "101788"
+  }, {
+    "id" : 2454249,
+    "nimi" : {
+      "fi" : "Erityistä tukea tarvitsevien ohjaaminen",
+      "sv" : "Att handleda personer som behöver särskilt stöd"
+    },
+    "koodiArvo" : "101789"
+  }, {
+    "id" : 222337,
+    "nimi" : {
+      "fi" : "Yrittäjyys",
+      "sv" : "Företagsamhet"
+    },
+    "koodiArvo" : "101790"
+  } ],
+  "osaamisalat" : [ ],
+  "luotu" : 1491832465053,
+  "muokattu" : 1547030252113
+}

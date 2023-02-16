@@ -1,0 +1,23 @@
+{
+  "id" : 7675670,
+  "nimi" : {
+    "_id" : "8520008",
+    "_tunniste" : "d7073e7b-8d94-4518-b1d0-e30633839341",
+    "fi" : "Vapaan sivistystyön lukutaitokoulutuksen opetussuunnitelma suositus 2017",
+    "sv" : "Rekommendation för läroplan för utbildning i litteracitet inom fritt bildningsarbete 2017"
+  },
+  "diaarinumero" : "OPH-2984-2017",
+  "koulutustyyppi" : "koulutustyyppi_35",
+  "voimassaoloAlkaa" : "1533070800000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "fi" : "Vapaan sivistystyön koulutus",
+      "sv" : "Fritt bildningsarbete "
+    },
+    "koulutuskoodiArvo" : "099999"
+  } ],
+  "koulutusvienti" : false,
+  "osaamisalat" : [ ],
+  "luotu" : 1619506454572,
+  "muokattu" : 1668669091144
+}

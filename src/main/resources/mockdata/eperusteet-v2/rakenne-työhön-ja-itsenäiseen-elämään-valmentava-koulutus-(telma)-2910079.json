@@ -1,0 +1,105 @@
+{
+  "id" : 2910079,
+  "nimi" : {
+    "_id" : "4640434",
+    "_tunniste" : "6877d49d-38e6-482b-9d1b-e779af1efccc",
+    "fi" : "Työhön ja itsenäiseen elämään valmentava koulutus (TELMA)",
+    "sv" : "Utbildning som handleder för arbete och ett självständigt liv"
+  },
+  "diaarinumero" : "OPH-2659-2017",
+  "koulutustyyppi" : "koulutustyyppi_5",
+  "voimassaoloAlkaa" : "1514757600000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "fi" : "Työhön ja itsenäiseen elämään valmentava koulutus (TELMA)",
+      "sv" : "Utbildning som handleder för arbete och ett självständigt liv (TELMA)"
+    },
+    "koulutuskoodiArvo" : "999903"
+  } ],
+  "koulutusvienti" : false,
+  "suoritustavat" : [ {
+    "suoritustapakoodi" : "reformi",
+    "laajuusYksikko" : "OSAAMISPISTE",
+    "rakenne" : {
+      "osat" : [ {
+        "nimi" : {
+          "_id" : "4520598",
+          "_tunniste" : "b12594c3-2715-4360-833c-5a178f3577c9",
+          "fi" : "Koulutuksen osat",
+          "sv" : "Utbildningsdelar"
+        },
+        "osat" : [ {
+          "_tutkinnonOsaViite" : "2983198"
+        }, {
+          "_tutkinnonOsaViite" : "2983199"
+        }, {
+          "_tutkinnonOsaViite" : "2988470"
+        }, {
+          "nimi" : {
+            "_id" : "3006152",
+            "_tunniste" : "9b5d8aec-f8da-44a0-8a3f-ec9fda2a6734",
+            "fi" : "Muut valinnaiset koulutuksen osat",
+            "sv" : "Valbara utbildningsdelar"
+          },
+          "osat" : [ ],
+          "rooli" : "määrittelemätön",
+          "muodostumisSaanto" : {
+            "laajuus" : {
+              "minimi" : 0,
+              "maksimi" : 20
+            }
+          }
+        } ],
+        "rooli" : "määritelty",
+        "muodostumisSaanto" : {
+          "laajuus" : {
+            "minimi" : 60,
+            "maksimi" : 60
+          }
+        }
+      } ],
+      "rooli" : "määritelty",
+      "muodostumisSaanto" : {
+        "laajuus" : {
+          "minimi" : 60,
+          "maksimi" : 60
+        }
+      }
+    },
+    "tutkinnonOsaViitteet" : [ {
+      "id" : 2983199,
+      "_tutkinnonOsa" : "3003004"
+    }, {
+      "id" : 2983198,
+      "_tutkinnonOsa" : "3003003"
+    }, {
+      "id" : 2988470,
+      "_tutkinnonOsa" : "3018112"
+    } ]
+  } ],
+  "tutkinnonOsat" : [ {
+    "id" : 3003003,
+    "nimi" : {
+      "fi" : "Ammatillisen toimintakyvyn vahvistaminen",
+      "sv" : "Stärkande av den yrkesinriktade funktionsförmågan"
+    },
+    "koodiArvo" : "400005"
+  }, {
+    "id" : 3003004,
+    "nimi" : {
+      "fi" : "Opiskeluvalmiuksien vahvistaminen ",
+      "sv" : "Stärkande av studiefärdigheter"
+    },
+    "koodiArvo" : "400006"
+  }, {
+    "id" : 3018112,
+    "nimi" : {
+      "fi" : "Työelämään valmentautuminen",
+      "sv" : "Förberedelse för arbetslivet"
+    },
+    "koodiArvo" : "400007"
+  } ],
+  "osaamisalat" : [ ],
+  "luotu" : 1505365340971,
+  "muokattu" : 1549276346167
+}

@@ -1,0 +1,16 @@
+{
+  "id" : 419551,
+  "nimi" : {
+    "_id" : "881328",
+    "fi" : "Esiopetuksen opetussuunnitelman perusteet 2014",
+    "sv" : "Grunderna för förskoleundervisningens läroplan 2014"
+  },
+  "diaarinumero" : "102/011/2014",
+  "koulutustyyppi" : "koulutustyyppi_15",
+  "voimassaoloAlkaa" : "1420063200000",
+  "koulutukset" : [ ],
+  "koulutusvienti" : false,
+  "osaamisalat" : [ ],
+  "luotu" : 1422024343692,
+  "muokattu" : 1671202055429
+}

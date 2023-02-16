@@ -1,0 +1,16 @@
+{
+  "id" : 419550,
+  "nimi" : {
+    "_id" : "1024460",
+    "fi" : "Perusopetuksen opetussuunnitelman perusteet 2014",
+    "sv" : "Grunderna för läroplanen för den grundläggande utbildningen 2014"
+  },
+  "diaarinumero" : "104/011/2014",
+  "koulutustyyppi" : "koulutustyyppi_16",
+  "voimassaoloAlkaa" : "1420063200000",
+  "koulutukset" : [ ],
+  "koulutusvienti" : false,
+  "osaamisalat" : [ ],
+  "luotu" : 1421821248830,
+  "muokattu" : 1678175938113
+}

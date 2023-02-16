@@ -1,0 +1,21 @@
+{
+  "id" : 7823340,
+  "nimi" : {
+    "_id" : "7938895",
+    "_tunniste" : "4b33f0ea-8462-49b6-8038-43d52ec7b288",
+    "fi" : "Lukiokoulutukseen valmistavan koulutuksen opetussuunnitelman perusteet 2021"
+  },
+  "diaarinumero" : "OPH-4958-2020",
+  "koulutustyyppi" : "koulutustyyppi_23",
+  "voimassaoloAlkaa" : "1627765200000",
+  "koulutukset" : [ ],
+  "koulutusvienti" : false,
+  "suoritustavat" : [ {
+    "suoritustapakoodi" : "lukiokoulutus2019",
+    "laajuusYksikko" : "OPINTOPISTE",
+    "tutkinnonOsaViitteet" : [ ]
+  } ],
+  "osaamisalat" : [ ],
+  "luotu" : 1624016199888,
+  "muokattu" : 1632993917652
+}

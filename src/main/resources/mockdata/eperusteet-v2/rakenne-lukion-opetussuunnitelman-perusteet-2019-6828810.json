@@ -1,0 +1,28 @@
+{
+  "id" : 6828810,
+  "nimi" : {
+    "_id" : "6858073",
+    "_tunniste" : "6313cc08-d468-40fa-b124-6e0fa7fa7e7f",
+    "fi" : "Lukion opetussuunnitelman perusteet 2019",
+    "sv" : "Grunderna för gymnasiets läroplan 2019"
+  },
+  "diaarinumero" : "OPH-2263-2019",
+  "koulutustyyppi" : "koulutustyyppi_2",
+  "voimassaoloAlkaa" : "1627765200000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "fi" : "Lukion oppimäärä",
+      "sv" : "Gymnasiets lärokurs"
+    },
+    "koulutuskoodiArvo" : "309902"
+  } ],
+  "koulutusvienti" : false,
+  "suoritustavat" : [ {
+    "suoritustapakoodi" : "lukiokoulutus2019",
+    "laajuusYksikko" : "OPINTOPISTE",
+    "tutkinnonOsaViitteet" : [ ]
+  } ],
+  "osaamisalat" : [ ],
+  "luotu" : 1572509694541,
+  "muokattu" : 1675942773678
+}

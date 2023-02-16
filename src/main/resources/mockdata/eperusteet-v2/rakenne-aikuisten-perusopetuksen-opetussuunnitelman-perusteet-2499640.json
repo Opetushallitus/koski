@@ -1,0 +1,17 @@
+{
+  "id" : 2499640,
+  "nimi" : {
+    "_id" : "2827020",
+    "_tunniste" : "e3ed18e1-e761-48e9-b1c1-f984001a116f",
+    "fi" : "Aikuisten perusopetuksen opetussuunnitelman perusteet",
+    "sv" : "Grunderna för läroplanen för den grundläggande utbildningen för vuxna 2017"
+  },
+  "diaarinumero" : "OPH-1280-2017",
+  "koulutustyyppi" : "koulutustyyppi_17",
+  "voimassaoloAlkaa" : "1514757600000",
+  "koulutukset" : [ ],
+  "koulutusvienti" : false,
+  "osaamisalat" : [ ],
+  "luotu" : 1493780399090,
+  "muokattu" : 1678190444892
+}

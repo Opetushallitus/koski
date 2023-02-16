@@ -1,0 +1,23 @@
+{
+  "id" : 3689873,
+  "nimi" : {
+    "_id" : "4046952",
+    "_tunniste" : "d6e8a3fd-c6d8-4bf9-8755-a1fa412deb46",
+    "fi" : "Taiteen perusopetuksen yleisen oppimäärän opetussuunnitelman perusteet 2017",
+    "sv" : "Grunderna för läroplanen för den allmänna lärokursen i grundläggande konstundervisning 2017"
+  },
+  "diaarinumero" : "OPH-2069-2017",
+  "koulutustyyppi" : "koulutustyyppi_999907",
+  "voimassaoloAlkaa" : "1533070800000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "fi" : "Taiteen perusopetus",
+      "sv" : "Grundläggande konstundervisning"
+    },
+    "koulutuskoodiArvo" : "999907"
+  } ],
+  "koulutusvienti" : false,
+  "osaamisalat" : [ ],
+  "luotu" : 1510066786800,
+  "muokattu" : 1595483916574
+}

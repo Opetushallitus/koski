@@ -1,0 +1,22 @@
+{
+  "id" : 718900,
+  "nimi" : {
+    "_id" : "1887451",
+    "fi" : "Lisäopetuksen opetussuunnitelman perusteet 2014",
+    "sv" : "Grunderna för påbyggnads-undervisningens läroplan 2014"
+  },
+  "diaarinumero" : "105/011/2014",
+  "koulutustyyppi" : "koulutustyyppi_6",
+  "voimassaoloAlkaa" : "1420063200000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "fi" : "Perusopetuksen lisäopetus",
+      "sv" : "Påbyggnadsundervisning efter den grundläggande utbildningen"
+    },
+    "koulutuskoodiArvo" : "020075"
+  } ],
+  "koulutusvienti" : false,
+  "osaamisalat" : [ ],
+  "luotu" : 1425539656030,
+  "muokattu" : 1471931108453
+}

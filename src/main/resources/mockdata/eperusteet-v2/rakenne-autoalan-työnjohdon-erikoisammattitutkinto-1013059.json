@@ -1,0 +1,168 @@
+{
+  "id" : 1013059,
+  "nimi" : {
+    "_id" : "1116965",
+    "fi" : "Autoalan työnjohdon erikoisammattitutkinto",
+    "sv" : "Specialyrkesexamen för arbetsledning inom bilbranschen"
+  },
+  "diaarinumero" : "40/011/2001",
+  "koulutustyyppi" : "koulutustyyppi_12",
+  "voimassaoloAlkaa" : "993934800000",
+  "voimassaoloLoppuu" : "1546207200000",
+  "siirtymaPaattyy" : "1640901600000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Specialist vocational qualification for Supervisors in Vehicle Technology",
+      "fi" : "Autoalan työnjohdon erikoisammattitutkinto",
+      "sv" : "Specialyrkesexamen för arbetsledning inom bilbranschen"
+    },
+    "koulutuskoodiArvo" : "457305"
+  } ],
+  "koulutusvienti" : false,
+  "suoritustavat" : [ {
+    "suoritustapakoodi" : "naytto",
+    "rakenne" : {
+      "osat" : [ {
+        "nimi" : {
+          "_id" : "1017949",
+          "fi" : "Tutkinnon pakolliset osat"
+        },
+        "osat" : [ {
+          "_tutkinnonOsaViite" : "1014261"
+        }, {
+          "_tutkinnonOsaViite" : "1014262"
+        }, {
+          "_tutkinnonOsaViite" : "1014263"
+        }, {
+          "_tutkinnonOsaViite" : "1014264"
+        } ],
+        "rooli" : "määritelty",
+        "muodostumisSaanto" : {
+          "koko" : {
+            "minimi" : 4,
+            "maksimi" : 4
+          }
+        }
+      }, {
+        "nimi" : {
+          "_id" : "1018040",
+          "fi" : "Tutkinnon valinnaiset osat"
+        },
+        "osat" : [ {
+          "_tutkinnonOsaViite" : "1014265"
+        }, {
+          "_tutkinnonOsaViite" : "1014266"
+        }, {
+          "_tutkinnonOsaViite" : "1014267"
+        } ],
+        "rooli" : "määritelty",
+        "muodostumisSaanto" : {
+          "koko" : {
+            "minimi" : 1,
+            "maksimi" : 3
+          }
+        }
+      }, {
+        "nimi" : {
+          "_id" : "1018041",
+          "fi" : "Tutkinnon vapaasti valittava osa"
+        },
+        "osat" : [ {
+          "_tutkinnonOsaViite" : "1014268"
+        } ],
+        "rooli" : "määritelty",
+        "muodostumisSaanto" : {
+          "koko" : {
+            "minimi" : 0,
+            "maksimi" : 1
+          }
+        }
+      } ]
+    },
+    "tutkinnonOsaViitteet" : [ {
+      "id" : 1014268,
+      "_tutkinnonOsa" : "1017990"
+    }, {
+      "id" : 1014262,
+      "_tutkinnonOsa" : "1017704"
+    }, {
+      "id" : 1014265,
+      "_tutkinnonOsa" : "1017707"
+    }, {
+      "id" : 1014263,
+      "_tutkinnonOsa" : "1017705"
+    }, {
+      "id" : 1014267,
+      "_tutkinnonOsa" : "1017709"
+    }, {
+      "id" : 1014264,
+      "_tutkinnonOsa" : "1017706"
+    }, {
+      "id" : 1014266,
+      "_tutkinnonOsa" : "1017708"
+    }, {
+      "id" : 1014261,
+      "_tutkinnonOsa" : "1017703"
+    } ]
+  } ],
+  "tutkinnonOsat" : [ {
+    "id" : 1017703,
+    "nimi" : {
+      "fi" : "Johtaminen ja henkilöstön kehittäminen",
+      "sv" : "Ledarskap och personalutveckling"
+    },
+    "koodiArvo" : "104052"
+  }, {
+    "id" : 1017704,
+    "nimi" : {
+      "fi" : "Asiakaspalvelu ja korjaamopalvelujen markkinointi",
+      "sv" : "Kundbetjäning och marknadsföring av reparationsverkstadens service"
+    },
+    "koodiArvo" : "104053"
+  }, {
+    "id" : 1017705,
+    "nimi" : {
+      "fi" : "Työnsuunnittelu ja organisointi",
+      "sv" : "Arbetsplanering och organisering"
+    },
+    "koodiArvo" : "104054"
+  }, {
+    "id" : 1017706,
+    "nimi" : {
+      "fi" : "Taloudellinen toiminta",
+      "sv" : "Ekonomisk verksamhet"
+    },
+    "koodiArvo" : "104055"
+  }, {
+    "id" : 1017707,
+    "nimi" : {
+      "fi" : "Työpaikkakoulutus",
+      "sv" : "Arbetsplatsutbildning"
+    },
+    "koodiArvo" : "104056"
+  }, {
+    "id" : 1017708,
+    "nimi" : {
+      "fi" : "Projektiosaaminen",
+      "sv" : "Projektkunnande"
+    },
+    "koodiArvo" : "104057"
+  }, {
+    "id" : 1017709,
+    "nimi" : {
+      "fi" : "Tekniikan asiantuntemus",
+      "sv" : "Teknisk sakkunskap"
+    },
+    "koodiArvo" : "104058"
+  }, {
+    "id" : 1017990,
+    "nimi" : {
+      "fi" : "Yrittäjyys",
+      "sv" : "Företagsamhet"
+    },
+    "koodiArvo" : "104059"
+  } ],
+  "osaamisalat" : [ ],
+  "luotu" : 1430670614415,
+  "muokattu" : 1548055210202
+}

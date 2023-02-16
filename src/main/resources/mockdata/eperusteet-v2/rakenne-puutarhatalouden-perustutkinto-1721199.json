@@ -1,0 +1,859 @@
+{
+  "id" : 1721199,
+  "nimi" : {
+    "_id" : "2070371",
+    "fi" : "Puutarhatalouden perustutkinto",
+    "sv" : "Grundexamen i trädgårdsskötsel"
+  },
+  "diaarinumero" : "75/011/2014",
+  "koulutustyyppi" : "koulutustyyppi_1",
+  "voimassaoloAlkaa" : "1469998800000",
+  "voimassaoloLoppuu" : "1532984400000",
+  "siirtymaPaattyy" : "1640901600000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Vocational qualification in Horticulture",
+      "fi" : "Puutarha-alan perustutkinto",
+      "sv" : "Grundexamen inom trädgårdsbranschen"
+    },
+    "koulutuskoodiArvo" : "361201"
+  } ],
+  "koulutusvienti" : false,
+  "suoritustavat" : [ {
+    "suoritustapakoodi" : "ops",
+    "laajuusYksikko" : "OSAAMISPISTE",
+    "rakenne" : {
+      "nimi" : {
+        "_id" : "623138",
+        "fi" : "Puutarhatalouden perustutkinto"
+      },
+      "osat" : [ {
+        "nimi" : {
+          "_id" : "1113085",
+          "fi" : "Ammatilliset tutkinnon osat",
+          "sv" : "Yrkesinriktade examensdelar"
+        },
+        "osat" : [ {
+          "nimi" : {
+            "_id" : "1113086",
+            "fi" : "Pakolliset tutkinnon osat",
+            "sv" : "Obligatoriska examensdelar"
+          },
+          "osat" : [ {
+            "_tutkinnonOsaViite" : "1723828"
+          }, {
+            "_tutkinnonOsaViite" : "1723825"
+          }, {
+            "nimi" : {
+              "fi" : "Puutarhatuotannon osaamisala",
+              "sv" : "Kompetensområdet för trädgårdsproduktion"
+            },
+            "osat" : [ {
+              "_tutkinnonOsaViite" : "1723826"
+            } ],
+            "osaamisala" : {
+              "osaamisalakoodiArvo" : "1583"
+            },
+            "rooli" : "osaamisala",
+            "muodostumisSaanto" : {
+              "laajuus" : {
+                "minimi" : 60,
+                "maksimi" : 60
+              }
+            }
+          }, {
+            "nimi" : {
+              "fi" : "Viheralan osaamisala",
+              "sv" : "Kompetensområdet för grönsektorn"
+            },
+            "osat" : [ {
+              "_tutkinnonOsaViite" : "1723830"
+            } ],
+            "osaamisala" : {
+              "osaamisalakoodiArvo" : "1584"
+            },
+            "rooli" : "osaamisala",
+            "muodostumisSaanto" : {
+              "laajuus" : {
+                "minimi" : 60,
+                "maksimi" : 60
+              }
+            }
+          }, {
+            "nimi" : {
+              "fi" : "Kukka- ja puutarhakaupan osaamisala",
+              "sv" : "Kompetensområdet för blomster- och trädgårdshandel"
+            },
+            "osat" : [ {
+              "_tutkinnonOsaViite" : "1723829"
+            } ],
+            "osaamisala" : {
+              "osaamisalakoodiArvo" : "1585"
+            },
+            "rooli" : "osaamisala",
+            "muodostumisSaanto" : {
+              "laajuus" : {
+                "minimi" : 60,
+                "maksimi" : 60
+              }
+            }
+          } ],
+          "rooli" : "määritelty",
+          "muodostumisSaanto" : {
+            "laajuus" : {
+              "minimi" : 105,
+              "maksimi" : 105
+            }
+          }
+        }, {
+          "nimi" : {
+            "_id" : "1113455",
+            "fi" : "Valinnaiset tutkinnon osat",
+            "sv" : "Valbara examensdelar"
+          },
+          "osat" : [ {
+            "_tutkinnonOsaViite" : "1723827"
+          }, {
+            "_tutkinnonOsaViite" : "1723831"
+          }, {
+            "_tutkinnonOsaViite" : "1723832"
+          }, {
+            "_tutkinnonOsaViite" : "1723833"
+          }, {
+            "_tutkinnonOsaViite" : "1723834"
+          }, {
+            "_tutkinnonOsaViite" : "1723835"
+          }, {
+            "_tutkinnonOsaViite" : "1723836"
+          }, {
+            "_tutkinnonOsaViite" : "1723837"
+          }, {
+            "_tutkinnonOsaViite" : "1723838"
+          }, {
+            "_tutkinnonOsaViite" : "1723839"
+          }, {
+            "_tutkinnonOsaViite" : "1723840"
+          }, {
+            "_tutkinnonOsaViite" : "1723841"
+          }, {
+            "_tutkinnonOsaViite" : "1723842"
+          }, {
+            "_tutkinnonOsaViite" : "1723843"
+          }, {
+            "_tutkinnonOsaViite" : "1723844"
+          }, {
+            "_tutkinnonOsaViite" : "1723845"
+          }, {
+            "_tutkinnonOsaViite" : "1723688"
+          }, {
+            "nimi" : {
+              "_id" : "1113087",
+              "fi" : "Tutkinnon osa ammatillisesta perustutkinnosta",
+              "sv" : "Examensdel från en yrkesinriktad grundexamen"
+            },
+            "osat" : [ ],
+            "rooli" : "määrittelemätön",
+            "muodostumisSaanto" : {
+              "laajuus" : {
+                "minimi" : 10,
+                "maksimi" : 15
+              }
+            }
+          }, {
+            "nimi" : {
+              "_id" : "1113089",
+              "fi" : "Tutkinnon osa ammattitutkinnosta tai erikoisammattitutkinnosta",
+              "sv" : "Examensdel från en yrkesexamen eller en specialyrkesexamen"
+            },
+            "osat" : [ ],
+            "rooli" : "määrittelemätön"
+          }, {
+            "nimi" : {
+              "_id" : "1113291",
+              "fi" : "Tutkinnon osa ammattikorkeakouluopinnoista",
+              "sv" : "Examensdel från yrkeshögskolestudier"
+            },
+            "osat" : [ ],
+            "rooli" : "määrittelemätön"
+          }, {
+            "_tutkinnonOsaViite" : "1723689"
+          }, {
+            "_tutkinnonOsaViite" : "1723820"
+          }, {
+            "_tutkinnonOsaViite" : "1723846"
+          }, {
+            "nimi" : {
+              "_id" : "1113293",
+              "fi" : "Paikallisiin ammattitaitovaatimuksiin perustuvia tutkinnon osia",
+              "sv" : "Examensdelar som grundar sig på lokala krav på yrkesskicklighet"
+            },
+            "osat" : [ ],
+            "rooli" : "määrittelemätön",
+            "muodostumisSaanto" : {
+              "laajuus" : {
+                "minimi" : 5,
+                "maksimi" : 15
+              }
+            }
+          }, {
+            "nimi" : {
+              "_id" : "1113323",
+              "fi" : "Tutkinnon osa vapaasti valittavista tutkinnon osista",
+              "sv" : "Examensdel från de fritt valbara examensdelarna"
+            },
+            "osat" : [ ],
+            "rooli" : "määrittelemätön",
+            "muodostumisSaanto" : {
+              "laajuus" : {
+                "minimi" : 5,
+                "maksimi" : 15
+              }
+            }
+          } ],
+          "rooli" : "määritelty",
+          "muodostumisSaanto" : {
+            "laajuus" : {
+              "minimi" : 30,
+              "maksimi" : 30
+            }
+          }
+        } ],
+        "rooli" : "määritelty",
+        "muodostumisSaanto" : {
+          "laajuus" : {
+            "minimi" : 135,
+            "maksimi" : 135
+          }
+        }
+      }, {
+        "nimi" : {
+          "_id" : "1113295",
+          "fi" : "Yhteiset tutkinnon osat",
+          "sv" : "Gemensamma examensdelar"
+        },
+        "osat" : [ {
+          "_tutkinnonOsaViite" : "1723821"
+        }, {
+          "_tutkinnonOsaViite" : "1723822"
+        }, {
+          "_tutkinnonOsaViite" : "1723823"
+        }, {
+          "_tutkinnonOsaViite" : "1723824"
+        } ],
+        "rooli" : "määritelty",
+        "muodostumisSaanto" : {
+          "laajuus" : {
+            "minimi" : 35,
+            "maksimi" : 35
+          }
+        }
+      }, {
+        "nimi" : {
+          "_id" : "1113298",
+          "fi" : "Vapaasti valittavat tutkinnon osat",
+          "sv" : "Fritt valbara examensdelar"
+        },
+        "osat" : [ {
+          "nimi" : {
+            "_id" : "1113310",
+            "fi" : "Ammatillisia tutkinnon osia",
+            "sv" : "Yrkesinriktade examensdelar"
+          },
+          "osat" : [ ],
+          "rooli" : "määrittelemätön",
+          "muodostumisSaanto" : {
+            "laajuus" : {
+              "maksimi" : 10
+            }
+          }
+        }, {
+          "nimi" : {
+            "_id" : "1113312",
+            "fi" : "Paikallisiin ammattitaitovaatimuksiin perustuvia tutkinnon osia",
+            "sv" : "Examensdelar som grundar sig på lokala krav på yrkesskicklighet"
+          },
+          "osat" : [ ],
+          "rooli" : "määrittelemätön",
+          "muodostumisSaanto" : {
+            "laajuus" : {
+              "maksimi" : 10
+            }
+          }
+        }, {
+          "nimi" : {
+            "_id" : "1307407",
+            "fi" : "Yhteisten tutkinnon osien osa-alueita tai lukio-opintoja",
+            "sv" : "Delområden av gemensamma examensdelar eller gymnasiestudier"
+          },
+          "osat" : [ ],
+          "rooli" : "määrittelemätön",
+          "muodostumisSaanto" : {
+            "laajuus" : {
+              "maksimi" : 10
+            }
+          }
+        }, {
+          "nimi" : {
+            "_id" : "1113316",
+            "fi" : "Jatko-opintovalmiuksia tai ammatillista kehittymistä tukevia opintoja",
+            "sv" : "Studier som stöder förutsättningarna för fortsatta studier eller yrkesmässig utveckling"
+          },
+          "osat" : [ ],
+          "rooli" : "määrittelemätön",
+          "muodostumisSaanto" : {
+            "laajuus" : {
+              "maksimi" : 10
+            }
+          }
+        }, {
+          "nimi" : {
+            "_id" : "1113318",
+            "fi" : "Työkokemuksen kautta hankittuun osaamiseen perustuvia yksilöllisiä tutkinnon osia",
+            "sv" : "Individuella examensdelar som baserar sig på kunnande som förvärvats via arbetserfarenhet"
+          },
+          "osat" : [ ],
+          "rooli" : "määrittelemätön",
+          "muodostumisSaanto" : {
+            "laajuus" : {
+              "maksimi" : 10
+            }
+          }
+        } ],
+        "rooli" : "määritelty",
+        "muodostumisSaanto" : {
+          "laajuus" : {
+            "minimi" : 10,
+            "maksimi" : 10
+          }
+        }
+      }, {
+        "nimi" : {
+          "_id" : "1113320",
+          "fi" : "Tutkintoa yksilöllisesti laajentavat tutkinnon osat",
+          "sv" : "Examensdelar som individuellt utvidgar examen"
+        },
+        "osat" : [ ],
+        "rooli" : "määrittelemätön"
+      } ],
+      "rooli" : "määritelty",
+      "muodostumisSaanto" : {
+        "laajuus" : {
+          "minimi" : 180,
+          "maksimi" : 180
+        }
+      }
+    },
+    "tutkinnonOsaViitteet" : [ {
+      "id" : 1723827,
+      "_tutkinnonOsa" : "133967"
+    }, {
+      "id" : 1723837,
+      "_tutkinnonOsa" : "135057"
+    }, {
+      "id" : 1723829,
+      "_tutkinnonOsa" : "133969"
+    }, {
+      "id" : 1723832,
+      "_tutkinnonOsa" : "135052"
+    }, {
+      "id" : 1723830,
+      "_tutkinnonOsa" : "135050"
+    }, {
+      "id" : 1723688,
+      "_tutkinnonOsa" : "632"
+    }, {
+      "id" : 1723831,
+      "_tutkinnonOsa" : "135051"
+    }, {
+      "id" : 1723833,
+      "_tutkinnonOsa" : "135053"
+    }, {
+      "id" : 1723844,
+      "_tutkinnonOsa" : "136554"
+    }, {
+      "id" : 1723828,
+      "_tutkinnonOsa" : "133968"
+    }, {
+      "id" : 1723838,
+      "_tutkinnonOsa" : "135058"
+    }, {
+      "id" : 1723689,
+      "_tutkinnonOsa" : "633"
+    }, {
+      "id" : 1723826,
+      "_tutkinnonOsa" : "133966"
+    }, {
+      "id" : 1723825,
+      "_tutkinnonOsa" : "133965"
+    }, {
+      "id" : 1723845,
+      "_tutkinnonOsa" : "136555"
+    }, {
+      "id" : 1723846,
+      "_tutkinnonOsa" : "635"
+    }, {
+      "id" : 1723842,
+      "_tutkinnonOsa" : "136552"
+    }, {
+      "id" : 1723821,
+      "_tutkinnonOsa" : "1802620"
+    }, {
+      "id" : 1723823,
+      "_tutkinnonOsa" : "1802622"
+    }, {
+      "id" : 1723843,
+      "_tutkinnonOsa" : "136553"
+    }, {
+      "id" : 1723824,
+      "_tutkinnonOsa" : "1802623"
+    }, {
+      "id" : 1723836,
+      "_tutkinnonOsa" : "135056"
+    }, {
+      "id" : 1723841,
+      "_tutkinnonOsa" : "136551"
+    }, {
+      "id" : 1723834,
+      "_tutkinnonOsa" : "135054"
+    }, {
+      "id" : 1723835,
+      "_tutkinnonOsa" : "135055"
+    }, {
+      "id" : 1723822,
+      "_tutkinnonOsa" : "1802621"
+    }, {
+      "id" : 1723840,
+      "_tutkinnonOsa" : "136550"
+    }, {
+      "id" : 1723820,
+      "_tutkinnonOsa" : "634"
+    }, {
+      "id" : 1723839,
+      "_tutkinnonOsa" : "135059"
+    } ]
+  }, {
+    "suoritustapakoodi" : "naytto",
+    "laajuusYksikko" : "OSAAMISPISTE",
+    "rakenne" : {
+      "osat" : [ {
+        "nimi" : {
+          "_id" : "1113326",
+          "fi" : "Ammatilliset tutkinnon osat",
+          "sv" : "Yrkesinriktade examensdelar"
+        },
+        "osat" : [ {
+          "nimi" : {
+            "_id" : "1113327",
+            "fi" : "Pakolliset tutkinnon osat",
+            "sv" : "Obligatoriska examensdelar"
+          },
+          "osat" : [ {
+            "_tutkinnonOsaViite" : "1723886"
+          }, {
+            "_tutkinnonOsaViite" : "1723848"
+          }, {
+            "nimi" : {
+              "fi" : "Puutarhatuotannon osaamisala",
+              "sv" : "Kompetensområdet för trädgårdsproduktion"
+            },
+            "osat" : [ {
+              "_tutkinnonOsaViite" : "1723849"
+            } ],
+            "osaamisala" : {
+              "osaamisalakoodiArvo" : "1583"
+            },
+            "rooli" : "osaamisala"
+          }, {
+            "nimi" : {
+              "fi" : "Viheralan osaamisala",
+              "sv" : "Kompetensområdet för grönsektorn"
+            },
+            "osat" : [ {
+              "_tutkinnonOsaViite" : "1723885"
+            } ],
+            "osaamisala" : {
+              "osaamisalakoodiArvo" : "1584"
+            },
+            "rooli" : "osaamisala"
+          }, {
+            "nimi" : {
+              "fi" : "Kukka- ja puutarhakaupan osaamisala",
+              "sv" : "Kompetensområdet för blomster- och trädgårdshandel"
+            },
+            "osat" : [ {
+              "_tutkinnonOsaViite" : "1723883"
+            } ],
+            "osaamisala" : {
+              "osaamisalakoodiArvo" : "1585"
+            },
+            "rooli" : "osaamisala"
+          } ],
+          "rooli" : "määritelty",
+          "muodostumisSaanto" : {
+            "koko" : {
+              "minimi" : 3,
+              "maksimi" : 3
+            }
+          }
+        }, {
+          "nimi" : {
+            "_id" : "1113328",
+            "fi" : "Valinnaiset tutkinnon osat",
+            "sv" : "Valbara examensdelar"
+          },
+          "osat" : [ {
+            "_tutkinnonOsaViite" : "1723880"
+          }, {
+            "_tutkinnonOsaViite" : "1723881"
+          }, {
+            "_tutkinnonOsaViite" : "1723882"
+          }, {
+            "_tutkinnonOsaViite" : "1723884"
+          }, {
+            "_tutkinnonOsaViite" : "1723887"
+          }, {
+            "_tutkinnonOsaViite" : "1723888"
+          }, {
+            "_tutkinnonOsaViite" : "1723889"
+          }, {
+            "_tutkinnonOsaViite" : "1723890"
+          }, {
+            "_tutkinnonOsaViite" : "1723891"
+          }, {
+            "_tutkinnonOsaViite" : "1723892"
+          }, {
+            "_tutkinnonOsaViite" : "1723893"
+          }, {
+            "_tutkinnonOsaViite" : "1723894"
+          }, {
+            "_tutkinnonOsaViite" : "1723895"
+          }, {
+            "_tutkinnonOsaViite" : "1723896"
+          }, {
+            "_tutkinnonOsaViite" : "1723897"
+          }, {
+            "_tutkinnonOsaViite" : "1723898"
+          }, {
+            "_tutkinnonOsaViite" : "1723847"
+          }, {
+            "nimi" : {
+              "_id" : "1113329",
+              "fi" : "Tutkinnon osa ammatillisesta perustutkinnosta",
+              "sv" : "Examensdel från en yrkesinriktad grundexamen"
+            },
+            "osat" : [ ],
+            "rooli" : "määrittelemätön"
+          }, {
+            "nimi" : {
+              "_id" : "1113450",
+              "fi" : "Tutkinnon osa ammattitutkinnosta tai erikoisammattitutkinnosta",
+              "sv" : "Examensdel från en yrkesexamen eller en specialyrkesexamen"
+            },
+            "osat" : [ ],
+            "rooli" : "määrittelemätön"
+          } ],
+          "rooli" : "määritelty",
+          "muodostumisSaanto" : {
+            "koko" : {
+              "minimi" : 3,
+              "maksimi" : 3
+            }
+          }
+        } ],
+        "rooli" : "määritelty"
+      } ]
+    },
+    "tutkinnonOsaViitteet" : [ {
+      "id" : 1723894,
+      "_tutkinnonOsa" : "136551"
+    }, {
+      "id" : 1723880,
+      "_tutkinnonOsa" : "133967"
+    }, {
+      "id" : 1723890,
+      "_tutkinnonOsa" : "135057"
+    }, {
+      "id" : 1723895,
+      "_tutkinnonOsa" : "136552"
+    }, {
+      "id" : 1723881,
+      "_tutkinnonOsa" : "135051"
+    }, {
+      "id" : 1723898,
+      "_tutkinnonOsa" : "136555"
+    }, {
+      "id" : 1723848,
+      "_tutkinnonOsa" : "133965"
+    }, {
+      "id" : 1723883,
+      "_tutkinnonOsa" : "133969"
+    }, {
+      "id" : 1723885,
+      "_tutkinnonOsa" : "135050"
+    }, {
+      "id" : 1723882,
+      "_tutkinnonOsa" : "135052"
+    }, {
+      "id" : 1723888,
+      "_tutkinnonOsa" : "135055"
+    }, {
+      "id" : 1723891,
+      "_tutkinnonOsa" : "135058"
+    }, {
+      "id" : 1723884,
+      "_tutkinnonOsa" : "135053"
+    }, {
+      "id" : 1723847,
+      "_tutkinnonOsa" : "632"
+    }, {
+      "id" : 1723897,
+      "_tutkinnonOsa" : "136554"
+    }, {
+      "id" : 1723889,
+      "_tutkinnonOsa" : "135056"
+    }, {
+      "id" : 1723886,
+      "_tutkinnonOsa" : "133968"
+    }, {
+      "id" : 1723849,
+      "_tutkinnonOsa" : "133966"
+    }, {
+      "id" : 1723893,
+      "_tutkinnonOsa" : "136550"
+    }, {
+      "id" : 1723887,
+      "_tutkinnonOsa" : "135054"
+    }, {
+      "id" : 1723892,
+      "_tutkinnonOsa" : "135059"
+    }, {
+      "id" : 1723896,
+      "_tutkinnonOsa" : "136553"
+    } ]
+  } ],
+  "tutkinnonOsat" : [ {
+    "id" : 632,
+    "nimi" : {
+      "fi" : "Yritystoiminnan suunnittelu",
+      "sv" : "Planering av företagsverksamhet"
+    },
+    "koodiArvo" : "101050"
+  }, {
+    "id" : 133965,
+    "nimi" : {
+      "fi" : "Yrittäminen puutarha-alalla",
+      "sv" : "Att verka som företagare inom trädgårdsbranschen"
+    },
+    "koodiArvo" : "100755"
+  }, {
+    "id" : 133966,
+    "nimi" : {
+      "fi" : "Puutarhakasvien tuottaminen",
+      "sv" : "Produktion av trädgårdsväxter"
+    },
+    "koodiArvo" : "100756"
+  }, {
+    "id" : 133967,
+    "nimi" : {
+      "fi" : "Taimitarhakasvien tuottaminen",
+      "sv" : "Produktion av plantskolväxter"
+    },
+    "koodiArvo" : "100759"
+  }, {
+    "id" : 135051,
+    "nimi" : {
+      "fi" : "Kasviryhmän tuottaminen",
+      "sv" : "Produktion av växtgrupp"
+    },
+    "koodiArvo" : "100760"
+  }, {
+    "id" : 135052,
+    "nimi" : {
+      "fi" : "Viljelyteknologian hyödyntäminen",
+      "sv" : "Odlingsteknologi"
+    },
+    "koodiArvo" : "100761"
+  }, {
+    "id" : 133969,
+    "nimi" : {
+      "fi" : "Asiakkaiden palveleminen ja myymälätyöskentely kukka- \n  tai puutarhakaupassa",
+      "sv" : "Kundbetjäning och arbete i en blomster- och trädgårdshandel"
+    },
+    "koodiArvo" : "100758"
+  }, {
+    "id" : 135053,
+    "nimi" : {
+      "fi" : "Hautausmaiden viheralueista huolehtiminen",
+      "sv" : "Underhåll av grönområden vid begravningsplatser"
+    },
+    "koodiArvo" : "100762"
+  }, {
+    "id" : 135050,
+    "nimi" : {
+      "fi" : "Viheralueiden rakentaminen ja ylläpitotöiden tekeminen",
+      "sv" : "Anläggning och underhåll av grönområden"
+    },
+    "koodiArvo" : "100757"
+  }, {
+    "id" : 133968,
+    "nimi" : {
+      "fi" : "Työskentely puutarha-alalla",
+      "sv" : "Att arbeta inom trädgårdsbranschen"
+    },
+    "koodiArvo" : "100754"
+  }, {
+    "id" : 135054,
+    "nimi" : {
+      "fi" : "Erityisviheralueiden yläpitäminen",
+      "sv" : "Underhåll av specialgrönområden"
+    },
+    "koodiArvo" : "100763"
+  }, {
+    "id" : 135055,
+    "nimi" : {
+      "fi" : "Viheralueiden kivitöiden tekeminen",
+      "sv" : "Stenarbeten i grönområden"
+    },
+    "koodiArvo" : "100764"
+  }, {
+    "id" : 135056,
+    "nimi" : {
+      "fi" : "Viheralueiden puutöiden tekeminen",
+      "sv" : "Träarbeten i grönområden"
+    },
+    "koodiArvo" : "100765"
+  }, {
+    "id" : 135057,
+    "nimi" : {
+      "fi" : "Viheralan koneiden ja laitteiden käyttäminen",
+      "sv" : "Användning av maskiner och anordningar inom grönsektorn"
+    },
+    "koodiArvo" : "100766"
+  }, {
+    "id" : 135058,
+    "nimi" : {
+      "fi" : "Viherrakentamisen kasvien käyttäminen pihasuunnittelussa",
+      "sv" : "Användning av växter i trädgårdsplanering"
+    },
+    "koodiArvo" : "100767"
+  }, {
+    "id" : 135059,
+    "nimi" : {
+      "fi" : "Puuvartisten kasvien hoitaminen",
+      "sv" : "Skötsel av vedartade växter"
+    },
+    "koodiArvo" : "100768"
+  }, {
+    "id" : 136550,
+    "nimi" : {
+      "fi" : "Kukkasidontatöiden tekeminen",
+      "sv" : "Blomsterbinderi"
+    },
+    "koodiArvo" : "100769"
+  }, {
+    "id" : 136551,
+    "nimi" : {
+      "fi" : "Kukkasidontatyökokonaisuuksien tekeminen",
+      "sv" : "Utförande av blomsterbinderihelheter"
+    },
+    "koodiArvo" : "100770"
+  }, {
+    "id" : 136552,
+    "nimi" : {
+      "fi" : "Tilojen ja tapahtumien koristeleminen ja näyttelytoiminta",
+      "sv" : "Dekorering av utrymmen eller vid tillställningar samt utställningsverksamhet"
+    },
+    "koodiArvo" : "100771"
+  }, {
+    "id" : 136553,
+    "nimi" : {
+      "fi" : "Somistaminen, tekstaaminen ja piirtäminen",
+      "sv" : "Dekorering, textning och teckning"
+    },
+    "koodiArvo" : "100772"
+  }, {
+    "id" : 136554,
+    "nimi" : {
+      "fi" : "Vihersisustuskasvien istutus- ja huoltotyöt",
+      "sv" : "Plantering och skötsel av växter för gröninredning"
+    },
+    "koodiArvo" : "100773"
+  }, {
+    "id" : 136555,
+    "nimi" : {
+      "fi" : "Asiakkaiden neuvominen puutarhamyymälässä",
+      "sv" : "Rådgivning till kunder i en trädgårdsaffär"
+    },
+    "koodiArvo" : "100774"
+  }, {
+    "id" : 633,
+    "nimi" : {
+      "fi" : "Työpaikkaohjaajaksi valmentautuminen",
+      "sv" : "Förberedelse för arbetsplatshandledaruppgifter"
+    },
+    "koodiArvo" : "101040"
+  }, {
+    "id" : 634,
+    "nimi" : {
+      "fi" : "Yrityksessä toimiminen",
+      "sv" : "Arbeta i ett företag"
+    },
+    "koodiArvo" : "101052"
+  }, {
+    "id" : 635,
+    "nimi" : {
+      "fi" : "Huippuosaajana toimiminen",
+      "sv" : "Arbete som kräver spetskompetens"
+    },
+    "koodiArvo" : "101051"
+  }, {
+    "id" : 1802620,
+    "nimi" : {
+      "fi" : "Viestintä- ja vuorovaikutusosaaminen",
+      "sv" : "Kunnande i kommunikation och interaktion"
+    },
+    "koodiArvo" : "101053"
+  }, {
+    "id" : 1802621,
+    "nimi" : {
+      "fi" : "Matemaattis-luonnontieteellinen osaaminen",
+      "sv" : "Kunnande i matematik och naturvetenskap"
+    },
+    "koodiArvo" : "101054"
+  }, {
+    "id" : 1802622,
+    "nimi" : {
+      "fi" : "Yhteiskunnassa ja työelämässä tarvittava osaaminen",
+      "sv" : "Kunnande som behövs i samhället och i arbetslivet"
+    },
+    "koodiArvo" : "101055"
+  }, {
+    "id" : 1802623,
+    "nimi" : {
+      "fi" : "Sosiaalinen ja kulttuurinen osaaminen",
+      "sv" : "Socialt och kulturellt kunnande"
+    },
+    "koodiArvo" : "101056"
+  } ],
+  "osaamisalat" : [ {
+    "nimi" : {
+      "fi" : "Viheralan osaamisala",
+      "sv" : "Kompetensområdet för grönsektorn"
+    },
+    "arvo" : "1584"
+  }, {
+    "nimi" : {
+      "fi" : "Kukka- ja puutarhakaupan osaamisala",
+      "sv" : "Kompetensområdet för blomster- och trädgårdshandel"
+    },
+    "arvo" : "1585"
+  }, {
+    "nimi" : {
+      "fi" : "Puutarhatuotannon osaamisala",
+      "sv" : "Kompetensområdet för trädgårdsproduktion"
+    },
+    "arvo" : "1583"
+  } ],
+  "luotu" : 1466054491723,
+  "muokattu" : 1603978392546
+}

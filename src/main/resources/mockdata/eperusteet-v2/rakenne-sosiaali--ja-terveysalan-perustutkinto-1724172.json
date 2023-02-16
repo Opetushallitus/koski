@@ -1,0 +1,1157 @@
+{
+  "id" : 1724172,
+  "nimi" : {
+    "_id" : "2298491",
+    "_tunniste" : "db6d824e-1433-47da-b13e-ffeb9e906187",
+    "fi" : "Sosiaali- ja terveysalan perustutkinto",
+    "sv" : "Grundexamen inom social- och hälsovårdsbranschen"
+  },
+  "diaarinumero" : "79/011/2014",
+  "koulutustyyppi" : "koulutustyyppi_1",
+  "voimassaoloAlkaa" : "1469998800000",
+  "voimassaoloLoppuu" : "1532984400000",
+  "siirtymaPaattyy" : "1640901600000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Vocational qualification in Social and Health Care",
+      "fi" : "Sosiaali- ja terveysalan perustutkinto",
+      "sv" : "Grundexamen inom social- och hälsovårdsbranschen"
+    },
+    "koulutuskoodiArvo" : "371101"
+  } ],
+  "koulutusvienti" : false,
+  "suoritustavat" : [ {
+    "suoritustapakoodi" : "ops",
+    "laajuusYksikko" : "OSAAMISPISTE",
+    "rakenne" : {
+      "nimi" : {
+        "_id" : "624410",
+        "fi" : "Sosiaali- ja terveysalan perustutkinto"
+      },
+      "osat" : [ {
+        "nimi" : {
+          "_id" : "644314",
+          "fi" : "Ammatilliset tutkinnon osat",
+          "sv" : "Yrkesinriktade examensdelar"
+        },
+        "osat" : [ {
+          "nimi" : {
+            "_id" : "644315",
+            "fi" : "Pakolliset  tutkinnon osat",
+            "sv" : "Obligatoriska examensdelar"
+          },
+          "osat" : [ {
+            "_tutkinnonOsaViite" : "1724494"
+          }, {
+            "_tutkinnonOsaViite" : "1724496"
+          }, {
+            "_tutkinnonOsaViite" : "1724493"
+          } ],
+          "rooli" : "määritelty",
+          "muodostumisSaanto" : {
+            "laajuus" : {
+              "minimi" : 70,
+              "maksimi" : 70
+            }
+          }
+        }, {
+          "nimi" : {
+            "fi" : "Asiakaspalvelun ja tietohallinnan osaamisala",
+            "sv" : "Kompetensområdet för kundbetjäning och informationshantering"
+          },
+          "osat" : [ {
+            "_tutkinnonOsaViite" : "1724495"
+          } ],
+          "osaamisala" : {
+            "osaamisalakoodiArvo" : "1515"
+          },
+          "rooli" : "osaamisala",
+          "muodostumisSaanto" : {
+            "laajuus" : {
+              "minimi" : 50,
+              "maksimi" : 50
+            }
+          }
+        }, {
+          "nimi" : {
+            "fi" : "Ensihoidon osaamisala",
+            "sv" : "Kompetensområdet för akutvård"
+          },
+          "osat" : [ {
+            "_tutkinnonOsaViite" : "1724498"
+          }, {
+            "_tutkinnonOsaViite" : "1724497"
+          }, {
+            "_tutkinnonOsaViite" : "1724499"
+          }, {
+            "_tutkinnonOsaViite" : "1724510"
+          } ],
+          "osaamisala" : {
+            "osaamisalakoodiArvo" : "1508"
+          },
+          "rooli" : "osaamisala",
+          "muodostumisSaanto" : {
+            "laajuus" : {
+              "minimi" : 50,
+              "maksimi" : 50
+            }
+          }
+        }, {
+          "nimi" : {
+            "fi" : "Jalkojenhoidon osaamisala",
+            "sv" : "Kompetensområdet för fotvård"
+          },
+          "osat" : [ {
+            "_tutkinnonOsaViite" : "1724508"
+          } ],
+          "osaamisala" : {
+            "osaamisalakoodiArvo" : "1655"
+          },
+          "rooli" : "osaamisala",
+          "muodostumisSaanto" : {
+            "laajuus" : {
+              "minimi" : 50,
+              "maksimi" : 50
+            }
+          }
+        }, {
+          "nimi" : {
+            "fi" : "Kuntoutuksen osaamisala",
+            "sv" : "Kompetensområdet för rehabilitering"
+          },
+          "osat" : [ {
+            "_tutkinnonOsaViite" : "1724500"
+          } ],
+          "osaamisala" : {
+            "osaamisalakoodiArvo" : "1598"
+          },
+          "rooli" : "osaamisala",
+          "muodostumisSaanto" : {
+            "laajuus" : {
+              "minimi" : 50,
+              "maksimi" : 50
+            }
+          }
+        }, {
+          "nimi" : {
+            "fi" : "Mielenterveys- ja päihdetyön osaamisala",
+            "sv" : "Kompetensområdet för mentalhälsoarbete och missbrukarvård"
+          },
+          "osat" : [ {
+            "_tutkinnonOsaViite" : "1724502"
+          } ],
+          "osaamisala" : {
+            "osaamisalakoodiArvo" : "1510"
+          },
+          "rooli" : "osaamisala",
+          "muodostumisSaanto" : {
+            "laajuus" : {
+              "minimi" : 50,
+              "maksimi" : 50
+            }
+          }
+        }, {
+          "nimi" : {
+            "fi" : "Lasten ja nuorten hoidon ja kasvatuksen osaamisala",
+            "sv" : "Kompetensområdet för vård och fostran av barn och unga"
+          },
+          "osat" : [ {
+            "_tutkinnonOsaViite" : "1724501"
+          } ],
+          "osaamisala" : {
+            "osaamisalakoodiArvo" : "1509"
+          },
+          "rooli" : "osaamisala",
+          "muodostumisSaanto" : {
+            "laajuus" : {
+              "minimi" : 50,
+              "maksimi" : 50
+            }
+          }
+        }, {
+          "nimi" : {
+            "fi" : "Sairaanhoidon ja huolenpidon osaamisala",
+            "sv" : "Kompetensområdet för sjukvård och omsorg"
+          },
+          "osat" : [ {
+            "_tutkinnonOsaViite" : "1724503"
+          } ],
+          "osaamisala" : {
+            "osaamisalakoodiArvo" : "1511"
+          },
+          "rooli" : "osaamisala",
+          "muodostumisSaanto" : {
+            "laajuus" : {
+              "minimi" : 50,
+              "maksimi" : 50
+            }
+          }
+        }, {
+          "nimi" : {
+            "fi" : "Suun terveydenhoidon osaamisala",
+            "sv" : "Kompetensområdet för munhälsovård"
+          },
+          "osat" : [ {
+            "_tutkinnonOsaViite" : "1724504"
+          } ],
+          "osaamisala" : {
+            "osaamisalakoodiArvo" : "1512"
+          },
+          "rooli" : "osaamisala",
+          "muodostumisSaanto" : {
+            "laajuus" : {
+              "minimi" : 50,
+              "maksimi" : 50
+            }
+          }
+        }, {
+          "nimi" : {
+            "fi" : "Vammaistyön osaamisala",
+            "sv" : "Kompetensområdet för handikappomsorg"
+          },
+          "osat" : [ {
+            "_tutkinnonOsaViite" : "1724506"
+          } ],
+          "osaamisala" : {
+            "osaamisalakoodiArvo" : "1513"
+          },
+          "rooli" : "osaamisala",
+          "muodostumisSaanto" : {
+            "laajuus" : {
+              "minimi" : 50,
+              "maksimi" : 50
+            }
+          }
+        }, {
+          "nimi" : {
+            "fi" : "Vanhustyön osaamisala",
+            "sv" : "Kompetensområdet för äldreomsorg"
+          },
+          "osat" : [ {
+            "_tutkinnonOsaViite" : "1724507"
+          } ],
+          "osaamisala" : {
+            "osaamisalakoodiArvo" : "1514"
+          },
+          "rooli" : "osaamisala",
+          "muodostumisSaanto" : {
+            "laajuus" : {
+              "minimi" : 50,
+              "maksimi" : 50
+            }
+          }
+        }, {
+          "nimi" : {
+            "_id" : "644395",
+            "fi" : "Valinnaiset tutkinnon osat",
+            "sv" : "Valbara examensdelar"
+          },
+          "osat" : [ {
+            "_tutkinnonOsaViite" : "1724497"
+          }, {
+            "_tutkinnonOsaViite" : "1724499"
+          }, {
+            "_tutkinnonOsaViite" : "1724510"
+          }, {
+            "_tutkinnonOsaViite" : "1724512"
+          }, {
+            "_tutkinnonOsaViite" : "1724505"
+          }, {
+            "_tutkinnonOsaViite" : "1724509"
+          }, {
+            "_tutkinnonOsaViite" : "1724511"
+          }, {
+            "_tutkinnonOsaViite" : "1724513"
+          }, {
+            "nimi" : {
+              "_id" : "644396",
+              "fi" : "Tutkinnon osa ammatillisesta perustutkinnosta",
+              "sv" : "Examensdel från en yrkesinriktad grundexamen"
+            },
+            "osat" : [ ],
+            "rooli" : "määrittelemätön",
+            "muodostumisSaanto" : {
+              "laajuus" : {
+                "minimi" : 10,
+                "maksimi" : 15
+              }
+            }
+          }, {
+            "nimi" : {
+              "_id" : "644398",
+              "fi" : "Tutkinnon osa ammattitutkinnosta tai erikoisammattitutkinnosta",
+              "sv" : "Examensdel från en yrkesexamen eller en specialyrkesexamen"
+            },
+            "osat" : [ ],
+            "rooli" : "määrittelemätön"
+          }, {
+            "nimi" : {
+              "_id" : "644420",
+              "fi" : "Tutkinnon osa ammattikorkeakouluopinnoista",
+              "sv" : "Examensdel från yrkeshögskolestudier"
+            },
+            "osat" : [ ],
+            "rooli" : "määrittelemätön"
+          }, {
+            "_tutkinnonOsaViite" : "1724396"
+          }, {
+            "_tutkinnonOsaViite" : "1724395"
+          }, {
+            "_tutkinnonOsaViite" : "1724397"
+          }, {
+            "_tutkinnonOsaViite" : "1724398"
+          }, {
+            "nimi" : {
+              "_id" : "644422",
+              "fi" : "Paikallisiin ammattitaitovaatimuksiin perustuvia tutkinnon osia",
+              "sv" : "Examensdelar som grundar sig på lokala krav på yrkesskicklighet"
+            },
+            "osat" : [ ],
+            "rooli" : "määrittelemätön",
+            "muodostumisSaanto" : {
+              "laajuus" : {
+                "minimi" : 5,
+                "maksimi" : 15
+              }
+            }
+          }, {
+            "nimi" : {
+              "_id" : "644423",
+              "fi" : "Tutkinnon osa vapaasti valittavista tutkinnon osista",
+              "sv" : "Examensdel från de fritt valbara examensdelarna"
+            },
+            "osat" : [ ],
+            "rooli" : "määrittelemätön",
+            "muodostumisSaanto" : {
+              "laajuus" : {
+                "minimi" : 5,
+                "maksimi" : 15
+              }
+            }
+          } ],
+          "rooli" : "määritelty",
+          "muodostumisSaanto" : {
+            "laajuus" : {
+              "minimi" : 15,
+              "maksimi" : 15
+            }
+          }
+        } ],
+        "rooli" : "määritelty",
+        "muodostumisSaanto" : {
+          "laajuus" : {
+            "minimi" : 135,
+            "maksimi" : 135
+          }
+        }
+      }, {
+        "nimi" : {
+          "_id" : "644425",
+          "fi" : "Yhteiset tutkinnon osat",
+          "sv" : "Gemensamma examensdelar"
+        },
+        "osat" : [ {
+          "_tutkinnonOsaViite" : "1724399"
+        }, {
+          "_tutkinnonOsaViite" : "1724490"
+        }, {
+          "_tutkinnonOsaViite" : "1724491"
+        }, {
+          "_tutkinnonOsaViite" : "1724492"
+        } ],
+        "rooli" : "määritelty",
+        "muodostumisSaanto" : {
+          "laajuus" : {
+            "minimi" : 35,
+            "maksimi" : 35
+          }
+        }
+      }, {
+        "nimi" : {
+          "_id" : "644426",
+          "fi" : "Vapaasti valittavat tutkinnon osat",
+          "sv" : "Fritt valbara examensdelar"
+        },
+        "osat" : [ {
+          "nimi" : {
+            "_id" : "644427",
+            "fi" : "Ammatillisia tutkinnon osia",
+            "sv" : "Yrkesinriktade examensdelar"
+          },
+          "osat" : [ ],
+          "rooli" : "määrittelemätön",
+          "muodostumisSaanto" : {
+            "laajuus" : {
+              "maksimi" : 10
+            }
+          }
+        }, {
+          "nimi" : {
+            "_id" : "644429",
+            "fi" : "Paikallisiin ammattitaitovaatimuksiin perustuvia tutkinnon osia",
+            "sv" : "Examensdelar som grundar sig på lokala krav på yrkesskicklighet"
+          },
+          "osat" : [ ],
+          "rooli" : "määrittelemätön",
+          "muodostumisSaanto" : {
+            "laajuus" : {
+              "maksimi" : 10
+            }
+          }
+        }, {
+          "nimi" : {
+            "_id" : "1274326",
+            "fi" : "Yhteisten tutkinnon osien osa-alueita tai lukio-opintoja",
+            "sv" : "Delområden av gemensamma examensdelar eller gymnasiestudier"
+          },
+          "osat" : [ ],
+          "rooli" : "määrittelemätön",
+          "muodostumisSaanto" : {
+            "laajuus" : {
+              "maksimi" : 10
+            }
+          }
+        }, {
+          "nimi" : {
+            "_id" : "644443",
+            "fi" : "Jatko-opintovalmiuksia tai ammatillista kehittymistä tukevia opintoja",
+            "sv" : "Studier som stöder förutsättningarna för fortsatta studier eller yrkesmässig utveckling"
+          },
+          "osat" : [ ],
+          "rooli" : "määrittelemätön",
+          "muodostumisSaanto" : {
+            "laajuus" : {
+              "maksimi" : 10
+            }
+          }
+        }, {
+          "nimi" : {
+            "_id" : "644445",
+            "fi" : "Työkokemuksen kautta hankittuun osaamiseen perustuvia yksilöllisiä tutkinnon osia",
+            "sv" : "Individuella examensdelar som baserar sig på kunnande som förvärvats via arbetserfarenhet"
+          },
+          "osat" : [ ],
+          "rooli" : "määrittelemätön",
+          "muodostumisSaanto" : {
+            "laajuus" : {
+              "maksimi" : 10
+            }
+          }
+        } ],
+        "rooli" : "määritelty",
+        "muodostumisSaanto" : {
+          "laajuus" : {
+            "minimi" : 10,
+            "maksimi" : 10
+          }
+        }
+      }, {
+        "nimi" : {
+          "_id" : "644447",
+          "fi" : "Tutkintoa yksilöllisesti laajentavat tutkinnon osat",
+          "sv" : "Examensdelar som individuellt utvidgar examen"
+        },
+        "osat" : [ ],
+        "rooli" : "määrittelemätön"
+      } ],
+      "rooli" : "määritelty",
+      "muodostumisSaanto" : {
+        "laajuus" : {
+          "minimi" : 180,
+          "maksimi" : 180
+        }
+      }
+    },
+    "tutkinnonOsaViitteet" : [ {
+      "id" : 1724505,
+      "_tutkinnonOsa" : "146154"
+    }, {
+      "id" : 1724501,
+      "_tutkinnonOsa" : "146150"
+    }, {
+      "id" : 1724398,
+      "_tutkinnonOsa" : "635"
+    }, {
+      "id" : 1724494,
+      "_tutkinnonOsa" : "144243"
+    }, {
+      "id" : 1724502,
+      "_tutkinnonOsa" : "146151"
+    }, {
+      "id" : 1724511,
+      "_tutkinnonOsa" : "185833"
+    }, {
+      "id" : 1724513,
+      "_tutkinnonOsa" : "185835"
+    }, {
+      "id" : 1724493,
+      "_tutkinnonOsa" : "144242"
+    }, {
+      "id" : 1724397,
+      "_tutkinnonOsa" : "634"
+    }, {
+      "id" : 1724500,
+      "_tutkinnonOsa" : "144249"
+    }, {
+      "id" : 1724498,
+      "_tutkinnonOsa" : "144247"
+    }, {
+      "id" : 1724496,
+      "_tutkinnonOsa" : "144245"
+    }, {
+      "id" : 1724512,
+      "_tutkinnonOsa" : "1735871"
+    }, {
+      "id" : 1724503,
+      "_tutkinnonOsa" : "146152"
+    }, {
+      "id" : 1724509,
+      "_tutkinnonOsa" : "146158"
+    }, {
+      "id" : 1724499,
+      "_tutkinnonOsa" : "144248"
+    }, {
+      "id" : 1724510,
+      "_tutkinnonOsa" : "146159"
+    }, {
+      "id" : 1724506,
+      "_tutkinnonOsa" : "146155"
+    }, {
+      "id" : 1724490,
+      "_tutkinnonOsa" : "1805903"
+    }, {
+      "id" : 1724495,
+      "_tutkinnonOsa" : "144244"
+    }, {
+      "id" : 1724507,
+      "_tutkinnonOsa" : "146156"
+    }, {
+      "id" : 1724497,
+      "_tutkinnonOsa" : "144246"
+    }, {
+      "id" : 1724491,
+      "_tutkinnonOsa" : "1805904"
+    }, {
+      "id" : 1724504,
+      "_tutkinnonOsa" : "146153"
+    }, {
+      "id" : 1724508,
+      "_tutkinnonOsa" : "146157"
+    }, {
+      "id" : 1724396,
+      "_tutkinnonOsa" : "633"
+    }, {
+      "id" : 1724395,
+      "_tutkinnonOsa" : "632"
+    }, {
+      "id" : 1724492,
+      "_tutkinnonOsa" : "1805905"
+    }, {
+      "id" : 1724399,
+      "_tutkinnonOsa" : "1805902"
+    } ]
+  }, {
+    "suoritustapakoodi" : "naytto",
+    "laajuusYksikko" : "OSAAMISPISTE",
+    "rakenne" : {
+      "osat" : [ {
+        "nimi" : {
+          "_id" : "644975",
+          "fi" : "Ammatilliset tutkinnon osat",
+          "sv" : "Yrkesinriktade examensdelar"
+        },
+        "osat" : [ {
+          "nimi" : {
+            "_id" : "644976",
+            "fi" : "Pakolliset tutkinnon osat",
+            "sv" : "Obligatoriska examensdelar"
+          },
+          "osat" : [ {
+            "_tutkinnonOsaViite" : "1724515"
+          }, {
+            "_tutkinnonOsaViite" : "1724571"
+          }, {
+            "_tutkinnonOsaViite" : "1724516"
+          }, {
+            "nimi" : {
+              "fi" : "Asiakaspalvelun ja tietohallinnan osaamisala",
+              "sv" : "Kompetensområdet för kundbetjäning och informationshantering"
+            },
+            "osat" : [ {
+              "_tutkinnonOsaViite" : "1724570"
+            } ],
+            "osaamisala" : {
+              "osaamisalakoodiArvo" : "1515"
+            },
+            "rooli" : "osaamisala",
+            "muodostumisSaanto" : {
+              "koko" : {
+                "minimi" : 1,
+                "maksimi" : 1
+              }
+            }
+          }, {
+            "nimi" : {
+              "fi" : "Ensihoidon osaamisala",
+              "sv" : "Kompetensområdet för akutvård"
+            },
+            "osat" : [ {
+              "_tutkinnonOsaViite" : "1724517"
+            }, {
+              "_tutkinnonOsaViite" : "1724585"
+            }, {
+              "_tutkinnonOsaViite" : "1724518"
+            }, {
+              "_tutkinnonOsaViite" : "1724581"
+            } ],
+            "osaamisala" : {
+              "osaamisalakoodiArvo" : "1508"
+            },
+            "rooli" : "osaamisala",
+            "muodostumisSaanto" : {
+              "koko" : {
+                "minimi" : 2,
+                "maksimi" : 2
+              }
+            }
+          }, {
+            "nimi" : {
+              "fi" : "Jalkojenhoidon osaamisala",
+              "sv" : "Kompetensområdet för fotvård"
+            },
+            "osat" : [ {
+              "_tutkinnonOsaViite" : "1724579"
+            } ],
+            "osaamisala" : {
+              "osaamisalakoodiArvo" : "1655"
+            },
+            "rooli" : "osaamisala",
+            "muodostumisSaanto" : {
+              "koko" : {
+                "minimi" : 1,
+                "maksimi" : 1
+              }
+            }
+          }, {
+            "nimi" : {
+              "fi" : "Kuntoutuksen osaamisala",
+              "sv" : "Kompetensområdet för rehabilitering"
+            },
+            "osat" : [ {
+              "_tutkinnonOsaViite" : "1724519"
+            } ],
+            "osaamisala" : {
+              "osaamisalakoodiArvo" : "1598"
+            },
+            "rooli" : "osaamisala",
+            "muodostumisSaanto" : {
+              "koko" : {
+                "minimi" : 1,
+                "maksimi" : 1
+              }
+            }
+          }, {
+            "nimi" : {
+              "fi" : "Lasten ja nuorten hoidon ja kasvatuksen osaamisala",
+              "sv" : "Kompetensområdet för vård och fostran av barn och unga"
+            },
+            "osat" : [ {
+              "_tutkinnonOsaViite" : "1724572"
+            } ],
+            "osaamisala" : {
+              "osaamisalakoodiArvo" : "1509"
+            },
+            "rooli" : "osaamisala",
+            "muodostumisSaanto" : {
+              "koko" : {
+                "minimi" : 1,
+                "maksimi" : 1
+              }
+            }
+          }, {
+            "nimi" : {
+              "fi" : "Mielenterveys- ja päihdetyön osaamisala",
+              "sv" : "Kompetensområdet för mentalhälsoarbete och missbrukarvård"
+            },
+            "osat" : [ {
+              "_tutkinnonOsaViite" : "1724573"
+            } ],
+            "osaamisala" : {
+              "osaamisalakoodiArvo" : "1510"
+            },
+            "rooli" : "osaamisala",
+            "muodostumisSaanto" : {
+              "koko" : {
+                "minimi" : 1,
+                "maksimi" : 1
+              }
+            }
+          }, {
+            "nimi" : {
+              "fi" : "Sairaanhoidon ja huolenpidon osaamisala",
+              "sv" : "Kompetensområdet för sjukvård och omsorg"
+            },
+            "osat" : [ {
+              "_tutkinnonOsaViite" : "1724574"
+            } ],
+            "osaamisala" : {
+              "osaamisalakoodiArvo" : "1511"
+            },
+            "rooli" : "osaamisala",
+            "muodostumisSaanto" : {
+              "koko" : {
+                "minimi" : 1,
+                "maksimi" : 1
+              }
+            }
+          }, {
+            "nimi" : {
+              "fi" : "Suun terveydenhoidon osaamisala",
+              "sv" : "Kompetensområdet för munhälsovård"
+            },
+            "osat" : [ {
+              "_tutkinnonOsaViite" : "1724575"
+            } ],
+            "osaamisala" : {
+              "osaamisalakoodiArvo" : "1512"
+            },
+            "rooli" : "osaamisala",
+            "muodostumisSaanto" : {
+              "koko" : {
+                "minimi" : 1,
+                "maksimi" : 1
+              }
+            }
+          }, {
+            "nimi" : {
+              "fi" : "Vammaistyön osaamisala",
+              "sv" : "Kompetensområdet för handikappomsorg"
+            },
+            "osat" : [ {
+              "_tutkinnonOsaViite" : "1724577"
+            } ],
+            "osaamisala" : {
+              "osaamisalakoodiArvo" : "1513"
+            },
+            "rooli" : "osaamisala",
+            "muodostumisSaanto" : {
+              "koko" : {
+                "minimi" : 1,
+                "maksimi" : 1
+              }
+            }
+          }, {
+            "nimi" : {
+              "fi" : "Vanhustyön osaamisala",
+              "sv" : "Kompetensområdet för äldreomsorg"
+            },
+            "osat" : [ {
+              "_tutkinnonOsaViite" : "1724578"
+            } ],
+            "osaamisala" : {
+              "osaamisalakoodiArvo" : "1514"
+            },
+            "rooli" : "osaamisala",
+            "muodostumisSaanto" : {
+              "koko" : {
+                "minimi" : 1,
+                "maksimi" : 1
+              }
+            }
+          } ],
+          "rooli" : "määritelty"
+        }, {
+          "nimi" : {
+            "_id" : "644979",
+            "fi" : "Valinnaiset tutkinnon osat",
+            "sv" : "Valbara examensdelar"
+          },
+          "osat" : [ {
+            "_tutkinnonOsaViite" : "1724585"
+          }, {
+            "_tutkinnonOsaViite" : "1724518"
+          }, {
+            "_tutkinnonOsaViite" : "1724581"
+          }, {
+            "_tutkinnonOsaViite" : "1724583"
+          }, {
+            "_tutkinnonOsaViite" : "1724576"
+          }, {
+            "_tutkinnonOsaViite" : "1724580"
+          }, {
+            "_tutkinnonOsaViite" : "1724582"
+          }, {
+            "_tutkinnonOsaViite" : "1724584"
+          }, {
+            "_tutkinnonOsaViite" : "1724514"
+          }, {
+            "nimi" : {
+              "_id" : "645110",
+              "fi" : "Tutkinnon osa ammatillisesta perustutkinnosta",
+              "sv" : "Examensdel från en yrkesinriktad grundexamen"
+            },
+            "osat" : [ ],
+            "rooli" : "määrittelemätön"
+          }, {
+            "nimi" : {
+              "_id" : "645111",
+              "fi" : "Tutkinnon osa ammattitutkinnosta tai erikoisammattitutkinnosta",
+              "sv" : "Examensdel från en yrkesexamen eller en specialyrkesexamen"
+            },
+            "osat" : [ ],
+            "rooli" : "määrittelemätön"
+          } ],
+          "rooli" : "määritelty",
+          "muodostumisSaanto" : {
+            "koko" : {
+              "minimi" : 1,
+              "maksimi" : 1
+            }
+          }
+        } ],
+        "rooli" : "määritelty"
+      } ]
+    },
+    "tutkinnonOsaViitteet" : [ {
+      "id" : 1724514,
+      "_tutkinnonOsa" : "632"
+    }, {
+      "id" : 1724570,
+      "_tutkinnonOsa" : "144244"
+    }, {
+      "id" : 1724573,
+      "_tutkinnonOsa" : "146151"
+    }, {
+      "id" : 1724584,
+      "_tutkinnonOsa" : "185835"
+    }, {
+      "id" : 1724578,
+      "_tutkinnonOsa" : "146156"
+    }, {
+      "id" : 1724517,
+      "_tutkinnonOsa" : "144247"
+    }, {
+      "id" : 1724571,
+      "_tutkinnonOsa" : "144245"
+    }, {
+      "id" : 1724581,
+      "_tutkinnonOsa" : "146159"
+    }, {
+      "id" : 1724572,
+      "_tutkinnonOsa" : "146150"
+    }, {
+      "id" : 1724519,
+      "_tutkinnonOsa" : "144249"
+    }, {
+      "id" : 1724585,
+      "_tutkinnonOsa" : "144246"
+    }, {
+      "id" : 1724515,
+      "_tutkinnonOsa" : "144243"
+    }, {
+      "id" : 1724582,
+      "_tutkinnonOsa" : "185833"
+    }, {
+      "id" : 1724580,
+      "_tutkinnonOsa" : "146158"
+    }, {
+      "id" : 1724575,
+      "_tutkinnonOsa" : "146153"
+    }, {
+      "id" : 1724576,
+      "_tutkinnonOsa" : "146154"
+    }, {
+      "id" : 1724579,
+      "_tutkinnonOsa" : "146157"
+    }, {
+      "id" : 1724574,
+      "_tutkinnonOsa" : "146152"
+    }, {
+      "id" : 1724516,
+      "_tutkinnonOsa" : "144242"
+    }, {
+      "id" : 1724577,
+      "_tutkinnonOsa" : "146155"
+    }, {
+      "id" : 1724583,
+      "_tutkinnonOsa" : "1745716"
+    }, {
+      "id" : 1724518,
+      "_tutkinnonOsa" : "144248"
+    } ]
+  } ],
+  "tutkinnonOsat" : [ {
+    "id" : 632,
+    "nimi" : {
+      "fi" : "Yritystoiminnan suunnittelu",
+      "sv" : "Planering av företagsverksamhet"
+    },
+    "koodiArvo" : "101050"
+  }, {
+    "id" : 144243,
+    "nimi" : {
+      "fi" : "Kasvun tukeminen ja ohjaus",
+      "sv" : "Stöd för utveckling och handledning"
+    },
+    "koodiArvo" : "100832"
+  }, {
+    "id" : 144242,
+    "nimi" : {
+      "fi" : "Kuntoutumisen tukeminen",
+      "sv" : "Stöd för rehabilitering"
+    },
+    "koodiArvo" : "100834"
+  }, {
+    "id" : 144247,
+    "nimi" : {
+      "fi" : "Ensihoitopalvelussa toimiminen",
+      "sv" : "Verksamhet i akutvårdstjänster"
+    },
+    "koodiArvo" : "100836"
+  }, {
+    "id" : 144248,
+    "nimi" : {
+      "fi" : "Perioperatiivinen hoitotyö",
+      "sv" : "Perioperativ vård"
+    },
+    "koodiArvo" : "100838"
+  }, {
+    "id" : 144249,
+    "nimi" : {
+      "fi" : "Kuntoutus",
+      "sv" : "Rehabilitering"
+    },
+    "koodiArvo" : "100839"
+  }, {
+    "id" : 144244,
+    "nimi" : {
+      "fi" : "Asiakaspalvelu ja tietohallinta",
+      "sv" : "Kundbetjäning och informationshantering"
+    },
+    "koodiArvo" : "100835"
+  }, {
+    "id" : 144245,
+    "nimi" : {
+      "fi" : "Hoito ja huolenpito",
+      "sv" : "Vård och omsorg"
+    },
+    "koodiArvo" : "100833"
+  }, {
+    "id" : 146150,
+    "nimi" : {
+      "fi" : "Lasten ja nuorten hoito ja kasvatus",
+      "sv" : "Vård och fostran av barn och unga"
+    },
+    "koodiArvo" : "100840"
+  }, {
+    "id" : 146151,
+    "nimi" : {
+      "fi" : "Mielenterveys- ja päihdetyö",
+      "sv" : "Mentalhälsoarbete och missbrukarvård"
+    },
+    "koodiArvo" : "100841"
+  }, {
+    "id" : 146152,
+    "nimi" : {
+      "fi" : "Sairaanhoito ja huolenpito",
+      "sv" : "Sjukvård och omsorg"
+    },
+    "koodiArvo" : "100842"
+  }, {
+    "id" : 146153,
+    "nimi" : {
+      "fi" : "Suun terveydenhoito",
+      "sv" : "Munhälsovård"
+    },
+    "koodiArvo" : "100843"
+  }, {
+    "id" : 146154,
+    "nimi" : {
+      "fi" : "Suun terveyden edistäminen ja suun terveydenhoidon erikoisaloilla toimiminen",
+      "sv" : "Främjande av munhälsan och arbete i specialområden inom munhälsan"
+    },
+    "koodiArvo" : "100844"
+  }, {
+    "id" : 146155,
+    "nimi" : {
+      "fi" : "Vammaistyö",
+      "sv" : "Handikappomsorg"
+    },
+    "koodiArvo" : "100845"
+  }, {
+    "id" : 146156,
+    "nimi" : {
+      "fi" : "Vanhustyö",
+      "sv" : "Äldreomsorg"
+    },
+    "koodiArvo" : "100846"
+  }, {
+    "id" : 146157,
+    "nimi" : {
+      "fi" : "Jalkojenhoito",
+      "sv" : "Fotvård"
+    },
+    "koodiArvo" : "100847"
+  }, {
+    "id" : 146158,
+    "nimi" : {
+      "fi" : "Haavan hoito jalkojenhoidossa",
+      "sv" : "Sårbehandling inom fotvård"
+    },
+    "koodiArvo" : "100848"
+  }, {
+    "id" : 146159,
+    "nimi" : {
+      "fi" : "Immobilisaatiohoidon toteuttaminen",
+      "sv" : "Genomförandet av immobiliseringsbehandling"
+    },
+    "koodiArvo" : "100849"
+  }, {
+    "id" : 185833,
+    "nimi" : {
+      "fi" : "Näytteenotto ja asiakaspalvelu lähihoitajan työssä",
+      "sv" : "Provtagning och kundbetjäning i närvårdarens arbete"
+    },
+    "koodiArvo" : "101066"
+  }, {
+    "id" : 1745716,
+    "nimi" : {
+      "fi" : "Lasten ja nuorten mielenterveyden edistäminen",
+      "sv" : "Främjande av den mentala hälsan hos barn och unga"
+    },
+    "koodiArvo" : "101065"
+  }, {
+    "id" : 185835,
+    "nimi" : {
+      "fi" : "Vanhusten kotihoito ja huolenpito",
+      "sv" : "Hemvård och omsorgsarbete för äldre"
+    },
+    "koodiArvo" : "101067"
+  }, {
+    "id" : 144246,
+    "nimi" : {
+      "fi" : "Päivystyspolikliininen hoitotyö",
+      "sv" : "Jourpolikliniskt vårdarbete"
+    },
+    "koodiArvo" : "100837"
+  }, {
+    "id" : 633,
+    "nimi" : {
+      "fi" : "Työpaikkaohjaajaksi valmentautuminen",
+      "sv" : "Förberedelse för arbetsplatshandledaruppgifter"
+    },
+    "koodiArvo" : "101040"
+  }, {
+    "id" : 634,
+    "nimi" : {
+      "fi" : "Yrityksessä toimiminen",
+      "sv" : "Arbeta i ett företag"
+    },
+    "koodiArvo" : "101052"
+  }, {
+    "id" : 635,
+    "nimi" : {
+      "fi" : "Huippuosaajana toimiminen",
+      "sv" : "Arbete som kräver spetskompetens"
+    },
+    "koodiArvo" : "101051"
+  }, {
+    "id" : 1805902,
+    "nimi" : {
+      "fi" : "Viestintä- ja vuorovaikutusosaaminen",
+      "sv" : "Kunnande i kommunikation och interaktion"
+    },
+    "koodiArvo" : "101053"
+  }, {
+    "id" : 1805903,
+    "nimi" : {
+      "fi" : "Matemaattis-luonnontieteellinen osaaminen",
+      "sv" : "Kunnande i matematik och naturvetenskap"
+    },
+    "koodiArvo" : "101054"
+  }, {
+    "id" : 1805904,
+    "nimi" : {
+      "fi" : "Yhteiskunnassa ja työelämässä tarvittava osaaminen",
+      "sv" : "Kunnande som behövs i samhället och i arbetslivet"
+    },
+    "koodiArvo" : "101055"
+  }, {
+    "id" : 1805905,
+    "nimi" : {
+      "fi" : "Sosiaalinen ja kulttuurinen osaaminen",
+      "sv" : "Socialt och kulturellt kunnande"
+    },
+    "koodiArvo" : "101056"
+  }, {
+    "id" : 1735871,
+    "nimi" : {
+      "fi" : "Lasten ja nuorten mielenterveyden edistäminen",
+      "sv" : "Främjande av den mentala hälsan hos barn och unga"
+    },
+    "koodiArvo" : "101065"
+  } ],
+  "osaamisalat" : [ {
+    "nimi" : {
+      "fi" : "Lasten ja nuorten hoidon ja kasvatuksen osaamisala",
+      "sv" : "Kompetensområdet för vård och fostran av barn och unga"
+    },
+    "arvo" : "1509"
+  }, {
+    "nimi" : {
+      "fi" : "Asiakaspalvelun ja tietohallinnan osaamisala",
+      "sv" : "Kompetensområdet för kundbetjäning och informationshantering"
+    },
+    "arvo" : "1515"
+  }, {
+    "nimi" : {
+      "fi" : "Vammaistyön osaamisala",
+      "sv" : "Kompetensområdet för handikappomsorg"
+    },
+    "arvo" : "1513"
+  }, {
+    "nimi" : {
+      "fi" : "Jalkojenhoidon osaamisala",
+      "sv" : "Kompetensområdet för fotvård"
+    },
+    "arvo" : "1655"
+  }, {
+    "nimi" : {
+      "fi" : "Mielenterveys- ja päihdetyön osaamisala",
+      "sv" : "Kompetensområdet för mentalhälsoarbete och missbrukarvård"
+    },
+    "arvo" : "1510"
+  }, {
+    "nimi" : {
+      "fi" : "Ensihoidon osaamisala",
+      "sv" : "Kompetensområdet för akutvård"
+    },
+    "arvo" : "1508"
+  }, {
+    "nimi" : {
+      "fi" : "Kuntoutuksen osaamisala",
+      "sv" : "Kompetensområdet för rehabilitering"
+    },
+    "arvo" : "1598"
+  }, {
+    "nimi" : {
+      "fi" : "Vanhustyön osaamisala",
+      "sv" : "Kompetensområdet för äldreomsorg"
+    },
+    "arvo" : "1514"
+  }, {
+    "nimi" : {
+      "fi" : "Suun terveydenhoidon osaamisala",
+      "sv" : "Kompetensområdet för munhälsovård"
+    },
+    "arvo" : "1512"
+  }, {
+    "nimi" : {
+      "fi" : "Sairaanhoidon ja huolenpidon osaamisala",
+      "sv" : "Kompetensområdet för sjukvård och omsorg"
+    },
+    "arvo" : "1511"
+  } ],
+  "luotu" : 1466054681280,
+  "muokattu" : 1513690887997
+}

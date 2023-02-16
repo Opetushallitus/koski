@@ -1,0 +1,351 @@
+{
+  "id" : 2434073,
+  "nimi" : {
+    "_id" : "2455864",
+    "_tunniste" : "531fa668-4dd3-4aef-a34d-6d45e91a9ab0",
+    "fi" : "Automekaanikon erikoisammattitutkinto",
+    "sv" : "Specialyrkesexamen för bilmekaniker"
+  },
+  "diaarinumero" : "OPH-1886-2017",
+  "koulutustyyppi" : "koulutustyyppi_12",
+  "voimassaoloAlkaa" : "1512338400000",
+  "voimassaoloLoppuu" : "1546207200000",
+  "siirtymaPaattyy" : "1640901600000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "fi" : "Automekaanikon erikoisammattitutkinto",
+      "sv" : "Specialyrkesexamen för bilmekaniker"
+    },
+    "koulutuskoodiArvo" : "457304"
+  } ],
+  "koulutusvienti" : false,
+  "suoritustavat" : [ {
+    "suoritustapakoodi" : "naytto",
+    "laajuusYksikko" : "OSAAMISPISTE",
+    "rakenne" : {
+      "osat" : [ {
+        "nimi" : {
+          "fi" : "Henkilöautotekniikka",
+          "sv" : "Personbilsteknik"
+        },
+        "osat" : [ {
+          "nimi" : {
+            "_id" : "6179906",
+            "_tunniste" : "4fc55a56-deac-423f-a5c8-504212bd77cb",
+            "fi" : "Pakolliset tutkinnon osat",
+            "sv" : "Obligatoriska examensdelar"
+          },
+          "osat" : [ {
+            "_tutkinnonOsaViite" : "2448038"
+          }, {
+            "_tutkinnonOsaViite" : "2449202"
+          } ],
+          "rooli" : "määritelty",
+          "muodostumisSaanto" : {
+            "koko" : {
+              "minimi" : 2,
+              "maksimi" : 2
+            }
+          }
+        }, {
+          "nimi" : {
+            "_id" : "6180138",
+            "_tunniste" : "aa073ba8-5783-4049-9557-23d0d68cb559",
+            "fi" : "Valinnaiset tutkinnon osat",
+            "sv" : "Valbara examensdelar"
+          },
+          "osat" : [ {
+            "_tutkinnonOsaViite" : "2449204"
+          }, {
+            "_tutkinnonOsaViite" : "2449205"
+          }, {
+            "_tutkinnonOsaViite" : "2449206"
+          }, {
+            "_tutkinnonOsaViite" : "2449207"
+          }, {
+            "_tutkinnonOsaViite" : "2451568"
+          }, {
+            "_tutkinnonOsaViite" : "2451870"
+          }, {
+            "_tutkinnonOsaViite" : "2451871"
+          }, {
+            "nimi" : {
+              "_id" : "2457126",
+              "_tunniste" : "8db67ab4-82df-4af0-ad66-4fa69ec56b2a",
+              "fi" : "Tutkinnon osa toisesta ammatti- tai erikoisammattitutkinnosta"
+            },
+            "osat" : [ ],
+            "rooli" : "määrittelemätön"
+          } ],
+          "rooli" : "määritelty",
+          "muodostumisSaanto" : {
+            "koko" : {
+              "minimi" : 2,
+              "maksimi" : 2
+            }
+          }
+        } ],
+        "osaamisala" : {
+          "osaamisalakoodiArvo" : "3094"
+        },
+        "rooli" : "osaamisala"
+      }, {
+        "nimi" : {
+          "fi" : "Kuorma- ja linja-autotekniikka",
+          "sv" : "Lastbils- och bussteknik"
+        },
+        "osat" : [ {
+          "nimi" : {
+            "_id" : "6180139",
+            "_tunniste" : "78e3a8a4-5ddf-47fa-8853-ed817b693686",
+            "fi" : "Pakolliset tutkinnon osat",
+            "sv" : "Obligatoriska examensdelar"
+          },
+          "osat" : [ {
+            "_tutkinnonOsaViite" : "2448038"
+          }, {
+            "_tutkinnonOsaViite" : "2449202"
+          } ],
+          "rooli" : "määritelty",
+          "muodostumisSaanto" : {
+            "koko" : {
+              "minimi" : 2,
+              "maksimi" : 2
+            }
+          }
+        }, {
+          "nimi" : {
+            "_id" : "6180230",
+            "_tunniste" : "084e37c2-cfd5-467b-9375-514659d712d1",
+            "fi" : "Valinnaiset tutkinnon osat",
+            "sv" : "Valbara examensdelar"
+          },
+          "osat" : [ {
+            "_tutkinnonOsaViite" : "2449204"
+          }, {
+            "_tutkinnonOsaViite" : "2449205"
+          }, {
+            "_tutkinnonOsaViite" : "2449206"
+          }, {
+            "_tutkinnonOsaViite" : "2449207"
+          }, {
+            "_tutkinnonOsaViite" : "2451568"
+          }, {
+            "_tutkinnonOsaViite" : "2451870"
+          }, {
+            "_tutkinnonOsaViite" : "2451871"
+          }, {
+            "nimi" : {
+              "_id" : "2357934",
+              "_tunniste" : "16e0bda8-d80e-4ee9-90bd-b199c69f2a9f",
+              "fi" : "Tutkinnon osa toisesta ammatti- tai erikoisammattitutkinnosta"
+            },
+            "osat" : [ ],
+            "rooli" : "määrittelemätön"
+          } ],
+          "rooli" : "määritelty",
+          "muodostumisSaanto" : {
+            "koko" : {
+              "minimi" : 2,
+              "maksimi" : 2
+            }
+          }
+        } ],
+        "osaamisala" : {
+          "osaamisalakoodiArvo" : "3095"
+        },
+        "rooli" : "osaamisala"
+      }, {
+        "nimi" : {
+          "fi" : "Työkonetekniikka",
+          "sv" : "Arbetsmaskinsteknik"
+        },
+        "osat" : [ {
+          "nimi" : {
+            "_id" : "6180231",
+            "_tunniste" : "8691239f-d6d7-4862-8189-0c348ee79367",
+            "fi" : "Pakolliset tutkinnon osat",
+            "sv" : "Obligatoriska examensdelar"
+          },
+          "osat" : [ {
+            "_tutkinnonOsaViite" : "2448038"
+          }, {
+            "_tutkinnonOsaViite" : "2449203"
+          } ],
+          "rooli" : "määritelty",
+          "muodostumisSaanto" : {
+            "koko" : {
+              "minimi" : 2,
+              "maksimi" : 2
+            }
+          }
+        }, {
+          "nimi" : {
+            "_id" : "6180232",
+            "_tunniste" : "1306b2c2-825b-4dd8-a8d9-9e95f4749ed7",
+            "fi" : "Valinnaiset tutkinnon osat",
+            "sv" : "Valbara examensdelar"
+          },
+          "osat" : [ {
+            "_tutkinnonOsaViite" : "2449204"
+          }, {
+            "_tutkinnonOsaViite" : "2449205"
+          }, {
+            "_tutkinnonOsaViite" : "2449206"
+          }, {
+            "_tutkinnonOsaViite" : "2449207"
+          }, {
+            "_tutkinnonOsaViite" : "2451568"
+          }, {
+            "_tutkinnonOsaViite" : "2451870"
+          }, {
+            "_tutkinnonOsaViite" : "2451871"
+          }, {
+            "nimi" : {
+              "_id" : "2457310",
+              "_tunniste" : "8e1a81f9-0a3f-4f88-88e4-f47f69b9226c",
+              "fi" : "Tutkinnon osa toisesta ammatti- tai erikoisammattitutkinnosta"
+            },
+            "osat" : [ ],
+            "rooli" : "määrittelemätön"
+          } ],
+          "rooli" : "määritelty",
+          "muodostumisSaanto" : {
+            "koko" : {
+              "minimi" : 2,
+              "maksimi" : 2
+            }
+          }
+        } ],
+        "osaamisala" : {
+          "osaamisalakoodiArvo" : "3096"
+        },
+        "rooli" : "osaamisala"
+      } ],
+      "rooli" : "määritelty"
+    },
+    "tutkinnonOsaViitteet" : [ {
+      "id" : 2449207,
+      "_tutkinnonOsa" : "2450732"
+    }, {
+      "id" : 2449202,
+      "_tutkinnonOsa" : "2448757"
+    }, {
+      "id" : 2451870,
+      "_tutkinnonOsa" : "2450739"
+    }, {
+      "id" : 2449206,
+      "_tutkinnonOsa" : "2450731"
+    }, {
+      "id" : 2451871,
+      "_tutkinnonOsa" : "2452100"
+    }, {
+      "id" : 2448038,
+      "_tutkinnonOsa" : "2448751"
+    }, {
+      "id" : 2449204,
+      "_tutkinnonOsa" : "2448759"
+    }, {
+      "id" : 2451568,
+      "_tutkinnonOsa" : "2450736"
+    }, {
+      "id" : 2449205,
+      "_tutkinnonOsa" : "2450730"
+    }, {
+      "id" : 2449203,
+      "_tutkinnonOsa" : "2448758"
+    } ]
+  } ],
+  "tutkinnonOsat" : [ {
+    "id" : 2448751,
+    "nimi" : {
+      "fi" : "Korjauksen haltuunotto",
+      "sv" : "Behärskande av reparationsprocessen"
+    },
+    "koodiArvo" : "300054"
+  }, {
+    "id" : 2448757,
+    "nimi" : {
+      "fi" : "Ajoneuvon vianmääritys",
+      "sv" : "Diagnostisering av fel hos fordon"
+    },
+    "koodiArvo" : "300051"
+  }, {
+    "id" : 2448759,
+    "nimi" : {
+      "fi" : "Teknisenä asiantuntijana toimiminen",
+      "sv" : "Arbete som teknisk expert"
+    },
+    "koodiArvo" : "300057"
+  }, {
+    "id" : 2450730,
+    "nimi" : {
+      "fi" : "Testaus ja kilpailutoiminta",
+      "sv" : "Testning och tävlingsverksamhet"
+    },
+    "koodiArvo" : "300058"
+  }, {
+    "id" : 2450731,
+    "nimi" : {
+      "fi" : "Sähköajoneuvojen korjaus",
+      "sv" : "Reparation av elfordon"
+    },
+    "koodiArvo" : "300056"
+  }, {
+    "id" : 2450732,
+    "nimi" : {
+      "fi" : "Päälli- ja korirakenteiden asennus sekä korjaus",
+      "sv" : "Montering och reparation av överredes- och karosskonstruktioner"
+    },
+    "koodiArvo" : "300055"
+  }, {
+    "id" : 2450736,
+    "nimi" : {
+      "fi" : "Alusta- ja jarrujärjestelmien asiantuntijana toimiminen",
+      "sv" : "Arbete som expert på chassi- och bromssystem"
+    },
+    "koodiArvo" : "300052"
+  }, {
+    "id" : 2450739,
+    "nimi" : {
+      "fi" : "Koneenohjausjärjestelmien ylläpito ja säätäminen",
+      "sv" : "Underhåll och reglering av maskinstyrningssystem"
+    },
+    "koodiArvo" : "300053"
+  }, {
+    "id" : 2452100,
+    "nimi" : {
+      "fi" : "Ajoneuvoalan kehitystehtävä",
+      "sv" : "Utvecklingsuppgift inom fordonsbranschen"
+    },
+    "koodiArvo" : "300050"
+  }, {
+    "id" : 2448758,
+    "nimi" : {
+      "fi" : "Työkoneiden vianmääritykset",
+      "sv" : "Diagnostisering av fel hos arbetsmaskiner"
+    },
+    "koodiArvo" : "300059"
+  } ],
+  "osaamisalat" : [ {
+    "nimi" : {
+      "fi" : "Kuorma- ja linja-autotekniikka",
+      "sv" : "Lastbils- och bussteknik"
+    },
+    "arvo" : "3095"
+  }, {
+    "nimi" : {
+      "fi" : "Työkonetekniikka",
+      "sv" : "Arbetsmaskinsteknik"
+    },
+    "arvo" : "3096"
+  }, {
+    "nimi" : {
+      "fi" : "Henkilöautotekniikka",
+      "sv" : "Personbilsteknik"
+    },
+    "arvo" : "3094"
+  } ],
+  "luotu" : 1491388585171,
+  "muokattu" : 1547130036594
+}

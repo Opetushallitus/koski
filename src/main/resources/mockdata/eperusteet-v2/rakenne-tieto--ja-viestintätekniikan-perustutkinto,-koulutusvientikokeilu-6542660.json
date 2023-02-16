@@ -1,0 +1,681 @@
+{
+  "id" : 6542660,
+  "nimi" : {
+    "_tunniste" : "7cf67401-93d4-447e-a3dd-1e84b43977f0",
+    "_id" : "6550128",
+    "sv" : "Grundexamen i informations- och kommunikationsteknik",
+    "en" : "Vocational Qualification in Information and Communications Technology",
+    "fi" : "Tieto- ja viestintätekniikan perustutkinto, koulutusvientikokeilu"
+  },
+  "diaarinumero" : "OPH-1117-2019",
+  "koulutustyyppi" : "koulutustyyppi_1",
+  "voimassaoloAlkaa" : "1568494800000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Vocational qualification in Information and Communications Technology",
+      "fi" : "Tieto- ja viestintätekniikan perustutkinto",
+      "sv" : "Grundexamen i informations- och kommunikationsteknik"
+    },
+    "koulutuskoodiArvo" : "341101"
+  } ],
+  "koulutusvienti" : true,
+  "suoritustavat" : [ {
+    "suoritustapakoodi" : "reformi",
+    "laajuusYksikko" : "OSAAMISPISTE",
+    "rakenne" : {
+      "nimi" : {
+        "_id" : "3280915",
+        "_tunniste" : "c4ab0a05-07a1-4e22-bdab-e4bb381da193",
+        "sv" : "xx grundexamen"
+      },
+      "osat" : [ {
+        "nimi" : {
+          "_tunniste" : "5fc7da92-0c7f-466a-888d-94c57c643163",
+          "_id" : "6656128",
+          "sv" : "Yrkesinriktade examensdelar",
+          "en" : "Vocational modules",
+          "fi" : "Ammatilliset tutkinnon osat"
+        },
+        "osat" : [ {
+          "nimi" : {
+            "_tunniste" : "57b1e66d-723b-48cc-b256-5b9fc61f2035",
+            "_id" : "6656129",
+            "sv" : "Obligatoriska examensdelar",
+            "en" : "Compulsory modules",
+            "fi" : "Kaikille pakolliset tutkinnon osat"
+          },
+          "osat" : [ {
+            "_tutkinnonOsaViite" : "6542610"
+          }, {
+            "_tutkinnonOsaViite" : "6542611"
+          } ],
+          "rooli" : "määritelty",
+          "muodostumisSaanto" : {
+            "laajuus" : {
+              "minimi" : 45,
+              "maksimi" : 45
+            }
+          }
+        }, {
+          "nimi" : {
+            "en" : "Competence area of Service Support",
+            "fi" : "Käytön tuen osaamisala",
+            "sv" : "Kompetensområdet för användarstöd"
+          },
+          "osat" : [ {
+            "nimi" : {
+              "_tunniste" : "881ffc1f-aa4f-4cd0-ab8f-a78f2212b2a1",
+              "_id" : "6656270",
+              "sv" : "Obligatoriska examensdelar",
+              "en" : "Compulsory modules",
+              "fi" : "Pakolliset tutkinnon osat"
+            },
+            "osat" : [ {
+              "_tutkinnonOsaViite" : "6542612"
+            }, {
+              "_tutkinnonOsaViite" : "6542613"
+            } ],
+            "rooli" : "määritelty",
+            "muodostumisSaanto" : {
+              "laajuus" : {
+                "minimi" : 60,
+                "maksimi" : 60
+              }
+            }
+          }, {
+            "nimi" : {
+              "_tunniste" : "55e15f4f-509b-4313-aeca-d83cf329d9db",
+              "_id" : "6656271",
+              "sv" : "Valbara examensdelar",
+              "en" : "Optional modules",
+              "fi" : "Valinnaiset tutkinnon osat"
+            },
+            "osat" : [ {
+              "_tutkinnonOsaViite" : "6542614"
+            }, {
+              "_tutkinnonOsaViite" : "6542615"
+            }, {
+              "_tutkinnonOsaViite" : "6542616"
+            }, {
+              "_tutkinnonOsaViite" : "6542617"
+            }, {
+              "_tutkinnonOsaViite" : "6542618"
+            }, {
+              "_tutkinnonOsaViite" : "6542619"
+            }, {
+              "_tutkinnonOsaViite" : "6542620"
+            }, {
+              "_tutkinnonOsaViite" : "6542621"
+            }, {
+              "_tutkinnonOsaViite" : "6542622"
+            }, {
+              "_tutkinnonOsaViite" : "6542623"
+            }, {
+              "_tutkinnonOsaViite" : "6542624"
+            }, {
+              "_tutkinnonOsaViite" : "6542625"
+            }, {
+              "_tutkinnonOsaViite" : "6762453"
+            }, {
+              "_tutkinnonOsaViite" : "6762455"
+            }, {
+              "_tutkinnonOsaViite" : "6762457"
+            }, {
+              "_tutkinnonOsaViite" : "6762458"
+            }, {
+              "nimi" : {
+                "_tunniste" : "fa9a9f29-ffaa-4ed3-ba90-c4deaf4bfa9e",
+                "_id" : "6536564",
+                "sv" : "Högskolestudier",
+                "en" : "Higher education studies",
+                "fi" : "Korkeakouluopinnot"
+              },
+              "osat" : [ ],
+              "rooli" : "määrittelemätön",
+              "muodostumisSaanto" : {
+                "laajuus" : {
+                  "minimi" : 5,
+                  "maksimi" : 15
+                }
+              }
+            }, {
+              "nimi" : {
+                "_tunniste" : "da488338-549f-477e-8f64-24486ac74cd6",
+                "_id" : "6656278",
+                "sv" : "Examensdel som grundar sig på lokala krav på yrkesskicklighet",
+                "en" : "A module based on local competence requirements",
+                "fi" : "Paikallisiin ammattitaitovaatimuksiin perustuva tutkinnon osa"
+              },
+              "osat" : [ ],
+              "rooli" : "määrittelemätön",
+              "muodostumisSaanto" : {
+                "laajuus" : {
+                  "minimi" : 5,
+                  "maksimi" : 15
+                }
+              }
+            }, {
+              "nimi" : {
+                "_tunniste" : "16db1a54-f9f1-45d1-8081-83db495763e0",
+                "_id" : "6656430",
+                "sv" : "Examensdel från en annan yrkesinriktad grundexamen, yrkesexamen eller specialyrkesexamen",
+                "en" : "A module from another vocational qualification, further qualification or specialist qualification",
+                "fi" : "Tutkinnon osa toisesta ammatillisesta perustutkinnosta, ammattitutkinnosta tai erikoisammattitutkinnosta"
+              },
+              "osat" : [ ],
+              "rooli" : "määrittelemätön",
+              "muodostumisSaanto" : {
+                "laajuus" : {
+                  "minimi" : 5,
+                  "maksimi" : 15
+                }
+              }
+            }, {
+              "nimi" : {
+                "_tunniste" : "b1f480c1-d995-45fd-b63b-b0f350a1a98b",
+                "_id" : "6656431",
+                "sv" : "Delområden av gemensamma examensdelar, gymnasiestudier eller andra studier som stöder förutsättningarna för fortsatta studier",
+                "en" : "Parts of common modules, general upper secondary school studies or other studies supporting capacities for further studies",
+                "fi" : "Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja"
+              },
+              "osat" : [ ],
+              "rooli" : "määrittelemätön",
+              "muodostumisSaanto" : {
+                "laajuus" : {
+                  "minimi" : 1,
+                  "maksimi" : 25
+                }
+              }
+            } ],
+            "rooli" : "määritelty",
+            "muodostumisSaanto" : {
+              "laajuus" : {
+                "minimi" : 40,
+                "maksimi" : 40
+              }
+            }
+          } ],
+          "osaamisala" : {
+            "osaamisalakoodiArvo" : "1717"
+          },
+          "rooli" : "osaamisala",
+          "muodostumisSaanto" : {
+            "laajuus" : {
+              "minimi" : 100,
+              "maksimi" : 100
+            }
+          }
+        }, {
+          "nimi" : {
+            "en" : "Competence area of Software Development",
+            "fi" : "Ohjelmistotuotannon osaamisala",
+            "sv" : "Kompetensområdet för programmering"
+          },
+          "osat" : [ {
+            "nimi" : {
+              "_tunniste" : "3e7e3646-0d76-4ef9-b8bf-70effe905afb",
+              "_id" : "6656272",
+              "sv" : "Obligatoriska examensdelar",
+              "en" : "Compulsory modules",
+              "fi" : "Pakolliset tutkinnon osat"
+            },
+            "osat" : [ {
+              "_tutkinnonOsaViite" : "6542614"
+            }, {
+              "_tutkinnonOsaViite" : "6542615"
+            } ],
+            "rooli" : "määritelty",
+            "muodostumisSaanto" : {
+              "laajuus" : {
+                "minimi" : 60,
+                "maksimi" : 60
+              }
+            }
+          }, {
+            "nimi" : {
+              "_tunniste" : "37d9da9a-c786-4b8f-95a8-bb17af39f107",
+              "_id" : "6656273",
+              "sv" : "Valbara examensdelar",
+              "en" : "Optional modules",
+              "fi" : "Valinnaiset tutkinnon osat"
+            },
+            "osat" : [ {
+              "_tutkinnonOsaViite" : "6542612"
+            }, {
+              "_tutkinnonOsaViite" : "6542613"
+            }, {
+              "_tutkinnonOsaViite" : "6542616"
+            }, {
+              "_tutkinnonOsaViite" : "6542617"
+            }, {
+              "_tutkinnonOsaViite" : "6542618"
+            }, {
+              "_tutkinnonOsaViite" : "6542619"
+            }, {
+              "_tutkinnonOsaViite" : "6542620"
+            }, {
+              "_tutkinnonOsaViite" : "6542621"
+            }, {
+              "_tutkinnonOsaViite" : "6542622"
+            }, {
+              "_tutkinnonOsaViite" : "6542623"
+            }, {
+              "_tutkinnonOsaViite" : "6542624"
+            }, {
+              "_tutkinnonOsaViite" : "6542625"
+            }, {
+              "_tutkinnonOsaViite" : "6762453"
+            }, {
+              "_tutkinnonOsaViite" : "6762455"
+            }, {
+              "_tutkinnonOsaViite" : "6762457"
+            }, {
+              "_tutkinnonOsaViite" : "6762458"
+            }, {
+              "nimi" : {
+                "_tunniste" : "b80dfd36-e33b-4cc4-8f6c-0a7ceb8ed182",
+                "_id" : "6537065",
+                "sv" : "Högskolestudier",
+                "en" : "Higher education studies",
+                "fi" : "Korkeakouluopinnot"
+              },
+              "osat" : [ ],
+              "rooli" : "määrittelemätön",
+              "muodostumisSaanto" : {
+                "laajuus" : {
+                  "minimi" : 5,
+                  "maksimi" : 15
+                }
+              }
+            }, {
+              "nimi" : {
+                "_tunniste" : "c7e87748-1491-43ab-9f1f-e4edb48d9fdb",
+                "_id" : "6656434",
+                "sv" : "Examensdel som grundar sig på lokala krav på yrkesskicklighet",
+                "en" : "A module based on local competence requirements",
+                "fi" : "Paikallisiin ammattitaitovaatimuksiin perustuva tutkinnon osa"
+              },
+              "osat" : [ ],
+              "rooli" : "määrittelemätön",
+              "muodostumisSaanto" : {
+                "laajuus" : {
+                  "minimi" : 5,
+                  "maksimi" : 15
+                }
+              }
+            }, {
+              "nimi" : {
+                "_tunniste" : "b5481378-1446-40a0-9b65-9f1544739b27",
+                "_id" : "6656436",
+                "sv" : "Examensdel från en annan yrkesinriktad grundexamen, yrkesexamen eller specialyrkesexamen",
+                "en" : "A module from another vocational qualification, further qualification or specialist qualification",
+                "fi" : "Tutkinnon osa toisesta ammatillisesta perustutkinnosta, ammattitutkinnosta tai erikoisammattitutkinnosta"
+              },
+              "osat" : [ ],
+              "rooli" : "määrittelemätön",
+              "muodostumisSaanto" : {
+                "laajuus" : {
+                  "minimi" : 5,
+                  "maksimi" : 15
+                }
+              }
+            }, {
+              "nimi" : {
+                "_tunniste" : "a7832324-ba31-4987-8d7f-8120b2ad64c1",
+                "_id" : "6656437",
+                "sv" : "Delområden av gemensamma examensdelar, gymnasiestudier eller andra studier som stöder förutsättningarna för fortsatta studier",
+                "en" : "Parts of common modules, general upper secondary school studies or other studies supporting capacities for further studies",
+                "fi" : "Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja"
+              },
+              "osat" : [ ],
+              "rooli" : "määrittelemätön",
+              "muodostumisSaanto" : {
+                "laajuus" : {
+                  "minimi" : 1,
+                  "maksimi" : 25
+                }
+              }
+            } ],
+            "rooli" : "määritelty",
+            "muodostumisSaanto" : {
+              "laajuus" : {
+                "minimi" : 40,
+                "maksimi" : 40
+              }
+            }
+          } ],
+          "osaamisala" : {
+            "osaamisalakoodiArvo" : "1718"
+          },
+          "rooli" : "osaamisala",
+          "muodostumisSaanto" : {
+            "laajuus" : {
+              "minimi" : 100,
+              "maksimi" : 100
+            }
+          }
+        } ],
+        "rooli" : "määritelty",
+        "muodostumisSaanto" : {
+          "laajuus" : {
+            "minimi" : 145,
+            "maksimi" : 145
+          }
+        }
+      }, {
+        "nimi" : {
+          "_id" : "6764876",
+          "_tunniste" : "07d1c2c6-68df-40bc-9c7a-ea89a17f0c51",
+          "fi" : "Yhteiset tutkinnon osat"
+        },
+        "osat" : [ {
+          "_tutkinnonOsaViite" : "6762459"
+        }, {
+          "_tutkinnonOsaViite" : "6762456"
+        }, {
+          "_tutkinnonOsaViite" : "6762454"
+        }, {
+          "nimi" : {
+            "_id" : "6764878",
+            "_tunniste" : "d696a2a0-8d21-4d7c-9b31-cdc721dede50",
+            "fi" : "Yhteisten tutkinnon osien valinnaiset osaamistavoitteet"
+          },
+          "osat" : [ ],
+          "rooli" : "määrittelemätön",
+          "muodostumisSaanto" : {
+            "laajuus" : {
+              "minimi" : 9,
+              "maksimi" : 9
+            }
+          }
+        } ],
+        "rooli" : "määritelty",
+        "muodostumisSaanto" : {
+          "laajuus" : {
+            "minimi" : 35,
+            "maksimi" : 35
+          }
+        }
+      } ],
+      "rooli" : "määritelty",
+      "muodostumisSaanto" : {
+        "laajuus" : {
+          "minimi" : 180,
+          "maksimi" : 180
+        }
+      }
+    },
+    "tutkinnonOsaViitteet" : [ {
+      "id" : 6542617,
+      "_tutkinnonOsa" : "6542718"
+    }, {
+      "id" : 6542620,
+      "_tutkinnonOsa" : "6577541"
+    }, {
+      "id" : 6542612,
+      "_tutkinnonOsa" : "6542713"
+    }, {
+      "id" : 6762459,
+      "_tutkinnonOsa" : "6459175"
+    }, {
+      "id" : 6542625,
+      "_tutkinnonOsa" : "6577546"
+    }, {
+      "id" : 6542615,
+      "_tutkinnonOsa" : "6542716"
+    }, {
+      "id" : 6762454,
+      "_tutkinnonOsa" : "6459171"
+    }, {
+      "id" : 6542611,
+      "_tutkinnonOsa" : "6542712"
+    }, {
+      "id" : 6542622,
+      "_tutkinnonOsa" : "6577543"
+    }, {
+      "id" : 6542621,
+      "_tutkinnonOsa" : "6577542"
+    }, {
+      "id" : 6762456,
+      "_tutkinnonOsa" : "6459177"
+    }, {
+      "id" : 6542624,
+      "_tutkinnonOsa" : "6577545"
+    }, {
+      "id" : 6542613,
+      "_tutkinnonOsa" : "6542714"
+    }, {
+      "id" : 6762457,
+      "_tutkinnonOsa" : "6459172"
+    }, {
+      "id" : 6542616,
+      "_tutkinnonOsa" : "6542717"
+    }, {
+      "id" : 6762455,
+      "_tutkinnonOsa" : "6459174"
+    }, {
+      "id" : 6762453,
+      "_tutkinnonOsa" : "6459173"
+    }, {
+      "id" : 6542619,
+      "_tutkinnonOsa" : "6577540"
+    }, {
+      "id" : 6542623,
+      "_tutkinnonOsa" : "6577544"
+    }, {
+      "id" : 6542618,
+      "_tutkinnonOsa" : "6542719"
+    }, {
+      "id" : 6762458,
+      "_tutkinnonOsa" : "6459176"
+    }, {
+      "id" : 6542614,
+      "_tutkinnonOsa" : "6542715"
+    }, {
+      "id" : 6542610,
+      "_tutkinnonOsa" : "6542711"
+    } ]
+  } ],
+  "tutkinnonOsat" : [ {
+    "id" : 6542711,
+    "nimi" : {
+      "en" : "Working in service tasks",
+      "fi" : "Palvelutehtävissä toimiminen",
+      "sv" : "Arbete med serviceuppgifter"
+    },
+    "koodiArvo" : "600023"
+  }, {
+    "id" : 6542712,
+    "nimi" : {
+      "en" : "Purchasing and commissioning a system",
+      "fi" : "Järjestelmän hankinta ja käyttöönotto",
+      "sv" : "Systemanskaffning och ibruktagande"
+    },
+    "koodiArvo" : "600024"
+  }, {
+    "id" : 6542713,
+    "nimi" : {
+      "en" : "Working in maintenance tasks",
+      "fi" : "Ylläpitotehtävissä toimiminen",
+      "sv" : "Arbete med underhållsuppgifter"
+    },
+    "koodiArvo" : "600025"
+  }, {
+    "id" : 6542714,
+    "nimi" : {
+      "en" : "Commissioning of and user support for services",
+      "fi" : "Palvelujen käyttöönotto ja tuki",
+      "sv" : "Ibruktagande av tjänster och stöd för tjänster"
+    },
+    "koodiArvo" : "600026"
+  }, {
+    "id" : 6542715,
+    "nimi" : {
+      "en" : "Implementing a software prototype",
+      "fi" : "Ohjelmiston prototyypin toteuttaminen",
+      "sv" : "Implementering av en prototyp för programvaran"
+    },
+    "koodiArvo" : "600027"
+  }, {
+    "id" : 6542716,
+    "nimi" : {
+      "en" : "Implementing a software production version",
+      "fi" : "Ohjelmiston tuotantoversion toteuttaminen",
+      "sv" : "Implementering av en produktionsversion för programvaran"
+    },
+    "koodiArvo" : "600028"
+  }, {
+    "id" : 6542717,
+    "nimi" : {
+      "en" : "Multimedia production",
+      "fi" : "Multimediatuotanto",
+      "sv" : "Multimediaproduktion"
+    },
+    "koodiArvo" : "600029"
+  }, {
+    "id" : 6542718,
+    "nimi" : {
+      "en" : "Implementing e-services",
+      "fi" : "Sähköisten asiointipalveluiden toteuttaminen",
+      "sv" : "Implementering av digitala servicetjänster"
+    },
+    "koodiArvo" : "600030"
+  }, {
+    "id" : 6542719,
+    "nimi" : {
+      "en" : "Server software administration and virtualisation",
+      "fi" : "Palvelinohjelmistojen hallinta ja virtualisointi",
+      "sv" : "Administration och virtualisering av serverprogramvara"
+    },
+    "koodiArvo" : "600031"
+  }, {
+    "id" : 6577540,
+    "nimi" : {
+      "en" : "Implementing multi-channel publications",
+      "fi" : "Monikanavajulkaisujen toteuttaminen",
+      "sv" : "Implementering av flerkanalspublikationer"
+    },
+    "koodiArvo" : "600032"
+  }, {
+    "id" : 6577541,
+    "nimi" : {
+      "en" : "Database management",
+      "fi" : "Tietokantojen hallinta",
+      "sv" : "Administrering av databaser"
+    },
+    "koodiArvo" : "600033"
+  }, {
+    "id" : 6577542,
+    "nimi" : {
+      "en" : "Using a development environment",
+      "fi" : "Kehitysympäristön käyttö",
+      "sv" : "Användning av utvecklingsmiljöer"
+    },
+    "koodiArvo" : "600034"
+  }, {
+    "id" : 6577543,
+    "nimi" : {
+      "en" : "Testing",
+      "fi" : "Testaus",
+      "sv" : "Testning"
+    },
+    "koodiArvo" : "600035"
+  }, {
+    "id" : 6577544,
+    "nimi" : {
+      "en" : "Using information systems",
+      "fi" : "Tietojärjestelmien hyödyntäminen",
+      "sv" : "Utnyttjande av datasystem"
+    },
+    "koodiArvo" : "600036"
+  }, {
+    "id" : 6577545,
+    "nimi" : {
+      "en" : "Maintaining information security",
+      "fi" : "Tietoturvan ylläpito",
+      "sv" : "Underhåll av datasäkerhet"
+    },
+    "koodiArvo" : "600037"
+  }, {
+    "id" : 6577546,
+    "nimi" : {
+      "en" : "Standardisation of user support processes",
+      "fi" : "Käytön tuen prosessien vakiointi",
+      "sv" : "Standardisering av processerna för användarstöd"
+    },
+    "koodiArvo" : "600038"
+  }, {
+    "id" : 6459173,
+    "nimi" : {
+      "en" : "Planning a business",
+      "fi" : "Yritystoiminnan suunnittelu    ",
+      "sv" : "Planering av företagsverksamhet"
+    },
+    "koodiArvo" : "400008"
+  }, {
+    "id" : 6459174,
+    "nimi" : {
+      "en" : "Workplace instructor training",
+      "fi" : "Työpaikkaohjaajaksi valmentautuminen         ",
+      "sv" : "Förberedelse för arbetsplatshandledaruppgifter"
+    },
+    "koodiArvo" : "400011"
+  }, {
+    "id" : 6459172,
+    "nimi" : {
+      "en" : "Working in a company",
+      "fi" : "Yrityksessä toimiminen     ",
+      "sv" : "Arbeta i ett företag"
+    },
+    "koodiArvo" : "400009"
+  }, {
+    "id" : 6459176,
+    "nimi" : {
+      "en" : "Working as a top expert",
+      "fi" : "Huippuosaajana toimiminen          ",
+      "sv" : "Arbete som kräver spetskompetens"
+    },
+    "koodiArvo" : "400010"
+  }, {
+    "id" : 6459175,
+    "nimi" : {
+      "en" : "Communication and interaction competence",
+      "fi" : "Viestintä- ja vuorovaikutusosaaminen",
+      "sv" : "Kunnande i kommunikation och interaktion"
+    },
+    "koodiArvo" : "600002"
+  }, {
+    "id" : 6459177,
+    "nimi" : {
+      "en" : "Mathematics and science competence",
+      "fi" : "Matemaattis-luonnontieteellinen osaaminen     ",
+      "sv" : "Kunnande i matematik och naturvetenskap"
+    },
+    "koodiArvo" : "400013"
+  }, {
+    "id" : 6459171,
+    "nimi" : {
+      "en" : "Citizenship and working life competence",
+      "fi" : "Yhteiskunta- ja työelämäosaaminen",
+      "sv" : "Kunnande om samhälle och arbetsliv"
+    },
+    "koodiArvo" : "600001"
+  } ],
+  "osaamisalat" : [ {
+    "nimi" : {
+      "en" : "Competence area of Software Development",
+      "fi" : "Ohjelmistotuotannon osaamisala",
+      "sv" : "Kompetensområdet för programmering"
+    },
+    "arvo" : "1718"
+  }, {
+    "nimi" : {
+      "en" : "Competence area of Service Support",
+      "fi" : "Käytön tuen osaamisala",
+      "sv" : "Kompetensområdet för användarstöd"
+    },
+    "arvo" : "1717"
+  } ],
+  "luotu" : 1557315013611,
+  "muokattu" : 1624962950318
+}

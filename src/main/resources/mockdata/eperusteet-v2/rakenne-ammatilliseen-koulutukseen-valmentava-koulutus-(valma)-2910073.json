@@ -1,0 +1,137 @@
+{
+  "id" : 2910073,
+  "nimi" : {
+    "_id" : "4341091",
+    "_tunniste" : "2c62879f-f4d6-496e-8dd0-9356aea787cb",
+    "fi" : "Ammatilliseen koulutukseen valmentava koulutus (VALMA)",
+    "sv" : "Utbildning som handleder för yrkesutbildning"
+  },
+  "diaarinumero" : "OPH-2658-2017",
+  "koulutustyyppi" : "koulutustyyppi_18",
+  "voimassaoloAlkaa" : "1514757600000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "fi" : "Ammatilliseen koulutukseen valmentava koulutus (VALMA)",
+      "sv" : "Utbildning som handleder för yrkesutbildning"
+    },
+    "koulutuskoodiArvo" : "999901"
+  } ],
+  "koulutusvienti" : false,
+  "suoritustavat" : [ {
+    "suoritustapakoodi" : "reformi",
+    "laajuusYksikko" : "OSAAMISPISTE",
+    "rakenne" : {
+      "nimi" : {
+        "_id" : "3190054",
+        "_tunniste" : "8d143d01-465f-42c5-9ae8-f3997460d364",
+        "fi" : "Ammatilliseen koulutukseen valmentava koulutus"
+      },
+      "osat" : [ {
+        "nimi" : {
+          "_id" : "4128931",
+          "_tunniste" : "97a4de3a-f6f4-4bd9-90f9-f167cc9c4163",
+          "fi" : "Valmentavan koulutuksen osat",
+          "sv" : "Delar i den handledande utbildningen"
+        },
+        "osat" : [ {
+          "_tutkinnonOsaViite" : "2957230"
+        }, {
+          "_tutkinnonOsaViite" : "2957231"
+        }, {
+          "_tutkinnonOsaViite" : "3039662"
+        }, {
+          "_tutkinnonOsaViite" : "3039663"
+        }, {
+          "nimi" : {
+            "_id" : "3192673",
+            "_tunniste" : "64052cea-a20e-47ec-bdea-077e841d7e62",
+            "fi" : "Ammatillisen tutkinnon osat tai osa-alueet",
+            "sv" : "Examensdelar eller delområden inom en yrkesinriktad grundexamen"
+          },
+          "osat" : [ ],
+          "rooli" : "määrittelemätön",
+          "muodostumisSaanto" : {
+            "laajuus" : {
+              "minimi" : 0,
+              "maksimi" : 15
+            }
+          }
+        }, {
+          "nimi" : {
+            "_id" : "4128933",
+            "_tunniste" : "1a7179ef-f78b-4ff5-b3dc-e226dc103b63",
+            "fi" : "Muut valinnaiset koulutuksen osat",
+            "sv" : "Övriga valbara utbildningsdelar"
+          },
+          "osat" : [ ],
+          "rooli" : "määrittelemätön",
+          "muodostumisSaanto" : {
+            "laajuus" : {
+              "minimi" : 0,
+              "maksimi" : 5
+            }
+          }
+        } ],
+        "rooli" : "määritelty",
+        "muodostumisSaanto" : {
+          "laajuus" : {
+            "minimi" : 60,
+            "maksimi" : 60
+          }
+        }
+      } ],
+      "rooli" : "määritelty",
+      "muodostumisSaanto" : {
+        "laajuus" : {
+          "minimi" : 60,
+          "maksimi" : 60
+        }
+      }
+    },
+    "tutkinnonOsaViitteet" : [ {
+      "id" : 2957230,
+      "_tutkinnonOsa" : "2952366"
+    }, {
+      "id" : 3039663,
+      "_tutkinnonOsa" : "3030619"
+    }, {
+      "id" : 2957231,
+      "_tutkinnonOsa" : "2952367"
+    }, {
+      "id" : 3039662,
+      "_tutkinnonOsa" : "3030618"
+    } ]
+  } ],
+  "tutkinnonOsat" : [ {
+    "id" : 2952366,
+    "nimi" : {
+      "fi" : "Ammatilliseen koulutukseen orientoituminen ja työelämän perusvalmiuksien hankkiminen",
+      "sv" : "Orientering i yrkesutbildningen och grundförutsättningar för arbetslivet"
+    },
+    "koodiArvo" : "400001"
+  }, {
+    "id" : 2952367,
+    "nimi" : {
+      "fi" : "Opiskeluvalmiuksien vahvistaminen",
+      "sv" : "Stärkande av studiefärdigheter"
+    },
+    "koodiArvo" : "400002"
+  }, {
+    "id" : 3030618,
+    "nimi" : {
+      "fi" : "Työpaikalla järjestettävään koulutukseen valmentautuminen",
+      "sv" : "Förberedelse inför utbildning som ordnas på en arbetsplats"
+    },
+    "koodiArvo" : "400004"
+  }, {
+    "id" : 3030619,
+    "nimi" : {
+      "fi" : "Osallisuuden ja käytännön taitojen vahvistaminen",
+      "sv" : "Stärkandet av delaktighet och praktiska färdigheter"
+    },
+    "koodiArvo" : "400003"
+  } ],
+  "osaamisalat" : [ ],
+  "luotu" : 1504865178212,
+  "muokattu" : 1576589804707
+}

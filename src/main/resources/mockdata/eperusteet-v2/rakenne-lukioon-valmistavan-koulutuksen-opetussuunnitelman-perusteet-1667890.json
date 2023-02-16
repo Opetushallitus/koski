@@ -1,0 +1,108 @@
+{
+  "id" : 1667890,
+  "nimi" : {
+    "_id" : "2691193",
+    "_tunniste" : "ee4ce597-f8ab-4590-9616-c18bffc40faa",
+    "fi" : "Lukioon valmistavan koulutuksen opetussuunnitelman perusteet",
+    "sv" : "Grunderna för läroplanen för utbildning som förbereder för gymnasieutbildning 2015"
+  },
+  "diaarinumero" : "56/011/2015",
+  "koulutustyyppi" : "koulutustyyppi_23",
+  "voimassaoloAlkaa" : "1469998800000",
+  "koulutukset" : [ ],
+  "koulutusvienti" : false,
+  "suoritustavat" : [ {
+    "suoritustapakoodi" : "lukiokoulutus",
+    "laajuusYksikko" : "KURSSI"
+  } ],
+  "osaamisalat" : [ ],
+  "lukiokoulutus" : {
+    "rakenne" : {
+      "oppiaineet" : [ {
+        "koodiArvo" : "AI",
+        "oppimaarat" : [ {
+          "koodiArvo" : "AI7",
+          "kurssit" : [ {
+            "koodiArvo" : "LVS1"
+          }, {
+            "koodiArvo" : "LVS2"
+          }, {
+            "koodiArvo" : "LVS3"
+          }, {
+            "koodiArvo" : "LVS4"
+          }, {
+            "koodiArvo" : "LVS5"
+          }, {
+            "koodiArvo" : "LVS6"
+          }, {
+            "koodiArvo" : "LVS7"
+          }, {
+            "koodiArvo" : "LVS8"
+          }, {
+            "koodiArvo" : "LVS9"
+          }, {
+            "koodiArvo" : "LVS10"
+          } ]
+        } ],
+        "kurssit" : [ ]
+      }, {
+        "koodiArvo" : "MK2",
+        "oppimaarat" : [ {
+          "koodiArvo" : "POAK",
+          "kurssit" : [ {
+            "koodiArvo" : "LVKA1"
+          }, {
+            "koodiArvo" : "LVKA2"
+          }, {
+            "koodiArvo" : "LVKA3"
+          } ]
+        }, {
+          "koodiArvo" : "LVAK",
+          "kurssit" : [ {
+            "koodiArvo" : "LVKB1"
+          }, {
+            "koodiArvo" : "LVKB2"
+          }, {
+            "koodiArvo" : "LVKB3"
+          } ]
+        }, {
+          "koodiArvo" : "AIAI6",
+          "kurssit" : [ {
+            "koodiArvo" : "LVMAI1"
+          }, {
+            "koodiArvo" : "LVMAI2"
+          }, {
+            "koodiArvo" : "LVMAI3"
+          } ]
+        } ],
+        "kurssit" : [ ]
+      }, {
+        "koodiArvo" : "MLO",
+        "oppimaarat" : [ ],
+        "kurssit" : [ {
+          "koodiArvo" : "LVLUMA1"
+        }, {
+          "koodiArvo" : "LVLUMA2"
+        } ]
+      }, {
+        "koodiArvo" : "YHK",
+        "oppimaarat" : [ ],
+        "kurssit" : [ {
+          "koodiArvo" : "LVHY1"
+        }, {
+          "koodiArvo" : "LVHY2"
+        } ]
+      }, {
+        "koodiArvo" : "OP",
+        "oppimaarat" : [ ],
+        "kurssit" : [ {
+          "koodiArvo" : "LVOP1"
+        }, {
+          "koodiArvo" : "LVOP2"
+        } ]
+      } ]
+    }
+  },
+  "luotu" : 1465204451968,
+  "muokattu" : 1503056774303
+}

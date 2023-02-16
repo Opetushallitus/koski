@@ -1,0 +1,520 @@
+{
+  "id" : 1571584,
+  "nimi" : {
+    "_id" : "1824662",
+    "fi" : "Hiusalan perustutkinto",
+    "sv" : "Grundexamen inom hårbranschen"
+  },
+  "diaarinumero" : "43/011/2014",
+  "koulutustyyppi" : "koulutustyyppi_1",
+  "voimassaoloAlkaa" : "1469998800000",
+  "voimassaoloLoppuu" : "1532984400000",
+  "siirtymaPaattyy" : "1640901600000",
+  "koulutukset" : [ {
+    "nimi" : {
+      "en" : "Hairdressing, VQ",
+      "fi" : "Hiusalan perustutkinto",
+      "sv" : "Grundexamen inom hårbranschen"
+    },
+    "koulutuskoodiArvo" : "381303"
+  } ],
+  "koulutusvienti" : false,
+  "suoritustavat" : [ {
+    "suoritustapakoodi" : "ops",
+    "laajuusYksikko" : "OSAAMISPISTE",
+    "rakenne" : {
+      "nimi" : {
+        "_id" : "619111",
+        "fi" : "Hiusalan perustutkinto"
+      },
+      "osat" : [ {
+        "nimi" : {
+          "_id" : "699010",
+          "fi" : "Ammatilliset tutkinnon osat",
+          "sv" : "Yrkesinriktade examensdelar"
+        },
+        "osat" : [ {
+          "nimi" : {
+            "_id" : "1645379",
+            "fi" : "Pakolliset tutkinnon osat",
+            "sv" : "Obligatorisk examensdel"
+          },
+          "osat" : [ {
+            "_tutkinnonOsaViite" : "1572368"
+          }, {
+            "_tutkinnonOsaViite" : "1572365"
+          }, {
+            "_tutkinnonOsaViite" : "1572366"
+          }, {
+            "_tutkinnonOsaViite" : "1572369"
+          }, {
+            "_tutkinnonOsaViite" : "1572370"
+          } ],
+          "rooli" : "määritelty",
+          "muodostumisSaanto" : {
+            "laajuus" : {
+              "minimi" : 120,
+              "maksimi" : 120
+            }
+          }
+        }, {
+          "nimi" : {
+            "_id" : "699012",
+            "fi" : "Valinnaiset tutkinnon osat",
+            "sv" : "Valbara examensdelar"
+          },
+          "osat" : [ {
+            "_tutkinnonOsaViite" : "1572367"
+          }, {
+            "_tutkinnonOsaViite" : "1572371"
+          }, {
+            "_tutkinnonOsaViite" : "1572267"
+          }, {
+            "nimi" : {
+              "_id" : "699013",
+              "fi" : "Tutkinnon osa ammatillisesta perustutkinnosta",
+              "sv" : "Examensdel från en yrkesinriktad grundexamen"
+            },
+            "osat" : [ ],
+            "rooli" : "määrittelemätön",
+            "muodostumisSaanto" : {
+              "laajuus" : {
+                "minimi" : 10,
+                "maksimi" : 15
+              }
+            }
+          }, {
+            "nimi" : {
+              "_id" : "699014",
+              "fi" : "Tutkinnon osa ammattitutkinnosta tai erikoisammattitutkinnosta",
+              "sv" : "Examensdel från en yrkesexamen eller en specialyrkesexamen"
+            },
+            "osat" : [ ],
+            "rooli" : "määrittelemätön"
+          }, {
+            "_tutkinnonOsaViite" : "1572268"
+          }, {
+            "_tutkinnonOsaViite" : "1572269"
+          }, {
+            "_tutkinnonOsaViite" : "1572360"
+          }, {
+            "nimi" : {
+              "_id" : "699015",
+              "fi" : "Tutkinnon osa ammattikorkeakouluopinnoista",
+              "sv" : "Examensdel från yrkeshögskolestudier"
+            },
+            "osat" : [ ],
+            "rooli" : "määrittelemätön"
+          }, {
+            "nimi" : {
+              "_id" : "699017",
+              "fi" : "Paikallisiin ammattitaitovaatimuksiin perustuvia tutkinnon osia",
+              "sv" : "Examensdelar som grundar sig på lokala krav på yrkesskicklighet"
+            },
+            "osat" : [ ],
+            "rooli" : "määrittelemätön",
+            "muodostumisSaanto" : {
+              "laajuus" : {
+                "minimi" : 5,
+                "maksimi" : 15
+              }
+            }
+          }, {
+            "nimi" : {
+              "_id" : "699019",
+              "fi" : "Tutkinnon osa vapaasti valittavista tutkinnon osista",
+              "sv" : "Examensdel från de fritt valbara examensdelarna"
+            },
+            "osat" : [ ],
+            "rooli" : "määrittelemätön",
+            "muodostumisSaanto" : {
+              "laajuus" : {
+                "minimi" : 5,
+                "maksimi" : 15
+              }
+            }
+          } ],
+          "rooli" : "määritelty",
+          "muodostumisSaanto" : {
+            "laajuus" : {
+              "minimi" : 15,
+              "maksimi" : 15
+            }
+          }
+        } ],
+        "rooli" : "määritelty",
+        "muodostumisSaanto" : {
+          "laajuus" : {
+            "minimi" : 135,
+            "maksimi" : 135
+          }
+        }
+      }, {
+        "nimi" : {
+          "_id" : "699041",
+          "fi" : "Yhteiset tutkinnon osat",
+          "sv" : "Gemensamma examensdelar"
+        },
+        "osat" : [ {
+          "_tutkinnonOsaViite" : "1572361"
+        }, {
+          "_tutkinnonOsaViite" : "1572362"
+        }, {
+          "_tutkinnonOsaViite" : "1572363"
+        }, {
+          "_tutkinnonOsaViite" : "1572364"
+        } ],
+        "rooli" : "määritelty",
+        "muodostumisSaanto" : {
+          "laajuus" : {
+            "minimi" : 35,
+            "maksimi" : 35
+          }
+        }
+      }, {
+        "nimi" : {
+          "_id" : "699044",
+          "fi" : "Vapaasti valittavat tutkinnon osat",
+          "sv" : "Fritt valbara examensdelar"
+        },
+        "osat" : [ {
+          "nimi" : {
+            "_id" : "699046",
+            "fi" : "Ammatillisia tutkinnon osia",
+            "sv" : "Yrkesinriktade examensdelar"
+          },
+          "osat" : [ ],
+          "rooli" : "määrittelemätön",
+          "muodostumisSaanto" : {
+            "laajuus" : {
+              "maksimi" : 10
+            }
+          }
+        }, {
+          "nimi" : {
+            "_id" : "699048",
+            "fi" : "Paikallisiin ammattitaitovaatimuksiin perustuvia tutkinnon osia",
+            "sv" : "Examensdelar som grundar sig på lokala krav på yrkesskicklighet"
+          },
+          "osat" : [ ],
+          "rooli" : "määrittelemätön",
+          "muodostumisSaanto" : {
+            "laajuus" : {
+              "maksimi" : 10
+            }
+          }
+        }, {
+          "nimi" : {
+            "_id" : "1273475",
+            "fi" : "Yhteisten tutkinnon osien osa-alueita tai lukio-opintoja",
+            "sv" : "Delområden av gemensamma examensdelar eller gymnasiestudier"
+          },
+          "osat" : [ ],
+          "rooli" : "määrittelemätön"
+        }, {
+          "nimi" : {
+            "_id" : "699062",
+            "fi" : "Jatko-opintovalmiuksia tai ammatillista kehittymistä tukevia opintoja",
+            "sv" : "Studier som stöder förutsättningarna för fortsatta studier eller yrkesmässig utveckling"
+          },
+          "osat" : [ ],
+          "rooli" : "määrittelemätön",
+          "muodostumisSaanto" : {
+            "laajuus" : {
+              "maksimi" : 10
+            }
+          }
+        }, {
+          "nimi" : {
+            "_id" : "699064",
+            "fi" : "Työkokemuksen kautta hankittuun osaamiseen perustuvia yksilöllisiä tutkinnon osia",
+            "sv" : "Individuella examensdelar som baserar sig på kunnande som förvärvats via arbetserfarenhet"
+          },
+          "osat" : [ ],
+          "rooli" : "määrittelemätön",
+          "muodostumisSaanto" : {
+            "laajuus" : {
+              "maksimi" : 10
+            }
+          }
+        } ],
+        "rooli" : "määritelty",
+        "muodostumisSaanto" : {
+          "laajuus" : {
+            "minimi" : 10,
+            "maksimi" : 10
+          }
+        }
+      }, {
+        "nimi" : {
+          "_id" : "699066",
+          "fi" : "Tutkintoa yksilöllisesti laajentavat tutkinnon osat",
+          "sv" : "Examensdelar som individuellt utvidgar examen"
+        },
+        "osat" : [ ],
+        "rooli" : "määrittelemätön"
+      } ],
+      "rooli" : "määritelty",
+      "muodostumisSaanto" : {
+        "laajuus" : {
+          "minimi" : 180,
+          "maksimi" : 180
+        }
+      }
+    },
+    "tutkinnonOsaViitteet" : [ {
+      "id" : 1572371,
+      "_tutkinnonOsa" : "23436"
+    }, {
+      "id" : 1572269,
+      "_tutkinnonOsa" : "634"
+    }, {
+      "id" : 1572368,
+      "_tutkinnonOsa" : "23433"
+    }, {
+      "id" : 1572363,
+      "_tutkinnonOsa" : "1642349"
+    }, {
+      "id" : 1572361,
+      "_tutkinnonOsa" : "1642348"
+    }, {
+      "id" : 1572365,
+      "_tutkinnonOsa" : "23430"
+    }, {
+      "id" : 1572367,
+      "_tutkinnonOsa" : "23432"
+    }, {
+      "id" : 1572360,
+      "_tutkinnonOsa" : "635"
+    }, {
+      "id" : 1572364,
+      "_tutkinnonOsa" : "1649000"
+    }, {
+      "id" : 1572268,
+      "_tutkinnonOsa" : "633"
+    }, {
+      "id" : 1572369,
+      "_tutkinnonOsa" : "23434"
+    }, {
+      "id" : 1572370,
+      "_tutkinnonOsa" : "23435"
+    }, {
+      "id" : 1572362,
+      "_tutkinnonOsa" : "1642346"
+    }, {
+      "id" : 1572366,
+      "_tutkinnonOsa" : "23431"
+    }, {
+      "id" : 1572267,
+      "_tutkinnonOsa" : "632"
+    } ]
+  }, {
+    "suoritustapakoodi" : "naytto",
+    "laajuusYksikko" : "OSAAMISPISTE",
+    "rakenne" : {
+      "osat" : [ {
+        "nimi" : {
+          "_id" : "700131",
+          "fi" : "Ammatilliset tutkinnon osat",
+          "sv" : "Yrkesinriktade examensdelar"
+        },
+        "osat" : [ {
+          "nimi" : {
+            "_id" : "700132",
+            "fi" : "Pakolliset tutkinnon osat",
+            "sv" : "Obligatoriska examensdelar"
+          },
+          "osat" : [ {
+            "_tutkinnonOsaViite" : "1572376"
+          }, {
+            "_tutkinnonOsaViite" : "1572372"
+          }, {
+            "_tutkinnonOsaViite" : "1572374"
+          }, {
+            "_tutkinnonOsaViite" : "1572379"
+          }, {
+            "_tutkinnonOsaViite" : "1572378"
+          } ],
+          "rooli" : "määritelty",
+          "muodostumisSaanto" : {
+            "koko" : {
+              "minimi" : 5,
+              "maksimi" : 5
+            }
+          }
+        }, {
+          "nimi" : {
+            "_id" : "700133",
+            "fi" : "Valinnaiset tutkinnon osat",
+            "sv" : "Valbara examensdelar"
+          },
+          "osat" : [ {
+            "_tutkinnonOsaViite" : "1572375"
+          }, {
+            "_tutkinnonOsaViite" : "1572377"
+          }, {
+            "_tutkinnonOsaViite" : "1572373"
+          }, {
+            "nimi" : {
+              "_id" : "700134",
+              "fi" : "Tutkinnon osa ammatillisesta perustutkinnosta",
+              "sv" : "Examensdel från en yrkesinriktad grundexamen"
+            },
+            "osat" : [ ],
+            "rooli" : "määrittelemätön"
+          }, {
+            "nimi" : {
+              "_id" : "700135",
+              "fi" : "Tutkinnon osa ammattitutkinnosta tai erikoisammattitutkinnosta",
+              "sv" : "Examensdel från en yrkesexamen eller en specialyrkesexamen"
+            },
+            "osat" : [ ],
+            "rooli" : "määrittelemätön"
+          } ],
+          "rooli" : "määritelty",
+          "muodostumisSaanto" : {
+            "koko" : {
+              "minimi" : 1,
+              "maksimi" : 1
+            }
+          }
+        } ],
+        "rooli" : "määritelty"
+      } ]
+    },
+    "tutkinnonOsaViitteet" : [ {
+      "id" : 1572378,
+      "_tutkinnonOsa" : "23435"
+    }, {
+      "id" : 1572373,
+      "_tutkinnonOsa" : "632"
+    }, {
+      "id" : 1572375,
+      "_tutkinnonOsa" : "23432"
+    }, {
+      "id" : 1572374,
+      "_tutkinnonOsa" : "23431"
+    }, {
+      "id" : 1572377,
+      "_tutkinnonOsa" : "23436"
+    }, {
+      "id" : 1572379,
+      "_tutkinnonOsa" : "23434"
+    }, {
+      "id" : 1572372,
+      "_tutkinnonOsa" : "23430"
+    }, {
+      "id" : 1572376,
+      "_tutkinnonOsa" : "23433"
+    } ]
+  } ],
+  "tutkinnonOsat" : [ {
+    "id" : 632,
+    "nimi" : {
+      "fi" : "Yritystoiminnan suunnittelu",
+      "sv" : "Planering av företagsverksamhet"
+    },
+    "koodiArvo" : "101050"
+  }, {
+    "id" : 633,
+    "nimi" : {
+      "fi" : "Työpaikkaohjaajaksi valmentautuminen",
+      "sv" : "Förberedelse för arbetsplatshandledaruppgifter"
+    },
+    "koodiArvo" : "101040"
+  }, {
+    "id" : 634,
+    "nimi" : {
+      "fi" : "Yrityksessä toimiminen",
+      "sv" : "Arbeta i ett företag"
+    },
+    "koodiArvo" : "101052"
+  }, {
+    "id" : 635,
+    "nimi" : {
+      "fi" : "Huippuosaajana toimiminen",
+      "sv" : "Arbete som kräver spetskompetens"
+    },
+    "koodiArvo" : "101051"
+  }, {
+    "id" : 1642348,
+    "nimi" : {
+      "fi" : "Viestintä- ja vuorovaikutusosaaminen",
+      "sv" : "Kunnande i kommunikation och interaktion"
+    },
+    "koodiArvo" : "101053"
+  }, {
+    "id" : 1642346,
+    "nimi" : {
+      "fi" : "Matemaattis-luonnontieteellinen osaaminen",
+      "sv" : "Kunnande i matematik och naturvetenskap"
+    },
+    "koodiArvo" : "101054"
+  }, {
+    "id" : 1642349,
+    "nimi" : {
+      "fi" : "Yhteiskunnassa ja työelämässä tarvittava osaaminen",
+      "sv" : "Kunnande som behövs i samhället och i arbetslivet"
+    },
+    "koodiArvo" : "101055"
+  }, {
+    "id" : 1649000,
+    "nimi" : {
+      "fi" : "Sosiaalinen ja kulttuurinen osaaminen",
+      "sv" : "Socialt och kulturellt kunnande"
+    },
+    "koodiArvo" : "101056"
+  }, {
+    "id" : 23430,
+    "nimi" : {
+      "fi" : "Kampaukset ja ehostus",
+      "sv" : "Frisyrer och makeup"
+    },
+    "koodiArvo" : "100115"
+  }, {
+    "id" : 23431,
+    "nimi" : {
+      "fi" : "Värjäyskäsittelyt",
+      "sv" : "Färgbehandlingar"
+    },
+    "koodiArvo" : "100116"
+  }, {
+    "id" : 23432,
+    "nimi" : {
+      "fi" : "Asiakkaan tyylipalvelut",
+      "sv" : "Stilkonsultation"
+    },
+    "koodiArvo" : "100119"
+  }, {
+    "id" : 23433,
+    "nimi" : {
+      "fi" : "Hiusten leikkaaminen ja partakäsittelyt",
+      "sv" : "Hårklippning och skäggbehandling"
+    },
+    "koodiArvo" : "100114"
+  }, {
+    "id" : 23434,
+    "nimi" : {
+      "fi" : "Permanenttikäsittelyt",
+      "sv" : "Permanentbehandlingar"
+    },
+    "koodiArvo" : "100117"
+  }, {
+    "id" : 23435,
+    "nimi" : {
+      "fi" : "Hiusalan yrittäjyys ja yritystoiminta",
+      "sv" : "Företagande och företagsverksamhet inom hårbranschen"
+    },
+    "koodiArvo" : "100118"
+  }, {
+    "id" : 23436,
+    "nimi" : {
+      "fi" : "Hiusten hoito- ja muotoilukokonaisuudet",
+      "sv" : "Servicehelheter inom vårdbehandlingar och styling"
+    },
+    "koodiArvo" : "100120"
+  } ],
+  "osaamisalat" : [ ],
+  "luotu" : 1463051587056,
+  "muokattu" : 1513756619432
+}

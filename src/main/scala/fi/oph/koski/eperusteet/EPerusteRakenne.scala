@@ -97,7 +97,8 @@ case class EPerusteKoulutus(
 )
 
 case class EPerusteOsaRakenteet(
-  data: List[EPerusteOsaRakenne]
+  data: List[EPerusteOsaRakenne],
+  sivuja: Int
 )
 
 case class EPerusteOsaRakenne(
