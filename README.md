@@ -105,12 +105,19 @@ Minimissään tarvitset nämä:
 
 - Git (osx, linux sisältää tämän, komentorivillä `git`)
 - GNU Make (osx, linux sisältää tämän, komentorivillä `make`)
-- Java 8 (osx: `brew tap adoptopenjdk/openjdk`
-  `brew cask install adoptopenjdk8`)
+- JDK 11 (osx: `brew tap homebrew/cask-versions`
+  `brew install temurin11 --cask`)
+  - Muista asettaa `JAVA_HOME` viittaamaan äsken asennetun Javan polkuun, että maven ja sbt osaavat käyttää oikeaa versiota.
 - Maven 3 (osx: `brew install maven`)
 - Node.js (`.nvmrc`-tiedoston mukainen versio)
 - Docker PostgreSQL:n ja OpenSearchin ajamiseen konteissa
 - Tekstieditori (kehitystiimi käyttää IntelliJ IDEA)
+
+### Scala-kääntäjän konfiguraatio
+
+Esim. IntelliJ IDEAn Scala-kääntäjän konfiguraatio kannattaa asettaa seuraavasti:
+
+![img.png](img.png)
 
 ## Buildi ja ajaminen
 
