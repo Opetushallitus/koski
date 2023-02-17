@@ -12,9 +12,9 @@ import { päätasonSuoritusPath } from '../../util/optics'
 import { OpiskeluoikeusjaksoOf } from '../../util/schema'
 import { ItemOf } from '../../util/types'
 import { common, CommonPropsWithChildren } from '../CommonProps'
-import { Tabs } from '../controls/Tabs'
+import { Tab, Tabs } from '../controls/Tabs'
 import { FormField } from '../forms/FormField'
-import { FormModel, FormOptic, getValue } from '../forms/FormModel'
+import { FormModel, FormOptic } from '../forms/FormModel'
 import { Spacer } from '../layout/Spacer'
 import { Snackbar } from '../messages/Snackbar'
 import { EditBar } from '../opiskeluoikeus/EditBar'
@@ -24,6 +24,7 @@ import {
 } from '../opiskeluoikeus/OpiskeluoikeudenTila'
 import { OpiskeluoikeusEditToolbar } from '../opiskeluoikeus/OpiskeluoikeusEditToolbar'
 import { UusiOpiskeluoikeusjakso } from '../opiskeluoikeus/UusiOpiskeluoikeudenTilaModal'
+import { CHARCODE_ADD, Icon } from '../texts/Icon'
 import { Trans } from '../texts/Trans'
 
 export type EditorContainerProps<T extends Opiskeluoikeus> =
@@ -36,6 +37,8 @@ export type EditorContainerProps<T extends Opiskeluoikeus> =
       seed: UusiOpiskeluoikeusjakso<OpiskeluoikeusjaksoOf<T['tila']>>
     ) => void
     suorituksenNimi?: (suoritus: ItemOf<T['suoritukset']>) => LocalizedString
+    suorituksenLisäys?: string | LocalizedString
+    onCreateSuoritus?: () => void
   }>
 
 export type ActivePäätasonSuoritus<T extends Opiskeluoikeus> = {
@@ -66,9 +69,40 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
   const [suoritusIndex, setSuoritusIndex] = useState(0)
   const changeSuoritusTab = useCallback(
     (index: number) => {
-      props.onChangeSuoritus(index)
-      setSuoritusIndex(index)
+      if (index < 0) {
+        props.onCreateSuoritus?.()
+      } else {
+        props.onChangeSuoritus(index)
+        setSuoritusIndex(index)
+      }
     },
+    [props]
+  )
+
+  const suoritusTabs: Tab<number>[] = useMemo(
+    () => [
+      ...props.form.state.suoritukset.map((s, i) => ({
+        key: i,
+        label: props.suorituksenNimi?.(s) || defaultSuorituksenNimi(s)
+      })),
+      ...(props.suorituksenLisäys && props.onCreateSuoritus
+        ? [
+            {
+              key: -1,
+              label: props.suorituksenLisäys,
+              display: (
+                <>
+                  <Icon
+                    charCode={CHARCODE_ADD}
+                    className="EditorContainer__addIcon"
+                  />{' '}
+                  {t(props.suorituksenLisäys)}
+                </>
+              )
+            }
+          ]
+        : [])
+    ],
     [props]
   )
 
@@ -100,11 +134,9 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
       </h2>
 
       <Tabs
+        key={`tabs-${props.form.state.suoritukset.length}`}
         onSelect={changeSuoritusTab}
-        tabs={props.form.state.suoritukset.map((s, i) => ({
-          key: i,
-          label: props.suorituksenNimi?.(s) || defaultSuorituksenNimi(s)
-        }))}
+        tabs={suoritusTabs}
       />
 
       <Spacer />

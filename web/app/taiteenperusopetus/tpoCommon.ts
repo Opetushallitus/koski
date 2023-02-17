@@ -1,3 +1,4 @@
+import * as Eq from 'fp-ts/Eq'
 import * as A from 'fp-ts/Array'
 import { pipe } from 'fp-ts/lib/function'
 import * as O from 'fp-ts/Option'
@@ -70,3 +71,10 @@ const minimilaajuudet: Record<
   taiteenperusopetuksenlaajanoppimaaranperusopinnot: 29.6,
   taiteenperusopetuksenlaajanoppimaaransyventavatopinnot: 18.5
 }
+
+export const TaiteenPerusopetuksenPäätasonSuoritusEq: Eq.Eq<TaiteenPerusopetuksenPäätasonSuoritus> =
+  {
+    equals(x, y) {
+      return x.$class === y.$class
+    }
+  }

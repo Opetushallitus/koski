@@ -11,6 +11,7 @@ export type TabsProps<T> = CommonProps<{
 export type Tab<T> = {
   key: T
   label: string | LocalizedString
+  display?: React.ReactNode
 }
 
 export const Tabs = <T,>(props: TabsProps<T>) => {
@@ -37,7 +38,7 @@ export const Tabs = <T,>(props: TabsProps<T>) => {
               className="Tabs__button"
               onClick={() => select(tab.key)}
             >
-              {t(tab.label)}
+              {tab.display || t(tab.label)}
             </button>
           </li>
         ))}

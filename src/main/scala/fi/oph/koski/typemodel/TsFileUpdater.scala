@@ -5,7 +5,7 @@ import fi.oph.koski.koskiuser.UserWithAccessRights
 import fi.oph.koski.oppija.HenkilönOpiskeluoikeusVersiot
 import fi.oph.koski.organisaatio.OrganisaatioHierarkia
 import fi.oph.koski.preferences.KeyValue
-import fi.oph.koski.schema.{Arviointi, KoodiViite, KoskiSchema, OpiskeluoikeudenTila, Opiskeluoikeusjakso, SelitettyOsaamisenTunnustaminen, StorablePreference}
+import fi.oph.koski.schema.{Arviointi, KoodiViite, KoskiSchema, OpiskeluoikeudenTila, Opiskeluoikeusjakso, PäätasonSuoritus, SelitettyOsaamisenTunnustaminen, StorablePreference}
 import fi.oph.koski.typemodel.TypescriptTypes.Options
 
 import java.io.{BufferedWriter, File, FileWriter}
@@ -52,6 +52,7 @@ case class AdditionalExports(
   storablePreferenceKeyValue: KeyValue,
   userWithAccessRights: UserWithAccessRights,
   opiskeluoikeusHistoryPatch: OpiskeluoikeusHistoryPatch,
+  päätasonSuoritus: PäätasonSuoritus,
 
   // Traitit jotka eivæt automaattisesti exporttaudu skeemasta, koska ne eivät sellaisenaan
   // ole minkään tietomallin jäseniä (ainoastaan niistä periytyvät luokat on mainittu).
