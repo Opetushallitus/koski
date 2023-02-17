@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react'
 import { useGlobalErrors } from '../../appstate/globalErrors'
+import { testId } from '../CommonProps'
 import { ButtonGroup } from '../containers/ButtonGroup'
 import { FooterBar } from '../containers/FooterBar'
 import { FlatButton } from '../controls/FlatButton'
@@ -28,20 +29,23 @@ export const EditBar = <T extends object>(props: EditBarProps<T>) => {
   return props.form.editMode ? (
     <FooterBar>
       <ButtonGroup>
-        <FlatButton onClick={cancel}>{'Peruuta'}</FlatButton>
+        <FlatButton onClick={cancel} testId="opiskeluoikeus.cancelEdit">
+          {'Peruuta'}
+        </FlatButton>
         <RaisedButton
           disabled={!props.form.hasChanged || !props.form.isValid}
           onClick={save}
+          testId="opiskeluoikeus.save"
         >
           {'Tallenna'}
         </RaisedButton>
         {!props.form.hasChanged && (
-          <span>
+          <span {...testId({ testId: 'opiskeluoikeus.editStatus' })}>
             <Trans>{'Ei tallentamattomia muutoksia'}</Trans>
           </span>
         )}
         {!props.form.isValid && (
-          <span>
+          <span {...testId({ testId: 'opiskeluoikeus.editStatus' })}>
             <Trans>{'Korjaa virheelliset tiedot.'}</Trans>
           </span>
         )}

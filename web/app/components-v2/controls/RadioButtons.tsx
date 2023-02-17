@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { common, CommonProps, cx } from '../CommonProps'
+import { common, CommonProps, cx, testId } from '../CommonProps'
 import { FieldEditorProps } from '../forms/FormField'
 
 export type RadioButtonProps<T> = CommonProps<{
@@ -33,6 +33,7 @@ export const RadioButtons = <T,>(
               'RadioButtons__option',
               opt.disabled && 'RadioButtons__option--disabled'
             )}
+            {...testId(props, opt.key)}
           >
             <input
               id={id}

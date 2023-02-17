@@ -25,7 +25,7 @@ import {
 } from '../../util/organisaatiot'
 import { isHenkilövahvistus } from '../../util/schema'
 import { ClassOf } from '../../util/types'
-import { common, CommonProps } from '../CommonProps'
+import { common, CommonProps, subTestId } from '../CommonProps'
 import { Label } from '../containers/Label'
 import { Modal, ModalBody, ModalFooter, ModalTitle } from '../containers/Modal'
 import { DateEdit, DateView } from '../controls/DateField'
@@ -161,6 +161,7 @@ export const SuorituksenVahvistusModal = <
             path={pvmPath}
             view={DateView}
             edit={DateEdit}
+            testId={subTestId(props, 'date')}
           />
         </Label>
 
@@ -171,6 +172,7 @@ export const SuorituksenVahvistusModal = <
             optional
             view={KuntaView}
             edit={KuntaEdit}
+            testId={subTestId(props, 'paikkakunta')}
           />
         </Label>
 
@@ -183,6 +185,7 @@ export const SuorituksenVahvistusModal = <
             view={OrganisaatioView}
             edit={OrganisaatioEdit}
             editProps={{ include: [props.organisaatio] }}
+            testId={subTestId(props, 'organisaatio')}
           />
         </Label>
 
@@ -199,15 +202,22 @@ export const SuorituksenVahvistusModal = <
                 storedHenkilöt: castStoredMyöntäjät,
                 onRemoveStoredHenkilö
               }}
+              testId={subTestId(props, 'myöntäjät')}
             />
           </Label>
         )}
       </ModalBody>
       <ModalFooter>
-        <FlatButton onClick={props.onCancel}>{'Peruuta'}</FlatButton>
+        <FlatButton
+          onClick={props.onCancel}
+          testId={subTestId(props, 'cancel')}
+        >
+          {'Peruuta'}
+        </FlatButton>
         <RaisedButton
           onClick={onSubmit}
           disabled={A.isNonEmpty(form.errors) || !vahvistus}
+          testId={subTestId(props, 'submit')}
         >
           {'Merkitse valmiiksi'}
         </RaisedButton>

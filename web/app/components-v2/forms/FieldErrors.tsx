@@ -2,12 +2,13 @@ import * as A from 'fp-ts/Array'
 import * as string from 'fp-ts/string'
 import React, { useMemo } from 'react'
 import { tExists, tTemplate } from '../../i18n/i18n'
+import { common, CommonProps, testId } from '../CommonProps'
 import { ValidationError } from './validator'
 
-export type FieldErrorsProps = {
+export type FieldErrorsProps = CommonProps<{
   errors?: ValidationError[]
   localErrors?: ValidationError[]
-}
+}>
 
 export const FieldErrors: React.FC<FieldErrorsProps> = (props) => {
   const errors: ValidationError[] = useMemo(
@@ -21,7 +22,7 @@ export const FieldErrors: React.FC<FieldErrorsProps> = (props) => {
   )
 
   return A.isNonEmpty(errors) ? (
-    <ul className="FieldErrors">
+    <ul {...common(props, ['FieldErrors'])} {...testId(props, 'errors')}>
       {messages.map((message, index) => (
         <li key={index}>{message}</li>
       ))}

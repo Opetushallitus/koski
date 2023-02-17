@@ -1,6 +1,6 @@
 import React from 'react'
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
-import { common, CommonProps } from '../CommonProps'
+import { common, CommonProps, testId } from '../CommonProps'
 import { Trans } from '../texts/Trans'
 
 export type RaisedButtonType = 'default' | 'dangerzone'
@@ -20,6 +20,7 @@ export const RaisedButton = (props: RaisedButtonProps) => (
       props.fullWidth && 'RaisedButton__fullWidth',
       props.type && `RaisedButton__${props.type}`
     ])}
+    {...testId(props)}
     onClick={props.onClick}
     disabled={props.disabled}
   >

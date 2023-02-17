@@ -11,7 +11,7 @@ import {
   OrganisaatiohenkilöEq
 } from '../../util/henkilo'
 import { ClassOf } from '../../util/types'
-import { common, CommonProps } from '../CommonProps'
+import { common, CommonProps, subTestId, testId } from '../CommonProps'
 import { MultiField } from '../containers/MultiField'
 import { Removable } from '../controls/Removable'
 import { OptionList, Select, SelectOption } from '../controls/Select'
@@ -31,7 +31,7 @@ export const OrganisaatioHenkilötView = <T extends AnyOrganisaatiohenkilö>(
   return props.value ? (
     <ul {...common(props, ['OrganisaatioHenkilotView'])}>
       {props.value.map((a, i) => (
-        <li key={i}>
+        <li key={i} {...testId(props, i.toString())}>
           {a.nimi}
           {a.titteli && ` (${t(a.titteli)})`}
         </li>
@@ -66,7 +66,10 @@ export const OrganisaatioHenkilötEdit = <T extends AnyOrganisaatiohenkilö>(
     <ul {...common(props, ['ArvioitsijatEdit'])}>
       {(props.value || []).map((a, i) => (
         <li key={i}>
-          <Removable onClick={state.removeAt(i)}>
+          <Removable
+            onClick={state.removeAt(i)}
+            testId={subTestId(props, i.toString())}
+          >
             {!props.storedHenkilöt?.find((h) =>
               OrganisaatiohenkilöEq.equals(a, h)
             ) ? (
@@ -82,6 +85,7 @@ export const OrganisaatioHenkilötEdit = <T extends AnyOrganisaatiohenkilö>(
                     i === props.value.length - 1 &&
                     state.focusNew
                   }
+                  testId={subTestId(props, `new.${i}.nimi`)}
                 />
                 <TextEdit
                   placeholder="Titteli"
@@ -89,6 +93,7 @@ export const OrganisaatioHenkilötEdit = <T extends AnyOrganisaatiohenkilö>(
                   value={t(a.titteli)}
                   onChange={state.onChangeTitteli(i)}
                   errors={narrowErrorsToLeaf(`${i}.titteli`)(props.errors)}
+                  testId={subTestId(props, `new.${i}.titteli`)}
                 />
               </MultiField>
             ) : (
@@ -97,6 +102,7 @@ export const OrganisaatioHenkilötEdit = <T extends AnyOrganisaatiohenkilö>(
                 value={a.nimi}
                 onChange={state.updateHenkilö(i)}
                 onRemove={state.onRemoveStored}
+                testId={subTestId(props, i.toString())}
               />
             )}
           </Removable>
@@ -107,6 +113,7 @@ export const OrganisaatioHenkilötEdit = <T extends AnyOrganisaatiohenkilö>(
           options={state.newOptions}
           onChange={state.addHenkilö}
           onRemove={state.onRemoveStored}
+          testId={subTestId(props, 'add')}
         />
       </li>
     </ul>
@@ -176,7 +183,8 @@ const useOrganisaatioHenkilöState = <T extends AnyOrganisaatiohenkilö>(
         key: h.nimi,
         label: `${h.nimi}${h.titteli ? ` (${t(h.titteli)})` : ''}`,
         value: h,
-        removable: true
+        removable: true,
+        testId: h.nimi
       })) || [],
     [props.storedHenkilöt]
   )
@@ -190,7 +198,8 @@ const useOrganisaatioHenkilöState = <T extends AnyOrganisaatiohenkilö>(
               label: 'Lisää henkilö',
               display: (
                 <IconLabel charCode={CHARCODE_ADD}>{'Lisää henkilö'}</IconLabel>
-              )
+              ),
+              testId: 'add'
             }
           ]
         : []),

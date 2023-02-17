@@ -45,6 +45,7 @@ export type ActivePäätasonSuoritus<T extends Opiskeluoikeus> = {
   index: number
   path: FormOptic<T, PäätasonSuoritusOf<T>>
   suoritus: PäätasonSuoritusOf<T>
+  testId: string
 }
 
 export const EditorContainer = <T extends Opiskeluoikeus>(
@@ -83,7 +84,8 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
     () => [
       ...props.form.state.suoritukset.map((s, i) => ({
         key: i,
-        label: props.suorituksenNimi?.(s) || defaultSuorituksenNimi(s)
+        label: props.suorituksenNimi?.(s) || defaultSuorituksenNimi(s),
+        testId: `suoritukset.${i}.tab`
       })),
       ...(props.suorituksenLisäys && props.onCreateSuoritus
         ? [
@@ -98,7 +100,8 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
                   />{' '}
                   {t(props.suorituksenLisäys)}
                 </>
-              )
+              ),
+              testId: `suoritukset.addNew`
             }
           ]
         : [])
@@ -126,6 +129,7 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
           enableValmistuminen: suorituksetVahvistettu,
           createJakso: props.createOpiskeluoikeusjakso
         }}
+        testId="opiskeluoikeus.tila"
       />
       <Spacer />
 
@@ -157,7 +161,8 @@ export const usePäätasonSuoritus = <T extends Opiskeluoikeus>(
     () => ({
       index,
       suoritus: form.state.suoritukset[index],
-      path: päätasonSuoritusPath(index)
+      path: päätasonSuoritusPath(index),
+      testId: `suoritukset.${index}`
     }),
     [form.state.suoritukset, index]
   )

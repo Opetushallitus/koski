@@ -10,7 +10,7 @@ import * as C from '../../util/constraints'
 import { koodiviiteId, KoodiviiteWithOptionalUri } from '../../util/koodisto'
 import { viimeisinArviointi } from '../../util/schema'
 import { schemaClassName } from '../../util/types'
-import { common, CommonProps } from '../CommonProps'
+import { common, CommonProps, testId } from '../CommonProps'
 import {
   groupKoodistoToOptions,
   OptionList,
@@ -33,7 +33,9 @@ export const ArvosanaView = <T extends Arviointi>(
 ) => {
   const arviointi = props.value && viimeisinArviointi(props.value)
   return arviointi ? (
-    <span {...common(props)}>{t(arviointi.arvosana?.nimi)}</span>
+    <span {...common(props)} {...testId(props)}>
+      {t(arviointi.arvosana?.nimi)}
+    </span>
   ) : null
 }
 
@@ -85,6 +87,7 @@ export const ArvosanaEdit = <T extends Arviointi>(
         value={selectedValue}
         options={groupedKoodisto as OptionList<ArvosanaOf<T>>}
         onChange={onChange}
+        testId={props.testId}
       />
     )
   )

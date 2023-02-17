@@ -4,7 +4,7 @@ import { localize, t } from '../../i18n/i18n'
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
 import { PaikallinenKoodi } from '../../types/fi/oph/koski/schema/PaikallinenKoodi'
 import { allLanguages } from '../../util/optics'
-import { CommonProps } from '../CommonProps'
+import { common, CommonProps, subTestId } from '../CommonProps'
 import { Modal, ModalBody, ModalFooter, ModalTitle } from '../containers/Modal'
 import { FlatButton } from '../controls/FlatButton'
 import { RaisedButton } from '../controls/RaisedButton'
@@ -84,9 +84,14 @@ export const PaikallinenOsasuoritusSelect: React.FC<
         hideEmpty
         onChange={onChangeCB}
         onRemove={onRemoveCB}
+        testId={subTestId(props, 'button')}
       />
       {modalIsVisible && (
-        <UusiOsasuoritusModal onClose={hideModal} onSubmit={onCreateNew} />
+        <UusiOsasuoritusModal
+          onClose={hideModal}
+          onSubmit={onCreateNew}
+          testId={subTestId(props, 'modal')}
+        />
       )}
     </>
   )
@@ -97,10 +102,10 @@ const emptyPaikallinenKoodi = PaikallinenKoodi({
   nimi: localize('')
 })
 
-type UusiOsasuoritusModalProps = {
+type UusiOsasuoritusModalProps = CommonProps<{
   onClose: () => void
   onSubmit: (paikallinenKoodi: PaikallinenKoodi) => void
-}
+}>
 
 const UusiOsasuoritusModal: React.FC<UusiOsasuoritusModalProps> = (props) => {
   const paikallinenKoodiSchema = useSchema('PaikallinenKoodi')
@@ -122,7 +127,7 @@ const UusiOsasuoritusModal: React.FC<UusiOsasuoritusModalProps> = (props) => {
   )
 
   return (
-    <Modal onClose={props.onClose}>
+    <Modal {...common(props)} onClose={props.onClose}>
       <ModalTitle>{t('Lisää osasuoritus')}</ModalTitle>
       <ModalBody>
         <FormField
@@ -136,13 +141,20 @@ const UusiOsasuoritusModal: React.FC<UusiOsasuoritusModalProps> = (props) => {
               {...editProps}
               placeholder={t('Osasuorituksen nimi')}
               autoFocus
+              testId={subTestId(props, 'nimi.edit')}
             />
           )}
         />
       </ModalBody>
       <ModalFooter>
-        <FlatButton onClick={props.onClose}>{'Peruuta'}</FlatButton>
-        <RaisedButton disabled={!form.isValid} onClick={onSubmitCB}>
+        <FlatButton onClick={props.onClose} testId={subTestId(props, 'cancel')}>
+          {'Peruuta'}
+        </FlatButton>
+        <RaisedButton
+          disabled={!form.isValid}
+          onClick={onSubmitCB}
+          testId={subTestId(props, 'submit')}
+        >
           {'Lisää'}
         </RaisedButton>
       </ModalFooter>

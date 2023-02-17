@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { t } from '../../i18n/i18n'
 import { useLayout } from '../../util/useDepth'
-import { CommonProps } from '../CommonProps'
+import { CommonProps, subTestId } from '../CommonProps'
 import {
   Column,
   ColumnRow,
@@ -9,6 +9,7 @@ import {
   mapResponsiveValue,
   ResponsiveValue
 } from '../containers/Columns'
+import { Section } from '../containers/Section'
 import { ExpandButton } from '../controls/ExpandButton'
 import { IconButton } from '../controls/IconButton'
 import { CHARCODE_REMOVE } from '../texts/Icon'
@@ -22,6 +23,8 @@ export type OsasuoritusTableProps<DATA_KEYS extends string> = CommonProps<{
 }>
 
 export type OsasuoritusRowData<DATA_KEYS extends string> = {
+  suoritusIndex: number
+  osasuoritusIndex: number
   columns: Record<DATA_KEYS, React.ReactNode>
   content?: React.ReactElement
 }
@@ -40,6 +43,7 @@ export const OsasuoritusTable = <DATA_KEYS extends string>(
           editMode={props.editMode}
           row={row}
           onRemove={props.onRemove ? () => props.onRemove?.(index) : undefined}
+          testId={`suoritukset.${row.suoritusIndex}.osasuoritukset.${row.osasuoritusIndex}`}
         />
       ))}
     </>
@@ -99,6 +103,7 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
               expanded={isOpen}
               onChange={setOpen}
               label={t('Osasuoritus')}
+              testId={subTestId(props, 'expand')}
             />
           )}
         </Column>
@@ -117,13 +122,18 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
                 label={t('Poista')}
                 size="input"
                 onClick={props.onRemove}
+                testId={subTestId(props, 'delete')}
               />
             )}
           </Column>
         )}
       </ColumnRow>
       {isOpen && props.row.content && (
-        <LayoutProvider indent={1}>{props.row.content}</LayoutProvider>
+        <LayoutProvider indent={1}>
+          <Section testId={subTestId(props, 'properties')}>
+            {props.row.content}
+          </Section>
+        </LayoutProvider>
       )}
     </>
   )
@@ -153,3 +163,11 @@ const getSpans = (dataObj: object, depth?: number, canRemove?: boolean) => {
     nameHeader
   }
 }
+
+export const osasuoritusTestId = (
+  suoritusIndex: number,
+  osasuoritusIndex: number,
+  subItem?: string
+): string =>
+  `suoritukset.${suoritusIndex}.osasuoritukset.${osasuoritusIndex}` +
+  (subItem ? `.${subItem}` : '')

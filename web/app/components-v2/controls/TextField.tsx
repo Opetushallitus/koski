@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback, useState } from 'react'
-import { common, CommonProps, cx } from '../CommonProps'
+import { common, CommonProps, cx, testId } from '../CommonProps'
 import { FieldErrors } from '../forms/FieldErrors'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
 
@@ -40,6 +40,7 @@ export const TextEdit: React.FC<TextEditProps> = (props) => {
         value={internalValue}
         onChange={onChangeCB}
         autoFocus={props.autoFocus}
+        {...testId(props, 'input')}
       />
       <FieldErrors errors={props.errors} />
     </label>
@@ -66,6 +67,7 @@ export const MultilineTextEdit: React.FC<TextEditProps> = (props) => {
         value={props.value}
         onChange={onChangeCB}
         autoFocus={props.autoFocus}
+        {...testId(props, 'input')}
       />
       <FieldErrors errors={props.errors} />
     </label>

@@ -25,7 +25,10 @@ export const OpiskeluoikeusEditToolbar = (
 
   return (
     <ColumnRow>
-      <Column span={{ default: spans[0], phone: 24 }}>
+      <Column
+        span={{ default: spans[0], phone: 24 }}
+        testId="opiskeluoikeus.voimassaoloaika"
+      >
         <Trans>{'Opiskeluoikeuden voimassaoloaika'}</Trans>
         {': '}
         {formatDateRange(
@@ -44,7 +47,11 @@ export const OpiskeluoikeusEditToolbar = (
               <MitätöintiButton opiskeluoikeusOid={opiskeluoikeusOid} />
             )
           ) : (
-            <RaisedButton fullWidth onClick={props.onStartEdit}>
+            <RaisedButton
+              fullWidth
+              onClick={props.onStartEdit}
+              testId="opiskeluoikeus.edit"
+            >
               {'Muokkaa'}
             </RaisedButton>
           )}
@@ -70,15 +77,22 @@ const MitätöintiButton: React.FC<MitätöintiButtonProps> = (props) => {
       <RaisedButton
         type="dangerzone"
         onClick={() => invalidate.call(props.opiskeluoikeusOid)}
+        testId="opiskeluoikeus.invalidate.confirm"
       >
         {'Vahvista mitätöinti, operaatiota ei voi peruuttaa'}
       </RaisedButton>
-      <FlatButton onClick={() => setConfirmationVisible(false)}>
+      <FlatButton
+        onClick={() => setConfirmationVisible(false)}
+        testId="opiskeluoikeus.invalidate.cancel"
+      >
         {'Peruuta mitätöinti'}
       </FlatButton>
     </>
   ) : (
-    <FlatButton onClick={() => setConfirmationVisible(true)}>
+    <FlatButton
+      onClick={() => setConfirmationVisible(true)}
+      testId="opiskeluoikeus.invalidate.button"
+    >
       {'Mitätöi opiskeluoikeus'}
     </FlatButton>
   )

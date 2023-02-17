@@ -1,5 +1,5 @@
 import React from 'react'
-import { common, CommonProps } from '../CommonProps'
+import { common, CommonProps, testId } from '../CommonProps'
 import { CHARCODE_CLOSE, CHARCODE_OPEN, Icon } from '../texts/Icon'
 
 export type ExpandButtonProps = CommonProps<{
@@ -12,6 +12,7 @@ export type ExpandButtonProps = CommonProps<{
 export const ExpandButton: React.FC<ExpandButtonProps> = (props) => (
   <button
     {...common(props, ['ExpandButton'])}
+    {...testId(props)}
     onClick={() => props.onChange(!props.expanded)}
     role="button"
     aria-expanded={false}

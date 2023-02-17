@@ -36,23 +36,28 @@ export const TaiteenPerusopetuksenTiedot: React.FC<
     [osasuorituksetPath]
   )
 
+  const testIdPrefix = `suoritukset.${päätasonSuoritus.index}`
+
   return (
     <KeyValueTable>
-      <KeyValueRow name="Taiteenala">
+      <KeyValueRow label="Taiteenala" testId={`${testIdPrefix}.taiteenala`}>
         <Trans>
           {päätasonSuoritus.suoritus.koulutusmoduuli.taiteenala.nimi}
         </Trans>
       </KeyValueRow>
-      <KeyValueRow name="Oppimäärä">
+      <KeyValueRow label="Oppimäärä" testId={`${testIdPrefix}.oppimäärä`}>
         <Trans>{opiskeluoikeus.oppimäärä.nimi}</Trans>
       </KeyValueRow>
-      <KeyValueRow name="Koulutuksen toteutustapa">
+      <KeyValueRow
+        label="Koulutuksen toteutustapa"
+        testId={`${testIdPrefix}.koulutuksenToteutustapa`}
+      >
         <Trans>{form.state.koulutuksenToteutustapa.nimi}</Trans>
       </KeyValueRow>
-      <KeyValueRow name="Oppilaitos">
+      <KeyValueRow label="Oppilaitos" testId={`${testIdPrefix}.oppilaitos`}>
         <Trans>{opiskeluoikeus.oppilaitos?.nimi}</Trans>
       </KeyValueRow>
-      <KeyValueRow name="Laajuus">
+      <KeyValueRow label="Laajuus" testId={`${testIdPrefix}.laajuus`}>
         <FormField
           form={form}
           path={opiskeluoikeudenLaajuusPath}

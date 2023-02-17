@@ -1,17 +1,16 @@
-import * as E from 'fp-ts/Either'
 import { isNonEmpty } from 'fp-ts/lib/Array'
-import { pipe } from 'fp-ts/lib/function'
 import React, { useCallback, useMemo, useState } from 'react'
-import { isSuccess, useApiMethod } from '../api-fetch'
 import { useSchema } from '../appstate/constraints'
 import { useKoodistoFiller } from '../appstate/koodisto'
 import { assortedPreferenceType, usePreferences } from '../appstate/preferences'
 import { KansalainenOnly } from '../components-v2/access/KansalainenOnly'
+import { subTestId } from '../components-v2/CommonProps'
 import { Column, ColumnRow } from '../components-v2/containers/Columns'
 import {
   EditorContainer,
   usePäätasonSuoritus
 } from '../components-v2/containers/EditorContainer'
+import { LocalizedTextView } from '../components-v2/controls/LocalizedTestField'
 import { RemoveArrayItemField } from '../components-v2/controls/RemoveArrayItemField'
 import { FormField } from '../components-v2/forms/FormField'
 import { FormModel, FormOptic, useForm } from '../components-v2/forms/FormModel'
@@ -29,12 +28,12 @@ import {
 import { PäätasonSuorituksenSuostumuksenPeruminen } from '../components-v2/opiskeluoikeus/OpiskeluoikeudenSuostumuksenPeruminen'
 import { OpiskeluoikeusTitle } from '../components-v2/opiskeluoikeus/OpiskeluoikeusTitle'
 import {
+  osasuoritusTestId,
   OsasuoritusRowData,
   OsasuoritusTable
 } from '../components-v2/opiskeluoikeus/OsasuoritusTable'
 import { PaikallinenOsasuoritusSelect } from '../components-v2/opiskeluoikeus/PaikallinenOsasuoritusSelect'
 import { SuorituksenVahvistusField } from '../components-v2/opiskeluoikeus/SuorituksenVahvistus'
-import { Trans } from '../components-v2/texts/Trans'
 import { localize, t } from '../i18n/i18n'
 import { LaajuusOpintopisteissä } from '../types/fi/oph/koski/schema/LaajuusOpintopisteissa'
 import { PaikallinenKoodi } from '../types/fi/oph/koski/schema/PaikallinenKoodi'
@@ -44,11 +43,6 @@ import { TaiteenPerusopetuksenPäätasonSuoritus } from '../types/fi/oph/koski/s
 import { TaiteenPerusopetuksenPaikallinenOpintokokonaisuus } from '../types/fi/oph/koski/schema/TaiteenPerusopetuksenPaikallinenOpintokokonaisuus'
 import { TaiteenPerusopetuksenPaikallisenOpintokokonaisuudenSuoritus } from '../types/fi/oph/koski/schema/TaiteenPerusopetuksenPaikallisenOpintokokonaisuudenSuoritus'
 import { append, deleteAt, isSingularArray } from '../util/fp/arrays'
-import { deletePäätasonSuoritus } from '../util/koskiApi'
-import {
-  getOpiskeluoikeusOid,
-  mergeOpiskeluoikeusVersionumero
-} from '../util/opiskeluoikeus'
 import { TaiteenPerusopetuksenTiedot } from './TaiteenPerusopetuksenTiedot'
 import {
   createTpoArviointi,
@@ -231,6 +225,7 @@ export const TaiteenPerusopetusEditor = (
                   confirm: 'Vahvista poisto, operaatiota ei voi peruuttaa',
                   cancel: 'Peruuta poisto'
                 }}
+                testId={`${päätasonSuoritus.testId}.invalidate`}
               />
             </Column>
           </ColumnRow>
@@ -249,6 +244,7 @@ export const TaiteenPerusopetusEditor = (
           disableAdd={
             !minimimääräArvioitujaOsasuorituksia(päätasonSuoritus.suoritus)
           }
+          testId={päätasonSuoritus.testId}
         />
         <Spacer />
 
@@ -262,6 +258,7 @@ export const TaiteenPerusopetusEditor = (
                     osasuoritusToTableRow(
                       form,
                       päätasonSuoritus.path,
+                      päätasonSuoritus.index,
                       osasuoritusIndex
                     )
                 )}
@@ -279,6 +276,7 @@ export const TaiteenPerusopetusEditor = (
                 tunnisteet={storedOsasuoritustunnisteet}
                 onSelect={onAddOsasuoritus}
                 onRemove={onRemoveStoredOsasuoritus}
+                testId={subTestId(päätasonSuoritus, 'add')}
               />
             </Column>
           </ColumnRow>
@@ -294,6 +292,7 @@ const osasuoritusToTableRow = (
     TaiteenPerusopetuksenOpiskeluoikeus,
     TaiteenPerusopetuksenPäätasonSuoritus
   >,
+  suoritusIndex: number,
   osasuoritusIndex: number
 ): OsasuoritusRowData<'Kurssi' | 'Laajuus' | 'Arviointi'> => {
   const osasuoritus = suoritusPath
@@ -302,12 +301,15 @@ const osasuoritusToTableRow = (
     .at(osasuoritusIndex)
 
   return {
+    suoritusIndex,
+    osasuoritusIndex,
     columns: {
       Kurssi: (
         <FormField
           form={form}
           path={osasuoritus.path('koulutusmoduuli.tunniste.nimi')}
-          view={(props) => <Trans>{props.value}</Trans>}
+          view={LocalizedTextView}
+          testId={osasuoritusTestId(suoritusIndex, osasuoritusIndex, 'nimi')}
         />
       ),
       Laajuus: (
@@ -316,6 +318,7 @@ const osasuoritusToTableRow = (
           path={osasuoritus.path('koulutusmoduuli.laajuus')}
           view={LaajuusView}
           edit={LaajuusOpintopisteissäEdit}
+          testId={osasuoritusTestId(suoritusIndex, osasuoritusIndex, 'laajuus')}
         />
       ),
       Arviointi: (
@@ -326,15 +329,16 @@ const osasuoritusToTableRow = (
           edit={(props) => (
             <ArvosanaEdit {...props} createArviointi={createTpoArviointi} />
           )}
+          testId={osasuoritusTestId(
+            suoritusIndex,
+            osasuoritusIndex,
+            'arvosana'
+          )}
         />
       )
     },
     content: (
-      <TpoOsasuoritusProperties
-        key="lol"
-        form={form}
-        osasuoritusPath={osasuoritus}
-      />
+      <TpoOsasuoritusProperties form={form} osasuoritusPath={osasuoritus} />
     )
   }
 }

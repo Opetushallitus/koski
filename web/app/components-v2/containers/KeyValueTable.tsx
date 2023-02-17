@@ -2,9 +2,14 @@ import { constant } from 'fp-ts/lib/function'
 import { isNumber } from 'fp-ts/lib/number'
 import React, { useMemo } from 'react'
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
-import { mapTimes } from '../../util/fp/arrays'
+import { mapTimes, nonNull } from '../../util/fp/arrays'
 import { sum } from '../../util/numbers'
-import { common, CommonProps, CommonPropsWithChildren } from '../CommonProps'
+import {
+  common,
+  CommonProps,
+  CommonPropsWithChildren,
+  subTestId
+} from '../CommonProps'
 import { Trans } from '../texts/Trans'
 import {
   Column,
@@ -22,7 +27,7 @@ export const KeyValueTable = (props: KeyValueTableProps) => (
 )
 
 export type KeyValueRowProps = CommonPropsWithChildren<{
-  name?: string | LocalizedString
+  label?: string | LocalizedString
   indent?: number
 }>
 
@@ -37,13 +42,14 @@ export const KeyValueRow = (props: KeyValueRowProps) => {
         valign="top"
         component="span"
       >
-        <Trans>{props.name}</Trans>
+        <Trans>{props.label}</Trans>
       </Column>
       <Column
         className="KeyValueRow__value"
         span={{ default: 20 - indent, small: 16 - indent, phone: 12 - indent }}
         valign="top"
         component="span"
+        testId={subTestId(props, 'value')}
       >
         {props.children}
       </Column>
@@ -55,6 +61,7 @@ export type KeyColumnedValuesRowProps = CommonProps<{
   name?: string | LocalizedString
   children: React.ReactNode[]
   columnSpans?: ResponsiveValue<Array<number | '*'>>
+  testIds?: string[]
 }>
 
 const NAME_WIDTH: ResponsiveValue<number> = { default: 4 }
@@ -87,6 +94,9 @@ export const KeyColumnedValuesRow = (props: KeyColumnedValuesRowProps) => {
           valign="top"
           component="span"
           key={index}
+          testId={[props.testId, props.testIds?.[index]]
+            .filter(nonNull)
+            .join('.')}
         >
           {child}
         </Column>

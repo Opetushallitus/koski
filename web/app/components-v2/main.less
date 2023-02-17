@@ -3,6 +3,22 @@
 @v-padding: 2 * @baseline;
 @padding: @v-padding @h-padding;
 
+// Debuggaustyylit nopeaan test-id:ttömien komponenttien löytämiseen
+/*
+*[data-testid] {
+  border: 2px solid green !important;
+  border-style: dotted !important;
+}
+
+*[data-testid^='osasuoritukset'] {
+  border-style: dashed !important;
+}
+
+*[data-testid^='suoritukset'] {
+  border-style: solid !important;
+}
+*/
+
 @import 'containers/ButtonGroup';
 @import 'containers/Columns';
 @import 'containers/ContentContainer';

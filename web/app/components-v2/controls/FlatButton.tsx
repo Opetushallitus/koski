@@ -1,6 +1,6 @@
 import React from 'react'
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
-import { common, CommonProps } from '../CommonProps'
+import { common, CommonProps, testId } from '../CommonProps'
 import { Trans } from '../texts/Trans'
 
 export type FlatButtonProps = CommonProps<{
@@ -16,6 +16,7 @@ export const FlatButton = (props: FlatButtonProps) => (
       'FlatButton',
       props.fullWidth && 'FlatButton__fullWidth'
     ])}
+    {...testId(props)}
     onClick={props.onClick}
     disabled={props.disabled}
   >

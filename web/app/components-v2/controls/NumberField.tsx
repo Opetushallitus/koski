@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { CommonProps, cx, common } from '../CommonProps'
+import { CommonProps, cx, common, testId } from '../CommonProps'
 
 export type NumberFieldProps = CommonProps<{
   value?: number
@@ -30,6 +30,7 @@ export const NumberField: React.FC<NumberFieldProps> = (props) => {
         type="number"
         value={internalValue}
         onChange={onChangeCB}
+        {...testId(props, 'input')}
       />
     </div>
   )
