@@ -1,15 +1,17 @@
 import React from 'react'
+import { common, CommonProps } from '../CommonProps'
+import { CHARCODE_CLOSE, CHARCODE_OPEN, Icon } from '../texts/Icon'
 
-export type ExpandButtonProps = {
+export type ExpandButtonProps = CommonProps<{
   expanded: boolean
   onChange: (expanded: boolean) => void
   label: string
   disabled?: boolean
-}
+}>
 
 export const ExpandButton: React.FC<ExpandButtonProps> = (props) => (
-  <a
-    className="toggle-expand"
+  <button
+    {...common(props, ['ExpandButton'])}
     onClick={() => props.onChange(!props.expanded)}
     role="button"
     aria-expanded={false}
@@ -17,7 +19,6 @@ export const ExpandButton: React.FC<ExpandButtonProps> = (props) => (
       props.expanded ? `Pienennä ${props.label}` : `Laajenna ${props.label}`
     }
   >
-    {/* eslint-disable-next-line react/jsx-no-literals */}
-    {props.expanded ? <>&#61766;</> : <>&#61694;</>}
-  </a>
+    <Icon charCode={props.expanded ? CHARCODE_CLOSE : CHARCODE_OPEN} />
+  </button>
 )

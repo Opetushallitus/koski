@@ -6,7 +6,14 @@ import { mapTimes } from '../../util/fp/arrays'
 import { sum } from '../../util/numbers'
 import { common, CommonProps, CommonPropsWithChildren } from '../CommonProps'
 import { Trans } from '../texts/Trans'
-import { Column, ColumnRow, COLUMN_COUNT } from './Columns'
+import {
+  Column,
+  ColumnRow,
+  COLUMN_COUNT,
+  getResponsiveValueAt,
+  mapResponsiveValue,
+  ResponsiveValue
+} from './Columns'
 
 export type KeyValueTableProps = CommonPropsWithChildren
 
@@ -19,13 +26,14 @@ export type KeyValueRowProps = CommonPropsWithChildren<{
   indent?: number
 }>
 
-export const KeyValueRow = (props: KeyValueRowProps) =>
-  props.children ? (
+export const KeyValueRow = (props: KeyValueRowProps) => {
+  const indent = props.indent || 0
+  return props.children ? (
     <ColumnRow component="li" {...common(props, ['KeyValueRow'])}>
       {props.indent && <Column span={props.indent} />}
       <Column
         className="KeyValueRow__name"
-        span={4}
+        span={{ default: 4, small: 8, phone: 12 }}
         valign="top"
         component="span"
       >
@@ -33,7 +41,7 @@ export const KeyValueRow = (props: KeyValueRowProps) =>
       </Column>
       <Column
         className="KeyValueRow__value"
-        span={20 - (props.indent || 0)}
+        span={{ default: 20 - indent, small: 16 - indent, phone: 12 - indent }}
         valign="top"
         component="span"
       >
@@ -41,23 +49,21 @@ export const KeyValueRow = (props: KeyValueRowProps) =>
       </Column>
     </ColumnRow>
   ) : null
+}
 
 export type KeyColumnedValuesRowProps = CommonProps<{
   name?: string | LocalizedString
   children: React.ReactNode[]
-  columnSpans?: Array<number | '*'>
+  columnSpans?: ResponsiveValue<Array<number | '*'>>
 }>
 
-export const KeyColumnedValuesRow = (props: KeyColumnedValuesRowProps) => {
-  const NAME_WIDTH = 4
+const NAME_WIDTH: ResponsiveValue<number> = { default: 4 }
+const VALUE_AREA_WIDTH = COLUMN_COUNT - NAME_WIDTH.default
 
+export const KeyColumnedValuesRow = (props: KeyColumnedValuesRowProps) => {
   const spans = useMemo(() => {
-    const VALUE_AREA_WIDTH = COLUMN_COUNT - NAME_WIDTH
     if (props.columnSpans) {
-      const fixed = sum(props.columnSpans.filter(isNumber) || [])
-      const autoWidths = props.columnSpans.filter((s) => s === '*').length || 1
-      const autoWidth = Math.min((VALUE_AREA_WIDTH - fixed) / autoWidths)
-      return props.columnSpans.map((s) => (s === '*' ? autoWidth : s))
+      return mapResponsiveValue(calculateAutomaticWidths)(props.columnSpans)
     } else {
       const autoWidth = Math.min(VALUE_AREA_WIDTH / props.children.length)
       return mapTimes(props.children.length, constant(autoWidth))
@@ -77,7 +83,7 @@ export const KeyColumnedValuesRow = (props: KeyColumnedValuesRowProps) => {
       {props.children.map((child, index) => (
         <Column
           className="KeyValueRow__value"
-          span={spans[index] || 4}
+          span={getResponsiveValueAt(index)(spans) || 4}
           valign="top"
           component="span"
           key={index}
@@ -87,4 +93,13 @@ export const KeyColumnedValuesRow = (props: KeyColumnedValuesRowProps) => {
       ))}
     </ColumnRow>
   ) : null
+}
+
+const calculateAutomaticWidths = (
+  columnSpans: Array<number | '*'>
+): number[] => {
+  const fixed = sum(columnSpans.filter(isNumber) || [])
+  const autoWidths = columnSpans.filter((s) => s === '*').length || 1
+  const autoWidth = Math.min((VALUE_AREA_WIDTH - fixed) / autoWidths)
+  return columnSpans.map((s) => (s === '*' ? autoWidth : s))
 }

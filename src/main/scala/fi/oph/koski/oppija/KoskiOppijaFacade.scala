@@ -312,7 +312,8 @@ class KoskiOppijaFacade(
               | _: InternationalSchoolOpiskeluoikeus
               | _: EuropeanSchoolOfHelsinkiOpiskeluoikeus
               | _: IBOpiskeluoikeus
-              | _: EsiopetuksenOpiskeluoikeus, _) => delete(päätasonSuoritus, oo)
+              | _: EsiopetuksenOpiskeluoikeus
+              | _: TaiteenPerusopetuksenOpiskeluoikeus, _) => delete(päätasonSuoritus, oo)
         case (_, _: LukionOppiaineenOppimääränSuoritus2015) => delete(päätasonSuoritus, oo)
         case _ => Left(KoskiErrorCategory.forbidden(s"Suoritusten tyyppiä ${päätasonSuoritus.tyyppi.koodiarvo} poisto ei ole sallittu"))
       }

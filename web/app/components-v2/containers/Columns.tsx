@@ -1,5 +1,6 @@
 import React from 'react'
 import { nonNull } from '../../util/fp/arrays'
+import { mapRecordValues } from '../../util/fp/objects'
 import { common, CommonProps } from '../CommonProps'
 
 export const COLUMN_COUNT = 24
@@ -28,14 +29,14 @@ export const ColumnRow = (props: ColumnRowProps) => {
   )
 }
 
-export type ResponsiveValue<T extends string | number> =
-  | T
-  | {
-      default: T
-      phone?: T
-      small?: T
-      large?: T
-    }
+export type ResponsiveValueObj<T> = {
+  default: T
+  phone?: T
+  small?: T
+  large?: T
+}
+export type ResponsiveValueTarget = keyof ResponsiveValueObj<any>
+export type ResponsiveValue<T> = T | ResponsiveValueObj<T>
 
 export type ColumnProps = CommonProps<{
   component?: React.ComponentClass | string
@@ -88,3 +89,20 @@ const responsiveClassNames = <T extends string | number>(
         .map(([name, t]) => (t ? build(name, t) : null))
         .filter(nonNull)
     : [build('default', value)]
+
+export const isResponsiveValueObj = <T,>(
+  a: ResponsiveValue<T>
+): a is ResponsiveValueObj<T> =>
+  typeof a === 'object' && a !== null && (a as any).default !== undefined
+
+export const mapResponsiveValue =
+  <T, S>(f: (t: T) => S) =>
+  (v: ResponsiveValue<T>): ResponsiveValue<S> =>
+    isResponsiveValueObj<T>(v)
+      ? (mapRecordValues(f)(v) as ResponsiveValue<S>)
+      : f(v)
+
+export const getResponsiveValueAt =
+  (index: number) =>
+  <T,>(value: ResponsiveValue<T[]>): ResponsiveValue<T> =>
+    mapResponsiveValue((as: T[]) => as[index])(value)

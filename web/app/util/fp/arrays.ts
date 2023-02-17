@@ -94,3 +94,6 @@ export const shallowEqual = (as: any[], bs: any[]): boolean => {
   }
   return !as.find((a, index) => a !== bs[index])
 }
+
+export const isSingularArray = <T>(as: T[]): as is NonEmptyArray<T> =>
+  as.length === 1

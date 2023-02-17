@@ -59,7 +59,7 @@ export type FormModel<O extends object> = {
    */
   readonly save: <T>(
     api: (data: O) => Promise<ApiResponse<T>>,
-    merge: (data: O, response: T) => O
+    merge: (response: T) => (data: O) => O
   ) => void
 
   /**
@@ -136,13 +136,13 @@ export const useForm = <O extends object>(
   const save: FormModelProp<'save'> = useCallback(
     async <T>(
       api: (data: O) => Promise<ApiResponse<T>>,
-      merge: (data: O, response: T) => O
+      merge: (response: T) => (data: O) => O
     ) => {
       if (editMode) {
         pipe(
           await api(data),
           tap((response) =>
-            dispatch({ type: 'endEdit', value: merge(data, response.data) })
+            dispatch({ type: 'endEdit', value: merge(response.data)(data) })
           ),
           tapLeft((errorResponse) =>
             setErrors(
@@ -286,12 +286,16 @@ const reducer = <O>(
   }
 }
 
-export type FormOptic<S, A> = $.Lens<S, any, A> | $.Prism<S, any, A>
+export type FormOptic<S, A> =
+  | $.Equivalence<S, any, A>
+  | $.Lens<S, any, A>
+  | $.Prism<S, any, A>
 
 export const getValue =
   <S, A>(optic: FormOptic<S, A>) =>
   (source: S): A | undefined => {
     switch (optic._tag) {
+      case 'Equivalence':
       case 'Lens':
         return $.get(optic)(source)
       case 'Prism':
@@ -306,6 +310,7 @@ const modifyValue =
   (fn: (a: A) => A) =>
   (source: S): S => {
     switch (optic._tag) {
+      case 'Equivalence':
       case 'Lens':
       case 'Prism':
         return $.modify(optic)(fn)(source)

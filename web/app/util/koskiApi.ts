@@ -6,6 +6,7 @@ import { KeyValue } from '../types/fi/oph/koski/preferences/KeyValue'
 import { OidHenkilö } from '../types/fi/oph/koski/schema/OidHenkilo'
 import { Opiskeluoikeus } from '../types/fi/oph/koski/schema/Opiskeluoikeus'
 import { Oppija } from '../types/fi/oph/koski/schema/Oppija'
+import { PäätasonSuoritus } from '../types/fi/oph/koski/schema/PaatasonSuoritus'
 import { StorablePreference } from '../types/fi/oph/koski/schema/StorablePreference'
 import { Constraint } from '../types/fi/oph/koski/typemodel/Constraint'
 import { GroupedKoodistot } from '../types/fi/oph/koski/typemodel/GroupedKoodistot'
@@ -50,6 +51,22 @@ export const saveOpiskeluoikeus =
         }
       )
     )
+
+export const deletePäätasonSuoritus = (
+  opiskeluoikeusOid: string,
+  versionumero: number,
+  suoritus: PäätasonSuoritus
+) =>
+  handleExpiredSession(
+    apiPost<HenkilönOpiskeluoikeusVersiot>(
+      apiUrl(
+        `opiskeluoikeus/${opiskeluoikeusOid}/${versionumero}/delete-paatason-suoritus`
+      ),
+      {
+        body: suoritus
+      }
+    )
+  )
 
 export const fetchKoodistot = (koodistoUris: string[]) =>
   handleExpiredSession(

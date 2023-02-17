@@ -1,5 +1,9 @@
-import React, { useCallback, useMemo, useState } from 'react'
-import { isSuccess, useApiWithParams } from '../../api-fetch'
+import React, { useCallback, useMemo, useRef, useState } from 'react'
+import {
+  createPreferLocalCache,
+  isSuccess,
+  useApiWithParams
+} from '../../api-fetch'
 import { formatYearRange, ISO2FinnishDateTime } from '../../date/date'
 import { t } from '../../i18n/i18n'
 import { Opiskeluoikeus } from '../../types/fi/oph/koski/schema/Opiskeluoikeus'
@@ -7,11 +11,12 @@ import { last, nonNull } from '../../util/fp/arrays'
 import { fetchVersiohistoria } from '../../util/koskiApi'
 import { viimeisinOpiskelujaksonTila } from '../../util/schema'
 import { uncapitalize } from '../../util/strings'
-import { currentQueryWith, parseQuery } from '../../util/url'
+import { currentQueryWith, goto, parseQuery } from '../../util/url'
 import { common, CommonProps, cx } from '../CommonProps'
 import { Column, ColumnRow } from '../containers/Columns'
 import { PositionalPopup } from '../containers/PositionalPopup'
 import { FlatButton } from '../controls/FlatButton'
+import { LinkButton } from '../controls/LinkButton'
 import { Lowercase } from '../texts/Lowercase'
 import { Trans } from '../texts/Trans'
 
@@ -76,30 +81,51 @@ type VersiohistoriaButtonProps = {
 }
 
 const VersiohistoriaButton: React.FC<VersiohistoriaButtonProps> = (props) => {
+  const buttonRef = useRef(null)
   const [versiohistoriaVisible, setVersiohistoriaVisible] = useState(false)
-  const showList = useCallback(() => setVersiohistoriaVisible(true), [])
+  const toggleList = useCallback(
+    () => setVersiohistoriaVisible(!versiohistoriaVisible),
+    [versiohistoriaVisible]
+  )
   const hideList = useCallback(() => setVersiohistoriaVisible(false), [])
 
   return (
-    <span className="VersiohistoriaButton">
-      <FlatButton onClick={showList}>{t('Versiohistoria')}</FlatButton>
-      {versiohistoriaVisible && (
-        <PositionalPopup align="right" onDismiss={hideList}>
-          <VersiohistoriaList opiskeluoikeusOid={props.opiskeluoikeusOid} />
-        </PositionalPopup>
-      )}
+    <span className="VersiohistoriaButton" ref={buttonRef}>
+      <FlatButton
+        onClick={toggleList}
+        aria-haspopup="menu"
+        aria-expanded={versiohistoriaVisible}
+      >
+        {t('Versiohistoria')}
+      </FlatButton>
+      <PositionalPopup
+        align="right"
+        onDismiss={hideList}
+        open={versiohistoriaVisible}
+        parentRef={buttonRef}
+      >
+        <VersiohistoriaList
+          opiskeluoikeusOid={props.opiskeluoikeusOid}
+          open={versiohistoriaVisible}
+        />
+      </PositionalPopup>
     </span>
   )
 }
 
 type VersiohistoriaListProps = {
   opiskeluoikeusOid: string
+  open: boolean
 }
 
+const versiolistaCache = createPreferLocalCache(fetchVersiohistoria)
+
 const VersiohistoriaList: React.FC<VersiohistoriaListProps> = (props) => {
-  const historia = useApiWithParams(fetchVersiohistoria, [
-    props.opiskeluoikeusOid
-  ])
+  const historia = useApiWithParams(
+    fetchVersiohistoria,
+    props.open ? [props.opiskeluoikeusOid] : undefined,
+    versiolistaCache
+  )
 
   const currentVersion = useMemo(() => {
     const v = parseQuery(window.location.search).versionumero
@@ -111,7 +137,7 @@ const VersiohistoriaList: React.FC<VersiohistoriaListProps> = (props) => {
   }, [historia])
 
   return isSuccess(historia) ? (
-    <ul className="VersiohistoriaList">
+    <ul className="VersiohistoriaList" role="navigation">
       {historia.data.map((versio) => (
         <li
           key={versio.versionumero}
@@ -121,14 +147,14 @@ const VersiohistoriaList: React.FC<VersiohistoriaListProps> = (props) => {
               'VersiohistoriaList__item--current'
           )}
         >
-          <a
+          <LinkButton
             href={currentQueryWith({
               opiskeluoikeus: props.opiskeluoikeusOid,
               versionumero: versio.versionumero
             })}
           >
             {`v${versio.versionumero}`} {ISO2FinnishDateTime(versio.aikaleima)}
-          </a>
+          </LinkButton>
         </li>
       ))}
     </ul>

@@ -32,3 +32,5 @@ export const updateQuery =
     })
 
 export const currentQueryWith = updateQuery(window.location.href)
+
+export const goto = (href: string) => window.location.assign(href)

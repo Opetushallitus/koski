@@ -2,7 +2,13 @@ import React, { useState } from 'react'
 import { t } from '../../i18n/i18n'
 import { useLayout } from '../../util/useDepth'
 import { CommonProps } from '../CommonProps'
-import { Column, ColumnRow } from '../containers/Columns'
+import {
+  Column,
+  ColumnRow,
+  COLUMN_COUNT,
+  mapResponsiveValue,
+  ResponsiveValue
+} from '../containers/Columns'
 import { ExpandButton } from '../controls/ExpandButton'
 import { IconButton } from '../controls/IconButton'
 import { CHARCODE_REMOVE } from '../texts/Icon'
@@ -60,7 +66,7 @@ export const OsasuoritusHeader = <DATA_KEYS extends string>(
         {Object.keys(props.row.columns).map((key, index) => (
           <Column
             key={index}
-            span={index === 0 ? spans.name + spans.leftIcons : spans.data}
+            span={index === 0 ? spans.nameHeader : spans.data}
           >
             {t(key)}
           </Column>
@@ -124,20 +130,26 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
 }
 
 const getSpans = (dataObj: object, depth?: number, canRemove?: boolean) => {
-  const DATA_SPAN = 4
+  const DATA_SPAN: ResponsiveValue<number> = { default: 4, phone: 8, small: 6 }
 
   const indent = depth || 0
   const leftIcons = 1
   const rightIcons = canRemove ? 1 : 0
   const dataCount = Object.values(dataObj).length
-  const data = DATA_SPAN * Math.max(0, dataCount - 1)
-  const name = 24 - indent - leftIcons - data - rightIcons
+  const data = mapResponsiveValue(
+    (w: number) => w * Math.max(0, dataCount - 1)
+  )(DATA_SPAN)
+  const name = mapResponsiveValue(
+    (w: number) => COLUMN_COUNT - indent - leftIcons - w - rightIcons
+  )(data)
+  const nameHeader = mapResponsiveValue((w: number) => w + leftIcons)(name)
 
   return {
     indent,
     leftIcons,
     rightIcons,
     data: DATA_SPAN,
-    name
+    name,
+    nameHeader
   }
 }

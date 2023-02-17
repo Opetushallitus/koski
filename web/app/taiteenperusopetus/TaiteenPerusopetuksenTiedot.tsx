@@ -11,7 +11,6 @@ import {
   LaajuusView
 } from '../components-v2/opiskeluoikeus/LaajuusField'
 import { Trans } from '../components-v2/texts/Trans'
-import { t } from '../i18n/i18n'
 import { TaiteenPerusopetuksenOpiskeluoikeus } from '../types/fi/oph/koski/schema/TaiteenPerusopetuksenOpiskeluoikeus'
 
 export type TaiteenPerusopetuksenTiedotProps = {

@@ -4,8 +4,10 @@ import { common, CommonPropsWithChildren } from '../CommonProps'
 export type PositionalPopupAlign = 'left' | 'right'
 
 export type PositionalPopupProps = CommonPropsWithChildren<{
+  open: boolean
   onDismiss?: () => void
   align?: PositionalPopupAlign
+  parentRef?: React.RefObject<HTMLElement>
 }>
 
 export const PositionalPopup: React.FC<PositionalPopupProps> = (props) => {
@@ -14,9 +16,10 @@ export const PositionalPopup: React.FC<PositionalPopupProps> = (props) => {
   useEffect(() => {
     if (props.onDismiss) {
       const clickHandler = (event: MouseEvent) => {
+        const container = props.parentRef?.current || ref.current
         if (
           !(event.target instanceof Element) ||
-          !ref.current?.contains(event.target)
+          !container?.contains(event.target)
         ) {
           props.onDismiss?.()
         }
@@ -30,8 +33,10 @@ export const PositionalPopup: React.FC<PositionalPopupProps> = (props) => {
     <div
       {...common(props, [
         'PositionalPopup',
-        props.align && `PositionalPopup--align-${props.align}`
+        props.align && `PositionalPopup--align-${props.align}`,
+        props.open && `PositionalPopup--open`
       ])}
+      role="menu"
       ref={ref}
     >
       <div className="PositionalPopup__overlay">{props.children}</div>
