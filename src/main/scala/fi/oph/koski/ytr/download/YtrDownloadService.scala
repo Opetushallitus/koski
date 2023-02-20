@@ -5,6 +5,7 @@ import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.db.{DB, QueryMethods}
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
 import fi.oph.koski.log.Logging
+import fi.oph.koski.schema.{Oppija, UusiHenkilö}
 import rx.lang.scala.schedulers.NewThreadScheduler
 import rx.lang.scala.{Observable, Scheduler}
 
@@ -158,12 +159,8 @@ class YtrDownloadService(
       .subscribeOn(scheduler)
       .subscribe(
         onNext = oppija => {
-//          logger.info(s"Downloaded oppija with ${
-//            val exams: Seq[YtrLaajaExam] = oppija.examinations.flatMap(_.examinationPeriods.flatMap(_.exams))
-//            exams.size
-//          } exams")
-
-          // TODO: TOR-1639: Datan konversio ja kirjoitus Koskeen
+          // TODO: TOR-1639 Kunhan tätä on testattu try-catchien kanssa tuotannossa tarpeeksi, siisti koodi siten, että mahdolliset poikkeukset saa valua
+          //  ylemmäksikin. Pitää myös miettiä silloin, onko ok, että yksittäisiä failaavia oppijoita skipataan, kuten koodi nyt tekee.
           try {
             implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUserTallennetutYlioppilastutkinnonOpiskeluoikeudet
             implicit val accessType: AccessType.Value = AccessType.write
@@ -173,6 +170,24 @@ class YtrDownloadService(
                 application.validator.updateFieldsAndValidateOpiskeluoikeus(ytrOo, None) match {
                   case Left(error) => logger.info(s"YTR-datan validointi epäonnistui: ${error.errorString.getOrElse("-")}")
                   case Right(_) =>
+                    try {
+                      val koskiOppija = Oppija(
+                        henkilö = UusiHenkilö(
+                          hetu = oppija.ssn,
+                          etunimet = oppija.firstNames,
+                          sukunimi = oppija.lastName,
+                          kutsumanimi = None
+                        ),
+                        opiskeluoikeudet = List(ytrOo)
+                      )
+                      application.oppijaFacade.createOrUpdate(
+                        oppija = koskiOppija,
+                        allowUpdate = true,
+                        allowDeleteCompleted = true
+                      )
+                    } catch {
+                      case e: Throwable => logger.warn(e)(s"YTR-datan tallennus epäonnistui: ${e.getMessage}")
+                    }
                 }
               case _ => logger.info(s"YTR-datan konversio palautti tyhjän opiskeluoikeuden")
             }

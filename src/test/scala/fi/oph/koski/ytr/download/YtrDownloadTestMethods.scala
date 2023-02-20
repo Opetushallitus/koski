@@ -10,28 +10,34 @@ import java.time.LocalDate
 trait YtrDownloadTestMethods extends KoskiHttpSpec {
   implicit val formats = DefaultFormats
 
-  def redownloadYtrData(
+  def clearYtrData(): Unit = {
+    authGet(s"test/ytr/clear") {
+      verifyResponseStatusOk()
+    }
+  }
+
+  def downloadYtrData(
     birthmonthStart: String,
     birthmonthEnd: String,
     force: Boolean = false
-  ): Unit = redownloadYtrData(
+  ): Unit = downloadYtrData(
     birthmonthStart = Some(birthmonthStart),
     birthmonthEnd = Some(birthmonthEnd),
     modifiedSince = None,
     force = force
   )
 
-  def redownloadYtrData(
+  def downloadYtrData(
     modifiedSince: LocalDate,
     force: Boolean
-  ): Unit = redownloadYtrData(
+  ): Unit = downloadYtrData(
     birthmonthStart = None,
     birthmonthEnd = None,
     modifiedSince = Some(modifiedSince),
     force = force
   )
 
-  private def redownloadYtrData(
+  private def downloadYtrData(
     birthmonthStart: Option[String],
     birthmonthEnd: Option[String],
     modifiedSince: Option[LocalDate],

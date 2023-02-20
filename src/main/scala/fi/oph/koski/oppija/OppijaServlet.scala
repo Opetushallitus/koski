@@ -85,6 +85,22 @@ class OppijaServlet(implicit val application: KoskiApplication)
     }.flatMap(_.warningsToLeft))
   }
 
+  get("/:oid/ytr-json") {
+    // TODO: TOR-1639 Pitäisikö kuitenkin tehdä TALLENNETUT_YLIOPPILASTUTKINNON_OPISKELUOIKEUDET oikea käyttöoikeus,
+    // jonka voisi antaa myös yksittäisille käyttäjille?
+    if (!session.isRoot) {
+      haltWithStatus(KoskiErrorCategory.forbidden())
+    } else {
+      renderEither[Oppija](HenkilöOid.validateHenkilöOid(params("oid")).right.flatMap { oid => {
+        application.oppijaFacade.findYtrDownloadedOppija(
+          oid,
+          findMasterIfSlaveOid = true
+        )(KoskiSpecificSession.systemUserTallennetutYlioppilastutkinnonOpiskeluoikeudet)
+      }
+      }.flatMap(_.warningsToLeft))
+    }
+  }
+
   get("/:oid/opintotiedot-json") {
     renderEither[Oppija](HenkilöOid.validateHenkilöOid(params("oid")).right.flatMap { oid =>
       application.oppijaFacade.findOppija(oid, findMasterIfSlaveOid = true)(session)

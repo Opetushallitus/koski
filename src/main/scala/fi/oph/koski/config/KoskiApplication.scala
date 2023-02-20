@@ -10,7 +10,7 @@ import fi.oph.koski.executors.GlobalExecutionContext
 import fi.oph.koski.fixture.FixtureCreator
 import fi.oph.koski.healthcheck.HealthCheck
 import fi.oph.koski.henkilo.{HenkilöRepository, Hetu, KoskiHenkilöCache, OpintopolkuHenkilöFacade}
-import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
+import fi.oph.koski.history.{OpiskeluoikeusHistoryRepository, YtrOpiskeluoikeusHistoryRepository}
 import fi.oph.koski.huoltaja.HuoltajaServiceVtj
 import fi.oph.koski.koodisto.{KoodistoCreator, KoodistoPalvelu, KoodistoViitePalvelu}
 import fi.oph.koski.koskiuser._
@@ -93,6 +93,7 @@ class KoskiApplication(
   lazy val huoltajaService = new HuoltajaService(this)
   lazy val huoltajaServiceVtj = new HuoltajaServiceVtj(config, henkilöRepository)
   lazy val historyRepository = OpiskeluoikeusHistoryRepository(masterDatabase.db)
+  lazy val ytrHistoryRepository = YtrOpiskeluoikeusHistoryRepository(masterDatabase.db)
   lazy val virta = TimedProxy[AuxiliaryOpiskeluoikeusRepository](VirtaOpiskeluoikeusRepository(virtaClient, oppilaitosRepository, koodistoViitePalvelu, organisaatioRepository, virtaAccessChecker, Some(validator)))
   lazy val henkilöCache = new KoskiHenkilöCache(masterDatabase.db)
   lazy val ePerusteetValidator = new EPerusteisiinPerustuvaValidator(ePerusteet, tutkintoRepository, koodistoViitePalvelu)
@@ -118,6 +119,12 @@ class KoskiApplication(
     organisaatioRepository,
     ePerusteetChangeValidator,
     config))
+  lazy val ytrPossu = TimedProxy[KoskiYtrOpiskeluoikeusRepository](new PostgresYtrOpiskeluoikeusRepository(
+    masterDatabase.db,
+    ytrHistoryRepository,
+    henkilöCache,
+    oidGenerator,
+    henkilöRepository.opintopolku))
   lazy val ytr = TimedProxy[AuxiliaryOpiskeluoikeusRepository](YtrOpiskeluoikeusRepository(ytrRepository, organisaatioRepository, oppilaitosRepository, koodistoViitePalvelu, ytrAccessChecker, Some(validator), koskiLocalizationRepository))
   lazy val opiskeluoikeusRepository = new CompositeOpiskeluoikeusRepository(possu, virta, ytr, hetu)
   lazy val opiskeluoikeusRepositoryV2 = new CompositeOpiskeluoikeusRepository(possuV2, virta, ytr, hetu)
@@ -140,8 +147,8 @@ class KoskiApplication(
   lazy val perustiedotManualSyncRepository = new PerustiedotManualSyncRepository(masterDatabase.db, henkilöCache)
   lazy val perustiedotSyncScheduler = new PerustiedotSyncScheduler(this)
   lazy val perustiedotManualSyncScheduler = new PerustiedotManualSyncScheduler(this)
-  lazy val oppijaFacade = new KoskiOppijaFacade(henkilöRepository, opiskeluoikeusRepository, historyRepository, globaaliValidator, config, hetu)
-  lazy val oppijaFacadeV2 = new KoskiOppijaFacade(henkilöRepository, opiskeluoikeusRepositoryV2, historyRepository, globaaliValidatorV2, config, hetu)
+  lazy val oppijaFacade = new KoskiOppijaFacade(henkilöRepository, opiskeluoikeusRepository, ytrPossu, historyRepository, globaaliValidator, config, hetu)
+  lazy val oppijaFacadeV2 = new KoskiOppijaFacade(henkilöRepository, opiskeluoikeusRepositoryV2, ytrPossu, historyRepository, globaaliValidatorV2, config, hetu)
   lazy val suoritusjakoRepository = new SuoritusjakoRepository(masterDatabase.db)
   lazy val suoritusjakoService = new SuoritusjakoService(suoritusjakoRepository, oppijaFacade)
   lazy val suoritusjakoRepositoryV2 = new SuoritusjakoRepositoryV2(masterDatabase.db)

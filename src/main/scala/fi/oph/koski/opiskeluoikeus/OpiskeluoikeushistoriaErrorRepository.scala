@@ -2,7 +2,7 @@ package fi.oph.koski.opiskeluoikeus
 
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api.actionBasedSQLInterpolation
 import fi.oph.koski.db.{DB, DatabaseExecutionContext, QueryMethods}
-import fi.oph.koski.history.OpiskeluoikeusHistory
+import fi.oph.koski.history.{OpiskeluoikeusHistory, YtrOpiskeluoikeusHistory}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.Henkilö.Oid
 import org.json4s.jackson.JsonMethods
@@ -40,6 +40,34 @@ class OpiskeluoikeushistoriaErrorRepository(val db: DB)
       sql"""
         SELECT *
         FROM opiskeluoikeushistoria_virheet
+      """.as[OpiskeluoikeushistoriaVirhe]
+    )
+
+  def saveYtr(
+    opiskeluoikeus: JValue,
+    historia: YtrOpiskeluoikeusHistory,
+    diff: JArray,
+  ): Int = runDbSync(
+    sql"""
+        INSERT INTO ytr_opiskeluoikeushistoria_virheet(
+          opiskeluoikeus,
+          historia,
+          diff
+        ) VALUES (
+          ${JsonMethods.compact(opiskeluoikeus)}::jsonb,
+          ${JsonMethods.compact(historia.asOpiskeluoikeusJson)}::jsonb,
+          ${JsonMethods.compact(diff)}::jsonb
+        )
+        RETURNING id
+      """.as[Int],
+    allowNestedTransactions = true,
+  ).head
+
+  def getAllYtr: Seq[OpiskeluoikeushistoriaVirhe] =
+    runDbSync(
+      sql"""
+        SELECT *
+        FROM ytr_opiskeluoikeushistoria_virheet
       """.as[OpiskeluoikeushistoriaVirhe]
     )
 

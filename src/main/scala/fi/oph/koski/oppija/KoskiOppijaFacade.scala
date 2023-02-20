@@ -18,6 +18,7 @@ import java.time.LocalDate
 class KoskiOppijaFacade(
   henkilöRepository: HenkilöRepository,
   opiskeluoikeusRepository: CompositeOpiskeluoikeusRepository,
+  ytrDownloadedOpiskeluoikeusRepository: KoskiYtrOpiskeluoikeusRepository,
   historyRepository: OpiskeluoikeusHistoryRepository,
   globaaliValidator: KoskiGlobaaliValidator,
   config: Config,
@@ -36,6 +37,21 @@ class KoskiOppijaFacade(
       .toRight(notFound(oid))
       .flatMap(henkilö => toOppija(henkilö, opiskeluoikeusRepository.findByOppija(henkilö, useVirta, useYtr)))
   }
+
+  // Palauttaa ainoastaan oppijan YTR:stä ladatut opiskeluoikeudet
+  def findYtrDownloadedOppija
+    (oid: String, findMasterIfSlaveOid: Boolean = false)
+    (implicit user: KoskiSpecificSession)
+  : Either[HttpStatus, WithWarnings[Oppija]] =
+    henkilöRepository.findByOid(oid, findMasterIfSlaveOid)
+      .toRight(notFound(oid))
+      .flatMap(henkilö => toOppija(
+        henkilö,
+        WithWarnings(
+          ytrDownloadedOpiskeluoikeusRepository.findByOppijaOids(henkilö.oid :: henkilö.linkitetytOidit),
+          Seq.empty
+        )
+      ))
 
   def findOppijaHenkilö
     (oid: String, findMasterIfSlaveOid: Boolean = false, useVirta: Boolean = true, useYtr: Boolean = true)
@@ -196,10 +212,24 @@ class KoskiOppijaFacade(
     if (oppijaOid.oppijaOid == user.oid) {
       Left(KoskiErrorCategory.forbidden.omienTietojenMuokkaus())
     } else {
-      val result = opiskeluoikeusRepository.createOrUpdate(oppijaOid, opiskeluoikeus, allowUpdate, allowDeleteCompleted)
+      val result = opiskeluoikeus match {
+        case ytrOo: YlioppilastutkinnonOpiskeluoikeus =>
+          ytrDownloadedOpiskeluoikeusRepository.createOrUpdate(oppijaOid, ytrOo)
+        case _ =>
+          opiskeluoikeusRepository.createOrUpdate(oppijaOid, opiskeluoikeus, allowUpdate, allowDeleteCompleted)
+      }
       result.right.map { (result: CreateOrUpdateResult) =>
         applicationLog(oppijaOid, opiskeluoikeus, result)
-        auditLog(oppijaOid, result)
+        // TODO: TOR-1639 Toteuta YTR-opiskeluoikeuksien operaatioiden audit-lokitus. Luultavasti pitää tehdä joku keinotekoinen
+        //  käyttäjätunnus (myös oppijanumerorekisteriin), jonka oid:lla YTR-dataan tehtävät operaatiot logitetaan, vaikka käytännössä sillä
+        //  tunnuksella ei koskaan sisäänkirjautumista tapahdukaan. Ehkä kyseisen tunnuksen oid vaan konfiguraatiotiedostoon sitten?
+        //  systemUserTallennetutYlioppilastutkinnonOpiskeluoikeudet-käyttäjällä auditlogitus ei suoraan onnistu, koska hänellä ei ole oidia.
+        if (
+          !opiskeluoikeus.isInstanceOf[YlioppilastutkinnonOpiskeluoikeus] ||
+          user != KoskiSpecificSession.systemUserTallennetutYlioppilastutkinnonOpiskeluoikeudet
+        ) {
+          auditLog(oppijaOid, result)
+        }
         OpiskeluoikeusVersio(result.oid, result.versionumero, result.lähdejärjestelmänId)
       }
     }
@@ -211,18 +241,24 @@ class KoskiOppijaFacade(
   : Unit = {
     val verb = result match {
       case updated: Updated =>
-        val tila = updated.old.tila.opiskeluoikeusjaksot.last
-        if (tila.opiskeluoikeusPäättynyt) {
-          s"Päivitetty päättynyt (${tila.tila.koodiarvo})"
-        } else {
-          "Päivitetty"
+        opiskeluoikeus match {
+          // TODO: TOR-1639 Poista tämä turha haara, kun ylioppilastutkinnon opiskeluoikeudella on tilat konversiossa mukana
+          case _:YlioppilastutkinnonOpiskeluoikeus =>
+            "Päivitetty"
+          case _ =>
+            val tila = updated.old.tila.opiskeluoikeusjaksot.last
+            if (tila.opiskeluoikeusPäättynyt) {
+              s"Päivitetty päättynyt (${tila.tila.koodiarvo})"
+            } else {
+              "Päivitetty"
+            }
         }
       case _: Created => "Luotu"
       case _: NotChanged => "Päivitetty (ei muutoksia)"
     }
     val tutkinto = opiskeluoikeus.suoritukset.map(_.koulutusmoduuli.tunniste).mkString(",")
-    val oppilaitos = opiskeluoikeus.getOppilaitos.oid
-    logger(user).info(s"${verb} opiskeluoikeus ${result.id} (versio ${result.versionumero}) oppijalle ${oppijaOid} tutkintoon ${tutkinto} oppilaitoksessa ${oppilaitos}")
+    val oppilaitosTaiKoulutustoimija = opiskeluoikeus.getOppilaitosOrKoulutusToimija.oid
+    logger(user).info(s"${verb} opiskeluoikeus ${result.id} (versio ${result.versionumero}) oppijalle ${oppijaOid} tutkintoon ${tutkinto} oppilaitoksessa/koulutustoimijalla ${oppilaitosTaiKoulutustoimija}")
   }
 
   private def auditLog
@@ -362,7 +398,9 @@ class KoskiOppijaFacade(
   )
 
   private def writeViewingEventToAuditLog(user: KoskiSpecificSession, oid: Henkilö.Oid): Unit = {
-    if (user != KoskiSpecificSession.systemUser) { // To prevent health checks from polluting the audit log
+    // TODO: TOR-1639 Toteuta YTR-opiskeluoikeuksien operaatioiden audit-lokitus halutulla tavalla. Voi olla, että näistä katseluista ei toistaiseksi
+    //  tosin tarvitse välittää, jos/kun niitä tehdään vain debug-tarkotuksissa. Mutta jotenkin pitää debuggaus-tutkimisetkin audit-lokittaa?
+    if (!List(KoskiSpecificSession.systemUserTallennetutYlioppilastutkinnonOpiskeluoikeudet, KoskiSpecificSession.systemUser).contains(user)) { // To prevent health checks from polluting the audit log
       val operation = if (user.user.kansalainen && user.isUsersHuollettava(oid)) {
         KANSALAINEN_HUOLTAJA_OPISKELUOIKEUS_KATSOMINEN
       } else if (user.user.kansalainen) {

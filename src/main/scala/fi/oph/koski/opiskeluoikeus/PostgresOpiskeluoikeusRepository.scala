@@ -218,6 +218,9 @@ class PostgresOpiskeluoikeusRepository(
             opiskeluoikeus.suoritukset.headOption.map(_.tyyppi.koodiarvo),
             opiskeluoikeus.lähdejärjestelmänId) == identifier
         }).map(_.toList).map(Right(_))
+
+      case _ =>
+        throw new InternalError("Tuntematon identifier-tyyppi")
     }
   }
 
