@@ -2473,5 +2473,8 @@
   "description:Kertoo, onko kyseessä lioppilastutkinnosta annetun..." : "Kertoo, onko kyseessä lioppilastutkinnosta annetun lain (502/2019) 20 § mukaisesti koe, johon osallistumisesta ei peritä maksua.",
   "description:Organisaatiopalvelusta saatu oppilaitos, johon kokelas..." : "Organisaatiopalvelusta saatu oppilaitos, johon kokelas on ilmoittautunut. Ei välttämättä ole oppilaitos, jossa henkilöllä on opinto-oikeus.",
   "description:organisaatiopalvelun oppilaitos-OID-tunniste, jossa ylioppilastutkinto on..." : "organisaatiopalvelun oppilaitos-OID-tunniste, jossa ylioppilastutkinto on suoritettu. Ei välttämättä ole oppilaitos, jossa henkilöllä on opintooikeus",
-  "Taiteen perusopetus (hankintakoulutus)": "Taiteen perusopetus (hankintakoulutus)"
+  "Taiteen perusopetus (hankintakoulutus)": "Taiteen perusopetus (hankintakoulutus)",
+  "Varhaiskasvatuksen järjestämismuoto": "Varhaiskasvatuksen järjestämismuoto",
+  "Taiteen perusopetus hankintakoulutuksena järjestettynä": "Taiteen perusopetus hankintakoulutuksena järjestettynä",
+  "Koulutus järjestetään oman organisaation ulkopuolelta": "Koulutus järjestetään oman organisaation ulkopuolelta"
 }

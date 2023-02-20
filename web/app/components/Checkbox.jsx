@@ -14,12 +14,13 @@ const Checkbox = ({
       className="koski-checkbox__input"
       type="checkbox"
       id={id}
+      data-testId={id}
       checked={checked}
       onChange={onChange}
       data-list-style-position={listStylePosition === 'inside' ? 'inside' : ''}
     />
 
-    <label htmlFor={id}>
+    <label htmlFor={id} data-testId={id + '__label'}>
       <span className="koski-checkbox__checkmark" aria-hidden={true} />
       {LabelComponent ? <LabelComponent /> : <Text name={label} />}
     </label>
