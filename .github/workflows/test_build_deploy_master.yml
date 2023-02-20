@@ -8,6 +8,10 @@ env:
   SSH_AUTH_SOCK: /tmp/ssh_agent.sock
   TZ: Europe/Helsinki
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   tests:
     name: "👀"
@@ -20,11 +24,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Configure AWS credentials for utility account
+      - name: Configure AWS credentials for artifact upload
         uses: aws-actions/configure-aws-credentials@v1-node16
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          role-to-assume: ${{ secrets.ECR_ROLE }}
+          role-duration-seconds: 900
+          role-session-name: KoskiDeployment-ECR-${{ github.event.inputs.commithash }}
           aws-region: eu-west-1
 
       - name: Login to Amazon ECR
