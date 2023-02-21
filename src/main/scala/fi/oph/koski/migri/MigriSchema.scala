@@ -1,8 +1,8 @@
 package fi.oph.koski.migri
 
 import java.time.{LocalDate, LocalDateTime}
-
 import fi.oph.koski.schema._
+import fi.oph.koski.schema.annotation.KoodistoUri
 import fi.oph.scalaschema.{ClassSchema, SchemaToJson}
 import org.json4s.JValue
 
@@ -35,7 +35,9 @@ case class MigriOpiskeluoikeus(
   päättymispäivä: Option[LocalDate],
   tyyppi: Koodistokoodiviite,
   lisätiedot: Option[MigriOpiskeluoikeudenLisätiedot],
-  suoritukset: List[MigriSuoritus]
+  suoritukset: List[MigriSuoritus],
+  @KoodistoUri("virtaopiskeluoikeudenluokittelu")
+  luokittelu: Option[List[Koodistokoodiviite]] = None
 )
 
 case class MigriOpiskeluoikeudenTila(
@@ -95,7 +97,9 @@ case class MigriSuoritus(
   suoritettuErityisenäTutkintona: Option[Boolean],
   luokka: Option[String],
   pakollisetKokeetSuoritettu: Option[Boolean],
-  osasuoritukset: Option[List[MigriOsasuoritus]]
+  osasuoritukset: Option[List[MigriOsasuoritus]],
+  @KoodistoUri("virtaopsuorluokittelu")
+  luokittelu: Option[List[Koodistokoodiviite]] = None
 )
 
 case class MigriSuorituksenKoulutusmoduuli(
@@ -140,7 +144,9 @@ case class MigriOsasuoritus(
   tunnustettu: Option[MigriOsaamisenTunnustaminen], //vain jos lisätiedoissta löytyy koodiarvo "mukautettu"
   lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]],
   osasuoritukset: Option[List[MigriOsasuorituksenOsasuoritus]],
-  suoritettuErityisenäTutkintona: Option[Boolean]
+  suoritettuErityisenäTutkintona: Option[Boolean],
+  @KoodistoUri("virtaopsuorluokittelu")
+  luokittelu: Option[List[Koodistokoodiviite]] = None
 )
 
 case class MigriOsasuorituksenOsasuoritus(
