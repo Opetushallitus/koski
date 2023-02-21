@@ -2,7 +2,9 @@ import * as fs from "fs/promises"
 import * as path from "path"
 import { eventually } from "./utils"
 
-export const downloadDir = path.join(__dirname, "..", "..", "download")
+export const downloadDir = path.resolve(
+  path.join(__dirname, "..", "..", "download")
+)
 
 export const filePath = (filename: string) => path.join(downloadDir, filename)
 
