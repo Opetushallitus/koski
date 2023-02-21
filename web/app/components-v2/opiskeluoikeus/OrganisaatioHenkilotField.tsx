@@ -68,7 +68,7 @@ export const OrganisaatioHenkilötEdit = <T extends AnyOrganisaatiohenkilö>(
         <li key={i}>
           <Removable
             onClick={state.removeAt(i)}
-            testId={subTestId(props, i.toString())}
+            testId={subTestId(props, `henkilö.${i}`)}
           >
             {!props.storedHenkilöt?.find((h) =>
               OrganisaatiohenkilöEq.equals(a, h)
@@ -85,7 +85,7 @@ export const OrganisaatioHenkilötEdit = <T extends AnyOrganisaatiohenkilö>(
                     i === props.value.length - 1 &&
                     state.focusNew
                   }
-                  testId={subTestId(props, `new.${i}.nimi`)}
+                  testId={subTestId(props, `newHenkilö.${i}.nimi`)}
                 />
                 <TextEdit
                   placeholder="Titteli"
@@ -93,7 +93,7 @@ export const OrganisaatioHenkilötEdit = <T extends AnyOrganisaatiohenkilö>(
                   value={t(a.titteli)}
                   onChange={state.onChangeTitteli(i)}
                   errors={narrowErrorsToLeaf(`${i}.titteli`)(props.errors)}
-                  testId={subTestId(props, `new.${i}.titteli`)}
+                  testId={subTestId(props, `newHenkilö.${i}.titteli`)}
                 />
               </MultiField>
             ) : (
@@ -102,7 +102,7 @@ export const OrganisaatioHenkilötEdit = <T extends AnyOrganisaatiohenkilö>(
                 value={a.nimi}
                 onChange={state.updateHenkilö(i)}
                 onRemove={state.onRemoveStored}
-                testId={subTestId(props, i.toString())}
+                testId={subTestId(props, `storedHenkilö.${i}`)}
               />
             )}
           </Removable>

@@ -49,14 +49,14 @@ export const OpiskeluoikeudenTilaView = <T extends OpiskeluoikeudenTila>(
   )
 
   return (
-    <KeyValueTable>
+    <KeyValueTable testId={props.testId}>
       {sortedJaksot.map((jakso, index) => (
         <KeyColumnedValuesRow
           name={index === 0 ? 'Tila' : undefined}
           key={index}
           className={index === 0 ? 'OpiskeluoikeudenTila-viimeisin' : undefined}
           columnSpans={{ default: [2, '*'], phone: [4, '*'] }}
-          testId={subTestId(props, index.toString())}
+          testId={subTestId(props, `items.${index}`)}
           testIds={['date', 'tila']}
         >
           {[ISO2FinnishDate(jakso.alku), t(jakso.tila.nimi)]}
@@ -88,7 +88,7 @@ export const OpiskeluoikeudenTilaEdit = <T extends OpiskeluoikeudenTila>(
 
   return (
     <>
-      <KeyValueTable>
+      <KeyValueTable testId={props.testId}>
         {oo.jaksot.map(({ jakso, index, min, max, isLatest }, arrIndex) => (
           <KeyColumnedValuesRow
             name={arrIndex === 0 ? 'Tila' : undefined}
@@ -103,10 +103,10 @@ export const OpiskeluoikeudenTilaEdit = <T extends OpiskeluoikeudenTila>(
                 min={min}
                 max={max}
                 onChange={oo.onChangeDate(index)}
-                testId={subTestId(props, `${index}.date`)}
+                testId={subTestId(props, `items.${index}.date`)}
               />,
               <div key="jakso">
-                <span {...testId(props, `${index}.tila`)}>
+                <span {...testId(props, `items.${index}.tila`)}>
                   {t(jakso.tila.nimi)}
                 </span>
                 {isLatest && (
@@ -115,7 +115,7 @@ export const OpiskeluoikeudenTilaEdit = <T extends OpiskeluoikeudenTila>(
                     label={t('Poista')}
                     size="input"
                     onClick={oo.onRemoveLatest}
-                    testId={subTestId(props, `${index}.remove`)}
+                    testId={subTestId(props, `items.${index}.remove`)}
                   />
                 )}
               </div>

@@ -48,7 +48,7 @@ export const TpoOsasuoritusProperties: React.FC<
   const tunnustettu = Boolean(osasuoritus?.tunnustettu)
 
   const parsedPath = useMemo(
-    () => parsePath(props.osasuoritusPath, props.form.state),
+    () => `${parsePath(props.osasuoritusPath, props.form.state)}.properties`,
     [props.form.state, props.osasuoritusPath]
   )
 

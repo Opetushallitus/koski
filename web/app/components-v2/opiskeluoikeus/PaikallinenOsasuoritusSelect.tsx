@@ -84,7 +84,7 @@ export const PaikallinenOsasuoritusSelect: React.FC<
         hideEmpty
         onChange={onChangeCB}
         onRemove={onRemoveCB}
-        testId={subTestId(props, 'button')}
+        testId={subTestId(props, 'select')}
       />
       {modalIsVisible && (
         <UusiOsasuoritusModal

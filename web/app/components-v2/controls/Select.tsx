@@ -99,7 +99,7 @@ const OptionList = <T,>(props: OptionListProps<T>): React.ReactElement => {
   const { options, onRemove, ...rest } = props
 
   return (
-    <ul {...common(props, ['Select__optionList'])}>
+    <ul {...common(props, ['Select__optionList'])} {...testId(props)}>
       {options.map((opt) => (
         <li
           className="Select__option"
@@ -109,7 +109,7 @@ const OptionList = <T,>(props: OptionListProps<T>): React.ReactElement => {
           <Removable
             isRemovable={Boolean(opt.removable && props.onRemove)}
             onClick={() => onRemove?.(opt)}
-            testId={subTestId(props, `${opt.key}.remove`)}
+            testId={subTestId(props, opt.key)}
           >
             <div
               className={cx(

@@ -1,22 +1,26 @@
 import { Page } from '@playwright/test'
 import { nonNull } from '../../../../../app/util/fp/arrays'
 import { mapObjectValues } from '../../../../../app/util/fp/objects'
-import { Button, isLeaf, Leaf } from './controls'
+import { isLeaf, Control } from './controls'
 
-export type IdNode = Leaf | IdNodeObject<string> | DynamicIdNode<any>
+export type IdNode =
+  | Control
+  | IdNodeObject<string>
+  | DynamicNumberIdNode<any>
+  | DynamicStringIdNode<any>
 export type IdNodeObject<K extends string> = { [_ in K]: IdNode }
-export type DynamicIdNode<T extends IdNode> = (index: number) => T
+export type DynamicNumberIdNode<T extends IdNode> = (index: number) => T
+export type DynamicStringIdNode<T extends IdNode> = (key: string) => T
 
-export type BuiltIdNode<T extends IdNode> = T extends Leaf<infer S>
+export type BuiltIdNode<T extends IdNode> = T extends Control<infer S>
   ? S
-  : T extends DynamicIdNode<infer S>
+  : T extends DynamicNumberIdNode<infer S>
   ? (index: number) => BuiltIdNode<S>
+  : T extends DynamicStringIdNode<infer S>
+  ? (key: string) => BuiltIdNode<S>
   : T extends IdNodeObject<infer K>
   ? { [A in K]: BuiltIdNode<T[A]> }
   : never
-
-type Foo = BuiltIdNode<{ asdasd: (i: number) => { lol: Button } }>
-type Bar = BuiltIdNode<(i: number) => Button>
 
 export function build<T extends { [K in string]: IdNode }>(
   page: Page,
@@ -24,7 +28,7 @@ export function build<T extends { [K in string]: IdNode }>(
   prefix?: string
 ): BuiltIdNode<T>
 
-export function build<T extends Leaf>(
+export function build<T extends Control>(
   page: Page,
   leaf: T,
   prefix?: string
@@ -38,11 +42,24 @@ export function build<T extends IdNode>(
 
 export function build<T extends IdNode>(
   page: Page,
+  fn: (index: string) => T,
+  prefix?: string
+): (index: string) => BuiltIdNode<T>
+
+export function build<T extends IdNode>(
+  page: Page,
   node: IdNode,
   prefix?: string
 ): any {
   if (isLeaf(node)) {
-    return node(page.getByTestId(prefix || ''))
+    if (!prefix) {
+      throw new Error('Leaf cannot be the root of the hierarchy')
+    }
+    return node(
+      page.getByTestId(prefix),
+      (postfix) => page.getByTestId(`${prefix}.${postfix}`),
+      prefix
+    )
   }
   if (typeof node === 'object') {
     return mapObjectValues((value, key) =>
@@ -50,7 +67,7 @@ export function build<T extends IdNode>(
     )(node)
   }
   if (typeof node === 'function') {
-    return (index: number) => {
+    return (index: number | string) => {
       return build(
         page,
         // @ts-ignore
@@ -65,6 +82,11 @@ export function build<T extends IdNode>(
 export const arrayOf =
   <T extends IdNode>(node: T) =>
   (index: number): T =>
+    node
+
+export const objectOf =
+  <T extends IdNode>(node: T) =>
+  (key: string): T =>
     node
 
 const mergeId = (...tokens: Array<string | undefined>): string =>

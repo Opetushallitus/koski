@@ -8,7 +8,8 @@ import {
   common,
   CommonProps,
   CommonPropsWithChildren,
-  subTestId
+  subTestId,
+  testId
 } from '../CommonProps'
 import { Trans } from '../texts/Trans'
 import {
@@ -23,7 +24,9 @@ import {
 export type KeyValueTableProps = CommonPropsWithChildren
 
 export const KeyValueTable = (props: KeyValueTableProps) => (
-  <ul {...common(props, ['KeyValueTable'])}>{props.children}</ul>
+  <ul {...common(props, ['KeyValueTable'])} {...testId(props)}>
+    {props.children}
+  </ul>
 )
 
 export type KeyValueRowProps = CommonPropsWithChildren<{

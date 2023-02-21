@@ -87,7 +87,9 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
         label: props.suorituksenNimi?.(s) || defaultSuorituksenNimi(s),
         testId: `suoritukset.${i}.tab`
       })),
-      ...(props.suorituksenLisäys && props.onCreateSuoritus
+      ...(props.suorituksenLisäys &&
+      props.form.editMode &&
+      props.onCreateSuoritus
         ? [
             {
               key: -1,

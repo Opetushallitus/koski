@@ -33,7 +33,6 @@ export const RadioButtons = <T,>(
               'RadioButtons__option',
               opt.disabled && 'RadioButtons__option--disabled'
             )}
-            {...testId(props, opt.key)}
           >
             <input
               id={id}
@@ -42,6 +41,7 @@ export const RadioButtons = <T,>(
               checked={opt.key === props.value}
               onChange={() => props.onChange(opt.value)}
               disabled={opt.disabled}
+              {...testId(props, `options.${opt.key}`)}
             />
             <label
               htmlFor={id}

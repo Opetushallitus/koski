@@ -276,7 +276,7 @@ export const TaiteenPerusopetusEditor = (
                 tunnisteet={storedOsasuoritustunnisteet}
                 onSelect={onAddOsasuoritus}
                 onRemove={onRemoveStoredOsasuoritus}
-                testId={subTestId(päätasonSuoritus, 'add')}
+                testId={subTestId(päätasonSuoritus, 'addOsasuoritus')}
               />
             </Column>
           </ColumnRow>
