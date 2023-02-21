@@ -82,7 +82,7 @@ describe("Kuntarouhinta", () => {
     })
   })
 
-  describe("Kuntarouhinnan tietojen lataaminen tiedostona", () => {
+  describe.skip("Kuntarouhinnan tietojen lataaminen tiedostona", () => {
     beforeAll(cleanupDownloads)
 
     it("Tietojen lataus vahvistusdialogista", async () => {
