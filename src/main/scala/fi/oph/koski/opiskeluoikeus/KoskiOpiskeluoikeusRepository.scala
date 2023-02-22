@@ -7,6 +7,7 @@ import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema._
+import fi.oph.koski.ytr.download.YtrLaajaOppija
 import org.json4s.JValue
 
 trait KoskiOpiskeluoikeusRepository {
@@ -38,6 +39,7 @@ trait KoskiYtrOpiskeluoikeusRepository {
     oppijaOid: PossiblyUnverifiedHenkilöOid,
     opiskeluoikeus: YlioppilastutkinnonOpiskeluoikeus
   )(implicit user: KoskiSpecificSession): Either[HttpStatus, CreateOrUpdateResult]
+  def createOrUpdateAlkuperäinenYTRJson(oppijaOid: String, data: JValue)(implicit user: KoskiSpecificSession): HttpStatus
 }
 
 trait AuxiliaryOpiskeluoikeusRepository {

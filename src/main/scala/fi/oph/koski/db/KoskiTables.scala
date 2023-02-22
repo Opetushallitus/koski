@@ -295,6 +295,14 @@ object KoskiTables {
     def * = (nimi, aikaleima, data) <> (YtrDownloadStatusRow.tupled, YtrDownloadStatusRow.unapply)
   }
 
+  class YtrAlkuperäinenDataTable(tag: Tag) extends Table[YtrAlkuperäinenDataRow](tag, "ytr_alkuperainen_data") {
+    val oppijaOid = column[String]("oppija_oid", O.PrimaryKey)
+    val aikaleima = column[Timestamp]("aikaleima")
+    val data = column[JValue]("data")
+
+    def * = (oppijaOid, aikaleima, data) <> (YtrAlkuperäinenDataRow.tupled, YtrAlkuperäinenDataRow.unapply)
+  }
+
   class PerustiedotSyncTable(tag: Tag) extends Table[PerustiedotSyncRow](tag, "perustiedot_sync") {
     val id: Rep[Int] = column[Int]("id", O.AutoInc, O.PrimaryKey)
     val opiskeluoikeusId = column[Int]("opiskeluoikeus_id")
@@ -376,6 +384,8 @@ object KoskiTables {
   val Scheduler = TableQuery[SchedulerTable]
 
   val YtrDownloadStatus = TableQuery[YtrDownloadStatusTable]
+
+  val YtrAlkuperäinenData = TableQuery[YtrAlkuperäinenDataTable]
 
   val PerustiedotSync = TableQuery[PerustiedotSyncTable]
   val PerustiedotManualSync = TableQuery[PerustiedotManualSyncTable]
@@ -520,6 +530,8 @@ case class SchedulerRow(name: String, nextFireTime: Timestamp, context: Option[J
 }
 
 case class YtrDownloadStatusRow(nimi: String = "ytr_download", aikaleima: Timestamp, data: JValue)
+
+case class YtrAlkuperäinenDataRow(oppijaOid: String, aikaleima: Timestamp, data: JValue)
 
 case class PerustiedotSyncRow(id: Int = 0, opiskeluoikeusId: Int, data: JValue, upsert: Boolean, aikaleima: Timestamp = new Timestamp(System.currentTimeMillis))
 

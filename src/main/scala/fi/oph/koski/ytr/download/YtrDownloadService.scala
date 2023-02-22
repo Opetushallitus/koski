@@ -4,10 +4,12 @@ import fi.oph.koski.cloudwatch.CloudWatchMetricsService
 import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.db.{DB, QueryMethods}
 import fi.oph.koski.http.HttpStatus
+import fi.oph.koski.json.JsonManipulation
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.oppija.HenkilönOpiskeluoikeusVersiot
-import fi.oph.koski.schema.{Oppija, UusiHenkilö, YlioppilastutkinnonOpiskeluoikeus}
+import fi.oph.koski.schema.{KoskiSchema, Oppija, UusiHenkilö, YlioppilastutkinnonOpiskeluoikeus}
+import fi.oph.scalaschema.{SerializationContext, Serializer}
 import rx.lang.scala.schedulers.NewThreadScheduler
 import rx.lang.scala.{Observable, Scheduler}
 
@@ -161,11 +163,12 @@ class YtrDownloadService(
       .subscribeOn(scheduler)
       .subscribe(
         onNext = oppija => {
+          implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUserTallennetutYlioppilastutkinnonOpiskeluoikeudet
+          implicit val accessType: AccessType.Value = AccessType.write
+
           // TODO: TOR-1639 Kunhan tätä on testattu try-catchien kanssa tuotannossa tarpeeksi, siisti koodi siten, että mahdolliset poikkeukset saa valua
           //  ylemmäksikin. Pitää myös miettiä silloin, onko ok, että yksittäisiä failaavia oppijoita skipataan, kuten koodi nyt tekee.
           try {
-            implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUserTallennetutYlioppilastutkinnonOpiskeluoikeudet
-            implicit val accessType: AccessType.Value = AccessType.write
 
             oppijaConverter.convertOppijastaOpiskeluoikeus(oppija) match {
               case Some(ytrOo) =>
@@ -191,6 +194,9 @@ class YtrDownloadService(
           } catch {
             case e: Throwable => logger.info(s"YTR-datan konversio epäonnistui: ${e.getMessage}")
           }
+
+          // TODO: TOR-1639 Ajastus tähän: serialisointi + tämä ylimääräinen tallennus voi olla yllättävänkin hidasta
+          tallennaAlkuperäinenJson(oppija)
 
           val birthMonth = oppija.birthMonth
           if (latestHandledBirthMonth != birthMonth) {
@@ -223,6 +229,20 @@ class YtrDownloadService(
           }
         }
       )
+  }
+
+  private def tallennaAlkuperäinenJson(oppija: YtrLaajaOppija)(implicit user: KoskiSpecificSession, accessType: AccessType.Value)
+  = {
+    application.henkilöRepository.findByHetuOrCreateIfInYtrOrVirta(
+      hetu = oppija.ssn,
+      userForAccessChecks = Some(user)
+    ).map(_.oid).map(oppijaOid => {
+      val serializationContext = SerializationContext(KoskiSchema.schemaFactory, KoskiSchema.skipSyntheticProperties)
+      val fieldsToExcludeInJson = Set("ssn", "firstNames", "lastName")
+      val serialisoituRaakaJson = JsonManipulation.removeFields(Serializer.serialize(oppija, serializationContext), fieldsToExcludeInJson)
+
+      application.ytrPossu.createOrUpdateAlkuperäinenYTRJson(oppijaOid, serialisoituRaakaJson)
+    })
   }
 
   def createOrUpdate(

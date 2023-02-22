@@ -11,6 +11,7 @@ import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.Opiskeluoikeus.VERSIO_1
 import fi.oph.koski.schema._
+import fi.oph.koski.ytr.download.YtrLaajaOppija
 import org.json4s.jackson.JsonMethods
 import org.json4s.{JArray, JObject, JString, JValue}
 import slick.dbio
@@ -18,8 +19,8 @@ import slick.dbio.Effect.{Read, Transactional, Write}
 import slick.dbio.{DBIOAction, NoStream}
 import slick.jdbc.GetResult
 
-import java.sql.SQLException
-import java.time.LocalDate
+import java.sql.{SQLException, Timestamp}
+import java.time.{LocalDate, LocalDateTime}
 
 // TODO: TOR-1639 Jos mahdollista, yhdistä tästä yhteisiä koodiosia PostgresOpiskeluoikeusRepository:n kanssa.
 class PostgresYtrOpiskeluoikeusRepository(
@@ -239,5 +240,23 @@ class PostgresYtrOpiskeluoikeusRepository(
     }
   } catch {
     case e: JsonPatchException => Some(s"Virhe YTR opiskeluoikeushistorian validoinnissa: ${e.getMessage}")
+  }
+
+  override def createOrUpdateAlkuperäinenYTRJson(oppijaOid: String, data: JValue)(implicit user: KoskiSpecificSession): HttpStatus = {
+    if (!user.hasTallennetutYlioppilastutkinnonOpiskeluoikeudetAccess) {
+      throw new RuntimeException(s"Ei oikeuksia tallentaa alkuperäistä jsonia")
+    }
+
+    runDbSync(
+      KoskiTables.YtrAlkuperäinenData.insertOrUpdate(
+        YtrAlkuperäinenDataRow(
+          oppijaOid,
+          Timestamp.valueOf(LocalDateTime.now),
+          data
+        )
+      )
+    )
+
+    HttpStatus.ok
   }
 }
