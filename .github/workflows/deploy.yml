@@ -9,11 +9,14 @@ on:
       commithash:
         description: "Commit hash to deploy from"
         required: true
+permissions:
+  id-token: write
+  contents: read
 env:
   DOCKER_BUILDKIT: 1
   SSH_AUTH_SOCK: /tmp/ssh_agent.sock
 
-
+run-name: Deploy to ${{ inputs.environment }}
 jobs:
   checkbuilddeploy:
     name: Build and deploy
@@ -34,16 +37,19 @@ jobs:
           echo "Changes to files:"
           git diff origin/master...
 
-      - name: Configure AWS credentials for utility account
+      - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1-node16
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          role-to-assume: ${{ secrets.DEPLOY_ROLE }}
+          role-duration-seconds: 3600
+          role-session-name: KoskiDeployment-${{ github.event.inputs.environment }}-${{ github.event.inputs.commithash }}
           aws-region: eu-west-1
 
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
+        with:
+          registries: ${{ secrets.ECR_ACCOUNT_ID }}
 
       - name: Check if container image already exists in ECR
         env:
@@ -105,16 +111,6 @@ jobs:
         run: |
           docker build -f docker-build/Dockerfile -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --build-arg KOSKI_VERSION=$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-
-      - name: Switch role to target environment
-        uses: aws-actions/configure-aws-credentials@v1-node16
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: eu-west-1
-          role-to-assume: ${{ secrets.DEPLOYMENT_ROLE }}
-          role-duration-seconds: 3600
-          role-session-name: KoskiDeployment-${{ github.event.inputs.commithash }}
 
       - name: Get task definition ARN
         id: get-taskdef-arn
