@@ -3,9 +3,11 @@ package fi.oph.koski.ytr.download
 import fi.oph.koski.cloudwatch.CloudWatchMetricsService
 import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.db.{DB, QueryMethods}
+import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schema.{Oppija, UusiHenkilö}
+import fi.oph.koski.oppija.HenkilönOpiskeluoikeusVersiot
+import fi.oph.koski.schema.{Oppija, UusiHenkilö, YlioppilastutkinnonOpiskeluoikeus}
 import rx.lang.scala.schedulers.NewThreadScheduler
 import rx.lang.scala.{Observable, Scheduler}
 
@@ -167,28 +169,23 @@ class YtrDownloadService(
 
             oppijaConverter.convertOppijastaOpiskeluoikeus(oppija) match {
               case Some(ytrOo) =>
-                application.validator.updateFieldsAndValidateOpiskeluoikeus(ytrOo, None) match {
-                  case Left(error) => logger.info(s"YTR-datan validointi epäonnistui: ${error.errorString.getOrElse("-")}")
-                  case Right(_) =>
-                    try {
-                      val koskiOppija = Oppija(
-                        henkilö = UusiHenkilö(
-                          hetu = oppija.ssn,
-                          etunimet = oppija.firstNames,
-                          sukunimi = oppija.lastName,
-                          kutsumanimi = None
-                        ),
-                        opiskeluoikeudet = List(ytrOo)
-                      )
-                      application.oppijaFacade.createOrUpdate(
-                        oppija = koskiOppija,
-                        allowUpdate = true,
-                        allowDeleteCompleted = true
-                      )
-                    } catch {
-                      case e: Throwable => logger.warn(e)(s"YTR-datan tallennus epäonnistui: ${e.getMessage}")
-                    }
+                val henkilö = UusiHenkilö(
+                  hetu = oppija.ssn,
+                  etunimet = oppija.firstNames,
+                  sukunimi = oppija.lastName,
+                  kutsumanimi = None
+                )
+
+                try {
+                  createOrUpdate(henkilö, ytrOo) match {
+                    case Left(error) =>
+                      logger.warn(s"YTR-datan tallennus epäonnistui: ${error.errorString.getOrElse("-")}")
+                    case _ =>
+                  }
+                } catch {
+                  case e: Throwable => logger.warn(e)(s"YTR-datan tallennus epäonnistui: ${e.getMessage}")
                 }
+
               case _ => logger.info(s"YTR-datan konversio palautti tyhjän opiskeluoikeuden")
             }
           } catch {
@@ -226,6 +223,27 @@ class YtrDownloadService(
           }
         }
       )
+  }
+
+  def createOrUpdate(
+    henkilö: UusiHenkilö,
+    ytrOo: YlioppilastutkinnonOpiskeluoikeus
+  )(implicit user: KoskiSpecificSession, accessType: AccessType.Value): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = {
+    application.validator.updateFieldsAndValidateOpiskeluoikeus(ytrOo, None) match {
+      case Left(error) =>
+        logger.info(s"YTR-datan validointi epäonnistui: ${error.errorString.getOrElse("-")}")
+        Left(error)
+      case Right(_) =>
+        val koskiOppija = Oppija(
+          henkilö = henkilö,
+          opiskeluoikeudet = List(ytrOo)
+        )
+        application.oppijaFacade.createOrUpdate(
+          oppija = koskiOppija,
+          allowUpdate = true,
+          allowDeleteCompleted = true
+        )
+    }
   }
 
   def shutdown: Nothing = {

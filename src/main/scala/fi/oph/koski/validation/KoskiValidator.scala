@@ -446,14 +446,21 @@ class KoskiValidator(
   }
 
   private def validateOrganisaatioAccess(oo: Opiskeluoikeus, organisaatio: OrganisaatioWithOid)(implicit user: KoskiSpecificSession, accessType: AccessType.Value): HttpStatus = {
-    val organisaationKoulutustoimija = organisaatioRepository.findKoulutustoimijaForOppilaitos(organisaatio).map(_.oid)
-    val opiskeluoikeudenKoulutustoimija = oo.koulutustoimija.map(_.oid)
-    val koulutustoimija = oo match {
-      case e: EsiopetuksenOpiskeluoikeus if e.järjestämismuoto.isDefined => opiskeluoikeudenKoulutustoimija
-      case _ => organisaationKoulutustoimija
-    }
-    HttpStatus.validate(user.hasAccess(organisaatio.oid, koulutustoimija, accessType)) {
-      KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon " + organisaatio.oid)
+    oo match {
+      case _: YlioppilastutkinnonOpiskeluoikeus =>
+        HttpStatus.validate(user.hasTallennetutYlioppilastutkinnonOpiskeluoikeudetAccess) {
+          KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon " + organisaatio.oid)
+        }
+      case _ =>
+        val organisaationKoulutustoimija = organisaatioRepository.findKoulutustoimijaForOppilaitos(organisaatio).map(_.oid)
+        val opiskeluoikeudenKoulutustoimija = oo.koulutustoimija.map(_.oid)
+        val koulutustoimija = oo match {
+          case e: EsiopetuksenOpiskeluoikeus if e.järjestämismuoto.isDefined => opiskeluoikeudenKoulutustoimija
+          case _ => organisaationKoulutustoimija
+        }
+        HttpStatus.validate(user.hasAccess(organisaatio.oid, koulutustoimija, accessType)) {
+          KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon " + organisaatio.oid)
+        }
     }
   }
 
