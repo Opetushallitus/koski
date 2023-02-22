@@ -344,7 +344,7 @@ class PostgresOpiskeluoikeusRepository(
         val oid = oidGenerator.generateOid(oppija.henkilö.oid)
         val row: OpiskeluoikeusRow = KoskiTables.OpiskeluoikeusTable.makeInsertableRow(oppija.henkilö.oid, oid, tallennettavaOpiskeluoikeus)
         for {
-          opiskeluoikeusId <- KoskiTables.OpiskeluOikeudet.returning(OpiskeluOikeudet.map(_.id)) += row
+          opiskeluoikeusId <- KoskiTables.OpiskeluOikeudetWithAccessCheck.returning(OpiskeluOikeudet.map(_.id)) += row
           diff = JArray(List(JObject("op" -> JString("add"), "path" -> JString(""), "value" -> row.data)))
           _ <- historyRepository.createAction(opiskeluoikeusId, VERSIO_1, user.oid, diff)
         } yield {
