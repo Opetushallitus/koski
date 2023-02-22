@@ -1,8 +1,9 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.KoskiHttpSpec
+import fi.oph.koski.documentation.AmmatillinenExampleData
 import fi.oph.koski.documentation.AmmatillinenExampleData._
-import fi.oph.koski.documentation.ExampleData.{helsinki, longTimeAgo, opiskeluoikeusLäsnä, valtionosuusRahoitteinen}
+import fi.oph.koski.documentation.ExampleData.{helsinki, longTimeAgo, opiskeluoikeusLäsnä, opiskeluoikeusValmistunut, valtionosuusRahoitteinen}
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.MockUsers.{omniaTallentaja, stadinAmmattiopistoTallentaja}
@@ -340,6 +341,80 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
         "Päivämäärät kunnossa" - {
           "palautetaan HTTP 200"  in (put(päivämäärillä("2015-08-01", "2016-06-01"))(
             verifyResponseStatusOk()))
+        }
+      }
+    }
+
+    "Korotettuna suorituksena" - {
+      "Korotuksen tiedot voi lisätä osittaiselle suoritukselle" in {
+        resetFixtures()
+
+        val oo = lastOpiskeluoikeusByHetu(defaultHenkilö) match {
+          case oo: AmmatillinenOpiskeluoikeus if oo.suoritukset.exists(_.tyyppi.koodiarvo == "ammatillinentutkinto") => oo
+        }
+        oo.oid should not be empty
+
+        val korotettuSuoritus = ammatillisenTutkinnonOsittainenSuoritus.copy(
+          korotettuOpiskeluoikeusOid = oo.oid,
+          korotettuKeskiarvo = Some(4.5),
+          korotettuKeskiarvoSisältääMukautettujaArvosanoja = Some(false),
+          osasuoritukset = Some(List(
+            osittaisenTutkinnonTutkinnonOsanSuoritus(k3, ammatillisetTutkinnonOsat, "100432", "Ympäristön hoitaminen", 35).copy(
+              korotettu = Some(korotettu)
+            ),
+            yhteisenOsittaisenTutkinnonTutkinnonOsansuoritus(k3, yhteisetTutkinnonOsat, "101054", "Matemaattis-luonnontieteellinen osaaminen", 9).copy(
+              osasuoritukset = Some(List(
+                YhteisenTutkinnonOsanOsaAlueenSuoritus(
+                  koulutusmoduuli = PaikallinenAmmatillisenTutkinnonOsanOsaAlue(
+                    PaikallinenKoodi("MA", "Matematiikka"), "Matematiikan opinnot", pakollinen = true, Some(LaajuusOsaamispisteissä(3))
+                  ),
+                  arviointi = Some(List(arviointiKiitettävä)),
+                  korotettu = Some(korotettu)
+                )
+              ))
+            )
+          ))
+        )
+        val korotettuOo = AmmatillinenOpiskeluoikeus(
+          tila = AmmatillinenOpiskeluoikeudenTila(List(
+            AmmatillinenOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
+            AmmatillinenOpiskeluoikeusjakso(date(2023, 1, 1), opiskeluoikeusValmistunut, Some(valtionosuusRahoitteinen)))
+          ),
+          oppilaitos = Some(Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto)),
+          suoritukset = List(korotettuSuoritus)
+        )
+
+        putOpiskeluoikeus(korotettuOo) {
+          verifyResponseStatusOk()
+        }
+      }
+
+      "Korotuksen tietoja ei voi lisätä tutkinnon suoritukselle" in {
+        val korotettuSuoritus = ympäristöalanPerustutkintoValmis().copy(
+          osasuoritukset = Some(List(
+            AmmatillinenExampleData.yhteisenTutkinnonOsanSuoritus("101053", "Viestintä- ja vuorovaikutusosaaminen", k3, 11).copy(
+              osasuoritukset = Some(List(
+                YhteisenTutkinnonOsanOsaAlueenSuoritus(
+                  koulutusmoduuli = AmmatillisenTutkinnonÄidinkieli(Koodistokoodiviite("AI", "ammatillisenoppiaineet"), pakollinen = true, kieli = Koodistokoodiviite("AI1", "oppiaineaidinkielijakirjallisuus"), laajuus = Some(LaajuusOsaamispisteissä(5))),
+                  arviointi = Some(List(arviointiKiitettävä)),
+                  korotettu = Some(korotettu)
+                )
+              ))
+            )
+          ))
+        )
+
+        val korotettuOo = AmmatillinenOpiskeluoikeus(
+          tila = AmmatillinenOpiskeluoikeudenTila(List(
+            AmmatillinenOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
+            AmmatillinenOpiskeluoikeusjakso(date(2023, 1, 1), opiskeluoikeusValmistunut, Some(valtionosuusRahoitteinen)))
+          ),
+          oppilaitos = Some(Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto)),
+          suoritukset = List(korotettuSuoritus)
+        )
+
+        putOpiskeluoikeus(korotettuOo) {
+          verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*korotettu.*".r))
         }
       }
     }

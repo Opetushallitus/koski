@@ -40,6 +40,9 @@ object AmmatillinenExampleData {
     Some(LocalizedString.finnish("Liikennelentäjät lentävät monentyyppisiä lentokoneita kuljettaen matkustajia, rahtia ja postia."))
   )
 
+  val korotettu = Koodistokoodiviite("korotettu", "ammatillisensuorituksenkorotus")
+  val korotuksenYritys = Koodistokoodiviite("korotuksenyritys", "ammatillisensuorituksenkorotus")
+
   def autoalanPerustutkinnonSuoritus(toimipiste: OrganisaatioWithOid = stadinToimipiste): AmmatillisenTutkinnonSuoritus = ammatillinenTutkintoSuoritus(autoalanPerustutkinto, toimipiste)
   def ajoneuvoalanPerustutkinnonSuoritus(toimipiste: OrganisaatioWithOid = stadinToimipiste): AmmatillisenTutkinnonSuoritus = ammatillinenTutkintoSuoritus(ajoneuvoalanPerustutkinto, toimipiste).copy(suoritustapa = suoritustapaReformi)
   def autoalanPerustutkinnonSuoritusValma(toimipiste: OrganisaatioWithOid = stadinToimipiste): ValmaKoulutuksenSuoritus = valmaSuoritus(valmaKoulutus, toimipiste)

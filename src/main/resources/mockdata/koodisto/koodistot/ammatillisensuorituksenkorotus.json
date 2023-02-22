@@ -1,0 +1,27 @@
+{
+  "koodistoUri": "ammatillisensuorituksenkorotus",
+  "versio": 1,
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "Ammatillisen suorituksen korotus",
+      "kuvaus": "Ammatillisen suorituksen korotus"
+    },
+    {
+      "kieli": "SV",
+      "nimi": "Ammatillisen suorituksen korotus",
+      "kuvaus": "Ammatillisen suorituksen korotus"
+    },
+    {
+      "kieli": "EN",
+      "nimi": "Ammatillisen suorituksen korotus",
+      "kuvaus": "Ammatillisen suorituksen korotus"
+    }
+  ],
+  "codesGroupUri": "koski",
+  "voimassaAlkuPvm": "2023-01-01",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "withinCodes": [],
+  "tila": "LUONNOS",
+  "version": 0
+}

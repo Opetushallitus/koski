@@ -272,3 +272,10 @@ trait LuokalleJääntiTiedonSisältäväSuoritus {
   @Title("Oppilas jää luokalle")
   def jääLuokalle: Boolean
 }
+
+trait Korotuksellinen extends Suoritus {
+  @Title("Korotettu suoritus")
+  @Description("Kentän arvo kertoo onko korotus onnistunut. Jos suorituksessa ei ole kyseessä korotus, kenttä jätetään tyhjäksi.")
+  @KoodistoUri("ammatillisensuorituksenkorotus")
+  def korotettu: Option[Koodistokoodiviite]
+}

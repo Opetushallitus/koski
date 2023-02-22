@@ -1,3 +1,15 @@
+## xx.xx.xxxx
+
+- Lisätty ammattikoulujen suoritusten korotusten vaatimat tietomallimuutokset.
+- Ammatillisen tutkinnon osan/osien suoritukselle lisätty kentät `korotettuOpiskeluoikeusOid`, `korotettuKeskiarvo`
+  ja `korotettuKeskiarvoSisältääMukautettujaArvosanoja`.
+- Ammatillisen tutkinnon osan/osien osasuorituksille ja aliosasuorituksille lisätty kenttä `korotettu`:
+  - Muun tutkinnon osan suoritus
+  - Muiden opintovalmiuksia tukevien opintojen suoritus
+  - Yhteisen tutkinnon osan osa-alueen suoritus
+- Uuden `korotettu`-kentän siirto muiden kuin ammatillisen tutkinnon osan/osien osasuorituksille ja aliosasuorituksille
+  on estetty.
+
 ## 1.3.2023
 
 - YO-tutkinnon suorituksen koulutusmoduulista on poistettu kokonaan kenttä perusteenDiaarinumero, jota ei ole koskaan käytetty

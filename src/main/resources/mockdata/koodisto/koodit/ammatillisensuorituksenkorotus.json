@@ -1,0 +1,54 @@
+[
+  {
+    "koodiUri": "ammatillisensuorituksenkorotus_korotettu",
+    "koodiArvo": "korotettu",
+    "metadata": [
+      {
+        "nimi": "Korotettu suoritus",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Korotettu suoritus",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Korotettu suoritus",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "ammatillisensuorituksenkorotus_korotuksenyritys",
+    "koodiArvo": "korotuksenyritys",
+    "metadata": [
+      {
+        "nimi": "Korotuksen yritys",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Korotuksen yritys",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Korotuksen yritys",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]
