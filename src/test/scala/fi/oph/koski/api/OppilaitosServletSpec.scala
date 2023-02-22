@@ -27,14 +27,14 @@ class OppilaitosServletSpec extends AnyFreeSpec with Matchers with KoskiHttpSpec
         )
       }
     }
-    "Muks-organisaatiolle palautetaan vain muks" in {
+    "Muks-organisaatiolle palautetaan vain muks ja TPO" in {
       authGet(
         s"api/oppilaitos/opiskeluoikeustyypit/${MockOrganisaatiot.MuuKuinSäänneltyKoulutusToimija.oppilaitos}",
         headers = authHeaders(MockUsers.muuKuinSäänneltyKoulutusYritys)
       ) {
         verifyResponseStatusOk()
         JsonSerializer.parse[List[Koodistokoodiviite]](body).map(_.koodiarvo).toSet should equal(
-          Set(OpiskeluoikeudenTyyppi.muukuinsaanneltykoulutus.koodiarvo)
+          Set(OpiskeluoikeudenTyyppi.muukuinsaanneltykoulutus.koodiarvo, OpiskeluoikeudenTyyppi.taiteenperusopetus.koodiarvo)
         )
       }
     }

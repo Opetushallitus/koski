@@ -8,6 +8,7 @@ const Input = ({ id, type, disabled, value, autofocus = false }) => (
     onChange={(e) => value.set(e.target.value)}
     id={id}
     autoFocus={autofocus}
+    data-testid={id}
   ></input>
 )
 

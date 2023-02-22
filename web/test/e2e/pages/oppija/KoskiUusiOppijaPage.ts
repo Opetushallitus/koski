@@ -16,6 +16,8 @@ interface BaseOppija {
   opintojenMaksuttomuus?: string
   peruste?: string
   rahoitus?: string
+  suoritustyyppi?: string
+  taiteenala?: string
 }
 
 type ESHOppija =
@@ -43,6 +45,8 @@ export class KoskiUusiOppijaPage {
   readonly submitBtn: Locator
   readonly oppilaitosTextInput: Locator
   readonly oppilaitosHakuInput: Locator
+  readonly suoritustyyppi: Dropdown
+  readonly taiteenala: Dropdown
 
   constructor(page: Page) {
     this.page = page
@@ -74,6 +78,8 @@ export class KoskiUusiOppijaPage {
     this.submitBtn = page.getByRole('button', { name: 'Lisää opiskelija' })
     this.etunimet = page.getByRole('textbox', { name: 'Etunimet' })
     this.sukunimi = page.getByRole('textbox', { name: 'Sukunimi' })
+    this.suoritustyyppi = Dropdown.fromTestId(page, 'Suoritustyyppi-koodisto-dropdown')
+    this.taiteenala = Dropdown.fromTestId(page, 'Taiteenala-koodisto-dropdown')
   }
 
   async goTo(hetu: Oppija['hetu']) {
@@ -101,11 +107,14 @@ export class KoskiUusiOppijaPage {
     if (oppija.oppilaitos) {
       await this.oppilaitosTextInput.click()
 
-      await this.oppilaitosHakuInput.fill('helsingin eurooppalainen koulu')
+      await this.oppilaitosHakuInput.fill(oppija.oppilaitos)
 
       await this.page
         .getByTestId(`organisaatio-list-item-${oppija.oppilaitos}`)
         .click()
+
+      // Odota oppilaitoksen asettamisen jälkeen että sallitut opiskeluoikeudet ja muut kentät ehtii latautua
+      await this.page.waitForTimeout(500)
     }
     if (oppija.opiskeluoikeus) {
       await this.opiskeluoikeus.selectOptionByClick(oppija.opiskeluoikeus)
@@ -132,6 +141,12 @@ export class KoskiUusiOppijaPage {
     }
     if (oppija.opintojenMaksuttomuus) {
       await this.maksuttomuus.selectOptionByLabel(oppija.opintojenMaksuttomuus)
+    }
+    if (oppija.suoritustyyppi) {
+      await this.suoritustyyppi.selectOptionByClick(oppija.suoritustyyppi)
+    }
+    if (oppija.taiteenala) {
+      await this.taiteenala.selectOptionByClick(oppija.taiteenala)
     }
   }
 

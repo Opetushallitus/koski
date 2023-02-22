@@ -22,6 +22,7 @@ class OppilaitosServlet(implicit val application: KoskiApplication) extends Kosk
   val tuvaTyypit = List(OpiskeluoikeudenTyyppi.tuva)
   val eshTyypit = List(OpiskeluoikeudenTyyppi.europeanschoolofhelsinki)
   val muunKuinSäännellynKoulutuksenTyypit = List(OpiskeluoikeudenTyyppi.muukuinsaanneltykoulutus)
+  val taiteenPerusopetuksenTyypit = List(OpiskeluoikeudenTyyppi.taiteenperusopetus)
   val pohjoiskalotinTyypit = List(OpiskeluoikeudenTyyppi.ammatillinenkoulutus, OpiskeluoikeudenTyyppi.muukuinsaanneltykoulutus)
 
   // Organisaatiopoikkeukset, jotka käydään ensin läpi. Esimerkiksi, jos on tarve näyttää vain yhdentyypinen opiskeluoikeus organisaatiolle, laita OID:t tähän listaan.
@@ -57,9 +58,9 @@ class OppilaitosServlet(implicit val application: KoskiApplication) extends Kosk
 
   private def byOrganisaatioTyyppi(organisaatiot: List[OrganisaatioHierarkia]) =
     if (organisaatiot.flatMap(_.organisaatiotyypit).contains(Organisaatiotyyppi.VARHAISKASVATUKSEN_TOIMIPAIKKA)) {
-      esiopetuksenTyypit ++ muunKuinSäännellynKoulutuksenTyypit
+      esiopetuksenTyypit ++ muunKuinSäännellynKoulutuksenTyypit ++ taiteenPerusopetuksenTyypit
     } else {
-      muunKuinSäännellynKoulutuksenTyypit
+      muunKuinSäännellynKoulutuksenTyypit ++ taiteenPerusopetuksenTyypit
     }
 
   private def byOrganisaatioPoikkeus(organisaatiot: List[OrganisaatioHierarkia]): List[Koodistokoodiviite] =

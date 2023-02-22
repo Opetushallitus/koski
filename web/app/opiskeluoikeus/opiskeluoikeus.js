@@ -41,7 +41,11 @@ const vainVstJaMuksKoulutuksissaKäytettävätTilat = [
   'hyvaksytystisuoritettu',
   'keskeytynyt'
 ]
-
+const taiteenPerusopetuksenTilat = [
+  'lasna',
+  'hyvaksytystisuoritettu',
+  'paattynyt'
+]
 const tuvaAmmatillinenTilat = [...tuvaTilat, 'loma']
 const alwaysExclude = ['mitatoity']
 
@@ -78,9 +82,11 @@ const filterByOpiskeluoikeudenTyyppi = (
 ) => {
   switch (opiskeluoikeudenTyyppi && opiskeluoikeudenTyyppi.koodiarvo) {
     case 'perusopetukseenvalmistavaopetus':
-      return tilat
+      return tilat.filter((t) => koodiarvo(t) !== 'paattynyt')
     case 'ammatillinenkoulutus':
-      return tilat.filter((t) => koodiarvo(t) !== 'eronnut')
+      return tilat.filter(
+        (t) => koodiarvo(t) !== 'eronnut' && koodiarvo(t) !== 'paattynyt'
+      )
     case 'internationalschool':
       return tilat.filter((t) =>
         internationalSchoolTilat.includes(koodiarvo(t))
@@ -91,8 +97,14 @@ const filterByOpiskeluoikeudenTyyppi = (
       )
     case 'tuva':
       return filterByJärjestämislupa(tuvaJärjestämislupa, tilat, koodiarvo)
+    case 'taiteenperusopetus':
+      return tilat.filter((t) =>
+        taiteenPerusopetuksenTilat.includes(koodiarvo(t))
+      )
     default:
-      return tilat.filter((t) => koodiarvo(t) !== 'loma')
+      return tilat.filter(
+        (t) => koodiarvo(t) !== 'loma' && koodiarvo(t) !== 'paattynyt'
+      )
   }
 }
 

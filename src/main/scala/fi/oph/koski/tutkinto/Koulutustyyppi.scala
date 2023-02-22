@@ -73,6 +73,8 @@ object Koulutustyyppi {
         Set(luva)
       case SuorituksenTyyppi.tuva =>
         Set(tuva)
+      case SuorituksenTyyppi.tpoLaajanOppimääränPerusopinnot | SuorituksenTyyppi.tpoLaajanOppimääränSyventävät | SuorituksenTyyppi.tpoYleisenOppimääränYhteiset | SuorituksenTyyppi.tpoYleisenOppimääränTeemat =>
+        Set(taiteenperusopetus)
       case _ => Set.empty[Koulutustyyppi]
     }
   }

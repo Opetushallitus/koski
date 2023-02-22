@@ -24,7 +24,7 @@ test("Hello world", async () => {
 })
 ```
 
-## Testidatan nollau
+## Testidatan nollaus
 
 ### Ennen kaikkia testejä
 

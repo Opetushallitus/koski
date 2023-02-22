@@ -57,6 +57,7 @@ import {
 import { jotpaSallitutRahoituskoodiarvot } from '../jotpa/jotpa'
 import UusiMuunKuinSäännellynKoulutuksenSuoritus from './UusiMuunKuinSäännellynKoulutuksenSuoritus'
 import { modelData } from '../editor/EditorModel'
+import UusiTaiteenPerusopetuksenSuoritus from './UusiTaiteenPerusopetuksenSuoritus'
 
 export default ({ opiskeluoikeusAtom }) => {
   const dateAtom = Atom(new Date())
@@ -71,11 +72,18 @@ export default ({ opiskeluoikeusAtom }) => {
   const varhaiskasvatusJärjestämismuotoAtom = Atom()
   const onTuvaOpiskeluoikeus = Atom(false)
   const tuvaJärjestämislupaAtom = Atom()
+  const onTaiteenPerusopetusOpiskeluoikeusAtom = Atom(false)
+  const tpoOppimääräAtom = Atom()
+  const tpoToteutustapaAtom = Atom()
+  const tpoTaiteenalaAtom = Atom()
   const maksuttomuusAtom = Atom()
   tyyppiAtom.changes().onValue((tyyppi) => {
     suoritusAtom.set(undefined)
     rahoitusAtom.set(undefined)
     onTuvaOpiskeluoikeus.set(tyyppi ? tyyppi.koodiarvo === 'tuva' : false)
+    onTaiteenPerusopetusOpiskeluoikeusAtom.set(
+      tyyppi ? tyyppi.koodiarvo === 'taiteenperusopetus' : false
+    )
   })
   const opintokokonaisuusAtom = Atom()
   const suoritustyyppiAtom = Atom()
@@ -177,6 +185,10 @@ export default ({ opiskeluoikeusAtom }) => {
     tuvaJärjestämislupaAtom,
     suoritustyyppiAtom,
     opintokokonaisuusAtom,
+    onTaiteenPerusopetusOpiskeluoikeusAtom,
+    tpoOppimääräAtom,
+    tpoToteutustapaAtom,
+    tpoTaiteenalaAtom,
     makeOpiskeluoikeus
   )
 
@@ -207,7 +219,8 @@ export default ({ opiskeluoikeusAtom }) => {
           (tyyppi) =>
             tyyppi &&
             tyyppi.koodiarvo !== 'internationalschool' &&
-            tyyppi.koodiarvo !== 'europeanschoolofhelsinki'
+            tyyppi.koodiarvo !== 'europeanschoolofhelsinki' &&
+            tyyppi.koodiarvo !== 'taiteenperusopetus'
         ),
         <Suorituskieli
           suorituskieliAtom={suorituskieliAtom}
@@ -219,6 +232,20 @@ export default ({ opiskeluoikeusAtom }) => {
         <TuvaJärjestämisLupa
           tuvaJärjestämislupaAtom={tuvaJärjestämislupaAtom}
           tuvaJärjestämislupaP={tuvaJärjestämislupaP}
+        />
+      )}
+      {ift(
+        tyyppiAtom.map(
+          (tyyppi) => tyyppi && tyyppi.koodiarvo === 'taiteenperusopetus'
+        ),
+        <TaiteenPerusopetuksenOppimäärä tpoOppimääräAtom={tpoOppimääräAtom} />
+      )}
+      {ift(
+        tyyppiAtom.map(
+          (tyyppi) => tyyppi && tyyppi.koodiarvo === 'taiteenperusopetus'
+        ),
+        <TaiteenPerusopetuksenKoulutuksenToteutustapa
+          tpoToteutustapaAtom={tpoToteutustapaAtom}
         />
       )}
       {tyyppiAtom.map('.koodiarvo').map((tyyppi) => {
@@ -348,6 +375,15 @@ export default ({ opiskeluoikeusAtom }) => {
               opintokokonaisuusAtom={opintokokonaisuusAtom}
             />
           )
+        if (tyyppi === 'taiteenperusopetus')
+          return (
+            <UusiTaiteenPerusopetuksenSuoritus
+              suoritusAtom={suoritusAtom}
+              oppilaitosAtom={oppilaitosAtom}
+              oppimääräAtom={tpoOppimääräAtom}
+              taiteenalaAtom={tpoTaiteenalaAtom}
+            />
+          )
       })}
       <Aloituspäivä dateAtom={dateAtom} />
       <OpiskeluoikeudenTila
@@ -377,7 +413,7 @@ const opiskeluoikeudentTilat = (
   tuvaJärjestämislupaAtom
 ) => {
   const tilatP = koodistoValues(
-    'koskiopiskeluoikeudentila/lasna,valmistunut,eronnut,katsotaaneronneeksi,valiaikaisestikeskeytynyt,peruutettu,loma,hyvaksytystisuoritettu,keskeytynyt'
+    'koskiopiskeluoikeudentila/lasna,valmistunut,eronnut,katsotaaneronneeksi,valiaikaisestikeskeytynyt,peruutettu,loma,hyvaksytystisuoritettu,keskeytynyt,paattynyt'
   )
   return Bacon.combineAsArray(tyyppiAtom, suoritusAtom, tuvaJärjestämislupaAtom)
     .flatMap(([tyyppi, suoritusTyyppi, järjestämislupa]) =>
@@ -624,6 +660,49 @@ const TuvaJärjestämisLupa = ({
   )
 }
 
+const TaiteenPerusopetuksenOppimäärä = ({ tpoOppimääräAtom }) => {
+  const tpoOppimäärätP = koodistoValues('taiteenperusopetusoppimaara').map(
+    (values) => values.reverse()
+  )
+  tpoOppimäärätP.onValue((koodit) =>
+    tpoOppimääräAtom.set(koodit.find(koodiarvoMatch('yleinenoppimaara')))
+  )
+  return (
+    <label id="tpo-oppimäärä">
+      <KoodistoDropdown
+        className="tpo-oppimäärä"
+        title="Oppimäärä"
+        options={tpoOppimäärätP}
+        selected={tpoOppimääräAtom}
+      />
+    </label>
+  )
+}
+
+const TaiteenPerusopetuksenKoulutuksenToteutustapa = ({
+  tpoToteutustapaAtom
+}) => {
+  // TODO: TOR-1692 hankintakoulutus
+  const tpoToteutustavatP = koodistoValues(
+    'taiteenperusopetuskoulutuksentoteutustapa/itsejarjestettykoulutus'
+  )
+  tpoToteutustavatP.onValue((koodit) =>
+    tpoToteutustapaAtom.set(
+      koodit.find(koodiarvoMatch('itsejarjestettykoulutus'))
+    )
+  )
+  return (
+    <label id="tpo-toteutustapa">
+      <KoodistoDropdown
+        className="tpo-toteutustapa"
+        title="Koulutuksen toteutustapa"
+        options={tpoToteutustavatP}
+        selected={tpoToteutustapaAtom}
+      />
+    </label>
+  )
+}
+
 const makeOpiskeluoikeus = (
   alkamispäivä,
   oppilaitos,
@@ -638,7 +717,11 @@ const makeOpiskeluoikeus = (
   onTuvaOpiskeluoikeus,
   tuvaJärjestämislupa,
   suoritustyyppi,
-  opintokokonaisuus
+  opintokokonaisuus,
+  onTaiteenPerusopetusOpiskeluoikeus,
+  tpoOppimäärä,
+  tpoToteutustapa,
+  tpoTaiteenala
 ) => {
   const makeOpiskeluoikeusjakso = () => {
     const opiskeluoikeusjakso = alkamispäivä &&
@@ -676,7 +759,9 @@ const makeOpiskeluoikeus = (
     (!maksuttomuusTiedonVoiValita || maksuttomuus !== undefined) &&
     (!onTuvaOpiskeluoikeus || tuvaJärjestämislupa) &&
     vstOpintokokonaisuusOk &&
-    muksOpintokokonaisuusOk
+    muksOpintokokonaisuusOk &&
+    (!onTaiteenPerusopetusOpiskeluoikeus ||
+      (tpoOppimäärä && tpoToteutustapa && tpoTaiteenala))
   ) {
     const järjestämismuoto =
       tyyppi.koodiarvo === 'esiopetus'
@@ -698,6 +783,14 @@ const makeOpiskeluoikeus = (
     const tuvaOletusLisätiedot = onTuvaOpiskeluoikeus
       ? getTuvaLisätiedot(tuvaJärjestämislupa)
       : {}
+    const oppimäärä =
+      tyyppi.koodiarvo === 'taiteenperusopetus'
+        ? { oppimäärä: tpoOppimäärä }
+        : {}
+    const toteutustapa =
+      tyyppi.koodiarvo === 'taiteenperusopetus'
+        ? { koulutuksenToteutustapa: tpoToteutustapa }
+        : {}
 
     if (
       opintokokonaisuus &&
@@ -720,7 +813,9 @@ const makeOpiskeluoikeus = (
       opiskeluoikeus,
       järjestämismuoto,
       R.mergeDeepLeft(maksuttomuusLisätieto, tuvaOletusLisätiedot),
-      järjestämislupa
+      järjestämislupa,
+      oppimäärä,
+      toteutustapa
     ])
   }
 }
