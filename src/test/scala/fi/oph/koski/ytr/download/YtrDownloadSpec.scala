@@ -39,6 +39,8 @@ class YtrDownloadSpec
 
   lazy val oppijaOidEnnestäänKoskessa1 =
     KoskiApplicationForTests.opintopolkuHenkilöFacade.findOppijaByHetu(oppijahetut(0)).get.oid
+  lazy val oppijaOidEnnestäänKoskessa2 =
+    KoskiApplicationForTests.opintopolkuHenkilöFacade.findOppijaByHetu(oppijahetut(1)).get.oid
 
   "Käyttöoikeudet" - {
 
@@ -91,8 +93,7 @@ class YtrDownloadSpec
     verifyOppijat(expectedOppijat())
   }
 
-
-  "YTR download peräkkäin päivittyvällä sisällöllä" in {
+  "YTR download peräkkäin päivittyvällä sisällöllä luo uuden version, joka voidaan myös lukea historiasta" in {
     clearYtrData()
 
     downloadYtrData(birthmonthStart, birthmonthEnd, force = true)
@@ -104,6 +105,12 @@ class YtrDownloadSpec
         expectedVersionumerot = Seq(1, 2, 1, 1)
       )
     )
+
+    val edellinenVersio = getYtrOppijaVersionumerolla(oppijaOidEnnestäänKoskessa2, 1, MockUsers.paakayttaja)
+    edellinenVersio.opiskeluoikeudet(0).suoritukset(0).osasuoritukset.get should have length(5)
+
+    val uusiVersio = getYtrOppijaVersionumerolla(oppijaOidEnnestäänKoskessa2, 2, MockUsers.paakayttaja)
+    uusiVersio.opiskeluoikeudet(0).suoritukset(0).osasuoritukset.get should have length(3)
   }
 
   "YTR download modified since" in {
@@ -152,6 +159,13 @@ class YtrDownloadSpec
 
   private def getYtrOppija(oppijaOid: String, user: UserWithPassword = defaultUser): Oppija = {
     authGet("api/oppija/" + oppijaOid + "/ytr-json", user) {
+      verifyResponseStatusOk()
+      readOppija
+    }
+  }
+
+  private def getYtrOppijaVersionumerolla(oppijaOid: String, versionumero: Int, user: UserWithPassword = defaultUser): Oppija = {
+    authGet("api/oppija/" + oppijaOid + "/ytr-json/" + versionumero, user) {
       verifyResponseStatusOk()
       readOppija
     }

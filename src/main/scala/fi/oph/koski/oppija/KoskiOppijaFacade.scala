@@ -2,10 +2,10 @@ package fi.oph.koski.oppija
 
 import com.typesafe.config.Config
 import fi.oph.koski.henkilo._
-import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
+import fi.oph.koski.history.{OpiskeluoikeusHistoryRepository, YtrOpiskeluoikeusHistoryRepository}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
-import fi.oph.koski.log.KoskiAuditLogMessageField.{opiskeluoikeusId, opiskeluoikeusVersio, oppijaHenkiloOid}
+import fi.oph.koski.log.KoskiAuditLogMessageField.{opiskeluoikeusId, opiskeluoikeusOid, opiskeluoikeusVersio, oppijaHenkiloOid}
 import fi.oph.koski.log.KoskiOperation._
 import fi.oph.koski.log._
 import fi.oph.koski.opiskeluoikeus._
@@ -20,6 +20,7 @@ class KoskiOppijaFacade(
   opiskeluoikeusRepository: CompositeOpiskeluoikeusRepository,
   ytrDownloadedOpiskeluoikeusRepository: KoskiYtrOpiskeluoikeusRepository,
   historyRepository: OpiskeluoikeusHistoryRepository,
+  ytrHistoryRepository: YtrOpiskeluoikeusHistoryRepository,
   globaaliValidator: KoskiGlobaaliValidator,
   config: Config,
   hetu: Hetu
@@ -52,6 +53,30 @@ class KoskiOppijaFacade(
           Seq.empty
         )
       ))
+
+  def findYtrDownloadedOppijaVersionumerolla
+    (oid: String, versionumero: Int, findMasterIfSlaveOid: Boolean = false)
+      (implicit user: KoskiSpecificSession)
+  : Either[HttpStatus, WithWarnings[Oppija]] =
+    findYtrDownloadedOppija(oid, findMasterIfSlaveOid) match {
+      case Left(status) => Left(status)
+      case Right(WithWarnings(oppija, _)) =>
+        val historiaOot = oppija.opiskeluoikeudet.flatMap(
+          oo => ytrHistoryRepository.findVersion(oo.oid.get, versionumero).toOption
+        )
+
+        val uusiOppija = oppija.copy(
+          opiskeluoikeudet = historiaOot
+        )
+
+        if (uusiOppija.opiskeluoikeudet.length == oppija.opiskeluoikeudet.length) {
+          Right(WithWarnings(uusiOppija, Seq.empty))
+        } else {
+          Left(KoskiErrorCategory.notFound("Historiaversiota ei löydy"))
+        }
+      case _ =>
+        Left(KoskiErrorCategory.notFound("Historiaversiota ei löydy"))
+    }
 
   def findOppijaHenkilö
     (oid: String, findMasterIfSlaveOid: Boolean = false, useVirta: Boolean = true, useYtr: Boolean = true)
