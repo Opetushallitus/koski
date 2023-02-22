@@ -9,6 +9,7 @@ import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.oppija.HenkilönOpiskeluoikeusVersiot
 import fi.oph.koski.schema.{KoskiSchema, Oppija, UusiHenkilö, YlioppilastutkinnonOpiskeluoikeus}
+import fi.oph.koski.util.Timing
 import fi.oph.scalaschema.{SerializationContext, Serializer}
 import rx.lang.scala.schedulers.NewThreadScheduler
 import rx.lang.scala.{Observable, Scheduler}
@@ -19,7 +20,7 @@ import java.time.LocalDate
 class YtrDownloadService(
   val db: DB,
   application: KoskiApplication
-) extends QueryMethods with Logging {
+) extends QueryMethods with Logging with Timing {
   val status = new YtrDownloadStatus(db)
 
   val oppijaConverter = new YtrDownloadOppijaConverter(
@@ -169,8 +170,12 @@ class YtrDownloadService(
           // TODO: TOR-1639 Kunhan tätä on testattu try-catchien kanssa tuotannossa tarpeeksi, siisti koodi siten, että mahdolliset poikkeukset saa valua
           //  ylemmäksikin. Pitää myös miettiä silloin, onko ok, että yksittäisiä failaavia oppijoita skipataan, kuten koodi nyt tekee.
           try {
+            val koskiOpiskeluoikeus =
+              timed("convert", thresholdMs = 1) {
+                oppijaConverter.convertOppijastaOpiskeluoikeus(oppija)
+              }
 
-            oppijaConverter.convertOppijastaOpiskeluoikeus(oppija) match {
+            koskiOpiskeluoikeus match {
               case Some(ytrOo) =>
                 val henkilö = UusiHenkilö(
                   hetu = oppija.ssn,
@@ -180,7 +185,12 @@ class YtrDownloadService(
                 )
 
                 try {
-                  createOrUpdate(henkilö, ytrOo) match {
+                  val result =
+                    timed("createOrUpdate", thresholdMs = 1) {
+                      createOrUpdate(henkilö, ytrOo)
+                    }
+
+                  result match {
                     case Left(error) =>
                       logger.warn(s"YTR-datan tallennus epäonnistui: ${error.errorString.getOrElse("-")}")
                     case _ =>
@@ -196,7 +206,9 @@ class YtrDownloadService(
           }
 
           // TODO: TOR-1639 Ajastus tähän: serialisointi + tämä ylimääräinen tallennus voi olla yllättävänkin hidasta
-          tallennaAlkuperäinenJson(oppija)
+          timed("tallennaAlkuperäinenJson", thresholdMs = 1) {
+            tallennaAlkuperäinenJson(oppija)
+          }
 
           val birthMonth = oppija.birthMonth
           if (latestHandledBirthMonth != birthMonth) {
