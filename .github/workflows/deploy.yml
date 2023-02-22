@@ -16,7 +16,7 @@ env:
   DOCKER_BUILDKIT: 1
   SSH_AUTH_SOCK: /tmp/ssh_agent.sock
 
-
+run-name: Deploy to ${{ inputs.environment }}
 jobs:
   checkbuilddeploy:
     name: Build and deploy
