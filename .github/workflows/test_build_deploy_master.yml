@@ -101,6 +101,8 @@ jobs:
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
+        with:
+          registries: ${{ secrets.ECR_ACCOUNT_ID }}
 
       - name: Switch role to dev environment
         uses: aws-actions/configure-aws-credentials@v1-node16
@@ -221,6 +223,8 @@ jobs:
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
+        with:
+          registries: ${{ secrets.ECR_ACCOUNT_ID }}
 
       - name: Switch role to qa environment
         uses: aws-actions/configure-aws-credentials@v1-node16
@@ -341,6 +345,8 @@ jobs:
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
+        with:
+          registries: ${{ secrets.ECR_ACCOUNT_ID }}
 
       - name: Switch role to prod environment
         uses: aws-actions/configure-aws-credentials@v1-node16
