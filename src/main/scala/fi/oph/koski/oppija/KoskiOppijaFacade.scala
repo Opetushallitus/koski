@@ -249,11 +249,11 @@ class KoskiOppijaFacade(
         //  käyttäjätunnus (myös oppijanumerorekisteriin), jonka oid:lla YTR-dataan tehtävät operaatiot logitetaan, vaikka käytännössä sillä
         //  tunnuksella ei koskaan sisäänkirjautumista tapahdukaan. Ehkä kyseisen tunnuksen oid vaan konfiguraatiotiedostoon sitten?
         //  systemUserTallennetutYlioppilastutkinnonOpiskeluoikeudet-käyttäjällä auditlogitus ei suoraan onnistu, koska hänellä ei ole oidia.
-        if (
-          !opiskeluoikeus.isInstanceOf[YlioppilastutkinnonOpiskeluoikeus] ||
-          user != KoskiSpecificSession.systemUserTallennetutYlioppilastutkinnonOpiskeluoikeudet
-        ) {
-          auditLog(oppijaOid, result)
+        opiskeluoikeus match {
+          case _: YlioppilastutkinnonOpiskeluoikeus =>
+            auditLogYtr(oppijaOid, result)
+          case _ =>
+            auditLog(oppijaOid, result)
         }
         OpiskeluoikeusVersio(result.oid, result.versionumero, result.lähdejärjestelmänId)
       }
@@ -290,9 +290,24 @@ class KoskiOppijaFacade(
     (oppijaOid: PossiblyUnverifiedHenkilöOid, result: CreateOrUpdateResult)
     (implicit user: KoskiSpecificSession)
   : Unit = {
+    auditLog(updatedOperation = OPISKELUOIKEUS_MUUTOS, createdOperation = OPISKELUOIKEUS_LISAYS)(oppijaOid, result)
+  }
+
+  private def auditLogYtr
+    (oppijaOid: PossiblyUnverifiedHenkilöOid, result: CreateOrUpdateResult)
+      (implicit user: KoskiSpecificSession)
+  : Unit = {
+    auditLog(updatedOperation = YTR_OPISKELUOIKEUS_MUUTOS, createdOperation = YTR_OPISKELUOIKEUS_LISAYS)(oppijaOid, result)
+  }
+
+  private def auditLog
+    (updatedOperation: KoskiOperation.Value, createdOperation: KoskiOperation.Value)
+    (oppijaOid: PossiblyUnverifiedHenkilöOid, result: CreateOrUpdateResult)
+    (implicit user: KoskiSpecificSession) =
+  {
     (result match {
-      case _: Updated => Some(OPISKELUOIKEUS_MUUTOS)
-      case _: Created => Some(OPISKELUOIKEUS_LISAYS)
+      case _: Updated => Some(updatedOperation)
+      case _: Created => Some(createdOperation)
       case _ => None
     }).foreach { operaatio =>
       AuditLog.log(KoskiAuditLogMessage(operaatio, user, Map(

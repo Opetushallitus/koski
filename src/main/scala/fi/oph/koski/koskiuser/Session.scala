@@ -163,7 +163,7 @@ object KoskiSpecificSession {
 
   private val systemKäyttöoikeudet: Set[Käyttöoikeus] = Set(KäyttöoikeusGlobal(List(Palvelurooli(OPHPAAKAYTTAJA), Palvelurooli(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))))
   private val KOSKI_SYSTEM_USER: String = "Koski system user"
-  private val KOSKI_SYSTEM_USER_TALLENNETUT_YLIOPPILASTUTKINNON_OPISKELUOIKEUDET = "Koski system user tallennetut ylioppilastutkinnon opiskeluoikeudet"
+  val KOSKI_SYSTEM_USER_TALLENNETUT_YLIOPPILASTUTKINNON_OPISKELUOIKEUDET = "Koski system user tallennetut ylioppilastutkinnon opiskeluoikeudet"
   private val KOSKI_SYSTEM_USER_MITÄTÖIDYT_JA_POISTETUT: String = "Koski system user mitätöidyt ja poistetut"
   private val UNTRUSTED_SYSTEM_USER = "Koski untrusted system user"
   val SUORITUSJAKO_KATSOMINEN_USER = "Koski suoritusjako katsominen"

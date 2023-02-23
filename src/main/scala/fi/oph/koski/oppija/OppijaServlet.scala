@@ -88,7 +88,6 @@ class OppijaServlet(implicit val application: KoskiApplication)
   get("/:oid/ytr-json") {
     // TODO: TOR-1639 Pitäisikö kuitenkin tehdä TALLENNETUT_YLIOPPILASTUTKINNON_OPISKELUOIKEUDET oikea käyttöoikeus,
     // jonka voisi antaa myös yksittäisille käyttäjille, ja jolla voisi kutsua tätä routea?
-    // TODO: TOR-1639: Audit-logitus
     if (!session.isRoot) {
       haltWithStatus(KoskiErrorCategory.forbidden())
     } else {
@@ -98,14 +97,16 @@ class OppijaServlet(implicit val application: KoskiApplication)
           findMasterIfSlaveOid = true
         )(KoskiSpecificSession.systemUserTallennetutYlioppilastutkinnonOpiskeluoikeudet)
       }
-      }.flatMap(_.warningsToLeft))
+      }
+        .flatMap(_.warningsToLeft)
+        .map(auditLogYtrKatsominen)
+      )
     }
   }
 
   get("/:oid/ytr-json/:versionumero") {
     // TODO: TOR-1639 Pitäisikö kuitenkin tehdä TALLENNETUT_YLIOPPILASTUTKINNON_OPISKELUOIKEUDET oikea käyttöoikeus,
     // jonka voisi antaa myös yksittäisille käyttäjille, ja jolla voisi kutsua tätä routea?
-    // TODO: TOR-1639: Audit-logitus
     if (!session.isRoot) {
       haltWithStatus(KoskiErrorCategory.forbidden())
     } else {
@@ -116,8 +117,31 @@ class OppijaServlet(implicit val application: KoskiApplication)
           findMasterIfSlaveOid = true
         )(KoskiSpecificSession.systemUserTallennetutYlioppilastutkinnonOpiskeluoikeudet)
       }
-      }.flatMap(_.warningsToLeft))
+      }
+        .flatMap(_.warningsToLeft)
+        .map(auditLogYtrKatsominen)
+      )
     }
+  }
+
+  private def auditLogYtrKatsominen(oppija: Oppija): Oppija = {
+    oppija.opiskeluoikeudet.foreach(oo =>
+      AuditLog.log(
+        KoskiAuditLogMessage(
+          KoskiOperation.YTR_OPISKELUOIKEUS_KATSOMINEN,
+          session,
+          Map(
+            KoskiAuditLogMessageField.oppijaHenkiloOid -> (oppija.henkilö match {
+              case henkilö: HenkilöWithOid => henkilö.oid
+              case _ => ""
+            }),
+            KoskiAuditLogMessageField.opiskeluoikeusOid -> oo.oid.getOrElse(""),
+            KoskiAuditLogMessageField.opiskeluoikeusVersio -> oo.versionumero.map(_.toString).getOrElse("")
+          )
+        )
+      )
+    )
+    oppija
   }
 
   get("/:oid/opintotiedot-json") {

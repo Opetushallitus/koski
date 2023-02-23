@@ -2,9 +2,7 @@ package fi.oph.koski.ytr.download
 
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import fi.oph.koski.api.OpiskeluoikeusTestMethods
-import fi.oph.koski.koskiuser.{MockUsers, UserWithPassword}
-import fi.oph.koski.log.AuditLogTester
-import fi.oph.koski.schema.Oppija
+import fi.oph.koski.koskiuser.{MockUsers}
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
@@ -22,7 +20,6 @@ class YtrDownloadSpec
 
   override protected def beforeEach() {
     super.beforeEach()
-    AuditLogTester.clearMessages
   }
 
   val birthmonthStart = "1980-03"
@@ -69,10 +66,6 @@ class YtrDownloadSpec
         verifyResponseStatus(403)
       }
     }
-  }
-
-  "Audit-logit" - {
-    // TODO: TOR-1639 lisää testit ja toteutus
   }
 
   "YTR:stä ladattu opiskeluoikeus tallennetaan oikein, vaikka kaikki oppijat eivät vielä löytyisi Koskesta" in {
@@ -155,20 +148,6 @@ class YtrDownloadSpec
     oppija.opiskeluoikeudet should have length (1)
     oppija.opiskeluoikeudet(0).suoritukset(0).osasuoritukset.get should have length (expected.osasuorituksetLkm)
     oppija.opiskeluoikeudet(0).versionumero should be(Some(expected.versionumero))
-  }
-
-  private def getYtrOppija(oppijaOid: String, user: UserWithPassword = defaultUser): Oppija = {
-    authGet("api/oppija/" + oppijaOid + "/ytr-json", user) {
-      verifyResponseStatusOk()
-      readOppija
-    }
-  }
-
-  private def getYtrOppijaVersionumerolla(oppijaOid: String, versionumero: Int, user: UserWithPassword = defaultUser): Oppija = {
-    authGet("api/oppija/" + oppijaOid + "/ytr-json/" + versionumero, user) {
-      verifyResponseStatusOk()
-      readOppija
-    }
   }
 }
 

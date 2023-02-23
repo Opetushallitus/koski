@@ -1,13 +1,16 @@
 package fi.oph.koski.ytr.download
 
 import fi.oph.koski.KoskiHttpSpec
+import fi.oph.koski.api.OpiskeluoikeusTestMethods
+import fi.oph.koski.koskiuser.UserWithPassword
+import fi.oph.koski.schema.Oppija
 import fi.oph.koski.util.Wait
 import org.json4s.DefaultFormats
 import org.json4s.jackson.JsonMethods
 
 import java.time.LocalDate
 
-trait YtrDownloadTestMethods extends KoskiHttpSpec {
+trait YtrDownloadTestMethods extends KoskiHttpSpec with OpiskeluoikeusTestMethods {
   implicit val formats = DefaultFormats
 
   def clearYtrData(): Unit = {
@@ -60,4 +63,19 @@ trait YtrDownloadTestMethods extends KoskiHttpSpec {
     val isComplete = (JsonMethods.parse(body) \ "current" \ "status").extract[String] == "complete"
     isComplete
   }
+
+  def getYtrOppija(oppijaOid: String, user: UserWithPassword = defaultUser): Oppija = {
+    authGet("api/oppija/" + oppijaOid + "/ytr-json", user) {
+      verifyResponseStatusOk()
+      readOppija
+    }
+  }
+
+  def getYtrOppijaVersionumerolla(oppijaOid: String, versionumero: Int, user: UserWithPassword = defaultUser): Oppija = {
+    authGet("api/oppija/" + oppijaOid + "/ytr-json/" + versionumero, user) {
+      verifyResponseStatusOk()
+      readOppija
+    }
+  }
+
 }
