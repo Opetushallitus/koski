@@ -8,10 +8,6 @@ env:
   SSH_AUTH_SOCK: /tmp/ssh_agent.sock
   TZ: Europe/Helsinki
 
-permissions:
-  id-token: write
-  contents: read
-
 jobs:
   tests:
     name: "👀"
@@ -21,6 +17,9 @@ jobs:
     name: Build and upload artifacts
     needs: [tests]
     runs-on: ubuntu-20.04
+    permissions:
+      id-token: write
+      contents: read
     steps:
       - uses: actions/checkout@v3
 
@@ -29,7 +28,6 @@ jobs:
         with:
           role-to-assume: ${{ secrets.ECR_ROLE }}
           role-duration-seconds: 900
-          role-session-name: KoskiDeployment-ECR-${{ github.event.inputs.commithash }}
           aws-region: eu-west-1
 
       - name: Login to Amazon ECR
@@ -88,6 +86,9 @@ jobs:
       name: dev
     needs: [build]
     runs-on: ubuntu-20.04
+    permissions:
+      id-token: write
+      contents: read
     steps:
       - uses: actions/checkout@v3
 
@@ -96,7 +97,7 @@ jobs:
         with:
           role-to-assume: ${{ secrets.DEPLOY_ROLE }}
           role-duration-seconds: 3600
-          role-session-name: KoskiDeployment-DEV-${{ github.event.inputs.commithash }}
+          role-session-name: KoskiDeployment-DEV-${{ github.sha }}
           aws-region: eu-west-1
       - name: Login to Amazon ECR
         id: login-ecr
@@ -200,6 +201,9 @@ jobs:
       name: qa
     needs: [deploy_dev]
     runs-on: ubuntu-20.04
+    permissions:
+      id-token: write
+      contents: read
     steps:
       - uses: actions/checkout@v3
 
@@ -208,7 +212,7 @@ jobs:
         with:
           role-to-assume: ${{ secrets.DEPLOY_ROLE }}
           role-duration-seconds: 3600
-          role-session-name: KoskiDeployment-QA-${{ github.event.inputs.commithash }}
+          role-session-name: KoskiDeployment-QA-${{ github.sha }}
           aws-region: eu-west-1
 
       - name: Login to Amazon ECR
@@ -313,6 +317,9 @@ jobs:
       name: prod
     needs: [deploy_qa]
     runs-on: ubuntu-20.04
+    permissions:
+      id-token: write
+      contents: read
     steps:
       - uses: actions/checkout@v3
 
@@ -321,7 +328,7 @@ jobs:
         with:
           role-to-assume: ${{ secrets.DEPLOY_ROLE }}
           role-duration-seconds: 3600
-          role-session-name: KoskiDeployment-PROD-${{ github.event.inputs.commithash }}
+          role-session-name: KoskiDeployment-PROD-${{ github.sha }}
           aws-region: eu-west-1
 
       - name: Login to Amazon ECR

@@ -9,9 +9,6 @@ on:
       commithash:
         description: "Commit hash to deploy from"
         required: true
-permissions:
-  id-token: write
-  contents: read
 env:
   DOCKER_BUILDKIT: 1
   SSH_AUTH_SOCK: /tmp/ssh_agent.sock
@@ -23,6 +20,9 @@ jobs:
     environment:
       name: ${{ github.event.inputs.environment }}
     runs-on: ubuntu-20.04
+    permissions:
+      id-token: write
+      contents: read
     steps:
       - uses: actions/checkout@v3
         with:
