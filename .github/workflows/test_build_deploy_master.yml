@@ -91,28 +91,18 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Configure AWS credentials for utility account
+      - name: Configure AWS credentials for DEV environment
         uses: aws-actions/configure-aws-credentials@v1-node16
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          role-to-assume: ${{ secrets.DEPLOY_ROLE }}
+          role-duration-seconds: 3600
+          role-session-name: KoskiDeployment-DEV-${{ github.event.inputs.commithash }}
           aws-region: eu-west-1
-
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
         with:
           registries: ${{ secrets.ECR_ACCOUNT_ID }}
-
-      - name: Switch role to dev environment
-        uses: aws-actions/configure-aws-credentials@v1-node16
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: eu-west-1
-          role-to-assume: ${{ secrets.DEPLOYMENT_ROLE }}
-          role-duration-seconds: 3600
-          role-session-name: KoskiDeployment-${{ github.sha }}
 
       - name: Get task definition ARN
         id: get-taskdef-arn
@@ -213,11 +203,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Configure AWS credentials for utility account
+      - name: Configure AWS credentials for QA environment
         uses: aws-actions/configure-aws-credentials@v1-node16
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          role-to-assume: ${{ secrets.DEPLOY_ROLE }}
+          role-duration-seconds: 3600
+          role-session-name: KoskiDeployment-QA-${{ github.event.inputs.commithash }}
           aws-region: eu-west-1
 
       - name: Login to Amazon ECR
@@ -225,16 +216,6 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
         with:
           registries: ${{ secrets.ECR_ACCOUNT_ID }}
-
-      - name: Switch role to qa environment
-        uses: aws-actions/configure-aws-credentials@v1-node16
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: eu-west-1
-          role-to-assume: ${{ secrets.DEPLOYMENT_ROLE }}
-          role-duration-seconds: 3600
-          role-session-name: KoskiDeployment-${{ github.sha }}
 
       - name: Get task definition ARN
         id: get-taskdef-arn
@@ -335,11 +316,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Configure AWS credentials for utility account
+      - name: Configure AWS credentials for PROD environment
         uses: aws-actions/configure-aws-credentials@v1-node16
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          role-to-assume: ${{ secrets.DEPLOY_ROLE }}
+          role-duration-seconds: 3600
+          role-session-name: KoskiDeployment-PROD-${{ github.event.inputs.commithash }}
           aws-region: eu-west-1
 
       - name: Login to Amazon ECR
@@ -347,16 +329,6 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
         with:
           registries: ${{ secrets.ECR_ACCOUNT_ID }}
-
-      - name: Switch role to prod environment
-        uses: aws-actions/configure-aws-credentials@v1-node16
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: eu-west-1
-          role-to-assume: ${{ secrets.DEPLOYMENT_ROLE }}
-          role-duration-seconds: 3600
-          role-session-name: KoskiDeployment-${{ github.sha }}
 
       - name: Get task definition ARN
         id: get-taskdef-arn
