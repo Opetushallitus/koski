@@ -40,6 +40,7 @@ trait KoskiYtrOpiskeluoikeusRepository {
     opiskeluoikeus: YlioppilastutkinnonOpiskeluoikeus
   )(implicit user: KoskiSpecificSession): Either[HttpStatus, CreateOrUpdateResult]
   def createOrUpdateAlkuperäinenYTRJson(oppijaOid: String, data: JValue)(implicit user: KoskiSpecificSession): HttpStatus
+  def findAlkuperäinenYTRJsonByOppijaOid(oppijaOid: String)(implicit user: KoskiSpecificSession): Option[JValue]
 }
 
 trait AuxiliaryOpiskeluoikeusRepository {

@@ -259,4 +259,14 @@ class PostgresYtrOpiskeluoikeusRepository(
 
     HttpStatus.ok
   }
+
+  override def findAlkuperäinenYTRJsonByOppijaOid(oppijaOid: String)(implicit user: KoskiSpecificSession): Option[JValue] = {
+    if (!user.isRoot) {
+      throw new RuntimeException(s"Ei oikeuksia hakea alkuperäistä jsonia")
+    }
+
+    runDbSync(
+      KoskiTables.YtrAlkuperäinenData.filter(_.oppijaOid === oppijaOid).result
+    ).headOption.map(_.data)
+  }
 }

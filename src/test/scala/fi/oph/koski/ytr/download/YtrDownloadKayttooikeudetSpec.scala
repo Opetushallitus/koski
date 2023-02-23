@@ -18,6 +18,7 @@ class YtrDownloadKäyttöoikeudetSpec
     with KoskiHttpSpec
     with Matchers
     with BeforeAndAfterEach
+    with YtrDownloadTestMethods
 {
 
   private val converter = new YtrDownloadOppijaConverter(
@@ -26,7 +27,13 @@ class YtrDownloadKäyttöoikeudetSpec
     KoskiApplicationForTests.koskiLocalizationRepository
   )
 
+  val birthmonthStart = "1980-03"
+  val birthmonthEnd = "1981-10"
+
   private val hetu = "140380-336X"
+
+  lazy val oppijaOid =
+    KoskiApplicationForTests.opintopolkuHenkilöFacade.findOppijaByHetu(hetu).get.oid
 
   private lazy val ytrOppijat = MockYrtClient.oppijatByHetut(YtrSsnData(ssns = Some(List("080380-2432", "140380-336X", "220680-7850", "240680-087S"))))
   private lazy val ytrOppija = ytrOppijat.find(_.ssn == hetu).get
@@ -56,4 +63,32 @@ class YtrDownloadKäyttöoikeudetSpec
 
     result should be(Left(KoskiErrorCategory.notImplemented.readOnly("Korkeakoulutuksen opiskeluoikeuksia ja ylioppilastutkintojen tietoja ei voi päivittää Koski-järjestelmässä")))
   }
+
+  "Tavallinen käyttäjä ei pysty lukemaan" - {
+
+    "Jsonia" in {
+      downloadYtrData(birthmonthStart, birthmonthEnd, force = true)
+
+      authGet("api/oppija/" + oppijaOid + "/ytr-json", MockUsers.kalle) {
+        verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus())
+      }
+    }
+
+    "Versioitua jsonia" in {
+      downloadYtrData(birthmonthStart, birthmonthEnd, force = true)
+
+      authGet("api/oppija/" + oppijaOid + "/ytr-json/" + 1, MockUsers.kalle) {
+        verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus())
+      }
+    }
+
+    "Tallennettua alkuperäistä jsonia" in {
+      downloadYtrData(birthmonthStart, birthmonthEnd, force = true)
+
+      authGet("api/oppija/" + oppijaOid + "/ytr-saved-original-json", MockUsers.kalle) {
+        verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus())
+      }
+    }
+  }
+
 }

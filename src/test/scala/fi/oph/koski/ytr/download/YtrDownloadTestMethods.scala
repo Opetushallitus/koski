@@ -78,4 +78,11 @@ trait YtrDownloadTestMethods extends KoskiHttpSpec with OpiskeluoikeusTestMethod
     }
   }
 
+  def getYtrSavedOriginal(oppijaOid: String, user: UserWithPassword = defaultUser): String = {
+    authGet("api/oppija/" + oppijaOid + "/ytr-saved-original-json", user) {
+      verifyResponseStatusOk()
+      body
+    }
+  }
+
 }

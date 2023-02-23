@@ -31,15 +31,10 @@ class YtrAuditLogSpec
 
   val modifiedSince = LocalDate.of(2023, 1, 1)
 
-  val oppijahetut = List(
-    "080380-2432",
-    "140380-336X",
-    "220680-7850",
-    "240680-087S"
-  )
+  val hetu = "140380-336X"
 
-  lazy val oppijaOidEnnestäänKoskessa2 =
-    KoskiApplicationForTests.opintopolkuHenkilöFacade.findOppijaByHetu(oppijahetut(1)).get.oid
+  lazy val oppijaOid =
+    KoskiApplicationForTests.opintopolkuHenkilöFacade.findOppijaByHetu(hetu).get.oid
 
   "Lisäys" in {
     downloadYtrData(birthmonthStart, birthmonthEnd, force = true)
@@ -85,7 +80,7 @@ class YtrAuditLogSpec
     downloadYtrData(modifiedSince, force = true)
     AuditLogTester.clearMessages
 
-    getYtrOppija(oppijaOidEnnestäänKoskessa2, MockUsers.paakayttaja)
+    getYtrOppija(oppijaOid, MockUsers.paakayttaja)
 
     verifyAuditLogs(
       List(
@@ -95,7 +90,7 @@ class YtrAuditLogSpec
             "oid" -> MockUsers.paakayttaja.oid
           ),
           "target" -> Map(
-            KoskiAuditLogMessageField.oppijaHenkiloOid.toString -> oppijaOidEnnestäänKoskessa2,
+            KoskiAuditLogMessageField.oppijaHenkiloOid.toString -> oppijaOid,
             KoskiAuditLogMessageField.opiskeluoikeusVersio.toString -> "2"
           )
         )
@@ -108,7 +103,7 @@ class YtrAuditLogSpec
     downloadYtrData(modifiedSince, force = true)
     AuditLogTester.clearMessages
 
-    getYtrOppijaVersionumerolla(oppijaOidEnnestäänKoskessa2, 1, MockUsers.paakayttaja)
+    getYtrOppijaVersionumerolla(oppijaOid, 1, MockUsers.paakayttaja)
 
     verifyAuditLogs(
       List(
@@ -118,8 +113,30 @@ class YtrAuditLogSpec
             "oid" -> MockUsers.paakayttaja.oid
           ),
           "target" -> Map(
-            KoskiAuditLogMessageField.oppijaHenkiloOid.toString -> oppijaOidEnnestäänKoskessa2,
+            KoskiAuditLogMessageField.oppijaHenkiloOid.toString -> oppijaOid,
             KoskiAuditLogMessageField.opiskeluoikeusVersio.toString -> "1"
+          )
+        )
+      )
+    )
+  }
+
+  "Tallennetun originaalin katsominen" in {
+    downloadYtrData(birthmonthStart, birthmonthEnd, force = true)
+    downloadYtrData(modifiedSince, force = true)
+    AuditLogTester.clearMessages
+
+    getYtrSavedOriginal(oppijaOid, MockUsers.paakayttaja)
+
+    verifyAuditLogs(
+      List(
+        Map(
+          "operation" -> KoskiOperation.YTR_OPISKELUOIKEUS_KATSOMINEN.toString,
+          "user" -> Map(
+            "oid" -> MockUsers.paakayttaja.oid
+          ),
+          "target" -> Map(
+            KoskiAuditLogMessageField.oppijaHenkiloOid.toString -> oppijaOid
           )
         )
       )

@@ -86,10 +86,8 @@ class OppijaServlet(implicit val application: KoskiApplication)
   }
 
   get("/:oid/ytr-json") {
-    // TODO: TOR-1639 Pitäisikö kuitenkin tehdä TALLENNETUT_YLIOPPILASTUTKINNON_OPISKELUOIKEUDET oikea käyttöoikeus,
-    // jonka voisi antaa myös yksittäisille käyttäjille, ja jolla voisi kutsua tätä routea?
     if (!session.isRoot) {
-      haltWithStatus(KoskiErrorCategory.forbidden())
+      haltWithStatus(KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus())
     } else {
       renderEither[Oppija](HenkilöOid.validateHenkilöOid(params("oid")).right.flatMap { oid => {
         application.oppijaFacade.findYtrDownloadedOppija(
@@ -105,10 +103,8 @@ class OppijaServlet(implicit val application: KoskiApplication)
   }
 
   get("/:oid/ytr-json/:versionumero") {
-    // TODO: TOR-1639 Pitäisikö kuitenkin tehdä TALLENNETUT_YLIOPPILASTUTKINNON_OPISKELUOIKEUDET oikea käyttöoikeus,
-    // jonka voisi antaa myös yksittäisille käyttäjille, ja jolla voisi kutsua tätä routea?
     if (!session.isRoot) {
-      haltWithStatus(KoskiErrorCategory.forbidden())
+      haltWithStatus(KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus())
     } else {
       renderEither[Oppija](HenkilöOid.validateHenkilöOid(params("oid")).right.flatMap { oid => {
         application.oppijaFacade.findYtrDownloadedOppijaVersionumerolla(
@@ -142,6 +138,35 @@ class OppijaServlet(implicit val application: KoskiApplication)
       )
     )
     oppija
+  }
+
+  get("/:oid/ytr-saved-original-json") {
+    if (!session.isRoot) {
+      haltWithStatus(KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus())
+    } else {
+      val oppijaOid = HenkilöOid.validateHenkilöOid(params("oid"))
+      renderEither[JValue](oppijaOid.right.map { oid =>
+          application.ytrPossu.findAlkuperäinenYTRJsonByOppijaOid(oid)
+        }.flatMap {
+        case Some(json) => Right(json)
+        case _ => Left(KoskiErrorCategory.notFound("Alkuperäistä dataa ei löytynyt"))
+      }.map(
+        auditLogYtrKatsominen(oppijaOid.getOrElse(""))
+      ))
+    }
+  }
+
+  private def auditLogYtrKatsominen(oppijaOid: String)(originalJson: JValue): JValue = {
+    AuditLog.log(
+      KoskiAuditLogMessage(
+        KoskiOperation.YTR_OPISKELUOIKEUS_KATSOMINEN,
+        session,
+        Map(
+          KoskiAuditLogMessageField.oppijaHenkiloOid -> oppijaOid
+        )
+      )
+    )
+    originalJson
   }
 
   get("/:oid/opintotiedot-json") {
