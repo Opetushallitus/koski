@@ -7,7 +7,7 @@ import fi.oph.koski.henkilo._
 import fi.oph.koski.history.{JsonPatchException, YtrOpiskeluoikeusHistory, YtrOpiskeluoikeusHistoryRepository}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonDiff.jsonDiff
-import fi.oph.koski.koskiuser.KoskiSpecificSession
+import fi.oph.koski.koskiuser.{KoskiSpecificSession, Rooli}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.Opiskeluoikeus.VERSIO_1
 import fi.oph.koski.schema._
@@ -261,7 +261,7 @@ class PostgresYtrOpiskeluoikeusRepository(
   }
 
   override def findAlkuperäinenYTRJsonByOppijaOid(oppijaOid: String)(implicit user: KoskiSpecificSession): Option[JValue] = {
-    if (!user.isRoot) {
+    if (!(user.hasGlobalReadAccess && user.sensitiveDataAllowed(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT)))) {
       throw new RuntimeException(s"Ei oikeuksia hakea alkuperäistä jsonia")
     }
 

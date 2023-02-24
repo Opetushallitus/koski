@@ -64,6 +64,87 @@ class YtrDownloadKäyttöoikeudetSpec
     result should be(Left(KoskiErrorCategory.notImplemented.readOnly("Korkeakoulutuksen opiskeluoikeuksia ja ylioppilastutkintojen tietoja ei voi päivittää Koski-järjestelmässä")))
   }
 
+  "Pääkäyttäjä pystyy lukemaan" - {
+
+    "Jsonia" in {
+      downloadYtrData(birthmonthStart, birthmonthEnd, force = true)
+
+      authGet("api/oppija/" + oppijaOid + "/ytr-json", MockUsers.paakayttaja) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "Versioitua jsonia" in {
+      downloadYtrData(birthmonthStart, birthmonthEnd, force = true)
+
+      authGet("api/oppija/" + oppijaOid + "/ytr-json/" + 1, MockUsers.paakayttaja) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "Tallennettua alkuperäistä jsonia" in {
+      downloadYtrData(birthmonthStart, birthmonthEnd, force = true)
+
+      authGet("api/oppija/" + oppijaOid + "/ytr-saved-original-json", MockUsers.paakayttaja) {
+        verifyResponseStatusOk()
+      }
+    }
+  }
+
+  "OPH-katselija pystyy lukemaan" - {
+
+    "Jsonia" in {
+      downloadYtrData(birthmonthStart, birthmonthEnd, force = true)
+
+      authGet("api/oppija/" + oppijaOid + "/ytr-json", MockUsers.ophkatselija) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "Versioitua jsonia" in {
+      downloadYtrData(birthmonthStart, birthmonthEnd, force = true)
+
+      authGet("api/oppija/" + oppijaOid + "/ytr-json/" + 1, MockUsers.ophkatselija) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "Tallennettua alkuperäistä jsonia" in {
+      downloadYtrData(birthmonthStart, birthmonthEnd, force = true)
+
+      authGet("api/oppija/" + oppijaOid + "/ytr-saved-original-json", MockUsers.ophkatselija) {
+        verifyResponseStatusOk()
+      }
+    }
+  }
+
+  "Viranomaiskatselija ei pysty lukemaan" - {
+
+    "Jsonia" in {
+      downloadYtrData(birthmonthStart, birthmonthEnd, force = true)
+
+      authGet("api/oppija/" + oppijaOid + "/ytr-json", MockUsers.viranomainen) {
+        verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus())
+      }
+    }
+
+    "Versioitua jsonia" in {
+      downloadYtrData(birthmonthStart, birthmonthEnd, force = true)
+
+      authGet("api/oppija/" + oppijaOid + "/ytr-json/" + 1, MockUsers.viranomainen) {
+        verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus())
+      }
+    }
+
+    "Tallennettua alkuperäistä jsonia" in {
+      downloadYtrData(birthmonthStart, birthmonthEnd, force = true)
+
+      authGet("api/oppija/" + oppijaOid + "/ytr-saved-original-json", MockUsers.viranomainen) {
+        verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus())
+      }
+    }
+  }
+
   "Tavallinen käyttäjä ei pysty lukemaan" - {
 
     "Jsonia" in {

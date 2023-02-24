@@ -86,7 +86,7 @@ class OppijaServlet(implicit val application: KoskiApplication)
   }
 
   get("/:oid/ytr-json") {
-    if (!session.isRoot) {
+    if (!onOikeusNähdäYtrJson) {
       haltWithStatus(KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus())
     } else {
       renderEither[Oppija](HenkilöOid.validateHenkilöOid(params("oid")).right.flatMap { oid => {
@@ -102,8 +102,12 @@ class OppijaServlet(implicit val application: KoskiApplication)
     }
   }
 
+  private def onOikeusNähdäYtrJson: Boolean = {
+    session.hasGlobalReadAccess && session.sensitiveDataAllowed(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+  }
+
   get("/:oid/ytr-json/:versionumero") {
-    if (!session.isRoot) {
+    if (!onOikeusNähdäYtrJson) {
       haltWithStatus(KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus())
     } else {
       renderEither[Oppija](HenkilöOid.validateHenkilöOid(params("oid")).right.flatMap { oid => {
@@ -141,7 +145,7 @@ class OppijaServlet(implicit val application: KoskiApplication)
   }
 
   get("/:oid/ytr-saved-original-json") {
-    if (!session.isRoot) {
+    if (!onOikeusNähdäYtrJson) {
       haltWithStatus(KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus())
     } else {
       val oppijaOid = HenkilöOid.validateHenkilöOid(params("oid"))

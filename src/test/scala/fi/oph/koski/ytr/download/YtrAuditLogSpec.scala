@@ -80,14 +80,14 @@ class YtrAuditLogSpec
     downloadYtrData(modifiedSince, force = true)
     AuditLogTester.clearMessages
 
-    getYtrOppija(oppijaOid, MockUsers.paakayttaja)
+    getYtrOppija(oppijaOid, MockUsers.ophkatselija)
 
     verifyAuditLogs(
       List(
         Map(
           "operation" -> KoskiOperation.YTR_OPISKELUOIKEUS_KATSOMINEN.toString,
           "user" -> Map(
-            "oid" -> MockUsers.paakayttaja.oid
+            "oid" -> MockUsers.ophkatselija.oid
           ),
           "target" -> Map(
             KoskiAuditLogMessageField.oppijaHenkiloOid.toString -> oppijaOid,
@@ -103,14 +103,14 @@ class YtrAuditLogSpec
     downloadYtrData(modifiedSince, force = true)
     AuditLogTester.clearMessages
 
-    getYtrOppijaVersionumerolla(oppijaOid, 1, MockUsers.paakayttaja)
+    getYtrOppijaVersionumerolla(oppijaOid, 1, MockUsers.ophkatselija)
 
     verifyAuditLogs(
       List(
         Map(
           "operation" -> KoskiOperation.YTR_OPISKELUOIKEUS_KATSOMINEN.toString,
           "user" -> Map(
-            "oid" -> MockUsers.paakayttaja.oid
+            "oid" -> MockUsers.ophkatselija.oid
           ),
           "target" -> Map(
             KoskiAuditLogMessageField.oppijaHenkiloOid.toString -> oppijaOid,
@@ -126,14 +126,14 @@ class YtrAuditLogSpec
     downloadYtrData(modifiedSince, force = true)
     AuditLogTester.clearMessages
 
-    getYtrSavedOriginal(oppijaOid, MockUsers.paakayttaja)
+    getYtrSavedOriginal(oppijaOid, MockUsers.ophkatselija)
 
     verifyAuditLogs(
       List(
         Map(
           "operation" -> KoskiOperation.YTR_OPISKELUOIKEUS_KATSOMINEN.toString,
           "user" -> Map(
-            "oid" -> MockUsers.paakayttaja.oid
+            "oid" -> MockUsers.ophkatselija.oid
           ),
           "target" -> Map(
             KoskiAuditLogMessageField.oppijaHenkiloOid.toString -> oppijaOid

@@ -98,6 +98,15 @@ object MockUsers {
     ))
   )
 
+  val ophkatselija = KoskiMockUser(
+    "käyttäjä",
+    "oph-katselija",
+    "1.2.246.562.24.99999999492",
+    Seq(OrganisaatioJaKäyttöoikeudet(Opetushallitus.organisaatioOid,
+      ophKatselija.kayttooikeudet
+    ))
+  )
+
   val viranomainen = KoskiMockUser(
     "käyttäjä",
     "viranomais",
@@ -452,6 +461,7 @@ object MockUsers {
     omniaTallentaja,
     omniaPääkäyttäjä,
     paakayttaja,
+    ophkatselija,
     paakayttajaMitatoidytOpiskeluoikeudet,
     paakayttajaMitatoidytJaPoistetutOpiskeluoikeudet,
     viranomainen,
