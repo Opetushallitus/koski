@@ -46,11 +46,7 @@ export function build<T extends IdNode>(
   prefix?: string
 ): (index: string) => BuiltIdNode<T>
 
-export function build<T extends IdNode>(
-  page: Page,
-  node: IdNode,
-  prefix?: string
-): any {
+export function build(page: Page, node: IdNode, prefix?: string): any {
   if (isLeaf(node)) {
     if (!prefix) {
       throw new Error('Leaf cannot be the root of the hierarchy')

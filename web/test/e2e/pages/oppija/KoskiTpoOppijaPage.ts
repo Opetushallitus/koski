@@ -1,8 +1,8 @@
 import { Page } from '@playwright/test'
 import { TaiteenPerusopetuksenArviointi } from '../../../../app/types/fi/oph/koski/schema/TaiteenPerusopetuksenArviointi'
 import { KoodiviiteIdOf } from '../../../../app/util/koodisto'
-import { expect } from '../../base'
-import { arrayOf, build, BuiltIdNode } from './uiV2builder/builder'
+import { KoskiOppijaPageV2 } from './KoskiOppijaPageV2'
+import { arrayOf } from './uiV2builder/builder'
 import { Button } from './uiV2builder/Button'
 import { FormField } from './uiV2builder/controls'
 import { Input } from './uiV2builder/Input'
@@ -10,39 +10,11 @@ import { Label } from './uiV2builder/Label'
 import { RadioButtons } from './uiV2builder/RadioButtons'
 import { Select } from './uiV2builder/Select'
 
-export class KoskiTpoOppijaPage {
-  page: Page
-  $: BuiltIdNode<typeof TaiteenPerusopetusTestIds>
-  editMode: boolean
-  suoritusIndex: number
-  osasuoritusIndex: number
-
+export class KoskiTpoOppijaPage extends KoskiOppijaPageV2<
+  typeof TaiteenPerusopetusTestIds
+> {
   constructor(page: Page) {
-    this.page = page
-    this.$ = build(page, TaiteenPerusopetusTestIds)
-    this.suoritusIndex = 0
-    this.osasuoritusIndex = 0
-    this.editMode = false
-  }
-
-  async goto(oppijaOid: string) {
-    await this.page.goto(`/koski/oppija/${oppijaOid}`)
-    await expect(this.page).toHaveURL(/\/koski\/oppija\/1\.2\..*/)
-
-    this.suoritusIndex = 0
-    this.osasuoritusIndex = 0
-    this.editMode = false
-  }
-
-  async edit() {
-    this.editMode = true
-    return this.$.opiskeluoikeus.edit.click()
-  }
-
-  async selectSuoritus(index: number) {
-    await this.$.suoritukset(index).tab.click()
-    this.suoritusIndex = index
-    this.osasuoritusIndex = 0
+    super(page, TaiteenPerusopetusTestIds)
   }
 
   async suoritustieto(
@@ -54,13 +26,6 @@ export class KoskiTpoOppijaPage {
       | 'taiteenala'
   ) {
     return this.$.suoritukset(this.suoritusIndex)[key].value(this.editMode)
-  }
-
-  async openOsasuoritus(index: number) {
-    await this.$.suoritukset(this.suoritusIndex)
-      .osasuoritukset(index)
-      .expand.click()
-    this.osasuoritusIndex = index
   }
 
   async osasuoritustieto(key: 'nimi' | 'laajuus' | 'arvosana') {
@@ -113,40 +78,12 @@ export class KoskiTpoOppijaPage {
       .arvosana.set(arvosana)
   }
 
-  async opiskeluoikeudenTila(index: number) {
-    const item =
-      this.$.opiskeluoikeus.tila[this.editMode ? 'edit' : 'value'].items(index)
-    return `${await item.date.value()} ${await item.tila.value()}`
-  }
-
   async addOpiskeluoikeudenTila(pvm: string, tila: string) {
     const editor = this.$.opiskeluoikeus.tila.edit
     await editor.add.click()
     await editor.modal.date.set(pvm)
     await editor.modal.tila.set(tila)
     await editor.modal.submit.click()
-  }
-
-  async removeOpiskeluoikeudenTila(index: number) {
-    await this.$.opiskeluoikeus.tila.edit.items(index).remove.click()
-  }
-
-  async suorituksenTila() {
-    return this.$.suoritukset(this.suoritusIndex).suorituksenVahvistus[
-      this.editMode ? 'edit' : 'value'
-    ].status.value()
-  }
-
-  async suorituksenVahvistus() {
-    return this.$.suoritukset(this.suoritusIndex).suorituksenVahvistus[
-      this.editMode ? 'edit' : 'value'
-    ].details.value()
-  }
-
-  async suorituksenVahvistushenkilö(index: number) {
-    return this.$.suoritukset(this.suoritusIndex)
-      .suorituksenVahvistus[this.editMode ? 'edit' : 'value'].henkilö(index)
-      .value()
   }
 
   async vahvistaSuoritusUudellaHenkilöllä(
@@ -179,12 +116,6 @@ export class KoskiTpoOppijaPage {
     await vahvistus.modal.date.set(pvm)
     await vahvistus.modal.myöntäjät.edit.add.set(nimi)
     await vahvistus.modal.submit.click()
-  }
-
-  async poistaSuorituksenVahvistus() {
-    await this.$.suoritukset(
-      this.suoritusIndex
-    ).suorituksenVahvistus.edit.merkitseKeskeneräiseksi.click()
   }
 }
 
