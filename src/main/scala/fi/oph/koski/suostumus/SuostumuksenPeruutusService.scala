@@ -79,7 +79,7 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
     oo: Opiskeluoikeus,
     tyyppi: String
   ): HttpStatus = {
-    val opiskeluoikeudenId = runDbSync(KoskiTables.OpiskeluOikeudet.filter(_.oid === oid).map(_.id).result).head
+    val opiskeluoikeudenId = runDbSync(KoskiTables.KoskiOpiskeluOikeudet.filter(_.oid === oid).map(_.id).result).head
     val perustiedot = OpiskeluoikeudenPerustiedot
       .makePerustiedot(opiskeluoikeudenId, oo, application.henkilöRepository.opintopolku.withMasterInfo(henkilö))
     val aiemminPoistettuRivi = runDbSync(KoskiTables.PoistetutOpiskeluoikeudet.filter(_.oid === oid).result).headOption
@@ -117,7 +117,7 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
     henkilö: LaajatOppijaHenkilöTiedot,
     oo: Opiskeluoikeus
   ): HttpStatus = {
-    val opiskeluoikeudenId = runDbSync(KoskiTables.OpiskeluOikeudet.filter(_.oid === oid).map(_.id).result).head
+    val opiskeluoikeudenId = runDbSync(KoskiTables.KoskiOpiskeluOikeudet.filter(_.oid === oid).map(_.id).result).head
     val aiemminPoistettuRivi = runDbSync(KoskiTables.PoistetutOpiskeluoikeudet.filter(_.oid === oid).result).headOption
     runDbSync(
       DBIO.seq(

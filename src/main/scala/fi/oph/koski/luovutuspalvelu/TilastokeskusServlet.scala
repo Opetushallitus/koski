@@ -2,7 +2,7 @@ package fi.oph.koski.luovutuspalvelu
 
 import java.time.LocalDate
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.db.{HenkilöRow, OpiskeluoikeusRow}
+import fi.oph.koski.db.{HenkilöRow, KoskiOpiskeluoikeusRow}
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
@@ -55,16 +55,16 @@ case class TilastokeskusQueryContext(request: HttpServletRequest)(implicit koski
     }
   }
 
-  private def query(filters: List[OpiskeluoikeusQueryFilter], paginationSettings: Option[PaginationSettings]): Observable[(LaajatOppijaHenkilöTiedot, List[OpiskeluoikeusRow])] = {
+  private def query(filters: List[OpiskeluoikeusQueryFilter], paginationSettings: Option[PaginationSettings]): Observable[(LaajatOppijaHenkilöTiedot, List[KoskiOpiskeluoikeusRow])] = {
     val groupedByOid = OpiskeluoikeusQueryContext.streamingQueryGroupedByOid(application, filters, paginationSettings).tumblingBuffer(10)
-    val oppijaStream = groupedByOid.flatMap { oppijatJaOidit: Seq[(QueryOppijaHenkilö, List[OpiskeluoikeusRow])] =>
+    val oppijaStream = groupedByOid.flatMap { oppijatJaOidit: Seq[(QueryOppijaHenkilö, List[KoskiOpiskeluoikeusRow])] =>
       val oids: List[String] = oppijatJaOidit.map(_._1.oid).toList
       val henkilöt: Map[Oid, LaajatOppijaHenkilöTiedot] = Retry.retryWithInterval(2, 500) {
         application.opintopolkuHenkilöFacade.findMasterOppijat(oids)
       }
 
       // Huomioi: Tämä flatMappäily purkaa (aiemmin turhaan tehdyn) oppijaryhmittelyn.
-      val oppijat: Seq[(LaajatOppijaHenkilöTiedot, List[OpiskeluoikeusRow])] = oppijatJaOidit.flatMap { case (oppijaHenkilö, opiskeluOikeudet) =>
+      val oppijat: Seq[(LaajatOppijaHenkilöTiedot, List[KoskiOpiskeluoikeusRow])] = oppijatJaOidit.flatMap { case (oppijaHenkilö, opiskeluOikeudet) =>
         opiskeluOikeudet.flatMap { oo =>
           henkilöt.get(oppijaHenkilö.oid) match {
             case Some(henkilö) =>

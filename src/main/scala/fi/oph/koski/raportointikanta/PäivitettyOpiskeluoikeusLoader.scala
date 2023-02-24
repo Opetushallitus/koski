@@ -1,8 +1,8 @@
 package fi.oph.koski.raportointikanta
 
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.db.KoskiTables.OpiskeluOikeudet
-import fi.oph.koski.db.{DB, OpiskeluoikeusRow, PäivitettyOpiskeluoikeusRow, QueryMethods}
+import fi.oph.koski.db.KoskiTables.KoskiOpiskeluOikeudet
+import fi.oph.koski.db.{DB, KoskiOpiskeluoikeusRow, PäivitettyOpiskeluoikeusRow, QueryMethods}
 import fi.oph.koski.opiskeluoikeus.PäivitetytOpiskeluoikeudetJonoService
 import rx.Observer
 import rx.functions.{Func0, Func2}
@@ -19,7 +19,7 @@ class PäivitettyOpiskeluoikeusLoader(
 
   def load[A]
     (pageSize: Int, update: RaportointiDatabaseUpdate)
-    (processRows: Seq[OpiskeluoikeusRow] => Seq[A])
+    (processRows: Seq[KoskiOpiskeluoikeusRow] => Seq[A])
   : Observable[A] = {
     import rx.lang.scala.JavaConverters._
 
@@ -27,7 +27,7 @@ class PäivitettyOpiskeluoikeusLoader(
       queue: Seq[PäivitettyOpiskeluoikeusRow],
       updateIds: Seq[Int] = Seq.empty,
       batchStartTime: Option[ZonedDateTime] = None,
-      resultBatch: Seq[OpiskeluoikeusRow] = Seq.empty,
+      resultBatch: Seq[KoskiOpiskeluoikeusRow] = Seq.empty,
       nextPage: Int = 0,
     ) {
       def loadNextPage(): State = {
@@ -35,7 +35,7 @@ class PäivitettyOpiskeluoikeusLoader(
         val index = nextPage * pageSize
         val updates = queue.slice(index, index + pageSize)
         val oids = updates.map(_.opiskeluoikeusOid)
-        val result = runDbSync(OpiskeluOikeudet.filter(_.oid inSet oids).result)
+        val result = runDbSync(KoskiOpiskeluOikeudet.filter(_.oid inSet oids).result)
         this.copy(
           updateIds = updates.flatMap(_.id),
           resultBatch = result,

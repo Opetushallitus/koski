@@ -2,7 +2,7 @@ package fi.oph.koski.perustiedot
 
 import java.time.LocalDate
 
-import fi.oph.koski.db.{HenkilöRow, OpiskeluoikeusRow}
+import fi.oph.koski.db.{HenkilöRow, KoskiOpiskeluoikeusRow}
 import fi.oph.koski.henkilo.{OppijaHenkilö, OppijaHenkilöWithMasterInfo}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.json.JsonSerializer.extract
@@ -68,7 +68,7 @@ case class OpiskeluoikeusJaksonPerustiedot(
 object OpiskeluoikeudenPerustiedot {
   val serializationContext = SerializationContext(KoskiSchema.schemaFactory, omitEmptyFields = false)
 
-  def makePerustiedot(row: OpiskeluoikeusRow, henkilöRow: HenkilöRow, masterHenkilöRow: Option[HenkilöRow]): OpiskeluoikeudenPerustiedot = {
+  def makePerustiedot(row: KoskiOpiskeluoikeusRow, henkilöRow: HenkilöRow, masterHenkilöRow: Option[HenkilöRow]): OpiskeluoikeudenPerustiedot = {
     makePerustiedot(
       row.id,
       row.toOpiskeluoikeusUnsafe(KoskiSpecificSession.untrustedUser),

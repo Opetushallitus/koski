@@ -1,6 +1,6 @@
 package fi.oph.koski.api
 
-import fi.oph.koski.db.KoskiTables.OpiskeluOikeudetWithAccessCheck
+import fi.oph.koski.db.KoskiTables.KoskiOpiskeluOikeudetWithAccessCheck
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
@@ -101,7 +101,7 @@ class SisältyväOpiskeluoikeusSpec extends AnyFreeSpec with Matchers with Opisk
   }
 
   def opiskeluoikeusId(oo: AmmatillinenOpiskeluoikeus): Option[Int] =
-    oo.oid.flatMap(oid => runDbSync(OpiskeluOikeudetWithAccessCheck(systemUser).filter(_.oid === oid).map(_.id).result).headOption)
+    oo.oid.flatMap(oid => runDbSync(KoskiOpiskeluOikeudetWithAccessCheck(systemUser).filter(_.oid === oid).map(_.id).result).headOption)
 
   private def syncPerustiedotToOpenSearch(waitCondition: => Boolean): Unit = {
     KoskiApplicationForTests.perustiedotIndexer.sync(refresh = true)

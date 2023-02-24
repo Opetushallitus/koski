@@ -1,6 +1,6 @@
 package fi.oph.koski.api
 
-import fi.oph.koski.db.KoskiTables.OpiskeluOikeudetWithAccessCheck
+import fi.oph.koski.db.KoskiTables.KoskiOpiskeluOikeudetWithAccessCheck
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.koskiuser.KoskiSpecificSession.systemUser
 import fi.oph.koski.koskiuser.MockUsers.stadinAmmattiopistoTallentaja
@@ -28,8 +28,8 @@ class DatabaseUpdateSpec
   }
 
   def opiskeluoikeusId(oo: AmmatillinenOpiskeluoikeus): Option[Int] =
-    oo.oid.flatMap(oid => runDbSync(OpiskeluOikeudetWithAccessCheck(systemUser).filter(_.oid === oid).map(_.id).result).headOption)
+    oo.oid.flatMap(oid => runDbSync(KoskiOpiskeluOikeudetWithAccessCheck(systemUser).filter(_.oid === oid).map(_.id).result).headOption)
 
   private def oppilaitosOid(opiskeluoikeusOid: String): Option[String] =
-    runDbSync(OpiskeluOikeudetWithAccessCheck(systemUser).filter(_.oid === opiskeluoikeusOid).map(_.oppilaitosOid).result).headOption
+    runDbSync(KoskiOpiskeluOikeudetWithAccessCheck(systemUser).filter(_.oid === opiskeluoikeusOid).map(_.oppilaitosOid).result).headOption
 }

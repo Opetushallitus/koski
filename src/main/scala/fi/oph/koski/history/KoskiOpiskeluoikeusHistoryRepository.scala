@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import com.github.fge.jsonpatch.JsonPatch
 import fi.oph.koski.db.KoskiDatabase._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.db.KoskiTables.OpiskeluoikeusTable.readAsOpiskeluoikeus
+import fi.oph.koski.db.KoskiTables.KoskiOpiskeluoikeusTable.readAsOpiskeluoikeus
 import fi.oph.koski.db.KoskiTables._
 import fi.oph.koski.db._
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
@@ -21,14 +21,14 @@ import org.json4s.jackson.JsonMethods
 import slick.dbio.DBIOAction
 import slick.dbio.Effect.Write
 
-case class OpiskeluoikeusHistoryRepository(db: DB) extends DatabaseExecutionContext with QueryMethods with Logging with JsonMethods {
+case class KoskiOpiskeluoikeusHistoryRepository(db: DB) extends DatabaseExecutionContext with QueryMethods with Logging with JsonMethods {
   def findByOpiskeluoikeusOid(oid: String, maxVersion: Int = Int.MaxValue)(implicit user: KoskiSpecificSession): Option[List[OpiskeluoikeusHistoryPatch]] = {
     runDbSync(findByOpiskeluoikeusOidAction(oid, maxVersion).map(_.map(_.patches)))
   }
 
   def findByOpiskeluoikeusOidAction(oid: String, maxVersion: Int)(implicit user: KoskiSpecificSession): DBIOAction[Option[OpiskeluoikeusHistory], NoStream, Effect.Read] = {
-    OpiskeluOikeudetWithAccessCheck.filter(_.oid === oid)
-      .join(OpiskeluoikeusHistoria.filter(_.versionumero <= maxVersion))
+    KoskiOpiskeluOikeudetWithAccessCheck.filter(_.oid === oid)
+      .join(KoskiOpiskeluoikeusHistoria.filter(_.versionumero <= maxVersion))
       .on(_.id === _.opiskeluoikeusId)
       .sortBy(_._2.versionumero.asc)
       .result
@@ -43,7 +43,7 @@ case class OpiskeluoikeusHistoryRepository(db: DB) extends DatabaseExecutionCont
   }
 
   def createAction(opiskeluoikeusId: Int, versionumero: Int, kayttäjäOid: String, muutos: JValue): DBIOAction[Int, NoStream, Write] = {
-    OpiskeluoikeusHistoria.map { row =>
+    KoskiOpiskeluoikeusHistoria.map { row =>
       (row.opiskeluoikeusId, row.kayttajaOid, row.muutos, row.versionumero)
     } += (opiskeluoikeusId, kayttäjäOid, muutos, versionumero)
   }
@@ -55,7 +55,7 @@ case class OpiskeluoikeusHistoryRepository(db: DB) extends DatabaseExecutionCont
     )
   }
 
-  private def toOpiskeluoikeusHistory(row: (OpiskeluoikeusRow, OpiskeluoikeusHistoryRow)) = OpiskeluoikeusHistoryPatch(
+  private def toOpiskeluoikeusHistory(row: (KoskiOpiskeluoikeusRow, OpiskeluoikeusHistoryRow)) = OpiskeluoikeusHistoryPatch(
     opiskeluoikeusOid = row._1.oid,
     versionumero = row._2.versionumero,
     aikaleima = row._2.aikaleima,

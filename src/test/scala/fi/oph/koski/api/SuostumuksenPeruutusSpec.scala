@@ -1,6 +1,6 @@
 package fi.oph.koski.api
 
-import fi.oph.koski.db.OpiskeluoikeusRow
+import fi.oph.koski.db.KoskiOpiskeluoikeusRow
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
@@ -103,7 +103,7 @@ class SuostumuksenPeruutusSpec extends AnyFreeSpec with Matchers with Opiskeluoi
       resetFixtures()
       post(s"/api/opiskeluoikeus/suostumuksenperuutus/$vapaatavoitteinenOpiskeluoikeusOid", headers = kansalainenLoginHeaders(vapaatavoitteinenHetu)) {}
 
-      val result: Either[HttpStatus, OpiskeluoikeusRow] =
+      val result: Either[HttpStatus, KoskiOpiskeluoikeusRow] =
         KoskiApplicationForTests.opiskeluoikeusRepository.findByOid(
           vapaatavoitteinenOpiskeluoikeusOid
         )(
@@ -266,7 +266,7 @@ class SuostumuksenPeruutusSpec extends AnyFreeSpec with Matchers with Opiskeluoi
       val logMessages = AuditLogTester.getLogMessages
       logMessages.length should equal(2)
 
-      val vapaatavoitteinenOpiskeluoikeusRow: Either[HttpStatus, OpiskeluoikeusRow] =
+      val vapaatavoitteinenOpiskeluoikeusRow: Either[HttpStatus, KoskiOpiskeluoikeusRow] =
         KoskiApplicationForTests.opiskeluoikeusRepository.findByOid(
           vapaatavoitteinenOpiskeluoikeusOid
         )(
@@ -287,7 +287,7 @@ class SuostumuksenPeruutusSpec extends AnyFreeSpec with Matchers with Opiskeluoi
       resetFixtures()
       mitätöiOpiskeluoikeus(vapaatavoitteinenOpiskeluoikeusOid, MockUsers.paakayttaja)
 
-      val result: Either[HttpStatus, OpiskeluoikeusRow] =
+      val result: Either[HttpStatus, KoskiOpiskeluoikeusRow] =
         KoskiApplicationForTests.opiskeluoikeusRepository.findByOid(
           vapaatavoitteinenOpiskeluoikeusOid
         )(
@@ -420,7 +420,7 @@ class SuostumuksenPeruutusSpec extends AnyFreeSpec with Matchers with Opiskeluoi
       val logMessages = AuditLogTester.getLogMessages
       logMessages.length should equal(1)
 
-      val vapaatavoitteinenOpiskeluoikeusRow: Either[HttpStatus, OpiskeluoikeusRow] =
+      val vapaatavoitteinenOpiskeluoikeusRow: Either[HttpStatus, KoskiOpiskeluoikeusRow] =
         KoskiApplicationForTests.opiskeluoikeusRepository.findByOid(
           vapaatavoitteinenOpiskeluoikeusOid
         )(
@@ -443,7 +443,7 @@ class SuostumuksenPeruutusSpec extends AnyFreeSpec with Matchers with Opiskeluoi
         verifyResponseStatusOk()
       }
 
-      val result: Either[HttpStatus, OpiskeluoikeusRow] =
+      val result: Either[HttpStatus, KoskiOpiskeluoikeusRow] =
         KoskiApplicationForTests.opiskeluoikeusRepository.findByOid(
           vapaatavoitteinenOpiskeluoikeusOid
         )(

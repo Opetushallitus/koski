@@ -4,7 +4,7 @@ import com.typesafe.config.Config
 import fi.oph.koski.db._
 import fi.oph.koski.eperusteetvalidation.EPerusteetOpiskeluoikeusChangeValidator
 import fi.oph.koski.henkilo._
-import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
+import fi.oph.koski.history.KoskiOpiskeluoikeusHistoryRepository
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.organisaatio.OrganisaatioRepository
@@ -14,9 +14,9 @@ import slick.dbio
 import slick.dbio.Effect.{Read, Transactional, Write}
 import slick.dbio.NoStream
 
-class PostgresOpiskeluoikeusRepositoryV2(
+class PostgresKoskiOpiskeluoikeusRepositoryV2(
   override val db: DB,
-  historyRepository: OpiskeluoikeusHistoryRepository,
+  historyRepository: KoskiOpiskeluoikeusHistoryRepository,
   henkilöCache: KoskiHenkilöCache,
   oidGenerator: OidGenerator,
   henkilöRepository: OpintopolkuHenkilöRepository,
@@ -24,7 +24,7 @@ class PostgresOpiskeluoikeusRepositoryV2(
   organisaatioRepository: OrganisaatioRepository,
   ePerusteetValidator: EPerusteetOpiskeluoikeusChangeValidator,
   config: Config
-) extends PostgresOpiskeluoikeusRepository(
+) extends PostgresKoskiOpiskeluoikeusRepository(
     db,
     historyRepository,
     henkilöCache,
@@ -39,7 +39,7 @@ class PostgresOpiskeluoikeusRepositoryV2(
   override protected def createOrUpdateActionBasedOnDbResult(oppijaOid: PossiblyUnverifiedHenkilöOid,
                                                              opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
                                                              allowUpdate: Boolean, allowDeleteCompleted:
-                               Boolean, rows: Either[HttpStatus, List[OpiskeluoikeusRow]])(implicit user: KoskiSpecificSession): dbio.DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write with Transactional] = {
+                               Boolean, rows: Either[HttpStatus, List[KoskiOpiskeluoikeusRow]])(implicit user: KoskiSpecificSession): dbio.DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write with Transactional] = {
     (allowUpdate, rows) match {
       case (false, Right(r)) if r.nonEmpty && vastaavanRinnakkaisenOpiskeluoikeudenLisääminenSallittu(opiskeluoikeus) => createAction(oppijaOid, opiskeluoikeus)
       case _ => super.createOrUpdateActionBasedOnDbResult(oppijaOid, opiskeluoikeus, allowUpdate, allowDeleteCompleted, rows)

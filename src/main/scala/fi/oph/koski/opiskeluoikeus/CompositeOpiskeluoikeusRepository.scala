@@ -1,7 +1,7 @@
 package fi.oph.koski.opiskeluoikeus
 
 import java.time.LocalDate
-import fi.oph.koski.db.OpiskeluoikeusRow
+import fi.oph.koski.db.KoskiOpiskeluoikeusRow
 import fi.oph.koski.executors.GlobalExecutionContext
 import fi.oph.koski.henkilo.{HenkilönTunnisteet, Hetu, PossiblyUnverifiedHenkilöOid}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
@@ -36,7 +36,7 @@ class CompositeOpiskeluoikeusRepository(main: KoskiOpiskeluoikeusRepository, vir
     found1 ++ found2 ++ found3
   }
 
-  def findByOid(oid: String)(implicit user: KoskiSpecificSession): Either[HttpStatus, OpiskeluoikeusRow] =
+  def findByOid(oid: String)(implicit user: KoskiSpecificSession): Either[HttpStatus, KoskiOpiskeluoikeusRow] =
     main.findByOid(oid)
 
   def createOrUpdate(

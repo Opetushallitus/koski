@@ -1,7 +1,7 @@
 package fi.oph.koski.raportointikanta
 
 import fi.oph.koski.api.{OpiskeluoikeudenMitätöintiJaPoistoTestMethods, OpiskeluoikeusTestMethodsAmmatillinen}
-import fi.oph.koski.db.KoskiTables.{OpiskeluOikeudet, PoistetutOpiskeluoikeudet}
+import fi.oph.koski.db.KoskiTables.{KoskiOpiskeluOikeudet, PoistetutOpiskeluoikeudet}
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.documentation.AmmatillinenExampleData
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
@@ -523,7 +523,7 @@ class RaportointikantaSpec
   "Mitätöityjen opiskeluoikeuksien lataus" - {
     "Kaikki mitätöidyt poistamattomat, mitätöidyt poistetut sekä peruttujen suostumusten opiskeluoikeudet ladataan erilliseen tauluun" in {
       val mitätöidytPoistamattomatKoskessa = runDbSync(
-        OpiskeluOikeudet.filter(_.mitätöity).filterNot(_.poistettu).sortBy(_.oid).result
+        KoskiOpiskeluOikeudet.filter(_.mitätöity).filterNot(_.poistettu).sortBy(_.oid).result
       )
       val mitätöidytPoistetutTaiPerututSuostumuksetKoskessa = runDbSync(
         PoistetutOpiskeluoikeudet.result
@@ -567,7 +567,7 @@ class RaportointikantaSpec
 
     "Mitätöityjä opiskeluoikeuksia ei ladata varsinaiseen opiskeluoikeudet-tauluun" in {
       val mitätöidytOpiskeluoikeusOidit = runDbSync(
-        OpiskeluOikeudet.filter(_.mitätöity).sortBy(_.id).result
+        KoskiOpiskeluOikeudet.filter(_.mitätöity).sortBy(_.id).result
       ).map(_.oid)
 
       val opiskeluoikeusOiditRaportointikannassa = mainRaportointiDb.runDbSync(

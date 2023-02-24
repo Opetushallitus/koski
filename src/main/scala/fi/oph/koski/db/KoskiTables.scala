@@ -14,7 +14,7 @@ import org.json4s._
 import slick.lifted.ProvenShape
 
 object KoskiTables {
-  class OpiskeluoikeusTable(tag: Tag) extends Table[OpiskeluoikeusRow](tag, "opiskeluoikeus") {
+  class KoskiOpiskeluoikeusTable(tag: Tag) extends Table[KoskiOpiskeluoikeusRow](tag, "opiskeluoikeus") {
     val id: Rep[Int] = column[Int]("id", O.AutoInc, O.PrimaryKey)
     val oid = column[String]("oid", O.Unique)
     val versionumero = column[Int]("versionumero")
@@ -35,12 +35,12 @@ object KoskiTables {
     val poistettu = column[Boolean]("poistettu")
 
 
-    def * = (id, oid, versionumero, aikaleima, oppijaOid, oppilaitosOid, koulutustoimijaOid, sisältäväOpiskeluoikeusOid, sisältäväOpiskeluoikeusOppilaitosOid, data, luokka, mitätöity, koulutusmuoto, alkamispäivä, päättymispäivä, suoritusjakoTehty, suoritustyypit, poistettu) <> (OpiskeluoikeusRow.tupled, OpiskeluoikeusRow.unapply)
+    def * = (id, oid, versionumero, aikaleima, oppijaOid, oppilaitosOid, koulutustoimijaOid, sisältäväOpiskeluoikeusOid, sisältäväOpiskeluoikeusOppilaitosOid, data, luokka, mitätöity, koulutusmuoto, alkamispäivä, päättymispäivä, suoritusjakoTehty, suoritustyypit, poistettu) <> (KoskiOpiskeluoikeusRow.tupled, KoskiOpiskeluoikeusRow.unapply)
     def updateableFields = (data, versionumero, sisältäväOpiskeluoikeusOid, sisältäväOpiskeluoikeusOppilaitosOid, luokka, koulutustoimijaOid, oppilaitosOid, mitätöity, alkamispäivä, päättymispäivä, suoritustyypit)
     def updateableFieldsPoisto = (data, versionumero, sisältäväOpiskeluoikeusOid, sisältäväOpiskeluoikeusOppilaitosOid, luokka, koulutustoimijaOid, oppilaitosOid, mitätöity, koulutusmuoto, alkamispäivä, päättymispäivä, suoritustyypit, poistettu)
   }
 
-  object OpiskeluoikeusTable {
+  object KoskiOpiskeluoikeusTable {
     private val serializationContext = SerializationContext(KoskiSchema.schemaFactory, skipSyntheticProperties)
     private val fieldsToExcludeInJson = Set("oid", "versionumero", "aikaleima")
     private implicit val deserializationContext = ExtractionContext(KoskiSchema.schemaFactory).copy(validate = false)
@@ -48,7 +48,7 @@ object KoskiTables {
     private def serialize(opiskeluoikeus: Opiskeluoikeus) = removeFields(Serializer.serialize(opiskeluoikeus, serializationContext), fieldsToExcludeInJson)
 
     def makeInsertableRow(oppijaOid: String, opiskeluoikeusOid: String, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) = {
-      OpiskeluoikeusRow(
+      KoskiOpiskeluoikeusRow(
         0,
         opiskeluoikeusOid,
         Opiskeluoikeus.VERSIO_1,
@@ -205,7 +205,7 @@ object KoskiTables {
     def * = (oid, sukunimi, etunimet, kutsumanimi, masterOid) <> (HenkilöRow.tupled, HenkilöRow.unapply)
   }
 
-  class OpiskeluoikeusHistoryTable(tag: Tag) extends Table[OpiskeluoikeusHistoryRow] (tag, "opiskeluoikeushistoria") {
+  class KoskiOpiskeluoikeusHistoryTable(tag: Tag) extends Table[OpiskeluoikeusHistoryRow] (tag, "opiskeluoikeushistoria") {
     val opiskeluoikeusId = column[Int]("opiskeluoikeus_id")
     val versionumero = column[Int]("versionumero")
     val aikaleima = column[Timestamp]("aikaleima")
@@ -373,7 +373,7 @@ object KoskiTables {
   // OpiskeluOikeudet-taulu. Käytä kyselyissä aina OpiskeluOikeudetWithAccessCheck,
   // niin tulee myös käyttöoikeudet tarkistettua samalla, ja mitätöidyt ja poistetut opiskeluoikeudet poistettua
   // listalta, jos on tarpeen, kuten yleensä on.
-  val OpiskeluOikeudet = TableQuery[OpiskeluoikeusTable]
+  val KoskiOpiskeluOikeudet = TableQuery[KoskiOpiskeluoikeusTable]
 
   // YTR OpiskeluOikeudet-taulu. Käytä kyselyissä aina YtrOpiskeluOikeudetWithAccessCheck,
   // niin tulee myös käyttöoikeudet tarkistettua samalla, ja mitätöidyt ja poistetut opiskeluoikeudet poistettua
@@ -392,7 +392,7 @@ object KoskiTables {
 
   val OppilaitosIPOsoite = TableQuery[OppilaitosIPOsoiteTable]
 
-  val OpiskeluoikeusHistoria = TableQuery[OpiskeluoikeusHistoryTable]
+  val KoskiOpiskeluoikeusHistoria = TableQuery[KoskiOpiskeluoikeusHistoryTable]
 
   val YtrOpiskeluoikeusHistoria = TableQuery[YtrOpiskeluoikeusHistoryTable]
 
@@ -400,15 +400,15 @@ object KoskiTables {
 
   val PäivitetytOpiskeluoikeudet = TableQuery[PäivitettyOpiskeluoikeusTable]
 
-  def OpiskeluOikeudetWithAccessCheck(implicit user: KoskiSpecificSession): Query[OpiskeluoikeusTable, OpiskeluoikeusRow, Seq] = {
+  def KoskiOpiskeluOikeudetWithAccessCheck(implicit user: KoskiSpecificSession): Query[KoskiOpiskeluoikeusTable, KoskiOpiskeluoikeusRow, Seq] = {
     val query = if (user.hasGlobalReadAccess || user.hasGlobalKoulutusmuotoReadAccess) {
-      OpiskeluOikeudet
+      KoskiOpiskeluOikeudet
     } else {
       val oppilaitosOidit = user.organisationOids(AccessType.read).toList
       val varhaiskasvatusOikeudet = user.varhaiskasvatusKäyttöoikeudet.filter(_.organisaatioAccessType.contains(AccessType.read))
 
       for {
-        oo <- OpiskeluOikeudet
+        oo <- KoskiOpiskeluOikeudet
         if (oo.oppilaitosOid inSet oppilaitosOidit) ||
            (oo.sisältäväOpiskeluoikeusOppilaitosOid inSet oppilaitosOidit) ||
            (oo.oppilaitosOid inSet varhaiskasvatusOikeudet.map(_.ulkopuolinenOrganisaatio.oid)) &&
@@ -444,7 +444,7 @@ object KoskiTables {
 case class SSOSessionRow(serviceTicket: String, username: String, userOid: String, name: String, started: Timestamp, updated: Timestamp, huollettavatSearchResult: Option[JValue])
 
 // Note: the data json must not contain [id, versionumero] fields. This is enforced by DB constraint.
-case class OpiskeluoikeusRow(id: Int,
+case class KoskiOpiskeluoikeusRow(id: Int,
   oid: String,
   versionumero: Int,
   aikaleima: Timestamp,
@@ -465,7 +465,7 @@ case class OpiskeluoikeusRow(id: Int,
 ) {
 
   def toOpiskeluoikeus(implicit user: SensitiveDataAllowed): Either[List[ValidationError], KoskeenTallennettavaOpiskeluoikeus] = {
-    KoskiTables.OpiskeluoikeusTable.readAsOpiskeluoikeus(data, oid, versionumero, aikaleima) match {
+    KoskiTables.KoskiOpiskeluoikeusTable.readAsOpiskeluoikeus(data, oid, versionumero, aikaleima) match {
       case Right(oo: KoskeenTallennettavaOpiskeluoikeus) =>
         Right(FilterNonAnnotationableSensitiveData.filter(oo))
       case Left(left) => Left(left)

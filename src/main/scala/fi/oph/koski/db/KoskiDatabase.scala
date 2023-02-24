@@ -15,7 +15,7 @@ object KoskiDatabase {
 class KoskiDatabase(protected val config: DatabaseConfig, isReplica: Boolean) extends Database {
   override final val smallDatabaseMaxRows = 500
 
-  override protected lazy val dbSizeQuery = KoskiTables.OpiskeluOikeudet.length.result
+  override protected lazy val dbSizeQuery = KoskiTables.KoskiOpiskeluOikeudet.length.result
 
   val isLocal: Boolean = config.isLocal
 }

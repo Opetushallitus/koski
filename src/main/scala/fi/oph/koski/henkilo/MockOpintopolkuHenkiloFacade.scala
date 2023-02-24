@@ -5,7 +5,7 @@ import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.db.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.db.KoskiTables.OpiskeluOikeudetWithAccessCheck
+import fi.oph.koski.db.KoskiTables.KoskiOpiskeluOikeudetWithAccessCheck
 import fi.oph.koski.db.{PostgresDriverWithJsonSupport, QueryMethods}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession.systemUser
@@ -163,7 +163,7 @@ class MockOpintopolkuHenkilöFacade extends OpintopolkuHenkilöFacade with Loggi
 
 class MockOpintopolkuHenkilöFacadeWithDBSupport(val db: DB) extends MockOpintopolkuHenkilöFacade with QueryMethods {
   def findFromDb(oid: String): Option[LaajatOppijaHenkilöTiedot] = {
-    runQuery(OpiskeluOikeudetWithAccessCheck(systemUser).filter(_.oppijaOid === oid)).headOption.map { oppijaRow =>
+    runQuery(KoskiOpiskeluOikeudetWithAccessCheck(systemUser).filter(_.oppijaOid === oid)).headOption.map { oppijaRow =>
       LaajatOppijaHenkilöTiedot(oid, oid, oid, oid, Some(oid), None, None, None)
     }
   }

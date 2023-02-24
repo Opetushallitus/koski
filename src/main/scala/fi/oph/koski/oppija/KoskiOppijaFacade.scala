@@ -2,7 +2,7 @@ package fi.oph.koski.oppija
 
 import com.typesafe.config.Config
 import fi.oph.koski.henkilo._
-import fi.oph.koski.history.{OpiskeluoikeusHistoryRepository, YtrOpiskeluoikeusHistoryRepository}
+import fi.oph.koski.history.{KoskiOpiskeluoikeusHistoryRepository, YtrOpiskeluoikeusHistoryRepository}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.KoskiAuditLogMessageField.{opiskeluoikeusId, opiskeluoikeusOid, opiskeluoikeusVersio, oppijaHenkiloOid}
@@ -18,8 +18,8 @@ import java.time.LocalDate
 class KoskiOppijaFacade(
   henkilöRepository: HenkilöRepository,
   opiskeluoikeusRepository: CompositeOpiskeluoikeusRepository,
-  ytrDownloadedOpiskeluoikeusRepository: KoskiYtrOpiskeluoikeusRepository,
-  historyRepository: OpiskeluoikeusHistoryRepository,
+  ytrDownloadedOpiskeluoikeusRepository: YtrSavedOpiskeluoikeusRepository,
+  historyRepository: KoskiOpiskeluoikeusHistoryRepository,
   ytrHistoryRepository: YtrOpiskeluoikeusHistoryRepository,
   globaaliValidator: KoskiGlobaaliValidator,
   config: Config,

@@ -94,7 +94,7 @@ order by "masterOppijaOid", opiskeluoikeus_oid
   })
 
   private def deserializeKelaOpiskeluoikeus(data: JValue, oid: String, versionumero: Int, aikaleima: Timestamp): KelaOpiskeluoikeus = {
-    val json = KoskiTables.OpiskeluoikeusTable.readAsJValue(data, oid, versionumero, aikaleima)
+    val json = KoskiTables.KoskiOpiskeluoikeusTable.readAsJValue(data, oid, versionumero, aikaleima)
 
     validatingAndResolvingExtractor.extract[KelaOpiskeluoikeus](
       KoskiSchema.lenientDeserializationWithIgnoringNonValidatingListItemsWithoutValidation

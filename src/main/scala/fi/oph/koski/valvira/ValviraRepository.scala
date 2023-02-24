@@ -5,7 +5,7 @@ import java.sql.{Date, Timestamp}
 import fi.oph.koski.db.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.jsonMethods.{parse => parseJson}
-import fi.oph.koski.db.KoskiTables.OpiskeluOikeudet
+import fi.oph.koski.db.KoskiTables.KoskiOpiskeluOikeudet
 import fi.oph.koski.db.QueryMethods
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
@@ -21,7 +21,7 @@ class ValviraRepository(val db: DB) extends QueryMethods with Logging {
 
   def opiskeluoikeudetByOppijaOids(oppijaOids: Seq[Henkilö.Oid]): Either[HttpStatus, List[ValviraOpiskeluoikeus]] = Try {
     runDbSync(
-      OpiskeluOikeudet
+      KoskiOpiskeluOikeudet
         .filter(_.oppijaOid inSet oppijaOids)
         .filterNot(_.mitätöity)
         .filter(_.data.+>("suoritukset").@>(parseJson(s"""[{"tyyppi":{"koodiarvo":"ammatillinentutkinto"}}]""")))

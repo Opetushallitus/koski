@@ -29,7 +29,7 @@ class PostgresYtrOpiskeluoikeusRepository(
   henkilöCache: KoskiHenkilöCache,
   oidGenerator: OidGenerator,
   henkilöRepository: OpintopolkuHenkilöRepository
-) extends KoskiYtrOpiskeluoikeusRepository with DatabaseExecutionContext with QueryMethods with Logging {
+) extends YtrSavedOpiskeluoikeusRepository with DatabaseExecutionContext with QueryMethods with Logging {
   lazy val errorRepository = new OpiskeluoikeushistoriaErrorRepository(db)
 
   private def oppijaOidsByOppijaOid(oid: String): DBIOAction[List[String], NoStream, Read] = {

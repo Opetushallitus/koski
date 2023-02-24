@@ -1,7 +1,7 @@
 package fi.oph.koski.opiskeluoikeus
 
 import java.time.LocalDate
-import fi.oph.koski.db.{OpiskeluoikeusRow, YtrOpiskeluoikeusRow}
+import fi.oph.koski.db.{KoskiOpiskeluoikeusRow, YtrOpiskeluoikeusRow}
 import fi.oph.koski.henkilo.{HenkilönTunnisteet, OppijaHenkilöWithMasterInfo, PossiblyUnverifiedHenkilöOid}
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koskiuser.KoskiSpecificSession
@@ -11,7 +11,7 @@ import fi.oph.koski.ytr.download.YtrLaajaOppija
 import org.json4s.JValue
 
 trait KoskiOpiskeluoikeusRepository {
-  def findByOid(oid: String)(implicit user: KoskiSpecificSession): Either[HttpStatus, OpiskeluoikeusRow]
+  def findByOid(oid: String)(implicit user: KoskiSpecificSession): Either[HttpStatus, KoskiOpiskeluoikeusRow]
   def getOppijaOidsForOpiskeluoikeus(opiskeluoikeusOid: String)(implicit user: KoskiSpecificSession): Either[HttpStatus, List[Henkilö.Oid]]
   def createOrUpdate(
     oppijaOid: PossiblyUnverifiedHenkilöOid,
@@ -33,7 +33,7 @@ trait KoskiOpiskeluoikeusRepository {
   def isKuoriOpiskeluoikeus(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): Boolean
 }
 
-trait KoskiYtrOpiskeluoikeusRepository {
+trait YtrSavedOpiskeluoikeusRepository {
   def findByOppijaOids(oids: List[String])(implicit user: KoskiSpecificSession): Seq[YlioppilastutkinnonOpiskeluoikeus]
   def createOrUpdate(
     oppijaOid: PossiblyUnverifiedHenkilöOid,

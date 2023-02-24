@@ -38,7 +38,7 @@ abstract class DatabaseFixtureCreator(application: KoskiApplication, opiskeluoik
     val henkilöOids = application.fixtureCreator.allOppijaOids.sorted
 
     runDbSync(DBIO.sequence(Seq(
-      OpiskeluOikeudet.filter(_.oppijaOid inSetBind (henkilöOids)).delete,
+      KoskiOpiskeluOikeudet.filter(_.oppijaOid inSetBind (henkilöOids)).delete,
       YtrOpiskeluoikeusHistoria.delete,
       YtrOpiskeluOikeudet.delete,
       KoskiTables.Henkilöt.filter(_.oid inSetBind henkilöOids).delete,

@@ -1,9 +1,9 @@
 package fi.oph.koski.opiskeluoikeus
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.db.OpiskeluoikeusRow
+import fi.oph.koski.db.KoskiOpiskeluoikeusRow
 import fi.oph.koski.henkilo.HenkilöRepository
-import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
+import fi.oph.koski.history.KoskiOpiskeluoikeusHistoryRepository
 import fi.oph.koski.http._
 import fi.oph.koski.json.JsonDiff.jsonDiff
 import fi.oph.koski.json.JsonSerializer.serialize
@@ -33,7 +33,7 @@ class OpiskeluoikeusValidationServlet(implicit val application: KoskiApplication
     implicit val systemUser = KoskiSpecificSession.systemUser
 
     val context = ValidateContext(application.validator, application.historyRepository, application.henkilöRepository)(systemUser)
-    val validateRow: OpiskeluoikeusRow => ValidationResult = row => try {
+    val validateRow: KoskiOpiskeluoikeusRow => ValidationResult = row => try {
       var result = if (extractOnly) {
         context.extractOpiskeluoikeus(row)
       } else {
@@ -60,7 +60,7 @@ class OpiskeluoikeusValidationServlet(implicit val application: KoskiApplication
     renderEither[ValidationResult](application.opiskeluoikeusRepository.findByOid(getStringParam("oid"))(systemUser).map(context.validateAll))
   }
 
-  private def validate(errorsOnly: Boolean, validateRow: OpiskeluoikeusRow => ValidationResult, systemUser: KoskiSpecificSession): Observable[ValidationResult] = {
+  private def validate(errorsOnly: Boolean, validateRow: KoskiOpiskeluoikeusRow => ValidationResult, systemUser: KoskiSpecificSession): Observable[ValidationResult] = {
     application.opiskeluoikeusQueryRepository.mapKaikkiOpiskeluoikeudetSivuittain(1000, systemUser) { opiskeluoikeusRows =>
       opiskeluoikeusRows.par.map(validateRow).filter(result => !(errorsOnly && result.isOk)).seq
     }
@@ -71,8 +71,8 @@ class OpiskeluoikeusValidationServlet(implicit val application: KoskiApplication
   *  Operating context for data validation. Operates outside the lecixal scope of OpiskeluoikeusServlet to ensure that none of the
   *  Scalatra threadlocals are used. This must be done because in batch mode, we are running in several threads.
   */
-case class ValidateContext(validator: KoskiValidator, historyRepository: OpiskeluoikeusHistoryRepository, henkilöRepository: HenkilöRepository)(implicit user: KoskiSpecificSession) extends Logging {
-  def validateHistory(row: OpiskeluoikeusRow): ValidationResult = {
+case class ValidateContext(validator: KoskiValidator, historyRepository: KoskiOpiskeluoikeusHistoryRepository, henkilöRepository: HenkilöRepository)(implicit user: KoskiSpecificSession) extends Logging {
+  def validateHistory(row: KoskiOpiskeluoikeusRow): ValidationResult = {
     try {
       val opiskeluoikeus = row.toOpiskeluoikeusUnsafe
       (historyRepository.findVersion(row.oid, row.versionumero)(user) match {
@@ -91,15 +91,15 @@ case class ValidateContext(validator: KoskiValidator, historyRepository: Opiskel
     }
   }
 
-  def extractOpiskeluoikeus(row: OpiskeluoikeusRow): ValidationResult = {
+  def extractOpiskeluoikeus(row: KoskiOpiskeluoikeusRow): ValidationResult = {
     renderValidationResult(row, validator.extractOpiskeluoikeus(row.data))
   }
 
-  def updateFieldsAndValidateOpiskeluoikeus(row: OpiskeluoikeusRow): ValidationResult = {
+  def updateFieldsAndValidateOpiskeluoikeus(row: KoskiOpiskeluoikeusRow): ValidationResult = {
     renderValidationResult(row, validator.extractUpdateFieldsAndValidateOpiskeluoikeus(row.data)(user, AccessType.read))
   }
 
-  private def renderValidationResult(row: OpiskeluoikeusRow, validationResult: Either[HttpStatus, Opiskeluoikeus]) = {
+  private def renderValidationResult(row: KoskiOpiskeluoikeusRow, validationResult: Either[HttpStatus, Opiskeluoikeus]) = {
     validationResult match {
       case Right(oppija) =>
         ValidationResult(row.oppijaOid, row.oid, Nil)
@@ -110,14 +110,14 @@ case class ValidateContext(validator: KoskiValidator, historyRepository: Opiskel
     }
   }
 
-  def validateHenkilö(row: OpiskeluoikeusRow): ValidationResult = {
+  def validateHenkilö(row: KoskiOpiskeluoikeusRow): ValidationResult = {
     henkilöRepository.findByOid(row.oppijaOid) match {
       case Some(h) => ValidationResult(row.oppijaOid, row.oid, Nil)
       case None => ValidationResult(row.oppijaOid, row.oid, List(ErrorDetail("oppijaaEiLöydy", s"Oppijaa ${row.oppijaOid} ei löydy henkilöpalvelusta")))
     }
   }
 
-  def validateAll(row: OpiskeluoikeusRow): ValidationResult = {
+  def validateAll(row: KoskiOpiskeluoikeusRow): ValidationResult = {
     updateFieldsAndValidateOpiskeluoikeus(row) + validateHistory(row) + validateHenkilö(row)
   }
 }
