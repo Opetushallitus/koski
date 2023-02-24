@@ -3,15 +3,12 @@ import { TaiteenPerusopetuksenArviointi } from '../../../../app/types/fi/oph/kos
 import { KoodiviiteIdOf } from '../../../../app/util/koodisto'
 import { expect } from '../../base'
 import { arrayOf, build, BuiltIdNode } from './uiV2builder/builder'
-import {
-  Button,
-  FormField,
-  Input,
-  NumberInput,
-  RadioButtons,
-  Select,
-  Text
-} from './uiV2builder/controls'
+import { Button } from './uiV2builder/Button'
+import { FormField } from './uiV2builder/controls'
+import { Input } from './uiV2builder/Input'
+import { Label } from './uiV2builder/Label'
+import { RadioButtons } from './uiV2builder/RadioButtons'
+import { Select } from './uiV2builder/Select'
 
 export class KoskiTpoOppijaPage {
   page: Page
@@ -193,21 +190,21 @@ export class KoskiTpoOppijaPage {
 
 const TaiteenPerusopetusTestIds = {
   opiskeluoikeus: {
-    nimi: Text,
-    oid: Text,
-    voimassaoloaika: Text,
+    nimi: Label,
+    oid: Label,
+    voimassaoloaika: Label,
     edit: Button,
     tila: {
       value: {
         items: arrayOf({
-          date: Text,
-          tila: Text
+          date: Label,
+          tila: Label
         })
       },
       edit: {
         items: arrayOf({
           date: Input,
-          tila: Text,
+          tila: Label,
           remove: Button
         }),
         add: Button,
@@ -222,20 +219,20 @@ const TaiteenPerusopetusTestIds = {
   },
   suoritukset: arrayOf({
     tab: Button,
-    koulutuksenToteutustapa: FormField(Text),
-    laajuus: FormField(Text),
-    oppilaitos: FormField(Text),
-    oppimäärä: FormField(Text),
-    taiteenala: FormField(Text),
+    koulutuksenToteutustapa: FormField(Label),
+    laajuus: FormField(Label),
+    oppilaitos: FormField(Label),
+    oppimäärä: FormField(Label),
+    taiteenala: FormField(Label),
     osasuoritukset: arrayOf({
       expand: Button,
-      arvosana: FormField(Text, Select),
-      laajuus: FormField(Text, NumberInput),
-      nimi: FormField(Text),
+      arvosana: FormField(Label, Select),
+      laajuus: FormField(Label, Input),
+      nimi: FormField(Label),
       properties: {
-        arvosana: FormField(Text),
-        arvostelunPvm: FormField(Text),
-        tunnustettu: FormField(Text)
+        arvosana: FormField(Label),
+        arvostelunPvm: FormField(Label),
+        tunnustettu: FormField(Label)
       },
       delete: Button
     }),
@@ -249,14 +246,14 @@ const TaiteenPerusopetusTestIds = {
     },
     suorituksenVahvistus: {
       value: {
-        status: Text,
-        details: Text,
-        henkilö: arrayOf(Text)
+        status: Label,
+        details: Label,
+        henkilö: arrayOf(Label)
       },
       edit: {
-        status: Text,
-        details: Text,
-        henkilö: arrayOf(Text),
+        status: Label,
+        details: Label,
+        henkilö: arrayOf(Label),
         merkitseValmiiksi: Button,
         merkitseKeskeneräiseksi: Button,
         modal: {
