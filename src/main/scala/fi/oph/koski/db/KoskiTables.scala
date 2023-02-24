@@ -12,9 +12,52 @@ import fi.oph.scalaschema.extraction.ValidationError
 import fi.oph.scalaschema.{Serializer, _}
 import org.json4s._
 import slick.lifted.ProvenShape
+import scala.reflect.runtime.{universe => ru}
 
 object KoskiTables {
-  class KoskiOpiskeluoikeusTable(tag: Tag) extends Table[KoskiOpiskeluoikeusRow](tag, "opiskeluoikeus") {
+
+  trait OpiskeluoikeusTable[T <: OpiskeluoikeusRow] extends Table[T] {
+    def id: Rep[Int]
+    def oid: Rep[String]
+    def versionumero: Rep[Int]
+    def aikaleima: Rep[Timestamp]
+    def oppijaOid: Rep[String]
+    def data: Rep[JValue]
+    def oppilaitosOid: Rep[String]
+    def koulutustoimijaOid: Rep[Option[String]]
+    def sisältäväOpiskeluoikeusOid: Rep[Option[String]]
+    def sisältäväOpiskeluoikeusOppilaitosOid: Rep[Option[String]]
+    def luokka: Rep[Option[String]]
+    def mitätöity: Rep[Boolean]
+    def koulutusmuoto: Rep[String]
+    def alkamispäivä: Rep[Date]
+    def päättymispäivä: Rep[Option[Date]]
+    def suoritusjakoTehty: Rep[Boolean]
+    def suoritustyypit: Rep[List[String]]
+    def poistettu: Rep[Boolean]
+  }
+
+  trait OpiskeluoikeusTableCompanion {
+    protected val serializationContext = SerializationContext(KoskiSchema.schemaFactory, skipSyntheticProperties)
+    protected val fieldsToExcludeInJson = Set("oid", "versionumero", "aikaleima")
+    protected implicit val deserializationContext = ExtractionContext(KoskiSchema.schemaFactory).copy(validate = false)
+
+    protected def serialize(opiskeluoikeus: Opiskeluoikeus) = removeFields(Serializer.serialize(opiskeluoikeus, serializationContext), fieldsToExcludeInJson)
+
+    def readAsJValue(data: JValue, oid: String, versionumero: Int, aikaleima: Timestamp): JValue = {
+      // note: for historical reasons, Opiskeluoikeus.aikaleima is Option[LocalDateTime], instead of Option[DateTime].
+      // this Timestamp->LocalDateTime conversion assumes JVM time zone is Europe/Helsinki
+      data.merge(Serializer.serialize(OidVersionTimestamp(oid, versionumero, aikaleima.toLocalDateTime), serializationContext))
+    }
+
+    def readAsOpiskeluoikeus[S <: KoskeenTallennettavaOpiskeluoikeus : ru.TypeTag](data: JValue, oid: String, versionumero: Int, aikaleima: Timestamp): Either[List[ValidationError], S] = {
+      SchemaValidatingExtractor.extract[S](readAsJValue(data, oid, versionumero, aikaleima))
+    }
+  }
+
+  class KoskiOpiskeluoikeusTable(tag: Tag)
+    extends Table[KoskiOpiskeluoikeusRow](tag, "opiskeluoikeus")
+      with OpiskeluoikeusTable[KoskiOpiskeluoikeusRow] {
     val id: Rep[Int] = column[Int]("id", O.AutoInc, O.PrimaryKey)
     val oid = column[String]("oid", O.Unique)
     val versionumero = column[Int]("versionumero")
@@ -40,12 +83,7 @@ object KoskiTables {
     def updateableFieldsPoisto = (data, versionumero, sisältäväOpiskeluoikeusOid, sisältäväOpiskeluoikeusOppilaitosOid, luokka, koulutustoimijaOid, oppilaitosOid, mitätöity, koulutusmuoto, alkamispäivä, päättymispäivä, suoritustyypit, poistettu)
   }
 
-  object KoskiOpiskeluoikeusTable {
-    private val serializationContext = SerializationContext(KoskiSchema.schemaFactory, skipSyntheticProperties)
-    private val fieldsToExcludeInJson = Set("oid", "versionumero", "aikaleima")
-    private implicit val deserializationContext = ExtractionContext(KoskiSchema.schemaFactory).copy(validate = false)
-
-    private def serialize(opiskeluoikeus: Opiskeluoikeus) = removeFields(Serializer.serialize(opiskeluoikeus, serializationContext), fieldsToExcludeInJson)
+  object KoskiOpiskeluoikeusTable extends OpiskeluoikeusTableCompanion {
 
     def makeInsertableRow(oppijaOid: String, opiskeluoikeusOid: String, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) = {
       KoskiOpiskeluoikeusRow(
@@ -70,14 +108,8 @@ object KoskiTables {
       )
     }
 
-    def readAsJValue(data: JValue, oid: String, versionumero: Int, aikaleima: Timestamp): JValue = {
-      // note: for historical reasons, Opiskeluoikeus.aikaleima is Option[LocalDateTime], instead of Option[DateTime].
-      // this Timestamp->LocalDateTime conversion assumes JVM time zone is Europe/Helsinki
-      data.merge(Serializer.serialize(OidVersionTimestamp(oid, versionumero, aikaleima.toLocalDateTime), serializationContext))
-    }
-
     def readAsOpiskeluoikeus(data: JValue, oid: String, versionumero: Int, aikaleima: Timestamp): Either[List[ValidationError], KoskeenTallennettavaOpiskeluoikeus] = {
-      SchemaValidatingExtractor.extract[KoskeenTallennettavaOpiskeluoikeus](readAsJValue(data, oid, versionumero, aikaleima))
+      readAsOpiskeluoikeus[KoskeenTallennettavaOpiskeluoikeus](data, oid, versionumero, aikaleima)
     }
 
     def updatedFieldValues(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, versionumero: Int) = {
@@ -98,7 +130,9 @@ object KoskiTables {
     }
   }
 
-  class YtrOpiskeluoikeusTable(tag: Tag) extends Table[YtrOpiskeluoikeusRow](tag, "ytr_opiskeluoikeus") {
+  class YtrOpiskeluoikeusTable(tag: Tag)
+    extends Table[YtrOpiskeluoikeusRow](tag, "ytr_opiskeluoikeus")
+      with OpiskeluoikeusTable[YtrOpiskeluoikeusRow] {
     val id: Rep[Int] = column[Int]("id", O.AutoInc, O.PrimaryKey)
     val oid = column[String]("oid", O.Unique)
     val versionumero = column[Int]("versionumero")
@@ -123,12 +157,7 @@ object KoskiTables {
     def updateableFieldsPoisto = (data, versionumero, sisältäväOpiskeluoikeusOid, sisältäväOpiskeluoikeusOppilaitosOid, luokka, koulutustoimijaOid, oppilaitosOid, mitätöity, koulutusmuoto, alkamispäivä, päättymispäivä, suoritustyypit, poistettu)
   }
 
-  object YtrOpiskeluoikeusTable {
-    private val serializationContext = SerializationContext(KoskiSchema.schemaFactory, skipSyntheticProperties)
-    private val fieldsToExcludeInJson = Set("oid", "versionumero", "aikaleima")
-    private implicit val deserializationContext = ExtractionContext(KoskiSchema.schemaFactory).copy(validate = false)
-
-    private def serialize(opiskeluoikeus: Opiskeluoikeus) = removeFields(Serializer.serialize(opiskeluoikeus, serializationContext), fieldsToExcludeInJson)
+  object YtrOpiskeluoikeusTable extends OpiskeluoikeusTableCompanion {
 
     def makeInsertableRow(oppijaOid: String, opiskeluoikeusOid: String, opiskeluoikeus: YlioppilastutkinnonOpiskeluoikeus) = {
       YtrOpiskeluoikeusRow(
@@ -160,14 +189,8 @@ object KoskiTables {
       )
     }
 
-    def readAsJValue(data: JValue, oid: String, versionumero: Int, aikaleima: Timestamp): JValue = {
-      // note: for historical reasons, Opiskeluoikeus.aikaleima is Option[LocalDateTime], instead of Option[DateTime].
-      // this Timestamp->LocalDateTime conversion assumes JVM time zone is Europe/Helsinki
-      data.merge(Serializer.serialize(OidVersionTimestamp(oid, versionumero, aikaleima.toLocalDateTime), serializationContext))
-    }
-
     def readAsOpiskeluoikeus(data: JValue, oid: String, versionumero: Int, aikaleima: Timestamp): Either[List[ValidationError], YlioppilastutkinnonOpiskeluoikeus] = {
-      SchemaValidatingExtractor.extract[YlioppilastutkinnonOpiskeluoikeus](readAsJValue(data, oid, versionumero, aikaleima))
+      readAsOpiskeluoikeus[YlioppilastutkinnonOpiskeluoikeus](data, oid, versionumero, aikaleima)
     }
 
     def updatedFieldValues(opiskeluoikeus: YlioppilastutkinnonOpiskeluoikeus, versionumero: Int) = {
@@ -443,6 +466,27 @@ object KoskiTables {
 
 case class SSOSessionRow(serviceTicket: String, username: String, userOid: String, name: String, started: Timestamp, updated: Timestamp, huollettavatSearchResult: Option[JValue])
 
+trait OpiskeluoikeusRow {
+  def id: Int
+  def oid: String
+  def versionumero: Int
+  def aikaleima: Timestamp
+  def oppijaOid: String
+  def oppilaitosOid: String
+  def koulutustoimijaOid: Option[String]
+  def sisältäväOpiskeluoikeusOid: Option[String]
+  def sisältäväOpiskeluoikeusOppilaitosOid: Option[String]
+  def data: JValue
+  def luokka: Option[String]
+  def mitätöity: Boolean
+  def koulutusmuoto: String
+  def alkamispäivä: Date
+  def päättymispäivä: Option[Date]
+  def suoritusjakoTehty: Boolean
+  def suoritustyypit: List[String]
+  def poistettu: Boolean
+}
+
 // Note: the data json must not contain [id, versionumero] fields. This is enforced by DB constraint.
 case class KoskiOpiskeluoikeusRow(id: Int,
   oid: String,
@@ -462,7 +506,7 @@ case class KoskiOpiskeluoikeusRow(id: Int,
   suoritusjakoTehty: Boolean,
   suoritustyypit: List[String],
   poistettu: Boolean
-) {
+) extends OpiskeluoikeusRow {
 
   def toOpiskeluoikeus(implicit user: SensitiveDataAllowed): Either[List[ValidationError], KoskeenTallennettavaOpiskeluoikeus] = {
     KoskiTables.KoskiOpiskeluoikeusTable.readAsOpiskeluoikeus(data, oid, versionumero, aikaleima) match {
@@ -499,7 +543,7 @@ case class YtrOpiskeluoikeusRow(id: Int,
   suoritusjakoTehty: Boolean,
   suoritustyypit: List[String],
   poistettu: Boolean
-) {
+) extends OpiskeluoikeusRow {
   def toOpiskeluoikeus(implicit user: SensitiveDataAllowed): Either[List[ValidationError], YlioppilastutkinnonOpiskeluoikeus] = {
     KoskiTables.YtrOpiskeluoikeusTable.readAsOpiskeluoikeus(data, oid, versionumero, aikaleima) match {
       case Right(oo: YlioppilastutkinnonOpiskeluoikeus) =>
