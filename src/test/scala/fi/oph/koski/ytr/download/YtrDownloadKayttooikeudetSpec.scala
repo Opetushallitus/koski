@@ -89,6 +89,14 @@ class YtrDownloadKäyttöoikeudetSpec
         verifyResponseStatusOk()
       }
     }
+
+    "YTR:stä haettua alkuperäistä jsonia" in {
+      downloadYtrData(birthmonthStart, birthmonthEnd, force = true)
+
+      authGet("api/oppija/" + oppijaOid + "/ytr-current-original-json", MockUsers.paakayttaja) {
+        verifyResponseStatusOk()
+      }
+    }
   }
 
   "OPH-katselija pystyy lukemaan" - {
@@ -113,6 +121,14 @@ class YtrDownloadKäyttöoikeudetSpec
       downloadYtrData(birthmonthStart, birthmonthEnd, force = true)
 
       authGet("api/oppija/" + oppijaOid + "/ytr-saved-original-json", MockUsers.ophkatselija) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "YTR:stä haettua alkuperäistä jsonia" in {
+      downloadYtrData(birthmonthStart, birthmonthEnd, force = true)
+
+      authGet("api/oppija/" + oppijaOid + "/ytr-current-original-json", MockUsers.ophkatselija) {
         verifyResponseStatusOk()
       }
     }
@@ -143,6 +159,14 @@ class YtrDownloadKäyttöoikeudetSpec
         verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus())
       }
     }
+
+    "YTR:stä haettua alkuperäistä jsonia" in {
+      downloadYtrData(birthmonthStart, birthmonthEnd, force = true)
+
+      authGet("api/oppija/" + oppijaOid + "/ytr-current-original-json", MockUsers.viranomainen) {
+        verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus())
+      }
+    }
   }
 
   "Tavallinen käyttäjä ei pysty lukemaan" - {
@@ -167,6 +191,14 @@ class YtrDownloadKäyttöoikeudetSpec
       downloadYtrData(birthmonthStart, birthmonthEnd, force = true)
 
       authGet("api/oppija/" + oppijaOid + "/ytr-saved-original-json", MockUsers.kalle) {
+        verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus())
+      }
+    }
+
+    "YTR:stä haettua alkuperäistä jsonia" in {
+      downloadYtrData(birthmonthStart, birthmonthEnd, force = true)
+
+      authGet("api/oppija/" + oppijaOid + "/ytr-current-original-json", MockUsers.kalle) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus())
       }
     }

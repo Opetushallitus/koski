@@ -1,6 +1,6 @@
 package fi.oph.koski.oppija
 
-import fi.oph.koski.config.{KoskiApplication}
+import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.HenkilöOid
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer.extract
@@ -8,13 +8,14 @@ import fi.oph.koski.json.SensitiveAndRedundantDataFilter
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.log._
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueries
-import fi.oph.koski.schema.KoskiSchema.{lenientDeserializationWithoutValidation}
+import fi.oph.koski.schema.KoskiSchema.lenientDeserializationWithoutValidation
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.RequestDescriber.logSafeDescription
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 import fi.oph.koski.tiedonsiirto.TiedonsiirtoError
 import fi.oph.koski.util.{Pagination, Timing, XML}
 import fi.oph.koski.virta.{VirtaHakuehtoHetu, VirtaHakuehtoKansallinenOppijanumero}
+import fi.oph.koski.ytr.download.{YtrLaajaOppija, YtrSsnData}
 
 import javax.servlet.http.HttpServletRequest
 import org.json4s.JsonAST.{JBool, JObject, JString}
@@ -160,7 +161,27 @@ class OppijaServlet(implicit val application: KoskiApplication)
     }
   }
 
-  private def auditLogYtrKatsominen(oppijaOid: String)(originalJson: JValue): JValue = {
+  get("/:oid/ytr-current-original-json") {
+    if (!onOikeusNähdäYtrJson) {
+      haltWithStatus(KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus())
+    } else {
+      val oppijaOid = HenkilöOid.validateHenkilöOid(params("oid"))
+      renderEither[List[YtrLaajaOppija]](oppijaOid.right
+        .flatMap(oid =>
+          application.opintopolkuHenkilöFacade.findMasterOppija(oid).toRight(KoskiErrorCategory.notFound.oppijaaEiLöydy())
+        )
+        .map(henkilö => {
+          val hetut = henkilö.hetu.toList ++ henkilö.vanhatHetut
+          YtrSsnData(Some(hetut))
+        })
+        .map(application.ytrClient.oppijatByHetut)
+        .map(
+          auditLogYtrKatsominen(oppijaOid.getOrElse(""))
+        ))
+    }
+  }
+
+  private def auditLogYtrKatsominen[T](oppijaOid: String)(originalJson: T): T = {
     AuditLog.log(
       KoskiAuditLogMessage(
         KoskiOperation.YTR_OPISKELUOIKEUS_KATSOMINEN,

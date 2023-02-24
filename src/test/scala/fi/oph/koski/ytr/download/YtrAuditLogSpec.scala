@@ -143,6 +143,28 @@ class YtrAuditLogSpec
     )
   }
 
+  "Ajantasaisen originaalin katsominen" in {
+    downloadYtrData(birthmonthStart, birthmonthEnd, force = true)
+    downloadYtrData(modifiedSince, force = true)
+    AuditLogTester.clearMessages
+
+    getYtrCurrentOriginal(oppijaOid, MockUsers.ophkatselija)
+
+    verifyAuditLogs(
+      List(
+        Map(
+          "operation" -> KoskiOperation.YTR_OPISKELUOIKEUS_KATSOMINEN.toString,
+          "user" -> Map(
+            "oid" -> MockUsers.ophkatselija.oid
+          ),
+          "target" -> Map(
+            KoskiAuditLogMessageField.oppijaHenkiloOid.toString -> oppijaOid
+          )
+        )
+      )
+    )
+  }
+
   private def verifyAuditLogs(expectedAuditLogParams: List[Map[String, Object]]) = {
     val logMessages = AuditLogTester.getLogMessages
     logMessages.length should equal(expectedAuditLogParams.length)
