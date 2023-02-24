@@ -7,8 +7,11 @@ import { Button } from './uiV2builder/Button'
 import { FormField } from './uiV2builder/controls'
 import { Input } from './uiV2builder/Input'
 import { Label } from './uiV2builder/Label'
+import { OpiskeluoikeudenTila } from './uiV2builder/OpiskeluoikeudenTila'
+import { OpiskeluoikeusHeader } from './uiV2builder/OpiskeluoikeusHeader'
 import { RadioButtons } from './uiV2builder/RadioButtons'
 import { Select } from './uiV2builder/Select'
+import { SuorituksenVahvistus } from './uiV2builder/SuorituksenVahvistus'
 
 export class KoskiTpoOppijaPage extends KoskiOppijaPageV2<
   typeof TaiteenPerusopetusTestIds
@@ -120,41 +123,18 @@ export class KoskiTpoOppijaPage extends KoskiOppijaPageV2<
 }
 
 const TaiteenPerusopetusTestIds = {
-  opiskeluoikeus: {
-    nimi: Label,
-    oid: Label,
-    voimassaoloaika: Label,
-    edit: Button,
-    tila: {
-      value: {
-        items: arrayOf({
-          date: Label,
-          tila: Label
-        })
-      },
-      edit: {
-        items: arrayOf({
-          date: Input,
-          tila: Label,
-          remove: Button
-        }),
-        add: Button,
-        modal: {
-          date: FormField(Input, Input),
-          tila: FormField(RadioButtons, RadioButtons),
-          submit: Button,
-          cancel: Button
-        }
-      }
-    }
-  },
+  opiskeluoikeus: OpiskeluoikeusHeader(),
   suoritukset: arrayOf({
     tab: Button,
+
     koulutuksenToteutustapa: FormField(Label),
     laajuus: FormField(Label),
     oppilaitos: FormField(Label),
     oppimäärä: FormField(Label),
     taiteenala: FormField(Label),
+
+    suorituksenVahvistus: SuorituksenVahvistus(),
+
     osasuoritukset: arrayOf({
       expand: Button,
       arvosana: FormField(Label, Select),
@@ -167,41 +147,13 @@ const TaiteenPerusopetusTestIds = {
       },
       delete: Button
     }),
+
     addOsasuoritus: {
       select: Select,
       modal: {
         nimi: FormField(Input, Input),
         cancel: Button,
         submit: Button
-      }
-    },
-    suorituksenVahvistus: {
-      value: {
-        status: Label,
-        details: Label,
-        henkilö: arrayOf(Label)
-      },
-      edit: {
-        status: Label,
-        details: Label,
-        henkilö: arrayOf(Label),
-        merkitseValmiiksi: Button,
-        merkitseKeskeneräiseksi: Button,
-        modal: {
-          date: FormField(Input, Input),
-          myöntäjät: {
-            edit: {
-              add: Select,
-              henkilö: arrayOf({ delete: Button }),
-              newHenkilö: arrayOf({ nimi: Input, titteli: Input }),
-              storedHenkilö: arrayOf(Select)
-            }
-          },
-          organisaatio: FormField(Select, Select),
-          paikkakunta: FormField(Select, Select),
-          submit: Button,
-          cancel: Button
-        }
       }
     }
   })
