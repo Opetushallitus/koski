@@ -23,8 +23,13 @@ trait OrganisaatioRepository extends Logging {
    */
   def getOrganisaatioHierarkiaIncludingParents(oid: String): List[OrganisaatioHierarkia] = findWithOid(oid).toList
   def getOrganisaatio(oid: String): Option[OrganisaatioWithOid] = getOrganisaatioHierarkia(oid).map(_.toOrganisaatio)
+
   def getChildOids(oid: String): Option[Set[String]] = getOrganisaatioHierarkia(oid).map { hierarkia =>
     OrganisaatioHierarkia.flatten(List(hierarkia)).map(_.oid).toSet
+  }
+  def getOppilaitosHetkellä(oid: String, date: LocalDate): Option[Oppilaitos] = {
+    val nimiAjanhetkellä = getOrganisaationNimiHetkellä(oid, date)
+    getOrganisaatio(oid).map { case oppilaitos: Oppilaitos => oppilaitos.copy(nimi = nimiAjanhetkellä) }
   }
   def getOrganisaationNimiHetkellä(oid: String, localDate: LocalDate): Option[LocalizedString]
   def findByOppilaitosnumero(numero: String): Option[Oppilaitos]

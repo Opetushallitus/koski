@@ -1,3 +1,6 @@
+## 24.2.2023
+- YTR-tietomalliin lisätty kenttiä rinnakkaisen integraation tarpeisiin
+
 ## 15.2.2023
 
 - Taiteen perusopetuksen opiskeluoikeuteen lisätty kenttä koulutuksen toteutustapa.
