@@ -11,7 +11,8 @@ import { last, nonNull } from '../../util/fp/arrays'
 import { fetchVersiohistoria } from '../../util/koskiApi'
 import { viimeisinOpiskelujaksonTila } from '../../util/schema'
 import { uncapitalize } from '../../util/strings'
-import { currentQueryWith, goto, parseQuery } from '../../util/url'
+import { currentQueryWith, parseQuery } from '../../util/url'
+import { VirkailijaOnly } from '../access/VirkailijaOnly'
 import { common, CommonProps, cx, subTestId } from '../CommonProps'
 import { Column, ColumnRow } from '../containers/Columns'
 import { PositionalPopup } from '../containers/PositionalPopup'
@@ -70,10 +71,12 @@ export const OpiskeluoikeusTitle = (props: OpiskeluoikeusTitleProps) => {
             <Trans>{'Opiskeluoikeuden oid'}</Trans>
             {': '}
             {oid}
-            <VersiohistoriaButton
-              opiskeluoikeusOid={oid}
-              testId="opiskeluoikeus.versiohistoria"
-            />
+            <VirkailijaOnly>
+              <VersiohistoriaButton
+                opiskeluoikeusOid={oid}
+                testId="opiskeluoikeus.versiohistoria"
+              />
+            </VirkailijaOnly>
           </Column>
         )}
       </ColumnRow>
