@@ -8,13 +8,15 @@ export type FlatButtonProps = CommonProps<{
   onClick: React.MouseEventHandler<HTMLButtonElement>
   fullWidth?: boolean
   disabled?: boolean
+  compact?: boolean
 }>
 
 export const FlatButton = (props: FlatButtonProps) => (
   <button
     {...common(props, [
       'FlatButton',
-      props.fullWidth && 'FlatButton__fullWidth'
+      props.fullWidth && 'FlatButton__fullWidth',
+      props.compact && 'FlatButton__compact'
     ])}
     {...testId(props)}
     onClick={props.onClick}

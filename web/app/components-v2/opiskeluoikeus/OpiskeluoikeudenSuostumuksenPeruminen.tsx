@@ -85,22 +85,29 @@ export const SuostumuksenPeruminen: React.FC<SuostumuksenPeruminenProps> = (
         <Trans>{props.text}</Trans>
       </b>
       <span className="infobox">
-        <span
+        <button
           className="info-icon"
           onClick={() =>
             setSuostumuksenPerumisenInfo(!suostumuksenPerumisenInfo)
           }
           onMouseEnter={() => setSuostumuksenPerumisenInfo(true)}
           onMouseLeave={() => setSuostumuksenPerumisenInfo(false)}
+          onKeyDown={() =>
+            setSuostumuksenPerumisenInfo(!suostumuksenPerumisenInfo)
+          }
+          onFocus={() => setSuostumuksenPerumisenInfo(true)}
+          onBlur={() => setSuostumuksenPerumisenInfo(false)}
+          aria-label={t('Lisätiedot')}
         />
       </span>
       {!suoritusjakoTehty && (
-        <a
+        <FlatButton
           className="peru-suostumus-linkki"
           onClick={() => setPeruuttamassaSuostumusta(!peruuttamassaSuostumusta)}
+          compact
         >
           {'Peruuta suostumus'}
-        </a>
+        </FlatButton>
       )}
       {peruuttamassaSuostumusta && props.opiskeluoikeusOid && (
         <SuostumuksenPeruutusPopup
