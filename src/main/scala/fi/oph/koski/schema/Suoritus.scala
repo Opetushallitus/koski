@@ -273,7 +273,7 @@ trait LuokalleJääntiTiedonSisältäväSuoritus {
   def jääLuokalle: Boolean
 }
 
-trait Korotuksellinen extends Suoritus {
+trait Korotuksellinen extends Suoritus with MahdollisestiTunnustettu {
   @Title("Korotettu suoritus")
   @Description("Kentän arvo kertoo onko korotus onnistunut. Jos suorituksessa ei ole kyseessä korotus, kenttä jätetään tyhjäksi.")
   @KoodistoUri("ammatillisensuorituksenkorotus")

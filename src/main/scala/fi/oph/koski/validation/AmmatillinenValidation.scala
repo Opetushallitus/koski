@@ -19,7 +19,8 @@ object AmmatillinenValidation {
         HttpStatus.fold(
           validateUseaPäätasonSuoritus(ammatillinen),
           validateKeskeneräiselläSuorituksellaEiSaaOllaKeskiarvoa(ammatillinen),
-          validateKeskiarvoOlemassaJosSuoritusOnValmis(ammatillinen, isKuoriopiskeluoikeus)
+          validateKeskiarvoOlemassaJosSuoritusOnValmis(ammatillinen, isKuoriopiskeluoikeus),
+          validateAmmatillisenKorotus(ammatillinen)
         )
       case _ => HttpStatus.ok
     }
@@ -76,6 +77,7 @@ object AmmatillinenValidation {
 
   private def näyttötutkintoJaNäyttöönValmistavaLöytyvät(opiskeluoikeus: AmmatillinenOpiskeluoikeus) = {
     opiskeluoikeus.suoritukset.exists {
+      case tutkintoSuoritus: AmmatillisenTutkinnonOsittainenSuoritus if tutkintoSuoritus.korotettuOpiskeluoikeusOid.isDefined => false
       case tutkintoSuoritus: AmmatillisenTutkinnonOsittainenTaiKokoSuoritus if tutkintoSuoritus.suoritustapa.koodiarvo == "naytto" => true
       case _ => false
     } && opiskeluoikeus.suoritukset.exists {
@@ -83,4 +85,62 @@ object AmmatillinenValidation {
       case _ => false
     }
   }
+
+  private def validateAmmatillisenKorotus(ammatillinen: AmmatillinenOpiskeluoikeus): HttpStatus = {
+    ammatillinen.suoritukset.headOption.map {
+      case os: AmmatillisenTutkinnonOsittainenSuoritus if os.korotettuOpiskeluoikeusOid.isDefined =>
+        validateKorotettuSuoritus(ammatillinen, os)
+      case os: AmmatillisenTutkinnonOsittainenSuoritus if os.korotettuKeskiarvo.isDefined =>
+        KoskiErrorCategory.badRequest.validation.ammatillinen.korotettuKeskiarvo()
+      case os: AmmatillisenTutkinnonOsittainenSuoritus if validateKorotettuSuoritus(os, k => k.korotettu.isDefined) =>
+        KoskiErrorCategory.badRequest.validation.ammatillinen.eiKorotuksenSuoritus()
+      case _ => HttpStatus.ok
+    }.getOrElse(HttpStatus.ok)
+  }
+
+  private def validateKorotettuSuoritus(oo: AmmatillinenOpiskeluoikeus, korotettuSuoritus: AmmatillisenTutkinnonOsittainenSuoritus): HttpStatus = {
+    val oss = korotettuSuoritus.osasuoritukset.getOrElse(List.empty)
+
+    def osasuorituksetKorotettuTaiTunnustettu: HttpStatus = HttpStatus.validate(
+      (!oo.onValmistunut && korotettuSuoritus.osasuoritusLista.isEmpty) || validateKorotettuSuoritus(korotettuSuoritus, k => k.korotettu.isDefined || k.tunnustettu.isDefined)
+    )(KoskiErrorCategory.badRequest.validation.ammatillinen.korotettuOsasuoritus())
+
+    def eiKorotuksiaEikäKorotettuaKeskiarvoa: HttpStatus = HttpStatus.validate(
+      if(oo.onValmistunut && validateKorotettuSuoritus(korotettuSuoritus, k => k.korotettu.map(_.koodiarvo).contains("korotuksenyritys") || k.tunnustettu.isDefined)) {
+        korotettuSuoritus.korotettuKeskiarvo.isEmpty
+      } else { true }
+    )(KoskiErrorCategory.badRequest.validation.ammatillinen.korotettuKeskiarvo("Korotettua keskiarvoa ei voi siirtää jos kaikki korotuksen yritykset epäonnistuivat"))
+
+    def valmistunutJaKorotettuKeskiarvo: HttpStatus = HttpStatus.validate(
+      !oo.onValmistunut || korotettuSuoritus.korotettuKeskiarvo.isDefined
+    )(KoskiErrorCategory.badRequest.validation.ammatillinen.korotettuKeskiarvo("Valmistuneella korotuksen suorituksella on oltava korotettu keskiarvo"))
+
+    def katsotaanEronneeksiIlmanOsasuorituksia: HttpStatus = HttpStatus.validate(
+      !oo.onKatsotaanEronneeksi || oss.isEmpty
+    )(KoskiErrorCategory.badRequest.validation.ammatillinen.korotettuOsasuoritus("Jos korotuksen suoritus on katsotaan eronneeksi -tilassa, ei suoritukselle voi siirtää osasuorituksia"))
+
+    def katsotaanEronneeksiJaKorotettuKeskiarvo: HttpStatus = HttpStatus.validate(
+      !oo.onKatsotaanEronneeksi || korotettuSuoritus.korotettuKeskiarvo.isEmpty
+    )(KoskiErrorCategory.badRequest.validation.ammatillinen.korotettuKeskiarvo("Jos korotuksen opiskeluoikeus on katsotaan eronneeksi -tilassa, ei suoritukselle voi siirtää korotettua keskiarvoa"))
+
+    HttpStatus.fold(
+      osasuorituksetKorotettuTaiTunnustettu,
+      eiKorotuksiaEikäKorotettuaKeskiarvoa,
+      valmistunutJaKorotettuKeskiarvo,
+      katsotaanEronneeksiIlmanOsasuorituksia,
+      katsotaanEronneeksiJaKorotettuKeskiarvo
+    )
+  }
+
+  private def validateKorotettuSuoritus(
+    korotettuSuoritus: AmmatillisenTutkinnonOsittainenSuoritus,
+    validateFun: Korotuksellinen => Boolean
+  ): Boolean = {
+    val rekursiivisetOsasuoritukset = korotettuSuoritus.rekursiivisetOsasuoritukset
+    rekursiivisetOsasuoritukset.nonEmpty && rekursiivisetOsasuoritukset.forall{
+      case k: Korotuksellinen => validateFun(k)
+      case _ => true
+    }
+  }
+
 }

@@ -33,6 +33,8 @@ case class AmmatillinenOpiskeluoikeus(
   override def päättymispäivä: Option[LocalDate] = super.päättymispäivä
   override def withOppilaitos(oppilaitos: Oppilaitos) = this.copy(oppilaitos = Some(oppilaitos))
   override def withKoulutustoimija(koulutustoimija: Koulutustoimija) = this.copy(koulutustoimija = Some(koulutustoimija))
+  def onValmistunut = tila.opiskeluoikeusjaksot.lastOption.exists(_.tila.koodiarvo == "valmistunut")
+  def onKatsotaanEronneeksi = tila.opiskeluoikeusjaksot.lastOption.exists(_.tila.koodiarvo == "katsotaaneronneeksi")
 }
 
 trait AmmatillinenPäätasonSuoritus extends KoskeenTallennettavaPäätasonSuoritus

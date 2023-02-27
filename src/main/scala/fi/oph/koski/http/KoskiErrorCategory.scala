@@ -204,6 +204,10 @@ object KoskiErrorCategory {
         val yhteinenTutkinnonOsaVVAI22 = subcategory("yhteinenTutkinnonOsaVVAI22", "Ennen 1.8.2022 voimaan tulleen perusteen kanssa ei voi lisätä yhteisen tutkinnon osan osa-alueen suoritusta VVAI22.")
         val keskiarvoaEiSallitaKeskeneräiselleSuoritukselle = subcategory("keskiarvoVaikkaSuoritusEiValmis", "Suoritukselle ei voi asettaa keskiarvoa ellei suoritus ole päättynyt")
         val valmiillaSuorituksellaPitääOllaKeskiarvo = subcategory("valmiillaSuorituksellaPitääOllaKeskiarvo", "Suorituksella pitää olla keskiarvo kun suoritus on valmis")
+
+        val korotettuKeskiarvo = subcategory("korotettuKeskiarvo", "Korotettua keskiarvoa ei voi syöttää suoritukselle joka ei ole korotus")
+        val eiKorotuksenSuoritus = subcategory("eiKorotuksenSuoritus", "Korotettu-tietoja ei voi siirtää jos kyseessä ei ole korotuksen suoritus")
+        val korotettuOsasuoritus = subcategory("korotettuOsasuoritus", "Kaikkien korotuksen suorituksen osasuoritusten tulee olla korotuksen yrityksiä tai tunnustettuja")
       }
       val ammatillinen = new Ammatillinen
 

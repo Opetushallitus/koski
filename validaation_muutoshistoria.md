@@ -1,5 +1,17 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## xx.xx.xxxx
+
+- Lisätty validaatioita ammatillisen opiskeluoikeuden korotuksen suoritukselle:
+  - Vain yksi päätason suoritus korotuksen opiskeluoikeudella.
+  - Korotetulla suorituksella on oltava linkitys alkuperäiseen opiskeluoikeuteen.
+  - Korotettua keskiarvoa ei voi siirtää jos kyseessä ei ole korotuksen suoritus.
+  - Korotettu-tietoa ei voi siirtää osasuoritukselle tai aliosasuoritukselle jos kyseessä ei ole korotuksen suoritus.
+  - Kaikkien korotuksen suorituksen osasuoritusten tulee olla korotuksen yrityksiä tai tunnustettuja.
+  - Korotettua keskiarvoa ei voi siirtää valmistuneelle korotuksen suoritukselle, jos kaikki korotuksen yritykset epäonnistuivat.
+  - Jos korotuksen suoritus päättyy katsotaan eronneeksi -tilaan, ei suoritukselle voi siirtää osasuorituksia.
+  - Jos korotuksen suoritus päättyy katsotaan eronneeksi -tilaan, ei suoritukselle voi siirtää korotettua keskiarvoa.
+
 ## 28.2.2023
 
 - Taiteen perusopetuksen koulutuksen toteutustapaa ei voi muuttaa opiskeluoikeuden luonnin jälkeen.
