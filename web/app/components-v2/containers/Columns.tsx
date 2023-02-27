@@ -1,12 +1,12 @@
 import React from 'react'
 import { nonNull } from '../../util/fp/arrays'
 import { mapRecordValues } from '../../util/fp/objects'
-import { common, CommonProps } from '../CommonProps'
+import { common, CommonProps, testId } from '../CommonProps'
 
 export const COLUMN_COUNT = 24
 
 export type ColumnRowProps = CommonProps<{
-  component?: React.ComponentClass | string
+  component?: React.ComponentClass<CommonProps> | string
   children?: React.ReactNode
   indent?: number
   valign?: 'top' | 'center' | 'bottom'
@@ -39,7 +39,7 @@ export type ResponsiveValueTarget = keyof ResponsiveValueObj<any>
 export type ResponsiveValue<T> = T | ResponsiveValueObj<T>
 
 export type ColumnProps = CommonProps<{
-  component?: React.ComponentClass | string
+  component?: React.ComponentClass<CommonProps> | string
   children?: React.ReactNode
   span?: ResponsiveValue<number>
   start?: ResponsiveValue<number>
@@ -72,6 +72,7 @@ export const Column = (props: ColumnProps) => {
         ),
         props.row !== undefined && `Column-row-${props.row + 1}`
       ])}
+      {...testId(props)}
     >
       {props.children}
     </Component>

@@ -15,6 +15,8 @@ import {
 
 export type KoodistoUriOf<T extends Koodistokoodiviite> = T['koodistoUri']
 export type KoodiarvotOf<T extends Koodistokoodiviite> = T['koodiarvo']
+export type KoodiviiteIdOf<T extends Koodistokoodiviite> =
+  `${KoodistoUriOf<T>}_${KoodiarvotOf<T>}`
 
 export const koodiviiteId = (a: KoodiViite): string =>
   isKoodiviiteUriOptional(a) ? a.koodiarvo : koodistokoodiviiteId(a)

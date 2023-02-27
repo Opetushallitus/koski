@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { DateEdit, DateView } from '../components-v2/controls/DateField'
 import { FormField } from '../components-v2/forms/FormField'
 import {
@@ -6,10 +6,6 @@ import {
   FormOptic,
   getValue
 } from '../components-v2/forms/FormModel'
-import {
-  ArvioitsijatEdit,
-  ArvioitsijatView
-} from '../components-v2/opiskeluoikeus/ArvioitsijatField'
 import {
   ArvosanaEdit,
   ArvosanaView
@@ -26,7 +22,7 @@ import {
 import { TaiteenPerusopetuksenOpiskeluoikeus } from '../types/fi/oph/koski/schema/TaiteenPerusopetuksenOpiskeluoikeus'
 import { TaiteenPerusopetuksenOsasuorituksenTunnustus } from '../types/fi/oph/koski/schema/TaiteenPerusopetuksenOsasuorituksenTunnustus'
 import { TaiteenPerusopetuksenPaikallisenOpintokokonaisuudenSuoritus } from '../types/fi/oph/koski/schema/TaiteenPerusopetuksenPaikallisenOpintokokonaisuudenSuoritus'
-import { lastElement } from '../util/optics'
+import { lastElement, parsePath } from '../util/optics'
 import { createTpoArviointi } from './tpoCommon'
 
 export type TpoOsasuoritusPropertiesProps = {
@@ -51,6 +47,11 @@ export const TpoOsasuoritusProperties: React.FC<
   const arvioitu = Boolean(osasuoritus?.arviointi)
   const tunnustettu = Boolean(osasuoritus?.tunnustettu)
 
+  const parsedPath = useMemo(
+    () => `${parsePath(props.osasuoritusPath, props.form.state)}.properties`,
+    [props.form.state, props.osasuoritusPath]
+  )
+
   return (
     <div>
       {arvioitu && (
@@ -66,6 +67,7 @@ export const TpoOsasuoritusProperties: React.FC<
                   createArviointi={createTpoArviointi}
                 />
               )}
+              testId={`${parsedPath}.arvosana`}
             />
           </OsasuoritusSubproperty>
           <OsasuoritusSubproperty rowNumber={1} label="Päivämäärä" key="pvm">
@@ -74,6 +76,7 @@ export const TpoOsasuoritusProperties: React.FC<
               path={viimeisinArviointiPath.prop('päivä')}
               view={DateView}
               edit={DateEdit}
+              testId={`${parsedPath}.arvostelunPvm`}
             />
           </OsasuoritusSubproperty>
         </OsasuoritusProperty>
@@ -90,6 +93,7 @@ export const TpoOsasuoritusProperties: React.FC<
                 tunnustusClass:
                   TaiteenPerusopetuksenOsasuorituksenTunnustus.className
               }}
+              testId={`${parsedPath}.tunnustettu`}
             />
           </OsasuoritusPropertyValue>
         </OsasuoritusProperty>

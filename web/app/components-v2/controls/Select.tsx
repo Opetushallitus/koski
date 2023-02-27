@@ -10,7 +10,7 @@ import { nonNull } from '../../util/fp/arrays'
 import { pluck } from '../../util/fp/objects'
 import { clamp } from '../../util/numbers'
 import { textSearch } from '../../util/strings'
-import { common, CommonProps, cx } from '../CommonProps'
+import { common, CommonProps, cx, subTestId, testId } from '../CommonProps'
 import { Removable } from './Removable'
 
 export type SelectProps<T> = CommonProps<{
@@ -64,6 +64,7 @@ export const Select = <T,>(props: SelectProps<T>) => {
         type="search"
         autoComplete="off"
         {...select.inputEventListeners}
+        {...testId(props, 'input')}
       />
       {select.dropdownVisible && (
         <div className="Select__optionListContainer">
@@ -72,6 +73,7 @@ export const Select = <T,>(props: SelectProps<T>) => {
             hoveredOption={select.hoveredOption}
             onRemove={props.onRemove}
             {...select.dropdownEventListeners}
+            testId={subTestId(props, 'options')}
           />
         </div>
       )}
@@ -79,13 +81,13 @@ export const Select = <T,>(props: SelectProps<T>) => {
   )
 }
 
-type OptionListProps<T> = {
+type OptionListProps<T> = CommonProps<{
   options: OptionList<T>
   hoveredOption?: SelectOption<T>
   onClick: (o: SelectOption<T>, event: React.MouseEvent) => void
   onMouseOver: (o: SelectOption<T>, event: React.MouseEvent) => void
   onRemove?: (o: SelectOption<T>) => void
-}
+}>
 
 const OptionList = <T,>(props: OptionListProps<T>): React.ReactElement => {
   const onClick = (option: SelectOption<T>) => (event: React.MouseEvent) => {
@@ -97,7 +99,7 @@ const OptionList = <T,>(props: OptionListProps<T>): React.ReactElement => {
   const { options, onRemove, ...rest } = props
 
   return (
-    <ul className="Select__optionList">
+    <ul {...common(props, ['Select__optionList'])} {...testId(props)}>
       {options.map((opt) => (
         <li
           className="Select__option"
@@ -107,6 +109,7 @@ const OptionList = <T,>(props: OptionListProps<T>): React.ReactElement => {
           <Removable
             isRemovable={Boolean(opt.removable && props.onRemove)}
             onClick={() => onRemove?.(opt)}
+            testId={subTestId(props, opt.key)}
           >
             <div
               className={cx(
@@ -120,11 +123,18 @@ const OptionList = <T,>(props: OptionListProps<T>): React.ReactElement => {
                   ? undefined
                   : (event) => props.onMouseOver(opt, event)
               }
+              {...testId(props, `${opt.key}.item`)}
             >
               {opt.display || opt.label}
             </div>
           </Removable>
-          {opt.children && <OptionList options={opt.children} {...rest} />}
+          {opt.children && (
+            <OptionList
+              options={opt.children}
+              {...rest}
+              testId={subTestId(props, opt.key)}
+            />
+          )}
         </li>
       ))}
     </ul>

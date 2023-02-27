@@ -7,7 +7,7 @@ import { TaiteenPerusopetuksenOsasuorituksenTunnustus } from '../../types/fi/oph
 import { allLanguages, currentLanguage } from '../../util/optics'
 import { assertNever } from '../../util/selfcare'
 import { ClassOf } from '../../util/types'
-import { common, CommonProps } from '../CommonProps'
+import { common, CommonProps, testId } from '../CommonProps'
 import { FlatButton } from '../controls/FlatButton'
 import { Removable } from '../controls/Removable'
 import { MultilineTextEdit } from '../controls/TextField'
@@ -22,7 +22,7 @@ export const TunnustusView = <T extends SelitettyOsaamisenTunnustaminen>(
   props: TunnustusViewProps<T>
 ): React.ReactElement | null => {
   return (
-    <div {...common(props, ['TunnustusView'])}>
+    <div {...common(props, ['TunnustusView'])} {...testId(props)}>
       {t(props.value?.selite) || '–'}
     </div>
   )
@@ -58,11 +58,12 @@ export const TunnustusEdit = <T extends SelitettyOsaamisenTunnustaminen>(
       {props.value === undefined ? (
         <FlatButton onClick={add}>{'lisää'}</FlatButton>
       ) : (
-        <Removable onClick={remove}>
+        <Removable onClick={remove} testId={props.testId}>
           <MultilineTextEdit
             value={value}
             onChange={onChange}
             placeholder="Selite"
+            testId={props.testId}
           />
         </Removable>
       )}

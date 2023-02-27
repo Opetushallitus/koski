@@ -20,28 +20,42 @@ export const cx = (...args: MaybeClassName[]): string =>
 export const common = <T extends object>(
   props: CommonProps<T>,
   classNames: MaybeClassName[] = []
-) => ({
-  'data-testid': props.testId,
+): object => ({
   style: props.style,
   className: cx(props.className, ...classNames),
   role: props.role,
-  ...filterObjByKey(startsWith('aria-'))(props)
+  ...filterObjByKey(startsWith('aria-', 'data-'))(props)
 })
 
+export const subTestId = <T extends object>(
+  props: CommonProps<T>,
+  subId: string
+) => props.testId && `${props.testId}.${subId}`
+
+export const testId = <T extends object>(
+  props: CommonProps<T>,
+  subId?: string
+): object | undefined =>
+  props.testId
+    ? {
+        'data-testid': subId ? `${props.testId}.${subId}` : props.testId
+      }
+    : undefined
+
 export const rest = <T extends object>({
-  testId,
+  testId: _,
   style,
   className,
   role,
   ...restOfProps
-}: CommonProps<T>) => doesNotStartWith('aria-')(restOfProps)
+}: CommonProps<T>) => doesNotStartWith('aria-', 'data-')(restOfProps)
 
 export const startsWith =
-  (searchString: string) =>
+  (...searchStrings: string[]) =>
   (input: any): boolean =>
-    typeof input === 'string' && input.startsWith(searchString)
+    typeof input === 'string' && searchStrings.some((s) => input.startsWith(s))
 
 export const doesNotStartWith =
-  (searchString: string) =>
+  (...searchStrings: string[]) =>
   (input: any): boolean =>
-    !startsWith(searchString)(input)
+    !startsWith(...searchStrings)(input)

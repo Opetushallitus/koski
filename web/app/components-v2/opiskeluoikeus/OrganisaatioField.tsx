@@ -8,7 +8,7 @@ import { OrganisaatioHierarkia } from '../../types/fi/oph/koski/organisaatio/Org
 import { isKoulutustoimija } from '../../types/fi/oph/koski/schema/Koulutustoimija'
 import { Organisaatio } from '../../types/fi/oph/koski/schema/Organisaatio'
 import { getOrganisaatioId, toOrganisaatio } from '../../util/organisaatiot'
-import { common, CommonProps } from '../CommonProps'
+import { common, CommonProps, testId } from '../CommonProps'
 import { OptionList, Select, SelectOption } from '../controls/Select'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
 
@@ -19,7 +19,7 @@ export type OrganisaatioViewProps<T extends Organisaatio> = CommonProps<
 export const OrganisaatioView = <T extends Organisaatio>(
   props: OrganisaatioViewProps<T>
 ): React.ReactElement => (
-  <div {...common(props, ['OrganisaatioView'])}>
+  <div {...common(props, ['OrganisaatioView'])} {...testId(props)}>
     {t(props.value?.nimi) || '–'}
   </div>
 )
@@ -71,6 +71,7 @@ export const OrganisaatioEdit = <T extends Organisaatio>(
       value={selected}
       onChange={onChangeCB}
       onSearch={setQuery}
+      testId={props.testId}
     />
   )
 }

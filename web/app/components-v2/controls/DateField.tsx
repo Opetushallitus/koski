@@ -7,7 +7,7 @@ import {
   parseFinnishDate
 } from '../../date/date'
 import { t } from '../../i18n/i18n'
-import { common, CommonProps, cx } from '../CommonProps'
+import { common, CommonProps, cx, subTestId, testId } from '../CommonProps'
 import {
   PositionalPopup,
   PositionalPopupHolder
@@ -25,7 +25,11 @@ export const DateView: React.FC<DateViewProps> = (props) => {
     () => (props.value ? ISO2FinnishDate(props.value) : '–'),
     [props.value]
   )
-  return <span {...common(props, ['DateView'])}>{formattedDate}</span>
+  return (
+    <span {...common(props, ['DateView'])} {...testId(props)}>
+      {formattedDate}
+    </span>
+  )
 }
 
 // Date editor
@@ -63,6 +67,7 @@ export const DateEdit: React.FC<DateEditProps> = (props) => {
             'DateEdit__input',
             hasError && 'DateEdit__input--error'
           )}
+          {...testId(props, 'input')}
         />
         <PositionalPopupHolder>
           <IconButton
@@ -70,6 +75,7 @@ export const DateEdit: React.FC<DateEditProps> = (props) => {
             label={t('Valitse päivämäärä')}
             size="input"
             onClick={toggleDayPicker}
+            testId={subTestId(props, 'calendarButton')}
           />
           <PositionalPopup open={datePickerVisible}>
             <DayPickerInput
@@ -83,7 +89,7 @@ export const DateEdit: React.FC<DateEditProps> = (props) => {
           </PositionalPopup>
         </PositionalPopupHolder>
       </div>
-      <FieldErrors errors={props.errors} />
+      <FieldErrors errors={props.errors} testId={props.testId} />
     </label>
   )
 }

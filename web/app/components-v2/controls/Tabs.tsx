@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { t } from '../../i18n/i18n'
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
-import { common, CommonProps, cx } from '../CommonProps'
+import { common, CommonProps, cx, testId } from '../CommonProps'
 
 export type TabsProps<T> = CommonProps<{
   tabs: Tab<T>[]
@@ -12,6 +12,7 @@ export type Tab<T> = {
   key: T
   label: string | LocalizedString
   display?: React.ReactNode
+  testId?: string
 }
 
 export const Tabs = <T,>(props: TabsProps<T>) => {
@@ -37,6 +38,7 @@ export const Tabs = <T,>(props: TabsProps<T>) => {
               tabIndex={0}
               className="Tabs__button"
               onClick={() => select(tab.key)}
+              {...testId(tab)}
             >
               {tab.display || t(tab.label)}
             </button>

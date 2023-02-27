@@ -14,7 +14,7 @@ import {
   OpiskeluoikeusjaksoOf,
   OpiskeluoikeusjaksoOrd
 } from '../../util/schema'
-import { CommonProps } from '../CommonProps'
+import { CommonProps, subTestId, testId } from '../CommonProps'
 import {
   KeyColumnedValuesRow,
   KeyValueRow,
@@ -49,13 +49,15 @@ export const OpiskeluoikeudenTilaView = <T extends OpiskeluoikeudenTila>(
   )
 
   return (
-    <KeyValueTable>
+    <KeyValueTable testId={props.testId}>
       {sortedJaksot.map((jakso, index) => (
         <KeyColumnedValuesRow
           name={index === 0 ? 'Tila' : undefined}
           key={index}
           className={index === 0 ? 'OpiskeluoikeudenTila-viimeisin' : undefined}
           columnSpans={{ default: [2, '*'], phone: [4, '*'] }}
+          testId={subTestId(props, `items.${index}`)}
+          testIds={['date', 'tila']}
         >
           {[ISO2FinnishDate(jakso.alku), t(jakso.tila.nimi)]}
         </KeyColumnedValuesRow>
@@ -86,7 +88,7 @@ export const OpiskeluoikeudenTilaEdit = <T extends OpiskeluoikeudenTila>(
 
   return (
     <>
-      <KeyValueTable>
+      <KeyValueTable testId={props.testId}>
         {oo.jaksot.map(({ jakso, index, min, max, isLatest }, arrIndex) => (
           <KeyColumnedValuesRow
             name={arrIndex === 0 ? 'Tila' : undefined}
@@ -101,15 +103,19 @@ export const OpiskeluoikeudenTilaEdit = <T extends OpiskeluoikeudenTila>(
                 min={min}
                 max={max}
                 onChange={oo.onChangeDate(index)}
+                testId={subTestId(props, `items.${index}.date`)}
               />,
               <div key="jakso">
-                {t(jakso.tila.nimi)}
+                <span {...testId(props, `items.${index}.tila`)}>
+                  {t(jakso.tila.nimi)}
+                </span>
                 {isLatest && (
                   <IconButton
                     charCode={CHARCODE_REMOVE}
                     label={t('Poista')}
                     size="input"
                     onClick={oo.onRemoveLatest}
+                    testId={subTestId(props, `items.${index}.remove`)}
                   />
                 )}
               </div>
@@ -117,8 +123,10 @@ export const OpiskeluoikeudenTilaEdit = <T extends OpiskeluoikeudenTila>(
           </KeyColumnedValuesRow>
         ))}
         {!oo.isTerminated && (
-          <KeyValueRow name={A.isEmpty(oo.jaksot) ? 'Tila' : undefined}>
-            <FlatButton onClick={oo.openModal}>{'lisää uusi'}</FlatButton>
+          <KeyValueRow label={A.isEmpty(oo.jaksot) ? 'Tila' : undefined}>
+            <FlatButton onClick={oo.openModal} testId={subTestId(props, 'add')}>
+              {'lisää uusi'}
+            </FlatButton>
           </KeyValueRow>
         )}
       </KeyValueTable>
@@ -128,6 +136,7 @@ export const OpiskeluoikeudenTilaEdit = <T extends OpiskeluoikeudenTila>(
           onClose={oo.closeModal}
           opiskeluoikeusjaksoClass={oo.opiskeluoikeusjaksoClass}
           enableValmistuminen={props.enableValmistuminen}
+          testId={subTestId(props, 'modal')}
         />
       )}
     </>

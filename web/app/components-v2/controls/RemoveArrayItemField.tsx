@@ -4,6 +4,7 @@ import * as O from 'fp-ts/Option'
 import React, { useCallback, useState } from 'react'
 import { t } from '../../i18n/i18n'
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
+import { CommonProps, testId } from '../CommonProps'
 import { FieldEditorProps, FormField } from '../forms/FormField'
 import { FormModel, FormOptic } from '../forms/FormModel'
 import { FlatButton } from './FlatButton'
@@ -14,14 +15,17 @@ export type ConfirmationTexts = {
   cancel: string
 }
 
-export type RemoveArrayItemFieldProps<S extends object, A extends any[]> = {
+export type RemoveArrayItemFieldProps<
+  S extends object,
+  A extends any[]
+> = CommonProps<{
   form: FormModel<S>
   path: FormOptic<S, A>
   removeAt: number
   label: string | LocalizedString
   onRemove: (index: number) => void
   confirmation?: ConfirmationTexts
-}
+}>
 
 export const RemoveArrayItemField = <S extends object, A extends any[]>(
   props: RemoveArrayItemFieldProps<S, A>
@@ -32,6 +36,7 @@ export const RemoveArrayItemField = <S extends object, A extends any[]>(
     view={NullView}
     edit={RemoveArrayItemButton}
     editProps={props}
+    testId={props.testId}
   />
 )
 
@@ -44,6 +49,7 @@ type RemoveArrayItemButtonProps<T extends any[]> = FieldEditorProps<
     label: string | LocalizedString
     onRemove: (index: number) => void
     confirmation?: ConfirmationTexts
+    testId?: string
   }
 >
 
@@ -65,16 +71,24 @@ const RemoveArrayItemButton = <T extends any[]>(
 
   return props.confirmation && confirmationVisible ? (
     <>
-      <RaisedButton onClick={remove} type="dangerzone">
+      <RaisedButton
+        onClick={remove}
+        type="dangerzone"
+        {...testId(props, 'confirm')}
+      >
         {t(props.confirmation.confirm)}
       </RaisedButton>
-      <FlatButton onClick={() => setConfirmationVisible(false)}>
+      <FlatButton
+        onClick={() => setConfirmationVisible(false)}
+        {...testId(props, 'cancel')}
+      >
         {t(props.confirmation.cancel)}
       </FlatButton>
     </>
   ) : (
     <FlatButton
       onClick={props.confirmation ? () => setConfirmationVisible(true) : remove}
+      {...testId(props, 'button')}
     >
       {props.label}
     </FlatButton>

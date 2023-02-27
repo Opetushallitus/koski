@@ -37,13 +37,13 @@ export const UusiTaiteenPerusopetuksenPäätasonSuoritusModal: React.FC<
       <ModalTitle>{t('Uusi taiteen perusopetuksen suoritus')}</ModalTitle>
       <ModalBody>
         <KeyValueTable>
-          <KeyValueRow name="Taiteenala">
+          <KeyValueRow label="Taiteenala">
             <Trans>{props.suoritus.koulutusmoduuli.taiteenala.nimi}</Trans>
           </KeyValueRow>
-          <KeyValueRow name="Oppimäärä">
+          <KeyValueRow label="Oppimäärä">
             <Trans>{props.opiskeluoikeus.oppimäärä.nimi}</Trans>
           </KeyValueRow>
-          <KeyValueRow name="Oppilaitos">
+          <KeyValueRow label="Oppilaitos">
             <Trans>{props.opiskeluoikeus.oppilaitos?.nimi}</Trans>
           </KeyValueRow>
         </KeyValueTable>

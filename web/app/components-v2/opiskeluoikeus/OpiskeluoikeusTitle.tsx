@@ -12,7 +12,7 @@ import { fetchVersiohistoria } from '../../util/koskiApi'
 import { viimeisinOpiskelujaksonTila } from '../../util/schema'
 import { uncapitalize } from '../../util/strings'
 import { currentQueryWith, goto, parseQuery } from '../../util/url'
-import { common, CommonProps, cx } from '../CommonProps'
+import { common, CommonProps, cx, subTestId } from '../CommonProps'
 import { Column, ColumnRow } from '../containers/Columns'
 import { PositionalPopup } from '../containers/PositionalPopup'
 import { FlatButton } from '../controls/FlatButton'
@@ -53,6 +53,7 @@ export const OpiskeluoikeusTitle = (props: OpiskeluoikeusTitleProps) => {
         <Column
           className="OpiskeluoikeusTitle__title"
           span={{ default: 12, small: 24 }}
+          testId="opiskeluoikeus.nimi"
         >
           {oppilaitosJaKoulutus} {'('}
           <Lowercase>{aikaväliJaTila}</Lowercase>
@@ -64,11 +65,15 @@ export const OpiskeluoikeusTitle = (props: OpiskeluoikeusTitleProps) => {
             className="OpiskeluoikeusTitle__oid"
             span={{ default: 12, small: 24 }}
             align={{ default: 'right', small: 'left' }}
+            testId="opiskeluoikeus.oid"
           >
             <Trans>{'Opiskeluoikeuden oid'}</Trans>
             {': '}
             {oid}
-            <VersiohistoriaButton opiskeluoikeusOid={oid} />
+            <VersiohistoriaButton
+              opiskeluoikeusOid={oid}
+              testId="opiskeluoikeus.versiohistoria"
+            />
           </Column>
         )}
       </ColumnRow>
@@ -76,9 +81,9 @@ export const OpiskeluoikeusTitle = (props: OpiskeluoikeusTitleProps) => {
   )
 }
 
-type VersiohistoriaButtonProps = {
+type VersiohistoriaButtonProps = CommonProps<{
   opiskeluoikeusOid: string
-}
+}>
 
 const VersiohistoriaButton: React.FC<VersiohistoriaButtonProps> = (props) => {
   const buttonRef = useRef(null)
@@ -95,6 +100,7 @@ const VersiohistoriaButton: React.FC<VersiohistoriaButtonProps> = (props) => {
         onClick={toggleList}
         aria-haspopup="menu"
         aria-expanded={versiohistoriaVisible}
+        testId={subTestId(props, 'button')}
       >
         {t('Versiohistoria')}
       </FlatButton>
@@ -107,16 +113,17 @@ const VersiohistoriaButton: React.FC<VersiohistoriaButtonProps> = (props) => {
         <VersiohistoriaList
           opiskeluoikeusOid={props.opiskeluoikeusOid}
           open={versiohistoriaVisible}
+          testId={subTestId(props, 'list')}
         />
       </PositionalPopup>
     </span>
   )
 }
 
-type VersiohistoriaListProps = {
+type VersiohistoriaListProps = CommonProps<{
   opiskeluoikeusOid: string
   open: boolean
-}
+}>
 
 const versiolistaCache = createPreferLocalCache(fetchVersiohistoria)
 
@@ -152,6 +159,7 @@ const VersiohistoriaList: React.FC<VersiohistoriaListProps> = (props) => {
               opiskeluoikeus: props.opiskeluoikeusOid,
               versionumero: versio.versionumero
             })}
+            testId={subTestId(props, versio.versionumero.toString())}
           >
             {`v${versio.versionumero}`} {ISO2FinnishDateTime(versio.aikaleima)}
           </LinkButton>

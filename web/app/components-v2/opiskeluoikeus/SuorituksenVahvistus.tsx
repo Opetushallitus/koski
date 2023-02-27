@@ -16,7 +16,13 @@ import {
   viimeisinOpiskelujaksonTila
 } from '../../util/schema'
 import { ClassOf } from '../../util/types'
-import { common, CommonProps, CommonPropsWithChildren } from '../CommonProps'
+import {
+  common,
+  CommonProps,
+  CommonPropsWithChildren,
+  subTestId,
+  testId
+} from '../CommonProps'
 import { FlatButton } from '../controls/FlatButton'
 import { RaisedButton } from '../controls/RaisedButton'
 import {
@@ -30,12 +36,13 @@ import { SuorituksenVahvistusModal } from './SuorituksenVahvistusModal'
 
 // Suorituksen vahvitus field
 
-export type SuorituksenVahvistusFieldProps<T extends Opiskeluoikeus> = {
-  form: FormModel<T>
-  suoritusPath: FormOptic<T, PäätasonSuoritusOf<T>>
-  organisaatio?: Oppilaitos | Koulutustoimija
-  disableAdd?: boolean
-}
+export type SuorituksenVahvistusFieldProps<T extends Opiskeluoikeus> =
+  CommonProps<{
+    form: FormModel<T>
+    suoritusPath: FormOptic<T, PäätasonSuoritusOf<T>>
+    organisaatio?: Oppilaitos | Koulutustoimija
+    disableAdd?: boolean
+  }>
 
 export const SuorituksenVahvistusField = <T extends Opiskeluoikeus>(
   props: SuorituksenVahvistusFieldProps<T>
@@ -57,6 +64,7 @@ export const SuorituksenVahvistusField = <T extends Opiskeluoikeus>(
         disableAdd: props.disableAdd,
         disableRemoval
       }}
+      testId={subTestId(props, 'suorituksenVahvistus')}
     />
   )
 }
@@ -123,11 +131,16 @@ export const SuorituksenVahvistusEdit = <T extends Vahvistus>({
         <FlatButton
           onClick={onMerkitseKeskeneräiseksi}
           disabled={disableRemoval}
+          testId={subTestId(rest, 'merkitseKeskeneräiseksi')}
         >
           {'Merkitse keskeneräiseksi'}
         </FlatButton>
       ) : (
-        <RaisedButton onClick={onMerkitseValmiiksi} disabled={disableAdd}>
+        <RaisedButton
+          onClick={onMerkitseValmiiksi}
+          disabled={disableAdd}
+          {...testId(rest, 'merkitseValmiiksi')}
+        >
           {'Merkitse valmiiksi'}
         </RaisedButton>
       )}
@@ -137,6 +150,7 @@ export const SuorituksenVahvistusEdit = <T extends Vahvistus>({
           vahvistusClass={vahvistusClass}
           onSubmit={onSubmit}
           onCancel={onCancel}
+          testId={subTestId(rest, 'modal')}
         />
       )}
     </SuorituksenVahvistus>
@@ -166,19 +180,29 @@ const SuorituksenVahvistus: React.FC<SuorituksenVahvistusProps> = (props) => {
         vahvistus && 'SuorituksenVahvistus--valmis'
       ])}
     >
-      <div className="SuorituksenVahvistus__status">
+      <div
+        className="SuorituksenVahvistus__status"
+        {...testId(props, 'status')}
+      >
         {vahvistus ? t('Suoritus valmis') : t('Suoritus kesken')}
       </div>
       {vahvistus && (
         <>
-          <div className="SuorituksenVahvistus__vahvistus">
+          <div
+            className="SuorituksenVahvistus__vahvistus"
+            {...testId(props, 'details')}
+          >
             <Trans>{'Vahvistus'}</Trans>
             {': '}
             {ISO2FinnishDate(vahvistus.päivä)}{' '}
             {t(vahvistus.myöntäjäOrganisaatio.nimi)}
           </div>
           {myöntäjäHenkilöt.map((myöntäjä, i) => (
-            <div key={i} className="SuorituksenVahvistus__myontaja">
+            <div
+              key={i}
+              className="SuorituksenVahvistus__myontaja"
+              {...testId(props, `henkilö.${i}`)}
+            >
               {myöntäjä}
             </div>
           ))}

@@ -10,6 +10,7 @@ import { ValidationError } from './validator'
 
 export type FieldViewerProps<T, P extends object = object> = P & {
   value?: T | undefined
+  testId?: string
 }
 
 export type FieldEditorProps<T, P extends object = object> = P & {
@@ -18,6 +19,7 @@ export type FieldEditorProps<T, P extends object = object> = P & {
   onChange: (value?: T) => void
   optional?: boolean
   errors?: NEA.NonEmptyArray<ValidationError>
+  testId?: string
 }
 
 export type FormFieldProps<
@@ -44,6 +46,7 @@ export type FormFieldProps<
   updateAlso?: Array<SideUpdate<O, T, any>>
   // Polku mitä käytetään virheiden hakemiseen, jos eri kuin mikä voidaan muodostaa path-propertysta.
   errorsFromPath?: string
+  testId?: string
 } & ( // Polku (Lens tai Prism) joka osoittaa mitä arvoa lomakkeen datasta ollaan muokkaamassa
   | { path: FormOptic<O, T>; optional?: false }
   | { path: FormOptic<O, T | undefined>; optional: true }
@@ -90,7 +93,8 @@ export const FormField = <
     editProps,
     auto,
     errorsFromPath,
-    optional
+    optional,
+    testId
   } = props
   const fillKoodistot = useKoodistoFiller()
 
@@ -156,13 +160,16 @@ export const FormField = <
           onChange={set}
           errors={A.isNonEmpty(errors) ? errors : undefined}
           path={path}
+          testId={testId && `${testId}.edit`}
         />
       )
     }
   }
 
-  // @ts-ignore - TODO tyyppicastaus?
-  return <View {...viewProps} value={value} />
+  return (
+    // @ts-ignore - TODO tyyppicastaus?
+    <View {...viewProps} value={value} testId={testId && `${testId}.value`} />
+  )
 }
 
 export const Nothing: React.FC = () => null

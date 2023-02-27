@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { common, CommonProps, cx } from '../CommonProps'
+import { common, CommonProps, cx, testId } from '../CommonProps'
 import { FieldEditorProps } from '../forms/FormField'
 
 export type RadioButtonProps<T> = CommonProps<{
@@ -41,6 +41,7 @@ export const RadioButtons = <T,>(
               checked={opt.key === props.value}
               onChange={() => props.onChange(opt.value)}
               disabled={opt.disabled}
+              {...testId(props, `options.${opt.key}`)}
             />
             <label
               htmlFor={id}

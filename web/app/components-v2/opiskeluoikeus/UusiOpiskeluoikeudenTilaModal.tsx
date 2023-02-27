@@ -9,7 +9,7 @@ import { Opiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/Opiskeluoik
 import { KoodiarvotOf } from '../../util/koodisto'
 import { isValmistuvaTerminaalitila } from '../../util/opiskeluoikeus'
 import { ClassOf } from '../../util/types'
-import { common, CommonProps } from '../CommonProps'
+import { common, CommonProps, subTestId } from '../CommonProps'
 import { Label } from '../containers/Label'
 import { Modal, ModalBody, ModalFooter, ModalTitle } from '../containers/Modal'
 import { DateEdit, DateView } from '../controls/DateField'
@@ -116,6 +116,7 @@ export const UusiOpiskeluoikeudenTilaModal = <T extends Opiskeluoikeusjakso>(
             path={päivämääräPath}
             view={DateView}
             edit={DateEdit}
+            testId={subTestId(props, 'date')}
           />
         </Label>
 
@@ -129,13 +130,18 @@ export const UusiOpiskeluoikeudenTilaModal = <T extends Opiskeluoikeusjakso>(
               getKey: (tila: Koodistokoodiviite) => tila.koodiarvo,
               options: tilaOptions
             }}
+            testId={subTestId(props, 'tila')}
           />
         </Label>
       </ModalBody>
 
       <ModalFooter>
-        <FlatButton onClick={props.onClose}>{'Peruuta'}</FlatButton>
-        <RaisedButton onClick={onSubmit}>{'Lisää'}</RaisedButton>
+        <FlatButton onClick={props.onClose} testId={subTestId(props, 'cancel')}>
+          {'Peruuta'}
+        </FlatButton>
+        <RaisedButton onClick={onSubmit} testId={subTestId(props, 'submit')}>
+          {'Lisää'}
+        </RaisedButton>
       </ModalFooter>
     </Modal>
   )

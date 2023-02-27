@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react'
-import { common, CommonProps } from '../CommonProps'
+import { common, CommonProps, testId } from '../CommonProps'
 import { Icon } from '../texts/Icon'
 
 export type IconButtonSize = 'normal' | 'input'
@@ -28,6 +28,7 @@ export const IconButton: React.FC<IconButtonProps> = (props) => {
         'IconButton',
         props.size && `IconButton--size-${props.size}`
       ])}
+      {...testId(props)}
       onClick={onClickCB}
       aria-label={props.label}
       title={props.label}
