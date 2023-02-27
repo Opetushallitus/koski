@@ -14,22 +14,28 @@ export type YlioppilastutkinnonKokeenSuoritus = {
   arviointi?: Array<YlioppilaskokeenArviointi>
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'ylioppilastutkinnonkoe'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
+  keskeytynyt?: boolean
   tutkintokerta: YlioppilastutkinnonTutkintokerta
   koulutusmoduuli: YlioppilasTutkinnonKoe
+  tutkintokokonaisuudenTunniste?: number
+  maksuton?: boolean
 }
 
 export const YlioppilastutkinnonKokeenSuoritus = (o: {
   arviointi?: Array<YlioppilaskokeenArviointi>
   tyyppi?: Koodistokoodiviite<'suorituksentyyppi', 'ylioppilastutkinnonkoe'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
+  keskeytynyt?: boolean
   tutkintokerta: YlioppilastutkinnonTutkintokerta
   koulutusmoduuli: YlioppilasTutkinnonKoe
+  tutkintokokonaisuudenTunniste?: number
+  maksuton?: boolean
 }): YlioppilastutkinnonKokeenSuoritus => ({
-  $class: 'fi.oph.koski.schema.YlioppilastutkinnonKokeenSuoritus',
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'ylioppilastutkinnonkoe',
     koodistoUri: 'suorituksentyyppi'
   }),
+  $class: 'fi.oph.koski.schema.YlioppilastutkinnonKokeenSuoritus',
   ...o
 })
 

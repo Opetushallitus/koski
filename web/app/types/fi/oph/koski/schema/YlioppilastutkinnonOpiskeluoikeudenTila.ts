@@ -1,4 +1,4 @@
-import { LukionOpiskeluoikeusjakso } from './LukionOpiskeluoikeusjakso'
+import { YlioppilastutkinnonOpiskeluoikeusjakso } from './YlioppilastutkinnonOpiskeluoikeusjakso'
 
 /**
  * YlioppilastutkinnonOpiskeluoikeudenTila
@@ -7,12 +7,12 @@ import { LukionOpiskeluoikeusjakso } from './LukionOpiskeluoikeusjakso'
  */
 export type YlioppilastutkinnonOpiskeluoikeudenTila = {
   $class: 'fi.oph.koski.schema.YlioppilastutkinnonOpiskeluoikeudenTila'
-  opiskeluoikeusjaksot: Array<LukionOpiskeluoikeusjakso>
+  opiskeluoikeusjaksot: Array<YlioppilastutkinnonOpiskeluoikeusjakso>
 }
 
 export const YlioppilastutkinnonOpiskeluoikeudenTila = (
   o: {
-    opiskeluoikeusjaksot?: Array<LukionOpiskeluoikeusjakso>
+    opiskeluoikeusjaksot?: Array<YlioppilastutkinnonOpiskeluoikeusjakso>
   } = {}
 ): YlioppilastutkinnonOpiskeluoikeudenTila => ({
   $class: 'fi.oph.koski.schema.YlioppilastutkinnonOpiskeluoikeudenTila',

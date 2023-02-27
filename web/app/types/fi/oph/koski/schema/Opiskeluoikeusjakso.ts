@@ -58,6 +58,10 @@ import {
   VapaanSivistystyönVapaatavoitteisenKoulutuksenOpiskeluoikeusjakso,
   isVapaanSivistystyönVapaatavoitteisenKoulutuksenOpiskeluoikeusjakso
 } from './VapaanSivistystyonVapaatavoitteisenKoulutuksenOpiskeluoikeusjakso'
+import {
+  YlioppilastutkinnonOpiskeluoikeusjakso,
+  isYlioppilastutkinnonOpiskeluoikeusjakso
+} from './YlioppilastutkinnonOpiskeluoikeusjakso'
 
 /**
  * Opiskeluoikeusjakso
@@ -80,6 +84,7 @@ export type Opiskeluoikeusjakso =
   | TutkintokoulutukseenValmentavanOpiskeluoikeusjakso
   | VapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso
   | VapaanSivistystyönVapaatavoitteisenKoulutuksenOpiskeluoikeusjakso
+  | YlioppilastutkinnonOpiskeluoikeusjakso
 
 export const isOpiskeluoikeusjakso = (a: any): a is Opiskeluoikeusjakso =>
   isAikuistenPerusopetuksenOpiskeluoikeusjakso(a) ||
@@ -96,4 +101,5 @@ export const isOpiskeluoikeusjakso = (a: any): a is Opiskeluoikeusjakso =>
   isTaiteenPerusopetuksenOpiskeluoikeusjakso(a) ||
   isTutkintokoulutukseenValmentavanOpiskeluoikeusjakso(a) ||
   isVapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso(a) ||
-  isVapaanSivistystyönVapaatavoitteisenKoulutuksenOpiskeluoikeusjakso(a)
+  isVapaanSivistystyönVapaatavoitteisenKoulutuksenOpiskeluoikeusjakso(a) ||
+  isYlioppilastutkinnonOpiskeluoikeusjakso(a)

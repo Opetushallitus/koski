@@ -2,6 +2,7 @@ import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
 import { YlioppilastutkinnonOpiskeluoikeudenTila } from './YlioppilastutkinnonOpiskeluoikeudenTila'
 import { Koulutustoimija } from './Koulutustoimija'
+import { YlioppilastutkinnonOpiskeluoikeudenLisätiedot } from './YlioppilastutkinnonOpiskeluoikeudenLisatiedot'
 import { YlioppilastutkinnonSuoritus } from './YlioppilastutkinnonSuoritus'
 import { LähdejärjestelmäId } from './LahdejarjestelmaId'
 import { Oppilaitos } from './Oppilaitos'
@@ -18,11 +19,13 @@ export type YlioppilastutkinnonOpiskeluoikeus = {
   alkamispäivä?: string
   oid?: string
   koulutustoimija?: Koulutustoimija
+  lisätiedot?: YlioppilastutkinnonOpiskeluoikeudenLisätiedot
   versionumero?: number
   suoritukset: Array<YlioppilastutkinnonSuoritus>
   aikaleima?: string
   päättymispäivä?: string
   lähdejärjestelmänId?: LähdejärjestelmäId
+  oppilaitosSuorituspäivänä?: Oppilaitos
   oppilaitos?: Oppilaitos
 }
 
@@ -33,11 +36,13 @@ export const YlioppilastutkinnonOpiskeluoikeus = (
     alkamispäivä?: string
     oid?: string
     koulutustoimija?: Koulutustoimija
+    lisätiedot?: YlioppilastutkinnonOpiskeluoikeudenLisätiedot
     versionumero?: number
     suoritukset?: Array<YlioppilastutkinnonSuoritus>
     aikaleima?: string
     päättymispäivä?: string
     lähdejärjestelmänId?: LähdejärjestelmäId
+    oppilaitosSuorituspäivänä?: Oppilaitos
     oppilaitos?: Oppilaitos
   } = {}
 ): YlioppilastutkinnonOpiskeluoikeus => ({
