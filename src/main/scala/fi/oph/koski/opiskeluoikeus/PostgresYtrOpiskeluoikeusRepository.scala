@@ -4,14 +4,13 @@ import fi.oph.koski.db.KoskiTables._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db._
 import fi.oph.koski.henkilo._
-import fi.oph.koski.history.{JsonPatchException, YtrOpiskeluoikeusHistory, YtrOpiskeluoikeusHistoryRepository}
+import fi.oph.koski.history.{JsonPatchException, OpiskeluoikeusHistory, YtrOpiskeluoikeusHistoryRepository}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonDiff.jsonDiff
 import fi.oph.koski.koskiuser.{KoskiSpecificSession, Rooli}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.Opiskeluoikeus.VERSIO_1
 import fi.oph.koski.schema._
-import fi.oph.koski.ytr.download.YtrLaajaOppija
 import org.json4s.jackson.JsonMethods
 import org.json4s.{JArray, JObject, JString, JValue}
 import slick.dbio
@@ -222,11 +221,11 @@ class PostgresYtrOpiskeluoikeusRepository(
     }
   }
 
-  private def verifyHistoria(opiskeluoikeusJson: JValue, hist: Option[YtrOpiskeluoikeusHistory]): Unit =
+  private def verifyHistoria(opiskeluoikeusJson: JValue, hist: Option[OpiskeluoikeusHistory]): Unit =
     hist.flatMap(validateHistoria(opiskeluoikeusJson, _))
         .foreach(logger.warn(_))
 
-  private def validateHistoria(opiskeluoikeusJson: JValue, historia: YtrOpiskeluoikeusHistory): Option[String] = try {
+  private def validateHistoria(opiskeluoikeusJson: JValue, historia: OpiskeluoikeusHistory): Option[String] = try {
     val opiskeluoikeusDiffHistoria = jsonDiff(opiskeluoikeusJson, historia.asOpiskeluoikeusJson)
     if (opiskeluoikeusDiffHistoria.values.nonEmpty) {
       val id = errorRepository.saveYtr(

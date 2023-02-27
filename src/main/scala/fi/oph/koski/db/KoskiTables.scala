@@ -50,8 +50,8 @@ object KoskiTables {
       data.merge(Serializer.serialize(OidVersionTimestamp(oid, versionumero, aikaleima.toLocalDateTime), serializationContext))
     }
 
-    def readAsOpiskeluoikeus[S <: KoskeenTallennettavaOpiskeluoikeus : ru.TypeTag](data: JValue, oid: String, versionumero: Int, aikaleima: Timestamp): Either[List[ValidationError], S] = {
-      SchemaValidatingExtractor.extract[S](readAsJValue(data, oid, versionumero, aikaleima))
+    def readAsOpiskeluoikeus(data: JValue, oid: String, versionumero: Int, aikaleima: Timestamp): Either[List[ValidationError], KoskeenTallennettavaOpiskeluoikeus] = {
+      SchemaValidatingExtractor.extract[KoskeenTallennettavaOpiskeluoikeus](readAsJValue(data, oid, versionumero, aikaleima))
     }
   }
 
@@ -108,10 +108,6 @@ object KoskiTables {
       )
     }
 
-    def readAsOpiskeluoikeus(data: JValue, oid: String, versionumero: Int, aikaleima: Timestamp): Either[List[ValidationError], KoskeenTallennettavaOpiskeluoikeus] = {
-      readAsOpiskeluoikeus[KoskeenTallennettavaOpiskeluoikeus](data, oid, versionumero, aikaleima)
-    }
-
     def updatedFieldValues(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, versionumero: Int) = {
       val data = serialize(opiskeluoikeus)
 
@@ -159,7 +155,7 @@ object KoskiTables {
 
   object YtrOpiskeluoikeusTable extends OpiskeluoikeusTableCompanion {
 
-    def makeInsertableRow(oppijaOid: String, opiskeluoikeusOid: String, opiskeluoikeus: YlioppilastutkinnonOpiskeluoikeus) = {
+    def makeInsertableRow(oppijaOid: String, opiskeluoikeusOid: String, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) = {
       YtrOpiskeluoikeusRow(
         0,
         opiskeluoikeusOid,
@@ -189,11 +185,7 @@ object KoskiTables {
       )
     }
 
-    def readAsOpiskeluoikeus(data: JValue, oid: String, versionumero: Int, aikaleima: Timestamp): Either[List[ValidationError], YlioppilastutkinnonOpiskeluoikeus] = {
-      readAsOpiskeluoikeus[YlioppilastutkinnonOpiskeluoikeus](data, oid, versionumero, aikaleima)
-    }
-
-    def updatedFieldValues(opiskeluoikeus: YlioppilastutkinnonOpiskeluoikeus, versionumero: Int) = {
+    def updatedFieldValues(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, versionumero: Int) = {
       val data = serialize(opiskeluoikeus)
 
       (data,
@@ -228,7 +220,17 @@ object KoskiTables {
     def * = (oid, sukunimi, etunimet, kutsumanimi, masterOid) <> (HenkilöRow.tupled, HenkilöRow.unapply)
   }
 
-  class KoskiOpiskeluoikeusHistoryTable(tag: Tag) extends Table[OpiskeluoikeusHistoryRow] (tag, "opiskeluoikeushistoria") {
+  trait OpiskeluoikeusHistoryTable extends Table[OpiskeluoikeusHistoryRow] {
+    def opiskeluoikeusId: Rep[Int]
+    def versionumero: Rep[Int]
+    def aikaleima: Rep[Timestamp]
+    def kayttajaOid: Rep[String]
+    def muutos: Rep[JValue]
+  }
+
+  class KoskiOpiskeluoikeusHistoryTable(tag: Tag)
+    extends Table[OpiskeluoikeusHistoryRow] (tag, "opiskeluoikeushistoria")
+      with OpiskeluoikeusHistoryTable {
     val opiskeluoikeusId = column[Int]("opiskeluoikeus_id")
     val versionumero = column[Int]("versionumero")
     val aikaleima = column[Timestamp]("aikaleima")
@@ -238,7 +240,9 @@ object KoskiTables {
     def * = (opiskeluoikeusId, versionumero, aikaleima, kayttajaOid, muutos) <> (OpiskeluoikeusHistoryRow.tupled, OpiskeluoikeusHistoryRow.unapply)
   }
 
-  class YtrOpiskeluoikeusHistoryTable(tag: Tag) extends Table[OpiskeluoikeusHistoryRow] (tag, "ytr_opiskeluoikeushistoria") {
+  class YtrOpiskeluoikeusHistoryTable(tag: Tag)
+    extends Table[OpiskeluoikeusHistoryRow] (tag, "ytr_opiskeluoikeushistoria")
+      with OpiskeluoikeusHistoryTable {
     val opiskeluoikeusId = column[Int]("opiskeluoikeus_id")
     val versionumero = column[Int]("versionumero")
     val aikaleima = column[Timestamp]("aikaleima")
@@ -550,6 +554,8 @@ case class YtrOpiskeluoikeusRow(id: Int,
         Right(FilterNonAnnotationableSensitiveData.filter(oo) match {
           case ytrOo: YlioppilastutkinnonOpiskeluoikeus => ytrOo
         })
+      case Right(_: KoskeenTallennettavaOpiskeluoikeus) =>
+        throw new InternalError("Tietoja väärässä taulussa")
       case Left(left) => Left(left)
     }
   }
