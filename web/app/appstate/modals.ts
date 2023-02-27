@@ -75,10 +75,12 @@ class ModalManager {
       }
     })
 
-    document.body.setAttribute(
-      'aria-hidden',
-      this.modalStack.length > 0 ? 'true' : 'false'
-    )
+    setTimeout(() => {
+      document.body.setAttribute(
+        'aria-hidden',
+        this.modalStack.length > 0 ? 'true' : 'false'
+      )
+    }, 300)
   }
 }
 

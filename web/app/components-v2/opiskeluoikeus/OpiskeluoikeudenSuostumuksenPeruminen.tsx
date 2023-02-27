@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 import {
   createPreferLocalCache,
   useApiWithParams,
@@ -61,6 +61,7 @@ const suoritusjakoTehtyCache = createPreferLocalCache(fetchSuoritusjakoTehty)
 export const SuostumuksenPeruminen: React.FC<SuostumuksenPeruminenProps> = (
   props
 ) => {
+  const peruutaSuostumusBtn = useRef<HTMLButtonElement>(null)
   const [peruuttamassaSuostumusta, setPeruuttamassaSuostumusta] =
     useState(false)
   const [suostumuksenPerumisenInfo, setSuostumuksenPerumisenInfo] =
@@ -78,6 +79,11 @@ export const SuostumuksenPeruminen: React.FC<SuostumuksenPeruminenProps> = (
   useOnApiSuccess(suoritusjaonTekemisenHaku, (response) =>
     setSuoritusjakoTehty(response.data.tehty)
   )
+
+  const dismissPopup = useCallback(() => {
+    setPeruuttamassaSuostumusta(false)
+    setTimeout(() => peruutaSuostumusBtn.current?.focus(), 0)
+  }, [])
 
   return (
     <div {...common(props, ['SuostumuksenPeruminen'])}>
@@ -97,7 +103,7 @@ export const SuostumuksenPeruminen: React.FC<SuostumuksenPeruminenProps> = (
           }
           onFocus={() => setSuostumuksenPerumisenInfo(true)}
           onBlur={() => setSuostumuksenPerumisenInfo(false)}
-          aria-label={t('Lisätiedot')}
+          aria-label={t('tooltip:Suostumuksen selitys')}
         />
       </span>
       {!suoritusjakoTehty && (
@@ -105,6 +111,7 @@ export const SuostumuksenPeruminen: React.FC<SuostumuksenPeruminenProps> = (
           className="peru-suostumus-linkki"
           onClick={() => setPeruuttamassaSuostumusta(!peruuttamassaSuostumusta)}
           compact
+          buttonRef={peruutaSuostumusBtn}
         >
           {'Peruuta suostumus'}
         </FlatButton>
@@ -114,7 +121,7 @@ export const SuostumuksenPeruminen: React.FC<SuostumuksenPeruminenProps> = (
           opiskeluoikeudenNimi={props.nimi}
           opiskeluoikeusOid={props.opiskeluoikeusOid}
           suorituksenTyyppi={props.suorituksenTyyppi}
-          onDismiss={() => setPeruuttamassaSuostumusta(false)}
+          onDismiss={dismissPopup}
         />
       )}
       {suostumuksenPerumisenInfo && (

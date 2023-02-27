@@ -9,6 +9,7 @@ export type FlatButtonProps = CommonProps<{
   fullWidth?: boolean
   disabled?: boolean
   compact?: boolean
+  buttonRef?: React.MutableRefObject<HTMLButtonElement | null>
 }>
 
 export const FlatButton = (props: FlatButtonProps) => (
@@ -21,6 +22,7 @@ export const FlatButton = (props: FlatButtonProps) => (
     {...testId(props)}
     onClick={props.onClick}
     disabled={props.disabled}
+    ref={props.buttonRef}
   >
     <Trans>{props.children}</Trans>
   </button>

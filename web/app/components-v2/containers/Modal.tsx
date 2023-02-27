@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useRef, useEffect } from 'react'
 import { useModalState } from '../../appstate/modals'
 import { common, CommonPropsWithChildren } from '../CommonProps'
 import { ButtonGroup } from './ButtonGroup'
@@ -8,6 +8,7 @@ export type ModalProps = CommonPropsWithChildren<{
 }>
 
 export const Modal: React.FC<ModalProps> = (props) => {
+  const ref = useRef<HTMLFormElement>(null)
   const { isActive, props: modalProps } = useModalState()
 
   const { onClose } = props
@@ -22,13 +23,23 @@ export const Modal: React.FC<ModalProps> = (props) => {
     [onClose]
   )
 
+  useEffect(() => {
+    if (isActive) {
+      const inputs: NodeListOf<HTMLInputElement> | undefined =
+        ref.current?.querySelectorAll('input, textarea, button, [tabindex]')
+      inputs?.[0]?.focus?.()
+    }
+  }, [isActive])
+
   return (
     <form
-      {...common(props, ['Modal', isActive && 'Modal__inactive'])}
+      {...common(props, ['Modal', isActive && 'Modal__active'])}
       {...modalProps}
       onSubmit={stopPropagation}
       onKeyDown={onKeyDown}
       onClick={props.onClose}
+      role="dialog"
+      ref={ref}
     >
       <div className="Modal__content" onClick={stopPropagation}>
         {props.children}
