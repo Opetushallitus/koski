@@ -4,7 +4,7 @@ import com.typesafe.config.Config
 import fi.oph.koski.eperusteetvalidation.EPerusteetOpiskeluoikeusChangeValidator
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.organisaatio.OrganisaatioRepository
-import fi.oph.koski.schema.KoskeenTallennettavaOpiskeluoikeus
+import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, YlioppilastutkinnonOpiskeluoikeus}
 import fi.oph.koski.validation.DateValidation.validateOpiskeluoikeudenPäivämäärät
 import fi.oph.koski.validation.{TaiteenPerusopetusValidation, TutkintokoulutukseenValmentavaKoulutusValidation}
 
@@ -19,15 +19,20 @@ class OpiskeluoikeusChangeValidator(
   val päivitetynOpiskeluoikeudenPäivämäärienValidaatioAstunutVoimaan = LocalDate.now().isAfter(validaatioViimeinenPäiväEnnenVoimassaoloa)
 
   def validateOpiskeluoikeusChange(oldState: KoskeenTallennettavaOpiskeluoikeus, newState: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
-    HttpStatus.fold(
-      validateOpiskeluoikeudenTyypinMuutos(oldState, newState),
-      validateLähdejärjestelmäIdnPoisto(oldState, newState),
-      validateOppilaitoksenMuutos(oldState, newState),
-      if (päivitetynOpiskeluoikeudenPäivämäärienValidaatioAstunutVoimaan) validateOpiskeluoikeudenPäivämäärät(newState) else HttpStatus.ok,
-      ePerusteetChangeValidator.validateVanhanOpiskeluoikeudenTapaukset(oldState, newState),
-      TutkintokoulutukseenValmentavaKoulutusValidation.validateJärjestämislupaEiMuuttunut(oldState, newState),
-      TaiteenPerusopetusValidation.validateHankintakoulutusEiMuuttunut(oldState, newState)
-    )
+    newState match {
+      case _: YlioppilastutkinnonOpiskeluoikeus =>
+        HttpStatus.ok
+      case _ =>
+        HttpStatus.fold(
+          validateOpiskeluoikeudenTyypinMuutos(oldState, newState),
+          validateLähdejärjestelmäIdnPoisto(oldState, newState),
+          validateOppilaitoksenMuutos(oldState, newState),
+          if (päivitetynOpiskeluoikeudenPäivämäärienValidaatioAstunutVoimaan) validateOpiskeluoikeudenPäivämäärät(newState) else HttpStatus.ok,
+          ePerusteetChangeValidator.validateVanhanOpiskeluoikeudenTapaukset(oldState, newState),
+          TutkintokoulutukseenValmentavaKoulutusValidation.validateJärjestämislupaEiMuuttunut(oldState, newState),
+          TaiteenPerusopetusValidation.validateHankintakoulutusEiMuuttunut(oldState, newState)
+        )
+    }
   }
 
   def validateOpiskeluoikeudenTyypinMuutos(oldState: KoskeenTallennettavaOpiskeluoikeus, newState: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {

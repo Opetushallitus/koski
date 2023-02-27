@@ -5,14 +5,14 @@ import java.time.{LocalDate, LocalDateTime}
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.json.JsonManipulation.removeFields
 import fi.oph.koski.json.SensitiveDataAllowed
-import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession, Rooli}
+import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
 import fi.oph.koski.schema.KoskiSchema.skipSyntheticProperties
-import fi.oph.koski.schema.{FilterNonAnnotationableSensitiveData, TutkinnonOsanSuoritus, _}
+import fi.oph.koski.schema.Organisaatio.Oid
+import fi.oph.koski.schema.{FilterNonAnnotationableSensitiveData, _}
 import fi.oph.scalaschema.extraction.ValidationError
 import fi.oph.scalaschema.{Serializer, _}
 import org.json4s._
 import slick.lifted.ProvenShape
-import scala.reflect.runtime.{universe => ru}
 
 object KoskiTables {
 
@@ -35,9 +35,12 @@ object KoskiTables {
     def suoritusjakoTehty: Rep[Boolean]
     def suoritustyypit: Rep[List[String]]
     def poistettu: Rep[Boolean]
+
+    def updateableFields:
+      (Rep[JValue], Rep[Int], Rep[Option[String]], Rep[Option[String]], Rep[Option[String]], Rep[Option[String]], Rep[String], Rep[Boolean], Rep[Date], Rep[Option[Date]], Rep[List[String]])
   }
 
-  trait OpiskeluoikeusTableCompanion {
+  trait OpiskeluoikeusTableCompanion[OOROW <: OpiskeluoikeusRow] {
     protected val serializationContext = SerializationContext(KoskiSchema.schemaFactory, skipSyntheticProperties)
     protected val fieldsToExcludeInJson = Set("oid", "versionumero", "aikaleima")
     protected implicit val deserializationContext = ExtractionContext(KoskiSchema.schemaFactory).copy(validate = false)
@@ -53,7 +56,12 @@ object KoskiTables {
     def readAsOpiskeluoikeus(data: JValue, oid: String, versionumero: Int, aikaleima: Timestamp): Either[List[ValidationError], KoskeenTallennettavaOpiskeluoikeus] = {
       SchemaValidatingExtractor.extract[KoskeenTallennettavaOpiskeluoikeus](readAsJValue(data, oid, versionumero, aikaleima))
     }
+
+    def makeInsertableRow(oppijaOid: String, opiskeluoikeusOid: String, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): OOROW
+    def updatedFieldValues(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, versionumero: Int):
+      (JObject, Int, Option[String], Option[Oid], Option[String], Option[Oid], Oid, Boolean, Date, Option[Date], List[String])
   }
+
 
   class KoskiOpiskeluoikeusTable(tag: Tag)
     extends Table[KoskiOpiskeluoikeusRow](tag, "opiskeluoikeus")
@@ -83,9 +91,9 @@ object KoskiTables {
     def updateableFieldsPoisto = (data, versionumero, sisältäväOpiskeluoikeusOid, sisältäväOpiskeluoikeusOppilaitosOid, luokka, koulutustoimijaOid, oppilaitosOid, mitätöity, koulutusmuoto, alkamispäivä, päättymispäivä, suoritustyypit, poistettu)
   }
 
-  object KoskiOpiskeluoikeusTable extends OpiskeluoikeusTableCompanion {
+  object KoskiOpiskeluoikeusTable extends OpiskeluoikeusTableCompanion[KoskiOpiskeluoikeusRow] {
 
-    def makeInsertableRow(oppijaOid: String, opiskeluoikeusOid: String, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) = {
+    override def makeInsertableRow(oppijaOid: String, opiskeluoikeusOid: String, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) = {
       KoskiOpiskeluoikeusRow(
         0,
         opiskeluoikeusOid,
@@ -108,7 +116,8 @@ object KoskiTables {
       )
     }
 
-    def updatedFieldValues(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, versionumero: Int) = {
+    override def updatedFieldValues(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, versionumero: Int):
+      (JObject, Int, Option[String], Option[Oid], Option[String], Option[Oid], Oid, Boolean, Date, Option[Date], List[String]) = {
       val data = serialize(opiskeluoikeus)
 
       (data,
@@ -150,12 +159,11 @@ object KoskiTables {
 
     def * = (id, oid, versionumero, aikaleima, oppijaOid, oppilaitosOid, koulutustoimijaOid, sisältäväOpiskeluoikeusOid, sisältäväOpiskeluoikeusOppilaitosOid, data, luokka, mitätöity, koulutusmuoto, alkamispäivä, päättymispäivä, suoritusjakoTehty, suoritustyypit, poistettu) <> (YtrOpiskeluoikeusRow.tupled, YtrOpiskeluoikeusRow.unapply)
     def updateableFields = (data, versionumero, sisältäväOpiskeluoikeusOid, sisältäväOpiskeluoikeusOppilaitosOid, luokka, koulutustoimijaOid, oppilaitosOid, mitätöity, alkamispäivä, päättymispäivä, suoritustyypit)
-    def updateableFieldsPoisto = (data, versionumero, sisältäväOpiskeluoikeusOid, sisältäväOpiskeluoikeusOppilaitosOid, luokka, koulutustoimijaOid, oppilaitosOid, mitätöity, koulutusmuoto, alkamispäivä, päättymispäivä, suoritustyypit, poistettu)
   }
 
-  object YtrOpiskeluoikeusTable extends OpiskeluoikeusTableCompanion {
+  object YtrOpiskeluoikeusTable extends OpiskeluoikeusTableCompanion[YtrOpiskeluoikeusRow] {
 
-    def makeInsertableRow(oppijaOid: String, opiskeluoikeusOid: String, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) = {
+    override def makeInsertableRow(oppijaOid: String, opiskeluoikeusOid: String, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) = {
       YtrOpiskeluoikeusRow(
         0,
         opiskeluoikeusOid,
@@ -185,7 +193,7 @@ object KoskiTables {
       )
     }
 
-    def updatedFieldValues(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, versionumero: Int) = {
+    override def updatedFieldValues(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, versionumero: Int) = {
       val data = serialize(opiskeluoikeus)
 
       (data,
@@ -489,6 +497,9 @@ trait OpiskeluoikeusRow {
   def suoritusjakoTehty: Boolean
   def suoritustyypit: List[String]
   def poistettu: Boolean
+
+  def toOpiskeluoikeus(implicit user: SensitiveDataAllowed): Either[List[ValidationError], KoskeenTallennettavaOpiskeluoikeus]
+  def toOpiskeluoikeusUnsafe(implicit user: SensitiveDataAllowed): KoskeenTallennettavaOpiskeluoikeus
 }
 
 // Note: the data json must not contain [id, versionumero] fields. This is enforced by DB constraint.
@@ -548,7 +559,7 @@ case class YtrOpiskeluoikeusRow(id: Int,
   suoritustyypit: List[String],
   poistettu: Boolean
 ) extends OpiskeluoikeusRow {
-  def toOpiskeluoikeus(implicit user: SensitiveDataAllowed): Either[List[ValidationError], YlioppilastutkinnonOpiskeluoikeus] = {
+  def toOpiskeluoikeus(implicit user: SensitiveDataAllowed): Either[List[ValidationError], KoskeenTallennettavaOpiskeluoikeus] = {
     KoskiTables.YtrOpiskeluoikeusTable.readAsOpiskeluoikeus(data, oid, versionumero, aikaleima) match {
       case Right(oo: YlioppilastutkinnonOpiskeluoikeus) =>
         Right(FilterNonAnnotationableSensitiveData.filter(oo) match {
@@ -560,7 +571,7 @@ case class YtrOpiskeluoikeusRow(id: Int,
     }
   }
 
-  def toOpiskeluoikeusUnsafe(implicit user: SensitiveDataAllowed): YlioppilastutkinnonOpiskeluoikeus = {
+  def toOpiskeluoikeusUnsafe(implicit user: SensitiveDataAllowed): KoskeenTallennettavaOpiskeluoikeus = {
     toOpiskeluoikeus(user) match {
       case Right(oo) => oo
       case Left(errors) =>

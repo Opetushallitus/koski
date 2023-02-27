@@ -34,10 +34,10 @@ trait KoskiOpiskeluoikeusRepository {
 }
 
 trait YtrSavedOpiskeluoikeusRepository {
-  def findByOppijaOids(oids: List[String])(implicit user: KoskiSpecificSession): Seq[YlioppilastutkinnonOpiskeluoikeus]
+  def findByOppijaOids(oids: List[String])(implicit user: KoskiSpecificSession): Seq[Opiskeluoikeus]
   def createOrUpdate(
     oppijaOid: PossiblyUnverifiedHenkilöOid,
-    opiskeluoikeus: YlioppilastutkinnonOpiskeluoikeus
+    opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus
   )(implicit user: KoskiSpecificSession): Either[HttpStatus, CreateOrUpdateResult]
   def createOrUpdateAlkuperäinenYTRJson(oppijaOid: String, data: JValue)(implicit user: KoskiSpecificSession): HttpStatus
   def findAlkuperäinenYTRJsonByOppijaOid(oppijaOid: String)(implicit user: KoskiSpecificSession): Option[JValue]
