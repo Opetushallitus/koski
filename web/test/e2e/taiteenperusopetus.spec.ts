@@ -5,14 +5,15 @@ const keskeneräinenOpiskelija = '1.2.246.562.24.00000000142'
 const hyväksytystiSuorittanutOpiskelija = '1.2.246.562.24.00000000143'
 
 test.describe('Taiteen perusopetus', () => {
+  test.beforeEach(async ({fixtures, page}) => {
+    page.once('dialog', (dialog) => {
+      dialog.accept()
+    })
+    await fixtures.reset()
+  })
+
   test.describe('Itse järjestetty opiskeluoikeus', () => {
     test.use({storageState: virkailija('kalle')})
-    test.beforeEach(async ({fixtures, page}) => {
-      page.once('dialog', (dialog) => {
-        dialog.accept()
-      })
-      await fixtures.reset()
-    })
 
     test.describe('Uuden opiskeluoikeuden luonti', () => {
       test.beforeEach(async ({uusiOppijaPage}) => {
@@ -93,13 +94,6 @@ test.describe('Taiteen perusopetus', () => {
 
   test.describe('Hankintakoulutuksena järjestetty opiskeluoikeus', () => {
     test.use({ storageState: virkailija('hki-tallentaja') })
-    test.beforeEach(async ({ fixtures, page }) => {
-      page.once('dialog', (dialog) => {
-        dialog.accept()
-      })
-      await fixtures.reset()
-    })
-
 
     test.describe('Uuden opiskeluoikeuden luonti', () => {
       test.beforeEach(async ({ uusiOppijaPage }) => {
@@ -127,6 +121,7 @@ test.describe('Taiteen perusopetus', () => {
   })
 
   test.describe(`Oppijan sivu ${hyväksytystiSuorittanutOpiskelija}`, () => {
+    test.use({ storageState: virkailija('kalle') })
     test.beforeEach(async ({ taiteenPerusopetusPage }) => {
       await taiteenPerusopetusPage.goto(hyväksytystiSuorittanutOpiskelija)
     })
@@ -175,6 +170,7 @@ test.describe('Taiteen perusopetus', () => {
   })
 
   test.describe(`Oppijan sivu ${keskeneräinenOpiskelija}`, () => {
+    test.use({ storageState: virkailija('kalle') })
     test.beforeEach(async ({ taiteenPerusopetusPage }) => {
       await taiteenPerusopetusPage.goto(keskeneräinenOpiskelija)
       await taiteenPerusopetusPage.edit()
@@ -245,6 +241,7 @@ test.describe('Taiteen perusopetus', () => {
     })
 
     test.describe('Opiskeluoikeuden tilan muokkaus', () => {
+      test.use({ storageState: virkailija('kalle') })
       test.beforeEach(async ({ taiteenPerusopetusPage }) => {
         await taiteenPerusopetusPage.goto(keskeneräinenOpiskelija)
       })
@@ -294,6 +291,7 @@ test.describe('Taiteen perusopetus', () => {
     })
 
     test.describe('Suorituksen vahvistus', () => {
+      test.use({ storageState: virkailija('kalle') })
       test.beforeEach(async ({ taiteenPerusopetusPage }) => {
         await taiteenPerusopetusPage.goto(keskeneräinenOpiskelija)
       })
