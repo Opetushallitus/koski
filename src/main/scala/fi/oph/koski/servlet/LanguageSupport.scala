@@ -11,6 +11,8 @@ trait LanguageSupport extends KoskiSpecificBaseServlet {
 
   def langFromDomain: String = if (request.getServerName == swedishDomain) {
     "sv"
+  } else if(request.getServerName == englishDomain) {
+    "en"
   } else {
     "fi"
   }
@@ -22,4 +24,5 @@ trait LanguageSupport extends KoskiSpecificBaseServlet {
   }
 
   private def swedishDomain = application.config.getString("koski.oppija.domain.sv")
+  private def englishDomain = application.config.getString("koski.oppija.domain.en")
 }
