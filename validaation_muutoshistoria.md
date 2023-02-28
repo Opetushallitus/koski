@@ -1,6 +1,6 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
-## xx.xx.xxxx
+## 28.2.2023
 
 - Taiteen perusopetuksen koulutuksen toteutustapaa ei voi muuttaa opiskeluoikeuden luonnin jälkeen.
 
