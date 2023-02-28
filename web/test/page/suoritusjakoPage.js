@@ -5,8 +5,14 @@ function SuoritusjakoPage() {
         openPage('/koski/opinnot/' + window.secrets[secretKey], api.isVisible)()
       }
     },
-    changeLanguageButton: function () {
-      return S('#topbar .change-lang')
+    changeLanguageButtonFinnish: function () {
+      return S('#topbar #change-lang-fi')
+    },
+    changeLanguageButtonSwedish: function () {
+      return S('#topbar #change-lang-sv')
+    },
+    changeLanguageButtonEnglish: function () {
+      return S('#topbar #change-lang-en')
     },
     header: function () {
       return S('.suoritusjako-page .oppija header')

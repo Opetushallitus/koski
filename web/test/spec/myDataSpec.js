@@ -135,16 +135,30 @@ describe('MyData', function () {
     })
   })
 
-  describe('Käyttäjä voi vaihtaa kielen', function () {
+  describe('Käyttäjä voi vaihtaa kielen ruotsiksi', function () {
     before.apply(null, login('fi', '100869-192W', 'Dippainssi', 'Dilbert'))
-    before(mydata.clickChangeLang, wait.until(mydata.isInSwedish))
+    before(mydata.clickChangeLangSwedish, wait.until(mydata.isInSwedish))
 
-    it('Suomesta ruotsiksi', function () {
+    it('Otsikko näytetään ruotsiksi', function () {
       expect(extractAsText(S('.title > h1'))).equal('Min Studieinfo')
     })
 
     it('Ja kumppanin nimi vaihtuu ruotsinkieliseksi', function () {
-      expect(mydata.getMemberName()).equal('HRT Helsingforsregionens trafik') // Flaky?
+      expect(mydata.getMemberName()).equal('HRT Helsingforsregionens trafik')
     })
   })
+
+  describe('Käyttäjä voi vaihtaa kielen englanniksi', function () {
+    before.apply(null, login('fi', '100869-192W', 'Dippainssi', 'Dilbert'))
+    before(mydata.clickChangeLangEnglish, wait.until(mydata.isInEnglish))
+
+    it('Otsikko näytetään englanniksi', function () {
+      expect(extractAsText(S('.title > h1'))).equal('My Studyinfo')
+    })
+
+    it('Ja kumppanin nimi vaihtuu englanninkieliseksi', function () {
+      expect(mydata.getMemberName()).equal('HSL Helsinki Region Transport')
+    })
+  })
+
 })

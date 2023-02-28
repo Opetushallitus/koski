@@ -1,15 +1,6 @@
 import React from 'baret'
 import Text from '../i18n/Text'
-import { lang, setLang } from '../i18n/i18n'
-
-const ChangeLang = () => (
-  <span
-    className="change-lang"
-    onClick={() => (lang === 'sv' ? setLang('fi') : setLang('sv'))}
-  >
-    {lang === 'sv' ? 'Suomeksi' : 'På svenska'}
-  </span>
-)
+import { ChangeLang } from '../components/ChangeLang'
 
 export default () => (
   <div className="header">

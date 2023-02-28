@@ -83,6 +83,29 @@ describe('Omat tiedot', function () {
             )
           })
         })
+
+        describe('Englanninkielinen sisältö', function () {
+          before(
+            click(findSingle('#logout')),
+            wait.until(etusivu.isVisible),
+            etusivu.login(),
+            wait.until(korhopankki.isReady),
+            korhopankki.login(
+              '251029-7230',
+              'Kansalainen',
+              'VÃ¤inÃ¶ TÃµnis',
+              'VÃ¤inÃ¶',
+              'en'
+            ),
+            wait.until(omattiedot.isVisible)
+          )
+
+          it('Näytetään englanninkielinen ingressi', function () {
+            expect(omattiedot.ingressi()).to.equal(
+              'This page shows all electronically stored study info, from individual courses to whole examinations.'
+            )
+          })
+        })
       })
 
       describe('Kun kirjaudutaan ulos', function () {
@@ -568,9 +591,9 @@ describe('Omat tiedot', function () {
             })
           })
 
-          describe('Kielen vaihto', function () {
+          describe('Kielen vaihto ruotsiin', function () {
             before(
-              click(suoritusjako.changeLanguageButton),
+              click(suoritusjako.changeLanguageButtonSwedish),
               wait.forMilliseconds(150), // page reloads
               wait.until(function () {
                 return isElementVisible(suoritusjako.header())
@@ -583,7 +606,25 @@ describe('Omat tiedot', function () {
               )
             })
 
-            after(click(suoritusjako.changeLanguageButton))
+            after(click(suoritusjako.changeLanguageButtonFinnish))
+          })
+
+          describe('Kielen vaihto englantiin', function () {
+            before(
+              click(suoritusjako.changeLanguageButtonEnglish),
+              wait.forMilliseconds(150), // page reloads
+              wait.until(function () {
+                return isElementVisible(suoritusjako.header())
+              })
+            )
+
+            it('toimii', function () {
+              expect(suoritusjako.headerText()).to.equal(
+                'Studies' + 'Miia Monikoululainen' + 'b. 18.4.1997'
+              )
+            })
+
+            after(click(suoritusjako.changeLanguageButtonFinnish))
           })
         })
 
