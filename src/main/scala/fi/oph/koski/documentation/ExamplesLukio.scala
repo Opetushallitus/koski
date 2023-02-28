@@ -364,8 +364,6 @@ object LukioExampleData {
 
   val exampleHenkilö = asUusiOppija(KoskiSpecificMockOppijat.lukiolainen)
 
-  val ylioppilastutkinto: Ylioppilastutkinto = Ylioppilastutkinto(perusteenDiaarinumero = Some("60/011/2015"))
-
   val lukionOppimäärä: LukionOppimäärä = LukionOppimäärä(perusteenDiaarinumero = Some("60/011/2015"))
 
   val lukionOppiaineenOppimääränSuoritusYhteiskuntaoppi: LukionOppiaineenOppimääränSuoritus2015 = LukionOppiaineenOppimääränSuoritus2015(

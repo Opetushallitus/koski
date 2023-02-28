@@ -1,0 +1,48 @@
+[
+  {
+    "oid": null,
+    "ssn": "140380-336X",
+    "firstNames": "Yrmiina",
+    "lastName": "Ylioppilas-uusi",
+    "examinations": [
+      {
+        "language": "fi",
+        "examinationType": "candidate",
+        "examinationState": "ongoing",
+        "examinationPeriods": [
+          {
+            "examinationPeriod": "2015K",
+            "schoolOid": "1.2.246.562.10.70411521654",
+            "schoolName": null,
+            "totalFee": null,
+            "education": 1,
+            "studentNumber": "028",
+            "exams": [
+              {
+                "examId": "PC",
+                "aborted": true,
+                "examFee": null,
+                "freeOfCharge": false,
+                "examItems": []
+              },
+              {
+                "examId": "PC",
+                "aborted": true,
+                "examFee": null,
+                "freeOfCharge": false,
+                "examItems": []
+              },
+              {
+                "examId": "PC",
+                "aborted": true,
+                "examFee": null,
+                "freeOfCharge": false,
+                "examItems": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

@@ -24,11 +24,14 @@ case class YlioppilastutkinnonOpiskeluoikeus(
   oppilaitosSuorituspäivänä: Option[Oppilaitos] = None,
   @Description("Toistaiseksi vain Kosken sisäisessä käytössä.")
   lisätiedot: Option[YlioppilastutkinnonOpiskeluoikeudenLisätiedot] = None
-  ) extends KoskeenTallennettavanKaltainenOpiskeluoikeus {
+  ) extends KoskeenTallennettavaOpiskeluoikeus {
   override def arvioituPäättymispäivä = None
   override def päättymispäivä = None
   override def sisältyyOpiskeluoikeuteen = None
   override def organisaatiohistoria: Option[List[OpiskeluoikeudenOrganisaatiohistoria]] = None
+
+  override def withOppilaitos(oppilaitos: Oppilaitos): YlioppilastutkinnonOpiskeluoikeus = this.copy(oppilaitos = Some(oppilaitos))
+  override def withKoulutustoimija(koulutustoimija: Koulutustoimija): YlioppilastutkinnonOpiskeluoikeus = this.copy(koulutustoimija = Some(koulutustoimija))
 }
 
 case class YlioppilastutkinnonOpiskeluoikeudenLisätiedot(
@@ -70,7 +73,7 @@ case class YlioppilastutkinnonOpiskeluoikeusjakso(
 
 case class YlioppilastutkinnonSuoritus(
   @Title("Koulutus")
-  koulutusmoduuli: Ylioppilastutkinto = Ylioppilastutkinto(perusteenDiaarinumero = None),
+  koulutusmoduuli: Ylioppilastutkinto = Ylioppilastutkinto(),
   toimipiste: OrganisaatioWithOid,
   vahvistus: Option[Organisaatiovahvistus] = None,
   pakollisetKokeetSuoritettu: Boolean,
@@ -79,7 +82,7 @@ case class YlioppilastutkinnonSuoritus(
   override val osasuoritukset: Option[List[YlioppilastutkinnonKokeenSuoritus]],
   @KoodistoKoodiarvo("ylioppilastutkinto")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ylioppilastutkinto", koodistoUri = "suorituksentyyppi")
-) extends KoskeenTallennettavanKaltainenPäätasonSuoritus with Arvioinniton with KoulusivistyskieliYlioppilasKokeenSuorituksesta
+) extends KoskeenTallennettavaPäätasonSuoritus with Arvioinniton with KoulusivistyskieliYlioppilasKokeenSuorituksesta
 
 case class YlioppilastutkinnonKokeenSuoritus(
   @Title("Koe")
@@ -94,7 +97,7 @@ case class YlioppilastutkinnonKokeenSuoritus(
   keskeytynyt: Option[Boolean] = None,
   @Description("Toistaiseksi vain Kosken sisäisessä käytössä. Kertoo, onko kyseessä ylioppilastutkinnosta annetun lain (502/2019) 20 § mukaisesti koe, johon osallistumisesta ei peritä maksua.")
   maksuton: Option[Boolean] = None
-) extends Vahvistukseton
+) extends Vahvistukseton with DuplikaatitSallittu
 
 case class YlioppilastutkinnonTutkintokerta(koodiarvo: String, vuosi: Int, vuodenaika: LocalizedString)
 
@@ -112,9 +115,8 @@ case class YlioppilaskokeenArviointi(
 case class Ylioppilastutkinto(
  @KoodistoKoodiarvo("301000")
  tunniste: Koodistokoodiviite = Koodistokoodiviite("301000", koodistoUri = "koulutus"),
- perusteenDiaarinumero: Option[String],
  koulutustyyppi: Option[Koodistokoodiviite] = None
-) extends Tutkinto with Laajuudeton with DiaarinumerollinenKoulutus
+) extends Tutkinto with Laajuudeton with Koulutus
 
 @Description("Ylioppilastutkinnon kokeen tunnistetiedot")
 case class YlioppilasTutkinnonKoe(

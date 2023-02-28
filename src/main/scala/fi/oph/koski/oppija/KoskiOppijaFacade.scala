@@ -2,10 +2,10 @@ package fi.oph.koski.oppija
 
 import com.typesafe.config.Config
 import fi.oph.koski.henkilo._
-import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
+import fi.oph.koski.history.{OpiskeluoikeusHistoryRepository, YtrOpiskeluoikeusHistoryRepository}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
-import fi.oph.koski.log.KoskiAuditLogMessageField.{opiskeluoikeusId, opiskeluoikeusVersio, oppijaHenkiloOid}
+import fi.oph.koski.log.KoskiAuditLogMessageField.{opiskeluoikeusId, opiskeluoikeusOid, opiskeluoikeusVersio, oppijaHenkiloOid}
 import fi.oph.koski.log.KoskiOperation._
 import fi.oph.koski.log._
 import fi.oph.koski.opiskeluoikeus._
@@ -18,7 +18,9 @@ import java.time.LocalDate
 class KoskiOppijaFacade(
   henkilöRepository: HenkilöRepository,
   opiskeluoikeusRepository: CompositeOpiskeluoikeusRepository,
+  ytrDownloadedOpiskeluoikeusRepository: KoskiYtrOpiskeluoikeusRepository,
   historyRepository: OpiskeluoikeusHistoryRepository,
+  ytrHistoryRepository: YtrOpiskeluoikeusHistoryRepository,
   globaaliValidator: KoskiGlobaaliValidator,
   config: Config,
   hetu: Hetu
@@ -36,6 +38,45 @@ class KoskiOppijaFacade(
       .toRight(notFound(oid))
       .flatMap(henkilö => toOppija(henkilö, opiskeluoikeusRepository.findByOppija(henkilö, useVirta, useYtr)))
   }
+
+  // Palauttaa ainoastaan oppijan YTR:stä ladatut opiskeluoikeudet
+  def findYtrDownloadedOppija
+    (oid: String, findMasterIfSlaveOid: Boolean = false)
+    (implicit user: KoskiSpecificSession)
+  : Either[HttpStatus, WithWarnings[Oppija]] =
+    henkilöRepository.findByOid(oid, findMasterIfSlaveOid)
+      .toRight(notFound(oid))
+      .flatMap(henkilö => toOppija(
+        henkilö,
+        WithWarnings(
+          ytrDownloadedOpiskeluoikeusRepository.findByOppijaOids(henkilö.oid :: henkilö.linkitetytOidit),
+          Seq.empty
+        )
+      ))
+
+  def findYtrDownloadedOppijaVersionumerolla
+    (oid: String, versionumero: Int, findMasterIfSlaveOid: Boolean = false)
+      (implicit user: KoskiSpecificSession)
+  : Either[HttpStatus, WithWarnings[Oppija]] =
+    findYtrDownloadedOppija(oid, findMasterIfSlaveOid) match {
+      case Left(status) => Left(status)
+      case Right(WithWarnings(oppija, _)) =>
+        val historiaOot = oppija.opiskeluoikeudet.flatMap(
+          oo => ytrHistoryRepository.findVersion(oo.oid.get, versionumero).toOption
+        )
+
+        val uusiOppija = oppija.copy(
+          opiskeluoikeudet = historiaOot
+        )
+
+        if (uusiOppija.opiskeluoikeudet.length == oppija.opiskeluoikeudet.length) {
+          Right(WithWarnings(uusiOppija, Seq.empty))
+        } else {
+          Left(KoskiErrorCategory.notFound("Historiaversiota ei löydy"))
+        }
+      case _ =>
+        Left(KoskiErrorCategory.notFound("Historiaversiota ei löydy"))
+    }
 
   def findOppijaHenkilö
     (oid: String, findMasterIfSlaveOid: Boolean = false, useVirta: Boolean = true, useYtr: Boolean = true)
@@ -196,10 +237,24 @@ class KoskiOppijaFacade(
     if (oppijaOid.oppijaOid == user.oid) {
       Left(KoskiErrorCategory.forbidden.omienTietojenMuokkaus())
     } else {
-      val result = opiskeluoikeusRepository.createOrUpdate(oppijaOid, opiskeluoikeus, allowUpdate, allowDeleteCompleted)
+      val result = opiskeluoikeus match {
+        case ytrOo: YlioppilastutkinnonOpiskeluoikeus =>
+          ytrDownloadedOpiskeluoikeusRepository.createOrUpdate(oppijaOid, ytrOo)
+        case _ =>
+          opiskeluoikeusRepository.createOrUpdate(oppijaOid, opiskeluoikeus, allowUpdate, allowDeleteCompleted)
+      }
       result.right.map { (result: CreateOrUpdateResult) =>
         applicationLog(oppijaOid, opiskeluoikeus, result)
-        auditLog(oppijaOid, result)
+        // TODO: TOR-1639 Toteuta YTR-opiskeluoikeuksien operaatioiden audit-lokitus. Luultavasti pitää tehdä joku keinotekoinen
+        //  käyttäjätunnus (myös oppijanumerorekisteriin), jonka oid:lla YTR-dataan tehtävät operaatiot logitetaan, vaikka käytännössä sillä
+        //  tunnuksella ei koskaan sisäänkirjautumista tapahdukaan. Ehkä kyseisen tunnuksen oid vaan konfiguraatiotiedostoon sitten?
+        //  systemUserTallennetutYlioppilastutkinnonOpiskeluoikeudet-käyttäjällä auditlogitus ei suoraan onnistu, koska hänellä ei ole oidia.
+        opiskeluoikeus match {
+          case _: YlioppilastutkinnonOpiskeluoikeus =>
+            auditLogYtr(oppijaOid, result)
+          case _ =>
+            auditLog(oppijaOid, result)
+        }
         OpiskeluoikeusVersio(result.oid, result.versionumero, result.lähdejärjestelmänId)
       }
     }
@@ -211,27 +266,48 @@ class KoskiOppijaFacade(
   : Unit = {
     val verb = result match {
       case updated: Updated =>
-        val tila = updated.old.tila.opiskeluoikeusjaksot.last
-        if (tila.opiskeluoikeusPäättynyt) {
-          s"Päivitetty päättynyt (${tila.tila.koodiarvo})"
-        } else {
-          "Päivitetty"
+        opiskeluoikeus match {
+          // TODO: TOR-1639 Poista tämä turha haara, kun ylioppilastutkinnon opiskeluoikeudella on tilat konversiossa mukana
+          case _:YlioppilastutkinnonOpiskeluoikeus =>
+            "Päivitetty"
+          case _ =>
+            val tila = updated.old.tila.opiskeluoikeusjaksot.last
+            if (tila.opiskeluoikeusPäättynyt) {
+              s"Päivitetty päättynyt (${tila.tila.koodiarvo})"
+            } else {
+              "Päivitetty"
+            }
         }
       case _: Created => "Luotu"
       case _: NotChanged => "Päivitetty (ei muutoksia)"
     }
     val tutkinto = opiskeluoikeus.suoritukset.map(_.koulutusmoduuli.tunniste).mkString(",")
-    val oppilaitos = opiskeluoikeus.getOppilaitos.oid
-    logger(user).info(s"${verb} opiskeluoikeus ${result.id} (versio ${result.versionumero}) oppijalle ${oppijaOid} tutkintoon ${tutkinto} oppilaitoksessa ${oppilaitos}")
+    val oppilaitosTaiKoulutustoimija = opiskeluoikeus.getOppilaitosOrKoulutusToimija.oid
+    logger(user).info(s"${verb} opiskeluoikeus ${result.id} (versio ${result.versionumero}) oppijalle ${oppijaOid} tutkintoon ${tutkinto} oppilaitoksessa/koulutustoimijalla ${oppilaitosTaiKoulutustoimija}")
   }
 
   private def auditLog
     (oppijaOid: PossiblyUnverifiedHenkilöOid, result: CreateOrUpdateResult)
     (implicit user: KoskiSpecificSession)
   : Unit = {
+    auditLog(updatedOperation = OPISKELUOIKEUS_MUUTOS, createdOperation = OPISKELUOIKEUS_LISAYS)(oppijaOid, result)
+  }
+
+  private def auditLogYtr
+    (oppijaOid: PossiblyUnverifiedHenkilöOid, result: CreateOrUpdateResult)
+      (implicit user: KoskiSpecificSession)
+  : Unit = {
+    auditLog(updatedOperation = YTR_OPISKELUOIKEUS_MUUTOS, createdOperation = YTR_OPISKELUOIKEUS_LISAYS)(oppijaOid, result)
+  }
+
+  private def auditLog
+    (updatedOperation: KoskiOperation.Value, createdOperation: KoskiOperation.Value)
+    (oppijaOid: PossiblyUnverifiedHenkilöOid, result: CreateOrUpdateResult)
+    (implicit user: KoskiSpecificSession) =
+  {
     (result match {
-      case _: Updated => Some(OPISKELUOIKEUS_MUUTOS)
-      case _: Created => Some(OPISKELUOIKEUS_LISAYS)
+      case _: Updated => Some(updatedOperation)
+      case _: Created => Some(createdOperation)
       case _ => None
     }).foreach { operaatio =>
       AuditLog.log(KoskiAuditLogMessage(operaatio, user, Map(
@@ -362,7 +438,9 @@ class KoskiOppijaFacade(
   )
 
   private def writeViewingEventToAuditLog(user: KoskiSpecificSession, oid: Henkilö.Oid): Unit = {
-    if (user != KoskiSpecificSession.systemUser) { // To prevent health checks from polluting the audit log
+    // TODO: TOR-1639 Toteuta YTR-opiskeluoikeuksien operaatioiden audit-lokitus halutulla tavalla. Voi olla, että näistä katseluista ei toistaiseksi
+    //  tosin tarvitse välittää, jos/kun niitä tehdään vain debug-tarkotuksissa. Mutta jotenkin pitää debuggaus-tutkimisetkin audit-lokittaa?
+    if (!List(KoskiSpecificSession.systemUserTallennetutYlioppilastutkinnonOpiskeluoikeudet, KoskiSpecificSession.systemUser).contains(user)) { // To prevent health checks from polluting the audit log
       val operation = if (user.user.kansalainen && user.isUsersHuollettava(oid)) {
         KANSALAINEN_HUOLTAJA_OPISKELUOIKEUS_KATSOMINEN
       } else if (user.user.kansalainen) {

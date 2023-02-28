@@ -187,9 +187,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing {
 
     if (
       Environment.isLocalDevelopmentEnvironment(application.config) ||
-      Environment.isMockEnvironment(application.config) ||
-      // TODO: TOR-1639 toistaiseksi päällä QA+untuvalla, testausta varten
-      (Environment.isServerEnvironment(application.config) && !Environment.isProdEnvironment(application.config))
+      Environment.isMockEnvironment(application.config)
     ) {
       mount ("/koski/test/ytr", new YtrTestServlet())
     }

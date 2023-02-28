@@ -1,7 +1,7 @@
 package fi.oph.koski.db
 
 import java.sql.{Date, Timestamp}
-import java.time.LocalDateTime
+import java.time.{LocalDate, LocalDateTime}
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.json.JsonManipulation.removeFields
 import fi.oph.koski.json.SensitiveDataAllowed
@@ -98,6 +98,103 @@ object KoskiTables {
     }
   }
 
+  class YtrOpiskeluoikeusTable(tag: Tag) extends Table[YtrOpiskeluoikeusRow](tag, "ytr_opiskeluoikeus") {
+    val id: Rep[Int] = column[Int]("id", O.AutoInc, O.PrimaryKey)
+    val oid = column[String]("oid", O.Unique)
+    val versionumero = column[Int]("versionumero")
+    val aikaleima = column[Timestamp]("aikaleima")
+    val oppijaOid = column[String]("oppija_oid")
+    val data = column[JValue]("data")
+    val oppilaitosOid = column[String]("oppilaitos_oid")
+    val koulutustoimijaOid = column[Option[String]]("koulutustoimija_oid")
+    val sisältäväOpiskeluoikeusOid = column[Option[String]]("sisaltava_opiskeluoikeus_oid")
+    val sisältäväOpiskeluoikeusOppilaitosOid = column[Option[String]]("sisaltava_opiskeluoikeus_oppilaitos_oid")
+    val luokka = column[Option[String]]("luokka")
+    val mitätöity = column[Boolean]("mitatoity")
+    val koulutusmuoto = column[String]("koulutusmuoto")
+    val alkamispäivä = column[Date]("alkamispaiva")
+    val päättymispäivä = column[Option[Date]]("paattymispaiva")
+    val suoritusjakoTehty = column[Boolean]("suoritusjako_tehty_rajapaivan_jalkeen") // Rajapäivä marraskuu 2021
+    val suoritustyypit = column[List[String]]("suoritustyypit")
+    val poistettu = column[Boolean]("poistettu")
+
+    def * = (id, oid, versionumero, aikaleima, oppijaOid, oppilaitosOid, koulutustoimijaOid, sisältäväOpiskeluoikeusOid, sisältäväOpiskeluoikeusOppilaitosOid, data, luokka, mitätöity, koulutusmuoto, alkamispäivä, päättymispäivä, suoritusjakoTehty, suoritustyypit, poistettu) <> (YtrOpiskeluoikeusRow.tupled, YtrOpiskeluoikeusRow.unapply)
+    def updateableFields = (data, versionumero, sisältäväOpiskeluoikeusOid, sisältäväOpiskeluoikeusOppilaitosOid, luokka, koulutustoimijaOid, oppilaitosOid, mitätöity, alkamispäivä, päättymispäivä, suoritustyypit)
+    def updateableFieldsPoisto = (data, versionumero, sisältäväOpiskeluoikeusOid, sisältäväOpiskeluoikeusOppilaitosOid, luokka, koulutustoimijaOid, oppilaitosOid, mitätöity, koulutusmuoto, alkamispäivä, päättymispäivä, suoritustyypit, poistettu)
+  }
+
+  object YtrOpiskeluoikeusTable {
+    private val serializationContext = SerializationContext(KoskiSchema.schemaFactory, skipSyntheticProperties)
+    private val fieldsToExcludeInJson = Set("oid", "versionumero", "aikaleima")
+    private implicit val deserializationContext = ExtractionContext(KoskiSchema.schemaFactory).copy(validate = false)
+
+    private def serialize(opiskeluoikeus: Opiskeluoikeus) = removeFields(Serializer.serialize(opiskeluoikeus, serializationContext), fieldsToExcludeInJson)
+
+    def makeInsertableRow(oppijaOid: String, opiskeluoikeusOid: String, opiskeluoikeus: YlioppilastutkinnonOpiskeluoikeus) = {
+      YtrOpiskeluoikeusRow(
+        0,
+        opiskeluoikeusOid,
+        Opiskeluoikeus.VERSIO_1,
+        new Timestamp(0), // Will be replaced by db trigger (see V90__add_ytr_opiskeluoikeus_extra_triggers.sql)
+        oppijaOid,
+        // TODO: TOR-1639: Toistaiseksi tallennetaan tietokantaan koulutustoimijan oid myös oppilaitokseksi,
+        //  jotta saadaan pidettyä jatkoa ajatellen taulut samanlaisina. Tietomallia muutetaan myöhemmin niin, että
+        //  myös JSON-datassa oppilaitokseksi tallentuu koulutustoimija
+        opiskeluoikeus.koulutustoimija.map(_.oid).get,
+        opiskeluoikeus.koulutustoimija.map(_.oid),
+        // TODO: TOR-1639: voiko näitä sisältyvyysasioita joskus olla YTR-opiskeluoikeudessa? Jos voi, niin pitää tallentaa jotain muuta kuin None allaoleviin 2 kenttään
+        None,
+        None,
+        serialize(opiskeluoikeus),
+        opiskeluoikeus.luokka,
+        opiskeluoikeus.mitätöity,
+        opiskeluoikeus.tyyppi.koodiarvo,
+        // TODO: TOR-1639: Kunhan tilat on luotu dataan, niin käytä oikeaa alkamispäivää ja päättymispäivää
+        Date.valueOf(LocalDate.of(1900, 1, 1)),
+        //Date.valueOf(opiskeluoikeus.alkamispäivä.get),
+        None,
+        //opiskeluoikeus.päättymispäivä.map(Date.valueOf),
+        false,
+        opiskeluoikeus.suoritukset.map(_.tyyppi.koodiarvo),
+        false
+      )
+    }
+
+    def readAsJValue(data: JValue, oid: String, versionumero: Int, aikaleima: Timestamp): JValue = {
+      // note: for historical reasons, Opiskeluoikeus.aikaleima is Option[LocalDateTime], instead of Option[DateTime].
+      // this Timestamp->LocalDateTime conversion assumes JVM time zone is Europe/Helsinki
+      data.merge(Serializer.serialize(OidVersionTimestamp(oid, versionumero, aikaleima.toLocalDateTime), serializationContext))
+    }
+
+    def readAsOpiskeluoikeus(data: JValue, oid: String, versionumero: Int, aikaleima: Timestamp): Either[List[ValidationError], YlioppilastutkinnonOpiskeluoikeus] = {
+      SchemaValidatingExtractor.extract[YlioppilastutkinnonOpiskeluoikeus](readAsJValue(data, oid, versionumero, aikaleima))
+    }
+
+    def updatedFieldValues(opiskeluoikeus: YlioppilastutkinnonOpiskeluoikeus, versionumero: Int) = {
+      val data = serialize(opiskeluoikeus)
+
+      (data,
+       versionumero,
+       // TODO: TOR-1639: voiko näitä sisältyvyysasioita joskus olla YTR-opiskeluoikeudessa? Jos voi, niin pitää tallentaa jotain muuta kuin None allaoleviin 2 kenttään
+       None,
+       None,
+       opiskeluoikeus.luokka,
+       opiskeluoikeus.koulutustoimija.map(_.oid),
+        // TODO: TOR-1639: Toistaiseksi tallennetaan tietokantaan koulutustoimijan oid myös oppilaitokseksi,
+        //  jotta saadaan pidettyä jatkoa ajatellen taulut samanlaisina. Tietomallia muutetaan myöhemmin niin, että
+        //  myös JSON-datassa oppilaitokseksi tallentuu koulutustoimija
+       opiskeluoikeus.koulutustoimija.map(_.oid).get,
+       opiskeluoikeus.mitätöity,
+        // TODO: TOR-1639: Kunhan tilat on luotu dataan, niin käytä oikeaa alkamispäivää ja päättymispäivää
+       Date.valueOf(LocalDate.of(1900, 1, 1)),
+       // Date.valueOf(opiskeluoikeus.alkamispäivä.get),
+       None,
+       //opiskeluoikeus.päättymispäivä.map(Date.valueOf),
+       opiskeluoikeus.suoritukset.map(_.tyyppi.koodiarvo)
+      )
+    }
+  }
+
   class HenkilöTable(tag: Tag) extends Table[HenkilöRow](tag, "henkilo") {
     val oid = column[String]("oid", O.PrimaryKey)
     val sukunimi = column[String]("sukunimi")
@@ -109,6 +206,16 @@ object KoskiTables {
   }
 
   class OpiskeluoikeusHistoryTable(tag: Tag) extends Table[OpiskeluoikeusHistoryRow] (tag, "opiskeluoikeushistoria") {
+    val opiskeluoikeusId = column[Int]("opiskeluoikeus_id")
+    val versionumero = column[Int]("versionumero")
+    val aikaleima = column[Timestamp]("aikaleima")
+    val kayttajaOid = column[String]("kayttaja_oid")
+    val muutos = column[JValue]("muutos")
+
+    def * = (opiskeluoikeusId, versionumero, aikaleima, kayttajaOid, muutos) <> (OpiskeluoikeusHistoryRow.tupled, OpiskeluoikeusHistoryRow.unapply)
+  }
+
+  class YtrOpiskeluoikeusHistoryTable(tag: Tag) extends Table[OpiskeluoikeusHistoryRow] (tag, "ytr_opiskeluoikeushistoria") {
     val opiskeluoikeusId = column[Int]("opiskeluoikeus_id")
     val versionumero = column[Int]("versionumero")
     val aikaleima = column[Timestamp]("aikaleima")
@@ -188,6 +295,14 @@ object KoskiTables {
     def * = (nimi, aikaleima, data) <> (YtrDownloadStatusRow.tupled, YtrDownloadStatusRow.unapply)
   }
 
+  class YtrAlkuperäinenDataTable(tag: Tag) extends Table[YtrAlkuperäinenDataRow](tag, "ytr_alkuperainen_data") {
+    val oppijaOid = column[String]("oppija_oid", O.PrimaryKey)
+    val aikaleima = column[Timestamp]("aikaleima")
+    val data = column[JValue]("data")
+
+    def * = (oppijaOid, aikaleima, data) <> (YtrAlkuperäinenDataRow.tupled, YtrAlkuperäinenDataRow.unapply)
+  }
+
   class PerustiedotSyncTable(tag: Tag) extends Table[PerustiedotSyncRow](tag, "perustiedot_sync") {
     val id: Rep[Int] = column[Int]("id", O.AutoInc, O.PrimaryKey)
     val opiskeluoikeusId = column[Int]("opiskeluoikeus_id")
@@ -260,10 +375,17 @@ object KoskiTables {
   // listalta, jos on tarpeen, kuten yleensä on.
   val OpiskeluOikeudet = TableQuery[OpiskeluoikeusTable]
 
+  // YTR OpiskeluOikeudet-taulu. Käytä kyselyissä aina YtrOpiskeluOikeudetWithAccessCheck,
+  // niin tulee myös käyttöoikeudet tarkistettua samalla, ja mitätöidyt ja poistetut opiskeluoikeudet poistettua
+  // listalta, jos on tarpeen, kuten yleensä on.
+  val YtrOpiskeluOikeudet = TableQuery[YtrOpiskeluoikeusTable]
+
   val Henkilöt = TableQuery[HenkilöTable]
   val Scheduler = TableQuery[SchedulerTable]
 
   val YtrDownloadStatus = TableQuery[YtrDownloadStatusTable]
+
+  val YtrAlkuperäinenData = TableQuery[YtrAlkuperäinenDataTable]
 
   val PerustiedotSync = TableQuery[PerustiedotSyncTable]
   val PerustiedotManualSync = TableQuery[PerustiedotManualSyncTable]
@@ -271,6 +393,8 @@ object KoskiTables {
   val OppilaitosIPOsoite = TableQuery[OppilaitosIPOsoiteTable]
 
   val OpiskeluoikeusHistoria = TableQuery[OpiskeluoikeusHistoryTable]
+
+  val YtrOpiskeluoikeusHistoria = TableQuery[YtrOpiskeluoikeusHistoryTable]
 
   val PoistetutOpiskeluoikeudet = TableQuery[PoistettuOpiskeluoikeusTable]
 
@@ -289,6 +413,19 @@ object KoskiTables {
            (oo.sisältäväOpiskeluoikeusOppilaitosOid inSet oppilaitosOidit) ||
            (oo.oppilaitosOid inSet varhaiskasvatusOikeudet.map(_.ulkopuolinenOrganisaatio.oid)) && oo.koulutustoimijaOid.map(_ inSet varhaiskasvatusOikeudet.map(_.koulutustoimija.oid)).getOrElse(false)
       } yield oo
+    }
+
+    query
+      .filterIf(user.hasKoulutusmuotoRestrictions)(_.koulutusmuoto inSet user.allowedOpiskeluoikeusTyypit)
+      .filterIf(!user.hasMitätöidytOpiskeluoikeudetAccess)(o => !o.mitätöity)
+      .filterIf(!user.hasPoistetutOpiskeluoikeudetAccess)(o => !o.poistettu)
+  }
+
+  def YtrOpiskeluOikeudetWithAccessCheck(implicit user: KoskiSpecificSession): Query[YtrOpiskeluoikeusTable, YtrOpiskeluoikeusRow, Seq] = {
+    val query = if (user.hasTallennetutYlioppilastutkinnonOpiskeluoikeudetAccess) {
+      YtrOpiskeluOikeudet
+    } else {
+      YtrOpiskeluOikeudet.take(0)
     }
 
     query
@@ -338,6 +475,44 @@ case class OpiskeluoikeusRow(id: Int,
   }
 }
 
+case class YtrOpiskeluoikeusRow(id: Int,
+  oid: String,
+  versionumero: Int,
+  aikaleima: Timestamp,
+  oppijaOid: String,
+  oppilaitosOid: String,
+  koulutustoimijaOid: Option[String],
+  sisältäväOpiskeluoikeusOid: Option[String],
+  sisältäväOpiskeluoikeusOppilaitosOid: Option[String],
+  data: JValue,
+  luokka: Option[String],
+  mitätöity: Boolean,
+  koulutusmuoto: String,
+  alkamispäivä: Date,
+  päättymispäivä: Option[Date],
+  suoritusjakoTehty: Boolean,
+  suoritustyypit: List[String],
+  poistettu: Boolean
+) {
+  def toOpiskeluoikeus(implicit user: SensitiveDataAllowed): Either[List[ValidationError], YlioppilastutkinnonOpiskeluoikeus] = {
+    KoskiTables.YtrOpiskeluoikeusTable.readAsOpiskeluoikeus(data, oid, versionumero, aikaleima) match {
+      case Right(oo: YlioppilastutkinnonOpiskeluoikeus) =>
+        Right(FilterNonAnnotationableSensitiveData.filter(oo) match {
+          case ytrOo: YlioppilastutkinnonOpiskeluoikeus => ytrOo
+        })
+      case Left(left) => Left(left)
+    }
+  }
+
+  def toOpiskeluoikeusUnsafe(implicit user: SensitiveDataAllowed): YlioppilastutkinnonOpiskeluoikeus = {
+    toOpiskeluoikeus(user) match {
+      case Right(oo) => oo
+      case Left(errors) =>
+        throw new MappingException(s"Error deserializing opiskeluoikeus ${oid} for oppija ${oppijaOid}: ${errors}")
+    }
+  }
+}
+
 case class HenkilöRow(oid: String, sukunimi: String, etunimet: String, kutsumanimi: String, masterOid: Option[String])
 
 case class HenkilöRowWithMasterInfo(henkilöRow: HenkilöRow, masterHenkilöRow: Option[HenkilöRow])
@@ -355,6 +530,8 @@ case class SchedulerRow(name: String, nextFireTime: Timestamp, context: Option[J
 }
 
 case class YtrDownloadStatusRow(nimi: String = "ytr_download", aikaleima: Timestamp, data: JValue)
+
+case class YtrAlkuperäinenDataRow(oppijaOid: String, aikaleima: Timestamp, data: JValue)
 
 case class PerustiedotSyncRow(id: Int = 0, opiskeluoikeusId: Int, data: JValue, upsert: Boolean, aikaleima: Timestamp = new Timestamp(System.currentTimeMillis))
 

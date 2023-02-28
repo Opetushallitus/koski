@@ -1,6 +1,6 @@
 package fi.oph.koski.oppija
 
-import fi.oph.koski.config.{KoskiApplication}
+import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.HenkilöOid
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer.extract
@@ -8,13 +8,14 @@ import fi.oph.koski.json.SensitiveAndRedundantDataFilter
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.log._
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueries
-import fi.oph.koski.schema.KoskiSchema.{lenientDeserializationWithoutValidation}
+import fi.oph.koski.schema.KoskiSchema.lenientDeserializationWithoutValidation
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.RequestDescriber.logSafeDescription
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 import fi.oph.koski.tiedonsiirto.TiedonsiirtoError
 import fi.oph.koski.util.{Pagination, Timing, XML}
 import fi.oph.koski.virta.{VirtaHakuehtoHetu, VirtaHakuehtoKansallinenOppijanumero}
+import fi.oph.koski.ytr.download.{YtrLaajaOppija, YtrSsnData}
 
 import javax.servlet.http.HttpServletRequest
 import org.json4s.JsonAST.{JBool, JObject, JString}
@@ -83,6 +84,114 @@ class OppijaServlet(implicit val application: KoskiApplication)
     renderEither[Oppija](HenkilöOid.validateHenkilöOid(params("oid")).right.flatMap { oid =>
       application.oppijaFacade.findOppija(oid, findMasterIfSlaveOid = false)(session)
     }.flatMap(_.warningsToLeft))
+  }
+
+  get("/:oid/ytr-json") {
+    if (!onOikeusNähdäYtrJson) {
+      haltWithStatus(KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus())
+    } else {
+      renderEither[Oppija](HenkilöOid.validateHenkilöOid(params("oid")).right.flatMap { oid => {
+        application.oppijaFacade.findYtrDownloadedOppija(
+          oid,
+          findMasterIfSlaveOid = true
+        )(KoskiSpecificSession.systemUserTallennetutYlioppilastutkinnonOpiskeluoikeudet)
+      }
+      }
+        .flatMap(_.warningsToLeft)
+        .map(auditLogYtrKatsominen)
+      )
+    }
+  }
+
+  private def onOikeusNähdäYtrJson: Boolean = {
+    session.hasGlobalReadAccess && session.sensitiveDataAllowed(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+  }
+
+  get("/:oid/ytr-json/:versionumero") {
+    if (!onOikeusNähdäYtrJson) {
+      haltWithStatus(KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus())
+    } else {
+      renderEither[Oppija](HenkilöOid.validateHenkilöOid(params("oid")).right.flatMap { oid => {
+        application.oppijaFacade.findYtrDownloadedOppijaVersionumerolla(
+          oid,
+          params("versionumero").toInt,
+          findMasterIfSlaveOid = true
+        )(KoskiSpecificSession.systemUserTallennetutYlioppilastutkinnonOpiskeluoikeudet)
+      }
+      }
+        .flatMap(_.warningsToLeft)
+        .map(auditLogYtrKatsominen)
+      )
+    }
+  }
+
+  private def auditLogYtrKatsominen(oppija: Oppija): Oppija = {
+    oppija.opiskeluoikeudet.foreach(oo =>
+      AuditLog.log(
+        KoskiAuditLogMessage(
+          KoskiOperation.YTR_OPISKELUOIKEUS_KATSOMINEN,
+          session,
+          Map(
+            KoskiAuditLogMessageField.oppijaHenkiloOid -> (oppija.henkilö match {
+              case henkilö: HenkilöWithOid => henkilö.oid
+              case _ => ""
+            }),
+            KoskiAuditLogMessageField.opiskeluoikeusOid -> oo.oid.getOrElse(""),
+            KoskiAuditLogMessageField.opiskeluoikeusVersio -> oo.versionumero.map(_.toString).getOrElse("")
+          )
+        )
+      )
+    )
+    oppija
+  }
+
+  get("/:oid/ytr-saved-original-json") {
+    if (!onOikeusNähdäYtrJson) {
+      haltWithStatus(KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus())
+    } else {
+      val oppijaOid = HenkilöOid.validateHenkilöOid(params("oid"))
+      renderEither[JValue](oppijaOid.right.map { oid =>
+          application.ytrPossu.findAlkuperäinenYTRJsonByOppijaOid(oid)
+        }.flatMap {
+        case Some(json) => Right(json)
+        case _ => Left(KoskiErrorCategory.notFound("Alkuperäistä dataa ei löytynyt"))
+      }.map(
+        auditLogYtrKatsominen(oppijaOid.getOrElse(""))
+      ))
+    }
+  }
+
+  get("/:oid/ytr-current-original-json") {
+    if (!onOikeusNähdäYtrJson) {
+      haltWithStatus(KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus())
+    } else {
+      val oppijaOid = HenkilöOid.validateHenkilöOid(params("oid"))
+      renderEither[List[YtrLaajaOppija]](oppijaOid.right
+        .flatMap(oid =>
+          application.opintopolkuHenkilöFacade.findMasterOppija(oid).toRight(KoskiErrorCategory.notFound.oppijaaEiLöydy())
+        )
+        .map(henkilö => {
+          val hetut = henkilö.hetu.toList ++ henkilö.vanhatHetut
+          YtrSsnData(Some(hetut))
+        })
+        .map(application.ytrClient.oppijatByHetut)
+        .map(
+          auditLogYtrKatsominen(oppijaOid.getOrElse(""))
+        ))
+    }
+  }
+
+  private def auditLogYtrKatsominen[T](oppijaOid: String)(originalJson: T): T = {
+    AuditLog.log(
+      KoskiAuditLogMessage(
+        KoskiOperation.YTR_OPISKELUOIKEUS_KATSOMINEN,
+        session,
+        Map(
+          KoskiAuditLogMessageField.oppijaHenkiloOid -> oppijaOid
+        )
+      )
+    )
+    originalJson
   }
 
   get("/:oid/opintotiedot-json") {

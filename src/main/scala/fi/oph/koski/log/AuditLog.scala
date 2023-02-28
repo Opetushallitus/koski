@@ -77,7 +77,7 @@ object KoskiAuditLogMessage {
 
   def apply(operation: KoskiOperation, session: KoskiSpecificSession, extraFields: AuditLogMessage.ExtraFields): AuditLogMessage = {
     val logOp = new KoskiAuditLogOperation(operation)
-    if (session.user.isSuoritusjakoKatsominen) {
+    if (session.user.isSuoritusjakoKatsominen || session.user.isYtrDownloadUser) {
       val user = new User(session.clientIp, "", session.userAgent)
       AuditLogMessage(logOp, user, extraFields)
     } else {
@@ -123,7 +123,10 @@ object KoskiOperation extends Enumeration {
   KANSALAINEN_MYDATA_POISTO,
   KANSALAINEN_SUOMIFI_KATSOMINEN,
   KANSALAINEN_SUORITUSJAKO_TEKEMÄTTÄ_KATSOMINEN,
-  KANSALAINEN_SUOSTUMUS_PERUMINEN = Value
+  KANSALAINEN_SUOSTUMUS_PERUMINEN,
+  YTR_OPISKELUOIKEUS_LISAYS,
+  YTR_OPISKELUOIKEUS_MUUTOS,
+  YTR_OPISKELUOIKEUS_KATSOMINEN = Value
 }
 
 private class KoskiAuditLogOperation(op: KoskiOperation) extends AuditLogOperation(op)

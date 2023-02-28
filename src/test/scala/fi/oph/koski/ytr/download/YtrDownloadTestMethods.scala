@@ -1,37 +1,46 @@
 package fi.oph.koski.ytr.download
 
 import fi.oph.koski.KoskiHttpSpec
+import fi.oph.koski.api.OpiskeluoikeusTestMethods
+import fi.oph.koski.koskiuser.UserWithPassword
+import fi.oph.koski.schema.Oppija
 import fi.oph.koski.util.Wait
 import org.json4s.DefaultFormats
 import org.json4s.jackson.JsonMethods
 
 import java.time.LocalDate
 
-trait YtrDownloadTestMethods extends KoskiHttpSpec {
+trait YtrDownloadTestMethods extends KoskiHttpSpec with OpiskeluoikeusTestMethods {
   implicit val formats = DefaultFormats
 
-  def redownloadYtrData(
+  def clearYtrData(): Unit = {
+    authGet(s"test/ytr/clear") {
+      verifyResponseStatusOk()
+    }
+  }
+
+  def downloadYtrData(
     birthmonthStart: String,
     birthmonthEnd: String,
     force: Boolean = false
-  ): Unit = redownloadYtrData(
+  ): Unit = downloadYtrData(
     birthmonthStart = Some(birthmonthStart),
     birthmonthEnd = Some(birthmonthEnd),
     modifiedSince = None,
     force = force
   )
 
-  def redownloadYtrData(
+  def downloadYtrData(
     modifiedSince: LocalDate,
     force: Boolean
-  ): Unit = redownloadYtrData(
+  ): Unit = downloadYtrData(
     birthmonthStart = None,
     birthmonthEnd = None,
     modifiedSince = Some(modifiedSince),
     force = force
   )
 
-  private def redownloadYtrData(
+  private def downloadYtrData(
     birthmonthStart: Option[String],
     birthmonthEnd: Option[String],
     modifiedSince: Option[LocalDate],
@@ -53,5 +62,33 @@ trait YtrDownloadTestMethods extends KoskiHttpSpec {
   def downloadComplete = authGet("api/ytr/download-status") {
     val isComplete = (JsonMethods.parse(body) \ "current" \ "status").extract[String] == "complete"
     isComplete
+  }
+
+  def getYtrOppija(oppijaOid: String, user: UserWithPassword = defaultUser): Oppija = {
+    authGet("api/oppija/" + oppijaOid + "/ytr-json", user) {
+      verifyResponseStatusOk()
+      readOppija
+    }
+  }
+
+  def getYtrOppijaVersionumerolla(oppijaOid: String, versionumero: Int, user: UserWithPassword = defaultUser): Oppija = {
+    authGet("api/oppija/" + oppijaOid + "/ytr-json/" + versionumero, user) {
+      verifyResponseStatusOk()
+      readOppija
+    }
+  }
+
+  def getYtrSavedOriginal(oppijaOid: String, user: UserWithPassword = defaultUser): String = {
+    authGet("api/oppija/" + oppijaOid + "/ytr-saved-original-json", user) {
+      verifyResponseStatusOk()
+      body
+    }
+  }
+
+  def getYtrCurrentOriginal(oppijaOid: String, user: UserWithPassword = defaultUser): String = {
+    authGet("api/oppija/" + oppijaOid + "/ytr-current-original-json", user) {
+      verifyResponseStatusOk()
+      body
+    }
   }
 }

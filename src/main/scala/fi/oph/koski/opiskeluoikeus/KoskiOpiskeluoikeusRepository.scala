@@ -1,13 +1,13 @@
 package fi.oph.koski.opiskeluoikeus
 
 import java.time.LocalDate
-
-import fi.oph.koski.db.OpiskeluoikeusRow
+import fi.oph.koski.db.{OpiskeluoikeusRow, YtrOpiskeluoikeusRow}
 import fi.oph.koski.henkilo.{HenkilönTunnisteet, OppijaHenkilöWithMasterInfo, PossiblyUnverifiedHenkilöOid}
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema._
+import fi.oph.koski.ytr.download.YtrLaajaOppija
 import org.json4s.JValue
 
 trait KoskiOpiskeluoikeusRepository {
@@ -31,6 +31,16 @@ trait KoskiOpiskeluoikeusRepository {
   def merkitseSuoritusjakoTehdyksiIlmanKäyttöoikeudenTarkastusta(oid: String): HttpStatus
   def suoritusjakoTehtyIlmanKäyttöoikeudenTarkastusta(oid: String): Boolean
   def isKuoriOpiskeluoikeus(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): Boolean
+}
+
+trait KoskiYtrOpiskeluoikeusRepository {
+  def findByOppijaOids(oids: List[String])(implicit user: KoskiSpecificSession): Seq[YlioppilastutkinnonOpiskeluoikeus]
+  def createOrUpdate(
+    oppijaOid: PossiblyUnverifiedHenkilöOid,
+    opiskeluoikeus: YlioppilastutkinnonOpiskeluoikeus
+  )(implicit user: KoskiSpecificSession): Either[HttpStatus, CreateOrUpdateResult]
+  def createOrUpdateAlkuperäinenYTRJson(oppijaOid: String, data: JValue)(implicit user: KoskiSpecificSession): HttpStatus
+  def findAlkuperäinenYTRJsonByOppijaOid(oppijaOid: String)(implicit user: KoskiSpecificSession): Option[JValue]
 }
 
 trait AuxiliaryOpiskeluoikeusRepository {
