@@ -9,14 +9,12 @@ import { LocalizedString } from './LocalizedString'
 export type Ylioppilastutkinto = {
   $class: 'fi.oph.koski.schema.Ylioppilastutkinto'
   tunniste: Koodistokoodiviite<'koulutus', '301000'>
-  perusteenDiaarinumero?: string
   koulutustyyppi?: Koodistokoodiviite<'koulutustyyppi', string>
 }
 
 export const Ylioppilastutkinto = (
   o: {
     tunniste?: Koodistokoodiviite<'koulutus', '301000'>
-    perusteenDiaarinumero?: string
     koulutustyyppi?: Koodistokoodiviite<'koulutustyyppi', string>
   } = {}
 ): Ylioppilastutkinto => ({
