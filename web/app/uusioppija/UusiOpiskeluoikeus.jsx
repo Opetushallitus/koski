@@ -69,6 +69,7 @@ export default ({ opiskeluoikeusAtom }) => {
   const suoritusAtom = Atom()
   const rahoitusAtom = Atom()
   const varhaiskasvatusOrganisaationUlkopuoleltaAtom = Atom(false)
+  const taiteenPerusopetusOrganisaationUlkopuoleltaAtom = Atom(false)
   const varhaiskasvatusJärjestämismuotoAtom = Atom()
   const onTuvaOpiskeluoikeus = Atom(false)
   const tuvaJärjestämislupaAtom = Atom()
@@ -87,6 +88,13 @@ export default ({ opiskeluoikeusAtom }) => {
   })
   const opintokokonaisuusAtom = Atom()
   const suoritustyyppiAtom = Atom()
+
+  taiteenPerusopetusOrganisaationUlkopuoleltaAtom
+    .changes()
+    .onValue((v) => oppilaitosAtom.set(null))
+  varhaiskasvatusOrganisaationUlkopuoleltaAtom
+    .changes()
+    .onValue((v) => oppilaitosAtom.set(null))
 
   const opiskeluoikeustyypitP = oppilaitosAtom
     .flatMapLatest((oppilaitos) =>
@@ -196,13 +204,17 @@ export default ({ opiskeluoikeusAtom }) => {
 
   return (
     <div>
-      <VarhaiskasvatuksenJärjestämismuotoPicker
+      <OmanOrganisaationUlkopuolinenOppilaitosPicker
         varhaiskasvatusAtom={varhaiskasvatusOrganisaationUlkopuoleltaAtom}
+        taiteenPerusopetusAtom={taiteenPerusopetusOrganisaationUlkopuoleltaAtom}
         järjestämismuotoAtom={varhaiskasvatusJärjestämismuotoAtom}
       />
       <Oppilaitos
         showVarhaiskasvatusToimipisteetP={
           varhaiskasvatusOrganisaationUlkopuoleltaAtom
+        }
+        showKaikkiOppilaitoksetP={
+          taiteenPerusopetusOrganisaationUlkopuoleltaAtom
         }
         oppilaitosAtom={oppilaitosAtom}
         organisaatiotyypitAtom={organisaatiotyypitAtom}
@@ -246,6 +258,7 @@ export default ({ opiskeluoikeusAtom }) => {
         ),
         <TaiteenPerusopetuksenKoulutuksenToteutustapa
           tpoToteutustapaAtom={tpoToteutustapaAtom}
+          hankintakoulutusAtom={taiteenPerusopetusOrganisaationUlkopuoleltaAtom}
         />
       )}
       {tyyppiAtom.map('.koodiarvo').map((tyyppi) => {
@@ -428,19 +441,43 @@ const opiskeluoikeudentTilat = (
     .toProperty()
 }
 
-const VarhaiskasvatuksenJärjestämismuotoPicker = ({
+const OmanOrganisaationUlkopuolinenOppilaitosPicker = ({
   varhaiskasvatusAtom,
+  taiteenPerusopetusAtom,
   järjestämismuotoAtom
 }) => {
-  const isKoulutustoimijaP = userP
+  const isVarhaiskasvatusKoulutustoimijaP = userP
     .map('.varhaiskasvatuksenJärjestäjäKoulutustoimijat')
     .map((koulutustoimijat) => koulutustoimijat.length > 0)
+  const isTPOKoulutustoimijaP = userP.map(
+    '.hasKoulutustoimijaOrganisaatioTaiGlobaaliWriteAccess'
+  )
+
+  const showVarhaiskasvatusCheckbox = Bacon.combineWith(
+    isVarhaiskasvatusKoulutustoimijaP,
+    taiteenPerusopetusAtom,
+    (kt, tp) => kt && !tp
+  )
+  const showTaiteenPerusopetusCheckbox = Bacon.combineWith(
+    isTPOKoulutustoimijaP,
+    varhaiskasvatusAtom,
+    (kt, vk) => kt && !vk
+  )
+
   return (
     <React.Fragment>
       {fromBacon(
         ift(
-          isKoulutustoimijaP,
+          showVarhaiskasvatusCheckbox,
           <VarhaiskasvatusCheckbox varhaiskasvatusAtom={varhaiskasvatusAtom} />
+        )
+      )}
+      {fromBacon(
+        ift(
+          showTaiteenPerusopetusCheckbox,
+          <TaiteenPerusopetusHankintakoulutusCheckbox
+            tpoHankintakoulutusAtom={taiteenPerusopetusAtom}
+          />
         )
       )}
       {fromBacon(
@@ -470,6 +507,25 @@ const VarhaiskasvatusCheckbox = ({ varhaiskasvatusAtom }) => {
   )
 }
 
+const TaiteenPerusopetusHankintakoulutusCheckbox = ({
+  tpoHankintakoulutusAtom
+}) => {
+  const hankintakoulutusOnChange = () => {
+    tpoHankintakoulutusAtom.modify((v) => !v)
+  }
+  return (
+    <label className="tpo-hankintakoulutus-checkbox">
+      <Text name="Taiteen perusopetus hankintakoulutuksena järjestettynä" />
+      <Checkbox
+        id="hankintakoulutus-checkbox"
+        onChange={hankintakoulutusOnChange}
+        label="Koulutus järjestetään oman organisaation ulkopuolelta"
+        listStylePosition="inside"
+      />
+    </label>
+  )
+}
+
 const VarhaiskasvatuksenJärjestämismuoto = ({ järjestämismuotoAtom }) => {
   const järjestysMuotoP = koodistoValues('vardajarjestamismuoto/JM02,JM03')
   return (
@@ -486,6 +542,7 @@ const VarhaiskasvatuksenJärjestämismuoto = ({ järjestämismuotoAtom }) => {
 
 const Oppilaitos = ({
   showVarhaiskasvatusToimipisteetP,
+  showKaikkiOppilaitoksetP,
   oppilaitosAtom,
   organisaatiotyypitAtom
 }) => {
@@ -500,11 +557,19 @@ const Oppilaitos = ({
       {Bacon.combineWith(
         oppilaitosAtom,
         showVarhaiskasvatusToimipisteetP,
-        (oppilaitos, show) => (
+        showKaikkiOppilaitoksetP,
+        (
+          oppilaitos,
+          showVarhaiskasvatusToimipisteet,
+          showKaikkiOppilaitokset
+        ) => (
           <OrganisaatioPicker
             key={
               'uuden-oppijan-oppilaitos-' +
-              (show ? 'vain-varhaiskasvatus' : 'oma-organisaatio')
+              (showVarhaiskasvatusToimipisteet
+                ? 'vain-varhaiskasvatus'
+                : 'oma-organisaatio') +
+              (showKaikkiOppilaitokset ? '-kaikki' : '')
             }
             preselectSingleOption={true}
             selectedOrg={{
@@ -526,8 +591,11 @@ const Oppilaitos = ({
             clearText={t('tyhjennä')}
             noSelectionText="Valitse..."
             orgTypesToShow={
-              show ? 'vainVarhaiskasvatusToimipisteet' : 'vainOmatOrganisaatiot'
+              showVarhaiskasvatusToimipisteet
+                ? 'vainVarhaiskasvatusToimipisteet'
+                : 'vainOmatOrganisaatiot'
             }
+            showAll={!!showKaikkiOppilaitokset}
           />
         )
       )}
@@ -680,15 +748,22 @@ const TaiteenPerusopetuksenOppimäärä = ({ tpoOppimääräAtom }) => {
 }
 
 const TaiteenPerusopetuksenKoulutuksenToteutustapa = ({
-  tpoToteutustapaAtom
+  tpoToteutustapaAtom,
+  hankintakoulutusAtom
 }) => {
-  // TODO: TOR-1692 hankintakoulutus
+  const onHankintakoulutus = !!hankintakoulutusAtom.get()
   const tpoToteutustavatP = koodistoValues(
-    'taiteenperusopetuskoulutuksentoteutustapa/itsejarjestettykoulutus'
+    onHankintakoulutus
+      ? 'taiteenperusopetuskoulutuksentoteutustapa/hankintakoulutus'
+      : 'taiteenperusopetuskoulutuksentoteutustapa/itsejarjestettykoulutus'
   )
   tpoToteutustavatP.onValue((koodit) =>
     tpoToteutustapaAtom.set(
-      koodit.find(koodiarvoMatch('itsejarjestettykoulutus'))
+      koodit.find(
+        koodiarvoMatch(
+          onHankintakoulutus ? 'hankintakoulutus' : 'itsejarjestettykoulutus'
+        )
+      )
     )
   )
   return (

@@ -19,7 +19,8 @@ class UserServlet(implicit val application: UserAuthenticationContext) extends K
           isViranomainen = session.hasGlobalKoulutusmuotoReadAccess,
           hasRaportitAccess = session.hasRaportitAccess,
           hasKelaUiAccess = session.hasKelaAccess,
-          varhaiskasvatuksenJärjestäjäKoulutustoimijat = session.varhaiskasvatusKoulutustoimijat.toList
+          varhaiskasvatuksenJärjestäjäKoulutustoimijat = session.varhaiskasvatusKoulutustoimijat.toList,
+          hasKoulutustoimijaOrganisaatioTaiGlobaaliWriteAccess = session.hasKoulutustoimijaOrganisaatioTaiGlobaaliWriteAccess
         )
       }
       }.getOrElse(UserWithAccessRights(user.name, user.oid))
@@ -39,6 +40,7 @@ case class UserWithAccessRights(
   isViranomainen: Boolean = false,
   hasRaportitAccess: Boolean = false,
   hasKelaUiAccess: Boolean = false,
-  varhaiskasvatuksenJärjestäjäKoulutustoimijat: List[String] = Nil
+  varhaiskasvatuksenJärjestäjäKoulutustoimijat: List[String] = Nil,
+  hasKoulutustoimijaOrganisaatioTaiGlobaaliWriteAccess: Boolean = false
 )
 

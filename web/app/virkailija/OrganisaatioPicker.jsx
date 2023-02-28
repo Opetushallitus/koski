@@ -176,7 +176,7 @@ export default class OrganisaatioPicker extends BaconComponent {
 
   UNSAFE_componentWillMount() {
     super.UNSAFE_componentWillMount()
-    const showAll = parseBool(this.props.showAll)
+    const showAllP = toObservable(this.props.showAll)
     const orgTypesToShowP = toObservable(this.props.orgTypesToShow)
     this.inputBus = Bacon.Bus()
     this.searchStringBus = Bacon.Bus()
@@ -185,19 +185,26 @@ export default class OrganisaatioPicker extends BaconComponent {
       this.setState({ searchString, loading: true })
     )
 
+    const params = Bacon.combineWith(
+      showAllP,
+      orgTypesToShowP,
+      (showAll, orgTypesToShow) => ({ showAll, orgTypesToShow })
+    )
+
     const searchResult = this.searchStringBus
       .flatMap((searchString) =>
-        orgTypesToShowP.map((orgTypesToShow) => ({
+        params.map(({ showAll, orgTypesToShow }) => ({
           searchString,
-          orgTypesToShow
+          orgTypesToShow,
+          showAll: parseBool(showAll, false)
         }))
       )
-      .flatMapLatest(({ searchString, orgTypesToShow }) =>
+      .flatMapLatest(({ searchString, orgTypesToShow, showAll }) =>
         Http.get(
           parseLocation('/koski/api/organisaatio/hierarkia').addQueryParams({
             query: searchString,
             all: showAll,
-            orgTypesToShow
+            orgTypesToShow: showAll ? null : orgTypesToShow
           })
         ).map((organisaatiot) => ({ organisaatiot, searchString }))
       )
