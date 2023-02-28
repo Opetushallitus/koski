@@ -686,4 +686,53 @@ describe('Oppijataulukko', function () {
       })
     })
   })
+
+  describe('Taiteen perusopetuksen järjestäjä', function () {
+    before(
+      Authentication().login('hki-tallentaja'),
+      page.openPage,
+      wait.until(page.isReady)
+    )
+    var organisaatiovalitsin = OrganisaatioHaku(page.oppijataulukko.tableElem)
+
+    describe('ei voi hakea yksittäisistä hankintakoulutuksen oppilaitoksista joihin on tallennettu opiskeluoikeuksia', function () {
+      before(
+        page.oppijataulukko.filterBy('tyyppi'),
+        page.oppijataulukko.filterBy('tila'),
+        organisaatiovalitsin.enter()
+      )
+
+      it('toimii', function () {
+        expect(organisaatiovalitsin.oppilaitokset()).not.to.deep.include(
+          'Varsinais-Suomen kansanopisto'
+        )
+      })
+    })
+
+    describe('voi filtteröidä hakusanalla Taiteen perusopetuksen hankintakoulutus', function () {
+      before(organisaatiovalitsin.enter('Taiteen perusopetus (hankintakoulutus)'))
+
+      it('näyttää vain Taiteen perusopetuksen hankintakoulutus -valinnan eikä aliorganisaatioita sille', function () {
+        expect(organisaatiovalitsin.oppilaitokset()).to.deep.equal([
+          'Taiteen perusopetus (hankintakoulutus)'
+        ])
+      })
+    })
+
+    describe('Voi valita kaikki hankintakoulutuksen toimipisteet', function () {
+      before(organisaatiovalitsin.select('Taiteen perusopetus (hankintakoulutus)'))
+
+      it('toimii', function () {
+        expect(page.oppijataulukko.names()).to.deep.equal([
+          'Taiteilija, Hank'
+        ])
+        expect(
+          page.oppijataulukko.oppilaitokset().slice().sort()
+        ).to.deep.equal([
+          'Varsinais-Suomen kansanopistoVarsinais-Suomen kansanopisto'
+        ])
+        expect(page.opiskeluoikeudeTotal()).to.equal('1')
+      })
+    })
+  })
 })

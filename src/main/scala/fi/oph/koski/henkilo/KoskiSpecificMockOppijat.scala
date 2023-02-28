@@ -166,6 +166,7 @@ object KoskiSpecificMockOppijat {
   val jotpaMuuKuinSäännelty = koskiSpecificOppijat.oppija("Jotpanen", "Muksu", "200600A515B")
   val taiteenPerusopetusAloitettu = koskiSpecificOppijat.oppija("Taiteilija", "Petra", "230405A067H")
   val taiteenPerusopetusValmis = koskiSpecificOppijat.oppija("Taiteilija", "Pentti", "110505A804B")
+  val taiteenPerusopetusHankintakoulutus = koskiSpecificOppijat.oppija("Taiteilija", "Hank", "120505A794N")
   val ylioppilasUusiApi = koskiSpecificOppijat.oppija("Ylioppilas-uusi", "Yölevi", "080380-2432")
   val ylioppilasUusiApi2 = koskiSpecificOppijat.oppija("Ylioppilas-uusi", "Yrmiina", "140380-336X")
 

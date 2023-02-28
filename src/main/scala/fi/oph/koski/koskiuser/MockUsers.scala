@@ -189,11 +189,53 @@ object MockUsers {
     Seq(oppilaitosPalvelukäyttäjä(varsinaisSuomenKansanopisto))
   )
 
+  val varsinaisSuomiKoulutustoimijaKatselija = KoskiMockUser(
+    "varsinaissuomi-koulutustoimija-katselija",
+    "varsinaissuomi-koulutustoimija-katselija",
+    "1.2.246.562.24.99966699999",
+    Seq(oppilaitosKatselija(varsinaisSuomenAikuiskoulutussäätiö))
+  )
+
+  val varsinaisSuomiKoulutustoimija = KoskiMockUser(
+    "varsinaissuomi-koulutustoimija-tallentaja",
+    "varsinaissuomi-koulutustoimija-tallentaja",
+    "1.2.246.562.24.99996669999",
+    Seq(oppilaitosTallentaja(varsinaisSuomenAikuiskoulutussäätiö))
+  )
+
+  val varsinaisSuomiPääkäyttäjä = KoskiMockUser(
+    "varsinaissuomi-oppilaitos-pää",
+    "varsinaissuomi-oppilaitos-pää",
+    "1.2.246.562.24.99999666999",
+    Seq(oppilaitosPääkäyttäjä(varsinaisSuomenKansanopisto))
+  )
+
+  val varsinaisSuomiOppilaitosTallentaja = KoskiMockUser(
+    "varsinaissuomi-oppilaitos-tallentaja",
+    "varsinaissuomi-oppilaitos-tallentaja",
+    "1.2.246.562.24.99999966669",
+    Seq(oppilaitosTallentaja(varsinaisSuomenKansanopisto))
+  )
+
+  val varsinaisSuomiHankintakoulutusOppilaitosTallentaja = KoskiMockUser(
+    "varsinaissuomi-hankinta-oppilaitos-tallentaja",
+    "varsinaissuomi-hankinta-oppilaitos-tallentaja",
+    "1.2.246.562.24.99999966666",
+    Seq(oppilaitosTallentajaTaiteenPerusopetusHankintakoulutus(varsinaisSuomenKansanopisto))
+  )
+
   val helsinkiTallentaja = KoskiMockUser(
     "hki-tallentaja",
     "hki-tallentaja",
     "1.2.246.562.24.99999999977",
     Seq(oppilaitosTallentaja(helsinginKaupunki))
+  )
+
+  val helsinkiKatselija = KoskiMockUser(
+    "hki-katselija",
+    "hki-katselija",
+    "1.2.246.562.24.99999999777",
+    Seq(oppilaitosKatselija(helsinginKaupunki))
   )
 
   val tornioTallentaja = KoskiMockUser(
@@ -259,8 +301,8 @@ object MockUsers {
     Seq(OrganisaatioJaKäyttöoikeudet(lehtikuusentienToimipiste, List(PalveluJaOikeus("OPPIJANUMEROREKISTERI", "READ"))))
   )
 
-  val evira = KoskiMockUser(
-    "Evira",
+  val viranomainenGlobaaliKatselija = KoskiMockUser(
+    "Viranomainen",
     "Eeva",
     "1.2.246.562.24.99999999111",
     Seq(OrganisaatioJaKäyttöoikeudet(MockOrganisaatiot.evira, List(
@@ -268,6 +310,7 @@ object MockUsers {
       PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_TOINEN_ASTE),
       PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_KORKEAKOULU),
       PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_MUU_KUIN_SAANNELTY),
+      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_TAITEENPERUSOPETUS),
     )))
   )
 
@@ -280,7 +323,8 @@ object MockUsers {
       PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_TOINEN_ASTE),
       PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_KORKEAKOULU),
       PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_MUU_KUIN_SAANNELTY),
-      PalveluJaOikeus("KOSKI", Rooli.LUOTTAMUKSELLINEN_KELA_SUPPEA)
+      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_TAITEENPERUSOPETUS),
+      PalveluJaOikeus("KOSKI", Rooli.LUOTTAMUKSELLINEN_KELA_SUPPEA),
     )))
   )
 
@@ -293,7 +337,8 @@ object MockUsers {
       PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_TOINEN_ASTE),
       PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_KORKEAKOULU),
       PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_MUU_KUIN_SAANNELTY),
-      PalveluJaOikeus("KOSKI", Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA)
+      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_TAITEENPERUSOPETUS),
+      PalveluJaOikeus("KOSKI", Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA),
     )))
   )
 
@@ -347,6 +392,7 @@ object MockUsers {
       PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_TOINEN_ASTE),
       PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_KORKEAKOULU),
       PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_MUU_KUIN_SAANNELTY),
+      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_TAITEENPERUSOPETUS),
     )))
   )
 
@@ -361,6 +407,7 @@ object MockUsers {
       PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_TOINEN_ASTE),
       PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_KORKEAKOULU),
       PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_MUU_KUIN_SAANNELTY),
+      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_TAITEENPERUSOPETUS),
     )))
   )
 
@@ -381,6 +428,7 @@ object MockUsers {
       PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_TOINEN_ASTE),
       PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_KORKEAKOULU),
       PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_MUU_KUIN_SAANNELTY),
+      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_TAITEENPERUSOPETUS),
     )))
   )
 
@@ -478,6 +526,7 @@ object MockUsers {
     stadinPääkäyttäjä,
     tallentajaEiLuottamuksellinen,
     helsinkiTallentaja,
+    helsinkiKatselija,
     tornioTallentaja,
     helsinkiSekäTornioTallentaja,
     pyhtäänTallentaja,
@@ -487,7 +536,7 @@ object MockUsers {
     eiOikkia,
     jyväskylänNormaalikoulunPalvelukäyttäjä,
     jyväskylänYliopistonVastuukäyttäjä,
-    evira,
+    viranomainenGlobaaliKatselija,
     kelaSuppeatOikeudet,
     kelaLaajatOikeudet,
     perusopetusViranomainen,
@@ -501,6 +550,11 @@ object MockUsers {
     esiopetusTallentaja,
     oppivelvollisuutietoRajapinta,
     varsinaisSuomiPalvelukäyttäjä,
+    varsinaisSuomiKoulutustoimijaKatselija,
+    varsinaisSuomiKoulutustoimija,
+    varsinaisSuomiPääkäyttäjä,
+    varsinaisSuomiOppilaitosTallentaja,
+    varsinaisSuomiHankintakoulutusOppilaitosTallentaja,
     ytlKäyttäjä,
     xssHyökkääjä,
     muuKuinSäänneltyKoulutusYritys,
