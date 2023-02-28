@@ -5,6 +5,7 @@
  */
 export type UserWithAccessRights = {
   $class: 'fi.oph.koski.koskiuser.UserWithAccessRights'
+  hasKoulutustoimijaOrganisaatioTaiGlobaaliWriteAccess: boolean
   name: string
   hasAnyInvalidateAccess: boolean
   oid: string
@@ -20,6 +21,7 @@ export type UserWithAccessRights = {
 }
 
 export const UserWithAccessRights = (o: {
+  hasKoulutustoimijaOrganisaatioTaiGlobaaliWriteAccess: boolean
   name: string
   hasAnyInvalidateAccess: boolean
   oid: string
