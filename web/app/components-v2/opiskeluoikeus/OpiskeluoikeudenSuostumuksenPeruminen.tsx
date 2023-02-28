@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 import {
   createPreferLocalCache,
   useApiWithParams,
@@ -61,6 +61,7 @@ const suoritusjakoTehtyCache = createPreferLocalCache(fetchSuoritusjakoTehty)
 export const SuostumuksenPeruminen: React.FC<SuostumuksenPeruminenProps> = (
   props
 ) => {
+  const peruutaSuostumusBtn = useRef<HTMLButtonElement>(null)
   const [peruuttamassaSuostumusta, setPeruuttamassaSuostumusta] =
     useState(false)
   const [suostumuksenPerumisenInfo, setSuostumuksenPerumisenInfo] =
@@ -79,35 +80,48 @@ export const SuostumuksenPeruminen: React.FC<SuostumuksenPeruminenProps> = (
     setSuoritusjakoTehty(response.data.tehty)
   )
 
+  const dismissPopup = useCallback(() => {
+    setPeruuttamassaSuostumusta(false)
+    setTimeout(() => peruutaSuostumusBtn.current?.focus(), 0)
+  }, [])
+
   return (
     <div {...common(props, ['SuostumuksenPeruminen'])}>
       <b>
         <Trans>{props.text}</Trans>
       </b>
       <span className="infobox">
-        <span
+        <button
           className="info-icon"
           onClick={() =>
             setSuostumuksenPerumisenInfo(!suostumuksenPerumisenInfo)
           }
           onMouseEnter={() => setSuostumuksenPerumisenInfo(true)}
           onMouseLeave={() => setSuostumuksenPerumisenInfo(false)}
+          onKeyDown={() =>
+            setSuostumuksenPerumisenInfo(!suostumuksenPerumisenInfo)
+          }
+          onFocus={() => setSuostumuksenPerumisenInfo(true)}
+          onBlur={() => setSuostumuksenPerumisenInfo(false)}
+          aria-label={t('tooltip:Suostumuksen selitys')}
         />
       </span>
       {!suoritusjakoTehty && (
-        <a
+        <FlatButton
           className="peru-suostumus-linkki"
           onClick={() => setPeruuttamassaSuostumusta(!peruuttamassaSuostumusta)}
+          compact
+          buttonRef={peruutaSuostumusBtn}
         >
           {'Peruuta suostumus'}
-        </a>
+        </FlatButton>
       )}
       {peruuttamassaSuostumusta && props.opiskeluoikeusOid && (
         <SuostumuksenPeruutusPopup
           opiskeluoikeudenNimi={props.nimi}
           opiskeluoikeusOid={props.opiskeluoikeusOid}
           suorituksenTyyppi={props.suorituksenTyyppi}
-          onDismiss={() => setPeruuttamassaSuostumusta(false)}
+          onDismiss={dismissPopup}
         />
       )}
       {suostumuksenPerumisenInfo && (

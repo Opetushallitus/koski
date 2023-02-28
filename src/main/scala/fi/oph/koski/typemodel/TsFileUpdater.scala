@@ -9,15 +9,17 @@ import fi.oph.koski.schema.{Arviointi, KoodiViite, KoskiSchema, Opiskeluoikeuden
 import fi.oph.koski.typemodel.TypescriptTypes.Options
 
 import java.io.{BufferedWriter, File, FileWriter}
-import java.nio.file.{Files, Paths}
+import java.nio.file.{Files, Path, Paths}
 
 object TsFileUpdater {
-  def updateTypeFiles(): Unit = {
+  def updateTypeFiles(dryRun: Boolean = false): Seq[TypescriptTypes.TsFile] = {
     val types =
       SchemaExport.toTypeDef(KoskiSchema.schema) ++
       TypeExport.toTypeDef(classOf[AdditionalExports]).filter(t => !AdditionalExports.getClass.getName.startsWith(t.fullClassName))
 
-    TypescriptTypes.build(types, options).foreach(writeFile)
+    val tsFiles = TypescriptTypes.build(types, options)
+    if (!dryRun) tsFiles.foreach(writeFile)
+    tsFiles
   }
 
   private def writeFile(tsFile: TypescriptTypes.TsFile): Unit = {

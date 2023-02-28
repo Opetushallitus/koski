@@ -1,7 +1,10 @@
-@import "colors.less";
-
+@import 'colors.less';
 
 .infobox {
+  .info-icon {
+    border: none;
+    background: none;
+  }
 
   .info-icon:before {
     font-family: FontAwesome;
@@ -30,7 +33,7 @@
     padding: 30px;
     font-size: 1rem;
     background: @color-white;
-    box-shadow: 0 1px 5px 0 rgba(0,0,0,0.30);
+    box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.3);
     border-radius: 2px;
 
     @media @media-phone {
@@ -51,13 +54,13 @@
       font-size: 1.2rem;
     }
 
-     ol {
+    ol {
       padding: 0 0 0 16px;
 
-       li {
-         margin: 0.5rem 0;
-         color: @color-darkgray;
-       }
+      li {
+        margin: 0.5rem 0;
+        color: @color-darkgray;
+      }
     }
   }
 

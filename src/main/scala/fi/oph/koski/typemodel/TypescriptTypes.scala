@@ -1,9 +1,10 @@
 package fi.oph.koski.typemodel
 
 import fi.oph.koski.typemodel.ClassNameResolver.{nameToAbsolutePath, nameToRelativePath, safeFilename, safePath}
+import fi.oph.koski.typemodel.TsFileUpdater.targetPath
 import fi.oph.koski.util.JsStringInterpolation.{JsStringInterpolation, parseExpression}
 
-import java.nio.file.Paths
+import java.nio.file.{Path, Paths}
 import scala.annotation.tailrec
 
 object TypescriptTypes {
@@ -291,5 +292,8 @@ object TypescriptTypes {
     directory: String,
     fileName: String,
     content: String
-  )
+  ) {
+    def fullPath(targetPath: String): Path =
+      Paths.get(targetPath, directory, fileName)
+  }
 }

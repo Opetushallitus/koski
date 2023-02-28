@@ -23,6 +23,7 @@ import {
 import { DateEdit } from '../controls/DateField'
 import { FlatButton } from '../controls/FlatButton'
 import { IconButton } from '../controls/IconButton'
+import { RaisedButton } from '../controls/RaisedButton'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
 import { isValidationError, ValidationError } from '../forms/validator'
 import { CHARCODE_REMOVE } from '../texts/Icon'
@@ -93,7 +94,11 @@ export const OpiskeluoikeudenTilaEdit = <T extends OpiskeluoikeudenTila>(
           <KeyColumnedValuesRow
             name={arrIndex === 0 ? 'Tila' : undefined}
             className={isLatest ? 'OpiskeluoikeudenTila-viimeisin' : undefined}
-            columnSpans={[6, '*']}
+            columnSpans={{
+              default: [6, '*'],
+              small: [8, '*'],
+              phone: [24, '*']
+            }}
             key={index}
           >
             {[
@@ -123,11 +128,23 @@ export const OpiskeluoikeudenTilaEdit = <T extends OpiskeluoikeudenTila>(
           </KeyColumnedValuesRow>
         ))}
         {!oo.isTerminated && (
-          <KeyValueRow label={A.isEmpty(oo.jaksot) ? 'Tila' : undefined}>
-            <FlatButton onClick={oo.openModal} testId={subTestId(props, 'add')}>
-              {'lisää uusi'}
-            </FlatButton>
-          </KeyValueRow>
+          <KeyColumnedValuesRow
+            name={A.isEmpty(oo.jaksot) ? 'Tila' : undefined}
+            columnSpans={{
+              default: [6, '*'],
+              small: [8, '*'],
+              phone: [24, '*']
+            }}
+          >
+            {[
+              <RaisedButton
+                onClick={oo.openModal}
+                testId={subTestId(props, 'add')}
+              >
+                {'Lisää uusi'}
+              </RaisedButton>
+            ]}
+          </KeyColumnedValuesRow>
         )}
       </KeyValueTable>
       {oo.isModalVisible && props.value && oo.opiskeluoikeusjaksoClass && (
