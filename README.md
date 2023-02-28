@@ -180,6 +180,15 @@ Ottaaksesi käyttöön ulkoiset integraatiot, kuten Oppijanumerorekisterin, voit
 
 Tällä asetuksella käytetään tiedostoa `src/main/resources/qa.conf`. Tämä tiedosto ei ole versionhallinnassa, koska se sisältää ei-julkista tietoa.
 
+### Typescript-tyypitysten generointi skeemasta
+
+Uudemmat osat Kosken käyttöliittymistä on kirjoitettu Typescriptillä ja niissä hyödynnetään kansiosta `web/app/types/fi/oph/koski/` löytyviä tyypityksiä,
+jotka on generoitu Kosken tietomallista sekä useista rajapintojen palauttamista tietotyypeistä. Jos teet muutoksia tietomalliin, sinun on ajettava
+komento `make ts-types` päivittääksesi ne. Älä editoi kyseisiä tiedostoja käsin, sillä muutokset menevät hukkaan seuraavan generoinnin myötä.
+
+Jos tietomallin tyypityksistä puuttuu jokin trait tai luokka, jonka tarvitset frontendin puolelle, lisää se `TsFileUpdater.scala` -tiedostoon ja
+aja `make ts-types` uudelleen. Samoin voit lisätä käyttämiesi rajapintojen palauttamat tietotyypit samaan tiedostoon.
+
 ### Kehitysympäristön tietokannat
 
 Kehityskäyttöön tarvitaan PostgreSQL-tietokanta ja OpenSearch-hakuindeksi.
@@ -346,9 +355,9 @@ Yleiskäyttöisten palveluiden dokumentaatio löytyy [OPH yleiskäyttöiset palv
 
 ### Kolmansien osapuolten palvelut
 
-| Kuvaus                            | URL                                                        | Yhteystiedot                                                                                                                         |
-| --------------------------------- | ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| CSC Virta                         | [kuvaus][virta-description] [api-dokumentaatio][virta-api] | virta@csc.fi, [Slack](https://opetushallitus.slack.com/archives/C03JKTYM810)                                                            |
+| Kuvaus                            | URL                                                        | Yhteystiedot                                                                                                                                                                                         |
+| --------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| CSC Virta                         | [kuvaus][virta-description] [api-dokumentaatio][virta-api] | virta@csc.fi, [Slack](https://opetushallitus.slack.com/archives/C03JKTYM810)                                                                                                                         |
 | Ylioppilastutkintorekisteri (YTR) |                                                            | 0295 338 200, lautakunta@ylioppilastutkinto.fi, [henkilökunta](https://www.ylioppilastutkinto.fi/yhteystiedot/kanslian-henkilokunta), [Slack](https://opetushallitus.slack.com/archives/C03PD4A55U4) |
 
 ## Testiympäristö
