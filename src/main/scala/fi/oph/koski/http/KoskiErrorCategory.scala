@@ -208,6 +208,7 @@ object KoskiErrorCategory {
         val korotettuKeskiarvo = subcategory("korotettuKeskiarvo", "Korotettua keskiarvoa ei voi syöttää suoritukselle joka ei ole korotus")
         val eiKorotuksenSuoritus = subcategory("eiKorotuksenSuoritus", "Korotettu-tietoja ei voi siirtää jos kyseessä ei ole korotuksen suoritus")
         val korotettuOsasuoritus = subcategory("korotettuOsasuoritus", "Kaikkien korotuksen suorituksen osasuoritusten tulee olla korotuksen yrityksiä tai tunnustettuja")
+        val korotuksenLinkitys = subcategory("korotuksenLinkitys", "Korotetun opiskeluoikeuden linkitystä ei voi muuttaa opiskeluoikeuden luonnin jälkeen")
       }
       val ammatillinen = new Ammatillinen
 

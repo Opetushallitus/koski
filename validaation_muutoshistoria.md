@@ -11,6 +11,7 @@
   - Korotettua keskiarvoa ei voi siirtää valmistuneelle korotuksen suoritukselle, jos kaikki korotuksen yritykset epäonnistuivat.
   - Jos korotuksen suoritus päättyy katsotaan eronneeksi -tilaan, ei suoritukselle voi siirtää osasuorituksia.
   - Jos korotuksen suoritus päättyy katsotaan eronneeksi -tilaan, ei suoritukselle voi siirtää korotettua keskiarvoa.
+- Korotetun suorituksen linkitystä alkuperäiseen opiskeluoikeuteen ei voi muuttaa opiskeluoikeuden luonnin jälkeen.
 
 ## 28.2.2023
 

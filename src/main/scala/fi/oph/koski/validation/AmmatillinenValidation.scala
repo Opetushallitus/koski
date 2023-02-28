@@ -143,4 +143,21 @@ object AmmatillinenValidation {
     }
   }
 
+  def validateKorotetunOpiskeluoikeudenLinkitysEiMuuttunut(
+    oldState: KoskeenTallennettavaOpiskeluoikeus,
+    newState: KoskeenTallennettavaOpiskeluoikeus
+  ): HttpStatus = {
+    def getKorotettuOpiskeluoikeusOid(s: AmmatillinenPäätasonSuoritus): Option[String] = s match {
+      case s: AmmatillisenTutkinnonOsittainenSuoritus => s.korotettuOpiskeluoikeusOid
+      case _ => None
+    }
+
+    (oldState, newState) match {
+      case (oldOo: AmmatillinenOpiskeluoikeus, newOo: AmmatillinenOpiskeluoikeus) => HttpStatus.validate(
+        oldOo.suoritukset.size == newOo.suoritukset.size &&
+          oldOo.suoritukset.map(getKorotettuOpiskeluoikeusOid) == newOo.suoritukset.map(getKorotettuOpiskeluoikeusOid)
+      )(KoskiErrorCategory.badRequest.validation.ammatillinen.korotuksenLinkitys())
+      case _ => HttpStatus.ok
+    }
+  }
 }
