@@ -164,55 +164,60 @@ object KoskiTables {
   object YtrOpiskeluoikeusTable extends OpiskeluoikeusTableCompanion[YtrOpiskeluoikeusRow] {
 
     override def makeInsertableRow(oppijaOid: String, opiskeluoikeusOid: String, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) = {
-      YtrOpiskeluoikeusRow(
-        0,
-        opiskeluoikeusOid,
-        Opiskeluoikeus.VERSIO_1,
-        new Timestamp(0), // Will be replaced by db trigger (see V90__add_ytr_opiskeluoikeus_extra_triggers.sql)
-        oppijaOid,
-        // TODO: TOR-1639: Toistaiseksi tallennetaan tietokantaan koulutustoimijan oid myös oppilaitokseksi,
-        //  jotta saadaan pidettyä jatkoa ajatellen taulut samanlaisina. Tietomallia muutetaan myöhemmin niin, että
-        //  myös JSON-datassa oppilaitokseksi tallentuu koulutustoimija
-        opiskeluoikeus.koulutustoimija.map(_.oid).get,
-        opiskeluoikeus.koulutustoimija.map(_.oid),
-        opiskeluoikeus.sisältyyOpiskeluoikeuteen.map(_.oid),
-        opiskeluoikeus.sisältyyOpiskeluoikeuteen.map(_.oppilaitos.oid),
-        serialize(opiskeluoikeus),
-        opiskeluoikeus.luokka,
-        opiskeluoikeus.mitätöity,
-        opiskeluoikeus.tyyppi.koodiarvo,
-        // TODO: TOR-1639: Kunhan tilat on luotu dataan, niin käytä oikeaa alkamispäivää ja päättymispäivää
-        Date.valueOf(LocalDate.of(1900, 1, 1)),
-        //Date.valueOf(opiskeluoikeus.alkamispäivä.get),
-        None,
-        //opiskeluoikeus.päättymispäivä.map(Date.valueOf),
-        false,
-        opiskeluoikeus.suoritukset.map(_.tyyppi.koodiarvo),
-        false
-      )
+      opiskeluoikeus match {
+        case ytrOo: YlioppilastutkinnonOpiskeluoikeus =>
+          YtrOpiskeluoikeusRow(
+            0,
+            opiskeluoikeusOid,
+            Opiskeluoikeus.VERSIO_1,
+            new Timestamp(0), // Will be replaced by db trigger (see V90__add_ytr_opiskeluoikeus_extra_triggers.sql)
+            oppijaOid,
+            // TODO: TOR-1639: Toistaiseksi tallennetaan tietokantaan koulutustoimijan oid myös oppilaitokseksi,
+            //  jotta saadaan pidettyä jatkoa ajatellen taulut samanlaisina. Tietomallia muutetaan myöhemmin niin, että
+            //  myös JSON-datassa oppilaitokseksi tallentuu koulutustoimija
+            opiskeluoikeus.koulutustoimija.map(_.oid).get,
+            opiskeluoikeus.koulutustoimija.map(_.oid),
+            opiskeluoikeus.sisältyyOpiskeluoikeuteen.map(_.oid),
+            opiskeluoikeus.sisältyyOpiskeluoikeuteen.map(_.oppilaitos.oid),
+            serialize(opiskeluoikeus),
+            opiskeluoikeus.luokka,
+            opiskeluoikeus.mitätöity,
+            opiskeluoikeus.tyyppi.koodiarvo,
+            Date.valueOf(ytrOo.keinotekoinenAlkamispäiväTutkintokerroista),
+            opiskeluoikeus.päättymispäivä.map(Date.valueOf),
+            false,
+            opiskeluoikeus.suoritukset.map(_.tyyppi.koodiarvo),
+            false
+          )
+        case _ =>
+          throw new InternalError("Yritettiin tallentaa muu kuin YO-tutkinnon opiskeluoikeus")
+      }
     }
 
     override def updatedFieldValues(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, versionumero: Int) = {
-      val data = serialize(opiskeluoikeus)
+      opiskeluoikeus match {
+        case ytrOo: YlioppilastutkinnonOpiskeluoikeus =>
+          val data = serialize(opiskeluoikeus)
 
-      (data,
-       versionumero,
-       opiskeluoikeus.sisältyyOpiskeluoikeuteen.map(_.oid),
-       opiskeluoikeus.sisältyyOpiskeluoikeuteen.map(_.oppilaitos.oid),
-       opiskeluoikeus.luokka,
-       opiskeluoikeus.koulutustoimija.map(_.oid),
-        // TODO: TOR-1639: Toistaiseksi tallennetaan tietokantaan koulutustoimijan oid myös oppilaitokseksi,
-        //  jotta saadaan pidettyä jatkoa ajatellen taulut samanlaisina. Tietomallia muutetaan myöhemmin niin, että
-        //  myös JSON-datassa oppilaitokseksi tallentuu koulutustoimija
-       opiskeluoikeus.koulutustoimija.map(_.oid).get,
-       opiskeluoikeus.mitätöity,
-        // TODO: TOR-1639: Kunhan tilat on luotu dataan, niin käytä oikeaa alkamispäivää ja päättymispäivää
-       Date.valueOf(LocalDate.of(1900, 1, 1)),
-       // Date.valueOf(opiskeluoikeus.alkamispäivä.get),
-       None,
-       //opiskeluoikeus.päättymispäivä.map(Date.valueOf),
-       opiskeluoikeus.suoritukset.map(_.tyyppi.koodiarvo)
-      )
+          (data,
+            versionumero,
+            opiskeluoikeus.sisältyyOpiskeluoikeuteen.map(_.oid),
+            opiskeluoikeus.sisältyyOpiskeluoikeuteen.map(_.oppilaitos.oid),
+            opiskeluoikeus.luokka,
+            opiskeluoikeus.koulutustoimija.map(_.oid),
+            // TODO: TOR-1639: Toistaiseksi tallennetaan tietokantaan koulutustoimijan oid myös oppilaitokseksi,
+            //  jotta saadaan pidettyä jatkoa ajatellen taulut samanlaisina. Tietomallia muutetaan myöhemmin niin, että
+            //  myös JSON-datassa oppilaitokseksi tallentuu koulutustoimija
+            opiskeluoikeus.koulutustoimija.map(_.oid).get,
+            opiskeluoikeus.mitätöity,
+            Date.valueOf(ytrOo.keinotekoinenAlkamispäiväTutkintokerroista),
+            opiskeluoikeus.päättymispäivä.map(Date.valueOf),
+            opiskeluoikeus.suoritukset.map(_.tyyppi.koodiarvo)
+          )
+
+        case _ =>
+          throw new InternalError("Yritettiin tallentaa muu kuin YO-tutkinnon opiskeluoikeus")
+      }
     }
   }
 

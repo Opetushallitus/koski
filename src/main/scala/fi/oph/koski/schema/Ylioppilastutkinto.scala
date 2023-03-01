@@ -1,7 +1,9 @@
 package fi.oph.koski.schema
 
 import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri}
+import fi.oph.koski.util.DateOrdering.localDateOrdering
 import fi.oph.koski.util.OptionalLists
+import fi.oph.koski.ytr.YtrConversionUtils
 import fi.oph.scalaschema.annotation.{Description, MaxItems, MinItems, Title}
 
 import java.time.{LocalDate, LocalDateTime}
@@ -24,14 +26,37 @@ case class YlioppilastutkinnonOpiskeluoikeus(
   oppilaitosSuorituspäivänä: Option[Oppilaitos] = None,
   @Description("Toistaiseksi vain Kosken sisäisessä käytössä.")
   lisätiedot: Option[YlioppilastutkinnonOpiskeluoikeudenLisätiedot] = None
-  ) extends KoskeenTallennettavaOpiskeluoikeus {
+  ) extends KoskeenTallennettavaOpiskeluoikeus with YlioppilastutkinnonOpiskeluoikeudenAlkamisJaPäättymispäivät {
   override def arvioituPäättymispäivä = None
-  override def päättymispäivä = None
+
   override def sisältyyOpiskeluoikeuteen = None
   override def organisaatiohistoria: Option[List[OpiskeluoikeudenOrganisaatiohistoria]] = None
 
   override def withOppilaitos(oppilaitos: Oppilaitos): YlioppilastutkinnonOpiskeluoikeus = this.copy(oppilaitos = Some(oppilaitos))
   override def withKoulutustoimija(koulutustoimija: Koulutustoimija): YlioppilastutkinnonOpiskeluoikeus = this.copy(koulutustoimija = Some(koulutustoimija))
+
+  def keinotekoinenAlkamispäiväTutkintokerroista: LocalDate = {
+    lisätiedot
+      .flatMap(_.tutkintokokonaisuudet)
+      .toList.flatten
+      .flatMap(_.tutkintokerrat)
+      .map(_.tutkintokerta.koodiarvo)
+      .map(YtrConversionUtils.convertTutkintokertaToDate)
+      .sorted
+      .headOption
+      .getOrElse(
+        LocalDate.of(1900, 1, 1)
+      )
+  }
+}
+
+// Nämä ovat erillisessä traitissä, koska Scheman luonti ei ota mukaan dokumentaatiokommentteja case-luokassa määritellyistä metodeista.
+trait YlioppilastutkinnonOpiskeluoikeudenAlkamisJaPäättymispäivät extends KoskeenTallennettavaOpiskeluoikeus {
+  @Description("Yksikäsitteistä alkamispäivää ei ole, joten alkamispäivä puuttuu aina.")
+  override def alkamispäivä = None
+  @Description("Päättymispäiväksi päätellään mahdollinen valmistumispäivä. Samassa opiskeluoikeudessa voi silti olla sitä myöhempien tutkintokertojen YO-kokeen suorituksia, esim. korotuksia.")
+  @Description("Toistaiseksi vain Kosken sisäisessä käytössä.")
+  override def päättymispäivä: Option[LocalDate] = super.päättymispäivä
 }
 
 case class YlioppilastutkinnonOpiskeluoikeudenLisätiedot(

@@ -161,6 +161,12 @@ class YtrDownloadOppijaConverterSpec extends AnyFreeSpec with TestEnvironment wi
       )
     )
 
+    expectedYlioppilastutkinto.alkamispäivä should be(None)
+    expectedYlioppilastutkinto.päättymispäivä should be(Some(LocalDate.of(2015, 11, 30)))
+    expectedYlioppilastutkinto.keinotekoinenAlkamispäiväTutkintokerroista should be(
+      LocalDate.of(2014, 3, 1)
+    )
+
     oppijaConverter.convertOppijastaOpiskeluoikeus(simppeliOppija) should equal (Some(expectedYlioppilastutkinto))
   }
 }
