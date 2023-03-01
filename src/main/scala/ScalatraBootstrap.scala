@@ -30,7 +30,7 @@ import fi.oph.koski.preferences.PreferencesServlet
 import fi.oph.koski.pulssi.{PulssiHtmlServlet, PulssiServlet}
 import fi.oph.koski.raamit.RaamiProxyServlet
 import fi.oph.koski.raportit.RaportitServlet
-import fi.oph.koski.raportointikanta.{RaportointikantaService, RaportointikantaServlet}
+import fi.oph.koski.raportointikanta.{RaportointikantaService, RaportointikantaStatusServlet, RaportointikantaTestServlet}
 import fi.oph.koski.servlet._
 import fi.oph.koski.sso.{CasServlet, LocalLoginServlet, SSOConfig}
 import fi.oph.koski.suoritusjako.{SuoritusjakoServlet, SuoritusjakoServletV2, SuoritusjakoServletV3}
@@ -95,7 +95,6 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing {
     mount("/koski/api/editor/koodit", new EditorKooditServlet)
     mount("/koski/api/types", new TypeModelServlet)
     mount("/koski/api/elaketurvakeskus", new ElaketurvakeskusServlet)
-    mount("/koski/api/opensearch", new OpenSearchServlet)
     mount("/koski/api/healthcheck", new HealthCheckApiServlet)
     mount("/koski/api/status", new StatusApiServlet)
     mount("/koski/api/henkilo", new HenkilötiedotServlet)
@@ -103,7 +102,6 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing {
     mount("/koski/api/omattiedot", new OmatTiedotServlet)
     mount("/koski/api/omattiedotV2", new OmatTiedotServletV2)
     mount("/koski/api/suoritusjako", new SuoritusjakoServlet)
-    mount("/koski/api/suoritusjakoV2", new SuoritusjakoServletV2)
     mount("/koski/api/suoritusjakoV3", new SuoritusjakoServletV3)
     mount("/koski/api/opiskeluoikeus", new OpiskeluoikeusServlet)
     mount("/koski/api/opiskeluoikeus/perustiedot", new OpiskeluoikeudenPerustiedotServlet)
@@ -122,7 +120,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing {
     mount("/koski/api/tutkinnonperusteet", new TutkinnonPerusteetServlet)
     mount("/koski/api/localization", new KoskiSpecificLocalizationServlet)
     mount("/koski/api/raportit", new RaportitServlet)
-    mount("/koski/api/raportointikanta", new RaportointikantaServlet)
+    mount("/koski/api/raportointikanta", new RaportointikantaStatusServlet)
     mount("/koski/api/ytr", new YtrStatusServlet)
     mount("/koski/api/sure", new SureServlet)
     mount("/koski/api/luovutuspalvelu", new LuovutuspalveluServlet)
@@ -190,6 +188,9 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing {
       Environment.isMockEnvironment(application.config)
     ) {
       mount ("/koski/test/ytr", new YtrTestServlet())
+      mount("/koski/api/test/suoritusjakoV2", new SuoritusjakoServletV2)
+      mount("/koski/api/test/raportointikanta", new RaportointikantaTestServlet)
+      mount("/koski/api/test/opensearch", new OpenSearchServlet)
     }
 
     Futures.await(initTasks) // await for all initialization tasks to complete

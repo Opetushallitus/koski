@@ -112,19 +112,19 @@ class RaportointikantaSpec
     }
 
     "Peräkkäinen load-kutsu ei tee mitään" in {
-      authGet("api/raportointikanta/load")(verifyResponseStatusOk())
+      authGet("api/test/raportointikanta/load")(verifyResponseStatusOk())
       Wait.until(isLoading)
       val loadStarted = getLoadStartedTime
-      authGet("api/raportointikanta/load")(verifyResponseStatusOk())
+      authGet("api/test/raportointikanta/load")(verifyResponseStatusOk())
       loadStarted should equal(getLoadStartedTime)
       Wait.until(loadComplete)
     }
 
     "Force load" in {
-      authGet("api/raportointikanta/load?fullReload=true")(verifyResponseStatusOk())
+      authGet("api/test/raportointikanta/load?fullReload=true")(verifyResponseStatusOk())
       Wait.until(isLoading)
       val loadStarted = getLoadStartedTime
-      authGet("api/raportointikanta/load?force=true&fullReload=true")(verifyResponseStatusOk())
+      authGet("api/test/raportointikanta/load?force=true&fullReload=true")(verifyResponseStatusOk())
       loadStarted before getLoadStartedTime should be(true)
 
       // Varmista, että raportointikanta ei jää epämääräiseen virhetilaan ennen muita testejä. Ilman sleeppiä

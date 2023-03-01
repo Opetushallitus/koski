@@ -14,7 +14,7 @@ class SuoritusjakoServletV3(implicit val application: KoskiApplication)
     with KoskiSpecificAuthenticationSupport
     with Logging
     with NoCache {
-  
+
   post("/") {
     withJsonBody { (json: JValue) => {
       implicit val suoritusjakoUser = KoskiSpecificSession.suoritusjakoKatsominenUser(request)

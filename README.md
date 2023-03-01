@@ -250,15 +250,15 @@ Esimerkki kuvaa tilannetta jossa indeksin mappingia tai asetuksia halutaan päiv
 
 Uuden perustiedot-indeksin luonti versiota 2 vastaavalla nimellä:
 
-    curl -N -u 'käyttäjätunnus:salasana' -X POST 'localhost:8080/koski/api/opensearch/perustiedot/create/2'
+    curl -N -u 'käyttäjätunnus:salasana' -X POST 'localhost:8080/koski/api/test/opensearch/perustiedot/create/2'
 
 Kirjoitusaliaksen siirto versiosta 1 versioon 2:
 
-    curl -N -u 'käyttäjätunnus:salasana' -X POST 'localhost:8080/koski/api/opensearch/perustiedot/migrateAlias/write/1/2'
+    curl -N -u 'käyttäjätunnus:salasana' -X POST 'localhost:8080/koski/api/test/opensearch/perustiedot/migrateAlias/write/1/2'
 
 Reindeksointi versiosta 1 versioon 2:
 
-    curl -N -u 'käyttäjätunnus:salasana' -X POST 'localhost:8080/koski/api/opensearch/perustiedot/reindex/1/2'
+    curl -N -u 'käyttäjätunnus:salasana' -X POST 'localhost:8080/koski/api/test/opensearch/perustiedot/reindex/1/2'
 
 Huomaa, että reindeksointi jää käyntiin taustalle. Tietoja sen edistymisestä
 kirjoitetaan Kosken lokiin INFO-tasolla. Prosessia voi seurata myös OpenSearchin
@@ -266,7 +266,7 @@ task-apin avulla.
 
 Kun reindeksointi on valmis, lukualiaksen siirto versiosta 1 versioon 2:
 
-    curl -N -u 'käyttäjätunnus:salasana' -X POST 'localhost:8080/koski/api/opensearch/perustiedot/migrateAlias/read/1/2'
+    curl -N -u 'käyttäjätunnus:salasana' -X POST 'localhost:8080/koski/api/test/opensearch/perustiedot/migrateAlias/read/1/2'
 
 Kosken indeksinhallinta-apin lisäksi ainakin OpenSearchin `/_cat/indices?v`
 ja `/_cat/aliases?v` apit voivat olla avuksi:

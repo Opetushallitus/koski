@@ -11,7 +11,7 @@ function RaportitPage() {
     },
     lataaRaportointikanta: function () {
       return Q(
-        $.ajax({ url: '/koski/api/raportointikanta/load', method: 'get' })
+        $.ajax({ url: '/koski/api/test/raportointikanta/load', method: 'get' })
       )
     },
     odotaRaportointikantaOnLatautunut: function () {
@@ -22,7 +22,7 @@ function RaportitPage() {
         .raportointikantaStatus()
         .then(function () {})
         .catch(function (err) {
-          if (err.status == 503) {
+          if (err.status === 503) {
             if (retriesLeft > 0) {
               return wait
                 .forMilliseconds(1000)()

@@ -14,11 +14,7 @@ import org.json4s.JValue
 import scala.reflect.runtime.universe.TypeTag
 
 class SuoritusjakoServletV2(implicit val application: KoskiApplication) extends EditorApiServlet with KoskiSpecificAuthenticationSupport with Logging with NoCache {
-
-  before() {
-    noRemoteCalls()
-  }
-
+  
   post("/editor") {
     implicit val suoritusjakoUser = KoskiSpecificSession.suoritusjakoKatsominenUser(request)
     renderEither(
