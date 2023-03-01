@@ -41,7 +41,6 @@ class YtrDownloadStatus(val db: DB) extends QueryMethods with Logging {
     ))
   }
 
-  // TODO: TOR-1639 tee tämä serialisointi (ja deserialisointi) paremmilla työkaluilla suoraan Scala case luokasta tms.
   private def constructStatusJson(currentStatus: String, timestamp: Option[LocalDateTime] = None): JValue = {
     val timestampPart = timestamp.map(Timestamp.valueOf).map(t =>
       s"""
