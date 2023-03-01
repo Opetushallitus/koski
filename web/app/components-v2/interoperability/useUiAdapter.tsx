@@ -90,12 +90,7 @@ export const useVirkailijaUiAdapter = (oppijaModel: ObjectModel): UiAdapter => {
     replaceOppijanOpiskeluoikeus
   )
 
-  return useUiAdapterImpl(
-    ooTyypit,
-    fetchData,
-    oppija,
-    oppijaModel.invalidatable
-  )
+  return useUiAdapterImpl(ooTyypit, fetchData, oppija)
 }
 
 const replaceOppijanOpiskeluoikeus = (
@@ -137,16 +132,14 @@ export const useKansalainenUiAdapter = (
     () => {
       oppija.call(suoritusjakoId || 'xxx')
     },
-    oppija,
-    false
+    oppija
   )
 }
 
 const useUiAdapterImpl = <T extends any[]>(
   opiskeluoikeustyypit: string[],
   oppijaDataNeeded: () => void,
-  oppija: ApiMethodHook<Oppija, T>,
-  invalidatable: boolean
+  oppija: ApiMethodHook<Oppija, T>
 ): UiAdapter => {
   const [adapter, setAdapter] = useSafeState<UiAdapter>(loadingUiAdapter)
 
@@ -186,7 +179,7 @@ const useUiAdapterImpl = <T extends any[]>(
               <Editor
                 oppijaOid={oppijaOid}
                 opiskeluoikeus={oo}
-                invalidatable={invalidatable}
+                invalidatable={opiskeluoikeusModel.invalidatable}
               />
             )
           : undefined

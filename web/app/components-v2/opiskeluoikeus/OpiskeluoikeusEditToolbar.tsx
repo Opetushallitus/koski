@@ -4,7 +4,6 @@ import { formatDateRange } from '../../date/date'
 import { Opiskeluoikeus } from '../../types/fi/oph/koski/schema/Opiskeluoikeus'
 import { invalidateOpiskeluoikeus } from '../../util/koskiApi'
 import { getOpiskeluoikeusOid } from '../../util/opiskeluoikeus'
-import { RequiresInvalidateAccess } from '../access/RequiresInvalidateAccess'
 import { RequiresWriteAccess } from '../access/RequiresWriteAccess'
 import { Column, ColumnRow } from '../containers/Columns'
 import { FlatButton } from '../controls/FlatButton'
@@ -41,15 +40,13 @@ export const OpiskeluoikeusEditToolbar = (
         span={{ default: spans[1], phone: 24 }}
         align={{ default: 'right', phone: 'left' }}
       >
-        {props.editMode ? (
-          props.invalidatable &&
-          opiskeluoikeusOid && (
-            <RequiresInvalidateAccess>
+        <RequiresWriteAccess>
+          {props.editMode ? (
+            props.invalidatable &&
+            opiskeluoikeusOid && (
               <MitätöintiButton opiskeluoikeusOid={opiskeluoikeusOid} />
-            </RequiresInvalidateAccess>
-          )
-        ) : (
-          <RequiresWriteAccess>
+            )
+          ) : (
             <RaisedButton
               fullWidth
               onClick={props.onStartEdit}
@@ -57,8 +54,8 @@ export const OpiskeluoikeusEditToolbar = (
             >
               {'Muokkaa'}
             </RaisedButton>
-          </RequiresWriteAccess>
-        )}
+          )}
+        </RequiresWriteAccess>
       </Column>
     </ColumnRow>
   )
