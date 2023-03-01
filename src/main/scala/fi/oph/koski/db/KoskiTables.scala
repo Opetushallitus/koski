@@ -175,9 +175,8 @@ object KoskiTables {
         //  myös JSON-datassa oppilaitokseksi tallentuu koulutustoimija
         opiskeluoikeus.koulutustoimija.map(_.oid).get,
         opiskeluoikeus.koulutustoimija.map(_.oid),
-        // TODO: TOR-1639: voiko näitä sisältyvyysasioita joskus olla YTR-opiskeluoikeudessa? Jos voi, niin pitää tallentaa jotain muuta kuin None allaoleviin 2 kenttään
-        None,
-        None,
+        opiskeluoikeus.sisältyyOpiskeluoikeuteen.map(_.oid),
+        opiskeluoikeus.sisältyyOpiskeluoikeuteen.map(_.oppilaitos.oid),
         serialize(opiskeluoikeus),
         opiskeluoikeus.luokka,
         opiskeluoikeus.mitätöity,
@@ -198,9 +197,8 @@ object KoskiTables {
 
       (data,
        versionumero,
-       // TODO: TOR-1639: voiko näitä sisältyvyysasioita joskus olla YTR-opiskeluoikeudessa? Jos voi, niin pitää tallentaa jotain muuta kuin None allaoleviin 2 kenttään
-       None,
-       None,
+       opiskeluoikeus.sisältyyOpiskeluoikeuteen.map(_.oid),
+       opiskeluoikeus.sisältyyOpiskeluoikeuteen.map(_.oppilaitos.oid),
        opiskeluoikeus.luokka,
        opiskeluoikeus.koulutustoimija.map(_.oid),
         // TODO: TOR-1639: Toistaiseksi tallennetaan tietokantaan koulutustoimijan oid myös oppilaitokseksi,
