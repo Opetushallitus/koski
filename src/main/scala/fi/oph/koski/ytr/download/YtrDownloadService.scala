@@ -205,7 +205,6 @@ class YtrDownloadService(
             case e: Throwable => logger.info(s"YTR-datan konversio epäonnistui: ${e.getMessage}")
           }
 
-          // TODO: TOR-1639 Ajastus tähän: serialisointi + tämä ylimääräinen tallennus voi olla yllättävänkin hidasta
           timed("tallennaAlkuperäinenJson", thresholdMs = 1) {
             tallennaAlkuperäinenJson(oppija)
           }
