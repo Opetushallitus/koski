@@ -49,7 +49,7 @@ class YtrDownloadOppijaConverter(
               oppilaitos = period.schoolOid.flatMap(oid =>
                 organisaatioRepository.getOppilaitosHetkellä(
                   oid,
-                  conversionUtils.convertTutkintokertaToDate(period.examinationPeriod)
+                  YtrConversionUtils.convertTutkintokertaToDate(period.examinationPeriod)
                 )
               )
             ))

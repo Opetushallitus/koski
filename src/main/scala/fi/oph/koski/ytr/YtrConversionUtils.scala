@@ -29,28 +29,13 @@ class YtrConversionUtils(
     Organisaatiovahvistus(graduationDate, helsinki, ytl.toOidOrganisaatio)
   }
 
-  def convertPeriodToYearAndSeason(period: String): (Int, String) = {
-    val Pattern = raw"(\d\d\d\d)(K|S)".r
-    period match {
-      case Pattern(year, season) => (year.toInt, season)
-    }
-  }
-
   def convertTutkintokerta(period: String): YlioppilastutkinnonTutkintokerta = {
-    val (year, season) = convertPeriodToYearAndSeason(period)
+    val (year, season) = YtrConversionUtils.convertPeriodToYearAndSeason(period)
     val seasonName = season match {
       case "K" => localizations.get("kevät")
       case "S" => localizations.get("syksy")
     }
     YlioppilastutkinnonTutkintokerta(period, year, seasonName)
-  }
-
-  def convertTutkintokertaToDate(period: String): LocalDate = {
-    val (year, season) = convertPeriodToYearAndSeason(period)
-    season match {
-      case "K" => LocalDate.of(year, 3, 1)
-      case "S" => LocalDate.of(year, 10, 1)
-    }
   }
 
   def convertArviointi(grade: String, points: Option[Int]) = {
@@ -59,5 +44,22 @@ class YtrConversionUtils(
 
   def requiredKoodi(uri: String, koodi: String): Koodistokoodiviite = {
     koodistoViitePalvelu.validateRequired(uri, koodi)
+  }
+}
+
+object YtrConversionUtils {
+  def convertPeriodToYearAndSeason(period: String): (Int, String) = {
+    val Pattern = raw"(\d\d\d\d)(K|S)".r
+    period match {
+      case Pattern(year, season) => (year.toInt, season)
+    }
+  }
+
+  def convertTutkintokertaToDate(period: String): LocalDate = {
+    val (year, season) = convertPeriodToYearAndSeason(period)
+    season match {
+      case "K" => LocalDate.of(year, 3, 1)
+      case "S" => LocalDate.of(year, 10, 1)
+    }
   }
 }
