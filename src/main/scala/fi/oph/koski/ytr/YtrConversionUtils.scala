@@ -12,15 +12,15 @@ class YtrConversionUtils(
   koodistoViitePalvelu: KoodistoViitePalvelu,
   organisaatioRepository: OrganisaatioRepository
 ) {
-  private def maybeYtl = organisaatioRepository.getOrganisaatio("1.2.246.562.10.43628088406")
+  private val ytlOid = "1.2.246.562.10.43628088406"
+  private def maybeYtl = organisaatioRepository.getOrganisaatio(ytlOid)
 
+  def ytlOppilaitos: Option[Oppilaitos] = maybeYtl.map(ytl =>
+    Oppilaitos(oid = ytl.oid, nimi = ytl.nimi)
+  )
   def ytl: Koulutustoimija = maybeYtl
     .flatMap(_.toKoulutustoimija)
     .getOrElse(throw new IllegalStateException(("Ylioppilastutkintolautakuntaorganisaatiota ei löytynyt organisaatiopalvelusta")))
-
-  def ytlOppilaitos: Option[Oppilaitos] = Some(Oppilaitos(
-    oid = "1.2.246.562.10.43628088406"
-  ))
 
   def helsinki: Koodistokoodiviite = koodistoViitePalvelu.validate("kunta", "091")
     .getOrElse(throw new IllegalStateException("Helsingin kaupunkia ei löytynyt koodistopalvelusta"))
