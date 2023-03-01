@@ -18,6 +18,8 @@ class YtrDownloadOppijaConverterSpec extends AnyFreeSpec with TestEnvironment wi
     application.koskiLocalizationRepository
   )
 
+  private val conversionUtils = new YtrConversionUtils(application.koskiLocalizationRepository,  application.koodistoViitePalvelu, application.organisaatioRepository)
+
   val ytl = application.organisaatioRepository
       .getOrganisaatio("1.2.246.562.10.43628088406")
       .flatMap(_.toKoulutustoimija)
@@ -39,7 +41,7 @@ class YtrDownloadOppijaConverterSpec extends AnyFreeSpec with TestEnvironment wi
 
     val expectedYlioppilastutkinto = YlioppilastutkinnonOpiskeluoikeus(
       lähdejärjestelmänId = None,
-      oppilaitos = None,
+      oppilaitos = conversionUtils.ytlOppilaitos,
       koulutustoimija = Some(ytl),
       tila = YlioppilastutkinnonOpiskeluoikeudenTila(opiskeluoikeusjaksot = List()),
       lisätiedot = Some(YlioppilastutkinnonOpiskeluoikeudenLisätiedot(Some(List(

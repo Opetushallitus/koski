@@ -18,8 +18,9 @@ class YtrConversionUtils(
     .flatMap(_.toKoulutustoimija)
     .getOrElse(throw new IllegalStateException(("Ylioppilastutkintolautakuntaorganisaatiota ei löytynyt organisaatiopalvelusta")))
 
-  def ytlOppilaitos: Option[Oppilaitos] = maybeYtl
-    .flatMap(_.toOppilaitos)
+  def ytlOppilaitos: Option[Oppilaitos] = Some(Oppilaitos(
+    oid = "1.2.246.562.10.43628088406"
+  ))
 
   def helsinki: Koodistokoodiviite = koodistoViitePalvelu.validate("kunta", "091")
     .getOrElse(throw new IllegalStateException("Helsingin kaupunkia ei löytynyt koodistopalvelusta"))
