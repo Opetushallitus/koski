@@ -433,9 +433,12 @@ class KoskiOppijaFacade(
   )
 
   private def writeViewingEventToAuditLog(user: KoskiSpecificSession, oid: Henkilö.Oid): Unit = {
-    // TODO: TOR-1639 Toteuta YTR-opiskeluoikeuksien operaatioiden audit-lokitus halutulla tavalla. Voi olla, että näistä katseluista ei toistaiseksi
-    //  tosin tarvitse välittää, jos/kun niitä tehdään vain debug-tarkotuksissa. Mutta jotenkin pitää debuggaus-tutkimisetkin audit-lokittaa?
-    if (!List(KoskiSpecificSession.systemUserTallennetutYlioppilastutkinnonOpiskeluoikeudet, KoskiSpecificSession.systemUser).contains(user)) { // To prevent health checks from polluting the audit log
+    if (!List(
+      // Tallennettujen YTR-operaatioiden katsomiset tehdään tällä systeemikäyttäjätunnuksella, joten auditlokitus tehdään
+      // servletissä erikseen sitä kutsuneen käyttäjän nimissä:
+      KoskiSpecificSession.systemUserTallennetutYlioppilastutkinnonOpiskeluoikeudet,
+      KoskiSpecificSession.systemUser // To prevent health checks from polluting the audit log
+    ).contains(user)) {
       val operation = if (user.user.kansalainen && user.isUsersHuollettava(oid)) {
         KANSALAINEN_HUOLTAJA_OPISKELUOIKEUS_KATSOMINEN
       } else if (user.user.kansalainen) {
