@@ -245,10 +245,6 @@ class KoskiOppijaFacade(
       }
       result.right.map { (result: CreateOrUpdateResult) =>
         applicationLog(oppijaOid, opiskeluoikeus, result)
-        // TODO: TOR-1639 Toteuta YTR-opiskeluoikeuksien operaatioiden audit-lokitus. Luultavasti pitää tehdä joku keinotekoinen
-        //  käyttäjätunnus (myös oppijanumerorekisteriin), jonka oid:lla YTR-dataan tehtävät operaatiot logitetaan, vaikka käytännössä sillä
-        //  tunnuksella ei koskaan sisäänkirjautumista tapahdukaan. Ehkä kyseisen tunnuksen oid vaan konfiguraatiotiedostoon sitten?
-        //  systemUserTallennetutYlioppilastutkinnonOpiskeluoikeudet-käyttäjällä auditlogitus ei suoraan onnistu, koska hänellä ei ole oidia.
         opiskeluoikeus match {
           case _: YlioppilastutkinnonOpiskeluoikeus =>
             auditLogYtr(oppijaOid, result)
