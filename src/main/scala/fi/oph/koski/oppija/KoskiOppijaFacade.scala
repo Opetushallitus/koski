@@ -263,7 +263,6 @@ class KoskiOppijaFacade(
     val verb = result match {
       case updated: Updated =>
         opiskeluoikeus match {
-          // TODO: TOR-1639 Poista tämä turha haara, kun ylioppilastutkinnon opiskeluoikeudella on tilat konversiossa mukana
           case _:YlioppilastutkinnonOpiskeluoikeus =>
             "Päivitetty"
           case _ =>
