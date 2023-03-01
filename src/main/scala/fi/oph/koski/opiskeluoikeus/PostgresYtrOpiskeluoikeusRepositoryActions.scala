@@ -60,7 +60,6 @@ class PostgresYtrOpiskeluoikeusRepositoryActions(
     opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
     result: Either[HttpStatus, CreateOrUpdateResult]
   )(implicit user: KoskiSpecificSession): DBIOAction[Any, NoStream, Read with Write] = {
-    // TODO: TOR-1639 Pitäisikö jotain henkilötietoja synkata YTR-opiskeluoikeuden tallentamisen yhteydessä vai ei?
     DBIO.successful(Unit)
   }
 
