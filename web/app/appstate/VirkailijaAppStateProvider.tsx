@@ -15,7 +15,7 @@ export const VirkailijaAppStateProvider: React.FC<AppStateProviderProps> = (
   props
 ) => (
   <GlobalErrorProvider>
-    <UserProvider user={props.user}>
+    <UserProvider user={props.user} isKansalainen={false}>
       <KoodistoProvider>
         <OrganisaatioHierarkiaProvider>
           <PreferencesProvider>
