@@ -3,8 +3,8 @@ package fi.oph.koski.ytr.download
 import fi.oph.koski.TestEnvironment
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.{helsinginMedialukio, ressunLukio}
-import fi.oph.koski.schema.{Koodistokoodiviite, Organisaatiovahvistus, YlioppilasTutkinnonKoe, YlioppilaskokeenArviointi, YlioppilastutkinnonKokeenSuoritus, YlioppilastutkinnonOpiskeluoikeudenLisätiedot, YlioppilastutkinnonOpiskeluoikeudenTila, YlioppilastutkinnonOpiskeluoikeus, YlioppilastutkinnonSuoritus, YlioppilastutkinnonTutkintokerranLisätiedot, YlioppilastutkinnonTutkintokerta, YlioppilastutkinnonTutkintokokonaisuudenLisätiedot}
-import fi.oph.koski.ytr.MockYrtClient
+import fi.oph.koski.schema.{Koodistokoodiviite, Organisaatiovahvistus, YlioppilasTutkinnonKoe, YlioppilaskokeenArviointi, YlioppilastutkinnonKokeenSuoritus, YlioppilastutkinnonOpiskeluoikeudenLisätiedot, YlioppilastutkinnonOpiskeluoikeudenTila, YlioppilastutkinnonOpiskeluoikeus, YlioppilastutkinnonOpiskeluoikeusjakso, YlioppilastutkinnonSuoritus, YlioppilastutkinnonTutkintokerranLisätiedot, YlioppilastutkinnonTutkintokerta, YlioppilastutkinnonTutkintokokonaisuudenLisätiedot}
+import fi.oph.koski.ytr.{MockYrtClient, YtrConversionUtils}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -43,7 +43,12 @@ class YtrDownloadOppijaConverterSpec extends AnyFreeSpec with TestEnvironment wi
       lähdejärjestelmänId = None,
       oppilaitos = conversionUtils.ytlOppilaitos,
       koulutustoimija = Some(ytl),
-      tila = YlioppilastutkinnonOpiskeluoikeudenTila(opiskeluoikeusjaksot = List()),
+      tila = YlioppilastutkinnonOpiskeluoikeudenTila(opiskeluoikeusjaksot = List(
+        YlioppilastutkinnonOpiskeluoikeusjakso(
+          LocalDate.of(2015,11,30),
+          Koodistokoodiviite("valmistunut", "koskiopiskeluoikeudentila")
+        )
+      )),
       lisätiedot = Some(YlioppilastutkinnonOpiskeluoikeudenLisätiedot(Some(List(
         YlioppilastutkinnonTutkintokokonaisuudenLisätiedot(
           tunniste = 0,
