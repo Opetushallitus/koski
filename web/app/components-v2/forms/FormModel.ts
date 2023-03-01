@@ -4,7 +4,7 @@ import * as $ from 'optics-ts'
 import { Reducer, useCallback, useEffect, useMemo, useReducer } from 'react'
 import { ApiResponse } from '../../api-fetch'
 import { useGlobalErrors } from '../../appstate/globalErrors'
-import { useVirkailijaUser } from '../../appstate/user'
+import { useUser } from '../../appstate/user'
 import { t } from '../../i18n/i18n'
 import { Constraint } from '../../types/fi/oph/koski/typemodel/Constraint'
 import { tap, tapLeft } from '../../util/fp/either'
@@ -84,7 +84,7 @@ export const useForm = <O extends object>(
 ): FormModel<O> => {
   type FormModelProp<T extends keyof FormModel<O>> = FormModel<O>[T]
 
-  const user = useVirkailijaUser()
+  const user = useUser()
   const init = useMemo(
     () =>
       internalInitialState(

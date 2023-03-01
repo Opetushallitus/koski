@@ -1,7 +1,7 @@
 import React from 'react'
-import { useVirkailijaUser } from '../../appstate/user'
+import { useKansalainenUser, useVirkailijaUser } from '../../appstate/user'
 
 export const KansalainenOnly: React.FC<React.PropsWithChildren> = (props) => {
-  const user = useVirkailijaUser()
-  return user === null ? <>{props.children}</> : null
+  const user = useKansalainenUser()
+  return user ? <>{props.children}</> : null
 }

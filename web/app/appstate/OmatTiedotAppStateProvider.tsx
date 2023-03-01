@@ -1,12 +1,20 @@
-import { Observable } from 'baconjs'
 import React from 'react'
-import { UserWithAccessRights } from '../types/fi/oph/koski/koskiuser/UserWithAccessRights'
+import { useBaconProperty } from '../util/hooks'
+import { userP } from '../util/user'
 import { GlobalErrorProvider } from './globalErrors'
+import { UserProvider } from './user'
 
-export type OmatTiedotAppStateProviderProps = React.PropsWithChildren<{
-  userP: Observable<UserWithAccessRights>
-}>
+export type OmatTiedotAppStateProviderProps = React.PropsWithChildren
 
 export const OmatTiedotAppStateProvider: React.FC<
   OmatTiedotAppStateProviderProps
-> = (props) => <GlobalErrorProvider>{props.children}</GlobalErrorProvider>
+> = (props) => {
+  const user = useBaconProperty(userP)
+  return (
+    <GlobalErrorProvider>
+      <UserProvider user={user} isKansalainen>
+        {props.children}
+      </UserProvider>
+    </GlobalErrorProvider>
+  )
+}

@@ -11,6 +11,7 @@ import {
 import { päätasonSuoritusPath } from '../../util/optics'
 import { OpiskeluoikeusjaksoOf } from '../../util/schema'
 import { ItemOf } from '../../util/types'
+import { useConfirmUnload } from '../../util/useConfirmUnload'
 import { common, CommonPropsWithChildren } from '../CommonProps'
 import { Tab, Tabs } from '../controls/Tabs'
 import { FormField } from '../forms/FormField'
@@ -51,6 +52,8 @@ export type ActivePäätasonSuoritus<T extends Opiskeluoikeus> = {
 export const EditorContainer = <T extends Opiskeluoikeus>(
   props: EditorContainerProps<T>
 ) => {
+  useConfirmUnload(props.form.editMode && props.form.hasChanged)
+
   const opiskeluoikeudenTilaPath = useMemo(
     () => props.form.root.prop('tila'),
     [props.form]
