@@ -9,6 +9,7 @@ import { postNewOppija } from '../uusioppija/UusiOppija'
 import { reloadOppija } from '../virkailija/VirkailijaOppijaView'
 import { userP } from '../util/user'
 import Text from '../i18n/Text'
+import { t } from '../i18n/i18n'
 
 export default ({ oppijaOid, opiskeluoikeusTyypit, selectedIndex }) => {
   const addingAtom = Atom(false)
@@ -63,7 +64,7 @@ export default ({ oppijaOid, opiskeluoikeusTyypit, selectedIndex }) => {
                           key={opiskeluoikeusIndex}
                         >
                           <span className="koulutus">
-                            {modelTitle(opiskeluoikeus, 'suoritukset.0.tyyppi')}
+                            {koulutuksenNimi(opiskeluoikeus)}
                           </span>{' '}
                           {modelData(opiskeluoikeus, 'alkamispäivä') ? (
                             <span>
@@ -143,4 +144,26 @@ export default ({ oppijaOid, opiskeluoikeusTyypit, selectedIndex }) => {
       )}
     </ul>
   )
+}
+
+const koulutuksenNimi = (opiskeluoikeus) => {
+  const tyyppi = modelData(opiskeluoikeus, 'tyyppi.koodiarvo')
+  if (tyyppi === 'taiteenperusopetus') {
+    const oppimäärä = modelData(opiskeluoikeus, 'oppimäärä.koodiarvo')
+    const oppimääräStr =
+      t(
+        {
+          laajaoppimaara: 'Laajan oppimäärän suoritus',
+          yleinenoppimaara: 'Yleisen oppimäärän suoritus'
+        }[oppimäärä]
+      ) || modelTitle(opiskeluoikeus, 'oppimäärä')
+
+    const taiteenala = modelTitle(
+      opiskeluoikeus,
+      'suoritukset.0.koulutusmoduuli.taiteenala'
+    ).toLowerCase()
+
+    return `${oppimääräStr} (${taiteenala})`
+  }
+  return modelTitle(opiskeluoikeus, 'suoritukset.0.tyyppi')
 }
