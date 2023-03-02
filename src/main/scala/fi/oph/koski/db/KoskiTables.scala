@@ -172,10 +172,7 @@ object KoskiTables {
             Opiskeluoikeus.VERSIO_1,
             new Timestamp(0), // Will be replaced by db trigger (see V90__add_ytr_opiskeluoikeus_extra_triggers.sql)
             oppijaOid,
-            // TODO: TOR-1639: Toistaiseksi tallennetaan tietokantaan koulutustoimijan oid myös oppilaitokseksi,
-            //  jotta saadaan pidettyä jatkoa ajatellen taulut samanlaisina. Tietomallia muutetaan myöhemmin niin, että
-            //  myös JSON-datassa oppilaitokseksi tallentuu koulutustoimija
-            opiskeluoikeus.koulutustoimija.map(_.oid).get,
+            opiskeluoikeus.getOppilaitos.oid,
             opiskeluoikeus.koulutustoimija.map(_.oid),
             opiskeluoikeus.sisältyyOpiskeluoikeuteen.map(_.oid),
             opiskeluoikeus.sisältyyOpiskeluoikeuteen.map(_.oppilaitos.oid),
@@ -205,10 +202,7 @@ object KoskiTables {
             opiskeluoikeus.sisältyyOpiskeluoikeuteen.map(_.oppilaitos.oid),
             opiskeluoikeus.luokka,
             opiskeluoikeus.koulutustoimija.map(_.oid),
-            // TODO: TOR-1639: Toistaiseksi tallennetaan tietokantaan koulutustoimijan oid myös oppilaitokseksi,
-            //  jotta saadaan pidettyä jatkoa ajatellen taulut samanlaisina. Tietomallia muutetaan myöhemmin niin, että
-            //  myös JSON-datassa oppilaitokseksi tallentuu koulutustoimija
-            opiskeluoikeus.koulutustoimija.map(_.oid).get,
+            opiskeluoikeus.getOppilaitos.oid,
             opiskeluoikeus.mitätöity,
             Date.valueOf(ytrOo.keinotekoinenAlkamispäiväTutkintokerroista),
             opiskeluoikeus.päättymispäivä.map(Date.valueOf),

@@ -38,37 +38,6 @@ class PostgresKoskiOpiskeluoikeusRepositoryActions(
     errorRepository.save(opiskeluoikeus, historia, diff)
   }
 
-  protected def findByIdentifierAction(identifier: OpiskeluoikeusIdentifier)(implicit user: KoskiSpecificSession): dbio.DBIOAction[Either[HttpStatus, List[KoskiOpiskeluoikeusRow]], NoStream, Read] = {
-    identifier match {
-      case OpiskeluoikeusByOid(oid) => KoskiOpiskeluOikeudetWithAccessCheck.filter(_.oid === oid).result.map { rows =>
-        rows.headOption match {
-          case Some(oikeus) => Right(List(oikeus))
-          case None => Left(KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia("Opiskeluoikeutta " + oid + " ei löydy tai käyttäjällä ei ole oikeutta sen katseluun"))
-        }
-      }
-
-      case OppijaOidJaLähdejärjestelmänId(oppijaOid, lähdejärjestelmäId, oppilaitosOid) =>
-        findOpiskeluoikeudetWithSlaves(oppijaOid).map(_.filter { row =>
-          row.toOpiskeluoikeusUnsafe.lähdejärjestelmänId.contains(lähdejärjestelmäId) && (oppilaitosOid.isEmpty || oppilaitosOid.contains(row.oppilaitosOid))
-        }).map(_.toList).map(Right(_))
-
-      case i:OppijaOidOrganisaatioJaTyyppi =>
-        findOpiskeluoikeudetWithSlaves(i.oppijaOid).map(_.filter { row =>
-          val opiskeluoikeus = row.toOpiskeluoikeusUnsafe
-          OppijaOidOrganisaatioJaTyyppi(i.oppijaOid,
-            opiskeluoikeus.getOppilaitos.oid,
-            opiskeluoikeus.koulutustoimija.map(_.oid),
-            opiskeluoikeus.tyyppi.koodiarvo,
-            opiskeluoikeus.suoritukset.headOption.map(_.koulutusmoduuli.tunniste.koodiarvo),
-            opiskeluoikeus.suoritukset.headOption.map(_.tyyppi.koodiarvo),
-            opiskeluoikeus.lähdejärjestelmänId) == identifier
-        }).map(_.toList).map(Right(_))
-
-      case _ =>
-        throw new InternalError("Tuntematon identifier-tyyppi")
-    }
-  }
-
   protected def syncAction(
     oppijaOid: PossiblyUnverifiedHenkilöOid,
     opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,

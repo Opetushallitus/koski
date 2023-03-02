@@ -37,8 +37,6 @@ trait PostgresOpiskeluoikeusRepositoryActions[OOROW <: OpiskeluoikeusRow, OOTABL
   protected def Opiskeluoikeudet: TableQuery[OOTABLE]
   protected def OpiskeluOikeudetWithAccessCheck(implicit user: KoskiSpecificSession): Query[OOTABLE, OOROW, Seq]
 
-  protected def findByIdentifierAction(identifier: OpiskeluoikeusIdentifier)(implicit user: KoskiSpecificSession): dbio.DBIOAction[Either[HttpStatus, List[OOROW]], NoStream, Read]
-
   def findByOppijaOids(oids: List[String])(implicit user: KoskiSpecificSession): Seq[Opiskeluoikeus] = {
     runDbSync(findByOppijaOidsAction(oids).map(rows => rows.sortBy(_.id).map(_.toOpiskeluoikeusUnsafe)))
   }
@@ -120,6 +118,34 @@ trait PostgresOpiskeluoikeusRepositoryActions[OOROW <: OpiskeluoikeusRow, OOTABL
       .flatMap { rows: Either[HttpStatus, List[OOROW]] =>
         createOrUpdateActionBasedOnDbResult(oppijaOid, opiskeluoikeus, allowUpdate, allowDeleteCompleted, rows)
       }
+  }
+
+  private def findByIdentifierAction(identifier: OpiskeluoikeusIdentifier)(implicit user: KoskiSpecificSession): dbio.DBIOAction[Either[HttpStatus, List[OOROW]], NoStream, Read] = {
+    identifier match {
+      case OpiskeluoikeusByOid(oid) => OpiskeluOikeudetWithAccessCheck.filter(_.oid === oid).result.map { rows =>
+        rows.headOption match {
+          case Some(oikeus) => Right(List(oikeus))
+          case None => Left(KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia("Opiskeluoikeutta " + oid + " ei löydy tai käyttäjällä ei ole oikeutta sen katseluun"))
+        }
+      }
+
+      case OppijaOidJaLähdejärjestelmänId(oppijaOid, lähdejärjestelmäId, oppilaitosOid) =>
+        findOpiskeluoikeudetWithSlaves(oppijaOid).map(_.filter { row =>
+          row.toOpiskeluoikeusUnsafe.lähdejärjestelmänId.contains(lähdejärjestelmäId) && (oppilaitosOid.isEmpty || oppilaitosOid.contains(row.oppilaitosOid))
+        }).map(_.toList).map(Right(_))
+
+      case i:OppijaOidOrganisaatioJaTyyppi =>
+        findOpiskeluoikeudetWithSlaves(i.oppijaOid).map(_.filter { row =>
+          val opiskeluoikeus = row.toOpiskeluoikeusUnsafe
+          OppijaOidOrganisaatioJaTyyppi(i.oppijaOid,
+            opiskeluoikeus.getOppilaitos.oid,
+            opiskeluoikeus.koulutustoimija.map(_.oid),
+            opiskeluoikeus.tyyppi.koodiarvo,
+            opiskeluoikeus.suoritukset.headOption.map(_.koulutusmoduuli.tunniste.koodiarvo),
+            opiskeluoikeus.suoritukset.headOption.map(_.tyyppi.koodiarvo),
+            opiskeluoikeus.lähdejärjestelmänId) == identifier
+        }).map(_.toList).map(Right(_))
+    }
   }
 
   protected def createOrUpdateActionBasedOnDbResult(

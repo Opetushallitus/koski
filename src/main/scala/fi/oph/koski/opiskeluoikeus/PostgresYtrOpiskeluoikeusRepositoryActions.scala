@@ -36,25 +36,6 @@ class PostgresYtrOpiskeluoikeusRepositoryActions(
     errorRepository.saveYtr(opiskeluoikeus, historia, diff)
   }
 
-  protected def findByIdentifierAction(identifier: OpiskeluoikeusIdentifier)(implicit user: KoskiSpecificSession): dbio.DBIOAction[Either[HttpStatus, List[YtrOpiskeluoikeusRow]], NoStream, Read] = {
-    identifier match {
-      case i:OppijaOidKoulutustoimijaJaTyyppi =>
-        findOpiskeluoikeudetWithSlaves(i.oppijaOid).map(_.filter { row =>
-          val opiskeluoikeus = row.toOpiskeluoikeusUnsafe
-          OppijaOidKoulutustoimijaJaTyyppi(
-            i.oppijaOid,
-            opiskeluoikeus.koulutustoimija.map(_.oid).get,
-            opiskeluoikeus.tyyppi.koodiarvo,
-            opiskeluoikeus.suoritukset.headOption.map(_.koulutusmoduuli.tunniste.koodiarvo),
-            opiskeluoikeus.suoritukset.headOption.map(_.tyyppi.koodiarvo),
-            opiskeluoikeus.lähdejärjestelmänId) == identifier
-        }).map(_.toList).map(Right(_))
-
-      case _ =>
-        throw new InternalError("Tuntematon identifier-tyyppi")
-    }
-  }
-
   protected def syncAction(
     oppijaOid: PossiblyUnverifiedHenkilöOid,
     opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
