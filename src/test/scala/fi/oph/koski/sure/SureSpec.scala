@@ -1,7 +1,7 @@
 package fi.oph.koski.sure
 
 import fi.oph.koski.api.{OpiskeluoikeudenMitätöintiJaPoistoTestMethods, OpiskeluoikeusTestMethodsAmmatillinen}
-import fi.oph.koski.db.KoskiTables.OpiskeluOikeudet
+import fi.oph.koski.db.KoskiTables.KoskiOpiskeluOikeudet
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.documentation.AmmatillinenExampleData
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
@@ -146,7 +146,7 @@ class SureSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMet
       "Kysely kursorilla palauttaa oikeat oidit" in {
         val cursor = muuttuneetAikaleimalla("2015-01-01T00:00:00+02:00")(extractCursor)
         val res = muuttuneetKursorilla(cursor)
-        val expectedOids = runDbSync(OpiskeluOikeudet.sortBy(_.aikaleima).map(_.oppijaOid).take(5).result)
+        val expectedOids = runDbSync(KoskiOpiskeluOikeudet.sortBy(_.aikaleima).map(_.oppijaOid).take(5).result)
         res.result should contain theSameElementsAs(expectedOids)
         res.mayHaveMore should equal(true)
       }
@@ -157,7 +157,7 @@ class SureSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMet
         val pageCount = res.size
         // huom, kummassakaan näissä ei ole ".distinct"
         val oids = res.flatMap(_.result).sorted
-        val expectedOids = runDbSync(OpiskeluOikeudet.map(_.oppijaOid).result).sorted
+        val expectedOids = runDbSync(KoskiOpiskeluOikeudet.map(_.oppijaOid).result).sorted
         pageCount should be > 5
         oids should contain theSameElementsAs(expectedOids)
       }
@@ -167,7 +167,7 @@ class SureSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMet
         val res1 = muuttuneetKursorilla(cursor, pageSize = 1000)
 
         val muuttuneetOidit = res1.result.distinct.take(3)
-        runDbSync(OpiskeluOikeudet.filter(_.oppijaOid inSetBind muuttuneetOidit).map(_.luokka).update(Some("X")))
+        runDbSync(KoskiOpiskeluOikeudet.filter(_.oppijaOid inSetBind muuttuneetOidit).map(_.luokka).update(Some("X")))
         val res2 = muuttuneetKursorilla(res1.nextCursor, pageSize = 1000)
         //res2.result.distinct should contain allElementsOf(muuttuneetOidit)
         res2.result.distinct should contain theSameElementsAs(muuttuneetOidit)
@@ -189,7 +189,7 @@ class SureSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMet
         Thread.sleep(2000)
         val muuttuneetOidit1 = kaikkiOidit.take(3)
         val muuttuneetOidit2 = kaikkiOidit.drop(3).take(1)
-        runDbSync(OpiskeluOikeudet.filter(_.oppijaOid inSetBind muuttuneetOidit1).map(_.luokka).update(Some("X")))
+        runDbSync(KoskiOpiskeluOikeudet.filter(_.oppijaOid inSetBind muuttuneetOidit1).map(_.luokka).update(Some("X")))
 
         // Ensimmäinen haku palauttaa kaikki oidit
         val res1 = muuttuneetKursorilla(cursor, pageSize = 1000, recentPageOverlapTestsOnly = 2)
@@ -200,7 +200,7 @@ class SureSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMet
         res2.result.distinct should contain theSameElementsAs(muuttuneetOidit1)
 
         // ...ja jos siellä on vielä uusia muuttuneita, niin myös ne:
-        runDbSync(OpiskeluOikeudet.filter(_.oppijaOid inSetBind muuttuneetOidit2).map(_.luokka).update(Some("X")))
+        runDbSync(KoskiOpiskeluOikeudet.filter(_.oppijaOid inSetBind muuttuneetOidit2).map(_.luokka).update(Some("X")))
         // huom, tässä tarkoituksella "res1.nextCursor" eikä res2
         val res3 = muuttuneetKursorilla(res1.nextCursor, pageSize = 1000, recentPageOverlapTestsOnly = 2)
         res3.result.distinct should contain theSameElementsAs(muuttuneetOidit1 ++ muuttuneetOidit2)
@@ -208,12 +208,12 @@ class SureSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMet
 
       "Kursorilla iterointi palauttaa kaikki oidit myös jos niillä on sama aikaleima" in {
         val cursor = muuttuneetAikaleimalla("2015-01-01T00:00:00+02:00")(extractCursor)
-        runDbSync(OpiskeluOikeudet.map(_.luokka).update(Some("X")))
+        runDbSync(KoskiOpiskeluOikeudet.map(_.luokka).update(Some("X")))
         val res = muuttuneetKursorillaIteroi(cursor)
         val pageCount = res.size
         // huom, kummassakaan näissä ei ole ".distinct"
         val oids = res.flatMap(_.result).sorted
-        val expectedOids = runDbSync(OpiskeluOikeudet.map(_.oppijaOid).result).sorted
+        val expectedOids = runDbSync(KoskiOpiskeluOikeudet.map(_.oppijaOid).result).sorted
         pageCount should be > 5
         oids should contain theSameElementsAs(expectedOids)
       }
@@ -223,7 +223,7 @@ class SureSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMet
         val res1 = muuttuneetKursorilla(cursor, pageSize = 1000)
 
         val oppijaOid = KoskiSpecificMockOppijat.ibFinal.oid
-        val opiskeluoikeusOid = runDbSync(OpiskeluOikeudet.filter(_.oppijaOid === oppijaOid).map(_.oid).result).head
+        val opiskeluoikeusOid = runDbSync(KoskiOpiskeluOikeudet.filter(_.oppijaOid === oppijaOid).map(_.oid).result).head
         delete(s"api/opiskeluoikeus/$opiskeluoikeusOid", headers = authHeaders(MockUsers.paakayttaja)) {
           verifyResponseStatusOk()
         }
@@ -239,7 +239,7 @@ class SureSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMet
         val res1 = muuttuneetKursorilla(cursor, pageSize = 1000)
 
         val oppijaOid = KoskiSpecificMockOppijat.vapaaSivistystyöVapaatavoitteinenKoulutus.oid
-        val opiskeluoikeusOid = runDbSync(OpiskeluOikeudet.filter(_.oppijaOid === oppijaOid).map(_.oid).result).head
+        val opiskeluoikeusOid = runDbSync(KoskiOpiskeluOikeudet.filter(_.oppijaOid === oppijaOid).map(_.oid).result).head
 
         poistaOpiskeluoikeus(oppijaOid, opiskeluoikeusOid)
 

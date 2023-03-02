@@ -2,7 +2,7 @@ package fi.oph.koski.oppija
 
 import com.typesafe.config.Config
 import fi.oph.koski.henkilo._
-import fi.oph.koski.history.{OpiskeluoikeusHistoryRepository, YtrOpiskeluoikeusHistoryRepository}
+import fi.oph.koski.history.{KoskiOpiskeluoikeusHistoryRepository, YtrOpiskeluoikeusHistoryRepository}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.KoskiAuditLogMessageField.{opiskeluoikeusId, opiskeluoikeusOid, opiskeluoikeusVersio, oppijaHenkiloOid}
@@ -18,8 +18,8 @@ import java.time.LocalDate
 class KoskiOppijaFacade(
   henkilöRepository: HenkilöRepository,
   opiskeluoikeusRepository: CompositeOpiskeluoikeusRepository,
-  ytrDownloadedOpiskeluoikeusRepository: KoskiYtrOpiskeluoikeusRepository,
-  historyRepository: OpiskeluoikeusHistoryRepository,
+  ytrDownloadedOpiskeluoikeusRepository: YtrSavedOpiskeluoikeusRepository,
+  historyRepository: KoskiOpiskeluoikeusHistoryRepository,
   ytrHistoryRepository: YtrOpiskeluoikeusHistoryRepository,
   globaaliValidator: KoskiGlobaaliValidator,
   config: Config,
@@ -245,10 +245,6 @@ class KoskiOppijaFacade(
       }
       result.right.map { (result: CreateOrUpdateResult) =>
         applicationLog(oppijaOid, opiskeluoikeus, result)
-        // TODO: TOR-1639 Toteuta YTR-opiskeluoikeuksien operaatioiden audit-lokitus. Luultavasti pitää tehdä joku keinotekoinen
-        //  käyttäjätunnus (myös oppijanumerorekisteriin), jonka oid:lla YTR-dataan tehtävät operaatiot logitetaan, vaikka käytännössä sillä
-        //  tunnuksella ei koskaan sisäänkirjautumista tapahdukaan. Ehkä kyseisen tunnuksen oid vaan konfiguraatiotiedostoon sitten?
-        //  systemUserTallennetutYlioppilastutkinnonOpiskeluoikeudet-käyttäjällä auditlogitus ei suoraan onnistu, koska hänellä ei ole oidia.
         opiskeluoikeus match {
           case _: YlioppilastutkinnonOpiskeluoikeus =>
             auditLogYtr(oppijaOid, result)
@@ -267,7 +263,6 @@ class KoskiOppijaFacade(
     val verb = result match {
       case updated: Updated =>
         opiskeluoikeus match {
-          // TODO: TOR-1639 Poista tämä turha haara, kun ylioppilastutkinnon opiskeluoikeudella on tilat konversiossa mukana
           case _:YlioppilastutkinnonOpiskeluoikeus =>
             "Päivitetty"
           case _ =>
@@ -438,9 +433,12 @@ class KoskiOppijaFacade(
   )
 
   private def writeViewingEventToAuditLog(user: KoskiSpecificSession, oid: Henkilö.Oid): Unit = {
-    // TODO: TOR-1639 Toteuta YTR-opiskeluoikeuksien operaatioiden audit-lokitus halutulla tavalla. Voi olla, että näistä katseluista ei toistaiseksi
-    //  tosin tarvitse välittää, jos/kun niitä tehdään vain debug-tarkotuksissa. Mutta jotenkin pitää debuggaus-tutkimisetkin audit-lokittaa?
-    if (!List(KoskiSpecificSession.systemUserTallennetutYlioppilastutkinnonOpiskeluoikeudet, KoskiSpecificSession.systemUser).contains(user)) { // To prevent health checks from polluting the audit log
+    if (!List(
+      // Tallennettujen YTR-operaatioiden katsomiset tehdään tällä systeemikäyttäjätunnuksella, joten auditlokitus tehdään
+      // servletissä erikseen sitä kutsuneen käyttäjän nimissä:
+      KoskiSpecificSession.systemUserTallennetutYlioppilastutkinnonOpiskeluoikeudet,
+      KoskiSpecificSession.systemUser // To prevent health checks from polluting the audit log
+    ).contains(user)) {
       val operation = if (user.user.kansalainen && user.isUsersHuollettava(oid)) {
         KANSALAINEN_HUOLTAJA_OPISKELUOIKEUS_KATSOMINEN
       } else if (user.user.kansalainen) {

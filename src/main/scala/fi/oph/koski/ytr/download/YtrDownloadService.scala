@@ -164,62 +164,63 @@ class YtrDownloadService(
       .subscribeOn(scheduler)
       .subscribe(
         onNext = oppija => {
-          implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUserTallennetutYlioppilastutkinnonOpiskeluoikeudet
-          implicit val accessType: AccessType.Value = AccessType.write
+          timed("handleSingleOppija", thresholdMs = 1) {
+            implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUserTallennetutYlioppilastutkinnonOpiskeluoikeudet
+            implicit val accessType: AccessType.Value = AccessType.write
 
-          // TODO: TOR-1639 Kunhan tätä on testattu try-catchien kanssa tuotannossa tarpeeksi, siisti koodi siten, että mahdolliset poikkeukset saa valua
-          //  ylemmäksikin. Pitää myös miettiä silloin, onko ok, että yksittäisiä failaavia oppijoita skipataan, kuten koodi nyt tekee.
-          try {
-            val koskiOpiskeluoikeus =
-              timed("convert", thresholdMs = 1) {
-                oppijaConverter.convertOppijastaOpiskeluoikeus(oppija)
-              }
-
-            koskiOpiskeluoikeus match {
-              case Some(ytrOo) =>
-                val henkilö = UusiHenkilö(
-                  hetu = oppija.ssn,
-                  etunimet = oppija.firstNames,
-                  sukunimi = oppija.lastName,
-                  kutsumanimi = None
-                )
-
-                try {
-                  val result =
-                    timed("createOrUpdate", thresholdMs = 1) {
-                      createOrUpdate(henkilö, ytrOo)
-                    }
-
-                  result match {
-                    case Left(error) =>
-                      logger.warn(s"YTR-datan tallennus epäonnistui: ${error.errorString.getOrElse("-")}")
-                    case _ =>
-                  }
-                } catch {
-                  case e: Throwable => logger.warn(e)(s"YTR-datan tallennus epäonnistui: ${e.getMessage}")
+            // TODO: TOR-1639 Kunhan tätä on testattu try-catchien kanssa tuotannossa tarpeeksi, siisti koodi siten, että mahdolliset poikkeukset saa valua
+            //  ylemmäksikin. Pitää myös miettiä silloin, onko ok, että yksittäisiä failaavia oppijoita skipataan, kuten koodi nyt tekee.
+            try {
+              val koskiOpiskeluoikeus =
+                timed("convert", thresholdMs = 1) {
+                  oppijaConverter.convertOppijastaOpiskeluoikeus(oppija)
                 }
 
-              case _ => logger.info(s"YTR-datan konversio palautti tyhjän opiskeluoikeuden")
+              koskiOpiskeluoikeus match {
+                case Some(ytrOo) =>
+                  val henkilö = UusiHenkilö(
+                    hetu = oppija.ssn,
+                    etunimet = oppija.firstNames,
+                    sukunimi = oppija.lastName,
+                    kutsumanimi = None
+                  )
+
+                  try {
+                    val result =
+                      timed("createOrUpdate", thresholdMs = 1) {
+                        createOrUpdate(henkilö, ytrOo)
+                      }
+
+                    result match {
+                      case Left(error) =>
+                        logger.warn(s"YTR-datan tallennus epäonnistui: ${error.errorString.getOrElse("-")}")
+                      case _ =>
+                    }
+                  } catch {
+                    case e: Throwable => logger.warn(e)(s"YTR-datan tallennus epäonnistui: ${e.getMessage}")
+                  }
+
+                case _ => logger.info(s"YTR-datan konversio palautti tyhjän opiskeluoikeuden")
+              }
+            } catch {
+              case e: Throwable => logger.info(s"YTR-datan konversio epäonnistui: ${e.getMessage}")
             }
-          } catch {
-            case e: Throwable => logger.info(s"YTR-datan konversio epäonnistui: ${e.getMessage}")
-          }
 
-          // TODO: TOR-1639 Ajastus tähän: serialisointi + tämä ylimääräinen tallennus voi olla yllättävänkin hidasta
-          timed("tallennaAlkuperäinenJson", thresholdMs = 1) {
-            tallennaAlkuperäinenJson(oppija)
-          }
+            timed("tallennaAlkuperäinenJson", thresholdMs = 1) {
+              tallennaAlkuperäinenJson(oppija)
+            }
 
-          val birthMonth = oppija.birthMonth
-          if (latestHandledBirthMonth != birthMonth) {
-            logger.info(s"Handled first oppija of birth month ${birthMonth}. Previously handled birth month ${latestHandledBirthMonth} had ${latestHandledBirthMonthCount} oppijas.")
-            latestHandledBirthMonth = birthMonth
-            latestHandledBirthMonthCount = 0
-          }
-          latestHandledBirthMonthCount = latestHandledBirthMonthCount + 1
+            val birthMonth = oppija.birthMonth
+            if (latestHandledBirthMonth != birthMonth) {
+              logger.info(s"Handled first oppija of birth month ${birthMonth}. Previously handled birth month ${latestHandledBirthMonth} had ${latestHandledBirthMonthCount} oppijas.")
+              latestHandledBirthMonth = birthMonth
+              latestHandledBirthMonthCount = 0
+            }
+            latestHandledBirthMonthCount = latestHandledBirthMonthCount + 1
 
-          if (extraSleepPerStudentInMs > 0) {
-            Thread.sleep(extraSleepPerStudentInMs)
+            if (extraSleepPerStudentInMs > 0) {
+              Thread.sleep(extraSleepPerStudentInMs)
+            }
           }
         },
         onError = e => {

@@ -1,13 +1,11 @@
 package fi.oph.koski.history
 
 import java.sql.Timestamp
-
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import com.github.fge.jsonpatch.JsonPatch
-import fi.oph.koski.db.KoskiDatabase._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.db.KoskiTables.OpiskeluoikeusTable.readAsOpiskeluoikeus
+import fi.oph.koski.db.KoskiTables.KoskiOpiskeluoikeusTable.readAsOpiskeluoikeus
 import fi.oph.koski.db.KoskiTables._
 import fi.oph.koski.db._
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
@@ -21,10 +19,15 @@ import org.json4s.jackson.JsonMethods
 import slick.dbio.DBIOAction
 import slick.dbio.Effect.Write
 
-case class OpiskeluoikeusHistoryRepository(db: DB) extends DatabaseExecutionContext with QueryMethods with Logging with JsonMethods {
-  def findByOpiskeluoikeusOid(oid: String, maxVersion: Int = Int.MaxValue)(implicit user: KoskiSpecificSession): Option[List[OpiskeluoikeusHistoryPatch]] = {
-    runDbSync(findByOpiskeluoikeusOidAction(oid, maxVersion).map(_.map(_.patches)))
-  }
+trait OpiskeluoikeusHistoryRepository[HISTORYTABLE <: OpiskeluoikeusHistoryTable, OOROW <: OpiskeluoikeusRow, OOTABLE <: OpiskeluoikeusTable[OOROW]]
+  extends DatabaseExecutionContext
+    with QueryMethods
+    with JsonMethods
+    with Logging {
+  def db: DB
+
+  protected def OpiskeluoikeusHistoria: TableQuery[HISTORYTABLE]
+  protected def OpiskeluOikeudetWithAccessCheck(implicit user: KoskiSpecificSession): Query[OOTABLE, OOROW, Seq]
 
   def findByOpiskeluoikeusOidAction(oid: String, maxVersion: Int)(implicit user: KoskiSpecificSession): DBIOAction[Option[OpiskeluoikeusHistory], NoStream, Effect.Read] = {
     OpiskeluOikeudetWithAccessCheck.filter(_.oid === oid)
@@ -36,6 +39,10 @@ case class OpiskeluoikeusHistoryRepository(db: DB) extends DatabaseExecutionCont
         val diffs = result.map(toOpiskeluoikeusHistory).toList
         optionalList(diffs).map(patches => OpiskeluoikeusHistory(oid, maxVersion, patches))
       }
+  }
+
+  def findByOpiskeluoikeusOid(oid: String, maxVersion: Int = Int.MaxValue)(implicit user: KoskiSpecificSession): Option[List[OpiskeluoikeusHistoryPatch]] = {
+    runDbSync(findByOpiskeluoikeusOidAction(oid, maxVersion).map(_.map(_.patches)))
   }
 
   def findVersion(oid: String, version: Int)(implicit user: KoskiSpecificSession): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = {
@@ -62,6 +69,17 @@ case class OpiskeluoikeusHistoryRepository(db: DB) extends DatabaseExecutionCont
     kayttajaOid = row._2.kayttajaOid,
     muutos = row._2.muutos
   )
+}
+
+case class KoskiOpiskeluoikeusHistoryRepository(db: DB) extends OpiskeluoikeusHistoryRepository[KoskiOpiskeluoikeusHistoryTable, KoskiOpiskeluoikeusRow, KoskiOpiskeluoikeusTable] {
+  protected def OpiskeluoikeusHistoria = KoskiOpiskeluoikeusHistoria
+  protected def OpiskeluOikeudetWithAccessCheck(implicit user: KoskiSpecificSession) = KoskiOpiskeluOikeudetWithAccessCheck
+}
+
+case class YtrOpiskeluoikeusHistoryRepository(db: DB)
+  extends OpiskeluoikeusHistoryRepository[YtrOpiskeluoikeusHistoryTable, YtrOpiskeluoikeusRow, YtrOpiskeluoikeusTable] {
+  protected def OpiskeluoikeusHistoria = YtrOpiskeluoikeusHistoria
+  protected def OpiskeluOikeudetWithAccessCheck(implicit user: KoskiSpecificSession) = YtrOpiskeluOikeudetWithAccessCheck
 }
 
 // TODO: use LocalDateTime instead of Timestamp for consistency with KoskeenTallennettavaOpiskeluoikeus

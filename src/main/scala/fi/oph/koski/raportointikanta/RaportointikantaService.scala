@@ -2,7 +2,7 @@ package fi.oph.koski.raportointikanta
 
 import fi.oph.koski.cloudwatch.CloudWatchMetricsService
 import fi.oph.koski.config.{Environment, KoskiApplication}
-import fi.oph.koski.db.{OpiskeluoikeusRow, RaportointiGenerointiDatabaseConfig}
+import fi.oph.koski.db.{KoskiOpiskeluoikeusRow, RaportointiGenerointiDatabaseConfig}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.PäivitetytOpiskeluoikeudetJonoService
@@ -23,7 +23,7 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
     scheduler: Scheduler = defaultScheduler,
     onEnd: () => Unit = () => (),
     pageSize: Int = OpiskeluoikeusLoader.DefaultBatchSize,
-    onAfterPage: (Int, Seq[OpiskeluoikeusRow]) => Unit = (_, _) => (),
+    onAfterPage: (Int, Seq[KoskiOpiskeluoikeusRow]) => Unit = (_, _) => (),
     skipUnchangedData: Boolean = false,
   ): Boolean = {
     if (isLoading && !force) {
@@ -65,7 +65,7 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
     db: RaportointiDatabase,
     update: Option[RaportointiDatabaseUpdate],
     pageSize: Int,
-    onAfterPage: (Int, Seq[OpiskeluoikeusRow]) => Unit
+    onAfterPage: (Int, Seq[KoskiOpiskeluoikeusRow]) => Unit
   ): Observable[LoadResult] = {
     // Ensure that nobody uses koskiSession implicitely
     implicit val systemUser = KoskiSpecificSession.systemUser
@@ -125,7 +125,7 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
     scheduler: Scheduler,
     onEnd: () => Unit,
     pageSize: Int,
-    onAfterPage: (Int, Seq[OpiskeluoikeusRow]) => Unit
+    onAfterPage: (Int, Seq[KoskiOpiskeluoikeusRow]) => Unit
   ) = {
     val startTime = ZonedDateTime.now()
     update match {

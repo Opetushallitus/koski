@@ -1,9 +1,9 @@
 package fi.oph.koski.opiskeluoikeus
 
-import fi.oph.koski.db.KoskiTables.OpiskeluOikeudetWithAccessCheck
+import fi.oph.koski.db.KoskiTables.KoskiOpiskeluOikeudetWithAccessCheck
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.{DatabaseExecutionContext, KoskiTables, PoistettuOpiskeluoikeusRow}
-import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
+import fi.oph.koski.history.KoskiOpiskeluoikeusHistoryRepository
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeus}
 import fi.oph.koski.schema.Opiskeluoikeus.Versionumero
@@ -41,18 +41,18 @@ object OpiskeluoikeusPoistoUtils extends DatabaseExecutionContext {
     oppijaOid: String,
     mitätöity: Boolean,
     aiemminPoistettuRivi: Option[PoistettuOpiskeluoikeusRow],
-    historyRepository: OpiskeluoikeusHistoryRepository
+    historyRepository: KoskiOpiskeluoikeusHistoryRepository
   ): dbio.DBIOAction[Unit, NoStream, Write with Effect.Transactional] = {
     val tallennettavaOpiskeluoikeus = oo.withSuoritukset(oo.suoritukset.filter(_.tyyppi.koodiarvo != suorituksenTyyppi)) match {
       case k: KoskeenTallennettavaOpiskeluoikeus => k
     }
 
-    val updatedValues @ (newData, _, _, _, _, _, _, _, _, _, _) = KoskiTables.OpiskeluoikeusTable.updatedFieldValues(tallennettavaOpiskeluoikeus, versionumero)
+    val updatedValues @ (newData, _, _, _, _, _, _, _, _, _, _) = KoskiTables.KoskiOpiskeluoikeusTable.updatedFieldValues(tallennettavaOpiskeluoikeus, versionumero)
     val diff = JArray(List(JObject("op" -> JString("add"), "path" -> JString(""), "value" -> newData)))
 
     DBIO.seq((
       List(
-        OpiskeluOikeudetWithAccessCheck(KoskiSpecificSession.systemUser).filter(_.id === opiskeluoikeusId).map(_.updateableFields).update(updatedValues),
+        KoskiOpiskeluOikeudetWithAccessCheck(KoskiSpecificSession.systemUser).filter(_.id === opiskeluoikeusId).map(_.updateableFields).update(updatedValues),
         poistettujenOpiskeluoikeuksienTauluunLisäämisenQuery(opiskeluoikeusOid, oo, oppijaOid, mitätöity, Some(suorituksenTyyppi), aiemminPoistettuRivi),
         opiskeluoikeudenHistorianPoistonQuery(opiskeluoikeusId),
       ) ++ Range.inclusive(1, versionumero).map(v => historyRepository.createAction(opiskeluoikeusId, v, oppijaOid, diff)).toList): _*
@@ -60,7 +60,7 @@ object OpiskeluoikeusPoistoUtils extends DatabaseExecutionContext {
   }
 
   private def opiskeluoikeudenPoistonQuery(oid: String, versionumero: Versionumero): dbio.DBIOAction[Int, NoStream, Write] = {
-    KoskiTables.OpiskeluOikeudet.filter(_.oid === oid)
+    KoskiTables.KoskiOpiskeluOikeudet.filter(_.oid === oid)
       .map(_.updateableFieldsPoisto)
       .update(
         (JObject.apply(), versionumero, None, None, None, None, "", true, "", Date.valueOf(LocalDate.now()), None, List(), true)
@@ -68,7 +68,7 @@ object OpiskeluoikeusPoistoUtils extends DatabaseExecutionContext {
   }
 
   private def opiskeluoikeudenHistorianPoistonQuery(id: Int): dbio.DBIOAction[Int, NoStream, Write] = {
-    KoskiTables.OpiskeluoikeusHistoria.filter(_.opiskeluoikeusId === id).delete
+    KoskiTables.KoskiOpiskeluoikeusHistoria.filter(_.opiskeluoikeusId === id).delete
   }
 
   private def poistettujenOpiskeluoikeuksienTauluunLisäämisenQuery(

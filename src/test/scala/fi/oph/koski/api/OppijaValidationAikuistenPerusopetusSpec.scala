@@ -1,6 +1,6 @@
 package fi.oph.koski.api
 
-import fi.oph.koski.db.KoskiTables.OpiskeluOikeudetWithAccessCheck
+import fi.oph.koski.db.KoskiTables.KoskiOpiskeluOikeudetWithAccessCheck
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus
 import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.{aikuistenPerusopetuksenAlkuvaiheenSuoritus, oppiaineidenSuoritukset2015, oppiaineidenSuoritukset2017}
@@ -262,5 +262,5 @@ class OppijaValidationAikuistenPerusopetusSpec
   }.asInstanceOf[AikuistenPerusopetuksenOpiskeluoikeus]
 
   private def opiskeluoikeusTietokannasta(opiskeluoikeusOid: String) =
-    runDbSync(OpiskeluOikeudetWithAccessCheck(systemUser).filter(_.oid === opiskeluoikeusOid).map(o => o).result).head
+    runDbSync(KoskiOpiskeluOikeudetWithAccessCheck(systemUser).filter(_.oid === opiskeluoikeusOid).map(o => o).result).head
 }

@@ -1,7 +1,7 @@
 package fi.oph.koski.api
 
-import fi.oph.koski.db.KoskiTables.OpiskeluOikeudet
-import fi.oph.koski.db.OpiskeluoikeusRow
+import fi.oph.koski.db.KoskiTables.KoskiOpiskeluOikeudet
+import fi.oph.koski.db.KoskiOpiskeluoikeusRow
 import fi.oph.koski.{DatabaseTestMethods, KoskiApplicationForTests}
 import fi.oph.koski.fixture.KoskiSpecificDatabaseFixtureCreator
 import org.scalatest.matchers.should.Matchers
@@ -11,8 +11,8 @@ import fi.oph.koski.koskiuser.UserWithPassword
 import fi.oph.koski.util.Wait
 
 trait OpiskeluoikeudenMitätöintiJaPoistoTestMethods extends HttpSpecification with DatabaseTestMethods with Matchers {
-  def ensimmäinenMitätöitävissäolevaOpiskeluoikeusIdJärjestyksessä: OpiskeluoikeusRow = runDbSync(
-    OpiskeluOikeudet.filterNot(_.mitätöity).sortBy(_.id).result
+  def ensimmäinenMitätöitävissäolevaOpiskeluoikeusIdJärjestyksessä: KoskiOpiskeluoikeusRow = runDbSync(
+    KoskiOpiskeluOikeudet.filterNot(_.mitätöity).sortBy(_.id).result
   ).head
 
   def mitätöiOpiskeluoikeus(oid: String, user: UserWithPassword = defaultUser): Unit = {
@@ -23,8 +23,8 @@ trait OpiskeluoikeudenMitätöintiJaPoistoTestMethods extends HttpSpecification 
     delete(s"api/opiskeluoikeus/${oid}", headers = authHeaders(user))(f)
   }
 
-  def ensimmäinenPoistettavissaolevaOpiskeluoikeusIdJärjestyksessä: OpiskeluoikeusRow = runDbSync(
-    OpiskeluOikeudet.filterNot(_.mitätöity).filter(_.suoritustyypit.@>(List("vstvapaatavoitteinenkoulutus"))).sortBy(_.id).result
+  def ensimmäinenPoistettavissaolevaOpiskeluoikeusIdJärjestyksessä: KoskiOpiskeluoikeusRow = runDbSync(
+    KoskiOpiskeluOikeudet.filterNot(_.mitätöity).filter(_.suoritustyypit.@>(List("vstvapaatavoitteinenkoulutus"))).sortBy(_.id).result
   ).head
 
   def poistaOpiskeluoikeus(oppijaOid: String, opiskeluoikeusOid: String) = {
@@ -33,7 +33,7 @@ trait OpiskeluoikeudenMitätöintiJaPoistoTestMethods extends HttpSpecification 
     ) should be(true)
   }
 
-  def päivitäOpiskeluoikeus(oo: OpiskeluoikeusRow) = {
-    runDbSync(OpiskeluOikeudet.insertOrUpdate(oo))
+  def päivitäOpiskeluoikeus(oo: KoskiOpiskeluoikeusRow) = {
+    runDbSync(KoskiOpiskeluOikeudet.insertOrUpdate(oo))
   }
 }

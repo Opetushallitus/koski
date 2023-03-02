@@ -2,7 +2,7 @@ package fi.oph.koski.validation
 
 import java.time.LocalDate
 import fi.oph.koski.http.{ErrorCategory, HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeusjakso}
+import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeusjakso, YlioppilastutkinnonOpiskeluoikeus}
 
 object DateValidation {
   type NamedDates = (String, Iterable[LocalDate])
@@ -39,7 +39,11 @@ object DateValidation {
       case None => "null"
     }
 
-    val ensimmäisenJaksonPäivä: Option[LocalDate] = opiskeluoikeus.tila.opiskeluoikeusjaksot.headOption.map(_.alku)
+    val ensimmäisenJaksonPäivä: Option[LocalDate] = opiskeluoikeus match {
+      // Ylioppilastutkinnon opiskeluoikeuksilla ei ole yksikäsitteistä alkamispäivää, joten sitä ei määritellä lainkaan
+      case _: YlioppilastutkinnonOpiskeluoikeus => None
+      case _ => opiskeluoikeus.tila.opiskeluoikeusjaksot.headOption.map(_.alku)
+    }
     val päätasonSuorituksenAlkamispäivät = opiskeluoikeus.suoritukset.flatMap(_.alkamispäivä)
 
     HttpStatus.fold(

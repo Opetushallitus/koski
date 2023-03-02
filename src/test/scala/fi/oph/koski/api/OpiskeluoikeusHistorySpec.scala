@@ -1,6 +1,6 @@
 package fi.oph.koski.api
 
-import fi.oph.koski.db.KoskiTables.{OpiskeluOikeudet, OpiskeluoikeusHistoria}
+import fi.oph.koski.db.KoskiTables.{KoskiOpiskeluOikeudet, KoskiOpiskeluoikeusHistoria}
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.documentation.{AmmatillinenOldExamples, ReforminMukainenErikoisammattitutkintoExample => Reformi}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
@@ -158,7 +158,7 @@ class OpiskeluoikeusHistorySpec
           """.stripMargin.trim)
 
         opiskeluoikeushistoriaErrors.length should equal(1)
-        
+
         resetFixtures() // Siivoa muutokset
       }
 
@@ -190,9 +190,9 @@ class OpiskeluoikeusHistorySpec
   private lazy val opiskeluoikeushistoriaErrorRepository = new OpiskeluoikeushistoriaErrorRepository(KoskiApplicationForTests.masterDatabase.db)
 
   private def updateOpiskeluoikeusHistory(oid: String, version: Int, muutos: String) = {
-    val id = runDbSync(OpiskeluOikeudet.filter(_.oid === oid).map(_.id).result.head)
+    val id = runDbSync(KoskiOpiskeluOikeudet.filter(_.oid === oid).map(_.id).result.head)
     runDbSync(
-      OpiskeluoikeusHistoria.filter(row => row.opiskeluoikeusId === id && row.versionumero === version)
+      KoskiOpiskeluoikeusHistoria.filter(row => row.opiskeluoikeusId === id && row.versionumero === version)
       .map(_.muutos)
       .update(JsonMethods.parse(muutos))
     )

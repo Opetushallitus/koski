@@ -103,7 +103,6 @@ case class RemoteYtrClient(rootUrl: String, user: String, password: String) exte
   }
 
   override def oppijatJsonByHetut(ssnData: YtrSsnData): Option[JValue] = {
-    // TODO: TOR-1639 Tuleekohan tästä ongelma, että iso taulukollinen käsitellään kokonaisena JValue:na? Olisiko parempi deserialisoida lennossa striimiä luettaessa? Käytännössä voidaan kyllä myös varmaan säätää batchin koko tarpeeksi pieneksi?
     runIO(http.post(uri"/api/oph-registrydata/students", ssnData)(json4sEncoderOf[YtrSsnData])(Http.parseJsonOptional[JValue]))
   }
 }

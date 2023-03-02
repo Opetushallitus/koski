@@ -1,7 +1,7 @@
 package fi.oph.koski.api
 
 import com.typesafe.config.Config
-import fi.oph.koski.db.OpiskeluoikeusRow
+import fi.oph.koski.db.KoskiOpiskeluoikeusRow
 import fi.oph.koski.documentation.{ExamplesTaiteenPerusopetus => TPO}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
@@ -883,7 +883,7 @@ class OppijaValidationTaiteenPerusopetusSpec
         verifyResponseStatusOk()
       }
 
-      val poistettuRivi: Either[HttpStatus, OpiskeluoikeusRow] =
+      val poistettuRivi: Either[HttpStatus, KoskiOpiskeluoikeusRow] =
         KoskiApplicationForTests.opiskeluoikeusRepository.findByOid(
           taiteenPerusopetusAloitettuOpiskeluoikeusOid
         )(
@@ -917,7 +917,7 @@ class OppijaValidationTaiteenPerusopetusSpec
       resetFixtures()
       mitätöiOpiskeluoikeus(taiteenPerusopetusAloitettuOpiskeluoikeusOid)
 
-      val poistettuRivi: Either[HttpStatus, OpiskeluoikeusRow] =
+      val poistettuRivi: Either[HttpStatus, KoskiOpiskeluoikeusRow] =
         KoskiApplicationForTests.opiskeluoikeusRepository.findByOid(
           taiteenPerusopetusAloitettuOpiskeluoikeusOid
         )(

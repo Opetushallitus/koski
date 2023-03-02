@@ -3,8 +3,8 @@ package fi.oph.koski.ytr.download
 import fi.oph.koski.TestEnvironment
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.{helsinginMedialukio, ressunLukio}
-import fi.oph.koski.schema.{Koodistokoodiviite, Organisaatiovahvistus, YlioppilasTutkinnonKoe, YlioppilaskokeenArviointi, YlioppilastutkinnonKokeenSuoritus, YlioppilastutkinnonOpiskeluoikeudenLisätiedot, YlioppilastutkinnonOpiskeluoikeudenTila, YlioppilastutkinnonOpiskeluoikeus, YlioppilastutkinnonSuoritus, YlioppilastutkinnonTutkintokerranLisätiedot, YlioppilastutkinnonTutkintokerta, YlioppilastutkinnonTutkintokokonaisuudenLisätiedot}
-import fi.oph.koski.ytr.MockYrtClient
+import fi.oph.koski.schema.{Koodistokoodiviite, Organisaatiovahvistus, YlioppilasTutkinnonKoe, YlioppilaskokeenArviointi, YlioppilastutkinnonKokeenSuoritus, YlioppilastutkinnonOpiskeluoikeudenLisätiedot, YlioppilastutkinnonOpiskeluoikeudenTila, YlioppilastutkinnonOpiskeluoikeus, YlioppilastutkinnonOpiskeluoikeusjakso, YlioppilastutkinnonSuoritus, YlioppilastutkinnonTutkintokerranLisätiedot, YlioppilastutkinnonTutkintokerta, YlioppilastutkinnonTutkintokokonaisuudenLisätiedot}
+import fi.oph.koski.ytr.{MockYrtClient, YtrConversionUtils}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -17,6 +17,8 @@ class YtrDownloadOppijaConverterSpec extends AnyFreeSpec with TestEnvironment wi
     application.organisaatioRepository,
     application.koskiLocalizationRepository
   )
+
+  private val conversionUtils = new YtrConversionUtils(application.koskiLocalizationRepository,  application.koodistoViitePalvelu, application.organisaatioRepository)
 
   val ytl = application.organisaatioRepository
       .getOrganisaatio("1.2.246.562.10.43628088406")
@@ -39,9 +41,14 @@ class YtrDownloadOppijaConverterSpec extends AnyFreeSpec with TestEnvironment wi
 
     val expectedYlioppilastutkinto = YlioppilastutkinnonOpiskeluoikeus(
       lähdejärjestelmänId = None,
-      oppilaitos = None,
+      oppilaitos = conversionUtils.ytlOppilaitos,
       koulutustoimija = Some(ytl),
-      tila = YlioppilastutkinnonOpiskeluoikeudenTila(opiskeluoikeusjaksot = List()),
+      tila = YlioppilastutkinnonOpiskeluoikeudenTila(opiskeluoikeusjaksot = List(
+        YlioppilastutkinnonOpiskeluoikeusjakso(
+          LocalDate.of(2015,11,30),
+          Koodistokoodiviite("valmistunut", "koskiopiskeluoikeudentila")
+        )
+      )),
       lisätiedot = Some(YlioppilastutkinnonOpiskeluoikeudenLisätiedot(Some(List(
         YlioppilastutkinnonTutkintokokonaisuudenLisätiedot(
           tunniste = 0,
@@ -152,6 +159,12 @@ class YtrDownloadOppijaConverterSpec extends AnyFreeSpec with TestEnvironment wi
           ))
         )
       )
+    )
+
+    expectedYlioppilastutkinto.alkamispäivä should be(None)
+    expectedYlioppilastutkinto.päättymispäivä should be(Some(LocalDate.of(2015, 11, 30)))
+    expectedYlioppilastutkinto.keinotekoinenAlkamispäiväTutkintokerroista should be(
+      LocalDate.of(2014, 3, 1)
     )
 
     oppijaConverter.convertOppijastaOpiskeluoikeus(simppeliOppija) should equal (Some(expectedYlioppilastutkinto))

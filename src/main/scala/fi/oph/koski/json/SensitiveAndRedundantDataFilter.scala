@@ -1,6 +1,6 @@
 package fi.oph.koski.json
 
-import fi.oph.koski.db.OpiskeluoikeusRow
+import fi.oph.koski.db.KoskiOpiskeluoikeusRow
 import fi.oph.koski.koskiuser.Rooli.Role
 import fi.oph.koski.schema.annotation.{RedundantData, SensitiveData}
 import fi.oph.koski.schema.{Henkilö, KoskiSchema, Oppija}
@@ -16,8 +16,8 @@ case class SensitiveAndRedundantDataFilter(user: SensitiveDataAllowed) {
 
   def serializationContext = SerializationContext(KoskiSchema.schemaFactory, filterSensitiveData)
 
-  def rowSerializer: ((Henkilö, immutable.Seq[OpiskeluoikeusRow])) => JValue = {
-    def ser(tuple: (Henkilö, immutable.Seq[OpiskeluoikeusRow])) = {
+  def rowSerializer: ((Henkilö, immutable.Seq[KoskiOpiskeluoikeusRow])) => JValue = {
+    def ser(tuple: (Henkilö, immutable.Seq[KoskiOpiskeluoikeusRow])) = {
       JsonSerializer.serialize(Oppija(tuple._1, tuple._2.map(_.toOpiskeluoikeusUnsafe(user))))
     }
     ser

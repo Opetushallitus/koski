@@ -1,7 +1,7 @@
 package fi.oph.koski.luovutuspalvelu
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.db.OpiskeluoikeusRow
+import fi.oph.koski.db.KoskiOpiskeluoikeusRow
 import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, OppijaHenkilö, SuppeatOppijaHenkilöTiedot}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
@@ -60,7 +60,7 @@ class LuovutuspalveluService(application: KoskiApplication) {
     }
   }
 
-  private def buildResponse(h: OppijaHenkilö, oo: List[OpiskeluoikeusRow])(implicit koskiSession: KoskiSpecificSession): LuovutuspalveluResponseV1 =
+  private def buildResponse(h: OppijaHenkilö, oo: List[KoskiOpiskeluoikeusRow])(implicit koskiSession: KoskiSpecificSession): LuovutuspalveluResponseV1 =
     LuovutuspalveluResponseV1(
       LuovutuspalveluHenkilöV1(h.oid, h.hetu, h.syntymäaika, h.turvakielto),
       oo.map(_.toOpiskeluoikeusUnsafe))

@@ -1218,7 +1218,6 @@ class KoskiValidator(
       opiskeluoikeus.suoritukset.exists(s => s.valmis && s.isInstanceOf[OppiaineenOppimääränSuoritus] && !s.koulutusmoduuli.isInstanceOf[EiTiedossaOppiaine])
 
     if (opiskeluoikeus.isInstanceOf[YlioppilastutkinnonOpiskeluoikeus]) {
-      // TODO: TOR-1639: Toteuta myös YO-tutkinnoille nämä validaatiot, kunhan sille on ensin konversiossa luotu tilat
       HttpStatus.ok
     } else if (opiskeluoikeus.tila.opiskeluoikeusjaksot.last.tila.koodiarvo != "valmistunut" || valmiitaOppimääriäLöytyy) {
       HttpStatus.ok

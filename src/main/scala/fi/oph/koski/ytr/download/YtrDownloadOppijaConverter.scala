@@ -4,8 +4,10 @@ import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.localization.LocalizationRepository
 import fi.oph.koski.log.Logging
 import fi.oph.koski.organisaatio.OrganisaatioRepository
-import fi.oph.koski.schema.{YlioppilasTutkinnonKoe, YlioppilastutkinnonKokeenSuoritus, YlioppilastutkinnonOpiskeluoikeudenLisätiedot, YlioppilastutkinnonOpiskeluoikeudenTila, YlioppilastutkinnonOpiskeluoikeus, YlioppilastutkinnonSuoritus, YlioppilastutkinnonTutkintokerranLisätiedot, YlioppilastutkinnonTutkintokerta, YlioppilastutkinnonTutkintokokonaisuudenLisätiedot}
+import fi.oph.koski.schema.{Koodistokoodiviite, YlioppilasTutkinnonKoe, YlioppilastutkinnonKokeenSuoritus, YlioppilastutkinnonOpiskeluoikeudenLisätiedot, YlioppilastutkinnonOpiskeluoikeudenTila, YlioppilastutkinnonOpiskeluoikeus, YlioppilastutkinnonOpiskeluoikeusjakso, YlioppilastutkinnonSuoritus, YlioppilastutkinnonTutkintokerranLisätiedot, YlioppilastutkinnonTutkintokerta, YlioppilastutkinnonTutkintokokonaisuudenLisätiedot}
 import fi.oph.koski.ytr.YtrConversionUtils
+
+import java.time.LocalDate
 
 class YtrDownloadOppijaConverter(
   koodistoViitePalvelu: KoodistoViitePalvelu,
@@ -24,7 +26,13 @@ class YtrDownloadOppijaConverter(
       lähdejärjestelmänId = None,
       oppilaitos = conversionUtils.ytlOppilaitos,
       koulutustoimija = Some(ytl),
-      tila = YlioppilastutkinnonOpiskeluoikeudenTila(opiskeluoikeusjaksot = List()),
+      tila = YlioppilastutkinnonOpiskeluoikeudenTila(opiskeluoikeusjaksot = ytrLaajaOppija.graduationDate match {
+        case gd: Some[LocalDate] => List(YlioppilastutkinnonOpiskeluoikeusjakso(
+          alku = gd.get,
+          tila = Koodistokoodiviite("valmistunut", "koskiopiskeluoikeudentila")
+        ))
+        case _ => List()
+      }),
       oppilaitosSuorituspäivänä = certificateSchoolAndDate.flatMap {
         case (oid, date) => organisaatioRepository.getOppilaitosHetkellä(oid, date)
       },
@@ -41,7 +49,7 @@ class YtrDownloadOppijaConverter(
               oppilaitos = period.schoolOid.flatMap(oid =>
                 organisaatioRepository.getOppilaitosHetkellä(
                   oid,
-                  conversionUtils.convertTutkintokertaToDate(period.examinationPeriod)
+                  YtrConversionUtils.convertTutkintokertaToDate(period.examinationPeriod)
                 )
               )
             ))

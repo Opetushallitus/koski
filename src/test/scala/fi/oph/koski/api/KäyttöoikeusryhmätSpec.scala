@@ -439,7 +439,7 @@ class KäyttöoikeusryhmätSpec
   }
 
   private def koskeenTallennetutOppijatCount =
-    runDbSync(KoskiTables.OpiskeluOikeudetWithAccessCheck(KoskiSpecificSession.systemUser)
+    runDbSync(KoskiTables.KoskiOpiskeluOikeudetWithAccessCheck(KoskiSpecificSession.systemUser)
       .join(KoskiTables.Henkilöt).on(_.oppijaOid === _.oid)
       .filter(_._2.masterOid.isEmpty)
       .map(_._1.oppijaOid).result)

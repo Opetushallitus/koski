@@ -1,6 +1,6 @@
 package fi.oph.koski.raportointikanta
 
-import fi.oph.koski.db.{DB, OpiskeluoikeusRow, PoistettuOpiskeluoikeusRow}
+import fi.oph.koski.db.{DB, KoskiOpiskeluoikeusRow, PoistettuOpiskeluoikeusRow}
 import fi.oph.koski.json.JsonManipulation
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
@@ -36,7 +36,7 @@ object OpiskeluoikeusLoader extends Logging {
     db: RaportointiDatabase,
     update: Option[RaportointiDatabaseUpdate] = None,
     batchSize: Int = DefaultBatchSize,
-    onAfterPage: (Int, Seq[OpiskeluoikeusRow]) => Unit = (_, _) => ()
+    onAfterPage: (Int, Seq[KoskiOpiskeluoikeusRow]) => Unit = (_, _) => ()
   ): Observable[LoadResult] = {
     val dueTime = update.map(_.dueTime).map(toTimestamp)
     db.setStatusLoadStarted(statusName, dueTime)
@@ -76,7 +76,7 @@ object OpiskeluoikeusLoader extends Logging {
   private def loadBatch(
     db: RaportointiDatabase,
     suostumuksenPeruutusService: SuostumuksenPeruutusService,
-    batch: Seq[OpiskeluoikeusRow]
+    batch: Seq[KoskiOpiskeluoikeusRow]
   ): Seq[LoadResult] = {
     val (mitätöidytOot, olemassaolevatOot) = batch.partition(_.mitätöity)
     val (poistetutOot, mitätöidytEiPoistetutOot) = mitätöidytOot.partition(_.poistettu)
@@ -91,7 +91,7 @@ object OpiskeluoikeusLoader extends Logging {
   private def updateBatch(
     db: RaportointiDatabase,
     suostumuksenPeruutusService: SuostumuksenPeruutusService,
-    batch: Seq[OpiskeluoikeusRow]
+    batch: Seq[KoskiOpiskeluoikeusRow]
   ): Seq[LoadResult] = {
     val (mitätöidytOot, olemassaolevatOot) = batch.partition(_.mitätöity)
     val (poistetutOot, mitätöidytEiPoistetutOot) = mitätöidytOot.partition(_.poistettu)
@@ -103,7 +103,7 @@ object OpiskeluoikeusLoader extends Logging {
     resultOlemassaolevatOot ++ resultMitätöidyt ++ resultPoistetut
   }
 
-  private def loadBatchOlemassaolevatOpiskeluoikeudet(db: RaportointiDatabase, oot: Seq[OpiskeluoikeusRow]) = {
+  private def loadBatchOlemassaolevatOpiskeluoikeudet(db: RaportointiDatabase, oot: Seq[KoskiOpiskeluoikeusRow]) = {
     val loadBatchStartTime = System.nanoTime()
 
     val (errors, outputRows) = oot.par
@@ -137,7 +137,7 @@ object OpiskeluoikeusLoader extends Logging {
 
   private def updateBatchOlemassaolevatOpiskeluoikeudet(
     db: RaportointiDatabase,
-    oot: Seq[OpiskeluoikeusRow],
+    oot: Seq[KoskiOpiskeluoikeusRow],
     mitätöidytOot: Seq[Opiskeluoikeus.Oid],
   ) = {
     val loadBatchStartTime = System.nanoTime()
@@ -178,7 +178,7 @@ object OpiskeluoikeusLoader extends Logging {
     result
   }
 
-  private def loadBatchMitätöidytOpiskeluoikeudet(db: RaportointiDatabase, oot: Seq[OpiskeluoikeusRow]) = {
+  private def loadBatchMitätöidytOpiskeluoikeudet(db: RaportointiDatabase, oot: Seq[KoskiOpiskeluoikeusRow]) = {
     val (errors, outputRows) = oot.par.filterNot(_.poistettu).map(buildRowMitätöity).seq.partition(_.isLeft)
     db.loadMitätöidytOpiskeluoikeudet(outputRows.map(_.right.get))
     db.updateStatusCount(mitätöidytStatusName, outputRows.size)
@@ -187,7 +187,7 @@ object OpiskeluoikeusLoader extends Logging {
 
   private def updateBatchMitätöidytOpiskeluoikeudet(
     db: RaportointiDatabase,
-    oot: Seq[OpiskeluoikeusRow],
+    oot: Seq[KoskiOpiskeluoikeusRow],
     olemassaolevatOot: Seq[Opiskeluoikeus.Oid],
   ) = {
     val (errors, outputRows) = oot.par.filterNot(_.poistettu).map(buildRowMitätöity).seq.partition(_.isLeft)
@@ -199,7 +199,7 @@ object OpiskeluoikeusLoader extends Logging {
   private def loadBatchPoistetutOpiskeluoikeudet(
     db: RaportointiDatabase,
     suostumuksenPeruutusService: SuostumuksenPeruutusService,
-    oot: Seq[OpiskeluoikeusRow]
+    oot: Seq[KoskiOpiskeluoikeusRow]
   ): Seq[LoadErrorResult] = {
     if (oot.nonEmpty) {
       val (errors, outputRows) = suostumuksenPeruutusService
@@ -217,7 +217,7 @@ object OpiskeluoikeusLoader extends Logging {
   private def updateBatchPoistetutOpiskeluoikeudet(
     db: RaportointiDatabase,
     suostumuksenPeruutusService: SuostumuksenPeruutusService,
-    oot: Seq[OpiskeluoikeusRow]
+    oot: Seq[KoskiOpiskeluoikeusRow]
   ): Seq[LoadErrorResult] = {
     if (oot.nonEmpty) {
       val (errors, outputRows) = suostumuksenPeruutusService
@@ -298,7 +298,7 @@ object OpiskeluoikeusLoader extends Logging {
 
   type AikajaksoRows = (Seq[ROpiskeluoikeusAikajaksoRow], Seq[EsiopetusOpiskeluoikeusAikajaksoRow])
 
-  private def buildRow(inputRow: OpiskeluoikeusRow): Either[LoadErrorResult, OutputRows] = {
+  private def buildRow(inputRow: KoskiOpiskeluoikeusRow): Either[LoadErrorResult, OutputRows] = {
     Try {
       val toOpiskeluoikeusUnsafeStartTime = System.nanoTime()
       val oo = inputRow.toOpiskeluoikeusUnsafe(KoskiSpecificSession.systemUser)
@@ -556,7 +556,7 @@ object OpiskeluoikeusLoader extends Logging {
     }
   }
 
-  private[raportointikanta] def buildRowMitätöity(raw: OpiskeluoikeusRow): Either[LoadErrorResult, RMitätöityOpiskeluoikeusRow] = {
+  private[raportointikanta] def buildRowMitätöity(raw: KoskiOpiskeluoikeusRow): Either[LoadErrorResult, RMitätöityOpiskeluoikeusRow] = {
     for {
       oo <- raw.toOpiskeluoikeus(KoskiSpecificSession.systemUser).left.map(e => LoadErrorResult(raw.oid, mitätöityError + " " + e.toString()))
       mitätöityPvm <- oo.mitätöintiPäivä.toRight(LoadErrorResult(raw.oid, "Mitätöintipäivämäärän haku epäonnistui"))
@@ -601,7 +601,7 @@ object OpiskeluoikeusLoader extends Logging {
       update: Option[RaportointiDatabaseUpdate],
       opiskeluoikeusQueryRepository: OpiskeluoikeusQueryService,
     )
-    (mapFn: Seq[OpiskeluoikeusRow] => Seq[A])
+    (mapFn: Seq[KoskiOpiskeluoikeusRow] => Seq[A])
   : Observable[A] =
     update match {
       case Some(update) =>
