@@ -4,7 +4,8 @@ import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.documentation.{AmmatillinenExampleData, AmmattitutkintoExample}
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.documentation.ExampleData.{helsinki, longTimeAgo, opiskeluoikeusKatsotaanEronneeksi, opiskeluoikeusLäsnä, opiskeluoikeusValmistunut, valtionosuusRahoitteinen}
-import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.tyhjä
+import fi.oph.koski.documentation.MuunAmmatillisenKoulutuksenExample.muuAmmatillinenKoulutusKokonaisuuksillaOpiskeluoikeus
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.{amiksenKorottaja, tyhjä}
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.MockUsers.{omniaTallentaja, stadinAmmattiopistoTallentaja}
@@ -12,6 +13,7 @@ import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.Organisaatio.Oid
 import fi.oph.koski.schema._
+import org.scalatest.BeforeAndAfterAll
 
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
@@ -356,12 +358,10 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
     }
 
     "Korotettuna suorituksena" - {
-      resetFixtures()
 
-      val alkuperäinen = lastOpiskeluoikeusByHetu(defaultHenkilö) match {
-        case oo: AmmatillinenOpiskeluoikeus if oo.suoritukset.exists(_.tyyppi.koodiarvo == "ammatillinentutkinto") => oo
-      }
-      alkuperäinen.oid should not be empty
+      def getAlkuperäinen: AmmatillinenOpiskeluoikeus = getOpiskeluoikeudet(amiksenKorottaja.oid).find(_.suoritukset.headOption.exists(_.tyyppi.koodiarvo == "ammatillinentutkinto")).map {
+        case a: AmmatillinenOpiskeluoikeus => a
+      }.get
 
       val korotettuTutkinnonOsanSuoritus = osittaisenTutkinnonTutkinnonOsanSuoritus(k3, ammatillisetTutkinnonOsat, "100432", "Ympäristön hoitaminen", 35).copy(
         korotettu = Some(korotettu)
@@ -383,6 +383,7 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
 
       "Keskeneräinen korotus" - {
         "Korotuksen tiedot voi lisätä uudelle osittaiselle suoritukselle" in {
+          val alkuperäinen = getAlkuperäinen
           val korotettuSuoritus = ammatillisenTutkinnonOsittainenSuoritus.copy(
             korotettuOpiskeluoikeusOid = alkuperäinen.oid,
             korotettuKeskiarvo = Some(4.5),
@@ -394,12 +395,13 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
           )
           val korotettuOo = makeOpiskeluoikeus(suoritus = korotettuSuoritus)
 
-          putOpiskeluoikeus(korotettuOo, tyhjä) {
+          putOpiskeluoikeus(korotettuOo, amiksenKorottaja) {
             verifyResponseStatusOk()
           }
         }
 
         "Korotuksen opiskeluoikeudella voi olla vain yksi päätason suoritus" in {
+          val alkuperäinen = getAlkuperäinen
           val korotettuSuoritus = ammatillisenTutkinnonOsittainenSuoritus.copy(
             korotettuOpiskeluoikeusOid = alkuperäinen.oid,
             keskiarvo = None,
@@ -421,7 +423,7 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
             suoritukset = List(korotettuSuoritus, näyttö)
           )
 
-          putOpiskeluoikeus(korotettuOo, tyhjä) {
+          putOpiskeluoikeus(korotettuOo, amiksenKorottaja) {
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.useampiPäätasonSuoritus())
           }
         }
@@ -438,7 +440,7 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
           )
           val korotettuOo = makeOpiskeluoikeus(suoritus = korotettuSuoritus)
 
-          putOpiskeluoikeus(korotettuOo, tyhjä) {
+          putOpiskeluoikeus(korotettuOo, amiksenKorottaja) {
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.eiKorotuksenSuoritus())
           }
         }
@@ -459,12 +461,13 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
           )
           val korotettuOo = makeOpiskeluoikeus(suoritus = korotettuSuoritus)
 
-          putOpiskeluoikeus(korotettuOo, tyhjä) {
+          putOpiskeluoikeus(korotettuOo, amiksenKorottaja) {
             verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*korotettu.*".r))
           }
         }
 
         "Korotettu keskiarvo saa puuttua keskeneräiseltä korotuksen suoritukselta" in {
+          val alkuperäinen = getAlkuperäinen
           val korotettuSuoritus = ammatillisenTutkinnonOsittainenSuoritus.copy(
             korotettuOpiskeluoikeusOid = alkuperäinen.oid,
             korotettuKeskiarvo = None,
@@ -476,7 +479,7 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
           )
           val korotettuOo = makeOpiskeluoikeus(suoritus = korotettuSuoritus)
 
-          putOpiskeluoikeus(korotettuOo, tyhjä) {
+          putOpiskeluoikeus(korotettuOo, amiksenKorottaja) {
             verifyResponseStatusOk()
           }
         }
@@ -492,12 +495,13 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
           )
           val korotettuOo = makeOpiskeluoikeus(suoritus = korotettuSuoritus)
 
-          putOpiskeluoikeus(korotettuOo, tyhjä) {
+          putOpiskeluoikeus(korotettuOo, amiksenKorottaja) {
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.korotettuKeskiarvo())
           }
         }
 
         "Korotetun keskiarvon voi siirtää keskeneräiselle opiskeluoikeudelle vaikka kaikki korotukset ovat false" in {
+          val alkuperäinen = getAlkuperäinen
           val korotettuSuoritus = ammatillisenTutkinnonOsittainenSuoritus.copy(
             korotettuOpiskeluoikeusOid = alkuperäinen.oid,
             korotettuKeskiarvo = Some(4.5),
@@ -522,7 +526,7 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
           )
           val korotettuOo = makeOpiskeluoikeus(suoritus = korotettuSuoritus)
 
-          putOpiskeluoikeus(korotettuOo, tyhjä) {
+          putOpiskeluoikeus(korotettuOo, amiksenKorottaja) {
             verifyResponseStatusOk()
           }
         }
@@ -540,12 +544,13 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
           )
           val korotettuOo = makeOpiskeluoikeus(suoritus = korotettuSuoritus)
 
-          putOpiskeluoikeus(korotettuOo, tyhjä) {
+          putOpiskeluoikeus(korotettuOo, amiksenKorottaja) {
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.eiKorotuksenSuoritus())
           }
         }
 
         "Korotuksen suoritukselle ei voi siirtää osasuorituksia joita ei ole korotettu tai tunnustettu" in {
+          val alkuperäinen = getAlkuperäinen
           val korotettuSuoritus = ammatillisenTutkinnonOsittainenSuoritus.copy(
             korotettuOpiskeluoikeusOid = alkuperäinen.oid,
             korotettuKeskiarvo = Some(4.5),
@@ -568,12 +573,13 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
           )
           val korotettuOo = makeOpiskeluoikeus(suoritus = korotettuSuoritus)
 
-          putOpiskeluoikeus(korotettuOo, tyhjä) {
+          putOpiskeluoikeus(korotettuOo, amiksenKorottaja) {
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.korotettuOsasuoritus())
           }
         }
 
         "Keskeneräisellä korotuksen opiskeluoikeudella ei tarvitse olla osasuorituksia" in {
+          val alkuperäinen = getAlkuperäinen
           val korotettuSuoritus = ammatillisenTutkinnonOsittainenSuoritus.copy(
             keskiarvo = None,
             keskiarvoSisältääMukautettujaArvosanoja = None,
@@ -583,7 +589,7 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
           )
           val korotettuOo = makeOpiskeluoikeus(suoritus = korotettuSuoritus)
 
-          putOpiskeluoikeus(korotettuOo, tyhjä) {
+          putOpiskeluoikeus(korotettuOo, amiksenKorottaja) {
             verifyResponseStatusOk()
           }
         }
@@ -591,6 +597,7 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
 
       "Valmistunut korotus" - {
         "Valmistuneen korotuksen suorituksen voi siirtää" in {
+          val alkuperäinen = getAlkuperäinen
           val korotettuSuoritus = ammatillisenTutkinnonOsittainenSuoritus.copy(
             korotettuOpiskeluoikeusOid = alkuperäinen.oid,
             korotettuKeskiarvo = Some(4.5),
@@ -615,12 +622,13 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
           )
           val korotettuOo = makeOpiskeluoikeus(suoritus = korotettuSuoritus, tila = Some(opiskeluoikeusValmistunut))
 
-          putOpiskeluoikeus(korotettuOo, tyhjä) {
+          putOpiskeluoikeus(korotettuOo, amiksenKorottaja) {
             verifyResponseStatusOk()
           }
         }
 
         "Jos korotuksen opiskeluoikeus on valmistunut, korotettu keskiarvo täytyy olla olemassa" in {
+          val alkuperäinen = getAlkuperäinen
           val korotettuSuoritus = ammatillisenTutkinnonOsittainenSuoritus.copy(
             korotettuOpiskeluoikeusOid = alkuperäinen.oid,
             osasuoritukset = Some(List(
@@ -630,12 +638,13 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
           )
           val korotettuOo = makeOpiskeluoikeus(suoritus = korotettuSuoritus, tila = Some(opiskeluoikeusValmistunut))
 
-          putOpiskeluoikeus(korotettuOo, tyhjä) {
+          putOpiskeluoikeus(korotettuOo, amiksenKorottaja) {
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.korotettuKeskiarvo("Valmistuneella korotuksen suorituksella on oltava korotettu keskiarvo"))
           }
         }
 
         "Korotettua keskiarvoa ei voi siirtää valmistuneelle opiskeluoikeudelle jos kaikki korotukset ovat false" in {
+          val alkuperäinen = getAlkuperäinen
           val korotettuSuoritus = ammatillisenTutkinnonOsittainenSuoritus.copy(
             korotettuOpiskeluoikeusOid = alkuperäinen.oid,
             korotettuKeskiarvo = Some(4.5),
@@ -660,12 +669,13 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
           )
           val korotettuOo = makeOpiskeluoikeus(suoritus = korotettuSuoritus, tila = Some(opiskeluoikeusValmistunut))
 
-          putOpiskeluoikeus(korotettuOo, tyhjä) {
+          putOpiskeluoikeus(korotettuOo, amiksenKorottaja) {
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.korotettuKeskiarvo("Korotettua keskiarvoa ei voi siirtää jos kaikki korotuksen yritykset epäonnistuivat"))
           }
         }
 
         "Valmistuneella korotuksen opiskeluoikeudella tarvitsee olla osasuorituksia" in {
+          val alkuperäinen = getAlkuperäinen
           val korotettuSuoritus = ammatillisenTutkinnonOsittainenSuoritus.copy(
             keskiarvo = None,
             keskiarvoSisältääMukautettujaArvosanoja = None,
@@ -676,7 +686,7 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
           )
           val korotettuOo = makeOpiskeluoikeus(suoritus = korotettuSuoritus, tila = Some(opiskeluoikeusValmistunut))
 
-          putOpiskeluoikeus(korotettuOo, tyhjä) {
+          putOpiskeluoikeus(korotettuOo, amiksenKorottaja) {
             verifyResponseStatus(
               400,
               KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia("Suoritus koulutus/361902 on merkitty valmiiksi, mutta sillä ei ole ammatillisen tutkinnon osan suoritusta tai opiskeluoikeudelta puuttuu linkitys"),
@@ -689,6 +699,7 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
 
       "Katsotaan eronneeksi korotus" - {
         "Katsotaan eronneeksi -tilaisen voi tallentaa ilman osasuorituksia" in {
+          val alkuperäinen = getAlkuperäinen
           val korotettuSuoritus = ammatillisenTutkinnonOsittainenSuoritus.copy(
             keskiarvo = None,
             keskiarvoSisältääMukautettujaArvosanoja = None,
@@ -700,12 +711,13 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
           )
           val korotettuOo = makeOpiskeluoikeus(suoritus = korotettuSuoritus, tila = Some(opiskeluoikeusKatsotaanEronneeksi))
 
-          putOpiskeluoikeus(korotettuOo, tyhjä) {
+          putOpiskeluoikeus(korotettuOo, amiksenKorottaja) {
             verifyResponseStatusOk()
           }
         }
 
         "Katsotaan eronneeksi -tilaiselle ei voi tallentaa korotettua keskiarvoa" in {
+          val alkuperäinen = getAlkuperäinen
           val korotettuSuoritus = ammatillisenTutkinnonOsittainenSuoritus.copy(
             keskiarvo = None,
             keskiarvoSisältääMukautettujaArvosanoja = None,
@@ -717,12 +729,13 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
           )
           val korotettuOo = makeOpiskeluoikeus(suoritus = korotettuSuoritus, tila = Some(opiskeluoikeusKatsotaanEronneeksi))
 
-          putOpiskeluoikeus(korotettuOo, tyhjä) {
+          putOpiskeluoikeus(korotettuOo, amiksenKorottaja) {
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.korotettuKeskiarvo("Jos korotuksen opiskeluoikeus on katsotaan eronneeksi -tilassa, ei suoritukselle voi siirtää korotettua keskiarvoa"))
           }
         }
 
         "Katsotaan eronneeksi -tilaiselle korotukselle ei voi siirtää osasuorituksia" in {
+          val alkuperäinen = getAlkuperäinen
           val korotettuSuoritus = ammatillisenTutkinnonOsittainenSuoritus.copy(
             keskiarvo = None,
             keskiarvoSisältääMukautettujaArvosanoja = None,
@@ -737,7 +750,7 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
           )
           val korotettuOo = makeOpiskeluoikeus(suoritus = korotettuSuoritus, tila = Some(opiskeluoikeusKatsotaanEronneeksi))
 
-          putOpiskeluoikeus(korotettuOo, tyhjä) {
+          putOpiskeluoikeus(korotettuOo, amiksenKorottaja) {
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.korotettuOsasuoritus("Jos korotuksen suoritus on katsotaan eronneeksi -tilassa, ei suoritukselle voi siirtää osasuorituksia"))
           }
         }
@@ -746,6 +759,8 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
       "Korotetun opiskeluoikeuden linkitys" - {
         "Linkitystä ei voi lisätä olemassaolevalle opiskeluoikeudelle" in {
           resetFixtures()
+
+          val alkuperäinen = getAlkuperäinen
 
           val korottamatonSuoritus = ammatillisenTutkinnonOsittainenSuoritus.copy(
             keskiarvo = None,
@@ -761,16 +776,24 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
           val korottamatonOo = makeOpiskeluoikeus(suoritus = korottamatonSuoritus)
           val korotettuOo = makeOpiskeluoikeus(suoritus = korotettuSuoritus)
 
-          putOpiskeluoikeus(korottamatonOo, tyhjä) {
+          putOpiskeluoikeus(korottamatonOo, amiksenKorottaja) {
             verifyResponseStatusOk()
           }
-          putOpiskeluoikeus(korotettuOo, tyhjä) {
+          putOpiskeluoikeus(korotettuOo, amiksenKorottaja) {
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.korotuksenLinkitys())
           }
         }
 
         "Linkitystä ei voi poistaa tai muuttaa olemassaolevalta korotuksen opiskeluoikeudelta" in {
           resetFixtures()
+
+          val alkup = getAlkuperäinen
+
+          putOpiskeluoikeus(makeOpiskeluoikeus(oppilaitos = Oppilaitos(MockOrganisaatiot.omnia), suoritus = ympäristöalanPerustutkintoValmis(), tila = Some(opiskeluoikeusValmistunut)), amiksenKorottaja)(
+            verifyResponseStatusOk()
+          )
+          val alkup2 = lastOpiskeluoikeusByHetu(amiksenKorottaja)
+          alkup.oid should not be alkup2.oid
 
           val korottamatonSuoritus = ammatillisenTutkinnonOsittainenSuoritus.copy(
             keskiarvo = None,
@@ -784,17 +807,112 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
             vahvistus = None
           )
           val korottamatonOo = makeOpiskeluoikeus(suoritus = korottamatonSuoritus)
-          val korotettuOo = makeOpiskeluoikeus(suoritus = korotettuSuoritus(alkuperäinen.oid))
-          val linkitysMuokattuOo = makeOpiskeluoikeus(suoritus = korotettuSuoritus(Some("muokattu_oid")))
+          val korotettuOo = makeOpiskeluoikeus(suoritus = korotettuSuoritus(alkup.oid))
+          val linkitysMuokattuOo = makeOpiskeluoikeus(suoritus = korotettuSuoritus(alkup2.oid))
 
-          putOpiskeluoikeus(korotettuOo, tyhjä) {
+          putOpiskeluoikeus(korotettuOo, amiksenKorottaja) {
             verifyResponseStatusOk()
           }
-          putOpiskeluoikeus(korottamatonOo, tyhjä) {
+          putOpiskeluoikeus(korottamatonOo, amiksenKorottaja) {
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.korotuksenLinkitys())
           }
-          putOpiskeluoikeus(linkitysMuokattuOo, tyhjä) {
+          putOpiskeluoikeus(linkitysMuokattuOo, amiksenKorottaja) {
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.korotuksenLinkitys())
+          }
+        }
+      }
+
+      "Alkuperäinen opiskeluoikeus" - {
+        "Alkuperäinen opiskeluoikeus on oltava samalle oppijalle" in {
+          putOpiskeluoikeus(makeOpiskeluoikeus(oppilaitos = Oppilaitos(MockOrganisaatiot.omnia), suoritus = ympäristöalanPerustutkintoValmis(), tila = Some(opiskeluoikeusValmistunut)), tyhjä)(
+            verifyResponseStatusOk()
+          )
+          val eriOppijanAlkuperäinen = lastOpiskeluoikeusByHetu(tyhjä)
+
+          val korotettuSuoritus = ammatillisenTutkinnonOsittainenSuoritus.copy(
+            korotettuOpiskeluoikeusOid = eriOppijanAlkuperäinen.oid,
+            korotettuKeskiarvo = Some(4.5),
+            korotettuKeskiarvoSisältääMukautettujaArvosanoja = Some(false),
+            osasuoritukset = Some(List(
+              korotettuTutkinnonOsanSuoritus,
+              korotettuYhteisenTutkinnonOsanSuoritus
+            ))
+          )
+          val korotettuOo = makeOpiskeluoikeus(suoritus = korotettuSuoritus)
+
+          putOpiskeluoikeus(korotettuOo, amiksenKorottaja) {
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.korotuksenOppija())
+          }
+        }
+
+        "Alkuperäinen opiskeluoikeus on oltava valmistunut" in {
+          val alkuperäinen = getAlkuperäinen.copy(
+            tila = AmmatillinenOpiskeluoikeudenTila(List(
+              AmmatillinenOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen))
+            ))
+          )
+          putOpiskeluoikeus(alkuperäinen, amiksenKorottaja)(
+            verifyResponseStatusOk()
+          )
+
+          val korotettuSuoritus = ammatillisenTutkinnonOsittainenSuoritus.copy(
+            korotettuOpiskeluoikeusOid = alkuperäinen.oid,
+            korotettuKeskiarvo = Some(4.5),
+            korotettuKeskiarvoSisältääMukautettujaArvosanoja = Some(false),
+            osasuoritukset = Some(List(
+              korotettuTutkinnonOsanSuoritus,
+              korotettuYhteisenTutkinnonOsanSuoritus
+            ))
+          )
+          val korotettuOo = makeOpiskeluoikeus(suoritus = korotettuSuoritus)
+
+          putOpiskeluoikeus(korotettuOo, amiksenKorottaja) {
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.alkuperäinenEiValmistunut())
+          }
+        }
+
+        "Alkuperäisen opiskeluoikeuden suoritus on oltava korotusta vastaava ja korotukseen sopiva" in {
+          resetFixtures()
+
+          val perustutkinnonOpiskeluoikeus = getAlkuperäinen
+
+          val korotettuSuoritus = ammatillisenTutkinnonOsittainenSuoritus.copy(
+            korotettuOpiskeluoikeusOid = perustutkinnonOpiskeluoikeus.oid,
+            korotettuKeskiarvo = Some(4.5),
+            korotettuKeskiarvoSisältääMukautettujaArvosanoja = Some(false),
+            osasuoritukset = Some(List(
+              korotettuTutkinnonOsanSuoritus,
+              korotettuYhteisenTutkinnonOsanSuoritus
+            ))
+          )
+          val korotettuOo = makeOpiskeluoikeus(suoritus = korotettuSuoritus)
+
+          val vääräDiaariSuorituksella = ympäristöalanPerustutkintoValmis().copy(
+            koulutusmoduuli = AmmatillinenTutkintoKoulutus(
+              tunniste = Koodistokoodiviite("361902", Some("Luonto- ja ympäristöalan perustutkinto"), "koulutus", None),
+              perusteenDiaarinumero = Some("OPH-2524-2017"), // Oikea diaari olisi 62/011/2014
+            )
+          )
+
+          putOpiskeluoikeus(perustutkinnonOpiskeluoikeus.copy(suoritukset = List(vääräDiaariSuorituksella)), amiksenKorottaja){
+            verifyResponseStatusOk()
+          }
+
+          putOpiskeluoikeus(korotettuOo, amiksenKorottaja) {
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.alkuperäinenSuoritusEiVastaava())
+          }
+
+          putOpiskeluoikeus(muuAmmatillinenKoulutusKokonaisuuksillaOpiskeluoikeus, amiksenKorottaja){
+            verifyResponseStatusOk()
+          }
+
+          val muunAmmatillisenOpiskeluoikeus = lastOpiskeluoikeus(amiksenKorottaja.oid)
+          makeOpiskeluoikeus(suoritus = korotettuSuoritus.copy(
+            korotettuOpiskeluoikeusOid = muunAmmatillisenOpiskeluoikeus.oid
+          ))
+
+          putOpiskeluoikeus(korotettuOo, amiksenKorottaja) {
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.alkuperäinenSuoritusEiVastaava())
           }
         }
       }

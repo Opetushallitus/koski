@@ -1,6 +1,7 @@
 package fi.oph.koski.validation
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.opiskeluoikeus.KoskiOpiskeluoikeusRepository
 import fi.oph.koski.schema
 import fi.oph.koski.schema._
@@ -11,8 +12,9 @@ import java.time.LocalDate
 object AmmatillinenValidation {
   def validateAmmatillinenOpiskeluoikeus(
     opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
+    henkilö: Option[Henkilö],
     koskiOpiskeluoikeudet: KoskiOpiskeluoikeusRepository
-  ): HttpStatus = {
+  )(implicit user: KoskiSpecificSession): HttpStatus = {
     opiskeluoikeus match {
       case ammatillinen: AmmatillinenOpiskeluoikeus =>
         lazy val isKuoriopiskeluoikeus = koskiOpiskeluoikeudet.isKuoriOpiskeluoikeus(ammatillinen)
@@ -20,7 +22,8 @@ object AmmatillinenValidation {
           validateUseaPäätasonSuoritus(ammatillinen),
           validateKeskeneräiselläSuorituksellaEiSaaOllaKeskiarvoa(ammatillinen),
           validateKeskiarvoOlemassaJosSuoritusOnValmis(ammatillinen, isKuoriopiskeluoikeus),
-          validateAmmatillisenKorotus(ammatillinen)
+          validateAmmatillisenKorotus(ammatillinen),
+          validateKorotuksenAlkuperäinenOpiskeluoikeus(ammatillinen, henkilö, koskiOpiskeluoikeudet)
         )
       case _ => HttpStatus.ok
     }
@@ -160,4 +163,82 @@ object AmmatillinenValidation {
       case _ => HttpStatus.ok
     }
   }
+
+  def validateKorotuksenAlkuperäinenOpiskeluoikeus(
+    ammatillinen: AmmatillinenOpiskeluoikeus,
+    henkilö: Option[Henkilö],
+    koskiOpiskeluoikeudet: KoskiOpiskeluoikeusRepository
+  )(implicit user: KoskiSpecificSession): HttpStatus = {
+    val korotuksenSuoritus = ammatillinen.suoritukset.headOption.flatMap {
+      case s: AmmatillisenTutkinnonOsittainenSuoritus if s.korotettuOpiskeluoikeusOid.isDefined => Some(s)
+      case _ => None
+    }
+
+    if(korotuksenSuoritus.isEmpty) {
+      HttpStatus.ok
+    } else {
+      val alkuperäinenOid = korotuksenSuoritus.flatMap(_.korotettuOpiskeluoikeusOid)
+      val oppijaOids = korotuksenSuoritus
+        .flatMap(_.korotettuOpiskeluoikeusOid)
+        .flatMap(oid => koskiOpiskeluoikeudet.getOppijaOidsForOpiskeluoikeus(oid).toOption)
+        .getOrElse(List.empty)
+      val alkuperäinenOpiskeluoikeus = koskiOpiskeluoikeudet.findByOppijaOids(oppijaOids)
+        .find(oo => oo.oid.isDefined && alkuperäinenOid == oo.oid)
+
+      HttpStatus.fold(
+        validateKorotuksenOppija(henkilö, oppijaOids),
+        validateKorotuksenAlkuperäinenOpiskeluoikeusOnValmistunut(alkuperäinenOpiskeluoikeus),
+        validateKorotuksenAlkuperäinenSuoritus(korotuksenSuoritus, alkuperäinenOpiskeluoikeus)
+      )
+    }
+  }
+
+  private def validateKorotuksenOppija(
+    korotuksenHenkilö: Option[Henkilö],
+    alkuperäisetOppijaOidit: List[Henkilö.Oid]
+  ): HttpStatus = {
+    val henkilöOid = korotuksenHenkilö.flatMap {
+      case h: HenkilöWithOid => Some(h.oid)
+      case _ => None
+    }
+
+    HttpStatus.validate(
+      henkilöOid.exists(oid =>
+        alkuperäisetOppijaOidit.contains(oid)
+      )
+    )(KoskiErrorCategory.badRequest.validation.ammatillinen.korotuksenOppija())
+  }
+
+  private def validateKorotuksenAlkuperäinenOpiskeluoikeusOnValmistunut(
+    alkuperäinenOpiskeluoikeus: Option[Opiskeluoikeus]
+  ): HttpStatus = {
+    HttpStatus.validate(
+      alkuperäinenOpiskeluoikeus.exists(_.tila.opiskeluoikeusjaksot.last.tila.koodiarvo == "valmistunut")
+    )(KoskiErrorCategory.badRequest.validation.ammatillinen.alkuperäinenEiValmistunut())
+  }
+
+  private def validateKorotuksenAlkuperäinenSuoritus(
+    korotuksenSuoritus: Option[AmmatillisenTutkinnonOsittainenSuoritus],
+    alkuperäinenOpiskeluoikeus: Option[Opiskeluoikeus]
+  ): HttpStatus = {
+
+    val alkuperäisetSuoritukset = alkuperäinenOpiskeluoikeus.map(_.suoritukset).getOrElse(List.empty).flatMap {
+      case s: AmmatillisenTutkinnonSuoritus => Some(s)
+      case _ => None
+    }
+
+    // TODO TOR-1712: suoritustapa?
+    val alkuperäinenSuoritus = alkuperäisetSuoritukset.find { s =>
+      s.tyyppi.koodiarvo == "ammatillinentutkinto" &&
+        s.koulutusmoduuli.tunniste.koodiarvo == korotuksenSuoritus.map(_.koulutusmoduuli.tunniste.koodiarvo).getOrElse("") &&
+        s.koulutusmoduuli.perusteenDiaarinumero.nonEmpty && s.koulutusmoduuli.perusteenDiaarinumero == korotuksenSuoritus.flatMap(_.koulutusmoduuli.perusteenDiaarinumero) &&
+        s.koulutusmoduuli.koulutustyyppi.map(_.koodiarvo).contains("1") &&
+        s.koulutusmoduuli.koulutustyyppi.map(_.koodiarvo) == korotuksenSuoritus.flatMap(_.koulutusmoduuli.koulutustyyppi.map(_.koodiarvo))
+    }
+
+    HttpStatus.validate(
+      alkuperäinenSuoritus.isDefined
+    )(KoskiErrorCategory.badRequest.validation.ammatillinen.alkuperäinenSuoritusEiVastaava())
+  }
+
 }

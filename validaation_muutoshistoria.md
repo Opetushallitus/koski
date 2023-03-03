@@ -12,6 +12,11 @@
   - Jos korotuksen suoritus päättyy katsotaan eronneeksi -tilaan, ei suoritukselle voi siirtää osasuorituksia.
   - Jos korotuksen suoritus päättyy katsotaan eronneeksi -tilaan, ei suoritukselle voi siirtää korotettua keskiarvoa.
 - Korotetun suorituksen linkitystä alkuperäiseen opiskeluoikeuteen ei voi muuttaa opiskeluoikeuden luonnin jälkeen.
+- Alkuperäisen opiskeluoikeuden suoritukselle lisätty validaatiot:
+  - Alkuperäinen linkitetty opiskeluoikeus löytyy oppijalle.
+  - Alkuperäinen opiskeluoikeus on valmistunut-tilassa.
+  - Alkuperäisen opiskeluoikeuden suoritus on ammatillisen perustutkinnon suoritus.
+  - Alkuperäisellä ja korotuksen suorituksella on sama koulutusmoduulin tunniste, diaarinumero sekä koulutustyyppi.
 
 ## 28.2.2023
 

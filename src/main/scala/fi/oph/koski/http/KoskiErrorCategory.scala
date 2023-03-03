@@ -209,6 +209,9 @@ object KoskiErrorCategory {
         val eiKorotuksenSuoritus = subcategory("eiKorotuksenSuoritus", "Korotettu-tietoja ei voi siirtää jos kyseessä ei ole korotuksen suoritus")
         val korotettuOsasuoritus = subcategory("korotettuOsasuoritus", "Kaikkien korotuksen suorituksen osasuoritusten tulee olla korotuksen yrityksiä tai tunnustettuja")
         val korotuksenLinkitys = subcategory("korotuksenLinkitys", "Korotetun opiskeluoikeuden linkitystä ei voi muuttaa opiskeluoikeuden luonnin jälkeen")
+        val korotuksenOppija = subcategory("korotuksenOppija", "Alkuperäistä opiskeluoikeutta ei löydy oppijalle")
+        val alkuperäinenEiValmistunut = subcategory("alkuperäinenEiValmistunut", "Alkuperäinen opiskeluoikeus ei ole valmistunut-tilassa")
+        val alkuperäinenSuoritusEiVastaava = subcategory("alkuperäinenSuoritusEiVastaava", "Korotusta vastaavaa tai korotukseen soveltuvaa suoritusta ei löydy alkuperäiseltä opiskeluoikeudelta")
       }
       val ammatillinen = new Ammatillinen
 
