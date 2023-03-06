@@ -165,6 +165,9 @@ export const TaiteenPerusopetusEditor = (
     [osasuoritukset]
   )
 
+  const suorituksetVahvistettu =
+    form.state.suoritukset.filter((s) => Boolean(s.vahvistus)).length >= 2
+
   // Render
 
   return (
@@ -195,6 +198,7 @@ export const TaiteenPerusopetusEditor = (
             : undefined
         }
         onCreateSuoritus={() => setNewSuoritusModalVisible(true)}
+        suorituksetVahvistettu={suorituksetVahvistettu}
       >
         {companionPäätasonSuoritus && newSuoritusModalVisible && (
           <UusiTaiteenPerusopetuksenPäätasonSuoritusModal

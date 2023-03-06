@@ -5,7 +5,7 @@ const keskeneräinenOpiskelija = '1.2.246.562.24.00000000142'
 const hyväksytystiSuorittanutOpiskelija = '1.2.246.562.24.00000000143'
 
 test.describe('Taiteen perusopetus', () => {
-  test.beforeEach(async ({fixtures, page}) => {
+  test.beforeEach(async ({ fixtures, page }) => {
     page.once('dialog', (dialog) => {
       dialog.accept()
     })
@@ -13,10 +13,10 @@ test.describe('Taiteen perusopetus', () => {
   })
 
   test.describe('Itse järjestetty opiskeluoikeus', () => {
-    test.use({storageState: virkailija('kalle')})
+    test.use({ storageState: virkailija('kalle') })
 
     test.describe('Uuden opiskeluoikeuden luonti', () => {
-      test.beforeEach(async ({uusiOppijaPage}) => {
+      test.beforeEach(async ({ uusiOppijaPage }) => {
         await uusiOppijaPage.goTo('230872-7258')
         await uusiOppijaPage.fill({
           etunimet: 'Tero',
@@ -43,15 +43,15 @@ test.describe('Taiteen perusopetus', () => {
       test('Oppimäärä on esivalittu ja oikeat suorituksen tyypit ovat valittavissa', async ({
         uusiOppijaPage
       }) => {
-        await expect(await uusiOppijaPage.oppimäärä.textInput.textContent()).toBe(
-          'Taiteen perusopetuksen yleinen oppimäärä'
-        )
-        await expect(await uusiOppijaPage.suoritustyyppi.getOptions()).toHaveText(
-          [
-            'Taiteen perusopetuksen yleisen oppimäärän yhteisten opintojen suoritus',
-            'Taiteen perusopetuksen yleisen oppimäärän teemaopintojen suoritus'
-          ]
-        )
+        await expect(
+          await uusiOppijaPage.oppimäärä.textInput.textContent()
+        ).toBe('Taiteen perusopetuksen yleinen oppimäärä')
+        await expect(
+          await uusiOppijaPage.suoritustyyppi.getOptions()
+        ).toHaveText([
+          'Taiteen perusopetuksen yleisen oppimäärän yhteisten opintojen suoritus',
+          'Taiteen perusopetuksen yleisen oppimäärän teemaopintojen suoritus'
+        ])
       })
 
       test('Oppimäärän voi vaihtaa ja suoritustyypit näytetään oikein', async ({
@@ -60,12 +60,12 @@ test.describe('Taiteen perusopetus', () => {
         await uusiOppijaPage.fill({
           oppimäärä: 'Taiteen perusopetuksen laaja oppimäärä'
         })
-        await expect(await uusiOppijaPage.suoritustyyppi.getOptions()).toHaveText(
-          [
-            'Taiteen perusopetuksen laajan oppimäärän perusopintojen suoritus',
-            'Taiteen perusopetuksen laajan oppimäärän syventävien opintojen suoritus'
-          ]
-        )
+        await expect(
+          await uusiOppijaPage.suoritustyyppi.getOptions()
+        ).toHaveText([
+          'Taiteen perusopetuksen laajan oppimäärän perusopintojen suoritus',
+          'Taiteen perusopetuksen laajan oppimäärän syventävien opintojen suoritus'
+        ])
       })
 
       test('Suoritustyypin voi asettaa ja peruste valikoituu oikein', async ({
@@ -81,7 +81,7 @@ test.describe('Taiteen perusopetus', () => {
         ).toHaveValue('OPH-2068-2017')
       })
 
-      test('Opiskeluoikeuden luonti onnistuu', async ({uusiOppijaPage}) => {
+      test('Opiskeluoikeuden luonti onnistuu', async ({ uusiOppijaPage }) => {
         await uusiOppijaPage.fill({
           oppimäärä: 'Taiteen perusopetuksen laaja oppimäärä',
           suoritustyyppi:
@@ -98,7 +98,9 @@ test.describe('Taiteen perusopetus', () => {
     test.describe('Uuden opiskeluoikeuden luonti', () => {
       test.beforeEach(async ({ uusiOppijaPage }) => {
         await uusiOppijaPage.goTo('230872-7258')
-        await uusiOppijaPage.page.getByTestId('hankintakoulutus-checkbox__label').click();
+        await uusiOppijaPage.page
+          .getByTestId('hankintakoulutus-checkbox__label')
+          .click()
         await uusiOppijaPage.fill({
           etunimet: 'Tero',
           sukunimi: 'Taiteilija',
@@ -107,12 +109,11 @@ test.describe('Taiteen perusopetus', () => {
         })
       })
 
-      test('Opiskeluoikeuden luonti onnistuu', async ({
-        uusiOppijaPage
-      }) => {
+      test('Opiskeluoikeuden luonti onnistuu', async ({ uusiOppijaPage }) => {
         await uusiOppijaPage.fill({
           oppimäärä: 'Taiteen perusopetuksen laaja oppimäärä',
-          suoritustyyppi: 'Taiteen perusopetuksen laajan oppimäärän perusopintojen suoritus',
+          suoritustyyppi:
+            'Taiteen perusopetuksen laajan oppimäärän perusopintojen suoritus',
           taiteenala: 'Kuvataide'
         })
         await uusiOppijaPage.submitAndExpectSuccess()
@@ -380,6 +381,27 @@ test.describe('Taiteen perusopetus', () => {
         expect(await page.suorituksenVahvistushenkilö(0)).toEqual(
           'Amos Rex (rehtori)'
         )
+      })
+
+      test('Opiskeluoikeuden tilaa ei voi merkitä hyvväksytysti suoritetuksi vain yhdellä vahvistetulla päätason suorituksella', async ({
+        taiteenPerusopetusPage: page
+      }) => {
+        await page.edit()
+
+        await page.addNewOsasuoritus('Osasuoritus')
+        await page.setOsasuorituksenArvosana(
+          'arviointiasteikkotaiteenperusopetus_hyvaksytty'
+        )
+        await page.setOsasuorituksenLaajuus(11.1)
+        await page.vahvistaSuoritusUudellaHenkilöllä(
+          'Amos Rex',
+          'rehtori',
+          '1.2.2021'
+        )
+
+        const ooTilaEditor = page.$.opiskeluoikeus.tila.edit
+        await ooTilaEditor.add.click()
+        await ooTilaEditor.modal.tila.isDisabled('hyvaksytystisuoritettu')
       })
 
       test('Suoritusten vahvistuksen jälkeen opiskeluoikeuden tilan voi merkitä suoritetuksi', async ({

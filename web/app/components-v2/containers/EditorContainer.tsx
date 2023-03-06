@@ -40,6 +40,7 @@ export type EditorContainerProps<T extends Opiskeluoikeus> =
     suorituksenNimi?: (suoritus: ItemOf<T['suoritukset']>) => LocalizedString
     suorituksenLisäys?: string | LocalizedString
     onCreateSuoritus?: () => void
+    suorituksetVahvistettu?: boolean
   }>
 
 export type ActivePäätasonSuoritus<T extends Opiskeluoikeus> = {
@@ -66,9 +67,12 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
     )
   }, [props.form, props.oppijaOid])
 
-  const suorituksetVahvistettu = props.form.state.suoritukset
-    .map((s) => Boolean(s.vahvistus))
-    .every((s) => s)
+  const suorituksetVahvistettu =
+    props.suorituksetVahvistettu !== undefined
+      ? props.suorituksetVahvistettu
+      : props.form.state.suoritukset
+          .map((s) => Boolean(s.vahvistus))
+          .every((s) => s)
 
   const [suoritusIndex, setSuoritusIndex] = useState(0)
   const changeSuoritusTab = useCallback(
