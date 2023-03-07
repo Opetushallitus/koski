@@ -249,7 +249,8 @@ export const suoritusProperties = (
           'näyttö',
           'tunnustettu',
           'lisätiedot',
-          'liittyyTutkinnonOsaan'
+          'liittyyTutkinnonOsaan',
+          'korotettu'
         )
       )
 

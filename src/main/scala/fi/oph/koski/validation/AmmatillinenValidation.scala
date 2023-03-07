@@ -158,10 +158,12 @@ object AmmatillinenValidation {
     }
 
     (oldState, newState) match {
-      case (oldOo: AmmatillinenOpiskeluoikeus, newOo: AmmatillinenOpiskeluoikeus) => HttpStatus.validate(
-        oldOo.suoritukset.size == newOo.suoritukset.size &&
-          oldOo.suoritukset.map(getKorotettuOpiskeluoikeusOid) == newOo.suoritukset.map(getKorotettuOpiskeluoikeusOid)
-      )(KoskiErrorCategory.badRequest.validation.ammatillinen.korotuksenLinkitys())
+      case (oldOo: AmmatillinenOpiskeluoikeus, newOo: AmmatillinenOpiskeluoikeus) =>
+        val oldLinkitykset = oldOo.suoritukset.flatMap(getKorotettuOpiskeluoikeusOid)
+        val newLinkitykset = newOo.suoritukset.flatMap(getKorotettuOpiskeluoikeusOid)
+        HttpStatus.validate(
+          oldOo.suoritukset.size == newOo.suoritukset.size && oldLinkitykset.forall(oid => newLinkitykset.contains(oid))
+        )(KoskiErrorCategory.badRequest.validation.ammatillinen.korotuksenLinkitys())
       case _ => HttpStatus.ok
     }
   }

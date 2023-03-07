@@ -771,7 +771,7 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
       }
 
       "Korotetun opiskeluoikeuden linkitys" - {
-        "Linkitystä ei voi lisätä olemassaolevalle opiskeluoikeudelle" in {
+        "Linkityksen voi lisätä olemassaolevalle opiskeluoikeudelle jota ei ole aiemmin linkitetty" in {
           resetFixtures()
 
           val alkuperäinen = getAlkuperäinen
@@ -794,7 +794,7 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
             verifyResponseStatusOk()
           }
           putOpiskeluoikeus(korotettuOo, amiksenKorottaja) {
-            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.korotuksenLinkitys())
+            verifyResponseStatusOk()
           }
         }
 
