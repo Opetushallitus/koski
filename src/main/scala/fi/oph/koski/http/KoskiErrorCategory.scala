@@ -212,6 +212,9 @@ object KoskiErrorCategory {
         val korotuksenOppija = subcategory("korotuksenOppija", "Alkuperäistä opiskeluoikeutta ei löydy oppijalle")
         val alkuperäinenEiValmistunut = subcategory("alkuperäinenEiValmistunut", "Alkuperäinen opiskeluoikeus ei ole valmistunut-tilassa")
         val alkuperäinenSuoritusEiVastaava = subcategory("alkuperäinenSuoritusEiVastaava", "Korotusta vastaavaa tai korotukseen soveltuvaa suoritusta ei löydy alkuperäiseltä opiskeluoikeudelta")
+        val alkuperäinenOsasuoritusEiVastaava = subcategory("alkuperäinenOsasuoritusEiVastaava", "Korotuksen suorituksella on osasuorituksia tai aliosasuorituksia joille ei löydy vastaavaa alkuperäisestä opiskeluoikeudesta")
+        val korotuksenLaajuus = subcategory("korotuksenLaajuus", "Korotetun osasuorituksen laajuus ei vastaa sen aliosasuoritusten laajuutta")
+        val liikaaSamojaTutkinnonOsia = subcategory("liikaaSamojaTutkinnonOsia", "Samalla tutkinnon osan koodilla ei voi olla enempää korotuksia kuin alkuperäisellä opiskeluoikeudella on suorituksia")
       }
       val ammatillinen = new Ammatillinen
 

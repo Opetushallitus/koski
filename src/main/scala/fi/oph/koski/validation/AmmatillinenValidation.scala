@@ -95,8 +95,10 @@ object AmmatillinenValidation {
         validateKorotettuSuoritus(ammatillinen, os)
       case os: AmmatillisenTutkinnonOsittainenSuoritus if os.korotettuKeskiarvo.isDefined =>
         KoskiErrorCategory.badRequest.validation.ammatillinen.korotettuKeskiarvo()
-      case os: AmmatillisenTutkinnonOsittainenSuoritus if validateKorotettuSuoritus(os, k => k.korotettu.isDefined) =>
-        KoskiErrorCategory.badRequest.validation.ammatillinen.eiKorotuksenSuoritus()
+      case os: AmmatillisenTutkinnonOsittainenSuoritus if os.rekursiivisetOsasuoritukset.exists {
+        case s: Korotuksellinen => s.korotettu.isDefined
+        case _ => false
+      } => KoskiErrorCategory.badRequest.validation.ammatillinen.eiKorotuksenSuoritus()
       case _ => HttpStatus.ok
     }.getOrElse(HttpStatus.ok)
   }
@@ -105,11 +107,11 @@ object AmmatillinenValidation {
     val oss = korotettuSuoritus.osasuoritukset.getOrElse(List.empty)
 
     def osasuorituksetKorotettuTaiTunnustettu: HttpStatus = HttpStatus.validate(
-      (!oo.onValmistunut && korotettuSuoritus.osasuoritusLista.isEmpty) || validateKorotettuSuoritus(korotettuSuoritus, k => k.korotettu.isDefined || k.tunnustettu.isDefined)
+      (!oo.onValmistunut && korotettuSuoritus.osasuoritusLista.isEmpty) || validateKaikkiKorotukselliset(korotettuSuoritus, k => k.korotettu.isDefined || k.tunnustettu.isDefined)
     )(KoskiErrorCategory.badRequest.validation.ammatillinen.korotettuOsasuoritus())
 
     def eiKorotuksiaEikäKorotettuaKeskiarvoa: HttpStatus = HttpStatus.validate(
-      if(oo.onValmistunut && validateKorotettuSuoritus(korotettuSuoritus, k => k.korotettu.map(_.koodiarvo).contains("korotuksenyritys") || k.tunnustettu.isDefined)) {
+      if(oo.onValmistunut && validateKaikkiKorotukselliset(korotettuSuoritus, k => k.korotettu.map(_.koodiarvo).contains("korotuksenyritys") || k.tunnustettu.isDefined)) {
         korotettuSuoritus.korotettuKeskiarvo.isEmpty
       } else { true }
     )(KoskiErrorCategory.badRequest.validation.ammatillinen.korotettuKeskiarvo("Korotettua keskiarvoa ei voi siirtää jos kaikki korotuksen yritykset epäonnistuivat"))
@@ -135,7 +137,7 @@ object AmmatillinenValidation {
     )
   }
 
-  private def validateKorotettuSuoritus(
+  private def validateKaikkiKorotukselliset(
     korotettuSuoritus: AmmatillisenTutkinnonOsittainenSuoritus,
     validateFun: Korotuksellinen => Boolean
   ): Boolean = {
@@ -221,13 +223,11 @@ object AmmatillinenValidation {
     korotuksenSuoritus: Option[AmmatillisenTutkinnonOsittainenSuoritus],
     alkuperäinenOpiskeluoikeus: Option[Opiskeluoikeus]
   ): HttpStatus = {
-
     val alkuperäisetSuoritukset = alkuperäinenOpiskeluoikeus.map(_.suoritukset).getOrElse(List.empty).flatMap {
       case s: AmmatillisenTutkinnonSuoritus => Some(s)
       case _ => None
     }
 
-    // TODO TOR-1712: suoritustapa?
     val alkuperäinenSuoritus = alkuperäisetSuoritukset.find { s =>
       s.tyyppi.koodiarvo == "ammatillinentutkinto" &&
         s.koulutusmoduuli.tunniste.koodiarvo == korotuksenSuoritus.map(_.koulutusmoduuli.tunniste.koodiarvo).getOrElse("") &&
@@ -236,9 +236,115 @@ object AmmatillinenValidation {
         s.koulutusmoduuli.koulutustyyppi.map(_.koodiarvo) == korotuksenSuoritus.flatMap(_.koulutusmoduuli.koulutustyyppi.map(_.koodiarvo))
     }
 
-    HttpStatus.validate(
+    val validateVastaavaAlkuperäinenSuoritusLöytyy = HttpStatus.validate(
       alkuperäinenSuoritus.isDefined
     )(KoskiErrorCategory.badRequest.validation.ammatillinen.alkuperäinenSuoritusEiVastaava())
+
+    HttpStatus.fold(
+      validateVastaavaAlkuperäinenSuoritusLöytyy,
+      alkuperäinenSuoritus.map(s =>
+        validateKorotetutOsasuorituksetjaAliosasuoritukset(korotuksenSuoritus, s)
+      ).getOrElse(HttpStatus.ok)
+    )
   }
 
+  private def validateKorotetutOsasuorituksetjaAliosasuoritukset(
+    korotuksenSuoritus: Option[AmmatillisenTutkinnonOsittainenSuoritus],
+    alkuperäinenSuoritus: AmmatillisenTutkinnonSuoritus
+  ): HttpStatus = {
+    val korotetutOsasuoritukset = korotuksenSuoritus.flatMap(_.osasuoritukset).getOrElse(List.empty)
+    HttpStatus.fold(
+      validateKorotettujaVastaavatOsasuoritukset(korotetutOsasuoritukset, alkuperäinenSuoritus),
+      validateKorotettujenOsasuoritustenLaajuus(korotetutOsasuoritukset),
+      validateKorotettujenSamojenTutkinnonOsienMäärä(korotetutOsasuoritukset, alkuperäinenSuoritus)
+    )
+  }
+
+  def validateKorotettujaVastaavatOsasuoritukset(
+    korotetutOsasuoritukset: List[OsittaisenAmmatillisenTutkinnonOsanSuoritus],
+    alkuperäinenSuoritus: AmmatillisenTutkinnonSuoritus
+  ): HttpStatus = {
+    def validateVastaavaOsasuoritusLöytyy(
+      korotettuOs: OsittaisenAmmatillisenTutkinnonOsanSuoritus,
+      alkuperäisetOsasuoritukset: List[AmmatillisenTutkinnonOsanSuoritus]
+    ): Boolean = {
+      alkuperäisetOsasuoritukset.exists(aos =>
+        korotettuOs.tyyppi.koodiarvo == aos.tyyppi.koodiarvo &&
+          korotettuOs.koulutusmoduuli.tunniste.koodiarvo == aos.koulutusmoduuli.tunniste.koodiarvo &&
+          Math.abs(korotettuOs.koulutusmoduuli.laajuusArvo(0.00) - aos.koulutusmoduuli.laajuusArvo(0.0)) < 0.001 &&
+          korotettuOs.osasuoritusLista.forall(s => validateAliosasuoritukset(s, aos.osasuoritusLista))
+      )
+    }
+
+    def validateAliosasuoritukset(
+      korotettuAliOsasuoritus: Suoritus,
+      alkuperäisetAliosasuoritukset: List[Suoritus]
+    ): Boolean = korotettuAliOsasuoritus match {
+      case korotettu: YhteisenTutkinnonOsanOsaAlueenSuoritus =>
+        alkuperäisetAliosasuoritukset.exists(aaos =>
+          validateVastaavaAliosasuoritusLöytyy(
+            tutkinnonOsanKoodi = korotettu.koulutusmoduuli.tunniste.koodiarvo,
+            laajuus = korotettu.koulutusmoduuli.laajuusArvo(0.0),
+            pakollinen = korotettu.koulutusmoduuli.pakollinen,
+            alkuperäinenAliosasuoritus = aaos
+          )
+        )
+      case korotettu: MuidenOpintovalmiuksiaTukevienOpintojenSuoritus =>
+        alkuperäisetAliosasuoritukset.exists(aaos =>
+          validateVastaavaAliosasuoritusLöytyy(
+            tutkinnonOsanKoodi = korotettu.koulutusmoduuli.tunniste.koodiarvo,
+            laajuus = korotettu.koulutusmoduuli.laajuusArvo(0.0),
+            pakollinen = false,
+            alkuperäinenAliosasuoritus = aaos
+          )
+        )
+      case _ => false
+    }
+
+    def validateVastaavaAliosasuoritusLöytyy(
+      tutkinnonOsanKoodi: String,
+      laajuus: Double,
+      pakollinen: Boolean,
+      alkuperäinenAliosasuoritus: Suoritus
+    ): Boolean = alkuperäinenAliosasuoritus match {
+      case aliosasuoritus: YhteisenTutkinnonOsanOsaAlueenSuoritus =>
+        aliosasuoritus.koulutusmoduuli.tunniste.koodiarvo == tutkinnonOsanKoodi &&
+          Math.abs(aliosasuoritus.koulutusmoduuli.laajuusArvo(0.0) - laajuus) < 0.001 &&
+          aliosasuoritus.koulutusmoduuli.pakollinen == pakollinen
+      case aliosasuoritus: Suoritus =>
+        aliosasuoritus.koulutusmoduuli.tunniste.koodiarvo == tutkinnonOsanKoodi &&
+          Math.abs(aliosasuoritus.koulutusmoduuli.laajuusArvo(0.0) - laajuus) < 0.001
+    }
+
+    HttpStatus.validate(
+      korotetutOsasuoritukset.forall(os =>
+        validateVastaavaOsasuoritusLöytyy(os, alkuperäinenSuoritus.osasuoritukset.getOrElse(List.empty))
+      )
+    )(KoskiErrorCategory.badRequest.validation.ammatillinen.alkuperäinenOsasuoritusEiVastaava())
+  }
+
+  def validateKorotettujenOsasuoritustenLaajuus(
+    korotetutOsasuoritukset: List[OsittaisenAmmatillisenTutkinnonOsanSuoritus]
+  ): HttpStatus = HttpStatus.validate(
+    korotetutOsasuoritukset.forall(os =>
+      os.osasuoritukset.isEmpty ||
+        Math.abs(
+          os.koulutusmoduuli.laajuusArvo(0.0) - os.osasuoritusLista.map(_.koulutusmoduuli.laajuusArvo(0.0)).sum
+        ) < 0.001
+    )
+  )(KoskiErrorCategory.badRequest.validation.ammatillinen.korotuksenLaajuus())
+
+  def validateKorotettujenSamojenTutkinnonOsienMäärä(
+    korotetutOsasuoritukset: List[OsittaisenAmmatillisenTutkinnonOsanSuoritus],
+    alkuperäinenSuoritus: AmmatillisenTutkinnonSuoritus
+  ): HttpStatus = HttpStatus.validate(
+    korotetutOsasuoritukset
+      .groupBy(_.koulutusmoduuli.tunniste.koodiarvo)
+      .forall {
+        case (tutkinnonOsa, osasuoritukset) =>
+          alkuperäinenSuoritus
+            .osasuoritusLista
+            .count(s => s.koulutusmoduuli.tunniste.koodiarvo == tutkinnonOsa) >= osasuoritukset.size
+      }
+  )(KoskiErrorCategory.badRequest.validation.ammatillinen.liikaaSamojaTutkinnonOsia())
 }

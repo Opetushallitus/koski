@@ -13,7 +13,6 @@ import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.Organisaatio.Oid
 import fi.oph.koski.schema._
-import org.scalatest.BeforeAndAfterAll
 
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
@@ -375,10 +374,25 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
         korotettu = Some(korotettu)
       )
 
+      val defaultOsanOsaAlueenSuoritukset = List(
+        YhteisenTutkinnonOsanOsaAlueenSuoritus(
+          koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("FK", "ammatillisenoppiaineet"), pakollinen = true, Some(LaajuusOsaamispisteissä(3))),
+          arviointi = Some(List(arviointiKiitettävä)),
+          tunnustettu = Some(tunnustettu)
+        ),
+        YhteisenTutkinnonOsanOsaAlueenSuoritus(
+          koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("TVT", "ammatillisenoppiaineet"), pakollinen = true, Some(LaajuusOsaamispisteissä(3))),
+          arviointi = Some(List(arviointiKiitettävä.copy(päivä = date(2015, 1, 1)))),
+          alkamispäivä = Some(date(2014, 1, 1)),
+          tunnustettu = Some(tunnustettu),
+          lisätiedot = Some(List(lisätietoOsaamistavoitteet))
+        )
+      )
+
       val korotettuYhteisenTutkinnonOsanSuoritus = yhteisenOsittaisenTutkinnonTutkinnonOsansuoritus(k3, yhteisetTutkinnonOsat, "101054", "Matemaattis-luonnontieteellinen osaaminen", 9).copy(
         osasuoritukset = Some(List(
-          korotettuYhteisenOsanOsaAlueenSuoritus
-        ))
+          korotettuYhteisenOsanOsaAlueenSuoritus,
+        ) ++ defaultOsanOsaAlueenSuoritukset)
       )
 
       "Keskeneräinen korotus" - {
@@ -913,6 +927,165 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
 
           putOpiskeluoikeus(korotettuOo, amiksenKorottaja) {
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.alkuperäinenSuoritusEiVastaava())
+          }
+        }
+
+        "osasuorituksella väärä koulutusmoduulin tunniste tai laajuus" in {
+          val alkuperäinen = getAlkuperäinen
+          val korotettuSuoritus = ammatillisenTutkinnonOsittainenSuoritus.copy(
+            korotettuOpiskeluoikeusOid = alkuperäinen.oid,
+            korotettuKeskiarvo = Some(4.5),
+            korotettuKeskiarvoSisältääMukautettujaArvosanoja = Some(false),
+            osasuoritukset = None
+          )
+
+          val korotettuOsasuoritusVääräTutkinnonOsa = osittaisenTutkinnonTutkinnonOsanSuoritus(k3, ammatillisetTutkinnonOsat, "100433", "Luonnossa ohjaaminen", 35).copy(
+            korotettu = Some(korotettu)
+          )
+          val korotettuSuoritusVääräTutkinnonOsa = korotettuSuoritus.copy(
+            osasuoritukset = Some(List(korotettuOsasuoritusVääräTutkinnonOsa))
+          )
+          val korotettuOoVääräTutkinnonOsa = makeOpiskeluoikeus(suoritus = korotettuSuoritusVääräTutkinnonOsa)
+
+          putOpiskeluoikeus(korotettuOoVääräTutkinnonOsa, amiksenKorottaja) {
+            verifyResponseStatus(400)
+          }
+
+          val korotettuOsasuoritusVääräLaajuus = osittaisenTutkinnonTutkinnonOsanSuoritus(k3, ammatillisetTutkinnonOsat, "100432", "Ympäristön hoitaminen", 34).copy(
+            korotettu = Some(korotettu)
+          )
+          val korotettuSuoritusVääräLaajuus = korotettuSuoritus.copy(
+            osasuoritukset = Some(List(korotettuOsasuoritusVääräLaajuus))
+          )
+          val korotettuOoVääräLaajuus = makeOpiskeluoikeus(suoritus = korotettuSuoritusVääräLaajuus)
+
+          putOpiskeluoikeus(korotettuOoVääräLaajuus, amiksenKorottaja) {
+            verifyResponseStatusOk(400)
+          }
+        }
+
+        "aliosasuorituksella väärä koulutusmoduulin tunniste" in {
+          val alkuperäinen = getAlkuperäinen
+
+          val korotettuYhteisenOsanOsaAlueenSuoritusVääräTutkinnonOsanOsaAlue = YhteisenTutkinnonOsanOsaAlueenSuoritus(
+            koulutusmoduuli = PaikallinenAmmatillisenTutkinnonOsanOsaAlue(
+              PaikallinenKoodi("FY", "Fysiikka"), "Fysiikan opinnot", pakollinen = true, Some(LaajuusOsaamispisteissä(3))
+            ),
+            arviointi = Some(List(arviointiKiitettävä)),
+            korotettu = Some(korotettu)
+          )
+          val korotettuYhteisenTutkinnonOsanSuoritus = yhteisenOsittaisenTutkinnonTutkinnonOsansuoritus(k3, yhteisetTutkinnonOsat, "101054", "Matemaattis-luonnontieteellinen osaaminen", 9).copy(
+            osasuoritukset = Some(List(
+              korotettuYhteisenOsanOsaAlueenSuoritusVääräTutkinnonOsanOsaAlue
+            ) ++ defaultOsanOsaAlueenSuoritukset)
+          )
+          val korotettuSuoritusVääräTutkinnonOsa = ammatillisenTutkinnonOsittainenSuoritus.copy(
+            korotettuOpiskeluoikeusOid = alkuperäinen.oid,
+            korotettuKeskiarvo = Some(4.5),
+            korotettuKeskiarvoSisältääMukautettujaArvosanoja = Some(false),
+            osasuoritukset = Some(List(korotettuYhteisenTutkinnonOsanSuoritus))
+          )
+          val korotettuOoVääräTutkinnonOsa = makeOpiskeluoikeus(suoritus = korotettuSuoritusVääräTutkinnonOsa)
+
+          putOpiskeluoikeus(korotettuOoVääräTutkinnonOsa, amiksenKorottaja) {
+            verifyResponseStatus(400)
+          }
+        }
+
+        "aliosasuorituksella väärä laajuus" in {
+          resetFixtures()
+
+          val alkuperäinen = getAlkuperäinen
+
+          val korotettuYhteisenOsanOsaAlueenSuoritusVääräLaajuus = YhteisenTutkinnonOsanOsaAlueenSuoritus(
+            koulutusmoduuli = PaikallinenAmmatillisenTutkinnonOsanOsaAlue(
+              PaikallinenKoodi("MA", "Matematiikka"), "Matematiikan opinnot", pakollinen = true, Some(LaajuusOsaamispisteissä(4)) // LaajuusOsaamispisteissä(3)
+            ),
+            arviointi = Some(List(arviointiKiitettävä)),
+            korotettu = Some(korotettu)
+          )
+          val korotettuYhteisenTutkinnonOsanSuoritus = yhteisenOsittaisenTutkinnonTutkinnonOsansuoritus(k3, yhteisetTutkinnonOsat, "101054", "Matemaattis-luonnontieteellinen osaaminen", 9).copy(
+            osasuoritukset = Some(List(
+              korotettuYhteisenOsanOsaAlueenSuoritusVääräLaajuus
+            ) ++ defaultOsanOsaAlueenSuoritukset)
+          )
+          val korotettuSuoritus = ammatillisenTutkinnonOsittainenSuoritus.copy(
+            korotettuOpiskeluoikeusOid = alkuperäinen.oid,
+            korotettuKeskiarvo = Some(4.5),
+            korotettuKeskiarvoSisältääMukautettujaArvosanoja = Some(false),
+            osasuoritukset = Some(List(korotettuYhteisenTutkinnonOsanSuoritus))
+          )
+          val korotettuOoVääräTutkinnonOsanOsaAlueenLaajuus = makeOpiskeluoikeus(suoritus = korotettuSuoritus)
+
+          putOpiskeluoikeus(korotettuOoVääräTutkinnonOsanOsaAlueenLaajuus, amiksenKorottaja) {
+            verifyResponseStatus(
+              400,
+              KoskiErrorCategory.badRequest.validation.ammatillinen.alkuperäinenOsasuoritusEiVastaava(),
+              KoskiErrorCategory.badRequest.validation.ammatillinen.korotuksenLaajuus()
+            )
+          }
+
+          val korotettuYhteisenTutkinnonOsanSuoritusVääräLaajuus = yhteisenOsittaisenTutkinnonTutkinnonOsansuoritus(k3, yhteisetTutkinnonOsat, "101054", "Matemaattis-luonnontieteellinen osaaminen", 9).copy(
+            osasuoritukset = Some(List(
+              korotettuYhteisenOsanOsaAlueenSuoritus
+            ))
+          )
+          val korotettuOoVääräTutkinnonOsanLaajuus = makeOpiskeluoikeus(suoritus = ammatillisenTutkinnonOsittainenSuoritus.copy(
+            korotettuOpiskeluoikeusOid = alkuperäinen.oid,
+            korotettuKeskiarvo = Some(4.5),
+            korotettuKeskiarvoSisältääMukautettujaArvosanoja = Some(false),
+            osasuoritukset = Some(List(korotettuYhteisenTutkinnonOsanSuoritusVääräLaajuus))
+          ))
+
+          putOpiskeluoikeus(korotettuOoVääräTutkinnonOsanLaajuus, amiksenKorottaja) {
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.korotuksenLaajuus())
+          }
+        }
+
+        "aliosasuorituksella väärä pakollisuus" in {
+          val alkuperäinen = getAlkuperäinen
+          val korotettuYhteisenOsanOsaAlueenSuoritusVääräPakollisuus = YhteisenTutkinnonOsanOsaAlueenSuoritus(
+            koulutusmoduuli = PaikallinenAmmatillisenTutkinnonOsanOsaAlue(
+              PaikallinenKoodi("MA", "Matematiikka"), "Matematiikan opinnot", pakollinen = false, Some(LaajuusOsaamispisteissä(3))
+            ),
+            arviointi = Some(List(arviointiKiitettävä)),
+            korotettu = Some(korotettu)
+          )
+          val korotettuYhteisenTutkinnonOsanSuoritus = yhteisenOsittaisenTutkinnonTutkinnonOsansuoritus(k3, yhteisetTutkinnonOsat, "101054", "Matemaattis-luonnontieteellinen osaaminen", 9).copy(
+            osasuoritukset = Some(List(
+              korotettuYhteisenOsanOsaAlueenSuoritusVääräPakollisuus
+            ) ++ defaultOsanOsaAlueenSuoritukset)
+          )
+          val korotettuSuoritusVääräLaajuus = ammatillisenTutkinnonOsittainenSuoritus.copy(
+            korotettuOpiskeluoikeusOid = alkuperäinen.oid,
+            korotettuKeskiarvo = Some(4.5),
+            korotettuKeskiarvoSisältääMukautettujaArvosanoja = Some(false),
+            osasuoritukset = Some(List(korotettuYhteisenTutkinnonOsanSuoritus))
+          )
+          val korotettuOoVääräTutkinnonOsa = makeOpiskeluoikeus(suoritus = korotettuSuoritusVääräLaajuus)
+
+          putOpiskeluoikeus(korotettuOoVääräTutkinnonOsa, amiksenKorottaja) {
+            verifyResponseStatus(400)
+          }
+        }
+
+        "samalla koulutusmoduulin tunnisteella löytyy vähintään yhtä monta osasuoritusta alkuperäiseltä" in {
+          resetFixtures()
+
+          val alkuperäinen = getAlkuperäinen
+          val korotettuSuoritus = ammatillisenTutkinnonOsittainenSuoritus.copy(
+            korotettuOpiskeluoikeusOid = alkuperäinen.oid,
+            korotettuKeskiarvo = Some(4.5),
+            korotettuKeskiarvoSisältääMukautettujaArvosanoja = Some(false),
+            osasuoritukset = Some(List(
+              korotettuTutkinnonOsanSuoritus,
+              korotettuTutkinnonOsanSuoritus
+            ))
+          )
+          val korotettuOo = makeOpiskeluoikeus(suoritus = korotettuSuoritus)
+
+          putOpiskeluoikeus(korotettuOo, amiksenKorottaja) {
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.liikaaSamojaTutkinnonOsia())
           }
         }
       }

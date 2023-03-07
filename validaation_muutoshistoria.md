@@ -17,6 +17,11 @@
   - Alkuperäinen opiskeluoikeus on valmistunut-tilassa.
   - Alkuperäisen opiskeluoikeuden suoritus on ammatillisen perustutkinnon suoritus.
   - Alkuperäisellä ja korotuksen suorituksella on sama koulutusmoduulin tunniste, diaarinumero sekä koulutustyyppi.
+- Lisätty validaatioita korotetun suorituksen osasuorituksille ja aliosasuorituksille.
+  - Alkuperäiseltä opiskeluoikeudelta on löydyttävä korotuksia vastaavat osasuoritukset ja aliosasuoritukset.
+    - Vastaavuudessa huomoidaan osasuorituksen koulutusmoduulin tunniste, laajuus sekä mahdollinen pakollisuus.
+    - Samalla tutkinnon osan koodilla ei voi olla enempää korotuksia kuin mitä alkuperäiseltä opiskeluoikeudelta löytyy.
+  - Korotetun opiskeluoikeuden osasuorituksen laajuus täytyy vastata sen aliosasuoritusten yhteenlaskettua laajuutta.
 
 ## 28.2.2023
 
