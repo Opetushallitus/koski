@@ -40,7 +40,7 @@ class KelaService(application: KoskiApplication) extends GlobalExecutionContext 
   }
 
   def streamOppijatByHetu(hetut: Seq[String])(implicit koskiSession: KoskiSpecificSession): Observable[JValue] = {
-    val (opiskeluoikeudet, _) = haeOpiskeluoikeudet(hetut, false)
+    val (opiskeluoikeudet, _) = haeOpiskeluoikeudet(hetut, true)
 
     Observable
       .from(
