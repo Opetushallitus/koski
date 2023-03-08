@@ -54,6 +54,15 @@ export const TaiteenPerusopetuksenTiedot: React.FC<
       >
         <Trans>{form.state.koulutuksenToteutustapa.nimi}</Trans>
       </KeyValueRow>
+      {opiskeluoikeus.koulutuksenToteutustapa.koodiarvo ===
+        'hankintakoulutus' && (
+        <KeyValueRow
+          label="Koulutuksen järjestäjä"
+          testId={`${testIdPrefix}.koulutustoimija`}
+        >
+          <Trans>{opiskeluoikeus.koulutustoimija?.nimi}</Trans>
+        </KeyValueRow>
+      )}
       <KeyValueRow label="Oppilaitos" testId={`${testIdPrefix}.oppilaitos`}>
         <Trans>{opiskeluoikeus.oppilaitos?.nimi}</Trans>
       </KeyValueRow>

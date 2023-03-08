@@ -298,7 +298,7 @@ const osasuoritusToTableRow = (
   >,
   suoritusIndex: number,
   osasuoritusIndex: number
-): OsasuoritusRowData<'Kurssi' | 'Laajuus' | 'Arviointi'> => {
+): OsasuoritusRowData<'Osasuoritus' | 'Laajuus' | 'Arviointi'> => {
   const osasuoritus = suoritusPath
     .prop('osasuoritukset')
     .optional()
@@ -308,7 +308,7 @@ const osasuoritusToTableRow = (
     suoritusIndex,
     osasuoritusIndex,
     columns: {
-      Kurssi: (
+      Osasuoritus: (
         <FormField
           form={form}
           path={osasuoritus.path('koulutusmoduuli.tunniste.nimi')}
