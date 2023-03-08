@@ -2480,6 +2480,7 @@
   "Koulutus järjestetään oman organisaation ulkopuolelta": "Koulutus järjestetään oman organisaation ulkopuolelta",
   "Laajan oppimäärän suoritus": "Laajan oppimäärän suoritus",
   "Yleisen oppimäärän suoritus": "Yleisen oppimäärän suoritus",
-  "description:Päättymispäiväksi päätellään mahdollinen valmistumispäivä. Samassa..." : "Päättymispäiväksi päätellään mahdollinen valmistumispäivä. Samassa opiskeluoikeudessa voi silti olla sitä myöhempien tutkintokertojen YO-kokeen suorituksia, esim. korotuksia.",
-  "description:Yksikäsitteistä alkamispäivää ei ole, joten..." : "Yksikäsitteistä alkamispäivää ei ole, joten alkamispäivä puuttuu aina."
+  "description:Päättymispäiväksi päätellään mahdollinen valmistumispäivä. Samassa...": "Päättymispäiväksi päätellään mahdollinen valmistumispäivä. Samassa opiskeluoikeudessa voi silti olla sitä myöhempien tutkintokertojen YO-kokeen suorituksia, esim. korotuksia.",
+  "description:Yksikäsitteistä alkamispäivää ei ole, joten...": "Yksikäsitteistä alkamispäivää ei ole, joten alkamispäivä puuttuu aina.",
+  "Koulutuksen järjestäjä": "Koulutuksen järjestäjä"
 }
