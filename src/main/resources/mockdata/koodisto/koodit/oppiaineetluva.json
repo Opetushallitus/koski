@@ -56,13 +56,13 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Historia ja yhteiskuntaoppi",
+        "nimi": "Historia och samhällslära",
         "lyhytNimi": "Historia ja yhteiskuntaoppi",
         "kuvaus": "Historia ja yhteiskuntaoppi",
         "kieli": "SV"
       },
       {
-        "nimi": "Historia ja yhteiskuntaoppi",
+        "nimi": "History and social studies",
         "lyhytNimi": "Historia ja yhteiskuntaoppi",
         "kuvaus": "Historia ja yhteiskuntaoppi",
         "kieli": "EN"
@@ -80,7 +80,7 @@
         "kieli": "FI"
       },
       {
-        "nimi": "De studerandes eget modersmål",
+        "nimi": "Den studerandes eget modersmål",
         "kieli": "SV"
       },
       {
@@ -128,13 +128,13 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Matematiikka, fysiikka, kemia, biologia, maantiede",
+        "nimi": "Matematik, fysik, kemi, biologi, geografi",
         "lyhytNimi": "Matematiikka, fysiikka, kemia, biologia, maantiede",
         "kuvaus": "Matematiikka, fysiikka, kemia, biologia, maantiede",
         "kieli": "SV"
       },
       {
-        "nimi": "Matematiikka, fysiikka, kemia, biologia, maantiede",
+        "nimi": "Mathematics, physics, chemistry, biology, geography",
         "lyhytNimi": "Matematiikka, fysiikka, kemia, biologia, maantiede",
         "kuvaus": "Matematiikka, fysiikka, kemia, biologia, maantiede",
         "kieli": "EN"

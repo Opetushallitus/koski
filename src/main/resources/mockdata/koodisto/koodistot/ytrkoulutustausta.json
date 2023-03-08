@@ -1,21 +1,25 @@
 {
-  "koodistoUri" : "ytrkoulutustausta",
-  "versio" : 1,
-  "metadata" : [ {
-    "kieli" : "FI",
-    "nimi" : "YTR koulutustausta",
-    "kuvaus": "Koulutustausta YO-kokeen tiedoissa"
-  }, {
-    "kieli" : "SV",
-    "nimi" : "YTR koulutustausta"
-  }, {
-    "kieli" : "EN",
-    "nimi" : "YTR koulutustausta"
-  } ],
-  "codesGroupUri" : "koski",
-  "voimassaAlkuPvm" : "2016-09-09",
-  "organisaatioOid" : "1.2.246.562.10.00000000001",
-  "withinCodes" : [ ],
-  "tila" : "LUONNOS",
-  "version" : 0
+  "koodistoUri": "ytrkoulutustausta",
+  "versio": 1,
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "YTR koulutustausta",
+      "kuvaus": "Koulutustausta YO-kokeen tiedoissa"
+    },
+    {
+      "kieli": "SV",
+      "nimi": "YTR koulutustausta"
+    },
+    {
+      "kieli": "EN",
+      "nimi": "YTR koulutustausta"
+    }
+  ],
+  "codesGroupUri": "koski",
+  "voimassaAlkuPvm": "2016-09-09",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "withinCodes": [],
+  "tila": "LUONNOS",
+  "version": 0
 }

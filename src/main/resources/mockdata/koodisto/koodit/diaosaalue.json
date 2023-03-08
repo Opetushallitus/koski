@@ -9,9 +9,11 @@
         "kieli": "FI"
       },
       {
+        "nimi": "Språk, litteratur, konst",
         "kieli": "SV"
       },
       {
+        "nimi": "Languages, literature, art",
         "kieli": "EN"
       }
     ],
@@ -28,9 +30,11 @@
         "kieli": "FI"
       },
       {
+        "nimi": "Matematik och naturvetenskap",
         "kieli": "SV"
       },
       {
+        "nimi": "Mathematics and science",
         "kieli": "EN"
       }
     ],
@@ -47,9 +51,11 @@
         "kieli": "FI"
       },
       {
+        "nimi": "Samhällsvetenskap",
         "kieli": "SV"
       },
       {
+        "nimi": "Social sciences",
         "kieli": "EN"
       }
     ],

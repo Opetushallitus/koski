@@ -9,9 +9,11 @@
         "kieli": "FI"
       },
       {
+        "nimi": "Written exam",
         "kieli": "SV"
       },
       {
+        "nimi": "Skriftligt prov",
         "kieli": "EN"
       }
     ],
@@ -47,9 +49,11 @@
         "kieli": "FI"
       },
       {
+        "nimi": "Muntligt prov",
         "kieli": "SV"
       },
       {
+        "nimi": "Oral exam",
         "kieli": "EN"
       }
     ],

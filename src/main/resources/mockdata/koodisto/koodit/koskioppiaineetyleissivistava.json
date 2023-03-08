@@ -14,6 +14,7 @@
         "kieli": "SV"
       },
       {
+        "nimi": "A-language",
         "kieli": "EN"
       }
     ],
@@ -35,6 +36,7 @@
         "kieli": "SV"
       },
       {
+        "nimi": "A1-language",
         "kieli": "EN"
       }
     ],
@@ -56,6 +58,7 @@
         "kieli": "SV"
       },
       {
+        "nimi": "A2-language",
         "kieli": "EN"
       }
     ],
@@ -77,6 +80,7 @@
         "kieli": "SV"
       },
       {
+        "nimi": "Mother tongue and literature",
         "kieli": "EN"
       }
     ],
@@ -88,18 +92,20 @@
     "koodiArvo": "AOM",
     "metadata": [
       {
-        "nimi": "Äidinkielenomainen kieli",
-        "lyhytNimi": "Äidinkielenomainen kieli",
+        "nimi": "Äidinkielenomainen kieli A-oppimäärä",
+        "lyhytNimi": "Äidinkielenomainen kieli A-oppimäärä",
         "kuvaus": "",
         "kieli": "FI"
       },
       {
-        "nimi": "Modersmålsinriktat språk",
+        "nimi": "Modersmålsinriktat språk A-lärokurs",
         "lyhytNimi": "Modersmålsinriktat språk",
         "kuvaus": "",
         "kieli": "SV"
       },
       {
+        "nimi": "Äidinkielenomainen kieli A-oppimäärä",
+        "lyhytNimi": "Äidinkielenomainen kieli A-oppimäärä",
         "kieli": "EN"
       }
     ],
@@ -121,6 +127,7 @@
         "kieli": "SV"
       },
       {
+        "nimi": "B1-language",
         "kieli": "EN"
       }
     ],
@@ -142,6 +149,7 @@
         "kieli": "SV"
       },
       {
+        "nimi": "B2-language",
         "kieli": "EN"
       }
     ],
@@ -163,6 +171,7 @@
         "kieli": "SV"
       },
       {
+        "nimi": "B3-language",
         "kieli": "EN"
       }
     ],
@@ -184,6 +193,7 @@
         "kieli": "SV"
       },
       {
+        "nimi": "Biology",
         "kieli": "EN"
       }
     ],
@@ -207,6 +217,7 @@
         "kieli": "SV"
       },
       {
+        "nimi": "Religion/ethics",
         "kieli": "EN"
       }
     ],
@@ -228,6 +239,7 @@
         "kieli": "SV"
       },
       {
+        "nimi": "Philosophy",
         "kieli": "EN"
       }
     ],
@@ -249,6 +261,7 @@
         "kieli": "SV"
       },
       {
+        "nimi": "Physics",
         "kieli": "EN"
       }
     ],
@@ -270,6 +283,7 @@
         "kieli": "SV"
       },
       {
+        "nimi": "Geography",
         "kieli": "EN"
       }
     ],
@@ -291,6 +305,7 @@
         "kieli": "SV"
       },
       {
+        "nimi": "History",
         "kieli": "EN"
       }
     ],
@@ -312,6 +327,7 @@
         "kieli": "SV"
       },
       {
+        "nimi": "Chemistry",
         "kieli": "EN"
       }
     ],
@@ -333,6 +349,7 @@
         "kieli": "SV"
       },
       {
+        "nimi": "Home economics",
         "kieli": "EN"
       }
     ],
@@ -354,6 +371,7 @@
         "kieli": "SV"
       },
       {
+        "nimi": "Crafts",
         "kieli": "EN"
       }
     ],
@@ -377,6 +395,7 @@
         "kieli": "SV"
       },
       {
+        "nimi": "Religion/ethics",
         "kieli": "EN"
       }
     ],
@@ -398,6 +417,7 @@
         "kieli": "SV"
       },
       {
+        "nimi": "Visual arts",
         "kieli": "EN"
       }
     ],
@@ -419,6 +439,7 @@
         "kieli": "SV"
       },
       {
+        "nimi": "Physical education",
         "kieli": "EN"
       }
     ],
@@ -440,6 +461,7 @@
         "kieli": "SV"
       },
       {
+        "nimi": "Mathematics",
         "kieli": "EN"
       }
     ],
@@ -461,6 +483,7 @@
         "kieli": "SV"
       },
       {
+        "nimi": "Music",
         "kieli": "EN"
       }
     ],
@@ -484,6 +507,7 @@
         "kieli": "SV"
       },
       {
+        "nimi": "Guidance counselling",
         "kieli": "EN"
       }
     ],
@@ -503,6 +527,7 @@
         "kieli": "SV"
       },
       {
+        "nimi": "Guidance counselling and working life competence",
         "kieli": "EN"
       }
     ],
@@ -524,6 +549,7 @@
         "kieli": "SV"
       },
       {
+        "nimi": "Psychology",
         "kieli": "EN"
       }
     ],
@@ -545,6 +571,7 @@
         "kieli": "SV"
       },
       {
+        "nimi": "Health education",
         "kieli": "EN"
       }
     ],
@@ -587,6 +614,7 @@
         "kieli": "SV"
       },
       {
+        "nimi": "Social studies",
         "kieli": "EN"
       }
     ],
@@ -610,6 +638,7 @@
         "kieli": "SV"
       },
       {
+        "nimi": "Environmental studies",
         "kieli": "EN"
       }
     ],

@@ -1,0 +1,365 @@
+{
+  "henkilö" : {
+    "hetu" : "210244-374K",
+    "etunimet" : "Ynjevi",
+    "kutsumanimi" : "Ynjevi",
+    "sukunimi" : "Ylioppilas"
+  },
+  "opiskeluoikeudet" : [ {
+    "lähdejärjestelmänId" : {
+      "lähdejärjestelmä" : {
+        "koodiarvo" : "ytr",
+        "nimi" : {
+          "fi" : "ytr"
+        },
+        "koodistoUri" : "lahdejarjestelma"
+      }
+    },
+    "oppilaitos" : {
+      "oid" : "1.2.246.562.10.70411521654",
+      "oppilaitosnumero" : {
+        "koodiarvo" : "00648",
+        "nimi" : {
+          "fi" : "Helsingin medialukio",
+          "sv" : "Helsingin medialukio",
+          "en" : "Helsingin medialukio"
+        },
+        "lyhytNimi" : {
+          "fi" : "Helsingin medialukio",
+          "sv" : "Helsingin medialukio",
+          "en" : "Helsingin medialukio"
+        },
+        "koodistoUri" : "oppilaitosnumero"
+      },
+      "nimi" : {
+        "fi" : "Helsingin medialukio",
+        "sv" : "Helsingin medialukio",
+        "en" : "Helsingin medialukio"
+      },
+      "kotipaikka" : {
+        "koodiarvo" : "091",
+        "nimi" : {
+          "fi" : "Helsinki",
+          "sv" : "Helsingfors"
+        },
+        "koodistoUri" : "kunta"
+      }
+    },
+    "koulutustoimija" : {
+      "oid" : "1.2.246.562.10.43628088406",
+      "nimi" : {
+        "fi" : "Ylioppilastutkintolautakunta",
+        "sv" : "Studentexamensnämnden",
+        "en" : "The Matriculation Examination Board"
+      },
+      "kotipaikka" : {
+        "koodiarvo" : "091",
+        "nimi" : {
+          "fi" : "Helsinki",
+          "sv" : "Helsingfors"
+        },
+        "koodistoUri" : "kunta"
+      }
+    },
+    "tila" : {
+      "opiskeluoikeusjaksot" : [ ]
+    },
+    "suoritukset" : [ {
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "301000",
+          "nimi" : {
+            "fi" : "Ylioppilastutkinto",
+            "sv" : "Studentexamen",
+            "en" : "Matriculation Examination"
+          },
+          "lyhytNimi" : {
+            "fi" : "Ylioppilastutkinto",
+            "sv" : "Studentexamen",
+            "en" : "Matriculation Examination"
+          },
+          "koodistoUri" : "koulutus"
+        }
+      },
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.70411521654",
+        "oppilaitosnumero" : {
+          "koodiarvo" : "00648",
+          "nimi" : {
+            "fi" : "Helsingin medialukio",
+            "sv" : "Helsingin medialukio",
+            "en" : "Helsingin medialukio"
+          },
+          "lyhytNimi" : {
+            "fi" : "Helsingin medialukio",
+            "sv" : "Helsingin medialukio",
+            "en" : "Helsingin medialukio"
+          },
+          "koodistoUri" : "oppilaitosnumero"
+        },
+        "nimi" : {
+          "fi" : "Helsingin medialukio",
+          "sv" : "Helsingin medialukio",
+          "en" : "Helsingin medialukio"
+        },
+        "kotipaikka" : {
+          "koodiarvo" : "091",
+          "nimi" : {
+            "fi" : "Helsinki",
+            "sv" : "Helsingfors"
+          },
+          "koodistoUri" : "kunta"
+        }
+      },
+      "vahvistus" : {
+        "päivä" : "2012-06-02",
+        "paikkakunta" : {
+          "koodiarvo" : "091",
+          "nimi" : {
+            "fi" : "Helsinki",
+            "sv" : "Helsingfors"
+          },
+          "koodistoUri" : "kunta"
+        },
+        "myöntäjäOrganisaatio" : {
+          "oid" : "1.2.246.562.10.43628088406",
+          "nimi" : {
+            "fi" : "Ylioppilastutkintolautakunta",
+            "sv" : "Studentexamensnämnden",
+            "en" : "The Matriculation Examination Board"
+          }
+        }
+      },
+      "pakollisetKokeetSuoritettu" : true,
+      "osasuoritukset" : [ {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "A",
+            "nimi" : {
+              "fi" : "Äidinkielen koe, suomi",
+              "sv" : "Provet i modersmålet, finska",
+              "en" : "Mother tongue test, Finnish"
+            },
+            "koodistoUri" : "koskiyokokeet"
+          }
+        },
+        "tutkintokerta" : {
+          "koodiarvo" : "2012K",
+          "vuosi" : 2012,
+          "vuodenaika" : {
+            "fi" : "kevät",
+            "sv" : "vår"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "B",
+            "nimi" : {
+              "fi" : "Lubenter approbatur"
+            },
+            "koodistoUri" : "koskiyoarvosanat"
+          },
+          "pisteet" : 46,
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ylioppilastutkinnonkoe",
+          "nimi" : {
+            "fi" : "Ylioppilastutkinnon koe",
+            "sv" : "Prov i studentexamen",
+            "en" : "Matriculation examination test"
+          },
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "BB",
+            "nimi" : {
+              "fi" : "Ruotsi, keskipitkä oppimäärä",
+              "sv" : "Svenska, medellång lärokurs",
+              "en" : "Swedish, medium syllabus"
+            },
+            "koodistoUri" : "koskiyokokeet"
+          }
+        },
+        "tutkintokerta" : {
+          "koodiarvo" : "2012K",
+          "vuosi" : 2012,
+          "vuodenaika" : {
+            "fi" : "kevät",
+            "sv" : "vår"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "C",
+            "nimi" : {
+              "fi" : "Cum laude approbatur"
+            },
+            "koodistoUri" : "koskiyoarvosanat"
+          },
+          "pisteet" : 166,
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ylioppilastutkinnonkoe",
+          "nimi" : {
+            "fi" : "Ylioppilastutkinnon koe",
+            "sv" : "Prov i studentexamen",
+            "en" : "Matriculation examination test"
+          },
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "EA",
+            "nimi" : {
+              "fi" : "Englanti, pitkä oppimäärä",
+              "sv" : "Engelska, lång lärokurs",
+              "en" : "English, advanced syllabus"
+            },
+            "koodistoUri" : "koskiyokokeet"
+          }
+        },
+        "tutkintokerta" : {
+          "koodiarvo" : "2012K",
+          "vuosi" : 2012,
+          "vuodenaika" : {
+            "fi" : "kevät",
+            "sv" : "vår"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "C",
+            "nimi" : {
+              "fi" : "Cum laude approbatur"
+            },
+            "koodistoUri" : "koskiyoarvosanat"
+          },
+          "pisteet" : 210,
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ylioppilastutkinnonkoe",
+          "nimi" : {
+            "fi" : "Ylioppilastutkinnon koe",
+            "sv" : "Prov i studentexamen",
+            "en" : "Matriculation examination test"
+          },
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "GE",
+            "nimi" : {
+              "fi" : "Maantiede",
+              "sv" : "Geografi",
+              "en" : "Geography"
+            },
+            "koodistoUri" : "koskiyokokeet"
+          }
+        },
+        "tutkintokerta" : {
+          "koodiarvo" : "2012K",
+          "vuosi" : 2012,
+          "vuodenaika" : {
+            "fi" : "kevät",
+            "sv" : "vår"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "M",
+            "nimi" : {
+              "fi" : "Magna cum laude approbatur"
+            },
+            "koodistoUri" : "koskiyoarvosanat"
+          },
+          "pisteet" : 26,
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ylioppilastutkinnonkoe",
+          "nimi" : {
+            "fi" : "Ylioppilastutkinnon koe",
+            "sv" : "Prov i studentexamen",
+            "en" : "Matriculation examination test"
+          },
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "N",
+            "nimi" : {
+              "fi" : "Matematiikan koe, lyhyt oppimäärä",
+              "sv" : "Matematik, kort lärokurs",
+              "en" : "Mathematics, basic syllabus"
+            },
+            "koodistoUri" : "koskiyokokeet"
+          }
+        },
+        "tutkintokerta" : {
+          "koodiarvo" : "2012K",
+          "vuosi" : 2012,
+          "vuodenaika" : {
+            "fi" : "kevät",
+            "sv" : "vår"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "L",
+            "nimi" : {
+              "fi" : "Laudatur"
+            },
+            "koodistoUri" : "koskiyoarvosanat"
+          },
+          "pisteet" : 59,
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ylioppilastutkinnonkoe",
+          "nimi" : {
+            "fi" : "Ylioppilastutkinnon koe",
+            "sv" : "Prov i studentexamen",
+            "en" : "Matriculation examination test"
+          },
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      } ],
+      "tyyppi" : {
+        "koodiarvo" : "ylioppilastutkinto",
+        "nimi" : {
+          "fi" : "Ylioppilastutkinto",
+          "sv" : "Studentexamen",
+          "en" : "Matriculation examination"
+        },
+        "koodistoUri" : "suorituksentyyppi"
+      },
+      "koulusivistyskieli" : [ {
+        "koodiarvo" : "FI",
+        "nimi" : {
+          "fi" : "suomi"
+        },
+        "koodistoUri" : "kieli"
+      } ]
+    } ],
+    "tyyppi" : {
+      "koodiarvo" : "ylioppilastutkinto",
+      "nimi" : {
+        "fi" : "Ylioppilastutkinto",
+        "sv" : "Studentexamen",
+        "en" : "Matriculation Examination"
+      },
+      "lyhytNimi" : {
+        "fi" : "Ylioppilastutkinto"
+      },
+      "koodistoUri" : "opiskeluoikeudentyyppi"
+    }
+  } ]
+}
