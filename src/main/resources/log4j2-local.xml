@@ -43,6 +43,10 @@
     <Logger name="slick.jdbc.JdbcBackend.statement" level="INFO" />
     <!-- Silence noise from Jetty writer -->
     <Logger name="org.eclipse.jetty.server.HttpChannel" level="ERROR" />
+    <!-- Health monitoring -->
+    <Logger name="fi.oph.koski.healthcheck.HealthMonitoring" level="INFO" additivity="false">
+      <AppenderRef ref="HealthMonitoringLog" />
+    </Logger>
   </Loggers>
   <!--
 
@@ -95,5 +99,12 @@
     </File>
     <!-- Prometheus -->
     <Prometheus name="Prometheus" />
+    <!-- Health monitoring log -->
+    <RollingFile name="HealthMonitoringLog" fileName="log/health.log" filePattern="log/health.log.%d{yyyy-MM}.zip">
+      <JsonTemplateLayout eventTemplateUri="classpath:HealthMonitoringJsonEventLayoutV1.json">
+        <EventTemplateAdditionalField key="log_type" value="health" />
+      </JsonTemplateLayout>
+      <TimeBasedTriggeringPolicy />
+    </RollingFile>
   </Appenders>
 </Configuration>

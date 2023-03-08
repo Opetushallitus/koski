@@ -38,6 +38,10 @@
     <Logger name="fi.oph.koski.frontendvalvonta.ReportToService" level="INFO" additivity="false">
       <AppenderRef ref="frontendreportto" />
     </Logger>
+    <!-- Health monitoring -->
+    <Logger name="fi.oph.koski.healthcheck.HealthMonitoring" level="INFO" additivity="false">
+      <AppenderRef ref="HealthMonitoringLog" />
+    </Logger>
     <!-- Suppress unwanted logging -->
     <Logger name="org.reflections" level="WARN" />
     <Logger name="org.eclipse.jetty.webapp" level="WARN" />
@@ -94,6 +98,12 @@
     </Console>
     <Console name="frontendreportto">
       <PatternLayout pattern="%m%n" />
+    </Console>
+    <!-- Health monitoring log -->
+    <Console name="HealthMonitoringLog">
+      <JsonTemplateLayout eventTemplateUri="classpath:HealthMonitoringJsonEventLayoutV1.json">
+        <EventTemplateAdditionalField key="log_type" value="health" />
+      </JsonTemplateLayout>
     </Console>
   </Appenders>
 </Configuration>
