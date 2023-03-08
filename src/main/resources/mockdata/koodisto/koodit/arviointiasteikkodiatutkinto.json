@@ -329,9 +329,11 @@
         "kieli": "FI"
       },
       {
+        "nimi": "Avlagd",
         "kieli": "SV"
       },
       {
+        "nimi": "Completed",
         "kieli": "EN"
       }
     ],

@@ -134,7 +134,7 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
     "Opiskeluoikeuden tyyppi" - {
       "sisältää koodin ja nimen" in {
         opiskeluoikeudet.head.tyyppi.koodiarvo should be ("korkeakoulutus")
-        opiskeluoikeudet.head.tyyppi.nimi.value should be (LocalizedString.sanitizeRequired(Map(("fi" -> "Korkeakoulutus"), ("sv" -> "Högskoleutbildning")), "Korkeakoulutus"))
+        opiskeluoikeudet.head.tyyppi.nimi.value should be (LocalizedString.sanitizeRequired(Map(("fi" -> "Korkeakoulutus"), ("sv" -> "Högskoleutbildning"), "en" -> "Higher education"), "Korkeakoulutus"))
       }
     }
 

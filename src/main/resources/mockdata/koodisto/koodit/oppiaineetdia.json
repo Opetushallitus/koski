@@ -10,9 +10,11 @@
         "kieli": "FI"
       },
       {
+        "nimi": "A-språk",
         "kieli": "SV"
       },
       {
+        "nimi": "A-language",
         "kieli": "EN"
       }
     ],
@@ -30,9 +32,11 @@
         "kieli": "FI"
       },
       {
+        "nimi": "Modersmål",
         "kieli": "SV"
       },
       {
+        "nimi": "Mother tongue",
         "kieli": "EN"
       }
     ],
@@ -50,9 +54,11 @@
         "kieli": "FI"
       },
       {
+        "nimi": "B1-språk",
         "kieli": "SV"
       },
       {
+        "nimi": "B1-language",
         "kieli": "EN"
       }
     ],
@@ -70,9 +76,11 @@
         "kieli": "FI"
       },
       {
+        "nimi": "B2-språk",
         "kieli": "SV"
       },
       {
+        "nimi": "B2-language",
         "kieli": "EN"
       }
     ],
@@ -90,9 +98,11 @@
         "kieli": "FI"
       },
       {
+        "nimi": "B3-språk",
         "kieli": "SV"
       },
       {
+        "nimi": "B3-language",
         "kieli": "EN"
       }
     ],
@@ -110,9 +120,11 @@
         "kieli": "FI"
       },
       {
+        "nimi": "Biologi",
         "kieli": "SV"
       },
       {
+        "nimi": "Biology",
         "kieli": "EN"
       }
     ],
@@ -168,9 +180,11 @@
         "kieli": "FI"
       },
       {
+        "nimi": "Engelska, extra kurs",
         "kieli": "SV"
       },
       {
+        "nimi": "English, additional course",
         "kieli": "EN"
       }
     ],
@@ -188,9 +202,11 @@
         "kieli": "FI"
       },
       {
+        "nimi": "Livsåskådningskunskap",
         "kieli": "SV"
       },
       {
+        "nimi": "Ethics",
         "kieli": "EN"
       }
     ],
@@ -208,9 +224,11 @@
         "kieli": "FI"
       },
       {
+        "nimi": "Filosofi",
         "kieli": "SV"
       },
       {
+        "nimi": "Philosophy",
         "kieli": "EN"
       }
     ],
@@ -228,9 +246,11 @@
         "kieli": "FI"
       },
       {
+        "nimi": "Fysik",
         "kieli": "SV"
       },
       {
+        "nimi": "Physics",
         "kieli": "EN"
       }
     ],
@@ -248,9 +268,11 @@
         "kieli": "FI"
       },
       {
+        "nimi": "Historia",
         "kieli": "SV"
       },
       {
+        "nimi": "History",
         "kieli": "EN"
       }
     ],
@@ -268,9 +290,11 @@
         "kieli": "FI"
       },
       {
+        "nimi": "Kemi",
         "kieli": "SV"
       },
       {
+        "nimi": "Chemistry",
         "kieli": "EN"
       }
     ],
@@ -288,9 +312,11 @@
         "kieli": "FI"
       },
       {
+        "nimi": "Bildkonst",
         "kieli": "SV"
       },
       {
+        "nimi": "Visual arts",
         "kieli": "EN"
       }
     ],
@@ -308,9 +334,11 @@
         "kieli": "FI"
       },
       {
+        "nimi": "Gymnastik",
         "kieli": "SV"
       },
       {
+        "nimi": "Physical education",
         "kieli": "EN"
       }
     ],
@@ -328,9 +356,11 @@
         "kieli": "FI"
       },
       {
+        "nimi": "Lagkunskap",
         "kieli": "SV"
       },
       {
+        "nimi": "Legal knowledge",
         "kieli": "EN"
       }
     ],
@@ -348,9 +378,11 @@
         "kieli": "FI"
       },
       {
+        "nimi": "Matematik",
         "kieli": "SV"
       },
       {
+        "nimi": "Mathematics",
         "kieli": "EN"
       }
     ],
@@ -368,9 +400,11 @@
         "kieli": "FI"
       },
       {
+        "nimi": "Geografi (tyska och engelska)",
         "kieli": "SV"
       },
       {
+        "nimi": "Geography (German and English)",
         "kieli": "EN"
       }
     ],
@@ -388,9 +422,11 @@
         "kieli": "FI"
       },
       {
+        "nimi": "Matematik, extra kurs",
         "kieli": "SV"
       },
       {
+        "nimi": "Mathematics, additional course",
         "kieli": "EN"
       }
     ],
@@ -408,9 +444,11 @@
         "kieli": "FI"
       },
       {
+        "nimi": "Matematik, fördjupande",
         "kieli": "SV"
       },
       {
+        "nimi": "Mathematics, advanced",
         "kieli": "EN"
       }
     ],
@@ -428,9 +466,11 @@
         "kieli": "FI"
       },
       {
+        "nimi": "Musik",
         "kieli": "SV"
       },
       {
+        "nimi": "Music",
         "kieli": "EN"
       }
     ],
@@ -446,9 +486,11 @@
         "kieli": "FI"
       },
       {
+        "nimi": "Franska, extra kurs",
         "kieli": "SV"
       },
       {
+        "nimi": "French, additional course",
         "kieli": "EN"
       }
     ],
@@ -466,9 +508,11 @@
         "kieli": "FI"
       },
       {
+        "nimi": "Ekonomisk kunskap och samhällslära",
         "kieli": "SV"
       },
       {
+        "nimi": "Economics and social studies",
         "kieli": "EN"
       }
     ],
@@ -486,9 +530,11 @@
         "kieli": "FI"
       },
       {
+        "nimi": "Informationsteknik",
         "kieli": "SV"
       },
       {
+        "nimi": "Information and communications technology",
         "kieli": "EN"
       }
     ],
@@ -506,9 +552,11 @@
         "kieli": "FI"
       },
       {
+        "nimi": "Databehandling",
         "kieli": "SV"
       },
       {
+        "nimi": "Computing and software",
         "kieli": "EN"
       }
     ],
@@ -526,9 +574,11 @@
         "kieli": "FI"
       },
       {
+        "nimi": "Religion",
         "kieli": "SV"
       },
       {
+        "nimi": "Religion",
         "kieli": "EN"
       }
     ],
@@ -544,9 +594,11 @@
         "kieli": "FI"
       },
       {
+        "nimi": "Ryska, extra kurs",
         "kieli": "SV"
       },
       {
+        "nimi": "Russian, additional course",
         "kieli": "EN"
       }
     ],

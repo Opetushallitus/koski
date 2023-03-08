@@ -26666,19 +26666,19 @@
     "koodiArvo": "381521",
     "metadata": [
       {
-        "nimi": "Vankeinhoidon perustutkinto",
+        "nimi": "Rikosseuraamusalan tutkinto; vankeinhoidon perustutkinto; vartija; ylivartija",
         "lyhytNimi": "Vankeinh. perustutk",
         "kuvaus": "Vankeinhoidon perustutkinto",
         "kieli": "FI"
       },
       {
-        "nimi": "Fångvårdens grundexamen",
+        "nimi": "Examen inom brottspåföljdsområdet; fångvårdens grundexamen; fångvaktare; överfångvaktare",
         "lyhytNimi": "Fångvårdens gr.ex",
         "kuvaus": "Fångvårdens grundexamen",
         "kieli": "SV"
       },
       {
-        "nimi": "Prison Services, VQ",
+        "nimi": "Qualification in prison and probation services; Basic Examination in Prison Service",
         "lyhytNimi": "Basic Examination in Prison Service",
         "kuvaus": "Prison Services, VQ",
         "kieli": "EN"
@@ -49812,9 +49812,9 @@
         "kieli": "SV"
       },
       {
-        "nimi": "BSc, Biosciences, Biechemistry",
-        "lyhytNimi": "Bachelor of Science, Biosciences, Biechemistry",
-        "kuvaus": "BSc, Biesciences, Biechemistry",
+        "nimi": "BSc, Biosciences, Biochemistry",
+        "lyhytNimi": "Bachelor of Science, Biosciences, Biochemistry",
+        "kuvaus": "BSc, Biosciences, Biochemistry",
         "kieli": "EN"
       }
     ],
@@ -63237,6 +63237,8 @@
         "kieli": "SV"
       },
       {
+        "nimi": "Master of Engineering, maritime",
+        "lyhytNimi": "Master of Engineering, maritime",
         "kieli": "EN"
       }
     ],
