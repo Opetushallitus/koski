@@ -3,6 +3,7 @@
 ## xx.xx.xxxx
 
 - Lisätty validaatioita ammatillisen opiskeluoikeuden korotuksen suoritukselle:
+  - Korotuksen opiskeluoikeuden alkamispäivä on oltava 1.7.2023 tai sen jälkeen.
   - Vain yksi päätason suoritus korotuksen opiskeluoikeudella.
   - Korotetulla suorituksella on oltava linkitys alkuperäiseen opiskeluoikeuteen.
   - Korotettua keskiarvoa ei voi siirtää jos kyseessä ei ole korotuksen suoritus.

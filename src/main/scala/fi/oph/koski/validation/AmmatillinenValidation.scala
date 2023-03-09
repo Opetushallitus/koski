@@ -106,6 +106,10 @@ object AmmatillinenValidation {
   private def validateKorotettuSuoritus(oo: AmmatillinenOpiskeluoikeus, korotettuSuoritus: AmmatillisenTutkinnonOsittainenSuoritus): HttpStatus = {
     val oss = korotettuSuoritus.osasuoritukset.getOrElse(List.empty)
 
+    def validateOpiskeluoikeudenAlkamispäivä: HttpStatus = HttpStatus.validate(
+      oo.alkamispäivä.exists(d => d.isAfter(LocalDate.of(2023, 6, 30)))
+    )(KoskiErrorCategory.badRequest.validation.date.alkamispäivä("Ammatillisen korotuksen suorituksen opiskeluoikeus voi alkaa aikaisintaan 1.7.2023"))
+
     def osasuorituksetKorotettuTaiTunnustettu: HttpStatus = HttpStatus.validate(
       (!oo.onValmistunut && oss.isEmpty) || validateKaikkiKorotukselliset(korotettuSuoritus, k => k.korotettu.isDefined || k.tunnustettu.isDefined)
     )(KoskiErrorCategory.badRequest.validation.ammatillinen.korotettuOsasuoritus())
@@ -137,6 +141,7 @@ object AmmatillinenValidation {
     )(KoskiErrorCategory.badRequest.validation.ammatillinen.korotettuKeskiarvo("Jos korotuksen opiskeluoikeus on katsotaan eronneeksi -tilassa, ei suoritukselle voi siirtää korotettua keskiarvoa"))
 
     HttpStatus.fold(
+      validateOpiskeluoikeudenAlkamispäivä,
       osasuorituksetKorotettuTaiTunnustettu,
       eiTunnustettujaTutkinnonOsanSuorituksia,
       eiKorotuksiaEikäKorotettuaKeskiarvoa,
