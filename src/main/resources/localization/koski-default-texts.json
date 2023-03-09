@@ -1906,6 +1906,7 @@
   "raportti-excel-kolumni-moduulikoodi": "Moduulikoodi",
   "raportti-excel-kolumni-moduulinNimi": "Moduulin nimi",
   "raportti-excel-kolumni-sisältyyOpiskeluoikeuteenOid": "Sisältyy opiskeluoikeuteen",
+  "raportti-excel-kolumni-korotettuOpiskeluoikeusOid": "Korottaa opiskeluoikeuden",
   "raportti-excel-kolumni-ostettu": "Ostettu",
   "raportti-excel-kolumni-sisältyvätOpiskeluoikeudetOidit": "Sisältyvät opiskeluoikeudet",
   "raportti-excel-kolumni-sisältyvätOpiskeluoikeudetOppilaitokset": "Sisältyvien opiskeluoikeuksien oppilaitokset",

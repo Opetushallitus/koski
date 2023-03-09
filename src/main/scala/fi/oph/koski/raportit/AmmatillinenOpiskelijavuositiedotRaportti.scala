@@ -13,6 +13,7 @@ case class OpiskelijavuositiedotRow(
   lähdejärjestelmä: Option[String],
   lähdejärjestelmänId: Option[String],
   sisältyyOpiskeluoikeuteenOid: String,
+  korotettuOpiskeluoikeusOidit: String,
   ostettu: Boolean,
   sisältyvätOpiskeluoikeudetOidit: String,
   sisältyvätOpiskeluoikeudetOppilaitokset: String,
@@ -80,6 +81,7 @@ object AmmatillinenOpiskalijavuositiedotRaportti extends AikajaksoRaportti {
     "lähdejärjestelmä" -> Column(t.get("raportti-excel-kolumni-lähdejärjestelmä"), width = Some(4000)),
     "lähdejärjestelmänId" -> Column(t.get("raportti-excel-kolumni-lähdejärjestelmänId"), width = Some(4000)),
     "sisältyyOpiskeluoikeuteenOid" -> Column(t.get("raportti-excel-kolumni-sisältyyOpiskeluoikeuteenOid"), width = Some(4000)),
+    "korotettuOpiskeluoikeusOidit" -> Column(t.get("raportti-excel-kolumni-korotettuOpiskeluoikeusOid"), width = Some(4000)),
     "ostettu"-> Column(t.get("raportti-excel-kolumni-ostettu"), width = Some(2000)),
     "sisältyvätOpiskeluoikeudetOidit" -> Column(t.get("raportti-excel-kolumni-sisältyvätOpiskeluoikeudetOidit"), width = Some(4000)),
     "sisältyvätOpiskeluoikeudetOppilaitokset"-> Column(t.get("raportti-excel-kolumni-sisältyvätOpiskeluoikeudetOppilaitokset"), width = Some(4000)),
@@ -170,12 +172,14 @@ object AmmatillinenOpiskalijavuositiedotRaportti extends AikajaksoRaportti {
         ))
         .unzip
     val lisätiedot = JsonSerializer.extract[Option[AmmatillisenOpiskeluoikeudenLisätiedot]](opiskeluoikeus.data \ "lisätiedot")
+    val korotettuOpiskeluoikeusOidit = päätasonSuoritukset.flatMap(s => JsonSerializer.extract[Option[String]](s.data \ "korotettuOpiskeluoikeusOid"))
 
     OpiskelijavuositiedotRow(
       opiskeluoikeusOid = opiskeluoikeus.opiskeluoikeusOid,
       lähdejärjestelmä = lähdejärjestelmänId.map(_.lähdejärjestelmä.koodiarvo),
       lähdejärjestelmänId = lähdejärjestelmänId.flatMap(_.id),
       sisältyyOpiskeluoikeuteenOid = opiskeluoikeus.sisältyyOpiskeluoikeuteenOid.getOrElse(""),
+      korotettuOpiskeluoikeusOidit = korotettuOpiskeluoikeusOidit.mkString(","),
       ostettu = JsonSerializer.validateAndExtract[Boolean](opiskeluoikeus.data \ "ostettu").getOrElse(false),
       sisältyvätOpiskeluoikeudetOidit = sisältyvätOpiskeluoikeudet.map(_.opiskeluoikeusOid).mkString(","),
       sisältyvätOpiskeluoikeudetOppilaitokset = sisältyvätOpiskeluoikeudet

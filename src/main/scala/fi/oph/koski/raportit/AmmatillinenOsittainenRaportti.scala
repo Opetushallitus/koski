@@ -52,12 +52,14 @@ object AmmatillinenOsittainenRaportti {
     def oppilaitosNimiLokalisoitu(oo: ROpiskeluoikeusRow, lang: String): String = {
       if(lang == "sv") oo.oppilaitosNimiSv else oo.oppilaitosNimi
     }
+    val korotettuOpiskeluoikeusOid = JsonSerializer.extract[Option[String]](päätasonSuoritus.data \ "korotettuOpiskeluoikeusOid")
 
     AmmatillinenOsittainRaporttiRow(
       opiskeluoikeusOid = opiskeluoikeus.opiskeluoikeusOid,
       lähdejärjestelmä = lähdejärjestelmänId.map(_.lähdejärjestelmä.koodiarvo),
       lähdejärjestelmänId = lähdejärjestelmänId.flatMap(_.id),
       sisältyyOpiskeluoikeuteenOid = opiskeluoikeus.sisältyyOpiskeluoikeuteenOid.getOrElse(""),
+      korotettuOpiskeluoikeusOid = korotettuOpiskeluoikeusOid,
       ostettu = JsonSerializer.validateAndExtract[Boolean](opiskeluoikeus.data \ "ostettu").getOrElse(false),
       sisältyvätOpiskeluoikeudetOidit = sisältyvätOpiskeluoikeudet.map(_.opiskeluoikeusOid).mkString(","),
       sisältyvätOpiskeluoikeudetOppilaitokset = sisältyvätOpiskeluoikeudet
@@ -135,6 +137,7 @@ object AmmatillinenOsittainenRaportti {
     "lähdejärjestelmä" -> Column(t.get("raportti-excel-kolumni-lähdejärjestelmä"), width = Some(4000)),
     "lähdejärjestelmänId" -> Column(t.get("raportti-excel-kolumni-lähdejärjestelmänId"), width = Some(4000)),
     "sisältyyOpiskeluoikeuteenOid" -> Column(t.get("raportti-excel-kolumni-sisältyyOpiskeluoikeuteenOid"), width = Some(4000)),
+    "korotettuOpiskeluoikeusOid" -> Column(t.get("raportti-excel-kolumni-korotettuOpiskeluoikeusOid"), width = Some(4000)),
     "ostettu"-> CompactColumn(t.get("raportti-excel-kolumni-ostettu")),
     "sisältyvätOpiskeluoikeudetOidit" -> Column(t.get("raportti-excel-kolumni-sisältyvätOpiskeluoikeudetOidit"), width = Some(4000)),
     "sisältyvätOpiskeluoikeudetOppilaitokset" -> Column(t.get("raportti-excel-kolumni-sisältyvätOpiskeluoikeudetOppilaitokset"), width = Some(4000)),
@@ -185,6 +188,7 @@ case class AmmatillinenOsittainRaporttiRow(
   lähdejärjestelmä: Option[String],
   lähdejärjestelmänId: Option[String],
   sisältyyOpiskeluoikeuteenOid: String,
+  korotettuOpiskeluoikeusOid: Option[String],
   ostettu: Boolean,
   sisältyvätOpiskeluoikeudetOidit: String,
   sisältyvätOpiskeluoikeudetOppilaitokset: String,
