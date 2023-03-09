@@ -162,7 +162,7 @@ object AmmatillinenValidation {
         val oldLinkitykset = oldOo.suoritukset.flatMap(getKorotettuOpiskeluoikeusOid)
         val newLinkitykset = newOo.suoritukset.flatMap(getKorotettuOpiskeluoikeusOid)
         HttpStatus.validate(
-          oldOo.suoritukset.size == newOo.suoritukset.size && oldLinkitykset.forall(oid => newLinkitykset.contains(oid))
+          oldLinkitykset.isEmpty || oldLinkitykset.forall(oid => newLinkitykset.contains(oid))
         )(KoskiErrorCategory.badRequest.validation.ammatillinen.korotuksenLinkitys())
       case _ => HttpStatus.ok
     }
