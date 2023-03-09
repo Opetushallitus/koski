@@ -1,59 +1,31 @@
-[
-  {
-    "koodiUri": "ytrtutkintokokonaisuudentyyppi_aftergraduation",
-    "koodiArvo": "after-graduation",
-    "metadata": [
-      {
-        "nimi": "Tutkinnon korottaminen ja/tai täydentäminen",
-        "lyhytNimi": "Korottaminen",
-        "kieli": "FI"
-      },
-      {
-        "kieli": "SV"
-      },
-      {
-        "kieli": "EN"
-      }
-    ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
-    "koodiUri": "ytrtutkintokokonaisuudentyyppi_candidate",
-    "koodiArvo": "candidate",
-    "metadata": [
-      {
-        "nimi": "Tutkinnon suorittaminen",
-        "lyhytNimi": "Tutkinnon suorittaminen",
-        "kieli": "FI"
-      },
-      {
-        "kieli": "SV"
-      },
-      {
-        "kieli": "EN"
-      }
-    ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
-    "koodiUri": "ytrtutkintokokonaisuudentyyppi_separateexam",
-    "koodiArvo": "separate-exam",
-    "metadata": [
-      {
-        "nimi": "Erillisen kokeen suorittaminen",
-        "lyhytNimi": "Erilliskoe",
-        "kieli": "FI"
-      },
-      {
-        "kieli": "SV"
-      },
-      {
-        "kieli": "EN"
-      }
-    ],
-    "versio": 1,
-    "withinCodeElements": []
-  }
-]
+[ {
+  "koodiUri" : "ytrtutkintokokonaisuudentyyppi_candidate",
+  "koodiArvo" : "candidate",
+  "metadata" : [ {
+    "nimi" : "Tutkinnon suorittaminen",
+    "lyhytNimi" : "Tutkinnon suorittaminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "ytrtutkintokokonaisuudentyyppi_aftergraduation",
+  "koodiArvo" : "after-graduation",
+  "metadata" : [ {
+    "nimi" : "Tutkinnon korottaminen ja/tai täydentäminen",
+    "lyhytNimi" : "Korottaminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "ytrtutkintokokonaisuudentyyppi_separateexam",
+  "koodiArvo" : "separate-exam",
+  "metadata" : [ {
+    "nimi" : "Erillisen kokeen suorittaminen",
+    "lyhytNimi" : "Erilliskoe",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}]

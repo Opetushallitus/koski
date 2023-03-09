@@ -16,7 +16,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Education funded by the state",
         "kieli": "EN"
       }
     ],
@@ -40,7 +39,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Labour market training (funded by the state/OKM)",
         "kieli": "EN"
       }
     ],
@@ -136,7 +134,7 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Funded by The Service Centre for Continuous Learning and Employment",
+        "nimi": "Jatkuvan oppimisen ja työllisuuden palvelukeskuksen rahoitus",
         "kieli": "EN"
       }
     ],
@@ -158,7 +156,7 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Funded by The Service Centre for Continuous Learning and Employment (RRF)",
+        "nimi": "Jatkuvan oppimisen ja työllisuuden palvelukeskuksen rahoitus (RRF)",
         "kuvaus": "Jatkuvan oppimisen ja työllisuuden palvelukeskuksen (JOTPA) valtionavustuksilla tai hankintana rahoittamat koulutukset, jotka on järjestetty JOTPA:n myöntämällä RRF-rahoituksella. Koulutuksen järjestäjällä on tästä tieto saamallaan rahoituspäätöksellä (Toimenpide: P3C2R1). Rahoituskoodia käyttävät vain JOTPA:n myöntämällä rahoituksella koulutusta järjestävät ammatillisen koulutuksen, vapaan sivistystyön tai muun kuin säännellyn koulutuksen järjestäjät. ",
         "kieli": "EN"
       }
@@ -252,7 +250,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Funded by other means",
         "kieli": "EN"
       }
     ],

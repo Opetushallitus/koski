@@ -16,7 +16,7 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Competency-based qualification",
+        "nimi": "Näyttö",
         "lyhytNimi": "",
         "kuvaus": "",
         "kieli": "EN"
@@ -32,17 +32,17 @@
       {
         "nimi": "Ammatillinen perustutkinto",
         "lyhytNimi": "ops",
-        "kuvaus": "Opetussuunnitelman mukainen",
+        "kuvaus": "",
         "kieli": "FI"
       },
       {
-        "nimi": "Yrkesinriktad grundexamen",
+        "nimi": "Läroplansbaserad",
         "lyhytNimi": "ops",
-        "kuvaus": "Läroplansbaserad",
+        "kuvaus": "",
         "kieli": "SV"
       },
       {
-        "nimi": "Initial vocational qualification",
+        "nimi": "Opetussuunnitelman mukainen",
         "lyhytNimi": "ops",
         "kuvaus": "",
         "kieli": "EN"
@@ -68,7 +68,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Reform",
         "kieli": "EN"
       }
     ],

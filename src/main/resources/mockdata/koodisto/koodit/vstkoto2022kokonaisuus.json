@@ -8,11 +8,9 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Språkliga färdigheter och kommunikationsfärdigheter",
         "kieli": "SV"
       },
       {
-        "nimi": "Language and communication skills",
         "kieli": "EN"
       }
     ],
@@ -32,7 +30,7 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Guidance",
+        "nimi": "Ohjaus",
         "kieli": "EN"
       }
     ],
@@ -48,11 +46,11 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Valbara studier",
+        "nimi": "Valfria studier",
         "kieli": "SV"
       },
       {
-        "nimi": "Optional studies",
+        "nimi": "Valinnaiset opinnot",
         "kieli": "EN"
       }
     ],
@@ -68,11 +66,9 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Samhälls- och arbetslivsfärdigheter",
         "kieli": "SV"
       },
       {
-        "nimi": "Citizenship and working life competence",
         "kieli": "EN"
       }
     ],

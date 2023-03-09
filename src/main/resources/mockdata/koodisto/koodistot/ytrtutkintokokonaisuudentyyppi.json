@@ -1,24 +1,20 @@
 {
-  "koodistoUri": "ytrtutkintokokonaisuudentyyppi",
-  "versio": 1,
-  "metadata": [
-    {
-      "kieli": "FI",
-      "nimi": "YTR tutkintokokonaisuuden tyyppi"
-    },
-    {
-      "kieli": "SV",
-      "nimi": "YTR tutkintokokonaisuuden tyyppi"
-    },
-    {
-      "kieli": "EN",
-      "nimi": "YTR tutkintokokonaisuuden tyyppi"
-    }
-  ],
-  "codesGroupUri": "koski",
-  "voimassaAlkuPvm": "2016-09-09",
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "withinCodes": [],
-  "tila": "LUONNOS",
-  "version": 0
+  "koodistoUri" : "ytrtutkintokokonaisuudentyyppi",
+  "versio" : 1,
+  "metadata" : [ {
+    "kieli" : "FI",
+    "nimi" : "YTR tutkintokokonaisuuden tyyppi"
+  }, {
+    "kieli" : "SV",
+    "nimi" : "YTR tutkintokokonaisuuden tyyppi"
+  }, {
+    "kieli" : "EN",
+    "nimi" : "YTR tutkintokokonaisuuden tyyppi"
+  } ],
+  "codesGroupUri" : "koski",
+  "voimassaAlkuPvm" : "2016-09-09",
+  "organisaatioOid" : "1.2.246.562.10.00000000001",
+  "withinCodes" : [ ],
+  "tila" : "LUONNOS",
+  "version" : 0
 }

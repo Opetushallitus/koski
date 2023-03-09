@@ -10,13 +10,13 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Arkitektur",
+        "nimi": "Arkkitehtuuri",
         "lyhytNimi": "",
         "kuvaus": "",
         "kieli": "SV"
       },
       {
-        "nimi": "Architecture",
+        "nimi": "Arkkitehtuuri",
         "lyhytNimi": "",
         "kuvaus": "",
         "kieli": "EN"
@@ -36,13 +36,13 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Slöjd",
+        "nimi": "Käsityö",
         "lyhytNimi": "",
         "kuvaus": "",
         "kieli": "SV"
       },
       {
-        "nimi": "Crafts",
+        "nimi": "Käsityö",
         "lyhytNimi": "",
         "kuvaus": "",
         "kieli": "EN"
@@ -62,13 +62,13 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Bildkonst",
+        "nimi": "Kuvataide",
         "lyhytNimi": "",
         "kuvaus": "",
         "kieli": "SV"
       },
       {
-        "nimi": "Visual arts",
+        "nimi": "Kuvataide",
         "lyhytNimi": "",
         "kuvaus": "",
         "kieli": "EN"
@@ -88,13 +88,13 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Mediekonst",
+        "nimi": "Mediataiteet",
         "lyhytNimi": "",
         "kuvaus": "",
         "kieli": "SV"
       },
       {
-        "nimi": "Media arts",
+        "nimi": "Mediataiteet",
         "lyhytNimi": "",
         "kuvaus": "",
         "kieli": "EN"
@@ -114,13 +114,13 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Musik",
+        "nimi": "Musiikki",
         "lyhytNimi": "",
         "kuvaus": "",
         "kieli": "SV"
       },
       {
-        "nimi": "Music",
+        "nimi": "Musiikki",
         "lyhytNimi": "",
         "kuvaus": "",
         "kieli": "EN"
@@ -140,13 +140,13 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Ordkonst",
+        "nimi": "Sanataide",
         "lyhytNimi": "",
         "kuvaus": "",
         "kieli": "SV"
       },
       {
-        "nimi": "Literary art",
+        "nimi": "Sanataide",
         "lyhytNimi": "",
         "kuvaus": "",
         "kieli": "EN"
@@ -166,13 +166,13 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Cirkuskonst",
+        "nimi": "Sirkustaide",
         "lyhytNimi": "",
         "kuvaus": "",
         "kieli": "SV"
       },
       {
-        "nimi": "Circus arts",
+        "nimi": "Sirkustaide",
         "lyhytNimi": "",
         "kuvaus": "",
         "kieli": "EN"
@@ -192,13 +192,13 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Dans",
+        "nimi": "Tanssi",
         "lyhytNimi": "",
         "kuvaus": "",
         "kieli": "SV"
       },
       {
-        "nimi": "Dance",
+        "nimi": "Tanssi",
         "lyhytNimi": "",
         "kuvaus": "",
         "kieli": "EN"
@@ -218,13 +218,13 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Teaterkonst",
+        "nimi": "Teatteritaide",
         "lyhytNimi": "",
         "kuvaus": "",
         "kieli": "SV"
       },
       {
-        "nimi": "Theatre",
+        "nimi": "Teatteritaide",
         "lyhytNimi": "",
         "kuvaus": "",
         "kieli": "EN"

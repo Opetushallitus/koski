@@ -16,8 +16,8 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Fail",
-        "lyhytNimi": "Fail",
+        "nimi": "Hylätty",
+        "lyhytNimi": "Hylätty",
         "kuvaus": "",
         "kieli": "EN"
       }
@@ -40,7 +40,7 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Pass",
+        "nimi": "Hyväksytty",
         "kieli": "EN"
       }
     ],

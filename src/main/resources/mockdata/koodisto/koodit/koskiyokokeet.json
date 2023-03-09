@@ -12,7 +12,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Mother tongue test, Finnish",
         "kieli": "EN"
       }
     ],
@@ -32,7 +31,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Finnish as a second language",
         "kieli": "EN"
       }
     ],
@@ -52,7 +50,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Swedish, advanced syllabus",
         "kieli": "EN"
       }
     ],
@@ -72,7 +69,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Swedish, medium syllabus",
         "kieli": "EN"
       }
     ],
@@ -92,7 +88,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Biology",
         "kieli": "EN"
       }
     ],
@@ -112,7 +107,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Finnish, advanced syllabus",
         "kieli": "EN"
       }
     ],
@@ -132,7 +126,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Finnish, medium syllabus",
         "kieli": "EN"
       }
     ],
@@ -152,7 +145,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Finnish, basic syllabus",
         "kieli": "EN"
       }
     ],
@@ -168,11 +160,10 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Nordsamiska, kort lärokurs",
+        "nimi": "Pohjoissaame, lyhyt oppimäärä",
         "kieli": "SV"
       },
       {
-        "nimi": "Northern Saami, basic syllabus",
         "kieli": "EN"
       }
     ],
@@ -192,7 +183,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "English, advanced syllabus, exemption",
         "kieli": "EN"
       }
     ],
@@ -212,7 +202,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "English, medium syllabus, exemption",
         "kieli": "EN"
       }
     ],
@@ -232,7 +221,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "English, advanced syllabus",
         "kieli": "EN"
       }
     ],
@@ -252,7 +240,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "English, medium syllabus",
         "kieli": "EN"
       }
     ],
@@ -272,7 +259,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "English, basic syllabus",
         "kieli": "EN"
       }
     ],
@@ -292,7 +278,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Ethics",
         "kieli": "EN"
       }
     ],
@@ -312,7 +297,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "French, advanced syllabus, exemption",
         "kieli": "EN"
       }
     ],
@@ -332,7 +316,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "French, medium syllabus, exemption",
         "kieli": "EN"
       }
     ],
@@ -352,7 +335,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "French, advanced syllabus",
         "kieli": "EN"
       }
     ],
@@ -372,7 +354,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "French, medium syllabus",
         "kieli": "EN"
       }
     ],
@@ -392,7 +373,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "French, basic syllabus",
         "kieli": "EN"
       }
     ],
@@ -412,7 +392,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Philosophy",
         "kieli": "EN"
       }
     ],
@@ -432,7 +411,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Physics",
         "kieli": "EN"
       }
     ],
@@ -452,7 +430,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Portuguese, advanced syllabus, exemption",
         "kieli": "EN"
       }
     ],
@@ -472,7 +449,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Portuguese, medium syllabus, exemption",
         "kieli": "EN"
       }
     ],
@@ -492,7 +468,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Portuguese, advanced syllabus",
         "kieli": "EN"
       }
     ],
@@ -512,7 +487,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Portuguese, medium syllabus",
         "kieli": "EN"
       }
     ],
@@ -532,7 +506,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Portuguese, basic syllabus",
         "kieli": "EN"
       }
     ],
@@ -552,7 +525,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Geography",
         "kieli": "EN"
       }
     ],
@@ -572,7 +544,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Hungarian, advanced syllabus, exemption",
         "kieli": "EN"
       }
     ],
@@ -592,7 +563,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Hungarian, medium syllabus, exemption",
         "kieli": "EN"
       }
     ],
@@ -612,7 +582,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Hungarian, advanced syllabus",
         "kieli": "EN"
       }
     ],
@@ -624,7 +593,7 @@
     "koodiArvo": "HB",
     "metadata": [
       {
-        "nimi": "Unkari, keskipitkä oppimäärä",
+        "nimi": "Unkari, keskipitkäoppimäärä",
         "kieli": "FI"
       },
       {
@@ -632,7 +601,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Hungarian, medium syllabus",
         "kieli": "EN"
       }
     ],
@@ -652,7 +620,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "History",
         "kieli": "EN"
       }
     ],
@@ -668,11 +635,10 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Provet i modersmålet, enaresamiska",
+        "nimi": "Äidinkielen koe, inarinsaame",
         "kieli": "SV"
       },
       {
-        "nimi": "Mother tongue test, Inari Saami",
         "kieli": "EN"
       }
     ],
@@ -688,11 +654,10 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Enaresamiska, kort lärokurs",
+        "nimi": "Inarinsaame, lyhyt oppimäärä",
         "kieli": "SV"
       },
       {
-        "nimi": "Inari Sami, basic syllabus",
         "kieli": "EN"
       }
     ],
@@ -727,11 +692,10 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Grekiska, kort lärokurs",
+        "nimi": "Grekiska, kort lärökurs",
         "kieli": "SV"
       },
       {
-        "nimi": "Greek, basic syllabus",
         "kieli": "EN"
       }
     ],
@@ -751,7 +715,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Chemistry",
         "kieli": "EN"
       }
     ],
@@ -771,7 +734,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Latin, basic syllabus",
         "kieli": "EN"
       }
     ],
@@ -791,7 +753,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Latin, wider syllabus",
         "kieli": "EN"
       }
     ],
@@ -811,7 +772,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Mathematics, advanced syllabus",
         "kieli": "EN"
       }
     ],
@@ -831,7 +791,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Mathematics, basic syllabus",
         "kieli": "EN"
       }
     ],
@@ -847,11 +806,10 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Provet i modersmålet, svenska",
+        "nimi": "Provet i modersmålet",
         "kieli": "SV"
       },
       {
-        "nimi": "Mother tongue test, Swedish",
         "kieli": "EN"
       }
     ],
@@ -871,7 +829,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Swedish as a second language",
         "kieli": "EN"
       }
     ],
@@ -891,7 +848,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Spanish, advanced syllabus, exemption",
         "kieli": "EN"
       }
     ],
@@ -911,7 +867,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Spanish, medium syllabus, exemption",
         "kieli": "EN"
       }
     ],
@@ -931,7 +886,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Spanish, advanced syllabus",
         "kieli": "EN"
       }
     ],
@@ -951,7 +905,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Spanish, advanced syllabus",
         "kieli": "EN"
       }
     ],
@@ -971,7 +924,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Spanish, basic syllabus",
         "kieli": "EN"
       }
     ],
@@ -991,7 +943,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Psychology",
         "kieli": "EN"
       }
     ],
@@ -1007,11 +958,10 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Skoltsamiska, kort lärokurs",
+        "nimi": "Koltan saame, lyhyt oppimäärä",
         "kieli": "SV"
       },
       {
-        "nimi": "Skolt Saami, basic syllabus",
         "kieli": "EN"
       }
     ],
@@ -1091,7 +1041,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "German, advanced syllabus, exemption",
         "kieli": "EN"
       }
     ],
@@ -1111,7 +1060,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "German, medium syllabus, exemption",
         "kieli": "EN"
       }
     ],
@@ -1150,7 +1098,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "German, advanced syllabus",
         "kieli": "EN"
       }
     ],
@@ -1170,7 +1117,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "German, medium syllabus",
         "kieli": "EN"
       }
     ],
@@ -1190,7 +1136,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "German, basic syllabus",
         "kieli": "EN"
       }
     ],
@@ -1210,7 +1155,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Italian, advanced syllabus, exemption",
         "kieli": "EN"
       }
     ],
@@ -1230,7 +1174,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Italian, medium syllabus, exemption",
         "kieli": "EN"
       }
     ],
@@ -1250,7 +1193,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Italian, advanced syllabus",
         "kieli": "EN"
       }
     ],
@@ -1270,7 +1212,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Italian, medium syllabus",
         "kieli": "EN"
       }
     ],
@@ -1290,7 +1231,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Italian, basic syllabus",
         "kieli": "EN"
       }
     ],
@@ -1310,7 +1250,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Health education",
         "kieli": "EN"
       }
     ],
@@ -1330,7 +1269,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Evangelical Lutheran religion",
         "kieli": "EN"
       }
     ],
@@ -1350,7 +1288,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Orthodox religion",
         "kieli": "EN"
       }
     ],
@@ -1370,7 +1307,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Russian, advanced syllabus, exemption",
         "kieli": "EN"
       }
     ],
@@ -1390,7 +1326,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Russian, medium syllabus, exemption",
         "kieli": "EN"
       }
     ],
@@ -1410,7 +1345,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Russian, advanced syllabus",
         "kieli": "EN"
       }
     ],
@@ -1422,7 +1356,7 @@
     "koodiArvo": "VB",
     "metadata": [
       {
-        "nimi": "Venäjä, keskipitkä oppimäärä",
+        "nimi": "Venäjä,keskipitkä oppimäärä",
         "kieli": "FI"
       },
       {
@@ -1430,7 +1364,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Russian, medium syllabus",
         "kieli": "EN"
       }
     ],
@@ -1450,7 +1383,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Russian, basic syllabus",
         "kieli": "EN"
       }
     ],
@@ -1466,11 +1398,10 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Provet i modersmålet, skoltsamiska",
+        "nimi": "Äidinkielen koe, koltansaame",
         "kieli": "SV"
       },
       {
-        "nimi": "Mother tongue test, Skolt Saami",
         "kieli": "EN"
       }
     ],
@@ -1490,7 +1421,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Social studies",
         "kieli": "EN"
       }
     ],
@@ -1506,11 +1436,10 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Provet i modersmålet, nordsamiska",
+        "nimi": "Äidinkielen koe, pohjoissaame",
         "kieli": "SV"
       },
       {
-        "nimi": "Mother tongue test, Northern Saami",
         "kieli": "EN"
       }
     ],

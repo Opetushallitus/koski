@@ -67,7 +67,7 @@ describe('Lukiokoulutus2019', function () {
             'Matematiikka, pitkä oppimäärä\nMAB2\n8 MAB3\n8 MAB4\n9 6 6 9\n' +
             'Opinto-ohjaus\nOP1\nH OP2\nS 4 2 H\n' +
             'Uskonto/Elämänkatsomustieto\nUE1\n4 1,5 0 4\n' +
-            'Äidinkielenomainen kieli A-oppimäärä, ruotsi\nRUA4\n7 1 1 9\n' +
+            'Äidinkielenomainen kieli, ruotsi\nRUA4\n7 1 1 9\n' +
             'A-kieli, espanja\nVKA1\n7 VKA8\n7 2 2 9\n' +
             'Fysiikka\nFY1\n10 FY2\n10 FY3\n10 FY123 *\n10 FY124 *\nS 87 87 10\n' +
             'Kemia 0 0 4\n' +
@@ -544,7 +544,7 @@ describe('Lukiokoulutus2019', function () {
             'Matematiikka, pitkä oppimäärä\nMAB2\n8 MAB3\n8 MAB4\n9 6 6 9\n' +
             'Opinto-ohjaus\nOP1\nH OP2\nS 4 2 H\n' +
             'Uskonto/Elämänkatsomustieto\nUE1\n4 1,5 0 4\n' +
-            'Äidinkielenomainen kieli A-oppimäärä, ruotsi\nRUA4\n7 1 1 9\n' +
+            'Äidinkielenomainen kieli, ruotsi\nRUA4\n7 1 1 9\n' +
             'A-kieli, espanja\nVKA1\n7 VKA8\n7 2 2 9\n' +
             'Fysiikka\nFY1\n10 FY2\n10 FY3\n10 FY123 *\n10 FY124 *\nS 87 87 10\n' +
             'Kemia 0 0 4\n' +

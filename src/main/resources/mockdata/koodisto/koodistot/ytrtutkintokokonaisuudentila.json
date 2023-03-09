@@ -1,25 +1,21 @@
 {
-  "koodistoUri": "ytrtutkintokokonaisuudentila",
-  "versio": 1,
-  "metadata": [
-    {
-      "kieli": "FI",
-      "nimi": "YTR tutkintokokonaisuuden tila",
-      "kuvaus": "Tutkinnon tila"
-    },
-    {
-      "kieli": "SV",
-      "nimi": "YTR tutkintokokonaisuuden tila"
-    },
-    {
-      "kieli": "EN",
-      "nimi": "YTR tutkintokokonaisuuden tila"
-    }
-  ],
-  "codesGroupUri": "koski",
-  "voimassaAlkuPvm": "2016-09-09",
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "withinCodes": [],
-  "tila": "LUONNOS",
-  "version": 0
+  "koodistoUri" : "ytrtutkintokokonaisuudentila",
+  "versio" : 1,
+  "metadata" : [ {
+    "kieli" : "FI",
+    "nimi" : "YTR tutkintokokonaisuuden tila",
+    "kuvaus": "Tutkinnon tila"
+  }, {
+    "kieli" : "SV",
+    "nimi" : "YTR tutkintokokonaisuuden tila"
+  }, {
+    "kieli" : "EN",
+    "nimi" : "YTR tutkintokokonaisuuden tila"
+  } ],
+  "codesGroupUri" : "koski",
+  "voimassaAlkuPvm" : "2016-09-09",
+  "organisaatioOid" : "1.2.246.562.10.00000000001",
+  "withinCodes" : [ ],
+  "tila" : "LUONNOS",
+  "version" : 0
 }

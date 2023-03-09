@@ -7139,11 +7139,6 @@
         "codeElementUri": "lukiolinjat_093",
         "codeElementVersion": 2,
         "passive": false
-      },
-      {
-        "codeElementUri": "lukiolinjat_861",
-        "codeElementVersion": 1,
-        "passive": false
       }
     ]
   },
@@ -8254,20 +8249,17 @@
     "metadata": [
       {
         "nimi": "Kuorma-autonkuljettaja",
-        "lyhytNimi": "Kuorma-autonkuljettaja",
+        "lyhytNimi": "",
         "kuvaus": "Kuorma-autonkuljettaja",
         "kieli": "FI"
       },
       {
         "nimi": "Lastbilsförare",
-        "lyhytNimi": "Lastbilsförare",
+        "lyhytNimi": "",
         "kuvaus": "Lastbilsförare",
         "kieli": "SV"
       },
       {
-        "nimi": "Lorry Driver",
-        "lyhytNimi": "Lorry Driver",
-        "kuvaus": "Lorry Driver",
         "kieli": "EN"
       }
     ],
@@ -8880,8 +8872,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Ajoneuvoasentaja",
-        "lyhytNimi": "Ajoneuvoasentaja",
         "kieli": "EN"
       }
     ],
@@ -11147,8 +11137,6 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Autokorimekaanikko",
-        "kuvaus": "Autokorimekaanikko",
         "kieli": "EN"
       }
     ],
