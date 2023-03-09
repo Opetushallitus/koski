@@ -194,7 +194,9 @@ class YtrDownloadService(
                     result match {
                       case Left(error) =>
                         logger.warn(s"YTR-datan tallennus epäonnistui: ${error.errorString.getOrElse("-")}")
-                      case _ =>
+                      case _ => timed("tallennaAlkuperäinenJson", thresholdMs = 1) {
+                        tallennaAlkuperäinenJson(oppija)
+                      }
                     }
                   } catch {
                     case e: Throwable => logger.warn(e)(s"YTR-datan tallennus epäonnistui: ${e.getMessage}")
@@ -204,10 +206,6 @@ class YtrDownloadService(
               }
             } catch {
               case e: Throwable => logger.warn(s"YTR-datan konversio epäonnistui: ${e.getMessage}")
-            }
-
-            timed("tallennaAlkuperäinenJson", thresholdMs = 1) {
-              tallennaAlkuperäinenJson(oppija)
             }
 
             val birthMonth = oppija.birthMonth
