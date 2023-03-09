@@ -93164,5 +93164,3007 @@
     ],
     "versio": 1,
     "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5846",
+    "koodiArvo": "5846",
+    "metadata": [
+      {
+        "nimi": "Tietokone- ja konsolipelaaminen",
+        "kuvaus": "Tietokone- ja konsolipelaaminen",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5847",
+    "koodiArvo": "5847",
+    "metadata": [
+      {
+        "nimi": "Neuropsykiatrinen valmentaja",
+        "kuvaus": "Neuropsykiatrinen valmentaja",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5848",
+    "koodiArvo": "5848",
+    "metadata": [
+      {
+        "nimi": "Työhyvinvointi ja tuottavuus",
+        "kuvaus": "Työhyvinvointi ja tuottavuus",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5849",
+    "koodiArvo": "5849",
+    "metadata": [
+      {
+        "nimi": "Työelämän mielenterveystaidot",
+        "kuvaus": "Työelämän mielenterveystaidot",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5850",
+    "koodiArvo": "5850",
+    "metadata": [
+      {
+        "nimi": "Arjen taidot ja elämänhallinta",
+        "kuvaus": "Arjen taidot ja elämänhallinta",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Vardagsfärdigheter och livskompetens",
+        "kuvaus": "Vardagsfärdigheter och livskompetens",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5851",
+    "koodiArvo": "5851",
+    "metadata": [
+      {
+        "nimi": "Opiskelu-, itsetuntemus- ja työelämätaidot",
+        "kuvaus": "Opiskelu-, itsetuntemus- ja työelämätaidot",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Studie- och arbetslivsfärdigheter och självkännedom",
+        "kuvaus": "Studie- och arbetslivsfärdigheter och självkännedom",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5852",
+    "koodiArvo": "5852",
+    "metadata": [
+      {
+        "nimi": "Vuorovaikutus- ja viestintätaidot",
+        "kuvaus": "Vuorovaikutus- ja viestintätaidot",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Interaktions- och kommunikationsfärdigheter",
+        "kuvaus": "Interaktions- och kommunikationsfärdigheter",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5853",
+    "koodiArvo": "5853",
+    "metadata": [
+      {
+        "nimi": "Matemaattiset perustaidot ja ongelmanratkaisutaidot",
+        "kuvaus": "Matemaattiset perustaidot ja ongelmanratkaisutaidot",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Grundläggande matematiska färdigheter och problemlösningsförmåga",
+        "kuvaus": "Grundläggande matematiska färdigheter och problemlösningsförmåga",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5854",
+    "koodiArvo": "5854",
+    "metadata": [
+      {
+        "nimi": "Aktiivinen kansalaisuus",
+        "kuvaus": "Aktiivinen kansalaisuus",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Aktivt medborgarskap",
+        "kuvaus": "Aktivt medborgarskap",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5855",
+    "koodiArvo": "5855",
+    "metadata": [
+      {
+        "nimi": "Opiskelu- ja urasuunnittelutaidot",
+        "kuvaus": "Opiskelu- ja urasuunnittelutaidot",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Studiefärdigheter och karriärplaneringsfärdigheter",
+        "kuvaus": "Studiefärdigheter och karriärplaneringsfärdigheter",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5856",
+    "koodiArvo": "5856",
+    "metadata": [
+      {
+        "nimi": "Lukutaitokoulutus, moduuli 1 (LK1)",
+        "kuvaus": "Lukutaitokoulutus, moduuli 1 (LK1)",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5857",
+    "koodiArvo": "5857",
+    "metadata": [
+      {
+        "nimi": "Lukutaitokoulutus, moduuli 2 (LK2)",
+        "kuvaus": "Lukutaitokoulutus, moduuli 2 (LK2)",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5858",
+    "koodiArvo": "5858",
+    "metadata": [
+      {
+        "nimi": "MLL:n lastenhoitokurssi nuorille ja aikuisille",
+        "kuvaus": "MLL:n lastenhoitokurssi nuorille ja aikuisille",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5859",
+    "koodiArvo": "5859",
+    "metadata": [
+      {
+        "nimi": "Grundkurs för förtroendemän",
+        "kuvaus": "Grundkurs för förtroendemän",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Grundkurs för förtroendemän",
+        "kuvaus": "Grundkurs för förtroendemän",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5860",
+    "koodiArvo": "5860",
+    "metadata": [
+      {
+        "nimi": "Koulutusohjaajakoulutus",
+        "kuvaus": "Koulutusohjaajakoulutus",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5861",
+    "koodiArvo": "5861",
+    "metadata": [
+      {
+        "nimi": "Kirjallisuusterapia henkilökohtaisen ja oman ammatillisen kasvun menetelmänä",
+        "kuvaus": "Kirjallisuusterapia henkilökohtaisen ja oman ammatillisen kasvun menetelmänä",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5862",
+    "koodiArvo": "5862",
+    "metadata": [
+      {
+        "nimi": "Johdanto opintoihin ja arvotyöpaja",
+        "kuvaus": "Johdanto opintoihin ja arvotyöpaja",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5863",
+    "koodiArvo": "5863",
+    "metadata": [
+      {
+        "nimi": "Englanti",
+        "kuvaus": "Englanti",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5864",
+    "koodiArvo": "5864",
+    "metadata": [
+      {
+        "nimi": "Väriopin ja sommittelun perusteita",
+        "kuvaus": "Väriopin ja sommittelun perusteita",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5865",
+    "koodiArvo": "5865",
+    "metadata": [
+      {
+        "nimi": "Johdatus taiteen toimintakenttiin",
+        "kuvaus": "Johdatus taiteen toimintakenttiin",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5866",
+    "koodiArvo": "5866",
+    "metadata": [
+      {
+        "nimi": "Adobe Creative Cloud, kuvankäsittelyn ohjelmistot",
+        "kuvaus": "Adobe Creative Cloud, kuvankäsittelyn ohjelmistot",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5867",
+    "koodiArvo": "5867",
+    "metadata": [
+      {
+        "nimi": "Elävän mallin piirustus",
+        "kuvaus": "Elävän mallin piirustus",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5868",
+    "koodiArvo": "5868",
+    "metadata": [
+      {
+        "nimi": "Visuaalinen kulttuuri",
+        "kuvaus": "Visuaalinen kulttuuri",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5869",
+    "koodiArvo": "5869",
+    "metadata": [
+      {
+        "nimi": "Piirustus KT",
+        "kuvaus": "Piirustus KT",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5870",
+    "koodiArvo": "5870",
+    "metadata": [
+      {
+        "nimi": "Maalaus",
+        "kuvaus": "Maalaus",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5871",
+    "koodiArvo": "5871",
+    "metadata": [
+      {
+        "nimi": "Kritiikki ja palaute KT",
+        "kuvaus": "Kritiikki ja palaute KT",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5872",
+    "koodiArvo": "5872",
+    "metadata": [
+      {
+        "nimi": "Plastinen sommittelu",
+        "kuvaus": "Plastinen sommittelu",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5873",
+    "koodiArvo": "5873",
+    "metadata": [
+      {
+        "nimi": "Ohjattu oma projekti I, II, III",
+        "kuvaus": "Ohjattu oma projekti I, II, III",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5874",
+    "koodiArvo": "5874",
+    "metadata": [
+      {
+        "nimi": "Valokuvauksen perusteet",
+        "kuvaus": "Valokuvauksen perusteet",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5875",
+    "koodiArvo": "5875",
+    "metadata": [
+      {
+        "nimi": "Kevätnäyttely ja verkkojulkaisu KT",
+        "kuvaus": "Kevätnäyttely ja verkkojulkaisu KT",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5876",
+    "koodiArvo": "5876",
+    "metadata": [
+      {
+        "nimi": "Mindfulness tunnetaitovalmentaja (25 op)",
+        "kuvaus": "Mindfulness tunnetaitovalmentaja (25 op)",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5877",
+    "koodiArvo": "5877",
+    "metadata": [
+      {
+        "nimi": "Verkkovertaisryhmänohjaaja",
+        "kuvaus": "Verkkovertaisryhmänohjaaja",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5878",
+    "koodiArvo": "5878",
+    "metadata": [
+      {
+        "nimi": "Johdanto opintohin ja arvotyöpaja",
+        "kuvaus": "Johdanto opintohin ja arvotyöpaja",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5879",
+    "koodiArvo": "5879",
+    "metadata": [
+      {
+        "nimi": "Englanti",
+        "kuvaus": "Englanti",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5880",
+    "koodiArvo": "5880",
+    "metadata": [
+      {
+        "nimi": "Väriopin ja sommittelun perusteita",
+        "kuvaus": "Väriopin ja sommittelun perusteita",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5881",
+    "koodiArvo": "5881",
+    "metadata": [
+      {
+        "nimi": "Johdatus taiteen toimintakenttiin",
+        "kuvaus": "Johdatus taiteen toimintakenttiin",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5882",
+    "koodiArvo": "5882",
+    "metadata": [
+      {
+        "nimi": "Adobe Creative Cloud, kuvankäsittelyn ohjelmistot",
+        "kuvaus": "Adobe Creative Cloud, kuvankäsittelyn ohjelmistot",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5883",
+    "koodiArvo": "5883",
+    "metadata": [
+      {
+        "nimi": "Elävän mallin piirustus",
+        "kuvaus": "Elävän mallin piirustus",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5884",
+    "koodiArvo": "5884",
+    "metadata": [
+      {
+        "nimi": "Visuaalinen kulttuuri",
+        "kuvaus": "Visuaalinen kulttuuri",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5885",
+    "koodiArvo": "5885",
+    "metadata": [
+      {
+        "nimi": "Johdanto typografiaan",
+        "kuvaus": "Johdanto typografiaan",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5886",
+    "koodiArvo": "5886",
+    "metadata": [
+      {
+        "nimi": "Kuvallisen kerronnan perusteet",
+        "kuvaus": "Kuvallisen kerronnan perusteet",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5887",
+    "koodiArvo": "5887",
+    "metadata": [
+      {
+        "nimi": "Kuvittamisen perusteet",
+        "kuvaus": "Kuvittamisen perusteet",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5888",
+    "koodiArvo": "5888",
+    "metadata": [
+      {
+        "nimi": "Graafisen suunnittelun perusteet",
+        "kuvaus": "Graafisen suunnittelun perusteet",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5889",
+    "koodiArvo": "5889",
+    "metadata": [
+      {
+        "nimi": "Ohjattu oma projekti KGS",
+        "kuvaus": "Ohjattu oma projekti KGS",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5890",
+    "koodiArvo": "5890",
+    "metadata": [
+      {
+        "nimi": "Maalaustekniikat",
+        "kuvaus": "Maalaustekniikat",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5891",
+    "koodiArvo": "5891",
+    "metadata": [
+      {
+        "nimi": "Kritiikki ja palaute KGS",
+        "kuvaus": "Kritiikki ja palaute KGS",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5892",
+    "koodiArvo": "5892",
+    "metadata": [
+      {
+        "nimi": "Piirustus KGS",
+        "kuvaus": "Piirustus KGS",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5893",
+    "koodiArvo": "5893",
+    "metadata": [
+      {
+        "nimi": "Valokuvauksen perusteet KGS",
+        "kuvaus": "Valokuvauksen perusteet KGS",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5894",
+    "koodiArvo": "5894",
+    "metadata": [
+      {
+        "nimi": "Kevätnäyttely ja verkkojulkaisu KGS",
+        "kuvaus": "Kevätnäyttely ja verkkojulkaisu KGS",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5895",
+    "koodiArvo": "5895",
+    "metadata": [
+      {
+        "nimi": "Johdanto opintoihin ja arvotyöpaja",
+        "kuvaus": "Johdanto opintoihin ja arvotyöpaja",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5896",
+    "koodiArvo": "5896",
+    "metadata": [
+      {
+        "nimi": "Englanti",
+        "kuvaus": "Englanti",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5897",
+    "koodiArvo": "5897",
+    "metadata": [
+      {
+        "nimi": "Väriopin ja sommittelun perusteita",
+        "kuvaus": "Väriopin ja sommittelun perusteita",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5898",
+    "koodiArvo": "5898",
+    "metadata": [
+      {
+        "nimi": "Johdatus taiteen toimintakenttiin",
+        "kuvaus": "Johdatus taiteen toimintakenttiin",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5899",
+    "koodiArvo": "5899",
+    "metadata": [
+      {
+        "nimi": "Adobe Creative Cloud, kuvankäsittelyn ohjelmistot",
+        "kuvaus": "Adobe Creative Cloud, kuvankäsittelyn ohjelmistot",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5900",
+    "koodiArvo": "5900",
+    "metadata": [
+      {
+        "nimi": "Elävän mallin piirustus",
+        "kuvaus": "Elävän mallin piirustus",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5901",
+    "koodiArvo": "5901",
+    "metadata": [
+      {
+        "nimi": "Visuaalinen kulttuuri",
+        "kuvaus": "Visuaalinen kulttuuri",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5902",
+    "koodiArvo": "5902",
+    "metadata": [
+      {
+        "nimi": "Valokuvauksen perusteet VK",
+        "kuvaus": "Valokuvauksen perusteet VK",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5903",
+    "koodiArvo": "5903",
+    "metadata": [
+      {
+        "nimi": "Videokuvaus ja editointi",
+        "kuvaus": "Videokuvaus ja editointi",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5904",
+    "koodiArvo": "5904",
+    "metadata": [
+      {
+        "nimi": "Valaisun perusteet",
+        "kuvaus": "Valaisun perusteet",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5905",
+    "koodiArvo": "5905",
+    "metadata": [
+      {
+        "nimi": "Äänitys",
+        "kuvaus": "Äänitys",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5906",
+    "koodiArvo": "5906",
+    "metadata": [
+      {
+        "nimi": "Analoginen valokuvaus",
+        "kuvaus": "Analoginen valokuvaus",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5907",
+    "koodiArvo": "5907",
+    "metadata": [
+      {
+        "nimi": "Ohjattu oma projekti",
+        "kuvaus": "Ohjattu oma projekti",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5908",
+    "koodiArvo": "5908",
+    "metadata": [
+      {
+        "nimi": "Henkilökohtainen teos",
+        "kuvaus": "Henkilökohtainen teos",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5909",
+    "koodiArvo": "5909",
+    "metadata": [
+      {
+        "nimi": "Kuvallisen kerronnan perusteet",
+        "kuvaus": "Kuvallisen kerronnan perusteet",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5910",
+    "koodiArvo": "5910",
+    "metadata": [
+      {
+        "nimi": "Dokumentaarinen taidevalokuva",
+        "kuvaus": "Dokumentaarinen taidevalokuva",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5911",
+    "koodiArvo": "5911",
+    "metadata": [
+      {
+        "nimi": "Rakennettu ja lavastettu valokuva",
+        "kuvaus": "Rakennettu ja lavastettu valokuva",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5912",
+    "koodiArvo": "5912",
+    "metadata": [
+      {
+        "nimi": "Kevätnäyttely ja verkkojulkaisu VK",
+        "kuvaus": "Kevätnäyttely ja verkkojulkaisu VK",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5913",
+    "koodiArvo": "5913",
+    "metadata": [
+      {
+        "nimi": "Näyttelijäntyön perusteet",
+        "kuvaus": "Näyttelijäntyön perusteet",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5914",
+    "koodiArvo": "5914",
+    "metadata": [
+      {
+        "nimi": "Improvisaatio",
+        "kuvaus": "Improvisaatio",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5915",
+    "koodiArvo": "5915",
+    "metadata": [
+      {
+        "nimi": "Puhetekniikka",
+        "kuvaus": "Puhetekniikka",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5916",
+    "koodiArvo": "5916",
+    "metadata": [
+      {
+        "nimi": "Tekstityöpaja",
+        "kuvaus": "Tekstityöpaja",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5917",
+    "koodiArvo": "5917",
+    "metadata": [
+      {
+        "nimi": "Musiikin perusteet",
+        "kuvaus": "Musiikin perusteet",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5918",
+    "koodiArvo": "5918",
+    "metadata": [
+      {
+        "nimi": "Teatterimusiikki",
+        "kuvaus": "Teatterimusiikki",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5919",
+    "koodiArvo": "5919",
+    "metadata": [
+      {
+        "nimi": "Perusliikunta",
+        "kuvaus": "Perusliikunta",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5920",
+    "koodiArvo": "5920",
+    "metadata": [
+      {
+        "nimi": "Tanssi",
+        "kuvaus": "Tanssi",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5921",
+    "koodiArvo": "5921",
+    "metadata": [
+      {
+        "nimi": "Liikkeellinen esitys",
+        "kuvaus": "Liikkeellinen esitys",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5922",
+    "koodiArvo": "5922",
+    "metadata": [
+      {
+        "nimi": "Teatterityön perusteet",
+        "kuvaus": "Teatterityön perusteet",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5923",
+    "koodiArvo": "5923",
+    "metadata": [
+      {
+        "nimi": "Produktio I",
+        "kuvaus": "Produktio I",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5924",
+    "koodiArvo": "5924",
+    "metadata": [
+      {
+        "nimi": "Taiteellinen ryhmätyö I",
+        "kuvaus": "Taiteellinen ryhmätyö I",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5925",
+    "koodiArvo": "5925",
+    "metadata": [
+      {
+        "nimi": "Teatterihistoria",
+        "kuvaus": "Teatterihistoria",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5926",
+    "koodiArvo": "5926",
+    "metadata": [
+      {
+        "nimi": "Dramaturginen ja esitysanalyyttinen ajattelu",
+        "kuvaus": "Dramaturginen ja esitysanalyyttinen ajattelu",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5927",
+    "koodiArvo": "5927",
+    "metadata": [
+      {
+        "nimi": "Taiteilijuus teatteritaiteessa",
+        "kuvaus": "Taiteilijuus teatteritaiteessa",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5928",
+    "koodiArvo": "5928",
+    "metadata": [
+      {
+        "nimi": "Butoh",
+        "kuvaus": "Butoh",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5929",
+    "koodiArvo": "5929",
+    "metadata": [
+      {
+        "nimi": "Keho ja mieli",
+        "kuvaus": "Keho ja mieli",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5930",
+    "koodiArvo": "5930",
+    "metadata": [
+      {
+        "nimi": "Akrobatia",
+        "kuvaus": "Akrobatia",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5931",
+    "koodiArvo": "5931",
+    "metadata": [
+      {
+        "nimi": "Kohtaustyöskentely",
+        "kuvaus": "Kohtaustyöskentely",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5932",
+    "koodiArvo": "5932",
+    "metadata": [
+      {
+        "nimi": "Puhetekniikka",
+        "kuvaus": "Puhetekniikka",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5933",
+    "koodiArvo": "5933",
+    "metadata": [
+      {
+        "nimi": "Fyysinen näyttelijäntyö",
+        "kuvaus": "Fyysinen näyttelijäntyö",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5934",
+    "koodiArvo": "5934",
+    "metadata": [
+      {
+        "nimi": "Produktio II",
+        "kuvaus": "Produktio II",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5935",
+    "koodiArvo": "5935",
+    "metadata": [
+      {
+        "nimi": "Taiteellinen ryhmätyö II",
+        "kuvaus": "Taiteellinen ryhmätyö II",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5936",
+    "koodiArvo": "5936",
+    "metadata": [
+      {
+        "nimi": "Oma taiteellinen työ I",
+        "kuvaus": "Oma taiteellinen työ I",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5937",
+    "koodiArvo": "5937",
+    "metadata": [
+      {
+        "nimi": "Oma taiteellinen työ II",
+        "kuvaus": "Oma taiteellinen työ II",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5938",
+    "koodiArvo": "5938",
+    "metadata": [
+      {
+        "nimi": "Yksinlaulu",
+        "kuvaus": "Yksinlaulu",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5939",
+    "koodiArvo": "5939",
+    "metadata": [
+      {
+        "nimi": "Musiikkiesitys",
+        "kuvaus": "Musiikkiesitys",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5940",
+    "koodiArvo": "5940",
+    "metadata": [
+      {
+        "nimi": "Kehonhuolto",
+        "kuvaus": "Kehonhuolto",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5941",
+    "koodiArvo": "5941",
+    "metadata": [
+      {
+        "nimi": "Tanssi",
+        "kuvaus": "Tanssi",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5942",
+    "koodiArvo": "5942",
+    "metadata": [
+      {
+        "nimi": "Liikkeellinen esitys",
+        "kuvaus": "Liikkeellinen esitys",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5943",
+    "koodiArvo": "5943",
+    "metadata": [
+      {
+        "nimi": "Teatteritieto",
+        "kuvaus": "Teatteritieto",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5944",
+    "koodiArvo": "5944",
+    "metadata": [
+      {
+        "nimi": "Dramaturginen ja esitysanalyyttinen ajattelu",
+        "kuvaus": "Dramaturginen ja esitysanalyyttinen ajattelu",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5945",
+    "koodiArvo": "5945",
+    "metadata": [
+      {
+        "nimi": "Taiteilijuus teatteritaiteessa",
+        "kuvaus": "Taiteilijuus teatteritaiteessa",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5946",
+    "koodiArvo": "5946",
+    "metadata": [
+      {
+        "nimi": "Näyttelijäntyön suuntaukset",
+        "kuvaus": "Näyttelijäntyön suuntaukset",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5947",
+    "koodiArvo": "5947",
+    "metadata": [
+      {
+        "nimi": "Keho ja mieli",
+        "kuvaus": "Keho ja mieli",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5948",
+    "koodiArvo": "5948",
+    "metadata": [
+      {
+        "nimi": "Teatteri tänään",
+        "kuvaus": "Teatteri tänään",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5949",
+    "koodiArvo": "5949",
+    "metadata": [
+      {
+        "nimi": "Laatikkoviljelykurssi",
+        "kuvaus": "Laatikkoviljelykurssi",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5950",
+    "koodiArvo": "5950",
+    "metadata": [
+      {
+        "nimi": "Kompostointikurssi",
+        "kuvaus": "Kompostointikurssi",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5951",
+    "koodiArvo": "5951",
+    "metadata": [
+      {
+        "nimi": "Rakenna loimi vipukangaspuihin",
+        "kuvaus": "Rakenna loimi vipukangaspuihin",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5952",
+    "koodiArvo": "5952",
+    "metadata": [
+      {
+        "nimi": "Lippukunnanjohtajakoulutus",
+        "kuvaus": "Lippukunnanjohtajakoulutus",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5953",
+    "koodiArvo": "5953",
+    "metadata": [
+      {
+        "nimi": "Ohjelmajohtajakoulutus",
+        "kuvaus": "Ohjelmajohtajakoulutus",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5954",
+    "koodiArvo": "5954",
+    "metadata": [
+      {
+        "nimi": "Pestijohtajakoulutus",
+        "kuvaus": "Pestijohtajakoulutus",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5955",
+    "koodiArvo": "5955",
+    "metadata": [
+      {
+        "nimi": "Jyvälle järjestötyöstä",
+        "kuvaus": "Jyvälle järjestötyöstä",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5956",
+    "koodiArvo": "5956",
+    "metadata": [
+      {
+        "nimi": "Edistä esteettömyyttä",
+        "kuvaus": "Edistä esteettömyyttä",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5957",
+    "koodiArvo": "5957",
+    "metadata": [
+      {
+        "nimi": "Edunvalvojan taloustieto - kansantalous",
+        "kuvaus": "Edunvalvojan taloustieto - kansantalous",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5958",
+    "koodiArvo": "5958",
+    "metadata": [
+      {
+        "nimi": "Taulukkolaskennan perusteet Excel-sovelluksella",
+        "kuvaus": "Taulukkolaskennan perusteet Excel-sovelluksella",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5959",
+    "koodiArvo": "5959",
+    "metadata": [
+      {
+        "nimi": "Psykoterapian perusteet",
+        "kuvaus": "Psykoterapian perusteet",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5960",
+    "koodiArvo": "5960",
+    "metadata": [
+      {
+        "nimi": "Sosiologian perusteet",
+        "kuvaus": "Sosiologian perusteet",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5961",
+    "koodiArvo": "5961",
+    "metadata": [
+      {
+        "nimi": "Valokuvaus (päivälinja)",
+        "kuvaus": "Valokuvaus (päivälinja)",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5962",
+    "koodiArvo": "5962",
+    "metadata": [
+      {
+        "nimi": "Digitaalinen järjestelmäkamera ja valokuvauksen periaatteet",
+        "kuvaus": "Digitaalinen järjestelmäkamera ja valokuvauksen periaatteet",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5963",
+    "koodiArvo": "5963",
+    "metadata": [
+      {
+        "nimi": "Valokuvauksen sujuvat ja ammattimaiset työnkulut",
+        "kuvaus": "Valokuvauksen sujuvat ja ammattimaiset työnkulut",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5964",
+    "koodiArvo": "5964",
+    "metadata": [
+      {
+        "nimi": "Valaisu valokuvauksessa",
+        "kuvaus": "Valaisu valokuvauksessa",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5965",
+    "koodiArvo": "5965",
+    "metadata": [
+      {
+        "nimi": "Digitaalinen kuvankäsittely",
+        "kuvaus": "Digitaalinen kuvankäsittely",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5966",
+    "koodiArvo": "5966",
+    "metadata": [
+      {
+        "nimi": "Video ja liikkuvan kuvan editointi",
+        "kuvaus": "Video ja liikkuvan kuvan editointi",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5967",
+    "koodiArvo": "5967",
+    "metadata": [
+      {
+        "nimi": "Julkaiseminen, vedostaminen ja näyttelyn rakentaminen",
+        "kuvaus": "Julkaiseminen, vedostaminen ja näyttelyn rakentaminen",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5968",
+    "koodiArvo": "5968",
+    "metadata": [
+      {
+        "nimi": "Yleiset taideopinnot 2 op",
+        "kuvaus": "Yleiset taideopinnot 2 op",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5969",
+    "koodiArvo": "5969",
+    "metadata": [
+      {
+        "nimi": "Digitaalinen julkaiseminen",
+        "kuvaus": "Digitaalinen julkaiseminen",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5970",
+    "koodiArvo": "5970",
+    "metadata": [
+      {
+        "nimi": "Graafinen suunnittelu ja typografia",
+        "kuvaus": "Graafinen suunnittelu ja typografia",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5971",
+    "koodiArvo": "5971",
+    "metadata": [
+      {
+        "nimi": "Valokuvaus",
+        "kuvaus": "Valokuvaus",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5972",
+    "koodiArvo": "5972",
+    "metadata": [
+      {
+        "nimi": "Luonnoskirja ja portfolio",
+        "kuvaus": "Luonnoskirja ja portfolio",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5973",
+    "koodiArvo": "5973",
+    "metadata": [
+      {
+        "nimi": "Näyttely tai presentaatio",
+        "kuvaus": "Näyttely tai presentaatio",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5974",
+    "koodiArvo": "5974",
+    "metadata": [
+      {
+        "nimi": "Oma projekti",
+        "kuvaus": "Oma projekti",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5975",
+    "koodiArvo": "5975",
+    "metadata": [
+      {
+        "nimi": "Arjen taidot ja elämänhallinta",
+        "kuvaus": "Arjen taidot ja elämänhallinta",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Vardagsfärdigheter och livskompetens",
+        "kuvaus": "Vardagsfärdigheter och livskompetens",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5976",
+    "koodiArvo": "5976",
+    "metadata": [
+      {
+        "nimi": "Opiskelu-, itsetuntemus- ja työelämätaidot",
+        "kuvaus": "Opiskelu-, itsetuntemus- ja työelämätaidot",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Studie- och arbetslivsfärdigheter och självkännedom",
+        "kuvaus": "Studie- och arbetslivsfärdigheter och självkännedom",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5977",
+    "koodiArvo": "5977",
+    "metadata": [
+      {
+        "nimi": "Vuorovaikutus- ja viestintätaidot",
+        "kuvaus": "Vuorovaikutus- ja viestintätaidot",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Interaktions- och kommunikationsfärdigheter",
+        "kuvaus": "Interaktions- och kommunikationsfärdigheter",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5978",
+    "koodiArvo": "5978",
+    "metadata": [
+      {
+        "nimi": "Matemaattiset perustaidot ja ongelmanratkaisutaidot",
+        "kuvaus": "Matemaattiset perustaidot ja ongelmanratkaisutaidot",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Grundläggande matematiska färdigheter och problemlösningsförmåga",
+        "kuvaus": "Grundläggande matematiska färdigheter och problemlösningsförmåga",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5979",
+    "koodiArvo": "5979",
+    "metadata": [
+      {
+        "nimi": "Aktiivinen kansalaisuus",
+        "kuvaus": "Aktiivinen kansalaisuus",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Aktivt medborgarskap",
+        "kuvaus": "Aktivt medborgarskap",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5980",
+    "koodiArvo": "5980",
+    "metadata": [
+      {
+        "nimi": "Opiskelu- ja urasuunnittelutaidot",
+        "kuvaus": "Opiskelu- ja urasuunnittelutaidot",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Studiefärdigheter och karriärplaneringsfärdigheter",
+        "kuvaus": "Studiefärdigheter och karriärplaneringsfärdigheter",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5981",
+    "koodiArvo": "5981",
+    "metadata": [
+      {
+        "nimi": "Lasten ja nuorten tunnetaito-ohjaajakoulutus",
+        "kuvaus": "Lasten ja nuorten tunnetaito-ohjaajakoulutus",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5982",
+    "koodiArvo": "5982",
+    "metadata": [
+      {
+        "nimi": "Arjen taidot ja elämänhallinta",
+        "kuvaus": "Arjen taidot ja elämänhallinta",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Vardagsfärdigheter och livskompetens",
+        "kuvaus": "Vardagsfärdigheter och livskompetens",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5983",
+    "koodiArvo": "5983",
+    "metadata": [
+      {
+        "nimi": "Opiskelu-, itsetuntemus- ja työelämätaidot",
+        "kuvaus": "Opiskelu-, itsetuntemus- ja työelämätaidot",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Studie- och arbetslivsfärdigheter och självkännedom",
+        "kuvaus": "Studie- och arbetslivsfärdigheter och självkännedom",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5984",
+    "koodiArvo": "5984",
+    "metadata": [
+      {
+        "nimi": "Vuorovaikutus- ja viestintätaidot",
+        "kuvaus": "Vuorovaikutus- ja viestintätaidot",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Interaktions- och kommunikationsfärdigheter",
+        "kuvaus": "Interaktions- och kommunikationsfärdigheter",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5985",
+    "koodiArvo": "5985",
+    "metadata": [
+      {
+        "nimi": "Matemaattiset perustaidot ja ongelmanratkaisutaidot",
+        "kuvaus": "Matemaattiset perustaidot ja ongelmanratkaisutaidot",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Grundläggande matematiska färdigheter och problemlösningsförmåga",
+        "kuvaus": "Grundläggande matematiska färdigheter och problemlösningsförmåga",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5986",
+    "koodiArvo": "5986",
+    "metadata": [
+      {
+        "nimi": "Aktiivinen kansalaisuus",
+        "kuvaus": "Aktiivinen kansalaisuus",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Aktivt medborgarskap",
+        "kuvaus": "Aktivt medborgarskap",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5987",
+    "koodiArvo": "5987",
+    "metadata": [
+      {
+        "nimi": "Opiskelu- ja urasuunnittelutaidot",
+        "kuvaus": "Opiskelu- ja urasuunnittelutaidot",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Studiefärdigheter och karriärplaneringsfärdigheter",
+        "kuvaus": "Studiefärdigheter och karriärplaneringsfärdigheter",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5988",
+    "koodiArvo": "5988",
+    "metadata": [
+      {
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Musiklinjen",
+        "kuvaus": "Musiklinjen",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5989",
+    "koodiArvo": "5989",
+    "metadata": [
+      {
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Musikteori",
+        "kuvaus": "Musikteori",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5990",
+    "koodiArvo": "5990",
+    "metadata": [
+      {
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Övrigt valbart",
+        "kuvaus": "Övrigt valbart",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5991",
+    "koodiArvo": "5991",
+    "metadata": [
+      {
+        "nimi": "Tieto- ja viestintäteknologiataitojen elinikäinen oppiminen opistojen henkilökunnalle",
+        "kuvaus": "Tieto- ja viestintäteknologiataitojen elinikäinen oppiminen opistojen henkilökunnalle",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5992",
+    "koodiArvo": "5992",
+    "metadata": [
+      {
+        "nimi": "Tieto- ja viestintäteknologiataitojen elinikäinen oppiminen opistojen opiskelijoille, alkeiskurssi",
+        "kuvaus": "Tieto- ja viestintäteknologiataitojen elinikäinen oppiminen opistojen opiskelijoille, alkeiskurssi",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5993",
+    "koodiArvo": "5993",
+    "metadata": [
+      {
+        "nimi": "Tieto- ja viestintäteknologiataitojen elinikäinen oppiminen opistojen opiskelijoille, peruskurssi",
+        "kuvaus": "Tieto- ja viestintäteknologiataitojen elinikäinen oppiminen opistojen opiskelijoille, peruskurssi",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5994",
+    "koodiArvo": "5994",
+    "metadata": [
+      {
+        "nimi": "Tieto- ja viestintäteknologiataitojen elinikäinen oppiminen opistojen opiskelijoille, jatkokurssi",
+        "kuvaus": "Tieto- ja viestintäteknologiataitojen elinikäinen oppiminen opistojen opiskelijoille, jatkokurssi",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5995",
+    "koodiArvo": "5995",
+    "metadata": [
+      {
+        "nimi": "Medialukutaito",
+        "kuvaus": "Medialukutaito",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5996",
+    "koodiArvo": "5996",
+    "metadata": [
+      {
+        "nimi": "Tietoturvana terävöittäminen ja digiosallisuuden lisääminen opistojen henkilökunnalle",
+        "kuvaus": "Tietoturvana terävöittäminen ja digiosallisuuden lisääminen opistojen henkilökunnalle",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5997",
+    "koodiArvo": "5997",
+    "metadata": [
+      {
+        "nimi": "Tietoturvana terävöittäminen ja digiosallisuuden lisääminen opistojen opiskelijoille",
+        "kuvaus": "Tietoturvana terävöittäminen ja digiosallisuuden lisääminen opistojen opiskelijoille",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5998",
+    "koodiArvo": "5998",
+    "metadata": [
+      {
+        "nimi": "Järjestön hallitusosaaja",
+        "kuvaus": "Järjestön hallitusosaaja",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_5999",
+    "koodiArvo": "5999",
+    "metadata": [
+      {
+        "nimi": "Arjen stressinhallinta – 1 op, opintopistekurssi",
+        "kuvaus": "Arjen stressinhallinta – 1 op, opintopistekurssi",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_6000",
+    "koodiArvo": "6000",
+    "metadata": [
+      {
+        "nimi": "Kielitietoisuus ja selkokielinen viestintä – 1 op, opintopistekurssi",
+        "kuvaus": "Kielitietoisuus ja selkokielinen viestintä – 1 op, opintopistekurssi",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_6001",
+    "koodiArvo": "6001",
+    "metadata": [
+      {
+        "nimi": "Vertsukoulutus: Ole oma itsesi",
+        "kuvaus": "Vertsukoulutus: Ole oma itsesi",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
   }
 ]

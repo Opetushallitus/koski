@@ -348,10 +348,12 @@
       {
         "nimi": "Kompetensområdet för servicelogistik",
         "lyhytNimi": "",
-        "kuvaus": "",
+        "kuvaus": "Kompetensområdet för servicelogistik",
         "kieli": "SV"
       },
       {
+        "nimi": "Competence area of Intralogistics",
+        "kuvaus": "Competence area of Intralogistics",
         "kieli": "EN"
       }
     ],
@@ -13992,7 +13994,7 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Aircraft line maintenance",
+        "nimi": "Competence area in Aircraft Servicing",
         "lyhytNimi": "",
         "kuvaus": "",
         "kieli": "EN"

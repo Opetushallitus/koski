@@ -384,6 +384,7 @@
         "kieli": "SV"
       },
       {
+        "nimi": "Preparatory education for basic vocational education",
         "kieli": "EN"
       }
     ],
@@ -470,12 +471,13 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Utbildning som handleder fö arbete och ett självständigt liv",
+        "nimi": "Utbildning som handleder för arbete och ett självständigt liv",
         "lyhytNimi": "",
         "kuvaus": "",
         "kieli": "SV"
       },
       {
+        "nimi": "Preparatory education and training for work and independent living",
         "kieli": "EN"
       }
     ],

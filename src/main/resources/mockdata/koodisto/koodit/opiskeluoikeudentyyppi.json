@@ -16,6 +16,7 @@
         "kieli": "SV"
       },
       {
+        "nimi": "Basic education for adults",
         "kieli": "EN"
       }
     ],
@@ -39,6 +40,7 @@
         "kieli": "SV"
       },
       {
+        "nimi": "Vocational education and training",
         "kieli": "EN"
       }
     ],
@@ -62,6 +64,7 @@
         "kieli": "SV"
       },
       {
+        "nimi": "Deutsches Internationales Abitur degree (DIA)",
         "kieli": "EN"
       }
     ],
@@ -85,6 +88,7 @@
         "kieli": "SV"
       },
       {
+        "nimi": "Pre-primary education",
         "kieli": "EN"
       }
     ],
@@ -102,12 +106,13 @@
         "kieli": "FI"
       },
       {
-        "nimi": "European School of Helsinki",
+        "nimi": "Europeiska skolan i Helsingfors",
         "lyhytNimi": "European School of Helsinki",
         "kuvaus": "",
         "kieli": "SV"
       },
       {
+        "nimi": "European School of Helsinki",
         "kieli": "EN"
       }
     ],
@@ -131,6 +136,7 @@
         "kieli": "SV"
       },
       {
+        "nimi": "IB diploma",
         "kieli": "EN"
       }
     ],
@@ -154,6 +160,8 @@
         "kieli": "SV"
       },
       {
+        "nimi": "International school",
+        "lyhytNimi": "International school",
         "kieli": "EN"
       }
     ],
@@ -177,6 +185,7 @@
         "kieli": "SV"
       },
       {
+        "nimi": "Higher education",
         "kieli": "EN"
       }
     ],
@@ -200,6 +209,7 @@
         "kieli": "SV"
       },
       {
+        "nimi": "General upper secondary education",
         "kieli": "EN"
       }
     ],
@@ -223,6 +233,7 @@
         "kieli": "SV"
       },
       {
+        "nimi": "Instruction preparing for general upper secondary education",
         "kieli": "EN"
       }
     ],
@@ -240,12 +251,13 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Muu kuin säännelty koulutus",
+        "nimi": "Annan än reglerad utbildning",
         "lyhytNimi": "MUKS",
         "kuvaus": "",
         "kieli": "SV"
       },
       {
+        "nimi": "Other than regulated education",
         "kieli": "EN"
       }
     ],
@@ -269,6 +281,7 @@
         "kieli": "SV"
       },
       {
+        "nimi": "Instruction preparing for basic education",
         "kieli": "EN"
       }
     ],
@@ -292,6 +305,7 @@
         "kieli": "SV"
       },
       {
+        "nimi": "Voluntary additional basic education",
         "kieli": "EN"
       }
     ],
@@ -315,6 +329,7 @@
         "kieli": "SV"
       },
       {
+        "nimi": "Basic education",
         "kieli": "EN"
       }
     ],
@@ -338,6 +353,7 @@
         "kieli": "SV"
       },
       {
+        "nimi": "Basic education in the arts",
         "kieli": "EN"
       }
     ],
@@ -361,6 +377,7 @@
         "kieli": "SV"
       },
       {
+        "nimi": "Preparatory education for an upper secondary qualification",
         "kieli": "EN"
       }
     ],
@@ -384,6 +401,7 @@
         "kieli": "SV"
       },
       {
+        "nimi": "Liberal adult education",
         "kieli": "EN"
       }
     ],
@@ -407,6 +425,7 @@
         "kieli": "SV"
       },
       {
+        "nimi": "Matriculation Examination",
         "kieli": "EN"
       }
     ],

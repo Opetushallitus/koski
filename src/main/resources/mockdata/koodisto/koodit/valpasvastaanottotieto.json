@@ -10,9 +10,11 @@
         "kieli": "FI"
       },
       {
+        "nimi": "Villkorligt mottagen",
         "kieli": "SV"
       },
       {
+        "nimi": "Conditionally accepted",
         "kieli": "EN"
       }
     ],
@@ -30,9 +32,11 @@
         "kieli": "FI"
       },
       {
+        "nimi": "Godkänd",
         "kieli": "SV"
       },
       {
+        "nimi": "Accepted",
         "kieli": "EN"
       }
     ],

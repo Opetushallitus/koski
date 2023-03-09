@@ -16,6 +16,7 @@
         "kieli": "SV"
       },
       {
+        "nimi": "Vocational qualification units",
         "kieli": "EN"
       }
     ],
@@ -33,12 +34,13 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Högskolestudier",
+        "nimi": "Öppna högskolestudier",
         "lyhytNimi": "",
         "kuvaus": "",
         "kieli": "SV"
       },
       {
+        "nimi": "Open higher education studies",
         "kieli": "EN"
       }
     ],
@@ -62,6 +64,7 @@
         "kieli": "SV"
       },
       {
+        "nimi": "Studies in general upper secondary education",
         "kieli": "EN"
       }
     ],
@@ -127,6 +130,7 @@
         "kieli": "SV"
       },
       {
+        "nimi": "Studies in liberal adult education",
         "kieli": "EN"
       }
     ],

@@ -2743,11 +2743,6 @@
         "passive": false
       },
       {
-        "codeElementUri": "oppilaitosnumero_00076",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
         "codeElementUri": "oppilaitosnumero_03461",
         "codeElementVersion": 1,
         "passive": false
@@ -5748,11 +5743,6 @@
       },
       {
         "codeElementUri": "koulutustoimija_20546211",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
-        "codeElementUri": "oppilaitosnumero_00151",
         "codeElementVersion": 1,
         "passive": false
       },

@@ -40887,49 +40887,21 @@
   {
     "koodiUri": "koulutustyyppi_999907",
     "koodiArvo": "999907",
-    "version": 4,
-    "versio": 1,
-    "tila": "LUONNOS",
     "metadata": [
       {
         "nimi": "Taiteen perusopetus",
-        "kuvaus": "",
-        "lyhytNimi": "TPO",
-        "kayttoohje": "",
-        "kasite": "",
-        "sisaltaaMerkityksen": "",
-        "eiSisallaMerkitysta": "",
-        "huomioitavaKoodi": "",
-        "sisaltaaKoodiston": "",
         "kieli": "FI"
       },
       {
         "nimi": "Grundläggande konstundervisning",
-        "kuvaus": "",
-        "lyhytNimi": "",
-        "kayttoohje": "",
-        "kasite": "",
-        "sisaltaaMerkityksen": "",
-        "eiSisallaMerkitysta": "",
-        "huomioitavaKoodi": "",
-        "sisaltaaKoodiston": "",
         "kieli": "SV"
       },
       {
         "nimi": "Taiteen perusopetus",
-        "kuvaus": "",
-        "lyhytNimi": "",
-        "kayttoohje": "",
-        "kasite": "",
-        "sisaltaaMerkityksen": "",
-        "eiSisallaMerkitysta": "",
-        "huomioitavaKoodi": "",
-        "sisaltaaKoodiston": "",
         "kieli": "EN"
       }
     ],
-    "withinCodeElements": [],
-    "includesCodeElements": [],
-    "levelsWithCodeElements": []
+    "versio": 1,
+    "withinCodeElements": []
   }
 ]
