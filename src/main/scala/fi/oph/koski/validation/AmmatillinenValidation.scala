@@ -107,8 +107,16 @@ object AmmatillinenValidation {
     val oss = korotettuSuoritus.osasuoritukset.getOrElse(List.empty)
 
     def osasuorituksetKorotettuTaiTunnustettu: HttpStatus = HttpStatus.validate(
-      (!oo.onValmistunut && korotettuSuoritus.osasuoritusLista.isEmpty) || validateKaikkiKorotukselliset(korotettuSuoritus, k => k.korotettu.isDefined || k.tunnustettu.isDefined)
+      (!oo.onValmistunut && oss.isEmpty) || validateKaikkiKorotukselliset(korotettuSuoritus, k => k.korotettu.isDefined || k.tunnustettu.isDefined)
     )(KoskiErrorCategory.badRequest.validation.ammatillinen.korotettuOsasuoritus())
+
+    def eiTunnustettujaTutkinnonOsanSuorituksia: HttpStatus = HttpStatus.validate(
+      oss.forall {
+        case os: MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus => os.tunnustettu.isEmpty
+        case os: YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus => os.tunnustettu.isEmpty
+        case _ => true
+      }
+    )(KoskiErrorCategory.badRequest.validation.ammatillinen.korotettuOsasuoritus("Muun tutkinnon osan tai yhteisen tutkinnon osan suoritus ei voi olla tunnustettu korotuksen opiskeluoikeudella"))
 
     def eiKorotuksiaEikäKorotettuaKeskiarvoa: HttpStatus = HttpStatus.validate(
       if(oo.onValmistunut && validateKaikkiKorotukselliset(korotettuSuoritus, k => k.korotettu.map(_.koodiarvo).contains("korotuksenyritys") || k.tunnustettu.isDefined)) {
@@ -130,6 +138,7 @@ object AmmatillinenValidation {
 
     HttpStatus.fold(
       osasuorituksetKorotettuTaiTunnustettu,
+      eiTunnustettujaTutkinnonOsanSuorituksia,
       eiKorotuksiaEikäKorotettuaKeskiarvoa,
       valmistunutJaKorotettuKeskiarvo,
       katsotaanEronneeksiIlmanOsasuorituksia,

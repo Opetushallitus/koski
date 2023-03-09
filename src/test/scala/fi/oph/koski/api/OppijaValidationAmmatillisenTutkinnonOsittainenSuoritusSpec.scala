@@ -607,6 +607,37 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
             verifyResponseStatusOk()
           }
         }
+
+        "Korotuksen suoritukselle ei voi siirtää tunnustettuja muun tutkinnon osan tai yhteisen tutkinnon osan suorituksia" in {
+          val alkuperäinen = getAlkuperäinen
+          val korotettuSuoritusTunnustetullaMuunTutkinnonOsalla = ammatillisenTutkinnonOsittainenSuoritus.copy(
+            korotettuOpiskeluoikeusOid = alkuperäinen.oid,
+            korotettuKeskiarvo = Some(4.5),
+            korotettuKeskiarvoSisältääMukautettujaArvosanoja = Some(false),
+            osasuoritukset = Some(List(
+              korotettuTutkinnonOsanSuoritus.copy(tunnustettu = Some(tunnustettu))
+            ))
+          )
+
+          putOpiskeluoikeus(makeOpiskeluoikeus(suoritus = korotettuSuoritusTunnustetullaMuunTutkinnonOsalla), amiksenKorottaja) {
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.korotettuOsasuoritus("Muun tutkinnon osan tai yhteisen tutkinnon osan suoritus ei voi olla tunnustettu korotuksen opiskeluoikeudella"))
+          }
+
+          val korotettuSuoritusTunnustetullaYhteisenTutkinnonOsalla = ammatillisenTutkinnonOsittainenSuoritus.copy(
+            korotettuOpiskeluoikeusOid = alkuperäinen.oid,
+            korotettuKeskiarvo = Some(4.5),
+            korotettuKeskiarvoSisältääMukautettujaArvosanoja = Some(false),
+            osasuoritukset = Some(List(
+              korotettuYhteisenTutkinnonOsanSuoritus.copy(
+                tunnustettu = Some(tunnustettu)
+              )
+            ))
+          )
+
+          putOpiskeluoikeus(makeOpiskeluoikeus(suoritus = korotettuSuoritusTunnustetullaYhteisenTutkinnonOsalla), amiksenKorottaja) {
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.korotettuOsasuoritus("Muun tutkinnon osan tai yhteisen tutkinnon osan suoritus ei voi olla tunnustettu korotuksen opiskeluoikeudella"))
+          }
+        }
       }
 
       "Valmistunut korotus" - {

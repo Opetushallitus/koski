@@ -8,10 +8,11 @@
   - Korotettua keskiarvoa ei voi siirtää jos kyseessä ei ole korotuksen suoritus.
   - Korotettu-tietoa ei voi siirtää osasuoritukselle tai aliosasuoritukselle jos kyseessä ei ole korotuksen suoritus.
   - Kaikkien korotuksen suorituksen osasuoritusten tulee olla korotuksen yrityksiä tai tunnustettuja.
+  - Muun tutkinnon osaa tai yhteisen tutkinnon osaa ei voi siirtää tunnustettuna korotuksen suoritukselle.
   - Korotettua keskiarvoa ei voi siirtää valmistuneelle korotuksen suoritukselle, jos kaikki korotuksen yritykset epäonnistuivat.
   - Jos korotuksen suoritus päättyy katsotaan eronneeksi -tilaan, ei suoritukselle voi siirtää osasuorituksia.
   - Jos korotuksen suoritus päättyy katsotaan eronneeksi -tilaan, ei suoritukselle voi siirtää korotettua keskiarvoa.
-- Korotetun suorituksen linkitystä alkuperäiseen opiskeluoikeuteen ei voi muuttaa opiskeluoikeuden luonnin jälkeen.
+- Korotetun suorituksen linkitystä alkuperäiseen opiskeluoikeuteen ei voi muuttaa sen jälkeen kun linkitys on tehty.
 - Alkuperäisen opiskeluoikeuden suoritukselle lisätty validaatiot:
   - Alkuperäinen linkitetty opiskeluoikeus löytyy oppijalle.
   - Alkuperäinen opiskeluoikeus on valmistunut-tilassa.
