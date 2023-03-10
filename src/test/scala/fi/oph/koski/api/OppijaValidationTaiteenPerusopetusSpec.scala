@@ -272,13 +272,13 @@ class OppijaValidationTaiteenPerusopetusSpec
         }
       }
 
-      "oppilaitoksen hankintakoulutuksen käyttäjä voi luoda itse järjestettävän opiskeluoikeuden" in {
+      "oppilaitoksen hankintakoulutuksen käyttäjä ei voi luoda itse järjestettävää opiskeluoikeutta" in {
         postOpiskeluoikeusV2(
           TPO.Opiskeluoikeus.hyväksytystiSuoritettuLaajaOppimäärä,
           henkilö = KoskiSpecificMockOppijat.tyhjä,
           headers = authHeaders(MockUsers.varsinaisSuomiHankintakoulutusOppilaitosTallentaja) ++ jsonContent
         ) {
-          verifyResponseStatusOk()
+          verifyResponseStatus(403, KoskiErrorCategory.forbidden("Käyttäjällä ei ole riittäviä oikeuksia luoda opiskeluoikeutta"))
         }
       }
 
