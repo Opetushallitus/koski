@@ -21,6 +21,7 @@ export type MuidenOpintovalmiuksiaTukevienOpintojenSuoritus = {
   alkamispäivä?: string
   suorituskieli?: Koodistokoodiviite<'kieli', string>
   lisätiedot?: Array<AmmatillisenTutkinnonOsanLisätieto>
+  korotettu?: Koodistokoodiviite<'ammatillisensuorituksenkorotus', string>
   koulutusmoduuli: PaikallinenOpintovalmiuksiaTukevaOpinto
   tunnustettu?: OsaamisenTunnustaminen
 }
@@ -35,6 +36,7 @@ export const MuidenOpintovalmiuksiaTukevienOpintojenSuoritus = (o: {
   alkamispäivä?: string
   suorituskieli?: Koodistokoodiviite<'kieli', string>
   lisätiedot?: Array<AmmatillisenTutkinnonOsanLisätieto>
+  korotettu?: Koodistokoodiviite<'ammatillisensuorituksenkorotus', string>
   koulutusmoduuli: PaikallinenOpintovalmiuksiaTukevaOpinto
   tunnustettu?: OsaamisenTunnustaminen
 }): MuidenOpintovalmiuksiaTukevienOpintojenSuoritus => ({
