@@ -63,14 +63,14 @@ class YtrDownloadService(
   ): Unit = {
     (birthmonthStart, birthmonthEnd, modifiedSince) match {
       case _ if status.isLoading && !force =>
-        logger.info("YTR data already downloading, do nothing")
+        logger.warn("YTR data already downloading, do nothing")
         onEnd()
       case (Some(birthmonthStart), Some(birthmonthEnd), _) =>
         startDownloadingUsingMonthInterval(birthmonthStart, birthmonthEnd, scheduler, onEnd)
       case (_, _, Some(modifiedSince)) =>
         startDownloadingUsingModifiedSince(modifiedSince, scheduler, onEnd)
       case _ =>
-        logger.info("Valid parameters for YTR download not defined")
+        logger.warn("Valid parameters for YTR download not defined")
         onEnd()
     }
   }
@@ -194,7 +194,9 @@ class YtrDownloadService(
                     result match {
                       case Left(error) =>
                         logger.warn(s"YTR-datan tallennus epäonnistui: ${error.errorString.getOrElse("-")}")
-                      case _ =>
+                      case _ => timed("tallennaAlkuperäinenJson", thresholdMs = 1) {
+                        tallennaAlkuperäinenJson(oppija)
+                      }
                     }
                   } catch {
                     case e: Throwable => logger.warn(e)(s"YTR-datan tallennus epäonnistui: ${e.getMessage}")
@@ -203,11 +205,7 @@ class YtrDownloadService(
                 case _ => logger.info(s"YTR-datan konversio palautti tyhjän opiskeluoikeuden")
               }
             } catch {
-              case e: Throwable => logger.info(s"YTR-datan konversio epäonnistui: ${e.getMessage}")
-            }
-
-            timed("tallennaAlkuperäinenJson", thresholdMs = 1) {
-              tallennaAlkuperäinenJson(oppija)
+              case e: Throwable => logger.warn(s"YTR-datan konversio epäonnistui: ${e.getMessage}")
             }
 
             val birthMonth = oppija.birthMonth
@@ -264,7 +262,7 @@ class YtrDownloadService(
   )(implicit user: KoskiSpecificSession, accessType: AccessType.Value): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = {
     application.validator.updateFieldsAndValidateOpiskeluoikeus(ytrOo, None) match {
       case Left(error) =>
-        logger.info(s"YTR-datan validointi epäonnistui: ${error.errorString.getOrElse("-")}")
+        logger.warn(s"YTR-datan validointi epäonnistui: ${error.errorString.getOrElse("-")}")
         Left(error)
       case Right(_) =>
         val koskiOppija = Oppija(
