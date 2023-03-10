@@ -449,9 +449,7 @@ const OmanOrganisaationUlkopuolinenOppilaitosPicker = ({
   const isVarhaiskasvatusKoulutustoimijaP = userP
     .map('.varhaiskasvatuksenJärjestäjäKoulutustoimijat')
     .map((koulutustoimijat) => koulutustoimijat.length > 0)
-  const isTPOKoulutustoimijaP = userP.map(
-    '.hasKoulutustoimijaOrganisaatioTaiGlobaaliWriteAccess'
-  )
+  const isTPOKoulutustoimijaP = userP.map('.hasOneKoulutustoimijaWriteAccess')
 
   const showVarhaiskasvatusCheckbox = Bacon.combineWith(
     isVarhaiskasvatusKoulutustoimijaP,

@@ -100,11 +100,13 @@ class KoskiSpecificSession(
   def hasTallennetutYlioppilastutkinnonOpiskeluoikeudetAccess: Boolean =
     globalKäyttöoikeudet.exists(_.globalPalveluroolit.contains(Palvelurooli(TALLENNETUT_YLIOPPILASTUTKINNON_OPISKELUOIKEUDET)))
 
+  def getKoulutustoimijatWithWriteAccess: List[Oid] = orgKäyttöoikeudet
+    .filter(_.organisaatioAccessType.contains(AccessType.write))
+    .flatMap(_.organisaatio.toKoulutustoimija).map(_.oid)
+    .toList
+
   def hasKoulutustoimijaOrganisaatioTaiGlobaaliWriteAccess = {
-    val koulutustoimijat = orgKäyttöoikeudet
-      .filter(_.organisaatioAccessType.contains(AccessType.write))
-      .flatMap(_.organisaatio.toKoulutustoimija).map(_.oid)
-      .toList
+    val koulutustoimijat = getKoulutustoimijatWithWriteAccess
     koulutustoimijat.nonEmpty || globalAccess.contains(AccessType.write)
   }
 
