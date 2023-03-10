@@ -26,40 +26,47 @@ trait HealthCheck extends Logging {
   private val oid = application.config.getString("healthcheck.oppija.oid")
   private val koodistoPalvelu = KoodistoPalvelu.withoutCache(application.config)
   private val ePerusteet = application.ePerusteet
-  private def healthcheckOppija: Either[HttpStatus, Oppija] =
+  private val monitoring = application.healthMonitoring
+  private def healthcheckOppija: Either[HttpStatus, Oppija] = {
     application.validator.updateFieldsAndValidateAsJson(Oppija(OidHenkilö(oid), List(perustutkintoOpiskeluoikeusValmis())))
+  }
 
   def healthcheckWithExternalSystems: HttpStatus = {
     logger.debug("Performing healthcheck")
     val oppija = findOrCreateOppija
-    val checks: List[() => HttpStatus] = List(
-      () => oppijaCheck(oppija),
-      () => openSearchCheck(oppija),
-      () => koodistopalveluCheck,
-      () => organisaatioPalveluCheck,
-      () => ePerusteetCheck,
-      () => casCheck
+    val checks: Map[String, () => HttpStatus] = Map(
+      Subsystem.Oppijanumerorekisteri -> (() => oppijaCheck(oppija)),
+      Subsystem.OpenSearch -> (() => openSearchCheck(oppija)),
+      Subsystem.Koodistopalvelu -> (() => koodistopalveluCheck),
+      Subsystem.Organisaatiopalvelu -> (() => organisaatioPalveluCheck),
+      Subsystem.EPerusteet -> (() => ePerusteetCheck),
+      Subsystem.CAS -> (() => casCheck),
     )
 
-    val status = HttpStatus.fold(checks.par.map(_.apply).seq)
+    val results = checks.par.mapValues(_.apply).seq
+    val status = HttpStatus.fold(results.values)
     if (status.isError) {
       logger.warn(s"Healthcheck with external systems status failed $status")
     }
+    logHealthStatus(results)
     status
   }
 
   def internalHealthcheck: HttpStatus = {
-    val checks: Seq[() => HttpStatus] = List(
-      () => assertTrue("koski database", application.masterDatabase.util.databaseIsOnline),
-      () => assertTrue("raportointi database", application.raportointiDatabase.util.databaseIsOnline),
-      () => assertTrue("valpas database", application.valpasDatabase.util.databaseIsOnline),
-      () => assertTrue("perustiedot index", application.perustiedotIndexer.index.isOnline),
-      () => assertTrue("tiedonsiirrot index", application.tiedonsiirtoService.index.isOnline)
+    val checks: Map[String, () => HttpStatus] = Map(
+      Subsystem.KoskiDatabase -> (() => assertTrue("koski database", application.masterDatabase.util.databaseIsOnline)),
+      Subsystem.RaportointiDatabase -> (() => assertTrue("raportointi database", application.raportointiDatabase.util.databaseIsOnline)),
+      Subsystem.ValpasDatabase -> (() => assertTrue("valpas database", application.valpasDatabase.util.databaseIsOnline)),
+      Subsystem.PerustiedotIndex -> (() => assertTrue("perustiedot index", application.perustiedotIndexer.index.isOnline)),
+      Subsystem.TiedonsiirtoIndex -> (() => assertTrue("tiedonsiirrot index", application.tiedonsiirtoService.index.isOnline)),
     )
-    val status = HttpStatus.fold(checks.par.map(_.apply).seq)
+
+    val results = checks.par.mapValues(_.apply).seq
+    val status = HttpStatus.fold(results.values)
     if (status.isError) {
       logger.error(s"Internal healthcheck failed: $status")
     }
+    logHealthStatus(results)
     status
   }
 
@@ -88,8 +95,19 @@ trait HealthCheck extends Logging {
     HttpStatus.fold(diaarinumerot.map(checkPeruste))
   }
 
+  private def logHealthStatus(status: scala.collection.Map[String, HttpStatus]): Unit = {
+    val payload = status
+      .map(SubsystemHealthStatus.apply)
+      .toSeq
+    monitoring.log(payload)
+  }
+
   def casCheck: HttpStatus = {
-    val VirkailijaCredentials(username, password) = VirkailijaCredentials(application.config, true)
+    val VirkailijaCredentials(username, password) = try {
+      VirkailijaCredentials(application.config, true)
+    } catch {
+      case _: Throwable => return KoskiErrorCategory.internalError("No CAS configuration")
+    }
 
     def authenticate = try {
       Some(application.casService.authenticateVirkailija(username, Password(password)))

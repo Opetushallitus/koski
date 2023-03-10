@@ -30,7 +30,7 @@
     <dependency>
       <groupId>fi.vm.sade</groupId>
       <artifactId>scala-cas_2.12</artifactId>
-      <version>3.0.1-SNAPSHOT</version>
+      <version>3.0.2-SNAPSHOT</version>
       <exclusions>
         <exclusion>
           <groupId>org.http4s</groupId>

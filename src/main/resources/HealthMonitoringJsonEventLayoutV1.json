@@ -1,0 +1,15 @@
+{
+  "mdc": {
+    "$resolver": "mdc"
+  },
+  "@version": 1,
+  "source_host": "${hostName}",
+  "message": {
+    "$resolver": "pattern",
+    "pattern": "%cm%ex{none}",
+    "alwaysWriteExceptions": false
+  },
+  "@timestamp": {
+    "$resolver": "timestamp"
+  }
+}

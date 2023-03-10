@@ -8,7 +8,7 @@ import fi.oph.koski.eperusteet.EPerusteetRepository
 import fi.oph.koski.eperusteetvalidation.{EPerusteetFiller, EPerusteetOpiskeluoikeusChangeValidator, EPerusteisiinPerustuvaValidator}
 import fi.oph.koski.executors.GlobalExecutionContext
 import fi.oph.koski.fixture.FixtureCreator
-import fi.oph.koski.healthcheck.HealthCheck
+import fi.oph.koski.healthcheck.{HealthCheck, HealthMonitoring}
 import fi.oph.koski.henkilo.{HenkilöRepository, Hetu, KoskiHenkilöCache, OpintopolkuHenkilöFacade}
 import fi.oph.koski.history.{KoskiOpiskeluoikeusHistoryRepository, YtrOpiskeluoikeusHistoryRepository}
 import fi.oph.koski.huoltaja.HuoltajaServiceVtj
@@ -83,7 +83,7 @@ class KoskiApplication(
   lazy val raportointiGenerointiDatabase = new RaportointiDatabase(new RaportointiGenerointiDatabaseConfig(config, schema = Public))
   lazy val valpasDatabase = new ValpasDatabase(new ValpasDatabaseConfig(config))
   lazy val raportointikantaService = new RaportointikantaService(this)
-  lazy val virtaClient = VirtaClient(config)
+  lazy val virtaClient = VirtaClient(config, Some(healthMonitoring))
   lazy val ytrClient = YtrClient(config)
   lazy val ytrRepository = new YtrRepository(ytrClient)
   lazy val ytrDownloadService = new YtrDownloadService(masterDatabase.db, this)
@@ -217,6 +217,7 @@ class KoskiApplication(
     valpasRajapäivätService,
     raportointiDatabase,
   )
+  lazy val healthMonitoring: HealthMonitoring = new HealthMonitoring()
 
   def init(): Future[Any] = {
     AuditLog.startHeartbeat()
