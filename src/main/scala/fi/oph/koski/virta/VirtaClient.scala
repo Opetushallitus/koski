@@ -2,6 +2,7 @@ package fi.oph.koski.virta
 
 import com.typesafe.config.Config
 import fi.oph.koski.config.{Environment, SecretsManager}
+import fi.oph.koski.healthcheck.{HealthMonitoring, Subsystem}
 import fi.oph.koski.henkilo.Hetu
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http.{Http, HttpConnectionException}
@@ -11,7 +12,7 @@ import fi.oph.koski.util.Files
 import scala.xml.{Elem, Node}
 
 object VirtaClient extends Logging {
-  def apply(config: Config) = {
+  def apply(config: Config, healthMonitoring: Option[HealthMonitoring] = None) = {
     val serviceUrl = {
       if (Environment.usesAwsSecretsManager) {
         VirtaConfig.fromSecretsManager.serviceUrl
@@ -29,7 +30,7 @@ object VirtaClient extends Logging {
       case _ =>
         val virtaConfig = if (Environment.usesAwsSecretsManager) VirtaConfig.fromSecretsManager else VirtaConfig.fromConfig(config)
         logger.info("Using Virta integration endpoint " + virtaConfig.serviceUrl)
-        TimedProxy[VirtaClient](RemoteVirtaClient(virtaConfig))
+        TimedProxy[VirtaClient](RemoteVirtaClient(virtaConfig, healthMonitoring))
     }
   }
 }
@@ -104,7 +105,7 @@ case class MockVirtaClient(config: Config) extends VirtaClient {
   }
 }
 
-case class RemoteVirtaClient(config: VirtaConfig) extends VirtaClient {
+case class RemoteVirtaClient(config: VirtaConfig, healthMonitoring: Option[HealthMonitoring] = None) extends VirtaClient {
   private val http = Http(config.serviceUrl, "virta")
   def opintotiedot(hakuehto: VirtaHakuehto): Option[Elem] = performHaku {
     <OpiskelijanKaikkiTiedotRequest xmlns="http://tietovaranto.csc.fi/luku">
@@ -135,7 +136,15 @@ case class RemoteVirtaClient(config: VirtaConfig) extends VirtaClient {
   }
 
   private def performHaku(xmlBody: Elem): Option[Elem] = {
-    Some(runIO(http.post(uri"", soapEnvelope(xmlBody))(Http.Encoders.xml)(Http.parseXml)))
+    try {
+      val result = Some(runIO(http.post(uri"", soapEnvelope(xmlBody))(Http.Encoders.xml)(Http.parseXml)))
+      healthMonitoring.foreach(_.setSubsystemStatus(Subsystem.Virta, operational = true))
+      result
+    } catch {
+      case e: Throwable =>
+        healthMonitoring.foreach(_.setSubsystemStatus(Subsystem.Virta, operational = false))
+        throw e
+    }
   }
 
   private def hakuehdotXml(hakuehto: VirtaHakuehto) = hakuehto match {

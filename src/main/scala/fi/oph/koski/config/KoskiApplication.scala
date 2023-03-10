@@ -83,7 +83,7 @@ class KoskiApplication(
   lazy val raportointiGenerointiDatabase = new RaportointiDatabase(new RaportointiGenerointiDatabaseConfig(config, schema = Public))
   lazy val valpasDatabase = new ValpasDatabase(new ValpasDatabaseConfig(config))
   lazy val raportointikantaService = new RaportointikantaService(this)
-  lazy val virtaClient = VirtaClient(config)
+  lazy val virtaClient = VirtaClient(config, Some(healthMonitoring))
   lazy val ytrClient = YtrClient(config)
   lazy val ytrRepository = new YtrRepository(ytrClient)
   lazy val ytrDownloadService = new YtrDownloadService(masterDatabase.db, this)

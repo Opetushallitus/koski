@@ -6,9 +6,22 @@ import fi.oph.koski.log.Logging
 import org.json4s.jackson.JsonMethods
 
 class HealthMonitoring extends Logging {
+  val operational: collection.mutable.Map[String, Boolean] = collection.mutable.Map.empty
+
   def log(status: Seq[SubsystemHealthStatus]): Unit = {
     val json = JsonSerializer.writeWithRoot(status)
     logger.info(json)
+  }
+
+  def setSubsystemStatus(subsystem: String, operational: Boolean): Unit = {
+    if (!this.operational.get(subsystem).contains(operational)) {
+      this.operational += (subsystem -> operational)
+      log(List(SubsystemHealthStatus(
+        subsystem,
+        operational,
+        if (!operational) Some("Not responding") else None,
+      )))
+    }
   }
 }
 
@@ -24,23 +37,13 @@ object Subsystem {
   val Organisaatiopalvelu = "Organisaatiopalvelu"
   val EPerusteet = "EPerusteet"
   val CAS = "CAS"
-
-  val externalSystems = List(
-    CAS,
-    EPerusteet,
-    Organisaatiopalvelu,
-    Koodistopalvelu,
-    Oppijanumerorekisteri,
-  )
-
-  def isExternal(name: String): Boolean = externalSystems.contains(name)
+  val Virta = "Virta"
 }
 
 case class SubsystemHealthStatus(
   subsystem: String,
   operational: Boolean,
   message: Option[String],
-  external: Boolean,
 )
 
 object SubsystemHealthStatus {
@@ -49,6 +52,5 @@ object SubsystemHealthStatus {
       keyValue._1,
       keyValue._2.isOk,
       if (keyValue._2.isError) Some(keyValue._2.errors.map(e => JsonMethods.pretty(e.message)).mkString("\n")) else None,
-      Subsystem.isExternal(keyValue._1),
     )
 }
