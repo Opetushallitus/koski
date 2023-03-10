@@ -105,6 +105,10 @@ object AmmatillinenValidation {
 
   private def validateKorotettuSuoritus(oo: AmmatillinenOpiskeluoikeus, korotettuSuoritus: AmmatillisenTutkinnonOsittainenSuoritus): HttpStatus = {
     val oss = korotettuSuoritus.osasuoritukset.getOrElse(List.empty)
+    val kaikkiKorotuksetEpäonnistuivatTaiTunnustettu = validateKaikkiKorotukselliset(
+      korotettuSuoritus,
+      k => k.korotettu.map(_.koodiarvo).contains("korotuksenyritys") || k.tunnustettu.isDefined
+    )
 
     def validateOpiskeluoikeudenAlkamispäivä: HttpStatus = HttpStatus.validate(
       oo.alkamispäivä.exists(d => d.isAfter(LocalDate.of(2023, 6, 30)))
@@ -123,14 +127,14 @@ object AmmatillinenValidation {
     )(KoskiErrorCategory.badRequest.validation.ammatillinen.korotettuOsasuoritus("Muun tutkinnon osan tai yhteisen tutkinnon osan suoritus ei voi olla tunnustettu korotuksen opiskeluoikeudella"))
 
     def eiKorotuksiaEikäKorotettuaKeskiarvoa: HttpStatus = HttpStatus.validate(
-      if(oo.onValmistunut && validateKaikkiKorotukselliset(korotettuSuoritus, k => k.korotettu.map(_.koodiarvo).contains("korotuksenyritys") || k.tunnustettu.isDefined)) {
+      if(oo.onValmistunut && kaikkiKorotuksetEpäonnistuivatTaiTunnustettu) {
         korotettuSuoritus.korotettuKeskiarvo.isEmpty
       } else { true }
     )(KoskiErrorCategory.badRequest.validation.ammatillinen.korotettuKeskiarvo("Korotettua keskiarvoa ei voi siirtää jos kaikki korotuksen yritykset epäonnistuivat"))
 
     def valmistunutJaKorotettuKeskiarvo: HttpStatus = HttpStatus.validate(
-      !oo.onValmistunut || korotettuSuoritus.korotettuKeskiarvo.isDefined
-    )(KoskiErrorCategory.badRequest.validation.ammatillinen.korotettuKeskiarvo("Valmistuneella korotuksen suorituksella on oltava korotettu keskiarvo"))
+      !oo.onValmistunut || (kaikkiKorotuksetEpäonnistuivatTaiTunnustettu && korotettuSuoritus.korotettuKeskiarvo.isEmpty) || korotettuSuoritus.korotettuKeskiarvo.isDefined
+    )(KoskiErrorCategory.badRequest.validation.ammatillinen.korotettuKeskiarvo("Valmistuneella korotuksen suorituksella on oltava korotettu keskiarvo, kun sillä on onnistuneita korotuksia"))
 
     def katsotaanEronneeksiIlmanOsasuorituksia: HttpStatus = HttpStatus.validate(
       !oo.onKatsotaanEronneeksi || oss.isEmpty

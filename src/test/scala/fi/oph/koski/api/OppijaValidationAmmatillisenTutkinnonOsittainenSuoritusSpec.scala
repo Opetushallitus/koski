@@ -693,7 +693,7 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
           }
         }
 
-        "Jos korotuksen opiskeluoikeus on valmistunut, korotettu keskiarvo täytyy olla olemassa" in {
+        "Jos korotuksen opiskeluoikeus on valmistunut, korotettu keskiarvo täytyy olla olemassa kun on onnistuneita korotuksia" in {
           val alkuperäinen = getAlkuperäinen
           val korotettuSuoritus = ammatillisenTutkinnonOsittainenSuoritus.copy(
             korotettuOpiskeluoikeusOid = alkuperäinen.oid,
@@ -705,11 +705,11 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
           val korotettuOo = makeOpiskeluoikeus(suoritus = korotettuSuoritus, tila = Some(opiskeluoikeusValmistunut), alkamispäivä = alkamispäivä)
 
           putOpiskeluoikeus(korotettuOo, amiksenKorottaja) {
-            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.korotettuKeskiarvo("Valmistuneella korotuksen suorituksella on oltava korotettu keskiarvo"))
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.korotettuKeskiarvo("Valmistuneella korotuksen suorituksella on oltava korotettu keskiarvo, kun sillä on onnistuneita korotuksia"))
           }
         }
 
-        "Korotettua keskiarvoa ei voi siirtää valmistuneelle opiskeluoikeudelle jos kaikki korotukset ovat false" in {
+        "Korotettua keskiarvoa ei voi siirtää valmistuneelle opiskeluoikeudelle jos kaikki korotukset ovat jääneet yrityksiksi" in {
           val alkuperäinen = getAlkuperäinen
           val korotettuSuoritus = ammatillisenTutkinnonOsittainenSuoritus.copy(
             korotettuOpiskeluoikeusOid = alkuperäinen.oid,
@@ -737,6 +737,37 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
 
           putOpiskeluoikeus(korotettuOo, amiksenKorottaja) {
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.korotettuKeskiarvo("Korotettua keskiarvoa ei voi siirtää jos kaikki korotuksen yritykset epäonnistuivat"))
+          }
+        }
+
+        "Valmistuneen korotuksen opiskeluoikeuden voi siirtää, jos kaikki korotukset ovat jääneet yrityksiksi, eikä korotettua keskiarvoa ole annettu" in {
+          val alkuperäinen = getAlkuperäinen
+          val korotettuSuoritus = ammatillisenTutkinnonOsittainenSuoritus.copy(
+            korotettuOpiskeluoikeusOid = alkuperäinen.oid,
+            korotettuKeskiarvo = None,
+            korotettuKeskiarvoSisältääMukautettujaArvosanoja = None,
+            osasuoritukset = Some(List(
+              korotettuTutkinnonOsanSuoritus.copy(korotettu = Some(korotuksenYritys)),
+              korotettuYhteisenTutkinnonOsanSuoritus.copy(
+                osasuoritukset = Some(List(
+                  korotettuYhteisenOsanOsaAlueenSuoritus.copy(
+                    korotettu = Some(korotuksenYritys)
+                  ),
+                  korotettuYhteisenOsanOsaAlueenSuoritus.copy(
+                    korotettu = None,
+                    tunnustettu = Some(OsaamisenTunnustaminen(None, Finnish("Tunnustettu")))
+                  ),
+                  korotettuYhteisenOsanOsaAlueenSuoritus.copy(
+                    korotettu = Some(korotuksenYritys)
+                  )
+                ))
+              )
+            ))
+          )
+          val korotettuOo = makeOpiskeluoikeus(suoritus = korotettuSuoritus, tila = Some(opiskeluoikeusValmistunut), alkamispäivä = alkamispäivä)
+
+          putOpiskeluoikeus(korotettuOo, amiksenKorottaja) {
+            verifyResponseStatusOk()
           }
         }
 
