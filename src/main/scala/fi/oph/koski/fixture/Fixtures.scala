@@ -15,6 +15,7 @@ object FixtureCreator {
 
 class FixtureCreator(application: KoskiApplication) extends Logging with Timing {
   private val raportointikantaService = application.raportointikantaService
+  private val ytrService = application.ytrDownloadService
   private var currentFixtureState: FixtureState = new NotInitializedFixtureState
   private val opiskeluoikeushistoriaErrorRepository = new OpiskeluoikeushistoriaErrorRepository(application.masterDatabase.db)
 
@@ -22,7 +23,8 @@ class FixtureCreator(application: KoskiApplication) extends Logging with Timing 
 
   def resetFixtures(
     fixtureState: FixtureState = koskiSpecificFixtureState,
-    reloadRaportointikanta: Boolean = false
+    reloadRaportointikanta: Boolean = false,
+    reloadYtrData: Boolean = false,
   ): Unit = synchronized {
     if (shouldUseFixtures) {
       val fixtureNameHasChanged = fixtureState.name != currentFixtureState.name
@@ -35,6 +37,10 @@ class FixtureCreator(application: KoskiApplication) extends Logging with Timing 
       application.tiedonsiirtoService.index.deleteAll()
       application.päivitetytOpiskeluoikeudetJono.poistaKaikki()
       opiskeluoikeushistoriaErrorRepository.truncate
+
+      if (reloadYtrData || fixtureNameHasChanged) {
+        ytrService.loadFixturesAndWaitUntilComplete()
+      }
 
       if (reloadRaportointikanta || fixtureNameHasChanged) {
         raportointikantaService.loadRaportointikanta(force = true)

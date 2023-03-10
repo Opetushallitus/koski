@@ -9,7 +9,7 @@ import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.oppija.HenkilönOpiskeluoikeusVersiot
 import fi.oph.koski.schema.{KoskiSchema, Oppija, UusiHenkilö, YlioppilastutkinnonOpiskeluoikeus}
-import fi.oph.koski.util.Timing
+import fi.oph.koski.util.{Timing, Wait}
 import fi.oph.scalaschema.{SerializationContext, Serializer}
 import rx.lang.scala.schedulers.NewThreadScheduler
 import rx.lang.scala.{Observable, Scheduler}
@@ -22,6 +22,8 @@ class YtrDownloadService(
   application: KoskiApplication
 ) extends QueryMethods with Logging with Timing {
   val status = new YtrDownloadStatus(db)
+
+  def isLoadComplete: Boolean = !status.isLoading && status.isComplete
 
   val oppijaConverter = new YtrDownloadOppijaConverter(
     application.koodistoViitePalvelu,
@@ -51,6 +53,17 @@ class YtrDownloadService(
         shutdown
       }
     )
+  }
+
+  def loadFixturesAndWaitUntilComplete(): Unit = {
+    val fixtureMonthStart = Some("1980-01")
+    val fixtureMonthEnd = Some("1981-10")
+    if (Environment.isUnitTestEnvironment(application.config) || Environment.isLocalDevelopmentEnvironment(application.config)) {
+      download(birthmonthStart = fixtureMonthStart, birthmonthEnd = fixtureMonthEnd)
+      Wait.until { isLoadComplete }
+    } else {
+      logger.warn("Trying to download YTR fixtures while not in local environment")
+    }
   }
 
   def download(
