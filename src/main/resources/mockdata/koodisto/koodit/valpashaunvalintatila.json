@@ -10,9 +10,11 @@
         "kieli": "FI"
       },
       {
+        "nimi": "Avslagits",
         "kieli": "SV"
       },
       {
+        "nimi": "Rejected",
         "kieli": "EN"
       }
     ],
@@ -30,9 +32,11 @@
         "kieli": "FI"
       },
       {
+        "nimi": "Godkänd",
         "kieli": "SV"
       },
       {
+        "nimi": "Accepted",
         "kieli": "EN"
       }
     ],
@@ -50,9 +54,11 @@
         "kieli": "FI"
       },
       {
+        "nimi": "Pågående",
         "kieli": "SV"
       },
       {
+        "nimi": "Unfinished",
         "kieli": "EN"
       }
     ],
@@ -70,9 +76,11 @@
         "kieli": "FI"
       },
       {
+        "nimi": "Canceled",
         "kieli": "SV"
       },
       {
+        "nimi": "Upphävt",
         "kieli": "EN"
       }
     ],
@@ -90,9 +98,11 @@
         "kieli": "FI"
       },
       {
+        "nimi": "Cancelled",
         "kieli": "SV"
       },
       {
+        "nimi": "Upphävd",
         "kieli": "EN"
       }
     ],
@@ -110,9 +120,11 @@
         "kieli": "FI"
       },
       {
+        "nimi": "Upphävd",
         "kieli": "SV"
       },
       {
+        "nimi": "Canceled",
         "kieli": "EN"
       }
     ],
@@ -130,9 +142,11 @@
         "kieli": "FI"
       },
       {
+        "nimi": "Upphävd",
         "kieli": "SV"
       },
       {
+        "nimi": "Cancelled",
         "kieli": "EN"
       }
     ],
@@ -150,9 +164,11 @@
         "kieli": "FI"
       },
       {
+        "nimi": "På reservlistan",
         "kieli": "SV"
       },
       {
+        "nimi": "On reserve list",
         "kieli": "EN"
       }
     ],

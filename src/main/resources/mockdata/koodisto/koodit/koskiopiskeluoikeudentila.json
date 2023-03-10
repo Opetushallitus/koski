@@ -90,6 +90,7 @@
         "kieli": "SV"
       },
       {
+        "nimi": "Suspended",
         "kieli": "EN"
       }
     ],
@@ -185,13 +186,13 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Päättynyt",
+        "nimi": "Upphört",
         "lyhytNimi": "",
         "kuvaus": "",
         "kieli": "SV"
       },
       {
-        "nimi": "Päättynyt",
+        "nimi": "Finished",
         "lyhytNimi": "",
         "kuvaus": "",
         "kieli": "EN"

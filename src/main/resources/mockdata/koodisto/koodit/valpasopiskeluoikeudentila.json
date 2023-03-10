@@ -224,6 +224,7 @@
         "kieli": "SV"
       },
       {
+        "nimi": "Duration of study right",
         "kieli": "EN"
       }
     ],
@@ -247,7 +248,7 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Opiskeluoikeus voimassa tulevaisuudessa",
+        "nimi": "Study right valid in future",
         "lyhytNimi": "",
         "kuvaus": "",
         "kieli": "EN"
