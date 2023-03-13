@@ -98,6 +98,7 @@ class AmmatillinenOsittainenRaporttiSpec
     lähdejärjestelmä = None,
     lähdejärjestelmänId = None,
     sisältyyOpiskeluoikeuteenOid = "",
+    korotettuOpiskeluoikeusOid = None,
     ostettu = false,
     sisältyvätOpiskeluoikeudetOidit = "",
     sisältyvätOpiskeluoikeudetOppilaitokset = "",

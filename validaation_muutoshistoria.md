@@ -1,5 +1,30 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## xx.xx.xxxx
+
+- Lisätty validaatioita ammatillisen opiskeluoikeuden korotuksen suoritukselle:
+  - Korotuksen opiskeluoikeuden alkamispäivä on oltava 1.7.2023 tai sen jälkeen.
+  - Vain yksi päätason suoritus korotuksen opiskeluoikeudella.
+  - Korotetulla suorituksella on oltava linkitys alkuperäiseen opiskeluoikeuteen.
+  - Korotettua keskiarvoa ei voi siirtää jos kyseessä ei ole korotuksen suoritus.
+  - Korotettu-tietoa ei voi siirtää osasuoritukselle tai aliosasuoritukselle jos kyseessä ei ole korotuksen suoritus.
+  - Kaikkien korotuksen suorituksen osasuoritusten tulee olla korotuksen yrityksiä tai tunnustettuja.
+  - Muun tutkinnon osaa tai yhteisen tutkinnon osaa ei voi siirtää tunnustettuna korotuksen suoritukselle.
+  - Korotettua keskiarvoa ei voi siirtää valmistuneelle korotuksen suoritukselle, jos kaikki korotuksen yritykset epäonnistuivat.
+  - Jos korotuksen suoritus päättyy katsotaan eronneeksi -tilaan, ei suoritukselle voi siirtää osasuorituksia.
+  - Jos korotuksen suoritus päättyy katsotaan eronneeksi -tilaan, ei suoritukselle voi siirtää korotettua keskiarvoa.
+- Korotetun suorituksen linkitystä alkuperäiseen opiskeluoikeuteen ei voi muuttaa sen jälkeen kun linkitys on tehty.
+- Alkuperäisen opiskeluoikeuden suoritukselle lisätty validaatiot:
+  - Alkuperäinen linkitetty opiskeluoikeus löytyy oppijalle.
+  - Alkuperäinen opiskeluoikeus on valmistunut-tilassa.
+  - Alkuperäisen opiskeluoikeuden suoritus on ammatillisen perustutkinnon suoritus.
+  - Alkuperäisellä ja korotuksen suorituksella on sama koulutusmoduulin tunniste, diaarinumero sekä koulutustyyppi.
+- Lisätty validaatioita korotetun suorituksen osasuorituksille ja aliosasuorituksille.
+  - Alkuperäiseltä opiskeluoikeudelta on löydyttävä korotuksia vastaavat osasuoritukset ja aliosasuoritukset.
+    - Vastaavuudessa huomoidaan osasuorituksen koulutusmoduulin tunniste, laajuus sekä mahdollinen pakollisuus.
+    - Samalla tutkinnon osan koodilla ei voi olla enempää korotuksia kuin mitä alkuperäiseltä opiskeluoikeudelta löytyy.
+  - Korotetun opiskeluoikeuden osasuorituksen laajuus täytyy vastata sen aliosasuoritusten yhteenlaskettua laajuutta.
+
 ## 28.2.2023
 
 - Taiteen perusopetuksen koulutuksen toteutustapaa ei voi muuttaa opiskeluoikeuden luonnin jälkeen.

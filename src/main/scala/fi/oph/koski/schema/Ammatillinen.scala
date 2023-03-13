@@ -33,6 +33,8 @@ case class AmmatillinenOpiskeluoikeus(
   override def päättymispäivä: Option[LocalDate] = super.päättymispäivä
   override def withOppilaitos(oppilaitos: Oppilaitos) = this.copy(oppilaitos = Some(oppilaitos))
   override def withKoulutustoimija(koulutustoimija: Koulutustoimija) = this.copy(koulutustoimija = Some(koulutustoimija))
+  def onValmistunut = tila.opiskeluoikeusjaksot.lastOption.exists(_.tila.koodiarvo == "valmistunut")
+  def onKatsotaanEronneeksi = tila.opiskeluoikeusjaksot.lastOption.exists(_.tila.koodiarvo == "katsotaaneronneeksi")
 }
 
 trait AmmatillinenPäätasonSuoritus extends KoskeenTallennettavaPäätasonSuoritus
@@ -331,7 +333,24 @@ case class AmmatillisenTutkinnonOsittainenSuoritus(
   @OnlyWhen("suoritustapa/koodiarvo","reformi")
   @OnlyWhen("suoritustapa/koodiarvo","ops")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
-  keskiarvoSisältääMukautettujaArvosanoja: Option[Boolean] = None
+  keskiarvoSisältääMukautettujaArvosanoja: Option[Boolean] = None,
+  @Title("Korotetun suorituksen alkuperäinen opiskeluoikeus")
+  @Description("Korotetun suorituksen alkuperäinen opiskeluoikeus")
+  korotettuOpiskeluoikeusOid: Option[String] = None,
+  @Title("Korotettu painotettu keskiarvo")
+  @Tooltip("Ammatillisen tutkinnon osaamispistein painotettu korotettu keskiarvo.")
+  @OnlyWhen("suoritustapa/koodiarvo", "reformi")
+  @OnlyWhen("suoritustapa/koodiarvo", "ops")
+  @MinValue(1)
+  @MaxValue(5)
+  @Scale(2)
+  korotettuKeskiarvo: Option[Double] = None,
+  @Title("Korotus sisältää mukautettuja arvosanoja")
+  @Tooltip("Korotettuun keskiarvoon sisältyy mukautettuja arvosanoja")
+  @OnlyWhen("suoritustapa/koodiarvo", "reformi")
+  @OnlyWhen("suoritustapa/koodiarvo", "ops")
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+  korotettuKeskiarvoSisältääMukautettujaArvosanoja: Option[Boolean] = None
 ) extends AmmatillisenTutkinnonOsittainenTaiKokoSuoritus
   with Järjestämismuodollinen
   with OsaamisenHankkimistavallinen
@@ -459,9 +478,11 @@ case class MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus(
   suorituskieli: Option[Koodistokoodiviite] = None,
   näyttö: Option[Näyttö] = None,
   override val osasuoritukset: Option[List[AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus]] = None,
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosa", koodistoUri = "suorituksentyyppi")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosa", koodistoUri = "suorituksentyyppi"),
+  korotettu: Option[Koodistokoodiviite] = None
 ) extends OsittaisenAmmatillisenTutkinnonOsanSuoritus
-  with MahdollisestiToimipisteellinen {
+  with MahdollisestiToimipisteellinen
+  with Korotuksellinen {
   override def withLisätiedot(lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]]): MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus =
     shapeless.lens[MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus].field[Option[List[AmmatillisenTutkinnonOsanLisätieto]]]("lisätiedot").set(this)(lisätiedot)
 }
@@ -820,12 +841,15 @@ case class MuidenOpintovalmiuksiaTukevienOpintojenSuoritus(
   lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("ammatillinenmuitaopintovalmiuksiatukeviaopintoja")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillinenmuitaopintovalmiuksiatukeviaopintoja", "suorituksentyyppi")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillinenmuitaopintovalmiuksiatukeviaopintoja", "suorituksentyyppi"),
+  @OnlyWhen("../../../../tyyppi/koodiarvo","ammatillinentutkintoosittainen")
+  korotettu: Option[Koodistokoodiviite] = None
 ) extends Suoritus
   with Vahvistukseton
   with MahdollisestiSuorituskielellinen
   with YhteistenTutkinnonOsienOsaAlueidenTaiLukioOpintojenTaiMuidenOpintovalmiuksiaTukevienOpintojenOsasuoritus
-  with AmmatillisenTutkinnonOsanLisätiedollinen {
+  with AmmatillisenTutkinnonOsanLisätiedollinen
+  with Korotuksellinen {
   override def withLisätiedot(lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]]): MuidenOpintovalmiuksiaTukevienOpintojenSuoritus =
     shapeless.lens[MuidenOpintovalmiuksiaTukevienOpintojenSuoritus].field[Option[List[AmmatillisenTutkinnonOsanLisätieto]]]("lisätiedot").set(this)(lisätiedot)
   override def osasuoritusLista: List[Suoritus] = List()
@@ -929,7 +953,9 @@ case class YhteisenTutkinnonOsanOsaAlueenSuoritus(
   @OnlyWhen("../../../../suoritustapa/koodiarvo","reformi")
   näyttö: Option[Näyttö] = None,
   @KoodistoKoodiarvo("ammatillisentutkinnonosanosaalue")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosanosaalue", "suorituksentyyppi")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosanosaalue", "suorituksentyyppi"),
+  @OnlyWhen("../../../../tyyppi/koodiarvo","ammatillinentutkintoosittainen")
+  korotettu: Option[Koodistokoodiviite] = None
 ) extends Suoritus
   with Vahvistukseton
   with MahdollisestiSuorituskielellinen
@@ -938,7 +964,8 @@ case class YhteisenTutkinnonOsanOsaAlueenSuoritus(
   with YhteistenTutkinnonOsienOsaAlueidenTaiLukioOpintojenTaiMuidenOpintovalmiuksiaTukevienOpintojenOsasuoritus
   with TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvanSuorituksenOsasuoritus
   with MuuAmmatillinenOsasuoritus
-  with AmmatillisenTutkinnonOsanLisätiedollinen {
+  with AmmatillisenTutkinnonOsanLisätiedollinen
+  with Korotuksellinen {
   override def withLisätiedot(lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]]): YhteisenTutkinnonOsanOsaAlueenSuoritus =
     shapeless.lens[YhteisenTutkinnonOsanOsaAlueenSuoritus].field[Option[List[AmmatillisenTutkinnonOsanLisätieto]]]("lisätiedot").set(this)(lisätiedot)
   override def osasuoritusLista: List[Suoritus] = List()

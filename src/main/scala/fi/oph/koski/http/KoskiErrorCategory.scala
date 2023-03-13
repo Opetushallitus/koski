@@ -204,6 +204,17 @@ object KoskiErrorCategory {
         val yhteinenTutkinnonOsaVVAI22 = subcategory("yhteinenTutkinnonOsaVVAI22", "Ennen 1.8.2022 voimaan tulleen perusteen kanssa ei voi lisätä yhteisen tutkinnon osan osa-alueen suoritusta VVAI22.")
         val keskiarvoaEiSallitaKeskeneräiselleSuoritukselle = subcategory("keskiarvoVaikkaSuoritusEiValmis", "Suoritukselle ei voi asettaa keskiarvoa ellei suoritus ole päättynyt")
         val valmiillaSuorituksellaPitääOllaKeskiarvo = subcategory("valmiillaSuorituksellaPitääOllaKeskiarvo", "Suorituksella pitää olla keskiarvo kun suoritus on valmis")
+
+        val korotettuKeskiarvo = subcategory("korotettuKeskiarvo", "Korotettua keskiarvoa ei voi syöttää suoritukselle joka ei ole korotus")
+        val eiKorotuksenSuoritus = subcategory("eiKorotuksenSuoritus", "Korotettu-tietoja ei voi siirtää jos kyseessä ei ole korotuksen suoritus")
+        val korotettuOsasuoritus = subcategory("korotettuOsasuoritus", "Kaikkien korotuksen suorituksen osasuoritusten tulee olla korotuksen yrityksiä tai tunnustettuja")
+        val korotuksenLinkitys = subcategory("korotuksenLinkitys", "Korotetun opiskeluoikeuden linkitystä ei voi muuttaa opiskeluoikeuden luonnin jälkeen")
+        val korotuksenOppija = subcategory("korotuksenOppija", "Alkuperäistä opiskeluoikeutta ei löydy oppijalle")
+        val alkuperäinenEiValmistunut = subcategory("alkuperäinenEiValmistunut", "Alkuperäinen opiskeluoikeus ei ole valmistunut-tilassa")
+        val alkuperäinenSuoritusEiVastaava = subcategory("alkuperäinenSuoritusEiVastaava", "Korotusta vastaavaa tai korotukseen soveltuvaa suoritusta ei löydy alkuperäiseltä opiskeluoikeudelta")
+        val alkuperäinenOsasuoritusEiVastaava = subcategory("alkuperäinenOsasuoritusEiVastaava", "Korotuksen suorituksella on osasuorituksia tai aliosasuorituksia joille ei löydy vastaavaa alkuperäisestä opiskeluoikeudesta")
+        val korotuksenLaajuus = subcategory("korotuksenLaajuus", "Korotetun osasuorituksen laajuus ei vastaa sen aliosasuoritusten laajuutta")
+        val liikaaSamojaTutkinnonOsia = subcategory("liikaaSamojaTutkinnonOsia", "Samalla tutkinnon osan koodilla ei voi olla enempää korotuksia kuin alkuperäisellä opiskeluoikeudella on suorituksia")
       }
       val ammatillinen = new Ammatillinen
 

@@ -108,10 +108,11 @@ describe('Oppijataulukko', function () {
           'Erityisoppilaitoksessa, Emppu',
           'Erityisoppilaitoksessa, Emppu',
           'Erityisoppilaitoksessa, Emppu Historia',
+          'Korhonen, Korottaja',
           'Paallekkaisia, Pekka',
           'Rikkinäinen, Kela'
         ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('7')
+        expect(page.opiskeluoikeudeTotal()).to.equal('8')
       })
     })
 
@@ -129,11 +130,12 @@ describe('Oppijataulukko', function () {
           'Erityisoppilaitoksessa, Emppu',
           'Erityisoppilaitoksessa, Emppu',
           'Erityisoppilaitoksessa, Emppu Historia',
+          'Korhonen, Korottaja',
           'Osittainen, Outi',
           'Paallekkaisia, Pekka',
           'Rikkinäinen, Kela'
         ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('9')
+        expect(page.opiskeluoikeudeTotal()).to.equal('10')
       })
     })
 
@@ -153,12 +155,13 @@ describe('Oppijataulukko', function () {
           'Erityisoppilaitoksessa, Emppu',
           'Erityisoppilaitoksessa, Emppu Historia',
           'Kokonaisuuksilla, Keijo',
+          'Korhonen, Korottaja',
           'Osittainen, Outi',
           'Rikkinäinen, Kela',
           'Telmanen, Tuula',
           'Valviralle, Veera'
         ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('12')
+        expect(page.opiskeluoikeudeTotal()).to.equal('13')
       })
     })
 
@@ -265,6 +268,7 @@ describe('Oppijataulukko', function () {
           'Kelalle, Useita',
           'Kokonaisuuksilla, Keijo',
           'Koodari, Monthy',
+          'Korhonen, Korottaja',
           'Koululainen, Kaisa',
           'Koululainen, Kaisa',
           'Koululainen, Kaisa',
@@ -326,10 +330,9 @@ describe('Oppijataulukko', function () {
           'Vuonna 2004 syntynyt maastamuuttaja, Peruskoulu suoritettu 2021',
           'Vuonna 2005 syntynyt, Peruskoulu suoritettu 2021',
           'Vuosiluokkalainen, Ville',
-          'Ylioppilaslukiolainen, Ynjevi',
-          'Ysiluokkalainen, Ylermi'
+          'Ylioppilaslukiolainen, Ynjevi'
         ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('100')
+        expect(page.opiskeluoikeudeTotal()).to.equal('101')
       })
     })
 
@@ -350,12 +353,13 @@ describe('Oppijataulukko', function () {
           'Erityisoppilaitoksessa, Emppu Historia',
           'Eskari, Essi',
           'Kelalle, Useita',
+          'Korhonen, Korottaja',
           'Koululainen, Kaisa',
           'Lisä-Eskari, Essiina',
           'Monikoululainen, Miia',
           'Rikkinäinen, Kela'
         ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('10')
+        expect(page.opiskeluoikeudeTotal()).to.equal('11')
       })
     })
   })

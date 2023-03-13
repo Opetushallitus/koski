@@ -907,6 +907,85 @@
           ]
         }
       ]
+    },
+    {
+      "id": 33827,
+      "globalVersion": {
+        "aikaleima": 1455103140346
+      },
+      "nimi": {
+        "fi": "Luonto- ja ympäristöalan perustutkinto",
+        "sv": "Grundexamen i natur och miljö",
+        "_id": "344511"
+      },
+      "koulutustyyppi": "koulutustyyppi_1",
+      "koulutukset": [
+        {
+          "nimi": {
+            "fi": "Luonto- ja ympäristöalan perustutkinto",
+            "sv": "Grundexamen i natur och miljö",
+            "en": "Nat., Environm. Protection, VQ",
+            "_id": "344199"
+          },
+          "koulutuskoodiArvo": "361902",
+          "koulutuskoodiUri": "koulutus_361902",
+          "koulutusalakoodi": "koulutusalaoph2002_6",
+          "opintoalakoodi": "opintoalaoph2002_605"
+        }
+      ],
+      "kielet": [
+        "fi",
+        "sv"
+      ],
+      "kuvaus": {
+        "fi": "Alan ympäristömyönteinen toiminta kohdistuu ympäristön hoitoon ja kunnossapitoon sekä luonnonmonipuoliseen hyödyntämiseen. Luonto- ja ympäristöyrittäjyydellä on huomattavaa kasvupotentiaalia maaseudulla. Haasteena on uusien luontoyrittäjyysmuotojen hyödyntäminen. Näitä ovat muun muassa luontomatkailu ja luonnontuotteiden tuotteistaminen joko elintarvikkeiksi tai koriste- tai hyötykäyttöön. Luonto- ja ympäristöala ammattilaisilla on vahva osaaminen ympäristön ja luonnon kestävään käyttöön. \nLuonto- ja ympäristöala tarjoaa työtä muun muassa taajamien ja maaseutualueiden ympäristönhoidon, luontomatkailun ja poronhoidon tehtävissä. Luonto- ja ympäristöneuvontaan erikoistunut voi toimia eri järjestöjen, luontokoulujen ja hyvinvointiyritysten palveluksessa. Alalla tarvitaan myös yrittäjiä.",
+        "sv": "<p>Inom natur- och miljöbranschen inriktar man sig på miljövård och underhåll samt på ett mångsidigt bruk av naturen. På landsbygden finns det en betydande tillväxtpotential för företagsamhet inom branschen. En utmaning är utnyttjandet av nya former av naturföretag. Sådana är bl.a. naturturism och produktifiering av naturprodukter antingen till livsmedel eller till prydnads- eller nyttoprodukter. De som avlagt grundexamen inom natur och miljö har goda kunskaper om ett hållbart bruk av natur och miljö. Branschen erbjuder arbete bland annat inom miljövården i tätorter eller på landsbygden, inom naturturism och inom renskötsel. Den som är specialiserad på natur- och miljörådgivning kan arbeta i olika organisationer, naturskolor och välfärdsföretag. Det behövs också företagare inom branschen.</p>",
+        "_id": "1089074"
+      },
+      "maarayskirje": {
+        "id": 1391451,
+        "url": {}
+      },
+      "diaarinumero": "62/011/2014",
+      "voimassaoloAlkaa": 1438376400000,
+      "siirtymaPaattyy": null,
+      "voimassaoloLoppuu": null,
+      "paatospvm": 1414447200000,
+      "muokattu": 1455103140759,
+      "tila": "valmis",
+      "tyyppi": "normaali",
+      "korvattavatDiaarinumerot": [
+        "31/011/2009"
+      ],
+      "osaamisalat": [
+        {
+          "nimi": {
+            "fi": "Porotalouden osaamisala",
+            "sv": "Kompetensområde för renskötsel",
+            "_id": "620559"
+          },
+          "arvo": "1592",
+          "uri": "osaamisala_1592"
+        },
+        {
+          "nimi": {
+            "fi": "Luontoalan osaamisala",
+            "sv": "Kompetensområde för natur",
+            "_id": "620558"
+          },
+          "arvo": "1591",
+          "uri": "osaamisala_1591"
+        },
+        {
+          "nimi": {
+            "fi": "Ympäristöalan osaamisala",
+            "sv": "Kompetensområde för miljö",
+            "_id": "620557"
+          },
+          "arvo": "1590",
+          "uri": "osaamisala_1590"
+        }
+      ]
     }
   ],
   "sivuja": 1,
