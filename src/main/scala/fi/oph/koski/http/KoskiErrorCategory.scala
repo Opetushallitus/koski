@@ -329,5 +329,11 @@ object KoskiErrorCategory {
     val ytr = subcategory("ytr", "Ylioppilastutkintojen tietoja ei juuri nyt saada haettua. Yritä myöhemmin uudelleen.")
     val raportit = subcategory("raportit", "Raportit eivät ole juuri nyt käytettävissä. Yritä myöhemmin uudelleen.")
     val huollettavat = subcategory("huollettavat", "Huollettavien opintotietoja ei juuri nyt saada haettua. Yritä myöhemmin uudelleen.")
+
+    object yoTodistus {
+      val oldExamination = subcategory("oldExamination", "Todistusta ei voida luoda koska tutkinto on aloitettu ennen kevättä 2008.")
+      val notAllowed = subcategory("notAllowed", "Todistusta ei voida luoda koska se on YTL:n rekisterin perusteella estetty esimerkiksi maksamattoman tutkintomaksun takia.")
+      val notCompleteOrNoAccess = subcategory("notComplete", "Todistusta ei ole vielä luotu tai käyttäjällä ei ole oikeuksia todistuksen lataamiseen.")
+    }
   }
 }

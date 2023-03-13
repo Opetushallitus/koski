@@ -52,7 +52,7 @@ import fi.oph.koski.valpas.ytl.ValpasYtlServlet
 import fi.oph.koski.valvira.ValviraServlet
 import fi.oph.koski.ytl.YtlServlet
 import fi.oph.koski.ytr.download.{YtrDownloadService, YtrStatusServlet, YtrTestServlet}
-import fi.oph.koski.ytr.{YtrKoesuoritusApiServlet, YtrKoesuoritusServlet}
+import fi.oph.koski.ytr.{YoTodistusServlet, YtrKoesuoritusApiServlet, YtrKoesuoritusServlet}
 
 import javax.servlet.ServletContext
 import org.scalatra._
@@ -136,6 +136,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing {
     mount("/koski/api/ytrkoesuoritukset", new YtrKoesuoritusApiServlet)
     mount("/koski/omadata", new MyDataReactServlet)
     mount("/koski/koesuoritus", new YtrKoesuoritusServlet)
+    mount("/koski/api/yotodistus", new YoTodistusServlet)
     mount("/koski/healthcheck", new HealthCheckHtmlServlet)
     mount("/koski/json-schema-viewer", new JsonSchemaViewerHtmlServlet)
     mount("/koski/user", new UserServlet)
