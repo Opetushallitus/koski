@@ -9,20 +9,23 @@ class HealthMonitoring extends Logging {
   val operational: collection.mutable.Map[String, Boolean] = collection.mutable.Map.empty
 
   def log(status: Seq[SubsystemHealthStatus]): Unit = {
-    val json = JsonSerializer.writeWithRoot(status)
-    logger.info(json)
+    logList(status ++ storedStatus)
   }
 
   def setSubsystemStatus(subsystem: String, operational: Boolean): Unit = {
     if (!this.operational.get(subsystem).contains(operational)) {
       this.operational += (subsystem -> operational)
-      log(List(SubsystemHealthStatus(
-        subsystem,
-        operational,
-        if (!operational) Some("Not responding") else None,
-      )))
+      logList(storedStatus)
     }
   }
+
+  private def logList(status: Seq[SubsystemHealthStatus]): Unit = {
+    logger.info(JsonSerializer.writeWithRoot(status))
+  }
+
+  private def storedStatus: Seq[SubsystemHealthStatus] = operational.map { case (key, ok) =>
+    SubsystemHealthStatus(key, ok, if (!ok) Some("Not responding") else None)
+  }.toList
 }
 
 object Subsystem {
