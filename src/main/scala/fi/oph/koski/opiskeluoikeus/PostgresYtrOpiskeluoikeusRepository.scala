@@ -14,7 +14,7 @@ import java.time.LocalDateTime
 
 class PostgresYtrOpiskeluoikeusRepository(
   val db: DB,
-  actions: PostgresYtrOpiskeluoikeusRepositoryActions
+  val actions: PostgresYtrOpiskeluoikeusRepositoryActions
 ) extends YtrSavedOpiskeluoikeusRepository with DatabaseExecutionContext with QueryMethods with Logging {
   override def findByOppijaOids(oids: List[String])(implicit user: KoskiSpecificSession): Seq[Opiskeluoikeus] = {
     actions.findByOppijaOids(oids)

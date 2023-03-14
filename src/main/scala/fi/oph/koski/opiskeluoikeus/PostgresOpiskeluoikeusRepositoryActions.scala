@@ -1,5 +1,7 @@
 package fi.oph.koski.opiskeluoikeus
 
+import com.typesafe.config.Config
+import fi.oph.koski.config.Environment
 import fi.oph.koski.db.KoskiTables._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db._
@@ -31,6 +33,7 @@ trait PostgresOpiskeluoikeusRepositoryActions[OOROW <: OpiskeluoikeusRow, OOTABL
   def historyRepository: OpiskeluoikeusHistoryRepository[HISTORYTABLE, OOROW, OOTABLE]
   def tableCompanion: OpiskeluoikeusTableCompanion[OOROW]
   def validator: OpiskeluoikeusChangeValidator
+  def config: Config
 
   protected lazy val errorRepository = new OpiskeluoikeushistoriaErrorRepository(db)
 
@@ -189,6 +192,14 @@ trait PostgresOpiskeluoikeusRepositoryActions[OOROW <: OpiskeluoikeusRow, OOTABL
           createAction(withMasterInfo, opiskeluoikeus)
         }
       case None => DBIO.successful(Left(KoskiErrorCategory.notFound.oppijaaEiLöydy("Oppijaa " + oppijaOid.oppijaOid + " ei löydy.")))
+    }
+  }
+
+  def createOpiskeluoikeusBypassingUpdateCheckForTests(oppija: OppijaHenkilöWithMasterInfo, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiSpecificSession): Either[HttpStatus, CreateOrUpdateResult] = {
+    if (Environment.isUnitTestEnvironment(config)) {
+      runDbSync(createAction(oppija, opiskeluoikeus))
+    } else {
+      Left(KoskiErrorCategory.internalError("Kielletty operaatio testien ulkopuolella"))
     }
   }
 
