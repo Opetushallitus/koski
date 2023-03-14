@@ -64,6 +64,14 @@ trait YtrDownloadTestMethods extends KoskiHttpSpec with OpiskeluoikeusTestMethod
     isComplete
   }
 
+  def totalCount: Int = authGet("api/ytr/download-status") {
+    (JsonMethods.parse(body) \ "current" \ "totalCount").extract[Int]
+  }
+
+  def errorCount: Int = authGet("api/ytr/download-status") {
+    (JsonMethods.parse(body) \ "current" \ "errorCount").extract[Int]
+  }
+
   def getYtrOppija(oppijaOid: String, user: UserWithPassword = defaultUser): Oppija = {
     authGet("api/oppija/" + oppijaOid + "/ytr-json", user) {
       verifyResponseStatusOk()
