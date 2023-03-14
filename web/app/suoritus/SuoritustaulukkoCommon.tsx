@@ -48,6 +48,10 @@ export type OnExpandFn = (expanded: boolean) => void
 
 export const isAmmatillinentutkinto = (suoritus: SuoritusModel) =>
   suoritus.value.classes.includes('ammatillisentutkinnonsuoritus')
+
+export const isAmmatillinentutkintoOsittainen = (suoritus: SuoritusModel) =>
+  suoritus.value.classes.includes('ammatillisentutkinnonosittainensuoritus')
+
 export const isMuunAmmatillisenKoulutuksenSuoritus = (
   suoritus: SuoritusModel
 ) =>
@@ -130,7 +134,8 @@ export const groupSuoritukset = (
     (ammatillisentutkinnonosanryhmaKoodisto) => {
       let grouped, groupIds, groupTitles
       if (
-        isAmmatillinentutkinto(parentSuoritus) &&
+        (isAmmatillinentutkinto(parentSuoritus) ||
+          isAmmatillinentutkintoOsittainen(parentSuoritus)) &&
         R.keys(ammatillisentutkinnonosanryhmaKoodisto).length > 1
       ) {
         grouped = R.groupBy(
