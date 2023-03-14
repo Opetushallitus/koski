@@ -193,19 +193,19 @@ class YtrDownloadService(
 
                     result match {
                       case Left(error) =>
-                        logger.warn(s"YTR-datan tallennus epäonnistui: ${error.errorString.getOrElse("-")}")
+                        logger.warn(s"YTR-datan tallennus epäonnistui (syntymäkuukausi ${oppija.birthMonth}): ${error.errorString.getOrElse("-")}")
                       case _ => timed("tallennaAlkuperäinenJson", thresholdMs = 1) {
                         tallennaAlkuperäinenJson(oppija)
                       }
                     }
                   } catch {
-                    case e: Throwable => logger.warn(e)(s"YTR-datan tallennus epäonnistui: ${e.getMessage}")
+                    case e: Throwable => logger.warn(e)(s"YTR-datan tallennus epäonnistui (syntymäkuukausi ${oppija.birthMonth}): ${e.getMessage}")
                   }
 
-                case _ => logger.info(s"YTR-datan konversio palautti tyhjän opiskeluoikeuden")
+                case _ => logger.info(s"YTR-datan konversio palautti tyhjän opiskeluoikeuden (syntymäkuukausi ${oppija.birthMonth})")
               }
             } catch {
-              case e: Throwable => logger.warn(s"YTR-datan konversio epäonnistui: ${e.getMessage}")
+              case e: Throwable => logger.warn(s"YTR-datan konversio epäonnistui (syntymäkuukausi ${oppija.birthMonth}): ${e.getMessage}")
             }
 
             val birthMonth = oppija.birthMonth
