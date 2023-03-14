@@ -1085,9 +1085,9 @@ describe('Ammatillinen koulutus', function () {
       describe('Tutkinnon osan lisääminen', function () {
         before(
           editor.edit,
-          opinnot.tutkinnonOsat().lisääTutkinnonOsa('Huolto- ja korjaustyöt'),
+          opinnot.tutkinnonOsat('1').lisääTutkinnonOsa('Huolto- ja korjaustyöt'),
           opinnot
-            .tutkinnonOsat()
+            .tutkinnonOsat('1')
             .tutkinnonOsa(0)
             .propertyBySelector('.arvosana')
             .setValue('3', 1),
@@ -3006,14 +3006,15 @@ describe('Ammatillinen koulutus', function () {
 
       it('näyttää tutkinnon osat', function () {
         expect(extractAsText(S('.osasuoritukset'))).to.equalIgnoreNewlines(
-          'Sulje kaikki Tutkinnon osa Laajuus (osp) Arvosana\n' +
+          'Sulje kaikki\n' +
+            'Ammatilliset tutkinnon osat Laajuus (osp) Arvosana\n' +
             'Ympäristön hoitaminen 35 3\n' +
             'Pakollinen kyllä\n' +
             'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
             'Arviointi Arvosana 3\n' +
             'Arviointipäivä 20.10.2014\n' +
-            'Yhteensä 35 osp'
+            'Yhteensä 35 / 135 osp'
         )
       })
     })

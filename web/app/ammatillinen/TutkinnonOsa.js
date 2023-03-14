@@ -69,7 +69,12 @@ export const osanOsa = (m) =>
   m && m.value.classes.includes('ammatillisentutkinnonosanosaalue')
 
 export const isYhteinenTutkinnonOsa = (suoritus) =>
-  suoritus.value.classes.includes('yhteisenammatillisentutkinnonosansuoritus')
+  suoritus.value.classes.includes(
+    'yhteisenammatillisentutkinnonosansuoritus'
+  ) ||
+  suoritus.value.classes.includes(
+    'yhteisenosittaisenammatillisentutkinnontutkinnonosansuoritus'
+  )
 
 export const isYhteinenTutkinnonOsanOsa = (suoritus) =>
   suoritus.value.classes.includes('yhteisentutkinnonosanosaalueensuoritus')
