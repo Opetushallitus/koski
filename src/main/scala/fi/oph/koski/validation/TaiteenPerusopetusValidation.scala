@@ -58,10 +58,10 @@ object TaiteenPerusopetusValidation {
   }
 
   def validateHyväksytystiSuoritettuPäätasonSuoritus(oo: TaiteenPerusopetuksenOpiskeluoikeus): HttpStatus = {
-    def valmiitOppimäärätLöytyvät: Boolean = oo.suoritukset.forall(s => s.valmis)
+    def valmiitOppimäärätLöytyvät: Boolean = oo.suoritukset.size == 2 && oo.suoritukset.forall(s => s.valmis)
 
     if (oo.tila.opiskeluoikeusjaksot.last.hyväksytystiSuoritettu && !valmiitOppimäärätLöytyvät) {
-      KoskiErrorCategory.badRequest.validation.tila.vahvistusPuuttuu("Suoritukselta puuttuu vahvistus, vaikka opiskeluoikeus on tilassa Hyväksytysti suoritettu")
+      KoskiErrorCategory.badRequest.validation.tila.vahvistusPuuttuu("Suoritukselta puuttuu vahvistus, vaikka opiskeluoikeus on tilassa hyväksytysti suoritettu")
     } else {
       HttpStatus.ok
     }

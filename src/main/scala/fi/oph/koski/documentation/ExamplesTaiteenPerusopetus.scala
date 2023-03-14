@@ -156,11 +156,25 @@ object ExamplesTaiteenPerusopetus {
       osasuoritukset = None
     )
 
+    val yleistenYhteistenOpintojenSuoritusArvioituJaVahvistettu = TaiteenPerusopetuksenYleisenOppimääränYhteistenOpintojenSuoritus(
+      koulutusmoduuli = Koulutusmoduuli.musiikkiYleinenOppimääräYhteisetOpinnot,
+      toimipiste = varsinaisSuomenKansanopistoToimipiste,
+      vahvistus = Some(vahvistus),
+      osasuoritukset = Some(List(Osasuoritus.osasuoritusMusiikki("musa1", 11.1)))
+    )
+
     val yleistenTeemaopintojenSuoritusEiArvioituEiOsasuorituksia = TaiteenPerusopetuksenYleisenOppimääränTeemaopintojenSuoritus(
       koulutusmoduuli = Koulutusmoduuli.musiikkiYleinenOppimääräTeemaopinnot,
       toimipiste = varsinaisSuomenKansanopistoToimipiste,
       vahvistus = None,
       osasuoritukset = None
+    )
+
+    val yleistenTeemaopintojenSuoritusArvioituJaVahvistettu = TaiteenPerusopetuksenYleisenOppimääränTeemaopintojenSuoritus(
+      koulutusmoduuli = Koulutusmoduuli.musiikkiYleinenOppimääräTeemaopinnot,
+      toimipiste = varsinaisSuomenKansanopistoToimipiste,
+      vahvistus = Some(vahvistus),
+      osasuoritukset = Some(List(Osasuoritus.osasuoritusMusiikki("musa2", 7.4)))
     )
 
     val laajojenPerusopintojenSuoritusArvioituJaVahvistettuJaOsasuorituksia = TaiteenPerusopetuksenLaajanOppimääränPerusopintojenSuoritus(

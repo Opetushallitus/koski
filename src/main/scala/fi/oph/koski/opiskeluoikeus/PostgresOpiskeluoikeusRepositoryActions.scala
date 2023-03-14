@@ -215,7 +215,7 @@ trait PostgresOpiskeluoikeusRepositoryActions[OOROW <: OpiskeluoikeusRow, OOTABL
   private def estäOpiskeluoikeudenLuonti(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiSpecificSession): Boolean = {
     opiskeluoikeus match {
       // Estä kirjoitusoikeus TPO hankintakoulutuksen opiskeluoikeuteen, jos käyttäjällä löytyy editOnly-access
-      case t: TaiteenPerusopetuksenOpiskeluoikeus if t.onHankintakoulutus =>
+      case t: TaiteenPerusopetuksenOpiskeluoikeus =>
         user.hasTaiteenPerusopetusAccess(t.getOppilaitos.oid, t.koulutustoimija.map(_.oid), AccessType.editOnly)
       case _ => false
     }

@@ -17,21 +17,13 @@ object OpiskeluoikeusChangeMigrator {
   }
 
   def kopioiValmiitSuorituksetUuteen(vanhaOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, uusiOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus = {
-    def vanhaOnKopioitavaTpoSuoritus(s: KoskeenTallennettavaPäätasonSuoritus) = vanhaOpiskeluoikeus match {
-      case _: TaiteenPerusopetuksenOpiskeluoikeus => !uusiOpiskeluoikeus.suoritukset.exists(_.tyyppi == s.tyyppi)
-      case _ => false
-    }
-
     if (OpiskeluoikeudenTyyppi.ammatillinenkoulutus == uusiOpiskeluoikeus.tyyppi) {
       uusiOpiskeluoikeus
     } else {
       val puuttuvatSuorituksetUudessa = vanhaOpiskeluoikeus.suoritukset
         .filter(kopioitavaPäätasonSuoritus)
         .filter { vanhaSuoritus =>
-          vanhaSuoritus.valmis && (
-            !uusiOpiskeluoikeus.suoritukset.exists(_.koulutusmoduuli.tunniste == vanhaSuoritus.koulutusmoduuli.tunniste) ||
-              vanhaOnKopioitavaTpoSuoritus(vanhaSuoritus)
-            )
+          vanhaSuoritus.valmis && !uusiOpiskeluoikeus.suoritukset.exists(_.koulutusmoduuli.tunniste == vanhaSuoritus.koulutusmoduuli.tunniste)
         }
       uusiOpiskeluoikeus.withSuoritukset(puuttuvatSuorituksetUudessa ++ uusiOpiskeluoikeus.suoritukset)
     }
@@ -54,7 +46,8 @@ object OpiskeluoikeusChangeMigrator {
          _: EsiopetuksenSuoritus |
          _: NuortenPerusopetuksenOppiaineenOppimääränSuoritus |
          _: AikuistenPerusopetuksenOppiaineenOppimääränSuoritus |
-         _: EuropeanSchoolOfHelsinkiPäätasonSuoritus => false
+         _: EuropeanSchoolOfHelsinkiPäätasonSuoritus |
+         _: TaiteenPerusopetuksenPäätasonSuoritus => false
     case _ => true
   }
 

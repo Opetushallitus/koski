@@ -1,6 +1,10 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
-## xx.xx.xxxx
+## 14.3.2023
+
+- Taiteen perusopetuksen opiskeluoikeutta ei voi merkitä hyväksytysti suoritetuksi ellei molempia päätason suorituksia ole vahvistettu.
+
+## 13.3.2023
 
 - Lisätty validaatioita ammatillisen opiskeluoikeuden korotuksen suoritukselle:
   - Korotuksen opiskeluoikeuden alkamispäivä on oltava 1.7.2023 tai sen jälkeen.

@@ -80,28 +80,14 @@ class OppijaValidationTaiteenPerusopetusSpec
       oot.flatMap(_.oid) should contain(oo1.oid.get)
     }
 
-    "päätason valmis suoritus yhdistetään samalle opiskeluoikeudelle uuden päätason suorituksen kanssa vaikka suoritukset siirretään erikseen" in {
-      val ooVanhaSuoritus = TPO.Opiskeluoikeus.hyväksytystiSuoritettuLaajaOppimäärä.copy(
-        suoritukset = List(
-          TPO.PäätasonSuoritus.laajojenPerusopintojenSuoritusArvioituJaVahvistettuJaOsasuorituksia
-        )
+    "opiskeluoikeutta ei voi tallentaa valmistunut-tilaan ellei molempia päätason suorituksia ole vahvistettu" in {
+      val oo = TPO.Opiskeluoikeus.hyväksytystiSuoritettuLaajaOppimäärä.copy(
+        suoritukset = List(TPO.PäätasonSuoritus.laajojenPerusopintojenSuoritusArvioituJaVahvistettuJaOsasuorituksia)
       )
 
-      val oid = postAndGetOpiskeluoikeusV2(ooVanhaSuoritus, henkilö = KoskiSpecificMockOppijat.tyhjä).oid
-
-      val ooUusiSuoritus = TPO.Opiskeluoikeus.hyväksytystiSuoritettuLaajaOppimäärä.copy(
-        oid = oid,
-        suoritukset = List(
-          TPO.PäätasonSuoritus.laajojenSyventävienOpintojenSuoritusArvioituJaVahvistettuJaOsasuorituksia
-        )
-      )
-
-      putOpiskeluoikeus(ooUusiSuoritus, henkilö = KoskiSpecificMockOppijat.tyhjä){
-        verifyResponseStatusOk()
+      putOpiskeluoikeus(oo, henkilö = oppija) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vahvistusPuuttuu("Suoritukselta puuttuu vahvistus, vaikka opiskeluoikeus on tilassa hyväksytysti suoritettu"))
       }
-
-      val oot = getOpiskeluoikeus(oid.get).asInstanceOf[TaiteenPerusopetuksenOpiskeluoikeus]
-      oot.suoritukset.size shouldBe 2
     }
   }
 
@@ -272,13 +258,13 @@ class OppijaValidationTaiteenPerusopetusSpec
         }
       }
 
-      "oppilaitoksen hankintakoulutuksen käyttäjä voi luoda itse järjestettävän opiskeluoikeuden" in {
+      "oppilaitoksen hankintakoulutuksen käyttäjä ei voi luoda itse järjestettävää opiskeluoikeutta" in {
         postOpiskeluoikeusV2(
           TPO.Opiskeluoikeus.hyväksytystiSuoritettuLaajaOppimäärä,
           henkilö = KoskiSpecificMockOppijat.tyhjä,
           headers = authHeaders(MockUsers.varsinaisSuomiHankintakoulutusOppilaitosTallentaja) ++ jsonContent
         ) {
-          verifyResponseStatusOk()
+          verifyResponseStatus(403, KoskiErrorCategory.forbidden("Käyttäjällä ei ole riittäviä oikeuksia luoda opiskeluoikeutta"))
         }
       }
 
@@ -590,7 +576,7 @@ class OppijaValidationTaiteenPerusopetusSpec
       )
 
       putOpiskeluoikeus(oo, henkilö = oppija) {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vahvistusPuuttuu ("Suoritukselta puuttuu vahvistus, vaikka opiskeluoikeus on tilassa Hyväksytysti suoritettu"))
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vahvistusPuuttuu ("Suoritukselta puuttuu vahvistus, vaikka opiskeluoikeus on tilassa hyväksytysti suoritettu"))
       }
     }
 
@@ -639,7 +625,8 @@ class OppijaValidationTaiteenPerusopetusSpec
             ),
             vahvistus = Some(TPO.vahvistus),
             osasuoritukset = Some(List(TPO.Osasuoritus.osasuoritusMusiikki("MU1", 11.09)))
-          )
+          ),
+          TPO.PäätasonSuoritus.yleistenTeemaopintojenSuoritusArvioituJaVahvistettu
         )
       )
 
@@ -670,6 +657,7 @@ class OppijaValidationTaiteenPerusopetusSpec
       val oo = TPO.Opiskeluoikeus.aloitettuYleinenOppimäärä.copy(
         tila = TPO.Opiskeluoikeus.tilaHyväksytystiSuoritettu(),
         suoritukset = List(
+          TPO.PäätasonSuoritus.yleistenYhteistenOpintojenSuoritusArvioituJaVahvistettu,
           TPO.PäätasonSuoritus.yleistenTeemaopintojenSuoritusEiArvioituEiOsasuorituksia.copy(
             koulutusmoduuli = TPO.PäätasonSuoritus.Koulutusmoduuli.musiikkiYleinenOppimääräTeemaopinnot.copy(
               laajuus = Some(LaajuusOpintopisteissä(7.39))
@@ -780,6 +768,7 @@ class OppijaValidationTaiteenPerusopetusSpec
     "laajan oppimäärän opiskeluoikeudelle voi siirtää vain laajan oppimäärän opintotasoja" in {
       val oo = TPO.Opiskeluoikeus.hyväksytystiSuoritettuLaajaOppimäärä.copy(
         suoritukset = List(
+          TPO.PäätasonSuoritus.yleistenYhteistenOpintojenSuoritusArvioituJaVahvistettu,
           TPO.PäätasonSuoritus.yleistenTeemaopintojenSuoritusEiArvioituEiOsasuorituksia.copy(
             koulutusmoduuli = TPO.PäätasonSuoritus.Koulutusmoduuli.musiikkiYleinenOppimääräTeemaopinnot.copy(
               laajuus = Some(LaajuusOpintopisteissä(7.4))
