@@ -12,7 +12,6 @@ import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.schema._
 import org.json4s.{JArray, JValue}
-import slick.dbio
 import slick.dbio.Effect.{Read, Write}
 import slick.dbio.{DBIOAction, NoStream}
 
