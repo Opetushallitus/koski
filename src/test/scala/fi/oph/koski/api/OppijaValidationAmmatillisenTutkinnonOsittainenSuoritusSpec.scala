@@ -1018,7 +1018,7 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
           resetFixtures()
         }
 
-        "osasuorituksella väärä koulutusmoduulin tunniste tai laajuus" in {
+        "osasuorituksella väärä koulutusmoduulin tunniste" in {
           val alkuperäinen = getAlkuperäinen
           val korotettuSuoritus = ammatillisenTutkinnonOsittainenSuoritus.copy(
             korotettuOpiskeluoikeusOid = alkuperäinen.oid,
@@ -1042,7 +1042,16 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
               KoskiErrorCategory.badRequest.validation.ammatillinen.liikaaSamojaTutkinnonOsia()
             )
           }
+        }
 
+        "osasuorituksella väärä koulutusmoduulin laajuus" in {
+          val alkuperäinen = getAlkuperäinen
+          val korotettuSuoritus = ammatillisenTutkinnonOsittainenSuoritus.copy(
+            korotettuOpiskeluoikeusOid = alkuperäinen.oid,
+            korotettuKeskiarvo = Some(4.5),
+            korotettuKeskiarvoSisältääMukautettujaArvosanoja = Some(false),
+            osasuoritukset = None
+          )
           val korotettuOsasuoritusVääräLaajuus = osittaisenTutkinnonTutkinnonOsanSuoritus(k3, ammatillisetTutkinnonOsat, "100432", "Ympäristön hoitaminen", 34).copy(
             korotettu = Some(korotettu)
           )
@@ -1052,6 +1061,28 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
           val korotettuOoVääräLaajuus = makeOpiskeluoikeus(suoritus = korotettuSuoritusVääräLaajuus, alkamispäivä = alkamispäivä)
 
           putOpiskeluoikeus(korotettuOoVääräLaajuus, amiksenKorottaja) {
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.alkuperäinenOsasuoritusEiVastaava())
+          }
+        }
+
+        "osasuorituksella väärä koulutusmoduulin pakollisuus" in {
+          val alkuperäinen = getAlkuperäinen
+          val korotettuSuoritus = ammatillisenTutkinnonOsittainenSuoritus.copy(
+            korotettuOpiskeluoikeusOid = alkuperäinen.oid,
+            korotettuKeskiarvo = Some(4.5),
+            korotettuKeskiarvoSisältääMukautettujaArvosanoja = Some(false),
+            osasuoritukset = None
+          )
+          val korotettuOsasuoritusVääräPakollisuus = osittaisenTutkinnonTutkinnonOsanSuoritus(k3, ammatillisetTutkinnonOsat, "100432", "Ympäristön hoitaminen", 35).copy(
+            koulutusmoduuli = MuuValtakunnallinenTutkinnonOsa(tunniste = Koodistokoodiviite("100432", Some("Ympäristön hoitaminen"), "tutkinnonosat"), false, Some(LaajuusOsaamispisteissä(35))),
+            korotettu = Some(korotettu)
+          )
+          val korotettuSuoritusVääräPakollisuus = korotettuSuoritus.copy(
+            osasuoritukset = Some(List(korotettuOsasuoritusVääräPakollisuus))
+          )
+          val korotettuOoVääräPakollisuus = makeOpiskeluoikeus(suoritus = korotettuSuoritusVääräPakollisuus, alkamispäivä = alkamispäivä)
+
+          putOpiskeluoikeus(korotettuOoVääräPakollisuus, amiksenKorottaja) {
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.alkuperäinenOsasuoritusEiVastaava())
           }
         }
