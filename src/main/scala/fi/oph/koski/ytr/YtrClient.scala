@@ -2,6 +2,7 @@ package fi.oph.koski.ytr
 
 import com.typesafe.config.Config
 import fi.oph.koski.config.{Environment, SecretsManager}
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.{ylioppilasLukiolainenMaksamatonSuoritus, ylioppilasLukiolainenRikki, ylioppilasLukiolainenTimeouttaava, ylioppilasLukiolainenVanhaSuoritus}
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http.{ClientWithBasicAuthentication, Http, HttpStatus}
 import fi.oph.koski.json.Json4sHttp4s.json4sEncoderOf
@@ -28,8 +29,8 @@ trait YtrClient {
   def getHetutByModifiedSince(modifiedSince: LocalDate): Option[YtrSsnData] = getJsonHetutByModifiedSince(modifiedSince).map(JsonSerializer.extract[YtrSsnData](_, ignoreExtras = true))
   def getJsonHetutByModifiedSince(modifiedSince: LocalDate): Option[JValue]
 
-  def getCertificateStatus(req: YoTodistusRequest): Either[HttpStatus, YtrCertificateResponse]
-  def generateCertificate(req: YoTodistusRequest): Either[HttpStatus, YtrCertificateResponse]
+  def getCertificateStatus(req: YoTodistusHetuRequest): Either[HttpStatus, YtrCertificateResponse]
+  def generateCertificate(req: YoTodistusHetuRequest): Either[HttpStatus, YtrCertificateResponse]
   def getCertificate(todistus: YtrCertificateCompleted, outputStream: OutputStream): Unit
 }
 
@@ -57,8 +58,13 @@ object YtrClient extends Logging {
     }
 }
 
-case class YoTodistusRequest(
+case class YoTodistusHetuRequest(
   hetu: String,
+  language: String,
+)
+
+case class YoTodistusOidRequest(
+  oid: String,
   language: String,
 )
 
@@ -71,9 +77,9 @@ object EmptyYtrClient extends YtrClient {
 
   override def oppijatJsonByHetut(ssnData: YtrSsnData): Option[JValue] = None
 
-  override def getCertificateStatus(req: YoTodistusRequest): Either[HttpStatus, YtrCertificateResponse] = Right(YtrCertificateServiceUnavailable(LocalDateTime.now()))
+  override def getCertificateStatus(req: YoTodistusHetuRequest): Either[HttpStatus, YtrCertificateResponse] = Right(YtrCertificateServiceUnavailable(LocalDateTime.now()))
 
-  override def generateCertificate(req: YoTodistusRequest): Either[HttpStatus, YtrCertificateResponse] = Right(YtrCertificateServiceUnavailable(LocalDateTime.now()))
+  override def generateCertificate(req: YoTodistusHetuRequest): Either[HttpStatus, YtrCertificateResponse] = Right(YtrCertificateServiceUnavailable(LocalDateTime.now()))
 
   override def getCertificate(todistus: YtrCertificateCompleted, outputStream: OutputStream): Unit = {}
 }
@@ -104,24 +110,35 @@ object MockYrtClient extends YtrClient {
 
   private def resourcenameLaaja(hetut: String) = "/mockdata/ytr/laaja_" + hetut + ".json"
 
-  override def getCertificateStatus(req: YoTodistusRequest): Either[HttpStatus, YtrCertificateResponse] =
-    requested.get(req.hetu) match {
-      case None =>
+  override def getCertificateStatus(req: YoTodistusHetuRequest): Either[HttpStatus, YtrCertificateResponse] = {
+    (req.hetu, requested.get(s"${req.hetu}_${req.language}")) match {
+      case (hetu, _) if hetu == ylioppilasLukiolainenMaksamatonSuoritus.hetu.get =>
+        Right(YtrCertificateBlocked(LocalDateTime.now()))
+      case (hetu, _) if hetu == ylioppilasLukiolainenVanhaSuoritus.hetu.get =>
+        Right(YtrCertificateOldExamination(LocalDateTime.now()))
+      case (_, None) =>
         Right(YtrCertificateNotStarted())
-      case Some(time) if LocalDateTime.now().isAfter(time.plusSeconds(5)) =>
-        Right(YtrCertificateCompleted(
-          requestedTime = time,
-          completedTime = time.plusSeconds(5),
-          certificateUrl = "link-to-download",
-        ))
-      case Some(time) =>
+      case (_, Some(time)) if LocalDateTime.now().isAfter(time.plusSeconds(5)) =>
+        if (req.hetu == ylioppilasLukiolainenTimeouttaava.hetu.get) {
+          Right(YtrCertificateTimeout(time))
+        } else if (req.hetu == ylioppilasLukiolainenRikki.hetu.get) {
+          Right(YtrCertificateInternalError(time))
+        } else {
+          Right(YtrCertificateCompleted(
+            requestedTime = time,
+            completedTime = time.plusSeconds(5),
+            certificateUrl = "link-to-download",
+          ))
+        }
+      case (_, Some(time)) =>
         Right(YtrCertificateInProgress(
           requestedTime = time,
         ))
     }
+  }
 
-  override def generateCertificate(req: YoTodistusRequest): Either[HttpStatus, YtrCertificateResponse] = {
-    requested += (req.hetu -> LocalDateTime.now())
+  override def generateCertificate(req: YoTodistusHetuRequest): Either[HttpStatus, YtrCertificateResponse] = {
+    requested += (s"${req.hetu}_${req.language}" -> LocalDateTime.now())
     getCertificateStatus(req)
   }
 
@@ -152,9 +169,9 @@ case class RemoteYtrClient(rootUrl: String, user: String, password: String) exte
     runIO(http.post(uri"/api/oph-registrydata/students", ssnData)(json4sEncoderOf[YtrSsnData])(Http.parseJsonOptional[JValue]))
   }
 
-  override def getCertificateStatus(req: YoTodistusRequest): Either[HttpStatus, YtrCertificateResponse] = ???
+  override def getCertificateStatus(req: YoTodistusHetuRequest): Either[HttpStatus, YtrCertificateResponse] = ???
 
-  override def generateCertificate(req: YoTodistusRequest): Either[HttpStatus, YtrCertificateResponse] = ???
+  override def generateCertificate(req: YoTodistusHetuRequest): Either[HttpStatus, YtrCertificateResponse] = ???
 
   override def getCertificate(todistus: YtrCertificateCompleted, outputStream: OutputStream): Unit = ???
 }
