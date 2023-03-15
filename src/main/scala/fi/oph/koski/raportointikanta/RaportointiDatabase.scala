@@ -52,6 +52,10 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
     MuuAmmatillinenOsasuoritusRaportointi,
     TOPKSAmmatillinenOsasuoritusRaportointi,
     ROppivelvollisuudestaVapautukset,
+    RYtrTutkintokokonaisuudenSuoritukset,
+    RYtrTutkintokerranSuoritukset,
+    RYtrKokeenSuoritukset,
+    RYtrTutkintokokonaisuudenKokeenSuoritukset,
   )
 
   def vacuumAnalyze(): Unit = {
@@ -522,6 +526,26 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
   lazy val ROppivelvollisuudestaVapautukset = schema match {
     case Public => TableQuery[ROppivelvollisuudestaVapautusTable]
     case Temp => TableQuery[ROppivelvollisuudestaVapautusTableTemp]
+  }
+
+  lazy val RYtrTutkintokokonaisuudenSuoritukset = schema match {
+    case Public => TableQuery[RYtrTutkintokokonaisuudenSuoritusTable]
+    case Temp => TableQuery[RYtrTutkintokokonaisuudenSuoritusTableTemp]
+  }
+
+  lazy val RYtrTutkintokerranSuoritukset = schema match {
+    case Public => TableQuery[RYtrTutkintokerranSuoritusTable]
+    case Temp => TableQuery[RYtrTutkintokerranSuoritusTableTemp]
+  }
+
+  lazy val RYtrKokeenSuoritukset = schema match {
+    case Public => TableQuery[RYtrKokeenSuoritusTable]
+    case Temp => TableQuery[RYtrKokeenSuoritusTableTemp]
+  }
+
+  lazy val RYtrTutkintokokonaisuudenKokeenSuoritukset = schema match {
+    case Public => TableQuery[RYtrTutkintokokonaisuudenKokeenSuoritusTable]
+    case Temp => TableQuery[RYtrTutkintokokonaisuudenKokeenSuoritusTableTemp]
   }
 }
 
