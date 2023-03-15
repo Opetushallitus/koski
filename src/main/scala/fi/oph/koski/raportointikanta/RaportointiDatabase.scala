@@ -182,20 +182,24 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
 
     case class Kloonaus(
       taulu: String,
-      primaryKey: Option[String] = None,
+      primaryKeys: List[String] = List.empty,
       timeout: FiniteDuration = 15.minutes,
     );
 
     val kloonattavatTaulut = List(
-      Kloonaus("r_opiskeluoikeus", Some("opiskeluoikeus_oid")),
+      Kloonaus("r_opiskeluoikeus", List("opiskeluoikeus_oid")),
       Kloonaus("r_organisaatiohistoria"),
       Kloonaus("esiopetus_opiskeluoik_aikajakso"),
-      Kloonaus("r_opiskeluoikeus_aikajakso", Some("id")),
-      Kloonaus("r_paatason_suoritus", Some("paatason_suoritus_id")),
-      Kloonaus("r_osasuoritus", Some("osasuoritus_id")),
+      Kloonaus("r_opiskeluoikeus_aikajakso", List("id")),
+      Kloonaus("r_paatason_suoritus", List("paatason_suoritus_id")),
+      Kloonaus("r_osasuoritus", List("osasuoritus_id")),
       Kloonaus("muu_ammatillinen_raportointi"),
       Kloonaus("topks_ammatillinen_raportointi"),
-      Kloonaus("r_mitatoitu_opiskeluoikeus", Some("opiskeluoikeus_oid")),
+      Kloonaus("r_mitatoitu_opiskeluoikeus", List("opiskeluoikeus_oid")),
+      Kloonaus("r_ytr_tutkintokokonaisuuden_suoritus", List("ytr_tutkintokokonaisuuden_suoritus_id")),
+      Kloonaus("r_ytr_tutkintokerran_suoritus", List("ytr_tutkintokerran_suoritus_id")),
+      Kloonaus("r_ytr_kokeen_suoritus", List("ytr_kokeen_suoritus_id")),
+      Kloonaus("r_ytr_tutkintokokonaisuuden_kokeen_suoritus", List("ytr_tutkintokokonaisuuden_suoritus_id", "ytr_kokeen_suoritus_id")),
     )
 
     val päivitettävätIdSekvenssit = List(
@@ -218,7 +222,10 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
             sql"""
                  INSERT INTO #${schema.name}.#${kloonaus.taulu}
                  SELECT * FROM #${source.schema.name}.#${kloonaus.taulu}
-                 #${kloonaus.primaryKey.map(pk => s"ORDER BY $pk").getOrElse("")}
+                 #${kloonaus.primaryKeys.mkString(", ") match {
+                   case "" => ""
+                   case pks => s"ORDER BY $pks"
+                 }}
                  LIMIT $BATCH_SIZE OFFSET $offset
             """.asUpdate,
             timeout = kloonaus.timeout,
