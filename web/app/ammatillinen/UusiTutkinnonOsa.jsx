@@ -18,6 +18,8 @@ import {
 import {
   fetchLisättävätTutkinnonOsat,
   isJatkoOpintovalmiuksiaTukevienOpintojenSuoritus,
+  isOsittaisenMuunOsanSuoritus,
+  isOsittaisenYhteisenOsanSuoritus,
   isYhteinenTutkinnonOsa,
   NON_GROUPED,
   selectTutkinnonOsanSuoritusPrototype,
@@ -39,9 +41,19 @@ export default ({
   setExpanded,
   groupTitles
 }) => {
+  const preferedclassOsittaiselle = isOsittaisenYhteisenOsanSuoritus(
+    suoritus,
+    groupId
+  )
+    ? 'yhteisenosittaisenammatillisentutkinnontutkinnonosansuoritus'
+    : isOsittaisenMuunOsanSuoritus(suoritus, groupId)
+    ? 'muunosittaisenammatillisentutkinnontutkinnonosansuoritus'
+    : undefined
+
   const suoritusPrototype = selectTutkinnonOsanSuoritusPrototype(
     suoritusPrototypes,
-    groupId
+    groupId,
+    preferedclassOsittaiselle
   )
   const valtakunnallisetKoulutusmoduulit =
     valtakunnallisetKoulutusmoduuliPrototypes(suoritusPrototype)

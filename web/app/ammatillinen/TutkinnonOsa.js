@@ -94,6 +94,14 @@ export const isOsittaisenAmmatillisenTutkinnonYhteisenTutkinnonOsanSuoritus = (
     'yhteisenosittaisenammatillisentutkinnontutkinnonosansuoritus'
   )
 
+export const isOsittaisenYhteisenOsanSuoritus = (s, groupId) =>
+  s.value.classes.includes('ammatillisentutkinnonosittainensuoritus') &&
+  groupId === YHTEISET_TUTKINNON_OSAT
+
+export const isOsittaisenMuunOsanSuoritus = (s, groupId) =>
+  s.value.classes.includes('ammatillisentutkinnonosittainensuoritus') &&
+  groupId !== YHTEISET_TUTKINNON_OSAT
+
 export const isOsittaisenAmmatillisenTutkinnonMuunTutkinnonOsanSuoritus = (s) =>
   s.value.classes.includes(
     'muunosittaisenammatillisentutkinnontutkinnonosansuoritus'

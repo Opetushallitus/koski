@@ -1014,6 +1014,8 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
           putOpiskeluoikeus(korotettuOo, amiksenKorottaja) {
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.alkuperäinenSuoritusEiVastaava())
           }
+
+          resetFixtures()
         }
 
         "osasuorituksella väärä koulutusmoduulin tunniste tai laajuus" in {
@@ -1034,7 +1036,11 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
           val korotettuOoVääräTutkinnonOsa = makeOpiskeluoikeus(suoritus = korotettuSuoritusVääräTutkinnonOsa, alkamispäivä = alkamispäivä)
 
           putOpiskeluoikeus(korotettuOoVääräTutkinnonOsa, amiksenKorottaja) {
-            verifyResponseStatus(400)
+            verifyResponseStatus(
+              400,
+              KoskiErrorCategory.badRequest.validation.ammatillinen.alkuperäinenOsasuoritusEiVastaava(),
+              KoskiErrorCategory.badRequest.validation.ammatillinen.liikaaSamojaTutkinnonOsia()
+            )
           }
 
           val korotettuOsasuoritusVääräLaajuus = osittaisenTutkinnonTutkinnonOsanSuoritus(k3, ammatillisetTutkinnonOsat, "100432", "Ympäristön hoitaminen", 34).copy(
@@ -1046,7 +1052,26 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
           val korotettuOoVääräLaajuus = makeOpiskeluoikeus(suoritus = korotettuSuoritusVääräLaajuus, alkamispäivä = alkamispäivä)
 
           putOpiskeluoikeus(korotettuOoVääräLaajuus, amiksenKorottaja) {
-            verifyResponseStatusOk(400)
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.alkuperäinenOsasuoritusEiVastaava())
+          }
+        }
+
+        "korotuksella tyhjä aliosasuoritusten lista, vaikka alkuperäisellä on aliosasuorituksia" in {
+          val alkuperäinen = getAlkuperäinen
+
+          val yhteisenTutkinnonOsanSuoritusIlmanOsaAlueita = yhteisenOsittaisenTutkinnonTutkinnonOsansuoritus(k3, yhteisetTutkinnonOsat, "101054", "Matemaattis-luonnontieteellinen osaaminen", 9).copy(
+            osasuoritukset = None
+          )
+          val korotettuSuoritusIlmanOsanOsaAlueita = ammatillisenTutkinnonOsittainenSuoritus.copy(
+            korotettuOpiskeluoikeusOid = alkuperäinen.oid,
+            korotettuKeskiarvo = Some(4.5),
+            korotettuKeskiarvoSisältääMukautettujaArvosanoja = Some(false),
+            osasuoritukset = Some(List(yhteisenTutkinnonOsanSuoritusIlmanOsaAlueita))
+          )
+          val korotettuOoVääräTutkinnonOsa = makeOpiskeluoikeus(suoritus = korotettuSuoritusIlmanOsanOsaAlueita, alkamispäivä = alkamispäivä)
+
+          putOpiskeluoikeus(korotettuOoVääräTutkinnonOsa, amiksenKorottaja) {
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.alkuperäinenOsasuoritusEiVastaava())
           }
         }
 
@@ -1074,7 +1099,7 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
           val korotettuOoVääräTutkinnonOsa = makeOpiskeluoikeus(suoritus = korotettuSuoritusVääräTutkinnonOsa, alkamispäivä = alkamispäivä)
 
           putOpiskeluoikeus(korotettuOoVääräTutkinnonOsa, amiksenKorottaja) {
-            verifyResponseStatus(400)
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.alkuperäinenOsasuoritusEiVastaava())
           }
         }
 
@@ -1154,7 +1179,7 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
           val korotettuOoVääräTutkinnonOsa = makeOpiskeluoikeus(suoritus = korotettuSuoritusVääräLaajuus, alkamispäivä = alkamispäivä)
 
           putOpiskeluoikeus(korotettuOoVääräTutkinnonOsa, amiksenKorottaja) {
-            verifyResponseStatus(400)
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.alkuperäinenOsasuoritusEiVastaava())
           }
         }
 

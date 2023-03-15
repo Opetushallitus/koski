@@ -292,8 +292,17 @@ object AmmatillinenValidation {
         korotettuOs.tyyppi.koodiarvo == aos.tyyppi.koodiarvo &&
           korotettuOs.koulutusmoduuli.tunniste.koodiarvo == aos.koulutusmoduuli.tunniste.koodiarvo &&
           Math.abs(korotettuOs.koulutusmoduuli.laajuusArvo(0.00) - aos.koulutusmoduuli.laajuusArvo(0.0)) < 0.001 &&
+          validateKorotuksellaAliosasuorituksia(korotettuOs) &&
           korotettuOs.osasuoritusLista.forall(s => validateAliosasuoritukset(s, aos.osasuoritusLista))
       )
+    }
+
+    def validateKorotuksellaAliosasuorituksia(
+      korotettuOs: OsittaisenAmmatillisenTutkinnonOsanSuoritus
+    ): Boolean = korotettuOs match {
+      case os: YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus => os.osasuoritusLista.nonEmpty
+      case os: OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus => os.osasuoritusLista.nonEmpty
+      case _ => true
     }
 
     def validateAliosasuoritukset(
