@@ -283,7 +283,11 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
       (KoskiSpecificMockOppijat.taiteenPerusopetusAloitettu, ExamplesTaiteenPerusopetus.Opiskeluoikeus.aloitettuYleinenOppimäärä),
       (KoskiSpecificMockOppijat.taiteenPerusopetusValmis, ExamplesTaiteenPerusopetus.Opiskeluoikeus.hyväksytystiSuoritettuLaajaOppimäärä),
       (KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus, ExamplesTaiteenPerusopetus.Opiskeluoikeus.hankintakoulutuksenaHyväksytystiSuoritettuLaajaOppimäärä),
-      (KoskiSpecificMockOppijat.amiksenKorottaja, AmmatillinenExampleData.perustutkintoOpiskeluoikeusValmis())
+      (KoskiSpecificMockOppijat.amiksenKorottaja, AmmatillinenExampleData.perustutkintoOpiskeluoikeusValmis()),
+      (KoskiSpecificMockOppijat.ylioppilasLukiolainenMaksamatonSuoritus, ExamplesLukio.päättötodistus()),
+      (KoskiSpecificMockOppijat.ylioppilasLukiolainenVanhaSuoritus, ExamplesLukio.päättötodistus()),
+      (KoskiSpecificMockOppijat.ylioppilasLukiolainenTimeouttaava, ExamplesLukio.päättötodistus()),
+      (KoskiSpecificMockOppijat.ylioppilasLukiolainenRikki, ExamplesLukio.päättötodistus()),
     )
   }
 
