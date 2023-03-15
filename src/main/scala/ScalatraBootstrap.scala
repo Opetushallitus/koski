@@ -196,7 +196,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing {
 
     if (application.fixtureCreator.shouldUseFixtures) {
       context.mount(new FixtureServlet, "/koski/fixtures")
-      timed("Loading fixtures")(application.fixtureCreator.resetFixtures(reloadRaportointikanta = true))
+      timed("Loading fixtures")(application.fixtureCreator.resetFixtures(reloadRaportointikanta = true, reloadYtrData = true))
     }
   }
 
