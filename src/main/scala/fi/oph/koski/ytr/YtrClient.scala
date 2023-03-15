@@ -4,7 +4,7 @@ import com.typesafe.config.Config
 import fi.oph.koski.config.{Environment, SecretsManager}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.{ylioppilasLukiolainenMaksamatonSuoritus, ylioppilasLukiolainenRikki, ylioppilasLukiolainenTimeouttaava, ylioppilasLukiolainenVanhaSuoritus}
 import fi.oph.koski.http.Http._
-import fi.oph.koski.http.{ClientWithBasicAuthentication, Http, HttpStatus}
+import fi.oph.koski.http.{ClientWithBasicAuthentication, Http, HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.Json4sHttp4s.json4sEncoderOf
 import fi.oph.koski.json.{JsonResources, JsonSerializer}
 import fi.oph.koski.log.{Logging, NotLoggable, TimedProxy}
@@ -122,7 +122,11 @@ object MockYrtClient extends YtrClient {
         if (req.hetu == ylioppilasLukiolainenTimeouttaava.hetu.get) {
           Right(YtrCertificateTimeout(time))
         } else if (req.hetu == ylioppilasLukiolainenRikki.hetu.get) {
-          Right(YtrCertificateInternalError(time))
+          if (req.language == "fi") {
+            Right(YtrCertificateInternalError(time))
+          } else {
+            Left(KoskiErrorCategory.internalError())
+          }
         } else {
           Right(YtrCertificateCompleted(
             requestedTime = time,
