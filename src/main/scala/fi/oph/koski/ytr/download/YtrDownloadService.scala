@@ -83,7 +83,7 @@ class YtrDownloadService(
   ): Unit = {
     logger.info(s"Start downloading YTR data (birthmonthStart: ${birthmonthStart}, birthmonthEnd: ${birthmonthEnd}, batchSize: ${batchSize}, extraSleepPerStudentInMs: ${extraSleepPerStudentInMs})")
 
-    status.setLoading
+    status.setLoading(0)
 
     val ssnDataObservable = splitToOneMonthIntervals(birthmonthStart, birthmonthEnd)
       .flatMap {
@@ -122,7 +122,7 @@ class YtrDownloadService(
   ): Unit = {
     logger.info(s"Start downloading YTR data (modifiedSince: ${modifiedSince.toString}, batchSize: ${batchSize}, extraSleepPerStudentInMs: ${extraSleepPerStudentInMs})")
 
-    status.setLoading
+    status.setLoading(0)
 
     val ssnDataObservable = Observable.from(application.ytrClient.getHetutByModifiedSince(modifiedSince))
 
@@ -158,7 +158,9 @@ class YtrDownloadService(
     onEnd: () => Unit
   ): Unit = {
     var latestHandledBirthMonth = "-"
+    var totalCount = 0
     var latestHandledBirthMonthCount = 0
+    var errorCount = 0
 
     oppijatObservable
       .subscribeOn(scheduler)
@@ -167,6 +169,8 @@ class YtrDownloadService(
           timed("handleSingleOppija", thresholdMs = 1) {
             implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUserTallennetutYlioppilastutkinnonOpiskeluoikeudet
             implicit val accessType: AccessType.Value = AccessType.write
+
+            var errorOccurred = false
 
             // TODO: TOR-1639 Kunhan tätä on testattu try-catchien kanssa tuotannossa tarpeeksi, siisti koodi siten, että mahdolliset poikkeukset saa valua
             //  ylemmäksikin. Pitää myös miettiä silloin, onko ok, että yksittäisiä failaavia oppijoita skipataan, kuten koodi nyt tekee.
@@ -193,24 +197,36 @@ class YtrDownloadService(
 
                     result match {
                       case Left(error) =>
-                        logger.warn(s"YTR-datan tallennus epäonnistui: ${error.errorString.getOrElse("-")}")
+                        errorOccurred = true
+                        logger.warn(s"YTR-datan tallennus epäonnistui (syntymäkuukausi ${oppija.birthMonth}): ${error.errorString.getOrElse("-")}")
                       case _ => timed("tallennaAlkuperäinenJson", thresholdMs = 1) {
                         tallennaAlkuperäinenJson(oppija)
                       }
                     }
                   } catch {
-                    case e: Throwable => logger.warn(e)(s"YTR-datan tallennus epäonnistui: ${e.getMessage}")
+                    case e: Throwable =>
+                      errorOccurred = true
+                      logger.warn(e)(s"YTR-datan tallennus epäonnistui (syntymäkuukausi ${oppija.birthMonth}): ${e.getMessage}")
                   }
 
-                case _ => logger.info(s"YTR-datan konversio palautti tyhjän opiskeluoikeuden")
+                case _ =>
+                  errorOccurred = true
+                  logger.warn(s"YTR-datan konversio palautti tyhjän opiskeluoikeuden (syntymäkuukausi ${oppija.birthMonth})")
               }
             } catch {
-              case e: Throwable => logger.warn(s"YTR-datan konversio epäonnistui: ${e.getMessage}")
+              case e: Throwable =>
+                errorOccurred = true
+                logger.warn(s"YTR-datan konversio epäonnistui (syntymäkuukausi ${oppija.birthMonth}): ${e.getMessage}")
             }
 
             val birthMonth = oppija.birthMonth
+            totalCount = totalCount + 1
+            if (errorOccurred) {
+              errorCount = errorCount + 1
+            }
             if (latestHandledBirthMonth != birthMonth) {
               logger.info(s"Handled first oppija of birth month ${birthMonth}. Previously handled birth month ${latestHandledBirthMonth} had ${latestHandledBirthMonthCount} oppijas.")
+              status.setLoading(totalCount, errorCount)
               latestHandledBirthMonth = birthMonth
               latestHandledBirthMonthCount = 0
             }
@@ -224,13 +240,13 @@ class YtrDownloadService(
         onError = e => {
           logger.error(e)("YTR download failed:" + e.toString)
           logger.info(s"From final handled birth month ${latestHandledBirthMonth} handled ${latestHandledBirthMonthCount} oppijas.")
-          status.setError
+          status.setError(totalCount, errorCount)
           onEnd()
         },
         onCompleted = () => {
           try {
             logger.info(s"Final handled birth month ${latestHandledBirthMonth} had ${latestHandledBirthMonthCount} oppijas.")
-            status.setComplete
+            status.setComplete(totalCount, errorCount)
             // TODO: Tilastot yms.
             onEnd()
           } catch {

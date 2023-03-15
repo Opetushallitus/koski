@@ -34,6 +34,8 @@ trait KoskiOpiskeluoikeusRepository {
 }
 
 trait YtrSavedOpiskeluoikeusRepository {
+  def actions: PostgresYtrOpiskeluoikeusRepositoryActions
+
   def findByOppijaOids(oids: List[String])(implicit user: KoskiSpecificSession): Seq[Opiskeluoikeus]
   def createOrUpdate(
     oppijaOid: PossiblyUnverifiedHenkilöOid,

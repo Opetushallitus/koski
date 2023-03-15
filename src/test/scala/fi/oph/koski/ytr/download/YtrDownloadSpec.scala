@@ -2,7 +2,7 @@ package fi.oph.koski.ytr.download
 
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import fi.oph.koski.api.OpiskeluoikeusTestMethods
-import fi.oph.koski.koskiuser.{MockUsers}
+import fi.oph.koski.koskiuser.MockUsers
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
