@@ -10,6 +10,7 @@ import { PäätasonSuoritus } from '../types/fi/oph/koski/schema/PaatasonSuoritu
 import { StorablePreference } from '../types/fi/oph/koski/schema/StorablePreference'
 import { Constraint } from '../types/fi/oph/koski/typemodel/Constraint'
 import { GroupedKoodistot } from '../types/fi/oph/koski/typemodel/GroupedKoodistot'
+import { YtrCertificateResponse } from '../types/fi/oph/koski/ytr/YtrCertificateResponse'
 import { tapLeftP } from './fp/either'
 import { queryString } from './url'
 
@@ -156,6 +157,20 @@ export const peruutaSuostumus = (
       apiUrl(`opiskeluoikeus/suostumuksenperuutus/${opiskeluoikeusOid}`, {
         suorituksentyyppi: suorituksenTyyppi
       })
+    )
+  )
+
+export const fetchYoTodistusState = (oppijaOid: string, language: string) =>
+  handleExpiredSession(
+    apiGet<YtrCertificateResponse>(
+      apiUrl(`yotodistus/status/${language}/${oppijaOid}`)
+    )
+  )
+
+export const generateYoTodistus = (oppijaOid: string, language: string) =>
+  handleExpiredSession(
+    apiGet<YtrCertificateResponse>(
+      apiUrl(`yotodistus/generate/${language}/${oppijaOid}`)
     )
   )
 

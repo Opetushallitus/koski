@@ -26,6 +26,7 @@ import { ArvosanaEditor } from './ArvosanaEditor'
 import Text from '../i18n/Text'
 import Http from '../util/http'
 import * as Bacon from 'baconjs'
+import { YoTodistus } from '../components-v2/yotutkinto/YoTodistus'
 
 const OmatTiedotSuoritustaulukko = ({
   suorituksetModel,
@@ -69,6 +70,9 @@ const OmatTiedotSuoritustaulukko = ({
             laajuusYksikkö={laajuusYksikkö}
           />
         ))
+      )}
+      {isYlioppilastutkinto(parentSuoritus) && (
+        <YoTodistus oppijaOid={context.oppijaOid} />
       )}
     </div>
   )

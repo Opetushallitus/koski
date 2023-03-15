@@ -13,20 +13,10 @@ class YoTodistusService(application: KoskiApplication) {
     toHetuReq(req).flatMap(client.getCertificateStatus)
 
   def initiateGenerating(req: YoTodistusOidRequest): Either[HttpStatus, YtrCertificateResponse] =
-    for {
-      hetuReq  <- toHetuReq(req)
-      response <- client.getCertificateStatus(hetuReq) match {
-                    case Right(_: YtrCertificateNotStarted) => generate(hetuReq)
-                    case Right(_: YtrCertificateTimeout) => generate(hetuReq)
-                    case s: Any => s
-                  }
-    } yield response
+    toHetuReq(req).flatMap(client.generateCertificate)
 
   def download(req: YtrCertificateCompleted, output: OutputStream): Unit =
     client.getCertificate(req, output)
-
-  private def generate(req: YoTodistusHetuRequest): Either[HttpStatus, YtrCertificateResponse] =
-    client.generateCertificate(req)
 
   private def toHetuReq(req: YoTodistusOidRequest): Either[HttpStatus, YoTodistusHetuRequest] =
     henkilöRepository
