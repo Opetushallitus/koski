@@ -219,7 +219,7 @@ class KoskiApplication(
     raportointiDatabase,
   )
   lazy val healthMonitoring: HealthMonitoring = new HealthMonitoring()
-  lazy val yoTodistusService: YoTodistusService = new YoTodistusService(this)
+  lazy val yoTodistusService: YoTodistusService = YoTodistusService(this)
 
   def init(): Future[Any] = {
     AuditLog.startHeartbeat()

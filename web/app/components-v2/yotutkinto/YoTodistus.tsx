@@ -71,7 +71,7 @@ export const YoTodistus: React.FC<YoTodistusProps> = (props) => {
     statePoller.stop()
     setState(null)
   })
-  useOnApiSuccess(generate, updateStateFromResponse)
+  useOnApiSuccess(generate, () => stateFetch.call(props.oppijaOid, language))
 
   const blockingErrorText = useMemo(() => {
     if (isYtrCertificateBlocked(state))

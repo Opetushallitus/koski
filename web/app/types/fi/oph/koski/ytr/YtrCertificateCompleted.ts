@@ -7,14 +7,14 @@ export type YtrCertificateCompleted = {
   $class: 'fi.oph.koski.ytr.YtrCertificateCompleted'
   status: 'COMPLETED'
   requestedTime: string
-  completedTime: string
+  completionTime: string
   certificateUrl: string
 }
 
 export const YtrCertificateCompleted = (o: {
   status?: 'COMPLETED'
   requestedTime: string
-  completedTime: string
+  completionTime: string
   certificateUrl: string
 }): YtrCertificateCompleted => ({
   $class: 'fi.oph.koski.ytr.YtrCertificateCompleted',

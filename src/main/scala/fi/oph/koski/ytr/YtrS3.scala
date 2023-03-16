@@ -1,7 +1,7 @@
 package fi.oph.koski.ytr
 
 import com.typesafe.config.Config
-import fi.oph.koski.config.SecretsManager
+import fi.oph.koski.config.{Environment, KoskiApplication, SecretsManager}
 import fi.oph.koski.log.NotLoggable
 import software.amazon.awssdk.auth.credentials.{AwsBasicCredentials, StaticCredentialsProvider}
 import software.amazon.awssdk.regions.Region
@@ -45,6 +45,24 @@ object YtrS3Config {
   def fromSecretsManager: YtrS3Config = {
     val cachedSecretsClient = new SecretsManager
     val secretId = cachedSecretsClient.getSecretId("YTR S3 secrets", "YTR_S3_SECRET_ID")
+    cachedSecretsClient.getStructuredSecret[YtrS3Config](secretId)
+  }
+}
+
+object YtrS3SignedCertificateConfig {
+  def getEnvironmentConfig(application: KoskiApplication): YtrS3Config =
+    if (Environment.usesAwsSecretsManager) YtrS3SignedCertificateConfig.fromSecretsManager else YtrS3SignedCertificateConfig.fromConfig(application.config)
+
+  def fromConfig(config: Config): YtrS3Config = YtrS3Config(
+    config.getString("ytr.certificates.aws.accessKeyId"),
+    config.getString("ytr.certificates.aws.secretAccessKey"),
+    config.getString("ytr.certificates.aws.roleArn"),
+    config.getString("ytr.certificates.aws.externalId"),
+    config.getString("ytr.certificates.aws.bucket")
+  )
+  def fromSecretsManager: YtrS3Config = {
+    val cachedSecretsClient = new SecretsManager
+    val secretId = cachedSecretsClient.getSecretId("YTR Certificates S3 secrets", "YTR_CERTIFICATES_S3_SECRET_ID")
     cachedSecretsClient.getStructuredSecret[YtrS3Config](secretId)
   }
 }
