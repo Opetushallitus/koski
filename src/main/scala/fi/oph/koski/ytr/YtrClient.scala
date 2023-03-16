@@ -4,16 +4,19 @@ import com.typesafe.config.Config
 import fi.oph.koski.config.{Environment, SecretsManager}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.{ylioppilasLukiolainenMaksamatonSuoritus, ylioppilasLukiolainenRikki, ylioppilasLukiolainenTimeouttaava, ylioppilasLukiolainenVanhaSuoritus}
 import fi.oph.koski.http.Http._
-import fi.oph.koski.http.{ClientWithBasicAuthentication, Http, HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.http.{ClientWithBasicAuthentication, Http, HttpStatus, JsonErrorMessage, KoskiErrorCategory}
 import fi.oph.koski.json.Json4sHttp4s.json4sEncoderOf
 import fi.oph.koski.json.{JsonResources, JsonSerializer}
 import fi.oph.koski.log.{Logging, NotLoggable, TimedProxy}
+import fi.oph.koski.schema.KoskiSchema
 import fi.oph.koski.util.{ClasspathResource, Resource, Streams}
 import fi.oph.koski.ytr.download.{YtrLaajaOppija, YtrSsnData}
+import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}
 import org.json4s.JValue
 
 import java.io.OutputStream
 import java.time.{LocalDate, LocalDateTime}
+import scala.reflect.runtime.{universe => ru}
 
 trait YtrClient {
   // Rajapinnat, joilla haetaan kaikki YTL:n datat.
@@ -31,7 +34,6 @@ trait YtrClient {
 
   def getCertificateStatus(req: YoTodistusHetuRequest): Either[HttpStatus, YtrCertificateResponse]
   def generateCertificate(req: YoTodistusHetuRequest): Either[HttpStatus, YtrCertificateResponse]
-  def getCertificate(todistus: YtrCertificateCompleted, outputStream: OutputStream): Unit
 }
 
 object YtrClient extends Logging {
@@ -80,8 +82,6 @@ object EmptyYtrClient extends YtrClient {
   override def getCertificateStatus(req: YoTodistusHetuRequest): Either[HttpStatus, YtrCertificateResponse] = Right(YtrCertificateServiceUnavailable(LocalDateTime.now()))
 
   override def generateCertificate(req: YoTodistusHetuRequest): Either[HttpStatus, YtrCertificateResponse] = Right(YtrCertificateServiceUnavailable(LocalDateTime.now()))
-
-  override def getCertificate(todistus: YtrCertificateCompleted, outputStream: OutputStream): Unit = {}
 }
 
 object MockYrtClient extends YtrClient {
@@ -145,9 +145,6 @@ object MockYrtClient extends YtrClient {
     requested += (s"${req.hetu}_${req.language}" -> LocalDateTime.now())
     getCertificateStatus(req)
   }
-
-  override def getCertificate(todistus: YtrCertificateCompleted, outputStream: OutputStream): Unit =
-    resource.resourceSerializer("mock-yotodistus.pdf")(is => Streams.pipeTo(is, outputStream))
 }
 
 case class RemoteYtrClient(rootUrl: String, user: String, password: String) extends YtrClient with Logging {
@@ -173,11 +170,20 @@ case class RemoteYtrClient(rootUrl: String, user: String, password: String) exte
     runIO(http.post(uri"/api/oph-registrydata/students", ssnData)(json4sEncoderOf[YtrSsnData])(Http.parseJsonOptional[JValue]))
   }
 
-  override def getCertificateStatus(req: YoTodistusHetuRequest): Either[HttpStatus, YtrCertificateResponse] = ???
+  override def getCertificateStatus(req: YoTodistusHetuRequest): Either[HttpStatus, YtrCertificateResponse] =
+    callSignedCertificateApi[YtrCertificateResponse](uri"/api/oph-koski/signed-certificate/status", req)
 
-  override def generateCertificate(req: YoTodistusHetuRequest): Either[HttpStatus, YtrCertificateResponse] = ???
+  override def generateCertificate(req: YoTodistusHetuRequest): Either[HttpStatus, YtrCertificateResponse] =
+    callSignedCertificateApi[YtrCertificateResponse](uri"/api/oph-koski/signed-certificate", req)
 
-  override def getCertificate(todistus: YtrCertificateCompleted, outputStream: OutputStream): Unit = ???
+  protected def callSignedCertificateApi[T: ru.TypeTag](uri: ParameterizedUriWrapper, req: YoTodistusHetuRequest): Either[HttpStatus, T] = {
+    val json = runIO(http.post(uri, req)(json4sEncoderOf[YoTodistusHetuRequest])(Http.parseJson[JValue]))
+    val response = SchemaValidatingExtractor.extract[T](json)
+    response.left.map(e => KoskiErrorCategory.badRequest.validation.jsonSchema(JsonErrorMessage(e)))
+  }
+
+  protected implicit val deserializationContext: ExtractionContext =
+    ExtractionContext(KoskiSchema.schemaFactory).copy(validate = false)
 }
 
 case class YtrConfig(username: String, password: String, url: String) extends NotLoggable
