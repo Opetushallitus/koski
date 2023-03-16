@@ -30,8 +30,16 @@ class YoTodistusServlet(implicit val application: KoskiApplication)
     }
   }
 
-  def getRequest: Either[HttpStatus, YoTodistusOidRequest] = {
-    // TODO: Tarkasta käyttöoikeudet
-    Right(YoTodistusOidRequest(oid = params("oppijaOid"), language = params("lang")))
-  }
+  private def getRequest: Either[HttpStatus, YoTodistusOidRequest] =
+    Right(YoTodistusOidRequest(
+      oid = params("oppijaOid"),
+      language = params("lang"),
+    )).flatMap(checkAccess)
+
+  private def checkAccess(req: YoTodistusOidRequest): Either[HttpStatus, YoTodistusOidRequest] =
+    if (session.oid == req.oid || session.isUsersHuollettava(req.oid)) {
+      Right(req)
+    } else {
+      Left(KoskiErrorCategory.unauthorized())
+    }
 }
