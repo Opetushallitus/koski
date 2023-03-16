@@ -1,6 +1,6 @@
 package fi.oph.koski.raportointikanta
 
-import fi.oph.koski.db.{DB, KoskiOpiskeluoikeusRow, PoistettuOpiskeluoikeusRow}
+import fi.oph.koski.db.{DB, KoskiOpiskeluoikeusRow, OpiskeluoikeusRow, PoistettuOpiskeluoikeusRow, YtrOpiskeluoikeusRow}
 import fi.oph.koski.json.JsonManipulation
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
@@ -36,7 +36,7 @@ object OpiskeluoikeusLoader extends Logging {
     db: RaportointiDatabase,
     update: Option[RaportointiDatabaseUpdate] = None,
     batchSize: Int = DefaultBatchSize,
-    onAfterPage: (Int, Seq[KoskiOpiskeluoikeusRow]) => Unit = (_, _) => ()
+    onAfterPage: (Int, Seq[OpiskeluoikeusRow]) => Unit = (_, _) => ()
   ): Observable[LoadResult] = {
     val dueTime = update.map(_.dueTime).map(toTimestamp)
     db.setStatusLoadStarted(statusName, dueTime)
@@ -53,11 +53,22 @@ object OpiskeluoikeusLoader extends Logging {
 
     val result = mapOpiskeluoikeudetSivuittainWithoutAccessCheck(batchSize, update, opiskeluoikeusQueryRepository) { batch =>
       if (batch.nonEmpty) {
-        val result = if (update.isDefined) {
-          updateBatch(db, suostumuksenPeruutusService, batch)
-        } else {
-          loadBatch(db, suostumuksenPeruutusService, batch)
+        val koskiBatch = batch.collect { case r: KoskiOpiskeluoikeusRow => r }
+        val ytrBatch = batch.collect { case r: YtrOpiskeluoikeusRow => r }
+
+        val result = (koskiBatch, ytrBatch) match {
+          case (_, Seq()) if update.isDefined =>
+            updateBatch(db, suostumuksenPeruutusService, koskiBatch)
+          case _ if update.isDefined =>
+            throw new InternalError("Inkrementaalista päivitystä ei tueta YTR-opiskeluoikeuksille")
+          case (_, Seq()) =>
+            loadKoskiBatch(db, suostumuksenPeruutusService, koskiBatch)
+          case (Seq(), _) =>
+            loadYtrBatch(db, ytrBatch)
+          case _ =>
+            throw new InternalError("Tuntematon tilanne, samassa batchissä YTR- ja Koski-opiskeluoikeuksia")
         }
+
         onAfterPage(loopCount, batch)
         loopCount = loopCount + 1
         result
@@ -73,7 +84,7 @@ object OpiskeluoikeusLoader extends Logging {
     result.doOnEach(progressLogger)
   }
 
-  private def loadBatch(
+  private def loadKoskiBatch(
     db: RaportointiDatabase,
     suostumuksenPeruutusService: SuostumuksenPeruutusService,
     batch: Seq[KoskiOpiskeluoikeusRow]
@@ -81,12 +92,26 @@ object OpiskeluoikeusLoader extends Logging {
     val (mitätöidytOot, olemassaolevatOot) = batch.partition(_.mitätöity)
     val (poistetutOot, mitätöidytEiPoistetutOot) = mitätöidytOot.partition(_.poistettu)
 
-    val resultOlemassaolevatOot = loadBatchOlemassaolevatOpiskeluoikeudet(db, olemassaolevatOot)
-    val resultMitätöidyt = loadBatchMitätöidytOpiskeluoikeudet(db, mitätöidytEiPoistetutOot)
-    val resultPoistetut = loadBatchPoistetutOpiskeluoikeudet(db, suostumuksenPeruutusService, poistetutOot)
+    val resultOlemassaolevatOot = loadKoskiBatchOlemassaolevatOpiskeluoikeudet(db, olemassaolevatOot)
+    val resultMitätöidyt = loadKoskiBatchMitätöidytOpiskeluoikeudet(db, mitätöidytEiPoistetutOot)
+    val resultPoistetut = loadKoskiBatchPoistetutOpiskeluoikeudet(db, suostumuksenPeruutusService, poistetutOot)
 
     resultOlemassaolevatOot ++ resultMitätöidyt ++ resultPoistetut
   }
+
+  private def loadYtrBatch(
+    db: RaportointiDatabase,
+    batch: Seq[YtrOpiskeluoikeusRow]
+  ): Seq[LoadResult] = {
+    val (mitätöidytOot, olemassaolevatOot) = batch.partition(_.mitätöity)
+
+    val resultOlemassaolevatOot = loadYtrBatchOlemassaolevatOpiskeluoikeudet(db, olemassaolevatOot)
+
+    // TODO: käsittele mitätöidyt
+
+    resultOlemassaolevatOot
+  }
+
 
   private def updateBatch(
     db: RaportointiDatabase,
@@ -103,7 +128,7 @@ object OpiskeluoikeusLoader extends Logging {
     resultOlemassaolevatOot ++ resultMitätöidyt ++ resultPoistetut
   }
 
-  private def loadBatchOlemassaolevatOpiskeluoikeudet(db: RaportointiDatabase, oot: Seq[KoskiOpiskeluoikeusRow]) = {
+  private def loadKoskiBatchOlemassaolevatOpiskeluoikeudet(db: RaportointiDatabase, oot: Seq[KoskiOpiskeluoikeusRow]): Seq[LoadResult] = {
     val loadBatchStartTime = System.nanoTime()
 
     val (errors, outputRows) = oot.par
@@ -133,6 +158,12 @@ object OpiskeluoikeusLoader extends Logging {
     val toOpiskeluoikeusUnsafeDuration: Long = outputRows.map(_.right.get.toOpiskeluoikeusUnsafeDuration).sum / 1000000
     logger.info(s"Batchin käsittely kesti ${loadBatchDuration} ms, jossa toOpiskeluOikeusUnsafe ${toOpiskeluoikeusUnsafeDuration} ms.")
     result
+  }
+
+  private def loadYtrBatchOlemassaolevatOpiskeluoikeudet(db: RaportointiDatabase, oot: Seq[YtrOpiskeluoikeusRow]): Seq[LoadResult] = {
+    // TODO
+    logger.info(s"TODO: Käsitellään YTR batch, koko ${oot.length}")
+    Seq.empty
   }
 
   private def updateBatchOlemassaolevatOpiskeluoikeudet(
@@ -178,7 +209,7 @@ object OpiskeluoikeusLoader extends Logging {
     result
   }
 
-  private def loadBatchMitätöidytOpiskeluoikeudet(db: RaportointiDatabase, oot: Seq[KoskiOpiskeluoikeusRow]) = {
+  private def loadKoskiBatchMitätöidytOpiskeluoikeudet(db: RaportointiDatabase, oot: Seq[KoskiOpiskeluoikeusRow]) = {
     val (errors, outputRows) = oot.par.filterNot(_.poistettu).map(buildRowMitätöity).seq.partition(_.isLeft)
     db.loadMitätöidytOpiskeluoikeudet(outputRows.map(_.right.get))
     db.updateStatusCount(mitätöidytStatusName, outputRows.size)
@@ -196,7 +227,7 @@ object OpiskeluoikeusLoader extends Logging {
     errors.map(_.left.get)
   }
 
-  private def loadBatchPoistetutOpiskeluoikeudet(
+  private def loadKoskiBatchPoistetutOpiskeluoikeudet(
     db: RaportointiDatabase,
     suostumuksenPeruutusService: SuostumuksenPeruutusService,
     oot: Seq[KoskiOpiskeluoikeusRow]
@@ -601,15 +632,14 @@ object OpiskeluoikeusLoader extends Logging {
       update: Option[RaportointiDatabaseUpdate],
       opiskeluoikeusQueryRepository: OpiskeluoikeusQueryService,
     )
-    (mapFn: Seq[KoskiOpiskeluoikeusRow] => Seq[A])
+    (mapFn: Seq[OpiskeluoikeusRow] => Seq[A])
   : Observable[A] =
     update match {
       case Some(update) =>
         update.loader.load(pageSize, update)(mapFn)
       case _ =>
-        opiskeluoikeusQueryRepository.mapOpiskeluoikeudetSivuittainWithoutAccessCheck(pageSize)(mapFn)
+        opiskeluoikeusQueryRepository.mapKoskiJaYtrOpiskeluoikeudetSivuittainWithoutAccessCheck(pageSize)(mapFn)
     }
-
 }
 
 sealed trait LoadResult
