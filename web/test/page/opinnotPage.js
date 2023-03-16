@@ -89,6 +89,18 @@ function OpinnotPage() {
         .find('.suoritus .property.koulutusmoduuli .koulutusmoduuli .tunniste')
         .text()
     },
+    getTutkintoKoodi: function (indexOrName) {
+      var opiskeluoikeus = resolveOpiskeluoikeus(indexOrName)
+      return opiskeluoikeus
+        .find('.suoritus .property.koulutusmoduuli .koulutusmoduuli .tunniste-koodiarvo')
+        .text()
+    },
+    getVirtaNimi: function (indexOrName) {
+      var opiskeluoikeus = resolveOpiskeluoikeus(indexOrName)
+      return opiskeluoikeus
+        .find('.suoritus .property.koulutusmoduuli .koulutusmoduuli .property.virtaNimi .value')
+        .text()
+    },
     getSuoritustapa: function (indexOrName) {
       var opiskeluoikeus = resolveOpiskeluoikeus(indexOrName)
       return opiskeluoikeus
