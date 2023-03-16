@@ -556,7 +556,7 @@ case class YtrOpiskeluoikeusRow(id: Int,
   suoritustyypit: List[String],
   poistettu: Boolean
 ) extends OpiskeluoikeusRow {
-  def toOpiskeluoikeus(implicit user: SensitiveDataAllowed): Either[List[ValidationError], KoskeenTallennettavaOpiskeluoikeus] = {
+  def toOpiskeluoikeus(implicit user: SensitiveDataAllowed): Either[List[ValidationError], YlioppilastutkinnonOpiskeluoikeus] = {
     KoskiTables.YtrOpiskeluoikeusTable.readAsOpiskeluoikeus(data, oid, versionumero, aikaleima) match {
       case Right(oo: YlioppilastutkinnonOpiskeluoikeus) =>
         Right(FilterNonAnnotationableSensitiveData.filter(oo) match {
@@ -568,7 +568,7 @@ case class YtrOpiskeluoikeusRow(id: Int,
     }
   }
 
-  def toOpiskeluoikeusUnsafe(implicit user: SensitiveDataAllowed): KoskeenTallennettavaOpiskeluoikeus = {
+  def toOpiskeluoikeusUnsafe(implicit user: SensitiveDataAllowed): YlioppilastutkinnonOpiskeluoikeus = {
     toOpiskeluoikeus(user) match {
       case Right(oo) => oo
       case Left(errors) =>

@@ -63,6 +63,29 @@ class RaportointikantaSpec
         true
       )))
     }
+    "Vain YTR-datassa esiintyvät henkilöt on ladattu" in {
+      val mockHetu = "080380-2432"
+      val mockOppija = KoskiApplicationForTests.opintopolkuHenkilöFacade.findOppijaByHetu(mockHetu).get
+      val expectedHenkilöRow = RHenkilöRow(
+        mockOppija.oid,
+        mockOppija.oid,
+        mockOppija.linkitetytOidit,
+        mockOppija.hetu,
+        None,
+        Some(Date.valueOf("1980-03-08")),
+        mockOppija.sukunimi,
+        mockOppija.etunimet,
+        Some("fi"),
+        None,
+        false,
+        None,
+        None,
+        None,
+        true
+      )
+      val henkilo = mainRaportointiDb.runDbSync(mainRaportointiDb.RHenkilöt.filter(_.hetu === mockHetu).result)
+      henkilo should equal(Seq(expectedHenkilöRow))
+    }
     "Huomioi linkitetyt oidit" in {
       val slaveOppija = KoskiSpecificMockOppijat.slave.henkilö
       val hakuOidit = Set(master.oid, slaveOppija.oid)
@@ -130,7 +153,46 @@ class RaportointikantaSpec
       // Varmista, että raportointikanta ei jää epämääräiseen virhetilaan ennen muita testejä. Ilman sleeppiä
       // näin voi generointivirheiden vuoksi käydä.
       Thread.sleep(5000)
-      KoskiApplicationForTests.fixtureCreator.resetFixtures(reloadRaportointikanta = true)
+      KoskiApplicationForTests.fixtureCreator.resetFixtures(reloadRaportointikanta = true, reloadYtrData = true)
+    }
+  }
+
+  "YTR-opiskeluoikeuksien lataus" - {
+    def verifioiYtrOpiskeluoikeudet() = {
+      val ytrOotRaportointikannassa = mainRaportointiDb.runDbSync(
+        mainRaportointiDb.ROpiskeluoikeudet.filter(_.koulutusmuoto === "ylioppilastutkinto").sortBy(_.opiskeluoikeusOid).result
+      )
+      val ytrPäätasonSuorituksetRaportointikannassa = mainRaportointiDb.runDbSync(
+        mainRaportointiDb.RPäätasonSuoritukset.filter(_.suorituksenTyyppi === "ylioppilastutkinto").sortBy(_.päätasonSuoritusId).result
+      )
+      val ytrTutkintokokonaisuudenSuorituksetRaportointikannassa = mainRaportointiDb.runDbSync(
+        mainRaportointiDb.RYtrTutkintokokonaisuudenSuoritukset.sortBy(_.ytrTutkintokokonaisuudenSuoritusId).result
+      )
+      val ytrTutkintokerranSuorituksetRaportointikannassa = mainRaportointiDb.runDbSync(
+        mainRaportointiDb.RYtrTutkintokerranSuoritukset.sortBy(_.ytrTutkintokerranSuoritusId).result
+      )
+      val ytrKokeenSuorituksetRaportointikannassa = mainRaportointiDb.runDbSync(
+        mainRaportointiDb.RYtrKokeenSuoritukset.sortBy(_.ytrKokeenSuoritusId).result
+      )
+      val ytrTutkintokokonaisuudenKokeenSuorituksetRaportointikannassa = mainRaportointiDb.runDbSync(
+        mainRaportointiDb.RYtrTutkintokokonaisuudenKokeenSuoritukset.sortBy(s => (s.ytrTutkintokokonaisuudenSuoritusId, s.ytrKokeenSuoritusId)).result
+      )
+
+      ytrOotRaportointikannassa.length should be >= 4
+      ytrPäätasonSuorituksetRaportointikannassa.length should be(ytrOotRaportointikannassa.length)
+      ytrTutkintokokonaisuudenSuorituksetRaportointikannassa.length should be >= ytrPäätasonSuorituksetRaportointikannassa.length
+      ytrTutkintokerranSuorituksetRaportointikannassa.length should be >= ytrTutkintokokonaisuudenSuorituksetRaportointikannassa.length
+      ytrKokeenSuorituksetRaportointikannassa.length should be >= ytrTutkintokerranSuorituksetRaportointikannassa.length
+      ytrTutkintokokonaisuudenKokeenSuorituksetRaportointikannassa.length should be(ytrKokeenSuorituksetRaportointikannassa.length)
+    }
+
+    "Opiskeluoikeudet ladataan raportointikantaan" in {
+      verifioiYtrOpiskeluoikeudet()
+    }
+    "Opiskeluoikeudet säilyvät raportointikannassa, kun tehdään inkrementaalinen päivitys" in {
+      päivitäRaportointikantaInkrementaalisesti()
+
+      verifioiYtrOpiskeluoikeudet()
     }
   }
 
@@ -501,7 +563,7 @@ class RaportointikantaSpec
         val opiskeluoikeus = ammatillinenOpiskeluoikeus.copy(
           suoritukset = List(suoritus)
         )
-        val (ps, _, _, _) = OpiskeluoikeusLoader.buildSuoritusRows(oid, None, opiskeluoikeus.oppilaitos.get, opiskeluoikeus.suoritukset.head, JObject(), 1)
+        val (ps, _, _, _) = OpiskeluoikeusLoader.buildKoskiSuoritusRows(oid, None, opiskeluoikeus.oppilaitos.get, opiskeluoikeus.suoritukset.head, JObject(), 1)
         ps.toimipisteOid should equal(AmmatillinenExampleData.stadinToimipiste.oid)
         ps.toimipisteNimi should equal(AmmatillinenExampleData.stadinToimipiste.nimi.get.get("fi"))
       }
@@ -514,7 +576,7 @@ class RaportointikantaSpec
         val opiskeluoikeus = ammatillinenOpiskeluoikeus.copy(
           suoritukset = List(suoritus)
         )
-        val (ps, _, _, _) = OpiskeluoikeusLoader.buildSuoritusRows(oid, None, opiskeluoikeus.oppilaitos.get, opiskeluoikeus.suoritukset.head, JObject(), 1)
+        val (ps, _, _, _) = OpiskeluoikeusLoader.buildKoskiSuoritusRows(oid, None, opiskeluoikeus.oppilaitos.get, opiskeluoikeus.suoritukset.head, JObject(), 1)
         ps.alkamispäivä.get should equal(Date.valueOf("2016-1-1"))
       }
     }
@@ -591,7 +653,7 @@ class RaportointikantaSpec
     }
 
     "Jo ladatun opiskeluoikeuden mitätöinti kesken latauksen ei vaikuta lopputulokseen" in {
-      KoskiApplicationForTests.fixtureCreator.resetFixtures(reloadRaportointikanta = true)
+      KoskiApplicationForTests.fixtureCreator.resetFixtures(reloadRaportointikanta = true, reloadYtrData = true)
 
       val alkuperäinenOpiskeluoikeusCount = opiskeluoikeusCount
 
@@ -619,7 +681,7 @@ class RaportointikantaSpec
     }
 
     "Jo ladatun opiskeluoikeuden poisto kesken latauksen ei vaikuta lopputulokseen" in {
-      KoskiApplicationForTests.fixtureCreator.resetFixtures(reloadRaportointikanta = true)
+      KoskiApplicationForTests.fixtureCreator.resetFixtures(reloadRaportointikanta = true, reloadYtrData = true)
 
       val alkuperäinenOpiskeluoikeusCount = opiskeluoikeusCount
 
@@ -659,7 +721,7 @@ class RaportointikantaSpec
     }
 
     "Mitätöity opiskeluoikeus päivittyy oikein inkrementaalisessa päivityksessä" in {
-      KoskiApplicationForTests.fixtureCreator.resetFixtures(reloadRaportointikanta = true)
+      KoskiApplicationForTests.fixtureCreator.resetFixtures(reloadRaportointikanta = true, reloadYtrData = true)
 
       val alkuperäinenOpiskeluoikeusCount = opiskeluoikeusCount
       val alkuperäinenMitätöityOpiskeluoikeusCount = mitätöityOpiskeluoikeusCount
@@ -673,7 +735,7 @@ class RaportointikantaSpec
     }
 
     "Poistettu opiskeluoikeus päivittyy oikein inkrementaalisessa päivityksessä" in {
-      KoskiApplicationForTests.fixtureCreator.resetFixtures(reloadRaportointikanta = true)
+      KoskiApplicationForTests.fixtureCreator.resetFixtures(reloadRaportointikanta = true, reloadYtrData = true)
 
       val alkuperäinenOpiskeluoikeusCount = opiskeluoikeusCount
       val alkuperäinenMitätöityOpiskeluoikeusCount = mitätöityOpiskeluoikeusCount
@@ -688,7 +750,7 @@ class RaportointikantaSpec
     }
 
     "Mitätöinnin peruutus päivittyy oikein inkrementaalisessa päivityksessä" in {
-      KoskiApplicationForTests.fixtureCreator.resetFixtures(reloadRaportointikanta = true)
+      KoskiApplicationForTests.fixtureCreator.resetFixtures(reloadRaportointikanta = true, reloadYtrData = true)
       val opiskeluoikeus = ensimmäinenMitätöitävissäolevaOpiskeluoikeusIdJärjestyksessä
 
       mitätöiOpiskeluoikeus(opiskeluoikeus.oid)

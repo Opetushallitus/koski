@@ -545,13 +545,13 @@ object RaportointiDatabaseSchema {
     val päätasonSuoritusId = column[Long]("paatason_suoritus_id")
     val opiskeluoikeusOid = column[String]("opiskeluoikeus_oid", StringIdentifierType)
 
-    val tutkintokertaKoodiarvo = column[String]("tyyppi_koodiarvo", StringIdentifierType)
+    val tutkintokertaKoodiarvo = column[String]("tutkintokerta_koodiarvo", StringIdentifierType)
     val vuosi = column[Int]("vuosi")
     val vuodenaikaKoodiarvo = column[String]("vuodenaika_koodiarvo", StringIdentifierType)
-    val koulutustaustaKoodiarvo = column[Option[String]]("tyyppi_koodiarvo", StringIdentifierType)
-    val oppilaitosOid = column[String]("oppilaitos_oid", StringIdentifierType)
-    val oppilaitosNimi = column[String]("oppilaitos_nimi")
-    val oppilaitosNimiSv = column[String]("oppilaitos_nimi_sv")
+    val koulutustaustaKoodiarvo = column[Option[String]]("koulutustausta_koodiarvo", StringIdentifierType)
+    val oppilaitosOid = column[Option[String]]("oppilaitos_oid", StringIdentifierType)
+    val oppilaitosNimi = column[Option[String]]("oppilaitos_nimi")
+    val oppilaitosNimiSv = column[Option[String]]("oppilaitos_nimi_sv")
     val oppilaitosKotipaikka = column[Option[String]]("oppilaitos_kotipaikka", StringIdentifierType)
     val oppilaitosnumero = column[Option[String]]("oppilaitosnumero", StringIdentifierType)
 
@@ -991,9 +991,9 @@ case class RYtrTutkintokerranSuoritusRow(
   vuosi: Int,
   vuodenaikaKoodiarvo: String,
   koulutustaustaKoodiarvo: Option[String],
-  oppilaitosOid: String,
-  oppilaitosNimi: String,
-  oppilaitosNimiSv: String,
+  oppilaitosOid: Option[String],
+  oppilaitosNimi: Option[String],
+  oppilaitosNimiSv: Option[String],
   oppilaitosKotipaikka: Option[String],
   oppilaitosnumero: Option[String],
 
