@@ -61,6 +61,14 @@ class YtrDownloadVirhetilanteetSpec
     verifyDownloadCounts(expectedTotalCount = 1, expectedErrorCount = 1)
   }
 
+  "YTR download selviää virheellisistä hetuista" in {
+    clearYtrData()
+    downloadYtrData("2023-02", "2023-03", force = true)
+    verifyDownloadCounts(expectedTotalCount = 0, expectedErrorCount = 0)
+    downloadYtrData("2023-03", "2023-04", force = true)
+    verifyDownloadCounts(expectedTotalCount = 0, expectedErrorCount = 0)
+  }
+
   private def verifyDownloadCounts(
     expectedTotalCount: Int,
     expectedErrorCount: Int
