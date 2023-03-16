@@ -2,7 +2,9 @@ package fi.oph.koski.ytr
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.koskiuser.RequiresKansalainen
+import fi.oph.koski.koskiuser.{KoskiSpecificSession, RequiresKansalainen}
+import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, KoskiAuditLogMessageField}
+import fi.oph.koski.log.KoskiOperation.{KoskiOperation, YTR_YOTODISTUKSEN_LUONTI, YTR_YOTODISTUKSEN_LATAAMINEN}
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 
 class YoTodistusServlet(implicit val application: KoskiApplication)
@@ -17,12 +19,14 @@ class YoTodistusServlet(implicit val application: KoskiApplication)
   }
 
   get("/generate/:lang/:oppijaOid") {
+    mkAuditLog(session, YTR_YOTODISTUKSEN_LUONTI)
     renderEither(getRequest.flatMap(service.initiateGenerating))
   }
 
   get("/download/:lang/:oppijaOid/:filename") {
     getRequest.flatMap(service.currentStatus) match {
       case Right(state: YtrCertificateCompleted) =>
+        mkAuditLog(session, YTR_YOTODISTUKSEN_LATAAMINEN)
         contentType = "application/pdf"
         service.download(state, response.getOutputStream)
       case _ =>
@@ -42,4 +46,7 @@ class YoTodistusServlet(implicit val application: KoskiApplication)
     } else {
       Left(KoskiErrorCategory.unauthorized())
     }
+
+  private def mkAuditLog(session: KoskiSpecificSession, operation: KoskiOperation): Unit = mkAuditLog(session.oid, operation)
+  private def mkAuditLog(oid: String, operation: KoskiOperation): Unit = AuditLog.log(KoskiAuditLogMessage(operation, session, Map(KoskiAuditLogMessageField.oppijaHenkiloOid -> oid)))
 }
