@@ -316,6 +316,18 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
   def loadOsasuoritukset(suoritukset: Seq[ROsasuoritusRow]): Unit =
     runDbSync(ROsasuoritukset ++= suoritukset, timeout = 5.minutes)
 
+  def loadYtrOsasuoritukset(
+    tutkintokokonaisuudet: Seq[RYtrTutkintokokonaisuudenSuoritusRow],
+    tutkintokerrat: Seq[RYtrTutkintokerranSuoritusRow],
+    kokeet: Seq[RYtrKokeenSuoritusRow],
+    tutkintokokonaisuudenKokeet: Seq[RYtrTutkintokokonaisuudenKokeenSuoritusRow]
+  ): Unit = {
+    runDbSync(RYtrTutkintokokonaisuudenSuoritukset ++= tutkintokokonaisuudet, timeout = 5.minutes)
+    runDbSync(RYtrTutkintokerranSuoritukset ++= tutkintokerrat, timeout = 5.minutes)
+    runDbSync(RYtrKokeenSuoritukset ++= kokeet, timeout = 5.minutes)
+    runDbSync(RYtrTutkintokokonaisuudenKokeenSuoritukset ++= tutkintokokonaisuudenKokeet, timeout = 5.minutes)
+  }
+
   def updateOsasuoritukset(suoritukset: Seq[ROsasuoritusRow]): Unit = {
     val opiskeluoikeusOids = suoritukset.map(_.opiskeluoikeusOid).toSet
     runDbSync(ROsasuoritukset.filter(_.opiskeluoikeusOid inSet opiskeluoikeusOids).delete, timeout = 10.minutes)
