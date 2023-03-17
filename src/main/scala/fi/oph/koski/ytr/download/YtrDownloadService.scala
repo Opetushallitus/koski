@@ -148,11 +148,15 @@ class YtrDownloadService(
 
   private def createOppijatObservable(ssnData: Observable[YtrSsnData]): Observable[YtrLaajaOppija] = {
     val groupedSsns = ssnData
-      .doOnEach(o =>
-        logger.info(s"Downloaded ${o.ssns.map(_.length).getOrElse('-')} ssns from YTR")
-      )
-      .map(_.sortedByBirthdays)
-      .flatMap(a => Observable.from(a.ssns.toList.flatten))
+      .doOnEach(o => {
+        val fullCount = o.ssns.map(_.length).getOrElse(0)
+        val validSsnCount = o.ssnsWithValidFormat.map(_.length).getOrElse(0)
+        logger.info(s"Downloaded ${fullCount} ssn prospects from YTR")
+        if (validSsnCount < fullCount) {
+          logger.warn(s"There was ${fullCount - validSsnCount} / ${fullCount} ssns of invalid format")
+        }
+      })
+      .flatMap(o => Observable.from(o.ssnsSortedByBirthdays.toList.flatten))
       .tumblingBuffer(batchSize)
       .map(ssns => YtrSsnData(Some(ssns.toList)))
 
