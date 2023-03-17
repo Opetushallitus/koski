@@ -256,7 +256,7 @@ describe('Oppijataulukko', function () {
           'Erkki, Eitiedossa',
           'Esimerkki, Eero',
           'Eskari, Essi',
-          "Eurooppalainen, Emilia",
+          'Eurooppalainen, Emilia',
           'Hetuton, Heikki',
           'Historoitsija, Hiisi',
           'IB-final, Iina',
@@ -287,6 +287,7 @@ describe('Oppijataulukko', function () {
           'Luokallejäänyt, Lasse',
           'Luva, Aikuisten',
           'Luva, Nuorten',
+          'Maksamaa-Toikkarinen, Matti',
           'Markkanen-Fagerström, Eéro Jorma-Petteri',
           'Mervi, Monioppiaineinen',
           'Monikoululainen, Miia',
@@ -302,10 +303,12 @@ describe('Oppijataulukko', function () {
           'Oppija, Oili',
           'Oppija, Oili',
           'Osittainen, Outi',
+          'Outinen-Toikkarinen, Taimi',
           'Perusopetuksensiirto, Pertti',
           'Pieni-Kokonaisuus, Pentti',
           'Reformi, Reijo',
           'Rikkinäinen, Kela',
+          'Rikko-Toikkarinen, Risto',
           'Syntynyt, Sylvi',
           't, tavallinen',
           't, tavallinen',
@@ -323,16 +326,13 @@ describe('Oppijataulukko', function () {
           'v, virheellisestiSiirrettyVieraskielinen',
           'Valviralle, Veera',
           'Valviralle-Kesken, Ville',
+          'Vanhanen-Toikkarinen, Vanja',
           'Vuonna 2004 syntynyt, Peruskoulu suoritettu 2021',
           'Vuonna 2004 syntynyt, Peruskoulu suoritettu ennen 2021',
           'Vuonna 2004 syntynyt, Peruskoulusta eronnut ennen 2021',
-          'Vuonna 2004 syntynyt ahvenanmaalle muuttanut, Peruskoulu suoritettu 2021',
-          'Vuonna 2004 syntynyt maastamuuttaja, Peruskoulu suoritettu 2021',
-          'Vuonna 2005 syntynyt, Peruskoulu suoritettu 2021',
-          'Vuosiluokkalainen, Ville',
-          'Ylioppilaslukiolainen, Ynjevi'
+          'Vuonna 2004 syntynyt ahvenanmaalle muuttanut, Peruskoulu suoritettu 2021'
         ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('101')
+        expect(page.opiskeluoikeudeTotal()).to.equal('105')
       })
     })
 
@@ -714,7 +714,9 @@ describe('Oppijataulukko', function () {
     })
 
     describe('voi filtteröidä hakusanalla Taiteen perusopetuksen hankintakoulutus', function () {
-      before(organisaatiovalitsin.enter('Taiteen perusopetus (hankintakoulutus)'))
+      before(
+        organisaatiovalitsin.enter('Taiteen perusopetus (hankintakoulutus)')
+      )
 
       it('näyttää vain Taiteen perusopetuksen hankintakoulutus -valinnan eikä aliorganisaatioita sille', function () {
         expect(organisaatiovalitsin.oppilaitokset()).to.deep.equal([
@@ -724,12 +726,12 @@ describe('Oppijataulukko', function () {
     })
 
     describe('Voi valita kaikki hankintakoulutuksen toimipisteet', function () {
-      before(organisaatiovalitsin.select('Taiteen perusopetus (hankintakoulutus)'))
+      before(
+        organisaatiovalitsin.select('Taiteen perusopetus (hankintakoulutus)')
+      )
 
       it('toimii', function () {
-        expect(page.oppijataulukko.names()).to.deep.equal([
-          'Taiteilija, Hank'
-        ])
+        expect(page.oppijataulukko.names()).to.deep.equal(['Taiteilija, Hank'])
         expect(
           page.oppijataulukko.oppilaitokset().slice().sort()
         ).to.deep.equal([

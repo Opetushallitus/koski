@@ -34,6 +34,8 @@ abstract class YoTodistusService(application: KoskiApplication) {
 
   def download(req: YtrCertificateCompleted, output: OutputStream): Unit
 
+  def reset(): Unit = {}
+
   private def toHetuReq(req: YoTodistusOidRequest): Either[HttpStatus, YoTodistusHetuRequest] =
     henkilöRepository
       .findByOid(req.oid)

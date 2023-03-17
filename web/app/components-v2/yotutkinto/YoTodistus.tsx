@@ -8,20 +8,19 @@ import {
   useOnApiSuccess,
   useSafeState
 } from '../../api-fetch'
-import { formatFinnishDateTime, ISO2FinnishDateTime } from '../../date/date'
+import { ISO2FinnishDateTime } from '../../date/date'
 import { t, tTemplate } from '../../i18n/i18n'
 import { isYtrCertificateBlocked } from '../../types/fi/oph/koski/ytr/YtrCertificateBlocked'
 import { isYtrCertificateCompleted } from '../../types/fi/oph/koski/ytr/YtrCertificateCompleted'
 import { isYtrCertificateInProgress } from '../../types/fi/oph/koski/ytr/YtrCertificateInProgress'
 import { isYtrCertificateInternalError } from '../../types/fi/oph/koski/ytr/YtrCertificateInternalError'
-import { isYtrCertificateNotStarted } from '../../types/fi/oph/koski/ytr/YtrCertificateNotStarted'
 import { isYtrCertificateOldExamination } from '../../types/fi/oph/koski/ytr/YtrCertificateOldExamination'
 import { YtrCertificateResponse } from '../../types/fi/oph/koski/ytr/YtrCertificateResponse'
 import { isYtrCertificateServiceUnavailable } from '../../types/fi/oph/koski/ytr/YtrCertificateServiceUnavailable'
 import { isYtrCertificateTimeout } from '../../types/fi/oph/koski/ytr/YtrCertificateTimeout'
 import { fetchYoTodistusState, generateYoTodistus } from '../../util/koskiApi'
 import { useInterval } from '../../util/useInterval'
-import { common, CommonProps } from '../CommonProps'
+import { common, CommonProps, subTestId, testId } from '../CommonProps'
 import { RaisedButton } from '../controls/RaisedButton'
 import { OptionList, Select, SelectOption } from '../controls/Select'
 import { Spinner } from '../texts/Spinner'
@@ -32,7 +31,7 @@ export type YoTodistusProps = CommonProps<{
 }>
 
 export const YoTodistus: React.FC<YoTodistusProps> = (props) => {
-  const [language, setLanguage] = useState<YoTodistusLangage>('fi')
+  const [language, setLanguage] = useState<YoTodistusLanguage>('fi')
 
   const stateFetch = useApiWithParams(fetchYoTodistusState, [
     props.oppijaOid,
@@ -48,13 +47,10 @@ export const YoTodistus: React.FC<YoTodistusProps> = (props) => {
 
   const generate = useApiMethod(generateYoTodistus)
 
-  const [generatingInitiated, setGeneratingInitiated] = useSafeState(false)
-
   const startGenerating = useCallback(() => {
     statePoller.start()
-    setGeneratingInitiated(true)
     return generate.call(props.oppijaOid, language)
-  }, [generate, language, props.oppijaOid, setGeneratingInitiated, statePoller])
+  }, [generate, language, props.oppijaOid, statePoller])
 
   const [state, setState] = useSafeState<YtrCertificateResponse | null>(null)
   const updateStateFromResponse = useCallback(
@@ -116,16 +112,25 @@ export const YoTodistus: React.FC<YoTodistusProps> = (props) => {
       >
         <span className="YoTodistus__title">{'Ylioppilastodistus'}</span>
         {blockingErrorText ? (
-          <span className="YoTodistus__blocked">{blockingErrorText}</span>
+          <span className="YoTodistus__blocked" {...testId(props, 'error')}>
+            {blockingErrorText}
+          </span>
         ) : (
           <>
             {!isYtrCertificateInProgress(state) && (
-              <LanguageSelect value={language} onChange={setLanguage} />
+              <LanguageSelect
+                value={language}
+                onChange={setLanguage}
+                testId={subTestId(props, 'language')}
+              />
             )}
             {!isYtrCertificateInProgress(state) &&
               !isYtrCertificateCompleted(state) && (
                 <>
-                  <RaisedButton onClick={startGenerating}>
+                  <RaisedButton
+                    onClick={startGenerating}
+                    {...testId(props, 'start')}
+                  >
                     {'Lataa todistus'}
                   </RaisedButton>
                 </>
@@ -133,7 +138,9 @@ export const YoTodistus: React.FC<YoTodistusProps> = (props) => {
             {isYtrCertificateInProgress(state) && (
               <>
                 <Spinner inline compact />
-                <Trans>{'Luodaan tiedostoa...'}</Trans>
+                <span {...testId(props, 'loading')}>
+                  <Trans>{'Luodaan tiedostoa...'}</Trans>
+                </span>
               </>
             )}
             {isYtrCertificateCompleted(state) && (
@@ -141,6 +148,7 @@ export const YoTodistus: React.FC<YoTodistusProps> = (props) => {
                 href={todistusUrl(props.oppijaOid, language)}
                 target="_blank"
                 rel="noreferrer"
+                {...testId(props, 'open')}
               >
                 <Trans>{'Näytä todistus'}</Trans>
               </a>
@@ -148,34 +156,38 @@ export const YoTodistus: React.FC<YoTodistusProps> = (props) => {
           </>
         )}
       </div>
-      {errorText && <div className="YoTodistus__error">{errorText}</div>}
+      {errorText && (
+        <div className="YoTodistus__error" {...testId(props, 'error')}>
+          {errorText}
+        </div>
+      )}
     </>
   )
 }
 
 const todistusUrl = (
   oppijaOid: string,
-  language: YoTodistusLangage
+  language: YoTodistusLanguage
 ): string => {
   return `/koski/api/yotodistus/download/${language}/${oppijaOid}/yo-todistus-${language}.pdf`
 }
 
-type YoTodistusLangage = 'fi' | 'sv' | 'en'
+export type YoTodistusLanguage = 'fi' | 'sv' | 'en'
 
-type LanguageSelectProps = {
-  value: YoTodistusLangage
-  onChange: (lang: YoTodistusLangage) => void
-}
+type LanguageSelectProps = CommonProps<{
+  value: YoTodistusLanguage
+  onChange: (lang: YoTodistusLanguage) => void
+}>
 
-const yoTodistusLanguages: OptionList<YoTodistusLangage> = [
-  { key: 'fi', value: 'fi', label: t('Suomi') },
-  { key: 'sv', value: 'sv', label: t('Ruotsi') },
-  { key: 'en', value: 'en', label: t('Englanti') }
+const yoTodistusLanguages: OptionList<YoTodistusLanguage> = [
+  { key: 'fi', value: 'fi', label: t('Fi') },
+  { key: 'sv', value: 'sv', label: t('Sv') },
+  { key: 'en', value: 'en', label: t('En') }
 ]
 
 const LanguageSelect: React.FC<LanguageSelectProps> = (props) => {
   const onChange = useCallback(
-    (option?: SelectOption<YoTodistusLangage>) => {
+    (option?: SelectOption<YoTodistusLanguage>) => {
       if (option?.value) props.onChange(option.value)
     },
     [props]
@@ -192,6 +204,7 @@ const LanguageSelect: React.FC<LanguageSelectProps> = (props) => {
         options={yoTodistusLanguages}
         value={props.value}
         onChange={onChange}
+        testId={props.testId}
       />
     </div>
   )
