@@ -87,6 +87,7 @@ object EmptyYtrClient extends YtrClient {
 object MockYrtClient extends YtrClient {
   lazy val resource: Resource = new ClasspathResource("/mockdata/yotodistus")
   val requested: collection.mutable.Map[String, LocalDateTime] = collection.mutable.Map.empty
+  val yoTodistusGeneratingTimeSecs = 2
 
   def oppijaJsonByHetu(hetu: String): Option[JValue] = JsonResources.readResourceIfExists(resourcename(hetu))
   def filename(hetu: String): String = "src/main/resources" + resourcename(hetu)
@@ -118,7 +119,7 @@ object MockYrtClient extends YtrClient {
         Right(YtrCertificateOldExamination(LocalDateTime.now()))
       case (_, None) =>
         Right(YtrCertificateNotStarted())
-      case (_, Some(time)) if LocalDateTime.now().isAfter(time.plusSeconds(5)) =>
+      case (_, Some(time)) if LocalDateTime.now().isAfter(time.plusSeconds(yoTodistusGeneratingTimeSecs)) =>
         if (req.hetu == ylioppilasLukiolainenTimeouttaava.hetu.get) {
           Right(YtrCertificateTimeout(time))
         } else if (req.hetu == ylioppilasLukiolainenRikki.hetu.get) {
@@ -130,7 +131,7 @@ object MockYrtClient extends YtrClient {
         } else {
           Right(YtrCertificateCompleted(
             requestedTime = time,
-            completedTime = time.plusSeconds(5),
+            completedTime = time.plusSeconds(yoTodistusGeneratingTimeSecs),
             certificateUrl = "link-to-download",
           ))
         }
@@ -145,6 +146,8 @@ object MockYrtClient extends YtrClient {
     requested += (s"${req.hetu}_${req.language}" -> LocalDateTime.now())
     getCertificateStatus(req)
   }
+
+  def reset(): Unit = requested.clear()
 }
 
 case class RemoteYtrClient(rootUrl: String, user: String, password: String) extends YtrClient with Logging {

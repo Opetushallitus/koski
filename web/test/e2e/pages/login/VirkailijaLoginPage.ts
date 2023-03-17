@@ -49,7 +49,7 @@ export class VirkailijaLoginPage {
    * Kirjautuu ulos Koski-palvelusta tekemällä POST-pyynnön resurssiin /koski/user/logout.
    */
   async apiLogout() {
-    const request = await this.page.request.post('/koski/user/logout')
+    const request = await this.page.request.get('/koski/user/logout')
     expect(request.ok()).toBeTruthy()
   }
 }

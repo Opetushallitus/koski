@@ -72,7 +72,7 @@ const OmatTiedotSuoritustaulukko = ({
         ))
       )}
       {isYlioppilastutkinto(parentSuoritus) && (
-        <YoTodistus oppijaOid={context.oppijaOid} />
+        <YoTodistus oppijaOid={context.oppijaOid} testId="yoTodistus" />
       )}
     </div>
   )

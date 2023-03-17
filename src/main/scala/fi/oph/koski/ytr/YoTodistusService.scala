@@ -32,6 +32,8 @@ abstract class YoTodistusService(application: KoskiApplication) {
 
   def download(req: YtrCertificateCompleted, output: OutputStream): Unit
 
+  def reset(): Unit = {}
+
   private def toHetuReq(req: YoTodistusOidRequest): Either[HttpStatus, YoTodistusHetuRequest] =
     henkilöRepository
       .findByOid(req.oid)
@@ -43,6 +45,8 @@ abstract class YoTodistusService(application: KoskiApplication) {
 class MockYoTodistusService(application: KoskiApplication) extends YoTodistusService(application) {
   override def download(req: YtrCertificateCompleted, output: OutputStream): Unit =
     resource.resourceSerializer("mock-yotodistus.pdf")(input => Streams.pipeTo(input, output))
+
+  override def reset(): Unit = MockYrtClient.reset()
 }
 
 class RemoteYoTodistusService(application: KoskiApplication, config: YtrS3Config) extends YoTodistusService(application) {
