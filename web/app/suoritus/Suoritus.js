@@ -88,7 +88,7 @@ export const suorituksenTyyppi = (suoritus) =>
 
 export const suoritusTitle = (suoritus) => {
   const title = modelTitle(
-    tutkinnonNimi(modelLookup(suoritus, 'koulutusmoduuli'))
+    tutkinnonNimi(modelLookup(suoritus, 'koulutusmoduuli'), true)
   )
   switch (suorituksenTyyppi(suoritus)) {
     case 'ammatillinentutkintoosittainen':

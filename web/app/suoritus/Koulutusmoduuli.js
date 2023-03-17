@@ -30,8 +30,8 @@ export const isLukio2019ModuuliTaiOpintojakso = (m) =>
   m && m.value.classes.includes('lukionmoduulitaipaikallinenopintojakso2019')
 export const isLukio2019Oppiaine = (m) =>
   m.value.classes.includes('lukionoppiaine2019')
-export const tutkinnonNimi = (m) =>
-  modelData(m, 'virtaNimi')
+export const tutkinnonNimi = (m, tryVirtaNimi) =>
+  tryVirtaNimi && modelData(m, 'virtaNimi')
     ? modelLookup(m, 'virtaNimi')
     : modelData(m, 'perusteenNimi')
     ? modelLookup(m, 'perusteenNimi')
