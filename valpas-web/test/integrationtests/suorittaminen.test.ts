@@ -81,7 +81,12 @@ const viikinNormaalikouluSuorittaminenPath = suorittaminenPathWithOrg.href(
 
 describe("Suorittamisen valvonta -näkymä", () => {
   it("Näyttää listan oppijoista Stadin ammattiopiston käyttäjälle", async () => {
-    await loginAs(suorittaminenListaPath, "valpas-pelkkä-suorittaminen-amis", true, "2021-09-02")
+    await loginAs(
+      suorittaminenListaPath,
+      "valpas-pelkkä-suorittaminen-amis",
+      true,
+      "2021-09-02"
+    )
     await urlIsEventually(pathToUrl(stadinAmmattiopistoSuorittaminenPath))
 
     await textEventuallyEquals(
@@ -151,7 +156,12 @@ describe("Suorittamisen valvonta -näkymä", () => {
   })
 
   it("Toimii koulutustoimijatason käyttäjällä", async () => {
-    await loginAs(hakutilannePath, "valpas-hki-suorittaminen", true, "2021-09-02")
+    await loginAs(
+      hakutilannePath,
+      "valpas-hki-suorittaminen",
+      true,
+      "2021-09-02"
+    )
     await selectOrganisaatioByNimi("Stadin ammatti- ja aikuisopisto")
 
     await urlIsEventually(pathToUrl(stadinAmmattiopistoSuorittaminenPath))
@@ -269,10 +279,20 @@ describe("Suorittamisen valvonta -näkymä", () => {
     const oppijaRowSelector = `.table__row[data-row*="${oppijaOid}"]`
 
     await reset(suorittaminenListaPath, true, "2021-09-02")
-    await loginAs(suorittaminenListaPath, "valpas-pelkkä-suorittaminen-amis", false, "2021-09-02")
+    await loginAs(
+      suorittaminenListaPath,
+      "valpas-pelkkä-suorittaminen-amis",
+      false,
+      "2021-09-02"
+    )
     await expectElementEventuallyNotVisible(oppijaRowSelector)
 
-    await loginAs(suorittaminenListaPath, "valpas-pelkkä-suorittaminen-amis-omnia", false, "2021-09-02")
+    await loginAs(
+      suorittaminenListaPath,
+      "valpas-pelkkä-suorittaminen-amis-omnia",
+      false,
+      "2021-09-02"
+    )
     await expectElementEventuallyVisible(oppijaRowSelector)
   })
 
@@ -282,10 +302,20 @@ describe("Suorittamisen valvonta -näkymä", () => {
     const oppijaRowSelector = `.table__row[data-row*="${oppijaOid}"]`
 
     await reset(suorittaminenListaPath, true, "2022-03-02")
-    await loginAs(suorittaminenListaPath, "valpas-pelkkä-suorittaminen-amis", false, "2022-03-02")
+    await loginAs(
+      suorittaminenListaPath,
+      "valpas-pelkkä-suorittaminen-amis",
+      false,
+      "2022-03-02"
+    )
     await expectElementEventuallyNotVisible(oppijaRowSelector)
 
-    await loginAs(suorittaminenListaPath, "valpas-pelkkä-suorittaminen-amis-omnia", false, "2022-03-02")
+    await loginAs(
+      suorittaminenListaPath,
+      "valpas-pelkkä-suorittaminen-amis-omnia",
+      false,
+      "2022-03-02"
+    )
     await expectElementEventuallyVisible(oppijaRowSelector)
   })
 
@@ -295,10 +325,20 @@ describe("Suorittamisen valvonta -näkymä", () => {
     const oppijaRowSelector = `.table__row[data-row*="${oppijaOid}"]`
 
     await reset(suorittaminenListaPath, true, "2022-03-02")
-    await loginAs(suorittaminenListaPath, "valpas-pelkkä-suorittaminen-amis", false, "2022-03-02")
+    await loginAs(
+      suorittaminenListaPath,
+      "valpas-pelkkä-suorittaminen-amis",
+      false,
+      "2022-03-02"
+    )
     await expectElementEventuallyNotVisible(oppijaRowSelector)
 
-    await loginAs(suorittaminenListaPath, "valpas-pelkkä-suorittaminen-ressu", false, "2022-03-02")
+    await loginAs(
+      suorittaminenListaPath,
+      "valpas-pelkkä-suorittaminen-ressu",
+      false,
+      "2022-03-02"
+    )
     await expectElementEventuallyVisible(oppijaRowSelector)
   })
 
@@ -308,10 +348,20 @@ describe("Suorittamisen valvonta -näkymä", () => {
     const oppijaRowSelector = `.table__row[data-row*="${oppijaOid}"]`
 
     await reset(suorittaminenListaPath, true, "2022-03-02")
-    await loginAs(suorittaminenListaPath, "valpas-pelkkä-suorittaminen-amis", false, "2022-03-02")
+    await loginAs(
+      suorittaminenListaPath,
+      "valpas-pelkkä-suorittaminen-amis",
+      false,
+      "2022-03-02"
+    )
     await expectElementEventuallyVisible(oppijaRowSelector)
 
-    await loginAs(suorittaminenListaPath, "valpas-pelkkä-suorittaminen-amis-omnia", false, "2022-03-02")
+    await loginAs(
+      suorittaminenListaPath,
+      "valpas-pelkkä-suorittaminen-amis-omnia",
+      false,
+      "2022-03-02"
+    )
     await expectElementEventuallyNotVisible(oppijaRowSelector)
   })
 })

@@ -161,17 +161,17 @@ describe("Oppijahaku", () => {
     )
   })
 
-  it("Maksuttomuus: Haku löytää opijan, joka on ikänsä puolesta uuden lain mukaan oppivelvollinen ja löytyy oppijanumerorekisteristä mutta ei Koskesta", async () => {
+  it("Maksuttomuus: Haku löytää oppijan, joka on ikänsä puolesta uuden lain mukaan oppivelvollinen ja löytyy oppijanumerorekisteristä mutta ei Koskesta", async () => {
     await hakuLogin("valpas-pelkkä-maksuttomuus")
     await fillQueryField(
-      "1.2.246.562.24.00000000075",
+      "1.2.246.562.24.00000000079",
       "maksuttomuusoppijasearch"
     )
     await submit("maksuttomuusoppijasearch")
     await expectResultToBe(
       "Löytyi: Ei-opiskeluoikeuksia-oppivelvollisuusikäinen Valpas (110405A6951)",
       oppijaPath.href("/virkailija", {
-        oppijaOid: "1.2.246.562.24.00000000075",
+        oppijaOid: "1.2.246.562.24.00000000079",
         prev: maksuttomuusPath.href(),
       }),
       "maksuttomuusoppijasearch"
@@ -330,7 +330,7 @@ describe("Oppijahaku", () => {
     await expectResultToBe(
       "Löytyi: Inter-valmistunut-9-2021 Valpas (200405A780K)",
       oppijaPath.href("/virkailija", {
-        oppijaOid: "1.2.246.562.24.00000000080",
+        oppijaOid: "1.2.246.562.24.00000000084",
         prev: maksuttomuusPath.href(),
       }),
       "maksuttomuusoppijasearch"
@@ -410,7 +410,7 @@ describe("Oppijahaku", () => {
       await expectResultToBe(
         "Löytyi: Oppivelvollisuudesta-vapautettu Valpas (060605A538B)",
         oppijaPath.href("/virkailija", {
-          oppijaOid: "1.2.246.562.24.00000000157",
+          oppijaOid: "1.2.246.562.24.00000000161",
           prev: kunnanHetuhakuPath.href(),
         })
       )

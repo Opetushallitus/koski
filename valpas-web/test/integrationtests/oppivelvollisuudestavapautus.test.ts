@@ -20,11 +20,13 @@ import {
 } from "./oppija.shared"
 
 const vapautetettavaPath = oppijaPath.href("/virkailija", {
+  // Oppivelvollinen-ysiluokka-kesken-keväällä-2021 Valpas (221105A3023)
   oppijaOid: "1.2.246.562.24.00000000001",
 })
 
 const oppivelvollisuudestaVapautettuPath = oppijaPath.href("/virkailija", {
-  oppijaOid: "1.2.246.562.24.00000000157",
+  // Oppivelvollisuudesta-vapautettu Valpas (060605A538B)
+  oppijaOid: "1.2.246.562.24.00000000161",
 })
 
 const tarkastelupäivä = "2021-10-01"
@@ -178,7 +180,7 @@ const validateOppivelvollisuudestaVapautettu = async (
   await mainHeadingEquals(
     "Oppivelvollisuudesta-vapautettu Valpas (060605A538B)"
   )
-  await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000157")
+  await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000161")
   await oppivelvollisuustiedotEquals(
     oppivelvollisuustiedot({
       oppivelvollisuus:
@@ -190,9 +192,9 @@ const validateOppivelvollisuudestaVapautettu = async (
 }
 
 const validateOppivelvollisuudestaVapautettuEiNäy = async () => {
-  allowNetworkError("/api/oppija/1.2.246.562.24.00000000157", FORBIDDEN)
+  allowNetworkError("/api/oppija/1.2.246.562.24.00000000161", FORBIDDEN)
   await mainHeadingEquals("Oppijan tiedot")
   await secondaryHeadingEquals(
-    "Oppijaa ei löydy tunnuksella 1.2.246.562.24.00000000157"
+    "Oppijaa ei löydy tunnuksella 1.2.246.562.24.00000000161"
   )
 }

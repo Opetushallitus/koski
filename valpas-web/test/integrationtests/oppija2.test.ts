@@ -54,12 +54,12 @@ const hetutonPath = oppijaPath.href("/virkailija", {
 const opiskeluoikeusKeskeytettyMääräajaksiPath = oppijaPath.href(
   "/virkailija",
   {
-    oppijaOid: "1.2.246.562.24.00000000077",
+    oppijaOid: "1.2.246.562.24.00000000081",
   }
 )
 
 const opiskeluoikeusLomaPath = oppijaPath.href("/virkailija", {
-  oppijaOid: "1.2.246.562.24.00000000078",
+  oppijaOid: "1.2.246.562.24.00000000082",
 })
 
 const opiskeluoikeusValmaPath = oppijaPath.href("/virkailija", {
@@ -67,11 +67,11 @@ const opiskeluoikeusValmaPath = oppijaPath.href("/virkailija", {
 })
 
 const maksuttomuuttaPidennettyPath = oppijaPath.href("/virkailija", {
-  oppijaOid: "1.2.246.562.24.00000000127",
+  oppijaOid: "1.2.246.562.24.00000000131",
 })
 
 const perusopetukseenValmistautuvaPath = oppijaPath.href("/virkailija", {
-  oppijaOid: "1.2.246.562.24.00000000131",
+  oppijaOid: "1.2.246.562.24.00000000135",
 })
 
 const montaKuntailmoitustaPath = oppijaPath.href("/virkailija", {
@@ -79,23 +79,23 @@ const montaKuntailmoitustaPath = oppijaPath.href("/virkailija", {
 })
 
 const preIBdOppijaPath = oppijaPath.href("/virkailija", {
-  oppijaOid: "1.2.246.562.24.00000000135",
+  oppijaOid: "1.2.246.562.24.00000000139",
 })
 
 const oppivelvollisuusKeskeytettyHelsinkiläinenPath = oppijaPath.href(
   "/virkailija",
   {
-    oppijaOid: "1.2.246.562.24.00000000130",
+    oppijaOid: "1.2.246.562.24.00000000134",
   }
 )
 
 const eiKoskessaOppivelvollinenJollaKeskeytyksiäJaIlmoituksiaPath =
   oppijaPath.href("/virkailija", {
-    oppijaOid: "1.2.246.562.24.00000000144",
+    oppijaOid: "1.2.246.562.24.00000000148",
   })
 
 const pelkkäEsiopetusPath = oppijaPath.href("/virkailija", {
-  oppijaOid: "1.2.246.562.24.00000000126",
+  oppijaOid: "1.2.246.562.24.00000000130",
 })
 
 const mainHeadingEquals = (expected: string) =>
@@ -527,7 +527,7 @@ describe("Oppijakohtainen näkymä 2/2", () => {
   it("Näyttää maksuttomuuden pidennyksen", async () => {
     await loginAs(maksuttomuuttaPidennettyPath, "valpas-monta")
     await mainHeadingEquals("Maksuttomuutta-pidennetty Valpas (070604A200U)")
-    await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000127")
+    await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000131")
     await opiskeluhistoriaEquals(
       historiaOpintoOikeus({
         otsikko: "Ammatillinen tutkinto 2021 –",
@@ -547,7 +547,7 @@ describe("Oppijakohtainen näkymä 2/2", () => {
     await mainHeadingEquals(
       "Perusopetukseen-valmistautuva Valpas (151011A1403)"
     )
-    await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000131")
+    await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000135")
     await opiskeluhistoriaEquals(
       historiaOpintoOikeus({
         otsikko: "Perusopetukseen valmistava opetus 2021 –",
@@ -609,7 +609,7 @@ describe("Oppijakohtainen näkymä 2/2", () => {
   it("Näyttää preIB oppijan tiedot", async () => {
     await loginAs(preIBdOppijaPath, "valpas-monta", true)
     await mainHeadingEquals("SuorittaaPreIB Valpas (190704A574E)")
-    await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000135")
+    await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000139")
     await opiskeluhistoriaEquals(
       merge(
         historiaOpintoOikeus({
@@ -634,7 +634,7 @@ describe("Oppijakohtainen näkymä 2/2", () => {
   it("Näyttää esiopetusoppijan tiedot", async () => {
     await loginAs(pelkkäEsiopetusPath, "valpas-monta", true)
     await mainHeadingEquals("Esikoululainen Valpas (270615A6481)")
-    await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000126")
+    await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000130")
     await opiskeluhistoriaEquals(
       merge(
         historiaOpintoOikeus({
@@ -656,7 +656,7 @@ describe("Oppijakohtainen näkymä 2/2", () => {
     await mainHeadingEquals(
       "Kosketon-keskeytyksiä-ilmoituksia Valpas (260705A1119)"
     )
-    await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000144")
+    await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000148")
     await oppivelvollisuustiedotEquals(
       oppivelvollisuustiedot({
         opiskelutilanne: "Ei opiskelupaikkaa",
@@ -684,7 +684,7 @@ describe("Oppijakohtainen näkymä 2/2", () => {
     await mainHeadingEquals(
       "Kosketon-keskeytyksiä-ilmoituksia Valpas (260705A1119)"
     )
-    await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000144")
+    await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000148")
 
     // Avaa ov-keskeytysmodaali
     await clickElement(testId("ovkeskeytys-btn"))

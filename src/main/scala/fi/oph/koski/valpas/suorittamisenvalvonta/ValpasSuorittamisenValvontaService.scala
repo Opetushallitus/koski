@@ -41,10 +41,6 @@ class ValpasSuorittamisenValvontaService(
   private def poistaEronneetOpiskeluoikeudetJoillaUusiKelpaavaOpiskelupaikka(
     oppija: OppijaHakutilanteillaLaajatTiedot
   ): OppijaHakutilanteillaLaajatTiedot = {
-    // TODO: Poista myös oppijat, joilla on ollut eroamisen jälkeen tai ennen eroamista, mutta eroamispäivän jälkeisenä päivänä voimassaollut, toinen opiskelupaikka, joka on myös voinut päättyä eroon.
-    // TODO: pitäisikö kuitenkin näyttää jonkin aikaa eroamisen jälkeen aina, vaikka olisikin toinen opiskelupaikka?
-    // TODO: otetaanko tulevaisuudessa alkavaksi merkityt opiskeluoikeudet huomioon vai ei? Oletettavasti ei.
-    // TODO: älä poista listalta kuin silloin, jos uusi opiskelupaikka on varmasti kyseiselle oppijalle oppivelvollisuuden suorittamiseen kelpaava? Esim. nivelvaihe ei aina ole. Tämä on ehkä se syy, miksei aikanaan ole poistettu automaattisesti...
     oppija.oppija.ifOppivelvollinenOtherwise(oppija) { o =>
       val uudetOpiskeluoikeudet =
         oppija.oppija.opiskeluoikeudet.filterNot(
