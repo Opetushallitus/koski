@@ -1,5 +1,21 @@
-function OmatTiedotPage() {
-  var api = {
+import {
+  click,
+  extractAsText,
+  findFirstNotThrowing,
+  findSingle,
+  isElementVisible,
+  isLoading,
+  openPage,
+  S,
+  seq,
+  toArray,
+  wait
+} from '../util/testHelpers.js'
+import { OrganisaatioHaku } from './organisaatioHaku.js'
+import { Page } from './pageApi.js'
+
+export function OmatTiedotPage() {
+  const api = {
     openPage: function () {
       return openPage('/koski/omattiedot', api.isVisible)()
     },
@@ -28,30 +44,30 @@ function OmatTiedotPage() {
       return S('header button:contains(Jaa suoritustietoja)')
     },
     selectOpiskelija: function () {
-      var elem = findSingle('.header__oppijanvalitsin')()
+      let elem = findSingle('.header__oppijanvalitsin')()
       return findFirstNotThrowing(elem)
     },
     selectOpiskelijaNäkyvissä: function () {
       return isElementVisible(S('.header__oppijanvalitsin'))
     },
     opiskelijanValintaNimet: function () {
-      var elem = findSingle('.header__oppijanvalitsin')
-      var result = toArray(elem().find('.option')).map(function (i) {
+      let elem = findSingle('.header__oppijanvalitsin')
+      let result = toArray(elem().find('.option')).map(function (i) {
         return i.innerHTML
       })
       return result
     },
     opiskelijanValinta: function (name) {
       return function () {
-        var elem = findSingle('.header__oppijanvalitsin')
-        var result = toArray(elem().find(`.option:contains("${name}")`))
+        let elem = findSingle('.header__oppijanvalitsin')
+        let result = toArray(elem().find(`.option:contains("${name}")`))
         return result
       }
     },
     virheraportointiForm: VirheraportointiForm(),
     suoritusjakoForm: SuoritusjakoForm(),
     headerNimi: function () {
-      var el = findFirstNotThrowing('header .header__name')
+      let el = findFirstNotThrowing('header .header__name')
       return el ? extractAsText(el) : ''
     },
     omatTiedotNäkyvissä: function () {
@@ -64,11 +80,11 @@ function OmatTiedotPage() {
   return api
 }
 
-function VirheraportointiForm() {
-  var pageApi = Page(findSingle('#lander-page .omattiedot'))
-  var elem = findSingle('.virheraportointi')
+export function VirheraportointiForm() {
+  let pageApi = Page(findSingle('#lander-page .omattiedot'))
+  let elem = findSingle('.virheraportointi')
 
-  var api = {
+  let api = {
     self: function () {
       return elem
     },
@@ -140,16 +156,16 @@ function VirheraportointiForm() {
   return api
 }
 
-function SuoritusjakoForm() {
-  var elem = findSingle('.suoritusjako')
-  var createSuoritusjakoButton = function () {
+export function SuoritusjakoForm() {
+  let elem = findSingle('.suoritusjako')
+  let createSuoritusjakoButton = function () {
     return S('.create-suoritusjako__button > button')
   }
-  var openAdditionalSuoritusjakoFormButton = function () {
+  let openAdditionalSuoritusjakoFormButton = function () {
     return S('.suoritusjako-form > div:last-child > button.toggle-button')
   }
 
-  var api = {
+  let api = {
     contentsAsText: function () {
       return extractAsText(elem)
     },
@@ -190,14 +206,14 @@ function SuoritusjakoForm() {
       return click(createSuoritusjakoButton)
     },
     createAndStoreSuoritusjako: function (name) {
-      var lastJako = Suoritusjako(
+      let lastJako = Suoritusjako(
         '.suoritusjako-form__link-list > li:last-child > .suoritusjako-link'
       )
       return seq(
         click(createSuoritusjakoButton),
         wait.until(lastJako.isVisible),
         function () {
-          var secret = lastJako.url().split('/')
+          let secret = lastJako.url().split('/')
           window.secrets[name] = secret[secret.length - 1]
         }
       )
@@ -216,8 +232,8 @@ function SuoritusjakoForm() {
   return api
 }
 
-function Suoritusjako(selectorOrIndex) {
-  var elem =
+export function Suoritusjako(selectorOrIndex) {
+  let elem =
     typeof selectorOrIndex === 'number'
       ? findSingle(
           '.suoritusjako-form__link-list > li:nth-child(' +
@@ -226,9 +242,9 @@ function Suoritusjako(selectorOrIndex) {
         )
       : findSingle(selectorOrIndex)
 
-  var pageApi = Page(elem)
+  let pageApi = Page(elem)
 
-  var api = {
+  let api = {
     isVisible: function () {
       return isElementVisible(elem)
     },

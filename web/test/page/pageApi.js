@@ -1,16 +1,30 @@
-function Page(mainElement) {
+/* eslint-disable no-undef */
+/* eslint-disable no-case-declarations */
+import {
+  click,
+  findSingle,
+  htmlOf,
+  isElementVisible,
+  S,
+  sanitizeText,
+  textsOf,
+  triggerEvent,
+  wait
+} from '../util/testHelpers.js'
+
+export function Page(mainElement) {
   if (!mainElement) {
     mainElement = function () {
       return S('body')
     }
   }
   if (typeof mainElement !== 'function') {
-    var el = mainElement
+    let el = mainElement
     mainElement = function () {
       return el
     }
   }
-  var api = {
+  const api = {
     getInput: function (selector) {
       return Input(findSingle(selector, mainElement))
     },
@@ -21,9 +35,9 @@ function Page(mainElement) {
     },
     setInputValue: function (selector, value, index) {
       return function () {
-        var input = api.getInput(selector)
-        var isRadio = input.attr('type') === 'radio'
-        var visibleElement = isRadio ? api.getRadioLabel(selector) : input
+        let input = api.getInput(selector)
+        let isRadio = input.attr('type') === 'radio'
+        let visibleElement = isRadio ? api.getRadioLabel(selector) : input
         return wait
           .until(visibleElement.isVisible)()
           .then(function () {
@@ -45,7 +59,7 @@ function Page(mainElement) {
       return api.elementTextBySelector('#' + escapeSelector(id))
     },
     elementTextBySelector: function (selector) {
-      var found = mainElement().find(selector).first()
+      let found = mainElement().find(selector).first()
       if (
         found.prop('tagName') === 'TEXTAREA' ||
         found.prop('tagName') === 'INPUT' ||
@@ -70,8 +84,8 @@ function Page(mainElement) {
         return el()
       },
       value: function () {
-        var e = el()
-        var ic = e.find('.input-container input')
+        let e = el()
+        let ic = e.find('.input-container input')
         if (ic.length !== 0) {
           e = ic
         }
@@ -90,8 +104,8 @@ function Page(mainElement) {
         return el().is(':enabled')
       },
       setValue: function (value, i) {
-        var input = el()
-        var index = i || 0
+        let input = el()
+        let index = i || 0
         switch (inputType(input)) {
           case 'EMAIL':
           case 'TEXT':
@@ -101,7 +115,7 @@ function Page(mainElement) {
             if (window.callPhantom) {
               input.val(value)
             } else {
-              var domElem = el()[0]
+              let domElem = el()[0]
               // Workaround for react-dom > 15.6
               // React tracks input.value = 'foo' changes too, so when the event is dispatched, it doesn't see any changes in the value and thus the event is ignored
               Object.getOwnPropertyDescriptor(
@@ -119,15 +133,14 @@ function Page(mainElement) {
             }
             break
           case 'RADIO':
-            var radioOption = _(input).find(function (item) {
+            const radioOption = _(input).find(function (item) {
               return $(item).prop('value') == value
             })
-            // eslint-disable-next-line no-use-before-define
             if (!option) throw new Error('Option ' + value + ' not found')
             S(radioOption).click()
             return click(S(radioOption))()
           case 'SELECT':
-            var option = _(input.children()).find(function (item) {
+            const option = _(input.children()).find(function (item) {
               return $(item).prop('value') == value
             })
             if (!option)
@@ -141,7 +154,7 @@ function Page(mainElement) {
               click(findSingle('.select', S(input)), 'click')()
             }
 
-            var result = S(input)
+            const result = S(input)
               .find('.options li.option')
               .filter(function (i, v) {
                 return $(v).text().includes(value)
@@ -159,7 +172,7 @@ function Page(mainElement) {
               )
             }
           case 'AUTOCOMPLETE': // Autocomplete.jsx
-            var selectedItem = findSingle('.results .selected', input)
+            const selectedItem = findSingle('.results .selected', input)
 
             return Page(input)
               .setInputValue('input', value)()
@@ -171,7 +184,7 @@ function Page(mainElement) {
         }
       },
       getOptions: function () {
-        var input = el()
+        let input = el()
         switch (inputType(input)) {
           case 'DROPDOWN': // Dropdown.jsx
             return textsOf(input.find('.option')).map(sanitizeText)

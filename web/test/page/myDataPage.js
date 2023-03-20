@@ -1,7 +1,16 @@
-function MyDataPage() {
-  var callbackURL = window.location.origin + '/koski/pulssi#linkki'
+import {
+  click,
+  extractAsText,
+  findSingle,
+  isElementVisible,
+  openPage,
+  S
+} from '../util/testHelpers.js'
 
-  var api = {
+export function MyDataPage() {
+  let callbackURL = window.location.origin + '/koski/pulssi#linkki'
+
+  let api = {
     openPage: function () {
       return openPage(
         '/koski/omadata/valtuutus/hsl?callback=' +

@@ -1,9 +1,22 @@
+import { Authentication } from '../page/authentication.js'
+import { LandingPage, KorhoPankki } from '../page/landingPage.js'
+import { OmatTiedotPage } from '../page/omatTiedotPage.js'
+import { OpinnotPage } from '../page/opinnotPage.js'
+import { expect } from '../util/chai.esm.js'
+import {
+  wait,
+  extractAsText,
+  S,
+  resetFixtures,
+  findSingle
+} from '../util/testHelpers.js'
+
 describe('Omat tiedot - TUVA', function () {
-  var omattiedot = OmatTiedotPage()
-  var opinnot = OpinnotPage()
-  var authentication = Authentication()
-  var etusivu = LandingPage()
-  var korhopankki = KorhoPankki()
+  let omattiedot = OmatTiedotPage()
+  let opinnot = OpinnotPage()
+  let authentication = Authentication()
+  let etusivu = LandingPage()
+  let korhopankki = KorhoPankki()
   before(authentication.login(), resetFixtures)
 
   describe('TUVAn suorittanut', function () {

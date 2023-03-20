@@ -1,5 +1,8 @@
+import { PulssiPage } from '../page/pulssiPage.js'
+import { expect } from '../util/chai.esm.js'
+
 describe('Pulssi', function () {
-  var page = PulssiPage()
+  let page = PulssiPage()
   describe('Koski-pulssi', function () {
     before(page.openPage)
     it('näytetään', function () {
@@ -25,18 +28,16 @@ describe('Pulssi', function () {
       ).to.equal(page.metric('valmiit-tutkinnot-total').value())
     })
     it('Saavutettavuus näytetään', function () {
-      expect(
-        page.metric('saavutettavuus', (elemType = 'section')).value() >= 0
-      ).to.equal(true)
+      expect(page.metric('saavutettavuus', 'section').value() >= 0).to.equal(
+        true
+      )
     })
     it('Operaatiot näytetään', function () {
-      expect(
-        page.metric('operaatiot', (elemType = 'section')).value() >= 0
-      ).to.equal(true)
+      expect(page.metric('operaatiot', 'section').value() >= 0).to.equal(true)
     })
     it('Operaatiot tyypeittäin näytetään', function () {
-      expect(page.metric('operaatiot', (elemType = 'section')).sum()).to.equal(
-        page.metric('operaatiot', (elemType = 'section')).value()
+      expect(page.metric('operaatiot', 'section').sum()).to.equal(
+        page.metric('operaatiot', 'section').value()
       )
     })
   })

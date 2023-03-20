@@ -1,8 +1,23 @@
-describe('Koski', function () {
-  var page = KoskiPage()
-  var login = LoginPage()
+import { Authentication } from '../page/authentication.js'
+import { KoskiPage } from '../page/koskiPage.js'
+import { LandingPage } from '../page/landingPage.js'
+import { LoginPage } from '../page/loginPage.js'
+import { expect } from '../util/chai.esm.js'
+import {
+  resetFixtures,
+  S,
+  findSingle,
+  wait,
+  openPage,
+  isElementVisible,
+  mockHttp
+} from '../util/testHelpers.js'
 
-  var eerola = 'Çelik-Eerola, Jouni (081165-793C)'
+describe('Koski', function () {
+  let page = KoskiPage()
+  let login = LoginPage()
+
+  let eerola = 'Çelik-Eerola, Jouni (081165-793C)'
 
   describe('Tietoturva', function () {
     before(login.openPage)
@@ -87,7 +102,7 @@ describe('Koski', function () {
       })
     })
 
-    var etusivu = LandingPage()
+    let etusivu = LandingPage()
     describe('Session vanhennuttua', function () {
       before(
         Authentication().login(),

@@ -1,4 +1,24 @@
-function OpinnotPage() {
+import {
+  click,
+  extractAsText,
+  findFirst,
+  findFirstNotThrowing,
+  findSingle,
+  isElementVisible,
+  S,
+  seq,
+  subElement,
+  textsOf,
+  toArray,
+  toElement,
+  triggerEvent,
+  wait
+} from '../util/testHelpers.js'
+import { OrganisaatioHaku } from './organisaatioHaku.js'
+import { Page } from './pageApi.js'
+import { KoskiPage } from './koskiPage.js'
+
+export function OpinnotPage() {
   function resolveOpiskeluoikeus(indexOrName, omatTiedot) {
     omatTiedot = omatTiedot || false
     var all = !omatTiedot
@@ -92,13 +112,17 @@ function OpinnotPage() {
     getTutkintoKoodi: function (indexOrName) {
       var opiskeluoikeus = resolveOpiskeluoikeus(indexOrName)
       return opiskeluoikeus
-        .find('.suoritus .property.koulutusmoduuli .koulutusmoduuli .tunniste-koodiarvo')
+        .find(
+          '.suoritus .property.koulutusmoduuli .koulutusmoduuli .tunniste-koodiarvo'
+        )
         .text()
     },
     getVirtaNimi: function (indexOrName) {
       var opiskeluoikeus = resolveOpiskeluoikeus(indexOrName)
       return opiskeluoikeus
-        .find('.suoritus .property.koulutusmoduuli .koulutusmoduuli .property.virtaNimi .value')
+        .find(
+          '.suoritus .property.koulutusmoduuli .koulutusmoduuli .property.virtaNimi .value'
+        )
         .text()
     },
     getSuoritustapa: function (indexOrName) {
@@ -343,7 +367,7 @@ function OpinnotPage() {
   return api
 }
 
-function Oppiaineet() {
+export function Oppiaineet() {
   var api = {
     isVisible: function () {
       return S('.oppiaineet h5').is(':visible')
@@ -384,7 +408,7 @@ function Oppiaineet() {
   return api
 }
 
-function Oppiaine(oppiaineElem) {
+export function Oppiaine(oppiaineElem) {
   var editorApi = Editor(oppiaineElem)
   var oppiaineApi = _.merge(
     {
@@ -544,9 +568,9 @@ function Oppiaine(oppiaineElem) {
   }
 }
 
-function Kurssi(elem) {
+export function Kurssi(elem) {
   var detailsElem = subElement(elem, '.details')
-  var api = {
+  const api = {
     detailsText: function () {
       return toElement(detailsElem).is(':visible')
         ? extractAsText(detailsElem)
@@ -574,11 +598,12 @@ function Kurssi(elem) {
   }
   return api
 }
-Kurssi.findAll = function () {
+
+export function FindAllKurssit() {
   return toArray(S('.kurssi')).map(Kurssi)
 }
 
-function TutkinnonOsat(groupId, base) {
+export function TutkinnonOsat(groupId, base) {
   function withSuffix(s) {
     return groupId ? s + '.' + groupId : s
   }
@@ -974,7 +999,7 @@ function TutkinnonOsat(groupId, base) {
   }
 }
 
-function LiittyyTutkinnonOsaan(property) {
+export function LiittyyTutkinnonOsaan(property) {
   var tutkintoProperty = property.subProperty('.tutkinto')
   var tutkinnonOsaProperty = property.subProperty('.tutkinnon-osat')
 
@@ -989,9 +1014,9 @@ function LiittyyTutkinnonOsaan(property) {
   return api
 }
 
-function VSTSuoritukset(prev) {
-  var selectedOsasuoritus = prev
-  var api = {
+export function VSTSuoritukset(prev) {
+  const selectedOsasuoritus = prev
+  const api = {
     lisääOsaamiskokonaisuus: function (hakusana) {
       return function () {
         return Page(
@@ -1007,9 +1032,7 @@ function VSTSuoritukset(prev) {
     lisääSuorituksenLaajuus: function (laajuus) {
       return function () {
         return Page(
-          findFirst(
-            '.koulutusmoduuli [data-testid="laajuus-editor"]'
-          )
+          findFirst('.koulutusmoduuli [data-testid="laajuus-editor"]')
         )
           .setInputValue('input', laajuus)()
           .then(wait.forAjax)
@@ -1062,8 +1085,13 @@ function VSTSuoritukset(prev) {
     },
     lisääTallennettuPaikallinenJotpa: function () {
       return function () {
-        return click('.vapaansivistystyonjotpakoulutuksensuoritus > .osasuoritukset > .suoritus-taulukko > table > .vst-uusi-osasuoritus .lisaa-paikallinen-suoritus .dropdown .select')()
-          .then(click('.vapaansivistystyonjotpakoulutuksensuoritus > .osasuoritukset > .suoritus-taulukko > table > .vst-uusi-osasuoritus .lisaa-paikallinen-suoritus .dropdown li:nth-child(1)'))
+        return click(
+          '.vapaansivistystyonjotpakoulutuksensuoritus > .osasuoritukset > .suoritus-taulukko > table > .vst-uusi-osasuoritus .lisaa-paikallinen-suoritus .dropdown .select'
+        )().then(
+          click(
+            '.vapaansivistystyonjotpakoulutuksensuoritus > .osasuoritukset > .suoritus-taulukko > table > .vst-uusi-osasuoritus .lisaa-paikallinen-suoritus .dropdown li:nth-child(1)'
+          )
+        )
       }
     },
     lisääLukutaitokoulutuksenKokonaisuus: function (hakusana) {
@@ -1150,10 +1178,10 @@ function VSTSuoritukset(prev) {
   )
 }
 
-function TUVASuoritukset(prev) {
-  var selectedOsasuoritus = prev
+export function TUVASuoritukset(prev) {
+  const selectedOsasuoritus = prev
 
-  var api = {
+  const api = {
     lisääOsaSuoritus: function (className) {
       return function () {
         click(`${className} a`)()
@@ -1222,10 +1250,10 @@ function TUVASuoritukset(prev) {
   )
 }
 
-function IBSuoritukset() {
-  var elem = findSingle('.ibtutkinnonsuoritus')
+export function IBSuoritukset() {
+  const elem = findSingle('.ibtutkinnonsuoritus')
 
-  var api = {
+  const api = {
     suoritus: function (suoritusClass) {
       switch (suoritusClass) {
         case 'theoryOfKnowledge':
@@ -1258,7 +1286,7 @@ function IBSuoritukset() {
   return api
 }
 
-function Opiskeluoikeudet() {
+export function Opiskeluoikeudet() {
   return {
     oppilaitokset: function () {
       return textsOf(
@@ -1320,7 +1348,7 @@ function Opiskeluoikeudet() {
   }
 }
 
-function Versiohistoria() {
+export function Versiohistoria() {
   function elem() {
     return S('.versiohistoria')
   }
@@ -1365,11 +1393,11 @@ function Versiohistoria() {
   return api
 }
 
-function TilaJaVahvistusIndeksillä(index = 0) {
+export function TilaJaVahvistusIndeksillä(index = 0) {
   return TilaJaVahvistus(findSingle('.tila-vahvistus:eq(' + index + ')'))
 }
 
-function TilaJaVahvistus(elem = findSingle('.tila-vahvistus')) {
+export function TilaJaVahvistus(elem = findSingle('.tila-vahvistus')) {
   function merkitseValmiiksiButton() {
     return elem().find('button.merkitse-valmiiksi')
   }
@@ -1423,7 +1451,7 @@ function TilaJaVahvistus(elem = findSingle('.tila-vahvistus')) {
   return api
 }
 
-function MerkitseValmiiksiDialog() {
+export function MerkitseValmiiksiDialog() {
   var elem = findSingle('.merkitse-valmiiksi-modal')
   var buttonElem = findSingle('button.vahvista', elem)
   var api = {
@@ -1461,7 +1489,7 @@ function MerkitseValmiiksiDialog() {
   return api
 }
 
-function LisääSuoritusDialog() {
+export function LisääSuoritusDialog() {
   var elem = findSingle('.lisaa-suoritus-modal')
   var buttonElem = findSingle('button.vahvista', elem)
   function link(text) {
@@ -1525,7 +1553,7 @@ function LisääSuoritusDialog() {
   return api
 }
 
-function TutkintoSelector(elem) {
+export function TutkintoSelector(elem) {
   function selectedTutkinto() {
     return elem().find('.selected')
   }
@@ -1548,7 +1576,7 @@ function TutkintoSelector(elem) {
   return api
 }
 
-function Päivämääräväli(elem) {
+export function Päivämääräväli(elem) {
   var api = {
     setAlku: function (value) {
       return function () {
@@ -1570,7 +1598,7 @@ function Päivämääräväli(elem) {
   return api
 }
 
-function OpiskeluoikeusDialog() {
+export function OpiskeluoikeusDialog() {
   var elem = findSingle('.lisaa-opiskeluoikeusjakso-modal')
   var button = findSingle('button.vahvista', elem)
   return {
@@ -1616,7 +1644,7 @@ function OpiskeluoikeusDialog() {
   }
 }
 
-function Editor(elem) {
+export function Editor(elem) {
   var editButton = findSingle('.toggle-edit', elem)
   var enabledSaveButton = findSingle('#edit-bar button:not(:disabled)')
   var api = {
@@ -1679,7 +1707,7 @@ function Editor(elem) {
   return api
 }
 
-function Property(elem) {
+export function Property(elem) {
   if (typeof elem !== 'function') throw new Error('elem has to be function')
   return _.merge(
     {

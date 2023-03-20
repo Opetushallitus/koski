@@ -1,10 +1,24 @@
+import { AddOppijaPage } from '../page/addOppijaPage.js'
+import { Authentication } from '../page/authentication.js'
+import { KoskiPage, prepareForNewOppija } from '../page/koskiPage.js'
+import { OpinnotPage, OpiskeluoikeusDialog } from '../page/opinnotPage.js'
+import { Page } from '../page/pageApi.js'
+import { expect } from '../util/chai.esm.js'
+import {
+  extractAsText,
+  resetFixtures,
+  S,
+  textsOf,
+  wait
+} from '../util/testHelpers.js'
+
 describe('International school', function () {
-  var page = KoskiPage()
-  var opinnot = OpinnotPage()
-  var tilaJaVahvistus = opinnot.tilaJaVahvistus
-  var addOppija = AddOppijaPage()
-  var opiskeluoikeus = OpiskeluoikeusDialog()
-  var editor = opinnot.opiskeluoikeusEditor()
+  let page = KoskiPage()
+  let opinnot = OpinnotPage()
+  let tilaJaVahvistus = opinnot.tilaJaVahvistus
+  let addOppija = AddOppijaPage()
+  let opiskeluoikeus = OpiskeluoikeusDialog()
+  let editor = opinnot.opiskeluoikeusEditor()
 
   before(Authentication().login(), resetFixtures)
 
@@ -72,7 +86,7 @@ describe('International school', function () {
     describe('Suoritusten tiedot', function () {
       describe('Oppiaineen kielen valinta, Diploma-suoritus', function () {
         describe('kielivalinnan muuttaminen', function () {
-          var kieli = opinnot.oppiaineet
+          let kieli = opinnot.oppiaineet
             .oppiaine('B')
             .propertyBySelector('.oppiaine')
           before(editor.edit, kieli.selectValue('englanti'), editor.saveChanges)
@@ -97,7 +111,7 @@ describe('International school', function () {
       describe('Oppiaineen kielen valinta, MYP-suoritus', function () {
         before(opinnot.valitseSuoritus(undefined, 'Grade 9'), editor.edit)
         describe('kielivalinnan muuttaminen', function () {
-          var kieli = opinnot.oppiaineet
+          let kieli = opinnot.oppiaineet
             .oppiaine('LL')
             .propertyBySelector('.oppiaine')
           before(kieli.selectValue('suomi'), editor.saveChanges)
@@ -108,8 +122,8 @@ describe('International school', function () {
       })
 
       describe('Oppiaineen arvosanan muutos', function () {
-        var languageAndLiterature = opinnot.oppiaineet.oppiaine(0)
-        var arvosana = languageAndLiterature.propertyBySelector('td.arvosana')
+        let languageAndLiterature = opinnot.oppiaineet.oppiaine(0)
+        let arvosana = languageAndLiterature.propertyBySelector('td.arvosana')
         before(opinnot.valitseSuoritus(undefined, 'Grade 9'))
 
         describe('Kun annetaan numeerinen arvosana', function () {
@@ -122,8 +136,8 @@ describe('International school', function () {
       })
 
       describe('Oppiaineen', function () {
-        var uusiOppiaine = opinnot.oppiaineet.uusiOppiaine('.uusi-oppiaine')
-        var economics = editor.subEditor('.ECO')
+        let uusiOppiaine = opinnot.oppiaineet.uusiOppiaine('.uusi-oppiaine')
+        let economics = editor.subEditor('.ECO')
         before(
           opinnot.valitseSuoritus(undefined, 'Grade 12'),
           editor.edit,
@@ -151,8 +165,8 @@ describe('International school', function () {
       })
 
       describe('Theory of knowledge', function () {
-        var uusiOppiaine = opinnot.oppiaineet.uusiOppiaine('.uusi-oppiaine')
-        var tok = editor.subEditor('.TOK')
+        let uusiOppiaine = opinnot.oppiaineet.uusiOppiaine('.uusi-oppiaine')
+        let tok = editor.subEditor('.TOK')
         before(opinnot.valitseSuoritus(undefined, 'Grade 12'))
 
         describe('Poistaminen', function () {
@@ -314,7 +328,7 @@ describe('International school', function () {
   })
 
   describe('Vuosiluokan suorituksen lisääminen', function () {
-    var lisääSuoritus = opinnot.lisääSuoritusDialog
+    let lisääSuoritus = opinnot.lisääSuoritusDialog
 
     before(
       prepareForNewOppija('kalle', '230872-7258'),
@@ -380,14 +394,13 @@ describe('International school', function () {
           })
 
           describe('Vuosiluokan merkitseminen valmiiksi', function () {
-            var uusiOppiaine = opinnot.oppiaineet.uusiOppiaine('.uusi-oppiaine')
-            var sciences = editor.subEditor('.SCI')
+            let uusiOppiaine = opinnot.oppiaineet.uusiOppiaine('.uusi-oppiaine')
             before(
               editor.edit,
               uusiOppiaine.selectValue('Science'),
               editor.saveChangesAndWaitForSuccess
             )
-            var dialog = tilaJaVahvistus.merkitseValmiiksiDialog
+            let dialog = tilaJaVahvistus.merkitseValmiiksiDialog
             describe('Aluksi', function () {
               it('Tila on "kesken"', function () {
                 expect(tilaJaVahvistus.text()).to.equal('Suoritus kesken')

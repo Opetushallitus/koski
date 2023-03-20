@@ -1,6 +1,17 @@
+import { Authentication } from '../page/authentication.js'
+import { TiedonsiirrotPage } from '../page/tiedonsiirrotPage.js'
+import { expect } from '../util/chai.esm.js'
+import {
+  insertExample,
+  resetFixtures,
+  sendAjax,
+  syncTiedonsiirrot,
+  wait
+} from '../util/testHelpers.js'
+
 describe('Tiedonsiirrot', function () {
-  var tiedonsiirrot = TiedonsiirrotPage()
-  var authentication = Authentication()
+  let tiedonsiirrot = TiedonsiirrotPage()
+  let authentication = Authentication()
 
   before(
     authentication.login('stadin-palvelu'),
@@ -165,6 +176,7 @@ describe('Tiedonsiirrot', function () {
           })
         })
       })
+
       describe('Kun poistetaan valittu rivi', function () {
         before(
           tiedonsiirrot.setValintaViimeiseen(true),

@@ -1,8 +1,23 @@
+import { AddOppijaPage } from '../page/addOppijaPage.js'
+import { Authentication } from '../page/authentication.js'
+import { KoskiPage, prepareForNewOppija } from '../page/koskiPage.js'
+import { OpinnotPage } from '../page/opinnotPage.js'
+import { Page } from '../page/pageApi.js'
+import {
+  click,
+  extractAsText,
+  findSingle,
+  isElementVisible,
+  resetFixtures,
+  S
+} from '../util/testHelpers.js'
+import { expect } from '../util/chai.esm.js'
+
 describe('Esiopetus', function () {
-  var page = KoskiPage()
-  var opinnot = OpinnotPage()
-  var addOppija = AddOppijaPage()
-  var editor = opinnot.opiskeluoikeusEditor()
+  let page = KoskiPage()
+  let opinnot = OpinnotPage()
+  let addOppija = AddOppijaPage()
+  let editor = opinnot.opiskeluoikeusEditor()
 
   before(Authentication().login(), resetFixtures)
 
@@ -395,7 +410,7 @@ describe('Esiopetus', function () {
   })
 
   describe('Tietojen muuttaminen', function () {
-    var indexEditor = opinnot.opiskeluoikeusEditor(1)
+    let indexEditor = opinnot.opiskeluoikeusEditor(1)
 
     before(
       Authentication().login(),
@@ -404,7 +419,7 @@ describe('Esiopetus', function () {
     )
 
     describe('Kurssin kuvauksen ja sanallisen arvion muuttaminen', function () {
-      var kuvaus = indexEditor
+      let kuvaus = indexEditor
         .subEditor('.osasuoritukset tbody')
         .propertyBySelector('.kuvaus')
 
@@ -432,7 +447,7 @@ describe('Esiopetus', function () {
   })
 
   describe('Aloituspäivä', function () {
-    var indexEditor = opinnot.opiskeluoikeusEditor(1)
+    let indexEditor = opinnot.opiskeluoikeusEditor(1)
 
     before(page.openPage, page.oppijaHaku.searchAndSelect('300996-870E'))
 

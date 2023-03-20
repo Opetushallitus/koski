@@ -1,6 +1,12 @@
+import { Authentication } from '../page/authentication.js'
+import { KoskiPage } from '../page/koskiPage.js'
+import { OpinnotPage } from '../page/opinnotPage.js'
+import { expect } from '../util/chai.esm.js'
+import { resetFixtures, extractAsText, S } from '../util/testHelpers.js'
+
 describe('Telma', function () {
-  var page = KoskiPage()
-  var opinnot = OpinnotPage()
+  let page = KoskiPage()
+  let opinnot = OpinnotPage()
   before(Authentication().login(), resetFixtures)
 
   describe('Työhön ja itsenäiseen elämään valmentava koulutus', function () {

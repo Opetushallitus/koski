@@ -1,9 +1,21 @@
-function KelaPage() {
-  var pageApi = Page(function () {
+import {
+  click,
+  extractAsText,
+  isElementVisible,
+  isLoading,
+  openPage,
+  S,
+  testFrame,
+  wait
+} from '../util/testHelpers.js'
+import { Page } from './pageApi.js'
+
+export function KelaPage() {
+  let pageApi = Page(function () {
     return S('#content')
   })
 
-  var api = {
+  const api = {
     openPage: function () {
       return openPage('/koski/kela', api.isReady)()
     },
@@ -44,8 +56,8 @@ function KelaPage() {
     },
     selectOpiskeluoikeusByTyyppi: function (opiskeluoikeudenTyyppi) {
       return function () {
-        var opiskeluoikeudet = S('.opiskeluoikeus-tabs > ul > li').toArray()
-        var opiskeluoikeus = opiskeluoikeudet.find(function (li) {
+        let opiskeluoikeudet = S('.opiskeluoikeus-tabs > ul > li').toArray()
+        let opiskeluoikeus = opiskeluoikeudet.find(function (li) {
           return $(li).text().includes(opiskeluoikeudenTyyppi)
         })
         return click(opiskeluoikeus)()
@@ -53,8 +65,8 @@ function KelaPage() {
     },
     selectSuoritus: function (suoritusTabNimi) {
       return function () {
-        var suoritukset = S('.suoritukset > .tabs > ul > li').toArray()
-        var suoritus = suoritukset.find(function (li) {
+        let suoritukset = S('.suoritukset > .tabs > ul > li').toArray()
+        let suoritus = suoritukset.find(function (li) {
           return $(li).text().includes(suoritusTabNimi)
         })
         return click(suoritus)()
@@ -62,10 +74,10 @@ function KelaPage() {
     },
     selectOsasuoritus: function (osasuoritukseNimi) {
       return function () {
-        var osasuoritukset = S(
+        let osasuoritukset = S(
           'tr.osasuoritukset > td > span.suorituksen-nimi'
         ).toArray()
-        var osasuoritus = osasuoritukset.find(function (li) {
+        let osasuoritus = osasuoritukset.find(function (li) {
           return $(li).text().includes(osasuoritukseNimi)
         })
         return click(osasuoritus)()
@@ -73,10 +85,10 @@ function KelaPage() {
     },
     selectFromVersiohistoria: function (versionumero) {
       return function () {
-        var versiot = S(
+        let versiot = S(
           '.versiohistoria > .kela-modal > .kela-modal-content > ol > li > a'
         ).toArray()
-        var versio = versiot.find(function (li) {
+        let versio = versiot.find(function (li) {
           return $(li).text().startsWith(versionumero)
         })
         return click(versio)()

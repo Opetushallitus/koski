@@ -1,9 +1,30 @@
+import { Authentication } from '../page/authentication.js'
+import { KoskiPage } from '../page/koskiPage.js'
+import { KorhoPankki, LandingPage } from '../page/landingPage.js'
+import { LoginPage } from '../page/loginPage.js'
+import { OmatTiedotPage } from '../page/omatTiedotPage.js'
+import { OpinnotPage } from '../page/opinnotPage.js'
+import { SuoritusjakoPage } from '../page/suoritusjakoPage.js'
+import { VirhePage } from '../page/virhePage.js'
+import { expect } from '../util/chai.esm.js'
+import {
+  click,
+  extractAsText,
+  findFirst,
+  findSingle,
+  isElementVisible,
+  openPage,
+  resetFixtures,
+  S,
+  wait
+} from '../util/testHelpers.js'
+
 describe('Omat tiedot', function () {
-  var page = KoskiPage()
-  var omattiedot = OmatTiedotPage()
-  var opinnot = OpinnotPage()
-  var authentication = Authentication()
-  var login = LoginPage()
+  let page = KoskiPage()
+  let omattiedot = OmatTiedotPage()
+  let opinnot = OpinnotPage()
+  let authentication = Authentication()
+  let login = LoginPage()
   before(authentication.login(), resetFixtures)
 
   describe('Virkailijana', function () {
@@ -16,8 +37,8 @@ describe('Omat tiedot', function () {
   })
 
   describe('Kansalaisena', function () {
-    var etusivu = LandingPage()
-    var korhopankki = KorhoPankki()
+    let etusivu = LandingPage()
+    let korhopankki = KorhoPankki()
     before(authentication.logout, etusivu.openPage)
 
     describe('Kun kirjaudutaan sisään', function () {
@@ -173,7 +194,7 @@ describe('Omat tiedot', function () {
         describe('Kun painetaan painiketta', function () {
           before(click(omattiedot.virheraportointiButton))
 
-          var form = omattiedot.virheraportointiForm
+          let form = omattiedot.virheraportointiForm
 
           it('näytetään lista tiedoista, joita palvelussa ei pystytä näyttämään', function () {
             expect(form.contentsAsText()).to.equal(
@@ -297,7 +318,7 @@ describe('Omat tiedot', function () {
         })
 
         describe('Ylioppilastutkinnoille', function () {
-          var form = omattiedot.virheraportointiForm
+          let form = omattiedot.virheraportointiForm
 
           describe('kun ei lukiosuorituksia', function () {
             before(authentication.logout, etusivu.openPage)
@@ -388,7 +409,7 @@ describe('Omat tiedot', function () {
           wait.until(omattiedot.isVisible)
         )
 
-        var form = omattiedot.suoritusjakoForm
+        let form = omattiedot.suoritusjakoForm
         window.secrets = {}
 
         describe('Jakaminen', function () {
@@ -449,20 +470,20 @@ describe('Omat tiedot', function () {
               )
 
               it('suoritusjako näytetään', function () {
-                var jako = form.suoritusjako(1)
-                var secret = jako.url().split('/') // otetaan salaisuus talteen jaon hakemista varten
+                let jako = form.suoritusjako(1)
+                let secret = jako.url().split('/') // otetaan salaisuus talteen jaon hakemista varten
                 window.secrets.perusopetus = secret[secret.length - 1]
 
                 expect(jako.isVisible()).to.equal(true)
               })
 
               it('suoritusjaon tiedot näytetään', function () {
-                var jako = form.suoritusjako(1)
+                let jako = form.suoritusjako(1)
 
-                var date = new Date()
-                var targetMonth = date.getMonth() + 6
+                let date = new Date()
+                let targetMonth = date.getMonth() + 6
                 date.setMonth(targetMonth)
-                if (date.getMonth() != targetMonth % 12) {
+                if (date.getMonth() !== targetMonth % 12) {
                   // match java.time.LocalDate.plusMonths behavior, in case e.g. today is May 31st, and
                   // November 31st doesn't exist
                   date.setDate(0)
@@ -539,7 +560,7 @@ describe('Omat tiedot', function () {
         })
 
         describe('Katselu', function () {
-          var suoritusjako = SuoritusjakoPage()
+          let suoritusjako = SuoritusjakoPage()
 
           before(
             authentication.logout,
@@ -563,8 +584,8 @@ describe('Omat tiedot', function () {
                 'Jyväskylän normaalikoulu'
               ])
               expect(suoritusjako.opiskeluoikeusTitleText()).to.match(
-              /Perusopetus \(2008—, läsnä\)Opiskeluoikeuden oid:.*/
-            )
+                /Perusopetus \(2008—, läsnä\)Opiskeluoikeuden oid:.*/
+              )
             })
 
             it('Ei näytetä virheraportointi-painiketta', function () {
@@ -652,8 +673,8 @@ describe('Omat tiedot', function () {
             )
 
             it('onnistuu', function () {
-              var jako = form.suoritusjako(1)
-              var secret = jako.url().split('/') // otetaan salaisuus talteen jaon hakemista varten
+              let jako = form.suoritusjako(1)
+              let secret = jako.url().split('/') // otetaan salaisuus talteen jaon hakemista varten
               window.secrets.korkeakoulututkinto = secret[secret.length - 1]
 
               expect(jako.isVisible()).to.equal(true)
@@ -675,8 +696,8 @@ describe('Omat tiedot', function () {
               )
 
               it('yhtenä kokonaisuutena', function () {
-                var jako = form.suoritusjako(2)
-                var secret = jako.url().split('/') // otetaan salaisuus talteen jaon hakemista varten
+                let jako = form.suoritusjako(2)
+                let secret = jako.url().split('/') // otetaan salaisuus talteen jaon hakemista varten
                 window.secrets.korkeakoulunopintojaksot =
                   secret[secret.length - 1]
 
@@ -725,7 +746,7 @@ describe('Omat tiedot', function () {
               )
 
               it('jakaminen onnistuu', function () {
-                var jako = form.suoritusjako(1)
+                let jako = form.suoritusjako(1)
 
                 expect(jako.isVisible()).to.equal(true)
               })
@@ -745,7 +766,7 @@ describe('Omat tiedot', function () {
               )
 
               it('jakaminen onnistuu', function () {
-                var jako = form.suoritusjako(2)
+                let jako = form.suoritusjako(2)
 
                 expect(jako.isVisible()).to.equal(true)
               })
@@ -765,7 +786,7 @@ describe('Omat tiedot', function () {
               )
 
               it('jakaminen onnistuu', function () {
-                var jako = form.suoritusjako(3)
+                let jako = form.suoritusjako(3)
 
                 expect(jako.isVisible()).to.equal(true)
               })
@@ -788,7 +809,7 @@ describe('Omat tiedot', function () {
               })
 
               describe('Katselu', function () {
-                var suoritusjako = SuoritusjakoPage()
+                let suoritusjako = SuoritusjakoPage()
                 before(
                   suoritusjako.openPage('opintojaksot'),
                   wait.until(suoritusjako.isVisible)
@@ -840,7 +861,7 @@ describe('Omat tiedot', function () {
           describe('Katselu', function () {
             before(authentication.logout)
 
-            var suoritusjako = SuoritusjakoPage()
+            let suoritusjako = SuoritusjakoPage()
 
             describe('Tutkintosuorituksen jako', function () {
               before(
@@ -969,8 +990,8 @@ describe('Omat tiedot', function () {
             )
 
             it('onnistuu', function () {
-              var jako = form.suoritusjako(1)
-              var secret = jako.url().split('/') // otetaan salaisuus talteen jaon hakemista varten
+              let jako = form.suoritusjako(1)
+              let secret = jako.url().split('/') // otetaan salaisuus talteen jaon hakemista varten
               window.secrets.tuplattu = secret[secret.length - 1]
 
               expect(jako.isVisible()).to.equal(true)
@@ -978,7 +999,7 @@ describe('Omat tiedot', function () {
           })
 
           describe('Katselu', function () {
-            var suoritusjako = SuoritusjakoPage()
+            let suoritusjako = SuoritusjakoPage()
 
             before(
               authentication.logout,
@@ -1038,8 +1059,8 @@ describe('Omat tiedot', function () {
       })
 
       describe('Ylioppilastutkinto suoritusjako', function () {
-        var suoritusjako = SuoritusjakoPage()
-        var form = omattiedot.suoritusjakoForm
+        let suoritusjako = SuoritusjakoPage()
+        let form = omattiedot.suoritusjakoForm
         before(
           authentication.logout,
           etusivu.openPage,

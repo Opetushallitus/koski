@@ -1,9 +1,13 @@
-var expect = chai.expect
-chai.config.truncateThreshold = 0 // disable truncating
+/* eslint-disable no-undef */
+import {
+  initialTestTimeoutValue,
+  overrideTestTimeoutDefault,
+  testTimeoutDefault,
+  testTimeoutPageLoad
+} from './testConfig.js'
+import html2canvas from '../lib/html2canvas.esm.js'
 
-timeout = (function () {
-  var defaultTimeout = testTimeoutDefault
-
+export const timeout = (function () {
   return {
     /**
      * Overrides timeout for wait.until calls.
@@ -11,7 +15,7 @@ timeout = (function () {
      */
     overrideWaitTime: function (timeoutMs) {
       return function () {
-        testTimeoutDefault = timeoutMs
+        overrideTestTimeoutDefault(timeoutMs)
       }
     },
     /**
@@ -20,13 +24,13 @@ timeout = (function () {
      */
     resetDefaultWaitTime: function () {
       return function () {
-        testTimeoutDefault = defaultTimeout
+        overrideTestTimeoutDefault(initialTestTimeoutValue)
       }
     }
   }
 })()
 
-function S(selector) {
+export function S(selector) {
   try {
     if (!testFrame() || !testFrame().jQuery) {
       return $([])
@@ -39,9 +43,9 @@ function S(selector) {
   }
 }
 
-function findSingle(selector, base) {
+export function findSingle(selector, base) {
   return function () {
-    var result = findFirst(selector, base)()
+    let result = findFirst(selector, base)()
     if (result.length > 1) {
       throw new Error(result.length + ' instances of ' + selector + ' found')
     }
@@ -49,31 +53,31 @@ function findSingle(selector, base) {
   }
 }
 
-function findFirst(selector, base) {
+export function findFirst(selector, base) {
   return function () {
-    var baseElem = toElement(base)
-    var result = baseElem ? baseElem.find(selector) : S(selector)
-    if (result.length == 0) {
-      var context = baseElem ? htmlOf(baseElem) : 'document'
+    let baseElem = toElement(base)
+    let result = baseElem ? baseElem.find(selector) : S(selector)
+    if (result.length === 0) {
+      let context = baseElem ? htmlOf(baseElem) : 'document'
       throw new Error('Element ' + selector + ' not found in ' + context)
     }
     return result
   }
 }
 
-function findFirstNotThrowing(selector, base) {
-  var baseElem = toElement(base)
-  var result = baseElem ? baseElem.find(selector) : S(selector)
+export function findFirstNotThrowing(selector, base) {
+  let baseElem = toElement(base)
+  let result = baseElem ? baseElem.find(selector) : S(selector)
   return result.length > 0 ? result : undefined
 }
 
-wait = {
+export const wait = {
   waitIntervalMs: 10,
   until: function (condition, maxWaitMs) {
     return function () {
-      if (maxWaitMs == undefined) maxWaitMs = testTimeoutDefault
-      var deferred = Q.defer()
-      var count = Math.floor(maxWaitMs / wait.waitIntervalMs)
+      if (maxWaitMs === undefined) maxWaitMs = testTimeoutDefault()
+      let deferred = Q.defer()
+      let count = Math.floor(maxWaitMs / wait.waitIntervalMs)
 
       ;(function waitLoop(remaining) {
         if (condition()) {
@@ -102,7 +106,7 @@ wait = {
   },
   forMilliseconds: function (ms) {
     return function () {
-      var deferred = Q.defer()
+      let deferred = Q.defer()
       setTimeout(function () {
         deferred.resolve()
       }, ms)
@@ -116,13 +120,13 @@ wait = {
       .then(wait.forMilliseconds(1))
   },
   prepareForNavigation: function () {
-    var frame = testFrame()
+    let frame = testFrame()
     frame.myWaitForNavigation = frame.location.href
   },
   forNavigation: function () {
     return wait
       .until(function () {
-        var frame = testFrame()
+        let frame = testFrame()
         return frame.myWaitForNavigation !== frame.location.href
       })()
       .then(wait.forAjax)
@@ -139,35 +143,35 @@ wait = {
   }
 }
 
-function isLoading() {
+export function isLoading() {
   return S('.loading').length > 0
 }
 
-var isNotLoading = not(isLoading)
+export const isNotLoading = not(isLoading)
 
-function not(f) {
+export function not(f) {
   return function () {
     return !f()
   }
 }
 
-function getJson(url) {
+export function getJson(url) {
   return Q($.ajax({ url, dataType: 'json' }))
 }
 
-function postJson(url, data) {
+export function postJson(url, data) {
   return sendJson(url, data, 'post')
 }
 
-function putJson(url, data) {
+export function putJson(url, data) {
   return sendJson(url, data, 'put')
 }
 
-function sendJson(url, data, method) {
+export function sendJson(url, data, method) {
   return sendAjax(url, 'application/json', JSON.stringify(data), method)
 }
 
-function sendAjax(url, contentType, data, method) {
+export function sendAjax(url, contentType, data, method) {
   return Q(
     $.ajax({
       type: method,
@@ -179,23 +183,23 @@ function sendAjax(url, contentType, data, method) {
   )
 }
 
-function testFrame() {
+export function testFrame() {
   return $('#testframe').get(0).contentWindow
 }
 
-function reloadTestFrame() {
+export function reloadTestFrame() {
   testFrame().document.location.reload()
 }
 
-function goBack() {
+export function goBack() {
   testFrame().history.back()
 }
 
-function goForward() {
+export function goForward() {
   testFrame().history.forward()
 }
 
-function insertExample(name) {
+export function insertExample(name) {
   return function () {
     return getJson('/koski/api/documentation/examples/' + name).then(function (
       data
@@ -205,21 +209,21 @@ function insertExample(name) {
   }
 }
 
-var isIE =
-  navigator.appName == 'Microsoft Internet Explorer' ||
+const isIE =
+  navigator.appName === 'Microsoft Internet Explorer' ||
   !!(
     navigator.userAgent.match(/Trident/) || navigator.userAgent.match(/rv:11/)
   ) ||
   (typeof $.browser !== 'undefined' && $.browser.msie == 1)
 
-function triggerEvent(selector, eventName) {
+export function triggerEvent(selector, eventName) {
   return function () {
-    var element = toElement(selector)
+    let element = toElement(selector)
     if (!element.length) {
       throw new Error('triggerEvent: element not visible')
     }
 
-    var evt
+    let evt
     if (window.callPhantom || isIE) {
       evt = testFrame().document.createEvent('HTMLEvents')
       evt.initEvent(eventName, true, true)
@@ -238,14 +242,14 @@ function triggerEvent(selector, eventName) {
   }
 }
 
-function click(element) {
+export function click(element) {
   return triggerEvent(element, 'click')
 }
 
-function seq() {
-  var tasks = Array.prototype.slice.call(arguments)
+export function seq() {
+  let tasks = Array.prototype.slice.call(arguments)
   return function () {
-    var promise = Q()
+    let promise = Q()
     tasks.forEach(function (task) {
       promise = promise.then(task)
     })
@@ -257,7 +261,7 @@ if (!$('#testframe').length) {
   $(document.body).append("<iframe id='testframe'></iframe>")
 }
 
-function openPage(path, predicate, width) {
+export function openPage(path, predicate, width) {
   if (!predicate) {
     predicate = function () {
       return testFrame().jQuery
@@ -267,13 +271,13 @@ function openPage(path, predicate, width) {
     width = 1400
   }
   function addScriptToDocument(w, src) {
-    var jquery = document.createElement('script')
+    let jquery = document.createElement('script')
     jquery.type = 'text/javascript'
     jquery.src = src
     $(w).contents().find('head')[0].appendChild(jquery)
   }
   return function () {
-    var newTestFrame = $('<iframe>')
+    let newTestFrame = $('<iframe>')
       .attr({ src: path, width, height: 2000, id: 'testframe' })
       .on('load', function () {
         addScriptToDocument(this, '/koski/test/lib/jquery.js')
@@ -289,11 +293,11 @@ function openPage(path, predicate, width) {
   }
 }
 
-function takeScreenshot(name) {
+export function takeScreenshot(name) {
   return function () {
-    var date = new Date()
-    var path = 'target/screenshots/'
-    var filename =
+    let date = new Date()
+    let path = 'target/screenshots/'
+    let filename =
       path +
       (name
         .toLowerCase()
@@ -303,6 +307,7 @@ function takeScreenshot(name) {
         .replace(/"/g, '') || date.getTime())
     console.log('Taking screenshot web/' + filename + '.png')
     if (window.callPhantom) {
+      // eslint-disable-next-line no-undef
       callPhantom({ screenshot: filename })
     } else {
       return Q(
@@ -318,21 +323,21 @@ function takeScreenshot(name) {
   }
 }
 
-function textsOf(elements) {
+export function textsOf(elements) {
   elements = evalFunc(elements)
   return toArray(elements).map(function (el) {
     return $(el).text().trim()
   })
 }
 
-function sanitizeText(text) {
+export function sanitizeText(text) {
   return text
     .replace(/ *\n+ */g, '\n')
     .replace(/ +/g, ' ')
     .replace(/||||||\u00ad/g, '')
 }
 
-function extractAsText(el, subElement) {
+export function extractAsText(el, subElement) {
   el = evalFunc(el)
   if (isJQuery(el) && el.length > 1) {
     return extractMultiple(el)
@@ -341,18 +346,18 @@ function extractAsText(el, subElement) {
   if (el.nodeType && el.nodeType != 1) return ''
 
   el = $(el)
-  var element = el[0]
+  let element = el[0]
 
   if (el.hasClass('toggle-edit') || el.hasClass('opintosuoritusote')) return ''
 
-  var isBlockElement =
+  let isBlockElement =
     element.tagName == 'SECTION' ||
     ['block', 'table', 'table-row', 'table-row-group', 'list-item'].indexOf(
       (element.currentStyle || window.getComputedStyle(element, '')).display
     ) >= 0
 
-  var separator = isBlockElement ? '\n' : ''
-  var text = sanitizeText(
+  let separator = isBlockElement ? '\n' : ''
+  let text = sanitizeText(
     separator + extractMultiple(element.childNodes) + separator
   )
   return subElement && isBlockElement ? text : text.trim()
@@ -370,30 +375,30 @@ function extractAsText(el, subElement) {
   }
 }
 
-function htmlOf(el) {
+export function htmlOf(el) {
   return S(el).clone().wrap('<div>').parent().html()
 }
 
-function hrefOf(el) {
+export function hrefOf(el) {
   return S(el)[0].href
 }
 
-function isJQuery(el) {
+export function isJQuery(el) {
   return typeof el.children === 'function'
 }
 
-function toArray(elements) {
+export function toArray(elements) {
   elements = evalFunc(elements)
   if (isJQuery(elements)) elements = elements.get() // <- a jQuery object
   return Array.prototype.slice.apply(elements)
 }
 
-function evalFunc(f) {
+export function evalFunc(f) {
   while (typeof f === 'function') f = f()
   return f
 }
 
-function isElementVisible(el) {
+export function isElementVisible(el) {
   try {
     el = toElement(el)
     if (el.get) el = el.get(0) // <- extract HTML element from jQuery object
@@ -407,20 +412,20 @@ function isElementVisible(el) {
   }
 }
 
-function subElement(el, selector) {
+export function subElement(el, selector) {
   return function () {
     if (!el) return S(selector)
     return toElement(el).find(selector)
   }
 }
 
-function toElement(el) {
+export function toElement(el) {
   if (!el) return el
   return S(evalFunc(el))
 }
 
 ;(function improveMocha() {
-  var origBefore = before
+  let origBefore = before
   // eslint-disable-next-line no-global-assign
   before = function () {
     Array.prototype.slice.call(arguments).forEach(function (arg) {
@@ -430,7 +435,7 @@ function toElement(el) {
       origBefore(arg)
     })
   }
-  var origAfter = after
+  let origAfter = after
   // eslint-disable-next-line no-global-assign
   after = function () {
     Array.prototype.slice.call(arguments).forEach(function (arg) {
@@ -442,39 +447,39 @@ function toElement(el) {
   }
 })()
 
-function resetFixtures() {
+export function resetFixtures() {
   return Q($.ajax({ url: '/koski/fixtures/reset', method: 'post' }))
 }
 
-function syncTiedonsiirrot() {
+export function syncTiedonsiirrot() {
   return Q(
     $.ajax({ url: '/koski/fixtures/sync-tiedonsiirrot', method: 'post' })
   )
 }
 
-function syncPerustiedot() {
+export function syncPerustiedot() {
   return Q($.ajax({ url: '/koski/fixtures/sync-perustiedot', method: 'post' }))
 }
 
-function mockHttp(url, result) {
+export function mockHttp(url, result) {
   return function () {
     testFrame().http.mock(url, result)
   }
 }
 
-function getAsTextArray(selector) {
+export function getAsTextArray(selector) {
   return S(selector)
     .map((_, elem) => S(elem).text())
     .toArray()
 }
 
-function getValuesAsArray(selector) {
+export function getValuesAsArray(selector) {
   return S(selector)
     .map((_, elem) => S(elem).val())
     .toArray()
 }
 
-function setInputValue(elementOrSelector, value) {
+export function setInputValue(elementOrSelector, value) {
   // Setter .value= is not working as we wanted because React library overrides input value setter but we can call the function directly on the input as context.
   // See: https://stackoverflow.com/questions/23892547/what-is-the-best-way-to-trigger-onchange-event-in-react-js
   const input = S(elementOrSelector)[0]
@@ -485,3 +490,5 @@ function setInputValue(elementOrSelector, value) {
   nativeInputValueSetter.call(input, value)
   input.dispatchEvent(new Event('input', { bubbles: true }))
 }
+
+export default {}

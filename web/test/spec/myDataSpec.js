@@ -1,8 +1,20 @@
+import { Authentication } from '../page/authentication.js'
+import { KorhoPankki } from '../page/landingPage.js'
+import { MyDataPage } from '../page/myDataPage.js'
+import { TietojenKayttoPage } from '../page/tietojenkayttoPage.js'
+import { expect } from '../util/chai.esm.js'
+import {
+  extractAsText,
+  isElementVisible,
+  S,
+  wait
+} from '../util/testHelpers.js'
+
 describe('MyData', function () {
-  var authentication = Authentication()
-  var korhopankki = KorhoPankki()
-  var mydata = MyDataPage()
-  var tietojenkaytto = TietojenKayttoPage()
+  let authentication = Authentication()
+  let korhopankki = KorhoPankki()
+  let mydata = MyDataPage()
+  let tietojenkaytto = TietojenKayttoPage()
 
   function login(lang, hetu, sukunimi, etunimi) {
     return [
@@ -160,5 +172,4 @@ describe('MyData', function () {
       expect(mydata.getMemberName()).equal('HSL Helsinki Region Transport')
     })
   })
-
 })

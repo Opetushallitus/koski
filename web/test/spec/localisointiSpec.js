@@ -1,7 +1,20 @@
+import { Authentication } from '../page/authentication.js'
+import { KoskiPage } from '../page/koskiPage.js'
+import { OpinnotPage } from '../page/opinnotPage.js'
+import { expect } from '../util/chai.esm.js'
+import {
+  wait,
+  click,
+  S,
+  resetFixtures,
+  findSingle,
+  triggerEvent
+} from '../util/testHelpers.js'
+
 describe('Lokalisointi', function () {
-  var page = KoskiPage()
-  var opinnot = OpinnotPage()
-  var editor = opinnot.opiskeluoikeusEditor()
+  let page = KoskiPage()
+  let opinnot = OpinnotPage()
+  let editor = opinnot.opiskeluoikeusEditor()
 
   describe('Ruotsinkielisellä käyttäjällä', function () {
     before(Authentication().login('pärre'), resetFixtures, page.openPage)
@@ -20,16 +33,17 @@ describe('Lokalisointi', function () {
     function editLink() {
       return S('.edit-localizations')
     }
-    var startEdit = click(editLink)
-    var saveEdits = click(
+    let startEdit = click(editLink)
+    let saveEdits = click(
       findSingle('.localization-edit-bar button:not(:disabled)')
     )
-    var cancelEdits = click(findSingle('.localization-edit-bar .cancel'))
+    let cancelEdits = click(findSingle('.localization-edit-bar .cancel'))
 
     function selectLanguage(lang) {
       return function () {
-        var selector =
+        let selector =
           '.localization-edit-bar .languages .' + lang + '.selected'
+        // eslint-disable-next-line no-undef
         return Q()
           .then(click(S('.localization-edit-bar .languages .' + lang)))
           .then(wait.untilVisible(findSingle(selector)))
@@ -37,7 +51,7 @@ describe('Lokalisointi', function () {
     }
     function changeText(selector, value) {
       return function () {
-        var el = findSingle(selector + ' .editing')()
+        let el = findSingle(selector + ' .editing')()
         el[0].textContent = value
         return triggerEvent(el, 'input')()
       }
@@ -91,8 +105,8 @@ describe('Lokalisointi', function () {
   })
 
   describe('Ruotsinkielisen virkailijan syöttämä paikallinen oppiaine', function () {
-    var oppiaineet = opinnot.oppiaineet.uusiOppiaine('.pakolliset')
-    var paikallinen = editor.subEditor('.pakollinen.paikallinen')
+    let oppiaineet = opinnot.oppiaineet.uusiOppiaine('.pakolliset')
+    let paikallinen = editor.subEditor('.pakollinen.paikallinen')
     before(
       Authentication().login('pärre'),
       resetFixtures,
@@ -119,7 +133,7 @@ describe('Lokalisointi', function () {
   })
 
   describe('Monikieliset tekstit muokattavassa datassa', function () {
-    var property = editor.property('todistuksellaNäkyvätLisätiedot')
+    let property = editor.property('todistuksellaNäkyvätLisätiedot')
 
     describe('Syötettäessä suomenkielisellä käyttäjällä', function () {
       before(

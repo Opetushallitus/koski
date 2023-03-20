@@ -1,8 +1,15 @@
+import { AddOppijaPage } from '../page/addOppijaPage.js'
+import { Authentication } from '../page/authentication.js'
+import { KoskiPage, prepareForNewOppija } from '../page/koskiPage.js'
+import { OpinnotPage, OpiskeluoikeusDialog } from '../page/opinnotPage.js'
+import { expect } from '../util/chai.esm.js'
+import { extractAsText, S, resetFixtures } from '../util/testHelpers.js'
+
 describe('Rahoitusmuoto', function () {
-  var page = KoskiPage()
-  var opinnot = OpinnotPage()
-  var editor = opinnot.opiskeluoikeusEditor()
-  var addOppija = AddOppijaPage()
+  let page = KoskiPage()
+  let opinnot = OpinnotPage()
+  let editor = opinnot.opiskeluoikeusEditor()
+  let addOppija = AddOppijaPage()
 
   before(Authentication().login(), resetFixtures)
 
