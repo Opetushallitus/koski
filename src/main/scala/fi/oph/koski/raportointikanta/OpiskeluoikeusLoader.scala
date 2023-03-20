@@ -51,7 +51,7 @@ object OpiskeluoikeusLoader extends Logging {
 
     var loopCount = 0
 
-    val result = mapOpiskeluoikeudetSivuittainWithoutAccessCheck(batchSize, update, opiskeluoikeusQueryRepository) { batch =>
+    val dataResult = mapOpiskeluoikeudetSivuittainWithoutAccessCheck(batchSize, update, opiskeluoikeusQueryRepository) { batch =>
       if (batch.nonEmpty) {
         val koskiBatch = batch.collect { case r: KoskiOpiskeluoikeusRow => r }
         val ytrBatch = batch.collect { case r: YtrOpiskeluoikeusRow => r }
@@ -73,14 +73,18 @@ object OpiskeluoikeusLoader extends Logging {
         loopCount = loopCount + 1
         result
       } else {
-        // Last batch processed; finalize
-        if (update.isEmpty) createIndexesForIncrementalUpdate(db)
-        createIndexes(db)
-        db.setStatusLoadCompleted(statusName)
-        db.setStatusLoadCompleted(mitätöidytStatusName)
-        Seq(LoadCompleted())
+        Seq.empty
       }
     }
+
+    val result = dataResult.doOnCompleted {
+      // Last batch processed; finalize
+      if (update.isEmpty) createIndexesForIncrementalUpdate(db)
+      createIndexes(db)
+      db.setStatusLoadCompleted(statusName)
+      db.setStatusLoadCompleted(mitätöidytStatusName)
+    } ++ Observable.from(Seq(LoadCompleted()))
+
     result.doOnEach(progressLogger)
   }
 
