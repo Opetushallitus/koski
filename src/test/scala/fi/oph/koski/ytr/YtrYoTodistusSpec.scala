@@ -1,0 +1,64 @@
+package fi.oph.koski.ytr
+
+import fi.oph.koski.KoskiHttpSpec
+import fi.oph.koski.api.OpiskeluoikeusTestMethods
+import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.log.AuditLogTester
+import fi.oph.koski.util.ClasspathResource
+import org.scalatest.freespec.AnyFreeSpec
+
+import scala.collection.Iterator.continually
+
+class YtrYoTodistusSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethods {
+  "Kansalainen" - {
+    "näkee oman todistuksensa" in {
+      yoTodistusHappyPath("080698-967F", "1.2.246.562.24.00000000049")
+    }
+
+    "näkee huollettavansa todistuksen" in {
+      yoTodistusHappyPath("030300-5215", "1.2.246.562.24.00000000049")
+    }
+
+    "ei näe toisen oppijan todistus" - {
+      "status-api" in {
+        get("api/yotodistus/status/fi/1.2.246.562.24.00000000050", headers = kansalainenLoginHeaders("080698-967F")) {
+          verifyResponseStatus(401, KoskiErrorCategory.unauthorized())
+        }
+      }
+
+      "generate-api" in {
+        get("api/yotodistus/generate/fi/1.2.246.562.24.00000000050", headers = kansalainenLoginHeaders("080698-967F")) {
+          verifyResponseStatus(401, KoskiErrorCategory.unauthorized())
+        }
+      }
+
+      "download-api" in {
+        get("api/yotodistus/download/fi/1.2.246.562.24.00000000050/pampam.pdf", headers = kansalainenLoginHeaders("080698-967F")) {
+          verifyResponseStatus(503, KoskiErrorCategory.unavailable.yoTodistus.notCompleteOrNoAccess())
+        }
+      }
+    }
+  }
+
+  private def yoTodistusHappyPath(katsojanHetu: String, oppijaOid: String) = {
+    AuditLogTester.clearMessages()
+    val headers = kansalainenLoginHeaders(katsojanHetu)
+    get(s"api/yotodistus/status/fi/$oppijaOid", headers = headers) {
+      verifyResponseStatusOk()
+      get(s"api/yotodistus/generate/fi/$oppijaOid", headers = headers) {
+        verifyResponseStatusOk()
+        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "YTR_YOTODISTUKSEN_LUONTI"))
+        Thread.sleep(3000)
+        get(s"api/yotodistus/download/fi/$oppijaOid/foobar.pdf", headers = headers) {
+          verifyResponseStatusOk()
+          AuditLogTester.verifyAuditLogMessage(Map("operation" -> "YTR_YOTODISTUKSEN_LATAAMINEN"))
+          response.getHeader("Content-Type") should equal("application/pdf;charset=utf-8")
+          bodyBytes should equal(resourceAsByteArray(s"/mockdata/yotodistus/mock-yotodistus.pdf"))
+        }
+      }
+    }
+  }
+
+  private def resourceAsByteArray(resourceName: String): Array[Byte] =
+    ClasspathResource.resourceSerializer(resourceName)(inputStream => continually(inputStream.read).takeWhile(_ != -1).map(_.toByte).toArray).get
+}
