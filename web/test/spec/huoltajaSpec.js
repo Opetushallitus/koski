@@ -94,7 +94,11 @@ describe('Huollettavien tiedot', function () {
 
           it('näytetään', function () {
             expect(
-              extractAsText(S('.ylioppilastutkinnonsuoritus .osasuoritukset'))
+              extractAsText(
+                S(
+                  '.ylioppilastutkinnonsuoritus .osasuoritukset .suoritus-group'
+                )
+              )
             ).to.equal(
               'Tutkintokerta Koe Pisteet Arvosana\n' +
                 '2012 kevät Äidinkielen koe, suomi 46 Lubenter approbatur Näytä koesuoritus\n' +

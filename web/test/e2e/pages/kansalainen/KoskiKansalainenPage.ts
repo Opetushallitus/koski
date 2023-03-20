@@ -44,7 +44,7 @@ export class KoskiKansalainenPage {
     const popupPromise = this.page.waitForEvent('popup')
     await this.$.yoTodistus.open.click()
     const popup = await popupPromise
-    await popup.waitForLoadState()
+    await popup.waitForLoadState('networkidle')
     await popup.close()
   }
 }
