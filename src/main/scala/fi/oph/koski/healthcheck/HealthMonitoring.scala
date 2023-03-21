@@ -20,7 +20,7 @@ class HealthMonitoring extends Logging {
   }
 
   private def logList(status: Seq[SubsystemHealthStatus]): Unit = {
-    logger.info(JsonSerializer.writeWithRoot(status))
+    status.foreach(s => logger.info(JsonSerializer.writeWithRoot(s)))
   }
 
   private def storedStatus: Seq[SubsystemHealthStatus] = operational.map { case (key, ok) =>
