@@ -81,7 +81,12 @@ const viikinNormaalikouluSuorittaminenPath = suorittaminenPathWithOrg.href(
 
 describe("Suorittamisen valvonta -näkymä", () => {
   it("Näyttää listan oppijoista Stadin ammattiopiston käyttäjälle", async () => {
-    await loginAs(suorittaminenListaPath, "valpas-pelkkä-suorittaminen-amis")
+    await loginAs(
+      suorittaminenListaPath,
+      "valpas-pelkkä-suorittaminen-amis",
+      true,
+      "2021-09-02"
+    )
     await urlIsEventually(pathToUrl(stadinAmmattiopistoSuorittaminenPath))
 
     await textEventuallyEquals(
@@ -151,7 +156,12 @@ describe("Suorittamisen valvonta -näkymä", () => {
   })
 
   it("Toimii koulutustoimijatason käyttäjällä", async () => {
-    await loginAs(hakutilannePath, "valpas-hki-suorittaminen")
+    await loginAs(
+      hakutilannePath,
+      "valpas-hki-suorittaminen",
+      true,
+      "2021-09-02"
+    )
     await selectOrganisaatioByNimi("Stadin ammatti- ja aikuisopisto")
 
     await urlIsEventually(pathToUrl(stadinAmmattiopistoSuorittaminenPath))
@@ -261,6 +271,98 @@ describe("Suorittamisen valvonta -näkymä", () => {
     await goToLocation(suorittaminenKuntailmoitusListaJklPath)
     await expectElementEventuallyVisible(oppijaRowSelector)
     await waitTableLoadingHasFinished(".suorittaminen")
+  })
+
+  it("Opiskeluoikeudesta eronnut ja samana päivänä uuden opiskeluoikeuden aloittanut näytetään vain uuden oppilaitoksen suorittamisen valvonnassa", async () => {
+    // Amis-eronnut-uusi-oo-samana-päivänä Valpas (300305C243W)
+    const oppijaOid = "1.2.246.562.24.00000000067"
+    const oppijaRowSelector = `.table__row[data-row*="${oppijaOid}"]`
+
+    await reset(suorittaminenListaPath, true, "2021-09-02")
+    await loginAs(
+      suorittaminenListaPath,
+      "valpas-pelkkä-suorittaminen-amis",
+      false,
+      "2021-09-02"
+    )
+    await expectElementEventuallyNotVisible(oppijaRowSelector)
+
+    await loginAs(
+      suorittaminenListaPath,
+      "valpas-pelkkä-suorittaminen-amis-omnia",
+      false,
+      "2021-09-02"
+    )
+    await expectElementEventuallyVisible(oppijaRowSelector)
+  })
+
+  it("Kahdesta opiskeluoikeudesta eronnut oppija näkyy vain viimeisimmän oppilaitoksen suorittamisen valvonnassa eron jälkeen", async () => {
+    // Amis-eronnut-uusi-oo-samana-päivänä-jo-päättynyt Valpas (140305D021D)
+    const oppijaOid = "1.2.246.562.24.00000000068"
+    const oppijaRowSelector = `.table__row[data-row*="${oppijaOid}"]`
+
+    await reset(suorittaminenListaPath, true, "2022-03-02")
+    await loginAs(
+      suorittaminenListaPath,
+      "valpas-pelkkä-suorittaminen-amis",
+      false,
+      "2022-03-02"
+    )
+    await expectElementEventuallyNotVisible(oppijaRowSelector)
+
+    await loginAs(
+      suorittaminenListaPath,
+      "valpas-pelkkä-suorittaminen-amis-omnia",
+      false,
+      "2022-03-02"
+    )
+    await expectElementEventuallyVisible(oppijaRowSelector)
+  })
+
+  it("Kahdesta opiskeluoikeudesta eronnut oppija näkyy vain viimeisimmän oppilaitoksen suorittamisen valvonnassa eron jälkeen, kun toinen opiskeluoikeus oli nivelvaihetta", async () => {
+    // Amis-eronnut-uusi-nivelvaihe-oo-samana-päivänä-jo-päättynyt Valpas (240305A783E)
+    const oppijaOid = "1.2.246.562.24.00000000069"
+    const oppijaRowSelector = `.table__row[data-row*="${oppijaOid}"]`
+
+    await reset(suorittaminenListaPath, true, "2022-03-02")
+    await loginAs(
+      suorittaminenListaPath,
+      "valpas-pelkkä-suorittaminen-amis",
+      false,
+      "2022-03-02"
+    )
+    await expectElementEventuallyNotVisible(oppijaRowSelector)
+
+    await loginAs(
+      suorittaminenListaPath,
+      "valpas-pelkkä-suorittaminen-ressu",
+      false,
+      "2022-03-02"
+    )
+    await expectElementEventuallyVisible(oppijaRowSelector)
+  })
+
+  it("Kahdesta opiskeluoikeudesta eronnut oppija näkyy vain viimeisimmän oppilaitoksen suorittamisen valvonnassa eron jälkeen, kun toinen opiskeluoikeus ajoittuu ensimmäisen sisälle", async () => {
+    // Amis-eronnut-uusi-oo-alkanut-ja-päättynyt-eroon-keskellä Valpas (170205A609H)
+    const oppijaOid = "1.2.246.562.24.00000000070"
+    const oppijaRowSelector = `.table__row[data-row*="${oppijaOid}"]`
+
+    await reset(suorittaminenListaPath, true, "2022-03-02")
+    await loginAs(
+      suorittaminenListaPath,
+      "valpas-pelkkä-suorittaminen-amis",
+      false,
+      "2022-03-02"
+    )
+    await expectElementEventuallyVisible(oppijaRowSelector)
+
+    await loginAs(
+      suorittaminenListaPath,
+      "valpas-pelkkä-suorittaminen-amis-omnia",
+      false,
+      "2022-03-02"
+    )
+    await expectElementEventuallyNotVisible(oppijaRowSelector)
   })
 })
 

@@ -6,6 +6,8 @@ import fi.oph.koski.fixture.DatabaseFixtureCreator
 import fi.oph.koski.henkilo.OppijaHenkilö
 import fi.oph.koski.schema._
 
+import java.time.LocalDate
+
 class ValpasOpiskeluoikeusDatabaseFixtureCreator(application: KoskiApplication) extends DatabaseFixtureCreator(application, "opiskeluoikeus_valpas_fixture", "opiskeluoikeushistoria_valpas_fixture") {
   protected def oppijat = ValpasMockOppijat.defaultOppijat
 
@@ -211,5 +213,23 @@ class ValpasOpiskeluoikeusDatabaseFixtureCreator(application: KoskiApplication) 
     (ValpasMockOppijat.amisEronnutTuvalainen, ValpasOpiskeluoikeusExampleData.ammattikouluEronnutOpiskeluoikeus),
     (ValpasMockOppijat.amisEronnutTuvalainen, ValpasOpiskeluoikeusExampleData.tuvaOpiskeluoikeusKesken),
     (ValpasMockOppijat.valmistunutTuvalainen, ValpasOpiskeluoikeusExampleData.tuvaOpiskeluoikeusValmis),
+    (ValpasMockOppijat.amisEronnutUusiOpiskeluoikeusAlkanutEroamispäivänä, ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainenSaksalainenKoulu),
+    (ValpasMockOppijat.amisEronnutUusiOpiskeluoikeusAlkanutEroamispäivänä, ValpasOpiskeluoikeusExampleData.ammattikouluEronnutOpiskeluoikeus),
+    (ValpasMockOppijat.amisEronnutUusiOpiskeluoikeusAlkanutEroamispäivänä, ValpasOpiskeluoikeusExampleData.ammattikouluAlkaaOmnia(ValpasOpiskeluoikeusExampleData.ammattikouluEronnutOpiskeluoikeus.päättymispäivä.get)),
+    (ValpasMockOppijat.amisEronnutUusiOpiskeluoikeusAlkanutEroamispäivänäJaPäättynyt, ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainenSaksalainenKoulu),
+    (ValpasMockOppijat.amisEronnutUusiOpiskeluoikeusAlkanutEroamispäivänäJaPäättynyt, ValpasOpiskeluoikeusExampleData.ammattikouluEronnutOpiskeluoikeus),
+    (ValpasMockOppijat.amisEronnutUusiOpiskeluoikeusAlkanutEroamispäivänäJaPäättynyt, ValpasOpiskeluoikeusExampleData.ammattikouluAlkaaJaEroaaOmnia(
+      ValpasOpiskeluoikeusExampleData.ammattikouluEronnutOpiskeluoikeus.päättymispäivä.get.plusDays(1),
+      ValpasOpiskeluoikeusExampleData.ammattikouluEronnutOpiskeluoikeus.päättymispäivä.get.plusMonths(6))),
+    (ValpasMockOppijat.amisEronnutUusiNivelvaiheOpiskeluoikeusAlkanutEroamispäivänäJaPäättynyt, ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainenSaksalainenKoulu),
+    (ValpasMockOppijat.amisEronnutUusiNivelvaiheOpiskeluoikeusAlkanutEroamispäivänäJaPäättynyt, ValpasOpiskeluoikeusExampleData.ammattikouluEronnutOpiskeluoikeus),
+    (ValpasMockOppijat.amisEronnutUusiNivelvaiheOpiskeluoikeusAlkanutEroamispäivänäJaPäättynyt, ValpasOpiskeluoikeusExampleData.valmaRessussaEronnut(
+      ValpasOpiskeluoikeusExampleData.ammattikouluEronnutOpiskeluoikeus.päättymispäivä.get.plusDays(1),
+      ValpasOpiskeluoikeusExampleData.ammattikouluEronnutOpiskeluoikeus.päättymispäivä.get.plusMonths(6))),
+    (ValpasMockOppijat.amisEronnutUusiOpiskeluoikeusAlkanutJaPäättynytEroonKeskellä, ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainenSaksalainenKoulu),
+    (ValpasMockOppijat.amisEronnutUusiOpiskeluoikeusAlkanutJaPäättynytEroonKeskellä, ValpasOpiskeluoikeusExampleData.ammattikouluEronnutOpiskeluoikeus),
+    (ValpasMockOppijat.amisEronnutUusiOpiskeluoikeusAlkanutJaPäättynytEroonKeskellä, ValpasOpiskeluoikeusExampleData.ammattikouluAlkaaJaEroaaOmnia(
+      ValpasOpiskeluoikeusExampleData.ammattikouluEronnutOpiskeluoikeus.päättymispäivä.get.minusMonths(6),
+      ValpasOpiskeluoikeusExampleData.ammattikouluEronnutOpiskeluoikeus.päättymispäivä.get.minusMonths(3))),
   )
 }

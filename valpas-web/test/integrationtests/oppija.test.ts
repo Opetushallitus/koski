@@ -65,7 +65,7 @@ const vsopPath = oppijaPath.href("/virkailija", {
 })
 
 const opiskeluoikeusIntSchoolPerusopetusPath = oppijaPath.href("/virkailija", {
-  oppijaOid: "1.2.246.562.24.00000000094",
+  oppijaOid: "1.2.246.562.24.00000000098",
 })
 
 describe("Oppijakohtainen näkymä 1/2", () => {
@@ -185,7 +185,7 @@ describe("Oppijakohtainen näkymä 1/2", () => {
     await mainHeadingEquals(
       "Int-school-9-luokan-jälkeen-lukion-aloittanut Valpas (120505A3434)"
     )
-    await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000094")
+    await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000098")
     await oppivelvollisuustiedotEquals(
       oppivelvollisuustiedot({
         opiskelutilanne: "Opiskelemassa",

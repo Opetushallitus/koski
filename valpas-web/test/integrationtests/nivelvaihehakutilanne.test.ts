@@ -172,7 +172,8 @@ describe("Nivelvaiheen hakutilannenäkymä", () => {
     await selectOrganisaatioByNimi(ressunLukioOid)
     await urlIsEventually(pathToUrl(ressunLukioHakutilannePath))
 
-    const oppijaOid = "1.2.246.562.24.00000000114"
+    // Aikuisten-perusopetuksesta-alle-2kk-aiemmin-valmistunut Valpas (131004A1477)
+    const oppijaOid = "1.2.246.562.24.00000000118"
     await openOppijaView(oppijaOid)
     await urlIsEventually(
       pathToUrl(

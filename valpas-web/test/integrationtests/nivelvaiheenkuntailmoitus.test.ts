@@ -57,7 +57,7 @@ const opo: Tekijä = {
 
 const teeOppijat = (tekijä: Tekijä): NonEmptyArray<Oppija> => [
   {
-    oid: "1.2.246.562.24.00000000114",
+    oid: "1.2.246.562.24.00000000118",
     title:
       "Aikuisten-perusopetuksesta-alle-2kk-aiemmin-valmistunut Valpas (131004A1477)",
     prefill: 0,
