@@ -4,7 +4,7 @@ import { KoskiPage, prepareForNewOppija } from '../page/koskiPage.js'
 import {
   OpinnotPage,
   OpiskeluoikeusDialog,
-  Kurssi
+  FindAllKurssit
 } from '../page/opinnotPage.js'
 import { expect } from '../util/chai.esm.js'
 import {
@@ -127,7 +127,7 @@ describe('Lukiokoulutus2019', function () {
       })
       describe('Kaikkien moduulien tiedot', function () {
         it('voidaan avata yksitellen virheettömästi', function () {
-          Kurssi.findAll().forEach(function (moduuli) {
+          FindAllKurssit().forEach(function (moduuli) {
             expect(moduuli.detailsText()).to.equal('')
             moduuli.toggleDetails()
             expect(moduuli.detailsText().length > 10).to.equal(true)

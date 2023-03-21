@@ -2,7 +2,7 @@ import { AddOppijaPage } from '../page/addOppijaPage.js'
 import { Authentication } from '../page/authentication.js'
 import { KoskiPage, prepareForNewOppija } from '../page/koskiPage.js'
 import {
-  Kurssi,
+  FindAllKurssit,
   OpinnotPage,
   OpiskeluoikeusDialog
 } from '../page/opinnotPage.js'
@@ -129,7 +129,7 @@ describe('Lukiokoulutus', function () {
 
       describe('Kaikkien kurssien tiedot', function () {
         it('voidaan avata yksitellen virheettömästi', function () {
-          Kurssi.findAll().forEach(function (kurssi) {
+          FindAllKurssit().forEach(function (kurssi) {
             expect(kurssi.detailsText()).to.equal('')
             kurssi.toggleDetails()
             expect(kurssi.detailsText().length > 10).to.equal(true)
