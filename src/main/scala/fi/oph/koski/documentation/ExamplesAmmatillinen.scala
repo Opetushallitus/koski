@@ -169,6 +169,39 @@ object AmmattitutkintoExample {
     )
   )
 
+  lazy val ammatillisenTutkinnonOsanSuoritus = AmmatillisenTutkinnonOsittainenSuoritus(
+    koulutusmoduuli = tutkinto,
+    suoritustapa = suoritustapaNäyttö,
+    järjestämismuodot = Some(List(
+      Järjestämismuotojakso(date(2014, 8, 1), None, järjestämismuotoOppilaitos),
+      Järjestämismuotojakso(date(2015, 5, 31), None, järjestämismuotoOppisopimus),
+      Järjestämismuotojakso(date(2016, 3, 31), None, järjestämismuotoOppilaitos)
+    )),
+    suorituskieli = suomenKieli,
+    alkamispäivä = None,
+    toimipiste = stadinToimipiste,
+    vahvistus = vahvistus(date(2016, 5, 31), stadinAmmattiopisto, Some(helsinki)),
+    osasuoritukset = Some(List(
+      osittaisenTutkinnonOsanSuoritus("104052", "Johtaminen ja henkilöstön kehittäminen", None, hyväksytty),
+      osittaisenTutkinnonOsanSuoritus("104053", "Asiakaspalvelu ja korjaamopalvelujen markkinointi", None, hyväksytty),
+      osittaisenTutkinnonOsanSuoritus("104054", "Työnsuunnittelu ja organisointi", None, hyväksytty),
+      osittaisenTutkinnonOsanSuoritus("104055", "Taloudellinen toiminta", None, hyväksytty),
+      osittaisenTutkinnonOsanSuoritus("104059", "Yrittäjyys", None, hyväksytty)
+    ))
+  )
+
+  lazy val opiskeluoikeusOsittainen = AmmatillinenOpiskeluoikeus(
+    arvioituPäättymispäivä = Some(date(2015, 5, 31)),
+    tila = AmmatillinenOpiskeluoikeudenTila(List(
+      AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)),
+      AmmatillinenOpiskeluoikeusjakso(date(2016, 8, 31), opiskeluoikeusValmistunut, Some(ExampleData.valtionosuusRahoitteinen))
+    )),
+    oppilaitos = Some(stadinAmmattiopisto),
+    suoritukset = List(
+      ammatillisenTutkinnonOsanSuoritus
+    )
+  )
+
   lazy val erikoisammattitutkinto = Oppija(
     exampleHenkilö,
     List(opiskeluoikeus)
