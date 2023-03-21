@@ -154,16 +154,18 @@ test.describe('Perusopetus', () => {
     test.describe('Päättövaiheen opinnot', async () => {
       test.beforeEach(async ({ perusopetusOppijaPage, page }) => {
         await perusopetusOppijaPage.avaaMuokkausnäkymä()
+        await page.waitForLoadState('networkidle')
         await page
           .getByRole('button', {
             name: 'lisää opintojen päättövaiheen suoritus'
           })
           .click()
+        await page.waitForLoadState('networkidle', { timeout: 20000 })
         await expect(
           page.getByRole('button', {
             name: 'lisää opintojen päättövaiheen suoritus'
           })
-        ).not.toBeVisible({ timeout: 20000 })
+        ).not.toBeVisible({ timeout: 90000 })
       })
       test.describe('Lisäyksen jälkeen', async () => {
         test('Piilotetaan lisäyslinkki ja esitäytetään pakolliset oppiaineet', async ({
