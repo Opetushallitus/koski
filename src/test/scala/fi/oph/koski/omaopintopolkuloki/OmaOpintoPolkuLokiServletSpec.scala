@@ -26,6 +26,9 @@ class OmaOpintoPolkuLokiServletSpec extends AnyFreeSpec with Matchers with Koski
         List(MockOrganisaatiot.ressunLukio)
       ))
     }
+    "Data sisältää tiedon lähdepalvelusta" in {
+      auditlogs(KoskiSpecificMockOppijat.aikuisOpiskelija).map(_.serviceName) should contain theSameElementsAs List("koski")
+    }
     "Ei näytetä kansalaisen omia katseluja" in {
       auditlogs(KoskiSpecificMockOppijat.ammattilainen) shouldBe empty
     }
