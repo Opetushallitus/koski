@@ -146,7 +146,7 @@ class SuoritusjakoV2Spec extends AnyFreeSpec with Matchers with OpiskeluoikeusTe
     createSuoritusjako(KoskiSpecificMockOppijat.lukiolainen)
     val secret = getSuoritusjaot(KoskiSpecificMockOppijat.lukiolainen).head.secret
 
-    post("api/suoritusjakoV2/editor", body = JsonMethods.pretty(JsonSerializer.serializeWithRoot(SuoritusjakoRequest(secret))), headers = jsonContent) {
+    post("api/test/suoritusjakoV2/editor", body = JsonMethods.pretty(JsonSerializer.serializeWithRoot(SuoritusjakoRequest(secret))), headers = jsonContent) {
       verifyResponseStatusOk()
     }
   }
@@ -162,14 +162,14 @@ class SuoritusjakoV2Spec extends AnyFreeSpec with Matchers with OpiskeluoikeusTe
 
   def postSuoritusjakoV2[A](opiskeluoikeudet: List[Opiskeluoikeus], oppija: OppijaHenkilö)(f: => A): A = {
     val json = JsonMethods.pretty(JsonSerializer.serializeWithRoot(opiskeluoikeudet))
-    post("api/suoritusjakoV2/create",
+    post("api/test/suoritusjakoV2/create",
       body = json,
       headers = kansalainenLoginHeaders(oppija.hetu.get) ++ jsonContent
     )(f)
   }
 
   def getSuoritusjaot(oppija: OppijaHenkilö) = {
-    get("api/suoritusjakoV2/available", headers = kansalainenLoginHeaders(oppija.hetu.get)) {
+    get("api/test/suoritusjakoV2/available", headers = kansalainenLoginHeaders(oppija.hetu.get)) {
       verifyResponseStatusOk()
       implicit val context: ExtractionContext = strictDeserialization
       SchemaValidatingExtractor.extract[List[Suoritusjako]](body).right.get
@@ -178,7 +178,7 @@ class SuoritusjakoV2Spec extends AnyFreeSpec with Matchers with OpiskeluoikeusTe
 
   def updateSuoritusjako(voimassaAsti: LocalDate, secret: String, oppija: OppijaHenkilö) = {
     val json = JsonMethods.pretty(JsonSerializer.serializeWithRoot(SuoritusjakoUpdateRequest(secret, voimassaAsti)))
-    post("api/suoritusjakoV2/update", body = json, headers = kansalainenLoginHeaders(oppija.hetu.get) ++ jsonContent ) {
+    post("api/test/suoritusjakoV2/update", body = json, headers = kansalainenLoginHeaders(oppija.hetu.get) ++ jsonContent ) {
       verifyResponseStatusOk()
     }
   }
@@ -189,7 +189,7 @@ class SuoritusjakoV2Spec extends AnyFreeSpec with Matchers with OpiskeluoikeusTe
 
   def deleteSuoritusjako(secret: String, oppija: OppijaHenkilö) = {
     val json = JsonMethods.pretty(JsonSerializer.serializeWithRoot(SuoritusjakoDeleteRequest(secret)))
-    post("api/suoritusjakoV2/delete", body = json, headers = kansalainenLoginHeaders(oppija.hetu.get) ++ jsonContent ) {
+    post("api/test/suoritusjakoV2/delete", body = json, headers = kansalainenLoginHeaders(oppija.hetu.get) ++ jsonContent ) {
       verifyResponseStatusOk()
     }
   }

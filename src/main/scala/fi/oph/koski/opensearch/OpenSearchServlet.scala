@@ -20,10 +20,6 @@ class OpenSearchServlet(implicit val application: KoskiApplication)
     }
   }
 
-  before() {
-    noRemoteCalls()
-  }
-
   post("/:indexName/create/:version") {
     withNamedIndex[String](
       _.createIndex(getStringParam("indexName"), getIntegerParam("version"))
