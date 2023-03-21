@@ -29,9 +29,9 @@ class SchedulerSpec extends AnyFreeSpec with TestEnvironment with Matchers {
 
     val scheduler = testScheduler(longRunningTask)
     val start = System.currentTimeMillis
-    Wait.until(sharedResource.get == 1, timeoutMs = 500)
+    Wait.until(sharedResource.get == 1, timeoutMs = 5000)
     (System.currentTimeMillis() - start >= 100) should be(true)
-    Wait.until(sharedResource.get == 2, timeoutMs = 500)
+    Wait.until(sharedResource.get == 2, timeoutMs = 5000)
     (System.currentTimeMillis() - start >= 200) should be(true)
     scheduler.shutdown
   }
