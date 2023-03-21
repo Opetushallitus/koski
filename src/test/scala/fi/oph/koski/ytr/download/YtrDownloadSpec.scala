@@ -39,6 +39,14 @@ class YtrDownloadSpec
   lazy val oppijaOidEnnestäänKoskessa2 =
     KoskiApplicationForTests.opintopolkuHenkilöFacade.findOppijaByHetu(oppijahetut(1)).get.oid
 
+  "YtrSsnData" - {
+    val ssnData = YtrSsnData(ssns = Some(oppijahetut))
+    "Mäppäys kuukausiksi toimii" in {
+      ssnData.minMonth shouldEqual "1980-03"
+      ssnData.maxMonth shouldEqual "1980-06"
+    }
+  }
+
   "Käyttöoikeudet" - {
 
     "OPH:n pääkäyttäjä ei voi ladata YTR:stä ladattua opiskeluoikeutta ennenkuin niitä on tallennettu" in {
