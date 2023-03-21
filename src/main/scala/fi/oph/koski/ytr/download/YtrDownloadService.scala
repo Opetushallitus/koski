@@ -153,7 +153,7 @@ class YtrDownloadService(
         val validSsnCount = o.ssnsWithValidFormat.map(_.length).getOrElse(0)
         logger.info(s"Downloaded ${fullCount} ssn prospects from YTR")
         if (validSsnCount < fullCount) {
-          logger.warn(s"There was ${fullCount - validSsnCount} / ${fullCount} ssns of invalid format")
+          logger.warn(s"There was ${fullCount - validSsnCount} / ${fullCount} ssns of invalid format between ${o.minMonth} and ${o.maxMonth}")
         }
       })
       .flatMap(o => Observable.from(o.ssnsSortedByBirthdays.toList.flatten))
