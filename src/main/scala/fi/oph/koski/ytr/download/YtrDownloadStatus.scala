@@ -7,9 +7,9 @@ import org.json4s.jackson.JsonMethods
 
 import java.sql.Timestamp
 import java.time.LocalDateTime
-
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import org.json4s._
+import slick.jdbc.GetResult
 
 class YtrDownloadStatus(val db: DB) extends QueryMethods with Logging {
   implicit val formats = DefaultFormats
@@ -29,6 +29,14 @@ class YtrDownloadStatus(val db: DB) extends QueryMethods with Logging {
   def getDownloadStatusJson: JValue = {
     runDbSync(KoskiTables.YtrDownloadStatus.filter(_.nimi === tietokantaStatusRivinNimi).result).headOption.map(_.data)
       .getOrElse(constructStatusJson("idle", None, 0, 0))
+  }
+
+  def getReplayLagSeconds: Int = {
+    runDbSync(
+      sql"""
+        select extract(epoch from replay_lag) as replay_lag from pg_stat_replication;
+      """.as[Double](GetResult(_.nextDouble))
+    ).headOption.map(_.toInt).getOrElse(0)
   }
 
   private def setStatus(currentStatus: String, totalCount: Int, errorCount: Int = 0) = {
