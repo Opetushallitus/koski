@@ -32,7 +32,11 @@ class YtrDownloadService(
   )
 
   private val batchSize = application.config.getInt("ytr.download.batchSize").max(1).min(1500)
-  private val extraSleepPerStudentInMs = application.config.getInt("ytr.download.extraSleepPerStudentInMs").max(0).min(100000)
+  private val defaultExtraSleepPerStudenInMs = application.config.getInt("ytr.download.extraSleepPerStudentInMs").max(0).min(100000)
+  private val maxAllowedLagInSeconds = application.config.getInt("ytr.download.maxAllowedLagInSeconds").max(0).min(100000)
+  private val longerSleepPerStudentInMs = application.config.getInt("ytr.download.longerSleepPerStudentInMs").max(0).min(100000)
+
+  private var extraSleepPerStudentInMs = defaultExtraSleepPerStudenInMs
 
   private lazy val defaultScheduler: Scheduler = NewThreadScheduler()
 
@@ -40,8 +44,33 @@ class YtrDownloadService(
   // TODO: TOR-1639 paremmat logitukset
   private val cloudWatchMetrics = CloudWatchMetricsService.apply(application.config)
 
+  def adjustSleepPeriodicallyByReplayLag() = {
+    val t = new java.util.Timer()
+    val scheduleIntervalMs = 15 * 60 * 1000
+    var tooMuchLagOnLastCheck = false
+    val task = new java.util.TimerTask {
+      def run() = {
+        val replayLag = status.getReplayLagSeconds
+        if (replayLag > maxAllowedLagInSeconds) {
+          logger.warn(s"Replay lag (${replayLag} s) is above threshold - will sleep ${longerSleepPerStudentInMs} ms between oppijas")
+          extraSleepPerStudentInMs = longerSleepPerStudentInMs
+          tooMuchLagOnLastCheck = true
+        } else if (tooMuchLagOnLastCheck) {
+          logger.info(s"Replay lag (${replayLag} s) is below threshold but was above last time - do nothing")
+          tooMuchLagOnLastCheck = false
+        } else {
+          logger.info(s"Replay lag (${replayLag} s) is below threshold - will sleep ${defaultExtraSleepPerStudenInMs} ms between oppijas")
+          extraSleepPerStudentInMs = defaultExtraSleepPerStudenInMs
+        }
+      }
+    }
+    t.schedule(task, 0, scheduleIntervalMs)
+    task
+  }
+
   def downloadAndShutdown(): Unit = {
     val config = Environment.ytrDownloadConfig
+    val sleepHandler = adjustSleepPeriodicallyByReplayLag()
 
     download(
       birthmonthStart = config.birthmonthStart,
@@ -50,6 +79,7 @@ class YtrDownloadService(
       force = config.force,
       onEnd = () => {
         logger.info(s"Ended downloading YTR data, shutting down...")
+        sleepHandler.cancel()
         shutdown
       }
     )
