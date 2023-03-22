@@ -2,11 +2,12 @@ package fi.oph.koski.omaopintopolkuloki
 
 
 import java.util
-import com.amazonaws.services.dynamodbv2.document.{DynamoDB, Item}
+import com.amazonaws.services.dynamodbv2.document.{Item}
 import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.organisaatio.{Opetushallitus, OrganisaatioRepository}
+import fi.oph.koski.organisaatio.{Opetushallitus}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.LocalizedString
 import fi.oph.koski.omaopintopolkuloki.AuditLogDynamoDB.AuditLogTableName
@@ -46,15 +47,18 @@ class AuditLogService(app: KoskiApplication) extends Logging {
   }
 
   private def buildLogs(queryResults: Seq[Item]): Iterable[Either[HttpStatus, OrganisaationAuditLogit]] = {
-    val timestampsGroupedByListOfOids = queryResults.map(item => {
-      val organisaatioOidit = item.getList[String]("organizationOid").asScala.sorted
-      val timestamp = item.getString("time")
-      (organisaatioOidit, timestamp)
-    }).groupBy(_._1).mapValues(_.map(_._2))
+    val timestampsGroupedByListOfOidsAndServiceName = queryResults.map(item => {
+      val parsedRow = JsonSerializer.parse[AuditlogRow](item.toJSON, ignoreExtras = true)
+      val parsedRaw = JsonSerializer.parse[AuditlogRaw](parsedRow.raw, ignoreExtras = true)
+      val organisaatioOidit = parsedRow.organizationOid
+      val timestampString = parsedRow.time
+      val serviceName = parsedRaw.serviceName
+      (organisaatioOidit, serviceName, timestampString)
+    }).groupBy(x => (x._1, x._2)).mapValues(_.map(_._3))
 
-    timestampsGroupedByListOfOids.map { case (oids, timestamps) =>
-      HttpStatus.foldEithers(oids.map(toOrganisaatio))
-        .map(orgs => OrganisaationAuditLogit(orgs, timestamps))
+    timestampsGroupedByListOfOidsAndServiceName.map { case ((orgs, serviceName), timestamps) =>
+      HttpStatus.foldEithers(orgs.map(toOrganisaatio))
+        .map(orgs => OrganisaationAuditLogit(orgs, serviceName, timestamps))
     }
   }
 
@@ -77,8 +81,18 @@ class AuditLogService(app: KoskiApplication) extends Logging {
   }
 }
 
+case class AuditlogRow (
+  organizationOid: List[String],
+  raw: String,
+  time: String
+)
+case class AuditlogRaw (
+  serviceName: String
+)
+
 case class OrganisaationAuditLogit(
   organizations: Seq[Organisaatio],
+  serviceName: String,
   timestamps: Seq[String]
 )
 
