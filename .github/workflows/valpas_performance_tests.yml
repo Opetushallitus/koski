@@ -23,27 +23,16 @@ jobs:
           java-version: '11'
           architecture: 'x64'
           distribution: 'zulu'
+          cache: 'maven'
 
       - name: Setup Node 16
         uses: actions/setup-node@v3
         with:
           node-version: "16.19.0"
-
-      - name: Cache Maven packages
-        uses: actions/cache@v3
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
-
-      - name: Cache Node modules
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
+          cache: 'npm'
+          cache-dependency-path: |
+            web/package-lock.json
+            valpas-web/package-lock.json
 
       - name: Build
         run: mvn test-compile
@@ -78,27 +67,16 @@ jobs:
           java-version: '11'
           architecture: 'x64'
           distribution: 'zulu'
+          cache: 'maven'
 
       - name: Setup Node 16
         uses: actions/setup-node@v3
         with:
           node-version: "16.19.0"
-
-      - name: Cache Maven packages
-        uses: actions/cache@v3
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
-
-      - name: Cache Node modules
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
+          cache: 'npm'
+          cache-dependency-path: |
+            web/package-lock.json
+            valpas-web/package-lock.json
 
       - name: Build
         run: mvn test-compile
