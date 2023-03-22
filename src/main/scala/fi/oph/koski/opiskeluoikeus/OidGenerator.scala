@@ -37,19 +37,41 @@ class OidGenerator {
 // Gives twice the same oid for MockOppijat.opiskeluoikeudenOidKonflikti
 class MockOidGenerator extends OidGenerator {
   private var previousOid: String = ""
+  private var ytrCount = 0
 
   override def generateKoskiOid(oppijaOid: String): String = this.synchronized {
     if (oppijaOid != KoskiSpecificMockOppijat.opiskeluoikeudenOidKonflikti.oid) {
       super.generateKoskiOid("")
     } else if (previousOid.isEmpty) {
-      getAndStore
+      getAndStoreKoski
     } else {
       getAndEmpty
     }
   }
 
-  private def getAndStore: String = {
+  override def generateYtrOid(oppijaOid: String): String = {
+    if (oppijaOid != KoskiSpecificMockOppijat.opiskeluoikeudenOidKonflikti.oid &&
+        oppijaOid != KoskiSpecificMockOppijat.opiskeluoikeudenOidKonflikti2.oid) {
+      super.generateYtrOid(oppijaOid)
+    } else if (ytrCount == 0) {
+      ytrCount = 1
+      getAndStoreYtr
+    } else if (ytrCount == 1) {
+      ytrCount = 2
+      previousOid
+    } else {
+      ytrCount = 0
+      getAndEmpty
+    }
+  }
+
+  private def getAndStoreKoski: String = {
     previousOid = super.generateKoskiOid("")
+    previousOid
+  }
+
+  private def getAndStoreYtr: String = {
+    previousOid = super.generateYtrOid("")
     previousOid
   }
 

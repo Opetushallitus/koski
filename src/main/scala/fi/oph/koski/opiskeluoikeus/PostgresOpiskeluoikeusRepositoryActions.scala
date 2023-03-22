@@ -80,7 +80,8 @@ trait PostgresOpiskeluoikeusRepositoryActions[OOROW <: OpiskeluoikeusRow, OOTABL
         }
       } catch {
         case e: SQLException if e.getSQLState == "23505" => // 23505 = Unique constraint violation
-          if (e.getMessage.contains("""duplicate key value violates unique constraint "opiskeluoikeus_oid_key"""")) {
+          if (e.getMessage.contains("""duplicate key value violates unique constraint "opiskeluoikeus_oid_key"""") ||
+            e.getMessage.contains("""duplicate key value violates unique constraint "ytr_opiskeluoikeus_oid_key"""")) {
             Left(KoskiErrorCategory.conflict("duplicate oid"))
           } else {
             Left(KoskiErrorCategory.conflict.samanaikainenPäivitys())
