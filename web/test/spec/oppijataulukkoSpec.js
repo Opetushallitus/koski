@@ -1,7 +1,14 @@
+import { Authentication } from '../page/authentication.js'
+import { KoskiPage } from '../page/koskiPage.js'
+import { OpinnotPage } from '../page/opinnotPage.js'
+import { OrganisaatioHaku } from '../page/organisaatioHaku.js'
+import { expect } from '../util/chai.esm.js'
+import { resetFixtures, wait } from '../util/testHelpers.js'
+
 describe('Oppijataulukko', function () {
-  var page = KoskiPage()
-  var opinnot = OpinnotPage()
-  var editor = opinnot.opiskeluoikeusEditor()
+  let page = KoskiPage()
+  let opinnot = OpinnotPage()
+  let editor = opinnot.opiskeluoikeusEditor()
 
   before(
     Authentication().login(),
@@ -256,7 +263,7 @@ describe('Oppijataulukko', function () {
           'Erkki, Eitiedossa',
           'Esimerkki, Eero',
           'Eskari, Essi',
-          "Eurooppalainen, Emilia",
+          'Eurooppalainen, Emilia',
           'Hetuton, Heikki',
           'Historoitsija, Hiisi',
           'IB-final, Iina',
@@ -644,7 +651,7 @@ describe('Oppijataulukko', function () {
       page.openPage,
       wait.until(page.isReady)
     )
-    var organisaatiovalitsin = OrganisaatioHaku(page.oppijataulukko.tableElem)
+    let organisaatiovalitsin = OrganisaatioHaku(page.oppijataulukko.tableElem)
 
     describe('ei voi hakea yksittäisistä ostopalvelutoimipisteistä joihin on tallennettu opiskeluoikeuksia', function () {
       before(
@@ -697,7 +704,7 @@ describe('Oppijataulukko', function () {
       page.openPage,
       wait.until(page.isReady)
     )
-    var organisaatiovalitsin = OrganisaatioHaku(page.oppijataulukko.tableElem)
+    let organisaatiovalitsin = OrganisaatioHaku(page.oppijataulukko.tableElem)
 
     describe('ei voi hakea yksittäisistä hankintakoulutuksen oppilaitoksista joihin on tallennettu opiskeluoikeuksia', function () {
       before(
@@ -714,7 +721,9 @@ describe('Oppijataulukko', function () {
     })
 
     describe('voi filtteröidä hakusanalla Taiteen perusopetuksen hankintakoulutus', function () {
-      before(organisaatiovalitsin.enter('Taiteen perusopetus (hankintakoulutus)'))
+      before(
+        organisaatiovalitsin.enter('Taiteen perusopetus (hankintakoulutus)')
+      )
 
       it('näyttää vain Taiteen perusopetuksen hankintakoulutus -valinnan eikä aliorganisaatioita sille', function () {
         expect(organisaatiovalitsin.oppilaitokset()).to.deep.equal([
@@ -724,12 +733,12 @@ describe('Oppijataulukko', function () {
     })
 
     describe('Voi valita kaikki hankintakoulutuksen toimipisteet', function () {
-      before(organisaatiovalitsin.select('Taiteen perusopetus (hankintakoulutus)'))
+      before(
+        organisaatiovalitsin.select('Taiteen perusopetus (hankintakoulutus)')
+      )
 
       it('toimii', function () {
-        expect(page.oppijataulukko.names()).to.deep.equal([
-          'Taiteilija, Hank'
-        ])
+        expect(page.oppijataulukko.names()).to.deep.equal(['Taiteilija, Hank'])
         expect(
           page.oppijataulukko.oppilaitokset().slice().sort()
         ).to.deep.equal([

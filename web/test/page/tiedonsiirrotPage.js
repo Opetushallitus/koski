@@ -1,9 +1,19 @@
-function TiedonsiirrotPage() {
+import {
+  click,
+  isElementVisible,
+  openPage,
+  S,
+  seq,
+  wait
+} from '../util/testHelpers.js'
+import { Page } from './pageApi.js'
+
+export function TiedonsiirrotPage() {
   function poistaNappi() {
     return S('button.remove-selected')
   }
 
-  var api = {
+  const api = {
     openPage: function () {
       return openPage('/koski/tiedonsiirrot', api.isVisible)()
     },

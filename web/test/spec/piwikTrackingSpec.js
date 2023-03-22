@@ -1,8 +1,22 @@
+import { FakePiwik } from '../doubles/fakePiwik.js'
+import { Authentication } from '../page/authentication.js'
+import { KoskiPage } from '../page/koskiPage.js'
+import { LoginPage } from '../page/loginPage.js'
+import { OpinnotPage } from '../page/opinnotPage.js'
+import { expect } from '../util/chai.esm.js'
+import {
+  goBack,
+  goForward,
+  openPage,
+  resetFixtures,
+  wait
+} from '../util/testHelpers.js'
+
 describe('Piwik-seuranta', function () {
-  var piwik = FakePiwik()
+  let piwik = FakePiwik()
 
   describe('Koski-palvelun login-sivu', function () {
-    var loginPage = LoginPage()
+    let loginPage = LoginPage()
 
     before(loginPage.openPage)
 
@@ -15,7 +29,7 @@ describe('Piwik-seuranta', function () {
     })
 
     describe('Kirjautumisen jälkeen', function () {
-      var koskiPage = KoskiPage()
+      let koskiPage = KoskiPage()
 
       before(
         Authentication().login(),
@@ -36,7 +50,7 @@ describe('Piwik-seuranta', function () {
       })
 
       describe('Siirryttäessä oppijan tietoihin', function () {
-        var oppijaPathRegexp =
+        let oppijaPathRegexp =
           /^\/koski\/oppija\/\d.\d.\d{3}.\d{3}.\d{2}.\d+(\?.*)?$/
 
         before(
@@ -53,7 +67,7 @@ describe('Piwik-seuranta', function () {
         })
 
         describe('Klikatessa paluulinkkiä', function () {
-          var opinnotPage = OpinnotPage()
+          let opinnotPage = OpinnotPage()
 
           before(piwik.reset, opinnotPage.backToList)
 
@@ -181,7 +195,7 @@ describe('Piwik-seuranta', function () {
   function expectPiwikTrackAjaxPage(piwikQueuedMethodCalls, urlPath) {
     expect(piwikQueuedMethodCalls).to.have.lengthOf(2)
 
-    var customUrlCall = piwikQueuedMethodCalls[0]
+    let customUrlCall = piwikQueuedMethodCalls[0]
 
     expect(customUrlCall).to.have.lengthOf(2)
     expect(customUrlCall[0]).to.equal('setCustomUrl')
@@ -189,7 +203,7 @@ describe('Piwik-seuranta', function () {
       urlPath
     )
 
-    var trackPageViewCall = piwikQueuedMethodCalls[1]
+    let trackPageViewCall = piwikQueuedMethodCalls[1]
 
     expect(trackPageViewCall).to.have.lengthOf(2)
     expect(trackPageViewCall[0]).to.equal('trackPageView')
@@ -203,8 +217,8 @@ describe('Piwik-seuranta', function () {
     expect(piwikQueuedMethodCall[0]).to.equal('trackEvent')
     expect(piwikQueuedMethodCall[1]).to.equal(errorName)
 
-    var msgKey = errorData.text ? 'text' : 'message'
-    var json = JSON.parse(piwikQueuedMethodCall[2])
+    let msgKey = errorData.text ? 'text' : 'message'
+    let json = JSON.parse(piwikQueuedMethodCall[2])
 
     expect(json).to.have.keys(Object.keys(errorData))
     expect(json.location).to.match(errorData.location)

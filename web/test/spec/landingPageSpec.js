@@ -1,8 +1,20 @@
+import { Authentication } from '../page/authentication.js'
+import { KoskiPage } from '../page/koskiPage.js'
+import { LandingPage, KorhoPankki } from '../page/landingPage.js'
+import { OmatTiedotPage } from '../page/omatTiedotPage.js'
+import { expect } from '../util/chai.esm.js'
+import {
+  wait,
+  extractAsText,
+  S,
+  isElementVisible
+} from '../util/testHelpers.js'
+
 describe('Etusivu', function () {
-  var etusivu = LandingPage()
-  var authentication = Authentication()
-  var virkailijaPage = KoskiPage()
-  var korhopankki = KorhoPankki()
+  let etusivu = LandingPage()
+  let authentication = Authentication()
+  let virkailijaPage = KoskiPage()
+  let korhopankki = KorhoPankki()
 
   describe('Kun käyttäjä ei ole kirjautunut sisään', function () {
     before(authentication.logout, etusivu.openPage)

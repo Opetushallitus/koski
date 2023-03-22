@@ -1,10 +1,17 @@
+import { AddOppijaPage } from '../page/addOppijaPage.js'
+import { Authentication } from '../page/authentication.js'
+import { KoskiPage, prepareForNewOppija } from '../page/koskiPage.js'
+import { OpinnotPage } from '../page/opinnotPage.js'
+import { expect } from '../util/chai.esm.js'
+import { extractAsText, resetFixtures, S } from '../util/testHelpers.js'
+
 describe('Muu ammatillinen koulutus', function () {
   before(Authentication().login())
-  var addOppija = AddOppijaPage()
-  var opinnot = OpinnotPage()
-  var page = KoskiPage()
-  var editor = opinnot.opiskeluoikeusEditor()
-  var lisääSuoritus = opinnot.lisääSuoritusDialog
+  let addOppija = AddOppijaPage()
+  let opinnot = OpinnotPage()
+  let page = KoskiPage()
+  let editor = opinnot.opiskeluoikeusEditor()
+  let lisääSuoritus = opinnot.lisääSuoritusDialog
 
   describe('Muun ammatillisen koulutuksen suoritus', function () {
     before(
@@ -169,9 +176,9 @@ describe('Muu ammatillinen koulutus', function () {
       })
 
       describe('Osasuorituksen osasuorituksen lisääminen', function () {
-        var osasuoritus = opinnot.tutkinnonOsat().tutkinnonOsa(0)
-        var osanOsa1 = osasuoritus.osanOsat().tutkinnonOsa(0)
-        var osanOsa2 = osasuoritus.osanOsat().tutkinnonOsa(1)
+        let osasuoritus = opinnot.tutkinnonOsat().tutkinnonOsa(0)
+        let osanOsa1 = osasuoritus.osanOsat().tutkinnonOsa(0)
+        let osanOsa2 = osasuoritus.osanOsat().tutkinnonOsa(1)
         before(
           editor.edit,
           opinnot.avaaKaikki,

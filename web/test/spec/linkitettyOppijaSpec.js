@@ -1,7 +1,13 @@
+import { Authentication } from '../page/authentication.js'
+import { KoskiPage } from '../page/koskiPage.js'
+import { OpinnotPage } from '../page/opinnotPage.js'
+import { expect } from '../util/chai.esm.js'
+import { resetFixtures, S, timeout, wait } from '../util/testHelpers.js'
+
 describe('Linkitetyt oppijat', function () {
-  var page = KoskiPage()
-  var opinnot = OpinnotPage()
-  var editor = opinnot.opiskeluoikeusEditor()
+  let page = KoskiPage()
+  let opinnot = OpinnotPage()
+  let editor = opinnot.opiskeluoikeusEditor()
 
   before(Authentication().login(), resetFixtures, page.openPage)
   describe('Kun katsotaan master-henkilön tietoja', function () {
@@ -31,7 +37,7 @@ describe('Linkitetyt oppijat', function () {
     })
 
     describe('Versiohistorian katsominen', function () {
-      var versiohistoria = opinnot.versiohistoria
+      let versiohistoria = opinnot.versiohistoria
 
       before(versiohistoria.avaa, versiohistoria.valitse('v1'))
 

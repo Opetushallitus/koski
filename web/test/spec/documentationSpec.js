@@ -1,5 +1,10 @@
+import { Authentication } from '../page/authentication.js'
+import { DocumentationPage } from '../page/documentationPage.js'
+import { openPage, S, textsOf, toArray } from '../util/testHelpers.js'
+import { expect } from '../util/chai.esm.js'
+
 describe('Dokumentaatio', function () {
-  var page = DocumentationPage()
+  let page = DocumentationPage()
   describe('Dokumentaatio-sivu', function () {
     before(Authentication().logout, page.openPage)
     it('näytetään', function () {

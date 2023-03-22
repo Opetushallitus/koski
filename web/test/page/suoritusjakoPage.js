@@ -1,5 +1,15 @@
-function SuoritusjakoPage() {
-  var api = {
+import {
+  click,
+  findSingle,
+  isElementVisible,
+  isLoading,
+  openPage,
+  S,
+  textsOf
+} from '../util/testHelpers.js'
+
+export function SuoritusjakoPage() {
+  const api = {
     openPage: function (secretKey) {
       return function () {
         openPage('/koski/opinnot/' + window.secrets[secretKey], api.isVisible)()

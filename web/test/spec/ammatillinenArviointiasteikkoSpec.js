@@ -1,5 +1,13 @@
+import { Authentication } from '../page/authentication.js'
+import { KoskiPage } from '../page/koskiPage.js'
+import { KorhoPankki, LandingPage } from '../page/landingPage.js'
+import { OmatTiedotPage } from '../page/omatTiedotPage.js'
+import { OpinnotPage } from '../page/opinnotPage.js'
+import { extractAsText, insertExample, S, wait } from '../util/testHelpers.js'
+import { expect } from '../util/chai.esm.js'
+
 describe('Ammatillisten koulutusten arviointiasteikko', function () {
-  var verifyArviointiasteikko = function (expectedText) {
+  let verifyArviointiasteikko = function (expectedText) {
     return expect(
       extractAsText(
         S('.ammatillinenpaatasonsuoritus > .ammatillinenarviointiasteikko')
@@ -9,7 +17,7 @@ describe('Ammatillisten koulutusten arviointiasteikko', function () {
 
   describe('Virkailijan käyttöliittymässä', function () {
     before(Authentication().login())
-    var page = KoskiPage()
+    let page = KoskiPage()
 
     describe('Arviointi 1-5, Hylätty tai Hyväksytty', function () {
       before(
@@ -48,11 +56,11 @@ describe('Ammatillisten koulutusten arviointiasteikko', function () {
   })
 
   describe('Arviointiasteikko näkyy myös kansalaisen näkymässä', function () {
-    var omattiedot = OmatTiedotPage()
-    var etusivu = LandingPage()
-    var korhopankki = KorhoPankki()
-    var authentication = Authentication()
-    var opinnot = OpinnotPage()
+    let omattiedot = OmatTiedotPage()
+    let etusivu = LandingPage()
+    let korhopankki = KorhoPankki()
+    let authentication = Authentication()
+    let opinnot = OpinnotPage()
 
     before(
       authentication.logout,

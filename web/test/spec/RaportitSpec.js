@@ -1,3 +1,8 @@
+import { Authentication } from '../page/authentication.js'
+import { LoginPage } from '../page/loginPage.js'
+import { RaportitPage } from '../page/raportitPage.js'
+import { expect } from '../util/chai.esm.js'
+
 const kaikkiOrganisaatiot = [
   'Aalto-yliopisto',
   'Aapajoen koulu',
@@ -37,8 +42,8 @@ const lukionRaportit = [
 ]
 
 describe('Raporttien luominen', function () {
-  var page = RaportitPage()
-  var login = LoginPage()
+  let page = RaportitPage()
+  let login = LoginPage()
 
   before(
     Authentication().login('pää'),

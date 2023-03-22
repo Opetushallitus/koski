@@ -1,5 +1,7 @@
+import { takeScreenshot } from './testHelpers.js'
+
 console.log('Starting mocha')
-var runner = mocha.run()
+let runner = mocha.run()
 if (window.callPhantom) {
   console.log('PhantomJS mode')
 }
@@ -7,7 +9,7 @@ if (window.callPhantom) {
 // For fi.oph.koski.browserstack.BrowserstackMochaTest
 runner.errors = []
 function mapError(e) {
-  var logEntry = { title: e.title }
+  let logEntry = { title: e.title }
   if (e.err) logEntry.message = e.err.message
   if (e.parent) logEntry.parent = mapError(e.parent)
   return logEntry
@@ -25,3 +27,5 @@ $(document).keyup(function (e) {
     runner.abort()
   }
 })
+
+export default {}

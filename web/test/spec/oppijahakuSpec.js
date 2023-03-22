@@ -1,10 +1,21 @@
+import { Authentication } from '../page/authentication.js'
+import { KoskiPage } from '../page/koskiPage.js'
+import { OpinnotPage } from '../page/opinnotPage.js'
+import { expect } from '../util/chai.esm.js'
+import {
+  resetFixtures,
+  extractAsText,
+  S,
+  openPage
+} from '../util/testHelpers.js'
+
 describe('Oppijahaku', function () {
-  var page = KoskiPage()
-  var opinnot = OpinnotPage()
-  var eero = 'Esimerkki, Eero (010101-123N)'
-  var eivastaa = 'Virtanen, Eivastaa (250390-680P)'
-  var markkanen = 'Markkanen-Fagerström, Eéro Jorma-Petteri (080154-770R)'
-  var eerola = 'Çelik-Eerola, Jouni (081165-793C)'
+  let page = KoskiPage()
+  let opinnot = OpinnotPage()
+  let eero = 'Esimerkki, Eero (010101-123N)'
+  let eivastaa = 'Virtanen, Eivastaa (250390-680P)'
+  let markkanen = 'Markkanen-Fagerström, Eéro Jorma-Petteri (080154-770R)'
+  let eerola = 'Çelik-Eerola, Jouni (081165-793C)'
 
   before(Authentication().login(), resetFixtures, page.openPage)
 

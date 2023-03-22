@@ -1,5 +1,12 @@
-function RaporttiPage() {
-  var api = {
+import {
+  findSingle,
+  isElementVisible,
+  openPage,
+  S
+} from '../util/testHelpers.js'
+
+export function RaporttiPage() {
+  const api = {
     openPage: function (predicate) {
       return function () {
         return openPage('/koski/pulssi/raportti', predicate)()

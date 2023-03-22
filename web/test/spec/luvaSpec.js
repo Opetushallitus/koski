@@ -1,8 +1,21 @@
+import { AddOppijaPage } from '../page/addOppijaPage.js'
+import { Authentication } from '../page/authentication.js'
+import { KoskiPage, prepareForNewOppija } from '../page/koskiPage.js'
+import { OpinnotPage } from '../page/opinnotPage.js'
+import { expect } from '../util/chai.esm.js'
+import {
+  resetFixtures,
+  extractAsText,
+  S,
+  findSingle,
+  wait
+} from '../util/testHelpers.js'
+
 describe('Lukioon valmistava koulutus', function () {
-  var page = KoskiPage()
-  var opinnot = OpinnotPage()
-  var editor = opinnot.opiskeluoikeusEditor()
-  var addOppija = AddOppijaPage()
+  let page = KoskiPage()
+  let opinnot = OpinnotPage()
+  let editor = opinnot.opiskeluoikeusEditor()
+  let addOppija = AddOppijaPage()
 
   before(
     Authentication().login(),
@@ -84,7 +97,7 @@ describe('Lukioon valmistava koulutus', function () {
   })
 
   describe('Kurssin tiedot', function () {
-    var kurssi = opinnot.oppiaineet.oppiaine('LVMALUO').kurssi('LVLUMA1')
+    let kurssi = opinnot.oppiaineet.oppiaine('LVMALUO').kurssi('LVLUMA1')
     describe('Kun klikataan', function () {
       before(kurssi.toggleDetails)
       it('näyttää kurssin tiedot', function () {
@@ -103,8 +116,8 @@ describe('Lukioon valmistava koulutus', function () {
 
     describe('Suoritusten tiedot', function () {
       describe('Kun päätason suoritus on merkitty valmiiksi', function () {
-        var aine = opinnot.oppiaineet.oppiaine('oppiaine.A1')
-        var aineenArvosana = aine.propertyBySelector('td.arvosana')
+        let aine = opinnot.oppiaineet.oppiaine('oppiaine.A1')
+        let aineenArvosana = aine.propertyBySelector('td.arvosana')
 
         before(editor.edit, aineenArvosana.selectValue('Ei valintaa'))
 
@@ -129,16 +142,16 @@ describe('Lukioon valmistava koulutus', function () {
           opinnot.tilaJaVahvistus.merkitseKeskeneräiseksi
         )
 
-        var valmistavaAi = opinnot.oppiaineet.oppiaine('oppiaine.LVAIK')
-        var valmistavaAiArvosana =
+        let valmistavaAi = opinnot.oppiaineet.oppiaine('oppiaine.LVAIK')
+        let valmistavaAiArvosana =
           valmistavaAi.propertyBySelector('td.arvosana')
-        var valmistavaAiKieli =
+        let valmistavaAiKieli =
           valmistavaAi.propertyBySelector('.title .properties')
 
-        var valinnainenEn = opinnot.oppiaineet.oppiaine('oppiaine.A1')
-        var valinnainenEnArvosana =
+        let valinnainenEn = opinnot.oppiaineet.oppiaine('oppiaine.A1')
+        let valinnainenEnArvosana =
           valinnainenEn.propertyBySelector('td.arvosana')
-        var valinnainenEnKieli =
+        let valinnainenEnKieli =
           valinnainenEn.propertyBySelector('.title .properties')
 
         describe('Alkutila', function () {
@@ -221,10 +234,10 @@ describe('Lukioon valmistava koulutus', function () {
         })
 
         describe('Valmistava oppiaine', function () {
-          var valmistavatSelector = '.lukioon-valmistavat-opinnot'
-          var uusiOppiaine =
+          let valmistavatSelector = '.lukioon-valmistavat-opinnot'
+          let uusiOppiaine =
             opinnot.oppiaineet.uusiOppiaine(valmistavatSelector)
-          var mat = editor.subEditor(
+          let mat = editor.subEditor(
             valmistavatSelector + ' .oppiaine.LVMALUO:eq(0)'
           )
 
@@ -280,7 +293,7 @@ describe('Lukioon valmistava koulutus', function () {
               })
 
               describe('arvosanan muuttaminen', function () {
-                var kurssi = opinnot.oppiaineet.oppiaine('LVAIK').kurssi('PA')
+                let kurssi = opinnot.oppiaineet.oppiaine('LVAIK').kurssi('PA')
 
                 before(
                   editor.edit,
@@ -295,7 +308,7 @@ describe('Lukioon valmistava koulutus', function () {
               })
 
               describe('poistaminen', function () {
-                var pa = valmistavaAi.kurssi('PA')
+                let pa = valmistavaAi.kurssi('PA')
 
                 before(
                   editor.edit,
@@ -314,7 +327,7 @@ describe('Lukioon valmistava koulutus', function () {
 
             describe('valtakunnallisen kurssin', function () {
               describe('kurssivaihtoehdot', function () {
-                var lvyhku = opinnot.oppiaineet.oppiaine('LVYHKU')
+                let lvyhku = opinnot.oppiaineet.oppiaine('LVYHKU')
                 before(editor.edit, lvyhku.avaaLisääKurssiDialog)
                 it('näytetään vain oikean oppiaineen kurssit', function () {
                   expect(lvyhku.lisääKurssiDialog.kurssit()).to.deep.equal([
@@ -328,7 +341,7 @@ describe('Lukioon valmistava koulutus', function () {
               })
 
               describe('lisääminen', function () {
-                var lvopo = opinnot.oppiaineet.oppiaine('LVOPO')
+                let lvopo = opinnot.oppiaineet.oppiaine('LVOPO')
                 before(
                   editor.edit,
                   lvopo.avaaLisääKurssiDialog,
@@ -349,10 +362,10 @@ describe('Lukioon valmistava koulutus', function () {
 
         describe('Valinnainen oppiaine', function () {
           describe('Valtakunnallisen valinnaisen oppiaineen', function () {
-            var valinnaisetSelector = '.valinnaisena-suoritetut-lukiokurssit'
-            var uusiOppiaine =
+            let valinnaisetSelector = '.valinnaisena-suoritetut-lukiokurssit'
+            let uusiOppiaine =
               opinnot.oppiaineet.uusiOppiaine(valinnaisetSelector)
-            var kotitalous = editor.subEditor(
+            let kotitalous = editor.subEditor(
               valinnaisetSelector + ' .oppiaine.KO:eq(0)'
             )
 
@@ -386,7 +399,7 @@ describe('Lukioon valmistava koulutus', function () {
 
             describe('valtakunnallisen kurssin', function () {
               describe('arvosanan muuttaminen', function () {
-                var kurssi = opinnot.oppiaineet.oppiaine('A1').kurssi('ENA1')
+                let kurssi = opinnot.oppiaineet.oppiaine('A1').kurssi('ENA1')
 
                 before(
                   editor.edit,
@@ -418,7 +431,7 @@ describe('Lukioon valmistava koulutus', function () {
               })
 
               describe('poistaminen', function () {
-                var ena1 = valinnainenEn.kurssi('ENA2')
+                let ena1 = valinnainenEn.kurssi('ENA2')
 
                 before(
                   editor.edit,
@@ -437,7 +450,7 @@ describe('Lukioon valmistava koulutus', function () {
 
             describe('paikallisen kurssin', function () {
               describe('arvosanan muuttaminen', function () {
-                var kurssi = opinnot.oppiaineet.oppiaine('A1').kurssi('ENA1')
+                let kurssi = opinnot.oppiaineet.oppiaine('A1').kurssi('ENA1')
 
                 before(
                   editor.edit,
@@ -469,7 +482,7 @@ describe('Lukioon valmistava koulutus', function () {
               })
 
               describe('poistaminen', function () {
-                var pa = opinnot.oppiaineet.oppiaine('A1').kurssi('PA')
+                let pa = opinnot.oppiaineet.oppiaine('A1').kurssi('PA')
 
                 before(
                   editor.edit,

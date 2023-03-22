@@ -1,4 +1,6 @@
-function FakePiwik() {
+import { testFrame } from '../util/testHelpers.js'
+
+export function FakePiwik() {
   return {
     reset: function () {
       testFrame().window._paq.length = 0

@@ -1,9 +1,23 @@
+import { AddOppijaPage } from '../page/addOppijaPage.js'
+import { Authentication } from '../page/authentication.js'
+import { KoskiPage, prepareForNewOppija } from '../page/koskiPage.js'
+import { OpinnotPage, OpiskeluoikeusDialog } from '../page/opinnotPage.js'
+import { expect } from '../util/chai.esm.js'
+import {
+  extractAsText,
+  findSingle,
+  isElementVisible,
+  resetFixtures,
+  S,
+  wait
+} from '../util/testHelpers.js'
+
 describe('IB', function () {
-  var page = KoskiPage()
-  var opinnot = OpinnotPage()
-  var editor = opinnot.opiskeluoikeusEditor()
-  var opiskeluoikeus = OpiskeluoikeusDialog()
-  var addOppija = AddOppijaPage()
+  let page = KoskiPage()
+  let opinnot = OpinnotPage()
+  let editor = opinnot.opiskeluoikeusEditor()
+  let opiskeluoikeus = OpiskeluoikeusDialog()
+  let addOppija = AddOppijaPage()
   before(Authentication().login(), resetFixtures)
 
   describe('Opiskeluoikeuden tiedot', function () {
@@ -79,11 +93,11 @@ describe('IB', function () {
     describe('Tietojen muuttaminen', function () {
       describe('Suoritusten tiedot', function () {
         describe('Oppiaine', function () {
-          var uusiOppiaine = opinnot.oppiaineet.uusiOppiaine()
+          let uusiOppiaine = opinnot.oppiaineet.uusiOppiaine()
 
           describe('Lukion oppiaine', function () {
-            var aine = opinnot.oppiaineet.oppiaine('oppiaine.BI')
-            var arvosana = aine.propertyBySelector('td.arvosana')
+            let aine = opinnot.oppiaineet.oppiaine('oppiaine.BI')
+            let arvosana = aine.propertyBySelector('td.arvosana')
 
             describe('Arvosana-asteikko', function () {
               before(editor.edit)
@@ -124,7 +138,7 @@ describe('IB', function () {
 
             describe('Oppiaineen kurssi', function () {
               describe('Arvosanan muuttaminen', function () {
-                var kurssi = aine.kurssi('BI10')
+                let kurssi = aine.kurssi('BI10')
 
                 before(
                   editor.edit,
@@ -152,7 +166,7 @@ describe('IB', function () {
 
               describe('Paikallisen lukion kurssin', function () {
                 describe('lisäyksessä', function () {
-                  var dialog = aine.lisääKurssiDialog
+                  let dialog = aine.lisääKurssiDialog
 
                   before(
                     editor.edit,
@@ -204,9 +218,9 @@ describe('IB', function () {
           describe('Lukion kieliaine', function () {
             before(editor.edit)
 
-            var aine = opinnot.oppiaineet.oppiaine('oppiaine.AI')
-            var kieli = aine.propertyBySelector('.title .properties:eq(0)')
-            var arvosana = aine.propertyBySelector('td.arvosana')
+            let aine = opinnot.oppiaineet.oppiaine('oppiaine.AI')
+            let kieli = aine.propertyBySelector('.title .properties:eq(0)')
+            let arvosana = aine.propertyBySelector('td.arvosana')
 
             describe('Alkutila', function () {
               it('on oikein', function () {
@@ -236,7 +250,7 @@ describe('IB', function () {
           describe('Lukion paikallinen aine', function () {
             before(editor.edit)
 
-            var aine = editor.subEditor('.oppiaine.oppiaine-rivi:last')
+            let aine = editor.subEditor('.oppiaine.oppiaine-rivi:last')
 
             it('alkutila', function () {
               expect(editor.canSave()).to.equal(false)
@@ -343,8 +357,8 @@ describe('IB', function () {
           describe('Muu IB-aine', function () {
             before(editor.edit)
 
-            var aine = opinnot.oppiaineet.oppiaine('oppiaine.CHE')
-            var arvosana = aine.propertyBySelector('td.arvosana')
+            let aine = opinnot.oppiaineet.oppiaine('oppiaine.CHE')
+            let arvosana = aine.propertyBySelector('td.arvosana')
 
             it('alkutila', function () {
               expect(editor.canSave()).to.equal(false)
@@ -425,7 +439,7 @@ describe('IB', function () {
 
                 describe('Paikallisen IB-kurssin', function () {
                   describe('lisäyksessä', function () {
-                    var dialog = aine.lisääKurssiDialog
+                    let dialog = aine.lisääKurssiDialog
 
                     before(
                       editor.edit,
@@ -496,8 +510,8 @@ describe('IB', function () {
                 opinnot.tilaJaVahvistus.merkitseKeskeneräiseksi
               )
 
-              var aine = opinnot.oppiaineet.oppiaine('oppiaine.B')
-              var kieli = aine.propertyBySelector(
+              let aine = opinnot.oppiaineet.oppiaine('oppiaine.B')
+              let kieli = aine.propertyBySelector(
                 '.title .properties:eq(0) > .dropdown-wrapper'
               )
 
@@ -724,7 +738,7 @@ describe('IB', function () {
     describe('Oppiaineet', function () {
       before(opinnot.expandAll)
       it('ryhmitellään aineryhmittäin', function () {
-        var rivit = S('.oppiaineet tbody tr')
+        let rivit = S('.oppiaineet tbody tr')
         expect(S(rivit.get(0)).hasClass('aineryhmä')).to.equal(true)
         expect(S(rivit.get(1)).hasClass('A')).to.equal(true)
         expect(S(rivit.get(2)).hasClass('A2')).to.equal(true)
@@ -800,11 +814,11 @@ describe('IB', function () {
       )
       describe('Suoritusten tiedot', function () {
         describe('Yhteinen IB-suoritus', function () {
-          var tok = opinnot.ibYhteisetSuoritukset.suoritus('theoryOfKnowledge')
-          var cas = opinnot.ibYhteisetSuoritukset.suoritus(
+          let tok = opinnot.ibYhteisetSuoritukset.suoritus('theoryOfKnowledge')
+          let cas = opinnot.ibYhteisetSuoritukset.suoritus(
             'creativityActionService'
           )
-          var ee = opinnot.ibYhteisetSuoritukset.suoritus('extendedEssay')
+          let ee = opinnot.ibYhteisetSuoritukset.suoritus('extendedEssay')
 
           describe('Alkutila', function () {
             before(editor.edit)
@@ -864,7 +878,7 @@ describe('IB', function () {
               before(editor.edit)
 
               describe('Arvosanan muuttaminen', function () {
-                var kurssi = tok.asOppiaine.kurssi('TOK1')
+                let kurssi = tok.asOppiaine.kurssi('TOK1')
 
                 before(
                   kurssi.arvosana.selectValue('5'),
@@ -878,7 +892,7 @@ describe('IB', function () {
               })
 
               describe('Arvioinnin effort-tiedon muuttaminen', function () {
-                var kurssi = tok.asOppiaine.kurssi('TOK1')
+                let kurssi = tok.asOppiaine.kurssi('TOK1')
 
                 before(
                   editor.edit,
@@ -898,7 +912,7 @@ describe('IB', function () {
               })
 
               describe('Arvioinnin effort-tiedon poistaminen', function () {
-                var kurssi = tok.asOppiaine.kurssi('TOK1')
+                let kurssi = tok.asOppiaine.kurssi('TOK1')
 
                 before(
                   editor.edit,
@@ -1023,14 +1037,14 @@ describe('IB', function () {
         describe('Oppiaine', function () {
           before(editor.edit)
 
-          var a = opinnot.oppiaineet.oppiaine('oppiaine.A')
-          var kieli = a.propertyBySelector(
+          let a = opinnot.oppiaineet.oppiaine('oppiaine.A')
+          let kieli = a.propertyBySelector(
             '.title > .properties > .dropdown-wrapper'
           )
-          var taso = a.propertyBySelector('.property.taso')
-          var arvosana = a.propertyBySelector('td.arvosana')
+          let taso = a.propertyBySelector('.property.taso')
+          let arvosana = a.propertyBySelector('td.arvosana')
 
-          var uusiOppiaine = opinnot.oppiaineet.uusiOppiaine('.A2 +')
+          let uusiOppiaine = opinnot.oppiaineet.uusiOppiaine('.A2 +')
 
           describe('Alkutila', function () {
             it('on oikein', function () {
@@ -1086,8 +1100,8 @@ describe('IB', function () {
               opinnot.tilaJaVahvistus.merkitseKeskeneräiseksi
             )
 
-            var b = opinnot.oppiaineet.oppiaine('oppiaine.B')
-            var kieliB = b.propertyBySelector(
+            let b = opinnot.oppiaineet.oppiaine('oppiaine.B')
+            let kieliB = b.propertyBySelector(
               '.title > .properties > .dropdown-wrapper'
             )
 
@@ -1139,7 +1153,7 @@ describe('IB', function () {
           describe('Muu oppiaine', function () {
             before(editor.edit)
 
-            var che = opinnot.oppiaineet.oppiaine('oppiaine.CHE')
+            let che = opinnot.oppiaineet.oppiaine('oppiaine.CHE')
 
             it('alkutila', function () {
               expect(editor.canSave()).to.equal(false)
@@ -1197,7 +1211,7 @@ describe('IB', function () {
             before(editor.edit)
 
             describe('Arvosanan muuttaminen', function () {
-              var kurssi = a.kurssi('FIN_S1')
+              let kurssi = a.kurssi('FIN_S1')
 
               before(
                 kurssi.arvosana.selectValue('5'),
@@ -1211,7 +1225,7 @@ describe('IB', function () {
             })
 
             describe('Arvioinnin effort-tiedon muuttaminen', function () {
-              var kurssi = a.kurssi('FIN_S1')
+              let kurssi = a.kurssi('FIN_S1')
 
               before(
                 editor.edit,
@@ -1236,7 +1250,7 @@ describe('IB', function () {
             })
 
             describe('Arvioinnin effort-tiedon poistaminen', function () {
-              var kurssi = a.kurssi('FIN_S1')
+              let kurssi = a.kurssi('FIN_S1')
 
               before(
                 editor.edit,
@@ -1363,8 +1377,8 @@ describe('IB', function () {
         })
 
         describe('Pre-IB-suorituksen lisääminen', function () {
-          var lisääSuoritus = opinnot.lisääSuoritusDialog
-          var lisäysTeksti = 'lisää pre-IB-suoritus'
+          let lisääSuoritus = opinnot.lisääSuoritusDialog
+          let lisäysTeksti = 'lisää pre-IB-suoritus'
 
           describe('Kun opiskeluoikeus on tilassa VALMIS', function () {
             before(
@@ -1473,8 +1487,8 @@ describe('IB', function () {
         })
 
         describe('IB-tutkinnon suorituksen lisääminen', function () {
-          var lisääSuoritus = opinnot.lisääSuoritusDialog
-          var lisäysTeksti = 'lisää IB-tutkinnon suoritus'
+          let lisääSuoritus = opinnot.lisääSuoritusDialog
+          let lisäysTeksti = 'lisää IB-tutkinnon suoritus'
 
           describe('Kun opiskeluoikeus on tilassa VALMIS', function () {
             before(

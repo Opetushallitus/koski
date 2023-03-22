@@ -1,5 +1,8 @@
-function OrganisaatioHaku(elem) {
-  var api = {
+import { click, findFirst, textsOf, wait } from '../util/testHelpers.js'
+import { Page } from './pageApi.js'
+
+export function OrganisaatioHaku(elem) {
+  const api = {
     select: function (value) {
       return function () {
         if (value) {

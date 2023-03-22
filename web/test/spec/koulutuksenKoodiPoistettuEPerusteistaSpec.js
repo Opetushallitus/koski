@@ -1,3 +1,16 @@
+import { Authentication } from '../page/authentication.js'
+import { KoskiPage } from '../page/koskiPage.js'
+import { OpinnotPage } from '../page/opinnotPage.js'
+import { expect } from '../util/chai.esm.js'
+import {
+  click,
+  extractAsText,
+  findSingle,
+  resetFixtures,
+  S,
+  seq
+} from '../util/testHelpers.js'
+
 describe('Koulutuksen koodi poistettu ePerusteista', function () {
   before(Authentication().login(), resetFixtures)
 
@@ -24,9 +37,9 @@ describe('Koulutuksen koodi poistettu ePerusteista', function () {
     )
   }
 
-  var page = KoskiPage()
-  var opinnot = OpinnotPage()
-  var editor = opinnot.opiskeluoikeusEditor()
+  let page = KoskiPage()
+  let opinnot = OpinnotPage()
+  let editor = opinnot.opiskeluoikeusEditor()
 
   describe('Vanhentunut koulutuskoodi, ei löydy enää ePerusteista', function () {
     before(

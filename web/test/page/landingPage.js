@@ -1,4 +1,15 @@
-function LandingPage() {
+import {
+  click,
+  findSingle,
+  isElementVisible,
+  isLoading,
+  openPage,
+  S,
+  seq
+} from '../util/testHelpers.js'
+import { Page } from './pageApi.js'
+
+export function LandingPage() {
   var api = {
     openPage: function () {
       return openPage('/koski/', api.isVisible)()
@@ -19,7 +30,7 @@ function LandingPage() {
   return api
 }
 
-function KorhoPankki() {
+export function KorhoPankki() {
   var pageApi = Page(findSingle('.korhopankki-page .login'))
   var api = {
     isReady: function () {

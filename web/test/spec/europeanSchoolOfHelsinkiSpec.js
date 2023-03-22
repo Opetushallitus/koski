@@ -1,7 +1,14 @@
+import { AddOppijaPage } from '../page/addOppijaPage.js'
+import { Authentication } from '../page/authentication.js'
+import { KoskiPage, prepareForNewOppija } from '../page/koskiPage.js'
+import { OpinnotPage } from '../page/opinnotPage.js'
+import { expect } from '../util/chai.esm.js'
+import { extractAsText, resetFixtures, S } from '../util/testHelpers.js'
+
 describe('Helsingin eurooppalainen koulu', function () {
-  var page = KoskiPage()
-  var opinnot = OpinnotPage()
-  var addOppija = AddOppijaPage()
+  let page = KoskiPage()
+  let opinnot = OpinnotPage()
+  let addOppija = AddOppijaPage()
 
   before(Authentication().login(), resetFixtures)
 

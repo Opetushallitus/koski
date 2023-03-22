@@ -1,7 +1,13 @@
+import { Authentication } from '../page/authentication.js'
+import { KoskiPage } from '../page/koskiPage.js'
+import { OpinnotPage } from '../page/opinnotPage.js'
+import { expect } from '../util/chai.esm.js'
+import { extractAsText, resetFixtures, S } from '../util/testHelpers.js'
+
 describe('Korkeakoulutus', function () {
-  var page = KoskiPage()
-  var login = LoginPage()
-  var opinnot = OpinnotPage()
+  let page = KoskiPage()
+  // let login = LoginPage()
+  let opinnot = OpinnotPage()
 
   before(Authentication().login(), resetFixtures)
 
@@ -200,12 +206,8 @@ describe('Korkeakoulutus', function () {
     })
     describe('Maisterin tutkinto', function () {
       it('näytetään oppilaitos ja tutkinto', function () {
-        expect(opinnot.getTutkinto(0)).to.equal(
-          'Dipl.ins., konetekniikka'
-        )
-        expect(opinnot.getTutkintoKoodi(0)).to.equal(
-          '751101'
-        )
+        expect(opinnot.getTutkinto(0)).to.equal('Dipl.ins., konetekniikka')
+        expect(opinnot.getTutkintoKoodi(0)).to.equal('751101')
         expect(opinnot.getVirtaNimi(0)).to.equal(
           'Tekniikan koulutus (UUSI2005), Diplomi-insinöörin tutkinto Konetekniikan koulutusohjelma'
         )
@@ -214,12 +216,8 @@ describe('Korkeakoulutus', function () {
     })
     describe('Kandin tutkinto', function () {
       it('näytetään oppilaitos ja tutkinto', function () {
-        expect(opinnot.getTutkinto(1)).to.equal(
-          'Tekn. kand., konetekniikka'
-        )
-        expect(opinnot.getTutkintoKoodi(1)).to.equal(
-          '655101'
-        )
+        expect(opinnot.getTutkinto(1)).to.equal('Tekn. kand., konetekniikka')
+        expect(opinnot.getTutkintoKoodi(1)).to.equal('655101')
         expect(opinnot.getVirtaNimi(1)).to.equal(
           'Tekniikan koulutus (UUSI2005), Tekniikan kandidaatin tutkinto Konetekniikan koulutusohjelma'
         )
