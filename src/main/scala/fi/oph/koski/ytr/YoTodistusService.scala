@@ -38,7 +38,7 @@ abstract class YoTodistusService(application: KoskiApplication) {
     henkilöRepository
       .findByOid(req.oid)
       .flatMap(_.hetu)
-      .map(hetu => YoTodistusHetuRequest(hetu = hetu, language = req.language))
+      .map(hetu => YoTodistusHetuRequest(ssn = hetu, language = req.language))
       .toRight(KoskiErrorCategory.notFound())
 }
 

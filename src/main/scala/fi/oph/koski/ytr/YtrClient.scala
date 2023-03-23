@@ -61,7 +61,7 @@ object YtrClient extends Logging {
 }
 
 case class YoTodistusHetuRequest(
-  hetu: String,
+  ssn: String,
   language: String,
 )
 
@@ -112,7 +112,7 @@ object MockYrtClient extends YtrClient {
   private def resourcenameLaaja(hetut: String) = "/mockdata/ytr/laaja_" + hetut + ".json"
 
   override def getCertificateStatus(req: YoTodistusHetuRequest): Either[HttpStatus, YtrCertificateResponse] = {
-    (req.hetu, requested.get(s"${req.hetu}_${req.language}")) match {
+    (req.ssn, requested.get(s"${req.ssn}_${req.language}")) match {
       case (hetu, _) if hetu == ylioppilasLukiolainenMaksamatonSuoritus.hetu.get =>
         Right(YtrCertificateBlocked(LocalDateTime.now()))
       case (hetu, _) if hetu == ylioppilasLukiolainenVanhaSuoritus.hetu.get =>
@@ -120,9 +120,9 @@ object MockYrtClient extends YtrClient {
       case (_, None) =>
         Right(YtrCertificateNotStarted())
       case (_, Some(time)) if LocalDateTime.now().isAfter(time.plusSeconds(yoTodistusGeneratingTimeSecs)) =>
-        if (req.hetu == ylioppilasLukiolainenTimeouttaava.hetu.get) {
+        if (req.ssn == ylioppilasLukiolainenTimeouttaava.hetu.get) {
           Right(YtrCertificateTimeout(time))
-        } else if (req.hetu == ylioppilasLukiolainenRikki.hetu.get) {
+        } else if (req.ssn == ylioppilasLukiolainenRikki.hetu.get) {
           if (req.language == "fi") {
             Right(YtrCertificateInternalError(time))
           } else {
@@ -143,7 +143,7 @@ object MockYrtClient extends YtrClient {
   }
 
   override def generateCertificate(req: YoTodistusHetuRequest): Either[HttpStatus, YtrCertificateResponse] = {
-    requested += (s"${req.hetu}_${req.language}" -> LocalDateTime.now())
+    requested += (s"${req.ssn}_${req.language}" -> LocalDateTime.now())
     getCertificateStatus(req)
   }
 
@@ -180,7 +180,9 @@ case class RemoteYtrClient(rootUrl: String, user: String, password: String) exte
     callSignedCertificateApi[YtrCertificateResponse](uri"/api/oph-koski/signed-certificate", req)
 
   protected def callSignedCertificateApi[T: ru.TypeTag](uri: ParameterizedUriWrapper, req: YoTodistusHetuRequest): Either[HttpStatus, T] = {
+    logger.info(s"callSignedCertifateApi request: $uri $req")
     val json = runIO(http.post(uri, req)(json4sEncoderOf[YoTodistusHetuRequest])(Http.parseJson[JValue]))
+    logger.info(s"callSignedCertifateApi response: $uri $req -> $json")
     val response = SchemaValidatingExtractor.extract[T](json)
     response.left.map(e => KoskiErrorCategory.badRequest.validation.jsonSchema(JsonErrorMessage(e)))
   }
