@@ -15,7 +15,8 @@ class YtrDownloadOppijaConverterSpec extends AnyFreeSpec with TestEnvironment wi
   private val oppijaConverter = new YtrDownloadOppijaConverter(
     application.koodistoViitePalvelu,
     application.organisaatioRepository,
-    application.koskiLocalizationRepository
+    application.koskiLocalizationRepository,
+    application.validatingAndResolvingExtractor
   )
 
   private val conversionUtils = new YtrConversionUtils(application.koskiLocalizationRepository,  application.koodistoViitePalvelu, application.organisaatioRepository)
@@ -77,7 +78,7 @@ class YtrDownloadOppijaConverterSpec extends AnyFreeSpec with TestEnvironment wi
             Organisaatiovahvistus(
               päivä = LocalDate.of(2015, 11, 30),
               paikkakunta = helsinki,
-              myöntäjäOrganisaatio = ytl.toOidOrganisaatio
+              myöntäjäOrganisaatio = ytl
             )
           ),
           osasuoritukset = Some(List(

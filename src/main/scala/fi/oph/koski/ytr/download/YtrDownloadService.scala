@@ -28,7 +28,8 @@ class YtrDownloadService(
   val oppijaConverter = new YtrDownloadOppijaConverter(
     application.koodistoViitePalvelu,
     application.organisaatioRepository,
-    application.koskiLocalizationRepository
+    application.koskiLocalizationRepository,
+    application.validatingAndResolvingExtractor
   )
 
   private val batchSize = application.config.getInt("ytr.download.batchSize").max(1).min(1500)
