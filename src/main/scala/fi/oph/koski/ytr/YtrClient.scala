@@ -4,18 +4,17 @@ import com.typesafe.config.Config
 import fi.oph.koski.config.{Environment, SecretsManager}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.{ylioppilasLukiolainenMaksamatonSuoritus, ylioppilasLukiolainenRikki, ylioppilasLukiolainenTimeouttaava, ylioppilasLukiolainenVanhaSuoritus}
 import fi.oph.koski.http.Http._
-import fi.oph.koski.http.{ClientWithBasicAuthentication, Http, HttpStatus, JsonErrorMessage, KoskiErrorCategory}
+import fi.oph.koski.http._
 import fi.oph.koski.json.Json4sHttp4s.json4sEncoderOf
 import fi.oph.koski.json.{JsonResources, JsonSerializer}
 import fi.oph.koski.log.{Logging, NotLoggable, TimedProxy}
 import fi.oph.koski.schema.KoskiSchema
-import fi.oph.koski.util.{ClasspathResource, Resource, Streams}
+import fi.oph.koski.util.{ClasspathResource, Resource}
 import fi.oph.koski.ytr.download.{YtrLaajaOppija, YtrSsnData}
 import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}
 import org.json4s.JValue
 
-import java.io.OutputStream
-import java.time.{LocalDate, LocalDateTime}
+import java.time.{LocalDate, ZonedDateTime}
 import scala.reflect.runtime.{universe => ru}
 
 trait YtrClient {
@@ -79,14 +78,14 @@ object EmptyYtrClient extends YtrClient {
 
   override def oppijatJsonByHetut(ssnData: YtrSsnData): Option[JValue] = None
 
-  override def getCertificateStatus(req: YoTodistusHetuRequest): Either[HttpStatus, YtrCertificateResponse] = Right(YtrCertificateServiceUnavailable(LocalDateTime.now()))
+  override def getCertificateStatus(req: YoTodistusHetuRequest): Either[HttpStatus, YtrCertificateResponse] = Right(YtrCertificateServiceUnavailable(ZonedDateTime.now()))
 
-  override def generateCertificate(req: YoTodistusHetuRequest): Either[HttpStatus, YtrCertificateResponse] = Right(YtrCertificateServiceUnavailable(LocalDateTime.now()))
+  override def generateCertificate(req: YoTodistusHetuRequest): Either[HttpStatus, YtrCertificateResponse] = Right(YtrCertificateServiceUnavailable(ZonedDateTime.now()))
 }
 
 object MockYrtClient extends YtrClient {
   lazy val resource: Resource = new ClasspathResource("/mockdata/yotodistus")
-  val requested: collection.mutable.Map[String, LocalDateTime] = collection.mutable.Map.empty
+  val requested: collection.mutable.Map[String, ZonedDateTime] = collection.mutable.Map.empty
   val yoTodistusGeneratingTimeSecs = 2
 
   def oppijaJsonByHetu(hetu: String): Option[JValue] = JsonResources.readResourceIfExists(resourcename(hetu))
@@ -114,12 +113,12 @@ object MockYrtClient extends YtrClient {
   override def getCertificateStatus(req: YoTodistusHetuRequest): Either[HttpStatus, YtrCertificateResponse] = {
     (req.ssn, requested.get(s"${req.ssn}_${req.language}")) match {
       case (hetu, _) if hetu == ylioppilasLukiolainenMaksamatonSuoritus.hetu.get =>
-        Right(YtrCertificateBlocked(LocalDateTime.now()))
+        Right(YtrCertificateBlocked(ZonedDateTime.now()))
       case (hetu, _) if hetu == ylioppilasLukiolainenVanhaSuoritus.hetu.get =>
-        Right(YtrCertificateOldExamination(LocalDateTime.now()))
+        Right(YtrCertificateOldExamination(ZonedDateTime.now()))
       case (_, None) =>
         Right(YtrCertificateNotStarted())
-      case (_, Some(time)) if LocalDateTime.now().isAfter(time.plusSeconds(yoTodistusGeneratingTimeSecs)) =>
+      case (_, Some(time)) if ZonedDateTime.now().isAfter(time.plusSeconds(yoTodistusGeneratingTimeSecs)) =>
         if (req.ssn == ylioppilasLukiolainenTimeouttaava.hetu.get) {
           Right(YtrCertificateTimeout(time))
         } else if (req.ssn == ylioppilasLukiolainenRikki.hetu.get) {
@@ -143,7 +142,7 @@ object MockYrtClient extends YtrClient {
   }
 
   override def generateCertificate(req: YoTodistusHetuRequest): Either[HttpStatus, YtrCertificateResponse] = {
-    requested += (s"${req.ssn}_${req.language}" -> LocalDateTime.now())
+    requested += (s"${req.ssn}_${req.language}" -> ZonedDateTime.now())
     getCertificateStatus(req)
   }
 
