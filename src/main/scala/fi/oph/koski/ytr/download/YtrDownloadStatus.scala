@@ -1,6 +1,6 @@
 package fi.oph.koski.ytr.download
 
-import fi.oph.koski.db.{DB, KoskiTables, QueryMethods, YtrDownloadStatusRow}
+import fi.oph.koski.db.{DB, DatabaseExecutionContext, KoskiTables, QueryMethods, YtrDownloadStatusRow}
 import fi.oph.koski.log.Logging
 import org.json4s.{DefaultFormats, JValue}
 import org.json4s.jackson.JsonMethods
@@ -11,7 +11,7 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import org.json4s._
 import slick.jdbc.GetResult
 
-class YtrDownloadStatus(val db: DB) extends QueryMethods with Logging {
+class YtrDownloadStatus(val db: DB) extends QueryMethods with Logging with DatabaseExecutionContext{
   implicit val formats = DefaultFormats
 
   private val tietokantaStatusRivinNimi = "ytr_download"
