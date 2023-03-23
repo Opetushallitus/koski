@@ -42,7 +42,7 @@ class FixtureCreator(application: KoskiApplication) extends Logging with Timing 
       yoTodistusService.reset()
 
       if (reloadYtrData || fixtureNameHasChanged) {
-        ytrService.loadFixturesAndWaitUntilComplete()
+        ytrService.loadFixturesAndWaitUntilComplete(force = true)
       }
 
       if (reloadRaportointikanta || fixtureNameHasChanged) {
