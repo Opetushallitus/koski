@@ -1,15 +1,3 @@
-import { Authentication } from '../page/authentication.js'
-import { KoskiPage } from '../page/koskiPage.js'
-import { expect } from '../util/chai.esm.js'
-import {
-  wait,
-  click,
-  S,
-  isElementVisible,
-  testFrame,
-  goBack
-} from '../util/testHelpers.js'
-
 describe('Muokkauspalkki', function () {
   function currentURL() {
     return testFrame().location.href
@@ -19,8 +7,8 @@ describe('Muokkauspalkki', function () {
     return S('#edit-bar-wrapper').hasClass('visible')
   }
 
-  let page = KoskiPage()
-  let auth = Authentication()
+  var page = KoskiPage()
+  var auth = Authentication()
   describe('Näkyvyys', function () {
     beforeEach(auth.login())
 

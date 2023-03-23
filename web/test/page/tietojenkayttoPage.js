@@ -1,13 +1,5 @@
-import {
-  click,
-  extractAsText,
-  isElementVisible,
-  openPage,
-  S
-} from '../util/testHelpers.js'
-
-export function TietojenKayttoPage() {
-  const api = {
+function TietojenKayttoPage() {
+  var api = {
     go: function () {
       return openPage('/koski/omadata/kayttooikeudet')()
     },

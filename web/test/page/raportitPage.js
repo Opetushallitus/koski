@@ -1,20 +1,9 @@
-import {
-  getAsTextArray,
-  getValuesAsArray,
-  isElementVisible,
-  openPage,
-  S,
-  seq,
-  setInputValue,
-  wait
-} from '../util/testHelpers.js'
-
-export function RaportitPage() {
+function RaportitPage() {
   const tabsElementti = 'div.main-content .tabs-container'
   const raporttivalitsinElementti =
     'div.main-content .raportti-valitsin .pills-container'
 
-  const api = {
+  var api = {
     openPage: function (predicate) {
       return function () {
         return openPage('/koski/raportit?tilastoraportit=true', predicate)()
@@ -68,7 +57,7 @@ export function RaportitPage() {
     otsikko: function () {
       return S('div.main-content > h2').text()
     },
-    raportit: function (_raportit) {
+    raportit: function (raportit) {
       return getAsTextArray(`${raporttivalitsinElementti} .pills-item`)
     },
     valittuRaportti: function () {

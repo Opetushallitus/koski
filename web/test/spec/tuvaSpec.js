@@ -1,20 +1,8 @@
-import { AddOppijaPage } from '../page/addOppijaPage.js'
-import { prepareForNewOppija } from '../page/koskiPage.js'
-import { OpinnotPage, TUVASuoritukset } from '../page/opinnotPage.js'
-import { expect } from '../util/chai.esm.js'
-import {
-  click,
-  extractAsText,
-  S,
-  findSingle,
-  timeout
-} from '../util/testHelpers.js'
-
 describe('TUVA', function () {
-  let opinnot = OpinnotPage()
-  let tuva = TUVASuoritukset()
-  let editor = opinnot.opiskeluoikeusEditor()
-  let addOppija = AddOppijaPage()
+  var opinnot = OpinnotPage()
+  var tuva = TUVASuoritukset()
+  var editor = opinnot.opiskeluoikeusEditor()
+  var addOppija = AddOppijaPage()
 
   describe('Opiskeluoikeuden lisääminen', function () {
     before(timeout.overrideWaitTime(30000))
@@ -175,10 +163,7 @@ describe('TUVA', function () {
               function () {
                 return tuva
                   .selectOsasuoritus('Valinnaiset opinnot')()
-                  .lisääLaajuus(
-                    2,
-                    '.tuva-osasuoritusrivi-1 .property.laajuus.arvo'
-                  )()
+                  .lisääLaajuus(2, '.tuva-osasuoritusrivi-1 .property.laajuus.arvo')()
               },
               editor.saveChanges,
               opinnot.avaaKaikki

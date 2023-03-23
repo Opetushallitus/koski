@@ -1,17 +1,11 @@
-import { AddOppijaPage } from '../page/addOppijaPage.js'
-import { Authentication } from '../page/authentication.js'
-import { KoskiPage } from '../page/koskiPage.js'
-import { OpinnotPage } from '../page/opinnotPage.js'
-import { expect } from '../util/chai.esm.js'
-import { wait, S, resetFixtures } from '../util/testHelpers.js'
-
 describe('Opiskeluoikeuden sisältyvyys', function () {
-  let addOppija = AddOppijaPage()
-  let page = KoskiPage()
-  let opinnot = OpinnotPage()
-  let editor = opinnot.opiskeluoikeusEditor()
+  var addOppija = AddOppijaPage()
+  var page = KoskiPage()
+  var login = LoginPage()
+  var opinnot = OpinnotPage()
+  var editor = opinnot.opiskeluoikeusEditor()
 
-  let sisältävänOpiskeluoikeudenId
+  var sisältävänOpiskeluoikeudenId
 
   before(
     Authentication().login(),

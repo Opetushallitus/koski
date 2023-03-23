@@ -1,15 +1,8 @@
-import { Authentication } from '../page/authentication.js'
-import { KelaPage } from '../page/kelaPage.js'
-import { KoskiPage } from '../page/koskiPage.js'
-import { OpinnotPage } from '../page/opinnotPage.js'
-import { expect } from '../util/chai.esm.js'
-import { wait, extractAsText, S, resetFixtures } from '../util/testHelpers.js'
-
 describe('Kela', function () {
-  let kela = KelaPage()
-  let opinnot = OpinnotPage()
-  let editor = opinnot.opiskeluoikeusEditor()
-  let page = KoskiPage()
+  var kela = KelaPage()
+  var opinnot = OpinnotPage()
+  var editor = opinnot.opiskeluoikeusEditor()
+  var page = KoskiPage()
 
   describe('Sivun latauksessa ei tapahdu virheitä', function () {
     before(Authentication().login('Laaja'), kela.openPage)
@@ -89,7 +82,7 @@ describe('Kela', function () {
       kela.searchAndSelect('280618-402H', 'Aarne')
     )
 
-    let osasuorituksenSisältö =
+    var osasuorituksenSisältö =
       'Osasuoritukset Laajuus (osaamispistettä) Arviointipäivä Hyväksytty\n' +
       'Matematiikka 3 20.10.2014 kyllä\n' +
       'Fysiikka ja kemia 3 20.10.2014 kyllä\n'
@@ -146,10 +139,10 @@ describe('Kela', function () {
       kela.searchAndSelect('151013-2195', 'Dia')
     )
 
-    let ensimmäisenTasonOsasuoritus =
+    var ensimmäisenTasonOsasuoritus =
       'Osasuoritukset Laajuus (vuosiviikkotuntia)\n' + 'Äidinkieli, saksa 3'
 
-    let toisenTasonOsasuoritus =
+    var toisenTasonOsasuoritus =
       'Osasuoritukset Laajuus (vuosiviikkotuntia) Arviointipäivä Hyväksytty\n' +
       '10/I 1 4.6.2016 kyllä'
 
@@ -232,7 +225,7 @@ describe('Kela', function () {
   })
 
   describe('Versiohistoria', function () {
-    let oppijanHetu = '220109-784L'
+    var oppijanHetu = '220109-784L'
 
     describe('Jos versiohistoriasta ei ole valittu uutta versiota', function () {
       before(

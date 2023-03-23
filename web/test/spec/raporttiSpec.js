@@ -1,12 +1,6 @@
-import { Authentication } from '../page/authentication.js'
-import { KoskiPage } from '../page/koskiPage.js'
-import { LoginPage } from '../page/loginPage.js'
-import { RaporttiPage } from '../page/raporttiPage.js'
-import { expect } from '../util/chai.esm.js'
-
 describe('Raportti', function () {
-  let page = RaporttiPage()
-  let login = LoginPage()
+  var page = RaporttiPage()
+  var login = LoginPage()
 
   describe('Tietoturva', function () {
     before(Authentication().logout, page.openPage())

@@ -1,160 +1,144 @@
 <!DOCTYPE html>
 <html>
-  <head lang="en">
-    <meta charset="UTF-8" />
+<head lang="en">
+    <meta charset="UTF-8">
     <title>Mocha tests</title>
-    <link rel="stylesheet" href="css/mocha.css" media="all" />
-    <link rel="stylesheet" href="css/mocha-custom.css" media="all" />
-  </head>
-  <body>
-    <div id="mocha"></div>
-    <!--Load libraries here, available globally for test suites-->
-    <script type="module" src="./lib/jquery.js"></script>
-    <script type="module" src="./lib/mocha.js"></script>
-    <script type="module" src="./lib/lodash.js"></script>
-    <script type="module" src="./lib/q.js"></script>
-    <script type="module" src="./lib/chai.js"></script>
-    <script type="module">
-      // Chai equalIgnoreNewlines
-      function equalIgnoreNewlines(str1, str2) {
-        if (typeof str1 !== 'string' || typeof str2 !== 'string') {
-          return false
-        }
-        return str1.replace(/\r?\n|\r/g, ' ') === str2.replace(/\r?\n|\r/g, ' ')
-      }
-
-      chai.use(function (chai, utils) {
-        chai.Assertion.addMethod(
-          'equalIgnoreNewlines',
-          function (expected, msg) {
-            var actual = this._obj
-            if (msg) {
-              utils.flag(this, 'message', msg)
-            }
-            return this.assert(
-              equalIgnoreNewlines(actual, expected),
-              'expected #{this} to equal #{exp} ignoring newlines',
-              'expected #{this} not to equal #{exp} ignoring newlines',
-              expected,
-              this._obj,
-              true
-            )
-          }
-        )
-      })
-    </script>
-    <script type="module">
-      import { testTimeoutPageLoad } from './util/testConfig.js'
-
-      // Add window error handler
-      console.log('Adding window error handler')
-      window.onerror = function (
-        errorMsg,
-        url,
-        lineNumber,
-        columnNumber,
-        exception
-      ) {
-        window.uiError = arguments
-        console.log(arguments)
-        return true
-      }
-
-      // Setup Mocha
-      console.log('Setting up mocha')
-      if (window.initMochaPhantomJS) {
-        console.log('Calling window.initMochaPhantomJS')
-        window.initMochaPhantomJS()
-      }
-      console.log(`testTimeoutPageLoad is set to ${testTimeoutPageLoad} ms`)
-      mocha.setup({
+    <link rel="stylesheet" href="css/mocha.css" media="all"/>
+    <link rel="stylesheet" href="css/mocha-custom.css" media="all"/>
+</head>
+<body>
+<div id="mocha"></div>
+<script>
+    // make sure Mocha fails on unhandled exceptions, even before Mocha has started (e.g. syntax errors in our test scripts)
+    // window.uiError is checked in mocha before() and afterEach() hooks below
+    console.log('Adding window error handler')
+    window.onerror = function(errorMsg, url, lineNumber, columnNumber, exception) {
+      window.uiError = arguments
+      console.log(arguments)
+      return true
+    }
+</script>
+<script src="lib/mocha.js"></script>
+<script src="lib/chai.js"></script>
+<script src="lib/lodash.js"></script>
+<script src="lib/q.js"></script>
+<script src="lib/jquery.js"></script>
+<script>
+    console.log('Setting up mocha')
+    var testTimeoutPageLoad = 20000
+    var testTimeoutDefault = 10000
+    if (window.initMochaPhantomJS) {
+      console.log('Calling window.initMochaPhantomJS')
+      window.initMochaPhantomJS();
+    }
+    mocha.setup({
         ui: 'bdd',
         reporter: 'html',
         timeout: testTimeoutPageLoad
-      })
+    });
 
-      function reportAndClearWindowUiError() {
-        const err = window.uiError
-        window.uiError = null
-        chai.expect(err || null).to.be.null
-      }
-      before(reportAndClearWindowUiError)
-      afterEach(reportAndClearWindowUiError)
+    function reportAndClearWindowUiError() {
+      var err = window.uiError
+      window.uiError = null
+      expect(err || null).to.be.null
+    }
+    before(reportAndClearWindowUiError)
+    afterEach(reportAndClearWindowUiError)
 
-      console.log('Mocha setup done')
-    </script>
-    <!--<script type="module" src="./util/polyfills.js"></script>-->
-    <!--<script type="module" src="./util/chaiEqualIgnoreNewlines.js"></script>-->
-    <script type="module">
-      function loadScript(src) {
-        const body = document.getElementsByTagName('body')[0]
-        const script = document.createElement('script')
-        script.type = 'module'
-        script.src = src
-        script.async = false
-        body.appendChild(script)
-      }
+    console.log('Mocha setup done')
+</script>
+<script src="util/polyfills.js"></script>
+<script src="util/testHelpers.js"></script>
+<script src="util/chaiEqualIgnoreNewlines.js"></script>
+<script src="doubles/fakePiwik.js"></script>
+<script src="page/pageApi.js"></script>
+<script src="page/organisaatioHaku.js"></script>
+<script src="page/authentication.js"></script>
+<script src="page/loginPage.js"></script>
+<script src="page/koskiPage.js"></script>
+<script src="page/addOppijaPage.js"></script>
+<script src="page/opinnotPage.js"></script>
+<script src="page/documentationPage.js"></script>
+<script src="page/tiedonsiirrotPage.js"></script>
+<script src="page/omatTiedotPage.js"></script>
+<script src="page/suoritusjakoPage.js"></script>
+<script src="page/virhePage.js"></script>
+<script src="page/pulssiPage.js"></script>
+<script src="page/raporttiPage.js"></script>
+<script src="page/landingPage.js"></script>
+<script src="page/myDataPage.js"></script>
+<script src="page/tietojenkayttoPage.js"></script>
+<script src="page/kelaPage.js"></script>
+<script src="page/raportitPage.js"></script>
+<script>
+  function loadScript(src) {
+    var body = document.getElementsByTagName('body')[0]
+    var script = document.createElement('script')
+    script.src = src
+    script.async = false
+    body.appendChild(script)
+  }
 
-      const urlParams = new URLSearchParams(location.search)
-      const spesificFilesOnly = urlParams.get('specFiles')
+  var urlParams = new URLSearchParams(location.search)
+  var spesificFilesOnly = urlParams.get("specFiles")
 
-      if (spesificFilesOnly) {
-        spesificFilesOnly
-          .split(',')
-          .filter((v) => v.trim() !== '')
-          .forEach(loadScript)
-      } else {
-        // Add new spec here
-        ;[
-          'spec/ammatillinenSpec.js',
-          'spec/perusopetusSpec.js',
-          'spec/lukioSpec.js',
-          'spec/diaSpec.js',
-          'spec/internationalschoolSpec.js',
-          'spec/ibSpec.js',
-          'spec/esiopetusSpec.js',
-          'spec/lukio2019Spec.js',
-          'spec/luvaSpec.js',
-          'spec/telmaSpec.js',
-          'spec/myDataSpec.js',
-          'spec/koskiSpec.js',
-          'spec/piwikTrackingSpec.js',
-          'spec/oppijahakuSpec.js',
-          'spec/oppijataulukkoSpec.js',
-          'spec/ammatillinenArviointiasteikkoSpec.js',
-          'spec/muuAmmatillinenSpec.js',
-          'spec/koulutuksenKoodiPoistettuEPerusteistaSpec.js',
-          'spec/valmaSpec.js',
-          'spec/ylioppilastutkintoSpec.js',
-          'spec/korkeakouluSpec.js',
-          'spec/documentationSpec.js',
-          'spec/tiedonsiirrotSpec.js',
-          'spec/omatTiedotSpec.js',
-          'spec/huoltajaSpec.js',
-          'spec/omatTiedotLukioSpec.js',
-          'spec/omatTiedotTuvaSpec.js',
-          'spec/pulssiSpec.js',
-          'spec/raporttiSpec.js',
-          'spec/localisointiSpec.js',
-          'spec/landingPageSpec.js',
-          'spec/muokkauspalkkiSpec.js',
-          'spec/sisaltyvaOpiskeluoikeusSpec.js',
-          'spec/linkitettyOppijaSpec.js',
-          'spec/oikeudetSpec.js',
-          'spec/perusteetSpec.js',
-          'spec/kelaSpec.js',
-          'spec/useampiSamanOppilaitoksenVoimassaOlevaOpintoOikeusSpec.js',
-          'spec/RaportitSpec.js',
-          'spec/rahoitusmuotoSpec.js',
-          'spec/maksuttomuusSpec.js',
-          'spec/vapaaSivistystyoSpec.js',
-          'spec/suostumuksenPeruutusSpec.js',
-          'spec/tuvaSpec.js',
-          'spec/europeanSchoolOfHelsinkiSpec.js'
-        ].forEach(loadScript)
-      }
+  if (spesificFilesOnly) {
+    spesificFilesOnly.split(",").forEach(loadScript)
+  } else {
+    // Add new spec here
+    [
+      "spec/ammatillinenSpec.js",
+      "spec/perusopetusSpec.js",
+      "spec/lukioSpec.js",
+      "spec/diaSpec.js",
+      "spec/internationalschoolSpec.js",
+      "spec/ibSpec.js",
+      "spec/esiopetusSpec.js",
+      "spec/lukio2019Spec.js",
+      "spec/luvaSpec.js",
+      "spec/telmaSpec.js",
+      "spec/myDataSpec.js",
+      "spec/koskiSpec.js",
+      "spec/piwikTrackingSpec.js",
+      "spec/oppijahakuSpec.js",
+      "spec/oppijataulukkoSpec.js",
+      "spec/ammatillinenArviointiasteikkoSpec.js",
+      "spec/muuAmmatillinenSpec.js",
+      "spec/koulutuksenKoodiPoistettuEPerusteistaSpec.js",
+      "spec/valmaSpec.js",
+      "spec/ylioppilastutkintoSpec.js",
+      "spec/korkeakouluSpec.js",
+      "spec/documentationSpec.js",
+      "spec/tiedonsiirrotSpec.js",
+      "spec/omatTiedotSpec.js",
+      "spec/huoltajaSpec.js",
+      "spec/omatTiedotLukioSpec.js",
+      "spec/omatTiedotTuvaSpec.js",
+      "spec/pulssiSpec.js",
+      "spec/raporttiSpec.js",
+      "spec/localisointiSpec.js",
+      "spec/landingPageSpec.js",
+      "spec/muokkauspalkkiSpec.js",
+      "spec/sisaltyvaOpiskeluoikeusSpec.js",
+      "spec/linkitettyOppijaSpec.js",
+      "spec/oikeudetSpec.js",
+      "spec/perusteetSpec.js",
+      "spec/kelaSpec.js",
+      "spec/useampiSamanOppilaitoksenVoimassaOlevaOpintoOikeusSpec.js",
+      "spec/RaportitSpec.js",
+      "spec/rahoitusmuotoSpec.js",
+      "spec/maksuttomuusSpec.js",
+      "spec/vapaaSivistystyoSpec.js",
+      "spec/suostumuksenPeruutusSpec.js",
+      "spec/tuvaSpec.js",
+      "spec/europeanSchoolOfHelsinkiSpec.js"
+    ].forEach(loadScript)
+  }
 
-      ;['lib/html2canvas.esm.js', 'util/startMocha.js'].forEach(loadScript)
-    </script>
-  </body>
+  [
+    "lib/html2canvas.js",
+    "util/startMocha.js"
+  ].forEach(loadScript)
+</script>
+</body>
 </html>

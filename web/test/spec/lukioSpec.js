@@ -1,26 +1,8 @@
-import { AddOppijaPage } from '../page/addOppijaPage.js'
-import { Authentication } from '../page/authentication.js'
-import { KoskiPage, prepareForNewOppija } from '../page/koskiPage.js'
-import {
-  FindAllKurssit,
-  OpinnotPage,
-  OpiskeluoikeusDialog
-} from '../page/opinnotPage.js'
-import { expect } from '../util/chai.esm.js'
-import {
-  extractAsText,
-  findSingle,
-  resetFixtures,
-  S,
-  timeout,
-  wait
-} from '../util/testHelpers.js'
-
 describe('Lukiokoulutus', function () {
-  let page = KoskiPage()
-  let opinnot = OpinnotPage()
-  let editor = opinnot.opiskeluoikeusEditor()
-  let addOppija = AddOppijaPage()
+  var page = KoskiPage()
+  var opinnot = OpinnotPage()
+  var editor = opinnot.opiskeluoikeusEditor()
+  var addOppija = AddOppijaPage()
   before(Authentication().login(), resetFixtures)
 
   describe('Lukion päättötodistus', function () {
@@ -100,7 +82,7 @@ describe('Lukiokoulutus', function () {
     })
 
     describe('Kurssin tiedot', function () {
-      let kurssi = opinnot.oppiaineet.oppiaine('MA').kurssi('MAA16')
+      var kurssi = opinnot.oppiaineet.oppiaine('MA').kurssi('MAA16')
       before(
         page.openPage,
         page.oppijaHaku.searchAndSelect('020655-2479'),
@@ -126,10 +108,9 @@ describe('Lukiokoulutus', function () {
           expect(kurssi.detailsText()).to.equal('')
         })
       })
-
       describe('Kaikkien kurssien tiedot', function () {
         it('voidaan avata yksitellen virheettömästi', function () {
-          FindAllKurssit().forEach(function (kurssi) {
+          Kurssi.findAll().forEach(function (kurssi) {
             expect(kurssi.detailsText()).to.equal('')
             kurssi.toggleDetails()
             expect(kurssi.detailsText().length > 10).to.equal(true)
@@ -143,9 +124,9 @@ describe('Lukiokoulutus', function () {
         describe('Oppiaine', function () {
           before(editor.edit)
 
-          let ai = opinnot.oppiaineet.oppiaine('oppiaine.AI')
-          let kieli = ai.propertyBySelector('.title .properties')
-          let arvosana = ai.propertyBySelector('td.arvosana')
+          var ai = opinnot.oppiaineet.oppiaine('oppiaine.AI')
+          var kieli = ai.propertyBySelector('.title .properties')
+          var arvosana = ai.propertyBySelector('td.arvosana')
 
           describe('Alkutila', function () {
             it('on oikein', function () {
@@ -182,8 +163,8 @@ describe('Lukiokoulutus', function () {
           })
 
           describe('Valtakunnallinen oppiaine', function () {
-            let uusiOppiaine = opinnot.oppiaineet.uusiOppiaine()
-            let kotitalous = editor.subEditor('.oppiaine.KO:eq(0)')
+            var uusiOppiaine = opinnot.oppiaineet.uusiOppiaine()
+            var kotitalous = editor.subEditor('.oppiaine.KO:eq(0)')
 
             describe('Lisääminen', function () {
               before(editor.edit, uusiOppiaine.selectValue('Kotitalous'))
@@ -233,8 +214,8 @@ describe('Lukiokoulutus', function () {
           describe('Paikallinen oppiaine', function () {
             before(editor.edit)
 
-            let uusiOppiaine = opinnot.oppiaineet.uusiOppiaine()
-            let paikallinen = editor.subEditor('.oppiaine.oppiaine-rivi:last')
+            var uusiOppiaine = opinnot.oppiaineet.uusiOppiaine()
+            var paikallinen = editor.subEditor('.oppiaine.oppiaine-rivi:last')
 
             it('alkutila', function () {
               expect(editor.canSave()).to.equal(false)
@@ -333,7 +314,7 @@ describe('Lukiokoulutus', function () {
             )
 
             describe('Arvosanan muuttaminen', function () {
-              let kurssi = opinnot.oppiaineet.oppiaine('MA').kurssi('MAA16')
+              var kurssi = opinnot.oppiaineet.oppiaine('MA').kurssi('MAA16')
 
               before(
                 kurssi.arvosana.selectValue('6'),
@@ -347,7 +328,7 @@ describe('Lukiokoulutus', function () {
             })
 
             describe('Osaamisen tunnustaminen', function () {
-              let kurssi = opinnot.oppiaineet.oppiaine('MA').kurssi('MAA16')
+              var kurssi = opinnot.oppiaineet.oppiaine('MA').kurssi('MAA16')
 
               before(editor.edit, kurssi.toggleDetails)
 
@@ -435,7 +416,7 @@ describe('Lukiokoulutus', function () {
             })
 
             describe('Poistaminen', function () {
-              let ai1 = ai.kurssi('ÄI1')
+              var ai1 = ai.kurssi('ÄI1')
 
               before(
                 editor.edit,
@@ -536,8 +517,8 @@ describe('Lukiokoulutus', function () {
         describe('Oppiaine', function () {
           before(editor.edit)
 
-          let hi = opinnot.oppiaineet.oppiaine('oppiaine.HI')
-          let arvosana = hi.propertyBySelector('td.arvosana')
+          var hi = opinnot.oppiaineet.oppiaine('oppiaine.HI')
+          var arvosana = hi.propertyBySelector('td.arvosana')
 
           describe('Alkutila', function () {
             it('on oikein', function () {
@@ -583,7 +564,7 @@ describe('Lukiokoulutus', function () {
             )
 
             describe('Arvosanan muuttaminen', function () {
-              let kurssi = opinnot.oppiaineet.oppiaine('HI').kurssi('HI4')
+              var kurssi = opinnot.oppiaineet.oppiaine('HI').kurssi('HI4')
 
               before(
                 kurssi.arvosana.selectValue('10'),
@@ -614,7 +595,7 @@ describe('Lukiokoulutus', function () {
             })
 
             describe('Poistaminen', function () {
-              let hi1 = hi.kurssi('HI1')
+              var hi1 = hi.kurssi('HI1')
 
               before(
                 editor.edit,

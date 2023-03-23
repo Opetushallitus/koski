@@ -1,6 +1,4 @@
-import { postJson } from '../util/testHelpers.js'
-
-export function Authentication() {
+function Authentication() {
   return {
     login: function (username) {
       if (!username) username = 'kalle'

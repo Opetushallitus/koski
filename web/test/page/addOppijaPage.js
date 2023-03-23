@@ -1,18 +1,4 @@
-import {
-  click,
-  extractAsText,
-  findSingle,
-  isElementVisible,
-  isNotLoading,
-  S,
-  wait
-} from '../util/testHelpers.js'
-import { OrganisaatioHaku } from './organisaatioHaku.js'
-import { Page } from './pageApi.js'
-import { KoskiPage, prepareForNewOppija } from './koskiPage.js'
-import { OpinnotPage } from './opinnotPage.js'
-
-export function AddOppijaPage() {
+function AddOppijaPage() {
   function form() {
     return S('form.uusi-oppija')
   }
@@ -28,8 +14,8 @@ export function AddOppijaPage() {
   function selectedTutkinto() {
     return form().find('.tutkinto .selected')
   }
-  let pageApi = Page(form)
-  const api = {
+  var pageApi = Page(form)
+  var api = {
     addNewOppija: function (username, hetu, oppijaData) {
       return function () {
         return prepareForNewOppija(username, hetu)()
@@ -576,7 +562,7 @@ export function AddOppijaPage() {
     },
     submitAndExpectSuccess: function (oppija, tutkinto) {
       tutkinto = tutkinto || 'Autoalan perustutkinto'
-      let timeoutMs = 15000
+      var timeoutMs = 15000
       return function () {
         return wait
           .until(api.isEnabled)()
@@ -594,7 +580,7 @@ export function AddOppijaPage() {
     submitAndExpectSuccessModal: function (oppija, tutkinto) {
       tutkinto = tutkinto || 'Autoalan perustutkinto'
       return function () {
-        let timeoutMs = 15000
+        var timeoutMs = 15000
         return wait
           .until(api.isModalButtonEnabled)()
           .then(api.submitModal)

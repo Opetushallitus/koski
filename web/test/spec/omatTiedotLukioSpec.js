@@ -1,16 +1,9 @@
-import { Authentication } from '../page/authentication.js'
-import { LandingPage, KorhoPankki } from '../page/landingPage.js'
-import { OmatTiedotPage } from '../page/omatTiedotPage.js'
-import { OpinnotPage } from '../page/opinnotPage.js'
-import { expect } from '../util/chai.esm.js'
-import { wait, extractAsText, S, resetFixtures } from '../util/testHelpers.js'
-
 describe('Omat tiedot - lukio', function () {
-  let omattiedot = OmatTiedotPage()
-  let opinnot = OpinnotPage()
-  let authentication = Authentication()
-  let etusivu = LandingPage()
-  let korhopankki = KorhoPankki()
+  var omattiedot = OmatTiedotPage()
+  var opinnot = OpinnotPage()
+  var authentication = Authentication()
+  var etusivu = LandingPage()
+  var korhopankki = KorhoPankki()
   before(authentication.login(), resetFixtures)
 
   describe('Mobiilinäkymä', function () {

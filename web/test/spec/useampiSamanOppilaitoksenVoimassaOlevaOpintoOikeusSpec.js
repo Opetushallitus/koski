@@ -1,14 +1,7 @@
-import { AddOppijaPage } from '../page/addOppijaPage.js'
-import { Authentication } from '../page/authentication.js'
-import { KoskiPage, prepareForNewOppija } from '../page/koskiPage.js'
-import { OpinnotPage } from '../page/opinnotPage.js'
-import { expect } from '../util/chai.esm.js'
-import { resetFixtures } from '../util/testHelpers.js'
-
 describe('Useampi voimassa oleva opinto oikeus samassa oppilaitoksessa', function () {
-  let addOppija = AddOppijaPage()
-  let opinnot = OpinnotPage()
-  let page = KoskiPage()
+  var addOppija = AddOppijaPage()
+  var opinnot = OpinnotPage()
+  var page = KoskiPage()
 
   before(
     Authentication().login(),
