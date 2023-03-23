@@ -6,6 +6,8 @@
     "lastName": "Ylioppilas-uusi",
     "graduationDate": "2012-11-30",
     "certificateDate": "2012-11-30",
+    "certificateSchoolOphOid": "1.2.246.562.10.14613773812",
+    "hasCompletedMandatoryExams": true,
     "examinations": [
       {
         "language": "fi",
