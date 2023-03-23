@@ -1,23 +1,8 @@
-import { Authentication } from '../page/authentication.js'
-import { KoskiPage } from '../page/koskiPage.js'
-import { LandingPage } from '../page/landingPage.js'
-import { LoginPage } from '../page/loginPage.js'
-import { expect } from '../util/chai.esm.js'
-import {
-  resetFixtures,
-  S,
-  findSingle,
-  wait,
-  openPage,
-  isElementVisible,
-  mockHttp
-} from '../util/testHelpers.js'
-
 describe('Koski', function () {
-  let page = KoskiPage()
-  let login = LoginPage()
+  var page = KoskiPage()
+  var login = LoginPage()
 
-  let eerola = 'Çelik-Eerola, Jouni (081165-793C)'
+  var eerola = 'Çelik-Eerola, Jouni (081165-793C)'
 
   describe('Tietoturva', function () {
     before(login.openPage)
@@ -102,7 +87,7 @@ describe('Koski', function () {
       })
     })
 
-    let etusivu = LandingPage()
+    var etusivu = LandingPage()
     describe('Session vanhennuttua', function () {
       before(
         Authentication().login(),

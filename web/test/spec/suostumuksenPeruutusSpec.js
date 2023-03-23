@@ -1,23 +1,9 @@
-import { Authentication } from '../page/authentication.js'
-import { LandingPage, KorhoPankki } from '../page/landingPage.js'
-import { OmatTiedotPage } from '../page/omatTiedotPage.js'
-import { OpinnotPage } from '../page/opinnotPage.js'
-import { expect } from '../util/chai.esm.js'
-import {
-  wait,
-  click,
-  extractAsText,
-  S,
-  resetFixtures,
-  findSingle
-} from '../util/testHelpers.js'
-
 describe('Suostumuksen peruutus', function () {
-  let opinnot = OpinnotPage()
-  let etusivu = LandingPage()
-  let korhopankki = KorhoPankki()
-  let omattiedot = OmatTiedotPage()
-  let authentication = Authentication()
+  var opinnot = OpinnotPage()
+  var etusivu = LandingPage()
+  var korhopankki = KorhoPankki()
+  var omattiedot = OmatTiedotPage()
+  var authentication = Authentication()
 
   describe('Koulutuksen suostumuksen voi perua', function () {
     before(
@@ -95,7 +81,7 @@ describe('Suostumuksen peruutus', function () {
     })
 
     describe('Kun opiskeluoikeudesta on tehty suoritusjako', function () {
-      let form = omattiedot.suoritusjakoForm
+      var form = omattiedot.suoritusjakoForm
 
       before(
         authentication.login(),

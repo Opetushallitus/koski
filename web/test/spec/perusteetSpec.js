@@ -1,22 +1,8 @@
-import { Authentication } from '../page/authentication.js'
-import { KoskiPage } from '../page/koskiPage.js'
-import { OpinnotPage } from '../page/opinnotPage.js'
-import { Page } from '../page/pageApi.js'
-import { expect } from '../util/chai.esm.js'
-import {
-  click,
-  findFirst,
-  isElementVisible,
-  resetFixtures,
-  S,
-  wait
-} from '../util/testHelpers.js'
-
 describe('EPerusteet', function () {
-  let page = KoskiPage()
-  let opinnot = OpinnotPage()
-  let editor = opinnot.opiskeluoikeusEditor()
-  let tilaJaVahvistus = opinnot.tilaJaVahvistus
+  var page = KoskiPage()
+  var opinnot = OpinnotPage()
+  var editor = opinnot.opiskeluoikeusEditor()
+  var tilaJaVahvistus = opinnot.tilaJaVahvistus
   before(
     Authentication().login(),
     page.openPage,
@@ -36,7 +22,9 @@ describe('EPerusteet', function () {
 
   describe('Kun perustetta ei löydy eperusteista', function () {
     before(
-      page.oppijaHaku.searchAndSelect('Aikuinen, AikuisopiskelijaMuuKuinVos')
+      page.oppijaHaku.searchAndSelect(
+        'Aikuinen, AikuisopiskelijaMuuKuinVos'
+      )
     )
 
     it('peruste näytetään ilman linkkiä', function () {
@@ -55,7 +43,7 @@ describe('EPerusteet', function () {
           'Tieto- ja viestintätekniikan perustutkinto, koulutusvientikokeilu'
         )
       )
-      let koulutus = opinnot.opiskeluoikeusEditor().property('koulutusmoduuli')
+      var koulutus = opinnot.opiskeluoikeusEditor().property('koulutusmoduuli')
       it('toimii', function () {
         expect(koulutus.getText()).to.equal(
           'Koulutus Tieto- ja viestintätekniikan perustutkinto, koulutusvientikokeilu 341101 OPH-1117-2019'
@@ -80,7 +68,7 @@ describe('EPerusteet', function () {
     })
 
     describe('Kun opiskeluoikeudella on päättymispäivä, linkitetään päättymispäivänä voimassa olleeseen perusteeseen', function () {
-      let paattymispaiva = '31.12.2018'
+      var paattymispaiva = '31.12.2018'
       before(
         resetFixtures,
         page.openPage,

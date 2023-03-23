@@ -1,7 +1,5 @@
-import { isElementVisible, isLoading, S } from '../util/testHelpers.js'
-
-export function VirhePage() {
-  const api = {
+function VirhePage() {
+  var api = {
     isVisible: function () {
       return isElementVisible(S('.odottamaton-virhe')) && !isLoading()
     },

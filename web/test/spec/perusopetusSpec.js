@@ -1,41 +1,12 @@
-import { AddOppijaPage } from '../page/addOppijaPage.js'
-import { Authentication } from '../page/authentication.js'
-import { KoskiPage, prepareForNewOppija } from '../page/koskiPage.js'
-import { LoginPage } from '../page/loginPage.js'
-import {
-  OpinnotPage,
-  OpiskeluoikeusDialog,
-  Oppiaine
-} from '../page/opinnotPage.js'
-import { Page } from '../page/pageApi.js'
-import { expect } from '../util/chai.esm.js'
-import {
-  extractAsText,
-  findSingle,
-  goBack,
-  isElementVisible,
-  mockHttp,
-  openPage,
-  reloadTestFrame,
-  resetFixtures,
-  S,
-  syncPerustiedot,
-  testFrame,
-  textsOf,
-  timeout,
-  toArray,
-  wait
-} from '../util/testHelpers.js'
-
 describe('Perusopetus', function () {
-  let page = KoskiPage()
-  let login = LoginPage()
-  let opinnot = OpinnotPage()
-  let tilaJaVahvistus = opinnot.tilaJaVahvistus
-  let addOppija = AddOppijaPage()
-  let opiskeluoikeus = OpiskeluoikeusDialog()
-  let editor = opinnot.opiskeluoikeusEditor()
-  let currentDate = new Date()
+  var page = KoskiPage()
+  var login = LoginPage()
+  var opinnot = OpinnotPage()
+  var tilaJaVahvistus = opinnot.tilaJaVahvistus
+  var addOppija = AddOppijaPage()
+  var opiskeluoikeus = OpiskeluoikeusDialog()
+  var editor = opinnot.opiskeluoikeusEditor()
+  var currentDate = new Date()
   function currentDatePlusYears(years) {
     return (
       currentDate.getDate() +
@@ -45,10 +16,10 @@ describe('Perusopetus', function () {
       (currentDate.getFullYear() + years)
     )
   }
-  let currentDateStr = currentDatePlusYears(0)
-  let date2017Str = '1.1.2017'
-  let date2018Str = '1.1.2018'
-  let date2019Str = '1.1.2019'
+  var currentDateStr = currentDatePlusYears(0)
+  var date2017Str = '1.1.2017'
+  var date2018Str = '1.1.2018'
+  var date2019Str = '1.1.2019'
 
   before(Authentication().login(), resetFixtures)
 
@@ -136,8 +107,9 @@ describe('Perusopetus', function () {
           it('arvosanoja ei näytetä', function () {
             expect(isElementVisible(S('.oppiaineet .arvosana'))).to.equal(false)
           })
+
           describe('Kun vahvistus on tulevaisuudessa', function () {
-            let future =
+            var future =
               new Date().getDate() +
               '.' +
               (1 + new Date().getMonth()) +
@@ -357,8 +329,8 @@ describe('Perusopetus', function () {
 
       describe('Tietojen muuttaminen', function () {
         describe('Oppiaineet', function () {
-          let uusiOppiaine = opinnot.oppiaineet.uusiOppiaine()
-          let sosiaalisetTaidot = editor.subEditor('.3')
+          var uusiOppiaine = opinnot.oppiaineet.uusiOppiaine()
+          var sosiaalisetTaidot = editor.subEditor('.3')
 
           describe('Poistaminen', function () {
             before(
@@ -397,7 +369,7 @@ describe('Perusopetus', function () {
         })
 
         describe('Vuosiluokan suorituksen lisäys', function () {
-          let lisääSuoritus = opinnot.lisääSuoritusDialog
+          var lisääSuoritus = opinnot.lisääSuoritusDialog
           before(
             editor.edit,
             editor.property('tila').removeItem(0),
@@ -581,8 +553,8 @@ describe('Perusopetus', function () {
 
       describe('Tietojen muuttaminen', function () {
         describe('Kurssin lisääminen', function () {
-          let äidinkieli = opinnot.oppiaineet.oppiaine(0)
-          let a1 = opinnot.oppiaineet.oppiaine('A1')
+          var äidinkieli = opinnot.oppiaineet.oppiaine(0)
+          var a1 = opinnot.oppiaineet.oppiaine('A1')
           describe('Valtakunnallinen kurssi', function () {
             before(editor.edit, äidinkieli.avaaLisääKurssiDialog)
             describe('Ennen kurssin lisäämistä', function () {
@@ -837,7 +809,7 @@ describe('Perusopetus', function () {
 
       describe('Tietojen muuttaminen', function () {
         describe('Oppiaineen arvosana', function () {
-          let matematiikka = editor.subEditor('.MA > tr:first-child')
+          var matematiikka = editor.subEditor('.MA > tr:first-child')
           before(
             editor.edit,
             matematiikka
@@ -851,7 +823,7 @@ describe('Perusopetus', function () {
         })
 
         describe('Kurssin lisääminen', function () {
-          let äidinkieli = opinnot.oppiaineet.oppiaine(0)
+          var äidinkieli = opinnot.oppiaineet.oppiaine(0)
           describe('Valtakunnallinen kurssi', function () {
             before(
               editor.edit,
@@ -999,7 +971,7 @@ describe('Perusopetus', function () {
     )
 
     describe('Opiskeluoikeuden tiedot', function () {
-      let tilaJaVahvistus = opinnot.tilaJaVahvistus
+      var tilaJaVahvistus = opinnot.tilaJaVahvistus
 
       it('Alkutila', function () {
         expect(opinnot.opiskeluoikeusEditor().päättymispäivä()).to.equal(
@@ -1162,7 +1134,7 @@ describe('Perusopetus', function () {
             })
 
             describe('Kun suorituksella on vahvistus tulevaisuudessa', function () {
-              let tilaJaVahvistus = opinnot.tilaJaVahvistus
+              var tilaJaVahvistus = opinnot.tilaJaVahvistus
               before(
                 opiskeluoikeus.peruuta,
                 opinnot.oppiaineet.merkitseOppiaineetValmiiksi(),
@@ -1363,7 +1335,7 @@ describe('Perusopetus', function () {
         })
 
         describe('Aktiivinen tila', function () {
-          let tila = opinnot.opiskeluoikeusEditor().property('tila')
+          var tila = opinnot.opiskeluoikeusEditor().property('tila')
           it('Viimeinen tila kun päivämäärä ei ole tulevaisuudessa', function () {
             expect(
               findSingle(
@@ -1387,7 +1359,7 @@ describe('Perusopetus', function () {
             )
 
             it('Viimeinen tila on aktiivinen', function () {
-              let jaksoElems = tila.elem().find('.opiskeluoikeusjakso')
+              var jaksoElems = tila.elem().find('.opiskeluoikeusjakso')
               toArray(jaksoElems)
                 .slice(1)
                 .forEach(function (e) {
@@ -1548,10 +1520,10 @@ describe('Perusopetus', function () {
         })
 
         describe('Päivämäärän syöttö', function () {
-          let joustavaPerusopetusProperty = editor.property(
+          var joustavaPerusopetusProperty = editor.property(
             'joustavaPerusopetus'
           )
-          let joustavaPerusopetus =
+          var joustavaPerusopetus =
             joustavaPerusopetusProperty.toPäivämääräväli()
 
           before(
@@ -1586,10 +1558,10 @@ describe('Perusopetus', function () {
         })
 
         describe('Virheellinen päivämääräväli', function () {
-          let joustavaPerusopetusProperty = editor.property(
+          var joustavaPerusopetusProperty = editor.property(
             'joustavaPerusopetus'
           )
-          let joustavaPerusopetus =
+          var joustavaPerusopetus =
             joustavaPerusopetusProperty.toPäivämääräväli()
 
           before(
@@ -1716,7 +1688,7 @@ describe('Perusopetus', function () {
         })
       })
       describe('Tutkinnon perusteen diaarinumero', function () {
-        let diaarinumero = editor.propertyBySelector('.diaarinumero')
+        var diaarinumero = editor.propertyBySelector('.diaarinumero')
         before(
           editor.edit,
           diaarinumero.setValue(
@@ -1755,7 +1727,7 @@ describe('Perusopetus', function () {
       })
       describe('Todistuksella näkyvät lisätiedot', function () {
         describe('lisäys', function () {
-          let lisätiedot = editor.property('todistuksellaNäkyvätLisätiedot')
+          var lisätiedot = editor.property('todistuksellaNäkyvätLisätiedot')
           before(
             opinnot.valitseSuoritus(undefined, 'Päättötodistus'),
             editor.edit,
@@ -1768,7 +1740,7 @@ describe('Perusopetus', function () {
           })
         })
         describe('poisto', function () {
-          let lisätiedot = editor.property('todistuksellaNäkyvätLisätiedot')
+          var lisätiedot = editor.property('todistuksellaNäkyvätLisätiedot')
           before(
             opinnot.valitseSuoritus(undefined, 'Päättötodistus'),
             editor.edit,
@@ -1785,7 +1757,7 @@ describe('Perusopetus', function () {
           })
         })
         describe('lisäys ja poisto kerralla', function () {
-          let lisätiedot = editor.property('todistuksellaNäkyvätLisätiedot')
+          var lisätiedot = editor.property('todistuksellaNäkyvätLisätiedot')
           before(
             opinnot.valitseSuoritus(undefined, 'Päättötodistus'),
             editor.edit,
@@ -1802,8 +1774,8 @@ describe('Perusopetus', function () {
       })
       describe('Vieraan kielen valinta', function () {
         describe('kielivalinnan muuttaminen', function () {
-          let b1kieli = opinnot.oppiaineet.oppiaine('valinnainen.B1')
-          let kieli = b1kieli.propertyBySelector('.oppiaine')
+          var b1kieli = opinnot.oppiaineet.oppiaine('valinnainen.B1')
+          var kieli = b1kieli.propertyBySelector('.oppiaine')
           before(
             editor.edit,
             editor.property('laajuus').setValue('1'),
@@ -1868,8 +1840,8 @@ describe('Perusopetus', function () {
 
       describe('Uskonto', function () {
         describe('oppimäärän muuttaminen', function () {
-          let uskonto = opinnot.oppiaineet.oppiaine('pakollinen.KT')
-          let oppimäärä = uskonto.propertyBySelector('.uskonnonOppimäärä')
+          var uskonto = opinnot.oppiaineet.oppiaine('pakollinen.KT')
+          var oppimäärä = uskonto.propertyBySelector('.uskonnonOppimäärä')
           before(
             editor.edit,
             uskonto.expand,
@@ -1913,7 +1885,7 @@ describe('Perusopetus', function () {
       })
 
       describe('Oppiaineen laajuuden muutos', function () {
-        let valinnainenLiikunta = opinnot.oppiaineet.oppiaine('valinnainen.LI')
+        var valinnainenLiikunta = opinnot.oppiaineet.oppiaine('valinnainen.LI')
         before(
           editor.edit,
           valinnainenLiikunta.property('laajuus').setValue('1.5'),
@@ -1927,8 +1899,8 @@ describe('Perusopetus', function () {
         })
       })
       describe('Oppiaineen arvosanan muutos', function () {
-        let äidinkieli = opinnot.oppiaineet.oppiaine(0)
-        let arvosana = äidinkieli.propertyBySelector('.arvosana')
+        var äidinkieli = opinnot.oppiaineet.oppiaine(0)
+        var arvosana = äidinkieli.propertyBySelector('.arvosana')
         before(opinnot.valitseSuoritus(undefined, '7. vuosiluokka'))
 
         describe('Kun annetaan numeerinen arvosana', function () {
@@ -1943,7 +1915,7 @@ describe('Perusopetus', function () {
           before(editor.edit, arvosana.selectValue('S'), opinnot.expandAll)
 
           describe('Sanallinen arviointi', function () {
-            let sanallinenArviointi = äidinkieli.propertyBySelector(
+            var sanallinenArviointi = äidinkieli.propertyBySelector(
               '.sanallinen-arviointi .kuvaus'
             )
             before(
@@ -2025,7 +1997,7 @@ describe('Perusopetus', function () {
         )
       })
       describe('Käyttäytymisen arvioinnin lisäys', function () {
-        let arvosana = editor.subEditor('.kayttaytyminen').property('arvosana')
+        var arvosana = editor.subEditor('.kayttaytyminen').property('arvosana')
         before(
           opinnot.valitseSuoritus(undefined, '7. vuosiluokka'),
           editor.edit,
@@ -2044,7 +2016,7 @@ describe('Perusopetus', function () {
           })
         })
         describe('Kun lisätään sanallinen kuvaus', function () {
-          let kuvaus = editor.subEditor('.kayttaytyminen').property('kuvaus')
+          var kuvaus = editor.subEditor('.kayttaytyminen').property('kuvaus')
           before(
             editor.edit,
             kuvaus.setValue('Hyvää käytöstä'),
@@ -2057,7 +2029,7 @@ describe('Perusopetus', function () {
       })
       describe('Liitetiedot', function () {
         // Liitetiedot testataan isolla testisetillä, joilla varmistetaan ArrayEditorin toiminta
-        let liitetiedot = editor.property('liitetiedot')
+        var liitetiedot = editor.property('liitetiedot')
         describe('Liitetietojen lisäys', function () {
           before(
             opinnot.valitseSuoritus(undefined, '7. vuosiluokka'),
@@ -2162,12 +2134,12 @@ describe('Perusopetus', function () {
 
       describe('Valinnainen oppiaine', function () {
         before(opinnot.valitseSuoritus(undefined, '7. vuosiluokka'))
-        let uusiOppiaine = opinnot.oppiaineet.uusiOppiaine('.valinnaiset')
-        let uusiPakollinenOppiaine =
+        var uusiOppiaine = opinnot.oppiaineet.uusiOppiaine('.valinnaiset')
+        var uusiPakollinenOppiaine =
           opinnot.oppiaineet.uusiOppiaine('.pakolliset')
         describe('Valtakunnallisen oppiaineen lisääminen', function () {
-          let historia = editor.subEditor('.valinnainen.HI:eq(0)')
-          let historia2 = editor.subEditor('.valinnainen.HI:eq(1)')
+          var historia = editor.subEditor('.valinnainen.HI:eq(0)')
+          var historia2 = editor.subEditor('.valinnainen.HI:eq(1)')
           before(
             editor.edit,
             uusiOppiaine.selectValue('Historia'),
@@ -2208,7 +2180,7 @@ describe('Perusopetus', function () {
         })
 
         describe('Uuden paikallisen oppiaineen lisääminen', function () {
-          let uusiPaikallinen = editor.subEditor('.valinnainen.paikallinen')
+          var uusiPaikallinen = editor.subEditor('.valinnainen.paikallinen')
           before(
             editor.edit,
             uusiOppiaine.selectValue('Lisää'),
@@ -2232,7 +2204,7 @@ describe('Perusopetus', function () {
             })
 
             describe('Lisäyksen jälkeen', function () {
-              let tanssi = editor.subEditor('.valinnainen.TNS')
+              var tanssi = editor.subEditor('.valinnainen.TNS')
               before(editor.edit)
 
               it('Uusi oppiaine on valittavissa myös pakollisissa oppiaineissa', function () {
@@ -2293,10 +2265,10 @@ describe('Perusopetus', function () {
       })
 
       describe('Pakollinen oppiaine', function () {
-        let uusiOppiaine = opinnot.oppiaineet.uusiOppiaine('.pakolliset')
-        let uusiValinnainenOppiaine =
+        var uusiOppiaine = opinnot.oppiaineet.uusiOppiaine('.pakolliset')
+        var uusiValinnainenOppiaine =
           opinnot.oppiaineet.uusiOppiaine('.valinnaiset')
-        let filosofia = editor.subEditor('.pakollinen.FI')
+        var filosofia = editor.subEditor('.pakollinen.FI')
         before(
           opinnot.valitseSuoritus(undefined, 'Päättötodistus'),
           editor.edit,
@@ -2338,7 +2310,7 @@ describe('Perusopetus', function () {
         })
 
         describe('Uuden paikallisen oppiaineen lisääminen', function () {
-          let uusiPaikallinen = editor.subEditor('.pakollinen.paikallinen')
+          var uusiPaikallinen = editor.subEditor('.pakollinen.paikallinen')
           before(
             editor.edit,
             uusiOppiaine.selectValue('Lisää'),
@@ -2367,7 +2339,7 @@ describe('Perusopetus', function () {
             })
 
             describe('Lisäyksen jälkeen', function () {
-              let tanssi = editor.subEditor('.pakollinen.TNS')
+              var tanssi = editor.subEditor('.pakollinen.TNS')
               before(editor.edit)
 
               it('Uusi oppiaine on valittavissa myös valinnaisissa oppiaineissa', function () {
@@ -2431,7 +2403,7 @@ describe('Perusopetus', function () {
       // Oppiaineella Uskonto/Elämänkatsomustieto sama nimi, joten näytetään myös koodiarvo oppiainetta
       // valittaessa, jotta homma pelittää oikein
       describe('Uskonto/Elämänkatsomustieto -vaihtoehdossa näkyy mukana koodiarvo', function () {
-        let uusiOppiaine = opinnot.oppiaineet.uusiOppiaine('.pakolliset')
+        var uusiOppiaine = opinnot.oppiaineet.uusiOppiaine('.pakolliset')
         before(
           opinnot.valitseSuoritus(undefined, 'Päättötodistus'),
           editor.edit,
@@ -2602,7 +2574,7 @@ describe('Perusopetus', function () {
         )
         describe('Kun käyttäjä valitsee Peruuta', function () {
           before(function () {
-            testFrame().confirm = function (_msg) {
+            testFrame().confirm = function (msg) {
               return false
             }
           }, opinnot.backToList)
@@ -2613,7 +2585,7 @@ describe('Perusopetus', function () {
 
         describe('Kun käyttäjä valitsee Jatka', function () {
           before(function () {
-            testFrame().confirm = function (_msg) {
+            testFrame().confirm = function (msg) {
               return true
             }
           }, opinnot.backToList)
@@ -2683,7 +2655,7 @@ describe('Perusopetus', function () {
   })
 
   describe('Opiskeluoikeuden versiot', function () {
-    let versiohistoria = opinnot.versiohistoria
+    var versiohistoria = opinnot.versiohistoria
 
     before(
       Authentication().login(),
@@ -2699,7 +2671,7 @@ describe('Perusopetus', function () {
     })
 
     describe('Muutoksen jälkeen', function () {
-      let liitetiedot = editor.property('liitetiedot')
+      var liitetiedot = editor.property('liitetiedot')
       before(
         versiohistoria.sulje,
         opinnot.valitseSuoritus(undefined, '7. vuosiluokka'),
@@ -2854,7 +2826,7 @@ describe('Perusopetus', function () {
             )
           )
 
-          let esitäytetytOppiaineet = [
+          var esitäytetytOppiaineet = [
             'Äidinkieli ja kirjallisuus,',
             'A1-kieli,',
             'B1-kieli,',
@@ -2924,7 +2896,7 @@ describe('Perusopetus', function () {
               })
 
               describe('Kun muutoksia oppiaineisiin', function () {
-                let biologia = editor.subEditor('.BI')
+                var biologia = editor.subEditor('.BI')
                 before(
                   editor
                     .property('opiskeleeToimintaAlueittain')
@@ -2958,7 +2930,7 @@ describe('Perusopetus', function () {
                 })
 
                 describe('Esitäyttöjen poistaminen', function () {
-                  let äidinkieli = editor.subEditor('.pakollinen.AI')
+                  var äidinkieli = editor.subEditor('.pakollinen.AI')
                   before(
                     editor.cancelChanges,
                     editor.edit,
@@ -3150,7 +3122,7 @@ describe('Perusopetus', function () {
           })
 
           describe('Toisen oppiaineen lisääminen', function () {
-            let lisääSuoritus = opinnot.lisääSuoritusDialog
+            var lisääSuoritus = opinnot.lisääSuoritusDialog
             before(
               editor.edit,
               lisääSuoritus.open('lisää oppiaineen suoritus'),
@@ -3261,7 +3233,7 @@ describe('Perusopetus', function () {
         })
 
         describe('Arvioimaton oppiane jolla arvioitu kurssi', function () {
-          let äidinkieli = opinnot.oppiaineet.oppiaine('AI')
+          var äidinkieli = opinnot.oppiaineet.oppiaine('AI')
           before(
             editor.edit,
             äidinkieli.avaaLisääKurssiDialog,
@@ -3326,9 +3298,9 @@ describe('Perusopetus', function () {
       describe('Tietojen muuttaminen', function () {
         before(editor.edit)
         describe('Oppiaineen lisäys', function () {
-          let uusiOppiaine = opinnot.oppiaineet.uusiOppiaine()
+          var uusiOppiaine = opinnot.oppiaineet.uusiOppiaine()
           describe('Valtakunnallisen oppiaineen lisääminen', function () {
-            let opintoOhjaus = editor.subEditor('.valinnainen.OP')
+            var opintoOhjaus = editor.subEditor('.valinnainen.OP')
             before(
               uusiOppiaine.selectValue('Opinto-ohjaus ja työelämän taidot'),
               opintoOhjaus.propertyBySelector('.arvosana').selectValue('9'),
@@ -3357,7 +3329,7 @@ describe('Perusopetus', function () {
           })
 
           describe('Uuden paikallisen oppiaineen lisääminen', function () {
-            let uusiPaikallinen = editor.subEditor('.valinnainen.paikallinen')
+            var uusiPaikallinen = editor.subEditor('.valinnainen.paikallinen')
             before(
               editor.edit,
               uusiOppiaine.selectValue('Lisää'),
@@ -3455,7 +3427,7 @@ describe('Perusopetus', function () {
           })
 
           describe('Toisen oppiaineen lisääminen', function () {
-            let lisääSuoritus = opinnot.lisääSuoritusDialog
+            var lisääSuoritus = opinnot.lisääSuoritusDialog
             before(
               editor.edit,
               lisääSuoritus.open('lisää oppiaineen suoritus'),
@@ -3541,7 +3513,7 @@ describe('Perusopetus', function () {
   })
 
   describe('Vuosiluokan suorituksen lisääminen', function () {
-    let lisääSuoritus = opinnot.lisääSuoritusDialog
+    var lisääSuoritus = opinnot.lisääSuoritusDialog
 
     before(
       prepareForNewOppija('kalle', '230872-7258'),
@@ -3613,8 +3585,8 @@ describe('Perusopetus', function () {
             })
 
             describe('Kun painetaan Lisää-nappia', function () {
-              let äidinkieli = opinnot.oppiaineet.oppiaine(0)
-              let arvosana = äidinkieli.propertyBySelector('.arvosana')
+              var äidinkieli = opinnot.oppiaineet.oppiaine(0)
+              var arvosana = äidinkieli.propertyBySelector('.arvosana')
               before(lisääSuoritus.lisääSuoritus)
               describe('Käyttöliittymän tila', function () {
                 it('Näytetään uusi suoritus', function () {
@@ -3671,7 +3643,7 @@ describe('Perusopetus', function () {
 
               describe('Merkitseminen valmiiksi', function () {
                 before(editor.edit)
-                let dialog = tilaJaVahvistus.merkitseValmiiksiDialog
+                var dialog = tilaJaVahvistus.merkitseValmiiksiDialog
                 describe('Aluksi', function () {
                   it('Tila on "kesken"', function () {
                     expect(tilaJaVahvistus.text()).to.equal('Suoritus kesken')
@@ -3799,10 +3771,10 @@ describe('Perusopetus', function () {
                           })
 
                           describe('Kun merkitään valmiiksi, jää luokalle', function () {
-                            let tilaJaVahvistus = opinnot.tilaJaVahvistus
-                            let dialog = tilaJaVahvistus.merkitseValmiiksiDialog
-                            let dialogEditor = dialog.editor
-                            let myöntäjät =
+                            var tilaJaVahvistus = opinnot.tilaJaVahvistus
+                            var dialog = tilaJaVahvistus.merkitseValmiiksiDialog
+                            var dialogEditor = dialog.editor
+                            var myöntäjät =
                               dialogEditor.property('myöntäjäHenkilöt')
                             before(
                               opinnot.oppiaineet.merkitseOppiaineetValmiiksi(),
@@ -3888,7 +3860,7 @@ describe('Perusopetus', function () {
 
                                     describe('Kun kaikki luokka-asteet on lisätty', function () {
                                       before(editor.edit)
-                                      for (let i = 3; i <= 9; i++) {
+                                      for (var i = 3; i <= 9; i++) {
                                         before(
                                           lisääSuoritus.open(
                                             'lisää vuosiluokan suoritus'
@@ -4280,7 +4252,7 @@ describe('Perusopetus', function () {
     })
 
     describe('Tietojen muuttaminen', function () {
-      let arvosana = editor.property('arviointi')
+      var arvosana = editor.property('arviointi')
 
       before(page.openPage, page.oppijaHaku.searchAndSelect('110738-839L'))
       before(editor.edit, editor.property('tila').removeItem(0)) // opiskeluoikeus: läsnä
@@ -4324,7 +4296,7 @@ describe('Perusopetus', function () {
       })
       describe('Kurssit', function () {
         describe('Kurssin lisääminen päättövaiheen kursseista', function () {
-          let äidinkieli = Oppiaine(
+          var äidinkieli = Oppiaine(
             findSingle('.perusopetuksenoppiaineenoppimaaransuoritus')
           )
 
@@ -4357,7 +4329,7 @@ describe('Perusopetus', function () {
         })
 
         describe('Kurssin lisääminen alkuvaiheen kursseista', function () {
-          let äidinkieli = Oppiaine(
+          var äidinkieli = Oppiaine(
             findSingle('.perusopetuksenoppiaineenoppimaaransuoritus')
           )
 
@@ -4430,7 +4402,7 @@ describe('Perusopetus', function () {
     })
 
     describe('Jos opiskelijalla on "ei tiedossa"-oppiaineita', function () {
-      let lisääSuoritus = opinnot.lisääSuoritusDialog
+      var lisääSuoritus = opinnot.lisääSuoritusDialog
       before(
         page.openPage,
         page.oppijaHaku.searchAndSelect('131298-5248'),
@@ -4516,8 +4488,8 @@ describe('Perusopetus', function () {
     describe('Tietojen muuttaminen', function () {
       before(page.openPage, page.oppijaHaku.searchAndSelect('131025-6573'))
       describe('Oppiaineen arvosanan muutos', function () {
-        let äidinkieli = opinnot.oppiaineet.oppiaine(0)
-        let arvosana = äidinkieli.propertyBySelector('.arvosana')
+        var äidinkieli = opinnot.oppiaineet.oppiaine(0)
+        var arvosana = äidinkieli.propertyBySelector('.arvosana')
         describe('Kun annetaan numeerinen arvosana', function () {
           before(editor.edit, arvosana.selectValue('5'), editor.saveChanges)
 
@@ -4528,9 +4500,9 @@ describe('Perusopetus', function () {
       })
 
       describe('Kurssin kuvauksen ja sanallisen arvion muuttaminen', function () {
-        let kurssi = opinnot.oppiaineet.oppiaine('xxx')
-        let sanallinenArviointi = kurssi.propertyBySelector('.kuvaus:eq(0)')
-        let kurssinKuvaus = kurssi.propertyBySelector('.kuvaus:eq(1)') // Yes, they both have the same class "kuvaus", which is exactly why testing this is important
+        var kurssi = opinnot.oppiaineet.oppiaine('xxx')
+        var sanallinenArviointi = kurssi.propertyBySelector('.kuvaus:eq(0)')
+        var kurssinKuvaus = kurssi.propertyBySelector('.kuvaus:eq(1)') // Yes, they both have the same class "kuvaus", which is exactly why testing this is important
 
         before(
           editor.edit,
@@ -4547,8 +4519,8 @@ describe('Perusopetus', function () {
       })
 
       describe('Pakollinen oppiaine', function () {
-        let uusiOppiaine = opinnot.oppiaineet.uusiOppiaine('.pakolliset')
-        let filosofia = editor.subEditor('.pakollinen.FI')
+        var uusiOppiaine = opinnot.oppiaineet.uusiOppiaine('.pakolliset')
+        var filosofia = editor.subEditor('.pakollinen.FI')
         before(
           editor.edit,
           uusiOppiaine.selectValue('Filosofia'),
@@ -4580,8 +4552,8 @@ describe('Perusopetus', function () {
 
       describe('Opiskelu toiminta-alueittain', function () {
         describe('Toiminta-alueen lisääminen', function () {
-          let uusiOppiaine = opinnot.oppiaineet.uusiOppiaine()
-          let kognitiivisetTaidot = editor.subEditor('.valinnainen.5')
+          var uusiOppiaine = opinnot.oppiaineet.uusiOppiaine()
+          var kognitiivisetTaidot = editor.subEditor('.valinnainen.5')
           before(
             editor.edit,
             opinnot.expandAll,
@@ -4675,8 +4647,8 @@ describe('Perusopetus', function () {
     })
     describe('Tietojen muuttaminen', function () {
       describe('Oppiaineen arvosanan muutos', function () {
-        let äidinkieli = opinnot.oppiaineet.oppiaine(0)
-        let arvosana = äidinkieli.propertyBySelector('.arvosana')
+        var äidinkieli = opinnot.oppiaineet.oppiaine(0)
+        var arvosana = äidinkieli.propertyBySelector('.arvosana')
         before(editor.edit, arvosana.selectValue('H'), editor.saveChanges)
         it('muutettu arvosana näytetään', function () {
           expect(arvosana.getValue()).to.equal('H')
@@ -4689,11 +4661,11 @@ describe('Perusopetus', function () {
         )
       })
       describe('Oppiaine', function () {
-        let uusiOppiaine = opinnot.oppiaineet.uusiOppiaine(
+        var uusiOppiaine = opinnot.oppiaineet.uusiOppiaine(
           '.uusi-perusopetukseen-valmistava-oppiaine'
         )
         describe('Uuden oppiaineen lisääminen', function () {
-          let uusiPaikallinen = editor.subEditor(
+          var uusiPaikallinen = editor.subEditor(
             '.oppiaine-rivi:nth-of-type(2)'
           )
           before(
@@ -4717,7 +4689,7 @@ describe('Perusopetus', function () {
           })
 
           describe('Lisäyksen jälkeen', function () {
-            let tanssi = editor.subEditor('.valinnainen.TNS')
+            var tanssi = editor.subEditor('.valinnainen.TNS')
             before(editor.edit)
             it('Valinnaisia aineita voi lisätä useaan kertaan', function () {
               expect(uusiOppiaine.getOptions().includes('Tanssi')).to.equal(
@@ -4756,10 +4728,10 @@ describe('Perusopetus', function () {
         })
 
         describe('Uuden nuorten perusopetuksen oppiaineen lisääminen', function () {
-          let uusiNuortenOppiaine = OpinnotPage()
+          var uusiNuortenOppiaine = OpinnotPage()
             .opiskeluoikeusEditor()
             .propertyBySelector('.oppiaine-taulukko > .uusi-oppiaine')
-          let historia = editor.subEditor('.HI')
+          var historia = editor.subEditor('.HI')
           before(
             editor.edit,
             uusiNuortenOppiaine.selectValue('Historia'),
@@ -4840,9 +4812,9 @@ describe('Perusopetus', function () {
       editor.saveChanges
     )
 
-    let matikka = opinnot.oppiaineet.oppiaine('pakollinen.MA')
-    let ennenLeikkuriPäivää = '31.7.2020'
-    let leikkuriPäivä = '1.8.2020'
+    var matikka = opinnot.oppiaineet.oppiaine('pakollinen.MA')
+    var ennenLeikkuriPäivää = '31.7.2020'
+    var leikkuriPäivä = '1.8.2020'
 
     describe('Asetetaan pakolliselle oppiaineelle laajuus', function () {
       before(

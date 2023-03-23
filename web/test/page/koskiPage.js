@@ -1,24 +1,5 @@
-import {
-  click,
-  findSingle,
-  isElementVisible,
-  isLoading,
-  not,
-  openPage,
-  resetFixtures,
-  S,
-  seq,
-  textsOf,
-  wait
-} from '../util/testHelpers.js'
-import { Authentication } from './authentication.js'
-import { LoginPage } from './loginPage.js'
-import { OrganisaatioHaku } from './organisaatioHaku.js'
-import { Page } from './pageApi.js'
-import { AddOppijaPage } from './addOppijaPage.js'
-
-export function KoskiPage() {
-  let pageApi = Page(function () {
+function KoskiPage() {
+  var pageApi = Page(function () {
     return S('#content')
   })
 
@@ -26,14 +7,14 @@ export function KoskiPage() {
     search: function (query, expectedResults) {
       if (!expectedResults) expectedResults = query
       if (expectedResults instanceof Array) {
-        let resultList = expectedResults
+        var resultList = expectedResults
         expectedResults = function () {
           return _.isEqual(resultList, OppijaHaku.getSearchResults())
         }
       } else if (typeof expectedResults === 'string') {
-        let expectedString = expectedResults
+        var expectedString = expectedResults
         expectedResults = function () {
-          let results = OppijaHaku.getSearchResults()
+          var results = OppijaHaku.getSearchResults()
           return (
             results.length == 1 &&
             results[0].toLowerCase().indexOf(expectedString.toLowerCase()) >= 0
@@ -71,7 +52,7 @@ export function KoskiPage() {
       return pageApi.getInputValue('#search-query')
     },
     canAddNewOppija: function () {
-      let button = S('.oppija-haku .lisaa-oppija')
+      var button = S('.oppija-haku .lisaa-oppija')
       return button.is(':visible') && !button.hasClass('disabled')
     },
     addNewOppija: seq(
@@ -89,7 +70,7 @@ export function KoskiPage() {
       return S('.oppija-haku').hasClass('searching')
     },
     selectOppija: function (oppija) {
-      let link = findSingle('.oppija-haku li a:contains(' + oppija + ')')
+      var link = findSingle('.oppija-haku li a:contains(' + oppija + ')')
       return seq(click(link), api.waitUntilOppijaSelected(oppija))
     },
     getErrorMessage: function () {
@@ -274,8 +255,8 @@ export function KoskiPage() {
   return api
 }
 
-export function prepareForNewOppija(username, hetu) {
-  let page = KoskiPage()
+function prepareForNewOppija(username, hetu) {
+  var page = KoskiPage()
   return function () {
     return Authentication()
       .login(username)()

@@ -1,22 +1,11 @@
-import { AddOppijaPage } from '../page/addOppijaPage.js'
-import { Authentication } from '../page/authentication.js'
-import { KoskiPage, prepareForNewOppija } from '../page/koskiPage.js'
-import {
-  OpinnotPage,
-  OpiskeluoikeusDialog,
-  VSTSuoritukset
-} from '../page/opinnotPage.js'
-import { expect } from '../util/chai.esm.js'
-import { extractAsText, hrefOf, S } from '../util/testHelpers.js'
-
 describe('VST', function () {
-  let opinnot = OpinnotPage()
-  let tilaJaVahvistus = opinnot.tilaJaVahvistus
-  let vst = VSTSuoritukset()
-  let editor = opinnot.opiskeluoikeusEditor()
-  let addOppija = AddOppijaPage()
-  let page = KoskiPage()
-  let opiskeluoikeus = OpiskeluoikeusDialog()
+  var opinnot = OpinnotPage()
+  var tilaJaVahvistus = opinnot.tilaJaVahvistus
+  var vst = VSTSuoritukset()
+  var editor = opinnot.opiskeluoikeusEditor()
+  var addOppija = AddOppijaPage()
+  var page = KoskiPage()
+  var opiskeluoikeus = OpiskeluoikeusDialog()
 
   describe('Opiskeluoikeuden lisääminen oppivelvollisten suorituksella', function () {
     before(
@@ -410,7 +399,7 @@ describe('VST', function () {
           )
 
           it('toimii', function () {
-            let osasuoritukset = S('.vst-osasuoritus')
+            var osasuoritukset = S('.vst-osasuoritus')
             expect(osasuoritukset.length).to.equal(2)
           })
         })
@@ -585,7 +574,7 @@ describe('VST', function () {
           )
 
           it('toimii', function () {
-            let osasuoritukset = S('.vst-osasuoritus')
+            var osasuoritukset = S('.vst-osasuoritus')
             expect(osasuoritukset.length).to.equal(2)
           })
         })
@@ -604,7 +593,9 @@ describe('VST', function () {
             )
           })
 
-          after(editor.saveChangesAndWaitForSuccess)
+          after(
+            editor.saveChangesAndWaitForSuccess
+          )
         })
       })
     })

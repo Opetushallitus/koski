@@ -1,17 +1,10 @@
-import { AddOppijaPage } from '../page/addOppijaPage.js'
-import { Authentication } from '../page/authentication.js'
-import { KoskiPage, prepareForNewOppija } from '../page/koskiPage.js'
-import { OpinnotPage } from '../page/opinnotPage.js'
-import { expect } from '../util/chai.esm.js'
-import { extractAsText, resetFixtures, S, wait } from '../util/testHelpers.js'
-
 describe('VALMA koulutus', function () {
   before(Authentication().login())
 
-  let addOppija = AddOppijaPage()
-  let page = KoskiPage()
-  let opinnot = OpinnotPage()
-  let editor = opinnot.opiskeluoikeusEditor()
+  var addOppija = AddOppijaPage()
+  var page = KoskiPage()
+  var opinnot = OpinnotPage()
+  var editor = opinnot.opiskeluoikeusEditor()
 
   describe('Opiskeluoikeuden lisääminen vanhalla perusteella', function () {
     before(
@@ -68,7 +61,7 @@ describe('VALMA koulutus', function () {
     })
 
     describe('Ammatillisen tutkinnon suorituksen lisääminen', function () {
-      let lisääSuoritus = opinnot.lisääSuoritusDialog
+      var lisääSuoritus = opinnot.lisääSuoritusDialog
 
       describe('Lisäyspainike', function () {
         before(editor.edit)
@@ -81,6 +74,7 @@ describe('VALMA koulutus', function () {
       })
     })
 
+    var suoritustapa = editor.property('suoritustapa')
     describe('Tutkinnon osan lisääminen', function () {
       before(
         editor.edit,

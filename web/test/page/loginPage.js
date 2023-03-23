@@ -1,16 +1,4 @@
-import {
-  click,
-  findSingle,
-  isElementVisible,
-  openPage,
-  S,
-  seq,
-  wait
-} from '../util/testHelpers.js'
-import { Authentication } from './authentication.js'
-import { Page } from './pageApi.js'
-
-export function LoginPage() {
+function LoginPage() {
   function loginElement() {
     return S('#content .login')
   }

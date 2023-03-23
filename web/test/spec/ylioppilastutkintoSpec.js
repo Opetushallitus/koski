@@ -1,12 +1,6 @@
-import { Authentication } from '../page/authentication.js'
-import { KoskiPage } from '../page/koskiPage.js'
-import { OpinnotPage } from '../page/opinnotPage.js'
-import { expect } from '../util/chai.esm.js'
-import { extractAsText, resetFixtures, S } from '../util/testHelpers.js'
-
 describe('Ylioppilastutkinto', function () {
-  let page = KoskiPage()
-  let opinnot = OpinnotPage()
+  var page = KoskiPage()
+  var opinnot = OpinnotPage()
 
   before(Authentication().login('pää'), resetFixtures, page.openPage)
 

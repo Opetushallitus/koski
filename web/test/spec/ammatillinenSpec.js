@@ -1,38 +1,10 @@
-import { AddOppijaPage } from '../page/addOppijaPage.js'
-import { Authentication } from '../page/authentication.js'
-import { KoskiPage, prepareForNewOppija } from '../page/koskiPage.js'
-import { LandingPage } from '../page/landingPage.js'
-import {
-  OpinnotPage,
-  OpiskeluoikeusDialog,
-  TilaJaVahvistusIndeksillä
-} from '../page/opinnotPage.js'
-import { Page } from '../page/pageApi.js'
-import {
-  click,
-  extractAsText,
-  findFirst,
-  findSingle,
-  insertExample,
-  isElementVisible,
-  openPage,
-  resetFixtures,
-  S,
-  syncPerustiedot,
-  textsOf,
-  timeout,
-  toArray,
-  wait
-} from '../util/testHelpers.js'
-import { expect } from '../util/chai.esm.js'
-
 describe('Ammatillinen koulutus', function () {
   before(Authentication().login())
 
-  let addOppija = AddOppijaPage()
-  let page = KoskiPage()
-  let opinnot = OpinnotPage()
-  let editor = opinnot.opiskeluoikeusEditor()
+  var addOppija = AddOppijaPage()
+  var page = KoskiPage()
+  var opinnot = OpinnotPage()
+  var editor = opinnot.opiskeluoikeusEditor()
 
   describe('Opiskeluoikeuden lisääminen', function () {
     this.timeout(40000)
@@ -160,7 +132,7 @@ describe('Ammatillinen koulutus', function () {
         })
 
         describe('Toisen ammatillisen tutkinnon lisääminen samaan opiskeluoikeuteen', function () {
-          let lisääSuoritus = opinnot.lisääSuoritusDialog
+          var lisääSuoritus = opinnot.lisääSuoritusDialog
           before(editor.edit)
           it('ei ole mahdollista', function () {
             expect(
@@ -508,7 +480,7 @@ describe('Ammatillinen koulutus', function () {
         })
 
         describe('Ammatillisen tutkinnon lisääminen samaan opiskeluoikeuteen', function () {
-          let lisääSuoritus = opinnot.lisääSuoritusDialog
+          var lisääSuoritus = opinnot.lisääSuoritusDialog
           before(
             editor.edit,
             lisääSuoritus.open('lisää ammatillisen tutkinnon suoritus')
@@ -538,7 +510,7 @@ describe('Ammatillinen koulutus', function () {
         })
       })
       describe('Lisääminen olemassa olevaan opiskeluoikeuteen, jossa ammatillisen tutkinnon suoritus', function () {
-        let lisääSuoritus = opinnot.lisääSuoritusDialog
+        var lisääSuoritus = opinnot.lisääSuoritusDialog
         before(
           prepareForNewOppija('kalle', '230872-7258'),
           addOppija.enterValidDataAmmatillinen({
@@ -587,7 +559,7 @@ describe('Ammatillinen koulutus', function () {
       })
 
       describe('Lisääminen olemassa olevaan opiskeluoikeuteen, jossa VALMA-suoritus', function () {
-        let lisääSuoritus = opinnot.lisääSuoritusDialog
+        var lisääSuoritus = opinnot.lisääSuoritusDialog
 
         before(
           prepareForNewOppija('kalle', '230872-7258'),
@@ -775,7 +747,7 @@ describe('Ammatillinen koulutus', function () {
               })
 
               describe('korkeakoulukokonaisuudet', function () {
-                let korkeakouluopinnot = opinnot
+                var korkeakouluopinnot = opinnot
                   .tutkinnonOsat(1)
                   .tutkinnonOsa(1)
                   .osanOsat()
@@ -810,7 +782,7 @@ describe('Ammatillinen koulutus', function () {
             before(editor.edit)
 
             describe('Lisääminen', function () {
-              let jatkoOpintovalmiuksiaTukevatOpinnot = opinnot
+              var jatkoOpintovalmiuksiaTukevatOpinnot = opinnot
                 .tutkinnonOsat(1)
                 .tutkinnonOsa(1)
                 .osanOsat()
@@ -1113,9 +1085,7 @@ describe('Ammatillinen koulutus', function () {
       describe('Tutkinnon osan lisääminen', function () {
         before(
           editor.edit,
-          opinnot
-            .tutkinnonOsat('1')
-            .lisääTutkinnonOsa('Huolto- ja korjaustyöt'),
+          opinnot.tutkinnonOsat('1').lisääTutkinnonOsa('Huolto- ja korjaustyöt'),
           opinnot
             .tutkinnonOsat('1')
             .tutkinnonOsa(0)
@@ -1204,6 +1174,7 @@ describe('Ammatillinen koulutus', function () {
         )
       })
 
+      var suoritustapa = editor.property('suoritustapa')
       describe('Paikallisen tutkinnon osan lisääminen', function () {
         before(
           editor.edit,
@@ -1385,7 +1356,7 @@ describe('Ammatillinen koulutus', function () {
     })
 
     describe('Järjestämismuodot', function () {
-      let järjestämismuodot = editor.property('järjestämismuodot')
+      var järjestämismuodot = editor.property('järjestämismuodot')
       before(
         editor.edit,
         järjestämismuodot.addItem,
@@ -1555,7 +1526,7 @@ describe('Ammatillinen koulutus', function () {
           )
 
           it('haetaan kaikki osaamisalat', function () {
-            let osaamisalat = textsOf(toArray(S('.osaamisala .options li')))
+            var osaamisalat = textsOf(toArray(S('.osaamisala .options li')))
 
             expect(osaamisalat.slice(0, 5)).to.deep.equal([
               'Ei valintaa',
@@ -1615,6 +1586,7 @@ describe('Ammatillinen koulutus', function () {
     })
 
     describe('Tutkinnon osat', function () {
+      var suoritustapa = editor.property('suoritustapa')
       describe('Kun suoritustapa on opetussuunnitelman mukainen', function () {
         describe('Tutkinnon osan lisääminen', function () {
           before(editor.edit)
@@ -1872,7 +1844,7 @@ describe('Ammatillinen koulutus', function () {
                 })
 
                 describe('Lisäyksen jälkeen', function () {
-                  let tutkinnonOsienOsat = opinnot.tutkinnonOsat('999999')
+                  var tutkinnonOsienOsat = opinnot.tutkinnonOsat('999999')
                   before(
                     tutkinnonOsienOsat.lisääTutkinnonOsa('Äidinkieli'),
                     tutkinnonOsienOsat
@@ -2027,7 +1999,7 @@ describe('Ammatillinen koulutus', function () {
       })
 
       describe('Osaamisen tunnustamisen muokkaus', function () {
-        let tunnustaminen = opinnot
+        var tunnustaminen = opinnot
           .tutkinnonOsat('1')
           .tutkinnonOsa(0)
           .property('tunnustettu')
@@ -2285,7 +2257,7 @@ describe('Ammatillinen koulutus', function () {
           describe('Oikeat tiedot säilyvät modalissa', function () {
             before(opinnot.tutkinnonOsat('1').tutkinnonOsa(0).avaaNäyttöModal)
             it('toimii', function () {
-              let näyttö = opinnot
+              var näyttö = opinnot
                 .tutkinnonOsat('1')
                 .tutkinnonOsa(0)
                 .lueNäyttöModal()
@@ -2342,7 +2314,7 @@ describe('Ammatillinen koulutus', function () {
 
       describe('Sanallisen arvioinnin muokkaus', function () {
         describe('VALMA-suorituksen osille', function () {
-          let sanallinenArviointi = opinnot
+          var sanallinenArviointi = opinnot
             .tutkinnonOsat()
             .tutkinnonOsa(0)
             .sanallinenArviointi()
@@ -3365,10 +3337,10 @@ describe('Ammatillinen koulutus', function () {
   })
 
   describe('Osittaisen ammatillisen tutkinnon validaatio', function () {
-    let yhteinenTutkinnonOsa = opinnot.tutkinnonOsat().tutkinnonOsa(5)
-    let osanOsa0 = yhteinenTutkinnonOsa.osanOsat().tutkinnonOsa(0)
-    let osanOsa1 = yhteinenTutkinnonOsa.osanOsat().tutkinnonOsa(1)
-    let osanOsa2 = yhteinenTutkinnonOsa.osanOsat().tutkinnonOsa(2)
+    var yhteinenTutkinnonOsa = opinnot.tutkinnonOsat().tutkinnonOsa(5)
+    var osanOsa0 = yhteinenTutkinnonOsa.osanOsat().tutkinnonOsa(0)
+    var osanOsa1 = yhteinenTutkinnonOsa.osanOsat().tutkinnonOsa(1)
+    var osanOsa2 = yhteinenTutkinnonOsa.osanOsat().tutkinnonOsa(2)
 
     describe('Valmiiksi merkitseminen', function () {
       before(
@@ -3432,22 +3404,22 @@ describe('Ammatillinen koulutus', function () {
       })
 
       describe('Ammatillisen tutkinnon osan suoritus puuttuu, mutta opiskeluoikeuteen on sisällytetty toinen opiskeluoikeus', function () {
-        let firstEditor = opinnot.opiskeluoikeusEditor(0)
-        let secondEditor = opinnot.opiskeluoikeusEditor(1)
-        let secondOpinnot = OpinnotPage(1)
+        var firstEditor = opinnot.opiskeluoikeusEditor(0)
+        var secondEditor = opinnot.opiskeluoikeusEditor(1)
+        var secondOpinnot = OpinnotPage(1)
 
-        let clickLisääOpiskeluoikeus = function () {
+        var clickLisääOpiskeluoikeus = function () {
           return S('li.add-opiskeluoikeus > a > span').click()
         }
-        let clickValitseOppilaitosDropdown = function () {
+        var clickValitseOppilaitosDropdown = function () {
           return S(
             'label.oppilaitos .organisaatio .organisaatio-selection'
           ).click()
         }
-        let clickMuokkaaOpiskeluoikeus = function () {
+        var clickMuokkaaOpiskeluoikeus = function () {
           return S('div.opiskeluoikeuden-tiedot button.toggle-edit')[0].click()
         }
-        let täydennäSisältyvänOpiskeluoikeudenOid = function () {
+        var täydennäSisältyvänOpiskeluoikeudenOid = function () {
           return firstEditor
             .property('oid')
             .setValue(
@@ -3456,14 +3428,14 @@ describe('Ammatillinen koulutus', function () {
               ).text()
             )()
         }
-        let tallenna = function () {
+        var tallenna = function () {
           return S('#edit-bar button.koski-button').click()
         }
-        let waitAjax = function () {
+        var waitAjax = function () {
           return wait.forAjax()
         }
 
-        let clickMuokkaaSisällytettyOpiskeluoikeus = function () {
+        var clickMuokkaaSisällytettyOpiskeluoikeus = function () {
           return S('.opiskeluoikeuden-tiedot:eq(1) .koski-button').click()
         }
 

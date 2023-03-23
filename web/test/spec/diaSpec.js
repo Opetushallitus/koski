@@ -1,26 +1,9 @@
-import { AddOppijaPage } from '../page/addOppijaPage.js'
-import { Authentication } from '../page/authentication.js'
-import { KoskiPage, prepareForNewOppija } from '../page/koskiPage.js'
-import { OpinnotPage, OpiskeluoikeusDialog } from '../page/opinnotPage.js'
-import {
-  click,
-  extractAsText,
-  findFirst,
-  findSingle,
-  isElementVisible,
-  resetFixtures,
-  S,
-  seq,
-  wait
-} from '../util/testHelpers.js'
-import { expect } from '../util/chai.esm.js'
-
 describe('DIA', function () {
-  let page = KoskiPage()
-  let opinnot = OpinnotPage()
-  let editor = opinnot.opiskeluoikeusEditor()
-  let opiskeluoikeus = OpiskeluoikeusDialog()
-  let addOppija = AddOppijaPage()
+  var page = KoskiPage()
+  var opinnot = OpinnotPage()
+  var editor = opinnot.opiskeluoikeusEditor()
+  var opiskeluoikeus = OpiskeluoikeusDialog()
+  var addOppija = AddOppijaPage()
 
   before(Authentication().login(), resetFixtures)
 
@@ -74,7 +57,6 @@ describe('DIA', function () {
           editor.saveChanges,
           wait.until(page.isSavedLabelShown)
         )
-
         it('tallentaa ja esittää kaikki lisätiedot', function () {
           expect(extractAsText(S('.lisätiedot'))).to.equal(
             'Lisätiedot\n' +
@@ -271,7 +253,7 @@ describe('DIA', function () {
 
       describe('Suoritusten tiedot', function () {
         describe('Oppiaine', function () {
-          let aine = opinnot.oppiaineet.oppiaine('oppiaine.A')
+          var aine = opinnot.oppiaineet.oppiaine('oppiaine.A')
 
           describe('Laajuus', function () {
             describe('Muuttaminen', () => {
@@ -338,7 +320,7 @@ describe('DIA', function () {
           })
 
           describe('Oppiaineen osasuoritukset', function () {
-            let osasuoritus = aine.kurssi('10/I')
+            var osasuoritus = aine.kurssi('10/I')
 
             describe('Arvosana-asteikko', function () {
               before(editor.edit)
@@ -433,7 +415,7 @@ describe('DIA', function () {
             })
 
             describe('Lisääminen', function () {
-              let dialog = aine.lisääKurssiDialog
+              var dialog = aine.lisääKurssiDialog
 
               before(
                 editor.edit,
@@ -453,6 +435,8 @@ describe('DIA', function () {
             })
 
             describe('Kun kaksi lukukautta on jo lisätty', function () {
+              var dialog = aine.lisääKurssiDialog
+
               before(editor.edit)
 
               it('nappi osasuorituksen lisäämiselle valmistavan vaiheen oppiaineeseen on piilotettu', function () {
@@ -481,7 +465,7 @@ describe('DIA', function () {
           })
 
           describe('Lisääminen', function () {
-            let uusiOppiaine = OpinnotPage()
+            var uusiOppiaine = OpinnotPage()
               .opiskeluoikeusEditor()
               .propertyBySelector('.uusi-oppiaine:last')
 
@@ -492,7 +476,7 @@ describe('DIA', function () {
             })
 
             describe('Laajuuden tallentaminen uudelle oppiaineelle', function () {
-              let liikunta = opinnot.oppiaineet.oppiaine('oppiaine.LI')
+              var liikunta = opinnot.oppiaineet.oppiaine('oppiaine.LI')
               before(
                 liikunta.laajuus.setValue('2'),
                 editor.saveChanges,
@@ -506,7 +490,7 @@ describe('DIA', function () {
           })
 
           describe('Poistaminen', function () {
-            let liikunta = opinnot.oppiaineet.oppiaine('oppiaine.LI')
+            var liikunta = opinnot.oppiaineet.oppiaine('oppiaine.LI')
 
             before(
               editor.edit,
@@ -716,7 +700,7 @@ describe('DIA', function () {
 
       describe('Suoritusten tiedot', function () {
         function lisääOppiaineelleKurssiTunnisteella(aine, kurssinTunniste) {
-          let dialog = aine.lisääKurssiDialog
+          var dialog = aine.lisääKurssiDialog
           return seq(
             aine.avaaLisääKurssiDialog,
             dialog.valitseKurssi(kurssinTunniste),
@@ -726,7 +710,7 @@ describe('DIA', function () {
         }
 
         describe('Oppiaine', function () {
-          let aine = opinnot.oppiaineet.oppiaine('oppiaine.A')
+          var aine = opinnot.oppiaineet.oppiaine('oppiaine.A')
 
           describe('Laajuus', function () {
             describe('Muuttaminen', () => {
@@ -777,7 +761,7 @@ describe('DIA', function () {
           })
 
           describe('Vastaavuustodistuksen tiedot', function () {
-            let aine = opinnot.oppiaineet.oppiaine('oppiaine.AI:first')
+            var aine = opinnot.oppiaineet.oppiaine('oppiaine.AI:first')
             before(
               editor.edit,
               aine
@@ -795,7 +779,7 @@ describe('DIA', function () {
             })
 
             describe('laajuden yksikön vaihtaminen kursseiksi', function () {
-              let aine = opinnot.oppiaineet.oppiaine('oppiaine.AI:first')
+              var aine = opinnot.oppiaineet.oppiaine('oppiaine.AI:first')
               before(
                 editor.edit,
                 aine
@@ -877,12 +861,12 @@ describe('DIA', function () {
           })
 
           describe('Oppiaineen osasuoritukset', function () {
-            let osasuoritus = aine.propertyBySelector('.kurssi:first')
-            let arvosana = osasuoritus.propertyBySelector('.arvosana')
+            var osasuoritus = aine.propertyBySelector('.kurssi:first')
+            var arvosana = osasuoritus.propertyBySelector('.arvosana')
 
-            let lukukausi_11_I = aine.nthOsasuoritus(0)
-            let lukukausi_11_II = aine.nthOsasuoritus(1)
-            let lukukausi_12_I = aine.nthOsasuoritus(2)
+            var lukukausi_11_I = aine.nthOsasuoritus(0)
+            var lukukausi_11_II = aine.nthOsasuoritus(1)
+            var lukukausi_12_I = aine.nthOsasuoritus(2)
 
             describe('Arvosana-asteikko', function () {
               before(editor.edit)
@@ -1009,7 +993,7 @@ describe('DIA', function () {
             })
 
             describe('Lisääminen', function () {
-              let dialog = aine.lisääKurssiDialog
+              var dialog = aine.lisääKurssiDialog
 
               before(
                 editor.edit,
@@ -1028,7 +1012,7 @@ describe('DIA', function () {
               })
 
               describe('Lasketaan kokonaispistemäärään -tieto', () => {
-                let kurssi = aine.kurssi('12/II')
+                var kurssi = aine.kurssi('12/II')
                 before(kurssi.showDetails)
                 it('on merkitty todeksi', function () {
                   expect(
@@ -1039,7 +1023,7 @@ describe('DIA', function () {
             })
 
             describe('Lasketaan kokonaispistemäärään -valinnan poistaminen', function () {
-              let kurssi = aine.kurssi('12/II')
+              var kurssi = aine.kurssi('12/II')
 
               before(
                 editor.edit,
@@ -1065,7 +1049,7 @@ describe('DIA', function () {
             })
 
             describe('Lasketaan kokonaispistemäärään -valinnan lisääminen', function () {
-              let kurssi = aine.kurssi('12/II')
+              var kurssi = aine.kurssi('12/II')
 
               before(
                 editor.edit,
@@ -1091,7 +1075,7 @@ describe('DIA', function () {
             })
 
             describe('Kun neljä lukukautta on jo lisätty', function () {
-              let dialog = aine.lisääKurssiDialog
+              var dialog = aine.lisääKurssiDialog
 
               before(editor.edit, aine.avaaLisääKurssiDialog)
 
@@ -1109,7 +1093,7 @@ describe('DIA', function () {
             describe('Päättökokeet', function () {
               function testaaPäättökokeenLisäysJaPoisto(nimi, arvosana) {
                 describe(nimi, function () {
-                  let dialog = aine.lisääKurssiDialog
+                  var dialog = aine.lisääKurssiDialog
 
                   describe('Lisääminen', function () {
                     before(
@@ -1173,6 +1157,8 @@ describe('DIA', function () {
             })
 
             describe('Lisääminen ei-kronologisessa järjestyksessä', function () {
+              var dialog = aine.lisääKurssiDialog
+
               function asetaKurssinLaajuus(kurssinTunniste, laajuus) {
                 return seq(
                   aine.kurssi(kurssinTunniste).toggleDetails,
@@ -1209,7 +1195,7 @@ describe('DIA', function () {
           })
 
           describe('Lisääminen', function () {
-            let uusiOppiaine = OpinnotPage()
+            var uusiOppiaine = OpinnotPage()
               .opiskeluoikeusEditor()
               .propertyBySelector('.uusi-oppiaine:last')
 
@@ -1220,7 +1206,7 @@ describe('DIA', function () {
             })
 
             describe('Laajuuden tallentaminen uudelle oppiaineelle', function () {
-              let lakitieto = opinnot.oppiaineet.oppiaine('oppiaine.LT')
+              var lakitieto = opinnot.oppiaineet.oppiaine('oppiaine.LT')
 
               before(
                 lakitieto.laajuus.setValue('1'),
@@ -1235,7 +1221,7 @@ describe('DIA', function () {
           })
 
           describe('Poistaminen', function () {
-            let lakitieto = opinnot.oppiaineet.oppiaine('oppiaine.LT')
+            var lakitieto = opinnot.oppiaineet.oppiaine('oppiaine.LT')
 
             before(
               editor.edit,
@@ -1253,7 +1239,7 @@ describe('DIA', function () {
         })
 
         describe('Ryhmätön oppiaine', function () {
-          let uusiRyhmätönOppiaineDropdown = OpinnotPage()
+          var uusiRyhmätönOppiaineDropdown = OpinnotPage()
             .opiskeluoikeusEditor()
             .propertyBySelector('.uusi-oppiaine:last')
 
@@ -1264,7 +1250,7 @@ describe('DIA', function () {
             wait.until(page.isSavedLabelShown)
           )
 
-          let liikunta = opinnot.oppiaineet.oppiaine('oppiaine.LI')
+          var liikunta = opinnot.oppiaineet.oppiaine('oppiaine.LI')
 
           describe('Oppiaineen osasuoritukset', function () {
             describe('Lisääminen ei-kronologisessa järjestyksessä', function () {
@@ -1377,8 +1363,8 @@ describe('DIA', function () {
         })
 
         describe('Valmistavan DIA-vaiheen suorituksen lisääminen', function () {
-          let lisääSuoritus = opinnot.lisääSuoritusDialog
-          let lisäysTeksti = 'lisää valmistavan DIA-vaiheen suoritus'
+          var lisääSuoritus = opinnot.lisääSuoritusDialog
+          var lisäysTeksti = 'lisää valmistavan DIA-vaiheen suoritus'
 
           describe('Kun opiskeluoikeus on tilassa VALMIS', function () {
             before(
@@ -1507,8 +1493,8 @@ describe('DIA', function () {
         })
 
         describe('DIA-tutkinnon suorituksen lisääminen', function () {
-          let lisääSuoritus = opinnot.lisääSuoritusDialog
-          let lisäysTeksti = 'lisää DIA-tutkinnon suoritus'
+          var lisääSuoritus = opinnot.lisääSuoritusDialog
+          var lisäysTeksti = 'lisää DIA-tutkinnon suoritus'
 
           describe('Kun opiskeluoikeus on tilassa VALMIS', function () {
             before(
@@ -1563,8 +1549,8 @@ describe('DIA', function () {
                         opinnot
                           .haeValmistavanOppiaineenOsasuoritustenVaihtoehtojenLukumäärä()
                           .then(function (amount) {
-                            let chain = Promise.resolve()
-                            for (let i = 0; i < amount; i++) {
+                            var chain = Promise.resolve()
+                            for (var i = 0; i < amount; i++) {
                               chain = chain.then(function () {
                                 return opinnot.lisääDIAValmistavaOppiaineOsasuoritus()
                               })

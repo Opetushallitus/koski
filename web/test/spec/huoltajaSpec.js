@@ -1,23 +1,9 @@
-import { Authentication } from '../page/authentication.js'
-import { LandingPage, KorhoPankki } from '../page/landingPage.js'
-import { OmatTiedotPage } from '../page/omatTiedotPage.js'
-import { OpinnotPage } from '../page/opinnotPage.js'
-import { expect } from '../util/chai.esm.js'
-import {
-  wait,
-  click,
-  extractAsText,
-  S,
-  isElementVisible,
-  findFirst
-} from '../util/testHelpers.js'
-
 describe('Huollettavien tiedot', function () {
-  let omattiedot = OmatTiedotPage()
-  let opinnot = OpinnotPage()
-  let authentication = Authentication()
-  let etusivu = LandingPage()
-  let korhopankki = KorhoPankki()
+  var omattiedot = OmatTiedotPage()
+  var opinnot = OpinnotPage()
+  var authentication = Authentication()
+  var etusivu = LandingPage()
+  var korhopankki = KorhoPankki()
 
   describe('Kun huollettavalla on opintoja Koskessa', function () {
     before(
@@ -178,9 +164,9 @@ describe('Huollettavien tiedot', function () {
     ).to.deep.equal(expectedOpiskeluoikeudet)
   }
 
-  let expectedHuollettavaEmptyText =
+  var expectedHuollettavaEmptyText =
     'Huollettavasi tiedoilla ei löydy opintosuorituksia eikä opiskeluoikeuksia.'
-  let expectedOmattiedotEmptyText =
+  var expectedOmattiedotEmptyText =
     'Tiedoillasi ei löydy opintosuorituksia eikä opiskeluoikeuksia.'
   function verifyOppijaEmpty(expectedHeader, expectedName) {
     expect(omattiedot.oppija()).to.equal(expectedHeader)

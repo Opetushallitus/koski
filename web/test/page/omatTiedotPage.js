@@ -1,21 +1,5 @@
-import {
-  click,
-  extractAsText,
-  findFirstNotThrowing,
-  findSingle,
-  isElementVisible,
-  isLoading,
-  openPage,
-  S,
-  seq,
-  toArray,
-  wait
-} from '../util/testHelpers.js'
-import { OrganisaatioHaku } from './organisaatioHaku.js'
-import { Page } from './pageApi.js'
-
-export function OmatTiedotPage() {
-  const api = {
+function OmatTiedotPage() {
+  var api = {
     openPage: function () {
       return openPage('/koski/omattiedot', api.isVisible)()
     },
@@ -44,30 +28,30 @@ export function OmatTiedotPage() {
       return S('header button:contains(Jaa suoritustietoja)')
     },
     selectOpiskelija: function () {
-      let elem = findSingle('.header__oppijanvalitsin')()
+      var elem = findSingle('.header__oppijanvalitsin')()
       return findFirstNotThrowing(elem)
     },
     selectOpiskelijaNäkyvissä: function () {
       return isElementVisible(S('.header__oppijanvalitsin'))
     },
     opiskelijanValintaNimet: function () {
-      let elem = findSingle('.header__oppijanvalitsin')
-      let result = toArray(elem().find('.option')).map(function (i) {
+      var elem = findSingle('.header__oppijanvalitsin')
+      var result = toArray(elem().find('.option')).map(function (i) {
         return i.innerHTML
       })
       return result
     },
     opiskelijanValinta: function (name) {
       return function () {
-        let elem = findSingle('.header__oppijanvalitsin')
-        let result = toArray(elem().find(`.option:contains("${name}")`))
+        var elem = findSingle('.header__oppijanvalitsin')
+        var result = toArray(elem().find(`.option:contains("${name}")`))
         return result
       }
     },
     virheraportointiForm: VirheraportointiForm(),
     suoritusjakoForm: SuoritusjakoForm(),
     headerNimi: function () {
-      let el = findFirstNotThrowing('header .header__name')
+      var el = findFirstNotThrowing('header .header__name')
       return el ? extractAsText(el) : ''
     },
     omatTiedotNäkyvissä: function () {
@@ -80,11 +64,11 @@ export function OmatTiedotPage() {
   return api
 }
 
-export function VirheraportointiForm() {
-  let pageApi = Page(findSingle('#lander-page .omattiedot'))
-  let elem = findSingle('.virheraportointi')
+function VirheraportointiForm() {
+  var pageApi = Page(findSingle('#lander-page .omattiedot'))
+  var elem = findSingle('.virheraportointi')
 
-  let api = {
+  var api = {
     self: function () {
       return elem
     },
@@ -156,16 +140,16 @@ export function VirheraportointiForm() {
   return api
 }
 
-export function SuoritusjakoForm() {
-  let elem = findSingle('.suoritusjako')
-  let createSuoritusjakoButton = function () {
+function SuoritusjakoForm() {
+  var elem = findSingle('.suoritusjako')
+  var createSuoritusjakoButton = function () {
     return S('.create-suoritusjako__button > button')
   }
-  let openAdditionalSuoritusjakoFormButton = function () {
+  var openAdditionalSuoritusjakoFormButton = function () {
     return S('.suoritusjako-form > div:last-child > button.toggle-button')
   }
 
-  let api = {
+  var api = {
     contentsAsText: function () {
       return extractAsText(elem)
     },
@@ -206,14 +190,14 @@ export function SuoritusjakoForm() {
       return click(createSuoritusjakoButton)
     },
     createAndStoreSuoritusjako: function (name) {
-      let lastJako = Suoritusjako(
+      var lastJako = Suoritusjako(
         '.suoritusjako-form__link-list > li:last-child > .suoritusjako-link'
       )
       return seq(
         click(createSuoritusjakoButton),
         wait.until(lastJako.isVisible),
         function () {
-          let secret = lastJako.url().split('/')
+          var secret = lastJako.url().split('/')
           window.secrets[name] = secret[secret.length - 1]
         }
       )
@@ -232,8 +216,8 @@ export function SuoritusjakoForm() {
   return api
 }
 
-export function Suoritusjako(selectorOrIndex) {
-  let elem =
+function Suoritusjako(selectorOrIndex) {
+  var elem =
     typeof selectorOrIndex === 'number'
       ? findSingle(
           '.suoritusjako-form__link-list > li:nth-child(' +
@@ -242,9 +226,9 @@ export function Suoritusjako(selectorOrIndex) {
         )
       : findSingle(selectorOrIndex)
 
-  let pageApi = Page(elem)
+  var pageApi = Page(elem)
 
-  let api = {
+  var api = {
     isVisible: function () {
       return isElementVisible(elem)
     },

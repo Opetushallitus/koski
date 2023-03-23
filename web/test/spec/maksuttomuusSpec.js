@@ -1,14 +1,8 @@
-import { AddOppijaPage } from '../page/addOppijaPage.js'
-import { KoskiPage, prepareForNewOppija } from '../page/koskiPage.js'
-import { OpinnotPage } from '../page/opinnotPage.js'
-import { expect } from '../util/chai.esm.js'
-import { wait, extractAsText, S } from '../util/testHelpers.js'
-
 describe('Maksuttomuus', function () {
-  let addOppija = AddOppijaPage()
-  let opinnot = OpinnotPage()
-  let page = KoskiPage()
-  let editor = opinnot.opiskeluoikeusEditor()
+  var addOppija = AddOppijaPage()
+  var opinnot = OpinnotPage()
+  var page = KoskiPage()
+  var editor = opinnot.opiskeluoikeusEditor()
 
   describe('Uusi opiskeluoikeus voidaan luoda', function () {
     describe('Maksuttomana', function () {

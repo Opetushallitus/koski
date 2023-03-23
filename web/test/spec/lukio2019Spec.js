@@ -1,26 +1,9 @@
-import { AddOppijaPage } from '../page/addOppijaPage.js'
-import { Authentication } from '../page/authentication.js'
-import { KoskiPage, prepareForNewOppija } from '../page/koskiPage.js'
-import {
-  OpinnotPage,
-  OpiskeluoikeusDialog,
-  FindAllKurssit
-} from '../page/opinnotPage.js'
-import { expect } from '../util/chai.esm.js'
-import {
-  resetFixtures,
-  extractAsText,
-  S,
-  findSingle,
-  wait
-} from '../util/testHelpers.js'
-
 describe('Lukiokoulutus2019', function () {
-  let page = KoskiPage()
-  let opinnot = OpinnotPage()
-  let editor = opinnot.opiskeluoikeusEditor()
-  let addOppija = AddOppijaPage()
-  let opiskeluoikeus = OpiskeluoikeusDialog()
+  var page = KoskiPage()
+  var opinnot = OpinnotPage()
+  var editor = opinnot.opiskeluoikeusEditor()
+  var addOppija = AddOppijaPage()
+  var opiskeluoikeus = OpiskeluoikeusDialog()
   before(Authentication().login(), resetFixtures)
 
   describe('Lukion päättötodistus', function () {
@@ -99,7 +82,7 @@ describe('Lukiokoulutus2019', function () {
     })
 
     describe('Moduulin tiedot', function () {
-      let moduuli = opinnot.oppiaineet.oppiaine('FY').kurssi('FY124')
+      var moduuli = opinnot.oppiaineet.oppiaine('FY').kurssi('FY124')
       before(
         page.openPage,
         page.oppijaHaku.searchAndSelect('250605A518Y'),
@@ -141,15 +124,15 @@ describe('Lukiokoulutus2019', function () {
         describe('Oppiaine', function () {
           before(editor.edit)
 
-          let ai = opinnot.oppiaineet.oppiaine('oppiaine.AI')
-          let kieli = ai.propertyBySelector(
+          var ai = opinnot.oppiaineet.oppiaine('oppiaine.AI')
+          var kieli = ai.propertyBySelector(
             '.title .properties .dropdown-wrapper'
           )
-          let arvosana = ai.propertyBySelector('td.arvosana')
-          let suoritettuErityisenäTutkintona = ai.propertyBySelector(
+          var arvosana = ai.propertyBySelector('td.arvosana')
+          var suoritettuErityisenäTutkintona = ai.propertyBySelector(
             '.properties .suoritettuErityisenäTutkintona'
           )
-          let suorituskieli = ai.propertyBySelector(
+          var suorituskieli = ai.propertyBySelector(
             '.properties .suorituskieli'
           )
 
@@ -204,8 +187,8 @@ describe('Lukiokoulutus2019', function () {
           })
 
           describe('Valtakunnallinen oppiaine', function () {
-            let uusiOppiaine = opinnot.oppiaineet.uusiOppiaine()
-            let psykologia = editor.subEditor('.oppiaine.PS:eq(0)')
+            var uusiOppiaine = opinnot.oppiaineet.uusiOppiaine()
+            var psykologia = editor.subEditor('.oppiaine.PS:eq(0)')
 
             describe('Lisääminen', function () {
               before(editor.edit, uusiOppiaine.selectValue('Psykologia'))
@@ -255,8 +238,8 @@ describe('Lukiokoulutus2019', function () {
           describe('Paikallinen oppiaine', function () {
             before(editor.edit)
 
-            let uusiOppiaine = opinnot.oppiaineet.uusiOppiaine()
-            let paikallinen = editor.subEditor('.oppiaine.oppiaine-rivi:last')
+            var uusiOppiaine = opinnot.oppiaineet.uusiOppiaine()
+            var paikallinen = editor.subEditor('.oppiaine.oppiaine-rivi:last')
 
             it('alkutila', function () {
               expect(editor.canSave()).to.equal(false)
@@ -376,7 +359,7 @@ describe('Lukiokoulutus2019', function () {
             )
 
             describe('Arvosanan muuttaminen', function () {
-              let moduuli = opinnot.oppiaineet.oppiaine('MA').kurssi('MAB4')
+              var moduuli = opinnot.oppiaineet.oppiaine('MA').kurssi('MAB4')
 
               before(
                 moduuli.arvosana.selectValue('6'),
@@ -390,7 +373,7 @@ describe('Lukiokoulutus2019', function () {
             })
 
             describe('Osaamisen tunnustaminen', function () {
-              let moduuli = opinnot.oppiaineet.oppiaine('MA').kurssi('MAB4')
+              var moduuli = opinnot.oppiaineet.oppiaine('MA').kurssi('MAB4')
 
               before(editor.edit, moduuli.toggleDetails)
 
@@ -480,7 +463,7 @@ describe('Lukiokoulutus2019', function () {
             })
 
             describe('Poistaminen', function () {
-              let ai2 = ai.kurssi('ÄI2')
+              var ai2 = ai.kurssi('ÄI2')
 
               before(
                 editor.edit,

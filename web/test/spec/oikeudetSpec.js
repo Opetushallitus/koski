@@ -1,13 +1,7 @@
-import { Authentication } from '../page/authentication.js'
-import { KoskiPage } from '../page/koskiPage.js'
-import { OpinnotPage } from '../page/opinnotPage.js'
-import { expect } from '../util/chai.esm.js'
-import { extractAsText, openPage, S } from '../util/testHelpers.js'
-
 describe('Käyttöoikeudet', function () {
-  let page = KoskiPage()
-  let opinnot = OpinnotPage()
-  let markkanen = 'Markkanen-Fagerström, Eéro Jorma-Petteri (080154-770R)'
+  var page = KoskiPage()
+  var opinnot = OpinnotPage()
+  var markkanen = 'Markkanen-Fagerström, Eéro Jorma-Petteri (080154-770R)'
 
   describe('Oppijahaku', function () {
     before(
@@ -61,7 +55,7 @@ describe('Käyttöoikeudet', function () {
       page.oppijaHaku.searchAndSelect('080154-770R')
     )
     it('Muutokset estetty', function () {
-      let suoritus = opinnot.opiskeluoikeusEditor()
+      var suoritus = opinnot.opiskeluoikeusEditor()
       expect(suoritus.isEditable()).to.equal(false)
     })
     it('Uuden opiskeluoikeuden lisääminen estetty', function () {
@@ -79,7 +73,7 @@ describe('Käyttöoikeudet', function () {
       page.oppijaHaku.searchAndSelect('080154-770R')
     )
     it('Muutokset estetty', function () {
-      let suoritus = opinnot.opiskeluoikeusEditor()
+      var suoritus = opinnot.opiskeluoikeusEditor()
       expect(suoritus.isEditable()).to.equal(false)
     })
     it('Uuden opiskeluoikeuden lisääminen estetty', function () {
@@ -91,7 +85,7 @@ describe('Käyttöoikeudet', function () {
 
   describe('Viranomaiskäyttäjän näkymä', function () {
     before(Authentication().login('viranomais'), page.openPage)
-    let hetut = [
+    var hetut = [
       '190751-739W',
       '101097-6107',
       '101097-6107',
