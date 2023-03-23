@@ -85,11 +85,11 @@ class YtrDownloadService(
     )
   }
 
-  def loadFixturesAndWaitUntilComplete(): Unit = {
+  def loadFixturesAndWaitUntilComplete(force: Boolean = false): Unit = {
     val fixtureMonthStart = Some("1980-01")
     val fixtureMonthEnd = Some("1981-10")
     if (Environment.isUnitTestEnvironment(application.config) || Environment.isLocalDevelopmentEnvironment(application.config)) {
-      download(birthmonthStart = fixtureMonthStart, birthmonthEnd = fixtureMonthEnd)
+      download(birthmonthStart = fixtureMonthStart, birthmonthEnd = fixtureMonthEnd, force = force)
       Wait.until { isLoadComplete }
     } else {
       logger.warn("Trying to download YTR fixtures while not in local environment")
