@@ -110,7 +110,7 @@ describe('Lukiokoulutus', function () {
       })
       describe('Kaikkien kurssien tiedot', function () {
         it('voidaan avata yksitellen virheettömästi', function () {
-          FindAllKurssit().forEach(function (kurssi) {
+          Kurssi.findAll().forEach(function (kurssi) {
             expect(kurssi.detailsText()).to.equal('')
             kurssi.toggleDetails()
             expect(kurssi.detailsText().length > 10).to.equal(true)
