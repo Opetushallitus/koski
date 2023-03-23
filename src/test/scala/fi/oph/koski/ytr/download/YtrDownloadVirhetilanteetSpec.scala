@@ -35,7 +35,8 @@ class YtrDownloadVirhetilanteetSpec
     val oppijaConverter = new YtrDownloadOppijaConverter(
       KoskiApplicationForTests.koodistoViitePalvelu,
       KoskiApplicationForTests.organisaatioRepository,
-      KoskiApplicationForTests.koskiLocalizationRepository
+      KoskiApplicationForTests.koskiLocalizationRepository,
+      KoskiApplicationForTests.validatingAndResolvingExtractor
     )
 
     implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUserTallennetutYlioppilastutkinnonOpiskeluoikeudet

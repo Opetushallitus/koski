@@ -24,7 +24,8 @@ class YtrDownloadKäyttöoikeudetSpec
   private val converter = new YtrDownloadOppijaConverter(
     KoskiApplicationForTests.koodistoViitePalvelu,
     KoskiApplicationForTests.organisaatioRepository,
-    KoskiApplicationForTests.koskiLocalizationRepository
+    KoskiApplicationForTests.koskiLocalizationRepository,
+    KoskiApplicationForTests.validatingAndResolvingExtractor
   )
 
   val birthmonthStart = "1980-03"
