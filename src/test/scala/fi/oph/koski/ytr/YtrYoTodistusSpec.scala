@@ -4,12 +4,59 @@ import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.api.OpiskeluoikeusTestMethods
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.log.AuditLogTester
+import fi.oph.koski.schema.KoskiSchema
 import fi.oph.koski.util.ClasspathResource
+import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}
+import org.json4s.{JNull, JObject, JString}
 import org.scalatest.freespec.AnyFreeSpec
 
+import java.time.{ZoneId, ZoneOffset, ZonedDateTime}
 import scala.collection.Iterator.continually
 
 class YtrYoTodistusSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethods {
+  "YTR-rajapinnan vastaukset" - {
+    implicit val deserializationContext: ExtractionContext =
+      ExtractionContext(KoskiSchema.schemaFactory).copy(validate = false)
+
+    "NOT_STARTED" in {
+      val json = JObject(List(("status", JString("NOT_STARTED"))))
+      val response = SchemaValidatingExtractor.extract[YtrCertificateResponse](json)
+      response should equal(Right(YtrCertificateNotStarted()))
+    }
+
+    "IN_PROGRESS" in {
+      val json = JObject(List(
+        ("status", JString("IN_PROGRESS")),
+        ("certificateUrl", JNull),
+        ("requestedTime", JString("2023-03-24T08:30:26.632Z")),
+      ))
+
+      val response = SchemaValidatingExtractor.extract[YtrCertificateResponse](json)
+
+      response should equal(Right(YtrCertificateInProgress(
+        requestedTime = ZonedDateTime.of(2023, 3, 24, 8, 30, 26, 632000000, ZoneOffset.UTC),
+      )))
+    }
+
+    "COMPLETED" in {
+
+      val json = JObject(List(
+        ("status", JString("COMPLETED")),
+        ("certificateUrl", JString("s3://yo-test.integration.certificates/5645a3f1-ebbc-4034-8426-d63cc4c5a901-fi-signed.pdf")),
+        ("requestedTime", JString("2023-03-23T13:44:04.398Z")),
+        ("completionTime", JString("2023-03-23T13:44:07.644Z"))
+      ))
+
+      val response = SchemaValidatingExtractor.extract[YtrCertificateResponse](json)
+
+      response should equal(Right(YtrCertificateCompleted(
+        requestedTime = ZonedDateTime.of(2023, 3, 23, 13, 44, 4, 398000000, ZoneOffset.UTC),
+        completionTime = ZonedDateTime.of(2023, 3, 23, 13, 44, 7, 644000000, ZoneOffset.UTC),
+        certificateUrl = "s3://yo-test.integration.certificates/5645a3f1-ebbc-4034-8426-d63cc4c5a901-fi-signed.pdf",
+      )))
+    }
+  }
+
   "Kansalainen" - {
     "näkee oman todistuksensa" in {
       yoTodistusHappyPath("080698-967F", "1.2.246.562.24.00000000049")

@@ -130,7 +130,7 @@ object MockYrtClient extends YtrClient {
         } else {
           Right(YtrCertificateCompleted(
             requestedTime = time,
-            completedTime = time.plusSeconds(yoTodistusGeneratingTimeSecs),
+            completionTime = time.plusSeconds(yoTodistusGeneratingTimeSecs),
             certificateUrl = "link-to-download",
           ))
         }

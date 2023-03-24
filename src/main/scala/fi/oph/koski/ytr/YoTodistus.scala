@@ -25,7 +25,7 @@ case class YtrCertificateCompleted(
   @EnumValue("COMPLETED")
   status: String = "COMPLETED",
   requestedTime: ZonedDateTime,
-  completedTime: ZonedDateTime,
+  completionTime: ZonedDateTime,
   @RedundantData // Piilotetaan S3-url loppykäyttäjiltä
   certificateUrl: String,
 ) extends YtrCertificateResponse
