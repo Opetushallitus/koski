@@ -32,7 +32,7 @@ trait YtrClient {
   def getJsonHetutByModifiedSince(modifiedSince: LocalDate): Option[JValue]
 
   def getCertificateStatus(req: YoTodistusHetuRequest): Either[HttpStatus, YtrCertificateResponse]
-  def generateCertificate(req: YoTodistusHetuRequest): Either[HttpStatus, YtrCertificateResponse]
+  def generateCertificate(req: YoTodistusHetuRequest): Either[HttpStatus, Unit]
 }
 
 object YtrClient extends Logging {
@@ -80,7 +80,7 @@ object EmptyYtrClient extends YtrClient {
 
   override def getCertificateStatus(req: YoTodistusHetuRequest): Either[HttpStatus, YtrCertificateResponse] = Right(YtrCertificateServiceUnavailable(ZonedDateTime.now()))
 
-  override def generateCertificate(req: YoTodistusHetuRequest): Either[HttpStatus, YtrCertificateResponse] = Right(YtrCertificateServiceUnavailable(ZonedDateTime.now()))
+  override def generateCertificate(req: YoTodistusHetuRequest): Either[HttpStatus, Unit] = Right(Unit)
 }
 
 object MockYrtClient extends YtrClient {
@@ -141,9 +141,9 @@ object MockYrtClient extends YtrClient {
     }
   }
 
-  override def generateCertificate(req: YoTodistusHetuRequest): Either[HttpStatus, YtrCertificateResponse] = {
+  override def generateCertificate(req: YoTodistusHetuRequest): Either[HttpStatus, Unit] = {
     requested += (s"${req.ssn}_${req.language}" -> ZonedDateTime.now())
-    getCertificateStatus(req)
+    Right(())
   }
 
   def reset(): Unit = requested.clear()
@@ -172,18 +172,28 @@ case class RemoteYtrClient(rootUrl: String, user: String, password: String) exte
     runIO(http.post(uri"/api/oph-registrydata/students", ssnData)(json4sEncoderOf[YtrSsnData])(Http.parseJsonOptional[JValue]))
   }
 
-  override def getCertificateStatus(req: YoTodistusHetuRequest): Either[HttpStatus, YtrCertificateResponse] =
-    callSignedCertificateApi[YtrCertificateResponse](uri"/api/oph-koski/signed-certificate/status", req)
-
-  override def generateCertificate(req: YoTodistusHetuRequest): Either[HttpStatus, YtrCertificateResponse] =
-    callSignedCertificateApi[YtrCertificateResponse](uri"/api/oph-koski/signed-certificate", req)
-
-  protected def callSignedCertificateApi[T: ru.TypeTag](uri: ParameterizedUriWrapper, req: YoTodistusHetuRequest): Either[HttpStatus, T] = {
-    logger.info(s"callSignedCertifateApi request: $uri $req")
+  override def getCertificateStatus(req: YoTodistusHetuRequest): Either[HttpStatus, YtrCertificateResponse] = {
+    val uri = uri"/api/oph-koski/signed-certificate/status"
+    logger.info(s"getCertificateStatus request: $uri $req")
     val json = runIO(http.post(uri, req)(json4sEncoderOf[YoTodistusHetuRequest])(Http.parseJson[JValue]))
-    logger.info(s"callSignedCertifateApi response: $uri $req -> $json")
-    val response = SchemaValidatingExtractor.extract[T](json)
+    logger.info(s"getCertificateStatus response: $uri $req -> $json")
+    val response = SchemaValidatingExtractor.extract[YtrCertificateResponse](json)
     response.left.map(e => KoskiErrorCategory.badRequest.validation.jsonSchema(JsonErrorMessage(e)))
+  }
+
+  override def generateCertificate(req: YoTodistusHetuRequest): Either[HttpStatus, Unit] = {
+    val uri = uri"/api/oph-koski/signed-certificate"
+    logger.info(s"generateCertificate request: $uri $req")
+    runIO(http.post(uri, req)(json4sEncoderOf[YoTodistusHetuRequest]) {
+      case (status, _, _) if status < 300 =>
+        logger.info(s"generateCertificate request OK!: $uri $req")
+        Right(())
+      case (404, _, _) => Left(KoskiErrorCategory.notFound.oppijaaEiLöydy())
+      case (400, _, _) =>Left(KoskiErrorCategory.badRequest())
+      case (status, text, _) =>
+        logger.error(s"Odottamaton virhe digitaalinen yo-todistus-apista: $status $text")
+        Left(KoskiErrorCategory.internalError())
+    })
   }
 
   protected implicit val deserializationContext: ExtractionContext =

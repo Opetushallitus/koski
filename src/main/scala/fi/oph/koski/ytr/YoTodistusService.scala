@@ -1,5 +1,6 @@
 package fi.oph.koski.ytr
 
+import com.amazonaws.services.s3.AmazonS3URI
 import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.util.Streams
@@ -27,7 +28,7 @@ abstract class YoTodistusService(application: KoskiApplication) {
   def currentStatus(req: YoTodistusOidRequest): Either[HttpStatus, YtrCertificateResponse] =
     toHetuReq(req).flatMap(client.getCertificateStatus)
 
-  def initiateGenerating(req: YoTodistusOidRequest): Either[HttpStatus, YtrCertificateResponse] =
+  def initiateGenerating(req: YoTodistusOidRequest): Either[HttpStatus, Unit] =
     toHetuReq(req).flatMap(client.generateCertificate)
 
   def download(req: YtrCertificateCompleted, output: OutputStream): Unit
@@ -51,7 +52,6 @@ class MockYoTodistusService(application: KoskiApplication) extends YoTodistusSer
 
 class RemoteYoTodistusService(application: KoskiApplication, config: YtrS3Config) extends YoTodistusService(application) {
   private val s3 = new YtrS3(config)
-  private val bucket = s3.bucket
 
   override def download(req: YtrCertificateCompleted, output: OutputStream): Unit =
     try {
@@ -63,5 +63,8 @@ class RemoteYoTodistusService(application: KoskiApplication, config: YtrS3Config
       output.close()
     }
 
-  private def objectRequest(key: String) = GetObjectRequest.builder.bucket(bucket).key(key).build
+  private def objectRequest(url: String) = {
+    val uri = new AmazonS3URI(url)
+    GetObjectRequest.builder.bucket(uri.getBucket).key(uri.getKey).build
+  }
 }

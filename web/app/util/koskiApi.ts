@@ -169,9 +169,7 @@ export const fetchYoTodistusState = (oppijaOid: string, language: string) =>
 
 export const generateYoTodistus = (oppijaOid: string, language: string) =>
   handleExpiredSession(
-    apiGet<YtrCertificateResponse>(
-      apiUrl(`yotodistus/generate/${language}/${oppijaOid}`)
-    )
+    apiGet<void>(apiUrl(`yotodistus/generate/${language}/${oppijaOid}`))
   )
 
 // Virhetilanteiden hallinta
