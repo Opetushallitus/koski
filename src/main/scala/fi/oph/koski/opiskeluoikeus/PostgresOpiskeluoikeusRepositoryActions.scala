@@ -212,7 +212,7 @@ trait PostgresOpiskeluoikeusRepositoryActions[OOROW <: OpiskeluoikeusRow, OOTABL
         DBIO.successful(Left(KoskiErrorCategory.forbidden("Käyttäjällä ei ole riittäviä oikeuksia luoda opiskeluoikeutta")))
       case _ =>
         val tallennettavaOpiskeluoikeus = opiskeluoikeus
-        val oid = oidGenerator.generateOid(oppija.henkilö.oid)
+        val oid: String = generateOid(oppija)
         val row: OOROW = tableCompanion.makeInsertableRow(oppija.henkilö.oid, oid, tallennettavaOpiskeluoikeus)
         for {
           opiskeluoikeusId <- Opiskeluoikeudet.returning(Opiskeluoikeudet.map(_.id)) += row
@@ -223,6 +223,8 @@ trait PostgresOpiskeluoikeusRepositoryActions[OOROW <: OpiskeluoikeusRow, OOTABL
         }
     }
   }
+
+  protected def generateOid(oppija: OppijaHenkilöWithMasterInfo): String
 
   private def estäOpiskeluoikeudenLuonti(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiSpecificSession): Boolean = {
     opiskeluoikeus match {

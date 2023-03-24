@@ -50,4 +50,8 @@ class PostgresYtrOpiskeluoikeusRepositoryActions(
   )(implicit user: KoskiSpecificSession): DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write] = {
     DBIO.successful(Left(KoskiErrorCategory.conflict.exists())) // Ei tehdä uutta, koska vastaava vanha YO-opiskeluoikeus on olemassa
   }
+
+  protected override def generateOid(oppija: OppijaHenkilöWithMasterInfo): String = {
+    oidGenerator.generateYtrOid(oppija.henkilö.oid)
+  }
 }
