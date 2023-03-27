@@ -35,8 +35,9 @@ object OpiskeluoikeusLoader extends Logging {
     suostumuksenPeruutusService: SuostumuksenPeruutusService,
     db: RaportointiDatabase,
     update: Option[RaportointiDatabaseUpdate] = None,
+    enableYtr: Boolean = true,
     batchSize: Int = DefaultBatchSize,
-    onAfterPage: (Int, Seq[OpiskeluoikeusRow]) => Unit = (_, _) => ()
+    onAfterPage: (Int, Seq[OpiskeluoikeusRow]) => Unit = (_, _) => (),
   ): Observable[LoadResult] = {
     val dueTime = update.map(_.dueTime).map(toTimestamp)
     db.setStatusLoadStarted(statusName, dueTime)
@@ -44,14 +45,14 @@ object OpiskeluoikeusLoader extends Logging {
 
     update.foreach(u => {
       u.service.alustaKaikkiKäsiteltäviksi()
-      db.cloneUpdateableTables(u.previousRaportointiDatabase)
+      db.cloneUpdateableTables(u.previousRaportointiDatabase, enableYtr)
       createIndexesForIncrementalUpdate(db)
       suoritusIds.set(db.getLatestSuoritusId)
     })
 
     var loopCount = 0
 
-    val dataResult = mapOpiskeluoikeudetSivuittainWithoutAccessCheck(batchSize, update, opiskeluoikeusQueryRepository) { batch =>
+    val dataResult = mapOpiskeluoikeudetSivuittainWithoutAccessCheck(batchSize, update, enableYtr, opiskeluoikeusQueryRepository) { batch =>
       if (batch.nonEmpty) {
         val koskiBatch = batch.collect { case r: KoskiOpiskeluoikeusRow => r }
         val ytrBatch = batch.collect { case r: YtrOpiskeluoikeusRow => r }
@@ -897,6 +898,7 @@ object OpiskeluoikeusLoader extends Logging {
     (
       pageSize: Int,
       update: Option[RaportointiDatabaseUpdate],
+      enableYtr: Boolean,
       opiskeluoikeusQueryRepository: OpiskeluoikeusQueryService,
     )
     (mapFn: Seq[OpiskeluoikeusRow] => Seq[A])
@@ -904,8 +906,10 @@ object OpiskeluoikeusLoader extends Logging {
     update match {
       case Some(update) =>
         update.loader.load(pageSize, update)(mapFn)
-      case _ =>
+      case _ if enableYtr =>
         opiskeluoikeusQueryRepository.mapKoskiJaYtrOpiskeluoikeudetSivuittainWithoutAccessCheck(pageSize)(mapFn)
+      case _ =>
+        opiskeluoikeusQueryRepository.mapKoskiOpiskeluoikeudetSivuittainWithoutAccessCheck(pageSize)(mapFn)
     }
 }
 

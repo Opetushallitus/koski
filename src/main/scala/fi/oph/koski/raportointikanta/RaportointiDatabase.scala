@@ -174,7 +174,7 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
     runDbSync(ROpiskeluoikeudet ++= opiskeluoikeudet, timeout = 5.minutes)
   }
 
-  def cloneUpdateableTables(source: RaportointiDatabase): Unit = {
+  def cloneUpdateableTables(source: RaportointiDatabase, enableYtr: Boolean): Unit = {
     import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 
     val BATCH_SIZE = 10000000
@@ -195,12 +195,17 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
       Kloonaus("r_osasuoritus", List("osasuoritus_id")),
       Kloonaus("muu_ammatillinen_raportointi"),
       Kloonaus("topks_ammatillinen_raportointi"),
-      Kloonaus("r_mitatoitu_opiskeluoikeus", List("opiskeluoikeus_oid")),
-      Kloonaus("r_ytr_tutkintokokonaisuuden_suoritus", List("ytr_tutkintokokonaisuuden_suoritus_id")),
-      Kloonaus("r_ytr_tutkintokerran_suoritus", List("ytr_tutkintokerran_suoritus_id")),
-      Kloonaus("r_ytr_kokeen_suoritus", List("ytr_kokeen_suoritus_id")),
-      Kloonaus("r_ytr_tutkintokokonaisuuden_kokeen_suoritus", List("ytr_tutkintokokonaisuuden_suoritus_id", "ytr_kokeen_suoritus_id")),
-    )
+      Kloonaus("r_mitatoitu_opiskeluoikeus", List("opiskeluoikeus_oid"))
+    ) ++ (if (enableYtr) {
+      List(
+        Kloonaus("r_ytr_tutkintokokonaisuuden_suoritus", List("ytr_tutkintokokonaisuuden_suoritus_id")),
+        Kloonaus("r_ytr_tutkintokerran_suoritus", List("ytr_tutkintokerran_suoritus_id")),
+        Kloonaus("r_ytr_kokeen_suoritus", List("ytr_kokeen_suoritus_id")),
+        Kloonaus("r_ytr_tutkintokokonaisuuden_kokeen_suoritus", List("ytr_tutkintokokonaisuuden_suoritus_id", "ytr_kokeen_suoritus_id")),
+      )
+    } else {
+      List.empty
+    })
 
     val päivitettävätIdSekvenssit = List(
       ("r_opiskeluoikeus_aikajakso", "id"),

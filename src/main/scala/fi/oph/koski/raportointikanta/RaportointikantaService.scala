@@ -25,6 +25,7 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
     pageSize: Int = OpiskeluoikeusLoader.DefaultBatchSize,
     onAfterPage: (Int, Seq[OpiskeluoikeusRow]) => Unit = (_, _) => (),
     skipUnchangedData: Boolean = false,
+    enableYtr: Boolean = true
   ): Boolean = {
     if (isLoading && !force) {
       logger.info("Raportointikanta already loading, do nothing")
@@ -43,17 +44,18 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
         None
       }
       loadDatabase.dropAndCreateObjects
-      startLoading(update, scheduler, onEnd, pageSize, onAfterPage)
+      startLoading(update, enableYtr, scheduler, onEnd, pageSize, onAfterPage)
       logger.info(s"Started loading raportointikanta (force: $force, duetime: ${update.map(_.dueTime.toString).getOrElse("-")})")
       true
     }
   }
 
-  def loadRaportointikantaAndExit(fullReload: Boolean, forceReload: Boolean): Unit = {
+  def loadRaportointikantaAndExit(fullReload: Boolean, forceReload: Boolean, enableYtr: Boolean): Unit = {
     val skipUnchangedData = !fullReload
     loadRaportointikanta(
       force = forceReload,
       skipUnchangedData = skipUnchangedData,
+      enableYtr = enableYtr,
       scheduler = defaultScheduler,
       onEnd = () => {
         logger.info(s"Ended loading raportointikanta, shutting down...")
@@ -64,6 +66,7 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
   private def loadOpiskeluoikeudet(
     db: RaportointiDatabase,
     update: Option[RaportointiDatabaseUpdate],
+    enableYtr: Boolean,
     pageSize: Int,
     onAfterPage: (Int, Seq[OpiskeluoikeusRow]) => Unit
   ): Observable[LoadResult] = {
@@ -74,6 +77,7 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
       application.suostumuksenPeruutusService,
       db,
       update,
+      enableYtr,
       pageSize,
       onAfterPage,
     )
@@ -122,6 +126,7 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
 
   private def startLoading(
     update: Option[RaportointiDatabaseUpdate],
+    enableYtr: Boolean,
     scheduler: Scheduler,
     onEnd: () => Unit,
     pageSize: Int,
@@ -136,6 +141,7 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
     loadOpiskeluoikeudet(
       loadDatabase,
       update,
+      enableYtr,
       pageSize,
       onAfterPage,
     )

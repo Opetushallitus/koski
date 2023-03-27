@@ -1,5 +1,6 @@
 package fi.oph.koski.opiskeluoikeus
 
+import com.typesafe.config.Config
 import fi.oph.koski.db.KoskiTables._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.jsonMethods.{parse => parseJson}
@@ -83,12 +84,21 @@ class OpiskeluoikeusQueryService(val db: DB) extends QueryMethods {
     }
   }
 
+  def mapKoskiOpiskeluoikeudetSivuittainWithoutAccessCheck[A]
+    (pageSize: Int)
+      (mapFn: Seq[OpiskeluoikeusRow] => Seq[A])
+  : Observable[A] = {
+    mapKaikkiSivuittainWithoutAccessCheck(pageSize)(kaikkiKoskiOpiskeluoikeudetSivuittainWithoutAccessCheck)(mapFn)
+  }
+
   def mapKoskiJaYtrOpiskeluoikeudetSivuittainWithoutAccessCheck[A]
     (pageSize: Int)
       (mapFn: Seq[OpiskeluoikeusRow] => Seq[A])
   : Observable[A] = {
-    mapKaikkiSivuittainWithoutAccessCheck(pageSize)(kaikkiKoskiOpiskeluoikeudetSivuittainWithoutAccessCheck)(mapFn) ++
-      mapKaikkiSivuittainWithoutAccessCheck(pageSize)(kaikkiYtrOpiskeluoikeudetSivuittainWithoutAccessCheck)(mapFn)
+    val koskiOot = mapKoskiOpiskeluoikeudetSivuittainWithoutAccessCheck(pageSize)(mapFn)
+    val ytrOot = mapKaikkiSivuittainWithoutAccessCheck(pageSize)(kaikkiYtrOpiskeluoikeudetSivuittainWithoutAccessCheck)(mapFn)
+
+    koskiOot ++ ytrOot
   }
 
   private def mapKaikkiSivuittainWithoutAccessCheck[A]

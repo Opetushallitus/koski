@@ -162,6 +162,23 @@ class RaportointikantaSpec
   }
 
   "YTR-opiskeluoikeuksien lataus" - {
+    "YTR-opiskeluoikeuksia ei ladata raportointikantaan, jos YTR-lataus ei ole päällä" in {
+      val loadResult = KoskiApplicationForTests.raportointikantaService.loadRaportointikanta(force = false, enableYtr = false)
+      loadResult should be(true)
+      Wait.until { KoskiApplicationForTests.raportointikantaService.isLoadComplete }
+
+      val ytrOotRaportointikannassa = mainRaportointiDb.runDbSync(
+        mainRaportointiDb.ROpiskeluoikeudet.filter(_.koulutusmuoto === "ylioppilastutkinto").result
+      )
+      ytrOotRaportointikannassa should have length(0)
+
+      val ootRaportointikannassa = mainRaportointiDb.runDbSync(
+        mainRaportointiDb.ROpiskeluoikeudet.result
+      )
+      ootRaportointikannassa.length should be > 0
+
+      resetFixtures()
+    }
     "Opiskeluoikeudet ladataan raportointikantaan" in {
       verifioiYtrOpiskeluoikeudet()
     }
