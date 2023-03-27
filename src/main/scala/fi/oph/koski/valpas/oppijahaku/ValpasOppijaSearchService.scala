@@ -155,8 +155,8 @@ class ValpasOppijaSearchService(application: KoskiApplication) extends Logging {
     (henkilö: OppijaHenkilö)
     (implicit session: ValpasSession)
   : Either[HttpStatus, ValpasLöytyiHenkilöhakuResult] =
-      oppijaLaajatTiedotService.getOppijaLaajatTiedot(ValpasRooli.OPPILAITOS_SUORITTAMINEN, henkilö.oid, haeMyösVainOppijanumerorekisterissäOleva = false)
-        .map(o => ValpasLöytyiHenkilöhakuResult.apply(o, rajapäivätService))
+    oppijaLaajatTiedotService.getOppijaLaajatTiedot(ValpasRooli.OPPILAITOS_SUORITTAMINEN, henkilö.oid, haeMyösVainOppijanumerorekisterissäOleva = false)
+      .map(o => ValpasLöytyiHenkilöhakuResult.apply(o, rajapäivätService))
 
   implicit private val getResultValpasLöytyiHenkilöhakuResult: GetResult[ValpasLöytyiHenkilöhakuResult] = GetResult(row =>
     ValpasLöytyiHenkilöhakuResult(

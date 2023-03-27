@@ -672,6 +672,16 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
           )
         LIMIT 1
       ) AS international_school_toisen_asteen_suorituksia ON TRUE
+      LEFT JOIN LATERAL (
+        SELECT
+          TRUE AS loytyi
+        FROM
+          r_paatason_suoritus pts
+        WHERE
+          pts.opiskeluoikeus_oid = ov_kelvollinen_opiskeluoikeus.opiskeluoikeus_oid
+          AND pts.suorituksen_tyyppi = 'ammatillinentutkintoosittainen'
+        LIMIT 1
+      ) AS ammatillisen_tutkinnon_osittaisia_suorituksia ON TRUE
     WHERE
       -- (0) henkilö on oppivelvollinen: suorittamisvalvontaa ei voi suorittaa enää sen jälkeen kun henkilön
       -- oppivelvollisuus on päättynyt
@@ -706,6 +716,13 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
           ($tarkastelupäivä >= ov_kelvollinen_opiskeluoikeus.paattymispaiva)
           AND (ov_kelvollinen_opiskeluoikeus.viimeisin_tila = 'valmistunut')
           AND (ov_kelvollinen_opiskeluoikeus.koulutusmuoto = 'lukiokoulutus')
+        )
+        -- TAI
+        OR (
+          -- (2b.4) Oppija on valmistunut ammatillisen osittaisesta tutkinnosta
+          ($tarkastelupäivä >= ov_kelvollinen_opiskeluoikeus.paattymispaiva)
+          AND (ov_kelvollinen_opiskeluoikeus.viimeisin_tila = 'valmistunut')
+          AND (ammatillisen_tutkinnon_osittaisia_suorituksia.loytyi IS TRUE)
         )
       )
   )

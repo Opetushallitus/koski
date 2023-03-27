@@ -1291,6 +1291,25 @@ object ValpasOppijaTestData {
         ),
       ),
     ),
+    (
+      ValpasMockOppijat.valmistunutAmiksenOsittainen,
+      List(
+        ExpectedData(
+          ValpasOpiskeluoikeusExampleData.ammattikouluValmistunutOsittainenOpiskeluoikeus,
+          onHakeutumisValvottavaOpiskeluoikeus = false,
+          onHakeutumisvalvovaOppilaitos = false,
+          onSuorittamisvalvovaOppilaitos = true,
+          perusopetuksenJälkeinenTiedot = Some(ExpectedDataPerusopetuksenJälkeinenTiedot("valmistunut", "valmistunut")),
+        ),
+        ExpectedData(
+          ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainenSaksalainenKoulu,
+          onHakeutumisValvottavaOpiskeluoikeus = false,
+          onHakeutumisvalvovaOppilaitos = false,
+          onSuorittamisvalvovaOppilaitos = false,
+          perusopetusTiedot = Some(ExpectedDataPerusopetusTiedot("valmistunut", "valmistunut")),
+        ),
+      ),
+    ),
 
   ).sortBy(item => (item._1.sukunimi, item._1.etunimet))
 

@@ -269,6 +269,20 @@ object AmmatillinenExampleData {
     )
   }
 
+  def osittaisenTutkinnonOsanSuoritus(koodi: String, nimi: String, ryhmä: Option[Koodistokoodiviite], arvosana: Koodistokoodiviite, laajuus: Option[Float] = None): OsittaisenAmmatillisenTutkinnonOsanSuoritus = {
+    val osa = MuuValtakunnallinenTutkinnonOsa(Koodistokoodiviite(koodi, Some(nimi), "tutkinnonosat"), true, laajuus.map(l =>LaajuusOsaamispisteissä(l)))
+    MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus(
+      koulutusmoduuli = osa,
+      tutkinnonOsanRyhmä = ryhmä,
+      näyttö = None,
+      suorituskieli = None,
+      alkamispäivä = None,
+      toimipiste = Some(stadinToimipiste),
+      arviointi = Some(List(AmmatillinenArviointi(arvosana = arvosana, date(2014, 10, 20)))),
+      vahvistus = vahvistusValinnaisellaTittelillä(date(2016, 5, 31), stadinAmmattiopisto)
+    )
+  }
+
   def tutkinnonOsanSuoritus(
     koodi: String,
     nimi: String,

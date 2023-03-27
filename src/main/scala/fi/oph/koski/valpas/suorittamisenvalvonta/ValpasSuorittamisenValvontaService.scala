@@ -31,20 +31,20 @@ class ValpasSuorittamisenValvontaService(
   : Either[HttpStatus, Seq[OppijaHakutilanteillaLaajatTiedot]] =
     oppijalistatService.getOppijatLaajatTiedot(ValpasRooli.OPPILAITOS_SUORITTAMINEN, oppilaitosOid, HakeutumisvalvontaTieto.Kaikki)
       .map(oppijat => oppijat.map(OppijaHakutilanteillaLaajatTiedot.apply))
-      .map(_.map(poistaEronneetOpiskeluoikeudetJoillaUusiKelpaavaOpiskelupaikka))
+      .map(_.map(poistaEronneetTaiValmistuneetOpiskeluoikeudetJoillaUusiKelpaavaOpiskelupaikka))
       .map(kuntailmoitusService.poistaKuntailmoitetutOpiskeluoikeudet(säästäJosOpiskeluoikeusVoimassa = true))
       // poista oppijat, joille ei eronneiden poiston jälkeen jäänyt jäljelle yhtään suorittamisvalvottavia opiskeluoikeuksia
       .map(_.filter(onSuorittamisvalvottaviaOpiskeluoikeuksia))
       .map(_.map(oppijaLaajatTiedotService.fetchOppivelvollisuudenKeskeytykset))
       .map(_.map(poistaMuutKuinVoimassaolevatKeskeytykset))
 
-  private def poistaEronneetOpiskeluoikeudetJoillaUusiKelpaavaOpiskelupaikka(
+  private def poistaEronneetTaiValmistuneetOpiskeluoikeudetJoillaUusiKelpaavaOpiskelupaikka(
     oppija: OppijaHakutilanteillaLaajatTiedot
   ): OppijaHakutilanteillaLaajatTiedot = {
     oppija.oppija.ifOppivelvollinenOtherwise(oppija) { o =>
       val uudetOpiskeluoikeudet =
         oppija.oppija.opiskeluoikeudet.filterNot(
-          opiskeluoikeus => onEronnutJaUusiOpiskelupaikkaVoimassaTaiEronnutMyöhemmin(
+          opiskeluoikeus => onEronnutTaiValmistunutJaUusiOpiskelupaikkaVoimassaTaiEronnutMyöhemmin(
             opiskeluoikeus = opiskeluoikeus,
             muutOppijanOpiskeluoikeudet =
               oppija.oppija.opiskeluoikeudet.filterNot(opiskeluoikeus2 => opiskeluoikeus2.equals(opiskeluoikeus))
@@ -59,7 +59,7 @@ class ValpasSuorittamisenValvontaService(
     }
   }
 
-  private def onEronnutJaUusiOpiskelupaikkaVoimassaTaiEronnutMyöhemmin(
+  private def onEronnutTaiValmistunutJaUusiOpiskelupaikkaVoimassaTaiEronnutMyöhemmin(
     opiskeluoikeus: ValpasOpiskeluoikeusLaajatTiedot,
     muutOppijanOpiskeluoikeudet: Seq[ValpasOpiskeluoikeusLaajatTiedot]
   ): Boolean = {
@@ -71,7 +71,8 @@ class ValpasSuorittamisenValvontaService(
       sisältääMyöhemminEronneenToisenAsteenOpiskeluoikeuden(opiskeluoikeus, muutOppijanOpiskeluoikeudet) ||
         sisältääMyöhemminEronneenNivelvaiheenOpiskeluoikeuden(opiskeluoikeus, muutOppijanOpiskeluoikeudet)
 
-    onEronnut(opiskeluoikeus) && (onLasnaUudessaOpiskeluoikeudessa || onEronnutUudestaOpiskeluoikeudestaMyöhemmin)
+    (onEronnut(opiskeluoikeus) || onValmistunut(opiskeluoikeus)) &&
+      (onLasnaUudessaOpiskeluoikeudessa || onEronnutUudestaOpiskeluoikeudestaMyöhemmin)
   }
 
   private def sisältääVoimassaolevanToisenAsteenOpiskeluoikeuden(
@@ -160,6 +161,11 @@ class ValpasSuorittamisenValvontaService(
 
   def onEronnut(opiskeluoikeus: ValpasOpiskeluoikeusLaajatTiedot): Boolean =
     opiskeluoikeus.onSuorittamisValvottava && onEronnutTila(opiskeluoikeus)
+
+  def onValmistunut(opiskeluoikeus: ValpasOpiskeluoikeusLaajatTiedot): Boolean = {
+    opiskeluoikeus.onSuorittamisValvottava &&
+      opiskeluoikeus.perusopetuksenJälkeinenTiedot.map(_.tarkastelupäivänTila.koodiarvo).contains("valmistunut")
+  }
 
   def onEronnutTila(opiskeluoikeus: ValpasOpiskeluoikeusLaajatTiedot): Boolean =
     opiskeluoikeus.perusopetuksenJälkeinenTiedot.map(_.tarkastelupäivänTila.koodiarvo)
