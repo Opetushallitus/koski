@@ -39,7 +39,7 @@ class FixtureCreator(application: KoskiApplication) extends Logging with Timing 
       opiskeluoikeushistoriaErrorRepository.truncate
 
       if (reloadYtrData || fixtureNameHasChanged) {
-        ytrService.loadFixturesAndWaitUntilComplete()
+        ytrService.loadFixturesAndWaitUntilComplete(force = true)
       }
 
       if (reloadRaportointikanta || fixtureNameHasChanged) {

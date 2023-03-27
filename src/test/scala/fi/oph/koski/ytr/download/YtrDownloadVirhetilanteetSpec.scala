@@ -32,21 +32,12 @@ class YtrDownloadVirhetilanteetSpec
 
     clearYtrData()
 
-    val oppijaConverter = new YtrDownloadOppijaConverter(
-      KoskiApplicationForTests.koodistoViitePalvelu,
-      KoskiApplicationForTests.organisaatioRepository,
-      KoskiApplicationForTests.koskiLocalizationRepository
-    )
+    val opiskeluoikeus = luoYtrTestiOpiskeluoikeus()
 
     implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUserTallennetutYlioppilastutkinnonOpiskeluoikeudet
     implicit val accessType: AccessType.Value = AccessType.write
 
     // Lisää YTR-opiskeluoikeus kahdelle samaan master-oppijaan liitetylle oppijalle ohi normaalin prosessin
-    val laajaOppija =
-      KoskiApplicationForTests.ytrClient.oppijatByHetut(YtrSsnData(Some(List("080380-2432"))))
-        .head
-    val opiskeluoikeus =
-      oppijaConverter.convertOppijastaOpiskeluoikeus(laajaOppija).head
     KoskiApplicationForTests.ytrPossu
       .createOrUpdate(VerifiedHenkilöOid(KoskiSpecificMockOppijat.master), opiskeluoikeus)
       .isRight should be(true)
@@ -67,6 +58,38 @@ class YtrDownloadVirhetilanteetSpec
     verifyDownloadCounts(expectedTotalCount = 0, expectedErrorCount = 0)
     downloadYtrData("2023-03", "2023-04", force = true)
     verifyDownloadCounts(expectedTotalCount = 0, expectedErrorCount = 0)
+  }
+
+  "YTR download luo uuden oidin, jos tulee duplikaatti" in {
+    clearYtrData()
+
+    val opiskeluoikeus = luoYtrTestiOpiskeluoikeus()
+
+    implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUserTallennetutYlioppilastutkinnonOpiskeluoikeudet
+    implicit val accessType: AccessType.Value = AccessType.write
+
+    KoskiApplicationForTests.ytrPossu
+      .createOrUpdate(VerifiedHenkilöOid(KoskiSpecificMockOppijat.opiskeluoikeudenOidKonflikti), opiskeluoikeus)
+      .isRight should be(true)
+    KoskiApplicationForTests.ytrPossu
+      .createOrUpdate(VerifiedHenkilöOid(KoskiSpecificMockOppijat.opiskeluoikeudenOidKonflikti2), opiskeluoikeus)
+      .isRight should be(true)
+  }
+
+  private def luoYtrTestiOpiskeluoikeus() = {
+    val oppijaConverter = new YtrDownloadOppijaConverter(
+      KoskiApplicationForTests.koodistoViitePalvelu,
+      KoskiApplicationForTests.organisaatioRepository,
+      KoskiApplicationForTests.koskiLocalizationRepository,
+      KoskiApplicationForTests.validatingAndResolvingExtractor
+    )
+
+    val laajaOppija =
+      KoskiApplicationForTests.ytrClient.oppijatByHetut(YtrSsnData(Some(List("080380-2432"))))
+        .head
+    val opiskeluoikeus =
+      oppijaConverter.convertOppijastaOpiskeluoikeus(laajaOppija).head
+    opiskeluoikeus
   }
 
   private def verifyDownloadCounts(

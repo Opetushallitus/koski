@@ -28,7 +28,8 @@ class YtrDownloadService(
   val oppijaConverter = new YtrDownloadOppijaConverter(
     application.koodistoViitePalvelu,
     application.organisaatioRepository,
-    application.koskiLocalizationRepository
+    application.koskiLocalizationRepository,
+    application.validatingAndResolvingExtractor
   )
 
   private val batchSize = application.config.getInt("ytr.download.batchSize").max(1).min(1500)
@@ -85,11 +86,11 @@ class YtrDownloadService(
     )
   }
 
-  def loadFixturesAndWaitUntilComplete(): Unit = {
+  def loadFixturesAndWaitUntilComplete(force: Boolean = false): Unit = {
     val fixtureMonthStart = Some("1980-01")
     val fixtureMonthEnd = Some("1981-10")
     if (Environment.isUnitTestEnvironment(application.config) || Environment.isLocalDevelopmentEnvironment(application.config)) {
-      download(birthmonthStart = fixtureMonthStart, birthmonthEnd = fixtureMonthEnd)
+      download(birthmonthStart = fixtureMonthStart, birthmonthEnd = fixtureMonthEnd, force = force)
       Wait.until { isLoadComplete }
     } else {
       logger.warn("Trying to download YTR fixtures while not in local environment")

@@ -79,4 +79,8 @@ class PostgresKoskiOpiskeluoikeusRepositoryActions(
       case Some(_) => DBIO.successful(Left(KoskiErrorCategory.conflict.exists())) // Ei tehdä uutta, koska vanha vastaava opiskeluoikeus on voimassa
     }
   }
+
+  protected override def generateOid(oppija: OppijaHenkilöWithMasterInfo): String = {
+    oidGenerator.generateKoskiOid(oppija.henkilö.oid)
+  }
 }
