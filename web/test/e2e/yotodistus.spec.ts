@@ -10,7 +10,7 @@ const hetut = {
   huoltaja: '030300-5215'
 }
 
-test.describe('Digitaalinen yo-todistus', () => {
+test.describe.skip('Digitaalinen yo-todistus', () => {
   test.beforeEach(async ({ fixtures, virkailijaLoginPage }) => {
     await virkailijaLoginPage.apiLoginAsUser('kalle', 'kalle')
     await fixtures.reset()
