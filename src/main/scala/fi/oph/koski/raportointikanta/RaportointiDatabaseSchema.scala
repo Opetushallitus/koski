@@ -31,6 +31,7 @@ object RaportointiDatabaseSchema {
   // Laita tähän vain ne indeksit, jotka tarvitaan inkrementaalisen generoinnin nopeuttamiseksi.
   def createIndexesForIncrementalUpdate(s: Schema) = DBIO.seq(
     sqlu"CREATE INDEX ON #${s.name}.r_osasuoritus(opiskeluoikeus_oid)",
+    // TODO: TOR-1639 Lisää myös YTR-taulut jos/kun inkrementaalinen päivitys toteutetaan?
   )
 
   def createOpiskeluoikeusIndexes(s: Schema) = DBIO.seq(
@@ -62,6 +63,23 @@ object RaportointiDatabaseSchema {
     sqlu"CREATE INDEX ON #${s.name}.esiopetus_opiskeluoik_aikajakso(opiskeluoikeus_oid)",
 
     sqlu"CREATE UNIQUE INDEX ON #${s.name}.r_mitatoitu_opiskeluoikeus(opiskeluoikeus_oid)",
+
+    sqlu"CREATE UNIQUE INDEX ON #${s.name}.r_ytr_tutkintokokonaisuuden_suoritus(ytr_tutkintokokonaisuuden_suoritus_id)",
+    sqlu"CREATE INDEX ON #${s.name}.r_ytr_tutkintokokonaisuuden_suoritus(paatason_suoritus_id)",
+    sqlu"CREATE INDEX ON #${s.name}.r_ytr_tutkintokokonaisuuden_suoritus(hyvaksytysti_valmistunut_tutkinto)", // TODO: Tarvitaanko tämä?
+
+    sqlu"CREATE UNIQUE INDEX ON #${s.name}.r_ytr_tutkintokerran_suoritus(ytr_tutkintokerran_suoritus_id)",
+    sqlu"CREATE INDEX ON #${s.name}.r_ytr_tutkintokerran_suoritus(ytr_tutkintokokonaisuuden_suoritus_id)",
+    sqlu"CREATE INDEX ON #${s.name}.r_ytr_tutkintokerran_suoritus(paatason_suoritus_id)",
+
+    sqlu"CREATE UNIQUE INDEX ON #${s.name}.r_ytr_kokeen_suoritus(ytr_kokeen_suoritus_id)",
+    sqlu"CREATE INDEX ON #${s.name}.r_ytr_kokeen_suoritus(ytr_tutkintokerran_suoritus_id)",
+    sqlu"CREATE INDEX ON #${s.name}.r_ytr_kokeen_suoritus(ytr_tutkintokokonaisuuden_suoritus_id)",
+    sqlu"CREATE INDEX ON #${s.name}.r_ytr_kokeen_suoritus(paatason_suoritus_id)",
+
+    sqlu"CREATE INDEX ON #${s.name}.r_ytr_tutkintokokonaisuuden_kokeen_suoritus(ytr_tutkintokokonaisuuden_suoritus_id)",
+    sqlu"CREATE INDEX ON #${s.name}.r_ytr_tutkintokokonaisuuden_kokeen_suoritus(ytr_kokeen_suoritus_id)",
+    sqlu"CREATE INDEX ON #${s.name}.r_ytr_tutkintokokonaisuuden_kokeen_suoritus(ytr_tutkintokerran_suoritus_id)",
   )
 
   def createOtherIndexes(s: Schema) = DBIO.seq(
@@ -90,7 +108,11 @@ object RaportointiDatabaseSchema {
     sqlu"DROP TABLE IF EXISTS #${s.name}.raportointikanta_status CASCADE",
     sqlu"DROP TABLE IF EXISTS #${s.name}.muu_ammatillinen_raportointi CASCADE",
     sqlu"DROP TABLE IF EXISTS #${s.name}.topks_ammatillinen_raportointi CASCADE",
-    sqlu"DROP TABLE IF EXISTS #${s.name}.r_oppivelvollisuudesta_vapautus CASCADE"
+    sqlu"DROP TABLE IF EXISTS #${s.name}.r_oppivelvollisuudesta_vapautus CASCADE",
+    sqlu"DROP TABLE IF EXISTS #${s.name}.r_ytr_tutkintokokonaisuuden_suoritus CASCADE",
+    sqlu"DROP TABLE IF EXISTS #${s.name}.r_ytr_tutkintokerran_suoritus CASCADE",
+    sqlu"DROP TABLE IF EXISTS #${s.name}.r_ytr_kokeen_suoritus CASCADE",
+    sqlu"DROP TABLE IF EXISTS #${s.name}.r_ytr_tutkintokokonaisuuden_kokeen_suoritus CASCADE",
   )
 
   val createRolesIfNotExists = DBIO.seq(
@@ -115,7 +137,11 @@ object RaportointiDatabaseSchema {
       #${s.name}.r_henkilo,
       #${s.name}.esiopetus_opiskeluoik_aikajakso,
       #${s.name}.muu_ammatillinen_raportointi,
-      #${s.name}.topks_ammatillinen_raportointi
+      #${s.name}.topks_ammatillinen_raportointi,
+      #${s.name}.r_ytr_tutkintokokonaisuuden_suoritus,
+      #${s.name}.r_ytr_tutkintokerran_suoritus,
+      #${s.name}.r_ytr_kokeen_suoritus,
+      #${s.name}.r_ytr_tutkintokokonaisuuden_kokeen_suoritus
       TO raportointikanta_henkilo_katselija"""
   )
 
@@ -484,6 +510,132 @@ object RaportointiDatabaseSchema {
     def * = (oppijaOid, vapautettu) <> (ROppivelvollisuudestaVapautusRow.tupled, ROppivelvollisuudestaVapautusRow.unapply)
   }
   class ROppivelvollisuudestaVapautusTableTemp(tag: Tag) extends ROppivelvollisuudestaVapautusTable(tag, Temp)
+
+  class RYtrTutkintokokonaisuudenSuoritusTable(tag: Tag, schema: Schema = Public) extends Table[RYtrTutkintokokonaisuudenSuoritusRow](tag, schema.nameOpt, "r_ytr_tutkintokokonaisuuden_suoritus") {
+    val ytrTutkintokokonaisuudenSuoritusId = column[Long]("ytr_tutkintokokonaisuuden_suoritus_id", O.PrimaryKey)
+
+    val päätasonSuoritusId = column[Long]("paatason_suoritus_id")
+    val opiskeluoikeusOid = column[String]("opiskeluoikeus_oid", StringIdentifierType)
+
+    val tyyppiKoodiarvo = column[Option[String]]("tyyppi_koodiarvo", StringIdentifierType)
+    val tilaKoodiarvo = column[Option[String]]("tila_koodiarvo", StringIdentifierType)
+    val suorituskieliKoodiarvo = column[Option[String]]("suorituskieli_koodiarvo", StringIdentifierType)
+
+    val hyväksytystiValmistunutTutkinto = column[Option[Boolean]]("hyvaksytysti_valmistunut_tutkinto")
+
+    val data = column[JValue]("data")
+
+    def * = (
+      ytrTutkintokokonaisuudenSuoritusId,
+      päätasonSuoritusId,
+      opiskeluoikeusOid,
+      tyyppiKoodiarvo,
+      tilaKoodiarvo,
+      suorituskieliKoodiarvo,
+      hyväksytystiValmistunutTutkinto,
+      data
+    ) <> (RYtrTutkintokokonaisuudenSuoritusRow.tupled, RYtrTutkintokokonaisuudenSuoritusRow.unapply)
+  }
+  class RYtrTutkintokokonaisuudenSuoritusTableTemp(tag: Tag) extends RYtrTutkintokokonaisuudenSuoritusTable(tag, Temp)
+
+  class RYtrTutkintokerranSuoritusTable(tag: Tag, schema: Schema = Public) extends Table[RYtrTutkintokerranSuoritusRow](tag, schema.nameOpt, "r_ytr_tutkintokerran_suoritus") {
+    val ytrTutkintokerranSuoritusId = column[Long]("ytr_tutkintokerran_suoritus_id", O.PrimaryKey)
+
+    val ytrTutkintokokonaisuudenSuoritusId = column[Long]("ytr_tutkintokokonaisuuden_suoritus_id")
+    val päätasonSuoritusId = column[Long]("paatason_suoritus_id")
+    val opiskeluoikeusOid = column[String]("opiskeluoikeus_oid", StringIdentifierType)
+
+    val tutkintokertaKoodiarvo = column[String]("tutkintokerta_koodiarvo", StringIdentifierType)
+    val vuosi = column[Int]("vuosi")
+    val vuodenaikaKoodiarvo = column[String]("vuodenaika_koodiarvo", StringIdentifierType)
+    val koulutustaustaKoodiarvo = column[Option[String]]("koulutustausta_koodiarvo", StringIdentifierType)
+    val oppilaitosOid = column[Option[String]]("oppilaitos_oid", StringIdentifierType)
+    val oppilaitosNimi = column[Option[String]]("oppilaitos_nimi")
+    val oppilaitosNimiSv = column[Option[String]]("oppilaitos_nimi_sv")
+    val oppilaitosKotipaikka = column[Option[String]]("oppilaitos_kotipaikka", StringIdentifierType)
+    val oppilaitosnumero = column[Option[String]]("oppilaitosnumero", StringIdentifierType)
+
+    val data = column[JValue]("data")
+
+    def * = (
+      ytrTutkintokerranSuoritusId,
+      ytrTutkintokokonaisuudenSuoritusId,
+      päätasonSuoritusId,
+      opiskeluoikeusOid,
+      tutkintokertaKoodiarvo,
+      vuosi,
+      vuodenaikaKoodiarvo,
+      koulutustaustaKoodiarvo,
+      oppilaitosOid,
+      oppilaitosNimi,
+      oppilaitosNimiSv,
+      oppilaitosKotipaikka,
+      oppilaitosnumero,
+      data
+    ) <> (RYtrTutkintokerranSuoritusRow.tupled, RYtrTutkintokerranSuoritusRow.unapply)
+  }
+  class RYtrTutkintokerranSuoritusTableTemp(tag: Tag) extends RYtrTutkintokerranSuoritusTable(tag, Temp)
+
+  class RYtrKokeenSuoritusTable(tag: Tag, schema: Schema = Public) extends Table[RYtrKokeenSuoritusRow](tag, schema.nameOpt, "r_ytr_kokeen_suoritus") {
+    val ytrKokeenSuoritusId = column[Long]("ytr_kokeen_suoritus_id", O.PrimaryKey)
+
+    val ytrTutkintokerranSuoritusId = column[Long]("ytr_tutkintokerran_suoritus_id")
+    val ytrTutkintokokonaisuudenSuoritusId = column[Long]("ytr_tutkintokokonaisuuden_suoritus_id")
+    val päätasonSuoritusId = column[Long]("paatason_suoritus_id")
+    val opiskeluoikeusOid = column[String]("opiskeluoikeus_oid", StringIdentifierType)
+
+    val suorituksenTyyppi = column[String]("suorituksen_tyyppi", StringIdentifierType)
+    val koulutusmoduuliKoodisto = column[Option[String]]("koulutusmoduuli_koodisto", StringIdentifierType)
+    val koulutusmoduuliKoodiarvo = column[String]("koulutusmoduuli_koodiarvo", StringIdentifierType)
+    val koulutusmoduuliNimi = column[Option[String]]("koulutusmoduuli_nimi")
+    val arviointiArvosanaKoodiarvo = column[Option[String]]("arviointi_arvosana_koodiarvo", StringIdentifierType)
+    val arviointiArvosanaKoodisto = column[Option[String]]("arviointi_arvosana_koodisto", StringIdentifierType)
+    val arviointiHyväksytty = column[Option[Boolean]]("arviointi_hyvaksytty")
+
+    val arviointiPisteet = column[Option[Int]]("arviointi_pisteet")
+    val keskeytynyt = column[Option[Boolean]]("keskeytynyt")
+    val maksuton = column[Option[Boolean]]("maksuton")
+
+    val data = column[JValue]("data")
+
+    def * = (
+      ytrKokeenSuoritusId,
+      ytrTutkintokerranSuoritusId,
+      ytrTutkintokokonaisuudenSuoritusId,
+      päätasonSuoritusId,
+      opiskeluoikeusOid,
+      suorituksenTyyppi,
+      koulutusmoduuliKoodisto,
+      koulutusmoduuliKoodiarvo,
+      koulutusmoduuliNimi,
+      arviointiArvosanaKoodiarvo,
+      arviointiArvosanaKoodisto,
+      arviointiHyväksytty,
+      arviointiPisteet,
+      keskeytynyt,
+      maksuton,
+      data
+    ) <> (RYtrKokeenSuoritusRow.tupled, RYtrKokeenSuoritusRow.unapply)
+  }
+  class RYtrKokeenSuoritusTableTemp(tag: Tag) extends RYtrKokeenSuoritusTable(tag, Temp)
+
+  class RYtrTutkintokokonaisuudenKokeenSuoritusTable(tag: Tag, schema: Schema = Public) extends Table[RYtrTutkintokokonaisuudenKokeenSuoritusRow](tag, schema.nameOpt, "r_ytr_tutkintokokonaisuuden_kokeen_suoritus") {
+    val ytrTutkintokokonaisuudenSuoritusId = column[Long]("ytr_tutkintokokonaisuuden_suoritus_id")
+    val ytrKokeenSuoritusId = column[Long]("ytr_kokeen_suoritus_id")
+
+    val ytrTutkintokerranSuoritusId = column[Long]("ytr_tutkintokerran_suoritus_id")
+
+    val sisällytetty = column[Boolean]("sisallytetty")
+
+    def * = (
+      ytrTutkintokokonaisuudenSuoritusId,
+      ytrKokeenSuoritusId,
+      ytrTutkintokerranSuoritusId,
+      sisällytetty
+    ) <> (RYtrTutkintokokonaisuudenKokeenSuoritusRow.tupled, RYtrTutkintokokonaisuudenKokeenSuoritusRow.unapply)
+    def pk = primaryKey("r_ytr_tutkintokokonaisuuden_kokeen_suoritus_pk", (ytrTutkintokokonaisuudenSuoritusId, ytrKokeenSuoritusId))
+  }
+  class RYtrTutkintokokonaisuudenKokeenSuoritusTableTemp(tag: Tag) extends RYtrTutkintokokonaisuudenKokeenSuoritusTable(tag, Temp)
 }
 
 trait AikajaksoRow[A] {
@@ -810,6 +962,77 @@ case class TOPKSAmmatillinenRaportointiRow(
   tunnustettu: Boolean,
   koulutusmoduuliLaajuusArvo: Option[Double],
   koulutusmoduuliLaajuusYksikkö: Option[String]
+)
+
+case class RYtrTutkintokokonaisuudenSuoritusRow(
+  ytrTutkintokokonaisuudenSuoritusId: Long,
+
+  päätasonSuoritusId: Long,
+  opiskeluoikeusOid: String,
+
+  tyyppiKoodiarvo: Option[String],
+  tilaKoodiarvo: Option[String],
+  suorituskieliKoodiarvo: Option[String],
+
+  // Jos tyyppi = candidate ja tila = graduated , tähän tallennetaan true.
+  hyväksytystiValmistunutTutkinto: Option[Boolean],
+
+  data: JValue
+)
+
+case class RYtrTutkintokerranSuoritusRow(
+  ytrTutkintokerranSuoritusId: Long,
+
+  ytrTutkintokokonaisuudenSuoritusId: Long,
+  päätasonSuoritusId: Long,
+  opiskeluoikeusOid: String,
+
+  tutkintokertaKoodiarvo: String,
+  vuosi: Int,
+  vuodenaikaKoodiarvo: String,
+  koulutustaustaKoodiarvo: Option[String],
+  oppilaitosOid: Option[String],
+  oppilaitosNimi: Option[String],
+  oppilaitosNimiSv: Option[String],
+  oppilaitosKotipaikka: Option[String],
+  oppilaitosnumero: Option[String],
+
+  data: JValue
+)
+
+case class RYtrKokeenSuoritusRow(
+  ytrKokeenSuoritusId: Long,
+
+  ytrTutkintokerranSuoritusId: Long,
+  ytrTutkintokokonaisuudenSuoritusId: Long,
+  päätasonSuoritusId: Long,
+  opiskeluoikeusOid: String,
+
+  // Jaetut kentät ROsasuoritusRow kanssa
+  suorituksenTyyppi: String,
+  koulutusmoduuliKoodisto: Option[String],
+  koulutusmoduuliKoodiarvo: String,
+  koulutusmoduuliNimi: Option[String],
+  arviointiArvosanaKoodiarvo: Option[String],
+  arviointiArvosanaKoodisto: Option[String],
+  arviointiHyväksytty: Option[Boolean],
+
+  // YTR-spesifit kentät
+  arviointiPisteet: Option[Int],
+  keskeytynyt: Option[Boolean],
+  maksuton: Option[Boolean],
+
+  data: JValue
+)
+
+case class RYtrTutkintokokonaisuudenKokeenSuoritusRow(
+  ytrTutkintokokonaisuudenSuoritusId: Long,
+  ytrKokeenSuoritusId: Long,
+
+  ytrTutkintokerranSuoritusId: Long,
+
+  // Tulevaisuutta varten: uuden lain myötä kokeita voi sisällyttää aiemmista tutkintokokonaisuuksista
+  sisällytetty: Boolean
 )
 
 sealed trait Schema {

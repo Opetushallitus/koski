@@ -52,6 +52,10 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
     MuuAmmatillinenOsasuoritusRaportointi,
     TOPKSAmmatillinenOsasuoritusRaportointi,
     ROppivelvollisuudestaVapautukset,
+    RYtrTutkintokokonaisuudenSuoritukset,
+    RYtrTutkintokerranSuoritukset,
+    RYtrKokeenSuoritukset,
+    RYtrTutkintokokonaisuudenKokeenSuoritukset,
   )
 
   def vacuumAnalyze(): Unit = {
@@ -170,7 +174,7 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
     runDbSync(ROpiskeluoikeudet ++= opiskeluoikeudet, timeout = 5.minutes)
   }
 
-  def cloneUpdateableTables(source: RaportointiDatabase): Unit = {
+  def cloneUpdateableTables(source: RaportointiDatabase, enableYtr: Boolean): Unit = {
     import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 
     val BATCH_SIZE = 10000000
@@ -178,21 +182,30 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
 
     case class Kloonaus(
       taulu: String,
-      primaryKey: Option[String] = None,
+      primaryKeys: List[String] = List.empty,
       timeout: FiniteDuration = 15.minutes,
     );
 
     val kloonattavatTaulut = List(
-      Kloonaus("r_opiskeluoikeus", Some("opiskeluoikeus_oid")),
+      Kloonaus("r_opiskeluoikeus", List("opiskeluoikeus_oid")),
       Kloonaus("r_organisaatiohistoria"),
       Kloonaus("esiopetus_opiskeluoik_aikajakso"),
-      Kloonaus("r_opiskeluoikeus_aikajakso", Some("id")),
-      Kloonaus("r_paatason_suoritus", Some("paatason_suoritus_id")),
-      Kloonaus("r_osasuoritus", Some("osasuoritus_id")),
+      Kloonaus("r_opiskeluoikeus_aikajakso", List("id")),
+      Kloonaus("r_paatason_suoritus", List("paatason_suoritus_id")),
+      Kloonaus("r_osasuoritus", List("osasuoritus_id")),
       Kloonaus("muu_ammatillinen_raportointi"),
       Kloonaus("topks_ammatillinen_raportointi"),
-      Kloonaus("r_mitatoitu_opiskeluoikeus", Some("opiskeluoikeus_oid")),
-    )
+      Kloonaus("r_mitatoitu_opiskeluoikeus", List("opiskeluoikeus_oid"))
+    ) ++ (if (enableYtr) {
+      List(
+        Kloonaus("r_ytr_tutkintokokonaisuuden_suoritus", List("ytr_tutkintokokonaisuuden_suoritus_id")),
+        Kloonaus("r_ytr_tutkintokerran_suoritus", List("ytr_tutkintokerran_suoritus_id")),
+        Kloonaus("r_ytr_kokeen_suoritus", List("ytr_kokeen_suoritus_id")),
+        Kloonaus("r_ytr_tutkintokokonaisuuden_kokeen_suoritus", List("ytr_tutkintokokonaisuuden_suoritus_id", "ytr_kokeen_suoritus_id")),
+      )
+    } else {
+      List.empty
+    })
 
     val päivitettävätIdSekvenssit = List(
       ("r_opiskeluoikeus_aikajakso", "id"),
@@ -214,7 +227,10 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
             sql"""
                  INSERT INTO #${schema.name}.#${kloonaus.taulu}
                  SELECT * FROM #${source.schema.name}.#${kloonaus.taulu}
-                 #${kloonaus.primaryKey.map(pk => s"ORDER BY $pk").getOrElse("")}
+                 #${kloonaus.primaryKeys.mkString(", ") match {
+                   case "" => ""
+                   case pks => s"ORDER BY $pks"
+                 }}
                  LIMIT $BATCH_SIZE OFFSET $offset
             """.asUpdate,
             timeout = kloonaus.timeout,
@@ -304,6 +320,18 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
 
   def loadOsasuoritukset(suoritukset: Seq[ROsasuoritusRow]): Unit =
     runDbSync(ROsasuoritukset ++= suoritukset, timeout = 5.minutes)
+
+  def loadYtrOsasuoritukset(
+    tutkintokokonaisuudet: Seq[RYtrTutkintokokonaisuudenSuoritusRow],
+    tutkintokerrat: Seq[RYtrTutkintokerranSuoritusRow],
+    kokeet: Seq[RYtrKokeenSuoritusRow],
+    tutkintokokonaisuudenKokeet: Seq[RYtrTutkintokokonaisuudenKokeenSuoritusRow]
+  ): Unit = {
+    runDbSync(RYtrTutkintokokonaisuudenSuoritukset ++= tutkintokokonaisuudet, timeout = 5.minutes)
+    runDbSync(RYtrTutkintokerranSuoritukset ++= tutkintokerrat, timeout = 5.minutes)
+    runDbSync(RYtrKokeenSuoritukset ++= kokeet, timeout = 5.minutes)
+    runDbSync(RYtrTutkintokokonaisuudenKokeenSuoritukset ++= tutkintokokonaisuudenKokeet, timeout = 5.minutes)
+  }
 
   def updateOsasuoritukset(suoritukset: Seq[ROsasuoritusRow]): Unit = {
     val opiskeluoikeusOids = suoritukset.map(_.opiskeluoikeusOid).toSet
@@ -522,6 +550,26 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
   lazy val ROppivelvollisuudestaVapautukset = schema match {
     case Public => TableQuery[ROppivelvollisuudestaVapautusTable]
     case Temp => TableQuery[ROppivelvollisuudestaVapautusTableTemp]
+  }
+
+  lazy val RYtrTutkintokokonaisuudenSuoritukset = schema match {
+    case Public => TableQuery[RYtrTutkintokokonaisuudenSuoritusTable]
+    case Temp => TableQuery[RYtrTutkintokokonaisuudenSuoritusTableTemp]
+  }
+
+  lazy val RYtrTutkintokerranSuoritukset = schema match {
+    case Public => TableQuery[RYtrTutkintokerranSuoritusTable]
+    case Temp => TableQuery[RYtrTutkintokerranSuoritusTableTemp]
+  }
+
+  lazy val RYtrKokeenSuoritukset = schema match {
+    case Public => TableQuery[RYtrKokeenSuoritusTable]
+    case Temp => TableQuery[RYtrKokeenSuoritusTableTemp]
+  }
+
+  lazy val RYtrTutkintokokonaisuudenKokeenSuoritukset = schema match {
+    case Public => TableQuery[RYtrTutkintokokonaisuudenKokeenSuoritusTable]
+    case Temp => TableQuery[RYtrTutkintokokonaisuudenKokeenSuoritusTableTemp]
   }
 }
 

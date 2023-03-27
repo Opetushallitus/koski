@@ -1,5 +1,6 @@
 package fi.oph.koski.opiskeluoikeus
 
+import com.typesafe.config.Config
 import fi.oph.koski.db.KoskiTables._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.jsonMethods.{parse => parseJson}
@@ -83,29 +84,48 @@ class OpiskeluoikeusQueryService(val db: DB) extends QueryMethods {
     }
   }
 
-  def mapOpiskeluoikeudetSivuittainWithoutAccessCheck[A]
+  def mapKoskiOpiskeluoikeudetSivuittainWithoutAccessCheck[A]
     (pageSize: Int)
-    (mapFn: Seq[KoskiOpiskeluoikeusRow] => Seq[A])
-  : Observable[A] =
-    mapKaikkiSivuittainWithoutAccessCheck(pageSize)(kaikkiSivuittainWithoutAccessCheck(KoskiOpiskeluOikeudet))(mapFn)
+      (mapFn: Seq[OpiskeluoikeusRow] => Seq[A])
+  : Observable[A] = {
+    mapKaikkiSivuittainWithoutAccessCheck(pageSize)(kaikkiKoskiOpiskeluoikeudetSivuittainWithoutAccessCheck)(mapFn)
+  }
+
+  def mapKoskiJaYtrOpiskeluoikeudetSivuittainWithoutAccessCheck[A]
+    (pageSize: Int)
+      (mapFn: Seq[OpiskeluoikeusRow] => Seq[A])
+  : Observable[A] = {
+    val koskiOot = mapKoskiOpiskeluoikeudetSivuittainWithoutAccessCheck(pageSize)(mapFn)
+    val ytrOot = mapKaikkiSivuittainWithoutAccessCheck(pageSize)(kaikkiYtrOpiskeluoikeudetSivuittainWithoutAccessCheck)(mapFn)
+
+    koskiOot ++ ytrOot
+  }
 
   private def mapKaikkiSivuittainWithoutAccessCheck[A]
     (pageSize: Int)
-    (queryFn: PaginationSettings => Seq[KoskiOpiskeluoikeusRow])
-    (mapFn: Seq[KoskiOpiskeluoikeusRow] => Seq[A])
+    (queryFn: PaginationSettings => Seq[OpiskeluoikeusRow])
+    (mapFn: Seq[OpiskeluoikeusRow] => Seq[A])
   : Observable[A] = {
-    processByPage[KoskiOpiskeluoikeusRow, A](page => queryFn(PaginationSettings(page, pageSize)), mapFn)
+    processByPage[OpiskeluoikeusRow, A](page => queryFn(PaginationSettings(page, pageSize)), mapFn)
   }
 
-  private def kaikkiSivuittainWithoutAccessCheck(
-    query: Query[KoskiOpiskeluoikeusTable, KoskiOpiskeluoikeusRow, Seq]
-  )(
+  private def kaikkiKoskiOpiskeluoikeudetSivuittainWithoutAccessCheck(
     pagination: PaginationSettings
   ): Seq[KoskiOpiskeluoikeusRow] = {
     // this approach to pagination ("limit 500 offset 176500") is not perfect (the query gets slower as offset
     // increases), but seems tolerable here (with join to henkilot, as in mkQuery below, it's much slower)
     retryWithInterval(5, intervalMs = 30000) {
-      runDbSync(defaultPagination.applyPagination(query.sortBy(_.id), pagination).result, timeout = 5.minutes)
+      runDbSync(defaultPagination.applyPagination(KoskiOpiskeluOikeudet.sortBy(_.id), pagination).result, timeout = 5.minutes)
+    }
+  }
+
+  private def kaikkiYtrOpiskeluoikeudetSivuittainWithoutAccessCheck(
+    pagination: PaginationSettings
+  ): Seq[YtrOpiskeluoikeusRow] = {
+    // this approach to pagination ("limit 500 offset 176500") is not perfect (the query gets slower as offset
+    // increases), but seems tolerable here (with join to henkilot, as in mkQuery below, it's much slower)
+    retryWithInterval(5, intervalMs = 30000) {
+      runDbSync(defaultPagination.applyPagination(YtrOpiskeluOikeudet.sortBy(_.id), pagination).result, timeout = 5.minutes)
     }
   }
 

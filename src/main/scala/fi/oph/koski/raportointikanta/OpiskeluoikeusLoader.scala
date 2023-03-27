@@ -1,6 +1,6 @@
 package fi.oph.koski.raportointikanta
 
-import fi.oph.koski.db.{DB, KoskiOpiskeluoikeusRow, PoistettuOpiskeluoikeusRow}
+import fi.oph.koski.db.{DB, KoskiOpiskeluoikeusRow, OpiskeluoikeusRow, PoistettuOpiskeluoikeusRow, YtrOpiskeluoikeusRow}
 import fi.oph.koski.json.JsonManipulation
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
@@ -35,8 +35,9 @@ object OpiskeluoikeusLoader extends Logging {
     suostumuksenPeruutusService: SuostumuksenPeruutusService,
     db: RaportointiDatabase,
     update: Option[RaportointiDatabaseUpdate] = None,
+    enableYtr: Boolean = true,
     batchSize: Int = DefaultBatchSize,
-    onAfterPage: (Int, Seq[KoskiOpiskeluoikeusRow]) => Unit = (_, _) => ()
+    onAfterPage: (Int, Seq[OpiskeluoikeusRow]) => Unit = (_, _) => (),
   ): Observable[LoadResult] = {
     val dueTime = update.map(_.dueTime).map(toTimestamp)
     db.setStatusLoadStarted(statusName, dueTime)
@@ -44,36 +45,51 @@ object OpiskeluoikeusLoader extends Logging {
 
     update.foreach(u => {
       u.service.alustaKaikkiKäsiteltäviksi()
-      db.cloneUpdateableTables(u.previousRaportointiDatabase)
+      db.cloneUpdateableTables(u.previousRaportointiDatabase, enableYtr)
       createIndexesForIncrementalUpdate(db)
       suoritusIds.set(db.getLatestSuoritusId)
     })
 
     var loopCount = 0
 
-    val result = mapOpiskeluoikeudetSivuittainWithoutAccessCheck(batchSize, update, opiskeluoikeusQueryRepository) { batch =>
+    val dataResult = mapOpiskeluoikeudetSivuittainWithoutAccessCheck(batchSize, update, enableYtr, opiskeluoikeusQueryRepository) { batch =>
       if (batch.nonEmpty) {
-        val result = if (update.isDefined) {
-          updateBatch(db, suostumuksenPeruutusService, batch)
-        } else {
-          loadBatch(db, suostumuksenPeruutusService, batch)
+        val koskiBatch = batch.collect { case r: KoskiOpiskeluoikeusRow => r }
+        val ytrBatch = batch.collect { case r: YtrOpiskeluoikeusRow => r }
+
+        val result = (koskiBatch, ytrBatch) match {
+          case (_, Seq()) if update.isDefined =>
+            updateBatch(db, suostumuksenPeruutusService, koskiBatch)
+          case _ if update.isDefined =>
+            throw new InternalError("Inkrementaalista päivitystä ei tueta YTR-opiskeluoikeuksille")
+          case (_, Seq()) =>
+            loadKoskiBatch(db, suostumuksenPeruutusService, koskiBatch)
+          case (Seq(), _) =>
+            loadYtrBatch(db, ytrBatch)
+          case _ =>
+            throw new InternalError("Tuntematon tilanne, samassa batchissä YTR- ja Koski-opiskeluoikeuksia")
         }
+
         onAfterPage(loopCount, batch)
         loopCount = loopCount + 1
         result
       } else {
-        // Last batch processed; finalize
-        if (update.isEmpty) createIndexesForIncrementalUpdate(db)
-        createIndexes(db)
-        db.setStatusLoadCompleted(statusName)
-        db.setStatusLoadCompleted(mitätöidytStatusName)
-        Seq(LoadCompleted())
+        Seq.empty
       }
     }
+
+    val result = dataResult.doOnCompleted {
+      // Last batch processed; finalize
+      if (update.isEmpty) createIndexesForIncrementalUpdate(db)
+      createIndexes(db)
+      db.setStatusLoadCompleted(statusName)
+      db.setStatusLoadCompleted(mitätöidytStatusName)
+    } ++ Observable.from(Seq(LoadCompleted()))
+
     result.doOnEach(progressLogger)
   }
 
-  private def loadBatch(
+  private def loadKoskiBatch(
     db: RaportointiDatabase,
     suostumuksenPeruutusService: SuostumuksenPeruutusService,
     batch: Seq[KoskiOpiskeluoikeusRow]
@@ -81,12 +97,26 @@ object OpiskeluoikeusLoader extends Logging {
     val (mitätöidytOot, olemassaolevatOot) = batch.partition(_.mitätöity)
     val (poistetutOot, mitätöidytEiPoistetutOot) = mitätöidytOot.partition(_.poistettu)
 
-    val resultOlemassaolevatOot = loadBatchOlemassaolevatOpiskeluoikeudet(db, olemassaolevatOot)
-    val resultMitätöidyt = loadBatchMitätöidytOpiskeluoikeudet(db, mitätöidytEiPoistetutOot)
-    val resultPoistetut = loadBatchPoistetutOpiskeluoikeudet(db, suostumuksenPeruutusService, poistetutOot)
+    val resultOlemassaolevatOot = loadKoskiBatchOlemassaolevatOpiskeluoikeudet(db, olemassaolevatOot)
+    val resultMitätöidyt = loadKoskiBatchMitätöidytOpiskeluoikeudet(db, mitätöidytEiPoistetutOot)
+    val resultPoistetut = loadKoskiBatchPoistetutOpiskeluoikeudet(db, suostumuksenPeruutusService, poistetutOot)
 
     resultOlemassaolevatOot ++ resultMitätöidyt ++ resultPoistetut
   }
+
+  private def loadYtrBatch(
+    db: RaportointiDatabase,
+    batch: Seq[YtrOpiskeluoikeusRow]
+  ): Seq[LoadResult] = {
+    val (mitätöidytOot, olemassaolevatOot) = batch.partition(_.mitätöity)
+
+    val resultOlemassaolevatOot = loadYtrBatchOlemassaolevatOpiskeluoikeudet(db, olemassaolevatOot)
+
+    // Mitätöityjä ei (toistaiseksi) käsitellä, koska sellaisia ei YTR-datassa voi olla.
+
+    resultOlemassaolevatOot
+  }
+
 
   private def updateBatch(
     db: RaportointiDatabase,
@@ -103,11 +133,11 @@ object OpiskeluoikeusLoader extends Logging {
     resultOlemassaolevatOot ++ resultMitätöidyt ++ resultPoistetut
   }
 
-  private def loadBatchOlemassaolevatOpiskeluoikeudet(db: RaportointiDatabase, oot: Seq[KoskiOpiskeluoikeusRow]) = {
+  private def loadKoskiBatchOlemassaolevatOpiskeluoikeudet(db: RaportointiDatabase, oot: Seq[KoskiOpiskeluoikeusRow]): Seq[LoadResult] = {
     val loadBatchStartTime = System.nanoTime()
 
     val (errors, outputRows) = oot.par
-      .map(row => buildRow(row))
+      .map(row => buildKoskiRow(row))
       .seq
       .partition(_.isLeft)
 
@@ -131,7 +161,46 @@ object OpiskeluoikeusLoader extends Logging {
 
     val loadBatchDuration: Long = (System.nanoTime() - loadBatchStartTime) / 1000000
     val toOpiskeluoikeusUnsafeDuration: Long = outputRows.map(_.right.get.toOpiskeluoikeusUnsafeDuration).sum / 1000000
-    logger.info(s"Batchin käsittely kesti ${loadBatchDuration} ms, jossa toOpiskeluOikeusUnsafe ${toOpiskeluoikeusUnsafeDuration} ms.")
+    logger.info(s"Koski batchin käsittely kesti ${loadBatchDuration} ms, jossa toOpiskeluOikeusUnsafe ${toOpiskeluoikeusUnsafeDuration} ms.")
+    result
+  }
+
+  private def loadYtrBatchOlemassaolevatOpiskeluoikeudet(db: RaportointiDatabase, oot: Seq[YtrOpiskeluoikeusRow]): Seq[LoadResult] = {
+    val loadBatchStartTime = System.nanoTime()
+
+    val (errors, outputRows) = oot.par
+      .map(row => buildYtrRow(row))
+      .seq
+      .partition(_.isLeft)
+
+    db.loadOpiskeluoikeudet(outputRows.map(_.right.get.rOpiskeluoikeusRow))
+    val päätasonSuoritusRows = outputRows.flatMap(_.right.get.rPäätasonSuoritusRows)
+    val tutkintokokonaisuudenSuoritusRows = outputRows.flatMap(_.right.get.rTutkintokokonaisuudenSuoritusRows)
+    val tutkintokerranSuoritusRows = outputRows.flatMap(_.right.get.rTutkintokerranSuoritusRows)
+    val kokeenSuoritusRows = outputRows.flatMap(_.right.get.rKokeenSuoritusRows)
+    val tutkintokokonaisuudenKokeenSuoritusRows = outputRows.flatMap(_.right.get.rTutkintokokonaisuudenKokeenSuoritusRows)
+    db.loadPäätasonSuoritukset(päätasonSuoritusRows)
+    db.loadYtrOsasuoritukset(
+      tutkintokokonaisuudenSuoritusRows,
+      tutkintokerranSuoritusRows,
+      kokeenSuoritusRows,
+      tutkintokokonaisuudenKokeenSuoritusRows
+    )
+
+    db.setLastUpdate(statusName)
+    db.updateStatusCount(statusName, outputRows.size)
+
+    val result = errors.map(_.left.get) :+
+      LoadProgressResult(outputRows.size,
+        päätasonSuoritusRows.size +
+          tutkintokokonaisuudenSuoritusRows.size +
+          tutkintokerranSuoritusRows.size +
+          kokeenSuoritusRows.size
+      )
+
+    val loadBatchDuration: Long = (System.nanoTime() - loadBatchStartTime) / 1000000
+    val toOpiskeluoikeusUnsafeDuration: Long = outputRows.map(_.right.get.toOpiskeluoikeusUnsafeDuration).sum / 1000000
+    logger.info(s"YTR batchin käsittely kesti ${loadBatchDuration} ms, jossa toOpiskeluOikeusUnsafe ${toOpiskeluoikeusUnsafeDuration} ms.")
     result
   }
 
@@ -143,7 +212,7 @@ object OpiskeluoikeusLoader extends Logging {
     val loadBatchStartTime = System.nanoTime()
 
     val (errors, outputRows) = oot.par
-      .map(row => buildRow(row))
+      .map(row => buildKoskiRow(row))
       .seq
       .partition(_.isLeft)
 
@@ -178,7 +247,7 @@ object OpiskeluoikeusLoader extends Logging {
     result
   }
 
-  private def loadBatchMitätöidytOpiskeluoikeudet(db: RaportointiDatabase, oot: Seq[KoskiOpiskeluoikeusRow]) = {
+  private def loadKoskiBatchMitätöidytOpiskeluoikeudet(db: RaportointiDatabase, oot: Seq[KoskiOpiskeluoikeusRow]) = {
     val (errors, outputRows) = oot.par.filterNot(_.poistettu).map(buildRowMitätöity).seq.partition(_.isLeft)
     db.loadMitätöidytOpiskeluoikeudet(outputRows.map(_.right.get))
     db.updateStatusCount(mitätöidytStatusName, outputRows.size)
@@ -196,7 +265,7 @@ object OpiskeluoikeusLoader extends Logging {
     errors.map(_.left.get)
   }
 
-  private def loadBatchPoistetutOpiskeluoikeudet(
+  private def loadKoskiBatchPoistetutOpiskeluoikeudet(
     db: RaportointiDatabase,
     suostumuksenPeruutusService: SuostumuksenPeruutusService,
     oot: Seq[KoskiOpiskeluoikeusRow]
@@ -289,7 +358,7 @@ object OpiskeluoikeusLoader extends Logging {
 
   private val suoritusIds = new AtomicLong()
 
-  type SuoritusRows = List[(
+  type KoskiSuoritusRows = List[(
     RPäätasonSuoritusRow,
       List[ROsasuoritusRow],
       List[MuuAmmatillinenOsasuoritusRaportointiRow],
@@ -298,15 +367,16 @@ object OpiskeluoikeusLoader extends Logging {
 
   type AikajaksoRows = (Seq[ROpiskeluoikeusAikajaksoRow], Seq[EsiopetusOpiskeluoikeusAikajaksoRow])
 
-  private def buildRow(inputRow: KoskiOpiskeluoikeusRow): Either[LoadErrorResult, OutputRows] = {
+  private def buildKoskiRow(inputRow: OpiskeluoikeusRow): Either[LoadErrorResult, KoskiOutputRows] = {
     Try {
       val toOpiskeluoikeusUnsafeStartTime = System.nanoTime()
       val oo = inputRow.toOpiskeluoikeusUnsafe(KoskiSpecificSession.systemUser)
       val toOpiskeluoikeusUnsafeDuration = System.nanoTime() - toOpiskeluoikeusUnsafeStartTime
       val ooRow = buildROpiskeluoikeusRow(inputRow.oppijaOid, inputRow.aikaleima, oo, inputRow.data)
+
       val aikajaksoRows: AikajaksoRows = buildAikajaksoRows(inputRow.oid, oo)
-      val suoritusRows: SuoritusRows = oo.suoritukset.zipWithIndex.map {
-        case (ps, i) => buildSuoritusRows(
+      val suoritusRows: KoskiSuoritusRows = oo.suoritukset.zipWithIndex.map {
+        case (ps, i) => buildKoskiSuoritusRows(
           inputRow.oid,
           inputRow.sisältäväOpiskeluoikeusOid,
           oo.getOppilaitos,
@@ -315,7 +385,7 @@ object OpiskeluoikeusLoader extends Logging {
           suoritusIds.incrementAndGet
         )
       }
-      OutputRows(
+      KoskiOutputRows(
         rOpiskeluoikeusRow = ooRow,
         organisaatioHistoriaRows = OrganisaatioHistoriaRowBuilder.buildOrganisaatioHistoriaRows(oo),
         rOpiskeluoikeusAikajaksoRows = aikajaksoRows._1,
@@ -329,9 +399,47 @@ object OpiskeluoikeusLoader extends Logging {
     }.toEither.left.map(t => LoadErrorResult(inputRow.oid, t.toString))
   }
 
+  type YtrSuoritusRows = List[(
+    RPäätasonSuoritusRow,
+      List[RYtrTutkintokokonaisuudenSuoritusRow],
+      List[RYtrTutkintokerranSuoritusRow],
+      List[RYtrKokeenSuoritusRow],
+      List[RYtrTutkintokokonaisuudenKokeenSuoritusRow]
+    )]
+
+  private def buildYtrRow(inputRow: YtrOpiskeluoikeusRow): Either[LoadErrorResult, YtrOutputRows] = {
+    Try {
+      val toOpiskeluoikeusUnsafeStartTime = System.nanoTime()
+      val oo = inputRow.toOpiskeluoikeusUnsafe(KoskiSpecificSession.systemUser)
+      val toOpiskeluoikeusUnsafeDuration = System.nanoTime() - toOpiskeluoikeusUnsafeStartTime
+      val ooRow = buildROpiskeluoikeusRow(inputRow.oppijaOid, inputRow.aikaleima, oo, inputRow.data)
+
+      val suoritusRows: YtrSuoritusRows = oo.suoritukset.zipWithIndex.map {
+        case (ps, i) => buildYtrSuoritusRows(
+          oo,
+          inputRow.sisältäväOpiskeluoikeusOid,
+          oo.getOppilaitos,
+          ps,
+          inputRow.data \ "lisätiedot",
+          (inputRow.data \ "suoritukset") (i),
+          suoritusIds.incrementAndGet
+        )
+      }
+      YtrOutputRows(
+        rOpiskeluoikeusRow = ooRow,
+        rPäätasonSuoritusRows = suoritusRows.map(_._1),
+        rTutkintokokonaisuudenSuoritusRows = suoritusRows.flatMap(_._2),
+        rTutkintokerranSuoritusRows = suoritusRows.flatMap(_._3),
+        rKokeenSuoritusRows = suoritusRows.flatMap(_._4),
+        rTutkintokokonaisuudenKokeenSuoritusRows = suoritusRows.flatMap(_._5),
+        toOpiskeluoikeusUnsafeDuration = toOpiskeluoikeusUnsafeDuration
+      )
+    }.toEither.left.map(t => LoadErrorResult(inputRow.oid, t.toString))
+  }
+
   private val fieldsToExcludeFromOpiskeluoikeusJson = Set("oid", "versionumero", "aikaleima", "oppilaitos", "koulutustoimija", "suoritukset", "tyyppi", "alkamispäivä", "päättymispäivä")
 
-  private def buildROpiskeluoikeusRow(oppijaOid: String, aikaleima: Timestamp, o: KoskeenTallennettavaOpiskeluoikeus, data: JValue) =
+  private def buildROpiskeluoikeusRow(oppijaOid: String, aikaleima: Timestamp, o: KoskeenTallennettavaOpiskeluoikeus, data: JValue) = {
     ROpiskeluoikeusRow(
       opiskeluoikeusOid = o.oid.get,
       versionumero = o.versionumero.get,
@@ -342,14 +450,26 @@ object OpiskeluoikeusLoader extends Logging {
       oppilaitosNimi = convertLocalizedString(o.oppilaitos.flatMap(_.nimi), "fi"),
       oppilaitosNimiSv = convertLocalizedString(o.oppilaitos.flatMap(_.nimi), "sv"),
       oppilaitosKotipaikka = o.oppilaitos.flatMap(_.kotipaikka).map(_.koodiarvo.stripPrefix("kunta_")),
-      oppilaitosnumero = o.oppilaitos.flatMap(_.oppilaitosnumero).map(_.koodiarvo),
+      oppilaitosnumero = o match {
+        case _: YlioppilastutkinnonOpiskeluoikeus => None
+        case _ => o.oppilaitos.flatMap(_.oppilaitosnumero).map(_.koodiarvo)
+      },
       koulutustoimijaOid = o.koulutustoimija.map(_.oid).getOrElse(""),
       koulutustoimijaNimi = convertLocalizedString(o.koulutustoimija.flatMap(_.nimi), "fi"),
       koulutustoimijaNimiSv = convertLocalizedString(o.koulutustoimija.flatMap(_.nimi), "sv"),
       koulutusmuoto = o.tyyppi.koodiarvo,
-      alkamispäivä = o.alkamispäivä.map(Date.valueOf),
-      päättymispäivä = o.tila.opiskeluoikeusjaksot.lastOption.filter(_.opiskeluoikeusPäättynyt).map(v => Date.valueOf(v.alku)),
-      viimeisinTila = o.tila.opiskeluoikeusjaksot.lastOption.map(_.tila.koodiarvo),
+      alkamispäivä = o match {
+        case _: YlioppilastutkinnonOpiskeluoikeus => None
+        case _ => o.alkamispäivä.map(Date.valueOf)
+      },
+      päättymispäivä = o match {
+        case _: YlioppilastutkinnonOpiskeluoikeus => None
+        case _ => o.tila.opiskeluoikeusjaksot.lastOption.filter(_.opiskeluoikeusPäättynyt).map(v => Date.valueOf(v.alku))
+      },
+      viimeisinTila = o match {
+        case _: YlioppilastutkinnonOpiskeluoikeus => None
+        case _ => o.tila.opiskeluoikeusjaksot.lastOption.map(_.tila.koodiarvo)
+      },
       lisätiedotHenkilöstökoulutus = o.lisätiedot.collect {
         case l: AmmatillisenOpiskeluoikeudenLisätiedot => l.henkilöstökoulutus
       }.getOrElse(false),
@@ -366,6 +486,7 @@ object OpiskeluoikeusLoader extends Logging {
       oppivelvollisuudenSuorittamiseenKelpaava = oppivelvollisuudenSuorittamiseenKelpaava(o),
       data = JsonManipulation.removeFields(data, fieldsToExcludeFromOpiskeluoikeusJson)
     )
+  }
 
   private def oppivelvollisuudenSuorittamiseenKelpaava(o: KoskeenTallennettavaOpiskeluoikeus): Boolean =
     o.tyyppi.koodiarvo match {
@@ -393,8 +514,12 @@ object OpiskeluoikeusLoader extends Logging {
 
   private val fieldsToExcludeFromPäätasonSuoritusJson = Set("osasuoritukset", "tyyppi", "toimipiste", "koulutustyyppi")
   private val fieldsToExcludeFromOsasuoritusJson = Set("osasuoritukset", "tyyppi")
+  private val fieldsToExcludeFromYtrTutkintokokonaisuudenSuoritusJson = Set("tutkintokerrat", "tunniste")
+  private val fieldsToExcludeFromYtrTutkintokerranSuoritusJson: Set[String] = Set()
+  private val fieldsToExcludeFromYtrKokeenSuoritusJson = Set("osasuoritukset", "tyyppi", "tutkintokokonaisuudenTunniste")
 
-  private[raportointikanta] def buildSuoritusRows(opiskeluoikeusOid: String, sisältyyOpiskeluoikeuteenOid: Option[String], oppilaitos: OrganisaatioWithOid, ps: PäätasonSuoritus, data: JValue, idGenerator: => Long) = {
+  private[raportointikanta] def buildKoskiSuoritusRows(opiskeluoikeusOid: String, sisältyyOpiskeluoikeuteenOid: Option[String], oppilaitos: OrganisaatioWithOid, ps: PäätasonSuoritus, data: JValue, idGenerator: => Long) =
+  {
     val päätasonSuoritusId: Long = idGenerator
     val päätaso = buildRPäätasonSuoritusRow(opiskeluoikeusOid, sisältyyOpiskeluoikeuteenOid, oppilaitos, ps, data, päätasonSuoritusId)
     val osat = ps.osasuoritukset.getOrElse(List.empty).zipWithIndex.flatMap {
@@ -409,6 +534,87 @@ object OpiskeluoikeusLoader extends Logging {
       case _ => Nil
     }
     (päätaso, osat, muuAmmatillinenRaportointi, topksAmmatillinenRaportointi)
+  }
+
+
+  private[raportointikanta] def buildYtrSuoritusRows(
+    oo: YlioppilastutkinnonOpiskeluoikeus,
+    sisältyyOpiskeluoikeuteenOid: Option[String],
+    oppilaitos: OrganisaatioWithOid,
+    ps: YlioppilastutkinnonSuoritus,
+    lisätiedotData: JValue,
+    psData: JValue,
+    idGenerator: => Long
+  ) =
+  {
+    val opiskeluoikeusOid = oo.oid.get
+
+    val päätasonSuoritusId: Long = idGenerator
+    val päätaso = buildRPäätasonSuoritusRow(opiskeluoikeusOid, sisältyyOpiskeluoikeuteenOid, oppilaitos, ps, psData, päätasonSuoritusId)
+
+    val tutkintokokonaisuudet: Map[Int, (RYtrTutkintokokonaisuudenSuoritusRow, Map[String, RYtrTutkintokerranSuoritusRow])] =
+      oo.lisätiedot.flatMap(_.tutkintokokonaisuudet).getOrElse(List.empty).zipWithIndex.map {
+        case (tutkintokokonaisuus, i) =>
+          val tutkintokokonaisuusId = idGenerator
+          val tutkintokokonaisuusRow =
+            buildRYtrTutkintokokonaisuudenSuoritusRow(
+              tutkintokokonaisuusId,
+              päätasonSuoritusId,
+              opiskeluoikeusOid,
+              tutkintokokonaisuus,
+              (lisätiedotData \ "tutkintokokonaisuudet")(i)
+            )
+
+          val tutkintokerrat = tutkintokokonaisuus.tutkintokerrat.zipWithIndex.map {
+            case (tutkintokerta, j) =>
+              val tutkintokertaId = idGenerator
+              val tutkintokertaRow =
+                buildRYtrTutkintokerranSuoritusRow(
+                  tutkintokertaId,
+                  tutkintokokonaisuusId,
+                  päätasonSuoritusId,
+                  opiskeluoikeusOid,
+                  tutkintokerta,
+                  ((lisätiedotData \ "tutkintokokonaisuudet")(i) \ "tutkintokerrat")(j)
+                )
+              tutkintokerta.tutkintokerta.koodiarvo -> tutkintokertaRow
+          }.toMap
+
+          tutkintokokonaisuus.tunniste -> (tutkintokokonaisuusRow, tutkintokerrat)
+      }.toMap
+
+    val kokeet: Seq[(RYtrKokeenSuoritusRow, Seq[RYtrTutkintokokonaisuudenKokeenSuoritusRow])] =
+      ps.osasuoritukset.getOrElse(List.empty).zipWithIndex.map {
+        case (koe, i) =>
+          val koeId = idGenerator
+          val tutkintokertaId = tutkintokokonaisuudet(koe.tutkintokokonaisuudenTunniste.get)._2(koe.tutkintokerta.koodiarvo).ytrTutkintokerranSuoritusId
+          val tutkintokokonaisuusId = tutkintokokonaisuudet(koe.tutkintokokonaisuudenTunniste.get)._1.ytrTutkintokokonaisuudenSuoritusId
+          val koeRow = buildRYtrKokeenSuoritusRow(
+            koeId,
+            tutkintokertaId,
+            tutkintokokonaisuusId,
+            päätasonSuoritusId,
+            opiskeluoikeusOid,
+            koe,
+            (psData \ "osasuoritukset")(i)
+          )
+          val tutkintokokonaisuudenKoeRow =
+            buildRYtrTutkintokokonaisuudenKokeenSuoritusRow(
+              tutkintokokonaisuusId,
+              koeId,
+              tutkintokertaId,
+              sisällytetty = false
+            )
+          (koeRow, Seq(tutkintokokonaisuudenKoeRow))
+      }
+
+    (
+      päätaso,
+      tutkintokokonaisuudet.values.map(_._1).toList,
+      tutkintokokonaisuudet.values.map(_._2).flatMap(_.values).toList,
+      kokeet.map(_._1).toList,
+      kokeet.flatMap(_._2).toList
+    )
   }
 
   private def buildRPäätasonSuoritusRow(opiskeluoikeusOid: String, sisältyyOpiskeluoikeuteenOid: Option[String], oppilaitos: OrganisaatioWithOid, ps: PäätasonSuoritus, data: JValue, päätasonSuoritusId: Long) = {
@@ -556,6 +762,99 @@ object OpiskeluoikeusLoader extends Logging {
     }
   }
 
+  private def buildRYtrTutkintokokonaisuudenSuoritusRow(
+    id: Long,
+    päätasonSuoritusId: Long,
+    opiskeluoikeusOid: String,
+    tk: YlioppilastutkinnonTutkintokokonaisuudenLisätiedot,
+    data: JValue
+  ): RYtrTutkintokokonaisuudenSuoritusRow = {
+    val tyyppiKoodiarvo = tk.tyyppi.map(_.koodiarvo)
+    val tilaKoodiarvo = tk.tila.map(_.koodiarvo)
+    val hyväksytystiValmistunutTutkinto =
+      tyyppiKoodiarvo.exists(_ == "candidate") &&
+        tilaKoodiarvo.exists(_ == "graduated")
+    RYtrTutkintokokonaisuudenSuoritusRow(
+      ytrTutkintokokonaisuudenSuoritusId = id,
+      päätasonSuoritusId = päätasonSuoritusId,
+      opiskeluoikeusOid = opiskeluoikeusOid,
+      tyyppiKoodiarvo = tyyppiKoodiarvo,
+      tilaKoodiarvo = tilaKoodiarvo,
+      suorituskieliKoodiarvo = tk.suorituskieli.map(_.koodiarvo),
+      hyväksytystiValmistunutTutkinto = Some(hyväksytystiValmistunutTutkinto),
+      data = JsonManipulation.removeFields(data, fieldsToExcludeFromYtrTutkintokokonaisuudenSuoritusJson)
+    )
+  }
+
+  private def buildRYtrTutkintokerranSuoritusRow(
+    id: Long,
+    tutkintokokonaisuusId: Long,
+    päätasonSuoritusId: Long,
+    opiskeluoikeusOid: String,
+    tk:  YlioppilastutkinnonTutkintokerranLisätiedot,
+    data: JValue
+  ): RYtrTutkintokerranSuoritusRow = {
+    RYtrTutkintokerranSuoritusRow(
+      ytrTutkintokerranSuoritusId = id,
+      ytrTutkintokokonaisuudenSuoritusId = tutkintokokonaisuusId,
+      päätasonSuoritusId = päätasonSuoritusId,
+      opiskeluoikeusOid = opiskeluoikeusOid,
+      tutkintokertaKoodiarvo = tk.tutkintokerta.koodiarvo,
+      vuosi = tk.tutkintokerta.vuosi,
+      vuodenaikaKoodiarvo = tk.tutkintokerta.koodiarvo.takeRight(1),
+      koulutustaustaKoodiarvo = tk.koulutustausta.map(_.koodiarvo),
+
+      oppilaitosOid = tk.oppilaitos.map(_.oid),
+      oppilaitosNimi = tk.oppilaitos.map(ol => convertLocalizedString(ol.nimi, "fi")),
+      oppilaitosNimiSv = tk.oppilaitos.map(ol => convertLocalizedString(ol.nimi, "sv")),
+      oppilaitosKotipaikka = tk.oppilaitos.flatMap(_.kotipaikka).map(_.koodiarvo.stripPrefix("kunta_")),
+      oppilaitosnumero = tk.oppilaitos.flatMap(_.oppilaitosnumero).map(_.koodiarvo),
+      data = JsonManipulation.removeFields(data, fieldsToExcludeFromYtrTutkintokerranSuoritusJson)
+    )
+  }
+
+  private def buildRYtrKokeenSuoritusRow(
+    id: Long,
+    tutkintokertaId: Long,
+    tutkintokokonaisuusId: Long,
+    päätasonSuoritusId: Long,
+    opiskeluoikeusOid: String,
+    ks: YlioppilastutkinnonKokeenSuoritus,
+    data: JValue
+  ) = {
+    RYtrKokeenSuoritusRow(
+      ytrKokeenSuoritusId = id,
+      ytrTutkintokerranSuoritusId = tutkintokertaId,
+      ytrTutkintokokonaisuudenSuoritusId = tutkintokokonaisuusId,
+      päätasonSuoritusId = päätasonSuoritusId,
+      opiskeluoikeusOid = opiskeluoikeusOid,
+      suorituksenTyyppi = ks.tyyppi.koodiarvo,
+      koulutusmoduuliKoodisto = convertKoodisto(ks.koulutusmoduuli.tunniste),
+      koulutusmoduuliKoodiarvo = ks.koulutusmoduuli.tunniste.koodiarvo,
+      koulutusmoduuliNimi = ks.koulutusmoduuli.tunniste.getNimi.map(_.get("fi")),
+      arviointiArvosanaKoodiarvo = ks.viimeisinArviointi.map(_.arvosana.koodiarvo),
+      arviointiArvosanaKoodisto = ks.viimeisinArviointi.flatMap(a => convertKoodisto(a.arvosana)),
+      arviointiHyväksytty = ks.viimeisinArviointi.map(_.hyväksytty),
+      arviointiPisteet = ks.viimeisinArviointi.flatMap(_.pisteet),
+      keskeytynyt = ks.keskeytynyt,
+      maksuton = ks.maksuton,
+      data = JsonManipulation.removeFields(data, fieldsToExcludeFromYtrKokeenSuoritusJson),
+    )
+  }
+
+  private def buildRYtrTutkintokokonaisuudenKokeenSuoritusRow(
+    tutkintokokonaisuusId: Long,
+    koeId: Long,
+    tutkintokertaId: Long,
+    sisällytetty: Boolean
+  ) =
+    RYtrTutkintokokonaisuudenKokeenSuoritusRow(
+      ytrTutkintokokonaisuudenSuoritusId = tutkintokokonaisuusId,
+      ytrKokeenSuoritusId = koeId,
+      ytrTutkintokerranSuoritusId = tutkintokertaId,
+      sisällytetty = sisällytetty
+    )
+
   private[raportointikanta] def buildRowMitätöity(raw: KoskiOpiskeluoikeusRow): Either[LoadErrorResult, RMitätöityOpiskeluoikeusRow] = {
     for {
       oo <- raw.toOpiskeluoikeus(KoskiSpecificSession.systemUser).left.map(e => LoadErrorResult(raw.oid, mitätöityError + " " + e.toString()))
@@ -599,17 +898,19 @@ object OpiskeluoikeusLoader extends Logging {
     (
       pageSize: Int,
       update: Option[RaportointiDatabaseUpdate],
+      enableYtr: Boolean,
       opiskeluoikeusQueryRepository: OpiskeluoikeusQueryService,
     )
-    (mapFn: Seq[KoskiOpiskeluoikeusRow] => Seq[A])
+    (mapFn: Seq[OpiskeluoikeusRow] => Seq[A])
   : Observable[A] =
     update match {
       case Some(update) =>
         update.loader.load(pageSize, update)(mapFn)
+      case _ if enableYtr =>
+        opiskeluoikeusQueryRepository.mapKoskiJaYtrOpiskeluoikeudetSivuittainWithoutAccessCheck(pageSize)(mapFn)
       case _ =>
-        opiskeluoikeusQueryRepository.mapOpiskeluoikeudetSivuittainWithoutAccessCheck(pageSize)(mapFn)
+        opiskeluoikeusQueryRepository.mapKoskiOpiskeluoikeudetSivuittainWithoutAccessCheck(pageSize)(mapFn)
     }
-
 }
 
 sealed trait LoadResult
@@ -617,7 +918,7 @@ case class LoadErrorResult(oid: String, error: String) extends LoadResult
 case class LoadProgressResult(opiskeluoikeusCount: Int, suoritusCount: Int) extends LoadResult
 case class LoadCompleted(done: Boolean = true) extends LoadResult
 
-case class OutputRows(
+case class KoskiOutputRows(
   rOpiskeluoikeusRow: ROpiskeluoikeusRow,
   organisaatioHistoriaRows: Seq[ROrganisaatioHistoriaRow],
   rOpiskeluoikeusAikajaksoRows: Seq[ROpiskeluoikeusAikajaksoRow],
@@ -626,6 +927,16 @@ case class OutputRows(
   rOsasuoritusRows: Seq[ROsasuoritusRow],
   muuAmmatillinenOsasuoritusRaportointiRows: Seq[MuuAmmatillinenOsasuoritusRaportointiRow],
   topksAmmatillinenRaportointiRows: Seq[TOPKSAmmatillinenRaportointiRow],
+  toOpiskeluoikeusUnsafeDuration: Long = 0
+)
+
+case class YtrOutputRows(
+  rOpiskeluoikeusRow: ROpiskeluoikeusRow,
+  rPäätasonSuoritusRows: Seq[RPäätasonSuoritusRow],
+  rTutkintokokonaisuudenSuoritusRows: Seq[RYtrTutkintokokonaisuudenSuoritusRow],
+  rTutkintokerranSuoritusRows: Seq[RYtrTutkintokerranSuoritusRow],
+  rKokeenSuoritusRows: Seq[RYtrKokeenSuoritusRow],
+  rTutkintokokonaisuudenKokeenSuoritusRows: Seq[RYtrTutkintokokonaisuudenKokeenSuoritusRow],
   toOpiskeluoikeusUnsafeDuration: Long = 0
 )
 

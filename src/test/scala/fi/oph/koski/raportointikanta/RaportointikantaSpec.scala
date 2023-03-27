@@ -3,8 +3,8 @@ package fi.oph.koski.raportointikanta
 import fi.oph.koski.api.{OpiskeluoikeudenMitätöintiJaPoistoTestMethods, OpiskeluoikeusTestMethodsAmmatillinen}
 import fi.oph.koski.db.KoskiTables.{KoskiOpiskeluOikeudet, PoistetutOpiskeluoikeudet}
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.documentation.AmmatillinenExampleData
-import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
+import fi.oph.koski.documentation.{AmmatillinenExampleData, YleissivistavakoulutusExampleData}
+import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.{master, masterEiKoskessa}
 import fi.oph.koski.json.{JsonFiles, JsonSerializer}
 import fi.oph.koski.koskiuser.MockUsers
@@ -12,8 +12,10 @@ import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Wait
+import fi.oph.koski.ytr.download.YtrDownloadTestMethods
 import fi.oph.koski.{DatabaseTestMethods, DirtiesFixtures, KoskiApplicationForTests, KoskiHttpSpec}
 import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}
+import org.json4s.{DefaultFormats, JNothing, JString}
 import org.json4s.JsonAST.{JBool, JObject}
 import org.json4s.jackson.JsonMethods
 import org.scalatest.freespec.AnyFreeSpec
@@ -30,7 +32,9 @@ class RaportointikantaSpec
     with RaportointikantaTestMethods
     with DatabaseTestMethods
     with DirtiesFixtures
-    with OpiskeluoikeudenMitätöintiJaPoistoTestMethods {
+    with OpiskeluoikeudenMitätöintiJaPoistoTestMethods
+    with YtrDownloadTestMethods {
+  override implicit val formats = DefaultFormats
 
   override protected def alterFixture(): Unit = {
     createOrUpdate(KoskiSpecificMockOppijat.slaveMasterEiKoskessa.henkilö, defaultOpiskeluoikeus)
@@ -62,6 +66,29 @@ class RaportointikantaSpec
         None,
         true
       )))
+    }
+    "Vain YTR-datassa esiintyvät henkilöt on ladattu" in {
+      val mockHetu = "080380-2432"
+      val mockOppija = KoskiApplicationForTests.opintopolkuHenkilöFacade.findOppijaByHetu(mockHetu).get
+      val expectedHenkilöRow = RHenkilöRow(
+        mockOppija.oid,
+        mockOppija.oid,
+        mockOppija.linkitetytOidit,
+        mockOppija.hetu,
+        None,
+        Some(Date.valueOf("1980-03-08")),
+        mockOppija.sukunimi,
+        mockOppija.etunimet,
+        Some("fi"),
+        None,
+        false,
+        None,
+        None,
+        None,
+        true
+      )
+      val henkilo = mainRaportointiDb.runDbSync(mainRaportointiDb.RHenkilöt.filter(_.hetu === mockHetu).result)
+      henkilo should equal(Seq(expectedHenkilöRow))
     }
     "Huomioi linkitetyt oidit" in {
       val slaveOppija = KoskiSpecificMockOppijat.slave.henkilö
@@ -130,7 +157,236 @@ class RaportointikantaSpec
       // Varmista, että raportointikanta ei jää epämääräiseen virhetilaan ennen muita testejä. Ilman sleeppiä
       // näin voi generointivirheiden vuoksi käydä.
       Thread.sleep(5000)
-      KoskiApplicationForTests.fixtureCreator.resetFixtures(reloadRaportointikanta = true)
+      KoskiApplicationForTests.fixtureCreator.resetFixtures(reloadRaportointikanta = true, reloadYtrData = true)
+    }
+  }
+
+  "YTR-opiskeluoikeuksien lataus" - {
+    "YTR-opiskeluoikeuksia ei ladata raportointikantaan, jos YTR-lataus ei ole päällä" in {
+      val loadResult = KoskiApplicationForTests.raportointikantaService.loadRaportointikanta(force = false, enableYtr = false)
+      loadResult should be(true)
+      Wait.until { KoskiApplicationForTests.raportointikantaService.isLoadComplete }
+
+      val ytrOotRaportointikannassa = mainRaportointiDb.runDbSync(
+        mainRaportointiDb.ROpiskeluoikeudet.filter(_.koulutusmuoto === "ylioppilastutkinto").result
+      )
+      ytrOotRaportointikannassa should have length(0)
+
+      val ootRaportointikannassa = mainRaportointiDb.runDbSync(
+        mainRaportointiDb.ROpiskeluoikeudet.result
+      )
+      ootRaportointikannassa.length should be > 0
+
+      resetFixtures()
+    }
+    "Opiskeluoikeudet ladataan raportointikantaan" in {
+      verifioiYtrOpiskeluoikeudet()
+    }
+    "Opiskeluoikeudet säilyvät raportointikannassa, kun tehdään inkrementaalinen päivitys" in {
+      päivitäRaportointikantaInkrementaalisesti()
+
+      verifioiYtrOpiskeluoikeudet()
+    }
+
+    def verifioiYtrOpiskeluoikeudet() = {
+      val ytrOotRaportointikannassa = mainRaportointiDb.runDbSync(
+        mainRaportointiDb.ROpiskeluoikeudet.filter(_.koulutusmuoto === "ylioppilastutkinto").sortBy(_.opiskeluoikeusOid).result
+      )
+      val ytrPäätasonSuorituksetRaportointikannassa = mainRaportointiDb.runDbSync(
+        mainRaportointiDb.RPäätasonSuoritukset.filter(_.suorituksenTyyppi === "ylioppilastutkinto").sortBy(_.päätasonSuoritusId).result
+      )
+      val ytrTutkintokokonaisuudenSuorituksetRaportointikannassa = mainRaportointiDb.runDbSync(
+        mainRaportointiDb.RYtrTutkintokokonaisuudenSuoritukset.sortBy(_.ytrTutkintokokonaisuudenSuoritusId).result
+      )
+      val ytrTutkintokerranSuorituksetRaportointikannassa = mainRaportointiDb.runDbSync(
+        mainRaportointiDb.RYtrTutkintokerranSuoritukset.sortBy(_.ytrTutkintokerranSuoritusId).result
+      )
+      val ytrKokeenSuorituksetRaportointikannassa = mainRaportointiDb.runDbSync(
+        mainRaportointiDb.RYtrKokeenSuoritukset.sortBy(_.ytrKokeenSuoritusId).result
+      )
+      val ytrTutkintokokonaisuudenKokeenSuorituksetRaportointikannassa = mainRaportointiDb.runDbSync(
+        mainRaportointiDb.RYtrTutkintokokonaisuudenKokeenSuoritukset.sortBy(s => (s.ytrTutkintokokonaisuudenSuoritusId, s.ytrKokeenSuoritusId)).result
+      )
+
+      ytrOotRaportointikannassa.length should be >= 4
+      ytrPäätasonSuorituksetRaportointikannassa.length should be(ytrOotRaportointikannassa.length)
+      ytrTutkintokokonaisuudenSuorituksetRaportointikannassa.length should be >= ytrPäätasonSuorituksetRaportointikannassa.length
+      ytrTutkintokerranSuorituksetRaportointikannassa.length should be >= ytrTutkintokokonaisuudenSuorituksetRaportointikannassa.length
+      ytrKokeenSuorituksetRaportointikannassa.length should be >= ytrTutkintokerranSuorituksetRaportointikannassa.length
+      ytrTutkintokokonaisuudenKokeenSuorituksetRaportointikannassa.length should be(ytrKokeenSuorituksetRaportointikannassa.length)
+
+      val expectedOo = getYtrOppija(KoskiSpecificMockOppijat.ylioppilasUusiApi.oid, MockUsers.ophkatselija).opiskeluoikeudet(0)
+        .asInstanceOf[YlioppilastutkinnonOpiskeluoikeus]
+      val expectedPts = expectedOo.suoritukset(0)
+      val expectedTutkintokokonaisuus = expectedOo.lisätiedot.get.tutkintokokonaisuudet.get(0)
+      val expectedTutkintokerrat = expectedTutkintokokonaisuus.tutkintokerrat.sortBy(_.tutkintokerta.koodiarvo)
+      val expectedKokeet = expectedPts.osasuoritukset.get.sortBy(os => os.koulutusmoduuli.tunniste.koodiarvo)
+
+      val actualOo: ROpiskeluoikeusRow =
+        ytrOotRaportointikannassa.filter(_.oppijaOid === KoskiSpecificMockOppijat.ylioppilasUusiApi.oid)(0)
+      val actualPts: RPäätasonSuoritusRow =
+        ytrPäätasonSuorituksetRaportointikannassa.filter(_.opiskeluoikeusOid === actualOo.opiskeluoikeusOid)(0)
+      val actualTutkintokokonaisuus: RYtrTutkintokokonaisuudenSuoritusRow =
+        ytrTutkintokokonaisuudenSuorituksetRaportointikannassa.filter(_.opiskeluoikeusOid === actualOo.opiskeluoikeusOid)(0)
+      val actualTutkintokerrat: Seq[RYtrTutkintokerranSuoritusRow] =
+        ytrTutkintokerranSuorituksetRaportointikannassa.filter(_.opiskeluoikeusOid === actualOo.opiskeluoikeusOid).sortBy(_.tutkintokertaKoodiarvo)
+      val actualKokeet: Seq[RYtrKokeenSuoritusRow] =
+        ytrKokeenSuorituksetRaportointikannassa.filter(_.päätasonSuoritusId === actualPts.päätasonSuoritusId).sortBy(_.koulutusmoduuliKoodiarvo)
+      val actualTutkintokokonaisuudenKokeet: Seq[RYtrTutkintokokonaisuudenKokeenSuoritusRow] =
+        ytrTutkintokokonaisuudenKokeenSuorituksetRaportointikannassa.filter(_.ytrTutkintokokonaisuudenSuoritusId === actualTutkintokokonaisuus.ytrTutkintokokonaisuudenSuoritusId)
+
+      verifyOo(KoskiSpecificMockOppijat.ylioppilasUusiApi, expectedOo, actualOo)
+      verifyPts(expectedOo, expectedPts, actualPts)
+      verifyTutkintokokonaisuus(expectedOo, expectedTutkintokokonaisuus, actualPts, actualTutkintokokonaisuus)
+      verifyTutkintokerrat(expectedOo, expectedTutkintokerrat, actualPts, actualTutkintokokonaisuus, actualTutkintokerrat)
+      verifyKokeet(expectedOo, expectedKokeet, actualPts, actualTutkintokokonaisuus, actualTutkintokerrat, actualKokeet, actualTutkintokokonaisuudenKokeet)
+    }
+
+    def verifyOo(expectedOppija: LaajatOppijaHenkilöTiedot, expectedOo: YlioppilastutkinnonOpiskeluoikeus, actualOo: ROpiskeluoikeusRow) = {
+      actualOo.opiskeluoikeusOid should equal(expectedOo.oid.get)
+      actualOo.alkamispäivä should equal(None)
+      actualOo.päättymispäivä should equal(None)
+      actualOo.oppijaOid should equal(expectedOppija.oid)
+      actualOo.sisältyyOpiskeluoikeuteenOid should equal(None)
+      actualOo.koulutusmuoto should equal("ylioppilastutkinto")
+      actualOo.koulutustoimijaOid should equal(expectedOo.koulutustoimija.get.oid)
+      actualOo.koulutustoimijaNimi should equal(expectedOo.koulutustoimija.get.nimi.get.get("fi"))
+      actualOo.koulutustoimijaNimiSv should equal(expectedOo.koulutustoimija.get.nimi.get.get("sv"))
+      actualOo.lisätiedotHenkilöstökoulutus should equal(false)
+      actualOo.lisätiedotKoulutusvienti should equal(false)
+      actualOo.luokka should equal(None)
+      actualOo.lähdejärjestelmäId should equal(expectedOo.lähdejärjestelmänId.flatMap(_.id))
+      actualOo.lähdejärjestelmäKoodiarvo should equal(expectedOo.lähdejärjestelmänId.map(_.lähdejärjestelmä.koodiarvo))
+      actualOo.oppilaitosOid should equal(expectedOo.oppilaitos.get.oid)
+      actualOo.oppilaitosnumero should equal(None)
+      actualOo.oppilaitosNimi should equal(expectedOo.oppilaitos.get.nimi.get.get("fi"))
+      actualOo.oppilaitosNimiSv should equal(expectedOo.oppilaitos.get.nimi.get.get("sv"))
+      actualOo.oppilaitosKotipaikka should equal(None)
+      actualOo.oppivelvollisuudenSuorittamiseenKelpaava should equal(false)
+      actualOo.tuvaJärjestämislupa should equal(None)
+      actualOo.versionumero should equal(expectedOo.versionumero.get)
+      actualOo.viimeisinTila should equal(None)
+
+      actualOo.data \ "suoritukset" should equal(JNothing)
+      actualOo.data \ "tyyppi" should equal(JNothing)
+      actualOo.data \ "oppilaitosSuorituspäivänä" \ "oid" should equal(JString(YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu.oid))
+      actualOo.data \ "oppilaitosSuorituspäivänä" \ "nimi" \ "fi" should equal(JString(YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu.nimi.get.get("fi")))
+    }
+
+    def verifyPts(expectedOo: YlioppilastutkinnonOpiskeluoikeus, expectedPts: YlioppilastutkinnonSuoritus, actualPts: RPäätasonSuoritusRow) = {
+      actualPts.opiskeluoikeusOid should equal(expectedOo.oid.get)
+      actualPts.toimipisteOid should equal(expectedPts.toimipiste.oid)
+      actualPts.toimipisteNimi should equal(expectedPts.toimipiste.nimi.get.get("fi"))
+      actualPts.toimipisteNimiSv should equal(expectedPts.toimipiste.nimi.get.get("sv"))
+      actualPts.alkamispäivä should equal(None)
+      actualPts.arviointiArvosanaKoodiarvo should equal(None)
+      actualPts.arviointiPäivä should equal(None)
+      actualPts.arviointiHyväksytty should equal(None)
+      actualPts.arviointiArvosanaKoodisto should equal(None)
+      actualPts.koulutusmoduuliKoodiarvo should equal(expectedPts.koulutusmoduuli.tunniste.koodiarvo)
+      actualPts.koulutusmoduuliKoodisto should equal(Some(expectedPts.koulutusmoduuli.tunniste.koodistoUri))
+      actualPts.koulutusmoduuliNimi should equal(Some(expectedPts.koulutusmoduuli.tunniste.nimi.get.get("fi")))
+      actualPts.koulutusmoduuliKoulutustyyppi should equal(expectedPts.koulutusmoduuli.koulutustyyppi)
+      actualPts.koulutusmoduuliLaajuusYksikkö should equal(expectedPts.koulutusmoduuli.laajuus.map(_.yksikkö.koodiarvo))
+      actualPts.koulutusmoduuliLaajuusArvo should equal(expectedPts.koulutusmoduuli.laajuus.map(_.arvo))
+      actualPts.koulutusModuulinLaajuusYksikköNimi should equal(expectedPts.koulutusmoduuli.laajuus.map(_.yksikkö.nimi.get.get("fi")))
+      actualPts.toimipisteOid should equal(expectedPts.toimipiste.oid)
+      actualPts.toimipisteNimi should equal(expectedPts.toimipiste.nimi.get.get("fi"))
+      actualPts.toimipisteNimiSv should equal(expectedPts.toimipiste.nimi.get.get("sv"))
+      actualPts.suorituksenTyyppi should equal(expectedPts.tyyppi.koodiarvo)
+      actualPts.suorituskieliKoodiarvo should equal(None)
+      actualPts.oppimääräKoodiarvo should equal(None)
+      actualPts.sisältyyOpiskeluoikeuteenOid should equal(None)
+      actualPts.vahvistusPäivä.map(_.toLocalDate) should equal(expectedPts.vahvistus.map(_.päivä))
+
+      actualPts.data \ "pakollisetKokeetSuoritettu" should equal(JBool(expectedPts.pakollisetKokeetSuoritettu))
+    }
+
+    def verifyTutkintokokonaisuus(
+      expectedOo: YlioppilastutkinnonOpiskeluoikeus,
+      expectedTutkintokokonaisuus: YlioppilastutkinnonTutkintokokonaisuudenLisätiedot,
+      actualPts: RPäätasonSuoritusRow,
+      actualTutkintokokonaisuus: RYtrTutkintokokonaisuudenSuoritusRow
+    ) = {
+      actualTutkintokokonaisuus.opiskeluoikeusOid should equal(expectedOo.oid.get)
+      actualTutkintokokonaisuus.päätasonSuoritusId should equal(actualPts.päätasonSuoritusId)
+      actualTutkintokokonaisuus.suorituskieliKoodiarvo should equal(expectedTutkintokokonaisuus.suorituskieli.map(_.koodiarvo))
+      actualTutkintokokonaisuus.tyyppiKoodiarvo should equal(expectedTutkintokokonaisuus.tyyppi.map(_.koodiarvo))
+      actualTutkintokokonaisuus.tilaKoodiarvo should equal(expectedTutkintokokonaisuus.tila.map(_.koodiarvo))
+      actualTutkintokokonaisuus.hyväksytystiValmistunutTutkinto should equal(
+        expectedTutkintokokonaisuus.tyyppi.zip(expectedTutkintokokonaisuus.tila).headOption match {
+          case Some((tyyppi, tila)) => Some(tyyppi.koodiarvo == "candidate" && tila.koodiarvo == "graduated")
+          case _ => None
+        }
+      )
+      actualTutkintokokonaisuus.data \ "tyyppi" \ "koodistoUri" should equal(JString("ytrtutkintokokonaisuudentyyppi"))
+    }
+
+    def verifyTutkintokerrat(
+      expectedOo: YlioppilastutkinnonOpiskeluoikeus,
+      expectedTutkintokerrat: List[YlioppilastutkinnonTutkintokerranLisätiedot],
+      actualPts: RPäätasonSuoritusRow,
+      actualTutkintokokonaisuus: RYtrTutkintokokonaisuudenSuoritusRow,
+      actualTutkintokerrat: Seq[RYtrTutkintokerranSuoritusRow]
+    )  = {
+      actualTutkintokerrat.length should equal(expectedTutkintokerrat.length)
+      actualTutkintokerrat.zip(expectedTutkintokerrat).foreach { case (actualTutkintokerta, expectedTutkintokerta) =>
+        actualTutkintokerta.opiskeluoikeusOid should equal(expectedOo.oid.get)
+        actualTutkintokerta.päätasonSuoritusId should equal(actualPts.päätasonSuoritusId)
+        actualTutkintokerta.ytrTutkintokokonaisuudenSuoritusId should equal(actualTutkintokokonaisuus.ytrTutkintokokonaisuudenSuoritusId)
+        actualTutkintokerta.tutkintokertaKoodiarvo should equal(expectedTutkintokerta.tutkintokerta.koodiarvo)
+
+        actualTutkintokerta.vuosi should equal(expectedTutkintokerta.tutkintokerta.vuosi)
+        actualTutkintokerta.vuodenaikaKoodiarvo should equal(expectedTutkintokerta.tutkintokerta.koodiarvo.takeRight(1))
+        actualTutkintokerta.koulutustaustaKoodiarvo should equal(expectedTutkintokerta.koulutustausta.map(_.koodiarvo))
+        actualTutkintokerta.oppilaitosOid should equal(expectedTutkintokerta.oppilaitos.map(_.oid))
+        actualTutkintokerta.oppilaitosNimi should equal(expectedTutkintokerta.oppilaitos.flatMap(_.nimi.map(_.get("fi"))))
+        actualTutkintokerta.oppilaitosNimiSv should equal(expectedTutkintokerta.oppilaitos.flatMap(_.nimi.map(_.get("sv"))))
+        actualTutkintokerta.oppilaitosKotipaikka should equal(expectedTutkintokerta.oppilaitos.flatMap(_.kotipaikka.map(_.koodiarvo)))
+        actualTutkintokerta.oppilaitosnumero should equal(expectedTutkintokerta.oppilaitos.flatMap(_.oppilaitosnumero.map(_.koodiarvo)))
+
+        actualTutkintokerta.data \ "tutkintokerta" \ "vuodenaika" \ "fi" should equal(JString(expectedTutkintokerta.tutkintokerta.vuodenaika.get("fi")))
+      }
+    }
+
+    def verifyKokeet(
+      expectedOo: YlioppilastutkinnonOpiskeluoikeus,
+      expectedKokeet: Seq[YlioppilastutkinnonKokeenSuoritus],
+      actualPts: RPäätasonSuoritusRow,
+      actualTutkintokokonaisuus: RYtrTutkintokokonaisuudenSuoritusRow,
+      actualTutkintokerrat: Seq[RYtrTutkintokerranSuoritusRow],
+      actualKokeet: Seq[RYtrKokeenSuoritusRow],
+      actualTutkintokokonaisuudenKokeet: Seq[RYtrTutkintokokonaisuudenKokeenSuoritusRow]
+    ) = {
+      actualKokeet.length should equal(expectedKokeet.length)
+      actualKokeet.zip(expectedKokeet).foreach { case (actualKoe, expectedKoe) =>
+        val actualTutkintokerta = actualTutkintokerrat.find(_.ytrTutkintokerranSuoritusId == actualKoe.ytrTutkintokerranSuoritusId).get
+
+        actualKoe.päätasonSuoritusId should equal(actualPts.päätasonSuoritusId)
+        actualKoe.ytrTutkintokerranSuoritusId should equal(actualTutkintokerta.ytrTutkintokerranSuoritusId)
+        actualKoe.ytrTutkintokokonaisuudenSuoritusId should equal(actualTutkintokokonaisuus.ytrTutkintokokonaisuudenSuoritusId)
+        actualKoe.päätasonSuoritusId should equal(actualPts.päätasonSuoritusId)
+        actualKoe.opiskeluoikeusOid should equal(expectedOo.oid.get)
+        actualKoe.suorituksenTyyppi should equal(expectedKoe.tyyppi.koodiarvo)
+        actualKoe.koulutusmoduuliKoodisto should equal(Some(expectedKoe.koulutusmoduuli.tunniste.koodistoUri))
+        actualKoe.koulutusmoduuliKoodiarvo should equal(expectedKoe.koulutusmoduuli.tunniste.koodiarvo)
+        actualKoe.koulutusmoduuliNimi should equal(Some(expectedKoe.koulutusmoduuli.tunniste.nimi.get.get("fi")))
+        actualKoe.arviointiArvosanaKoodiarvo should equal(expectedKoe.arviointi.map(_.last).map(_.arvosana.koodiarvo))
+        actualKoe.arviointiArvosanaKoodisto should equal(expectedKoe.arviointi.map(_.last).map(_.arvosana.koodistoUri))
+        actualKoe.arviointiHyväksytty should equal(expectedKoe.arviointi.map(_.last).map(_.hyväksytty))
+        actualKoe.arviointiPisteet should equal(expectedKoe.arviointi.map(_.last).flatMap(_.pisteet))
+        actualKoe.keskeytynyt should equal(expectedKoe.keskeytynyt)
+        actualKoe.maksuton should equal(expectedKoe.maksuton)
+
+        actualKoe.data \ "tutkintokerta" \ "vuodenaika" \ "fi" should equal(JString(expectedKoe.tutkintokerta.vuodenaika.get("fi")))
+
+        actualTutkintokokonaisuudenKokeet should contain(RYtrTutkintokokonaisuudenKokeenSuoritusRow(
+          ytrTutkintokokonaisuudenSuoritusId = actualTutkintokokonaisuus.ytrTutkintokokonaisuudenSuoritusId,
+          ytrKokeenSuoritusId = actualKoe.ytrKokeenSuoritusId,
+          ytrTutkintokerranSuoritusId = actualTutkintokerta.ytrTutkintokerranSuoritusId,
+          sisällytetty = false
+        ))
+      }
     }
   }
 
@@ -501,7 +757,7 @@ class RaportointikantaSpec
         val opiskeluoikeus = ammatillinenOpiskeluoikeus.copy(
           suoritukset = List(suoritus)
         )
-        val (ps, _, _, _) = OpiskeluoikeusLoader.buildSuoritusRows(oid, None, opiskeluoikeus.oppilaitos.get, opiskeluoikeus.suoritukset.head, JObject(), 1)
+        val (ps, _, _, _) = OpiskeluoikeusLoader.buildKoskiSuoritusRows(oid, None, opiskeluoikeus.oppilaitos.get, opiskeluoikeus.suoritukset.head, JObject(), 1)
         ps.toimipisteOid should equal(AmmatillinenExampleData.stadinToimipiste.oid)
         ps.toimipisteNimi should equal(AmmatillinenExampleData.stadinToimipiste.nimi.get.get("fi"))
       }
@@ -514,7 +770,7 @@ class RaportointikantaSpec
         val opiskeluoikeus = ammatillinenOpiskeluoikeus.copy(
           suoritukset = List(suoritus)
         )
-        val (ps, _, _, _) = OpiskeluoikeusLoader.buildSuoritusRows(oid, None, opiskeluoikeus.oppilaitos.get, opiskeluoikeus.suoritukset.head, JObject(), 1)
+        val (ps, _, _, _) = OpiskeluoikeusLoader.buildKoskiSuoritusRows(oid, None, opiskeluoikeus.oppilaitos.get, opiskeluoikeus.suoritukset.head, JObject(), 1)
         ps.alkamispäivä.get should equal(Date.valueOf("2016-1-1"))
       }
     }
@@ -591,7 +847,7 @@ class RaportointikantaSpec
     }
 
     "Jo ladatun opiskeluoikeuden mitätöinti kesken latauksen ei vaikuta lopputulokseen" in {
-      KoskiApplicationForTests.fixtureCreator.resetFixtures(reloadRaportointikanta = true)
+      KoskiApplicationForTests.fixtureCreator.resetFixtures(reloadRaportointikanta = true, reloadYtrData = true)
 
       val alkuperäinenOpiskeluoikeusCount = opiskeluoikeusCount
 
@@ -619,7 +875,7 @@ class RaportointikantaSpec
     }
 
     "Jo ladatun opiskeluoikeuden poisto kesken latauksen ei vaikuta lopputulokseen" in {
-      KoskiApplicationForTests.fixtureCreator.resetFixtures(reloadRaportointikanta = true)
+      KoskiApplicationForTests.fixtureCreator.resetFixtures(reloadRaportointikanta = true, reloadYtrData = true)
 
       val alkuperäinenOpiskeluoikeusCount = opiskeluoikeusCount
 
@@ -659,7 +915,7 @@ class RaportointikantaSpec
     }
 
     "Mitätöity opiskeluoikeus päivittyy oikein inkrementaalisessa päivityksessä" in {
-      KoskiApplicationForTests.fixtureCreator.resetFixtures(reloadRaportointikanta = true)
+      KoskiApplicationForTests.fixtureCreator.resetFixtures(reloadRaportointikanta = true, reloadYtrData = true)
 
       val alkuperäinenOpiskeluoikeusCount = opiskeluoikeusCount
       val alkuperäinenMitätöityOpiskeluoikeusCount = mitätöityOpiskeluoikeusCount
@@ -673,7 +929,7 @@ class RaportointikantaSpec
     }
 
     "Poistettu opiskeluoikeus päivittyy oikein inkrementaalisessa päivityksessä" in {
-      KoskiApplicationForTests.fixtureCreator.resetFixtures(reloadRaportointikanta = true)
+      KoskiApplicationForTests.fixtureCreator.resetFixtures(reloadRaportointikanta = true, reloadYtrData = true)
 
       val alkuperäinenOpiskeluoikeusCount = opiskeluoikeusCount
       val alkuperäinenMitätöityOpiskeluoikeusCount = mitätöityOpiskeluoikeusCount
@@ -688,7 +944,7 @@ class RaportointikantaSpec
     }
 
     "Mitätöinnin peruutus päivittyy oikein inkrementaalisessa päivityksessä" in {
-      KoskiApplicationForTests.fixtureCreator.resetFixtures(reloadRaportointikanta = true)
+      KoskiApplicationForTests.fixtureCreator.resetFixtures(reloadRaportointikanta = true, reloadYtrData = true)
       val opiskeluoikeus = ensimmäinenMitätöitävissäolevaOpiskeluoikeusIdJärjestyksessä
 
       mitätöiOpiskeluoikeus(opiskeluoikeus.oid)

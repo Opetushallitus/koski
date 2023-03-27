@@ -2,7 +2,7 @@ package fi.oph.koski.raportointikanta
 
 import fi.oph.koski.cloudwatch.CloudWatchMetricsService
 import fi.oph.koski.config.{Environment, KoskiApplication}
-import fi.oph.koski.db.{KoskiOpiskeluoikeusRow, RaportointiGenerointiDatabaseConfig}
+import fi.oph.koski.db.{KoskiOpiskeluoikeusRow, OpiskeluoikeusRow, RaportointiGenerointiDatabaseConfig}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.PäivitetytOpiskeluoikeudetJonoService
@@ -23,8 +23,9 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
     scheduler: Scheduler = defaultScheduler,
     onEnd: () => Unit = () => (),
     pageSize: Int = OpiskeluoikeusLoader.DefaultBatchSize,
-    onAfterPage: (Int, Seq[KoskiOpiskeluoikeusRow]) => Unit = (_, _) => (),
+    onAfterPage: (Int, Seq[OpiskeluoikeusRow]) => Unit = (_, _) => (),
     skipUnchangedData: Boolean = false,
+    enableYtr: Boolean = true
   ): Boolean = {
     if (isLoading && !force) {
       logger.info("Raportointikanta already loading, do nothing")
@@ -43,17 +44,18 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
         None
       }
       loadDatabase.dropAndCreateObjects
-      startLoading(update, scheduler, onEnd, pageSize, onAfterPage)
+      startLoading(update, enableYtr, scheduler, onEnd, pageSize, onAfterPage)
       logger.info(s"Started loading raportointikanta (force: $force, duetime: ${update.map(_.dueTime.toString).getOrElse("-")})")
       true
     }
   }
 
-  def loadRaportointikantaAndExit(fullReload: Boolean, forceReload: Boolean): Unit = {
+  def loadRaportointikantaAndExit(fullReload: Boolean, forceReload: Boolean, enableYtr: Boolean): Unit = {
     val skipUnchangedData = !fullReload
     loadRaportointikanta(
       force = forceReload,
       skipUnchangedData = skipUnchangedData,
+      enableYtr = enableYtr,
       scheduler = defaultScheduler,
       onEnd = () => {
         logger.info(s"Ended loading raportointikanta, shutting down...")
@@ -64,8 +66,9 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
   private def loadOpiskeluoikeudet(
     db: RaportointiDatabase,
     update: Option[RaportointiDatabaseUpdate],
+    enableYtr: Boolean,
     pageSize: Int,
-    onAfterPage: (Int, Seq[KoskiOpiskeluoikeusRow]) => Unit
+    onAfterPage: (Int, Seq[OpiskeluoikeusRow]) => Unit
   ): Observable[LoadResult] = {
     // Ensure that nobody uses koskiSession implicitely
     implicit val systemUser = KoskiSpecificSession.systemUser
@@ -74,6 +77,7 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
       application.suostumuksenPeruutusService,
       db,
       update,
+      enableYtr,
       pageSize,
       onAfterPage,
     )
@@ -122,10 +126,11 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
 
   private def startLoading(
     update: Option[RaportointiDatabaseUpdate],
+    enableYtr: Boolean,
     scheduler: Scheduler,
     onEnd: () => Unit,
     pageSize: Int,
-    onAfterPage: (Int, Seq[KoskiOpiskeluoikeusRow]) => Unit
+    onAfterPage: (Int, Seq[OpiskeluoikeusRow]) => Unit
   ) = {
     val startTime = ZonedDateTime.now()
     update match {
@@ -136,6 +141,7 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
     loadOpiskeluoikeudet(
       loadDatabase,
       update,
+      enableYtr,
       pageSize,
       onAfterPage,
     )
