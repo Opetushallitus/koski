@@ -1,6 +1,5 @@
 package fi.oph.koski.opiskeluoikeus
 
-import com.typesafe.config.Config
 import fi.oph.koski.db.KoskiTables._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.jsonMethods.{parse => parseJson}
@@ -12,11 +11,7 @@ import fi.oph.koski.servlet.InvalidRequestException
 import fi.oph.koski.util.Retry.retryWithInterval
 import fi.oph.koski.util.SortOrder.{Ascending, Descending}
 import fi.oph.koski.util.{PaginationSettings, QueryPagination, SortOrder}
-import rx.Observable.{create => createObservable}
-import rx.Observer
-import rx.functions.{Func0, Func2}
 import rx.lang.scala.Observable
-import rx.observables.SyncOnSubscribe.createStateful
 
 import java.sql.{Date, Timestamp}
 import scala.concurrent.duration.DurationInt
@@ -59,18 +54,14 @@ class OpiskeluoikeusQueryService(val db: DB) extends QueryMethods {
     (pageSize: Int, user: KoskiSpecificSession)
     (mapFn: Seq[KoskiOpiskeluoikeusRow] => Seq[A])
   : Observable[A] = {
-    mapKaikkiSivuittain(pageSize, user)(kaikkiSivuittain(KoskiOpiskeluOikeudetWithAccessCheck(user)))(mapFn)
+
+    Observable.from(Iterator.from(0).toIterable)
+      .map(page => kaikkiSivulta(KoskiOpiskeluOikeudetWithAccessCheck(user))(PaginationSettings(page, pageSize), user))
+      .takeWhile(!_.isEmpty)
+      .flatMap(p => Observable.from(mapFn(p)))
   }
 
-  private def mapKaikkiSivuittain[A]
-    (pageSize: Int, user: KoskiSpecificSession)
-    (queryFn: (PaginationSettings, KoskiSpecificSession) => Seq[KoskiOpiskeluoikeusRow])
-    (mapFn: Seq[KoskiOpiskeluoikeusRow] => Seq[A])
-  : Observable[A] = {
-    processByPage[KoskiOpiskeluoikeusRow, A](page => queryFn(PaginationSettings(page, pageSize), user), mapFn)
-  }
-
-  private def kaikkiSivuittain(
+  private def kaikkiSivulta(
     query: Query[KoskiOpiskeluoikeusTable, KoskiOpiskeluoikeusRow, Seq]
   )(
     pagination: PaginationSettings,
@@ -84,32 +75,27 @@ class OpiskeluoikeusQueryService(val db: DB) extends QueryMethods {
     }
   }
 
-  def mapKoskiOpiskeluoikeudetSivuittainWithoutAccessCheck[A]
+  def koskiOpiskeluoikeudetSivuittainWithoutAccessCheck
     (pageSize: Int)
-      (mapFn: Seq[OpiskeluoikeusRow] => Seq[A])
-  : Observable[A] = {
-    mapKaikkiSivuittainWithoutAccessCheck(pageSize)(kaikkiKoskiOpiskeluoikeudetSivuittainWithoutAccessCheck)(mapFn)
+  : Observable[Seq[OpiskeluoikeusRow]] = {
+    Observable.from(Iterator.from(0).toIterable)
+      .map(page => kaikkiKoskiOpiskeluoikeudetSivultaWithoutAccessCheck(PaginationSettings(page, pageSize)))
+      .takeWhile(!_.isEmpty)
   }
 
-  def mapKoskiJaYtrOpiskeluoikeudetSivuittainWithoutAccessCheck[A]
+  def koskiJaYtrOpiskeluoikeudetSivuittainWithoutAccessCheck
     (pageSize: Int)
-      (mapFn: Seq[OpiskeluoikeusRow] => Seq[A])
-  : Observable[A] = {
-    val koskiOot = mapKoskiOpiskeluoikeudetSivuittainWithoutAccessCheck(pageSize)(mapFn)
-    val ytrOot = mapKaikkiSivuittainWithoutAccessCheck(pageSize)(kaikkiYtrOpiskeluoikeudetSivuittainWithoutAccessCheck)(mapFn)
+  : Observable[Seq[OpiskeluoikeusRow]] = {
+    val koskiOot = koskiOpiskeluoikeudetSivuittainWithoutAccessCheck(pageSize)
+
+    val ytrOot = Observable.from(Iterator.from(0).toIterable)
+      .map(page => kaikkiYtrOpiskeluoikeudetSivultaWithoutAccessCheck(PaginationSettings(page, pageSize)))
+      .takeWhile(!_.isEmpty)
 
     koskiOot ++ ytrOot
   }
 
-  private def mapKaikkiSivuittainWithoutAccessCheck[A]
-    (pageSize: Int)
-    (queryFn: PaginationSettings => Seq[OpiskeluoikeusRow])
-    (mapFn: Seq[OpiskeluoikeusRow] => Seq[A])
-  : Observable[A] = {
-    processByPage[OpiskeluoikeusRow, A](page => queryFn(PaginationSettings(page, pageSize)), mapFn)
-  }
-
-  private def kaikkiKoskiOpiskeluoikeudetSivuittainWithoutAccessCheck(
+  private def kaikkiKoskiOpiskeluoikeudetSivultaWithoutAccessCheck(
     pagination: PaginationSettings
   ): Seq[KoskiOpiskeluoikeusRow] = {
     // this approach to pagination ("limit 500 offset 176500") is not perfect (the query gets slower as offset
@@ -119,7 +105,7 @@ class OpiskeluoikeusQueryService(val db: DB) extends QueryMethods {
     }
   }
 
-  private def kaikkiYtrOpiskeluoikeudetSivuittainWithoutAccessCheck(
+  private def kaikkiYtrOpiskeluoikeudetSivultaWithoutAccessCheck(
     pagination: PaginationSettings
   ): Seq[YtrOpiskeluoikeusRow] = {
     // this approach to pagination ("limit 500 offset 176500") is not perfect (the query gets slower as offset
@@ -181,36 +167,6 @@ class OpiskeluoikeusQueryService(val db: DB) extends QueryMethods {
       case Some(Descending("luokka")) => query.sortBy(tuple => (luokka(tuple).desc, nimiDesc(tuple)))
       case Some(s) => throw new InvalidRequestException(KoskiErrorCategory.badRequest.queryParam("Epäkelpo järjestyskriteeri: " + s))
     }
-  }
-
-  private def processByPage[A, B](
-    loadRows: Int => Seq[A],
-    processRows: Seq[A] => Seq[B],
-  ): Observable[B] = {
-    import rx.lang.scala.JavaConverters._
-
-    def loadRowsInt(page: Int): (Seq[B], Int, Boolean) = {
-      val rows = loadRows(page)
-      (
-        /* loadResults = */ processRows(rows),
-        /* nextPage =    */ if (rows.isEmpty) page else page + 1,
-        /* done =        */ rows.isEmpty
-      )
-    }
-
-    createObservable(createStateful[(Seq[B], Int, Boolean), Seq[B]](
-      (() => loadRowsInt(0)): Func0[_ <: (Seq[B], Int, Boolean)],
-      ((state, observer) => {
-        val (loadResults, nextPage, done) = state
-        observer.onNext(loadResults)
-        if (done) {
-          observer.onCompleted()
-          (Nil, 0, true)
-        } else {
-          loadRowsInt(nextPage)
-        }
-      }): Func2[_ >: (Seq[B], Int, Boolean), _ >: Observer[_ >: Seq[B]], _ <: (Seq[B], Int, Boolean)]
-    )).asScala.flatMap(Observable.from(_))
   }
 }
 

@@ -43,39 +43,49 @@ object OpiskeluoikeusLoader extends Logging {
     db.setStatusLoadStarted(statusName, dueTime)
     db.setStatusLoadStarted(mitätöidytStatusName, dueTime)
 
-    update.foreach(u => {
-      u.service.alustaKaikkiKäsiteltäviksi()
-      db.cloneUpdateableTables(u.previousRaportointiDatabase, enableYtr)
-      createIndexesForIncrementalUpdate(db)
-      suoritusIds.set(db.getLatestSuoritusId)
-    })
-
     var loopCount = 0
 
-    val dataResult = mapOpiskeluoikeudetSivuittainWithoutAccessCheck(batchSize, update, enableYtr, opiskeluoikeusQueryRepository) { batch =>
-      if (batch.nonEmpty) {
-        val koskiBatch = batch.collect { case r: KoskiOpiskeluoikeusRow => r }
-        val ytrBatch = batch.collect { case r: YtrOpiskeluoikeusRow => r }
+    val dataResult = update match {
+      case Some(update) =>
+        update.service.alustaKaikkiKäsiteltäviksi()
+        db.cloneUpdateableTables(update.previousRaportointiDatabase, enableYtr)
+        createIndexesForIncrementalUpdate(db)
+        suoritusIds.set(db.getLatestSuoritusId)
 
-        val result = (koskiBatch, ytrBatch) match {
-          case (_, Seq()) if update.isDefined =>
-            updateBatch(db, suostumuksenPeruutusService, koskiBatch)
-          case _ if update.isDefined =>
-            throw new InternalError("Inkrementaalista päivitystä ei tueta YTR-opiskeluoikeuksille")
-          case (_, Seq()) =>
-            loadKoskiBatch(db, suostumuksenPeruutusService, koskiBatch)
-          case (Seq(), _) =>
-            loadYtrBatch(db, ytrBatch)
-          case _ =>
-            throw new InternalError("Tuntematon tilanne, samassa batchissä YTR- ja Koski-opiskeluoikeuksia")
+        update.loader.load(batchSize, update) { koskiBatch =>
+          val loadResult = if (koskiBatch.nonEmpty) {
+            val result = updateBatch(db, suostumuksenPeruutusService, koskiBatch)
+
+            onAfterPage(loopCount, koskiBatch)
+            loopCount = loopCount + 1
+            result
+          } else {
+            Seq.empty
+          }
+
+          loadResult
         }
+      case _ =>
+        opiskeluoikeudetSivuittainWithoutAccessCheck(batchSize, enableYtr, opiskeluoikeusQueryRepository)
+          .filter(!_.isEmpty)
+          .flatMap(batch => {
+            val koskiBatch = batch.collect { case r: KoskiOpiskeluoikeusRow => r }
+            val ytrBatch = batch.collect { case r: YtrOpiskeluoikeusRow => r }
 
-        onAfterPage(loopCount, batch)
-        loopCount = loopCount + 1
-        result
-      } else {
-        Seq.empty
-      }
+            val results = (koskiBatch, ytrBatch) match {
+              case (_, Seq()) =>
+                loadKoskiBatch(db, suostumuksenPeruutusService, koskiBatch)
+              case (Seq(), _) =>
+                loadYtrBatch(db, ytrBatch)
+              case _ =>
+                throw new InternalError("Tuntematon tilanne, samassa batchissä YTR- ja Koski-opiskeluoikeuksia")
+            }
+
+            onAfterPage(loopCount, batch)
+            loopCount = loopCount + 1
+
+            Observable.from(results)
+          })
     }
 
     val result = dataResult.doOnCompleted {
@@ -894,22 +904,17 @@ object OpiskeluoikeusLoader extends Logging {
     )
   }
 
-  def mapOpiskeluoikeudetSivuittainWithoutAccessCheck[A]
+  def opiskeluoikeudetSivuittainWithoutAccessCheck
     (
       pageSize: Int,
-      update: Option[RaportointiDatabaseUpdate],
       enableYtr: Boolean,
       opiskeluoikeusQueryRepository: OpiskeluoikeusQueryService,
     )
-    (mapFn: Seq[OpiskeluoikeusRow] => Seq[A])
-  : Observable[A] =
-    update match {
-      case Some(update) =>
-        update.loader.load(pageSize, update)(mapFn)
-      case _ if enableYtr =>
-        opiskeluoikeusQueryRepository.mapKoskiJaYtrOpiskeluoikeudetSivuittainWithoutAccessCheck(pageSize)(mapFn)
-      case _ =>
-        opiskeluoikeusQueryRepository.mapKoskiOpiskeluoikeudetSivuittainWithoutAccessCheck(pageSize)(mapFn)
+  : Observable[Seq[OpiskeluoikeusRow]] =
+    if (enableYtr) {
+      opiskeluoikeusQueryRepository.koskiJaYtrOpiskeluoikeudetSivuittainWithoutAccessCheck(pageSize)
+    } else {
+      opiskeluoikeusQueryRepository.koskiOpiskeluoikeudetSivuittainWithoutAccessCheck(pageSize)
     }
 }
 
