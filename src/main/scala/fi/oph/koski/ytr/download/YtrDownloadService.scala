@@ -93,7 +93,7 @@ class YtrDownloadService(
       download(birthmonthStart = fixtureMonthStart, birthmonthEnd = fixtureMonthEnd, force = force)
       Wait.until { isLoadComplete }
     } else {
-      logger.warn("Trying to download YTR fixtures while not in local environment")
+      logger.error("Trying to download YTR fixtures while not in local environment")
     }
   }
 
@@ -107,14 +107,14 @@ class YtrDownloadService(
   ): Unit = {
     (birthmonthStart, birthmonthEnd, modifiedSince) match {
       case _ if status.isLoading && !force =>
-        logger.warn("YTR data already downloading, do nothing")
+        logger.error("YTR data already downloading, do nothing")
         onEnd()
       case (Some(birthmonthStart), Some(birthmonthEnd), _) =>
         startDownloadingUsingMonthInterval(birthmonthStart, birthmonthEnd, scheduler, onEnd)
       case (_, _, Some(modifiedSince)) =>
         startDownloadingUsingModifiedSince(modifiedSince, scheduler, onEnd)
       case _ =>
-        logger.warn("Valid parameters for YTR download not defined")
+        logger.error("Valid parameters for YTR download not defined")
         onEnd()
     }
   }
@@ -246,7 +246,7 @@ class YtrDownloadService(
                     result match {
                       case Left(error) =>
                         errorOccurred = true
-                        logger.warn(s"YTR-datan tallennus epäonnistui (syntymäkuukausi ${oppija.birthMonth}): ${error.errorString.getOrElse("-")}")
+                        logger.error(s"YTR-datan tallennus epäonnistui (syntymäkuukausi ${oppija.birthMonth}): ${error.errorString.getOrElse("-")}")
                       case _ => timed("tallennaAlkuperäinenJson", thresholdMs = 1) {
                         tallennaAlkuperäinenJson(oppija)
                       }
@@ -254,17 +254,17 @@ class YtrDownloadService(
                   } catch {
                     case e: Throwable =>
                       errorOccurred = true
-                      logger.warn(e)(s"YTR-datan tallennus epäonnistui (syntymäkuukausi ${oppija.birthMonth}): ${e.getMessage}")
+                      logger.error(e)(s"YTR-datan tallennus epäonnistui (syntymäkuukausi ${oppija.birthMonth}): ${e.getMessage}")
                   }
 
                 case _ =>
                   errorOccurred = true
-                  logger.warn(s"YTR-datan konversio palautti tyhjän opiskeluoikeuden (syntymäkuukausi ${oppija.birthMonth})")
+                  logger.error(s"YTR-datan konversio palautti tyhjän opiskeluoikeuden (syntymäkuukausi ${oppija.birthMonth})")
               }
             } catch {
               case e: Throwable =>
                 errorOccurred = true
-                logger.warn(s"YTR-datan konversio epäonnistui (syntymäkuukausi ${oppija.birthMonth}): ${e.getMessage}")
+                logger.error(s"YTR-datan konversio epäonnistui (syntymäkuukausi ${oppija.birthMonth}): ${e.getMessage}")
             }
 
             val birthMonth = oppija.birthMonth
@@ -326,7 +326,7 @@ class YtrDownloadService(
   )(implicit user: KoskiSpecificSession, accessType: AccessType.Value): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = {
     application.validator.updateFieldsAndValidateOpiskeluoikeus(ytrOo, None) match {
       case Left(error) =>
-        logger.warn(s"YTR-datan validointi epäonnistui: ${error.errorString.getOrElse("-")}")
+        logger.error(s"YTR-datan validointi epäonnistui: ${error.errorString.getOrElse("-")}")
         Left(error)
       case Right(_) =>
         val koskiOppija = Oppija(
