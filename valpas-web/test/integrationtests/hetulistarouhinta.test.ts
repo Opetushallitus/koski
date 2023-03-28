@@ -39,7 +39,7 @@ describe("Hetulistalla rouhinta", () => {
     await expectSubmitButtonTextToEqual("Lataa raportti (3 henkilötunnusta)")
   })
 
-  it.skip("Lomakkeen lähettäminen palauttaa tiedoston", async () => {
+  it("Lomakkeen lähettäminen palauttaa tiedoston", async () => {
     await loginAs(heturouhintaPath, "valpas-monta")
     await fillForm(input)
     await submit()
