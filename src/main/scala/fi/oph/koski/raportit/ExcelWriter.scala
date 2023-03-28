@@ -15,6 +15,7 @@ import org.apache.poi.ss.util.WorkbookUtil.createSafeSheetName
 import org.apache.poi.xssf.streaming.{SXSSFCell, SXSSFDrawing, SXSSFSheet, SXSSFWorkbook}
 import org.apache.poi.xssf.usermodel.XSSFSheet
 
+import javax.crypto.BadPaddingException
 import scala.collection.JavaConverters._
 
 object ExcelWriter {
@@ -50,10 +51,10 @@ object ExcelWriter {
         val tempData = new EncryptedTempData
         try {
           wb.write(tempData.getOutputStream)
-          val opc = OPCPackage.open(tempData.getInputStream)
           val fs = new POIFSFileSystem
           val enc = Encryptor.getInstance(new EncryptionInfo(EncryptionMode.agile))
           enc.confirmPassword(workbookSettings.password.get)
+          val opc = OPCPackage.open(tempData.getInputStream)
           opc.save(enc.getDataStream(fs))
           fs.writeFilesystem(out)
         } finally {
