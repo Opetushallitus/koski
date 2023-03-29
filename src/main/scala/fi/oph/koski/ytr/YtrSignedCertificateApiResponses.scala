@@ -39,13 +39,11 @@ trait YtrCertificateError extends YtrCertificateResponse {
 }
 
 case class YtrCertificateBlocked(
-  requestedTime: ZonedDateTime,
   @EnumValue("NOT_ALLOWED_BLOCKED")
   errorReason: String = "NOT_ALLOWED_BLOCKED"
 ) extends YtrCertificateError
 
 case class YtrCertificateOldExamination(
-  requestedTime: ZonedDateTime,
   @EnumValue("NOT_ALLOWED_OLD_EXAMINATION")
   errorReason: String = "NOT_ALLOWED_OLD_EXAMINATION"
 ) extends YtrCertificateError
@@ -63,7 +61,6 @@ case class YtrCertificateInternalError(
 ) extends YtrCertificateError
 
 case class YtrCertificateServiceUnavailable(
-  requestedTime: ZonedDateTime,
   @EnumValue("SERVICE_UNAVAILABLE")
   errorReason: String = "SERVICE_UNAVAILABLE"
 ) extends YtrCertificateError

@@ -5,16 +5,16 @@
  */
 export type YtrCertificateServiceUnavailable = {
   $class: 'fi.oph.koski.ytr.YtrCertificateServiceUnavailable'
-  requestedTime: string
   errorReason: 'SERVICE_UNAVAILABLE'
   status?: 'ERROR'
 }
 
-export const YtrCertificateServiceUnavailable = (o: {
-  requestedTime: string
-  errorReason?: 'SERVICE_UNAVAILABLE'
-  status?: 'ERROR'
-}): YtrCertificateServiceUnavailable => ({
+export const YtrCertificateServiceUnavailable = (
+  o: {
+    errorReason?: 'SERVICE_UNAVAILABLE'
+    status?: 'ERROR'
+  } = {}
+): YtrCertificateServiceUnavailable => ({
   $class: 'fi.oph.koski.ytr.YtrCertificateServiceUnavailable',
   errorReason: 'SERVICE_UNAVAILABLE',
   ...o

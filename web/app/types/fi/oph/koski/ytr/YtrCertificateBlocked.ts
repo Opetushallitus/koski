@@ -5,16 +5,16 @@
  */
 export type YtrCertificateBlocked = {
   $class: 'fi.oph.koski.ytr.YtrCertificateBlocked'
-  requestedTime: string
   errorReason: 'NOT_ALLOWED_BLOCKED'
   status?: 'ERROR'
 }
 
-export const YtrCertificateBlocked = (o: {
-  requestedTime: string
-  errorReason?: 'NOT_ALLOWED_BLOCKED'
-  status?: 'ERROR'
-}): YtrCertificateBlocked => ({
+export const YtrCertificateBlocked = (
+  o: {
+    errorReason?: 'NOT_ALLOWED_BLOCKED'
+    status?: 'ERROR'
+  } = {}
+): YtrCertificateBlocked => ({
   $class: 'fi.oph.koski.ytr.YtrCertificateBlocked',
   errorReason: 'NOT_ALLOWED_BLOCKED',
   ...o

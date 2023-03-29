@@ -78,7 +78,7 @@ object EmptyYtrClient extends YtrClient {
 
   override def oppijatJsonByHetut(ssnData: YtrSsnData): Option[JValue] = None
 
-  override def getCertificateStatus(req: YoTodistusHetuRequest): Either[HttpStatus, YtrCertificateResponse] = Right(YtrCertificateServiceUnavailable(ZonedDateTime.now()))
+  override def getCertificateStatus(req: YoTodistusHetuRequest): Either[HttpStatus, YtrCertificateResponse] = Right(YtrCertificateServiceUnavailable())
 
   override def generateCertificate(req: YoTodistusHetuRequest): Either[HttpStatus, Unit] = Right(Unit)
 }
@@ -113,9 +113,9 @@ object MockYrtClient extends YtrClient {
   override def getCertificateStatus(req: YoTodistusHetuRequest): Either[HttpStatus, YtrCertificateResponse] = {
     (req.ssn, yoTodistusRequestTimes.get(s"${req.ssn}_${req.language}")) match {
       case (hetu, _) if hetu == ylioppilasLukiolainenMaksamatonSuoritus.hetu.get =>
-        Right(YtrCertificateBlocked(ZonedDateTime.now()))
+        Right(YtrCertificateBlocked())
       case (hetu, _) if hetu == ylioppilasLukiolainenVanhaSuoritus.hetu.get =>
-        Right(YtrCertificateOldExamination(ZonedDateTime.now()))
+        Right(YtrCertificateOldExamination())
       case (_, None) =>
         Right(YtrCertificateNotStarted())
       case (_, Some(time)) if ZonedDateTime.now().isAfter(time.plusSeconds(yoTodistusGeneratingTimeSecs)) =>

@@ -90,9 +90,8 @@ export const YoTodistus: React.FC<YoTodistusProps> = (props) => {
       isYtrCertificateInternalError(state) ||
       isYtrCertificateServiceUnavailable(state)
     )
-      return tTemplate(
-        '{{time}} aloitettu todistuksen luonti epäonnistui teknisen ongelman takia. Jos ongelma jatkuu, ota yhteyttä YTL:ään.',
-        { time: ISO2FinnishDateTime(state.requestedTime) }
+      return t(
+        'Todistuksen luonti epäonnistui teknisen ongelman takia. Jos ongelma jatkuu, ota yhteyttä YTL:ään.'
       )
     if (isError(generate) || isError(stateFetch)) {
       return t(
