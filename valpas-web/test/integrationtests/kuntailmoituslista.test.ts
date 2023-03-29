@@ -81,7 +81,7 @@ describe("Kunnan listanäkymä", () => {
     await urlIsEventually(
       pathToUrl(kuntailmoitusPathWithOrg.href("/virkailija", pyhtäänKuntaOid))
     )
-    await textEventuallyEquals(".card__header", ilmoitustitle(8, 4))
+    await textEventuallyEquals(".card__header", ilmoitustitle(8, 5))
   })
 
   it("Käyminen oppijakohtaisessa näkymässä ei hukkaa valittua organisaatiota", async () => {
@@ -131,7 +131,7 @@ describe("Kunnan listanäkymä", () => {
       pathToUrl(kuntailmoitusPathWithOrg.href("/virkailija", pyhtäänKuntaOid))
     )
 
-    await textEventuallyEquals(".card__header", ilmoitustitle(8, 4))
+    await textEventuallyEquals(".card__header", ilmoitustitle(8, 5))
     await dataTableEventuallyEquals(".kuntailmoitus", pyhtääTableContent, "|")
 
     await clickElement('[data-testid="arkistoidutcb"]')

@@ -647,6 +647,25 @@ object ValpasOppijaTestData {
         )
       )
     ),
+    (
+      ValpasMockOppijat.valmistunutYsiluokkalainenJollaIlmoitusJaUusiOpiskeluoikeus,
+      List(
+        ExpectedData(
+          ValpasOpiskeluoikeusExampleData.valmaRessussa,
+          onHakeutumisValvottavaOpiskeluoikeus = false,
+          onHakeutumisvalvovaOppilaitos = false,
+          onSuorittamisvalvovaOppilaitos = false,
+          perusopetuksenJälkeinenTiedot = Some(ExpectedDataPerusopetuksenJälkeinenTiedot("voimassa", "lasna")),
+        ),
+        ExpectedData(
+          ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainen,
+          onHakeutumisValvottavaOpiskeluoikeus = true,
+          onHakeutumisvalvovaOppilaitos = true,
+          onSuorittamisvalvovaOppilaitos = false,
+          perusopetusTiedot = Some(ExpectedDataPerusopetusTiedot("valmistunut", "valmistunut")),
+        )
+      )
+    ),
   ).sortBy(item => (item._1.sukunimi, item._1.etunimet))
 
   // Jyväskylän normaalikoulusta löytyvät näytettävät hakeutumisvelvolliset aakkosjärjestyksessä, tutkittaessa syksyn rajapäivän jälkeen

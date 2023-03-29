@@ -1,12 +1,9 @@
 package fi.oph.koski.valpas.opiskeluoikeusfixture
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.documentation.DIAExampleData.saksalainenKoulu
 import fi.oph.koski.fixture.DatabaseFixtureCreator
 import fi.oph.koski.henkilo.OppijaHenkilö
 import fi.oph.koski.schema._
-
-import java.time.LocalDate
 
 class ValpasOpiskeluoikeusDatabaseFixtureCreator(application: KoskiApplication) extends DatabaseFixtureCreator(application, "opiskeluoikeus_valpas_fixture", "opiskeluoikeushistoria_valpas_fixture") {
   protected def oppijat = ValpasMockOppijat.defaultOppijat
@@ -236,5 +233,7 @@ class ValpasOpiskeluoikeusDatabaseFixtureCreator(application: KoskiApplication) 
     (ValpasMockOppijat.valmistunutAmiksenOsittainenUusiOo, ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainenSaksalainenKoulu),
     (ValpasMockOppijat.valmistunutAmiksenOsittainenUusiOo, ValpasOpiskeluoikeusExampleData.ammattikouluValmistunutOsittainenOpiskeluoikeus),
     (ValpasMockOppijat.valmistunutAmiksenOsittainenUusiOo, ValpasOpiskeluoikeusExampleData.ammattikouluAlkaaOmnia(ValpasOpiskeluoikeusExampleData.ammattikouluValmistunutOsittainenOpiskeluoikeus.päättymispäivä.get)),
+    (ValpasMockOppijat.valmistunutYsiluokkalainenJollaIlmoitusJaUusiOpiskeluoikeus, ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainen),
+    (ValpasMockOppijat.valmistunutYsiluokkalainenJollaIlmoitusJaUusiOpiskeluoikeus, ValpasOpiskeluoikeusExampleData.valmaRessussa),
   )
 }

@@ -109,7 +109,7 @@ class ValpasKuntailmoitusService(
           .getOppijat(oppijaOids, rajaaOVKelpoisiinOpiskeluoikeuksiin = true, haeMyösOppivelvollisuudestaVapautetut = false)
           .flatMap(oppijaLaajatTiedotService.asValpasOppijaLaajatTiedot(_).toOption)
         val oppijatJoihinKatseluoikeus = accessResolver
-          .filterByOppijaAccess(rooli)(oppijat)
+          .filterByOppijaAccess(rooli, Some(oppilaitosOid))(oppijat)
           .map(OppijaHakutilanteillaLaajatTiedot.apply)
         val oppijatLisätiedoilla = lisätiedotRepository.readForOppijat(oppijatJoihinKatseluoikeus)
         val oppijatLaajatTiedot = oppijatLisätiedoilla.map(oppijaLisätiedotTuple =>
