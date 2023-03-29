@@ -46,22 +46,23 @@ export default ({ opiskeluoikeus, callback }) => {
 
           return (
             <span key={i}>
-              {opiskeluoikeus.context.edit && !onLopputilassa(opiskeluoikeus) && (
-                <a
-                  className="add-suoritus-link"
-                  onClick={startAdding}
-                  role="button"
-                  tabIndex={0}
-                  aria-label={
-                    PopUp.addSuoritusTitleKey
-                      ? t(PopUp.addSuoritusTitleKey)
-                      : t('lisää suoritus')
-                  }
-                >
-                  <span className="plus">{''}</span>
-                  {PopUp.addSuoritusTitle(opiskeluoikeus)}
-                </a>
-              )}
+              {opiskeluoikeus.context.edit &&
+                !onLopputilassa(opiskeluoikeus) && (
+                  <a
+                    className="add-suoritus-link"
+                    onClick={startAdding}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={
+                      PopUp.addSuoritusTitleKey
+                        ? t(PopUp.addSuoritusTitleKey)
+                        : t('lisää suoritus')
+                    }
+                  >
+                    <span className="plus">{''}</span>
+                    {PopUp.addSuoritusTitle(opiskeluoikeus)}
+                  </a>
+                )}
               {addingAtom.map(
                 (adding) =>
                   adding && <PopUp {...{ opiskeluoikeus, resultCallback }} />
