@@ -7,7 +7,9 @@ export class OsasuoritusDialog {
 
   constructor(page: Page) {
     this.dropdown = page.getByTestId('dropdown-osasuoritus')
-    this.nimiField = page.getByLabel('Opintokokonaisuuden nimi')
+    this.nimiField = page.getByRole('textbox', {
+      name: 'Opintokokonaisuuden nimi'
+    })
     this.submitBtn = page.getByRole('button', { name: 'Lisää osasuoritus' })
   }
 
