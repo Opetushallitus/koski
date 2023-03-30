@@ -1,4 +1,4 @@
-## xx.xx.xxxx
+## 13.3.2023
 
 - Lisätty ammattikoulujen suoritusten korotusten vaatimat tietomallimuutokset.
 - Ammatillisen tutkinnon osan/osien suoritukselle lisätty kentät `korotettuOpiskeluoikeusOid`, `korotettuKeskiarvo`
