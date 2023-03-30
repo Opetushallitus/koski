@@ -71,12 +71,6 @@ trait KoodistostaLöytyväArviointi extends Arviointi {
   def hyväksytty: Boolean
 }
 
-trait PaikallinenArviointi extends Arviointi {
-  @Description("Paikallinen arvosana, jota ei löydy kansallisesta koodistosta")
-  def arvosana: PaikallinenKoodi
-  def arvosanaKirjaimin = arvosana.nimi
-}
-
 @Description("Arvioitsijan/arvioitsijoiden tiedot")
 trait SuorituksenArvioitsija {
   @Description("Henkilön koko nimi")

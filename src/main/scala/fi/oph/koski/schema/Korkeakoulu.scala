@@ -175,11 +175,26 @@ case class KorkeakoulunKoodistostaLöytyväArviointi(
 }
 
 case class KorkeakoulunPaikallinenArviointi(
-  arvosana: PaikallinenKoodi,
+  @Description("Paikallinen arvosana, jota ei löydy kansallisesta koodistosta")
+  arvosana: KorkeakoulunPaikallinenArvosana,
   päivä: LocalDate
-) extends PaikallinenArviointi with KorkeakoulunArviointi {
+) extends KorkeakoulunArviointi {
+  def arvosanaKirjaimin = arvosana.nimi
   override def arvioitsijat: Option[List[Arvioitsija]] = None
 }
+
+@Description("Paikallinen, koulutustoimijan oma kooditus. Käytetään kansallisen koodiston puuttuessa")
+case class KorkeakoulunPaikallinenArvosana(
+  @Description("Koodin yksilöivä tunniste käytetyssä koodistossa")
+  @Title("Tunniste")
+  @Discriminator
+  koodiarvo: String,
+  @Description("Koodin selväkielinen nimi")
+  nimi: LocalizedString,
+  @Description("Koodiston tunniste. Esimerkiksi Virta-järjestelmästä saatavissa arvioinneissa käytetään virta/x, missä x on arviointiasteikon tunniste. Jos koodistolla ei ole tunnistetta, voidaan kenttä jättää tyhjäksi")
+  @Title("Koodisto-URI")
+  koodistoUri: Option[String] = None
+) extends PaikallinenKoodiviite
 
 case class Lukukausi_Ilmoittautuminen(
   ilmoittautumisjaksot: List[Lukukausi_Ilmoittautumisjakso]
