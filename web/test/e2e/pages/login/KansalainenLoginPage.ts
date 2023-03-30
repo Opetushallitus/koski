@@ -6,7 +6,7 @@ export class KansalainenLoginPage {
   readonly loginButton: Locator
 
   constructor(private readonly page: Page) {
-    this.hetuInput = page.getByLabel('Henkilötunnus')
+    this.hetuInput = page.getByTestId('hetu')
     this.loginButton = page.getByRole('button', { name: 'Kirjaudu sisään' })
   }
 
