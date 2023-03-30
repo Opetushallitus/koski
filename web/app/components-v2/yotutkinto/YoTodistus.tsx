@@ -24,6 +24,7 @@ import { common, CommonProps, subTestId, testId } from '../CommonProps'
 import { RaisedButton } from '../controls/RaisedButton'
 import { OptionList, Select, SelectOption } from '../controls/Select'
 import { Spinner } from '../texts/Spinner'
+import { TextWithLinks } from '../texts/TextWithLinks'
 import { Trans } from '../texts/Trans'
 
 export type YoTodistusProps = CommonProps<{
@@ -47,10 +48,11 @@ export const YoTodistus: React.FC<YoTodistusProps> = (props) => {
 
   const generate = useApiMethod(generateYoTodistus)
 
-  const startGenerating = useCallback(() => {
+  const startGenerating = useCallback(async () => {
+    await generate.call(props.oppijaOid, language)
+    await pollState()
     statePoller.start()
-    return generate.call(props.oppijaOid, language)
-  }, [generate, language, props.oppijaOid, statePoller])
+  }, [generate, language, pollState, props.oppijaOid, statePoller])
 
   const [state, setState] = useSafeState<YtrCertificateResponse | null>(null)
   const updateStateFromResponse = useCallback(
@@ -70,33 +72,23 @@ export const YoTodistus: React.FC<YoTodistusProps> = (props) => {
   useOnApiSuccess(generate, () => stateFetch.call(props.oppijaOid, language))
 
   const blockingErrorText = useMemo(() => {
-    if (isYtrCertificateBlocked(state))
-      return t(
-        'Todistuksen lataaminen on estetty. Syynä voi olla esimerkiksi maksamaton tutkintomaksu.'
-      )
+    if (isYtrCertificateBlocked(state)) return t('yotodistus-error: blocked')
     if (isYtrCertificateOldExamination(state))
-      return t(
-        'Todistus ei ole ladattavissa, sillä tutkinto on aloitettu ennen kevättä 2008.'
-      )
+      return t('yotodistus-error: old examination')
   }, [state])
 
   const errorText = useMemo(() => {
     if (isYtrCertificateTimeout(state))
-      return tTemplate(
-        '{{time}} aloitettu todistuksen luonti epäonnistui palvelun ruuhkautumisen takia.',
-        { time: ISO2FinnishDateTime(state.requestedTime) }
-      )
+      return tTemplate('yotodistus-error: timeout', {
+        time: ISO2FinnishDateTime(state.requestedTime)
+      })
     if (
       isYtrCertificateInternalError(state) ||
       isYtrCertificateServiceUnavailable(state)
     )
-      return t(
-        'Todistuksen luonti epäonnistui teknisen ongelman takia. Jos ongelma jatkuu, ota yhteyttä YTL:ään.'
-      )
+      return t('yotodistus-error: ytr error')
     if (isError(generate) || isError(stateFetch)) {
-      return t(
-        'Tapahtui odottamaton tekninen ongelma. Jos ongelma jatkuu, ota yhteyttä KOSKI-tiimiin.'
-      )
+      return t('yotodistus-error: koski error')
     }
     return null
   }, [generate, state, stateFetch])
@@ -111,9 +103,12 @@ export const YoTodistus: React.FC<YoTodistusProps> = (props) => {
       >
         <span className="YoTodistus__title">{'Ylioppilastodistus'}</span>
         {blockingErrorText ? (
-          <span className="YoTodistus__blocked" {...testId(props, 'error')}>
+          <TextWithLinks
+            className="YoTodistus__blocked"
+            {...testId(props, 'error')}
+          >
             {blockingErrorText}
-          </span>
+          </TextWithLinks>
         ) : (
           <>
             {!isYtrCertificateInProgress(state) && (
@@ -138,7 +133,7 @@ export const YoTodistus: React.FC<YoTodistusProps> = (props) => {
               <>
                 <Spinner inline compact />
                 <span {...testId(props, 'loading')}>
-                  <Trans>{'Luodaan tiedostoa...'}</Trans>
+                  <Trans>{'Ladataan todistusta...'}</Trans>
                 </span>
               </>
             )}
@@ -157,7 +152,7 @@ export const YoTodistus: React.FC<YoTodistusProps> = (props) => {
       </div>
       {errorText && (
         <div className="YoTodistus__error" {...testId(props, 'error')}>
-          {errorText}
+          <TextWithLinks>{errorText}</TextWithLinks>
         </div>
       )}
     </>

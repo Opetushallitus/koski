@@ -71,7 +71,7 @@ test.describe.skip('Digitaalinen yo-todistus', () => {
       await kansalainenLoginPage.loginWithHetu(hetut.vanhaTutkinto)
       await kansalainenPage.openOpiskeluoikeus('Ylioppilastutkinto')
       expect(await kansalainenPage.getYoTodistusError()).toEqual(
-        'Todistus ei ole ladattavissa, sillä tutkinto on aloitettu ennen kevättä 2008.'
+        'Todistus ei ole ladattavissa itsepalvelun kautta. Voit tilata maksullisen todistuksen Ylioppilastutkintolautakunnan verkkopalvelusta https://kokelas.ylioppilastutkinto.fi Tarvittaessa saat lisätietoa Ylioppilastutkintolautakunnalta osoitteesta lautakunta@ylioppilastutkinto.fi'
       )
     })
 
@@ -82,7 +82,7 @@ test.describe.skip('Digitaalinen yo-todistus', () => {
       await kansalainenLoginPage.loginWithHetu(hetut.maksamatonTutkintomaksu)
       await kansalainenPage.openOpiskeluoikeus('Ylioppilastutkinto')
       expect(await kansalainenPage.getYoTodistusError()).toEqual(
-        'Todistuksen lataaminen on estetty. Syynä voi olla esimerkiksi maksamaton tutkintomaksu.'
+        'Todistuksen lataaminen on estetty. Syynä voi olla esimerkiksi maksamaton tutkintomaksu. Lisätietoa saa tarvittaessa Ylioppilastutkintolautakunnalta osoitteesta lautakunta@ylioppilastutkinto.fi'
       )
     })
 
@@ -93,8 +93,8 @@ test.describe.skip('Digitaalinen yo-todistus', () => {
       await kansalainenLoginPage.loginWithHetu(hetut.ongelmiaJärjestelmissä)
       await kansalainenPage.openOpiskeluoikeus('Ylioppilastutkinto')
       await kansalainenPage.generateYoTodistus()
-      expect(await kansalainenPage.getYoTodistusError()).toContain(
-        'aloitettu todistuksen luonti epäonnistui teknisen ongelman takia. Jos ongelma jatkuu, ota yhteyttä YTL:ään.'
+      expect(await kansalainenPage.getYoTodistusError()).toEqual(
+        'Todistuksen luonti epäonnistui teknisen ongelman takia. Odota muutama minuutti ja lataa todistus uudelleen. Jos ongelma jatkuu muutaman yrityksen jälkeen, ota yhteyttä Ylioppilastutkintolautakuntaan osoitteeseen lautakunta@ylioppilastutkinto.fi'
       )
     })
 
@@ -107,7 +107,7 @@ test.describe.skip('Digitaalinen yo-todistus', () => {
       await kansalainenPage.setYoTodistusLanguage('en') // MockYtrClient simuloi Kosken backendissa tapahtuneen virheen, jos kieli on muu kuin suomi
       await kansalainenPage.generateYoTodistus()
       expect(await kansalainenPage.getYoTodistusError()).toEqual(
-        'Tapahtui odottamaton tekninen ongelma. Jos ongelma jatkuu, ota yhteyttä KOSKI-tiimiin.'
+        'Tapahtui odottamaton tekninen ongelma. Jos ongelma jatkuu, ota yhteyttä KOSKI-tiimiin osoitteeseen koski@opintopolku.fi'
       )
     })
 
