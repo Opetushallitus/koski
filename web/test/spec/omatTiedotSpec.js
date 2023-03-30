@@ -1075,11 +1075,7 @@ describe('Omat tiedot', function () {
               '2012 kevät Ruotsi, keskipitkä oppimäärä 166 Cum laude approbatur\n' +
               '2012 kevät Englanti, pitkä oppimäärä 210 Cum laude approbatur\n' +
               '2012 kevät Maantiede 26 Magna cum laude approbatur\n' +
-              '2012 kevät Matematiikan koe, lyhyt oppimäärä 59 Laudatur\n' +
-              'Ylioppilastodistus\n' +
-              'Todistuksen kieli\n' +
-              ':\n' +
-              'Lataa todistus'
+              '2012 kevät Matematiikan koe, lyhyt oppimäärä 59 Laudatur'
           )
         })
       })
