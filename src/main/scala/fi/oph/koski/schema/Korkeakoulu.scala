@@ -136,9 +136,9 @@ case class Korkeakoulututkinto(
 @Description("Korkeakoulun opintojakson tunnistetiedot")
 case class KorkeakoulunOpintojakso(
   tunniste: PaikallinenKoodi,
-  nimi: LocalizedString,
+  override val nimi: LocalizedString,
   laajuus: Option[Laajuus]
-) extends KoulutusmoduuliValinnainenLaajuus
+) extends KoulutusmoduuliValinnainenLaajuus with PaikallinenKoulutusmoduuli
 
 @Description("Muun korkeakoulun opinnon tunnistetiedot")
 case class MuuKorkeakoulunOpinto(

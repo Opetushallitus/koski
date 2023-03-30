@@ -267,10 +267,10 @@ case class TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosanOsas
     with MahdollisestiTunnustettu
 
 case class TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosanOsasuoritus(
-  nimi: LocalizedString,
+  override val nimi: LocalizedString,
   tunniste: PaikallinenKoodi,
   laajuus: Option[LaajuusViikoissa]
-) extends KoulutusmoduuliValinnainenLaajuus
+) extends KoulutusmoduuliValinnainenLaajuus with PaikallinenKoulutusmoduuli
 
 @Title("Tutkintokoulutukseen valmentavan koulutuksen osasuorituksen sanallinen arviointi")
 @Description("Tutkintokoulutukseen valmentavan koulutuksen osasuorituksen hyväksytty/hylätty arviointi")
