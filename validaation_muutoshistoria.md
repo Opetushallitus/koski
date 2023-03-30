@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 30.3.2023
+
+- Lisätty validaatio, ettei paikallisten koulutusmoduulien tunnisteiden koodisto uri -kentässä voi enää siirtää tietoja.
+
 ## 14.3.2023
 
 - Taiteen perusopetuksen opiskeluoikeutta ei voi merkitä hyväksytysti suoritetuksi ellei molempia päätason suorituksia ole vahvistettu.

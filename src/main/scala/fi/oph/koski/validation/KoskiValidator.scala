@@ -924,6 +924,7 @@ class KoskiValidator(
         :: validateOsaamisenHankkimistavat(suoritus)
         :: validateYhteisetTutkinnonOsat(suoritus, opiskeluoikeus)
         :: validateÄidinkielenOmainenKieli(suoritus)
+        :: validatePaikallinenKoulutusmoduuli(suoritus)
         :: Lukio2019OsasuoritusValidation.validate(suoritus, parent)
         :: Lukio2019VieraatKieletValidation.validate(suoritus, parent)
         :: Lukio2019ArvosanaValidation.validateOsasuoritus(suoritus)
@@ -1529,6 +1530,16 @@ class KoskiValidator(
       case k: NuortenPerusopetuksenVierasTaiToinenKotimainenKieli if k.tunniste.koodiarvo == "AOM" => validateSuomiTaiRuotsi(k.kieli.koodiarvo)
       case k: VierasTaiToinenKotimainenKieli2019 if k.tunniste.koodiarvo == "AOM" => validateSuomiTaiRuotsi(k.kieli.koodiarvo)
       case k: VierasTaiToinenKotimainenKieli2015 if k.tunniste.koodiarvo == "AOM" => validateSuomiTaiRuotsi(k.kieli.koodiarvo)
+      case _ => HttpStatus.ok
+    }
+  }
+
+  private def validatePaikallinenKoulutusmoduuli(suoritus: Suoritus): HttpStatus = {
+    suoritus.koulutusmoduuli match {
+      case pk: PaikallinenKoulutusmoduuli =>
+        HttpStatus.validate(
+          pk.tunniste.koodistoUri.isEmpty
+        )(KoskiErrorCategory.badRequest.validation.rakenne.deprekoituKoodistoUri(s"Suorituksen ${suorituksenTunniste(suoritus)} paikallisen koulutusmoduulin tunnisteen koodisto uri -kenttä on poistettu käytöstä"))
       case _ => HttpStatus.ok
     }
   }

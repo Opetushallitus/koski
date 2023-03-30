@@ -251,6 +251,18 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
             "palautetaan HTTP 200" in (putTutkinnonOsaSuoritus(suoritus, tutkinnonSuoritustapaOps) (verifyResponseStatusOk()))
           }
 
+          "Paikallinen tutkinnon osa ja koodistoUri" - {
+            lazy val paikallinenTutkinnonOsaUrilla = PaikallinenTutkinnonOsa(
+              PaikallinenKoodi("1", "paikallinen osa", Some("jokukoodistouri")), "Paikallinen tutkinnon osa koodistoUrilla", false, Some(laajuus)
+            )
+            val suoritus = paikallinenTutkinnonOsaSuoritus.copy(koulutusmoduuli = paikallinenTutkinnonOsaUrilla, tutkinnonOsanRyhmä = ammatillisetTutkinnonOsat)
+            "palautetaan HTTP 400" in {
+              putTutkinnonOsaSuoritus(suoritus, tutkinnonSuoritustapaOps)(
+                verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.deprekoituKoodistoUri("Suorituksen 1 (paikallinen osa) paikallisen koulutusmoduulin tunnisteen koodisto uri -kenttä on poistettu käytöstä"))
+              )
+            }
+          }
+
           "Laajuus negatiivinen" - {
             val suoritus = paikallinenTutkinnonOsaSuoritus.copy(koulutusmoduuli = paikallinenTutkinnonOsa.copy(laajuus = Some(laajuus.copy(arvo = -1))))
             "palautetaan HTTP 400" in (putTutkinnonOsaSuoritus(suoritus, tutkinnonSuoritustapaNäyttönä) (

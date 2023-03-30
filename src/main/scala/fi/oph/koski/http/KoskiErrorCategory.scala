@@ -128,6 +128,7 @@ object KoskiErrorCategory {
         val epäsopiviaOsasuorituksia = subcategory("epäsopiviaOsasuorituksia", "Suorituksella tai sen osasuorituksella on epäsopiva lista osasuorituksia")
         val deprekoituKielikoodi = subcategory("deprekoituKielikoodi", "Suorituksessa on käytetty deprekoitua kielikoodia")
         val deprekoituOppimäärä = subcategory("deprekoituOppimäärä", "Suorituksessa on käytetty deprekoitua oppimäärää")
+        val deprekoituKoodistoUri = subcategory("deprekoituKoodistoUri", "Suorituksen paikallisen koulutusmoduulin tunnisteen koodisto uri -kenttä on poistettu käytöstä")
         val puuttuvaSuullisenKielitaidonKoe = subcategory("puuttuvaSuullisenKielitaidonKoe", "Suorituksesta puuttuu vaadittava merkintä suullisen kielitaidon kokeesta")
         val lukioonValmistavassaVanhanOpsinKurssiSuorituksia = subcategory("lukioonValmistavassaVanhanOpsinKurssiSuorituksia", "Lukion valmistavan koulutuksen suorituksella ei voi 1.8.2021 jälkeen olla luva2015-opetussuunnitelman mukaisia suorituksia")
         val liianVanhaOpetussuunnitelma = subcategory("liianVanhaOpetussuunnitelma", "Uusi lukion opiskelija ei voi aloittaa vanhojen opetussuunnitelman perusteiden mukaisia opintoja 1.8.2021 tai myöhemmin. Käytä lukion opetussuunnitelman perusteen diaarinumeroa OPH-2263-2019. Jos tosiasiassa oppija on aloittanut vanhojen perusteiden mukaiset lukio-opinnot ennen 1.8.2021, häneltä puuttuu KOSKI-tietovarannosta tämä opiskeluoikeus")

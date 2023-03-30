@@ -1,8 +1,8 @@
 package fi.oph.koski.schema
 
 import fi.oph.koski.schema.LocalizedString.unlocalized
-import fi.oph.koski.schema.annotation.{ReadOnly, Representative}
-import fi.oph.scalaschema.annotation.{Description, Discriminator, SyntheticProperty, Title}
+import fi.oph.koski.schema.annotation.{Deprecated, ReadOnly, Representative}
+import fi.oph.scalaschema.annotation.{Description, Discriminator, Title}
 
 trait KoodiViite extends Localized {
   def koodiarvo: String
@@ -102,5 +102,6 @@ case class PaikallinenKoodi(
   nimi: LocalizedString,
   @Description("Koodiston tunniste. Esimerkiksi Virta-järjestelmästä saatavissa arvioinneissa käytetään virta/x, missä x on arviointiasteikon tunniste. Jos koodistolla ei ole tunnistetta, voidaan kenttä jättää tyhjäksi")
   @Title("Koodisto-URI")
+  @Deprecated("Tämä kenttä on vanhentunut eikä siihen voi enää siirtää tietoja.")
   koodistoUri: Option[String] = None
 ) extends PaikallinenKoodiviite
