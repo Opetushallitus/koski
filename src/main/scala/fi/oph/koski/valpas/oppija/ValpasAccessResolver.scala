@@ -3,7 +3,7 @@ package fi.oph.koski.valpas.oppija
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koskiuser.{KäyttöoikeusOrg, Palvelurooli}
 import fi.oph.koski.schema.{Opiskeluoikeus, Organisaatio, OrganisaatioWithOid}
-import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasOppijaLaajatTiedot
+import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasOppijaLaajatTiedot, ValpasOppilaitos}
 import fi.oph.koski.valpas.valpasuser.{ValpasRooli, ValpasSession}
 
 class ValpasAccessResolver {
@@ -75,7 +75,8 @@ class ValpasAccessResolver {
   }
 
   def filterByOppijaAccess[T <: ValpasOppijaLaajatTiedot](
-    rooli: ValpasRooli.Role
+    rooli: ValpasRooli.Role,
+    oppilaitosOid: Option[ValpasOppilaitos.Oid] = None
   )(
     oppijat: Seq[T]
   )(
@@ -85,6 +86,7 @@ class ValpasAccessResolver {
       case ValpasRooli.OPPILAITOS_HAKEUTUMINEN =>
         oppijat.filter(
           oppija => oppija.hakeutumisvalvovatOppilaitokset.nonEmpty &&
+            (oppilaitosOid.isEmpty || oppilaitosOid.exists(ooid => oppija.hakeutumisvalvovatOppilaitokset.contains(ooid))) &&
             accessToSomeOrgs(rooli, oppija.hakeutumisvalvovatOppilaitokset) &&
             !oppija.oppivelvollisuudestaVapautettu
         )
@@ -97,6 +99,7 @@ class ValpasAccessResolver {
       case ValpasRooli.OPPILAITOS_SUORITTAMINEN =>
         oppijat.filter(
           oppija => oppija.suorittamisvalvovatOppilaitokset.nonEmpty &&
+            (oppilaitosOid.isEmpty || oppilaitosOid.exists(ooid => oppija.suorittamisvalvovatOppilaitokset.contains(ooid))) &&
             accessToSomeOrgs(rooli, oppija.suorittamisvalvovatOppilaitokset) &&
             !oppija.oppivelvollisuudestaVapautettu
         )

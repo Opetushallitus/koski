@@ -285,7 +285,8 @@ class ValpasOppijaServiceKuntailmoitusSpec extends ValpasOppijaTestBase {
         ValpasMockOppijat.kasiinAstiToisessaKoulussaOllutJollaIlmoitus,
         ValpasMockOppijat.valmistunutYsiluokkalainenJollaIlmoitus,
         ValpasMockOppijat.ilmoituksenLisätiedotPoistettu,
-        ValpasMockOppijat.oppivelvollisuusKeskeytettyEiOpiskele
+        ValpasMockOppijat.oppivelvollisuusKeskeytettyEiOpiskele,
+        ValpasMockOppijat.valmistunutYsiluokkalainenJollaIlmoitusJaUusiOpiskeluoikeus
       ))
     }
   }

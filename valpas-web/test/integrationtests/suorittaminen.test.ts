@@ -23,6 +23,7 @@ import {
   reset,
   resetMockData,
 } from "../integrationtests-env/browser/reset"
+import { sleep } from "../integrationtests-env/browser/utils"
 import { hakutilannePath } from "../integrationtests/hakutilanne.shared"
 import {
   Oppija,
@@ -362,6 +363,23 @@ describe("Suorittamisen valvonta -näkymä", () => {
       false,
       "2022-03-02"
     )
+    await expectElementEventuallyNotVisible(oppijaRowSelector)
+  })
+
+  it("Kuntailmoituksen näkyminen oppijasta, joka on eri oppilaitoksen suorittamisen valvottava ja käyttäjällä on riittävät oikeudet molempiin oppilaitoksiin", async () => {
+    // Ysiluokka-valmis-ja-ilmoitettu-ja-uusi-nivelvaihe Valpas (240706A3571)
+    const oppijaOid = "1.2.246.562.24.00000000166"
+    const oppijaRowSelector = `.table__row[data-row*="${oppijaOid}"]`
+
+    await reset(suorittaminenListaJklPath, true)
+    await loginAs(suorittaminenListaJklPath, "valpas-monta")
+    await waitTableLoadingHasFinished(".suorittaminen")
+    await sleep(500)
+    await expectElementEventuallyNotVisible(oppijaRowSelector)
+
+    await goToLocation(suorittaminenKuntailmoitusListaJklPath)
+    await waitTableLoadingHasFinished(".kuntailmoitukset")
+    await sleep(500)
     await expectElementEventuallyNotVisible(oppijaRowSelector)
   })
 })

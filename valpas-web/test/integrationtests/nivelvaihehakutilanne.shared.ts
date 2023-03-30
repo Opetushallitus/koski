@@ -8,7 +8,7 @@ export const ressunLukioTableContent_syyskuu2021 = `
 `
 
 export const ressunLukioTableHead_lokakuu2021 =
-  "Hakeutumisvelvollisia oppijoita (13)"
+  "Hakeutumisvelvollisia oppijoita (14)"
 export const ressunLukioTableContent_lokakuu2021 = `
   Aikuisten-perusopetuksessa Valpas                                   | 2.3.2004    | Aikuisten perusopetus                         | 15.8.2021 | –           | Ei hakemusta  | – | – | –                               |
   Aikuisten-perusopetuksessa-syksyn-rajapäivän-jälkeen Valpas         | 25.2.2004   | Aikuisten perusopetus                         | 1.10.2021 | –           | Ei hakemusta  | – | – | –                               |
@@ -23,6 +23,7 @@ export const ressunLukioTableContent_lokakuu2021 = `
   Telma Valpas                                                        | 16.3.2004   | TELMA                                         | 9.8.2021  | –           | Ei hakemusta  | – | – | –                               |
   Valma Valpas                                                        | 9.1.2004    | VALMA                                         | 8.8.2021  | –           | Ei hakemusta  | – | – | –                               |
   Vst-kops Valpas                                                     | 19.5.2004   | VST                                           | 1.9.2021  | –           | Ei hakemusta  | – | – | –                               |
+  Ysiluokka-valmis-ja-ilmoitettu-ja-uusi-nivelvaihe Valpas            | 24.7.2006   | VALMA                                         | 8.8.2021  | –           | Ei hakemusta  | – | – | –                               |
 `
 
 export const jyväskylänNormaalikouluNivelvaiheTableContent = `
