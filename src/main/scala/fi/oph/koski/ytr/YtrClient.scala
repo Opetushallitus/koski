@@ -203,20 +203,15 @@ case class RemoteYtrClient(rootUrl: String, user: String, password: String) exte
 
   override def getCertificateStatus(req: YoTodistusHetuRequest): Either[HttpStatus, YtrCertificateResponse] = {
     val uri = uri"/api/oph-koski/signed-certificate/status"
-    logger.info(s"getCertificateStatus request: $uri $req")
     val json = runIO(http.post(uri, req)(json4sEncoderOf[YoTodistusHetuRequest])(Http.parseJson[JValue]))
-    logger.info(s"getCertificateStatus response: $uri $req -> $json")
     val response = SchemaValidatingExtractor.extract[YtrCertificateResponse](json)
     response.left.map(e => KoskiErrorCategory.badRequest.validation.jsonSchema(JsonErrorMessage(e)))
   }
 
   override def generateCertificate(req: YoTodistusHetuRequest): Either[HttpStatus, Unit] = {
     val uri = uri"/api/oph-koski/signed-certificate"
-    logger.info(s"generateCertificate request: $uri $req")
     runIO(http.post(uri, req)(json4sEncoderOf[YoTodistusHetuRequest]) {
-      case (status, _, _) if status < 300 =>
-        logger.info(s"generateCertificate request OK!: $uri $req")
-        Right(())
+      case (status, _, _) if status < 300 => Right(())
       case (404, _, _) => Left(KoskiErrorCategory.notFound.oppijaaEiLöydy())
       case (400, _, _) =>Left(KoskiErrorCategory.badRequest())
       case (status, text, _) =>
