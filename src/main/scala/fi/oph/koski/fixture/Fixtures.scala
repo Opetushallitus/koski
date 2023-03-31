@@ -5,6 +5,7 @@ import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, MockOpintopolkuHenkilöFa
 import fi.oph.koski.localization.MockLocalizationRepository
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeushistoriaErrorRepository
+import fi.oph.koski.raportointikanta.OpiskeluoikeusLoader
 import fi.oph.koski.suostumus.SuostumuksenPeruutusService
 import fi.oph.koski.util.{Timing, Wait}
 import fi.oph.koski.valpas.opiskeluoikeusfixture.ValpasOpiskeluoikeusFixtureState
@@ -46,7 +47,7 @@ class FixtureCreator(application: KoskiApplication) extends Logging with Timing 
       }
 
       if (reloadRaportointikanta || fixtureNameHasChanged) {
-        raportointikantaService.loadRaportointikanta(force = true)
+        raportointikantaService.loadRaportointikanta(force = true, pageSize = OpiskeluoikeusLoader.LocalTestingBatchSize)
         Wait.until { raportointikantaService.isLoadComplete }
       }
 

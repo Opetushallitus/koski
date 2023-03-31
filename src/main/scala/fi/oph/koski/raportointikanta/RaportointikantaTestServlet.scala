@@ -20,6 +20,7 @@ class RaportointikantaTestServlet(implicit val application: KoskiApplication) ex
     service.loadRaportointikanta(
       force = getOptionalBooleanParam("force").getOrElse(false),
       skipUnchangedData = !getOptionalBooleanParam("fullReload").getOrElse(false),
+      pageSize = OpiskeluoikeusLoader.LocalTestingBatchSize
     )
     renderObject(Map("status" -> "loading"))
   }

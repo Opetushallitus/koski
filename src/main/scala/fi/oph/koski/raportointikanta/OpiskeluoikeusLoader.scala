@@ -1,16 +1,14 @@
 package fi.oph.koski.raportointikanta
 
-import fi.oph.koski.db.DB
 import fi.oph.koski.log.Logging
-import fi.oph.koski.opiskeluoikeus.PäivitetytOpiskeluoikeudetJonoService
 import rx.lang.scala.{Observable, Subscriber}
 
 import java.sql.Timestamp
-import java.time.{LocalDateTime, ZonedDateTime}
-import scala.concurrent.duration.{DurationInt, FiniteDuration}
+import scala.concurrent.duration.DurationInt
 
 object OpiskeluoikeusLoader {
   val DefaultBatchSize = 500
+  val LocalTestingBatchSize = 5
 }
 
 trait OpiskeluoikeusLoader extends Logging {
