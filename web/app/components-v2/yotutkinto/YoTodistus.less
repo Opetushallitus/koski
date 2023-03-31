@@ -1,0 +1,66 @@
+.YoTodistus {
+  display: flex;
+  align-items: center;
+  background: @color-light-blue;
+  min-height: 4 * @baseline;
+  padding: 4px 17px;
+
+  &--notAvailable {
+    background: @color-info-box-background--neutral;
+  }
+
+  & > * {
+    margin-right: 25px;
+  }
+
+  &__title {
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  &__lang {
+    display: flex;
+    align-items: center;
+
+    .YoTodistus__langLabel {
+      white-space: nowrap;
+    }
+
+    .Select {
+      max-width: 200px;
+      margin-bottom: 0;
+      margin-left: 10px;
+    }
+  }
+
+  .loading-container {
+    height: 18px;
+  }
+
+  a {
+    color: @color-black;
+    font-weight: lighter;
+    text-decoration: underline;
+    margin-right: 50px;
+
+    &::after {
+      content: '';
+      position: absolute;
+      background: url('/koski/images/external-link-icon.svg') no-repeat;
+      margin-left: 10px;
+      margin-top: 1px;
+      width: 16px;
+      height: 16px;
+    }
+  }
+}
+
+.YoTodistus__error {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 0, 0, 0.05);
+  color: @color-red;
+  min-height: 3 * @baseline;
+  padding: 4px 17px;
+  border-radius: 0 0 5px 5px;
+}

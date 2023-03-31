@@ -8,6 +8,7 @@ import fi.oph.koski.opiskeluoikeus.OpiskeluoikeushistoriaErrorRepository
 import fi.oph.koski.suostumus.SuostumuksenPeruutusService
 import fi.oph.koski.util.{Timing, Wait}
 import fi.oph.koski.valpas.opiskeluoikeusfixture.ValpasOpiskeluoikeusFixtureState
+import fi.oph.koski.ytr.MockYoTodistusService
 
 object FixtureCreator {
   def generateOppijaOid(counter: Int) = "1.2.246.562.24." + "%011d".format(counter)
@@ -16,6 +17,7 @@ object FixtureCreator {
 class FixtureCreator(application: KoskiApplication) extends Logging with Timing {
   private val raportointikantaService = application.raportointikantaService
   private val ytrService = application.ytrDownloadService
+  private val yoTodistusService = application.yoTodistusService
   private var currentFixtureState: FixtureState = new NotInitializedFixtureState
   private val opiskeluoikeushistoriaErrorRepository = new OpiskeluoikeushistoriaErrorRepository(application.masterDatabase.db)
 
@@ -37,6 +39,7 @@ class FixtureCreator(application: KoskiApplication) extends Logging with Timing 
       application.tiedonsiirtoService.index.deleteAll()
       application.päivitetytOpiskeluoikeudetJono.poistaKaikki()
       opiskeluoikeushistoriaErrorRepository.truncate
+      yoTodistusService.reset()
 
       if (reloadYtrData || fixtureNameHasChanged) {
         ytrService.loadFixturesAndWaitUntilComplete(force = true)

@@ -26,7 +26,7 @@ class OmatTiedotServlet(implicit val application: KoskiApplication) extends Edit
       renderHuollettavanTiedot(oid)
     }
   }
-
+  
   private def renderOmatTiedot: Unit = {
     val käyttäjäOppija = huoltajaService.findUserOppijaAllowEmpty(session)
     val editorModel = käyttäjäOppija.map(oppija => OmatTiedotEditorModel.toEditorModel(userOppija = oppija, näytettäväOppija = oppija))

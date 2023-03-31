@@ -142,7 +142,9 @@ describe('Omat tiedot', function () {
 
         it('näytetään jos ne löytyy', function () {
           expect(
-            extractAsText(S('.ylioppilastutkinnonsuoritus .osasuoritukset'))
+            extractAsText(
+              S('.ylioppilastutkinnonsuoritus .osasuoritukset .suoritus-group')
+            )
           ).to.equal(
             'Tutkintokerta Koe Pisteet Arvosana\n' +
               '2012 kevät Äidinkielen koe, suomi 46 Lubenter approbatur Näytä koesuoritus\n' +
@@ -563,8 +565,8 @@ describe('Omat tiedot', function () {
                 'Jyväskylän normaalikoulu'
               ])
               expect(suoritusjako.opiskeluoikeusTitleText()).to.match(
-              /Perusopetus \(2008—, läsnä\)Opiskeluoikeuden oid:.*/
-            )
+                /Perusopetus \(2008—, läsnä\)Opiskeluoikeuden oid:.*/
+              )
             })
 
             it('Ei näytetä virheraportointi-painiketta', function () {

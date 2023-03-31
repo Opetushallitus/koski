@@ -5,11 +5,12 @@ import fi.oph.koski.koskiuser.UserWithAccessRights
 import fi.oph.koski.oppija.HenkilönOpiskeluoikeusVersiot
 import fi.oph.koski.organisaatio.OrganisaatioHierarkia
 import fi.oph.koski.preferences.KeyValue
-import fi.oph.koski.schema.{Arviointi, KoodiViite, KoskiSchema, OpiskeluoikeudenTila, Opiskeluoikeusjakso, PäätasonSuoritus, SelitettyOsaamisenTunnustaminen, StorablePreference}
+import fi.oph.koski.schema._
 import fi.oph.koski.typemodel.TypescriptTypes.Options
+import fi.oph.koski.ytr.YtrCertificateResponse
 
 import java.io.{BufferedWriter, File, FileWriter}
-import java.nio.file.{Files, Path, Paths}
+import java.nio.file.{Files, Paths}
 
 object TsFileUpdater {
   def updateTypeFiles(dryRun: Boolean = false): Seq[TypescriptTypes.TsFile] = {
@@ -55,6 +56,7 @@ case class AdditionalExports(
   userWithAccessRights: UserWithAccessRights,
   opiskeluoikeusHistoryPatch: OpiskeluoikeusHistoryPatch,
   päätasonSuoritus: PäätasonSuoritus,
+  ytrCertificateResponse: YtrCertificateResponse,
 
   // Traitit jotka eivæt automaattisesti exporttaudu skeemasta, koska ne eivät sellaisenaan
   // ole minkään tietomallin jäseniä (ainoastaan niistä periytyvät luokat on mainittu).

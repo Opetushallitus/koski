@@ -2,15 +2,20 @@ package fi.oph.koski.ytr
 
 import com.typesafe.config.Config
 import fi.oph.koski.config.{Environment, SecretsManager}
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.{ylioppilasLukiolainenMaksamatonSuoritus, ylioppilasLukiolainenRikki, ylioppilasLukiolainenTimeouttaava, ylioppilasLukiolainenVanhaSuoritus}
 import fi.oph.koski.http.Http._
-import fi.oph.koski.http.{ClientWithBasicAuthentication, Http}
+import fi.oph.koski.http._
 import fi.oph.koski.json.Json4sHttp4s.json4sEncoderOf
 import fi.oph.koski.json.{JsonResources, JsonSerializer}
 import fi.oph.koski.log.{Logging, NotLoggable, TimedProxy}
+import fi.oph.koski.schema.KoskiSchema
+import fi.oph.koski.util.{ClasspathResource, Resource}
 import fi.oph.koski.ytr.download.{YtrLaajaOppija, YtrSsnData}
+import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}
 import org.json4s.JValue
 
-import java.time.LocalDate
+import java.time.{LocalDate, ZonedDateTime}
+import scala.reflect.runtime.{universe => ru}
 
 trait YtrClient {
   // Rajapinnat, joilla haetaan kaikki YTL:n datat.
@@ -25,6 +30,9 @@ trait YtrClient {
 
   def getHetutByModifiedSince(modifiedSince: LocalDate): Option[YtrSsnData] = getJsonHetutByModifiedSince(modifiedSince).map(JsonSerializer.extract[YtrSsnData](_, ignoreExtras = true))
   def getJsonHetutByModifiedSince(modifiedSince: LocalDate): Option[JValue]
+
+  def getCertificateStatus(req: YoTodistusHetuRequest): Either[HttpStatus, YtrCertificateResponse]
+  def generateCertificate(req: YoTodistusHetuRequest): Either[HttpStatus, Unit]
 }
 
 object YtrClient extends Logging {
@@ -51,6 +59,16 @@ object YtrClient extends Logging {
     }
 }
 
+case class YoTodistusHetuRequest(
+  ssn: String,
+  language: String,
+)
+
+case class YoTodistusOidRequest(
+  oid: String,
+  language: String,
+)
+
 object EmptyYtrClient extends YtrClient {
   override def oppijaJsonByHetu(hetu: String): None.type = None
 
@@ -59,9 +77,17 @@ object EmptyYtrClient extends YtrClient {
   override def getJsonHetutByModifiedSince(modifiedSince: LocalDate): Option[JValue] = None
 
   override def oppijatJsonByHetut(ssnData: YtrSsnData): Option[JValue] = None
+
+  override def getCertificateStatus(req: YoTodistusHetuRequest): Either[HttpStatus, YtrCertificateResponse] = Right(YtrCertificateServiceUnavailable())
+
+  override def generateCertificate(req: YoTodistusHetuRequest): Either[HttpStatus, Unit] = Right(Unit)
 }
 
 object MockYrtClient extends YtrClient {
+  lazy val yoTodistusResource: Resource = new ClasspathResource("/mockdata/yotodistus")
+  val yoTodistusRequestTimes: collection.mutable.Map[String, ZonedDateTime] = collection.mutable.Map.empty
+  val yoTodistusGeneratingTimeSecs = 2
+
   def oppijaJsonByHetu(hetu: String): Option[JValue] = JsonResources.readResourceIfExists(resourcename(hetu))
   def filename(hetu: String): String = "src/main/resources" + resourcename(hetu)
   private def resourcename(hetu: String) = "/mockdata/ytr/" + hetu + ".json"
@@ -73,6 +99,7 @@ object MockYrtClient extends YtrClient {
 
   override def getJsonHetutByModifiedSince(modifiedSince: LocalDate): Option[JValue] =
     JsonResources.readResourceIfExists(hetutResourceName(modifiedSince.toString))
+
   private def hetutResourceName(modifiedSince: String) =
     s"/mockdata/ytr/ssns_${modifiedSince}.json"
 
@@ -80,7 +107,46 @@ object MockYrtClient extends YtrClient {
     JsonResources.readResourceIfExists(
       resourcenameLaaja(ssnData.ssns.getOrElse(List.empty).mkString("_"))
     )
+
   private def resourcenameLaaja(hetut: String) = "/mockdata/ytr/laaja_" + hetut + ".json"
+
+  override def getCertificateStatus(req: YoTodistusHetuRequest): Either[HttpStatus, YtrCertificateResponse] = {
+    (req.ssn, yoTodistusRequestTimes.get(s"${req.ssn}_${req.language}")) match {
+      case (hetu, _) if hetu == ylioppilasLukiolainenMaksamatonSuoritus.hetu.get =>
+        Right(YtrCertificateBlocked())
+      case (hetu, _) if hetu == ylioppilasLukiolainenVanhaSuoritus.hetu.get =>
+        Right(YtrCertificateOldExamination())
+      case (_, None) =>
+        Right(YtrCertificateNotStarted())
+      case (_, Some(time)) if ZonedDateTime.now().isAfter(time.plusSeconds(yoTodistusGeneratingTimeSecs)) =>
+        if (req.ssn == ylioppilasLukiolainenTimeouttaava.hetu.get) {
+          Right(YtrCertificateTimeout(time))
+        } else if (req.ssn == ylioppilasLukiolainenRikki.hetu.get) {
+          if (req.language == "fi") {
+            Right(YtrCertificateInternalError(time))
+          } else {
+            Left(KoskiErrorCategory.internalError())
+          }
+        } else {
+          Right(YtrCertificateCompleted(
+            requestedTime = time,
+            completionTime = time.plusSeconds(yoTodistusGeneratingTimeSecs),
+            certificateUrl = "link-to-download",
+          ))
+        }
+      case (_, Some(time)) =>
+        Right(YtrCertificateInProgress(
+          requestedTime = time,
+        ))
+    }
+  }
+
+  override def generateCertificate(req: YoTodistusHetuRequest): Either[HttpStatus, Unit] = {
+    yoTodistusRequestTimes += (s"${req.ssn}_${req.language}" -> ZonedDateTime.now())
+    Right(())
+  }
+
+  def reset(): Unit = yoTodistusRequestTimes.clear()
 }
 
 case class RemoteYtrClient(rootUrl: String, user: String, password: String) extends YtrClient with Logging {
@@ -105,6 +171,33 @@ case class RemoteYtrClient(rootUrl: String, user: String, password: String) exte
   override def oppijatJsonByHetut(ssnData: YtrSsnData): Option[JValue] = {
     runIO(http.post(uri"/api/oph-registrydata/students", ssnData)(json4sEncoderOf[YtrSsnData])(Http.parseJsonOptional[JValue]))
   }
+
+  override def getCertificateStatus(req: YoTodistusHetuRequest): Either[HttpStatus, YtrCertificateResponse] = {
+    val uri = uri"/api/oph-koski/signed-certificate/status"
+    logger.info(s"getCertificateStatus request: $uri $req")
+    val json = runIO(http.post(uri, req)(json4sEncoderOf[YoTodistusHetuRequest])(Http.parseJson[JValue]))
+    logger.info(s"getCertificateStatus response: $uri $req -> $json")
+    val response = SchemaValidatingExtractor.extract[YtrCertificateResponse](json)
+    response.left.map(e => KoskiErrorCategory.badRequest.validation.jsonSchema(JsonErrorMessage(e)))
+  }
+
+  override def generateCertificate(req: YoTodistusHetuRequest): Either[HttpStatus, Unit] = {
+    val uri = uri"/api/oph-koski/signed-certificate"
+    logger.info(s"generateCertificate request: $uri $req")
+    runIO(http.post(uri, req)(json4sEncoderOf[YoTodistusHetuRequest]) {
+      case (status, _, _) if status < 300 =>
+        logger.info(s"generateCertificate request OK!: $uri $req")
+        Right(())
+      case (404, _, _) => Left(KoskiErrorCategory.notFound.oppijaaEiLöydy())
+      case (400, _, _) =>Left(KoskiErrorCategory.badRequest())
+      case (status, text, _) =>
+        logger.error(s"Odottamaton virhe digitaalinen yo-todistus-apista: $status $text")
+        Left(KoskiErrorCategory.internalError())
+    })
+  }
+
+  protected implicit val deserializationContext: ExtractionContext =
+    ExtractionContext(KoskiSchema.schemaFactory).copy(validate = false)
 }
 
 case class YtrConfig(username: String, password: String, url: String) extends NotLoggable

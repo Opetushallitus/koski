@@ -26,6 +26,8 @@ import { ArvosanaEditor } from './ArvosanaEditor'
 import Text from '../i18n/Text'
 import Http from '../util/http'
 import * as Bacon from 'baconjs'
+import { YoTodistus } from '../components-v2/yotutkinto/YoTodistus'
+import { useHrefParam } from '../util/useHrefParam'
 
 const OmatTiedotSuoritustaulukko = ({
   suorituksetModel,
@@ -35,6 +37,7 @@ const OmatTiedotSuoritustaulukko = ({
   const { context } = suorituksetModel
   const parentSuoritus = parentSuoritusProp || context.suoritus
   const suoritukset = modelItems(suorituksetModel) || []
+  const showYoTodistus = useHrefParam('yo')
 
   if (suoritukset.length === 0) return null
 
@@ -55,6 +58,7 @@ const OmatTiedotSuoritustaulukko = ({
   )
 
   const laajuusYksikkö = getLaajuusYksikkö(suoritukset[0])
+
   return (
     <div className="omattiedot-suoritus-taulukko">
       {groupsP.map((groups) =>
@@ -69,6 +73,9 @@ const OmatTiedotSuoritustaulukko = ({
             laajuusYksikkö={laajuusYksikkö}
           />
         ))
+      )}
+      {showYoTodistus && isYlioppilastutkinto(parentSuoritus) && (
+        <YoTodistus oppijaOid={context.oppijaOid} testId="yoTodistus" />
       )}
     </div>
   )

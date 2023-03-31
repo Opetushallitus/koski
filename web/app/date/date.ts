@@ -16,7 +16,8 @@ export const parseFinnishDate = (dateStr: string) => {
   }
 }
 export const parseISODateTime = (dateStr: string) =>
-  fecha.parse(dateStr, 'YYYY-MM-DDThh:mmZZ')
+  fecha.parse(dateStr, 'YYYY-MM-DDThh:mmZZ') ||
+  fecha.parse(dateStr, 'YYYY-MM-DDThh:mm:ss.SSS')
 
 export const formatFinnishDateTime = (date: Date) =>
   format(date, 'D.M.YYYY H:mm')
