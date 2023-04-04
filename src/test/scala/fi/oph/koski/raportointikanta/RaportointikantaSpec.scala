@@ -757,7 +757,7 @@ class RaportointikantaSpec
         val opiskeluoikeus = ammatillinenOpiskeluoikeus.copy(
           suoritukset = List(suoritus)
         )
-        val (ps, _, _, _) = OpiskeluoikeusLoader.buildKoskiSuoritusRows(oid, None, opiskeluoikeus.oppilaitos.get, opiskeluoikeus.suoritukset.head, JObject(), 1)
+        val (ps, _, _, _) = OpiskeluoikeusLoaderRowBuilder.buildKoskiSuoritusRows(oid, None, opiskeluoikeus.oppilaitos.get, opiskeluoikeus.suoritukset.head, JObject(), 1)
         ps.toimipisteOid should equal(AmmatillinenExampleData.stadinToimipiste.oid)
         ps.toimipisteNimi should equal(AmmatillinenExampleData.stadinToimipiste.nimi.get.get("fi"))
       }
@@ -770,7 +770,7 @@ class RaportointikantaSpec
         val opiskeluoikeus = ammatillinenOpiskeluoikeus.copy(
           suoritukset = List(suoritus)
         )
-        val (ps, _, _, _) = OpiskeluoikeusLoader.buildKoskiSuoritusRows(oid, None, opiskeluoikeus.oppilaitos.get, opiskeluoikeus.suoritukset.head, JObject(), 1)
+        val (ps, _, _, _) = OpiskeluoikeusLoaderRowBuilder.buildKoskiSuoritusRows(oid, None, opiskeluoikeus.oppilaitos.get, opiskeluoikeus.suoritukset.head, JObject(), 1)
         ps.alkamispäivä.get should equal(Date.valueOf("2016-1-1"))
       }
     }
@@ -789,8 +789,8 @@ class RaportointikantaSpec
       )
 
       val mitätöidytKoskessa =
-        mitätöidytPoistamattomatKoskessa.map(OpiskeluoikeusLoader.buildRowMitätöity).map(_.right.get) ++
-        mitätöidytPoistetutTaiPerututSuostumuksetKoskessa.map(OpiskeluoikeusLoader.buildRowMitätöity).map(_.right.get)
+        mitätöidytPoistamattomatKoskessa.map(OpiskeluoikeusLoaderRowBuilder.buildRowMitätöity).map(_.right.get) ++
+        mitätöidytPoistetutTaiPerututSuostumuksetKoskessa.map(OpiskeluoikeusLoaderRowBuilder.buildRowMitätöity).map(_.right.get)
 
       mitätöidytKoskessa.distinct.length should equal(mitätöidytKoskessa.length)
       mitätöidytRaportointikannassa.length should equal(mitätöidytKoskessa.length)

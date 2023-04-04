@@ -27,7 +27,7 @@ class MigrationSpec extends AnyFreeSpec with Matchers {
         "LoaderUtils.scala"                                         -> "38d31b4d1cfa5e3892083bb39f7f0047",
         "MuuAmmatillinenRaporttiRowBuilder.scala"                   -> "31774fb0fbd06a775a07325e867a951f",
         "OpiskeluoikeudenUlkopuolellaArvioidutOsasuoritukset.scala" -> "47d7ee909d283a47f9240d804d5ddde5",
-        "OpiskeluoikeusLoader.scala"                                -> "302b353e9ef022ead95ba32c0dec6e65",
+        "OpiskeluoikeusLoader.scala"                                -> "2a9a7500cb21a6eda52007c55ea8b734",
         "OppivelvollisuudenVapautusLoader.scala"                    -> "2870707413fff5719b7cb7063dd424c4",
         "OrganisaatioHistoriaRowBuilder.scala"                      -> "7e586d9e273a5a4ee7beae257f22c7f4",
         "OrganisaatioLoader.scala"                                  -> "9e2e45da33ed335af4a7b0a31b139a7",
@@ -35,11 +35,14 @@ class MigrationSpec extends AnyFreeSpec with Matchers {
         "RaportointiDatabase.scala"                                 -> "b382bd117d5953dd235bccc659ce3eaa",
         "RaportointiDatabaseCustomFunctions.scala"                  -> "956f101d1219c49ac9134b72a30caf3a",
         "RaportointiDatabaseSchema.scala"                           -> "72059850ce1d8d1b7453507c134e94a2",
-        "RaportointikantaService.scala"                             -> "69aee6c9ffd4d8dc36e4013195e4a90b",
+        "RaportointikantaService.scala"                             -> "8f151f971984b09167f781b7e465a259",
         "RaportointikantaStatusServlet.scala"                       -> "9fd6f796adfb2034cce0151b7330cd1a",
-        "RaportointikantaTestServlet.scala"                         -> "2b515d2841ff605149861e60479804c8",
+        "RaportointikantaTestServlet.scala"                         -> "d457be86e60dd84545378ae415236d26",
         "RaportointikantaTableQueries.scala"                        -> "b97f971fa7a5896ec3c4d69882ca705d",
         "TOPKSAmmatillinenRaporttiRowBuilder.scala"                 -> "a9c26a13385ff576810f3ef831240437",
+        "OpiskeluoikeusLoaderRowBuilder.scala"                      -> "aea66b3f54e707dca1573511f50f75f0",
+        "IncrementalUpdateOpiskeluoikeusLoader.scala"               -> "fd0687df6c413b981947246909b1c91d",
+        "FullReloadOpiskeluoikeusLoader.scala"                      -> "925831fbb6bc923c49f6f87f8827f8d",
       )
 
       val errors = getListOfFiles(dir).flatMap(file => {

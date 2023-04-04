@@ -3,6 +3,7 @@ package fi.oph.koski.valpas
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.Unauthenticated
+import fi.oph.koski.raportointikanta.OpiskeluoikeusLoader
 import fi.oph.koski.servlet.NoCache
 import fi.oph.koski.util.Wait
 import fi.oph.koski.valpas.opiskeluoikeusfixture.{FixtureState, FixtureUtil, StatefulFixtureUtil}
@@ -47,7 +48,7 @@ class ValpasTestApiServlet(implicit val application: KoskiApplication) extends V
 
   get("/load-raportointikanta") {
     synchronized {
-      raportointikantaService.loadRaportointikanta(force = true)
+      raportointikantaService.loadRaportointikanta(force = true, pageSize = OpiskeluoikeusLoader.LocalTestingBatchSize)
       Wait.until { raportointikantaService.isLoadComplete }
     }
     Unit
