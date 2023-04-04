@@ -12,6 +12,10 @@ import {
   isSynteettinenKoodiviite,
   SynteettinenKoodiviite
 } from '../types/fi/oph/koski/schema/SynteettinenKoodiviite'
+import {
+  isKorkeakoulunPaikallinenArvosana,
+  KorkeakoulunPaikallinenArvosana
+} from '../types/fi/oph/koski/schema/KorkeakoulunPaikallinenArvosana'
 
 export type KoodistoUriOf<T extends Koodistokoodiviite> = T['koodistoUri']
 export type KoodiarvotOf<T extends Koodistokoodiviite> = T['koodiarvo']
@@ -28,13 +32,15 @@ export type KoodiviiteWithOptionalUri =
   | PaikallinenKoodi
   | LukionOppiaineidenOppimäärätKoodi2019
   | SynteettinenKoodiviite
+  | KorkeakoulunPaikallinenArvosana
 
 export const isKoodiviiteUriOptional = (
   a: KoodiViite
 ): a is KoodiviiteWithOptionalUri =>
   isPaikallinenKoodi(a) ||
   isLukionOppiaineidenOppimäärätKoodi2019(a) ||
-  isSynteettinenKoodiviite(a)
+  isSynteettinenKoodiviite(a) ||
+  isKorkeakoulunPaikallinenArvosana(a)
 
 export const asKoodiviite = <U extends string, A extends string = string>(
   a: Koodistokoodiviite,
