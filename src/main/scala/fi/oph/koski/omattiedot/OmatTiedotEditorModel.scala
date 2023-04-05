@@ -24,13 +24,17 @@ object OmatTiedotEditorModel extends Timing {
     toEditorModel(userOppija.getIgnoringWarnings, näytettäväOppija.getIgnoringWarnings, warnings = näytettäväOppija.warnings)
 
   def toEditorModel(userOppija: Oppija, näytettäväOppija: Oppija, warnings: Seq[HttpStatus])(implicit application: KoskiApplication, koskiSession: KoskiSpecificSession): EditorModel = timed("createModel") {
-    val piilotetuillaTiedoilla = piilotaArvosanatKeskeneräisistäSuorituksista _ andThen
+    buildModel(buildView(piilotetuillaTiedoilla(userOppija), piilotetuillaTiedoilla(näytettäväOppija), warnings))
+  }
+
+  def piilotetuillaTiedoilla(oppija: Oppija)(implicit koskiSession: KoskiSpecificSession): Oppija = {
+    val piilota = piilotaArvosanatKeskeneräisistäSuorituksista _ andThen
       piilotaSensitiivisetHenkilötiedot andThen
       piilotaKeskeneräisetPerusopetuksenPäättötodistukset andThen
       piilotaTietojaSuoritusjaosta andThen
       piilotaLaajuuksia
 
-    buildModel(buildView(piilotetuillaTiedoilla(userOppija), piilotetuillaTiedoilla(näytettäväOppija), warnings))
+    piilota(oppija)
   }
 
   def opiskeluoikeudetOppilaitoksittain(oppija: Oppija): List[OppilaitoksenOpiskeluoikeudet] = {
