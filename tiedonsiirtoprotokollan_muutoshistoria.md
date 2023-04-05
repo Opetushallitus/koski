@@ -1,3 +1,8 @@
+## 4.4.2023
+
+- Paikallisten koulutusmoduulien tunnisteen koodisto uri -kenttä on merkitty poistettavaksi käytöstä
+  eikä kentässä siirrettyjä tietoja enää tallenneta.
+
 ## 13.3.2023
 
 - Lisätty ammattikoulujen suoritusten korotusten vaatimat tietomallimuutokset.

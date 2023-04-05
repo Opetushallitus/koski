@@ -1,4 +1,4 @@
-import { PaikallinenKoodi } from './PaikallinenKoodi'
+import { KorkeakoulunPaikallinenArvosana } from './KorkeakoulunPaikallinenArvosana'
 
 /**
  * KorkeakoulunPaikallinenArviointi
@@ -7,13 +7,13 @@ import { PaikallinenKoodi } from './PaikallinenKoodi'
  */
 export type KorkeakoulunPaikallinenArviointi = {
   $class: 'fi.oph.koski.schema.KorkeakoulunPaikallinenArviointi'
-  arvosana: PaikallinenKoodi
+  arvosana: KorkeakoulunPaikallinenArvosana
   päivä: string
   hyväksytty?: boolean
 }
 
 export const KorkeakoulunPaikallinenArviointi = (o: {
-  arvosana: PaikallinenKoodi
+  arvosana: KorkeakoulunPaikallinenArvosana
   päivä: string
   hyväksytty?: boolean
 }): KorkeakoulunPaikallinenArviointi => ({

@@ -401,7 +401,7 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
               </virta:Muu>
             </virta:Arvosana>
           (convertArviointi(arvosana)
-            should equal(KorkeakoulunPaikallinenArviointi(PaikallinenKoodi("OIV", "OIV", Some("virta/310")), LocalDate.of(2014, 5, 30))))
+            should equal(KorkeakoulunPaikallinenArviointi(KorkeakoulunPaikallinenArvosana("OIV", "OIV", Some("virta/310")), LocalDate.of(2014, 5, 30))))
         }
         "Hanken - Poäng" in {
           val arvosana =
@@ -419,7 +419,7 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
               </virta:Muu>
             </virta:Arvosana>
           (convertArviointi(arvosana)
-            should equal(KorkeakoulunPaikallinenArviointi(PaikallinenKoodi("76", "76", Some("virta/4")), LocalDate.of(2014, 5, 30))))
+            should equal(KorkeakoulunPaikallinenArviointi(KorkeakoulunPaikallinenArvosana("76", "76", Some("virta/4")), LocalDate.of(2014, 5, 30))))
         }
       }
     }

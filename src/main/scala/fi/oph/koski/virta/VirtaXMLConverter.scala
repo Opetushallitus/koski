@@ -400,7 +400,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
       .find(a => (a \ "@avain").text == (suoritus \ "Arvosana" \ "Muu" \ "Koodi").text)
       .map { a => List(
         KorkeakoulunPaikallinenArviointi(
-          PaikallinenKoodi((a \ "Koodi").text, LocalizedString.finnish(nimi(a)), Some(asteikkoUri)),
+          KorkeakoulunPaikallinenArvosana((a \ "Koodi").text, LocalizedString.finnish(nimi(a)), Some(asteikkoUri)),
           LocalDate.parse((suoritus \ "SuoritusPvm").text)
         ))
       }
