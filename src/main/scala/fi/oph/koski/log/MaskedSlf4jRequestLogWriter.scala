@@ -25,6 +25,7 @@ object MaskedSlf4jRequestLogWriter {
       .replaceAll("(/koski/valpas/api/henkilohaku/suorittaminen/)(\\d\\S+)", "$1******-****")
       .replaceAll("(/koski/valpas/api/henkilohaku/maksuttomuus/)(\\d\\S+)", "$1******-****")
       .replaceAll("(/koski/valpas/api/henkilohaku/kunta/)(\\d\\S+)", "$1******-****")
+      .replaceAll("(/koski/api/opinnot/[0-9a-f]{8})([0-9a-f]+)", "$1************************")
   }
 }
 
