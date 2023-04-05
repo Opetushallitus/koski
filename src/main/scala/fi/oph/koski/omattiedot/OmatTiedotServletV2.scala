@@ -18,6 +18,7 @@ class OmatTiedotServletV2(implicit val application: KoskiApplication) extends Ko
     renderEither[Oppija](
       huoltajaService
         .findUserOppijaAllowEmpty(session)
+        .map(_.map(OmatTiedotEditorModel.piilotetuillaTiedoilla))
         .map(_.getIgnoringWarnings)
     )
   }
