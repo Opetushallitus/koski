@@ -156,6 +156,13 @@ case class RemoteYtrClient(rootUrl: String, user: String, password: String) exte
     password = password
   ))
 
+  // Can be used in order to recover from temporary failures, since POST requests to students API are idempotent.
+  val postRetryingHttp = Http(rootUrl, ClientWithBasicAuthentication(
+    unsafeRetryingClient("ytrWithPostRetry"),
+    username = user,
+    password = password
+  ))
+
   def oppijaJsonByHetu(hetu: String): Option[JValue] = {
     runIO(http.get(uri"/api/oph-koski/student/$hetu")(Http.parseJsonOptional[JValue]))
   }
@@ -169,7 +176,7 @@ case class RemoteYtrClient(rootUrl: String, user: String, password: String) exte
   }
 
   override def oppijatJsonByHetut(ssnData: YtrSsnData): Option[JValue] = {
-    runIO(http.post(uri"/api/oph-registrydata/students", ssnData)(json4sEncoderOf[YtrSsnData])(Http.parseJsonOptional[JValue]))
+    runIO(postRetryingHttp.post(uri"/api/oph-registrydata/students", ssnData)(json4sEncoderOf[YtrSsnData])(Http.parseJsonOptional[JValue]))
   }
 
   override def getCertificateStatus(req: YoTodistusHetuRequest): Either[HttpStatus, YtrCertificateResponse] = {
