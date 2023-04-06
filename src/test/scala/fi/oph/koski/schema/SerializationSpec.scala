@@ -1,13 +1,17 @@
 package fi.oph.koski.schema
 
 import fi.oph.koski.TestEnvironment
-import fi.oph.koski.documentation.{AmmatillinenExampleData, Example, Examples}
+import fi.oph.koski.documentation.{AmmatillinenExampleData, Examples}
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, OppijaHenkilöWithMasterInfo}
 import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.koodisto.MockKoodistoViitePalvelu
 import fi.oph.koski.log.Logging
+import fi.oph.koski.organisaatio.MockOrganisaatioRepository
 import fi.oph.koski.perustiedot.{OpiskeluoikeudenHenkilötiedot, OpiskeluoikeudenOsittaisetTiedot, OpiskeluoikeudenPerustiedot}
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
+import fi.oph.koski.validation.ValidatingAndResolvingExtractor
 import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}
+import org.json4s.jackson.JsonMethods.{parse => parseJson}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -96,6 +100,16 @@ class SerializationSpec extends AnyFreeSpec with TestEnvironment with Matchers w
             }
           }
         }
+      }
+    }
+
+    "Paikallisen koodin koodistouri pudotetaan deserialisoinnissa" in {
+      val json = """{"nimi": {"fi": "Paikallinen 1"}, "koodiarvo": "Paikallinen 1", "koodistoUri": "omakoodisto"}"""
+      val v = new ValidatingAndResolvingExtractor(MockKoodistoViitePalvelu, MockOrganisaatioRepository)
+
+      v.extract[PaikallinenKoodi](context)(parseJson(json)) match {
+        case Right(viite: PaikallinenKoodi) => viite shouldBe PaikallinenKoodi("Paikallinen 1", Finnish("Paikallinen 1"), None)
+        case Left(error) => fail(s"deserialization of $json failed: $error")
       }
     }
   }
