@@ -57,20 +57,21 @@ export const LuvaEditor = ({ suorituksetModel }) => {
           />
         </div>
       )}
-      {oppimaaraDiaarinumero === '56/011/2015' && (edit || hasLukionKursseja) && (
-        <div className="valinnaisena-suoritetut-lukiokurssit">
-          <h5>
-            <Text name="Valinnaisena suoritetut lukiokurssit" />
-          </h5>
-          <LukionOppiaineetComponent
-            suorituksetModel={suorituksetModel}
-            classesForUusiOppiaineenSuoritus={[
-              'lukionoppiaineenopintojensuorituslukioonvalmistavassakoulutuksessa'
-            ]}
-            suoritusFilter={lukionkurssinsuorituksetFilter}
-          />
-        </div>
-      )}
+      {oppimaaraDiaarinumero === '56/011/2015' &&
+        (edit || hasLukionKursseja) && (
+          <div className="valinnaisena-suoritetut-lukiokurssit">
+            <h5>
+              <Text name="Valinnaisena suoritetut lukiokurssit" />
+            </h5>
+            <LukionOppiaineetComponent
+              suorituksetModel={suorituksetModel}
+              classesForUusiOppiaineenSuoritus={[
+                'lukionoppiaineenopintojensuorituslukioonvalmistavassakoulutuksessa'
+              ]}
+              suoritusFilter={lukionkurssinsuorituksetFilter}
+            />
+          </div>
+        )}
       {oppimaaraDiaarinumero === 'OPH-4958-2020' &&
         (edit || hasLukion2019Moduuleja) && (
           <div className="valinnaisena-suoritetut-lukiokurssit">

@@ -8,7 +8,7 @@ export const supportedLanguages = ['fi', 'sv', 'en'] as const
 
 export type TranslationId = string
 export type Translation = string
-export type Language = typeof supportedLanguages[number]
+export type Language = (typeof supportedLanguages)[number]
 export type LanguageRecord = Record<Language, Translation>
 export type LocalizationMap = Record<TranslationId, LanguageRecord>
 
