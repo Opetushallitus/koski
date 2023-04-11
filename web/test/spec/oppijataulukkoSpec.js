@@ -156,12 +156,13 @@ describe('Oppijataulukko', function () {
           'Erityisoppilaitoksessa, Emppu Historia',
           'Kokonaisuuksilla, Keijo',
           'Korhonen, Korottaja',
+          'Koulutusvientiläinen, Amis',
           'Osittainen, Outi',
           'Rikkinäinen, Kela',
           'Telmanen, Tuula',
           'Valviralle, Veera'
         ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('13')
+        expect(page.opiskeluoikeudeTotal()).to.equal('14')
       })
     })
 
@@ -272,6 +273,7 @@ describe('Oppijataulukko', function () {
           'Koululainen, Kaisa',
           'Koululainen, Kaisa',
           'Koululainen, Kaisa',
+          'Koulutusvientiläinen, Amis',
           'Kurssikertyma, Eronnut Aineopiskelija',
           'Kurssikertyma, Oppimaara',
           'Kurssikertyma, Valmistunut Aineopiskelija',
@@ -329,10 +331,9 @@ describe('Oppijataulukko', function () {
           'Vanhanen-Toikkarinen, Vanja',
           'Vuonna 2004 syntynyt, Peruskoulu suoritettu 2021',
           'Vuonna 2004 syntynyt, Peruskoulu suoritettu ennen 2021',
-          'Vuonna 2004 syntynyt, Peruskoulusta eronnut ennen 2021',
-          'Vuonna 2004 syntynyt ahvenanmaalle muuttanut, Peruskoulu suoritettu 2021'
+          'Vuonna 2004 syntynyt, Peruskoulusta eronnut ennen 2021'
         ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('105')
+        expect(page.opiskeluoikeudeTotal()).to.equal('106')
       })
     })
 

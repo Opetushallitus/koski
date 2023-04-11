@@ -467,6 +467,18 @@ object AmmatillinenExampleData {
     )
   )
 
+  def sosiaaliJaTerveysalaKoulutusvientiOpiskeluoikeus(
+    oppilaitos: Oppilaitos = stadinAmmattiopisto,
+    toimipiste: OrganisaatioWithOid = stadinToimipiste
+  ): AmmatillinenOpiskeluoikeus = {
+    sosiaaliJaTerveysalaOpiskeluoikeus().copy(
+      lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(
+        hojks = None,
+        koulutusvienti = true
+      ))
+    )
+  }
+
   def sosiaaliJaTerveysalaOpiskeluoikeusKesken(oppilaitos: Oppilaitos = stadinAmmattiopisto, toimipiste: OrganisaatioWithOid = stadinToimipiste) = AmmatillinenOpiskeluoikeus(
     arvioituPäättymispäivä = Some(date(2015, 5, 31)),
     oppilaitos = Some(oppilaitos),

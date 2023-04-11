@@ -56,6 +56,11 @@ class ValviraSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTest
         )
       }
     }
+    "ei palauta ammatillisen koulutusvientikoulutuksen opiskeluoikeutta Valviralle" in {
+      getHetu(KoskiSpecificMockOppijat.amisKoulutusvienti.hetu.get) {
+        verifyResponseStatus(404, KoskiErrorCategory.notFound())
+      }
+    }
     "Palauttaa linkitettyjen oidien opinnot" in {
       putOpiskeluoikeus(AmmatillinenExampleData.sosiaaliJaTerveysalaOpiskeluoikeus(), KoskiSpecificMockOppijat.master) {
         putOpiskeluoikeus(AmmatillinenExampleData.sosiaaliJaTerveysalaOpiskeluoikeusKesken(), KoskiSpecificMockOppijat.slave.henkilö) {
