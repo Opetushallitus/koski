@@ -735,9 +735,7 @@ describe('Oppijataulukko', function () {
         expect(page.oppijataulukko.names()).to.deep.equal(['Taiteilija, Hank'])
         expect(
           page.oppijataulukko.oppilaitokset().slice().sort()
-        ).to.deep.equal([
-          'Varsinais-Suomen kansanopistoVarsinais-Suomen kansanopisto'
-        ])
+        ).to.deep.equal(['Varsinais-Suomen kansanopisto'])
         expect(page.opiskeluoikeudeTotal()).to.equal('1')
       })
     })
