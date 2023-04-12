@@ -2,7 +2,7 @@ package fi.oph.koski.koodisto
 
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schema.Koodistokoodiviite
+import fi.oph.koski.schema.{Koodistokoodiviite, PaikallinenKoodi}
 import fi.oph.koski.servlet.InvalidRequestException
 import fi.oph.scalaschema._
 import fi.oph.scalaschema.extraction.{CustomDeserializer, OtherViolation, ValidationError}
@@ -26,9 +26,10 @@ case class KoodistoResolvingCustomDeserializer(koodistoPalvelu: KoodistoViitePal
           case None =>
             Left(List(ValidationError(json.path, json.json, OtherViolation("Koodia " + viite + " ei löydy koodistosta", "tuntematonKoodi"))))
         }
+      case Right(viite: PaikallinenKoodi) => Right(viite.copy(koodistoUri = None))
       case errors => errors
     }
   }
 
-  def isApplicable(schema: SchemaWithClassName): Boolean = schema.appliesToClass(classOf[Koodistokoodiviite])
+  def isApplicable(schema: SchemaWithClassName): Boolean = schema.appliesToClass(classOf[Koodistokoodiviite]) || schema.appliesToClass(classOf[PaikallinenKoodi])
 }
