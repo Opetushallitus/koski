@@ -1022,9 +1022,10 @@ class OppijaValidationTaiteenPerusopetusSpec
       val poistettavaSuoritus = TPO.PäätasonSuoritus.yleistenYhteistenOpintojenSuoritusEiArvioituEiOsasuorituksia
 
       // Syötä opiskeluoikeus
+      val henkilö = KoskiSpecificMockOppijat.tyhjä
       val oo = postAndGetOpiskeluoikeusV2(
         TPO.Opiskeluoikeus.aloitettuYleinenOppimäärä,
-        henkilö = KoskiSpecificMockOppijat.tyhjä
+        henkilö = henkilö
       )
       oo.oid should not be empty
 
@@ -1088,10 +1089,15 @@ class OppijaValidationTaiteenPerusopetusSpec
       // Suostumuksen peruutuksesta on jäänyt sähköposti-ilmoituksen laukaiseva logitus
       RootLogTester.getLogMessages.find(_.startsWith("Kansalainen")).get should equal(s"Kansalainen perui suostumuksen. Opiskeluoikeus ${oo.oid.get}. Ks. tarkemmat tiedot mock/koski/api/opiskeluoikeus/suostumuksenperuutus")
 
-      // Opiskeluoikeus ei ole poistunut oppija-listauksesta
+      // Opiskeluoikeus ei ole poistunut oppija-listauksesta...
       KoskiApplicationForTests.perustiedotIndexer.sync(true)
       val opiskeluoikeuksia = searchForPerustiedot(Map("toimipiste" -> oo.oppilaitos.get.oid))
       opiskeluoikeuksia.length should equal(opiskeluoikeuksiaEnnenPerumistaOpenSearchissa)
+
+      // ...mutta toinen suorituksista on
+      opiskeluoikeuksia
+        .find(_.henkilö.exists(h => h.etunimet == henkilö.etunimet && h.sukunimi == henkilö.sukunimi))
+        .map(_.suoritukset.length) should equal(Some(1))
     }
 
     "suostumuksen peruutus vuorotellen suorituksilta kun opiskeluoikeulla enemmän kuin yksi suoritus - opiskeluoikeus poistuu" in {

@@ -80,8 +80,11 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
     tyyppi: String
   ): HttpStatus = {
     val opiskeluoikeudenId = runDbSync(KoskiTables.KoskiOpiskeluOikeudet.filter(_.oid === oid).map(_.id).result).head
-    val perustiedot = OpiskeluoikeudenPerustiedot
-      .makePerustiedot(opiskeluoikeudenId, oo, application.henkilöRepository.opintopolku.withMasterInfo(henkilö))
+    val perustiedot = OpiskeluoikeudenPerustiedot.makePerustiedot(
+      opiskeluoikeudenId,
+      oo.withSuoritukset(oo.suoritukset.filter(_.tyyppi.koodiarvo != tyyppi)),
+      application.henkilöRepository.opintopolku.withMasterInfo(henkilö),
+    )
     val aiemminPoistettuRivi = runDbSync(KoskiTables.PoistetutOpiskeluoikeudet.filter(_.oid === oid).result).headOption
     runDbSync(
       DBIO.seq(

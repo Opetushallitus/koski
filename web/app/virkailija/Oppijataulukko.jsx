@@ -19,6 +19,9 @@ import { lang, t } from '../i18n/i18n'
 import Text from '../i18n/Text'
 import { EditLocalizationsLink } from '../i18n/EditLocalizationsLink'
 import { userP } from '../util/user'
+import { uniq } from 'fp-ts/lib/Array'
+import * as string from 'fp-ts/lib/string'
+import { arraysEqual } from '../util/fp/arrays'
 
 export const listviewPath = () => {
   return sessionStorage.previousListViewPath || '/koski/'
@@ -271,46 +274,54 @@ export class Oppijataulukko extends React.Component {
                         </ul>
                       </td>
                       <td className="tutkinto">
-                        {opiskeluoikeus.suoritukset.map((suoritus, j) => (
-                          <ul className="cell-listing" key={j}>
-                            {
-                              <li className="koulutusmoduuli">
-                                <Highlight search={params.tutkintohaku || ''}>
-                                  {t(suoritus.koulutusmoduuli.tunniste.nimi)}
-                                </Highlight>
-                              </li>
-                            }
-                            {(suoritus.osaamisala || []).map(
-                              (osaamisala, k) => (
-                                <li className="osaamisala" key={k}>
+                        {uniqTutkinto(opiskeluoikeus.suoritukset).map(
+                          (suoritus, j) => (
+                            <ul className="cell-listing" key={j}>
+                              {
+                                <li className="koulutusmoduuli">
                                   <Highlight search={params.tutkintohaku || ''}>
-                                    {t(osaamisala.nimi)}
+                                    {t(suoritus.koulutusmoduuli.tunniste.nimi)}
                                   </Highlight>
                                 </li>
-                              )
-                            )}
-                            {(suoritus.tutkintonimike || []).map(
-                              (nimike, k) => (
-                                <li className="tutkintonimike" key={k}>
-                                  <Highlight search={params.tutkintohaku || ''}>
-                                    {t(nimike.nimi)}
-                                  </Highlight>
-                                </li>
-                              )
-                            )}
-                          </ul>
-                        ))}
+                              }
+                              {(suoritus.osaamisala || []).map(
+                                (osaamisala, k) => (
+                                  <li className="osaamisala" key={k}>
+                                    <Highlight
+                                      search={params.tutkintohaku || ''}
+                                    >
+                                      {t(osaamisala.nimi)}
+                                    </Highlight>
+                                  </li>
+                                )
+                              )}
+                              {(suoritus.tutkintonimike || []).map(
+                                (nimike, k) => (
+                                  <li className="tutkintonimike" key={k}>
+                                    <Highlight
+                                      search={params.tutkintohaku || ''}
+                                    >
+                                      {t(nimike.nimi)}
+                                    </Highlight>
+                                  </li>
+                                )
+                              )}
+                            </ul>
+                          )
+                        )}
                       </td>
                       <td className="tila">
                         {t(L.get(['tilat', 0, 'tila', 'nimi'], opiskeluoikeus))}
                       </td>
                       <td className="oppilaitos">
                         <ul className="cell-listing">
-                          {opiskeluoikeus.suoritukset.map((suoritus, j) => (
-                            <li key={j} className="toimipiste">
-                              {t(suoritus.toimipiste.nimi)}
-                            </li>
-                          ))}
+                          {uniqToimipiste(opiskeluoikeus.suoritukset).map(
+                            (nimi, j) => (
+                              <li key={j} className="toimipiste">
+                                {nimi}
+                              </li>
+                            )
+                          )}
                         </ul>
                       </td>
                       <td className="aloitus pvm">
@@ -442,3 +453,20 @@ export const oppijataulukkoContentP = (query, params) => {
     title: ''
   }))
 }
+
+const uniqContramapString = (getString) => (as) =>
+  uniq(string.Eq)(as.map(getString))
+
+const uniqToimipiste = uniqContramapString((suoritus) =>
+  t(suoritus.toimipiste.nimi)
+)
+
+const showTutkintoEq = {
+  equals: (a, b) =>
+    a.koulutusmoduuli.tunniste.koodiarvo ===
+      b.koulutusmoduuli.tunniste.koodiarvo &&
+    arraysEqual(a.osaamisala || [], b.osaamisala || []) &&
+    arraysEqual(a.tutkintonimike || [], b.tutkintonimike || [])
+}
+
+const uniqTutkinto = uniq(showTutkintoEq)
