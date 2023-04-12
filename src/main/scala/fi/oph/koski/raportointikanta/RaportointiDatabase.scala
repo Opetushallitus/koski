@@ -183,7 +183,7 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
     case class Kloonaus(
       taulu: String,
       primaryKeys: List[String] = List.empty,
-      timeout: FiniteDuration = 15.minutes,
+      timeout: FiniteDuration = 120.minutes,
     );
 
     val kloonattavatTaulut = List(
