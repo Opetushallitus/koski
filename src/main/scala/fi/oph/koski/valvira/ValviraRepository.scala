@@ -1,7 +1,6 @@
 package fi.oph.koski.valvira
 
 import java.sql.{Date, Timestamp}
-
 import fi.oph.koski.db.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.jsonMethods.{parse => parseJson}
@@ -12,7 +11,7 @@ import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.schema.Henkilö
 import fi.oph.koski.log.Logging
 import org.json4s.JValue
-import org.json4s.JsonAST.{JArray, JString}
+import org.json4s.JsonAST.{JArray, JBool, JString}
 
 import scala.util.{Failure, Success, Try}
 
@@ -31,6 +30,7 @@ class ValviraRepository(val db: DB) extends QueryMethods with Logging {
       .map(mergeJson)
       .map(onlyValviraTutkinnonSuoritukset)
       .filter(sisältääSuorituksia)
+      .filterNot(onKoulutusvientiä)
       .map(JsonSerializer.extract[ValviraOpiskeluoikeus](_, ignoreExtras = true))
   } match {
     case Success(opiskeluoikeudet) if opiskeluoikeudet.nonEmpty => Right(opiskeluoikeudet.toList)
@@ -65,4 +65,9 @@ class ValviraRepository(val db: DB) extends QueryMethods with Logging {
   private def sisältääSuorituksia(json: JValue): Boolean = {
     json \ "suoritukset" != JArray(Nil)
   }
+
+  private def onKoulutusvientiä(json: JValue): Boolean = {
+    json \ "lisätiedot" \ "koulutusvienti" == JBool.True
+  }
+
 }
