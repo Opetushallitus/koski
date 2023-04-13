@@ -13,7 +13,7 @@ import java.io.OutputStream
 
 object YoTodistusService {
   def apply(application: KoskiApplication): YoTodistusService = {
-    val s3config: YtrS3Config = YtrS3SignedCertificateConfig.getEnvironmentConfig(application)
+    val s3config: YtrS3Config = YtrS3Config.getEnvironmentConfig(application)
     if (s3config.bucket == "mock") {
       new MockYoTodistusService(application)
     } else {

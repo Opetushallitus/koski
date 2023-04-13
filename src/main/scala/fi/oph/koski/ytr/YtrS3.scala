@@ -35,6 +35,10 @@ class YtrS3(config: YtrS3Config) {
 }
 
 object YtrS3Config {
+  def getEnvironmentConfig(application: KoskiApplication): YtrS3Config = {
+    if (Environment.usesAwsSecretsManager) this.fromSecretsManager else this.fromConfig(application.config)
+  }
+
   def fromConfig(config: Config): YtrS3Config = YtrS3Config(
     config.getString("ytr.aws.accessKeyId"),
     config.getString("ytr.aws.secretAccessKey"),
@@ -42,27 +46,10 @@ object YtrS3Config {
     config.getString("ytr.aws.externalId"),
     config.getString("ytr.aws.bucket")
   )
+
   def fromSecretsManager: YtrS3Config = {
     val cachedSecretsClient = new SecretsManager
     val secretId = cachedSecretsClient.getSecretId("YTR S3 secrets", "YTR_S3_SECRET_ID")
-    cachedSecretsClient.getStructuredSecret[YtrS3Config](secretId)
-  }
-}
-
-object YtrS3SignedCertificateConfig {
-  def getEnvironmentConfig(application: KoskiApplication): YtrS3Config =
-    if (Environment.usesAwsSecretsManager) YtrS3SignedCertificateConfig.fromSecretsManager else YtrS3SignedCertificateConfig.fromConfig(application.config)
-
-  def fromConfig(config: Config): YtrS3Config = YtrS3Config(
-    config.getString("ytr.certificates.aws.accessKeyId"),
-    config.getString("ytr.certificates.aws.secretAccessKey"),
-    config.getString("ytr.certificates.aws.roleArn"),
-    config.getString("ytr.certificates.aws.externalId"),
-    config.getString("ytr.certificates.aws.bucket")
-  )
-  def fromSecretsManager: YtrS3Config = {
-    val cachedSecretsClient = new SecretsManager
-    val secretId = cachedSecretsClient.getSecretId("YTR Certificates S3 secrets", "YTR_CERTIFICATES_S3_SECRET_ID")
     cachedSecretsClient.getStructuredSecret[YtrS3Config](secretId)
   }
 }
