@@ -83,6 +83,10 @@ object ExamplesLukio {
               kurssisuoritus(valtakunnallinenKurssi("LAB31")).copy(arviointi = numeerinenArviointi(9)),
               kurssisuoritus(valtakunnallinenKurssi("LAB32")).copy(arviointi = numeerinenArviointi(8))
             ))),
+            suoritus(lukionKieli("AOM", "FI")).copy(arviointi = arviointi("8")).copy(osasuoritukset = Some(List(
+              kurssisuoritus(valtakunnallinenKurssi("ÄI1")).copy(arviointi = numeerinenArviointi(9)),
+              kurssisuoritus(valtakunnallinenKurssi("ÄI2")).copy(arviointi = numeerinenArviointi(8))
+            ))),
             suoritus(matematiikka("MAA", None)).copy(arviointi = arviointi("9")).copy(osasuoritukset = Some(List(
               kurssisuoritus(syventäväKurssi("MAA1", "Funktiot ja yhtälöt, pa, vuositaso 1",
                 "Vahvistetaan yhtälön ratkaisemisen ja prosenttilaskennan taitoja. Syvennetään verrannollisuuden, neliöjuuren ja potenssin käsitteiden ymmärtämistä. Harjaannutaan käyttämään neliöjuuren ja potenssin laskusääntöjä. Syvennetään funktiokäsitteen ymmärtämistä tutkimalla potenssi- ja eksponenttifunktioita. Opetellaan ratkaisemaan potenssiyhtälöitä."))

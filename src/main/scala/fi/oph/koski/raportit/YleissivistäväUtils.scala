@@ -124,6 +124,7 @@ trait YleissivistäväRaporttiOppiaineJaKurssitOrdering extends Ordering[Yleissi
     "AI",
     "A1",
     "A2",
+    "AOM",
     "B1",
     "B2",
     "B3",
