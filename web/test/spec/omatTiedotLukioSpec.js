@@ -40,6 +40,9 @@ describe('Omat tiedot - lukio', function () {
               'B3-kieli, latina\n' +
               '(2 kurssia) 9\n' +
               '+\n' +
+              'Äidinkielenomainen kieli A-oppimäärä, suomi\n' +
+              '(2 kurssia) 8\n' +
+              '+\n' +
               'Matematiikka, pitkä oppimäärä\n' +
               '(14 kurssia) 9\n' +
               '+\n' +
@@ -272,6 +275,12 @@ describe('Omat tiedot - lukio', function () {
               '(2 kurssia) 9\n' +
               'LAB31\n' +
               '9 LAB32\n' +
+              '8 Keskiarvo 8,5\n' +
+              '(8,5)\n' +
+              'Äidinkielenomainen kieli A-oppimäärä, suomi\n' +
+              '(2 kurssia) 8\n' +
+              'ÄI1\n' +
+              '9 ÄI2\n' +
               '8 Keskiarvo 8,5\n' +
               '(8,5)\n' +
               'Matematiikka, pitkä oppimäärä\n' +

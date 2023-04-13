@@ -69,6 +69,7 @@ describe('Perusopetus', function () {
               'Suoritustapa Erityinen tutkinto\n' +
               'B1-kieli, ruotsi 8\n' +
               'A1-kieli, englanti 8\n' +
+              'Äidinkielenomainen kieli A-oppimäärä, suomi 8\n' +
               'Uskonto/Elämänkatsomustieto 10\n' +
               'Uskonnon oppimäärä Ortodoksinen uskonto\n' +
               'Historia 8\n' +
@@ -175,6 +176,7 @@ describe('Perusopetus', function () {
               'Suoritustapa Erityinen tutkinto\n' +
               'B1-kieli, ruotsi 8\n' +
               'A1-kieli, englanti 8\n' +
+              'Äidinkielenomainen kieli A-oppimäärä, suomi 8\n' +
               'Uskonto/Elämänkatsomustieto 10\n' +
               'Uskonnon oppimäärä Ortodoksinen uskonto\n' +
               'Historia 8\n' +
@@ -2702,6 +2704,7 @@ describe('Perusopetus', function () {
               'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9\n' +
               'B1-kieli, ruotsi 8\n' +
               'A1-kieli, englanti 8\n' +
+              'Äidinkielenomainen kieli A-oppimäärä, suomi 8\n' +
               'Uskonto/Elämänkatsomustieto 10\n' +
               'Historia 8\n' +
               'Yhteiskuntaoppi 10\n' +

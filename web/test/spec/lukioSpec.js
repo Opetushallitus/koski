@@ -60,6 +60,7 @@ describe('Lukiokoulutus', function () {
             'A1-kieli, englanti\nENA1\n10 ENA2\n10 ENA3\n9 ENA4\n9 ENA5\n9 ENA6\n8 ENA7\n8 ENA8\n9 ENA 10 *\nS 9 9\n(9,0)\n' +
             'B1-kieli, ruotsi\nRUB11\n9 RUB12\n8 RUB13\n7 RUB14\n7 RUB15\n6 5 7\n(7,4)\n' +
             'B3-kieli, latina\nLAB31\n9 LAB32\n8 2 9\n(8,5)\n' +
+            'Äidinkielenomainen kieli A-oppimäärä, suomi\nÄI1\n9 ÄI2\n8 2 8\n(8,5)\n' +
             'Matematiikka, pitkä oppimäärä\nMAA1 *\n9 MAA2\n10 MAA3\n8 MAA4\n10 MAA5\n7 MAA6\n9 MAA7\n8 MAA8\n7 MAA9\n9 MAA10\n8 MAA11\n8 MAA12\n10 MAA13\nH MAA14 *\n9 MAA16 *\n9 14 9\n(8,6)\n' +
             'Biologia\nBI1\n8 BI2\n9 BI3\n8 BI4\n9 BI5\n10 BI6 *\nS BI7 *\nS BI8 *\nS 7,5 9\n(8,8)\n' +
             'Maantieto\nGE1\n9 GE2\n7 2 8\n(8,0)\nFysiikka\nFY1\n8 FY2\n9 FY3\n9 FY4\n7 FY5\n8 FY6\n7 FY7\n8 FY8 *\n7 FY9 *\n7 FY10 *\nS FY11 *\nS FY12 *\nS FY13 *\nS 13 8\n(7,8)\n' +
@@ -75,7 +76,7 @@ describe('Lukiokoulutus', function () {
             'Tanssi ja liike *\nITT1 *\n10 1 10\n(10,0)\n' +
             'Teemaopinnot\nMTA *\nS 1 S\n' +
             'Oman äidinkielen opinnot\nOA1 *\nS 1 S\n' +
-            'Suoritettujen kurssien määrä yhteensä: 89,5\n' +
+            'Suoritettujen kurssien määrä yhteensä: 91,5\n' +
             '* = paikallinen kurssi tai oppiaine'
         )
       })
@@ -222,14 +223,14 @@ describe('Lukiokoulutus', function () {
               expect(editor.getEditBarMessage()).to.equal(
                 'Ei tallentamattomia muutoksia'
               )
-              expect(S('.oppiaineet .oppiaine-rivi').length).to.equal(21)
+              expect(S('.oppiaineet .oppiaine-rivi').length).to.equal(22)
             })
 
             describe('Lisääminen', function () {
               before(editor.edit, uusiOppiaine.selectValue('Lisää'))
 
               it('lisää oppiaineen', function () {
-                expect(S('.oppiaineet .oppiaine-rivi').length).to.equal(22)
+                expect(S('.oppiaineet .oppiaine-rivi').length).to.equal(23)
               })
 
               it('estää tallennuksen kunnes pakolliset tiedot on täytetty', function () {
