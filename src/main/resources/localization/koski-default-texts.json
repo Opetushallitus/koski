@@ -1672,6 +1672,8 @@
   "raportti-excel-kolumni-kieliA2Oppimaara": "A2-kielen oppimäärä",
   "raportti-excel-kolumni-kieliB": "B-kieli",
   "raportti-excel-kolumni-kieliBOppimaara": "B-kielen oppimäärä",
+  "raportti-excel-kolumni-aidinkielenomainenKieli": "Äidinkielenomainen kieli",
+  "raportti-excel-kolumni-aidinkielenomainenKieliOppimaara": "Äidinkielenomainen kieli A-oppimäärä",
   "raportti-excel-kolumni-uskonto": "Uskonto",
   "raportti-excel-kolumni-elamankatsomustieto": "Elämänkatsomustieto",
   "raportti-excel-kolumni-uskonnonOppimaara": "Uskonnon oppimäärä",

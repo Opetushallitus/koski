@@ -71,6 +71,8 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
       kieliA2Oppimaara = getOppiaineenOppimäärä("A2", t)(pakollisetValtakunnalliset),
       kieliB = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, t, "B1")(pakollisetValtakunnalliset),
       kieliBOppimaara = getOppiaineenOppimäärä("B1", t)(pakollisetValtakunnalliset),
+      aidinkielenomainenKieli = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, t, "AOM")(pakollisetValtakunnalliset),
+      aidinkielenomainenKieliOppimaara = getOppiaineenOppimäärä("AOM", t)(pakollisetValtakunnalliset),
       uskonto = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, t, "KT")(pakollisetValtakunnalliset),
       elamankatsomustieto = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, t, "ET")(pakollisetValtakunnalliset),
       uskonnonOppimaara = uskonnonOppimääräIfNotElämänkatsomustieto(pakollisetValtakunnalliset, t),
@@ -128,7 +130,7 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
   }
 
   private val yleissivistäväkoodisto = Seq(
-    "A1", "A2", "AI", "B1", "B2", "B3", "BI", "ET", "FI", "FY", "GE", "HI", "KE", "KO", "KS", "KT", "KU", "LI", "MA", "MU", "OP", "OPA", "PS", "TE", "YH", "YL"
+    "A1", "A2", "AI", "AOM", "B1", "B2", "B3", "BI", "ET", "FI", "FY", "GE", "HI", "KE", "KO", "KS", "KT", "KU", "LI", "MA", "MU", "OP", "OPA", "PS", "TE", "YH", "YL"
   )
 
   private def isValtakunnallinenOppiaine(osasuoritus: ROsasuoritusRow) = {
@@ -305,6 +307,8 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
     "kieliA2Oppimaara" -> CompactColumn(t.get("raportti-excel-kolumni-kieliA2Oppimaara")),
     "kieliB" -> CompactColumn(t.get("raportti-excel-kolumni-kieliB")),
     "kieliBOppimaara" -> CompactColumn(t.get("raportti-excel-kolumni-kieliBOppimaara")),
+    "aidinkielenomainenKieli" -> CompactColumn(t.get("raportti-excel-kolumni-aidinkielenomainenKieli")),
+    "aidinkielenomainenKieliOppimaara" -> CompactColumn(t.get("raportti-excel-kolumni-aidinkielenomainenKieliOppimaara")),
     "uskonto" -> CompactColumn(t.get("raportti-excel-kolumni-uskonto")),
     "uskonnonOppimaara" -> CompactColumn(t.get("raportti-excel-kolumni-uskonnonOppimaara")),
     "elamankatsomustieto" -> CompactColumn(t.get("raportti-excel-kolumni-elamankatsomustieto")),
@@ -383,6 +387,8 @@ private[raportit] case class PerusopetusRow(
   kieliA2Oppimaara: String,
   kieliB: String,
   kieliBOppimaara: String,
+  aidinkielenomainenKieli: String,
+  aidinkielenomainenKieliOppimaara: String,
   uskonto: String,
   uskonnonOppimaara: String,
   elamankatsomustieto: String,

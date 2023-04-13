@@ -186,7 +186,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
         }
       }
 
-      "Ei tulosta tulosta päättötodistusta oppijoilla joilla ei ole yhdeksännen luokan opintoja" in {
+      "Ei tulosta päättötodistusta oppijoilla joilla ei ole yhdeksännen luokan opintoja" in {
         withAdditionalSuoritukset(KoskiSpecificMockOppijat.vuosiluokkalainen, List(perusopetuksenOppimääränSuoritus), Some(perusopetuksenOpiskeluoikeudenLisätiedot.copy(vuosiluokkiinSitoutumatonOpetus = true))) {
           val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), date(2016, 6, 1), "9", t)
           result.map(_.oppijaOid) shouldNot contain(KoskiSpecificMockOppijat.vuosiluokkalainen.oid)
@@ -297,6 +297,8 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
     kieliA2Oppimaara = "Oppiaine puuttuu",
     kieliB = "8",
     kieliBOppimaara = "ruotsi",
+    aidinkielenomainenKieli = "8",
+    aidinkielenomainenKieliOppimaara = "suomi",
     uskonto = "10",
     uskonnonOppimaara = "Ortodoksinen uskonto",
     elamankatsomustieto = "Oppiaine puuttuu",
@@ -372,6 +374,8 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
     kieliA1Oppimaara = "englanti",
     kieliB = "4",
     kieliBOppimaara = "ruotsi",
+    aidinkielenomainenKieli = "4",
+    aidinkielenomainenKieliOppimaara = "suomi",
     uskonto = "4",
     historia = "4",
     yhteiskuntaoppi = "4",

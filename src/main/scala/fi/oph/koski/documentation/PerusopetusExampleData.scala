@@ -69,6 +69,7 @@ object PerusopetusExampleData {
     suoritus(kieli("B1", "SV", vuosiviikkotuntia(1)).copy(laajuus = vuosiviikkotuntia(1))).copy(arviointi = arviointi(8)),
     suoritus(kieli("B1", "SV", vuosiviikkotuntia(1)).copy(pakollinen = false, laajuus = vuosiviikkotuntia(1))).copy(arviointi = hyväksytty),
     suoritus(kieli("A1", "EN", vuosiviikkotuntia(1))).copy(arviointi = arviointi(8)),
+    suoritus(kieli("AOM", "FI", vuosiviikkotuntia(1))).copy(arviointi = arviointi(8)),
     suoritus(uskonto(Some("OR"), vuosiviikkotuntia(1))).copy(arviointi = arviointi(10)),
     suoritus(oppiaine("HI", vuosiviikkotuntia(1))).copy(arviointi = arviointi(8)),
     suoritus(oppiaine("YH", vuosiviikkotuntia(1))).copy(arviointi = arviointi(10)),
