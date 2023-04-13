@@ -14,7 +14,6 @@ class SuomiFiService(application: KoskiApplication) extends Logging {
   def suomiFiOpiskeluoikeudet(hetu: String)(implicit user: KoskiSpecificSession): Either[HttpStatus, SuomiFiResponse] =
     application.oppijaFacade.findOppijaByHetuOrCreateIfInYtrOrVirta(hetu)
       .flatMap(_.warningsToLeft)
-      .map(OmatTiedotEditorModel.piilotaKeskeneräisetPerusopetuksenPäättötodistukset)
       .map(OmatTiedotEditorModel.opiskeluoikeudetOppilaitoksittain)
       .map(convertToSuomiFi)
       .left.flatMap(emptyIfNotFound)
