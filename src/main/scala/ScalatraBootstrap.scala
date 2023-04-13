@@ -4,6 +4,7 @@ import fi.oph.koski.documentation.{DocumentationApiServlet, DocumentationServlet
 import fi.oph.koski.editor.{EditorKooditServlet, EditorServlet}
 import fi.oph.koski.opensearch.OpenSearchServlet
 import fi.oph.koski.etk.ElaketurvakeskusServlet
+import fi.oph.koski.executors.GlobalExecutionContext
 import fi.oph.koski.fixture.FixtureServlet
 import fi.oph.koski.frontendvalvonta.{FrontendValvontaMode, FrontendValvontaRaportointiServlet}
 import fi.oph.koski.healthcheck.{HealthCheckApiServlet, HealthCheckHtmlServlet}
@@ -57,10 +58,9 @@ import fi.oph.koski.ytr.{YoTodistusServlet, YtrKoesuoritusApiServlet, YtrKoesuor
 import javax.servlet.ServletContext
 import org.scalatra._
 
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class ScalatraBootstrap extends LifeCycle with Logging with Timing {
+class ScalatraBootstrap extends LifeCycle with Logging with Timing with GlobalExecutionContext {
   override def init(context: ServletContext): Unit = try {
     val application = Option(context.getAttribute("koski.application").asInstanceOf[KoskiApplication]).getOrElse(KoskiApplication.apply)
 
