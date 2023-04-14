@@ -247,17 +247,26 @@ class YtrDownloadService(
                   )
 
                   try {
-                    val result =
-                      timed("createOrUpdate", thresholdMs = 1) {
-                        createOrUpdate(henkilö, ytrOo)
-                      }
+                    var tries = 0
+                    val maxTries = 3
+                    var updateSuccess = false
 
-                    result match {
-                      case Left(error) =>
-                        errorOccurred = true
-                        logger.error(s"YTR-datan tallennus epäonnistui (syntymäkuukausi ${oppija.birthMonth}): ${error.errorString.getOrElse("-")}")
-                      case _ => timed("tallennaAlkuperäinenJson", thresholdMs = 1) {
-                        tallennaAlkuperäinenJson(oppija)
+                    while (!updateSuccess && tries <= maxTries) {
+                      tries += 1
+                      val result =
+                        timed("createOrUpdate", thresholdMs = 1) {
+                          createOrUpdate(henkilö, ytrOo)
+                        }
+
+                      result match {
+                        case Left(error) =>
+                          val triesLeft = maxTries - tries
+                          logger.error(s"YTR-datan tallennus epäonnistui (syntymäkuukausi ${oppija.birthMonth}): ${error.errorString.getOrElse("-")}, yrityksiä jäljellä: $triesLeft)")
+                          if (triesLeft == 0) errorOccurred = true
+                        case _ => timed("tallennaAlkuperäinenJson", thresholdMs = 1) {
+                          updateSuccess = true
+                          tallennaAlkuperäinenJson(oppija)
+                        }
                       }
                     }
                   } catch {
