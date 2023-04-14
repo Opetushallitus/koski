@@ -219,13 +219,52 @@ class YtrDownloadService(
     var latestHandledBirthMonthCount = 0
     var errorCount = 0
 
+    def tryCreateOrUpdateYtrOo(
+      oppija: YtrLaajaOppija,
+      ytrOo: YlioppilastutkinnonOpiskeluoikeus,
+      maxTimes: Int,
+      sleepBetweenTriesMs: Int,
+      onError: () => Unit
+    ): Unit = {
+      implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUserTallennetutYlioppilastutkinnonOpiskeluoikeudet
+      implicit val accessType: AccessType.Value = AccessType.write
+
+      val henkilö = UusiHenkilö(
+        hetu = oppija.ssn,
+        etunimet = oppija.firstNames.get,
+        sukunimi = oppija.lastName.get,
+        kutsumanimi = None
+      )
+
+      var tries = 0
+      var success = false
+      while (!success && tries <= maxTimes) {
+        tries += 1
+        val result = {
+          timed("createOrUpdate", thresholdMs = 1) {
+            createOrUpdate(henkilö, ytrOo)
+          }
+        }
+
+        result match {
+          case Left(error) =>
+            val triesLeft = maxTimes - tries
+            logger.error(s"YTR-datan tallennus epäonnistui (syntymäkuukausi ${oppija.birthMonth}, yrityksiä jäljellä: $triesLeft): ${error.errorString.getOrElse("-")}s")
+            if (sleepBetweenTriesMs > 0) Thread.sleep(sleepBetweenTriesMs)
+            if (triesLeft == 0) onError()
+          case _ => timed("tallennaAlkuperäinenJson", thresholdMs = 1) {
+            success = true
+            tallennaAlkuperäinenJson(oppija)
+          }
+        }
+      }
+    }
+
     oppijatObservable
       .subscribeOn(scheduler)
       .subscribe(
         onNext = oppija => {
           timed("handleSingleOppija", thresholdMs = 1) {
-            implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUserTallennetutYlioppilastutkinnonOpiskeluoikeudet
-            implicit val accessType: AccessType.Value = AccessType.write
 
             var errorOccurred = false
 
@@ -239,36 +278,15 @@ class YtrDownloadService(
 
               koskiOpiskeluoikeus match {
                 case Some(ytrOo) =>
-                  val henkilö = UusiHenkilö(
-                    hetu = oppija.ssn,
-                    etunimet = oppija.firstNames.get,
-                    sukunimi = oppija.lastName.get,
-                    kutsumanimi = None
-                  )
-
                   try {
-                    var tries = 0
-                    val maxTries = 3
-                    var updateSuccess = false
-
-                    while (!updateSuccess && tries <= maxTries) {
-                      tries += 1
-                      val result =
-                        timed("createOrUpdate", thresholdMs = 1) {
-                          createOrUpdate(henkilö, ytrOo)
-                        }
-
-                      result match {
-                        case Left(error) =>
-                          val triesLeft = maxTries - tries
-                          logger.error(s"YTR-datan tallennus epäonnistui (syntymäkuukausi ${oppija.birthMonth}): ${error.errorString.getOrElse("-")}, yrityksiä jäljellä: $triesLeft)")
-                          if (triesLeft == 0) errorOccurred = true
-                        case _ => timed("tallennaAlkuperäinenJson", thresholdMs = 1) {
-                          updateSuccess = true
-                          tallennaAlkuperäinenJson(oppija)
-                        }
-                      }
-                    }
+                    tryCreateOrUpdateYtrOo(
+                      oppija,
+                      ytrOo,
+                      maxTimes = 3,
+                      sleepBetweenTriesMs = 3000,
+                      onError = () => {
+                      errorOccurred = true
+                    })
                   } catch {
                     case e: Throwable =>
                       errorOccurred = true
