@@ -8,8 +8,8 @@ import java.time.format.DateTimeFormatter
 case class YtrLaajaOppija(
   oid: Option[String],
   ssn: String,
-  firstNames: String,
-  lastName: String,
+  firstNames: Option[String],
+  lastName: Option[String],
   graduationDate: Option[LocalDate],
   // TODO: tallennetaan päätason suoritukselle
   graduationPeriod: Option[String],

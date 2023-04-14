@@ -60,6 +60,12 @@ class YtrDownloadVirhetilanteetSpec
     verifyDownloadCounts(expectedTotalCount = 0, expectedErrorCount = 0)
   }
 
+  "YTR download selviää puuttuvista etu- ja sukunimistä" in {
+    clearYtrData()
+    downloadYtrData("2022-01", "2022-02", force = true)
+    verifyDownloadCounts(expectedTotalCount = 0, expectedErrorCount = 0)
+  }
+
   "YTR download luo uuden oidin, jos tulee duplikaatti" in {
     clearYtrData()
 
