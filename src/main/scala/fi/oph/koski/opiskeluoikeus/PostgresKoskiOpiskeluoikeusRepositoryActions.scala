@@ -75,7 +75,7 @@ class PostgresKoskiOpiskeluoikeusRepositoryActions(
     rows: List[KoskiOpiskeluoikeusRow]
   )(implicit user: KoskiSpecificSession): DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write] = {
     val opiskeluoikeusPäättynyt = rows.exists(_.toOpiskeluoikeusUnsafe.tila.opiskeluoikeusjaksot.last.opiskeluoikeusPäättynyt)
-    val duplikoivanOpiskeluoikeudenLuontiSallittu = rows.exists(row => allowOpiskeluoikeusDuplication(opiskeluoikeus, row))
+    val duplikoivanOpiskeluoikeudenLuontiSallittu = rows.exists(row => allowOpiskeluoikeusCreationOnConflict(opiskeluoikeus, row))
 
     if (opiskeluoikeusPäättynyt && duplikoivanOpiskeluoikeudenLuontiSallittu) {
       createAction(oppijaOid, opiskeluoikeus)
@@ -88,7 +88,7 @@ class PostgresKoskiOpiskeluoikeusRepositoryActions(
     oidGenerator.generateKoskiOid(oppija.henkilö.oid)
   }
 
-  protected def allowOpiskeluoikeusDuplication(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, row: KoskiOpiskeluoikeusRow): Boolean = {
+  protected def allowOpiskeluoikeusCreationOnConflict(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, row: KoskiOpiskeluoikeusRow): Boolean = {
     lazy val perusteenDiaarinumero: Option[String] = {
       val value = (row.data \ "suoritukset")(0) \ "koulutusmoduuli" \ "perusteenDiaarinumero"
       Option(value.extract[String])
@@ -99,7 +99,11 @@ class PostgresKoskiOpiskeluoikeusRepositoryActions(
         !oo.oppilaitos.exists(_.oid == row.oppilaitosOid) ||
           !oo.suoritukset
             .collect { case s: AmmatillisenTutkinnonSuoritus => s }
-            .exists(s => s.koulutusmoduuli.perusteenDiaarinumero.isDefined && s.koulutusmoduuli.perusteenDiaarinumero == perusteenDiaarinumero)
+            .exists(s =>
+              s.koulutusmoduuli.perusteenDiaarinumero.isDefined &&
+                s.koulutusmoduuli.perusteenDiaarinumero == perusteenDiaarinumero
+
+            )
       case _ => true
     }
   }

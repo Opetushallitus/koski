@@ -249,7 +249,7 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
         // Normaali tapaus: opiskeluoikeuden oppilaitos on erityisoppilaitos
         AmmatillinenPerustutkintoExample.perustutkintoOpiskeluoikeusValmisOrganisaatiohistorialla()
       ),
-      (KoskiSpecificMockOppijat.opiskeleeAmmatillisessaErityisoppilaitoksessa,
+      (KoskiSpecificMockOppijat.opiskeleeAmmatillisessaErityisoppilaitoksessa2,
         // Erityisoppilaitos esiintyy vain suorituksen toimipisteessä
         AmmatillinenPerustutkintoExample.perustutkintoOpiskeluoikeusValmisOrganisaatiohistorialla(
           koulutustoimija = helsinki,
