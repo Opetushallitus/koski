@@ -1,3 +1,9 @@
+## xx.4.2023
+
+- Lukion opiskeluoikeuden LOPS 2019 mukaiseen oppiaineiden oppimäärien suoritusten osasuorituksiin lisätty
+muiden lukio-opintojen suoritukset. Mahdollistaa mm. LOPS 2019 mukaisten lukiodiplomien siirron oppiaineen oppimäärän
+suorituksille.
+
 ## 4.4.2023
 
 - Paikallisten koulutusmoduulien tunnisteen koodisto uri -kenttä on merkitty poistettavaksi käytöstä

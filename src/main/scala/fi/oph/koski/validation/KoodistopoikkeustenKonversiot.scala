@@ -14,8 +14,8 @@ object KoodistopoikkeustenKonversiot {
         case oppi: LukionOppimääränSuoritus2015 => lukionOppimääränKonversiot2015(oppi)
         case aine: LukionOppiaineenOppimääränSuoritus2015 => lukionOppiaineenOppimääränKonversiot2015(aine)
         // 2019
-        case oppi: LukionOppimääränSuoritus2019 => lukionOppimääränKonversiot2019(oppi)
-        case aine: LukionOppiaineidenOppimäärienSuoritus2019 if aine.koulutusmoduuli.perusteenDiaarinumero.getOrElse("") == "OPH-2267-2019" => aine.withOsasuoritukset(lukionHistoriankurssienKonversio2019(aine.osasuoritukset))
+        case oppi: LukionOppimääränSuoritus2019 if oppi.koulutusmoduuli.perusteenDiaarinumero.getOrElse("") == "OPH-2267-2019" => lukionOppimääränKonversiot2019(oppi)
+        case aine: LukionOppiaineidenOppimäärienSuoritus2019 if aine.koulutusmoduuli.perusteenDiaarinumero.getOrElse("") == "OPH-2267-2019" => lukionOppiaineenOppimääränKonversiot2019(aine)
         case s: Any => s
       }
     )
@@ -73,33 +73,31 @@ object KoodistopoikkeustenKonversiot {
   private def lukionOppimääränKonversiot2019(suoritus: LukionOppimääränSuoritus2019): PäätasonSuoritus = {
     suoritus.withOsasuoritukset(
       suoritus.osasuoritukset match {
-        case Some(osasuoritukset) => Some(osasuoritukset.map {
-          case loos: LukionOppiaineenSuoritus2019 if suoritus.koulutusmoduuli.perusteenDiaarinumero.getOrElse("") == "OPH-2267-2019"
-          => loos.copy(osasuoritukset = lukionHistoriankurssienOsasuoritustenKonversio2019Paikallinen(loos.osasuoritukset))
-          case moos: MuidenLukioOpintojenSuoritus2019 if suoritus.koulutusmoduuli.perusteenDiaarinumero.getOrElse("") == "OPH-2267-2019"
-          => moos.copy(osasuoritukset = lukionHistoriankurssienOsasuorisutenKonversio2019MuissaOpinnoissa(moos.osasuoritukset))
-          case a: Any => a
-        })
+        case Some(osasuoritukset) => Some(osasuoritukset.map(lukionOppimääränOsasuorituksenKonversiot2019))
         case None => None
       }
     )
   }
 
-  private val korjattuHistoria2Nimi = Finnish("Itsenäisen Suomen historia", Some("Det självständiga Finlands historia"))
-  private val korjattuHistoria3Nimi = Finnish("Kansainväliset suhteet", Some("Internationella relationer"))
-
-  private def lukionHistoriankurssienKonversio2019(suoritukset: Option[List[LukionOppiaineenSuoritus2019]]): Option[List[LukionOppiaineenSuoritus2019]] = {
-    suoritukset.map(suoritukset =>
-      suoritukset.map(suoritus => {
-        suoritus.koulutusmoduuli match {
-          case _: PaikallinenLukionOppiaine2019 if suoritus.koulutusmoduuli.tunniste.koodiarvo == "HI" => suoritus.copy(osasuoritukset = lukionHistoriankurssienOsasuoritustenKonversio2019Paikallinen(suoritus.osasuoritukset))
-          case _: PaikallinenLukionOppiaine2019 if suoritus.koulutusmoduuli.tunniste.koodiarvo == "HI" => suoritus.copy(osasuoritukset = lukionHistoriankurssienOsasuoritustenKonversio2019Paikallinen(suoritus.osasuoritukset))
-          case _: LukionMuuValtakunnallinenOppiaine2019 if suoritus.koulutusmoduuli.tunniste.koodiarvo == "HI" => suoritus.copy(osasuoritukset = lukionHistoriankurssienOsasuoritustenKonversio2019Paikallinen(suoritus.osasuoritukset))
-          case _ => suoritus
-        }
-      })
+  private def lukionOppiaineenOppimääränKonversiot2019(suoritus: LukionOppiaineidenOppimäärienSuoritus2019): PäätasonSuoritus = {
+    suoritus.withOsasuoritukset(
+      suoritus.osasuoritukset match {
+        case Some(osasuoritukset) => Some(osasuoritukset.map(lukionOppimääränOsasuorituksenKonversiot2019))
+        case None => None
+      }
     )
   }
+
+  private def lukionOppimääränOsasuorituksenKonversiot2019(suoritus: LukionOppimääränOsasuoritus2019): LukionOppimääränOsasuoritus2019 = suoritus match {
+    case loos: LukionOppiaineenSuoritus2019 =>
+      loos.copy(osasuoritukset = lukionHistoriankurssienOsasuoritustenKonversio2019Paikallinen(loos.osasuoritukset))
+    case moos: MuidenLukioOpintojenSuoritus2019 =>
+      moos.copy(osasuoritukset = lukionHistoriankurssienOsasuorisutenKonversio2019MuissaOpinnoissa(moos.osasuoritukset))
+    case a: Any => a
+  }
+
+  private val korjattuHistoria2Nimi = Finnish("Itsenäisen Suomen historia", Some("Det självständiga Finlands historia"))
+  private val korjattuHistoria3Nimi = Finnish("Kansainväliset suhteet", Some("Internationella relationer"))
 
   private def lukionHistoriankurssienOsasuoritustenKonversio2019Paikallinen(osasuoritukset: Option[List[LukionModuulinTaiPaikallisenOpintojaksonSuoritusOppiaineissa2019]]) =
     osasuoritukset.map(osasuoritukset =>

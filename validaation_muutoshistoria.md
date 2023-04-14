@@ -1,5 +1,10 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## xx.4.2023
+
+- Aikuisten lukiokoulutuksen uudessa opintosuunnitelmassa (2019) Historian kurssien HI2 ja HI3 nimet on korjattu
+  vastaamaan Opetushallituksen laatimaa opetussuunnitelmaa myös oppiaineiden oppimäärien suorituksille.
+
 ## 14.3.2023
 
 - Taiteen perusopetuksen opiskeluoikeutta ei voi merkitä hyväksytysti suoritetuksi ellei molempia päätason suorituksia ole vahvistettu.

@@ -73,6 +73,15 @@ object ExamplesLukio2019 {
     osasuoritukset = Some(oppiainesuoritukset)
   )
 
+  lazy val oppiaineidenOppimäärienLukioDiplominSuoritus = LukionOppiaineidenOppimäärienSuoritus2019(
+    koulutusmoduuli = LukionOppiaineidenOppimäärät2019(perusteenDiaarinumero = lops2019perusteenDiaarinumero),
+    oppimäärä = nuortenOpetussuunnitelma,
+    suorituskieli = suomenKieli,
+    toimipiste = jyväskylänNormaalikoulu,
+    suullisenKielitaidonKokeet = Some(List(suullisenKielitaidonKoeEspanja)),
+    osasuoritukset = Some(oppiaineSuorituksetJoissaMuitaSuorituksiaJaVastaavia)
+  )
+
   lazy val aikuistenOppiaineidenOppimäärienSuoritus = LukionOppiaineidenOppimäärienSuoritus2019(
     koulutusmoduuli = LukionOppiaineidenOppimäärät2019(perusteenDiaarinumero = lops2019AikuistenPerusteenDiaarinumero),
     oppimäärä = aikuistenOpetussuunnitelma,
