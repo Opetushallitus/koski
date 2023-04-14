@@ -74,9 +74,12 @@ class PostgresKoskiOpiskeluoikeusRepositoryActions(
     opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
     rows: List[KoskiOpiskeluoikeusRow]
   )(implicit user: KoskiSpecificSession): DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write] = {
-    rows.find(!_.toOpiskeluoikeusUnsafe.tila.opiskeluoikeusjaksot.last.opiskeluoikeusPäättynyt) match {
-      case None => createAction(oppijaOid, opiskeluoikeus) // Tehdään uusi opiskeluoikeus, koska vanha on päättynyt
-      case Some(_) => DBIO.successful(Left(KoskiErrorCategory.conflict.exists())) // Ei tehdä uutta, koska vanha vastaava opiskeluoikeus on voimassa
+    val opiskeluoikeusPäättynyt = rows.exists(_.toOpiskeluoikeusUnsafe.tila.opiskeluoikeusjaksot.last.opiskeluoikeusPäättynyt)
+
+    if (opiskeluoikeusPäättynyt) {
+      createAction(oppijaOid, opiskeluoikeus)
+    } else {
+      DBIO.successful(Left(KoskiErrorCategory.conflict.exists())) // Ei tehdä uutta, koska vanha vastaava opiskeluoikeus on voimassa
     }
   }
 
