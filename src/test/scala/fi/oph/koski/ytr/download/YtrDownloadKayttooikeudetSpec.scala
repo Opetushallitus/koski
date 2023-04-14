@@ -41,8 +41,8 @@ class YtrDownloadKäyttöoikeudetSpec
 
   private lazy val henkilö = UusiHenkilö(
     hetu = ytrOppija.ssn,
-    etunimet = ytrOppija.firstNames,
-    sukunimi = ytrOppija.lastName,
+    etunimet = ytrOppija.firstNames.get,
+    sukunimi = ytrOppija.lastName.get,
     kutsumanimi = None
   )
   private lazy val opiskeluoikeus = converter.convertOppijastaOpiskeluoikeus(ytrOppija).get

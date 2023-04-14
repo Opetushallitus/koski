@@ -198,6 +198,15 @@ class YtrDownloadService(
       .flatMap(a => Observable.from(application.ytrClient.oppijatByHetut(a)))
 
     oppijat
+      .filter(o => {
+        val hasValidNames = o.firstNames.isDefined && o.lastName.isDefined
+
+        if (!hasValidNames) {
+          logger.warn(s"There was a student with missing first or last name in birth month ${o.birthMonth}. The student was skipped.")
+        }
+
+        hasValidNames
+      })
   }
 
   private def startDownloadingAndUpdateToKoskiDatabase(
@@ -232,8 +241,8 @@ class YtrDownloadService(
                 case Some(ytrOo) =>
                   val henkilö = UusiHenkilö(
                     hetu = oppija.ssn,
-                    etunimet = oppija.firstNames,
-                    sukunimi = oppija.lastName,
+                    etunimet = oppija.firstNames.get,
+                    sukunimi = oppija.lastName.get,
                     kutsumanimi = None
                   )
 
