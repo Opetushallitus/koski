@@ -1146,6 +1146,60 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
         }
       }
     }
+
+    "Duplikaattiopiskeluoikeuksien tunnistus" - {
+      def testDuplicates(opiskeluoikeus: AmmatillinenOpiskeluoikeus): Unit = {
+        putOpiskeluoikeus(opiskeluoikeus = opiskeluoikeus) {
+          verifyResponseStatusOk()
+        }
+        postOpiskeluoikeus(opiskeluoikeus = opiskeluoikeus) {
+          verifyResponseStatus(409, KoskiErrorCategory.conflict.exists())
+        }
+      }
+
+      "Tutkinnon suoritus" - {
+        "Suoritus kesken" in {
+          resetFixtures()
+          testDuplicates(defaultOpiskeluoikeus)
+        }
+
+        "Suoritus valmis" in {
+          resetFixtures()
+          testDuplicates(AmmatillinenOpiskeluoikeusTestData.päättynytOpiskeluoikeus(
+            MockOrganisaatiot.stadinAmmattiopisto,
+            koulutusKoodi = 331101,
+            diaariNumero = "3000/011/2014",
+            alkamispäivä = LocalDate.of(2018, 1, 1),
+            päättymispäivä = LocalDate.of(2019, 7, 31)
+          ))
+        }
+      }
+
+      "Tutkinnon osittainen suoritus" - {
+        "Suoritus kesken" in {
+          resetFixtures()
+          testDuplicates(defaultOpiskeluoikeus.copy(suoritukset = List(ammatillisenTutkinnonOsittainenSuoritus)))
+        }
+
+        "Suoritus valmis" in {
+          resetFixtures()
+          val opiskeluoikeus = AmmatillinenOpiskeluoikeusTestData.päättynytOpiskeluoikeus(
+            MockOrganisaatiot.stadinAmmattiopisto,
+            koulutusKoodi = 331101,
+            diaariNumero = "3000/011/2014",
+            alkamispäivä = LocalDate.of(2018, 1, 1),
+            päättymispäivä = LocalDate.of(2019, 7, 31)
+          ).copy(suoritukset = List(ammatillisenTutkinnonOsittainenSuoritus))
+
+          putOpiskeluoikeus(opiskeluoikeus = opiskeluoikeus) {
+            verifyResponseStatusOk()
+          }
+          postOpiskeluoikeus(opiskeluoikeus = opiskeluoikeus) {
+            verifyResponseStatusOk()
+          }
+        }
+      }
+    }
   }
 
   def vahvistus(date: LocalDate) = {
