@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 25.4.2023
+
+- Tutkintotavoitteiset ammattikoulun opiskeluoikeuksien duplikaatit estetty validaatiolla. Duplikaattius päätellään oppilaitoksen ja perusteen diaarinumeron perusteella.
+
 ## 24.4.2023
 
 - Aikuisten lukiokoulutuksen uudessa opintosuunnitelmassa (2019) Historian kurssien HI2 ja HI3 nimet on korjattu
@@ -47,9 +51,11 @@
 - Sallittu väliaikaisesti oppilaitoksen vaihto tilanteessa, jossa vaihdetaan oppilaitoksesta 1.2.246.562.10.13857290038 oppilaitokseen 1.2.246.562.10.38485743660
 
 ## 25.1.2023
+
 - Tutkintoon valmentavan koulutuksen (TUVA) jaksolta vaaditaan rahoitustieto kun jakson tila on `valmistunut`, `lasna` tai `loma`.
 
 ## 24.1.2023
+
 - Taiteen perusopetuksen päätason suoritusten laajuuksien minimitasot muutettu yhden desimaalin tarkkuudelle:
   - Yleisen oppimäärän yhteiset opinnot: 11,1op.
   - Yleisen oppimäärän teemaopinnot: 7,4op.
@@ -57,6 +63,7 @@
   - Laajan oppimäärän syventävät opinnot: 18,5op.
 
 ## 19.1.2023
+
 - Lisätty validaatio että vahvistetulta jatkuvaan oppimiseen suunnatulta vapaan sivistystyön koulutuksen suoritukselta löytyy laajuus.
   - Myös vahvistetun suorituksen osasuorituksilta ja niiden aliosasuorituksilta validoidaan että laajuudet löytyvät.
 
@@ -69,6 +76,7 @@
 - VALMA- ja perusopetuksen lisäopetuksen opiskeluoikeuksille ei sallita uusia tiloja, joiden alkupäivämäärä on 1.6.2023 tai sen jälkeen.
 
 ## 19.12.2022
+
 - Taiteen perusopetuksen opiskeluoikeuksille lisätty validaatiot:
   - Suoritusta ei voi vahvistaa jos sillä on arvioimattomia osasuorituksia.
   - Suorituksen voi vahvistaa jos sillä ei ole yhtään osasuoritusta.
@@ -82,13 +90,16 @@
   - Suorituksella on oltava kelvollinen perusteen diaarinumero.
 
 ## 14.12.2022
+
 - Siirretään TOR-1834:ssä lisätty validaatio (suorituksen alkamispäivämäärä ei saa olla ennen opiskeluoikeuden alkua) tulemaan voimaan myöhemmin 1.2.2023.
 
 ## 9.12.2022
+
 - Lukion nuorten oppimäärän (LOPS2015) voi merkitä valmiiksi vasta kun kursseja on suoritettu vähintään 75 kpl.
 - Lukion aikuisten oppimäärän (LOPS2015) voi merkitä valmiiksi vasta kun kursseja on suoritettu vähintään 44 kpl.
 
 ## 30.11.2022
+
 - Tarkistetaan tietyissä palvelukäyttäjän siirroissa, että suoritukset eivät ala ennen opiskeluoikeuden alkua.
 
 ## 21.11.2022

@@ -12,9 +12,9 @@ import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.perustiedot.{OpiskeluoikeudenPerustiedot, PerustiedotSyncRepository}
 import fi.oph.koski.schema._
-import org.json4s.{JArray, JValue}
-import slick.dbio
-import slick.dbio.Effect.{Read, Transactional, Write}
+import fi.oph.scalaschema.Serializer.format
+import org.json4s._
+import slick.dbio.Effect.{Read, Write}
 import slick.dbio.{DBIOAction, NoStream}
 
 class PostgresKoskiOpiskeluoikeusRepositoryActions(
@@ -75,15 +75,32 @@ class PostgresKoskiOpiskeluoikeusRepositoryActions(
     rows: List[KoskiOpiskeluoikeusRow]
   )(implicit user: KoskiSpecificSession): DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write] = {
     val opiskeluoikeusPäättynyt = rows.exists(_.toOpiskeluoikeusUnsafe.tila.opiskeluoikeusjaksot.last.opiskeluoikeusPäättynyt)
+    val duplikoivanOpiskeluoikeudenLuontiSallittu = rows.exists(row => allowOpiskeluoikeusDuplication(opiskeluoikeus, row))
 
-    if (opiskeluoikeusPäättynyt) {
+    if (opiskeluoikeusPäättynyt && duplikoivanOpiskeluoikeudenLuontiSallittu) {
       createAction(oppijaOid, opiskeluoikeus)
     } else {
-      DBIO.successful(Left(KoskiErrorCategory.conflict.exists())) // Ei tehdä uutta, koska vanha vastaava opiskeluoikeus on voimassa
+      DBIO.successful(Left(KoskiErrorCategory.conflict.exists()))
     }
   }
 
   protected override def generateOid(oppija: OppijaHenkilöWithMasterInfo): String = {
     oidGenerator.generateKoskiOid(oppija.henkilö.oid)
+  }
+
+  protected def allowOpiskeluoikeusDuplication(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, row: KoskiOpiskeluoikeusRow): Boolean = {
+    lazy val perusteenDiaarinumero: Option[String] = {
+      val value = (row.data \ "suoritukset")(0) \ "koulutusmoduuli" \ "perusteenDiaarinumero"
+      Option(value.extract[String])
+    }
+
+    opiskeluoikeus match {
+      case oo: AmmatillinenOpiskeluoikeus =>
+        !oo.oppilaitos.exists(_.oid == row.oppilaitosOid) ||
+          !oo.suoritukset
+            .collect { case s: AmmatillisenTutkinnonSuoritus => s }
+            .exists(s => s.koulutusmoduuli.perusteenDiaarinumero.isDefined && s.koulutusmoduuli.perusteenDiaarinumero == perusteenDiaarinumero)
+      case _ => true
+    }
   }
 }
