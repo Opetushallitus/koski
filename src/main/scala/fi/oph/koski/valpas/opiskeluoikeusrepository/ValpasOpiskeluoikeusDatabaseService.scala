@@ -1220,6 +1220,9 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       JOIN r_opiskeluoikeus ON r_opiskeluoikeus.oppija_oid = oppija_oid.oppija_oid
         AND r_opiskeluoikeus.koulutusmuoto <> 'perusopetus'
         AND r_opiskeluoikeus.koulutusmuoto <> 'internationalschool'
+        -- Toistaiseksi YO-tutkintoja ei haluta Valppaassa näkyviin. Huom! Pelkästään tämän poistaminen ei riitä niiden näkyviin saamiseksi,
+        -- koska YO-tutkinnoilla ei esim. ole samanlaisia tilatietoja kuin muilla.
+        AND r_opiskeluoikeus.koulutusmuoto <> 'ylioppilastutkinto'
       LEFT JOIN r_opiskeluoikeus_aikajakso aikajakson_keskella
         ON aikajakson_keskella.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
         AND $tarkastelupäivä BETWEEN aikajakson_keskella.alku AND aikajakson_keskella.loppu
