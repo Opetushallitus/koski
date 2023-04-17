@@ -31,7 +31,8 @@ class YtrDownloadSpec
     "080380-2432",
     "140380-336X",
     "220680-7850",
-    "240680-087S"
+    "240680-087S",
+    "060807A7787"
   )
 
   lazy val oppijaOidEnnestäänKoskessa1 =
@@ -43,7 +44,7 @@ class YtrDownloadSpec
     val ssnData = YtrSsnData(ssns = Some(oppijahetut))
     "Mäppäys kuukausiksi toimii" in {
       ssnData.minMonth shouldEqual "1980-03"
-      ssnData.maxMonth shouldEqual "1980-06"
+      ssnData.maxMonth shouldEqual "2007-08"
     }
   }
 
@@ -102,8 +103,8 @@ class YtrDownloadSpec
 
     verifyOppijat(
       expectedOppijat(
-        expectedOsasuorituksetLkm = Seq(12, 3, 12, 24),
-        expectedVersionumerot = Seq(1, 2, 1, 1)
+        expectedOsasuorituksetLkm = Seq(12, 3, 12, 24, 12),
+        expectedVersionumerot = Seq(1, 2, 1, 1, 1)
       )
     )
 
@@ -130,8 +131,8 @@ class YtrDownloadSpec
 
   private def expectedOppijat(
     hetut: Seq[String] = oppijahetut,
-    expectedOsasuorituksetLkm: Seq[Int] = Seq(12, 5, 12, 24),
-    expectedVersionumerot: Seq[Int] = Seq.fill(4)(1),
+    expectedOsasuorituksetLkm: Seq[Int] = Seq(12, 5, 12, 24, 12),
+    expectedVersionumerot: Seq[Int] = Seq.fill(5)(1),
   ): Seq[ExpectedOppijaData] = {
     hetut.zipWithIndex.map {
       case (hetu, i) =>

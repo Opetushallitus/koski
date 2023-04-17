@@ -174,6 +174,7 @@ object ValpasMockOppijat {
   val valmistunutAmiksenOsittainen = valpasOppijat.oppijaSyntymäaikaHetusta("Amis-valmistunut-osittainen", "Valpas", "200105A171H", kotikunta = Some("624"))
   val valmistunutAmiksenOsittainenUusiOo = valpasOppijat.oppijaSyntymäaikaHetusta("Amis-valmistunut-osittainen-ja-uusi-opiskeluoikeus", "Valpas", "280705A076E", kotikunta = Some("624"))
   val valmistunutYsiluokkalainenJollaIlmoitusJaUusiOpiskeluoikeus = valpasOppijat.oppijaSyntymäaikaHetusta("Ysiluokka-valmis-ja-ilmoitettu-ja-uusi-nivelvaihe", "Valpas", "240706A3571", kotikunta = Some("091"))
+  val oppijaJollaMuitaOpiskeluoikeuksia = valpasOppijat.oppijaSyntymäaikaHetusta("Muita-opiskeluoikeuksia", "Valpas", "060807A7787", kotikunta = Some("091"))
 
   // Kutsumanimi ja yhteystiedot haetaan oppijanumerorekisteristä Valpas-käyttäjälle, tallennetaan siksi käyttäjä myös "oppijana" mockeihin
   val käyttäjäValpasJklNormaalikoulu = valpasOppijat.oppija(
