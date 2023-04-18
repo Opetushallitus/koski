@@ -249,7 +249,7 @@ class YtrDownloadService(
         result match {
           case Left(error) =>
             val triesLeft = maxTimes - tries
-            logger.error(s"YTR-datan tallennus epäonnistui (syntymäkuukausi ${oppija.birthMonth}, yrityksiä jäljellä: $triesLeft): ${error.errorString.getOrElse("-")}s")
+            logger.warn(s"YTR-datan tallennus epäonnistui (syntymäkuukausi ${oppija.birthMonth}, yrityksiä jäljellä: $triesLeft): ${error.errorString.getOrElse("-")}s")
             if (sleepBetweenTriesMs > 0) Thread.sleep(sleepBetweenTriesMs)
             if (triesLeft == 0) onError()
           case _ => timed("tallennaAlkuperäinenJson", thresholdMs = 1) {
@@ -284,23 +284,22 @@ class YtrDownloadService(
                       ytrOo,
                       maxTimes = 3,
                       sleepBetweenTriesMs = 3000,
-                      onError = () => {
-                      errorOccurred = true
-                    })
+                      onError = () => { errorOccurred = true }
+                    )
                   } catch {
                     case e: Throwable =>
                       errorOccurred = true
-                      logger.error(e)(s"YTR-datan tallennus epäonnistui (syntymäkuukausi ${oppija.birthMonth}): ${e.getMessage}")
+                      logger.warn(e)(s"YTR-datan tallennus epäonnistui (syntymäkuukausi ${oppija.birthMonth}): ${e.getMessage}")
                   }
 
                 case _ =>
                   errorOccurred = true
-                  logger.error(s"YTR-datan konversio palautti tyhjän opiskeluoikeuden (syntymäkuukausi ${oppija.birthMonth})")
+                  logger.warn(s"YTR-datan konversio palautti tyhjän opiskeluoikeuden (syntymäkuukausi ${oppija.birthMonth})")
               }
             } catch {
               case e: Throwable =>
                 errorOccurred = true
-                logger.error(s"YTR-datan konversio epäonnistui (syntymäkuukausi ${oppija.birthMonth}): ${e.getMessage}")
+                logger.warn(e)(s"YTR-datan konversio epäonnistui (syntymäkuukausi ${oppija.birthMonth}): ${e.getMessage}")
             }
 
             val birthMonth = oppija.birthMonth
