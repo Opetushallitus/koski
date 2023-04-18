@@ -184,7 +184,7 @@ class YtrDownloadService(
         val validSsnCount = o.ssnsWithValidFormat.map(_.length).getOrElse(0)
         logger.info(s"Downloaded ${fullCount} ssn prospects from YTR")
         if (validSsnCount < fullCount) {
-          logger.warn(s"There was ${fullCount - validSsnCount} / ${fullCount} ssns of invalid format between ${o.minMonth} and ${o.maxMonth}")
+          logger.info(s"There was ${fullCount - validSsnCount} / ${fullCount} ssns of invalid format between ${o.minMonth} and ${o.maxMonth}")
         }
       })
       .flatMap(o => Observable.from(o.ssnsSortedByBirthdays.toList.flatten))
@@ -218,6 +218,8 @@ class YtrDownloadService(
     var totalCount = 0
     var latestHandledBirthMonthCount = 0
     var errorCount = 0
+
+    def logLatestMonthCount() = logger.info(s"Viimeisin käsitelty kuukausi ${latestHandledBirthMonth} sisälsi ${latestHandledBirthMonthCount} oppijaa.")
 
     def tryCreateOrUpdateYtrOo(
       oppija: YtrLaajaOppija,
@@ -308,7 +310,8 @@ class YtrDownloadService(
               errorCount = errorCount + 1
             }
             if (latestHandledBirthMonth != birthMonth) {
-              logger.info(s"Handled first oppija of birth month ${birthMonth}. Previously handled birth month ${latestHandledBirthMonth} had ${latestHandledBirthMonthCount} oppijas.")
+              logger.info(s"Käsiteltiin syntymäkuukauden ${birthMonth} ensimmäinen oppija.")
+              logLatestMonthCount()
               status.setLoading(totalCount, errorCount)
               latestHandledBirthMonth = birthMonth
               latestHandledBirthMonthCount = 0
@@ -322,13 +325,13 @@ class YtrDownloadService(
         },
         onError = e => {
           logger.error(e)("YTR download failed:" + e.toString)
-          logger.info(s"From final handled birth month ${latestHandledBirthMonth} handled ${latestHandledBirthMonthCount} oppijas.")
+          logLatestMonthCount()
           status.setError(totalCount, errorCount)
           onEnd()
         },
         onCompleted = () => {
           try {
-            logger.info(s"Final handled birth month ${latestHandledBirthMonth} had ${latestHandledBirthMonthCount} oppijas.")
+            logLatestMonthCount()
             status.setComplete(totalCount, errorCount)
             // TODO: Tilastot yms.
             onEnd()
