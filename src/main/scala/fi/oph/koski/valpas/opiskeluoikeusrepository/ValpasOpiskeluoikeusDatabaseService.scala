@@ -131,6 +131,22 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
 
     val nonEmptyOppijaOids = if (oppijaOids.nonEmpty) Some(oppijaOids) else None
 
+    val lokitettavatParametrit = Map(
+      "rajaaOVKelpoisiinOpiskeluoikeuksiin" -> rajaaOVKelpoisiinOpiskeluoikeuksiin.toString,
+      "keväänValmistumisjaksoAlku" -> keväänValmistumisjaksoAlku.toString,
+      "keväänValmistumisjaksoLoppu" -> keväänValmistumisjaksoLoppu.toString,
+      "keväänUlkopuolellaValmistumisjaksoAlku" -> keväänUlkopuolellaValmistumisjaksoAlku.toString,
+      "tarkastelupäivä" -> tarkastelupäivä.toString,
+      "keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä" -> keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä.toString,
+      "hakeutusmivalvottavanSuorituksenNäyttämisenAikaraja" -> hakeutusmivalvottavanSuorituksenNäyttämisenAikaraja.toString,
+      "nivelvaiheenOppilaitokselleHakeutumisvalvottavaJosOppijaEronnutAlku" -> nivelvaiheenOppilaitokselleHakeutumisvalvottavaJosOppijaEronnutAlku.toString,
+      "nivelvaiheenOppilaitokselleHakeutumisvalvottavaJosOppijaEronnutLoppu" -> nivelvaiheenOppilaitokselleHakeutumisvalvottavaJosOppijaEronnutLoppu.toString,
+      "haePerusopetuksenHakeutumisvalvontatiedot" -> haePerusopetuksenHakeutumisvalvontatiedot.toString,
+      "haeNivelvaiheenHakeutusmisvalvontatiedot" -> haeNivelvaiheenHakeutusmisvalvontatiedot.toString
+    )
+
+    logger.info("queryOppijat SQL-parametrit: " + lokitettavatParametrit.toString)
+
     val result = timed(timedBlockname, 10) {
       // TODO: TOR-1685 Eurooppalainen koulu
       db.runDbSync(timeout = 3.minutes, a = SQLHelpers.concatMany(
