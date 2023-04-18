@@ -26,6 +26,11 @@ class OmaOpintoPolkuLokiServletSpec extends AnyFreeSpec with Matchers with Koski
         List(MockOrganisaatiot.ressunLukio)
       ))
     }
+    "Näytetään Vardasta peräisin olevia auditlogeja" in {
+      auditlogs(KoskiSpecificMockOppijat.eskari).map(_.organizations.map(_.oid)) should contain theSameElementsAs(List(
+        List(MockOrganisaatiot.päiväkotiTouhula)
+      ))
+    }
     "Data sisältää tiedon lähdepalvelusta" in {
       auditlogs(KoskiSpecificMockOppijat.aikuisOpiskelija).map(_.serviceName) should contain theSameElementsAs List("koski")
     }
