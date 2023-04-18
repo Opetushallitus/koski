@@ -46,7 +46,7 @@ describe('Kela', function () {
 
     it('Kaikkien osasuoritusten yhteislaajuus', function () {
       expect(extractAsText(S('.yhteislaajuus'))).to.include(
-        'Yhteislaajuus 23.5 vuosiviikkotuntia'
+        'Yhteislaajuus 24.5 vuosiviikkotuntia'
       )
     })
 

@@ -54,7 +54,7 @@ class SensitiveAndRedundantDataFilterSpec extends AnyFreeSpec with TestEnvironme
     val perusopetuksenOpiskeluoikeusMuillaOsasuorituksilla = getOpiskeluoikeudet(KoskiSpecificMockOppijat.koululainen.oid, MockUsers.viranomainenGlobaaliKatselija).find(
       _.tyyppi.koodiarvo == OpiskeluoikeudenTyyppi.perusopetus.koodiarvo
     ).get
-    perusopetuksenOpiskeluoikeusMuillaOsasuorituksilla.suoritukset.head.osasuoritusLista.length should equal (17)
+    perusopetuksenOpiskeluoikeusMuillaOsasuorituksilla.suoritukset.head.osasuoritusLista.length should equal (18)
   }
 
   "Käyttäjä jolla on kaikki luottamuksellisten tietojen oikeudet näkee kaikki arkaluontoiset tiedot" in {
