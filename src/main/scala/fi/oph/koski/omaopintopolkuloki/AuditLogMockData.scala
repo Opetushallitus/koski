@@ -49,7 +49,7 @@ object AuditLogMockData extends Logging {
     logger.info("Done inserting MockData to DynamoDB")
   }
 
-  private def rawAuditlog(operation: String): String = {
+  private def rawAuditlog(operation: String, serviceName: String = "koski"): String = {
     s"""
       |{
       | \"operation\": \"${operation}\",
@@ -60,7 +60,7 @@ object AuditLogMockData extends Logging {
       |   \"oid": "678.678.678",
       |   \"ip\": \"127.0.0.1\"
       | },
-      | \"serviceName\": \"koski\"
+      | \"serviceName\": \"${serviceName}\"
       |}
     """.stripMargin
   }
@@ -113,6 +113,12 @@ object AuditLogMockData extends Logging {
       time = "2001-01-12T20:31:32.104+03",
       organizationOid = List("self"),
       raw = rawAuditlog("KANSALAINEN_OPISKELUOIKEUS_KATSOMINEN")
+    ),
+    MockData(
+      studentOid = KoskiSpecificMockOppijat.eskari.oid,
+      time = "2020-01-12T20:31:32.104+03",
+      organizationOid = List(MockOrganisaatiot.päiväkotiTouhula),
+      raw = rawAuditlog("dataAccess", "varda")
     ),
     MockData(
       studentOid = KoskiSpecificMockOppijat.ammattilainen.oid,

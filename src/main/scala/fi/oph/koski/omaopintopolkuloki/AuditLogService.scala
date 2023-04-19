@@ -26,13 +26,14 @@ class AuditLogService(app: KoskiApplication) extends Logging {
     val auditLogTable = dynamoDB.getTable(AuditLogTableName)
     val querySpec = new QuerySpec()
       .withKeyConditionExpression("studentOid = :oid")
-      .withFilterExpression("not contains (organizationOid, :self) and contains (#rawEntry, :katsominen)")
+      .withFilterExpression("not contains (organizationOid, :self) and (contains (#rawEntry, :katsominen) or contains(#rawEntry, :varda_service))")
       .withNameMap(Map("#rawEntry" -> "raw").asJava)
       .withValueMap({
         val valueMap = new util.HashMap[String, Object]()
         valueMap.put(":oid", oppijaOid)
         valueMap.put(":self", "self")
         valueMap.put(":katsominen", "\"OPISKELUOIKEUS_KATSOMINEN\"")
+        valueMap.put(":varda_service", "\"varda\"")
         valueMap
       })
 
