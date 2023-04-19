@@ -35,8 +35,8 @@ class YtrDownloadOppijaConverterSpec extends AnyFreeSpec with TestEnvironment wi
   val simppelinHetu = "140380-336X"
 
   "Yksinkertainen YTR:n latausrajapinnan palauttama oppija osataan konvertoida" in {
-    val oppijat = MockYrtClient.oppijatByHetut(YtrSsnData(ssns = Some(List("080380-2432", "140380-336X", "220680-7850", "240680-087S"))))
-    oppijat should have length 4
+    val oppijat = MockYrtClient.oppijatByHetut(YtrSsnData(ssns = Some(List("080380-2432", "140380-336X", "220680-7850", "240680-087S", "060807A7787"))))
+    oppijat should have length 5
     val simppeliOppija = oppijat.find(_.ssn == simppelinHetu).get
     simppeliOppija.ssn should be (simppelinHetu)
 

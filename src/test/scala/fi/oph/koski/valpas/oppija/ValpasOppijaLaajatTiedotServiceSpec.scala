@@ -14,6 +14,15 @@ class ValpasOppijaLaajatTiedotServiceSpec extends ValpasOppijaTestBase {
       validateOppijaLaajatTiedot(result.oppija, expectedOppija, expectedData)
     }
 
+    "palauttaa annetun oppijanumeron mukaisen oppijan, jolla on YO-opiskeluoikeuksia, ilman ylioppilastutkintoja" in {
+      val oid = ValpasMockOppijat.oppijaJollaMuitaOpiskeluoikeuksia.oid
+      val result = oppijaLaajatTiedotService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(oid)(session(ValpasMockUsers.valpasAapajoenKoulu))
+
+      result.isRight should be(true)
+      result.toOption.get.oppija.opiskeluoikeudet should have length(1)
+      result.toOption.get.oppija.opiskeluoikeudet(0).tyyppi.koodiarvo should be("perusopetus")
+    }
+
     "palautetun oppijan valintatilat ovat oikein" in {
       val result = oppijaLaajatTiedotService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021.oid)(defaultSession).toOption.get
 
