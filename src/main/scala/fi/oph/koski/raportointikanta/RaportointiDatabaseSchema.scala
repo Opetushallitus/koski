@@ -6,7 +6,7 @@ import java.time.temporal.ChronoUnit
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.localization.LocalizationReader
-import fi.oph.koski.raportit.YleissivistäväRaporttiOppiaineTaiKurssi
+import fi.oph.koski.raportit.{YleissivistäväRaporttiKurssi, YleissivistäväRaporttiOppiaine, YleissivistäväRaporttiOppiaineTaiKurssi}
 import fi.oph.koski.schema.LocalizedString
 import org.json4s.JValue
 import shapeless.{Generic, HNil}
@@ -861,9 +861,14 @@ case class ROsasuoritusRow(
   sisältyyOpiskeluoikeuteenOid: Option[String]
 ) extends RSuoritusRow {
   override def matchesWith(x: YleissivistäväRaporttiOppiaineTaiKurssi, lang: String): Boolean = {
-    suorituksestaKäytettäväNimi(lang).contains(x.nimi) &&
-      koulutusmoduuliKoodiarvo == x.koulutusmoduuliKoodiarvo &&
-      koulutusmoduuliPaikallinen == x.koulutusmoduuliPaikallinen
+    x match {
+      case _: YleissivistäväRaporttiOppiaine => suorituksestaKäytettäväNimi(lang).contains(x.nimi) &&
+        koulutusmoduuliKoodiarvo == x.koulutusmoduuliKoodiarvo &&
+        koulutusmoduuliPaikallinen == x.koulutusmoduuliPaikallinen
+      case _: YleissivistäväRaporttiKurssi => koulutusModuulistaKäytettäväNimi(lang).contains(x.nimi) &&
+        koulutusmoduuliKoodiarvo == x.koulutusmoduuliKoodiarvo &&
+        koulutusmoduuliPaikallinen == x.koulutusmoduuliPaikallinen
+    }
   }
 
   def oppimääräKoodiarvo: Option[String] =
