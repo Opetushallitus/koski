@@ -117,7 +117,7 @@ class KelaService(application: KoskiApplication) extends GlobalExecutionContext 
   def findKelaOppijaVersion(oppijaOid: String, opiskeluoikeusOid: String, version: Int)
     (implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, KelaOppija] = {
     application.oppijaFacade.findVersion(oppijaOid, opiskeluoikeusOid, version)
-      .map(t => schema.Oppija(t._1.toHenkilötiedotJaOid, t._2))
+      .map(t => t.oppija)
       .flatMap(KelaOppijaConverter.convertOppijaToKelaOppija)
   }
 

@@ -81,10 +81,14 @@ class KoskiOppijaFacade(
   def findOppijaHenkilö
     (oid: String, findMasterIfSlaveOid: Boolean = false, useVirta: Boolean = true, useYtr: Boolean = true)
     (implicit user: KoskiSpecificSession)
-  : Either[HttpStatus, WithWarnings[(LaajatOppijaHenkilöTiedot, Seq[Opiskeluoikeus])]] = {
+  : Either[HttpStatus, WithWarnings[OppijaYksilöintitiedolla]] = {
     henkilöRepository.findByOid(oid, findMasterIfSlaveOid)
       .toRight(notFound(oid))
       .flatMap(henkilö => withOpiskeluoikeudet(henkilö, opiskeluoikeusRepository.findByOppija(henkilö, useVirta, useYtr)))
+      .map(_.map {
+        case (henkilö, opiskeluoikeudet) =>
+          OppijaYksilöintitiedolla(Oppija(henkilöRepository.oppijaHenkilöToTäydellisetHenkilötiedot(henkilö), opiskeluoikeudet), henkilö.yksilöity)
+      })
   }
 
   def findUserOppija(implicit user: KoskiSpecificSession): Either[HttpStatus, WithWarnings[Oppija]] = {
@@ -122,7 +126,7 @@ class KoskiOppijaFacade(
   def findVersion
     (oppijaOid: String, opiskeluoikeusOid: String, versionumero: Int)
     (implicit user: KoskiSpecificSession)
-  : Either[HttpStatus, (LaajatOppijaHenkilöTiedot, Seq[Opiskeluoikeus])] = {
+  : Either[HttpStatus, OppijaYksilöintitiedolla] = {
     opiskeluoikeusRepository.getOppijaOidsForOpiskeluoikeus(opiskeluoikeusOid).flatMap {
       case oids: List[Henkilö.Oid] if oids.contains(oppijaOid) =>
         historyRepository.findVersion(opiskeluoikeusOid, versionumero).flatMap { history =>
@@ -130,6 +134,10 @@ class KoskiOppijaFacade(
             .toRight(notFound(oppijaOid))
             .flatMap(henkilö => withOpiskeluoikeudet(henkilö, WithWarnings(List(history), Nil)))
             .flatMap(_.warningsToLeft)
+            .map {
+              case (henkilö, opiskeluoikeudet) =>
+                OppijaYksilöintitiedolla(Oppija(henkilöRepository.oppijaHenkilöToTäydellisetHenkilötiedot(henkilö), opiskeluoikeudet), henkilö.yksilöity)
+            }
         }
       case _ =>
         logger(user).warn(s"Yritettiin hakea opiskeluoikeuden $opiskeluoikeusOid versiota $versionumero väärällä oppija-oidilla $oppijaOid")
@@ -468,3 +476,8 @@ case class OpiskeluoikeusVersio(
   versionumero: Int,
   lähdejärjestelmänId: Option[LähdejärjestelmäId]
 ) extends Lähdejärjestelmällinen
+
+case class OppijaYksilöintitiedolla(
+  oppija: Oppija,
+  yksilöity: Boolean
+)
