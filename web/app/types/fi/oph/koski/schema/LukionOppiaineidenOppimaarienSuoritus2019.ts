@@ -4,7 +4,7 @@ import { SuullisenKielitaidonKoe2019 } from './SuullisenKielitaidonKoe2019'
 import { PuhviKoe2019 } from './PuhviKoe2019'
 import { LukionOppiaineidenOppimäärät2019 } from './LukionOppiaineidenOppimaarat2019'
 import { OrganisaatioWithOid } from './OrganisaatioWithOid'
-import { LukionOppiaineenSuoritus2019 } from './LukionOppiaineenSuoritus2019'
+import { LukionOppimääränOsasuoritus2019 } from './LukionOppimaaranOsasuoritus2019'
 import { HenkilövahvistusPaikkakunnalla } from './HenkilovahvistusPaikkakunnalla'
 
 /**
@@ -25,7 +25,7 @@ export type LukionOppiaineidenOppimäärienSuoritus2019 = {
   ryhmä?: string
   koulutusmoduuli: LukionOppiaineidenOppimäärät2019
   toimipiste: OrganisaatioWithOid
-  osasuoritukset?: Array<LukionOppiaineenSuoritus2019>
+  osasuoritukset?: Array<LukionOppimääränOsasuoritus2019>
   vahvistus?: HenkilövahvistusPaikkakunnalla
 }
 
@@ -41,7 +41,7 @@ export const LukionOppiaineidenOppimäärienSuoritus2019 = (o: {
   ryhmä?: string
   koulutusmoduuli: LukionOppiaineidenOppimäärät2019
   toimipiste: OrganisaatioWithOid
-  osasuoritukset?: Array<LukionOppiaineenSuoritus2019>
+  osasuoritukset?: Array<LukionOppimääränOsasuoritus2019>
   vahvistus?: HenkilövahvistusPaikkakunnalla
 }): LukionOppiaineidenOppimäärienSuoritus2019 => ({
   tyyppi: Koodistokoodiviite({

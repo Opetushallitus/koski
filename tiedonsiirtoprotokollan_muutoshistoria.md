@@ -1,4 +1,4 @@
-## xx.4.2023
+## 24.4.2023
 
 - Lukion opiskeluoikeuden LOPS 2019 mukaiseen oppiaineiden oppimäärien suoritusten osasuorituksiin lisätty
 muiden lukio-opintojen suoritukset. Mahdollistaa mm. LOPS 2019 mukaisten lukiodiplomien siirron oppiaineen oppimäärän
