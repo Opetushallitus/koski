@@ -5,6 +5,7 @@ import java.time.{LocalDate, LocalDateTime}
 import fi.oph.koski.schema.LocalizedString.english
 import fi.oph.koski.schema.annotation.{FlattenInUI, KoodistoKoodiarvo, KoodistoUri, OksaUri}
 import fi.oph.scalaschema.annotation._
+import fi.oph.koski.schema.annotation.Deprecated
 
 @Description("IB-tutkinnon opiskeluoikeus")
 @Title("IB-tutkinnon opiskeluoikeus")
@@ -118,11 +119,14 @@ case class IBExtendedEssaySuoritus(
 @Title("IB-oppiaineen arviointi")
 case class IBOppiaineenArviointi(
   @Description("Onko arvoitu arvosana vai ei, jos ei niin tarkoittaa IBOn vahvistamaa arvosanaa")
-  predicted: Boolean = true,
+  @Deprecated("Käytä IB-oppiaineen suorituksen predictedArviointi-kenttää")
+  @Hidden
+  predicted: Boolean = false,
   @KoodistoUri("arviointiasteikkoib")
   arvosana: Koodistokoodiviite,
   @Description("Effort-arvosana, kuvaa opiskelijan tunnollisuutta, aktiivisuutta ja yritteliäisyyttä. Arvosteluasteikko: A = very good, B = good, C = needs improvement")
   @KoodistoUri("effortasteikkoib")
+  @Deprecated("Effort-arvosanaa ei enää tallenneta KOSKI-tietovarantoon")
   effort: Option[Koodistokoodiviite] = None,
   @Description("Arviointipäivämäärä")
   päivä: Option[LocalDate]
