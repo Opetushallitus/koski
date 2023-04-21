@@ -43,6 +43,17 @@ class KoskiOppijaFacade(
       .flatMap(henkilö => toOppija(henkilö, opiskeluoikeusRepository.findByOppija(henkilö, useVirta, useYtr)))
   }
 
+  def findOppijaAndCombineWithOpiskeluoikeudet(
+    oid: String,
+    opiskeluoikeudet: Seq[Opiskeluoikeus],
+    findMasterIfSlaveOid: Boolean = false
+  )(implicit user: KoskiSpecificSession)
+  : Either[HttpStatus, WithWarnings[Oppija]] = {
+    henkilöRepository.findByOid(oid, findMasterIfSlaveOid)
+      .toRight(notFound(oid))
+      .flatMap(henkilö => toOppija(henkilö, WithWarnings(opiskeluoikeudet, Nil)))
+  }
+
   // Palauttaa ainoastaan oppijan YTR:stä ladatut opiskeluoikeudet
   def findYtrDownloadedOppija
     (oid: String, findMasterIfSlaveOid: Boolean = false)
@@ -479,6 +490,13 @@ class KoskiOppijaFacade(
     }
   }
 
+  def opinnotonOppija(oid: String)(implicit koskiSession: KoskiSpecificSession): Option[WithWarnings[Oppija]] =
+    henkilöRepository.findByOid(oid)
+      .map(henkilöRepository.oppijaHenkilöToTäydellisetHenkilötiedot)
+      .map(Oppija(_, Nil))
+      .map(WithWarnings(_, Nil))
+      .map(piilotaOppijanTietojaTarvittaessa)
+
   private def piilotaOppijanTietojaTarvittaessa(oppija: WithWarnings[Oppija])(implicit user: KoskiSpecificSession): WithWarnings[Oppija] = {
     if (user.user.kansalainen || user.user.huollettava || user.user.isSuoritusjakoKatsominen) {
       oppija.map(piilotetuillaTiedoilla)
@@ -494,7 +512,6 @@ class KoskiOppijaFacade(
       oppija
     }
   }
-
 
   private def piilotetuillaTiedoilla(oppija: Oppija)(implicit koskiSession: KoskiSpecificSession): Oppija = {
     val piilota = piilotaArvosanatKeskeneräisistäSuorituksista _ andThen

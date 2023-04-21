@@ -111,9 +111,10 @@ case class ValidateContext(validator: KoskiValidator, historyRepository: KoskiOp
   }
 
   def validateHenkilö(row: KoskiOpiskeluoikeusRow): ValidationResult = {
-    henkilöRepository.findByOid(row.oppijaOid) match {
-      case Some(h) => ValidationResult(row.oppijaOid, row.oid, Nil)
-      case None => ValidationResult(row.oppijaOid, row.oid, List(ErrorDetail("oppijaaEiLöydy", s"Oppijaa ${row.oppijaOid} ei löydy henkilöpalvelusta")))
+    if (henkilöRepository.henkilöExists(row.oppijaOid)) {
+      ValidationResult(row.oppijaOid, row.oid, Nil)
+    } else {
+      ValidationResult(row.oppijaOid, row.oid, List(ErrorDetail("oppijaaEiLöydy", s"Oppijaa ${row.oppijaOid} ei löydy henkilöpalvelusta")))
     }
   }
 
