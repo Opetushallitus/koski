@@ -1158,12 +1158,12 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
       }
 
       "Tutkinnon suoritus" - {
-        "Suoritus kesken" in {
+        "Duplikaatin tallennus ei onnistu, jos edellisen opiskeluoikeuden suoritus on kesken" in {
           resetFixtures()
           testDuplicates(defaultOpiskeluoikeus)
         }
 
-        "Suoritus valmis" in {
+        "Duplikaatin tallennus ei onnistu, jos edellisen opiskeluoikeuden suoritus on päättynyt, mutta päivämäärät ovat päällekkäin" in {
           resetFixtures()
           testDuplicates(AmmatillinenOpiskeluoikeusTestData.päättynytOpiskeluoikeus(
             MockOrganisaatiot.stadinAmmattiopisto,
@@ -1173,15 +1173,42 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
             päättymispäivä = LocalDate.of(2019, 7, 31)
           ))
         }
+
+        "Duplikaatin tallennus onnistuu, jos edellisen opiskeluoikeuden suoritus on päättynyt ja päivämäärät ovat erillään" in {
+          resetFixtures()
+          val opiskeluoikeus = AmmatillinenOpiskeluoikeusTestData.päättynytOpiskeluoikeus(
+            MockOrganisaatiot.stadinAmmattiopisto,
+            koulutusKoodi = 331101,
+            diaariNumero = "3000/011/2014",
+            alkamispäivä = LocalDate.of(2018, 1, 1),
+            päättymispäivä = LocalDate.of(2018, 1, 31)
+          )
+
+          putOpiskeluoikeus(opiskeluoikeus = opiskeluoikeus) {
+            verifyResponseStatusOk()
+          }
+
+          val toinenOpiskeluoiekus = AmmatillinenOpiskeluoikeusTestData.päättynytOpiskeluoikeus(
+            MockOrganisaatiot.stadinAmmattiopisto,
+            koulutusKoodi = 331101,
+            diaariNumero = "3000/011/2014",
+            alkamispäivä = LocalDate.of(2018, 2, 1),
+            päättymispäivä = LocalDate.of(2019, 7, 31)
+          )
+
+          postOpiskeluoikeus(opiskeluoikeus = toinenOpiskeluoiekus) {
+            verifyResponseStatusOk()
+          }
+        }
       }
 
       "Tutkinnon osittainen suoritus" - {
-        "Suoritus kesken" in {
+        "Duplikaatin tallennus ei onnistu, kun edellisen opiskeluoikeuden suoritus on kesken" in {
           resetFixtures()
           testDuplicates(defaultOpiskeluoikeus.copy(suoritukset = List(ammatillisenTutkinnonOsittainenSuoritus)))
         }
 
-        "Suoritus valmis" in {
+        "Duplikaatin tallennus onnistuu, kun edellisen opiskeluoikeuden suoritus on päättynyt ja päivämäärät ovatkin päällekkäiset" in {
           resetFixtures()
           val opiskeluoikeus = AmmatillinenOpiskeluoikeusTestData.päättynytOpiskeluoikeus(
             MockOrganisaatiot.stadinAmmattiopisto,

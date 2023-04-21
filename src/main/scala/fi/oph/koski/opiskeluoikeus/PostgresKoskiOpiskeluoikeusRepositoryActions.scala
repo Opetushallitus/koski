@@ -17,6 +17,8 @@ import org.json4s._
 import slick.dbio.Effect.{Read, Write}
 import slick.dbio.{DBIOAction, NoStream}
 
+import java.time.LocalDate
+
 class PostgresKoskiOpiskeluoikeusRepositoryActions(
   val db: DB,
   val oidGenerator: OidGenerator,
@@ -96,14 +98,18 @@ class PostgresKoskiOpiskeluoikeusRepositoryActions(
 
     opiskeluoikeus match {
       case oo: AmmatillinenOpiskeluoikeus =>
-        !oo.oppilaitos.exists(_.oid == row.oppilaitosOid) ||
+        // Jos oppilaitos ja perusteen diaarinumero ovat samat, ei sallita päällekkäisen opiskeluoikeuden luontia...
+        (!oo.oppilaitos.exists(_.oid == row.oppilaitosOid) || // Tänne ei pitäisi tulla eriävällä oppilaitoksella, mutta tulevien mahdollisten muutosten varalta tehdään tässä eksplisiittinen tarkastus
           !oo.suoritukset
             .collect { case s: AmmatillisenTutkinnonSuoritus => s }
             .exists(s =>
               s.koulutusmoduuli.perusteenDiaarinumero.isDefined &&
                 s.koulutusmoduuli.perusteenDiaarinumero == perusteenDiaarinumero
 
-            )
+            )) ||
+          // ...paitsi jos ne ovat toisistaan ajallisesti täysin erillään
+          !Aikajakso(oo.alkamispäivä.getOrElse(LocalDate.of(0, 1, 1)), oo.päättymispäivä)
+            .overlaps(Aikajakso(row.alkamispäivä.toLocalDate, row.päättymispäivä.map(_.toLocalDate)))
       case _ => true
     }
   }

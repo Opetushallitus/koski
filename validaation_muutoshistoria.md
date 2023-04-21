@@ -8,6 +8,7 @@
 
 - Aikuisten lukiokoulutuksen uudessa opintosuunnitelmassa (2019) Historian kurssien HI2 ja HI3 nimet on korjattu
   vastaamaan Opetushallituksen laatimaa opetussuunnitelmaa myös oppiaineiden oppimäärien suorituksille.
+- Tutkintotavoitteiset ammattikoulun opiskeluoikeuksien duplikaatit estetty validaatiolla. Duplikaattius päätellään oppilaitoksen ja peruteen diaarinumeron perusteella. Päällekkäinen opiskeluoikeus sallitaan kuitenkin siinä tapauksessa, että sen aikajakso ei leikkaa aiemman opiskeluoikeuden aikajakson kanssa.
 
 ## 14.3.2023
 
