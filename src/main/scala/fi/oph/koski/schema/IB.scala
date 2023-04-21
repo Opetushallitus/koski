@@ -70,6 +70,7 @@ case class IBOppiaineenSuoritus(
   @Title("Oppiaine")
   koulutusmoduuli: IBAineRyhmäOppiaine,
   arviointi: Option[List[IBOppiaineenArviointi]] = None,
+  predictedArviointi: Option[List[IBOppiaineenPredictedArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @Description("Oppiaineeseen kuuluvien kurssien suoritukset")
   @Title("Kurssit")
@@ -128,6 +129,16 @@ case class IBOppiaineenArviointi(
   @KoodistoUri("effortasteikkoib")
   @Deprecated("Effort-arvosanaa ei enää tallenneta KOSKI-tietovarantoon")
   effort: Option[Koodistokoodiviite] = None,
+  @Description("Arviointipäivämäärä")
+  päivä: Option[LocalDate]
+) extends IBArviointi {
+  override def arviointipäivä: Option[LocalDate] = päivä
+}
+
+@Title("IB-oppiaineen predicted-arviointi")
+case class IBOppiaineenPredictedArviointi(
+  @KoodistoUri("arviointiasteikkoib")
+  arvosana: Koodistokoodiviite,
   @Description("Arviointipäivämäärä")
   päivä: Option[LocalDate]
 ) extends IBArviointi {
