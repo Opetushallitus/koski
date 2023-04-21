@@ -1,11 +1,9 @@
 package fi.oph.koski.schema
 
 import java.time.{LocalDate, LocalDateTime}
-
 import fi.oph.koski.schema.LocalizedString.english
-import fi.oph.koski.schema.annotation.{FlattenInUI, KoodistoKoodiarvo, KoodistoUri, OksaUri}
+import fi.oph.koski.schema.annotation.{Deprecated, FlattenInUI, Hidden, KoodistoKoodiarvo, KoodistoUri, OksaUri}
 import fi.oph.scalaschema.annotation._
-import fi.oph.koski.schema.annotation.Deprecated
 
 @Description("IB-tutkinnon opiskeluoikeus")
 @Title("IB-tutkinnon opiskeluoikeus")

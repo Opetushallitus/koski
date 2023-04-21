@@ -6,7 +6,9 @@ export const LukionOppiaineetTableHead = ({
   showArviointi = true,
   laajuusHeaderText = 'Laajuus',
   arvosanaHeader = <Text name="Arvosana (keskiarvo)" />,
-  showHyväksytystiArvioitujenLaajuus = false
+  showHyväksytystiArvioitujenLaajuus = false,
+  showPredictedArviointi = false,
+  predictedArvosanaHeader = <Text name="Predicted grade" />
 }) => (
   <thead>
     <tr>
@@ -23,6 +25,9 @@ export const LukionOppiaineetTableHead = ({
         <th className="laajuus arvioitu">
           <Text name={`Hyväksytysti arvioitu (${laajuusyksikkö})`} />
         </th>
+      )}
+      {showPredictedArviointi && (
+        <th className="predicted-arvosana">{predictedArvosanaHeader}</th>
       )}
       {showArviointi && <th className="arvosana">{arvosanaHeader}</th>}
     </tr>

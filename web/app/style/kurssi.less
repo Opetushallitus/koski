@@ -11,21 +11,27 @@
       > .tunniste {
         cursor: pointer;
         font-weight: 600;
-        &.syventava, &.soveltava, &.ei-lasketa-kokonaispistemäärään, &.paikallinen {
+        &.syventava,
+        &.soveltava,
+        &.ei-lasketa-kokonaispistemäärään,
+        &.paikallinen {
           font-style: italic;
         }
         &.hoverable {
           color: black;
-          &.syventava, &.soveltava, &.ei-lasketa-kokonaispistemäärään {
+          &.syventava,
+          &.soveltava,
+          &.ei-lasketa-kokonaispistemäärään {
             color: #979797;
-            &+.footnote-hint {
+            & + .footnote-hint {
               color: #979797;
             }
           }
         }
       }
 
-      > .arvosana {
+      > .arvosana,
+      > .predicted-arvosana {
         margin-right: 10px;
         .dropdown {
           width: 62px !important;
@@ -42,7 +48,7 @@
         padding: 25px;
         margin-bottom: 80px;
         background-color: white;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, .15);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
         z-index: @z-index-base + 2;
         width: 550px;
         tbody tr {
@@ -80,7 +86,6 @@
             .KurssiTooltip(right, top);
           }
         }
-
       }
     }
     .kurssi:not(:last-of-type) {
@@ -131,12 +136,15 @@ table.kurssilista-mobile {
     border-bottom: 1px solid @color-neutral-gray;
   }
 
-  > thead > tr, > tbody > tr {
+  > thead > tr,
+  > tbody > tr {
     > .nimi {
       width: 20%;
     }
 
-    > .arvosana, > .lisatiedot {
+    > .arvosana,
+    > .predicted-arvosana,
+    > .lisatiedot {
       width: 40%;
       text-align: center;
 
@@ -152,7 +160,8 @@ table.kurssilista-mobile {
     }
 
     > tr.kurssi {
-      &.even { // nth-child/nth-of-type do not support matching classes, so this is needed. (properties adds one tr to the DOM causing the colors to switch)
+      &.even {
+        // nth-child/nth-of-type do not support matching classes, so this is needed. (properties adds one tr to the DOM causing the colors to switch)
         background: @color-neutral-gray;
       }
 
@@ -164,7 +173,9 @@ table.kurssilista-mobile {
 }
 
 .edit .kurssit ul .kurssi {
-  .details-middle-top, .details-left-top, .details-right-top {
+  .details-middle-top,
+  .details-left-top,
+  .details-right-top {
     bottom: -10px;
   }
 }
@@ -209,7 +220,7 @@ table.kurssilista-mobile {
 }
 
 .KurssiTriangle(@x-alignment, @y-alignment) when (@x-alignment = middle) {
-  left: ~"calc(50% - 15px)";
+  left: ~'calc(50% - 15px)';
 }
 
 .KurssiTriangle(@x-alignment, @y-alignment) when (@x-alignment = right) {
@@ -217,7 +228,7 @@ table.kurssilista-mobile {
 }
 
 .KurssiTriangle(@x-alignment, @y-alignment) {
-  content: "";
+  content: '';
   position: absolute;
   .Triangle(15px, white, @y-alignment);
 }

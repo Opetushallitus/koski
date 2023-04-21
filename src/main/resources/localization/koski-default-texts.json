@@ -2506,5 +2506,7 @@
   "Näytä todistus": "Näytä todistus",
   "Tiedot koneluettavassa muodossa": "Tiedot koneluettavassa muodossa",
   "deprecated:Käytä IB-oppiaineen suorituksen predictedArviointi-kenttää": "Käytä IB-oppiaineen suorituksen predictedArviointi-kenttää",
-  "deprecated:Effort-arvosanaa ei enää tallenneta KOSKI-tietovarantoon": "Effort-arvosanaa ei enää tallenneta KOSKI-tietovarantoon"
+  "deprecated:Effort-arvosanaa ei enää tallenneta KOSKI-tietovarantoon": "Effort-arvosanaa ei enää tallenneta KOSKI-tietovarantoon",
+  "Predicted-arvosana (keskiarvo)": "Predicted-arvosana (keskiarvo)",
+  "Päättöarvosana": "Päättöarvosana"
 }
