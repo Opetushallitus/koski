@@ -76,7 +76,7 @@ case class LukionOppiaineidenOppimäärienSuoritus2019(
   suullisenKielitaidonKokeet: Option[List[SuullisenKielitaidonKoe2019]] = None,
   @Description("Oppiaineiden suoritukset")
   @Title("Oppiaineet")
-  override val osasuoritukset: Option[List[LukionOppiaineenSuoritus2019]],
+  override val osasuoritukset: Option[List[LukionOppimääränOsasuoritus2019]],
   @Description("Todistuksella näytettävä lisätieto, vapaamuotoinen tekstikenttä")
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("lukionaineopinnot")
