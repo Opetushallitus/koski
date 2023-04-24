@@ -70,9 +70,12 @@ case class Lukio2019Raportti(repository: Lukio2019RaportitRepository, t: Localiz
     }
   }
 
-  private def oppiaineKohtainenSheet(oppiaineJaOsasuoritukset: YleissivistäväRaporttiOppiaineJaKurssit, data: Seq[Lukio2019RaporttiRows]) = {
+  private def oppiaineKohtainenSheet(
+    oppiaineJaOsasuoritukset: YleissivistäväRaporttiOppiaineJaKurssit,
+    data: Seq[Lukio2019RaporttiRows]
+  ): DynamicDataSheet = {
     val oppiaine = oppiaineJaOsasuoritukset.oppiaine
-    val osasuoritukset = oppiaineJaOsasuoritukset.kurssit
+    val osasuoritukset = oppiaineJaOsasuoritukset.oppijoidenRivitJärjestettyKursseittain
     val filtered = data.filter(notOppimääränOpiskelijaFromAnotherOppiaine(oppiaine))
 
     DynamicDataSheet(
@@ -150,33 +153,45 @@ case class Lukio2019Raportti(repository: Lukio2019RaportitRepository, t: Localiz
     )
   }
 
-  private def oppiainekohtaisetOsasuorituksetiedot(row:Lukio2019RaporttiRows, osasuoritukset: Seq[YleissivistäväRaporttiKurssi]) = {
+  private def oppiainekohtaisetOsasuorituksetiedot(
+    oppijanRivit: Lukio2019RaporttiRows,
+    oppijoidenRivitJärjestettyKursseittain: Seq[Seq[YleissivistäväRaporttiKurssi]]
+  ): Lukio2019RaportinOppiaineenOsasuorituksetRow = {
     Lukio2019RaportinOppiaineenOsasuorituksetRow(
       stattisetKolumnit = Lukio2019OppiaineenKurssienVälilehtiStaattisetKolumnit(
-        oppijanOid = row.opiskeluoikeus.oppijaOid,
-        hetu = row.henkilo.hetu,
-        sukinimi =  row.henkilo.sukunimi,
-        etunimet = row.henkilo.etunimet,
-        toimipiste = if(t.language == "sv") row.päätasonSuoritus.toimipisteNimiSv else row.päätasonSuoritus.toimipisteNimi,
-        opetussuunnitelma = opetussuunnitelma(row.päätasonSuoritus),
-        suorituksenTyyppi = row.päätasonSuoritus.suorituksenTyyppi
+        oppijanOid = oppijanRivit.opiskeluoikeus.oppijaOid,
+        hetu = oppijanRivit.henkilo.hetu,
+        sukinimi = oppijanRivit.henkilo.sukunimi,
+        etunimet = oppijanRivit.henkilo.etunimet,
+        toimipiste = if (t.language == "sv") oppijanRivit.päätasonSuoritus.toimipisteNimiSv else oppijanRivit.päätasonSuoritus.toimipisteNimi,
+        opetussuunnitelma = opetussuunnitelma(oppijanRivit.päätasonSuoritus),
+        suorituksenTyyppi = oppijanRivit.päätasonSuoritus.suorituksenTyyppi
       ),
-      osasuoritukset = kurssienTiedot(row.osasuoritukset, osasuoritukset)
+      osasuoritukset = kurssienTiedot(oppijanRivit, oppijoidenRivitJärjestettyKursseittain)
     )
   }
 
-  private def kurssienTiedot(osasuorituksetRow: Seq[ROsasuoritusRow], osasuoritukset: Seq[YleissivistäväRaporttiKurssi]) = {
-    val osasuorituksetMap = osasuorituksetRow.groupBy(_.koulutusmoduuliKoodiarvo)
-    osasuoritukset.map { kurssi =>
-      osasuorituksetMap.getOrElse(kurssi.koulutusmoduuliKoodiarvo, Nil).filter(_.matchesWith(kurssi, t.language)).map(kurssisuoritus =>
-        Lukio2019ModuulinTiedot(
-          pakollinen = JsonSerializer.extract[Boolean](kurssisuoritus.data \ "koulutusmoduuli" \ "pakollinen"),
-          arvosana = kurssisuoritus.arviointiArvosanaKoodiarvo,
-          laajuus = kurssisuoritus.koulutusmoduuliLaajuusArvo,
-          tunnustettu = kurssisuoritus.tunnustettu,
-          korotettuEriVuonna = kurssisuoritus.korotettuEriVuonna
-        ).toStringLokalisoitu(t)
-      ).mkString(",")
+  private def kurssienTiedot(
+    oppijanRivit: Lukio2019RaporttiRows,
+    oppijoidenRivitJärjestettyKursseittain: Seq[Seq[YleissivistäväRaporttiKurssi]]
+  ): Seq[String] = {
+    def onKurssiOppijalla(k: YleissivistäväRaporttiKurssi): Boolean =
+      oppijanRivit.osasuoritukset.map(_.osasuoritusId).contains(k.osasuoritusRow.osasuoritusId)
+
+    oppijoidenRivitJärjestettyKursseittain.map {
+      // Tuottaa tyhjän solun jos oppijalla ei ole suorituksia tähän sarakkeeseen
+      case kurssit: Seq[YleissivistäväRaporttiKurssi] if !kurssit.exists(k => onKurssiOppijalla(k)) => ""
+      case kurssit: Seq[YleissivistäväRaporttiKurssi] =>
+        val oppijanKurssit = kurssit.filter(k => onKurssiOppijalla(k))
+        oppijanKurssit.map( kurssi =>
+          Lukio2019ModuulinTiedot(
+            pakollinen = JsonSerializer.extract[Boolean](kurssi.osasuoritusRow.data \ "koulutusmoduuli" \ "pakollinen"),
+            arvosana = kurssi.osasuoritusRow.arviointiArvosanaKoodiarvo,
+            laajuus = kurssi.osasuoritusRow.koulutusmoduuliLaajuusArvo,
+            tunnustettu = kurssi.osasuoritusRow.tunnustettu,
+            korotettuEriVuonna = kurssi.osasuoritusRow.korotettuEriVuonna
+          ).toStringLokalisoitu(t)
+        ).mkString(",")
     }
   }
 
@@ -235,7 +250,9 @@ case class Lukio2019Raportti(repository: Lukio2019RaportitRepository, t: Localiz
     ) ++ oppiaineet.map(x => CompactColumn(title = x.oppiaine.toColumnTitle(t), comment = Some(t.get("raportti-excel-kolumni-oppiaineSarake-comment"))))
   }
 
-  private def oppiaineKohtaisetColumnSettings(osasuoritukset: Seq[YleissivistäväRaporttiKurssi]) = {
+  private def oppiaineKohtaisetColumnSettings(
+    oppijoidenRivitJärjestettyKursseittain: Seq[Seq[YleissivistäväRaporttiKurssi]]
+  ): Seq[Column] = {
     Seq(
       Column(t.get("raportti-excel-kolumni-oppijaOid")),
       Column(t.get("raportti-excel-kolumni-hetu")),
@@ -244,7 +261,7 @@ case class Lukio2019Raportti(repository: Lukio2019RaportitRepository, t: Localiz
       CompactColumn(t.get("raportti-excel-kolumni-toimipisteNimi")),
       CompactColumn(t.get("raportti-excel-kolumni-opetussuunnitelma"), comment = Some(t.get("raportti-excel-kolumni-opetussuunnitelma-lukio-comment"))),
       CompactColumn(t.get("raportti-excel-kolumni-suorituksenTyyppi"), comment = Some(t.get("raportti-excel-kolumni-suorituksenTyyppi-lukio-comment")))
-    ) ++ osasuoritukset.map(k => CompactColumn(title = k.toColumnTitle(t), comment = Some(t.get("raportti-excel-kolumni-oppiaineSarake-lukio-comment"))))
+    ) ++ oppijoidenRivitJärjestettyKursseittain.map(_.head).map(k => CompactColumn(title = k.toColumnTitle(t), comment = Some(t.get("raportti-excel-kolumni-oppiaineSarake-lukio-comment"))))
   }
 }
 

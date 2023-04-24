@@ -57,16 +57,26 @@ sealed trait YleissivistäväRaporttiOppiaineTaiKurssi {
   def koulutusmoduuliPaikallinen: Boolean
 }
 
-case class YleissivistäväRaporttiOppiaine(nimi: String, koulutusmoduuliKoodiarvo: String, koulutusmoduuliPaikallinen: Boolean, oppimääräKoodiarvo: Option[String]) extends YleissivistäväRaporttiOppiaineTaiKurssi {
+case class YleissivistäväRaporttiOppiaine(
+  nimi: String, koulutusmoduuliKoodiarvo: String,
+  koulutusmoduuliPaikallinen: Boolean,
+  oppimääräKoodiarvo: Option[String]
+) extends YleissivistäväRaporttiOppiaineTaiKurssi {
   def toSheetTitle(t: LocalizationReader): String = s"$koulutusmoduuliKoodiarvo ${if (koulutusmoduuliPaikallinen) t.get("raportti-excel-kolumni-paikallinen-lyhenne") else t.get("raportti-excel-kolumni-valtakunnallinen-lyhenne")} ${nimi.capitalize}"
   def toColumnTitle(t: LocalizationReader): String = s"$koulutusmoduuliKoodiarvo ${nimi.capitalize} ${if (koulutusmoduuliPaikallinen) t.get("raportti-excel-kolumni-paikallinen") else t.get("raportti-excel-kolumni-valtakunnallinen")}"
 }
 
-case class YleissivistäväRaporttiKurssi(nimi: String, koulutusmoduuliKoodiarvo: String, koulutusmoduuliPaikallinen: Boolean) extends YleissivistäväRaporttiOppiaineTaiKurssi {
+case class YleissivistäväRaporttiKurssi(
+  nimi: String,
+  koulutusmoduuliKoodiarvo: String,
+  koulutusmoduuliPaikallinen: Boolean,
+  osasuoritusRow: ROsasuoritusRow
+) extends YleissivistäväRaporttiOppiaineTaiKurssi {
   def toColumnTitle(t: LocalizationReader): String = s"$koulutusmoduuliKoodiarvo ${nimi.capitalize} ${if (koulutusmoduuliPaikallinen) t.get("raportti-excel-kolumni-paikallinen") else t.get("raportti-excel-kolumni-valtakunnallinen")}"
 }
 
-case class YleissivistäväRaporttiOppiaineJaKurssit(oppiaine: YleissivistäväRaporttiOppiaine, kurssit: Seq[YleissivistäväRaporttiKurssi])
+case class OppiaineetJaKurssit(oppiaine: YleissivistäväRaporttiOppiaine, kaikkiKurssitJaOppijoidenRivit: Seq[YleissivistäväRaporttiKurssi])
+case class YleissivistäväRaporttiOppiaineJaKurssit(oppiaine: YleissivistäväRaporttiOppiaine, oppijoidenRivitJärjestettyKursseittain: Seq[Seq[YleissivistäväRaporttiKurssi]])
 
 object PerusopetukseenValmistavaOppiaineetOrdering extends YleissivistäväRaporttiOppiaineJaKurssitOrdering {
   override def compare(
@@ -157,9 +167,17 @@ object YleissivistäväKurssitOrdering {
   lazy val yleissivistäväKurssitOrdering: Ordering[YleissivistäväRaporttiKurssi] = Ordering.by(orderByPaikallisuusAndSuffix)
 
   private def orderByPaikallisuusAndSuffix(kurssi: YleissivistäväRaporttiKurssi) = {
-    val (koodiarvoCharacters, koodiarvoDigits) = KoulutusModuuliOrdering.järjestäSuffiksinMukaan(kurssi.koulutusmoduuliKoodiarvo)
+    val (koodiarvoCharacters, koodiarvoDigits) = järjestäSuffiksinMukaan(kurssi.koulutusmoduuliKoodiarvo)
+    (kurssi.koulutusmoduuliPaikallinen, koodiarvoCharacters, koodiarvoDigits, kurssi.nimi)
+  }
 
-    (kurssi.koulutusmoduuliPaikallinen, koodiarvoCharacters, koodiarvoDigits)
+  private def järjestäSuffiksinMukaan(koodiarvo: String) = {
+    val numericSuffix = koodiarvo.reverse.takeWhile(isDigit).reverse
+    if (numericSuffix.isEmpty) {
+      (koodiarvo, None)
+    } else {
+      (koodiarvo.substring(0, koodiarvo.length - numericSuffix.length), Some(numericSuffix.toInt))
+    }
   }
 }
 
@@ -194,7 +212,7 @@ object YleissivistäväUtils {
     oppiaineet
       .groupBy(_.oppiaine)
       .map { case (oppiaine, x) =>
-        YleissivistäväRaporttiOppiaineJaKurssit(oppiaine, x.flatMap(_.kurssit).distinct.sorted(YleissivistäväKurssitOrdering.yleissivistäväKurssitOrdering))
+        YleissivistäväRaporttiOppiaineJaKurssit(oppiaine, YleissivistäväUtils.kurssitDistinctJaSorted(x.flatMap(_.kaikkiKurssitJaOppijoidenRivit)))
       }
       .toSeq
       .sorted(ordering)
@@ -204,9 +222,9 @@ object YleissivistäväUtils {
     isOppiaineenOppimäärä: RPäätasonSuoritusRow => Boolean,
     isOppiaine: ROsasuoritusRow => Boolean,
     t: LocalizationReader
-  ) (row: YleissivistäväRaporttiRows): Seq[YleissivistäväRaporttiOppiaineJaKurssit] = {
+  ) (row: YleissivistäväRaporttiRows): Seq[OppiaineetJaKurssit] = {
     if (isOppiaineenOppimäärä(row.päätasonSuoritus)) {
-      Seq(YleissivistäväRaporttiOppiaineJaKurssit(toOppiaine(row.päätasonSuoritus, t), row.osasuoritukset.map(o => toKurssi(o, t))))
+      Seq(OppiaineetJaKurssit(toOppiaine(row.päätasonSuoritus, t), row.osasuoritukset.map(o => toKurssi(o, t))))
     } else {
       oppiaineetJaNiidenKurssitOppimäärästä(isOppiaine, row, t)
     }
@@ -216,11 +234,11 @@ object YleissivistäväUtils {
     isOppiaine: ROsasuoritusRow => Boolean,
     row: YleissivistäväRaporttiRows,
     t: LocalizationReader
-  ): Seq[YleissivistäväRaporttiOppiaineJaKurssit] = {
+  ): Seq[OppiaineetJaKurssit] = {
     val kurssit = row.osasuoritukset.filter(_.ylempiOsasuoritusId.isDefined).groupBy(_.ylempiOsasuoritusId.get)
     val oppiaineet = row.osasuoritukset.filter(isOppiaine)
     val combineOppiaineWithKurssit = (oppiaine: ROsasuoritusRow) =>
-      YleissivistäväRaporttiOppiaineJaKurssit(
+      OppiaineetJaKurssit(
         toOppiaine(oppiaine, t),
         kurssit.getOrElse(oppiaine.osasuoritusId, Nil).map(k => toKurssi(k, t))
       )
@@ -248,7 +266,8 @@ object YleissivistäväUtils {
     YleissivistäväRaporttiKurssi(
       row.koulutusModuulistaKäytettäväNimi(t.language).getOrElse(t.get("raportti-excel-default-value-ei-nimeä")),
       row.koulutusmoduuliKoodiarvo,
-      row.koulutusmoduuliPaikallinen
+      row.koulutusmoduuliPaikallinen,
+      row
     )
   }
 
@@ -296,23 +315,11 @@ object YleissivistäväUtils {
       0
     }
   }
-}
 
-object KoulutusModuuliOrdering {
-  // Käsittelee tunnisteen numeerisen suffiksin lukuna
-  lazy val orderByTunniste: Ordering[Koulutusmoduuli] = Ordering.by(järjestäKoulutusmoduuliSuffiksinMukaan)
-
-  def järjestäSuffiksinMukaan(koodiarvo: String) = {
-    val numericSuffix = koodiarvo.reverse.takeWhile(isDigit).reverse
-    if (numericSuffix.isEmpty) {
-      (koodiarvo, None)
-    } else {
-      (koodiarvo.substring(0, koodiarvo.length - numericSuffix.length), Some(numericSuffix.toInt))
-    }
-  }
-
-  private def järjestäKoulutusmoduuliSuffiksinMukaan(koulutusmoduuli: Koulutusmoduuli) = {
-    val koodiarvo: String = koulutusmoduuli.tunniste.koodiarvo
-    järjestäSuffiksinMukaan(koodiarvo)
+  def kurssitDistinctJaSorted(kurssit: Seq[YleissivistäväRaporttiKurssi]): Seq[Seq[YleissivistäväRaporttiKurssi]] = {
+    kurssit
+      .groupBy(k => (k.nimi, k.koulutusmoduuliKoodiarvo, k.koulutusmoduuliPaikallinen))
+      .values.toSeq
+      .sortBy(_.head)(YleissivistäväKurssitOrdering.yleissivistäväKurssitOrdering)
   }
 }
