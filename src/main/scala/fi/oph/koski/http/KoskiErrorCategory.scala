@@ -195,6 +195,7 @@ object KoskiErrorCategory {
         val eiSallittuSuppealleValinnaiselle = subcategory("eiSallittuSuppealleValinnaiselle", "Vain arvioinnit 'S' ja 'O' on sallittu valinnaiselle valtakunnalliselle oppiaineelle, jonka laajuus on alle kaksi vuosiviikkotuntia")
         val sallittuVainSuppealle = subcategory("sallittuVainSuppealle", "Arvioinnit 'S' ja 'H' on sallittu vain riittävän suppealle oppiaineelle")
         val epäsopivaArvosana = subcategory("epäsopivaArvosana", "Arvosanaa ei ole sallittu suoritukselle")
+        val arviointiPuuttuu = subcategory("arviointiPuuttuu", "Suoritukselta puuttuu arviointi")
       }
       val arviointi = new Arviointi
 

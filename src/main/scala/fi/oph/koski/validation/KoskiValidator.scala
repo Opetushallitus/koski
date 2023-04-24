@@ -140,7 +140,8 @@ class KoskiValidator(
                 JotpaValidation.validateOpiskeluoikeus(opiskeluoikeus, JotpaValidation.jotpaRahoitusVoimassaAlkaen(config)),
                 TutkintokoulutukseenValmentavaKoulutusValidation.validateOpiskeluoikeus(opiskeluoikeus),
                 EuropeanSchoolOfHelsinkiValidation.validateOpiskeluoikeus(config)(opiskeluoikeus),
-                TaiteenPerusopetusValidation.validateOpiskeluoikeus(config)(opiskeluoikeus, suostumuksenPeruutusService)
+                TaiteenPerusopetusValidation.validateOpiskeluoikeus(config)(opiskeluoikeus, suostumuksenPeruutusService),
+                IBValidation.validateIbOpiskeluoikeus(config)(opiskeluoikeus),
               )
             } match {
             case HttpStatus.ok => Right(opiskeluoikeus)

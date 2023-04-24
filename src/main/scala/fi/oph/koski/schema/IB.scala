@@ -143,6 +143,13 @@ case class IBOppiaineenPredictedArviointi(
   override def arviointipäivä: Option[LocalDate] = päivä
 }
 
+object IBOppiaineenPredictedArviointi {
+  def apply(arviointi: IBOppiaineenArviointi): IBOppiaineenPredictedArviointi = IBOppiaineenPredictedArviointi(
+    arvosana = arviointi.arvosana,
+    päivä = arviointi.päivä,
+  )
+}
+
 @Title("IB CAS -oppiaineen arviointi")
 @OnlyWhen("../tyyppi/koodiarvo","iboppiainecas")
 case class IBCASOppiaineenArviointi(
