@@ -140,8 +140,12 @@ const Arviointi = ({
       ? modelData(oppiaine, arviointiField)
       : predicted
       ? modelData(oppiaine, 'predictedArviointi') ||
-        modelData(oppiaine, 'arviointi').filter((a) => a.arvosana.predicted)
-      : modelData(oppiaine, 'arviointi').filter((a) => !a.arvosana.predicted)
+        (modelData(oppiaine, 'arviointi') || []).filter(
+          (a) => a.arvosana.predicted
+        )
+      : (modelData(oppiaine, 'arviointi') || []).filter(
+          (a) => !a.arvosana.predicted
+        )
 
   const keskiarvo = showKeskiarvo
     ? kurssienKeskiarvo(suoritetutKurssit)

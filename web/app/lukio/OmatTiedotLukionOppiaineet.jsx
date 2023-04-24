@@ -95,10 +95,11 @@ export class OmatTiedotLukionOppiaine extends React.Component {
       notFoundText = '-',
       customOsasuoritusTitle,
       useOppiaineLaajuus = false,
-      customKurssitSortFn
+      customKurssitSortFn,
+      arviointiField = 'arviointi'
     } = this.props
     const kurssit = modelItems(oppiaine, 'osasuoritukset')
-    const arviointi = modelData(oppiaine, 'arviointi')
+    const arviointi = modelData(oppiaine, arviointiField)
     const oppiaineenKeskiarvo = kurssienKeskiarvo(suoritetutKurssit(kurssit))
     const laajuusYhteensä = numberToString(
       useOppiaineLaajuus
@@ -143,7 +144,11 @@ export class OmatTiedotLukionOppiaine extends React.Component {
           </div>
         </td>
         <td className="arvosana">
-          <ArvosanaEditor model={oppiaine} notFoundText={notFoundText} />
+          <ArvosanaEditor
+            model={oppiaine}
+            notFoundText={notFoundText}
+            arviointiField={arviointiField}
+          />
           {arviointi && footnote && (
             <FootnoteHint title={footnote.title} hint={footnote.hint} />
           )}
