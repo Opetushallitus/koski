@@ -180,7 +180,7 @@ case class AikuistenPerusopetusRaportti(
 
   private def oppiaineKohtainenSheet(oppiaineJaKurssit: YleissivistäväRaporttiOppiaineJaKurssit, data: Seq[AikuistenPerusopetusRaporttiRows]) = {
     val oppiaine = oppiaineJaKurssit.oppiaine
-    val kurssit = oppiaineJaKurssit.kurssit
+    val kurssit = oppiaineJaKurssit.oppijoidenRivitJärjestettyKursseittain
     val filtered = data.filter(notOppimääränOpiskelijaFromAnotherOppiaine(oppiaine))
 
     DynamicDataSheet(
@@ -257,31 +257,43 @@ case class AikuistenPerusopetusRaportti(
     osasuoritus.arviointiArvosanaKoodiarvo.getOrElse("") != "O"
   }
 
-  private def oppiainekohtaisetKurssitiedot(row: AikuistenPerusopetusRaporttiRows, kurssit: Seq[YleissivistäväRaporttiKurssi]) = {
+  private def oppiainekohtaisetKurssitiedot(
+    row: AikuistenPerusopetusRaporttiRows,
+    oppijoidenRivitJärjestettyKursseittain: Seq[Seq[YleissivistäväRaporttiKurssi]]
+  ): AikuistenPerusopetusRaporttiOppiaineRow = {
     AikuistenPerusopetusRaporttiOppiaineRow(
       staticColumns = AikuistenPerusopetusRaporttiOppiaineTabStaticColumns(
         oppijanOid = row.opiskeluoikeus.oppijaOid,
         hetu = row.henkilo.hetu,
         sukinimi = row.henkilo.sukunimi,
         etunimet = row.henkilo.etunimet,
-        toimipiste = if(t.language == "sv") row.päätasonSuoritus.toimipisteNimiSv else row.päätasonSuoritus.toimipisteNimi,
+        toimipiste = if (t.language == "sv") row.päätasonSuoritus.toimipisteNimiSv else row.päätasonSuoritus.toimipisteNimi,
         suorituksenTyyppi = row.päätasonSuoritus.suorituksenTyyppi
       ),
-      kurssit = kurssienTiedot(row.osasuoritukset, kurssit)
+      kurssit = kurssienTiedot(row, oppijoidenRivitJärjestettyKursseittain)
     )
   }
 
-  private def kurssienTiedot(osasuoritukset: Seq[ROsasuoritusRow], kurssit: Seq[YleissivistäväRaporttiKurssi]) = {
-    val osasuorituksetMap = osasuoritukset.groupBy(_.koulutusmoduuliKoodiarvo)
-    kurssit.map { kurssi =>
-      osasuorituksetMap.getOrElse(kurssi.koulutusmoduuliKoodiarvo, Nil).filter(_.matchesWith(kurssi, t.language)).map(kurssisuoritus =>
-        AikuistenPerusopetusKurssinTiedot(
-          arvosana = kurssisuoritus.arviointiArvosanaKoodiarvo,
-          laajuus = kurssisuoritus.koulutusmoduuliLaajuusArvo,
-          tunnustettu = kurssisuoritus.tunnustettu,
-          korotettuEriVuonna = kurssisuoritus.korotettuEriVuonna
-        ).toStringLokalisoitu(t)
-      ).mkString(", ")
+  private def kurssienTiedot(
+    oppijanRivit: AikuistenPerusopetusRaporttiRows,
+    oppijoidenRivitJärjestettyKursseittain: Seq[Seq[YleissivistäväRaporttiKurssi]]
+  ): Seq[String] = {
+    def onKurssiOppijalla(k: YleissivistäväRaporttiKurssi): Boolean =
+      oppijanRivit.osasuoritukset.map(_.osasuoritusId).contains(k.osasuoritusRow.osasuoritusId)
+
+    oppijoidenRivitJärjestettyKursseittain.map {
+      // Tuottaa tyhjän solun jos oppijalla ei ole suorituksia tähän sarakkeeseen
+      case kurssit: Seq[YleissivistäväRaporttiKurssi] if !kurssit.exists(k => onKurssiOppijalla(k)) => ""
+      case kurssit: Seq[YleissivistäväRaporttiKurssi] =>
+        val oppijanKurssit = kurssit.filter(k => onKurssiOppijalla(k))
+        oppijanKurssit.map(kurssi =>
+          AikuistenPerusopetusKurssinTiedot(
+            arvosana = kurssi.osasuoritusRow.arviointiArvosanaKoodiarvo,
+            laajuus = kurssi.osasuoritusRow.koulutusmoduuliLaajuusArvo,
+            tunnustettu = kurssi.osasuoritusRow.tunnustettu,
+            korotettuEriVuonna = kurssi.osasuoritusRow.korotettuEriVuonna
+          ).toStringLokalisoitu(t)
+        ).mkString(",")
     }
   }
 
@@ -351,7 +363,9 @@ case class AikuistenPerusopetusRaportti(
     yleisetColumns ++ oppiaineColumns
   }
 
-  private def oppiaineKohtaisetColumnSettings(kurssit: Seq[YleissivistäväRaporttiKurssi]) = {
+  private def oppiaineKohtaisetColumnSettings(
+    oppijoidenRivitJärjestettyKursseittain: Seq[Seq[YleissivistäväRaporttiKurssi]]
+  ): Seq[Column] = {
     Seq(
       Column(t.get("raportti-excel-kolumni-oppijaOid")),
       Column(t.get("raportti-excel-kolumni-hetu")),
@@ -359,7 +373,9 @@ case class AikuistenPerusopetusRaportti(
       Column(t.get("raportti-excel-kolumni-etunimet")),
       CompactColumn(t.get("raportti-excel-kolumni-toimipisteNimi")),
       CompactColumn(t.get("raportti-excel-kolumni-suorituksenTyyppi"), comment = Some(t.get("raportti-excel-kolumni-suorituksenTyyppi-comment")))
-    ) ++ kurssit.map(k => CompactColumn(title = k.toColumnTitle(t), comment = Some(t.get("raportti-excel-kolumni-kurssit-comment"))))
+    ) ++ oppijoidenRivitJärjestettyKursseittain.map(_.head).map(k =>
+      CompactColumn(title = k.toColumnTitle(t), comment = Some(t.get("raportti-excel-kolumni-kurssit-comment")))
+    )
   }
 }
 
