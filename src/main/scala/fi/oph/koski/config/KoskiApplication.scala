@@ -171,7 +171,7 @@ class KoskiApplication(
   lazy val suoritusjakoRepository = new SuoritusjakoRepository(masterDatabase.db)
   lazy val suoritusjakoService = new SuoritusjakoService(suoritusjakoRepository, oppijaFacade)
   lazy val suoritusjakoRepositoryV2 = new SuoritusjakoRepositoryV2(masterDatabase.db)
-  lazy val suoritusjakoServiceV2 = new SuoritusjakoServiceV2(suoritusjakoRepositoryV2, henkilöRepository, opiskeluoikeusRepositoryV2, this)
+  lazy val suoritusjakoServiceV2 = new SuoritusjakoServiceV2(suoritusjakoRepositoryV2, oppijaFacade, henkilöRepository, opiskeluoikeusRepositoryV2, this)
   lazy val mydataRepository = new MyDataRepository(masterDatabase.db)
   lazy val mydataService = new MyDataService(mydataRepository, this)
   lazy val sessionTimeout = SessionTimeout(config)

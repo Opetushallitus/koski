@@ -151,7 +151,7 @@ class SuoritusjakoSpec extends AnyFreeSpec with SuoritusjakoTestMethods with Mat
 
         val oppija = getSuoritusjakoOppija(secret)
         val vahvistusPäivä = oppija.opiskeluoikeudet.head.asInstanceOf[YlioppilastutkinnonOpiskeluoikeus].suoritukset.head.vahvistus.get.päivä
-        oppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot].hetu.get should equal("280171-2730")
+        oppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot].sukunimi should equal("Seppänen")
         vahvistusPäivä should equal(LocalDate.of(1995, 5, 31))
       }
     }

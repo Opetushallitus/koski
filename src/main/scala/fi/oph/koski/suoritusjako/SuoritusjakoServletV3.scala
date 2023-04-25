@@ -23,7 +23,6 @@ class SuoritusjakoServletV3(implicit val application: KoskiApplication)
         .validatingAndResolvingExtractor
         .extract[SuoritusjakoRequest](strictDeserialization)(json)
         .flatMap(r => application.suoritusjakoService.get(r.secret)(suoritusjakoUser))
-        .map(_.map(OmatTiedotEditorModel.piilotetuillaTiedoilla))
         .map(_.getIgnoringWarnings)
       renderEither[Oppija](jako)
     } } (parseErrorHandler = handleUnparseableJson)

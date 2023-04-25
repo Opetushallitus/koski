@@ -5,13 +5,17 @@ import fi.oph.koski.henkilo._
 import fi.oph.koski.history.{KoskiOpiskeluoikeusHistoryRepository, YtrOpiskeluoikeusHistoryRepository}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
-import fi.oph.koski.log.KoskiAuditLogMessageField.{opiskeluoikeusId, opiskeluoikeusOid, opiskeluoikeusVersio, oppijaHenkiloOid}
+import fi.oph.koski.log.KoskiAuditLogMessageField.{opiskeluoikeusId, opiskeluoikeusVersio, oppijaHenkiloOid}
 import fi.oph.koski.log.KoskiOperation._
 import fi.oph.koski.log._
+import fi.oph.koski.schema.PerusopetuksenOpiskeluoikeus._
 import fi.oph.koski.opiskeluoikeus._
+import fi.oph.koski.schema.PerusopetuksenOpiskeluoikeus.{käyttäytymisenArviointiTraversal, nuortenPerusopetuksenPakollistenOppiaineidenLaajuudetTraversal, oppimääränArvioinnitTraversal, päätasonSuorituksetTraversal}
 import fi.oph.koski.schema._
 import fi.oph.koski.util.{Timing, WithWarnings}
 import fi.oph.koski.validation.KoskiGlobaaliValidator
+import mojave.{Traversal, traversal}
+import mojave._
 
 import java.time.LocalDate
 
@@ -39,6 +43,17 @@ class KoskiOppijaFacade(
       .flatMap(henkilö => toOppija(henkilö, opiskeluoikeusRepository.findByOppija(henkilö, useVirta, useYtr)))
   }
 
+  def findOppijaAndCombineWithOpiskeluoikeudet(
+    oid: String,
+    opiskeluoikeudet: Seq[Opiskeluoikeus],
+    findMasterIfSlaveOid: Boolean = false
+  )(implicit user: KoskiSpecificSession)
+  : Either[HttpStatus, WithWarnings[Oppija]] = {
+    henkilöRepository.findByOid(oid, findMasterIfSlaveOid)
+      .toRight(notFound(oid))
+      .flatMap(henkilö => toOppija(henkilö, WithWarnings(opiskeluoikeudet, Nil)))
+  }
+
   // Palauttaa ainoastaan oppijan YTR:stä ladatut opiskeluoikeudet
   def findYtrDownloadedOppija
     (oid: String, findMasterIfSlaveOid: Boolean = false)
@@ -57,8 +72,8 @@ class KoskiOppijaFacade(
   def findYtrDownloadedOppijaVersionumerolla
     (oid: String, versionumero: Int, findMasterIfSlaveOid: Boolean = false)
       (implicit user: KoskiSpecificSession)
-  : Either[HttpStatus, WithWarnings[Oppija]] =
-    findYtrDownloadedOppija(oid, findMasterIfSlaveOid) match {
+  : Either[HttpStatus, WithWarnings[Oppija]] = {
+    val oppija = findYtrDownloadedOppija(oid, findMasterIfSlaveOid) match {
       case Left(status) => Left(status)
       case Right(WithWarnings(oppija, _)) =>
         val historiaOot = oppija.opiskeluoikeudet.flatMap(
@@ -77,14 +92,25 @@ class KoskiOppijaFacade(
       case _ =>
         Left(KoskiErrorCategory.notFound("Historiaversiota ei löydy"))
     }
+    oppija.map(piilotaOppijanTietojaTarvittaessa)
+  }
 
   def findOppijaHenkilö
     (oid: String, findMasterIfSlaveOid: Boolean = false, useVirta: Boolean = true, useYtr: Boolean = true)
     (implicit user: KoskiSpecificSession)
-  : Either[HttpStatus, WithWarnings[(LaajatOppijaHenkilöTiedot, Seq[Opiskeluoikeus])]] = {
+  : Either[HttpStatus, WithWarnings[OppijaYksilöintitiedolla]] = {
     henkilöRepository.findByOid(oid, findMasterIfSlaveOid)
       .toRight(notFound(oid))
       .flatMap(henkilö => withOpiskeluoikeudet(henkilö, opiskeluoikeusRepository.findByOppija(henkilö, useVirta, useYtr)))
+      .map(_.map {
+        case (henkilö, opiskeluoikeudet) =>
+          OppijaYksilöintitiedolla(
+            piilotaOppijanTietojaTarvittaessa(
+              Oppija(henkilöRepository.oppijaHenkilöToTäydellisetHenkilötiedot(henkilö), opiskeluoikeudet)
+            ),
+            henkilö.yksilöity
+          )
+      })
   }
 
   def findUserOppija(implicit user: KoskiSpecificSession): Either[HttpStatus, WithWarnings[Oppija]] = {
@@ -122,7 +148,7 @@ class KoskiOppijaFacade(
   def findVersion
     (oppijaOid: String, opiskeluoikeusOid: String, versionumero: Int)
     (implicit user: KoskiSpecificSession)
-  : Either[HttpStatus, (LaajatOppijaHenkilöTiedot, Seq[Opiskeluoikeus])] = {
+  : Either[HttpStatus, OppijaYksilöintitiedolla] = {
     opiskeluoikeusRepository.getOppijaOidsForOpiskeluoikeus(opiskeluoikeusOid).flatMap {
       case oids: List[Henkilö.Oid] if oids.contains(oppijaOid) =>
         historyRepository.findVersion(opiskeluoikeusOid, versionumero).flatMap { history =>
@@ -130,6 +156,15 @@ class KoskiOppijaFacade(
             .toRight(notFound(oppijaOid))
             .flatMap(henkilö => withOpiskeluoikeudet(henkilö, WithWarnings(List(history), Nil)))
             .flatMap(_.warningsToLeft)
+            .map {
+              case (henkilö, opiskeluoikeudet) =>
+                OppijaYksilöintitiedolla(
+                  piilotaOppijanTietojaTarvittaessa(
+                    Oppija(henkilöRepository.oppijaHenkilöToTäydellisetHenkilötiedot(henkilö), opiskeluoikeudet)
+                  ),
+                  henkilö.yksilöity
+                )
+            }
         }
       case _ =>
         logger(user).warn(s"Yritettiin hakea opiskeluoikeuden $opiskeluoikeusOid versiota $versionumero väärällä oppija-oidilla $oppijaOid")
@@ -406,12 +441,13 @@ class KoskiOppijaFacade(
     tunniste: OppijaHenkilö => String = _.oid
   )(implicit user: KoskiSpecificSession)
   : Either[HttpStatus, WithWarnings[Oppija]] = {
-    opiskeluoikeudet match {
+    val oppija = opiskeluoikeudet match {
       case WithWarnings(Nil, Nil) => Left(notFound(tunniste(henkilö)))
       case oo: WithWarnings[Seq[Opiskeluoikeus]] =>
         writeViewingEventToAuditLog(user, henkilö.oid)
         Right(oo.map(Oppija(henkilöRepository.oppijaHenkilöToTäydellisetHenkilötiedot(henkilö), _)))
     }
+    oppija.map(piilotaOppijanTietojaTarvittaessa)
   }
 
   private def withOpiskeluoikeudet(
@@ -454,6 +490,123 @@ class KoskiOppijaFacade(
     }
   }
 
+  def opinnotonOppija(oid: String)(implicit koskiSession: KoskiSpecificSession): Option[WithWarnings[Oppija]] =
+    henkilöRepository.findByOid(oid)
+      .map(henkilöRepository.oppijaHenkilöToTäydellisetHenkilötiedot)
+      .map(Oppija(_, Nil))
+      .map(WithWarnings(_, Nil))
+      .map(piilotaOppijanTietojaTarvittaessa)
+
+  private def piilotaOppijanTietojaTarvittaessa(oppija: WithWarnings[Oppija])(implicit user: KoskiSpecificSession): WithWarnings[Oppija] = {
+    if (user.user.kansalainen || user.user.huollettava || user.user.isSuoritusjakoKatsominen) {
+      oppija.map(piilotetuillaTiedoilla)
+    } else {
+      oppija
+    }
+  }
+
+  private def piilotaOppijanTietojaTarvittaessa(oppija: Oppija)(implicit user: KoskiSpecificSession): Oppija = {
+    if (user.user.kansalainen || user.user.huollettava || user.user.isSuoritusjakoKatsominen) {
+      piilotetuillaTiedoilla(oppija)
+    } else {
+      oppija
+    }
+  }
+
+  private def piilotetuillaTiedoilla(oppija: Oppija)(implicit koskiSession: KoskiSpecificSession): Oppija = {
+    val piilota = piilotaArvosanatKeskeneräisistäSuorituksista _ andThen
+      piilotaSensitiivisetHenkilötiedot andThen
+      piilotaKeskeneräisetPerusopetuksenPäättötodistukset andThen
+      piilotaTietojaSuoritusjaosta andThen
+      piilotaLaajuuksia
+
+    piilota(oppija)
+  }
+
+  private def piilotaArvosanatKeskeneräisistäSuorituksista(oppija: Oppija) = {
+    val keskeneräisetTaiLiianÄskettäinVahvistetut = traversal[Suoritus].filter { s =>
+      s.vahvistus.isEmpty || !s.vahvistus.exists { v => v.päivä.plusDays(4).isBefore(LocalDate.now())}
+    }.compose(päätasonSuorituksetTraversal)
+    val piilotettavatOppiaineidenArvioinnit = (oppimääränArvioinnitTraversal ++ vuosiluokanArvioinnitTraversal ++ oppiaineenOppimääränArvioinnitTraversal).compose(keskeneräisetTaiLiianÄskettäinVahvistetut)
+    val piilotettavaKäyttäytymisenArviointi = käyttäytymisenArviointiTraversal.compose(keskeneräisetTaiLiianÄskettäinVahvistetut)
+
+    List(piilotettavaKäyttäytymisenArviointi, piilotettavatOppiaineidenArvioinnit).foldLeft(oppija) { (oppija, traversal) =>
+      traversal.set(oppija)(None)
+    }
+  }
+
+  private def piilotaLaajuuksia(oppija: Oppija)= {
+    val  keskenTaiVahvistettuEnnenLeikkuriPäivää = traversal[Suoritus].filter { suoritus =>
+      (suoritus.isInstanceOf[PerusopetuksenVuosiluokanSuoritus] || suoritus.isInstanceOf[NuortenPerusopetuksenOppimääränSuoritus]) &&
+        suoritus.vahvistus.forall(_.päivä.isBefore(LocalDate.of(2020, 8, 1)))
+    }.compose(päätasonSuorituksetTraversal)
+
+    val piilotettavatLaajuudet = nuortenPerusopetuksenPakollistenOppiaineidenLaajuudetTraversal.compose(keskenTaiVahvistettuEnnenLeikkuriPäivää)
+
+    piilotettavatLaajuudet.set(oppija)(None)
+  }
+
+  private def piilotaTietojaSuoritusjaosta(oppija: Oppija)(implicit koskiSession: KoskiSpecificSession) = {
+    if (koskiSession.user.isSuoritusjakoKatsominen) {
+      piilotaLukuvuosimaksutiedot(oppija)
+    } else {
+      oppija
+    }
+  }
+
+  private def piilotaLukuvuosimaksutiedot(oppija: Oppija)(implicit koskiSession: KoskiSpecificSession) = {
+    val korjatutOpiskeluoikeudet = oppija.opiskeluoikeudet.map {
+      case oo: KorkeakoulunOpiskeluoikeus if oo.lisätiedot.nonEmpty => {
+        val korjatutLukukausiIlmottautuminen = oo.lisätiedot.get.lukukausiIlmoittautuminen.flatMap(ilmo =>
+          Some(ilmo.copy(
+            ilmoittautumisjaksot = ilmo.ilmoittautumisjaksot.map(_.copy(
+              maksetutLukuvuosimaksut = None
+            ))
+          ))
+        )
+
+        val korjatutLisätiedot = oo.lisätiedot.get.copy(
+          maksettavatLukuvuosimaksut = None,
+          lukukausiIlmoittautuminen = korjatutLukukausiIlmottautuminen
+        )
+        oo.copy(
+          lisätiedot = Some(korjatutLisätiedot)
+        )
+      }
+      case oo: Any => oo
+    }
+    oppija.copy(
+      opiskeluoikeudet = korjatutOpiskeluoikeudet
+    )
+  }
+
+  private def piilotaSensitiivisetHenkilötiedot(oppija: Oppija) = {
+    val t: Traversal[Oppija, TäydellisetHenkilötiedot] = traversal[Oppija].field[Henkilö]("henkilö").ifInstanceOf[TäydellisetHenkilötiedot]
+    t.modify(oppija)((th: TäydellisetHenkilötiedot) => th.copy(hetu = None, kansalaisuus = None, turvakielto = None))
+  }
+
+  private def piilotaKeskeneräisetPerusopetuksenPäättötodistukset(oppija: Oppija): Oppija = {
+    def poistaKeskeneräisetPäättötodistukset = (suoritukset: List[PäätasonSuoritus]) => suoritukset.filter(_ match {
+      case s: PerusopetuksenOppimääränSuoritus if !s.valmis => false
+      case _ => true
+    })
+
+    def poistaOsasuoritukset = (suoritukset: List[PäätasonSuoritus]) => suoritukset.map(s =>
+      shapeless.lens[PäätasonSuoritus].field[Option[List[Suoritus]]]("osasuoritukset").set(s)(None)
+    )
+
+    shapeless.lens[Oppija].field[Seq[Opiskeluoikeus]]("opiskeluoikeudet").modify(oppija)(_.map(oo => {
+      val isKeskeneräinenPäättötodistusAinoaSuoritus = oo.suoritukset match {
+        case (s: PerusopetuksenOppimääränSuoritus) :: Nil if s.kesken => true
+        case _ => false
+      }
+
+      shapeless.lens[Opiskeluoikeus].field[List[PäätasonSuoritus]]("suoritukset").modify(oo)(
+        if (isKeskeneräinenPäättötodistusAinoaSuoritus) poistaOsasuoritukset else poistaKeskeneräisetPäättötodistukset
+      )
+    }))
+  }
+
   private lazy val mitätöity = Koodistokoodiviite("mitatoity", koodistoUri = "koskiopiskeluoikeudentila")
 
   def merkitseSuoritusjakoTehdyksiIlmanKäyttöoikeudenTarkastusta(opiskeluoikeusOid: String): HttpStatus = {
@@ -468,3 +621,8 @@ case class OpiskeluoikeusVersio(
   versionumero: Int,
   lähdejärjestelmänId: Option[LähdejärjestelmäId]
 ) extends Lähdejärjestelmällinen
+
+case class OppijaYksilöintitiedolla(
+  oppija: Oppija,
+  yksilöity: Boolean
+)

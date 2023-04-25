@@ -2,7 +2,6 @@ package fi.oph.koski.suoritusjako
 
 
 import java.time.LocalDate
-
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.editor.EditorModel
 import fi.oph.koski.henkilo.HenkilöRepository
@@ -13,10 +12,12 @@ import fi.oph.koski.log.KoskiOperation.{KANSALAINEN_SUORITUSJAKO_KATSOMINEN, KAN
 import fi.oph.koski.log.KoskiAuditLogMessageField.oppijaHenkiloOid
 import fi.oph.koski.omattiedot.OmatTiedotEditorModel
 import fi.oph.koski.opiskeluoikeus.CompositeOpiskeluoikeusRepository
+import fi.oph.koski.oppija.KoskiOppijaFacade
 import fi.oph.koski.schema.{Opiskeluoikeus, Oppija, Suoritus}
 import fi.oph.koski.util.WithWarnings
+import fi.oph.koski.util.ChainingSyntax.chainingOps
 
-class SuoritusjakoServiceV2(suoritusjakoRepositoryV2: SuoritusjakoRepositoryV2, henkiloRepository: HenkilöRepository, opiskeluoikeusRepository: CompositeOpiskeluoikeusRepository, application: KoskiApplication) {
+class SuoritusjakoServiceV2(suoritusjakoRepositoryV2: SuoritusjakoRepositoryV2, oppijaFacade: KoskiOppijaFacade, henkilöRepository: HenkilöRepository, opiskeluoikeusRepository: CompositeOpiskeluoikeusRepository, application: KoskiApplication) {
 
   def createSuoritusjako(opiskeluoikeudet: List[Opiskeluoikeus])(implicit user: KoskiSpecificSession): HttpStatus = {
     HttpStatus.foldEithers(opiskeluoikeudet.map(validateIsUsersOpiskeluoikeus))
@@ -32,14 +33,10 @@ class SuoritusjakoServiceV2(suoritusjakoRepositoryV2: SuoritusjakoRepositoryV2, 
     SuoritusjakoSecret.validate(secret)
       .flatMap(suoritusjakoRepositoryV2.findBySecret)
       .flatMap { case (oppijaOid, opiskeluoikeudet) =>
-        henkiloRepository.findByOid(oppijaOid)
-          .map(henkilo => {
-            AuditLog.log(KoskiAuditLogMessage(KANSALAINEN_SUORITUSJAKO_KATSOMINEN, user, Map(oppijaHenkiloOid -> henkilo.oid)))
-            Oppija(henkiloRepository.oppijaHenkilöToTäydellisetHenkilötiedot(henkilo), opiskeluoikeudet)
-          })
-          .toRight(KoskiErrorCategory.internalError())
+        oppijaFacade.findOppijaAndCombineWithOpiskeluoikeudet(oppijaOid, opiskeluoikeudet)
+          .tap(_ => AuditLog.log(KoskiAuditLogMessage(KANSALAINEN_SUORITUSJAKO_KATSOMINEN, user, Map(oppijaHenkiloOid -> oppijaOid))))
       }
-      .map(OmatTiedotEditorModel.toEditorModel(_)(application, user))
+      .map(oppija => OmatTiedotEditorModel.toEditorModel(oppija, oppija)(application, user))
   }
 
   def listActivesByUser(user: KoskiSpecificSession): Seq[Suoritusjako] = {
@@ -59,7 +56,7 @@ class SuoritusjakoServiceV2(suoritusjakoRepositoryV2: SuoritusjakoRepositoryV2, 
   }
 
   private def validateIsUsersOpiskeluoikeus(jaettuOpiskeluoikeus: Opiskeluoikeus)(implicit user: KoskiSpecificSession): Either[HttpStatus, Opiskeluoikeus] = {
-    henkiloRepository.findByOid(user.oid)
+    henkilöRepository.findByOid(user.oid)
       .toRight(KoskiErrorCategory.internalError())
       .map(henkilö => opiskeluoikeusRepository.findByCurrentUser(henkilö))
       .map(opiskeluoikeudetWithWarnings => opiskeluoikeudetWithWarnings.map(_.filter(opiskeluoikeus => isPartOfOriginalOpiskeluoikeus(jaettuOpiskeluoikeus, opiskeluoikeus)).toList))

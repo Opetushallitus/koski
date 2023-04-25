@@ -49,6 +49,9 @@ case class HenkilöRepository(
     opintopolku.findByOid(key.oid)
   }
 
+  def henkilöExists(oid: String, findMasterIfSlaveOid: Boolean = false): Boolean =
+    findByOid(oid, findMasterIfSlaveOid).isDefined
+
   // findByOid is locally cached
   def findByOid(oid: String, findMasterIfSlaveOid: Boolean = false): Option[LaajatOppijaHenkilöTiedot] =
     oidCache(HenkilöCacheKey(oid, findMasterIfSlaveOid))
