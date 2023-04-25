@@ -21,7 +21,7 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
     "IB tutkinnon suoritus" - {
 
       "CAS-aine, arvosanan antaminen" - {
-        def historiaOppiaine(level: String, arvosana: String) = ibAineSuoritus(ibOppiaine("HIS", level, 3), ibArviointi(arvosana, predicted = false))
+        def historiaOppiaine(level: String, arvosana: String) = ibAineSuoritus(ibOppiaine("HIS", level, 3), ibArviointi(arvosana), ibPredictedArviointi(arvosana))
 
         "Arvosana S" - {
           "Palautetaan HTTP/200" in {
@@ -41,7 +41,7 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
       }
 
       "Kaksi samaa oppiainetta"  - {
-        def historiaOppiaine(level: String, arvosana: String) = ibAineSuoritus(ibOppiaine("HIS", level, 3), ibArviointi(arvosana, predicted = false))
+        def historiaOppiaine(level: String, arvosana: String) = ibAineSuoritus(ibOppiaine("HIS", level, 3), ibArviointi(arvosana), ibPredictedArviointi(arvosana))
         "Joilla sama taso" - {
           val opiskeluoikeus = opiskeluoikeusIBTutkinnollaWithOppiaineet(List(
             historiaOppiaine(higherLevel, "S"),
