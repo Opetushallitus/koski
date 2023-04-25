@@ -14,6 +14,7 @@ import fi.oph.scalaschema.{SerializationContext, Serializer}
 import rx.lang.scala.schedulers.NewThreadScheduler
 import rx.lang.scala.{Observable, Scheduler}
 
+import java.sql.Timestamp
 import java.time.format.DateTimeFormatter
 import java.time.LocalDate
 
@@ -22,8 +23,6 @@ class YtrDownloadService(
   application: KoskiApplication
 ) extends QueryMethods with Logging with Timing {
   val status = new YtrDownloadStatus(db)
-
-  def isLoadComplete: Boolean = !status.isLoading && status.isComplete
 
   val oppijaConverter = new YtrDownloadOppijaConverter(
     application.koodistoViitePalvelu,
@@ -77,6 +76,7 @@ class YtrDownloadService(
       birthmonthStart = config.birthmonthStart,
       birthmonthEnd = config.birthmonthEnd,
       modifiedSince = config.modifiedSince,
+      modifiedSinceLastRun = config.modifiedSinceLatest,
       force = config.force,
       onEnd = () => {
         logger.info(s"Ended downloading YTR data, shutting down...")
@@ -91,7 +91,7 @@ class YtrDownloadService(
     val fixtureMonthEnd = Some("1981-10")
     if (Environment.isUnitTestEnvironment(application.config) || Environment.isLocalDevelopmentEnvironment(application.config)) {
       download(birthmonthStart = fixtureMonthStart, birthmonthEnd = fixtureMonthEnd, force = force)
-      Wait.until { isLoadComplete }
+      Wait.until { status.latestIsComplete }
     } else {
       logger.error("Trying to download YTR fixtures while not in local environment")
     }
@@ -101,33 +101,46 @@ class YtrDownloadService(
     birthmonthStart: Option[String] = None,
     birthmonthEnd: Option[String] = None,
     modifiedSince: Option[LocalDate] = None,
+    modifiedSinceLastRun: Option[Boolean] = None,
     force: Boolean = false,
     scheduler: Scheduler = defaultScheduler,
     onEnd: () => Unit = () => (),
   ): Unit = {
-    (birthmonthStart, birthmonthEnd, modifiedSince) match {
-      case _ if status.isLoading && !force =>
+    val statusId = status.init()
+    (birthmonthStart, birthmonthEnd, modifiedSince, modifiedSinceLastRun) match {
+      case _ if status.latestIsLoading && !force =>
         logger.error("YTR data already downloading, do nothing")
         onEnd()
-      case (Some(birthmonthStart), Some(birthmonthEnd), _) =>
-        startDownloadingUsingMonthInterval(birthmonthStart, birthmonthEnd, scheduler, onEnd)
-      case (_, _, Some(modifiedSince)) =>
-        startDownloadingUsingModifiedSince(modifiedSince, scheduler, onEnd)
+      case (Some(birthmonthStart), Some(birthmonthEnd), _, _) =>
+        startDownloadingUsingMonthInterval(birthmonthStart, birthmonthEnd, scheduler, statusId, onEnd)
+      case (_, _, Some(modifiedSince), _) =>
+        startDownloadingUsingModifiedSince(modifiedSince, scheduler, statusId, onEnd)
+      case (_, _, _, Some(true)) =>
+        val lastCompletedRun = status.lastCompletedRun() match {
+          case x: Some[Timestamp] => x.get.toLocalDateTime.toLocalDate
+          case _ => throw new RuntimeException("No completed run found from history")
+        }
+        startDownloadingUsingModifiedSince(lastCompletedRun, scheduler, statusId, onEnd)
       case _ =>
         logger.error("Valid parameters for YTR download not defined")
         onEnd()
     }
   }
 
+  def getDownloadStatusRows() = {
+    status.getDownloadStatusRows()
+  }
+
   private def startDownloadingUsingMonthInterval(
     birthmonthStart: String,
     birthmonthEnd: String,
     scheduler: Scheduler,
+    statusId: Int,
     onEnd: () => Unit
   ): Unit = {
     logger.info(s"Start downloading YTR data (birthmonthStart: ${birthmonthStart}, birthmonthEnd: ${birthmonthEnd}, batchSize: ${batchSize}, extraSleepPerStudentInMs: ${extraSleepPerStudentInMs})")
 
-    status.setLoading(0)
+    status.setLoading(statusId, 0)
 
     val ssnDataObservable = splitToOneMonthIntervals(birthmonthStart, birthmonthEnd)
       .flatMap {
@@ -138,6 +151,7 @@ class YtrDownloadService(
     startDownloadingAndUpdateToKoskiDatabase(
       createOppijatObservable(ssnDataObservable),
       scheduler,
+      statusId,
       onEnd
     )
   }
@@ -162,17 +176,19 @@ class YtrDownloadService(
   private def startDownloadingUsingModifiedSince(
     modifiedSince: LocalDate,
     scheduler: Scheduler,
+    statusId: Int,
     onEnd: () => Unit
   ): Unit = {
     logger.info(s"Start downloading YTR data (modifiedSince: ${modifiedSince.toString}, batchSize: ${batchSize}, extraSleepPerStudentInMs: ${extraSleepPerStudentInMs})")
 
-    status.setLoading(0)
+    status.setLoading(statusId, 0, 0)
 
     val ssnDataObservable = Observable.from(application.ytrClient.getHetutByModifiedSince(modifiedSince))
 
     startDownloadingAndUpdateToKoskiDatabase(
       createOppijatObservable(ssnDataObservable),
       scheduler,
+      statusId,
       onEnd
     )
   }
@@ -212,6 +228,7 @@ class YtrDownloadService(
   private def startDownloadingAndUpdateToKoskiDatabase(
     oppijatObservable: Observable[YtrLaajaOppija],
     scheduler: Scheduler,
+    statusId: Int,
     onEnd: () => Unit
   ): Unit = {
     var latestHandledBirthMonth = "-"
@@ -312,7 +329,7 @@ class YtrDownloadService(
             if (latestHandledBirthMonth != birthMonth) {
               logger.info(s"Käsiteltiin syntymäkuukauden ${birthMonth} ensimmäinen oppija.")
               logLatestMonthCount()
-              status.setLoading(totalCount, errorCount)
+              status.setLoading(statusId, totalCount, errorCount)
               latestHandledBirthMonth = birthMonth
               latestHandledBirthMonthCount = 0
             }
@@ -326,13 +343,13 @@ class YtrDownloadService(
         onError = e => {
           logger.error(e)("YTR download failed:" + e.toString)
           logLatestMonthCount()
-          status.setError(totalCount, errorCount)
+          status.setError(statusId, totalCount, errorCount)
           onEnd()
         },
         onCompleted = () => {
           try {
             logLatestMonthCount()
-            status.setComplete(totalCount, errorCount)
+            status.setComplete(statusId, totalCount, errorCount)
             // TODO: Tilastot yms.
             onEnd()
           } catch {

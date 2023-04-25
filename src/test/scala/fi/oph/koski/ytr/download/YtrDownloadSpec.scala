@@ -3,6 +3,7 @@ package fi.oph.koski.ytr.download
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import fi.oph.koski.api.OpiskeluoikeusTestMethods
 import fi.oph.koski.koskiuser.MockUsers
+import junit.framework.Assert.assertEquals
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
@@ -127,6 +128,15 @@ class YtrDownloadSpec
         expectedVersionumerot = Seq(1, 1)
       )
     )
+  }
+
+  "YTR download modified since last run" in {
+    clearYtrData()
+
+    downloadYtrData(modifiedSince, force = false)
+    downloadYtrData(modifiedSinceLastRun = true, force = false)
+
+    assertEquals(2, getDownloadStatusRows().size)
   }
 
   private def expectedOppijat(
