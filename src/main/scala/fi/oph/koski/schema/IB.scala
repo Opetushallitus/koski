@@ -77,6 +77,10 @@ case class IBOppiaineenSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "iboppiaine", koodistoUri = "suorituksentyyppi")
 ) extends IBSuoritus {
   override def ryhmittelytekijä: Option[String] = koulutusmoduuli.taso.map(_.koodiarvo)
+  override def parasArviointi: Option[Arviointi] = {
+    val arvioinnit: List[Arviointi] = arviointi.fold(predictedArviointi.toList.flatten)(_.map(IBOppiaineenPredictedArviointi.apply))
+    arvioinnit.reduceOption((a, b) => Arviointi.korkeampiArviointi(a, b))
+  }
 }
 
 @Description("Theory of Knowledge-suorituksen tiedot")

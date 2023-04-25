@@ -354,7 +354,8 @@ object ExamplesIB {
 
   lazy val vahvistamatonPreIB2019Suoritus = preIBSuoritus2019.copy(vahvistus = None)
 
-  val opiskeluoikeusPredictedGrades = aktiivinenOpiskeluoikeus.copy(
+  val opiskeluoikeusPredictedGrades = opiskeluoikeus.copy(
+    tila = opiskeluoikeus.tila.copy(List(opiskeluoikeus.tila.opiskeluoikeusjaksot.head)),
     suoritukset = List(opiskeluoikeus.suoritukset.head, ibTutkinnonSuoritus(predicted = true).copy(vahvistus = None))
   )
 
