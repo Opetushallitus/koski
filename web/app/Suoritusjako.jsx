@@ -18,8 +18,8 @@ import Text from './i18n/Text'
 import editorMapping from './oppija/editors'
 import { addContext } from './editor/EditorModel'
 import { locationP } from './util/location'
-import { SuoritusjakoHeader } from './suoritusjako/SuoritusjakoHeader'
 import { ChangeLang } from './components/ChangeLang'
+import { SuoritusjakoHeader } from './components-v2/suoritusjako/SuoritusjakoHeader'
 __webpack_nonce__ = window.nonce
 import(/* webpackChunkName: "styles" */ './style/main.less')
 
@@ -119,7 +119,7 @@ const Oppija = ({ oppija }) => {
   ) : (
     <div>
       <div className="oppija-content">
-        <SuoritusjakoHeader oppija={oppija} />
+        <SuoritusjakoHeader oppija={oppija} secret={secret} />
         <Editor key={document.location.toString()} model={oppija} />
       </div>
     </div>

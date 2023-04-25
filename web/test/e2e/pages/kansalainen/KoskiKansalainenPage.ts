@@ -5,6 +5,8 @@ import { build, BuiltIdNode } from '../oppija/uiV2builder/builder'
 import { Button } from '../oppija/uiV2builder/Button'
 import { Label } from '../oppija/uiV2builder/Label'
 import { Select } from '../oppija/uiV2builder/Select'
+import { KansalainenOpiskeluoikeusHeader } from '../oppija/uiV2builder/kansalainen/KansalainenOpiskeluoikeusHeader'
+import { SuoritusotePage } from './SuoritusotePage'
 
 export class KoskiKansalainenPage {
   $: BuiltIdNode<KansalainenUIV2TestIds>
@@ -51,6 +53,54 @@ export class KoskiKansalainenPage {
     await popup.waitForLoadState('networkidle')
     await popup.close()
   }
+
+  async openJaaSuoritustietoja() {
+    await this.page
+      .getByRole('button', { name: /Sulje Suoritustietojen jakaminen/ })
+      .isHidden()
+    await this.page.getByRole('button', { name: /Jaa suoritustietoja/ }).click()
+    await this.page
+      .getByRole('button', { name: /Sulje Suoritustietojen jakaminen/ })
+      .isVisible()
+  }
+
+  async closeJaaSuoritustietoja() {
+    await this.page
+      .getByRole('button', { name: /Sulje Suoritustietojen jakaminen/ })
+      .isVisible()
+    await this.page
+      .getByRole('button', { name: /Sulje Suoritustietojen jakaminen/ })
+      .click()
+    await this.page
+      .getByRole('button', { name: /Sulje Suoritustietojen jakaminen/ })
+      .isHidden()
+  }
+
+  suoritustietoLabel(
+    oppilaitosOid: string,
+    ptsTyyppi: string,
+    koulutusmoduuli: string
+  ) {
+    return this.page.getByTestId(
+      `__${oppilaitosOid}__${ptsTyyppi}__${koulutusmoduuli}__label`
+    )
+  }
+
+  jaaValitsemasiOpinnotButton() {
+    return this.page.getByRole('button', { name: 'Jaa valitsemasi opinnot' })
+  }
+
+  katsoSuoritusoteLink() {
+    return this.page.getByRole('link', {
+      name: 'Katso, miltä suoritusote näyttää selaimessa'
+    })
+  }
+
+  async avaaSuoritusote() {
+    const suoritusotePagePromise = this.page.waitForEvent('popup')
+    await this.katsoSuoritusoteLink().click()
+    return new SuoritusotePage(await suoritusotePagePromise)
+  }
 }
 
 type KansalainenUIV2TestIds = typeof KansalainenUIV2TestIds
@@ -61,5 +111,6 @@ const KansalainenUIV2TestIds = {
     loading: Label,
     error: Label,
     open: Button
-  }
+  },
+  opiskeluoikeus: KansalainenOpiskeluoikeusHeader()
 }
