@@ -1146,6 +1146,87 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
         }
       }
     }
+
+    "Duplikaattiopiskeluoikeuksien tunnistus" - {
+      def testDuplicates(opiskeluoikeus: AmmatillinenOpiskeluoikeus): Unit = {
+        putOpiskeluoikeus(opiskeluoikeus = opiskeluoikeus) {
+          verifyResponseStatusOk()
+        }
+        postOpiskeluoikeus(opiskeluoikeus = opiskeluoikeus) {
+          verifyResponseStatus(409, KoskiErrorCategory.conflict.exists())
+        }
+      }
+
+      "Tutkinnon suoritus" - {
+        "Duplikaatin tallennus ei onnistu, jos edellisen opiskeluoikeuden suoritus on kesken" in {
+          resetFixtures()
+          testDuplicates(defaultOpiskeluoikeus)
+        }
+
+        "Duplikaatin tallennus ei onnistu, jos edellisen opiskeluoikeuden suoritus on päättynyt, mutta päivämäärät ovat päällekkäin" in {
+          resetFixtures()
+          testDuplicates(AmmatillinenOpiskeluoikeusTestData.päättynytOpiskeluoikeus(
+            MockOrganisaatiot.stadinAmmattiopisto,
+            koulutusKoodi = 331101,
+            diaariNumero = "3000/011/2014",
+            alkamispäivä = LocalDate.of(2018, 1, 1),
+            päättymispäivä = LocalDate.of(2019, 7, 31)
+          ))
+        }
+
+        "Duplikaatin tallennus onnistuu, jos edellisen opiskeluoikeuden suoritus on päättynyt ja päivämäärät ovat erillään" in {
+          resetFixtures()
+          val opiskeluoikeus = AmmatillinenOpiskeluoikeusTestData.päättynytOpiskeluoikeus(
+            MockOrganisaatiot.stadinAmmattiopisto,
+            koulutusKoodi = 331101,
+            diaariNumero = "3000/011/2014",
+            alkamispäivä = LocalDate.of(2018, 1, 1),
+            päättymispäivä = LocalDate.of(2018, 1, 31)
+          )
+
+          putOpiskeluoikeus(opiskeluoikeus = opiskeluoikeus) {
+            verifyResponseStatusOk()
+          }
+
+          val toinenOpiskeluoiekus = AmmatillinenOpiskeluoikeusTestData.päättynytOpiskeluoikeus(
+            MockOrganisaatiot.stadinAmmattiopisto,
+            koulutusKoodi = 331101,
+            diaariNumero = "3000/011/2014",
+            alkamispäivä = LocalDate.of(2018, 2, 1),
+            päättymispäivä = LocalDate.of(2019, 7, 31)
+          )
+
+          postOpiskeluoikeus(opiskeluoikeus = toinenOpiskeluoiekus) {
+            verifyResponseStatusOk()
+          }
+        }
+      }
+
+      "Tutkinnon osittainen suoritus" - {
+        "Duplikaatin tallennus ei onnistu, kun edellisen opiskeluoikeuden suoritus on kesken" in {
+          resetFixtures()
+          testDuplicates(defaultOpiskeluoikeus.copy(suoritukset = List(ammatillisenTutkinnonOsittainenSuoritus)))
+        }
+
+        "Duplikaatin tallennus onnistuu, kun edellisen opiskeluoikeuden suoritus on päättynyt ja päivämäärät ovatkin päällekkäiset" in {
+          resetFixtures()
+          val opiskeluoikeus = AmmatillinenOpiskeluoikeusTestData.päättynytOpiskeluoikeus(
+            MockOrganisaatiot.stadinAmmattiopisto,
+            koulutusKoodi = 331101,
+            diaariNumero = "3000/011/2014",
+            alkamispäivä = LocalDate.of(2018, 1, 1),
+            päättymispäivä = LocalDate.of(2019, 7, 31)
+          ).copy(suoritukset = List(ammatillisenTutkinnonOsittainenSuoritus))
+
+          putOpiskeluoikeus(opiskeluoikeus = opiskeluoikeus) {
+            verifyResponseStatusOk()
+          }
+          postOpiskeluoikeus(opiskeluoikeus = opiskeluoikeus) {
+            verifyResponseStatusOk()
+          }
+        }
+      }
+    }
   }
 
   def vahvistus(date: LocalDate) = {

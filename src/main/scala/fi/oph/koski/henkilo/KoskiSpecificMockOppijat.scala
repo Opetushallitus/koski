@@ -176,6 +176,7 @@ object KoskiSpecificMockOppijat {
   val ylioppilasLukiolainenTimeouttaava = koskiSpecificOppijat.oppija("Outinen-Toikkarinen", "Taimi", "270900A2635")
   val ylioppilasLukiolainenRikki = koskiSpecificOppijat.oppija("Rikko-Toikkarinen", "Risto", "280100A855E")
   val amisKoulutusvienti = koskiSpecificOppijat.oppija("Koulutusvientiläinen", "Amis", "020605A3368")
+  val opiskeleeAmmatillisessaErityisoppilaitoksessa2 = koskiSpecificOppijat.oppija("Erityisoppilaitoksessa", "Emppu", "211005A867V", syntymäaika = Some(LocalDate.of(2005, 2, 21)), kotikunta = Some("091"))
 
   //Jos luot uuden oppijan voi hetun generoida täältä: http://www.lintukoto.net/muut/henkilotunnus/index.php
   //Huomaa, että hetun pitää olla oikean kaltainen

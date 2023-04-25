@@ -52,8 +52,13 @@ abstract class DatabaseFixtureCreator(application: KoskiApplication, opiskeluoik
     application.perustiedotIndexer.deleteByOppijaOids(henkilöOids, refresh = false)
 
     if (!fixtureCacheCreated) {
-      cachedPerustiedot = Some(opiskeluoikeudet.map { case (henkilö, opiskeluoikeus) =>
-        val id = application.opiskeluoikeusRepository.createOrUpdate(VerifiedHenkilöOid(henkilö), opiskeluoikeus, false).right.get.id
+      cachedPerustiedot = Some(opiskeluoikeudet.zipWithIndex.map { case ((henkilö, opiskeluoikeus), index) =>
+        val id = application.opiskeluoikeusRepository
+          .createOrUpdate(VerifiedHenkilöOid(henkilö), opiskeluoikeus, allowUpdate = false)
+          .fold(
+            error => throw new Exception(s"Fikstuurin opiskeluoikeutta ${index + 1}/${opiskeluoikeudet.length} ei saatu luotua: $error"),
+            result => result.id
+          )
         OpiskeluoikeudenPerustiedot.makePerustiedot(id, opiskeluoikeus, application.henkilöRepository.opintopolku.withMasterInfo(henkilö))
       })
       application.perustiedotIndexer.sync(refresh = true)

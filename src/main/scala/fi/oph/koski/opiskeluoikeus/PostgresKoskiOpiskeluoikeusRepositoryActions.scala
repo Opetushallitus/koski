@@ -12,10 +12,12 @@ import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.perustiedot.{OpiskeluoikeudenPerustiedot, PerustiedotSyncRepository}
 import fi.oph.koski.schema._
-import org.json4s.{JArray, JValue}
-import slick.dbio
-import slick.dbio.Effect.{Read, Transactional, Write}
+import fi.oph.scalaschema.Serializer.format
+import org.json4s._
+import slick.dbio.Effect.{Read, Write}
 import slick.dbio.{DBIOAction, NoStream}
+
+import java.time.LocalDate
 
 class PostgresKoskiOpiskeluoikeusRepositoryActions(
   val db: DB,
@@ -74,13 +76,41 @@ class PostgresKoskiOpiskeluoikeusRepositoryActions(
     opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
     rows: List[KoskiOpiskeluoikeusRow]
   )(implicit user: KoskiSpecificSession): DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write] = {
-    rows.find(!_.toOpiskeluoikeusUnsafe.tila.opiskeluoikeusjaksot.last.opiskeluoikeusPäättynyt) match {
-      case None => createAction(oppijaOid, opiskeluoikeus) // Tehdään uusi opiskeluoikeus, koska vanha on päättynyt
-      case Some(_) => DBIO.successful(Left(KoskiErrorCategory.conflict.exists())) // Ei tehdä uutta, koska vanha vastaava opiskeluoikeus on voimassa
+    val opiskeluoikeusPäättynyt = rows.exists(_.toOpiskeluoikeusUnsafe.tila.opiskeluoikeusjaksot.last.opiskeluoikeusPäättynyt)
+    val duplikoivanOpiskeluoikeudenLuontiSallittu = rows.exists(row => allowOpiskeluoikeusCreationOnConflict(opiskeluoikeus, row))
+
+    if (opiskeluoikeusPäättynyt && duplikoivanOpiskeluoikeudenLuontiSallittu) {
+      createAction(oppijaOid, opiskeluoikeus)
+    } else {
+      DBIO.successful(Left(KoskiErrorCategory.conflict.exists()))
     }
   }
 
   protected override def generateOid(oppija: OppijaHenkilöWithMasterInfo): String = {
     oidGenerator.generateKoskiOid(oppija.henkilö.oid)
+  }
+
+  protected def allowOpiskeluoikeusCreationOnConflict(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, row: KoskiOpiskeluoikeusRow): Boolean = {
+    lazy val perusteenDiaarinumero: Option[String] = {
+      val value = (row.data \ "suoritukset")(0) \ "koulutusmoduuli" \ "perusteenDiaarinumero"
+      Option(value.extract[String])
+    }
+
+    opiskeluoikeus match {
+      case oo: AmmatillinenOpiskeluoikeus =>
+        // Jos oppilaitos ja perusteen diaarinumero ovat samat, ei sallita päällekkäisen opiskeluoikeuden luontia...
+        (!oo.oppilaitos.exists(_.oid == row.oppilaitosOid) || // Tänne ei pitäisi tulla eriävällä oppilaitoksella, mutta tulevien mahdollisten muutosten varalta tehdään tässä eksplisiittinen tarkastus
+          !oo.suoritukset
+            .collect { case s: AmmatillisenTutkinnonSuoritus => s }
+            .exists(s =>
+              s.koulutusmoduuli.perusteenDiaarinumero.isDefined &&
+                s.koulutusmoduuli.perusteenDiaarinumero == perusteenDiaarinumero
+
+            )) ||
+          // ...paitsi jos ne ovat toisistaan ajallisesti täysin erillään
+          !Aikajakso(oo.alkamispäivä.getOrElse(LocalDate.of(0, 1, 1)), oo.päättymispäivä)
+            .overlaps(Aikajakso(row.alkamispäivä.toLocalDate, row.päättymispäivä.map(_.toLocalDate)))
+      case _ => true
+    }
   }
 }

@@ -14,6 +14,7 @@ import org.scalatest.matchers.should.Matchers
 
 import java.time.format.DateTimeFormatter.ISO_INSTANT
 import java.time.ZonedDateTime
+import scala.List
 
 class YtlSpec
   extends AnyFreeSpec
@@ -379,20 +380,21 @@ class YtlSpec
       "poistetaan palautettavista tiedoista kaikki koulutustoimija-, oppilaitos- ja toimipistetiedot, jos opiskeluoikeuden oppilaitos on erityisoppilaitos" in {
         val hetut = List(
           KoskiSpecificMockOppijat.opiskeleeAmmatillisessaErityisoppilaitoksessa,
+          KoskiSpecificMockOppijat.opiskeleeAmmatillisessaErityisoppilaitoksessa2,
           KoskiSpecificMockOppijat.opiskeleeAmmatillisessaErityisoppilaitoksessaOrganisaatioHistoriallinen
         ).map(_.hetu.get)
 
         postHetut(hetut) {
           verifyResponseStatusOk()
           val response = JsonSerializer.parse[List[YtlOppija]](body)
-          response.length should equal(2)
 
-          val järjestettyResponse = response.sortBy(_.opiskeluoikeudet.length)
+          val opiskeluoikeudet = response
+            .sortBy(_.opiskeluoikeudet.length)
+            .map(_.opiskeluoikeudet)
 
-          järjestettyResponse(0).opiskeluoikeudet.length should equal(1)
-          järjestettyResponse(1).opiskeluoikeudet.length should equal(3)
+          opiskeluoikeudet.map(_.length) should equal(List(1, 1, 2))
 
-          (järjestettyResponse(0).opiskeluoikeudet ++ järjestettyResponse(1).opiskeluoikeudet).foreach(yoo => {
+          opiskeluoikeudet.flatten.foreach(yoo => {
             val oo = yoo.asInstanceOf[YtlAmmatillinenOpiskeluoikeus]
 
             oo.organisaatiohistoria should equal(None)

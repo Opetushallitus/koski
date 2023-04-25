@@ -29,6 +29,10 @@ trait PutOpiskeluoikeusTestMethods[Oikeus <: Opiskeluoikeus] extends Opiskeluoik
     putOppija(makeOppija(henkilö, List(opiskeluoikeus)), headers)(f)
   }
 
+  def postOpiskeluoikeus[A](opiskeluoikeus: Opiskeluoikeus, henkilö: Henkilö = defaultHenkilö, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
+    postOppija(makeOppija(henkilö, List(opiskeluoikeus)), headers)(f)
+  }
+
   def putOpiskeluoikeudet[A](opiskeluoikeudet: List[Opiskeluoikeus], henkilö: Henkilö = defaultHenkilö, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
     putOppija(makeOppija(henkilö, opiskeluoikeudet), headers)(f)
   }
@@ -40,6 +44,12 @@ trait PutOpiskeluoikeusTestMethods[Oikeus <: Opiskeluoikeus] extends Opiskeluoik
   def putOppija[A](oppija: JValue, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
     val jsonString = JsonMethods.pretty(oppija)
     val result = put("api/oppija", body = jsonString, headers = headers)(f)
+    result
+  }
+
+  def postOppija[A](oppija: JValue, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
+    val jsonString = JsonMethods.pretty(oppija)
+    val result = post("api/oppija", body = jsonString, headers = headers)(f)
     result
   }
 
