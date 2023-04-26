@@ -1,8 +1,15 @@
+## 3.5.2023
+
+- IB-oppiaine-osasuorituksen arvioinnin predicted- ja effort-kentät on deprekoitu.
+  - Effort-arvosanaa ei jatkossa enää siirretä Koskeen.
+  - Predicted gradet tallennetaan jatkossa arviointi-kentän sijaan predictedArviointi-kenttään.
+- Tietomallimuutokselle ei tehdä Koskessa migraatiota, eli vanhan tietomallin mukaisesti siirretyt opiskeluoikeudet palautetaan kuten ne on aikanaan Koskeen siirretty.
+
 ## 24.4.2023
 
 - Lukion opiskeluoikeuden LOPS 2019 mukaiseen oppiaineiden oppimäärien suoritusten osasuorituksiin lisätty
-muiden lukio-opintojen suoritukset. Mahdollistaa mm. LOPS 2019 mukaisten lukiodiplomien siirron oppiaineen oppimäärän
-suorituksille.
+  muiden lukio-opintojen suoritukset. Mahdollistaa mm. LOPS 2019 mukaisten lukiodiplomien siirron oppiaineen oppimäärän
+  suorituksille.
 
 ## 4.4.2023
 
@@ -38,9 +45,9 @@ suorituksille.
 ## 8.2.2023
 
 - Ylioppilastutkinnon opiskeluoikeuteen on lisätty valinnaiset kentät sitä ennakoiden, että YO-tutkinnon opiskeluoikeudet
-tallennetaan tulevaisuudessa myös Koskeen. Datan sisällössä ainut muutos on, että YO-tutkinnon päätason suorituksen
-toimipiste-kentässä palautetaan aina jatkossa Ylioppilastutkintolautakunnan organisaation tiedot, jos muuta dataa ei ole
-saatavilla.
+  tallennetaan tulevaisuudessa myös Koskeen. Datan sisällössä ainut muutos on, että YO-tutkinnon päätason suorituksen
+  toimipiste-kentässä palautetaan aina jatkossa Ylioppilastutkintolautakunnan organisaation tiedot, jos muuta dataa ei ole
+  saatavilla.
 
 ## 26.1.2023
 
