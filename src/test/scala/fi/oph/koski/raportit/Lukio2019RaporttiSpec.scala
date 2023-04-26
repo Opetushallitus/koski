@@ -18,15 +18,26 @@ class Lukio2019RaporttiSpec extends AnyFreeSpec with Matchers with Raportointika
 
   override protected def beforeAll(): Unit = {
     super.beforeAll()
-    val opiskelijaSuppea = KoskiSpecificMockOppijat.teija
+    val teijaSuppea = KoskiSpecificMockOppijat.teija
 
-    val oppimäärä = defaultOpiskeluoikeus.copy(
+    val teijanOppimäärä = defaultOpiskeluoikeus.copy(
       suoritukset = List(Lukio2019RaaportitTestData.oppimääränSuoritus),
     )
 
-    putOppija(Oppija(opiskelijaSuppea, List(oppimäärä))) {
+    putOppija(Oppija(teijaSuppea, List(teijanOppimäärä))) {
       verifyResponseStatusOk()
     }
+
+    val eeroSuppea = KoskiSpecificMockOppijat.eero
+
+    val eeronOppimäärä = defaultOpiskeluoikeus.copy(
+      suoritukset = List(Lukio2019RaaportitTestData.oppimääränSuoritusMuillaOpinnoilla),
+    )
+
+    putOppija(Oppija(eeroSuppea, List(eeronOppimäärä))) {
+      verifyResponseStatusOk()
+    }
+
     reloadRaportointikanta
   }
 
@@ -85,6 +96,7 @@ class Lukio2019RaporttiSpec extends AnyFreeSpec with Matchers with Raportointika
           "Yhteislaajuus (tunnustetut opintopisteet)",
           "Yhteislaajuus (eri vuonna korotetut opintopisteet)",
           "AI Suomen kieli ja kirjallisuus valtakunnallinen",
+          "MS Muut suoritukset valtakunnallinen",
           "ITT Tanssi ja liike paikallinen"
         ))
       }
@@ -118,6 +130,34 @@ class Lukio2019RaporttiSpec extends AnyFreeSpec with Matchers with Raportointika
           )
         }
       }
+      "Kurssien tason välilehti" - {
+        lazy val (titleAI, oppiaineetRowsWithColumnsAI) = titleAndRowsWithColumns.find(_._1 == "AI v Suomen kieli ja kirjallisuus").get
+        lazy val (titleMS, oppiaineetRowsWithColumnsMS) = titleAndRowsWithColumns.find(_._1 == "MS v Muut suoritukset").get
+        "Äidinkielen oppiaineen välilehti löytyy" in {
+          titleAI should equal("AI v Suomen kieli ja kirjallisuus")
+        }
+        "Äidinkielen oppiaineen kurssien suoritukset" in {
+          verifyOppijanRows(KoskiSpecificMockOppijat.teija,
+            Seq(
+              teijanAidinkielenRow
+            ),
+            oppiaineetRowsWithColumnsAI,
+            addOpiskeluoikeudenOid = false
+          )
+        }
+        "Muiden suoritusten oppiaineen välilehti löytyy" in {
+          titleMS should equal("MS v Muut suoritukset")
+        }
+        "Muiden suoritusten oppiaineen kurssien suoritukset" in {
+          verifyOppijanRows(KoskiSpecificMockOppijat.teija,
+            Seq(
+              teijanMuidenSuoritustenRow
+            ),
+            oppiaineetRowsWithColumnsMS,
+            addOpiskeluoikeudenOid = false
+          )
+        }
+      }
     }
   }
 
@@ -129,12 +169,16 @@ class Lukio2019RaporttiSpec extends AnyFreeSpec with Matchers with Raportointika
     sheet.rows.map(_.zip(sheet.columnSettings)).map(_.map { case (data, column) => column.title -> data }.toMap)
   }
 
-  private def verifyOppijanRows(oppija: LaajatOppijaHenkilöTiedot, expected: Seq[Map[String, Any]], all: Seq[Map[String, Any]]) = {
+  private def verifyOppijanRows(oppija: LaajatOppijaHenkilöTiedot, expected: Seq[Map[String, Any]], all: Seq[Map[String, Any]], addOpiskeluoikeudenOid: Boolean = true) = {
     val opiskeluoikeudenOid = lastOpiskeluoikeus(oppija.oid).oid
     opiskeluoikeudenOid shouldBe defined
     val found = findByOid(oppija.oid, all)
     found.length should equal(expected.length)
-    found.toSet should equal(expected.map(_ + ("Opiskeluoikeuden oid" -> opiskeluoikeudenOid.get)).toSet)
+    if(addOpiskeluoikeudenOid) {
+      found.toSet should equal(expected.map(_ + ("Opiskeluoikeuden oid" -> opiskeluoikeudenOid.get)).toSet)
+    } else {
+      found.toSet should equal(expected.toSet)
+    }
   }
 
   private def findByOid(oid: String, maps: Seq[Map[String, Any]]) = maps.filter(_.get("Oppijan oid").exists(_ == oid))
@@ -176,11 +220,36 @@ class Lukio2019RaporttiSpec extends AnyFreeSpec with Matchers with Raportointika
     "Sukunimi" -> KoskiSpecificMockOppijat.teija.sukunimi,
     "Etunimet" -> KoskiSpecificMockOppijat.teija.etunimet,
     "AI Suomen kieli ja kirjallisuus valtakunnallinen" -> "Arvosana 9, 6.0 opintopistettä",
+    "MS Muut suoritukset valtakunnallinen" -> "",
     "ITT Tanssi ja liike paikallinen" -> "Arvosana 8, 2.0 opintopistettä",
     "Yhteislaajuus (kaikki opintopisteet)" -> 8.0,
     "Yhteislaajuus (suoritetut opintopisteet)" -> 4.0,
     "Yhteislaajuus (tunnustetut opintopisteet)" -> 4.0,
     "Yhteislaajuus (hylätyllä arvosanalla suoritetut opintopisteet)" -> 0,
     "Yhteislaajuus (eri vuonna korotetut opintopisteet)" -> 2.0
+  )
+
+  lazy val teijanAidinkielenRow = Map(
+    "Oppijan oid" -> KoskiSpecificMockOppijat.teija.oid,
+    "hetu" -> Some("251019-039B"),
+    "Sukunimi" -> "Tekijä",
+    "Etunimet" -> "Teija",
+    "Toimipisteen nimi" -> "Jyväskylän normaalikoulu",
+    "Opetussuunnitelma" -> Some("Lukio suoritetaan nuorten opetussuunnitelman mukaan"),
+    "Suorituksen tyyppi" -> "lukionoppimaara",
+    "ÄI1 Tekstien tulkinta ja kirjoittaminen valtakunnallinen" -> "Pakollinen, Arvosana 8, Laajuus 2.0",
+    "ÄI2 Kieli- ja tekstitietoisuus valtakunnallinen" -> "Pakollinen, Arvosana 8, Laajuus 2.0, Tunnustettu",
+    "ÄI3 Vuorovaikutus 1 valtakunnallinen" -> "Pakollinen, Arvosana 9, Laajuus 2.0, Tunnustettu, Korotettu eri vuonna"
+  )
+
+  lazy val teijanMuidenSuoritustenRow = Map(
+    "Oppijan oid" -> KoskiSpecificMockOppijat.teija.oid,
+    "hetu" -> Some("251019-039B"),
+    "Sukunimi" -> "Tekijä",
+    "Etunimet" -> "Teija",
+    "Toimipisteen nimi" -> "Jyväskylän normaalikoulu",
+    "Opetussuunnitelma" -> Some("Lukio suoritetaan nuorten opetussuunnitelman mukaan"),
+    "Suorituksen tyyppi" -> "lukionoppimaara",
+    "ÄI1 Tekstien tulkinta ja kirjoittaminen valtakunnallinen" -> ""
   )
 }
