@@ -52,7 +52,7 @@ object Environment {
       birthmonthStart = parseMonth("YTR_DOWNLOAD_BIRTHMONTH_START"),
       birthmonthEnd = parseMonth("YTR_DOWNLOAD_BIRTHMONTH_END"),
       modifiedSince = parseLocalDate("YTR_DOWNLOAD_MODIFIED_SINCE"),
-      modifiedSinceLatest = parseBoolean("YTR_DOWNLOAD_MODIFIED_SINCE_LATEST"),
+      modifiedSinceLastRun = parseBoolean("YTR_DOWNLOAD_MODIFIED_SINCE_LAST_RUN"),
       force = getYtrForceMode
     )
   }
@@ -94,6 +94,6 @@ case class YtrDownloadConfig(
   birthmonthStart: Option[String],
   birthmonthEnd: Option[String],
   modifiedSince: Option[LocalDate],
-  modifiedSinceLatest: Option[Boolean],
+  modifiedSinceLastRun: Option[Boolean],
   force: Boolean
 )

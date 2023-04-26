@@ -3,12 +3,12 @@ package fi.oph.koski.ytr.download
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import fi.oph.koski.api.OpiskeluoikeusTestMethods
 import fi.oph.koski.koskiuser.MockUsers
-import junit.framework.Assert.assertEquals
+import junit.framework.Assert.{assertEquals, assertNotNull}
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
-import java.time.LocalDate
+import java.time.{LocalDate, LocalDateTime}
 
 class YtrDownloadSpec
   extends AnyFreeSpec
@@ -134,9 +134,21 @@ class YtrDownloadSpec
     clearYtrData()
 
     downloadYtrData(modifiedSince, force = false)
+
+    var statusRows = getDownloadStatusRows()
+    assertEquals(1, statusRows.size)
+
+    var row = statusRows.head
+    assertEquals(modifiedSince.toString, (row \ "modifiedSinceParam").extract[String])
+    assertNotNull((row \ "completed").extract[String])
+
     downloadYtrData(modifiedSinceLastRun = true, force = false)
 
-    assertEquals(2, getDownloadStatusRows().size)
+    statusRows = getDownloadStatusRows()
+    assertEquals(2, statusRows.size)
+
+    row = statusRows(1)
+    assertEquals(LocalDate.now().toString, (row \ "modifiedSinceParam").extract[String])
   }
 
   private def expectedOppijat(

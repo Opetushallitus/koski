@@ -14,7 +14,6 @@ import fi.oph.scalaschema.{SerializationContext, Serializer}
 import rx.lang.scala.schedulers.NewThreadScheduler
 import rx.lang.scala.{Observable, Scheduler}
 
-import java.sql.Timestamp
 import java.time.format.DateTimeFormatter
 import java.time.LocalDate
 
@@ -76,7 +75,7 @@ class YtrDownloadService(
       birthmonthStart = config.birthmonthStart,
       birthmonthEnd = config.birthmonthEnd,
       modifiedSince = config.modifiedSince,
-      modifiedSinceLastRun = config.modifiedSinceLatest,
+      modifiedSinceLastRun = config.modifiedSinceLastRun,
       force = config.force,
       onEnd = () => {
         logger.info(s"Ended downloading YTR data, shutting down...")
@@ -106,7 +105,7 @@ class YtrDownloadService(
     scheduler: Scheduler = defaultScheduler,
     onEnd: () => Unit = () => (),
   ): Unit = {
-    val statusId = status.init()
+    lazy val statusId = status.init()
     (birthmonthStart, birthmonthEnd, modifiedSince, modifiedSinceLastRun) match {
       case _ if status.latestIsLoading && !force =>
         logger.error("YTR data already downloading, do nothing")
@@ -116,10 +115,9 @@ class YtrDownloadService(
       case (_, _, Some(modifiedSince), _) =>
         startDownloadingUsingModifiedSince(modifiedSince, scheduler, statusId, onEnd)
       case (_, _, _, Some(true)) =>
-        val lastCompletedRun = status.lastCompletedRun() match {
-          case x: Some[Timestamp] => x.get.toLocalDateTime.toLocalDate
-          case _ => throw new RuntimeException("No completed run found from history")
-        }
+        val lastCompletedRun = status.lastCompletedRun()
+          .map(_.toLocalDateTime.minusHours(1).toLocalDate)
+          .getOrElse(throw new RuntimeException("No completed run found from history - should be run with a given modified since date first"))
         startDownloadingUsingModifiedSince(lastCompletedRun, scheduler, statusId, onEnd)
       case _ =>
         logger.error("Valid parameters for YTR download not defined")
@@ -181,7 +179,7 @@ class YtrDownloadService(
   ): Unit = {
     logger.info(s"Start downloading YTR data (modifiedSince: ${modifiedSince.toString}, batchSize: ${batchSize}, extraSleepPerStudentInMs: ${extraSleepPerStudentInMs})")
 
-    status.setLoading(statusId, 0, 0)
+    status.setLoading(statusId, 0, 0, modifiedSinceParam = Some(modifiedSince))
 
     val ssnDataObservable = Observable.from(application.ytrClient.getHetutByModifiedSince(modifiedSince))
 

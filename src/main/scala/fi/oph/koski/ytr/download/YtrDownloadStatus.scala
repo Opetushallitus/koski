@@ -6,32 +6,27 @@ import org.json4s.{DefaultFormats, JValue}
 import org.json4s.jackson.JsonMethods
 
 import java.sql.Timestamp
-import java.time.{LocalDateTime}
+import java.time.{LocalDate, LocalDateTime}
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import slick.jdbc.GetResult
 
 class YtrDownloadStatus(val db: DB) extends QueryMethods with Logging with DatabaseExecutionContext{
   implicit val formats = DefaultFormats
 
-  def init() = {
-    initLoading().map(_.id) match {
-      case x: Some[Int] => x.get
-      case _ => throw new InternalError("Ytr-latauksen statuksen initialisointi epäonnistui.")
-    }
-  }
+  def init() = initLoading().map(_.id).getOrElse(throw new InternalError("Ytr-latauksen statuksen initialisointi epäonnistui."))
 
   def latestIsLoading: Boolean = getDownloadStatusLatest == "loading"
   def latestIsComplete: Boolean = getDownloadStatusLatest == "complete"
   def isComplete(id: Int): Boolean = getDownloadStatus(id) == "complete"
   def initLoading() = setStatus(id = 0, "initialized", 0, 0)
-  def setLoading(id: Int, totalCount: Int, errorCount: Int = 0) = setStatus(id, "loading", totalCount, errorCount)
-  def setComplete(id: Int, totalCount: Int, errorCount: Int = 0, completedAt: LocalDateTime = LocalDateTime.now()): Option[YtrDownloadStatusRow] = setStatus(id, "complete", totalCount, errorCount, Some(completedAt))
+  def setLoading(id: Int, totalCount: Int, errorCount: Int = 0, modifiedSinceParam: Option[LocalDate] = None) = setStatus(id, "loading", totalCount, errorCount, modifiedSince = modifiedSinceParam)
+  def setComplete(id: Int, totalCount: Int, errorCount: Int = 0, completedAt: LocalDateTime = LocalDateTime.now()): Option[YtrDownloadStatusRow] = setStatus(id, "complete", totalCount, errorCount, completedAt = Some(completedAt))
   def setError(id: Int, totalCount: Int, errorCount: Int = 0) = setStatus(id, "error", totalCount, errorCount)
 
   def lastCompletedRun(): Option[Timestamp] = {
     runDbSync(KoskiTables.YtrDownloadStatus
-      .filter(_.completed != null)
-      .sortBy(row => (row.aikaleima.desc)).result)
+      .filter(r => r.completed != null && r.modifiedSinceParam != null)
+      .sortBy(row => (row.initialized.desc)).result)
       .headOption
       .map(_.aikaleima)
   }
@@ -67,28 +62,24 @@ class YtrDownloadStatus(val db: DB) extends QueryMethods with Logging with Datab
     ).headOption.map(_.toInt).getOrElse(0)
   }
 
-  private def aikaleimaById(id: Int) = {
-    runDbSync(KoskiTables.YtrDownloadStatus.filter(_.id === id).result).headOption.map(_.aikaleima)
+  private def rowById(id: Int): Option[YtrDownloadStatusRow] = {
+    runDbSync(KoskiTables.YtrDownloadStatus.filter(_.id === id).result).headOption
   }
-  private def setStatus(id: Int, currentStatus: String, totalCount: Int, errorCount: Int = 0, completedAt: Option[LocalDateTime] = None) = {
-    val aikaleima: Timestamp = aikaleimaById(id) match {
-      case t: Some[Timestamp] => t.get
-      case _ => Timestamp.valueOf(LocalDateTime.now)
-    }
-
-    val maybeCompletedAt: Option[Timestamp] = completedAt match {
-      case dt: Some[LocalDateTime] => Some(Timestamp.valueOf(dt.get))
-      case _ => None
-    }
+  private def setStatus(id: Int, currentStatus: String, totalCount: Int, errorCount: Int = 0, completedAt: Option[LocalDateTime] = None, modifiedSince: Option[LocalDate] = None) = {
+    val initializedAt = rowById(id).map(_.initialized).getOrElse(Timestamp.valueOf(LocalDateTime.now))
+    val modifiedSinceParam: Option[LocalDate] = rowById(id).flatMap(_.modifiedSinceParam).orElse(modifiedSince)
+    val maybeCompletedAt: Option[Timestamp] = completedAt.map(Timestamp.valueOf)
 
     runDbSync(KoskiTables.YtrDownloadStatus
       .returning(KoskiTables.YtrDownloadStatus)
       .insertOrUpdate(
         YtrDownloadStatusRow(
           id,
-          aikaleima,
+          aikaleima = Timestamp.valueOf(LocalDateTime.now),
           constructStatusJson(currentStatus, Some(LocalDateTime.now), totalCount, errorCount),
-          maybeCompletedAt
+          initializedAt,
+          maybeCompletedAt,
+          modifiedSinceParam
         )
       )
     )
