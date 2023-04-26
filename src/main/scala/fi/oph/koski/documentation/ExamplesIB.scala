@@ -2,7 +2,6 @@ package fi.oph.koski.documentation
 
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
-
 import fi.oph.koski.documentation.ExampleData.{englanti, helsinki, ruotsinKieli}
 import fi.oph.koski.documentation.IBExampleData._
 import fi.oph.koski.documentation.LukioExampleData._
@@ -12,6 +11,7 @@ import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.schema._
 import fi.oph.koski.localization.LocalizedStringImplicits.str2localized
+import fi.oph.koski.util.OptionalLists.optionalList
 
 object ExamplesIB {
   val preIBSuoritus = PreIBSuoritus2015(
@@ -339,6 +339,16 @@ object ExamplesIB {
       )
     ),
     suoritukset = List(preIBSuoritus, ibTutkinnonSuoritus(predicted = false))
+  )
+
+  val kaikkiArviointityypitArvioinnissaSisältäväVanhanmallinenOpiskeluoikeus: IBOpiskeluoikeus = opiskeluoikeus.copy(
+    suoritukset = opiskeluoikeus.suoritukset.map {
+      case suoritus: IBOppiaineenSuoritus =>
+        suoritus.copy(arviointi =
+          Some(suoritus.predictedArviointi.getOrElse(List.empty).map(IBOppiaineenArviointi.apply) ++ suoritus.arviointi.getOrElse(List.empty))
+            .flatMap(optionalList))
+      case s: IBPäätasonSuoritus => s
+    }.asInstanceOf[List[IBPäätasonSuoritus]]
   )
 
   lazy val aktiivinenOpiskeluoikeus: IBOpiskeluoikeus =

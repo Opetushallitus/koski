@@ -137,6 +137,14 @@ case class IBOppiaineenArviointi(
   override def arviointipäivä: Option[LocalDate] = päivä
 }
 
+object IBOppiaineenArviointi {
+  def apply(predicted: IBOppiaineenPredictedArviointi): IBOppiaineenArviointi = IBOppiaineenArviointi(
+    predicted = true,
+    arvosana = predicted.arvosana,
+    päivä = predicted.päivä,
+  )
+}
+
 @Title("IB-oppiaineen predicted-arviointi")
 case class IBOppiaineenPredictedArviointi(
   @KoodistoUri("arviointiasteikkoib")

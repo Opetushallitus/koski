@@ -73,7 +73,7 @@ class IBSuoritustiedotRaporttiSpec extends AnyFreeSpec with Matchers with Raport
 
       "suoritustiedot sheetillä IB-tutkinnon suorituksille" in {
         val suoritusTiedotSheet = raporttiRivitIB.head
-        suoritusTiedotSheet.size shouldBe 2
+        suoritusTiedotSheet.size shouldBe 3
 
         lazy val expectedPetteri = Map(
           "Opiskeluoikeuden oid" -> "",
@@ -120,7 +120,7 @@ class IBSuoritustiedotRaporttiSpec extends AnyFreeSpec with Matchers with Raport
 
       "suoritustiedot sheetillä Pre-IB suorituksille" in {
         val suoritusTiedotSheet = raporttiRivitPreIB.head
-        suoritusTiedotSheet.size shouldBe 4
+        suoritusTiedotSheet.size shouldBe 5
 
         lazy val expectedPetteri = Map(
           "Opiskeluoikeuden oid" -> "",
@@ -188,7 +188,7 @@ class IBSuoritustiedotRaporttiSpec extends AnyFreeSpec with Matchers with Raport
 
       "suoritustiedot sheetillä Pre-IB 2019 suorituksille" in {
         val suoritusTiedotSheet = raporttiRivitPreIB.head
-        suoritusTiedotSheet.size shouldBe 4
+        suoritusTiedotSheet.size shouldBe 5
 
         lazy val expectedPate = Map(
           "Opiskeluoikeuden oid" -> "",
