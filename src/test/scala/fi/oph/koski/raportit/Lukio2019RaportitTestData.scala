@@ -6,7 +6,8 @@ import fi.oph.koski.documentation.Lukio2019ExampleData
 import fi.oph.koski.documentation.Lukio2019ExampleData.{moduulinSuoritusOppiaineissa, muuModuuliOppiaineissa, numeerinenArviointi, numeerinenLukionOppiaineenArviointi, oppiaineenSuoritus, paikallinenOpintojakso, paikallisenOpintojaksonSuoritus}
 import fi.oph.koski.documentation.LukioExampleData.nuortenOpetussuunnitelma
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu
-import fi.oph.koski.schema.{LocalizedString, LukionOppiaineenSuoritus2019, LukionOppiaineidenOppimäärienSuoritus2019, LukionOppiaineidenOppimäärät2019, LukionOppimääränSuoritus2019, OsaamisenTunnustaminen, PaikallinenKoodi, PaikallinenLukionOppiaine2019}
+import fi.oph.koski.schema.{LocalizedString, LukionOppiaineenSuoritus2019, LukionOppiaineidenOppimäärienSuoritus2019, LukionOppiaineidenOppimäärät2019, LukionOppimääränOsasuoritus2019, LukionOppimääränSuoritus2019, OsaamisenTunnustaminen, PaikallinenKoodi, PaikallinenLukionOppiaine2019}
+
 import java.time.LocalDate.{of => date}
 
 object Lukio2019RaaportitTestData {
@@ -30,6 +31,12 @@ object Lukio2019RaaportitTestData {
     )))
   )
 
+  lazy val oppiaineSuorituksetMuillaOpinnoilla: List[LukionOppimääränOsasuoritus2019] = oppiaineSuoritukset ++ List(
+    Lukio2019ExampleData.muidenLukioOpintojenSuoritus().copy(osasuoritukset = Some(List(
+      Lukio2019ExampleData.moduulinSuoritusMuissaOpinnoissa(Lukio2019ExampleData.muuModuuliMuissaOpinnoissa("ÄI1").copy(laajuus = Lukio2019ExampleData.laajuus(2.5))).copy(arviointi = numeerinenArviointi(8)),
+    )))
+  )
+
   lazy val oppiaineidenOppimäärienSuoritus = LukionOppiaineidenOppimäärienSuoritus2019(
     koulutusmoduuli = LukionOppiaineidenOppimäärät2019(perusteenDiaarinumero = lops2019perusteenDiaarinumero),
     oppimäärä = nuortenOpetussuunnitelma,
@@ -45,5 +52,14 @@ object Lukio2019RaaportitTestData {
     vahvistus = None,
     toimipiste = jyväskylänNormaalikoulu,
     osasuoritukset = Some(oppiaineSuoritukset),
+  )
+
+  lazy val oppimääränSuoritusMuillaOpinnoilla = LukionOppimääränSuoritus2019(
+    koulutusmoduuli = lukionOppimäärä2019,
+    oppimäärä = nuortenOpetussuunnitelma,
+    suorituskieli = suomenKieli,
+    vahvistus = None,
+    toimipiste = jyväskylänNormaalikoulu,
+    osasuoritukset = Some(oppiaineSuorituksetMuillaOpinnoilla),
   )
 }
