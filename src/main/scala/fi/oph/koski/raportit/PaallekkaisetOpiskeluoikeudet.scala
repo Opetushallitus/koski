@@ -15,6 +15,7 @@ import scala.concurrent.duration.DurationInt
 object PaallekkaisetOpiskeluoikeudet extends Logging {
 
   def datasheet(
+     koulutustoimijaOid: String,
     oids: Seq[String],
     aikaisintaan: LocalDate,
     viimeistaan: LocalDate,
@@ -24,7 +25,7 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
       title = t.get("raportti-excel-paallekkaiset-opiskeluoikeudet-sheet-name"),
       rows = db
         .runDbSync(
-          query(oids, Date.valueOf(aikaisintaan), Date.valueOf(viimeistaan))
+          query(koulutustoimijaOid, oids, Date.valueOf(aikaisintaan), Date.valueOf(viimeistaan))
             .as[PaallekkaisetOpiskeluoikeudetRow], timeout = 5.minutes
         ),
       columnSettings(t)
@@ -105,7 +106,7 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
   def createIndex(s: Schema) =
     sqlu"create index on #${s.name}.paallekkaiset_opiskeluoikeudet(opiskeluoikeus_oid)"
 
-  private def query(oppilaitosOids: Seq[String], aikaisintaan: Date, viimeistaan: Date) =
+  private def query(koulutustoimijaOid: String, oppilaitosOids: Seq[String], aikaisintaan: Date, viimeistaan: Date) =
     sql"""
       select
         paallekkaiset_opiskeluoikeudet.*,
@@ -126,7 +127,7 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
         from r_opiskeluoikeus
           left join r_opiskeluoikeus_aikajakso on r_opiskeluoikeus_aikajakso.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
           left join esiopetus_opiskeluoik_aikajakso on esiopetus_opiskeluoik_aikajakso.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
-        where oppilaitos_oid = any($oppilaitosOids)
+        where (oppilaitos_oid = any($oppilaitosOids) or (r_opiskeluoikeus.koulutustoimija_oid = $koulutustoimijaOid and r_opiskeluoikeus.koulutusmuoto = 'esiopetus' and r_opiskeluoikeus.data -> 'järjestämismuoto' ->> 'koodiarvo' IN('JM02', 'JM03')))
           and (
             ( r_opiskeluoikeus_aikajakso.opiskeluoikeus_oid is not null
               and r_opiskeluoikeus_aikajakso.alku <= $viimeistaan
