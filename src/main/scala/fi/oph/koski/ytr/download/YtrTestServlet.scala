@@ -25,7 +25,8 @@ class YtrTestServlet(implicit val application: KoskiApplication) extends KoskiSp
     // TODO: TOR-1639 Kun raportointikannan luonti tehdään, tuhoa myös sen generointiin liittyvät taulut
     runDbSync(DBIO.sequence(Seq(
       KoskiTables.YtrOpiskeluoikeusHistoria.delete,
-      KoskiTables.YtrOpiskeluOikeudet.delete
+      KoskiTables.YtrOpiskeluOikeudet.delete,
+      KoskiTables.YtrDownloadStatus.delete
     )))
 
     renderObject(JObject("ok" -> JBool(true)))
@@ -45,11 +46,16 @@ class YtrTestServlet(implicit val application: KoskiApplication) extends KoskiSp
           m
         }),
       modifiedSince = getOptionalStringParam("modifiedSince").map(LocalDate.parse),
+      modifiedSinceLastRun = getOptionalStringParam("modifiedSinceLastRun").flatMap(str => stringToBoolean(str)),
       force = getOptionalBooleanParam("force").getOrElse(false),
       onEnd = () => {
         logger.info("Download YTR done")
       }
     )
-    renderObject(downloadService.status.getDownloadStatusJson)
+    renderObject(downloadService.status.getDownloadStatusJsonLatest)
+  }
+
+  get("/download-status-rows") {
+    renderObject(downloadService.getDownloadStatusRows())
   }
 }

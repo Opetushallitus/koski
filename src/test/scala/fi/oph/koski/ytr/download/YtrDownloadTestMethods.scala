@@ -27,6 +27,7 @@ trait YtrDownloadTestMethods extends KoskiHttpSpec with OpiskeluoikeusTestMethod
     birthmonthStart = Some(birthmonthStart),
     birthmonthEnd = Some(birthmonthEnd),
     modifiedSince = None,
+    modifiedSinceLastRun = None,
     force = force
   )
 
@@ -37,6 +38,18 @@ trait YtrDownloadTestMethods extends KoskiHttpSpec with OpiskeluoikeusTestMethod
     birthmonthStart = None,
     birthmonthEnd = None,
     modifiedSince = Some(modifiedSince),
+    modifiedSinceLastRun = None,
+    force = force
+  )
+
+  def downloadYtrData(
+    modifiedSinceLastRun: Boolean,
+    force: Boolean
+  ): Unit = downloadYtrData(
+    birthmonthStart = None,
+    birthmonthEnd = None,
+    modifiedSince = None,
+    modifiedSinceLastRun = Some(modifiedSinceLastRun),
     force = force
   )
 
@@ -44,13 +57,15 @@ trait YtrDownloadTestMethods extends KoskiHttpSpec with OpiskeluoikeusTestMethod
     birthmonthStart: Option[String],
     birthmonthEnd: Option[String],
     modifiedSince: Option[LocalDate],
+    modifiedSinceLastRun: Option[Boolean],
     force: Boolean,
   ): Unit = {
     val urlParams = List(
       Some(s"force=${force}"),
       birthmonthStart.map(d => s"birthmonthStart=$d"),
       birthmonthEnd.map(d => s"birthmonthEnd=$d"),
-      modifiedSince.map(d => s"modifiedSince=${d.toString}")
+      modifiedSince.map(d => s"modifiedSince=${d.toString}"),
+      modifiedSinceLastRun.map(d => s"modifiedSinceLastRun=${d.toString}")
     ).flatten.mkString("&")
 
     authGet(s"test/ytr/download?${urlParams}") {
@@ -62,6 +77,10 @@ trait YtrDownloadTestMethods extends KoskiHttpSpec with OpiskeluoikeusTestMethod
   def downloadComplete = authGet("api/ytr/download-status") {
     val isComplete = (JsonMethods.parse(body) \ "current" \ "status").extract[String] == "complete"
     isComplete
+  }
+
+  def getDownloadStatusRows() = authGet("test/ytr/download-status-rows") {
+    JsonMethods.parse(body).children
   }
 
   def totalCount: Int = authGet("api/ytr/download-status") {

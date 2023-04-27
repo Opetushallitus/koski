@@ -52,6 +52,7 @@ object Environment {
       birthmonthStart = parseMonth("YTR_DOWNLOAD_BIRTHMONTH_START"),
       birthmonthEnd = parseMonth("YTR_DOWNLOAD_BIRTHMONTH_END"),
       modifiedSince = parseLocalDate("YTR_DOWNLOAD_MODIFIED_SINCE"),
+      modifiedSinceLastRun = parseBoolean("YTR_DOWNLOAD_MODIFIED_SINCE_LAST_RUN"),
       force = getYtrForceMode
     )
   }
@@ -73,6 +74,14 @@ object Environment {
     })
   }
 
+  private def parseBoolean(environmentVariableName: String): Option[Boolean] = {
+    try {
+      sys.env.get(environmentVariableName).map(_.toBoolean)
+    } catch {
+      case e: Exception => throw new RuntimeException(s"Invalid format for environment variable ${environmentVariableName} (expected boolean): ${e.getMessage}")
+    }
+  }
+
   private def getYtrForceMode: Boolean = sys.env.get("YTR_DOWNLOAD_FORCE") match {
     case Some("true") => true
     case Some("false") => false
@@ -85,5 +94,6 @@ case class YtrDownloadConfig(
   birthmonthStart: Option[String],
   birthmonthEnd: Option[String],
   modifiedSince: Option[LocalDate],
+  modifiedSinceLastRun: Option[Boolean],
   force: Boolean
 )

@@ -320,11 +320,14 @@ object KoskiTables {
   }
 
   class YtrDownloadStatusTable(tag: Tag) extends Table[YtrDownloadStatusRow](tag, "ytr_download_status") {
-    val nimi = column[String]("nimi", O.PrimaryKey)
+    val id = column[Int]("id", O.AutoInc, O.PrimaryKey)
     val aikaleima = column[Timestamp]("aikaleima")
+    val initialized = column[Timestamp]("initialized")
+    val completed = column[Option[Timestamp]]("completed")
+    val modifiedSinceParam = column[Option[LocalDate]]("modified_since_param")
     val data = column[JValue]("data")
 
-    def * = (nimi, aikaleima, data) <> (YtrDownloadStatusRow.tupled, YtrDownloadStatusRow.unapply)
+    def * = (id, aikaleima, data, initialized, completed, modifiedSinceParam) <> (YtrDownloadStatusRow.tupled, YtrDownloadStatusRow.unapply)
   }
 
   class YtrAlkuperäinenDataTable(tag: Tag) extends Table[YtrAlkuperäinenDataRow](tag, "ytr_alkuperainen_data") {
@@ -593,7 +596,7 @@ case class SchedulerRow(name: String, nextFireTime: Timestamp, context: Option[J
   def running: Boolean = status == ScheduledTaskStatus.running
 }
 
-case class YtrDownloadStatusRow(nimi: String = "ytr_download", aikaleima: Timestamp, data: JValue)
+case class YtrDownloadStatusRow(id: Int, aikaleima: Timestamp, data: JValue, initialized: Timestamp, completed: Option[Timestamp], modifiedSinceParam: Option[LocalDate])
 
 case class YtrAlkuperäinenDataRow(oppijaOid: String, aikaleima: Timestamp, data: JValue)
 
