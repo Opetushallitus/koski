@@ -1031,6 +1031,7 @@ describe('IB', function () {
             '.title > .properties > .dropdown-wrapper'
           )
           var taso = a.propertyBySelector('.property.taso')
+          var predictedGrade = a.propertyBySelector('td.predicted-arvosana')
           var arvosana = a.propertyBySelector('td.arvosana')
 
           var uusiOppiaine = opinnot.oppiaineet.uusiOppiaine('.A2 +')
@@ -1069,16 +1070,35 @@ describe('IB', function () {
           })
 
           describe('Arvosanan muuttaminen', function () {
-            before(
-              arvosana.selectValue(5),
-              editor.saveChanges,
-              wait.until(page.isSavedLabelShown)
-            )
+            describe('Predicted grade', function () {
+              before(
+                predictedGrade.selectValue(3),
+                editor.saveChanges,
+                wait.until(page.isSavedLabelShown)
+              )
 
-            it('onnistuu', function () {
-              expect(
-                findSingle('.oppiaine.A .arvosana .annettuArvosana')().text()
-              ).to.equal('5')
+              it('onnistuu', function () {
+                expect(
+                  findSingle(
+                    '.oppiaine.A .predicted-arvosana .annettuArvosana'
+                  )().text()
+                ).to.equal('3')
+              })
+            })
+
+            describe('Päättöarvosana', function () {
+              before(
+                editor.edit,
+                arvosana.selectValue(5),
+                editor.saveChanges,
+                wait.until(page.isSavedLabelShown)
+              )
+
+              it('onnistuu', function () {
+                expect(
+                  findSingle('.oppiaine.A .arvosana .annettuArvosana')().text()
+                ).to.equal('5')
+              })
             })
           })
 

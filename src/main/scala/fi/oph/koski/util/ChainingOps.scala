@@ -23,6 +23,8 @@ final class ChainingOps[A](private val self: A) extends AnyVal {
     f(self)
     self
   }
+
+  def map[U](f: A => U): U = f(self)
 }
 
 final class EitherChainingOps[S, T](private val self: Either[S, T]) extends AnyVal {
