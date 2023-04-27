@@ -556,7 +556,10 @@ describe('Omat tiedot', function () {
           describe('Sivun sisältö', function () {
             it('Näytetään otsikko, nimi ja syntymäaika', function () {
               expect(suoritusjako.headerText()).to.equal(
-                'Opinnot' + 'Miia Monikoululainen' + 's. 18.4.1997'
+                'Opinnot' +
+                  'Miia Monikoululainen' +
+                  's. 18.4.1997' +
+                  'Tiedot koneluettavassa muodossa'
               )
             })
 
@@ -604,7 +607,10 @@ describe('Omat tiedot', function () {
 
             it('toimii', function () {
               expect(suoritusjako.headerText()).to.equal(
-                'Studier' + 'Miia Monikoululainen' + 'f. 18.4.1997'
+                'Studier' +
+                  'Miia Monikoululainen' +
+                  'f. 18.4.1997' +
+                  'Tiedot koneluettavassa muodossa'
               )
             })
 
@@ -622,7 +628,10 @@ describe('Omat tiedot', function () {
 
             it('toimii', function () {
               expect(suoritusjako.headerText()).to.equal(
-                'Studies' + 'Miia Monikoululainen' + 'b. 18.4.1997'
+                'Studies' +
+                  'Miia Monikoululainen' +
+                  'b. 18.4.1997' +
+                  'Tiedot koneluettavassa muodossa'
               )
             })
 
@@ -857,7 +866,10 @@ describe('Omat tiedot', function () {
               describe('Sivun sisältö', function () {
                 it('Näytetään oikea otsikko, nimi ja syntymäaika', function () {
                   expect(suoritusjako.headerText()).to.equal(
-                    'Opinnot' + 'Dilbert Dippainssi' + 's. 10.8.1969'
+                    'Opinnot' +
+                      'Dilbert Dippainssi' +
+                      's. 10.8.1969' +
+                      'Tiedot koneluettavassa muodossa'
                   )
                 })
 
@@ -904,7 +916,10 @@ describe('Omat tiedot', function () {
               describe('Sivun sisältö', function () {
                 it('Näytetään oikea otsikko, nimi ja syntymäaika', function () {
                   expect(suoritusjako.headerText()).to.equal(
-                    'Opinnot' + 'Dilbert Dippainssi' + 's. 10.8.1969'
+                    'Opinnot' +
+                      'Dilbert Dippainssi' +
+                      's. 10.8.1969' +
+                      'Tiedot koneluettavassa muodossa'
                   )
                 })
 
@@ -995,7 +1010,10 @@ describe('Omat tiedot', function () {
             describe('Sivun sisältö', function () {
               it('Näytetään oikea otsikko, nimi ja syntymäaika', function () {
                 expect(suoritusjako.headerText()).to.equal(
-                  'Opinnot' + 'Lasse Luokallejäänyt' + 's. 17.1.1986'
+                  'Opinnot' +
+                    'Lasse Luokallejäänyt' +
+                    's. 17.1.1986' +
+                    'Tiedot koneluettavassa muodossa'
                 )
               })
 
