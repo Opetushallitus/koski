@@ -120,7 +120,7 @@ class YtrDownloadService(
           .getOrElse(throw new RuntimeException("No completed run found from history - should be run with a given modified since date first"))
         startDownloadingUsingModifiedSince(lastCompletedRun, scheduler, statusId, onEnd)
       case _ =>
-        logger.error("Valid parameters for YTR download not defined")
+        logger.error(s"Valid parameters for YTR download not defined (had birthmonthStart: ${birthmonthStart}, birthmonthEnd: ${birthmonthEnd}, modifiedSince: ${modifiedSince}, modifiedSinceLastRun: ${modifiedSinceLastRun})")
         onEnd()
     }
   }
