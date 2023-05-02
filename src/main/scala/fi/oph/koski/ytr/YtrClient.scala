@@ -88,8 +88,12 @@ object MockYrtClient extends YtrClient {
   val yoTodistusRequestTimes: collection.mutable.Map[String, ZonedDateTime] = collection.mutable.Map.empty
   val yoTodistusGeneratingTimeSecs = 2
   private var failureHetu: Option[String] = None
+  private var timeoutHetu: Option[String] = None
 
   def oppijaJsonByHetu(hetu: String): Option[JValue] = {
+    if (timeoutHetu.contains(hetu)) {
+      Thread.sleep(20000)
+    }
     if (failureHetu.contains(hetu)) {
       throw new RuntimeException("Mocked failure on hetu " + hetu)
     } else {
@@ -153,13 +157,17 @@ object MockYrtClient extends YtrClient {
     Right(())
   }
 
-  def reset(): Unit = yoTodistusRequestTimes.clear()
+  def reset(): Unit = {
+    yoTodistusRequestTimes.clear()
+    failureHetu = None
+    timeoutHetu = None
+  }
 
   def setFailureHetu(hetu: String): Unit = {
     failureHetu = Some(hetu)
   }
-  def resetFailureHetu(): Unit = {
-    failureHetu = None
+  def setTimeoutHetu(hetu: String): Unit = {
+    timeoutHetu = Some(hetu)
   }
 }
 

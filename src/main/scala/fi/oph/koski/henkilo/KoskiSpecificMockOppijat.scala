@@ -178,6 +178,11 @@ object KoskiSpecificMockOppijat {
   val amisKoulutusvienti = koskiSpecificOppijat.oppija("Koulutusvientiläinen", "Amis", "020605A3368")
   val opiskeleeAmmatillisessaErityisoppilaitoksessa2 = koskiSpecificOppijat.oppija("Erityisoppilaitoksessa", "Emppu", "211005A867V", syntymäaika = Some(LocalDate.of(2005, 2, 21)), kotikunta = Some("091"))
   val vanhanMallinenIBOppija = koskiSpecificOppijat.oppija("Ibe", "Vanhanen", "101000A684K")
+  val ylioppilasEiValmistunut = koskiSpecificOppijat.oppija("Yliniemi", "Kalevi", "120674-064R")
+  val ammattilainenVahvistettuTulevaisuudessa = koskiSpecificOppijat.oppija("Tuleva-ammattilainen", "Tuure", "280128-6867")
+  val masterYlioppilasJaAmmattilainen = koskiSpecificOppijat.oppija("Mastinen", "Maarni", "151031-620R")
+  val slaveAmmattilainen = koskiSpecificOppijat.addOppija(OppijaHenkilöWithMasterInfo(LaajatOppijaHenkilöTiedot(oid = "1.2.246.562.24.00000057489", sukunimi = "Slavinen", etunimet = "Saarni", kutsumanimi = "Ammi", hetu = Some("140661-592P"), syntymäaika = None), Some(masterYlioppilasJaAmmattilainen)))
+  val ammatilliseenTetäväänValmistavaMuuAmmatillinenVahvistettu = koskiSpecificOppijat.oppija("Tehtävään-Valmistava-vahvistettu", "Tauno", "120418-275F")
 
   //Jos luot uuden oppijan voi hetun generoida täältä: http://www.lintukoto.net/muut/henkilotunnus/index.php
   //Huomaa, että hetun pitää olla oikean kaltainen

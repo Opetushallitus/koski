@@ -192,6 +192,20 @@ object MuunAmmatillisenKoulutuksenExample {
     )
   )
 
+  lazy val ammatilliseenTehtäväänValmistavaKoulutusOpiskeluoikeusVahvistettu =
+    ammatilliseenTehtäväänValmistavaKoulutusOpiskeluoikeus.withSuoritukset(
+      List(
+        ammatilliseenTehtäväänValmistavaKoulutusOpiskeluoikeus.suoritukset.head.asInstanceOf[MuunAmmatillisenKoulutuksenSuoritus].copy(
+          vahvistus = Some(HenkilövahvistusValinnaisellaPaikkakunnalla(
+            date(2020, 5, 31),
+            None,
+            stadinAmmattiopisto,
+            List(Organisaatiohenkilö("Reijo Reksi", "rehtori", stadinAmmattiopisto))
+          ))
+        )
+      )
+    )
+
   lazy val ammatilliseenTehtäväänValmistavaKoulutusOpiskeluoikeus = AmmatillinenOpiskeluoikeus(
     arvioituPäättymispäivä = Some(date(2020, 5, 31)),
     tila = AmmatillinenOpiskeluoikeudenTila(List(
