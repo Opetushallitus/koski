@@ -390,7 +390,7 @@ describe('VST', function () {
           })
         })
 
-        describe('Osasuoritus on tallennettu ja tallenetun osasuorituksen voi lisätä', function () {
+        describe('Osasuoritus on tallennettu ja tallennetun osasuorituksen voi lisätä', function () {
           before(
             editor.edit,
             opinnot.avaaKaikki,
@@ -402,7 +402,32 @@ describe('VST', function () {
             var osasuoritukset = S('.vst-osasuoritus')
             expect(osasuoritukset.length).to.equal(2)
           })
+
+          after(
+            editor.cancelChanges
+          )
         })
+      })
+
+      describe('Opiskeluoikeuden tilan muuttaminen toimii', function () {
+        before(
+          editor.edit,
+          opinnot.poistaViimeisinTila,
+          tilaJaVahvistus.merkitseKeskeneräiseksi,
+          opinnot.avaaLisaysDialogi,
+          opiskeluoikeus.tila().aseta('keskeytynyt'),
+          opiskeluoikeus.tallenna
+        )
+
+        it('toimii', function () {
+          expect(opinnot.lisääSuoritusDialog.isLinkVisible('Lisää')).to.equal(
+            false
+          )
+        })
+
+        after(
+          editor.saveChangesAndWaitForSuccess
+        )
       })
     })
   })
