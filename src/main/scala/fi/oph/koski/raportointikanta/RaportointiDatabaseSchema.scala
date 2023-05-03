@@ -41,6 +41,7 @@ object RaportointiDatabaseSchema {
     sqlu"CREATE INDEX ON #${s.name}.r_opiskeluoikeus(koulutusmuoto)",
     sqlu"CREATE INDEX ON #${s.name}.r_opiskeluoikeus(sisaltyy_opiskeluoikeuteen_oid)",
     sqlu"CREATE INDEX ON #${s.name}.r_opiskeluoikeus(opiskeluoikeus_oid, koulutusmuoto, oppija_oid)",
+    sqlu"CREATE INDEX ON #${s.name}.r_opiskeluoikeus USING HASH ((data->'järjestämismuoto'->>'koodiarvo'))",
 
     sqlu"CREATE INDEX ON #${s.name}.r_organisaatiohistoria(opiskeluoikeus_oid, loppu, alku, oppilaitos_oid, koulutustoimija_oid)",
     sqlu"CREATE INDEX ON #${s.name}.r_organisaatiohistoria(oppilaitos_oid, loppu, alku, opiskeluoikeus_oid)",
