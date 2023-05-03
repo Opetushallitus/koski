@@ -284,10 +284,11 @@ object KoskiTables {
     val secret = column[String]("secret", O.Unique)
     val oppijaOid = column[String]("oppija_oid")
     val suoritusIds = column[JValue]("suoritus_ids")
+    val kokonaisuudet = column[JValue]("kokonaisuudet")
     val voimassaAsti = column[Date]("voimassa_asti")
     val aikaleima = column[Timestamp]("aikaleima")
 
-    def * = (id, secret, oppijaOid, suoritusIds, voimassaAsti, aikaleima) <> (SuoritusjakoRow.tupled, SuoritusjakoRow.unapply)
+    def * = (id, secret, oppijaOid, suoritusIds, kokonaisuudet, voimassaAsti, aikaleima) <> (SuoritusjakoRow.tupled, SuoritusjakoRow.unapply)
   }
 
   class SuoritusjakoTableV2(tag: Tag) extends Table[SuoritusjakoRowV2] (tag, "suoritusjako_v2") {
@@ -608,7 +609,7 @@ case class OppilaitosIPOsoiteRow(username: String, ip: String)
 
 case class PreferenceRow(organisaatioOid: String, koulutustoimijaOid: Option[String], `type`: String, key: String, value: JValue)
 
-case class SuoritusjakoRow(id: Long, secret: String, oppijaOid: String, suoritusIds: JValue, voimassaAsti: Date, aikaleima: Timestamp)
+case class SuoritusjakoRow(id: Long, secret: String, oppijaOid: String, suoritusIds: JValue, kokonaisuudet: JValue, voimassaAsti: Date, aikaleima: Timestamp)
 
 case class SuoritusjakoRowV2(secret: String, oppijaOid: String, data: JValue, voimassaAsti: Date, aikaleima: Timestamp)
 

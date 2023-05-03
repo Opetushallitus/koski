@@ -14,6 +14,7 @@ import { OpiskeluoikeudenTila } from '../fragments/OpiskeluoikeudenTila'
 import Text from '../../i18n/Text'
 import Checkbox from '../../components/Checkbox'
 import { isOpintojakso } from '../../opiskeluoikeus/OpiskeluoikeusEditor'
+import SuoritetutKokonaisuudet from './SuoritetutKokonaisuudet'
 
 export const SelectableSuoritusList = ({
   opiskeluoikeudet,
@@ -24,8 +25,19 @@ export const SelectableSuoritusList = ({
       event.target.checked ? R.append(id, ids) : R.without([id], ids)
     )
 
+  const handleSelectedItems = (selectedItems, unselectedItems) => {
+    const ourVersion = R.map(R.pick(['tyyppi']))
+    selectedSuoritusIds.modify((ids) =>
+      R.without(ourVersion(unselectedItems), ids)
+    )
+    selectedSuoritusIds.modify((ids) =>
+      selectedItems.length > 0 ? R.concat(ourVersion(selectedItems), ids) : ids
+    )
+  }
+
   return (
     <ul className="create-suoritusjako__list">
+      <SuoritetutKokonaisuudet handleSelectedItems={handleSelectedItems} />
       {opiskeluoikeudet.map((oppilaitoksittain) => {
         const oppilaitos = modelLookup(oppilaitoksittain, 'oppilaitos')
         const groupTitle = modelTitle(oppilaitos)

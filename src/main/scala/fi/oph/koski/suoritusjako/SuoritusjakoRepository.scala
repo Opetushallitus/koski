@@ -20,7 +20,7 @@ class SuoritusjakoRepository(val db: DB) extends Logging with QueryMethods {
     runDbSync(SuoritusJako.filter(r => r.oppijaOid === oppijaOid && r.voimassaAsti >= Date.valueOf(LocalDate.now)).result)
   }
 
-  def create(secret: String, oppijaOid: String, suoritusIds: List[SuoritusIdentifier]): Either[HttpStatus, Suoritusjako] = {
+  def create(secret: String, oppijaOid: String, suoritusIds: List[SuoritusIdentifier], kokonaisuudet: List[SuoritusjakoPayload]): Either[HttpStatus, Suoritusjako] = {
     val expirationDate = LocalDate.now.plusMonths(6)
     val maxSuoritusjakoCount = 100
     val timestamp = Timestamp.from(Instant.now())
@@ -35,6 +35,7 @@ class SuoritusjakoRepository(val db: DB) extends Logging with QueryMethods {
         secret,
         oppijaOid,
         JsonSerializer.serializeWithRoot(suoritusIds),
+        JsonSerializer.serializeWithRoot(kokonaisuudet),
         Date.valueOf(expirationDate),
         timestamp
       )))
