@@ -16,9 +16,16 @@ import { sortGrades } from '../util/sorting'
 import { fetchAlternativesBasedOnPrototypes } from '../editor/EnumEditor'
 import { fixArviointi } from './Suoritus'
 
-export const ArvosanaEditor = ({ model, notFoundText, ...rest }) => {
+export const ArvosanaEditor = ({
+  model,
+  notFoundText,
+  arviointiField,
+  ...rest
+}) => {
+  arviointiField = arviointiField || 'arviointi'
+
   if (!model.context.edit) {
-    const arvosanaModel = resolveArvosanaModel(model)
+    const arvosanaModel = resolveArvosanaModel(model, arviointiField)
     return arvosanaModel ? (
       <Editor model={arvosanaModel} />
     ) : notFoundText ? (
@@ -26,13 +33,13 @@ export const ArvosanaEditor = ({ model, notFoundText, ...rest }) => {
     ) : null
   }
 
-  if (!modelProperty(model, 'arviointi')) {
+  if (!modelProperty(model, arviointiField)) {
     return null
   }
 
   model = fixArviointi(model)
   const alternativesP = fetchAlternativesBasedOnPrototypes(
-    oneOfPrototypes(wrapOptional(modelLookup(model, 'arviointi.-1'))),
+    oneOfPrototypes(wrapOptional(modelLookup(model, `${arviointiField}.-1`))),
     'arvosana'
   ).startWith([])
 
@@ -65,7 +72,7 @@ export const ArvosanaEditor = ({ model, notFoundText, ...rest }) => {
             }
           }
         )
-        const arviointiModel = modelLookup(model, 'arviointi')
+        const arviointiModel = modelLookup(model, arviointiField)
         const arvosanaModel = lensedModel(arviointiModel, arvosanaLens)
         // Use key to ensure re-render when alternatives are supplied
         return (
@@ -83,8 +90,11 @@ export const ArvosanaEditor = ({ model, notFoundText, ...rest }) => {
   )
 }
 
-export const resolveArvosanaModel = (suoritus) => {
-  const arviointi = parasArviointi(suoritus)
+export const resolveArvosanaModel = (
+  suoritus,
+  arviointiField = 'arviointi'
+) => {
+  const arviointi = parasArviointi(suoritus, arviointiField)
   const arvosana = arviointi ? modelLookup(arviointi, 'arvosana') : null
 
   const isPaikallinenArviointi =
@@ -95,13 +105,13 @@ export const resolveArvosanaModel = (suoritus) => {
   return isPaikallinenArviointi ? modelLookup(arvosana, 'nimi') : arvosana
 }
 
-const parasArviointi = (suoritus) => {
-  let arviointi = modelLookup(suoritus, 'arviointi.-1')
+const parasArviointi = (suoritus, arviointiField = 'arviointi') => {
+  let arviointi = modelLookup(suoritus, `${arviointiField}.-1`)
   let arvosana = arviointi
-    ? modelLookup(suoritus, 'arviointi.-1.arvosana')
+    ? modelLookup(suoritus, `${arviointiField}.-1.arvosana`)
     : null
 
-  modelItems(suoritus, 'arviointi').map((item) => {
+  modelItems(suoritus, arviointiField).map((item) => {
     const nthArvosana = modelLookup(item, 'arvosana')
     if (
       nthArvosana.value.data !== undefined &&

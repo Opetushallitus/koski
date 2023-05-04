@@ -200,10 +200,11 @@ describe('Oppijataulukko', function () {
           'IB-final, Iina',
           'IB-Pre-IB-uusilukio, Pate',
           'IB-predicted, Petteri',
+          'Ibe, Vanhanen',
           'Kurssikertyma, Eronnut Aineopiskelija',
           'Kurssikertyma, Valmistunut Aineopiskelija'
         ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('8')
+        expect(page.opiskeluoikeudeTotal()).to.equal('9')
       })
     })
 
@@ -263,6 +264,7 @@ describe('Oppijataulukko', function () {
           'IB-final, Iina',
           'IB-Pre-IB-uusilukio, Pate',
           'IB-predicted, Petteri',
+          'Ibe, Vanhanen',
           'International, Ida',
           'k, kotiopetus',
           'Kelalle, Useita',
@@ -330,10 +332,9 @@ describe('Oppijataulukko', function () {
           'Valviralle-Kesken, Ville',
           'Vanhanen-Toikkarinen, Vanja',
           'Vuonna 2004 syntynyt, Peruskoulu suoritettu 2021',
-          'Vuonna 2004 syntynyt, Peruskoulu suoritettu ennen 2021',
-          'Vuonna 2004 syntynyt, Peruskoulusta eronnut ennen 2021'
+          'Vuonna 2004 syntynyt, Peruskoulu suoritettu ennen 2021'
         ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('106')
+        expect(page.opiskeluoikeudeTotal()).to.equal('107')
       })
     })
 

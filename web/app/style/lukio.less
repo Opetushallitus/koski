@@ -1,15 +1,23 @@
 .oppija .opiskeluoikeus .suoritukset {
-  .lukionoppimaaransuoritus2019, .lukionoppiaineidenoppimaariensuoritus2019,
-  .lukionoppimaaransuoritus2015, .lukionoppiaineenoppimaaransuoritus2015, .lukioonvalmistavankoulutuksensuoritus,
-  .preibsuoritus2015, .preibsuoritus2019, .ibtutkinnonsuoritus, .internationalschoolvuosiluokansuoritus,
-  .diavalmistavanvaiheensuoritus, .diatutkinnonsuoritus {
+  .lukionoppimaaransuoritus2019,
+  .lukionoppiaineidenoppimaariensuoritus2019,
+  .lukionoppimaaransuoritus2015,
+  .lukionoppiaineenoppimaaransuoritus2015,
+  .lukioonvalmistavankoulutuksensuoritus,
+  .preibsuoritus2015,
+  .preibsuoritus2019,
+  .ibtutkinnonsuoritus,
+  .internationalschoolvuosiluokansuoritus,
+  .diavalmistavanvaiheensuoritus,
+  .diatutkinnonsuoritus {
     .oppiaine {
       .footnote-hint {
         top: -0.4em;
         cursor: pointer;
       }
       .title {
-        > .nimi, > .footnote-hint {
+        > .nimi,
+        > .footnote-hint {
           color: @color-label;
         }
         > .properties {
@@ -50,24 +58,29 @@
         th {
           padding: 0;
           hr {
-            margin: 0 0 20px 0
+            margin: 0 0 20px 0;
           }
         }
       }
 
-      > tbody, thead {
+      > tbody,
+      thead {
         > tr {
           > th {
-            &.arvosana, &.laajuus {
+            &.arvosana,
+            &.predicted-arvosana,
+            &.laajuus {
               width: 100px;
               text-align: right;
             }
-            &.oppiaine, &.suorituksentila {
+            &.oppiaine,
+            &.suorituksentila {
               vertical-align: bottom;
             }
           }
 
-          > td, > th {
+          > td,
+          > th {
             padding: 12px;
             .omattiedot-phone({
               padding: 6px;
@@ -96,7 +109,9 @@
 
           > td {
             border-bottom: 5px solid white;
-            &.laajuus, &.arvosana {
+            &.laajuus,
+            &.arvosana,
+            &.predicted-arvosana {
               text-align: right;
               max-width: 76px;
 
@@ -169,7 +184,9 @@
       }
 
       > thead > tr > th.arvosana,
-      > tbody > tr > td.arvosana {
+      > thead > tr > th.predicted-arvosana,
+      > tbody > tr > td.arvosana,
+      > tbody > tr > td.predicted-arvosana {
         text-align: center;
         width: 8rem;
 
@@ -257,4 +274,3 @@
     }
   }
 }
-

@@ -1,9 +1,8 @@
 package fi.oph.koski.schema
 
 import java.time.{LocalDate, LocalDateTime}
-
 import fi.oph.koski.schema.LocalizedString.english
-import fi.oph.koski.schema.annotation.{FlattenInUI, KoodistoKoodiarvo, KoodistoUri, OksaUri}
+import fi.oph.koski.schema.annotation.{Deprecated, FlattenInUI, Hidden, KoodistoKoodiarvo, KoodistoUri, OksaUri}
 import fi.oph.scalaschema.annotation._
 
 @Description("IB-tutkinnon opiskeluoikeus")
@@ -69,6 +68,7 @@ case class IBOppiaineenSuoritus(
   @Title("Oppiaine")
   koulutusmoduuli: IBAineRyhmäOppiaine,
   arviointi: Option[List[IBOppiaineenArviointi]] = None,
+  predictedArviointi: Option[List[IBOppiaineenPredictedArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @Description("Oppiaineeseen kuuluvien kurssien suoritukset")
   @Title("Kurssit")
@@ -77,6 +77,10 @@ case class IBOppiaineenSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "iboppiaine", koodistoUri = "suorituksentyyppi")
 ) extends IBSuoritus {
   override def ryhmittelytekijä: Option[String] = koulutusmoduuli.taso.map(_.koodiarvo)
+  override def parasArviointi: Option[Arviointi] = {
+    val arvioinnit: List[Arviointi] = arviointi.fold(predictedArviointi.toList.flatten)(_.map(IBOppiaineenPredictedArviointi.apply))
+    arvioinnit.reduceOption((a, b) => Arviointi.korkeampiArviointi(a, b))
+  }
 }
 
 @Description("Theory of Knowledge-suorituksen tiedot")
@@ -118,16 +122,44 @@ case class IBExtendedEssaySuoritus(
 @Title("IB-oppiaineen arviointi")
 case class IBOppiaineenArviointi(
   @Description("Onko arvoitu arvosana vai ei, jos ei niin tarkoittaa IBOn vahvistamaa arvosanaa")
-  predicted: Boolean = true,
+  @Deprecated("Käytä IB-oppiaineen suorituksen predictedArviointi-kenttää")
+  @Hidden
+  predicted: Boolean = false,
   @KoodistoUri("arviointiasteikkoib")
   arvosana: Koodistokoodiviite,
   @Description("Effort-arvosana, kuvaa opiskelijan tunnollisuutta, aktiivisuutta ja yritteliäisyyttä. Arvosteluasteikko: A = very good, B = good, C = needs improvement")
   @KoodistoUri("effortasteikkoib")
+  @Deprecated("Effort-arvosanaa ei enää tallenneta KOSKI-tietovarantoon")
   effort: Option[Koodistokoodiviite] = None,
   @Description("Arviointipäivämäärä")
   päivä: Option[LocalDate]
 ) extends IBArviointi {
   override def arviointipäivä: Option[LocalDate] = päivä
+}
+
+object IBOppiaineenArviointi {
+  def apply(predicted: IBOppiaineenPredictedArviointi): IBOppiaineenArviointi = IBOppiaineenArviointi(
+    predicted = true,
+    arvosana = predicted.arvosana,
+    päivä = predicted.päivä,
+  )
+}
+
+@Title("IB-oppiaineen predicted-arviointi")
+case class IBOppiaineenPredictedArviointi(
+  @KoodistoUri("arviointiasteikkoib")
+  arvosana: Koodistokoodiviite,
+  @Description("Arviointipäivämäärä")
+  päivä: Option[LocalDate]
+) extends IBArviointi {
+  override def arviointipäivä: Option[LocalDate] = päivä
+}
+
+object IBOppiaineenPredictedArviointi {
+  def apply(arviointi: IBOppiaineenArviointi): IBOppiaineenPredictedArviointi = IBOppiaineenPredictedArviointi(
+    arvosana = arviointi.arvosana,
+    päivä = arviointi.päivä,
+  )
 }
 
 @Title("IB CAS -oppiaineen arviointi")

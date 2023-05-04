@@ -73,7 +73,7 @@ class IBSuoritustiedotRaporttiSpec extends AnyFreeSpec with Matchers with Raport
 
       "suoritustiedot sheetillä IB-tutkinnon suorituksille" in {
         val suoritusTiedotSheet = raporttiRivitIB.head
-        suoritusTiedotSheet.size shouldBe 2
+        suoritusTiedotSheet.size shouldBe 3
 
         lazy val expectedPetteri = Map(
           "Opiskeluoikeuden oid" -> "",
@@ -89,11 +89,11 @@ class IBSuoritustiedotRaporttiSpec extends AnyFreeSpec with Matchers with Raport
           "Sukunimi" -> ibPredicted.sukunimi,
           "Etunimet" -> ibPredicted.etunimet,
           "Opiskeluoikeuden alkamispäivä" -> Some(LocalDate.of(2012, 9, 1)),
-          "Viimeisin opiskeluoikeuden tila" -> Some("valmistunut"),
-          "Opiskeluoikeuden tilat aikajakson aikana" -> "lasna, valmistunut",
+          "Viimeisin opiskeluoikeuden tila" -> Some("lasna"),
+          "Opiskeluoikeuden tilat aikajakson aikana" -> "lasna",
           "Päätason suoritusten nimet" -> Some("IB-tutkinto (International Baccalaureate)"),
-          "Opiskeluoikeuden päättymispäivä" -> Some(LocalDate.of(2016, 6, 4)),
-          "Rahoitukset" -> "1, 1",
+          "Opiskeluoikeuden päättymispäivä" -> None,
+          "Rahoitukset" -> "1",
           "Läsnä/valmistunut-rahoitusmuodot syötetty" -> true,
           "Maksuttomuus" -> None,
           "Oikeutta maksuttomuuteen pidennetty" -> None,
@@ -107,7 +107,7 @@ class IBSuoritustiedotRaporttiSpec extends AnyFreeSpec with Matchers with Raport
           "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)" -> 2.0,
           "Yhteislaajuus (tunnustetut kurssit)" -> 0,
           "Yhteislaajuus (eri vuonna korotetut kurssit)" -> 0,
-          "A2 Englanti valtakunnallinen" -> "Arvosana 7, 6.0 kurssia",
+          "A2 Englanti valtakunnallinen" -> "Arvosana 6, 6.0 kurssia",
           "BIO Biology valtakunnallinen" -> "Arvosana 5, 9.0 kurssia (joista 1.0 hylättyjä)",
           "HIS History valtakunnallinen" -> "Arvosana 6, 6.0 kurssia (joista 1.0 hylättyjä)",
           "MATST Mathematical studies valtakunnallinen" -> "Arvosana 5, 6.0 kurssia",
@@ -120,7 +120,7 @@ class IBSuoritustiedotRaporttiSpec extends AnyFreeSpec with Matchers with Raport
 
       "suoritustiedot sheetillä Pre-IB suorituksille" in {
         val suoritusTiedotSheet = raporttiRivitPreIB.head
-        suoritusTiedotSheet.size shouldBe 4
+        suoritusTiedotSheet.size shouldBe 5
 
         lazy val expectedPetteri = Map(
           "Opiskeluoikeuden oid" -> "",
@@ -136,11 +136,11 @@ class IBSuoritustiedotRaporttiSpec extends AnyFreeSpec with Matchers with Raport
           "Sukunimi" -> ibPredicted.sukunimi,
           "Etunimet" -> ibPredicted.etunimet,
           "Opiskeluoikeuden alkamispäivä" -> Some(LocalDate.of(2012, 9, 1)),
-          "Viimeisin opiskeluoikeuden tila" -> Some("valmistunut"),
-          "Opiskeluoikeuden tilat aikajakson aikana" -> "lasna, valmistunut",
+          "Viimeisin opiskeluoikeuden tila" -> Some("lasna"),
+          "Opiskeluoikeuden tilat aikajakson aikana" -> "lasna",
           "Päätason suoritusten nimet" -> Some("Pre-IB"),
-          "Opiskeluoikeuden päättymispäivä" -> Some(LocalDate.of(2016, 6, 4)),
-          "Rahoitukset" -> "1, 1",
+          "Opiskeluoikeuden päättymispäivä" -> None,
+          "Rahoitukset" -> "1",
           "Läsnä/valmistunut-rahoitusmuodot syötetty" -> true,
           "Maksuttomuus" -> None,
           "Oikeutta maksuttomuuteen pidennetty" -> None,
@@ -188,7 +188,7 @@ class IBSuoritustiedotRaporttiSpec extends AnyFreeSpec with Matchers with Raport
 
       "suoritustiedot sheetillä Pre-IB 2019 suorituksille" in {
         val suoritusTiedotSheet = raporttiRivitPreIB.head
-        suoritusTiedotSheet.size shouldBe 4
+        suoritusTiedotSheet.size shouldBe 5
 
         lazy val expectedPate = Map(
           "Opiskeluoikeuden oid" -> "",

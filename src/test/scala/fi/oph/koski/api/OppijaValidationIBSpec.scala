@@ -3,13 +3,15 @@ package fi.oph.koski.api
 import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.documentation.{ExampleData, LukioExampleData}
 import fi.oph.koski.documentation.ExampleData._
-import fi.oph.koski.documentation.ExamplesIB._
+import fi.oph.koski.documentation.ExamplesIB.{ibTutkinnonSuoritus, _}
+import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.ressunLukio
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.schema._
 import org.scalatest.freespec.AnyFreeSpec
 
 import java.time.LocalDate.{of => date}
+import fi.oph.koski.util.ChainingSyntax._
 
 class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpiskeluoikeusTestMethods[IBOpiskeluoikeus] {
 
@@ -21,7 +23,7 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
     "IB tutkinnon suoritus" - {
 
       "CAS-aine, arvosanan antaminen" - {
-        def historiaOppiaine(level: String, arvosana: String) = ibAineSuoritus(ibOppiaine("HIS", level, 3), ibArviointi(arvosana, predicted = false))
+        def historiaOppiaine(level: String, arvosana: String) = ibAineSuoritus(ibOppiaine("HIS", level, 3), ibArviointi(arvosana), ibPredictedArviointi(arvosana))
 
         "Arvosana S" - {
           "Palautetaan HTTP/200" in {
@@ -41,7 +43,7 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
       }
 
       "Kaksi samaa oppiainetta"  - {
-        def historiaOppiaine(level: String, arvosana: String) = ibAineSuoritus(ibOppiaine("HIS", level, 3), ibArviointi(arvosana, predicted = false))
+        def historiaOppiaine(level: String, arvosana: String) = ibAineSuoritus(ibOppiaine("HIS", level, 3), ibArviointi(arvosana), ibPredictedArviointi(arvosana))
         "Joilla sama taso" - {
           val opiskeluoikeus = opiskeluoikeusIBTutkinnollaWithOppiaineet(List(
             historiaOppiaine(higherLevel, "S"),
@@ -132,6 +134,59 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
           putOpiskeluoikeus(opiskeluoikeus, henkilö = vuonna2004SyntynytPeruskouluValmis2021) {
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä oppija on aloittanut Pre-IB opinnot aiemmin kuin 1.1.2021."))
           }
+        }
+      }
+    }
+
+    "Suorituksen vahvistaminen" - {
+      "Ei onnistu, jos päättöarvosana puuttuu" in {
+        val suoritus = ibTutkinnonSuoritus(predicted = false)
+        val osasuoritukset = suoritus.osasuoritukset.map(_.map(_.copy(
+          arviointi = None,
+          predictedArviointi = ibPredictedArviointi("4"),
+        )))
+        val opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(suoritus.copy(osasuoritukset = osasuoritukset)))
+        putOpiskeluoikeus(opiskeluoikeus) {
+          verifyResponseStatus(400,
+            KoskiErrorCategory.badRequest.validation.tila.keskeneräinenOsasuoritus("Valmiiksi merkityllä suorituksella koulutus/301102 on keskeneräinen osasuoritus oppiaineetib/A"),
+            KoskiErrorCategory.badRequest.validation.arviointi.arviointiPuuttuu("Vahvistetun suorituksen koulutus/301102 osasuoritukselta oppiaineetib/A puuttuu päättöarvosana"),
+            KoskiErrorCategory.badRequest.validation.arviointi.arviointiPuuttuu("Vahvistetun suorituksen koulutus/301102 osasuoritukselta oppiaineetib/A2 puuttuu päättöarvosana"),
+            KoskiErrorCategory.badRequest.validation.arviointi.arviointiPuuttuu("Vahvistetun suorituksen koulutus/301102 osasuoritukselta oppiaineetib/HIS puuttuu päättöarvosana"),
+            KoskiErrorCategory.badRequest.validation.arviointi.arviointiPuuttuu("Vahvistetun suorituksen koulutus/301102 osasuoritukselta oppiaineetib/PSY puuttuu päättöarvosana"),
+            KoskiErrorCategory.badRequest.validation.arviointi.arviointiPuuttuu("Vahvistetun suorituksen koulutus/301102 osasuoritukselta oppiaineetib/BIO puuttuu päättöarvosana"),
+            KoskiErrorCategory.badRequest.validation.arviointi.arviointiPuuttuu("Vahvistetun suorituksen koulutus/301102 osasuoritukselta oppiaineetib/MATST puuttuu päättöarvosana"),
+          )
+        }
+      }
+
+      "Ei onnistu, jos predicted grade puuttuu" in {
+        val suoritus = ibTutkinnonSuoritus(predicted = false)
+        val osasuoritukset = suoritus.osasuoritukset.map(_.map(_.copy(
+          arviointi = ibArviointi("5"),
+          predictedArviointi = None,
+        )))
+        val opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(suoritus.copy(osasuoritukset = osasuoritukset)))
+        putOpiskeluoikeus(opiskeluoikeus) {
+          verifyResponseStatus(400,
+            KoskiErrorCategory.badRequest.validation.arviointi.arviointiPuuttuu("Vahvistetun suorituksen koulutus/301102 osasuoritukselta oppiaineetib/A puuttuu predicted grade"),
+            KoskiErrorCategory.badRequest.validation.arviointi.arviointiPuuttuu("Vahvistetun suorituksen koulutus/301102 osasuoritukselta oppiaineetib/A2 puuttuu predicted grade"),
+            KoskiErrorCategory.badRequest.validation.arviointi.arviointiPuuttuu("Vahvistetun suorituksen koulutus/301102 osasuoritukselta oppiaineetib/HIS puuttuu predicted grade"),
+            KoskiErrorCategory.badRequest.validation.arviointi.arviointiPuuttuu("Vahvistetun suorituksen koulutus/301102 osasuoritukselta oppiaineetib/PSY puuttuu predicted grade"),
+            KoskiErrorCategory.badRequest.validation.arviointi.arviointiPuuttuu("Vahvistetun suorituksen koulutus/301102 osasuoritukselta oppiaineetib/BIO puuttuu predicted grade"),
+            KoskiErrorCategory.badRequest.validation.arviointi.arviointiPuuttuu("Vahvistetun suorituksen koulutus/301102 osasuoritukselta oppiaineetib/MATST puuttuu predicted grade"),
+          )
+        }
+      }
+
+      "Onnistuu, kun molemmat arvosanat on annettu" in {
+        val suoritus = ibTutkinnonSuoritus(predicted = false)
+        val osasuoritukset = suoritus.osasuoritukset.map(_.map(_.copy(
+          arviointi = ibArviointi("5"),
+          predictedArviointi = ibPredictedArviointi("4"),
+        )))
+        val opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(suoritus.copy(osasuoritukset = osasuoritukset)))
+        putOpiskeluoikeus(opiskeluoikeus) {
+          verifyResponseStatusOk()
         }
       }
     }

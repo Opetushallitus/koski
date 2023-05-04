@@ -62,9 +62,9 @@ class LukioDiaIbInternationalESHOpiskelijaMaaratRaporttiSpec extends AnyFreeSpec
       helsinki.aikuistenOppimaaranSuorittajia shouldBe(1)
       helsinki.aineopiskelija shouldBe(0)
 
-      ressu.opiskelijoidenMaara shouldBe(5)
-      ressu.oppimaaranSuorittajia shouldBe(4)
-      ressu.nuortenOppimaaranSuorittajia shouldBe(4)
+      ressu.opiskelijoidenMaara shouldBe(6)
+      ressu.oppimaaranSuorittajia shouldBe(5)
+      ressu.nuortenOppimaaranSuorittajia shouldBe(5)
       ressu.aikuistenOppimaaranSuorittajia shouldBe(0)
       ressu.aineopiskelija shouldBe(1)
     }
@@ -75,9 +75,9 @@ class LukioDiaIbInternationalESHOpiskelijaMaaratRaporttiSpec extends AnyFreeSpec
       helsinki.aikuistenOppimaaranSuorittajia_VOSRahoitteisia shouldBe(0)
       helsinki.aineopiskelija_VOSRahoitteisia shouldBe(0)
 
-      ressu.opiskelijoidenMaara_VOSRahoitteisia should equal(2)
-      ressu.oppimaaranSuorittajia_VOSRahoitteisia shouldBe(1)
-      ressu.nuortenOppimaaranSuorittajia_VOSRahoitteisia shouldBe(1)
+      ressu.opiskelijoidenMaara_VOSRahoitteisia should equal(3)
+      ressu.oppimaaranSuorittajia_VOSRahoitteisia shouldBe(2)
+      ressu.nuortenOppimaaranSuorittajia_VOSRahoitteisia shouldBe(2)
       ressu.aikuistenOppimaaranSuorittajia_VOSRahoitteisia shouldBe(0)
       ressu.aineopiskelija_VOSRahoitteisia shouldBe(1)
     }
@@ -108,8 +108,8 @@ class LukioDiaIbInternationalESHOpiskelijaMaaratRaporttiSpec extends AnyFreeSpec
       helsinki.nuortenOppimaaranSuorittajia_YliKolmeVuotta_VOSRahoitteisia shouldBe(1)
       helsinki.aikuistenOppimaaranSuorittajia_YliKolmeVuotta_VOSRahoitteisia shouldBe(0)
 
-      ressu.oppimaaranSuorittajia_YliKolmeVuotta_VOSRahoitteisia shouldBe(0)
-      ressu.nuortenOppimaaranSuorittajia_YliKolmeVuotta_VOSRahoitteisia shouldBe(0)
+      ressu.oppimaaranSuorittajia_YliKolmeVuotta_VOSRahoitteisia shouldBe(1)
+      ressu.nuortenOppimaaranSuorittajia_YliKolmeVuotta_VOSRahoitteisia shouldBe(1)
       ressu.aikuistenOppimaaranSuorittajia_YliKolmeVuotta_VOSRahoitteisia shouldBe(0)
     }
     "Opetuskieli suomi" in {
@@ -135,8 +135,8 @@ class LukioDiaIbInternationalESHOpiskelijaMaaratRaporttiSpec extends AnyFreeSpec
       helsinki.nuortenOppimaaranSuorittajia_OpetuskieliMuu shouldBe(0)
       helsinki.aikuistenOppimaaranSuorittajia_OpetuskieliMuu shouldBe(0)
 
-      ressu.oppimaaranSuorittajia_OpetuskieliMuu shouldBe(4)
-      ressu.nuortenOppimaaranSuorittajia_OpetuskieliMuu shouldBe(4)
+      ressu.oppimaaranSuorittajia_OpetuskieliMuu shouldBe(5)
+      ressu.nuortenOppimaaranSuorittajia_OpetuskieliMuu shouldBe(5)
       ressu.aikuistenOppimaaranSuorittajia_OpetuskieliMuu shouldBe(0)
     }
     "Sisäoppilaitosmainen majoitus" in {

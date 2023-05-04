@@ -117,7 +117,8 @@ const Arviointi = ({
   oppiaine,
   suoritetutKurssit,
   footnote,
-  showKeskiarvo = true
+  showKeskiarvo = true,
+  predicted
 }) => {
   const { edit, suoritus } = oppiaine.context
   const ishDiploma =
@@ -129,7 +130,23 @@ const Arviointi = ({
     return !(p.key === 'arvosana' || p.model.optional || predictedInISH)
   }
 
-  const arviointi = modelData(oppiaine, 'arviointi')
+  // IB-opintojen predicted- ja päättöarvosanat tallennettiin tietomallissa aiemmin arviointi-kenttään,
+  // mutta nykyään ne erotellaan kahteen erilliseen kenttään. Tuetaan datan taaksepäinyhteensopivuutta
+  // etsimällä ne tarvittaessa myös vanhasta kentästä. Jos predicted ei ole määritelty, käytetään vanhaa
+  // logiikkaa.
+  const arviointiField = predicted === true ? 'predictedArviointi' : 'arviointi'
+  const arviointi =
+    predicted === undefined
+      ? modelData(oppiaine, arviointiField)
+      : predicted
+      ? modelData(oppiaine, 'predictedArviointi') ||
+        (modelData(oppiaine, 'arviointi') || []).filter(
+          (a) => a.arvosana.predicted
+        )
+      : (modelData(oppiaine, 'arviointi') || []).filter(
+          (a) => !a.arvosana.predicted
+        )
+
   const keskiarvo = showKeskiarvo
     ? kurssienKeskiarvo(suoritetutKurssit)
     : undefined
@@ -139,14 +156,14 @@ const Arviointi = ({
       <div className="annettuArvosana">
         {edit || arviointi ? (
           <span className="value">
-            <ArvosanaEditor model={oppiaine} />
+            <ArvosanaEditor model={oppiaine} arviointiField={arviointiField} />
           </span>
         ) : (
           '-'
         )}
         {edit && (
           <PropertiesEditor
-            model={modelLookup(oppiaine, 'arviointi.-1')}
+            model={modelLookup(oppiaine, `${arviointiField}.-1`)}
             propertyFilter={filterProps}
             key={'properties'}
           />

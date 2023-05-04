@@ -12,6 +12,7 @@ import {
   diaLukukausiAlternativesCompletionFn,
   diaRyhmät
 } from '../dia/DIA'
+import Text from '../i18n/Text'
 
 const diaCustomizations = {
   groupAineet: diaRyhmät,
@@ -134,11 +135,17 @@ export default ({
     edit
   )
 
+  const isIbTutkinto = suorituksetModel.parent.value.classes.includes(
+    'ibtutkinnonsuoritus'
+  )
+
   const commonOppiaineProps = {
     additionalEditableProperties,
     additionalEditableKoulutusmoduuliProperties,
     useOppiaineLaajuus,
     showArviointi,
+    showKeskiarvo: !isIbTutkinto,
+    showPredictedArviointi: isIbTutkinto,
     customOsasuoritusTitle,
     customOsasuoritusAlternativesCompletionFn: customOsasuoritusAlternativesFn,
     customKurssitSortFn
@@ -150,6 +157,10 @@ export default ({
         <LukionOppiaineetTableHead
           laajuusyksikkö={laajuusyksikkö}
           showArviointi={showArviointi}
+          showPredictedArviointi={isIbTutkinto}
+          arvosanaHeader={
+            isIbTutkinto ? <Text name="Päättöarvosana" /> : undefined
+          }
         />
         <tbody>
           {aineryhmät.map((ryhmät) =>

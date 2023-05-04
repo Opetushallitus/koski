@@ -524,7 +524,7 @@ describe('Omat tiedot - lukio', function () {
       describe('Kun opiskeluoikeus avataan', function () {
         before(
           opinnot.valitseOmatTiedotOpiskeluoikeus(
-            'IB-tutkinto (International Baccalaureate) (2012—2016, valmistunut)'
+            'IB-tutkinto (International Baccalaureate) (2012—, läsnä)'
           )
         )
 
@@ -545,7 +545,7 @@ describe('Omat tiedot - lukio', function () {
               'S FIN_S9\n' +
               '5\n' +
               'Language A: language and literature, englanti\n' +
-              '(6 kurssia) 7 *\n' +
+              '(6 kurssia) 6 *\n' +
               'ENG_B_H1\n' +
               '6 ENG_B_H2\n' +
               '7 ENG_B_H4\n' +
@@ -608,7 +608,7 @@ describe('Omat tiedot - lukio', function () {
         describe('Kun valitaan Pre-IB -välilehti', function () {
           before(
             opinnot.valitseSuoritus(
-              'IB-tutkinto (International Baccalaureate) (2012—2016, valmistunut)',
+              'IB-tutkinto (International Baccalaureate) (2012—, läsnä)',
               'Pre-IB',
               true
             )

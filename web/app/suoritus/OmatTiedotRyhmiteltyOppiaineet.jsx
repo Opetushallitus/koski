@@ -23,14 +23,36 @@ const OmatTiedotOppiaineryhmä = ({
     <table className="omattiedot-suoritukset">
       <OmatTiedotLukionOppiaineetTableHead
         arvosanaHeader={
-          aineet.some(resolveArvosanaModel) ? <Text name="Arvosana" /> : null
+          aineet.some(
+            (aine) =>
+              resolveArvosanaModel(aine, 'arviointi') ||
+              resolveArvosanaModel(aine, 'predictedArviointi')
+          ) ? (
+            <Text name="Arvosana" />
+          ) : null
         }
       />
       <tbody>
         {aineet &&
           aineet.map((oppiaine, oppiaineIndex) => {
+            const predictedArviointi = modelData(
+              oppiaine,
+              'predictedArviointi.-1'
+            )
+            const arviointi = modelData(oppiaine, 'arviointi.-1')
+            const predictedArviointiVanhassaHaarassa = arviointi?.predicted
+            const arviointiField =
+              arviointi && !arviointi?.predicted
+                ? 'arviointi' // Vanhan tietomallin mukaisesti predicted löytyy arviointi-kentästä
+                : predictedArviointi
+                ? 'predictedArviointi' // Predicted grade löytyy, mutta ei päättöarvosanaa
+                : 'arviointi'
+
             const footnote =
-              modelData(oppiaine, 'arviointi.-1.predicted') && arvosanaFootnote
+              (predictedArviointiVanhassaHaarassa ||
+                (!arviointi && predictedArviointi)) &&
+              arvosanaFootnote
+
             return (
               <OmatTiedotLukionOppiaine
                 baret-lift
@@ -43,6 +65,7 @@ const OmatTiedotOppiaineryhmä = ({
                 useOppiaineLaajuus={useOppiaineLaajuus}
                 customOsasuoritusTitle={customOsasuoritusTitle}
                 customKurssitSortFn={customKurssitSortFn}
+                arviointiField={arviointiField}
               />
             )
           })}

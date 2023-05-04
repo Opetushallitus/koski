@@ -288,7 +288,8 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
       (KoskiSpecificMockOppijat.ylioppilasLukiolainenVanhaSuoritus, ExamplesLukio.päättötodistus()),
       (KoskiSpecificMockOppijat.ylioppilasLukiolainenTimeouttaava, ExamplesLukio.päättötodistus()),
       (KoskiSpecificMockOppijat.ylioppilasLukiolainenRikki, ExamplesLukio.päättötodistus()),
-      (KoskiSpecificMockOppijat.amisKoulutusvienti, AmmatillinenExampleData.sosiaaliJaTerveysalaKoulutusvientiOpiskeluoikeus())
+      (KoskiSpecificMockOppijat.amisKoulutusvienti, AmmatillinenExampleData.sosiaaliJaTerveysalaKoulutusvientiOpiskeluoikeus()),
+      (KoskiSpecificMockOppijat.vanhanMallinenIBOppija, ExamplesIB.kaikkiArviointityypitArvioinnissaSisältäväVanhanmallinenOpiskeluoikeus),
     )
   }
 

@@ -63,11 +63,13 @@ export class LukionOppiaineEditor extends React.Component {
       showLaajuus = true,
       useOppiaineLaajuus = false,
       showArviointi = true,
+      showPredictedArviointi = false,
       showArviointiEditor = true,
       customOsasuoritusTitle,
       customOsasuoritusAlternativesCompletionFn,
       customKurssitSortFn,
       showKeskiarvo = true,
+      showPredictedKeskiarvo = true,
       useHylkäämättömätLaajuus = true,
       showHyväksytystiArvioitujenLaajuus = false,
       forceLaajuusOpintopisteinä = false
@@ -146,6 +148,20 @@ export class LukionOppiaineEditor extends React.Component {
             )}
           </td>
         )}
+        {showPredictedArviointi && (
+          <td className="predicted-arvosana">
+            {showArviointiEditor && (
+              <Arviointi
+                arviointiField="predictedArviointi"
+                oppiaine={oppiaine}
+                suoritetutKurssit={suoritetutKurssit(kurssit)}
+                footnote={footnote}
+                predicted={true}
+                showKeskiarvo={false}
+              />
+            )}
+          </td>
+        )}
         {showArviointi && (
           <td className="arvosana">
             {showArviointiEditor && (
@@ -154,6 +170,7 @@ export class LukionOppiaineEditor extends React.Component {
                 suoritetutKurssit={suoritetutKurssit(kurssit)}
                 footnote={footnote}
                 showKeskiarvo={showKeskiarvo}
+                predicted={showPredictedArviointi ? false : undefined}
               />
             )}
           </td>

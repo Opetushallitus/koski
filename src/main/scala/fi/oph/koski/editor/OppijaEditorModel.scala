@@ -10,6 +10,7 @@ import fi.oph.koski.schema.annotation.{Hidden, KoodistoUri}
 import fi.oph.koski.util.{Timing, WithWarnings}
 import fi.oph.scalaschema.{ClassSchema, ExtractionContext}
 import fi.oph.koski.util.DateOrdering.{localDateOptionOrdering, localDateOrdering}
+import fi.oph.koski.util.OptionalLists.optionalList
 
 object OppijaEditorModel extends Timing {
   val opiskeluoikeusOrdering: Ordering[Opiskeluoikeus] = Ordering.by(suoritusJaAlkamispäiväKriteeri)(Ordering.Tuple2(Ordering.Int, localDateOptionOrdering.reverse))
@@ -45,7 +46,8 @@ object OppijaEditorModel extends Timing {
     val oppijaYksilöintitiedolla = oppijaWithWarnings.getIgnoringWarnings
     val oppija = oppijaYksilöintitiedolla.oppija
     val yksilöity = oppijaYksilöintitiedolla.yksilöity
-    val tyypit = oppija.opiskeluoikeudet.groupBy(oo => application.koodistoViitePalvelu.validateRequired(oo.tyyppi)).map {
+    val opiskeluoikeudet = oppija.opiskeluoikeudet.map(sovitaTietomallinMuutoksetEditorModelille)
+    val tyypit = opiskeluoikeudet.groupBy(oo => application.koodistoViitePalvelu.validateRequired(oo.tyyppi)).map {
       case (tyyppi, opiskeluoikeudet) =>
         val oppilaitokset = opiskeluoikeudet.groupBy(oo => oo.getOppilaitosOrKoulutusToimija).map {
           case (oppilaitos, opiskeluoikeudet) => toOppilaitoksenOpiskeluoikeus(oppilaitos, opiskeluoikeudet)
@@ -140,6 +142,30 @@ object OppijaEditorModel extends Timing {
       case _ => 1
     }
   }
+
+  def sovitaTietomallinMuutoksetEditorModelille(opiskeluoikeus: Opiskeluoikeus): Opiskeluoikeus =
+    opiskeluoikeus match {
+      case ib: IBOpiskeluoikeus => ib.copy(suoritukset = ib.suoritukset.map {
+        case pts: IBTutkinnonSuoritus => pts.copy(
+          osasuoritukset = pts.osasuoritukset.map(_.map(erotteleIBOppiaineenArvostelutOmiinListoihin)),
+        )
+        case a: Any => a
+      })
+      case _ => opiskeluoikeus
+    }
+
+  def erotteleIBOppiaineenArvostelutOmiinListoihin(osasuoritus: IBOppiaineenSuoritus): IBOppiaineenSuoritus =
+     osasuoritus.copy(
+      arviointi =
+        osasuoritus.arviointi
+          .map(_.filterNot(_.predicted))
+          .flatMap(optionalList),
+      predictedArviointi =
+        ((osasuoritus.predictedArviointi, osasuoritus.arviointi) match {
+          case (Some(predicted), _) => Some(predicted)
+          case (None, arviointi) => arviointi.map(_.filter(_.predicted).map(IBOppiaineenPredictedArviointi.apply))
+        }).flatMap(optionalList)
+    )
 }
 
 object EditorSchema {

@@ -1,6 +1,7 @@
 import { IBOppiaineenArviointi } from './IBOppiaineenArviointi'
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
+import { IBOppiaineenPredictedArviointi } from './IBOppiaineenPredictedArviointi'
 import { IBAineRyhmäOppiaine } from './IBAineRyhmaOppiaine'
 import { IBKurssinSuoritus } from './IBKurssinSuoritus'
 
@@ -14,6 +15,7 @@ export type IBOppiaineenSuoritus = {
   arviointi?: Array<IBOppiaineenArviointi>
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'iboppiaine'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
+  predictedArviointi?: Array<IBOppiaineenPredictedArviointi>
   suorituskieli?: Koodistokoodiviite<'kieli', string>
   koulutusmoduuli: IBAineRyhmäOppiaine
   osasuoritukset?: Array<IBKurssinSuoritus>
@@ -23,6 +25,7 @@ export const IBOppiaineenSuoritus = (o: {
   arviointi?: Array<IBOppiaineenArviointi>
   tyyppi?: Koodistokoodiviite<'suorituksentyyppi', 'iboppiaine'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
+  predictedArviointi?: Array<IBOppiaineenPredictedArviointi>
   suorituskieli?: Koodistokoodiviite<'kieli', string>
   koulutusmoduuli: IBAineRyhmäOppiaine
   osasuoritukset?: Array<IBKurssinSuoritus>

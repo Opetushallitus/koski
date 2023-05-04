@@ -7,13 +7,15 @@
 }
 
 .opiskeluoikeus-content.editing .suoritukset {
-  .ibtutkinnonsuoritus, .diplomavuosiluokansuoritus {
+  .ibtutkinnonsuoritus,
+  .diplomavuosiluokansuoritus {
     .extendedEssay > .value:not(.empty) > div > .properties {
       margin-bottom: 1rem;
     }
 
     table.suoritukset > tbody > tr > td {
-      &.arvosana {
+      &.arvosana,
+      &.predicted-arvosana {
         max-width: 150px;
       }
     }
