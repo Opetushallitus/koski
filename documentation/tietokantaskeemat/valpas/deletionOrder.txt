@@ -1,0 +1,8 @@
+schema_version
+oppivelvollisuudesta_vapautetut
+opiskeluoikeus_lisätiedot
+oppivelvollisuuden_keskeytyshistoria
+ilmoitus_opiskeluoikeus_konteksti
+ilmoitus_lisätiedot
+oppivelvollisuuden_keskeytys
+ilmoitus

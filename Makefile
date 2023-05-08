@@ -131,6 +131,12 @@ run:
 docker-dbs:
 	${DOCKER_COMPOSE} up ${DOCKER_COMPOSE_OPTS}
 
+db-docs:
+	cd scripts/db-schema-docs && ./generate.sh
+
+view-db-docs:
+	npx http-serve documentation/tietokantaskeemat
+
 ### Code checks
 
 .PHONY: eslint

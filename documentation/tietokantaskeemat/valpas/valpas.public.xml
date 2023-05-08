@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?><database name="valpas" schema="public" type="PostgreSQL - 12.11 (Debian 12.11-1.pgdg110+1)">
+   <sequences>
+      <sequence increment="1" name="oppivelvollisuuden_keskeytyshistoria_id_seq" startValue="1"/>
+   </sequences>
+   <tables>
+      <table name="ilmoitus" numRows="0" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="uuid" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111">
+            <child column="ilmoitus_uuid" foreignKey="ilmoitus_fk" implied="false" onDeleteCascade="true" schema="public" table="ilmoitus_lisätiedot"/>
+            <child column="ilmoitus_uuid" foreignKey="ilmoitus_opiskeluoikeus_konteksti_fk" implied="false" onDeleteCascade="true" schema="public" table="ilmoitus_opiskeluoikeus_konteksti"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="1" name="luotu" nullable="false" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="oppija_oid" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="kunta_oid" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="tekijä_organisaatio_oid" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="tekijä_oid" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <primaryKey column="uuid" sequenceNumberInPK="1"/>
+         <index name="ilmoitus_pkey" unique="true">
+            <column ascending="true" name="uuid"/>
+         </index>
+      </table>
+      <table name="ilmoitus_lisätiedot" numRows="0" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="ilmoitus_uuid" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111">
+            <parent column="uuid" foreignKey="ilmoitus_fk" implied="false" onDeleteCascade="true" schema="public" table="ilmoitus"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="data" nullable="false" remarks="" size="2147483647" type="jsonb" typeCode="1111"/>
+         <primaryKey column="ilmoitus_uuid" sequenceNumberInPK="1"/>
+         <index name="ilmoitus_lisätiedot_pkey" unique="true">
+            <column ascending="true" name="ilmoitus_uuid"/>
+         </index>
+      </table>
+      <table name="ilmoitus_opiskeluoikeus_konteksti" numRows="0" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="ilmoitus_uuid" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111">
+            <parent column="uuid" foreignKey="ilmoitus_opiskeluoikeus_konteksti_fk" implied="false" onDeleteCascade="true" schema="public" table="ilmoitus"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="opiskeluoikeus_oid" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <primaryKey column="ilmoitus_uuid" sequenceNumberInPK="1"/>
+         <primaryKey column="opiskeluoikeus_oid" sequenceNumberInPK="2"/>
+         <index name="ilmoitus_opiskeluoikeus_konteksti_pkey" unique="true">
+            <column ascending="true" name="ilmoitus_uuid"/>
+            <column ascending="true" name="opiskeluoikeus_oid"/>
+         </index>
+      </table>
+      <table name="opiskeluoikeus_lisätiedot" numRows="0" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="oppija_oid" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="opiskeluoikeus_oid" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="oppilaitos_oid" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="muu_haku" nullable="false" remarks="" size="1" type="bool" typeCode="-7"/>
+         <primaryKey column="oppija_oid" sequenceNumberInPK="1"/>
+         <primaryKey column="opiskeluoikeus_oid" sequenceNumberInPK="2"/>
+         <primaryKey column="oppilaitos_oid" sequenceNumberInPK="3"/>
+         <index name="opiskeluoikeus_lisätiedot_pkey" unique="true">
+            <column ascending="true" name="oppija_oid"/>
+            <column ascending="true" name="opiskeluoikeus_oid"/>
+            <column ascending="true" name="oppilaitos_oid"/>
+         </index>
+      </table>
+      <table name="oppivelvollisuuden_keskeytys" numRows="0" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="uuid" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111">
+            <child column="ov_keskeytys_uuid" foreignKey="oppivelvollisuuden_keskeytyshistoria_ov_keskeytys_uuid_fkey" implied="false" onDeleteCascade="false" schema="public" table="oppivelvollisuuden_keskeytyshistoria"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="oppija_oid" nullable="false" remarks="" size="2147483647" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="alku" nullable="false" remarks="" size="13" type="date" typeCode="91"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="loppu" nullable="true" remarks="" size="13" type="date" typeCode="91"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="4" name="luotu" nullable="false" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="tekijä_oid" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="tekijä_organisaatio_oid" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="peruttu" nullable="false" remarks="" size="1" type="bool" typeCode="-7"/>
+         <primaryKey column="uuid" sequenceNumberInPK="1"/>
+         <index name="oppivelvollisuuden_keskeytys_pkey" unique="true">
+            <column ascending="true" name="uuid"/>
+         </index>
+      </table>
+      <table name="oppivelvollisuuden_keskeytyshistoria" numRows="0" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('oppivelvollisuuden_keskeytyshistoria_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="serial" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="ov_keskeytys_uuid" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111">
+            <parent column="uuid" foreignKey="oppivelvollisuuden_keskeytyshistoria_ov_keskeytys_uuid_fkey" implied="false" onDeleteCascade="false" schema="public" table="oppivelvollisuuden_keskeytys"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="2" name="muutos_tehty" nullable="false" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="muutoksen_tekija" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="oppija_oid" nullable="false" remarks="" size="2147483647" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="alku" nullable="false" remarks="" size="13" type="date" typeCode="91"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="loppu" nullable="true" remarks="" size="13" type="date" typeCode="91"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="7" name="luotu" nullable="false" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="tekijä_oid" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="tekijä_organisaatio_oid" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="peruttu" nullable="false" remarks="" size="1" type="bool" typeCode="-7"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="oppivelvollisuuden_keskeytyshistoria_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="oppivelvollisuudesta_vapautetut" numRows="0" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="oppija_oid" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="virkailija_oid" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="kunta_koodiarvo" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="vapautettu" nullable="false" remarks="" size="13" type="date" typeCode="91"/>
+         <column autoUpdated="false" defaultValue="now()" digits="6" id="4" name="aikaleima" nullable="false" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="'9999-01-01 00:00:00'::timestamp without time zone" digits="6" id="5" name="mitatoity" nullable="false" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <index name="oppivelvollisuudesta_vapautetut_oppija_oid_mitatoity_idx" unique="true">
+            <column ascending="true" name="oppija_oid"/>
+            <column ascending="true" name="mitatoity"/>
+         </index>
+      </table>
+      <table name="schema_version" numRows="0" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="version_rank" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="installed_rank" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="version" nullable="false" remarks="" size="50" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="description" nullable="false" remarks="" size="200" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="type" nullable="false" remarks="" size="20" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="script" nullable="false" remarks="" size="1000" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="checksum" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="installed_by" nullable="false" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="now()" digits="6" id="8" name="installed_on" nullable="false" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="execution_time" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="success" nullable="false" remarks="" size="1" type="bool" typeCode="-7"/>
+         <primaryKey column="version" sequenceNumberInPK="1"/>
+         <index name="schema_version_pk" unique="true">
+            <column ascending="true" name="version"/>
+         </index>
+         <index name="schema_version_ir_idx" unique="false">
+            <column ascending="true" name="installed_rank"/>
+         </index>
+         <index name="schema_version_s_idx" unique="false">
+            <column ascending="true" name="success"/>
+         </index>
+         <index name="schema_version_vr_idx" unique="false">
+            <column ascending="true" name="version_rank"/>
+         </index>
+      </table>
+   </tables>
+   <routines>
+      <routine dataAccess="MODIFIES" deterministic="false" name="uuid_generate_v1()" returnType="uuid" securityType="INVOKER" type="FUNCTION">
+         <comment/>
+         <definition language="C"><![CDATA[uuid_generate_v1]]></definition>
+         <parameters/>
+      </routine>
+      <routine dataAccess="MODIFIES" deterministic="false" name="uuid_generate_v1mc()" returnType="uuid" securityType="INVOKER" type="FUNCTION">
+         <comment/>
+         <definition language="C"><![CDATA[uuid_generate_v1mc]]></definition>
+         <parameters/>
+      </routine>
+      <routine dataAccess="MODIFIES" deterministic="true" name="uuid_generate_v3(uuid, text)" returnType="uuid" securityType="INVOKER" type="FUNCTION">
+         <comment/>
+         <definition language="C"><![CDATA[uuid_generate_v3]]></definition>
+         <parameters>
+            <parameter mode="IN" name="namespace" type="uuid"/>
+            <parameter mode="IN" name="name" type="text"/>
+         </parameters>
+      </routine>
+      <routine dataAccess="MODIFIES" deterministic="false" name="uuid_generate_v4()" returnType="uuid" securityType="INVOKER" type="FUNCTION">
+         <comment/>
+         <definition language="C"><![CDATA[uuid_generate_v4]]></definition>
+         <parameters/>
+      </routine>
+      <routine dataAccess="MODIFIES" deterministic="true" name="uuid_generate_v5(uuid, text)" returnType="uuid" securityType="INVOKER" type="FUNCTION">
+         <comment/>
+         <definition language="C"><![CDATA[uuid_generate_v5]]></definition>
+         <parameters>
+            <parameter mode="IN" name="namespace" type="uuid"/>
+            <parameter mode="IN" name="name" type="text"/>
+         </parameters>
+      </routine>
+      <routine dataAccess="MODIFIES" deterministic="true" name="uuid_nil()" returnType="uuid" securityType="INVOKER" type="FUNCTION">
+         <comment/>
+         <definition language="C"><![CDATA[uuid_nil]]></definition>
+         <parameters/>
+      </routine>
+      <routine dataAccess="MODIFIES" deterministic="true" name="uuid_ns_dns()" returnType="uuid" securityType="INVOKER" type="FUNCTION">
+         <comment/>
+         <definition language="C"><![CDATA[uuid_ns_dns]]></definition>
+         <parameters/>
+      </routine>
+      <routine dataAccess="MODIFIES" deterministic="true" name="uuid_ns_oid()" returnType="uuid" securityType="INVOKER" type="FUNCTION">
+         <comment/>
+         <definition language="C"><![CDATA[uuid_ns_oid]]></definition>
+         <parameters/>
+      </routine>
+      <routine dataAccess="MODIFIES" deterministic="true" name="uuid_ns_url()" returnType="uuid" securityType="INVOKER" type="FUNCTION">
+         <comment/>
+         <definition language="C"><![CDATA[uuid_ns_url]]></definition>
+         <parameters/>
+      </routine>
+      <routine dataAccess="MODIFIES" deterministic="true" name="uuid_ns_x500()" returnType="uuid" securityType="INVOKER" type="FUNCTION">
+         <comment/>
+         <definition language="C"><![CDATA[uuid_ns_x500]]></definition>
+         <parameters/>
+      </routine>
+   </routines>
+</database>
