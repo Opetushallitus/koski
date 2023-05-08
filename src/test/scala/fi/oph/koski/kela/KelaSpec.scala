@@ -1,6 +1,6 @@
 package fi.oph.koski.kela
 
-import fi.oph.koski.KoskiHttpSpec
+import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec, ytr}
 import fi.oph.koski.api.OpiskeluoikeusTestMethodsAmmatillinen
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.history.OpiskeluoikeusHistoryPatch
@@ -9,7 +9,8 @@ import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{MockUser, MockUsers}
 import fi.oph.koski.log.{AccessLogTester, AuditLogTester}
 import fi.oph.koski.schema._
-import org.scalatest.BeforeAndAfterAll
+import fi.oph.koski.ytr.MockYrtClient
+import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -20,7 +21,13 @@ class KelaSpec
     with KoskiHttpSpec
     with OpiskeluoikeusTestMethodsAmmatillinen
     with Matchers
-    with BeforeAndAfterAll {
+    with BeforeAndAfterAll
+    with BeforeAndAfterEach {
+
+  override def afterEach(): Unit = {
+    super.afterEach()
+    MockYrtClient.reset()
+  }
 
   "Kelan yhden oppijan rajapinta" - {
     "Yhden oppijan hakeminen onnistuu ja tuottaa auditlog viestin" in {
@@ -41,7 +48,7 @@ class KelaSpec
         val response = JsonSerializer.parse[KelaOppija](body)
 
         response.henkilö.hetu should equal(KoskiSpecificMockOppijat.kelaErityyppisiaOpiskeluoikeuksia.hetu)
-        response.opiskeluoikeudet.map(_.tyyppi.koodiarvo) should equal(List(OpiskeluoikeudenTyyppi.perusopetus.koodiarvo))
+        response.opiskeluoikeudet.map(_.tyyppi.koodiarvo) should equal(List(OpiskeluoikeudenTyyppi.perusopetus.koodiarvo, OpiskeluoikeudenTyyppi.ylioppilastutkinto.koodiarvo))
       }
     }
     "Palauttaa TUVA opiskeluoikeuden tiedot" in {
@@ -101,6 +108,26 @@ class KelaSpec
         opiskeluoikeus.suoritukset.head.suoritustapa.get.koodiarvo shouldBe "rikkinäinenKoodi"
         opiskeluoikeus.suoritukset.head.osasuoritukset.get.head.lisätiedot.get.size shouldBe 1
         opiskeluoikeus.suoritukset.head.osasuoritukset.get.head.lisätiedot.get.head.tunniste.koodiarvo shouldBe "mukautettu"
+      }
+    }
+    "Jos YTR-rajapinta palauttaa virheen, ei palauteta oppijan tietoja lainkaan" in {
+      val hetu = KoskiSpecificMockOppijat.kelaErityyppisiaOpiskeluoikeuksia.hetu.get
+
+      KoskiApplicationForTests.cacheManager.invalidateAllCaches
+      MockYrtClient.setFailureHetu(hetu)
+
+      postHetu(hetu) {
+        verifyResponseStatus(500)
+      }
+    }
+    "Jos YTR-rajapinta timeouttaa, ei palauteta oppijan tietoja lainkaan" in {
+      val hetu = KoskiSpecificMockOppijat.kelaErityyppisiaOpiskeluoikeuksia.hetu.get
+
+      KoskiApplicationForTests.cacheManager.invalidateAllCaches
+      MockYrtClient.setTimeoutHetu(hetu)
+
+      postHetu(hetu) {
+        verifyResponseStatus(500)
       }
     }
   }

@@ -1,0 +1,106 @@
+{
+  "certificateSchoolOphOid": "1.2.246.562.10.70411521654",
+  "certificateSchoolYtlNumber": 1648,
+  "ssn": "100800A057R",
+  "lastname": "Kelalle",
+  "firstnames": "Useita",
+  "graduationDate": "2012-06-02",
+  "graduationPeriod": "2012K",
+  "hasCompletedMandatoryExams": true,
+  "language" : "fi",
+  "exams" : [ {
+    "period" : "2012K",
+    "examId" : "A",
+    "examRoleLegacy" : "11",
+    "examRoleShort" : "mother-tongue",
+    "grade" : "B",
+    "points" : 46,
+    "sections" : [ {
+      "sectionPoints" : 25,
+      "sectionId" : "T001"
+    }, {
+      "sectionPoints" : 21,
+      "sectionId" : "T002"
+    } ]
+  }, {
+    "period" : "2012K",
+    "examId" : "BB",
+    "examRoleLegacy" : null,
+    "examRoleShort" : "optional-subject",
+    "grade" : "C",
+    "points" : 166,
+    "sections" : [ {
+      "sectionPoints" : 33,
+      "sectionId" : "HM02"
+    }, {
+      "sectionPoints" : 9,
+      "sectionId" : "HT01"
+    }, {
+      "sectionPoints" : 34,
+      "sectionId" : "LM02"
+    }, {
+      "sectionPoints" : 12,
+      "sectionId" : "LT02"
+    }, {
+      "sectionPoints" : 17,
+      "sectionId" : "RM01"
+    }, {
+      "sectionPoints" : 4,
+      "sectionId" : "RT01"
+    }, {
+      "sectionPoints" : 57,
+      "sectionId" : "KK01"
+    } ]
+  }, {
+    "period" : "2012K",
+    "examId" : "EA",
+    "examRoleLegacy" : "31",
+    "examRoleShort" : "mandatory-subject",
+    "grade" : "C",
+    "points" : 210,
+    "sections" : [ {
+      "sectionPoints" : 37,
+      "sectionId" : "HM02"
+    }, {
+      "sectionPoints" : 18,
+      "sectionId" : "HT01"
+    }, {
+      "sectionPoints" : 34,
+      "sectionId" : "LM02"
+    }, {
+      "sectionPoints" : 14,
+      "sectionId" : "LT02"
+    }, {
+      "sectionPoints" : 21,
+      "sectionId" : "RM01"
+    }, {
+      "sectionPoints" : 8,
+      "sectionId" : "RT03"
+    }, {
+      "sectionPoints" : 78,
+      "sectionId" : "KK01"
+    } ]
+  }, {
+    "period" : "2012K",
+    "examId" : "GE",
+    "examRoleLegacy" : "41",
+    "examRoleShort" : "mandatory-subject",
+    "grade" : "M",
+    "points" : 26,
+    "sections" : [ {
+      "sectionPoints" : 26,
+      "sectionId" : "T000"
+    } ]
+  }, {
+    "period" : "2012K",
+    "examId" : "N",
+    "examRoleLegacy" : null,
+    "examRoleShort" : "mandatory-subject",
+    "grade" : "L",
+    "points" : 59,
+    "sections" : [ {
+      "sectionPoints" : 59,
+      "sectionId" : "T000"
+    } ]
+  }
+]}
