@@ -1,20 +1,27 @@
 package fi.oph.koski.suoritusjako.suoritetuttutkinnot
 
-import fi.oph.koski.api.OpiskeluoikeusTestMethods
+import fi.oph.koski.api.{OpiskeluoikeusTestMethods, PutOpiskeluoikeusTestMethods}
+import fi.oph.koski.documentation.AmmatillinenExampleData.{ammatillisenTutkinnonOsittainenSuoritus, ammatillisetTutkinnonOsat, arviointiKiitettävä, k3, korotettu, lisätietoOsaamistavoitteet, osittaisenTutkinnonTutkinnonOsanSuoritus, tunnustettu, yhteisenOsittaisenTutkinnonTutkinnonOsansuoritus, yhteisetTutkinnonOsat}
+import fi.oph.koski.documentation.ExampleData.{longTimeAgo, opiskeluoikeusLäsnä, valtionosuusRahoitteinen}
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.KoskiSpecificSession.SUORITUSJAKO_KATSOMINEN_USER
 import fi.oph.koski.koskiuser.Rooli.OPHKATSELIJA
 import fi.oph.koski.koskiuser.{AuthenticationUser, KoskiSpecificSession, KäyttöoikeusGlobal, MockUsers, Palvelurooli}
+import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema
-import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, AmmatillisenTutkinnonOsittainenSuoritus, AmmatillisenTutkinnonSuoritus, MuunAmmatillisenKoulutuksenSuoritus, YlioppilastutkinnonOpiskeluoikeus, YlioppilastutkinnonSuoritus}
 import fi.oph.koski.ytr.MockYrtClient
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
+import fi.oph.koski.localization.LocalizedStringImplicits._
+import fi.oph.koski.schema.AmmatillinenOpiskeluoikeus
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
 import java.net.InetAddress
+import java.time.LocalDate
+import java.time.LocalDate.{of => date}
+import scala.reflect.runtime.universe
 
 class SuoritetutTutkinnotServiceSpec
   extends AnyFreeSpec
@@ -22,7 +29,11 @@ class SuoritetutTutkinnotServiceSpec
   with Matchers
   with BeforeAndAfterAll
   with BeforeAndAfterEach
-  with OpiskeluoikeusTestMethods {
+  with OpiskeluoikeusTestMethods
+  with PutOpiskeluoikeusTestMethods[schema.AmmatillinenOpiskeluoikeus]
+{
+  def tag: universe.TypeTag[schema.AmmatillinenOpiskeluoikeus] = implicitly[reflect.runtime.universe.TypeTag[schema.AmmatillinenOpiskeluoikeus]]
+  override def defaultOpiskeluoikeus = makeOpiskeluoikeus(alkamispäivä = longTimeAgo, suoritus = osittainenSuoritusKesken)
 
   val suoritetutTutkinnotService = KoskiApplicationForTests.suoritetutTutkinnotService
 
@@ -137,6 +148,23 @@ class SuoritetutTutkinnotServiceSpec
 
     "Muun ammatillisen paikallisella koulutusmoduulilla olevaa suoritusta ei palauteta" in {
       verifyEiOpiskeluoikeuksia(KoskiSpecificMockOppijat.muuAmmatillinenKokonaisuuksilla)
+    }
+
+    "Korotussuoritusta ei palauteta" in {
+      val oppija = KoskiSpecificMockOppijat.amiksenKorottaja
+
+      lisääKorotettuSuoritus(oppija)
+
+      val result = suoritetutTutkinnotService.findSuoritetutTutkinnotOppija(oppija.oid)
+
+      result.isRight should be(true)
+
+      result.map(o => {
+        verifyOppija(oppija, o)
+        o.opiskeluoikeudet should have length 1
+
+        o.opiskeluoikeudet.head.suoritukset.head.tyyppi.koodiarvo should be("ammatillinentutkinto")
+      })
     }
   }
 
@@ -270,6 +298,76 @@ class SuoritetutTutkinnotServiceSpec
     // TODO
   }
 
+  private def lisääKorotettuSuoritus(oppija: LaajatOppijaHenkilöTiedot) = {
+    val alkamispäivä = LocalDate.of(2023, 7, 1)
+    val korotettuTutkinnonOsanSuoritus = osittaisenTutkinnonTutkinnonOsanSuoritus(k3, ammatillisetTutkinnonOsat, "100432", "Ympäristön hoitaminen", 35).copy(
+      korotettu = Some(korotettu)
+    )
+    val korotettuYhteisenOsanOsaAlueenSuoritus = schema.YhteisenTutkinnonOsanOsaAlueenSuoritus(
+      koulutusmoduuli = schema.PaikallinenAmmatillisenTutkinnonOsanOsaAlue(
+        schema.PaikallinenKoodi("MA", "Matematiikka"), "Matematiikan opinnot", pakollinen = true, Some(schema.LaajuusOsaamispisteissä(3))
+      ),
+      arviointi = Some(List(arviointiKiitettävä)),
+      korotettu = Some(korotettu)
+    )
+    val defaultOsanOsaAlueenSuoritukset = List(
+      schema.YhteisenTutkinnonOsanOsaAlueenSuoritus(
+        koulutusmoduuli = schema.ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(schema.Koodistokoodiviite("FK", "ammatillisenoppiaineet"), pakollinen = true, Some(schema.LaajuusOsaamispisteissä(3))),
+        arviointi = Some(List(arviointiKiitettävä)),
+        tunnustettu = Some(tunnustettu)
+      ),
+      schema.YhteisenTutkinnonOsanOsaAlueenSuoritus(
+        koulutusmoduuli = schema.ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(schema.Koodistokoodiviite("TVT", "ammatillisenoppiaineet"), pakollinen = true, Some(schema.LaajuusOsaamispisteissä(3))),
+        arviointi = Some(List(arviointiKiitettävä.copy(päivä = date(2015, 1, 1)))),
+        alkamispäivä = Some(date(2014, 1, 1)),
+        tunnustettu = Some(tunnustettu),
+        lisätiedot = Some(List(lisätietoOsaamistavoitteet))
+      )
+    )
+    lazy val korotettuYhteisenTutkinnonOsanSuoritus = yhteisenOsittaisenTutkinnonTutkinnonOsansuoritus(k3, yhteisetTutkinnonOsat, "101054", "Matemaattis-luonnontieteellinen osaaminen", 9).copy(
+      osasuoritukset = Some(List(
+        korotettuYhteisenOsanOsaAlueenSuoritus,
+      ) ++ defaultOsanOsaAlueenSuoritukset)
+    )
+
+    def getAlkuperäinen: AmmatillinenOpiskeluoikeus = getOpiskeluoikeudet(oppija.oid).find(_.suoritukset.headOption.exists(_.tyyppi.koodiarvo == "ammatillinentutkinto")).map {
+      case a: AmmatillinenOpiskeluoikeus => a
+    }.get
+
+    val korotettuSuoritus = ammatillisenTutkinnonOsittainenSuoritus.copy(
+      korotettuOpiskeluoikeusOid = getAlkuperäinen.oid,
+      korotettuKeskiarvo = Some(4.5),
+      korotettuKeskiarvoSisältääMukautettujaArvosanoja = Some(false),
+      osasuoritukset = Some(List(
+        korotettuTutkinnonOsanSuoritus,
+        korotettuYhteisenTutkinnonOsanSuoritus
+      ))
+    )
+
+    val korotettuOo = makeOpiskeluoikeus(suoritus = korotettuSuoritus, alkamispäivä = alkamispäivä)
+
+    putOpiskeluoikeus(korotettuOo, oppija) {
+      verifyResponseStatusOk()
+    }
+  }
+
+  private def osittainenSuoritusKesken = ammatillisenTutkinnonOsittainenSuoritus.copy(vahvistus = None, keskiarvo = None)
+
+  private def makeOpiskeluoikeus(
+    alkamispäivä: LocalDate = longTimeAgo,
+    oppilaitos: schema.Oppilaitos = schema.Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto),
+    suoritus: schema.AmmatillinenPäätasonSuoritus,
+    tila: Option[schema.Koodistokoodiviite] = None
+  ) = schema.AmmatillinenOpiskeluoikeus(
+    tila = schema.AmmatillinenOpiskeluoikeudenTila(
+      List(
+        schema.AmmatillinenOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen))
+      ) ++ tila.map(t => schema.AmmatillinenOpiskeluoikeusjakso(date(2023, 12, 31), t, Some(valtionosuusRahoitteinen))).toList
+    ),
+    oppilaitos = Some(oppilaitos),
+    suoritukset = List(suoritus)
+  )
+
   private def verifyOppija(expected: LaajatOppijaHenkilöTiedot, actual: SuoritetutTutkinnotOppija) = {
     actual.henkilö.oid should be(expected.oid)
     actual.henkilö.etunimet should be(expected.etunimet)
@@ -317,8 +415,8 @@ class SuoritetutTutkinnotServiceSpec
   private def verifyAmmatillinenTutkinto(
     actualOo: SuoritetutTutkinnotAmmatillinenOpiskeluoikeus,
     actualSuoritus: SuoritetutTutkinnotAmmatillisenTutkinnonSuoritus,
-    expectedOoData: AmmatillinenOpiskeluoikeus,
-    expectedSuoritusData: AmmatillisenTutkinnonSuoritus
+    expectedOoData: schema.AmmatillinenOpiskeluoikeus,
+    expectedSuoritusData: schema.AmmatillisenTutkinnonSuoritus
   ): Unit = {
     verifyAmmatillinenOpiskeluoikeudenKentät(actualOo, expectedOoData)
     verifyAmmatillisenTutkinnonOsittainenTaiKokoSuoritus(actualSuoritus, expectedSuoritusData)
@@ -327,8 +425,8 @@ class SuoritetutTutkinnotServiceSpec
   private def verifyAmmatillinenOsittainen(
     actualOo: SuoritetutTutkinnotAmmatillinenOpiskeluoikeus,
     actualSuoritus: SuoritetutTutkinnotAmmatillisenTutkinnonOsittainenSuoritus,
-    expectedOoData: AmmatillinenOpiskeluoikeus,
-    expectedSuoritusData: AmmatillisenTutkinnonOsittainenSuoritus
+    expectedOoData: schema.AmmatillinenOpiskeluoikeus,
+    expectedSuoritusData: schema.AmmatillisenTutkinnonOsittainenSuoritus
   ): Unit = {
     verifyAmmatillinenOpiskeluoikeudenKentät(actualOo, expectedOoData)
     verifyAmmatillisenTutkinnonOsittainenTaiKokoSuoritus(actualSuoritus, expectedSuoritusData)
@@ -341,8 +439,8 @@ class SuoritetutTutkinnotServiceSpec
   private def verifyMuuAmmatillinen(
     actualOo: SuoritetutTutkinnotAmmatillinenOpiskeluoikeus,
     actualSuoritus: SuoritetutTutkinnotMuunAmmatillisenKoulutuksenSuoritus,
-    expectedOoData: AmmatillinenOpiskeluoikeus,
-    expectedSuoritusData: MuunAmmatillisenKoulutuksenSuoritus
+    expectedOoData: schema.AmmatillinenOpiskeluoikeus,
+    expectedSuoritusData: schema.MuunAmmatillisenKoulutuksenSuoritus
   ): Unit = {
     verifyAmmatillinenOpiskeluoikeudenKentät(actualOo, expectedOoData)
     verifyMuunAmmatillisenTutkinnonSuoritus(actualSuoritus, expectedSuoritusData)
@@ -372,7 +470,7 @@ class SuoritetutTutkinnotServiceSpec
 
   private def verifyMuunAmmatillisenTutkinnonSuoritus(
     actualSuoritus: SuoritetutTutkinnotMuunAmmatillisenKoulutuksenSuoritus,
-    expectedSuoritusData: MuunAmmatillisenKoulutuksenSuoritus
+    expectedSuoritusData: schema.MuunAmmatillisenKoulutuksenSuoritus
   ): Unit = {
     actualSuoritus.koulutusmoduuli.tunniste.koodiarvo should equal(expectedSuoritusData.koulutusmoduuli.tunniste.koodiarvo)
 
@@ -394,7 +492,7 @@ class SuoritetutTutkinnotServiceSpec
 
   private def verifyAmmatillinenOpiskeluoikeudenKentät(
     actualOo: SuoritetutTutkinnotAmmatillinenOpiskeluoikeus,
-    expectedOoData: AmmatillinenOpiskeluoikeus
+    expectedOoData: schema.AmmatillinenOpiskeluoikeus
   ): Unit = {
     actualOo.oid should be(expectedOoData.oid)
     actualOo.versionumero should be(expectedOoData.versionumero)
@@ -410,8 +508,8 @@ class SuoritetutTutkinnotServiceSpec
   private def verifyYlioppilastutkinto(
     actualOo: SuoritetutTutkinnotYlioppilastutkinnonOpiskeluoikeus,
     actualSuoritus: SuoritetutTutkinnotYlioppilastutkinnonPäätasonSuoritus,
-    expectedOoData: YlioppilastutkinnonOpiskeluoikeus,
-    expectedSuoritusData: YlioppilastutkinnonSuoritus
+    expectedOoData: schema.YlioppilastutkinnonOpiskeluoikeus,
+    expectedSuoritusData: schema.YlioppilastutkinnonSuoritus
   ): Unit = {
     actualOo.oppilaitos.map(_.oid) should equal(expectedOoData.oppilaitos.map(_.oid))
     actualOo.koulutustoimija.map(_.oid) should equal(expectedOoData.koulutustoimija.map(_.oid))
