@@ -4,7 +4,7 @@ import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.localization.LocalizationRepository
 import fi.oph.koski.log.Logging
 import fi.oph.koski.organisaatio.OrganisaatioRepository
-import fi.oph.koski.schema.{Koodistokoodiviite, KoskiSchema, YlioppilasTutkinnonKoe, YlioppilastutkinnonKokeenSuoritus, YlioppilastutkinnonOpiskeluoikeudenLisätiedot, YlioppilastutkinnonOpiskeluoikeudenTila, YlioppilastutkinnonOpiskeluoikeus, YlioppilastutkinnonOpiskeluoikeusjakso, YlioppilastutkinnonSuoritus, YlioppilastutkinnonTutkintokerranLisätiedot, YlioppilastutkinnonTutkintokerta, YlioppilastutkinnonTutkintokokonaisuudenLisätiedot, Ylioppilastutkinto}
+import fi.oph.koski.schema.{Koodistokoodiviite, KoskiSchema, YlioppilasTutkinnonKoe, YlioppilastutkinnonKokeenSuoritus, YlioppilastutkinnonOpiskeluoikeudenLisätiedot, YlioppilastutkinnonOpiskeluoikeudenTila, YlioppilastutkinnonOpiskeluoikeus, YlioppilastutkinnonOpiskeluoikeusjakso, YlioppilastutkinnonSisältyväKoe, YlioppilastutkinnonSuoritus, YlioppilastutkinnonTutkintokerranLisätiedot, YlioppilastutkinnonTutkintokerta, YlioppilastutkinnonTutkintokokonaisuudenLisätiedot, Ylioppilastutkinto}
 import fi.oph.koski.validation.ValidatingAndResolvingExtractor
 import fi.oph.koski.ytr.YtrConversionUtils
 import fi.oph.scalaschema.{SerializationContext, Serializer}
@@ -61,7 +61,15 @@ class YtrDownloadOppijaConverter(
                     YtrConversionUtils.convertTutkintokertaToDate(period.examinationPeriod)
                   )
                 )
-              ))
+              )),
+              aiemminSuoritetutKokeet = examination.includedExams.map(_.map(includedExam =>
+                YlioppilastutkinnonSisältyväKoe(
+                  koulutusmoduuli = YlioppilasTutkinnonKoe(
+                    tunniste = conversionUtils.requiredKoodi("koskiyokokeet", includedExam.examId),
+                  ),
+                  tutkintokerta = conversionUtils.convertTutkintokerta(includedExam.examinationPeriod)
+                )
+              )).filter(_.nonEmpty)
             )}
           )
         )),

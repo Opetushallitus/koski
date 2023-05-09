@@ -1830,6 +1830,12 @@
               }
             ]
           }
+        ],
+        "includedExams": [
+          {
+            "examId": "BB",
+            "examinationPeriod": "2014S"
+          }
         ]
       },
       {
@@ -1880,7 +1886,8 @@
               }
             ]
           }
-        ]
+        ],
+        "includedExams": []
       }
     ]
   },

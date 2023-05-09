@@ -24,14 +24,11 @@ case class YtrLaajaOppija(
 }
 
 case class YtrExamination(
-
   language: String,
-
   examinationType: String,
-
   examinationState: Option[String],
-
-  examinationPeriods: List[YtrExaminationPeriod]
+  examinationPeriods: List[YtrExaminationPeriod],
+  includedExams: Option[List[YtrIncludedExam]]
 )
 
 case class YtrExaminationPeriod(
@@ -46,6 +43,11 @@ case class YtrExaminationPeriod(
 
   studentNumber: Option[String], // Ei tallenneta Koskeen
   exams: List[YtrLaajaExam]
+)
+
+case class YtrIncludedExam(
+  examId: String,
+  examinationPeriod: String
 )
 
 case class YtrLaajaExam(
