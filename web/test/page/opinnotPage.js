@@ -182,6 +182,9 @@ function OpinnotPage() {
     isDirty: function () {
       return S('.oppija-content.dirty').is(':visible')
     },
+    poistaViimeisinTila: function () {
+      return click(S('[data-testid="poista-tila"]'))()
+    },
     avaaLisaysDialogi: function () {
       if (
         !S('.lisaa-opiskeluoikeusjakso-modal .modal-content').is(':visible')

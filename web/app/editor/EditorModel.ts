@@ -120,7 +120,7 @@ export const modelLens = <T, S>(path: PathExpr): L.Lens<T, S> => {
 
 const parseModelStep = <T, S>(key: any): L.Lens<T, S> => {
   if (key == '..') return modelParentLens as L.Lens<T, S>
-  if (!isNaN(key)) return modelItemLens(parseInt(key))
+  if (!isNaN(parseInt(key))) return modelItemLens(parseInt(key))
   if (typeof key === 'string') return modelPropertyValueLens(key)
   if (typeof key === 'function') return key as L.Lens<T, S> // an actual lens then
   return throwError('Unexpected model path element', key)
@@ -218,15 +218,15 @@ export function modelData(mainModel?: EditorModel, path?: PathExpr): any
 // TODO: Tämä funktio on vaikea ymmärtää ja se tuntuu mutatoivan annettua objektia --> Pitäisi uudelleenkirjoittaa.
 export function modelData(mainModel?: any, path?: PathExpr): any {
   const anyModel = mainModel as any
-  if (!anyModel || !anyModel.value) return
+  if (!anyModel || (!anyModel.value && !("arrayPrototype" in anyModel))) return
 
-  if (anyModel.value.data) {
+  if (anyModel.value && anyModel.value.data) {
     if (!path) return anyModel.value.data
     return L.get(objectLens(path), anyModel.value.data)
   }
 
   const head = toPath(path).slice(0, 1)
-  if (head.length) {
+  if (head.length > 0) {
     const model = modelLookup(anyModel, head)
     const tail = toPath(path).slice(1)
     return modelData(model, tail)
