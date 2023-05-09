@@ -171,6 +171,10 @@ checkdoc_validation:
 checkdoc_schema:
 	./scripts/checkdoc_schema.sh
 
+.PHONY: checkdoc_dbdocs
+checkdoc_dbdocs:
+	./scripts/checkdoc_dbdocs.sh
+
 .PHONY: mvndeps
 mvndeps:
 	mvn dependency:tree|less

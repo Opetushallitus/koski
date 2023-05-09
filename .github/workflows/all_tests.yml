@@ -75,6 +75,17 @@ jobs:
         run: |
           make checkdoc_schema
 
+  checkdoc_database_documentation:
+    name: Database documentation check
+    runs-on: ${{ inputs.runs-on }}
+    steps:
+      - uses: actions/checkout@v3
+        with: { fetch-depth: 0 }
+
+      - name: Check migration and database documentation changes
+        run: |
+          make checkdoc_dbdocs
+
   run_backend_tests_api:
     name: Backend (api)
     runs-on: ${{ inputs.runs-on }}
