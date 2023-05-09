@@ -109,10 +109,12 @@ describe('Oppijataulukko', function () {
           'Erityisoppilaitoksessa, Emppu',
           'Erityisoppilaitoksessa, Emppu Historia',
           'Korhonen, Korottaja',
+          'Mastinen, Maarni',
           'Paallekkaisia, Pekka',
-          'Rikkinäinen, Kela'
+          'Rikkinäinen, Kela',
+          'Tuleva-ammattilainen, Tuure'
         ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('8')
+        expect(page.opiskeluoikeudeTotal()).to.equal('10')
       })
     })
 
@@ -131,11 +133,13 @@ describe('Oppijataulukko', function () {
           'Erityisoppilaitoksessa, Emppu',
           'Erityisoppilaitoksessa, Emppu Historia',
           'Korhonen, Korottaja',
+          'Mastinen, Maarni',
           'Osittainen, Outi',
           'Paallekkaisia, Pekka',
-          'Rikkinäinen, Kela'
+          'Rikkinäinen, Kela',
+          'Tuleva-ammattilainen, Tuure'
         ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('10')
+        expect(page.opiskeluoikeudeTotal()).to.equal('12')
       })
     })
 
@@ -157,12 +161,13 @@ describe('Oppijataulukko', function () {
           'Kokonaisuuksilla, Keijo',
           'Korhonen, Korottaja',
           'Koulutusvientiläinen, Amis',
+          'Mastinen, Maarni',
           'Osittainen, Outi',
           'Rikkinäinen, Kela',
           'Telmanen, Tuula',
           'Valviralle, Veera'
         ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('14')
+        expect(page.opiskeluoikeudeTotal()).to.equal('15')
       })
     })
 
@@ -293,6 +298,7 @@ describe('Oppijataulukko', function () {
           'Luva, Nuorten',
           'Maksamaa-Toikkarinen, Matti',
           'Markkanen-Fagerström, Eéro Jorma-Petteri',
+          'Mastinen, Maarni',
           'Mervi, Monioppiaineinen',
           'Monikoululainen, Miia',
           'Monikoululainen, Miia',
@@ -317,10 +323,12 @@ describe('Oppijataulukko', function () {
           't, tavallinen',
           't, tavallinen',
           'Tehtävään-Valmistava, Tauno',
+          'Tehtävään-Valmistava-vahvistettu, Tauno',
           'Tekijä, Teija',
           'Telmanen, Tuula',
           'Tiedonsiirto, Tiina',
           'Toiminta, Tommi',
+          'Tuleva-ammattilainen, Tuure',
           'Tunnustettu, Teuvo',
           'Tupla, Toivo',
           'Turvakielto, Tero',
@@ -329,12 +337,9 @@ describe('Oppijataulukko', function () {
           'v, virheellisestiSiirrettyVieraskielinen',
           'v, virheellisestiSiirrettyVieraskielinen',
           'Valviralle, Veera',
-          'Valviralle-Kesken, Ville',
-          'Vanhanen-Toikkarinen, Vanja',
-          'Vuonna 2004 syntynyt, Peruskoulu suoritettu 2021',
-          'Vuonna 2004 syntynyt, Peruskoulu suoritettu ennen 2021'
+          'Valviralle-Kesken, Ville'
         ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('107')
+        expect(page.opiskeluoikeudeTotal()).to.equal('110')
       })
     })
 
@@ -358,10 +363,11 @@ describe('Oppijataulukko', function () {
           'Korhonen, Korottaja',
           'Koululainen, Kaisa',
           'Lisä-Eskari, Essiina',
+          'Mastinen, Maarni',
           'Monikoululainen, Miia',
           'Rikkinäinen, Kela'
         ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('11')
+        expect(page.opiskeluoikeudeTotal()).to.equal('12')
       })
     })
   })

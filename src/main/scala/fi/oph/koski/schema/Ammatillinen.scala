@@ -265,8 +265,6 @@ case class AmmatillisenTutkinnonSuoritus(
   keskiarvoSisältääMukautettujaArvosanoja: Option[Boolean] = None
 ) extends AmmatillisenTutkinnonOsittainenTaiKokoSuoritus
   with Todistus
-  with Järjestämismuodollinen
-  with OsaamisenHankkimistavallinen
 
 @ReadFlattened
 case class Osaamisalajakso(
@@ -352,8 +350,6 @@ case class AmmatillisenTutkinnonOsittainenSuoritus(
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   korotettuKeskiarvoSisältääMukautettujaArvosanoja: Option[Boolean] = None
 ) extends AmmatillisenTutkinnonOsittainenTaiKokoSuoritus
-  with Järjestämismuodollinen
-  with OsaamisenHankkimistavallinen
 
 trait MahdollisestiKeskiarvollinen {
   def keskiarvo: Option[Double]
@@ -367,6 +363,8 @@ trait AmmatillisenTutkinnonOsittainenTaiKokoSuoritus extends AmmatillinenPääta
   with Osaamisalallinen
   with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta
   with MahdollisestiKeskiarvollinen
+  with Järjestämismuodollinen
+  with OsaamisenHankkimistavallinen
 {
   def koulutusmoduuli: AmmatillinenTutkintoKoulutus
   @Description("Tutkinnon suoritustapa (näyttö / ops / reformi). Ammatillisen perustutkinnon voi suorittaa joko opetussuunnitelmaperusteisesti tai näyttönä. Ammatillisen reformin (531/2017) mukaiset suoritukset välitetään suoritustavalla reformi. ")

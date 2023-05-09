@@ -1,6 +1,6 @@
 package fi.oph.koski.kela
 
-import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.executors.GlobalExecutionContext
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.history.OpiskeluoikeusHistoryPatch
@@ -8,7 +8,6 @@ import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log._
-import fi.oph.koski.schema
 import fi.oph.koski.schema.YlioppilastutkinnonOpiskeluoikeus
 import fi.oph.koski.util.Futures
 import org.json4s.JsonAST.JValue
@@ -100,7 +99,7 @@ class KelaService(application: KoskiApplication) extends GlobalExecutionContext 
         opiskeluoikeudet <- opiskeluoikeudetFut
         ytrResult <- ytrResultFut
       } yield (opiskeluoikeudet, ytrResult),
-      atMost = 20.minutes
+      atMost = if (Environment.isUnitTestEnvironment(application.config)) { 10.seconds } else { 20.minutes }
     )
     (opiskeluoikeudet, ytrResult)
   }

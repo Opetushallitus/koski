@@ -169,7 +169,9 @@ jobs:
             fi.oph.koski.ytl, \
             fi.oph.koski.meta, \
             fi.oph.koski.frontendvalvonta, \
-            fi.oph.koski.tiedonsiirto
+            fi.oph.koski.tiedonsiirto \
+            fi.oph.koski.suoritusjako \
+            fi.oph.koski.suoritusjako.suoritetuttutkinnot
 
   run_frontend_tests:
     name: Frontend ${{matrix.shardIndex}}/${{matrix.shardTotal}}

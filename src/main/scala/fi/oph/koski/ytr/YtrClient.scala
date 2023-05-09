@@ -87,8 +87,19 @@ object MockYrtClient extends YtrClient {
   lazy val yoTodistusResource: Resource = new ClasspathResource("/mockdata/yotodistus")
   val yoTodistusRequestTimes: collection.mutable.Map[String, ZonedDateTime] = collection.mutable.Map.empty
   val yoTodistusGeneratingTimeSecs = 2
+  private var failureHetu: Option[String] = None
+  private var timeoutHetu: Option[String] = None
 
-  def oppijaJsonByHetu(hetu: String): Option[JValue] = JsonResources.readResourceIfExists(resourcename(hetu))
+  def oppijaJsonByHetu(hetu: String): Option[JValue] = {
+    if (timeoutHetu.contains(hetu)) {
+      Thread.sleep(20000)
+    }
+    if (failureHetu.contains(hetu)) {
+      throw new RuntimeException("Mocked failure on hetu " + hetu)
+    } else {
+      JsonResources.readResourceIfExists(resourcename(hetu))
+    }
+  }
   def filename(hetu: String): String = "src/main/resources" + resourcename(hetu)
   private def resourcename(hetu: String) = "/mockdata/ytr/" + hetu + ".json"
 
@@ -146,8 +157,20 @@ object MockYrtClient extends YtrClient {
     Right(())
   }
 
-  def reset(): Unit = yoTodistusRequestTimes.clear()
+  def reset(): Unit = {
+    yoTodistusRequestTimes.clear()
+    failureHetu = None
+    timeoutHetu = None
+  }
+
+  def setFailureHetu(hetu: String): Unit = {
+    failureHetu = Some(hetu)
+  }
+  def setTimeoutHetu(hetu: String): Unit = {
+    timeoutHetu = Some(hetu)
+  }
 }
+
 
 case class RemoteYtrClient(rootUrl: String, user: String, password: String) extends YtrClient with Logging {
   private val http = Http(rootUrl, ClientWithBasicAuthentication(
