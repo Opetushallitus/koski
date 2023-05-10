@@ -78,7 +78,9 @@ trait Suoritus{
   def vahvistus: Option[Vahvistus]
 }
 
-trait SuorituksenKoulutusmoduuli
+trait SuorituksenKoulutusmoduuli {
+  def tunniste: SuoritetutTutkinnotKoodistokoodiviite
+}
 
 case class SuoritetutTutkinnotKoodistokoodiviite(
   koodiarvo: String,
