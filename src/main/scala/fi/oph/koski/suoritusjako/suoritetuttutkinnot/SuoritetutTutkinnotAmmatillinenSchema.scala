@@ -14,7 +14,6 @@ case class SuoritetutTutkinnotAmmatillinenOpiskeluoikeus(
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija],
   sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus],
-  @DefaultValue(false)
   suoritukset: List[SuoritetutTutkinnotAmmatillinenPäätasonSuoritus],
   @KoodistoKoodiarvo("ammatillinenkoulutus")
   tyyppi: schema.Koodistokoodiviite,
