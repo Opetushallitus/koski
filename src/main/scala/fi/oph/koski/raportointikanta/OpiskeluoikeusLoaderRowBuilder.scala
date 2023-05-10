@@ -231,7 +231,7 @@ object OpiskeluoikeusLoaderRowBuilder {
     val päätasonSuoritusId: Long = idGenerator
     val päätaso = buildRPäätasonSuoritusRow(opiskeluoikeusOid, sisältyyOpiskeluoikeuteenOid, oppilaitos, ps, psData, päätasonSuoritusId)
 
-    val tutkintokokonaisuudet: Map[Int, (RYtrTutkintokokonaisuudenSuoritusRow, Map[String, RYtrTutkintokerranSuoritusRow])] =
+    val tutkintokokonaisuudet: Map[Int, (RYtrTutkintokokonaisuudenSuoritusRow, Map[String, RYtrTutkintokerranSuoritusRow], List[YlioppilastutkinnonSisältyväKoe])] =
       oo.lisätiedot.flatMap(_.tutkintokokonaisuudet).getOrElse(List.empty).zipWithIndex.map {
         case (tutkintokokonaisuus, i) =>
           val tutkintokokonaisuusId = idGenerator
@@ -259,7 +259,9 @@ object OpiskeluoikeusLoaderRowBuilder {
               tutkintokerta.tutkintokerta.koodiarvo -> tutkintokertaRow
           }.toMap
 
-          tutkintokokonaisuus.tunniste -> (tutkintokokonaisuusRow, tutkintokerrat)
+          val aiemminSuoritetutKokeet = tutkintokokonaisuus.aiemminSuoritetutKokeet.getOrElse(List.empty)
+
+          tutkintokokonaisuus.tunniste -> (tutkintokokonaisuusRow, tutkintokerrat, aiemminSuoritetutKokeet)
       }.toMap
 
     val kokeet: Seq[(RYtrKokeenSuoritusRow, Seq[RYtrTutkintokokonaisuudenKokeenSuoritusRow])] =
@@ -268,6 +270,10 @@ object OpiskeluoikeusLoaderRowBuilder {
           val koeId = idGenerator
           val tutkintokertaId = tutkintokokonaisuudet(koe.tutkintokokonaisuudenTunniste.get)._2(koe.tutkintokerta.koodiarvo).ytrTutkintokerranSuoritusId
           val tutkintokokonaisuusId = tutkintokokonaisuudet(koe.tutkintokokonaisuudenTunniste.get)._1.ytrTutkintokokonaisuudenSuoritusId
+          val onSisällytetty = tutkintokokonaisuudet(koe.tutkintokokonaisuudenTunniste.get)._3.exists( sisältyväKoe =>
+            sisältyväKoe.tutkintokerta.koodiarvo == koe.tutkintokerta.koodiarvo &&
+              sisältyväKoe.koulutusmoduuli.tunniste.koodiarvo == koe.koulutusmoduuli.tunniste.koodiarvo
+          )
           val koeRow = buildRYtrKokeenSuoritusRow(
             koeId,
             tutkintokertaId,
@@ -282,7 +288,7 @@ object OpiskeluoikeusLoaderRowBuilder {
               tutkintokokonaisuusId,
               koeId,
               tutkintokertaId,
-              sisällytetty = false
+              sisällytetty = onSisällytetty
             )
           (koeRow, Seq(tutkintokokonaisuudenKoeRow))
       }

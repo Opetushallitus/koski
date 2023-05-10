@@ -1453,6 +1453,12 @@
               }
             ]
           }
+        ],
+        "includedExams": [
+          {
+            "examId": "A",
+            "examinationPeriod": "2012K"
+          }
         ]
       }
     ]

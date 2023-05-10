@@ -221,6 +221,7 @@ class RaportointikantaSpec
       val expectedTutkintokokonaisuus = expectedOo.lisätiedot.get.tutkintokokonaisuudet.get(0)
       val expectedTutkintokerrat = expectedTutkintokokonaisuus.tutkintokerrat.sortBy(_.tutkintokerta.koodiarvo)
       val expectedKokeet = expectedPts.osasuoritukset.get.sortBy(os => os.koulutusmoduuli.tunniste.koodiarvo)
+      val expectedAiemminSuoritetutKokeet = expectedTutkintokokonaisuus.aiemminSuoritetutKokeet.getOrElse(List.empty)
 
       val actualOo: ROpiskeluoikeusRow =
         ytrOotRaportointikannassa.filter(_.oppijaOid === KoskiSpecificMockOppijat.ylioppilasUusiApi.oid)(0)
@@ -239,7 +240,7 @@ class RaportointikantaSpec
       verifyPts(expectedOo, expectedPts, actualPts)
       verifyTutkintokokonaisuus(expectedOo, expectedTutkintokokonaisuus, actualPts, actualTutkintokokonaisuus)
       verifyTutkintokerrat(expectedOo, expectedTutkintokerrat, actualPts, actualTutkintokokonaisuus, actualTutkintokerrat)
-      verifyKokeet(expectedOo, expectedKokeet, actualPts, actualTutkintokokonaisuus, actualTutkintokerrat, actualKokeet, actualTutkintokokonaisuudenKokeet)
+      verifyKokeet(expectedOo, expectedKokeet, expectedAiemminSuoritetutKokeet, actualPts, actualTutkintokokonaisuus, actualTutkintokerrat, actualKokeet, actualTutkintokokonaisuudenKokeet)
     }
 
     def verifyOo(expectedOppija: LaajatOppijaHenkilöTiedot, expectedOo: YlioppilastutkinnonOpiskeluoikeus, actualOo: ROpiskeluoikeusRow) = {
@@ -352,6 +353,7 @@ class RaportointikantaSpec
     def verifyKokeet(
       expectedOo: YlioppilastutkinnonOpiskeluoikeus,
       expectedKokeet: Seq[YlioppilastutkinnonKokeenSuoritus],
+      expectedSisältyvätKokeet: Seq[YlioppilastutkinnonSisältyväKoe],
       actualPts: RPäätasonSuoritusRow,
       actualTutkintokokonaisuus: RYtrTutkintokokonaisuudenSuoritusRow,
       actualTutkintokerrat: Seq[RYtrTutkintokerranSuoritusRow],
@@ -361,6 +363,10 @@ class RaportointikantaSpec
       actualKokeet.length should equal(expectedKokeet.length)
       actualKokeet.zip(expectedKokeet).foreach { case (actualKoe, expectedKoe) =>
         val actualTutkintokerta = actualTutkintokerrat.find(_.ytrTutkintokerranSuoritusId == actualKoe.ytrTutkintokerranSuoritusId).get
+        val onExpectedSisältyväKoe = expectedSisältyvätKokeet.exists( sisältyväKoe =>
+          sisältyväKoe.tutkintokerta.koodiarvo == expectedKoe.tutkintokerta.koodiarvo &&
+            sisältyväKoe.koulutusmoduuli.tunniste.koodiarvo == expectedKoe.koulutusmoduuli.tunniste.koodiarvo
+        )
 
         actualKoe.päätasonSuoritusId should equal(actualPts.päätasonSuoritusId)
         actualKoe.ytrTutkintokerranSuoritusId should equal(actualTutkintokerta.ytrTutkintokerranSuoritusId)
@@ -384,7 +390,7 @@ class RaportointikantaSpec
           ytrTutkintokokonaisuudenSuoritusId = actualTutkintokokonaisuus.ytrTutkintokokonaisuudenSuoritusId,
           ytrKokeenSuoritusId = actualKoe.ytrKokeenSuoritusId,
           ytrTutkintokerranSuoritusId = actualTutkintokerta.ytrTutkintokerranSuoritusId,
-          sisällytetty = false
+          sisällytetty = onExpectedSisältyväKoe
         ))
       }
     }
