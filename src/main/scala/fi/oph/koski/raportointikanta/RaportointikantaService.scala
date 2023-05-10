@@ -43,7 +43,7 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
       } else {
         None
       }
-      loadDatabase.dropAndCreateObjects
+      loadDatabase.dropAndCreateObjects(Some(raportointiDatabase.status.dataVersion.getOrElse(0)))
       startLoading(update, enableYtr, scheduler, onEnd, pageSize, onAfterPage)
       logger.info(s"Started loading raportointikanta (force: $force, duetime: ${update.map(_.dueTime.toString).getOrElse("-")})")
       true

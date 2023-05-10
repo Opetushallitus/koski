@@ -20,7 +20,7 @@ object OpiskeluoikeusLoaderPerfTester extends App {
   }
 
   println("reseting database...")
-  application.raportointiDatabase.dropAndCreateObjects
+  application.raportointiDatabase.dropAndCreateObjects()
 
   println("loading...")
   val start = System.currentTimeMillis()

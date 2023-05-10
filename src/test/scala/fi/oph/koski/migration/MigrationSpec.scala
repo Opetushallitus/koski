@@ -1,5 +1,8 @@
 package fi.oph.koski.migration
 
+import fi.oph.koski.KoskiApplicationForTests
+import fi.oph.koski.raportointikanta.{DelayedScheduler, RaportointiDatabase}
+import fi.oph.koski.util.Wait
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -15,6 +18,19 @@ class MigrationSpec extends AnyFreeSpec with Matchers {
   }
 
   "Raportointikannan skeema" - {
+    "Skeema ei ole muuttunut tai skeeman versionumero on päivitetty" in {
+      KoskiApplicationForTests.raportointikantaService.loadRaportointikanta(force = false)
+      Wait.until(KoskiApplicationForTests.raportointikantaService.isLoadComplete)
+
+      val hash = KoskiApplicationForTests.raportointiDatabase.getSchemaHash("public")
+
+      if (hash != RaportointiDatabase.schemaVersion._2) {
+        val newVersion = RaportointiDatabase.schemaVersion._1 + 1
+        println(s"""Raportointikannan skeema on muuttunut. Päivitä RaportointiDatabase-objektiin versio seuraavanlaiseksi:\n\n\tdef schemaVersion: (Int, String) = ($newVersion, "$hash")""")
+        RaportointiDatabase.schemaVersion should equal((newVersion, hash))
+      }
+    }
+
     "Havaittiin mahdollinen muutos raportointikannan skeemassa. Skeemamuutokset saattavat rikkoa inkrementaalisen kantageneroinnin.\n" +
       "Muutoksen vieminen tuotantoon vaatii raportointikannan full-reload-generoinnin ympäristöihin.\n" +
       "Korjaa tämän testin md5-tarkastusluvut vasta kun olet varma siitä että nykyinen toteutus voidaan viedä eteenpäin." in {
@@ -32,10 +48,10 @@ class MigrationSpec extends AnyFreeSpec with Matchers {
         "OrganisaatioHistoriaRowBuilder.scala"                      -> "7e586d9e273a5a4ee7beae257f22c7f4",
         "OrganisaatioLoader.scala"                                  -> "9e2e45da33ed335af4a7b0a31b139a7",
         "PäivitettyOpiskeluoikeusLoader.scala"                      -> "500545bbe7ef47dedcfdc49580b536d2",
-        "RaportointiDatabase.scala"                                 -> "2b7e37233ce8d107edb176224f4e2b2c",
+        "RaportointiDatabase.scala"                                 -> "ff29b23abbb6d6115c40cbf09172ac0a",
         "RaportointiDatabaseCustomFunctions.scala"                  -> "956f101d1219c49ac9134b72a30caf3a",
-        "RaportointiDatabaseSchema.scala"                           -> "c6dbe072011a672c0880e0d1561069d6",
-        "RaportointikantaService.scala"                             -> "8f151f971984b09167f781b7e465a259",
+        "RaportointiDatabaseSchema.scala"                           -> "a5d1771eab880a6241b4a556bb919b69",
+        "RaportointikantaService.scala"                             -> "fdb8fa73c26ed6defc92e0ff2e41f771",
         "RaportointikantaStatusServlet.scala"                       -> "9fd6f796adfb2034cce0151b7330cd1a",
         "RaportointikantaTestServlet.scala"                         -> "d457be86e60dd84545378ae415236d26",
         "RaportointikantaTableQueries.scala"                        -> "b97f971fa7a5896ec3c4d69882ca705d",

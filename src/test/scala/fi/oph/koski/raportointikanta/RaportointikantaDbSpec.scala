@@ -1,5 +1,6 @@
 package fi.oph.koski.raportointikanta
 
+import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import org.postgresql.util.PSQLException
 import org.scalatest.BeforeAndAfterAll
@@ -28,8 +29,9 @@ class RaportointikantaDbSpec extends AnyFreeSpec with Matchers with Raportointik
   private def dropsAndCreatesSchemaObjects(db: RaportointiDatabase) = {
     dropAll(db)
     schemaIsEmpty(db)
-    db.dropAndCreateObjects
+    db.dropAndCreateObjects()
     schemaExists(db)
+    db.createPrecomputedTables(KoskiApplicationForTests.valpasRajapäivätService)
   }
 
   private def schemaExists(db: RaportointiDatabase) {
@@ -46,7 +48,7 @@ class RaportointikantaDbSpec extends AnyFreeSpec with Matchers with Raportointik
   }
 
   private def dropAll(db: RaportointiDatabase) {
-    db.dropAndCreateObjects
+    db.dropAndCreateObjects()
     db.runDbSync(RaportointiDatabaseSchema.dropAllIfExists(db.schema))
   }
 }

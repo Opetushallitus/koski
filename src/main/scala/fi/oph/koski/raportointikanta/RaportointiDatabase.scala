@@ -23,6 +23,13 @@ import java.time.LocalDateTime.now
 import java.time._
 import scala.concurrent.duration.{DurationInt, FiniteDuration}
 
+object RaportointiDatabase {
+  // Raportointikannan skeeman muuttuessa päivitä versionumeroa yksi ylöspäin.
+  // Jälkimmäinen arvo on skeemasta laskettu tunniste (kts. QueryMethods::getSchemaHash).
+  // Testi nimeltä "Schema version has been updated" tarkastaa että versionumeroa päivitetään skeemamuutosten
+  // myötä.
+  def schemaVersion: (Int, String) = (2, "1584a2563dccac8ec3fe8cc456580b84")
+}
 
 class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging with QueryMethods {
   val schema: Schema = config.schema
@@ -88,7 +95,7 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
     logger.info("RaportointiDatabase schema swapped")
   }
 
-  def dropAndCreateObjects: Unit = {
+  def dropAndCreateObjects(previousDataVersion: Option[Int] = None): Unit = {
     logger.info(s"Creating database ${schema.name}")
     runDbSync(DBIO.sequence(
       Seq(
@@ -101,7 +108,15 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
         RaportointiDatabaseSchema.grantPermissions(schema),
       )
     ).transactionally)
+    previousDataVersion.foreach(v => writeVersionInfo(v + 1))
     logger.info(s"${schema.name} created")
+  }
+
+  private def writeVersionInfo(dataVersion: Int) = {
+    setStatusLoadStarted("version_schema")
+    setStatusLoadCompletedAndCount("version_schema", RaportointiDatabase.schemaVersion._1)
+    setStatusLoadStarted("version_data")
+    setStatusLoadCompletedAndCount("version_data", dataVersion)
   }
 
   // A helper to help with creating migrations: dumps the SQL DDL to create the full schema
@@ -574,7 +589,7 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
 }
 
 case class RaportointikantaStatusResponse(schema: String, statuses: Seq[RaportointikantaStatusRow]) {
-  private val allNames = Seq("opiskeluoikeudet", "henkilot", "organisaatiot", "koodistot", "materialized_views")
+  private val allNames = Seq("opiskeluoikeudet", "henkilot", "organisaatiot", "koodistot", "materialized_views", "version_schema", "version_data")
 
   @SyntheticProperty
   def isComplete: Boolean = completionTime.isDefined && !isEmpty && allNames.forall(statuses.map(_.name).contains)
@@ -606,4 +621,10 @@ case class RaportointikantaStatusResponse(schema: String, statuses: Seq[Raportoi
   } else {
     Some(statuses.map(_.lastUpdate).max(ascedingSqlTimestampOrdering))
   }
+
+  @SyntheticProperty
+  def schemaVersion: Option[Int] = statuses.find(_.name == "version_schema").map(_.count)
+
+  @SyntheticProperty
+  def dataVersion: Option[Int] = statuses.find(_.name == "version_data").map(_.count)
 }
