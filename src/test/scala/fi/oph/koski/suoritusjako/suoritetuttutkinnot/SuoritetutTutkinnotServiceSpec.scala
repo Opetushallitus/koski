@@ -221,7 +221,31 @@ class SuoritetutTutkinnotServiceSpec
 
         verifyOpiskeluoikeusJaSuoritus(actualOo, actualSuoritus, expectedOoData, expectedSuoritusData)
       })
+    }
+  }
 
+  "DIA-tutkinto" - {
+    "vahvistetun tutkinnon tiedot palautetaan" in {
+      val oppija = KoskiSpecificMockOppijat.dia
+
+      val expectedOoData = getOpiskeluoikeus(oppija.oid, schema.OpiskeluoikeudenTyyppi.diatutkinto.koodiarvo)
+      val expectedSuoritusData = expectedOoData.suoritukset.collectFirst { case dia: schema.DIATutkinnonSuoritus => dia }.get
+
+      val result = suoritetutTutkinnotService.findSuoritetutTutkinnotOppija(oppija.oid)
+
+      result.isRight should be(true)
+
+      result.map(o => {
+        verifyOppija(oppija, o)
+
+        o.opiskeluoikeudet should have length 1
+        o.opiskeluoikeudet.head shouldBe a[SuoritetutTutkinnotDIAOpiskeluoikeus]
+
+        val actualOo = o.opiskeluoikeudet.head
+        val actualSuoritus = actualOo.suoritukset.head
+
+        verifyOpiskeluoikeusJaSuoritus(actualOo, actualSuoritus, expectedOoData, expectedSuoritusData)
+      })
     }
   }
 
@@ -461,6 +485,12 @@ class SuoritetutTutkinnotServiceSpec
         expectedSuoritusData: schema.EBTutkinnonSuoritus
         ) => verifyEBTutkinto(actualOo, actualSuoritus, expectedOoData, expectedSuoritusData)
       case (
+        actualOo: SuoritetutTutkinnotDIAOpiskeluoikeus,
+        actualSuoritus: SuoritetutTutkinnotDIATutkinnonSuoritus,
+        expectedOoData: schema.DIAOpiskeluoikeus,
+        expectedSuoritusData: schema.DIATutkinnonSuoritus
+        ) => verifyDIATutkinto(actualOo, actualSuoritus, expectedOoData, expectedSuoritusData)
+      case (
         actualOo: SuoritetutTutkinnotYlioppilastutkinnonOpiskeluoikeus,
         actualSuoritus: SuoritetutTutkinnotYlioppilastutkinnonPäätasonSuoritus,
         expectedOoData: schema.YlioppilastutkinnonOpiskeluoikeus,
@@ -602,6 +632,30 @@ class SuoritetutTutkinnotServiceSpec
     actualSuoritus.koulutusmoduuli.curriculum.koodiarvo should equal(expectedSuoritusData.koulutusmoduuli.curriculum.koodiarvo)
     actualSuoritus.toimipiste.map(_.oid) should equal(Some(expectedSuoritusData.toimipiste.oid))
     actualSuoritus.vahvistus.map(_.päivä) should equal(expectedSuoritusData.vahvistus.map(_.päivä))
+    actualSuoritus.tyyppi.koodiarvo should equal(expectedSuoritusData.tyyppi.koodiarvo)
+  }
+
+  private def verifyDIATutkinto(
+    actualOo: SuoritetutTutkinnotDIAOpiskeluoikeus,
+    actualSuoritus: SuoritetutTutkinnotDIATutkinnonSuoritus,
+    expectedOoData: schema.DIAOpiskeluoikeus,
+    expectedSuoritusData: schema.DIATutkinnonSuoritus
+  ): Unit = {
+    actualOo.oid should be(expectedOoData.oid)
+    actualOo.versionumero should be(expectedOoData.versionumero)
+    actualOo.aikaleima should be(expectedOoData.aikaleima)
+    actualOo.oppilaitos.map(_.oid) should equal(expectedOoData.oppilaitos.map(_.oid))
+    actualOo.koulutustoimija.map(_.oid) should equal(expectedOoData.koulutustoimija.map(_.oid))
+    actualOo.sisältyyOpiskeluoikeuteen.map(_.oid) should equal(expectedOoData.sisältyyOpiskeluoikeuteen.map(_.oid))
+    actualOo.suoritukset.length should equal(1)
+    actualOo.tyyppi.koodiarvo should equal(expectedOoData.tyyppi.koodiarvo)
+    actualOo.organisaatiohistoria.map(_.length) should equal(expectedOoData.organisaatiohistoria.map(_.length))
+
+    actualSuoritus.koulutusmoduuli.tunniste.koodiarvo should equal(expectedSuoritusData.koulutusmoduuli.tunniste.koodiarvo)
+    actualSuoritus.koulutusmoduuli.koulutustyyppi.map(_.koodiarvo) should equal(expectedSuoritusData.koulutusmoduuli.koulutustyyppi.map(_.koodiarvo))
+    actualSuoritus.toimipiste.map(_.oid) should equal(Some(expectedSuoritusData.toimipiste.oid))
+    actualSuoritus.vahvistus.map(_.päivä) should equal(expectedSuoritusData.vahvistus.map(_.päivä))
+    actualSuoritus.suorituskieli.map(_.koodiarvo) should equal(Some(expectedSuoritusData.suorituskieli.koodiarvo))
     actualSuoritus.tyyppi.koodiarvo should equal(expectedSuoritusData.tyyppi.koodiarvo)
   }
 

@@ -15,8 +15,8 @@ object SuoritetutTutkinnotSchema {
   val schemassaTuetutOpiskeluoikeustyypit: List[String] = List(
     schema.OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo,
     schema.OpiskeluoikeudenTyyppi.ylioppilastutkinto.koodiarvo,
-    schema.OpiskeluoikeudenTyyppi.europeanschoolofhelsinki.koodiarvo
-    // TODO: TOR-1025 diatutkinto
+    schema.OpiskeluoikeudenTyyppi.europeanschoolofhelsinki.koodiarvo,
+    schema.OpiskeluoikeudenTyyppi.diatutkinto.koodiarvo
     // TODO: TOR-1025 virta
   )
 }
