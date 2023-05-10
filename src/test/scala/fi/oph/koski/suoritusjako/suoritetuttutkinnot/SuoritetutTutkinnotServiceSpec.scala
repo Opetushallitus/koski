@@ -6,6 +6,7 @@ import fi.oph.koski.documentation.ExampleData.{longTimeAgo, opiskeluoikeusLäsn�
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.KoskiSpecificSession.SUORITUSJAKO_KATSOMINEN_USER
+import fi.oph.koski.koskiuser.MockUsers.stadinAmmattiopistoTallentaja
 import fi.oph.koski.koskiuser.Rooli.OPHKATSELIJA
 import fi.oph.koski.koskiuser.{AuthenticationUser, KoskiSpecificSession, KäyttöoikeusGlobal, MockUsers, Palvelurooli}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
@@ -13,6 +14,7 @@ import fi.oph.koski.schema
 import fi.oph.koski.ytr.MockYrtClient
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import fi.oph.koski.localization.LocalizedStringImplicits._
+import fi.oph.koski.organisaatio.MockOrganisaatiot.omnia
 import fi.oph.koski.schema.AmmatillinenOpiskeluoikeus
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 import org.scalatest.freespec.AnyFreeSpec
@@ -33,7 +35,7 @@ class SuoritetutTutkinnotServiceSpec
   with PutOpiskeluoikeusTestMethods[schema.AmmatillinenOpiskeluoikeus]
 {
   def tag: universe.TypeTag[schema.AmmatillinenOpiskeluoikeus] = implicitly[reflect.runtime.universe.TypeTag[schema.AmmatillinenOpiskeluoikeus]]
-  override def defaultOpiskeluoikeus = makeOpiskeluoikeus(alkamispäivä = longTimeAgo, suoritus = osittainenSuoritusKesken)
+  override def defaultOpiskeluoikeus = makeOpiskeluoikeus(alkamispäivä = longTimeAgo, suoritus = ammatillisenTutkinnonOsittainenSuoritus)
 
   val suoritetutTutkinnotService = KoskiApplicationForTests.suoritetutTutkinnotService
 
@@ -278,8 +280,34 @@ class SuoritetutTutkinnotServiceSpec
     result should equal(Left(KoskiErrorCategory.unavailable()))
   }
 
-  "TODO: Älä palauta kuori-opiskeluoikeuksia, ainoastaan sisältyvät" - {
-    // TODO
+  "Älä palauta kuori-opiskeluoikeuksia, ainoastaan sisältyvät" in {
+    val oppija = KoskiSpecificMockOppijat.eero
+
+    val kuori: AmmatillinenOpiskeluoikeus = createOpiskeluoikeus(oppija, defaultOpiskeluoikeus, user = stadinAmmattiopistoTallentaja)
+
+    val sisältyväInput: AmmatillinenOpiskeluoikeus = defaultOpiskeluoikeus.copy(
+      oppilaitos = Some(schema.Oppilaitos(omnia)),
+      sisältyyOpiskeluoikeuteen = Some(schema.SisältäväOpiskeluoikeus(kuori.oppilaitos.get, kuori.oid.get)),
+      suoritukset = List(
+        defaultOpiskeluoikeus.suoritukset.head.asInstanceOf[schema.AmmatillisenTutkinnonOsittainenSuoritus].copy(
+          toimipiste = schema.OidOrganisaatio(omnia)
+        )
+      )
+    )
+
+    val sisältyvä = createOpiskeluoikeus(oppija, sisältyväInput, user = MockUsers.omniaTallentaja)
+
+    val result = suoritetutTutkinnotService.findSuoritetutTutkinnotOppija(oppija.oid)
+
+    result.isRight should be(true)
+
+    result.map(o => {
+      verifyOppija(oppija, o)
+      o.opiskeluoikeudet should have length 1
+
+      o.opiskeluoikeudet.head.oppilaitos.map(_.oid) should equal(Some(MockOrganisaatiot.omnia))
+      o.opiskeluoikeudet.head.oid should equal(Some(sisältyvä.oid.get))
+    })
   }
 
   "Korkeakoulututkinnot" - {
@@ -350,8 +378,6 @@ class SuoritetutTutkinnotServiceSpec
       verifyResponseStatusOk()
     }
   }
-
-  private def osittainenSuoritusKesken = ammatillisenTutkinnonOsittainenSuoritus.copy(vahvistus = None, keskiarvo = None)
 
   private def makeOpiskeluoikeus(
     alkamispäivä: LocalDate = longTimeAgo,

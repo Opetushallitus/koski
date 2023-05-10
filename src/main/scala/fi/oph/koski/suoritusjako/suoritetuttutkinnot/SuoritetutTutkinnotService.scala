@@ -117,21 +117,28 @@ class SuoritetutTutkinnotService(application: KoskiApplication) extends GlobalEx
       }
     }
 
-    def eiKorotusSuoritus(s: Suoritus): Boolean = {
+    def onKorotusSuoritus(s: Suoritus): Boolean = {
       s match {
         case ms: SuoritetutTutkinnotAmmatillisenTutkinnonOsittainenSuoritus
-          if ms.korotettuOpiskeluoikeusOid.isDefined => false
-        case _ => true
+          if ms.korotettuOpiskeluoikeusOid.isDefined => true
+        case _ => false
       }
     }
 
-    opiskeluoikeudet.map { opiskeluoikeus =>
-      opiskeluoikeus.withSuoritukset(
-        opiskeluoikeus.suoritukset
-          .filter(vahvistettuNykyhetkeenMennessä)
-          .filter(josMuuAmmatillinenNiinTehtäväänValmistava)
-          .filter(eiKorotusSuoritus)
-      )
-    }.filter(_.suoritukset.nonEmpty)
+    val kuoriOpiskeluoikeusOidit = opiskeluoikeudet.map(_.sisältyyOpiskeluoikeuteen.map(_.oid)).flatten.toSet
+    def onKuoriOpiskeluoikeus(o: SuoritetutTutkinnotOpiskeluoikeus): Boolean = {
+      o.oid.map(kuoriOpiskeluoikeusOidit.contains).getOrElse(false)
+    }
+
+    opiskeluoikeudet
+      .filterNot(onKuoriOpiskeluoikeus)
+      .map { opiskeluoikeus =>
+        opiskeluoikeus.withSuoritukset(
+          opiskeluoikeus.suoritukset
+            .filter(vahvistettuNykyhetkeenMennessä)
+            .filter(josMuuAmmatillinenNiinTehtäväänValmistava)
+            .filterNot(onKorotusSuoritus)
+        )
+      }.filter(_.suoritukset.nonEmpty)
   }
 }

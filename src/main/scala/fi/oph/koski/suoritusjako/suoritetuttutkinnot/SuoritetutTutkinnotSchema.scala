@@ -49,7 +49,6 @@ trait SuoritetutTutkinnotOpiskeluoikeus {
   def aikaleima: Option[LocalDateTime]
   def oppilaitos: Option[Oppilaitos]
   def koulutustoimija: Option[Koulutustoimija]
-  // TODO: TOR-1025 tarvitaanko:
   def sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus]
   def suoritukset: List[Suoritus]
   @KoodistoUri("opiskeluoikeudentyyppi")
