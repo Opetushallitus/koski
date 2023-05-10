@@ -2,7 +2,7 @@ package fi.oph.koski.suoritusjako.suoritetuttutkinnot
 
 import fi.oph.koski.schema
 import fi.oph.koski.schema.annotation.{Deprecated, KoodistoKoodiarvo}
-import fi.oph.scalaschema.annotation.{DefaultValue, ReadFlattened, Title}
+import fi.oph.scalaschema.annotation.{ReadFlattened, Title}
 
 import java.time.{LocalDate, LocalDateTime}
 
