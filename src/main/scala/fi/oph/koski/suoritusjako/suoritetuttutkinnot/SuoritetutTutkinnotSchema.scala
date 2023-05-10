@@ -13,12 +13,12 @@ object SuoritetutTutkinnotSchema {
     SchemaToJson.toJsonSchema(schema.KoskiSchema.createSchema(classOf[SuoritetutTutkinnotOppija]).asInstanceOf[ClassSchema])
 
   val schemassaTuetutOpiskeluoikeustyypit: List[String] = List(
-    "ammatillinenkoulutus",
-    // TODO: TOR-1025 ebtutkinto
+    schema.OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo,
+    schema.OpiskeluoikeudenTyyppi.ylioppilastutkinto.koodiarvo,
+    schema.OpiskeluoikeudenTyyppi.europeanschoolofhelsinki.koodiarvo
     // TODO: TOR-1025 diatutkinto
     // TODO: TOR-1025 virta
-    "ylioppilastutkinto",
-  ).filter(_.nonEmpty)
+  )
 }
 
 case class SuoritetutTutkinnotOppija(
