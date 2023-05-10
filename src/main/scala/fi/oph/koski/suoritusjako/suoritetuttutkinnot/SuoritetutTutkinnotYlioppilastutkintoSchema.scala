@@ -4,8 +4,6 @@ import fi.oph.koski.schema
 import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
 import fi.oph.scalaschema.annotation.{Description, Title}
 
-import java.time.LocalDate
-
 object SuoritetutTutkinnotYlioppilastutkinnonOpiskeluoikeus {
   def fromKoskiSchema(yo: schema.YlioppilastutkinnonOpiskeluoikeus) = SuoritetutTutkinnotYlioppilastutkinnonOpiskeluoikeus(
     oppilaitos = yo.oppilaitos.map(ol =>
@@ -36,7 +34,6 @@ object SuoritetutTutkinnotYlioppilastutkinnonOpiskeluoikeus {
       )),
       vahvistus = s.vahvistus.map(v => Vahvistus(v.päivä)),
       tyyppi = s.tyyppi,
-      alkamispäivä = s.alkamispäivä
     )),
     tyyppi = yo.tyyppi
   )
@@ -69,7 +66,6 @@ case class SuoritetutTutkinnotYlioppilastutkinnonPäätasonSuoritus(
   toimipiste: Option[Toimipiste],
   vahvistus: Option[Vahvistus],
   tyyppi: schema.Koodistokoodiviite,
-  alkamispäivä: Option[LocalDate],
 ) extends Suoritus
 
 case class SuoritetutTutkinnotYlioppilastutkinnonSuorituksenKoulutusmoduuli(
