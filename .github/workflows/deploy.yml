@@ -40,9 +40,9 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1-node16
         with:
-          role-to-assume: ${{ secrets.DEPLOY_ROLE }}
+          role-to-assume: ${{ secrets.ECR_ROLE }}
           role-duration-seconds: 3600
-          role-session-name: KoskiDeployment-${{ github.event.inputs.environment }}-${{ github.event.inputs.commithash }}
+          role-session-name: KoskiDeploymentEcr-${{ github.event.inputs.environment }}-${{ github.event.inputs.commithash }}
           aws-region: eu-west-1
 
       - name: Login to Amazon ECR
@@ -112,6 +112,20 @@ jobs:
           docker build -f docker-build/Dockerfile -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --build-arg KOSKI_VERSION=$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1-node16
+        with:
+          role-to-assume: ${{ secrets.DEPLOY_ROLE }}
+          role-duration-seconds: 3600
+          role-session-name: KoskiDeployment-${{ github.event.inputs.environment }}-${{ github.event.inputs.commithash }}
+          aws-region: eu-west-1
+
+      - name: Login to Amazon ECR
+        id: login-deployment
+        uses: aws-actions/amazon-ecr-login@v1
+        with:
+          registries: ${{ secrets.ECR_ACCOUNT_ID }}
+
       - name: Get task definition ARN
         id: get-taskdef-arn
         run: |
@@ -127,7 +141,7 @@ jobs:
         with:
           task-definition: task-definition.json
           container-name: KoskiContainer
-          image: ${{ steps.login-ecr.outputs.registry }}/koski:${{ github.event.inputs.commithash }}
+          image: ${{ steps.login-deployment.outputs.registry }}/koski:${{ github.event.inputs.commithash }}
 
       - name: Get AppSpec template
         run: |
@@ -159,7 +173,7 @@ jobs:
         with:
           task-definition: raportointikanta-loader-task-definition.json
           container-name: RaportointikantaLoaderContainer
-          image: ${{ steps.login-ecr.outputs.registry }}/koski:${{ github.event.inputs.commithash }}
+          image: ${{ steps.login-deployment.outputs.registry }}/koski:${{ github.event.inputs.commithash }}
 
       - name: Deploy Amazon ECS task definition
         id: raportointikanta-loader-taskdef-deploy
@@ -188,7 +202,7 @@ jobs:
         with:
           task-definition: ytr-data-loader-task-definition.json
           container-name: YtrDataLoaderContainer
-          image: ${{ steps.login-ecr.outputs.registry }}/koski:${{ github.event.inputs.commithash }}
+          image: ${{ steps.login-deployment.outputs.registry }}/koski:${{ github.event.inputs.commithash }}
 
       - name: Deploy Amazon ECS task definition
         id: ytr-data-loader-taskdef-deploy
