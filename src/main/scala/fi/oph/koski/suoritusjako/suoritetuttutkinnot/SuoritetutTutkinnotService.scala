@@ -31,10 +31,10 @@ class SuoritetutTutkinnotService(application: KoskiApplication) extends GlobalEx
   case class RawOppija(
     henkilö: LaajatOppijaHenkilöTiedot,
     opiskeluoikeudet: Seq[SuoritetutTutkinnotOppijanOpiskeluoikeusRow],
-    ylioppilastutkinnot: Seq[SuoritetutTutkinnotYlioppilastutkinnonOpiskeluoikeus]
+    ylioppilastutkinnot: Seq[SuoritetutTutkinnotYlioppilastutkinnonOpiskeluoikeus],
+    korkeakoulututkinnot: Seq[SuoritetutTutkinnotKorkeakoulunOpiskeluoikeus],
   )
 
-  // TODO: TOR-1025 Lisää Virta-opiskeluoikeuksien nouto
   private def haeOpiskeluoikeudet(oppijaOid: String)(
     implicit user: KoskiSpecificSession
   ): Either[HttpStatus, RawOppija] = {
@@ -64,6 +64,22 @@ class SuoritetutTutkinnotService(application: KoskiApplication) extends GlobalEx
           ))
       }
 
+      val virtaResultFut: Future[Either[HttpStatus, Seq[SuoritetutTutkinnotKorkeakoulunOpiskeluoikeus]]] = {
+        masterHenkilöFut
+          .map(_.flatMap(masterHenkilö =>
+            try {
+              Right(application.virta.findByOppija(masterHenkilö).map {
+                case kk: schema.KorkeakoulunOpiskeluoikeus =>
+                  SuoritetutTutkinnotKorkeakoulunOpiskeluoikeus.fromKoskiSchema(kk)
+              })
+            } catch {
+              case NonFatal(e) =>
+                logger.warn(e)("Failed to fetch data from Virta")
+                Left(KoskiErrorCategory.unavailable.virta())
+            }
+          ))
+      }
+
       val opiskeluoikeudetFut: Future[Either[HttpStatus, Seq[SuoritetutTutkinnotOppijanOpiskeluoikeusRow]]] =
         masterHenkilöFut
           .map(_.flatMap(masterHenkilö =>
@@ -77,7 +93,8 @@ class SuoritetutTutkinnotService(application: KoskiApplication) extends GlobalEx
         henkilö <- EitherT(masterHenkilöFut)
         opiskeluoikeudet <- EitherT(opiskeluoikeudetFut)
         ytrResult <- EitherT(ytrResultFut)
-      } yield RawOppija(henkilö, opiskeluoikeudet, ytrResult)
+        virtaResult <- EitherT(virtaResultFut)
+      } yield RawOppija(henkilö, opiskeluoikeudet, ytrResult, virtaResult)
 
       try {
         Futures.await(
@@ -97,10 +114,11 @@ class SuoritetutTutkinnotService(application: KoskiApplication) extends GlobalEx
   ): SuoritetutTutkinnotOppija = {
     val opiskeluoikeudet = rawOppija.opiskeluoikeudet.map(_.opiskeluoikeus)
     val ytrOpiskeluoikeudet = rawOppija.ylioppilastutkinnot
+    val virtaOpiskeluoikeudet = rawOppija.korkeakoulututkinnot
 
     SuoritetutTutkinnotOppija(
       henkilö = Henkilo.fromOppijaHenkilö(rawOppija.henkilö),
-      opiskeluoikeudet = suodataPalautettavat(opiskeluoikeudet ++ ytrOpiskeluoikeudet).toList
+      opiskeluoikeudet = suodataPalautettavat(opiskeluoikeudet ++ ytrOpiskeluoikeudet ++ virtaOpiskeluoikeudet).toList
     )
   }
 

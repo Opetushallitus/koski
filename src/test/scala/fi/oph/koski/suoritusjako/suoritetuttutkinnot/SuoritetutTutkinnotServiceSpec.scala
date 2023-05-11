@@ -16,6 +16,7 @@ import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.organisaatio.MockOrganisaatiot.omnia
 import fi.oph.koski.schema.AmmatillinenOpiskeluoikeus
+import fi.oph.koski.virta.MockVirtaClient
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
@@ -59,7 +60,9 @@ class SuoritetutTutkinnotServiceSpec
   }
 
   "Kosken testioppijoiden tiedot voi hakea ilman virheitä" in {
-    val oppijaOidit = KoskiSpecificMockOppijat.defaultOppijat.map(_.henkilö.oid)
+    val oppijaOidit = KoskiSpecificMockOppijat.defaultOppijat
+      .filter(o => o.henkilö.hetu.isEmpty || o.henkilö.hetu.exists(!MockVirtaClient.virheenAiheuttavaHetu(_)))
+      .map(_.henkilö.oid)
 
     oppijaOidit.length should be > 100
 
@@ -249,6 +252,32 @@ class SuoritetutTutkinnotServiceSpec
     }
   }
 
+  "Korkeakoulututkinnot" - {
+    "vahvistetun tutkinnon tiedot palautetaan" in {
+      val oppija = KoskiSpecificMockOppijat.dippainssi
+
+      val expectedOoData = getOpiskeluoikeus(oppija.oid, schema.OpiskeluoikeudenTyyppi.korkeakoulutus.koodiarvo)
+      val expectedSuoritusData = expectedOoData.suoritukset.collectFirst { case korkeakoulu: schema.KorkeakoulututkinnonSuoritus => korkeakoulu }.get
+
+      val result = suoritetutTutkinnotService.findSuoritetutTutkinnotOppija(oppija.oid)
+
+      result.isRight should be(true)
+
+      result.map(o => {
+        verifyOppija(oppija, o)
+
+        o.opiskeluoikeudet should have length 1
+        o.opiskeluoikeudet.head shouldBe a[SuoritetutTutkinnotKorkeakoulunOpiskeluoikeus]
+
+        val actualOo = o.opiskeluoikeudet.head
+        val actualSuoritus = actualOo.suoritukset.head
+
+        verifyOpiskeluoikeusJaSuoritus(actualOo, actualSuoritus, expectedOoData, expectedSuoritusData)
+      })
+    }
+  }
+
+
 
   "Linkitetyt oppijat" - {
     "Masterin ja slaven tutkinnot palautetaan kummankin oideilla" in {
@@ -317,6 +346,15 @@ class SuoritetutTutkinnotServiceSpec
     result should equal(Left(KoskiErrorCategory.unavailable.ytr()))
   }
 
+  "jos Virta palauttaa virheen, palautetaan virhe" in {
+    val oppija = KoskiSpecificMockOppijat.virtaEiVastaa
+
+    val result = suoritetutTutkinnotService.findSuoritetutTutkinnotOppija(oppija.oid)
+
+    result.isRight should be(false)
+    result should equal(Left(KoskiErrorCategory.unavailable.virta()))
+  }
+
   "jos YTR timeouttaa, palautetaan virhe" in {
     val oppija = KoskiSpecificMockOppijat.masterYlioppilasJaAmmattilainen
 
@@ -359,22 +397,6 @@ class SuoritetutTutkinnotServiceSpec
       o.opiskeluoikeudet.head.oppilaitos.map(_.oid) should equal(Some(MockOrganisaatiot.omnia))
       o.opiskeluoikeudet.head.oid should equal(Some(sisältyvä.oid.get))
     })
-  }
-
-  "Korkeakoulututkinnot" - {
-    // TODO
-  }
-
-  "jos Virta palauttaa virheen, palautetaan virhe" in {
-    // TODO
-  }
-
-  "Muut tutkinnot" - {
-    // TODO DIA, EB
-  }
-
-  "Audit-lokit" - {
-    // TODO
   }
 
   private def lisääKorotettuSuoritus(oppija: LaajatOppijaHenkilöTiedot) = {
@@ -496,7 +518,12 @@ class SuoritetutTutkinnotServiceSpec
         expectedOoData: schema.YlioppilastutkinnonOpiskeluoikeus,
         expectedSuoritusData: schema.YlioppilastutkinnonSuoritus
       ) => verifyYlioppilastutkinto(actualOo, actualSuoritus, expectedOoData, expectedSuoritusData)
-
+      case (
+        actualOo: SuoritetutTutkinnotKorkeakoulunOpiskeluoikeus,
+        actualSuoritus: SuoritetutTutkinnotKorkeakoulututkinnonSuoritus,
+        expectedOoData: schema.KorkeakoulunOpiskeluoikeus,
+        expectedSuoritusData: schema.KorkeakoulututkinnonSuoritus
+        ) => verifyKorkeakoulututkinto(actualOo, actualSuoritus, expectedOoData, expectedSuoritusData)
       case _ => fail("Palautettiin tunnistamattoman tyyppistä dataa")
     }
   }
@@ -607,6 +634,26 @@ class SuoritetutTutkinnotServiceSpec
 
     actualSuoritus.koulutusmoduuli.tunniste.koodiarvo should equal(expectedSuoritusData.koulutusmoduuli.tunniste.koodiarvo)
     actualSuoritus.koulutusmoduuli.koulutustyyppi.map(_.koodiarvo) should equal(expectedSuoritusData.koulutusmoduuli.koulutustyyppi.map(_.koodiarvo))
+    actualSuoritus.toimipiste.map(_.oid) should equal(Some(expectedSuoritusData.toimipiste.oid))
+    actualSuoritus.vahvistus.map(_.päivä) should equal(expectedSuoritusData.vahvistus.map(_.päivä))
+    actualSuoritus.tyyppi.koodiarvo should equal(expectedSuoritusData.tyyppi.koodiarvo)
+  }
+
+  private def verifyKorkeakoulututkinto(
+    actualOo: SuoritetutTutkinnotKorkeakoulunOpiskeluoikeus,
+    actualSuoritus: SuoritetutTutkinnotKorkeakoulututkinnonSuoritus,
+    expectedOoData: schema.KorkeakoulunOpiskeluoikeus,
+    expectedSuoritusData: schema.KorkeakoulututkinnonSuoritus
+  ): Unit = {
+    actualOo.oppilaitos.map(_.oid) should equal(expectedOoData.oppilaitos.map(_.oid))
+    actualOo.koulutustoimija.map(_.oid) should equal(expectedOoData.koulutustoimija.map(_.oid))
+    actualOo.suoritukset.length should equal(1)
+    actualOo.tyyppi.koodiarvo should equal(expectedOoData.tyyppi.koodiarvo)
+    actualOo.luokittelu.map(_.map(_.koodiarvo)) should equal(expectedOoData.luokittelu.map(_.map(_.koodiarvo)))
+
+    actualSuoritus.koulutusmoduuli.tunniste.koodiarvo should equal(expectedSuoritusData.koulutusmoduuli.tunniste.koodiarvo)
+    actualSuoritus.koulutusmoduuli.koulutustyyppi.map(_.koodiarvo) should equal(expectedSuoritusData.koulutusmoduuli.koulutustyyppi.map(_.koodiarvo))
+    actualSuoritus.koulutusmoduuli.virtaNimi should equal(expectedSuoritusData.koulutusmoduuli.virtaNimi)
     actualSuoritus.toimipiste.map(_.oid) should equal(Some(expectedSuoritusData.toimipiste.oid))
     actualSuoritus.vahvistus.map(_.päivä) should equal(expectedSuoritusData.vahvistus.map(_.päivä))
     actualSuoritus.tyyppi.koodiarvo should equal(expectedSuoritusData.tyyppi.koodiarvo)

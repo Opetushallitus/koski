@@ -16,8 +16,8 @@ object SuoritetutTutkinnotSchema {
     schema.OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo,
     schema.OpiskeluoikeudenTyyppi.ylioppilastutkinto.koodiarvo,
     schema.OpiskeluoikeudenTyyppi.europeanschoolofhelsinki.koodiarvo,
-    schema.OpiskeluoikeudenTyyppi.diatutkinto.koodiarvo
-    // TODO: TOR-1025 virta
+    schema.OpiskeluoikeudenTyyppi.diatutkinto.koodiarvo,
+    schema.OpiskeluoikeudenTyyppi.korkeakoulutus.koodiarvo,
   )
 }
 
@@ -98,7 +98,6 @@ object SuoritetutTutkinnotKoodistokoodiviite{
   )
 }
 
-// TODO: TOR-1025 tarvitaanko muita tietoja kuin päivä vahvistuksesta?
 case class Vahvistus(päivä: LocalDate)
 
 case class Oppilaitos(

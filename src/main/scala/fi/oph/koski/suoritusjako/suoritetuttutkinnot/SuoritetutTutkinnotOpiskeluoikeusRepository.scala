@@ -19,8 +19,6 @@ class SuoritetutTutkinnotOpiskeluoikeusRepository(
     oppijaMasterOid: String
   ): Seq[SuoritetutTutkinnotOppijanOpiskeluoikeusRow] = {
 
-    // TODO: TOR-1025 Muuta query niin, että kuoria ei palauteta, ainoastaan sisältyvät opiskeluoikeudet.
-    // Tai filtteröi myöhemmin, jos helpompaa.
     runDbSync(SQLHelpers.concatMany(Some(
       sql"""
 with
