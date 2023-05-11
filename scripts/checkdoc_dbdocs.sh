@@ -6,7 +6,7 @@ function has_koski_db_schema_changes() {
 }
 
 function has_raportointikanta_db_schema_changes() {
-  git log --name-only --pretty=format: HEAD...origin/master | grep -E "src/main/scala/fi/oph/koski/raportointikanta" > /dev/null
+  git log --name-only --pretty=format: HEAD...origin/master | grep -E "src/main/scala/fi/oph/koski/raportointikanta/RaportointiDatabase" > /dev/null
 }
 
 function has_valpas_db_schema_changes() {
