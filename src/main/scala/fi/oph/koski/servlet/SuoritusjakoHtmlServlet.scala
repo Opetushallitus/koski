@@ -10,6 +10,11 @@ class SuoritusjakoHtmlServlet(implicit val application: KoskiApplication) extend
   val frontendValvontaMode: FrontendValvontaMode.FrontendValvontaMode =
     FrontendValvontaMode(application.config.getString("frontend-valvonta.mode"))
 
+  get("/suoritetut-tutkinnot/:secret")(nonce => {
+    setLangCookieFromDomainIfNecessary
+    htmlIndex("koski-suoritetuttutkinnot.js", responsive = true, nonce = nonce)
+  })
+
   get("/:secret")(nonce => {
     setLangCookieFromDomainIfNecessary
     htmlIndex("koski-suoritusjako.js", responsive = true, nonce = nonce)

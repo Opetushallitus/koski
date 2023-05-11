@@ -44,10 +44,13 @@ class SuoritusjakoServlet(implicit val application: KoskiApplication) extends Ed
       val suoritusIds = rightOrEmptyList(extract[List[SuoritusIdentifier]](body))
       val kokonaisuudet = rightOrEmptyList(extract[List[SuoritusjakoPayload]](body))
 
+      logger.info(suoritusIds.toString())
+      logger.info(kokonaisuudet.toString())
+
       val result = if (suoritusIds.nonEmpty) {
-        application.suoritusjakoService.put(user.oid, suoritusIds, List())(user)
+        application.suoritusjakoService.putBySuoritusIds(user.oid, suoritusIds)(user)
       } else if (kokonaisuudet.nonEmpty) {
-        application.suoritusjakoService.put(user.oid, List(), kokonaisuudet)(user)
+        application.suoritusjakoService.putByKokonaisuudet(user.oid, kokonaisuudet)(user)
       } else {
         Left(HttpStatus.fold(errors))
       }

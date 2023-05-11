@@ -5,7 +5,7 @@ const SuoritetutKokonaisuudet = ({ handleSelectedItems }) => {
   const [checkedItems, setCheckedItems] = useState({})
 
   const checkboxListData = useMemo(
-    () => [{ tyyppi: 'suoritetut_tutkinnot', label: 'Suoritetut tutkinnot' }],
+    () => [{ tyyppi: 'suoritetut-tutkinnot', label: 'Suoritetut tutkinnot' }],
     []
   )
 

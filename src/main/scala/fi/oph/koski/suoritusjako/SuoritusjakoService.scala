@@ -1,57 +1,50 @@
 package fi.oph.koski.suoritusjako
 
 
-import fi.oph.koski.db.KoskiTables
+import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.db.{KoskiTables, SuoritusjakoRow}
 
 import java.time.LocalDate
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, Logging}
-import fi.oph.koski.log.KoskiOperation.KANSALAINEN_SUORITUSJAKO_LISAYS
+import fi.oph.koski.log.KoskiOperation.{KANSALAINEN_SUORITUSJAKO_LISAYS, KANSALAINEN_SUORITUSJAKO_LISAYS_SUORITETUT_TUTKINNOT}
 import fi.oph.koski.log.KoskiAuditLogMessageField.oppijaHenkiloOid
 import fi.oph.koski.oppija.KoskiOppijaFacade
 import fi.oph.koski.schema._
+import fi.oph.koski.suoritusjako.suoritetuttutkinnot.SuoritetutTutkinnotOppija
 import fi.oph.koski.util.WithWarnings
 
 
 case class SuoritusjakoPayload(
   tyyppi: String
 )
-class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppijaFacade: KoskiOppijaFacade) extends Logging {
-  def put(oppijaOid: String, suoritusIds: List[SuoritusIdentifier], kokonaisuudet: List[SuoritusjakoPayload])(implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, Suoritusjako] = {
-
-    def addSuoritusjako = {
-      val secret = SuoritusjakoSecret.generateNew
-      val suoritusjako = suoritusjakoRepository.create(secret, oppijaOid, suoritusIds, kokonaisuudet)
-      AuditLog.log(KoskiAuditLogMessage(KANSALAINEN_SUORITUSJAKO_LISAYS, koskiSession, Map(oppijaHenkiloOid -> oppijaOid)))
-      suoritusjako
-    }
-
-    if (suoritusIds.nonEmpty) {
-      val suoritusjako = addSuoritusjako
-
-      getOpiskeluoikeudetSuoritusIdentifierinMukaan(oppijaOid, suoritusIds) match {
-        case Left(status) => Left(status)
-        case Right(opiskeluoikeudet) =>
-          // Kaikkia opiskeluoikeuksia ei talleteta Koskeen, jolloin niillä ei välttämättä ole oidia.
-          // Ei yritetä merkata sellaisille opiskeluoikeuksille suoritusjakoa tehdyksi.
-          opiskeluoikeudet.map(_.oid match {
-            case Some(oid) if suoritusjako.isRight => oppijaFacade.merkitseSuoritusjakoTehdyksiIlmanKäyttöoikeudenTarkastusta(oid)
-            case _ =>
-          })
-          suoritusjako
-      }
-    } else {
-      addSuoritusjako
+class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppijaFacade: KoskiOppijaFacade, application: KoskiApplication) extends Logging {
+  private def addSuoritusjako(oppijaOid: String, suoritusIds: List[SuoritusIdentifier], kokonaisuudet: List[SuoritusjakoPayload])(implicit koskiSession: KoskiSpecificSession) = {
+    val secret = SuoritusjakoSecret.generateNew
+    val suoritusjako = suoritusjakoRepository.create(secret, oppijaOid, suoritusIds, kokonaisuudet)
+    suoritusjako
+  }
+  def putBySuoritusIds(oppijaOid: String, suoritusIds: List[SuoritusIdentifier])(implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, Suoritusjako] = {
+    AuditLog.log(KoskiAuditLogMessage(KANSALAINEN_SUORITUSJAKO_LISAYS, koskiSession, Map(oppijaHenkiloOid -> oppijaOid)))
+    getOpiskeluoikeudetSuoritusIdentifierinMukaan(oppijaOid, suoritusIds) match {
+      case Left(status) => Left(status)
+      case Right(opiskeluoikeudet) =>
+        val suoritusjako = addSuoritusjako(oppijaOid, suoritusIds, List())
+        // Kaikkia opiskeluoikeuksia ei talleteta Koskeen, jolloin niillä ei välttämättä ole oidia.
+        // Ei yritetä merkata sellaisille opiskeluoikeuksille suoritusjakoa tehdyksi.
+        opiskeluoikeudet.map(_.oid match {
+          case Some(oid) if suoritusjako.isRight => oppijaFacade.merkitseSuoritusjakoTehdyksiIlmanKäyttöoikeudenTarkastusta(oid)
+          case _ =>
+        })
+        suoritusjako
     }
   }
 
-  def put(oppijaOid: String, kokonaisuudet: List[SuoritusjakoPayload])(implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, Suoritusjako] = {
-    val secret = SuoritusjakoSecret.generateNew
-    val suoritusjako = suoritusjakoRepository.create(secret, oppijaOid, List(), kokonaisuudet)
-    AuditLog.log(KoskiAuditLogMessage(KANSALAINEN_SUORITUSJAKO_LISAYS, koskiSession, Map(oppijaHenkiloOid -> oppijaOid)))
-    suoritusjako
+  def putByKokonaisuudet(oppijaOid: String, kokonaisuudet: List[SuoritusjakoPayload])(implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, Suoritusjako] = {
+    AuditLog.log(KoskiAuditLogMessage(KANSALAINEN_SUORITUSJAKO_LISAYS_SUORITETUT_TUTKINNOT, koskiSession, Map(oppijaHenkiloOid -> oppijaOid)))
+    addSuoritusjako(oppijaOid, List(), kokonaisuudet)
   }
 
   def delete(oppijaOid: String, secret: String): HttpStatus = {
@@ -77,7 +70,13 @@ class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppija
   }
 
   def getAll(oppijaOid: String): Seq[Suoritusjako] = {
-    suoritusjakoRepository.getAll(oppijaOid).map(jako => Suoritusjako(jako.secret, jako.voimassaAsti.toLocalDate, jako.aikaleima))
+    suoritusjakoRepository.getAll(oppijaOid).map(jako =>
+      Suoritusjako(jako.secret, jako.voimassaAsti.toLocalDate, jako.aikaleima, jaonTyyppi = jako.jaonTyyppi))
+  }
+
+  def getSuoritetutTutkinnot(secret: String)(implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, SuoritetutTutkinnotOppija] = {
+    suoritusjakoRepository.get(secret)
+      .flatMap(t => application.suoritetutTutkinnotService.findSuoritetutTutkinnotOppija(t.oppijaOid))
   }
 
   private def filterOpiskeluoikeudet(opiskeluoikeudet: Seq[Opiskeluoikeus], suoritusIds: List[SuoritusIdentifier]): Seq[Opiskeluoikeus] = {

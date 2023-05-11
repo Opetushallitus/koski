@@ -42,7 +42,7 @@ class SuoritusjakoRepositoryV2(val db: DB) extends Logging with QueryMethods {
 
   def listActivesByOppijaOid(oppijaOid: String): Seq[Suoritusjako] = {
     runDbSync(VoimassaOlevatSuoritusJaotV2.filter(_.oppijaOid === oppijaOid).result)
-      .map(r => Suoritusjako(r.secret, r.voimassaAsti.toLocalDate, r.aikaleima))
+      .map(r => Suoritusjako(r.secret, r.voimassaAsti.toLocalDate, r.aikaleima, ""))
   }
 
   def updateExpirationDate(oppijaOid: String, secret: String, voimassaAsti: LocalDate): HttpStatus = {

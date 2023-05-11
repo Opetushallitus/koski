@@ -170,7 +170,7 @@ class KoskiApplication(
   lazy val oppijaFacade = new KoskiOppijaFacade(henkilöRepository, opiskeluoikeusRepository, ytrPossu, historyRepository, ytrHistoryRepository, globaaliValidator, config, hetu)
   lazy val oppijaFacadeV2 = new KoskiOppijaFacade(henkilöRepository, opiskeluoikeusRepositoryV2, ytrPossu, historyRepository, ytrHistoryRepository, globaaliValidatorV2, config, hetu)
   lazy val suoritusjakoRepository = new SuoritusjakoRepository(masterDatabase.db)
-  lazy val suoritusjakoService = new SuoritusjakoService(suoritusjakoRepository, oppijaFacade)
+  lazy val suoritusjakoService = new SuoritusjakoService(suoritusjakoRepository, oppijaFacade, this)
   lazy val suoritusjakoRepositoryV2 = new SuoritusjakoRepositoryV2(masterDatabase.db)
   lazy val suoritusjakoServiceV2 = new SuoritusjakoServiceV2(suoritusjakoRepositoryV2, oppijaFacade, henkilöRepository, opiskeluoikeusRepositoryV2, this)
   lazy val mydataRepository = new MyDataRepository(masterDatabase.db)
