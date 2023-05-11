@@ -5,7 +5,7 @@ export type Translation = string
 
 export const supportedLanguages = ["fi", "sv", "en"] as const
 
-export type Language = typeof supportedLanguages[number]
+export type Language = (typeof supportedLanguages)[number]
 
 type LanguageRecord = Record<Language, Translation>
 
