@@ -7,3 +7,5 @@ fetchMock.enableMocks()
 fetchMock.mockResponse(
   '{"huom": "fetch-kutsut on mockailtu, kts. https://www.npmjs.com/package/jest-fetch-mock"}'
 )
+
+jest.setTimeout(5 * 60 * 1000)

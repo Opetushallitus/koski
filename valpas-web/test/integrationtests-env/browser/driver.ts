@@ -14,7 +14,6 @@ declare namespace global {
 }
 
 export let driver: WebDriver
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 1000 * 60 * 5
 
 beforeAll(async () => {
   driver = (await buildBrowserStackDriver()) || (await buildChromeDriver())
