@@ -4,26 +4,25 @@ import fi.oph.koski.schema
 import fi.oph.koski.schema.annotation.{Deprecated, KoodistoKoodiarvo}
 import fi.oph.scalaschema.annotation.{ReadFlattened, Title}
 
-import java.time.{LocalDate, LocalDateTime}
+import java.time.LocalDate
 
 @Title("Ammatillisten opintojen opiskeluoikeus")
 case class SuoritetutTutkinnotAmmatillinenOpiskeluoikeus(
   oid: Option[String],
   versionumero: Option[Int],
-  aikaleima: Option[LocalDateTime],
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija],
   sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus],
   suoritukset: List[SuoritetutTutkinnotAmmatillinenPäätasonSuoritus],
   @KoodistoKoodiarvo("ammatillinenkoulutus")
   tyyppi: schema.Koodistokoodiviite,
-  organisaatiohistoria: Option[List[OrganisaatioHistoria]]
 ) extends SuoritetutTutkinnotOpiskeluoikeus {
 
   override def withSuoritukset(suoritukset: List[Suoritus]): SuoritetutTutkinnotOpiskeluoikeus =
     this.copy(
       suoritukset = suoritukset.collect { case s : SuoritetutTutkinnotAmmatillinenPäätasonSuoritus => s }
     )
+  override def withoutSisältyyOpiskeluoikeuteen: SuoritetutTutkinnotOpiskeluoikeus = this.copy(sisältyyOpiskeluoikeuteen = None)
 }
 
 trait SuoritetutTutkinnotAmmatillinenPäätasonSuoritus extends Suoritus {
@@ -31,15 +30,11 @@ trait SuoritetutTutkinnotAmmatillinenPäätasonSuoritus extends Suoritus {
   def suoritustapa: Option[SuoritetutTutkinnotKoodistokoodiviite]
   def toimipiste: Option[Toimipiste]
   def suorituskieli: Option[SuoritetutTutkinnotKoodistokoodiviite]
-  def osaamisenHankkimistavat: Option[List[OsaamisenHankkimistapajakso]]
-  def koulutussopimukset: Option[List[Koulutussopimusjakso]]
 }
 
 trait SuoritetutTutkinnotAmmatillisenTutkinnonOsittainenTaiKokoSuoritus extends SuoritetutTutkinnotAmmatillinenPäätasonSuoritus {
   def koulutusmoduuli: SuoritetutTutkinnotKokoTaiOsittaisenAmmatillisenTutkinnonKoulutusmoduuli
   def osaamisala: Option[List[SuoritetutTutkinnotOsaamisalajakso]]
-  def järjestämismuodot: Option[List[Järjestämismuotojakso]]
-  def työssäoppimisjaksot: Option[List[Työssäoppimisjakso]]
   def tutkintonimike: Option[List[SuoritetutTutkinnotKoodistokoodiviite]]
 }
 
@@ -52,11 +47,7 @@ case class SuoritetutTutkinnotAmmatillisenTutkinnonSuoritus(
   @KoodistoKoodiarvo("ammatillinentutkinto")
   tyyppi: schema.Koodistokoodiviite,
   suorituskieli: Option[SuoritetutTutkinnotKoodistokoodiviite],
-  osaamisenHankkimistavat: Option[List[OsaamisenHankkimistapajakso]],
-  koulutussopimukset: Option[List[Koulutussopimusjakso]],
   osaamisala: Option[List[SuoritetutTutkinnotOsaamisalajakso]],
-  järjestämismuodot: Option[List[Järjestämismuotojakso]],
-  työssäoppimisjaksot: Option[List[Työssäoppimisjakso]],
   tutkintonimike: Option[List[SuoritetutTutkinnotKoodistokoodiviite]],
 ) extends SuoritetutTutkinnotAmmatillisenTutkinnonOsittainenTaiKokoSuoritus
 
@@ -69,11 +60,7 @@ case class SuoritetutTutkinnotAmmatillisenTutkinnonOsittainenSuoritus(
   @KoodistoKoodiarvo("ammatillinentutkintoosittainen")
   tyyppi: schema.Koodistokoodiviite,
   suorituskieli: Option[SuoritetutTutkinnotKoodistokoodiviite],
-  osaamisenHankkimistavat: Option[List[OsaamisenHankkimistapajakso]],
-  koulutussopimukset: Option[List[Koulutussopimusjakso]],
   osaamisala: Option[List[SuoritetutTutkinnotOsaamisalajakso]],
-  järjestämismuodot: Option[List[Järjestämismuotojakso]],
-  työssäoppimisjaksot: Option[List[Työssäoppimisjakso]],
   tutkintonimike: Option[List[SuoritetutTutkinnotKoodistokoodiviite]],
   toinenTutkintonimike: Option[Boolean],
   toinenOsaamisala: Option[Boolean],
@@ -90,9 +77,6 @@ case class SuoritetutTutkinnotMuunAmmatillisenKoulutuksenSuoritus(
   @KoodistoKoodiarvo("muuammatillinenkoulutus")
   tyyppi: schema.Koodistokoodiviite,
   suorituskieli: Option[SuoritetutTutkinnotKoodistokoodiviite],
-  osaamisenHankkimistavat: Option[List[OsaamisenHankkimistapajakso]],
-  koulutussopimukset: Option[List[Koulutussopimusjakso]],
-  täydentääTutkintoa: Option[SuoritetutTutkinnotKokoTaiOsittaisenAmmatillisenTutkinnonKoulutusmoduuli],
 ) extends SuoritetutTutkinnotAmmatillinenPäätasonSuoritus
 
 trait SuoritetutTutkinnotAmmatillisenSuorituksenKoulutusmoduuli extends SuorituksenKoulutusmoduuli {

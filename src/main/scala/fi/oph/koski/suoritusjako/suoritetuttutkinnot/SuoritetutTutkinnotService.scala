@@ -150,6 +150,7 @@ class SuoritetutTutkinnotService(application: KoskiApplication) extends GlobalEx
 
     opiskeluoikeudet
       .filterNot(onKuoriOpiskeluoikeus)
+      .map(_.withoutSisältyyOpiskeluoikeuteen)
       .map { opiskeluoikeus =>
         opiskeluoikeus.withSuoritukset(
           opiskeluoikeus.suoritukset

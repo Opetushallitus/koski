@@ -24,8 +24,7 @@ object SuoritetutTutkinnotYlioppilastutkinnonOpiskeluoikeus {
     ),
     suoritukset = yo.suoritukset.map(s => SuoritetutTutkinnotYlioppilastutkinnonPäätasonSuoritus(
       SuoritetutTutkinnotYlioppilastutkinnonSuorituksenKoulutusmoduuli(
-        SuoritetutTutkinnotKoodistokoodiviite.fromKoskiSchema(s.koulutusmoduuli.tunniste),
-        s.koulutusmoduuli.koulutustyyppi.map(SuoritetutTutkinnotKoodistokoodiviite.fromKoskiSchema)
+        SuoritetutTutkinnotKoodistokoodiviite.fromKoskiSchema(s.koulutusmoduuli.tunniste)
       ),
       Some(Toimipiste(
         s.toimipiste.oid,
@@ -51,13 +50,12 @@ case class SuoritetutTutkinnotYlioppilastutkinnonOpiskeluoikeus(
   override def oid = None
   override def versionumero = None
   override def sisältyyOpiskeluoikeuteen = None
-  override def organisaatiohistoria = None
-  override def aikaleima = None
 
   override def withSuoritukset(suoritukset: List[Suoritus]): SuoritetutTutkinnotOpiskeluoikeus =
     this.copy(
       suoritukset = suoritukset.collect { case s : SuoritetutTutkinnotYlioppilastutkinnonPäätasonSuoritus => s }
     )
+  override def withoutSisältyyOpiskeluoikeuteen: SuoritetutTutkinnotOpiskeluoikeus = this
 }
 
 @Title("Ylioppilastutkinnon suoritus")
@@ -70,5 +68,4 @@ case class SuoritetutTutkinnotYlioppilastutkinnonPäätasonSuoritus(
 
 case class SuoritetutTutkinnotYlioppilastutkinnonSuorituksenKoulutusmoduuli(
   tunniste: SuoritetutTutkinnotKoodistokoodiviite,
-  koulutustyyppi: Option[SuoritetutTutkinnotKoodistokoodiviite],
 ) extends SuorituksenKoulutusmoduuli

@@ -10,13 +10,11 @@ import java.time.LocalDateTime
 case class SuoritetutTutkinnotEuropeanSchoolOfHelsinkiOpiskeluoikeus(
   oid: Option[String],
   versionumero: Option[Int],
-  aikaleima: Option[LocalDateTime],
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija],
   suoritukset: List[SuoritetutTutkinnotEBTutkinnonSuoritus],
   @KoodistoKoodiarvo(schema.OpiskeluoikeudenTyyppi.europeanschoolofhelsinki.koodiarvo)
   tyyppi: schema.Koodistokoodiviite,
-  organisaatiohistoria: Option[List[OrganisaatioHistoria]]
 ) extends SuoritetutTutkinnotOpiskeluoikeus {
   override def sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus] = None
 
@@ -24,6 +22,7 @@ case class SuoritetutTutkinnotEuropeanSchoolOfHelsinkiOpiskeluoikeus(
     this.copy(
       suoritukset = suoritukset.collect { case s : SuoritetutTutkinnotEBTutkinnonSuoritus => s }
     )
+  override def withoutSisältyyOpiskeluoikeuteen: SuoritetutTutkinnotOpiskeluoikeus = this
 }
 
 @Title("EB-tutkinnon suoritus")
@@ -37,6 +36,5 @@ case class SuoritetutTutkinnotEBTutkinnonSuoritus(
 
 case class SuoritetutTutkinnotEBTutkinto(
   tunniste: SuoritetutTutkinnotKoodistokoodiviite,
-  koulutustyyppi: Option[SuoritetutTutkinnotKoodistokoodiviite],
   curriculum: SuoritetutTutkinnotKoodistokoodiviite
 ) extends SuorituksenKoulutusmoduuli
