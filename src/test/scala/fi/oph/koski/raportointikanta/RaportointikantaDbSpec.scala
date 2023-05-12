@@ -18,7 +18,6 @@ class RaportointikantaDbSpec extends AnyFreeSpec with Matchers with Raportointik
 
   "Moves schema" in {
     dropAll(mainRaportointiDb)
-    schemaIsEmpty(mainRaportointiDb)
     dropsAndCreatesSchemaObjects(tempRaportointiDb)
     schemaExists(tempRaportointiDb)
     tempRaportointiDb.moveTo(Public)
@@ -28,9 +27,9 @@ class RaportointikantaDbSpec extends AnyFreeSpec with Matchers with Raportointik
 
   private def dropsAndCreatesSchemaObjects(db: RaportointiDatabase) = {
     dropAll(db)
-    schemaIsEmpty(db)
-    db.dropAndCreateObjects()
     schemaExists(db)
+    db.createOtherIndexes()
+    db.createCustomFunctions
     db.createPrecomputedTables(KoskiApplicationForTests.valpasRajapäivätService)
   }
 
@@ -49,6 +48,5 @@ class RaportointikantaDbSpec extends AnyFreeSpec with Matchers with Raportointik
 
   private def dropAll(db: RaportointiDatabase) {
     db.dropAndCreateObjects()
-    db.runDbSync(RaportointiDatabaseSchema.dropAllIfExists(db.schema))
   }
 }

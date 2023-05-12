@@ -99,8 +99,7 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
     logger.info(s"Creating database ${schema.name}")
     runDbSync(DBIO.sequence(
       Seq(
-        RaportointiDatabaseSchema.createSchemaIfNotExists(schema),
-        RaportointiDatabaseSchema.dropAllIfExists(schema),
+        RaportointiDatabaseSchema.recreateSchema(schema),
       ) ++
       tables.map(_.schema.create) ++
       Seq(
