@@ -45,7 +45,8 @@ case class YtrCertificateBlocked(
 
 case class YtrCertificateOldExamination(
   @EnumValue("NOT_ALLOWED_OLD_EXAMINATION")
-  errorReason: String = "NOT_ALLOWED_OLD_EXAMINATION"
+  errorReason: String = "NOT_ALLOWED_OLD_EXAMINATION",
+  requestedTime: ZonedDateTime,
 ) extends YtrCertificateError
 
 case class YtrCertificateTimeout(

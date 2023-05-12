@@ -8,14 +8,13 @@ import fi.oph.koski.http._
 import fi.oph.koski.json.Json4sHttp4s.json4sEncoderOf
 import fi.oph.koski.json.{JsonResources, JsonSerializer}
 import fi.oph.koski.log.{Logging, NotLoggable, TimedProxy}
-import fi.oph.koski.schema.KoskiSchema
+import fi.oph.koski.schema.KoskiSchema.lenientDeserializationWithoutValidation
 import fi.oph.koski.util.{ClasspathResource, Resource}
 import fi.oph.koski.ytr.download.{YtrLaajaOppija, YtrSsnData}
 import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}
 import org.json4s.JValue
 
 import java.time.{LocalDate, ZonedDateTime}
-import scala.reflect.runtime.{universe => ru}
 
 trait YtrClient {
   // Rajapinnat, joilla haetaan kaikki YTL:n datat.
@@ -125,8 +124,8 @@ object MockYrtClient extends YtrClient {
     (req.ssn, yoTodistusRequestTimes.get(s"${req.ssn}_${req.language}")) match {
       case (hetu, _) if hetu == ylioppilasLukiolainenMaksamatonSuoritus.hetu.get =>
         Right(YtrCertificateBlocked())
-      case (hetu, _) if hetu == ylioppilasLukiolainenVanhaSuoritus.hetu.get =>
-        Right(YtrCertificateOldExamination())
+      case (hetu, time) if hetu == ylioppilasLukiolainenVanhaSuoritus.hetu.get =>
+        Right(YtrCertificateOldExamination(requestedTime = time.getOrElse(ZonedDateTime.now())))
       case (_, None) =>
         Right(YtrCertificateNotStarted())
       case (_, Some(time)) if ZonedDateTime.now().isAfter(time.plusSeconds(yoTodistusGeneratingTimeSecs)) =>
@@ -226,8 +225,7 @@ case class RemoteYtrClient(rootUrl: String, user: String, password: String) exte
     })
   }
 
-  protected implicit val deserializationContext: ExtractionContext =
-    ExtractionContext(KoskiSchema.schemaFactory).copy(validate = false)
+  protected implicit val deserializationContext: ExtractionContext = lenientDeserializationWithoutValidation
 }
 
 case class YtrConfig(username: String, password: String, url: String) extends NotLoggable
