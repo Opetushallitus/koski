@@ -536,6 +536,9 @@ class SuoritetutTutkinnotServiceSpec
   ): Unit = {
     verifyAmmatillinenOpiskeluoikeudenKentät(actualOo, expectedOoData)
     verifyAmmatillisenTutkinnonOsittainenTaiKokoSuoritus(actualSuoritus, expectedSuoritusData)
+
+    actualSuoritus.osaamisala.map(_.length) should equal(expectedSuoritusData.osaamisala.map(_.length))
+    actualSuoritus.tutkintonimike.map(_.length) should equal(expectedSuoritusData.tutkintonimike.map(_.length))
   }
 
   private def verifyAmmatillinenOsittainen(
@@ -550,6 +553,21 @@ class SuoritetutTutkinnotServiceSpec
     actualSuoritus.toinenOsaamisala should equal(Some(expectedSuoritusData.toinenOsaamisala))
     actualSuoritus.toinenTutkintonimike should equal(Some(expectedSuoritusData.toinenTutkintonimike))
     actualSuoritus.korotettuOpiskeluoikeusOid should equal(expectedSuoritusData.korotettuOpiskeluoikeusOid)
+
+    actualSuoritus.osaamisala.map(_.length) should equal(
+      if (expectedSuoritusData.toinenOsaamisala) {
+        expectedSuoritusData.osaamisala.map(_.length)
+      } else {
+        None
+      }
+    )
+    actualSuoritus.tutkintonimike.map(_.length) should equal(
+      if (expectedSuoritusData.toinenTutkintonimike) {
+        expectedSuoritusData.tutkintonimike.map(_.length)
+      } else {
+        None
+      }
+    )
   }
 
   private def verifyMuuAmmatillinen(
@@ -576,8 +594,6 @@ class SuoritetutTutkinnotServiceSpec
     actualSuoritus.vahvistus.map(_.päivä) should equal(expectedSuoritusData.vahvistus.map(_.päivä))
     actualSuoritus.tyyppi.koodiarvo should equal(expectedSuoritusData.tyyppi.koodiarvo)
     actualSuoritus.suorituskieli.map(_.koodiarvo) should equal(Some(expectedSuoritusData.suorituskieli.koodiarvo))
-    actualSuoritus.osaamisala.map(_.length) should equal(expectedSuoritusData.osaamisala.map(_.length))
-    actualSuoritus.tutkintonimike.map(_.length) should equal(expectedSuoritusData.tutkintonimike.map(_.length))
   }
 
   private def verifyMuunAmmatillisenTutkinnonSuoritus(

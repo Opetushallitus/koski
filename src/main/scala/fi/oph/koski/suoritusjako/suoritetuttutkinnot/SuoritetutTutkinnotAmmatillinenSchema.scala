@@ -2,7 +2,7 @@ package fi.oph.koski.suoritusjako.suoritetuttutkinnot
 
 import fi.oph.koski.schema
 import fi.oph.koski.schema.annotation.{Deprecated, KoodistoKoodiarvo}
-import fi.oph.scalaschema.annotation.{ReadFlattened, Title}
+import fi.oph.scalaschema.annotation.{Description, ReadFlattened, Title}
 
 import java.time.LocalDate
 
@@ -60,7 +60,9 @@ case class SuoritetutTutkinnotAmmatillisenTutkinnonOsittainenSuoritus(
   @KoodistoKoodiarvo("ammatillinentutkintoosittainen")
   tyyppi: schema.Koodistokoodiviite,
   suorituskieli: Option[SuoritetutTutkinnotKoodistokoodiviite],
+  @Description("Palautetaan vain, jos toinenOsaamisala on true")
   osaamisala: Option[List[SuoritetutTutkinnotOsaamisalajakso]],
+  @Description("Palautetaan vain, jos toinenTukintonimike on true")
   tutkintonimike: Option[List[SuoritetutTutkinnotKoodistokoodiviite]],
   toinenTutkintonimike: Option[Boolean],
   toinenOsaamisala: Option[Boolean],

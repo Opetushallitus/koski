@@ -148,12 +148,31 @@ class SuoritetutTutkinnotService(application: KoskiApplication) extends GlobalEx
       o.oid.map(kuoriOpiskeluoikeusOidit.contains).getOrElse(false)
     }
 
+    def poistaTutkintonimikeJaOsaamisalaTarvittaessa(s: Suoritus): Suoritus = {
+      s match {
+        case s: SuoritetutTutkinnotAmmatillisenTutkinnonOsittainenSuoritus =>
+          val tutkintonimike = if (s.toinenTutkintonimike.getOrElse(false)) {
+            s.tutkintonimike
+          } else {
+            None
+          }
+          val osaamisala = if (s.toinenOsaamisala.getOrElse(false)) {
+            s.osaamisala
+          } else {
+            None
+          }
+          s.copy(tutkintonimike = tutkintonimike, osaamisala = osaamisala)
+        case _ => s
+      }
+    }
+
     opiskeluoikeudet
       .filterNot(onKuoriOpiskeluoikeus)
       .map(_.withoutSisältyyOpiskeluoikeuteen)
       .map { opiskeluoikeus =>
         opiskeluoikeus.withSuoritukset(
           opiskeluoikeus.suoritukset
+            .map(poistaTutkintonimikeJaOsaamisalaTarvittaessa)
             .filter(vahvistettuNykyhetkeenMennessä)
             .filter(josMuuAmmatillinenNiinTehtäväänValmistava)
             .filterNot(onKorotusSuoritus)
