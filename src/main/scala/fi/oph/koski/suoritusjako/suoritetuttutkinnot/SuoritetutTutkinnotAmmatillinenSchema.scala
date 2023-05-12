@@ -2,28 +2,28 @@ package fi.oph.koski.suoritusjako.suoritetuttutkinnot
 
 import fi.oph.koski.schema
 import fi.oph.koski.schema.annotation.{Deprecated, KoodistoKoodiarvo}
-import fi.oph.scalaschema.annotation.{ReadFlattened, Title}
+import fi.oph.koski.util.DateOrdering.localDateOptionOrdering
+import fi.oph.scalaschema.annotation.{Description, ReadFlattened, Title}
 
-import java.time.{LocalDate, LocalDateTime}
+import java.time.LocalDate
 
 @Title("Ammatillisten opintojen opiskeluoikeus")
 case class SuoritetutTutkinnotAmmatillinenOpiskeluoikeus(
   oid: Option[String],
   versionumero: Option[Int],
-  aikaleima: Option[LocalDateTime],
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija],
   sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus],
   suoritukset: List[SuoritetutTutkinnotAmmatillinenPäätasonSuoritus],
   @KoodistoKoodiarvo("ammatillinenkoulutus")
   tyyppi: schema.Koodistokoodiviite,
-  organisaatiohistoria: Option[List[OrganisaatioHistoria]]
 ) extends SuoritetutTutkinnotOpiskeluoikeus {
 
   override def withSuoritukset(suoritukset: List[Suoritus]): SuoritetutTutkinnotOpiskeluoikeus =
     this.copy(
       suoritukset = suoritukset.collect { case s : SuoritetutTutkinnotAmmatillinenPäätasonSuoritus => s }
     )
+  override def withoutSisältyyOpiskeluoikeuteen: SuoritetutTutkinnotOpiskeluoikeus = this.copy(sisältyyOpiskeluoikeuteen = None)
 }
 
 trait SuoritetutTutkinnotAmmatillinenPäätasonSuoritus extends Suoritus {
@@ -31,16 +31,15 @@ trait SuoritetutTutkinnotAmmatillinenPäätasonSuoritus extends Suoritus {
   def suoritustapa: Option[SuoritetutTutkinnotKoodistokoodiviite]
   def toimipiste: Option[Toimipiste]
   def suorituskieli: Option[SuoritetutTutkinnotKoodistokoodiviite]
-  def osaamisenHankkimistavat: Option[List[OsaamisenHankkimistapajakso]]
-  def koulutussopimukset: Option[List[Koulutussopimusjakso]]
 }
 
 trait SuoritetutTutkinnotAmmatillisenTutkinnonOsittainenTaiKokoSuoritus extends SuoritetutTutkinnotAmmatillinenPäätasonSuoritus {
   def koulutusmoduuli: SuoritetutTutkinnotKokoTaiOsittaisenAmmatillisenTutkinnonKoulutusmoduuli
+  @Description("Osaamisaloista palautetaan vain uusin Koskeen merkitty")
   def osaamisala: Option[List[SuoritetutTutkinnotOsaamisalajakso]]
-  def järjestämismuodot: Option[List[Järjestämismuotojakso]]
-  def työssäoppimisjaksot: Option[List[Työssäoppimisjakso]]
   def tutkintonimike: Option[List[SuoritetutTutkinnotKoodistokoodiviite]]
+
+  def withVainUusinOsaamisala: SuoritetutTutkinnotAmmatillisenTutkinnonOsittainenTaiKokoSuoritus
 }
 
 @Title("Ammatillisen tutkinnon suoritus")
@@ -52,13 +51,14 @@ case class SuoritetutTutkinnotAmmatillisenTutkinnonSuoritus(
   @KoodistoKoodiarvo("ammatillinentutkinto")
   tyyppi: schema.Koodistokoodiviite,
   suorituskieli: Option[SuoritetutTutkinnotKoodistokoodiviite],
-  osaamisenHankkimistavat: Option[List[OsaamisenHankkimistapajakso]],
-  koulutussopimukset: Option[List[Koulutussopimusjakso]],
   osaamisala: Option[List[SuoritetutTutkinnotOsaamisalajakso]],
-  järjestämismuodot: Option[List[Järjestämismuotojakso]],
-  työssäoppimisjaksot: Option[List[Työssäoppimisjakso]],
   tutkintonimike: Option[List[SuoritetutTutkinnotKoodistokoodiviite]],
-) extends SuoritetutTutkinnotAmmatillisenTutkinnonOsittainenTaiKokoSuoritus
+) extends SuoritetutTutkinnotAmmatillisenTutkinnonOsittainenTaiKokoSuoritus {
+  override def withVainUusinOsaamisala: SuoritetutTutkinnotAmmatillisenTutkinnonSuoritus = {
+    val uusinOsaamisala = osaamisala.map(_.maxBy(_.alku)(localDateOptionOrdering))
+    this.copy(osaamisala = uusinOsaamisala.map(oa => List(oa)))
+  }
+}
 
 @Title("Ammatillisen tutkinnon osan tai osien suoritus")
 case class SuoritetutTutkinnotAmmatillisenTutkinnonOsittainenSuoritus(
@@ -69,17 +69,20 @@ case class SuoritetutTutkinnotAmmatillisenTutkinnonOsittainenSuoritus(
   @KoodistoKoodiarvo("ammatillinentutkintoosittainen")
   tyyppi: schema.Koodistokoodiviite,
   suorituskieli: Option[SuoritetutTutkinnotKoodistokoodiviite],
-  osaamisenHankkimistavat: Option[List[OsaamisenHankkimistapajakso]],
-  koulutussopimukset: Option[List[Koulutussopimusjakso]],
+  @Description("Palautetaan vain, jos toinenOsaamisala on true")
   osaamisala: Option[List[SuoritetutTutkinnotOsaamisalajakso]],
-  järjestämismuodot: Option[List[Järjestämismuotojakso]],
-  työssäoppimisjaksot: Option[List[Työssäoppimisjakso]],
+  @Description("Palautetaan vain, jos toinenTukintonimike on true")
   tutkintonimike: Option[List[SuoritetutTutkinnotKoodistokoodiviite]],
   toinenTutkintonimike: Option[Boolean],
   toinenOsaamisala: Option[Boolean],
   @Deprecated("Ei palauteta. Kenttä on näkyvissä skeemassa vain teknisistä syistä.")
   korotettuOpiskeluoikeusOid: Option[String],
-) extends SuoritetutTutkinnotAmmatillisenTutkinnonOsittainenTaiKokoSuoritus
+) extends SuoritetutTutkinnotAmmatillisenTutkinnonOsittainenTaiKokoSuoritus {
+  override def withVainUusinOsaamisala: SuoritetutTutkinnotAmmatillisenTutkinnonOsittainenSuoritus = {
+    val uusinOsaamisala = osaamisala.map(_.maxBy(_.alku)(localDateOptionOrdering))
+    this.copy(osaamisala = uusinOsaamisala.map(oa => List(oa)))
+  }
+}
 
 @Title("Muun ammatillisen koulutuksen suoritus")
 case class SuoritetutTutkinnotMuunAmmatillisenKoulutuksenSuoritus(
@@ -90,9 +93,6 @@ case class SuoritetutTutkinnotMuunAmmatillisenKoulutuksenSuoritus(
   @KoodistoKoodiarvo("muuammatillinenkoulutus")
   tyyppi: schema.Koodistokoodiviite,
   suorituskieli: Option[SuoritetutTutkinnotKoodistokoodiviite],
-  osaamisenHankkimistavat: Option[List[OsaamisenHankkimistapajakso]],
-  koulutussopimukset: Option[List[Koulutussopimusjakso]],
-  täydentääTutkintoa: Option[SuoritetutTutkinnotKokoTaiOsittaisenAmmatillisenTutkinnonKoulutusmoduuli],
 ) extends SuoritetutTutkinnotAmmatillinenPäätasonSuoritus
 
 trait SuoritetutTutkinnotAmmatillisenSuorituksenKoulutusmoduuli extends SuorituksenKoulutusmoduuli {

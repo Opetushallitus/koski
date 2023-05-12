@@ -1,7 +1,7 @@
 package fi.oph.koski.suoritusjako.suoritetuttutkinnot
 
 import fi.oph.koski.schema
-import fi.oph.koski.schema.annotation.KoodistoUri
+import fi.oph.koski.schema.annotation.{Deprecated, KoodistoUri}
 import fi.oph.scalaschema.annotation.Discriminator
 import fi.oph.scalaschema.{ClassSchema, SchemaToJson}
 import org.json4s.JValue
@@ -46,28 +46,21 @@ object Henkilo {
 trait SuoritetutTutkinnotOpiskeluoikeus {
   def oid: Option[String]
   def versionumero: Option[Int]
-  def aikaleima: Option[LocalDateTime]
   def oppilaitos: Option[Oppilaitos]
   def koulutustoimija: Option[Koulutustoimija]
+  @Deprecated("Ei palauteta. Kenttä on näkyvissä skeemassa vain teknisistä syistä.")
   def sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus]
   def suoritukset: List[Suoritus]
   @KoodistoUri("opiskeluoikeudentyyppi")
   @Discriminator
   def tyyppi: schema.Koodistokoodiviite
-  def organisaatiohistoria: Option[List[OrganisaatioHistoria]]
-
   def withSuoritukset(suoritukset: List[Suoritus]): SuoritetutTutkinnotOpiskeluoikeus
+  def withoutSisältyyOpiskeluoikeuteen: SuoritetutTutkinnotOpiskeluoikeus
 }
 
 case class SisältäväOpiskeluoikeus(
   oid: String,
   oppilaitos: Oppilaitos
-)
-
-case class OrganisaatioHistoria(
-  muutospäivä: LocalDate,
-  oppilaitos: Option[Oppilaitos],
-  koulutustoimija: Option[Koulutustoimija]
 )
 
 trait Suoritus{

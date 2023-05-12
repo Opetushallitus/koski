@@ -10,19 +10,18 @@ import java.time.LocalDateTime
 case class SuoritetutTutkinnotDIAOpiskeluoikeus(
   oid: Option[String],
   versionumero: Option[Int],
-  aikaleima: Option[LocalDateTime],
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija],
   sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus],
   suoritukset: List[SuoritetutTutkinnotDIATutkinnonSuoritus],
   @KoodistoKoodiarvo(schema.OpiskeluoikeudenTyyppi.diatutkinto.koodiarvo)
   tyyppi: schema.Koodistokoodiviite,
-  organisaatiohistoria: Option[List[OrganisaatioHistoria]]
 ) extends SuoritetutTutkinnotOpiskeluoikeus {
   override def withSuoritukset(suoritukset: List[Suoritus]): SuoritetutTutkinnotOpiskeluoikeus =
     this.copy(
       suoritukset = suoritukset.collect { case s : SuoritetutTutkinnotDIATutkinnonSuoritus => s }
     )
+  override def withoutSisältyyOpiskeluoikeuteen: SuoritetutTutkinnotOpiskeluoikeus = this.copy(sisältyyOpiskeluoikeuteen = None)
 }
 
 @Title("DIA-tutkinnon suoritus")
@@ -36,6 +35,5 @@ case class SuoritetutTutkinnotDIATutkinnonSuoritus(
 ) extends Suoritus
 
 case class SuoritetutTutkinnotDIATutkinto(
-  tunniste: SuoritetutTutkinnotKoodistokoodiviite,
-  koulutustyyppi: Option[SuoritetutTutkinnotKoodistokoodiviite]
+  tunniste: SuoritetutTutkinnotKoodistokoodiviite
 ) extends SuorituksenKoulutusmoduuli

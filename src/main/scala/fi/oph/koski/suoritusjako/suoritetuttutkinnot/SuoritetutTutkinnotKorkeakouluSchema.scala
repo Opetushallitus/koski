@@ -39,7 +39,6 @@ object SuoritetutTutkinnotKorkeakoulunOpiskeluoikeus {
         tyyppi = s.tyyppi,
       )),
     tyyppi = kk.tyyppi,
-    luokittelu = kk.luokittelu.map(_.map(SuoritetutTutkinnotKoodistokoodiviite.fromKoskiSchema)),
   )
 }
 
@@ -50,18 +49,16 @@ case class SuoritetutTutkinnotKorkeakoulunOpiskeluoikeus(
   suoritukset: List[SuoritetutTutkinnotKorkeakoulututkinnonSuoritus],
   @KoodistoKoodiarvo(schema.OpiskeluoikeudenTyyppi.korkeakoulutus.koodiarvo)
   tyyppi: schema.Koodistokoodiviite,
-  luokittelu: Option[List[SuoritetutTutkinnotKoodistokoodiviite]]
 ) extends SuoritetutTutkinnotOpiskeluoikeus {
   override def oid = None
   override def versionumero = None
   override def sisältyyOpiskeluoikeuteen = None
-  override def organisaatiohistoria = None
-  override def aikaleima = None
 
   override def withSuoritukset(suoritukset: List[Suoritus]): SuoritetutTutkinnotOpiskeluoikeus =
     this.copy(
       suoritukset = suoritukset.collect { case s : SuoritetutTutkinnotKorkeakoulututkinnonSuoritus => s }
     )
+  override def withoutSisältyyOpiskeluoikeuteen: SuoritetutTutkinnotOpiskeluoikeus = this
 }
 
 @Title("Korkeakoulututkinnon suoritus")
