@@ -13,12 +13,12 @@ object SuoritetutTutkinnotSchema {
     SchemaToJson.toJsonSchema(schema.KoskiSchema.createSchema(classOf[SuoritetutTutkinnotOppija]).asInstanceOf[ClassSchema])
 
   val schemassaTuetutOpiskeluoikeustyypit: List[String] = List(
-    "ammatillinenkoulutus",
-    // TODO: TOR-1025 ebtutkinto
-    // TODO: TOR-1025 diatutkinto
-    // TODO: TOR-1025 virta
-    "ylioppilastutkinto",
-  ).filter(_.nonEmpty)
+    schema.OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo,
+    schema.OpiskeluoikeudenTyyppi.ylioppilastutkinto.koodiarvo,
+    schema.OpiskeluoikeudenTyyppi.europeanschoolofhelsinki.koodiarvo,
+    schema.OpiskeluoikeudenTyyppi.diatutkinto.koodiarvo,
+    schema.OpiskeluoikeudenTyyppi.korkeakoulutus.koodiarvo,
+  )
 }
 
 case class SuoritetutTutkinnotOppija(
@@ -49,7 +49,6 @@ trait SuoritetutTutkinnotOpiskeluoikeus {
   def aikaleima: Option[LocalDateTime]
   def oppilaitos: Option[Oppilaitos]
   def koulutustoimija: Option[Koulutustoimija]
-  // TODO: TOR-1025 tarvitaanko:
   def sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus]
   def suoritukset: List[Suoritus]
   @KoodistoUri("opiskeluoikeudentyyppi")
@@ -78,7 +77,9 @@ trait Suoritus{
   def vahvistus: Option[Vahvistus]
 }
 
-trait SuorituksenKoulutusmoduuli
+trait SuorituksenKoulutusmoduuli {
+  def tunniste: SuoritetutTutkinnotKoodistokoodiviite
+}
 
 case class SuoritetutTutkinnotKoodistokoodiviite(
   koodiarvo: String,
@@ -97,7 +98,6 @@ object SuoritetutTutkinnotKoodistokoodiviite{
   )
 }
 
-// TODO: TOR-1025 tarvitaanko muita tietoja kuin päivä vahvistuksesta?
 case class Vahvistus(päivä: LocalDate)
 
 case class Oppilaitos(
