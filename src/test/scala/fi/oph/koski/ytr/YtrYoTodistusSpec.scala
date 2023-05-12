@@ -38,6 +38,20 @@ class YtrYoTodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoike
       )))
     }
 
+    "OLD_EXAMINATION" in {
+      val json = JObject(List(
+        ("status", JString("ERROR")),
+        ("errorReason", JString("NOT_ALLOWED_OLD_EXAMINATION")),
+        ("requestedTime", JString("2023-03-24T08:30:26.632Z")),
+      ))
+
+      val response = SchemaValidatingExtractor.extract[YtrCertificateResponse](json)
+
+      response should equal(Right(YtrCertificateOldExamination(
+        requestedTime = ZonedDateTime.of(2023, 3, 24, 8, 30, 26, 632000000, ZoneOffset.UTC),
+      )))
+    }
+
     "COMPLETED" in {
 
       val json = JObject(List(

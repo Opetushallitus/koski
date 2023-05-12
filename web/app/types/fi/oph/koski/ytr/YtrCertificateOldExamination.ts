@@ -6,15 +6,15 @@
 export type YtrCertificateOldExamination = {
   $class: 'fi.oph.koski.ytr.YtrCertificateOldExamination'
   errorReason: 'NOT_ALLOWED_OLD_EXAMINATION'
+  requestedTime: string
   status?: 'ERROR'
 }
 
-export const YtrCertificateOldExamination = (
-  o: {
-    errorReason?: 'NOT_ALLOWED_OLD_EXAMINATION'
-    status?: 'ERROR'
-  } = {}
-): YtrCertificateOldExamination => ({
+export const YtrCertificateOldExamination = (o: {
+  errorReason?: 'NOT_ALLOWED_OLD_EXAMINATION'
+  requestedTime: string
+  status?: 'ERROR'
+}): YtrCertificateOldExamination => ({
   $class: 'fi.oph.koski.ytr.YtrCertificateOldExamination',
   errorReason: 'NOT_ALLOWED_OLD_EXAMINATION',
   ...o
