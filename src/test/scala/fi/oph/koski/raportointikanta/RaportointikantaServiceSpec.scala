@@ -16,7 +16,7 @@ class RaportointikantaServiceSpec extends AnyFreeSpec with Matchers with BeforeA
 
   override protected def beforeAll(): Unit = {
     super.beforeAll()
-    tempRaportointiDb.dropAndCreateObjects
+    tempRaportointiDb.dropAndCreateObjects()
   }
 
   "Loads raportointikanta is idempotent" in {

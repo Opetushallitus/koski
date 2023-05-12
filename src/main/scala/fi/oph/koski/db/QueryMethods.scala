@@ -47,4 +47,18 @@ trait QueryMethods extends DatabaseConverters {
       runDbSync(a, allowNestedTransactions, timeout)
     }
   }
+
+  def getSchemaHash(schema: String): String =
+    runDbSync(sql"""
+      SELECT md5(array_agg(t2)::text)
+      FROM (
+        SELECT row_to_json(t)
+        FROM (
+          SELECT *
+          FROM information_schema.columns
+          WHERE table_schema = $schema
+          ORDER BY table_name, ordinal_position
+        ) t
+      ) t2
+   """.as[String]).head
 }

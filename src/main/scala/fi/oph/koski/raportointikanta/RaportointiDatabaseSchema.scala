@@ -22,8 +22,11 @@ object RaportointiDatabaseSchema {
     sqlu"ALTER SCHEMA #${oldSchema.name} RENAME TO #${newSchema.name}"
   )
 
-  def createSchemaIfNotExists(s: Schema) =
-    sqlu"CREATE SCHEMA IF NOT EXISTS #${s.name}"
+  def recreateSchema(s: Schema) =
+    DBIO.seq(
+      sqlu"DROP SCHEMA IF EXISTS #${s.name} CASCADE",
+      sqlu"CREATE SCHEMA #${s.name}"
+    )
 
   def dropSchema(s: Schema) =
     sqlu"DROP SCHEMA #${s.name} CASCADE"
@@ -92,28 +95,6 @@ object RaportointiDatabaseSchema {
     sqlu"CREATE INDEX ON #${s.name}.r_organisaatio(oppilaitosnumero)",
 
     sqlu"CREATE UNIQUE INDEX ON #${s.name}.r_koodisto_koodi(koodisto_uri, koodiarvo)",
-  )
-
-  def dropAllIfExists(s: Schema) = DBIO.seq(
-    sqlu"DROP TABLE IF EXISTS #${s.name}.r_opiskeluoikeus CASCADE",
-    sqlu"DROP TABLE IF EXISTS #${s.name}.r_mitatoitu_opiskeluoikeus CASCADE",
-    sqlu"DROP TABLE IF EXISTS #${s.name}.r_organisaatiohistoria CASCADE",
-    sqlu"DROP TABLE IF EXISTS #${s.name}.r_opiskeluoikeus_aikajakso CASCADE",
-    sqlu"DROP TABLE IF EXISTS #${s.name}.esiopetus_opiskeluoik_aikajakso CASCADE",
-    sqlu"DROP TABLE IF EXISTS #${s.name}.r_paatason_suoritus CASCADE",
-    sqlu"DROP TABLE IF EXISTS #${s.name}.r_osasuoritus CASCADE",
-    sqlu"DROP TABLE IF EXISTS #${s.name}.r_henkilo CASCADE",
-    sqlu"DROP TABLE IF EXISTS #${s.name}.r_organisaatio CASCADE",
-    sqlu"DROP TABLE IF EXISTS #${s.name}.r_organisaatio_kieli CASCADE",
-    sqlu"DROP TABLE IF EXISTS #${s.name}.r_koodisto_koodi CASCADE",
-    sqlu"DROP TABLE IF EXISTS #${s.name}.raportointikanta_status CASCADE",
-    sqlu"DROP TABLE IF EXISTS #${s.name}.muu_ammatillinen_raportointi CASCADE",
-    sqlu"DROP TABLE IF EXISTS #${s.name}.topks_ammatillinen_raportointi CASCADE",
-    sqlu"DROP TABLE IF EXISTS #${s.name}.r_oppivelvollisuudesta_vapautus CASCADE",
-    sqlu"DROP TABLE IF EXISTS #${s.name}.r_ytr_tutkintokokonaisuuden_suoritus CASCADE",
-    sqlu"DROP TABLE IF EXISTS #${s.name}.r_ytr_tutkintokerran_suoritus CASCADE",
-    sqlu"DROP TABLE IF EXISTS #${s.name}.r_ytr_kokeen_suoritus CASCADE",
-    sqlu"DROP TABLE IF EXISTS #${s.name}.r_ytr_tutkintokokonaisuuden_kokeen_suoritus CASCADE",
   )
 
   val createRolesIfNotExists = DBIO.seq(
