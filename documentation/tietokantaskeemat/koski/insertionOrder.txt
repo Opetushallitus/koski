@@ -11,6 +11,8 @@ suoritusjako
 ytr_opiskeluoikeushistoria
 casserviceticket
 mydata_jako
+opiskeluoikeus_fixture
+opiskeluoikeushistoria_fixture
 opiskeluoikeushistoria_virheet
 paivitetty_opiskeluoikeus
 poistettu_opiskeluoikeus
