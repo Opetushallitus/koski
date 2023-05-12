@@ -384,6 +384,20 @@ object AmmatillinenExampleData {
     )
   )
 
+  def perustutkintoOpiskeluoikeusValmisMontaOsaamisalaa(oppilaitos: Oppilaitos = stadinAmmattiopisto, toimipiste: OrganisaatioWithOid = stadinToimipiste, valmistumispäivä: LocalDate = date(2016, 5, 31)) =
+    perustutkintoOpiskeluoikeusValmis(oppilaitos, toimipiste, valmistumispäivä).withSuoritukset(
+      List(
+        ympäristöalanPerustutkintoValmisMontaOsaamisalaa(toimipiste, valmistumispäivä)
+      )
+    )
+
+  def perustutkintoOpiskeluoikeusValmisMontaOsaamisalaaMukanaPäivämäärätön(oppilaitos: Oppilaitos = stadinAmmattiopisto, toimipiste: OrganisaatioWithOid = stadinToimipiste, valmistumispäivä: LocalDate = date(2016, 5, 31)) =
+    perustutkintoOpiskeluoikeusValmis(oppilaitos, toimipiste, valmistumispäivä).withSuoritukset(
+      List(
+        ympäristöalanPerustutkintoValmisMontaOsaamisalaaMukanaPäivämäärätön(toimipiste, valmistumispäivä)
+      )
+    )
+
   def perustutkintoOpiskeluoikeusValmis(oppilaitos: Oppilaitos = stadinAmmattiopisto, toimipiste: OrganisaatioWithOid = stadinToimipiste, valmistumispäivä: LocalDate = date(2016, 5, 31)) = AmmatillinenOpiskeluoikeus(
     arvioituPäättymispäivä = Some(date(2015, 5, 31)),
     oppilaitos = Some(oppilaitos),
@@ -504,6 +518,25 @@ object AmmatillinenExampleData {
 
   lazy val työssäoppimisjakso = Työssäoppimisjakso(date(2014, 1, 1), Some(date(2014, 3, 15)), Some("Sortti-asema"), jyväskylä, suomi, Some(LocalizedString.finnish("Toimi harjoittelijana Sortti-asemalla")), LaajuusOsaamispisteissä(5))
   lazy val koulutussopimusjakso = Koulutussopimusjakso(date(2014, 1, 1), Some(date(2014, 3, 15)), Some("Sortti-asema"), Some("1572860-0"), jyväskylä, suomi, Some(LocalizedString.finnish("Toimi harjoittelijana Sortti-asemalla")))
+
+  def ympäristöalanPerustutkintoValmisMontaOsaamisalaa(toimipiste: OrganisaatioWithOid = stadinToimipiste, valmistumispäivä: LocalDate = date(2016, 5, 31)): AmmatillisenTutkinnonSuoritus = {
+    ympäristöalanPerustutkintoValmis(toimipiste, valmistumispäivä).copy(
+      osaamisala = Some(List(
+        Osaamisalajakso(Koodistokoodiviite("1590", Some("Ympäristöalan osaamisala"), "osaamisala", None), alku = Some(valmistumispäivä.minusDays(10)), loppu = Some(valmistumispäivä)),
+        Osaamisalajakso(Koodistokoodiviite("1591", Some("Luontoalan osaamisala"), "osaamisala", None), alku = Some(valmistumispäivä.minusDays(20)), loppu = Some(valmistumispäivä.minusDays(10))),
+      ))
+    )
+  }
+
+  def ympäristöalanPerustutkintoValmisMontaOsaamisalaaMukanaPäivämäärätön(toimipiste: OrganisaatioWithOid = stadinToimipiste, valmistumispäivä: LocalDate = date(2016, 5, 31)): AmmatillisenTutkinnonSuoritus = {
+    ympäristöalanPerustutkintoValmis(toimipiste, valmistumispäivä).copy(
+      osaamisala = Some(List(
+        Osaamisalajakso(Koodistokoodiviite("1590", Some("Ympäristöalan osaamisala"), "osaamisala", None), alku = Some(valmistumispäivä.minusDays(10)), loppu = Some(valmistumispäivä)),
+        Osaamisalajakso(Koodistokoodiviite("1592", Some("Porotalouden osaamisala"), "osaamisala", None)),
+        Osaamisalajakso(Koodistokoodiviite("1591", Some("Luontoalan osaamisala"), "osaamisala", None), alku = Some(valmistumispäivä.minusDays(20)), loppu = Some(valmistumispäivä.minusDays(10))),
+      ))
+    )
+  }
 
   def ympäristöalanPerustutkintoValmis(toimipiste: OrganisaatioWithOid = stadinToimipiste, valmistumispäivä: LocalDate = date(2016, 5, 31)): AmmatillisenTutkinnonSuoritus = {
     AmmatillisenTutkinnonSuoritus(

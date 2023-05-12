@@ -123,60 +123,71 @@ class SuoritetutTutkinnotService(application: KoskiApplication) extends GlobalEx
   }
 
   private def suodataPalautettavat(opiskeluoikeudet: Seq[SuoritetutTutkinnotOpiskeluoikeus]): Seq[SuoritetutTutkinnotOpiskeluoikeus] = {
-    def vahvistettuNykyhetkeenMennessä(s: Suoritus): Boolean = {
-      s.vahvistus.exists(!_.päivä.isAfter(LocalDate.now))
-    }
-
-    def josMuuAmmatillinenNiinTehtäväänValmistava(s: Suoritus): Boolean = {
-      s match {
-        case ms: SuoritetutTutkinnotMuunAmmatillisenKoulutuksenSuoritus
-          => ms.koulutusmoduuli.tunniste.koodistoUri.contains("ammatilliseentehtavaanvalmistavakoulutus")
-        case _ => true
-      }
-    }
-
-    def onKorotusSuoritus(s: Suoritus): Boolean = {
-      s match {
-        case ms: SuoritetutTutkinnotAmmatillisenTutkinnonOsittainenSuoritus
-          if ms.korotettuOpiskeluoikeusOid.isDefined => true
-        case _ => false
-      }
-    }
 
     val kuoriOpiskeluoikeusOidit = opiskeluoikeudet.map(_.sisältyyOpiskeluoikeuteen.map(_.oid)).flatten.toSet
-    def onKuoriOpiskeluoikeus(o: SuoritetutTutkinnotOpiskeluoikeus): Boolean = {
-      o.oid.map(kuoriOpiskeluoikeusOidit.contains).getOrElse(false)
-    }
-
-    def poistaTutkintonimikeJaOsaamisalaTarvittaessa(s: Suoritus): Suoritus = {
-      s match {
-        case s: SuoritetutTutkinnotAmmatillisenTutkinnonOsittainenSuoritus =>
-          val tutkintonimike = if (s.toinenTutkintonimike.getOrElse(false)) {
-            s.tutkintonimike
-          } else {
-            None
-          }
-          val osaamisala = if (s.toinenOsaamisala.getOrElse(false)) {
-            s.osaamisala
-          } else {
-            None
-          }
-          s.copy(tutkintonimike = tutkintonimike, osaamisala = osaamisala)
-        case _ => s
-      }
-    }
 
     opiskeluoikeudet
-      .filterNot(onKuoriOpiskeluoikeus)
+      .filterNot(onKuoriOpiskeluoikeus(kuoriOpiskeluoikeusOidit))
       .map(_.withoutSisältyyOpiskeluoikeuteen)
       .map { opiskeluoikeus =>
         opiskeluoikeus.withSuoritukset(
           opiskeluoikeus.suoritukset
             .map(poistaTutkintonimikeJaOsaamisalaTarvittaessa)
+            .map(poistaAikaisemmatOsaamisalat)
             .filter(vahvistettuNykyhetkeenMennessä)
             .filter(josMuuAmmatillinenNiinTehtäväänValmistava)
             .filterNot(onKorotusSuoritus)
         )
       }.filter(_.suoritukset.nonEmpty)
+  }
+
+  private def onKuoriOpiskeluoikeus(kuoriOpiskeluoikeusOidit: Set[String])(o: SuoritetutTutkinnotOpiskeluoikeus): Boolean = {
+    o.oid.map(kuoriOpiskeluoikeusOidit.contains).getOrElse(false)
+  }
+
+  private def poistaTutkintonimikeJaOsaamisalaTarvittaessa(s: Suoritus): Suoritus = {
+    s match {
+      case s: SuoritetutTutkinnotAmmatillisenTutkinnonOsittainenSuoritus =>
+        val tutkintonimike = if (s.toinenTutkintonimike.getOrElse(false)) {
+          s.tutkintonimike
+        } else {
+          None
+        }
+        val osaamisala = if (s.toinenOsaamisala.getOrElse(false)) {
+          s.osaamisala
+        } else {
+          None
+        }
+        s.copy(tutkintonimike = tutkintonimike, osaamisala = osaamisala)
+      case _ => s
+    }
+  }
+
+  def poistaAikaisemmatOsaamisalat(s: Suoritus): Suoritus = {
+    s match {
+      case s: SuoritetutTutkinnotAmmatillisenTutkinnonOsittainenTaiKokoSuoritus =>
+        s.withVainUusinOsaamisala
+      case _ => s
+    }
+  }
+
+  private def vahvistettuNykyhetkeenMennessä(s: Suoritus): Boolean = {
+    s.vahvistus.exists(!_.päivä.isAfter(LocalDate.now))
+  }
+
+  private def josMuuAmmatillinenNiinTehtäväänValmistava(s: Suoritus): Boolean = {
+    s match {
+      case ms: SuoritetutTutkinnotMuunAmmatillisenKoulutuksenSuoritus
+      => ms.koulutusmoduuli.tunniste.koodistoUri.contains("ammatilliseentehtavaanvalmistavakoulutus")
+      case _ => true
+    }
+  }
+
+  private def onKorotusSuoritus(s: Suoritus): Boolean = {
+    s match {
+      case ms: SuoritetutTutkinnotAmmatillisenTutkinnonOsittainenSuoritus
+        if ms.korotettuOpiskeluoikeusOid.isDefined => true
+      case _ => false
+    }
   }
 }

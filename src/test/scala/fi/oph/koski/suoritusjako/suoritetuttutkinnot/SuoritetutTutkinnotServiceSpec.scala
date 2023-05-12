@@ -171,6 +171,55 @@ class SuoritetutTutkinnotServiceSpec
         o.opiskeluoikeudet.head.suoritukset.head.tyyppi.koodiarvo should be("ammatillinentutkinto")
       })
     }
+
+    "Monesta osaamisalasta palautetaan vain uusin" in {
+      val oppija = KoskiSpecificMockOppijat.masterYlioppilasJaAmmattilainen
+
+      val result = suoritetutTutkinnotService.findSuoritetutTutkinnotOppija(oppija.oid)
+
+      result.isRight should be(true)
+
+      result.map(o => {
+        verifyOppija(oppija, o)
+        o.opiskeluoikeudet should have length 3
+
+        val moniOsaamisalainenSuoritus =
+          o.opiskeluoikeudet
+            .collect { case oo: SuoritetutTutkinnotAmmatillinenOpiskeluoikeus => oo }
+            .find(_.oppilaitos.map(_.oid) == Some(MockOrganisaatiot.stadinAmmattiopisto))
+            .flatMap(_.suoritukset.collectFirst { case s: SuoritetutTutkinnotAmmatillisenTutkinnonSuoritus => s})
+            .get
+
+
+        moniOsaamisalainenSuoritus.osaamisala.get should have length 1
+        moniOsaamisalainenSuoritus.osaamisala.get.head.osaamisala.koodiarvo should be("1590")
+      })
+    }
+
+    "Monesta osaamisalasta tulkitaan uusimmaksi alkupäivämäärätön" in {
+      val oppija = KoskiSpecificMockOppijat.masterYlioppilasJaAmmattilainen
+
+      val result = suoritetutTutkinnotService.findSuoritetutTutkinnotOppija(oppija.oid)
+
+      result.isRight should be(true)
+
+      result.map(o => {
+        verifyOppija(oppija, o)
+        o.opiskeluoikeudet should have length 3
+
+        val moniOsaamisalainenSuoritus =
+          o.opiskeluoikeudet
+            .collect { case oo: SuoritetutTutkinnotAmmatillinenOpiskeluoikeus => oo }
+            .find(_.oppilaitos.map(_.oid) == Some(MockOrganisaatiot.kiipulanAmmattiopisto))
+            .flatMap(_.suoritukset.collectFirst { case s: SuoritetutTutkinnotAmmatillisenTutkinnonSuoritus => s})
+            .get
+
+
+        moniOsaamisalainenSuoritus.osaamisala.get should have length 1
+        moniOsaamisalainenSuoritus.osaamisala.get.head.osaamisala.koodiarvo should be("1592")
+      })
+    }
+
   }
 
   "YO-tutkinto" - {

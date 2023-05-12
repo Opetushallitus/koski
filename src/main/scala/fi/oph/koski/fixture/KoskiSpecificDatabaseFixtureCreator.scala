@@ -291,11 +291,11 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
       (KoskiSpecificMockOppijat.amisKoulutusvienti, AmmatillinenExampleData.sosiaaliJaTerveysalaKoulutusvientiOpiskeluoikeus()),
       (KoskiSpecificMockOppijat.vanhanMallinenIBOppija, ExamplesIB.kaikkiArviointityypitArvioinnissaSisältäväVanhanmallinenOpiskeluoikeus),
       (KoskiSpecificMockOppijat.ammattilainenVahvistettuTulevaisuudessa, AmmatillinenExampleData.perustutkintoOpiskeluoikeusValmis(valmistumispäivä = LocalDate.now.plusDays(2))),
-      (KoskiSpecificMockOppijat.masterYlioppilasJaAmmattilainen, AmmatillinenExampleData.perustutkintoOpiskeluoikeusValmis(
+      (KoskiSpecificMockOppijat.masterYlioppilasJaAmmattilainen, AmmatillinenExampleData.perustutkintoOpiskeluoikeusValmisMontaOsaamisalaaMukanaPäivämäärätön(
         oppilaitos = AmmatillinenExampleData.kiipulanAmmattiopisto,
         toimipiste = AmmatillinenExampleData.kiipulanAmmattiopistoNokianToimipaikka)
       ),
-      (KoskiSpecificMockOppijat.slaveAmmattilainen.henkilö, AmmatillinenExampleData.perustutkintoOpiskeluoikeusValmis()),
+      (KoskiSpecificMockOppijat.slaveAmmattilainen.henkilö, AmmatillinenExampleData.perustutkintoOpiskeluoikeusValmisMontaOsaamisalaa()),
       (KoskiSpecificMockOppijat.ammatilliseenTetäväänValmistavaMuuAmmatillinenVahvistettu, MuunAmmatillisenKoulutuksenExample.ammatilliseenTehtäväänValmistavaKoulutusOpiskeluoikeusVahvistettu),
     )
   }
