@@ -225,6 +225,19 @@ class PaallekkaisetOpiskeluoikeudetSpec extends AnyFreeSpec with Raportointikant
       ))
     }
 
+    "Päällekkäinen opiskeluoikeus -raportti sisältää myös esiopetuksen ostopalvelun opiskeluoikeudet" in {
+      val rivit = eskariEssinRivit(helsinginRaportti)
+
+      rivit.map(withOppilaitos(_.viimeisinTila)) should contain theSameElementsAs (Seq(
+        ("Jyväskylän normaalikoulu", "lasna"),
+        ("Jyväskylän normaalikoulu", "lasna"),
+        ("Jyväskylän normaalikoulu", "lasna"),
+        ("Jyväskylän normaalikoulu", "lasna"),
+        ("Päiväkoti Touhula", "lasna"),
+        ("Päiväkoti Majakka", "lasna")
+      ))
+    }
+
     "Päällekkäisen opiskeluoikeuden sisältämistä suorituksista käytetävän nimi" - {
       "International school" - {
         "Yksikin 10-luokan MYP-suoritus tulkitaan lukion suoritukseksi, vaikka opiskeluoikeudella on useita alemman vuosiluokan suorituksia" in {

@@ -63,7 +63,7 @@ class RaportitService(application: KoskiApplication) {
     val oidit = accessResolver.kyselyOiditOrganisaatiolle(request.oppilaitosOid).toSeq
     OppilaitosRaporttiResponse(
       sheets = Seq(
-        PaallekkaisetOpiskeluoikeudet.datasheet(oidit, request.alku, request.loppu, raportointiDatabase)(t)
+        PaallekkaisetOpiskeluoikeudet.datasheet(request.oppilaitosOid, oidit, request.alku, request.loppu, raportointiDatabase)(t)
       ),
       workbookSettings = WorkbookSettings("", Some(request.password)),
       filename = s"${t.get("raportti-excel-paallekkaiset-opiskeluoikeudet-tiedoston-etuliite")}_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx",
