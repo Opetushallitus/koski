@@ -224,7 +224,7 @@ class RaportointikantaSpec
         .asInstanceOf[YlioppilastutkinnonOpiskeluoikeus]
       val expectedPts = expectedOo.suoritukset(0)
       val expectedTutkintokokonaisuudet = expectedOo.lisätiedot.get.tutkintokokonaisuudet.get
-      val expectedTutkintokerrat = expectedOo.lisätiedot.get.tutkintokokonaisuudet.get.flatMap(_.tutkintokerrat).sortBy(_.tutkintokerta.koodiarvo)
+      val expectedTutkintokerrat = expectedTutkintokokonaisuudet.flatMap(_.tutkintokerrat).sortBy(_.tutkintokerta.koodiarvo)
       val expectedKokeet = expectedPts.osasuoritukset.get.sortBy(os => os.koulutusmoduuli.tunniste.koodiarvo)
       val expectedAiemminSuoritetutKokeet = expectedTutkintokokonaisuudet.flatMap(_.aiemminSuoritetutKokeet.getOrElse(List.empty))
 
@@ -314,6 +314,7 @@ class RaportointikantaSpec
       actualPts: RPäätasonSuoritusRow,
       actualTutkintokokonaisuudet: Seq[RYtrTutkintokokonaisuudenSuoritusRow]
     ) = {
+      expectedTutkintokokonaisuudet.size shouldBe actualTutkintokokonaisuudet.size
       actualTutkintokokonaisuudet.zip(expectedTutkintokokonaisuudet).foreach{ case(actualTutkintokokonaisuus, expectedTutkintokokonaisuus) =>
         actualTutkintokokonaisuus.opiskeluoikeusOid should equal(expectedOo.oid.get)
         actualTutkintokokonaisuus.päätasonSuoritusId should equal(actualPts.päätasonSuoritusId)
@@ -403,6 +404,7 @@ class RaportointikantaSpec
 
         // Jos koe on sisältyvä koe, on siitä lisätty rivi myös sisällyttävään tutkintokokonaisuuden suoritukseen linkitettynä
         if(onExpectedSisältyväKoe){
+          actualTutkintokokonaisuudet.size shouldBe 2
           actualTutkintokokonaisuudenKokeet should contain(RYtrTutkintokokonaisuudenKokeenSuoritusRow(
             ytrTutkintokokonaisuudenSuoritusId =
               actualTutkintokokonaisuudet
