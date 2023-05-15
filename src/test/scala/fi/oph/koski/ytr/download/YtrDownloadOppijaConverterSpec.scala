@@ -63,9 +63,9 @@ class YtrDownloadOppijaConverterSpec extends AnyFreeSpec with TestEnvironment wi
           aiemminSuoritetutKokeet = Some(List(
             YlioppilastutkinnonSisältyväKoe(
               YlioppilasTutkinnonKoe(
-                tunniste = Koodistokoodiviite("BB", "koskiyokokeet"),
+                tunniste = Koodistokoodiviite("A", "koskiyokokeet"),
               ),
-              tutkintokerta = YlioppilastutkinnonTutkintokerta("2014S", 2014, syksy)
+              tutkintokerta = YlioppilastutkinnonTutkintokerta("2014K", 2014, kevät)
             )
           ))
         ),

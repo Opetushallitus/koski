@@ -205,7 +205,10 @@ class RaportointikantaSpec
         mainRaportointiDb.RYtrKokeenSuoritukset.sortBy(_.ytrKokeenSuoritusId).result
       )
       val ytrTutkintokokonaisuudenKokeenSuorituksetRaportointikannassa = mainRaportointiDb.runDbSync(
-        mainRaportointiDb.RYtrTutkintokokonaisuudenKokeenSuoritukset.sortBy(s => (s.ytrTutkintokokonaisuudenSuoritusId, s.ytrKokeenSuoritusId)).result
+        mainRaportointiDb.RYtrTutkintokokonaisuudenKokeenSuoritukset.sortBy(s => (s.ytrTutkintokokonaisuudenSuoritusId, s.ytrKokeenSuoritusId, s.sisällytetty)).result
+      )
+      val ytrTutkintokokonaisuudenKokeenSisällytetytSuorituksetRaportointikannassa = mainRaportointiDb.runDbSync(
+        mainRaportointiDb.RYtrTutkintokokonaisuudenKokeenSuoritukset.filter(_.sisällytetty === true).result
       )
 
       ytrOotRaportointikannassa.length should be >= 4
@@ -213,34 +216,36 @@ class RaportointikantaSpec
       ytrTutkintokokonaisuudenSuorituksetRaportointikannassa.length should be >= ytrPäätasonSuorituksetRaportointikannassa.length
       ytrTutkintokerranSuorituksetRaportointikannassa.length should be >= ytrTutkintokokonaisuudenSuorituksetRaportointikannassa.length
       ytrKokeenSuorituksetRaportointikannassa.length should be >= ytrTutkintokerranSuorituksetRaportointikannassa.length
-      ytrTutkintokokonaisuudenKokeenSuorituksetRaportointikannassa.length should be(ytrKokeenSuorituksetRaportointikannassa.length)
+      ytrTutkintokokonaisuudenKokeenSuorituksetRaportointikannassa.length should be(
+        ytrKokeenSuorituksetRaportointikannassa.length + ytrTutkintokokonaisuudenKokeenSisällytetytSuorituksetRaportointikannassa.length
+      )
 
       val expectedOo = getYtrOppija(KoskiSpecificMockOppijat.ylioppilasUusiApi.oid, MockUsers.ophkatselija).opiskeluoikeudet(0)
         .asInstanceOf[YlioppilastutkinnonOpiskeluoikeus]
       val expectedPts = expectedOo.suoritukset(0)
-      val expectedTutkintokokonaisuus = expectedOo.lisätiedot.get.tutkintokokonaisuudet.get(0)
-      val expectedTutkintokerrat = expectedTutkintokokonaisuus.tutkintokerrat.sortBy(_.tutkintokerta.koodiarvo)
+      val expectedTutkintokokonaisuudet = expectedOo.lisätiedot.get.tutkintokokonaisuudet.get
+      val expectedTutkintokerrat = expectedOo.lisätiedot.get.tutkintokokonaisuudet.get.flatMap(_.tutkintokerrat).sortBy(_.tutkintokerta.koodiarvo)
       val expectedKokeet = expectedPts.osasuoritukset.get.sortBy(os => os.koulutusmoduuli.tunniste.koodiarvo)
-      val expectedAiemminSuoritetutKokeet = expectedTutkintokokonaisuus.aiemminSuoritetutKokeet.getOrElse(List.empty)
+      val expectedAiemminSuoritetutKokeet = expectedTutkintokokonaisuudet.flatMap(_.aiemminSuoritetutKokeet.getOrElse(List.empty))
 
       val actualOo: ROpiskeluoikeusRow =
         ytrOotRaportointikannassa.filter(_.oppijaOid === KoskiSpecificMockOppijat.ylioppilasUusiApi.oid)(0)
       val actualPts: RPäätasonSuoritusRow =
         ytrPäätasonSuorituksetRaportointikannassa.filter(_.opiskeluoikeusOid === actualOo.opiskeluoikeusOid)(0)
-      val actualTutkintokokonaisuus: RYtrTutkintokokonaisuudenSuoritusRow =
-        ytrTutkintokokonaisuudenSuorituksetRaportointikannassa.filter(_.opiskeluoikeusOid === actualOo.opiskeluoikeusOid)(0)
+      val actualTutkintokokonaisuudet: Seq[RYtrTutkintokokonaisuudenSuoritusRow] =
+        ytrTutkintokokonaisuudenSuorituksetRaportointikannassa.filter(_.opiskeluoikeusOid === actualOo.opiskeluoikeusOid)
       val actualTutkintokerrat: Seq[RYtrTutkintokerranSuoritusRow] =
         ytrTutkintokerranSuorituksetRaportointikannassa.filter(_.opiskeluoikeusOid === actualOo.opiskeluoikeusOid).sortBy(_.tutkintokertaKoodiarvo)
       val actualKokeet: Seq[RYtrKokeenSuoritusRow] =
         ytrKokeenSuorituksetRaportointikannassa.filter(_.päätasonSuoritusId === actualPts.päätasonSuoritusId).sortBy(_.koulutusmoduuliKoodiarvo)
       val actualTutkintokokonaisuudenKokeet: Seq[RYtrTutkintokokonaisuudenKokeenSuoritusRow] =
-        ytrTutkintokokonaisuudenKokeenSuorituksetRaportointikannassa.filter(_.ytrTutkintokokonaisuudenSuoritusId === actualTutkintokokonaisuus.ytrTutkintokokonaisuudenSuoritusId)
+        ytrTutkintokokonaisuudenKokeenSuorituksetRaportointikannassa.filter(s => actualTutkintokokonaisuudet.map(_.ytrTutkintokokonaisuudenSuoritusId).contains(s.ytrTutkintokokonaisuudenSuoritusId))
 
       verifyOo(KoskiSpecificMockOppijat.ylioppilasUusiApi, expectedOo, actualOo)
       verifyPts(expectedOo, expectedPts, actualPts)
-      verifyTutkintokokonaisuus(expectedOo, expectedTutkintokokonaisuus, actualPts, actualTutkintokokonaisuus)
-      verifyTutkintokerrat(expectedOo, expectedTutkintokerrat, actualPts, actualTutkintokokonaisuus, actualTutkintokerrat)
-      verifyKokeet(expectedOo, expectedKokeet, expectedAiemminSuoritetutKokeet, actualPts, actualTutkintokokonaisuus, actualTutkintokerrat, actualKokeet, actualTutkintokokonaisuudenKokeet)
+      verifyTutkintokokonaisuus(expectedOo, expectedTutkintokokonaisuudet, actualPts, actualTutkintokokonaisuudet)
+      verifyTutkintokerrat(expectedOo, expectedTutkintokerrat, actualPts, actualTutkintokokonaisuudet, actualTutkintokerrat)
+      verifyKokeet(expectedOo, expectedKokeet, expectedAiemminSuoritetutKokeet, actualPts, actualTutkintokokonaisuudet, actualTutkintokerrat, actualKokeet, actualTutkintokokonaisuudenKokeet)
     }
 
     def verifyOo(expectedOppija: LaajatOppijaHenkilöTiedot, expectedOo: YlioppilastutkinnonOpiskeluoikeus, actualOo: ROpiskeluoikeusRow) = {
@@ -305,36 +310,38 @@ class RaportointikantaSpec
 
     def verifyTutkintokokonaisuus(
       expectedOo: YlioppilastutkinnonOpiskeluoikeus,
-      expectedTutkintokokonaisuus: YlioppilastutkinnonTutkintokokonaisuudenLisätiedot,
+      expectedTutkintokokonaisuudet: Seq[YlioppilastutkinnonTutkintokokonaisuudenLisätiedot],
       actualPts: RPäätasonSuoritusRow,
-      actualTutkintokokonaisuus: RYtrTutkintokokonaisuudenSuoritusRow
+      actualTutkintokokonaisuudet: Seq[RYtrTutkintokokonaisuudenSuoritusRow]
     ) = {
-      actualTutkintokokonaisuus.opiskeluoikeusOid should equal(expectedOo.oid.get)
-      actualTutkintokokonaisuus.päätasonSuoritusId should equal(actualPts.päätasonSuoritusId)
-      actualTutkintokokonaisuus.suorituskieliKoodiarvo should equal(expectedTutkintokokonaisuus.suorituskieli.map(_.koodiarvo))
-      actualTutkintokokonaisuus.tyyppiKoodiarvo should equal(expectedTutkintokokonaisuus.tyyppi.map(_.koodiarvo))
-      actualTutkintokokonaisuus.tilaKoodiarvo should equal(expectedTutkintokokonaisuus.tila.map(_.koodiarvo))
-      actualTutkintokokonaisuus.hyväksytystiValmistunutTutkinto should equal(
-        expectedTutkintokokonaisuus.tyyppi.zip(expectedTutkintokokonaisuus.tila).headOption match {
-          case Some((tyyppi, tila)) => Some(tyyppi.koodiarvo == "candidate" && tila.koodiarvo == "graduated")
-          case _ => None
-        }
-      )
-      actualTutkintokokonaisuus.data \ "tyyppi" \ "koodistoUri" should equal(JString("ytrtutkintokokonaisuudentyyppi"))
+      actualTutkintokokonaisuudet.zip(expectedTutkintokokonaisuudet).foreach{ case(actualTutkintokokonaisuus, expectedTutkintokokonaisuus) =>
+        actualTutkintokokonaisuus.opiskeluoikeusOid should equal(expectedOo.oid.get)
+        actualTutkintokokonaisuus.päätasonSuoritusId should equal(actualPts.päätasonSuoritusId)
+        actualTutkintokokonaisuus.suorituskieliKoodiarvo should equal(expectedTutkintokokonaisuus.suorituskieli.map(_.koodiarvo))
+        actualTutkintokokonaisuus.tyyppiKoodiarvo should equal(expectedTutkintokokonaisuus.tyyppi.map(_.koodiarvo))
+        actualTutkintokokonaisuus.tilaKoodiarvo should equal(expectedTutkintokokonaisuus.tila.map(_.koodiarvo))
+        actualTutkintokokonaisuus.hyväksytystiValmistunutTutkinto should equal(
+          expectedTutkintokokonaisuus.tyyppi.zip(expectedTutkintokokonaisuus.tila).headOption match {
+            case Some((tyyppi, tila)) => Some(tyyppi.koodiarvo == "candidate" && tila.koodiarvo == "graduated")
+            case _ => None
+          }
+        )
+        actualTutkintokokonaisuus.data \ "tyyppi" \ "koodistoUri" should equal(JString("ytrtutkintokokonaisuudentyyppi"))
+      }
     }
 
     def verifyTutkintokerrat(
       expectedOo: YlioppilastutkinnonOpiskeluoikeus,
       expectedTutkintokerrat: List[YlioppilastutkinnonTutkintokerranLisätiedot],
       actualPts: RPäätasonSuoritusRow,
-      actualTutkintokokonaisuus: RYtrTutkintokokonaisuudenSuoritusRow,
+      actualTutkintokokonaisuudet: Seq[RYtrTutkintokokonaisuudenSuoritusRow],
       actualTutkintokerrat: Seq[RYtrTutkintokerranSuoritusRow]
     )  = {
       actualTutkintokerrat.length should equal(expectedTutkintokerrat.length)
       actualTutkintokerrat.zip(expectedTutkintokerrat).foreach { case (actualTutkintokerta, expectedTutkintokerta) =>
         actualTutkintokerta.opiskeluoikeusOid should equal(expectedOo.oid.get)
         actualTutkintokerta.päätasonSuoritusId should equal(actualPts.päätasonSuoritusId)
-        actualTutkintokerta.ytrTutkintokokonaisuudenSuoritusId should equal(actualTutkintokokonaisuus.ytrTutkintokokonaisuudenSuoritusId)
+        actualTutkintokokonaisuudet.map(_.ytrTutkintokokonaisuudenSuoritusId) should contain(actualTutkintokerta.ytrTutkintokokonaisuudenSuoritusId)
         actualTutkintokerta.tutkintokertaKoodiarvo should equal(expectedTutkintokerta.tutkintokerta.koodiarvo)
 
         actualTutkintokerta.vuosi should equal(expectedTutkintokerta.tutkintokerta.vuosi)
@@ -355,13 +362,14 @@ class RaportointikantaSpec
       expectedKokeet: Seq[YlioppilastutkinnonKokeenSuoritus],
       expectedSisältyvätKokeet: Seq[YlioppilastutkinnonSisältyväKoe],
       actualPts: RPäätasonSuoritusRow,
-      actualTutkintokokonaisuus: RYtrTutkintokokonaisuudenSuoritusRow,
+      actualTutkintokokonaisuudet: Seq[RYtrTutkintokokonaisuudenSuoritusRow],
       actualTutkintokerrat: Seq[RYtrTutkintokerranSuoritusRow],
       actualKokeet: Seq[RYtrKokeenSuoritusRow],
       actualTutkintokokonaisuudenKokeet: Seq[RYtrTutkintokokonaisuudenKokeenSuoritusRow]
     ) = {
       actualKokeet.length should equal(expectedKokeet.length)
       actualKokeet.zip(expectedKokeet).foreach { case (actualKoe, expectedKoe) =>
+        val actualTutkintokokonaisuus = actualTutkintokokonaisuudet.find(_.ytrTutkintokokonaisuudenSuoritusId == actualKoe.ytrTutkintokokonaisuudenSuoritusId).get
         val actualTutkintokerta = actualTutkintokerrat.find(_.ytrTutkintokerranSuoritusId == actualKoe.ytrTutkintokerranSuoritusId).get
         val onExpectedSisältyväKoe = expectedSisältyvätKokeet.exists( sisältyväKoe =>
           sisältyväKoe.tutkintokerta.koodiarvo == expectedKoe.tutkintokerta.koodiarvo &&
@@ -390,8 +398,22 @@ class RaportointikantaSpec
           ytrTutkintokokonaisuudenSuoritusId = actualTutkintokokonaisuus.ytrTutkintokokonaisuudenSuoritusId,
           ytrKokeenSuoritusId = actualKoe.ytrKokeenSuoritusId,
           ytrTutkintokerranSuoritusId = actualTutkintokerta.ytrTutkintokerranSuoritusId,
-          sisällytetty = onExpectedSisältyväKoe
+          sisällytetty = false
         ))
+
+        // Jos koe on sisältyvä koe, on siitä lisätty rivi myös sisällyttävään tutkintokokonaisuuden suoritukseen linkitettynä
+        if(onExpectedSisältyväKoe){
+          actualTutkintokokonaisuudenKokeet should contain(RYtrTutkintokokonaisuudenKokeenSuoritusRow(
+            ytrTutkintokokonaisuudenSuoritusId =
+              actualTutkintokokonaisuudet
+                .find(_.ytrTutkintokokonaisuudenSuoritusId != actualKoe.ytrTutkintokokonaisuudenSuoritusId)
+                .get
+                .ytrTutkintokokonaisuudenSuoritusId,
+            ytrKokeenSuoritusId = actualKoe.ytrKokeenSuoritusId,
+            ytrTutkintokerranSuoritusId = actualTutkintokerta.ytrTutkintokerranSuoritusId,
+            sisällytetty = true
+          ))
+        }
       }
     }
   }
