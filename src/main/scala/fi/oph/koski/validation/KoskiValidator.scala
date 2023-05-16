@@ -1078,9 +1078,9 @@ class KoskiValidator(
       case _: PerusopetuksenVuosiluokanSuoritus
         if PerusopetuksenOpiskeluoikeusValidation.onVuosiluokkiinSitoutumatonOpetus(opiskeluoikeus) => true
       case s: LukionOppimääränSuoritus2019
-      => osasuorituksetKunnossaLukio2019(s)
+      => osasuorituksetKunnossaLukio2019(s, opiskeluoikeus.oppilaitos.map(_.oid))
       case s: LukionOppiaineidenOppimäärienSuoritus2019 if opiskeluoikeus.asInstanceOf[LukionOpiskeluoikeus].oppimääräSuoritettu.getOrElse(false)
-      => osasuorituksetKunnossaLukio2019(s)
+      => osasuorituksetKunnossaLukio2019(s, None)
       case s: NurseryVuosiluokanSuoritus
         => true
       case s: SecondaryUpperVuosiluokanSuoritus if s.koulutusmoduuli.tunniste.koodiarvo == "S7"
@@ -1091,10 +1091,14 @@ class KoskiValidator(
       case s => s.osasuoritusLista.nonEmpty
     }
 
-  private def osasuorituksetKunnossaLukio2019(suoritus: LukionPäätasonSuoritus2019) = {
+  private def osasuorituksetKunnossaLukio2019(
+    suoritus: LukionPäätasonSuoritus2019,
+    oppilaitosOid: Option[Organisaatio.Oid]
+  ): Boolean = {
     (sisältääErityisenTutkinnonSuorittamisen(suoritus), suoritus.oppimäärä.koodiarvo) match {
       case (false, "nuortenops") => lukio2019TarpeeksiOsasuorituksia(suoritus.osasuoritukset.getOrElse(List()), 150, 20)
-      case (false, "aikuistenops") => lukio2019TarpeeksiOsasuorituksia(suoritus.osasuoritukset.getOrElse(List()), 88, 0)
+      case (false, "aikuistenops") if LukionYhteisetValidaatiot.laajuusValidoitavaOppilaitoksessa(oppilaitosOid) =>
+        lukio2019TarpeeksiOsasuorituksia(suoritus.osasuoritukset.getOrElse(List()), 88, 0)
       case _ => suoritus.osasuoritusLista.nonEmpty
     }
   }
