@@ -1,4 +1,4 @@
-## xx.xx.2023
+## 16.05.2023
 
 - Ylioppilastutkinnon opiskeluoikeuden lisätietojen tutkintokokonaisuuksiin lisätty kenttä aiemmin suoritetuille kokeille.
 
