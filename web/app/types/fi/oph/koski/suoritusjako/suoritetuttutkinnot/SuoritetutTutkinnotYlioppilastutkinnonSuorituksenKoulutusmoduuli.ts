@@ -8,13 +8,11 @@ import { SuoritetutTutkinnotKoodistokoodiviite } from './SuoritetutTutkinnotKood
 export type SuoritetutTutkinnotYlioppilastutkinnonSuorituksenKoulutusmoduuli = {
   $class: 'fi.oph.koski.suoritusjako.suoritetuttutkinnot.SuoritetutTutkinnotYlioppilastutkinnonSuorituksenKoulutusmoduuli'
   tunniste: SuoritetutTutkinnotKoodistokoodiviite
-  koulutustyyppi?: SuoritetutTutkinnotKoodistokoodiviite
 }
 
 export const SuoritetutTutkinnotYlioppilastutkinnonSuorituksenKoulutusmoduuli =
   (o: {
     tunniste: SuoritetutTutkinnotKoodistokoodiviite
-    koulutustyyppi?: SuoritetutTutkinnotKoodistokoodiviite
   }): SuoritetutTutkinnotYlioppilastutkinnonSuorituksenKoulutusmoduuli => ({
     $class:
       'fi.oph.koski.suoritusjako.suoritetuttutkinnot.SuoritetutTutkinnotYlioppilastutkinnonSuorituksenKoulutusmoduuli',

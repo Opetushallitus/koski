@@ -610,7 +610,7 @@ case class OppilaitosIPOsoiteRow(username: String, ip: String)
 case class PreferenceRow(organisaatioOid: String, koulutustoimijaOid: Option[String], `type`: String, key: String, value: JValue)
 
 case class SuoritusjakoRow(id: Long, secret: String, oppijaOid: String, suoritusIds: JValue, kokonaisuudet: JValue, voimassaAsti: Date, aikaleima: Timestamp) {
-  def jaonTyyppi: String = if (kokonaisuudet.children.nonEmpty) "suoritetut-tutkinnot" else "default" // TODO: should look kokonaisuudet.children.head
+  def jaonTyyppi: Option[String] = if (kokonaisuudet.children.nonEmpty) Some("suoritetut-tutkinnot") else None // TODO: should look kokonaisuudet.children.head
 }
 
 case class SuoritusjakoRowV2(secret: String, oppijaOid: String, data: JValue, voimassaAsti: Date, aikaleima: Timestamp)

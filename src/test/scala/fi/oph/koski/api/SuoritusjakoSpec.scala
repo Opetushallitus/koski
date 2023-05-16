@@ -195,7 +195,7 @@ class SuoritusjakoSpec extends AnyFreeSpec with SuoritusjakoTestMethods with Mat
         }]"""
 
         createSuoritusjako(json) {
-          verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*missingProperty.*".r))
+          verifyResponseStatus(400, List(ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*missingProperty.*".r), ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*missingProperty.*".r)))
         }
       }
 
@@ -209,7 +209,7 @@ class SuoritusjakoSpec extends AnyFreeSpec with SuoritusjakoTestMethods with Mat
         }]"""
 
         createSuoritusjako(json) {
-          verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*unexpectedProperty.*".r))
+          verifyResponseStatus(400, List(ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*unexpectedProperty.*".r), ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*unexpectedProperty.*".r)))
         }
       }
 

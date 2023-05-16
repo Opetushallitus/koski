@@ -1,7 +1,7 @@
-import { Koodistokoodiviite } from '../../schema/Koodistokoodiviite'
 import { SuoritetutTutkinnotYlioppilastutkinnonSuorituksenKoulutusmoduuli } from './SuoritetutTutkinnotYlioppilastutkinnonSuorituksenKoulutusmoduuli'
 import { Toimipiste } from './Toimipiste'
 import { Vahvistus } from './Vahvistus'
+import { Koodistokoodiviite } from '../../schema/Koodistokoodiviite'
 
 /**
  * SuoritetutTutkinnotYlioppilastutkinnonPäätasonSuoritus
@@ -10,19 +10,17 @@ import { Vahvistus } from './Vahvistus'
  */
 export type SuoritetutTutkinnotYlioppilastutkinnonPäätasonSuoritus = {
   $class: 'fi.oph.koski.suoritusjako.suoritetuttutkinnot.SuoritetutTutkinnotYlioppilastutkinnonPäätasonSuoritus'
-  tyyppi: Koodistokoodiviite
-  alkamispäivä?: string
   koulutusmoduuli: SuoritetutTutkinnotYlioppilastutkinnonSuorituksenKoulutusmoduuli
   toimipiste?: Toimipiste
   vahvistus?: Vahvistus
+  tyyppi: Koodistokoodiviite
 }
 
 export const SuoritetutTutkinnotYlioppilastutkinnonPäätasonSuoritus = (o: {
-  tyyppi: Koodistokoodiviite
-  alkamispäivä?: string
   koulutusmoduuli: SuoritetutTutkinnotYlioppilastutkinnonSuorituksenKoulutusmoduuli
   toimipiste?: Toimipiste
   vahvistus?: Vahvistus
+  tyyppi: Koodistokoodiviite
 }): SuoritetutTutkinnotYlioppilastutkinnonPäätasonSuoritus => ({
   $class:
     'fi.oph.koski.suoritusjako.suoritetuttutkinnot.SuoritetutTutkinnotYlioppilastutkinnonPäätasonSuoritus',

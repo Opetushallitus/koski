@@ -416,7 +416,8 @@ describe('Omat tiedot', function () {
 
             it('näytetään suoritusvaihtoehdot', function () {
               expect(form.suoritusvaihtoehdotText()).to.equal(
-                'Kulosaaren ala-aste\n' +
+                'Suoritetut tutkinnot\n' +
+                  'Kulosaaren ala-aste\n' +
                   '7. vuosiluokka\n' +
                   '6. vuosiluokka\n' +
                   'Jyväskylän normaalikoulu\n' +
@@ -700,7 +701,8 @@ describe('Omat tiedot', function () {
 
               it('valita jaettaviksi yksittäin', function () {
                 expect(form.suoritusvaihtoehdotText()).to.equal(
-                  'Aalto-yliopisto\n' +
+                  'Suoritetut tutkinnot\n' +
+                    'Aalto-yliopisto\n' +
                     'Dipl.ins., konetekniikka ( 2013 — 2016 , päättynyt )\n' +
                     '8 opintojaksoa'
                 )
@@ -964,7 +966,8 @@ describe('Omat tiedot', function () {
 
             it('näytetään tuplattu luokka vain kerran', function () {
               expect(form.suoritusvaihtoehdotText()).to.equal(
-                'Jyväskylän normaalikoulu\n' +
+                'Suoritetut tutkinnot\n' +
+                  'Jyväskylän normaalikoulu\n' +
                   'Päättötodistus\n' +
                   '9. vuosiluokka\n' +
                   '8. vuosiluokka\n' +

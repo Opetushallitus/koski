@@ -3,7 +3,7 @@ package fi.oph.koski.suoritusjako
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.editor.{EditorApiServlet, EditorModel}
-import fi.oph.koski.http.HttpStatus
+import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{KoskiSpecificAuthenticationSupport, KoskiSpecificSession}
 import fi.oph.koski.log.Logging
@@ -46,6 +46,8 @@ class SuoritusjakoServlet(implicit val application: KoskiApplication) extends Ed
 
       logger.info(suoritusIds.toString())
       logger.info(kokonaisuudet.toString())
+
+      if (suoritusIds.isEmpty && kokonaisuudet.isEmpty && errors.isEmpty) errors = errors :+ KoskiErrorCategory.badRequest.format()
 
       val result = if (suoritusIds.nonEmpty) {
         application.suoritusjakoService.putBySuoritusIds(user.oid, suoritusIds)(user)

@@ -1,11 +1,8 @@
 import { Koodistokoodiviite } from '../../schema/Koodistokoodiviite'
 import { LocalizedString } from '../../schema/LocalizedString'
 import { SuoritetutTutkinnotKoodistokoodiviite } from './SuoritetutTutkinnotKoodistokoodiviite'
-import { SuoritetutTutkinnotKokoTaiOsittaisenAmmatillisenTutkinnonKoulutusmoduuli } from './SuoritetutTutkinnotKokoTaiOsittaisenAmmatillisenTutkinnonKoulutusmoduuli'
-import { Koulutussopimusjakso } from './Koulutussopimusjakso'
 import { SuoritetutTutkinnotMuunAmmatillisenKoulutuksenKoulutusmoduuli } from './SuoritetutTutkinnotMuunAmmatillisenKoulutuksenKoulutusmoduuli'
 import { Toimipiste } from './Toimipiste'
-import { OsaamisenHankkimistapajakso } from './OsaamisenHankkimistapajakso'
 import { Vahvistus } from './Vahvistus'
 
 /**
@@ -18,11 +15,8 @@ export type SuoritetutTutkinnotMuunAmmatillisenKoulutuksenSuoritus = {
   tyyppi: Koodistokoodiviite<string, 'muuammatillinenkoulutus'>
   suorituskieli?: SuoritetutTutkinnotKoodistokoodiviite
   suoritustapa?: SuoritetutTutkinnotKoodistokoodiviite
-  täydentääTutkintoa?: SuoritetutTutkinnotKokoTaiOsittaisenAmmatillisenTutkinnonKoulutusmoduuli
-  koulutussopimukset?: Array<Koulutussopimusjakso>
   koulutusmoduuli: SuoritetutTutkinnotMuunAmmatillisenKoulutuksenKoulutusmoduuli
   toimipiste?: Toimipiste
-  osaamisenHankkimistavat?: Array<OsaamisenHankkimistapajakso>
   vahvistus?: Vahvistus
 }
 
@@ -30,11 +24,8 @@ export const SuoritetutTutkinnotMuunAmmatillisenKoulutuksenSuoritus = (o: {
   tyyppi: Koodistokoodiviite<string, 'muuammatillinenkoulutus'>
   suorituskieli?: SuoritetutTutkinnotKoodistokoodiviite
   suoritustapa?: SuoritetutTutkinnotKoodistokoodiviite
-  täydentääTutkintoa?: SuoritetutTutkinnotKokoTaiOsittaisenAmmatillisenTutkinnonKoulutusmoduuli
-  koulutussopimukset?: Array<Koulutussopimusjakso>
   koulutusmoduuli: SuoritetutTutkinnotMuunAmmatillisenKoulutuksenKoulutusmoduuli
   toimipiste?: Toimipiste
-  osaamisenHankkimistavat?: Array<OsaamisenHankkimistapajakso>
   vahvistus?: Vahvistus
 }): SuoritetutTutkinnotMuunAmmatillisenKoulutuksenSuoritus => ({
   $class:
