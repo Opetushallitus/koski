@@ -73,7 +73,15 @@ case class YlioppilastutkinnonTutkintokokonaisuudenLisätiedot(
   tila: Option[Koodistokoodiviite] = None,
   @KoodistoUri("kieli")
   suorituskieli: Option[Koodistokoodiviite] = None,
-  tutkintokerrat: List[YlioppilastutkinnonTutkintokerranLisätiedot]
+  tutkintokerrat: List[YlioppilastutkinnonTutkintokerranLisätiedot],
+  aiemminSuoritetutKokeet: Option[List[YlioppilastutkinnonSisältyväKoe]]
+)
+
+@Description("Tiedot aiemmin suoritetusta kokeesta, joka on sisällytetty uuteen ylioppilastutkintoon")
+case class YlioppilastutkinnonSisältyväKoe(
+  @Title("Koe")
+  koulutusmoduuli: YlioppilasTutkinnonKoe,
+  tutkintokerta: YlioppilastutkinnonTutkintokerta
 )
 
 case class YlioppilastutkinnonTutkintokerranLisätiedot(

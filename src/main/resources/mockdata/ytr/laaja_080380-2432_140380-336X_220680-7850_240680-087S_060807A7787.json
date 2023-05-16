@@ -1453,7 +1453,64 @@
               }
             ]
           }
+        ],
+        "includedExams": [
+          {
+            "examId": "A",
+            "examinationPeriod": "2011S"
+          }
         ]
+      },
+      {
+        "language": "fi",
+        "examinationType": "candidate",
+        "examinationState": "ongoing",
+        "examinationPeriods": [
+          {
+            "examinationPeriod": "2011S",
+            "schoolOid": "1.2.246.562.10.70411521654",
+            "schoolName": null,
+            "totalFee": null,
+            "education": 1,
+            "studentNumber": "028",
+            "exams": [
+              {
+                "examId": "A",
+                "grade": "E",
+                "gradePoints": 6,
+                "aborted": false,
+                "examFee": null,
+                "freeOfCharge": false,
+                "totalScore": null,
+                "examItems": [
+                  {
+                    "itemNumber": "1",
+                    "finalAssesmentScore": 40
+                  },
+                  {
+                    "itemNumber": "1",
+                    "finalAssesmentScore": 15
+                  },
+                  {
+                    "itemNumber": "2",
+                    "finalAssesmentScore": 12
+                  },
+                  {
+                    "itemNumber": "3",
+                    "finalAssesmentScore": 12
+                  },
+                  {
+                    "itemNumber": "4"
+                  },
+                  {
+                    "itemNumber": "5"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "includedExams": []
       }
     ]
   },
@@ -1830,6 +1887,12 @@
               }
             ]
           }
+        ],
+        "includedExams": [
+          {
+            "examId": "A",
+            "examinationPeriod": "2014K"
+          }
         ]
       },
       {
@@ -1880,7 +1943,8 @@
               }
             ]
           }
-        ]
+        ],
+        "includedExams": []
       }
     ]
   },

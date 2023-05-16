@@ -1,3 +1,4 @@
+import { YlioppilastutkinnonSisältyväKoe } from './YlioppilastutkinnonSisaltyvaKoe'
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
 import { YlioppilastutkinnonTutkintokerranLisätiedot } from './YlioppilastutkinnonTutkintokerranLisatiedot'
@@ -9,6 +10,7 @@ import { YlioppilastutkinnonTutkintokerranLisätiedot } from './Ylioppilastutkin
  */
 export type YlioppilastutkinnonTutkintokokonaisuudenLisätiedot = {
   $class: 'fi.oph.koski.schema.YlioppilastutkinnonTutkintokokonaisuudenLisätiedot'
+  aiemminSuoritetutKokeet?: Array<YlioppilastutkinnonSisältyväKoe>
   tyyppi?: Koodistokoodiviite<'ytrtutkintokokonaisuudentyyppi', string>
   tila?: Koodistokoodiviite<'ytrtutkintokokonaisuudentila', string>
   tutkintokerrat: Array<YlioppilastutkinnonTutkintokerranLisätiedot>
@@ -17,6 +19,7 @@ export type YlioppilastutkinnonTutkintokokonaisuudenLisätiedot = {
 }
 
 export const YlioppilastutkinnonTutkintokokonaisuudenLisätiedot = (o: {
+  aiemminSuoritetutKokeet?: Array<YlioppilastutkinnonSisältyväKoe>
   tyyppi?: Koodistokoodiviite<'ytrtutkintokokonaisuudentyyppi', string>
   tila?: Koodistokoodiviite<'ytrtutkintokokonaisuudentila', string>
   tutkintokerrat?: Array<YlioppilastutkinnonTutkintokerranLisätiedot>

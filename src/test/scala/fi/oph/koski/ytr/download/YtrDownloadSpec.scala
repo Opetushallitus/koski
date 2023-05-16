@@ -104,7 +104,7 @@ class YtrDownloadSpec
 
     verifyOppijat(
       expectedOppijat(
-        expectedOsasuorituksetLkm = Seq(12, 3, 12, 24, 12),
+        expectedOsasuorituksetLkm = Seq(13, 3, 12, 24, 12),
         expectedVersionumerot = Seq(1, 2, 1, 1, 1)
       )
     )
@@ -124,7 +124,7 @@ class YtrDownloadSpec
     verifyOppijat(
       expectedOppijat(
         hetut = Seq(oppijahetut(0), oppijahetut(1)),
-        expectedOsasuorituksetLkm = Seq(12, 3),
+        expectedOsasuorituksetLkm = Seq(13, 3),
         expectedVersionumerot = Seq(1, 1)
       )
     )
@@ -153,7 +153,7 @@ class YtrDownloadSpec
 
   private def expectedOppijat(
     hetut: Seq[String] = oppijahetut,
-    expectedOsasuorituksetLkm: Seq[Int] = Seq(12, 5, 12, 24, 12),
+    expectedOsasuorituksetLkm: Seq[Int] = Seq(13, 5, 12, 24, 12),
     expectedVersionumerot: Seq[Int] = Seq.fill(5)(1),
   ): Seq[ExpectedOppijaData] = {
     hetut.zipWithIndex.map {

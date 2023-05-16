@@ -1,3 +1,7 @@
+## xx.xx.2023
+
+- Ylioppilastutkinnon opiskeluoikeuden lisätietojen tutkintokokonaisuuksiin lisätty kenttä aiemmin suoritetuille kokeille.
+
 ## 3.5.2023
 
 - IB-oppiaine-osasuorituksen arvioinnin predicted- ja effort-kentät on deprekoitu.

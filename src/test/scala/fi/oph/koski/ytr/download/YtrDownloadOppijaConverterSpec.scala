@@ -3,7 +3,7 @@ package fi.oph.koski.ytr.download
 import fi.oph.koski.TestEnvironment
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.{helsinginMedialukio, ressunLukio}
-import fi.oph.koski.schema.{Koodistokoodiviite, Organisaatiovahvistus, YlioppilasTutkinnonKoe, YlioppilaskokeenArviointi, YlioppilastutkinnonKokeenSuoritus, YlioppilastutkinnonOpiskeluoikeudenLisätiedot, YlioppilastutkinnonOpiskeluoikeudenTila, YlioppilastutkinnonOpiskeluoikeus, YlioppilastutkinnonOpiskeluoikeusjakso, YlioppilastutkinnonSuoritus, YlioppilastutkinnonTutkintokerranLisätiedot, YlioppilastutkinnonTutkintokerta, YlioppilastutkinnonTutkintokokonaisuudenLisätiedot}
+import fi.oph.koski.schema.{Finnish, Koodistokoodiviite, Organisaatiovahvistus, YlioppilasTutkinnonKoe, YlioppilaskokeenArviointi, YlioppilastutkinnonKokeenSuoritus, YlioppilastutkinnonOpiskeluoikeudenLisätiedot, YlioppilastutkinnonOpiskeluoikeudenTila, YlioppilastutkinnonOpiskeluoikeus, YlioppilastutkinnonOpiskeluoikeusjakso, YlioppilastutkinnonSisältyväKoe, YlioppilastutkinnonSuoritus, YlioppilastutkinnonTutkintokerranLisätiedot, YlioppilastutkinnonTutkintokerta, YlioppilastutkinnonTutkintokokonaisuudenLisätiedot}
 import fi.oph.koski.ytr.{MockYrtClient, YtrConversionUtils}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
@@ -59,7 +59,16 @@ class YtrDownloadOppijaConverterSpec extends AnyFreeSpec with TestEnvironment wi
           tutkintokerrat = List(
             YlioppilastutkinnonTutkintokerranLisätiedot(YlioppilastutkinnonTutkintokerta(koodiarvo = "2015K", vuosi = 2015, vuodenaika = kevät),Some(Koodistokoodiviite("1", "ytrkoulutustausta")), Some(helsinginMedialukio)),
             YlioppilastutkinnonTutkintokerranLisätiedot(YlioppilastutkinnonTutkintokerta(koodiarvo = "2014S", vuosi = 2014, vuodenaika = syksy),Some(Koodistokoodiviite("1", "ytrkoulutustausta")), Some(helsinginMedialukio))
-          )),
+          ),
+          aiemminSuoritetutKokeet = Some(List(
+            YlioppilastutkinnonSisältyväKoe(
+              YlioppilasTutkinnonKoe(
+                tunniste = Koodistokoodiviite("A", "koskiyokokeet"),
+              ),
+              tutkintokerta = YlioppilastutkinnonTutkintokerta("2014K", 2014, kevät)
+            )
+          ))
+        ),
         YlioppilastutkinnonTutkintokokonaisuudenLisätiedot(
           tunniste = 1,
           tyyppi = Some(Koodistokoodiviite("candidate", "ytrtutkintokokonaisuudentyyppi")),
@@ -67,7 +76,9 @@ class YtrDownloadOppijaConverterSpec extends AnyFreeSpec with TestEnvironment wi
           suorituskieli = Some(Koodistokoodiviite("FI", "kieli")),
           tutkintokerrat = List(
             YlioppilastutkinnonTutkintokerranLisätiedot(YlioppilastutkinnonTutkintokerta(koodiarvo = "2014K", vuosi = 2014, vuodenaika = kevät), Some(Koodistokoodiviite("1", "ytrkoulutustausta")), Some(helsinginMedialukio))
-          ))
+          ),
+          aiemminSuoritetutKokeet = None
+        )
       )))),
       // oppilaitosSuorituspäivänä = Some(ressunLukio),
       suoritukset = List(

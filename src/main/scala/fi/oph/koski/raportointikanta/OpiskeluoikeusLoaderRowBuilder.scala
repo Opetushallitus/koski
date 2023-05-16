@@ -29,6 +29,13 @@ object OpiskeluoikeusLoaderRowBuilder {
 
   type AikajaksoRows = (Seq[ROpiskeluoikeusAikajaksoRow], Seq[EsiopetusOpiskeluoikeusAikajaksoRow])
 
+  type TutkintokokonaisuusId = Int
+  case class YtrTutkintokokonaisuusRows(
+    tutkintokokonaisuudenSuoritusRow: RYtrTutkintokokonaisuudenSuoritusRow,
+    tutkintokerranSuoritukset: Map[String, RYtrTutkintokerranSuoritusRow],
+    sisältyvätKokeet: List[YlioppilastutkinnonSisältyväKoe]
+  )
+
   private[raportointikanta] def buildKoskiRow(inputRow: OpiskeluoikeusRow): Either[LoadErrorResult, KoskiOutputRows] = {
     Try {
       val toOpiskeluoikeusUnsafeStartTime = System.nanoTime()
@@ -231,7 +238,7 @@ object OpiskeluoikeusLoaderRowBuilder {
     val päätasonSuoritusId: Long = idGenerator
     val päätaso = buildRPäätasonSuoritusRow(opiskeluoikeusOid, sisältyyOpiskeluoikeuteenOid, oppilaitos, ps, psData, päätasonSuoritusId)
 
-    val tutkintokokonaisuudet: Map[Int, (RYtrTutkintokokonaisuudenSuoritusRow, Map[String, RYtrTutkintokerranSuoritusRow])] =
+    val tutkintokokonaisuudet: Map[TutkintokokonaisuusId, YtrTutkintokokonaisuusRows] =
       oo.lisätiedot.flatMap(_.tutkintokokonaisuudet).getOrElse(List.empty).zipWithIndex.map {
         case (tutkintokokonaisuus, i) =>
           val tutkintokokonaisuusId = idGenerator
@@ -259,15 +266,18 @@ object OpiskeluoikeusLoaderRowBuilder {
               tutkintokerta.tutkintokerta.koodiarvo -> tutkintokertaRow
           }.toMap
 
-          tutkintokokonaisuus.tunniste -> (tutkintokokonaisuusRow, tutkintokerrat)
+          val aiemminSuoritetutKokeet = tutkintokokonaisuus.aiemminSuoritetutKokeet.getOrElse(List.empty)
+
+          tutkintokokonaisuus.tunniste -> YtrTutkintokokonaisuusRows(tutkintokokonaisuusRow, tutkintokerrat, aiemminSuoritetutKokeet)
       }.toMap
 
     val kokeet: Seq[(RYtrKokeenSuoritusRow, Seq[RYtrTutkintokokonaisuudenKokeenSuoritusRow])] =
       ps.osasuoritukset.getOrElse(List.empty).zipWithIndex.map {
         case (koe, i) =>
           val koeId = idGenerator
-          val tutkintokertaId = tutkintokokonaisuudet(koe.tutkintokokonaisuudenTunniste.get)._2(koe.tutkintokerta.koodiarvo).ytrTutkintokerranSuoritusId
-          val tutkintokokonaisuusId = tutkintokokonaisuudet(koe.tutkintokokonaisuudenTunniste.get)._1.ytrTutkintokokonaisuudenSuoritusId
+          val tutkintoKokonaisuus = tutkintokokonaisuudet(koe.tutkintokokonaisuudenTunniste.get)
+          val tutkintokertaId = tutkintoKokonaisuus.tutkintokerranSuoritukset(koe.tutkintokerta.koodiarvo).ytrTutkintokerranSuoritusId
+          val tutkintokokonaisuusId = tutkintoKokonaisuus.tutkintokokonaisuudenSuoritusRow.ytrTutkintokokonaisuudenSuoritusId
           val koeRow = buildRYtrKokeenSuoritusRow(
             koeId,
             tutkintokertaId,
@@ -284,13 +294,31 @@ object OpiskeluoikeusLoaderRowBuilder {
               tutkintokertaId,
               sisällytetty = false
             )
-          (koeRow, Seq(tutkintokokonaisuudenKoeRow))
+
+          val kokeenSisällyttävätTutkintokokonaisuudet = tutkintokokonaisuudet.filter{
+            case (_, tutkintokokonaisuus) =>
+              tutkintokokonaisuus.sisältyvätKokeet.exists { sisältyväKoe =>
+                sisältyväKoe.tutkintokerta.koodiarvo == koe.tutkintokerta.koodiarvo &&
+                  sisältyväKoe.koulutusmoduuli.tunniste.koodiarvo == koe.koulutusmoduuli.tunniste.koodiarvo
+              }
+          }.map(_._2.tutkintokokonaisuudenSuoritusRow).toSeq
+
+          val kokeenSisällytetytTutkintokokonaisuudenSuoritusRivit = kokeenSisällyttävätTutkintokokonaisuudet.map(kokonaisuus =>
+            buildRYtrTutkintokokonaisuudenKokeenSuoritusRow(
+              kokonaisuus.ytrTutkintokokonaisuudenSuoritusId,
+              koeId,
+              tutkintokertaId,
+              sisällytetty = true
+            )
+          )
+
+          (koeRow, Seq(tutkintokokonaisuudenKoeRow) ++ kokeenSisällytetytTutkintokokonaisuudenSuoritusRivit)
       }
 
     (
       päätaso,
-      tutkintokokonaisuudet.values.map(_._1).toList,
-      tutkintokokonaisuudet.values.map(_._2).flatMap(_.values).toList,
+      tutkintokokonaisuudet.values.map(_.tutkintokokonaisuudenSuoritusRow).toList,
+      tutkintokokonaisuudet.values.map(_.tutkintokerranSuoritukset).flatMap(_.values).toList,
       kokeet.map(_._1).toList,
       kokeet.flatMap(_._2).toList
     )

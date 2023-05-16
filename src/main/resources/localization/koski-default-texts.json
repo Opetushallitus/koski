@@ -2509,5 +2509,7 @@
   "deprecated:Effort-arvosanaa ei enää tallenneta KOSKI-tietovarantoon": "Effort-arvosanaa ei enää tallenneta KOSKI-tietovarantoon",
   "Predicted arviointi": "Predicted grade",
   "Predicted grade": "Predicted grade",
-  "Päättöarvosana": "Päättöarvosana"
+  "Päättöarvosana": "Päättöarvosana",
+  "description:Tiedot aiemmin suoritetusta kokeesta, joka..." : "Tiedot aiemmin suoritetusta kokeesta, joka on sisällytetty uuteen ylioppilastutkintoon",
+  "Aiemmin suoritetut kokeet" : "Aiemmin suoritetut kokeet"
 }
