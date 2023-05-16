@@ -7,7 +7,7 @@ import software.amazon.awssdk.services.appconfigdata.model.{GetLatestConfigurati
 
 case class EcsMetadataResponse(DockerId: String)
 
-object AppConfig extends Logging {
+object ConfigLoader extends Logging {
   lazy private val envName = sys.env.getOrElse("ENV_NAME", "local")
 
   lazy private val appConfigClient: AppConfigDataClient = AppConfigDataClient.builder
