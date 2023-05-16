@@ -62,6 +62,7 @@ object MockOrganisaatiot {
   val kuopionAikuislukio = "1.2.246.562.10.42923230215"
   val kallavedenLukio = "1.2.246.562.10.63813695861"
   val europeanSchoolOfHelsinki = "1.2.246.562.10.13349113236"
+  val oulunAikuislukio = "1.2.246.562.10.73692574509"
   // Esimerkki muuta kuin säänneltyä koulutusta järjestävästä toimijasta, jotka koostuvat organisaatiopalvelussa koulutustoimija-oppilaitos-parista
   object MuuKuinSäänneltyKoulutusToimija {
     val koulutustoimija = "1.2.246.562.10.53455746569"
@@ -97,6 +98,7 @@ object MockOrganisaatiot {
     kallavedenLukio,
     europeanSchoolOfHelsinki,
     MuuKuinSäänneltyKoulutusToimija.oppilaitos,
+    oulunAikuislukio
   )
 }
 

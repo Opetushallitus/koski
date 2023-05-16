@@ -19658,6 +19658,248 @@
       "virastoTunnus": "9999999-9",
       "organisaatiotyypit": ["organisaatiotyyppi_01"],
       "status": "AKTIIVINEN"
+    },
+    {
+      "aliOrganisaatioMaara": 217,
+      "alkuPvm": 258760800000,
+      "children": [
+        {
+          "aliOrganisaatioMaara": 1,
+          "alkuPvm": 694216800000,
+          "children": [
+            {
+              "aliOrganisaatioMaara": 0,
+              "alkuPvm": 694216800000,
+              "children": [],
+              "kieletUris": [
+                "oppilaitoksenopetuskieli_1#1"
+              ],
+              "kotipaikkaUri": "kunta_564",
+              "lyhytNimi": {
+                "fi": "Oulun aikuislukio",
+                "sv": "Oulun aikuislukio",
+                "en": "Oulun aikuislukio"
+              },
+              "match": false,
+              "nimi": {
+                "fi": "Oulun aikuislukio",
+                "sv": "Oulun aikuislukio",
+                "en": "Oulun aikuislukio"
+              },
+              "oid": "1.2.246.562.10.10268288056",
+              "organisaatiotyypit": [
+                "organisaatiotyyppi_03"
+              ],
+              "parentOid": "1.2.246.562.10.73692574509",
+              "parentOidPath": "1.2.246.562.10.10268288056/1.2.246.562.10.73692574509/1.2.246.562.10.80381044462/1.2.246.562.10.00000000001",
+              "status": "AKTIIVINEN",
+              "subRows": [],
+              "toimipistekoodi": "0054801",
+              "tyypit": [
+                "organisaatiotyyppi_03"
+              ]
+            }
+          ],
+          "kieletUris": [
+            "oppilaitoksenopetuskieli_1#2"
+          ],
+          "kotipaikkaUri": "kunta_564",
+          "lyhytNimi": {
+            "fi": "Oulun aikuislukio",
+            "sv": "Oulun aikuislukio",
+            "en": "Oulun aikuislukio"
+          },
+          "match": true,
+          "nimi": {
+            "fi": "Oulun aikuislukio",
+            "sv": "Oulun aikuislukio",
+            "en": "Oulun aikuislukio"
+          },
+          "oid": "1.2.246.562.10.73692574509",
+          "oppilaitosKoodi": "00548",
+          "oppilaitostyyppi": "oppilaitostyyppi_15#1",
+          "organisaatiotyypit": [
+            "organisaatiotyyppi_02"
+          ],
+          "parentOid": "1.2.246.562.10.80381044462",
+          "parentOidPath": "1.2.246.562.10.73692574509/1.2.246.562.10.80381044462/1.2.246.562.10.00000000001",
+          "status": "AKTIIVINEN",
+          "subRows": [
+            {
+              "aliOrganisaatioMaara": 0,
+              "alkuPvm": 694216800000,
+              "children": [],
+              "kieletUris": [
+                "oppilaitoksenopetuskieli_1#1"
+              ],
+              "kotipaikkaUri": "kunta_564",
+              "lyhytNimi": {
+                "fi": "Oulun aikuislukio",
+                "sv": "Oulun aikuislukio",
+                "en": "Oulun aikuislukio"
+              },
+              "match": false,
+              "nimi": {
+                "fi": "Oulun aikuislukio",
+                "sv": "Oulun aikuislukio",
+                "en": "Oulun aikuislukio"
+              },
+              "oid": "1.2.246.562.10.10268288056",
+              "organisaatiotyypit": [
+                "organisaatiotyyppi_03"
+              ],
+              "parentOid": "1.2.246.562.10.73692574509",
+              "parentOidPath": "1.2.246.562.10.10268288056/1.2.246.562.10.73692574509/1.2.246.562.10.80381044462/1.2.246.562.10.00000000001",
+              "status": "AKTIIVINEN",
+              "subRows": [],
+              "toimipistekoodi": "0054801",
+              "tyypit": [
+                "organisaatiotyyppi_03"
+              ]
+            }
+          ],
+          "tarkastusPvm": 1677229228895,
+          "toimipistekoodi": "00548",
+          "tyypit": [
+            "organisaatiotyyppi_02"
+          ]
+        }
+      ],
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
+      "kotipaikkaUri": "kunta_564",
+      "lyhytNimi": {
+        "fi": "Oulun kaupunki",
+        "sv": "Oulun kaupunki",
+        "en": "Oulun kaupunki"
+      },
+      "match": false,
+      "nimi": {
+        "fi": "Oulun kaupunki",
+        "sv": "Oulun kaupunki",
+        "en": "Oulun kaupunki"
+      },
+      "oid": "1.2.246.562.10.80381044462",
+      "organisaatiotyypit": [
+        "organisaatiotyyppi_01",
+        "organisaatiotyyppi_07",
+        "organisaatiotyyppi_09"
+      ],
+      "parentOid": "1.2.246.562.10.00000000001",
+      "parentOidPath": "1.2.246.562.10.80381044462/1.2.246.562.10.00000000001",
+      "status": "AKTIIVINEN",
+      "subRows": [
+        {
+          "aliOrganisaatioMaara": 1,
+          "alkuPvm": 694216800000,
+          "children": [
+            {
+              "aliOrganisaatioMaara": 0,
+              "alkuPvm": 694216800000,
+              "children": [],
+              "kieletUris": [
+                "oppilaitoksenopetuskieli_1#1"
+              ],
+              "kotipaikkaUri": "kunta_564",
+              "lyhytNimi": {
+                "fi": "Oulun aikuislukio",
+                "sv": "Oulun aikuislukio",
+                "en": "Oulun aikuislukio"
+              },
+              "match": false,
+              "nimi": {
+                "fi": "Oulun aikuislukio",
+                "sv": "Oulun aikuislukio",
+                "en": "Oulun aikuislukio"
+              },
+              "oid": "1.2.246.562.10.10268288056",
+              "organisaatiotyypit": [
+                "organisaatiotyyppi_03"
+              ],
+              "parentOid": "1.2.246.562.10.73692574509",
+              "parentOidPath": "1.2.246.562.10.10268288056/1.2.246.562.10.73692574509/1.2.246.562.10.80381044462/1.2.246.562.10.00000000001",
+              "status": "AKTIIVINEN",
+              "subRows": [],
+              "toimipistekoodi": "0054801",
+              "tyypit": [
+                "organisaatiotyyppi_03"
+              ]
+            }
+          ],
+          "kieletUris": [
+            "oppilaitoksenopetuskieli_1#2"
+          ],
+          "kotipaikkaUri": "kunta_564",
+          "lyhytNimi": {
+            "fi": "Oulun aikuislukio",
+            "sv": "Oulun aikuislukio",
+            "en": "Oulun aikuislukio"
+          },
+          "match": true,
+          "nimi": {
+            "fi": "Oulun aikuislukio",
+            "sv": "Oulun aikuislukio",
+            "en": "Oulun aikuislukio"
+          },
+          "oid": "1.2.246.562.10.73692574509",
+          "oppilaitosKoodi": "00548",
+          "oppilaitostyyppi": "oppilaitostyyppi_15#1",
+          "organisaatiotyypit": [
+            "organisaatiotyyppi_02"
+          ],
+          "parentOid": "1.2.246.562.10.80381044462",
+          "parentOidPath": "1.2.246.562.10.73692574509/1.2.246.562.10.80381044462/1.2.246.562.10.00000000001",
+          "status": "AKTIIVINEN",
+          "subRows": [
+            {
+              "aliOrganisaatioMaara": 0,
+              "alkuPvm": 694216800000,
+              "children": [],
+              "kieletUris": [
+                "oppilaitoksenopetuskieli_1#1"
+              ],
+              "kotipaikkaUri": "kunta_564",
+              "lyhytNimi": {
+                "fi": "Oulun aikuislukio",
+                "sv": "Oulun aikuislukio",
+                "en": "Oulun aikuislukio"
+              },
+              "match": false,
+              "nimi": {
+                "fi": "Oulun aikuislukio",
+                "sv": "Oulun aikuislukio",
+                "en": "Oulun aikuislukio"
+              },
+              "oid": "1.2.246.562.10.10268288056",
+              "organisaatiotyypit": [
+                "organisaatiotyyppi_03"
+              ],
+              "parentOid": "1.2.246.562.10.73692574509",
+              "parentOidPath": "1.2.246.562.10.10268288056/1.2.246.562.10.73692574509/1.2.246.562.10.80381044462/1.2.246.562.10.00000000001",
+              "status": "AKTIIVINEN",
+              "subRows": [],
+              "toimipistekoodi": "0054801",
+              "tyypit": [
+                "organisaatiotyyppi_03"
+              ]
+            }
+          ],
+          "tarkastusPvm": 1677229228895,
+          "toimipistekoodi": "00548",
+          "tyypit": [
+            "organisaatiotyyppi_02"
+          ]
+        }
+      ],
+      "tarkastusPvm": 1664188328592,
+      "toimipistekoodi": "",
+      "tyypit": [
+        "organisaatiotyyppi_01",
+        "organisaatiotyyppi_07",
+        "organisaatiotyyppi_09"
+      ],
+      "ytunnus": "0187690-1"
     }
   ]
 }
