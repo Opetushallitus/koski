@@ -88,7 +88,9 @@ object VirkailijaHttpClient {
   }
 }
 
-case class ServiceConfig(virkailijaUrl: String, username: String, password: String, useCas: Boolean)
+case class ServiceConfig(virkailijaUrl: String, username: String, password: String, useCas: Boolean) {
+  def withUrl(url: Option[String]): ServiceConfig = this.copy(virkailijaUrl = url.getOrElse(virkailijaUrl))
+}
 
 object ServiceConfig {
   def apply(config: Config, prefixes: String*): ServiceConfig = {

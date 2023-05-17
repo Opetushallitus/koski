@@ -1,7 +1,6 @@
 package fi.oph.koski.henkilo
 
 import java.time.LocalDate
-
 import cats.effect.IO
 import com.typesafe.config.Config
 import fi.oph.koski.http.Http._
@@ -10,8 +9,9 @@ import fi.oph.koski.json.Json4sHttp4s.json4sEncoderOf
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.Koodistokoodiviite
-
 import cats.syntax.parallel._
+import fi.oph.koski.config.OphServiceUrls
+
 import scala.concurrent.duration.DurationInt
 
 case class OppijanumeroRekisteriClient(config: Config) {
@@ -51,6 +51,7 @@ case class OppijanumeroRekisteriClient(config: Config) {
 
   private def makeServiceConfig(config: Config) =
     ServiceConfig.apply(config, "authentication-service", "authentication-service.virkailija", "opintopolku.virkailija")
+      .withUrl(OphServiceUrls.oppijanumerorekisteri(config))
 
   private def henkilöByOid[T](oid: String) =
     oidServiceHttp.get[T](uri"/oppijanumerorekisteri-service/henkilo/$oid")(_)
