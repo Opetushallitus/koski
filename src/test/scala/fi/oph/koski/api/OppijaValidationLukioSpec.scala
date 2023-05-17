@@ -7,6 +7,7 @@ import fi.oph.koski.documentation.ExamplesLukio2019.{lops2019AikuistenPerusteenD
 import fi.oph.koski.documentation.LukioExampleData._
 import fi.oph.koski.documentation.{ExamplesLukio, LukioExampleData}
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
+import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
 import junit.framework.Assert.assertEquals
 
@@ -189,6 +190,22 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.lops2015VääräLaajuusAikuiset("Lukion aikuisten oppimäärän LOPS2015 voi merkitä valmiiksi vain kun vähintään 44 kurssia on suoritettu"))
       }
     }
+
+    "vahvistetulta aikuisten suoritukselta sallitaan oppimäärän suoritus alle 44 kurssilla tietyissä oppilaitoksissa" in {
+      val lukionSuoritus = ExamplesLukio.päättötodistus().copy(oppimääräSuoritettu = Some(true))
+      val päätasonSuoritus = lukionSuoritus.suoritukset.head.asInstanceOf[LukionOppimääränSuoritus2015].copy(oppimäärä = aikuistenOpetussuunnitelma)
+      val oppiaineet = päätasonSuoritus.osasuoritusLista.take(6).asInstanceOf[List[LukionOppiaineenSuoritus2015]]
+
+      assertEquals(41, oppiaineet.flatMap(f => f.osasuoritusLista).size)
+
+      putOpiskeluoikeus(lukionSuoritus.copy(
+        oppilaitos = Some(Oppilaitos(MockOrganisaatiot.oulunAikuislukio)),
+        suoritukset = List(päätasonSuoritus.copy(osasuoritukset = Some(oppiaineet)))
+      )) {
+        verifyResponseStatusOk()
+      }
+    }
+
 
     "suoritus validoidaan vaikka oppimäärä olisi merkitty suoritetuksi" in {
       val lukionSuoritus = ExamplesLukio.päättötodistus().copy(oppimääräSuoritettu = Some(true))

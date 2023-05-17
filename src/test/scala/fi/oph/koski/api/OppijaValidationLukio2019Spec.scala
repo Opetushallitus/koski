@@ -1,15 +1,15 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.KoskiHttpSpec
-import fi.oph.koski.api.TestMethodsLukio.päättötodistusSuoritus
 import fi.oph.koski.documentation.ExampleData.{englanti, opiskeluoikeusEronnut, opiskeluoikeusLäsnä, ruotsinKieli, suomenKieli, vahvistusPaikkakunnalla, valtionosuusRahoitteinen}
 import fi.oph.koski.documentation.ExamplesLukio2019.{aikuistenOppiaineidenOppimäärienSuoritus, aikuistenOppimäärienSuoritus, aktiivinenOpiskeluoikeus, oppiaineidenOppimäärienSuoritus, oppimääränSuoritus, vahvistamatonOppimääränSuoritus}
 import fi.oph.koski.documentation.Lukio2019ExampleData._
-import fi.oph.koski.documentation.LukioExampleData.{opiskeluoikeusAktiivinen, opiskeluoikeusPäättynyt}
-import fi.oph.koski.documentation.{ExampleData, ExamplesLukio, ExamplesLukio2019, Lukio2019ExampleData, LukioExampleData}
+import fi.oph.koski.documentation.LukioExampleData.opiskeluoikeusAktiivinen
+import fi.oph.koski.documentation.{ExampleData, ExamplesLukio2019, Lukio2019ExampleData, LukioExampleData}
 import fi.oph.koski.http.ErrorMatcher.exact
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.localization.LocalizedStringImplicits.str2localized
+import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
 import org.scalatest.freespec.AnyFreeSpec
 
@@ -169,6 +169,35 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
           verifyResponseStatus(400,
             KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia(
               s"Suoritus koulutus/309902 on merkitty valmiiksi tai opiskeluoikeuden tiedoissa oppimäärä on merkitty suoritetuksi, mutta sillä ei ole 88 op osasuorituksia, tai opiskeluoikeudelta puuttuu linkitys"
+            )
+          )
+        }
+      }
+
+      "Alle 88 op sisältävän aikuisten oppimäärän suorituksen pystyy vahvistamaan tietyissä oppilaitoksissa" in {
+        putOpiskeluoikeus(defaultOpiskeluoikeus.copy(
+          oppilaitos = Some(Oppilaitos(MockOrganisaatiot.oulunAikuislukio)),
+          suoritukset = List(oppimääränSuoritus.copy(
+            koulutusmoduuli = LukionOppimäärä(perusteenDiaarinumero = ExamplesLukio2019.lops2019AikuistenPerusteenDiaarinumero),
+            oppimäärä = LukioExampleData.aikuistenOpetussuunnitelma,
+            osasuoritukset = Some(oppiainesuorituksetEiRiitäValmistumiseen)
+          ))
+        )) {
+          verifyResponseStatusOk()
+        }
+      }
+
+      "Alle 88 op sisältävän aikuisten aineopintojen suorituksen ei pysty vahvistamaan tietyissä oppilaitoksissa kun oppimäärä on suoritettu" in {
+        putOpiskeluoikeus(defaultOpiskeluoikeus.copy(
+          oppimääräSuoritettu = Some(true),
+          oppilaitos = Some(Oppilaitos(MockOrganisaatiot.oulunAikuislukio)),
+          suoritukset = List(aikuistenOppiaineidenOppimäärienSuoritus.copy(
+            osasuoritukset = Some(oppiainesuorituksetEiRiitäValmistumiseen)
+          ))
+        )) {
+          verifyResponseStatus(400,
+            KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia(
+              s"Suorituksen lukionaineopinnot opiskeluoikeuden tiedoissa oppimäärä on merkitty suoritetuksi, mutta sillä ei ole 88 op osasuorituksia, tai opiskeluoikeudelta puuttuu linkitys"
             )
           )
         }

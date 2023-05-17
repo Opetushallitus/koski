@@ -1,5 +1,10 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 16.5.2023
+
+- Lukion oppimäärän laajuuden validointi jätetään tekemättä aikuisten opetussuunnitelman mukaisissa suorituksissa tietyissä oppilaitoksissa.
+  - Sallitut oppilaitokset: `1.2.246.562.10.73692574509` ja `1.2.246.562.10.43886782945`
+
 ## 25.4.2023
 
 - Tutkintotavoitteiset ammattikoulun opiskeluoikeuksien duplikaatit estetty validaatiolla. Duplikaattius päätellään oppilaitoksen ja perusteen diaarinumeron perusteella.

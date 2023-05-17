@@ -14,6 +14,7 @@ const kaikkiOrganisaatiot = [
   'Kuopion aikuislukio',
   'Lahden ammattikorkeakoulu',
   'Omnia',
+  'Oulun aikuislukio',
   'PK Vironniemi',
   'Ressun lukio',
   'Sockenbacka lågstadieskola',

@@ -30,8 +30,9 @@ object Lukio2015Validation {
   }
 
   def kurssejaRiittävästi(oo: LukionOpiskeluoikeus): HttpStatus = {
+    val oppilaitosOid = oo.oppilaitos.map(_.oid)
     oo.suoritukset.collectFirst { case s: LukionOppimääränSuoritus2015 => s } match {
-      case Some(oppimääränSuoritus) =>
+      case Some(oppimääränSuoritus) if LukionYhteisetValidaatiot.laajuusValidoitavaOppilaitoksessa(oppilaitosOid) =>
         val kurssit = oppimääränSuoritus.osasuoritusLista.flatMap(_.osasuoritusLista)
         val laajuudet = kurssit.map(_.koulutusmoduuli.laajuusArvo(1))
 
