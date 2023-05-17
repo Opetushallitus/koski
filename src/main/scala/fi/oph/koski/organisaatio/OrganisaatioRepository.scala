@@ -4,7 +4,7 @@ import java.lang.System.currentTimeMillis
 import java.time.LocalDate
 import com.typesafe.config.Config
 import fi.oph.koski.cache._
-import fi.oph.koski.config.AppConfig
+import fi.oph.koski.config.{AppConfig, OphServiceUrls}
 import fi.oph.koski.http.{ServiceConfig, VirkailijaHttpClient}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.log.Logging
@@ -130,7 +130,7 @@ object OrganisaatioRepository {
   )
 
   def apply(config: Config, koodisto: KoodistoViitePalvelu)(implicit cacheInvalidator: CacheManager) = {
-    AppConfig.virkailijaOpintopolkuUrl(config) match {
+    OphServiceUrls.organisaatiot(config) match {
       case None =>
         MockOrganisaatioRepository
       case Some(_) =>

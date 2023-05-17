@@ -23,4 +23,5 @@ object AppConfig {
 
 object OphServiceUrls {
   def koodisto(config: Config): Option[String] = AppConfig.ophService(config, "koodisto")
+  def organisaatiot(config: Config): Option[String] = AppConfig .ophService(config, "organisaatio-service")
 }
