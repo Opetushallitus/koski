@@ -50,7 +50,7 @@ const laajuusRange = (l) => {
       return l.min.toString() + '–' + l.max.toString()
     }
   } else {
-    return l.min === undefined ? '-' + l.max.toString() : l.min.toString() + '-'
+    return l.min === undefined ? '-' + l.max.toString() : l.min.toString()
   }
 }
 
