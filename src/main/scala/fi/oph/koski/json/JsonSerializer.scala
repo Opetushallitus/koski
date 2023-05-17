@@ -44,8 +44,11 @@ object JsonSerializer {
     extract(JsonMethods.parse(j), ignoreExtras)
   }
 
-  def extract[T: TypeTag](j: JValue, ignoreExtras: Boolean = false): T = {
-    implicit val c = ExtractionContext(schemaFactory).copy(ignoreUnexpectedProperties = ignoreExtras)
+  def extract[T: TypeTag](j: JValue, ignoreExtras: Boolean = false, omitNullValues: Boolean = true): T = {
+    implicit val extractionContext: ExtractionContext = ExtractionContext(schemaFactory).copy(
+      ignoreUnexpectedProperties = ignoreExtras,
+      omitNullFromInput = omitNullValues,
+    )
     SchemaValidatingExtractor.extract(j) match {
       case Right(x) => x
       case Left(error) =>
