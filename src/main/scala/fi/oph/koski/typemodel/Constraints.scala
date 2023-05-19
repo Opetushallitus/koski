@@ -4,85 +4,107 @@ import fi.oph.koski.typemodel.JsonValue.valueToJson
 import fi.oph.scalaschema.annotation.EnumValue
 import org.json4s.{JObject, JValue}
 
+case class ConstraintBuildContext(
+  classTypes: Seq[TypeModelWithClassName],
+  resolvedClasses: List[String],
+) {
+  def contains(className: String): Boolean =
+    this.resolvedClasses.contains(className)
+
+  def withClassName(className: String): ConstraintBuildContext =
+    this.copy(resolvedClasses = this.resolvedClasses :+ className)
+}
+
+object ConstraintBuildContext {
+  def apply(types: Seq[TypeModel]): ConstraintBuildContext =
+    ConstraintBuildContext(
+      types.collect { case t: TypeModelWithClassName => t },
+      Nil
+    )
+}
+
 object Constraints {
   def build(constraintType: TypeModel, types: Seq[TypeModel]): Constraint = {
-    implicit val allTypes: Seq[TypeModelWithClassName] = types.collect { case t: TypeModelWithClassName => t }
-    buildConstraint(constraintType)
+    buildConstraint(constraintType, ConstraintBuildContext(types))
   }
 
-  private def buildConstraint(tpe: TypeModel)(implicit allTypes: Seq[TypeModelWithClassName]): Constraint = tpe match {
-    case t: ObjectType =>
-      ObjectConstraint(
-        default = defaultOf(t).asInstanceOf[Option[JObject]],
-        properties = t.properties.mapValues(buildConstraint),
-        `class` = t.fullClassName,
-      )
-    case t: ClassRef =>
-      allTypes.find(_.fullClassName == t.fullClassName)
-        .map(buildConstraint)
-        .getOrElse(AnyConstraint())
-    case t: StringType =>
-      StringConstraint(
-        default = defaultOf(t)
-      )
-    case t: LiteralType =>
-      LiteralConstraint(constant = t.literal)
-    case _: DateType =>
-      DateConstraint()
-    case t: BooleanType =>
-      BooleanConstraint(
-        default = defaultOf(t),
-      )
-    case t: NumberType =>
-      NumberConstraint(
-        default = defaultOf(t),
-        min = t.min,
-        max = t.max,
-        decimals = t.decimals,
-      )
-    case t: OptionalType =>
-      OptionalConstraint(
-        default = defaultOf(t),
-        optional = buildConstraint(t.item),
-      )
-    case t: ArrayType =>
-      ArrayConstraint(
-        default = defaultOf(t),
-        items = buildConstraint(t.items),
-      )
-    case t: RecordType =>
-      RecordConstraint(
-        default = defaultOf(t),
-        items = buildConstraint(t.items),
-      )
-    case t: UnionType =>
-      UnionConstraint(
-        anyOf = t.anyOf
-          .collect { case t: TypeModelWithClassName => t }
-          .map(child => (child.fullClassName, buildConstraint(child)))
-          .toMap,
-      )
-    case t: EnumType[_] =>
-      t.childType match {
-        case DataTypes.String =>
-          StringConstraint(
-            default = defaultOf(t),
-            enum = Some(t.enumValues.asInstanceOf[List[String]]),
-          )
-        case DataTypes.Number =>
-          NumberConstraint(
-            default = defaultOf(t),
-            enum = Some(t.enumValues.asInstanceOf[List[Double]]),
-          )
-        case DataTypes.Boolean =>
-          BooleanConstraint(
-            default = defaultOf(t),
-            enum = Some(t.enumValues.asInstanceOf[List[Boolean]]),
-          )
-        case _ => AnyConstraint()
-      }
-    case _: AnyType =>
-      AnyConstraint()
+  private def buildConstraint(tpe: TypeModel, context: ConstraintBuildContext): Constraint = {
+    tpe match {
+      case t: ObjectType if context.contains(t.fullClassName) =>
+        ObjectRefConstraint(t.fullClassName)
+      case t: ObjectType =>
+        ObjectConstraint(
+          default = defaultOf(t).asInstanceOf[Option[JObject]],
+          properties = t.properties.mapValues(value => buildConstraint(value, context.withClassName(t.fullClassName))),
+          `class` = t.fullClassName,
+        )
+      case t: ClassRef =>
+        context.classTypes.find(_.fullClassName == t.fullClassName)
+          .map(a => buildConstraint(a, context))
+          .getOrElse(AnyConstraint())
+      case t: StringType =>
+        StringConstraint(
+          default = defaultOf(t)
+        )
+      case t: LiteralType =>
+        LiteralConstraint(constant = t.literal)
+      case _: DateType =>
+        DateConstraint()
+      case t: BooleanType =>
+        BooleanConstraint(
+          default = defaultOf(t),
+        )
+      case t: NumberType =>
+        NumberConstraint(
+          default = defaultOf(t),
+          min = t.min,
+          max = t.max,
+          decimals = t.decimals,
+        )
+      case t: OptionalType =>
+        OptionalConstraint(
+          default = defaultOf(t),
+          optional = buildConstraint(t.item, context),
+        )
+      case t: ArrayType =>
+        ArrayConstraint(
+          default = defaultOf(t),
+          items = buildConstraint(t.items, context),
+        )
+      case t: RecordType =>
+        RecordConstraint(
+          default = defaultOf(t),
+          items = buildConstraint(t.items, context),
+        )
+      case t: UnionType =>
+        UnionConstraint(
+          anyOf = t.anyOf
+            .collect { case t: TypeModelWithClassName => t }
+            .map(child => (child.fullClassName, buildConstraint(child, context)))
+            .toMap,
+        )
+      case t: EnumType[_] =>
+        t.childType match {
+          case DataTypes.String =>
+            StringConstraint(
+              default = defaultOf(t),
+              enum = Some(t.enumValues.asInstanceOf[List[String]]),
+            )
+          case DataTypes.Number =>
+            NumberConstraint(
+              default = defaultOf(t),
+              enum = Some(t.enumValues.asInstanceOf[List[Double]]),
+            )
+          case DataTypes.Boolean =>
+            BooleanConstraint(
+              default = defaultOf(t),
+              enum = Some(t.enumValues.asInstanceOf[List[Boolean]]),
+            )
+          case _ => AnyConstraint()
+        }
+      case _: AnyType =>
+        AnyConstraint()
+    }
   }
 
   def defaultOf(t: TypeModel): Option[JValue] =
@@ -169,4 +191,10 @@ case class UnionConstraint(
 case class AnyConstraint(
   @EnumValue("any")
   `type`: String = "any",
+) extends Constraint
+
+case class ObjectRefConstraint(
+  `class`: String,
+  @EnumValue("ref")
+  `type`: String = "ref"
 ) extends Constraint

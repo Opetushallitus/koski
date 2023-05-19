@@ -50,6 +50,11 @@ import {
 } from '../../types/fi/oph/koski/typemodel/UnionConstraint'
 import { nonFalsy } from '../../util/fp/arrays'
 import { isValidationRule, ValidationRule } from './ValidationRule'
+import {
+  isObjectRefConstraint,
+  ObjectRefConstraint
+} from '../../types/fi/oph/koski/typemodel/ObjectRefConstraint'
+import { findObjectConstraint } from '../../util/constraints'
 
 export type ValidationError =
   | InvalidTypeError
@@ -141,18 +146,19 @@ export const validateData = (
 const validate = (
   data: unknown,
   constraint: Constraint | ValidationRule<any>,
-  path: string[]
+  path: string[],
+  root?: Constraint
 ): ValidationError[] => {
   if (isLocalizedString(data)) {
     return validateLocalizationString(data, path)
   } else if (isObjectConstraint(constraint)) {
-    return validateObject(data, constraint, path)
+    return validateObject(data, constraint, path, root || constraint)
   } else if (isArrayConstraint(constraint)) {
-    return validateArray(data, constraint, path)
+    return validateArray(data, constraint, path, root || constraint)
   } else if (isUnionConstraint(constraint)) {
-    return validateUnion(data, constraint, path)
+    return validateUnion(data, constraint, path, root || constraint)
   } else if (isOptionalConstraint(constraint)) {
-    return validateOptional(data, constraint, path)
+    return validateOptional(data, constraint, path, root || constraint)
   } else if (isNumberConstraint(constraint)) {
     return validateNumber(data, constraint, path)
   } else if (isStringConstraint(constraint)) {
@@ -167,6 +173,8 @@ const validate = (
     return validateRecord(data, constraint, path)
   } else if (isValidationRule(constraint)) {
     return constraint.isMatch(data, path) ? constraint.validate(data, path) : []
+  } else if (isObjectRefConstraint(constraint)) {
+    return validateObjectReference(data, constraint, path, root || constraint)
   }
   return []
 }
@@ -175,7 +183,8 @@ const validate = (
 const validateObject = (
   data: unknown,
   constraint: ObjectConstraint,
-  path: string[]
+  path: string[],
+  root: Constraint
 ): ValidationError[] => {
   if (typeof data !== 'object') {
     return [invalidType('object', data, path)]
@@ -183,8 +192,24 @@ const validateObject = (
     return [invalidType('object', data, path)]
   } else {
     return Object.entries(constraint.properties).flatMap(([key, child]) =>
-      validate((data as any)[key], child, [...path, key])
+      validate((data as any)[key], child, [...path, key], root)
     )
+  }
+}
+
+// ObjectRefConstraint
+const validateObjectReference = (
+  data: unknown,
+  constraint: ObjectRefConstraint,
+  path: string[],
+  root: Constraint
+): ValidationError[] => {
+  const ref = findObjectConstraint(constraint.class, root)
+  if (!ref) {
+    console.warn(
+      `Could not validate object reference ${constraint.class} because it was not found in the root constraint`
+    )
+    return []
   }
 }
 
@@ -192,13 +217,14 @@ const validateObject = (
 const validateArray = (
   data: unknown,
   constraint: ArrayConstraint,
-  path: string[]
+  path: string[],
+  root: Constraint
 ): ValidationError[] => {
   if (!Array.isArray(data)) {
     return [invalidType('array', data, path)]
   } else {
     return data.flatMap((e, i) =>
-      validate(e, constraint.items, [...path, i.toString()])
+      validate(e, constraint.items, [...path, i.toString()], root)
     )
   }
 }
@@ -207,7 +233,8 @@ const validateArray = (
 const validateUnion = (
   data: unknown,
   constraint: UnionConstraint,
-  path: string[]
+  path: string[],
+  root: Constraint
 ): ValidationError[] => {
   const className = (data as any)?.$class as string
   if (!className) {
@@ -221,19 +248,20 @@ const validateUnion = (
       noMatchingClass(Object.keys(constraint.anyOf), className, data, path)
     ]
   }
-  return validate(data, childC, path)
+  return validate(data, childC, path, root)
 }
 
 // OptionalConstraint
 const validateOptional = (
   data: unknown,
   constraint: OptionalConstraint,
-  path: string[]
+  path: string[],
+  root: Constraint
 ): ValidationError[] => {
   if (data === null || data === undefined) {
     return []
   }
-  return validate(data, constraint.optional, path)
+  return validate(data, constraint.optional, path, root)
 }
 
 // NumberConstraint

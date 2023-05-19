@@ -3,12 +3,16 @@ import * as Eq from 'fp-ts/Eq'
 import { pipe } from 'fp-ts/lib/function'
 import { isArrayConstraint } from '../types/fi/oph/koski/typemodel/ArrayConstraint'
 import { Constraint } from '../types/fi/oph/koski/typemodel/Constraint'
-import { isObjectConstraint } from '../types/fi/oph/koski/typemodel/ObjectConstraint'
+import {
+  ObjectConstraint,
+  isObjectConstraint
+} from '../types/fi/oph/koski/typemodel/ObjectConstraint'
+import { isObjectRefConstraint } from '../types/fi/oph/koski/typemodel/ObjectRefConstraint'
 import { isOptionalConstraint } from '../types/fi/oph/koski/typemodel/OptionalConstraint'
 import { isStringConstraint } from '../types/fi/oph/koski/typemodel/StringConstraint'
 import { isUnionConstraint } from '../types/fi/oph/koski/typemodel/UnionConstraint'
 import { nonNull } from './fp/arrays'
-import { ClassOf, ObjWithClass, schemaClassName, shortClassName } from './types'
+import { ClassOf, ObjWithClass, shortClassName } from './types'
 
 /**
  * Muuta yksittäinen constraint listaksi. Palauttaa null, jos annettu arvo on null.
@@ -99,18 +103,21 @@ export const hasProp = (
   isObjectConstraint(constraint) && constraint.properties[propKey] !== undefined
 
 /**
- * Palauttaa funktion, joka palauttaa annetun constraintin lapsipropertyn.
+ * Palauttaa funktion, joka palauttaa annetun constraintin lapsipropertya vastaavat constraintit.
  *
  * Heittää poikkeuksen, jos propertya ei ole.
  *
  * @see props
  *
  * @param propNamePath Propertyn nimi (voi antaa myös alapropertyjen nimiä lisäargumentteina)
- * @returns Lapsi-constraint. Null, jos annettu argumentti oli null.
+ * @returns Lapsi-constraintit. Null, jos annettu argumentti oli null.
  */
 export const prop =
   (...propNamePath: string[]) =>
-  (constraint: Constraint | null): Constraint[] | null => {
+  (
+    constraint: Constraint | null,
+    rootConstraint?: Constraint
+  ): Constraint[] | null => {
     if (!constraint) {
       return constraint
     }
@@ -132,10 +139,30 @@ export const prop =
           )}`
         )
       }
-      return c ? prop(...tail)(c) : null
+      return prop(...tail)(c, rootConstraint || constraint)
     }
     if (isOptionalConstraint(constraint)) {
-      return prop(...propNamePath)(constraint.optional)
+      return prop(...propNamePath)(
+        constraint.optional,
+        rootConstraint || constraint
+      )
+    }
+    if (isObjectRefConstraint(constraint)) {
+      if (!rootConstraint) {
+        throw new Error(
+          `Cannot resolve class reference '${constraint.class}' without root constraint. Give it as a second argument to the prop function.`
+        )
+      }
+      const referredObject = findObjectConstraint(
+        constraint.class,
+        rootConstraint
+      )
+      if (!referredObject) {
+        throw new Error(
+          `Given root constraint does not contain object constraint for class '${constraint.class}'`
+        )
+      }
+      return prop(...propNamePath)(referredObject, rootConstraint || constraint)
     }
     throw new Error(`${toString(constraint)} cannot have any properties`)
   }
@@ -147,6 +174,39 @@ export const prop =
  */
 export const props = (...propNamePath: string[]) =>
   flatMap(prop(...propNamePath))
+
+/**
+ *
+ */
+export const findObjectConstraint = (
+  className: string,
+  constraint: Constraint
+): ObjectConstraint | null => {
+  if (isObjectConstraint(constraint)) {
+    if (constraint.class === className) {
+      return constraint
+    }
+    for (const property of Object.values(constraint.properties)) {
+      const found = findObjectConstraint(className, property)
+      if (found) return found
+    }
+    return null
+  }
+  if (isOptionalConstraint(constraint)) {
+    return findObjectConstraint(className, constraint.optional)
+  }
+  if (isArrayConstraint(constraint)) {
+    return findObjectConstraint(className, constraint.items)
+  }
+  if (isUnionConstraint(constraint)) {
+    for (const property of Object.values(constraint.anyOf)) {
+      const found = findObjectConstraint(className, property)
+      if (found) return found
+    }
+    return null
+  }
+  return null
+}
 
 /**
  * Palauttaa constraintin määrittelemän luokan nimen (objektille, eli constraint viittaa yksittäiseen luokkaan)

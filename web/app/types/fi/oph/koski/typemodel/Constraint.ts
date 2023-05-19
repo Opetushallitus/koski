@@ -5,6 +5,10 @@ import { DateConstraint, isDateConstraint } from './DateConstraint'
 import { LiteralConstraint, isLiteralConstraint } from './LiteralConstraint'
 import { NumberConstraint, isNumberConstraint } from './NumberConstraint'
 import { ObjectConstraint, isObjectConstraint } from './ObjectConstraint'
+import {
+  ObjectRefConstraint,
+  isObjectRefConstraint
+} from './ObjectRefConstraint'
 import { OptionalConstraint, isOptionalConstraint } from './OptionalConstraint'
 import { RecordConstraint, isRecordConstraint } from './RecordConstraint'
 import { StringConstraint, isStringConstraint } from './StringConstraint'
@@ -23,6 +27,7 @@ export type Constraint =
   | LiteralConstraint
   | NumberConstraint
   | ObjectConstraint
+  | ObjectRefConstraint
   | OptionalConstraint
   | RecordConstraint
   | StringConstraint
@@ -36,6 +41,7 @@ export const isConstraint = (a: any): a is Constraint =>
   isLiteralConstraint(a) ||
   isNumberConstraint(a) ||
   isObjectConstraint(a) ||
+  isObjectRefConstraint(a) ||
   isOptionalConstraint(a) ||
   isRecordConstraint(a) ||
   isStringConstraint(a) ||
