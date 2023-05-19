@@ -25,7 +25,10 @@ const SuoritetutTutkinnot = ({ testId }: SuoritetutTutkinnotProps) => {
   return isSuccess(response) && isSuoritetutTutkinnotOppija(response.data) ? (
     <>
       <SuoritusjakoTopBar />
-      <ContentContainer className="content-area suoritusjako" testId={testId}>
+      <ContentContainer
+        className="content-area suoritusjako suoritusjako-page"
+        testId={testId}
+      >
         <div className="main-content">
           <h1>
             <Trans>{'Suoritetut tutkinnot'}</Trans>

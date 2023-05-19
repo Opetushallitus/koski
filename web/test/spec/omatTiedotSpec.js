@@ -1058,6 +1058,50 @@ describe('Omat tiedot', function () {
             })
           })
         })
+
+        describe('Suoritetut tutkinnot', function () {
+          before(
+            authentication.logout,
+            etusivu.openPage,
+            etusivu.login(),
+            wait.until(korhopankki.isReady),
+            korhopankki.login('280618-402H', 'Ammattilainen', 'Aarne'),
+            wait.until(omattiedot.isVisible),
+            click(omattiedot.suoritusjakoButton)
+          )
+
+          describe('suoritettujen tutkintojen jakaminen', function () {
+            before(
+              form.selectSuoritetutTutkinnot(),
+              form.createSuoritusjako(),
+              wait.until(form.suoritusjako(1).isVisible)
+            )
+
+            it('onnistuu', function () {
+              var jako = form.suoritusjako(1)
+              var secret = jako.url().split('/') // otetaan salaisuus talteen jaon hakemista varten
+              window.secrets.suoritetutTutkinnot = secret[secret.length - 1]
+              expect(jako.isVisible()).to.equal(true)
+            })
+          })
+
+          describe('Katselu', function () {
+            var suoritusjako = SuoritusjakoPage()
+
+            before(
+              authentication.logout,
+              suoritusjako.openPage(
+                'suoritetutTutkinnot',
+                'suoritetut-tutkinnot'
+              ),
+              wait.until(suoritusjako.isVisible)
+            )
+
+            it('onnistuu', function () {
+              expect(suoritusjako.isVisible()).to.equal(true)
+            })
+          })
+        })
       })
 
       describe('Ylioppilastutkinto suoritusjako', function () {
