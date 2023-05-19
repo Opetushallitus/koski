@@ -1,48 +1,28 @@
 package fi.oph.koski.config
 
-import com.typesafe.config.{Config, ConfigFactory}
-import fi.oph.koski.log.Logging
-import software.amazon.awssdk.services.appconfigdata.AppConfigDataClient
-import software.amazon.awssdk.services.appconfigdata.model.{GetLatestConfigurationRequest, StartConfigurationSessionRequest}
+import com.typesafe.config.Config
 
-case class EcsMetadataResponse(DockerId: String)
+object AppConfig {
+  def virkailijaOpintopolkuUrl(config: Config, path: String*): Option[String] =
+    Option(config.getString("opintopolku.virkailija.url"))
+      .flatMap(ignoreMock)
+      .map(_ + path.mkString(""))
 
-object AppConfig extends Logging {
-  lazy private val envName = sys.env.getOrElse("ENV_NAME", "local")
+  def environmentName(config: Config): Option[String] =
+    Option(config.getString("opintopolku.environment")).flatMap(ignoreMock)
 
-  lazy private val appConfigClient: AppConfigDataClient = AppConfigDataClient.builder
-    .build
+  def oppijaOpintopolkuUrl(config: Config): String =
+    config.getString("opintopolku.oppija.url")
 
-  lazy private val configurationSessionRequest =
-    StartConfigurationSessionRequest.builder
-      .applicationIdentifier("koski")
-      .environmentIdentifier(envName)
-      .configurationProfileIdentifier(envName)
-      .build
+  def ophService(config: Config, service: String): Option[String] =
+    virkailijaOpintopolkuUrl(config)
 
-  lazy private val configurationSession =
-    appConfigClient.startConfigurationSession(configurationSessionRequest)
+  private def ignoreMock(url: String): Option[String] =
+    if (url == "mock") None else Some(url)
+}
 
-  private def getLatestConfigurationRequest = {
-    val token = configurationToken.getOrElse(configurationSession.initialConfigurationToken())
-    GetLatestConfigurationRequest.builder
-      .configurationToken(token)
-      .build
-  }
-
-  private var configurationToken: Option[String] = None
-  private var configuration: Option[Config] = None
-
-  def loadConfig: Option[Config] = {
-    val config = appConfigClient.getLatestConfiguration(getLatestConfigurationRequest)
-    configurationToken = Some(config.nextPollConfigurationToken)
-
-    val configContent = config.configuration().asUtf8String()
-
-    if (configContent.nonEmpty) {
-      configuration = Some(ConfigFactory.parseString(configContent))
-    }
-
-    configuration
-  }
+object OphServiceUrls {
+  def koodisto(config: Config): Option[String] = AppConfig.ophService(config, "koodisto")
+  def organisaatiot(config: Config): Option[String] = AppConfig.ophService(config, "organisaatio-service")
+  def oppijanumerorekisteri(config: Config): Option[String] = AppConfig.ophService(config, "oppijanumerorekisteri-service")
 }

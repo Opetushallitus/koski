@@ -1,6 +1,6 @@
 package fi.oph.koski.migri
 
-import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.config.{AppConfig, KoskiApplication}
 import fi.oph.koski.http.Http.{UriInterpolator, runIO}
 import fi.oph.koski.http.{ErrorDetail, HttpStatus, KoskiErrorCategory, ServiceConfig, VirkailijaHttpClient}
 import fi.oph.koski.json.Json4sHttp4s.json4sEncoderOf
@@ -16,7 +16,7 @@ trait MigriService {
 
 class RemoteMigriService (implicit val application: KoskiApplication) extends Logging with MigriService {
   private def getClient(username: String, password: String) = {
-    val config = ServiceConfig(application.config.getString("opintopolku.virkailija.url"), username, password, useCas = true)
+    val config = ServiceConfig(AppConfig.virkailijaOpintopolkuUrl(application.config).get, username, password, useCas = true)
     VirkailijaHttpClient(config,
       "/valinta-tulos-service",
       sessionCookieName = "session",
@@ -30,7 +30,7 @@ class RemoteMigriService (implicit val application: KoskiApplication) extends Lo
     runIO(client.post(uri"/valinta-tulos-service/cas/migri/hakemukset/henkilo-oidit", oids)(json4sEncoderOf[List[String]]) {
       case (200, text, _) => Right(RawJsonResponse(text))
       case (status, text, _) =>
-        logger.error(s"valinta-tulos-service returned status $status: $text with user ${basicAuthRequest.username} and first oid ${oids.headOption} from ${application.config.getString("opintopolku.virkailija.url")}")
+        logger.error(s"valinta-tulos-service returned status $status: $text with user ${basicAuthRequest.username} and first oid ${oids.headOption} from ${AppConfig.virkailijaOpintopolkuUrl(application.config)}")
         Left(HttpStatus(status, List(ErrorDetail("valinta-tulos-service-error", text))))
     })
   }
@@ -41,7 +41,7 @@ class RemoteMigriService (implicit val application: KoskiApplication) extends Lo
     runIO(client.post(uri"/valinta-tulos-service/cas/migri/hakemukset/hetut", hetus)(json4sEncoderOf[List[String]]) {
       case (200, text, _) => Right(RawJsonResponse(text))
       case (status, text, _) =>
-        logger.error(s"valinta-tulos-service returned status $status: $text with user ${basicAuthRequest.username} from ${application.config.getString("opintopolku.virkailija.url")}")
+        logger.error(s"valinta-tulos-service returned status $status: $text with user ${basicAuthRequest.username} from ${AppConfig.virkailijaOpintopolkuUrl(application.config)}")
         Left(HttpStatus(status, List(ErrorDetail("valinta-tulos-service-error", text))))
     })
   }

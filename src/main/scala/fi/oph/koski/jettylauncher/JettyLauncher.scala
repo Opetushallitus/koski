@@ -4,7 +4,7 @@ import java.lang.management.ManagementFactory
 import java.nio.file.{Files, Paths}
 import com.typesafe.config.{Config, ConfigFactory}
 import fi.oph.koski.cache.JMXCacheManager
-import fi.oph.koski.config.{AppConfig, Environment, KoskiApplication}
+import fi.oph.koski.config.{ConfigLoader, Environment, KoskiApplication}
 import fi.oph.koski.executors.Pools
 import fi.oph.koski.log.{LogConfiguration, Logging, MaskedSlf4jRequestLogWriter}
 import io.prometheus.client.exporter.MetricsServlet
@@ -24,7 +24,7 @@ object JettyLauncher extends App with Logging {
   private val config: Config = if (Environment.usesAwsAppConfig) {
     logger.info("Ladataan konfiguraatio...")
     try {
-      AppConfig
+      ConfigLoader
         .loadConfig
         .map(ConfigFactory.load)
         .getOrElse {
