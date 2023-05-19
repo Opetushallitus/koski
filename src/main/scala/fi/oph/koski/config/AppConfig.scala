@@ -15,7 +15,7 @@ object AppConfig {
     config.getString("opintopolku.oppija.url")
 
   def ophService(config: Config, service: String): Option[String] =
-    environmentName(config).map(env => s"http://$service.$env.internal:8080")
+    virkailijaOpintopolkuUrl(config)
 
   private def ignoreMock(url: String): Option[String] =
     if (url == "mock") None else Some(url)
