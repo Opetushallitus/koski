@@ -12,6 +12,7 @@ jobs:
   tests:
     name: "👀"
     uses: ./.github/workflows/all_tests.yml
+    if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
 
   build:
     name: Build and upload artifacts
@@ -58,9 +59,9 @@ jobs:
       - name: Set up Java 11
         uses: actions/setup-java@v3
         with:
-          java-version: '11'
-          architecture: 'x64'
-          distribution: 'zulu'
+          java-version: "11"
+          architecture: "x64"
+          distribution: "zulu"
           server-id: oph-sade-artifactory
           server-username: ARTIFACTORY_USERNAME
           server-password: ARTIFACTORY_PASSWORD

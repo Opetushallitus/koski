@@ -306,6 +306,8 @@ Myös staattinen analyysi [ScalaStyle](http://www.scalastyle.org/) ja [ESLint](h
 
 Suorituskykytestit ajetaan joka aamuyö.
 
+Integraatiotestit jätetään ajamatta, jos commit-viestissä on teksti `[skip-tests]`. Tämä ominaisuus on tarkoitettu kiireisten hotfixien viemiseen suoraan master-haaraan.
+
 ## Asennukset
 
 Github Actions asentaa kehitys- ja testiympäristöön automaattisesti kaikki master haaraan tulleet muutokset.
