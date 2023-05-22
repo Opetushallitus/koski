@@ -13,14 +13,14 @@ import fi.oph.koski.log.KoskiOperation.{KANSALAINEN_SUORITUSJAKO_LISAYS, KANSALA
 import fi.oph.koski.log.KoskiAuditLogMessageField.oppijaHenkiloOid
 import fi.oph.koski.oppija.KoskiOppijaFacade
 import fi.oph.koski.schema._
-import fi.oph.koski.suoritusjako.suoritetuttutkinnot.SuoritetutTutkinnotOppija
+import fi.oph.koski.suoritusjako.suoritetuttutkinnot.{SuoritetutTutkinnotOppija, SuoritetutTutkinnotService}
 import fi.oph.koski.util.WithWarnings
 
 
 case class SuoritusjakoPayload(
   tyyppi: String
 )
-class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppijaFacade: KoskiOppijaFacade, application: KoskiApplication) extends Logging {
+class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppijaFacade: KoskiOppijaFacade, suoritetutTutkinnotService: SuoritetutTutkinnotService) extends Logging {
   private def addSuoritusjako(oppijaOid: String, suoritusIds: List[SuoritusIdentifier], kokonaisuudet: List[SuoritusjakoPayload])(implicit koskiSession: KoskiSpecificSession) = {
     val secret = SuoritusjakoSecret.generateNew
     val suoritusjako = suoritusjakoRepository.create(secret, oppijaOid, suoritusIds, kokonaisuudet)
@@ -76,7 +76,7 @@ class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppija
 
   def getSuoritetutTutkinnot(secret: String)(implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, SuoritetutTutkinnotOppija] = {
     suoritusjakoRepository.get(secret)
-      .flatMap(t => application.suoritetutTutkinnotService.findSuoritetutTutkinnotOppija(t.oppijaOid))
+      .flatMap(t => suoritetutTutkinnotService.findSuoritetutTutkinnotOppija(t.oppijaOid))
   }
 
   private def filterOpiskeluoikeudet(opiskeluoikeudet: Seq[Opiskeluoikeus], suoritusIds: List[SuoritusIdentifier]): Seq[Opiskeluoikeus] = {
