@@ -3,6 +3,7 @@ package fi.oph.koski.raportointikanta
 import fi.oph.koski.db.{KoskiOpiskeluoikeusRow, OpiskeluoikeusRow, PoistettuOpiskeluoikeusRow, YtrOpiskeluoikeusRow}
 import fi.oph.koski.json.JsonManipulation
 import fi.oph.koski.koskiuser.KoskiSpecificSession
+import fi.oph.koski.log.Logging
 import fi.oph.koski.raportointikanta.LoaderUtils.{convertKoodisto, convertLocalizedString}
 import fi.oph.koski.schema._
 import fi.oph.koski.validation.MaksuttomuusValidation
@@ -13,7 +14,7 @@ import java.time.temporal.ChronoField
 import java.util.concurrent.atomic.AtomicLong
 import scala.util.Try
 
-object OpiskeluoikeusLoaderRowBuilder {
+object OpiskeluoikeusLoaderRowBuilder extends Logging {
 
   // mitätöityError sisältö käytössä AWS hälytyksessä
   private val mitätöityError = "[mitatoity]"
@@ -312,7 +313,16 @@ object OpiskeluoikeusLoaderRowBuilder {
             )
           )
 
-          (koeRow, Seq(tutkintokokonaisuudenKoeRow) ++ kokeenSisällytetytTutkintokokonaisuudenSuoritusRivit)
+          val kelvollisetSisällytetytKokeet =
+            kokeenSisällytetytTutkintokokonaisuudenSuoritusRivit.filter(tsr => tsr.ytrTutkintokokonaisuudenSuoritusId != tutkintokokonaisuusId)
+
+          // YTL:n datoissa on toistaiseksi bugi, jolloin sama koe voi sisältyä samaan tutkintokokonaisuuteen kuin kokeen varsinainen suoritus. Voi poistaa myöhemmin kun data on kunnossa.
+          if(kelvollisetSisällytetytKokeet.size !=  kokeenSisällytetytTutkintokokonaisuudenSuoritusRivit.size) {
+            logger.warn(s"Koe on samassa tutkintokokonaisuudessa sekä varsinaisena että sisällytettynä, koeId: $koeId, tutkintokokonaisuusId: $tutkintokokonaisuusId. Ei lisätty sisällytettyä riviä samaan tutkintokokonaisuuteen.")
+            (koeRow, Seq(tutkintokokonaisuudenKoeRow) ++ kelvollisetSisällytetytKokeet)
+          } else {
+            (koeRow, Seq(tutkintokokonaisuudenKoeRow) ++ kokeenSisällytetytTutkintokokonaisuudenSuoritusRivit)
+          }
       }
 
     (
