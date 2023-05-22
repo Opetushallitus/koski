@@ -89,7 +89,7 @@ const SuoritetutTutkinnot = ({ testId }: SuoritetutTutkinnotProps) => {
               ))}
             </PlainList>
             {response.data.opiskeluoikeudet.length <= 0 && (
-              <Trans>{'Suoritettuja tutkintoja ei löytynyt.'}</Trans>
+              <Trans>{'Suoritettuja tutkintoja ei löytynyt'}</Trans>
             )}
           </div>
         </div>
