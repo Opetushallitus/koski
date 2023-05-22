@@ -1099,6 +1099,10 @@ describe('Omat tiedot', function () {
 
             it('onnistuu', function () {
               expect(suoritusjako.isVisible()).to.equal(true)
+              expect(isElementVisible(S('.suoritettu-tutkinto'))).to.equal(true)
+              expect(S('.suoritettu-tutkinto h3').text()).to.equal(
+                'Stadin ammatti- ja aikuisopisto'
+              )
             })
           })
         })

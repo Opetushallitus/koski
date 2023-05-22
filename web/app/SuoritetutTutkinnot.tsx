@@ -56,13 +56,16 @@ const SuoritetutTutkinnot = ({ testId }: SuoritetutTutkinnotProps) => {
             <p>
               <Trans>
                 {
-                  'Tässä listataan suoritetut tutkinnot otsikkotasolla. Tarkemmat tiedot löytyvät koneluettavassa muodossa yllä olevasta linkistä.'
+                  'Tässä listataan suoritetut tutkinnot otsikkotasolla. Tarkemmat tiedot löytyvät koneluettavassa muodossa yllä olevasta linkistä'
                 }
               </Trans>
             </p>
             <PlainList>
-              {response.data.opiskeluoikeudet.map((oo) => (
-                <div key={oo.$class}>
+              {response.data.opiskeluoikeudet.map((oo, index) => (
+                <div
+                  key={oo.$class + '-' + index}
+                  className={'suoritettu-tutkinto'}
+                >
                   <h3>{oo.oppilaitos?.nimi?.en}</h3>
                   <Flex>
                     <span>
