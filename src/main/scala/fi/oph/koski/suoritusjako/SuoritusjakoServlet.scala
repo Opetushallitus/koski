@@ -32,29 +32,17 @@ class SuoritusjakoServlet(implicit val application: KoskiApplication) extends Ed
   post("/") {
     requireKansalainen
     withJsonBody({ body =>
-      var errors: List[HttpStatus] = List()
-      def rightOrEmptyList[T](x: Either[HttpStatus, List[T]]) = x
-        match {
-          case Right(f) => f
-          case Left(e) =>
-            errors = errors :+ e
-            List()
-        }
-
-      val suoritusIds = rightOrEmptyList(extract[List[SuoritusIdentifier]](body))
-      val kokonaisuudet = rightOrEmptyList(extract[List[SuoritusjakoPayload]](body))
-
-      logger.info(suoritusIds.toString())
-      logger.info(kokonaisuudet.toString())
-
-      if (suoritusIds.isEmpty && kokonaisuudet.isEmpty && errors.isEmpty) errors = errors :+ KoskiErrorCategory.badRequest.format()
-
-      val result = if (suoritusIds.nonEmpty) {
-        application.suoritusjakoService.putBySuoritusIds(user.oid, suoritusIds)(user)
-      } else if (kokonaisuudet.nonEmpty) {
-        application.suoritusjakoService.putByKokonaisuudet(user.oid, kokonaisuudet)(user)
-      } else {
-        Left(HttpStatus.fold(errors))
+      val result: Either[HttpStatus, Suoritusjako] = (extract[List[SuoritusIdentifier]](body), extract[List[SuoritusjakoPayload]](body)) match {
+        case (Right(_), Right(_)) =>
+          Left(KoskiErrorCategory.badRequest.format())
+        case (Right(suoritusIds), _) if suoritusIds.nonEmpty =>
+          application.suoritusjakoService.putBySuoritusIds(user.oid, suoritusIds)(user)
+        case (_, Right(kokonaisuudet)) if kokonaisuudet.nonEmpty =>
+          application.suoritusjakoService.putByKokonaisuudet(user.oid, kokonaisuudet)(user)
+        case (Left(a), Left(b)) =>
+          Left(HttpStatus.fold(a, b))
+        case _ =>
+          Left(KoskiErrorCategory.badRequest.format())
       }
 
       result match {
@@ -62,7 +50,7 @@ class SuoritusjakoServlet(implicit val application: KoskiApplication) extends Ed
           renderObject(suoritusjako)
         case Left(status) =>
           logger.info(status.errors.toString)
-          logger.error(s"Suoritusjaon luonti epäonnistui: oppija: ${user.oid}, suoritukset: ${suoritusIds.mkString}, kokonaisuudet ${kokonaisuudet.mkString}: ${status.errorString.mkString}")
+          logger.error(s"Suoritusjaon luonti epäonnistui: oppija: ${user.oid}: ${status.errorString.mkString}")
           renderStatus(status)
       }
     })()
