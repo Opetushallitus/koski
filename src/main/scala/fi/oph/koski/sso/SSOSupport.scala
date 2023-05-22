@@ -2,7 +2,6 @@ package fi.oph.koski.sso
 
 import java.net.{URI, URLDecoder, URLEncoder}
 import com.typesafe.config.Config
-import fi.oph.koski.config.AppConfig
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{AuthenticationUser, UserAuthenticationContext}
 import fi.oph.koski.log.Logging
@@ -83,7 +82,7 @@ trait SSOSupport extends ScalatraBase with Logging {
   def redirectToVirkailijaLogin = {
     response.addCookie(Cookie("koskiReturnUrl", currentUrl)(CookieOptions(secure = isHttps, path = "/", maxAge = 60, httpOnly = ssoConfig.isCasSsoUsed)))
     if (ssoConfig.isCasSsoUsed) {
-      redirect(AppConfig.virkailijaOpintopolkuUrl(application.config, "/cas/login?service=", casVirkailijaServiceUrl).get)
+      redirect(application.config.getString("opintopolku.virkailija.url") + "/cas/login?service=" + casVirkailijaServiceUrl)
     } else {
       redirect(localLoginPage)
     }
@@ -92,7 +91,7 @@ trait SSOSupport extends ScalatraBase with Logging {
   def redirectToOppijaLogin = {
     response.addCookie(Cookie("koskiReturnUrl", currentUrl)(CookieOptions(secure = isHttps, path = "/", maxAge = 60, httpOnly = true)))
     if (ssoConfig.isCasSsoUsed) {
-      redirect(AppConfig.oppijaOpintopolkuUrl(application.config))
+      redirect(application.config.getString("opintopolku.oppija.url") + "/cas-oppija/login?service=" + casOppijaServiceUrl + "&valtuudet=false")
     } else {
       redirect(localOppijaLoginPage + "?onSuccess=" + URLEncoder.encode(params.getOrElse("redirect", ""), "UTF-8"))
     }
@@ -100,7 +99,7 @@ trait SSOSupport extends ScalatraBase with Logging {
 
   def redirectToVirkailijaLogout = {
     if (ssoConfig.isCasSsoUsed) {
-      redirect(AppConfig.virkailijaOpintopolkuUrl(application.config, "/cas/logout?service=", serviceRoot, "/koski/virkailija").get)
+      redirect(application.config.getString("opintopolku.virkailija.url") + "/cas/logout?service=" + serviceRoot + "/koski/virkailija")
     } else {
       redirect(localLoginPage)
     }

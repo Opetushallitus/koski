@@ -17,10 +17,10 @@ object Environment {
     app.masterDatabase.isLocal && isMockEnvironment(app.config)
 
   def isMockEnvironment(config: Config): Boolean =
-    AppConfig.virkailijaOpintopolkuUrl(config).isEmpty
+    config.getString("opintopolku.virkailija.url") == "mock"
 
   def isProdEnvironment(config: Config): Boolean =
-    AppConfig.virkailijaOpintopolkuUrl(config).contains("https://virkailija.opintopolku.fi")
+    config.getString("opintopolku.virkailija.url") == "https://virkailija.opintopolku.fi"
 
   def isServerEnvironment(config: Config): Boolean = !Set(Local, UnitTest).contains(currentEnvironment(config))
 

@@ -1,7 +1,6 @@
 package fi.oph.koski.henkilo
 
 import com.typesafe.config.Config
-import fi.oph.koski.config.AppConfig
 import fi.oph.koski.db.DB
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http.HttpStatus
@@ -31,11 +30,10 @@ object OpintopolkuHenkilöFacade {
     db: => DB,
     perustiedotRepository: => OpiskeluoikeudenPerustiedotRepository,
     perustiedotIndexer: => OpiskeluoikeudenPerustiedotIndexer
-  ): OpintopolkuHenkilöFacade =
-    AppConfig.virkailijaOpintopolkuUrl(config) match {
-      case None => new MockOpintopolkuHenkilöFacadeWithDBSupport(db)
-      case Some(_) => RemoteOpintopolkuHenkilöFacade(config, perustiedotRepository, perustiedotIndexer)
-    }
+  ): OpintopolkuHenkilöFacade = config.getString("opintopolku.virkailija.url") match {
+    case "mock" => new MockOpintopolkuHenkilöFacadeWithDBSupport(db)
+    case _ => RemoteOpintopolkuHenkilöFacade(config, perustiedotRepository, perustiedotIndexer)
+  }
 }
 
 object RemoteOpintopolkuHenkilöFacade {

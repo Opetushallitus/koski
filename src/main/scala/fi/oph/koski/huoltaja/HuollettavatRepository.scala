@@ -1,7 +1,6 @@
 package fi.oph.koski.huoltaja
 
 import com.typesafe.config.Config
-import fi.oph.koski.config.AppConfig
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.{eskari, faija, faijaFeilaa, ylioppilasLukiolainen}
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http._
@@ -15,10 +14,10 @@ trait HuollettavatRepository {
 
 object HuollettavatRepository {
   def apply(config: Config): HuollettavatRepository = {
-    AppConfig.virkailijaOpintopolkuUrl(config) match {
-      case None =>
+    config.getString("opintopolku.virkailija.url") match {
+      case "mock" =>
         new MockHuollettavatRepository
-      case Some(_) =>
+      case url =>
         val http = VirkailijaHttpClient(ServiceConfig.apply(config, "opintopolku.virkailija"), "/vtj-service", true)
         new RemoteHuollettavatRepository(http)
     }

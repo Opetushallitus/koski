@@ -32,7 +32,6 @@ class OppijanumeroRekisteriClientSpec
       |opintopolku.virkailija.url = "http://localhost:9876"
       |opintopolku.virkailija.username = "foo"
       |opintopolku.virkailija.password = "bar"
-      |opintopolku.environment="mock"
     """.stripMargin)
 
   private val mockClient = OppijanumeroRekisteriClient(config)

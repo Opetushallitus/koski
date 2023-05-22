@@ -228,7 +228,7 @@ class KoskiApplication(
     AuditLog.startHeartbeat()
 
     tryCatch("Koodistojen luonti") {
-      if (Environment.isServerEnvironment(config)) {
+      if (config.getString("opintopolku.virkailija.url") != "mock") {
         KoodistoCreator(this).createAndUpdateCodesBasedOnMockData
       }
     }

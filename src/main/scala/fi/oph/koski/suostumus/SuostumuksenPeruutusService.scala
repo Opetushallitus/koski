@@ -1,6 +1,6 @@
 package fi.oph.koski.suostumus
 
-import fi.oph.koski.config.{AppConfig, Environment, KoskiApplication}
+import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.db.{KoskiTables, PoistettuOpiskeluoikeusRow, QueryMethods}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
@@ -153,7 +153,7 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
   }
 
   private def teeLogimerkintäSähköpostinotifikaatiotaVarten(oid: String): Unit = {
-    logger.warn(s"Kansalainen perui suostumuksen. Opiskeluoikeus ${oid}. Ks. tarkemmat tiedot ${AppConfig.virkailijaOpintopolkuUrl(application.config).getOrElse("mock")}/koski/api/opiskeluoikeus/suostumuksenperuutus")
+    logger.warn(s"Kansalainen perui suostumuksen. Opiskeluoikeus ${oid}. Ks. tarkemmat tiedot ${application.config.getString("opintopolku.virkailija.url")}/koski/api/opiskeluoikeus/suostumuksenperuutus")
   }
 
   def suoritusjakoTekemättäWithAccessCheck(

@@ -1,6 +1,6 @@
 package fi.oph.koski.valpas
 
-import fi.oph.koski.config.{AppConfig, Environment, KoskiApplication}
+import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.koskiuser.AuthenticationUser
 import fi.oph.koski.schema.LocalizedString
 import fi.oph.koski.servlet.NoCache
@@ -12,8 +12,8 @@ class ValpasBootstrapServlet(implicit val application: KoskiApplication) extends
     WindowProperties(
       valpasLocalizationMap = application.valpasLocalizationRepository.localizations,
       environment = Environment.currentEnvironment(application.config),
-      opintopolkuVirkailijaUrl = AppConfig.virkailijaOpintopolkuUrl(application.config).getOrElse("mock"),
-      opintopolkuOppijaUrl = AppConfig.oppijaOpintopolkuUrl(application.config),
+      opintopolkuVirkailijaUrl = application.config.getString("opintopolku.virkailija.url"),
+      opintopolkuOppijaUrl = application.config.getString("opintopolku.oppija.url"),
       oppijaRaamitUser = getUser.map(OppijaRaamitUser.apply).toOption,
     )
   }

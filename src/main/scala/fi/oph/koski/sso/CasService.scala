@@ -1,7 +1,7 @@
 package fi.oph.koski.sso
 
 import com.typesafe.config.Config
-import fi.oph.koski.config.{AppConfig, Environment}
+import fi.oph.koski.config.Environment
 import fi.oph.koski.http.{Http, OpintopolkuCallerId}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.userdirectory.Password
@@ -12,13 +12,13 @@ import scala.concurrent.duration.DurationInt
 
 class CasService(config: Config) extends Logging {
   private val casVirkailijaClient = new CasClient(
-    AppConfig.virkailijaOpintopolkuUrl(config, "/cas").getOrElse("mock"),
+    config.getString("opintopolku.virkailija.url") + "/cas",
     Http.retryingClient("cas.serviceticketvalidation.virkailija"),
     OpintopolkuCallerId.koski
   )
 
   private val casOppijaClient = new CasClient(
-    AppConfig.virkailijaOpintopolkuUrl(config, "/cas-oppija").getOrElse("mock"),
+    config.getString("opintopolku.oppija.url") + "/cas-oppija",
     Http.retryingClient("cas.serviceticketvalidation.oppija"),
     OpintopolkuCallerId.koski
   )
