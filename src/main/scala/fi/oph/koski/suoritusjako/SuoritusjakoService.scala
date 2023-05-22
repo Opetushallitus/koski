@@ -23,14 +23,13 @@ case class SuoritusjakoPayload(
 class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppijaFacade: KoskiOppijaFacade, suoritetutTutkinnotService: SuoritetutTutkinnotService) extends Logging {
   private def addSuoritusjako(oppijaOid: String, suoritusIds: List[SuoritusIdentifier], kokonaisuudet: List[SuoritusjakoPayload])(implicit koskiSession: KoskiSpecificSession) = {
     val secret = SuoritusjakoSecret.generateNew
-    val suoritusjako = suoritusjakoRepository.create(secret, oppijaOid, suoritusIds, kokonaisuudet)
-    suoritusjako
+    suoritusjakoRepository.create(secret, oppijaOid, suoritusIds, kokonaisuudet)
   }
   def putBySuoritusIds(oppijaOid: String, suoritusIds: List[SuoritusIdentifier])(implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, Suoritusjako] = {
-    AuditLog.log(KoskiAuditLogMessage(KANSALAINEN_SUORITUSJAKO_LISAYS, koskiSession, Map(oppijaHenkiloOid -> oppijaOid)))
     getOpiskeluoikeudetSuoritusIdentifierinMukaan(oppijaOid, suoritusIds) match {
       case Left(status) => Left(status)
       case Right(opiskeluoikeudet) =>
+        AuditLog.log(KoskiAuditLogMessage(KANSALAINEN_SUORITUSJAKO_LISAYS, koskiSession, Map(oppijaHenkiloOid -> oppijaOid)))
         val suoritusjako = addSuoritusjako(oppijaOid, suoritusIds, List())
         // Kaikkia opiskeluoikeuksia ei talleteta Koskeen, jolloin niillä ei välttämättä ole oidia.
         // Ei yritetä merkata sellaisille opiskeluoikeuksille suoritusjakoa tehdyksi.
@@ -43,8 +42,9 @@ class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppija
   }
 
   def putByKokonaisuudet(oppijaOid: String, kokonaisuudet: List[SuoritusjakoPayload])(implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, Suoritusjako] = {
+    val suoritusjako = addSuoritusjako(oppijaOid, List(), kokonaisuudet)
     AuditLog.log(KoskiAuditLogMessage(KANSALAINEN_SUORITUSJAKO_LISAYS_SUORITETUT_TUTKINNOT, koskiSession, Map(oppijaHenkiloOid -> oppijaOid)))
-    addSuoritusjako(oppijaOid, List(), kokonaisuudet)
+    suoritusjako
   }
 
   def delete(oppijaOid: String, secret: String): HttpStatus = {
