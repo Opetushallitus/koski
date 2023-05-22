@@ -25,7 +25,8 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
     pageSize: Int = OpiskeluoikeusLoader.DefaultBatchSize,
     onAfterPage: (Int, Seq[OpiskeluoikeusRow]) => Unit = (_, _) => (),
     skipUnchangedData: Boolean = false,
-    enableYtr: Boolean = true
+    enableYtr: Boolean = true,
+    incrementalLoadMaxRows: Int = 50000
   ): Boolean = {
     if (isLoading && !force) {
       logger.info("Raportointikanta already loading, do nothing")
@@ -33,13 +34,21 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
       false
     } else {
       val update = if (skipUnchangedData) {
-        Some(RaportointiDatabaseUpdate(
-          previousRaportointiDatabase = raportointiDatabase,
-          readReplicaDb = application.replicaDatabase.db,
-          dueTime = getDueTime,
-          sleepDuration = sleepDuration,
-          service = päivitetytOpiskeluoikeudetJonoService,
-        ))
+        val dueTime = getDueTime
+        val updatesInQueue = päivitetytOpiskeluoikeudetJonoService.päivitetytOpiskeluoikeudetCount(dueTime)
+
+        if(incrementalLoadMaxRows <= updatesInQueue) {
+          logger.warn(s"Raportointikanta incremental loading overridden with full reload: updates in queue: $updatesInQueue, incremental load threshold: $incrementalLoadMaxRows")
+          None
+        } else {
+          Some(RaportointiDatabaseUpdate(
+            previousRaportointiDatabase = raportointiDatabase,
+            readReplicaDb = application.replicaDatabase.db,
+            dueTime = dueTime,
+            sleepDuration = sleepDuration,
+            service = päivitetytOpiskeluoikeudetJonoService,
+          ))
+        }
       } else {
         None
       }
@@ -50,7 +59,7 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
     }
   }
 
-  def loadRaportointikantaAndExit(fullReload: Boolean, forceReload: Boolean, enableYtr: Boolean): Unit = {
+  def loadRaportointikantaAndExit(fullReload: Boolean, forceReload: Boolean, enableYtr: Boolean, incrementalLoadMaxRows: Int): Unit = {
     val skipUnchangedData = !fullReload
     loadRaportointikanta(
       force = forceReload,
@@ -60,7 +69,9 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
       onEnd = () => {
         logger.info(s"Ended loading raportointikanta, shutting down...")
         shutdown
-      })
+      },
+      incrementalLoadMaxRows = incrementalLoadMaxRows
+    )
   }
 
   private def loadOpiskeluoikeudet(
