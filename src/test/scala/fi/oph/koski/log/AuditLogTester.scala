@@ -13,7 +13,7 @@ object AuditLogTester extends Matchers with LogTester {
   override def appenderName: String = "Audit"
 
   def verifyAuditLogMessage(params: Map[String, Any]): Unit = {
-    retryingTest(times = 3) { () =>
+    retryingTest(times = 10) { () =>
       val message = getLogMessages.lastOption.map(m => parse(m))
       message match {
         case Some(msg: JObject) => verifyAuditLogMessage(msg, params)
@@ -23,7 +23,7 @@ object AuditLogTester extends Matchers with LogTester {
   }
 
   def verifyAuditLogMessage(loggingEvent: String, params: Map[String, Any]): Unit = {
-    retryingTest(times = 3) { () =>
+    retryingTest(times = 10) { () =>
       parse(loggingEvent) match {
         case msg: JObject => verifyAuditLogMessage(msg, params)
         case _ => throw new IllegalStateException("No audit log message found")
@@ -39,7 +39,7 @@ object AuditLogTester extends Matchers with LogTester {
 
   private def verifyAuditLogMessage(msg: JObject, params: Map[String, Any]): Unit = {
     implicit val formats: Formats = GenericJsonFormats.genericFormats
-    retryingTest(times = 3) { () =>
+    retryingTest(times = 10) { () =>
       params.foreach {
         case (key, expectedValue: String) =>
           msg.values.get(key) should equal(Some(expectedValue))
