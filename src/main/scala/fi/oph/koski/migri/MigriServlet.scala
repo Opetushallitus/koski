@@ -14,24 +14,6 @@ class MigriServlet(implicit val application: KoskiApplication) extends KoskiSpec
   lazy val migriService =
     if (Environment.isMockEnvironment(application.config)) new MockMigriService else new RemoteMigriService
 
-  // Overridetaan RequiresLuovutuspalvelu-traitin funktio.
-  // Poistetaan tämä kun uusi API avataan Migrille.
-  // See TOR-1679
-  before() {
-    if (Environment.isProdEnvironment(application.config)) {
-      haltWithStatus(KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus())
-    } else {
-      getUser match {
-        case Left(status) if status.statusCode == 401 =>
-          haltWithStatus(status)
-        case _ =>
-          if (!koskiSessionOption.exists(_.hasLuovutuspalveluAccess)) {
-            haltWithStatus(KoskiErrorCategory.forbidden.vainViranomainen())
-          }
-      }
-    }
-  }
-
   post("/hetu") {
     withJsonBody{ json =>
       renderEither(extractAndValidateHetu(json).flatMap(haeHetulla))
