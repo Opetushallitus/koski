@@ -21,11 +21,11 @@
 <text text-anchor="start" x="347.5219" y="-199.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">[table]</text>
 <polygon fill="none" stroke="#000000" points="272,-169.2 272,-191.2 382,-191.2 382,-169.2 272,-169.2"/>
 <image xlink:href="../../images/primaryKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="277" y="-186.2"/>
-<text text-anchor="start" x="296" y="-176.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">id</text>
+<text text-anchor="start" x="295" y="-176.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">id</text>
 <polygon fill="#ffffff" stroke="transparent" points="272,-147.2 272,-169.2 382,-169.2 382,-147.2 272,-147.2"/>
 <polygon fill="none" stroke="#000000" points="272,-147.2 272,-169.2 382,-169.2 382,-147.2 272,-147.2"/>
 <image xlink:href="../../images/foreignKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="277" y="-164.2"/>
-<text text-anchor="start" x="296" y="-154.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">secret</text>
+<text text-anchor="start" x="295" y="-154.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">secret</text>
 <polygon fill="none" stroke="#000000" points="272,-128.2 272,-147.2 382,-147.2 382,-128.2 272,-128.2"/>
 <text text-anchor="start" x="275" y="-134.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">...</text>
 <polygon fill="#ffffff" stroke="transparent" points="272,-109.2 272,-128.2 312,-128.2 312,-109.2 272,-109.2"/>
@@ -33,7 +33,7 @@
 <text text-anchor="start" x="275" y="-115.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">&lt; 1</text>
 <polygon fill="#ffffff" stroke="transparent" points="312,-109.2 312,-128.2 360,-128.2 360,-109.2 312,-109.2"/>
 <polygon fill="none" stroke="#000000" points="312,-109.2 312,-128.2 360,-128.2 360,-109.2 312,-109.2"/>
-<text text-anchor="start" x="324.6105" y="-115.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">0 rows</text>
+<text text-anchor="start" x="324.6105" y="-115.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">9 rows</text>
 <polygon fill="#ffffff" stroke="transparent" points="360,-109.2 360,-128.2 382,-128.2 382,-109.2 360,-109.2"/>
 <polygon fill="none" stroke="#000000" points="360,-109.2 360,-128.2 382,-128.2 382,-109.2 360,-109.2"/>
 <text text-anchor="start" x="372.8862" y="-115.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000"> &#160;</text>
