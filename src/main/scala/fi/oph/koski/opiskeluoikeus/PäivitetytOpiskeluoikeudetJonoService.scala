@@ -27,6 +27,10 @@ class PäivitetytOpiskeluoikeudetJonoService(application: KoskiApplication) {
       .filterNot(r => prosessoidutRivit.contains(r.id))
   }
 
+  def päivitetytOpiskeluoikeudetCount(dueTime: ZonedDateTime): Int = {
+    master.päivitetytOpiskeluoikeudetCount(dueTime)
+  }
+
   def kaikki: Seq[PäivitettyOpiskeluoikeusRow] =
     replica.kaikki
 
@@ -50,13 +54,25 @@ class PäivitetytOpiskeluoikeudetJonoService(application: KoskiApplication) {
 }
 
 trait PäivitetytOpiskeluoikeudetDbService extends QueryMethods {
-  def päivitetytOpiskeluoikeudet(dueTime: ZonedDateTime): Seq[PäivitettyOpiskeluoikeusRow] = {
+
+  private def päivitetytOpiskeluoikeudetQuery(dueTime: ZonedDateTime) = {
     val due = toTimestamp(dueTime)
+    PäivitetytOpiskeluoikeudet
+      .filter(_.prosessoitu === false)
+      .filter(_.aikaleima < due)
+  }
+  def päivitetytOpiskeluoikeudet(dueTime: ZonedDateTime): Seq[PäivitettyOpiskeluoikeusRow] = {
     runDbSync {
-      PäivitetytOpiskeluoikeudet
-        .filter(_.prosessoitu === false)
-        .filter(_.aikaleima < due)
+      päivitetytOpiskeluoikeudetQuery(dueTime)
         .sortBy(_.aikaleima)
+        .result
+    }
+  }
+
+  def päivitetytOpiskeluoikeudetCount(dueTime: ZonedDateTime): Int = {
+    runDbSync {
+      päivitetytOpiskeluoikeudetQuery(dueTime)
+        .size
         .result
     }
   }

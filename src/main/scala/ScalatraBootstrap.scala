@@ -206,7 +206,12 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing with GlobalEx
   private def generateRaportointikanta(application: KoskiApplication): Unit = {
     val service = new RaportointikantaService(application)
     val generating = Future {
-      service.loadRaportointikantaAndExit(fullReload = RunMode.isFullReload, forceReload = getForceMode, enableYtr = application.config.getBoolean("ytr.raportointi.enabled"))
+      service.loadRaportointikantaAndExit(
+        fullReload = RunMode.isFullReload,
+        forceReload = getForceMode,
+        enableYtr = application.config.getBoolean("ytr.raportointi.enabled"),
+        incrementalLoadMaxRows = application.config.getInt("raportointikanta.incrementalLoadMaxRows")
+      )
     }
     generating.failed.map(error => {
       logger.error(error)("Raportointikannan generointi keskeytyi odottamattomasti")

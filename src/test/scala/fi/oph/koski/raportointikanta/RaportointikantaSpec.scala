@@ -1,7 +1,7 @@
 package fi.oph.koski.raportointikanta
 
 import fi.oph.koski.api.{OpiskeluoikeudenMitätöintiJaPoistoTestMethods, OpiskeluoikeusTestMethodsAmmatillinen}
-import fi.oph.koski.db.KoskiTables.{KoskiOpiskeluOikeudet, PoistetutOpiskeluoikeudet}
+import fi.oph.koski.db.KoskiTables.{KoskiOpiskeluOikeudet, PoistetutOpiskeluoikeudet, YtrOpiskeluOikeudet}
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.documentation.{AmmatillinenExampleData, YleissivistavakoulutusExampleData}
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
@@ -992,6 +992,25 @@ class RaportointikantaSpec
     }
   }
 
+  "Inkrementaalinen lataus muutetaan täyslataukseksi jos päivitettäviä rivien määrä ylittää raja-arvon" in {
+    KoskiApplicationForTests.fixtureCreator.resetFixtures(reloadRaportointikanta = true, reloadYtrData = true)
+    val kaikkiOpiskeluoikeudet = runDbSync(KoskiOpiskeluOikeudet.filter(_.mitätöity === false).result)
+    val kaikkiYtrOpiskeluoikeudet = runDbSync(YtrOpiskeluOikeudet.result)
+    val incrementalLoadMaxRows = 50
+
+    kaikkiOpiskeluoikeudet.size > incrementalLoadMaxRows shouldBe true
+    kaikkiOpiskeluoikeudet
+      .take(incrementalLoadMaxRows)
+      .foreach(oo => KoskiApplicationForTests.päivitetytOpiskeluoikeudetJono.lisää(oo.oid))
+
+    päivitäRaportointikantaInkrementaalisesti(incrementalLoadMaxRows)
+    val päivitetytRivit = mainRaportointiDb.runDbSync(
+      mainRaportointiDb.RaportointikantaStatus.filter(_.name === "opiskeluoikeudet").map(_.count).result
+    ).head
+
+    päivitetytRivit shouldBe kaikkiOpiskeluoikeudet.size + kaikkiYtrOpiskeluoikeudet.size
+  }
+
   private def opiskeluoikeusCount: Int = mainRaportointiDb.runDbSync(mainRaportointiDb.ROpiskeluoikeudet.length.result)
   private def mitätöityOpiskeluoikeusCount: Int = mainRaportointiDb.runDbSync(mainRaportointiDb.RMitätöidytOpiskeluoikeudet.length.result)
   private def henkiloCount: Int = mainRaportointiDb.runDbSync(mainRaportointiDb.RHenkilöt.length.result)
@@ -1006,8 +1025,12 @@ class RaportointikantaSpec
     JsonSerializer.extract[Timestamp](JsonMethods.parse(body) \ "etl" \ "startedTime")
   }
 
-  def päivitäRaportointikantaInkrementaalisesti() = {
-    val loadResult = KoskiApplicationForTests.raportointikantaService.loadRaportointikanta(force = false, skipUnchangedData = true)
+  def päivitäRaportointikantaInkrementaalisesti(incrementalLoadMaxRows: Int = 50000) = {
+    val loadResult = KoskiApplicationForTests.raportointikantaService.loadRaportointikanta(
+      force = false,
+      skipUnchangedData = true,
+      incrementalLoadMaxRows = incrementalLoadMaxRows
+    )
     loadResult should be(true)
     Wait.until(isLoading)
     Wait.until(loadComplete)
