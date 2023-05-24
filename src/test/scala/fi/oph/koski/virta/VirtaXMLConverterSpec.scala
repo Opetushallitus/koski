@@ -84,6 +84,7 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
       {if (organisaatio.isDefined) organisaatio.get}
       <virta:Jakso koulutusmoduulitunniste="opiskeluoikeuden_kk_tunniste">
         <virta:AlkuPvm>2008-08-01</virta:AlkuPvm>
+        <virta:LoppuPvm>2008-08-02</virta:LoppuPvm>
         <virta:Koulutuskoodi>621702</virta:Koulutuskoodi>
         <virta:Koulutuskunta>091</virta:Koulutuskunta>
         <virta:Koulutuskieli>en</virta:Koulutuskieli>
@@ -93,6 +94,24 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
             <virta:Luokittelu>{luokittelu.get}</virta:Luokittelu>
           }
         }
+        <virta:Nimi kieli="fi">Nimi 1</virta:Nimi>
+        <virta:Nimi kieli="sv">Nimi 1</virta:Nimi>
+        <virta:Nimi kieli="en">Nimi 1</virta:Nimi>
+      </virta:Jakso>
+      <virta:Jakso koulutusmoduulitunniste="opiskeluoikeuden_kk_tunniste">
+        <virta:AlkuPvm>2008-08-03</virta:AlkuPvm>
+        <virta:Koulutuskoodi>621702</virta:Koulutuskoodi>
+        <virta:Koulutuskunta>091</virta:Koulutuskunta>
+        <virta:Koulutuskieli>en</virta:Koulutuskieli>
+        <virta:Rahoituslahde>1</virta:Rahoituslahde>
+        {
+          if (luokittelu.isDefined) {
+            <virta:Luokittelu>{luokittelu.get}</virta:Luokittelu>
+          }
+        }
+        <virta:Nimi kieli="fi">Nimi 2</virta:Nimi>
+        <virta:Nimi kieli="sv">Nimi 2</virta:Nimi>
+        <virta:Nimi kieli="en">Nimi 2</virta:Nimi>
       </virta:Jakso>
       <virta:Laajuus>
         <virta:Opintopiste>240</virta:Opintopiste>
@@ -136,6 +155,9 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
         opiskeluoikeudet.head.tyyppi.koodiarvo should be ("korkeakoulutus")
         opiskeluoikeudet.head.tyyppi.nimi.value should be (LocalizedString.sanitizeRequired(Map(("fi" -> "Korkeakoulutus"), ("sv" -> "Högskoleutbildning"), "en" -> "Higher education"), "Korkeakoulutus"))
       }
+    }
+    "Virta-datasta saatu nimi valitaan oikein" in {
+      opiskeluoikeudet.head.suoritukset.head.koulutusmoduuli.nimi.get("fi") shouldBe "Nimi 2"
     }
 
     "Luokittelu" - {

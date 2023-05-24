@@ -130,7 +130,6 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
       val opiskeluoikeudenTutkinto = tutkinto(jakso.koulutuskoodi)
       suoritukset.exists(_.koulutusmoduuli.tunniste == opiskeluoikeudenTutkinto.tunniste)
     }
-    def viimeisinTutkinto = tutkinto(opiskeluoikeusJaksot.maxBy(_.alku)(DateOrdering.localDateOrdering).koulutuskoodi, jaksonNimi(opiskeluoikeusNode))
 
     if (suoritusLöytyyKoulutuskoodilla) { // suoritus löytyy virta datasta vain jos se on valmis
       moveOpintojaksotUnderPäätasonSuoritusIfNecessary(suoritukset)
@@ -481,11 +480,13 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
   }
 
   private def jaksonNimi(opiskeluoikeusNode: Node): Option[LocalizedString] = {
-    val jakso = opiskeluoikeusNode \ "Jakso"
-    jakso.headOption match {
-      case Some(node) => nimi(node)
-      case _ => None
-    }
+    val jaksot = opiskeluoikeusNode \ "Jakso"
+
+    jaksot
+      .map(jakso => NimellinenOpiskeluoikeusJakso(alkuPvm(jakso), nimi(jakso)))
+      .sortBy(_.alku)(DateOrdering.localDateOrdering.reverse)
+      .find(_.nimi.nonEmpty)
+      .flatMap(_.nimi)
   }
 
   private def oppilaitos(node: Node, vahvistusPäivä: Option[LocalDate]): Oppilaitos =
@@ -559,6 +560,11 @@ case class LoppupäivällinenOpiskeluoikeusJakso(
 case class KoulutuskoodillinenOpiskeluoikeusJakso(
   alku: LocalDate,
   koulutuskoodi: String
+)
+
+case class NimellinenOpiskeluoikeusJakso(
+  alku: LocalDate,
+  nimi: Option[LocalizedString]
 )
 
 object VirtaXMLConverterUtils {
