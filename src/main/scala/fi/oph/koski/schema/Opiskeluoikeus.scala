@@ -1,7 +1,9 @@
 package fi.oph.koski.schema
 
-import java.time.{LocalDate, LocalDateTime}
+import fi.oph.koski.schema.Opiskeluoikeus.PäättynytAlgoritmi
+import fi.oph.koski.schema.Opiskeluoikeus.PäättynytAlgoritmi.PäättynytAlgoritmi
 
+import java.time.{LocalDate, LocalDateTime}
 import fi.oph.koski.schema.annotation._
 import fi.oph.scalaschema.annotation._
 import mojave.Traversal
@@ -28,6 +30,47 @@ object Opiskeluoikeus {
     import mojave._
     Suoritus.toimipisteetTraversal.compose(traversal[KoskeenTallennettavaOpiskeluoikeus].field[List[Suoritus]]("suoritukset").items)
   }
+
+  def alkamispäivä(opiskeluoikeudenTyyppiKoodiarvo: String, jaksojenAlkamispäivät: Seq[LocalDate]): Option[LocalDate] = opiskeluoikeudenTyyppiKoodiarvo match {
+    case OpiskeluoikeudenTyyppi.ylioppilastutkinto.koodiarvo =>
+      None
+    case _ =>
+      jaksojenAlkamispäivät.headOption
+  }
+
+  def päättymispäivä(opiskeluoikeudenTyyppiKoodiarvo: String, jaksojenAlutJaTilaKoodiarvot: Seq[(LocalDate, String)]): Option[LocalDate] = {
+    val päättynyt = opiskeluoikeudenTyyppiKoodiarvo match {
+      case OpiskeluoikeudenTyyppi.vapaansivistystyonkoulutus.koodiarvo =>
+        opiskeluoikeusPäättynyt(PäättynytAlgoritmi.VST) _
+      case _ =>
+        opiskeluoikeusPäättynyt() _
+    }
+    jaksojenAlutJaTilaKoodiarvot.lastOption.flatMap(alkuJaKoodiarvo => opiskeluoikeudenTyyppiKoodiarvo match {
+      case OpiskeluoikeudenTyyppi.korkeakoulutus.koodiarvo =>
+        throw new InternalError("Korkeakoulutuksen tapauksessa ei pitäisi päätyä tänne")
+      case _ => if (päättynyt(alkuJaKoodiarvo._2)) {
+          Some(alkuJaKoodiarvo._1)
+        } else {
+          None
+        }
+    })
+  }
+
+  object PäättynytAlgoritmi extends Enumeration {
+    type PäättynytAlgoritmi = Value
+    val Koski, Korkeakoulutus, VST = Value
+  }
+
+  def opiskeluoikeusPäättynyt(algoritmi: PäättynytAlgoritmi = PäättynytAlgoritmi.Koski)(tilaKoodiarvo: String): Boolean = {
+    algoritmi match {
+      case PäättynytAlgoritmi.Korkeakoulutus =>
+        List("3", "4", "5").contains(tilaKoodiarvo)
+      case PäättynytAlgoritmi.VST =>
+        VapaanSivistystyönOpiskeluoikeusjakso.päätöstilat.contains(tilaKoodiarvo) || tilaKoodiarvo == "mitatoity"
+      case PäättynytAlgoritmi.Koski =>
+        KoskiOpiskeluoikeusjakso.päätöstilat.contains(tilaKoodiarvo) || tilaKoodiarvo == "mitatoity"
+    }
+  }
 }
 
 trait Opiskeluoikeus extends Lähdejärjestelmällinen with OrganisaatioonLiittyvä {
@@ -49,12 +92,12 @@ trait Opiskeluoikeus extends Lähdejärjestelmällinen with OrganisaatioonLiitty
   def versionumero: Option[Int]
   @Description("Muoto YYYY-MM-DD. Tiedon syötössä tietoa ei tarvita; tieto poimitaan tila-kentän ensimmäisestä opiskeluoikeusjaksosta.")
   @SyntheticProperty
-  def alkamispäivä: Option[LocalDate] = this.tila.opiskeluoikeusjaksot.headOption.map(_.alku)
+  def alkamispäivä: Option[LocalDate] = Opiskeluoikeus.alkamispäivä(this.tyyppi.koodiarvo, this.tila.opiskeluoikeusjaksot.map(_.alku))
   @Description("Muoto YYYY-MM-DD")
   def arvioituPäättymispäivä: Option[LocalDate]
   @Description("Muoto YYYY-MM-DD. Tiedon syötössä tietoa ei tarvita; tieto poimitaan tila-kentän viimeisestä opiskeluoikeusjaksosta.")
   @SyntheticProperty
-  def päättymispäivä: Option[LocalDate] = this.tila.opiskeluoikeusjaksot.lastOption.filter(_.opiskeluoikeusPäättynyt).map(_.alku)
+  def päättymispäivä: Option[LocalDate] = Opiskeluoikeus.päättymispäivä(this.tyyppi.koodiarvo, this.tila.opiskeluoikeusjaksot.map(j => (j.alku, j.tila.koodiarvo)))
   @Description("Oppilaitos, jossa opinnot on suoritettu")
   def oppilaitos: Option[Oppilaitos]
   @Hidden
@@ -193,7 +236,8 @@ object KoskiOpiskeluoikeusjakso {
 trait KoskiOpiskeluoikeusjakso extends Opiskeluoikeusjakso {
   @KoodistoUri("koskiopiskeluoikeudentila")
   def tila: Koodistokoodiviite
-  override def opiskeluoikeusPäättynyt = KoskiOpiskeluoikeusjakso.päätöstilat.contains(tila.koodiarvo) || tila.koodiarvo == "mitatoity"
+  override def opiskeluoikeusPäättynyt =
+    Opiskeluoikeus.opiskeluoikeusPäättynyt(PäättynytAlgoritmi.Koski)(tila.koodiarvo)
   @KoodistoUri("opintojenrahoitus")
   def opintojenRahoitus: Option[Koodistokoodiviite] = None
 }
