@@ -1,6 +1,7 @@
 package fi.oph.koski.suoritusjako.suoritetuttutkinnot
 
 import fi.oph.koski.api.{OpiskeluoikeusTestMethods, PutOpiskeluoikeusTestMethods}
+import fi.oph.koski.db.KoskiTables
 import fi.oph.koski.documentation.AmmatillinenExampleData.{ammatillisenTutkinnonOsittainenSuoritus, ammatillisetTutkinnonOsat, arviointiKiitettävä, k3, korotettu, lisätietoOsaamistavoitteet, osittaisenTutkinnonTutkinnonOsanSuoritus, tunnustettu, yhteisenOsittaisenTutkinnonTutkinnonOsansuoritus, yhteisetTutkinnonOsat}
 import fi.oph.koski.documentation.ExampleData.{longTimeAgo, opiskeluoikeusLäsnä, valtionosuusRahoitteinen}
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
@@ -10,9 +11,8 @@ import fi.oph.koski.koskiuser.MockUsers.stadinAmmattiopistoTallentaja
 import fi.oph.koski.koskiuser.Rooli.OPHKATSELIJA
 import fi.oph.koski.koskiuser.{AuthenticationUser, KoskiSpecificSession, KäyttöoikeusGlobal, MockUsers, Palvelurooli}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
-import fi.oph.koski.schema
+import fi.oph.koski.{DatabaseTestMethods, KoskiApplicationForTests, KoskiHttpSpec, schema}
 import fi.oph.koski.ytr.MockYrtClient
-import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.organisaatio.MockOrganisaatiot.omnia
 import fi.oph.koski.schema.AmmatillinenOpiskeluoikeus
@@ -20,6 +20,7 @@ import fi.oph.koski.virta.MockVirtaClient
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 
 import java.net.InetAddress
 import java.time.LocalDate
@@ -34,6 +35,7 @@ class SuoritetutTutkinnotServiceSpec
   with BeforeAndAfterEach
   with OpiskeluoikeusTestMethods
   with PutOpiskeluoikeusTestMethods[schema.AmmatillinenOpiskeluoikeus]
+  with DatabaseTestMethods
 {
   def tag: universe.TypeTag[schema.AmmatillinenOpiskeluoikeus] = implicitly[reflect.runtime.universe.TypeTag[schema.AmmatillinenOpiskeluoikeus]]
   override def defaultOpiskeluoikeus = makeOpiskeluoikeus(alkamispäivä = longTimeAgo, suoritus = ammatillisenTutkinnonOsittainenSuoritus)
@@ -69,6 +71,14 @@ class SuoritetutTutkinnotServiceSpec
     oppijaOidit.foreach(oppijaOid => {
       val result = suoritetutTutkinnotService.findSuoritetutTutkinnotOppija(oppijaOid)
       result.isRight should be(true)
+
+      def isSuoritusjakoTehty(oid: String): Option[Boolean] = runDbSync(KoskiTables.KoskiOpiskeluOikeudet.filter(_.oid === oid).map(_.suoritusjakoTehty).result).headOption
+
+      result.map(oppija => {
+        oppija.opiskeluoikeudet.map(oo => {
+          oo.oid.flatMap(isSuoritusjakoTehty).map(_ should be(true))
+        })
+      })
     })
   }
 
