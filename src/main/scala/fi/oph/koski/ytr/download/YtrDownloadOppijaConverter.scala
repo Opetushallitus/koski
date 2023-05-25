@@ -21,7 +21,7 @@ class YtrDownloadOppijaConverter(
 
   private val ytl = conversionUtils.ytl
 
-  private val serializationContext = SerializationContext(KoskiSchema.schemaFactory, KoskiSchema.skipSyntheticProperties)
+  private val serializationContext = SerializationContext(KoskiSchema.schemaFactory)
 
   private val deserializationContext = KoskiSchema.strictDeserialization
 

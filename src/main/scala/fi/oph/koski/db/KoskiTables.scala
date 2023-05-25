@@ -6,7 +6,6 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.json.JsonManipulation.removeFields
 import fi.oph.koski.json.SensitiveDataAllowed
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
-import fi.oph.koski.schema.KoskiSchema.skipSyntheticProperties
 import fi.oph.koski.schema.Organisaatio.Oid
 import fi.oph.koski.schema.{FilterNonAnnotationableSensitiveData, _}
 import fi.oph.scalaschema.extraction.ValidationError
@@ -41,11 +40,11 @@ object KoskiTables {
   }
 
   trait OpiskeluoikeusTableCompanion[OOROW <: OpiskeluoikeusRow] {
-    protected val serializationContext = SerializationContext(KoskiSchema.schemaFactory, skipSyntheticProperties)
+    protected val serializationContext = SerializationContext(KoskiSchema.schemaFactory)
     protected val fieldsToExcludeInJson = Set("oid", "versionumero", "aikaleima")
     protected implicit val deserializationContext = ExtractionContext(KoskiSchema.schemaFactory).copy(validate = false)
 
-    protected def serialize(opiskeluoikeus: Opiskeluoikeus) = removeFields(Serializer.serialize(opiskeluoikeus, serializationContext), fieldsToExcludeInJson)
+    protected def serialize(opiskeluoikeus: Opiskeluoikeus, ctx: SerializationContext = serializationContext) = removeFields(Serializer.serialize(opiskeluoikeus, ctx), fieldsToExcludeInJson)
 
     def readAsJValue(data: JValue, oid: String, versionumero: Int, aikaleima: Timestamp): JValue = {
       // note: for historical reasons, Opiskeluoikeus.aikaleima is Option[LocalDateTime], instead of Option[DateTime].
@@ -133,6 +132,8 @@ object KoskiTables {
        opiskeluoikeus.suoritukset.map(_.tyyppi.koodiarvo)
       )
     }
+
+    override def serialize(opiskeluoikeus: Opiskeluoikeus, ctx: SerializationContext = serializationContext): JObject = super.serialize(opiskeluoikeus, ctx)
   }
 
   class YtrOpiskeluoikeusTable(tag: Tag)

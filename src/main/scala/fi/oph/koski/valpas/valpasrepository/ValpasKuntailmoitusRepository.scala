@@ -30,7 +30,7 @@ class ValpasKuntailmoitusRepository(
   protected val db: DB = valpasDatabase.db
 
   private def serialize(model: IlmoitusLisätiedotData): JValue =
-    Serializer.serialize(model, SerializationContext(KoskiSchema.schemaFactory, skipSyntheticProperties))
+    Serializer.serialize(model, SerializationContext(KoskiSchema.schemaFactory))
 
   private def deserialize(data: JValue): Either[HttpStatus, IlmoitusLisätiedotData] =
     deserializer.extract[IlmoitusLisätiedotData](strictDeserialization)(data)
