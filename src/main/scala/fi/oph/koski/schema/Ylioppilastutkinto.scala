@@ -53,7 +53,7 @@ case class YlioppilastutkinnonOpiskeluoikeus(
 // Nämä ovat erillisessä traitissä, koska Scheman luonti ei ota mukaan dokumentaatiokommentteja case-luokassa määritellyistä metodeista.
 trait YlioppilastutkinnonOpiskeluoikeudenAlkamisJaPäättymispäivät extends KoskeenTallennettavaOpiskeluoikeus {
   @Description("Yksikäsitteistä alkamispäivää ei ole, joten alkamispäivä puuttuu aina.")
-  override def alkamispäivä = None
+  override def alkamispäivä = super.alkamispäivä
   @Description("Päättymispäiväksi päätellään mahdollinen valmistumispäivä. Samassa opiskeluoikeudessa voi silti olla sitä myöhempien tutkintokertojen YO-kokeen suorituksia, esim. korotuksia.")
   @Description("Toistaiseksi vain Kosken sisäisessä käytössä.")
   override def päättymispäivä: Option[LocalDate] = super.päättymispäivä
