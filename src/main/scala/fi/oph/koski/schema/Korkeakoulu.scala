@@ -1,12 +1,12 @@
 package fi.oph.koski.schema
 
-import fi.oph.koski.koodisto.KoodistoViite
 import fi.oph.koski.schema.LocalizedString.unlocalized
 
 import java.time.LocalDate
 import fi.oph.koski.schema.annotation._
 import fi.oph.scalaschema.annotation.{Description, Discriminator, OnlyWhen, SyntheticProperty, Title}
 import fi.oph.koski.koskiuser.Rooli
+import fi.oph.koski.schema.Opiskeluoikeus.OpiskeluoikeudenPäättymistila
 import fi.oph.koski.schema.annotation.SensitiveData
 import fi.oph.koski.schema.annotation.Deprecated
 
@@ -159,7 +159,8 @@ case class KorkeakoulunOpiskeluoikeusjakso(
   @KoodistoUri("virtaopiskeluoikeudentila")
   tila: Koodistokoodiviite
 ) extends Opiskeluoikeusjakso {
-  def opiskeluoikeusPäättynyt = List("3", "4", "5").contains(tila.koodiarvo)
+  def opiskeluoikeusPäättynyt: Boolean =
+    OpiskeluoikeudenPäättymistila.korkeakoulu(tila.koodiarvo)
 }
 
 trait KorkeakoulunArviointi extends ArviointiPäivämäärällä {

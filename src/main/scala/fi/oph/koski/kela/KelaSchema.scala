@@ -102,7 +102,7 @@ case class KelaOpiskeluoikeusjakso(
 trait Opiskeluoikeusjakso {
   def alku: LocalDate
   def tila: KelaKoodistokoodiviite
-  def opiskeluoikeusPäättynyt = schema.KoskiOpiskeluoikeusjakso.päätöstilat.contains(tila.koodiarvo) || tila.koodiarvo == "mitatoity"
+  def opiskeluoikeusPäättynyt = schema.Opiskeluoikeus.OpiskeluoikeudenPäättymistila.koski(tila.koodiarvo)
 }
 
 case class OrganisaatioHistoria(

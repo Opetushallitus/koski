@@ -1,7 +1,8 @@
 package fi.oph.koski.schema
 
-import java.time.{LocalDate, LocalDateTime}
+import fi.oph.koski.schema.Opiskeluoikeus.OpiskeluoikeudenPäättymistila
 
+import java.time.{LocalDate, LocalDateTime}
 import fi.oph.koski.schema.annotation._
 import fi.oph.scalaschema.annotation._
 import mojave.Traversal
@@ -28,6 +29,58 @@ object Opiskeluoikeus {
     import mojave._
     Suoritus.toimipisteetTraversal.compose(traversal[KoskeenTallennettavaOpiskeluoikeus].field[List[Suoritus]]("suoritukset").items)
   }
+
+  def alkamispäivä(opiskeluoikeudenTyyppiKoodiarvo: String, jaksojenAlkamispäivät: Seq[LocalDate]): Option[LocalDate] = opiskeluoikeudenTyyppiKoodiarvo match {
+    case OpiskeluoikeudenTyyppi.ylioppilastutkinto.koodiarvo =>
+      None
+    case _ =>
+      jaksojenAlkamispäivät.headOption
+  }
+
+  def päättymispäivä(opiskeluoikeudenTyyppiKoodiarvo: String, jaksojenAlutJaTilaKoodiarvot: Seq[(LocalDate, String)]): Option[LocalDate] = {
+    jaksojenAlutJaTilaKoodiarvot.lastOption.flatMap(alkuJaKoodiarvo => opiskeluoikeudenTyyppiKoodiarvo match {
+      case OpiskeluoikeudenTyyppi.korkeakoulutus.koodiarvo =>
+        throw new InternalError("Korkeakoulutuksen tapauksessa ei pitäisi päätyä tänne: päättymispäivä päätellään suoraan Virta-datasta.")
+      case _ => if (OpiskeluoikeudenPäättymistila.koski(alkuJaKoodiarvo._2)) {
+          Some(alkuJaKoodiarvo._1)
+        } else {
+          None
+        }
+    })
+  }
+
+  // Huom: Näitä käytetään myös muualla kuin Kosken pääschemassa. Pidä mielessä, jos muutat.
+  object OpiskeluoikeudenPäättymistila {
+    def koski(tilaKoodiarvo: String): Boolean =
+      onPäättymistila(onKoskiPäättymistila, tilaKoodiarvo)
+    def korkeakoulu(tilaKoodiarvo: String): Boolean =
+      onPäättymistila(onVirtaPäättymistila, tilaKoodiarvo)
+
+    private def onPäättymistila(päättymistila: Map[String, Boolean], tilaKoodiarvo: String): Boolean =
+      päättymistila.getOrElse(tilaKoodiarvo, throw new IllegalArgumentException(s"Tuntematon opiskeluoikeuden tila: $tilaKoodiarvo"))
+
+    private val onKoskiPäättymistila = Map(
+      "eronnut" -> true,
+      "hyvaksytystisuoritettu" -> true,
+      "katsotaaneronneeksi" -> true,
+      "keskeytynyt" -> true,
+      "loma" -> false,
+      "lasna" -> false,
+      "mitatoity" -> true,
+      "peruutettu" -> true,
+      "paattynyt" -> true,
+      "valmistunut" -> true,
+      "valiaikaisestikeskeytynyt" -> false
+    )
+
+    private val onVirtaPäättymistila = Map(
+      "1" -> false,
+      "2" -> false,
+      "3" -> true,
+      "4" -> true,
+      "5" -> true
+    )
+  }
 }
 
 trait Opiskeluoikeus extends Lähdejärjestelmällinen with OrganisaatioonLiittyvä {
@@ -49,12 +102,12 @@ trait Opiskeluoikeus extends Lähdejärjestelmällinen with OrganisaatioonLiitty
   def versionumero: Option[Int]
   @Description("Muoto YYYY-MM-DD. Tiedon syötössä tietoa ei tarvita; tieto poimitaan tila-kentän ensimmäisestä opiskeluoikeusjaksosta.")
   @SyntheticProperty
-  def alkamispäivä: Option[LocalDate] = this.tila.opiskeluoikeusjaksot.headOption.map(_.alku)
+  def alkamispäivä: Option[LocalDate] = Opiskeluoikeus.alkamispäivä(this.tyyppi.koodiarvo, this.tila.opiskeluoikeusjaksot.map(_.alku))
   @Description("Muoto YYYY-MM-DD")
   def arvioituPäättymispäivä: Option[LocalDate]
   @Description("Muoto YYYY-MM-DD. Tiedon syötössä tietoa ei tarvita; tieto poimitaan tila-kentän viimeisestä opiskeluoikeusjaksosta.")
   @SyntheticProperty
-  def päättymispäivä: Option[LocalDate] = this.tila.opiskeluoikeusjaksot.lastOption.filter(_.opiskeluoikeusPäättynyt).map(_.alku)
+  def päättymispäivä: Option[LocalDate] = Opiskeluoikeus.päättymispäivä(this.tyyppi.koodiarvo, this.tila.opiskeluoikeusjaksot.map(j => (j.alku, j.tila.koodiarvo)))
   @Description("Oppilaitos, jossa opinnot on suoritettu")
   def oppilaitos: Option[Oppilaitos]
   @Hidden
@@ -184,16 +237,13 @@ trait Opiskeluoikeusjakso extends Alkupäivällinen {
   def opiskeluoikeusPäättynyt: Boolean
 }
 
-object KoskiOpiskeluoikeusjakso {
-  // Tiloista hyvaksytystisuoritettu ja keskeytynyt ovat vapaan sivistystyön sekä muun kuin säännellyn koulutuksen tiloja.
-  // Lisäksi taiteen perusopetuksessa käytetään tiloja hyvaksytystisuoritettu ja paattynyt.
-  def päätöstilat = List("valmistunut", "eronnut", "peruutettu", "katsotaaneronneeksi", "hyvaksytystisuoritettu", "keskeytynyt", "paattynyt")
-}
-
 trait KoskiOpiskeluoikeusjakso extends Opiskeluoikeusjakso {
   @KoodistoUri("koskiopiskeluoikeudentila")
   def tila: Koodistokoodiviite
-  override def opiskeluoikeusPäättynyt = KoskiOpiskeluoikeusjakso.päätöstilat.contains(tila.koodiarvo) || tila.koodiarvo == "mitatoity"
+  override def opiskeluoikeusPäättynyt = {
+    OpiskeluoikeudenPäättymistila.koski(tila.koodiarvo)
+  }
+
   @KoodistoUri("opintojenrahoitus")
   def opintojenRahoitus: Option[Koodistokoodiviite] = None
 }
