@@ -13,4 +13,3 @@ jobs:
   tests:
     name: "👀"
     uses: ./.github/workflows/all_tests.yml
-    if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
