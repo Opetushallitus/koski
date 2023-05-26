@@ -28,6 +28,9 @@ import Http from '../util/http'
 import * as Bacon from 'baconjs'
 import { YoTodistus } from '../components-v2/yotutkinto/YoTodistus'
 
+const isOmatTiedotPage = () =>
+  window.location.pathname.startsWith('/koski/omattiedot')
+
 const OmatTiedotSuoritustaulukko = ({
   suorituksetModel,
   nested,
@@ -72,7 +75,7 @@ const OmatTiedotSuoritustaulukko = ({
           />
         ))
       )}
-      {isYlioppilastutkinto(parentSuoritus) && (
+      {isYlioppilastutkinto(parentSuoritus) && isOmatTiedotPage() && (
         <YoTodistus oppijaOid={context.oppijaOid} testId="yoTodistus" />
       )}
     </div>
