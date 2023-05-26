@@ -10,7 +10,7 @@ env:
 
 jobs:
   tests:
-    name: "👀"
+    name: "👀 Tests"
     uses: ./.github/workflows/all_tests.yml
 
   build:

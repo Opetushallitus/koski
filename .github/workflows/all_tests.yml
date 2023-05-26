@@ -15,7 +15,6 @@ jobs:
   lint_koski:
     name: Lint Koski
     runs-on: ${{ inputs.runs-on }}
-    if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
     steps:
       - uses: actions/checkout@v3
 
