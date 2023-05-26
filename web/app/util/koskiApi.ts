@@ -161,10 +161,8 @@ export const peruutaSuostumus = (
   )
 
 export const fetchYoTodistusState = (oppijaOid: string, language: string) =>
-  handleExpiredSession(
-    apiGet<YtrCertificateResponse>(
-      apiUrl(`yotodistus/status/${language}/${oppijaOid}`)
-    )
+  apiGet<YtrCertificateResponse>(
+    apiUrl(`yotodistus/status/${language}/${oppijaOid}`)
   )
 
 export const generateYoTodistus = (oppijaOid: string, language: string) =>
