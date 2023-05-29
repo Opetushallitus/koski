@@ -88,20 +88,20 @@ class AikuistenPerusopetuksenAineopiskelijoidenKurssikertymätSpec
 
       r.oppilaitos should equal("Jyväskylän normaalikoulu")
       r.yhteensäSuorituksia should equal(2)
-      r.yhteensäSuoritettujaSuorituksia(2)
+      r.yhteensäSuoritettujaSuorituksia should equal(2)
       r.yhteensäTunnistettujaSuorituksia should equal(0)
       r.yhteensäTunnistettujaSuorituksiaRahoituksenPiirissä should equal(0)
       r.päättövaiheenSuorituksia should equal(2)
-      r.päättövaiheenSuoritettujaSuorituksia(2)
+      r.päättövaiheenSuoritettujaSuorituksia should equal(2)
       r.päättövaiheenTunnistettujaSuorituksia should equal(0)
       r.päättövaiheenTunnistettujaSuorituksiaRahoituksenPiirissä should equal(0)
       r.alkuvaiheenSuorituksia should equal(0)
-      r.alkuvaiheenSuoritettujaSuorituksia(0)
+      r.alkuvaiheenSuoritettujaSuorituksia should equal(0)
       r.alkuvaiheenTunnistettujaSuorituksia should equal(0)
       r.alkuvaiheenTunnistettujaSuorituksiaRahoituksenPiirissä should equal(0)
-      r.suoritetutTaiRahoituksenPiirissäTunnustetutMuutaKauttaRahoitetut(0)
-      r.suoritetutTaiRahoituksenPiirissäTunnustetutEiRahoitusTietoa(0)
-      r.suoritetutTaiRahoituksenPiirissäTunnustetutArviointipäiväEiTiedossa(0)
+      r.suoritetutTaiRahoituksenPiirissäTunnustetutMuutaKauttaRahoitetut should equal(0)
+      r.suoritetutTaiRahoituksenPiirissäTunnustetutEiRahoitusTietoa should equal(0)
+      r.suoritetutTaiRahoituksenPiirissäTunnustetutArviointipäiväEiTiedossa should equal(0)
     }
   }
 
