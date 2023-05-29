@@ -404,7 +404,8 @@ describe('Omat tiedot', function () {
             it('näytetään ingressi', function () {
               expect(form.ingressi()).to.equal(
                 'Luomalla jakolinkin voit näyttää suoritustietosi haluamillesi henkilöille (esimerkiksi työtä tai opiskelupaikkaa hakiessasi). ' +
-                  'Luotuasi linkin voit tarkistaa tarkan sisällön Esikatsele-painikkeella.'
+                  'Luotuasi linkin voit tarkistaa tarkan sisällön Esikatsele-painikkeella.\n' +
+                  'Voit valita jaettavaksi yksittäisiä tutkintoja tai vaihtoehtoisesti esimääriteltyjä kokonaisuuksia.'
               )
             })
 
@@ -421,7 +422,9 @@ describe('Omat tiedot', function () {
                   '6. vuosiluokka\n' +
                   'Jyväskylän normaalikoulu\n' +
                   '9. vuosiluokka\n' +
-                  '8. vuosiluokka'
+                  '8. vuosiluokka\n' +
+                  'Jaettavat kokonaisuudet\n' +
+                  'Suoritetut tutkinnot'
               )
             })
 
@@ -702,7 +705,9 @@ describe('Omat tiedot', function () {
                 expect(form.suoritusvaihtoehdotText()).to.equal(
                   'Aalto-yliopisto\n' +
                     'Dipl.ins., konetekniikka ( 2013 — 2016 , päättynyt )\n' +
-                    '8 opintojaksoa'
+                    '8 opintojaksoa\n' +
+                    'Jaettavat kokonaisuudet\n' +
+                    'Suoritetut tutkinnot'
                 )
               })
             })
@@ -968,7 +973,9 @@ describe('Omat tiedot', function () {
                   'Päättötodistus\n' +
                   '9. vuosiluokka\n' +
                   '8. vuosiluokka\n' +
-                  '7. vuosiluokka'
+                  '7. vuosiluokka\n' +
+                  'Jaettavat kokonaisuudet\n' +
+                  'Suoritetut tutkinnot'
               )
             })
           })
@@ -1052,6 +1059,54 @@ describe('Omat tiedot', function () {
                   ).to.equal('7A')
                 })
               })
+            })
+          })
+        })
+
+        describe('Suoritetut tutkinnot', function () {
+          before(
+            authentication.logout,
+            etusivu.openPage,
+            etusivu.login(),
+            wait.until(korhopankki.isReady),
+            korhopankki.login('280618-402H', 'Ammattilainen', 'Aarne'),
+            wait.until(omattiedot.isVisible),
+            click(omattiedot.suoritusjakoButton)
+          )
+
+          describe('suoritettujen tutkintojen jakaminen', function () {
+            before(
+              form.selectSuoritetutTutkinnot(),
+              form.createSuoritusjako(),
+              wait.until(form.suoritusjako(1).isVisible)
+            )
+
+            it('onnistuu', function () {
+              var jako = form.suoritusjako(1)
+              var secret = jako.url().split('/') // otetaan salaisuus talteen jaon hakemista varten
+              window.secrets.suoritetutTutkinnot = secret[secret.length - 1]
+              expect(jako.isVisible()).to.equal(true)
+            })
+          })
+
+          describe('Katselu', function () {
+            var suoritusjako = SuoritusjakoPage()
+
+            before(
+              authentication.logout,
+              suoritusjako.openPage(
+                'suoritetutTutkinnot',
+                'suoritetut-tutkinnot'
+              ),
+              wait.until(suoritusjako.isVisible)
+            )
+
+            it('onnistuu', function () {
+              expect(suoritusjako.isVisible()).to.equal(true)
+              expect(isElementVisible(S('.suoritettu-tutkinto'))).to.equal(true)
+              expect(S('.suoritettu-tutkinto h3').text()).to.equal(
+                'Stadin ammatti- ja aikuisopisto'
+              )
             })
           })
         })

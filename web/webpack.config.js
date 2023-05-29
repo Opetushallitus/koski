@@ -7,6 +7,7 @@ module.exports = {
     main: './app/Virkailija.jsx',
     omattiedot: './app/OmatTiedot.jsx',
     suoritusjako: './app/Suoritusjako.jsx',
+    suoritetuttutkinnot: './app/SuoritetutTutkinnot.tsx',
     login: './app/VirkailijaLogin.jsx',
     pulssi: './app/Pulssi.jsx',
     lander: './app/Lander.jsx',

@@ -2,11 +2,9 @@ package fi.oph.koski.suoritusjako
 
 import java.sql.{Date, Timestamp}
 import java.time.{Instant, LocalDate}
-
-import fi.oph.koski.db.DB
+import fi.oph.koski.db.{DB, KoskiTables, QueryMethods, SuoritusjakoRow}
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.KoskiTables.{SuoritusJako, SuoritusjakoTable}
-import fi.oph.koski.db.{QueryMethods, SuoritusjakoRow}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.Logging
@@ -20,7 +18,7 @@ class SuoritusjakoRepository(val db: DB) extends Logging with QueryMethods {
     runDbSync(SuoritusJako.filter(r => r.oppijaOid === oppijaOid && r.voimassaAsti >= Date.valueOf(LocalDate.now)).result)
   }
 
-  def create(secret: String, oppijaOid: String, suoritusIds: List[SuoritusIdentifier]): Either[HttpStatus, Suoritusjako] = {
+  def create(secret: String, oppijaOid: String, suoritusIds: List[SuoritusIdentifier], kokonaisuudet: List[SuoritusjakoPayload]): Either[HttpStatus, Suoritusjako] = {
     val expirationDate = LocalDate.now.plusMonths(6)
     val maxSuoritusjakoCount = 100
     val timestamp = Timestamp.from(Instant.now())
@@ -30,16 +28,20 @@ class SuoritusjakoRepository(val db: DB) extends Logging with QueryMethods {
     )
 
     if (currentSuoritusjakoCount < maxSuoritusjakoCount) {
-      runDbSync(SuoritusJako.insertOrUpdate(SuoritusjakoRow(
-        0,
-        secret,
-        oppijaOid,
-        JsonSerializer.serializeWithRoot(suoritusIds),
-        Date.valueOf(expirationDate),
-        timestamp
-      )))
+      val row = runDbSync(SuoritusJako
+        .returning(SuoritusJako)
+        .insertOrUpdate(SuoritusjakoRow(
+          0,
+          secret,
+          oppijaOid,
+          JsonSerializer.serializeWithRoot(suoritusIds),
+          JsonSerializer.serializeWithRoot(kokonaisuudet),
+          Date.valueOf(expirationDate),
+          timestamp
+        ))
+      )
 
-      Right(Suoritusjako(secret, expirationDate, timestamp))
+      row.map(x => Suoritusjako(x.secret, x.voimassaAsti.toLocalDate, x.aikaleima, x.jaonTyyppi)).toRight(KoskiErrorCategory.notFound())
     } else {
       Left(KoskiErrorCategory.forbidden.liianMontaSuoritusjakoa())
     }

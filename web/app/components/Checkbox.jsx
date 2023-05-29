@@ -7,7 +7,8 @@ const Checkbox = ({
   checked,
   label,
   LabelComponent,
-  listStylePosition
+  listStylePosition,
+  disabled
 }) => (
   <div className="koski-checkbox">
     <input
@@ -18,6 +19,7 @@ const Checkbox = ({
       checked={checked}
       onChange={onChange}
       data-list-style-position={listStylePosition === 'inside' ? 'inside' : ''}
+      disabled={disabled}
     />
 
     <label htmlFor={id} data-testid={id + '__label'}>

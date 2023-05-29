@@ -186,6 +186,13 @@ function SuoritusjakoForm() {
 
       return click(option)
     },
+    selectSuoritetutTutkinnot: function () {
+      function option() {
+        return S('.create-suoritusjako__list input[id="suoritetut-tutkinnot"]')
+      }
+
+      return click(option)
+    },
     createSuoritusjako: function () {
       return click(createSuoritusjakoButton)
     },

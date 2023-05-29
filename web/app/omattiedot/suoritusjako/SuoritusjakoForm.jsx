@@ -23,6 +23,12 @@ const Ingressi = () => (
         'Luotuasi linkin voit tarkistaa tarkan sisällön Esikatsele-painikkeella.'
       }
     />
+    <br />
+    <Text
+      name={
+        'Voit valita jaettavaksi yksittäisiä tutkintoja tai vaihtoehtoisesti esimääriteltyjä kokonaisuuksia.'
+      }
+    />
   </div>
 )
 

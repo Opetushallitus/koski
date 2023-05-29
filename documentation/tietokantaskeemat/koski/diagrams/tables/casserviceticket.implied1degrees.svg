@@ -50,12 +50,12 @@
 <text text-anchor="start" x="234" y="-68.8" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">huollettavat_search_result</text>
 <polygon fill="none" stroke="#000000" points="387,-61.7 387,-83.7 486,-83.7 486,-61.7 387,-61.7"/>
 <text text-anchor="start" x="389.7258" y="-69.4" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">jsonb[2147483647]</text>
-<polygon fill="#ffffff" stroke="transparent" points="214,-42.7 214,-61.7 292,-61.7 292,-42.7 214,-42.7"/>
-<polygon fill="none" stroke="#000000" points="214,-42.7 214,-61.7 292,-61.7 292,-42.7 214,-42.7"/>
+<polygon fill="#ffffff" stroke="transparent" points="214,-42.7 214,-61.7 286,-61.7 286,-42.7 214,-42.7"/>
+<polygon fill="none" stroke="#000000" points="214,-42.7 214,-61.7 286,-61.7 286,-42.7 214,-42.7"/>
 <text text-anchor="start" x="217" y="-48.8" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">&lt; 2</text>
-<polygon fill="#ffffff" stroke="transparent" points="292,-42.7 292,-61.7 387,-61.7 387,-42.7 292,-42.7"/>
-<polygon fill="none" stroke="#000000" points="292,-42.7 292,-61.7 387,-61.7 387,-42.7 292,-42.7"/>
-<text text-anchor="start" x="351.6105" y="-48.8" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">0 rows</text>
+<polygon fill="#ffffff" stroke="transparent" points="286,-42.7 286,-61.7 387,-61.7 387,-42.7 286,-42.7"/>
+<polygon fill="none" stroke="#000000" points="286,-42.7 286,-61.7 387,-61.7 387,-42.7 286,-42.7"/>
+<text text-anchor="start" x="339.3807" y="-48.8" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">387 rows</text>
 <polygon fill="#ffffff" stroke="transparent" points="387,-42.7 387,-61.7 486,-61.7 486,-42.7 387,-42.7"/>
 <polygon fill="none" stroke="#000000" points="387,-42.7 387,-61.7 486,-61.7 486,-42.7 387,-42.7"/>
 <text text-anchor="start" x="467.4053" y="-48.8" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">0 &gt;</text>

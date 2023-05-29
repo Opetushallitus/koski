@@ -3,6 +3,7 @@ package fi.oph.koski.suoritusjako
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.editor.{EditorApiServlet, EditorModel}
+import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{KoskiSpecificAuthenticationSupport, KoskiSpecificSession}
 import fi.oph.koski.log.Logging
@@ -31,12 +32,25 @@ class SuoritusjakoServlet(implicit val application: KoskiApplication) extends Ed
   post("/") {
     requireKansalainen
     withJsonBody({ body =>
-      val suoritusIds = extract[List[SuoritusIdentifier]](body)
-      suoritusIds.flatMap(application.suoritusjakoService.put(user.oid, _)(user)) match {
+      val result: Either[HttpStatus, Suoritusjako] = (extract[List[SuoritusIdentifier]](body), extract[List[SuoritusjakoPayload]](body)) match {
+        case (Right(_), Right(_)) =>
+          Left(KoskiErrorCategory.badRequest.format())
+        case (Right(suoritusIds), _) if suoritusIds.nonEmpty =>
+          application.suoritusjakoService.putBySuoritusIds(user.oid, suoritusIds)(user)
+        case (_, Right(kokonaisuudet)) if kokonaisuudet.nonEmpty =>
+          application.suoritusjakoService.putByKokonaisuudet(user.oid, kokonaisuudet)(user)
+        case (Left(a), Left(b)) =>
+          Left(HttpStatus.fold(a, b))
+        case _ =>
+          Left(KoskiErrorCategory.badRequest.format())
+      }
+
+      result match {
         case Right(suoritusjako) =>
           renderObject(suoritusjako)
         case Left(status) =>
-          logger.error(s"Suoritusjaon luonti epäonnistui: oppija: ${user.oid}, suoritukset: ${suoritusIds.getOrElse(Nil).mkString}: ${status.errorString.mkString}")
+          logger.info(status.errors.toString)
+          logger.error(s"Suoritusjaon luonti epäonnistui: oppija: ${user.oid}: ${status.errorString.mkString}")
           renderStatus(status)
       }
     })()

@@ -2511,5 +2511,10 @@
   "Predicted grade": "Predicted grade",
   "Päättöarvosana": "Päättöarvosana",
   "description:Tiedot aiemmin suoritetusta kokeesta, joka..." : "Tiedot aiemmin suoritetusta kokeesta, joka on sisällytetty uuteen ylioppilastutkintoon",
-  "Aiemmin suoritetut kokeet" : "Aiemmin suoritetut kokeet"
+  "Aiemmin suoritetut kokeet" : "Aiemmin suoritetut kokeet",
+  "Suoritetut tutkinnot": "Suoritetut tutkinnot",
+  "Tässä listataan suoritetut tutkinnot otsikkotasolla. Tarkemmat tiedot löytyvät koneluettavassa muodossa yllä olevasta linkistä": "Tässä listataan suoritetut tutkinnot otsikkotasolla. Tarkemmat tiedot löytyvät koneluettavassa muodossa yllä olevasta linkistä.",
+  "Suoritettuja tutkintoja ei löytynyt": "Suoritettuja tutkintoja ei löytynyt.",
+  "Tietojen hakeminen epäonnistui": "Tietojen hakeminen epäonnistui",
+  "Voit valita jaettavaksi yksittäisiä tutkintoja tai vaihtoehtoisesti esimääriteltyjä kokonaisuuksia.": "Voit valita jaettavaksi yksittäisiä tutkintoja tai vaihtoehtoisesti esimääriteltyjä kokonaisuuksia."
 }

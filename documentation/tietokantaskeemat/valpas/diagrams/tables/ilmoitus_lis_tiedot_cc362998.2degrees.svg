@@ -28,12 +28,12 @@
 <text text-anchor="start" x="237.5" y="-148.8" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">data</text>
 <polygon fill="none" stroke="#000000" points="343.5,-141.7 343.5,-163.7 442.5,-163.7 442.5,-141.7 343.5,-141.7"/>
 <text text-anchor="start" x="346.2258" y="-149.4" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">jsonb[2147483647]</text>
-<polygon fill="#ffffff" stroke="transparent" points="217.5,-122.7 217.5,-141.7 271.5,-141.7 271.5,-122.7 217.5,-122.7"/>
-<polygon fill="none" stroke="#000000" points="217.5,-122.7 217.5,-141.7 271.5,-141.7 271.5,-122.7 217.5,-122.7"/>
+<polygon fill="#ffffff" stroke="transparent" points="217.5,-122.7 217.5,-141.7 268.5,-141.7 268.5,-122.7 217.5,-122.7"/>
+<polygon fill="none" stroke="#000000" points="217.5,-122.7 217.5,-141.7 268.5,-141.7 268.5,-122.7 217.5,-122.7"/>
 <text text-anchor="start" x="220.5" y="-128.8" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">&lt; 1</text>
-<polygon fill="#ffffff" stroke="transparent" points="271.5,-122.7 271.5,-141.7 343.5,-141.7 343.5,-122.7 271.5,-122.7"/>
-<polygon fill="none" stroke="#000000" points="271.5,-122.7 271.5,-141.7 343.5,-141.7 343.5,-122.7 271.5,-122.7"/>
-<text text-anchor="start" x="308.1105" y="-128.8" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">0 rows</text>
+<polygon fill="#ffffff" stroke="transparent" points="268.5,-122.7 268.5,-141.7 343.5,-141.7 343.5,-122.7 268.5,-122.7"/>
+<polygon fill="none" stroke="#000000" points="268.5,-122.7 268.5,-141.7 343.5,-141.7 343.5,-122.7 268.5,-122.7"/>
+<text text-anchor="start" x="301.9956" y="-128.8" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">16 rows</text>
 <polygon fill="#ffffff" stroke="transparent" points="343.5,-122.7 343.5,-141.7 442.5,-141.7 442.5,-122.7 343.5,-122.7"/>
 <polygon fill="none" stroke="#000000" points="343.5,-122.7 343.5,-141.7 442.5,-141.7 442.5,-122.7 343.5,-122.7"/>
 <text text-anchor="start" x="423.9053" y="-128.8" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">0 &gt;</text>
@@ -55,14 +55,14 @@
 <text text-anchor="start" x="28" y="-115.8" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">uuid</text>
 <polygon fill="none" stroke="#000000" points="8,-89.7 8,-108.7 162,-108.7 162,-89.7 8,-89.7"/>
 <text text-anchor="start" x="11" y="-95.8" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">...</text>
-<polygon fill="#ffffff" stroke="transparent" points="8,-70.7 8,-89.7 61,-89.7 61,-70.7 8,-70.7"/>
-<polygon fill="none" stroke="#000000" points="8,-70.7 8,-89.7 61,-89.7 61,-70.7 8,-70.7"/>
+<polygon fill="#ffffff" stroke="transparent" points="8,-70.7 8,-89.7 58,-89.7 58,-70.7 8,-70.7"/>
+<polygon fill="none" stroke="#000000" points="8,-70.7 8,-89.7 58,-89.7 58,-70.7 8,-70.7"/>
 <text text-anchor="start" x="11" y="-76.8" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000"> &#160;</text>
-<polygon fill="#ffffff" stroke="transparent" points="61,-70.7 61,-89.7 120,-89.7 120,-70.7 61,-70.7"/>
-<polygon fill="none" stroke="#000000" points="61,-70.7 61,-89.7 120,-89.7 120,-70.7 61,-70.7"/>
-<text text-anchor="start" x="84.6105" y="-76.8" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">0 rows</text>
-<polygon fill="#ffffff" stroke="transparent" points="120,-70.7 120,-89.7 162,-89.7 162,-70.7 120,-70.7"/>
-<polygon fill="none" stroke="#000000" points="120,-70.7 120,-89.7 162,-89.7 162,-70.7 120,-70.7"/>
+<polygon fill="#ffffff" stroke="transparent" points="58,-70.7 58,-89.7 121,-89.7 121,-70.7 58,-70.7"/>
+<polygon fill="none" stroke="#000000" points="58,-70.7 58,-89.7 121,-89.7 121,-70.7 58,-70.7"/>
+<text text-anchor="start" x="79.4956" y="-76.8" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">17 rows</text>
+<polygon fill="#ffffff" stroke="transparent" points="121,-70.7 121,-89.7 162,-89.7 162,-70.7 121,-70.7"/>
+<polygon fill="none" stroke="#000000" points="121,-70.7 121,-89.7 162,-89.7 162,-70.7 121,-70.7"/>
 <text text-anchor="start" x="143.4053" y="-76.8" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">2 &gt;</text>
 </a>
 </g>

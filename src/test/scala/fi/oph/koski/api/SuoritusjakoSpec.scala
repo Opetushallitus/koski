@@ -154,6 +154,18 @@ class SuoritusjakoSpec extends AnyFreeSpec with SuoritusjakoTestMethods with Mat
         oppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot].sukunimi should equal("Seppänen")
         vahvistusPäivä should equal(LocalDate.of(1995, 5, 31))
       }
+
+      "suoritetut tutkinnot -kokonaisuudelle" in {
+        val json =
+          """[{
+          "tyyppi": "suoritetut-tutkinnot"
+        }]"""
+
+        createSuoritusjako(json) {
+          verifyResponseStatusOk()
+          secrets += ("suoritetut-tutkinnot" -> JsonSerializer.parse[Suoritusjako](response.body).secret)
+        }
+      }
     }
 
     "epäonnistuu" - {
@@ -195,7 +207,7 @@ class SuoritusjakoSpec extends AnyFreeSpec with SuoritusjakoTestMethods with Mat
         }]"""
 
         createSuoritusjako(json) {
-          verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*missingProperty.*".r))
+          verifyResponseStatus(400, List(ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*missingProperty.*".r), ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*missingProperty.*".r)))
         }
       }
 
@@ -209,7 +221,7 @@ class SuoritusjakoSpec extends AnyFreeSpec with SuoritusjakoTestMethods with Mat
         }]"""
 
         createSuoritusjako(json) {
-          verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*unexpectedProperty.*".r))
+          verifyResponseStatus(400, List(ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*unexpectedProperty.*".r), ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*unexpectedProperty.*".r)))
         }
       }
 
@@ -250,17 +262,30 @@ class SuoritusjakoSpec extends AnyFreeSpec with SuoritusjakoTestMethods with Mat
 
     "tuottaa auditlog-merkinnän" in {
       AuditLogTester.clearMessages
-      val json =
+      val perusopetuksenVuosiluokkaJson =
         """[{
           "oppilaitosOid": "1.2.246.562.10.64353470871",
           "suorituksenTyyppi": "perusopetuksenvuosiluokka",
           "koulutusmoduulinTunniste": "7"
         }]"""
 
-      createSuoritusjako(json){
+      createSuoritusjako(perusopetuksenVuosiluokkaJson){
         verifyResponseStatusOk()
         AuditLogTester.verifyAuditLogMessage(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_LISAYS"))
         secrets += ("auditlog" -> JsonSerializer.parse[Suoritusjako](response.body).secret)
+      }
+    }
+
+    "tuottaa auditlog-merkinnän suoritetuille kokonaisuuksille" in {
+      AuditLogTester.clearMessages
+
+      val suoritetutTutkinnotJson =
+        """[{ "tyyppi": "suoritetut-tutkinnot" }]"""
+
+      createSuoritusjako(suoritetutTutkinnotJson) {
+        verifyResponseStatusOk()
+        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_LISAYS_SUORITETUT_TUTKINNOT"))
+        secrets += ("auditlog-suoritetut-tutkinnot" -> JsonSerializer.parse[Suoritusjako](response.body).secret)
       }
     }
   }
@@ -431,6 +456,24 @@ class SuoritusjakoSpec extends AnyFreeSpec with SuoritusjakoTestMethods with Mat
     }
   }
 
+  "Suoritusjaon katsominen" - {
+    "tuottaa auditlog-merkinnän" in {
+      AuditLogTester.clearMessages
+      getSuoritusjakoFromOpinnotApi(secrets("yksi suoritus"), None) {
+        verifyResponseStatusOk()
+        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN"))
+      }
+    }
+
+    "tuottaa auditlog-merkinnän 2" in {
+      AuditLogTester.clearMessages
+      getSuoritusjakoFromOpinnotApi(secrets("yksi suoritus"), Some("suoritetut-tutkinnot")) {
+        verifyResponseStatusOk()
+        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN_SUORITETUT_TUTKINNOT"))
+      }
+    }
+  }
+
   "Suoritusjakolinkkien hakeminen" - {
     "onnistuu" - {
       "kun jakoja on olemassa" in {
@@ -456,7 +499,9 @@ class SuoritusjakoSpec extends AnyFreeSpec with SuoritusjakoTestMethods with Mat
             Suoritusjako(secrets("yksi suoritus"), expirationDate, timestamp),
             Suoritusjako(secrets("kaksi suoritusta"), expirationDate, timestamp),
             Suoritusjako(secrets("kaksi suoritusta opiskeluoikeuden oideilla"), expirationDate, timestamp),
-            Suoritusjako(secrets("auditlog"), expirationDate, timestamp)
+            Suoritusjako(secrets("suoritetut-tutkinnot"), expirationDate, timestamp),
+            Suoritusjako(secrets("auditlog"), expirationDate, timestamp),
+            Suoritusjako(secrets("auditlog-suoritetut-tutkinnot"), expirationDate, timestamp)
           ))
         }
       }

@@ -24,8 +24,14 @@ class SuoritetutTutkinnotService(application: KoskiApplication) extends GlobalEx
   def findSuoritetutTutkinnotOppija(oppijaOid: String)
     (implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, SuoritetutTutkinnotOppija] = {
 
-    haeOpiskeluoikeudet(oppijaOid)
+    val suoritetutTutkinnotOppija = haeOpiskeluoikeudet(oppijaOid)
       .map(teePalautettavaSuoritetutTutkinnotOppija)
+
+    suoritetutTutkinnotOppija.map(sto => sto.opiskeluoikeudet.map(oo =>
+      oo.oid.map(application.oppijaFacade.merkitseSuoritusjakoTehdyksiIlmanKäyttöoikeudenTarkastusta)
+    ))
+
+    suoritetutTutkinnotOppija
   }
 
   case class RawOppija(

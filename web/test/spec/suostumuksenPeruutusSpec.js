@@ -93,7 +93,7 @@ describe('Suostumuksen peruutus', function () {
         korhopankki.login('010917-156A'),
         wait.until(omattiedot.isVisible),
         click(omattiedot.suoritusjakoButton),
-        click('.koski-checkbox__input'),
+        click('.oppilaitos-group__list .koski-checkbox__input'),
         form.createSuoritusjako(),
         wait.until(form.suoritusjako(1).isVisible),
         opinnot.valitseOmatTiedotOpiskeluoikeus(

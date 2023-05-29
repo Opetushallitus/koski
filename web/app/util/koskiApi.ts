@@ -13,6 +13,7 @@ import { GroupedKoodistot } from '../types/fi/oph/koski/typemodel/GroupedKoodist
 import { YtrCertificateResponse } from '../types/fi/oph/koski/ytr/YtrCertificateResponse'
 import { tapLeftP } from './fp/either'
 import { queryString } from './url'
+import { SuoritetutTutkinnotOppija } from '../types/fi/oph/koski/suoritusjako/suoritetuttutkinnot/SuoritetutTutkinnotOppija'
 
 const apiUrl = (path: string, query?: object): string =>
   `/koski/api/${path}${queryString({ class_refs: 'true', ...query })}`
@@ -129,6 +130,13 @@ export const fetchOmatTiedotOppija = () =>
 export const fetchSuoritusjako = (id: string) =>
   handleExpiredSession(
     apiPost<Oppija>(apiUrl(`suoritusjakoV3`), { body: { secret: id } })
+  )
+
+export const fetchSuoritetutTutkinnot = (id: string) =>
+  handleExpiredSession(
+    apiGet<SuoritetutTutkinnotOppija>(
+      apiUrl(`opinnot/suoritetut-tutkinnot/${id}`)
+    )
   )
 
 export type SuoritusjakoTehty = {

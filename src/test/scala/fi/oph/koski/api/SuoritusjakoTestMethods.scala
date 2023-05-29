@@ -27,6 +27,11 @@ trait SuoritusjakoTestMethods extends KoskiHttpSpec with OpiskeluoikeusTestMetho
     post("api/suoritusjako", body = body, headers = (if (authenticate) kansalainenLoginHeaders(hetu) else Nil) ++ jsonContent)(f)
   }
 
+  def getSuoritusjakoFromOpinnotApi[A](secret: String, tyyppi: Option[String])(f: => A): A = {
+    val path = tyyppi.map(tyyppi => s"api/opinnot/$tyyppi/$secret").getOrElse(s"api/opinnot/$secret")
+    get(path, headers = jsonContent)(f)
+  }
+
   def getSuoritusjako[A](secret: String)(f: => A): A = {
     post("api/suoritusjako/editor", JsonSerializer.writeWithRoot(SuoritusjakoRequest(secret)), headers = jsonContent)(f)
   }

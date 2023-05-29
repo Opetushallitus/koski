@@ -1,8 +1,13 @@
 function SuoritusjakoPage() {
   var api = {
-    openPage: function (secretKey) {
+    openPage: function (secretKey, jakoTyyppi) {
       return function () {
-        openPage('/koski/opinnot/' + window.secrets[secretKey], api.isVisible)()
+        openPage(
+          '/koski/opinnot/' +
+            (jakoTyyppi ? jakoTyyppi + '/' : '') +
+            window.secrets[secretKey],
+          api.isVisible
+        )()
       }
     },
     changeLanguageButtonFinnish: function () {

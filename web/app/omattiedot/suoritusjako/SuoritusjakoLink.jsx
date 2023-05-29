@@ -104,8 +104,11 @@ export class SuoritusjakoLink extends React.Component {
     const { isDeletePending, isDateUpdatePending, showDeleteConfirmation } =
       this.state
     const { suoritusjako } = this.props
-    const { secret, expirationDate, timestamp } = suoritusjako
-    const url = `${window.location.origin}/koski/opinnot/${secret}`
+    const { secret, expirationDate, timestamp, jaonTyyppi } = suoritusjako
+    const baseUrl = `${window.location.origin}/koski/opinnot`
+    const url = jaonTyyppi
+      ? `${baseUrl}/${jaonTyyppi}/${secret}`
+      : `${baseUrl}/${secret}`
     const labelId = `date-input-${timestamp}`
 
     return isDeletePending ? (

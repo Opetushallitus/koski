@@ -24,14 +24,14 @@
 <text text-anchor="start" x="384.5" y="-228.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">ilmoitus_uuid</text>
 <polygon fill="none" stroke="#000000" points="355.5,-202.2 355.5,-221.2 499.5,-221.2 499.5,-202.2 355.5,-202.2"/>
 <text text-anchor="start" x="358.5" y="-208.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">...</text>
-<polygon fill="#ffffff" stroke="transparent" points="355.5,-183.2 355.5,-202.2 412.5,-202.2 412.5,-183.2 355.5,-183.2"/>
-<polygon fill="none" stroke="#000000" points="355.5,-183.2 355.5,-202.2 412.5,-202.2 412.5,-183.2 355.5,-183.2"/>
+<polygon fill="#ffffff" stroke="transparent" points="355.5,-183.2 355.5,-202.2 409.5,-202.2 409.5,-183.2 355.5,-183.2"/>
+<polygon fill="none" stroke="#000000" points="355.5,-183.2 355.5,-202.2 409.5,-202.2 409.5,-183.2 355.5,-183.2"/>
 <text text-anchor="start" x="358.5" y="-189.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">&lt; 1</text>
-<polygon fill="#ffffff" stroke="transparent" points="412.5,-183.2 412.5,-202.2 468.5,-202.2 468.5,-183.2 412.5,-183.2"/>
-<polygon fill="none" stroke="#000000" points="412.5,-183.2 412.5,-202.2 468.5,-202.2 468.5,-183.2 412.5,-183.2"/>
-<text text-anchor="start" x="433.1105" y="-189.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">0 rows</text>
-<polygon fill="#ffffff" stroke="transparent" points="468.5,-183.2 468.5,-202.2 499.5,-202.2 499.5,-183.2 468.5,-183.2"/>
-<polygon fill="none" stroke="#000000" points="468.5,-183.2 468.5,-202.2 499.5,-202.2 499.5,-183.2 468.5,-183.2"/>
+<polygon fill="#ffffff" stroke="transparent" points="409.5,-183.2 409.5,-202.2 470.5,-202.2 470.5,-183.2 409.5,-183.2"/>
+<polygon fill="none" stroke="#000000" points="409.5,-183.2 409.5,-202.2 470.5,-202.2 470.5,-183.2 409.5,-183.2"/>
+<text text-anchor="start" x="428.9956" y="-189.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">16 rows</text>
+<polygon fill="#ffffff" stroke="transparent" points="470.5,-183.2 470.5,-202.2 499.5,-202.2 499.5,-183.2 470.5,-183.2"/>
+<polygon fill="none" stroke="#000000" points="470.5,-183.2 470.5,-202.2 499.5,-202.2 499.5,-183.2 470.5,-183.2"/>
 <text text-anchor="start" x="490.3862" y="-189.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000"> &#160;</text>
 </a>
 </g>
@@ -70,12 +70,12 @@
 <text text-anchor="start" x="30" y="-66.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">tekijä_oid</text>
 <polygon fill="none" stroke="#000000" points="164,-59.2 164,-81.2 258,-81.2 258,-59.2 164,-59.2"/>
 <text text-anchor="start" x="167" y="-66.9" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">text[2147483647]</text>
-<polygon fill="#ffffff" stroke="transparent" points="10,-40.2 10,-59.2 78,-59.2 78,-40.2 10,-40.2"/>
-<polygon fill="none" stroke="#000000" points="10,-40.2 10,-59.2 78,-59.2 78,-40.2 10,-40.2"/>
+<polygon fill="#ffffff" stroke="transparent" points="10,-40.2 10,-59.2 75,-59.2 75,-40.2 10,-40.2"/>
+<polygon fill="none" stroke="#000000" points="10,-40.2 10,-59.2 75,-59.2 75,-40.2 10,-40.2"/>
 <text text-anchor="start" x="13" y="-46.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">&lt; 0</text>
-<polygon fill="#ffffff" stroke="transparent" points="78,-40.2 78,-59.2 164,-59.2 164,-40.2 78,-40.2"/>
-<polygon fill="none" stroke="#000000" points="78,-40.2 78,-59.2 164,-59.2 164,-40.2 78,-40.2"/>
-<text text-anchor="start" x="128.6105" y="-46.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">0 rows</text>
+<polygon fill="#ffffff" stroke="transparent" points="75,-40.2 75,-59.2 164,-59.2 164,-40.2 75,-40.2"/>
+<polygon fill="none" stroke="#000000" points="75,-40.2 75,-59.2 164,-59.2 164,-40.2 75,-40.2"/>
+<text text-anchor="start" x="122.4956" y="-46.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">17 rows</text>
 <polygon fill="#ffffff" stroke="transparent" points="164,-40.2 164,-59.2 258,-59.2 258,-40.2 164,-40.2"/>
 <polygon fill="none" stroke="#000000" points="164,-40.2 164,-59.2 258,-59.2 258,-40.2 164,-40.2"/>
 <text text-anchor="start" x="239.4053" y="-46.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">2 &gt;</text>

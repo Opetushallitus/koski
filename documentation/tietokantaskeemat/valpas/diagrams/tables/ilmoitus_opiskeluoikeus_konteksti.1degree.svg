@@ -56,14 +56,14 @@
 <text text-anchor="start" x="28" y="-88.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">uuid</text>
 <polygon fill="none" stroke="#000000" points="8,-62.2 8,-81.2 162,-81.2 162,-62.2 8,-62.2"/>
 <text text-anchor="start" x="11" y="-68.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">...</text>
-<polygon fill="#ffffff" stroke="transparent" points="8,-43.2 8,-62.2 61,-62.2 61,-43.2 8,-43.2"/>
-<polygon fill="none" stroke="#000000" points="8,-43.2 8,-62.2 61,-62.2 61,-43.2 8,-43.2"/>
+<polygon fill="#ffffff" stroke="transparent" points="8,-43.2 8,-62.2 58,-62.2 58,-43.2 8,-43.2"/>
+<polygon fill="none" stroke="#000000" points="8,-43.2 8,-62.2 58,-62.2 58,-43.2 8,-43.2"/>
 <text text-anchor="start" x="11" y="-49.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000"> &#160;</text>
-<polygon fill="#ffffff" stroke="transparent" points="61,-43.2 61,-62.2 120,-62.2 120,-43.2 61,-43.2"/>
-<polygon fill="none" stroke="#000000" points="61,-43.2 61,-62.2 120,-62.2 120,-43.2 61,-43.2"/>
-<text text-anchor="start" x="84.6105" y="-49.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">0 rows</text>
-<polygon fill="#ffffff" stroke="transparent" points="120,-43.2 120,-62.2 162,-62.2 162,-43.2 120,-43.2"/>
-<polygon fill="none" stroke="#000000" points="120,-43.2 120,-62.2 162,-62.2 162,-43.2 120,-43.2"/>
+<polygon fill="#ffffff" stroke="transparent" points="58,-43.2 58,-62.2 121,-62.2 121,-43.2 58,-43.2"/>
+<polygon fill="none" stroke="#000000" points="58,-43.2 58,-62.2 121,-62.2 121,-43.2 58,-43.2"/>
+<text text-anchor="start" x="79.4956" y="-49.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">17 rows</text>
+<polygon fill="#ffffff" stroke="transparent" points="121,-43.2 121,-62.2 162,-62.2 162,-43.2 121,-43.2"/>
+<polygon fill="none" stroke="#000000" points="121,-43.2 121,-62.2 162,-62.2 162,-43.2 121,-43.2"/>
 <text text-anchor="start" x="143.4053" y="-49.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">2 &gt;</text>
 </a>
 </g>
