@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import Checkbox from '../../components/Checkbox'
 
-const SuoritetutKokonaisuudet = ({ handleSelectedItems }) => {
+const SuoritetutKokonaisuudet = ({ handleSelectedItems, allDisabled }) => {
   const [checkedItems, setCheckedItems] = useState({})
 
   const checkboxListData = useMemo(
@@ -38,6 +38,7 @@ const SuoritetutKokonaisuudet = ({ handleSelectedItems }) => {
               onChange={handleChange}
               label={item.label}
               listStylePosition={'inside'}
+              disabled={allDisabled}
             />
           </label>
         </div>

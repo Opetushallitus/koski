@@ -15,17 +15,22 @@ import Text from '../../i18n/Text'
 import Checkbox from '../../components/Checkbox'
 import { isOpintojakso } from '../../opiskeluoikeus/OpiskeluoikeusEditor'
 import SuoritetutKokonaisuudet from './SuoritetutKokonaisuudet'
+import { useState, useEffect } from 'react'
 
 export const SelectableSuoritusList = ({
   opiskeluoikeudet,
   selectedSuoritusIds
 }) => {
-  const toggleSelection = (id) => (event) =>
+  const [kokonaisuudetDisabled, setKokonaisuudetDisabled] = useState(false)
+  const [tutkinnotDisabled, setTutkinnotDisabled] = useState(false)
+  const toggleSelection = (id) => (event) => {
     selectedSuoritusIds.modify((ids) =>
       event.target.checked ? R.append(id, ids) : R.without([id], ids)
     )
+    setKokonaisuudetDisabled(selectedSuoritusIds.value.length > 0)
+  }
 
-  const handleSelectedItems = (selectedItems, unselectedItems) => {
+  const handleSelectedKokonaisuudet = (selectedItems, unselectedItems) => {
     const ourVersion = R.map(R.pick(['tyyppi']))
     selectedSuoritusIds.modify((ids) =>
       R.without(ourVersion(unselectedItems), ids)
@@ -33,11 +38,11 @@ export const SelectableSuoritusList = ({
     selectedSuoritusIds.modify((ids) =>
       selectedItems.length > 0 ? R.concat(ourVersion(selectedItems), ids) : ids
     )
+    setTutkinnotDisabled(selectedItems && selectedItems.length > 0)
   }
 
   return (
     <ul className="create-suoritusjako__list">
-      <SuoritetutKokonaisuudet handleSelectedItems={handleSelectedItems} />
       {opiskeluoikeudet.map((oppilaitoksittain) => {
         const oppilaitos = modelLookup(oppilaitoksittain, 'oppilaitos')
         const groupTitle = modelTitle(oppilaitos)
@@ -63,6 +68,7 @@ export const SelectableSuoritusList = ({
                       <li key={id}>
                         <Checkbox
                           id={id}
+                          disabled={tutkinnotDisabled}
                           checked={R.includes(id, selectedIds)}
                           onChange={toggleSelection(id)}
                           LabelComponent={Title}
@@ -76,6 +82,11 @@ export const SelectableSuoritusList = ({
           </li>
         ]
       })}
+      <h2>{'Jaettavat kokonaisuudet'}</h2>
+      <SuoritetutKokonaisuudet
+        handleSelectedItems={handleSelectedKokonaisuudet}
+        allDisabled={kokonaisuudetDisabled}
+      />
     </ul>
   )
 }
