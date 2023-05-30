@@ -1,8 +1,7 @@
 name: Run smoketests
 on:
-  push:
-  # schedule:
-  #   - cron: "08 * * * *"
+  schedule:
+    - cron: "30 5-12 * * MON-FRI"
   workflow_dispatch:
 
 jobs:
