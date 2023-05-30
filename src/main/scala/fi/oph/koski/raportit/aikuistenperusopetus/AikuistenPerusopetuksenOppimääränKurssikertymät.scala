@@ -109,8 +109,7 @@ case class AikuistenPerusopetuksenOppimääränKurssikertymät(db: DB) extends Q
           and r_osasuoritus.arviointi_paiva >= $aikaisintaan
           and r_osasuoritus.arviointi_paiva <= $viimeistaan
           and r_osasuoritus.arviointi_arvosana_koodiarvo != 'O'
-          and (oo_alkamisaiva > r_osasuoritus.arviointi_paiva
-            or (oo_paattymispaiva < r_osasuoritus.arviointi_paiva and viimeisin_tila = 'valmistunut'))
+          and (oo_alkamisaiva > r_osasuoritus.arviointi_paiva or oo_paattymispaiva < r_osasuoritus.arviointi_paiva)
         group by paatason_suoritus.oppilaitos_nimi, paatason_suoritus.oppilaitos_oid
       ) opiskeluoikeuden_ulkopuoliset
       on opiskeluoikeuden_ulkopuoliset.oppilaitos_oid = kurssikertymat.oppilaitos_oid;
