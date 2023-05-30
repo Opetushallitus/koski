@@ -23,8 +23,12 @@ class IndexServlet(implicit val application: KoskiApplication) extends ScalatraS
 
   get("/")(nonce => {
     if (!isAuthenticated) {
-      setLangCookieFromDomainIfNecessary
-      landerHtml(nonce)
+      subdomainRedirectNeeded match {
+        case Some(url) => redirect(url)
+        case None =>
+          setLangCookieFromDomainIfNecessary
+          landerHtml(nonce)
+      }
     } else {
       val url = if (koskiSessionOption.exists(_.user.kansalainen)) {
         "/koski/omattiedot"

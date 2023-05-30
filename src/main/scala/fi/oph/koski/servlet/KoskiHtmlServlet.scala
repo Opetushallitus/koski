@@ -6,6 +6,7 @@ import fi.oph.koski.koskiuser.KoskiSpecificAuthenticationSupport
 import fi.oph.koski.log.Logging
 import fi.oph.koski.util.XML
 
+import java.net.{URI, URL}
 import scala.xml.Elem
 
 trait KoskiHtmlServlet extends HtmlServlet with KoskiSpecificAuthenticationSupport with Logging {
@@ -26,6 +27,21 @@ trait KoskiHtmlServlet extends HtmlServlet with KoskiSpecificAuthenticationSuppo
     response.setStatus(status.statusCode)
     renderHtml(html)
   }
+
+  def subdomainRedirectNeeded: Option[String] = {
+    val url = new URL(request.getRequestURL.toString)
+    "(\\w+)\\.(.+)".r("subdomain", "rest").findFirstMatchIn(url.getHost) match {
+      case Some(m) if m.group("subdomain") == "koski" =>
+        Some(new URL(
+          url.getProtocol,
+          m.group("rest"),
+          url.getPort,
+          url.getFile,
+        ).toString)
+      case _ => None
+    }
+  }
+
 
   protected val virkailijaRaamitSet: Boolean
 
