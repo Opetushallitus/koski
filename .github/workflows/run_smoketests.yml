@@ -1,0 +1,32 @@
+name: Run smoketests
+on:
+  schedule:
+    - cron: "30 5-12 * * MON-FRI"
+  workflow_dispatch:
+
+jobs:
+  smoketests:
+    name:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node 16
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16.19.0"
+
+      - name: Install dependencies
+        run: cd smoketests && npm ci
+
+      - name: Test kansalaisen näkymä testiopintopolussa
+        run: cd smoketests && npm run qa:kansalainen
+
+      - name: Report failure
+        uses: ravsamhq/notify-slack-action@95a35215cdf7ab510d2cdd20ae94f342d212a1a1
+        if: ${{ failure() }}
+        with:
+          status: ${{ job.status }}
+          notification_title: "Run smoketests: failure in kansalaisen näkymä testiopintopolussa"
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
