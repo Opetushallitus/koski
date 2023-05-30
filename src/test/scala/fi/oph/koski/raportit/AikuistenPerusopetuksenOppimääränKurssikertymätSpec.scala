@@ -1,9 +1,11 @@
 package fi.oph.koski.raportit
 
-import fi.oph.koski.KoskiApplicationForTests
+import fi.oph.koski.{DirtiesFixtures, KoskiApplicationForTests}
 import fi.oph.koski.api.PutOpiskeluoikeusTestMethods
-import fi.oph.koski.documentation.ExampleData.{longTimeAgo, opiskeluoikeusLäsnä, opiskeluoikeusValmistunut, valtionosuusRahoitteinen}
-import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.{aikuistenPerusopetukseOppimääränSuoritus, aikuistenPerusopetuksenAlkuvaiheenSuoritus, aikuistenPerusopetus2017, oppiaineidenSuoritukset2017}
+import fi.oph.koski.documentation.ExampleData.{longTimeAgo, opiskeluoikeusEronnut, opiskeluoikeusLäsnä, opiskeluoikeusValmistunut, valtionosuusRahoitteinen}
+import fi.oph.koski.documentation.{ExamplesAikuistenPerusopetus, PerusopetusExampleData}
+import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.{aikuistenPerusopetukseOppimääränSuoritus, aikuistenPerusopetuksenAlkuvaiheenSuoritus, aikuistenPerusopetus2017, alkuvaiheenKurssinSuoritus, alkuvaiheenOppiaineenSuoritus, oppiaineidenSuoritukset2017}
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.tyhjä
 import fi.oph.koski.koskiuser.KoskiMockUser
 import fi.oph.koski.koskiuser.MockUsers.paakayttaja
 import fi.oph.koski.localization.LocalizationReader
@@ -13,7 +15,7 @@ import fi.oph.koski.organisaatio.MockOrganisaatiot.jyväskylänNormaalikoulu
 import fi.oph.koski.raportit.aikuistenperusopetus.{AikuistenPerusopetuksenOppimääränKurssikertymät, AikuistenPerusopetuksenOppimääränKurssikertymätRow}
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import fi.oph.koski.schema.Organisaatio.Oid
-import fi.oph.koski.schema.{Aikajakso, AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot, AikuistenPerusopetuksenOpiskeluoikeudenTila, AikuistenPerusopetuksenOpiskeluoikeus, AikuistenPerusopetuksenOpiskeluoikeusjakso, Oppilaitos, SisältäväOpiskeluoikeus}
+import fi.oph.koski.schema.{Aikajakso, AikuistenPerusopetuksenAlkuvaiheenÄidinkieliJaKirjallisuus, AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot, AikuistenPerusopetuksenOpiskeluoikeudenTila, AikuistenPerusopetuksenOpiskeluoikeus, AikuistenPerusopetuksenOpiskeluoikeusjakso, Koodistokoodiviite, Oppilaitos, SisältäväOpiskeluoikeus}
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
@@ -24,6 +26,7 @@ import java.time.LocalDate.{of => date}
 class AikuistenPerusopetuksenOppimääränKurssikertymätSpec
   extends AnyFreeSpec
     with Matchers
+    with DirtiesFixtures
     with RaportointikantaTestMethods
     with BeforeAndAfterAll
     with PutOpiskeluoikeusTestMethods[AikuistenPerusopetuksenOpiskeluoikeus] {
@@ -34,8 +37,31 @@ class AikuistenPerusopetuksenOppimääränKurssikertymätSpec
   private lazy val raportti =
     raporttiBuilder.build(List(jyväskylänNormaalikoulu), date(2006, 1, 1), date(2018, 12, 30), t)(session(defaultUser)).rows.map(_.asInstanceOf[AikuistenPerusopetuksenOppimääränKurssikertymätRow])
 
-  override protected def beforeAll(): Unit = {
-    super.beforeAll()
+  override protected def alterFixture(): Unit = {
+    val ooEronnut = ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen.copy(
+      tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(
+        List(
+          AikuistenPerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
+          AikuistenPerusopetuksenOpiskeluoikeusjakso(date(2018, 6, 4), opiskeluoikeusEronnut, Some(valtionosuusRahoitteinen))
+        )
+      ),
+      suoritukset = List(
+        aikuistenPerusopetuksenAlkuvaiheenSuoritus.copy(
+          osasuoritukset = Some(List(
+            alkuvaiheenOppiaineenSuoritus(AikuistenPerusopetuksenAlkuvaiheenÄidinkieliJaKirjallisuus(kieli = Koodistokoodiviite(koodiarvo = "AI1", koodistoUri = "oppiaineaidinkielijakirjallisuus"))).copy(
+              arviointi = PerusopetusExampleData.arviointi(9, Some(date(2016, 12, 29))),
+              osasuoritukset = Some(List(
+                alkuvaiheenKurssinSuoritus("AÄI1").copy(arviointi = PerusopetusExampleData.arviointi(9, Some(date(2018, 12, 29)))),
+              ))
+            )
+          ))
+        )
+      )
+    )
+    putOpiskeluoikeus(ooEronnut, tyhjä) {
+      verifyResponseStatusOk()
+    }
+
     reloadRaportointikanta
   }
 
@@ -93,22 +119,22 @@ class AikuistenPerusopetuksenOppimääränKurssikertymätSpec
       lazy val r = findSingle(raportti)
 
       r.oppilaitos should equal("Jyväskylän normaalikoulu")
-      r.yhteensäSuorituksia should equal(31)
-      r.yhteensäSuoritettujaSuorituksia(26)
+      r.yhteensäSuorituksia should equal(32)
+      r.yhteensäSuoritettujaSuorituksia should equal(26)
       r.yhteensäTunnistettujaSuorituksia should equal(6)
       r.yhteensäTunnistettujaSuorituksiaRahoituksenPiirissä should equal(3)
       r.päättövaiheenSuorituksia should equal(6)
-      r.päättövaiheenSuoritettujaSuorituksia(2)
+      r.päättövaiheenSuoritettujaSuorituksia should equal(2)
       r.päättövaiheenTunnistettujaSuorituksia should equal(4)
       r.päättövaiheenTunnistettujaSuorituksiaRahoituksenPiirissä should equal(2)
-      r.alkuvaiheenSuorituksia should equal(25)
-      r.alkuvaiheenSuoritettujaSuorituksia(23)
+      r.alkuvaiheenSuorituksia should equal(26)
+      r.alkuvaiheenSuoritettujaSuorituksia should equal(24)
       r.alkuvaiheenTunnistettujaSuorituksia should equal(2)
       r.alkuvaiheenTunnistettujaSuorituksiaRahoituksenPiirissä should equal(1)
-      r.suoritetutTaiRahoituksenPiirissäTunnustetutMuutaKauttaRahoitetut(2)
-      r.suoritetutTaiRahoituksenPiirissäTunnustetutEiRahoitusTietoa(0)
-      r.suoritetutTaiRahoituksenPiirissäTunnustetutArviointipäiväEiTiedossa(1)
-      r.eriVuonnaKorotetutSuoritukset(1)
+      r.suoritetutTaiRahoituksenPiirissäTunnustetutMuutaKauttaRahoitetut should equal(2)
+      r.suoritetutTaiRahoituksenPiirissäTunnustetutEiRahoitusTietoa should equal(0)
+      r.suoritetutTaiRahoituksenPiirissäTunnustetutArviointipäiväEiTiedossa should equal(2)
+      r.eriVuonnaKorotetutSuoritukset should equal(2)
     }
   }
 

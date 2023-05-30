@@ -1,10 +1,10 @@
 package fi.oph.koski.raportit
 
 import fi.oph.koski.api.PutOpiskeluoikeusTestMethods
-import fi.oph.koski.documentation.ExampleData.{longTimeAgo, opiskeluoikeusLäsnä, opiskeluoikeusValmistunut, valtionosuusRahoitteinen}
+import fi.oph.koski.documentation.ExampleData.{longTimeAgo, opiskeluoikeusEronnut, opiskeluoikeusLäsnä, opiskeluoikeusValmistunut, valtionosuusRahoitteinen}
 import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus
 import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.{aikuistenPerusopetukseOppimääränSuoritus, aikuistenPerusopetuksenAlkuvaiheenSuoritus, aikuistenPerusopetus2017, oppiaineidenSuoritukset2017}
-import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.aikuisOpiskelija
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.{aikuisOpiskelija, tyhjä}
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.koskiuser.KoskiMockUser
 import fi.oph.koski.localization.LocalizationReader
@@ -35,13 +35,21 @@ class AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssitSpec
     raporttiBuilder.build(List(jyväskylänNormaalikoulu), date(2006, 1, 1), date(2018, 12, 30), t)(session(defaultUser)).rows.map(_.asInstanceOf[AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssitRow])
 
   override protected def alterFixture(): Unit = {
-    lisääPäätasonSuorituksia(
-      aikuisOpiskelija,
-      List(
-        ExamplesAikuistenPerusopetus.oppiaineenOppimääränSuoritusAI1,
-        ExamplesAikuistenPerusopetus.oppiaineenOppimääränSuoritusYH
+    val ooEronnut = ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen.copy(
+      tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(
+        List(
+          AikuistenPerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
+          AikuistenPerusopetuksenOpiskeluoikeusjakso(date(2018, 6, 4), opiskeluoikeusEronnut, Some(valtionosuusRahoitteinen))
+        )
+      ),
+      suoritukset = List(
+        aikuistenPerusopetuksenAlkuvaiheenSuoritus
       )
     )
+    putOpiskeluoikeus(ooEronnut, tyhjä){
+      verifyResponseStatusOk()
+    }
+
     reloadRaportointikanta
   }
 
@@ -85,7 +93,7 @@ class AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssitSpec
 
     "Raportin kolumnit" in {
       lazy val rows = raportti.filter(_.oppilaitos.equals("Jyväskylän normaalikoulu"))
-      rows.length should equal (1)
+      rows.length should equal (2)
 
       lazy val row = rows.head
       row.oppilaitos should equal("Jyväskylän normaalikoulu")
