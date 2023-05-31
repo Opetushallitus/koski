@@ -956,7 +956,8 @@ class YtlSpec
        |          },
        |          "koodistoUri": "opiskeluoikeudentyyppi",
        |          "koodistoVersio": 1
-       |        }
+       |        },
+       |        "alkamispäivä": "2021-08-01"
        |      },
        |      {
        |        "oid": "${opiskeluoikeusOidit(1)}",
@@ -1069,7 +1070,8 @@ class YtlSpec
        |          },
        |          "koodistoUri": "opiskeluoikeudentyyppi",
        |          "koodistoVersio": 1
-       |        }
+       |        },
+       |        "alkamispäivä": "2021-08-01"
        |      }
        |    ]
        |  }

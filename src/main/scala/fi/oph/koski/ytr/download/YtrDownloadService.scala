@@ -365,7 +365,7 @@ class YtrDownloadService(
       hetu = oppija.ssn,
       userForAccessChecks = Some(user)
     ).map(_.oid).map(oppijaOid => {
-      val serializationContext = SerializationContext(KoskiSchema.schemaFactory, KoskiSchema.skipSyntheticProperties)
+      val serializationContext = SerializationContext(KoskiSchema.schemaFactory)
       val fieldsToExcludeInJson = Set("ssn", "firstNames", "lastName")
       val serialisoituRaakaJson = JsonManipulation.removeFields(Serializer.serialize(oppija, serializationContext), fieldsToExcludeInJson)
 
