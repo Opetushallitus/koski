@@ -66,7 +66,9 @@ const SuoritetutTutkinnot = ({ testId }: SuoritetutTutkinnotProps) => {
                   key={oo.$class + '-' + index}
                   className={'suoritettu-tutkinto'}
                 >
-                  <h3>{oo.oppilaitos?.nimi?.en}</h3>
+                  <h3>
+                    <Trans>{oo.oppilaitos?.nimi}</Trans>
+                  </h3>
                   <Flex>
                     <span>
                       <Trans>{oo.tyyppi.nimi}</Trans>
