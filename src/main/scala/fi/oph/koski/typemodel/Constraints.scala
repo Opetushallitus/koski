@@ -16,7 +16,6 @@ object Constraints {
     } else {
       tpe match {
         case t: ObjectType =>
-          println(s"buildConstrait $t")
           ObjectConstraint(
             default = defaultOf(t).asInstanceOf[Option[JObject]],
             properties = t.properties.mapValues(value => buildConstraint(value, levelsLeft - 1)),
