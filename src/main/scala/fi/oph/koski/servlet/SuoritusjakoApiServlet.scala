@@ -10,6 +10,7 @@ import fi.oph.koski.omattiedot.OmatTiedotEditorModel
 import fi.oph.koski.schema.Oppija
 import fi.oph.koski.suoritusjako.{SuoritusjakoRequest, SuoritusjakoSecret}
 import fi.oph.koski.suoritusjako.suoritetuttutkinnot.SuoritetutTutkinnotOppija
+import fi.oph.koski.util.ChainingSyntax.chainingOps
 
 case class SuoritusjakoReadRequest(
   secret: String
@@ -19,7 +20,7 @@ class SuoritusjakoApiServlet(implicit application: KoskiApplication) extends Kos
     contentType = "application/json"
     implicit val suoritusjakoUser = KoskiSpecificSession.suoritusjakoKatsominenUser(request)
     val result = application.suoritusjakoService.getSuoritetutTutkinnot(params("secret"))
-    AuditLog.log(KoskiAuditLogMessage(KANSALAINEN_SUORITUSJAKO_KATSOMINEN_SUORITETUT_TUTKINNOT, suoritusjakoUser, Map()))
+      .tap(_ => AuditLog.log(KoskiAuditLogMessage(KANSALAINEN_SUORITUSJAKO_KATSOMINEN_SUORITETUT_TUTKINNOT, suoritusjakoUser, Map())))
     renderEither[SuoritetutTutkinnotOppija](result)
   }
 
@@ -29,7 +30,7 @@ class SuoritusjakoApiServlet(implicit application: KoskiApplication) extends Kos
     withJsonBody({ json =>
       val body = JsonSerializer.extract[SuoritusjakoReadRequest](json)
       val result = application.suoritusjakoService.getSuoritetutTutkinnot(body.secret)
-      AuditLog.log(KoskiAuditLogMessage(KANSALAINEN_SUORITUSJAKO_KATSOMINEN_SUORITETUT_TUTKINNOT, suoritusjakoUser, Map()))
+        .tap(_ => AuditLog.log(KoskiAuditLogMessage(KANSALAINEN_SUORITUSJAKO_KATSOMINEN_SUORITETUT_TUTKINNOT, suoritusjakoUser, Map())))
       renderEither[SuoritetutTutkinnotOppija](result)
     })()
   }
@@ -38,7 +39,6 @@ class SuoritusjakoApiServlet(implicit application: KoskiApplication) extends Kos
     contentType = "application/json"
     implicit val suoritusjakoUser = KoskiSpecificSession.suoritusjakoKatsominenUser(request)
     val result = application.suoritusjakoService.get(params("secret"))
-    AuditLog.log(KoskiAuditLogMessage(KANSALAINEN_SUORITUSJAKO_KATSOMINEN, suoritusjakoUser, Map()))
     renderEither[Oppija](result.map(_.getIgnoringWarnings))
   }
 
@@ -48,7 +48,6 @@ class SuoritusjakoApiServlet(implicit application: KoskiApplication) extends Kos
     withJsonBody({ json =>
       val body = JsonSerializer.extract[SuoritusjakoReadRequest](json)
       val result = application.suoritusjakoService.get(body.secret)
-      AuditLog.log(KoskiAuditLogMessage(KANSALAINEN_SUORITUSJAKO_KATSOMINEN, suoritusjakoUser, Map()))
       renderEither[Oppija](result.map(_.getIgnoringWarnings))
     })()
   }
