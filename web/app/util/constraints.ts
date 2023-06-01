@@ -255,7 +255,7 @@ export type KoodiviiteConstraint<T extends string> = {
  */
 export const koodiviite = <T extends string>(
   constraint: Constraint | null
-): KoodiviiteConstraint<T> | null => {
+): Array<KoodiviiteConstraint<T>> | null => {
   if (!constraint) {
     return null
   }
@@ -263,13 +263,16 @@ export const koodiviite = <T extends string>(
     isObjectConstraint(constraint) &&
     constraint.class === 'fi.oph.koski.schema.Koodistokoodiviite'
   ) {
-    return {
-      koodistoUri:
-        (allowedStrings(singular(prop('koodistoUri')(constraint)))?.[0] as T) ||
-        null,
-      koodiarvot:
-        allowedStrings(singular(prop('koodiarvo')(constraint))) || null
-    }
+    const koodistoUris = allowedStrings(
+      singular(prop('koodistoUri')(constraint))
+    )
+    const koodiarvot =
+      allowedStrings(singular(prop('koodiarvo')(constraint))) || null
+
+    return (koodistoUris?.map((koodistoUri) => ({
+      koodistoUri,
+      koodiarvot
+    })) || null) as Array<KoodiviiteConstraint<T>> | null
   }
   throw new Error(`${toString(constraint)} is not Object(Koodistokoodiviite)`)
 }
