@@ -256,13 +256,14 @@ object ConvertMigriSchema {
                 case _ => None
               },
               tunnustettu = osasuoritus match {
-                case x: MahdollisestiTunnustettu
-                  if lisätiedotKoodiarvonTunnisteEquals("mukautettu", osasuoritus) =>
+                case x: MahdollisestiTunnustettu =>
                   x.tunnustettu.map(tunnustaminen => MigriOsaamisenTunnustaminen(tunnustaminen.selite))
                 case _ => None
               },
               lisätiedot = osasuoritus match {
-                case x: TutkinnonOsanSuoritus => x.lisätiedot
+                case x: TutkinnonOsanSuoritus
+                  if lisätiedotKoodiarvonTunnisteEquals("mukautettu", osasuoritus) =>
+                  x.lisätiedot
                 case _ => None
               },
               suoritettuErityisenäTutkintona = osasuoritus match {
@@ -301,13 +302,14 @@ object ConvertMigriSchema {
                   )),
                   tyyppi = osasuorituksenOsasuoritus.tyyppi,
                   tunnustettu = osasuorituksenOsasuoritus  match {
-                    case x: MahdollisestiTunnustettu
-                      if lisätiedotKoodiarvonTunnisteEquals("mukautettu", osasuorituksenOsasuoritus) =>
+                    case x: MahdollisestiTunnustettu =>
                       x.tunnustettu.map(tunnustaminen => MigriOsaamisenTunnustaminen(tunnustaminen.selite))
                     case _ => None
                   },
                   lisätiedot = osasuorituksenOsasuoritus match {
-                    case x: TutkinnonOsanSuoritus => x.lisätiedot
+                    case x: TutkinnonOsanSuoritus
+                      if lisätiedotKoodiarvonTunnisteEquals("mukautettu", osasuorituksenOsasuoritus) =>
+                      x.lisätiedot
                     case _ => None
                   }
                 )

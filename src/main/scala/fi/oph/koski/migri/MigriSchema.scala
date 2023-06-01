@@ -141,8 +141,8 @@ case class MigriOsasuoritus(
   arviointi: Option[List[MigriArviointi]],
   tyyppi: Koodistokoodiviite,
   tutkinnonOsanRyhmä: Option[Koodistokoodiviite],
-  tunnustettu: Option[MigriOsaamisenTunnustaminen], //vain jos lisätiedoissta löytyy koodiarvo "mukautettu"
-  lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]],
+  tunnustettu: Option[MigriOsaamisenTunnustaminen],
+  lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]], //vain jos lisätiedoissta löytyy koodiarvo "mukautettu"
   osasuoritukset: Option[List[MigriOsasuorituksenOsasuoritus]],
   suoritettuErityisenäTutkintona: Option[Boolean],
   @KoodistoUri("virtaopsuorluokittelu")
@@ -153,8 +153,8 @@ case class MigriOsasuorituksenOsasuoritus(
   koulutusmoduuli: MigriOsasuorituksenKoulutusmoduuli,
   arviointi: Option[List[MigriArviointi]],
   tyyppi: Koodistokoodiviite,
-  tunnustettu: Option[MigriOsaamisenTunnustaminen], //vain jos lisätiedoissta löytyy koodiarvo "mukautettu"
-  lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]]
+  tunnustettu: Option[MigriOsaamisenTunnustaminen],
+  lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] //vain jos lisätiedoissta löytyy koodiarvo "mukautettu"
 )
 
 case class MigriOsasuorituksenKoulutusmoduuli(
