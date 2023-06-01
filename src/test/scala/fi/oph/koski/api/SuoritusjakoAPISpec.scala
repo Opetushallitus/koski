@@ -7,6 +7,7 @@ import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.{AccessLogTester, AuditLogTester}
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema._
+import fi.oph.koski.servlet.SuoritusjakoReadRequest
 import fi.oph.koski.suoritusjako.{Suoritusjako, SuoritusjakoRequest}
 import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}
 import org.scalatest.BeforeAndAfterAll
@@ -135,5 +136,13 @@ class SuoritusjakoAPISpec extends AnyFreeSpec with SuoritusjakoTestMethods with 
 
   def getSuoritusjakoPublicAPI[A](secret: String)(f: => A): A = {
     get(s"/api/opinnot/${secret}", headers = jsonContent)(f)
+  }
+
+  def postSuoritusjakoPublicAPI[A](secret: String)(f: => A): A = {
+    post(s"/api/opinnot/", JsonSerializer.writeWithRoot(SuoritusjakoReadRequest(secret = secret)), headers = jsonContent)(f)
+  }
+
+  def postSuoritetutTutkinnotPublicAPI[A](secret: String)(f: => A): A = {
+    post(s"/api/opinnot/suoritetut-tutkinnot", JsonSerializer.writeWithRoot(SuoritusjakoReadRequest(secret = secret)), headers = jsonContent)(f)
   }
 }
