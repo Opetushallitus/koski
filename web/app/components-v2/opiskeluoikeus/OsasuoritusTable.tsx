@@ -12,6 +12,8 @@ import {
 import { Section } from '../containers/Section'
 import { ExpandButton } from '../controls/ExpandButton'
 import { IconButton } from '../controls/IconButton'
+import { RaisedButton } from '../controls/RaisedButton'
+import { Spacer } from '../layout/Spacer'
 import { CHARCODE_REMOVE } from '../texts/Icon'
 
 export const OSASUORITUSTABLE_DEPTH_KEY = 'OsasuoritusTable'
@@ -32,8 +34,32 @@ export type OsasuoritusRowData<DATA_KEYS extends string> = {
 export const OsasuoritusTable = <DATA_KEYS extends string>(
   props: OsasuoritusTableProps<DATA_KEYS>
 ) => {
+  const [openState, setOpenState] = useState<Record<number, boolean>>(
+    props.rows.reduce(
+      (prev, curr) => ({ ...prev, [`${curr.osasuoritusIndex}`]: false }),
+      {}
+    )
+  )
+  const isOpen = Object.values(openState).some((val) => val === true)
   return (
     <>
+      {props.rows[0] && (
+        <>
+          <RaisedButton
+            onClick={(e) => {
+              e.preventDefault()
+              setOpenState((oldState) =>
+                Object.keys(oldState).reduce((prev, curr) => {
+                  return { ...prev, [`${curr}`]: !isOpen }
+                }, oldState)
+              )
+            }}
+          >
+            {isOpen ? t('Sulje kaikki') : t('Avaa kaikki')}
+          </RaisedButton>
+          <Spacer />
+        </>
+      )}
       {props.rows[0] && (
         <OsasuoritusHeader row={props.rows[0]} editMode={props.editMode} />
       )}
@@ -42,6 +68,13 @@ export const OsasuoritusTable = <DATA_KEYS extends string>(
           key={index}
           editMode={props.editMode}
           row={row}
+          isOpen={openState[`${row.osasuoritusIndex}`]}
+          onClickExpand={() => {
+            setOpenState((oldState) => ({
+              ...oldState,
+              [`${row.osasuoritusIndex}`]: !oldState[`${row.osasuoritusIndex}`]
+            }))
+          }}
           onRemove={props.onRemove ? () => props.onRemove?.(index) : undefined}
           testId={`suoritukset.${row.suoritusIndex}.osasuoritukset.${row.osasuoritusIndex}`}
         />
@@ -53,11 +86,13 @@ export const OsasuoritusTable = <DATA_KEYS extends string>(
 export type OsasuoritusRowProps<DATA_KEYS extends string> = CommonProps<{
   editMode: boolean
   row: OsasuoritusRowData<DATA_KEYS>
+  isOpen: boolean
+  onClickExpand: () => void
   onRemove?: () => void
 }>
 
 export const OsasuoritusHeader = <DATA_KEYS extends string>(
-  props: OsasuoritusRowProps<DATA_KEYS>
+  props: Omit<OsasuoritusRowProps<DATA_KEYS>, 'isOpen' | 'onClickExpand'>
 ) => {
   const [indentation] = useLayout(OSASUORITUSTABLE_DEPTH_KEY)
   const spans = getSpans(props.row.columns, indentation)
@@ -84,7 +119,6 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
   props: OsasuoritusRowProps<DATA_KEYS>
 ) => {
   const [indentation, LayoutProvider] = useLayout(OSASUORITUSTABLE_DEPTH_KEY)
-  const [isOpen, setOpen] = useState(false)
   const spans = getSpans(
     props.row.columns,
     indentation,
@@ -100,8 +134,8 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
         <Column span={spans.leftIcons} align="right">
           {props.row.content && (
             <ExpandButton
-              expanded={isOpen}
-              onChange={setOpen}
+              expanded={props.isOpen}
+              onChange={props.onClickExpand}
               label={t('Osasuoritus')}
               testId={subTestId(props, 'expand')}
             />
@@ -128,7 +162,7 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
           </Column>
         )}
       </ColumnRow>
-      {isOpen && props.row.content && (
+      {props.isOpen && props.row.content && (
         <LayoutProvider indent={1}>
           <Section testId={subTestId(props, 'properties')}>
             {props.row.content}

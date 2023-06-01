@@ -7,7 +7,7 @@ export type RaisedButtonType = 'default' | 'dangerzone'
 
 export type RaisedButtonProps = CommonProps<{
   children: LocalizedString | string
-  onClick?: () => void
+  onClick?: React.MouseEventHandler<HTMLButtonElement>
   disabled?: boolean
   fullWidth?: boolean
   type?: RaisedButtonType
