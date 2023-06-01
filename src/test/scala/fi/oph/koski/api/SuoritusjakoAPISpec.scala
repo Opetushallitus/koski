@@ -28,11 +28,20 @@ class SuoritusjakoAPISpec extends AnyFreeSpec with SuoritusjakoTestMethods with 
         "koulutusmoduulinTunniste": "${Koulutusmoduuli.musiikkiLaajaOppimääräPerusopinnot.tunniste.koodiarvo}"
       }]"""
 
+  val jsonSuoritetutTutkinnot =
+    s"""[{
+        "tyyppi": "suoritetut-tutkinnot"
+      }]"""
+
   override protected def beforeAll(): Unit = {
     super.beforeAll()
     createSuoritusjako(json, hetu) {
       verifyResponseStatusOk()
       secrets += ("taiteen perusopetus" -> JsonSerializer.parse[Suoritusjako](response.body).secret)
+    }
+    createSuoritusjako(jsonSuoritetutTutkinnot, hetu) {
+      verifyResponseStatusOk()
+      secrets += ("suoritetut tutkinnot" -> JsonSerializer.parse[Suoritusjako](response.body).secret)
     }
   }
 
@@ -125,6 +134,20 @@ class SuoritusjakoAPISpec extends AnyFreeSpec with SuoritusjakoTestMethods with 
         getSuoritusjakoPublicAPI(secret) {
           verifyResponseStatusOk()
           AccessLogTester.getLatestMatchingAccessLog("/koski/api/opinnot") should include(maskedSecret)
+        }
+      }
+
+      "onnistuu post-requestilla ja tuottaa auditlog-merkinnän" in {
+        postSuoritusjakoPublicAPI(secrets("taiteen perusopetus")) {
+          verifyResponseStatusOk()
+          AuditLogTester.verifyAuditLogMessage(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN"))
+        }
+      }
+
+      "onnistuu post-requestilla suoritetut tutkinnot ja tuottaa auditlog-merkinnän" in {
+        postSuoritetutTutkinnotPublicAPI(secrets("suoritetut tutkinnot")) {
+          verifyResponseStatusOk()
+          AuditLogTester.verifyAuditLogMessage(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN_SUORITETUT_TUTKINNOT"))
         }
       }
     }
