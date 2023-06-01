@@ -161,12 +161,16 @@ export const className =
       return null
     }
     if (isObjectConstraint(constraint)) {
+      // TODO: Käy tyypitys läpi
+      // @ts-expect-error
       return [constraint.class]
     }
     if (isOptionalConstraint(constraint)) {
       return className<T>()(constraint.optional)
     }
     if (isUnionConstraint(constraint)) {
+      // TODO: Käy tyypitys läpi
+      // @ts-expect-error
       return Object.keys(constraint.anyOf)
     }
     throw new Error(`${toString(constraint)} does not have a class name`)

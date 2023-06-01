@@ -61,12 +61,10 @@ export const TpoOsasuoritusProperties: React.FC<
               form={props.form}
               path={props.osasuoritusPath.prop('arviointi')}
               view={ArvosanaView}
-              edit={(editProps) => (
-                <ArvosanaEdit
-                  {...editProps}
-                  createArviointi={createTpoArviointi}
-                />
-              )}
+              edit={ArvosanaEdit}
+              editProps={{
+                createArviointi: createTpoArviointi
+              }}
               testId={`${parsedPath}.arvosana`}
             />
           </OsasuoritusSubproperty>

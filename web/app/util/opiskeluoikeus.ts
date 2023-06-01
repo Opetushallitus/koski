@@ -3,7 +3,6 @@ import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodivi
 import { isKorkeakoulunOpiskeluoikeus } from '../types/fi/oph/koski/schema/KorkeakoulunOpiskeluoikeus'
 import { Opiskeluoikeus } from '../types/fi/oph/koski/schema/Opiskeluoikeus'
 import { isYlioppilastutkinnonOpiskeluoikeus } from '../types/fi/oph/koski/schema/YlioppilastutkinnonOpiskeluoikeus'
-import { päätasonSuoritusPath } from './optics'
 
 export type PäätasonSuoritusOf<T extends Opiskeluoikeus> = T['suoritukset'][0]
 

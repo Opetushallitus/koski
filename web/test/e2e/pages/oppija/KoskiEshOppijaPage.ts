@@ -70,7 +70,7 @@ export class KoskiEshOppijaPage extends KoskiOppijaPage {
     return osasuoritus
   }
 
-  async expectSuoritusUrl(suoritus: string, hyväksyttyPostfix: string = '.*') {
+  async expectSuoritusUrl(suoritus: string, hyväksyttyPostfix = '.*') {
     await expect(this.page).toHaveURL(
       new RegExp(
         `koski\\/oppija\\/1\\.2\\..*\\?1\\.2\\..*\\.suoritus=${suoritus}${hyväksyttyPostfix}$`
@@ -81,7 +81,7 @@ export class KoskiEshOppijaPage extends KoskiOppijaPage {
 
   async poistaSuoritus(
     vuosiluokka: string,
-    aktiivinenSuoritusPoistonJälkeen: string = 'EB-tutkinto'
+    aktiivinenSuoritusPoistonJälkeen = 'EB-tutkinto'
   ) {
     await this.clickSuoritusTabByLabel(vuosiluokka, 'first')
     await this.avaaMuokkausnäkymä()

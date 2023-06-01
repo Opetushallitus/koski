@@ -10,7 +10,7 @@ import {
 } from '../../util/opiskeluoikeus'
 import { päätasonSuoritusPath } from '../../util/optics'
 import { OpiskeluoikeusjaksoOf } from '../../util/schema'
-import { ItemOf } from '../../util/types'
+import { ClassOf, ItemOf } from '../../util/types'
 import { useConfirmUnload } from '../../util/useConfirmUnload'
 import { common, CommonPropsWithChildren } from '../CommonProps'
 import { Tab, Tabs } from '../controls/Tabs'
@@ -24,9 +24,11 @@ import {
   OpiskeluoikeudenTilaView
 } from '../opiskeluoikeus/OpiskeluoikeudenTila'
 import { OpiskeluoikeusEditToolbar } from '../opiskeluoikeus/OpiskeluoikeusEditToolbar'
-import { UusiOpiskeluoikeusjakso } from '../opiskeluoikeus/UusiOpiskeluoikeudenTilaModal'
 import { CHARCODE_ADD, Icon } from '../texts/Icon'
 import { Trans } from '../texts/Trans'
+import { NonEmptyArray } from 'fp-ts/lib/NonEmptyArray'
+import { ValidationError } from '../forms/validator'
+import { UusiOpiskeluoikeusjakso } from '../opiskeluoikeus/UusiOpiskeluoikeudenTilaModal'
 
 export type EditorContainerProps<T extends Opiskeluoikeus> =
   CommonPropsWithChildren<{
@@ -36,8 +38,12 @@ export type EditorContainerProps<T extends Opiskeluoikeus> =
     onChangeSuoritus: (suoritusIndex: number) => void
     createOpiskeluoikeusjakso: (
       seed: UusiOpiskeluoikeusjakso<OpiskeluoikeusjaksoOf<T['tila']>>
-    ) => void
+    ) => OpiskeluoikeusjaksoOf<T['tila']> | NonEmptyArray<ValidationError>
     suorituksenNimi?: (suoritus: ItemOf<T['suoritukset']>) => LocalizedString
+    /**
+     * Jos opiskeluoikeuden tila voi olla useampaa kuin yhtä tyyppiä, tätä funktiota käytetään oikeanlaisen luokan määrittämiseen.
+     */
+    opiskeluoikeusJaksoClassName?: ClassOf<OpiskeluoikeusjaksoOf<T['tila']>>
     suorituksenLisäys?: string | LocalizedString
     onCreateSuoritus?: () => void
     suorituksetVahvistettu?: boolean
@@ -136,7 +142,8 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
         edit={OpiskeluoikeudenTilaEdit}
         editProps={{
           enableValmistuminen: suorituksetVahvistettu,
-          createJakso: props.createOpiskeluoikeusjakso
+          createJakso: props.createOpiskeluoikeusjakso,
+          opiskeluoikeusJaksoClassName: props.opiskeluoikeusJaksoClassName
         }}
         testId="opiskeluoikeus.tila"
       />

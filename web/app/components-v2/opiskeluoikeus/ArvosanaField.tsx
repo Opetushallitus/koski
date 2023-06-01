@@ -31,7 +31,7 @@ export type ArviointiViewProps<T extends Arviointi> = CommonProps<
 export const ArvosanaView = <T extends Arviointi>(
   props: ArviointiViewProps<T>
 ) => {
-  const arviointi = props.value && viimeisinArviointi(props.value)
+  const arviointi = props.value !== undefined && viimeisinArviointi(props.value)
   return arviointi ? (
     <span {...common(props)} {...testId(props)}>
       {t(arviointi.arvosana?.nimi)}
