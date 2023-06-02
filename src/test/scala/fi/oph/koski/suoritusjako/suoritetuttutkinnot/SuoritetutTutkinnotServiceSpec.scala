@@ -700,6 +700,9 @@ class SuoritetutTutkinnotServiceSpec
     expectedSuoritusData: schema.KorkeakoulututkinnonSuoritus
   ): Unit = {
     verifyOpiskeluoikeudenKentät(actualOo, expectedOoData)
+
+    actualOo.lisätiedot.map(_.virtaOpiskeluoikeudenTyyppi.map(_.koodiarvo)) should be(expectedOoData.lisätiedot.map(_.virtaOpiskeluoikeudenTyyppi.map(_.koodiarvo)))
+
     actualOo.suoritukset.length should equal(1)
 
     actualSuoritus.koulutusmoduuli.tunniste.koodiarvo should equal(expectedSuoritusData.koulutusmoduuli.tunniste.koodiarvo)
