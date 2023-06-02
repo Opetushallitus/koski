@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useState, useCallback } from 'react'
 import { useSchema } from '../appstate/constraints'
+import { append } from '../util/fp/arrays'
 import { KansalainenOnly } from '../components-v2/access/KansalainenOnly'
 import {
   ActivePäätasonSuoritus,
@@ -72,13 +73,22 @@ import { VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYh
 import { VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenSuoritus'
 import { VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus'
 import { OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi } from '../types/fi/oph/koski/schema/OppivelvollisilleSuunnatunVapaanSivistystyonOpintokokonaisuudenArviointi'
-import { OppivelvollisilleSuunnatunVapaanSivistystyönOsaamiskokonaisuudenSuoritus } from '../types/fi/oph/koski/schema/OppivelvollisilleSuunnatunVapaanSivistystyonOsaamiskokonaisuudenSuoritus'
-import { OppivelvollisilleSuunnatunVapaanSivistystyönValinnaistenSuuntautumisopintojenSuoritus } from '../types/fi/oph/koski/schema/OppivelvollisilleSuunnatunVapaanSivistystyonValinnaistenSuuntautumisopintojenSuoritus'
 import { VSTKotoutumiskoulutuksenKieliJaViestintäosaamisenSuoritus2022 } from '../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenKieliJaViestintaosaamisenSuoritus2022'
-import { VSTKotoutumiskoulutuksenOhjauksenSuoritus2022 } from '../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenOhjauksenSuoritus2022'
 import { VSTKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus2022 } from '../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus2022'
 import { VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenSuoritus2022 } from '../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenYhteiskuntaJaTyoelamaosaaminenSuoritus2022'
 import { VSTKotoutumiskoulutuksenOsasuorituksenArviointi2022 } from '../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenOsasuorituksenArviointi2022'
+import { RaisedButton } from '../components-v2/controls/RaisedButton'
+import {
+  Modal,
+  ModalTitle,
+  ModalBody,
+  ModalFooter
+} from '../components-v2/containers/Modal'
+import { FlatButton } from '../components-v2/controls/FlatButton'
+import { TextEdit } from '../components-v2/controls/TextField'
+import { OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus } from '../types/fi/oph/koski/schema/OppivelvollisilleSuunnattuVapaanSivistystyonOpintokokonaisuus'
+import { Finnish } from '../types/fi/oph/koski/schema/Finnish'
+import { PaikallinenKoodi } from '../types/fi/oph/koski/schema/PaikallinenKoodi'
 
 type VSTEditorProps =
   AdaptedOpiskeluoikeusEditorProps<VapaanSivistystyönOpiskeluoikeus>
@@ -126,11 +136,50 @@ const resolveOpiskeluoikeudenTilaClass = (
   }
 }
 
+const UusiVSTOsasuoritusModal: React.FC<{}> = (props) => {
+  const [opintokokonaisuus, setOpintokokonaisuus] = useState('')
+  return (
+    <Modal>
+      <ModalTitle>{t('Osasuorituksen lisäys')}</ModalTitle>
+      <ModalBody>
+        <KeyValueTable>
+          <KeyValueRow label="Opintokokonaisuus">
+            <TextEdit
+              value={opintokokonaisuus}
+              onChange={(e) => setOpintokokonaisuus(e || '')}
+              placeholder={'Opintokokonaisuus'}
+            />
+          </KeyValueRow>
+        </KeyValueTable>
+      </ModalBody>
+      <ModalFooter>
+        <FlatButton
+          onClick={() => {
+            console.log('Hello world')
+          }}
+        >
+          {'Peruuta'}
+        </FlatButton>
+        <RaisedButton
+          onClick={() => {
+            console.log('Hello world')
+          }}
+        >
+          {'Lisää osasuoritus'}
+        </RaisedButton>
+      </ModalFooter>
+    </Modal>
+  )
+}
+
 export const VSTEditor = (props: VSTEditorProps) => {
   // Opiskeluoikeus
   const opiskeluoikeusSchema = useSchema('VapaanSivistystyönOpiskeluoikeus')
 
   const form = useForm(props.opiskeluoikeus, false, opiskeluoikeusSchema)
+
+  const [newOsasuoritusModalVisible, setNewOsasuoritusModalVisible] =
+    useState(false)
 
   // Oppilaitos
   const organisaatio =
@@ -139,6 +188,28 @@ export const VSTEditor = (props: VSTEditorProps) => {
   // Päätason suoritus
   const [päätasonSuoritus, setPäätasonSuoritus] = usePäätasonSuoritus(form)
   const jaksoClass = form.state.tila.opiskeluoikeusjaksot[0].$class
+
+  const isNew = false
+  const createOsasuoritus = useCallback(() => {
+    const newOsasuoritus =
+      VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOhjauksenSuoritus(
+        {}
+      )
+    // @ts-expect-error
+    form.updateAt(päätasonSuoritus.path, (päätaso) => ({
+      ...päätaso,
+      // @ts-expect-error
+      osasuoritukset: append(newOsasuoritus)(päätaso.osasuoritukset)
+    }))
+
+    /*
+    if (isNew) {
+      osasuoritukset.store(tunniste.koodiarvo, newOsasuoritus.koulutusmoduuli)
+    }
+    */
+
+    setNewOsasuoritusModalVisible(false)
+  }, [form, päätasonSuoritus.path])
 
   // Render
   return (
@@ -176,6 +247,7 @@ export const VSTEditor = (props: VSTEditorProps) => {
         onChangeSuoritus={setPäätasonSuoritus}
         testId="vst-editor-container"
       >
+        {/*<UusiVSTOsasuoritusModal />*/}
         <KansalainenOnly>
           <PäätasonSuorituksenSuostumuksenPeruminen
             opiskeluoikeus={form.state}
@@ -326,6 +398,9 @@ export const VSTEditor = (props: VSTEditorProps) => {
                   // TODO: onRemove handler
                 }}
               />
+              <Spacer />
+              {/* TODO: Nappi avaa modalin */}
+              <RaisedButton>{'Lisää osasuoritus'}</RaisedButton>
               <Spacer />
               <KeyValueTable>
                 <KeyValueRow
