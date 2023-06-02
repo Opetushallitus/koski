@@ -5,7 +5,7 @@ import { Trans } from '../texts/Trans'
 
 export type FlatButtonProps = CommonProps<{
   children: LocalizedString | string
-  onClick: React.MouseEventHandler<HTMLButtonElement>
+  onClick?: React.MouseEventHandler<HTMLButtonElement>
   fullWidth?: boolean
   disabled?: boolean
   compact?: boolean
