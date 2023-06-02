@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
   <suppress until="2023-07-01Z">
-    <notes><![CDATA[file name: guava-32.0.0-jre.jar Patch not available on 2023-06-02 -> update postponed by month]]></notes>
-    <packageUrl regex="true">^pkg:maven/com\.google\.guava/guava@.*$</packageUrl>
-    <vulnerabilityName>CVE-2023-2976</vulnerabilityName>
+    <notes>guava-32.0.0-jre.jar Patch not available on 2023-06-02 - update postponed by month</notes>
+    <cve>CVE-2023-2976</cve>
   </suppress>
   <suppress until="2023-07-01Z">
     <notes>Medium level issues in the org.apache.xmlbeans:xmlbeans:jar:2.6.0 which is dependency of
@@ -34,7 +33,8 @@
     <notes><![CDATA[file name: lodash:4.17.20. Node not in use: Command injection is not possible.]]></notes>
     <packageUrl regex="true">^pkg:npm/lodash@.*$</packageUrl>
     <vulnerabilityName>1673</vulnerabilityName>
-    <vulnerabilityName>CWE-77: Improper Neutralization of Special Elements used in a Command ('Command Injection')</vulnerabilityName>
+    <vulnerabilityName>CWE-77: Improper Neutralization of Special Elements used in a Command
+      ('Command Injection')</vulnerabilityName>
   </suppress>
   <suppress>
     <notes><![CDATA[file name: lodash:4.17.20. Dev dependency.]]> </notes>
@@ -49,7 +49,8 @@
   <suppress until="2023-07-01Z">
     <notes>
       <![CDATA[ file name: aws-java-sdk-secretsmanager-1.12.148.jar]]> Dependency of
-      com.amazonaws.secretsmanager:aws-secretsmanager-jdbc, which most probably is not affected by the vulnerability
+      com.amazonaws.secretsmanager:aws-secretsmanager-jdbc, which most probably is not affected by
+      the vulnerability
     </notes>
     <packageUrl regex="true">^pkg:maven/com\.amazonaws/aws\-java\-sdk\-secretsmanager@.*$</packageUrl>
     <cve>CVE-2022-31159</cve>
