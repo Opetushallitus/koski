@@ -2,6 +2,7 @@ name: Run security tests
 on:
   schedule:
     - cron: "0 0 * * *"
+  workflow_dispatch:
 env:
   DOCKER_BUILDKIT: 1
 jobs:
