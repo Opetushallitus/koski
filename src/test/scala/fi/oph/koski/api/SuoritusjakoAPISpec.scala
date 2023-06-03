@@ -7,6 +7,7 @@ import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.{AccessLogTester, AuditLogTester}
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema._
+import fi.oph.koski.servlet.SuoritusjakoReadRequest
 import fi.oph.koski.suoritusjako.{Suoritusjako, SuoritusjakoRequest}
 import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}
 import org.scalatest.BeforeAndAfterAll
@@ -27,11 +28,20 @@ class SuoritusjakoAPISpec extends AnyFreeSpec with SuoritusjakoTestMethods with 
         "koulutusmoduulinTunniste": "${Koulutusmoduuli.musiikkiLaajaOppimääräPerusopinnot.tunniste.koodiarvo}"
       }]"""
 
+  val jsonSuoritetutTutkinnot =
+    s"""[{
+        "tyyppi": "suoritetut-tutkinnot"
+      }]"""
+
   override protected def beforeAll(): Unit = {
     super.beforeAll()
     createSuoritusjako(json, hetu) {
       verifyResponseStatusOk()
       secrets += ("taiteen perusopetus" -> JsonSerializer.parse[Suoritusjako](response.body).secret)
+    }
+    createSuoritusjako(jsonSuoritetutTutkinnot, hetu) {
+      verifyResponseStatusOk()
+      secrets += ("suoritetut tutkinnot" -> JsonSerializer.parse[Suoritusjako](response.body).secret)
     }
   }
 
@@ -126,6 +136,20 @@ class SuoritusjakoAPISpec extends AnyFreeSpec with SuoritusjakoTestMethods with 
           AccessLogTester.getLatestMatchingAccessLog("/koski/api/opinnot") should include(maskedSecret)
         }
       }
+
+      "onnistuu post-requestilla ja tuottaa auditlog-merkinnän" in {
+        postSuoritusjakoPublicAPI(secrets("taiteen perusopetus")) {
+          verifyResponseStatusOk()
+          AuditLogTester.verifyAuditLogMessage(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN"))
+        }
+      }
+
+      "onnistuu post-requestilla suoritetut tutkinnot ja tuottaa auditlog-merkinnän" in {
+        postSuoritetutTutkinnotPublicAPI(secrets("suoritetut tutkinnot")) {
+          verifyResponseStatusOk()
+          AuditLogTester.verifyAuditLogMessage(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN_SUORITETUT_TUTKINNOT"))
+        }
+      }
     }
   }
 
@@ -135,5 +159,13 @@ class SuoritusjakoAPISpec extends AnyFreeSpec with SuoritusjakoTestMethods with 
 
   def getSuoritusjakoPublicAPI[A](secret: String)(f: => A): A = {
     get(s"/api/opinnot/${secret}", headers = jsonContent)(f)
+  }
+
+  def postSuoritusjakoPublicAPI[A](secret: String)(f: => A): A = {
+    post(s"/api/opinnot/", JsonSerializer.writeWithRoot(SuoritusjakoReadRequest(secret = secret)), headers = jsonContent)(f)
+  }
+
+  def postSuoritetutTutkinnotPublicAPI[A](secret: String)(f: => A): A = {
+    post(s"/api/opinnot/suoritetut-tutkinnot", JsonSerializer.writeWithRoot(SuoritusjakoReadRequest(secret = secret)), headers = jsonContent)(f)
   }
 }
