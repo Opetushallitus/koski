@@ -7,16 +7,10 @@ env:
   DOCKER_BUILDKIT: 1
 jobs:
   run_owasp_and_snyk:
-    name: Run Koski owasp and snyk checks
+    name: Run owasp and snyk
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
-
-      - name: Get week
-        id: get-date
-        run: |
-          echo "date=$(/bin/date -u "+%Ywk%V")" >> $GITHUB_OUTPUT
-        shell: bash
 
       - name: Set up Java 11
         uses: actions/setup-java@v3
@@ -38,11 +32,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      - name: Restore NVD database cache
+      - name: Restore NVD database from cache
         uses: actions/cache/restore@v3
         with:
           path: ~/.m2/repository/org/owasp/dependency-check-data
-          key: ${{ runner.os }}-depcheck-${{ steps.get-date.outputs.date }}
+          key: ${{ runner.os }}-owasp-db
 
       - name: Cache Node modules
         uses: actions/cache@v3
@@ -53,8 +47,13 @@ jobs:
             ${{ runner.os }}-node-
 
       - name: Run owasp
-        run: |
-          make owasp
+        uses: nick-fields/retry@v2
+        with:
+          max_attempts: 3
+          timeout_minutes: 10
+          retry_wait_seconds: 1800
+          command: |
+            make owasp
 
       - name: Archive OWASP results
         if: always()
@@ -63,12 +62,12 @@ jobs:
           name: owasp-report
           path: target/dependency-check-report.html
 
-      - name: Save NVD database cache
+      - name: Save NVD database to cache
         uses: actions/cache/save@v3
         if: always()
         with:
           path: ~/.m2/repository/org/owasp/dependency-check-data
-          key: ${{ runner.os }}-depcheck-${{ steps.get-date.outputs.date }}
+          key: ${{ runner.os }}-owasp-db
 
       - name: Run snyk
         env:
