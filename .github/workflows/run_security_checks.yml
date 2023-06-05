@@ -47,13 +47,20 @@ jobs:
             ${{ runner.os }}-node-
 
       - name: Run owasp
+        id: owasp
         uses: nick-fields/retry@v2
         with:
           max_attempts: 3
           timeout_minutes: 10
           retry_wait_seconds: 1800
           command: |
-            make owasp
+            make owasp | tee owasp-output.log
+            STATUS="${PIPESTATUS[0]}"
+            EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+            echo "errors<<$EOF" >> $GITHUB_OUTPUT
+            grep -i error owasp-output.log >> $GITHUB_OUTPUT
+            echo "$EOF" >> $GITHUB_OUTPUT
+            exit $STATUS
 
       - name: Archive OWASP results
         if: always()
@@ -70,6 +77,7 @@ jobs:
           key: ${{ runner.os }}-owasp-db
 
       - name: Run snyk
+        id: snyk
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         run: |
@@ -80,5 +88,6 @@ jobs:
         if: ${{ failure() }}
         with:
           status: ${{ job.status }}
+          message_format: "{emoji} *{workflow}* {status_message} in <{repo_url}|{repo}@{branch}> on <{commit_url}|{commit_sha}>\n\nOn tämäkin taas työmaa :---(\n${{ steps.owasp.outputs.errors }}"
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
