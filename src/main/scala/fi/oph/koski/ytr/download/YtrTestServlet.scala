@@ -22,7 +22,6 @@ class YtrTestServlet(implicit val application: KoskiApplication) extends KoskiSp
 
     logger.info("Clearing YTR data")
 
-    // TODO: TOR-1639 Kun raportointikannan luonti tehdään, tuhoa myös sen generointiin liittyvät taulut
     runDbSync(DBIO.sequence(Seq(
       KoskiTables.YtrOpiskeluoikeusHistoria.delete,
       KoskiTables.YtrOpiskeluOikeudet.delete,

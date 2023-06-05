@@ -98,7 +98,6 @@ class KoskiValidator(
       case opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus if opiskeluoikeus.mitätöity &&
         (!opiskeluoikeus.isInstanceOf[YlioppilastutkinnonOpiskeluoikeus] ||
           user.hasTallennetutYlioppilastutkinnonOpiskeluoikeudetAccess) =>
-        // TODO: TOR-1639: Toteuta YO-opiskeluoikeuksien lipsuva mitätöinti
         updateFields(opiskeluoikeus, lipsuTarvittaessaVirheistäMitätöinnissä = true)
       case opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus if
         (!opiskeluoikeus.isInstanceOf[YlioppilastutkinnonOpiskeluoikeus] ||

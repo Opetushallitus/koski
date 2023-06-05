@@ -34,7 +34,6 @@ object RaportointiDatabaseSchema {
   // Laita tähän vain ne indeksit, jotka tarvitaan inkrementaalisen generoinnin nopeuttamiseksi.
   def createIndexesForIncrementalUpdate(s: Schema) = DBIO.seq(
     sqlu"CREATE INDEX ON #${s.name}.r_osasuoritus(opiskeluoikeus_oid)",
-    // TODO: TOR-1639 Lisää myös YTR-taulut jos/kun inkrementaalinen päivitys toteutetaan?
   )
 
   def createOpiskeluoikeusIndexes(s: Schema) = DBIO.seq(
