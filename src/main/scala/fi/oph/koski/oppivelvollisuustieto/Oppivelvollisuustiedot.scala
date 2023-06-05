@@ -78,6 +78,7 @@ object Oppivelvollisuustiedot {
       - Jos oppija suorittaa lukion oppimäärää, voimassaolot päättyvät kun molemmat lukion oppimäärä ja ylioppilastutkinto ovat valmiita, jos henkilön ikä sitä ei aikaisemmin päätä.
   */
   def createPrecomputedTable(s: Schema, valpasRajapäivätService: ValpasRajapäivätService)= {
+    val tarkastelupäivä = valpasRajapäivätService.tarkastelupäivä
     val valpasLakiVoimassaVanhinSyntymäaika = valpasRajapäivätService.lakiVoimassaVanhinSyntymäaika
     val valpasLakiVoimassaPeruskoulustaValmistuneilla = valpasRajapäivätService.lakiVoimassaPeruskoulustaValmistuneillaAlku
     val oppivelvollisuusAlkaaIka = valpasRajapäivätService.oppivelvollisuusAlkaaIka.toInt
@@ -249,6 +250,7 @@ object Oppivelvollisuustiedot {
               ib_tutkinnon_vahvistuspaiva,
               international_schoolin_toisen_asteen_vahvistus_paiva,
               european_school_of_helsinki_toisen_asteen_vahvistus_paiva,
+              ammattitutkinnon_vahvistus_paiva,
               (syntymaaika + interval '#$oppivelvollisuusLoppuuIka year' - interval '1 day')::date)
 
             when suorittaa_ammattitutkintoa then least(

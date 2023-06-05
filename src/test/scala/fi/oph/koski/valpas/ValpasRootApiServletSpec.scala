@@ -14,7 +14,6 @@ import fi.oph.koski.valpas.valpasuser.ValpasMockUsers
 import org.scalatest.{BeforeAndAfterEach, Tag}
 
 import java.time.LocalDate.{of => date}
-import java.time.LocalDateTime
 
 class ValpasRootApiServletSpec extends ValpasTestBase with BeforeAndAfterEach {
   override protected def beforeEach() {
@@ -197,6 +196,14 @@ class ValpasRootApiServletSpec extends ValpasTestBase with BeforeAndAfterEach {
         verifyResponseStatus(403, ValpasErrorCategory.forbidden.oppija("Käyttäjällä ei ole oikeuksia annetun oppijan tietoihin"))
       }
     }
+
+    "Ei palauta ammatillisesta tutkinnosta valmistunutta oppijaa" in {
+      FixtureUtil.resetMockData(KoskiApplicationForTests, date(2023, 5, 2))
+
+      authGet(getHenkilöhakuKuntaUrl(ValpasMockOppijat.amisValmistunutEronnutValmasta.oid), ValpasMockUsers.valpasHelsinki) {
+        verifyResponseStatus(403, ValpasErrorCategory.forbidden.oppija("Käyttäjällä ei ole oikeuksia annetun oppijan tietoihin"))
+      }
+    }
   }
 
   "Maksuttomuuskäyttäjän hetuhaku" - {
@@ -346,6 +353,28 @@ class ValpasRootApiServletSpec extends ValpasTestBase with BeforeAndAfterEach {
         val result = JsonSerializer.parse[ValpasHenkilöhakuResult](response.body)
 
         result should be(expectedResult)
+      }
+    }
+
+    "Palauttaa ammatillisesta tutkinnosta valmistuneen oppijan jolla on oikeutta maksuttomuuteen jäljellä" in {
+      FixtureUtil.resetMockData(KoskiApplicationForTests, date(2023, 5, 2))
+
+      authGet(getHenkilöhakuMaksuttomuusUrl(ValpasMockOppijat.amisValmistunutEronnutValmasta.oid), ValpasMockUsers.valpasMonta) {
+        verifyResponseStatusOk()
+        val res = JsonSerializer.parse[ValpasLöytyiHenkilöhakuResult](response.body)
+        res.ok shouldBe true
+        res.oid shouldBe ValpasMockOppijat.amisValmistunutEronnutValmasta.oid
+      }
+    }
+
+    "Ei palauta ammatillisesta tutkinnosta valmistunutta oppijaa kun oikeus maksuttomuuteen on päättynyt" in {
+      FixtureUtil.resetMockData(KoskiApplicationForTests, date(2026, 1, 1))
+
+      authGet(getHenkilöhakuMaksuttomuusUrl(ValpasMockOppijat.amisValmistunutEronnutValmasta.oid), ValpasMockUsers.valpasMonta) {
+        verifyResponseStatusOk()
+        val res = JsonSerializer.parse[ValpasEiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult](response.body)
+        res.ok shouldBe false
+        res.eiLainTaiMaksuttomuudenPiirissä shouldBe true
       }
     }
   }
