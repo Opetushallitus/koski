@@ -55,7 +55,7 @@ object KoskiSpecificMockOppijat {
   val aikuisAineOpiskelijaMuuKuinVos = koskiSpecificOppijat.oppija("Aikuinen", "AikuisAineOpiskelijaMuuKuinVos", "241001B7649")
   val aikuisOpiskelijaVieraskielinen = koskiSpecificOppijat.oppija("Aikuinen", "Vieraskielinen", "241001B7651", äidinkieli = Some("en"))
   val aikuisOpiskelijaVieraskielinenMuuKuinVos = koskiSpecificOppijat.oppija("Aikuinen", "VieraskielinenMuuKuinVos", "241001B7647", äidinkieli = Some("en"))
-  val aikuisOpiskelijaMuuRahoitus = koskiSpecificOppijat.oppija("Aikuinen", "MuuRahoitus", "241001C4647")
+  val aikuisOpiskelijaMuuRahoitus = koskiSpecificOppijat.oppija("Aikuinen", "MuuRahoitus", "241001C464S")
   val kymppiluokkalainen = koskiSpecificOppijat.oppija("Kymppiluokkalainen", "Kaisa", "131025-6573", sukupuoli = Some("2"), kotikunta = Some("Kontu"))
   val luva = koskiSpecificOppijat.oppija("Lukioonvalmistautuja", "Luke", "211007-442N")
   val luva2019 = koskiSpecificOppijat.oppija("Lukioonvalmistautuja2019", "Luke", "270926-380M")
