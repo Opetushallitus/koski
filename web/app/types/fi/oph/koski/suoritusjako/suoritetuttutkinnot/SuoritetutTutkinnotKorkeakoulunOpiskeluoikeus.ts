@@ -1,8 +1,9 @@
-import { Oppilaitos } from './Oppilaitos'
-import { Koulutustoimija } from './Koulutustoimija'
-import { SuoritetutTutkinnotKorkeakoulututkinnonSuoritus } from './SuoritetutTutkinnotKorkeakoulututkinnonSuoritus'
 import { Koodistokoodiviite } from '../../schema/Koodistokoodiviite'
 import { LocalizedString } from '../../schema/LocalizedString'
+import { Koulutustoimija } from './Koulutustoimija'
+import { SuoritetutTutkinnotKorkeakoulunLisätiedot } from './SuoritetutTutkinnotKorkeakoulunLisatiedot'
+import { SuoritetutTutkinnotKorkeakoulututkinnonSuoritus } from './SuoritetutTutkinnotKorkeakoulututkinnonSuoritus'
+import { Oppilaitos } from './Oppilaitos'
 
 /**
  * SuoritetutTutkinnotKorkeakoulunOpiskeluoikeus
@@ -11,18 +12,20 @@ import { LocalizedString } from '../../schema/LocalizedString'
  */
 export type SuoritetutTutkinnotKorkeakoulunOpiskeluoikeus = {
   $class: 'fi.oph.koski.suoritusjako.suoritetuttutkinnot.SuoritetutTutkinnotKorkeakoulunOpiskeluoikeus'
-  oppilaitos?: Oppilaitos
-  koulutustoimija?: Koulutustoimija
-  suoritukset: Array<SuoritetutTutkinnotKorkeakoulututkinnonSuoritus>
   tyyppi: Koodistokoodiviite<'opiskeluoikeudentyyppi', 'korkeakoulutus'>
+  koulutustoimija?: Koulutustoimija
+  lisätiedot?: SuoritetutTutkinnotKorkeakoulunLisätiedot
+  suoritukset: Array<SuoritetutTutkinnotKorkeakoulututkinnonSuoritus>
+  oppilaitos?: Oppilaitos
 }
 
 export const SuoritetutTutkinnotKorkeakoulunOpiskeluoikeus = (
   o: {
-    oppilaitos?: Oppilaitos
-    koulutustoimija?: Koulutustoimija
-    suoritukset?: Array<SuoritetutTutkinnotKorkeakoulututkinnonSuoritus>
     tyyppi?: Koodistokoodiviite<'opiskeluoikeudentyyppi', 'korkeakoulutus'>
+    koulutustoimija?: Koulutustoimija
+    lisätiedot?: SuoritetutTutkinnotKorkeakoulunLisätiedot
+    suoritukset?: Array<SuoritetutTutkinnotKorkeakoulututkinnonSuoritus>
+    oppilaitos?: Oppilaitos
   } = {}
 ): SuoritetutTutkinnotKorkeakoulunOpiskeluoikeus => ({
   tyyppi: Koodistokoodiviite({
