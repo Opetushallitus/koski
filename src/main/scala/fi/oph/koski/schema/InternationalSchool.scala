@@ -96,6 +96,8 @@ case class InternationalSchoolOpiskeluoikeudenLisätiedot(
 ) extends OpiskeluoikeudenLisätiedot with ErityisenKoulutustehtävänJaksollinen with Ulkomaanjaksollinen with MaksuttomuusTieto
 
 trait InternationalSchoolVuosiluokanSuoritus extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen with Arvioinniton with Suorituskielellinen {
+  @Title("Koulutus")
+  def koulutusmoduuli: InternationalSchoolLuokkaAste
   def tyyppi: Koodistokoodiviite
   @Description("Luokan tunniste, esimerkiksi 9C.")
   @Tooltip("Luokan tunniste, esimerkiksi 9C.")
@@ -103,7 +105,6 @@ trait InternationalSchoolVuosiluokanSuoritus extends KoskeenTallennettavaPääta
 }
 
 case class PYPVuosiluokanSuoritus(
-  @Title("Koulutus")
   koulutusmoduuli: PYPLuokkaAste,
   luokka: Option[String] = None,
   @Tooltip("Vuosiluokan alkamispäivä")
@@ -118,7 +119,6 @@ case class PYPVuosiluokanSuoritus(
 ) extends InternationalSchoolVuosiluokanSuoritus
 
 case class MYPVuosiluokanSuoritus(
-  @Title("Koulutus")
   koulutusmoduuli: MYPLuokkaAste,
   luokka: Option[String] = None,
   @Tooltip("Vuosiluokan alkamispäivä")
@@ -133,7 +133,6 @@ case class MYPVuosiluokanSuoritus(
 ) extends InternationalSchoolVuosiluokanSuoritus
 
 case class DiplomaVuosiluokanSuoritus(
-  @Title("Koulutus")
   koulutusmoduuli: DiplomaLuokkaAste,
   luokka: Option[String] = None,
   @Tooltip("Vuosiluokan alkamispäivä")
