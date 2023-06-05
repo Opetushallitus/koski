@@ -37,7 +37,7 @@ object TutkintokoulutukseenValmentavaKoulutusValidation {
       opiskeluoikeus.tila.opiskeluoikeusjaksot.lastOption.map(_.tila.koodiarvo).contains("valmistunut")
     val päätasonSuorituksenLaajuusViikkoina = suoritus.koulutusmoduuli.laajuusArvo(default = 0.0)
 
-    if (opiskeluOikeudenTilaValmistunut && 4.0 <= päätasonSuorituksenLaajuusViikkoina && päätasonSuorituksenLaajuusViikkoina <= 38.0) {
+    if (opiskeluOikeudenTilaValmistunut && 4.0 <= päätasonSuorituksenLaajuusViikkoina && päätasonSuorituksenLaajuusViikkoina <= 200.0) {
       HttpStatus.fold(
         validateOsasuoritustenLaajuus(suoritus),
         validateTuvaOpiskeluJaUrasuunnittelutaidotOsasuoritusOlemassa(suoritus),

@@ -207,7 +207,7 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
 
       "valmistuneen päätason suorituksen laajuus liian suuri" in {
         val oo = tuvaOpiskeluOikeusValmistunut.copy(
-          suoritukset = List(tuvaPäätasonSuoritus(laajuus = Some(39)).copy(
+          suoritukset = List(tuvaPäätasonSuoritus(laajuus = Some(201)).copy(
             osasuoritukset = Some(
               List(
                 tuvaKoulutuksenMuunOsanSuoritus(
@@ -221,7 +221,7 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
                   arviointiPäivä = Some(date(2021, 9, 1))
                 ),
                 tuvaKoulutuksenMuunOsanSuoritus(
-                  koulutusmoduuli = tuvaArjenJaYhteiskunnallisenOsallisuudenTaidot(laajuus = Some(17)),
+                  koulutusmoduuli = tuvaArjenJaYhteiskunnallisenOsallisuudenTaidot(laajuus = Some(179)),
                   koodistoviite = "tutkintokoulutukseenvalmentava",
                   arviointiPäivä = Some(date(2021, 9, 1))
                 )
