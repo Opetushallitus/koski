@@ -50,17 +50,24 @@ jobs:
         id: owasp
         uses: nick-fields/retry@v2
         with:
-          max_attempts: 3
+          max_attempts: 5
           timeout_minutes: 10
           retry_wait_seconds: 1800
+          retry_on_exit_code: 99
           command: |
             make owasp | tee owasp-output.log
             STATUS="${PIPESTATUS[0]}"
+
             EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
             echo "errors<<$EOF" >> $GITHUB_OUTPUT
             grep -i error owasp-output.log >> $GITHUB_OUTPUT
             echo "$EOF" >> $GITHUB_OUTPUT
-            exit $STATUS
+
+            if grep -q "One or more dependencies were identified with vulnerabilities" owasp-output.log; then
+              exit $STATUS
+            else
+              exit 99
+            fi
 
       - name: Archive OWASP results
         if: always()
@@ -88,6 +95,6 @@ jobs:
         if: ${{ failure() }}
         with:
           status: ${{ job.status }}
-          message_format: "{emoji} *{workflow}* {status_message} in <{repo_url}|{repo}@{branch}> on <{commit_url}|{commit_sha}>\n\nOn tämäkin taas työmaa :---(\n${{ steps.owasp.outputs.errors }}"
+          message_format: "{emoji} *{workflow}* {status_message} in <{repo_url}|{repo}@{branch}> on <{commit_url}|{commit_sha}>\n\n${{ steps.owasp.outputs.errors }}"
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
