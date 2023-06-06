@@ -261,7 +261,7 @@ object ConvertMigriSchema {
                 case _ => None
               },
               lisätiedot = osasuoritus match {
-                case x: TutkinnonOsanSuoritus
+                case x: AmmatillisenTutkinnonOsanLisätiedollinen
                   if lisätiedotKoodiarvonTunnisteEquals("mukautettu", osasuoritus) =>
                   x.lisätiedot
                 case _ => None
@@ -307,7 +307,7 @@ object ConvertMigriSchema {
                     case _ => None
                   },
                   lisätiedot = osasuorituksenOsasuoritus match {
-                    case x: TutkinnonOsanSuoritus
+                    case x: AmmatillisenTutkinnonOsanLisätiedollinen
                       if lisätiedotKoodiarvonTunnisteEquals("mukautettu", osasuorituksenOsasuoritus) =>
                       x.lisätiedot
                     case _ => None
@@ -341,7 +341,7 @@ object ConvertMigriSchema {
   }
 
   private def lisätiedotKoodiarvonTunnisteEquals(koodiarvo: String, suoritus: Suoritus): Boolean = suoritus match {
-    case t: TutkinnonOsanSuoritus => t.lisätiedot.exists(_.exists(_.tunniste.koodiarvo == koodiarvo))
+    case t: AmmatillisenTutkinnonOsanLisätiedollinen => t.lisätiedot.exists(_.exists(_.tunniste.koodiarvo == koodiarvo))
     case _ => false
   }
 }

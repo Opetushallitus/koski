@@ -2,6 +2,7 @@ package fi.oph.koski.migri
 
 import fi.oph.koski.{DirtiesFixtures, KoskiHttpSpec}
 import fi.oph.koski.api.OpiskeluoikeusTestMethodsAmmatillinen
+import fi.oph.koski.documentation.AmmatillinenExampleData.arviointiKiitettävä
 import fi.oph.koski.documentation.{AmmatillinenOldExamples, ExamplesLukio2019, MuunAmmatillisenKoulutuksenExample}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat._
@@ -175,6 +176,43 @@ class MigriSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMe
     }
   }
 
+  "Lisätiedot-rakenne palautetaan aliosasuoritukselle, jos aliosasuorituksen lisätietojen tunnisteen koodiarvo on 'mukautettu'" in {
+    resetFixtures
+    val lisätiedot = Some(List(AmmatillisenTutkinnonOsanLisätieto(
+      Koodistokoodiviite("mukautettu", "ammatillisentutkinnonosanlisatieto"),
+      LocalizedString.finnish("lisätiedot")
+    )))
+
+    val osasuoritus = AmmatillinenOldExamples.mukautettuTutkinnonOsa.copy(
+      lisätiedot = None,
+      osasuoritukset = Some(List(
+        YhteisenTutkinnonOsanOsaAlueenSuoritus(
+          koulutusmoduuli = AmmatillisenTutkinnonÄidinkieli(
+            Koodistokoodiviite("AI", "ammatillisenoppiaineet"),
+            pakollinen = true,
+            kieli = Koodistokoodiviite("AI1", "oppiaineaidinkielijakirjallisuus"),
+            laajuus = Some(LaajuusOsaamispisteissä(11))
+          ),
+          arviointi = Some(List(arviointiKiitettävä)),
+          lisätiedot = lisätiedot
+        )
+      ))
+    )
+    val suoritukset = AmmatillinenOldExamples.mukautettu.opiskeluoikeudet.head.suoritukset
+    val opiskeluoikeus = AmmatillinenOldExamples.mukautettu.opiskeluoikeudet.head.withSuoritukset(suoritukset.map(_.withOsasuoritukset(Some(List(osasuoritus)))))
+
+    putOpiskeluoikeus(opiskeluoikeus, luva) {
+      verifyResponseStatusOk()
+    }
+    verifyResponseContent(luva.oid, user) { migriOppija =>
+      val lisätiedot = migriOppija.opiskeluoikeudet.flatMap(lisätiedotRakenteet)
+      lisätiedot shouldBe List(AmmatillisenTutkinnonOsanLisätieto(
+        Koodistokoodiviite("mukautettu", "ammatillisentutkinnonosanlisatieto"),
+        LocalizedString.finnish("lisätiedot")
+      ))
+    }
+  }
+
   "Muilla koodiarvoilla lisätiedot-rakenne on piilotettu" in {
     resetFixtures
     val lisätiedot = Some(List(AmmatillisenTutkinnonOsanLisätieto(
@@ -186,6 +224,40 @@ class MigriSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMe
       lisätiedot,
       None
     )
+    putOpiskeluoikeus(opiskeluoikeus, luva) {
+      verifyResponseStatusOk()
+    }
+    verifyResponseContent(luva.oid, user) { migriOppija =>
+      val lisätiedot = migriOppija.opiskeluoikeudet.flatMap(lisätiedotRakenteet)
+      lisätiedot shouldBe(Nil)
+    }
+  }
+
+  "Muilla koodiarvoilla lisätiedot-rakenne on piilotettu myös aliosasuorituksilta" in {
+    resetFixtures
+    val lisätiedot = Some(List(AmmatillisenTutkinnonOsanLisätieto(
+      Koodistokoodiviite("muu", "ammatillisentutkinnonosanlisatieto"),
+      LocalizedString.finnish("lisätiedot")
+    )))
+
+    val osasuoritus = AmmatillinenOldExamples.mukautettuTutkinnonOsa.copy(
+      lisätiedot = None,
+      osasuoritukset = Some(List(
+        YhteisenTutkinnonOsanOsaAlueenSuoritus(
+          koulutusmoduuli = AmmatillisenTutkinnonÄidinkieli(
+            Koodistokoodiviite("AI", "ammatillisenoppiaineet"),
+            pakollinen = true,
+            kieli = Koodistokoodiviite("AI1", "oppiaineaidinkielijakirjallisuus"),
+            laajuus = Some(LaajuusOsaamispisteissä(11))
+          ),
+          arviointi = Some(List(arviointiKiitettävä)),
+          lisätiedot = lisätiedot
+        )
+      ))
+    )
+    val suoritukset = AmmatillinenOldExamples.mukautettu.opiskeluoikeudet.head.suoritukset
+    val opiskeluoikeus = AmmatillinenOldExamples.mukautettu.opiskeluoikeudet.head.withSuoritukset(suoritukset.map(_.withOsasuoritukset(Some(List(osasuoritus)))))
+
     putOpiskeluoikeus(opiskeluoikeus, luva) {
       verifyResponseStatusOk()
     }

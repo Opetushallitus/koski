@@ -519,23 +519,25 @@ object AmmatillinenOldExamples {
   lazy val mukautettu = oppija(opiskeluoikeus = opiskeluoikeus(
     tutkinto = autoalanPerustutkinnonSuoritus().copy(suoritustapa = suoritustapaOps),
     osat = Some(List(
-      YhteisenAmmatillisenTutkinnonOsanSuoritus(
-        koulutusmoduuli = YhteinenTutkinnonOsa(Koodistokoodiviite("101053", Some("Viestintä- ja vuorovaikutusosaaminen"), "tutkinnonosat", None), true, Some(LaajuusOsaamispisteissä(11))),
-        lisätiedot = Some(List(AmmatillisenTutkinnonOsanLisätieto(
-          Koodistokoodiviite("mukautettu", "ammatillisentutkinnonosanlisatieto"),
-          "Tutkinnon osan ammattitaitovaatimuksia ja osaamisen arviointi on mukautettu (ja/tai niistä on poikettu) ammatillisesta peruskoulutuksesta annetun lain\n(630/1998, muutos 246/2015) 19 a (ja/tai 21) §:n perusteella"))),
-        suorituskieli = None,
-        alkamispäivä = None,
-        toimipiste = Some(stadinToimipiste),
-        arviointi = Some(List(arviointiKiitettävä.copy(kuvaus=Some("Erinomaista kehitystä")))),
-        vahvistus = vahvistusValinnaisellaTittelillä(date(2014, 11, 8), stadinAmmattiopisto),
-        tutkinnonOsanRyhmä = yhteisetTutkinnonOsat,
-        osasuoritukset = Some(List(
-          YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonÄidinkieli(Koodistokoodiviite("AI", "ammatillisenoppiaineet"), pakollinen = true, kieli = Koodistokoodiviite("AI1", "oppiaineaidinkielijakirjallisuus"), laajuus = Some(LaajuusOsaamispisteissä(11))), arviointi = Some(List(arviointiKiitettävä))),
-        ))
-      )
+      mukautettuTutkinnonOsa
     ))
   ))
+
+  lazy val mukautettuTutkinnonOsa = YhteisenAmmatillisenTutkinnonOsanSuoritus(
+    koulutusmoduuli = YhteinenTutkinnonOsa(Koodistokoodiviite("101053", Some("Viestintä- ja vuorovaikutusosaaminen"), "tutkinnonosat", None), true, Some(LaajuusOsaamispisteissä(11))),
+    lisätiedot = Some(List(AmmatillisenTutkinnonOsanLisätieto(
+      Koodistokoodiviite("mukautettu", "ammatillisentutkinnonosanlisatieto"),
+      "Tutkinnon osan ammattitaitovaatimuksia ja osaamisen arviointi on mukautettu (ja/tai niistä on poikettu) ammatillisesta peruskoulutuksesta annetun lain\n(630/1998, muutos 246/2015) 19 a (ja/tai 21) §:n perusteella"))),
+    suorituskieli = None,
+    alkamispäivä = None,
+    toimipiste = Some(stadinToimipiste),
+    arviointi = Some(List(arviointiKiitettävä.copy(kuvaus = Some("Erinomaista kehitystä")))),
+    vahvistus = vahvistusValinnaisellaTittelillä(date(2014, 11, 8), stadinAmmattiopisto),
+    tutkinnonOsanRyhmä = yhteisetTutkinnonOsat,
+    osasuoritukset = Some(List(
+      YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonÄidinkieli(Koodistokoodiviite("AI", "ammatillisenoppiaineet"), pakollinen = true, kieli = Koodistokoodiviite("AI1", "oppiaineaidinkielijakirjallisuus"), laajuus = Some(LaajuusOsaamispisteissä(11))), arviointi = Some(List(arviointiKiitettävä))),
+    ))
+  )
 
   lazy val muunAmmatillisenTutkinnonOsanSuoritus = MuunAmmatillisenTutkinnonOsanSuoritus(
     koulutusmoduuli = MuuValtakunnallinenTutkinnonOsa(Koodistokoodiviite("104052", "tutkinnonosat"), true, None),
