@@ -152,54 +152,49 @@ class MigriSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMe
     }
   }
 
-  "Tunnustettu rakenne palautetaan, jos osasuorituksen lisätietojen tunnisteen koodiarvo on 'mukautettu'" in {
+  "Lisätiedot-rakenne palautetaan, jos osasuorituksen lisätietojen tunnisteen koodiarvo on 'mukautettu'" in {
     resetFixtures
     val lisätiedot = Some(List(AmmatillisenTutkinnonOsanLisätieto(
       Koodistokoodiviite("mukautettu", "ammatillisentutkinnonosanlisatieto"),
       LocalizedString.finnish("lisätiedot")
     )))
-    val tunnustaminen = Some(OsaamisenTunnustaminen(
-      osaaminen = None,
-      selite = LocalizedString.finnish("osaamisen tunnustaminen")
-    ))
     val opiskeluoikeus = modifyOsasuoritukset(
       AmmatillinenOldExamples.mukautettu.opiskeluoikeudet.head,
       lisätiedot,
-      tunnustaminen
+      None
     )
     putOpiskeluoikeus(opiskeluoikeus, luva) {
       verifyResponseStatusOk()
     }
     verifyResponseContent(luva.oid, user) { migriOppija =>
-      val tunnustetut = migriOppija.opiskeluoikeudet.flatMap(tunnustettuRakenteet)
-      tunnustetut shouldBe(List(MigriOsaamisenTunnustaminen(LocalizedString.finnish("osaamisen tunnustaminen"))))
+      val lisätiedot = migriOppija.opiskeluoikeudet.flatMap(lisätiedotRakenteet)
+      lisätiedot shouldBe List(AmmatillisenTutkinnonOsanLisätieto(
+        Koodistokoodiviite("mukautettu", "ammatillisentutkinnonosanlisatieto"),
+        LocalizedString.finnish("lisätiedot")
+      ))
     }
   }
 
-  "Muilla koodiarvoilla tunnustettu rakenne on piilotettu" in {
+  "Muilla koodiarvoilla lisätiedot-rakenne on piilotettu" in {
     resetFixtures
     val lisätiedot = Some(List(AmmatillisenTutkinnonOsanLisätieto(
       Koodistokoodiviite("muu", "ammatillisentutkinnonosanlisatieto"),
       LocalizedString.finnish("lisätiedot")
     )))
-    val tunnustaminen = Some(OsaamisenTunnustaminen(
-      osaaminen = None,
-      selite = LocalizedString.finnish("osaamisen tunnustaminen")
-    ))
     val opiskeluoikeus = modifyOsasuoritukset(
       AmmatillinenOldExamples.mukautettu.opiskeluoikeudet.head,
       lisätiedot,
-      tunnustaminen
+      None
     )
     putOpiskeluoikeus(opiskeluoikeus, luva) {
       verifyResponseStatusOk()
     }
     verifyResponseContent(luva.oid, user) { migriOppija =>
-      val tunnustetut = migriOppija.opiskeluoikeudet.flatMap(tunnustettuRakenteet)
-      tunnustetut shouldBe(Nil)
+      val lisätiedot = migriOppija.opiskeluoikeudet.flatMap(lisätiedotRakenteet)
+      lisätiedot shouldBe(Nil)
     }
   }
-  
+
   private def postOid[A](oid: String, user: MockUser)(f: => A): A = {
     post(
       "api/luovutuspalvelu/migri/oid",
@@ -228,6 +223,12 @@ class MigriSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMe
     val osasuoritukset = opiskeluoikeus.suoritukset.flatMap(_.osasuoritukset).flatten
     val osasuoritustenOsasuoritukset = osasuoritukset.flatMap(_.osasuoritukset).flatten
     osasuoritukset.flatMap(_.tunnustettu) ++ osasuoritustenOsasuoritukset.flatMap(_.tunnustettu)
+  }
+
+  private def lisätiedotRakenteet(opiskeluoikeus: MigriOpiskeluoikeus): Seq[AmmatillisenTutkinnonOsanLisätieto] = {
+    val osasuoritukset = opiskeluoikeus.suoritukset.flatMap(_.osasuoritukset).flatten
+    val osasuoritustenOsasuoritukset = osasuoritukset.flatMap(_.osasuoritukset).flatten
+    (osasuoritukset.flatMap(_.lisätiedot) ++ osasuoritustenOsasuoritukset.flatMap(_.lisätiedot)).flatten
   }
 
   def modifyOsasuoritukset(
