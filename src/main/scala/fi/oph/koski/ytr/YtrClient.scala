@@ -122,6 +122,8 @@ object MockYrtClient extends YtrClient {
 
   override def getCertificateStatus(req: YoTodistusHetuRequest): Either[HttpStatus, YtrCertificateResponse] = {
     (req.ssn, yoTodistusRequestTimes.get(s"${req.ssn}_${req.language}")) match {
+      case _ if req.ssn == ylioppilasLukiolainenRikki.hetu.get && req.language == "sv" =>
+        Right(YtrCertificateServiceUnavailable())
       case (hetu, _) if hetu == ylioppilasLukiolainenMaksamatonSuoritus.hetu.get =>
         Right(YtrCertificateBlocked())
       case (hetu, time) if hetu == ylioppilasLukiolainenVanhaSuoritus.hetu.get =>
@@ -132,10 +134,9 @@ object MockYrtClient extends YtrClient {
         if (req.ssn == ylioppilasLukiolainenTimeouttaava.hetu.get) {
           Right(YtrCertificateTimeout(time))
         } else if (req.ssn == ylioppilasLukiolainenRikki.hetu.get) {
-          if (req.language == "fi") {
-            Right(YtrCertificateInternalError(time))
-          } else {
-            Left(KoskiErrorCategory.internalError())
+          req.language match {
+            case "fi" => Right(YtrCertificateInternalError(time))
+            case _ => Left(KoskiErrorCategory.internalError())
           }
         } else {
           Right(YtrCertificateCompleted(

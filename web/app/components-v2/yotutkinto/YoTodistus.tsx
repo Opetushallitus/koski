@@ -75,6 +75,8 @@ export const YoTodistus: React.FC<YoTodistusProps> = (props) => {
     if (isYtrCertificateBlocked(state)) return t('yotodistus-error: blocked')
     if (isYtrCertificateOldExamination(state))
       return t('yotodistus-error: old examination')
+    if (isYtrCertificateServiceUnavailable(state))
+      return t('yotodistus-error: ytr offline')
   }, [state])
 
   const errorText = useMemo(() => {
@@ -82,10 +84,7 @@ export const YoTodistus: React.FC<YoTodistusProps> = (props) => {
       return tTemplate('yotodistus-error: timeout', {
         time: ISO2FinnishDateTime(state.requestedTime)
       })
-    if (
-      isYtrCertificateInternalError(state) ||
-      isYtrCertificateServiceUnavailable(state)
-    )
+    if (isYtrCertificateInternalError(state))
       return t('yotodistus-error: ytr error')
     if (isError(generate) || isError(stateFetch)) {
       return t('yotodistus-error: koski error')
