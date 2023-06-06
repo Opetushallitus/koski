@@ -27,6 +27,7 @@ import fi.oph.koski.pulssi.{KoskiPulssi, PrometheusRepository}
 import fi.oph.koski.raportointikanta.{Public, RaportointiDatabase, RaportointikantaService}
 import fi.oph.koski.schedule.{KoskiScheduledTasks, PerustiedotManualSyncScheduler, PerustiedotSyncScheduler}
 import fi.oph.koski.sso.{CasOppijaCreationService, CasService, KoskiSessionRepository}
+import fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.AktiivisetJaPaattyneetOpinnotService
 import fi.oph.koski.suoritusjako.suoritetuttutkinnot.SuoritetutTutkinnotService
 import fi.oph.koski.suoritusjako.{SuoritusjakoRepository, SuoritusjakoRepositoryV2, SuoritusjakoService, SuoritusjakoServiceV2}
 import fi.oph.koski.suostumus.SuostumuksenPeruutusService
@@ -170,7 +171,7 @@ class KoskiApplication(
   lazy val oppijaFacade = new KoskiOppijaFacade(henkilöRepository, opiskeluoikeusRepository, ytrPossu, historyRepository, ytrHistoryRepository, globaaliValidator, config, hetu)
   lazy val oppijaFacadeV2 = new KoskiOppijaFacade(henkilöRepository, opiskeluoikeusRepositoryV2, ytrPossu, historyRepository, ytrHistoryRepository, globaaliValidatorV2, config, hetu)
   lazy val suoritusjakoRepository = new SuoritusjakoRepository(masterDatabase.db)
-  lazy val suoritusjakoService = new SuoritusjakoService(suoritusjakoRepository, oppijaFacade, suoritetutTutkinnotService)
+  lazy val suoritusjakoService = new SuoritusjakoService(suoritusjakoRepository, oppijaFacade, suoritetutTutkinnotService, aktiivisetJaPäättyneetOpinnotService)
   lazy val suoritusjakoRepositoryV2 = new SuoritusjakoRepositoryV2(masterDatabase.db)
   lazy val suoritusjakoServiceV2 = new SuoritusjakoServiceV2(suoritusjakoRepositoryV2, oppijaFacade, henkilöRepository, opiskeluoikeusRepositoryV2, this)
   lazy val mydataRepository = new MyDataRepository(masterDatabase.db)
@@ -187,6 +188,7 @@ class KoskiApplication(
   lazy val koskiLocalizationRepository = LocalizationRepository(config, new KoskiLocalizationConfig)
   lazy val päivitetytOpiskeluoikeudetJono = new PäivitetytOpiskeluoikeudetJonoService(this)
   lazy val suoritetutTutkinnotService = new SuoritetutTutkinnotService(this)
+  lazy val aktiivisetJaPäättyneetOpinnotService = new AktiivisetJaPaattyneetOpinnotService(this)
 
   lazy val valpasLocalizationRepository = LocalizationRepository(config, new ValpasLocalizationConfig)
   lazy val valpasRajapäivätService = ValpasRajapäivätService(config)

@@ -4,7 +4,7 @@ import java.sql.{Date, Timestamp}
 import java.time.{LocalDate, LocalDateTime}
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.json.JsonManipulation.removeFields
-import fi.oph.koski.json.SensitiveDataAllowed
+import fi.oph.koski.json.{JsonSerializer, SensitiveDataAllowed}
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
 import fi.oph.koski.schema.Organisaatio.Oid
 import fi.oph.koski.schema.{FilterNonAnnotationableSensitiveData, _}
@@ -611,8 +611,20 @@ case class OppilaitosIPOsoiteRow(username: String, ip: String)
 case class PreferenceRow(organisaatioOid: String, koulutustoimijaOid: Option[String], `type`: String, key: String, value: JValue)
 
 case class SuoritusjakoRow(id: Long, secret: String, oppijaOid: String, suoritusIds: JValue, kokonaisuudet: JValue, voimassaAsti: Date, aikaleima: Timestamp) {
-  def jaonTyyppi: Option[String] = if (kokonaisuudet.children.nonEmpty) Some("suoritetut-tutkinnot") else None // TODO: should look kokonaisuudet.children.head
+  def jaonTyyppi: Option[String] = {
+    JsonSerializer.validateAndExtract[List[JaonTyyppi]](kokonaisuudet)
+      .map(_.map(_.tyyppi).toSet.toList) match {
+      case Right(List(jaonTyyppi)) => Some(jaonTyyppi)
+      case Right(Nil) => None
+      case Right(t) => throw new InternalError(s"Jaon tyyppitietoa ${t} ei tuettu")
+      case Left(validationError) => throw new InternalError(validationError.toString)
+    }
+  }
 }
+
+case class JaonTyyppi(
+  tyyppi: String
+)
 
 case class SuoritusjakoRowV2(secret: String, oppijaOid: String, data: JValue, voimassaAsti: Date, aikaleima: Timestamp)
 

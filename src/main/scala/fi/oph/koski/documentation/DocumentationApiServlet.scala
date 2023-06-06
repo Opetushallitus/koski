@@ -8,6 +8,7 @@ import fi.oph.koski.koskiuser.Unauthenticated
 import fi.oph.koski.migri.MigriSchema
 import fi.oph.koski.schema.KoskiSchema
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
+import fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotSchema
 import fi.oph.koski.suoritusjako.suoritetuttutkinnot.SuoritetutTutkinnotSchema
 import fi.oph.koski.valvira.ValviraSchema
 import fi.oph.koski.valpas.kela.ValpasKelaSchema
@@ -55,6 +56,10 @@ class DocumentationApiServlet extends KoskiSpecificApiServlet with Unauthenticat
 
   get("/suoritetut-tutkinnot-oppija-schema.json") {
     SuoritetutTutkinnotSchema.schemaJson
+  }
+
+  get("/aktiiviset-ja-paattyneet-opinnot-oppija-schema.json") {
+    AktiivisetJaPäättyneetOpinnotSchema.schemaJson
   }
 
   get("/ytl-oppija-schema.json") {
