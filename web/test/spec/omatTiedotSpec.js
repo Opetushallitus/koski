@@ -424,7 +424,8 @@ describe('Omat tiedot', function () {
                   '9. vuosiluokka\n' +
                   '8. vuosiluokka\n' +
                   'Jaettavat kokonaisuudet\n' +
-                  'Suoritetut tutkinnot'
+                  'Suoritetut tutkinnot\n' +
+                  'Aktiiviset ja päättyneet opinnot'
               )
             })
 
@@ -707,7 +708,8 @@ describe('Omat tiedot', function () {
                     'Dipl.ins., konetekniikka ( 2013 — 2016 , päättynyt )\n' +
                     '8 opintojaksoa\n' +
                     'Jaettavat kokonaisuudet\n' +
-                    'Suoritetut tutkinnot'
+                    'Suoritetut tutkinnot\n' +
+                    'Aktiiviset ja päättyneet opinnot'
                 )
               })
             })
@@ -975,7 +977,8 @@ describe('Omat tiedot', function () {
                   '8. vuosiluokka\n' +
                   '7. vuosiluokka\n' +
                   'Jaettavat kokonaisuudet\n' +
-                  'Suoritetut tutkinnot'
+                  'Suoritetut tutkinnot\n' +
+                  'Aktiiviset ja päättyneet opinnot'
               )
             })
           })
@@ -1105,6 +1108,61 @@ describe('Omat tiedot', function () {
               expect(suoritusjako.isVisible()).to.equal(true)
               expect(isElementVisible(S('.suoritettu-tutkinto'))).to.equal(true)
               expect(S('.suoritettu-tutkinto h3').text()).to.equal(
+                'Stadin ammatti- ja aikuisopisto'
+              )
+            })
+          })
+        })
+
+        describe('Aktiiviset ja päättyneet opinnot', function () {
+          before(
+            authentication.logout,
+            etusivu.openPage,
+            etusivu.login(),
+            wait.until(korhopankki.isReady),
+            korhopankki.login('280618-402H', 'Ammattilainen', 'Aarne'),
+            wait.until(omattiedot.isVisible),
+            click(omattiedot.suoritusjakoButton),
+            wait.until(() =>
+              isElementVisible(omattiedot.luoUusiSuoritusjakoButton)
+            ),
+            click(omattiedot.luoUusiSuoritusjakoButton)
+          )
+
+          describe('aktiivisten ja päättyneiden opintojen jakaminen', function () {
+            before(
+              form.selectAktiivisetJaPaattyneetOpinnot(),
+              form.createSuoritusjako(),
+              wait.until(form.suoritusjako(1).isVisible)
+            )
+
+            it('onnistuu', function () {
+              var jako = form.suoritusjako(1)
+              var secret = jako.url().split('/') // otetaan salaisuus talteen jaon hakemista varten
+              window.secrets.aktiivisetJaPaattyneetOpinnot =
+                secret[secret.length - 1]
+              expect(jako.isVisible()).to.equal(true)
+            })
+          })
+
+          describe('Katselu', function () {
+            var suoritusjako = SuoritusjakoPage()
+
+            before(
+              authentication.logout,
+              suoritusjako.openPage(
+                'aktiivisetJaPaattyneetOpinnot',
+                'aktiiviset-ja-paattyneet-opinnot'
+              ),
+              wait.until(suoritusjako.isVisible)
+            )
+
+            it('onnistuu', function () {
+              expect(suoritusjako.isVisible()).to.equal(true)
+              expect(
+                isElementVisible(S('.aktiivinen-tai-paattynyt-opinto'))
+              ).to.equal(true)
+              expect(S('.aktiivinen-tai-paattynyt-opinto h3').text()).to.equal(
                 'Stadin ammatti- ja aikuisopisto'
               )
             })

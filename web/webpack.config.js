@@ -10,6 +10,7 @@ module.exports = {
     omattiedot: './app/OmatTiedot.jsx',
     suoritusjako: './app/Suoritusjako.jsx',
     suoritetuttutkinnot: './app/SuoritetutTutkinnot.tsx',
+    aktiivisetjapaattyneetopinnot: './app/AktiivisetJaPaattyneetOpinnot.tsx',
     login: './app/VirkailijaLogin.jsx',
     pulssi: './app/Pulssi.jsx',
     lander: './app/Lander.jsx',

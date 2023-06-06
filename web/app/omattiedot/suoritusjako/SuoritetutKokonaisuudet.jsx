@@ -5,7 +5,13 @@ const SuoritetutKokonaisuudet = ({ handleSelectedItems, allDisabled }) => {
   const [checkedItems, setCheckedItems] = useState({})
 
   const checkboxListData = useMemo(
-    () => [{ tyyppi: 'suoritetut-tutkinnot', label: 'Suoritetut tutkinnot' }],
+    () => [
+      { tyyppi: 'suoritetut-tutkinnot', label: 'Suoritetut tutkinnot' },
+      {
+        tyyppi: 'aktiiviset-ja-paattyneet-opinnot',
+        label: 'Aktiiviset ja päättyneet opinnot'
+      }
+    ],
     []
   )
 

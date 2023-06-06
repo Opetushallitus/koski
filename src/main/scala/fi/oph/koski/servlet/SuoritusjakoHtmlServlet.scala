@@ -15,6 +15,11 @@ class SuoritusjakoHtmlServlet(implicit val application: KoskiApplication) extend
     htmlIndex("koski-suoritetuttutkinnot.js", responsive = true, nonce = nonce)
   })
 
+  get("/aktiiviset-ja-paattyneet-opinnot/:secret")(nonce => {
+    setLangCookieFromDomainIfNecessary
+    htmlIndex("koski-aktiivisetjapaattyneetopinnot.js", responsive = true, nonce = nonce)
+  })
+
   get("/:secret")(nonce => {
     setLangCookieFromDomainIfNecessary
     htmlIndex("koski-suoritusjako.js", responsive = true, nonce = nonce)

@@ -14,6 +14,7 @@ import { YtrCertificateResponse } from '../types/fi/oph/koski/ytr/YtrCertificate
 import { tapLeftP } from './fp/either'
 import { queryString } from './url'
 import { SuoritetutTutkinnotOppija } from '../types/fi/oph/koski/suoritusjako/suoritetuttutkinnot/SuoritetutTutkinnotOppija'
+import { AktiivisetJaPäättyneetOpinnotOppija } from '../types/fi/oph/koski/suoritusjako/aktiivisetjapaattyneetopinnot/AktiivisetJaPaattyneetOpinnotOppija'
 
 const apiUrl = (path: string, query?: object): string =>
   `/koski/api/${path}${queryString({ class_refs: 'true', ...query })}`
@@ -136,6 +137,13 @@ export const fetchSuoritetutTutkinnot = (id: string) =>
   handleExpiredSession(
     apiGet<SuoritetutTutkinnotOppija>(
       apiUrl(`opinnot/suoritetut-tutkinnot/${id}`)
+    )
+  )
+
+export const fetchAktiivisetJaPäättyneetOpinnot = (id: string) =>
+  handleExpiredSession(
+    apiGet<AktiivisetJaPäättyneetOpinnotOppija>(
+      apiUrl(`opinnot/aktiiviset-ja-paattyneet-opinnot/${id}`)
     )
   )
 

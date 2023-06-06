@@ -27,6 +27,9 @@ function OmatTiedotPage() {
     suoritusjakoButton: function () {
       return S('header button:contains(Jaa suoritustietoja)')
     },
+    luoUusiSuoritusjakoButton: function () {
+      return S('button:contains(Luo uusi)')
+    },
     selectOpiskelija: function () {
       var elem = findSingle('.header__oppijanvalitsin')()
       return findFirstNotThrowing(elem)
@@ -189,6 +192,15 @@ function SuoritusjakoForm() {
     selectSuoritetutTutkinnot: function () {
       function option() {
         return S('.create-suoritusjako__list input[id="suoritetut-tutkinnot"]')
+      }
+
+      return click(option)
+    },
+    selectAktiivisetJaPaattyneetOpinnot: function () {
+      function option() {
+        return S(
+          '.create-suoritusjako__list input[id="aktiiviset-ja-paattyneet-opinnot"]'
+        )
       }
 
       return click(option)
