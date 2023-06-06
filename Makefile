@@ -153,7 +153,7 @@ lint: eslint scalastyle
 
 .PHONY: owasp
 owasp:
-	mvn dependency-check:check -P owasp
+	mvn dependency-check:check -P owasp --batch-mode
 
 .PHONY: owaspresults
 owaspresults:
