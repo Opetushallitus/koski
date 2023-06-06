@@ -1,30 +1,26 @@
 package fi.oph.koski.suoritusjako.suoritetuttutkinnot
 
-import fi.oph.koski.config.{Environment, KoskiApplication}
+import fi.oph.koski.config.{KoskiApplication}
 import fi.oph.koski.executors.GlobalExecutionContext
-import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
-import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.http.{HttpStatus}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log._
-import fi.oph.koski.schema
-import fi.oph.koski.util.Futures
 
 import java.time.LocalDate
-import scala.concurrent.{Future, TimeoutException}
-import scala.concurrent.duration.DurationInt
-import scala.util.control.NonFatal
-import cats.data.EitherT
+import fi.oph.koski.suoritusjako.common.{OpiskeluoikeusFacade, RawOppija}
 
 class SuoritetutTutkinnotService(application: KoskiApplication) extends GlobalExecutionContext with Logging {
-  private val suoritetutTutkinnotOpiskeluoikeusRepository = new SuoritetutTutkinnotOpiskeluoikeusRepository(
-    application.replicaDatabase.db,
-    application.validatingAndResolvingExtractor
+
+  private val opiskeluoikeusFacade = new OpiskeluoikeusFacade[SuoritetutTutkinnotOpiskeluoikeus](
+    application,
+    Some(SuoritetutTutkinnotYlioppilastutkinnonOpiskeluoikeus.fromKoskiSchema),
+    Some(SuoritetutTutkinnotKorkeakoulunOpiskeluoikeus.fromKoskiSchema)
   )
 
   def findSuoritetutTutkinnotOppija(oppijaOid: String)
     (implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, SuoritetutTutkinnotOppija] = {
 
-    val suoritetutTutkinnotOppija = haeOpiskeluoikeudet(oppijaOid)
+    val suoritetutTutkinnotOppija = opiskeluoikeusFacade.haeOpiskeluoikeudet(oppijaOid, SuoritetutTutkinnotSchema.schemassaTuetutOpiskeluoikeustyypit)
       .map(teePalautettavaSuoritetutTutkinnotOppija)
 
     suoritetutTutkinnotOppija.map(sto => sto.opiskeluoikeudet.map(oo =>
@@ -34,97 +30,12 @@ class SuoritetutTutkinnotService(application: KoskiApplication) extends GlobalEx
     suoritetutTutkinnotOppija
   }
 
-  case class RawOppija(
-    henkilö: LaajatOppijaHenkilöTiedot,
-    opiskeluoikeudet: Seq[SuoritetutTutkinnotOpiskeluoikeus],
-    ylioppilastutkinnot: Seq[SuoritetutTutkinnotYlioppilastutkinnonOpiskeluoikeus],
-    korkeakoulututkinnot: Seq[SuoritetutTutkinnotKorkeakoulunOpiskeluoikeus],
-  )
-
-  private def haeOpiskeluoikeudet(oppijaOid: String)(
-    implicit user: KoskiSpecificSession
-  ): Either[HttpStatus, RawOppija] = {
-    val notFoundResult = KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia(
-      "Oppijaa ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun."
-    )
-
-    if (user.hasGlobalReadAccess) {
-      val masterHenkilöFut: Future[Either[HttpStatus, LaajatOppijaHenkilöTiedot]] = Future(
-        application.opintopolkuHenkilöFacade.findMasterOppija(oppijaOid)
-          .toRight(notFoundResult)
-      )
-
-      val ytrResultFut: Future[Either[HttpStatus, Seq[SuoritetutTutkinnotYlioppilastutkinnonOpiskeluoikeus]]] = {
-        masterHenkilöFut
-          .map(_.flatMap(masterHenkilö =>
-            try {
-              Right(application.ytr.findByOppija(masterHenkilö).map {
-                case yo: schema.YlioppilastutkinnonOpiskeluoikeus =>
-                  SuoritetutTutkinnotYlioppilastutkinnonOpiskeluoikeus.fromKoskiSchema(yo)
-              })
-            } catch {
-              case NonFatal(e) =>
-                logger.warn(e)("Failed to fetch data from YTR")
-                Left(KoskiErrorCategory.unavailable.ytr())
-            }
-          ))
-      }
-
-      val virtaResultFut: Future[Either[HttpStatus, Seq[SuoritetutTutkinnotKorkeakoulunOpiskeluoikeus]]] = {
-        masterHenkilöFut
-          .map(_.flatMap(masterHenkilö =>
-            try {
-              Right(application.virta.findByOppija(masterHenkilö).map {
-                case kk: schema.KorkeakoulunOpiskeluoikeus =>
-                  SuoritetutTutkinnotKorkeakoulunOpiskeluoikeus.fromKoskiSchema(kk)
-              })
-            } catch {
-              case NonFatal(e) =>
-                logger.warn(e)("Failed to fetch data from Virta")
-                Left(KoskiErrorCategory.unavailable.virta())
-            }
-          ))
-      }
-
-      val opiskeluoikeudetFut: Future[Either[HttpStatus, Seq[SuoritetutTutkinnotOpiskeluoikeus]]] =
-        masterHenkilöFut
-          .map(_.flatMap(masterHenkilö =>
-            Right(suoritetutTutkinnotOpiskeluoikeusRepository.getOppijanKaikkiOpiskeluoikeudet(
-              palautettavatOpiskeluoikeudenTyypit = SuoritetutTutkinnotSchema.schemassaTuetutOpiskeluoikeustyypit,
-              oppijaMasterOid = masterHenkilö.oid
-            ))
-          ))
-
-      val rawOppija = for {
-        henkilö <- EitherT(masterHenkilöFut)
-        opiskeluoikeudet <- EitherT(opiskeluoikeudetFut)
-        ytrResult <- EitherT(ytrResultFut)
-        virtaResult <- EitherT(virtaResultFut)
-      } yield RawOppija(henkilö, opiskeluoikeudet, ytrResult, virtaResult)
-
-      try {
-        Futures.await(
-          future = rawOppija.value,
-          atMost = if (Environment.isUnitTestEnvironment(application.config)) { 10.seconds } else { 5.minutes }
-        )
-      } catch {
-        case _: TimeoutException => Left(KoskiErrorCategory.unavailable())
-      }
-    } else {
-      Left(notFoundResult)
-    }
-  }
-
   private def teePalautettavaSuoritetutTutkinnotOppija(
-    rawOppija: RawOppija
+    rawOppija: RawOppija[SuoritetutTutkinnotOpiskeluoikeus]
   ): SuoritetutTutkinnotOppija = {
-    val opiskeluoikeudet = rawOppija.opiskeluoikeudet
-    val ytrOpiskeluoikeudet = rawOppija.ylioppilastutkinnot
-    val virtaOpiskeluoikeudet = rawOppija.korkeakoulututkinnot
-
     SuoritetutTutkinnotOppija(
       henkilö = Henkilo.fromOppijaHenkilö(rawOppija.henkilö),
-      opiskeluoikeudet = suodataPalautettavat(opiskeluoikeudet ++ ytrOpiskeluoikeudet ++ virtaOpiskeluoikeudet).toList
+      opiskeluoikeudet = suodataPalautettavat(rawOppija.opiskeluoikeudet).toList
     )
   }
 

@@ -5,7 +5,7 @@ import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
 import fi.oph.scalaschema.annotation.{Description, Title}
 
 object SuoritetutTutkinnotYlioppilastutkinnonOpiskeluoikeus {
-  def fromKoskiSchema(yo: schema.YlioppilastutkinnonOpiskeluoikeus) = SuoritetutTutkinnotYlioppilastutkinnonOpiskeluoikeus(
+  def fromKoskiSchema(yo: schema.YlioppilastutkinnonOpiskeluoikeus): SuoritetutTutkinnotOpiskeluoikeus = SuoritetutTutkinnotYlioppilastutkinnonOpiskeluoikeus(
     oppilaitos = yo.oppilaitos.map(ol =>
       Oppilaitos(
         ol.oid,
