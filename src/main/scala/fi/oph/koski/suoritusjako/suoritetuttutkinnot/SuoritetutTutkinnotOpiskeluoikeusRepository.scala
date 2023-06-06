@@ -17,7 +17,7 @@ class SuoritetutTutkinnotOpiskeluoikeusRepository(
   def getOppijanKaikkiOpiskeluoikeudet(
     palautettavatOpiskeluoikeudenTyypit: Seq[String],
     oppijaMasterOid: String
-  ): Seq[SuoritetutTutkinnotOppijanOpiskeluoikeusRow] = {
+  ): Seq[SuoritetutTutkinnotOpiskeluoikeus] = {
 
     runDbSync(SQLHelpers.concatMany(Some(
       sql"""
@@ -72,6 +72,7 @@ select
 from opiskeluoikeus_palautettavat
 order by "masterOppijaOid", opiskeluoikeus_oid
     """)).as[SuoritetutTutkinnotOppijanOpiskeluoikeusRow])
+      .map(_.opiskeluoikeus)
   }
 
   private implicit def getOppijanOpiskeluoikeusRow: GetResult[SuoritetutTutkinnotOppijanOpiskeluoikeusRow] = GetResult(r => {
@@ -83,7 +84,6 @@ order by "masterOppijaOid", opiskeluoikeus_oid
     )
 
     SuoritetutTutkinnotOppijanOpiskeluoikeusRow(
-      masterOppijaOid = r.rs.getString("masterOppijaOid"),
       opiskeluoikeus = opiskeluoikeus
     )
   })
@@ -102,7 +102,6 @@ order by "masterOppijaOid", opiskeluoikeus_oid
 }
 
 case class SuoritetutTutkinnotOppijanOpiskeluoikeusRow(
-  masterOppijaOid: String,
   opiskeluoikeus: SuoritetutTutkinnotOpiskeluoikeus
 )
 

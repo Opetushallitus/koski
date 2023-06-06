@@ -36,7 +36,7 @@ class SuoritetutTutkinnotService(application: KoskiApplication) extends GlobalEx
 
   case class RawOppija(
     henkilö: LaajatOppijaHenkilöTiedot,
-    opiskeluoikeudet: Seq[SuoritetutTutkinnotOppijanOpiskeluoikeusRow],
+    opiskeluoikeudet: Seq[SuoritetutTutkinnotOpiskeluoikeus],
     ylioppilastutkinnot: Seq[SuoritetutTutkinnotYlioppilastutkinnonOpiskeluoikeus],
     korkeakoulututkinnot: Seq[SuoritetutTutkinnotKorkeakoulunOpiskeluoikeus],
   )
@@ -86,7 +86,7 @@ class SuoritetutTutkinnotService(application: KoskiApplication) extends GlobalEx
           ))
       }
 
-      val opiskeluoikeudetFut: Future[Either[HttpStatus, Seq[SuoritetutTutkinnotOppijanOpiskeluoikeusRow]]] =
+      val opiskeluoikeudetFut: Future[Either[HttpStatus, Seq[SuoritetutTutkinnotOpiskeluoikeus]]] =
         masterHenkilöFut
           .map(_.flatMap(masterHenkilö =>
             Right(suoritetutTutkinnotOpiskeluoikeusRepository.getOppijanKaikkiOpiskeluoikeudet(
@@ -118,7 +118,7 @@ class SuoritetutTutkinnotService(application: KoskiApplication) extends GlobalEx
   private def teePalautettavaSuoritetutTutkinnotOppija(
     rawOppija: RawOppija
   ): SuoritetutTutkinnotOppija = {
-    val opiskeluoikeudet = rawOppija.opiskeluoikeudet.map(_.opiskeluoikeus)
+    val opiskeluoikeudet = rawOppija.opiskeluoikeudet
     val ytrOpiskeluoikeudet = rawOppija.ylioppilastutkinnot
     val virtaOpiskeluoikeudet = rawOppija.korkeakoulututkinnot
 
