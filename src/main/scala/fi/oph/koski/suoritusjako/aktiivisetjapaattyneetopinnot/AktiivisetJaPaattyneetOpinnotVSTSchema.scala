@@ -33,7 +33,6 @@ case class AktiivisetJaPäättyneetOpinnotVapaanSivistystyönPäätasonSuoritus(
   vahvistus: Option[Vahvistus],
   toimipiste: Option[Toimipiste],
   @KoodistoKoodiarvo("vstmaahanmuuttajienkotoutumiskoulutus")
-  @KoodistoKoodiarvo("vstmaahanmuuttajienkotoutumiskoulutus")
   @KoodistoKoodiarvo("vstoppivelvollisillesuunnattukoulutus")
   @KoodistoKoodiarvo("vstjotpakoulutus")
   @KoodistoKoodiarvo("vstlukutaitokoulutus")
