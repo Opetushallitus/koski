@@ -18,11 +18,15 @@ class FullReloadOpiskeluoikeusLoader(
     setStatusStarted()
 
     var loopCount = 0
+    var loadBatchStartTime = System.nanoTime()
 
     val dataResult =
       opiskeluoikeudetSivuittainWithoutAccessCheck(batchSize, enableYtr, opiskeluoikeusQueryRepository)
         .filter(!_.isEmpty)
         .flatMap(batch => {
+          val newLoadBatchStartTime = System.nanoTime()
+          logger.info(s"Opiskeluoikeuserän lataaminen kesti ${(newLoadBatchStartTime - loadBatchStartTime) / 1000000} ms")
+
           val koskiBatch = batch.collect { case r: KoskiOpiskeluoikeusRow => r }
           val ytrBatch = batch.collect { case r: YtrOpiskeluoikeusRow => r }
 
@@ -38,6 +42,7 @@ class FullReloadOpiskeluoikeusLoader(
           onAfterPage(loopCount, batch)
           loopCount = loopCount + 1
 
+          loadBatchStartTime = System.nanoTime()
           Observable.from(results)
         })
 
