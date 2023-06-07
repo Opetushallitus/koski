@@ -99,15 +99,29 @@
       align-items: center;
     }
 
-    &__list {
-      list-style: none;
+    &__content {
       padding-left: 0;
       margin: 0;
+      margin-bottom: 1rem;
 
       @media @media-full {
         flex-basis: 50%;
         border-right: solid 1px @color-gray-darker;
       }
+
+      .dropdown {
+        padding: 4px 24px 4px 4px;
+        box-shadow: inset 0 1px 4px 0 #DADADA;
+        line-height: 28px;
+        width: 96%;
+      }
+    }
+
+
+    &__list {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
 
       & > li {
         &.oppilaitos-group {

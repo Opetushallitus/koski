@@ -422,10 +422,7 @@ describe('Omat tiedot', function () {
                   '6. vuosiluokka\n' +
                   'Jyväskylän normaalikoulu\n' +
                   '9. vuosiluokka\n' +
-                  '8. vuosiluokka\n' +
-                  'Jaettavat kokonaisuudet\n' +
-                  'Suoritetut tutkinnot\n' +
-                  'Aktiiviset ja päättyneet opinnot'
+                  '8. vuosiluokka'
               )
             })
 
@@ -706,10 +703,7 @@ describe('Omat tiedot', function () {
                 expect(form.suoritusvaihtoehdotText()).to.equal(
                   'Aalto-yliopisto\n' +
                     'Dipl.ins., konetekniikka ( 2013 — 2016 , päättynyt )\n' +
-                    '8 opintojaksoa\n' +
-                    'Jaettavat kokonaisuudet\n' +
-                    'Suoritetut tutkinnot\n' +
-                    'Aktiiviset ja päättyneet opinnot'
+                    '8 opintojaksoa'
                 )
               })
             })
@@ -975,10 +969,7 @@ describe('Omat tiedot', function () {
                   'Päättötodistus\n' +
                   '9. vuosiluokka\n' +
                   '8. vuosiluokka\n' +
-                  '7. vuosiluokka\n' +
-                  'Jaettavat kokonaisuudet\n' +
-                  'Suoritetut tutkinnot\n' +
-                  'Aktiiviset ja päättyneet opinnot'
+                  '7. vuosiluokka'
               )
             })
           })
