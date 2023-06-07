@@ -148,9 +148,14 @@ class FullReloadOpiskeluoikeusLoader(
   }
 
   private def loadKoskiBatchMitätöidytOpiskeluoikeudet(oot: Seq[KoskiOpiskeluoikeusRow]) = {
+    val loadBatchStartTime = System.nanoTime()
     val (errors, outputRows) = oot.par.filterNot(_.poistettu).map(OpiskeluoikeusLoaderRowBuilder.buildRowMitätöity).seq.partition(_.isLeft)
     db.loadMitätöidytOpiskeluoikeudet(outputRows.map(_.right.get))
     db.updateStatusCount(mitätöidytStatusName, outputRows.size)
+
+    val loadBatchDuration: Long = (System.nanoTime() - loadBatchStartTime) / 1000000
+    logger.info(s"Koski batchin käsittely mitätöidyille opiskeluoikeuksille kesti ${loadBatchDuration} ms")
+
     errors.map(_.left.get)
   }
 
@@ -158,12 +163,17 @@ class FullReloadOpiskeluoikeusLoader(
     oot: Seq[KoskiOpiskeluoikeusRow]
   ): Seq[LoadErrorResult] = {
     if (oot.nonEmpty) {
+      val loadBatchStartTime = System.nanoTime()
       val (errors, outputRows) = suostumuksenPeruutusService
         .etsiPoistetut(oot.map(_.oid))
         .map(OpiskeluoikeusLoaderRowBuilder.buildRowMitätöity)
         .partition(_.isLeft)
       db.loadMitätöidytOpiskeluoikeudet(outputRows.map(_.right.get))
       db.updateStatusCount(mitätöidytStatusName, outputRows.size)
+
+      val loadBatchDuration: Long = (System.nanoTime() - loadBatchStartTime) / 1000000
+      logger.info(s"Koski batchin käsittely poistetuille opiskeluoikeuksille kesti ${loadBatchDuration} ms")
+
       errors.map(_.left.get)
     } else {
       Seq.empty
