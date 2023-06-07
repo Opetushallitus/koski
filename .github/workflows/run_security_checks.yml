@@ -58,15 +58,17 @@ jobs:
             make owasp | tee owasp-output.log
             STATUS="${PIPESTATUS[0]}"
 
-            EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
-            echo "errors<<$EOF" >> $GITHUB_OUTPUT
-            grep -i error owasp-output.log >> $GITHUB_OUTPUT
-            echo "$EOF" >> $GITHUB_OUTPUT
+            if [ "$STATUS" != "0" ]; then
+              EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+              echo "errors<<$EOF" >> $GITHUB_OUTPUT
+              grep -i error owasp-output.log >> $GITHUB_OUTPUT
+              echo "$EOF" >> $GITHUB_OUTPUT
 
-            if grep -q "One or more dependencies were identified with vulnerabilities" owasp-output.log; then
-              exit $STATUS
-            else
-              exit 99
+              if grep -q "One or more dependencies were identified with vulnerabilities" owasp-output.log; then
+                exit $STATUS
+              else
+                exit 99
+              fi
             fi
 
       - name: Archive OWASP results
