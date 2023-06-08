@@ -58,10 +58,6 @@ case class SuoritetutTutkinnotKorkeakoulunOpiskeluoikeus(
   @KoodistoKoodiarvo(schema.OpiskeluoikeudenTyyppi.korkeakoulutus.koodiarvo)
   tyyppi: schema.Koodistokoodiviite,
 ) extends SuoritetutTutkinnotOpiskeluoikeus {
-  override def oid = None
-  override def versionumero = None
-  override def sisältyyOpiskeluoikeuteen = None
-
   override def withSuoritukset(suoritukset: List[Suoritus]): SuoritetutTutkinnotOpiskeluoikeus =
     this.copy(
       suoritukset = suoritukset.collect { case s : SuoritetutTutkinnotKorkeakoulututkinnonSuoritus => s }

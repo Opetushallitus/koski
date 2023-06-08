@@ -15,7 +15,7 @@ case class SuoritetutTutkinnotEuropeanSchoolOfHelsinkiOpiskeluoikeus(
   suoritukset: List[SuoritetutTutkinnotEBTutkinnonSuoritus],
   @KoodistoKoodiarvo(schema.OpiskeluoikeudenTyyppi.europeanschoolofhelsinki.koodiarvo)
   tyyppi: schema.Koodistokoodiviite,
-) extends SuoritetutTutkinnotOpiskeluoikeus {
+) extends SuoritetutTutkinnotKoskeenTallennettavaOpiskeluoikeus {
   override def sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus] = None
 
   override def withSuoritukset(suoritukset: List[Suoritus]): SuoritetutTutkinnotOpiskeluoikeus =

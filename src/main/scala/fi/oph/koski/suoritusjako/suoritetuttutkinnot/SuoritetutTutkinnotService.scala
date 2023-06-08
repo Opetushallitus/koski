@@ -23,9 +23,13 @@ class SuoritetutTutkinnotService(application: KoskiApplication) extends GlobalEx
     val suoritetutTutkinnotOppija = opiskeluoikeusFacade.haeOpiskeluoikeudet(oppijaOid, SuoritetutTutkinnotSchema.schemassaTuetutOpiskeluoikeustyypit)
       .map(teePalautettavaSuoritetutTutkinnotOppija)
 
-    suoritetutTutkinnotOppija.map(sto => sto.opiskeluoikeudet.map(oo =>
-      oo.oid.map(application.oppijaFacade.merkitseSuoritusjakoTehdyksiIlmanKäyttöoikeudenTarkastusta)
-    ))
+    suoritetutTutkinnotOppija
+      .foreach(sto => sto.opiskeluoikeudet
+        .collect({case oo: SuoritetutTutkinnotKoskeenTallennettavaOpiskeluoikeus => oo})
+        .foreach(
+          _.oid.map(application.oppijaFacade.merkitseSuoritusjakoTehdyksiIlmanKäyttöoikeudenTarkastusta)
+        )
+      )
 
     suoritetutTutkinnotOppija
   }
@@ -40,8 +44,7 @@ class SuoritetutTutkinnotService(application: KoskiApplication) extends GlobalEx
   }
 
   private def suodataPalautettavat(opiskeluoikeudet: Seq[SuoritetutTutkinnotOpiskeluoikeus]): Seq[SuoritetutTutkinnotOpiskeluoikeus] = {
-
-    val kuoriOpiskeluoikeusOidit = opiskeluoikeudet.map(_.sisältyyOpiskeluoikeuteen.map(_.oid)).flatten.toSet
+    val kuoriOpiskeluoikeusOidit = opiskeluoikeudet.collect({ case koo: SuoritetutTutkinnotKoskeenTallennettavaOpiskeluoikeus => koo }).map(_.sisältyyOpiskeluoikeuteen).map(_.map(_.oid)).flatten.toSet
 
     opiskeluoikeudet
       .filterNot(onKuoriOpiskeluoikeus(kuoriOpiskeluoikeusOidit))
@@ -59,7 +62,10 @@ class SuoritetutTutkinnotService(application: KoskiApplication) extends GlobalEx
   }
 
   private def onKuoriOpiskeluoikeus(kuoriOpiskeluoikeusOidit: Set[String])(o: SuoritetutTutkinnotOpiskeluoikeus): Boolean = {
-    o.oid.map(kuoriOpiskeluoikeusOidit.contains).getOrElse(false)
+    o match {
+      case ko: SuoritetutTutkinnotKoskeenTallennettavaOpiskeluoikeus => ko.oid.map(kuoriOpiskeluoikeusOidit.contains).getOrElse(false)
+      case _ => false
+    }
   }
 
   private def poistaTutkintonimikeJaOsaamisalaTarvittaessa(s: Suoritus): Suoritus = {

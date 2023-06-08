@@ -44,18 +44,21 @@ object Henkilo {
 }
 
 trait SuoritetutTutkinnotOpiskeluoikeus {
-  def oid: Option[String]
-  def versionumero: Option[Int]
   def oppilaitos: Option[Oppilaitos]
   def koulutustoimija: Option[Koulutustoimija]
-  @Deprecated("Ei palauteta. Kenttä on näkyvissä skeemassa vain teknisistä syistä.")
-  def sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus]
   def suoritukset: List[Suoritus]
   @KoodistoUri("opiskeluoikeudentyyppi")
   @Discriminator
   def tyyppi: schema.Koodistokoodiviite
   def withSuoritukset(suoritukset: List[Suoritus]): SuoritetutTutkinnotOpiskeluoikeus
   def withoutSisältyyOpiskeluoikeuteen: SuoritetutTutkinnotOpiskeluoikeus
+}
+
+trait SuoritetutTutkinnotKoskeenTallennettavaOpiskeluoikeus extends SuoritetutTutkinnotOpiskeluoikeus {
+  def oid: Option[String]
+  def versionumero: Option[Int]
+  @Deprecated("Ei palauteta. Kenttä on näkyvissä skeemassa vain teknisistä syistä.")
+  def sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus]
 }
 
 case class SisältäväOpiskeluoikeus(

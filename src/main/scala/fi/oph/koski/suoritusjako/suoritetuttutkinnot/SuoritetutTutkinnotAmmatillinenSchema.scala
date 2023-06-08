@@ -17,7 +17,7 @@ case class SuoritetutTutkinnotAmmatillinenOpiskeluoikeus(
   suoritukset: List[SuoritetutTutkinnotAmmatillinenPäätasonSuoritus],
   @KoodistoKoodiarvo("ammatillinenkoulutus")
   tyyppi: schema.Koodistokoodiviite,
-) extends SuoritetutTutkinnotOpiskeluoikeus {
+) extends SuoritetutTutkinnotKoskeenTallennettavaOpiskeluoikeus {
 
   override def withSuoritukset(suoritukset: List[Suoritus]): SuoritetutTutkinnotOpiskeluoikeus =
     this.copy(

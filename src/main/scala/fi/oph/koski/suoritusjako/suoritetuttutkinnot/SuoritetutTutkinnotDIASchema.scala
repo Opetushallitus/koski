@@ -16,7 +16,7 @@ case class SuoritetutTutkinnotDIAOpiskeluoikeus(
   suoritukset: List[SuoritetutTutkinnotDIATutkinnonSuoritus],
   @KoodistoKoodiarvo(schema.OpiskeluoikeudenTyyppi.diatutkinto.koodiarvo)
   tyyppi: schema.Koodistokoodiviite,
-) extends SuoritetutTutkinnotOpiskeluoikeus {
+) extends SuoritetutTutkinnotKoskeenTallennettavaOpiskeluoikeus {
   override def withSuoritukset(suoritukset: List[Suoritus]): SuoritetutTutkinnotOpiskeluoikeus =
     this.copy(
       suoritukset = suoritukset.collect { case s : SuoritetutTutkinnotDIATutkinnonSuoritus => s }

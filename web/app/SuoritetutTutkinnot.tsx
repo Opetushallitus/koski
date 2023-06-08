@@ -11,6 +11,8 @@ import { PlainList } from './components-v2/containers/PlainList'
 import { isSuoritetutTutkinnotAmmatillinenOpiskeluoikeus } from './types/fi/oph/koski/suoritusjako/suoritetuttutkinnot/SuoritetutTutkinnotAmmatillinenOpiskeluoikeus'
 import { Trans } from './components-v2/texts/Trans'
 import { Flex } from './components-v2/containers/Flex'
+import { isSuoritetutTutkinnotOpiskeluoikeus } from './types/fi/oph/koski/suoritusjako/suoritetuttutkinnot/SuoritetutTutkinnotOpiskeluoikeus'
+import { isSuoritetutTutkinnotKoskeenTallennettavaOpiskeluoikeus } from './types/fi/oph/koski/suoritusjako/suoritetuttutkinnot/SuoritetutTutkinnotKoskeenTallennettavaOpiskeluoikeus'
 // @ts-ignore
 __webpack_nonce__ = window.nonce
 // @ts-ignore
@@ -78,12 +80,14 @@ const SuoritetutTutkinnot = ({ testId }: SuoritetutTutkinnotProps) => {
                       ))}
                     </span>
                     <span>
-                      {isSuoritetutTutkinnotAmmatillinenOpiskeluoikeus(oo)
+                      {isSuoritetutTutkinnotKoskeenTallennettavaOpiskeluoikeus(
+                        oo
+                      )
                         ? `Opiskeluoikeuden oid: ${oo.oid}`
                         : ''}
                     </span>
                     <span>
-                      {isSuoritetutTutkinnotAmmatillinenOpiskeluoikeus(oo)
+                      {isSuoritetutTutkinnotOpiskeluoikeus(oo)
                         ? `Vahvistettu: ${oo.suoritukset.map(
                             (foo) => foo.vahvistus?.päivä
                           )}`
