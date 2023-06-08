@@ -16,7 +16,6 @@ case class AktiivisetJaPäättyneetOpinnotTutkintokoulutukseenValmentavanOpiskel
   lisätiedot: Option[AktiivisetJaPäättyneetOpinnotTuvaJaAmmatillinenOpiskeluoikeudenLisätiedot],
   @KoodistoKoodiarvo(schema.OpiskeluoikeudenTyyppi.tuva.koodiarvo)
   tyyppi: schema.Koodistokoodiviite,
-  järjestämislupa: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite
 ) extends AktiivisetJaPäättyneetOpinnotOpiskeluoikeus {
 
   override def withSuoritukset(suoritukset: List[Suoritus]): AktiivisetJaPäättyneetOpinnotOpiskeluoikeus =

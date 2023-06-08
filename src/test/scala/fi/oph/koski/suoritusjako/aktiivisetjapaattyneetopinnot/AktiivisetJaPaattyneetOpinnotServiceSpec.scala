@@ -786,8 +786,6 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
   ): Unit = {
     verifyKoskiOpiskeluoikeudenKentät(actualOo, expectedOoData)
 
-    actualOo.järjestämislupa.koodiarvo should be(expectedOoData.järjestämislupa.koodiarvo)
-
     expectedOoData.lisätiedot match {
       case Some(lt: schema.TutkintokoulutukseenValmentavanOpiskeluoikeudenAmmatillisenLuvanLisätiedot) =>
         actualOo.lisätiedot.map(_.osaAikaisuusjaksot.map(_.length)) should equal(Some(lt.osaAikaisuusjaksot.map(_.length)))
