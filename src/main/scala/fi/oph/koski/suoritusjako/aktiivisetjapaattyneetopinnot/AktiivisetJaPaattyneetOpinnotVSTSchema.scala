@@ -44,6 +44,5 @@ case class AktiivisetJaPäättyneetOpinnotVapaanSivistyönKoulutus(
   tunniste: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite,
   perusteenDiaarinumero: Option[String],
   koulutustyyppi: Option[AktiivisetJaPäättyneetOpinnotKoodistokoodiviite],
-  laajuus: Option[AktiivisetJaPäättyneetOpinnotLaajuus],
   opintokokonaisuus: Option[AktiivisetJaPäättyneetOpinnotKoodistokoodiviite],
 ) extends SuorituksenKooditettuKoulutusmoduuli

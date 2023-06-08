@@ -38,6 +38,5 @@ case class AktiivisetJaPäättyneetOpinnotMuunKuinSäännellynKoulutuksenPääta
 case class AktiivisetJaPäättyneetOpinnotMuuKuinSäänneltyKoulutus(
   tunniste: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite,
   koulutustyyppi: Option[AktiivisetJaPäättyneetOpinnotKoodistokoodiviite],
-  laajuus: Option[AktiivisetJaPäättyneetOpinnotLaajuus],
   opintokokonaisuus: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite,
 ) extends SuorituksenKoulutusmoduuli

@@ -63,7 +63,6 @@ object AktiivisetJaPäättyneetOpinnotKorkeakoulunOpiskeluoikeus {
             koulutusmoduuli = AktiivisetJaPäättyneetOpinnotKorkeakoulunOpintojakso(
               tunniste = AktiivisetJaPäättyneetOpinnotPaikallinenKoodi.fromKoskiSchema(s.koulutusmoduuli.tunniste),
               nimi = s.koulutusmoduuli.nimi,
-              laajuus = s.koulutusmoduuli.laajuus.map(AktiivisetJaPäättyneetOpinnotLaajuus.fromKoskiSchema)
             ),
             vahvistus = s.vahvistus.map(v => Vahvistus(v.päivä)),
             toimipiste = Some(Toimipiste(
@@ -93,7 +92,6 @@ object AktiivisetJaPäättyneetOpinnotKorkeakoulunOpiskeluoikeus {
             koulutusmoduuli = AktiivisetJaPäättyneetOpinnotMuuKorkeakoulunOpinto(
               tunniste = AktiivisetJaPäättyneetOpinnotKoodistokoodiviite.fromKoskiSchema(s.koulutusmoduuli.tunniste),
               nimi = s.koulutusmoduuli.nimi,
-              laajuus = s.koulutusmoduuli.laajuus.map(AktiivisetJaPäättyneetOpinnotLaajuus.fromKoskiSchema)
             ),
             vahvistus = s.vahvistus.map(v => Vahvistus(v.päivä)),
             toimipiste = Some(Toimipiste(
@@ -188,7 +186,6 @@ case class AktiivisetJaPäättyneetOpinnotLukuvuosi_IlmoittautumisjaksonLukuvuos
 case class AktiivisetJaPäättyneetOpinnotMuuKorkeakoulunOpinto(
   tunniste: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite,
   nimi: schema.LocalizedString,
-  laajuus: Option[AktiivisetJaPäättyneetOpinnotLaajuus]
 ) extends SuorituksenKoulutusmoduuli
 
 @Title("Korkeakoulututkinto")
@@ -202,5 +199,4 @@ case class AktiivisetJaPäättyneetOpinnotKorkeakoulututkinto(
 case class AktiivisetJaPäättyneetOpinnotKorkeakoulunOpintojakso(
   tunniste: AktiivisetJaPäättyneetOpinnotPaikallinenKoodi,
   nimi: schema.LocalizedString,
-  laajuus: Option[AktiivisetJaPäättyneetOpinnotLaajuus]
 ) extends SuorituksenKoulutusmoduuli

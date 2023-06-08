@@ -195,7 +195,6 @@ case class AktiivisetJaPäättyneetOpinnotPäätasonKoulutusmoduuli(
   tunniste: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite,
   perusteenDiaarinumero: Option[String],
   koulutustyyppi: Option[AktiivisetJaPäättyneetOpinnotKoodistokoodiviite],
-  laajuus: Option[AktiivisetJaPäättyneetOpinnotLaajuus]
 ) extends SuorituksenKooditettuKoulutusmoduuli
 
 @ReadFlattened

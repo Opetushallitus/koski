@@ -753,8 +753,6 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
     actualSuoritus.koulutusmoduuli.tunniste.koodiarvo should equal(expectedSuoritusData.koulutusmoduuli.tunniste.koodiarvo)
     actualSuoritus.koulutusmoduuli.koulutustyyppi.map(_.koodiarvo) should equal(expectedSuoritusData.koulutusmoduuli.koulutustyyppi.map(_.koodiarvo))
     actualSuoritus.koulutusmoduuli.opintokokonaisuus.koodiarvo should equal(expectedSuoritusData.koulutusmoduuli.opintokokonaisuus.koodiarvo)
-    actualSuoritus.koulutusmoduuli.laajuus.map(_.yksikkö.koodiarvo) should equal(expectedSuoritusData.koulutusmoduuli.laajuus.map(_.yksikkö.koodiarvo))
-    actualSuoritus.koulutusmoduuli.laajuus.map(_.arvo) should equal(expectedSuoritusData.koulutusmoduuli.laajuus.map(_.arvo))
   }
 
   private def verifyVST(
@@ -843,7 +841,6 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
       perusteenNimi = expectedSuoritusData.koulutusmoduuli.perusteenNimi,
       koulutustyyppi = expectedSuoritusData.koulutusmoduuli.koulutustyyppi.map(AktiivisetJaPäättyneetOpinnotKoodistokoodiviite.fromKoskiSchema),
       kuvaus = None,
-      laajuus = expectedSuoritusData.koulutusmoduuli.laajuus.map(AktiivisetJaPäättyneetOpinnotLaajuus.fromKoskiSchema)
     )
     actualSuoritus.koulutusmoduuli should be(expectedKoulutusmoduuli)
 
@@ -861,7 +858,6 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
       perusteenNimi = expectedSuoritusData.koulutusmoduuli.perusteenNimi,
       koulutustyyppi = expectedSuoritusData.koulutusmoduuli.koulutustyyppi.map(AktiivisetJaPäättyneetOpinnotKoodistokoodiviite.fromKoskiSchema),
       kuvaus = None,
-      laajuus = expectedSuoritusData.koulutusmoduuli.laajuus.map(AktiivisetJaPäättyneetOpinnotLaajuus.fromKoskiSchema)
     )
     actualSuoritus.koulutusmoduuli should be(expectedKoulutusmoduuli)
 
@@ -879,7 +875,6 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
       perusteenNimi = None,
       koulutustyyppi = None,
       kuvaus = Some(expectedSuoritusData.koulutusmoduuli.kuvaus),
-      laajuus = expectedSuoritusData.koulutusmoduuli.laajuus.map(AktiivisetJaPäättyneetOpinnotLaajuus.fromKoskiSchema)
     )
     actualSuoritus.koulutusmoduuli should be(expectedKoulutusmoduuli)
 
@@ -900,7 +895,6 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
           perusteenNimi = None,
           koulutustyyppi = None,
           kuvaus = expectedKoulutusmoduuliData.kuvaus,
-          laajuus = expectedSuoritusData.koulutusmoduuli.laajuus.map(AktiivisetJaPäättyneetOpinnotLaajuus.fromKoskiSchema)
         )
       case expectedKoulutusmoduuliData: schema.PaikallinenMuuAmmatillinenKoulutus =>
         AktiivisetJaPäättyneetOpinnotAmmatillisenSuorituksenKoulutusmoduuli(
@@ -909,7 +903,6 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
           perusteenNimi = None,
           koulutustyyppi = None,
           kuvaus = Some(expectedKoulutusmoduuliData.kuvaus),
-          laajuus = expectedSuoritusData.koulutusmoduuli.laajuus.map(AktiivisetJaPäättyneetOpinnotLaajuus.fromKoskiSchema)
         )
     }
     actualSuoritus.koulutusmoduuli should be(expectedKoulutusmoduuli)
@@ -928,7 +921,6 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
       perusteenNimi = None,
       koulutustyyppi = expectedSuoritusData.koulutusmoduuli.koulutustyyppi.map(AktiivisetJaPäättyneetOpinnotKoodistokoodiviite.fromKoskiSchema),
       kuvaus = None,
-      laajuus = expectedSuoritusData.koulutusmoduuli.laajuus.map(AktiivisetJaPäättyneetOpinnotLaajuus.fromKoskiSchema)
     )
     actualSuoritus.koulutusmoduuli should be(expectedKoulutusmoduuli)
 
@@ -946,7 +938,6 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
       perusteenNimi = None,
       koulutustyyppi = expectedSuoritusData.koulutusmoduuli.koulutustyyppi.map(AktiivisetJaPäättyneetOpinnotKoodistokoodiviite.fromKoskiSchema),
       kuvaus = None,
-      laajuus = expectedSuoritusData.koulutusmoduuli.laajuus.map(AktiivisetJaPäättyneetOpinnotLaajuus.fromKoskiSchema)
     )
     actualSuoritus.koulutusmoduuli should be(expectedKoulutusmoduuli)
 
@@ -964,7 +955,6 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
       perusteenNimi = None,
       koulutustyyppi = expectedSuoritusData.koulutusmoduuli.koulutustyyppi.map(AktiivisetJaPäättyneetOpinnotKoodistokoodiviite.fromKoskiSchema),
       kuvaus = None,
-      laajuus = expectedSuoritusData.koulutusmoduuli.laajuus.map(AktiivisetJaPäättyneetOpinnotLaajuus.fromKoskiSchema)
     )
     actualSuoritus.koulutusmoduuli should be(expectedKoulutusmoduuli)
 

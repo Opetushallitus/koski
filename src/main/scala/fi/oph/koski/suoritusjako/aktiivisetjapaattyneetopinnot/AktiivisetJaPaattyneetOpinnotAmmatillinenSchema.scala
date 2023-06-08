@@ -55,7 +55,6 @@ case class AktiivisetJaPäättyneetOpinnotAmmatillinenPäätasonSuoritus(
 
 case class AktiivisetJaPäättyneetOpinnotAmmatillisenSuorituksenKoulutusmoduuli(
   tunniste: AktiivisetJaPäättyneetOpinnotKoodiViite,
-  laajuus: Option[AktiivisetJaPäättyneetOpinnotLaajuus],
   perusteenDiaarinumero: Option[String],
   perusteenNimi: Option[schema.LocalizedString],
   koulutustyyppi: Option[AktiivisetJaPäättyneetOpinnotKoodistokoodiviite],
