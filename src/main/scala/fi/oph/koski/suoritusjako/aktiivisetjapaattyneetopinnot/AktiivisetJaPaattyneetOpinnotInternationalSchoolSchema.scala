@@ -6,7 +6,7 @@ import fi.oph.scalaschema.annotation.Title
 
 import java.time.LocalDate
 
-@Title("Internationl School -opiskeluoikeus")
+@Title("International School -opiskeluoikeus")
 case class AktiivisetJaPäättyneetOpinnotInternationalSchoolOpiskeluoikeus(
   oid: Option[String],
   versionumero: Option[Int],
@@ -28,9 +28,9 @@ case class AktiivisetJaPäättyneetOpinnotInternationalSchoolOpiskeluoikeus(
   override def withoutSisältyyOpiskeluoikeuteen: AktiivisetJaPäättyneetOpinnotOpiskeluoikeus = this.copy(sisältyyOpiskeluoikeuteen = None)
 }
 
-@Title("Internationl School -vuosiluokan suoritus")
+@Title("International School -vuosiluokan suoritus")
 case class AktiivisetJaPäättyneetOpinnotInternationalSchoolVuosiluokanSuoritus(
-  koulutusmoduuli: AktiivisetJaPäättyneetOpinnotInternationlSchoolKoulutusmoduuli,
+  koulutusmoduuli: AktiivisetJaPäättyneetOpinnotInternationalSchoolKoulutusmoduuli,
   vahvistus: Option[Vahvistus],
   toimipiste: Option[Toimipiste],
   @KoodistoKoodiarvo("internationalschoolmypvuosiluokka")
@@ -38,7 +38,7 @@ case class AktiivisetJaPäättyneetOpinnotInternationalSchoolVuosiluokanSuoritus
   tyyppi: schema.Koodistokoodiviite
 ) extends Suoritus
 
-case class AktiivisetJaPäättyneetOpinnotInternationlSchoolKoulutusmoduuli(
+case class AktiivisetJaPäättyneetOpinnotInternationalSchoolKoulutusmoduuli(
   tunniste: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite,
   koulutustyyppi: Option[AktiivisetJaPäättyneetOpinnotKoodistokoodiviite],
   diplomaType: Option[AktiivisetJaPäättyneetOpinnotKoodistokoodiviite],

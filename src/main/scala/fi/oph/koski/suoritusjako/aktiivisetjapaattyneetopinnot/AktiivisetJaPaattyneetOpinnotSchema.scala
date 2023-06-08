@@ -93,7 +93,6 @@ case class AktiivisetJaPäättyneetOpinnotPäätasonKooditettuSuoritus(
   toimipiste: Option[Toimipiste],
 ) extends Suoritus
 
-@Title("Koodiviite")
 trait AktiivisetJaPäättyneetOpinnotKoodiViite {
   def koodiarvo: String
 }

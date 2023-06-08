@@ -2,7 +2,9 @@ package fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot
 
 import fi.oph.koski.schema
 import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
+import fi.oph.scalaschema.annotation.Title
 
+@Title("Lukion opiskeluoikeus")
 case class AktiivisetJaPäättyneetOpinnotLukionOpiskeluoikeus(
   oid: Option[String],
   versionumero: Option[Int],
