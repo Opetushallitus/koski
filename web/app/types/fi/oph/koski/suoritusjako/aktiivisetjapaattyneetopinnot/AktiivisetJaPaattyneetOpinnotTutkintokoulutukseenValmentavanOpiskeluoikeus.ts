@@ -5,7 +5,6 @@ import { SisältäväOpiskeluoikeus } from './SisaltavaOpiskeluoikeus'
 import { Koulutustoimija } from './Koulutustoimija'
 import { AktiivisetJaPäättyneetOpinnotTuvaJaAmmatillinenOpiskeluoikeudenLisätiedot } from './AktiivisetJaPaattyneetOpinnotTuvaJaAmmatillinenOpiskeluoikeudenLisatiedot'
 import { AktiivisetJaPäättyneetOpinnotPäätasonSuoritus } from './AktiivisetJaPaattyneetOpinnotPaatasonSuoritus'
-import { AktiivisetJaPäättyneetOpinnotKoodistokoodiviite } from './AktiivisetJaPaattyneetOpinnotKoodistokoodiviite'
 import { Oppilaitos } from './Oppilaitos'
 
 /**
@@ -26,25 +25,25 @@ export type AktiivisetJaPäättyneetOpinnotTutkintokoulutukseenValmentavanOpiske
     versionumero?: number
     suoritukset: Array<AktiivisetJaPäättyneetOpinnotPäätasonSuoritus>
     päättymispäivä?: string
-    järjestämislupa: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite
     oppilaitos?: Oppilaitos
   }
 
 export const AktiivisetJaPäättyneetOpinnotTutkintokoulutukseenValmentavanOpiskeluoikeus =
-  (o: {
-    tyyppi?: Koodistokoodiviite<'opiskeluoikeudentyyppi', 'tuva'>
-    tila?: AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila
-    alkamispäivä?: string
-    sisältyyOpiskeluoikeuteen?: SisältäväOpiskeluoikeus
-    oid?: string
-    koulutustoimija?: Koulutustoimija
-    lisätiedot?: AktiivisetJaPäättyneetOpinnotTuvaJaAmmatillinenOpiskeluoikeudenLisätiedot
-    versionumero?: number
-    suoritukset?: Array<AktiivisetJaPäättyneetOpinnotPäätasonSuoritus>
-    päättymispäivä?: string
-    järjestämislupa: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite
-    oppilaitos?: Oppilaitos
-  }): AktiivisetJaPäättyneetOpinnotTutkintokoulutukseenValmentavanOpiskeluoikeus => ({
+  (
+    o: {
+      tyyppi?: Koodistokoodiviite<'opiskeluoikeudentyyppi', 'tuva'>
+      tila?: AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila
+      alkamispäivä?: string
+      sisältyyOpiskeluoikeuteen?: SisältäväOpiskeluoikeus
+      oid?: string
+      koulutustoimija?: Koulutustoimija
+      lisätiedot?: AktiivisetJaPäättyneetOpinnotTuvaJaAmmatillinenOpiskeluoikeudenLisätiedot
+      versionumero?: number
+      suoritukset?: Array<AktiivisetJaPäättyneetOpinnotPäätasonSuoritus>
+      päättymispäivä?: string
+      oppilaitos?: Oppilaitos
+    } = {}
+  ): AktiivisetJaPäättyneetOpinnotTutkintokoulutukseenValmentavanOpiskeluoikeus => ({
     tyyppi: Koodistokoodiviite({
       koodiarvo: 'tuva',
       koodistoUri: 'opiskeluoikeudentyyppi'

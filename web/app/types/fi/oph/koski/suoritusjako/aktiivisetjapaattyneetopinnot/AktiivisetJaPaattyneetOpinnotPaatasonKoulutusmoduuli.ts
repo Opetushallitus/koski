@@ -1,5 +1,4 @@
 import { AktiivisetJaPäättyneetOpinnotKoodistokoodiviite } from './AktiivisetJaPaattyneetOpinnotKoodistokoodiviite'
-import { AktiivisetJaPäättyneetOpinnotLaajuus } from './AktiivisetJaPaattyneetOpinnotLaajuus'
 
 /**
  * AktiivisetJaPäättyneetOpinnotPäätasonKoulutusmoduuli
@@ -11,14 +10,12 @@ export type AktiivisetJaPäättyneetOpinnotPäätasonKoulutusmoduuli = {
   tunniste: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite
   perusteenDiaarinumero?: string
   koulutustyyppi?: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite
-  laajuus?: AktiivisetJaPäättyneetOpinnotLaajuus
 }
 
 export const AktiivisetJaPäättyneetOpinnotPäätasonKoulutusmoduuli = (o: {
   tunniste: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite
   perusteenDiaarinumero?: string
   koulutustyyppi?: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite
-  laajuus?: AktiivisetJaPäättyneetOpinnotLaajuus
 }): AktiivisetJaPäättyneetOpinnotPäätasonKoulutusmoduuli => ({
   $class:
     'fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotPäätasonKoulutusmoduuli',

@@ -1,6 +1,5 @@
 import { AktiivisetJaPäättyneetOpinnotPaikallinenKoodi } from './AktiivisetJaPaattyneetOpinnotPaikallinenKoodi'
 import { LocalizedString } from '../../schema/LocalizedString'
-import { AktiivisetJaPäättyneetOpinnotLaajuus } from './AktiivisetJaPaattyneetOpinnotLaajuus'
 
 /**
  * AktiivisetJaPäättyneetOpinnotKorkeakoulunOpintojakso
@@ -11,13 +10,11 @@ export type AktiivisetJaPäättyneetOpinnotKorkeakoulunOpintojakso = {
   $class: 'fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotKorkeakoulunOpintojakso'
   tunniste: AktiivisetJaPäättyneetOpinnotPaikallinenKoodi
   nimi: LocalizedString
-  laajuus?: AktiivisetJaPäättyneetOpinnotLaajuus
 }
 
 export const AktiivisetJaPäättyneetOpinnotKorkeakoulunOpintojakso = (o: {
   tunniste: AktiivisetJaPäättyneetOpinnotPaikallinenKoodi
   nimi: LocalizedString
-  laajuus?: AktiivisetJaPäättyneetOpinnotLaajuus
 }): AktiivisetJaPäättyneetOpinnotKorkeakoulunOpintojakso => ({
   $class:
     'fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotKorkeakoulunOpintojakso',

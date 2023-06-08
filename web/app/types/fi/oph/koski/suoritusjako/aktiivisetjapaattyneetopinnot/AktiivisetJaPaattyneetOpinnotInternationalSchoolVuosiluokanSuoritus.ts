@@ -1,4 +1,4 @@
-import { AktiivisetJaPäättyneetOpinnotInternationlSchoolKoulutusmoduuli } from './AktiivisetJaPaattyneetOpinnotInternationlSchoolKoulutusmoduuli'
+import { AktiivisetJaPäättyneetOpinnotInternationalSchoolKoulutusmoduuli } from './AktiivisetJaPaattyneetOpinnotInternationalSchoolKoulutusmoduuli'
 import { Vahvistus } from './Vahvistus'
 import { Toimipiste } from './Toimipiste'
 import { Koodistokoodiviite } from '../../schema/Koodistokoodiviite'
@@ -12,7 +12,7 @@ import { LocalizedString } from '../../schema/LocalizedString'
 export type AktiivisetJaPäättyneetOpinnotInternationalSchoolVuosiluokanSuoritus =
   {
     $class: 'fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotInternationalSchoolVuosiluokanSuoritus'
-    koulutusmoduuli: AktiivisetJaPäättyneetOpinnotInternationlSchoolKoulutusmoduuli
+    koulutusmoduuli: AktiivisetJaPäättyneetOpinnotInternationalSchoolKoulutusmoduuli
     vahvistus?: Vahvistus
     toimipiste?: Toimipiste
     tyyppi: Koodistokoodiviite<
@@ -24,7 +24,7 @@ export type AktiivisetJaPäättyneetOpinnotInternationalSchoolVuosiluokanSuoritu
 
 export const AktiivisetJaPäättyneetOpinnotInternationalSchoolVuosiluokanSuoritus =
   (o: {
-    koulutusmoduuli: AktiivisetJaPäättyneetOpinnotInternationlSchoolKoulutusmoduuli
+    koulutusmoduuli: AktiivisetJaPäättyneetOpinnotInternationalSchoolKoulutusmoduuli
     vahvistus?: Vahvistus
     toimipiste?: Toimipiste
     tyyppi: Koodistokoodiviite<
