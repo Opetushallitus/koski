@@ -81,13 +81,3 @@ case class Koulutussopimusjakso(
   paikkakunta: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite,
   maa: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite
 )
-
-case class Järjestämismuoto (
-  tunniste: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite
-)
-
-case class Järjestämismuotojakso(
-  alku: LocalDate,
-  loppu: Option[LocalDate],
-  järjestämismuoto: Järjestämismuoto
-)
