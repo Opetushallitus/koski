@@ -190,8 +190,6 @@ case class AktiivisetJaPäättyneetOpinnotValmaKoulutus(
 
 case class OsaamisenHankkimistapa (
   tunniste: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite,
-  // TODO: TOR-1984: Jätetäänkö oppisopimus pois? Ei ole HSL-datassa
-  // oppisopimus: Oppisopimus
 )
 
 case class OsaamisenHankkimistapajakso(
@@ -203,8 +201,6 @@ case class OsaamisenHankkimistapajakso(
 case class Koulutussopimusjakso(
   alku: LocalDate,
   loppu: Option[LocalDate],
-  // TODO: TOR-1984: Jätetäänkö pois, ei mukana HSL-datassa?
-  // työssäoppimispaikka: Option[schema.LocalizedString],
   paikkakunta: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite,
   maa: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite
 )
