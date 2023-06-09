@@ -578,6 +578,38 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
     }
   }
 
+  "Älä palauta kuori-opiskeluoikeuksia, ainoastaan sisältyvät" in {
+    val oppija = KoskiSpecificMockOppijat.eskari
+
+    val kuori: schema.AmmatillinenOpiskeluoikeus = createOpiskeluoikeus(oppija, defaultOpiskeluoikeus, user = MockUsers.stadinAmmattiopistoTallentaja)
+
+    val sisältyväInput: schema.AmmatillinenOpiskeluoikeus = defaultOpiskeluoikeus.copy(
+      oppilaitos = Some(schema.Oppilaitos(MockOrganisaatiot.omnia)),
+      sisältyyOpiskeluoikeuteen = Some(schema.SisältäväOpiskeluoikeus(kuori.oppilaitos.get, kuori.oid.get)),
+      suoritukset = List(
+        defaultOpiskeluoikeus.suoritukset.head.asInstanceOf[schema.AmmatillisenTutkinnonOsittainenSuoritus].copy(
+          toimipiste = schema.OidOrganisaatio(MockOrganisaatiot.omnia)
+        )
+      )
+    )
+
+    val sisältyvä = createOpiskeluoikeus(oppija, sisältyväInput, user = MockUsers.omniaTallentaja)
+
+    val result = aktiivisetJaPäättyneetOpinnotService.findOppija(oppija.oid)
+
+    result.isRight should be(true)
+
+    result.map(o => {
+      verifyOppija(oppija, o)
+      o.opiskeluoikeudet should have length 1
+
+      o.opiskeluoikeudet.head.oppilaitos.map(_.oid) should equal(Some(MockOrganisaatiot.omnia))
+      o.opiskeluoikeudet.head match {
+        case koo: AktiivisetJaPäättyneetOpinnotOpiskeluoikeus => koo.oid should equal(Some(sisältyvä.oid.get))
+      }
+    })
+  }
+
   private def makeOpiskeluoikeus(
     alkamispäivä: LocalDate = longTimeAgo,
     oppilaitos: schema.Oppilaitos = schema.Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto),
