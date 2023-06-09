@@ -27,7 +27,7 @@ import fi.oph.koski.pulssi.{KoskiPulssi, PrometheusRepository}
 import fi.oph.koski.raportointikanta.{Public, RaportointiDatabase, RaportointikantaService}
 import fi.oph.koski.schedule.{KoskiScheduledTasks, PerustiedotManualSyncScheduler, PerustiedotSyncScheduler}
 import fi.oph.koski.sso.{CasOppijaCreationService, CasService, KoskiSessionRepository}
-import fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.AktiivisetJaPaattyneetOpinnotService
+import fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotService
 import fi.oph.koski.suoritusjako.suoritetuttutkinnot.SuoritetutTutkinnotService
 import fi.oph.koski.suoritusjako.{SuoritusjakoRepository, SuoritusjakoRepositoryV2, SuoritusjakoService, SuoritusjakoServiceV2}
 import fi.oph.koski.suostumus.SuostumuksenPeruutusService
@@ -188,7 +188,7 @@ class KoskiApplication(
   lazy val koskiLocalizationRepository = LocalizationRepository(config, new KoskiLocalizationConfig)
   lazy val päivitetytOpiskeluoikeudetJono = new PäivitetytOpiskeluoikeudetJonoService(this)
   lazy val suoritetutTutkinnotService = new SuoritetutTutkinnotService(this)
-  lazy val aktiivisetJaPäättyneetOpinnotService = new AktiivisetJaPaattyneetOpinnotService(this)
+  lazy val aktiivisetJaPäättyneetOpinnotService = new AktiivisetJaPäättyneetOpinnotService(this)
 
   lazy val valpasLocalizationRepository = LocalizationRepository(config, new ValpasLocalizationConfig)
   lazy val valpasRajapäivätService = ValpasRajapäivätService(config)

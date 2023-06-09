@@ -9,7 +9,7 @@ import fi.oph.koski.log.KoskiOperation.{KANSALAINEN_SUORITUSJAKO_LISAYS, KANSALA
 import fi.oph.koski.log.KoskiAuditLogMessageField.oppijaHenkiloOid
 import fi.oph.koski.oppija.KoskiOppijaFacade
 import fi.oph.koski.schema._
-import fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.{AktiivisetJaPäättyneetOpinnotOppija, AktiivisetJaPaattyneetOpinnotService}
+import fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.{AktiivisetJaPäättyneetOpinnotOppija, AktiivisetJaPäättyneetOpinnotService}
 import fi.oph.koski.suoritusjako.suoritetuttutkinnot.{SuoritetutTutkinnotOppija, SuoritetutTutkinnotService}
 import fi.oph.koski.util.ChainingSyntax.chainingOps
 import fi.oph.koski.util.WithWarnings
@@ -18,7 +18,7 @@ import fi.oph.koski.util.WithWarnings
 case class SuoritusjakoPayload(
   tyyppi: String
 )
-class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppijaFacade: KoskiOppijaFacade, suoritetutTutkinnotService: SuoritetutTutkinnotService, aktiivisetJaPäättyneetOpinnotService: AktiivisetJaPaattyneetOpinnotService) extends Logging {
+class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppijaFacade: KoskiOppijaFacade, suoritetutTutkinnotService: SuoritetutTutkinnotService, aktiivisetJaPäättyneetOpinnotService: AktiivisetJaPäättyneetOpinnotService) extends Logging {
   private def addSuoritusjako(oppijaOid: String, suoritusIds: List[SuoritusIdentifier], kokonaisuudet: List[SuoritusjakoPayload])(implicit koskiSession: KoskiSpecificSession) = {
     val secret = SuoritusjakoSecret.generateNew
     suoritusjakoRepository.create(secret, oppijaOid, suoritusIds, kokonaisuudet)

@@ -8,7 +8,7 @@ import fi.oph.koski.log._
 import fi.oph.koski.schema
 import fi.oph.koski.suoritusjako.common.{OpiskeluoikeusFacade, RawOppija}
 
-class AktiivisetJaPaattyneetOpinnotService(application: KoskiApplication) extends GlobalExecutionContext with Logging {
+class AktiivisetJaPäättyneetOpinnotService(application: KoskiApplication) extends GlobalExecutionContext with Logging {
   private val opiskeluoikeusFacade = new OpiskeluoikeusFacade[AktiivisetJaPäättyneetOpinnotOpiskeluoikeus](
     application,
     None,
