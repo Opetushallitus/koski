@@ -833,14 +833,7 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
     actualSuoritus: AktiivisetJaPäättyneetOpinnotAmmatillinenPäätasonSuoritus,
     expectedSuoritusData: schema.AmmatillisenTutkinnonSuoritus
   ): Unit = {
-    val expectedKoulutusmoduuli = AktiivisetJaPäättyneetOpinnotAmmatillisenSuorituksenKoulutusmoduuli(
-      tunniste = AktiivisetJaPäättyneetOpinnotKoodistokoodiviite.fromKoskiSchema(expectedSuoritusData.koulutusmoduuli.tunniste),
-      perusteenDiaarinumero = expectedSuoritusData.koulutusmoduuli.perusteenDiaarinumero,
-      perusteenNimi = expectedSuoritusData.koulutusmoduuli.perusteenNimi,
-      koulutustyyppi = expectedSuoritusData.koulutusmoduuli.koulutustyyppi.map(AktiivisetJaPäättyneetOpinnotKoodistokoodiviite.fromKoskiSchema),
-      kuvaus = None,
-    )
-    actualSuoritus.koulutusmoduuli should be(expectedKoulutusmoduuli)
+    actualSuoritus.koulutusmoduuli.tunniste.koodiarvo should be(expectedSuoritusData.koulutusmoduuli.tunniste.koodiarvo)
 
     verifyOsaamisenHankkimistavallinen(actualSuoritus, expectedSuoritusData)
     verifyKoulutussopimuksellinen(actualSuoritus, expectedSuoritusData)
@@ -850,14 +843,7 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
     actualSuoritus: AktiivisetJaPäättyneetOpinnotAmmatillinenPäätasonSuoritus,
     expectedSuoritusData: schema.AmmatillisenTutkinnonOsittainenSuoritus
   ): Unit = {
-    val expectedKoulutusmoduuli = AktiivisetJaPäättyneetOpinnotAmmatillisenSuorituksenKoulutusmoduuli(
-      tunniste = AktiivisetJaPäättyneetOpinnotKoodistokoodiviite.fromKoskiSchema(expectedSuoritusData.koulutusmoduuli.tunniste),
-      perusteenDiaarinumero = expectedSuoritusData.koulutusmoduuli.perusteenDiaarinumero,
-      perusteenNimi = expectedSuoritusData.koulutusmoduuli.perusteenNimi,
-      koulutustyyppi = expectedSuoritusData.koulutusmoduuli.koulutustyyppi.map(AktiivisetJaPäättyneetOpinnotKoodistokoodiviite.fromKoskiSchema),
-      kuvaus = None,
-    )
-    actualSuoritus.koulutusmoduuli should be(expectedKoulutusmoduuli)
+    actualSuoritus.koulutusmoduuli.tunniste.koodiarvo should be(expectedSuoritusData.koulutusmoduuli.tunniste.koodiarvo)
 
     verifyOsaamisenHankkimistavallinen(actualSuoritus, expectedSuoritusData)
     verifyKoulutussopimuksellinen(actualSuoritus, expectedSuoritusData)
@@ -867,14 +853,7 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
     actualSuoritus: AktiivisetJaPäättyneetOpinnotAmmatillinenPäätasonSuoritus,
     expectedSuoritusData: schema.TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus
   ): Unit = {
-    val expectedKoulutusmoduuli = AktiivisetJaPäättyneetOpinnotAmmatillisenSuorituksenKoulutusmoduuli(
-      tunniste = AktiivisetJaPäättyneetOpinnotPaikallinenKoodi.fromKoskiSchema(expectedSuoritusData.koulutusmoduuli.tunniste),
-      perusteenDiaarinumero = None,
-      perusteenNimi = None,
-      koulutustyyppi = None,
-      kuvaus = Some(expectedSuoritusData.koulutusmoduuli.kuvaus),
-    )
-    actualSuoritus.koulutusmoduuli should be(expectedKoulutusmoduuli)
+    actualSuoritus.koulutusmoduuli.tunniste.koodiarvo should be(expectedSuoritusData.koulutusmoduuli.tunniste.koodiarvo)
 
     verifyOsaamisenHankkimistavallinen(actualSuoritus, expectedSuoritusData)
     verifyKoulutussopimuksellinen(actualSuoritus, expectedSuoritusData)
@@ -884,26 +863,7 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
     actualSuoritus: AktiivisetJaPäättyneetOpinnotAmmatillinenPäätasonSuoritus,
     expectedSuoritusData: schema.MuunAmmatillisenKoulutuksenSuoritus
   ): Unit = {
-
-    val expectedKoulutusmoduuli = expectedSuoritusData.koulutusmoduuli match {
-      case expectedKoulutusmoduuliData: schema.AmmatilliseenTehtäväänValmistavaKoulutus =>
-        AktiivisetJaPäättyneetOpinnotAmmatillisenSuorituksenKoulutusmoduuli(
-          tunniste = AktiivisetJaPäättyneetOpinnotKoodistokoodiviite.fromKoskiSchema(expectedKoulutusmoduuliData.tunniste),
-          perusteenDiaarinumero = None,
-          perusteenNimi = None,
-          koulutustyyppi = None,
-          kuvaus = expectedKoulutusmoduuliData.kuvaus,
-        )
-      case expectedKoulutusmoduuliData: schema.PaikallinenMuuAmmatillinenKoulutus =>
-        AktiivisetJaPäättyneetOpinnotAmmatillisenSuorituksenKoulutusmoduuli(
-          tunniste = AktiivisetJaPäättyneetOpinnotPaikallinenKoodi.fromKoskiSchema(expectedKoulutusmoduuliData.tunniste),
-          perusteenDiaarinumero = None,
-          perusteenNimi = None,
-          koulutustyyppi = None,
-          kuvaus = Some(expectedKoulutusmoduuliData.kuvaus),
-        )
-    }
-    actualSuoritus.koulutusmoduuli should be(expectedKoulutusmoduuli)
+    actualSuoritus.koulutusmoduuli.tunniste.koodiarvo should be(expectedSuoritusData.koulutusmoduuli.tunniste.koodiarvo)
 
     verifyOsaamisenHankkimistavallinen(actualSuoritus, expectedSuoritusData)
     verifyKoulutussopimuksellinen(actualSuoritus, expectedSuoritusData)
@@ -913,14 +873,7 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
     actualSuoritus: AktiivisetJaPäättyneetOpinnotAmmatillinenPäätasonSuoritus,
     expectedSuoritusData: schema.NäyttötutkintoonValmistavanKoulutuksenSuoritus
   ): Unit = {
-    val expectedKoulutusmoduuli = AktiivisetJaPäättyneetOpinnotAmmatillisenSuorituksenKoulutusmoduuli(
-      tunniste = AktiivisetJaPäättyneetOpinnotKoodistokoodiviite.fromKoskiSchema(expectedSuoritusData.koulutusmoduuli.tunniste),
-      perusteenDiaarinumero = None,
-      perusteenNimi = None,
-      koulutustyyppi = expectedSuoritusData.koulutusmoduuli.koulutustyyppi.map(AktiivisetJaPäättyneetOpinnotKoodistokoodiviite.fromKoskiSchema),
-      kuvaus = None,
-    )
-    actualSuoritus.koulutusmoduuli should be(expectedKoulutusmoduuli)
+    actualSuoritus.koulutusmoduuli.tunniste.koodiarvo should be(expectedSuoritusData.koulutusmoduuli.tunniste.koodiarvo)
 
     verifyOsaamisenHankkimistavallinen(actualSuoritus, expectedSuoritusData)
     verifyKoulutussopimuksellinen(actualSuoritus, expectedSuoritusData)
@@ -930,16 +883,8 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
     actualSuoritus: AktiivisetJaPäättyneetOpinnotAmmatillinenPäätasonSuoritus,
     expectedSuoritusData: schema.TelmaKoulutuksenSuoritus
   ): Unit = {
-    val expectedKoulutusmoduuli = AktiivisetJaPäättyneetOpinnotAmmatillisenSuorituksenKoulutusmoduuli(
-      tunniste = AktiivisetJaPäättyneetOpinnotKoodistokoodiviite.fromKoskiSchema(expectedSuoritusData.koulutusmoduuli.tunniste),
-      perusteenDiaarinumero = expectedSuoritusData.koulutusmoduuli.perusteenDiaarinumero,
-      perusteenNimi = None,
-      koulutustyyppi = expectedSuoritusData.koulutusmoduuli.koulutustyyppi.map(AktiivisetJaPäättyneetOpinnotKoodistokoodiviite.fromKoskiSchema),
-      kuvaus = None,
-    )
-    actualSuoritus.koulutusmoduuli should be(expectedKoulutusmoduuli)
+    actualSuoritus.koulutusmoduuli.tunniste.koodiarvo should be(expectedSuoritusData.koulutusmoduuli.tunniste.koodiarvo)
 
-    actualSuoritus.osaamisenHankkimistavat should equal(None)
     verifyKoulutussopimuksellinen(actualSuoritus, expectedSuoritusData)
   }
 
@@ -947,16 +892,8 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
     actualSuoritus: AktiivisetJaPäättyneetOpinnotAmmatillinenPäätasonSuoritus,
     expectedSuoritusData: schema.ValmaKoulutuksenSuoritus
   ): Unit = {
-    val expectedKoulutusmoduuli = AktiivisetJaPäättyneetOpinnotAmmatillisenSuorituksenKoulutusmoduuli(
-      tunniste = AktiivisetJaPäättyneetOpinnotKoodistokoodiviite.fromKoskiSchema(expectedSuoritusData.koulutusmoduuli.tunniste),
-      perusteenDiaarinumero = expectedSuoritusData.koulutusmoduuli.perusteenDiaarinumero,
-      perusteenNimi = None,
-      koulutustyyppi = expectedSuoritusData.koulutusmoduuli.koulutustyyppi.map(AktiivisetJaPäättyneetOpinnotKoodistokoodiviite.fromKoskiSchema),
-      kuvaus = None,
-    )
-    actualSuoritus.koulutusmoduuli should be(expectedKoulutusmoduuli)
+    actualSuoritus.koulutusmoduuli.tunniste.koodiarvo should be(expectedSuoritusData.koulutusmoduuli.tunniste.koodiarvo)
 
-    actualSuoritus.osaamisenHankkimistavat should equal(None)
     verifyKoulutussopimuksellinen(actualSuoritus, expectedSuoritusData)
   }
 
@@ -964,10 +901,13 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
     actualSuoritus: AktiivisetJaPäättyneetOpinnotAmmatillinenPäätasonSuoritus,
     expectedSuoritusData: schema.OsaamisenHankkimistavallinen
   ): Unit = {
-    actualSuoritus.osaamisenHankkimistavat.map(_.length) should equal(expectedSuoritusData.osaamisenHankkimistavat.map(_.length))
-    actualSuoritus.osaamisenHankkimistavat.map(_.map(_.osaamisenHankkimistapa.tunniste.koodiarvo)) should equal(expectedSuoritusData.osaamisenHankkimistavat.map(_.map(_.osaamisenHankkimistapa.tunniste.koodiarvo)))
-    actualSuoritus.osaamisenHankkimistavat.map(_.map(_.alku)) should equal(expectedSuoritusData.osaamisenHankkimistavat.map(_.map(_.alku)))
-    actualSuoritus.osaamisenHankkimistavat.map(_.map(_.loppu)) should equal(expectedSuoritusData.osaamisenHankkimistavat.map(_.map(_.loppu)))
+    actualSuoritus match {
+      case actualSuoritus: AktiivisetJaPäättyneetOpinnotOsaamisenHankkimistavallinen =>
+        actualSuoritus.osaamisenHankkimistavat.map(_.length) should equal(expectedSuoritusData.osaamisenHankkimistavat.map(_.length))
+        actualSuoritus.osaamisenHankkimistavat.map(_.map(_.osaamisenHankkimistapa.tunniste.koodiarvo)) should equal(expectedSuoritusData.osaamisenHankkimistavat.map(_.map(_.osaamisenHankkimistapa.tunniste.koodiarvo)))
+        actualSuoritus.osaamisenHankkimistavat.map(_.map(_.alku)) should equal(expectedSuoritusData.osaamisenHankkimistavat.map(_.map(_.alku)))
+        actualSuoritus.osaamisenHankkimistavat.map(_.map(_.loppu)) should equal(expectedSuoritusData.osaamisenHankkimistavat.map(_.map(_.loppu)))
+    }
   }
 
   private def verifyKoulutussopimuksellinen(

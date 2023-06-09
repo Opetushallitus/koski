@@ -82,7 +82,7 @@ trait Suoritus {
   @Discriminator
   def tyyppi: schema.Koodistokoodiviite
   def vahvistus: Option[Vahvistus]
-  def toimipiste: Option[Toimipiste]
+  def toimipiste: Option[Toimipiste] // TODO: Muuta pakolliseksi niissä, missä on
 }
 
 @Title("Päätason suoritus kooditetulla koulutusmoduulilla")
