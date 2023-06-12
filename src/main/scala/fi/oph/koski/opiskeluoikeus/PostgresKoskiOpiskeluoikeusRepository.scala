@@ -10,7 +10,9 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema._
 import slick.dbio.DBIOAction.sequence
+import slick.dbio.{DBIOAction, NoStream}
 import slick.jdbc.GetResult
+import slick.lifted.Query
 
 import java.time.LocalDate
 
@@ -80,9 +82,14 @@ class PostgresKoskiOpiskeluoikeusRepository(
   }
 
   def merkitseSuoritusjakoTehdyksiIlmanKäyttöoikeudenTarkastusta(oid: String): HttpStatus = {
-    runDbSync(KoskiTables.KoskiOpiskeluOikeudet.filter(_.oid === oid).map(_.suoritusjakoTehty).update(true)) match {
-      case 0 => throw new RuntimeException(s"Oppija not found: $oid")
-      case _ => HttpStatus.ok
+    // Tarkastetaan ensin, tarvitseeko päivitystä edes tehdä, jotta vältetään turha taulun lukitseminen runDbSyncWithoutAikaleimaUpdate-kutsussa
+    if (!suoritusjakoTehtyIlmanKäyttöoikeudenTarkastusta(oid)) {
+      runDbSyncWithoutAikaleimaUpdate(KoskiTables.KoskiOpiskeluOikeudet.filter(_.oid === oid).map(_.suoritusjakoTehty).update(true)) match {
+        case 0 => throw new RuntimeException(s"Oppija not found: $oid")
+        case _ => HttpStatus.ok
+      }
+    } else {
+      HttpStatus.ok
     }
   }
 
@@ -172,6 +179,18 @@ class PostgresKoskiOpiskeluoikeusRepository(
     r.getLocalDate("paiva")
   })
 
+  private def runDbSyncWithoutAikaleimaUpdate[R](updateRows: DBIOAction[R, NoStream, Nothing]) = {
+    val action = for {
+      _       <- disableAikaleimaTrigger
+      result  <- updateRows
+      _       <- enableAikaleimaTrigger
+    } yield result
+
+    runDbSync(action.transactionally)
+  }
+
+  private def disableAikaleimaTrigger = sqlu"""alter table opiskeluoikeus disable trigger update_opiskeluoikeus_aikaleima"""
+  private def enableAikaleimaTrigger = sqlu"""alter table opiskeluoikeus enable trigger update_opiskeluoikeus_aikaleima"""
 }
 
 case class Päivämääräväli(

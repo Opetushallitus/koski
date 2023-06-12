@@ -49,6 +49,19 @@ class SuoritusjakoAPISpec extends AnyFreeSpec with SuoritusjakoTestMethods with 
     super.afterAll()
   }
 
+  "Suoritusjaon tekeminen ei muuta opiskeluoikeus-taulun rivin aikaleimaa" in {
+    val aikaleimatEnnenSuoritusjaonTekemistä = getOpiskeluoikeudet(KoskiSpecificMockOppijat.taiteenPerusopetusValmis.oid).map(_.aikaleima)
+    Thread.sleep(100)
+
+    createSuoritusjako(json, hetu) {
+      verifyResponseStatusOk()
+      secrets += ("taiteen perusopetus" -> JsonSerializer.parse[Suoritusjako](response.body).secret)
+
+      val uudetAikaleimat = getOpiskeluoikeudet(KoskiSpecificMockOppijat.taiteenPerusopetusValmis.oid).map(_.aikaleima)
+      aikaleimatEnnenSuoritusjaonTekemistä should equal(uudetAikaleimat)
+    }
+  }
+
   "Suoritusjaon hakeminen" - {
     "vanhalla käyttöliittymän rajapinnalla" - {
       "onnistuu" in {
@@ -168,4 +181,8 @@ class SuoritusjakoAPISpec extends AnyFreeSpec with SuoritusjakoTestMethods with 
   def postSuoritetutTutkinnotPublicAPI[A](secret: String)(f: => A): A = {
     post(s"/api/opinnot/suoritetut-tutkinnot", JsonSerializer.writeWithRoot(SuoritusjakoReadRequest(secret = secret)), headers = jsonContent)(f)
   }
+
+  def getOpiskeluoikeudet(oppijaOid: String): Seq[KoskeenTallennettavaOpiskeluoikeus] =
+    super.getOpiskeluoikeudet(KoskiSpecificMockOppijat.taiteenPerusopetusValmis.oid)
+      .collect { case oo: KoskeenTallennettavaOpiskeluoikeus => oo }
 }
