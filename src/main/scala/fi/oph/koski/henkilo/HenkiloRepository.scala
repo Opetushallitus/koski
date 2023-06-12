@@ -70,8 +70,7 @@ case class HenkilöRepository(
   def findByHetuOrCreateIfInYtrOrVirta(
     hetu: String,
     nimitiedot: Option[Nimitiedot] = None,
-    userForAccessChecks: Option[KoskiSpecificSession] = None,
-    kutsuvaRajapinta: String = ""
+    userForAccessChecks: Option[KoskiSpecificSession] = None
   ): Option[OppijaHenkilö] = {
     Hetu.validFormat(hetu) match {
       case Right(validHetu) =>
@@ -101,9 +100,6 @@ case class HenkilöRepository(
                 None
             }
           } else {
-            if(kutsuvaRajapinta == "omadata") {
-              logger.info(s"Oppijan tietoja ei löytynyt ONR:stä, Virrasta tai YTR:stä.")
-            }
             None
           }
         }
