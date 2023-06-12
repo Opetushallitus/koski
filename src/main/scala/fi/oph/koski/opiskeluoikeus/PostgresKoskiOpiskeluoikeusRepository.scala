@@ -82,9 +82,14 @@ class PostgresKoskiOpiskeluoikeusRepository(
   }
 
   def merkitseSuoritusjakoTehdyksiIlmanKäyttöoikeudenTarkastusta(oid: String): HttpStatus = {
-    runDbSyncWithoutAikaleimaUpdate(KoskiTables.KoskiOpiskeluOikeudet.filter(_.oid === oid).map(_.suoritusjakoTehty).update(true)) match {
-      case 0 => throw new RuntimeException(s"Oppija not found: $oid")
-      case _ => HttpStatus.ok
+    // Tarkastetaan ensin, tarvitseeko päivitystä edes tehdä, jotta vältetään turha taulun lukitseminen runDbSyncWithoutAikaleimaUpdate-kutsussa
+    if (!suoritusjakoTehtyIlmanKäyttöoikeudenTarkastusta(oid)) {
+      runDbSyncWithoutAikaleimaUpdate(KoskiTables.KoskiOpiskeluOikeudet.filter(_.oid === oid).map(_.suoritusjakoTehty).update(true)) match {
+        case 0 => throw new RuntimeException(s"Oppija not found: $oid")
+        case _ => HttpStatus.ok
+      }
+    } else {
+      HttpStatus.ok
     }
   }
 
