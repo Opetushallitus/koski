@@ -52,7 +52,7 @@ export function useKoodisto<T extends string>(
  * @returns KoodistokoodiviiteKoodistonNimellä[] kun yksikin koodisto on saatu ladattua, muuten null.
  */
 const useKoodistot = <T extends string>(
-  ...koodistoUris: NEA.NonEmptyArray<string | null | undefined>
+  ...koodistoUris: Array<string | null | undefined>
 ) => {
   const { koodistot, loadKoodistot } = useContext(KoodistoContext)
 
@@ -85,8 +85,24 @@ const useKoodistot = <T extends string>(
 export const useKoodistoOfConstraint = <T extends string = string>(
   constraint: Constraint | null
 ): KoodistokoodiviiteKoodistonNimellä<T>[] | null => {
-  const koodisto = useMemo(() => C.koodiviite<T>(constraint), [constraint])
-  return useKoodisto<T>(koodisto?.koodistoUri, koodisto?.koodiarvot)
+  const koodistoSchemas = useMemo(
+    () => C.koodiviite<T>(constraint)?.filter(nonNull) || [],
+    [constraint]
+  )
+  const koodistot = useKoodistot<T>(
+    ...koodistoSchemas.map((k) => k.koodistoUri)
+  )
+  return (
+    koodistot?.filter((k) =>
+      koodistoSchemas.find(
+        (s) =>
+          s.koodistoUri === k.koodiviite.koodistoUri &&
+          (s.koodiarvot === null ||
+            A.isEmpty(s.koodiarvot) ||
+            s.koodiarvot.includes(k.koodiviite.koodiarvo))
+      )
+    ) || null
+  )
 }
 
 /**

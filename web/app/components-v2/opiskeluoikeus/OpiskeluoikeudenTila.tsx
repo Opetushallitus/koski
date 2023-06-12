@@ -4,33 +4,61 @@ import { NonEmptyArray } from 'fp-ts/lib/NonEmptyArray'
 import * as O from 'fp-ts/Option'
 import * as Ord from 'fp-ts/Ord'
 import React, { useCallback, useMemo, useState } from 'react'
-import { useChildClassName } from '../../appstate/constraints'
+import { useChildClassNames } from '../../appstate/constraints'
 import { addDaysISO, ISO2FinnishDate } from '../../date/date'
 import { t } from '../../i18n/i18n'
+import { isAikuistenPerusopetuksenOpiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/AikuistenPerusopetuksenOpiskeluoikeusjakso'
+import { isAmmatillinenOpiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/AmmatillinenOpiskeluoikeusjakso'
+import { isDIAOpiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/DIAOpiskeluoikeusjakso'
+import { isEuropeanSchoolOfHelsinkiOpiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso'
+import { isInternationalSchoolOpiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/InternationalSchoolOpiskeluoikeusjakso'
+import { isLukionOpiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/LukionOpiskeluoikeusjakso'
+import { isMuunKuinSäännellynKoulutuksenOpiskeluoikeudenJakso } from '../../types/fi/oph/koski/schema/MuunKuinSaannellynKoulutuksenOpiskeluoikeudenJakso'
+import { isTutkintokoulutukseenValmentavanOpiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/TutkintokoulutukseenValmentavanOpiskeluoikeusjakso'
 import { OpiskeluoikeudenTila } from '../../types/fi/oph/koski/schema/OpiskeluoikeudenTila'
 import { Opiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/Opiskeluoikeusjakso'
+import { isVapaanSivistystyönOpiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeusjakso'
 import { isTerminaalitila } from '../../util/opiskeluoikeus'
 import {
   OpiskeluoikeusjaksoOf,
   OpiskeluoikeusjaksoOrd
 } from '../../util/schema'
+import { ClassOf } from '../../util/types'
 import { CommonProps, subTestId, testId } from '../CommonProps'
 import {
   KeyColumnedValuesRow,
-  KeyValueRow,
   KeyValueTable
 } from '../containers/KeyValueTable'
 import { DateEdit } from '../controls/DateField'
-import { FlatButton } from '../controls/FlatButton'
 import { IconButton } from '../controls/IconButton'
 import { RaisedButton } from '../controls/RaisedButton'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
 import { isValidationError, ValidationError } from '../forms/validator'
 import { CHARCODE_REMOVE } from '../texts/Icon'
 import {
-  UusiOpiskeluoikeusjakso,
-  UusiOpiskeluoikeudenTilaModal
+  UusiOpiskeluoikeudenTilaModal,
+  UusiOpiskeluoikeusjakso
 } from './UusiOpiskeluoikeudenTilaModal'
+
+// TODO: Siisti omaan tiedostoonsa
+type RahoituksellinenOpiskeluoikeusjakso = Extract<
+  Opiskeluoikeusjakso,
+  { opintojenRahoitus?: any }
+>
+function isRahoituksellinenOpiskeluoikeusjakso(
+  x: Opiskeluoikeusjakso
+): x is RahoituksellinenOpiskeluoikeusjakso {
+  return (
+    isAikuistenPerusopetuksenOpiskeluoikeusjakso(x) ||
+    isAmmatillinenOpiskeluoikeusjakso(x) ||
+    isDIAOpiskeluoikeusjakso(x) ||
+    isEuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(x) ||
+    isInternationalSchoolOpiskeluoikeusjakso(x) ||
+    isLukionOpiskeluoikeusjakso(x) ||
+    isMuunKuinSäännellynKoulutuksenOpiskeluoikeudenJakso(x) ||
+    isTutkintokoulutukseenValmentavanOpiskeluoikeusjakso(x)
+  )
+}
 
 // Opiskeluoikeuden tila viewer
 
@@ -56,11 +84,19 @@ export const OpiskeluoikeudenTilaView = <T extends OpiskeluoikeudenTila>(
           name={index === 0 ? 'Tila' : undefined}
           key={index}
           className={index === 0 ? 'OpiskeluoikeudenTila-viimeisin' : undefined}
-          columnSpans={{ default: [2, '*'], phone: [4, '*'] }}
+          columnSpans={{ default: [2, 2, '*'], phone: [4, 4, '*'] }}
           testId={subTestId(props, `items.${index}`)}
-          testIds={['date', 'tila']}
+          testIds={['date', 'tila', 'opintojenRahoitus']}
         >
-          {[ISO2FinnishDate(jakso.alku), t(jakso.tila.nimi)]}
+          {[
+            <time key={`time_${index}`} dateTime={jakso.alku}>
+              {ISO2FinnishDate(jakso.alku)}
+            </time>,
+            t(jakso.tila.nimi),
+            isVapaanSivistystyönOpiskeluoikeusjakso(jakso) &&
+              isRahoituksellinenOpiskeluoikeusjakso(jakso) &&
+              `(${t(jakso.opintojenRahoitus?.nimi)})`
+          ]}
         </KeyColumnedValuesRow>
       ))}
     </KeyValueTable>
@@ -68,7 +104,6 @@ export const OpiskeluoikeudenTilaView = <T extends OpiskeluoikeudenTila>(
 }
 
 // Opiskeluoikeuden tila editor
-
 export type OpiskeluoikeudenTilaEditProps<T extends OpiskeluoikeudenTila> =
   CommonProps<
     FieldEditorProps<
@@ -78,6 +113,7 @@ export type OpiskeluoikeudenTilaEditProps<T extends OpiskeluoikeudenTila> =
         createJakso: (
           form: UusiOpiskeluoikeusjakso<OpiskeluoikeusjaksoOf<T>>
         ) => OpiskeluoikeusjaksoOf<T> | NonEmptyArray<ValidationError>
+        opiskeluoikeusJaksoClassName?: ClassOf<OpiskeluoikeusjaksoOf<T>>
       }
     >
   >
@@ -99,11 +135,11 @@ export const OpiskeluoikeudenTilaEdit = <T extends OpiskeluoikeudenTila>(
               small: [8, '*'],
               phone: [24, '*']
             }}
-            key={index}
+            key={`${index}_${arrIndex}`}
           >
             {[
               <DateEdit
-                key="date"
+                key={`date_${index}_${arrIndex}`}
                 value={jakso.alku}
                 min={min}
                 max={max}
@@ -114,6 +150,18 @@ export const OpiskeluoikeudenTilaEdit = <T extends OpiskeluoikeudenTila>(
                 <span {...testId(props, `items.${index}.tila`)}>
                   {t(jakso.tila.nimi)}
                 </span>
+                {/* TODO: Putsaa */}
+                {isVapaanSivistystyönOpiskeluoikeusjakso(jakso) &&
+                  isRahoituksellinenOpiskeluoikeusjakso(jakso) && (
+                    <>
+                      {' '}
+                      <span>
+                        {'('}
+                        {t(jakso.opintojenRahoitus?.nimi)}
+                        {')'}
+                      </span>
+                    </>
+                  )}
                 {isLatest && (
                   <IconButton
                     charCode={CHARCODE_REMOVE}
@@ -121,6 +169,7 @@ export const OpiskeluoikeudenTilaEdit = <T extends OpiskeluoikeudenTila>(
                     size="input"
                     onClick={oo.onRemoveLatest}
                     testId={subTestId(props, `items.${index}.remove`)}
+                    key={`IconButton_${index}_${arrIndex}`}
                   />
                 )}
               </div>
@@ -138,6 +187,7 @@ export const OpiskeluoikeudenTilaEdit = <T extends OpiskeluoikeudenTila>(
           >
             {[
               <RaisedButton
+                key="RaisedButton"
                 onClick={oo.openModal}
                 testId={subTestId(props, 'add')}
               >
@@ -232,10 +282,46 @@ const useOpiskeluoikeudenTilaState = <T extends OpiskeluoikeudenTila>(
     setModalVisible(false)
   }, [])
 
-  const opiskeluoikeusjaksoClass = useChildClassName<OpiskeluoikeusjaksoOf<T>>(
-    props.value?.$class,
-    'opiskeluoikeusjaksot.[]'
-  )
+  // Joissain tapauksissa opiskeluoikeusjaksolla on useampi luokkanimi.
+  // Näille tapauksille käytetään komponentista syötettävää resolveria, jolla määritellään käytettävä luokka manuaalisesti.
+  // Ennen kuin Scala-Scheman OnlyWhen ja NotWhen saadaan uuteen käliin mukaan linsseillä, niin tämä toteutus on väliaikainen.
+  const opiskeluoikeusjaksoClassNames = useChildClassNames<
+    OpiskeluoikeusjaksoOf<T>
+  >(props.value?.$class, 'opiskeluoikeusjaksot.[]')
+
+  if (
+    props.opiskeluoikeusJaksoClassName === undefined &&
+    opiskeluoikeusjaksoClassNames &&
+    opiskeluoikeusjaksoClassNames.length > 1
+  ) {
+    throw new Error(
+      "More than one possible className detected and no className resolver was supplied. To suppress this error, please use 'classNameResolver' property in your data model."
+    )
+  }
+
+  // TODO: Siisti
+  if (
+    props.opiskeluoikeusJaksoClassName !== undefined &&
+    opiskeluoikeusjaksoClassNames &&
+    opiskeluoikeusjaksoClassNames.length > 1 &&
+    !opiskeluoikeusjaksoClassNames.includes(props.opiskeluoikeusJaksoClassName)
+  ) {
+    throw new Error(
+      `opiskeluoikeusjaksoClassNames does not include ${
+        props.opiskeluoikeusJaksoClassName
+      }. Valid options are: ${opiskeluoikeusjaksoClassNames.join(', ')}`
+    )
+  }
+
+  // TODO: Refaktoroi, näyttää ihan hirveältä luettavalta.
+  const opiskeluoikeusjaksoClass =
+    opiskeluoikeusjaksoClassNames !== null
+      ? opiskeluoikeusjaksoClassNames.length === 1
+        ? opiskeluoikeusjaksoClassNames[0]
+        : props.opiskeluoikeusJaksoClassName !== undefined
+        ? props.opiskeluoikeusJaksoClassName
+        : null
+      : null
 
   const isTerminated = useMemo(
     () =>

@@ -1,8 +1,10 @@
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
 const ESLintPlugin = require('eslint-webpack-plugin')
 const path = require('path')
 
 module.exports = {
+  context: __dirname,
   entry: {
     main: './app/Virkailija.jsx',
     omattiedot: './app/OmatTiedot.jsx',
@@ -41,7 +43,18 @@ module.exports = {
       {
         test: /\.(ts|tsx)$/,
         include: [path.join(__dirname, 'app')],
-        use: ['ts-loader']
+        exclude: /(node_modules|bower_components)/,
+        use: {
+          loader: 'swc-loader',
+          options: {
+            jsc: {
+              parser: {
+                syntax: 'typescript',
+                jsx: true
+              }
+            }
+          }
+        }
       },
       {
         test: /\.less$/,
@@ -68,6 +81,9 @@ module.exports = {
     ]
   },
   plugins: [
+    new ForkTsCheckerWebpackPlugin({
+      typescript: { mode: 'write-tsbuildinfo' }
+    }),
     new ESLintPlugin({
       extensions: ['js', 'jsx', 'ts', 'tsx'],
       failOnWarning: false // Ei failata compilationia ESLint-varoituksille
@@ -107,5 +123,8 @@ module.exports = {
         }
       ]
     })
-  ]
+  ],
+  watchOptions: {
+    ignored: /node_modules/
+  }
 }

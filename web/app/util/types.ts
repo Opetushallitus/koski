@@ -7,7 +7,7 @@ import { KoodiarvotOf } from './koodisto'
 export type ObjWithClass = { $class: string }
 
 // Palauttaa string-tyypin, joka on annetun Scala-luokan nimen literaali
-export type ClassOf<T extends ObjWithClass> = T['$class']
+export type ClassOf<T> = T extends ObjWithClass ? T['$class'] : never
 
 // Sovittaa v2-tyypityksen vanhalle datamallille, josta puuttuu luokkien nimet
 export type LegacyClass<T extends ObjWithClass> = Omit<T, '$class'>

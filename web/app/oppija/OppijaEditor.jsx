@@ -27,7 +27,10 @@ export const OppijaEditor = ({ model }) => {
       />
       {!uiAdapter.isLoadingV2 && (
         <div>
-          <ul className="opiskeluoikeuksientiedot">
+          <ul
+            className="opiskeluoikeuksientiedot"
+            data-testid="opiskeluoikeuksientiedot"
+          >
             {flatMapArray(
               modelItems(
                 model,

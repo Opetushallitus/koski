@@ -64,7 +64,8 @@ case class AdditionalExports(
   // ole minkään tietomallin jäseniä (ainoastaan niistä periytyvät luokat on mainittu).
   opiskeluoikeudenTila: OpiskeluoikeudenTila,
   opiskeluoikeusjakso: Opiskeluoikeusjakso,
+  koskiOpiskeluoikeusjakso: KoskiOpiskeluoikeusjakso,
   arviointi: Arviointi,
   koodiviite: KoodiViite,
-  selitettyOsaamisenTunnustaminen: SelitettyOsaamisenTunnustaminen,
+  selitettyOsaamisenTunnustaminen: SelitettyOsaamisenTunnustaminen
 )

@@ -6,6 +6,7 @@ import { todayISODate } from '../../date/date'
 import { t } from '../../i18n/i18n'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { Opiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/Opiskeluoikeusjakso'
+import { VapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/VapaanSivistystyonJotpaKoulutuksenOpiskeluoikeusjakso'
 import { KoodiarvotOf } from '../../util/koodisto'
 import { isValmistuvaTerminaalitila } from '../../util/opiskeluoikeus'
 import { ClassOf } from '../../util/types'
@@ -17,7 +18,7 @@ import { FlatButton } from '../controls/FlatButton'
 import { RadioButtonsEdit } from '../controls/RadioButtons'
 import { RaisedButton } from '../controls/RaisedButton'
 import { FormField, Nothing } from '../forms/FormField'
-import { useForm } from '../forms/FormModel'
+import { FormModel, useForm } from '../forms/FormModel'
 import { ValidationError } from '../forms/validator'
 
 export type UusiOpiskeluoikeudenTilaModalProps<T extends Opiskeluoikeusjakso> =
@@ -30,32 +31,120 @@ export type UusiOpiskeluoikeudenTilaModalProps<T extends Opiskeluoikeusjakso> =
     enableValmistuminen: boolean
   }>
 
+type Rahoituksellinen = {
+  opintojenRahoitus: any
+}
+
+// TODO: Tyypitä tämä uudestaan tukemaan kaikkia Koskesta löytyviä opiskeluoikeusjaksoja.
 export type UusiOpiskeluoikeusjakso<T extends Opiskeluoikeusjakso> = {
   alku: string
   tila: OpiskeluoikeudenTilakoodi<KoodiarvotOf<T['tila']>>
+  // TODO: Vahvempi tyypitys
+  opintojenRahoitus?: any
 }
 
-const KOODISTOURI_OPISKELUOIKEUDEN_TILA = 'koskiopiskeluoikeudentila'
+const KOODISTOURI_OPISKELUOIKEUDEN_TILA = 'koskiopiskeluoikeudentila' as const
+const KOODISTOURI_OPINTOJENRAHOITUS = 'opintojenrahoitus' as const
+const VST_JOTPA_KOULUTUS =
+  'fi.oph.koski.schema.VapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso' as const
+
 type TilaKoodistoUri = typeof KOODISTOURI_OPISKELUOIKEUDEN_TILA
+type OpintojenRahoitusUri = typeof KOODISTOURI_OPINTOJENRAHOITUS
 
 type OpiskeluoikeudenTilakoodi<S extends string = string> = Koodistokoodiviite<
   TilaKoodistoUri,
   S
 >
 
+type OpiskeluoikeudenOpintojenrahoituskoodi<S extends string = string> =
+  Koodistokoodiviite<OpintojenRahoitusUri, S>
+
 const useInitialOpiskelujaksoForm = <T extends Opiskeluoikeusjakso>(
   opiskeluoikeusjaksoClass: ClassOf<T>
 ) =>
-  useMemo<UusiOpiskeluoikeusjakso<T>>(
-    () => ({
+  useMemo<UusiOpiskeluoikeusjakso<T>>(() => {
+    if (opiskeluoikeusjaksoClass === VST_JOTPA_KOULUTUS) {
+      // VST JOTPA erikoistapaus
+      // TODO: Tarkista, onko tämä ok
+      return {
+        alku: todayISODate(),
+        tila: Koodistokoodiviite({
+          koodistoUri: KOODISTOURI_OPISKELUOIKEUDEN_TILA,
+          koodiarvo: defaultTila(opiskeluoikeusjaksoClass)
+        }),
+        opintojenRahoitus: Koodistokoodiviite({
+          koodistoUri: KOODISTOURI_OPINTOJENRAHOITUS,
+          koodiarvo: defaultOpintojenRahoitus(opiskeluoikeusjaksoClass)
+        })
+      }
+    }
+    return {
       alku: todayISODate(),
       tila: Koodistokoodiviite({
         koodistoUri: KOODISTOURI_OPISKELUOIKEUDEN_TILA,
         koodiarvo: defaultTila(opiskeluoikeusjaksoClass)
       })
-    }),
-    [opiskeluoikeusjaksoClass]
+    }
+  }, [opiskeluoikeusjaksoClass])
+
+function hasRahoitus(x: string) {
+  switch (x) {
+    case VapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso.className:
+      return true
+    default:
+      return false
+  }
+}
+
+type P<T extends Opiskeluoikeusjakso> = {
+  form: FormModel<UusiOpiskeluoikeusjakso<T>>
+  opiskeluoikeusjaksoClass: ClassOf<T>
+  enableValmistuminen: boolean
+}
+
+const OpiskeluoikeudenTilanRahoitusField = <T extends Opiskeluoikeusjakso>(
+  props: P<T>
+) => {
+  const [opintojenRahoitusPath] = useMemo(
+    () => [props.form.root.prop('opintojenRahoitus')],
+    [props.form.root]
   )
+  const rahoitusKoodiarvot = useAllowedStrings(
+    props.opiskeluoikeusjaksoClass,
+    'opintojenRahoitus.koodiarvo'
+  )
+  const rahoitus = useKoodisto(
+    KOODISTOURI_OPINTOJENRAHOITUS,
+    rahoitusKoodiarvot
+  )?.map((k) => k.koodiviite)
+
+  const opintojenRahoitusOptions = useMemo(
+    () =>
+      rahoitus?.map((r) => ({
+        key: r.koodiarvo,
+        label: t(r.nimi),
+        value: r,
+        disabled: !props.enableValmistuminen && isValmistuvaTerminaalitila(r)
+      })),
+    [props.enableValmistuminen, rahoitus]
+  )
+
+  return (
+    <Label label="Opintojen rahoitus">
+      <FormField
+        form={props.form}
+        path={opintojenRahoitusPath}
+        view={Nothing}
+        edit={RadioButtonsEdit}
+        editProps={{
+          getKey: (tila: Koodistokoodiviite) => tila.koodiarvo,
+          options: opintojenRahoitusOptions
+        }}
+        testId={subTestId(props, 'opintojenRahoitus')}
+      />
+    </Label>
+  )
+}
 
 export const UusiOpiskeluoikeudenTilaModal = <T extends Opiskeluoikeusjakso>(
   props: UusiOpiskeluoikeudenTilaModalProps<T>
@@ -133,6 +222,14 @@ export const UusiOpiskeluoikeudenTilaModal = <T extends Opiskeluoikeusjakso>(
             testId={subTestId(props, 'tila')}
           />
         </Label>
+
+        {hasRahoitus(props.opiskeluoikeusjaksoClass) && (
+          <OpiskeluoikeudenTilanRahoitusField
+            form={form}
+            enableValmistuminen={props.enableValmistuminen}
+            opiskeluoikeusjaksoClass={props.opiskeluoikeusjaksoClass}
+          />
+        )}
       </ModalBody>
 
       <ModalFooter>
@@ -150,3 +247,5 @@ export const UusiOpiskeluoikeudenTilaModal = <T extends Opiskeluoikeusjakso>(
 // Utils
 
 const defaultTila = (cn: ClassOf<Opiskeluoikeusjakso>): string => 'lasna'
+const defaultOpintojenRahoitus = (cn: ClassOf<Opiskeluoikeusjakso>): string =>
+  '14'
