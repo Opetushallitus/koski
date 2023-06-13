@@ -872,7 +872,7 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
       case expectedSuoritusData: schema.TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus =>
         verifyTutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus(actualSuoritus, expectedSuoritusData)
       case expectedSuoritusData: schema.MuunAmmatillisenKoulutuksenSuoritus =>
-        verifyMuunAmmatillisenKoulutuksenSuoritus(actualSuoritus, expectedSuoritusData)
+        verifyMuunAmmatillisenKoulutuksenSuoritus(actualSuoritus.asInstanceOf[AktiivisetJaPäättyneetOpinnotMuunAmmatillisenKoulutuksenSuoritus], expectedSuoritusData)
       case expectedSuoritusData: schema.NäyttötutkintoonValmistavanKoulutuksenSuoritus =>
         verifyNäyttötutkintoonValmistavanKoulutuksenSuoritus(actualSuoritus, expectedSuoritusData)
       case expectedSuoritusData: schema.TelmaKoulutuksenSuoritus =>
@@ -914,10 +914,11 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
   }
 
   private def verifyMuunAmmatillisenKoulutuksenSuoritus(
-    actualSuoritus: AktiivisetJaPäättyneetOpinnotAmmatillinenPäätasonSuoritus,
+    actualSuoritus: AktiivisetJaPäättyneetOpinnotMuunAmmatillisenKoulutuksenSuoritus,
     expectedSuoritusData: schema.MuunAmmatillisenKoulutuksenSuoritus
   ): Unit = {
     actualSuoritus.koulutusmoduuli.tunniste.koodiarvo should be(expectedSuoritusData.koulutusmoduuli.tunniste.koodiarvo)
+    actualSuoritus.täydentääTutkintoa.map(_.tunniste.koodiarvo) should be(expectedSuoritusData.täydentääTutkintoa.map(_.tunniste.koodiarvo))
 
     verifyOsaamisenHankkimistavallinen(actualSuoritus, expectedSuoritusData)
     verifyKoulutussopimuksellinen(actualSuoritus, expectedSuoritusData)

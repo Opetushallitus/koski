@@ -90,6 +90,7 @@ case class AktiivisetJaPäättyneetOpinnotAmmatillisenTutkinnonSuoritus(
 @Title("Muun ammatillisen koulutuksen suoritus")
 case class AktiivisetJaPäättyneetOpinnotMuunAmmatillisenKoulutuksenSuoritus(
   koulutusmoduuli: AktiivisetJaPäättyneetOpinnotMuuAmmatillinenKoulutus,
+  täydentääTutkintoa: Option[AktiivisetJaPäättyneetOpinnotAmmatillinenTutkintoKoulutus],
   vahvistus: Option[Vahvistus],
   toimipiste: Option[Toimipiste],
   osaamisenHankkimistavat: Option[List[OsaamisenHankkimistapajakso]],
