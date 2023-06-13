@@ -500,7 +500,7 @@ class SuoritusjakoSpec extends AnyFreeSpec with SuoritusjakoTestMethods with Mat
 
     "tuottaa auditlog-merkinnän aktiiviselle ja päättyneille opinnoille" in {
       AuditLogTester.clearMessages
-      getSuoritusjakoFromOpinnotApi(secrets("yksi suoritus"), Some("aktiiviset-ja-paattyneet-opinnot")) {
+      getSuoritusjakoFromOpinnotApi(secrets("auditlog-aktiiviset-ja-paattyneet-opinno"), Some("aktiiviset-ja-paattyneet-opinnot")) {
         verifyResponseStatusOk()
         AuditLogTester.verifyAuditLogMessage(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN_AKTIIVISET_JA_PAATTYNEET_OPINNOT"))
       }
