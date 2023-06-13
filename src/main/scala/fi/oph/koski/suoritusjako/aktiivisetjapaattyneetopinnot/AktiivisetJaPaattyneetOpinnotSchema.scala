@@ -85,14 +85,6 @@ trait Suoritus {
   def toimipiste: Option[Toimipiste] // TODO: Muuta pakolliseksi niissä, missä on
 }
 
-@Title("Päätason suoritus kooditetulla koulutusmoduulilla")
-case class AktiivisetJaPäättyneetOpinnotPäätasonKooditettuSuoritus(
-  koulutusmoduuli: SuorituksenKooditettuKoulutusmoduuli,
-  tyyppi: schema.Koodistokoodiviite,
-  vahvistus: Option[Vahvistus],
-  toimipiste: Option[Toimipiste],
-) extends Suoritus
-
 trait AktiivisetJaPäättyneetOpinnotKoodiViite {
   def koodiarvo: String
 }
@@ -146,16 +138,6 @@ case class Koulutustoimija(
   yTunnus: Option[String],
   kotipaikka: Option[AktiivisetJaPäättyneetOpinnotKoodistokoodiviite]
 )
-
-case class AktiivisetJaPäättyneetOpinnotLaajuus(arvo: Double, yksikkö: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite)
-
-object AktiivisetJaPäättyneetOpinnotLaajuus {
-  def fromKoskiSchema(koskiLaajuus: schema.Laajuus) =
-    AktiivisetJaPäättyneetOpinnotLaajuus(
-      koskiLaajuus.arvo,
-      AktiivisetJaPäättyneetOpinnotKoodistokoodiviite.fromKoskiSchema(koskiLaajuus.yksikkö)
-    )
-}
 
 @Title("Opiskeluoikeuden tila")
 case class AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila(
