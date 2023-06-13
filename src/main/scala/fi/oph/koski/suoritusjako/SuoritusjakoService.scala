@@ -60,12 +60,14 @@ class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppija
   }
 
   def get(secret: String)(implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, WithWarnings[Oppija]] = {
-    suoritusjakoRepository.get(secret).flatMap { suoritusjako =>
-      oppijaFacade.findOppija(suoritusjako.oppijaOid)(koskiSession).map(_.map { oppija =>
-        val suoritusIdentifiers = JsonSerializer.extract[List[SuoritusIdentifier]](suoritusjako.suoritusIds)
-        val filtered = filterOpiskeluoikeudet(oppija.opiskeluoikeudet, suoritusIdentifiers)
-        oppija.copy(opiskeluoikeudet = filtered)
-      })
+    suoritusjakoRepository.get(secret).flatMap {
+      case suoritusjako if suoritusjako.jaonTyyppi.isEmpty =>
+        oppijaFacade.findOppija(suoritusjako.oppijaOid)(koskiSession).map(_.map { oppija =>
+          val suoritusIdentifiers = JsonSerializer.extract[List[SuoritusIdentifier]](suoritusjako.suoritusIds)
+          val filtered = filterOpiskeluoikeudet(oppija.opiskeluoikeudet, suoritusIdentifiers)
+          oppija.copy(opiskeluoikeudet = filtered)
+        })
+      case _ => Left(KoskiErrorCategory.notFound())
     }
   }
 
@@ -75,8 +77,13 @@ class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppija
   }
 
   def getSuoritetutTutkinnot(secret: String)(implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, SuoritetutTutkinnotOppija] = {
-    suoritusjakoRepository.get(secret)
-      .flatMap(t => suoritetutTutkinnotService.findSuoritetutTutkinnotOppija(t.oppijaOid))
+    suoritusjakoRepository.get(secret).flatMap(
+      o =>
+        (o.oppijaOid, o.jaonTyyppi) match {
+          case (oppijaOid, Some("suoritetut-tutkinnot")) => suoritetutTutkinnotService.findSuoritetutTutkinnotOppija(oppijaOid)
+          case _ => Left(KoskiErrorCategory.notFound())
+      }
+    )
   }
 
   private def filterOpiskeluoikeudet(opiskeluoikeudet: Seq[Opiskeluoikeus], suoritusIds: List[SuoritusIdentifier]): Seq[Opiskeluoikeus] = {

@@ -163,6 +163,18 @@ class SuoritusjakoAPISpec extends AnyFreeSpec with SuoritusjakoTestMethods with 
           AuditLogTester.verifyAuditLogMessage(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN_SUORITETUT_TUTKINNOT"))
         }
       }
+
+      "ei onnistu suoritettujen tutkintojen API:sta tavallisen suoritusjaon secretillä" in {
+        postSuoritetutTutkinnotPublicAPI(secrets("taiteen perusopetus")) {
+          verifyResponseStatus(404)
+        }
+      }
+
+      "ei onnistu erillisten suoritusten API:sta suoritettujen tutkintojen secretillä" in {
+        postSuoritusjakoPublicAPI(secrets("suoritetut tutkinnot")) {
+          verifyResponseStatus(404)
+        }
+      }
     }
   }
 
