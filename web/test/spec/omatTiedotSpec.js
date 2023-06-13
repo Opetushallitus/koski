@@ -1113,11 +1113,7 @@ describe('Omat tiedot', function () {
             wait.until(korhopankki.isReady),
             korhopankki.login('280618-402H', 'Ammattilainen', 'Aarne'),
             wait.until(omattiedot.isVisible),
-            click(omattiedot.suoritusjakoButton),
-            wait.until(() =>
-              isElementVisible(omattiedot.luoUusiSuoritusjakoButton)
-            ),
-            click(omattiedot.luoUusiSuoritusjakoButton)
+            click(omattiedot.suoritusjakoButton)
           )
 
           describe('aktiivisten ja päättyneiden opintojen jakaminen', function () {
