@@ -65,6 +65,7 @@ object AktiivisetJaPäättyneetOpinnotKorkeakoulunOpiskeluoikeus {
               nimi = s.koulutusmoduuli.nimi,
             ),
             vahvistus = s.vahvistus.map(v => Vahvistus(v.päivä)),
+            suorituskieli = s.suorituskieli.map(AktiivisetJaPäättyneetOpinnotKoodistokoodiviite.fromKoskiSchema),
             toimipiste = Some(Toimipiste(
               s.toimipiste.oid,
               s.toimipiste.nimi,
@@ -80,6 +81,7 @@ object AktiivisetJaPäättyneetOpinnotKorkeakoulunOpiskeluoikeus {
               virtaNimi = s.koulutusmoduuli.virtaNimi
             ),
             vahvistus = s.vahvistus.map(v => Vahvistus(v.päivä)),
+            suorituskieli = s.suorituskieli.map(AktiivisetJaPäättyneetOpinnotKoodistokoodiviite.fromKoskiSchema),
             toimipiste = Some(Toimipiste(
               s.toimipiste.oid,
               s.toimipiste.nimi,
@@ -94,6 +96,7 @@ object AktiivisetJaPäättyneetOpinnotKorkeakoulunOpiskeluoikeus {
               nimi = s.koulutusmoduuli.nimi,
             ),
             vahvistus = s.vahvistus.map(v => Vahvistus(v.päivä)),
+            suorituskieli = s.suorituskieli.map(AktiivisetJaPäättyneetOpinnotKoodistokoodiviite.fromKoskiSchema),
             toimipiste = Some(Toimipiste(
               s.toimipiste.oid,
               s.toimipiste.nimi,
@@ -135,6 +138,7 @@ trait AktiivisetJaPäättyneetOpinnotKorkeakouluSuoritus extends Suoritus
 case class AktiivisetJaPäättyneetOpinnotKorkeakoulunOpintojaksonSuoritus(
   koulutusmoduuli: AktiivisetJaPäättyneetOpinnotKorkeakoulunOpintojakso,
   vahvistus: Option[Vahvistus],
+  suorituskieli: Option[AktiivisetJaPäättyneetOpinnotKoodistokoodiviite],
   toimipiste: Option[Toimipiste],
   @KoodistoKoodiarvo("korkeakoulunopintojakso")
   tyyppi: schema.Koodistokoodiviite
@@ -145,12 +149,14 @@ case class AktiivisetJaPäättyneetOpinnotKorkeakoulututkinnonSuoritus(
   @KoodistoKoodiarvo("korkeakoulututkinto")
   tyyppi: schema.Koodistokoodiviite,
   vahvistus: Option[Vahvistus],
+  suorituskieli: Option[AktiivisetJaPäättyneetOpinnotKoodistokoodiviite],
   toimipiste: Option[Toimipiste],
 ) extends AktiivisetJaPäättyneetOpinnotKorkeakouluSuoritus
 
 case class AktiivisetJaPäättyneetOpinnotMuuKorkeakoulunSuoritus(
   koulutusmoduuli: AktiivisetJaPäättyneetOpinnotMuuKorkeakoulunOpinto,
   vahvistus: Option[Vahvistus],
+  suorituskieli: Option[AktiivisetJaPäättyneetOpinnotKoodistokoodiviite],
   toimipiste: Option[Toimipiste],
   @KoodistoKoodiarvo("muukorkeakoulunsuoritus")
   tyyppi: schema.Koodistokoodiviite

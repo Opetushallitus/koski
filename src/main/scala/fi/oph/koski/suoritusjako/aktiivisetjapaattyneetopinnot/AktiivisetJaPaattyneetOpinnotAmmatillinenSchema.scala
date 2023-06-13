@@ -61,6 +61,7 @@ trait AktiivisetJaPäättyneetOpinnotAmmatillisenTutkinnonOsittainenTaiKokoSuori
 case class AktiivisetJaPäättyneetOpinnotAmmatillisenTutkinnonOsittainenSuoritus(
   koulutusmoduuli: AktiivisetJaPäättyneetOpinnotAmmatillinenTutkintoKoulutus,
   vahvistus: Option[Vahvistus],
+  suorituskieli: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite,
   toimipiste: Option[Toimipiste],
   suoritustapa: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite,
   osaamisala: Option[List[AktiivisetJaPäättyneetOpinnotOsaamisalajakso]],
@@ -77,6 +78,7 @@ case class AktiivisetJaPäättyneetOpinnotAmmatillisenTutkinnonOsittainenSuoritu
 case class AktiivisetJaPäättyneetOpinnotAmmatillisenTutkinnonSuoritus(
   koulutusmoduuli: AktiivisetJaPäättyneetOpinnotAmmatillinenTutkintoKoulutus,
   vahvistus: Option[Vahvistus],
+  suorituskieli: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite,
   toimipiste: Option[Toimipiste],
   suoritustapa: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite,
   osaamisala: Option[List[AktiivisetJaPäättyneetOpinnotOsaamisalajakso]],
@@ -103,6 +105,7 @@ case class AktiivisetJaPäättyneetOpinnotMuunAmmatillisenKoulutuksenSuoritus(
 case class AktiivisetJaPäättyneetOpinnotTelmaKoulutuksenSuoritus(
   koulutusmoduuli: AktiivisetJaPäättyneetOpinnotTelmaKoulutus,
   vahvistus: Option[Vahvistus],
+  suorituskieli: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite,
   toimipiste: Option[Toimipiste],
   koulutussopimukset: Option[List[Koulutussopimusjakso]],
   @KoodistoKoodiarvo("telma")
@@ -125,6 +128,7 @@ case class AktiivisetJaPäättyneetOpinnotTutkinnonOsaaPienemmistäKokonaisuuksi
 case class AktiivisetJaPäättyneetOpinnotValmaKoulutuksenSuoritus(
   koulutusmoduuli: AktiivisetJaPäättyneetOpinnotValmaKoulutus,
   vahvistus: Option[Vahvistus],
+  suorituskieli: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite,
   toimipiste: Option[Toimipiste],
   koulutussopimukset: Option[List[Koulutussopimusjakso]],
   @KoodistoKoodiarvo("valma")
@@ -153,11 +157,6 @@ case class AktiivisetJaPäättyneetOpinnotPaikallinenMuuAmmatillinenKoulutus(
   tunniste: AktiivisetJaPäättyneetOpinnotPaikallinenKoodi,
   kuvaus: schema.LocalizedString
 ) extends AktiivisetJaPäättyneetOpinnotMuuAmmatillinenKoulutus
-
-case class AktiivisetJaPäättyneetOpinnotNäyttötutkintoonValmistavaKoulutus(
-  tunniste: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite,
-  koulutustyyppi: Option[AktiivisetJaPäättyneetOpinnotKoodistokoodiviite],
-) extends AktiivisetJaPäättyneetOpinnotAmmatillisenSuorituksenKoulutusmoduuli
 
 case class AktiivisetJaPäättyneetOpinnotTelmaKoulutus(
   tunniste: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite,

@@ -32,6 +32,7 @@ case class AktiivisetJaPäättyneetOpinnotInternationalSchoolOpiskeluoikeus(
 case class AktiivisetJaPäättyneetOpinnotInternationalSchoolVuosiluokanSuoritus(
   koulutusmoduuli: AktiivisetJaPäättyneetOpinnotInternationalSchoolKoulutusmoduuli,
   vahvistus: Option[Vahvistus],
+  suorituskieli: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite,
   toimipiste: Option[Toimipiste],
   @KoodistoKoodiarvo("internationalschoolmypvuosiluokka")
   @KoodistoKoodiarvo("internationalschooldiplomavuosiluokka")

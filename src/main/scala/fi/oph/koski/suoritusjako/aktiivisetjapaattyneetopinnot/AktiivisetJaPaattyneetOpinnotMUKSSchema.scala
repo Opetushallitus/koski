@@ -30,6 +30,7 @@ case class AktiivisetJaPäättyneetOpinnotMuunKuinSäännellynKoulutuksenOpiskel
 case class AktiivisetJaPäättyneetOpinnotMuunKuinSäännellynKoulutuksenPäätasonSuoritus(
   koulutusmoduuli: AktiivisetJaPäättyneetOpinnotMuuKuinSäänneltyKoulutus,
   vahvistus: Option[Vahvistus],
+  suorituskieli: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite,
   toimipiste: Option[Toimipiste],
   tyyppi: schema.Koodistokoodiviite
 ) extends Suoritus

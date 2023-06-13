@@ -27,12 +27,15 @@ case class AktiivisetJaPäättyneetOpinnotVapaanSivistystyönOpiskeluoikeus(
   override def withoutSisältyyOpiskeluoikeuteen: AktiivisetJaPäättyneetOpinnotOpiskeluoikeus = this
 }
 
-trait AktiivisetJaPäättyneetOpinnotVapaanSivistystyönPäätasonSuoritus extends Suoritus
+trait AktiivisetJaPäättyneetOpinnotVapaanSivistystyönPäätasonSuoritus extends Suoritus {
+  def suorituskieli: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite
+}
 
 @Title("Oppivelvollisille suunnattu maahanmuuttajien kotoutusmiskoulutuksen suoritus")
 case class AktiivisetJaPäättyneetOpinnotOppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus(
   koulutusmoduuli: AktiivisetJaPäättyneetOpinnotVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutus,
   vahvistus: Option[Vahvistus],
+  suorituskieli: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite,
   toimipiste: Option[Toimipiste],
   @KoodistoKoodiarvo("vstmaahanmuuttajienkotoutumiskoulutus")
   tyyppi: schema.Koodistokoodiviite
@@ -42,6 +45,7 @@ case class AktiivisetJaPäättyneetOpinnotOppivelvollisilleSuunnattuMaahanmuutta
 case class AktiivisetJaPäättyneetOpinnotOppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus(
   koulutusmoduuli: AktiivisetJaPäättyneetOpinnotOppivelvollisilleSuunnattuVapaanSivistystyönKoulutus,
   vahvistus: Option[Vahvistus],
+  suorituskieli: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite,
   toimipiste: Option[Toimipiste],
   @KoodistoKoodiarvo("vstoppivelvollisillesuunnattukoulutus")
   tyyppi: schema.Koodistokoodiviite
@@ -51,6 +55,7 @@ case class AktiivisetJaPäättyneetOpinnotOppivelvollisilleSuunnattuVapaanSivist
 case class AktiivisetJaPäättyneetOpinnotVapaanSivistystyönJotpaKoulutuksenSuoritus(
   koulutusmoduuli: AktiivisetJaPäättyneetOpinnotVapaanSivistystyönJotpaKoulutus,
   vahvistus: Option[Vahvistus],
+  suorituskieli: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite,
   toimipiste: Option[Toimipiste],
   @KoodistoKoodiarvo("vstjotpakoulutus")
   tyyppi: schema.Koodistokoodiviite
@@ -60,6 +65,7 @@ case class AktiivisetJaPäättyneetOpinnotVapaanSivistystyönJotpaKoulutuksenSuo
 case class AktiivisetJaPäättyneetOpinnotVapaanSivistystyönLukutaitokoulutuksenSuoritus(
   koulutusmoduuli: AktiivisetJaPäättyneetOpinnotVapaanSivistystyönLukutaitokoulutus,
   vahvistus: Option[Vahvistus],
+  suorituskieli: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite,
   toimipiste: Option[Toimipiste],
   @KoodistoKoodiarvo("vstlukutaitokoulutus")
   tyyppi: schema.Koodistokoodiviite

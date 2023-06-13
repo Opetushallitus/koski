@@ -167,6 +167,7 @@ trait SuorituksenKooditettuKoulutusmoduuli extends SuorituksenKoulutusmoduuli {
 @Title("Päätason suoritus")
 case class AktiivisetJaPäättyneetOpinnotPäätasonSuoritus(
   koulutusmoduuli: AktiivisetJaPäättyneetOpinnotPäätasonKoulutusmoduuli,
+  suorituskieli: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite,
   tyyppi: schema.Koodistokoodiviite,
   vahvistus: Option[Vahvistus],
   toimipiste: Option[Toimipiste]

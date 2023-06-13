@@ -1001,6 +1001,7 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
 
     (actualSuoritus, expectedSuoritusData) match {
       case (actualSuoritus: AktiivisetJaPäättyneetOpinnotKorkeakoulututkinnonSuoritus, expectedSuoritusData: schema.KorkeakoulututkinnonSuoritus) =>
+        actualSuoritus.suorituskieli.map(_.koodiarvo) should equal(expectedSuoritusData.suorituskieli.map(_.koodiarvo))
         actualSuoritus.koulutusmoduuli.koulutustyyppi should equal(expectedSuoritusData.koulutusmoduuli.koulutustyyppi)
         actualSuoritus.koulutusmoduuli.virtaNimi should equal(expectedSuoritusData.koulutusmoduuli.virtaNimi)
       case (actualSuoritus: AktiivisetJaPäättyneetOpinnotMuuKorkeakoulunSuoritus, expectedSuoritusData: schema.MuuKorkeakoulunSuoritus) =>
@@ -1014,6 +1015,10 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
   private def verifyPäätasonSuoritus(actualSuoritus: AktiivisetJaPäättyneetOpinnotPäätasonSuoritus, expectedSuoritusData: schema.PäätasonSuoritus) = {
     actualSuoritus.tyyppi.koodiarvo should equal(expectedSuoritusData.tyyppi.koodiarvo)
     actualSuoritus.koulutusmoduuli.tunniste.koodiarvo should equal(expectedSuoritusData.koulutusmoduuli.tunniste.koodiarvo)
+    expectedSuoritusData match {
+      case es: schema.Suorituskielellinen => actualSuoritus.suorituskieli.koodiarvo should equal(es.suorituskieli.koodiarvo)
+      case _ => fail(s"Yritettiin tutkita suorituskieletöntä päätason suoritustyyppiä: ${expectedSuoritusData.tyyppi.koodiarvo}")
+    }
   }
 
   private def verifyKorkeakouluOpiskeluoikeudenKentät(
