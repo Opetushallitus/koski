@@ -393,7 +393,7 @@ describe('Omat tiedot', function () {
         var form = omattiedot.suoritusjakoForm
         window.secrets = {}
 
-        describe('Jakaminen', function () {
+        describe('Jakolinkeillä jakaminen', function () {
           it('Aluksi ei näytetä lomaketta', function () {
             expect(form.isVisible()).to.equal(false)
           })
@@ -536,6 +536,111 @@ describe('Omat tiedot', function () {
                 expect(form.suoritusjako(1).feedbackText.value()).to.equal(
                   'Virheellinen päivämäärä'
                 )
+              })
+            })
+          })
+
+          describe('Suoritetut tutkinnot', function () {
+            before(
+              authentication.logout,
+              etusivu.openPage,
+              etusivu.login(),
+              wait.until(korhopankki.isReady),
+              korhopankki.login('280618-402H', 'Ammattilainen', 'Aarne'),
+              wait.until(omattiedot.isVisible),
+              click(omattiedot.suoritusjakoButton)
+            )
+
+            describe('suoritettujen tutkintojen jakaminen', function () {
+              before(
+                form.selectSuoritetutTutkinnot(),
+                form.createSuoritusjako(),
+                wait.until(form.suoritusjako(1).isVisible)
+              )
+
+              it('onnistuu', function () {
+                var jako = form.suoritusjako(1)
+                var secret = jako.url().split('/') // otetaan salaisuus talteen jaon hakemista varten
+                window.secrets.suoritetutTutkinnot = secret[secret.length - 1]
+                expect(jako.isVisible()).to.equal(true)
+              })
+            })
+
+            describe('Katselu', function () {
+              var suoritusjako = SuoritusjakoPage()
+
+              before(
+                authentication.logout,
+                suoritusjako.openPage(
+                  'suoritetutTutkinnot',
+                  'suoritetut-tutkinnot'
+                ),
+                wait.until(suoritusjako.isVisible)
+              )
+
+              it('onnistuu', function () {
+                expect(suoritusjako.isVisible()).to.equal(true)
+                expect(isElementVisible(S('.suoritettu-tutkinto'))).to.equal(
+                  true
+                )
+                expect(S('.suoritettu-tutkinto h3').text()).to.equal(
+                  'Stadin ammatti- ja aikuisopisto'
+                )
+              })
+            })
+          })
+
+          describe('Aktiiviset ja päättyneet opinnot', function () {
+            before(
+              authentication.logout,
+              etusivu.openPage,
+              etusivu.login(),
+              wait.until(korhopankki.isReady),
+              korhopankki.login('280618-402H', 'Ammattilainen', 'Aarne'),
+              wait.until(omattiedot.isVisible),
+              click(omattiedot.suoritusjakoButton),
+              wait.until(() =>
+                isElementVisible(omattiedot.luoUusiSuoritusjakoButton)
+              ),
+              click(omattiedot.luoUusiSuoritusjakoButton)
+            )
+
+            describe('aktiivisten ja päättyneiden opintojen jakaminen', function () {
+              before(
+                form.selectAktiivisetJaPaattyneetOpinnot(),
+                form.createSuoritusjako(),
+                wait.until(form.suoritusjako(1).isVisible)
+              )
+
+              it('onnistuu', function () {
+                var jako = form.suoritusjako(2)
+                var secret = jako.url().split('/') // otetaan salaisuus talteen jaon hakemista varten
+                window.secrets.aktiivisetJaPaattyneetOpinnot =
+                  secret[secret.length - 1]
+                expect(jako.isVisible()).to.equal(true)
+              })
+            })
+
+            describe('Katselu', function () {
+              var suoritusjako = SuoritusjakoPage()
+
+              before(
+                authentication.logout,
+                suoritusjako.openPage(
+                  'aktiivisetJaPaattyneetOpinnot',
+                  'aktiiviset-ja-paattyneet-opinnot'
+                ),
+                wait.until(suoritusjako.isVisible)
+              )
+
+              it('onnistuu', function () {
+                expect(suoritusjako.isVisible()).to.equal(true)
+                expect(
+                  isElementVisible(S('.aktiivinen-tai-paattynyt-opinto'))
+                ).to.equal(true)
+                expect(
+                  S('.aktiivinen-tai-paattynyt-opinto h3').text()
+                ).to.equal('Stadin ammatti- ja aikuisopisto')
               })
             })
           })
@@ -1053,109 +1158,6 @@ describe('Omat tiedot', function () {
                   ).to.equal('7A')
                 })
               })
-            })
-          })
-        })
-
-        describe('Suoritetut tutkinnot', function () {
-          before(
-            authentication.logout,
-            etusivu.openPage,
-            etusivu.login(),
-            wait.until(korhopankki.isReady),
-            korhopankki.login('280618-402H', 'Ammattilainen', 'Aarne'),
-            wait.until(omattiedot.isVisible),
-            click(omattiedot.suoritusjakoButton)
-          )
-
-          describe('suoritettujen tutkintojen jakaminen', function () {
-            before(
-              form.selectSuoritetutTutkinnot(),
-              form.createSuoritusjako(),
-              wait.until(form.suoritusjako(1).isVisible)
-            )
-
-            it('onnistuu', function () {
-              var jako = form.suoritusjako(1)
-              var secret = jako.url().split('/') // otetaan salaisuus talteen jaon hakemista varten
-              window.secrets.suoritetutTutkinnot = secret[secret.length - 1]
-              expect(jako.isVisible()).to.equal(true)
-            })
-          })
-
-          describe('Katselu', function () {
-            var suoritusjako = SuoritusjakoPage()
-
-            before(
-              authentication.logout,
-              suoritusjako.openPage(
-                'suoritetutTutkinnot',
-                'suoritetut-tutkinnot'
-              ),
-              wait.until(suoritusjako.isVisible)
-            )
-
-            it('onnistuu', function () {
-              expect(suoritusjako.isVisible()).to.equal(true)
-              expect(isElementVisible(S('.suoritettu-tutkinto'))).to.equal(true)
-              expect(S('.suoritettu-tutkinto h3').text()).to.equal(
-                'Stadin ammatti- ja aikuisopisto'
-              )
-            })
-          })
-        })
-
-        describe('Aktiiviset ja päättyneet opinnot', function () {
-          before(
-            authentication.logout,
-            etusivu.openPage,
-            etusivu.login(),
-            wait.until(korhopankki.isReady),
-            korhopankki.login('280618-402H', 'Ammattilainen', 'Aarne'),
-            wait.until(omattiedot.isVisible),
-            click(omattiedot.suoritusjakoButton),
-            wait.until(() =>
-              isElementVisible(omattiedot.luoUusiSuoritusjakoButton)
-            ),
-            click(omattiedot.luoUusiSuoritusjakoButton)
-          )
-
-          describe('aktiivisten ja päättyneiden opintojen jakaminen', function () {
-            before(
-              form.selectAktiivisetJaPaattyneetOpinnot(),
-              form.createSuoritusjako(),
-              wait.until(form.suoritusjako(1).isVisible)
-            )
-
-            it('onnistuu', function () {
-              var jako = form.suoritusjako(1)
-              var secret = jako.url().split('/') // otetaan salaisuus talteen jaon hakemista varten
-              window.secrets.aktiivisetJaPaattyneetOpinnot =
-                secret[secret.length - 1]
-              expect(jako.isVisible()).to.equal(true)
-            })
-          })
-
-          describe('Katselu', function () {
-            var suoritusjako = SuoritusjakoPage()
-
-            before(
-              authentication.logout,
-              suoritusjako.openPage(
-                'aktiivisetJaPaattyneetOpinnot',
-                'aktiiviset-ja-paattyneet-opinnot'
-              ),
-              wait.until(suoritusjako.isVisible)
-            )
-
-            it('onnistuu', function () {
-              expect(suoritusjako.isVisible()).to.equal(true)
-              expect(
-                isElementVisible(S('.aktiivinen-tai-paattynyt-opinto'))
-              ).to.equal(true)
-              expect(S('.aktiivinen-tai-paattynyt-opinto h3').text()).to.equal(
-                'Stadin ammatti- ja aikuisopisto'
-              )
             })
           })
         })
