@@ -17,7 +17,6 @@ case class KorkeakoulunOpiskeluoikeus(
   koulutustoimija: Option[Koulutustoimija] = None,
   arvioituPäättymispäivä: Option[LocalDate] = None,
   override val päättymispäivä: Option[LocalDate] = None,
-  @Description("Jos tämä on opiskelijan ensisijainen opiskeluoikeus tässä oppilaitoksessa, ilmoitetaan tässä ensisijaisuuden tiedot")
   tila: KorkeakoulunOpiskeluoikeudenTila,
   lisätiedot: Option[KorkeakoulunOpiskeluoikeudenLisätiedot] = None,
   suoritukset: List[KorkeakouluSuoritus],
@@ -53,6 +52,7 @@ case class KorkeakoulunOpiskeluoikeus(
 
 @Description("Korkeakoulun opiskeluoikeuden lisätiedot")
 case class KorkeakoulunOpiskeluoikeudenLisätiedot(
+  @Description("Jos tämä on opiskelijan ensisijainen opiskeluoikeus tässä oppilaitoksessa, ilmoitetaan tässä ensisijaisuuden tiedot")
   ensisijaisuus: Option[List[Aikajakso]] = None,
   @Title("Korkeakoulun opiskeluoikeuden tyyppi")
   @KoodistoUri("virtaopiskeluoikeudentyyppi")
