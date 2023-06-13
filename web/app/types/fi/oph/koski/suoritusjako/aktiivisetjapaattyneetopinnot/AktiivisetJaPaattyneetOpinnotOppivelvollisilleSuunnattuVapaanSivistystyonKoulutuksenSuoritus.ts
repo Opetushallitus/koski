@@ -1,8 +1,9 @@
-import { AktiivisetJaPäättyneetOpinnotOppivelvollisilleSuunnattuVapaanSivistystyönKoulutus } from './AktiivisetJaPaattyneetOpinnotOppivelvollisilleSuunnattuVapaanSivistystyonKoulutus'
-import { Vahvistus } from './Vahvistus'
-import { Toimipiste } from './Toimipiste'
 import { Koodistokoodiviite } from '../../schema/Koodistokoodiviite'
 import { LocalizedString } from '../../schema/LocalizedString'
+import { AktiivisetJaPäättyneetOpinnotKoodistokoodiviite } from './AktiivisetJaPaattyneetOpinnotKoodistokoodiviite'
+import { AktiivisetJaPäättyneetOpinnotOppivelvollisilleSuunnattuVapaanSivistystyönKoulutus } from './AktiivisetJaPaattyneetOpinnotOppivelvollisilleSuunnattuVapaanSivistystyonKoulutus'
+import { Toimipiste } from './Toimipiste'
+import { Vahvistus } from './Vahvistus'
 
 /**
  * AktiivisetJaPäättyneetOpinnotOppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus
@@ -12,18 +13,20 @@ import { LocalizedString } from '../../schema/LocalizedString'
 export type AktiivisetJaPäättyneetOpinnotOppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus =
   {
     $class: 'fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotOppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus'
-    koulutusmoduuli: AktiivisetJaPäättyneetOpinnotOppivelvollisilleSuunnattuVapaanSivistystyönKoulutus
-    vahvistus?: Vahvistus
-    toimipiste?: Toimipiste
     tyyppi: Koodistokoodiviite<string, 'vstoppivelvollisillesuunnattukoulutus'>
+    suorituskieli: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite
+    koulutusmoduuli: AktiivisetJaPäättyneetOpinnotOppivelvollisilleSuunnattuVapaanSivistystyönKoulutus
+    toimipiste?: Toimipiste
+    vahvistus?: Vahvistus
   }
 
 export const AktiivisetJaPäättyneetOpinnotOppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus =
   (o: {
-    koulutusmoduuli: AktiivisetJaPäättyneetOpinnotOppivelvollisilleSuunnattuVapaanSivistystyönKoulutus
-    vahvistus?: Vahvistus
-    toimipiste?: Toimipiste
     tyyppi: Koodistokoodiviite<string, 'vstoppivelvollisillesuunnattukoulutus'>
+    suorituskieli: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite
+    koulutusmoduuli: AktiivisetJaPäättyneetOpinnotOppivelvollisilleSuunnattuVapaanSivistystyönKoulutus
+    toimipiste?: Toimipiste
+    vahvistus?: Vahvistus
   }): AktiivisetJaPäättyneetOpinnotOppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus => ({
     $class:
       'fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotOppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus',

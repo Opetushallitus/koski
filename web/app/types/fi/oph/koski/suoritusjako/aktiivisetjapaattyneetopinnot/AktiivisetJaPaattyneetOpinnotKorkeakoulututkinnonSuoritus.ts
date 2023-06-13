@@ -1,8 +1,9 @@
-import { AktiivisetJaPäättyneetOpinnotKorkeakoulututkinto } from './AktiivisetJaPaattyneetOpinnotKorkeakoulututkinto'
 import { Koodistokoodiviite } from '../../schema/Koodistokoodiviite'
 import { LocalizedString } from '../../schema/LocalizedString'
-import { Vahvistus } from './Vahvistus'
+import { AktiivisetJaPäättyneetOpinnotKoodistokoodiviite } from './AktiivisetJaPaattyneetOpinnotKoodistokoodiviite'
+import { AktiivisetJaPäättyneetOpinnotKorkeakoulututkinto } from './AktiivisetJaPaattyneetOpinnotKorkeakoulututkinto'
 import { Toimipiste } from './Toimipiste'
+import { Vahvistus } from './Vahvistus'
 
 /**
  * AktiivisetJaPäättyneetOpinnotKorkeakoulututkinnonSuoritus
@@ -11,17 +12,19 @@ import { Toimipiste } from './Toimipiste'
  */
 export type AktiivisetJaPäättyneetOpinnotKorkeakoulututkinnonSuoritus = {
   $class: 'fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotKorkeakoulututkinnonSuoritus'
-  koulutusmoduuli: AktiivisetJaPäättyneetOpinnotKorkeakoulututkinto
   tyyppi: Koodistokoodiviite<string, 'korkeakoulututkinto'>
-  vahvistus?: Vahvistus
+  suorituskieli?: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite
+  koulutusmoduuli: AktiivisetJaPäättyneetOpinnotKorkeakoulututkinto
   toimipiste?: Toimipiste
+  vahvistus?: Vahvistus
 }
 
 export const AktiivisetJaPäättyneetOpinnotKorkeakoulututkinnonSuoritus = (o: {
-  koulutusmoduuli: AktiivisetJaPäättyneetOpinnotKorkeakoulututkinto
   tyyppi: Koodistokoodiviite<string, 'korkeakoulututkinto'>
-  vahvistus?: Vahvistus
+  suorituskieli?: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite
+  koulutusmoduuli: AktiivisetJaPäättyneetOpinnotKorkeakoulututkinto
   toimipiste?: Toimipiste
+  vahvistus?: Vahvistus
 }): AktiivisetJaPäättyneetOpinnotKorkeakoulututkinnonSuoritus => ({
   $class:
     'fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotKorkeakoulututkinnonSuoritus',

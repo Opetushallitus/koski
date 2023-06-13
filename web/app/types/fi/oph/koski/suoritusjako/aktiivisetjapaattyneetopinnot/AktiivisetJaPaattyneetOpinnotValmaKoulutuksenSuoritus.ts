@@ -1,5 +1,6 @@
 import { Koodistokoodiviite } from '../../schema/Koodistokoodiviite'
 import { LocalizedString } from '../../schema/LocalizedString'
+import { AktiivisetJaPäättyneetOpinnotKoodistokoodiviite } from './AktiivisetJaPaattyneetOpinnotKoodistokoodiviite'
 import { Koulutussopimusjakso } from './Koulutussopimusjakso'
 import { AktiivisetJaPäättyneetOpinnotValmaKoulutus } from './AktiivisetJaPaattyneetOpinnotValmaKoulutus'
 import { Toimipiste } from './Toimipiste'
@@ -13,6 +14,7 @@ import { Vahvistus } from './Vahvistus'
 export type AktiivisetJaPäättyneetOpinnotValmaKoulutuksenSuoritus = {
   $class: 'fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotValmaKoulutuksenSuoritus'
   tyyppi: Koodistokoodiviite<string, 'valma'>
+  suorituskieli: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite
   koulutussopimukset?: Array<Koulutussopimusjakso>
   koulutusmoduuli: AktiivisetJaPäättyneetOpinnotValmaKoulutus
   toimipiste?: Toimipiste
@@ -21,6 +23,7 @@ export type AktiivisetJaPäättyneetOpinnotValmaKoulutuksenSuoritus = {
 
 export const AktiivisetJaPäättyneetOpinnotValmaKoulutuksenSuoritus = (o: {
   tyyppi: Koodistokoodiviite<string, 'valma'>
+  suorituskieli: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite
   koulutussopimukset?: Array<Koulutussopimusjakso>
   koulutusmoduuli: AktiivisetJaPäättyneetOpinnotValmaKoulutus
   toimipiste?: Toimipiste

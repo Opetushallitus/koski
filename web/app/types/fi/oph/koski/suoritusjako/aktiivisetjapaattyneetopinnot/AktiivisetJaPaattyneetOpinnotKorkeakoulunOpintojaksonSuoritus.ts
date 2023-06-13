@@ -1,8 +1,9 @@
-import { AktiivisetJaPäättyneetOpinnotKorkeakoulunOpintojakso } from './AktiivisetJaPaattyneetOpinnotKorkeakoulunOpintojakso'
-import { Vahvistus } from './Vahvistus'
-import { Toimipiste } from './Toimipiste'
 import { Koodistokoodiviite } from '../../schema/Koodistokoodiviite'
 import { LocalizedString } from '../../schema/LocalizedString'
+import { AktiivisetJaPäättyneetOpinnotKoodistokoodiviite } from './AktiivisetJaPaattyneetOpinnotKoodistokoodiviite'
+import { AktiivisetJaPäättyneetOpinnotKorkeakoulunOpintojakso } from './AktiivisetJaPaattyneetOpinnotKorkeakoulunOpintojakso'
+import { Toimipiste } from './Toimipiste'
+import { Vahvistus } from './Vahvistus'
 
 /**
  * AktiivisetJaPäättyneetOpinnotKorkeakoulunOpintojaksonSuoritus
@@ -11,18 +12,20 @@ import { LocalizedString } from '../../schema/LocalizedString'
  */
 export type AktiivisetJaPäättyneetOpinnotKorkeakoulunOpintojaksonSuoritus = {
   $class: 'fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotKorkeakoulunOpintojaksonSuoritus'
-  koulutusmoduuli: AktiivisetJaPäättyneetOpinnotKorkeakoulunOpintojakso
-  vahvistus?: Vahvistus
-  toimipiste?: Toimipiste
   tyyppi: Koodistokoodiviite<string, 'korkeakoulunopintojakso'>
+  suorituskieli?: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite
+  koulutusmoduuli: AktiivisetJaPäättyneetOpinnotKorkeakoulunOpintojakso
+  toimipiste?: Toimipiste
+  vahvistus?: Vahvistus
 }
 
 export const AktiivisetJaPäättyneetOpinnotKorkeakoulunOpintojaksonSuoritus =
   (o: {
-    koulutusmoduuli: AktiivisetJaPäättyneetOpinnotKorkeakoulunOpintojakso
-    vahvistus?: Vahvistus
-    toimipiste?: Toimipiste
     tyyppi: Koodistokoodiviite<string, 'korkeakoulunopintojakso'>
+    suorituskieli?: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite
+    koulutusmoduuli: AktiivisetJaPäättyneetOpinnotKorkeakoulunOpintojakso
+    toimipiste?: Toimipiste
+    vahvistus?: Vahvistus
   }): AktiivisetJaPäättyneetOpinnotKorkeakoulunOpintojaksonSuoritus => ({
     $class:
       'fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotKorkeakoulunOpintojaksonSuoritus',

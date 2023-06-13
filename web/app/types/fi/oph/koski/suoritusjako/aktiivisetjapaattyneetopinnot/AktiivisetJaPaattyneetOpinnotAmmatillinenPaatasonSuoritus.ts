@@ -11,10 +11,6 @@ import {
   isAktiivisetJaPäättyneetOpinnotMuunAmmatillisenKoulutuksenSuoritus
 } from './AktiivisetJaPaattyneetOpinnotMuunAmmatillisenKoulutuksenSuoritus'
 import {
-  AktiivisetJaPäättyneetOpinnotNäyttötutkintoonValmistavanKoulutuksenSuoritus,
-  isAktiivisetJaPäättyneetOpinnotNäyttötutkintoonValmistavanKoulutuksenSuoritus
-} from './AktiivisetJaPaattyneetOpinnotNayttotutkintoonValmistavanKoulutuksenSuoritus'
-import {
   AktiivisetJaPäättyneetOpinnotTelmaKoulutuksenSuoritus,
   isAktiivisetJaPäättyneetOpinnotTelmaKoulutuksenSuoritus
 } from './AktiivisetJaPaattyneetOpinnotTelmaKoulutuksenSuoritus'
@@ -36,7 +32,6 @@ export type AktiivisetJaPäättyneetOpinnotAmmatillinenPäätasonSuoritus =
   | AktiivisetJaPäättyneetOpinnotAmmatillisenTutkinnonOsittainenSuoritus
   | AktiivisetJaPäättyneetOpinnotAmmatillisenTutkinnonSuoritus
   | AktiivisetJaPäättyneetOpinnotMuunAmmatillisenKoulutuksenSuoritus
-  | AktiivisetJaPäättyneetOpinnotNäyttötutkintoonValmistavanKoulutuksenSuoritus
   | AktiivisetJaPäättyneetOpinnotTelmaKoulutuksenSuoritus
   | AktiivisetJaPäättyneetOpinnotTutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus
   | AktiivisetJaPäättyneetOpinnotValmaKoulutuksenSuoritus
@@ -47,9 +42,6 @@ export const isAktiivisetJaPäättyneetOpinnotAmmatillinenPäätasonSuoritus = (
   isAktiivisetJaPäättyneetOpinnotAmmatillisenTutkinnonOsittainenSuoritus(a) ||
   isAktiivisetJaPäättyneetOpinnotAmmatillisenTutkinnonSuoritus(a) ||
   isAktiivisetJaPäättyneetOpinnotMuunAmmatillisenKoulutuksenSuoritus(a) ||
-  isAktiivisetJaPäättyneetOpinnotNäyttötutkintoonValmistavanKoulutuksenSuoritus(
-    a
-  ) ||
   isAktiivisetJaPäättyneetOpinnotTelmaKoulutuksenSuoritus(a) ||
   isAktiivisetJaPäättyneetOpinnotTutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus(
     a

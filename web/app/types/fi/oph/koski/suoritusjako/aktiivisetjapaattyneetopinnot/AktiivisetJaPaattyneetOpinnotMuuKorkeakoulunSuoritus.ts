@@ -1,8 +1,9 @@
-import { AktiivisetJaPäättyneetOpinnotMuuKorkeakoulunOpinto } from './AktiivisetJaPaattyneetOpinnotMuuKorkeakoulunOpinto'
-import { Vahvistus } from './Vahvistus'
-import { Toimipiste } from './Toimipiste'
 import { Koodistokoodiviite } from '../../schema/Koodistokoodiviite'
 import { LocalizedString } from '../../schema/LocalizedString'
+import { AktiivisetJaPäättyneetOpinnotKoodistokoodiviite } from './AktiivisetJaPaattyneetOpinnotKoodistokoodiviite'
+import { AktiivisetJaPäättyneetOpinnotMuuKorkeakoulunOpinto } from './AktiivisetJaPaattyneetOpinnotMuuKorkeakoulunOpinto'
+import { Toimipiste } from './Toimipiste'
+import { Vahvistus } from './Vahvistus'
 
 /**
  * AktiivisetJaPäättyneetOpinnotMuuKorkeakoulunSuoritus
@@ -11,17 +12,19 @@ import { LocalizedString } from '../../schema/LocalizedString'
  */
 export type AktiivisetJaPäättyneetOpinnotMuuKorkeakoulunSuoritus = {
   $class: 'fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotMuuKorkeakoulunSuoritus'
-  koulutusmoduuli: AktiivisetJaPäättyneetOpinnotMuuKorkeakoulunOpinto
-  vahvistus?: Vahvistus
-  toimipiste?: Toimipiste
   tyyppi: Koodistokoodiviite<string, 'muukorkeakoulunsuoritus'>
+  suorituskieli?: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite
+  koulutusmoduuli: AktiivisetJaPäättyneetOpinnotMuuKorkeakoulunOpinto
+  toimipiste?: Toimipiste
+  vahvistus?: Vahvistus
 }
 
 export const AktiivisetJaPäättyneetOpinnotMuuKorkeakoulunSuoritus = (o: {
-  koulutusmoduuli: AktiivisetJaPäättyneetOpinnotMuuKorkeakoulunOpinto
-  vahvistus?: Vahvistus
-  toimipiste?: Toimipiste
   tyyppi: Koodistokoodiviite<string, 'muukorkeakoulunsuoritus'>
+  suorituskieli?: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite
+  koulutusmoduuli: AktiivisetJaPäättyneetOpinnotMuuKorkeakoulunOpinto
+  toimipiste?: Toimipiste
+  vahvistus?: Vahvistus
 }): AktiivisetJaPäättyneetOpinnotMuuKorkeakoulunSuoritus => ({
   $class:
     'fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotMuuKorkeakoulunSuoritus',

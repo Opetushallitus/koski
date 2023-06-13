@@ -1,8 +1,9 @@
-import { AktiivisetJaPäättyneetOpinnotVapaanSivistystyönJotpaKoulutus } from './AktiivisetJaPaattyneetOpinnotVapaanSivistystyonJotpaKoulutus'
-import { Vahvistus } from './Vahvistus'
-import { Toimipiste } from './Toimipiste'
 import { Koodistokoodiviite } from '../../schema/Koodistokoodiviite'
 import { LocalizedString } from '../../schema/LocalizedString'
+import { AktiivisetJaPäättyneetOpinnotKoodistokoodiviite } from './AktiivisetJaPaattyneetOpinnotKoodistokoodiviite'
+import { AktiivisetJaPäättyneetOpinnotVapaanSivistystyönJotpaKoulutus } from './AktiivisetJaPaattyneetOpinnotVapaanSivistystyonJotpaKoulutus'
+import { Toimipiste } from './Toimipiste'
+import { Vahvistus } from './Vahvistus'
 
 /**
  * AktiivisetJaPäättyneetOpinnotVapaanSivistystyönJotpaKoulutuksenSuoritus
@@ -12,18 +13,20 @@ import { LocalizedString } from '../../schema/LocalizedString'
 export type AktiivisetJaPäättyneetOpinnotVapaanSivistystyönJotpaKoulutuksenSuoritus =
   {
     $class: 'fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotVapaanSivistystyönJotpaKoulutuksenSuoritus'
-    koulutusmoduuli: AktiivisetJaPäättyneetOpinnotVapaanSivistystyönJotpaKoulutus
-    vahvistus?: Vahvistus
-    toimipiste?: Toimipiste
     tyyppi: Koodistokoodiviite<string, 'vstjotpakoulutus'>
+    suorituskieli: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite
+    koulutusmoduuli: AktiivisetJaPäättyneetOpinnotVapaanSivistystyönJotpaKoulutus
+    toimipiste?: Toimipiste
+    vahvistus?: Vahvistus
   }
 
 export const AktiivisetJaPäättyneetOpinnotVapaanSivistystyönJotpaKoulutuksenSuoritus =
   (o: {
-    koulutusmoduuli: AktiivisetJaPäättyneetOpinnotVapaanSivistystyönJotpaKoulutus
-    vahvistus?: Vahvistus
-    toimipiste?: Toimipiste
     tyyppi: Koodistokoodiviite<string, 'vstjotpakoulutus'>
+    suorituskieli: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite
+    koulutusmoduuli: AktiivisetJaPäättyneetOpinnotVapaanSivistystyönJotpaKoulutus
+    toimipiste?: Toimipiste
+    vahvistus?: Vahvistus
   }): AktiivisetJaPäättyneetOpinnotVapaanSivistystyönJotpaKoulutuksenSuoritus => ({
     $class:
       'fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotVapaanSivistystyönJotpaKoulutuksenSuoritus',

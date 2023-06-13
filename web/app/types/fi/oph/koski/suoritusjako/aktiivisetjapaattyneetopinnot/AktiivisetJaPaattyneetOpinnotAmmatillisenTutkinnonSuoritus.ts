@@ -17,6 +17,7 @@ export type AktiivisetJaPäättyneetOpinnotAmmatillisenTutkinnonSuoritus = {
   $class: 'fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotAmmatillisenTutkinnonSuoritus'
   tutkintonimike?: Array<AktiivisetJaPäättyneetOpinnotKoodistokoodiviite>
   tyyppi: Koodistokoodiviite<string, 'ammatillinentutkinto'>
+  suorituskieli: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite
   suoritustapa: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite
   koulutussopimukset?: Array<Koulutussopimusjakso>
   koulutusmoduuli: AktiivisetJaPäättyneetOpinnotAmmatillinenTutkintoKoulutus
@@ -29,6 +30,7 @@ export type AktiivisetJaPäättyneetOpinnotAmmatillisenTutkinnonSuoritus = {
 export const AktiivisetJaPäättyneetOpinnotAmmatillisenTutkinnonSuoritus = (o: {
   tutkintonimike?: Array<AktiivisetJaPäättyneetOpinnotKoodistokoodiviite>
   tyyppi: Koodistokoodiviite<string, 'ammatillinentutkinto'>
+  suorituskieli: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite
   suoritustapa: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite
   koulutussopimukset?: Array<Koulutussopimusjakso>
   koulutusmoduuli: AktiivisetJaPäättyneetOpinnotAmmatillinenTutkintoKoulutus

@@ -19,6 +19,7 @@ export type AktiivisetJaPäättyneetOpinnotAmmatillisenTutkinnonOsittainenSuorit
     toinenTutkintonimike: boolean
     tutkintonimike?: Array<AktiivisetJaPäättyneetOpinnotKoodistokoodiviite>
     tyyppi: Koodistokoodiviite<string, 'ammatillinentutkintoosittainen'>
+    suorituskieli: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite
     toinenOsaamisala: boolean
     suoritustapa: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite
     koulutussopimukset?: Array<Koulutussopimusjakso>
@@ -34,6 +35,7 @@ export const AktiivisetJaPäättyneetOpinnotAmmatillisenTutkinnonOsittainenSuori
     toinenTutkintonimike: boolean
     tutkintonimike?: Array<AktiivisetJaPäättyneetOpinnotKoodistokoodiviite>
     tyyppi: Koodistokoodiviite<string, 'ammatillinentutkintoosittainen'>
+    suorituskieli: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite
     toinenOsaamisala: boolean
     suoritustapa: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite
     koulutussopimukset?: Array<Koulutussopimusjakso>
