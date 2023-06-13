@@ -98,19 +98,6 @@ case class AktiivisetJaPäättyneetOpinnotMuunAmmatillisenKoulutuksenSuoritus(
   tyyppi: schema.Koodistokoodiviite,
 ) extends AktiivisetJaPäättyneetOpinnotAmmatillinenPäätasonSuoritus with AktiivisetJaPäättyneetOpinnotOsaamisenHankkimistavallinen
 
-@Title("Näyttötutkintoon valmistavan koulutuksen suoritus")
-case class AktiivisetJaPäättyneetOpinnotNäyttötutkintoonValmistavanKoulutuksenSuoritus(
-  koulutusmoduuli: AktiivisetJaPäättyneetOpinnotNäyttötutkintoonValmistavaKoulutus,
-  vahvistus: Option[Vahvistus],
-  toimipiste: Option[Toimipiste],
-  osaamisala: Option[List[AktiivisetJaPäättyneetOpinnotOsaamisalajakso]],
-  tutkintonimike: Option[List[AktiivisetJaPäättyneetOpinnotKoodistokoodiviite]],
-  osaamisenHankkimistavat: Option[List[OsaamisenHankkimistapajakso]],
-  koulutussopimukset: Option[List[Koulutussopimusjakso]],
-  @KoodistoKoodiarvo("nayttotutkintoonvalmistavakoulutus")
-  tyyppi: schema.Koodistokoodiviite,
-) extends AktiivisetJaPäättyneetOpinnotAmmatillinenPäätasonSuoritus with AktiivisetJaPäättyneetOpinnotOsaamisenHankkimistavallinen
-
 @Title("TELMA-koulutuksen suoritus")
 case class AktiivisetJaPäättyneetOpinnotTelmaKoulutuksenSuoritus(
   koulutusmoduuli: AktiivisetJaPäättyneetOpinnotTelmaKoulutus,

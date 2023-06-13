@@ -80,7 +80,6 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
       KoskiSpecificMockOppijat.amis,
       KoskiSpecificMockOppijat.ammatillisenOsittainenRapsa,
       KoskiSpecificMockOppijat.paikallinenTunnustettu,
-      KoskiSpecificMockOppijat.erikoisammattitutkinto,
       KoskiSpecificMockOppijat.reformitutkinto,
       KoskiSpecificMockOppijat.osittainenammattitutkinto,
       KoskiSpecificMockOppijat.telma,
@@ -109,6 +108,29 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
         })
       }
     })
+
+    "Näyttötutkintoon valmistavaa päätason suoritusta ei palauteta" in {
+      val oppija = KoskiSpecificMockOppijat.erikoisammattitutkinto
+
+      val expectedOoData = getOpiskeluoikeus(oppija.oid, schema.OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo)
+      val expectedSuoritusDatat = expectedOoData.suoritukset.collect { case s if !s.isInstanceOf[schema.NäyttötutkintoonValmistavanKoulutuksenSuoritus] => s}
+
+      val result = aktiivisetJaPäättyneetOpinnotService.findOppija(oppija.oid)
+
+      result.isRight should be(true)
+
+      result.map(o => {
+        verifyOppija(oppija, o)
+
+        o.opiskeluoikeudet should have length 1
+        o.opiskeluoikeudet.head shouldBe a[AktiivisetJaPäättyneetOpinnotAmmatillinenOpiskeluoikeus]
+
+        val actualOo = o.opiskeluoikeudet.head
+        val actualSuoritukset = actualOo.suoritukset
+
+        verifyOpiskeluoikeusJaSuoritus(actualOo, actualSuoritukset, expectedOoData, expectedSuoritusDatat)
+      })
+    }
   }
 
   "Korkeakoulu" - {
@@ -958,7 +980,6 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
     expectedOoData: schema.AmmatillinenOpiskeluoikeus
   ): Unit = {
     verifyKoskiOpiskeluoikeudenKentät(actualOo, expectedOoData)
-    actualOo.suoritukset.length should equal(expectedOoData.suoritukset.length)
 
     actualOo.lisätiedot.map(_.osaAikaisuusjaksot.map(_.length)) should equal(expectedOoData.lisätiedot.map(_.osaAikaisuusjaksot.map(_.length)))
     actualOo.lisätiedot.map(_.osaAikaisuusjaksot.map(_.map(_.alku))) should equal(expectedOoData.lisätiedot.map(_.osaAikaisuusjaksot.map(_.map(_.alku))))
