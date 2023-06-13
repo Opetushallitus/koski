@@ -467,7 +467,7 @@ class SuoritusjakoSpec extends AnyFreeSpec with SuoritusjakoTestMethods with Mat
 
     "tuottaa auditlog-merkinnän suoritetuille tutkinnoille" in {
       AuditLogTester.clearMessages
-      getSuoritusjakoFromOpinnotApi(secrets("yksi suoritus"), Some("suoritetut-tutkinnot")) {
+      getSuoritusjakoFromOpinnotApi(secrets("auditlog-suoritetut-tutkinnot"), Some("suoritetut-tutkinnot")) {
         verifyResponseStatusOk()
         AuditLogTester.verifyAuditLogMessage(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN_SUORITETUT_TUTKINNOT"))
       }
