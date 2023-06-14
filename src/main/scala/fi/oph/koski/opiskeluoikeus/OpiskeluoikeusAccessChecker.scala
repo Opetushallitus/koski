@@ -7,7 +7,6 @@ object OpiskeluoikeusAccessChecker {
   def isInvalidatable(opiskeluoikeus: Opiskeluoikeus, session: KoskiSpecificSession): Boolean = {
     opiskeluoikeus match {
       case _: YlioppilastutkinnonOpiskeluoikeus =>
-        // TODO: TOR-1639 toistaiseksi YO-tutkinnon opiskeluoikeutta ei voi mitätöidä.
         false
       case _ =>
         val orgWriteAccess = opiskeluoikeus.omistajaOrganisaatio.exists(o => hasWriteAccess(session, opiskeluoikeus, o))

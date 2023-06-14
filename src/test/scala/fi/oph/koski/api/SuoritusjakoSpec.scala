@@ -166,6 +166,18 @@ class SuoritusjakoSpec extends AnyFreeSpec with SuoritusjakoTestMethods with Mat
           secrets += ("suoritetut-tutkinnot" -> JsonSerializer.parse[Suoritusjako](response.body).secret)
         }
       }
+
+      "aktiiviset ja päättyneet opinnot -kokonaisuudelle" in {
+        val json =
+          """[{
+          "tyyppi": "aktiiviset-ja-paattyneet-opinnot"
+        }]"""
+
+        createSuoritusjako(json) {
+          verifyResponseStatusOk()
+          secrets += ("aktiiviset-ja-paattyneet-opinnot" -> JsonSerializer.parse[Suoritusjako](response.body).secret)
+        }
+      }
     }
 
     "epäonnistuu" - {
@@ -286,6 +298,19 @@ class SuoritusjakoSpec extends AnyFreeSpec with SuoritusjakoTestMethods with Mat
         verifyResponseStatusOk()
         AuditLogTester.verifyAuditLogMessage(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_LISAYS_SUORITETUT_TUTKINNOT"))
         secrets += ("auditlog-suoritetut-tutkinnot" -> JsonSerializer.parse[Suoritusjako](response.body).secret)
+      }
+    }
+
+    "tuottaa auditlog-merkinnän aktiivisten ja päättyneiden opintojen kokonaisuuksille" in {
+      AuditLogTester.clearMessages
+
+      val aktiivisetJaPaattyneetOpinnotJson =
+        """[{ "tyyppi": "aktiiviset-ja-paattyneet-opinnot" }]"""
+
+      createSuoritusjako(aktiivisetJaPaattyneetOpinnotJson) {
+        verifyResponseStatusOk()
+        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_LISAYS_AKTIIVISET_JA_PAATTYNEET_OPINNOT"))
+        secrets += ("auditlog-aktiiviset-ja-paattyneet-opinnot" -> JsonSerializer.parse[Suoritusjako](response.body).secret)
       }
     }
   }
@@ -472,6 +497,15 @@ class SuoritusjakoSpec extends AnyFreeSpec with SuoritusjakoTestMethods with Mat
         AuditLogTester.verifyAuditLogMessage(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN_SUORITETUT_TUTKINNOT"))
       }
     }
+
+    "tuottaa auditlog-merkinnän aktiiviselle ja päättyneille opinnoille" in {
+      AuditLogTester.clearMessages
+      getSuoritusjakoFromOpinnotApi(secrets("auditlog-aktiiviset-ja-paattyneet-opinnot"), Some("aktiiviset-ja-paattyneet-opinnot")) {
+        verifyResponseStatusOk()
+        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN_AKTIIVISET_JA_PAATTYNEET_OPINNOT"))
+      }
+    }
+
   }
 
   "Suoritusjakolinkkien hakeminen" - {
@@ -500,8 +534,10 @@ class SuoritusjakoSpec extends AnyFreeSpec with SuoritusjakoTestMethods with Mat
             Suoritusjako(secrets("kaksi suoritusta"), expirationDate, timestamp),
             Suoritusjako(secrets("kaksi suoritusta opiskeluoikeuden oideilla"), expirationDate, timestamp),
             Suoritusjako(secrets("suoritetut-tutkinnot"), expirationDate, timestamp),
+            Suoritusjako(secrets("aktiiviset-ja-paattyneet-opinnot"), expirationDate, timestamp),
             Suoritusjako(secrets("auditlog"), expirationDate, timestamp),
-            Suoritusjako(secrets("auditlog-suoritetut-tutkinnot"), expirationDate, timestamp)
+            Suoritusjako(secrets("auditlog-suoritetut-tutkinnot"), expirationDate, timestamp),
+            Suoritusjako(secrets("auditlog-aktiiviset-ja-paattyneet-opinnot"), expirationDate, timestamp)
           ))
         }
       }

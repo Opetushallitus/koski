@@ -6,7 +6,8 @@ import fi.oph.koski.oppija.HenkilönOpiskeluoikeusVersiot
 import fi.oph.koski.organisaatio.OrganisaatioHierarkia
 import fi.oph.koski.preferences.KeyValue
 import fi.oph.koski.schema._
-import fi.oph.koski.suoritusjako.suoritetuttutkinnot.SuoritetutTutkinnotOppija
+import fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotOppija
+import fi.oph.koski.suoritusjako.suoritetuttutkinnot.{SuoritetutTutkinnotKoskeenTallennettavaOpiskeluoikeus, SuoritetutTutkinnotOppija}
 import fi.oph.koski.typemodel.TypescriptTypes.Options
 import fi.oph.koski.ytr.YtrCertificateResponse
 
@@ -59,6 +60,7 @@ case class AdditionalExports(
   päätasonSuoritus: PäätasonSuoritus,
   ytrCertificateResponse: YtrCertificateResponse,
   suoritetutTutkinnotOppija: SuoritetutTutkinnotOppija,
+  aktiivisetOpinnotOppija: AktiivisetJaPäättyneetOpinnotOppija,
 
   // Traitit jotka eivæt automaattisesti exporttaudu skeemasta, koska ne eivät sellaisenaan
   // ole minkään tietomallin jäseniä (ainoastaan niistä periytyvät luokat on mainittu).
@@ -67,5 +69,6 @@ case class AdditionalExports(
   koskiOpiskeluoikeusjakso: KoskiOpiskeluoikeusjakso,
   arviointi: Arviointi,
   koodiviite: KoodiViite,
-  selitettyOsaamisenTunnustaminen: SelitettyOsaamisenTunnustaminen
+  selitettyOsaamisenTunnustaminen: SelitettyOsaamisenTunnustaminen,
+  suoritetutTutkinnotKoskeenTallennettavaOpiskeluoikeus: SuoritetutTutkinnotKoskeenTallennettavaOpiskeluoikeus
 )

@@ -1,23 +1,24 @@
-package fi.oph.koski.suoritusjako.suoritetuttutkinnot
+package fi.oph.koski.suoritusjako.common
 
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.db.{DB, KoskiTables, QueryMethods, SQLHelpers}
-import fi.oph.koski.schema.KoskiSchema
+import fi.oph.koski.schema
 import fi.oph.koski.validation.ValidatingAndResolvingExtractor
 import org.json4s.JsonAST.JValue
 import org.json4s.MappingException
 import slick.jdbc.GetResult
 
 import java.sql.Timestamp
+import scala.reflect.runtime.universe.TypeTag
 
-class SuoritetutTutkinnotOpiskeluoikeusRepository(
+class OpiskeluoikeusRepository[OPISKELUOIKEUS: TypeTag](
   val db: DB,
   val validatingAndResolvingExtractor: ValidatingAndResolvingExtractor
 ) extends QueryMethods {
   def getOppijanKaikkiOpiskeluoikeudet(
     palautettavatOpiskeluoikeudenTyypit: Seq[String],
     oppijaMasterOid: String
-  ): Seq[SuoritetutTutkinnotOppijanOpiskeluoikeusRow] = {
+  ): Seq[OPISKELUOIKEUS] = {
 
     runDbSync(SQLHelpers.concatMany(Some(
       sql"""
@@ -71,38 +72,37 @@ select
   data
 from opiskeluoikeus_palautettavat
 order by "masterOppijaOid", opiskeluoikeus_oid
-    """)).as[SuoritetutTutkinnotOppijanOpiskeluoikeusRow])
+    """)).as[OpiskeluoikeusRow[OPISKELUOIKEUS]])
+      .map(_.opiskeluoikeus)
   }
 
-  private implicit def getOppijanOpiskeluoikeusRow: GetResult[SuoritetutTutkinnotOppijanOpiskeluoikeusRow] = GetResult(r => {
-    val opiskeluoikeus = deserializeSuoritetutTutkinnotOpiskeluoikeus(
+  private implicit def getOppijanOpiskeluoikeusRow: GetResult[OpiskeluoikeusRow[OPISKELUOIKEUS]] = GetResult(r => {
+    val opiskeluoikeus = deserializeOpiskeluoikeus(
       data = r.getJson("data"),
       oid = r.rs.getString("opiskeluoikeusOid"),
       versionumero = r.rs.getInt("versionumero"),
       aikaleima = r.rs.getTimestamp("aikaleima")
     )
 
-    SuoritetutTutkinnotOppijanOpiskeluoikeusRow(
-      masterOppijaOid = r.rs.getString("masterOppijaOid"),
+    OpiskeluoikeusRow(
       opiskeluoikeus = opiskeluoikeus
     )
   })
 
-  private def deserializeSuoritetutTutkinnotOpiskeluoikeus(data: JValue, oid: String, versionumero: Int, aikaleima: Timestamp): SuoritetutTutkinnotOpiskeluoikeus = {
+  private def deserializeOpiskeluoikeus(data: JValue, oid: String, versionumero: Int, aikaleima: Timestamp): OPISKELUOIKEUS = {
     val json = KoskiTables.KoskiOpiskeluoikeusTable.readAsJValue(data, oid, versionumero, aikaleima)
 
-    validatingAndResolvingExtractor.extract[SuoritetutTutkinnotOpiskeluoikeus](
-      KoskiSchema.lenientDeserializationWithIgnoringNonValidatingListItemsWithoutValidation
+    validatingAndResolvingExtractor.extract[OPISKELUOIKEUS](
+      schema.KoskiSchema.lenientDeserializationWithIgnoringNonValidatingListItemsWithoutValidation
     )(json) match {
       case Right(oo) => oo
       case Left(errors) =>
-        throw new MappingException(s"Error deserializing Suoritetut tutkinnot opiskeluoikeus ${oid}: ${errors}")
+        throw new MappingException(s"Error deserializing opiskeluoikeus ${oid}: ${errors}")
     }
   }
 }
 
-case class SuoritetutTutkinnotOppijanOpiskeluoikeusRow(
-  masterOppijaOid: String,
-  opiskeluoikeus: SuoritetutTutkinnotOpiskeluoikeus
+case class OpiskeluoikeusRow[OPISKELUOIKEUS](
+  opiskeluoikeus: OPISKELUOIKEUS
 )
 

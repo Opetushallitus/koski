@@ -74,11 +74,10 @@ class SuoritetutTutkinnotServiceSpec
 
       def isSuoritusjakoTehty(oid: String): Option[Boolean] = runDbSync(KoskiTables.KoskiOpiskeluOikeudet.filter(_.oid === oid).map(_.suoritusjakoTehty).result).headOption
 
-      result.map(oppija => {
-        oppija.opiskeluoikeudet.map(oo => {
-          oo.oid.flatMap(isSuoritusjakoTehty).map(_ should be(true))
-        })
-      })
+      result.foreach(
+        _.opiskeluoikeudet.collect ({ case koo: SuoritetutTutkinnotKoskeenTallennettavaOpiskeluoikeus => koo })
+          .foreach(_.oid.flatMap(isSuoritusjakoTehty).map(_ should be(true)))
+      )
     })
   }
 
@@ -454,7 +453,9 @@ class SuoritetutTutkinnotServiceSpec
       o.opiskeluoikeudet should have length 1
 
       o.opiskeluoikeudet.head.oppilaitos.map(_.oid) should equal(Some(MockOrganisaatiot.omnia))
-      o.opiskeluoikeudet.head.oid should equal(Some(sisältyvä.oid.get))
+      o.opiskeluoikeudet.head match {
+        case koo: SuoritetutTutkinnotKoskeenTallennettavaOpiskeluoikeus => koo.oid should equal(Some(sisältyvä.oid.get))
+      }
     })
   }
 
@@ -746,12 +747,13 @@ class SuoritetutTutkinnotServiceSpec
   }
 
   private def verifyKoskiOpiskeluoikeudenKentät(
-    actualOo: SuoritetutTutkinnotOpiskeluoikeus,
+    actualOo: SuoritetutTutkinnotKoskeenTallennettavaOpiskeluoikeus,
     expectedOoData: schema.KoskeenTallennettavaOpiskeluoikeus
   ): Unit = {
     verifyOpiskeluoikeudenKentät(actualOo, expectedOoData)
     actualOo.oid should be(expectedOoData.oid)
     actualOo.versionumero should be(expectedOoData.versionumero)
+    actualOo.sisältyyOpiskeluoikeuteen.map(_.oid) should equal(None)
   }
 
   private def verifyOpiskeluoikeudenKentät(
@@ -760,7 +762,6 @@ class SuoritetutTutkinnotServiceSpec
   ): Unit = {
     actualOo.oppilaitos.map(_.oid) should equal(expectedOoData.oppilaitos.map(_.oid))
     actualOo.koulutustoimija.map(_.oid) should equal(expectedOoData.koulutustoimija.map(_.oid))
-    actualOo.sisältyyOpiskeluoikeuteen.map(_.oid) should equal(None)
     actualOo.tyyppi.koodiarvo should equal(expectedOoData.tyyppi.koodiarvo)
   }
 

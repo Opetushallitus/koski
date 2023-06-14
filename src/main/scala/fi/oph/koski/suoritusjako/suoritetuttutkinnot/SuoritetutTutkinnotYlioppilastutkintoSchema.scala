@@ -5,7 +5,7 @@ import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
 import fi.oph.scalaschema.annotation.{Description, Title}
 
 object SuoritetutTutkinnotYlioppilastutkinnonOpiskeluoikeus {
-  def fromKoskiSchema(yo: schema.YlioppilastutkinnonOpiskeluoikeus) = SuoritetutTutkinnotYlioppilastutkinnonOpiskeluoikeus(
+  def fromKoskiSchema(yo: schema.YlioppilastutkinnonOpiskeluoikeus): SuoritetutTutkinnotOpiskeluoikeus = SuoritetutTutkinnotYlioppilastutkinnonOpiskeluoikeus(
     oppilaitos = yo.oppilaitos.map(ol =>
       Oppilaitos(
         ol.oid,
@@ -47,9 +47,6 @@ case class SuoritetutTutkinnotYlioppilastutkinnonOpiskeluoikeus(
   @KoodistoKoodiarvo(schema.OpiskeluoikeudenTyyppi.ylioppilastutkinto.koodiarvo)
   tyyppi: schema.Koodistokoodiviite,
 ) extends SuoritetutTutkinnotOpiskeluoikeus {
-  override def oid = None
-  override def versionumero = None
-  override def sisältyyOpiskeluoikeuteen = None
 
   override def withSuoritukset(suoritukset: List[Suoritus]): SuoritetutTutkinnotOpiskeluoikeus =
     this.copy(

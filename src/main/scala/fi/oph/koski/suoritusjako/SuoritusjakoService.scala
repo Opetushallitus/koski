@@ -1,26 +1,24 @@
 package fi.oph.koski.suoritusjako
 
-
-import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.db.{KoskiTables, SuoritusjakoRow}
-
 import java.time.LocalDate
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, Logging}
-import fi.oph.koski.log.KoskiOperation.{KANSALAINEN_SUORITUSJAKO_LISAYS, KANSALAINEN_SUORITUSJAKO_LISAYS_SUORITETUT_TUTKINNOT}
+import fi.oph.koski.log.KoskiOperation.{KANSALAINEN_SUORITUSJAKO_LISAYS, KANSALAINEN_SUORITUSJAKO_LISAYS_AKTIIVISET_JA_PAATTYNEET_OPINNOT, KANSALAINEN_SUORITUSJAKO_LISAYS_SUORITETUT_TUTKINNOT}
 import fi.oph.koski.log.KoskiAuditLogMessageField.oppijaHenkiloOid
 import fi.oph.koski.oppija.KoskiOppijaFacade
 import fi.oph.koski.schema._
+import fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.{AktiivisetJaPäättyneetOpinnotOppija, AktiivisetJaPäättyneetOpinnotService}
 import fi.oph.koski.suoritusjako.suoritetuttutkinnot.{SuoritetutTutkinnotOppija, SuoritetutTutkinnotService}
+import fi.oph.koski.util.ChainingSyntax.chainingOps
 import fi.oph.koski.util.WithWarnings
 
 
 case class SuoritusjakoPayload(
   tyyppi: String
 )
-class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppijaFacade: KoskiOppijaFacade, suoritetutTutkinnotService: SuoritetutTutkinnotService) extends Logging {
+class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppijaFacade: KoskiOppijaFacade, suoritetutTutkinnotService: SuoritetutTutkinnotService, aktiivisetJaPäättyneetOpinnotService: AktiivisetJaPäättyneetOpinnotService) extends Logging {
   private def addSuoritusjako(oppijaOid: String, suoritusIds: List[SuoritusIdentifier], kokonaisuudet: List[SuoritusjakoPayload])(implicit koskiSession: KoskiSpecificSession) = {
     val secret = SuoritusjakoSecret.generateNew
     suoritusjakoRepository.create(secret, oppijaOid, suoritusIds, kokonaisuudet)
@@ -42,9 +40,17 @@ class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppija
   }
 
   def putByKokonaisuudet(oppijaOid: String, kokonaisuudet: List[SuoritusjakoPayload])(implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, Suoritusjako] = {
-    val suoritusjako = addSuoritusjako(oppijaOid, List(), kokonaisuudet)
-    AuditLog.log(KoskiAuditLogMessage(KANSALAINEN_SUORITUSJAKO_LISAYS_SUORITETUT_TUTKINNOT, koskiSession, Map(oppijaHenkiloOid -> oppijaOid)))
-    suoritusjako
+    // Tässä toSet, koska bugin vuoksi sama tyyppi saattaa esiintyä listalla useammin kuin kerran
+    kokonaisuudet.map(_.tyyppi).toSet.toList match {
+      case List("suoritetut-tutkinnot") =>
+        addSuoritusjako(oppijaOid, List(), kokonaisuudet)
+          .tap(_ => AuditLog.log(KoskiAuditLogMessage(KANSALAINEN_SUORITUSJAKO_LISAYS_SUORITETUT_TUTKINNOT, koskiSession, Map(oppijaHenkiloOid -> oppijaOid))))
+      case List("aktiiviset-ja-paattyneet-opinnot") =>
+        addSuoritusjako(oppijaOid, List(), kokonaisuudet)
+          .tap(_ => AuditLog.log(KoskiAuditLogMessage(KANSALAINEN_SUORITUSJAKO_LISAYS_AKTIIVISET_JA_PAATTYNEET_OPINNOT, koskiSession, Map(oppijaHenkiloOid -> oppijaOid))))
+      case t =>
+        Left(KoskiErrorCategory.internalError(s"Tuntematon suoritusjakotyyppi: ${t}"))
+    }
   }
 
   def delete(oppijaOid: String, secret: String): HttpStatus = {
@@ -83,6 +89,16 @@ class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppija
           case (oppijaOid, Some("suoritetut-tutkinnot")) => suoritetutTutkinnotService.findSuoritetutTutkinnotOppija(oppijaOid)
           case _ => Left(KoskiErrorCategory.notFound())
       }
+    )
+  }
+
+  def getAktiivisetJaPäättyneetOpinnot(secret: String)(implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, AktiivisetJaPäättyneetOpinnotOppija] = {
+    suoritusjakoRepository.get(secret).flatMap(
+      o =>
+        (o.oppijaOid, o.jaonTyyppi) match {
+          case (oppijaOid, Some("aktiiviset-ja-paattyneet-opinnot")) => aktiivisetJaPäättyneetOpinnotService.findOppija(oppijaOid)
+          case _ => Left(KoskiErrorCategory.notFound())
+        }
     )
   }
 

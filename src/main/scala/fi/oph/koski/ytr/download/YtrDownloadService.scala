@@ -39,8 +39,6 @@ class YtrDownloadService(
 
   private lazy val defaultScheduler: Scheduler = NewThreadScheduler()
 
-  // TODO: TOR-1639 metriikat cloudwatchiin
-  // TODO: TOR-1639 paremmat logitukset
   private val cloudWatchMetrics = CloudWatchMetricsService.apply(application.config)
 
   def adjustSleepPeriodicallyByReplayLag() = {
@@ -285,8 +283,6 @@ class YtrDownloadService(
 
             var errorOccurred = false
 
-            // TODO: TOR-1639 Kunhan tätä on testattu try-catchien kanssa tuotannossa tarpeeksi, siisti koodi siten, että mahdolliset poikkeukset saa valua
-            //  ylemmäksikin. Pitää myös miettiä silloin, onko ok, että yksittäisiä failaavia oppijoita skipataan, kuten koodi nyt tekee.
             try {
               val koskiOpiskeluoikeus =
                 timed("convert", thresholdMs = 1) {
@@ -348,7 +344,6 @@ class YtrDownloadService(
           try {
             logLatestMonthCount()
             status.setComplete(statusId, totalCount, errorCount)
-            // TODO: Tilastot yms.
             onEnd()
           } catch {
             case e: Throwable =>

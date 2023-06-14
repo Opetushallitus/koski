@@ -27,6 +27,9 @@ function OmatTiedotPage() {
     suoritusjakoButton: function () {
       return S('header button:contains(Jaa suoritustietoja)')
     },
+    luoUusiSuoritusjakoButton: function () {
+      return S('button:contains(Luo uusi)')
+    },
     selectOpiskelija: function () {
       var elem = findSingle('.header__oppijanvalitsin')()
       return findFirstNotThrowing(elem)
@@ -141,6 +144,7 @@ function VirheraportointiForm() {
 }
 
 function SuoritusjakoForm() {
+  var pageApi = Page('.suoritusjako-form')
   var elem = findSingle('.suoritusjako')
   var createSuoritusjakoButton = function () {
     return S('.create-suoritusjako__button > button')
@@ -187,11 +191,16 @@ function SuoritusjakoForm() {
       return click(option)
     },
     selectSuoritetutTutkinnot: function () {
-      function option() {
-        return S('.create-suoritusjako__list input[id="suoritetut-tutkinnot"]')
-      }
-
-      return click(option)
+      return selectFromDropdown(
+        "[data-testid='suoritusjako-dropdown']",
+        'suoritetut-tutkinnot'
+      )
+    },
+    selectAktiivisetJaPaattyneetOpinnot: function () {
+      return selectFromDropdown(
+        "[data-testid='suoritusjako-dropdown']",
+        'aktiiviset-ja-paattyneet-opinnot'
+      )
     },
     createSuoritusjako: function () {
       return click(createSuoritusjakoButton)
@@ -220,6 +229,14 @@ function SuoritusjakoForm() {
     }
   }
 
+  function selectFromDropdown(selector, value) {
+    return function () {
+      return wait
+        .until(pageApi.getInput(selector).isVisible)()
+        .then(wait.forAjax)
+        .then(pageApi.setInputValue(selector, value))
+    }
+  }
   return api
 }
 

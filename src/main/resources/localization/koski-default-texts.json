@@ -2514,8 +2514,15 @@
   "description:Tiedot aiemmin suoritetusta kokeesta, joka...": "Tiedot aiemmin suoritetusta kokeesta, joka on sisällytetty uuteen ylioppilastutkintoon",
   "Aiemmin suoritetut kokeet": "Aiemmin suoritetut kokeet",
   "Suoritetut tutkinnot": "Suoritetut tutkinnot",
+  "Aktiiviset ja päättyneet opinnot": "Aktiiviset ja päättyneet opinnot",
   "Tässä listataan suoritetut tutkinnot otsikkotasolla. Tarkemmat tiedot löytyvät koneluettavassa muodossa yllä olevasta linkistä": "Tässä listataan suoritetut tutkinnot otsikkotasolla. Tarkemmat tiedot löytyvät koneluettavassa muodossa yllä olevasta linkistä.",
+  "Tässä listataan aktiiviset ja päättyneet opinnot otsikkotasolla. Tarkemmat tiedot löytyvät koneluettavassa muodossa yllä olevasta linkistä": "Tässä listataan aktiiviset ja päättyneet opinnot otsikkotasolla. Tarkemmat tiedot löytyvät koneluettavassa muodossa yllä olevasta linkistä.",
   "Suoritettuja tutkintoja ei löytynyt": "Suoritettuja tutkintoja ei löytynyt.",
+  "Aktiivisia tai päättyneitä opintoja ei löytynyt": "Aktiivisia tai päättyneitä opintoja ei löytynyt.",
   "Tietojen hakeminen epäonnistui": "Tietojen hakeminen epäonnistui",
-  "Voit valita jaettavaksi yksittäisiä tutkintoja tai vaihtoehtoisesti esimääriteltyjä kokonaisuuksia.": "Voit valita jaettavaksi yksittäisiä tutkintoja tai vaihtoehtoisesti esimääriteltyjä kokonaisuuksia."
+  "Voit valita jaettavaksi yksittäisiä tutkintoja tai vaihtoehtoisesti esimääriteltyjä kokonaisuuksia.": "Voit valita jaettavaksi yksittäisiä tutkintoja tai vaihtoehtoisesti esimääriteltyjä kokonaisuuksia.",
+  "Kattavat tiedot valituista suorituksista": "Kattavat tiedot valituista suorituksista",
+  "Jaa perustiedot kaikista suoritetuista tutkinnoista": "Jaa perustiedot kaikista suoritetuista tutkinnoista.",
+  "Jaa perustiedot kaikista aktiivisista ja päättyneistä opinnoista": "Jaa perustiedot kaikista aktiivisista ja päättyneistä opinnoista.",
+  "Jaa kattavat tiedot valitsemistasi suorituksista": "Jaa kattavat tiedot valitsemistasi suorituksista."
 }

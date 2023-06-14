@@ -1,0 +1,49 @@
+import {
+  AktiivisetJaPäättyneetOpinnotAmmatillisenTutkinnonOsittainenSuoritus,
+  isAktiivisetJaPäättyneetOpinnotAmmatillisenTutkinnonOsittainenSuoritus
+} from './AktiivisetJaPaattyneetOpinnotAmmatillisenTutkinnonOsittainenSuoritus'
+import {
+  AktiivisetJaPäättyneetOpinnotAmmatillisenTutkinnonSuoritus,
+  isAktiivisetJaPäättyneetOpinnotAmmatillisenTutkinnonSuoritus
+} from './AktiivisetJaPaattyneetOpinnotAmmatillisenTutkinnonSuoritus'
+import {
+  AktiivisetJaPäättyneetOpinnotMuunAmmatillisenKoulutuksenSuoritus,
+  isAktiivisetJaPäättyneetOpinnotMuunAmmatillisenKoulutuksenSuoritus
+} from './AktiivisetJaPaattyneetOpinnotMuunAmmatillisenKoulutuksenSuoritus'
+import {
+  AktiivisetJaPäättyneetOpinnotTelmaKoulutuksenSuoritus,
+  isAktiivisetJaPäättyneetOpinnotTelmaKoulutuksenSuoritus
+} from './AktiivisetJaPaattyneetOpinnotTelmaKoulutuksenSuoritus'
+import {
+  AktiivisetJaPäättyneetOpinnotTutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus,
+  isAktiivisetJaPäättyneetOpinnotTutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus
+} from './AktiivisetJaPaattyneetOpinnotTutkinnonOsaaPienemmistaKokonaisuuksistaKoostuvaSuoritus'
+import {
+  AktiivisetJaPäättyneetOpinnotValmaKoulutuksenSuoritus,
+  isAktiivisetJaPäättyneetOpinnotValmaKoulutuksenSuoritus
+} from './AktiivisetJaPaattyneetOpinnotValmaKoulutuksenSuoritus'
+
+/**
+ * AktiivisetJaPäättyneetOpinnotAmmatillinenPäätasonSuoritus
+ *
+ * @see `fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotAmmatillinenPäätasonSuoritus`
+ */
+export type AktiivisetJaPäättyneetOpinnotAmmatillinenPäätasonSuoritus =
+  | AktiivisetJaPäättyneetOpinnotAmmatillisenTutkinnonOsittainenSuoritus
+  | AktiivisetJaPäättyneetOpinnotAmmatillisenTutkinnonSuoritus
+  | AktiivisetJaPäättyneetOpinnotMuunAmmatillisenKoulutuksenSuoritus
+  | AktiivisetJaPäättyneetOpinnotTelmaKoulutuksenSuoritus
+  | AktiivisetJaPäättyneetOpinnotTutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus
+  | AktiivisetJaPäättyneetOpinnotValmaKoulutuksenSuoritus
+
+export const isAktiivisetJaPäättyneetOpinnotAmmatillinenPäätasonSuoritus = (
+  a: any
+): a is AktiivisetJaPäättyneetOpinnotAmmatillinenPäätasonSuoritus =>
+  isAktiivisetJaPäättyneetOpinnotAmmatillisenTutkinnonOsittainenSuoritus(a) ||
+  isAktiivisetJaPäättyneetOpinnotAmmatillisenTutkinnonSuoritus(a) ||
+  isAktiivisetJaPäättyneetOpinnotMuunAmmatillisenKoulutuksenSuoritus(a) ||
+  isAktiivisetJaPäättyneetOpinnotTelmaKoulutuksenSuoritus(a) ||
+  isAktiivisetJaPäättyneetOpinnotTutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus(
+    a
+  ) ||
+  isAktiivisetJaPäättyneetOpinnotValmaKoulutuksenSuoritus(a)

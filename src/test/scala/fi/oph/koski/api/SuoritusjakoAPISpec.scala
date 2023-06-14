@@ -33,6 +33,11 @@ class SuoritusjakoAPISpec extends AnyFreeSpec with SuoritusjakoTestMethods with 
         "tyyppi": "suoritetut-tutkinnot"
       }]"""
 
+  val jsonAktiivisetJaPäättyneetOpinnot =
+    s"""[{
+        "tyyppi": "aktiiviset-ja-paattyneet-opinnot"
+      }]"""
+
   override protected def beforeAll(): Unit = {
     super.beforeAll()
     createSuoritusjako(json, hetu) {
@@ -42,6 +47,10 @@ class SuoritusjakoAPISpec extends AnyFreeSpec with SuoritusjakoTestMethods with 
     createSuoritusjako(jsonSuoritetutTutkinnot, hetu) {
       verifyResponseStatusOk()
       secrets += ("suoritetut tutkinnot" -> JsonSerializer.parse[Suoritusjako](response.body).secret)
+    }
+    createSuoritusjako(jsonAktiivisetJaPäättyneetOpinnot, hetu) {
+      verifyResponseStatusOk()
+      secrets += ("aktiiviset ja päättyneet opinnot" -> JsonSerializer.parse[Suoritusjako](response.body).secret)
     }
   }
 
@@ -164,14 +173,45 @@ class SuoritusjakoAPISpec extends AnyFreeSpec with SuoritusjakoTestMethods with 
         }
       }
 
+      "onnistuu post-requestilla aktiiviset ja päättyneet opinnot ja tuottaa auditlog-merkinnän" in {
+        postAktiivisetJaPäättyneetOpinnotPublicAPI(secrets("aktiiviset ja päättyneet opinnot")) {
+          verifyResponseStatusOk()
+          AuditLogTester.verifyAuditLogMessage(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN_AKTIIVISET_JA_PAATTYNEET_OPINNOT"))
+        }
+      }
+
       "ei onnistu suoritettujen tutkintojen API:sta tavallisen suoritusjaon secretillä" in {
         postSuoritetutTutkinnotPublicAPI(secrets("taiteen perusopetus")) {
           verifyResponseStatus(404)
         }
       }
 
+      "ei onnistu aktiivisten ja päättyneiden opintojen API:sta tavallisen suoritusjaon secretillä" in {
+        postAktiivisetJaPäättyneetOpinnotPublicAPI(secrets("taiteen perusopetus")) {
+          verifyResponseStatus(404)
+        }
+      }
+
       "ei onnistu erillisten suoritusten API:sta suoritettujen tutkintojen secretillä" in {
         postSuoritusjakoPublicAPI(secrets("suoritetut tutkinnot")) {
+          verifyResponseStatus(404)
+        }
+      }
+
+      "ei onnistu erillisten suoritusten API:sta aktiivisten ja päättyneiden secretillä" in {
+        postSuoritusjakoPublicAPI(secrets("aktiiviset ja päättyneet opinnot")) {
+          verifyResponseStatus(404)
+        }
+      }
+
+      "ei onnistu aktiivisten ja päättyneiden opintojen API:sta suoritettujen tutkintojen secretillä" in {
+        postAktiivisetJaPäättyneetOpinnotPublicAPI(secrets("suoritetut tutkinnot")) {
+          verifyResponseStatus(404)
+        }
+      }
+
+      "ei onnistu suoritettujen API:sta aktiivisten ja päättyneiden secretillä" in {
+        postSuoritetutTutkinnotPublicAPI(secrets("aktiiviset ja päättyneet opinnot")) {
           verifyResponseStatus(404)
         }
       }
@@ -195,6 +235,10 @@ class SuoritusjakoAPISpec extends AnyFreeSpec with SuoritusjakoTestMethods with 
   }
 
   def getOpiskeluoikeudet(oppijaOid: String): Seq[KoskeenTallennettavaOpiskeluoikeus] =
-    super.getOpiskeluoikeudet(KoskiSpecificMockOppijat.taiteenPerusopetusValmis.oid)
+    super.getOpiskeluoikeudet(oppijaOid)
       .collect { case oo: KoskeenTallennettavaOpiskeluoikeus => oo }
+
+  def postAktiivisetJaPäättyneetOpinnotPublicAPI[A](secret: String)(f: => A): A = {
+    post(s"/api/opinnot/aktiiviset-ja-paattyneet-opinnot", JsonSerializer.writeWithRoot(SuoritusjakoReadRequest(secret = secret)), headers = jsonContent)(f)
+  }
 }

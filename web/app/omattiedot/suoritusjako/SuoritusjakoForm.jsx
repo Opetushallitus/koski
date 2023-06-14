@@ -11,6 +11,7 @@ import {
 import { SelectableSuoritusList } from './SelectableSuoritusList'
 import { ToggleButton } from '../../components/ToggleButton'
 import { focusWithoutScrolling } from '../../util/util'
+import { t } from '../../i18n/i18n'
 
 const Url = '/koski/api/suoritusjako'
 const doShare = (suoritusIds) => Http.post(Url, [...suoritusIds])
@@ -92,7 +93,9 @@ const CreateNewSuoritusjakoButton = ({
 
 const NewSuoritusjako = ({
   opiskeluoikeudet,
+  suoritusjakoOptions,
   selectedSuoritusIds,
+  suoritusjakoSelectedAtom,
   onSuccess,
   showForm,
   canCancelForm,
@@ -125,10 +128,44 @@ const NewSuoritusjako = ({
                   )}
                 </div>
                 <div className="create-suoritusjako">
-                  <SelectableSuoritusList
-                    opiskeluoikeudet={opiskeluoikeudet}
-                    selectedSuoritusIds={selectedSuoritusIds}
-                  />
+                  <div className="create-suoritusjako__content">
+                    <select
+                      className="dropdown"
+                      data-testid="suoritusjako-dropdown"
+                      value={suoritusjakoOptions.find(
+                        (opt) =>
+                          opt.value === suoritusjakoSelectedAtom.get.value
+                      )}
+                      onChange={(event) => {
+                        const selectedOption = suoritusjakoOptions.find(
+                          (opt) => opt.value === event.target.value
+                        )
+                        suoritusjakoSelectedAtom.set(selectedOption)
+                        selectedOption.select()
+                      }}
+                    >
+                      {suoritusjakoOptions.map(({ value, display }) => (
+                        <option key={value} value={value}>
+                          {t(display)}
+                        </option>
+                      ))}
+                    </select>
+                    {suoritusjakoSelectedAtom.map((option) => {
+                      return (
+                        <>
+                          <p>
+                            <Text name={option.ingressText} />
+                          </p>
+                          {option.value === 'erillisia' ? (
+                            <SelectableSuoritusList
+                              opiskeluoikeudet={opiskeluoikeudet}
+                              selectedSuoritusIds={selectedSuoritusIds}
+                            />
+                          ) : null}
+                        </>
+                      )
+                    })}
+                  </div>
                   <CreateNewSuoritusjakoButton
                     baret-lift
                     selectedSuoritusIds={selectedSuoritusIds}
@@ -155,8 +192,43 @@ export class SuoritusjakoForm extends React.Component {
   constructor(props) {
     super(props)
 
+    this.suoritusjakoOptions = [
+      {
+        value: 'erillisia',
+        display: 'Kattavat tiedot valituista suorituksista',
+        ingressText: 'Jaa kattavat tiedot valitsemistasi suorituksista',
+        select: () => {
+          const yksittaisiaJoValittu =
+            this.selectedSuoritusIds.value[0]?.tyyppi === undefined
+          if (!yksittaisiaJoValittu) {
+            this.selectedSuoritusIds.set([])
+          }
+        }
+      },
+      {
+        value: 'suoritetut-tutkinnot',
+        display: 'Suoritetut tutkinnot',
+        ingressText: 'Jaa perustiedot kaikista suoritetuista tutkinnoista',
+        select: () => {
+          this.selectedSuoritusIds.set([{ tyyppi: 'suoritetut-tutkinnot' }])
+        }
+      },
+      {
+        value: 'aktiiviset-ja-paattyneet-opinnot',
+        display: 'Aktiiviset ja päättyneet opinnot',
+        ingressText:
+          'Jaa perustiedot kaikista aktiivisista ja päättyneistä opinnoista',
+        select: () => {
+          this.selectedSuoritusIds.set([
+            { tyyppi: 'aktiiviset-ja-paattyneet-opinnot' }
+          ])
+        }
+      }
+    ]
+
     this.selectedSuoritusIds = Atom([])
     this.suoritusjaot = Atom([])
+    this.suoritusjakoSelectedAtom = Atom(this.suoritusjakoOptions[0])
 
     this.showNewSuoritusjakoForm = Atom(false)
     this.showLinkCreationSuccess = Atom(false)
@@ -197,6 +269,7 @@ export class SuoritusjakoForm extends React.Component {
   addLink(suoritusjako) {
     this.suoritusjaot.modify((list) => R.append(suoritusjako, list))
     this.selectedSuoritusIds.set([])
+    this.suoritusjakoSelectedAtom.set(this.suoritusjakoOptions[0])
 
     this.showLinkCreationSuccess.set(true)
     this.showLinkRemovalSuccess.set(false)
@@ -262,7 +335,9 @@ export class SuoritusjakoForm extends React.Component {
         />
         <NewSuoritusjako
           opiskeluoikeudet={opiskeluoikeudet}
+          suoritusjakoOptions={this.suoritusjakoOptions}
           selectedSuoritusIds={this.selectedSuoritusIds}
+          suoritusjakoSelectedAtom={this.suoritusjakoSelectedAtom}
           onSuccess={this.addLink.bind(this)}
           showForm={this.showNewSuoritusjakoForm}
           canCancelForm={this.canCancelForm}
