@@ -56,9 +56,9 @@
     "koodiArvo": "3",
     "metadata": [
       {
-        "nimi": "päättynyt",
+        "nimi": "valmistunut",
         "lyhytNimi": "",
-        "kuvaus": "Opiskeluoikeuden tila on päättynyt, kun koulutus on saatu päätökseen tarkoitetulla tavalla.",
+        "kuvaus": "Opiskeluoikeuden tila on päättynyt, kun koulutus on saatu päätökseen tarkoitetulla tavalla. Huom aiemmin tämän tilan nimi oli 'päättynyt'.",
         "kieli": "FI"
       },
       {
@@ -128,5 +128,45 @@
     ],
     "versio": 1,
     "withinCodeElements": []
-  }
+  }, {
+  "koodiUri": "virtaopiskeluoikeudentila_6",
+  "koodiArvo": "6",
+  "metadata": [
+    {
+      "nimi": "-",
+      "kuvaus": "",
+      "kayttoohje": null,
+      "kasite": null,
+      "sisaltaaMerkityksen": null,
+      "eiSisallaMerkitysta": null,
+      "huomioitavaKoodi": null,
+      "sisaltaaKoodiston": null,
+      "kieli": "EN"
+    },
+    {
+      "nimi": "-",
+      "kuvaus": "",
+      "kayttoohje": null,
+      "kasite": null,
+      "sisaltaaMerkityksen": null,
+      "eiSisallaMerkitysta": null,
+      "huomioitavaKoodi": null,
+      "sisaltaaKoodiston": null,
+      "kieli": "SV"
+    },
+    {
+      "nimi": "päättynyt",
+      "kuvaus": "",
+      "kayttoohje": null,
+      "kasite": null,
+      "sisaltaaMerkityksen": null,
+      "eiSisallaMerkitysta": null,
+      "huomioitavaKoodi": null,
+      "sisaltaaKoodiston": null,
+      "kieli": "FI"
+    }
+  ],
+  "versio": 1,
+  "withinCodeElements": []
+}
 ]

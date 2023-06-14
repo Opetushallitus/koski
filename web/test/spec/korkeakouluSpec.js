@@ -18,7 +18,7 @@ describe('Korkeakoulutus', function () {
         expect(
           opinnot.opiskeluoikeudet.valitunVälilehdenAlaotsikot()
         ).to.deep.equal([
-          'korkeakoulututkinto 2013—2016, päättynyt',
+          'korkeakoulututkinto 2013—2016, valmistunut',
           'korkeakoulunopintojakso'
         ])
       })
@@ -84,7 +84,7 @@ describe('Korkeakoulutus', function () {
         expect(
           opinnot.opiskeluoikeudet.opiskeluoikeuksienOtsikot()
         ).to.deep.equal([
-          'Yrkeshögskolan Arcada, Fysioterapeutti (AMK) (2011—2015, päättynyt)'
+          'Yrkeshögskolan Arcada, Fysioterapeutti (AMK) (2011—2015, valmistunut)'
         ])
       })
     })
@@ -97,7 +97,7 @@ describe('Korkeakoulutus', function () {
         expect(
           opinnot.opiskeluoikeudet.opiskeluoikeuksienOtsikot()
         ).to.deep.equal([
-          'Yrkeshögskolan Arcada, Fysioterapeutti (AMK) (2011—2015, päättynyt)'
+          'Yrkeshögskolan Arcada, Fysioterapeutti (AMK) (2011—2015, valmistunut)'
         ])
       })
     })
@@ -107,7 +107,7 @@ describe('Korkeakoulutus', function () {
         expect(
           opinnot.opiskeluoikeudet.opiskeluoikeuksienOtsikot()
         ).to.deep.equal([
-          'Yrkeshögskolan Arcada, Fysioterapeutti (AMK) (2011—2015, päättynyt)'
+          'Yrkeshögskolan Arcada, Fysioterapeutti (AMK) (2011—2015, valmistunut)'
         ])
       })
     })
@@ -124,7 +124,7 @@ describe('Korkeakoulutus', function () {
       expect(
         opinnot.opiskeluoikeudet.opiskeluoikeuksienOtsikot()
       ).to.deep.equal([
-        'Aalto-yliopisto, Fil. maist., englannin kieli (2000—, päättynyt)'
+        'Aalto-yliopisto, Fil. maist., englannin kieli (2000—, valmistunut)'
       ])
     })
   })
@@ -193,8 +193,8 @@ describe('Korkeakoulutus', function () {
         expect(
           opinnot.opiskeluoikeudet.valitunVälilehdenAlaotsikot()
         ).to.deep.equal([
-          'korkeakoulututkinto 2014—2016, päättynyt',
-          'korkeakoulututkinto 2014—2015, päättynyt'
+          'korkeakoulututkinto 2014—2016, valmistunut',
+          'korkeakoulututkinto 2014—2015, valmistunut'
         ])
       })
     })
