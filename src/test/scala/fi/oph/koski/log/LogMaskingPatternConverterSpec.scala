@@ -28,6 +28,10 @@ class LogMaskingPatternConverterSpec extends AnyFreeSpec with TestEnvironment wi
         logger.info("Hetu: 040404-0404")
         latestMaskedJsonMessage should equal(s"Hetu: ${HETU_MASK}")
       }
+      "JsonTemplateLayout: MaskedLogstashJsonEventLayoutV1.json, OpenSearch id" in {
+        logger.info("Id: 1.2.246.562.24.00000000040_040404-0404")
+        latestMaskedJsonMessage should equal(s"Id: 1.2.246.562.24.00000000040_${HETU_MASK}")
+      }
     }
     "Hetujen maskaus ja viestin lyhennys" - {
       "PatternLayout: %cm" in {
