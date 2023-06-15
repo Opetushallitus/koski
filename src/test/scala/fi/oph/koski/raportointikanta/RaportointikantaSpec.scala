@@ -324,7 +324,7 @@ class RaportointikantaSpec
         actualTutkintokokonaisuus.hyväksytystiValmistunutTutkinto should equal(
           expectedTutkintokokonaisuus.tyyppi.zip(expectedTutkintokokonaisuus.tila).headOption match {
             case Some((tyyppi, tila)) => Some(tyyppi.koodiarvo == "candidate" && tila.koodiarvo == "graduated")
-            case _ => None
+            case _ => Some(false)
           }
         )
         actualTutkintokokonaisuus.data \ "tyyppi" \ "koodistoUri" should equal(JString("ytrtutkintokokonaisuudentyyppi"))

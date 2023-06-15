@@ -50,7 +50,10 @@ class YtrDownloadOppijaConverter(
             .map { case (examination, index) => YlioppilastutkinnonTutkintokokonaisuudenLisätiedot(
               tunniste = getTutkintokokonaisuudenTunniste(index),
               tyyppi = Some(conversionUtils.requiredKoodi("ytrtutkintokokonaisuudentyyppi", examination.examinationType)),
-              tila = examination.examinationState.map(x => conversionUtils.requiredKoodi("ytrtutkintokokonaisuudentila", x)),
+              tila = examination.examinationState.map(x => conversionUtils.requiredKoodi("ytrtutkintokokonaisuudentila", x))
+                // Muut kuin graduated-tila eivät ole luotettavia, koska YTR ei pysty vielä toimittamaan ajantasaista tietoa
+                // esim. failed-tilasta, mitä eivät tallenna tietokantaan.
+                .filter(_.koodiarvo == "graduated"),
               suorituskieli = Some(conversionUtils.requiredKoodi("kieli", examination.language.toUpperCase)),
               tutkintokerrat = examination.examinationPeriods.map(period => YlioppilastutkinnonTutkintokerranLisätiedot(
                 tutkintokerta = conversionUtils.convertTutkintokerta(period.examinationPeriod),

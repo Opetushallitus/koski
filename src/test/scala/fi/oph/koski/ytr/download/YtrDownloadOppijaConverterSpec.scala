@@ -33,6 +33,7 @@ class YtrDownloadOppijaConverterSpec extends AnyFreeSpec with TestEnvironment wi
   val syksy = application.koskiLocalizationRepository.get("syksy")
 
   val simppelinHetu = "140380-336X"
+  val valmistuneenHetu = "080380-2432"
 
   "Yksinkertainen YTR:n latausrajapinnan palauttama oppija osataan konvertoida" in {
     val oppijat = MockYrtClient.oppijatByHetut(YtrSsnData(ssns = Some(List("080380-2432", "140380-336X", "220680-7850", "240680-087S", "060807A7787"))))
@@ -54,7 +55,7 @@ class YtrDownloadOppijaConverterSpec extends AnyFreeSpec with TestEnvironment wi
         YlioppilastutkinnonTutkintokokonaisuudenLisätiedot(
           tunniste = 0,
           tyyppi = Some(Koodistokoodiviite("candidate", "ytrtutkintokokonaisuudentyyppi")),
-          tila = Some(Koodistokoodiviite("ongoing", "ytrtutkintokokonaisuudentila")),
+          tila = None,
           suorituskieli = Some(Koodistokoodiviite("FI", "kieli")),
           tutkintokerrat = List(
             YlioppilastutkinnonTutkintokerranLisätiedot(YlioppilastutkinnonTutkintokerta(koodiarvo = "2015K", vuosi = 2015, vuodenaika = kevät),Some(Koodistokoodiviite("1", "ytrkoulutustausta")), Some(helsinginMedialukio)),
@@ -72,7 +73,7 @@ class YtrDownloadOppijaConverterSpec extends AnyFreeSpec with TestEnvironment wi
         YlioppilastutkinnonTutkintokokonaisuudenLisätiedot(
           tunniste = 1,
           tyyppi = Some(Koodistokoodiviite("candidate", "ytrtutkintokokonaisuudentyyppi")),
-          tila = Some(Koodistokoodiviite("ongoing", "ytrtutkintokokonaisuudentila")),
+          tila = None,
           suorituskieli = Some(Koodistokoodiviite("FI", "kieli")),
           tutkintokerrat = List(
             YlioppilastutkinnonTutkintokerranLisätiedot(YlioppilastutkinnonTutkintokerta(koodiarvo = "2014K", vuosi = 2014, vuodenaika = kevät), Some(Koodistokoodiviite("1", "ytrkoulutustausta")), Some(helsinginMedialukio))
@@ -180,5 +181,18 @@ class YtrDownloadOppijaConverterSpec extends AnyFreeSpec with TestEnvironment wi
     )
 
     oppijaConverter.convertOppijastaOpiskeluoikeus(simppeliOppija) should equal (Some(expectedYlioppilastutkinto))
+  }
+
+  "Graduated-tila konverstoidaan opintokokonaisuuksiin" in {
+    val oppijat = MockYrtClient.oppijatByHetut(YtrSsnData(ssns = Some(List("080380-2432", "140380-336X", "220680-7850", "240680-087S", "060807A7787"))))
+    oppijat should have length 5
+    val valmistunutOppija = oppijat.find(_.ssn == valmistuneenHetu).get
+    valmistunutOppija.ssn should be (valmistuneenHetu)
+
+    val opiskeluoikeus = oppijaConverter.convertOppijastaOpiskeluoikeus(valmistunutOppija).get
+
+    val tutkintokokonaisuuksienTilat = opiskeluoikeus.lisätiedot.flatMap(_.tutkintokokonaisuudet.map(_.flatMap(_.tila.map(_.koodiarvo)))).toList.flatten
+
+    tutkintokokonaisuuksienTilat should contain("graduated")
   }
 }
