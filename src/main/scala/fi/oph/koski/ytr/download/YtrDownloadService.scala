@@ -9,13 +9,14 @@ import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.oppija.HenkilönOpiskeluoikeusVersiot
 import fi.oph.koski.schema.{KoskiSchema, Oppija, UusiHenkilö, YlioppilastutkinnonOpiskeluoikeus}
+import fi.oph.koski.util.DateOrdering.localDateOrdering
 import fi.oph.koski.util.{Timing, Wait}
 import fi.oph.scalaschema.{SerializationContext, Serializer}
 import rx.lang.scala.schedulers.NewThreadScheduler
 import rx.lang.scala.{Observable, Scheduler}
 
 import java.time.format.DateTimeFormatter
-import java.time.LocalDate
+import java.time.{LocalDate, LocalDateTime}
 
 class YtrDownloadService(
   val db: DB,
@@ -34,6 +35,7 @@ class YtrDownloadService(
   private val defaultExtraSleepPerStudenInMs = application.config.getInt("ytr.download.extraSleepPerStudentInMs").max(0).min(100000)
   private val maxAllowedLagInSeconds = application.config.getInt("ytr.download.maxAllowedLagInSeconds").max(0).min(100000)
   private val longerSleepPerStudentInMs = application.config.getInt("ytr.download.longerSleepPerStudentInMs").max(0).min(100000)
+  private val modifiedSinceLastRunGuaranteedDaysToDownload = application.config.getInt("ytr.download.modifiedSinceLastRunGuaranteedDaysToDownload").max(0)
 
   private var extraSleepPerStudentInMs = defaultExtraSleepPerStudenInMs
 
@@ -113,10 +115,19 @@ class YtrDownloadService(
       case (_, _, Some(modifiedSince), _) =>
         startDownloadingUsingModifiedSince(modifiedSince, scheduler, statusId, onEnd)
       case (_, _, _, Some(true)) =>
-        val lastCompletedRun = status.lastCompletedRun()
+        val lastCompletedRunDate = status.lastCompletedRun()
           .map(_.toLocalDateTime.minusHours(1).toLocalDate)
           .getOrElse(throw new RuntimeException("No completed run found from history - should be run with a given modified since date first"))
-        startDownloadingUsingModifiedSince(lastCompletedRun, scheduler, statusId, onEnd)
+
+        // YTR julkaisee YO-kokeiden tulokset vasta joitain päiviä myöhemmin kuin niiden tietokantamuutokset on tehty.
+        // Niiden saamiseksi Koski-tietokantaan oikein on haettava aiempia muutoksia uudestaan.
+        val guaranteedDate = LocalDateTime.now.minusDays(modifiedSinceLastRunGuaranteedDaysToDownload).minusHours(1).toLocalDate
+
+        val modifiedSinceDate = Seq(lastCompletedRunDate, guaranteedDate).sorted.head
+
+        logger.info(s"Downloading modifications since $modifiedSinceDate. Last completed run at $lastCompletedRunDate, guaranteed days $modifiedSinceLastRunGuaranteedDaysToDownload resulted to date $guaranteedDate.")
+
+        startDownloadingUsingModifiedSince(modifiedSinceDate, scheduler, statusId, onEnd)
       case _ =>
         logger.error("Valid parameters for YTR download not defined")
         onEnd()
