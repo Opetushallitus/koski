@@ -938,7 +938,7 @@ class KoskiValidator(
         :: LukioonValmistavanKoulutuksenValidaatiot.validateLukioonValmistava2019(suoritus)
         :: VapaaSivistystyöValidation.validateVapaanSivistystyönPäätasonSuoritus(suoritus, opiskeluoikeus, VapaaSivistystyöValidation.vstJotpaAikaisinSallittuAlkamispäivä(config))
         :: VSTKotoutumiskoulutus2022Validation.validate(suoritus)
-        :: TutkintokoulutukseenValmentavaKoulutusValidation.validateTuvaSuoritus(suoritus, opiskeluoikeus)
+        :: TutkintokoulutukseenValmentavaKoulutusValidation.validateTuvaSuoritus(config, suoritus, opiskeluoikeus)
         :: HttpStatus.validate(!suoritus.isInstanceOf[PäätasonSuoritus])(validateDuplicates(suoritus.osasuoritukset.toList.flatten))
         :: suoritus.osasuoritusLista.map(validateSuoritus(_, opiskeluoikeus, suoritus :: parent))
     )
