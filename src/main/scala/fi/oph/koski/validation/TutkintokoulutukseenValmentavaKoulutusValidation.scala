@@ -1,11 +1,31 @@
 package fi.oph.koski.validation
 
+import com.typesafe.config.Config
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.http.KoskiErrorCategory.badRequest.validation.laajuudet._
-import fi.oph.koski.http.KoskiErrorCategory.badRequest.validation.tila.{tuvaSuorituksenOpiskeluoikeidenTilaVääräKoodiarvo}
+import fi.oph.koski.http.KoskiErrorCategory.badRequest.validation.tila.tuvaSuorituksenOpiskeluoikeidenTilaVääräKoodiarvo
 import fi.oph.koski.schema._
 
+import java.time.LocalDate
+
 object TutkintokoulutukseenValmentavaKoulutusValidation {
+
+  private def getTuvaLaajuusValidaationRajapäivä(config: Config): LocalDate = {
+    LocalDate.parse(config.getString("validaatiot.tuvaLaajuusValidaatioMuutoksetAstuvatVoimaan"))
+  }
+
+  /**
+   * Suorittaa annetuista funktioista toisen riippuen siitä onko Tuva laajuuksien validaation rajapäivä mennyt.
+   * Rajapäivän jälkeen tämän rakenteen voi purkaa ja siirtyä käyttämään vain rajapäivän jälkeisiä toimintoja
+   * kaikkialla missä tätä funktiota on kutsuttu.
+   */
+  def validateLaajuusRajapäivääEnnenTaiJälkeen[A](config: Config, rajapäivääEnnen: () => A, rajapäivänJälkeen: () => A): A = {
+    if(getTuvaLaajuusValidaationRajapäivä(config).isBefore(LocalDate.now())){
+      rajapäivänJälkeen()
+    } else {
+      rajapäivääEnnen()
+    }
+  }
   def validateOpiskeluoikeus(oo: KoskeenTallennettavaOpiskeluoikeus): HttpStatus =
     HttpStatus.fold(oo.tila.opiskeluoikeusjaksot.map(validateOpiskeluoikeusjaksonRahoitusmuoto))
 

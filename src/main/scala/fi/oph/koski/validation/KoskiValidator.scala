@@ -208,6 +208,9 @@ class KoskiValidator(
     def yhteislaajuus: Double =
       suoritus.osasuoritusLista.map(_.koulutusmoduuli.laajuusArvo(0.0)).map(BigDecimal.decimal).sum.toDouble
 
+    def yhteislaajuusHyväksytyt: Double =
+      suoritus.osasuoritusLista.filter(os => os.viimeisinArviointi.exists(_.hyväksytty)).map(_.koulutusmoduuli.laajuusArvo(0.0)).map(BigDecimal.decimal).sum.toDouble
+
     suoritus match {
       case koto: OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus =>
         laajuusYlimpienOsasuoritustenLaajuuksista(koto, yhteislaajuus, l => LaajuusOpintopisteissä(l))
@@ -216,7 +219,11 @@ class KoskiValidator(
       case lukutaito: VapaanSivistystyönLukutaitokoulutuksenSuoritus =>
         laajuusYlimpienOsasuoritustenLaajuuksista(lukutaito, yhteislaajuus, l => LaajuusOpintopisteissä(l))
       case tuva: TutkintokoulutukseenValmentavanKoulutuksenPäätasonSuoritus =>
-        laajuusYlimpienOsasuoritustenLaajuuksista(tuva, yhteislaajuus, l => LaajuusViikoissa(l))
+        TutkintokoulutukseenValmentavaKoulutusValidation.validateLaajuusRajapäivääEnnenTaiJälkeen(
+          config,
+          () => laajuusYlimpienOsasuoritustenLaajuuksista(tuva, yhteislaajuus, l => LaajuusViikoissa(l)),
+          () => laajuusYlimpienOsasuoritustenLaajuuksista(tuva, yhteislaajuusHyväksytyt, l => LaajuusViikoissa(l))
+        )
       case _ => suoritus
     }
   }
@@ -977,6 +984,21 @@ class KoskiValidator(
   }
 
   private def validateLaajuus(suoritus: Suoritus): HttpStatus = {
+    def validateLaajuus(laajuus: Laajuus, osasuoritustenLaajuudet: List[Laajuus]) = (osasuoritustenLaajuudet, suoritus.valmis) match {
+      case (_, false) => HttpStatus.ok
+      case (Nil, _) => HttpStatus.ok
+      case (_, _) =>
+        osasuoritustenLaajuudet.map(_.arvo).sum match {
+          case summa if Math.abs(summa - laajuus.arvo) < 0.001 =>
+            HttpStatus.ok
+          case summa =>
+            KoskiErrorCategory.badRequest.validation.laajuudet.osasuoritustenLaajuuksienSumma("Suorituksen " + suorituksenTunniste(suoritus) + " osasuoritusten laajuuksien summa " + summa + " ei vastaa suorituksen laajuutta " + laajuus.arvo)
+        }
+    }
+
+    def osasuoritustenLaajuudet: List[Laajuus] = suoritus.osasuoritusLista.map(_.koulutusmoduuli).flatMap(_.getLaajuus)
+    def osasuoritustenLaajuudetHyväksytty: List[Laajuus] = suoritus.osasuoritusLista.filter(os => os.viimeisinArviointi.exists(_.hyväksytty)).map(_.koulutusmoduuli).flatMap(_.getLaajuus)
+
     (suoritus.koulutusmoduuli.getLaajuus, suoritus) match {
       case (Some(laajuus: Laajuus), _) =>
         val yksikköValidaatio = HttpStatus.fold(suoritus.osasuoritusLista.map { case osasuoritus =>
@@ -990,19 +1012,14 @@ class KoskiValidator(
         yksikköValidaatio.onSuccess({
           suoritus.koulutusmoduuli match {
             case _: LaajuuttaEiValidoida => HttpStatus.ok
+            case _: TutkintokoulutukseenValmentavanKoulutus | _: TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosa =>
+              TutkintokoulutukseenValmentavaKoulutusValidation.validateLaajuusRajapäivääEnnenTaiJälkeen(
+                config,
+                () => validateLaajuus(laajuus, osasuoritustenLaajuudet),
+                () => validateLaajuus(laajuus, osasuoritustenLaajuudetHyväksytty)
+              )
             case _ =>
-              val osasuoritustenLaajuudet: List[Laajuus] = suoritus.osasuoritusLista.map(_.koulutusmoduuli).flatMap(_.getLaajuus)
-              (osasuoritustenLaajuudet, suoritus.valmis) match {
-                case (_, false) => HttpStatus.ok
-                case (Nil, _) => HttpStatus.ok
-                case (_, _) =>
-                  osasuoritustenLaajuudet.map(_.arvo).sum match {
-                    case summa if Math.abs(summa - laajuus.arvo) < 0.001 =>
-                      HttpStatus.ok
-                    case summa =>
-                      KoskiErrorCategory.badRequest.validation.laajuudet.osasuoritustenLaajuuksienSumma("Suorituksen " + suorituksenTunniste(suoritus) + " osasuoritusten laajuuksien summa " + summa + " ei vastaa suorituksen laajuutta " + laajuus.arvo)
-                  }
-              }
+              validateLaajuus(laajuus, osasuoritustenLaajuudet)
           }
         })
 

@@ -28,6 +28,22 @@ object ExamplesTutkintokoulutukseenValmentavaKoulutus {
     )
   }
 
+  def tuvaSanallinenArviointiHylätty(
+    arviointiPäivä: Option[LocalDate]
+  ): Option[List[SanallinenTutkintokoulutukseenValmentavanKoulutuksenSuorituksenArviointi]] = {
+    arviointiPäivä.map(d =>
+      List(
+        SanallinenTutkintokoulutukseenValmentavanKoulutuksenSuorituksenArviointi(
+          arvosana = Koodistokoodiviite("Hylätty", "arviointiasteikkotuva"),
+          kuvaus = Some(
+            finnish("Hylätty tutkintokoulutukseen valmentavan koulutuksen osasuoritus.")
+          ),
+          päivä = d
+        )
+      )
+    )
+  }
+
   def tuvaOpiskeluOikeusjakso(d: LocalDate, koodistokoodiviite: String) = TutkintokoulutukseenValmentavanOpiskeluoikeusjakso(
     alku = d,
     tila = Koodistokoodiviite(koodistokoodiviite, "koskiopiskeluoikeudentila"),

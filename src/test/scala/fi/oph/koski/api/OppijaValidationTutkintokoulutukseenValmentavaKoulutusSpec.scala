@@ -1,10 +1,11 @@
 package fi.oph.koski.api
 
-import com.typesafe.config.Config
+import com.typesafe.config.{Config, ConfigFactory}
 import com.typesafe.config.ConfigValueFactory.fromAnyRef
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import fi.oph.koski.documentation.ExamplesTutkintokoulutukseenValmentavaKoulutus._
 import fi.oph.koski.documentation.{ExampleData, LukioExampleData}
+import fi.oph.koski.eperusteetvalidation.{EPerusteetFiller, EPerusteisiinPerustuvaValidator}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
@@ -115,29 +116,187 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
         tuva.suoritukset.head.osasuoritusLista.last.koulutusmoduuli.laajuusArvo(0.0) shouldBe 8.0
       }
 
-        "suoritusten laajuus sallitaan ilman osasuorituksia" in {
-          val oo = tuvaOpiskeluOikeusValmistunut.copy(
-            suoritukset = List(tuvaPäätasonSuoritus(laajuus = None).copy( // laajuus lasketaan ja täytetään automaattisesti
-              osasuoritukset = Some(
-                List(
-                  tuvaKoulutuksenMuunOsanSuoritus(
-                    koulutusmoduuli = tuvaOpiskeluJaUrasuunnittelutaidot(laajuus = Some(2)),
-                    koodistoviite = "tutkintokoulutukseenvalmentava",
-                    arviointiPäivä = Some(date(2021, 9, 1))
-                  ),
-                  tuvaKoulutuksenMuunOsanSuoritus(
-                    koulutusmoduuli = tuvaTyöelämätaidotJaTyöpaikallaTapahtuvaOppiminen(laajuus = Some(2)),
-                    koodistoviite = "tutkintokoulutukseenvalmentava",
-                    arviointiPäivä = Some(date(2021, 9, 1))
-                  ),
-                  tuvaKoulutuksenValinnaisenOsanSuoritus(
-                    arviointiPäivä = Some(date(2021, 9, 1)),
-                    laajuus = Some(6)
+      "suoritusten laajuuteen lasketaan mukaan myös muut kuin hyväksytyt suoritukset ennen rajapäivää" in {
+        val oo = tuvaOpiskeluOikeusValmistunut.copy(
+          suoritukset = List(tuvaPäätasonSuoritus(laajuus = None).copy( // laajuus lasketaan ja täytetään automaattisesti
+            osasuoritukset = Some(
+              List(
+                tuvaKoulutuksenMuunOsanSuoritus(
+                  koulutusmoduuli = tuvaOpiskeluJaUrasuunnittelutaidot(laajuus = Some(2)),
+                  koodistoviite = "tutkintokoulutukseenvalmentava",
+                  arviointiPäivä = Some(date(2021, 9, 1))
+                ),
+                tuvaKoulutuksenMuunOsanSuoritus(
+                  koulutusmoduuli = tuvaTyöelämätaidotJaTyöpaikallaTapahtuvaOppiminen(laajuus = Some(2)),
+                  koodistoviite = "tutkintokoulutukseenvalmentava",
+                  arviointiPäivä = Some(date(2021, 9, 1))
+                ).copy(arviointi = tuvaSanallinenArviointiHylätty(Some(date(2021, 9, 1)))),
+                tuvaKoulutuksenValinnaisenOsanSuoritus(
+                  arviointiPäivä = Some(date(2021, 9, 1)),
+                  laajuus = Some(8)
+                ).copy(
+                  osasuoritukset = Some(
+                    List(
+                      tuvaKoulutuksenValinnaisenOsanOsasuoritus(
+                        kurssinNimi = "Ohjelmointi 1",
+                        paikallinenKoodi = "ohj1",
+                        paikallisenKoodinNimi = "Paikallinen ohjelmointikurssi",
+                        laajuusViikoissa = 4
+                      ),
+                      tuvaKoulutuksenValinnaisenOsanOsasuoritus(
+                        kurssinNimi = "Ohjelmointi 2",
+                        paikallinenKoodi = "ohj2",
+                        paikallisenKoodinNimi = "Paikallinen ohjelmointikurssi",
+                        laajuusViikoissa = 4
+                      ).copy(arviointi = tuvaSanallinenArviointiHylätty(Some(date(2021, 12, 1)))),
+                    )
                   )
                 )
               )
-            ))
-          )
+            )
+          )))
+
+        val config = KoskiApplicationForTests.config.withValue("validaatiot.tuvaLaajuusValidaatioMuutoksetAstuvatVoimaan", fromAnyRef(LocalDate.now.plusDays(1).toString))
+        val validator = mockKoskiValidator(config)
+
+        implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUser
+        implicit val accessType = AccessType.write
+
+        val res = validator.updateFieldsAndValidateAsJson(Oppija(tuvaHenkilöValmis, List(oo))).right.get
+        res.opiskeluoikeudet.size shouldBe 1
+
+        val tuva = res.opiskeluoikeudet.head
+        tuva.suoritukset.head.koulutusmoduuli.laajuusArvo(0) shouldBe 12.0
+        tuva.suoritukset.head.osasuoritusLista.last.koulutusmoduuli.laajuusArvo(0.0) shouldBe 8.0
+      }
+
+      "suoritusten laajuuden validointi tuottaa virheen ennen rajapäivää jos osasuorituksen laajuuteen ei ole sisällytetty hylättyjä suorituksia" in {
+        val oo = tuvaOpiskeluOikeusValmistunut.copy(
+          suoritukset = List(tuvaPäätasonSuoritus(laajuus = None).copy( // laajuus lasketaan ja täytetään automaattisesti
+            osasuoritukset = Some(
+              List(
+                tuvaKoulutuksenMuunOsanSuoritus(
+                  koulutusmoduuli = tuvaOpiskeluJaUrasuunnittelutaidot(laajuus = Some(2)),
+                  koodistoviite = "tutkintokoulutukseenvalmentava",
+                  arviointiPäivä = Some(date(2021, 9, 1))
+                ),
+                tuvaKoulutuksenMuunOsanSuoritus(
+                  koulutusmoduuli = tuvaTyöelämätaidotJaTyöpaikallaTapahtuvaOppiminen(laajuus = Some(2)),
+                  koodistoviite = "tutkintokoulutukseenvalmentava",
+                  arviointiPäivä = Some(date(2021, 9, 1))
+                ).copy(arviointi = tuvaSanallinenArviointiHylätty(Some(date(2021, 9, 1)))),
+                tuvaKoulutuksenValinnaisenOsanSuoritus(
+                  arviointiPäivä = Some(date(2021, 9, 1)),
+                  laajuus = Some(4) // Tämä laajuus pitäisi olla 8 kun lasketaan mukaan hylätyt aliosasuoritukset
+                ).copy(
+                  osasuoritukset = Some(
+                    List(
+                      tuvaKoulutuksenValinnaisenOsanOsasuoritus(
+                        kurssinNimi = "Ohjelmointi 1",
+                        paikallinenKoodi = "ohj1",
+                        paikallisenKoodinNimi = "Paikallinen ohjelmointikurssi",
+                        laajuusViikoissa = 4
+                      ),
+                      tuvaKoulutuksenValinnaisenOsanOsasuoritus(
+                        kurssinNimi = "Ohjelmointi 2",
+                        paikallinenKoodi = "ohj2",
+                        paikallisenKoodinNimi = "Paikallinen ohjelmointikurssi",
+                        laajuusViikoissa = 4
+                      ).copy(arviointi = tuvaSanallinenArviointiHylätty(Some(date(2021, 12, 1)))),
+                    )
+                  )
+                )
+              )
+            )
+          )))
+
+        val config = KoskiApplicationForTests.config.withValue("validaatiot.tuvaLaajuusValidaatioMuutoksetAstuvatVoimaan", fromAnyRef(LocalDate.now.plusDays(1).toString))
+        val validator = mockKoskiValidator(config)
+
+        implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUser
+        implicit val accessType = AccessType.write
+
+        val res = validator.updateFieldsAndValidateAsJson(Oppija(tuvaHenkilöValmis, List(oo))).left.get
+        res shouldBe KoskiErrorCategory.badRequest.validation.laajuudet.osasuoritustenLaajuuksienSumma("Suorituksen koulutuksenosattuva/104 osasuoritusten laajuuksien summa 8.0 ei vastaa suorituksen laajuutta 4.0")
+      }
+
+      "suoritusten laajuuteen ei lasketa mukaan kuin hyväksytyt suoritukset rajapäivän jälkeen" in {
+        val oo = tuvaOpiskeluOikeusValmistunut.copy(
+          suoritukset = List(tuvaPäätasonSuoritus(laajuus = None).copy( // laajuus lasketaan ja täytetään automaattisesti
+            osasuoritukset = Some(
+              List(
+                tuvaKoulutuksenMuunOsanSuoritus(
+                  koulutusmoduuli = tuvaOpiskeluJaUrasuunnittelutaidot(laajuus = Some(2)),
+                  koodistoviite = "tutkintokoulutukseenvalmentava",
+                  arviointiPäivä = Some(date(2021, 9, 1))
+                ),
+                tuvaKoulutuksenMuunOsanSuoritus(
+                  koulutusmoduuli = tuvaTyöelämätaidotJaTyöpaikallaTapahtuvaOppiminen(laajuus = Some(2)),
+                  koodistoviite = "tutkintokoulutukseenvalmentava",
+                  arviointiPäivä = Some(date(2021, 9, 1))
+                ).copy(arviointi = tuvaSanallinenArviointiHylätty(Some(date(2021, 9, 1)))),
+                tuvaKoulutuksenValinnaisenOsanSuoritus(
+                  arviointiPäivä = Some(date(2021, 9, 1)),
+                  laajuus = Some(4)
+                ).copy(
+                  osasuoritukset = Some(
+                    List(
+                      tuvaKoulutuksenValinnaisenOsanOsasuoritus(
+                        kurssinNimi = "Ohjelmointi 1",
+                        paikallinenKoodi = "ohj1",
+                        paikallisenKoodinNimi = "Paikallinen ohjelmointikurssi",
+                        laajuusViikoissa = 4
+                      ),
+                      tuvaKoulutuksenValinnaisenOsanOsasuoritus(
+                        kurssinNimi = "Ohjelmointi 2",
+                        paikallinenKoodi = "ohj2",
+                        paikallisenKoodinNimi = "Paikallinen ohjelmointikurssi",
+                        laajuusViikoissa = 4
+                      ).copy(arviointi = tuvaSanallinenArviointiHylätty(Some(date(2021, 12, 1)))),
+                    )
+                  )
+                )
+              )
+            )
+          )))
+
+        val config = KoskiApplicationForTests.config.withValue("validaatiot.tuvaLaajuusValidaatioMuutoksetAstuvatVoimaan", fromAnyRef(LocalDate.now.minusDays(1).toString))
+        val validator = mockKoskiValidator(config)
+
+        implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUser
+        implicit val accessType = AccessType.write
+
+        val res = validator.updateFieldsAndValidateAsJson(Oppija(tuvaHenkilöValmis, List(oo))).right.get
+        res.opiskeluoikeudet.size shouldBe 1
+
+        val tuva = res.opiskeluoikeudet.head
+        tuva.suoritukset.head.koulutusmoduuli.laajuusArvo(0) shouldBe 6.0
+        tuva.suoritukset.head.osasuoritusLista.last.koulutusmoduuli.laajuusArvo(0.0) shouldBe 4.0
+      }
+
+      "suoritusten laajuus sallitaan ilman osasuorituksia" in {
+        val oo = tuvaOpiskeluOikeusValmistunut.copy(
+          suoritukset = List(tuvaPäätasonSuoritus(laajuus = None).copy( // laajuus lasketaan ja täytetään automaattisesti
+            osasuoritukset = Some(
+              List(
+                tuvaKoulutuksenMuunOsanSuoritus(
+                  koulutusmoduuli = tuvaOpiskeluJaUrasuunnittelutaidot(laajuus = Some(2)),
+                  koodistoviite = "tutkintokoulutukseenvalmentava",
+                  arviointiPäivä = Some(date(2021, 9, 1))
+                ),
+                tuvaKoulutuksenMuunOsanSuoritus(
+                  koulutusmoduuli = tuvaTyöelämätaidotJaTyöpaikallaTapahtuvaOppiminen(laajuus = Some(2)),
+                  koodistoviite = "tutkintokoulutukseenvalmentava",
+                  arviointiPäivä = Some(date(2021, 9, 1))
+                ),
+                tuvaKoulutuksenValinnaisenOsanSuoritus(
+                  arviointiPäivä = Some(date(2021, 9, 1)),
+                  laajuus = Some(6)
+                )
+              )
+            )
+          ))
+        )
 
         val tuva = putAndGetOpiskeluoikeus(oo, tuvaHenkilöValmis)
         tuva.suoritukset.head.koulutusmoduuli.laajuusArvo(0) shouldBe 10.0
@@ -681,4 +840,26 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
   }
 
   override def eperusteistaLöytymätönValidiDiaarinumero: String = "6/011/2015"
+
+  private def mockKoskiValidator(config: Config) = {
+    new KoskiValidator(
+      KoskiApplicationForTests.organisaatioRepository,
+      KoskiApplicationForTests.possu,
+      KoskiApplicationForTests.henkilöRepository,
+      new EPerusteisiinPerustuvaValidator(
+        KoskiApplicationForTests.ePerusteet,
+        KoskiApplicationForTests.tutkintoRepository,
+        KoskiApplicationForTests.koodistoViitePalvelu
+      ),
+      new EPerusteetFiller(
+        KoskiApplicationForTests.ePerusteet,
+        KoskiApplicationForTests.tutkintoRepository,
+        KoskiApplicationForTests.koodistoViitePalvelu
+      ),
+      KoskiApplicationForTests.validatingAndResolvingExtractor,
+      KoskiApplicationForTests.suostumuksenPeruutusService,
+      KoskiApplicationForTests.koodistoViitePalvelu,
+      config
+    )
+  }
 }
