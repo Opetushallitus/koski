@@ -1,5 +1,10 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## xx.06.2023
+- TUVA-validointiin muutoksia 1.8.2023 alkaen:
+  - Valmistunut-tilan voi jatkossa merkitä, kun opiskeluoikeudella on Opiskelu- ja urasuunnittelutaidot - koulutuksen osan suoritus, jonka laajuus on vähintään kaksi viikkoa.
+  - Kaikilla muilla koulutuksen osilla poislukien Opiskelu- ja urasuunnittelutaidot ei ole enää määriteltyä vähimmäislaajuutta. Enimmäislaajuudet säilyvät ennallaan.
+
 ## 16.5.2023
 
 - Lukion oppimäärän laajuuden validointi jätetään tekemättä aikuisten opetussuunnitelman mukaisissa suorituksissa tietyissä oppilaitoksissa.
