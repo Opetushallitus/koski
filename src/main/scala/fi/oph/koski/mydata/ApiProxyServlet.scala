@@ -23,7 +23,7 @@ class ApiProxyServlet(implicit val application: KoskiApplication) extends KoskiS
         .left.map(errors => KoskiErrorCategory.badRequest.validation.jsonSchema(JsonErrorMessage(errors)))
         .flatMap(req => Hetu.validFormat(req.hetu))
         .flatMap { hetu =>
-          application.henkilöRepository.findByHetuOrCreateIfInYtrOrVirta(hetu, kutsuvaRajapinta = "omadata").toRight(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia())
+          application.henkilöRepository.findByHetuOrCreateIfInYtrOrVirta(hetu).toRight(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia())
         }
         .flatMap { oppijaHenkilö =>
           if (application.mydataService.hasAuthorizedMember(oppijaHenkilö.oid, memberId)) {
