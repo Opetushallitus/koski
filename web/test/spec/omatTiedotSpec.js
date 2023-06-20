@@ -807,7 +807,7 @@ describe('Omat tiedot', function () {
               it('valita jaettaviksi yksittäin', function () {
                 expect(form.suoritusvaihtoehdotText()).to.equal(
                   'Aalto-yliopisto\n' +
-                    'Dipl.ins., konetekniikka ( 2013 — 2016 , päättynyt )\n' +
+                    'Dipl.ins., konetekniikka ( 2013 — 2016 , valmistunut )\n' +
                     '8 opintojaksoa'
                 )
               })
@@ -914,14 +914,14 @@ describe('Omat tiedot', function () {
                 it('onnistuu', function () {
                   expect(suoritusjako.isVisible()).to.equal(true)
                   expect(suoritusjako.opiskeluoikeusTitleText()).to.deep.equal([
-                    '12 opintojaksoa (2011—2013, päättynyt)'
+                    '12 opintojaksoa (2011—2013, valmistunut)'
                   ])
                 })
 
                 describe('Kun avataan oppilaitos', function () {
                   before(
                     suoritusjako.avaaOpiskeluoikeus(
-                      '12 opintojaksoa (2011—2013, päättynyt)'
+                      '12 opintojaksoa (2011—2013, valmistunut)'
                     )
                   )
 
@@ -930,7 +930,7 @@ describe('Omat tiedot', function () {
                       extractAsText(S('.opiskeluoikeus-content'))
                     ).to.equal(
                       'Opiskeluoikeuden voimassaoloaika : 24.8.2011 — 20.6.2013\n' +
-                        'Tila 21.6.2013 päättynyt\n' +
+                        'Tila 21.6.2013 valmistunut\n' +
                         '24.8.2011 aktiivinen\n' +
                         'Lisätiedot\n' +
                         'Opintojakso Laajuus Arvosana\n' +
@@ -984,14 +984,14 @@ describe('Omat tiedot', function () {
                     'Aalto-yliopisto'
                   ])
                   expect(suoritusjako.opiskeluoikeusTitleText()).to.deep.equal([
-                    'Dipl.ins., konetekniikka (2013—2016, päättynyt)'
+                    'Dipl.ins., konetekniikka (2013—2016, valmistunut)'
                   ])
                 })
 
                 describe('Kun avataan oppilaitos', function () {
                   before(
                     suoritusjako.avaaOpiskeluoikeus(
-                      'Dipl.ins., konetekniikka (2013—2016, päättynyt)'
+                      'Dipl.ins., konetekniikka (2013—2016, valmistunut)'
                     )
                   )
 
@@ -1002,7 +1002,7 @@ describe('Omat tiedot', function () {
                     expect(
                       opinnot.opiskeluoikeudet.omatTiedotOpiskeluoikeuksienOtsikot()
                     ).to.deep.equal([
-                      'Dipl.ins., konetekniikka (2013—2016, päättynyt)'
+                      'Dipl.ins., konetekniikka (2013—2016, valmistunut)'
                     ])
                   })
                 })
