@@ -46,6 +46,7 @@ import {
   internationalSchoolSuorittaminenTableHead,
   jklNormaalikouluSuorittaminenTableContent,
   jklNormaalikouluSuorittaminenTableHead,
+  stadinAmmattiopistoSuorittaminen20230531TableContent,
   stadinAmmattiopistoSuorittaminenTableContent,
   stadinAmmattiopistoSuorittaminenTableHead,
   suorittaminenKuntailmoitusListaJklPath,
@@ -381,6 +382,42 @@ describe("Suorittamisen valvonta -näkymä", () => {
     await waitTableLoadingHasFinished(".kuntailmoitukset")
     await sleep(500)
     await expectElementEventuallyNotVisible(oppijaRowSelector)
+  })
+
+  it("Suorittamisen valvonta ei näytä oppijaa, joka on valmistunut amiksesta, mutta on alle 18v", async () => {
+    // Amis-valmistunut-eronnut-valmasta Valpas (180605A313U) ei näy listalla
+    await loginAs(
+      suorittaminenListaPath,
+      "valpas-pelkkä-suorittaminen-amis",
+      true,
+      "2023-05-31"
+    )
+    await urlIsEventually(pathToUrl(stadinAmmattiopistoSuorittaminenPath))
+
+    await textEventuallyEquals(".card__header", "Oppivelvolliset (5)")
+    await dataTableEventuallyEquals(
+      ".suorittaminen",
+      stadinAmmattiopistoSuorittaminen20230531TableContent,
+      "|"
+    )
+  })
+
+  it("Suorittamisen valvonta ei näytä oppijaa, joka on yli 18v (ja valmistunut amiksesta)", async () => {
+    // Amis-valmistunut-eronnut-valmasta Valpas (180605A313U) ei näy listalla
+    await loginAs(
+      suorittaminenListaPath,
+      "valpas-pelkkä-suorittaminen-amis",
+      true,
+      "2023-06-18"
+    )
+    await urlIsEventually(pathToUrl(stadinAmmattiopistoSuorittaminenPath))
+
+    await textEventuallyEquals(".card__header", "Oppivelvolliset (5)")
+    await dataTableEventuallyEquals(
+      ".suorittaminen",
+      stadinAmmattiopistoSuorittaminen20230531TableContent,
+      "|"
+    )
   })
 })
 

@@ -5,6 +5,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.OppijaHenkilö
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.log.Logging
+import fi.oph.koski.oppivelvollisuustieto.Oppivelvollisuustiedot
 import fi.oph.koski.schema.Henkilö
 import fi.oph.koski.validation.MaksuttomuusValidation
 import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHenkilö, ValpasOppijaLaajatTiedot, ValpasOppivelvollinenOppijaLaajatTiedot, ValpasRajapäivätService}
@@ -140,16 +141,16 @@ class ValpasOppijaSearchService(application: KoskiApplication) extends Logging {
     (henkilö: OppijaHenkilö)
     (implicit session: ValpasSession)
   : Either[HttpStatus, ValpasLöytyiHenkilöhakuResult] = {
-    oppijaLaajatTiedotService.getOppijaLaajatTiedotIlmanOikeustarkastusta(henkilö.oid) match {
-      case Right(Some(oppija)) =>
-        // Oli Koskessa, tarkista käyttöoikeudet ja palauta, jos ok
-        accessResolver.withOppijaAccessAsRole(ValpasRooli.KUNTA)(oppija)
-          .map(o => ValpasLöytyiHenkilöhakuResult.apply(o, rajapäivätService))
-      case Right(None) if oppijanumerorekisteriService.onKunnalleNäkyväVainOnrssäOlevaOppija(henkilö) =>
-        Right(ValpasLöytyiHenkilöhakuResult(henkilö, vainOppijanumerorekisterissä = true, rajapäivätService))
-      case _ => Left(ValpasErrorCategory.forbidden.oppija())
+      oppijaLaajatTiedotService.getOppijaLaajatTiedotIlmanOikeustarkastusta(henkilö.oid) match {
+        case Right(Some(oppija)) =>
+          // Oli Koskessa, tarkista käyttöoikeudet ja palauta, jos ok
+          accessResolver.withOppijaAccessAsRole(ValpasRooli.KUNTA)(oppija)
+            .map(o => ValpasLöytyiHenkilöhakuResult.apply(o, rajapäivätService))
+        case Right(None) if oppijanumerorekisteriService.onKunnalleNäkyväVainOnrssäOlevaOppija(henkilö) =>
+          Right(ValpasLöytyiHenkilöhakuResult(henkilö, vainOppijanumerorekisterissä = true, rajapäivätService))
+        case _ => Left(ValpasErrorCategory.forbidden.oppija())
+      }
     }
-  }
 
   private def asSuorittaminenHenkilöhakuResult
     (henkilö: OppijaHenkilö)

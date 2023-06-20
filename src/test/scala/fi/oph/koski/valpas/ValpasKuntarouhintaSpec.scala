@@ -1,16 +1,17 @@
 package fi.oph.koski.valpas
 
-import java.time.LocalDate
-import java.time.LocalDate.{of => date}
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.koskiuser.AuthenticationUser
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.organisaatio.MockOrganisaatiot.helsinginKaupunki
+import fi.oph.koski.raportit.DataSheet
 import fi.oph.koski.valpas.log.ValpasAuditLog
 import fi.oph.koski.valpas.opiskeluoikeusfixture.{FixtureUtil, ValpasMockOppijat}
-import fi.oph.koski.valpas.rouhinta.ValpasRouhintaService
-import fi.oph.koski.valpas.valpasuser.{ValpasMockUsers, ValpasSession}
+import fi.oph.koski.valpas.rouhinta.{ValpasRouhintaOppivelvollinenSheetRow, ValpasRouhintaService}
+import fi.oph.koski.valpas.valpasuser.{ValpasMockUser, ValpasMockUsers}
+
+import java.time.LocalDate
+import java.time.LocalDate.{of => date}
 
 object ValpasKuntarouhintaSpec {
   val tarkastelupäivä = date(2021, 5, 20)
@@ -154,21 +155,35 @@ class ValpasKuntarouhintaSpec extends ValpasRouhintaTestBase {
       }
     }
 
+    "Helsingin kaupungilla" - {
+      "Ei löydy valmistunutta amista" in {
+        FixtureUtil.resetMockData(KoskiApplicationForTests, LocalDate.of(2023, 5, 2))
+
+        val oppijat = loadKuntahaku("091", ValpasMockUsers.valpasHelsinki).collectFirst {
+          case d: DataSheet if d.title == t.get("rouhinta_tab_ei_oppivelvollisuutta_suorittavat") => d.rows.collect {
+            case r: ValpasRouhintaOppivelvollinenSheetRow => r
+          }
+        }.get
+
+        oppijat.flatMap(_.hetu) should not contain (ValpasMockOppijat.amisValmistunutEronnutValmasta.hetu.get)
+      }
+    }
+
     "Audit-log toimii myös isolla oppijamäärällä" in {
       val oids = Range.inclusive(1, 10000).map(n => s"1.2.246.562.10.000000${"%05d".format(n)}")
       ValpasAuditLog.auditLogRouhintahakuKunnalla(helsinginKaupunki, oids)(session(defaultUser))
     }
   }
 
-  lazy val hakutulosSheets = loadKuntahaku
+  lazy val hakutulosSheets = loadKuntahaku()
 
-  private def loadKuntahaku() = {
+  private def loadKuntahaku(kuntakoodi: String = ValpasKuntarouhintaSpec.kuntakoodi, user: ValpasMockUser = ValpasMockUsers.valpasPyhtääJaAapajoenPeruskoulu) = {
     new ValpasRouhintaService(KoskiApplicationForTests)
       .haeKunnanPerusteellaExcel(
-        kunta = ValpasKuntarouhintaSpec.kuntakoodi,
+        kunta = kuntakoodi,
         language = "fi",
         password = Some("hunter2")
-      )(session(ValpasMockUsers.valpasPyhtääJaAapajoenPeruskoulu))
+      )(session(user))
       .fold(
         error => fail(s"Haku Kunnalla epäonnistui: $error"),
         result => result.response.sheets

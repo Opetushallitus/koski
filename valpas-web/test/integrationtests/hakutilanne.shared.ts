@@ -5,8 +5,9 @@ import {
   expectElementEventuallyVisible,
 } from "../integrationtests-env/browser/content"
 
-export const jklNormaalikouluTableHead = "Hakeutumisvelvollisia oppijoita (46)"
+export const jklNormaalikouluTableHead = "Hakeutumisvelvollisia oppijoita (47)"
 export const jklNormaalikouluTableContent = `
+  Amis-valmistunut-eronnut-valmasta Valpas                | 18.6.2005   | 9C | 30.5.2021  | Ei hakemusta         | –                           | –                         | done3 opiskeluoikeutta                                                     |
   Epäonninen Valpas                                       | 30.10.2005  | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
   Eroaja-myöhemmin Valpas                                 | 29.9.2005   | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
   Eronnut-elokuussa-17-vuotta-täyttävä-8-luokkalainen Valpas | 11.9.2004 | 8C | –         | Ei hakemusta         | –                           | –                         | –                                                                          |

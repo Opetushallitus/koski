@@ -545,7 +545,7 @@ object ValpasOpiskeluoikeusExampleData {
     ),
   )
 
-  def ammattikouluOpiskeluoikeus = ammattikouluValmistunutOpiskeluoikeus.copy(
+  def ammattikouluOpiskeluoikeus = ammattikouluValmistunutOpiskeluoikeus().copy(
     tila = AmmatillinenOpiskeluoikeudenTila(List(
       AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)),
     )),
@@ -557,7 +557,7 @@ object ValpasOpiskeluoikeusExampleData {
     )
   )
 
-  def ammattikouluValmaOpiskeluoikeus = ammattikouluValmistunutOpiskeluoikeus.copy(
+  def ammattikouluValmaOpiskeluoikeus = ammattikouluValmistunutOpiskeluoikeus().copy(
     tila = AmmatillinenOpiskeluoikeudenTila(List(
       AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)),
     )),
@@ -566,6 +566,14 @@ object ValpasOpiskeluoikeusExampleData {
         vahvistus = None
       )
     )
+  )
+
+  def ammattikouluValmaOpiskeluoikeusEronnut = ammattikouluValmaOpiskeluoikeus.copy(
+    tila = AmmatillinenOpiskeluoikeudenTila(List(
+      AmmatillinenOpiskeluoikeusjakso(LocalDate.of(2021, 11, 1), opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)),
+      AmmatillinenOpiskeluoikeusjakso(LocalDate.of(2022, 1, 9), opiskeluoikeusEronnut, Some(ExampleData.valtionosuusRahoitteinen)),
+    )),
+    arvioituPäättymispäivä = Some(LocalDate.of(2022, 1, 9))
   )
 
   def valmaRessussa = ammattikouluValmaOpiskeluoikeus.copy(
@@ -597,7 +605,7 @@ object ValpasOpiskeluoikeusExampleData {
     )
   )
 
-  def valmaRessussaValmistunut = ammattikouluValmistunutOpiskeluoikeus.copy(
+  def valmaRessussaValmistunut = ammattikouluValmistunutOpiskeluoikeus().copy(
     oppilaitos = Some(ressunLukio),
     suoritukset = List(
       ExamplesValma.valmaKoulutuksenSuoritus.copy(
@@ -607,7 +615,7 @@ object ValpasOpiskeluoikeusExampleData {
     )
   )
 
-  def ammattikouluTelmaOpiskeluoikeus = ammattikouluValmistunutOpiskeluoikeus.copy(
+  def ammattikouluTelmaOpiskeluoikeus = ammattikouluValmistunutOpiskeluoikeus().copy(
     arvioituPäättymispäivä = None,
     tila = AmmatillinenOpiskeluoikeudenTila(List(
       AmmatillinenOpiskeluoikeusjakso(date(2018, 9, 1), opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)),
@@ -651,15 +659,23 @@ object ValpasOpiskeluoikeusExampleData {
     )
   )
 
-  def ammattikouluValmistunutOpiskeluoikeus = AmmattitutkintoExample.opiskeluoikeus.copy(
+  def ammattikouluValmistunutOpiskeluoikeus(
+    alkamispäivä: LocalDate = date(2012, 9, 1),
+    päättymispäivä: LocalDate = date(2021, 9, 2)
+  ) = AmmattitutkintoExample.opiskeluoikeus.copy(
     tila = AmmatillinenOpiskeluoikeudenTila(List(
-      AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)),
-      AmmatillinenOpiskeluoikeusjakso(date(2021, 9, 2), opiskeluoikeusValmistunut, Some(ExampleData.valtionosuusRahoitteinen))
+      AmmatillinenOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)),
+      AmmatillinenOpiskeluoikeusjakso(päättymispäivä, opiskeluoikeusValmistunut, Some(ExampleData.valtionosuusRahoitteinen)),
     )),
+    arvioituPäättymispäivä = Some(päättymispäivä),
     suoritukset = List(
-      AmmattitutkintoExample.näyttötutkintoonValmistavanKoulutuksenSuoritus,
+      AmmattitutkintoExample.näyttötutkintoonValmistavanKoulutuksenSuoritus.copy(
+        alkamispäivä = Some(alkamispäivä),
+        vahvistus = vahvistus(päättymispäivä, stadinAmmattiopisto, Some(helsinki)),
+      ),
       AmmattitutkintoExample.ammatillisenTutkinnonSuoritus.copy(
-        vahvistus = vahvistus(date(2021, 9, 2), AmmatillinenExampleData.stadinAmmattiopisto, Some(helsinki))
+        alkamispäivä = Some(alkamispäivä),
+        vahvistus = vahvistus(päättymispäivä, stadinAmmattiopisto, Some(helsinki))
       )
     )
   )
@@ -697,7 +713,7 @@ object ValpasOpiskeluoikeusExampleData {
 
   def ammattikouluAlkaaOmniaLoka2021: AmmatillinenOpiskeluoikeus = ammattikouluAlkaaOmnia(date(2021, 10, 1))
 
-  def ammattikouluAlkaaOmnia(alkamispäivä: LocalDate): AmmatillinenOpiskeluoikeus = ammattikouluValmistunutOpiskeluoikeus.copy(
+  def ammattikouluAlkaaOmnia(alkamispäivä: LocalDate): AmmatillinenOpiskeluoikeus = ammattikouluValmistunutOpiskeluoikeus().copy(
     arvioituPäättymispäivä = Some(date(2023, 5, 31)),
     oppilaitos = Some(oppilaitos(MockOrganisaatiot.omnia)),
     tila = AmmatillinenOpiskeluoikeudenTila(List(
@@ -715,7 +731,7 @@ object ValpasOpiskeluoikeusExampleData {
     )
   )
 
-  def ammattikouluAlkaaJaEroaaOmnia(alkamispäivä: LocalDate, päättymispäivä: LocalDate): AmmatillinenOpiskeluoikeus = ammattikouluValmistunutOpiskeluoikeus.copy(
+  def ammattikouluAlkaaJaEroaaOmnia(alkamispäivä: LocalDate, päättymispäivä: LocalDate): AmmatillinenOpiskeluoikeus = ammattikouluValmistunutOpiskeluoikeus().copy(
     arvioituPäättymispäivä = Some(date(2023, 5, 31)),
     oppilaitos = Some(oppilaitos(MockOrganisaatiot.omnia)),
     tila = AmmatillinenOpiskeluoikeudenTila(List(
@@ -1104,7 +1120,7 @@ object ValpasOpiskeluoikeusExampleData {
     )
   )
 
-  def valmaOpiskeluoikeusAlkaaOmniassaSyys2021 = ammattikouluValmistunutOpiskeluoikeus.copy(
+  def valmaOpiskeluoikeusAlkaaOmniassaSyys2021 = ammattikouluValmistunutOpiskeluoikeus().copy(
     arvioituPäättymispäivä = Some(date(2023, 5, 31)),
     tila = AmmatillinenOpiskeluoikeudenTila(List(
       AmmatillinenOpiskeluoikeusjakso(date(2021, 9, 1), opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)),
@@ -1133,7 +1149,7 @@ object ValpasOpiskeluoikeusExampleData {
     ))
   )
 
-  def amisAmmatillinenJaNäyttötutkintoonValmistavaOpiskeluoikeus = ammattikouluValmistunutOpiskeluoikeus.copy(
+  def amisAmmatillinenJaNäyttötutkintoonValmistavaOpiskeluoikeus = ammattikouluValmistunutOpiskeluoikeus().copy(
     tila = AmmatillinenOpiskeluoikeudenTila(List(
       AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)),
     )),

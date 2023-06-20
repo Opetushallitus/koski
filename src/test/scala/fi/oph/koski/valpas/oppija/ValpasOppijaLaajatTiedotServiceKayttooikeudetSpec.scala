@@ -186,11 +186,11 @@ class ValpasOppijaLaajatTiedotServiceKäyttöoikeudetSpec extends ValpasOppijaTe
       ) shouldBe false
     }
 
-    "Käyttäjä, jolla pelkät suorittamisen valvonnan oikeudet lukioon näkee yhteistutkinnon opiskelijan vielä valmistumisen jälkeenkin, koska YO-tutkinto oletetaan olevan suorittamatta" in {
+    "Käyttäjä, jolla pelkät suorittamisen valvonnan oikeudet lukioon ei näe yhteistutkinnon opiskelijaa ammatillisen tutkinnon valmistumisen jälkeen, vaikka YO-tutkinto oletetaan olevan suorittamatta" in {
       canAccessOppijaYhteystiedoillaJaKuntailmoituksilla(
         ValpasMockOppijat.kaksoistutkinnostaValmistunutOpiskelija,
         ValpasMockUsers.valpasPelkkäSuorittaminenkäyttäjä
-      ) shouldBe true
+      ) shouldBe false
     }
 
     "Käyttäjä, jolla pelkät suorittamisen valvonnan oikeudet ei näe peruskoulun oppijaa" in {

@@ -2,9 +2,44 @@ package fi.oph.koski.valpas.oppija
 
 import fi.oph.koski.valpas.opiskeluoikeusfixture.{ValpasMockOppijat, ValpasOpiskeluoikeusExampleData}
 
+import java.time.LocalDate
+
 object ValpasOppijaTestData {
   // Jyväskylän normaalikoulusta löytyvät näytettävät hakeutumisvelvolliset aakkosjärjestyksessä, tutkittaessa ennen syksyn rajapäivää
   val hakeutumisvelvolliset = List(
+    (
+      ValpasMockOppijat.amisValmistunutEronnutValmasta,
+      List(
+        ExpectedData(
+          ValpasOpiskeluoikeusExampleData.ammattikouluValmistunutOpiskeluoikeus(LocalDate.of(2022, 1, 10), LocalDate.of(2023, 4, 28)),
+          onHakeutumisValvottavaOpiskeluoikeus = false,
+          onHakeutumisvalvovaOppilaitos = false,
+          onSuorittamisvalvovaOppilaitos = false,
+          perusopetuksenJälkeinenTiedot = Some(ExpectedDataPerusopetuksenJälkeinenTiedot("voimassatulevaisuudessa", "lasna")),
+        ),
+        ExpectedData(
+          ValpasOpiskeluoikeusExampleData.ammattikouluValmaOpiskeluoikeusEronnut,
+          onHakeutumisValvottavaOpiskeluoikeus = false,
+          onHakeutumisvalvovaOppilaitos = false,
+          onSuorittamisvalvovaOppilaitos = false,
+          perusopetuksenJälkeinenTiedot = Some(ExpectedDataPerusopetuksenJälkeinenTiedot("voimassatulevaisuudessa", "lasna")),
+        ),
+        ExpectedData(
+          ValpasOpiskeluoikeusExampleData.lukionOpiskeluoikeusAlkaaJaLoppuu2021Syksyllä(),
+          onHakeutumisValvottavaOpiskeluoikeus = false,
+          onHakeutumisvalvovaOppilaitos = true,
+          onSuorittamisvalvovaOppilaitos = true,
+          perusopetuksenJälkeinenTiedot = Some(ExpectedDataPerusopetuksenJälkeinenTiedot("voimassa", "lasna")),
+        ),
+        ExpectedData(
+          ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainen,
+          onHakeutumisValvottavaOpiskeluoikeus = true,
+          onHakeutumisvalvovaOppilaitos = true,
+          onSuorittamisvalvovaOppilaitos = false,
+          perusopetusTiedot = Some(ExpectedDataPerusopetusTiedot("valmistunut", "valmistunut")),
+        ),
+      )
+    ),
     (
       ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021,
       List(

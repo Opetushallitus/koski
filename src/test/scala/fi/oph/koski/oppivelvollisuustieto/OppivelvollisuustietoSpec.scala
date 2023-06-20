@@ -76,7 +76,7 @@ class OppivelvollisuustietoSpec
           insert(slave1, ammatillinenTutkinto(vahvistus = Some(date(2020, 1, 1)), keskiarvo = Some(4.0)))
           insert(slave2, lukionOppimäärä(vahvistus = None))
           updateRaportointikanta
-          verifyTestiOidit(oppivelvollisuus = date(2021, 12, 31), maksuttomuus = date(2024, 12, 31))
+          verifyTestiOidit(oppivelvollisuus = date(2020, 1, 1), maksuttomuus = date(2024, 12, 31))
         }
         "Lukion oppimaaralla vahvistus" in {
           resetFixtures
@@ -92,7 +92,7 @@ class OppivelvollisuustietoSpec
           insert(slave1, ammatillinenTutkinto(vahvistus = Some(date(2020, 1, 1)), keskiarvo = Some(4.0)))
           insert(slave2, lukionOppimäärä(vahvistus = Some(date(2019, 1, 1))))
           updateRaportointikanta
-          verifyTestiOidit(oppivelvollisuus = date(2021, 12, 31), maksuttomuus = date(2024, 12, 31))
+          verifyTestiOidit(oppivelvollisuus = date(2020, 1, 1), maksuttomuus = date(2024, 12, 31))
         }
       }
       "Jos suorittaa vain lukion oppimäärää, käytetään aina syntymäaikaa päättymispäivien päättelyssä" - {

@@ -1,12 +1,13 @@
 package fi.oph.koski.valpas
 
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.organisaatio.MockOrganisaatiot.helsinginKaupunki
 import fi.oph.koski.raportit.{DataSheet, Sheet}
 import fi.oph.koski.valpas.log.ValpasAuditLog
 import fi.oph.koski.valpas.opiskeluoikeusfixture.{FixtureUtil, ValpasMockOppijat}
-import fi.oph.koski.valpas.rouhinta.{ValpasRouhintaPelkkäHetuSheetRow, ValpasRouhintaService}
+import fi.oph.koski.valpas.rouhinta.{ValpasRouhintaOppivelvollinenSheetRow, ValpasRouhintaPelkkäHetuSheetRow, ValpasRouhintaService}
 import fi.oph.koski.valpas.valpasuser.ValpasMockUsers
+
+import java.time.LocalDate
 
 class ValpasHeturouhintaSpec extends ValpasRouhintaTestBase {
 
@@ -65,6 +66,10 @@ class ValpasHeturouhintaSpec extends ValpasRouhintaTestBase {
   val oppivelvollisuudenUlkopuolistenHetut = List(
     ValpasMockOppijat.eiOppivelvollinenSyntynytEnnen2004.hetu.get,
     ValpasMockOppijat.eiOppivelvollinenLiianNuori.hetu.get,
+  )
+
+  val amiksestaValmistuneidenHetut = List(
+    ValpasMockOppijat.amisValmistunutEronnutValmasta.hetu.get
   )
 
   val oppijanumerorekisterinUlkopuolisetHetut = List(
@@ -141,13 +146,25 @@ class ValpasHeturouhintaSpec extends ValpasRouhintaTestBase {
       }
     }
 
+    "Heturouhinta ei palauta amiksesta valmistunutta" in {
+      FixtureUtil.resetMockData(KoskiApplicationForTests, LocalDate.of(2023, 5, 2))
+
+      val oppijat = loadHetuhaku(amiksestaValmistuneidenHetut).collectFirst {
+        case d: DataSheet if d.title == t.get("rouhinta_tab_ei_oppivelvollisuutta_suorittavat") => d.rows.collect {
+          case r: ValpasRouhintaOppivelvollinenSheetRow => r
+        }
+      }.get
+
+      oppijat.flatMap(_.hetu) should not contain (ValpasMockOppijat.amisValmistunutEronnutValmasta.hetu.get)
+    }
+
     "Audit-log toimii myös isolla oppijamäärällä" in {
       val hetut = Range.inclusive(0, 9999).map(n => s"123456-${"%04d".format(n)}")
       ValpasAuditLog.auditLogRouhintahakuHetulistalla(hetut, hetut)(session(defaultUser))
     }
   }
 
-  lazy val hakutulosSheets: Seq[Sheet] = loadHetuhaku
+  lazy val hakutulosSheets: Seq[Sheet] = loadHetuhaku()
 
   lazy val oppivelvollisuuttaSuorittavat = pelkkäHetuRows("rouhinta_tab_oppivelvollisuutta_suorittavat")
 
@@ -157,14 +174,15 @@ class ValpasHeturouhintaSpec extends ValpasRouhintaTestBase {
 
   lazy val virheelliset = pelkkäHetuRows("rouhinta_tab_virheelliset_hetut")
 
-  private def loadHetuhaku() = {
+  private def loadHetuhaku(muutHetut: List[String] = Nil) = {
     new ValpasRouhintaService(KoskiApplicationForTests)
       .haeHetulistanPerusteellaExcel(
         hetut = eiOppivelvollisuuttaSuorittavienHetut ++
           oppivelvollisuuttaSuorittavienHetut ++
           oppivelvollisuudenUlkopuolistenHetut ++
           oppijanumerorekisterinUlkopuolisetHetut ++
-          virheellisetHetut,
+          virheellisetHetut ++
+          muutHetut,
         language = "fi",
         password = Some("hunter2")
       )(session(ValpasMockUsers.valpasHelsinki))
