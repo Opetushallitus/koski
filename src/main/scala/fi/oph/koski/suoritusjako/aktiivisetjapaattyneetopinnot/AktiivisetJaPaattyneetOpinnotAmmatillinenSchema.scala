@@ -18,13 +18,13 @@ case class AktiivisetJaPäättyneetOpinnotAmmatillinenOpiskeluoikeus(
   lisätiedot: Option[AktiivisetJaPäättyneetOpinnotTuvaJaAmmatillinenOpiskeluoikeudenLisätiedot],
   @KoodistoKoodiarvo("ammatillinenkoulutus")
   tyyppi: schema.Koodistokoodiviite,
-) extends AktiivisetJaPäättyneetOpinnotOpiskeluoikeus {
+) extends AktiivisetJaPäättyneetOpinnotKoskeenTallennettavaOpiskeluoikeus {
 
-  override def withSuoritukset(suoritukset: List[Suoritus]): AktiivisetJaPäättyneetOpinnotOpiskeluoikeus =
+  override def withSuoritukset(suoritukset: List[Suoritus]): AktiivisetJaPäättyneetOpinnotKoskeenTallennettavaOpiskeluoikeus =
     this.copy(
       suoritukset = suoritukset.collect { case s : AktiivisetJaPäättyneetOpinnotAmmatillinenPäätasonSuoritus => s }
     )
-  override def withoutSisältyyOpiskeluoikeuteen: AktiivisetJaPäättyneetOpinnotOpiskeluoikeus = this.copy(sisältyyOpiskeluoikeuteen = None)
+  override def withoutSisältyyOpiskeluoikeuteen: AktiivisetJaPäättyneetOpinnotKoskeenTallennettavaOpiskeluoikeus = this.copy(sisältyyOpiskeluoikeuteen = None)
 }
 
 case class AktiivisetJaPäättyneetOpinnotTuvaJaAmmatillinenOpiskeluoikeudenLisätiedot(

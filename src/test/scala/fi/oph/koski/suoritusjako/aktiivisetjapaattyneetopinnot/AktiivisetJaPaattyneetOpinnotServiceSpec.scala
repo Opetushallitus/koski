@@ -627,7 +627,7 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
 
       o.opiskeluoikeudet.head.oppilaitos.map(_.oid) should equal(Some(MockOrganisaatiot.omnia))
       o.opiskeluoikeudet.head match {
-        case koo: AktiivisetJaPäättyneetOpinnotOpiskeluoikeus => koo.oid should equal(Some(sisältyvä.oid.get))
+        case koo: AktiivisetJaPäättyneetOpinnotKoskeenTallennettavaOpiskeluoikeus => koo.oid should equal(Some(sisältyvä.oid.get))
       }
     })
   }
@@ -1044,12 +1044,13 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
   }
 
   private def verifyKoskiOpiskeluoikeudenKentät(
-    actualOo: AktiivisetJaPäättyneetOpinnotOpiskeluoikeus,
+    actualOo: AktiivisetJaPäättyneetOpinnotKoskeenTallennettavaOpiskeluoikeus,
     expectedOoData: schema.KoskeenTallennettavaOpiskeluoikeus
   ): Unit = {
     verifyOpiskeluoikeudenKentät(actualOo, expectedOoData)
 
     actualOo.oid should be(expectedOoData.oid)
+    actualOo.sisältyyOpiskeluoikeuteen.map(_.oid) should equal(None)
     actualOo.versionumero should be(expectedOoData.versionumero)
 
     actualOo.tila.opiskeluoikeusjaksot.zip(expectedOoData.tila.opiskeluoikeusjaksot).foreach {
@@ -1066,7 +1067,6 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
   ): Unit = {
     actualOo.oppilaitos.map(_.oid) should equal(expectedOoData.oppilaitos.map(_.oid))
     actualOo.koulutustoimija.map(_.oid) should equal(expectedOoData.koulutustoimija.map(_.oid))
-    actualOo.sisältyyOpiskeluoikeuteen.map(_.oid) should equal(None)
     actualOo.tyyppi.koodiarvo should equal(expectedOoData.tyyppi.koodiarvo)
 
     actualOo.alkamispäivä should equal(expectedOoData.alkamispäivä)

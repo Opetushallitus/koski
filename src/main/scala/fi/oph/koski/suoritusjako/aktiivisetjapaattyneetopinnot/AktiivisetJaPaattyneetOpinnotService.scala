@@ -21,9 +21,12 @@ class AktiivisetJaPäättyneetOpinnotService(application: KoskiApplication) exte
     val aktiivisetOpinnotOppija = opiskeluoikeusFacade.haeOpiskeluoikeudet(oppijaOid, AktiivisetJaPäättyneetOpinnotSchema.schemassaTuetutOpiskeluoikeustyypit)
       .map(teePalautettavaAktiivisetJaPäättyneetOpinnotOppija)
 
-    aktiivisetOpinnotOppija.map(_.opiskeluoikeudet.map(oo =>
-      oo.oid.map(application.oppijaFacade.merkitseSuoritusjakoTehdyksiIlmanKäyttöoikeudenTarkastusta)
-    ))
+    aktiivisetOpinnotOppija.foreach(
+      _.opiskeluoikeudet.collect {
+        case oo: AktiivisetJaPäättyneetOpinnotKoskeenTallennettavaOpiskeluoikeus => oo
+      }
+      .foreach(_.oid.foreach(application.oppijaFacade.merkitseSuoritusjakoTehdyksiIlmanKäyttöoikeudenTarkastusta))
+    )
 
     aktiivisetOpinnotOppija
   }
@@ -39,7 +42,10 @@ class AktiivisetJaPäättyneetOpinnotService(application: KoskiApplication) exte
 
   private def suodataPalautettavat(opiskeluoikeudet: Seq[AktiivisetJaPäättyneetOpinnotOpiskeluoikeus]): Seq[AktiivisetJaPäättyneetOpinnotOpiskeluoikeus] = {
 
-    val kuoriOpiskeluoikeusOidit = opiskeluoikeudet.map(_.sisältyyOpiskeluoikeuteen.map(_.oid)).flatten.toSet
+    val kuoriOpiskeluoikeusOidit = opiskeluoikeudet.map {
+      case oo: AktiivisetJaPäättyneetOpinnotKoskeenTallennettavaOpiskeluoikeus => oo.sisältyyOpiskeluoikeuteen.map(_.oid)
+      case _ => None
+    }.flatten.toSet
 
     opiskeluoikeudet
       .filterNot(onKuoriOpiskeluoikeus(kuoriOpiskeluoikeusOidit))
@@ -66,6 +72,9 @@ class AktiivisetJaPäättyneetOpinnotService(application: KoskiApplication) exte
   }
 
   private def onKuoriOpiskeluoikeus(kuoriOpiskeluoikeusOidit: Set[String])(o: AktiivisetJaPäättyneetOpinnotOpiskeluoikeus): Boolean = {
-    o.oid.map(kuoriOpiskeluoikeusOidit.contains).getOrElse(false)
+    o match {
+      case ko: AktiivisetJaPäättyneetOpinnotKoskeenTallennettavaOpiskeluoikeus => ko.oid.map(kuoriOpiskeluoikeusOidit.contains).getOrElse(false)
+      case _ => false
+    }
   }
 }
