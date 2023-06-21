@@ -1,4 +1,4 @@
-## xx.06.2023
+## 21.06.2023
 - TUVA-opiskeluoikeuden siirtoon muutoksia 1.8.2023 alkaen:
   - TUVA-opiskeluoikeuden päätason suorituksen laajuuteen lasketaan jatkossa vain Hyväksytty-arvosanalla arvioidut osasuoritukset.
   - Vastaavasti osasuorituksen laajuuteen lasketaan vain Hyväksytty-arvosanalla arvioidut aliosasuoritukset.
