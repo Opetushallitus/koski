@@ -24,6 +24,7 @@ object AktiivisetJaPäättyneetOpinnotSchema {
     schema.OpiskeluoikeudenTyyppi.internationalschool.koodiarvo, // Vain ne, missä on lukiota vastaavia luokkia
     schema.OpiskeluoikeudenTyyppi.muukuinsaanneltykoulutus.koodiarvo,
     schema.OpiskeluoikeudenTyyppi.vapaansivistystyonkoulutus.koodiarvo, // Ei vapaatavoitteisia
+    schema.OpiskeluoikeudenTyyppi.ylioppilastutkinto.koodiarvo // YO-tutkinnoista otetaan vain vahvistetut
   )
 }
 

@@ -11,7 +11,7 @@ import fi.oph.koski.suoritusjako.common.{OpiskeluoikeusFacade, RawOppija}
 class AktiivisetJaPäättyneetOpinnotService(application: KoskiApplication) extends GlobalExecutionContext with Logging {
   private val opiskeluoikeusFacade = new OpiskeluoikeusFacade[AktiivisetJaPäättyneetOpinnotOpiskeluoikeus](
     application,
-    None,
+    Some(AktiivisetJaPäättyneetOpinnotYlioppilastutkinnonOpiskeluoikeus.fromKoskiSchema),
     Some(AktiivisetJaPäättyneetOpinnotKorkeakoulunOpiskeluoikeus.fromKoskiSchema)
   )
 
@@ -54,6 +54,7 @@ class AktiivisetJaPäättyneetOpinnotService(application: KoskiApplication) exte
         opiskeluoikeus.withSuoritukset(
           opiskeluoikeus.suoritukset
             .filter(josInternationalSchoolNiinLukiotaVastaava)
+            .filter(josYOTutkintoNiinVahvistettu)
         )
       }.filter(_.suoritukset.nonEmpty)
   }
@@ -66,6 +67,15 @@ class AktiivisetJaPäättyneetOpinnotService(application: KoskiApplication) exte
           s.koulutusmoduuli.tunniste.koodiarvo
         )
         => false
+      case _
+        => true
+    }
+  }
+
+  private def josYOTutkintoNiinVahvistettu(s: Suoritus): Boolean = {
+    s match {
+      case s: AktiivisetJaPäättyneetOpinnotYlioppilastutkinnonPäätasonSuoritus
+        => s.vahvistus.isDefined
       case _
         => true
     }

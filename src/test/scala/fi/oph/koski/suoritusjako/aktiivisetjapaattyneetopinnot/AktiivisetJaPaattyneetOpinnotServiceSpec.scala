@@ -170,6 +170,44 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
     })
   }
 
+  "Ylioppilastutkinto" - {
+    s"Keskeneräisen tietoja ei palauteta" in {
+      val oppija = KoskiSpecificMockOppijat.ylioppilasEiValmistunut
+
+      val result = aktiivisetJaPäättyneetOpinnotService.findOppija(oppija.oid)
+
+      result.isRight should be(true)
+
+      result.foreach(o => {
+        verifyOppija(oppija, o)
+        o.opiskeluoikeudet.length should be(0)
+      })
+    }
+
+    s"Valmistuneen tiedot palautetaan" in {
+      val oppija = KoskiSpecificMockOppijat.ylioppilas
+
+      val expectedOoData = getOpiskeluoikeus(oppija.oid, schema.OpiskeluoikeudenTyyppi.ylioppilastutkinto.koodiarvo)
+      val expectedSuoritusDatat = expectedOoData.suoritukset
+
+      val result = aktiivisetJaPäättyneetOpinnotService.findOppija(oppija.oid)
+
+      result.isRight should be(true)
+
+      result.foreach(o => {
+        verifyOppija(oppija, o)
+
+        o.opiskeluoikeudet should have length 1
+        o.opiskeluoikeudet.head shouldBe a[AktiivisetJaPäättyneetOpinnotYlioppilastutkinnonOpiskeluoikeus]
+
+        val actualOo = o.opiskeluoikeudet.head
+        val actualSuoritukset = actualOo.suoritukset
+
+        verifyOpiskeluoikeusJaSuoritus(actualOo, actualSuoritukset, expectedOoData, expectedSuoritusDatat)
+      })
+    }
+  }
+
   "Aikuisten perusopetus" - {
     val oppijat = Seq(
       KoskiSpecificMockOppijat.oppiaineenKorottaja,
@@ -392,7 +430,7 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
       }
     }
 
-    "Palautetaan opiskeluioikeus, jossa on 10. vuosiluokan suoritus mutta ei uudempia" in {
+    "Palautetaan opiskeluoikeus, jossa on 10. vuosiluokan suoritus mutta ei uudempia" in {
       val oppija = KoskiSpecificMockOppijat.internationalschool
 
       val alkuperäinenOo = getOpiskeluoikeus(oppija.oid, schema.OpiskeluoikeudenTyyppi.internationalschool.koodiarvo).asInstanceOf[schema.InternationalSchoolOpiskeluoikeus]
@@ -732,6 +770,12 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
             expectedOoData: schema.VapaanSivistystyönOpiskeluoikeus,
             expectedSuoritusData: schema.VapaanSivistystyönPäätasonSuoritus
             ) => verifyVST(actualOo, actualSuoritus, expectedOoData, expectedSuoritusData)
+          case (
+            actualOo: AktiivisetJaPäättyneetOpinnotYlioppilastutkinnonOpiskeluoikeus,
+            actualSuoritus: AktiivisetJaPäättyneetOpinnotYlioppilastutkinnonPäätasonSuoritus,
+            expectedOoData: schema.YlioppilastutkinnonOpiskeluoikeus,
+            expectedSuoritusData: schema.YlioppilastutkinnonSuoritus
+            ) => verifyYO(actualOo, actualSuoritus, expectedOoData, expectedSuoritusData)
           case _ => fail(s"Palautettiin tunnistamattoman tyyppistä dataa actual: (${actualOo.getClass.getName},${actualSuoritus.getClass.getName}), expected:(${expectedOoData.getClass.getName},${expectedSuoritusData.getClass.getName})")
         }
     }
@@ -819,6 +863,20 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
 
     actualSuoritus.tyyppi.koodiarvo should equal(expectedSuoritusData.tyyppi.koodiarvo)
     actualSuoritus.koulutusmoduuli.tunniste.koodiarvo should equal(expectedSuoritusData.koulutusmoduuli.tunniste.koodiarvo)
+  }
+
+  private def verifyYO(
+    actualOo: AktiivisetJaPäättyneetOpinnotYlioppilastutkinnonOpiskeluoikeus,
+    actualSuoritus: AktiivisetJaPäättyneetOpinnotYlioppilastutkinnonPäätasonSuoritus,
+    expectedOoData: schema.YlioppilastutkinnonOpiskeluoikeus,
+    expectedSuoritusData: schema.YlioppilastutkinnonSuoritus
+  ): Unit = {
+    verifyOpiskeluoikeudenKentät(actualOo, expectedOoData)
+
+    actualSuoritus.tyyppi.koodiarvo should equal(expectedSuoritusData.tyyppi.koodiarvo)
+    actualSuoritus.koulutusmoduuli.tunniste.koodiarvo should equal(expectedSuoritusData.koulutusmoduuli.tunniste.koodiarvo)
+    actualSuoritus.vahvistus.map(_.päivä) should equal(expectedSuoritusData.vahvistus.map(_.päivä))
+    actualSuoritus.vahvistus.isDefined should be(true)
   }
 
   private def verifyLukio(
