@@ -23,10 +23,6 @@ import {
   isAktiivisetJaPäättyneetOpinnotInternationalSchoolOpiskeluoikeus
 } from './AktiivisetJaPaattyneetOpinnotInternationalSchoolOpiskeluoikeus'
 import {
-  AktiivisetJaPäättyneetOpinnotKorkeakoulunOpiskeluoikeus,
-  isAktiivisetJaPäättyneetOpinnotKorkeakoulunOpiskeluoikeus
-} from './AktiivisetJaPaattyneetOpinnotKorkeakoulunOpiskeluoikeus'
-import {
   AktiivisetJaPäättyneetOpinnotLukionOpiskeluoikeus,
   isAktiivisetJaPäättyneetOpinnotLukionOpiskeluoikeus
 } from './AktiivisetJaPaattyneetOpinnotLukionOpiskeluoikeus'
@@ -42,46 +38,39 @@ import {
   AktiivisetJaPäättyneetOpinnotVapaanSivistystyönOpiskeluoikeus,
   isAktiivisetJaPäättyneetOpinnotVapaanSivistystyönOpiskeluoikeus
 } from './AktiivisetJaPaattyneetOpinnotVapaanSivistystyonOpiskeluoikeus'
-import {
-  AktiivisetJaPäättyneetOpinnotYlioppilastutkinnonOpiskeluoikeus,
-  isAktiivisetJaPäättyneetOpinnotYlioppilastutkinnonOpiskeluoikeus
-} from './AktiivisetJaPaattyneetOpinnotYlioppilastutkinnonOpiskeluoikeus'
 
 /**
- * AktiivisetJaPäättyneetOpinnotOpiskeluoikeus
+ * AktiivisetJaPäättyneetOpinnotKoskeenTallennettavaOpiskeluoikeus
  *
- * @see `fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotOpiskeluoikeus`
+ * @see `fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotKoskeenTallennettavaOpiskeluoikeus`
  */
-export type AktiivisetJaPäättyneetOpinnotOpiskeluoikeus =
+export type AktiivisetJaPäättyneetOpinnotKoskeenTallennettavaOpiskeluoikeus =
   | AktiivisetJaPäättyneetOpinnotAikuistenPerusopetuksenOpiskeluoikeus
   | AktiivisetJaPäättyneetOpinnotAmmatillinenOpiskeluoikeus
   | AktiivisetJaPäättyneetOpinnotDIAOpiskeluoikeus
   | AktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiOpiskeluoikeus
   | AktiivisetJaPäättyneetOpinnotIBOpiskeluoikeus
   | AktiivisetJaPäättyneetOpinnotInternationalSchoolOpiskeluoikeus
-  | AktiivisetJaPäättyneetOpinnotKorkeakoulunOpiskeluoikeus
   | AktiivisetJaPäättyneetOpinnotLukionOpiskeluoikeus
   | AktiivisetJaPäättyneetOpinnotMuunKuinSäännellynKoulutuksenOpiskeluoikeus
   | AktiivisetJaPäättyneetOpinnotTutkintokoulutukseenValmentavanOpiskeluoikeus
   | AktiivisetJaPäättyneetOpinnotVapaanSivistystyönOpiskeluoikeus
-  | AktiivisetJaPäättyneetOpinnotYlioppilastutkinnonOpiskeluoikeus
 
-export const isAktiivisetJaPäättyneetOpinnotOpiskeluoikeus = (
-  a: any
-): a is AktiivisetJaPäättyneetOpinnotOpiskeluoikeus =>
-  isAktiivisetJaPäättyneetOpinnotAikuistenPerusopetuksenOpiskeluoikeus(a) ||
-  isAktiivisetJaPäättyneetOpinnotAmmatillinenOpiskeluoikeus(a) ||
-  isAktiivisetJaPäättyneetOpinnotDIAOpiskeluoikeus(a) ||
-  isAktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiOpiskeluoikeus(a) ||
-  isAktiivisetJaPäättyneetOpinnotIBOpiskeluoikeus(a) ||
-  isAktiivisetJaPäättyneetOpinnotInternationalSchoolOpiskeluoikeus(a) ||
-  isAktiivisetJaPäättyneetOpinnotKorkeakoulunOpiskeluoikeus(a) ||
-  isAktiivisetJaPäättyneetOpinnotLukionOpiskeluoikeus(a) ||
-  isAktiivisetJaPäättyneetOpinnotMuunKuinSäännellynKoulutuksenOpiskeluoikeus(
-    a
-  ) ||
-  isAktiivisetJaPäättyneetOpinnotTutkintokoulutukseenValmentavanOpiskeluoikeus(
-    a
-  ) ||
-  isAktiivisetJaPäättyneetOpinnotVapaanSivistystyönOpiskeluoikeus(a) ||
-  isAktiivisetJaPäättyneetOpinnotYlioppilastutkinnonOpiskeluoikeus(a)
+export const isAktiivisetJaPäättyneetOpinnotKoskeenTallennettavaOpiskeluoikeus =
+  (
+    a: any
+  ): a is AktiivisetJaPäättyneetOpinnotKoskeenTallennettavaOpiskeluoikeus =>
+    isAktiivisetJaPäättyneetOpinnotAikuistenPerusopetuksenOpiskeluoikeus(a) ||
+    isAktiivisetJaPäättyneetOpinnotAmmatillinenOpiskeluoikeus(a) ||
+    isAktiivisetJaPäättyneetOpinnotDIAOpiskeluoikeus(a) ||
+    isAktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiOpiskeluoikeus(a) ||
+    isAktiivisetJaPäättyneetOpinnotIBOpiskeluoikeus(a) ||
+    isAktiivisetJaPäättyneetOpinnotInternationalSchoolOpiskeluoikeus(a) ||
+    isAktiivisetJaPäättyneetOpinnotLukionOpiskeluoikeus(a) ||
+    isAktiivisetJaPäättyneetOpinnotMuunKuinSäännellynKoulutuksenOpiskeluoikeus(
+      a
+    ) ||
+    isAktiivisetJaPäättyneetOpinnotTutkintokoulutukseenValmentavanOpiskeluoikeus(
+      a
+    ) ||
+    isAktiivisetJaPäättyneetOpinnotVapaanSivistystyönOpiskeluoikeus(a)

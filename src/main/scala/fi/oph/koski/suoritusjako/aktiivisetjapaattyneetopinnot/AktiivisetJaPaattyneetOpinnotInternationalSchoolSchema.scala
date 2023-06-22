@@ -17,15 +17,15 @@ case class AktiivisetJaPäättyneetOpinnotInternationalSchoolOpiskeluoikeus(
   suoritukset: List[AktiivisetJaPäättyneetOpinnotInternationalSchoolVuosiluokanSuoritus],
   @KoodistoKoodiarvo(schema.OpiskeluoikeudenTyyppi.internationalschool.koodiarvo)
   tyyppi: schema.Koodistokoodiviite,
-) extends AktiivisetJaPäättyneetOpinnotOpiskeluoikeus {
+) extends AktiivisetJaPäättyneetOpinnotKoskeenTallennettavaOpiskeluoikeus {
 
   override def lisätiedot: Option[AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenLisätiedot] = None
 
-  override def withSuoritukset(suoritukset: List[Suoritus]): AktiivisetJaPäättyneetOpinnotOpiskeluoikeus =
+  override def withSuoritukset(suoritukset: List[Suoritus]): AktiivisetJaPäättyneetOpinnotKoskeenTallennettavaOpiskeluoikeus =
     this.copy(
       suoritukset = suoritukset.collect { case s : AktiivisetJaPäättyneetOpinnotInternationalSchoolVuosiluokanSuoritus => s }
     )
-  override def withoutSisältyyOpiskeluoikeuteen: AktiivisetJaPäättyneetOpinnotOpiskeluoikeus = this.copy(sisältyyOpiskeluoikeuteen = None)
+  override def withoutSisältyyOpiskeluoikeuteen: AktiivisetJaPäättyneetOpinnotKoskeenTallennettavaOpiskeluoikeus = this.copy(sisältyyOpiskeluoikeuteen = None)
 }
 
 @Title("International School -vuosiluokan suoritus")

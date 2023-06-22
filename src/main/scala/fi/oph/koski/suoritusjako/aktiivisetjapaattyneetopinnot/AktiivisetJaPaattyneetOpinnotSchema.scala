@@ -24,6 +24,7 @@ object AktiivisetJaPäättyneetOpinnotSchema {
     schema.OpiskeluoikeudenTyyppi.internationalschool.koodiarvo, // Vain ne, missä on lukiota vastaavia luokkia
     schema.OpiskeluoikeudenTyyppi.muukuinsaanneltykoulutus.koodiarvo,
     schema.OpiskeluoikeudenTyyppi.vapaansivistystyonkoulutus.koodiarvo, // Ei vapaatavoitteisia
+    schema.OpiskeluoikeudenTyyppi.ylioppilastutkinto.koodiarvo // YO-tutkinnoista otetaan vain vahvistetut
   )
 }
 
@@ -50,12 +51,8 @@ object Henkilo {
 }
 
 trait AktiivisetJaPäättyneetOpinnotOpiskeluoikeus {
-  def oid: Option[String]
-  def versionumero: Option[Int]
   def oppilaitos: Option[Oppilaitos]
   def koulutustoimija: Option[Koulutustoimija]
-  @Deprecated("Ei palauteta. Kenttä on näkyvissä skeemassa vain teknisistä syistä.")
-  def sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus]
   def suoritukset: List[Suoritus]
   @KoodistoUri("opiskeluoikeudentyyppi")
   @Discriminator
@@ -70,6 +67,13 @@ trait AktiivisetJaPäättyneetOpinnotOpiskeluoikeus {
 
   def withSuoritukset(suoritukset: List[Suoritus]): AktiivisetJaPäättyneetOpinnotOpiskeluoikeus
   def withoutSisältyyOpiskeluoikeuteen: AktiivisetJaPäättyneetOpinnotOpiskeluoikeus
+}
+
+trait AktiivisetJaPäättyneetOpinnotKoskeenTallennettavaOpiskeluoikeus extends AktiivisetJaPäättyneetOpinnotOpiskeluoikeus {
+  def oid: Option[String]
+  def versionumero: Option[Int]
+  @Deprecated("Ei palauteta. Kenttä on näkyvissä skeemassa vain teknisistä syistä.")
+  def sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus]
 }
 
 case class SisältäväOpiskeluoikeus(

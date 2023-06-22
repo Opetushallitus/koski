@@ -14,17 +14,17 @@ case class AktiivisetJaPäättyneetOpinnotVapaanSivistystyönOpiskeluoikeus(
   suoritukset: List[AktiivisetJaPäättyneetOpinnotVapaanSivistystyönPäätasonSuoritus],
   @KoodistoKoodiarvo(schema.OpiskeluoikeudenTyyppi.vapaansivistystyonkoulutus.koodiarvo)
   tyyppi: schema.Koodistokoodiviite,
-) extends AktiivisetJaPäättyneetOpinnotOpiskeluoikeus {
+) extends AktiivisetJaPäättyneetOpinnotKoskeenTallennettavaOpiskeluoikeus {
 
   override def lisätiedot: Option[AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenLisätiedot] = None
 
-  override def withSuoritukset(suoritukset: List[Suoritus]): AktiivisetJaPäättyneetOpinnotOpiskeluoikeus =
+  override def withSuoritukset(suoritukset: List[Suoritus]): AktiivisetJaPäättyneetOpinnotKoskeenTallennettavaOpiskeluoikeus =
     this.copy(
       suoritukset = suoritukset.collect { case s : AktiivisetJaPäättyneetOpinnotVapaanSivistystyönPäätasonSuoritus => s }
     )
   override def sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus] = None
 
-  override def withoutSisältyyOpiskeluoikeuteen: AktiivisetJaPäättyneetOpinnotOpiskeluoikeus = this
+  override def withoutSisältyyOpiskeluoikeuteen: AktiivisetJaPäättyneetOpinnotKoskeenTallennettavaOpiskeluoikeus = this
 }
 
 trait AktiivisetJaPäättyneetOpinnotVapaanSivistystyönPäätasonSuoritus extends Suoritus {

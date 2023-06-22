@@ -11,7 +11,7 @@ import fi.oph.koski.suoritusjako.common.{OpiskeluoikeusFacade, RawOppija}
 class AktiivisetJaPäättyneetOpinnotService(application: KoskiApplication) extends GlobalExecutionContext with Logging {
   private val opiskeluoikeusFacade = new OpiskeluoikeusFacade[AktiivisetJaPäättyneetOpinnotOpiskeluoikeus](
     application,
-    None,
+    Some(AktiivisetJaPäättyneetOpinnotYlioppilastutkinnonOpiskeluoikeus.fromKoskiSchema),
     Some(AktiivisetJaPäättyneetOpinnotKorkeakoulunOpiskeluoikeus.fromKoskiSchema)
   )
 
@@ -21,9 +21,12 @@ class AktiivisetJaPäättyneetOpinnotService(application: KoskiApplication) exte
     val aktiivisetOpinnotOppija = opiskeluoikeusFacade.haeOpiskeluoikeudet(oppijaOid, AktiivisetJaPäättyneetOpinnotSchema.schemassaTuetutOpiskeluoikeustyypit)
       .map(teePalautettavaAktiivisetJaPäättyneetOpinnotOppija)
 
-    aktiivisetOpinnotOppija.map(_.opiskeluoikeudet.map(oo =>
-      oo.oid.map(application.oppijaFacade.merkitseSuoritusjakoTehdyksiIlmanKäyttöoikeudenTarkastusta)
-    ))
+    aktiivisetOpinnotOppija.foreach(
+      _.opiskeluoikeudet.collect {
+        case oo: AktiivisetJaPäättyneetOpinnotKoskeenTallennettavaOpiskeluoikeus => oo
+      }
+      .foreach(_.oid.foreach(application.oppijaFacade.merkitseSuoritusjakoTehdyksiIlmanKäyttöoikeudenTarkastusta))
+    )
 
     aktiivisetOpinnotOppija
   }
@@ -39,7 +42,10 @@ class AktiivisetJaPäättyneetOpinnotService(application: KoskiApplication) exte
 
   private def suodataPalautettavat(opiskeluoikeudet: Seq[AktiivisetJaPäättyneetOpinnotOpiskeluoikeus]): Seq[AktiivisetJaPäättyneetOpinnotOpiskeluoikeus] = {
 
-    val kuoriOpiskeluoikeusOidit = opiskeluoikeudet.map(_.sisältyyOpiskeluoikeuteen.map(_.oid)).flatten.toSet
+    val kuoriOpiskeluoikeusOidit = opiskeluoikeudet.map {
+      case oo: AktiivisetJaPäättyneetOpinnotKoskeenTallennettavaOpiskeluoikeus => oo.sisältyyOpiskeluoikeuteen.map(_.oid)
+      case _ => None
+    }.flatten.toSet
 
     opiskeluoikeudet
       .filterNot(onKuoriOpiskeluoikeus(kuoriOpiskeluoikeusOidit))
@@ -48,6 +54,7 @@ class AktiivisetJaPäättyneetOpinnotService(application: KoskiApplication) exte
         opiskeluoikeus.withSuoritukset(
           opiskeluoikeus.suoritukset
             .filter(josInternationalSchoolNiinLukiotaVastaava)
+            .filter(josYOTutkintoNiinVahvistettu)
         )
       }.filter(_.suoritukset.nonEmpty)
   }
@@ -65,7 +72,19 @@ class AktiivisetJaPäättyneetOpinnotService(application: KoskiApplication) exte
     }
   }
 
+  private def josYOTutkintoNiinVahvistettu(s: Suoritus): Boolean = {
+    s match {
+      case s: AktiivisetJaPäättyneetOpinnotYlioppilastutkinnonPäätasonSuoritus
+        => s.vahvistus.isDefined
+      case _
+        => true
+    }
+  }
+
   private def onKuoriOpiskeluoikeus(kuoriOpiskeluoikeusOidit: Set[String])(o: AktiivisetJaPäättyneetOpinnotOpiskeluoikeus): Boolean = {
-    o.oid.map(kuoriOpiskeluoikeusOidit.contains).getOrElse(false)
+    o match {
+      case ko: AktiivisetJaPäättyneetOpinnotKoskeenTallennettavaOpiskeluoikeus => ko.oid.map(kuoriOpiskeluoikeusOidit.contains).getOrElse(false)
+      case _ => false
+    }
   }
 }
