@@ -41,6 +41,7 @@ class PaallekkaisetOpiskeluoikeudetSpec extends AnyFreeSpec with Raportointikant
   lazy val helsinginRaportti = loadRaportti(MockOrganisaatiot.helsinginKaupunki)
   lazy val stadinRaportti = loadRaportti(MockOrganisaatiot.stadinAmmattiopisto)
   lazy val keskuksenRaportti = loadRaportti(MockOrganisaatiot.stadinOppisopimuskeskus)
+  lazy val kansanopistonRaportti = loadRaportti(MockOrganisaatiot.varsinaisSuomenKansanopisto, loppu = LocalDate.of(2022, 1, 1))
   lazy val jyväskylänNormaalikoulunRaportti = loadRaportti(MockOrganisaatiot.jyväskylänNormaalikoulu, LocalDate.of(2014, 8, 12), LocalDate.of(2014, 8, 13))
 
   "Päällekkäisten opiskeluoikeuksien raportti" - {
@@ -290,6 +291,10 @@ class PaallekkaisetOpiskeluoikeudetSpec extends AnyFreeSpec with Raportointikant
         """
         PaallekkaisetOpiskeluoikeudet.suorituksistaKaytettavaNimi(jsonb, t) shouldBe("Perusopetuksen oppimäärä")
       }
+    }
+
+    "Päällekkäisten opiskeluoikeuksien raportti ei sisällä taiteen perusopetuksen opiskeluoikeuksia" in {
+      kansanopistonRaportti.size shouldBe 0
     }
   }
 

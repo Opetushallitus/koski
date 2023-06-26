@@ -125,6 +125,7 @@ test.describe('Taiteen perusopetus', () => {
     test.use({ storageState: virkailija('kalle') })
     test.beforeEach(async ({ taiteenPerusopetusPage }) => {
       await taiteenPerusopetusPage.goto(hyväksytystiSuorittanutOpiskelija)
+      await taiteenPerusopetusPage.selectOpiskeluoikeus('taiteenperusopetus')
     })
 
     test('Näyttää suorituksen tiedot oikein', async ({

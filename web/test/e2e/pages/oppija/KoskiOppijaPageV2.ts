@@ -25,6 +25,14 @@ export class KoskiOppijaPageV2<T extends IdNodeObject<string>> {
     this.editMode = false
   }
 
+  async selectOpiskeluoikeus(tyyppi: string) {
+    const opiskeluoikeusTab = this.page.getByTestId(
+      `opiskeluoikeustyyppi-${tyyppi}`
+    )
+    await opiskeluoikeusTab.click()
+    await expect(opiskeluoikeusTab).toHaveAttribute('data-selected', 'true')
+  }
+
   async edit() {
     this.editMode = true
     return this.$.opiskeluoikeus.edit.click()
