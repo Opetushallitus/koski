@@ -8,6 +8,7 @@ import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{KäyttöoikeusViranomainen, MockUsers, Palvelurooli, UserWithPassword}
 import fi.oph.koski.log.AuditLogTester
+import fi.oph.koski.migri.MigriHetuRequest
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema._
 import org.scalatest.freespec.AnyFreeSpec
@@ -65,7 +66,7 @@ class TilastokeskusSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoike
     }
 
     "TILASTOKESKUS-käyttöoikeus ei toimi muualla" in {
-      post("api/luovutuspalvelu/hetut", JsonSerializer.writeWithRoot(BulkHetuRequestV1(1, List(KoskiSpecificMockOppijat.eero.hetu.get), List("ammatillinenkoulutus"))), headers = authHeaders(MockUsers.tilastokeskusKäyttäjä) ++ jsonContent) {
+      post("api/luovutuspalvelu/migri/hetu", JsonSerializer.writeWithRoot(MigriHetuRequest(KoskiSpecificMockOppijat.eero.hetu.get)), headers = authHeaders(MockUsers.tilastokeskusKäyttäjä) ++ jsonContent) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden.vainViranomainen())
       }
       authGet ("api/oppija", MockUsers.tilastokeskusKäyttäjä) {
