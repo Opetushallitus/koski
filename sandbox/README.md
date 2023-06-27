@@ -27,7 +27,7 @@ Tiedon hyödyntäjien rajapinnat on dokumentoitu osana [koskipalvelua](https://s
 
 Dokumentaatio: https://sandbox.dev.koski.opintopolku.fi/koski/dokumentaatio/rajapinnat/luovutuspalvelu
 
-Esimerkki viranomainen: `curl --header "Content-Type: application/json" --data '{"v": 1,"hetu": "020655-2479","opiskeluoikeudenTyypit": ["perusopetus", "korkeakoulutus"]}' "https://sandbox.dev.koski.opintopolku.fi/koski/api/luovutuspalvelu/hetu" --user Lasse:Lasse`
+Esimerkki viranomainen: `curl --header "Content-Type: application/json" --data '{ "hetu": "020655-2479" }' "https://sandbox.dev.koski.opintopolku.fi/koski/api/luovutuspalvelu/migri/hetu" --user Lasse:Lasse`
 
 Esimerkki tilastokeskus: `curl "https://sandbox.dev.koski.opintopolku.fi/koski/api/luovutuspalvelu/haku?v=1&pageSize=10&pageNumber=0&opiskeluoikeudenTyyppi=ammatillinenkoulutus&muuttunutJälkeen=2015-06-24T15:24:49Z" --user Teppo:Teppo`
 

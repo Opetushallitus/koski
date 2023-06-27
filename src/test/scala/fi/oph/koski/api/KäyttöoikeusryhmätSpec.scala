@@ -7,14 +7,12 @@ import fi.oph.koski.documentation.ExamplesEsiopetus
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.MockUsers.{viranomainenGlobaaliKatselija, korkeakouluViranomainen, perusopetusViranomainen, toinenAsteViranomainen}
+import fi.oph.koski.koskiuser.MockUsers.{korkeakouluViranomainen, perusopetusViranomainen, toinenAsteViranomainen, viranomainenGlobaaliKatselija}
 import fi.oph.koski.koskiuser.{KoskiSpecificSession, MockUser, MockUsers, UserWithPassword}
-import fi.oph.koski.luovutuspalvelu.{HetuRequestV1, LuovutuspalveluResponseV1}
+import fi.oph.koski.migri.MigriHetuRequest
 import fi.oph.koski.organisaatio.MockOrganisaatiot
-import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema._
 import fi.oph.koski.{DatabaseTestMethods, DirtiesFixtures, KoskiHttpSpec}
-import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}
 import org.scalatest.freespec.AnyFreeSpec
 
 import java.time.LocalDate
@@ -326,28 +324,8 @@ class KäyttöoikeusryhmätSpec
     }
   }
 
-  "viranomainen jolla luovutuspalveluoikeudet ja LUOTTAMUKSELLINEN_KAIKKI_TIEDOT-oikeudet" - {
-    "voi kutsua luovutuspalveluapeja, näkee arkaluontoiset tiedot" in {
-      val requestBody = HetuRequestV1(1, KoskiSpecificMockOppijat.eero.hetu.get, List(OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo))
-      post("api/luovutuspalvelu/hetu", JsonSerializer.writeWithRoot(requestBody), headers = authHeaders(MockUsers.luovutuspalveluKäyttäjäArkaluontoinen) ++ jsonContent) {
-        verifyResponseStatusOk()
-        kaikkiSensitiveDataNäkyy(getLuovutuspalveluOpiskeluoikeudet)
-      }
-    }
-  }
-
-  "viranomainen jolla luovutuspalveluoikeudet" - {
-    "voi kutsua luovutuspalveluapeja, ei näe arkaluontoisia tietoja" in {
-      val requestBody = HetuRequestV1(1, KoskiSpecificMockOppijat.eero.hetu.get, List(OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo))
-      post("api/luovutuspalvelu/hetu", JsonSerializer.writeWithRoot(requestBody), headers = authHeaders(MockUsers.luovutuspalveluKäyttäjä) ++ jsonContent) {
-        verifyResponseStatusOk()
-        kaikkiSensitiveDataPiilotettu(getLuovutuspalveluOpiskeluoikeudet)
-      }
-    }
-
-    "ei voi kutsua muita apeja" in {
-      verifyMuidenApienKutsuminenEstetty(MockUsers.luovutuspalveluKäyttäjä)
-    }
+  "viranomainen jolla luovutuspalveluoikeudet ei voi kutsua muita apeja" - {
+    verifyMuidenApienKutsuminenEstetty(MockUsers.luovutuspalveluKäyttäjä)
   }
 
   "Kela ei voi kutsua muita apeja" in {
@@ -363,12 +341,10 @@ class KäyttöoikeusryhmätSpec
     verifyMuidenApienKutsuminenEstetty(MockUsers.valviraKäyttäjä)
   }
 
-  "viranomainen jolla ei ole luovutuspalveluoikeuksia" - {
-    "ei voi kutsua luovutuspalveluapeja" in {
-      val body = HetuRequestV1(1, KoskiSpecificMockOppijat.ysiluokkalainen.hetu.get, List("perusopetus"))
-      post("api/luovutuspalvelu/hetu", JsonSerializer.writeWithRoot(body), headers = authHeaders(MockUsers.perusopetusViranomainen) ++ jsonContent) {
-        verifyResponseStatus(403, KoskiErrorCategory.forbidden.vainViranomainen())
-      }
+  "viranomainen jolla ei ole luovutuspalveluoikeuksia ei voi kutsua migrin apia" - {
+    val requestBody = MigriHetuRequest(KoskiSpecificMockOppijat.eero.hetu.get)
+    post("api/luovutuspalvelu/migri/hetu", JsonSerializer.writeWithRoot(requestBody), headers = authHeaders(MockUsers.perusopetusViranomainen) ++ jsonContent) {
+      verifyResponseStatus(403, KoskiErrorCategory.forbidden.vainViranomainen())
     }
   }
 
@@ -432,11 +408,6 @@ class KäyttöoikeusryhmätSpec
   }
 
   private def readLisätiedot(opiskeluoikeudet: Seq[Opiskeluoikeus]) = opiskeluoikeudet.head.lisätiedot.get.asInstanceOf[AmmatillisenOpiskeluoikeudenLisätiedot]
-
-  private def getLuovutuspalveluOpiskeluoikeudet = {
-    implicit val context: ExtractionContext = strictDeserialization
-    SchemaValidatingExtractor.extract[LuovutuspalveluResponseV1](body).right.get.opiskeluoikeudet
-  }
 
   private def koskeenTallennetutOppijatCount =
     runDbSync(KoskiTables.KoskiOpiskeluOikeudetWithAccessCheck(KoskiSpecificSession.systemUser)
