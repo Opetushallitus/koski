@@ -101,6 +101,8 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
         where opiskeluoikeus.sisaltyy_opiskeluoikeuteen_oid is null
           and not suoritus.suorituksen_tyyppi = 'vstvapaatavoitteinenkoulutus'
           and not paallekkainensuoritus.suorituksen_tyyppi = 'vstvapaatavoitteinenkoulutus'
+          and not opiskeluoikeus.koulutusmuoto = 'taiteenperusopetus'
+          and not paallekkainen.koulutusmuoto = 'taiteenperusopetus'
     """
 
   def createIndex(s: Schema) =

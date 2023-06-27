@@ -28,7 +28,7 @@ test.describe('Suoritusjako', () => {
 
     test('opiskeluoikeuden otsikko näkyy', async ({ kansalainenPage }) => {
       expect(await kansalainenPage.$.opiskeluoikeus.nimi.value()).toEqual(
-        'Varsinais-Suomen kansanopisto, taiteen perusopetuksen laaja oppimäärä, musiikki (2021, hyväksytysti suoritettu)'
+        'Varsinais-Suomen kansanopisto, taiteen perusopetuksen laaja oppimäärä, musiikki (2021 – 2022, hyväksytysti suoritettu)'
       )
     })
 

@@ -91,14 +91,14 @@ object ExamplesTaiteenPerusopetus {
     def tilaHyväksytystiSuoritettu(päivä: LocalDate = alkupäivä) = TaiteenPerusopetuksenOpiskeluoikeudenTila(
           opiskeluoikeusjaksot = List(
             jaksoLäsnä(päivä),
-            jaksoHyväksytystiSuoritettu(päivä.plusMonths(6))
+            jaksoHyväksytystiSuoritettu(päivä.plusMonths(12))
           )
         )
 
     def tilaMitätöity(päivä: LocalDate = alkupäivä) = TaiteenPerusopetuksenOpiskeluoikeudenTila(
           opiskeluoikeusjaksot = List(
             jaksoLäsnä(päivä),
-            jaksoMitätöity(päivä.plusMonths(6))
+            jaksoMitätöity(päivä.plusMonths(12))
           )
         )
 

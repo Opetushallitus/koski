@@ -110,7 +110,7 @@ class OppijaValidationTaiteenPerusopetusSpec
 
       "oppilaitoksen käyttäjä voi lukea itse järjestettävän opiskeluoikeuden" in {
         val oos = getOpiskeluoikeudet(KoskiSpecificMockOppijat.taiteenPerusopetusValmis.oid, user = MockUsers.varsinaisSuomiOppilaitosTallentaja)
-        oos.size shouldBe 1
+        oos.size shouldBe 2
       }
 
       "oppilaitoksen käyttäjä voi lukea hankintakoulutuksena järjestettävän opiskeluoikeuden" in {
