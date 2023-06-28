@@ -1,11 +1,8 @@
 export default {
-  'local': {
-    'kelaUi': true
+  local: {
+    kelaUi: true
   },
-  'OPHKoskiDev': {
-  },
-  'OPHKoskiOpintopolku-QA': {
-  },
-  'OPHKoskiProd': {
-  }
+  OPHKoskiDev: {},
+  'OPHKoskiOpintopolku-QA': {},
+  OPHKoskiProd: {}
 }
