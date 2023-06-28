@@ -92,7 +92,7 @@ class MockOpintopolkuHenkilöFacade extends OpintopolkuHenkilöFacade with Loggi
 
   override def findByVarhaisinSyntymäaikaAndKotikunta(syntymäaika: String, kunta: String, page: Int)
   : OppijaNumerorekisteriKuntarouhintatiedot = synchronized {
-    val pageSize = 3
+    val pageSize = 4
 
     val varhaisinSyntymäaika = LocalDate.parse(syntymäaika)
 

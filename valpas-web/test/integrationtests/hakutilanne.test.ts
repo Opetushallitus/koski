@@ -19,6 +19,8 @@ import { isCheckboxChecked } from "../integrationtests-env/browser/forms"
 import { loginAs } from "../integrationtests-env/browser/reset"
 import { eventually } from "../integrationtests-env/browser/utils"
 import {
+  europeanSchoolOfHelsinkiTableContent,
+  europeanSchoolOfHelsinkiTableHead,
   hakutilannePath,
   internationalSchoolTableContent,
   internationalSchoolTableHead,
@@ -29,6 +31,7 @@ import {
 } from "./hakutilanne.shared"
 import {
   aapajoenKouluOid,
+  europeanSchoolOfHelsinkiOid,
   internationalSchoolOid,
   jyväskylänNormaalikouluOid,
   kulosaarenAlaAsteOid,
@@ -89,6 +92,13 @@ const internationalSchoolHakutilannePath = hakutilannePathWithOrg.href(
   "/virkailija",
   {
     organisaatioOid: internationalSchoolOid,
+  }
+)
+
+const europeanSchoolOfHelsinkiHakutilannePath = hakutilannePathWithOrg.href(
+  "/virkailija",
+  {
+    organisaatioOid: europeanSchoolOfHelsinkiOid,
   }
 )
 
@@ -319,6 +329,20 @@ describe("Hakutilannenäkymä", () => {
     await dataTableEventuallyEquals(
       ".hakutilanne",
       internationalSchoolTableContent,
+      "|"
+    )
+  })
+
+  it("Näyttää listan oppijoista European School of Helsingille", async () => {
+    await loginAs(hakutilannePath, "valpas-esh")
+    await urlIsEventually(pathToUrl(europeanSchoolOfHelsinkiHakutilannePath))
+    await textEventuallyEquals(
+      ".card__header",
+      europeanSchoolOfHelsinkiTableHead
+    )
+    await dataTableEventuallyEquals(
+      ".hakutilanne",
+      europeanSchoolOfHelsinkiTableContent,
       "|"
     )
   })

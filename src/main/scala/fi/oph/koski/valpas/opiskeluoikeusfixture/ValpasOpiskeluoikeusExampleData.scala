@@ -2,9 +2,11 @@ package fi.oph.koski.valpas.opiskeluoikeusfixture
 
 import fi.oph.koski.documentation.AmmatillinenExampleData.stadinAmmattiopisto
 import fi.oph.koski.documentation.DIAExampleData.saksalainenKoulu
+import fi.oph.koski.documentation.EuropeanSchoolOfHelsinkiExampleData.suoritusVahvistus
 
 import java.time.LocalDate
 import fi.oph.koski.documentation.ExampleData._
+import fi.oph.koski.documentation.ExamplesEuropeanSchoolOfHelsinki.{n1, n2, p1, p2, p2JääLuokalle, p3, p4, p5, s1, s2, s3, s4, s5, s6}
 import fi.oph.koski.documentation.ExamplesIB._
 import fi.oph.koski.documentation.LukioExampleData.{opiskeluoikeusAktiivinen, opiskeluoikeusPäättynyt}
 import fi.oph.koski.documentation.PerusopetusExampleData.{kahdeksannenLuokanSuoritus, perusopetuksenOppimääränSuoritus, perusopetuksenOppimääränSuoritusKesken, seitsemännenLuokanSuoritus, suoritustapaErityinenTutkinto, yhdeksännenLuokanSuoritus}
@@ -1411,6 +1413,132 @@ object ValpasOpiskeluoikeusExampleData {
       List(
         InternationalSchoolOpiskeluoikeusjakso(date(2004, 8, 15), opiskeluoikeusLäsnä),
         InternationalSchoolOpiskeluoikeusjakso(date(2021, 8, 5), opiskeluoikeusEronnut),
+      )
+    )
+  )
+
+  private def eshNurseryssäAlkamispäivä = Some(date(2021, 8, 1))
+  private def eshS5alkamispäivä = Some(date(2020, 8, 1))
+  private def eshS5vahvistus = suoritusVahvistus(eshS5alkamispäivä.get.plusYears(1).withMonth(5).withDayOfMonth(31))
+  private def eshS6alkamispäivä = eshS5alkamispäivä.map(_.plusYears(1))
+
+  def eshNurseryssä = ExamplesEuropeanSchoolOfHelsinki.opiskeluoikeus.copy(
+    tila = EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila(
+      List(
+        EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(eshNurseryssäAlkamispäivä.get, LukioExampleData.opiskeluoikeusAktiivinen)
+      )
+    ),
+    suoritukset = List(
+      n2.copy(
+        alkamispäivä = eshNurseryssäAlkamispäivä,
+        vahvistus = None
+      )
+    )
+  )
+
+  def oppivelvollinenESHS5KeskenKeväällä2021Opiskeluoikeus = ExamplesEuropeanSchoolOfHelsinki.opiskeluoikeus.copy(
+    tila = EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila(
+      List(
+        EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(date(2003, 8, 15), LukioExampleData.opiskeluoikeusAktiivinen)
+      )
+    ),
+    suoritukset = List(
+      n1,
+      n2,
+      p1,
+      p2JääLuokalle,
+      p2,
+      p3,
+      p4,
+      p5,
+      s1,
+      s2,
+      s3,
+      s4,
+      s5.copy(
+        alkamispäivä = eshS5alkamispäivä,
+        vahvistus = None
+      )
+    )
+  )
+
+  def oppivelvollinenESHS5ValmisKeväällä2021Opiskeluoikeus = ExamplesEuropeanSchoolOfHelsinki.opiskeluoikeus.copy(
+    tila = EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila(
+      List(
+        EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(date(2003, 8, 15), LukioExampleData.opiskeluoikeusAktiivinen)
+      )
+    ),
+    suoritukset = List(
+      n1,
+      n2,
+      p1,
+      p2JääLuokalle,
+      p2,
+      p3,
+      p4,
+      p5,
+      s1,
+      s2,
+      s3,
+      s4,
+      s5.copy(
+        alkamispäivä = eshS5alkamispäivä,
+        vahvistus = eshS5vahvistus,
+      )
+    )
+  )
+
+  def eshS5S6Opiskeluoikeus = ExamplesEuropeanSchoolOfHelsinki.opiskeluoikeus.copy(
+    tila = EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila(
+      List(
+        EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(date(2003, 8, 15), LukioExampleData.opiskeluoikeusAktiivinen)
+      )
+    ),
+    suoritukset = List(
+      n1,
+      n2,
+      p1,
+      p2JääLuokalle,
+      p2,
+      p3,
+      p4,
+      p5,
+      s1,
+      s2,
+      s3,
+      s4,
+      s5.copy(
+        alkamispäivä = eshS5alkamispäivä,
+        vahvistus = eshS5vahvistus,
+      ),
+      s6.copy(
+        alkamispäivä = eshS6alkamispäivä,
+        vahvistus = None
+      )
+    )
+  )
+
+  def eshKasiluokkaKeskenKeväällä2021Opiskeluoikeus = ExamplesEuropeanSchoolOfHelsinki.opiskeluoikeus.copy(
+    tila = EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila(
+      List(
+        EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(date(2003, 8, 15), LukioExampleData.opiskeluoikeusAktiivinen)
+      )
+    ),
+    suoritukset = List(
+      n1,
+      n2,
+      p1,
+      p2JääLuokalle,
+      p2,
+      p3,
+      p4,
+      p5,
+      s1,
+      s2,
+      s3,
+      s4.copy(
+        alkamispäivä = eshS5alkamispäivä,
+        vahvistus = None
       )
     )
   )

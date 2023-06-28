@@ -137,6 +137,8 @@ trait EuropeanSchoolOfHelsinkiVuosiluokanSuoritus
   def ilmanAlkamispäivää(): EuropeanSchoolOfHelsinkiVuosiluokanSuoritus
 }
 
+trait OppivelvollisuudenSuorittamiseenKelpaavaESHVuosiluokanSuoritus extends EuropeanSchoolOfHelsinkiVuosiluokanSuoritus
+
 case class NurseryVuosiluokanSuoritus(
   koulutusmoduuli: NurseryLuokkaAste,
   luokka: Option[String] = None,
@@ -147,13 +149,11 @@ case class NurseryVuosiluokanSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("europeanschoolofhelsinkivuosiluokkanursery", koodistoUri = "suorituksentyyppi"),
   jääLuokalle: Boolean = false,
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None
-) extends EuropeanSchoolOfHelsinkiVuosiluokanSuoritus {
+) extends OppivelvollisuudenSuorittamiseenKelpaavaESHVuosiluokanSuoritus {
   override def ilmanAlkamispäivää(): EuropeanSchoolOfHelsinkiVuosiluokanSuoritus = this.copy(alkamispäivä = None)
 
   override protected def tyypinMukainenJärjestysKriteeri: Int = 100
 }
-
-trait OppivelvollisuudenSuorittamiseenKelpaavaESHVuosiluokanSuoritus extends EuropeanSchoolOfHelsinkiVuosiluokanSuoritus
 
 case class PrimaryVuosiluokanSuoritus(
   koulutusmoduuli: PrimaryLuokkaAste,

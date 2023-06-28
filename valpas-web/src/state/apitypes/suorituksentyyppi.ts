@@ -19,6 +19,8 @@ export const suorituksenTyyppiToKoulutustyyppi = (
     return t("koulutustyyppi_ib")
   } else if (tyyppi.koodiarvo.startsWith("internationalschool")) {
     return t("koulutustyyppi_internationalschool")
+  } else if (tyyppi.koodiarvo.startsWith("europeanschoolofhelsinki")) {
+    return t("koulutustyyppi_europeanschool")
   } else if (tyyppi.koodiarvo.startsWith("dia")) {
     return t("koulutustyyppi_dia")
   } else if (tyyppi.koodiarvo === "perusopetuksenvuosiluokka") {
@@ -30,5 +32,4 @@ export const suorituksenTyyppiToKoulutustyyppi = (
   } else {
     return getLocalizedMaybe(tyyppi.nimi) || tyyppi.koodiarvo
   }
-  // TODO: TOR-1685 Eurooppalainen koulu
 }

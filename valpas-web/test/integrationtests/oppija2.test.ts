@@ -98,6 +98,10 @@ const pelkkäEsiopetusPath = oppijaPath.href("/virkailija", {
   oppijaOid: "1.2.246.562.24.00000000130",
 })
 
+const pelkkäESHNurseryPath = oppijaPath.href("/virkailija", {
+  oppijaOid: "1.2.246.562.24.00000000173",
+})
+
 const mainHeadingEquals = (expected: string) =>
   textEventuallyEquals("h1.heading--primary", expected)
 const secondaryHeadingEquals = (expected: string) =>
@@ -642,6 +646,24 @@ describe("Oppijakohtainen näkymä 2/2", () => {
           tila: "Läsnä",
           toimipiste: "Jyväskylän normaalikoulu",
           alkamispäivä: "13.8.2021",
+        })
+      )
+    )
+  })
+
+  it("Näyttää European School of Helsinki nursery-oppijan tiedot", async () => {
+    await loginAs(pelkkäESHNurseryPath, "valpas-monta", true)
+    await mainHeadingEquals("ESH-nurseryssä Valpas (070614A452J)")
+    await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000173")
+    await opiskeluhistoriaEquals(
+      merge(
+        historiaOpintoOikeus({
+          otsikko: "European School of Helsinki 2021 –",
+          tila: "Läsnä",
+          toimipiste: "Helsingin eurooppalainen koulu",
+          alkamispäivä: "1.8.2021",
+          ryhmä: "N2A",
+          maksuttomuus: ["Ei"],
         })
       )
     )

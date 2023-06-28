@@ -97,14 +97,6 @@ export const isSuorittamisvalvottavaOpiskeluoikeus =
     // kaikkien olla perusopetuksen jälkeisiä opintoja sisältäviä opiskeluoikeuksia:
     oo.perusopetuksenJälkeinenTiedot !== undefined
 
-export const isNuortenPerusopetus = (oo: OpiskeluoikeusSuppeatTiedot) =>
-  oo.tyyppi.koodiarvo === "perusopetus"
-
-export const isInternationalSchool = (oo: OpiskeluoikeusSuppeatTiedot) =>
-  oo.tyyppi.koodiarvo === "internationalschool"
-
-// TODO: TOR-1685 Eurooppalainen koulu
-
 export const hakeutumisvalvottavatOpiskeluoikeudet = (
   organisaatioOid: Oid | undefined,
   opiskeluoikeudet: OpiskeluoikeusSuppeatTiedot[]
