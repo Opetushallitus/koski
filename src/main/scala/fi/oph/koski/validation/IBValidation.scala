@@ -16,7 +16,7 @@ object IBValidation {
 
   private def validateIbTutkinnonSuoritus(opiskeluoikeus: IBOpiskeluoikeus, config: Config): HttpStatus =
     opiskeluoikeus.suoritukset.headOption match {
-      case Some(s: IBTutkinnonSuoritus) if predictedJaPäättöarvioinninVaatimisenVoimassa(config) =>
+      case Some(s: IBTutkinnonSuoritus) if predictedJaPäättöarvioinninVaatiminenVoimassa(config) =>
         suorituksenVahvistusVaatiiPredictedJaPäättöarvosanan(s)
       case _ =>
         HttpStatus.ok
@@ -44,20 +44,14 @@ object IBValidation {
     }
   }
 
-  // Tuetaan vanhempaa tietomallin tapaa tallentaa päättöarvosanat ja predicted gradet samaan listaan (nykyään eritelty kahteen eri listaan)
+  // Primus lähettää arvosanat väärin (päättöarvosanoillakin on predicted-lippu), joten käytännössä tässä ei tehdä mitään:
+  // arviointi-kentässäkin olevat predicted=true lipulla varustetut arvioinnit katsotaan päättöarvioinneiksi.
   def ibOppiaineenArvioinnit(osasuoritus: IBOppiaineenSuoritus): (List[IBOppiaineenArviointi], List[IBOppiaineenPredictedArviointi]) = (
-    osasuoritus.arviointi
-      .getOrElse(List.empty)
-      .filterNot(_.predicted),
-    osasuoritus.predictedArviointi
-      .getOrElse(osasuoritus.arviointi
-        .getOrElse(List.empty)
-        .filter(_.predicted)
-        .map(IBOppiaineenPredictedArviointi.apply)
-      )
+    osasuoritus.arviointi.getOrElse(List.empty),
+    osasuoritus.predictedArviointi.getOrElse(List.empty)
   )
 
-  def predictedJaPäättöarvioinninVaatimisenVoimassa(config: Config): Boolean =
+  def predictedJaPäättöarvioinninVaatiminenVoimassa(config: Config): Boolean =
     Option(LocalDate.parse(config.getString("validaatiot.ibSuorituksenVahvistusVaatiiPredictedJaPäättöarvosanan")))
       .exists(_.isEqualOrBefore(LocalDate.now()))
 }

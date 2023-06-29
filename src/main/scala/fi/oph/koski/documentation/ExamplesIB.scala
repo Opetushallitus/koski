@@ -343,12 +343,18 @@ object ExamplesIB {
 
   val kaikkiArviointityypitArvioinnissaSisältäväVanhanmallinenOpiskeluoikeus: IBOpiskeluoikeus = opiskeluoikeus.copy(
     suoritukset = opiskeluoikeus.suoritukset.map {
-      case suoritus: IBOppiaineenSuoritus =>
-        suoritus.copy(arviointi =
-          Some(suoritus.predictedArviointi.getOrElse(List.empty).map(IBOppiaineenArviointi.apply) ++ suoritus.arviointi.getOrElse(List.empty))
-            .flatMap(optionalList))
+      case suoritus: IBTutkinnonSuoritus =>
+        suoritus.copy(
+          osasuoritukset = suoritus.osasuoritukset.map(_.map(osasuoritus =>
+            osasuoritus.copy(
+              arviointi = Some(osasuoritus.predictedArviointi.getOrElse(List.empty).map(IBOppiaineenArviointi.apply) ++ osasuoritus.arviointi.getOrElse(List.empty))
+                .flatMap(optionalList),
+              predictedArviointi = None
+            )
+          ))
+        )
       case s: IBPäätasonSuoritus => s
-    }.asInstanceOf[List[IBPäätasonSuoritus]]
+    }
   )
 
   lazy val aktiivinenOpiskeluoikeus: IBOpiskeluoikeus =
