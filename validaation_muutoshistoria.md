@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 30.6.2023
+
+- IB-oppiaineiden arvioinneissa kaikki arviointi-haaraan siirretyt arvioinnit katsotaan päättöarvioinneiksi, vaikka niissä olisi predicted-kentän arvona true.
+
 ## 21.06.2023
 - TUVA-validointiin muutoksia 1.8.2023 alkaen:
   - Valmistunut-tilan voi jatkossa merkitä, kun opiskeluoikeudella on Opiskelu- ja urasuunnittelutaidot - koulutuksen osan suoritus, jonka laajuus on vähintään kaksi viikkoa.

@@ -44,17 +44,11 @@ object IBValidation {
     }
   }
 
-  // Tuetaan vanhempaa tietomallin tapaa tallentaa päättöarvosanat ja predicted gradet samaan listaan (nykyään eritelty kahteen eri listaan)
+  // Primus lähettää arvosanat väärin (päättöarvosanoillakin on predicted-lippu), joten käytännössä tässä ei tehdä mitään:
+  // arviointi-kentässäkin olevat predicted=true lipulla varustetut arvioinnit katsotaan päättöarvioinneiksi.
   def ibOppiaineenArvioinnit(osasuoritus: IBOppiaineenSuoritus): (List[IBOppiaineenArviointi], List[IBOppiaineenPredictedArviointi]) = (
-    osasuoritus.arviointi
-      .getOrElse(List.empty)
-      .filterNot(_.predicted),
-    osasuoritus.predictedArviointi
-      .getOrElse(osasuoritus.arviointi
-        .getOrElse(List.empty)
-        .filter(_.predicted)
-        .map(IBOppiaineenPredictedArviointi.apply)
-      )
+    osasuoritus.arviointi.getOrElse(List.empty),
+    osasuoritus.predictedArviointi.getOrElse(List.empty)
   )
 
   def predictedJaPäättöarvioinninVaatiminenVoimassa(config: Config): Boolean =

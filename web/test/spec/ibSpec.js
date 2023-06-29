@@ -1322,6 +1322,28 @@ describe('IB', function () {
     })
   })
 
+  describe('Vanhan mallinen IB-tutkinto', function () {
+    before(
+      resetFixtures,
+      page.openPage,
+      page.oppijaHaku.searchAndSelect('101000A684K')
+    )
+    it('näyttää oppiaineiden ja kurssien arvosanat, sisältäen pelkkiä päättöarvosanoja', function () {
+      expect(extractAsText(S('.osasuoritukset'))).to.equal(
+        'Oppiaine Laajuus (kurssia) Predicted grade Päättöarvosana\n' +
+          'Studies in language and literature\n' +
+          'Language A: literature, suomi\nFIN_S1\n4 FIN_S2\n4 FIN_S3\nS FIN_S4\n5 FIN_S5\n6 FIN_S6\n5 FIN_S7\n5 FIN_S8\nS FIN_S9\n5 9 4\n' +
+          'Language A: language and literature, englanti\nENG_B_H1\n6 ENG_B_H2\n7 ENG_B_H4\nS ENG_B_H5\n6 ENG_B_H6\n6 ENG_B_H8\n5 6 7\n' +
+          'Individuals and societies\n' +
+          'History\nHIS_H3\n6 HIS_H4\n6 HIS_H5\n7 HIS_H6\n6 HIS_H7\n1 HIS_H9\nS 6 6\n' +
+          'Psychology\nPSY_S1\n6 PSY_S2\n6 PSY_S3\n6 PSY_S4\n5 PSY_S5\nS PSY_S6\n6 PSY_S7\n5 PSY_S8\n2 PSY_S9\nS 9 7\n' +
+          'Experimental sciences\nBiology\nBIO_H1\n5 BIO_H2\n4 BIO_H3\nS BIO_H4\n5 BIO_H5\n5 BIO_H6\n2 BIO_H7\n3 BIO_H8\n4 BIO_H9\n1 9 5\n' +
+          'Mathematics\n' +
+          'Mathematical studies\nMATST_S1\n5 MATST_S2\n7 MATST_S3\n6 MATST_S4\n6 MATST_S5\n4 MATST_S6\nS 6 5'
+      )
+    })
+  })
+
   describe('Opiskeluoikeuden lisääminen', function () {
     describe('IB-tutkinto', function () {
       before(
