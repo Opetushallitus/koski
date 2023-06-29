@@ -16,7 +16,7 @@ object IBValidation {
 
   private def validateIbTutkinnonSuoritus(opiskeluoikeus: IBOpiskeluoikeus, config: Config): HttpStatus =
     opiskeluoikeus.suoritukset.headOption match {
-      case Some(s: IBTutkinnonSuoritus) if predictedJaPäättöarvioinninVaatimisenVoimassa(config) =>
+      case Some(s: IBTutkinnonSuoritus) if predictedJaPäättöarvioinninVaatiminenVoimassa(config) =>
         suorituksenVahvistusVaatiiPredictedJaPäättöarvosanan(s)
       case _ =>
         HttpStatus.ok
@@ -57,7 +57,7 @@ object IBValidation {
       )
   )
 
-  def predictedJaPäättöarvioinninVaatimisenVoimassa(config: Config): Boolean =
+  def predictedJaPäättöarvioinninVaatiminenVoimassa(config: Config): Boolean =
     Option(LocalDate.parse(config.getString("validaatiot.ibSuorituksenVahvistusVaatiiPredictedJaPäättöarvosanan")))
       .exists(_.isEqualOrBefore(LocalDate.now()))
 }
