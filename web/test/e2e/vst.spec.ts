@@ -1,8 +1,8 @@
 import { test, expect } from './base'
 import { virkailija } from './setup/auth'
 
-const kotoutuja = '260769-598H'
-const jotpa = '030200A005P'
+// const kotoutuja = '260769-598H'
+// const jotpa = '030200A005P'
 const kotoutumiskoulutus = '1.2.246.562.24.00000000106'
 const jotpaKoulutus = '1.2.246.562.24.00000000140'
 
@@ -10,7 +10,7 @@ test.describe.skip('Vapaan sivistystyön koulutus', () => {
   test.describe('Kotoutumiskoulutus oppivelvollisille', () => {
     test.describe('Virkailijan näkymä', () => {
       test.use({ storageState: virkailija('kalle') })
-      test.beforeEach(async ({ fixtures, page, vstOppijaPage }) => {
+      test.beforeEach(async ({ fixtures, vstOppijaPage }) => {
         await fixtures.reset(false)
         await vstOppijaPage.goto(kotoutumiskoulutus)
       })
@@ -69,7 +69,7 @@ test.describe.skip('Vapaan sivistystyön koulutus', () => {
   test.describe('JOTPA', () => {
     test.describe('Virkailijan näkymä', () => {
       test.use({ storageState: virkailija('kalle') })
-      test.beforeEach(async ({ fixtures, page, vstOppijaPage }) => {
+      test.beforeEach(async ({ fixtures, vstOppijaPage }) => {
         await fixtures.reset(false)
         await vstOppijaPage.goto(jotpaKoulutus)
       })

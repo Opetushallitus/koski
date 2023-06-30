@@ -1,6 +1,6 @@
 import { createControl } from './controls'
 
-export const RadioButtons = createControl((self, child) => {
+export const RadioButtons = createControl((_self, child) => {
   const option = (key: string) => child(`options.${key}`)
 
   return {

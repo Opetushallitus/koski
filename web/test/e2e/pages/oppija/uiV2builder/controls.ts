@@ -1,5 +1,4 @@
 import { Locator } from '@playwright/test'
-import { expect } from '../../../base'
 
 export type Control<T = any> = {
   (locator: Locator, child: (postfix: string) => Locator, testId: string): T
@@ -31,7 +30,7 @@ export const FormField = <E extends Editor>(
   viewer: Control<Viewer>,
   editor?: Control<E>
 ) =>
-  createControl((self, child, id) => {
+  createControl((_self, child, id) => {
     const view = viewer(
       child('value'),
       (postfix) => child(`value.${postfix}`),

@@ -9,6 +9,7 @@ type Virkailija = {
 }
 
 function sanitizeString(str: string) {
+  // eslint-disable-next-line no-useless-escape
   const tmp = str.replace(/[^a-z0-9äöåáéíóúñü \.,_-]/gim, '')
   return tmp.trim()
 }
@@ -48,7 +49,7 @@ const kansalainen = (hetu: string): Kansalainen => ({
   type: 'kansalainen'
 })
 
-async function globalSetup(config: FullConfig) {
+async function globalSetup(_config: FullConfig) {
   const usersFile = await fs
     .readFile(join(__dirname, 'users.json'))
     .then((data) => data.toString('utf-8'))
