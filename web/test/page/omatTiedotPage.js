@@ -30,26 +30,8 @@ function OmatTiedotPage() {
     luoUusiSuoritusjakoButton: function () {
       return S('button:contains(Luo uusi)')
     },
-    selectOpiskelija: function () {
-      var elem = findSingle('.header__oppijanvalitsin')()
-      return findFirstNotThrowing(elem)
-    },
     selectOpiskelijaNäkyvissä: function () {
       return isElementVisible(S('.header__oppijanvalitsin'))
-    },
-    opiskelijanValintaNimet: function () {
-      var elem = findSingle('.header__oppijanvalitsin')
-      var result = toArray(elem().find('.option')).map(function (i) {
-        return i.innerHTML
-      })
-      return result
-    },
-    opiskelijanValinta: function (name) {
-      return function () {
-        var elem = findSingle('.header__oppijanvalitsin')
-        var result = toArray(elem().find(`.option:contains("${name}")`))
-        return result
-      }
     },
     virheraportointiForm: VirheraportointiForm(),
     suoritusjakoForm: SuoritusjakoForm(),
@@ -62,8 +44,41 @@ function OmatTiedotPage() {
     },
     varoitusNäkyvissä: function () {
       return isElementVisible(S('.varoitus'))
+    },
+    opiskelijanValinta: OpiskelijanValintaForm()
+  }
+
+  return api
+}
+
+function OpiskelijanValintaForm() {
+  var pageApi = Page(findSingle('.header__oppijanvalitsin'))
+
+  var api = {
+    kaikkiVaihtoehdot: function () {
+      const elem = findSingle('.header__oppijanvalitsin')
+      const result = toArray(elem().find('option')).map(function (i) {
+        return {
+          text: i.innerHTML,
+          disabled: i.disabled
+        }
+      })
+      return result
+    },
+    selectOpiskelija: function (oid) {
+      return selectFromDropdown("[data-testid='oppijanvalitsin-dropdown']", oid)
     }
   }
+
+  function selectFromDropdown(selector, value) {
+    return function () {
+      return wait
+        .until(pageApi.getInput(selector).isVisible)()
+        .then(wait.forAjax)
+        .then(pageApi.setInputValue(selector, value))
+    }
+  }
+
   return api
 }
 

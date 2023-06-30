@@ -5,6 +5,9 @@ describe('Huollettavien tiedot', function () {
   var etusivu = LandingPage()
   var korhopankki = KorhoPankki()
 
+  const essiOid = '1.2.246.562.24.00000000066'
+  const ynjeviOid = '1.2.246.562.24.00000000049'
+
   describe('Kun huollettavalla on opintoja Koskessa', function () {
     before(
       authentication.logout,
@@ -23,97 +26,84 @@ describe('Huollettavien tiedot', function () {
       expect(omattiedot.selectOpiskelijaNäkyvissä()).to.equal(true)
     })
 
-    describe('Kun painetaan Huollettavien opintotiedot-nappia', function () {
-      before(wait.until(omattiedot.omatTiedotNäkyvissä))
-      before(click(omattiedot.selectOpiskelija))
+    it('näytetään opiskelijan valinta, oidittomat disabloituina', function () {
+      expect(omattiedot.opiskelijanValinta.kaikkiVaihtoehdot()).to.deep.equal([
+        { text: 'Faija EiOpintojaKoskessa', disabled: false },
+        { text: 'Essi Eskari', disabled: false },
+        { text: 'Olli Oiditon (Ei opintoja)', disabled: true },
+        { text: 'Ynjevi Ylioppilaslukiolainen', disabled: false }
+      ])
+    })
 
-      it('näytetään opiskelijan valinta', function () {
-        expect(omattiedot.opiskelijanValintaNimet()).to.deep.equal([
-          'Essi Eskari',
-          'Olli Oiditon (Ei opintoja)',
-          'Ynjevi Ylioppilaslukiolainen'
-        ])
-      })
-
-      describe('Huollettavan jolla ei ole oidia', function () {
-        before(click(omattiedot.opiskelijanValinta('Olli')))
-        it('valitsemisesta ei tapahdu mitään', function () {
-          verifyOppijaEmpty('Opintoni', 'Faija EiOpintojaKoskessa\ns. 3.3.1900')
+    describe('Kun valitaan huollettava', function () {
+      before(omattiedot.opiskelijanValinta.selectOpiskelija(essiOid))
+      before(
+        wait.until(function () {
+          return omattiedot.oppija() === 'Huollettavani opinnot'
         })
-      })
+      )
 
-      describe('Kun valitaan huollettava', function () {
-        before(click(omattiedot.opiskelijanValinta('Essi')))
-        before(
-          wait.until(function () {
-            return omattiedot.oppija() === 'Huollettavani opinnot'
-          })
+      it('näytetään huollettavan tiedot', function () {
+        verifyOppija(
+          'Huollettavani opinnot',
+          'Essi Eskari\ns. 30.9.1996',
+          [
+            'Jyväskylän normaalikoulu',
+            'Päiväkoti Touhula',
+            'Päiväkoti Majakka'
+          ],
+          [
+            'Peruskoulun esiopetus (2022—, läsnä)',
+            'Peruskoulun esiopetus (2014—2015, valmistunut)',
+            'Päiväkodin esiopetus (2014—, läsnä)',
+            'Päiväkodin esiopetus (2014—, läsnä)'
+          ]
         )
+      })
+    })
 
-        it('näytetään huollettavan tiedot', function () {
-          verifyOppija(
-            'Huollettavani opinnot',
-            'Essi Eskari\ns. 30.9.1996',
-            [
-              'Jyväskylän normaalikoulu',
-              'Päiväkoti Touhula',
-              'Päiväkoti Majakka'
-            ],
-            [
-              'Peruskoulun esiopetus (2022—, läsnä)',
-              'Peruskoulun esiopetus (2014—2015, valmistunut)',
-              'Päiväkodin esiopetus (2014—, läsnä)',
-              'Päiväkodin esiopetus (2014—, läsnä)'
-            ]
+    describe('Kun valitaan yliopistotutkinnon suorittanut huollettava', function () {
+      before(omattiedot.opiskelijanValinta.selectOpiskelija(ynjeviOid))
+      before(
+        wait.until(function () {
+          return (
+            omattiedot.headerNimi() ===
+            'Ynjevi Ylioppilaslukiolainen\ns. 8.6.1998'
           )
         })
+      )
+
+      it('näytetään huollettavan tiedot', function () {
+        verifyOppija(
+          'Huollettavani opinnot',
+          'Ynjevi Ylioppilaslukiolainen\ns. 8.6.1998',
+          ['Jyväskylän normaalikoulu'],
+          ['Ylioppilastutkinto', 'Lukion oppimäärä (2012—2016, valmistunut)']
+        )
       })
 
-      describe('Kun valitaan yliopistotutkinnon suorittanut huollettava', function () {
-        before(click(omattiedot.opiskelijanValinta('Ynjevi')))
-        before(
-          wait.until(function () {
-            return (
-              omattiedot.headerNimi() ===
-              'Ynjevi Ylioppilaslukiolainen\ns. 8.6.1998'
-            )
-          })
-        )
+      describe('Ylioppilastutkinnon koesuoritukset', function () {
+        before(opinnot.valitseOmatTiedotOpiskeluoikeus('Ylioppilastutkinto'))
 
-        it('näytetään huollettavan tiedot', function () {
-          verifyOppija(
-            'Huollettavani opinnot',
-            'Ynjevi Ylioppilaslukiolainen\ns. 8.6.1998',
-            ['Jyväskylän normaalikoulu'],
-            ['Ylioppilastutkinto', 'Lukion oppimäärä (2012—2016, valmistunut)']
+        it('näytetään', function () {
+          expect(
+            extractAsText(
+              S('.ylioppilastutkinnonsuoritus .osasuoritukset .suoritus-group')
+            )
+          ).to.equal(
+            'Tutkintokerta Koe Pisteet Arvosana\n' +
+              '2012 kevät Äidinkielen koe, suomi 46 Lubenter approbatur Näytä koesuoritus\n' +
+              '2012 kevät Ruotsi, keskipitkä oppimäärä 166 Cum laude approbatur Näytä koesuoritus\n' +
+              '2012 kevät Englanti, pitkä oppimäärä 210 Cum laude approbatur Näytä koesuoritus\n' +
+              '2012 kevät Maantiede 26 Magna cum laude approbatur Näytä koesuoritus\n' +
+              '2012 kevät Matematiikan koe, lyhyt oppimäärä 59 Laudatur Näytä koesuoritus'
           )
         })
 
-        describe('Ylioppilastutkinnon koesuoritukset', function () {
-          before(opinnot.valitseOmatTiedotOpiskeluoikeus('Ylioppilastutkinto'))
-
-          it('näytetään', function () {
-            expect(
-              extractAsText(
-                S(
-                  '.ylioppilastutkinnonsuoritus .osasuoritukset .suoritus-group'
-                )
-              )
-            ).to.equal(
-              'Tutkintokerta Koe Pisteet Arvosana\n' +
-                '2012 kevät Äidinkielen koe, suomi 46 Lubenter approbatur Näytä koesuoritus\n' +
-                '2012 kevät Ruotsi, keskipitkä oppimäärä 166 Cum laude approbatur Näytä koesuoritus\n' +
-                '2012 kevät Englanti, pitkä oppimäärä 210 Cum laude approbatur Näytä koesuoritus\n' +
-                '2012 kevät Maantiede 26 Magna cum laude approbatur Näytä koesuoritus\n' +
-                '2012 kevät Matematiikan koe, lyhyt oppimäärä 59 Laudatur Näytä koesuoritus'
-            )
-          })
-
-          it('koesuoritus linkissä on huollettavan oid', function () {
-            expect(findFirst('.koesuoritus a')().attr('href')).to.includes(
-              '/koski/koesuoritus/2345K_XX_12345.pdf?huollettava=1.2.246.562.24.'
-            )
-          })
+        it('koesuoritus linkissä on huollettavan oid', function () {
+          expect(findFirst('.koesuoritus a')().attr('href')).to.includes(
+            '/koski/koesuoritus/2345K_XX_12345.pdf?huollettava=1.2.246.562.24.'
+          )
         })
       })
     })

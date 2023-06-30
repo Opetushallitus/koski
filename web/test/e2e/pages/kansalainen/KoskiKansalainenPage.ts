@@ -24,8 +24,8 @@ export class KoskiKansalainenPage {
     await expect(this.page).toHaveURL(/\/koski\/omattiedot$/)
   }
 
-  async openHuollettava(name: string) {
-    await this.page.getByRole('listitem', { name }).click()
+  async openOppija(oid: string) {
+    this.page.getByTestId('oppijanvalitsin-dropdown').selectOption(oid)
   }
 
   async openOpiskeluoikeus(name: string) {
