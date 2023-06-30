@@ -10,6 +10,10 @@ const hetut = {
   huoltaja: '030300-5215'
 }
 
+const oidit = {
+  ynjevi: '1.2.246.562.24.00000000049'
+}
+
 test.describe('Digitaalinen yo-todistus', () => {
   test.beforeEach(async ({ fixtures, virkailijaLoginPage }) => {
     await virkailijaLoginPage.apiLoginAsUser('kalle', 'kalle')
@@ -54,7 +58,7 @@ test.describe('Digitaalinen yo-todistus', () => {
       kansalainenPage
     }) => {
       await kansalainenLoginPage.loginWithHetu(hetut.huoltaja)
-      await kansalainenPage.openHuollettava('Ynjevi Ylioppilaslukiolainen')
+      await kansalainenPage.openOppija(oidit.ynjevi)
       await kansalainenPage.openOpiskeluoikeus('Ylioppilastutkinto')
       await kansalainenPage.generateYoTodistus()
       await kansalainenPage.getYoTodistusFile()
