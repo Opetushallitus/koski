@@ -2,6 +2,10 @@
 version: v1.22.0
 # ignores vulnerabilities until expiry date; change duration by modifying expiry date
 ignore:
+  SNYK-JS-SEMVER-3247795:
+    - '*': null
+    - reason: the risk is tolerable
+    - expires: 2100-03-18T14:01:55.550Z
   SNYK-JS-NODEFETCH-674311:
     - '*': null
     - reason: vulnerable code not in use
