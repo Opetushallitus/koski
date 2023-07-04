@@ -9,7 +9,7 @@
     <notes>guava-32.0.0-jre.jar Patch not available on 2023-06-02 - update postponed by month</notes>
     <cve>CVE-2023-2976</cve>
   </suppress>
-  <suppress until="2023-07-01Z">
+  <suppress until="2024-07-01Z">
     <notes>Medium level issues in the org.apache.xmlbeans:xmlbeans:jar:2.6.0 which is dependency of
       org.apache.poi:poi-ooxml:jar:3.17. Ticket for fix https://jira.eduuni.fi/browse/TOR-1373.</notes>
     <cve>CVE-2019-12415</cve>
@@ -51,7 +51,7 @@
     <packageUrl regex="true">^pkg:npm/lodash@.*$</packageUrl>
     <vulnerabilityName>CVE-2021-23337</vulnerabilityName>
   </suppress>
-  <suppress until="2023-07-01Z">
+  <suppress until="2023-09-01Z">
     <notes>
       <![CDATA[ file name: aws-java-sdk-secretsmanager-1.12.148.jar]]> Dependency of
       com.amazonaws.secretsmanager:aws-secretsmanager-jdbc, which most probably is not affected by
