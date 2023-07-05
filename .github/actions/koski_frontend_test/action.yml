@@ -16,8 +16,11 @@ runs:
       env:
         MOCHA_SHARD_INDEX: ${{inputs.shardIndex}}
         MOCHA_SHARD_TOTAL: ${{inputs.shardTotal}}
-      run: mvn test -Pmocharunner -Dsuites="fi.oph.koski.mocha.KoskiParallelMochaSpec"
-      shell: bash
+      uses: nick-fields/retry@v2
+      with:
+        max_attempts: 2
+        timeout_minutes: 45
+        command: mvn test -Pmocharunner -Dsuites="fi.oph.koski.mocha.KoskiParallelMochaSpec"
 
     - name: Archive test screenshots
       if: ${{ failure() }}
