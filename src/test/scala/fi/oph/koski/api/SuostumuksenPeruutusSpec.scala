@@ -59,7 +59,7 @@ class SuostumuksenPeruutusSpec extends AnyFreeSpec with Matchers with Opiskeluoi
       val logMessages = AuditLogTester.getLogMessages
       logMessages.length should equal(2)
 
-      AuditLogTester.verifyAuditLogMessage(logMessages(1), Map(
+      AuditLogTester.verifyAuditLogString(logMessages(1), Map(
         "operation" -> KoskiOperation.KANSALAINEN_SUOSTUMUS_PERUMINEN.toString,
         "target" -> Map(
           KoskiAuditLogMessageField.opiskeluoikeusOid.toString -> vapaatavoitteinenOpiskeluoikeus.oid.get
@@ -273,7 +273,7 @@ class SuostumuksenPeruutusSpec extends AnyFreeSpec with Matchers with Opiskeluoi
           KoskiSpecificSession.systemUserMitätöidytJaPoistetut
         )
 
-      AuditLogTester.verifyAuditLogMessage(logMessages(1), Map(
+      AuditLogTester.verifyAuditLogString(logMessages(1), Map(
         "operation" -> KoskiOperation.OPISKELUOIKEUS_MUUTOS.toString,
         "target" -> Map(
           KoskiAuditLogMessageField.oppijaHenkiloOid.toString -> KoskiSpecificMockOppijat.vapaaSivistystyöVapaatavoitteinenKoulutus.oid,
@@ -427,7 +427,7 @@ class SuostumuksenPeruutusSpec extends AnyFreeSpec with Matchers with Opiskeluoi
           KoskiSpecificSession.systemUserMitätöidytJaPoistetut
         )
 
-      AuditLogTester.verifyAuditLogMessage(logMessages.head, Map(
+      AuditLogTester.verifyAuditLogString(logMessages.head, Map(
         "operation" -> KoskiOperation.OPISKELUOIKEUS_MUUTOS.toString,
         "target" -> Map(
           KoskiAuditLogMessageField.oppijaHenkiloOid.toString -> KoskiSpecificMockOppijat.vapaaSivistystyöVapaatavoitteinenKoulutus.oid,

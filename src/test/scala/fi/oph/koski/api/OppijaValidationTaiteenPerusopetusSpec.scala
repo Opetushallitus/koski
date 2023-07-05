@@ -997,7 +997,7 @@ class OppijaValidationTaiteenPerusopetusSpec
       val logMessages = AuditLogTester.getLogMessages
       logMessages.length should equal(4)
 
-      AuditLogTester.verifyAuditLogMessage(
+      AuditLogTester.verifyAuditLogString(
         logMessages(3), Map(
           "operation" -> KoskiOperation.KANSALAINEN_SUOSTUMUS_PERUMINEN.toString,
           "target" -> Map(
@@ -1076,7 +1076,7 @@ class OppijaValidationTaiteenPerusopetusSpec
       val logMessages = AuditLogTester.getLogMessages
       logMessages.length should equal(5)
 
-      AuditLogTester.verifyAuditLogMessage(
+      AuditLogTester.verifyAuditLogString(
         logMessages(3), Map(
           "operation" -> KoskiOperation.KANSALAINEN_SUOSTUMUS_PERUMINEN.toString,
           "target" -> Map(
@@ -1157,7 +1157,7 @@ class OppijaValidationTaiteenPerusopetusSpec
       val logMessages = AuditLogTester.getLogMessages
       logMessages.length should equal(5)
 
-      AuditLogTester.verifyAuditLogMessage(
+      AuditLogTester.verifyAuditLogString(
         logMessages(3), Map(
           "operation" -> KoskiOperation.KANSALAINEN_SUOSTUMUS_PERUMINEN.toString,
           "target" -> Map(
@@ -1166,7 +1166,7 @@ class OppijaValidationTaiteenPerusopetusSpec
           )
         )
       )
-      AuditLogTester.verifyAuditLogMessage(
+      AuditLogTester.verifyAuditLogString(
         logMessages(4), Map(
           "operation" -> KoskiOperation.KANSALAINEN_SUOSTUMUS_PERUMINEN.toString,
           "target" -> Map(

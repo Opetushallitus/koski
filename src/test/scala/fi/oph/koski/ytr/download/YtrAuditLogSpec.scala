@@ -171,7 +171,7 @@ class YtrAuditLogSpec
 
     logMessages.zipWithIndex.map {
       case (logMessage, i) =>
-        AuditLogTester.verifyAuditLogMessage(
+        AuditLogTester.verifyAuditLogString(
           logMessage, expectedAuditLogParams(i)
         )
     }
