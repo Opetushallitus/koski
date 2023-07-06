@@ -196,19 +196,19 @@ install-and-verify-valpas-jest-deps:
 
 .PHONY: valpas-fronttest-1
 valpas-fronttest-1:
-	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -Pvalpasfronttest -Dsuites="fi.oph.koski.valpas.jest.ValpasFrontSpec1"
+	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -Pvalpasfronttest -Dsuites="fi.oph.koski.valpas.jest.ValpasFrontSpec1" --batch-mode
 
 .PHONY: valpas-fronttest-2
 valpas-fronttest-2:
-	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -Pvalpasfronttest -Dsuites="fi.oph.koski.valpas.jest.ValpasFrontSpec2"
+	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -Pvalpasfronttest -Dsuites="fi.oph.koski.valpas.jest.ValpasFrontSpec2" --batch-mode
 
 .PHONY: valpas-fronttest-3
 valpas-fronttest-3:
-	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -Pvalpasfronttest -Dsuites="fi.oph.koski.valpas.jest.ValpasFrontSpec3"
+	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -Pvalpasfronttest -Dsuites="fi.oph.koski.valpas.jest.ValpasFrontSpec3" --batch-mode
 
 .PHONY: valpas-fronttest-4
 valpas-fronttest-4:
-	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -Pvalpasfronttest -Dsuites="fi.oph.koski.valpas.jest.ValpasFrontSpec4"
+	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -Pvalpasfronttest -Dsuites="fi.oph.koski.valpas.jest.ValpasFrontSpec4" --batch-mode
 
 ### Dist
 
