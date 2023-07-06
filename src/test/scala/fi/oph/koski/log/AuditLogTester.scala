@@ -16,35 +16,31 @@ object AuditLogTester extends Matchers with LogTester {
     retryingTest(times = 10) { () =>
       val message = getLogMessages.lastOption.map(m => parse(m))
       message match {
-        case Some(msg: JObject) => verifyAuditLogMessage(msg, params)
+        case Some(msg: JObject) => verifyAuditLogObject(msg, params)
         case _ => throw new IllegalStateException("No audit log message found")
       }
     }
   }
 
-  def verifyAuditLogMessage(loggingEvent: String, params: Map[String, Any]): Unit = {
-    retryingTest(times = 10) { () =>
-      parse(loggingEvent) match {
-        case msg: JObject => verifyAuditLogMessage(msg, params)
-        case _ => throw new IllegalStateException("No audit log message found")
-      }
+  def verifyAuditLogString(loggingEvent: String, params: Map[String, Any]): Unit =
+    parse(loggingEvent) match {
+      case msg: JObject => verifyAuditLogObject(msg, params)
+      case _ => throw new IllegalStateException("No audit log message found")
     }
-  }
 
-  def verifyNoAuditLogMessages(): Unit = {
+  def verifyNoAuditLogMessages(): Unit =
     if (getLogMessages.nonEmpty) {
       throw new IllegalStateException("Audit log message found, expected none")
     }
-  }
 
-  private def verifyAuditLogMessage(msg: JObject, params: Map[String, Any]): Unit = {
+  private def verifyAuditLogObject(msg: JObject, params: Map[String, Any]): Unit = {
     implicit val formats: Formats = GenericJsonFormats.genericFormats
-    retryingTest(times = 10) { () =>
+    withClue(s"Audit log message: $msg | Expected: $params") {
       params.foreach {
         case (key, expectedValue: String) =>
           msg.values.get(key) should equal(Some(expectedValue))
         case (key, newParams: Map[String, Any]@unchecked) =>
-          verifyAuditLogMessage((msg \ key).extract[JObject], newParams)
+          verifyAuditLogObject((msg \ key).extract[JObject], newParams)
         case _ => ???
       }
     }

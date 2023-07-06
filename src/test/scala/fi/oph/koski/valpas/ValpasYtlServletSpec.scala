@@ -287,7 +287,7 @@ class ValpasYtlServletSpec  extends ValpasTestBase with BeforeAndAfterEach {
           .sorted
           .zip(oppijat)
           .foreach { msg_oppija =>
-            AuditLogTester.verifyAuditLogMessage(
+            AuditLogTester.verifyAuditLogString(
               msg_oppija._1,
               Map(
                 "operation" -> ValpasOperation.OPPIVELVOLLISUUSREKISTERI_LUOVUTUS.toString,

@@ -57,7 +57,7 @@ class ValpasRouhintaApiServletSpec extends ValpasTestBase with BeforeAndAfterEac
         val logMessages = AuditLogTester.getLogMessages
         logMessages.length should equal(2)
 
-        AuditLogTester.verifyAuditLogMessage(logMessages(0), Map(
+        AuditLogTester.verifyAuditLogString(logMessages(0), Map(
           "operation" -> ValpasOperation.VALPAS_ROUHINTA_HETUHAKU.toString,
           "target" -> Map(
             ValpasAuditLogMessageField.hakulause.toString -> "161004A404E, 011005A115P, 110405A6951",
@@ -66,7 +66,7 @@ class ValpasRouhintaApiServletSpec extends ValpasTestBase with BeforeAndAfterEac
 
           ),
         ))
-        AuditLogTester.verifyAuditLogMessage(logMessages(1), Map(
+        AuditLogTester.verifyAuditLogString(logMessages(1), Map(
           "operation" -> ValpasOperation.VALPAS_ROUHINTA_HETUHAKU.toString,
           "target" -> Map(
             ValpasAuditLogMessageField.oppijaHenkilöOidList.toString -> "1.2.246.562.24.00000000134 1.2.246.562.24.00000000079",

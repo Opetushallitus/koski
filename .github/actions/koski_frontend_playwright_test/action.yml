@@ -23,7 +23,7 @@ runs:
       with:
         max_attempts: 2
         timeout_minutes: 45
-        command: mvn test -Pintegrationtest -Dsuites="fi.oph.koski.e2e.KoskiFrontSpec"
+        command: mvn test -Pintegrationtest -Dsuites="fi.oph.koski.e2e.KoskiFrontSpec" --batch-mode
     - uses: actions/upload-artifact@v3
       if: always()
       with:

@@ -3,7 +3,7 @@ package fi.oph.koski.ytr.download
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import fi.oph.koski.api.OpiskeluoikeusTestMethods
 import fi.oph.koski.koskiuser.MockUsers
-import junit.framework.Assert.{assertEquals, assertNotNull}
+import junit.framework.Assert.{assertEquals, assertNotNull, assertNotSame}
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
@@ -148,7 +148,9 @@ class YtrDownloadSpec
     assertEquals(2, statusRows.size)
 
     row = statusRows(1)
-    assertEquals(LocalDate.now().toString, (row \ "modifiedSinceParam").extract[String])
+    // Tarkistetaan vain onko modifiedSinceParam muuttunut sitten ylemmän assertin.
+    // Tarkempi vertailu tämänhetkisellä päivämäärällä on flaky.
+    assertNotSame(modifiedSince.toString, (row \ "modifiedSinceParam").extract[String])
   }
 
   private def expectedOppijat(

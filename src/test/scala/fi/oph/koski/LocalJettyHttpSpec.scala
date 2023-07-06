@@ -5,6 +5,8 @@ import fi.oph.koski.http.HttpSpecification
 import fi.oph.koski.jettylauncher.JettyLauncher
 import fi.oph.koski.log.Logging
 
+import java.io.IOException
+
 trait LocalJettyHttpSpec extends HttpSpecification {
   LocalJettyHttpSpec.setup(defaultKoskiApplication)
 
@@ -18,9 +20,7 @@ object LocalJettyHttpSpec extends Logging {
 
   private lazy val jetty: JettyLauncher = externalJettyPort match {
     case None =>
-      val sharedJetty = new SharedJetty(defaultKoskiApplication)
-      sharedJetty.start()
-      sharedJetty
+      tryToStartSharedJetty(retries = 5)
     case Some(port) =>
       logger.info(s"Using external jetty on port $port")
       new JettyLauncher(port, defaultKoskiApplication)
@@ -37,4 +37,18 @@ object LocalJettyHttpSpec extends Logging {
   }
 
   def baseUrl: String = jetty.baseUrl
+
+  // Vaikka satunnaiseksi portiksi yritetään valita avoin portti käynnistysvaiheessa, se ei aina onnistu luotettavasti,
+  // ja käynnistys epäonnistuu. Sellaisessa tapauksessa yritetään yksinkertaisesti luoda uusi instanssi ja toivotaan
+  // että uusi portti olisi vapaa.
+  def tryToStartSharedJetty(retries: Int): SharedJetty =
+    try {
+      val sharedJetty = new SharedJetty(defaultKoskiApplication)
+      sharedJetty.start()
+      sharedJetty
+    } catch {
+      case _: IOException if retries > 0 =>
+        Thread.sleep(500)
+        tryToStartSharedJetty(retries - 1)
+    }
 }
