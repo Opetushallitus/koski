@@ -2,3 +2,4 @@
 http.host: 0.0.0.0
 
 indices.query.bool.max_clause_count: 16384
+bootstrap.system_call_filter: false
