@@ -132,11 +132,14 @@ export class KoskiOppijaPage {
   }
 
   async avaaMuokkausnäkymä() {
-    // @ts-expect-error
-    await this.page.evaluate(() => (window.DISABLE_EXIT_HOOKS = true))
+    await this.page.evaluate(() => {
+      if ('DISABLE_EXIT_HOOKS' in window) {
+        window.DISABLE_EXIT_HOOKS = true
+      }
+    })
     await this.muokkausNäkymäBtn.click()
     await this.peruutaMuutoksetLink.waitFor()
-    await expect(this.page).toHaveURL(/.*\?.*\&edit=.*/)
+    await expect(this.page).toHaveURL(/.*\?.*&edit=.*/)
   }
 
   async peruuta() {

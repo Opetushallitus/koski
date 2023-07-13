@@ -64,6 +64,34 @@ test.describe.skip('Vapaan sivistystyön koulutus', () => {
           ).toHaveText('54')
         })
       })
+      test.describe('Muokkausnäkymä', () => {
+        test('Avaa ja sulkee muokkausnäkymän', async ({ page }) => {
+          await expect(page.getByTestId('opiskeluoikeus.edit')).toBeVisible()
+          await expect(
+            page.getByTestId('opiskeluoikeus.cancelEdit')
+          ).toBeHidden()
+
+          await page.getByTestId('opiskeluoikeus.edit').click()
+
+          await expect(page.getByTestId('opiskeluoikeus.edit')).toBeHidden()
+          await expect(
+            page.getByTestId('opiskeluoikeus.cancelEdit')
+          ).toBeVisible()
+
+          await page.getByTestId('opiskeluoikeus.cancelEdit').click()
+        })
+        test('Lisää uuden osasuorituksen', async ({ page }) => {
+          await expect(page.getByTestId('opiskeluoikeus.edit')).toBeVisible()
+          await page.getByTestId('opiskeluoikeus.edit').click()
+          await page.getByRole('button', { name: 'Lisää osasuoritus' }).click()
+          await page
+            .getByPlaceholder('Opintokokonaisuus')
+            .fill('Playwright-opinnot')
+          await page.locator('form').getByText('Lisää osasuoritus').click()
+          await page.getByRole('button', { name: 'Lisää osasuoritus' }).click()
+          await page.locator('form').getByText('Peruuta').click()
+        })
+      })
     })
   })
   test.describe('JOTPA', () => {
