@@ -29,6 +29,7 @@ import { Trans } from '../texts/Trans'
 import { NonEmptyArray } from 'fp-ts/lib/NonEmptyArray'
 import { ValidationError } from '../forms/validator'
 import { UusiOpiskeluoikeusjakso } from '../opiskeluoikeus/UusiOpiskeluoikeudenTilaModal'
+import { FlatButton } from '../controls/FlatButton'
 
 export type EditorContainerProps<T extends Opiskeluoikeus> =
   CommonPropsWithChildren<{
@@ -47,6 +48,7 @@ export type EditorContainerProps<T extends Opiskeluoikeus> =
     suorituksenLisäys?: string | LocalizedString
     onCreateSuoritus?: () => void
     suorituksetVahvistettu?: boolean
+    lisätiedotContainer?: React.FC<any>
   }>
 
 export type ActivePäätasonSuoritus<T extends Opiskeluoikeus> = {
@@ -66,6 +68,7 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
     [props.form]
   )
 
+  const [lisatiedotOpen, setLisatiedotOpen] = useState(false)
   const onSave = useCallback(() => {
     props.form.save(
       saveOpiskeluoikeus(props.oppijaOid),
@@ -124,6 +127,8 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
     [props]
   )
 
+  const { lisätiedotContainer: LisätiedotContainer } = props
+
   return (
     <article {...common(props, ['EditorContainer'])}>
       <OpiskeluoikeusEditToolbar
@@ -148,6 +153,26 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
         testId="opiskeluoikeus.tila"
       />
       <Spacer />
+
+      {props.form.editMode && (
+        <FlatButton
+          onClick={(e) => {
+            e.preventDefault()
+            setLisatiedotOpen((prev) => !prev)
+          }}
+        >
+          {lisatiedotOpen
+            ? t('lisatiedot:sulje_lisatiedot')
+            : t('lisatiedot:nayta_lisatiedot')}
+        </FlatButton>
+      )}
+      {props.form.editMode && LisätiedotContainer && lisatiedotOpen && (
+        <>
+          <Spacer />
+          <LisätiedotContainer form={props.form} />
+          <Spacer />
+        </>
+      )}
 
       <h2>
         <Trans>{'Suoritukset'}</Trans>
