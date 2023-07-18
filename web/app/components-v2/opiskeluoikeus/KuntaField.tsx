@@ -13,7 +13,7 @@ import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
 
 export type Kuntakoodiviite = Koodistokoodiviite<'kunta'>
 
-export type KuntaViewProps = CommonProps<FieldViewerProps<Kuntakoodiviite>>
+export type KuntaViewProps = CommonProps<FieldViewerProps<Kuntakoodiviite, {}>>
 
 export const KuntaView: React.FC<KuntaViewProps> = (props) => (
   <div {...common(props, ['KuntaView'])} {...testId(props)}>
@@ -21,7 +21,7 @@ export const KuntaView: React.FC<KuntaViewProps> = (props) => (
   </div>
 )
 
-export type KuntaEditProps = CommonProps<FieldEditorProps<Kuntakoodiviite>>
+export type KuntaEditProps = CommonProps<FieldEditorProps<Kuntakoodiviite, {}>>
 
 export const KuntaEdit: React.FC<KuntaEditProps> = (props) => {
   const kunnat = useKoodisto('kunta')

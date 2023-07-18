@@ -3,17 +3,21 @@ import { common, CommonProps, cx, testId } from '../CommonProps'
 import { FieldErrors } from '../forms/FieldErrors'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
 
-export type TextViewProps = CommonProps<FieldViewerProps<string>>
+// eslint-disable-next-line @typescript-eslint/ban-types
+export type TextViewProps = CommonProps<FieldViewerProps<string, {}>>
 
 export const TextView: React.FC<TextViewProps> = (props) => (
   <div {...common(props, ['TextView'])}>{props.value}</div>
 )
 
 export type TextEditProps = CommonProps<
-  FieldEditorProps<string> & {
-    placeholder?: string
-    autoFocus?: boolean
-  }
+  FieldEditorProps<
+    string,
+    {
+      placeholder?: string
+      autoFocus?: boolean
+    }
+  >
 >
 
 export const TextEdit: React.FC<TextEditProps> = (props) => {

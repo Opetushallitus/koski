@@ -14,7 +14,7 @@ import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
 export type Suorituskielikoodiviite = Koodistokoodiviite<'kieli'>
 
 export type SuorituskieliViewProps = CommonProps<
-  FieldViewerProps<Suorituskielikoodiviite>
+  FieldViewerProps<Suorituskielikoodiviite, {}>
 >
 
 export const SuorituskieliView: React.FC<SuorituskieliViewProps> = (props) => (
@@ -24,7 +24,7 @@ export const SuorituskieliView: React.FC<SuorituskieliViewProps> = (props) => (
 )
 
 export type SuorituskieliEditProps = CommonProps<
-  FieldEditorProps<Suorituskielikoodiviite>
+  FieldEditorProps<Suorituskielikoodiviite, {}>
 >
 
 export const SuorituskieliEdit: React.FC<SuorituskieliEditProps> = (props) => {

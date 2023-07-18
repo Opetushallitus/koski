@@ -1,10 +1,14 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { NonEmptyArray } from 'fp-ts/lib/NonEmptyArray'
 import React, { useCallback, useMemo } from 'react'
 import { useAllowedStrings, useSchema } from '../../appstate/constraints'
 import { useKoodisto } from '../../appstate/koodisto'
 import { todayISODate } from '../../date/date'
 import { t } from '../../i18n/i18n'
-import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
+import {
+  Koodistokoodiviite,
+  isKoodistokoodiviite
+} from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { Opiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/Opiskeluoikeusjakso'
 import { VapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/VapaanSivistystyonJotpaKoulutuksenOpiskeluoikeusjakso'
 import { KoodiarvotOf } from '../../util/koodisto'
@@ -30,10 +34,6 @@ export type UusiOpiskeluoikeudenTilaModalProps<T extends Opiskeluoikeusjakso> =
     opiskeluoikeusjaksoClass: ClassOf<T>
     enableValmistuminen: boolean
   }>
-
-type Rahoituksellinen = {
-  opintojenRahoitus: any
-}
 
 // TODO: Tyypitä tämä uudestaan tukemaan kaikkia Koskesta löytyviä opiskeluoikeusjaksoja.
 export type UusiOpiskeluoikeusjakso<T extends Opiskeluoikeusjakso> = {
@@ -137,7 +137,12 @@ const OpiskeluoikeudenTilanRahoitusField = <T extends Opiskeluoikeusjakso>(
         view={Nothing}
         edit={RadioButtonsEdit}
         editProps={{
-          getKey: (tila: Koodistokoodiviite) => tila.koodiarvo,
+          getKey: (tila: unknown) => {
+            if (isKoodistokoodiviite(tila)) {
+              return tila.koodiarvo
+            }
+            throw new Error('getKey(): Unknown value for tila')
+          },
           options: opintojenRahoitusOptions
         }}
         testId={subTestId(props, 'opintojenRahoitus')}
@@ -184,6 +189,7 @@ export const UusiOpiskeluoikeudenTilaModal = <T extends Opiskeluoikeusjakso>(
     if (errors) {
       // onSubmitista ei tällä implementointihetkellä pitäisi tulla virheitä,
       // joten virheiden näyttämisen voi toteuttaa myöhemmin vasta kun sitä tarvitaan.
+      // eslint-disable-next-line no-console
       console.warn(
         'Käsittelemättömiä validointivirheitä UusiOpiskeluoikeudenTilaModalissa:',
         errors
@@ -216,7 +222,12 @@ export const UusiOpiskeluoikeudenTilaModal = <T extends Opiskeluoikeusjakso>(
             view={Nothing}
             edit={RadioButtonsEdit}
             editProps={{
-              getKey: (tila: Koodistokoodiviite) => tila.koodiarvo,
+              getKey: (tila: unknown) => {
+                if (isKoodistokoodiviite(tila)) {
+                  return tila.koodiarvo
+                }
+                throw new Error('getKey(): Unknown type for tila')
+              },
               options: tilaOptions
             }}
             testId={subTestId(props, 'tila')}

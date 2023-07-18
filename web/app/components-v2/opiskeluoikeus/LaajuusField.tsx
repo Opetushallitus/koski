@@ -18,7 +18,7 @@ import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
  * ---------------------------------------------------------------------
  */
 
-export type LaajuusViewProps = CommonProps<FieldViewerProps<Laajuus>>
+export type LaajuusViewProps = CommonProps<FieldViewerProps<Laajuus, {}>>
 
 export const LaajuusView = (props: LaajuusViewProps) => {
   return (
@@ -33,9 +33,12 @@ export const LaajuusView = (props: LaajuusViewProps) => {
 }
 
 export type LaajuusEditProps<T extends Laajuus> = CommonProps<
-  FieldEditorProps<T> & {
-    createLaajuus: (arvo: number) => T
-  }
+  FieldEditorProps<
+    T,
+    {
+      createLaajuus: (arvo: number) => T
+    }
+  >
 >
 
 /* ---------------------------------------------------------------------
@@ -45,7 +48,7 @@ export type LaajuusEditProps<T extends Laajuus> = CommonProps<
  * ---------------------------------------------------------------------
  */
 
-export const LaajuusEdit = <T extends Laajuus>(props: LaajuusEditProps<T>) => {
+export const LaajuusEdit: React.FC<LaajuusEditProps<Laajuus>> = (props) => {
   const { onChange, createLaajuus } = props
   const onChangeCB = useCallback(
     (arvo: number) => onChange(createLaajuus(arvo)),
@@ -79,15 +82,16 @@ export const LaajuusEdit = <T extends Laajuus>(props: LaajuusEditProps<T>) => {
  */
 
 export type DefaultLaajuusEditProps<T extends Laajuus> = CommonProps<
-  FieldEditorProps<T>
+  FieldEditorProps<T, {}>
 >
 
 export const LaajuusOpintopisteissäEdit: React.FC<
   DefaultLaajuusEditProps<LaajuusOpintopisteissä>
 > = (props) => (
+  // @ts-expect-error TypeScript ei tykkää..
   <LaajuusEdit
     {...props}
-    createLaajuus={(arvo) => LaajuusOpintopisteissä({ arvo })}
+    createLaajuus={(arvo: any) => LaajuusOpintopisteissä({ arvo }) as any}
   />
 )
 

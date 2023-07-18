@@ -33,7 +33,7 @@ export type AdaptedOpiskeluoikeusEditorProps<T extends Opiskeluoikeus> = {
 
 export type AdaptedOpiskeluoikeusEditor<T extends Opiskeluoikeus> = (
   prop: AdaptedOpiskeluoikeusEditorProps<T>
-) => React.ReactElement
+) => React.ReactElement | null
 
 export type AdaptedOpiskeluoikeusEditorCollection = Partial<{
   [OO in Opiskeluoikeus as OpiskeluoikeudenTyyppiOf<OO>]: AdaptedOpiskeluoikeusEditor<OO>

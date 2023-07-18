@@ -5,7 +5,7 @@ import { common, CommonProps, testId } from '../CommonProps'
 import { FieldViewerProps } from '../forms/FormField'
 
 export type LocalizedTextViewProps = CommonProps<
-  FieldViewerProps<LocalizedString>
+  FieldViewerProps<LocalizedString, {}>
 >
 
 export const LocalizedTextView: React.FC<LocalizedTextViewProps> = (props) => (

@@ -18,7 +18,7 @@ import { IconButton } from './IconButton'
 
 // Date viewer
 
-export type DateViewProps = CommonProps<FieldViewerProps<string>>
+export type DateViewProps = CommonProps<FieldViewerProps<string, {}>>
 
 export const DateView: React.FC<DateViewProps> = (props) => {
   const formattedDate = useMemo(
@@ -111,7 +111,7 @@ const useDateEditState = (props: DateEditProps) => {
     [internalFinnishDate]
   )
 
-  const { onChange, min, max, value } = props
+  const { onChange, min: _min, max: _max, value } = props
   const onChangeCB: React.ChangeEventHandler<HTMLInputElement> = useCallback(
     (event) => {
       const newFinnishDate = event.target.value

@@ -39,6 +39,7 @@ import {
   UusiOpiskeluoikeudenTilaModal,
   UusiOpiskeluoikeusjakso
 } from './UusiOpiskeluoikeudenTilaModal'
+import { isVapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/VapaanSivistystyonJotpaKoulutuksenOpiskeluoikeusjakso'
 
 // TODO: Siisti omaan tiedostoonsa
 type RahoituksellinenOpiskeluoikeusjakso = Extract<
@@ -56,14 +57,15 @@ function isRahoituksellinenOpiskeluoikeusjakso(
     isInternationalSchoolOpiskeluoikeusjakso(x) ||
     isLukionOpiskeluoikeusjakso(x) ||
     isMuunKuinSäännellynKoulutuksenOpiskeluoikeudenJakso(x) ||
-    isTutkintokoulutukseenValmentavanOpiskeluoikeusjakso(x)
+    isTutkintokoulutukseenValmentavanOpiskeluoikeusjakso(x) ||
+    isVapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso(x)
   )
 }
 
 // Opiskeluoikeuden tila viewer
 
 export type OpiskeluoikeudenTilaViewProps<T extends OpiskeluoikeudenTila> =
-  CommonProps<FieldViewerProps<T>>
+  CommonProps<FieldViewerProps<T, {}>>
 
 export const OpiskeluoikeudenTilaView = <T extends OpiskeluoikeudenTila>(
   props: OpiskeluoikeudenTilaViewProps<T>
@@ -84,18 +86,22 @@ export const OpiskeluoikeudenTilaView = <T extends OpiskeluoikeudenTila>(
           name={index === 0 ? 'Tila' : undefined}
           key={index}
           className={index === 0 ? 'OpiskeluoikeudenTila-viimeisin' : undefined}
-          columnSpans={{ default: [2, 2, '*'], phone: [4, 4, '*'] }}
+          columnSpans={{ default: [2, '*'], phone: [4, '*'] }}
           testId={subTestId(props, `items.${index}`)}
-          testIds={['date', 'tila', 'opintojenRahoitus']}
+          testIds={['date', 'tila']}
         >
           {[
-            <time key={`time_${index}`} dateTime={jakso.alku}>
+            <time key={`jakso_time_${index}`} dateTime={jakso.alku}>
               {ISO2FinnishDate(jakso.alku)}
             </time>,
-            t(jakso.tila.nimi),
-            isVapaanSivistystyönOpiskeluoikeusjakso(jakso) &&
-              isRahoituksellinenOpiskeluoikeusjakso(jakso) &&
-              `(${t(jakso.opintojenRahoitus?.nimi)})`
+            <React.Fragment key={`jakso_tila_lisatiedot_${index}`}>
+              <span>{t(jakso.tila.nimi)}</span>
+              <span>
+                {isVapaanSivistystyönOpiskeluoikeusjakso(jakso) &&
+                  isRahoituksellinenOpiskeluoikeusjakso(jakso) &&
+                  ` (${t(jakso.opintojenRahoitus?.nimi)})`}
+              </span>
+            </React.Fragment>
           ]}
         </KeyColumnedValuesRow>
       ))}

@@ -13,7 +13,7 @@ import { OptionList, Select, SelectOption } from '../controls/Select'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
 
 export type OrganisaatioViewProps<T extends Organisaatio> = CommonProps<
-  FieldViewerProps<T>
+  FieldViewerProps<T, {}>
 >
 
 export const OrganisaatioView = <T extends Organisaatio>(
