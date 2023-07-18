@@ -24,11 +24,7 @@
     "no-unreachable": "error",
     "no-console": "off", // TODO: Vaihda --> "warn"
     "no-warning-comments": "off", // TODO: Vaihda --> "warn"
-    "no-unused-vars": "off", // TODO: Korvaa sääntö
-    /*"no-unused-vars": [
-      "warn",
-      { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }
-    ], */
+    "no-unused-vars": "off",
     "react/jsx-no-undef": "warn",
     "react/jsx-uses-react": "warn",
     "react/jsx-uses-vars": "warn",
@@ -56,11 +52,17 @@
     "prefer-spread": "warn", // TODO: Poista sääntö
     "@typescript-eslint/no-shadow": "warn",
     "@typescript-eslint/no-explicit-any": "off", // TODO: Poista sääntö
-    "@typescript-eslint/no-unused-vars": "off", // TODO: Poista sääntö
+    "@typescript-eslint/no-unused-vars": "off",
+    /*
+    [
+      "warn",
+      { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }
+    ],
+    */
     "@typescript-eslint/ban-ts-comment": "off", // TODO: Poista sääntö
     "@typescript-eslint/no-empty-function": "off",
     "@typescript-eslint/no-unnecessary-type-constraint": "warn", // TODO: Poista sääntö
-    "@typescript-eslint/ban-types": "warn" // TODO: Poista sääntö
+    "@typescript-eslint/ban-types": "warn" // TODO: Poista sääntö,
   },
   "overrides": [
     {
