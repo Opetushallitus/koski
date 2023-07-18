@@ -11,6 +11,7 @@ import {
   usePäätasonSuoritus
 } from '../components-v2/containers/EditorContainer'
 import { LocalizedTextView } from '../components-v2/controls/LocalizedTestField'
+import { RaisedButton } from '../components-v2/controls/RaisedButton'
 import { RemoveArrayItemField } from '../components-v2/controls/RemoveArrayItemField'
 import { FormField } from '../components-v2/forms/FormField'
 import { FormModel, FormOptic, useForm } from '../components-v2/forms/FormModel'
@@ -30,7 +31,8 @@ import { OpiskeluoikeusTitle } from '../components-v2/opiskeluoikeus/Opiskeluoik
 import {
   osasuoritusTestId,
   OsasuoritusRowData,
-  OsasuoritusTable
+  OsasuoritusTable,
+  constructOsasuorituksetOpenState
 } from '../components-v2/opiskeluoikeus/OsasuoritusTable'
 import { PaikallinenOsasuoritusSelect } from '../components-v2/opiskeluoikeus/PaikallinenOsasuoritusSelect'
 import { SuorituksenVahvistusField } from '../components-v2/opiskeluoikeus/SuorituksenVahvistus'
@@ -59,9 +61,9 @@ import {
 export type TaiteenPerusopetusEditorProps =
   AdaptedOpiskeluoikeusEditorProps<TaiteenPerusopetuksenOpiskeluoikeus>
 
-export const TaiteenPerusopetusEditor = (
-  props: TaiteenPerusopetusEditorProps
-) => {
+export const TaiteenPerusopetusEditor: React.FC<
+  TaiteenPerusopetusEditorProps
+> = (props) => {
   const fillKoodistot = useKoodistoFiller()
 
   // Opiskeluoikeus
@@ -168,6 +170,47 @@ export const TaiteenPerusopetusEditor = (
   const suorituksetVahvistettu =
     form.state.suoritukset.filter((s) => Boolean(s.vahvistus)).length >= 2
 
+  // TODO: Duplikaattikoodia VST:stä. Siivoa!
+  const [osasuoritusModalOpenState, setOsasuoritusModalOpenState] = useState(
+    constructOsasuorituksetOpenState(
+      0,
+      päätasonSuoritus.index,
+      päätasonSuoritus.suoritus.osasuoritukset || []
+    )
+  )
+
+  const allOsasuorituksetOpen = osasuoritusModalOpenState.every(
+    (val) => val.expanded === true
+  )
+
+  const isAnyModalOpen =
+    Object.values(osasuoritusModalOpenState).some(
+      (val) => val.expanded === true
+    ) || allOsasuorituksetOpen
+
+  const toggleOsasuorituksetOpenState = useCallback(() => {
+    setOsasuoritusModalOpenState((oldState) =>
+      oldState.reduce((prev, curr) => {
+        return [...prev, { ...curr, expanded: !isAnyModalOpen }]
+      }, oldState)
+    )
+  }, [isAnyModalOpen])
+
+  const setOsasuorituksetStateHandler = useCallback(
+    (key: string, value: boolean) => {
+      setOsasuoritusModalOpenState((oldState) =>
+        oldState.map((s) => {
+          if (s.key === key) {
+            return { ...s, value }
+          } else {
+            return s
+          }
+        })
+      )
+    },
+    []
+  )
+
   // Render
 
   return (
@@ -255,7 +298,20 @@ export const TaiteenPerusopetusEditor = (
         {päätasonSuoritus.suoritus.osasuoritukset &&
           isNonEmpty(päätasonSuoritus.suoritus.osasuoritukset) && (
             <>
+              <RaisedButton
+                onClick={(e) => {
+                  e.preventDefault()
+                  toggleOsasuorituksetOpenState()
+                }}
+              >
+                {isAnyModalOpen ? t('Sulje kaikki') : t('Avaa kaikki')}
+              </RaisedButton>
+              <Spacer />
               <OsasuoritusTable
+                level={0}
+                openState={osasuoritusModalOpenState}
+                setOsasuoritusOpen={setOsasuorituksetStateHandler}
+                toggleModal={toggleOsasuorituksetOpenState}
                 editMode={form.editMode}
                 rows={päätasonSuoritus.suoritus.osasuoritukset.map(
                   (_, osasuoritusIndex) =>
@@ -307,6 +363,7 @@ const osasuoritusToTableRow = (
   return {
     suoritusIndex,
     osasuoritusIndex,
+    expandable: true,
     columns: {
       Osasuoritus: (
         <FormField

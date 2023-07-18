@@ -63,6 +63,7 @@ export const TpoOsasuoritusProperties: React.FC<
               view={ArvosanaView}
               edit={ArvosanaEdit}
               editProps={{
+                // @ts-expect-error TypeScript ei tajua, että tämä on oikeasti ok. createTpoArviointi -funktion parametrin tyyppi on väärä.
                 createArviointi: createTpoArviointi
               }}
               testId={`${parsedPath}.arvosana`}
