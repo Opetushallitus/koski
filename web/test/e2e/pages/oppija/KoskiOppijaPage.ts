@@ -72,6 +72,12 @@ export class KoskiOppijaPage {
     await expect(this.page).toHaveURL(/\/koski\/oppija\/1\.2\..*/)
   }
 
+  async gotoWithQueryParams(oid: string, queryParams: Record<string, string>) {
+    const params = new URLSearchParams(queryParams)
+    await this.page.goto(`/koski/oppija/${oid}?${params.toString()}`)
+    await expect(this.page).toHaveURL(/\/koski\/oppija\/1\.2\..*/)
+  }
+
   async selectOpiskeluoikeus(tyyppi: string) {
     const opiskeluoikeusTab = this.opiskeluoikeudetNav.getByTestId(
       `opiskeluoikeustyyppi-${tyyppi}`
@@ -97,8 +103,8 @@ export class KoskiOppijaPage {
 
   async vahvistaSuoritus(
     päivämäärä: string,
-    nimi: string = 'Reijo Rehtori',
-    titteli: string = 'Rehtori'
+    nimi = 'Reijo Rehtori',
+    titteli = 'Rehtori'
   ) {
     await this.page.getByTestId('merkitse-suoritus-valmiiksi').click()
 

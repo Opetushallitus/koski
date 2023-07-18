@@ -6,13 +6,15 @@ import { virkailija } from './setup/auth'
 const kotoutumiskoulutus = '1.2.246.562.24.00000000106'
 const jotpaKoulutus = '1.2.246.562.24.00000000140'
 
-test.describe.skip('Vapaan sivistystyön koulutus', () => {
+test.describe('Vapaan sivistystyön koulutus', () => {
   test.describe('Kotoutumiskoulutus oppivelvollisille', () => {
     test.describe('Virkailijan näkymä', () => {
       test.use({ storageState: virkailija('kalle') })
       test.beforeEach(async ({ fixtures, vstOppijaPage }) => {
         await fixtures.reset(false)
-        await vstOppijaPage.goto(kotoutumiskoulutus)
+        await vstOppijaPage.gotoWithQueryParams(kotoutumiskoulutus, {
+          newVSTUI: 'true'
+        })
       })
 
       test.describe('Katselunäkymä', () => {
@@ -21,7 +23,7 @@ test.describe.skip('Vapaan sivistystyön koulutus', () => {
             'Varsinais-Suomen kansanopisto, kotoutumiskoulutus oppivelvollisille (2021 –, läsnä)'
           )
           await expect(page.getByTestId('opiskeluoikeus.oid')).toHaveText(
-            'Opiskeluoikeuden oid: 1.2.246.562.15.99344582590Versiohistoria'
+            'Opiskeluoikeuden oid: 1.2.246.562.15.99809995667Versiohistoria'
           )
           await expect(
             page.getByTestId('opiskeluoikeus.tila.value')
@@ -61,7 +63,7 @@ test.describe.skip('Vapaan sivistystyön koulutus', () => {
           ).toHaveText('Reijo Reksi (rehtori)')
           await expect(
             page.getByTestId('vst.suoritukset.0.yhteensa.value')
-          ).toHaveText('54')
+          ).toHaveText('54 op')
         })
       })
       test.describe('Muokkausnäkymä', () => {
@@ -99,7 +101,9 @@ test.describe.skip('Vapaan sivistystyön koulutus', () => {
       test.use({ storageState: virkailija('kalle') })
       test.beforeEach(async ({ fixtures, vstOppijaPage }) => {
         await fixtures.reset(false)
-        await vstOppijaPage.goto(jotpaKoulutus)
+        await vstOppijaPage.gotoWithQueryParams(jotpaKoulutus, {
+          newVSTUI: 'true'
+        })
       })
       test.describe('Katselunäkymä', () => {
         test('Näyttää oikeat tiedot', async ({ page }) => {
@@ -107,7 +111,7 @@ test.describe.skip('Vapaan sivistystyön koulutus', () => {
             'Varsinais-Suomen kansanopisto, vapaan sivistystyön koulutus (2023 –, läsnä)'
           )
           await expect(page.getByTestId('opiskeluoikeus.oid')).toHaveText(
-            'Opiskeluoikeuden oid: 1.2.246.562.15.49672478820Versiohistoria'
+            'Opiskeluoikeuden oid: 1.2.246.562.15.37023888375Versiohistoria'
           )
           await expect(
             page.getByTestId('opiskeluoikeus.tila.value')
@@ -138,7 +142,7 @@ test.describe.skip('Vapaan sivistystyön koulutus', () => {
           )
           await expect(
             page.getByTestId('vst.suoritukset.0.yhteensa.value')
-          ).toHaveText('75')
+          ).toHaveText('3 op')
         })
       })
     })
