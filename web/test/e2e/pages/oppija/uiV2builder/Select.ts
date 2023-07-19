@@ -1,6 +1,6 @@
 import { createControl } from './controls'
 
-export const Select = createControl((self, child) => {
+export const Select = createControl((_self, child) => {
   const showOptions = () => child('input').click()
 
   return {

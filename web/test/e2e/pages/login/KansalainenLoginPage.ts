@@ -33,7 +33,7 @@ export class KansalainenLoginPage {
    * Kirjautuu Koski-palvelun kansalaisnäkymään käyttämällä henkilötunnusta.
    * @param hetu Henkilötunnus
    */
-  async apiLoginWithHetu(hetu: string) {
+  async apiLoginWithHetu(_hetu: string) {
     throw new Error('Not implemented')
   }
 

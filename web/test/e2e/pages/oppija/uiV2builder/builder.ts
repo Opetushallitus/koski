@@ -77,12 +77,12 @@ export function build(page: Page, node: IdNode, prefix?: string): any {
 
 export const arrayOf =
   <T extends IdNode>(node: T) =>
-  (index: number): T =>
+  (_index: number): T =>
     node
 
 export const objectOf =
   <T extends IdNode>(node: T) =>
-  (key: string): T =>
+  (_key: string): T =>
     node
 
 const mergeId = (...tokens: Array<string | undefined>): string =>

@@ -1,7 +1,7 @@
 import * as A from 'fp-ts/Array'
 import React, { useCallback, useContext, useMemo, useState } from 'react'
 import * as E from 'fp-ts/Either'
-import { constant, identity, pipe } from 'fp-ts/lib/function'
+import { pipe } from 'fp-ts/lib/function'
 import { useEffect } from 'react'
 import { OrganisaatioHierarkia } from '../types/fi/oph/koski/organisaatio/OrganisaatioHierarkia'
 import {
