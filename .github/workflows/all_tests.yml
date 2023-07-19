@@ -201,8 +201,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        shardIndex: [1, 2]
-        shardTotal: [2]
+        shardIndex: [1, 2, 3]
+        shardTotal: [3]
     runs-on: ${{ inputs.runs-on }}
     if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
     steps:
