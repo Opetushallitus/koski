@@ -178,11 +178,13 @@ export const OsasuoritusTable = <DATA_KEYS extends string>(
             )
           }}
           onRemove={onRemoveCb(index)}
-          testId={`taso.${level}.suoritukset.${row.suoritusIndex}.osasuoritukset.${row.osasuoritusIndex}`}
+          testId={`suoritukset.${row.suoritusIndex}.taso.${props.level}.osasuoritukset.${row.osasuoritusIndex}`}
         />
       ))}
       <Spacer />
-      {editMode && (
+      {/*
+      TODO: Otettu pois väliaikaisesti päältä TPO:n takia.
+      editMode && (
         <ColumnRow indent={level}>
           <Column>
             <RaisedButton onClick={onClickLisääOsasuoritus}>
@@ -190,7 +192,7 @@ export const OsasuoritusTable = <DATA_KEYS extends string>(
             </RaisedButton>
           </Column>
         </ColumnRow>
-      )}
+      )*/}
       <Spacer />
     </>
   )
@@ -339,8 +341,9 @@ const getSpans = (dataObj: object, depth?: number, canRemove?: boolean) => {
 
 export const osasuoritusTestId = (
   suoritusIndex: number,
+  levelIndex: number,
   osasuoritusIndex: number,
   subItem?: string
 ): string =>
-  `suoritukset.${suoritusIndex}.osasuoritukset.${osasuoritusIndex}` +
+  `suoritukset.${suoritusIndex}.taso.${levelIndex}.osasuoritukset.${osasuoritusIndex}` +
   (subItem ? `.${subItem}` : '')

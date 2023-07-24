@@ -297,6 +297,7 @@ export const TaiteenPerusopetusEditor: React.FC<
           isNonEmpty(päätasonSuoritus.suoritus.osasuoritukset) && (
             <>
               <RaisedButton
+                data-testid={`suoritukset.${päätasonSuoritus.index}.expand`}
                 onClick={(e) => {
                   e.preventDefault()
                   toggleOsasuorituksetOpenState()
@@ -316,6 +317,7 @@ export const TaiteenPerusopetusEditor: React.FC<
                     osasuoritusToTableRow(
                       form,
                       päätasonSuoritus.path,
+                      0,
                       päätasonSuoritus.index,
                       osasuoritusIndex
                     )
@@ -350,6 +352,7 @@ const osasuoritusToTableRow = (
     TaiteenPerusopetuksenOpiskeluoikeus,
     TaiteenPerusopetuksenPäätasonSuoritus
   >,
+  levelIndex: number,
   suoritusIndex: number,
   osasuoritusIndex: number
 ): OsasuoritusRowData<'Osasuoritus' | 'Laajuus' | 'Arviointi'> => {
@@ -368,7 +371,12 @@ const osasuoritusToTableRow = (
           form={form}
           path={osasuoritus.path('koulutusmoduuli.tunniste.nimi')}
           view={LocalizedTextView}
-          testId={osasuoritusTestId(suoritusIndex, osasuoritusIndex, 'nimi')}
+          testId={osasuoritusTestId(
+            suoritusIndex,
+            levelIndex,
+            osasuoritusIndex,
+            'nimi'
+          )}
         />
       ),
       Laajuus: (
@@ -377,7 +385,12 @@ const osasuoritusToTableRow = (
           path={osasuoritus.path('koulutusmoduuli.laajuus')}
           view={LaajuusView}
           edit={LaajuusOpintopisteissäEdit}
-          testId={osasuoritusTestId(suoritusIndex, osasuoritusIndex, 'laajuus')}
+          testId={osasuoritusTestId(
+            suoritusIndex,
+            levelIndex,
+            osasuoritusIndex,
+            'laajuus'
+          )}
         />
       ),
       Arviointi: (
@@ -390,6 +403,7 @@ const osasuoritusToTableRow = (
           )}
           testId={osasuoritusTestId(
             suoritusIndex,
+            levelIndex,
             osasuoritusIndex,
             'arvosana'
           )}
@@ -397,7 +411,16 @@ const osasuoritusToTableRow = (
       )
     },
     content: (
-      <TpoOsasuoritusProperties form={form} osasuoritusPath={osasuoritus} />
+      <TpoOsasuoritusProperties
+        form={form}
+        osasuoritusPath={osasuoritus}
+        testId={osasuoritusTestId(
+          suoritusIndex,
+          levelIndex,
+          osasuoritusIndex,
+          'properties'
+        )}
+      />
     )
   }
 }

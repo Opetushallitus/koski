@@ -675,6 +675,7 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
         {päätasonSuoritus.suoritus.osasuoritukset && (
           <>
             <RaisedButton
+              data-testid={`suoritukset.${päätasonSuoritus.index}.expand`}
               onClick={(e) => {
                 e.preventDefault()
                 toggleOsasuorituksetOpenState()
@@ -803,7 +804,12 @@ const osasuoritusToTableRow = (
         form={form}
         path={osasuoritus.path('koulutusmoduuli.tunniste.nimi')}
         view={LocalizedTextView}
-        testId={osasuoritusTestId(suoritusIndex, osasuoritusIndex, 'nimi')}
+        testId={osasuoritusTestId(
+          suoritusIndex,
+          level,
+          osasuoritusIndex,
+          'nimi'
+        )}
       />
     ),
     Laajuus: (
@@ -812,7 +818,12 @@ const osasuoritusToTableRow = (
         path={osasuoritus.path('koulutusmoduuli.laajuus')}
         view={LaajuusView}
         edit={LaajuusOpintopisteissäEdit}
-        testId={osasuoritusTestId(suoritusIndex, osasuoritusIndex, 'laajuus')}
+        testId={osasuoritusTestId(
+          suoritusIndex,
+          level,
+          osasuoritusIndex,
+          'laajuus'
+        )}
       />
     ),
     Arvosana: (
@@ -836,7 +847,12 @@ const osasuoritusToTableRow = (
             />
           )
         }}
-        testId={osasuoritusTestId(suoritusIndex, osasuoritusIndex, 'arvosana')}
+        testId={osasuoritusTestId(
+          suoritusIndex,
+          level,
+          osasuoritusIndex,
+          'arvosana'
+        )}
       />
     ),
     Taitotaso: (
@@ -852,7 +868,12 @@ const osasuoritusToTableRow = (
           }
           return <TaitotasoEdit {...taitotasoProps} />
         }}
-        testId={osasuoritusTestId(suoritusIndex, osasuoritusIndex, 'arvosana')}
+        testId={osasuoritusTestId(
+          suoritusIndex,
+          level,
+          osasuoritusIndex,
+          'arvosana'
+        )}
       />
     )
   }
