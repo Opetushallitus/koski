@@ -171,7 +171,7 @@ export const TaiteenPerusopetusEditor: React.FC<
     form.state.suoritukset.filter((s) => Boolean(s.vahvistus)).length >= 2
 
   // TODO: Duplikaattikoodia VST:stä. Siivoa!
-  const [osasuoritusModalOpenState, setOsasuoritusModalOpenState] = useState(
+  const [osasuorituksetOpenState, setOsasuorituksetOpenState] = useState(
     constructOsasuorituksetOpenState(
       0,
       päätasonSuoritus.index,
@@ -179,29 +179,27 @@ export const TaiteenPerusopetusEditor: React.FC<
     )
   )
 
-  const allOsasuorituksetOpen = osasuoritusModalOpenState.every(
+  const allOsasuorituksetOpen = osasuorituksetOpenState.every(
     (val) => val.expanded === true
   )
 
   const isAnyModalOpen =
-    Object.values(osasuoritusModalOpenState).some(
+    Object.values(osasuorituksetOpenState).some(
       (val) => val.expanded === true
     ) || allOsasuorituksetOpen
 
   const toggleOsasuorituksetOpenState = useCallback(() => {
-    setOsasuoritusModalOpenState((oldState) =>
-      oldState.reduce((prev, curr) => {
-        return [...prev, { ...curr, expanded: !isAnyModalOpen }]
-      }, oldState)
+    setOsasuorituksetOpenState((oldState) =>
+      oldState.map((item) => ({ ...item, expanded: !isAnyModalOpen }), oldState)
     )
   }, [isAnyModalOpen])
 
   const setOsasuorituksetStateHandler = useCallback(
-    (key: string, value: boolean) => {
-      setOsasuoritusModalOpenState((oldState) =>
+    (key: string, expanded: boolean) => {
+      setOsasuorituksetOpenState((oldState) =>
         oldState.map((s) => {
           if (s.key === key) {
-            return { ...s, value }
+            return { ...s, expanded }
           } else {
             return s
           }
@@ -309,9 +307,9 @@ export const TaiteenPerusopetusEditor: React.FC<
               <Spacer />
               <OsasuoritusTable
                 level={0}
-                openState={osasuoritusModalOpenState}
-                setOsasuoritusOpen={setOsasuorituksetStateHandler}
+                openState={osasuorituksetOpenState}
                 toggleModal={toggleOsasuorituksetOpenState}
+                setOsasuoritusOpen={setOsasuorituksetStateHandler}
                 editMode={form.editMode}
                 rows={päätasonSuoritus.suoritus.osasuoritukset.map(
                   (_, osasuoritusIndex) =>
