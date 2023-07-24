@@ -162,8 +162,8 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
           }}
         >
           {lisatiedotOpen
-            ? t('lisatiedot:sulje_lisatiedot')
-            : t('lisatiedot:nayta_lisatiedot')}
+            ? 'lisatiedot:sulje_lisatiedot'
+            : 'lisatiedot:nayta_lisatiedot'}
         </FlatButton>
       )}
       {props.form.editMode && LisätiedotContainer && lisatiedotOpen && (
