@@ -43,9 +43,9 @@ test.describe('Taiteen perusopetus', () => {
       test('Oppimäärä on esivalittu ja oikeat suorituksen tyypit ovat valittavissa', async ({
         uusiOppijaPage
       }) => {
-        await expect(
-          await uusiOppijaPage.oppimäärä.textInput.textContent()
-        ).toBe('Taiteen perusopetuksen yleinen oppimäärä')
+        expect(await uusiOppijaPage.oppimäärä.textInput.textContent()).toBe(
+          'Taiteen perusopetuksen yleinen oppimäärä'
+        )
         await expect(
           await uusiOppijaPage.suoritustyyppi.getOptions()
         ).toHaveText([
@@ -77,7 +77,7 @@ test.describe('Taiteen perusopetus', () => {
             'Taiteen perusopetuksen laajan oppimäärän perusopintojen suoritus'
         })
         await expect(
-          await uusiOppijaPage.page.getByTestId('tpo-peruste-input')
+          uusiOppijaPage.page.getByTestId('tpo-peruste-input')
         ).toHaveValue('OPH-2068-2017')
       })
 
