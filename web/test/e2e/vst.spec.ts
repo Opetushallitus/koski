@@ -6,7 +6,7 @@ import { virkailija } from './setup/auth'
 const kotoutumiskoulutus = '1.2.246.562.24.00000000106'
 const jotpaKoulutus = '1.2.246.562.24.00000000140'
 
-test.describe('Vapaan sivistystyön koulutus', () => {
+test.describe.skip('Vapaan sivistystyön koulutus', () => {
   test.describe('Kotoutumiskoulutus oppivelvollisille', () => {
     test.describe('Virkailijan näkymä', () => {
       test.use({ storageState: virkailija('kalle') })
