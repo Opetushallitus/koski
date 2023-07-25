@@ -1,5 +1,5 @@
 import { isNonEmpty } from 'fp-ts/lib/Array'
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useSchema } from '../appstate/constraints'
 import { useKoodistoFiller } from '../appstate/koodisto'
 import { assortedPreferenceType, usePreferences } from '../appstate/preferences'
@@ -32,7 +32,8 @@ import {
   osasuoritusTestId,
   OsasuoritusRowData,
   OsasuoritusTable,
-  constructOsasuorituksetOpenState
+  constructOsasuorituksetOpenState,
+  OsasuorituksetExpandedState
 } from '../components-v2/opiskeluoikeus/OsasuoritusTable'
 import { PaikallinenOsasuoritusSelect } from '../components-v2/opiskeluoikeus/PaikallinenOsasuoritusSelect'
 import { SuorituksenVahvistusField } from '../components-v2/opiskeluoikeus/SuorituksenVahvistus'
@@ -170,14 +171,18 @@ export const TaiteenPerusopetusEditor: React.FC<
   const suorituksetVahvistettu =
     form.state.suoritukset.filter((s) => Boolean(s.vahvistus)).length >= 2
 
-  // TODO: Duplikaattikoodia VST:stä. Siivoa!
-  const [osasuorituksetOpenState, setOsasuorituksetOpenState] = useState(
-    constructOsasuorituksetOpenState(
-      0,
-      päätasonSuoritus.index,
-      päätasonSuoritus.suoritus.osasuoritukset || []
-    )
-  )
+  const [osasuorituksetOpenState, setOsasuorituksetOpenState] =
+    useState<OsasuorituksetExpandedState>([])
+
+  useEffect(() => {
+    setOsasuorituksetOpenState((oldState) => {
+      return constructOsasuorituksetOpenState(
+        0,
+        päätasonSuoritus.index,
+        päätasonSuoritus.suoritus.osasuoritukset || []
+      )
+    })
+  }, [päätasonSuoritus.index, päätasonSuoritus.suoritus.osasuoritukset])
 
   const allOsasuorituksetOpen = osasuorituksetOpenState.every(
     (val) => val.expanded === true

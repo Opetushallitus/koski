@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from 'react'
+import React, { useState, useEffect, useCallback, useMemo } from 'react'
 import { useSchema } from '../appstate/constraints'
 import { append } from '../util/fp/arrays'
 import { KansalainenOnly } from '../components-v2/access/KansalainenOnly'
@@ -500,13 +500,19 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
     [appendPäätasonOsasuoritus, päätasonSuoritus.suoritus]
   )
 
-  const [osasuorituksetOpenState, setOsasuorituksetOpenState] = useState(
-    constructOsasuorituksetOpenState(
-      0,
-      päätasonSuoritus.index,
-      päätasonSuoritus.suoritus.osasuoritukset || []
-    )
-  )
+  const [osasuorituksetOpenState, setOsasuorituksetOpenState] =
+    useState<OsasuorituksetExpandedState>([])
+
+  // TODO: Osasuorituksen lisääminen sulkee kaiken. Pitäisi mergettää vanha lista uuden päälle, jotta tilatieto säilyy.
+  useEffect(() => {
+    setOsasuorituksetOpenState((oldState) => {
+      return constructOsasuorituksetOpenState(
+        0,
+        päätasonSuoritus.index,
+        päätasonSuoritus.suoritus.osasuoritukset || []
+      )
+    })
+  }, [päätasonSuoritus.index, päätasonSuoritus.suoritus.osasuoritukset])
 
   const allOsasuorituksetOpen = osasuorituksetOpenState.every(
     (val) => val.expanded === true
