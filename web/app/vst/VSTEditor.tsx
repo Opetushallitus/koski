@@ -126,7 +126,6 @@ import {
   PerusteEdit,
   PerusteView
 } from '../components-v2/opiskeluoikeus/PerusteField'
-import { VapaanSivistystyönVapaatavoitteinenKoulutus } from '../types/fi/oph/koski/schema/VapaanSivistystyonVapaatavoitteinenKoulutus'
 import { VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus'
 import { VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonVapaatavoitteisenKoulutuksenOsasuoritus'
 import {
@@ -134,11 +133,14 @@ import {
   VapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus
 } from '../types/fi/oph/koski/schema/VapaanSivistystyonLukutaitokoulutuksenKokonaisuudenSuoritus'
 import { VapaanSivistystyönLukutaidonKokonaisuus } from '../types/fi/oph/koski/schema/VapaanSivistystyonLukutaidonKokonaisuus'
-import { isLukutaitokoulutuksenArviointi } from '../types/fi/oph/koski/schema/LukutaitokoulutuksenArviointi'
 import {
   TaitotasoEdit,
   TaitotasoView
 } from '../components-v2/opiskeluoikeus/TaitotasoField'
+import { Column, ColumnRow } from '../components-v2/containers/Columns'
+import { PaikallinenOsasuoritusSelect } from '../components-v2/opiskeluoikeus/PaikallinenOsasuoritusSelect'
+import { subTestId } from '../components-v2/CommonProps'
+import { KoodistoSelect } from '../components-v2/opiskeluoikeus/KoodistoSelect'
 
 /**
  * Tarkistaa, että koodistokoodiviitteen koodistoUri ja koodiarvo täsmäävät haluttuun arvoon. Tämä lisäksi tarkentaa Koodistokoodiviitteen tyypin.
@@ -267,6 +269,7 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
 
   // Päätason suoritus
   const [päätasonSuoritus, setPäätasonSuoritus] = usePäätasonSuoritus(form)
+
   const appendOsasuoritus = useCallback(
     (newOsasuoritus: VSTOsasuoritus) => {
       const osPath = modal.data?.osasuoritusPath
@@ -279,6 +282,17 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
       }
     },
     [form, modal.data?.osasuoritusPath]
+  )
+
+  const appendPäätasonOsasuoritus = useCallback(
+    (newOsasuoritus: VSTOsasuoritus) => {
+      form.updateAt(päätasonSuoritus.path, (päätaso) => ({
+        ...päätaso,
+        // @ts-expect-error
+        osasuoritukset: append(newOsasuoritus)(päätaso.osasuoritukset)
+      }))
+    },
+    [form, päätasonSuoritus.path]
   )
 
   const createOsasuoritus = useCallback(
@@ -442,6 +456,50 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
     },
     [appendOsasuoritus, päätasonSuoritus.suoritus]
   )
+
+  const createPaikallinenPäätasonOsasuoritus = useCallback(
+    (tunniste: PaikallinenKoodi, isNew: boolean) => {
+      console.log('createPaikallinenPäätasonOsasuoritus tunniste', tunniste)
+      // 1) VapaanSivistystyönJotpaKoulutuksenSuoritus
+      if (
+        isVapaanSivistystyönJotpaKoulutuksenSuoritus(päätasonSuoritus.suoritus)
+      ) {
+        appendPäätasonOsasuoritus(
+          VapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus({
+            koulutusmoduuli: VapaanSivistystyönJotpaKoulutuksenOsasuoritus({
+              tunniste,
+              laajuus: defaultLaajuusOpintopisteissa
+            })
+          })
+        )
+
+        // 2) VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus
+      } else if (
+        isVapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus(
+          päätasonSuoritus.suoritus
+        ) &&
+        isPaikallinenKoodi(tunniste)
+      ) {
+        appendPäätasonOsasuoritus(
+          VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus({
+            koulutusmoduuli:
+              VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuoritus({
+                tunniste,
+                laajuus: defaultLaajuusOpintopisteissa,
+                // TODO: Kytke lomake
+                kuvaus: Finnish({ fi: 'Foo Bar' })
+              })
+          })
+        )
+      } else {
+        throw new Error(
+          `Not yet implemented for ${päätasonSuoritus.suoritus.$class}`
+        )
+      }
+    },
+    [appendPäätasonOsasuoritus, päätasonSuoritus.suoritus]
+  )
+
   const [osasuorituksetOpenState, setOsasuorituksetOpenState] = useState(
     constructOsasuorituksetOpenState(
       0,
@@ -759,6 +817,65 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
               </KeyValueRow>
             </KeyValueTable>
           </>
+        )}
+        {form.editMode && (
+          <ColumnRow>
+            <Column span={{ default: 1, phone: 0 }} />
+            <Column span={{ default: 14, small: 10, phone: 24 }}>
+              {(isVapaanSivistystyönJotpaKoulutuksenSuoritus(
+                päätasonSuoritus.suoritus
+              ) ||
+                isVapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus(
+                  päätasonSuoritus.suoritus
+                )) && (
+                <PaikallinenOsasuoritusSelect
+                  tunnisteet={[]}
+                  onSelect={createPaikallinenPäätasonOsasuoritus}
+                  onRemove={() => console.log('TODO: onRemove')}
+                  testId={subTestId(päätasonSuoritus, 'addOsasuoritus')}
+                />
+              )}
+              {isOppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus2022(
+                päätasonSuoritus.suoritus
+              ) && (
+                <KoodistoSelect
+                  koodistoUri="vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus"
+                  addNewText={t('Lisää osasuoritus')}
+                  onSelect={(tunniste, isNew) =>
+                    console.log('new tunniste', tunniste)
+                  }
+                  onRemove={() => console.log('TODO: onRemove')}
+                  testId={subTestId(päätasonSuoritus, 'addOsasuoritus')}
+                />
+              )}
+              {isVapaanSivistystyönLukutaitokoulutuksenSuoritus(
+                päätasonSuoritus.suoritus
+              ) && (
+                <KoodistoSelect
+                  koodistoUri="vstlukutaitokoulutuksenkokonaisuus"
+                  addNewText={t('Lisää kokonaisuus')}
+                  onSelect={(tunniste, isNew) =>
+                    console.log('new tunniste', tunniste)
+                  }
+                  onRemove={() => console.log('TODO: onRemove')}
+                  testId={subTestId(päätasonSuoritus, 'addOsasuoritus')}
+                />
+              )}
+              {isOppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus(
+                päätasonSuoritus.suoritus
+              ) && (
+                <KoodistoSelect
+                  koodistoUri="vstosaamiskokonaisuus"
+                  addNewText={t('Lisää osaamiskokonaisuus')}
+                  onSelect={(tunniste, isNew) =>
+                    console.log('new tunniste', tunniste)
+                  }
+                  onRemove={() => console.log('TODO: onRemove')}
+                  testId={subTestId(päätasonSuoritus, 'addOsaamiskokonaisuus')}
+                />
+              )}
+            </Column>
+          </ColumnRow>
         )}
       </EditorContainer>
     </>
