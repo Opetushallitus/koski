@@ -4,7 +4,7 @@ import { localize, t } from '../../i18n/i18n'
 import { OsaamisenTunnustaminen } from '../../types/fi/oph/koski/schema/OsaamisenTunnustaminen'
 import { SelitettyOsaamisenTunnustaminen } from '../../types/fi/oph/koski/schema/SelitettyOsaamisenTunnustaminen'
 import { TaiteenPerusopetuksenOsasuorituksenTunnustus } from '../../types/fi/oph/koski/schema/TaiteenPerusopetuksenOsasuorituksenTunnustus'
-import { allLanguages, currentLanguage } from '../../util/optics'
+import { allLanguages } from '../../util/optics'
 import { assertNever } from '../../util/selfcare'
 import { ClassOf } from '../../util/types'
 import { common, CommonProps, testId } from '../CommonProps'
@@ -13,10 +13,10 @@ import { Removable } from '../controls/Removable'
 import { MultilineTextEdit } from '../controls/TextField'
 import { FieldErrors } from '../forms/FieldErrors'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
-import { getValue } from '../forms/FormModel'
 
 export type TunnustusViewProps<T extends SelitettyOsaamisenTunnustaminen> =
-  CommonProps<FieldViewerProps<T>>
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  CommonProps<FieldViewerProps<T, {}>>
 
 export const TunnustusView = <T extends SelitettyOsaamisenTunnustaminen>(
   props: TunnustusViewProps<T>
@@ -29,13 +29,11 @@ export const TunnustusView = <T extends SelitettyOsaamisenTunnustaminen>(
 }
 
 export type TunnustusEditProps<T extends SelitettyOsaamisenTunnustaminen> =
-  CommonProps<
-    FieldEditorProps<
-      T,
-      {
-        tunnustusClass: ClassOf<T>
-      }
-    >
+  FieldEditorProps<
+    T,
+    {
+      tunnustusClass: ClassOf<T>
+    }
   >
 
 export const TunnustusEdit = <T extends SelitettyOsaamisenTunnustaminen>(
@@ -50,7 +48,8 @@ export const TunnustusEdit = <T extends SelitettyOsaamisenTunnustaminen>(
   const onChange = (s?: string) =>
     props.onChange($.set(selitePath)(s)(props.value) as T)
 
-  const add = () => props.onChange(createEmptyTunnustus(props.tunnustusClass))
+  const add = () =>
+    props.onChange(createEmptyTunnustus(props.tunnustusClass) as any)
   const remove = () => props.onChange(undefined)
 
   return (

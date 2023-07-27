@@ -34,7 +34,6 @@ import {
 } from '../types/EditorModels'
 import { ChangeBusContext, Contextualized } from '../types/EditorModelContext'
 import { OsasuoritusEditorModel } from '../types/OsasuoritusEditorModel'
-import { Deprecated_Koodistokoodiviite } from '../types/common'
 import { withoutNullValues } from '../util/objects'
 import { PaikallinenKoodi } from '../types/fi/oph/koski/schema/PaikallinenKoodi'
 import { OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus } from '../types/fi/oph/koski/schema/OppivelvollisilleSuunnattuVapaanSivistystyonOpintokokonaisuus'

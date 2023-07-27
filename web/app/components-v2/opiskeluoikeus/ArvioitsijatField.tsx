@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import * as A from 'fp-ts/Array'
 import { pipe } from 'fp-ts/lib/function'
 import * as O from 'fp-ts/Option'
@@ -11,7 +12,7 @@ import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
 import { narrowErrorsToLeaf } from '../forms/validator'
 
 export type ArvioitsijatViewProps = CommonProps<
-  FieldViewerProps<Arvioitsija[] | undefined>
+  FieldViewerProps<Arvioitsija[] | undefined, {}>
 >
 
 export const ArvioitsijatView: React.FC<ArvioitsijatViewProps> = (props) => {
@@ -27,7 +28,7 @@ export const ArvioitsijatView: React.FC<ArvioitsijatViewProps> = (props) => {
 }
 
 export type ArvioitsijatEditProps = CommonProps<
-  FieldEditorProps<Arvioitsija[] | undefined>
+  FieldEditorProps<Arvioitsija[] | undefined, {}>
 >
 
 export const ArvioitsijatEdit: React.FC<ArvioitsijatEditProps> = (props) => {

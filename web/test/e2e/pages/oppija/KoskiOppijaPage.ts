@@ -72,6 +72,12 @@ export class KoskiOppijaPage {
     await expect(this.page).toHaveURL(/\/koski\/oppija\/1\.2\..*/)
   }
 
+  async gotoWithQueryParams(oid: string, queryParams: Record<string, string>) {
+    const params = new URLSearchParams(queryParams)
+    await this.page.goto(`/koski/oppija/${oid}?${params.toString()}`)
+    await expect(this.page).toHaveURL(/\/koski\/oppija\/1\.2\..*/)
+  }
+
   async selectOpiskeluoikeus(tyyppi: string) {
     const opiskeluoikeusTab = this.opiskeluoikeudetNav.getByTestId(
       `opiskeluoikeustyyppi-${tyyppi}`
@@ -97,8 +103,8 @@ export class KoskiOppijaPage {
 
   async vahvistaSuoritus(
     päivämäärä: string,
-    nimi: string = 'Reijo Rehtori',
-    titteli: string = 'Rehtori'
+    nimi = 'Reijo Rehtori',
+    titteli = 'Rehtori'
   ) {
     await this.page.getByTestId('merkitse-suoritus-valmiiksi').click()
 
@@ -132,11 +138,14 @@ export class KoskiOppijaPage {
   }
 
   async avaaMuokkausnäkymä() {
-    // @ts-expect-error
-    await this.page.evaluate(() => (window.DISABLE_EXIT_HOOKS = true))
+    await this.page.evaluate(() => {
+      if ('DISABLE_EXIT_HOOKS' in window) {
+        window.DISABLE_EXIT_HOOKS = true
+      }
+    })
     await this.muokkausNäkymäBtn.click()
     await this.peruutaMuutoksetLink.waitFor()
-    await expect(this.page).toHaveURL(/.*\?.*\&edit=.*/)
+    await expect(this.page).toHaveURL(/.*\?.*&edit=.*/)
   }
 
   async peruuta() {

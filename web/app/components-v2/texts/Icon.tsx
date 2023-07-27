@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 import { t } from '../../i18n/i18n'
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
-import { common, CommonProps, CommonPropsWithChildren } from '../CommonProps'
+import { common, CommonProps } from '../CommonProps'
 
 export type IconProps = CommonProps<{
   charCode: string

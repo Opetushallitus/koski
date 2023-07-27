@@ -4,8 +4,18 @@ import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString
 import { common, CommonProps } from '../CommonProps'
 import { FieldEditorProps } from '../forms/FormField'
 
+export type TodistuksellaNäkyvätLisätiedotViewProps = CommonProps<
+  FieldEditorProps<LocalizedString, {}>
+>
+
+export const TodistuksellaNäkyvätLisätiedotView: React.FC<
+  TodistuksellaNäkyvätLisätiedotEditProps
+> = ({ value }) => {
+  return <span>{isFinnish(value) ? value?.fi : value?.en || '-'}</span>
+}
+
 export type TodistuksellaNäkyvätLisätiedotEditProps = CommonProps<
-  FieldEditorProps<LocalizedString>
+  FieldEditorProps<LocalizedString, {}>
 >
 
 export const TodistuksellaNäkyvätLisätiedotEdit: React.FC<

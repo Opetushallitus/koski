@@ -124,7 +124,7 @@ const createState = (oppijaOid) => {
   )
 
   const queryString = currentLocation().filterQueryParams((key) =>
-    ['opiskeluoikeus', 'versionumero'].includes(key)
+    ['opiskeluoikeus', 'versionumero', 'newVSTUI'].includes(key)
   ).queryString
 
   const oppijaEditorUri = `/koski/api/editor/${oppijaOid}${queryString}`

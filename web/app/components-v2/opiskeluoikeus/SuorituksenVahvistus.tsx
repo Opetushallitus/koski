@@ -72,7 +72,7 @@ export const SuorituksenVahvistusField = <T extends Opiskeluoikeus>(
 // Suorituksen vahvitus viewer
 
 export type SuorituksenVahvistusViewProps<T extends Vahvistus> = CommonProps<
-  FieldViewerProps<T | undefined>
+  FieldViewerProps<T | undefined, {}>
 >
 
 export const SuorituksenVahvistusView = <T extends Vahvistus>({

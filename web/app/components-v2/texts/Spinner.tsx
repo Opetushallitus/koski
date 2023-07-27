@@ -1,5 +1,5 @@
 import React from 'react'
-import { common, CommonProps, cx } from '../CommonProps'
+import { common, CommonProps } from '../CommonProps'
 
 export type SpinnerProps = CommonProps<{
   inline?: boolean

@@ -24,12 +24,12 @@ type ArvosanaOf<T extends Arviointi> = Exclude<
   KoodiviiteWithOptionalUri
 >
 
-export type ArviointiViewProps<T extends Arviointi> = CommonProps<
-  FieldViewerProps<T[] | undefined>
+export type ArvosanaViewProps<T extends Arviointi> = CommonProps<
+  FieldViewerProps<T[] | undefined, {}>
 >
 
 export const ArvosanaView = <T extends Arviointi>(
-  props: ArviointiViewProps<T>
+  props: ArvosanaViewProps<T>
 ) => {
   const arviointi = props.value !== undefined && viimeisinArviointi(props.value)
   return arviointi ? (
@@ -39,14 +39,14 @@ export const ArvosanaView = <T extends Arviointi>(
   ) : null
 }
 
-export type ArviointiEditProps<T extends Arviointi> = CommonProps<
-  FieldEditorProps<T[] | undefined> & {
-    createArviointi: (arvosana: ArvosanaOf<T>) => T
-  }
->
+export type ArvosanaEditProps<T extends Arviointi> = CommonProps<
+  FieldEditorProps<T[] | undefined, {}>
+> & {
+  createArviointi: (arvosana: ArvosanaOf<T>) => T
+}
 
 export const ArvosanaEdit = <T extends Arviointi>(
-  props: ArviointiEditProps<T>
+  props: ArvosanaEditProps<T>
 ) => {
   const { createArviointi } = props
   const schemaClass = useMemo(

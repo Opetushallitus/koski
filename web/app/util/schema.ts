@@ -17,6 +17,7 @@ import {
   isHenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla
 } from '../types/fi/oph/koski/schema/HenkilovahvistusValinnaisellaTittelillaJaValinnaisellaPaikkakunnalla'
 import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
+import { LukutaitokoulutuksenArviointi } from '../types/fi/oph/koski/schema/LukutaitokoulutuksenArviointi'
 import { OpiskeluoikeudenTila } from '../types/fi/oph/koski/schema/OpiskeluoikeudenTila'
 import { Opiskeluoikeusjakso } from '../types/fi/oph/koski/schema/Opiskeluoikeusjakso'
 import { Vahvistus } from '../types/fi/oph/koski/schema/Vahvistus'
@@ -52,6 +53,11 @@ export const viimeisinOpiskelujaksonTila = (
 export const viimeisinArviointi = (
   arviointi: Arviointi[]
 ): Arviointi | undefined => pipe(A.last(arviointi), O.toUndefined)
+
+export const viimeisinLukutaitokoulutuksenArviointi = (
+  arviointi: LukutaitokoulutuksenArviointi[]
+): LukutaitokoulutuksenArviointi | undefined =>
+  pipe(A.last(arviointi), O.toUndefined)
 
 export const isHenkilövahvistus = (
   vahvistus: Vahvistus

@@ -1,13 +1,7 @@
 import React from 'baret'
 import * as R from 'ramda'
 
-import {
-  modelData,
-  modelEmpty,
-  modelLookup,
-  modelProperties,
-  pushRemoval
-} from '../editor/EditorModel'
+import { modelData, modelLookup, pushRemoval } from '../editor/EditorModel'
 import { PropertiesEditor } from '../editor/PropertiesEditor'
 import { suoritusProperties } from '../suoritus/SuoritustaulukkoCommon'
 import { VapaanSivistystyonSuoritustaulukko } from './VapaanSivistystyonSuoritustaulukko'

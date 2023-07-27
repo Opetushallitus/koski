@@ -1,5 +1,5 @@
 import { isNonEmpty } from 'fp-ts/lib/Array'
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useSchema } from '../appstate/constraints'
 import { useKoodistoFiller } from '../appstate/koodisto'
 import { assortedPreferenceType, usePreferences } from '../appstate/preferences'
@@ -11,6 +11,7 @@ import {
   usePäätasonSuoritus
 } from '../components-v2/containers/EditorContainer'
 import { LocalizedTextView } from '../components-v2/controls/LocalizedTestField'
+import { RaisedButton } from '../components-v2/controls/RaisedButton'
 import { RemoveArrayItemField } from '../components-v2/controls/RemoveArrayItemField'
 import { FormField } from '../components-v2/forms/FormField'
 import { FormModel, FormOptic, useForm } from '../components-v2/forms/FormModel'
@@ -30,7 +31,9 @@ import { OpiskeluoikeusTitle } from '../components-v2/opiskeluoikeus/Opiskeluoik
 import {
   osasuoritusTestId,
   OsasuoritusRowData,
-  OsasuoritusTable
+  OsasuoritusTable,
+  constructOsasuorituksetOpenState,
+  OsasuorituksetExpandedState
 } from '../components-v2/opiskeluoikeus/OsasuoritusTable'
 import { PaikallinenOsasuoritusSelect } from '../components-v2/opiskeluoikeus/PaikallinenOsasuoritusSelect'
 import { SuorituksenVahvistusField } from '../components-v2/opiskeluoikeus/SuorituksenVahvistus'
@@ -59,9 +62,9 @@ import {
 export type TaiteenPerusopetusEditorProps =
   AdaptedOpiskeluoikeusEditorProps<TaiteenPerusopetuksenOpiskeluoikeus>
 
-export const TaiteenPerusopetusEditor = (
-  props: TaiteenPerusopetusEditorProps
-) => {
+export const TaiteenPerusopetusEditor: React.FC<
+  TaiteenPerusopetusEditorProps
+> = (props) => {
   const fillKoodistot = useKoodistoFiller()
 
   // Opiskeluoikeus
@@ -168,6 +171,49 @@ export const TaiteenPerusopetusEditor = (
   const suorituksetVahvistettu =
     form.state.suoritukset.filter((s) => Boolean(s.vahvistus)).length >= 2
 
+  const [osasuorituksetOpenState, setOsasuorituksetOpenState] =
+    useState<OsasuorituksetExpandedState>([])
+
+  useEffect(() => {
+    setOsasuorituksetOpenState((oldState) => {
+      return constructOsasuorituksetOpenState(
+        0,
+        päätasonSuoritus.index,
+        päätasonSuoritus.suoritus.osasuoritukset || []
+      )
+    })
+  }, [päätasonSuoritus.index, päätasonSuoritus.suoritus.osasuoritukset])
+
+  const allOsasuorituksetOpen = osasuorituksetOpenState.every(
+    (val) => val.expanded === true
+  )
+
+  const isAnyModalOpen =
+    Object.values(osasuorituksetOpenState).some(
+      (val) => val.expanded === true
+    ) || allOsasuorituksetOpen
+
+  const toggleOsasuorituksetOpenState = useCallback(() => {
+    setOsasuorituksetOpenState((oldState) =>
+      oldState.map((item) => ({ ...item, expanded: !isAnyModalOpen }), oldState)
+    )
+  }, [isAnyModalOpen])
+
+  const setOsasuorituksetStateHandler = useCallback(
+    (key: string, expanded: boolean) => {
+      setOsasuorituksetOpenState((oldState) =>
+        oldState.map((s) => {
+          if (s.key === key) {
+            return { ...s, expanded }
+          } else {
+            return s
+          }
+        })
+      )
+    },
+    []
+  )
+
   // Render
 
   return (
@@ -255,13 +301,28 @@ export const TaiteenPerusopetusEditor = (
         {päätasonSuoritus.suoritus.osasuoritukset &&
           isNonEmpty(päätasonSuoritus.suoritus.osasuoritukset) && (
             <>
+              <RaisedButton
+                data-testid={`suoritukset.${päätasonSuoritus.index}.expand`}
+                onClick={(e) => {
+                  e.preventDefault()
+                  toggleOsasuorituksetOpenState()
+                }}
+              >
+                {isAnyModalOpen ? t('Sulje kaikki') : t('Avaa kaikki')}
+              </RaisedButton>
+              <Spacer />
               <OsasuoritusTable
+                level={0}
+                openState={osasuorituksetOpenState}
+                toggleModal={toggleOsasuorituksetOpenState}
+                setOsasuoritusOpen={setOsasuorituksetStateHandler}
                 editMode={form.editMode}
                 rows={päätasonSuoritus.suoritus.osasuoritukset.map(
                   (_, osasuoritusIndex) =>
                     osasuoritusToTableRow(
                       form,
                       päätasonSuoritus.path,
+                      0,
                       päätasonSuoritus.index,
                       osasuoritusIndex
                     )
@@ -296,6 +357,7 @@ const osasuoritusToTableRow = (
     TaiteenPerusopetuksenOpiskeluoikeus,
     TaiteenPerusopetuksenPäätasonSuoritus
   >,
+  levelIndex: number,
   suoritusIndex: number,
   osasuoritusIndex: number
 ): OsasuoritusRowData<'Osasuoritus' | 'Laajuus' | 'Arviointi'> => {
@@ -307,13 +369,19 @@ const osasuoritusToTableRow = (
   return {
     suoritusIndex,
     osasuoritusIndex,
+    expandable: true,
     columns: {
       Osasuoritus: (
         <FormField
           form={form}
           path={osasuoritus.path('koulutusmoduuli.tunniste.nimi')}
           view={LocalizedTextView}
-          testId={osasuoritusTestId(suoritusIndex, osasuoritusIndex, 'nimi')}
+          testId={osasuoritusTestId(
+            suoritusIndex,
+            levelIndex,
+            osasuoritusIndex,
+            'nimi'
+          )}
         />
       ),
       Laajuus: (
@@ -322,7 +390,12 @@ const osasuoritusToTableRow = (
           path={osasuoritus.path('koulutusmoduuli.laajuus')}
           view={LaajuusView}
           edit={LaajuusOpintopisteissäEdit}
-          testId={osasuoritusTestId(suoritusIndex, osasuoritusIndex, 'laajuus')}
+          testId={osasuoritusTestId(
+            suoritusIndex,
+            levelIndex,
+            osasuoritusIndex,
+            'laajuus'
+          )}
         />
       ),
       Arviointi: (
@@ -335,6 +408,7 @@ const osasuoritusToTableRow = (
           )}
           testId={osasuoritusTestId(
             suoritusIndex,
+            levelIndex,
             osasuoritusIndex,
             'arvosana'
           )}
@@ -342,7 +416,16 @@ const osasuoritusToTableRow = (
       )
     },
     content: (
-      <TpoOsasuoritusProperties form={form} osasuoritusPath={osasuoritus} />
+      <TpoOsasuoritusProperties
+        form={form}
+        osasuoritusPath={osasuoritus}
+        testId={osasuoritusTestId(
+          suoritusIndex,
+          levelIndex,
+          osasuoritusIndex,
+          'properties'
+        )}
+      />
     )
   }
 }

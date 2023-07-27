@@ -8,48 +8,98 @@ import { FormModel, FormOptic, getValue } from './FormModel'
 import { useFormErrors } from './useFormErrors'
 import { ValidationError } from './validator'
 
-export type FieldViewerProps<T, P extends object = object> = P & {
-  value?: T | undefined
+/*
+
+type Foo = {
+  foo: string
+}
+
+type Bar = {
+  bar: number
+}
+
+const FooBarBazView: React.FC<FieldViewerProps<string, Foo>> = (
+  props
+): React.ReactElement | null => <div>{props.foo}</div>
+
+const FooBarBazEdit: React.FC<FieldEditorProps<string, Bar>> = (
+  props
+): React.ReactElement | null => <div>{props.bar}</div>
+
+const FooBarField = ({ form, path }: any) => (
+  <FormField
+    form={form}
+    path={path}
+    view={FooBarBazView}
+    viewProps={{
+      foo: '5'
+    }}
+    edit={FooBarBazEdit}
+    editProps={{
+      bar: 6
+    }}
+  />
+)
+
+*/
+
+export type FieldViewerProps<FieldValue, ViewerProps> = ViewerProps & {
+  value?: FieldValue | undefined
   testId?: string
 }
 
-export type FieldEditorProps<T, P extends object = object> = P & {
-  initialValue?: T | undefined
-  value?: T | undefined
-  onChange: (value?: T) => void
+export type FieldEditorProps<FieldValue, EditorProps> = EditorProps & {
+  initialValue?: FieldValue | undefined
+  onChange: (value?: FieldValue) => void
   optional?: boolean
   errors?: NEA.NonEmptyArray<ValidationError>
+  value?: FieldValue | undefined
   testId?: string
 }
 
+type ComponentType<T> =
+  | React.FunctionComponent<T>
+  | ((props: T) => React.ReactElement | null)
+
+type ExtractComponentProps<T> = T extends ComponentType<infer P> ? P : never
+
+type ExtractViewerProps<T> = T extends FieldViewerProps<any, infer K>
+  ? K
+  : never
+type ExtractEditorProps<T> = T extends FieldEditorProps<any, infer K>
+  ? K
+  : never
+
 export type FormFieldProps<
-  O extends object,
-  T,
-  VP extends object,
-  EP extends object,
-  VIEW_PROPS extends FieldViewerProps<T, VP>,
-  EDIT_PROPS extends FieldEditorProps<T, EP>
+  FormState extends object,
+  FieldValue,
+  VIEW_COMPONENT extends React.FunctionComponent<
+    FieldViewerProps<FieldValue, any>
+  >,
+  EDIT_COMPONENT extends React.FunctionComponent<
+    FieldEditorProps<FieldValue, any>
+  >
 > = {
   // Lomake johon kenttä kytketään
-  form: FormModel<O>
+  form: FormModel<FormState>
   // Komponentti jota käytetään arvon näyttämiseen normaalitilassa
-  view: React.FC<VIEW_PROPS>
+  view: VIEW_COMPONENT
   // Näyttökomponentille annettavat lisäpropertyt
-  viewProps?: VP
+  viewProps?: Partial<ExtractViewerProps<ExtractComponentProps<VIEW_COMPONENT>>>
   // Komponentti jota käytetään arvon näyttämiseen ja muokkaamiseen muokkaustilassa
-  edit?: React.FC<EDIT_PROPS>
+  edit?: EDIT_COMPONENT
   // Muokkauskomponentille annettavat lisäpropertyt
-  editProps?: EP
+  editProps?: Partial<ExtractEditorProps<ExtractComponentProps<EDIT_COMPONENT>>>
   // Funktio joka laskee kentän arvon automaattisesti (esim. laajuuksien yhteismäärä). Tätä käytetäessä älä käytä edit-propertya.
-  auto?: () => T | undefined
+  auto?: () => FieldValue | undefined
   // Muut kohteet lomakedatassa, jotka päivitetään myös kentän arvoa muokatessa
-  updateAlso?: Array<SideUpdate<O, T, any>>
+  updateAlso?: Array<SideUpdate<FormState, FieldValue, any>>
   // Polku mitä käytetään virheiden hakemiseen, jos eri kuin mikä voidaan muodostaa path-propertysta.
   errorsFromPath?: string
   testId?: string
 } & ( // Polku (Lens tai Prism) joka osoittaa mitä arvoa lomakkeen datasta ollaan muokkaamassa
-  | { path: FormOptic<O, T>; optional?: false }
-  | { path: FormOptic<O, T | undefined>; optional: true }
+  | { path: FormOptic<FormState, FieldValue>; optional?: false }
+  | { path: FormOptic<FormState, FieldValue | undefined>; optional: true }
 )
 
 export type SideUpdate<O extends object, T, S> = (value?: T) => {
@@ -74,14 +124,16 @@ export const sideUpdate =
  * @returns
  */
 export const FormField = <
-  O extends object,
-  T,
-  VP extends object,
-  EP extends object,
-  VIEW_PROPS extends FieldViewerProps<T, VP>,
-  EDIT_PROPS extends FieldEditorProps<T, EP>
+  FormState extends object,
+  FieldValue,
+  VIEW_COMPONENT extends React.FunctionComponent<
+    FieldViewerProps<FieldValue, any>
+  >,
+  EDIT_COMPONENT extends React.FunctionComponent<
+    FieldEditorProps<FieldValue, any>
+  >
 >(
-  props: FormFieldProps<O, T, VP, EP, VIEW_PROPS, EDIT_PROPS>
+  props: FormFieldProps<FormState, FieldValue, VIEW_COMPONENT, EDIT_COMPONENT>
 ) => {
   const {
     form,
@@ -99,29 +151,40 @@ export const FormField = <
   const fillKoodistot = useKoodistoFiller()
 
   const initialValue = useMemo(
-    () => getValue(path as FormOptic<O, T | undefined>)(form.initialState),
+    () =>
+      getValue(path as FormOptic<FormState, FieldValue | undefined>)(
+        form.initialState
+      ),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [form.initialState]
   )
   const value = useMemo(
-    () => getValue(path as FormOptic<O, T | undefined>)(form.state),
+    () =>
+      getValue(path as FormOptic<FormState, FieldValue | undefined>)(
+        form.state
+      ),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [form.state, path]
   )
 
   const errors = useFormErrors(
     form,
-    errorsFromPath || (path as any as FormOptic<O, object>)
+    errorsFromPath || (path as any as FormOptic<FormState, object>)
   )
 
   const set = useCallback(
-    async (newValue?: T) => {
+    async (newValue?: FieldValue) => {
       const filledValue = await fillKoodistot(newValue)
-      form.updateAt(path as FormOptic<O, T | undefined>, constant(filledValue))
-      secondaryPaths?.forEach(<S,>(update: SideUpdate<O, T, S>) => {
-        const side = update(filledValue)
-        form.updateAt(side.path, side.update)
-      })
+      form.updateAt(
+        path as FormOptic<FormState, FieldValue | undefined>,
+        constant(filledValue)
+      )
+      secondaryPaths?.forEach(
+        <S,>(update: SideUpdate<FormState, FieldValue, S>) => {
+          const side = update(filledValue)
+          form.updateAt(side.path, side.update)
+        }
+      )
       form.validate()
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps

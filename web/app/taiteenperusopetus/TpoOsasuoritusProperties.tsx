@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import { DateEdit, DateView } from '../components-v2/controls/DateField'
 import { FormField } from '../components-v2/forms/FormField'
 import {
@@ -22,7 +22,7 @@ import {
 import { TaiteenPerusopetuksenOpiskeluoikeus } from '../types/fi/oph/koski/schema/TaiteenPerusopetuksenOpiskeluoikeus'
 import { TaiteenPerusopetuksenOsasuorituksenTunnustus } from '../types/fi/oph/koski/schema/TaiteenPerusopetuksenOsasuorituksenTunnustus'
 import { TaiteenPerusopetuksenPaikallisenOpintokokonaisuudenSuoritus } from '../types/fi/oph/koski/schema/TaiteenPerusopetuksenPaikallisenOpintokokonaisuudenSuoritus'
-import { lastElement, parsePath } from '../util/optics'
+import { lastElement } from '../util/optics'
 import { createTpoArviointi } from './tpoCommon'
 
 export type TpoOsasuoritusPropertiesProps = {
@@ -31,6 +31,7 @@ export type TpoOsasuoritusPropertiesProps = {
     TaiteenPerusopetuksenOpiskeluoikeus,
     TaiteenPerusopetuksenPaikallisenOpintokokonaisuudenSuoritus
   >
+  testId: string
 }
 
 export const TpoOsasuoritusProperties: React.FC<
@@ -47,11 +48,6 @@ export const TpoOsasuoritusProperties: React.FC<
   const arvioitu = Boolean(osasuoritus?.arviointi)
   const tunnustettu = Boolean(osasuoritus?.tunnustettu)
 
-  const parsedPath = useMemo(
-    () => `${parsePath(props.osasuoritusPath, props.form.state)}.properties`,
-    [props.form.state, props.osasuoritusPath]
-  )
-
   return (
     <div>
       {arvioitu && (
@@ -63,9 +59,10 @@ export const TpoOsasuoritusProperties: React.FC<
               view={ArvosanaView}
               edit={ArvosanaEdit}
               editProps={{
+                // @ts-expect-error TypeScript ei tajua, että tämä on oikeasti ok. createTpoArviointi -funktion parametrin tyyppi on väärä.
                 createArviointi: createTpoArviointi
               }}
-              testId={`${parsedPath}.arvosana`}
+              testId={`${props.testId}.arvosana`}
             />
           </OsasuoritusSubproperty>
           <OsasuoritusSubproperty rowNumber={1} label="Päivämäärä" key="pvm">
@@ -74,7 +71,7 @@ export const TpoOsasuoritusProperties: React.FC<
               path={viimeisinArviointiPath.prop('päivä')}
               view={DateView}
               edit={DateEdit}
-              testId={`${parsedPath}.arvostelunPvm`}
+              testId={`${props.testId}.arvostelunPvm`}
             />
           </OsasuoritusSubproperty>
         </OsasuoritusProperty>
@@ -91,7 +88,7 @@ export const TpoOsasuoritusProperties: React.FC<
                 tunnustusClass:
                   TaiteenPerusopetuksenOsasuorituksenTunnustus.className
               }}
-              testId={`${parsedPath}.tunnustettu`}
+              testId={`${props.testId}.tunnustettu`}
             />
           </OsasuoritusPropertyValue>
         </OsasuoritusProperty>

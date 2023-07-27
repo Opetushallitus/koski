@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import * as A from 'fp-ts/Array'
 import { pipe } from 'fp-ts/lib/function'
 import * as O from 'fp-ts/Option'
@@ -23,7 +24,7 @@ import { CHARCODE_ADD, IconLabel } from '../texts/Icon'
 // Organisaatiohenkilö viewer
 
 export type OrganisaatioHenkilötViewProps<T extends AnyOrganisaatiohenkilö> =
-  CommonProps<FieldViewerProps<T[] | undefined>>
+  CommonProps<FieldViewerProps<T[] | undefined, {}>>
 
 export const OrganisaatioHenkilötView = <T extends AnyOrganisaatiohenkilö>(
   props: OrganisaatioHenkilötViewProps<T>

@@ -43,9 +43,9 @@ test.describe('Taiteen perusopetus', () => {
       test('Oppimäärä on esivalittu ja oikeat suorituksen tyypit ovat valittavissa', async ({
         uusiOppijaPage
       }) => {
-        await expect(
-          await uusiOppijaPage.oppimäärä.textInput.textContent()
-        ).toBe('Taiteen perusopetuksen yleinen oppimäärä')
+        expect(await uusiOppijaPage.oppimäärä.textInput.textContent()).toBe(
+          'Taiteen perusopetuksen yleinen oppimäärä'
+        )
         await expect(
           await uusiOppijaPage.suoritustyyppi.getOptions()
         ).toHaveText([
@@ -77,7 +77,7 @@ test.describe('Taiteen perusopetus', () => {
             'Taiteen perusopetuksen laajan oppimäärän perusopintojen suoritus'
         })
         await expect(
-          await uusiOppijaPage.page.getByTestId('tpo-peruste-input')
+          uusiOppijaPage.page.getByTestId('tpo-peruste-input')
         ).toHaveValue('OPH-2068-2017')
       })
 
@@ -152,8 +152,7 @@ test.describe('Taiteen perusopetus', () => {
       taiteenPerusopetusPage: page
     }) => {
       for (let osasuoritusIndex = 0; osasuoritusIndex < 3; osasuoritusIndex++) {
-        await page.openOsasuoritus(osasuoritusIndex)
-
+        await page.openOsasuoritus(0, osasuoritusIndex)
         expect(await page.osasuoritustieto('nimi')).toBe('Musiikin kurssi')
         expect(await page.osasuoritustieto('laajuus')).toBe(
           ['10 op', '10 op', '9.6 op'][osasuoritusIndex]
@@ -190,7 +189,7 @@ test.describe('Taiteen perusopetus', () => {
         taiteenPerusopetusPage: page
       }) => {
         await page.addNewOsasuoritus('Nuotinnus')
-        await page.removeOsasuoritus(0)
+        await page.removeOsasuoritus(0, 0)
 
         expect(
           await page.$.suoritukset(0).addOsasuoritus.select.options()
@@ -223,10 +222,10 @@ test.describe('Taiteen perusopetus', () => {
         await page.addNewOsasuoritus('Kuorolaulu')
 
         page.osasuoritusIndex = 0
-        await page.setOsasuorituksenLaajuus(3.2)
+        await page.setOsasuorituksenLaajuus(0, 3.2)
 
         page.osasuoritusIndex = 1
-        await page.setOsasuorituksenLaajuus(3.1)
+        await page.setOsasuorituksenLaajuus(0, 3.1)
 
         expect(await page.suoritustieto('laajuus')).toEqual('6.3 op')
       })
@@ -315,7 +314,7 @@ test.describe('Taiteen perusopetus', () => {
         )
         expect(await vahvistusBtn.isDisabled()).toBe(true)
 
-        await page.setOsasuorituksenLaajuus(11.1)
+        await page.setOsasuorituksenLaajuus(0, 11.1)
         expect(await vahvistusBtn.isDisabled()).toBe(false)
       })
 
@@ -330,7 +329,7 @@ test.describe('Taiteen perusopetus', () => {
         await page.setOsasuorituksenArvosana(
           'arviointiasteikkotaiteenperusopetus_hyvaksytty'
         )
-        await page.setOsasuorituksenLaajuus(11.1)
+        await page.setOsasuorituksenLaajuus(0, 11.1)
 
         await page.vahvistaSuoritusUudellaHenkilöllä(
           'Teemu Rex',
@@ -359,7 +358,7 @@ test.describe('Taiteen perusopetus', () => {
         await page.setOsasuorituksenArvosana(
           'arviointiasteikkotaiteenperusopetus_hyvaksytty'
         )
-        await page.setOsasuorituksenLaajuus(11.1)
+        await page.setOsasuorituksenLaajuus(0, 11.1)
 
         await page.vahvistaSuoritusUudellaHenkilöllä(
           'Amos Rex',
@@ -393,7 +392,7 @@ test.describe('Taiteen perusopetus', () => {
         await page.setOsasuorituksenArvosana(
           'arviointiasteikkotaiteenperusopetus_hyvaksytty'
         )
-        await page.setOsasuorituksenLaajuus(11.1)
+        await page.setOsasuorituksenLaajuus(0, 11.1)
         await page.vahvistaSuoritusUudellaHenkilöllä(
           'Amos Rex',
           'rehtori',
@@ -414,7 +413,7 @@ test.describe('Taiteen perusopetus', () => {
         await page.setOsasuorituksenArvosana(
           'arviointiasteikkotaiteenperusopetus_hyvaksytty'
         )
-        await page.setOsasuorituksenLaajuus(11.1)
+        await page.setOsasuorituksenLaajuus(0, 11.1)
         await page.vahvistaSuoritusUudellaHenkilöllä(
           'Amos Rex',
           'rehtori',
@@ -427,7 +426,7 @@ test.describe('Taiteen perusopetus', () => {
         await page.setOsasuorituksenArvosana(
           'arviointiasteikkotaiteenperusopetus_hyvaksytty'
         )
-        await page.setOsasuorituksenLaajuus(11.1)
+        await page.setOsasuorituksenLaajuus(0, 11.1)
         await page.vahvistaSuoritusTallennetullaHenkilöllä(
           'Amos Rex',
           '1.2.2021'
