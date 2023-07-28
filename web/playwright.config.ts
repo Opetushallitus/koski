@@ -28,6 +28,8 @@ const config: PlaywrightTestConfig = {
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
+  // Limit the number of failures on CI to save resources
+  maxFailures: process.env.CI ? 3 : undefined,
   /* Opt out of parallel tests on CI. */
   // process.env.CI ? 1 : undefined
   workers: 1,
