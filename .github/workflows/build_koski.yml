@@ -1,0 +1,49 @@
+name: Build Koski & Valpas
+on:
+  pull_request:
+
+jobs:
+  build-koski-frontend:
+    runs-on: "ubuntu-20.04"
+    strategy:
+        matrix:
+          node-version: [ 16.19.0 ]
+    steps:
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          cache-dependency-path: ./web/package-lock.json
+      - name: "Install npm dependencies"
+        working-directory: "web"
+        run: npm ci
+  build-valpas-frontend:
+    runs-on: "ubuntu-20.04"
+    strategy:
+      matrix:
+        node-version: [ 16.19.0 ]
+    steps:
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          cache-dependency-path: ./valpas-web/package-lock.json
+      - name: "Install npm dependencies"
+        working-directory: valpas-web
+        run: npm ci
+  build-koski-backend:
+    runs-on: "ubuntu-20.04"
+    strategy:
+      matrix:
+        java-version: [ 11 ]
+        java-arch: [ x64 ]
+        java-dist: [ zulu ]
+    steps:
+      - name: Set up Java ${{ matrix.java-version }}
+        uses: actions/setup-java@v3
+        with:
+          java-version: ${{ matrix.java-version }}
+          architecture: ${{ matrix.java-arch }}
+          distribution: ${{ matrix.java-dist }}
