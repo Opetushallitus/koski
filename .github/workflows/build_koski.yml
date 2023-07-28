@@ -90,5 +90,5 @@ jobs:
         with:
           path: target/webapp/valpas
           key: ${{ runner.os }}-${{ matrix.node-version }}-${{ hashFiles('valpas-web/src/**') }}
-      - name: Check target folder contents
-        run: ls -lra target/webapp
+      - name: Build Koski app
+        run: mvn verify -DskipTests=true
