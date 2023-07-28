@@ -25,7 +25,7 @@ jobs:
         with:
           path: target/webapp/koski
           key: ${{ runner.os }}-${{ matrix.node-version }}-${{ hashFiles('web/app/**') }}
-      - name: "Build app"
+      - name: "Build Koski web"
         if: steps.koski-frontend-build-cache.outputs.cache-hit != 'true'
         working-directory: "web"
         run: npm run build:prod
@@ -45,7 +45,18 @@ jobs:
       - name: "Install npm dependencies"
         working-directory: valpas-web
         run: npm ci
+      - name: "Build Valpas web"
+        uses: actions/cache@v3
+        id: valpas-frontend-build-cache
+        with:
+          path: target/webapp/valpas
+          key: ${{ runner.os }}-${{ matrix.node-version }}-${{ hashFiles('valpas-web/src/**') }}
+      - name: "Build Koski web"
+        if: steps.valpas-frontend-build-cache.outputs.cache-hit != 'true'
+        working-directory: "web"
+        run: npm run build:prod
   build-koski-backend:
+    needs: [build-koski-frontend, build-valpas-frontend]
     runs-on: "ubuntu-20.04"
     strategy:
       matrix:
