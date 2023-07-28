@@ -73,5 +73,17 @@ jobs:
           distribution: ${{ matrix.java-dist }}
       - name: Check Maven version
         run: mvn --version
+      - name: "Get Koski production build"
+        uses: actions/cache@v3
+        id: koski-frontend-build-cache
+        with:
+          path: target/webapp/koski
+          key: ${{ runner.os }}-${{ matrix.node-version }}-${{ hashFiles('web/app/**') }}
+      - name: "Get Valpas production build"
+        uses: actions/cache@v3
+        id: valpas-frontend-build-cache
+        with:
+          path: target/webapp/valpas
+          key: ${{ runner.os }}-${{ matrix.node-version }}-${{ hashFiles('valpas-web/app/**') }}
       - name: Check target folder contents
         run: ls -lra target/webapp
