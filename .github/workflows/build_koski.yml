@@ -73,3 +73,5 @@ jobs:
           distribution: ${{ matrix.java-dist }}
       - name: Check Maven version
         run: mvn --version
+      - name: Check target folder contents
+        run: ls --lra target/webapp
