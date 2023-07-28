@@ -89,6 +89,6 @@ jobs:
         id: valpas-frontend-build-cache
         with:
           path: target/webapp/valpas
-          key: ${{ runner.os }}-${{ matrix.node-version }}-${{ hashFiles('valpas-web/app/**') }}
+          key: ${{ runner.os }}-${{ matrix.node-version }}-${{ hashFiles('valpas-web/src/**') }}
       - name: Check target folder contents
         run: ls -lra target/webapp
