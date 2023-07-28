@@ -507,6 +507,7 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
   useEffect(() => {
     setOsasuorituksetOpenState((oldState) => {
       return constructOsasuorituksetOpenState(
+        oldState,
         0,
         päätasonSuoritus.index,
         päätasonSuoritus.suoritus.osasuoritukset || []

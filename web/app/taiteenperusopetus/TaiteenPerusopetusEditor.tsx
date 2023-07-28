@@ -177,6 +177,7 @@ export const TaiteenPerusopetusEditor: React.FC<
   useEffect(() => {
     setOsasuorituksetOpenState((oldState) => {
       return constructOsasuorituksetOpenState(
+        oldState,
         0,
         päätasonSuoritus.index,
         päätasonSuoritus.suoritus.osasuoritukset || []

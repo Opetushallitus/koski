@@ -13,7 +13,6 @@ import {
 import { Section } from '../containers/Section'
 import { ExpandButton } from '../controls/ExpandButton'
 import { IconButton } from '../controls/IconButton'
-import { RaisedButton } from '../controls/RaisedButton'
 import { FormOptic } from '../forms/FormModel'
 import { Spacer } from '../layout/Spacer'
 import { CHARCODE_REMOVE } from '../texts/Icon'
@@ -21,13 +20,14 @@ import { CHARCODE_REMOVE } from '../texts/Icon'
 export const OSASUORITUSTABLE_DEPTH_KEY = 'OsasuoritusTable'
 
 export type ExpandState = {
-  key: `level_${number}_suoritus_${number}_osasuoritus_${number}`
+  key: string
   expanded: boolean
 }
 
 export type OsasuorituksetExpandedState = Array<ExpandState>
 
 export const constructOsasuorituksetOpenState = (
+  prevState: Array<ExpandState>,
   level: number,
   suoritusIndex: number,
   // TODO: Tyyppi
@@ -35,18 +35,21 @@ export const constructOsasuorituksetOpenState = (
 ): OsasuorituksetExpandedState => {
   return osasuoritukset.reduce<OsasuorituksetExpandedState>(
     (prev, _curr, i) => {
+      const key = `level_${level}_suoritus_${suoritusIndex}_osasuoritus_${i}`
+      const existing = prevState.find((v) => v.key === key)
       if (
         'osasuoritukset' in osasuoritukset[i] &&
         Array.isArray(osasuoritukset[i].osasuoritukset) &&
         osasuoritukset[i].osasuoritukset.length > 0
       ) {
         return [
-          ...prev,
+          ...prev.filter((p) => p.key !== key),
           {
-            key: `level_${level}_suoritus_${suoritusIndex}_osasuoritus_${i}`,
-            expanded: false
+            key,
+            expanded: existing !== undefined ? existing.expanded : false
           },
           ...constructOsasuorituksetOpenState(
+            prevState,
             level + 1,
             i,
             osasuoritukset[i].osasuoritukset
@@ -54,15 +57,15 @@ export const constructOsasuorituksetOpenState = (
         ]
       } else {
         return [
-          ...prev,
+          ...prev.filter((p) => p.key !== key),
           {
-            key: `level_${level}_suoritus_${suoritusIndex}_osasuoritus_${i}`,
-            expanded: false
+            key,
+            expanded: existing !== undefined ? existing.expanded : false
           }
         ]
       }
     },
-    []
+    prevState
   )
 }
 
