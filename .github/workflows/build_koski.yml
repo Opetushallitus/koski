@@ -3,11 +3,11 @@ on:
   pull_request:
 
 jobs:
-  strategy:
-    matrix:
-      node-version: [ 16.19.0 ]
   build-koski-frontend:
     runs-on: "ubuntu-20.04"
+    strategy:
+      matrix:
+        node-version: [ 16.19.0 ]
     steps:
       - uses: actions/checkout@v3
       - name: Setup Node.js ${{ matrix.node-version }}
