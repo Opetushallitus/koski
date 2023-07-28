@@ -92,3 +92,5 @@ jobs:
           key: ${{ runner.os }}-${{ matrix.node-version }}-${{ hashFiles('valpas-web/src/**') }}
       - name: Build Koski app
         run: mvn verify -DskipTests=true
+      - name: Check buildversion.txt
+        run: cat target/webapp/buildversion.txt
