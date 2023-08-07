@@ -90,7 +90,7 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
         RaportointiDatabaseSchema.createRolesIfNotExists,
         RaportointiDatabaseSchema.grantPermissions(Public)
       ).transactionally,
-      timeout = 5.minutes
+      timeout = 10.minutes
     )
     logger.info("RaportointiDatabase schema swapped")
   }
