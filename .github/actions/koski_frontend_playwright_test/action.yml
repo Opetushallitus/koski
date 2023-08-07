@@ -19,11 +19,8 @@ runs:
       env:
         PLAYWRIGHT_SHARD_INDEX: ${{inputs.shardIndex}}
         PLAYWRIGHT_SHARD_TOTAL: ${{inputs.shardTotal}}
-      uses: nick-fields/retry@v2
-      with:
-        max_attempts: 2
-        timeout_minutes: 45
-        command: mvn test -Pintegrationtest -Dsuites="fi.oph.koski.e2e.KoskiFrontSpec" --batch-mode
+      run: mvn test -Pintegrationtest -Dsuites="fi.oph.koski.e2e.KoskiFrontSpec"
+      shell: bash
     - uses: actions/upload-artifact@v3
       if: always()
       with:
