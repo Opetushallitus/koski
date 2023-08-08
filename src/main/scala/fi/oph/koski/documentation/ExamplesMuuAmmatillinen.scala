@@ -242,7 +242,7 @@ object MuunAmmatillisenKoulutuksenExample {
 
   lazy val muunAmmatillisenKoulutuksenSuoritus = MuunAmmatillisenKoulutuksenSuoritus(
     koulutusmoduuli = muuAmmatillinenKoulutus,
-    None,
+    täydentääTutkintoa = Some(AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351301", None, "koulutus", None), Some("39/011/2014"))),
     osaamisenHankkimistavat = None,
     koulutussopimukset = None,
     suorituskieli = suomenKieli,
@@ -285,7 +285,7 @@ object MuunAmmatillisenKoulutuksenExample {
         suorituskieli = None
       ),
       yhteisenTutkinnonOsanOsaAlueenSuoritusValtakunnallinen,
-      yhteisenTutkinnonOsanOsaAlueenSuoritusPaikallinen
+      yhteisenTutkinnonOsanOsaAlueenSuoritusPaikallinen,
     ))
   )
 
