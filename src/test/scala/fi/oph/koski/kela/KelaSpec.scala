@@ -72,7 +72,7 @@ class KelaSpec
       }
     }
 
-    "Palauttaa tiedon täydentääTutkintoa kun kyseessä on Muu ammatillinen koulutus" in {
+    "Palauttaa tiedon 'täydentääTutkintoa' kun kyseessä on Muu ammatillinen koulutus" in {
       postHetu(KoskiSpecificMockOppijat.muuAmmatillinen.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
         verifyResponseStatusOk()
         val oppija = JsonSerializer.parse[KelaOppija](body)
@@ -80,6 +80,19 @@ class KelaSpec
         oppija.opiskeluoikeudet.head.suoritukset.length.shouldBe(1)
         val suoritus = oppija.opiskeluoikeudet.head.suoritukset.head.asInstanceOf[KelaAmmatillinenPäätasonSuoritus]
         suoritus.täydentääTutkintoa.isEmpty.shouldEqual(false)
+        suoritus.tyyppi.koodiarvo.shouldEqual("muuammatillinenkoulutus")
+      }
+    }
+
+    "Palauttaa tiedon 'tutkinto' kun kyseessä on Näyttötutkintoon valmistava" in {
+      postHetu(KoskiSpecificMockOppijat.erikoisammattitutkinto.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+        verifyResponseStatusOk()
+        val oppija = JsonSerializer.parse[KelaOppija](body)
+        oppija.opiskeluoikeudet.length.shouldBe(1)
+        oppija.opiskeluoikeudet.head.suoritukset.length.shouldBe(2)
+        val suoritus = oppija.opiskeluoikeudet.head.suoritukset.head.asInstanceOf[KelaAmmatillinenPäätasonSuoritus]
+        suoritus.tutkinto.isEmpty.shouldEqual(false)
+        suoritus.tyyppi.koodiarvo.shouldEqual("nayttotutkintoonvalmistavakoulutus")
       }
     }
 
