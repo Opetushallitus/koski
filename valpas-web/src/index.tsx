@@ -4,6 +4,7 @@ import React from "react"
 import ReactDOM from "react-dom"
 import "regenerator-runtime/runtime"
 import { fetchAppConfiguration } from "./api/api"
+import { withRetries } from "./api/apiUtils"
 import { getLanguage } from "./i18n/i18n"
 import { AppConfiguration } from "./state/apitypes/appConfiguration"
 import { enableFeature, Feature } from "./state/featureFlags"
@@ -21,9 +22,13 @@ declare global {
 
 const loadWindowProperties = async (): Promise<void> =>
   pipe(
-    await fetchAppConfiguration(),
+    await withRetries(3, fetchAppConfiguration),
     E.fold(
-      (error) => console.error("Konfiguraation haku epäonnistui:", error),
+      (error) =>
+        console.error(
+          "Konfiguraation haku epäonnistui:",
+          JSON.stringify(error)
+        ),
       (props) => Object.assign(window, props.data)
     )
   )

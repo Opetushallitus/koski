@@ -1,4 +1,5 @@
-import { ApiError } from "./apiFetch"
+import * as E from "fp-ts/Either"
+import { ApiError, ApiResponse } from "./apiFetch"
 import {
   ApiMethodState,
   ApiMethodStateError,
@@ -47,3 +48,15 @@ export const mapError = <T, S>(
   state: ApiMethodState<T>,
   fn: (errors: ApiError[]) => S | null
 ) => (isError(state) ? fn(state.errors) : null)
+
+export const withRetries = async <T>(
+  times: number,
+  fn: () => Promise<ApiResponse<T>>
+): Promise<ApiResponse<T>> => {
+  const response = await fn()
+  if (E.isLeft(response) && times > 0) {
+    await new Promise((r) => setTimeout(r, 100))
+    return withRetries(times - 1, fn)
+  }
+  return response
+}
