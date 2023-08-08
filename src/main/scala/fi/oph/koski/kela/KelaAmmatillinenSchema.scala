@@ -86,6 +86,7 @@ case class KelaAmmatillinenPäätasonSuoritus(
   koulutussopimukset: Option[List[Koulutussopimusjakso]],
   tutkintonimike: Option[List[KelaKoodistokoodiviite]],
   toinenTutkintonimike: Option[Boolean],
+  täydentääTutkintoa: Option[Tutkinto]
 ) extends Suoritus {
   def withEmptyArvosana = copy(
     osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana))

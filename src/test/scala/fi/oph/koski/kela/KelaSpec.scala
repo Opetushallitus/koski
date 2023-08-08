@@ -72,6 +72,17 @@ class KelaSpec
       }
     }
 
+    "Palauttaa tiedon täydentääTutkintoa kun kyseessä on Muu ammatillinen koulutus" in {
+      postHetu(KoskiSpecificMockOppijat.muuAmmatillinen.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+        verifyResponseStatusOk()
+        val oppija = JsonSerializer.parse[KelaOppija](body)
+        oppija.opiskeluoikeudet.length.shouldBe(1)
+        oppija.opiskeluoikeudet.head.suoritukset.length.shouldBe(1)
+        val suoritus = oppija.opiskeluoikeudet.head.suoritukset.head.asInstanceOf[KelaAmmatillinenPäätasonSuoritus]
+        suoritus.täydentääTutkintoa.isEmpty.shouldEqual(false)
+      }
+    }
+
     "Palauttaa tiedon oppisopimuksen purkamisesta" in {
       postHetu(KoskiSpecificMockOppijat.reformitutkinto.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
         verifyResponseStatusOk()
