@@ -84,7 +84,7 @@ class KelaSpec
       }
     }
 
-    "Palauttaa tiedon 'tutkinto' kun kyseessä on Näyttötutkintoon valmistava" in {
+    "Palauttaa tiedot 'tutkinto' ja 'päättymispäivä' kun kyseessä on Näyttötutkintoon valmistava" in {
       postHetu(KoskiSpecificMockOppijat.erikoisammattitutkinto.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
         verifyResponseStatusOk()
         val oppija = JsonSerializer.parse[KelaOppija](body)
@@ -93,6 +93,7 @@ class KelaSpec
         val suoritus = oppija.opiskeluoikeudet.head.suoritukset.head.asInstanceOf[KelaAmmatillinenPäätasonSuoritus]
         suoritus.tutkinto.isEmpty.shouldEqual(false)
         suoritus.tyyppi.koodiarvo.shouldEqual("nayttotutkintoonvalmistavakoulutus")
+        suoritus.päättymispäivä.isEmpty.shouldEqual(false)
       }
     }
 

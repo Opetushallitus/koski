@@ -115,7 +115,7 @@ object AmmattitutkintoExample {
   lazy val näyttötutkintoonValmistavanKoulutuksenSuoritus = NäyttötutkintoonValmistavanKoulutuksenSuoritus(
     tutkinto = tutkinto,
     alkamispäivä = Some(date(2012, 9, 1)),
-    päättymispäivä = None,
+    päättymispäivä = Some(date(2015, 5, 31)),
     toimipiste = stadinToimipiste,
     vahvistus = vahvistus(date(2015, 5, 31), stadinAmmattiopisto, Some(helsinki)),
     suorituskieli = suomenKieli,
