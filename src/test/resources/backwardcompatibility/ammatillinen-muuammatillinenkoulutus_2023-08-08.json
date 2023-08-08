@@ -1,0 +1,327 @@
+{
+  "henkilö" : {
+    "hetu" : "280618-402H",
+    "etunimet" : "Aarne",
+    "kutsumanimi" : "Aarne",
+    "sukunimi" : "Ammattilainen"
+  },
+  "opiskeluoikeudet" : [ {
+    "oppilaitos" : {
+      "oid" : "1.2.246.562.10.52251087186",
+      "oppilaitosnumero" : {
+        "koodiarvo" : "10105",
+        "koodistoUri" : "oppilaitosnumero"
+      },
+      "nimi" : {
+        "fi" : "Stadin ammattiopisto"
+      }
+    },
+    "arvioituPäättymispäivä" : "2020-05-31",
+    "ostettu" : false,
+    "tila" : {
+      "opiskeluoikeusjaksot" : [ {
+        "alku" : "2018-01-01",
+        "tila" : {
+          "koodiarvo" : "lasna",
+          "nimi" : {
+            "fi" : "Läsnä"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        },
+        "opintojenRahoitus" : {
+          "koodiarvo" : "1",
+          "koodistoUri" : "opintojenrahoitus"
+        }
+      } ]
+    },
+    "suoritukset" : [ {
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "KISI",
+          "nimi" : {
+            "fi" : "Kiinteistösihteerin koulutus ja tutkinto (KISI)"
+          }
+        },
+        "kuvaus" : {
+          "fi" : "Koulutus antaa opiskelijalle valmiudet hoitaa isännöinti- ja kiinteistöpalvelualan yritysten sihteeri- ja asiakaspalvelutehtäviä."
+        }
+      },
+      "täydentääTutkintoa" : {
+        "tunniste" : {
+          "koodiarvo" : "351301",
+          "koodistoUri" : "koulutus"
+        },
+        "perusteenDiaarinumero" : "39/011/2014"
+      },
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.42456023292",
+        "nimi" : {
+          "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+        }
+      },
+      "suorituskieli" : {
+        "koodiarvo" : "FI",
+        "nimi" : {
+          "fi" : "suomi"
+        },
+        "koodistoUri" : "kieli"
+      },
+      "osasuoritukset" : [ {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "AOYL",
+            "nimi" : {
+              "fi" : "Asunto-osakeyhtiölain ja huoneenvuokralainsäädännön perusteet"
+            }
+          },
+          "laajuus" : {
+            "arvo" : 5.0,
+            "yksikkö" : {
+              "koodiarvo" : "2",
+              "nimi" : {
+                "fi" : "opintopistettä",
+                "sv" : "studiepoäng",
+                "en" : "ECTS credits"
+              },
+              "lyhytNimi" : {
+                "fi" : "op",
+                "sv" : "sp",
+                "en" : "ECTS cr"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          },
+          "kuvaus" : {
+            "fi" : "Asunto-osakeyhtiölain ja huoneenvuokralainsäädännön perusteet, huoneistokohtaiset korjaus- ja muutostyöt"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "Suoritettu",
+            "koodistoUri" : "arviointiasteikkomuuammatillinenkoulutus"
+          },
+          "päivä" : "2018-05-31",
+          "arvioitsijat" : [ {
+            "nimi" : "Aarne Arvioija"
+          } ],
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "muunammatillisenkoulutuksenosasuoritus",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "AKOYTV",
+            "nimi" : {
+              "fi" : "Asunto- ja kiinteistöosakeyhtiön talous ja verotus"
+            }
+          },
+          "laajuus" : {
+            "arvo" : 15.0,
+            "yksikkö" : {
+              "koodiarvo" : "2",
+              "nimi" : {
+                "fi" : "opintopistettä",
+                "sv" : "studiepoäng",
+                "en" : "ECTS credits"
+              },
+              "lyhytNimi" : {
+                "fi" : "op",
+                "sv" : "sp",
+                "en" : "ECTS cr"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          },
+          "kuvaus" : {
+            "fi" : "Laskentatoimen ja verotuksen perusteet, lainaosuus- ja rahoituslaskelmat, kiinteistövero, arvonlisävero sekä veroilmoituslomakkeet"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "Suoritettu",
+            "koodistoUri" : "arviointiasteikkomuuammatillinenkoulutus"
+          },
+          "päivä" : "2018-05-31",
+          "arvioitsijat" : [ {
+            "nimi" : "Aarne Arvioija"
+          } ],
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "muunammatillisenkoulutuksenosasuoritus",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "TAP",
+            "nimi" : {
+              "fi" : "Tiedottaminen ja asiakaspalvelu"
+            }
+          },
+          "laajuus" : {
+            "arvo" : 20.0,
+            "yksikkö" : {
+              "koodiarvo" : "2",
+              "nimi" : {
+                "fi" : "opintopistettä",
+                "sv" : "studiepoäng",
+                "en" : "ECTS credits"
+              },
+              "lyhytNimi" : {
+                "fi" : "op",
+                "sv" : "sp",
+                "en" : "ECTS cr"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          },
+          "kuvaus" : {
+            "fi" : "Tiedottaminen ja asiakaspalvelu, isännöitsijän ja sihteerin työparityöskentely sekä asiakaspalvelun henkilöturvallisuus"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "Suoritettu",
+            "koodistoUri" : "arviointiasteikkomuuammatillinenkoulutus"
+          },
+          "päivä" : "2018-05-31",
+          "arvioitsijat" : [ {
+            "nimi" : "Aarne Arvioija"
+          } ],
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "muunammatillisenkoulutuksenosasuoritus",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "KISI",
+            "nimi" : {
+              "fi" : "KISI-tentti"
+            }
+          },
+          "kuvaus" : {
+            "fi" : "Valmiudet hoitaa kiinteistöalan yrityksen sihteeri-, toimisto- ja asiakaspalvelutehtäviä, vahvistaa osallistujan ammatillisia perusvalmiuksia"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "Suoritettu",
+            "koodistoUri" : "arviointiasteikkomuuammatillinenkoulutus"
+          },
+          "päivä" : "2018-05-31",
+          "arvioitsijat" : [ {
+            "nimi" : "Aarne Arvioija"
+          } ],
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "muunammatillisenkoulutuksenosasuoritus",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "ATK",
+            "nimi" : {
+              "fi" : "ATK-Ajokortti"
+            }
+          },
+          "kuvaus" : {
+            "fi" : "Tietokoneiden käyttö"
+          }
+        },
+        "liittyyTutkinnonOsaan" : {
+          "koodiarvo" : "101481",
+          "koodistoUri" : "tutkinnonosat"
+        },
+        "tyyppi" : {
+          "koodiarvo" : "tutkinnonosaapienempikokonaisuus",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "FK",
+            "koodistoUri" : "ammatillisenoppiaineet"
+          },
+          "pakollinen" : true
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "Hyväksytty",
+            "nimi" : {
+              "fi" : "Hyväksytty"
+            },
+            "koodistoUri" : "arviointiasteikkoammatillinenhyvaksyttyhylatty",
+            "koodistoVersio" : 1
+          },
+          "päivä" : "2013-03-20",
+          "arvioitsijat" : [ {
+            "nimi" : "Jaana Arstila"
+          }, {
+            "nimi" : "Pekka Saurmann"
+          }, {
+            "nimi" : "Juhani Mykkänen"
+          } ],
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ammatillisentutkinnonosanosaalue",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "AI",
+            "koodistoUri" : "ammatillisenoppiaineet"
+          },
+          "kieli" : {
+            "koodiarvo" : "AI1",
+            "koodistoUri" : "oppiaineaidinkielijakirjallisuus"
+          },
+          "pakollinen" : false
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "Hyväksytty",
+            "nimi" : {
+              "fi" : "Hyväksytty"
+            },
+            "koodistoUri" : "arviointiasteikkoammatillinenhyvaksyttyhylatty",
+            "koodistoVersio" : 1
+          },
+          "päivä" : "2013-03-20",
+          "arvioitsijat" : [ {
+            "nimi" : "Jaana Arstila"
+          }, {
+            "nimi" : "Pekka Saurmann"
+          }, {
+            "nimi" : "Juhani Mykkänen"
+          } ],
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ammatillisentutkinnonosanosaalue",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      } ],
+      "tyyppi" : {
+        "koodiarvo" : "muuammatillinenkoulutus",
+        "koodistoUri" : "suorituksentyyppi"
+      }
+    } ],
+    "tyyppi" : {
+      "koodiarvo" : "ammatillinenkoulutus",
+      "koodistoUri" : "opiskeluoikeudentyyppi"
+    },
+    "alkamispäivä" : "2018-01-01"
+  } ]
+}
