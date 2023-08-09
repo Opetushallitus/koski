@@ -83,9 +83,12 @@ export const internationalSchoolSuorittaminenTableContent = `
     `
 
 export const europeanSchoolOfHelsinkiSuorittaminenTableHead =
-  "Oppivelvolliset (1)"
+  "Oppivelvolliset (3)"
+
 export const europeanSchoolOfHelsinkiSuorittaminenTableContent = `
-  ESH-s5-jälkeen-s6-aloittanut Valpas | 1.11.2005 | European School of Helsinki | Läsnä | Helsingin eurooppalainen koulu | 1.8.2021 | – | – | 31.10.2023 asti
+  ESH-s4-jälkeen-s5-aloittanut Valpas                 | 20.3.2005   | European School of Helsinki | Läsnä | Helsingin eurooppalainen koulu  | –         | – | –                                       | 19.3.2023 asti
+  ESH-s5-jälkeen-lukiossa-aloittanut Valpas           | 27.11.2005  |	European School of Helsinki | Läsnä | Helsingin eurooppalainen koulu  | –         | –	| Jyväskylän normaalikoulu, Lukiokoulutus | 26.11.2023 asti
+  Oppivelvollinen-esh-s5-kesken-keväällä-2021 Valpas  | 3.1.2005    | European School of Helsinki | Läsnä | Helsingin eurooppalainen koulu  | –         | –	| –                                       | 2.1.2023 asti
 `
 
 export const suorittaminenListaPath = suorittaminenPath.href("/virkailija")

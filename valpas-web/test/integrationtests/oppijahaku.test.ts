@@ -339,10 +339,10 @@ describe("Oppijahaku", () => {
 
   it("Maksuttomuus: Haku löytää oppijan, vaikka hänellä on oppivelvollisuuden suorittamiseen kelpaavia opintoja ainoastaan European school of Helsingissä", async () => {
     await hakuLogin("valpas-maksuttomuus-hki")
-    await fillQueryField("011105A653V", "maksuttomuusoppijasearch")
+    await fillQueryField("200305A594S", "maksuttomuusoppijasearch")
     await submit("maksuttomuusoppijasearch")
     await expectResultToBe(
-      "Löytyi: ESH-s5-jälkeen-s6-aloittanut Valpas (011105A653V)",
+      "Löytyi: ESH-s4-jälkeen-s5-aloittanut Valpas (200305A594S)",
       oppijaPath.href("/virkailija", {
         oppijaOid: "1.2.246.562.24.00000000171",
         prev: maksuttomuusPath.href(),
