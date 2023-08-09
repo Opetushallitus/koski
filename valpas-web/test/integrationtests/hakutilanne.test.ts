@@ -238,12 +238,13 @@ describe("Hakutilannenäkymä", () => {
 
     // Vaihda filtteriä ja järjestyksen suuntaa nimen perusteella
     const selector = ".hakutilanne"
+    const contentSelector = `${selector} tr td:first-child`
     await setTableTextFilter(selector, 1, "luoka")
     await toggleTableSort(selector, 1)
 
     // Ota snapshot talteen taulukon tilasta
     await waitTableLoadingHasFinished(".hakutilanne")
-    const contentsBefore = await getTableContents(selector)
+    const contentsBefore = await getTableContents(contentSelector)
 
     // Käy jossakin oppijanäkymässä
     await openAnyOppijaView()
@@ -252,8 +253,9 @@ describe("Hakutilannenäkymä", () => {
 
     // Taulukon tilan pitäisi olla sama kuin aiemmin
     await urlIsEventually(pathToUrl(jklHakutilannePath))
-    const contentsAfter = await getTableContents(selector)
     await waitTableLoadingHasFinished(".hakutilanne")
+    const contentsAfter = await getTableContents(contentSelector)
+
     expect(contentsAfter).toEqual(contentsBefore)
   })
 
