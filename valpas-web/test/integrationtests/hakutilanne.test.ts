@@ -2,6 +2,7 @@ import { hakutilannePathWithOrg, oppijaPath } from "../../src/state/paths"
 import {
   clickElement,
   expectElementEventuallyVisible,
+  expectLinkToEqual,
   textEventuallyEquals,
 } from "../integrationtests-env/browser/content"
 import {
@@ -267,8 +268,10 @@ describe("Hakutilannenäkymä", () => {
       "valpas-useampi-peruskoulu"
     )
 
-    await clickElement(".oppijaview__backbutton a")
-    await urlIsEventually(pathToUrl(kulosaariHakutilannePath), 5000)
+    await expectLinkToEqual(
+      ".oppijaview__backbutton a",
+      pathToUrl(kulosaariHakutilannePath)
+    )
 
     await waitTableLoadingHasFinished(".hakutilanne")
   })
