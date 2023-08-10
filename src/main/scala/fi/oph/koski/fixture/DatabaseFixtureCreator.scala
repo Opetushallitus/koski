@@ -14,7 +14,7 @@ import slick.dbio.DBIO
 
 import scala.reflect.runtime.universe.TypeTag
 
-abstract class DatabaseFixtureCreator(application: KoskiApplication, opiskeluoikeusFixtureCacheTableName: String, opiskeluoikeusHistoriaFixtureCacheTableName: String) extends QueryMethods with Timing {
+abstract class DatabaseFixtureCreator(application: KoskiApplication, contextName: String) extends QueryMethods with Timing {
   implicit val user = KoskiSpecificSession.systemUser
   protected val validator = application.validator
   val db = application.masterDatabase.db
@@ -29,10 +29,10 @@ abstract class DatabaseFixtureCreator(application: KoskiApplication, opiskeluoik
 
   protected lazy val opiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = validatedOpiskeluoikeudet ++ invalidOpiskeluoikeudet
 
-  var fixtureCacheCreated = false
+  var createdFixtureCaches: scala.collection.mutable.ListBuffer[String] = scala.collection.mutable.ListBuffer.empty
   var cachedPerustiedot: Option[Seq[OpiskeluoikeudenOsittaisetTiedot]] = None
 
-  def resetFixtures: Unit = {
+  def resetFixtures(state: FixtureState): Unit = {
     if (!application.masterDatabase.isLocal) throw new IllegalStateException("Trying to reset fixtures in remote database")
 
     val henkilöOids = application.fixtureCreator.allOppijaOids.sorted
@@ -51,16 +51,20 @@ abstract class DatabaseFixtureCreator(application: KoskiApplication, opiskeluoik
     application.perustiedotIndexer.sync(refresh = false) // Make sure the sync queue is empty
     application.perustiedotIndexer.deleteByOppijaOids(henkilöOids, refresh = false)
 
-    if (!fixtureCacheCreated) {
+    val opiskeluoikeusFixtureCacheTableName: String = s"fixture_${contextName}_${state.key}_opiskeluoikeus"
+    val opiskeluoikeusHistoriaFixtureCacheTableName: String = s"fixture_${contextName}_${state.key}_opiskeluoikeushistoria"
+
+    if (!createdFixtureCaches.contains(state.key)) {
       cachedPerustiedot = Some(opiskeluoikeudet.zipWithIndex.map { case ((henkilö, opiskeluoikeus), index) =>
-        val id = application.opiskeluoikeusRepository
-          .createOrUpdate(VerifiedHenkilöOid(henkilö), opiskeluoikeus, allowUpdate = false)
-          .fold(
-            error => throw new Exception(s"Fikstuurin opiskeluoikeutta ${index + 1}/${opiskeluoikeudet.length} ei saatu luotua: $error"),
-            result => result.id
-          )
-        OpiskeluoikeudenPerustiedot.makePerustiedot(id, opiskeluoikeus, application.henkilöRepository.opintopolku.withMasterInfo(henkilö))
+          val id = application.opiskeluoikeusRepository
+            .createOrUpdate(VerifiedHenkilöOid(henkilö), opiskeluoikeus, allowUpdate = false)
+            .fold(
+              error => throw new Exception(s"Fikstuurin opiskeluoikeutta ${index + 1}/${opiskeluoikeudet.length} ei saatu luotua: $error"),
+              result => result.id
+            )
+          OpiskeluoikeudenPerustiedot.makePerustiedot(id, opiskeluoikeus, application.henkilöRepository.opintopolku.withMasterInfo(henkilö))
       })
+
       application.perustiedotIndexer.sync(refresh = true)
       val henkilöOidsIn = henkilöOids.map("'" + _ + "'").mkString(",")
       runDbSync(DBIO.seq(
@@ -69,7 +73,7 @@ abstract class DatabaseFixtureCreator(application: KoskiApplication, opiskeluoik
         sqlu"drop table if exists #$opiskeluoikeusHistoriaFixtureCacheTableName",
         sqlu"create table #$opiskeluoikeusHistoriaFixtureCacheTableName as select * from opiskeluoikeushistoria where opiskeluoikeus_id in (select id from #$opiskeluoikeusFixtureCacheTableName)"
       ))
-      fixtureCacheCreated = true
+      createdFixtureCaches += state.key
     } else {
       runDbSync(DBIO.seq(
         sqlu"alter table opiskeluoikeus disable trigger update_opiskeluoikeus_aikaleima",

@@ -5,7 +5,7 @@ import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, MockOpintopolkuHenkilöFa
 import fi.oph.koski.localization.MockLocalizationRepository
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeushistoriaErrorRepository
-import fi.oph.koski.raportointikanta.OpiskeluoikeusLoader
+import fi.oph.koski.raportointikanta.{OpiskeluoikeusLoader, RaportointikantaFixture, RaportointikantaFixturePurge}
 import fi.oph.koski.suostumus.SuostumuksenPeruutusService
 import fi.oph.koski.util.{Timing, Wait}
 import fi.oph.koski.valpas.opiskeluoikeusfixture.ValpasOpiskeluoikeusFixtureState
@@ -21,6 +21,9 @@ class FixtureCreator(application: KoskiApplication) extends Logging with Timing 
   private val yoTodistusService = application.yoTodistusService
   private var currentFixtureState: FixtureState = new NotInitializedFixtureState
   private val opiskeluoikeushistoriaErrorRepository = new OpiskeluoikeushistoriaErrorRepository(application.masterDatabase.db)
+  private val raportointikantaFixturePurge = new RaportointikantaFixturePurge(application.raportointiDatabase)
+
+  raportointikantaFixturePurge.run()
 
   def defaultOppijat: List[OppijaHenkilöWithMasterInfo] = currentFixtureState.defaultOppijat
 
@@ -47,8 +50,14 @@ class FixtureCreator(application: KoskiApplication) extends Logging with Timing 
       }
 
       if (reloadRaportointikanta || fixtureNameHasChanged) {
-        raportointikantaService.loadRaportointikanta(force = true, pageSize = OpiskeluoikeusLoader.LocalTestingBatchSize)
-        Wait.until { raportointikantaService.isLoadComplete }
+        val raportointikantaFixture = new RaportointikantaFixture(application.raportointiDatabase, fixtureState)
+        if (raportointikantaFixture.exists) {
+          raportointikantaFixture.restore()
+        } else {
+          raportointikantaService.loadRaportointikanta(force = true, pageSize = OpiskeluoikeusLoader.LocalTestingBatchSize)
+          Wait.until { raportointikantaService.isLoadComplete }
+          raportointikantaFixture.save()
+        }
       }
 
       logger.info(s"Application fixtures reset to ${fixtureState.name}")
@@ -81,6 +90,7 @@ class FixtureCreator(application: KoskiApplication) extends Logging with Timing 
 
 trait FixtureState extends Timing {
   def name: String
+  def key: String = "default"
   def defaultOppijat: List[OppijaHenkilöWithMasterInfo]
   def resetFixtures: Unit
 
@@ -105,7 +115,7 @@ class NotInitializedFixtureState extends FixtureState {
 
 abstract class DatabaseFixtureState(application: KoskiApplication) extends FixtureState {
   def resetFixtures = {
-    timed("Resetting database fixtures") (databaseFixtureCreator.resetFixtures)
+    timed("Resetting database fixtures") (databaseFixtureCreator.resetFixtures(this))
     application.henkilöRepository.opintopolku.henkilöt.asInstanceOf[MockOpintopolkuHenkilöFacade].resetFixtures(defaultOppijat)
   }
 

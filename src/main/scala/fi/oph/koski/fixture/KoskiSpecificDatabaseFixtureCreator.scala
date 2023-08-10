@@ -17,7 +17,7 @@ import java.net.InetAddress
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
-class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends DatabaseFixtureCreator(application, "opiskeluoikeus_fixture", "opiskeluoikeushistoria_fixture") {
+class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends DatabaseFixtureCreator(application, "koski") {
   protected def oppijat = KoskiSpecificMockOppijat.defaultOppijat
 
   protected lazy val invalidOpiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = {
@@ -302,8 +302,8 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
     )
   }
 
-  override def resetFixtures: Unit = {
-    super.resetFixtures
+  override def resetFixtures(state: FixtureState): Unit = {
+    super.resetFixtures(state)
     peruutaSuostumusOpiskeluoikeudelta()
   }
 

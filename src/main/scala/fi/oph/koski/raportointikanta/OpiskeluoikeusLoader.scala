@@ -8,7 +8,7 @@ import scala.concurrent.duration.DurationInt
 
 object OpiskeluoikeusLoader {
   val DefaultBatchSize = 500
-  val LocalTestingBatchSize = 5
+  val LocalTestingBatchSize = 100
 }
 
 trait OpiskeluoikeusLoader extends Logging {
