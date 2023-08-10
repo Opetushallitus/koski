@@ -83,15 +83,17 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
   def dropPublicAndMoveTempToPublic: Unit = {
     // Raportointikannan swappaaminen saattaa epäonnistua timeouttiin, jos esim. käyttäjä on juuri ajamassa
     // hidasta raporttia. Parempi yrittää uudestaan, eikä lopettaa monen tunnin operaatiota vain tästä syystä.
+    val stashedPublicSchemaName = "public_old"
     retryDbSync(
       DBIO.seq(
-        RaportointiDatabaseSchema.dropSchema(Public),
+        RaportointiDatabaseSchema.moveSchemaByName(Public.name, stashedPublicSchemaName),
         RaportointiDatabaseSchema.moveSchema(Temp, Public),
         RaportointiDatabaseSchema.createRolesIfNotExists,
         RaportointiDatabaseSchema.grantPermissions(Public)
       ).transactionally,
       timeout = 5.minutes
     )
+    DBIO.seq(RaportointiDatabaseSchema.dropSchemaByName(stashedPublicSchemaName))
     logger.info("RaportointiDatabase schema swapped")
   }
 

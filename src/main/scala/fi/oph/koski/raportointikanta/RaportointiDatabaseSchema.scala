@@ -22,6 +22,11 @@ object RaportointiDatabaseSchema {
     sqlu"ALTER SCHEMA #${oldSchema.name} RENAME TO #${newSchema.name}"
   )
 
+  def moveSchemaByName(oldSchema: String, newSchema: String) = DBIO.seq(
+    sqlu"DROP SCHEMA IF EXISTS #${newSchema} CASCADE",
+    sqlu"ALTER SCHEMA #${oldSchema} RENAME TO #${newSchema}"
+  )
+
   def recreateSchema(s: Schema) =
     DBIO.seq(
       sqlu"DROP SCHEMA IF EXISTS #${s.name} CASCADE",
@@ -30,6 +35,9 @@ object RaportointiDatabaseSchema {
 
   def dropSchema(s: Schema) =
     sqlu"DROP SCHEMA #${s.name} CASCADE"
+
+  def dropSchemaByName(name: String) =
+    sqlu"DROP SCHEMA #${name} CASCADE"
 
   // Laita tähän vain ne indeksit, jotka tarvitaan inkrementaalisen generoinnin nopeuttamiseksi.
   def createIndexesForIncrementalUpdate(s: Schema) = DBIO.seq(
