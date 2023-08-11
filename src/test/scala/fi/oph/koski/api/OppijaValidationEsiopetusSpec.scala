@@ -740,6 +740,34 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
       validate(oo).left.get should equal(KoskiErrorCategory.badRequest.validation.date.erityisenTuenPäätös("Oppivelvollisuuden pidennyksessä on päiviä, joina ei ole voimassaolevaa erityisen tuen jaksoa"))
     }
 
+    "Validointi onnistuu, jos pidennetty oppivelvollisuus sisältää päiviä, joina ei ole erityisen tuen jaksoa mikäli nämä ovat opiskeluoikeuden päättymisen jälkeen" in {
+      val oo = defaultOpiskeluoikeus.copy(
+        tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
+          opiskeluoikeusjaksot = List(
+            NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2020, 9, 9), opiskeluoikeusLäsnä),
+            NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2021, 6, 4), opiskeluoikeusValmistunut)
+          )
+        ),
+        lisätiedot = Some(
+          ExamplesEsiopetus.lisätiedot.copy(
+            pidennettyOppivelvollisuus = Some(Aikajakso(LocalDate.of(2020, 9, 9), None)),
+            vammainen = None,
+            vaikeastiVammainen = Some(List(Aikajakso(LocalDate.of(2020, 9, 9), None))),
+            erityisenTuenPäätökset = Some(List(
+              ErityisenTuenPäätös(
+                alku = Some(LocalDate.of(2020, 9, 9)),
+                loppu = Some(LocalDate.of(2021, 12, 1)),
+                opiskeleeToimintaAlueittain = true,
+                erityisryhmässä = Some(true)
+              )
+            ))
+          )
+        )
+      )
+
+      validate(oo).isRight should equal(true)
+    }
+
     def validate(oo: Opiskeluoikeus, voimaanastumispäivänOffsetTästäPäivästä: Long = 0): Either[HttpStatus, Oppija] = {
       val oppija = Oppija(defaultHenkilö, List(oo))
 

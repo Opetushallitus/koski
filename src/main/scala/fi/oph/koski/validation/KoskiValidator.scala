@@ -15,7 +15,7 @@ import fi.oph.koski.opiskeluoikeus.KoskiOpiskeluoikeusRepository
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
-import fi.oph.koski.schema.Opiskeluoikeus.{koulutustoimijaTraversal, oppilaitosTraversal, toimipisteetTraversal}
+import fi.oph.koski.schema.Opiskeluoikeus.{koulutustoimijaTraversal, oppilaitosTraversal, päättymispäivä, toimipisteetTraversal}
 import fi.oph.koski.schema.{MahdollisestiAlkupäivällinenJakso, VapaanSivistystyönPäätasonSuoritus, _}
 import fi.oph.koski.suostumus.SuostumuksenPeruutusService
 import fi.oph.koski.tutkinto.Koulutustyyppi._
@@ -542,7 +542,7 @@ class KoskiValidator(
   private def validateOpiskeluoikeudenLisätiedot(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
     HttpStatus.fold(
       validateErityisenKoulutustehtävänJakso(opiskeluoikeus.lisätiedot),
-      validatePidennettyOppivelvollisuusAikarajastaAlkaen(opiskeluoikeus.lisätiedot, opiskeluoikeus.alkamispäivä),
+      validatePidennettyOppivelvollisuusAikarajastaAlkaen(opiskeluoikeus.lisätiedot, opiskeluoikeus.alkamispäivä, opiskeluoikeus.päättymispäivä),
       validateTuvaPerusopetusErityinenTukiJaVammaisuusAikarajastaAlkaen(opiskeluoikeus.lisätiedot)
     )
   }
@@ -574,7 +574,8 @@ class KoskiValidator(
 
   private def validatePidennettyOppivelvollisuusAikarajastaAlkaen(
     lisätiedot: Option[OpiskeluoikeudenLisätiedot],
-    opiskeluoikeudenAlkamispäivä: Option[LocalDate]
+    opiskeluoikeudenAlkamispäivä: Option[LocalDate],
+    opiskeluoikeudenPäättymispäivä: Option[LocalDate],
   ): HttpStatus = {
     val validaatioViimeinenPäiväEnnenVoimassaoloa = LocalDate.parse(config.getString("validaatiot.pidennetynOppivelvollisuudenYmsValidaatiotAstuvatVoimaan")).minusDays(1)
     val voimassaolotarkastusAstunutVoimaan = LocalDate.now().isAfter(validaatioViimeinenPäiväEnnenVoimassaoloa)
@@ -582,17 +583,17 @@ class KoskiValidator(
     if (Environment.isProdEnvironment(config)) {
       // Tuotannossa käytä vanhoja validointeja vaihtopäivämäärään asti
       if (voimassaolotarkastusAstunutVoimaan) {
-        validatePidennettyOppivelvollisuus(lisätiedot, opiskeluoikeudenAlkamispäivä)
+        validatePidennettyOppivelvollisuus(lisätiedot, opiskeluoikeudenAlkamispäivä, opiskeluoikeudenPäättymispäivä)
       } else {
         validatePidennettyOppivelvollisuusVanha(lisätiedot, opiskeluoikeudenAlkamispäivä)
       }
     } else if (Environment.isServerEnvironment(config)) {
       // Muissa palvelinympäristöissä käytä vain uusia validointeja testausta ja järjestelmätoimittajia varten
-      validatePidennettyOppivelvollisuus(lisätiedot, opiskeluoikeudenAlkamispäivä)
+      validatePidennettyOppivelvollisuus(lisätiedot, opiskeluoikeudenAlkamispäivä, opiskeluoikeudenPäättymispäivä)
     } else {
       // Muuten käytä uusia, jos ovat voimassa, eikä mitään, jos eivät ole voimassa (testejä varten lähinnä: vanhoilla validaatioilla ei enää ole testejä)
       if (voimassaolotarkastusAstunutVoimaan) {
-        validatePidennettyOppivelvollisuus(lisätiedot, opiskeluoikeudenAlkamispäivä)
+        validatePidennettyOppivelvollisuus(lisätiedot, opiskeluoikeudenAlkamispäivä, opiskeluoikeudenPäättymispäivä)
       } else {
         HttpStatus.ok
       }
@@ -666,7 +667,8 @@ class KoskiValidator(
 
   private def validatePidennettyOppivelvollisuus(
     lisätiedot: Option[OpiskeluoikeudenLisätiedot],
-    opiskeluoikeudenAlkamispäivä: Option[LocalDate]
+    opiskeluoikeudenAlkamispäivä: Option[LocalDate],
+    opiskeluoikeudenPäättymispäivä: Option[LocalDate]
   ): HttpStatus = {
 
     // Yhdistää päällekkäiset aikajaksot sekä sellaiset jaksot, jotka alkavat seuraavana päivänä edellisen jakson päättymisestä
@@ -729,10 +731,11 @@ class KoskiValidator(
         val eiPäällekäisiäEriVammaisuustyypinJaksoja =
           !vammaisuusjaksotYhdistettynä.exists(vj => vaikeastiVammaisuusjaksotYhdistettynä.exists(_.overlaps(vj)))
 
+        val looginenTakaraja = List(lt.pidennettyOppivelvollisuus.get.loppu.getOrElse(LocalDate.MAX), opiskeluoikeudenPäättymispäivä.getOrElse(LocalDate.MAX)).min[LocalDate]
         val jokinErityisenTuenJaksoKokoPidennetynOppivelvollisuudenAjan =
           erityisenTuenJaksotYhdistettynä.exists(j => {
             j.contains(lt.pidennettyOppivelvollisuus.get.alku) &&
-              j.contains(lt.pidennettyOppivelvollisuus.get.loppu.getOrElse(LocalDate.MAX))
+              j.contains(lt.pidennettyOppivelvollisuus.get.loppu.getOrElse(looginenTakaraja))
           })
 
         HttpStatus.fold(
