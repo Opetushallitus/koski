@@ -165,6 +165,20 @@ object Oppivelvollisuustiedot {
 
         ),
 
+        ylioppilastutkinto as (
+
+            select
+              distinct master_oid,
+              first_value(vahvistus_paiva) over (partition by master_oid order by vahvistus_paiva asc nulls last) ylioppilastutkinnon_vahvistus_paiva,
+              true suorittaa_ylioppilastutkintoa
+            from
+              oppivelvolliset_henkilot
+              join #${s.name}.r_opiskeluoikeus opiskeluoikeus on oppivelvolliset_henkilot.oppija_oid = opiskeluoikeus.oppija_oid
+              join #${s.name}.r_paatason_suoritus paatason_suoritus on opiskeluoikeus.opiskeluoikeus_oid = paatason_suoritus.opiskeluoikeus_oid
+            where paatason_suoritus.suorituksen_tyyppi = 'ylioppilastutkinto'
+
+        ),
+
         internationalschool as (
 
             select
@@ -262,20 +276,13 @@ object Oppivelvollisuustiedot {
               ammattitutkinnon_vahvistus_paiva,
               (syntymaaika + interval '#$oppivelvollisuusLoppuuIka year' - interval '1 day')::date)
 
-            when suorittaa_lukionoppimaaraa then least(
-              oppivelvollisuudesta_vapautus,
-              dia_tutkinnon_vahvistuspaiva,
-              ib_tutkinnon_vahvistuspaiva,
-              international_schoolin_toisen_asteen_vahvistus_paiva,
-              european_school_of_helsinki_toisen_asteen_vahvistus_paiva,
-              (syntymaaika + interval '#$oppivelvollisuusLoppuuIka year' - interval '1 day')::date)
-
             else least(
               oppivelvollisuudesta_vapautus,
               dia_tutkinnon_vahvistuspaiva,
               ib_tutkinnon_vahvistuspaiva,
               international_schoolin_toisen_asteen_vahvistus_paiva,
               european_school_of_helsinki_toisen_asteen_vahvistus_paiva,
+              ylioppilastutkinnon_vahvistus_paiva,
               (syntymaaika + interval '#$oppivelvollisuusLoppuuIka year' - interval '1 day')::date)
           end
             oppivelvollisuusVoimassaAsti,
@@ -306,6 +313,7 @@ object Oppivelvollisuustiedot {
               ib_tutkinnon_vahvistuspaiva,
               international_schoolin_toisen_asteen_vahvistus_paiva,
               european_school_of_helsinki_toisen_asteen_vahvistus_paiva,
+              ylioppilastutkinnon_vahvistus_paiva,
               #${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '#$maksuttomuusLoppuuIka year'))
           end
             oikeusKoulutuksenMaksuttomuuteenVoimassaAsti
@@ -319,6 +327,7 @@ object Oppivelvollisuustiedot {
           left join ibtutkinto on oppivelvolliset_henkilot.master_oid = ibtutkinto.master_oid
           left join diatutkinto on oppivelvolliset_henkilot.master_oid = diatutkinto.master_oid
           left join oppivelvollisuudesta_vapautus on oppivelvolliset_henkilot.master_oid = oppivelvollisuudesta_vapautus.master_oid
+          left join ylioppilastutkinto on oppivelvolliset_henkilot.master_oid = ylioppilastutkinto.master_oid
       """
   }
 

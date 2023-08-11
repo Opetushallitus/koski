@@ -106,6 +106,77 @@ class OppivelvollisuustietoSpec
         }
       }
 
+      "Jos on suorittanut YO-tutkinnon" - {
+        "eikä mitään oppivelvollisuuden suorittamiseen hyväksyttyjä 2. asteen opintoja" - {
+          "käytetään päättymispäivänä YO-tutkinnon vahvistuspäivää" in {
+            resetFixtures
+            queryOids(pelkkäYoKannassaUudenOvLainPiirissä.oid) should be(List(
+              Oppivelvollisuustieto(
+                pelkkäYoKannassaUudenOvLainPiirissä.oid,
+                oppivelvollisuusVoimassaAsti = LocalDate.of(2012, 11, 30),
+                oikeusMaksuttomaanKoulutukseenVoimassaAsti = LocalDate.of(2012, 11, 30)
+              )
+            ))
+          }
+        }
+        "ja muista 2. asteen opinnoista vain lukio-opintoja" - {
+          "käytetään päättymispäivänä YO-tutkinnon vahvistuspäivää, vaikka lukio-opinnot olisi vahvistettu myöhemmin" in {
+            resetFixtures
+            insert(pelkkäYoKannassaUudenOvLainPiirissä, lukionOppimäärä(vahvistus = Some(date(2018, 1, 1))))
+            updateRaportointikanta
+            queryOids(pelkkäYoKannassaUudenOvLainPiirissä.oid) should be(List(
+              Oppivelvollisuustieto(
+                pelkkäYoKannassaUudenOvLainPiirissä.oid,
+                oppivelvollisuusVoimassaAsti = LocalDate.of(2012, 11, 30),
+                oikeusMaksuttomaanKoulutukseenVoimassaAsti = LocalDate.of(2012, 11, 30)
+              )
+            ))
+          }
+        }
+        "ja lukiosta poikkeavia muita keskeneräisiä 2. asteen opintoja" - {
+          "käytetään päättymispäivänä YO-tutkinnon vahvistupäivää" in {
+            resetFixtures
+            insert(pelkkäYoKannassaUudenOvLainPiirissä, europeanSchoolOfHelsinkiToinenAsteEB(vahvistusEB = None))
+            updateRaportointikanta
+            queryOids(pelkkäYoKannassaUudenOvLainPiirissä.oid) should be(List(
+              Oppivelvollisuustieto(
+                pelkkäYoKannassaUudenOvLainPiirissä.oid,
+                oppivelvollisuusVoimassaAsti = LocalDate.of(2012, 11, 30),
+                oikeusMaksuttomaanKoulutukseenVoimassaAsti = LocalDate.of(2012, 11, 30)
+              )
+            ))
+          }
+        }
+        "ja lukiosta poikkeavia muita vahvistettuja 2. asteen opintoja" - {
+          "käytetään päättymispäivänä aikaisinta päivämäärää" in {
+            resetFixtures
+            insert(pelkkäYoKannassaUudenOvLainPiirissä, europeanSchoolOfHelsinkiToinenAsteEB(vahvistusEB = Some(date(2021, 1, 1))))
+            updateRaportointikanta
+            queryOids(pelkkäYoKannassaUudenOvLainPiirissä.oid) should be(List(
+              Oppivelvollisuustieto(
+                pelkkäYoKannassaUudenOvLainPiirissä.oid,
+                oppivelvollisuusVoimassaAsti = LocalDate.of(2012, 11, 30),
+                oikeusMaksuttomaanKoulutukseenVoimassaAsti = LocalDate.of(2012, 11, 30)
+              )
+            ))
+          }
+        }
+        "ja ammattiopintoja" - {
+          "käytetään päättymispäivänä ammattiopintojen vahvistuspäivää, eikä YO-tutkintoa oteta huomioon" in {
+            resetFixtures
+            insert(pelkkäYoKannassaUudenOvLainPiirissä, ammatillinenTutkinto(vahvistus = Some(date(2020, 1, 1)), keskiarvo = Some(4.0)))
+            updateRaportointikanta
+            queryOids(pelkkäYoKannassaUudenOvLainPiirissä.oid) should be(List(
+              Oppivelvollisuustieto(
+                pelkkäYoKannassaUudenOvLainPiirissä.oid,
+                oppivelvollisuusVoimassaAsti = LocalDate.of(2020, 1, 1),
+                oikeusMaksuttomaanKoulutukseenVoimassaAsti = LocalDate.of(2020, 1, 1)
+              )
+            ))
+          }
+        }
+      }
+
       "Jos suorittaa vain ammatillista tutkintoa, käytetään päättymispäivänä päivää, joka lopettaa aikaisemmin oikeuden maksuttomuuteen tai oppivelvollisuuteen" - {
         "Syntymäaika päättää oppivelvollisuuden aikaisemmin, ensimmäisenä vahvistetun tutkinnon vahvistus päättää oikeuden maksuttomuuteen aikaisemmin" in {
           resetFixtures
