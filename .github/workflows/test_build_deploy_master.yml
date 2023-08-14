@@ -16,7 +16,7 @@ jobs:
   build:
     name: Build and upload artifacts
     needs: [tests]
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     permissions:
       id-token: write
       contents: read
@@ -85,7 +85,7 @@ jobs:
     environment:
       name: dev
     needs: [build]
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     permissions:
       id-token: write
       contents: read
@@ -200,7 +200,7 @@ jobs:
     environment:
       name: qa
     needs: [deploy_dev]
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     permissions:
       id-token: write
       contents: read
@@ -316,7 +316,7 @@ jobs:
     environment:
       name: prod
     needs: [deploy_qa]
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     permissions:
       id-token: write
       contents: read

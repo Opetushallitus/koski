@@ -19,7 +19,7 @@ env:
 jobs:
   random_get_light:
     name: random-get-light
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
 
@@ -71,7 +71,7 @@ jobs:
   insert_light:
     needs: [ random_get_light ]
     name: insert-light
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
 
@@ -123,7 +123,7 @@ jobs:
   mixed-overload:
     needs: [ insert_light ]
     name: mixed-overload
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
 
@@ -175,7 +175,7 @@ jobs:
   valpas-organisaatio-listaus:
     needs: [ insert_light ]
     name: valpas-organisaatio-listaus
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
 
@@ -231,7 +231,7 @@ jobs:
   valpas-oppija-detaalit:
     needs: [ insert_light ]
     name: valpas-oppija-detaalit
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
 
