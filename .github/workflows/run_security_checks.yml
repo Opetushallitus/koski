@@ -8,7 +8,7 @@ env:
 jobs:
   run_owasp_and_snyk:
     name: Run owasp and snyk
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
 

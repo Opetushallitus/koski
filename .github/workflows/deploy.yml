@@ -19,7 +19,7 @@ jobs:
     name: Build and deploy
     environment:
       name: ${{ github.event.inputs.environment }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     permissions:
       id-token: write
       contents: read

@@ -5,7 +5,7 @@ on:
     inputs:
       runs-on:
         type: string
-        default: "ubuntu-latest"
+        default: "ubuntu-20.04"
 
 env:
   DOCKER_BUILDKIT: 1

@@ -13,7 +13,7 @@ env:
 jobs:
   valpas-organisaatio-listaus:
     name: valpas-organisaatio-listaus
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
 
@@ -68,7 +68,7 @@ jobs:
 
   valpas-oppija-detaalit:
     name: valpas-oppija-detaalit
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
 
