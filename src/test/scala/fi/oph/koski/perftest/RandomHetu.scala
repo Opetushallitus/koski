@@ -10,7 +10,7 @@ class RandomHetu(lahtienVuodesta: Int) extends KoskidevHttpSpecification {
   private lazy val hetut: Iterator[String] = {
     Iterator.continually({
       println("Haetaan hetuja...")
-      EasyHttp.getJson[List[String]]("https://www.telepartikkeli.net/tunnusgeneraattori/api/generoi/hetu/500").iterator
+      EasyHttp.getJson[List[String]]("https://telepartikkeli.azurewebsites.net/tunnusgeneraattori/api/generoi/hetu/500").iterator
     }).flatten.filter(Hetu.validate(_, acceptSynthetic = false).isRight).filter(vuodenJalkeen(_, lahtienVuodesta))
   }
 
