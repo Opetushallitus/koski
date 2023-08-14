@@ -17,7 +17,7 @@
     <scalatra.version>2.8.4</scalatra.version>
     <http4s.version>0.23.13</http4s.version>
     <json4s.version>4.0.6</json4s.version>
-    <awssdk.version>2.20.105</awssdk.version>
+    <awssdk.version>2.20.108</awssdk.version>
     <jetty.version>9.4.51.v20230217</jetty.version>
     <prometheus.client.version>0.16.0</prometheus.client.version>
     <scoverage.plugin.version>1.1.1</scoverage.plugin.version>
@@ -324,12 +324,12 @@
     <dependency>
       <groupId>com.amazonaws</groupId>
       <artifactId>aws-java-sdk-dynamodb</artifactId>
-      <version>1.12.501</version>
+      <version>1.12.508</version>
     </dependency>
     <dependency>
       <groupId>com.amazonaws</groupId>
       <artifactId>aws-java-sdk-sts</artifactId>
-      <version>1.12.505</version>
+      <version>1.12.508</version>
     </dependency>
     <!-- test deps -->
     <dependency>
