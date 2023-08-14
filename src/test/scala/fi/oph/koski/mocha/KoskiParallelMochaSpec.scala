@@ -12,6 +12,10 @@ class KoskiParallelMochaSpec extends AnyFreeSpec with KoskiCommandLineSpec {
     val specs = SplitMochaSpecs.takeSpecsForRunner(shardIndex)
     val sharedJetty = new SharedJetty(KoskiApplicationForTests)
     sharedJetty.start()
+    // Sleep on workaround CI:llä silloin tällöin esiintyvään "Error: No inspectable targets"-ongelmaan.
+    val sleepTimeInMs = 2000
+    logger.info(s"Sleeping ${sleepTimeInMs} ms to wait for everything to be ready before starting the tests")
+    Thread.sleep(sleepTimeInMs)
     //specFiles parameter makes runner.html to only load given spec.js files
     runTestCommand("mocha-chrome", Seq("scripts/mocha-chrome-test.sh", sharedJetty.baseUrl + s"/test/runner.html?specFiles=$specs"))
   }
