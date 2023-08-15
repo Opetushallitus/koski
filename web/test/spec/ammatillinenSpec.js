@@ -3057,6 +3057,7 @@ describe('Ammatillinen koulutus', function () {
               'Tutkinto Autoalan työnjohdon erikoisammattitutkinto 357305 40/011/2001\n' +
               'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
               'Alkamispäivä 1.9.2012\n' +
+              'Päättymispäivä 31.5.2015\n' +
               'Suorituskieli suomi\n' +
               'Suoritus valmis Vahvistus : 31.5.2015 Helsinki Reijo Reksi , rehtori'
           )
