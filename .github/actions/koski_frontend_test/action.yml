@@ -20,7 +20,7 @@ runs:
       with:
         max_attempts: 2
         timeout_minutes: 45
-        command: mvn test -Pmocharunner -Dsuites="fi.oph.koski.mocha.KoskiParallelMochaSpec" -DargLine="-Xms1536m -Xmx1536m" --batch-mode
+        command: mvn test -Pmocharunner -Dsuites="fi.oph.koski.mocha.KoskiParallelMochaSpec" -DargLine="-Xms2560m -Xmx2560m" --batch-mode
 
     - name: Archive test screenshots
       if: ${{ failure() }}
