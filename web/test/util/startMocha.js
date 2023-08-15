@@ -16,9 +16,9 @@ runner.on('fail', function (e) {
   runner.errors.push(mapError(e))
 })
 
-runner.on('fail', function (e) {
-  takeScreenshot(e.title)()
-})
+//runner.on('fail', function (e) {
+//  takeScreenshot(e.title)()
+//})
 
 $(document).keyup(function (e) {
   if (e.keyCode === 27) {
