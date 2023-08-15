@@ -132,7 +132,7 @@ object Oppivelvollisuustiedot {
                                   and koulutusmoduuli_koodiarvo = '9'
                                   and vahvistus_paiva < '#$valpasLakiVoimassaPeruskoulustaValmistuneilla'::date) or
                                   (suorituksen_tyyppi = 'europeanschoolofhelsinkivuosiluokkasecondarylower'
-                                  and koulutusmoduuli_koodiarvo = 'S5'
+                                  and koulutusmoduuli_koodiarvo = 'S4'
                                   and vahvistus_paiva < '#$valpasLakiVoimassaPeruskoulustaValmistuneilla'::date)
                 )
         ),

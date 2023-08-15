@@ -223,13 +223,13 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
 
           resetFixtures()
         }
-        "European School of Helsinki -koulun ysiluokkaa vastaava luokka S5" in {
+        "European School of Helsinki -koulun luokka S4" in {
           val opiskeluoikeus = ExamplesEuropeanSchoolOfHelsinki.opiskeluoikeus.copy(
             suoritukset = Nil,
           )
-          val s5Luokka: SecondaryLowerVuosiluokanSuoritus = ExamplesEuropeanSchoolOfHelsinki.s5.copy(alkamispäivä = Some(ExamplesEuropeanSchoolOfHelsinki.alkamispäivä))
+          val s4Luokka: SecondaryLowerVuosiluokanSuoritus = ExamplesEuropeanSchoolOfHelsinki.s4.copy(alkamispäivä = Some(ExamplesEuropeanSchoolOfHelsinki.alkamispäivä))
 
-          putOpiskeluoikeus(opiskeluoikeus.withSuoritukset(List(s5Luokka)), KoskiSpecificMockOppijat.vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa) {
+          putOpiskeluoikeus(opiskeluoikeus.withSuoritukset(List(s4Luokka)), KoskiSpecificMockOppijat.vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa) {
             verifyResponseStatusOk()
           }
 
@@ -268,7 +268,7 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
 
           resetFixtures()
         }
-        "European School of Helsinki -koulun ysiluokkaa vastaava S5 ilman opiskeluoikeuden päättymistä" in {
+        "European School of Helsinki -koulun S4 ilman opiskeluoikeuden päättymistä" in {
           val opiskeluoikeus = ExamplesEuropeanSchoolOfHelsinki.opiskeluoikeus.copy(
             tila = EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila(
               List(
@@ -277,9 +277,9 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
             ),
             suoritukset = Nil,
           )
-          val s5Luokka: SecondaryLowerVuosiluokanSuoritus = ExamplesEuropeanSchoolOfHelsinki.s5.copy(alkamispäivä = Some(date(2015, 6, 30)))
+          val s4Luokka: SecondaryLowerVuosiluokanSuoritus = ExamplesEuropeanSchoolOfHelsinki.s4.copy(alkamispäivä = Some(date(2015, 6, 30)))
 
-          putOpiskeluoikeus(opiskeluoikeus.withSuoritukset(List(s5Luokka)), KoskiSpecificMockOppijat.vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa) {
+          putOpiskeluoikeus(opiskeluoikeus.withSuoritukset(List(s4Luokka)), KoskiSpecificMockOppijat.vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa) {
             verifyResponseStatusOk()
           }
 
@@ -466,7 +466,7 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
       }
     }
   }
-  
+
   "International school MYPVuosiluokanSuoritus" - {
     val lisätiedot = InternationalSchoolOpiskeluoikeudenLisätiedot(maksuttomuus = Some(List(Maksuttomuus(date(2021, 8, 1), None, true))))
     val opiskeluoikeus = ExamplesInternationalSchool.opiskeluoikeus.copy(

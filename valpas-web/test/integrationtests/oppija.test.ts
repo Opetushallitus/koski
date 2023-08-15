@@ -71,7 +71,7 @@ const opiskeluoikeusIntSchoolPerusopetusPath = oppijaPath.href("/virkailija", {
 const opiskeluoikeusEuropeanSchoolPerusopetusPath = oppijaPath.href(
   "/virkailija",
   {
-    oppijaOid: "1.2.246.562.24.00000000172",
+    oppijaOid: "1.2.246.562.24.00000000171",
   }
 )
 
@@ -228,37 +228,22 @@ describe("Oppijakohtainen näkymä 1/2", () => {
     )
   })
 
-  it("Näyttää oppijan tiedot European schoolissa olevalle S5-luokkalaiselle", async () => {
+  it("Näyttää oppijan tiedot European schoolissa olevalle S4-luokkalaiselle", async () => {
     await loginAs(
       opiskeluoikeusEuropeanSchoolPerusopetusPath,
       "valpas-jkl-normaali"
     )
-    await mainHeadingEquals(
-      "ESH-s5-jälkeen-lukiossa-aloittanut Valpas (271105A101U)"
-    )
-    await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000172")
+    await mainHeadingEquals("ESH-s4-jälkeen-s5-aloittanut Valpas (200305A594S)")
+    await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000171")
     await oppivelvollisuustiedotEquals(
       oppivelvollisuustiedot({
         opiskelutilanne: "Opiskelemassa",
-        oppivelvollisuus: "26.11.2023 asti",
+        oppivelvollisuus: "19.3.2023 asti",
         maksuttomuusoikeus: "31.12.2025 asti",
-        kuntailmoitusBtn: true,
       })
     )
     await opiskeluhistoriaEquals(
       merge(
-        historiaOpintoOikeus({
-          otsikko: "Lukion oppimäärä 2021 –",
-          tila: "Läsnä",
-          maksuttomuus: [
-            "15.8.2021–16.8.2021 maksuton",
-            "17.8.2021–18.8.2021 maksullinen",
-            "19.8.2021– maksuton",
-          ],
-          toimipiste: "Jyväskylän normaalikoulu",
-          ryhmä: "AH",
-          alkamispäivä: "15.8.2021",
-        }),
         historiaOpintoOikeus({
           otsikko: "European School of Helsinki 2003 –",
           tila: "Läsnä",
@@ -266,7 +251,6 @@ describe("Oppijakohtainen näkymä 1/2", () => {
           toimipiste: "Helsingin eurooppalainen koulu",
           ryhmä: "S5A",
           alkamispäivä: "15.8.2003",
-          perusopetusSuoritettu: "31.5.2021",
         })
       )
     )
