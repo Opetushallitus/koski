@@ -32,9 +32,24 @@ import * as ytr from '../ytr/ytr'
 import { ammattillinenOsittainenTutkintoJaMuuAmmatillisenTutkinnonOsaPuuttuu } from '../ammatillinen/AmmatillinenOsittainenTutkinto'
 import { isLukionOppiaineidenOppimaarienSuoritus2019 } from '../lukio/lukio.js'
 
+const isVirtaSuoritus = (model) =>
+  [
+    'korkeakoulunopintojakso',
+    'korkeakoulututkinto',
+    'muukorkeakoulunsuoritus'
+  ].includes(modelData(model, 'tyyppi.koodiarvo'))
+
+const isPäättynyt = (model) =>
+  modelData(
+    model.context.opiskeluoikeus,
+    'tila.opiskeluoikeusjaksot.-1.tila.koodiarvo'
+  ) === '6'
+
 export const TilaJaVahvistusEditor = ({ model }) => {
   if (ytr.pakollisetKokeetSuoritettuEnnen1990(model)) return null
   if (isLukionOppiaineidenOppimaarienSuoritus2019(model)) return null
+  if (isVirtaSuoritus(model) && isPäättynyt(model) && !suoritusValmis(model))
+    return null
 
   return (
     <div
