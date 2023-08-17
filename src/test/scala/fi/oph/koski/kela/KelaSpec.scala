@@ -72,6 +72,31 @@ class KelaSpec
       }
     }
 
+    "Palauttaa tiedon 'täydentääTutkintoa' kun kyseessä on Muu ammatillinen koulutus" in {
+      postHetu(KoskiSpecificMockOppijat.muuAmmatillinen.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+        verifyResponseStatusOk()
+        val oppija = JsonSerializer.parse[KelaOppija](body)
+        oppija.opiskeluoikeudet.length.shouldBe(1)
+        oppija.opiskeluoikeudet.head.suoritukset.length.shouldBe(1)
+        val suoritus = oppija.opiskeluoikeudet.head.suoritukset.head.asInstanceOf[KelaAmmatillinenPäätasonSuoritus]
+        suoritus.täydentääTutkintoa.isEmpty.shouldEqual(false)
+        suoritus.tyyppi.koodiarvo.shouldEqual("muuammatillinenkoulutus")
+      }
+    }
+
+    "Palauttaa tiedot 'tutkinto' ja 'päättymispäivä' kun kyseessä on Näyttötutkintoon valmistava" in {
+      postHetu(KoskiSpecificMockOppijat.erikoisammattitutkinto.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+        verifyResponseStatusOk()
+        val oppija = JsonSerializer.parse[KelaOppija](body)
+        oppija.opiskeluoikeudet.length.shouldBe(1)
+        oppija.opiskeluoikeudet.head.suoritukset.length.shouldBe(2)
+        val suoritus = oppija.opiskeluoikeudet.head.suoritukset.head.asInstanceOf[KelaAmmatillinenPäätasonSuoritus]
+        suoritus.tutkinto.isEmpty.shouldEqual(false)
+        suoritus.tyyppi.koodiarvo.shouldEqual("nayttotutkintoonvalmistavakoulutus")
+        suoritus.päättymispäivä.isEmpty.shouldEqual(false)
+      }
+    }
+
     "Palauttaa tiedon oppisopimuksen purkamisesta" in {
       postHetu(KoskiSpecificMockOppijat.reformitutkinto.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
         verifyResponseStatusOk()
@@ -82,9 +107,10 @@ class KelaSpec
         suoritus.osaamisenHankkimistavat.map(oht => oht.length).shouldBe(Some(2))
         suoritus.osaamisenHankkimistavat.map(oht => oht.last.osaamisenHankkimistapa.isInstanceOf[OppisopimuksellinenOsaamisenHankkimistapa]).shouldBe(Some(true))
         val hankkimistapa = suoritus.osaamisenHankkimistavat.map(oht => oht.last.osaamisenHankkimistapa.asInstanceOf[OppisopimuksellinenOsaamisenHankkimistapa])
-        hankkimistapa.get.oppisopimus.oppisopimuksenPurkaminen.exists(_.päivä.equals(LocalDate.of(2013,3,20))).shouldBe(true)
+        hankkimistapa.get.oppisopimus.oppisopimuksenPurkaminen.exists(_.päivä.equals(LocalDate.of(2013, 3, 20))).shouldBe(true)
       }
     }
+
     "Ei palauta mitätöityä opiskeluoikeutta" in {
       postHetu(KoskiSpecificMockOppijat.lukiolainen.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
         verifyResponseStatusOk()

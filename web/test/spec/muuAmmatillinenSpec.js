@@ -23,6 +23,7 @@ describe('Muu ammatillinen koulutus', function () {
           'Koulutusmoduuli Tunniste KISI\n' +
             'Nimi Kiinteistösihteerin koulutus ja tutkinto (KISI)\n' +
             'Kuvaus Koulutus antaa opiskelijalle valmiudet hoitaa isännöinti- ja kiinteistöpalvelualan yritysten sihteeri- ja asiakaspalvelutehtäviä.\n' +
+            'Täydentää tutkintoa Ajoneuvoalan perustutkinto 351301 39/011/2014\n' +
             'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
             'Suorituskieli suomi\n' +
             'Suoritus kesken'
@@ -156,7 +157,6 @@ describe('Muu ammatillinen koulutus', function () {
       describe('Täydentää tutkintoa', function () {
         before(
           editor.edit,
-          editor.property('täydentääTutkintoa').addValue,
           opinnot.tutkinto('.täydentääTutkintoa').select('autoalan työnjohdon'),
           editor.saveChangesAndWaitForSuccess
         )
