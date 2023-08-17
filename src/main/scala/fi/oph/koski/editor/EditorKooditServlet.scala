@@ -146,7 +146,10 @@ class EditorKooditServlet(implicit val application: KoskiApplication) extends Ed
 
   private def koodistojenKoodit(koodistot: List[KoodistoViite]) = koodistot.flatMap(application.koodistoViitePalvelu.getKoodistoKoodiViitteet(_))
 
-  private def toKoodistoEnumValues(koodit: List[Koodistokoodiviite]) = koodit.map(KoodistoEnumModelBuilder.koodistoEnumValue(_)(localization, application.koodistoViitePalvelu)).sortBy(_.title)
+  private def toKoodistoEnumValues(koodit: List[Koodistokoodiviite]) = {
+    val localizationResult = localization
+    koodit.map(KoodistoEnumModelBuilder.koodistoEnumValue(_)(localizationResult, application.koodistoViitePalvelu)).sortBy(_.title)
+  }
 
   private def koodistotByString(str: String): List[KoodistoViite] = {
     // note: silently omits non-existing koodistot from result
