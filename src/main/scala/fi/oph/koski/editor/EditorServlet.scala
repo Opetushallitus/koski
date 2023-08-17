@@ -34,23 +34,26 @@ class   EditorServlet(implicit val application: KoskiApplication)
   }
 
   get[Set[EnumValue]]("/organisaatiot") {
+    val localizationResult = localization
     val organisaatiot = session.organisationOids(AccessType.write)
       .flatMap(application.organisaatioRepository.getOrganisaatio)
-    organisaatiot.map(EditorModelBuilder.organisaatioEnumValue(localization)(_))
+    organisaatiot.map(EditorModelBuilder.organisaatioEnumValue(localizationResult)(_))
   }
 
   get[Set[EnumValue]]("/oppilaitokset") {
+    val localizationResult = localization
     val organisaatiot = session.organisationOids(AccessType.write)
       .flatMap(application.organisaatioRepository.getOrganisaatio)
-    organisaatiot.flatMap(_.toOppilaitos).map(EditorModelBuilder.organisaatioEnumValue(localization)(_))
+    organisaatiot.flatMap(_.toOppilaitos).map(EditorModelBuilder.organisaatioEnumValue(localizationResult)(_))
   }
 
   get("/organisaatio/:oid/kotipaikka") {
+    val localizationResult = localization
     renderEither[EnumValue](OrganisaatioOid.validateOrganisaatioOid(params("oid")).right.flatMap { oid =>
       application.organisaatioRepository.getOrganisaatio(oid).flatMap(_.kotipaikka) match {
         case None => Left(KoskiErrorCategory.notFound())
         case Some(kotipaikka) => Right(
-          KoodistoEnumModelBuilder.koodistoEnumValue(kotipaikka)(localization, application.koodistoViitePalvelu)
+          KoodistoEnumModelBuilder.koodistoEnumValue(kotipaikka)(localizationResult, application.koodistoViitePalvelu)
         )
       }
     })

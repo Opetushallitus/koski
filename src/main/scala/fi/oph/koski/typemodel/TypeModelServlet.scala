@@ -41,14 +41,17 @@ class TypeModelServlet(implicit val application: KoskiApplication)
   private def koodistojenKoodit(koodistot: List[KoodistoViite]): List[Koodistokoodiviite] =
     koodistot.flatMap(application.koodistoViitePalvelu.getKoodistoKoodiViitteet)
 
-  private def toGroupedKoodistoValues(koodit: List[Koodistokoodiviite]): GroupedKoodistot =
+  private def toGroupedKoodistoValues(koodit: List[Koodistokoodiviite]): GroupedKoodistot = {
+    val localizationResult = localization
+
     GroupedKoodistot(
       koodit.groupBy(viite => {
         KoodistoEnumModelBuilder
-          .koodistoName(viite)(localization, application.koodistoViitePalvelu)
+          .koodistoName(viite)(localizationResult, application.koodistoViitePalvelu)
           .getOrElse(viite.koodistoUri)
       })
     )
+  }
 
   private def koodistotByString(str: String): List[KoodistoViite] = {
     // note: silently omits non-existing koodistot from result
