@@ -3031,11 +3031,7 @@ describe('Perusopetus', function () {
             it('Onnistuu ja uusi ammatillinen opiskeluoikeus tulee valituksi', function () {})
 
             describe('Kolmannen opiskeluoikeuden lisääminen (oppiaineen oppimäärä)', function () {
-              this.timeout(30000)
-
               before(
-                timeout.overrideWaitTime(20000),
-
                 opinnot.opiskeluoikeudet.lisääOpiskeluoikeus,
                 addOppija.selectOppilaitos('Kulosaaren ala-aste'),
                 addOppija.selectOpiskeluoikeudenTyyppi('Aikuisten perusopetus'),
@@ -3051,7 +3047,6 @@ describe('Perusopetus', function () {
                   'Fysiikka'
                 )
               )
-              after(timeout.resetDefaultWaitTime())
               it('toimii', function () {})
             })
           })
@@ -3155,16 +3150,11 @@ describe('Perusopetus', function () {
     })
 
     describe('Aikuisten perusopetus, uusi oppija', function () {
-      this.timeout(30000)
-
       before(
-        timeout.overrideWaitTime(20000),
         prepareForNewOppija('kalle', '230872-7258'),
         addOppija.enterValidDataPerusopetus(),
         addOppija.selectOpiskeluoikeudenTyyppi('Aikuisten perusopetus')
       )
-
-      after(timeout.resetDefaultWaitTime())
 
       it('Näytetään opintojen rahoitus-kenttä', function () {
         expect(addOppija.rahoitusIsVisible()).to.equal(true)
@@ -3172,10 +3162,7 @@ describe('Perusopetus', function () {
     })
 
     describe('Aikuisten perusopetus', function () {
-      this.timeout(30000)
-
       before(
-        timeout.overrideWaitTime(20000),
         prepareForNewOppija('kalle', '230872-7258'),
         addOppija.enterValidDataPerusopetus(),
         addOppija.selectOpiskeluoikeudenTyyppi('Aikuisten perusopetus'),
@@ -3186,8 +3173,6 @@ describe('Perusopetus', function () {
           'Aikuisten perusopetuksen oppimäärä'
         )
       )
-
-      after(timeout.resetDefaultWaitTime())
 
       describe('Lisäyksen jälkeen', function () {
         it('Näytetään oikein', function () {
@@ -3271,10 +3256,7 @@ describe('Perusopetus', function () {
     })
 
     describe('Aikuisten perusopetuksen alkuvaihe', function () {
-      this.timeout(30000)
-
       before(
-        timeout.overrideWaitTime(20000),
         prepareForNewOppija('kalle', '230872-7258'),
         addOppija.enterValidDataPerusopetus(),
         addOppija.selectOpiskeluoikeudenTyyppi('Aikuisten perusopetus'),
@@ -3358,15 +3340,10 @@ describe('Perusopetus', function () {
           })
         })
       })
-
-      after(timeout.resetDefaultWaitTime())
     })
 
     describe('Perusopetuksen oppiaineen oppimäärä', function () {
-      this.timeout(30000)
-
       before(
-        timeout.overrideWaitTime(20000),
         prepareForNewOppija('kalle', '230872-7258'),
         addOppija.enterValidDataPerusopetus(),
         addOppija.selectOpiskeluoikeudenTyyppi('Aikuisten perusopetus')
@@ -3404,7 +3381,6 @@ describe('Perusopetus', function () {
 
         describe('Kun valitaan kieli ja lisätään oppiaine', function () {
           before(
-            timeout.overrideWaitTime(20000),
             addOppija.selectKieli('englanti'),
             wait.forMilliseconds(1000),
             addOppija.selectOpintojenRahoitus(
