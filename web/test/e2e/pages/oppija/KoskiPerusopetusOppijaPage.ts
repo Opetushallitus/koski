@@ -17,12 +17,11 @@ export class KoskiPerusopetusOppijaPage extends KoskiOppijaPage {
     })
   }
 
-  async expectSuoritusUrl(suoritus: string, hyväksyttyPostfix: string = '.*') {
+  async expectSuoritusUrl(suoritus: string, hyväksyttyPostfix = '.*') {
     await expect(this.page).toHaveURL(
       new RegExp(
         `koski\\/oppija\\/1\\.2\\..*\\?1\\.2\\..*\\.suoritus=${suoritus}${hyväksyttyPostfix}$`
-      ),
-      { timeout: 20000 }
+      )
     )
   }
 }

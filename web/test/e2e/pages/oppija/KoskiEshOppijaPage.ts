@@ -27,7 +27,7 @@ export class KoskiEshOppijaPage extends KoskiOppijaPage {
         .getByTestId('oppiaineet-list')
         .getByTestId('suoritus-taulukko')
         .locator(`[data-test-nested-level="0"][data-test-expanded="false"]`)
-    ).toHaveCount(0, { timeout: 20000 })
+    ).toHaveCount(0)
   }
 
   async suljeKaikkiOsasuoritukset() {
@@ -38,7 +38,7 @@ export class KoskiEshOppijaPage extends KoskiOppijaPage {
         .getByTestId('oppiaineet-list')
         .getByTestId('suoritus-taulukko')
         .locator(`[data-test-nested-level="0"][data-test-expanded="true"]`)
-    ).toHaveCount(0, { timeout: 20000 })
+    ).toHaveCount(0)
   }
 
   async poistaKaikkiOsasuoritukset() {
@@ -74,8 +74,7 @@ export class KoskiEshOppijaPage extends KoskiOppijaPage {
     await expect(this.page).toHaveURL(
       new RegExp(
         `koski\\/oppija\\/1\\.2\\..*\\?1\\.2\\..*\\.suoritus=${suoritus}${hyväksyttyPostfix}$`
-      ),
-      { timeout: 30000 }
+      )
     )
   }
 

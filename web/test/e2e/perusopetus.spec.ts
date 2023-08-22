@@ -161,12 +161,12 @@ test.describe('Perusopetus', () => {
             name: 'lisää opintojen päättövaiheen suoritus'
           })
           .click()
-        await page.waitForLoadState('networkidle', { timeout: 20000 })
+        await page.waitForLoadState('networkidle')
         await expect(
           page.getByRole('button', {
             name: 'lisää opintojen päättövaiheen suoritus'
           })
-        ).not.toBeVisible({ timeout: 90000 })
+        ).not.toBeVisible()
       })
       test.describe('Lisäyksen jälkeen', async () => {
         test('Piilotetaan lisäyslinkki ja esitäytetään pakolliset oppiaineet', async ({

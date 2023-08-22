@@ -50,8 +50,7 @@ export async function getVirkailijaSession(
     data: {
       username,
       password
-    },
-    timeout: 2000
+    }
   })
   expect(request.ok()).toBeTruthy()
   await virkailijaLoginPage.context().storageState({

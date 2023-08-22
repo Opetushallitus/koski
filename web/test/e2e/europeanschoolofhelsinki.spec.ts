@@ -317,7 +317,6 @@ test.describe('European School of Helsinki', () => {
     })
 
     test.describe('Primary-vuosiluokan suoritukset', () => {
-      test.setTimeout(120000)
       const vuosiluokat = ['P1', 'P5']
       test.beforeEach(async ({ eshOppijaPage }) => {
         await eshOppijaPage.goto(ESH_OID)
@@ -498,10 +497,12 @@ test.describe('European School of Helsinki', () => {
 
         await expect(
           await uusiOppijaPage.opiskeluoikeudenTila.getOptions()
-        ).toHaveText(
-          ['Eronnut', 'Läsnä', 'Valmistunut', 'Väliaikaisesti keskeytynyt'],
-          { timeout: 5000 }
-        )
+        ).toHaveText([
+          'Eronnut',
+          'Läsnä',
+          'Valmistunut',
+          'Väliaikaisesti keskeytynyt'
+        ])
       })
 
       test('Opiskeluoikeuden luonti onnistuu ja luo uuden opiskeluoikeuden tyhjällä EB-tutkinnon suorituksella', async ({

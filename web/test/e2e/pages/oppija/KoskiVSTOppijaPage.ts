@@ -6,15 +6,16 @@ export class KoskiVSTOppijaPage extends KoskiOppijaPage {
 
   constructor(page: Page) {
     super(page)
-    this.__NEW_UI_opiskeluoikeuksienTiedot = page.getByTestId('opiskeluoikeuksientiedot')
+    this.__NEW_UI_opiskeluoikeuksienTiedot = page.getByTestId(
+      'opiskeluoikeuksientiedot'
+    )
   }
 
   async expectSuoritusUrl(suoritus: string, hyväksyttyPostfix = '.*') {
     await expect(this.page).toHaveURL(
       new RegExp(
         `koski\\/oppija\\/1\\.2\\..*\\?1\\.2\\..*\\.suoritus=${suoritus}${hyväksyttyPostfix}$`
-      ),
-      { timeout: 30000 }
+      )
     )
   }
 }

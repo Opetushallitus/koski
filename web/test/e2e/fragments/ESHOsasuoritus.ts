@@ -3,9 +3,6 @@ import { expect } from '../base'
 import { Dropdown } from '../pages/oppija/components/Dropdown'
 
 export class ESHOsasuoritus {
-  // Validaatiot on välillä tosi hitaita käyttöliittymässä.
-  readonly validaatioTimeout = 5000
-
   readonly laajennaBtn: Locator
   readonly pienennäBtn: Locator
   readonly kieliDropdown: Dropdown
@@ -116,9 +113,7 @@ export class ESHOsasuoritus {
     await this.kieliDropdown.selectOptionByClick(kieli)
 
     if (poistuvaValidaatiovirhe !== undefined) {
-      await expect(validaatioElement).not.toBeVisible({
-        timeout: this.validaatioTimeout
-      })
+      await expect(validaatioElement).not.toBeVisible()
     }
   }
 
@@ -139,9 +134,7 @@ export class ESHOsasuoritus {
     await this.suorituskieliDropdown.selectOptionByClick(kieli)
 
     if (poistuvaValidaatiovirhe !== undefined) {
-      await expect(validaatioElement).not.toBeVisible({
-        timeout: this.validaatioTimeout
-      })
+      await expect(validaatioElement).not.toBeVisible()
     }
   }
 
@@ -151,7 +144,7 @@ export class ESHOsasuoritus {
     )
   }
 
-  async syötäLaajuus(laajuus: string, validaatioVirhePoistuu: boolean = true) {
+  async syötäLaajuus(laajuus: string, validaatioVirhePoistuu = true) {
     if (validaatioVirhePoistuu) {
       await expect(this.laajuusInput).toHaveClass(/error/)
     }
@@ -160,9 +153,7 @@ export class ESHOsasuoritus {
     await this.laajuusInput.evaluate((e) => e.blur())
 
     if (validaatioVirhePoistuu) {
-      await expect(this.laajuusInput).not.toHaveClass(/error/, {
-        timeout: this.validaatioTimeout
-      })
+      await expect(this.laajuusInput).not.toHaveClass(/error/)
     }
   }
 

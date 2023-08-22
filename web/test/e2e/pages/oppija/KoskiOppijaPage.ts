@@ -162,13 +162,9 @@ export class KoskiOppijaPage {
       // Jos virhettä ei näy, niin edit-queryparametrin pitäisi häipyä.
       // Tällöin voidaan assertoida sitä
       if (!isErrorVisible) {
-        await expect(this.page).not.toHaveURL(/&edit=/, {
-          timeout: 1000
-        })
+        await expect(this.page).not.toHaveURL(/&edit=/)
       }
-    }).toPass({
-      timeout: 40000
-    })
+    }).toPass()
   }
 
   async peruutaMuutokset() {
