@@ -562,7 +562,6 @@ function AddOppijaPage() {
     },
     submitAndExpectSuccess: function (oppija, tutkinto) {
       tutkinto = tutkinto || 'Autoalan perustutkinto'
-      var timeoutMs = 15000
       return function () {
         return wait
           .until(api.isEnabled)()
@@ -573,14 +572,13 @@ function AddOppijaPage() {
                 KoskiPage().getSelectedOppija().indexOf(oppija) >= 0 &&
                 OpinnotPage().suoritusOnValittu(0, tutkinto)
               )
-            }, timeoutMs)
+            })
           )
       }
     },
     submitAndExpectSuccessModal: function (oppija, tutkinto) {
       tutkinto = tutkinto || 'Autoalan perustutkinto'
       return function () {
-        var timeoutMs = 15000
         return wait
           .until(api.isModalButtonEnabled)()
           .then(api.submitModal)
@@ -590,7 +588,7 @@ function AddOppijaPage() {
                 KoskiPage().getSelectedOppija().indexOf(oppija) >= 0 &&
                 OpinnotPage().suoritusOnValittu(0, tutkinto)
               )
-            }, timeoutMs)
+            })
           )
       }
     },

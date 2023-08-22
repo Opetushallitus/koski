@@ -5,10 +5,6 @@ describe('Linkitetyt oppijat', function () {
 
   before(Authentication().login(), resetFixtures, page.openPage)
   describe('Kun katsotaan master-henkilön tietoja', function () {
-    this.timeout(20000)
-    before(timeout.overrideWaitTime(20000))
-    after(timeout.resetDefaultWaitTime())
-
     before(page.oppijaHaku.searchAndSelect('Master'))
     describe('Tietojen katsominen', function () {
       it('Näytetään myös slave-henkilön opiskeluoikeudet', function () {

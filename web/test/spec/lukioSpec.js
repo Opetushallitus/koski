@@ -7,12 +7,10 @@ describe('Lukiokoulutus', function () {
 
   describe('Lukion päättötodistus', function () {
     before(
-      timeout.overrideWaitTime(20000),
       page.openPage,
       page.oppijaHaku.searchAndSelect('020655-2479'),
       opinnot.opiskeluoikeudet.valitseOpiskeluoikeudenTyyppi('lukiokoulutus')
     )
-    after(timeout.resetDefaultWaitTime())
 
     describe('Oppijan suorituksissa', function () {
       it('näytetään', function () {
