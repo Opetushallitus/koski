@@ -32,8 +32,8 @@ class FixtureCreator(application: KoskiApplication) extends Logging with Timing 
   ): Unit = synchronized {
     try {
       val commands = Seq(
-        "lsof".#|("wc -l"),
-        "ps -Ao pid,rss,cmd --sort rss".#|("tail -10")
+        "ps -Ao pid,pcpu,rss,cmd --sort=-rss".#|("head -10"),
+        "ps -Ao pid,pcpu,rss,cmd --sort=-pcpu".#|("head -10"),
       )
       for (cmd <- commands) {
         val result = cmd.!!
