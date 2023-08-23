@@ -1,0 +1,134 @@
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+  <SOAP-ENV:Header/>
+  <SOAP-ENV:Body>
+    <virtaluku:OpiskelijanKaikkiTiedotResponse xmlns:virtaluku="http://tietovaranto.csc.fi/luku">
+      <virta:Virta xmlns:virta="urn:mace:funet.fi:virta/2015/09/01">
+        <virta:Opiskelija avain="123456">
+          <virta:Henkilotunnus>130505A831H</virta:Henkilotunnus>
+          <virta:KansallinenOppijanumero>1.2.246.562.24.00000000159</virta:KansallinenOppijanumero>
+          <virta:Opiskeluoikeudet>
+            <virta:Opiskeluoikeus avain="6969696" opiskelijaAvain="123456">
+              <virta:AlkuPvm>2023-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2023-12-31</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2023-01-01</virta:AlkuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>8</virta:Tyyppi>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="HLD2 Liiketalouden koulutus">
+                <virta:AlkuPvm>2023-01-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2023-12-31</virta:LoppuPvm>
+                <virta:Koulutuskunta>092</virta:Koulutuskunta>
+                <virta:Koulutuskieli>fi</virta:Koulutuskieli>
+                <virta:Rahoituslahde>1</virta:Rahoituslahde>
+                <virta:Nimi kieli="fi">Liiketalouden koulutus</virta:Nimi>
+                <virta:Nimi kieli="en">Degree Programme in Business Management</virta:Nimi>
+              </virta:Jakso>
+              <virta:Koulutusala versio="ohjausala">5</virta:Koulutusala>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+            </virta:Opiskeluoikeus>
+          </virta:Opiskeluoikeudet>
+          <virta:Opintosuoritukset>
+            <virta:Opintosuoritus avain="12725473" koulutusmoduulitunniste="AVOINAMK TO00BR99-3012" opiskelijaAvain="123456" opiskeluoikeusAvain="6969696">
+              <virta:SuoritusPvm>2023-02-22</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>2</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Itsensä johtamisen työkalut</virta:Nimi>
+              <virta:Nimi kieli="en">Tools for Self-management</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+              <virta:Luokittelu>3</virta:Luokittelu>
+            </virta:Opintosuoritus>
+          </virta:Opintosuoritukset>
+        </virta:Opiskelija>
+        <virta:Opiskelija avain="654321">
+          <virta:Henkilotunnus>130505A831H</virta:Henkilotunnus>
+          <virta:KansallinenOppijanumero>1.2.246.562.24.53901923152</virta:KansallinenOppijanumero>
+          <virta:Opiskeluoikeudet>
+            <virta:Opiskeluoikeus avain="6969696" opiskelijaAvain="654321">
+              <virta:AlkuPvm>2023-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2023-07-31</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2023-01-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2023-07-31</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tila>
+                <virta:AlkuPvm>2023-08-01</virta:AlkuPvm>
+                <virta:Koodi>3</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>8</virta:Tyyppi>
+              <virta:Myontaja>02469</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="AVOINAMK Avoin ammattikorkeakoulu">
+                <virta:AlkuPvm>2023-01-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2023-07-31</virta:LoppuPvm>
+                <virta:Koulutuskunta>167</virta:Koulutuskunta>
+                <virta:Koulutuskieli>fi</virta:Koulutuskieli>
+                <virta:Rahoituslahde>1</virta:Rahoituslahde>
+                <virta:Nimi kieli="fi">Avoin ammattikorkeakoulu</virta:Nimi>
+                <virta:Nimi kieli="sv">Avoin ammattikorkeakoulu</virta:Nimi>
+                <virta:Nimi kieli="en">Open University of Applied Sciences</virta:Nimi>
+              </virta:Jakso>
+              <virta:Koulutusala versio="ohjausala">5</virta:Koulutusala>
+              <virta:Laajuus>
+                <virta:Opintopiste>0</virta:Opintopiste>
+              </virta:Laajuus>
+            </virta:Opiskeluoikeus>
+          </virta:Opiskeluoikeudet>
+          <virta:Opintosuoritukset>
+            <virta:Opintosuoritus avain="5878981" koulutusmoduulitunniste="AVOINAMK LL10068-3002" opiskelijaAvain="654321" opiskeluoikeusAvain="6969696">
+              <virta:SuoritusPvm>2023-05-16</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>2</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02469</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Onnistu työnhaussa</virta:Nimi>
+              <virta:Nimi kieli="en">Succeed in Job Hunting</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+              <virta:Luokittelu>3</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="5886245" koulutusmoduulitunniste="AVOINAMK LTP7212-3005" opiskelijaAvain="654321" opiskeluoikeusAvain="6969696">
+              <virta:SuoritusPvm>2023-06-05</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02469</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Ohjelmistorobotiikka</virta:Nimi>
+              <virta:Nimi kieli="en">Robotic Process Automation</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+              <virta:Luokittelu>3</virta:Luokittelu>
+            </virta:Opintosuoritus>
+          </virta:Opintosuoritukset>
+        </virta:Opiskelija>
+      </virta:Virta>
+    </virtaluku:OpiskelijanKaikkiTiedotResponse>
+  </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
