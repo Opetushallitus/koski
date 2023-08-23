@@ -8,8 +8,8 @@ object SystemInfo extends Logging {
   def logInfo: Unit = {
     try {
       val commands = Seq(
-        "ps -Ao pid,pcpu,rss,cmd --sort=rss".#|("tail -10"),
-        "ps -Ao pid,pcpu,rss,cmd --sort=pcpu".#|("tail -10"),
+        "scripts/memhogs.sh".cat,
+        "scripts/cpuhogs.sh".cat,
         "scripts/filehogs.sh".cat
       )
       for (cmd <- commands) {
