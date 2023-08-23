@@ -5,12 +5,12 @@ import java.sql.Timestamp
 import java.time.{Duration, LocalDateTime}
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit.MILLISECONDS
-
 import fi.oph.koski.db.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db._
 import fi.oph.koski.executors.NamedThreadFactory
 import fi.oph.koski.log.Logging
+import fi.oph.koski.util.SystemInfo
 import org.json4s._
 import org.json4s.jackson.JsonMethods
 
@@ -47,6 +47,7 @@ class Scheduler(
         fire
       } catch {
         case e: Exception =>
+          SystemInfo.logInfo
           logger.error(e)(s"Scheduled task $name failed: ${e.getMessage}")
       }
     } else {

@@ -1,7 +1,7 @@
 package fi.oph.koski.schedule
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.util.Timing
+import fi.oph.koski.util.{SystemInfo, Timing}
 import org.json4s.JValue
 
 import java.time.Duration
@@ -19,7 +19,10 @@ case class PerustiedotManualSyncScheduler(app: KoskiApplication) extends Timing 
     try {
       app.perustiedotIndexer.manualSync(refresh = true)
     } catch {
-      case e: Exception => logger.error(e)("Problem running perustiedotManualSync")
+      case e: Exception => {
+        SystemInfo.logInfo
+        logger.error(e)("Problem running perustiedotManualSync")
+      }
     }
     None
   }
