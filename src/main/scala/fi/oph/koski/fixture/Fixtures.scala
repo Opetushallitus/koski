@@ -7,10 +7,9 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeushistoriaErrorRepository
 import fi.oph.koski.raportointikanta.OpiskeluoikeusLoader
 import fi.oph.koski.suostumus.SuostumuksenPeruutusService
-import fi.oph.koski.util.{Timing, Wait}
+import fi.oph.koski.util.{SystemInfo, Timing, Wait}
 import fi.oph.koski.valpas.opiskeluoikeusfixture.ValpasOpiskeluoikeusFixtureState
 import fi.oph.koski.ytr.MockYoTodistusService
-import sys.process._
 
 object FixtureCreator {
   def generateOppijaOid(counter: Int) = "1.2.246.562.24." + "%011d".format(counter)
@@ -30,20 +29,7 @@ class FixtureCreator(application: KoskiApplication) extends Logging with Timing 
     reloadRaportointikanta: Boolean = false,
     reloadYtrData: Boolean = false,
   ): Unit = synchronized {
-    try {
-      val commands = Seq(
-        "ps -Ao pid,pcpu,rss,cmd --sort=rss".#|("tail -10"),
-        "ps -Ao pid,pcpu,rss,cmd --sort=pcpu".#|("tail -10"),
-        "scripts/filehogs.sh".cat
-      )
-      for (cmd <- commands) {
-        val result = cmd.!!
-        logger.info(s"$cmd output: $result")
-      }
-    } catch {
-      case e: Throwable =>
-        logger.error(e)(s"Error running external command: ${e.getMessage}")
-    }
+    SystemInfo.logInfo
 
     if (shouldUseFixtures) {
       val fixtureNameHasChanged = fixtureState.name != currentFixtureState.name
