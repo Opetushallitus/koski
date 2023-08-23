@@ -1,14 +1,13 @@
 package fi.oph.koski.schedule
 
 import java.lang.System.currentTimeMillis
-
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.{OppijaHenkilö, OppijaHenkilöWithMasterInfo}
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.perustiedot.OpiskeluoikeudenHenkilötiedot
 import fi.oph.koski.schema.Henkilö.Oid
-import fi.oph.koski.util.Timing
+import fi.oph.koski.util.{SystemInfo, Timing}
 import org.json4s.JValue
 
 class UpdateHenkilotTask(application: KoskiApplication) extends Timing {
@@ -30,6 +29,8 @@ class UpdateHenkilotTask(application: KoskiApplication) extends Timing {
     }
 
   def updateHenkilöt(refresh: Boolean)(context: Option[JValue]): Option[JValue] = timed("scheduledHenkilötiedotUpdate") {
+    SystemInfo.logInfo
+
     try {
       val oldContext = JsonSerializer.extract[HenkilöUpdateContext](context.get)
       val (unfilteredChangedOids, changedKoskiOids) = findChangedOppijaOids(oldContext.lastRun)
