@@ -93,3 +93,10 @@ export const clickElement = async (selector: string) => {
 
   await element.click()
 }
+
+export const expectLinkToEqual = async (selector: string, href: string) => {
+  await eventually(async () => {
+    const link = await $(selector)
+    expect(await link.getAttribute("href")).toEqual(href)
+  })
+}

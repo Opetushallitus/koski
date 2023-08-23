@@ -1488,7 +1488,7 @@ object ValpasOpiskeluoikeusExampleData {
     )
   )
 
-  def eshS5S6Opiskeluoikeus = ExamplesEuropeanSchoolOfHelsinki.opiskeluoikeus.copy(
+  def eshS4S5Opiskeluoikeus = ExamplesEuropeanSchoolOfHelsinki.opiskeluoikeus.copy(
     tila = EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila(
       List(
         EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(date(2003, 8, 15), LukioExampleData.opiskeluoikeusAktiivinen)
@@ -1506,12 +1506,11 @@ object ValpasOpiskeluoikeusExampleData {
       s1,
       s2,
       s3,
-      s4,
-      s5.copy(
+      s4.copy(
         alkamispäivä = eshS5alkamispäivä,
         vahvistus = eshS5vahvistus,
       ),
-      s6.copy(
+      s5.copy(
         alkamispäivä = eshS6alkamispäivä,
         vahvistus = None
       )

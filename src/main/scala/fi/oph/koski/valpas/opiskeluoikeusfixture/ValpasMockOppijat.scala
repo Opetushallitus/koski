@@ -178,7 +178,7 @@ object ValpasMockOppijat {
   val amisValmistunutEronnutValmasta = valpasOppijat.oppijaSyntymäaikaHetusta("Amis-valmistunut-eronnut-valmasta", "Valpas", "180605A313U", kotikunta = Some("091"))
   val oppivelvollinenESHS5KeskenKeväällä2021 = valpasOppijat.oppijaSyntymäaikaHetusta("Oppivelvollinen-esh-s5-kesken-keväällä-2021", "Valpas", "030105A049L", kotikunta = Some("091"))
   val eshS4KeskenKeväällä2021 = valpasOppijat.oppijaSyntymäaikaHetusta("ESH-s4-kesken-keväällä-2021", "Valpas", "110505A1807", kotikunta = Some("091"))
-  val eshS5JälkeenS6Aloittanut = valpasOppijat.oppijaSyntymäaikaHetusta("ESH-s5-jälkeen-s6-aloittanut", "Valpas", "011105A653V", kotikunta = Some("091"))
+  val eshS4JälkeenS5Aloittanut = valpasOppijat.oppijaSyntymäaikaHetusta("ESH-s4-jälkeen-s5-aloittanut", "Valpas", "200305A594S", kotikunta = Some("091"))
   val eshS5JälkeenLukiossaAloittanut = valpasOppijat.oppijaSyntymäaikaHetusta("ESH-s5-jälkeen-lukiossa-aloittanut", "Valpas", "271105A101U", kotikunta = Some("091"))
   val eshNurseryssä = valpasOppijat.oppijaSyntymäaikaHetusta("ESH-nurseryssä", "Valpas", hetu="070614A452J", kotikunta = Some("091"))
 

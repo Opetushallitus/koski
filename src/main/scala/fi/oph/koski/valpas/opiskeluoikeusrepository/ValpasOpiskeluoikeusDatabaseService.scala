@@ -543,9 +543,9 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       -- (1) oppijalla on International schoolin opiskeluoikeus
       AND ov_kelvollinen_opiskeluoikeus.koulutusmuoto = 'europeanschoolofhelsinki'
       AND (
-        -- (B2.1) kyseisessä opiskeluoikeudessa on S5-luokan suoritus.
+        -- (B2.1) kyseisessä opiskeluoikeudessa on S4-luokan suoritus.
         (
-          r_paatason_suoritus.koulutusmoduuli_koodiarvo = 'S5'
+          r_paatason_suoritus.koulutusmoduuli_koodiarvo = 'S4'
         )
         -- (B2.2) TAI oppija täyttää vähintään 17 vuotta tarkasteluvuonna ja hänellä on jokin ESH:n
         -- perusopetuksen päätason suoritus: heidät näytetään luokka-asteesta
@@ -554,8 +554,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         OR (
           ov_kelvollinen_opiskeluoikeus.henkilo_tayttaa_vahintaan_17_tarkasteluvuonna
           AND (
-            r_paatason_suoritus.koulutusmoduuli_koodiarvo = 'S4'
-            OR r_paatason_suoritus.koulutusmoduuli_koodiarvo = 'S3'
+            r_paatason_suoritus.koulutusmoduuli_koodiarvo = 'S3'
             OR r_paatason_suoritus.koulutusmoduuli_koodiarvo = 'S2'
             OR r_paatason_suoritus.koulutusmoduuli_koodiarvo = 'S1'
             OR r_paatason_suoritus.koulutusmoduuli_koodiarvo = 'P5'
@@ -595,7 +594,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         (
           (aikajakson_keskella.tila IS NOT NULL
             AND aikajakson_keskella.tila = any('{lasna, valiaikaisestikeskeytynyt, loma}'))
-          -- B5a.1 vasta syksyllä (1.8. tai myöhemmin) 9. luokan (ESH:n S5) aloittavia ei näytetä ennen kevään viimeistä rajapäivää.
+          -- B5a.1 vasta syksyllä (1.8. tai myöhemmin) 9. luokan (ESH:n S4) aloittavia ei näytetä ennen kevään viimeistä rajapäivää.
           AND (
             r_paatason_suoritus.data ->> 'alkamispäivä' <= $keväänValmistumisjaksoLoppu
             OR $tarkastelupäivä > $keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä
@@ -603,12 +602,12 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         )
         -- TAI:
         OR (
-          -- (B5b.1) 9. (ESH:ssa S5) luokka on tullut suoritetetuksi menneisyydessä
+          -- (B5b.1) 9. (ESH:ssa S4) luokka on tullut suoritetetuksi menneisyydessä
           (
             (
               r_paatason_suoritus.vahvistus_paiva IS NOT NULL
               AND $tarkastelupäivä >= r_paatason_suoritus.vahvistus_paiva
-              -- (B5b.2) ministeriön määrittelemä aikaraja ei ole kulunut umpeen henkilön 9. (ESH:ssa S5) luokan suorittamisajasta.
+              -- (B5b.2) ministeriön määrittelemä aikaraja ei ole kulunut umpeen henkilön 9. (ESH:ssa S4) luokan suorittamisajasta.
               AND (
                 (
                   -- keväällä 9. luokan suorittanut ja tarkastellaan heille määrättyä rajapäivää aiemmin
@@ -617,7 +616,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
                   AND $tarkastelupäivä <= $keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä
                 )
                 OR (
-                  -- tai muuna aikana 9. (ESH:ssa S5) luokan suorittanut ja tarkastellaan heille määrättyä rajapäivää aiemmin
+                  -- tai muuna aikana 9. (ESH:ssa S4) luokan suorittanut ja tarkastellaan heille määrättyä rajapäivää aiemmin
                   (r_paatason_suoritus.vahvistus_paiva
                     NOT BETWEEN $keväänValmistumisjaksoAlku AND $keväänValmistumisjaksoLoppu)
                   AND (r_paatason_suoritus.vahvistus_paiva >= $keväänUlkopuolellaValmistumisjaksoAlku)
@@ -837,6 +836,17 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
           AND pts.suorituksen_tyyppi = 'europeanschoolofhelsinkivuosiluokkasecondaryupper'
         LIMIT 1
       ) AS esh_toisen_asteen_suorituksia ON TRUE
+      LEFT JOIN LATERAL (
+        SELECT
+          TRUE AS loytyi
+        FROM
+          r_paatason_suoritus pts
+        WHERE
+          pts.opiskeluoikeus_oid = ov_kelvollinen_opiskeluoikeus.opiskeluoikeus_oid
+          AND pts.suorituksen_tyyppi = 'europeanschoolofhelsinkivuosiluokkasecondarylower'
+          AND pts.koulutusmoduuli_koodiarvo = 'S5'
+        LIMIT 1
+      ) AS esh_s5_suorituksia ON TRUE
     WHERE
       -- (0) henkilö on oppivelvollinen: suorittamisvalvontaa ei voi suorittaa enää sen jälkeen kun henkilön
       -- oppivelvollisuus on päättynyt
@@ -848,10 +858,11 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         ov_kelvollinen_opiskeluoikeus.koulutusmuoto <> 'internationalschool'
         OR international_school_toisen_asteen_suorituksia.loytyi IS TRUE
       )
-      -- (1b) European School of Helsinki on suorittamisvalvottava vain, jos siinä on S6-S7 suoritus
+      -- (1b) European School of Helsinki on suorittamisvalvottava vain, jos siinä on S5-S7 suoritus
       AND (
         ov_kelvollinen_opiskeluoikeus.koulutusmuoto <> 'europeanschoolofhelsinki'
         OR esh_toisen_asteen_suorituksia.loytyi IS TRUE
+        OR esh_s5_suorituksia.loytyi IS TRUE
       )
       AND (
         -- (2a) opiskeluoikeus on läsnä tai väliaikaisesti keskeytynyt tai lomalla tällä hetkellä.

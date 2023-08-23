@@ -135,7 +135,7 @@ class PostgresKoskiOpiskeluoikeusRepository(
             or (suoritukset -> 'tyyppi' ->> 'koodiarvo' = 'internationalschoolmypvuosiluokka'
               and suoritukset -> 'koulutusmoduuli' -> 'tunniste' ->> 'koodiarvo' = '9')
             or (suoritukset -> 'tyyppi' ->> 'koodiarvo' = 'europeanschoolofhelsinkivuosiluokkasecondarylower'
-              and suoritukset -> 'koulutusmoduuli' -> 'tunniste' ->> 'koodiarvo' = 'S5')
+              and suoritukset -> 'koulutusmoduuli' -> 'tunniste' ->> 'koodiarvo' = 'S4')
           )
           and oppija_oid = any(select oids from linkitetyt)
       """.as[Päivämääräväli])

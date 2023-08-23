@@ -2,6 +2,7 @@ import { hakutilannePathWithOrg, oppijaPath } from "../../src/state/paths"
 import {
   clickElement,
   expectElementEventuallyVisible,
+  expectLinkToEqual,
   textEventuallyEquals,
 } from "../integrationtests-env/browser/content"
 import {
@@ -238,12 +239,13 @@ describe("Hakutilannenäkymä", () => {
 
     // Vaihda filtteriä ja järjestyksen suuntaa nimen perusteella
     const selector = ".hakutilanne"
+    const contentSelector = `${selector} tr td:first-child`
     await setTableTextFilter(selector, 1, "luoka")
     await toggleTableSort(selector, 1)
 
     // Ota snapshot talteen taulukon tilasta
     await waitTableLoadingHasFinished(".hakutilanne")
-    const contentsBefore = await getTableContents(selector)
+    const contentsBefore = await getTableContents(contentSelector)
 
     // Käy jossakin oppijanäkymässä
     await openAnyOppijaView()
@@ -252,8 +254,9 @@ describe("Hakutilannenäkymä", () => {
 
     // Taulukon tilan pitäisi olla sama kuin aiemmin
     await urlIsEventually(pathToUrl(jklHakutilannePath))
-    const contentsAfter = await getTableContents(selector)
     await waitTableLoadingHasFinished(".hakutilanne")
+    const contentsAfter = await getTableContents(contentSelector)
+
     expect(contentsAfter).toEqual(contentsBefore)
   })
 
@@ -265,8 +268,10 @@ describe("Hakutilannenäkymä", () => {
       "valpas-useampi-peruskoulu"
     )
 
-    await clickElement(".oppijaview__backbutton a")
-    await urlIsEventually(pathToUrl(kulosaariHakutilannePath), 5000)
+    await expectLinkToEqual(
+      ".oppijaview__backbutton a",
+      pathToUrl(kulosaariHakutilannePath)
+    )
 
     await waitTableLoadingHasFinished(".hakutilanne")
   })
