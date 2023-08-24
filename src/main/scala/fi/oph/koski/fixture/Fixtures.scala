@@ -29,7 +29,7 @@ class FixtureCreator(application: KoskiApplication) extends Logging with Timing 
     reloadRaportointikanta: Boolean = false,
     reloadYtrData: Boolean = false,
   ): Unit = synchronized {
-    SystemInfo.logInfo
+    // SystemInfo.logInfo
 
     if (shouldUseFixtures) {
       val fixtureNameHasChanged = fixtureState.name != currentFixtureState.name

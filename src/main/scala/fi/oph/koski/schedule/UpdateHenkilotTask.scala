@@ -29,7 +29,7 @@ class UpdateHenkilotTask(application: KoskiApplication) extends Timing {
     }
 
   def updateHenkilöt(refresh: Boolean)(context: Option[JValue]): Option[JValue] = timed("scheduledHenkilötiedotUpdate") {
-    SystemInfo.logInfo
+    // SystemInfo.logInfo
 
     try {
       val oldContext = JsonSerializer.extract[HenkilöUpdateContext](context.get)
