@@ -193,6 +193,7 @@ object KoskiSpecificMockOppijat {
     Some(virtaOppija)))
 
   val virtaOppijaValiaikainenHetu = koskiSpecificOppijat.addOppija(LaajatOppijaHenkilöTiedot(oid = "1.2.246.562.24.20170814999", sukunimi = "Hetu", etunimet = "Valiaikainen", kutsumanimi = "Vahetu", hetu = Some("010469-999W"), syntymäaika = Some(LocalDate.of(1969, 4, 1)), äidinkieli = None, kansalaisuus = None))
+  val virtaOpiskeluoikeuksiaSamallaAvaimella = koskiSpecificOppijat.oppija("Opiskeluoikeuksia-samalla-avaimella", "Korkeakoululainen", "130505A831H")
 
   def defaultOppijat = koskiSpecificOppijat.getOppijat
 }

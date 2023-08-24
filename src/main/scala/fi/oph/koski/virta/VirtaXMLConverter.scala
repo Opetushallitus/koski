@@ -17,6 +17,7 @@ import fi.oph.koski.util.OptionalLists.optionalList
 import fi.oph.koski.virta.VirtaXMLConverterUtils._
 
 import scala.collection.mutable.{HashMap, HashSet, ListBuffer}
+import scala.language.postfixOps
 
 case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu, organisaatioRepository: OrganisaatioRepository) extends Logging {
   var virheet: ListBuffer[VirtaVirhe] = ListBuffer[VirtaVirhe]()
@@ -30,6 +31,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
 
     val suoritusRoots: List[Node] = suoritusNodeList.filter(isRoot(suoritusNodeList)(_))
     val opiskeluoikeusNodes: List[Node] = (virtaXml \\ "Opiskeluoikeus").toList
+    val duplikaattiavaimet: List[String] = getDuplikaatitOpiskeluoikeusavaimet(opiskeluoikeusNodes)
     val ooTyyppi: Koodistokoodiviite = koodistoViitePalvelu.validateRequired(OpiskeluoikeudenTyyppi.korkeakoulutus)
 
     def opiskeluoikeudenLuokittelu(opiskeluoikeusNode: Node): List[Koodistokoodiviite] = (opiskeluoikeusNode \ "Jakso")
@@ -59,7 +61,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
         oppilaitoksenNimiPäivä
       )
       val opiskeluoikeus = KorkeakoulunOpiskeluoikeus(
-        lähdejärjestelmänId = Some(LähdejärjestelmäId(Some(opiskeluoikeusNode \ "@avain" text), requiredKoodi("lahdejarjestelma", "virta"))),
+        lähdejärjestelmänId = Some(taaksepäinYhteensopivaYksiselitteinenLähdenjärjestelmänId(duplikaattiavaimet, avain(opiskeluoikeusNode))),
         arvioituPäättymispäivä = None,
         päättymispäivä = loppuPvm(opiskeluoikeusNode),
         oppilaitos = oppilaitos,
@@ -114,6 +116,15 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
         } else { true }
       } else { true }
     })
+  }
+
+  private def taaksepäinYhteensopivaYksiselitteinenLähdenjärjestelmänId(duplikaattiavaimet: List[String], oo: OpiskeluoikeusAvain): LähdejärjestelmäId = {
+    val id = if (duplikaattiavaimet.contains(oo.avain)) {
+      oo.yhdistelmäavain
+    } else {
+      oo.avain // Taaksepäin vanhojen linkkijakojen kanssa toimiva avain
+    }
+    LähdejärjestelmäId(Some(id), requiredKoodi("lahdejarjestelma", "virta"))
   }
 
   private def rearrangeSuorituksetIfNecessary(suoritukset: List[KorkeakouluSuoritus], opiskeluoikeusNode: Node, tila: KorkeakoulunOpiskeluoikeudenTila) = {
@@ -292,7 +303,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
     summa = (n \ "Summa").headOption.map(_.text.toInt)
   )
 
-  private def lukukausiIlmoittautuminen(oppilaitos: Option[Oppilaitos], tila: KorkeakoulunOpiskeluoikeudenTila, opiskeluoikeusAvain: String, virtaXml: Node): Option[Lukukausi_Ilmoittautuminen] = {
+  private def lukukausiIlmoittautuminen(oppilaitos: Option[Oppilaitos], tila: KorkeakoulunOpiskeluoikeudenTila, opiskeluoikeusAvain: OpiskeluoikeusAvain, virtaXml: Node): Option[Lukukausi_Ilmoittautuminen] = {
     val ilmo = Ilmoittautuminen(oppilaitos, tila, opiskeluoikeusAvain, virtaXml)
     val ilmot = (virtaXml \\ "LukukausiIlmoittautuminen").toList
       .filter(ilmo.kuuluuOpiskeluoikeuteen)
@@ -412,7 +423,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
   }
 
   private def isRoot(suoritukset: Seq[Node])(node: Node) = {
-    !suoritukset.exists(sisaltyvatAvaimet(_).contains(avain(node)))
+    !suoritukset.exists(sisaltyvatAvaimet(_).contains(avain(node).avain))
   }
 
   private def sisaltyvatAvaimet(node: Node) = {
@@ -421,7 +432,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
 
   private def childNodes(node: Node, allNodes: List[Node]) = {
     sisaltyvatAvaimet(node).flatMap { opintosuoritusAvain =>
-      val osasuoritusNodes = allNodes.filter(avain(_) == opintosuoritusAvain)
+      val osasuoritusNodes = allNodes.filter(avain(_).avain == opintosuoritusAvain)
       osasuoritusNodes match {
         case osasuoritusNode :: Nil => Some(osasuoritusNode)
         case Nil =>
@@ -456,7 +467,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
   // Siksi tehdään vertailu myös päätason suorituksen opiskeluoikeuteen (sisältyyOpiskeluoikeuteen), jottei tulkittaisi
   // tällaisessa tilanteessa koko päätasonsuorituksen kuuluvan johonkin toiseen opiskeluoikeuteen.
   private def LapsenTapauksessaOpiskeluoikeusavaimenPitääOllaSamaKuinPäätasonSuorituksella(opiskeluoikeus: Node, päätasonSuoristusNode: Option[Node]): Boolean = {
-    päätasonSuoristusNode.isEmpty || opiskeluoikeusAvain(päätasonSuoristusNode.get) == "" || opiskeluoikeusAvain(päätasonSuoristusNode.get) == avain(opiskeluoikeus)
+    päätasonSuoristusNode.isEmpty || opiskeluoikeusAvain(päätasonSuoristusNode.get).isEmpty || opiskeluoikeusAvain(päätasonSuoristusNode.get) == avain(opiskeluoikeus)
   }
 
   private def requiredKoodi(uri: String, koodi: String) = {
@@ -527,9 +538,15 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
     case _ => vahvistusPäivä
   }
 
+  private def getDuplikaatitOpiskeluoikeusavaimet(opiskeluoikeusNodes: List[Node]): List[String] =
+    opiskeluoikeusNodes
+      .map(_ \\ "@avain" text)
+      .groupBy(identity)
+      .collect { case (avain, xs) if xs.length > 1 => avain }
+      .toList
 }
 
-case class Ilmoittautuminen(oppilaitos: Option[Oppilaitos], tila: KorkeakoulunOpiskeluoikeudenTila, ooAvain: String, virtaXml: Node) {
+case class Ilmoittautuminen(oppilaitos: Option[Oppilaitos], tila: KorkeakoulunOpiskeluoikeudenTila, ooAvain: OpiskeluoikeusAvain, virtaXml: Node) {
   private lazy val jaksot = tila.opiskeluoikeusjaksot.map(Some.apply)
   private lazy val kaikkiJaksot = jaksot.zipAll(jaksot.drop(1), None, None)
   private lazy val aktiivisetJaksot = kaikkiJaksot.collect {
@@ -572,13 +589,15 @@ object VirtaXMLConverterUtils {
     (n \ "LoppuPvm").headOption.flatMap(l => optionalDate(l.text))
   }
 
-  def avain(node: Node) = {
-    (node \ "@avain").text
-  }
+  def avain(node: Node): OpiskeluoikeusAvain = OpiskeluoikeusAvain(
+    avain = (node \ "@avain").text,
+    opiskelijaAvain = (node \ "@opiskelijaAvain").text,
+  )
 
-  def opiskeluoikeusAvain(node: Node) = {
-    (node \ "@opiskeluoikeusAvain").text
-  }
+  def opiskeluoikeusAvain(node: Node): OpiskeluoikeusAvain = OpiskeluoikeusAvain(
+    avain = (node \ "@opiskeluoikeusAvain").text,
+    opiskelijaAvain = (node \ "@opiskelijaAvain").text,
+  )
 
   def alkuPvm(node: Node) = {
     date((node \ "AlkuPvm").text)
@@ -670,3 +689,12 @@ object OrganisaationRooli extends Enumeration {
 }
 
 case class IllegalSuoritusException(msg: String) extends IllegalArgumentException(msg)
+
+case class OpiskeluoikeusAvain(
+  avain: String,
+  opiskelijaAvain: String,
+) {
+  def yhdistelmäavain: String = s"$avain.$opiskelijaAvain"
+  def isEmpty: Boolean = avain.isEmpty
+  def nonEmpty: Boolean = avain.nonEmpty
+}

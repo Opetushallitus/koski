@@ -6,7 +6,7 @@
         <virta:Opiskelija avain="testi-opiskelija-20220325">
           <virta:Henkilotunnus>080795-884U</virta:Henkilotunnus>
           <virta:Opiskeluoikeudet>
-            <virta:Opiskeluoikeus avain="fuusioitu-testi-opiskeluoikeus" opiskelijaAvain="fuusioitu-testi-opiskelija-20220325">
+            <virta:Opiskeluoikeus avain="fuusioitu-testi-opiskeluoikeus" opiskelijaAvain="testi-opiskelija-20220325">
               <virta:AlkuPvm>2010-08-01</virta:AlkuPvm>
               <virta:Tila>
                 <virta:AlkuPvm>2010-08-01</virta:AlkuPvm>
@@ -35,7 +35,7 @@
                 <virta:Opintopiste>180</virta:Opintopiste>
               </virta:Laajuus>
             </virta:Opiskeluoikeus>
-            <virta:Opiskeluoikeus avain="luopunut-testi-opiskeluoikeus" opiskelijaAvain="fuusioitu-testi-opiskelija-20220325">
+            <virta:Opiskeluoikeus avain="luopunut-testi-opiskeluoikeus" opiskelijaAvain="testi-opiskelija-20220325">
               <virta:AlkuPvm>2010-08-01</virta:AlkuPvm>
               <virta:LoppuPvm>2010-10-10</virta:LoppuPvm>
               <virta:Tila>
