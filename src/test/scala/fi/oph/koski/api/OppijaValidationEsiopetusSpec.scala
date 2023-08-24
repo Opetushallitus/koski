@@ -4,6 +4,7 @@ import com.typesafe.config.Config
 import com.typesafe.config.ConfigValueFactory.fromAnyRef
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusEronnut, opiskeluoikeusLäsnä, opiskeluoikeusValmistunut}
+import fi.oph.koski.documentation.ExamplesEsiopetus.ostopalveluOpiskeluoikeus
 import fi.oph.koski.documentation.ExamplesPerusopetus.erityisenTuenPäätös
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.kulosaarenAlaAste
 import fi.oph.koski.documentation.{ExamplesEsiopetus, OsaAikainenErityisopetusExampleData}
@@ -95,6 +96,11 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
   "Pidennetyn oppivelvollisuuden aikajakso" - {
     val alku = LocalDate.of(2016, 4, 1)
 
+    val esiopetusTilaLäsnä = NuortenPerusopetuksenOpiskeluoikeudenTila(
+      List(
+        NuortenPerusopetuksenOpiskeluoikeusjakso(alku, opiskeluoikeusLäsnä)
+      ))
+
 
     "Validointi onnistuu, kun opiskeluoikeus ei sisällä pidennettyä oppivelvollisuuden eikä vammaisuuden aikajaksoja" in {
       val oo = defaultOpiskeluoikeus.copy(
@@ -125,7 +131,8 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
             vammainen = None,
             vaikeastiVammainen = None,
           )
-        )
+        ),
+        tila = esiopetusTilaLäsnä
       )
 
       validate(oo).left.get should equal (KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso("Oppivelvollisuuden pidennyksessä on päiviä, joina ei ole voimassaolevaa vammaisuusjaksoa"))
@@ -159,7 +166,7 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
       validate(oo, 1).isRight should be(true)
     }
 
-    "Validointi onnistuu, kun opiskeluoikeus sisältää vaikeasti vammaisuuden mutta ei vammaisuuden jakson ja jaksojen loppua ei ole määritelty" in {
+    "Validointi onnistuu, kun opiskeluoikeus sisältää vaikeasti vammaisuuden mutta ei vammaisuuden jakson ja jaksojen loppua ei ole määritelty eikä opiskeluoikeus ole valmis" in {
       val oo = defaultOpiskeluoikeus.copy(
         lisätiedot = Some(
           ExamplesEsiopetus.lisätiedot.copy(
@@ -175,7 +182,8 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
             vammainen = None,
             vaikeastiVammainen = Some(List(Aikajakso(alku, None))),
           )
-        )
+        ),
+        tila = esiopetusTilaLäsnä
       )
 
       validate(oo).isRight should be(true)
@@ -197,7 +205,8 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
             vammainen = Some(List(Aikajakso(alku, None))),
             vaikeastiVammainen = None
           )
-        )
+        ),
+        tila = esiopetusTilaLäsnä
       )
 
       validate(oo).left.get should equal (KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso("Jokin vammaisuusjaksoista on pidennetyn oppivelvollisuuden ulkopuolella"))
@@ -222,7 +231,8 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
             )),
             vaikeastiVammainen = None
           )
-        )
+        ),
+        tila = esiopetusTilaLäsnä
       )
 
       validate(oo).left.get should equal (KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso("Jokin vammaisuusjaksoista on pidennetyn oppivelvollisuuden ulkopuolella"))
@@ -246,7 +256,8 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
             )),
             vaikeastiVammainen = None
           )
-        )
+        ),
+        tila = esiopetusTilaLäsnä
       )
 
       validate(oo).left.get should equal (KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso("Jokin vammaisuusjaksoista on pidennetyn oppivelvollisuuden ulkopuolella"))
@@ -269,7 +280,8 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
             vammainen = None,
             vaikeastiVammainen = Some(List(Aikajakso(alku, None)))
           )
-        )
+        ),
+        tila = esiopetusTilaLäsnä
       )
 
       validate(oo).left.get should equal (KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso("Oppivelvollisuuden pidennyksessä on päiviä, joina ei ole voimassaolevaa vammaisuusjaksoa"))
@@ -738,6 +750,34 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
       )
 
       validate(oo).left.get should equal(KoskiErrorCategory.badRequest.validation.date.erityisenTuenPäätös("Oppivelvollisuuden pidennyksessä on päiviä, joina ei ole voimassaolevaa erityisen tuen jaksoa"))
+    }
+
+    "Validointi onnistuu, jos pidennetty oppivelvollisuus sisältää päiviä, joina ei ole erityisen tuen jaksoa mikäli nämä ovat opiskeluoikeuden päättymisen jälkeen" in {
+      val oo = defaultOpiskeluoikeus.copy(
+        tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
+          opiskeluoikeusjaksot = List(
+            NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2020, 9, 9), opiskeluoikeusLäsnä),
+            NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2021, 6, 4), opiskeluoikeusValmistunut)
+          )
+        ),
+        lisätiedot = Some(
+          ExamplesEsiopetus.lisätiedot.copy(
+            pidennettyOppivelvollisuus = Some(Aikajakso(LocalDate.of(2020, 9, 9), None)),
+            vammainen = None,
+            vaikeastiVammainen = Some(List(Aikajakso(LocalDate.of(2020, 9, 9), None))),
+            erityisenTuenPäätökset = Some(List(
+              ErityisenTuenPäätös(
+                alku = Some(LocalDate.of(2020, 9, 9)),
+                loppu = Some(LocalDate.of(2021, 12, 1)),
+                opiskeleeToimintaAlueittain = true,
+                erityisryhmässä = Some(true)
+              )
+            ))
+          )
+        )
+      )
+
+      validate(oo).isRight should equal(true)
     }
 
     def validate(oo: Opiskeluoikeus, voimaanastumispäivänOffsetTästäPäivästä: Long = 0): Either[HttpStatus, Oppija] = {

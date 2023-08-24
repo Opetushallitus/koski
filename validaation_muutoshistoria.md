@@ -1,5 +1,8 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 17.8.2023
+- Pidennetyn oppivelvollisuuden ja erityisen tuen ajanjaksojen validaatiota tarkennettu terminaalitilaisen opiskeluoikeuden osalta.
+
 ## 30.6.2023
 
 - IB-oppiaineiden arvioinneissa kaikki arviointi-haaraan siirretyt arvioinnit katsotaan päättöarvioinneiksi, vaikka niissä olisi predicted-kentän arvona true.
