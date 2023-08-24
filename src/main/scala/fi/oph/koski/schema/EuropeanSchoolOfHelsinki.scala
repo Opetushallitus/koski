@@ -33,6 +33,19 @@ case class EuropeanSchoolOfHelsinkiOpiskeluoikeus(
 
   def vuosiluokkasuorituksetJärjestyksessä: List[EuropeanSchoolOfHelsinkiPäätasonSuoritus] =
     suoritukset.sortBy(_.suorituksenJärjestysKriteeriAlustaLoppuun)
+
+}
+
+object EuropeanSchoolOfHelsinkiOpiskeluoikeus {
+  def vuosiluokallaMahdollisestiMaksuttomuusLisätieto(
+    koulutusmoduulinUri: String,
+    koulutusmoduulinKoodiarvo: String
+  ): Boolean = (koulutusmoduulinUri, koulutusmoduulinKoodiarvo) match {
+    case ("europeanschoolofhelsinkiluokkaaste", "S5") => true
+    case ("europeanschoolofhelsinkiluokkaaste", "S6") => true
+    case ("europeanschoolofhelsinkiluokkaaste", "S7") => true
+    case _ => false
+  }
 }
 
 /******************************************************************************

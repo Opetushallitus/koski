@@ -4,9 +4,7 @@ package fi.oph.koski.validation
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.opiskeluoikeus.{CompositeOpiskeluoikeusRepository, Päivämääräväli}
-import fi.oph.koski.oppivelvollisuustieto.Oppivelvollisuustiedot
-import fi.oph.koski.raportointikanta.RaportointiDatabase
-import fi.oph.koski.schema._
+import fi.oph.koski.schema.{_}
 import fi.oph.koski.util.{DateOrdering, FinnishDateFormat}
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
 
@@ -80,6 +78,8 @@ object MaksuttomuusValidation {
     opiskeluoikeus.suoritukset.collectFirst {
       case myp: MYPVuosiluokanSuoritus
         if InternationalSchoolOpiskeluoikeus.onLukiotaVastaavaInternationalSchoolinSuoritus(myp.tyyppi.koodiarvo, myp.koulutusmoduuli.tunniste.koodiarvo) => myp
+      case esh: EuropeanSchoolOfHelsinkiVuosiluokanSuoritus
+        if EuropeanSchoolOfHelsinkiOpiskeluoikeus.vuosiluokallaMahdollisestiMaksuttomuusLisätieto(esh.koulutusmoduuli.tunniste.koodistoUri, esh.koulutusmoduuli.tunniste.koodiarvo) => esh
       case s: SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta => s
     }.isDefined
 

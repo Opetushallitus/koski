@@ -452,16 +452,28 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
       tila = EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila(List(EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(date(2021, 8, 1), LukioExampleData.opiskeluoikeusAktiivinen))),
       lisätiedot = Some(lisätiedot)
     )
+    val s4Luokka = ExamplesEuropeanSchoolOfHelsinki.s4.copy(alkamispäivä = Some(date(2021, 8, 1)), vahvistus = None)
     val s5Luokka = ExamplesEuropeanSchoolOfHelsinki.s5.copy(alkamispäivä = Some(date(2021, 8, 1)), vahvistus = None)
     val s6luokka = ExamplesEuropeanSchoolOfHelsinki.s6.copy(alkamispäivä = Some(date(2021, 8, 1)), vahvistus = None)
+    val s7luokka = ExamplesEuropeanSchoolOfHelsinki.s7.copy(alkamispäivä = Some(date(2021, 8, 1)), vahvistus = None)
 
+    "Maksuttomuus-tiedon voi siirtää jos opiskeluoikeudella on s5-vuosiluokan suoritus" in {
+      putOpiskeluoikeus(opiskeluoikeus.withSuoritukset(List(s5Luokka)), KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021) {
+        verifyResponseStatusOk()
+      }
+    }
     "Maksuttomuus-tiedon voi siirtää jos opiskeluoikeudella on s6-vuosiluokan suoritus, koska se tulkitaan 'lukiotason suoritukseksi'" in {
       putOpiskeluoikeus(opiskeluoikeus.withSuoritukset(List(s6luokka)), KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021) {
         verifyResponseStatusOk()
       }
     }
+    "Maksuttomuus-tiedon voi siirtää jos opiskeluoikeudella on s7-vuosiluokan suoritus, koska se tulkitaan 'lukiotason suoritukseksi'" in {
+      putOpiskeluoikeus(opiskeluoikeus.withSuoritukset(List(s7luokka)), KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021) {
+        verifyResponseStatusOk()
+      }
+    }
     "Maksuttomuus-tietoa ei voi siirtää jos on pelkästään muun vuosiluokan suorituksia" in {
-      putOpiskeluoikeus(opiskeluoikeus.withSuoritukset(List(s5Luokka)), KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021) {
+      putOpiskeluoikeus(opiskeluoikeus.withSuoritukset(List(s4Luokka)), KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä koulutus ei siirrettyjen tietojen perusteella kelpaa oppivelvollisuuden suorittamiseen (tarkista, että koulutuskoodi, käytetyn opetussuunnitelman perusteen diaarinumero, suorituksen tyyppi ja/tai suoritustapa ovat oikein)."))
       }
     }
