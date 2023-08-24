@@ -47,7 +47,7 @@ class Scheduler(
         fire
       } catch {
         case e: Exception =>
-          SystemInfo.logInfo
+          // SystemInfo.logInfo
           logger.error(e)(s"Scheduled task $name failed: ${e.getMessage}")
       }
     } else {

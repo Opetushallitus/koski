@@ -20,7 +20,7 @@ case class PerustiedotManualSyncScheduler(app: KoskiApplication) extends Timing 
       app.perustiedotIndexer.manualSync(refresh = true)
     } catch {
       case e: Exception => {
-        SystemInfo.logInfo
+        // SystemInfo.logInfo
         logger.error(e)("Problem running perustiedotManualSync")
       }
     }
