@@ -5,6 +5,9 @@ describe('TUVA', function () {
   var addOppija = AddOppijaPage()
 
   describe('Opiskeluoikeuden lisääminen', function () {
+    before(timeout.overrideWaitTime(30000))
+    after(timeout.resetDefaultWaitTime())
+
     describe('Perusopetuksen järjestämislupa (TUVA)', () => {
       before(
         prepareForNewOppija('kalle', '230872-7258'),
@@ -160,10 +163,7 @@ describe('TUVA', function () {
               function () {
                 return tuva
                   .selectOsasuoritus('Valinnaiset opinnot')()
-                  .lisääLaajuus(
-                    2,
-                    '.tuva-osasuoritusrivi-1 .property.laajuus.arvo'
-                  )()
+                  .lisääLaajuus(2, '.tuva-osasuoritusrivi-1 .property.laajuus.arvo')()
               },
               editor.saveChanges,
               opinnot.avaaKaikki

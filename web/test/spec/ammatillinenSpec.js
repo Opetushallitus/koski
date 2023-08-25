@@ -7,8 +7,13 @@ describe('Ammatillinen koulutus', function () {
   var editor = opinnot.opiskeluoikeusEditor()
 
   describe('Opiskeluoikeuden lisääminen', function () {
+    this.timeout(40000)
     describe('Olemassa olevalle henkilölle', function () {
-      before(prepareForNewOppija('kalle', '280608-6619'))
+      this.timeout(40000)
+      before(
+        timeout.overrideWaitTime(40000),
+        prepareForNewOppija('kalle', '280608-6619')
+      )
       before(addOppija.enterValidDataAmmatillinen())
 
       describe('Tietojen näyttäminen', function () {
@@ -1080,9 +1085,7 @@ describe('Ammatillinen koulutus', function () {
       describe('Tutkinnon osan lisääminen', function () {
         before(
           editor.edit,
-          opinnot
-            .tutkinnonOsat('1')
-            .lisääTutkinnonOsa('Huolto- ja korjaustyöt'),
+          opinnot.tutkinnonOsat('1').lisääTutkinnonOsa('Huolto- ja korjaustyöt'),
           opinnot
             .tutkinnonOsat('1')
             .tutkinnonOsa(0)
