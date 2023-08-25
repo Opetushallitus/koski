@@ -6,6 +6,8 @@ echo
 echo
 echo "============================"
 echo "MEM hogs:"
+date
 ps -Ao pid,pcpu,rss,cmd --sort=-rss | head -n 10
+date
 echo "============================"
 echo

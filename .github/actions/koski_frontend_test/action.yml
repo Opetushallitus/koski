@@ -12,6 +12,13 @@ runs:
     - name: "🔨 Setup backend and databases"
       uses: ./.github/actions/setup_backend
 
+    - name: Compile tests
+      uses: nick-fields/retry@v2
+      with:
+        max_attempts: 1
+        timeout_minutes: 20
+        command: mvn test-compile -Pmocharunner -Dsuites="fi.oph.koski.mocha.KoskiParallelMochaSpec" --batch-mode
+
     - name: Run frontend tests
       env:
         MOCHA_SHARD_INDEX: ${{inputs.shardIndex}}
@@ -20,7 +27,7 @@ runs:
       with:
         max_attempts: 2
         timeout_minutes: 45
-        command: mvn test -Pmocharunner -Dsuites="fi.oph.koski.mocha.KoskiParallelMochaSpec" --batch-mode
+        command: mvn scalatest:test -Pmocharunner -Dsuites="fi.oph.koski.mocha.KoskiParallelMochaSpec" --batch-mode
 
     - name: Archive test screenshots
       if: ${{ failure() }}
