@@ -17,7 +17,7 @@ runs:
       with:
         max_attempts: 1
         timeout_minutes: 20
-        command: mvn test-compile -Pmocharunner -Dsuites="fi.oph.koski.mocha.KoskiParallelMochaSpec" --batch-mode
+        command: mvn test-compile --batch-mode
 
     - name: Run frontend tests
       env:
