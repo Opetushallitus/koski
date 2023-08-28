@@ -91,7 +91,7 @@ jobs:
 
   run_backend_tests_api:
     name: Backend (api)
-    runs-on: ${{ inputs.runs-on }}
+    runs-on: "KOSKI-4vcpu-16gram"
     if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
     steps:
       - uses: actions/checkout@v3
@@ -104,7 +104,7 @@ jobs:
 
   run_backend_tests_nonmock:
     name: Backend (non-mock)
-    runs-on: ${{ inputs.runs-on }}
+    runs-on: "KOSKI-4vcpu-16gram"
     if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
     steps:
       - uses: actions/checkout@v3
@@ -115,7 +115,7 @@ jobs:
 
   run_backend_tests_other_1:
     name: Backend (other 1/2)
-    runs-on: ${{ inputs.runs-on }}
+    runs-on: "KOSKI-4vcpu-16gram"
     if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
     steps:
       - uses: actions/checkout@v3
@@ -150,7 +150,7 @@ jobs:
 
   run_backend_tests_other_2:
     name: Backend (other 2/2)
-    runs-on: ${{ inputs.runs-on }}
+    runs-on: "KOSKI-4vcpu-16gram"
     if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
     steps:
       - uses: actions/checkout@v3
@@ -187,7 +187,7 @@ jobs:
       matrix:
         shardIndex: [1, 2, 3, 4, 5]
         shardTotal: [5]
-    runs-on: ${{ inputs.runs-on }}
+    runs-on: "KOSKI-4vcpu-16gram"
     if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
     steps:
       - uses: actions/checkout@v3
@@ -203,7 +203,7 @@ jobs:
       matrix:
         shardIndex: [1, 2, 3]
         shardTotal: [3]
-    runs-on: ${{ inputs.runs-on }}
+    runs-on: "KOSKI-4vcpu-16gram"
     if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
     steps:
       - uses: actions/checkout@v3
@@ -219,7 +219,7 @@ jobs:
       matrix:
         shardIndex: [1, 2, 3, 4]
         shardTotal: [4]
-    runs-on: ${{ inputs.runs-on }}
+    runs-on: "KOSKI-4vcpu-16gram"
     if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
     steps:
       - uses: actions/checkout@v3
