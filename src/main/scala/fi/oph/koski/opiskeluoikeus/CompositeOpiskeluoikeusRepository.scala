@@ -3,12 +3,13 @@ package fi.oph.koski.opiskeluoikeus
 import java.time.LocalDate
 import fi.oph.koski.db.KoskiOpiskeluoikeusRow
 import fi.oph.koski.executors.GlobalExecutionContext
-import fi.oph.koski.henkilo.{HenkilönTunnisteet, Hetu, PossiblyUnverifiedHenkilöOid}
+import fi.oph.koski.henkilo.{HenkilönTunnisteet, Hetu, LaajatOppijaHenkilöTiedot, PossiblyUnverifiedHenkilöOid}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeus}
+import fi.oph.koski.turvakielto.TurvakieltoService
 import fi.oph.koski.util.{Futures, WithWarnings}
 
 import scala.concurrent.Future
@@ -98,7 +99,14 @@ class CompositeOpiskeluoikeusRepository(main: KoskiOpiskeluoikeusRepository, vir
     val mainResult = main.findHuollettavaByOppijaOids(tunnisteet.oid :: tunnisteet.linkitetytOidit)
     val virtaResult = Futures.await(virtaResultFuture)
     val ytrResult = Futures.await(ytrResultFuture)
-    WithWarnings(mainResult ++ virtaResult.getIgnoringWarnings ++ ytrResult.getIgnoringWarnings, virtaResult.warnings ++ ytrResult.warnings)
+
+    val opiskeluoikeudet = mainResult ++ virtaResult.getIgnoringWarnings ++ ytrResult.getIgnoringWarnings
+    val siivotutOpiskeluoikeudet = tunnisteet match {
+      case h: LaajatOppijaHenkilöTiedot if h.turvakielto => opiskeluoikeudet.map(TurvakieltoService.poistaOpiskeluoikeudenTurvakiellonAlaisetTiedot)
+      case _ => opiskeluoikeudet
+    }
+
+    WithWarnings(siivotutOpiskeluoikeudet, virtaResult.warnings ++ ytrResult.warnings)
   }
 
   def getPerusopetuksenAikavälitIlmanKäyttöoikeustarkistusta(oppijaOid: String): Seq[Päivämääräväli] = {

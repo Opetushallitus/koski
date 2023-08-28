@@ -1,7 +1,8 @@
 package fi.oph.koski.huoltaja
 
 import com.typesafe.config.Config
-import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.{eskari, faija, faijaFeilaa, ylioppilasLukiolainen}
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.{eskari, faija, faijaFeilaa, turvakielto, ylioppilasLukiolainen}
+import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http._
 import fi.oph.koski.log.Logging
@@ -48,9 +49,10 @@ class MockHuollettavatRepository extends HuollettavatRepository {
       case None =>
         if (faija.hetu.contains(huoltajaHetu)) {
           Right(List(
-            VtjHuollettavaHenkilö(eskari.etunimet, eskari.sukunimi, eskari.hetu.get),
-            VtjHuollettavaHenkilö(ylioppilasLukiolainen.etunimet, ylioppilasLukiolainen.sukunimi, ylioppilasLukiolainen.hetu.get),
-            VtjHuollettavaHenkilö("Olli", "Oiditon", "060488-681S")
+            VtjHuollettavaHenkilö(eskari),
+            VtjHuollettavaHenkilö(ylioppilasLukiolainen),
+            VtjHuollettavaHenkilö("Olli", "Oiditon", "060488-681S"),
+            VtjHuollettavaHenkilö(turvakielto),
           ))
         } else if (faijaFeilaa.hetu.contains(huoltajaHetu)) {
           Left(KoskiErrorCategory.unavailable.huollettavat())
@@ -63,3 +65,11 @@ class MockHuollettavatRepository extends HuollettavatRepository {
 
 case class VtjHuoltajaHenkilöResponse(huollettavat: List[VtjHuollettavaHenkilö])
 case class VtjHuollettavaHenkilö(etunimet: String, sukunimi: String, hetu: String)
+
+object VtjHuollettavaHenkilö {
+  def apply(h: LaajatOppijaHenkilöTiedot): VtjHuollettavaHenkilö = VtjHuollettavaHenkilö(
+    etunimet = h.etunimet,
+    sukunimi = h.sukunimi,
+    hetu = h.hetu.get,
+  )
+}

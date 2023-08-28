@@ -7,6 +7,7 @@ describe('Huollettavien tiedot', function () {
 
   const essiOid = '1.2.246.562.24.00000000066'
   const ynjeviOid = '1.2.246.562.24.00000000049'
+  const teroTurvakieltoOid = '1.2.246.562.24.00000000071'
 
   describe('Kun huollettavalla on opintoja Koskessa', function () {
     before(
@@ -31,6 +32,7 @@ describe('Huollettavien tiedot', function () {
         { text: 'Faija EiOpintojaKoskessa', disabled: false },
         { text: 'Essi Eskari', disabled: false },
         { text: 'Olli Oiditon (Ei opintoja)', disabled: true },
+        { text: 'Tero Turvakielto', disabled: false },
         { text: 'Ynjevi Ylioppilaslukiolainen', disabled: false }
       ])
     })
@@ -58,6 +60,24 @@ describe('Huollettavien tiedot', function () {
             'Päiväkodin esiopetus (2014—, läsnä)',
             'Päiväkodin esiopetus (2014—, läsnä)'
           ]
+        )
+      })
+    })
+
+    describe('Kun valitaan turvakiellollinen huollettava', function () {
+      before(omattiedot.opiskelijanValinta.selectOpiskelija(teroTurvakieltoOid))
+      before(
+        wait.until(function () {
+          return omattiedot.oppija() === 'Huollettavani opinnot'
+        })
+      )
+
+      it('näytetään huollettavan tiedot', function () {
+        verifyOppija(
+          'Huollettavani opinnot',
+          'Tero Turvakielto\ns. 15.10.1967',
+          ['Oppilaitos'],
+          ['Lukion oppimäärä (2012—2016, valmistunut)']
         )
       })
     })
