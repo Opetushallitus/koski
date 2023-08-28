@@ -32,12 +32,18 @@ object StubLogs {
   private val logs: ListBuffer[Message] = ListBuffer.empty
   val maxSize = 200
 
-  def clear(): Unit = logs.clear()
-  def getLogs(appenderName: String): Seq[String] = logs.filter(_.appenderName == appenderName).map(_.message)
+  def clear(): Unit = synchronized {
+    logs.clear()
+  }
+  def getLogs(appenderName: String): Seq[String] = synchronized {
+    logs.filter(_.appenderName == appenderName).map(_.message)
+  }
   def append(appenderName: String, message: String): Unit = {
-    logs += Message(appenderName, message)
-    if (logs.size > maxSize) {
-      logs.trimStart(logs.size - maxSize)
+    synchronized {
+      logs += Message(appenderName, message)
+      if (logs.size > maxSize) {
+        logs.trimStart(logs.size - maxSize)
+      }
     }
   }
 }
