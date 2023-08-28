@@ -40,3 +40,11 @@ runs:
     - name: Start Postgres and OS containers
       run: docker-compose up -d
       shell: bash
+
+    - name: Compile tests
+      uses: nick-fields/retry@v2
+      with:
+        max_attempts: 1
+        timeout_minutes: 20
+        command: mvn test-compile --batch-mode
+

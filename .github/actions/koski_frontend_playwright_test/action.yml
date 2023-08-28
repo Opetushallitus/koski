@@ -16,13 +16,6 @@ runs:
     - name: "🌍 Setup Playwright"
       uses: ./.github/actions/setup_playwright
 
-    - name: Compile tests
-      uses: nick-fields/retry@v2
-      with:
-        max_attempts: 1
-        timeout_minutes: 20
-        command: mvn test-compile --batch-mode
-
     - name: Run Playwright tests
       env:
         PLAYWRIGHT_SHARD_INDEX: ${{inputs.shardIndex}}

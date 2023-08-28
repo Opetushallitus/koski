@@ -16,4 +16,4 @@ runs:
       with:
         max_attempts: 2
         timeout_minutes: 45
-        command: mvn test -DwildcardSuites="${{ inputs.suites }}" --batch-mode
+        command: mvn scalatest:test -DwildcardSuites="${{ inputs.suites }}" --batch-mode
