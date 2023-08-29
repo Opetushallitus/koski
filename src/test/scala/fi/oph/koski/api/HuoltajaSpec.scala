@@ -21,7 +21,7 @@ class HuoltajaSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTes
         val etunimet = huollettavat.map(huollettava => {
           huollettava("etunimet")
         }).sorted
-        etunimet should equal (List("Essi", "Olli", "Ynjevi"))
+        etunimet should equal (List("Essi", "Olli", "Tero", "Ynjevi"))
       }
     }
 
