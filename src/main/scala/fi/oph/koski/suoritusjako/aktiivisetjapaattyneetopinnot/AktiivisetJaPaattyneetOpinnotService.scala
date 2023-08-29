@@ -55,6 +55,7 @@ class AktiivisetJaPäättyneetOpinnotService(application: KoskiApplication) exte
           opiskeluoikeus.suoritukset
             .filter(josInternationalSchoolNiinLukiotaVastaava)
             .filter(josYOTutkintoNiinVahvistettu)
+            .filter(vähintäänS5josESHSecondaryLower)
         )
       }.filter(_.suoritukset.nonEmpty)
   }
@@ -85,6 +86,14 @@ class AktiivisetJaPäättyneetOpinnotService(application: KoskiApplication) exte
     o match {
       case ko: AktiivisetJaPäättyneetOpinnotKoskeenTallennettavaOpiskeluoikeus => ko.oid.map(kuoriOpiskeluoikeusOidit.contains).getOrElse(false)
       case _ => false
+    }
+  }
+
+  private def vähintäänS5josESHSecondaryLower(s: Suoritus): Boolean = {
+    s match {
+      case s: AktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiPäätasonSuoritus
+        if s.tyyppi.koodiarvo == "europeanschoolofhelsinkivuosiluokkasecondarylower" => s.koulutusmoduuli.tunniste.koodiarvo == "S5"
+      case _ => true
     }
   }
 }

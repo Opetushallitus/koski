@@ -33,6 +33,7 @@ case class AktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiPäätasonSuor
   koulutusmoduuli: AktiivisetJaPäättyneetOpinnotESHKoulutusmoduuli,
   vahvistus: Option[Vahvistus],
   toimipiste: Option[Toimipiste],
+  @KoodistoKoodiarvo("europeanschoolofhelsinkivuosiluokkasecondarylower")
   @KoodistoKoodiarvo("europeanschoolofhelsinkivuosiluokkasecondaryupper")
   @KoodistoKoodiarvo("ebtutkinto")
   tyyppi: schema.Koodistokoodiviite,

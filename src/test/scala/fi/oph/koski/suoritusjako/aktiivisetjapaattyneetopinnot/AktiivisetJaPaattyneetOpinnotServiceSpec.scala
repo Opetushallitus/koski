@@ -312,6 +312,7 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
         val expectedSuoritusDatat = expectedOoData.suoritukset.collect {
           case s: schema.SecondaryUpperVuosiluokanSuoritus => s
           case s: schema.EBTutkinnonSuoritus => s
+          case s: schema.SecondaryLowerVuosiluokanSuoritus if s.koulutusmoduuli.tunniste.koodiarvo == "S5" => s
         }
 
         val result = aktiivisetJaPäättyneetOpinnotService.findOppija(oppija.oid)
@@ -332,7 +333,36 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
       }
     })
 
-    "Ei palauteta opiskeluoikeutta, jolla ei ole secondary upper -vuosiluokan tai EB-tutkinnon suorituksia" in {
+    "Palautetaan S5-vuosiluokan suoritus" in {
+      val oppija = KoskiSpecificMockOppijat.europeanSchoolOfHelsinki
+
+      val expectedOo = getOpiskeluoikeus(oppija.oid, schema.OpiskeluoikeudenTyyppi.europeanschoolofhelsinki.koodiarvo).asInstanceOf[schema.EuropeanSchoolOfHelsinkiOpiskeluoikeus]
+
+      val expectedSuoritukset = expectedOo.suoritukset.collect {
+        case s: schema.SecondaryLowerVuosiluokanSuoritus if s.koulutusmoduuli.tunniste.koodiarvo == "S5" => s
+      }
+
+      expectedSuoritukset should have length 1
+
+      val result = aktiivisetJaPäättyneetOpinnotService.findOppija(oppija.oid)
+
+      result.isRight should be(true)
+
+      result.map(o => {
+        verifyOppija(oppija, o)
+
+        o.opiskeluoikeudet should have length 1
+        o.opiskeluoikeudet.head shouldBe a[AktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiOpiskeluoikeus]
+
+        val actualOo = o.opiskeluoikeudet.head
+
+        actualOo.suoritukset.exists(s =>
+          s.tyyppi.koodiarvo == "europeanschoolofhelsinkivuosiluokkasecondarylower" && s.koulutusmoduuli.tunniste.koodiarvo == "S5"
+        ) should be(true)
+      })
+    }
+
+    "Ei palauteta opiskeluoikeutta, jolla ei ole S5-suoritusta eikä secondary upper -vuosiluokan tai EB-tutkinnon suorituksia" in {
       val oppija = KoskiSpecificMockOppijat.europeanSchoolOfHelsinki
 
       val alkuperäinenOo = getOpiskeluoikeus(oppija.oid, schema.OpiskeluoikeudenTyyppi.europeanschoolofhelsinki.koodiarvo).asInstanceOf[schema.EuropeanSchoolOfHelsinkiOpiskeluoikeus]
@@ -340,7 +370,7 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
       val ooIlmanSecondaryUpperSuorituksia = alkuperäinenOo
         .withSuoritukset(
         alkuperäinenOo.suoritukset.collect {
-          case s if !s.isInstanceOf[schema.SecondaryUpperVuosiluokanSuoritus] && !s.isInstanceOf[schema.EBTutkinnonSuoritus] => s
+          case s if !s.isInstanceOf[schema.SecondaryUpperVuosiluokanSuoritus] && !s.isInstanceOf[schema.EBTutkinnonSuoritus] && s.koulutusmoduuli.tunniste.koodiarvo != "S5" => s
         }
       )
 
