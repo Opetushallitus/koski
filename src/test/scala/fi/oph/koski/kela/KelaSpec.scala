@@ -1,18 +1,20 @@
 package fi.oph.koski.kela
 
 import fi.oph.koski.api.misc.OpiskeluoikeusTestMethodsAmmatillinen
-import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec, ytr}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.history.OpiskeluoikeusHistoryPatch
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{MockUser, MockUsers}
 import fi.oph.koski.log.{AccessLogTester, AuditLogTester}
+import fi.oph.koski.organisaatio.MockOrganisaatiot.MuuKuinSäänneltyKoulutusToimija
+import fi.oph.koski.schema.LocalizedString.finnish
 import fi.oph.koski.schema._
 import fi.oph.koski.ytr.MockYrtClient
-import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
+import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
+import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 
 import java.time.LocalDate
 
@@ -362,6 +364,35 @@ class KelaSpec
     getHetu(KoskiSpecificMockOppijat.amis.hetu.get) {
       verifyResponseStatusOk()
       AccessLogTester.getLatestMatchingAccessLog("/koski/kela") should include(maskedHetu)
+    }
+  }
+
+  "Palauttaa muun kuin säännellyn koulutuksen opiskeluoikeuden" in {
+    postHetu(KoskiSpecificMockOppijat.jotpaMuuKuinSäänneltySuoritettu.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+      verifyResponseStatusOk()
+
+      val oppija = JsonSerializer.parse[KelaOppija](body)
+      oppija.opiskeluoikeudet.length should be(1)
+
+      val muksOpiskeluoikeus = oppija.opiskeluoikeudet.last match {
+        case x: KelaMUKSOpiskeluoikeus => x
+      }
+
+      muksOpiskeluoikeus.oppilaitos.get.oid shouldBe MuuKuinSäänneltyKoulutusToimija.oppilaitos
+      muksOpiskeluoikeus.koulutustoimija.get.oid shouldBe MuuKuinSäänneltyKoulutusToimija.koulutustoimija
+      muksOpiskeluoikeus.tila.opiskeluoikeusjaksot.last.tila.koodiarvo shouldBe "hyvaksytystisuoritettu"
+      muksOpiskeluoikeus.suoritukset.length shouldBe 1
+
+      val päätasonSuoritus = muksOpiskeluoikeus.suoritukset.head
+      päätasonSuoritus.koulutusmoduuli.tunniste.koodiarvo shouldBe "999951"
+      päätasonSuoritus.koulutusmoduuli.opintokokonaisuus.koodiarvo shouldBe "1138"
+      päätasonSuoritus.koulutusmoduuli.opintokokonaisuus.nimi shouldBe Some(Finnish("Kuvallisen ilmaisun perusteet ja välineet"))
+
+      päätasonSuoritus.osasuoritukset shouldNot be(None)
+      päätasonSuoritus.osasuoritukset.get.length shouldBe 1
+      val osasuoritus = päätasonSuoritus.osasuoritukset.get.head
+      osasuoritus.koulutusmoduuli.tunniste.koodiarvo shouldBe "Maalaus"
+      osasuoritus.koulutusmoduuli.tunniste.nimi shouldBe Some(finnish("Maalaus"))
     }
   }
 

@@ -27,7 +27,8 @@ object KelaSchema {
     "perusopetus",
     "ylioppilastutkinto",
     "vapaansivistystyonkoulutus",
-    "tuva"
+    "tuva",
+    "muukuinsaanneltykoulutus",
   ).filter(_.nonEmpty)
 }
 
@@ -142,6 +143,7 @@ case class KelaKoodistokoodiviite(
   koodistoUri: Option[String],
   koodistoVersio: Option[Int]
 )
+
 object KelaKoodistokoodiviite{
   def fromKoskiSchema(kv: schema.Koodistokoodiviite) = KelaKoodistokoodiviite(
     kv.koodiarvo,
@@ -151,6 +153,12 @@ object KelaKoodistokoodiviite{
     kv.koodistoVersio
   )
 }
+
+case class KelaPaikallinenKoodiviite(
+  koodiarvo: String,
+  nimi: Option[schema.LocalizedString],
+  koodistoUri: Option[String],
+)
 
 case class Ulkomaanjakso(
   alku: LocalDate,
