@@ -31,10 +31,22 @@ import { t } from '../i18n/i18n'
 import * as ytr from '../ytr/ytr'
 import { ammattillinenOsittainenTutkintoJaMuuAmmatillisenTutkinnonOsaPuuttuu } from '../ammatillinen/AmmatillinenOsittainenTutkinto'
 import { isLukionOppiaineidenOppimaarienSuoritus2019 } from '../lukio/lukio.js'
+import { isKorkeakouluSuoritus } from '../omattiedot/suoritusjako/SelectableSuoritusList'
+const isPäättynyt = (model) =>
+  modelData(
+    model.context.opiskeluoikeus,
+    'tila.opiskeluoikeusjaksot.-1.tila.koodiarvo'
+  ) === '6'
 
 export const TilaJaVahvistusEditor = ({ model }) => {
   if (ytr.pakollisetKokeetSuoritettuEnnen1990(model)) return null
   if (isLukionOppiaineidenOppimaarienSuoritus2019(model)) return null
+  if (
+    isKorkeakouluSuoritus(model) &&
+    isPäättynyt(model) &&
+    !suoritusValmis(model)
+  )
+    return null
 
   return (
     <div

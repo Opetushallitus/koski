@@ -67,6 +67,13 @@ describe('Korkeakoulutus', function () {
     })
   })
 
+  describe('Päättynyt-tila', function () {
+    before(page.openPage, page.oppijaHaku.searchAndSelect('010190-4473'))
+    it('ei tulkita keskeneräiseksi suoritukseksi', function () {
+      expect(S('.suoritukset .tila-vahvistus').length).to.equal(0)
+    })
+  })
+
   describe('AMK, keskeyttänyt', function () {
     before(page.openPage, page.oppijaHaku.searchAndSelect('170691-3962'))
     describe('Oppilaitos ja tutkinto', function () {

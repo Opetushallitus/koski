@@ -69,7 +69,7 @@ export const SelectableSuoritusList = ({
   )
 }
 
-const isKorkeakouluSuoritus = (suoritus) =>
+export const isKorkeakouluSuoritus = (suoritus) =>
   [
     'korkeakoulututkinto',
     'korkeakoulunopintojakso',
