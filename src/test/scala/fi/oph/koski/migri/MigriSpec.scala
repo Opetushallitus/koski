@@ -1,7 +1,7 @@
 package fi.oph.koski.migri
 
+import fi.oph.koski.api.misc.OpiskeluoikeusTestMethodsAmmatillinen
 import fi.oph.koski.{DirtiesFixtures, KoskiHttpSpec}
-import fi.oph.koski.api.OpiskeluoikeusTestMethodsAmmatillinen
 import fi.oph.koski.documentation.AmmatillinenExampleData.arviointiKiitettävä
 import fi.oph.koski.documentation.{AmmatillinenOldExamples, ExamplesLukio2019, MuunAmmatillisenKoulutuksenExample}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat

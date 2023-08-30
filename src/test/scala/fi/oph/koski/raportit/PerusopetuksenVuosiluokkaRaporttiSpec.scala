@@ -3,7 +3,7 @@ package fi.oph.koski.raportit
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.api.OpiskeluoikeusTestMethodsPerusopetus
+import fi.oph.koski.api.misc.OpiskeluoikeusTestMethodsPerusopetus
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.ExamplesPerusopetus._
 import fi.oph.koski.documentation.PerusopetusExampleData

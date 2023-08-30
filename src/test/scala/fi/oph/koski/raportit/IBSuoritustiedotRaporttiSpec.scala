@@ -1,7 +1,7 @@
 package fi.oph.koski.raportit
 
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.api.OpiskeluoikeusTestMethods
+import fi.oph.koski.api.misc.OpiskeluoikeusTestMethods
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.{ibPreIB2019, ibPredicted}
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.http.KoskiErrorCategory

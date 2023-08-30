@@ -1,6 +1,6 @@
 package fi.oph.koski.raportit
 
-import fi.oph.koski.api.OpiskeluoikeusTestMethodsAikuistenPerusopetus
+import fi.oph.koski.api.misc.OpiskeluoikeusTestMethodsAikuistenPerusopetus
 import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusLäsnä, valtionosuusRahoitteinen}
 import fi.oph.koski.documentation.{ExampleData, ExamplesAikuistenPerusopetus, YleissivistavakoulutusExampleData}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat._

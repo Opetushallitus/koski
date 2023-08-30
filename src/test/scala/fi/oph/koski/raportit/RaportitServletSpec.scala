@@ -2,7 +2,7 @@ package fi.oph.koski.raportit
 
 
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.api.OpiskeluoikeusTestMethods
+import fi.oph.koski.api.misc.OpiskeluoikeusTestMethods
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.UserWithPassword
 import fi.oph.koski.organisaatio.MockOrganisaatiot._

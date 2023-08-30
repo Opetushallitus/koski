@@ -1,7 +1,7 @@
 package fi.oph.koski.raportit
 
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.api.{PutOpiskeluoikeusTestMethods, TestMethodsLukio}
+import fi.oph.koski.api.misc.{PutOpiskeluoikeusTestMethods, TestMethodsLukio}
 import fi.oph.koski.documentation.ExamplesLukio.{aikuistenOpsinPerusteet2015, aineopiskelija}
 import fi.oph.koski.documentation.{AmmatillinenExampleData, ExampleData, YleissivistavakoulutusExampleData}
 import fi.oph.koski.documentation.ExampleData.suomenKieli

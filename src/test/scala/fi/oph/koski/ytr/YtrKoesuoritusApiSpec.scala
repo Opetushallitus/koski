@@ -1,7 +1,7 @@
 package fi.oph.koski.ytr
 
 import fi.oph.koski.KoskiHttpSpec
-import fi.oph.koski.api.OpiskeluoikeusTestMethods
+import fi.oph.koski.api.misc.OpiskeluoikeusTestMethods
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}

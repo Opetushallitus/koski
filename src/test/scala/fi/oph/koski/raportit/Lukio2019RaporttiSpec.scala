@@ -1,11 +1,11 @@
 package fi.oph.koski.raportit
 
-import fi.oph.koski.api.OpiskeluoikeusTestMethodsLukio2015
+import fi.oph.koski.api.misc.OpiskeluoikeusTestMethodsLukio2015
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.organisaatio.MockOrganisaatiot._
 import fi.oph.koski.raportit.lukio.lops2021.{Lukio2019RaportitRepository, Lukio2019Raportti}
-import fi.oph.koski.raportointikanta.{RaportointikantaTestMethods}
+import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import fi.oph.koski.schema._
 import fi.oph.koski.{DirtiesFixtures, KoskiApplicationForTests}
 import org.scalatest.freespec.AnyFreeSpec

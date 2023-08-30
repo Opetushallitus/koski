@@ -1,7 +1,7 @@
 package fi.oph.koski.ytr.download
 
 import fi.oph.koski.KoskiHttpSpec
-import fi.oph.koski.api.OpiskeluoikeusTestMethods
+import fi.oph.koski.api.misc.OpiskeluoikeusTestMethods
 import fi.oph.koski.koskiuser.UserWithPassword
 import fi.oph.koski.schema.Oppija
 import fi.oph.koski.util.Wait

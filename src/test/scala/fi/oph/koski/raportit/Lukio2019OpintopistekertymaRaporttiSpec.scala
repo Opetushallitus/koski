@@ -1,9 +1,9 @@
 package fi.oph.koski.raportit
 
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.api.{PutOpiskeluoikeusTestMethods, TestMethodsLukio}
-import fi.oph.koski.documentation.ExamplesLukio2019.{lops2019AikuistenPerusteenDiaarinumero}
-import fi.oph.koski.documentation.{ExampleData}
+import fi.oph.koski.api.misc.{PutOpiskeluoikeusTestMethods, TestMethodsLukio}
+import fi.oph.koski.documentation.ExamplesLukio2019.lops2019AikuistenPerusteenDiaarinumero
+import fi.oph.koski.documentation.ExampleData
 import fi.oph.koski.documentation.LukioExampleData.{aikuistenOpetussuunnitelma, opiskeluoikeusAktiivinen}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.localization.LocalizationReader

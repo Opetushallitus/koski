@@ -1,7 +1,7 @@
 package fi.oph.koski.raportit
 
+import fi.oph.koski.api.misc.PutOpiskeluoikeusTestMethods
 import fi.oph.koski.{DirtiesFixtures, KoskiApplicationForTests}
-import fi.oph.koski.api.PutOpiskeluoikeusTestMethods
 import fi.oph.koski.documentation.ExampleData.{longTimeAgo, opiskeluoikeusEronnut, opiskeluoikeusLäsnä, opiskeluoikeusValmistunut, valtionosuusRahoitteinen}
 import fi.oph.koski.documentation.{ExamplesAikuistenPerusopetus, PerusopetusExampleData}
 import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.{aikuistenPerusopetukseOppimääränSuoritus, aikuistenPerusopetuksenAlkuvaiheenSuoritus, aikuistenPerusopetus2017, alkuvaiheenKurssinSuoritus, alkuvaiheenOppiaineenSuoritus, oppiaineidenSuoritukset2017}
