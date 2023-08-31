@@ -204,47 +204,47 @@ class OppivelvollisuustietoSpec
         }
       }
 
-      "Jos suorittaa vain international schoolia, käytetään päättymispäivänä päivää, joka lopettaa aikaisemmin oikeuden maksuttomuuteen tai oppivelvollisuuteen" - {
+      "Jos suorittaa vain international schoolia, käytetään päättymispäivänä ikään perustuvia päiviä, koska international schoolia ei katsota ov päättäväksi tutkinnoksi" - {
         "Vahvistuspäivä päättää molemmat aikaisemmin" in {
           resetFixtures
           insert(master, internationalSchoolToinenAste(vahvistusGrade12 = Some(date(2021, 1, 1))))
           insert(slave1, internationalSchoolToinenAste(vahvistusGrade12 = Some(date(2025, 1, 1))))
           insert(slave2, internationalSchoolToinenAste(vahvistusGrade12 = None))
           updateRaportointikanta
-          verifyTestiOidit(oppivelvollisuus = date(2021, 1, 1), maksuttomuus = date(2021, 1, 1))
+          verifyTestiOidit(oppivelvollisuus = date(2021, 12, 31), maksuttomuus = date(2024, 12, 31))
         }
       }
 
-      "Jos suorittaa international schoolia ja lukiota, käytetään päättymispäivän international schoolin vahvistuspäivää" - {
+      "Jos suorittaa international schoolia ja lukiota, käytetään päättymispäivänä ikään perustuvia päiviä, koska kumpaakaan ei katsota ov päättäväksi tutkinnoksi" - {
         "Vahvistuspäivä päättää molemmat aikaisemmin" in {
           resetFixtures
           insert(master, internationalSchoolToinenAste(vahvistusGrade12 = Some(date(2021, 1, 1))))
           insert(slave1, internationalSchoolToinenAste(vahvistusGrade12 = Some(date(2025, 1, 1))))
           insert(slave2, lukionOppimäärä(vahvistus = None))
           updateRaportointikanta
-          verifyTestiOidit(oppivelvollisuus = date(2021, 1, 1), maksuttomuus = date(2021, 1, 1))
+          verifyTestiOidit(oppivelvollisuus = date(2021, 12, 31), maksuttomuus = date(2024, 12, 31))
         }
       }
 
-      "Jos suorittaa international schoolia, lukiota ja ammattikoulua, käytetään päättymispäivän international schoolin vahvistuspäivää" - {
+      "Jos suorittaa international schoolia, lukiota ja ammattikoulua, käytetään päättymispäivänä ikään perustuvia vahvistuspäiviä, koska mitään ov-päättävää tutkintoa ei katsota olevan" - {
         "Vahvistuspäivä päättää molemmat aikaisemmin" in {
           resetFixtures
           insert(master, internationalSchoolToinenAste(vahvistusGrade12 = Some(date(2021, 1, 1))))
           insert(slave1, ammatillinenTutkinto(vahvistus = None))
           insert(slave2, lukionOppimäärä(vahvistus = None))
           updateRaportointikanta
-          verifyTestiOidit(oppivelvollisuus = date(2021, 1, 1), maksuttomuus = date(2021, 1, 1))
+          verifyTestiOidit(oppivelvollisuus = date(2021, 12, 31), maksuttomuus = date(2024, 12, 31))
         }
       }
 
-      "Jos on suorittanut IB-tutkinnon ja international schoolin, käytetään päättymispäivänä aiempaa vahvistuspäivää" - {
+      "Jos on suorittanut IB-tutkinnon ja international schoolin, käytetään päättymispäivänä ikään perustuvaa vahvistuspäivää, koska kumpikaan ei ole ov-päättävä tutkinto" - {
         "Vahvistuspäivä päättää molemmat aikaisemmin" in {
           resetFixtures
           insert(master, ibTutkinto(ibTutkinnonVahvistus = Some(date(2021, 3, 3))))
           insert(slave1, ibTutkinto(ibTutkinnonVahvistus = Some(date(2025, 1, 1))))
           insert(slave2, internationalSchoolToinenAste(vahvistusGrade12 = Some(date(2021, 1, 1))))
           updateRaportointikanta
-          verifyTestiOidit(oppivelvollisuus = date(2021, 1, 1), maksuttomuus = date(2021, 1, 1))
+          verifyTestiOidit(oppivelvollisuus = date(2021, 12, 31), maksuttomuus = date(2024, 12, 31))
         }
       }
 
@@ -283,7 +283,7 @@ class OppivelvollisuustietoSpec
           }
         }
 
-        "Jos on suorittanut IB-tutkinnon ja European school of Helsingin, käytetään päättymispäivänä aiempaa vahvistuspäivää" - {
+        "Jos on suorittanut IB-tutkinnon ja European school of Helsingin, käytetään päättymispäivänä ESH:n vahvistuspäivää, koska IB-merkintä Koskessa ei ole ov:n päättävä tutkinto" - {
           "Vahvistuspäivä päättää molemmat aikaisemmin" in {
             resetFixtures
             insert(master, ibTutkinto(ibTutkinnonVahvistus = Some(date(2021, 3, 3))))
@@ -295,36 +295,36 @@ class OppivelvollisuustietoSpec
         }
       }
 
-      "Jos suorittaa vain IB-tutkintoa, käytetään päättymispäivänä päivää, joka lopettaa aikaisemmin oikeuden maksuttomuuteen tai oppivelvollisuuteen" - {
+      "Jos suorittaa vain IB-tutkintoa, käytetään päättymispäivänä ikään perustuvaa päivää, koska Koskeen vahvistettu ib-suoritus ei päätä oppivelvollisuutta" - {
         "Vahvistuspäivä päättää molemmat aikaisemmin" in {
           resetFixtures
           insert(master, ibTutkinto(ibTutkinnonVahvistus = Some(date(2021, 1, 1))))
           insert(slave1, ibTutkinto(ibTutkinnonVahvistus = Some(date(2025, 1, 1))))
           insert(slave2, ibTutkinto(ibTutkinnonVahvistus = None))
           updateRaportointikanta
-          verifyTestiOidit(oppivelvollisuus = date(2021, 1, 1), maksuttomuus = date(2021, 1, 1))
+          verifyTestiOidit(oppivelvollisuus = date(2021, 12, 31), maksuttomuus = date(2024, 12, 31))
         }
       }
 
-      "Jos suorittaa IB-tutkintoa ja lukiota, käytetään päättymispäivän IB-tutkinnon vahvistuspäivää" - {
+      "Jos suorittaa IB-tutkintoa ja lukiota, käytetään päättymispäivänä ikään perustuvaa päivää, koska kumpikaan merkintä ei ole ov:n päättävä tutkinto" - {
         "Vahvistuspäivä päättää molemmat aikaisemmin" in {
           resetFixtures
           insert(master, ibTutkinto(ibTutkinnonVahvistus = Some(date(2021, 1, 1))))
           insert(slave1, ibTutkinto(ibTutkinnonVahvistus = Some(date(2025, 1, 1))))
           insert(slave2, lukionOppimäärä(vahvistus = None))
           updateRaportointikanta
-          verifyTestiOidit(oppivelvollisuus = date(2021, 1, 1), maksuttomuus = date(2021, 1, 1))
+          verifyTestiOidit(oppivelvollisuus = date(2021, 12, 31), maksuttomuus = date(2024, 12, 31))
         }
       }
 
-      "Jos suorittaa IB-tutkintoa, lukiota ja ammattikoulua, käytetään päättymispäivän IB-tutkinnon vahvistuspäivää" - {
+      "Jos suorittaa IB-tutkintoa, lukiota ja ammattikoulua, käytetään päättymispäivänä ikään perustuvia päiviä, koska ov-päättävää tutkintoa ei ole" - {
         "Vahvistuspäivä päättää molemmat aikaisemmin" in {
           resetFixtures
           insert(master, ibTutkinto(ibTutkinnonVahvistus = Some(date(2021, 1, 1))))
           insert(slave1, ammatillinenTutkinto(vahvistus = None))
           insert(slave2, lukionOppimäärä(vahvistus = None))
           updateRaportointikanta
-          verifyTestiOidit(oppivelvollisuus = date(2021, 1, 1), maksuttomuus = date(2021, 1, 1))
+          verifyTestiOidit(oppivelvollisuus = date(2021, 12, 31), maksuttomuus = date(2024, 12, 31))
         }
       }
 
