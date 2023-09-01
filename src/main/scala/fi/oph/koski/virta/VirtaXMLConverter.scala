@@ -632,7 +632,7 @@ object VirtaXMLConverterUtils {
     (node \\ "SiirtoOpiskelija").headOption.isDefined
 
   def hyväksilukuPäivämäärä(node: Node): Option[LocalDate] =
-    (node \\ "HyvaksilukuPvm").headOption.map(d => date(d.text))
+      (node \\ "HyvaksilukuPvm").headOption.map(d => date(d.text))
 
   def oppilaitosnumero(node: Node): Oppilaitosnumerot =
     Oppilaitosnumerot(
