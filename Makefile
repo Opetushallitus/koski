@@ -210,6 +210,15 @@ valpas-fronttest-3:
 valpas-fronttest-4:
 	mvn $(mvn_opts) -DargLine="$(mvn_argline)" scalatest:test -Pvalpasfronttest -Dsuites="fi.oph.koski.valpas.jest.ValpasFrontSpec4" --batch-mode
 
+.PHONY: valpas-fronttest-5
+valpas-fronttest-5:
+	mvn $(mvn_opts) -DargLine="$(mvn_argline)" scalatest:test -Pvalpasfronttest -Dsuites="fi.oph.koski.valpas.jest.ValpasFrontSpec5" --batch-mode
+
+.PHONY: valpas-fronttest-6
+valpas-fronttest-6:
+	mvn $(mvn_opts) -DargLine="$(mvn_argline)" scalatest:test -Pvalpasfronttest -Dsuites="fi.oph.koski.valpas.jest.ValpasFrontSpec6" --batch-mode
+
+
 ### Dist
 
 .PHONY: dist

@@ -1,6 +1,6 @@
 package fi.oph.koski.integrationtest
 
-import fi.oph.koski.api.{OpiskeluoikeusTestMethodsAmmatillinen, SearchTestMethods}
+import fi.oph.koski.api.misc.{OpiskeluoikeusTestMethodsAmmatillinen, SearchTestMethods}
 import fi.oph.koski.schema.{OidHenkilö, TäydellisetHenkilötiedot, YlioppilastutkinnonOpiskeluoikeus}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers

@@ -1,7 +1,7 @@
 package fi.oph.koski.ytr.download
 
+import fi.oph.koski.api.misc.OpiskeluoikeusTestMethods
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
-import fi.oph.koski.api.OpiskeluoikeusTestMethods
 import fi.oph.koski.http.{ErrorDetail, HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession, MockUsers, UserWithPassword}
 import fi.oph.koski.log.AuditLogTester

@@ -1,7 +1,7 @@
 package fi.oph.koski.raportit
 
 import fi.oph.koski.{DirtiesFixtures, KoskiApplicationForTests}
-import fi.oph.koski.api.{OpiskeluoikeusTestMethods, OpiskeluoikeusTestMethodsAmmatillinen}
+import fi.oph.koski.api.misc.{OpiskeluoikeusTestMethods, OpiskeluoikeusTestMethodsAmmatillinen}
 import fi.oph.koski.documentation.AmmatillinenExampleData
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa

@@ -1,7 +1,7 @@
 package fi.oph.koski.json
 
+import fi.oph.koski.api.misc.OpiskeluoikeusTestMethods
 import fi.oph.koski.{KoskiHttpSpec, TestEnvironment}
-import fi.oph.koski.api.OpiskeluoikeusTestMethods
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.documentation.AmmatillinenExampleData.{k3, lisätietoOsaamistavoitteet, yhteisenTutkinnonOsanSuoritus}
 import fi.oph.koski.documentation.PerusopetusExampleData.{oppiaine, suoritus}

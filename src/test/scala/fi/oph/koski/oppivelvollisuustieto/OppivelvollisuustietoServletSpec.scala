@@ -1,7 +1,7 @@
 package fi.oph.koski.oppivelvollisuustieto
 
 import fi.oph.koski.KoskiHttpSpec
-import fi.oph.koski.api.OpiskeluoikeusTestMethods
+import fi.oph.koski.api.misc.OpiskeluoikeusTestMethods
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer

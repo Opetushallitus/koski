@@ -1,6 +1,6 @@
 package fi.oph.koski.raportit
 
-import fi.oph.koski.api.OpiskeluoikeusTestMethodsAmmatillinen
+import fi.oph.koski.api.misc.OpiskeluoikeusTestMethodsAmmatillinen
 import fi.oph.koski.documentation.ExampleData.opiskeluoikeusLäsnä
 import fi.oph.koski.documentation.{AmmatillinenExampleData, AmmattitutkintoExample, ExampleData}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat

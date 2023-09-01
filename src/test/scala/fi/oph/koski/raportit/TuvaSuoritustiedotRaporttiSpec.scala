@@ -1,6 +1,6 @@
 package fi.oph.koski.raportit
 
-import fi.oph.koski.api.OpiskeluoikeusTestMethods
+import fi.oph.koski.api.misc.OpiskeluoikeusTestMethods
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.log.AuditLogTester

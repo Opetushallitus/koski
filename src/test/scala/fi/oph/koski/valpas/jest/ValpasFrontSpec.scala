@@ -28,22 +28,32 @@ class ValpasFrontSpec extends ValpasFrontSpecBase {
 
 class ValpasFrontSpec1 extends ValpasFrontSpecBase {
   def chunkNumber = 1
-  def numberOfChunks = 4
+  def numberOfChunks = 6
 }
 
 class ValpasFrontSpec2 extends ValpasFrontSpecBase {
   def chunkNumber = 2
-  def numberOfChunks = 4
+  def numberOfChunks = 6
 }
 
 class ValpasFrontSpec3 extends ValpasFrontSpecBase {
   def chunkNumber = 3
-  def numberOfChunks = 4
+  def numberOfChunks = 6
 }
 
 class ValpasFrontSpec4 extends ValpasFrontSpecBase {
   def chunkNumber = 4
-  def numberOfChunks = 4
+  def numberOfChunks = 6
+}
+
+class ValpasFrontSpec5 extends ValpasFrontSpecBase {
+  def chunkNumber = 5
+  def numberOfChunks = 6
+}
+
+class ValpasFrontSpec6 extends ValpasFrontSpecBase {
+  def chunkNumber = 6
+  def numberOfChunks = 6
 }
 
 object ValpasFrontTag extends Tag("valpasfront")

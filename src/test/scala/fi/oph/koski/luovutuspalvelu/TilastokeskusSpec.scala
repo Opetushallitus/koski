@@ -1,7 +1,7 @@
 package fi.oph.koski.luovutuspalvelu
 
 import fi.oph.koski.KoskiHttpSpec
-import fi.oph.koski.api.{OpiskeluoikeudenMitätöintiJaPoistoTestMethods, OpiskeluoikeusTestMethodsAmmatillinen}
+import fi.oph.koski.api.misc.{OpiskeluoikeudenMitätöintiJaPoistoTestMethods, OpiskeluoikeusTestMethodsAmmatillinen}
 import fi.oph.koski.documentation.{AmmatillinenExampleData, ExampleData, ExamplesLukio2019, LukioExampleData}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory

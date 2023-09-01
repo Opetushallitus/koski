@@ -1,6 +1,6 @@
 package fi.oph.koski.raportointikanta
 
-import fi.oph.koski.api.OpiskeluoikeusTestMethods
+import fi.oph.koski.api.misc.OpiskeluoikeusTestMethods
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.schema.MahdollisestiTunnustettu
 import fi.oph.koski.schema.Opiskeluoikeus.Oid

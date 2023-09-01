@@ -1,6 +1,6 @@
 package fi.oph.koski.raportit
 
-import fi.oph.koski.api.PutOpiskeluoikeusTestMethods
+import fi.oph.koski.api.misc.PutOpiskeluoikeusTestMethods
 import fi.oph.koski.fixture.PaallekkaisetOpiskeluoikeudetFixtures
 
 import java.time.LocalDate

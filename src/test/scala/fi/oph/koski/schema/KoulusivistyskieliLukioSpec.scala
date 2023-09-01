@@ -1,7 +1,7 @@
 package fi.oph.koski.schema
 
 import fi.oph.koski.KoskiHttpSpec
-import fi.oph.koski.api.OpiskeluoikeusTestMethodsLukio2015
+import fi.oph.koski.api.misc.OpiskeluoikeusTestMethodsLukio2015
 import fi.oph.koski.documentation.LukioExampleData._
 import fi.oph.koski.documentation.{ExampleData, YleissivistavakoulutusExampleData}
 import org.scalatest.freespec.AnyFreeSpec

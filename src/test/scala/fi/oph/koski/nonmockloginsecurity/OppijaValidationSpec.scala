@@ -2,7 +2,7 @@ package fi.oph.koski.nonmockloginsecurity
 
 import com.typesafe.config.ConfigValueFactory.fromAnyRef
 import fi.oph.koski.KoskiHttpSpec
-import fi.oph.koski.api.OpiskeluoikeusTestMethodsAmmatillinen
+import fi.oph.koski.api.misc.OpiskeluoikeusTestMethodsAmmatillinen
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.config.KoskiApplication.defaultConfig
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}

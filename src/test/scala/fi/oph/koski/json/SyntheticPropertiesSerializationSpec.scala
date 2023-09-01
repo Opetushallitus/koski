@@ -1,6 +1,6 @@
 package fi.oph.koski.json
 
-import fi.oph.koski.api.OpiskeluoikeusTestMethods
+import fi.oph.koski.api.misc.OpiskeluoikeusTestMethods
 import fi.oph.koski.db.KoskiTables.{KoskiOpiskeluOikeudet, KoskiOpiskeluoikeusTable}
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.documentation._

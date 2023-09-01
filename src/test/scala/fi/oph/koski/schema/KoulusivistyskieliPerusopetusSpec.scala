@@ -1,7 +1,7 @@
 package fi.oph.koski.schema
 
 import fi.oph.koski.KoskiHttpSpec
-import fi.oph.koski.api.OpiskeluoikeusTestMethodsPerusopetus
+import fi.oph.koski.api.misc.OpiskeluoikeusTestMethodsPerusopetus
 import fi.oph.koski.documentation.PerusopetusExampleData._
 import org.scalatest.freespec.AnyFreeSpec
 
