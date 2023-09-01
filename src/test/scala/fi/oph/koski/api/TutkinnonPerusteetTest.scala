@@ -3,13 +3,21 @@ package fi.oph.koski.api
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.schema._
+import org.scalatest.BeforeAndAfterAll
 import org.scalatest.freespec.AnyFreeSpec
 
 import java.time.LocalDate
 import scala.reflect.runtime.universe.TypeTag
 
-trait TutkinnonPerusteetTest[T <: Opiskeluoikeus] extends AnyFreeSpec with PutOpiskeluoikeusTestMethods[T] {
+trait TutkinnonPerusteetTest[T <: Opiskeluoikeus] extends AnyFreeSpec with PutOpiskeluoikeusTestMethods[T] with BeforeAndAfterAll {
+
+  override protected def beforeAll(): Unit = {
+    super.beforeAll()
+    resetFixtures()
+  }
+
   def tag: TypeTag[T]
+
   "Tutkinnon perusteet" - {
     "Valideilla tiedoilla" - {
       "palautetaan HTTP 200" in {
