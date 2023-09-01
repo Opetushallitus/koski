@@ -1,13 +1,14 @@
 package fi.oph.koski.kela
 
 import fi.oph.koski.api.misc.OpiskeluoikeusTestMethodsAmmatillinen
+import fi.oph.koski.documentation.EuropeanSchoolOfHelsinkiExampleData
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.history.OpiskeluoikeusHistoryPatch
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{MockUser, MockUsers}
 import fi.oph.koski.log.{AccessLogTester, AuditLogTester}
-import fi.oph.koski.organisaatio.MockOrganisaatiot.MuuKuinSäänneltyKoulutusToimija
+import fi.oph.koski.organisaatio.MockOrganisaatiot.{EuropeanSchoolOfHelsinki, MuuKuinSäänneltyKoulutusToimija}
 import fi.oph.koski.schema.LocalizedString.finnish
 import fi.oph.koski.schema._
 import fi.oph.koski.ytr.MockYrtClient
@@ -394,6 +395,54 @@ class KelaSpec
       osasuoritus.koulutusmoduuli.tunniste.koodiarvo shouldBe "Maalaus"
       osasuoritus.koulutusmoduuli.tunniste.nimi shouldBe Some(finnish("Maalaus"))
     }
+  }
+
+  "Palauttaa European School of Helsinki -opiskeluoikeuden" in {
+    postHetu(KoskiSpecificMockOppijat.europeanSchoolOfHelsinki.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+      verifyResponseStatusOk()
+
+      val oppija = JsonSerializer.parse[KelaOppija](body)
+      oppija.opiskeluoikeudet.length should be(1)
+
+      val eshOpiskeluoikeus = oppija.opiskeluoikeudet.last match { case x: KelaESHOpiskeluoikeus => x }
+
+      eshOpiskeluoikeus.oppilaitos.get.oid shouldBe EuropeanSchoolOfHelsinki.oppilaitos
+      eshOpiskeluoikeus.koulutustoimija.get.oid shouldBe EuropeanSchoolOfHelsinki.koulutustoimija
+
+      val s5 = eshOpiskeluoikeus.suoritukset.find {
+        case s: KelaESHSecondaryLowerVuosiluokanSuoritus if s.koulutusmoduuli.tunniste.koodiarvo == "S5" => true
+        case _ => false
+      }
+      s5 shouldNot be(None)
+      s5.get.osasuoritukset.get.length shouldBe EuropeanSchoolOfHelsinkiExampleData.secondaryLowerSuoritus45("S5", LocalDate.now(), false).osasuoritukset.get.length
+
+      val s6 = eshOpiskeluoikeus.suoritukset.find {
+        case s: KelaESHSecondaryUpperVuosiluokanSuoritus if s.koulutusmoduuli.tunniste.koodiarvo == "S6" => true
+        case _ => false
+      }
+      s6 shouldNot be(None)
+      s6.get.osasuoritukset.get.length shouldBe EuropeanSchoolOfHelsinkiExampleData.secondaryUpperSuoritusS6("S6", LocalDate.now(), false).osasuoritukset.get.length
+
+      val s7 = eshOpiskeluoikeus.suoritukset.find {
+        case s: KelaESHSecondaryUpperVuosiluokanSuoritus if s.koulutusmoduuli.tunniste.koodiarvo == "S7" => true
+        case _ => false
+      }
+      s7 shouldNot be(None)
+      val expectedS7Osasuoritukset = EuropeanSchoolOfHelsinkiExampleData.secondaryUpperSuoritusS7("S7", LocalDate.now(), false).osasuoritukset.get
+      s7.get.osasuoritukset.get.length shouldBe expectedS7Osasuoritukset.length
+      expectedS7Osasuoritukset.zip(s7.get.osasuoritukset.get).foreach {
+        case (expected :SecondaryUpperOppiaineenSuoritus, actual: KelaESHSecondaryUpperOppiaineenSuoritusS7) =>
+          actual.tyyppi shouldBe expected.tyyppi
+          expected.osasuoritukset.fold({ actual.osasuoritukset shouldBe None; () }) { osasuoritukset =>
+            osasuoritukset.length shouldBe actual.osasuoritukset.get.length
+            osasuoritukset.zip(actual.osasuoritukset.get).foreach {
+              case (expectedOsasuoritukset, actualOsasuoritukset) => expectedOsasuoritukset.tyyppi shouldBe actualOsasuoritukset.tyyppi
+            }
+          }
+        case (_, actual) => throw new Error(s"Unexpected type: $actual")
+      }
+    }
+
   }
 
   private def getHetu[A](hetu: String, user: MockUser = MockUsers.kelaSuppeatOikeudet)(f: => A)= {

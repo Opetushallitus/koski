@@ -50,13 +50,13 @@ object KelaOppijaConverter extends Logging {
          _: schema.DIAOpiskeluoikeus |
          _: schema.IBOpiskeluoikeus |
          _: schema.InternationalSchoolOpiskeluoikeus |
-         // TODO: TOR-1685 Eurooppalainen koulu
          _: schema.PerusopetuksenOpiskeluoikeus |
          _: schema.PerusopetukseenValmistavanOpetuksenOpiskeluoikeus |
          _: schema.PerusopetuksenLisäopetuksenOpiskeluoikeus |
          _: schema.AikuistenPerusopetuksenOpiskeluoikeus |
          _: schema.TutkintokoulutukseenValmentavanOpiskeluoikeus |
-         _: schema.MuunKuinSäännellynKoulutuksenOpiskeluoikeus => Some(opiskeluoikeus)
+         _: schema.MuunKuinSäännellynKoulutuksenOpiskeluoikeus |
+         _: schema.EuropeanSchoolOfHelsinkiOpiskeluoikeus => Some(opiskeluoikeus)
     // Vapaatavoitteisen koulutuksen kohdalla täytyisi ottaa huomioon
     // suostumuksen peruminen jos Kelalle halutaan antaa tieto ko. suorituksesta.
     case o: schema.VapaanSivistystyönOpiskeluoikeus => {

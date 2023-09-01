@@ -259,7 +259,7 @@ object ValpasMockUsers {
     "käyttäjä",
     "valpas-esh",
     "1.2.246.562.24.12312384883",
-    peruskoulunJossa10LuokkaKäyttäjä(europeanSchoolOfHelsinki) ++ toisenAsteenKäyttäjä(europeanSchoolOfHelsinki)
+    peruskoulunJossa10LuokkaKäyttäjä(EuropeanSchoolOfHelsinki.oppilaitos) ++ toisenAsteenKäyttäjä(EuropeanSchoolOfHelsinki.oppilaitos)
   )
 
   val valpasIntSchoolJklHki = ValpasMockUser(
@@ -274,7 +274,7 @@ object ValpasMockUsers {
     "käyttäjä",
     "valpas-monta",
     "1.2.246.562.24.12312394165",
-      peruskoulunJossa10LuokkaKäyttäjä(europeanSchoolOfHelsinki) ++ toisenAsteenKäyttäjä(europeanSchoolOfHelsinki) ++
+      peruskoulunJossa10LuokkaKäyttäjä(EuropeanSchoolOfHelsinki.oppilaitos) ++ toisenAsteenKäyttäjä(EuropeanSchoolOfHelsinki.oppilaitos) ++
       peruskoulunJossa10LuokkaKäyttäjä(internationalSchool) ++ toisenAsteenKäyttäjä(internationalSchool) ++
       nivelvaiheenKäyttäjä(jyväskylänNormaalikoulu) ++ kuntakäyttäjä(helsinginKaupunki) ++
       nivelvaiheenKäyttäjä(ressunLukio) ++ kuntakäyttäjä(pyhtäänKunta) ++
