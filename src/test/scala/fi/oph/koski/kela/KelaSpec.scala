@@ -513,6 +513,22 @@ class KelaSpec
     }
   }
 
+  "Palauttaa vst-jotpan opiskeluoikeuden" in {
+    postHetu(KoskiSpecificMockOppijat.vstJotpaKeskenOppija.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+      verifyResponseStatusOk()
+
+      val oppija = JsonSerializer.parse[KelaOppija](body)
+      oppija.opiskeluoikeudet.length shouldBe 1
+      
+      val jotpaOpiskeluoikeus = oppija.opiskeluoikeudet.last match {
+        case x: KelaVapaanSivistystyönOpiskeluoikeus => x
+      }
+
+      jotpaOpiskeluoikeus.suoritukset.length shouldBe 1
+      jotpaOpiskeluoikeus.suoritukset.head.tyyppi.koodiarvo should be("vstjotpakoulutus")
+    }
+  }
+
   private def getHetu[A](hetu: String, user: MockUser = MockUsers.kelaSuppeatOikeudet)(f: => A)= {
     authGet(s"kela/$hetu", user)(f)
   }
