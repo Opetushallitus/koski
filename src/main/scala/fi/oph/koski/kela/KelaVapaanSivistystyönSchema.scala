@@ -82,6 +82,36 @@ case class KelaVapaanSivistystyönMaahanmuuttajienKotoutumisenSuoritus(
   )
 }
 
+@Title("Jatkuvaan oppimiseen suunnattu vapaan sivistystyön koulutuksen suoritus")
+case class KelaVapaanSivistystyönJotpaSuoritus(
+  koulutusmoduuli: KelaVapaanSivistystyönSuorituksenKoulutusmoduuli,
+  toimipiste: Option[Toimipiste],
+  vahvistus: Option[Vahvistus],
+  osasuoritukset: Option[List[KelaVapaanSivistystyönJotpaOsasuoritus]],
+  @KoodistoKoodiarvo("vstjotpakoulutus")
+  tyyppi: schema.Koodistokoodiviite,
+  tila: Option[KelaKoodistokoodiviite],
+) extends VstSuoritus {
+  def withEmptyArvosana: KelaVapaanSivistystyönJotpaSuoritus = copy(
+    osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana))
+  )
+}
+
+@Title("Jatkuvaan oppimiseen suunnattu vapaan sivistystyön koulutuksen osasuoritus")
+case class KelaVapaanSivistystyönJotpaOsasuoritus(
+  koulutusmoduuli: KelaVapaanSivistystyönOsasuorituksenKoulutusmoduuli,
+  arviointi: Option[List[KelaVSTOsasuorituksenArviointi]],
+  osasuoritukset: Option[List[KelaVapaanSivistystyönJotpaOsasuoritus]],
+  @KoodistoKoodiarvo("vstjotpakoulutuksenosasuoritus")
+  tyyppi: schema.Koodistokoodiviite,
+  tila: Option[KelaKoodistokoodiviite],
+) extends Osasuoritus {
+  def withEmptyArvosana: KelaVapaanSivistystyönJotpaOsasuoritus = copy(
+    arviointi = arviointi.map(_.map(_.withEmptyArvosana)),
+    osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana))
+  )
+}
+
 trait VstSuoritus extends Suoritus {
   def withEmptyArvosana: VstSuoritus
 }
