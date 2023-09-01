@@ -65,6 +65,7 @@ object KelaOppijaConverter extends Logging {
         case s: schema.OppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus => s
         case s: schema.OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus => s
         case s: schema.VapaanSivistystyönLukutaitokoulutuksenSuoritus => s
+        case s: schema.VapaanSivistystyönJotpaKoulutuksenSuoritus => s
       }
       if (suoritukset.isEmpty) None else Some(opiskeluoikeus.withSuoritukset(suoritukset))
     }
