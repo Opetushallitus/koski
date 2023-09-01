@@ -362,12 +362,6 @@ class KelaSpec
     }
   }
 
-  "Vapaan sivistystyön opiskeluoikeuksista ei välitetä Jotpa-koulutuksen suorituksia" in {
-    postHetu(KoskiSpecificMockOppijat.vstJotpaKeskenOppija.hetu.get) {
-      verifyResponseStatus(404, KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia("Oppijaa (hetu) ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun."))
-    }
-  }
-
   "Opiskeluoikeuden versiohistorian haku tuottaa AuditLogin" in {
     resetFixtures
     val opiskeluoikeus = lastOpiskeluoikeusByHetu(KoskiSpecificMockOppijat.amis)
@@ -443,11 +437,7 @@ class KelaSpec
 
   "Palauttaa European School of Helsinki -opiskeluoikeuden" in {
     postHetu(KoskiSpecificMockOppijat.europeanSchoolOfHelsinki.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
-      verifyResponseStatusOk()
-
       val oppija = JsonSerializer.parse[KelaOppija](body)
-      oppija.opiskeluoikeudet.length should be(1)
-
       val eshOpiskeluoikeus = oppija.opiskeluoikeudet.last match { case x: KelaESHOpiskeluoikeus => x }
 
       eshOpiskeluoikeus.oppilaitos.get.oid shouldBe EuropeanSchoolOfHelsinki.oppilaitos
@@ -560,6 +550,22 @@ class KelaSpec
       val pts = lukioOpiskeluoikeus.suoritukset.find(p => p.tyyppi.koodiarvo == "perusopetuksenoppimaara").get
 
       pts.omanÄidinkielenOpinnot should not be (None)
+    }
+  }
+
+  "Palauttaa vst-jotpan opiskeluoikeuden" in {
+    postHetu(KoskiSpecificMockOppijat.vstJotpaKeskenOppija.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+      verifyResponseStatusOk()
+
+      val oppija = JsonSerializer.parse[KelaOppija](body)
+      oppija.opiskeluoikeudet.length should be(1)
+
+      val jotpaOpiskeluoikeus = oppija.opiskeluoikeudet.last match {
+        case x: KelaVapaanSivistystyönOpiskeluoikeus => x
+      }
+
+      jotpaOpiskeluoikeus.suoritukset.length shouldBe 1
+      jotpaOpiskeluoikeus.suoritukset.head.tyyppi.koodiarvo should be("vstjotpakoulutus")
     }
   }
 
