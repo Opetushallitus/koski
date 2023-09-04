@@ -70,12 +70,8 @@ object Oppivelvollisuustiedot {
     )
 
   /*
-    Voimassaolojen päättelyssä ei tällä hetkellä oteta ylioppilastutkinnon suoritusta ollenkaan huomioon, koska tekovaiheessa tähän dataan ei ollut pääsyä.
-    Tämä kierretään sillä, että voimassaolot päättyvät aina syntymäajan mukaan.
-
-    Kun ylioppilastutkinnon datat ovat saatavilla, tulisi voimassaolot päätellä seuraavasti:
-
-      - Jos oppija suorittaa lukion oppimäärää, voimassaolot päättyvät kun molemmat lukion oppimäärä ja ylioppilastutkinto ovat valmiita, jos henkilön ikä sitä ei aikaisemmin päätä.
+    Voimassaolojen päättelyssä otetaan ylioppilastutkinto huomioon, mikäli oppijalla ei ole ammatillista tutkintoa. Ammatillisen
+    tutkinnon tapaukset on toistaiseksi jätetty pois, koska kaksois- ja kolmoistutkinnot on vaikeasti määriteltäviä.
   */
   def createPrecomputedTable(s: Schema, valpasRajapäivätService: ValpasRajapäivätService)= {
     val tarkastelupäivä = valpasRajapäivätService.tarkastelupäivä
