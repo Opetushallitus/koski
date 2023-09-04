@@ -1,5 +1,6 @@
 package fi.oph.koski.kela
 
+import com.typesafe.config.{Config, ConfigList}
 import fi.oph.koski.henkilo.OppijaHenkilö
 import fi.oph.koski.schema
 import fi.oph.koski.schema.annotation.{Deprecated, KoodistoUri, UnitOfMeasure}
@@ -8,6 +9,7 @@ import fi.oph.scalaschema.{ClassSchema, SchemaToJson}
 import org.json4s.JValue
 
 import java.time.{LocalDate, LocalDateTime}
+import scala.collection.JavaConverters._
 
 object KelaSchema {
   lazy val schemaJson: JValue =
@@ -19,7 +21,6 @@ object KelaSchema {
     "ibtutkinto",
     "diatutkinto",
     "internationalschool",
-    // TODO: TOR-1685 Eurooppalainen koulu
     "lukiokoulutus",
     "luva",
     "perusopetukseenvalmistavaopetus",
@@ -27,8 +28,19 @@ object KelaSchema {
     "perusopetus",
     "ylioppilastutkinto",
     "vapaansivistystyonkoulutus",
-    "tuva"
+    "tuva",
+    "muukuinsaanneltykoulutus",
   ).filter(_.nonEmpty)
+
+  def kelallePalautettavatOpiskeluoikeustyypit(config: Config): List[String] = {
+    val configKey = "kela.palautettavatOpiskeluoikeustyypit"
+    if (config.hasPath(configKey)) {
+      val allowList = config.getList(configKey)
+      schemassaTuetutOpiskeluoikeustyypit.intersect(allowList.unwrapped().asScala.toList)
+    } else {
+      schemassaTuetutOpiskeluoikeustyypit
+    }
+  }
 }
 
 case class KelaOppija(
@@ -142,6 +154,7 @@ case class KelaKoodistokoodiviite(
   koodistoUri: Option[String],
   koodistoVersio: Option[Int]
 )
+
 object KelaKoodistokoodiviite{
   def fromKoskiSchema(kv: schema.Koodistokoodiviite) = KelaKoodistokoodiviite(
     kv.koodiarvo,
@@ -151,6 +164,12 @@ object KelaKoodistokoodiviite{
     kv.koodistoVersio
   )
 }
+
+case class KelaPaikallinenKoodiviite(
+  koodiarvo: String,
+  nimi: Option[schema.LocalizedString],
+  koodistoUri: Option[String],
+)
 
 case class Ulkomaanjakso(
   alku: LocalDate,

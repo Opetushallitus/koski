@@ -36,7 +36,7 @@ object ExamplesMuuKuinSäänneltyKoulutus {
         OpiskeluoikeudenJakso.läsnä(LocalDate.of(2023, 1, 1)),
         OpiskeluoikeudenJakso.suoritettu(LocalDate.of(2023, 2, 1)),
       )),
-      suoritukset = List(PäätasonSuoritus.suoritusIlmanOsasuorituksia),
+      suoritukset = List(PäätasonSuoritus.suoritusOsasuorituksilla),
     )
 
     object OpiskeluoikeudenJakso {
@@ -66,7 +66,7 @@ object ExamplesMuuKuinSäänneltyKoulutus {
       toimipiste = jatkuvaKoulutusOyOppilaitos,
       suorituskieli = suomenKieli,
       osasuoritukset = Some(List(
-
+        Osasuoritus.maalaus(10.0, LocalDate.of(2023, 2, 1))
       ))
     )
 
