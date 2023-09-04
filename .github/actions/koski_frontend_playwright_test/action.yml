@@ -31,4 +31,4 @@ runs:
       with:
         name: koski-playwright-report-${{inputs.shardIndex}}-of-${{inputs.shardTotal}}
         path: web/koski-playwright-report-${{inputs.shardIndex}}-of-${{inputs.shardTotal}}/
-        retention-days: 7
+        retention-days: 3
