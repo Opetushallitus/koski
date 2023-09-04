@@ -100,8 +100,20 @@ jobs:
           suites: |
             fi.oph.koski.api.oppijavalidation
 
-  run_backend_tests_api_misc:
-    name: Backend (api misc)
+  run_backend_tests_api_misc_1:
+    name: Backend (api misc 1/2)
+    runs-on: ${{ inputs.runs-on }}
+    if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/koski_backend_test
+        with:
+          suites: |
+            fi.oph.koski.api.oppijaupdate, \
+            fi.oph.koski.api.suostumus
+
+  run_backend_tests_api_misc_2:
+    name: Backend (api misc 2/2)
     runs-on: ${{ inputs.runs-on }}
     if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
     steps:

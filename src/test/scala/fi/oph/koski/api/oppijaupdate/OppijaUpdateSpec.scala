@@ -1,6 +1,7 @@
-package fi.oph.koski.api.misc
+package fi.oph.koski.api.oppijaupdate
 
 import fi.oph.koski.KoskiHttpSpec
+import fi.oph.koski.api.misc.{OpiskeluoikeusTestMethodsAmmatillinen, TestMethodsLukio}
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.documentation.ExampleData.{jyväskylä, longTimeAgo, opiskeluoikeusLäsnä, valtionosuusRahoitteinen}
 import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.{aikuistenPerusopetukseOppimääränSuoritus, aikuistenPerusopetus2017, oppiaineidenSuoritukset2017}

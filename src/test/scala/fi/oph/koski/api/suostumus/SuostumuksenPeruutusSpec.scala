@@ -1,5 +1,6 @@
-package fi.oph.koski.api.misc
+package fi.oph.koski.api.suostumus
 
+import fi.oph.koski.api.misc._
 import fi.oph.koski.db.KoskiOpiskeluoikeusRow
 import fi.oph.koski.documentation.AmmatillinenExampleData.winnovaLähdejärjestelmäId
 import fi.oph.koski.documentation.ExampleData.opiskeluoikeusMitätöity
