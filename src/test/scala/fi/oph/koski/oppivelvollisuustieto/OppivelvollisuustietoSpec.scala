@@ -95,6 +95,33 @@ class OppivelvollisuustietoSpec
           verifyTestiOidit(oppivelvollisuus = date(2020, 1, 1), maksuttomuus = date(2024, 12, 31))
         }
       }
+      "Jos suorittaa ammatillista tutkintoa ja lukion aineopintoja, käytetään aina syntymäaikaa päättymispäivien päättelyssä" - {
+        "Ammatillisella tutkinnolla vahvistus" in {
+          resetFixtures
+          insert(master, perusopetuksenOppimäärä(Some(date(2021, 1, 1))))
+          insert(slave1, ammatillinenTutkinto(vahvistus = Some(date(2020, 1, 1)), keskiarvo = Some(4.0)))
+          insert(slave2, lukionAineopinnot(vahvistus = None))
+          updateRaportointikanta
+          verifyTestiOidit(oppivelvollisuus = date(2020, 1, 1), maksuttomuus = date(2024, 12, 31))
+        }
+        "Lukion aineopinnoilla vahvistus" in {
+          resetFixtures
+          insert(master, perusopetuksenOppimäärä(Some(date(2021, 1, 1))))
+          insert(slave1, ammatillinenTutkinto(vahvistus = None))
+          insert(slave2, lukionAineopinnot(vahvistus = Some(date(2019, 1, 1))))
+          updateRaportointikanta
+          verifyTestiOidit(oppivelvollisuus = date(2021, 12, 31), maksuttomuus = date(2024, 12, 31))
+        }
+        "Molemmilla vahvistus" in {
+          resetFixtures
+          insert(master, perusopetuksenOppimäärä(Some(date(2021, 1, 1))))
+          insert(slave1, ammatillinenTutkinto(vahvistus = Some(date(2020, 1, 1)), keskiarvo = Some(4.0)))
+          insert(slave2, lukionAineopinnot(vahvistus = Some(date(2019, 1, 1))))
+          updateRaportointikanta
+          verifyTestiOidit(oppivelvollisuus = date(2020, 1, 1), maksuttomuus = date(2024, 12, 31))
+        }
+      }
+
       "Jos suorittaa vain lukion oppimäärää, käytetään aina syntymäaikaa päättymispäivien päättelyssä" - {
         "Lukion oppimaaralla vahvistus" in {
           resetFixtures
@@ -551,6 +578,22 @@ class OppivelvollisuustietoSpec
           }
       )
   }
+
+  private def lukionAineopinnot(vahvistus: Option[LocalDate], lisääMaksuttomuus: Boolean = false): Opiskeluoikeus = {
+    ExamplesLukio2019.oppiaineenOppimääräOpiskeluoikeus
+      .copy(
+        oppilaitos = None,
+        suoritukset = List(ExamplesLukio2019.oppiaineidenOppimäärienSuoritus.copy(vahvistus = vahvistus.flatMap(vahvistusPaikkakunnalla(_)))),
+        lisätiedot = if (lisääMaksuttomuus) {
+          Some(LukionOpiskeluoikeudenLisätiedot(
+            maksuttomuus = maksuttomuustietoAlkamispäivästä(ExamplesLukio2019.aktiivinenOpiskeluoikeus.alkamispäivä),
+          ))
+        } else {
+          None
+        }
+      )
+  }
+
 
   def maksuttomuustietoAlkamispäivästä(alkamispäivä: Option[LocalDate]): Option[List[Maksuttomuus]] =
     alkamispäivä.map(a => List(Maksuttomuus(alku = a, loppu = None, maksuton = true)))

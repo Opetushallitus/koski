@@ -161,6 +161,19 @@ object Oppivelvollisuustiedot {
 
         ),
 
+        lukionaineopinnot as (
+
+            select
+              distinct master_oid,
+              true suorittaa_lukionaineopintoja
+            from
+              oppivelvolliset_henkilot
+              join #${s.name}.r_opiskeluoikeus opiskeluoikeus on oppivelvolliset_henkilot.oppija_oid = opiskeluoikeus.oppija_oid
+              join #${s.name}.r_paatason_suoritus paatason_suoritus on opiskeluoikeus.opiskeluoikeus_oid = paatason_suoritus.opiskeluoikeus_oid
+            where paatason_suoritus.suorituksen_tyyppi = 'lukionaineopinnot'
+
+        ),
+
         ylioppilastutkinto as (
 
             select
@@ -225,13 +238,6 @@ object Oppivelvollisuustiedot {
           -- Huom! Osa samasta logiikasta on myös Scala-koodina ValpasRajapäivätService-luokassa. Varmista muutosten jälkeen,
           -- että logiikka säilyy samana.
           case
-            when suorittaa_ammattitutkintoa and suorittaa_lukionoppimaaraa then least(
-              oppivelvollisuudesta_vapautus,
-              dia_tutkinnon_vahvistuspaiva,
-              european_school_of_helsinki_toisen_asteen_vahvistus_paiva,
-              ammattitutkinnon_vahvistus_paiva,
-              (syntymaaika + interval '#$oppivelvollisuusLoppuuIka year' - interval '1 day')::date)
-
             when suorittaa_ammattitutkintoa then least(
               oppivelvollisuudesta_vapautus,
               dia_tutkinnon_vahvistuspaiva,
@@ -251,7 +257,7 @@ object Oppivelvollisuustiedot {
           -- Huom! Osa samasta logiikasta on myös Scala-koodina ValpasRajapäivätService-luokassa. Varmista muutosten jälkeen,
           -- että logiikka säilyy samana.
           case
-            when suorittaa_ammattitutkintoa and suorittaa_lukionoppimaaraa then least(
+            when suorittaa_ammattitutkintoa and (suorittaa_lukionoppimaaraa or suorittaa_lukionaineopintoja) then least(
               oppivelvollisuudesta_vapautus,
               dia_tutkinnon_vahvistuspaiva,
               european_school_of_helsinki_toisen_asteen_vahvistus_paiva,
@@ -277,6 +283,7 @@ object Oppivelvollisuustiedot {
           oppivelvolliset_henkilot
           left join ammattitutkinto on oppivelvolliset_henkilot.master_oid = ammattitutkinto.master_oid
           left join lukionoppimaara on oppivelvolliset_henkilot.master_oid = lukionoppimaara.master_oid
+          left join lukionaineopinnot on oppivelvolliset_henkilot.master_oid = lukionaineopinnot.master_oid
           left join europeanschoolofhelsinki on oppivelvolliset_henkilot.master_oid = europeanschoolofhelsinki.master_oid
           left join diatutkinto on oppivelvolliset_henkilot.master_oid = diatutkinto.master_oid
           left join oppivelvollisuudesta_vapautus on oppivelvolliset_henkilot.master_oid = oppivelvollisuudesta_vapautus.master_oid
