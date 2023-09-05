@@ -1,7 +1,7 @@
 package fi.oph.koski.kela
 
 import fi.oph.koski.schema
-import fi.oph.koski.schema.OpiskeluoikeudenTyyppi
+import fi.oph.koski.schema.{OmanÄidinkielenOpinnotLaajuusOpintopisteinä, OpiskeluoikeudenTyyppi, PuhviKoe2019, SuullisenKielitaidonKoe2019}
 import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
 import fi.oph.scalaschema.annotation.{Description, Title}
 
@@ -51,6 +51,9 @@ case class KelaLukionPäätasonSuoritus(
   oppimäärä: Option[KelaKoodistokoodiviite],
   vahvistus: Option[Vahvistus],
   osasuoritukset: Option[List[KelaLukionOsasuoritus]],
+  omanÄidinkielenOpinnot: Option[OmanÄidinkielenOpinnotLaajuusOpintopisteinä] = None,
+  puhviKoe: Option[PuhviKoe2019] = None,
+  suullisenKielitaidonKokeet: Option[List[SuullisenKielitaidonKoe2019]] = None,
   tyyppi: schema.Koodistokoodiviite,
   tila: Option[KelaKoodistokoodiviite]
 ) extends Suoritus {
