@@ -57,7 +57,7 @@ case class KelaTuvaOpiskeluoikeudenLisätiedot(
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   vaativanErityisenTuenYhteydessäJärjestettäväMajoitus: Option[List[KelaAikajakso]],
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
-  erityinenTuki: Option[List[KelaAikajakso]],
+  erityisenTuenPäätökset: Option[List[KelaAikajakso]],
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   vaativanErityisenTuenErityinenTehtävä: Option[List[KelaAikajakso]],
   ulkomaanjaksot: Option[List[Ulkomaanjakso]],
