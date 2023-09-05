@@ -75,6 +75,20 @@ class KelaSpec
       }
     }
 
+    "Palauttaa TUVA-perusopetuksen erityisen tuen jaksot" in {
+      postHetu(KoskiSpecificMockOppijat.tuvaPerus.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+        verifyResponseStatusOk()
+        val oppija = JsonSerializer.parse[KelaOppija](body)
+        oppija.opiskeluoikeudet.length should be(1)
+
+        val tuvaOpiskeluoikeus = oppija.opiskeluoikeudet.last match {
+          case x: KelaTutkintokoulutukseenValmentavanOpiskeluoikeus => x
+        }
+        tuvaOpiskeluoikeus.järjestämislupa.koodiarvo shouldBe "perusopetus"
+        tuvaOpiskeluoikeus.lisätiedot.get.erityisenTuenPäätökset.get should have length (1)
+      }
+    }
+
     "Palauttaa tiedon 'täydentääTutkintoa' kun kyseessä on Muu ammatillinen koulutus" in {
       postHetu(KoskiSpecificMockOppijat.muuAmmatillinen.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
         verifyResponseStatusOk()
