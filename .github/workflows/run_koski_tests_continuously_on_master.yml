@@ -1,7 +1,7 @@
-name: Run tests 1 per hour
+name: Run tests 1 per 4 hours
 on:
   schedule:
-    - cron: "0 * * * *"
+    - cron: "0 */4 * * *"
   workflow_dispatch:
 
 env:
