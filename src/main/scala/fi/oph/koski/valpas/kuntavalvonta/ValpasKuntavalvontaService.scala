@@ -41,7 +41,7 @@ class ValpasKuntavalvontaService(
             // Tietokannassa ei voi olla kuntailmoituksia ilman oppijaOid:ia, joten oppijaOid:n olemassaoloa ei tässä
             // erikseen tarkisteta, vaan keskeytys ja sen seurauksena tuleva 500-virhe on ok, jos oppijaOid on None.
             .getOppijat(kuntailmoitukset.map(_.oppijaOid.get).distinct, rajaaOVKelpoisiinOpiskeluoikeuksiin = true, haeMyösOppivelvollisuudestaVapautetut = false)
-            .flatMap(oppijaLaajatTiedotService.asValpasOppijaLaajatTiedot(_).toOption)
+            .flatMap(oppijaLaajatTiedotService.asValpasOppijaLaajatTiedot()(_).toOption)
         )
       ))
 

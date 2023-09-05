@@ -205,7 +205,7 @@ describe("Hakutilannenäkymä", () => {
     await urlIsEventually(pathToUrl(aapajoenKouluHakutilannePath))
     await textEventuallyEquals(
       ".card__header",
-      "Hakeutumisvelvollisia oppijoita (5)"
+      "Hakeutumisvelvollisia oppijoita (4)"
     )
 
     await dataTableEventuallyEquals(
