@@ -533,6 +533,25 @@ class KelaSpec
     }
   }
 
+  "Palauttaa lukio-opintoihin liittyvät puhvit yms" in {
+    postHetu(KoskiSpecificMockOppijat.uusiLukio.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+      verifyResponseStatusOk()
+
+      val oppija = JsonSerializer.parse[KelaOppija](body)
+      oppija.opiskeluoikeudet.length should be(1)
+
+      val lukioOpiskeluoikeus = oppija.opiskeluoikeudet.collectFirst {
+        case x: KelaLukionOpiskeluoikeus => x
+      }.head
+
+      val päätasonSuoritus = lukioOpiskeluoikeus.suoritukset.head
+
+      päätasonSuoritus.puhviKoe should not be (None)
+      päätasonSuoritus.omanÄidinkielenOpinnot should not be (None)
+      päätasonSuoritus.suullisenKielitaidonKokeet should not be (None)
+    }
+  }
+
   private def getHetu[A](hetu: String, user: MockUser = MockUsers.kelaSuppeatOikeudet)(f: => A)= {
     authGet(s"kela/$hetu", user)(f)
   }
