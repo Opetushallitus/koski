@@ -469,7 +469,16 @@ class KelaSpec
       val expectedOsasuoritukset = ExamplesVapaaSivistystyöKotoutuskoulutus2022.PäätasonSuoritus.suoritettu.osasuoritukset.get
       päätasonSuoritus.osasuoritukset.get.length shouldBe expectedOsasuoritukset.length
       päätasonSuoritus.osasuoritukset.get.zip(expectedOsasuoritukset).foreach {
-        case (actualOsasuoritus, expectedOsasuoritus) => actualOsasuoritus.tyyppi shouldBe expectedOsasuoritus.tyyppi
+        case (actualOsasuoritus, expectedOsasuoritus) =>
+          actualOsasuoritus.tyyppi shouldBe expectedOsasuoritus.tyyppi
+          actualOsasuoritus.osasuoritukset.foreach(_.foreach { osasuoritus =>
+            osasuoritus.arviointi.foreach(_.foreach { arviointi =>
+              arviointi.puhumisenTaitotaso shouldBe None
+              arviointi.kirjoittamisenTaitotaso shouldBe None
+              arviointi.kuullunYmmärtämisenTaitotaso shouldBe None
+              arviointi.luetunYmmärtämisenTaitotaso shouldBe None
+            })
+          })
       }
     }
   }

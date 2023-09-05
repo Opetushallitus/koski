@@ -1,8 +1,8 @@
 package fi.oph.koski.kela
 
 import fi.oph.koski.schema
-import fi.oph.koski.schema.{Koodistokoodiviite, OpiskeluoikeudenTyyppi, VSTKoto2022Peruste}
-import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
+import fi.oph.koski.schema.annotation.{Deprecated, KoodistoKoodiarvo}
+import fi.oph.koski.schema.{OpiskeluoikeudenTyyppi, VSTKoto2022Peruste}
 import fi.oph.scalaschema.annotation.{Description, OnlyWhen, Title}
 
 import java.time.{LocalDate, LocalDateTime}
@@ -142,14 +142,22 @@ case class VSTMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenArviointi (
   arvosana: Option[schema.Koodistokoodiviite],
   hyväksytty: Option[Boolean],
   päivä: Option[LocalDate],
+  @Deprecated("Poistettu palautettavien tietojen joukosta")
   kuullunYmmärtämisenTaitotaso: Option[VSTKielenTaitotasonArviointi],
+  @Deprecated("Poistettu palautettavien tietojen joukosta")
   puhumisenTaitotaso: Option[VSTKielenTaitotasonArviointi],
+  @Deprecated("Poistettu palautettavien tietojen joukosta")
   luetunYmmärtämisenTaitotaso: Option[VSTKielenTaitotasonArviointi],
+  @Deprecated("Poistettu palautettavien tietojen joukosta")
   kirjoittamisenTaitotaso: Option[VSTKielenTaitotasonArviointi]
 ) extends OsasuorituksenArvionti {
   def withEmptyArvosana: VSTMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenArviointi = copy(
     arvosana = None,
-    hyväksytty = arvosana.map(schema.VapaanSivistystyönKoulutuksenArviointi.hyväksytty)
+    hyväksytty = arvosana.map(schema.VapaanSivistystyönKoulutuksenArviointi.hyväksytty),
+    kuullunYmmärtämisenTaitotaso = None,
+    puhumisenTaitotaso = None,
+    luetunYmmärtämisenTaitotaso = None,
+    kirjoittamisenTaitotaso = None,
   )
 }
 
