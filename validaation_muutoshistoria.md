@@ -1,5 +1,8 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 25.8.2023
+- Helsingin Eurooppalaisen koulun vuosiluokalle S5 sallitaan maksuttomuustiedon lisääminen
+
 ## 17.8.2023
 - Pidennetyn oppivelvollisuuden ja erityisen tuen ajanjaksojen validaatiota tarkennettu terminaalitilaisen opiskeluoikeuden osalta.
 

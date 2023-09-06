@@ -17,7 +17,9 @@ export type AktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiPäätasonSuo
     toimipiste?: Toimipiste
     tyyppi: Koodistokoodiviite<
       string,
-      'europeanschoolofhelsinkivuosiluokkasecondaryupper' | 'ebtutkinto'
+      | 'europeanschoolofhelsinkivuosiluokkasecondarylower'
+      | 'europeanschoolofhelsinkivuosiluokkasecondaryupper'
+      | 'ebtutkinto'
     >
   }
 
@@ -28,7 +30,9 @@ export const AktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiPäätasonSu
     toimipiste?: Toimipiste
     tyyppi: Koodistokoodiviite<
       string,
-      'europeanschoolofhelsinkivuosiluokkasecondaryupper' | 'ebtutkinto'
+      | 'europeanschoolofhelsinkivuosiluokkasecondarylower'
+      | 'europeanschoolofhelsinkivuosiluokkasecondaryupper'
+      | 'ebtutkinto'
     >
   }): AktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiPäätasonSuoritus => ({
     $class:
