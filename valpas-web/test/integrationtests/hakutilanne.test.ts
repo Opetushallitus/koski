@@ -21,7 +21,9 @@ import { loginAs } from "../integrationtests-env/browser/reset"
 import { eventually } from "../integrationtests-env/browser/utils"
 import {
   europeanSchoolOfHelsinkiTableContent,
+  europeanSchoolOfHelsinkiTableContentLater,
   europeanSchoolOfHelsinkiTableHead,
+  europeanSchoolOfHelsinkiTableHeadLater,
   hakutilannePath,
   internationalSchoolTableContent,
   internationalSchoolTableHead,
@@ -348,6 +350,34 @@ describe("Hakutilannenäkymä", () => {
     await dataTableEventuallyEquals(
       ".hakutilanne",
       europeanSchoolOfHelsinkiTableContent,
+      "|"
+    )
+  })
+
+  it("ESH: Ei näytä S5-opiskelijoita kevään valmistumisjakson päätyttyä", async () => {
+    await loginAs(hakutilannePath, "valpas-esh", false, "2021-10-01")
+    await urlIsEventually(pathToUrl(europeanSchoolOfHelsinkiHakutilannePath))
+    await textEventuallyEquals(
+      ".card__header",
+      europeanSchoolOfHelsinkiTableHeadLater
+    )
+    await dataTableEventuallyEquals(
+      ".hakutilanne",
+      europeanSchoolOfHelsinkiTableContentLater,
+      "|"
+    )
+  })
+
+  it("ESH: Ei näytä S5-opiskelijoita seuraavan kevään valmistumisjakson aikana", async () => {
+    await loginAs(hakutilannePath, "valpas-esh", false, "2022-09-05")
+    await urlIsEventually(pathToUrl(europeanSchoolOfHelsinkiHakutilannePath))
+    await textEventuallyEquals(
+      ".card__header",
+      europeanSchoolOfHelsinkiTableHeadLater
+    )
+    await dataTableEventuallyEquals(
+      ".hakutilanne",
+      europeanSchoolOfHelsinkiTableContentLater,
       "|"
     )
   })
