@@ -139,7 +139,7 @@ describe("Oppijakohtainen näkymä 2/2", () => {
       "valpas-maksuttomuus-hki"
     )
     await mainHeadingEquals(
-      "Ei-oppivelvollisuuden-suorittamiseen-kelpaavia-opiskeluoikeuksia Valpas (061005A671V)"
+      "Ei-oppivelvollisuuden-suorittamiseen-yksinään-kelpaavia-opiskeluoikeuksia Valpas (061005A671V)"
     )
   })
 
