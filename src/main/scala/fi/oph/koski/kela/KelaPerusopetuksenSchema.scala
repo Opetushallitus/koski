@@ -2,7 +2,7 @@ package fi.oph.koski.kela
 
 import fi.oph.koski.koskiuser.Rooli
 import fi.oph.koski.schema
-import fi.oph.koski.schema.OpiskeluoikeudenTyyppi
+import fi.oph.koski.schema.{OmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina, OpiskeluoikeudenTyyppi}
 import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, SensitiveData}
 import fi.oph.scalaschema.annotation.{Description, Discriminator, OnlyWhen, Title}
 
@@ -61,7 +61,8 @@ case class KelaPerusopetuksenSuoritus(
   tyyppi: schema.Koodistokoodiviite,
   tila: Option[KelaKoodistokoodiviite],
   alkamispäivä: Option[LocalDate],
-  jääLuokalle: Option[Boolean]
+  jääLuokalle: Option[Boolean],
+  omanÄidinkielenOpinnot: Option[OmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina] = None
 ) extends Suoritus {
   def withEmptyArvosana: KelaPerusopetuksenSuoritus = copy(
     osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana))
