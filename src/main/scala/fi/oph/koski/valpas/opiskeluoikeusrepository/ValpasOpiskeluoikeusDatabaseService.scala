@@ -535,12 +535,32 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       LEFT JOIN r_opiskeluoikeus_aikajakso aikajakson_keskella
         ON aikajakson_keskella.opiskeluoikeus_oid = ov_kelvollinen_opiskeluoikeus.opiskeluoikeus_oid
         AND $tarkastelupäivä BETWEEN aikajakson_keskella.alku AND aikajakson_keskella.loppu
+      LEFT JOIN LATERAL (
+            SELECT
+              TRUE AS loytyi
+            FROM
+              r_paatason_suoritus pts
+            WHERE
+              pts.opiskeluoikeus_oid = ov_kelvollinen_opiskeluoikeus.opiskeluoikeus_oid
+              AND (
+                pts.suorituksen_tyyppi = 'europeanschoolofhelsinkivuosiluokkasecondaryupper'
+                OR (
+                  pts.suorituksen_tyyppi = 'europeanschoolofhelsinkivuosiluokkasecondarylower'
+                  AND pts.koulutusmoduuli_koodiarvo = 'S5'
+                  AND (
+                    pts.alkamispaiva < $keväänValmistumisjaksoAlku
+                    OR $tarkastelupäivä > $keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä
+                  )
+                )
+              )
+            LIMIT 1
+          ) AS esh_perusopetuksen_jalkeisia_suorituksia ON TRUE
     WHERE
       $haePerusopetuksenHakeutumisvalvontatiedot IS TRUE
       -- (0) henkilö on oppivelvollinen: hakeutumisvalvontaa ei voi suorittaa enää sen jälkeen kun henkilön
       -- oppivelvollisuus on päättynyt
       AND ov_kelvollinen_opiskeluoikeus.henkilo_on_oppivelvollinen
-      -- (1) oppijalla on International schoolin opiskeluoikeus
+      -- (1) oppijalla on European School of Helsinki -opiskeluoikeus
       AND ov_kelvollinen_opiskeluoikeus.koulutusmuoto = 'europeanschoolofhelsinki'
       AND (
         -- (B2.1) kyseisessä opiskeluoikeudessa on S4-luokan suoritus.
@@ -646,6 +666,8 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
           )
         )
       )
+      -- Ja oppilas ei jatka opiskelua ESH:ssä
+      AND esh_perusopetuksen_jalkeisia_suorituksia.loytyi IS NULL
   )
   , hakeutumisvalvottava_nivelvaiheen_opiskeluoikeus AS (
     SELECT
@@ -833,20 +855,15 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
           r_paatason_suoritus pts
         WHERE
           pts.opiskeluoikeus_oid = ov_kelvollinen_opiskeluoikeus.opiskeluoikeus_oid
-          AND pts.suorituksen_tyyppi = 'europeanschoolofhelsinkivuosiluokkasecondaryupper'
+          AND (
+            pts.suorituksen_tyyppi = 'europeanschoolofhelsinkivuosiluokkasecondaryupper'
+            OR (
+              pts.suorituksen_tyyppi = 'europeanschoolofhelsinkivuosiluokkasecondarylower'
+              AND pts.koulutusmoduuli_koodiarvo = 'S5'
+            )
+          )
         LIMIT 1
-      ) AS esh_toisen_asteen_suorituksia ON TRUE
-      LEFT JOIN LATERAL (
-        SELECT
-          TRUE AS loytyi
-        FROM
-          r_paatason_suoritus pts
-        WHERE
-          pts.opiskeluoikeus_oid = ov_kelvollinen_opiskeluoikeus.opiskeluoikeus_oid
-          AND pts.suorituksen_tyyppi = 'europeanschoolofhelsinkivuosiluokkasecondarylower'
-          AND pts.koulutusmoduuli_koodiarvo = 'S5'
-        LIMIT 1
-      ) AS esh_s5_suorituksia ON TRUE
+      ) AS esh_perusopetuksen_jalkeisia_suorituksia ON TRUE
     WHERE
       -- (0) henkilö on oppivelvollinen: suorittamisvalvontaa ei voi suorittaa enää sen jälkeen kun henkilön
       -- oppivelvollisuus on päättynyt
@@ -861,8 +878,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       -- (1b) European School of Helsinki on suorittamisvalvottava vain, jos siinä on S5-S7 suoritus
       AND (
         ov_kelvollinen_opiskeluoikeus.koulutusmuoto <> 'europeanschoolofhelsinki'
-        OR esh_toisen_asteen_suorituksia.loytyi IS TRUE
-        OR esh_s5_suorituksia.loytyi IS TRUE
+        OR esh_perusopetuksen_jalkeisia_suorituksia.loytyi IS TRUE
       )
       AND (
         -- (2a) opiskeluoikeus on läsnä tai väliaikaisesti keskeytynyt tai lomalla tällä hetkellä.
@@ -1355,13 +1371,13 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
               -- Jos perusopetuksen 9. luokka on vahvistettu, käytetään sitä. Jos sitä ei ole vahvistettu, ja on toisen asteen suorituksia,
               -- ei päättymispäivää ole lainkaan. Jos taas toisen asteen suorituksia ei ole lainkaan, käytetään koko oo:n päättymispäivää.
               CASE
-                WHEN s5suoritus.vahvistus_paiva IS NOT NULL THEN s5suoritus.vahvistus_paiva
+                WHEN s4suoritus.vahvistus_paiva IS NOT NULL THEN s4suoritus.vahvistus_paiva
                 WHEN toisen_asteen_suorituksia.lukumaara > 0 THEN NULL::date
                 ELSE r_opiskeluoikeus.paattymispaiva
               END,
             'päättymispäiväMerkittyTulevaisuuteen', (
               CASE
-                WHEN s5suoritus.vahvistus_paiva IS NOT NULL THEN s5suoritus.vahvistus_paiva
+                WHEN s4suoritus.vahvistus_paiva IS NOT NULL THEN s4suoritus.vahvistus_paiva
                 WHEN toisen_asteen_suorituksia.lukumaara > 0 THEN NULL::date
                 ELSE r_opiskeluoikeus.paattymispaiva
               END) > $tarkastelupäivä,
@@ -1370,7 +1386,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
                 (CASE
                   WHEN $tarkastelupäivä < r_opiskeluoikeus.alkamispaiva THEN 'voimassatulevaisuudessa'
                   -- Jos S5 on vahvistettu ja tutkitaan vahvistuspäivämäärän jälkeen, käytetään tilaa valmistunut:
-                  WHEN s5suoritus.vahvistus_paiva IS NOT NULL AND s5suoritus.vahvistus_paiva <= $tarkastelupäivä THEN 'valmistunut'
+                  WHEN s4suoritus.vahvistus_paiva IS NOT NULL AND s4suoritus.vahvistus_paiva <= $tarkastelupäivä THEN 'valmistunut'
                   -- Muuten käytetään opiskeluoikeuden tietoja:
                   WHEN $tarkastelupäivä > r_opiskeluoikeus.paattymispaiva THEN valpastila_viimeisin.valpasopiskeluoikeudentila
                   ELSE valpastila_aikajakson_keskella.valpasopiskeluoikeudentila
@@ -1385,7 +1401,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
                   -- ongelmaa.
                   WHEN $tarkastelupäivä < r_opiskeluoikeus.alkamispaiva THEN 'lasna'
                   -- Jos S5 on vahvistettu ja tutkitaan vahvistuspäivämäärän jälkeen, käytetään tilaa valmistunut:
-                  WHEN s5suoritus.vahvistus_paiva IS NOT NULL AND s5suoritus.vahvistus_paiva <= $tarkastelupäivä THEN 'valmistunut'
+                  WHEN s4suoritus.vahvistus_paiva IS NOT NULL AND s4suoritus.vahvistus_paiva <= $tarkastelupäivä THEN 'valmistunut'
                   -- Muuten käytetään opiskeluoikeuden tietoja:
                   WHEN $tarkastelupäivä > r_opiskeluoikeus.paattymispaiva THEN r_opiskeluoikeus.viimeisin_tila
                   ELSE aikajakson_keskella.tila
@@ -1396,14 +1412,14 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
               (CASE
                 WHEN $tarkastelupäivä < r_opiskeluoikeus.alkamispaiva THEN r_opiskeluoikeus.alkamispaiva
                 -- Jos S5 on vahvistettu ja tutkitaan vahvistuspäivämäärän jälkeen, käytetään vahvistuspäivää:
-                WHEN (s5suoritus.vahvistus_paiva IS NOT NULL AND s5suoritus.vahvistus_paiva <= $tarkastelupäivä) THEN s5suoritus.vahvistus_paiva
+                WHEN (s4suoritus.vahvistus_paiva IS NOT NULL AND s4suoritus.vahvistus_paiva <= $tarkastelupäivä) THEN s4suoritus.vahvistus_paiva
                 -- Muuten käytetään opiskeluoikeuden tietoja:
                 WHEN $tarkastelupäivä > r_opiskeluoikeus.paattymispaiva THEN r_opiskeluoikeus.paattymispaiva
                 ELSE aikajakson_keskella.tila_alkanut
               END),
             'valmistunutAiemminTaiLähitulevaisuudessa', (
-              s5suoritus.vahvistus_paiva IS NOT NULL
-              AND s5suoritus.vahvistus_paiva < $hakeutusmivalvottavanSuorituksenNäyttämisenAikaraja
+              s4suoritus.vahvistus_paiva IS NOT NULL
+              AND s4suoritus.vahvistus_paiva < $hakeutusmivalvottavanSuorituksenNäyttämisenAikaraja
             ),
             'vuosiluokkiinSitomatonOpetus', FALSE
           ))
@@ -1517,8 +1533,8 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         WHERE
           pts.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
           AND pts.suorituksen_tyyppi = 'europeanschoolofhelsinkivuosiluokkasecondarylower'
-          AND pts.koulutusmoduuli_koodiarvo = 'S5'
-      ) AS s5suoritus ON TRUE
+          AND pts.koulutusmoduuli_koodiarvo = 'S4'
+      ) AS s4suoritus ON TRUE
       LEFT JOIN LATERAL (
         SELECT
           TRUE AS loytyi
@@ -1535,7 +1551,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
                 OR pts.koulutusmoduuli_koodiarvo = 'S2'
                 OR pts.koulutusmoduuli_koodiarvo = 'S3'
                 OR pts.koulutusmoduuli_koodiarvo = 'S4'
-                OR pts.koulutusmoduuli_koodiarvo = 'S5'
+                -- OR pts.koulutusmoduuli_koodiarvo = 'S5'
               )
             )
           )

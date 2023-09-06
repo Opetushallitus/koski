@@ -77,7 +77,13 @@ export const internationalSchoolTableContent = `
 export const europeanSchoolOfHelsinkiTableHead =
   "Hakeutumisvelvollisia oppijoita (2)"
 export const europeanSchoolOfHelsinkiTableContent = `
-  ESH-s4-jälkeen-s5-aloittanut Valpas                    | 20.3.2005   | S5A | –         | Ei hakemusta | – | – | –                                                               |
+  ESH-s4-jälkeen-s5-aloittanut Valpas                    | 20.3.2005   | S5A | 31.5.2021 | Ei hakemusta | – | – | –                                                               |
+  ESH-s4-kesken-keväällä-2021 Valpas                     | 11.5.2005   | S4A | –         | Ei hakemusta | – | – | –                                                               |
+`
+
+export const europeanSchoolOfHelsinkiTableHeadLater =
+  "Hakeutumisvelvollisia oppijoita (1)"
+export const europeanSchoolOfHelsinkiTableContentLater = `
   ESH-s4-kesken-keväällä-2021 Valpas                     | 11.5.2005   | S4A | –         | Ei hakemusta | – | – | –                                                               |
 `
 
