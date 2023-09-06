@@ -552,6 +552,23 @@ class KelaSpec
     }
   }
 
+  "Palauttaa perusopetuksen kentän omanÄidinkielenOpinnot" in {
+    postHetu(KoskiSpecificMockOppijat.ysiluokkalainen.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+      verifyResponseStatusOk()
+
+      val oppija = JsonSerializer.parse[KelaOppija](body)
+      oppija.opiskeluoikeudet.length should be(1)
+
+      val lukioOpiskeluoikeus = oppija.opiskeluoikeudet.collectFirst {
+        case x: KelaPerusopetuksenOpiskeluoikeus => x
+      }.head
+
+      val pts = lukioOpiskeluoikeus.suoritukset.find(p => p.tyyppi.koodiarvo == "perusopetuksenoppimaara").get
+
+      pts.omanÄidinkielenOpinnot should not be (None)
+    }
+  }
+
   private def getHetu[A](hetu: String, user: MockUser = MockUsers.kelaSuppeatOikeudet)(f: => A)= {
     authGet(s"kela/$hetu", user)(f)
   }
