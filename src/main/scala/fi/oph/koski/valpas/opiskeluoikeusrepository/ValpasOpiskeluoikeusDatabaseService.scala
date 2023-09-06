@@ -855,20 +855,15 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
           r_paatason_suoritus pts
         WHERE
           pts.opiskeluoikeus_oid = ov_kelvollinen_opiskeluoikeus.opiskeluoikeus_oid
-          AND pts.suorituksen_tyyppi = 'europeanschoolofhelsinkivuosiluokkasecondaryupper'
+          AND (
+            pts.suorituksen_tyyppi = 'europeanschoolofhelsinkivuosiluokkasecondaryupper'
+            OR (
+              pts.suorituksen_tyyppi = 'europeanschoolofhelsinkivuosiluokkasecondarylower'
+              AND pts.koulutusmoduuli_koodiarvo = 'S5'
+            )
+          )
         LIMIT 1
-      ) AS esh_toisen_asteen_suorituksia ON TRUE
-      LEFT JOIN LATERAL (
-        SELECT
-          TRUE AS loytyi
-        FROM
-          r_paatason_suoritus pts
-        WHERE
-          pts.opiskeluoikeus_oid = ov_kelvollinen_opiskeluoikeus.opiskeluoikeus_oid
-          AND pts.suorituksen_tyyppi = 'europeanschoolofhelsinkivuosiluokkasecondarylower'
-          AND pts.koulutusmoduuli_koodiarvo = 'S5'
-        LIMIT 1
-      ) AS esh_s5_suorituksia ON TRUE
+      ) AS esh_perusopetuksen_jalkeisia_suorituksia ON TRUE
     WHERE
       -- (0) henkilö on oppivelvollinen: suorittamisvalvontaa ei voi suorittaa enää sen jälkeen kun henkilön
       -- oppivelvollisuus on päättynyt
@@ -883,8 +878,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       -- (1b) European School of Helsinki on suorittamisvalvottava vain, jos siinä on S5-S7 suoritus
       AND (
         ov_kelvollinen_opiskeluoikeus.koulutusmuoto <> 'europeanschoolofhelsinki'
-        OR esh_toisen_asteen_suorituksia.loytyi IS TRUE
-        OR esh_s5_suorituksia.loytyi IS TRUE
+        OR esh_perusopetuksen_jalkeisia_suorituksia.loytyi IS TRUE
       )
       AND (
         -- (2a) opiskeluoikeus on läsnä tai väliaikaisesti keskeytynyt tai lomalla tällä hetkellä.
