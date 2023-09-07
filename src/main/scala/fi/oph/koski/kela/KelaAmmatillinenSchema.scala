@@ -3,7 +3,7 @@ package fi.oph.koski.kela
 import fi.oph.koski.koskiuser.Rooli
 import fi.oph.koski.schema
 import fi.oph.koski.schema.OppisopimuksenPurkaminen
-import fi.oph.koski.schema.annotation.{Deprecated, Example, KoodistoKoodiarvo, SensitiveData}
+import fi.oph.koski.schema.annotation.{Deprecated, Example, KoodistoKoodiarvo, KoodistoUri, SensitiveData}
 import fi.oph.scalaschema.annotation.{DefaultValue, Description, RegularExpression, Title}
 
 import java.time.{LocalDate, LocalDateTime}
@@ -115,7 +115,9 @@ case class KelaAmmatillinenOsasuoritus(
   toinenTutkintonimike: Option[Boolean],
   näyttö: Option[Näyttö],
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
-  lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]]
+  lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]],
+  @KoodistoUri("ammatillisensuorituksenkorotus")
+  korotettu: Option[KelaKoodistokoodiviite],
 ) extends Osasuoritus {
   def withEmptyArvosana: KelaAmmatillinenOsasuoritus = copy(
     arviointi = arviointi.map(_.map(_.withEmptyArvosana)),
