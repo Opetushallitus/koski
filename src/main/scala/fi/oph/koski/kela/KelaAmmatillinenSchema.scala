@@ -182,7 +182,8 @@ case class NäytönSuoritusaika(
 case class NäytönArviointi(
   @Deprecated("Ei palauteta Kela-API:ssa. Kenttä on näkyvissä skeemassa vain teknisistä syistä.")
   arvosana: Option[schema.Koodistokoodiviite],
-  hyväksytty: Option[Boolean]
+  hyväksytty: Option[Boolean],
+  päivä: LocalDate,
 ) {
   def withEmptyArvosana: NäytönArviointi = copy(
     arvosana = None,
