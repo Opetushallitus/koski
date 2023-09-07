@@ -116,6 +116,8 @@ class KelaSpec
         suoritus.osaamisenHankkimistavat.map(oht => oht.last.osaamisenHankkimistapa.isInstanceOf[OppisopimuksellinenOsaamisenHankkimistapa]).shouldBe(Some(true))
         val hankkimistapa = suoritus.osaamisenHankkimistavat.map(oht => oht.last.osaamisenHankkimistapa.asInstanceOf[OppisopimuksellinenOsaamisenHankkimistapa])
         hankkimistapa.get.oppisopimus.oppisopimuksenPurkaminen.exists(_.päivä.equals(LocalDate.of(2013, 3, 20))).shouldBe(true)
+
+        suoritus.koulutussopimukset.get.head.työssäoppimispaikanYTunnus shouldBe Some("1572860-0")
       }
     }
 
