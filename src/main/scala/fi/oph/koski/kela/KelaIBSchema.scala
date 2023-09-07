@@ -59,7 +59,6 @@ case class KelaIBPäätasonSuoritus(
 case class KelaIBOsasuoritus(
   koulutusmoduuli: KelaIBOsasuorituksenKoulutusmoduuli,
   arviointi: Option[List[KelaIBOsasuorituksenArvionti]],
-  predictedArviointi: Option[List[KelaIBOsasuorituksenArvionti]],
   osasuoritukset: Option[List[KelaIBOsasuoritus]],
   tyyppi: schema.Koodistokoodiviite,
   tila: Option[KelaKoodistokoodiviite],

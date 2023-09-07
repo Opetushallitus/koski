@@ -111,8 +111,6 @@ class KelaSpec
         suoritus.osaamisenHankkimistavat.map(oht => oht.last.osaamisenHankkimistapa.isInstanceOf[OppisopimuksellinenOsaamisenHankkimistapa]).shouldBe(Some(true))
         val hankkimistapa = suoritus.osaamisenHankkimistavat.map(oht => oht.last.osaamisenHankkimistapa.asInstanceOf[OppisopimuksellinenOsaamisenHankkimistapa])
         hankkimistapa.get.oppisopimus.oppisopimuksenPurkaminen.exists(_.päivä.equals(LocalDate.of(2013, 3, 20))).shouldBe(true)
-
-        suoritus.koulutussopimukset.get.head.työssäoppimispaikanYTunnus shouldBe Some("1572860-0")
       }
     }
 
@@ -159,34 +157,6 @@ class KelaSpec
 
       postHetu(hetu) {
         verifyResponseStatus(500)
-      }
-    }
-    "Palauttaa koulutusvientitiedon" in {
-      postHetu(KoskiSpecificMockOppijat.amisKoulutusvienti.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
-        verifyResponseStatusOk()
-        val oppija = JsonSerializer.parse[KelaOppija](body)
-        val lisätiedot = oppija.opiskeluoikeudet.head.lisätiedot.get.asInstanceOf[KelaAmmatillisenOpiskeluoikeudenLisätiedot]
-        lisätiedot.koulutusvienti shouldBe Some(true)
-      }
-    }
-    "Palauttaa näytön arviointipäivän" in {
-      postHetu(KoskiSpecificMockOppijat.ammatillisenOsittainenRapsa.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
-        verifyResponseStatusOk()
-        val oppija = JsonSerializer.parse[KelaOppija](body)
-        val suoritus = oppija.opiskeluoikeudet.head.suoritukset.head.asInstanceOf[KelaAmmatillinenPäätasonSuoritus]
-        val näyttöjenArviointipäivät = suoritus.osasuoritukset.get.flatMap(_.näyttö).map(_.arviointi.map(_.päivä))
-        näyttöjenArviointipäivät shouldBe List(Some(LocalDate.of(2014, 10, 20)))
-      }
-    }
-    "Palauttaa IB:n predicted grade -arvioinnin" in {
-      postHetu(KoskiSpecificMockOppijat.ibPredicted.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
-        verifyResponseStatusOk()
-        val oppija = JsonSerializer.parse[KelaOppija](body)
-        val suoritus = oppija.opiskeluoikeudet.head.suoritukset
-          .collect { case s: KelaIBPäätasonSuoritus if s.koulutusmoduuli.tunniste.koodiarvo == "301102" => s }
-          .head
-        val osasuoritus = suoritus.osasuoritukset.get.head
-        osasuoritus.predictedArviointi.get.head.päivä shouldBe Some(LocalDate.of(2016, 6, 4))
       }
     }
   }

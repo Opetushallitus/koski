@@ -103,10 +103,6 @@ case class KelaOpiskeluoikeudenTila(
   opiskeluoikeusjaksot: List[KelaOpiskeluoikeusjakso]
 ) extends OpiskeluoikeudenTila
 
-case class KelaOpiskeluoikeudenTilaRahoitustiedoilla(
-  opiskeluoikeusjaksot: List[KelaOpiskeluoikeusjaksoRahoituksella]
-) extends OpiskeluoikeudenTila
-
 trait OpiskeluoikeudenTila {
   def opiskeluoikeusjaksot: List[Opiskeluoikeusjakso]
 }
@@ -114,12 +110,6 @@ trait OpiskeluoikeudenTila {
 case class KelaOpiskeluoikeusjakso(
   alku: LocalDate,
   tila: KelaKoodistokoodiviite,
-) extends Opiskeluoikeusjakso
-
-case class KelaOpiskeluoikeusjaksoRahoituksella(
-  alku: LocalDate,
-  tila: KelaKoodistokoodiviite,
-
 ) extends Opiskeluoikeusjakso
 
 trait Opiskeluoikeusjakso {
