@@ -166,6 +166,14 @@ class KelaSpec
         verifyResponseStatus(500)
       }
     }
+    "Palauttaa koulutusvientitiedon" in {
+      postHetu(KoskiSpecificMockOppijat.amisKoulutusvienti.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+        verifyResponseStatusOk()
+        val oppija = JsonSerializer.parse[KelaOppija](body)
+        val lisätiedot = oppija.opiskeluoikeudet.head.lisätiedot.get.asInstanceOf[KelaAmmatillisenOpiskeluoikeudenLisätiedot]
+        lisätiedot.koulutusvienti shouldBe Some(true)
+      }
+    }
   }
 
   "Usean oppijan rajapinta" - {
