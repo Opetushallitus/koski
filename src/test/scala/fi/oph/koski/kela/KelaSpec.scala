@@ -178,6 +178,17 @@ class KelaSpec
         näyttöjenArviointipäivät shouldBe List(Some(LocalDate.of(2014, 10, 20)))
       }
     }
+    "Palauttaa IB:n predicted grade -arvioinnin" in {
+      postHetu(KoskiSpecificMockOppijat.ibPredicted.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+        verifyResponseStatusOk()
+        val oppija = JsonSerializer.parse[KelaOppija](body)
+        val suoritus = oppija.opiskeluoikeudet.head.suoritukset
+          .collect { case s: KelaIBPäätasonSuoritus if s.koulutusmoduuli.tunniste.koodiarvo == "301102" => s }
+          .head
+        val osasuoritus = suoritus.osasuoritukset.get.head
+        osasuoritus.predictedArviointi.get.head.päivä shouldBe Some(LocalDate.of(2016, 6, 4))
+      }
+    }
   }
 
   "Usean oppijan rajapinta" - {
