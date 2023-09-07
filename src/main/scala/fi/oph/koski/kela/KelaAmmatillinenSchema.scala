@@ -65,7 +65,8 @@ case class KelaAmmatillisenOpiskeluoikeudenLisätiedot(
   opiskeluvalmiuksiaTukevatOpinnot: Option[List[KelaOpiskeluvalmiuksiaTukevienOpintojenJakso]],
   vankilaopetuksessa: Option[List[KelaAikajakso]],
   maksuttomuus: Option[List[KelaMaksuttomuus]],
-  oikeuttaMaksuttomuuteenPidennetty: Option[List[KelaOikeuttaMaksuttomuuteenPidennetty]]
+  oikeuttaMaksuttomuuteenPidennetty: Option[List[KelaOikeuttaMaksuttomuuteenPidennetty]],
+  koulutusvienti: Option[Boolean],
 ) extends OpiskeluoikeudenLisätiedot
 
 @Title("Ammatillisen koulutuksen suoritus")
