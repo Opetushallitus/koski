@@ -1,5 +1,6 @@
 package fi.oph.koski.schema.annotation
 
+import fi.oph.koski.kela.KelaKoodistokoodiviite
 import fi.oph.koski.schema.Koodistokoodiviite
 import fi.oph.koski.schema.annotation.SchemaClassMapper.mapClasses
 import fi.oph.scalaschema._
@@ -9,12 +10,17 @@ import org.json4s.JsonAST._
   Vain tietty koodiarvo hyväksytään -annotaatio
  */
 case class KoodistoKoodiarvo(arvo: String) extends Metadata {
+  private val tuetutKoodiarvoluokat = List(
+    classOf[Koodistokoodiviite].getName,
+    classOf[KelaKoodistokoodiviite].getName,
+  )
+
   override def appendMetadataToJsonSchema(obj: JObject) = {
     appendToDescription(obj, "(Hyväksytty koodiarvo: " + arvo + ")")
   }
 
   override def applyMetadata(x: ObjectWithMetadata[_], schemaFactory: SchemaFactory) = {
-    super.applyMetadata(mapClasses(x, schemaFactory, { case s: ClassSchema if s.fullClassName == classOf[Koodistokoodiviite].getName  =>
+    super.applyMetadata(mapClasses(x, schemaFactory, { case s: ClassSchema if tuetutKoodiarvoluokat.contains(s.fullClassName)  =>
       s.copy(properties = s.properties.map {
         case p: Property if p.key == "koodiarvo" => addEnumValue(this.arvo, p)
         case p: Property => p

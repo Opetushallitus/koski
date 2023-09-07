@@ -1,7 +1,7 @@
 package fi.oph.koski.kela
 
 import fi.oph.koski.api.misc.OpiskeluoikeusTestMethodsAmmatillinen
-import fi.oph.koski.documentation.EuropeanSchoolOfHelsinkiExampleData
+import fi.oph.koski.documentation.{EuropeanSchoolOfHelsinkiExampleData, ExamplesVapaaSivistystyöKotoutuskoulutus2022}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.history.OpiskeluoikeusHistoryPatch
 import fi.oph.koski.http.KoskiErrorCategory
@@ -442,7 +442,45 @@ class KelaSpec
         case (_, actual) => throw new Error(s"Unexpected type: $actual")
       }
     }
+  }
 
+  "Palauttaa muun vapaan sivistystyön koulutuksen kuin KOTO 2022 opiskeuoikeuden" in {
+    postHetu(KoskiSpecificMockOppijat.vapaaSivistystyöOppivelvollinen.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+      verifyResponseStatusOk()
+      val oppija = JsonSerializer.parse[KelaOppija](body)
+      oppija.opiskeluoikeudet.length should be(1)
+    }
+  }
+
+  "Palauttaa VST KOTO 2022 opiskeuoikeus" in {
+    postHetu(KoskiSpecificMockOppijat.vstKoto2022Suorittanut.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+      verifyResponseStatusOk()
+
+      val oppija = JsonSerializer.parse[KelaOppija](body)
+      oppija.opiskeluoikeudet.length shouldBe 1
+
+      val opiskeluoikeus = oppija.opiskeluoikeudet.last match { case x: KelaVapaanSivistystyönOpiskeluoikeus => x }
+
+      opiskeluoikeus.suoritukset.length shouldBe 1
+      val päätasonSuoritus = opiskeluoikeus.suoritukset.head match { case x: KelaVSTKOTO2022Suoritus => x }
+
+      päätasonSuoritus.osasuoritukset shouldNot be(None)
+
+      val expectedOsasuoritukset = ExamplesVapaaSivistystyöKotoutuskoulutus2022.PäätasonSuoritus.suoritettu.osasuoritukset.get
+      päätasonSuoritus.osasuoritukset.get.length shouldBe expectedOsasuoritukset.length
+      päätasonSuoritus.osasuoritukset.get.zip(expectedOsasuoritukset).foreach {
+        case (actualOsasuoritus, expectedOsasuoritus) =>
+          actualOsasuoritus.tyyppi shouldBe expectedOsasuoritus.tyyppi
+          actualOsasuoritus.osasuoritukset.foreach(_.foreach { osasuoritus =>
+            osasuoritus.arviointi.foreach(_.foreach { arviointi =>
+              arviointi.puhumisenTaitotaso shouldBe None
+              arviointi.kirjoittamisenTaitotaso shouldBe None
+              arviointi.kuullunYmmärtämisenTaitotaso shouldBe None
+              arviointi.luetunYmmärtämisenTaitotaso shouldBe None
+            })
+          })
+      }
+    }
   }
 
   private def getHetu[A](hetu: String, user: MockUser = MockUsers.kelaSuppeatOikeudet)(f: => A)= {

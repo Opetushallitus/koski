@@ -1,9 +1,9 @@
 package fi.oph.koski.kela
 
 import fi.oph.koski.schema
-import fi.oph.koski.schema.OpiskeluoikeudenTyyppi
-import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
-import fi.oph.scalaschema.annotation.{Description, Title}
+import fi.oph.koski.schema.annotation.{Deprecated, KoodistoKoodiarvo}
+import fi.oph.koski.schema.{OpiskeluoikeudenTyyppi, VSTKoto2022Peruste}
+import fi.oph.scalaschema.annotation.{Description, OnlyWhen, Title}
 
 import java.time.{LocalDate, LocalDateTime}
 
@@ -16,7 +16,7 @@ case class KelaVapaanSivistystyönOpiskeluoikeus(
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija],
   arvioituPäättymispäivä: Option[LocalDate],
-  tila: KelaOpiskeluoikeudenTila,
+  tila: KelaVapaansivistystyönOpiskeluoikeudenTila,
   suoritukset: List[VstSuoritus],
   lisätiedot: Option[KelaVapaanSivistystyönOpiskeluoikeudenLisätiedot],
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.vapaansivistystyonkoulutus.koodiarvo)
@@ -35,6 +35,18 @@ case class KelaVapaanSivistystyönOpiskeluoikeus(
     organisaatiohistoria = None
   )
 }
+
+case class KelaVapaansivistystyönOpiskeluoikeudenTila(
+  opiskeluoikeusjaksot: List[KelaVapaanSivistystyönOpiskeluoikeusjakso]
+) extends OpiskeluoikeudenTila
+
+case class KelaVapaanSivistystyönOpiskeluoikeusjakso(
+  alku: LocalDate,
+  tila: KelaKoodistokoodiviite,
+  @KoodistoKoodiarvo("14")
+  @KoodistoKoodiarvo("15")
+  opintojenRahoitus: Option[KelaKoodistokoodiviite],
+) extends Opiskeluoikeusjakso
 
 case class KelaVapaanSivistystyönOpiskeluoikeudenLisätiedot(
   maksuttomuus: Option[List[KelaMaksuttomuus]],
@@ -130,17 +142,40 @@ case class VSTMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenArviointi (
   arvosana: Option[schema.Koodistokoodiviite],
   hyväksytty: Option[Boolean],
   päivä: Option[LocalDate],
+  @Deprecated("Poistettu palautettavien tietojen joukosta")
   kuullunYmmärtämisenTaitotaso: Option[VSTKielenTaitotasonArviointi],
+  @Deprecated("Poistettu palautettavien tietojen joukosta")
   puhumisenTaitotaso: Option[VSTKielenTaitotasonArviointi],
+  @Deprecated("Poistettu palautettavien tietojen joukosta")
   luetunYmmärtämisenTaitotaso: Option[VSTKielenTaitotasonArviointi],
+  @Deprecated("Poistettu palautettavien tietojen joukosta")
   kirjoittamisenTaitotaso: Option[VSTKielenTaitotasonArviointi]
 ) extends OsasuorituksenArvionti {
   def withEmptyArvosana: VSTMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenArviointi = copy(
     arvosana = None,
-    hyväksytty = arvosana.map(schema.VapaanSivistystyönKoulutuksenArviointi.hyväksytty)
+    hyväksytty = arvosana.map(schema.VapaanSivistystyönKoulutuksenArviointi.hyväksytty),
+    kuullunYmmärtämisenTaitotaso = None,
+    puhumisenTaitotaso = None,
+    luetunYmmärtämisenTaitotaso = None,
+    kirjoittamisenTaitotaso = None,
   )
 }
 
 case class VSTKielenTaitotasonArviointi(
   taso: KelaKoodistokoodiviite
 )
+
+@OnlyWhen("koulutusmoduuli/perusteenDiaarinumero", VSTKoto2022Peruste.diaarinumero)
+case class KelaVSTKOTO2022Suoritus(
+  koulutusmoduuli: KelaVapaanSivistystyönSuorituksenKoulutusmoduuli, // TODO:
+  toimipiste: Option[Toimipiste],
+  vahvistus: Option[Vahvistus],
+  osasuoritukset: Option[List[KelaVapaanSivistystyönMaahanmuuttajienKototutumisenOsasuoritus]],
+  @KoodistoKoodiarvo("vstmaahanmuuttajienkotoutumiskoulutus")
+  tyyppi: schema.Koodistokoodiviite,
+  tila: Option[KelaKoodistokoodiviite],
+) extends VstSuoritus {
+  override def withEmptyArvosana: VstSuoritus = this.copy(
+    osasuoritukset = this.osasuoritukset.map(_.map(_.withEmptyArvosana)),
+  )
+}
