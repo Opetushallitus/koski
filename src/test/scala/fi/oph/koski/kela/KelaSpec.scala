@@ -169,6 +169,15 @@ class KelaSpec
         lisätiedot.koulutusvienti shouldBe Some(true)
       }
     }
+    "Palauttaa näytön arviointipäivän" in {
+      postHetu(KoskiSpecificMockOppijat.ammatillisenOsittainenRapsa.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+        verifyResponseStatusOk()
+        val oppija = JsonSerializer.parse[KelaOppija](body)
+        val suoritus = oppija.opiskeluoikeudet.head.suoritukset.head.asInstanceOf[KelaAmmatillinenPäätasonSuoritus]
+        val näyttöjenArviointipäivät = suoritus.osasuoritukset.get.flatMap(_.näyttö).map(_.arviointi.map(_.päivä))
+        näyttöjenArviointipäivät shouldBe List(Some(LocalDate.of(2014, 10, 20)))
+      }
+    }
   }
 
   "Usean oppijan rajapinta" - {
