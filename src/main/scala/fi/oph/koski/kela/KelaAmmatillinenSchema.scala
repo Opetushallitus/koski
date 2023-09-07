@@ -3,8 +3,8 @@ package fi.oph.koski.kela
 import fi.oph.koski.koskiuser.Rooli
 import fi.oph.koski.schema
 import fi.oph.koski.schema.OppisopimuksenPurkaminen
-import fi.oph.koski.schema.annotation.{Deprecated, KoodistoKoodiarvo, SensitiveData}
-import fi.oph.scalaschema.annotation.{DefaultValue, Description, Title}
+import fi.oph.koski.schema.annotation.{Deprecated, Example, KoodistoKoodiarvo, KoodistoUri, SensitiveData}
+import fi.oph.scalaschema.annotation.{DefaultValue, Description, RegularExpression, Title}
 
 import java.time.{LocalDate, LocalDateTime}
 
@@ -65,7 +65,8 @@ case class KelaAmmatillisenOpiskeluoikeudenLisätiedot(
   opiskeluvalmiuksiaTukevatOpinnot: Option[List[KelaOpiskeluvalmiuksiaTukevienOpintojenJakso]],
   vankilaopetuksessa: Option[List[KelaAikajakso]],
   maksuttomuus: Option[List[KelaMaksuttomuus]],
-  oikeuttaMaksuttomuuteenPidennetty: Option[List[KelaOikeuttaMaksuttomuuteenPidennetty]]
+  oikeuttaMaksuttomuuteenPidennetty: Option[List[KelaOikeuttaMaksuttomuuteenPidennetty]],
+  koulutusvienti: Option[Boolean],
 ) extends OpiskeluoikeudenLisätiedot
 
 @Title("Ammatillisen koulutuksen suoritus")
@@ -114,7 +115,9 @@ case class KelaAmmatillinenOsasuoritus(
   toinenTutkintonimike: Option[Boolean],
   näyttö: Option[Näyttö],
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
-  lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]]
+  lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]],
+  @KoodistoUri("ammatillisensuorituksenkorotus")
+  korotettu: Option[KelaKoodistokoodiviite],
 ) extends Osasuoritus {
   def withEmptyArvosana: KelaAmmatillinenOsasuoritus = copy(
     arviointi = arviointi.map(_.map(_.withEmptyArvosana)),
@@ -181,7 +184,8 @@ case class NäytönSuoritusaika(
 case class NäytönArviointi(
   @Deprecated("Ei palauteta Kela-API:ssa. Kenttä on näkyvissä skeemassa vain teknisistä syistä.")
   arvosana: Option[schema.Koodistokoodiviite],
-  hyväksytty: Option[Boolean]
+  hyväksytty: Option[Boolean],
+  päivä: LocalDate,
 ) {
   def withEmptyArvosana: NäytönArviointi = copy(
     arvosana = None,
@@ -235,7 +239,12 @@ case class Koulutussopimusjakso(
   loppu: Option[LocalDate],
   työssäoppimispaikka: Option[schema.LocalizedString],
   paikkakunta: KelaKoodistokoodiviite,
-  maa: KelaKoodistokoodiviite
+  maa: KelaKoodistokoodiviite,
+  @Description("Työssäoppimispaikan Y-tunnus")
+  @RegularExpression("^\\d{7}-\\d$")
+  @Example("1234567-8")
+  @Title("Työssäoppimispaikan Y-tunnus")
+  työssäoppimispaikanYTunnus: Option[String],
 )
 
 case class Järjestämismuoto (

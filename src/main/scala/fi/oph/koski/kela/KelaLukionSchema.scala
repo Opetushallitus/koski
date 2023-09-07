@@ -17,7 +17,7 @@ case class KelaLukionOpiskeluoikeus(
   koulutustoimija: Option[Koulutustoimija],
   sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus],
   arvioituPäättymispäivä: Option[LocalDate],
-  tila: KelaOpiskeluoikeudenTila,
+  tila: KelaOpiskeluoikeudenTilaRahoitustiedoilla,
   suoritukset: List[KelaLukionPäätasonSuoritus],
   lisätiedot: Option[KelaLukionOpiskeluoikeudenLisätiedot],
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.lukiokoulutus.koodiarvo)
