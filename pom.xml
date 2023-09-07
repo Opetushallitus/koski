@@ -18,7 +18,7 @@
     <http4s.version>0.23.13</http4s.version>
     <json4s.version>4.0.6</json4s.version>
     <awssdk.version>2.20.109</awssdk.version>
-    <jetty.version>9.4.51.v20230217</jetty.version>
+    <jetty.version>9.4.52.v20230823</jetty.version>
     <prometheus.client.version>0.16.0</prometheus.client.version>
     <scoverage.plugin.version>1.1.1</scoverage.plugin.version>
     <log4j.version>2.20.0</log4j.version>
