@@ -77,7 +77,8 @@ const TunnisteEditor = ({ model }) => {
     [
       'aikuistenperusopetuksenoppimaara',
       'aikuistenperusopetuksenoppimaaranalkuvaihe',
-      'ebtutkinto'
+      'ebtutkinto',
+      'vstlukutaitokoulutus'
     ].includes(tyyppi) ||
     model.value.classes.includes('lukionoppiaineidenoppimaarat2019')
   const tutkinnonNimiModel = tutkinnonNimi(model)
