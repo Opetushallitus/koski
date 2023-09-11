@@ -51,15 +51,6 @@
     <packageUrl regex="true">^pkg:npm/lodash@.*$</packageUrl>
     <vulnerabilityName>CVE-2021-23337</vulnerabilityName>
   </suppress>
-  <suppress until="2023-09-01Z">
-    <notes>
-      <![CDATA[ file name: aws-java-sdk-secretsmanager-1.12.148.jar]]> Dependency of
-      com.amazonaws.secretsmanager:aws-secretsmanager-jdbc, which most probably is not affected by
-      the vulnerability
-    </notes>
-    <packageUrl regex="true">^pkg:maven/com\.amazonaws/aws\-java\-sdk\-secretsmanager@.*$</packageUrl>
-    <cve>CVE-2022-31159</cve>
-  </suppress>
   <suppress>
     <notes>Suppress a false positive in the scalaz-core dependency.</notes>
     <packageUrl regex="true">^pkg:maven/org\.scalaz/scalaz\-core_2\.12@.*$</packageUrl>
