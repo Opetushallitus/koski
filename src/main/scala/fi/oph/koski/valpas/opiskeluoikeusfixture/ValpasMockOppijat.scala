@@ -61,11 +61,11 @@ object ValpasMockOppijat {
   val ilmoituksenLisätiedotPoistettu = valpasOppijat.oppijaSyntymäaikaHetusta("Ilmoituksen-lisätiedot–poistettu", "Valpas", "190505A3019", kotikunta = Some("091"))
   val lukiostaValmistunutOpiskelija = valpasOppijat.oppijaSyntymäaikaHetusta("Lukio-opiskelija-valmistunut", "Valpas", "271105A835H", kotikunta = Some("091"))
   val ammattikouluOpiskelija = valpasOppijat.oppijaSyntymäaikaHetusta("Amis-opiskelija", "Valpas", "231005A2431", kotikunta = Some("091"))
-  val kaksoistutkinnostaValmistunutOpiskelija = valpasOppijat.oppijaSyntymäaikaHetusta("Kaksois-tutkinnosta-valmistunut", "Valpas", "260905A7672", kotikunta = Some("091"))
+  val kolmoistutkinnostaValmistunutOpiskelija = valpasOppijat.oppijaSyntymäaikaHetusta("Kolmois-tutkinnosta-valmistunut", "Valpas", "260905A7672", kotikunta = Some("091"))
   val nivelvaiheestaValmistunutOpiskelija = valpasOppijat.oppijaSyntymäaikaHetusta("Nivelvaiheesta-valmistunut", "Valpas", "201005A022Y", kotikunta = Some("091"))
   val oppivelvollisuusKeskeytetty = valpasOppijat.oppijaSyntymäaikaHetusta("Oppivelvollisuus-keskeytetty-määräajaksi", "Valpas", "181005A1560", kotikunta = Some("091"))
   val oppivelvollisuusKeskeytettyToistaiseksi = valpasOppijat.oppijaSyntymäaikaHetusta("Oppivelvollisuus-keskeytetty-toistaiseksi", "Valpas", "150905A1823", kotikunta = Some("091"))
-  val eiOppivelvollisuudenSuorittamiseenKelpaaviaOpiskeluoikeuksia = valpasOppijat.oppijaSyntymäaikaHetusta("Ei-oppivelvollisuuden-suorittamiseen-kelpaavia-opiskeluoikeuksia", "Valpas", "061005A671V", kotikunta = Some("624"))
+  val eiOppivelvollisuudenSuorittamiseenYksinäänKelpaaviaOpiskeluoikeuksia = valpasOppijat.oppijaSyntymäaikaHetusta("Ei-oppivelvollisuuden-suorittamiseen-yksinään-kelpaavia-opiskeluoikeuksia", "Valpas", "061005A671V", kotikunta = Some("624"))
   val hetuton = valpasOppijat.oppija("Hetuton", "Valpas", "", syntymäaika = Some(LocalDate.of(2005, 1, 1)), kotikunta = Some("091"))
   val oppivelvollinenJollaHetu = valpasOppijat.oppijaSyntymäaikaHetusta("Oppivelvollinen-hetullinen", "Valpas", "030105A7507", kotikunta = Some("091"))
   val oppivelvollinenJollaHetuHetutonSlave = valpasOppijat.duplicate(oppivelvollinenJollaHetu.copy(hetu = None))
@@ -181,6 +181,7 @@ object ValpasMockOppijat {
   val eshS4JälkeenS5Aloittanut = valpasOppijat.oppijaSyntymäaikaHetusta("ESH-s4-jälkeen-s5-aloittanut", "Valpas", "200305A594S", kotikunta = Some("091"))
   val eshS5JälkeenLukiossaAloittanut = valpasOppijat.oppijaSyntymäaikaHetusta("ESH-s5-jälkeen-lukiossa-aloittanut", "Valpas", "271105A101U", kotikunta = Some("091"))
   val eshNurseryssä = valpasOppijat.oppijaSyntymäaikaHetusta("ESH-nurseryssä", "Valpas", hetu="070614A452J", kotikunta = Some("091"))
+  val lukionAineOpinnotJaAmmatillisia = valpasOppijat.oppijaSyntymäaikaHetusta("Lukion-aineopinnot-ja-ammatillisia", "Valpas", "121005A797T", kotikunta = Some("624"))
 
   // Kutsumanimi ja yhteystiedot haetaan oppijanumerorekisteristä Valpas-käyttäjälle, tallennetaan siksi käyttäjä myös "oppijana" mockeihin
   val käyttäjäValpasJklNormaalikoulu = valpasOppijat.oppija(

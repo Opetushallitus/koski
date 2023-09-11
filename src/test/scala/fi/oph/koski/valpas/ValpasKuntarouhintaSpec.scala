@@ -41,7 +41,7 @@ object ValpasKuntarouhintaSpec {
       kuntailmoitusPvm = None,
     ),
     RouhintaExpectedData(
-      oppija = ValpasMockOppijat.eiOppivelvollisuudenSuorittamiseenKelpaaviaOpiskeluoikeuksia,
+      oppija = ValpasMockOppijat.eiOppivelvollisuudenSuorittamiseenYksinäänKelpaaviaOpiskeluoikeuksia,
       ooPäättymispäivä = t.get("rouhinta_ei_opiskeluoikeutta"),
       ooViimeisinTila = None,
       ooKoulutusmuoto = None,

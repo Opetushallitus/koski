@@ -311,10 +311,10 @@ describe("Oppijahaku", () => {
 
   it("Maksuttomuus: Haku löytää oppijan, vaikka hänellä ei ole oppivelvollisuuden suorittamiseen kelpaavia opintoja", async () => {
     await hakuLogin("valpas-maksuttomuus-hki")
-    await fillQueryField("061005A671V", "maksuttomuusoppijasearch") // Ei-oppivelvollisuuden-suorittamiseen-kelpaavia-opiskeluoikeuksia Valpas
+    await fillQueryField("061005A671V", "maksuttomuusoppijasearch") // Ei-oppivelvollisuuden-suorittamiseen-yksinään-kelpaavia-opiskeluoikeuksia Valpas
     await submit("maksuttomuusoppijasearch")
     await expectResultToBe(
-      "Löytyi: Ei-oppivelvollisuuden-suorittamiseen-kelpaavia-opiskeluoikeuksia Valpas (061005A671V)",
+      "Löytyi: Ei-oppivelvollisuuden-suorittamiseen-yksinään-kelpaavia-opiskeluoikeuksia Valpas (061005A671V)",
       oppijaPath.href("/virkailija", {
         oppijaOid: "1.2.246.562.24.00000000058",
         prev: maksuttomuusPath.href(),
@@ -391,7 +391,7 @@ describe("Oppijahaku", () => {
     await fillQueryField("061005A671V") // Ei-oppivelvollisuuden-suorittamiseen-kelpaavia-opiskeluoikeuksia Valpas
     await submit()
     await expectResultToBe(
-      "Löytyi: Ei-oppivelvollisuuden-suorittamiseen-kelpaavia-opiskeluoikeuksia Valpas (061005A671V)",
+      "Löytyi: Ei-oppivelvollisuuden-suorittamiseen-yksinään-kelpaavia-opiskeluoikeuksia Valpas (061005A671V)",
       oppijaPath.href("/virkailija", {
         oppijaOid: "1.2.246.562.24.00000000058",
         prev: kunnanHetuhakuPath.href(),

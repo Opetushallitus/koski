@@ -28,7 +28,7 @@ class ValpasOppijalistatService(
   : Either[HttpStatus, Seq[ValpasOppijaLaajatTiedot]] = {
     accessResolver.assertAccessToOrg(rooli, oppilaitosOid)
       .map(_ => opiskeluoikeusDbService.getOppijatByOppilaitos(oppilaitosOid, hakeutumisvalvontaTieto))
-      .flatMap(results => HttpStatus.foldEithers(results.map(oppijaLaajatTiedotService.asValpasOppijaLaajatTiedot)))
+      .flatMap(results => HttpStatus.foldEithers(results.map(oppijaLaajatTiedotService.asValpasOppijaLaajatTiedot())))
       .map(accessResolver.filterByOppijaAccess(rooli))
   }
 
@@ -41,7 +41,7 @@ class ValpasOppijalistatService(
     accessResolver.assertAccessToOrg(ValpasRooli.OPPILAITOS_HAKEUTUMINEN, oppilaitosOid)
       .map(_ => opiskeluoikeusDbService.getOppijatByOppilaitos(oppilaitosOid, HakeutumisvalvontaTieto.Kaikki))
       .map(_.filter(oppijaRow => oppijaOids.contains(oppijaRow.oppijaOid)))
-      .flatMap(results => HttpStatus.foldEithers(results.map(oppijaLaajatTiedotService.asValpasOppijaLaajatTiedot)))
+      .flatMap(results => HttpStatus.foldEithers(results.map(oppijaLaajatTiedotService.asValpasOppijaLaajatTiedot())))
       .map(accessResolver.filterByOppijaAccess(ValpasRooli.OPPILAITOS_HAKEUTUMINEN))
       .map(hakukoosteService.fetchHautYhteystiedoilla(errorClue, oppijaOids))
       .flatMap(oppijat => HttpStatus.foldEithers(oppijat.map(oppijaLaajatTiedotService.withVirallisetYhteystiedot)))
@@ -56,7 +56,7 @@ class ValpasOppijalistatService(
         val oppijat = opiskeluoikeusDbService.getOppijat(oppijaOids, rajaaOVKelpoisiinOpiskeluoikeuksiin = false, haeMyösOppivelvollisuudestaVapautetut = false)
 
         rouhintaTimed("getOppijalista:asValpasOppijaLaajatTiedot", oppijat.size) {
-          oppijat.map(oppijaLaajatTiedotService.asValpasOppijaLaajatTiedot)
+          oppijat.map(oppijaLaajatTiedotService.asValpasOppijaLaajatTiedot())
         }
       })
         .map(asEmptyOppijaHakutilanteillaLaajatTiedot) // Huom! Ei haeta hakutietoja, halutaan vain vaihtaa tyyppi fetchOppivelvollisuudenKeskeytykset-kutsua varten

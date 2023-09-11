@@ -1364,6 +1364,16 @@ object ValpasOppijaTestData {
         ),
       ),
     ),
+    (
+      ValpasMockOppijat.lukionAineOpinnotJaAmmatillisia,
+      List(ExpectedData(
+        ValpasOpiskeluoikeusExampleData.ammattikouluOpiskeluoikeus,
+        onHakeutumisValvottavaOpiskeluoikeus = false,
+        onHakeutumisvalvovaOppilaitos = false,
+        onSuorittamisvalvovaOppilaitos = true,
+        perusopetuksenJälkeinenTiedot = Some(ExpectedDataPerusopetuksenJälkeinenTiedot("voimassa", "lasna")),
+      ))
+    ),
 
   ).sortBy(item => (item._1.sukunimi, item._1.etunimet))
 

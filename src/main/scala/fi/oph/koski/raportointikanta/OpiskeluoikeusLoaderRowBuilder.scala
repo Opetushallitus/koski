@@ -169,6 +169,11 @@ object OpiskeluoikeusLoaderRowBuilder extends Logging {
         } => true
       case "esiopetus" => true
       case "perusopetukseenvalmistavaopetus" => true
+      case "lukiokoulutus"
+        if o.asInstanceOf[LukionOpiskeluoikeus].suoritukset.exists {
+          case _: LukionOppiaineidenOppimäärienSuoritus2019 | _: LukionOppiaineenOppimääränSuoritus2015 => true
+          case _ => false
+        } => true
       case _ => MaksuttomuusValidation.oppivelvollisuudenSuorittamiseenKelpaavaMuuKuinPeruskoulunOpiskeluoikeus(o)
     }
 

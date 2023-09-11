@@ -102,6 +102,10 @@ const pelkkäESHNurseryPath = oppijaPath.href("/virkailija", {
   oppijaOid: "1.2.246.562.24.00000000173",
 })
 
+const lukionAineopintojaJaAmmatillisiaPath = oppijaPath.href("/virkailija", {
+  oppijaOid: "1.2.246.562.24.00000000174",
+})
+
 const mainHeadingEquals = (expected: string) =>
   textEventuallyEquals("h1.heading--primary", expected)
 const secondaryHeadingEquals = (expected: string) =>
@@ -139,7 +143,7 @@ describe("Oppijakohtainen näkymä 2/2", () => {
       "valpas-maksuttomuus-hki"
     )
     await mainHeadingEquals(
-      "Ei-oppivelvollisuuden-suorittamiseen-kelpaavia-opiskeluoikeuksia Valpas (061005A671V)"
+      "Ei-oppivelvollisuuden-suorittamiseen-yksinään-kelpaavia-opiskeluoikeuksia Valpas (061005A671V)"
     )
   })
 
@@ -664,6 +668,33 @@ describe("Oppijakohtainen näkymä 2/2", () => {
           alkamispäivä: "1.8.2021",
           ryhmä: "N2A",
           maksuttomuus: ["Ei"],
+        })
+      )
+    )
+  })
+
+  it("Näyttää Lukion aineopintoja ja ammattiopintoja opiskelevan oppijan tiedot, mukaanlukien aineopinnot", async () => {
+    await loginAs(lukionAineopintojaJaAmmatillisiaPath, "valpas-monta", true)
+    await mainHeadingEquals(
+      "Lukion-aineopinnot-ja-ammatillisia Valpas (121005A797T)"
+    )
+    await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000174")
+    await opiskeluhistoriaEquals(
+      merge(
+        historiaOpintoOikeus({
+          otsikko: "Lukion aineopinnot 2021 –",
+          tila: "Läsnä",
+          toimipiste: "Jyväskylän normaalikoulu",
+          alkamispäivä: "15.8.2021",
+          maksuttomuus: ["Ei"],
+        }),
+        historiaOpintoOikeus({
+          otsikko: "Ammatillinen tutkinto 2012 –",
+          tila: "Läsnä",
+          maksuttomuus: ["Ei"],
+          toimipiste:
+            "Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka",
+          alkamispäivä: "1.9.2012",
         })
       )
     )
