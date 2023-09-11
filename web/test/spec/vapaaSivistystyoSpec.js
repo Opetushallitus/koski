@@ -177,13 +177,13 @@ describe('VST', function () {
       addOppija.enterValidDataVSTLukutaito(),
       addOppija.submitAndExpectSuccess(
         'Tyhjä, Tero (230872-7258)',
-        'Lukutaitokoulutus oppivelvollisille'
+        'Vapaan sivistystyön lukutaitokoulutus'
       )
     )
 
     it('toimii', function () {
       expect(opinnot.getTutkinto()).to.equal(
-        'Lukutaitokoulutus oppivelvollisille'
+        'Vapaan sivistystyön lukutaitokoulutus'
       )
       expect(opinnot.getOppilaitos()).to.equal('Varsinais-Suomen kansanopisto')
       expect(editor.propertyBySelector('.diaarinumero').getValue()).to.equal(
@@ -403,9 +403,7 @@ describe('VST', function () {
             expect(osasuoritukset.length).to.equal(2)
           })
 
-          after(
-            editor.cancelChanges
-          )
+          after(editor.cancelChanges)
         })
       })
 
@@ -425,9 +423,7 @@ describe('VST', function () {
           )
         })
 
-        after(
-          editor.saveChangesAndWaitForSuccess
-        )
+        after(editor.saveChangesAndWaitForSuccess)
       })
     })
   })
@@ -618,9 +614,7 @@ describe('VST', function () {
             )
           })
 
-          after(
-            editor.saveChangesAndWaitForSuccess
-          )
+          after(editor.saveChangesAndWaitForSuccess)
         })
       })
     })

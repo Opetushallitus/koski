@@ -71,7 +71,7 @@ describe('Suostumuksen peruutus', function () {
         korhopankki.login('231158-467R'),
         wait.until(omattiedot.isVisible),
         opinnot.valitseOmatTiedotOpiskeluoikeus(
-          'Lukutaitokoulutus oppivelvollisille (2021—, läsnä)'
+          'Vapaan sivistystyön lukutaitokoulutus (2021—, läsnä)'
         )
       )
 
