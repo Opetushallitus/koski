@@ -366,12 +366,26 @@ object Lukio2019ExampleData {
 
   def laajuus(arvo: Double): LaajuusOpintopisteissä = LaajuusOpintopisteissä(arvo = arvo, yksikkö = laajuusOpintopisteissä)
 
-  def omanÄidinkielenOpinnotSaame(): Some[OmanÄidinkielenOpinnotLaajuusOpintopisteinä] = Some(OmanÄidinkielenOpinnotLaajuusOpintopisteinä(
+  def omanÄidinkielenOpinnotSaame(): Some[LukionOmanÄidinkielenOpinnot] = Some(LukionOmanÄidinkielenOpinnot(
     arvosana = Koodistokoodiviite(koodiarvo = "8", koodistoUri = "arviointiasteikkoyleissivistava"),
     arviointipäivä = None,
     kieli = Kielivalikoima.saame,
-    laajuus = LaajuusOpintopisteissä(3)
+    laajuus = LaajuusOpintopisteissä(3),
+    osasuoritukset = omanÄidinkielenOpintojenOsasuoritukset(Koodistokoodiviite("SE", "kieli"), List("OÄI1", "OÄI2", "OÄI3"))
   ))
+
+  def omanÄidinkielenOpintojenOsasuoritukset(kieli: Koodistokoodiviite, tunnisteet: List[String]): Option[List[LukionOmanÄidinkielenOpintojenOsasuoritus]] =
+    Some(tunnisteet.map(tunniste => LukionOmanÄidinkielenOpintojenOsasuoritus(
+      koulutusmoduuli = omanÄidinkielenOpintoKoulutusmoduuli(tunniste),
+      tyyppi = Koodistokoodiviite(koodiarvo = "lukionvaltakunnallinenmoduuli", koodistoUri = "suorituksentyyppi"),
+      suorituskieli = Some(kieli),
+      arviointi = Some(List(LukionOmanÄidinkielenOpinnonOsasuorituksenArviointi(Koodistokoodiviite("O", "arviointiasteikkoyleissivistava"), LocalDate.of(2019, 8, 30))))
+    )))
+
+  def omanÄidinkielenOpintoKoulutusmoduuli(tunniste: String): LukionOmanÄidinkielenOpinto = LukionOmanÄidinkielenOpinto(
+    tunniste = Koodistokoodiviite(koodiarvo = tunniste, koodistoUri = "moduulikoodistolops2021"),
+    laajuus = LaajuusOpintopisteissä(1),
+  )
 
   def puhviKoe(): Some[PuhviKoe2019] = Some(PuhviKoe2019(
     arvosana = Koodistokoodiviite(koodiarvo = "7", koodistoUri = "arviointiasteikkoyleissivistava"),

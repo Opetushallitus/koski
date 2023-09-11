@@ -12,7 +12,7 @@ case class PreIBSuoritus2019(
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   suorituskieli: Koodistokoodiviite,
   @Title("Lukion oppimäärää täydentävät oman äidinkielen opinnot")
-  omanÄidinkielenOpinnot: Option[OmanÄidinkielenOpinnotLaajuusOpintopisteinä] = None,
+  omanÄidinkielenOpinnot: Option[LukionOmanÄidinkielenOpinnot] = None,
   puhviKoe: Option[PuhviKoe2019] = None,
   suullisenKielitaidonKokeet: Option[List[SuullisenKielitaidonKoe2019]] = None,
   @Title("Oppiaineet")
