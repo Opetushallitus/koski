@@ -1,8 +1,14 @@
+## xx.09.2023
+
+- Lisätty uuden opetussuunnitelman mukaisen lukion oppimäärän oman äidinkielen opetuksen alle siirrettävät osasuoritukset.
+
 ## 25.08.2023
+
 - Helsingin Eurooppalaisen koulun siirtoon muutos:
   - Vuosiluokalle S5 sallitaan maksuttomuustiedon lisääminen
 
 ## 21.06.2023
+
 - TUVA-opiskeluoikeuden siirtoon muutoksia 1.8.2023 alkaen:
   - TUVA-opiskeluoikeuden päätason suorituksen laajuuteen lasketaan jatkossa vain Hyväksytty-arvosanalla arvioidut osasuoritukset.
   - Vastaavasti osasuorituksen laajuuteen lasketaan vain Hyväksytty-arvosanalla arvioidut aliosasuoritukset.
