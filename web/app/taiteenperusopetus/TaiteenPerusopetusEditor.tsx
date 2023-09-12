@@ -171,46 +171,49 @@ export const TaiteenPerusopetusEditor: React.FC<
   const suorituksetVahvistettu =
     form.state.suoritukset.filter((s) => Boolean(s.vahvistus)).length >= 2
 
-  const [osasuorituksetOpenState, setOsasuorituksetOpenState] =
-    useState<OsasuorituksetExpandedState>([])
+  const rootLevel = 0
 
-  useEffect(() => {
+  const [osasuorituksetOpenState, setOsasuorituksetOpenState] =
+    useState<OsasuorituksetExpandedState>({})
+
+  const rootLevelOsasuoritusOpen = Object.entries(osasuorituksetOpenState)
+    .filter(([k, _v]) => k.indexOf('level_0_') === 0)
+    .some(([_key, val]) => val === true)
+
+  /**
+   * Avaa kaikki ylimmän tason osasuoritukset
+   */
+  const openAllOsasuoritukset = useCallback(() => {
     setOsasuorituksetOpenState((oldState) => {
-      return constructOsasuorituksetOpenState(
-        oldState,
-        0,
+      const expandedState = constructOsasuorituksetOpenState(
+        {},
+        rootLevel,
         päätasonSuoritus.index,
         päätasonSuoritus.suoritus.osasuoritukset || []
       )
+      const newExpandedState = Object.entries(expandedState).reduce(
+        (prev, [key, _val]) => {
+          return { ...prev, [key]: true }
+        },
+        expandedState
+      )
+      return newExpandedState
     })
   }, [päätasonSuoritus.index, päätasonSuoritus.suoritus.osasuoritukset])
 
-  const allOsasuorituksetOpen = osasuorituksetOpenState.every(
-    (val) => val.expanded === true
-  )
-
-  const isAnyModalOpen =
-    Object.values(osasuorituksetOpenState).some(
-      (val) => val.expanded === true
-    ) || allOsasuorituksetOpen
-
-  const toggleOsasuorituksetOpenState = useCallback(() => {
-    setOsasuorituksetOpenState((oldState) =>
-      oldState.map((item) => ({ ...item, expanded: !isAnyModalOpen }), oldState)
-    )
-  }, [isAnyModalOpen])
+  /**
+   * Sulkee kaikki osasuoritukset
+   */
+  const closeAllOsasuoritukset = useCallback(() => {
+    setOsasuorituksetOpenState({})
+  }, [])
 
   const setOsasuorituksetStateHandler = useCallback(
     (key: string, expanded: boolean) => {
-      setOsasuorituksetOpenState((oldState) =>
-        oldState.map((s) => {
-          if (s.key === key) {
-            return { ...s, expanded }
-          } else {
-            return s
-          }
-        })
-      )
+      setOsasuorituksetOpenState((oldState) => ({
+        ...oldState,
+        [key]: expanded
+      }))
     },
     []
   )
@@ -306,18 +309,23 @@ export const TaiteenPerusopetusEditor: React.FC<
                 data-testid={`suoritukset.${päätasonSuoritus.index}.expand`}
                 onClick={(e) => {
                   e.preventDefault()
-                  toggleOsasuorituksetOpenState()
+                  if (rootLevelOsasuoritusOpen) {
+                    closeAllOsasuoritukset()
+                  } else {
+                    openAllOsasuoritukset()
+                  }
                 }}
               >
-                {isAnyModalOpen ? t('Sulje kaikki') : t('Avaa kaikki')}
+                {rootLevelOsasuoritusOpen
+                  ? t('Sulje kaikki')
+                  : t('Avaa kaikki')}
               </RaisedButton>
               <Spacer />
               <OsasuoritusTable
+                editMode={form.editMode}
                 level={0}
                 openState={osasuorituksetOpenState}
-                toggleModal={toggleOsasuorituksetOpenState}
                 setOsasuoritusOpen={setOsasuorituksetStateHandler}
-                editMode={form.editMode}
                 rows={päätasonSuoritus.suoritus.osasuoritukset.map(
                   (_, osasuoritusIndex) =>
                     osasuoritusToTableRow(
