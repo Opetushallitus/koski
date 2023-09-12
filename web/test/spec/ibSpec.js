@@ -630,7 +630,9 @@ describe('IB', function () {
       })
 
       it('näyttää oppiaineiden ja kurssien arvosanat', function () {
-        expect(extractAsText(S('.osasuoritukset'))).to.equal(
+        expect(
+          extractAsText(S('.preibsuoritus2019 > .osasuoritukset'))
+        ).to.equal(
           'Oppiaine Arvioitu (opintopistettä) Hyväksytysti arvioitu (opintopistettä) Arvosana\n' +
             'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus, valinnainen\n' +
             'ÄI1\n' +

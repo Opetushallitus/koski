@@ -588,6 +588,7 @@ case class LukionOmanÄidinkielenOpintojenOsasuoritus(
   suorituskieli: Option[Koodistokoodiviite],
   arviointi: Option[List[LukionOmanÄidinkielenOpinnonOsasuorituksenArviointi]] = None,
   @ComplexObject
+  @Hidden
   tunnustettu: Option[OsaamisenTunnustaminen] = None,
 ) extends LukionModuulinSuoritus2019 {
   def description: LocalizedString = koulutusmoduuli.nimi

@@ -71,7 +71,9 @@ describe('Lukiokoulutus2019', function () {
       })
 
       it('näyttää oppiaineiden ja kurssien arvosanat', function () {
-        expect(extractAsText(S('.osasuoritukset'))).to.equal(
+        expect(
+          extractAsText(S('.lukionoppimaaransuoritus2019 > .osasuoritukset'))
+        ).to.equal(
           'Oppiaine Arvioitu (opintopistettä) Hyväksytysti arvioitu (opintopistettä) Arvosana\n' +
             'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus\nÄI1\n8 ÄI2\n8 ÄI3\n8 6 6 9\n' +
             'Matematiikka, pitkä oppimäärä\nMAB2\n8 MAB3\n8 MAB4\n9 6 6 9\n' +
