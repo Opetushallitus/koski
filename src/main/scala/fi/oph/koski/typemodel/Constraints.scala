@@ -20,6 +20,9 @@ object Constraints {
             default = defaultOf(t).asInstanceOf[Option[JObject]],
             properties = t.properties.mapValues(value => buildConstraint(value, levelsLeft - 1)),
             `class` = t.fullClassName,
+            infoDescription = t.infoDescription.headOption,
+            infoLinkUrl = t.infoLinkUrl.headOption,
+            infoLinkTitle = t.infoLinkTitle.headOption,
           )
         case t: ClassRef =>
           allTypes.find(_.fullClassName == t.fullClassName)
@@ -48,6 +51,9 @@ object Constraints {
           OptionalConstraint(
             default = defaultOf(t),
             optional = buildConstraint(t.item, levelsLeft - 1),
+            infoDescription = t.infoDescription.headOption,
+            infoLinkUrl = t.infoLinkUrl.headOption,
+            infoLinkTitle = t.infoLinkTitle.headOption,
           )
         case t: ArrayType =>
           ArrayConstraint(
@@ -140,6 +146,9 @@ case class OptionalConstraint(
   optional: Constraint,
   @EnumValue("optional")
   `type`: String = "optional",
+  infoDescription: Option[String] = None,
+  infoLinkTitle: Option[String] = None,
+  infoLinkUrl: Option[String] = None,
 ) extends Constraint
 
 case class ArrayConstraint(
@@ -163,7 +172,10 @@ case class ObjectConstraint(
   `class`: String,
   properties: Map[String, Constraint],
   @EnumValue("object")
-  `type`: String = "object"
+  `type`: String = "object",
+  infoDescription: Option[String] = None,
+  infoLinkTitle: Option[String] = None,
+  infoLinkUrl: Option[String] = None,
 ) extends Constraint
 
 case class UnionConstraint(

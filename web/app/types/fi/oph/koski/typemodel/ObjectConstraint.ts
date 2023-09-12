@@ -7,21 +7,27 @@ import { Constraint } from './Constraint'
  */
 export type ObjectConstraint = {
   $class: 'fi.oph.koski.typemodel.ObjectConstraint'
-  default?: object
-  class: string
+  infoLinkTitle?: string
+  infoLinkUrl?: string
   properties: Record<string, Constraint>
+  default?: object
+  infoDescription?: string
+  class: string
   type: 'object'
 }
 
 export const ObjectConstraint = (o: {
-  default?: object
-  class: string
+  infoLinkTitle?: string
+  infoLinkUrl?: string
   properties?: Record<string, Constraint>
+  default?: object
+  infoDescription?: string
+  class: string
   type?: 'object'
 }): ObjectConstraint => ({
-  $class: 'fi.oph.koski.typemodel.ObjectConstraint',
   properties: {},
   type: 'object',
+  $class: 'fi.oph.koski.typemodel.ObjectConstraint',
   ...o
 })
 

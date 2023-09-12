@@ -1,7 +1,6 @@
 package fi.oph.koski.typemodel
 
 import fi.oph.koski.typemodel.ClassNameResolver.{nameToAbsolutePath, nameToRelativePath, safeFilename, safePath}
-import fi.oph.koski.typemodel.TsFileUpdater.targetPath
 import fi.oph.koski.util.JsStringInterpolation.{JsStringInterpolation, parseExpression}
 
 import java.nio.file.{Path, Paths}
@@ -108,7 +107,7 @@ object TypescriptTypes {
       case _: BooleanType => "boolean"
       case _: NumberType => "number"
 
-      case OptionalType(t) => s"${toDefinition(t, options)} | undefined"
+      case OptionalType(t, _, _, _) => s"${toDefinition(t, options)} | undefined"
       case ArrayType(t) => s"Array<${toDefinition(t, options)}>"
       case RecordType(t) => s"Record<string, ${toDefinition(t, options)}>"
       case t: ObjectType  => objectReference(t, options)
