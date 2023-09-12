@@ -3,9 +3,10 @@ import { expect, Page } from '@playwright/test'
 export class KoskiFixtures {
   constructor(private readonly page: Page) {}
 
-  async reset(reloadRaportointikanta = false) {
+  async reset(reloadRaportointikanta = false, reloadYTR = false) {
     const params = new URLSearchParams({
-      reloadRaportointikanta: reloadRaportointikanta ? 'true' : 'false'
+      reloadRaportointikanta: reloadRaportointikanta ? 'true' : 'false',
+      reloadYTR: reloadYTR ? 'true' : 'false'
     })
     const request = await this.page.request.post(
       `/koski/fixtures/reset?${params.toString()}`
