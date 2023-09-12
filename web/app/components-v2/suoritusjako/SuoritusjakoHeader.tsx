@@ -35,7 +35,7 @@ export const SuoritusjakoHeader: React.FC<SuoritusjakoHeaderProps> = (
       >
         {/* @ts-expect-error Text */}
         <Text
-          testId={`${props.testId ? props.testId : ''}__koneluettava-link`}
+          data-testid={`${props.testId ? props.testId : ''}__koneluettava-link`}
           name="Tiedot koneluettavassa muodossa"
         />
       </a>

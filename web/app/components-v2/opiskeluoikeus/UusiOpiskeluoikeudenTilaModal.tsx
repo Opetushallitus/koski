@@ -45,8 +45,6 @@ export type UusiOpiskeluoikeusjakso<T extends Opiskeluoikeusjakso> = {
 
 const KOODISTOURI_OPISKELUOIKEUDEN_TILA = 'koskiopiskeluoikeudentila' as const
 const KOODISTOURI_OPINTOJENRAHOITUS = 'opintojenrahoitus' as const
-const VST_JOTPA_KOULUTUS =
-  'fi.oph.koski.schema.VapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso' as const
 
 type TilaKoodistoUri = typeof KOODISTOURI_OPISKELUOIKEUDEN_TILA
 type OpintojenRahoitusUri = typeof KOODISTOURI_OPINTOJENRAHOITUS
@@ -63,7 +61,10 @@ const useInitialOpiskelujaksoForm = <T extends Opiskeluoikeusjakso>(
   opiskeluoikeusjaksoClass: ClassOf<T>
 ) =>
   useMemo<UusiOpiskeluoikeusjakso<T>>(() => {
-    if (opiskeluoikeusjaksoClass === VST_JOTPA_KOULUTUS) {
+    if (
+      opiskeluoikeusjaksoClass ===
+      VapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso.className
+    ) {
       // VST JOTPA erikoistapaus
       // TODO: Tarkista, onko tämä ok
       return {

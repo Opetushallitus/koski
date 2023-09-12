@@ -11,20 +11,29 @@ export type KoodistoSelectProps = CommonProps<{
   addNewText: string | LocalizedString
   onSelect: (tunniste: Koodistokoodiviite, isNew: boolean) => void
   onRemove?: (tunniste: Koodistokoodiviite) => void
+  filter?: (tunniste: Koodistokoodiviite) => boolean
 }>
 
 export const KoodistoSelect: React.FC<KoodistoSelectProps> = (props) => {
-  const k = useKoodisto(props.koodistoUri)
+  const koodisto = useKoodisto(props.koodistoUri)
+  const { filter } = props
   const options: OptionList<Koodistokoodiviite> = useMemo(
     () => [
-      ...(k || []).map((tunniste) => ({
-        key: tunniste.koodiviite.koodiarvo,
-        label: t(tunniste.koodiviite.nimi),
-        value: tunniste.koodiviite,
-        removable: true
-      }))
+      ...(koodisto || [])
+        .map((tunniste) => ({
+          key: tunniste.koodiviite.koodiarvo,
+          label: t(tunniste.koodiviite.nimi),
+          value: tunniste.koodiviite,
+          removable: true
+        }))
+        .filter((entry) => {
+          if (filter === undefined) {
+            return entry
+          }
+          return filter(entry.value)
+        })
     ],
-    [k]
+    [koodisto, filter]
   )
 
   const { onSelect } = props

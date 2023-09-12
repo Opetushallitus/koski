@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import { common, CommonProps, cx, testId } from '../CommonProps'
 import { FieldEditorProps } from '../forms/FormField'
 
@@ -20,15 +20,13 @@ export type RadioButtonKey = string
 export const RadioButtons = <T,>(
   props: RadioButtonProps<T>
 ): React.ReactElement | null => {
-  const name = useMemo(() => Math.random().toString(), [])
-
   return props.options ? (
     <ul {...common(props, ['RadioButtons'])}>
-      {props.options.map((opt) => {
-        const id = `${name}${opt.key}`
+      {props.options.map((opt, i) => {
+        const id = `RadioButton_${i}_${opt.key}`
         return (
           <li
-            key={Math.random()} // TODO: Tässä RadioButtonsin kanssa on nyt joku outo häiriö, eikä sen checked-tila vaihdu ilman tätä. Please PR.
+            key={id}
             className={cx(
               'RadioButtons__option',
               opt.disabled && 'RadioButtons__option--disabled'
@@ -37,7 +35,7 @@ export const RadioButtons = <T,>(
             <input
               id={id}
               type="radio"
-              name={name}
+              name={id}
               checked={opt.key === props.value}
               onChange={() => props.onChange(opt.value)}
               disabled={opt.disabled}

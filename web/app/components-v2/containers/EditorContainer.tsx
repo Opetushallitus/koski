@@ -30,6 +30,7 @@ import { NonEmptyArray } from 'fp-ts/lib/NonEmptyArray'
 import { ValidationError } from '../forms/validator'
 import { UusiOpiskeluoikeusjakso } from '../opiskeluoikeus/UusiOpiskeluoikeudenTilaModal'
 import { FlatButton } from '../controls/FlatButton'
+import { OrganisaatiohistoriaView } from '../opiskeluoikeus/OrganisaatiohistoriaView'
 
 export type EditorContainerProps<T extends Opiskeluoikeus> =
   CommonPropsWithChildren<{
@@ -65,6 +66,12 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
 
   const opiskeluoikeudenTilaPath = useMemo(
     () => props.form.root.prop('tila'),
+    [props.form]
+  )
+
+  const opiskeluoikeudenOrganisaatiohistoriaPath = useMemo(
+    // @ts-expect-error
+    () => props.form.root.prop('organisaatiohistoria').optional(),
     [props.form]
   )
 
@@ -153,27 +160,30 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
         testId="opiskeluoikeus.tila"
       />
       <Spacer />
-
-      {props.form.editMode && (
-        <FlatButton
-          onClick={(e) => {
-            e.preventDefault()
-            setLisatiedotOpen((prev) => !prev)
-          }}
-        >
-          {lisatiedotOpen
-            ? 'lisatiedot:sulje_lisatiedot'
-            : 'lisatiedot:nayta_lisatiedot'}
-        </FlatButton>
-      )}
-      {props.form.editMode && LisätiedotContainer && lisatiedotOpen && (
+      <FormField
+        form={props.form}
+        path={opiskeluoikeudenOrganisaatiohistoriaPath}
+        view={OrganisaatiohistoriaView}
+        testId="opiskeluoikeus.organisaatiohistoria"
+      />
+      <Spacer />
+      <FlatButton
+        onClick={(e) => {
+          e.preventDefault()
+          setLisatiedotOpen((prev) => !prev)
+        }}
+      >
+        {lisatiedotOpen
+          ? 'lisatiedot:sulje_lisatiedot'
+          : 'lisatiedot:nayta_lisatiedot'}
+      </FlatButton>
+      {LisätiedotContainer !== undefined && lisatiedotOpen && (
         <>
           <Spacer />
           <LisätiedotContainer form={props.form} />
           <Spacer />
         </>
       )}
-
       <h2>
         <Trans>{'Suoritukset'}</Trans>
       </h2>

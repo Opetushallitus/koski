@@ -6,10 +6,7 @@ import { useKoodisto } from '../../appstate/koodisto'
 import { t } from '../../i18n/i18n'
 import { LukutaitokoulutuksenArviointi } from '../../types/fi/oph/koski/schema/LukutaitokoulutuksenArviointi'
 import { koodiviiteId, KoodiviiteWithOptionalUri } from '../../util/koodisto'
-import {
-  viimeisinArviointi,
-  viimeisinLukutaitokoulutuksenArviointi
-} from '../../util/schema'
+import { viimeisinLukutaitokoulutuksenArviointi } from '../../util/schema'
 import { common, CommonProps, testId } from '../CommonProps'
 import {
   groupKoodistoToOptions,
@@ -18,33 +15,32 @@ import {
   SelectOption
 } from '../controls/Select'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
+import { VSTKehittyvänKielenTaitotasonArviointi } from '../../types/fi/oph/koski/schema/VSTKehittyvanKielenTaitotasonArviointi'
 
-type TaitotasoOf<T extends LukutaitokoulutuksenArviointi> = Exclude<
-  T['taitotaso'],
+type TaitotasoOf<T extends VSTKehittyvänKielenTaitotasonArviointi> = Exclude<
+  T['taso'],
   KoodiviiteWithOptionalUri
 >
 
-export type TaitotasoViewProps<T extends LukutaitokoulutuksenArviointi> =
-  CommonProps<FieldViewerProps<T[] | undefined, {}>>
+export type TaitotasoViewProps<
+  T extends VSTKehittyvänKielenTaitotasonArviointi
+> = CommonProps<FieldViewerProps<T | undefined, {}>>
 
-export const TaitotasoView = <T extends LukutaitokoulutuksenArviointi>(
+export const TaitotasoView = <T extends VSTKehittyvänKielenTaitotasonArviointi>(
   props: TaitotasoViewProps<T>
 ) => {
-  const arviointi =
-    props.value !== undefined &&
-    viimeisinLukutaitokoulutuksenArviointi(props.value)
-  console.log('arviointi', arviointi)
-  return arviointi ? (
+  return props.value !== undefined ? (
     <span {...common(props)} {...testId(props)}>
-      {t(arviointi.taitotaso.nimi)}
+      {t(props.value.taso.nimi)}
     </span>
   ) : null
 }
 
-export type TaitotasoEditProps<T extends LukutaitokoulutuksenArviointi> =
-  CommonProps<FieldEditorProps<T[] | undefined, {}>>
+export type TaitotasoEditProps<
+  T extends VSTKehittyvänKielenTaitotasonArviointi
+> = CommonProps<FieldEditorProps<T | undefined, {}>>
 
-export const TaitotasoEdit = <T extends LukutaitokoulutuksenArviointi>(
+export const TaitotasoEdit = <T extends VSTKehittyvänKielenTaitotasonArviointi>(
   props: TaitotasoEditProps<T>
 ) => {
   const koodisto = useKoodisto('arviointiasteikkokehittyvankielitaidontasot')
@@ -53,28 +49,25 @@ export const TaitotasoEdit = <T extends LukutaitokoulutuksenArviointi>(
     [koodisto]
   )
 
-  const initialArviointi =
-    props.initialValue &&
-    viimeisinLukutaitokoulutuksenArviointi(props.initialValue)
+  const initialTaitotaso = props.initialValue
   const initialValue =
-    initialArviointi?.taitotaso && koodiviiteId(initialArviointi.taitotaso)
-  const arviointi =
-    props.value && viimeisinLukutaitokoulutuksenArviointi(props.value)
+    initialTaitotaso !== undefined
+      ? koodiviiteId(initialTaitotaso.taso)
+      : undefined
+  const taitotaso = props.value && props.value
   const selectedValue =
-    arviointi?.taitotaso && koodiviiteId(arviointi?.taitotaso)
+    taitotaso !== undefined ? koodiviiteId(taitotaso.taso) : undefined
 
   const onChange = (option?: SelectOption<TaitotasoOf<T>>) => {
-    // TODO: Päivitä taitotaso viimeisimmästä arvioinnista
-    console.log('option', option)
-    /*
+    console.log(option?.value)
     props.onChange(
-      option?.value &&
-        updateLukutaitokoulutuksenArvioinnit(
-          props.createTaitotaso(option.value),
-          props.initialValue || []
-        )
+      // TODO: Tarkasta, voiko tyypityksen korjata
+      // @ts-expect-error
+      VSTKehittyvänKielenTaitotasonArviointi({
+        // @ts-expect-error
+        taso: option?.value
+      })
     )
-    */
   }
 
   return (

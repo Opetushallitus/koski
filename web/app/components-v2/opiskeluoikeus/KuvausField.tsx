@@ -4,23 +4,19 @@ import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString
 import { common, CommonProps } from '../CommonProps'
 import { FieldEditorProps } from '../forms/FormField'
 
-export type TodistuksellaNäkyvätLisätiedotViewProps = CommonProps<
-  FieldEditorProps<LocalizedString, {}>
->
+export type KuvausViewProps = CommonProps<FieldEditorProps<LocalizedString, {}>>
 
-export const TodistuksellaNäkyvätLisätiedotView: React.FC<
-  TodistuksellaNäkyvätLisätiedotViewProps
-> = ({ value }) => {
+export const KuvausView: React.FC<KuvausViewProps> = ({ value }) => {
   return <span>{isFinnish(value) ? value?.fi : value?.en || '-'}</span>
 }
 
-export type TodistuksellaNäkyvätLisätiedotEditProps = CommonProps<
-  FieldEditorProps<LocalizedString, {}>
->
+export type KuvausEditProps = CommonProps<FieldEditorProps<LocalizedString, {}>>
 
-export const TodistuksellaNäkyvätLisätiedotEdit: React.FC<
-  TodistuksellaNäkyvätLisätiedotEditProps
-> = ({ onChange, initialValue, ...rest }) => {
+export const KuvausEdit: React.FC<KuvausEditProps> = ({
+  onChange,
+  initialValue,
+  ...rest
+}) => {
   const [value, setValue] = useState(initialValue)
 
   const onChangeCB = useCallback<React.ChangeEventHandler<HTMLTextAreaElement>>(
@@ -35,7 +31,9 @@ export const TodistuksellaNäkyvätLisätiedotEdit: React.FC<
 
   return (
     <textarea
-      {...common({ ...rest }, ['TodistuksellaNäkyvätLisätiedotEdit'])}
+      {...common({ ...rest }, ['KuvausEdit'])}
+      rows={5}
+      cols={40}
       value={isFinnish(value) ? value?.fi : value?.en}
       onChange={onChangeCB}
     />

@@ -214,7 +214,7 @@ export const FormField = <
   if (form.editMode) {
     if (Edit) {
       return (
-        // @ts-ignore - TODO tyyppicastaus?
+        // @ts-expect-error - TODO: tyyppicastaus?
         <Edit
           {...editProps}
           initialValue={initialValue}
@@ -230,7 +230,7 @@ export const FormField = <
   }
 
   return (
-    // @ts-ignore - TODO tyyppicastaus?
+    // @ts-expect-error - TODO: tyyppicastaus?
     <View {...viewProps} value={value} testId={testId && `${testId}.value`} />
   )
 }
