@@ -14,11 +14,7 @@ interface VSTLisatiedotProps {
   form: FormModel<VapaanSivistystyönOpiskeluoikeus>
 }
 
-// TODO: Luo riveistä omat komponenttinsa
 export const VSTLisatiedot: React.FC<VSTLisatiedotProps> = ({ form }) => {
-  if (!form.editMode) {
-    throw new Error('Oops')
-  }
   const lisatiedotPath = form.root.prop('lisätiedot')
   const lisätiedot = getValue(lisatiedotPath)(form.state)
 
@@ -79,22 +75,29 @@ export const VSTLisatiedot: React.FC<VSTLisatiedotProps> = ({ form }) => {
                   className="vst-lisatiedot__koulutuksen-maksuttomuus__maksuttomuus-row"
                 >
                   <div>
-                    <DateEdit
-                      onChange={(val) => {
-                        form.updateAt(maksuttomuusPath.at(i), (_maksuttomuus) =>
-                          Maksuttomuus({
-                            alku: val || '',
-                            maksuton: m.maksuton
-                          })
-                        )
-                      }}
-                      value={m.alku}
-                    />
+                    {form.editMode ? (
+                      <DateEdit
+                        onChange={(val) => {
+                          form.updateAt(
+                            maksuttomuusPath.at(i),
+                            (_maksuttomuus) =>
+                              Maksuttomuus({
+                                alku: val || '',
+                                maksuton: m.maksuton
+                              })
+                          )
+                        }}
+                        value={m.alku}
+                      />
+                    ) : (
+                      <>{m.alku}</>
+                    )}
                   </div>
                   <div className="vst-lisatiedot__koulutuksen-maksuttomuus__maksuttomuus-row-checkbox-container">
                     <label htmlFor={`maksuton-${i}`}>{t('Maksuton')}</label>
                     <input
                       type="checkbox"
+                      disabled={!form.editMode}
                       id={`maksuton-${i}`}
                       checked={m.maksuton === true}
                       onChange={(_e) => {
@@ -114,34 +117,38 @@ export const VSTLisatiedot: React.FC<VSTLisatiedotProps> = ({ form }) => {
                     />
                   </div>
                   <div>
-                    <RaisedButton
-                      type="dangerzone"
-                      fullWidth={false}
-                      onClick={(e) => {
-                        e.preventDefault()
-                        form.updateAt(maksuttomuusPath, (maksuttomuudet) =>
-                          maksuttomuudet.filter(
-                            (_val, maksuttomuusIndex) => maksuttomuusIndex !== i
+                    {form.editMode && (
+                      <RaisedButton
+                        type="dangerzone"
+                        fullWidth={false}
+                        onClick={(e) => {
+                          e.preventDefault()
+                          form.updateAt(maksuttomuusPath, (maksuttomuudet) =>
+                            maksuttomuudet.filter(
+                              (_val, maksuttomuusIndex) =>
+                                maksuttomuusIndex !== i
+                            )
                           )
-                        )
-                      }}
-                    >
-                      {t('Poista')}
-                    </RaisedButton>
+                        }}
+                      >
+                        {t('Poista')}
+                      </RaisedButton>
+                    )}
                   </div>
                 </div>
               )
             })}
           <div>
-            <FlatButton
-              fullWidth={false}
-              onClick={(_e) => {
-                // Lisää tyhjän koulutuksen maksuttomuus
-                addKoulutuksenMaksuttomuus()
-              }}
-            >
-              {t('lisatiedot:lisaa_uusi')}
-            </FlatButton>
+            {form.editMode && (
+              <FlatButton
+                fullWidth={false}
+                onClick={(_e) => {
+                  addKoulutuksenMaksuttomuus()
+                }}
+              >
+                {t('lisatiedot:lisaa_uusi')}
+              </FlatButton>
+            )}
           </div>
         </div>
       </div>
@@ -190,33 +197,37 @@ export const VSTLisatiedot: React.FC<VSTLisatiedotProps> = ({ form }) => {
                     />
                   </div>
                   <div>
-                    <RaisedButton
-                      fullWidth={false}
-                      type={'dangerzone'}
-                      onClick={(e) => {
-                        e.preventDefault()
-                        form.updateAt(oikeuttaMaksuttomuuteenPath, (omp) =>
-                          omp.filter((_val, index) => index !== i)
-                        )
-                      }}
-                    >
-                      {t('Poista')}
-                    </RaisedButton>
+                    {form.editMode && (
+                      <RaisedButton
+                        fullWidth={false}
+                        type={'dangerzone'}
+                        onClick={(e) => {
+                          e.preventDefault()
+                          form.updateAt(oikeuttaMaksuttomuuteenPath, (omp) =>
+                            omp.filter((_val, index) => index !== i)
+                          )
+                        }}
+                      >
+                        {t('Poista')}
+                      </RaisedButton>
+                    )}
                   </div>
                 </div>
               )
             })}
           <div>
-            <FlatButton
-              fullWidth={false}
-              onClick={(e) => {
-                e.preventDefault()
-                // Lisää tyhjän oikeutta maksuttomuuteen pidennetty
-                addOikeuttaMaksuttomuuteenPidennetty()
-              }}
-            >
-              {t('Lisää uusi')}
-            </FlatButton>
+            {form.editMode && (
+              <FlatButton
+                fullWidth={false}
+                onClick={(e) => {
+                  e.preventDefault()
+                  // Lisää tyhjän oikeutta maksuttomuuteen pidennetty
+                  addOikeuttaMaksuttomuuteenPidennetty()
+                }}
+              >
+                {t('Lisää uusi')}
+              </FlatButton>
+            )}
           </div>
         </div>
       </div>

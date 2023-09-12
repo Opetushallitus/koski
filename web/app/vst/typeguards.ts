@@ -1,9 +1,16 @@
 import { Arviointi } from '../types/fi/oph/koski/schema/Arviointi'
+import {
+  Koodistokoodiviite,
+  isKoodistokoodiviite
+} from '../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { LukutaitokoulutuksenArviointi } from '../types/fi/oph/koski/schema/LukutaitokoulutuksenArviointi'
+import { MuuallaSuoritettuOppivelvollisilleSuunnatunVapaanSivistystyönOpintojenSuoritus } from '../types/fi/oph/koski/schema/MuuallaSuoritettuOppivelvollisilleSuunnatunVapaanSivistystyonOpintojenSuoritus'
+import { OppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus } from '../types/fi/oph/koski/schema/OppivelvollisilleSuunnattuVapaanSivistystyonKoulutuksenSuoritus'
 import {
   isOppivelvollisilleSuunnattuVapaanSivistystyönKoulutus,
   OppivelvollisilleSuunnattuVapaanSivistystyönKoulutus
 } from '../types/fi/oph/koski/schema/OppivelvollisilleSuunnattuVapaanSivistystyonKoulutus'
+import { OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus } from '../types/fi/oph/koski/schema/OppivelvollisilleSuunnatunVapaanSivistystyonOpintokokonaisuudenSuoritus'
 import {
   OppivelvollisilleSuunnatunVapaanSivistystyönOsasuoritus,
   isOppivelvollisilleSuunnatunVapaanSivistystyönOsasuoritus
@@ -13,17 +20,26 @@ import {
   isVapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus
 } from '../types/fi/oph/koski/schema/VapaanSivistystyonJotpaKoulutuksenOsasuorituksenSuoritus'
 import {
+  VapaanSivistystyönJotpaKoulutuksenSuoritus,
+  isVapaanSivistystyönJotpaKoulutuksenSuoritus
+} from '../types/fi/oph/koski/schema/VapaanSivistystyonJotpaKoulutuksenSuoritus'
+import {
   VapaanSivistystyönJotpaKoulutus,
   isVapaanSivistystyönJotpaKoulutus
 } from '../types/fi/oph/koski/schema/VapaanSivistystyonJotpaKoulutus'
+import { VapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonLukutaitokoulutuksenKokonaisuudenSuoritus'
 import {
   VapaanSivistystyönLukutaitokoulutus,
   isVapaanSivistystyönLukutaitokoulutus
 } from '../types/fi/oph/koski/schema/VapaanSivistystyonLukutaitokoulutus'
+import { VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenSuoritus'
+import { VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOhjauksenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenOhjauksenSuoritus'
 import {
   isVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenOpintojenSuoritus,
   VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenOpintojenSuoritus
 } from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenTyoelamaJaYhteiskuntataitojenOpintojenSuoritus'
+import { VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenTyöelämäJakso } from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenTyoelamaJaYhteiskuntataitojenTyoelamaJakso'
+import { VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus'
 import {
   isVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenSuoritus,
   VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenSuoritus
@@ -41,6 +57,11 @@ import {
   VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus,
   isVapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus
 } from '../types/fi/oph/koski/schema/VapaanSivistystyonVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus'
+import {
+  VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus,
+  isVapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus
+} from '../types/fi/oph/koski/schema/VapaanSivistystyonVapaatavoitteisenKoulutuksenSuoritus'
+import { VSTKotoutumiskoulutuksenKieliJaViestintäosaamisenOsasuoritus } from '../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenKieliJaViestintaosaamisenOsasuoritus'
 import {
   isVSTKotoutumiskoulutuksenKieliJaViestintäosaamisenSuoritus2022,
   VSTKotoutumiskoulutuksenKieliJaViestintäosaamisenSuoritus2022
@@ -97,6 +118,7 @@ type OsasuoritusOf<T> = T extends { osasuoritukset?: any }
 export type VSTOsasuoritus =
   | OsasuoritusOf<VapaanSivistystyönPäätasonSuoritus>
   | OsasuoritusOf<OsasuoritusOf<VapaanSivistystyönPäätasonSuoritus>>
+  | OppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus
 
 export type VSTOsasuoritusOsasuorituksilla = Extract<
   VSTOsasuoritus,
@@ -104,6 +126,8 @@ export type VSTOsasuoritusOsasuorituksilla = Extract<
     osasuoritukset?: any
   }
 >
+
+export type VSTKoulutusmoduuli = VSTOsasuoritus['koulutusmoduuli']
 
 export function isVSTOsasuoritusOsasuorituksilla(
   x: VSTOsasuoritus
@@ -116,6 +140,16 @@ export type VSTOsasuoritusArvioinnilla = Extract<
   {
     arviointi?: Arviointi[]
   }
+>
+
+export type VSTKoulutusmoduuliKuvauksella = Extract<
+  VSTKoulutusmoduuli,
+  { kuvaus?: any }
+>
+
+export type VSTOsasuoritusTunnustuksella = Extract<
+  VSTOsasuoritus,
+  { tunnustettu?: any }
 >
 
 export type VSTOsasuoritusLukutaitokoulutuksenArvioinnilla = Extract<
@@ -132,38 +166,57 @@ export type VSTOsasuoritusIlmanArviointia = Exclude<
   }
 >
 
-export function hasArviointi(
+export function isVSTOsasuoritusArvioinnilla(
   s: VSTOsasuoritus
 ): s is VSTOsasuoritusArvioinnilla {
   switch (s.$class) {
-    case 'fi.oph.koski.schema.MuuallaSuoritettuOppivelvollisilleSuunnatunVapaanSivistystyönOpintojenSuoritus':
-    case 'fi.oph.koski.schema.OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus':
-    case 'fi.oph.koski.schema.VSTKotoutumiskoulutuksenKieliJaViestintäosaamisenOsasuoritus':
-    case 'fi.oph.koski.schema.VSTKotoutumiskoulutuksenKieliJaViestintäosaamisenSuoritus2022':
-    case 'fi.oph.koski.schema.VSTKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus2022':
-    case 'fi.oph.koski.schema.VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenSuoritus2022':
-    case 'fi.oph.koski.schema.VapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus':
-    case 'fi.oph.koski.schema.VapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus':
-    case 'fi.oph.koski.schema.VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus':
-    case 'fi.oph.koski.schema.VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenSuoritus':
-    case 'fi.oph.koski.schema.VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOhjauksenSuoritus':
-    case 'fi.oph.koski.schema.VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenOpintojenSuoritus':
-    case 'fi.oph.koski.schema.VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenSuoritus':
-    case 'fi.oph.koski.schema.VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenTyöelämäJakso':
-    case 'fi.oph.koski.schema.VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus':
+    case MuuallaSuoritettuOppivelvollisilleSuunnatunVapaanSivistystyönOpintojenSuoritus.className:
+    case OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus.className:
+    case VSTKotoutumiskoulutuksenKieliJaViestintäosaamisenOsasuoritus.className:
+    case VSTKotoutumiskoulutuksenKieliJaViestintäosaamisenSuoritus2022.className:
+    case VSTKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus2022.className:
+    case VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenSuoritus2022.className:
+    case VapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus.className:
+    case VapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus.className:
+    case VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus.className:
+    case VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenSuoritus.className:
+    case VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOhjauksenSuoritus.className:
+    case VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenOpintojenSuoritus.className:
+    case VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenSuoritus.className:
+    case VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenTyöelämäJakso.className:
+    case VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus.className:
       return true
     default:
       return false
   }
 }
 
-/*
-export function hasNoArviointi(
-  s: VSTOsasuoritus
-): s is VSTOsasuoritusIlmanArviointia {
-  return !hasArviointi(s)
+export function isVSTKoulutusmoduuliKuvauksella(
+  s: VSTKoulutusmoduuli
+): s is VSTKoulutusmoduuliKuvauksella {
+  switch (s.$class) {
+    case 'fi.oph.koski.schema.VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuoritus':
+    case 'fi.oph.koski.schema.OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus':
+    case 'fi.oph.koski.schema.MuuallaSuoritetutVapaanSivistystyönOpinnot':
+    case 'fi.oph.koski.schema.VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOpintojenOsasuoritus':
+    case 'fi.oph.koski.schema.VSTKotoutumiskoulutuksenValinnaistenOpintojenAlasuorituksenKoulutusmoduuli2022':
+      return true
+    default:
+      return false
+  }
 }
-*/
+
+export function isTunnustettuVSTOsasuoritus(
+  s: VSTOsasuoritus
+): s is VSTOsasuoritusTunnustuksella {
+  switch (s.$class) {
+    case 'fi.oph.koski.schema.OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus':
+    case 'fi.oph.koski.schema.MuuallaSuoritettuOppivelvollisilleSuunnatunVapaanSivistystyönOpintojenSuoritus':
+      return true
+    default:
+      return false
+  }
+}
 
 export type VSTArviointi = NonNullable<
   VSTOsasuoritusArvioinnilla['arviointi']
@@ -183,7 +236,7 @@ export type CreateVSTTaitotaso = (
   o: VSTOsasuoritusLukutaitokoulutuksenArvioinnilla
 ) => (arvosana: any) => VSTTaitotaso | null
 
-export const hasOsasuoritustenOsasuorituksia = (
+export const isVSTOsasuoritusJollaOsasuorituksia = (
   s: any
 ): s is
   | VapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus
@@ -206,3 +259,40 @@ export const hasOsasuoritustenOsasuorituksia = (
   isVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenSuoritus(
     s
   )
+
+export function hasOpintokokonaisuus(
+  x: any
+): x is
+  | VapaanSivistystyönJotpaKoulutuksenSuoritus
+  | VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus {
+  return (
+    isVapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus(x) ||
+    isVapaanSivistystyönJotpaKoulutuksenSuoritus(x)
+  )
+}
+
+/**
+ * Tarkistaa, että koodistokoodiviitteen koodistoUri ja koodiarvo täsmäävät haluttuun arvoon. Tämä lisäksi tarkentaa Koodistokoodiviitteen tyypin.
+ * @param val Tarkistettava koodistokoodiviite
+ * @param koodistoUri Koodiston URI
+ * @param koodiarvo  Koodiarvo
+ * @returns Onko Koodistokoodiviite tyyppiä Koodistokoodiviite<T, K>
+ */
+export function narrowKoodistokoodiviite<T extends string, K extends string>(
+  val: unknown,
+  koodistoUri: T,
+  koodiarvo?: K
+): val is K extends string
+  ? Koodistokoodiviite<T, K>
+  : Koodistokoodiviite<T, string> {
+  if (!isKoodistokoodiviite(val)) {
+    return false
+  }
+  if (val.koodistoUri !== koodistoUri) {
+    return false
+  }
+  if (koodiarvo !== undefined && val.koodiarvo !== koodiarvo) {
+    return false
+  }
+  return true
+}
