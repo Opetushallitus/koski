@@ -218,7 +218,7 @@ export function modelData(mainModel?: EditorModel, path?: PathExpr): any
 // TODO: Tämä funktio on vaikea ymmärtää ja se tuntuu mutatoivan annettua objektia --> Pitäisi uudelleenkirjoittaa.
 export function modelData(mainModel?: any, path?: PathExpr): any {
   const anyModel = mainModel as any
-  if (!anyModel || (!anyModel.value && !("arrayPrototype" in anyModel))) return
+  if (!anyModel || (!anyModel.value && !('arrayPrototype' in anyModel))) return
 
   if (anyModel.value && anyModel.value.data) {
     if (!path) return anyModel.value.data
