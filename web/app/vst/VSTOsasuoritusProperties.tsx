@@ -71,13 +71,25 @@ import {
 import { isOppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus } from '../types/fi/oph/koski/schema/OppivelvollisilleSuunnattuVapaanSivistystyonKoulutuksenSuoritus'
 import { isOppivelvollisilleSuunnatunVapaanSivistystyönOsaamiskokonaisuudenSuoritus } from '../types/fi/oph/koski/schema/OppivelvollisilleSuunnatunVapaanSivistystyonOsaamiskokonaisuudenSuoritus'
 import { isOppivelvollisilleSuunnatunVapaanSivistystyönValinnaistenSuuntautumisopintojenSuoritus } from '../types/fi/oph/koski/schema/OppivelvollisilleSuunnatunVapaanSivistystyonValinnaistenSuuntautumisopintojenSuoritus'
-import { isVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenOpintojenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenTyoelamaJaYhteiskuntataitojenOpintojenSuoritus'
-import { isVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenSuoritus'
+import {
+  isVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenOpintojenSuoritus,
+  VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenOpintojenSuoritus
+} from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenTyoelamaJaYhteiskuntataitojenOpintojenSuoritus'
+import {
+  isVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenSuoritus,
+  VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenSuoritus
+} from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenSuoritus'
 import { isOppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus } from '../types/fi/oph/koski/schema/OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus'
 import { RaisedButton } from '../components-v2/controls/RaisedButton'
 import { Spacer } from '../components-v2/layout/Spacer'
-import { isVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenSuoritus'
-import { isVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOhjauksenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenOhjauksenSuoritus'
+import {
+  VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenSuoritus,
+  isVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenSuoritus
+} from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenSuoritus'
+import {
+  isVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOhjauksenSuoritus,
+  VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOhjauksenSuoritus
+} from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenOhjauksenSuoritus'
 import { isLukutaitokoulutuksenArviointi } from '../types/fi/oph/koski/schema/LukutaitokoulutuksenArviointi'
 import { isOppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi } from '../types/fi/oph/koski/schema/OppivelvollisilleSuunnatunVapaanSivistystyonOpintokokonaisuudenArviointi'
 import { isVapaanSivistystyöJotpaKoulutuksenArviointi } from '../types/fi/oph/koski/schema/VapaanSivistystyoJotpaKoulutuksenArviointi'
@@ -98,6 +110,8 @@ import { VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuoritus } from '../t
 import { VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataidot } from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenTyoelamaJaYhteiskuntataidot'
 import { VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenTyöelämäJakso } from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenTyoelamaJaYhteiskuntataitojenTyoelamaJakso'
 import { VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOpintojenOsasuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenOpintojenOsasuoritus'
+import { append } from 'ramda'
+import { Finnish } from '../types/fi/oph/koski/schema/Finnish'
 
 type AddNewVSTOsasuoritusViewProps = {
   level: number
@@ -327,7 +341,36 @@ export const AddNewVSTOsasuoritusView: React.FC<
             {!(data.osasuoritukset || []).find(
               isVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenSuoritus
             ) && (
-              <RaisedButton onClick={() => alert(':TODO:')}>
+              <RaisedButton
+                onClick={() =>
+                  props.form.updateAt(props.pathWithOsasuoritukset, (os) => ({
+                    ...os,
+                    // @ts-expect-error
+                    osasuoritukset: append(
+                      VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenSuoritus(
+                        {
+                          koulutusmoduuli: {
+                            $class:
+                              'fi.oph.koski.schema.VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenKoulutusmoduuli',
+                            tunniste: {
+                              $class: 'fi.oph.koski.schema.Koodistokoodiviite',
+                              koodiarvo:
+                                'vstmaahanmuuttajienkotoutumiskoulutuksenkieliopintojensuoritus',
+                              koodistoUri:
+                                'vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus',
+                              nimi: Finnish({
+                                fi: 'Suomen kieli ja viestintätaidot'
+                              })
+                            }
+                          }
+                        }
+                      ),
+                      // @ts-expect-error
+                      os.osasuoritukset
+                    )
+                  }))
+                }
+              >
                 {t('Lisää suomen/ruotsin kielen ja viestintätaitojen osa-alue')}
               </RaisedButton>
             )}
@@ -335,7 +378,36 @@ export const AddNewVSTOsasuoritusView: React.FC<
             {!(data.osasuoritukset || []).find(
               isVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenOpintojenSuoritus
             ) && (
-              <RaisedButton onClick={() => alert(':TODO:')}>
+              <RaisedButton
+                onClick={() =>
+                  props.form.updateAt(props.pathWithOsasuoritukset, (os) => ({
+                    ...os,
+                    // @ts-expect-error
+                    osasuoritukset: append(
+                      VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenOpintojenSuoritus(
+                        {
+                          koulutusmoduuli: {
+                            $class:
+                              'fi.oph.koski.schema.VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenOpintojenKoulutusmoduuli',
+                            tunniste: {
+                              $class: 'fi.oph.koski.schema.Koodistokoodiviite',
+                              koodiarvo:
+                                'vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojenkokonaisuudensuoritus',
+                              koodistoUri:
+                                'vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus',
+                              nimi: Finnish({
+                                fi: 'Työelämä- ja yhteiskuntataidot'
+                              })
+                            }
+                          }
+                        }
+                      ),
+                      // @ts-expect-error
+                      os.osasuoritukset
+                    )
+                  }))
+                }
+              >
                 {t('Lisää työelämän ja yhteiskuntataitojen opintojen osa-alue')}
               </RaisedButton>
             )}
@@ -343,7 +415,36 @@ export const AddNewVSTOsasuoritusView: React.FC<
             {!(data.osasuoritukset || []).find(
               isVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOhjauksenSuoritus
             ) && (
-              <RaisedButton onClick={() => alert(':TODO:')}>
+              <RaisedButton
+                onClick={() =>
+                  props.form.updateAt(props.pathWithOsasuoritukset, (os) => ({
+                    ...os,
+                    // @ts-expect-error
+                    osasuoritukset: append(
+                      VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOhjauksenSuoritus(
+                        {
+                          koulutusmoduuli: {
+                            $class:
+                              'fi.oph.koski.schema.VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOhjauksenKoulutusmoduuli',
+                            tunniste: {
+                              $class: 'fi.oph.koski.schema.Koodistokoodiviite',
+                              koodiarvo:
+                                'vstmaahanmuuttajienkotoutumiskoulutuksenohjauksensuoritus',
+                              koodistoUri:
+                                'vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus',
+                              nimi: Finnish({
+                                fi: 'Ohjaus'
+                              })
+                            }
+                          }
+                        }
+                      ),
+                      // @ts-expect-error
+                      os.osasuoritukset
+                    )
+                  }))
+                }
+              >
                 {t('Lisää kotoutumiskoulutuksen ohjauksen osa-alue')}
               </RaisedButton>
             )}
@@ -351,7 +452,36 @@ export const AddNewVSTOsasuoritusView: React.FC<
             {!(data.osasuoritukset || []).find(
               isVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenSuoritus
             ) && (
-              <RaisedButton onClick={() => alert(':TODO:')}>
+              <RaisedButton
+                onClick={() =>
+                  props.form.updateAt(props.pathWithOsasuoritukset, (os) => ({
+                    ...os,
+                    // @ts-expect-error
+                    osasuoritukset: append(
+                      VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenSuoritus(
+                        {
+                          koulutusmoduuli: {
+                            $class:
+                              'fi.oph.koski.schema.VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenKoulutusmoduuli',
+                            tunniste: {
+                              $class: 'fi.oph.koski.schema.Koodistokoodiviite',
+                              koodiarvo:
+                                'vstmaahanmuuttajienkotoutumiskoulutuksenvalinnaistensuoritus',
+                              koodistoUri:
+                                'vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus',
+                              nimi: Finnish({
+                                fi: 'Valinnaiset opinnot'
+                              })
+                            }
+                          }
+                        }
+                      ),
+                      // @ts-expect-error
+                      os.osasuoritukset
+                    )
+                  }))
+                }
+              >
                 {t('Lisää valinnaisten opintojen osa-alue')}
               </RaisedButton>
             )}
