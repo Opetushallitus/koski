@@ -40,6 +40,7 @@ class DateInput extends React.Component {
       valueCallback = () => {},
       optional = false,
       inputId = 'date-input',
+      isPending,
       ...rest // aria-label jne.
     } = this.props
     const { invalidDate } = this.state
@@ -142,6 +143,7 @@ class DateInput extends React.Component {
 
 DateInput.propTypes = {
   isAllowedDate: PropTypes.func,
+  isPending: PropTypes.bool,
   valueCallback: PropTypes.func,
   validityCallback: PropTypes.func
 }
