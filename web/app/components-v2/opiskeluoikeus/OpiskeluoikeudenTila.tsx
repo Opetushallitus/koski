@@ -41,7 +41,6 @@ import {
 } from './UusiOpiskeluoikeudenTilaModal'
 import { isVapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/VapaanSivistystyonJotpaKoulutuksenOpiskeluoikeusjakso'
 
-// TODO: Siisti omaan tiedostoonsa
 type RahoituksellinenOpiskeluoikeusjakso = Extract<
   Opiskeluoikeusjakso,
   { opintojenRahoitus?: any }
@@ -156,7 +155,6 @@ export const OpiskeluoikeudenTilaEdit = <T extends OpiskeluoikeudenTila>(
                 <span {...testId(props, `items.${index}.tila`)}>
                   {t(jakso.tila.nimi)}
                 </span>
-                {/* TODO: Putsaa */}
                 {isVapaanSivistystyönOpiskeluoikeusjakso(jakso) &&
                   isRahoituksellinenOpiskeluoikeusjakso(jakso) && (
                     <>
@@ -305,7 +303,6 @@ const useOpiskeluoikeudenTilaState = <T extends OpiskeluoikeudenTila>(
     )
   }
 
-  // TODO: Siisti
   if (
     props.opiskeluoikeusJaksoClassName !== undefined &&
     opiskeluoikeusjaksoClassNames &&
@@ -319,7 +316,6 @@ const useOpiskeluoikeudenTilaState = <T extends OpiskeluoikeudenTila>(
     )
   }
 
-  // TODO: Refaktoroi, näyttää ihan hirveältä luettavalta.
   const opiskeluoikeusjaksoClass =
     opiskeluoikeusjaksoClassNames !== null
       ? opiskeluoikeusjaksoClassNames.length === 1

@@ -1,5 +1,6 @@
 package fi.oph.koski.typemodel
 
+import fi.oph.koski.schema.annotation.{InfoDescription, InfoLinkTitle, InfoLinkUrl}
 import fi.oph.koski.typemodel.DataTypes.DataType
 import fi.oph.koski.typemodel.ObjectType.{ObjectDefaultNode, ObjectDefaultsMap, ObjectDefaultsProperty}
 import fi.oph.scalaschema.Metadata
@@ -102,11 +103,20 @@ case class NumberType(
 // Container types
 
 case class OptionalType(
-  item: TypeModel
+  item: TypeModel,
+  infoDescription: Seq[String] = Seq.empty,
+  infoLinkTitle: Seq[String] = Seq.empty,
+  infoLinkUrl: Seq[String] = Seq.empty,
 ) extends TypeModel {
   def `type`: DataType = DataTypes.Optional
   override def unambigiousDefaultValue: Option[Option[_]] = Some(None)
   override def dependencies: Seq[String] = item.dependencies
+  override def addMetadata(metadata: Metadata): TypeModel = metadata match {
+    case InfoLinkTitle(text) => this.copy(infoLinkTitle = (infoLinkTitle :+ text).distinct)
+    case InfoDescription(desc) => this.copy(infoDescription = (infoDescription :+ desc).distinct)
+    case InfoLinkUrl(url) => this.copy(infoLinkUrl = (infoLinkUrl :+ url).distinct)
+    case _ => this
+  }
 }
 
 case class ArrayType(
@@ -129,6 +139,9 @@ case class ObjectType(
   fullClassName: String,
   properties: Map[String, TypeModel],
   override val description: Seq[String] = Seq.empty,
+  infoDescription: Seq[String] = Seq.empty,
+  infoLinkTitle: Seq[String] = Seq.empty,
+  infoLinkUrl: Seq[String] = Seq.empty,
 ) extends TypeModelWithClassName {
   def `type`: DataType = DataTypes.Object
 
@@ -142,6 +155,9 @@ case class ObjectType(
 
   override def addMetadata(metadata: Metadata): TypeModel = metadata match {
     case Description(text) => this.copy(description = (description :+ text).distinct)
+    case InfoDescription(text) => this.copy(infoDescription = (infoDescription :+ text).distinct)
+    case InfoLinkTitle(text) => this.copy(infoLinkTitle = (infoLinkTitle :+ text).distinct)
+    case InfoLinkUrl(url) => this.copy(infoLinkUrl = (infoLinkUrl :+ url).distinct)
     case _ => this
   }
 

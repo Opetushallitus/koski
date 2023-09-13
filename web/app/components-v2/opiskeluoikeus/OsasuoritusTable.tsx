@@ -13,7 +13,7 @@ import {
 import { Section } from '../containers/Section'
 import { ExpandButton } from '../controls/ExpandButton'
 import { IconButton } from '../controls/IconButton'
-import { FormOptic } from '../forms/FormModel'
+import { FormModel, FormOptic } from '../forms/FormModel'
 import { Spacer } from '../layout/Spacer'
 import { CHARCODE_REMOVE } from '../texts/Icon'
 
@@ -24,74 +24,47 @@ export type ExpandState = {
   expanded: boolean
 }
 
-export type OsasuorituksetExpandedState = Array<ExpandState>
+export type OsasuorituksetExpandedState = Record<string, boolean>
 
 export const constructOsasuorituksetOpenState = (
-  prevState: Array<ExpandState>,
+  prevState: Record<string, boolean>,
   level: number,
   suoritusIndex: number,
-  // TODO: Tyyppi
   osasuoritukset: any[]
-): OsasuorituksetExpandedState => {
-  return osasuoritukset.reduce<OsasuorituksetExpandedState>(
-    (prev, _curr, i) => {
-      const key = `level_${level}_suoritus_${suoritusIndex}_osasuoritus_${i}`
-      const existing = prevState.find((v) => v.key === key)
-      if (
-        'osasuoritukset' in osasuoritukset[i] &&
-        Array.isArray(osasuoritukset[i].osasuoritukset) &&
-        osasuoritukset[i].osasuoritukset.length > 0
-      ) {
-        return [
-          ...prev.filter((p) => p.key !== key),
-          {
-            key,
-            expanded: existing !== undefined ? existing.expanded : false
-          },
-          ...constructOsasuorituksetOpenState(
-            prevState,
-            level + 1,
-            i,
-            osasuoritukset[i].osasuoritukset
-          )
-        ]
-      } else {
-        return [
-          ...prev.filter((p) => p.key !== key),
-          {
-            key,
-            expanded: existing !== undefined ? existing.expanded : false
-          }
-        ]
-      }
-    },
-    prevState
-  )
+): Record<string, boolean> => {
+  const newState = { ...prevState }
+  osasuoritukset.map((_os, i) => {
+    const key = `level_${level}_suoritus_${suoritusIndex}_osasuoritus_${i}`
+    const existing = newState[key]
+    if (existing === undefined) {
+      newState[key] = false
+    } else {
+      newState[key] = !existing
+    }
+  })
+  return newState
 }
 
 type Completed = (osasuoritusIndex: number) => boolean | undefined
 export type SetOsasuoritusOpen = (key: string, value: boolean) => void
 export type ToggleOsasuoritusOpen = () => void
-export type ToggleModal = () => void
-export type SetModal = React.Dispatch<
-  React.SetStateAction<{
-    open: boolean
-    data: {
-      osasuoritusPath: FormOptic<any, any>
-    } | null
-  }>
->
-export type OsasuoritusTableProps<DATA_KEYS extends string> = CommonProps<{
-  editMode: boolean
+
+export type OpenOsasuorituksetHandler = () => void
+export type CloseOsasuorituksetHandler = () => void
+
+export type OsasuoritusTableProps<
+  DATA_KEYS extends string,
+  P = object
+> = CommonProps<{
+  editMode: FormModel<object>['editMode']
   level: number
-  toggleModal: ToggleModal
-  setModal?: SetModal // TODO: Abstraktoi tämä VST-spesifinen logiikka pois
   setOsasuoritusOpen: SetOsasuoritusOpen
-  pathWithOsasuoritukset?: FormOptic<Opiskeluoikeus, any>
   openState: OsasuorituksetExpandedState
   rows: Array<OsasuoritusRowData<DATA_KEYS>>
   completed?: Completed
   onRemove?: (index: number) => void
+  addNewOsasuoritusView?: React.FC<P>
+  addNewOsasuoritusViewProps?: P
 }>
 
 export type OsasuoritusRowData<DATA_KEYS extends string> = {
@@ -103,13 +76,8 @@ export type OsasuoritusRowData<DATA_KEYS extends string> = {
   content?: React.ReactElement
 }
 
-function getOsasuoritusButtonText() {
-  // TODO: Suorituksesta riippuva tekstin nimi
-  return t('Lisää osasuoritus')
-}
-
-export const OsasuoritusTable = <DATA_KEYS extends string>(
-  props: OsasuoritusTableProps<DATA_KEYS>
+export const OsasuoritusTable = <DATA_KEYS extends string, P>(
+  props: OsasuoritusTableProps<DATA_KEYS, P>
 ) => {
   const {
     editMode,
@@ -117,29 +85,9 @@ export const OsasuoritusTable = <DATA_KEYS extends string>(
     onRemove,
     setOsasuoritusOpen,
     completed,
-    setModal,
-    pathWithOsasuoritukset,
     rows,
     openState
   } = props
-
-  const onClickLisääOsasuoritus = useCallback(
-    (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-      e.preventDefault()
-      if (setModal !== undefined && pathWithOsasuoritukset !== undefined) {
-        pathWithOsasuoritukset &&
-          setModal({
-            open: true,
-            data: { osasuoritusPath: pathWithOsasuoritukset }
-          })
-      } else {
-        console.warn(
-          'onClickLisääOsasuoritus: setModal or pathWithOsasuoritukset is undefined.'
-        )
-      }
-    },
-    [pathWithOsasuoritukset, setModal]
-  )
 
   const onRemoveCb = useCallback(
     (index: number) => {
@@ -152,50 +100,38 @@ export const OsasuoritusTable = <DATA_KEYS extends string>(
     [onRemove]
   )
 
+  const { addNewOsasuoritusView: AddNewOsasuoritusView } = props
+
   return (
     <>
       {rows[0] && <OsasuoritusHeader row={rows[0]} editMode={editMode} />}
-      {rows.map((row, index) => (
-        <OsasuoritusRow
-          key={index}
-          editMode={editMode}
-          row={row}
-          isExpanded={
-            openState.find(
-              (s) =>
-                s.key ===
-                `level_${level}_suoritus_${row.suoritusIndex}_osasuoritus_${row.osasuoritusIndex}`
-            )?.expanded || false
-          }
-          expandedState={openState}
-          expandable={row.expandable}
-          completed={completed ? completed(index) : undefined}
-          onClickExpand={() => {
-            setOsasuoritusOpen(
-              `level_${level}_suoritus_${row.suoritusIndex}_osasuoritus_${row.osasuoritusIndex}`,
-              !openState.find(
-                (s) =>
-                  s.key ===
-                  `level_${level}_suoritus_${row.suoritusIndex}_osasuoritus_${row.osasuoritusIndex}`
-              )?.expanded
-            )
-          }}
-          onRemove={onRemoveCb(index)}
-          testId={`suoritukset.${row.suoritusIndex}.taso.${props.level}.osasuoritukset.${row.osasuoritusIndex}`}
-        />
-      ))}
+      {rows.map((row, index) => {
+        const k = `level_${level}_suoritus_${row.suoritusIndex}_osasuoritus_${row.osasuoritusIndex}`
+        return (
+          <OsasuoritusRow
+            key={index}
+            editMode={editMode}
+            row={row}
+            isExpanded={openState[k] === undefined ? false : openState[k]}
+            expandedState={openState}
+            expandable={row.expandable}
+            completed={completed ? completed(index) : undefined}
+            onClickExpand={() => {
+              setOsasuoritusOpen(
+                k,
+                openState[k] === undefined ? true : !openState[k]
+              )
+            }}
+            onRemove={onRemoveCb(index)}
+            testId={`suoritukset.${row.suoritusIndex}.taso.${props.level}.osasuoritukset.${row.osasuoritusIndex}`}
+          />
+        )
+      })}
       <Spacer />
-      {/*
-      TODO: Otettu pois väliaikaisesti päältä TPO:n takia.
-      editMode && (
-        <ColumnRow indent={level}>
-          <Column>
-            <RaisedButton onClick={onClickLisääOsasuoritus}>
-              {getOsasuoritusButtonText()}
-            </RaisedButton>
-          </Column>
-        </ColumnRow>
-      )*/}
+      {editMode && AddNewOsasuoritusView !== undefined && (
+        // @ts-expect-error React.JSX.IntristicAttributes virhe
+        <AddNewOsasuoritusView {...(props.addNewOsasuoritusViewProps || {})} />
+      )}
       <Spacer />
     </>
   )
@@ -207,7 +143,7 @@ export type OsasuoritusRowProps<DATA_KEYS extends string> = CommonProps<{
   expandable?: boolean
   row: OsasuoritusRowData<DATA_KEYS>
   expandedState: OsasuorituksetExpandedState
-  isExpanded: OsasuorituksetExpandedState[number]['expanded']
+  isExpanded: boolean
   onClickExpand: () => void
   onRemove?: () => void
 }>
@@ -249,10 +185,8 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
     Boolean(props.editMode && props.onRemove)
   )
 
-  const isAllExpanded = props.expandedState.every((s) => s.expanded === true)
-
   const expandable = props.expandable === undefined ? true : props.expandable
-  const expanded = isAllExpanded || props.isExpanded
+  const expanded = props.isExpanded
 
   return (
     <>
@@ -264,7 +198,9 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
           {props.row.content && expandable && (
             <ExpandButton
               expanded={expanded}
-              onChange={props.onClickExpand}
+              onChange={() => {
+                props.onClickExpand()
+              }}
               label={t('Osasuoritus')}
               testId={subTestId(props, 'expand')}
             />

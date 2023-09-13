@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useApiMethod, useOnApiSuccess } from '../../api-fetch'
 import { formatDateRange } from '../../date/date'
+import { t } from '../../i18n/i18n'
 import { Opiskeluoikeus } from '../../types/fi/oph/koski/schema/Opiskeluoikeus'
 import { invalidateOpiskeluoikeus } from '../../util/koskiApi'
 import { getOpiskeluoikeusOid } from '../../util/opiskeluoikeus'
@@ -31,10 +32,16 @@ export const OpiskeluoikeusEditToolbar = (
       >
         <Trans>{'Opiskeluoikeuden voimassaoloaika'}</Trans>
         {': '}
-        {formatDateRange(
-          props.opiskeluoikeus.alkamispäivä,
-          props.opiskeluoikeus.päättymispäivä
-        )}
+        {'arvioituPäättymispäivä' in props.opiskeluoikeus &&
+        !props.opiskeluoikeus.päättymispäivä
+          ? `${formatDateRange(
+              props.opiskeluoikeus.alkamispäivä,
+              props.opiskeluoikeus.arvioituPäättymispäivä
+            )} (${t('Arvioitu päättymispäivä')})`
+          : formatDateRange(
+              props.opiskeluoikeus.alkamispäivä,
+              props.opiskeluoikeus.päättymispäivä
+            )}
       </Column>
       <Column
         span={{ default: spans[1], phone: 24 }}

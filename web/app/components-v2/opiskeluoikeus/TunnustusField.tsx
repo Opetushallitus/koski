@@ -1,9 +1,12 @@
 import * as $ from 'optics-ts'
 import React from 'react'
 import { localize, t } from '../../i18n/i18n'
+import { MuuallaSuoritettuOppivelvollisilleSuunnatunVapaanSivistystyönOpintojenSuoritus } from '../../types/fi/oph/koski/schema/MuuallaSuoritettuOppivelvollisilleSuunnatunVapaanSivistystyonOpintojenSuoritus'
+import { OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus } from '../../types/fi/oph/koski/schema/OppivelvollisilleSuunnatunVapaanSivistystyonOpintokokonaisuudenSuoritus'
 import { OsaamisenTunnustaminen } from '../../types/fi/oph/koski/schema/OsaamisenTunnustaminen'
 import { SelitettyOsaamisenTunnustaminen } from '../../types/fi/oph/koski/schema/SelitettyOsaamisenTunnustaminen'
 import { TaiteenPerusopetuksenOsasuorituksenTunnustus } from '../../types/fi/oph/koski/schema/TaiteenPerusopetuksenOsasuorituksenTunnustus'
+import { VapaanSivistystyönOpintojenSuorituksenOsaamisenTunnustaminen } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpintojenSuorituksenOsaamisenTunnustaminen'
 import { allLanguages } from '../../util/optics'
 import { assertNever } from '../../util/selfcare'
 import { ClassOf } from '../../util/types'
@@ -80,6 +83,10 @@ const createEmptyTunnustus = <T extends SelitettyOsaamisenTunnustaminen>(
       return OsaamisenTunnustaminen({ selite }) as T
     case TaiteenPerusopetuksenOsasuorituksenTunnustus.className:
       return TaiteenPerusopetuksenOsasuorituksenTunnustus({ selite }) as T
+    case VapaanSivistystyönOpintojenSuorituksenOsaamisenTunnustaminen.className:
+      return VapaanSivistystyönOpintojenSuorituksenOsaamisenTunnustaminen({
+        selite
+      }) as any
     default:
       return assertNever(className)
   }

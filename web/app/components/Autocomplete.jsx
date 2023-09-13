@@ -78,13 +78,11 @@ export default class Autocomplete extends BaconComponent {
     const itemElems = items
       .concat(newItem ? [newItem] : [])
       .map(createItemElement)
-    // TODO: Käytä Reactin reffejä
     const results = itemElems.length ? (
       <ul ref="results" className="results" data-testid="autocomplete-results">
         {itemElems}
       </ul>
     ) : null
-    // TODO: Käytä Reactin reffejä
     return (
       <div ref="autocomplete" className="autocomplete">
         <input

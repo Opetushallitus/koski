@@ -53,16 +53,10 @@
     "@typescript-eslint/no-shadow": "warn",
     "@typescript-eslint/no-explicit-any": "off", // TODO: Poista sääntö
     "@typescript-eslint/no-unused-vars": "off",
-    /*
-    [
-      "warn",
-      { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }
-    ],
-    */
     "@typescript-eslint/ban-ts-comment": "off", // TODO: Poista sääntö
     "@typescript-eslint/no-empty-function": "off",
     "@typescript-eslint/no-unnecessary-type-constraint": "warn", // TODO: Poista sääntö
-    "@typescript-eslint/ban-types": "warn" // TODO: Poista sääntö,
+    "@typescript-eslint/ban-types": "off" // TODO: Poista sääntö,
   },
   "overrides": [
     {

@@ -18,6 +18,9 @@ const NEW_KEY = '__NEW__'
 export type PaikallinenOsasuoritusSelectProps = CommonProps<{
   tunnisteet?: PaikallinenKoodi[]
   addNewText?: string | LocalizedString
+  labelText?: string
+  modalTitle?: string
+  namePlaceholder?: string
   onSelect: (tunniste: PaikallinenKoodi, isNew: boolean) => void
   onRemove?: (tunniste: PaikallinenKoodi) => void
 }>
@@ -35,7 +38,7 @@ export const PaikallinenOsasuoritusSelect: React.FC<
     () => [
       {
         key: NEW_KEY,
-        label: t('Lisää osasuoritus'),
+        label: props.labelText ? props.labelText : t('Lisää osasuoritus'),
         value: emptyPaikallinenKoodi,
         ignoreFilter: true
       },
@@ -46,10 +49,10 @@ export const PaikallinenOsasuoritusSelect: React.FC<
         removable: true
       }))
     ],
-    [props.tunnisteet]
+    [props.labelText, props.tunnisteet]
   )
 
-  const { onSelect } = props
+  const { onSelect, modalTitle, namePlaceholder } = props
   const onChangeCB = useCallback(
     (option?: SelectOption<PaikallinenKoodi>) => {
       if (option?.key === NEW_KEY) {
@@ -88,6 +91,8 @@ export const PaikallinenOsasuoritusSelect: React.FC<
       />
       {modalIsVisible && (
         <UusiOsasuoritusModal
+          title={modalTitle}
+          placeholder={namePlaceholder}
           onClose={hideModal}
           onSubmit={onCreateNew}
           testId={subTestId(props, 'modal')}
@@ -104,6 +109,8 @@ const emptyPaikallinenKoodi = PaikallinenKoodi({
 
 type UusiOsasuoritusModalProps = CommonProps<{
   onClose: () => void
+  title?: string
+  placeholder?: string
   onSubmit: (paikallinenKoodi: PaikallinenKoodi) => void
 }>
 
@@ -128,7 +135,9 @@ const UusiOsasuoritusModal: React.FC<UusiOsasuoritusModalProps> = (props) => {
 
   return (
     <Modal {...common(props)} onClose={props.onClose}>
-      <ModalTitle>{t('Lisää osasuoritus')}</ModalTitle>
+      <ModalTitle>
+        {props.title ? props.title : t('Lisää osasuoritus')}
+      </ModalTitle>
       <ModalBody>
         <FormField
           form={form}
@@ -139,7 +148,9 @@ const UusiOsasuoritusModal: React.FC<UusiOsasuoritusModalProps> = (props) => {
           edit={(editProps) => (
             <TextEdit
               {...editProps}
-              placeholder={t('Osasuorituksen nimi')}
+              placeholder={
+                props.placeholder ? props.placeholder : t('Osasuorituksen nimi')
+              }
               autoFocus
               testId={subTestId(props, 'nimi.edit')}
             />

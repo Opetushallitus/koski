@@ -7,18 +7,24 @@ import { Constraint } from './Constraint'
  */
 export type OptionalConstraint = {
   $class: 'fi.oph.koski.typemodel.OptionalConstraint'
-  default?: any
+  infoLinkTitle?: string
+  infoLinkUrl?: string
   optional: Constraint
+  default?: any
+  infoDescription?: string
   type: 'optional'
 }
 
 export const OptionalConstraint = (o: {
-  default?: any
+  infoLinkTitle?: string
+  infoLinkUrl?: string
   optional: Constraint
+  default?: any
+  infoDescription?: string
   type?: 'optional'
 }): OptionalConstraint => ({
-  $class: 'fi.oph.koski.typemodel.OptionalConstraint',
   type: 'optional',
+  $class: 'fi.oph.koski.typemodel.OptionalConstraint',
   ...o
 })
 
