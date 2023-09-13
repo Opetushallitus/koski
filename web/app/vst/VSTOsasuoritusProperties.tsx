@@ -112,6 +112,10 @@ import { VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYh
 import { VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOpintojenOsasuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenOpintojenOsasuoritus'
 import { append } from 'ramda'
 import { Finnish } from '../types/fi/oph/koski/schema/Finnish'
+import {
+  KehittyvänKielenTaitotasoEdit,
+  KehittyvänKielenTaitotasoView
+} from '../components-v2/opiskeluoikeus/KehittyvänKielenTaitotasoField'
 
 type AddNewVSTOsasuoritusViewProps = {
   level: number
@@ -875,8 +879,8 @@ export const VSTOsasuoritusProperties: React.FC<
                   .optional()
                   .compose(lastElement())
                   .prop('kuullunYmmärtämisenTaitotaso')}
-                view={TaitotasoView}
-                edit={TaitotasoEdit}
+                view={KehittyvänKielenTaitotasoView}
+                edit={KehittyvänKielenTaitotasoEdit}
                 testId={`vst.kuullunYmmartaminen`}
               />
             </OsasuoritusSubproperty>
@@ -893,8 +897,8 @@ export const VSTOsasuoritusProperties: React.FC<
                   .optional()
                   .compose(lastElement())
                   .prop('puhumisenTaitotaso')}
-                view={TaitotasoView}
-                edit={TaitotasoEdit}
+                view={KehittyvänKielenTaitotasoView}
+                edit={KehittyvänKielenTaitotasoEdit}
                 testId={`vst.kuullunYmmartaminen`}
               />
             </OsasuoritusSubproperty>
@@ -911,8 +915,8 @@ export const VSTOsasuoritusProperties: React.FC<
                   .optional()
                   .compose(lastElement())
                   .prop('luetunYmmärtämisenTaitotaso')}
-                view={TaitotasoView}
-                edit={TaitotasoEdit}
+                view={KehittyvänKielenTaitotasoView}
+                edit={KehittyvänKielenTaitotasoEdit}
                 testId={`vst.luetunYmmartaminen`}
               />
             </OsasuoritusSubproperty>
@@ -929,8 +933,8 @@ export const VSTOsasuoritusProperties: React.FC<
                   .optional()
                   .compose(lastElement())
                   .prop('kirjoittamisenTaitotaso')}
-                view={TaitotasoView}
-                edit={TaitotasoEdit}
+                view={KehittyvänKielenTaitotasoView}
+                edit={KehittyvänKielenTaitotasoEdit}
                 testId={`vst.kirjoittaminen`}
               />
             </OsasuoritusSubproperty>
