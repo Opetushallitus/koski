@@ -135,7 +135,6 @@ type AddNewVSTOsasuoritusViewProps = {
 export const AddNewVSTOsasuoritusView: React.FC<
   AddNewVSTOsasuoritusViewProps
 > = (props) => {
-  // TODO: Passaa tässä haettu data osasuorituksen lisäysfunktiolle, jotta sitä ei tarvitse hakea kahteen kertaan?
   const data = useMemo(
     () => getValue(props.pathWithOsasuoritukset)(props.form.state),
     [props.form.state, props.pathWithOsasuoritukset]
@@ -145,7 +144,6 @@ export const AddNewVSTOsasuoritusView: React.FC<
   const onKoodistoSelect = useCallback(
     (koodi: Koodistokoodiviite<string, string>) => {
       if (pathWithOsasuoritukset !== undefined) {
-        // TODO: Pitäisikö jo tässä kohtaa luoda oikeanlainen osasuoritusluokka?
         createOsasuoritus(pathWithOsasuoritukset, koodi)
       } else {
         console.warn('pathWithOsasuoritukset is undefined')
@@ -163,10 +161,10 @@ export const AddNewVSTOsasuoritusView: React.FC<
     },
     [createOsasuoritusV2, pathWithOsasuoritukset]
   )
+  // TODO: Refaktoroi pois ja korvaa onPaikallinenKoodistoSelectV2:lla
   const onPaikallinenKoodistoSelect = useCallback(
     (koodi: PaikallinenKoodi) => {
       if (pathWithOsasuoritukset !== undefined) {
-        // TODO: Pitäisikö jo tässä kohtaa luoda oikeanlainen osasuoritusluokka?
         createOsasuoritus(pathWithOsasuoritukset, koodi)
       } else {
         console.warn('pathWithOsasuoritukset is undefined')
@@ -246,7 +244,6 @@ export const AddNewVSTOsasuoritusView: React.FC<
         ) && (
           <>
             <PaikallinenOsasuoritusSelect
-              // TODO: Copypaste pois
               addNewText={t('Lisää työelämäjakso')}
               labelText={t('Lisää työelämäjakso')}
               modalTitle={t('Lisää työelämäjakso')}
@@ -269,7 +266,6 @@ export const AddNewVSTOsasuoritusView: React.FC<
               onRemove={onRemovePaikallinenKoodisto}
             />
             <PaikallinenOsasuoritusSelect
-              // TODO: Copypaste pois
               addNewText={t(
                 'Lisää työelämä- ja yhteiskuntataidon opintokokonaisuus'
               )}
@@ -801,7 +797,6 @@ export const VSTOsasuoritusProperties: React.FC<
               view={ArvosanaView}
               edit={(arvosanaProps) => {
                 if (!isVSTOsasuoritusArvioinnilla(osasuoritus)) {
-                  // TODO: Poista, kun vaikuttaa toimivalta
                   return <div>{'Ei arviointia'}</div>
                 }
                 return (

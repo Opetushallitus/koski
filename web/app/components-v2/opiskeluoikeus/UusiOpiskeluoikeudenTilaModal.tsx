@@ -65,8 +65,6 @@ const useInitialOpiskelujaksoForm = <T extends Opiskeluoikeusjakso>(
       opiskeluoikeusjaksoClass ===
       VapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso.className
     ) {
-      // VST JOTPA erikoistapaus
-      // TODO: Tarkista, onko tämä ok
       return {
         alku: todayISODate(),
         tila: Koodistokoodiviite({
