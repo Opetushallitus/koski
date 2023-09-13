@@ -2559,6 +2559,7 @@
   "validation:mustBeAtMost": "Arvon pitää olla enintään {{limit}}",
   "validation:mustBeGreater": "Arvon pitää olla enemmän kuin {{limit}}",
   "validation:mustBeLesser": "Arvon pitää olla vähemmän kuin {{error}}",
+  "validation:noMatchingValue": "Arvo '{{actual}}' ei ole sallittu. Sallitut arvot: {{expected}}",
   "validation:other": "Odottamaton virhe, ota yhteyttä KOSKI-tiimiin (lisätiedot: {{details}}",
   "Validointi": "Validointi",
   "valinnainen": "valinnainen",
