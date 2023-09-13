@@ -159,7 +159,7 @@ export const resolveOpiskeluoikeudenTilaClass = (
     case 'vstjotpakoulutus':
       return VapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso.className
     case 'vstvapaatavoitteinenkoulutus':
-      return VapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso.className
+      return VapaanSivistystyönVapaatavoitteisenKoulutuksenOpiskeluoikeusjakso.className
     case 'vstmaahanmuuttajienkotoutumiskoulutus':
     case 'vstlukutaitokoulutus':
     case 'vstoppivelvollisillesuunnattukoulutus':
