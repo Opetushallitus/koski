@@ -48,7 +48,7 @@ class MigrationSpec extends AnyFreeSpec with Matchers {
         "OrganisaatioHistoriaRowBuilder.scala"                      -> "7e586d9e273a5a4ee7beae257f22c7f4",
         "OrganisaatioLoader.scala"                                  -> "9e2e45da33ed335af4a7b0a31b139a7",
         "PäivitettyOpiskeluoikeusLoader.scala"                      -> "500545bbe7ef47dedcfdc49580b536d2",
-        "RaportointiDatabase.scala"                                 -> "89c0d7b5728af32f646dc2250cf5f8cc",
+        "RaportointiDatabase.scala"                                 -> "853df84cfe504b8b33de82a53ae25b57",
         "RaportointiDatabaseCustomFunctions.scala"                  -> "956f101d1219c49ac9134b72a30caf3a",
         "RaportointiDatabaseSchema.scala"                           -> "898b18131c9b56dd49a0b7bbd4626934",
         "RaportointikantaService.scala"                             -> "451c1d9b7a3040e482ed4b4e0bf036a5",
@@ -59,6 +59,7 @@ class MigrationSpec extends AnyFreeSpec with Matchers {
         "OpiskeluoikeusLoaderRowBuilder.scala"                      -> "6b4f5eed83054351c75c93e7fab904a3",
         "IncrementalUpdateOpiskeluoikeusLoader.scala"               -> "fd0687df6c413b981947246909b1c91d",
         "FullReloadOpiskeluoikeusLoader.scala"                      -> "b36cbb43bd51df20c82bd31d7402a253",
+        "VipunenExport.scala"                                       -> "9563ec86b4214f871fbd085e44c048cb",
       )
 
       val errors = getListOfFiles(dir).flatMap(file => {

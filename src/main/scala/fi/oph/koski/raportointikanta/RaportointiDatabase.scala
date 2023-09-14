@@ -28,7 +28,7 @@ object RaportointiDatabase {
   // Jälkimmäinen arvo on skeemasta laskettu tunniste (kts. QueryMethods::getSchemaHash).
   // Testi nimeltä "Schema version has been updated" tarkastaa että versionumeroa päivitetään skeemamuutosten
   // myötä.
-  def schemaVersion: (Int, String) = (2, "1584a2563dccac8ec3fe8cc456580b84")
+  def schemaVersion: (Int, String) = (2, "6fadfc6b87cb2b77b81585ea3f23e8a0")
 }
 
 class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging with QueryMethods {
@@ -169,6 +169,10 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
       Oppivelvollisuustiedot.createIndexes(schema)
     )
     runDbSync(DBIO.seq(views: _*), timeout = 120.minutes)
+
+    val vipunen = new VipunenExport(db, schema)
+    vipunen.createAndPopulateHenkilöTable
+
     setStatusLoadCompletedAndCount("materialized_views", views.length)
 
     val duration = (System.currentTimeMillis - started) / 1000
