@@ -1,7 +1,7 @@
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
 import { SuullisenKielitaidonKoe2019 } from './SuullisenKielitaidonKoe2019'
-import { OmanÄidinkielenOpinnotLaajuusOpintopisteinä } from './OmanAidinkielenOpinnotLaajuusOpintopisteina'
+import { LukionOmanÄidinkielenOpinnot } from './LukionOmanAidinkielenOpinnot'
 import { PuhviKoe2019 } from './PuhviKoe2019'
 import { LukionOppimäärä } from './LukionOppimaara'
 import { OrganisaatioWithOid } from './OrganisaatioWithOid'
@@ -19,7 +19,7 @@ export type LukionOppimääränSuoritus2019 = {
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'lukionoppimaara'>
   suullisenKielitaidonKokeet?: Array<SuullisenKielitaidonKoe2019>
   tila?: Koodistokoodiviite<'suorituksentila', string>
-  omanÄidinkielenOpinnot?: OmanÄidinkielenOpinnotLaajuusOpintopisteinä
+  omanÄidinkielenOpinnot?: LukionOmanÄidinkielenOpinnot
   suoritettuErityisenäTutkintona: boolean
   suorituskieli: Koodistokoodiviite<'kieli', string>
   puhviKoe?: PuhviKoe2019
@@ -37,7 +37,7 @@ export const LukionOppimääränSuoritus2019 = (o: {
   tyyppi?: Koodistokoodiviite<'suorituksentyyppi', 'lukionoppimaara'>
   suullisenKielitaidonKokeet?: Array<SuullisenKielitaidonKoe2019>
   tila?: Koodistokoodiviite<'suorituksentila', string>
-  omanÄidinkielenOpinnot?: OmanÄidinkielenOpinnotLaajuusOpintopisteinä
+  omanÄidinkielenOpinnot?: LukionOmanÄidinkielenOpinnot
   suoritettuErityisenäTutkintona?: boolean
   suorituskieli: Koodistokoodiviite<'kieli', string>
   puhviKoe?: PuhviKoe2019

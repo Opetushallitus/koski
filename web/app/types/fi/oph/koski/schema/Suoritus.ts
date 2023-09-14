@@ -145,6 +145,10 @@ import {
   isLukionModuulinSuoritusOppiaineissa2019
 } from './LukionModuulinSuoritusOppiaineissa2019'
 import {
+  LukionOmanÄidinkielenOpintojenOsasuoritus,
+  isLukionOmanÄidinkielenOpintojenOsasuoritus
+} from './LukionOmanAidinkielenOpintojenOsasuoritus'
+import {
   LukionOppiaineenOpintojenSuoritusLukioonValmistavassaKoulutuksessa,
   isLukionOppiaineenOpintojenSuoritusLukioonValmistavassaKoulutuksessa
 } from './LukionOppiaineenOpintojenSuoritusLukioonValmistavassaKoulutuksessa'
@@ -623,6 +627,7 @@ export type Suoritus =
   | LukionKurssinSuoritus2015
   | LukionModuulinSuoritusMuissaOpinnoissa2019
   | LukionModuulinSuoritusOppiaineissa2019
+  | LukionOmanÄidinkielenOpintojenOsasuoritus
   | LukionOppiaineenOpintojenSuoritusLukioonValmistavassaKoulutuksessa
   | LukionOppiaineenOpintojenSuoritusLukioonValmistavassaKoulutuksessa2019
   | LukionOppiaineenOppimääränSuoritus2015
@@ -775,6 +780,7 @@ export const isSuoritus = (a: any): a is Suoritus =>
   isLukionKurssinSuoritus2015(a) ||
   isLukionModuulinSuoritusMuissaOpinnoissa2019(a) ||
   isLukionModuulinSuoritusOppiaineissa2019(a) ||
+  isLukionOmanÄidinkielenOpintojenOsasuoritus(a) ||
   isLukionOppiaineenOpintojenSuoritusLukioonValmistavassaKoulutuksessa(a) ||
   isLukionOppiaineenOpintojenSuoritusLukioonValmistavassaKoulutuksessa2019(a) ||
   isLukionOppiaineenOppimääränSuoritus2015(a) ||

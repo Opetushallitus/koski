@@ -36,7 +36,7 @@ case class LukionOppimääränSuoritus2019(
   suorituskieli: Koodistokoodiviite,
   @Tooltip("Osallistuminen lukiokoulutusta täydentävän saamen/romanikielen/opiskelijan oman äidinkielen opiskeluun")
   @Title("Lukion oppimäärää täydentävät oman äidinkielen opinnot")
-  omanÄidinkielenOpinnot: Option[OmanÄidinkielenOpinnotLaajuusOpintopisteinä] = None,
+  omanÄidinkielenOpinnot: Option[LukionOmanÄidinkielenOpinnot] = None,
   puhviKoe: Option[PuhviKoe2019] = None,
   @Description("Vahvistetussa lukion oppimäärän suorituksessa tulee olla suullisen kielitaidon kokeen suoritus niistä kielistä, joissa on suoritettu suullisen kielitaidon kokeen sisältävä valtakunnallinen moduuli. Nämä moduulit ovat ENA8, FIM8, FINA8, FINB16, RUA8, RUB16, RUÄ8, SMA8 ja VKA8.")
   suullisenKielitaidonKokeet: Option[List[SuullisenKielitaidonKoe2019]] = None,
@@ -162,7 +162,7 @@ trait LukionModuulinTaiPaikallisenOpintojaksonSuoritusMuissaOpinnoissa2019 exten
 trait LukionModuulinSuoritus2019 extends ValtakunnallisenModuulinSuoritus with MahdollisestiSuorituskielellinen with MahdollisestiTunnustettu {
   @Description("Lukion moduulin tunnistetiedot")
   def koulutusmoduuli: LukionModuuli2019
-  def arviointi: Option[List[LukionModuulinTaiPaikallisenOpintojaksonArviointi2019]]
+  def arviointi: Option[List[LukionModuulinTaiPaikallisenOpintojaksonTaiOmanÄidinkielenOpintojenArviointi2019]]
   @Description("Jos moduuli on suoritettu osaamisen tunnustamisena, syötetään tänne osaamisen tunnustamiseen liittyvät lisätiedot. Osaamisen tunnustamisella voidaan opiskelijalle lukea hyväksi ja korvata lukion oppimäärään kuuluvia opintoja. Opiskelijan osaamisen tunnustamisessa noudatetaan, mitä 17 ja 17 a §:ssä säädetään opiskelijan arvioinnista ja siitä päättämisestä. Mikäli opinnot tai muutoin hankittu osaaminen luetaan hyväksi opetussuunnitelman perusteiden mukaan numerolla arvioitavaan moduuliin, tulee moduulista antaa numeroarvosana")
   def tunnustettu: Option[OsaamisenTunnustaminen]
   def suorituskieli: Option[Koodistokoodiviite]
@@ -543,7 +543,8 @@ object SanallinenLukionOppiaineenArviointi2019 {
   def apply(arvosana: String) = new SanallinenLukionOppiaineenArviointi2019(arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoyleissivistava"), None)
 }
 
-trait LukionModuulinTaiPaikallisenOpintojaksonArviointi2019 extends ArviointiPäivämäärällä
+trait LukionModuulinTaiPaikallisenOpintojaksonTaiOmanÄidinkielenOpintojenArviointi2019 extends ArviointiPäivämäärällä
+trait LukionModuulinTaiPaikallisenOpintojaksonArviointi2019 extends LukionModuulinTaiPaikallisenOpintojaksonTaiOmanÄidinkielenOpintojenArviointi2019
 
 @Title("Numeerinen lukion moduulin tai paikallisen opintojakson arviointi 2019")
 case class NumeerinenLukionModuulinTaiPaikallisenOpintojaksonArviointi2019(
@@ -566,3 +567,60 @@ case class SanallinenLukionModuulinTaiPaikallisenOpintojaksonArviointi2019(
   kuvaus: Option[LocalizedString],
   päivä: LocalDate
 ) extends LukionModuulinTaiPaikallisenOpintojaksonArviointi2019 with YleissivistävänKoulutuksenArviointi
+
+case class LukionOmanÄidinkielenOpinnot(
+  arvosana: Koodistokoodiviite,
+  arviointipäivä: Option[LocalDate],
+  kieli: Koodistokoodiviite,
+  laajuus: LaajuusOpintopisteissä,
+  @Tabular
+  osasuoritukset: Option[List[LukionOmanÄidinkielenOpintojenOsasuoritus]] = None,
+) extends OmanÄidinkielenArviointi
+
+@Title("Lukion oman äidinkielen opintojen osasuoritus")
+@OnlyWhen("../tyyppi/koodiarvo", "lukionoppiaine")
+case class LukionOmanÄidinkielenOpintojenOsasuoritus(
+  @Hidden
+  tyyppi: Koodistokoodiviite,
+  @Title("Kurssi")
+  koulutusmoduuli: LukionOmanÄidinkielenOpinto,
+  @KoodistoUri("kieli")
+  suorituskieli: Option[Koodistokoodiviite],
+  arviointi: Option[List[LukionOmanÄidinkielenOpinnonOsasuorituksenArviointi]] = None,
+  @ComplexObject
+  @Hidden
+  tunnustettu: Option[OsaamisenTunnustaminen] = None,
+) extends LukionModuulinSuoritus2019 {
+  def description: LocalizedString = koulutusmoduuli.nimi
+  def nimi: LocalizedString = koulutusmoduuli.nimi
+}
+
+case class LukionOmanÄidinkielenOpinto(
+  @KoodistoKoodiarvo("OÄI1")
+  @KoodistoKoodiarvo("OÄI2")
+  @KoodistoKoodiarvo("OÄI3")
+  @KoodistoKoodiarvo("OÄI4")
+  @KoodistoKoodiarvo("OÄI5")
+  @KoodistoKoodiarvo("OÄI6")
+  @KoodistoKoodiarvo("OÄI7")
+  @KoodistoKoodiarvo("OÄI8")
+  tunniste: Koodistokoodiviite,
+  laajuus: LaajuusOpintopisteissä,
+) extends LukionModuuli2019 {
+  override def nimi: LocalizedString = tunniste.nimi.getOrElse(Finnish(tunniste.koodiarvo))
+  override def pakollinen: Boolean = false
+}
+
+@Title("Lukion oman äidinkielen opintojen osasuorituksen arviointi")
+case class LukionOmanÄidinkielenOpinnonOsasuorituksenArviointi(
+  @KoodistoKoodiarvo("O")
+  @KoodistoKoodiarvo("4")
+  @KoodistoKoodiarvo("5")
+  @KoodistoKoodiarvo("6")
+  @KoodistoKoodiarvo("7")
+  @KoodistoKoodiarvo("8")
+  @KoodistoKoodiarvo("9")
+  @KoodistoKoodiarvo("10")
+  arvosana: Koodistokoodiviite,
+  päivä: LocalDate
+) extends LukionModuulinTaiPaikallisenOpintojaksonTaiOmanÄidinkielenOpintojenArviointi2019 with YleissivistävänKoulutuksenArviointi

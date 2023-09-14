@@ -42,6 +42,16 @@ describe('Lukiokoulutus2019', function () {
             'Lukion oppimäärää täydentävät oman äidinkielen opinnot Arvosana 8\n' +
             'Kieli saame, lappi\n' +
             'Laajuus 3 op\n' +
+            'Osasuoritukset Kurssi Suorituskieli Arviointi\n' +
+            'Kieli- ja tekstitietoisuus\n' +
+            'Laajuus 1 op pohjoissaame Arvosana O\n' +
+            'Arviointipäivä 30.8.2019\n' +
+            'Vuorovaikutus 1\n' +
+            'Laajuus 1 op pohjoissaame Arvosana O\n' +
+            'Arviointipäivä 30.8.2019\n' +
+            'Tekstien tulkinta ja kirjoittaminen\n' +
+            'Laajuus 1 op pohjoissaame Arvosana O\n' +
+            'Arviointipäivä 30.8.2019\n' +
             'Puhvi-koe Arvosana 7\n' +
             'Arviointipäivä 30.8.2019\n' +
             'Suullisen kielitaidon kokeet Kieli englanti\n' +
@@ -61,7 +71,9 @@ describe('Lukiokoulutus2019', function () {
       })
 
       it('näyttää oppiaineiden ja kurssien arvosanat', function () {
-        expect(extractAsText(S('.osasuoritukset'))).to.equal(
+        expect(
+          extractAsText(S('.lukionoppimaaransuoritus2019 > .osasuoritukset'))
+        ).to.equal(
           'Oppiaine Arvioitu (opintopistettä) Hyväksytysti arvioitu (opintopistettä) Arvosana\n' +
             'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus\nÄI1\n8 ÄI2\n8 ÄI3\n8 6 6 9\n' +
             'Matematiikka, pitkä oppimäärä\nMAB2\n8 MAB3\n8 MAB4\n9 6 6 9\n' +

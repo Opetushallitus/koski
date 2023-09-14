@@ -197,7 +197,7 @@ export class TabularArrayEditor extends React.Component {
     const items = modelItems(model)
     if (!items.length) return null
     if (model.context.edit) return <ArrayEditor {...this.props} />
-    const properties = modelProperties(items[0])
+    const properties = modelProperties(items[0]).filter(notHidden)
     return (
       <table className="tabular-array">
         <thead>
@@ -210,21 +210,23 @@ export class TabularArrayEditor extends React.Component {
           </tr>
         </thead>
         <tbody>
-          {items.map((item, i) => {
-            return (
-              <tr key={i}>
-                {modelProperties(item).map((p, j) => {
+          {items.map((item, i) => (
+            <tr key={i}>
+              {modelProperties(item)
+                .filter(notHidden)
+                .map((p, j) => {
                   return (
                     <td key={j}>
                       <Editor model={p.model} />
                     </td>
                   )
                 })}
-              </tr>
-            )
-          })}
+            </tr>
+          ))}
         </tbody>
       </table>
     )
   }
 }
+
+const notHidden = (p) => !p.hidden
