@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react'
+import React, { useState, useCallback, useMemo } from 'react'
 import { useSchema } from '../appstate/constraints'
 import { append } from '../util/fp/arrays'
 import { KansalainenOnly } from '../components-v2/access/KansalainenOnly'
@@ -75,6 +75,7 @@ import {
 import {
   createVstOpiskeluoikeusjakso,
   defaultLaajuusOpintopisteissa,
+  resolveDiaarinumero,
   resolveOpiskeluoikeudenTilaClass,
   vstNimi,
   vstSuorituksenNimi
@@ -145,6 +146,7 @@ import { OppivelvollisilleSuunnatunVapaanSivistystyönValinnaisetSuuntautumisopi
 import { VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenKoulutusmoduuli2022 } from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenKoulutusmoduuli2022'
 import { isVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenOpintojenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenTyoelamaJaYhteiskuntataitojenOpintojenSuoritus'
 import { VapaanSivistystyönVapaatavoitteinenKoulutus } from '../types/fi/oph/koski/schema/VapaanSivistystyonVapaatavoitteinenKoulutus'
+
 type VSTEditorProps =
   AdaptedOpiskeluoikeusEditorProps<VapaanSivistystyönOpiskeluoikeus>
 
@@ -752,7 +754,9 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
                 edit={PerusteEdit}
                 testId="koulutusmoduuli.peruste"
                 editProps={{
-                  diaariNumero: 'vstmaahanmuuttajienkotoutumiskoulutus'
+                  diaariNumero: resolveDiaarinumero(
+                    päätasonSuoritus.suoritus.koulutusmoduuli
+                  )
                 }}
               />
             </KeyValueRow>

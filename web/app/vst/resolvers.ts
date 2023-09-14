@@ -8,6 +8,7 @@ import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodivi
 import { LaajuusOpintopisteissä } from '../types/fi/oph/koski/schema/LaajuusOpintopisteissa'
 import { LukutaitokoulutuksenArviointi } from '../types/fi/oph/koski/schema/LukutaitokoulutuksenArviointi'
 import { MuuallaSuoritettuOppivelvollisilleSuunnatunVapaanSivistystyönOpintojenSuoritus } from '../types/fi/oph/koski/schema/MuuallaSuoritettuOppivelvollisilleSuunnatunVapaanSivistystyonOpintojenSuoritus'
+import { OppivelvollisilleSuunnattuVapaanSivistystyönKoulutus } from '../types/fi/oph/koski/schema/OppivelvollisilleSuunnattuVapaanSivistystyonKoulutus'
 import { OppivelvollisilleSuunnattuVapaanSivistystyönOpiskeluoikeusjakso } from '../types/fi/oph/koski/schema/OppivelvollisilleSuunnattuVapaanSivistystyonOpiskeluoikeusjakso'
 import { OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi } from '../types/fi/oph/koski/schema/OppivelvollisilleSuunnatunVapaanSivistystyonOpintokokonaisuudenArviointi'
 import { OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus } from '../types/fi/oph/koski/schema/OppivelvollisilleSuunnatunVapaanSivistystyonOpintokokonaisuudenSuoritus'
@@ -15,6 +16,7 @@ import { VapaanSivistystyöJotpaKoulutuksenArviointi } from '../types/fi/oph/kos
 import { VapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso } from '../types/fi/oph/koski/schema/VapaanSivistystyonJotpaKoulutuksenOpiskeluoikeusjakso'
 import { VapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonJotpaKoulutuksenOsasuorituksenSuoritus'
 import { VapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonLukutaitokoulutuksenKokonaisuudenSuoritus'
+import { VapaanSivistystyönLukutaitokoulutus } from '../types/fi/oph/koski/schema/VapaanSivistystyonLukutaitokoulutus'
 import { VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenArviointi } from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenArviointi'
 import { VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenSuoritus'
 import { VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOhjauksenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenOhjauksenSuoritus'
@@ -23,6 +25,7 @@ import { VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYh
 import { VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenTyöelämäJakso } from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenTyoelamaJaYhteiskuntataitojenTyoelamaJakso'
 import { VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus'
 import { VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenSuoritus'
+import { VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutus } from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutus'
 import { VapaanSivistystyönOpiskeluoikeus } from '../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeus'
 import { VapaanSivistystyönOpiskeluoikeusjakso } from '../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeusjakso'
 import { VapaanSivistystyönPäätasonSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonPaatasonSuoritus'
@@ -35,6 +38,7 @@ import { VSTKotoutumiskoulutuksenKieliJaViestintäosaamisenSuoritus2022 } from '
 import { VSTKotoutumiskoulutuksenOsasuorituksenArviointi2022 } from '../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenOsasuorituksenArviointi2022'
 import { VSTKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus2022 } from '../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus2022'
 import { VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenSuoritus2022 } from '../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenYhteiskuntaJaTyoelamaosaaminenSuoritus2022'
+import { VSTKotoutumiskoulutus2022 } from '../types/fi/oph/koski/schema/VSTKotoutumiskoulutus2022'
 import { KoodiarvotOf } from '../util/koodisto'
 import { assertNever } from '../util/selfcare'
 import { CreateVSTArviointi } from './typeguards'
@@ -184,6 +188,27 @@ const resolveOpiskeluoikeudenJaksoClass = (
       return OppivelvollisilleSuunnattuVapaanSivistystyönOpiskeluoikeusjakso.className
     default:
       return assertNever(koodiarvo)
+  }
+}
+
+export const resolveDiaarinumero = (
+  koulutusmoduuli:
+    | VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutus
+    | VSTKotoutumiskoulutus2022
+    | OppivelvollisilleSuunnattuVapaanSivistystyönKoulutus
+    | VapaanSivistystyönLukutaitokoulutus
+): string => {
+  const { $class } = koulutusmoduuli
+  switch ($class) {
+    case 'fi.oph.koski.schema.VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutus':
+    case 'fi.oph.koski.schema.VSTKotoutumiskoulutus2022':
+      return 'vstmaahanmuuttajienkotoutumiskoulutus'
+    case 'fi.oph.koski.schema.VapaanSivistystyönLukutaitokoulutus':
+      return 'vstlukutaitokoulutus'
+    case 'fi.oph.koski.schema.OppivelvollisilleSuunnattuVapaanSivistystyönKoulutus':
+      return 'vstoppivelvollisillesuunnattukoulutus'
+    default:
+      return assertNever($class)
   }
 }
 
