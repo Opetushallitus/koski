@@ -15,7 +15,7 @@ class ValpasOppijaLaajatTiedotServiceSpec extends ValpasOppijaTestBase {
     }
 
     "ei palauta ylioppilasta, koska YO-tutkinto lopettaa oppivelvollisuuden" in {
-      val oid = ValpasMockOppijat.oppijaJollaMuitaOpiskeluoikeuksia.oid
+      val oid = ValpasMockOppijat.oppijaJollaYOOpiskeluoikeus.oid
       val result = oppijaLaajatTiedotService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(oid)(session(ValpasMockUsers.valpasAapajoenKoulu))
 
       result.left.map(_.statusCode) should be(Left(403))
