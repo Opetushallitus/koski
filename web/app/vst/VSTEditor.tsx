@@ -143,6 +143,7 @@ import { VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenK
 import { isVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenOpintojenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenTyoelamaJaYhteiskuntataitojenOpintojenSuoritus'
 import { VapaanSivistystyönVapaatavoitteinenKoulutus } from '../types/fi/oph/koski/schema/VapaanSivistystyonVapaatavoitteinenKoulutus'
 import { useOsasuorituksetExpand } from './../osasuoritus/hooks'
+import { useInfoLink } from './infoLinkHook'
 
 type VSTEditorProps =
   AdaptedOpiskeluoikeusEditorProps<VapaanSivistystyönOpiskeluoikeus>
@@ -152,34 +153,7 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
   const opiskeluoikeusSchema = useSchema(
     VapaanSivistystyönOpiskeluoikeus.className
   )
-  const vapaanSivistystyönVapaatavoitteinenKoulutusSchema = useSchema(
-    VapaanSivistystyönVapaatavoitteinenKoulutus.className
-  )
-  const { infoLinkTitle, infoLinkUrl, infoDescription } = useMemo(() => {
-    if (vapaanSivistystyönVapaatavoitteinenKoulutusSchema === null) {
-      return {}
-    }
-    if (
-      isObjectConstraint(vapaanSivistystyönVapaatavoitteinenKoulutusSchema) &&
-      isOptionalConstraint(
-        vapaanSivistystyönVapaatavoitteinenKoulutusSchema.properties
-          .opintokokonaisuus
-      )
-    ) {
-      const {
-        infoLinkTitle: infoTitle,
-        infoLinkUrl: infoUrl,
-        infoDescription: infoDesc
-      } = vapaanSivistystyönVapaatavoitteinenKoulutusSchema.properties
-        .opintokokonaisuus
-      return {
-        infoLinkTitle: infoTitle,
-        infoLinkUrl: infoUrl,
-        infoDescription: infoDesc
-      }
-    }
-    return {}
-  }, [vapaanSivistystyönVapaatavoitteinenKoulutusSchema])
+
   const form = useForm(props.opiskeluoikeus, false, opiskeluoikeusSchema)
 
   // Oppilaitos
@@ -188,6 +162,10 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
 
   // Päätason suoritus
   const [päätasonSuoritus, setPäätasonSuoritus] = usePäätasonSuoritus(form)
+
+  const { infoDescription, infoLinkTitle, infoLinkUrl } = useInfoLink(
+    päätasonSuoritus.suoritus.koulutusmoduuli.$class
+  )
 
   const appendOsasuoritus = useCallback(
     (
@@ -739,21 +717,23 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
                   edit={OpintokokonaisuusEdit}
                 />
               </KeyValueRow>
-              {infoLinkTitle && infoLinkUrl && infoDescription && (
-                <Infobox>
-                  <>
-                    {t(`infoDescription:${infoDescription}`)}
-                    <br />
-                    <a
-                      href={t(`infoLinkUrl:${infoLinkUrl}`)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {t(`infoLinkTitle:${infoLinkTitle}`)}
-                    </a>
-                  </>
-                </Infobox>
-              )}
+              {infoLinkTitle !== undefined &&
+                infoLinkUrl !== undefined &&
+                infoDescription !== undefined && (
+                  <Infobox>
+                    <>
+                      {t(`infoDescription:${infoDescription}`)}
+                      <br />
+                      <a
+                        href={t(`infoLinkUrl:${infoLinkUrl}`)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {t(`infoLinkTitle:${infoLinkTitle}`)}
+                      </a>
+                    </>
+                  </Infobox>
+                )}
             </>
           )}
           {isLaajuuksellinenVSTKoulutusmoduuli(
