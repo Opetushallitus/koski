@@ -12,6 +12,7 @@ r_opiskeluoikeus_aikajakso
 r_opiskeluoikeus
 r_mitatoitu_opiskeluoikeus
 r_koodisto_koodi
+r_henkilo_vipunen
 r_henkilo
 paallekkaiset_opiskeluoikeudet
 osasuoritus_arvioitu_opiskeluoikeuden_ulkopuolella

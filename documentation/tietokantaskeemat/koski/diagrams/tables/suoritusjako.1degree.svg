@@ -50,12 +50,12 @@
 <text text-anchor="start" x="30" y="-66.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">kokonaisuudet</text>
 <polygon fill="none" stroke="#000000" points="115,-59.2 115,-81.2 214,-81.2 214,-59.2 115,-59.2"/>
 <text text-anchor="start" x="117.7258" y="-66.9" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">jsonb[2147483647]</text>
-<polygon fill="#ffffff" stroke="transparent" points="10,-40.2 10,-59.2 54,-59.2 54,-40.2 10,-40.2"/>
-<polygon fill="none" stroke="#000000" points="10,-40.2 10,-59.2 54,-59.2 54,-40.2 10,-40.2"/>
+<polygon fill="#ffffff" stroke="transparent" points="10,-40.2 10,-59.2 67,-59.2 67,-40.2 10,-40.2"/>
+<polygon fill="none" stroke="#000000" points="10,-40.2 10,-59.2 67,-59.2 67,-40.2 10,-40.2"/>
 <text text-anchor="start" x="13" y="-46.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">&lt; 0</text>
-<polygon fill="#ffffff" stroke="transparent" points="54,-40.2 54,-59.2 115,-59.2 115,-40.2 54,-40.2"/>
-<polygon fill="none" stroke="#000000" points="54,-40.2 54,-59.2 115,-59.2 115,-40.2 54,-40.2"/>
-<text text-anchor="start" x="79.6105" y="-46.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">9 rows</text>
+<polygon fill="#ffffff" stroke="transparent" points="67,-40.2 67,-59.2 115,-59.2 115,-40.2 67,-40.2"/>
+<polygon fill="none" stroke="#000000" points="67,-40.2 67,-59.2 115,-59.2 115,-40.2 67,-40.2"/>
+<text text-anchor="start" x="105.8862" y="-46.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000"> &#160;</text>
 <polygon fill="#ffffff" stroke="transparent" points="115,-40.2 115,-59.2 214,-59.2 214,-40.2 115,-40.2"/>
 <polygon fill="none" stroke="#000000" points="115,-40.2 115,-59.2 214,-59.2 214,-40.2 115,-40.2"/>
 <text text-anchor="start" x="195.4053" y="-46.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">0 &gt;</text>
