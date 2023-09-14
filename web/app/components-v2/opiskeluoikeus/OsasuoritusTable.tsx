@@ -2,6 +2,10 @@ import React, { useCallback } from 'react'
 import { t } from '../../i18n/i18n'
 import { Opiskeluoikeus } from '../../types/fi/oph/koski/schema/Opiskeluoikeus'
 import { useLayout } from '../../util/useDepth'
+import {
+  OsasuorituksetExpandedState,
+  SetOsasuoritusOpen
+} from '../../osasuoritus/hooks'
 import { CommonProps, subTestId } from '../CommonProps'
 import {
   Column,
@@ -19,38 +23,7 @@ import { CHARCODE_REMOVE } from '../texts/Icon'
 
 export const OSASUORITUSTABLE_DEPTH_KEY = 'OsasuoritusTable'
 
-export type ExpandState = {
-  key: string
-  expanded: boolean
-}
-
-export type OsasuorituksetExpandedState = Record<string, boolean>
-
-export const constructOsasuorituksetOpenState = (
-  prevState: Record<string, boolean>,
-  level: number,
-  suoritusIndex: number,
-  osasuoritukset: any[]
-): Record<string, boolean> => {
-  const newState = { ...prevState }
-  osasuoritukset.map((_os, i) => {
-    const key = `level_${level}_suoritus_${suoritusIndex}_osasuoritus_${i}`
-    const existing = newState[key]
-    if (existing === undefined) {
-      newState[key] = false
-    } else {
-      newState[key] = !existing
-    }
-  })
-  return newState
-}
-
 type Completed = (osasuoritusIndex: number) => boolean | undefined
-export type SetOsasuoritusOpen = (key: string, value: boolean) => void
-export type ToggleOsasuoritusOpen = () => void
-
-export type OpenOsasuorituksetHandler = () => void
-export type CloseOsasuorituksetHandler = () => void
 
 export type OsasuoritusTableProps<
   DATA_KEYS extends string,

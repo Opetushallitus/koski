@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { useSchema } from '../appstate/constraints'
 import { append } from '../util/fp/arrays'
 import { KansalainenOnly } from '../components-v2/access/KansalainenOnly'
@@ -20,11 +20,7 @@ import {
 } from '../components-v2/containers/KeyValueTable'
 import { Trans } from '../components-v2/texts/Trans'
 import { SuorituksenVahvistusField } from '../components-v2/opiskeluoikeus/SuorituksenVahvistus'
-import {
-  constructOsasuorituksetOpenState,
-  OsasuorituksetExpandedState,
-  OsasuoritusTable
-} from '../components-v2/opiskeluoikeus/OsasuoritusTable'
+import { OsasuoritusTable } from '../components-v2/opiskeluoikeus/OsasuoritusTable'
 import { FormField } from '../components-v2/forms/FormField'
 import {
   LaajuusEdit,
@@ -146,6 +142,7 @@ import { OppivelvollisilleSuunnatunVapaanSivistystyönValinnaisetSuuntautumisopi
 import { VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenKoulutusmoduuli2022 } from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenKoulutusmoduuli2022'
 import { isVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenOpintojenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenTyoelamaJaYhteiskuntataitojenOpintojenSuoritus'
 import { VapaanSivistystyönVapaatavoitteinenKoulutus } from '../types/fi/oph/koski/schema/VapaanSivistystyonVapaatavoitteinenKoulutus'
+import { useOsasuorituksetExpand } from './../osasuoritus/hooks'
 
 type VSTEditorProps =
   AdaptedOpiskeluoikeusEditorProps<VapaanSivistystyönOpiskeluoikeus>
@@ -606,50 +603,13 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
 
   const rootLevel = 0
 
-  const [osasuorituksetOpenState, setOsasuorituksetOpenState] =
-    useState<OsasuorituksetExpandedState>({})
-
-  const rootLevelOsasuoritusOpen = Object.entries(osasuorituksetOpenState)
-    .filter(([k, _v]) => k.indexOf('level_0_') === 0)
-    .some(([_key, val]) => val === true)
-
-  /**
-   * Avaa kaikki ylimmän tason osasuoritukset
-   */
-  const openAllOsasuoritukset = useCallback(() => {
-    setOsasuorituksetOpenState((oldState) => {
-      const expandedState = constructOsasuorituksetOpenState(
-        {},
-        rootLevel,
-        päätasonSuoritus.index,
-        päätasonSuoritus.suoritus.osasuoritukset || []
-      )
-      const newExpandedState = Object.entries(expandedState).reduce(
-        (prev, [key, _val]) => {
-          return { ...prev, [key]: true }
-        },
-        expandedState
-      )
-      return newExpandedState
-    })
-  }, [päätasonSuoritus.index, päätasonSuoritus.suoritus.osasuoritukset])
-
-  /**
-   * Sulkee kaikki osasuoritukset
-   */
-  const closeAllOsasuoritukset = useCallback(() => {
-    setOsasuorituksetOpenState({})
-  }, [])
-
-  const setOsasuorituksetStateHandler = useCallback(
-    (key: string, expanded: boolean) => {
-      setOsasuorituksetOpenState((oldState) => ({
-        ...oldState,
-        [key]: expanded
-      }))
-    },
-    []
-  )
+  const {
+    osasuorituksetOpenState,
+    rootLevelOsasuoritusOpen,
+    closeAllOsasuoritukset,
+    openAllOsasuoritukset,
+    setOsasuorituksetStateHandler
+  } = useOsasuorituksetExpand(päätasonSuoritus)
 
   const suorituksenVahvistus = useMemo(() => {
     if (päätasonSuoritus.suoritus.osasuoritukset === undefined) {

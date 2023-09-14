@@ -1,5 +1,4 @@
 import { ActivePäätasonSuoritus } from '../components-v2/containers/EditorContainer'
-import { FormModel } from '../components-v2/forms/FormModel'
 import { UusiOpiskeluoikeusjakso } from '../components-v2/opiskeluoikeus/UusiOpiskeluoikeudenTilaModal'
 import { todayISODate } from '../date/date'
 import { t, localize } from '../i18n/i18n'
@@ -200,12 +199,12 @@ export const resolveDiaarinumero = (
 ): string => {
   const { $class } = koulutusmoduuli
   switch ($class) {
-    case 'fi.oph.koski.schema.VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutus':
-    case 'fi.oph.koski.schema.VSTKotoutumiskoulutus2022':
+    case VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutus.className:
+    case VSTKotoutumiskoulutus2022.className:
       return 'vstmaahanmuuttajienkotoutumiskoulutus'
-    case 'fi.oph.koski.schema.VapaanSivistystyönLukutaitokoulutus':
+    case VapaanSivistystyönLukutaitokoulutus.className:
       return 'vstlukutaitokoulutus'
-    case 'fi.oph.koski.schema.OppivelvollisilleSuunnattuVapaanSivistystyönKoulutus':
+    case OppivelvollisilleSuunnattuVapaanSivistystyönKoulutus.className:
       return 'vstoppivelvollisillesuunnattukoulutus'
     default:
       return assertNever($class)

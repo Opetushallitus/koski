@@ -31,15 +31,22 @@ export const TunnustusView = <T extends SelitettyOsaamisenTunnustaminen>(
   )
 }
 
-export type TunnustusEditProps<T extends SelitettyOsaamisenTunnustaminen> =
-  FieldEditorProps<
-    T,
-    {
-      tunnustusClass: ClassOf<T>
-    }
-  >
+export type TunnustusEditProps<
+  T extends
+    | SelitettyOsaamisenTunnustaminen
+    | VapaanSivistystyönOpintojenSuorituksenOsaamisenTunnustaminen
+> = FieldEditorProps<
+  T,
+  {
+    tunnustusClass: ClassOf<T>
+  }
+>
 
-export const TunnustusEdit = <T extends SelitettyOsaamisenTunnustaminen>(
+export const TunnustusEdit = <
+  T extends
+    | SelitettyOsaamisenTunnustaminen
+    | VapaanSivistystyönOpintojenSuorituksenOsaamisenTunnustaminen
+>(
   props: TunnustusEditProps<T>
 ): React.ReactElement | null => {
   const selitePath = $.optic_<T | undefined>()
@@ -74,7 +81,11 @@ export const TunnustusEdit = <T extends SelitettyOsaamisenTunnustaminen>(
   )
 }
 
-const createEmptyTunnustus = <T extends SelitettyOsaamisenTunnustaminen>(
+const createEmptyTunnustus = <
+  T extends
+    | SelitettyOsaamisenTunnustaminen
+    | VapaanSivistystyönOpintojenSuorituksenOsaamisenTunnustaminen
+>(
   className: ClassOf<T>
 ): T => {
   const selite = localize('')
@@ -86,7 +97,7 @@ const createEmptyTunnustus = <T extends SelitettyOsaamisenTunnustaminen>(
     case VapaanSivistystyönOpintojenSuorituksenOsaamisenTunnustaminen.className:
       return VapaanSivistystyönOpintojenSuorituksenOsaamisenTunnustaminen({
         selite
-      }) as any
+      }) as T
     default:
       return assertNever(className)
   }

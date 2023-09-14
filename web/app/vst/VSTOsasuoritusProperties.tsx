@@ -20,14 +20,9 @@ import {
   OsasuoritusSubproperty
 } from '../components-v2/opiskeluoikeus/OsasuoritusProperty'
 import {
-  ToggleOsasuoritusOpen,
-  SetOsasuoritusOpen,
-  OsasuorituksetExpandedState,
   OsasuoritusTable,
   osasuoritusTestId,
-  OsasuoritusRowData,
-  OpenOsasuorituksetHandler,
-  CloseOsasuorituksetHandler
+  OsasuoritusRowData
 } from '../components-v2/opiskeluoikeus/OsasuoritusTable'
 import {
   TaitotasoView,
@@ -50,7 +45,8 @@ import {
   isVSTOsasuoritusJollaOsasuorituksia,
   VSTArviointi,
   isVSTKoulutusmoduuliKuvauksella,
-  isTunnustettuVSTOsasuoritus
+  isTunnustettuVSTOsasuoritus,
+  hasPäiväInArviointi
 } from './typeguards'
 import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { PaikallinenKoodi } from '../types/fi/oph/koski/schema/PaikallinenKoodi'
@@ -116,6 +112,12 @@ import {
   KehittyvänKielenTaitotasoEdit,
   KehittyvänKielenTaitotasoView
 } from '../components-v2/opiskeluoikeus/KehittyvänKielenTaitotasoField'
+import { VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenKoulutusmoduuli } from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenKoulutusmoduuli'
+import { VapaanSivistystyönOpintojenSuorituksenOsaamisenTunnustaminen } from '../types/fi/oph/koski/schema/VapaanSivistystyonOpintojenSuorituksenOsaamisenTunnustaminen'
+import {
+  OsasuorituksetExpandedState,
+  SetOsasuoritusOpen
+} from './../osasuoritus/hooks'
 
 type AddNewVSTOsasuoritusViewProps = {
   level: number
@@ -349,20 +351,20 @@ export const AddNewVSTOsasuoritusView: React.FC<
                     osasuoritukset: append(
                       VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenSuoritus(
                         {
-                          koulutusmoduuli: {
-                            $class:
-                              'fi.oph.koski.schema.VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenKoulutusmoduuli',
-                            tunniste: {
-                              $class: 'fi.oph.koski.schema.Koodistokoodiviite',
-                              koodiarvo:
-                                'vstmaahanmuuttajienkotoutumiskoulutuksenkieliopintojensuoritus',
-                              koodistoUri:
-                                'vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus',
-                              nimi: Finnish({
-                                fi: 'Suomen kieli ja viestintätaidot'
-                              })
-                            }
-                          }
+                          koulutusmoduuli:
+                            VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenKoulutusmoduuli(
+                              {
+                                tunniste: Koodistokoodiviite({
+                                  koodiarvo:
+                                    'vstmaahanmuuttajienkotoutumiskoulutuksenkieliopintojensuoritus',
+                                  koodistoUri:
+                                    'vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus',
+                                  nimi: Finnish({
+                                    fi: 'Suomen kieli ja viestintätaidot'
+                                  })
+                                })
+                              }
+                            )
                         }
                       ),
                       // @ts-expect-error
@@ -748,23 +750,6 @@ export const osasuoritusToTableRow = ({
   }
 }
 
-function hasPäiväInArviointi(
-  x: VSTArviointi
-): x is Extract<VSTArviointi, { päivä?: any }> {
-  return (
-    isVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenArviointi(
-      x
-    ) ||
-    isOppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi(
-      x
-    ) ||
-    isVSTKotoutumiskoulutuksenOsasuorituksenArviointi2022(x) ||
-    isVapaanSivistystyöJotpaKoulutuksenArviointi(x) ||
-    isLukutaitokoulutuksenArviointi(x) ||
-    isVapaanSivistystyöVapaatavoitteisenKoulutuksenArviointi(x)
-  )
-}
-
 export const VSTOsasuoritusProperties: React.FC<
   VSTOsasuoritusPropertiesProps
 > = (props) => {
@@ -854,9 +839,8 @@ export const VSTOsasuoritusProperties: React.FC<
                 view={TunnustusView}
                 edit={TunnustusEdit}
                 editProps={{
-                  // @ts-expect-error TODO: Tunnustuksen voisi laajentaa VST:hen myös
                   tunnustusClass:
-                    'fi.oph.koski.schema.VapaanSivistystyönOpintojenSuorituksenOsaamisenTunnustaminen'
+                    VapaanSivistystyönOpintojenSuorituksenOsaamisenTunnustaminen.className
                 }}
                 testId={`vst.tunnustettu`}
               />
