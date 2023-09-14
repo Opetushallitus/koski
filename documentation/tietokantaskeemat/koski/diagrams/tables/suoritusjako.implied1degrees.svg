@@ -50,12 +50,12 @@
 <text text-anchor="start" x="209" y="-66.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">kokonaisuudet</text>
 <polygon fill="none" stroke="#000000" points="294,-59.2 294,-81.2 393,-81.2 393,-59.2 294,-59.2"/>
 <text text-anchor="start" x="296.7258" y="-66.9" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">jsonb[2147483647]</text>
-<polygon fill="#ffffff" stroke="transparent" points="189,-40.2 189,-59.2 233,-59.2 233,-40.2 189,-40.2"/>
-<polygon fill="none" stroke="#000000" points="189,-40.2 189,-59.2 233,-59.2 233,-40.2 189,-40.2"/>
+<polygon fill="#ffffff" stroke="transparent" points="189,-40.2 189,-59.2 246,-59.2 246,-40.2 189,-40.2"/>
+<polygon fill="none" stroke="#000000" points="189,-40.2 189,-59.2 246,-59.2 246,-40.2 189,-40.2"/>
 <text text-anchor="start" x="192" y="-46.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">&lt; 1</text>
-<polygon fill="#ffffff" stroke="transparent" points="233,-40.2 233,-59.2 294,-59.2 294,-40.2 233,-40.2"/>
-<polygon fill="none" stroke="#000000" points="233,-40.2 233,-59.2 294,-59.2 294,-40.2 233,-40.2"/>
-<text text-anchor="start" x="258.6105" y="-46.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">9 rows</text>
+<polygon fill="#ffffff" stroke="transparent" points="246,-40.2 246,-59.2 294,-59.2 294,-40.2 246,-40.2"/>
+<polygon fill="none" stroke="#000000" points="246,-40.2 246,-59.2 294,-59.2 294,-40.2 246,-40.2"/>
+<text text-anchor="start" x="284.8862" y="-46.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000"> &#160;</text>
 <polygon fill="#ffffff" stroke="transparent" points="294,-40.2 294,-59.2 393,-59.2 393,-40.2 294,-40.2"/>
 <polygon fill="none" stroke="#000000" points="294,-40.2 294,-59.2 393,-59.2 393,-40.2 294,-40.2"/>
 <text text-anchor="start" x="374.4053" y="-46.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">0 &gt;</text>
@@ -77,14 +77,14 @@
 <text text-anchor="start" x="37" y="-176.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">secret</text>
 <polygon fill="none" stroke="#000000" points="8,-150.2 8,-169.2 138,-169.2 138,-150.2 8,-150.2"/>
 <text text-anchor="start" x="11" y="-156.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">...</text>
-<polygon fill="#ffffff" stroke="transparent" points="8,-131.2 8,-150.2 49,-150.2 49,-131.2 8,-131.2"/>
-<polygon fill="none" stroke="#000000" points="8,-131.2 8,-150.2 49,-150.2 49,-131.2 8,-131.2"/>
+<polygon fill="#ffffff" stroke="transparent" points="8,-131.2 8,-150.2 62,-150.2 62,-131.2 8,-131.2"/>
+<polygon fill="none" stroke="#000000" points="8,-131.2 8,-150.2 62,-150.2 62,-131.2 8,-131.2"/>
 <text text-anchor="start" x="11" y="-137.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000"> &#160;</text>
-<polygon fill="#ffffff" stroke="transparent" points="49,-131.2 49,-150.2 102,-150.2 102,-131.2 49,-131.2"/>
-<polygon fill="none" stroke="#000000" points="49,-131.2 49,-150.2 102,-150.2 102,-131.2 49,-131.2"/>
-<text text-anchor="start" x="66.6105" y="-137.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">0 rows</text>
-<polygon fill="#ffffff" stroke="transparent" points="102,-131.2 102,-150.2 138,-150.2 138,-131.2 102,-131.2"/>
-<polygon fill="none" stroke="#000000" points="102,-131.2 102,-150.2 138,-150.2 138,-131.2 102,-131.2"/>
+<polygon fill="#ffffff" stroke="transparent" points="62,-131.2 62,-150.2 95,-150.2 95,-131.2 62,-131.2"/>
+<polygon fill="none" stroke="#000000" points="62,-131.2 62,-150.2 95,-150.2 95,-131.2 62,-131.2"/>
+<text text-anchor="start" x="85.8862" y="-137.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000"> &#160;</text>
+<polygon fill="#ffffff" stroke="transparent" points="95,-131.2 95,-150.2 138,-150.2 138,-131.2 95,-131.2"/>
+<polygon fill="none" stroke="#000000" points="95,-131.2 95,-150.2 138,-150.2 138,-131.2 95,-131.2"/>
 <text text-anchor="start" x="119.4053" y="-137.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">1 &gt;</text>
 </a>
 </g>

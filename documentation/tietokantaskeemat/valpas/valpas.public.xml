@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?><database name="valpas" schema="public" type="PostgreSQL - 12.11 (Debian 12.11-1.pgdg110+1)">
+<?xml version="1.0" encoding="UTF-8"?><database name="valpas" schema="public" type="PostgreSQL - 15.2 (Debian 15.2-1.pgdg110+1)">
    <sequences>
       <sequence increment="1" name="oppivelvollisuuden_keskeytyshistoria_id_seq" startValue="1"/>
    </sequences>
    <tables>
-      <table name="ilmoitus" numRows="17" remarks="" schema="public" type="TABLE">
+      <table name="ilmoitus" remarks="" schema="public" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="uuid" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111">
             <child column="ilmoitus_uuid" foreignKey="ilmoitus_fk" implied="false" onDeleteCascade="true" schema="public" table="ilmoitus_lisätiedot"/>
             <child column="ilmoitus_uuid" foreignKey="ilmoitus_opiskeluoikeus_konteksti_fk" implied="false" onDeleteCascade="true" schema="public" table="ilmoitus_opiskeluoikeus_konteksti"/>
@@ -18,7 +18,7 @@
             <column ascending="true" name="uuid"/>
          </index>
       </table>
-      <table name="ilmoitus_lisätiedot" numRows="16" remarks="" schema="public" type="TABLE">
+      <table name="ilmoitus_lisätiedot" remarks="" schema="public" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="ilmoitus_uuid" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111">
             <parent column="uuid" foreignKey="ilmoitus_fk" implied="false" onDeleteCascade="true" schema="public" table="ilmoitus"/>
          </column>
@@ -28,7 +28,7 @@
             <column ascending="true" name="ilmoitus_uuid"/>
          </index>
       </table>
-      <table name="ilmoitus_opiskeluoikeus_konteksti" numRows="0" remarks="" schema="public" type="TABLE">
+      <table name="ilmoitus_opiskeluoikeus_konteksti" remarks="" schema="public" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="ilmoitus_uuid" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111">
             <parent column="uuid" foreignKey="ilmoitus_opiskeluoikeus_konteksti_fk" implied="false" onDeleteCascade="true" schema="public" table="ilmoitus"/>
          </column>
@@ -40,7 +40,7 @@
             <column ascending="true" name="opiskeluoikeus_oid"/>
          </index>
       </table>
-      <table name="opiskeluoikeus_lisätiedot" numRows="0" remarks="" schema="public" type="TABLE">
+      <table name="opiskeluoikeus_lisätiedot" remarks="" schema="public" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="oppija_oid" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="opiskeluoikeus_oid" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="oppilaitos_oid" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
@@ -54,7 +54,7 @@
             <column ascending="true" name="oppilaitos_oid"/>
          </index>
       </table>
-      <table name="oppivelvollisuuden_keskeytys" numRows="8" remarks="" schema="public" type="TABLE">
+      <table name="oppivelvollisuuden_keskeytys" remarks="" schema="public" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="uuid" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111">
             <child column="ov_keskeytys_uuid" foreignKey="oppivelvollisuuden_keskeytyshistoria_ov_keskeytys_uuid_fkey" implied="false" onDeleteCascade="false" schema="public" table="oppivelvollisuuden_keskeytyshistoria"/>
          </column>
@@ -70,7 +70,7 @@
             <column ascending="true" name="uuid"/>
          </index>
       </table>
-      <table name="oppivelvollisuuden_keskeytyshistoria" numRows="0" remarks="" schema="public" type="TABLE">
+      <table name="oppivelvollisuuden_keskeytyshistoria" remarks="" schema="public" type="TABLE">
          <column autoUpdated="true" defaultValue="nextval('oppivelvollisuuden_keskeytyshistoria_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="serial" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="ov_keskeytys_uuid" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111">
             <parent column="uuid" foreignKey="oppivelvollisuuden_keskeytyshistoria_ov_keskeytys_uuid_fkey" implied="false" onDeleteCascade="false" schema="public" table="oppivelvollisuuden_keskeytys"/>
@@ -89,7 +89,7 @@
             <column ascending="true" name="id"/>
          </index>
       </table>
-      <table name="oppivelvollisuudesta_vapautetut" numRows="0" remarks="" schema="public" type="TABLE">
+      <table name="oppivelvollisuudesta_vapautetut" remarks="" schema="public" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="oppija_oid" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="virkailija_oid" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="kunta_koodiarvo" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
@@ -101,7 +101,7 @@
             <column ascending="true" name="mitatoity"/>
          </index>
       </table>
-      <table name="schema_version" numRows="0" remarks="" schema="public" type="TABLE">
+      <table name="schema_version" remarks="" schema="public" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="version_rank" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="installed_rank" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="version" nullable="false" remarks="" size="50" type="varchar" typeCode="12"/>
