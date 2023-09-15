@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { usePeruste } from '../../appstate/peruste'
 import { t } from '../../i18n/i18n'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { CommonProps } from '../CommonProps'
@@ -56,8 +57,8 @@ function useTutkinnonPerusteet(diaariNumero: string) {
 }
 
 export const PerusteEdit: React.FC<PerusteEditProps> = (props) => {
-  const perusteet = useTutkinnonPerusteet(props.diaariNumero)
-  const mappedPerusteet: OptionList<string> = perusteet.map((p) => ({
+  const perusteet = usePeruste(props.diaariNumero)
+  const mappedPerusteet: OptionList<string> = (perusteet || []).map((p) => ({
     key: p.koodiarvo,
     label: `${p.koodiarvo} ${t(p.nimi)}`,
     value: p.koodiarvo
