@@ -1,9 +1,18 @@
 const Sequencer = require("@jest/test-sequencer").default
+const path = require("path")
 
 class ChunkingSequencer extends Sequencer {
   sort(tests) {
     const chunking = (process.env.TEST_CHUNK || "").match(/(\d+)\/(\d+)/)
-    const sortedTests = super.sort(tests)
+    const sortablePath = (test) => {
+      // Take only last 4 parts of the full file path (starting from 'valpas-web') to avoid a dependency on the
+      // full directory path that might be different on different test runners.
+      return test.path.split(path.sep).slice(-4).join(path.sep)
+    }
+
+    const sortedTests = tests.sort((a, b) => {
+      return sortablePath(a).localeCompare(sortablePath(b))
+    })
 
     if (chunking) {
       const chunkIndex = parseInt(chunking[1], 10) - 1
