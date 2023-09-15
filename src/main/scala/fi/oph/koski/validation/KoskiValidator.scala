@@ -1114,11 +1114,13 @@ class KoskiValidator(
     suoritus: LukionPäätasonSuoritus2019,
     oppilaitosOid: Option[Organisaatio.Oid]
   ): Boolean = {
-    (sisältääErityisenTutkinnonSuorittamisen(suoritus), suoritus.oppimäärä.koodiarvo) match {
-      case (false, "nuortenops") => lukio2019TarpeeksiOsasuorituksia(suoritus.osasuoritukset.getOrElse(List()), 150, 20)
-      case (false, "aikuistenops") if LukionYhteisetValidaatiot.laajuusValidoitavaOppilaitoksessa(oppilaitosOid) =>
-        lukio2019TarpeeksiOsasuorituksia(suoritus.osasuoritukset.getOrElse(List()), 88, 0)
-      case _ => suoritus.osasuoritusLista.nonEmpty
+    (sisältääErityisenTutkinnonSuorittamisen(suoritus), sisältääOmanÄidinkielenOpintojenSuorituksia(suoritus), suoritus.oppimäärä.koodiarvo) match {
+      case (false, false, "nuortenops")
+        => lukio2019TarpeeksiOsasuorituksia(suoritus.osasuoritukset.getOrElse(List()), 150, 20)
+      case (false, false, "aikuistenops") if LukionYhteisetValidaatiot.laajuusValidoitavaOppilaitoksessa(oppilaitosOid)
+        => lukio2019TarpeeksiOsasuorituksia(suoritus.osasuoritukset.getOrElse(List()), 88, 0)
+      case _
+        => suoritus.osasuoritusLista.nonEmpty
     }
   }
 
@@ -1132,6 +1134,12 @@ class KoskiValidator(
       case _ => false
     }
   }
+
+  private def sisältääOmanÄidinkielenOpintojenSuorituksia(suoritus: LukionPäätasonSuoritus2019) =
+    suoritus match {
+      case s: LukionOppimääränSuoritus2019 => s.omanÄidinkielenOpinnot.exists(_.osasuoritukset.exists(_.nonEmpty))
+      case _ => false
+    }
 
   private def lukio2019TarpeeksiOsasuorituksia(osasuoritukset: List[LukionOppimääränOsasuoritus2019], minimiLaajuus: Double, minimiValinnaistenLaajuus: Double): Boolean = {
     val kaikki = osasuoritukset.flatMap(_.osasuoritusLista.map(_.koulutusmoduuli.laajuus.arvo))

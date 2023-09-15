@@ -1,9 +1,15 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 15.9.2023
+
+- LOPS 2019 -mukaista lukion oppimäärän suorituksen kokonaislaajuutta ei validoida, jos oppimäärän suorituksesta löytyy oman äidinkielen suorituksia.
+
 ## 25.8.2023
+
 - Helsingin Eurooppalaisen koulun vuosiluokalle S5 sallitaan maksuttomuustiedon lisääminen
 
 ## 17.8.2023
+
 - Pidennetyn oppivelvollisuuden ja erityisen tuen ajanjaksojen validaatiota tarkennettu terminaalitilaisen opiskeluoikeuden osalta.
 
 ## 30.6.2023
@@ -11,6 +17,7 @@
 - IB-oppiaineiden arvioinneissa kaikki arviointi-haaraan siirretyt arvioinnit katsotaan päättöarvioinneiksi, vaikka niissä olisi predicted-kentän arvona true.
 
 ## 21.06.2023
+
 - TUVA-validointiin muutoksia 1.8.2023 alkaen:
   - Valmistunut-tilan voi jatkossa merkitä, kun opiskeluoikeudella on Opiskelu- ja urasuunnittelutaidot - koulutuksen osan suoritus, jonka laajuus on vähintään kaksi viikkoa.
   - Kaikilla muilla koulutuksen osilla poislukien Opiskelu- ja urasuunnittelutaidot ei ole enää määriteltyä vähimmäislaajuutta. Enimmäislaajuudet säilyvät ennallaan.

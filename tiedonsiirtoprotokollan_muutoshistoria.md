@@ -1,4 +1,4 @@
-## xx.09.2023
+## 14.09.2023
 
 - Lisätty uuden opetussuunnitelman mukaisen lukion oppimäärän oman äidinkielen opetuksen alle siirrettävät osasuoritukset.
 
