@@ -251,6 +251,7 @@ describe("Oppijakohtainen näkymä 1/2", () => {
           toimipiste: "Helsingin eurooppalainen koulu",
           ryhmä: "S5A",
           alkamispäivä: "15.8.2003",
+          perusopetusSuoritettu: "31.5.2021",
         })
       )
     )
