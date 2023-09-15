@@ -75,7 +75,6 @@ const aapajaoenKouluTableContent = `
   Kahdella-oppija-oidilla Valpas                          | 15.2.2005   | 9C | 29.5.2021  | Hakenut open_in_new  | Varasija: Ressun lukio      | –                         | doneJyväskylän normaalikoulu, Lukiokoulutus                                |
   Kahdella-oppija-oidilla-ilmo Valpas                     | 4.6.2005    | 9C | 29.5.2021  | Ei hakemusta         | –                           | –                         | doneJyväskylän normaalikoulu, Lukiokoulutus                                |
   KahdenKoulunYsi-ilmo Valpas                             | 21.11.2004  | 9C | 29.5.2021  | Ei hakemusta         | –                           | –                         | –                                                                          |
-  Muita-opiskeluoikeuksia Valpas                          | 6.8.2007    | 9C | 29.5.2021  | Ei hakemusta         | –                           | –                         | –                                                                          |
 `
 
 const jklHakutilannePath = hakutilannePathWithOrg.href("/virkailija", {
