@@ -40,7 +40,29 @@ import { VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenSuoritus2022 }
 import { VSTKotoutumiskoulutus2022 } from '../types/fi/oph/koski/schema/VSTKotoutumiskoulutus2022'
 import { KoodiarvotOf } from '../util/koodisto'
 import { assertNever } from '../util/selfcare'
-import { CreateVSTArviointi } from './typeguards'
+import { CreateVSTArviointi, VSTOsasuoritusArvioinnilla } from './typeguards'
+
+function isHyväksytty(
+  arvosana: NonNullable<
+    VSTOsasuoritusArvioinnilla['arviointi']
+  >[number]['arvosana']
+) {
+  const { koodistoUri, koodiarvo } = arvosana
+  switch (koodistoUri) {
+    case 'arviointiasteikkovstjotpa':
+    case 'arviointiasteikkovstvapaatavoitteinen':
+      // Oletuksena hyväksytty
+      return true
+    case 'arviointiasteikkovst':
+      return (
+        koodistoUri === 'arviointiasteikkovst' && koodiarvo === 'hyvaksytty'
+      )
+    case 'arviointiasteikkokehittyvankielitaidontasot':
+      return true
+    default:
+      return assertNever(koodistoUri)
+  }
+}
 
 /**
  * Selvittää osasuorituksen tyypin perusteella, minkälaisen arviointiprototypen käyttöliittymälle tarjotaan.
@@ -49,100 +71,72 @@ export const createVstArviointi: CreateVSTArviointi = (o) => (arvosana) => {
   const c = o.$class
   switch (c) {
     case VSTKotoutumiskoulutuksenKieliJaViestintäosaamisenSuoritus2022.className:
-      return VSTKotoutumiskoulutuksenOsasuorituksenArviointi2022({
-        arvosana,
-        päivä: todayISODate()
-      })
     case VSTKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus2022.className:
-      return VSTKotoutumiskoulutuksenOsasuorituksenArviointi2022({
-        arvosana,
-        päivä: todayISODate()
-      })
     case VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenSuoritus2022.className:
       return VSTKotoutumiskoulutuksenOsasuorituksenArviointi2022({
         arvosana,
-        päivä: todayISODate()
+        päivä: todayISODate(),
+        hyväksytty: isHyväksytty(arvosana)
       })
     case VapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus.className:
       return VapaanSivistystyöJotpaKoulutuksenArviointi({
         arvosana,
-        päivä: todayISODate()
+        päivä: todayISODate(),
+        hyväksytty: isHyväksytty(arvosana)
       })
     case VapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus.className:
       return LukutaitokoulutuksenArviointi({
         arvosana,
         päivä: todayISODate(),
-        // TODO: Tarkista, onko ok
         taitotaso: Koodistokoodiviite({
           koodistoUri: 'arviointiasteikkokehittyvankielitaidontasot',
           koodiarvo: 'A1.1'
-        })
+        }),
+        hyväksytty: isHyväksytty(arvosana)
       })
     case VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenSuoritus.className:
       return VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenArviointi(
         {
           arvosana,
-          päivä: todayISODate()
+          päivä: todayISODate(),
+          hyväksytty: isHyväksytty(arvosana)
         }
       )
     case VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOhjauksenSuoritus.className:
-      return OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi(
-        {
-          arvosana,
-          päivä: todayISODate()
-        }
-      )
     case VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenOpintojenSuoritus.className:
-      return OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi(
-        {
-          arvosana,
-          päivä: todayISODate()
-        }
-      )
     case VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenSuoritus.className:
       return OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi(
         {
           arvosana,
-          päivä: todayISODate()
+          päivä: todayISODate(),
+          hyväksytty: isHyväksytty(arvosana)
         }
       )
     case VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus.className:
       return VapaanSivistystyöVapaatavoitteisenKoulutuksenArviointi({
         arvosana,
-        päivä: todayISODate()
+        päivä: todayISODate(),
+        hyväksytty: isHyväksytty(arvosana)
       })
     case VSTKotoutumiskoulutuksenKieliJaViestintäosaamisenOsasuoritus.className:
       return VSTKotoutumiskoulutuksenKieliJaViestintäosaamisenArviointi({
         arvosana,
-        arviointipäivä: todayISODate()
+        arviointipäivä: todayISODate(),
+        hyväksytty: isHyväksytty(arvosana)
       })
 
     case OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus.className:
-      return OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi(
-        {
-          päivä: todayISODate()
-        }
-      )
     case MuuallaSuoritettuOppivelvollisilleSuunnatunVapaanSivistystyönOpintojenSuoritus.className:
-      return OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi(
-        {
-          päivä: todayISODate()
-        }
-      )
     case VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenTyöelämäJakso.className:
-      return OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi(
-        {
-          päivä: todayISODate()
-        }
-      )
     case VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus.className:
+    case VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataidot.className:
       return OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi(
         {
-          päivä: todayISODate()
+          päivä: todayISODate(),
+          arvosana,
+          hyväksytty: isHyväksytty(arvosana)
         }
       )
-    case VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataidot.className:
-      throw new Error(`Not yet implemented: ${c}`)
     default:
       console.error(
         `No arviointi component available for the following class: ${c}`

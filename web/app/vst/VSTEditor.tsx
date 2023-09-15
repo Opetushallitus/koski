@@ -820,7 +820,6 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
           addNewOsasuoritusView={AddNewVSTOsasuoritusView}
           addNewOsasuoritusViewProps={{
             form,
-            createOsasuoritus,
             createOsasuoritusV2,
             level: rootLevel,
             // Polku, johon uusi osasuoritus lisätään. Polun tulee sisältää "osasuoritukset"-property.
@@ -854,7 +853,6 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
                 level: rootLevel,
                 form,
                 allOsasuorituksetOpen: rootLevelOsasuoritusOpen,
-                createOsasuoritus: createOsasuoritus,
                 createOsasuoritusV2: createOsasuoritusV2,
                 osasuorituksetExpandedState: osasuorituksetOpenState,
                 osasuoritusIndex,

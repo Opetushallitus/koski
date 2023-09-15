@@ -1,4 +1,3 @@
-import { nonEmptyArray } from 'fp-ts'
 import { append, isNonEmpty } from 'fp-ts/lib/Array'
 import React, { useCallback, useMemo } from 'react'
 import { DateEdit } from '../components-v2/controls/DateField'

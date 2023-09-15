@@ -43,7 +43,6 @@ import {
   VSTOsasuoritusOsasuorituksilla,
   isVSTOsasuoritusArvioinnilla,
   isVSTOsasuoritusJollaOsasuorituksia,
-  VSTArviointi,
   isVSTKoulutusmoduuliKuvauksella,
   isTunnustettuVSTOsasuoritus,
   hasPäiväInArviointi
@@ -86,12 +85,6 @@ import {
   isVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOhjauksenSuoritus,
   VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOhjauksenSuoritus
 } from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenOhjauksenSuoritus'
-import { isLukutaitokoulutuksenArviointi } from '../types/fi/oph/koski/schema/LukutaitokoulutuksenArviointi'
-import { isOppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi } from '../types/fi/oph/koski/schema/OppivelvollisilleSuunnatunVapaanSivistystyonOpintokokonaisuudenArviointi'
-import { isVapaanSivistystyöJotpaKoulutuksenArviointi } from '../types/fi/oph/koski/schema/VapaanSivistystyoJotpaKoulutuksenArviointi'
-import { isVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenArviointi } from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenArviointi'
-import { isVapaanSivistystyöVapaatavoitteisenKoulutuksenArviointi } from '../types/fi/oph/koski/schema/VapaanSivistystyoVapaatavoitteisenKoulutuksenArviointi'
-import { isVSTKotoutumiskoulutuksenOsasuorituksenArviointi2022 } from '../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenOsasuorituksenArviointi2022'
 import { isVapaanSivistystyönJotpaKoulutuksenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonJotpaKoulutuksenSuoritus'
 import { isVapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonJotpaKoulutuksenOsasuorituksenSuoritus'
 import {
@@ -118,14 +111,11 @@ import {
   OsasuorituksetExpandedState,
   SetOsasuoritusOpen
 } from './../osasuoritus/hooks'
+import { VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus'
 
 type AddNewVSTOsasuoritusViewProps = {
   level: number
   form: FormModel<VapaanSivistystyönOpiskeluoikeus>
-  createOsasuoritus: (
-    path: FormOptic<VapaanSivistystyönOpiskeluoikeus, any>,
-    tunniste: PaikallinenKoodi | Koodistokoodiviite
-  ) => void
   createOsasuoritusV2: (
     path: FormOptic<VapaanSivistystyönOpiskeluoikeus, any>,
     osasuoritus: VSTOsasuoritus
@@ -145,8 +135,8 @@ export const AddNewVSTOsasuoritusView: React.FC<
     () => getValue(props.pathWithOsasuoritukset)(props.form.state),
     [props.form.state, props.pathWithOsasuoritukset]
   )
-  const { pathWithOsasuoritukset, createOsasuoritus, createOsasuoritusV2 } =
-    props
+  const { pathWithOsasuoritukset, createOsasuoritusV2 } = props
+  /*
   const onKoodistoSelect = useCallback(
     (koodi: Koodistokoodiviite<string, string>) => {
       if (pathWithOsasuoritukset !== undefined) {
@@ -157,6 +147,7 @@ export const AddNewVSTOsasuoritusView: React.FC<
     },
     [createOsasuoritus, pathWithOsasuoritukset]
   )
+  */
   const onPaikallinenKoodistoSelectV2 = useCallback(
     (osasuoritus: VSTOsasuoritus) => {
       if (pathWithOsasuoritukset !== undefined) {
@@ -167,7 +158,7 @@ export const AddNewVSTOsasuoritusView: React.FC<
     },
     [createOsasuoritusV2, pathWithOsasuoritukset]
   )
-  // TODO: Refaktoroi pois ja korvaa onPaikallinenKoodistoSelectV2:lla
+  /*
   const onPaikallinenKoodistoSelect = useCallback(
     (koodi: PaikallinenKoodi) => {
       if (pathWithOsasuoritukset !== undefined) {
@@ -178,6 +169,7 @@ export const AddNewVSTOsasuoritusView: React.FC<
     },
     [createOsasuoritus, pathWithOsasuoritukset]
   )
+  */
   const onRemoveKoodisto = useCallback(
     (_tunniste: Koodistokoodiviite<string, string>) => {
       console.log('TODO: onRemove')
@@ -306,7 +298,20 @@ export const AddNewVSTOsasuoritusView: React.FC<
         ) && (
           <PaikallinenOsasuoritusSelect
             addNewText={t('Lisää valinnaiset')}
-            onSelect={onPaikallinenKoodistoSelect}
+            onSelect={(p) =>
+              onPaikallinenKoodistoSelectV2(
+                VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus(
+                  {
+                    koulutusmoduuli: {
+                      tunniste: p,
+                      $class:
+                        'fi.oph.koski.schema.VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOpintojenOsasuoritus',
+                      kuvaus: defaultFinnishKuvaus
+                    }
+                  }
+                )
+              )
+            }
             onRemove={onRemovePaikallinenKoodisto}
           />
         )}
@@ -561,10 +566,6 @@ type VSTOsasuoritusPropertiesProps = {
   osasuoritusOpenState: OsasuorituksetExpandedState
   form: FormModel<VapaanSivistystyönOpiskeluoikeus>
   osasuoritusPath: FormOptic<VapaanSivistystyönOpiskeluoikeus, VSTOsasuoritus>
-  createOsasuoritus: (
-    path: FormOptic<VapaanSivistystyönPäätasonSuoritus, any>,
-    data: any
-  ) => void
   createOsasuoritusV2: (
     path: FormOptic<VapaanSivistystyönPäätasonSuoritus, any>,
     osasuoritus: VSTOsasuoritus
@@ -585,10 +586,6 @@ interface OsasuoritusToTableRowParams {
   osasuorituksetExpandedState: OsasuorituksetExpandedState
   setOsasuoritusOpen: SetOsasuoritusOpen
   allOsasuorituksetOpen: boolean
-  createOsasuoritus: (
-    path: FormOptic<VapaanSivistystyönPäätasonSuoritus, any>,
-    data: any
-  ) => void
   createOsasuoritusV2: (
     path: FormOptic<VapaanSivistystyönPäätasonSuoritus, any>,
     osasuoritus: VSTOsasuoritus
@@ -601,7 +598,6 @@ export const osasuoritusToTableRow = ({
   osasuoritusIndex,
   form,
   level,
-  createOsasuoritus,
   createOsasuoritusV2,
   allOsasuorituksetOpen,
   osasuorituksetExpandedState,
@@ -743,7 +739,6 @@ export const osasuoritusToTableRow = ({
         form={form}
         // @ts-expect-error Korjaa tyypitys
         osasuoritusPath={osasuoritus}
-        createOsasuoritus={createOsasuoritus}
         createOsasuoritusV2={createOsasuoritusV2}
       />
     )
@@ -936,7 +931,6 @@ export const VSTOsasuoritusProperties: React.FC<
           addNewOsasuoritusViewProps={{
             form: props.form,
             level: props.level + 1,
-            createOsasuoritus: props.createOsasuoritus,
             createOsasuoritusV2: props.createOsasuoritusV2,
             // @ts-expect-error TODO: Tyypitä fiksusti
             pathWithOsasuoritukset: props.osasuoritusPath
@@ -958,7 +952,6 @@ export const VSTOsasuoritusProperties: React.FC<
                 form: props.form,
                 osasuoritusPath: props.osasuoritusPath,
                 allOsasuorituksetOpen: props.allOpen,
-                createOsasuoritus: props.createOsasuoritus,
                 createOsasuoritusV2: props.createOsasuoritusV2,
                 // @ts-expect-error
                 suoritusPath: props.osasuoritusPath,
