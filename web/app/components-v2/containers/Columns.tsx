@@ -1,17 +1,18 @@
-import React from 'react'
+import React, { PropsWithChildren } from 'react'
 import { nonNull } from '../../util/fp/arrays'
 import { mapRecordValues } from '../../util/fp/objects'
 import { common, CommonProps, testId } from '../CommonProps'
 
 export const COLUMN_COUNT = 24
 
-export type ColumnRowProps = CommonProps<{
-  component?: React.ComponentClass<CommonProps> | string
-  children?: React.ReactNode
-  indent?: number
-  valign?: 'top' | 'center' | 'bottom'
-  align?: 'left' | 'center' | 'right'
-}>
+export type ColumnRowProps = CommonProps<
+  PropsWithChildren<{
+    component?: React.ComponentClass<CommonProps> | string
+    indent?: number
+    valign?: 'top' | 'center' | 'bottom'
+    align?: 'left' | 'center' | 'right'
+  }>
+>
 
 export const ColumnRow = (props: ColumnRowProps) => {
   const Component = props.component || 'section'
@@ -38,15 +39,16 @@ export type ResponsiveValueObj<T> = {
 export type ResponsiveValueTarget = keyof ResponsiveValueObj<any>
 export type ResponsiveValue<T> = T | ResponsiveValueObj<T>
 
-export type ColumnProps = CommonProps<{
-  component?: React.ComponentClass<CommonProps> | string
-  children?: React.ReactNode
-  span?: ResponsiveValue<number>
-  start?: ResponsiveValue<number>
-  row?: number
-  valign?: ResponsiveValue<'top' | 'center' | 'bottom'>
-  align?: ResponsiveValue<'left' | 'center' | 'right'>
-}>
+export type ColumnProps = CommonProps<
+  PropsWithChildren<{
+    component?: React.ComponentClass<CommonProps> | string
+    span?: ResponsiveValue<number>
+    start?: ResponsiveValue<number>
+    row?: number
+    valign?: ResponsiveValue<'top' | 'center' | 'bottom'>
+    align?: ResponsiveValue<'left' | 'center' | 'right'>
+  }>
+>
 
 export const Column = (props: ColumnProps) => {
   const Component = props.component || 'div'

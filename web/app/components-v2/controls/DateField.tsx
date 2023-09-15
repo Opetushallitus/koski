@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useEffect, useCallback, useMemo, useState } from 'react'
 import DayPickerInput, { DateUtils } from 'react-day-picker'
 import {
   formatFinnishDate,
@@ -105,6 +105,11 @@ const useDateEditState = (props: DateEditProps) => {
 
   const finnishDate = useMemo(() => ISO2FinnishDate(props.value), [props.value])
   const [internalFinnishDate, setInternalFinnishDate] = useState(finnishDate)
+  useEffect(() => {
+    if (finnishDate !== internalFinnishDate) {
+      setInternalFinnishDate(finnishDate)
+    }
+  }, [finnishDate, internalFinnishDate])
   const internalDate = useMemo(
     () =>
       internalFinnishDate ? parseFinnishDate(internalFinnishDate) : undefined,
