@@ -1,18 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { usePeruste } from '../../appstate/peruste'
+import { Peruste, usePeruste } from '../../appstate/peruste'
 import { t } from '../../i18n/i18n'
-import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { CommonProps } from '../CommonProps'
 import { OptionList, Select } from '../controls/Select'
 import { FieldViewerProps, FieldEditorProps } from '../forms/FormField'
 
 type PerusteViewProps = CommonProps<FieldViewerProps<string | undefined, {}>>
-
-// TODO: Tyypitys paremmaksi
-type Peruste = Omit<
-  Koodistokoodiviite<string, string>,
-  '$class' | 'koodistoVersio' | 'lyhytNimi'
->
 
 // TODO: Perusteen linkitys
 export const PerusteView: React.FC<PerusteViewProps> = (props) => {

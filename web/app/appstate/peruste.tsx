@@ -11,7 +11,7 @@ import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodivi
 import { nonNull } from '../util/fp/arrays'
 import { fetchPeruste } from '../util/koskiApi'
 
-type Peruste = Omit<
+export type Peruste = Omit<
   Koodistokoodiviite<string, string>,
   '$class' | 'koodistoVersio' | 'lyhytNimi'
 >
@@ -22,15 +22,15 @@ type Peruste = Omit<
 export function usePeruste(diaariNumero: string): Peruste[] | null {
   const perusteet = usePerusteet(diaariNumero)
 
-  return useMemo(() => {
-    return perusteet[diaariNumero] ? perusteet[diaariNumero] : null
-  }, [diaariNumero, perusteet])
+  return useMemo(
+    () => (perusteet[diaariNumero] ? perusteet[diaariNumero] : null),
+    [diaariNumero, perusteet]
+  )
 }
 
 /**
- * Palauttaa yhden tai useamman koodiston koodiarvot.
+ * Palauttaa yhden tai useamman diaarinumeron perusteet.
  *
- * @returns KoodistokoodiviiteKoodistonNimellä[] kun yksikin koodisto on saatu ladattua, muuten null.
  */
 const usePerusteet = (...diaariNumerot: Array<string | null | undefined>) => {
   const { perusteet, loadPerusteet } = useContext(PerusteContext)
@@ -65,9 +65,7 @@ const PerusteContext = React.createContext<PerusteContextValue>({
   loadPerusteet: () => {}
 })
 
-export type PerusteProviderProps = {
-  children: React.ReactNode
-}
+export type PerusteProviderProps = React.PropsWithChildren
 
 export type PerusteRecord = Record<string, Peruste[] | typeof Loading>
 

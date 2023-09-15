@@ -155,9 +155,7 @@ const KoodistoContext = React.createContext<KoodistoContextValue>({
   loadKoodistot: () => {}
 })
 
-export type KoodistoProviderProps = {
-  children: React.ReactNode
-}
+export type KoodistoProviderProps = React.PropsWithChildren
 
 export type KoodistoRecord = {
   [URI in string]: KoodistokoodiviiteKoodistonNimellä<URI>[] | typeof Loading
