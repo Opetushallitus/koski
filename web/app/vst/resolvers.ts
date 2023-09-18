@@ -261,16 +261,6 @@ export const laajuusOpintopisteissa = (arvo: number) =>
     arvo,
     yksikkö: Koodistokoodiviite({
       koodiarvo: '2',
-      nimi: Finnish({
-        fi: 'opintopistettä',
-        sv: 'studiepoäng',
-        en: 'ECTS credits'
-      }),
-      lyhytNimi: Finnish({
-        fi: 'op',
-        sv: 'sp',
-        en: 'ECTS cr'
-      }),
       koodistoUri: 'opintojenlaajuusyksikko'
     })
   })
