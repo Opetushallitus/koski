@@ -253,22 +253,25 @@ export const vstSuorituksenNimi = (
   return localize(`${t(titles[suoritus.tyyppi.koodiarvo])}`)
 }
 
-export const defaultLaajuusOpintopisteissa = LaajuusOpintopisteissä({
-  arvo: 0,
-  yksikkö: Koodistokoodiviite({
-    koodiarvo: '2',
-    nimi: Finnish({
-      fi: 'opintopistettä',
-      sv: 'studiepoäng',
-      en: 'ECTS credits'
-    }),
-    lyhytNimi: Finnish({
-      fi: 'op',
-      sv: 'sp',
-      en: 'ECTS cr'
-    }),
-    koodistoUri: 'opintojenlaajuusyksikko'
+export const laajuusOpintopisteissa = (arvo: number) =>
+  LaajuusOpintopisteissä({
+    arvo,
+    yksikkö: Koodistokoodiviite({
+      koodiarvo: '2',
+      nimi: Finnish({
+        fi: 'opintopistettä',
+        sv: 'studiepoäng',
+        en: 'ECTS credits'
+      }),
+      lyhytNimi: Finnish({
+        fi: 'op',
+        sv: 'sp',
+        en: 'ECTS cr'
+      }),
+      koodistoUri: 'opintojenlaajuusyksikko'
+    })
   })
-})
+
+export const defaultLaajuusOpintopisteissa = laajuusOpintopisteissa(0)
 
 export const defaultFinnishKuvaus = Finnish({ fi: '' })
