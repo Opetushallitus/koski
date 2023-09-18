@@ -110,24 +110,6 @@ describe("Suorittamisen valvonta -näkymä", () => {
     )
   })
 
-  it("Näyttää listan oppijoista Jyväskylän normaalikoulun käyttäjälle", async () => {
-    await loginAs(suorittaminenListaPath, "valpas-jkl-normaali")
-    await urlIsEventually(pathToUrl(jklSuorittaminenPath))
-
-    await resetMockData("2021-12-12")
-    await goToLocation(jklSuorittaminenPath)
-
-    await textEventuallyEquals(
-      ".card__header",
-      jklNormaalikouluSuorittaminenTableHead
-    )
-    await dataTableEventuallyEquals(
-      ".suorittaminen",
-      jklNormaalikouluSuorittaminenTableContent,
-      "|"
-    )
-  })
-
   it("Näyttää listan oppijoista International schoolin käyttäjälle", async () => {
     await loginAs(suorittaminenListaPath, "valpas-int-school")
     await urlIsEventually(pathToUrl(internationalSchoolSuorittaminenPath))
@@ -443,6 +425,27 @@ describe("Suorittamisen valvonta -näkymä", () => {
       stadinAmmattiopistoSuorittaminen20230531TableContent,
       "|"
     )
+  })
+
+  describe("Kun tarkastelupäivää vaihdetaan", () => {
+    it("Näyttää listan oppijoista Jyväskylän normaalikoulun käyttäjälle", async () => {
+      await loginAs(suorittaminenListaPath, "valpas-jkl-normaali")
+      await urlIsEventually(pathToUrl(jklSuorittaminenPath))
+
+      await resetMockData("2021-12-12")
+
+      await goToLocation(jklSuorittaminenPath)
+
+      await textEventuallyEquals(
+        ".card__header",
+        jklNormaalikouluSuorittaminenTableHead
+      )
+      await dataTableEventuallyEquals(
+        ".suorittaminen",
+        jklNormaalikouluSuorittaminenTableContent,
+        "|"
+      )
+    })
   })
 })
 
