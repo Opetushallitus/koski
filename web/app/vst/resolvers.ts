@@ -43,10 +43,13 @@ import { assertNever } from '../util/selfcare'
 import { CreateVSTArviointi, VSTOsasuoritusArvioinnilla } from './typeguards'
 
 function isHyväksytty(
-  arvosana: NonNullable<
-    VSTOsasuoritusArvioinnilla['arviointi']
-  >[number]['arvosana']
+  arvosana:
+    | NonNullable<VSTOsasuoritusArvioinnilla['arviointi']>[number]['arvosana']
+    | null
 ) {
+  if (arvosana === null) {
+    return false
+  }
   const { koodistoUri, koodiarvo } = arvosana
   switch (koodistoUri) {
     case 'arviointiasteikkovstjotpa':
