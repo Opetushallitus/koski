@@ -155,7 +155,10 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       """),
         nonEmptyOppijaOids.map(oids =>
           sql"""
-  -- CTE: jos pyydettiin vain yhtä oppijaa, hae hänen master oid:nsa
+  -- ********************************************************************************************************
+  -- CTE: OPPIJA
+  --      jos pyydettiin vain yhtä oppijaa, hae hänen master oid:nsa
+  -- ********************************************************************************************************
   pyydetty_oppija AS (
     SELECT r_henkilo.master_oid
     FROM r_henkilo
@@ -164,7 +167,10 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       """),
         Some(
           sql"""
-  -- CTE: Kaikki opiskeluoikeudet, jotka ovat oppivelvollisuuden suorittamiseen kelpaavia
+  -- ********************************************************************************************************
+  -- CTE: KAIKKI OPISKELUOIKEUDET
+  --      jotka ovat oppivelvollisuuden suorittamiseen kelpaavia
+  -- ********************************************************************************************************
   ov_kelvollinen_opiskeluoikeus AS (
     SELECT
       DISTINCT r_opiskeluoikeus.opiskeluoikeus_oid,
@@ -202,7 +208,9 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         },
           Some(sql"""
   )
-  -- CTE: perusopetuksen opiskeluoikeudet, joiden hakeutumista oppilaitoksella on oikeus valvoa tällä hetkellä
+  -- ********************************************************************************************************
+  -- CTE: PERUSOPETUS HAKEUTUMISVALVOTTAVAT
+  -- ********************************************************************************************************
   , hakeutumisvalvottava_peruskoulun_opiskeluoikeus AS (
     SELECT
       DISTINCT ov_kelvollinen_opiskeluoikeus.opiskeluoikeus_oid,
@@ -351,6 +359,9 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         )
       )
   )
+  -- ********************************************************************************************************
+  -- CTE: PERUSKOULUUN VALMISTAVA HAKEUTUMISVALVOTTAVAT
+  -- ********************************************************************************************************
   , hakeutumisvalvottava_peruskouluun_valmistava_opiskeluoikeus AS (
     SELECT
       DISTINCT ov_kelvollinen_opiskeluoikeus.opiskeluoikeus_oid,
@@ -399,6 +410,9 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         )
       )
   )
+  -- ********************************************************************************************************
+  -- CTE: INTERNATIONAL SCHOOL HAKEUTUMISVALVOTTAVAT
+  -- ********************************************************************************************************
   , hakeutumisvalvottava_international_schoolin_opiskeluoikeus AS (
     SELECT
       DISTINCT ov_kelvollinen_opiskeluoikeus.opiskeluoikeus_oid,
@@ -523,6 +537,9 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         )
       )
   )
+  -- ********************************************************************************************************
+  -- CTE: EUROPEAN SCHOOL OF HELSINKI HAKEUTUMISVALVOTTAVAT
+  -- ********************************************************************************************************
   , hakeutumisvalvottava_esh_opiskeluoikeus AS (
     SELECT
       DISTINCT ov_kelvollinen_opiskeluoikeus.opiskeluoikeus_oid,
@@ -669,6 +686,9 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       -- Ja oppilas ei jatka opiskelua ESH:ssä
       AND esh_perusopetuksen_jalkeisia_suorituksia.loytyi IS NULL
   )
+  -- ********************************************************************************************************
+  -- CTE: NIVELVAIHE HAKEUTUMISVALVOTTAVAT
+  -- ********************************************************************************************************
   , hakeutumisvalvottava_nivelvaiheen_opiskeluoikeus AS (
     SELECT
       DISTINCT ov_kelvollinen_opiskeluoikeus.opiskeluoikeus_oid,
@@ -786,6 +806,9 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         )
       )
   )
+  -- ********************************************************************************************************
+  -- CTE: HAKEUTUMISVALVOTTAVAT YHDESSÄ
+  -- ********************************************************************************************************
   , hakeutumisvalvottava_opiskeluoikeus AS (
     SELECT
       *
@@ -812,8 +835,9 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
     FROM
       hakeutumisvalvottava_nivelvaiheen_opiskeluoikeus
   )
-  -- CTE: opiskeluoikeudet, joissa oppivelvollisuuden suorittamista oppilaitoksella on oikeus
-  -- valvoa tällä hetkellä
+  -- ********************************************************************************************************
+  -- CTE: SUORITTAMISVALVOTTAVAT
+  -- ********************************************************************************************************
   , suorittamisvalvottava_opiskeluoikeus AS (
     SELECT
       DISTINCT ov_kelvollinen_opiskeluoikeus.opiskeluoikeus_oid,
@@ -939,9 +963,12 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         )
       )
   )
-  -- CTE: kaikki uuden lain piirissä olevat oppijat, joilla on vähintään yksi oppivelvollisuuden suorittamiseen
-  -- kelpaava opiskeluoikeus. Mukana myös taulukko hakeutumisvalvontaan ja suoritusvalvontaan
-  -- kelpuutettavien opiskeluoikeuksien oppilaitoksista käyttöoikeustarkastelua varten.
+  -- ********************************************************************************************************
+  -- CTE: PALAUTETTAVAT OPPIJAT
+  --      kaikki uuden lain piirissä olevat oppijat, joilla on vähintään yksi oppivelvollisuuden suorittamiseen
+  --      kelpaava opiskeluoikeus. Mukana myös taulukko hakeutumisvalvontaan ja suoritusvalvontaan
+  --      kelpuutettavien opiskeluoikeuksien oppilaitoksista käyttöoikeustarkastelua varten.
+  -- ********************************************************************************************************
   , oppija AS (
     SELECT
       DISTINCT r_henkilo.master_oid,
@@ -1015,7 +1042,10 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       oppivelvollisuustiedot.oppivelvollisuusvoimassaasti,
       oppivelvollisuustiedot.oikeuskoulutuksenmaksuttomuuteenvoimassaasti
   )
-  -- CTE: kaikki oppija_oidit, joilla pitää opiskeluoikeuksia etsiä
+  -- ********************************************************************************************************
+  -- CTE: OPPIJOIDEN KAIKKI OPPIJA_OIDIT
+  --      Oppijoiden opiskeluoikeudet pitää hakea myös heidän muilla oppija-oideillaan
+  -- ********************************************************************************************************
   , oppija_oid AS (
 	SELECT
 	  DISTINCT oppija_oid,
@@ -1024,7 +1054,10 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
 	  r_henkilo
 	  JOIN oppija ON oppija.master_oid = r_henkilo.master_oid
   )
-  -- Tilamäppäykset Kosken tarkkojen ja Valppaan yksinkertaisempien tilojen välillä
+  -- ********************************************************************************************************
+  -- CTE: TILAT
+  --      Tilamäppäykset Kosken tarkkojen ja Valppaan yksinkertaisempien tilojen välillä
+  -- ********************************************************************************************************
   , valpastila AS (
     SELECT
       column1 AS koskiopiskeluoikeudentila,
@@ -1044,9 +1077,12 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         (NULL, 'tuntematon')
       ) t
   )
-  -- CTE: peruskoulun opiskeluoikeudet. Ei sama lista kuin aiemmassa CTE:ssä, koska voi olla rinnakkaisia tai
-  -- peräkkäisiä muita peruskoulun opiskeluoikeuksia. Teoriassa varmaan voisi tehostaa kyselyä jotenkin ja välttää
-  -- näiden hakeminen uudestaan, mutta kysely voisi mennä melko monimutkaiseksi.
+  -- ********************************************************************************************************
+  -- CTE: PERUSOPETUS
+  --      peruskoulun opiskeluoikeudet. Ei sama lista kuin aiemmassa CTE:ssä, koska voi olla rinnakkaisia tai
+  --      peräkkäisiä muita peruskoulun opiskeluoikeuksia. Teoriassa varmaan voisi tehostaa kyselyä jotenkin ja välttää
+  --      näiden hakeminen uudestaan, mutta kysely voisi mennä melko monimutkaiseksi.
+  -- ********************************************************************************************************
   , peruskoulun_opiskeluoikeus AS (
     SELECT
       oppija_oid.master_oid,
@@ -1150,8 +1186,10 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         LIMIT 1
       ) AS valittu_paatason_suoritus
   )
-  -- CTE: International schoolin opiskeluoikeudet
-  -- Pitää hakea erikseen, koska sisältää sekä perusopetuksen että sen jälkeisen koulutuksen tietoja
+  -- ********************************************************************************************************
+  -- CTE: INTERNATIONAL SCHOOL
+  --      Pitää hakea erikseen, koska sisältää sekä perusopetuksen että sen jälkeisen koulutuksen tietoja
+  -- ********************************************************************************************************
   , international_schoolin_opiskeluoikeus AS (
     SELECT
       oppija_oid.master_oid,
@@ -1371,8 +1409,10 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
           )
       ) AS toisen_asteen_suorituksia
   )
-  -- CTE: European School of Helsinki opiskeluoikeudet
-  -- Pitää hakea erikseen, koska sisältää sekä perusopetuksen että sen jälkeisen koulutuksen tietoja
+  -- ********************************************************************************************************
+  -- CTE: EUROPEAN SCHOOL OF HELSINKI
+  --      Pitää hakea erikseen, koska sisältää sekä perusopetuksen että sen jälkeisen koulutuksen tietoja
+  -- ********************************************************************************************************
   , esh_opiskeluoikeus AS (
     SELECT
       oppija_oid.master_oid,
@@ -1594,8 +1634,80 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
           AND pts.suorituksen_tyyppi = 'europeanschoolofhelsinkivuosiluokkasecondaryupper'
       ) AS toisen_asteen_suorituksia
   )
-  -- CTE: Muut kuin peruskoulun/international/esh opiskeluoikeudet
-  -- Pitää hakea erikseen, koska säännöt päätason suorituksen kenttien osalta ovat erilaiset, koska datat ovat erilaiset
+  -- ********************************************************************************************************
+  -- CTE: VALMISTUNEET YO-TUTKINNOT
+  --      Pitää hakea erikseen, koska tilatiedot ovat erilaiset
+  -- ********************************************************************************************************
+  , yo_opiskeluoikeus AS (
+      SELECT
+        oppija_oid.master_oid,
+        r_opiskeluoikeus.opiskeluoikeus_oid,
+        r_opiskeluoikeus.koulutusmuoto,
+        r_opiskeluoikeus.oppilaitos_oid,
+        r_opiskeluoikeus.oppilaitos_nimi,
+        TRUE as oppivelvollisuuden_suorittamiseen_kelpaava,
+        kaikki_paatason_suoritukset.data AS paatason_suoritukset,
+        r_paatason_suoritus.vahvistus_paiva as alkamispaiva, -- YO-tutkinnoilla ei ole mitään alkamispäivää
+        r_paatason_suoritus.vahvistus_paiva as paattymispaiva,
+        'valmistunut' AS tarkastelupaivan_tila,
+        NULL::jsonb AS perusopetus_tiedot,
+        jsonb_build_object(
+          'alkamispäivä', r_paatason_suoritus.vahvistus_paiva, -- YO-tutkinnoilla ei ole mitään alkamispäivää
+          'päättymispäivä', r_paatason_suoritus.vahvistus_paiva,
+          'päättymispäiväMerkittyTulevaisuuteen', FALSE,
+          'tarkastelupäivänTila', jsonb_build_object(
+            'koodiarvo', 'valmistunut',
+            'koodistoUri', 'valpasopiskeluoikeudentila'
+          ),
+          'tarkastelupäivänKoskiTila', jsonb_build_object(
+            'koodiarvo', 'valmistunut',
+            'koodistoUri', 'koskiopiskeluoikeudentila'
+          ),
+          'tarkastelupäivänKoskiTilanAlkamispäivä', r_paatason_suoritus.vahvistus_paiva,
+          'valmistunutAiemminTaiLähitulevaisuudessa', TRUE,
+          'näytäMuunaPerusopetuksenJälkeisenäOpintona', TRUE
+        ) AS muu_kuin_perusopetus_tiedot,
+        NULL::jsonb AS maksuttomuus,
+        NULL::jsonb AS oikeutta_maksuttomuuteen_pidennetty
+      FROM
+        oppija_oid
+        JOIN r_opiskeluoikeus ON r_opiskeluoikeus.oppija_oid = oppija_oid.oppija_oid
+          AND r_opiskeluoikeus.koulutusmuoto = 'ylioppilastutkinto'
+        JOIN r_paatason_suoritus ON r_paatason_suoritus.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
+          AND r_paatason_suoritus.vahvistus_paiva IS NOT NULL
+          AND r_paatason_suoritus.vahvistus_paiva <= $tarkastelupäivä
+        CROSS JOIN LATERAL (
+          SELECT jsonb_agg(
+            jsonb_build_object(
+              'suorituksenTyyppi', jsonb_build_object(
+                'koodiarvo', pts.suorituksen_tyyppi,
+                'koodistoUri', 'suorituksentyyppi'
+              ),
+              'toimipiste', jsonb_build_object(
+                'oid', pts.toimipiste_oid,
+                'nimi', jsonb_build_object(
+                  'fi', pts.toimipiste_nimi
+                )
+              ),
+              'ryhmä', NULL::jsonb
+            )
+            -- Haetaan päätason suoritukset vahvistus- tai arviointipäivien mukaisessa järjestyksessä.
+            -- Yleensä käytetään tässä järjestyksessä ensimmäistä, mutta tähän on poikkeus.
+            -- Teoriassa voisi tutkia päätason suorituksen osasuorituksiin kirjattuja päivämääriä, mutta se on aika
+            -- monimutkaista ja luultavasti myös hidasta.
+            ORDER BY
+              pts.vahvistus_paiva DESC NULLS FIRST,
+              pts.arviointi_paiva DESC NULLS FIRST
+          ) AS data
+          FROM r_paatason_suoritus pts
+          WHERE pts.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
+          GROUP BY pts.opiskeluoikeus_oid
+        ) AS kaikki_paatason_suoritukset
+      )
+  -- ********************************************************************************************************
+  -- CTE: MUUT KUIN PERUSOPETUS/ISH/ESH/YO
+  --      Pitää hakea erikseen, koska säännöt päätason suorituksen kenttien osalta ovat erilaiset, koska datat ovat erilaiset
+  -- ********************************************************************************************************
   , muu_opiskeluoikeus AS (
     SELECT
       oppija_oid.master_oid,
@@ -1656,8 +1768,6 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       JOIN r_opiskeluoikeus ON r_opiskeluoikeus.oppija_oid = oppija_oid.oppija_oid
         AND r_opiskeluoikeus.koulutusmuoto <> 'perusopetus'
         AND r_opiskeluoikeus.koulutusmuoto <> 'internationalschool'
-        -- Toistaiseksi YO-tutkintoja ei haluta Valppaassa näkyviin. Huom! Pelkästään tämän poistaminen ei riitä niiden näkyviin saamiseksi,
-        -- koska YO-tutkinnoilla ei esim. ole samanlaisia tilatietoja kuin muilla.
         AND r_opiskeluoikeus.koulutusmuoto <> 'ylioppilastutkinto'
         AND r_opiskeluoikeus.koulutusmuoto <> 'europeanschoolofhelsinki'
       LEFT JOIN r_opiskeluoikeus_aikajakso aikajakson_keskella
@@ -1701,7 +1811,9 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         GROUP BY pts.opiskeluoikeus_oid
       ) AS kaikki_paatason_suoritukset
   )
-  -- CTE: Yhdistettynä peruskoulun ja muut opiskeluoikeudet
+  -- ********************************************************************************************************
+  -- CTE: KAIKKI PALAUTETTAVAT OPISKELUOIKEUDET YHDISTETTYNÄ
+  -- ********************************************************************************************************
   , opiskeluoikeus AS (
     SELECT
       *
@@ -1719,11 +1831,19 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       esh_opiskeluoikeus
     UNION ALL
     SELECT
+        *
+      FROM
+        yo_opiskeluoikeus
+      UNION ALL
+    SELECT
       *
     FROM
      muu_opiskeluoikeus
   )
-  -- Päätason SELECT: Muodostetaan palautettava rakenne
+  -- ********************************************************************************************************
+  -- PÄÄTASON SELECT
+  --     Muodostetaan palautettava rakenne CTE:istä
+  -- ********************************************************************************************************
   SELECT
     oppija.master_oid AS oppija_oid,
     oppija.kaikkiOppijaOidit,

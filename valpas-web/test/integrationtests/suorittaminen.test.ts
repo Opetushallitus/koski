@@ -110,24 +110,6 @@ describe("Suorittamisen valvonta -näkymä", () => {
     )
   })
 
-  it("Näyttää listan oppijoista Jyväskylän normaalikoulun käyttäjälle", async () => {
-    await loginAs(suorittaminenListaPath, "valpas-jkl-normaali")
-    await urlIsEventually(pathToUrl(jklSuorittaminenPath))
-
-    await resetMockData("2021-12-12")
-    await goToLocation(jklSuorittaminenPath)
-
-    await textEventuallyEquals(
-      ".card__header",
-      jklNormaalikouluSuorittaminenTableHead
-    )
-    await dataTableEventuallyEquals(
-      ".suorittaminen",
-      jklNormaalikouluSuorittaminenTableContent,
-      "|"
-    )
-  })
-
   it("Näyttää listan oppijoista International schoolin käyttäjälle", async () => {
     await loginAs(suorittaminenListaPath, "valpas-int-school")
     await urlIsEventually(pathToUrl(internationalSchoolSuorittaminenPath))
@@ -419,7 +401,7 @@ describe("Suorittamisen valvonta -näkymä", () => {
     )
     await urlIsEventually(pathToUrl(stadinAmmattiopistoSuorittaminenPath))
 
-    await textEventuallyEquals(".card__header", "Oppivelvolliset (6)")
+    await textEventuallyEquals(".card__header", "Oppivelvolliset (7)")
     await dataTableEventuallyEquals(
       ".suorittaminen",
       stadinAmmattiopistoSuorittaminen20230531TableContent,
@@ -437,12 +419,33 @@ describe("Suorittamisen valvonta -näkymä", () => {
     )
     await urlIsEventually(pathToUrl(stadinAmmattiopistoSuorittaminenPath))
 
-    await textEventuallyEquals(".card__header", "Oppivelvolliset (6)")
+    await textEventuallyEquals(".card__header", "Oppivelvolliset (7)")
     await dataTableEventuallyEquals(
       ".suorittaminen",
       stadinAmmattiopistoSuorittaminen20230531TableContent,
       "|"
     )
+  })
+
+  describe("Kun tarkastelupäivää vaihdetaan", () => {
+    it("Näyttää listan oppijoista Jyväskylän normaalikoulun käyttäjälle", async () => {
+      await loginAs(suorittaminenListaPath, "valpas-jkl-normaali")
+      await urlIsEventually(pathToUrl(jklSuorittaminenPath))
+
+      await resetMockData("2021-12-12")
+
+      await goToLocation(jklSuorittaminenPath)
+
+      await textEventuallyEquals(
+        ".card__header",
+        jklNormaalikouluSuorittaminenTableHead
+      )
+      await dataTableEventuallyEquals(
+        ".suorittaminen",
+        jklNormaalikouluSuorittaminenTableContent,
+        "|"
+      )
+    })
   })
 })
 

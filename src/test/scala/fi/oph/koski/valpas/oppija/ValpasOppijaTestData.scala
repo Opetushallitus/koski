@@ -1374,7 +1374,25 @@ object ValpasOppijaTestData {
         perusopetuksenJälkeinenTiedot = Some(ExpectedDataPerusopetuksenJälkeinenTiedot("voimassa", "lasna")),
       ))
     ),
-
+    (
+      ValpasMockOppijat.oppijaJollaAmisJaValmistunutYO,
+      List(
+        ExpectedData(
+          ValpasOpiskeluoikeusExampleData.ammattikouluEronnutOpiskeluoikeus,
+          onHakeutumisValvottavaOpiskeluoikeus = false,
+          onHakeutumisvalvovaOppilaitos = false,
+          onSuorittamisvalvovaOppilaitos = true,
+          perusopetuksenJälkeinenTiedot = Some(ExpectedDataPerusopetuksenJälkeinenTiedot("eronnut", "eronnut")),
+        ),
+        ExpectedData(
+          ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainenToinenKoulu,
+          onHakeutumisValvottavaOpiskeluoikeus = false,
+          onHakeutumisvalvovaOppilaitos = false,
+          onSuorittamisvalvovaOppilaitos = false,
+          perusopetusTiedot = Some(ExpectedDataPerusopetusTiedot("valmistunut", "valmistunut")),
+        )
+      )
+    ),
   ).sortBy(item => (item._1.sukunimi, item._1.etunimet))
 
   // Varsinais-Suomen Kansanopiston suorittamisvalvottavat oppijat 5.9.2021

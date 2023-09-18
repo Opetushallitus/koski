@@ -36,8 +36,8 @@ class YtrDownloadOppijaConverterSpec extends AnyFreeSpec with TestEnvironment wi
   val valmistuneenHetu = "080380-2432"
 
   "Yksinkertainen YTR:n latausrajapinnan palauttama oppija osataan konvertoida" in {
-    val oppijat = MockYrtClient.oppijatByHetut(YtrSsnData(ssns = Some(List("080380-2432", "140380-336X", "220680-7850", "240680-087S", "060807A7787"))))
-    oppijat should have length 5
+    val oppijat = MockYrtClient.oppijatByHetut(YtrSsnData(ssns = Some(List("080380-2432", "140380-336X", "220680-7850", "240680-087S", "060807A7787", "300805A756F"))))
+    oppijat should have length 6
     val simppeliOppija = oppijat.find(_.ssn == simppelinHetu).get
     simppeliOppija.ssn should be (simppelinHetu)
 
@@ -184,8 +184,8 @@ class YtrDownloadOppijaConverterSpec extends AnyFreeSpec with TestEnvironment wi
   }
 
   "Graduated-tila konverstoidaan opintokokonaisuuksiin" in {
-    val oppijat = MockYrtClient.oppijatByHetut(YtrSsnData(ssns = Some(List("080380-2432", "140380-336X", "220680-7850", "240680-087S", "060807A7787"))))
-    oppijat should have length 5
+    val oppijat = MockYrtClient.oppijatByHetut(YtrSsnData(ssns = Some(List("080380-2432", "140380-336X", "220680-7850", "240680-087S", "060807A7787", "300805A756F"))))
+    oppijat should have length 6
     val valmistunutOppija = oppijat.find(_.ssn == valmistuneenHetu).get
     valmistunutOppija.ssn should be (valmistuneenHetu)
 

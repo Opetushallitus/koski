@@ -51,7 +51,7 @@ class ValpasKansalainenService(
       opiskeluoikeusDbService
         .getOppija(oppijaOid, rajaaOVKelpoisiinOpiskeluoikeuksiin = false, haeMyösOppivelvollisuudestaVapautettu = true)
         .toRight(ValpasErrorCategory.notFound.oppijaEiOppivelvollisuuslainPiirissä())
-        .flatMap(oppijaLaajatTiedotService.asValpasOppijaLaajatTiedot(palautaLukionAineopinnotJosMyösAmmatillisiaOpintoja = true)) match {
+        .flatMap(oppijaLaajatTiedotService.asValpasOppijaLaajatTiedot(palautaLukionAineopinnotJaYOTutkinnotJosMyösAmmatillisiaOpintoja = true)) match {
         case Left(_) =>
           oppijanumerorekisteriService.getKansalaiselleNäkyvätOppijaLaajatTiedotOppijanumerorekisteristäIlmanKäyttöoikeustarkistusta(oppijaOid)
             .left.map(_ => ValpasErrorCategory.notFound.oppijaEiOppivelvollisuuslainPiirissä())

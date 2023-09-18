@@ -174,7 +174,7 @@ object ValpasMockOppijat {
   val valmistunutAmiksenOsittainen = valpasOppijat.oppijaSyntymäaikaHetusta("Amis-valmistunut-osittainen", "Valpas", "200105A171H", kotikunta = Some("624"))
   val valmistunutAmiksenOsittainenUusiOo = valpasOppijat.oppijaSyntymäaikaHetusta("Amis-valmistunut-osittainen-ja-uusi-opiskeluoikeus", "Valpas", "280705A076E", kotikunta = Some("624"))
   val valmistunutYsiluokkalainenJollaIlmoitusJaUusiOpiskeluoikeus = valpasOppijat.oppijaSyntymäaikaHetusta("Ysiluokka-valmis-ja-ilmoitettu-ja-uusi-nivelvaihe", "Valpas", "240706A3571", kotikunta = Some("091"))
-  val oppijaJollaMuitaOpiskeluoikeuksia = valpasOppijat.oppijaSyntymäaikaHetusta("Muita-opiskeluoikeuksia", "Valpas", "060807A7787", kotikunta = Some("091"))
+  val oppijaJollaYOOpiskeluoikeus = valpasOppijat.oppijaSyntymäaikaHetusta("YO-opiskeluoikeus", "Valpas", "060807A7787", kotikunta = Some("091"))
   val amisValmistunutEronnutValmasta = valpasOppijat.oppijaSyntymäaikaHetusta("Amis-valmistunut-eronnut-valmasta", "Valpas", "180605A313U", kotikunta = Some("091"))
   val oppivelvollinenESHS5KeskenKeväällä2021 = valpasOppijat.oppijaSyntymäaikaHetusta("Oppivelvollinen-esh-s5-kesken-keväällä-2021", "Valpas", "030105A049L", kotikunta = Some("091"))
   val eshS4KeskenKeväällä2021 = valpasOppijat.oppijaSyntymäaikaHetusta("ESH-s4-kesken-keväällä-2021", "Valpas", "110505A1807", kotikunta = Some("091"))
@@ -182,6 +182,7 @@ object ValpasMockOppijat {
   val eshS5JälkeenLukiossaAloittanut = valpasOppijat.oppijaSyntymäaikaHetusta("ESH-s5-jälkeen-lukiossa-aloittanut", "Valpas", "271105A101U", kotikunta = Some("091"))
   val eshNurseryssä = valpasOppijat.oppijaSyntymäaikaHetusta("ESH-nurseryssä", "Valpas", hetu="070614A452J", kotikunta = Some("091"))
   val lukionAineOpinnotJaAmmatillisia = valpasOppijat.oppijaSyntymäaikaHetusta("Lukion-aineopinnot-ja-ammatillisia", "Valpas", "121005A797T", kotikunta = Some("624"))
+  val oppijaJollaAmisJaValmistunutYO = valpasOppijat.oppijaSyntymäaikaHetusta("Amis-ja-YO", "Valpas", "300805A756F", kotikunta = Some("091"))
 
   // Kutsumanimi ja yhteystiedot haetaan oppijanumerorekisteristä Valpas-käyttäjälle, tallennetaan siksi käyttäjä myös "oppijana" mockeihin
   val käyttäjäValpasJklNormaalikoulu = valpasOppijat.oppija(

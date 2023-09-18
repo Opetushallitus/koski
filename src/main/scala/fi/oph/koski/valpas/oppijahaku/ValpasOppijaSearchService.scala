@@ -160,7 +160,7 @@ class ValpasOppijaSearchService(application: KoskiApplication) extends Logging {
         ValpasRooli.OPPILAITOS_SUORITTAMINEN,
         henkilö.oid,
         haeMyösVainOppijanumerorekisterissäOleva = false,
-        palautaLukionAineopinnotJosMyösAmmatillisiaOpintoja = false
+        palautaLukionAineopinnotJaYOTutkinnotJosMyösAmmatillisiaOpintoja = false
       )
       .map(o => ValpasLöytyiHenkilöhakuResult.apply(o, rajapäivätService))
 

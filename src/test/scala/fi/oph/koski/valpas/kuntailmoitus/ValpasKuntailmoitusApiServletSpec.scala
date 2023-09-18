@@ -875,7 +875,7 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasTestBase with BeforeAndAft
     val oppija = oppijaLaajatTiedotService.getOppijaLaajatTiedot(
       oppijaOid,
       haeMyösVainOppijanumerorekisterissäOleva = false,
-      palautaLukionAineopinnotJosMyösAmmatillisiaOpintoja = false
+      palautaLukionAineopinnotJaYOTutkinnotJosMyösAmmatillisiaOpintoja = false
     )(defaultSession)
 
     oppija.map(_.opiskeluoikeudet.filter(_.oppilaitos.oid == oppilaitosOid).map(_.oid)).map(_.toSet)
