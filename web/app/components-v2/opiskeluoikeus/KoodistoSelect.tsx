@@ -6,18 +6,20 @@ import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString
 import { CommonProps, subTestId } from '../CommonProps'
 import { OptionList, Select, SelectOption } from '../controls/Select'
 
-export type KoodistoSelectProps = CommonProps<{
-  koodistoUri: string
+export type KoodistoSelectProps<T extends string> = CommonProps<{
+  koodistoUri: T
   addNewText: string | LocalizedString
-  onSelect: (tunniste: Koodistokoodiviite, isNew: boolean) => void
-  onRemove?: (tunniste: Koodistokoodiviite) => void
-  filter?: (tunniste: Koodistokoodiviite) => boolean
+  onSelect: (tunniste: Koodistokoodiviite<T>, isNew: boolean) => void
+  onRemove?: (tunniste: Koodistokoodiviite<T>) => void
+  filter?: (tunniste: Koodistokoodiviite<T>) => boolean
 }>
 
-export const KoodistoSelect: React.FC<KoodistoSelectProps> = (props) => {
+export function KoodistoSelect<T extends string>(
+  props: KoodistoSelectProps<T>
+) {
   const koodisto = useKoodisto(props.koodistoUri)
   const { filter } = props
-  const options: OptionList<Koodistokoodiviite> = useMemo(
+  const options: OptionList<Koodistokoodiviite<T>> = useMemo(
     () => [
       ...(koodisto || [])
         .map((tunniste) => ({
@@ -38,7 +40,7 @@ export const KoodistoSelect: React.FC<KoodistoSelectProps> = (props) => {
 
   const { onSelect } = props
   const onChangeCB = useCallback(
-    (option?: SelectOption<Koodistokoodiviite>) => {
+    (option?: SelectOption<Koodistokoodiviite<T>>) => {
       if (option?.value) {
         onSelect(option.value, false)
       }
