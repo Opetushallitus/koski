@@ -86,7 +86,7 @@ export const historiaOpintoOikeus = (p: {
   toimipiste?: string
   ryhmä?: string
   vuosiluokkiinSitomatonOpetus?: boolean
-  alkamispäivä: string
+  alkamispäivä?: string
   päättymispäivä?: string
   perusopetusSuoritettu?: string
 }) =>
