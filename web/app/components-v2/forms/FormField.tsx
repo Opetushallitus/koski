@@ -8,41 +8,6 @@ import { FormModel, FormOptic, getValue } from './FormModel'
 import { useFormErrors } from './useFormErrors'
 import { ValidationError } from './validator'
 
-/*
-
-type Foo = {
-  foo: string
-}
-
-type Bar = {
-  bar: number
-}
-
-const FooBarBazView: React.FC<FieldViewerProps<string, Foo>> = (
-  props
-): React.ReactElement | null => <div>{props.foo}</div>
-
-const FooBarBazEdit: React.FC<FieldEditorProps<string, Bar>> = (
-  props
-): React.ReactElement | null => <div>{props.bar}</div>
-
-const FooBarField = ({ form, path }: any) => (
-  <FormField
-    form={form}
-    path={path}
-    view={FooBarBazView}
-    viewProps={{
-      foo: '5'
-    }}
-    edit={FooBarBazEdit}
-    editProps={{
-      bar: 6
-    }}
-  />
-)
-
-*/
-
 export type FieldViewerProps<FieldValue, ViewerProps> = ViewerProps & {
   value?: FieldValue | undefined
   testId?: string
