@@ -106,27 +106,27 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
   )
 
   const appendOsasuoritus = useCallback(
-    async (
+    (
       // TODO: Path-tyypitys
       path: FormOptic<VapaanSivistystyönPäätasonSuoritus, any>,
       uusiOsasuoritus: VSTOsasuoritus
     ) => {
-      const filledOsasuoritus = await fillKoodistot(uusiOsasuoritus)
       if (form.editMode) {
         form.updateAt(path, (osasuoritus) => ({
           ...osasuoritus,
-          osasuoritukset: append(filledOsasuoritus)(osasuoritus.osasuoritukset)
+          osasuoritukset: append(uusiOsasuoritus)(osasuoritus.osasuoritukset)
         }))
       }
     },
-    [fillKoodistot, form]
+    [form]
   )
 
   const createOsasuoritus = useCallback(
-    (suoritusPath: any, osasuoritus: VSTOsasuoritus) => {
-      appendOsasuoritus(suoritusPath, osasuoritus)
+    async (suoritusPath: any, osasuoritus: VSTOsasuoritus) => {
+      const filledOsasuoritus = await fillKoodistot(osasuoritus)
+      appendOsasuoritus(suoritusPath, filledOsasuoritus)
     },
-    [appendOsasuoritus]
+    [appendOsasuoritus, fillKoodistot]
   )
 
   const rootLevel = 0

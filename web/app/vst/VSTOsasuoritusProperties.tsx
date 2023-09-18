@@ -153,6 +153,7 @@ import { VSTKotoutumiskoulutuksenKieliopintojenKoulutusmoduuli } from '../types/
 import { VSTKotoutumiskoulutuksenOhjauksenKoulutusmoduuli2022 } from '../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenOhjauksenKoulutusmoduuli2022'
 import { VSTKotoutumiskoulutuksenValinnaistenOpintojenKoulutusmoduuli2022 } from '../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenValinnaistenOpintojenKoulutusmoduuli2022'
 import { VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenKoulutusmoduuli2022 } from '../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenYhteiskuntaJaTyoelamaosaaminenKoulutusmoduuli2022'
+import { useKoodistoFiller } from '../appstate/koodisto'
 
 type AddNewVSTOsasuoritusViewProps = {
   level: number
@@ -423,7 +424,16 @@ export const AddNewVSTOsasuoritusView: React.FC<
               addNewText={t('Lisää suuntautumisopinto')}
               onSelect={(tunniste) => {
                 onKoodistoSelect(
-                  OppivelvollisilleSuunnatunVapaanSivistystyönValinnaistenSuuntautumisopintojenSuoritus()
+                  OppivelvollisilleSuunnatunVapaanSivistystyönValinnaistenSuuntautumisopintojenSuoritus(
+                    {
+                      koulutusmoduuli: {
+                        $class:
+                          'fi.oph.koski.schema.OppivelvollisilleSuunnatunVapaanSivistystyönValinnaisetSuuntautumisopinnot',
+                        // @ts-expect-error Tyyppi kavennettu jo
+                        tunniste
+                      }
+                    }
+                  )
                 )
               }}
               onRemove={onRemoveKoodisto}
@@ -439,32 +449,24 @@ export const AddNewVSTOsasuoritusView: React.FC<
             ) && (
               <RaisedButton
                 onClick={() =>
-                  props.form.updateAt(props.pathWithOsasuoritukset, (os) => ({
-                    ...os,
-                    // @ts-expect-error
-                    osasuoritukset: append(
-                      VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenSuoritus(
-                        {
-                          koulutusmoduuli:
-                            VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenKoulutusmoduuli(
-                              {
-                                tunniste: Koodistokoodiviite({
-                                  koodiarvo:
-                                    'vstmaahanmuuttajienkotoutumiskoulutuksenkieliopintojensuoritus',
-                                  koodistoUri:
-                                    'vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus',
-                                  nimi: Finnish({
-                                    fi: 'Suomen kieli ja viestintätaidot'
-                                  })
-                                })
-                              }
-                            )
-                        }
-                      ),
-                      // @ts-expect-error
-                      os.osasuoritukset
+                  props.createOsasuoritus(
+                    props.pathWithOsasuoritukset,
+                    VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenSuoritus(
+                      {
+                        koulutusmoduuli:
+                          VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenKoulutusmoduuli(
+                            {
+                              tunniste: Koodistokoodiviite({
+                                koodiarvo:
+                                  'vstmaahanmuuttajienkotoutumiskoulutuksenkieliopintojensuoritus',
+                                koodistoUri:
+                                  'vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus'
+                              })
+                            }
+                          )
+                      }
                     )
-                  }))
+                  )
                 }
               >
                 {t('Lisää suomen/ruotsin kielen ja viestintätaitojen osa-alue')}
@@ -476,32 +478,24 @@ export const AddNewVSTOsasuoritusView: React.FC<
             ) && (
               <RaisedButton
                 onClick={() =>
-                  props.form.updateAt(props.pathWithOsasuoritukset, (os) => ({
-                    ...os,
-                    // @ts-expect-error
-                    osasuoritukset: append(
-                      VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenOpintojenSuoritus(
-                        {
-                          koulutusmoduuli:
-                            VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenOpintojenKoulutusmoduuli(
-                              {
-                                tunniste: Koodistokoodiviite({
-                                  koodiarvo:
-                                    'vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojenkokonaisuudensuoritus',
-                                  koodistoUri:
-                                    'vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus',
-                                  nimi: Finnish({
-                                    fi: 'Työelämä- ja yhteiskuntataidot'
-                                  })
-                                })
-                              }
-                            )
-                        }
-                      ),
-                      // @ts-expect-error
-                      os.osasuoritukset
+                  props.createOsasuoritus(
+                    props.pathWithOsasuoritukset,
+                    VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenOpintojenSuoritus(
+                      {
+                        koulutusmoduuli:
+                          VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenOpintojenKoulutusmoduuli(
+                            {
+                              tunniste: Koodistokoodiviite({
+                                koodiarvo:
+                                  'vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojenkokonaisuudensuoritus',
+                                koodistoUri:
+                                  'vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus'
+                              })
+                            }
+                          )
+                      }
                     )
-                  }))
+                  )
                 }
               >
                 {t('Lisää työelämän ja yhteiskuntataitojen opintojen osa-alue')}
@@ -513,33 +507,24 @@ export const AddNewVSTOsasuoritusView: React.FC<
             ) && (
               <RaisedButton
                 onClick={() =>
-                  props.form.updateAt(props.pathWithOsasuoritukset, (os) => ({
-                    ...os,
-                    // @ts-expect-error
-                    osasuoritukset: append(
-                      VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOhjauksenSuoritus(
-                        {
-                          koulutusmoduuli:
-                            VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOhjauksenKoulutusmoduuli(
-                              {
-                                tunniste: Koodistokoodiviite({
-                                  koodiarvo:
-                                    'vstmaahanmuuttajienkotoutumiskoulutuksenohjauksensuoritus',
-                                  koodistoUri:
-                                    'vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus',
-                                  // TODO: Koodistofiller
-                                  nimi: Finnish({
-                                    fi: 'Ohjaus'
-                                  })
-                                })
-                              }
-                            )
-                        }
-                      ),
-                      // @ts-expect-error
-                      os.osasuoritukset
+                  props.createOsasuoritus(
+                    props.pathWithOsasuoritukset,
+                    VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOhjauksenSuoritus(
+                      {
+                        koulutusmoduuli:
+                          VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOhjauksenKoulutusmoduuli(
+                            {
+                              tunniste: Koodistokoodiviite({
+                                koodiarvo:
+                                  'vstmaahanmuuttajienkotoutumiskoulutuksenohjauksensuoritus',
+                                koodistoUri:
+                                  'vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus'
+                              })
+                            }
+                          )
+                      }
                     )
-                  }))
+                  )
                 }
               >
                 {t('Lisää kotoutumiskoulutuksen ohjauksen osa-alue')}
@@ -551,33 +536,24 @@ export const AddNewVSTOsasuoritusView: React.FC<
             ) && (
               <RaisedButton
                 onClick={() =>
-                  props.form.updateAt(props.pathWithOsasuoritukset, (os) => ({
-                    ...os,
-                    // @ts-expect-error
-                    osasuoritukset: append(
-                      VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenSuoritus(
-                        {
-                          koulutusmoduuli:
-                            VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenKoulutusmoduuli(
-                              {
-                                tunniste: Koodistokoodiviite({
-                                  koodiarvo:
-                                    'vstmaahanmuuttajienkotoutumiskoulutuksenvalinnaistensuoritus',
-                                  koodistoUri:
-                                    'vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus',
-                                  // TODO: Koodistofiller
-                                  nimi: Finnish({
-                                    fi: 'Valinnaiset opinnot'
-                                  })
-                                })
-                              }
-                            )
-                        }
-                      ),
-                      // @ts-expect-error
-                      os.osasuoritukset
+                  props.createOsasuoritus(
+                    props.pathWithOsasuoritukset,
+                    VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenSuoritus(
+                      {
+                        koulutusmoduuli:
+                          VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenKoulutusmoduuli(
+                            {
+                              tunniste: Koodistokoodiviite({
+                                koodiarvo:
+                                  'vstmaahanmuuttajienkotoutumiskoulutuksenvalinnaistensuoritus',
+                                koodistoUri:
+                                  'vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus'
+                              })
+                            }
+                          )
+                      }
                     )
-                  }))
+                  )
                 }
               >
                 {t('Lisää valinnaisten opintojen osa-alue')}
