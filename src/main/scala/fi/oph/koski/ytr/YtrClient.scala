@@ -115,7 +115,7 @@ object MockYrtClient extends YtrClient {
 
   override def oppijatJsonByHetut(ssnData: YtrSsnData): Option[JValue] =
     JsonResources.readResourceIfExists(
-      resourcenameLaaja(ssnData.ssns.getOrElse(List.empty).mkString("_"))
+      resourcenameLaaja(ssnData.ssns.getOrElse(List.empty).sorted.mkString("_"))
     )
 
   private def resourcenameLaaja(hetut: String) = "/mockdata/ytr/laaja_" + hetut + ".json"

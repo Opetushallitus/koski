@@ -106,6 +106,10 @@ const lukionAineopintojaJaAmmatillisiaPath = oppijaPath.href("/virkailija", {
   oppijaOid: "1.2.246.562.24.00000000174",
 })
 
+const yoTutkintoJaAmmatillisiaPath = oppijaPath.href("/virkailija", {
+  oppijaOid: "1.2.246.562.24.00000000175",
+})
+
 const mainHeadingEquals = (expected: string) =>
   textEventuallyEquals("h1.heading--primary", expected)
 const secondaryHeadingEquals = (expected: string) =>

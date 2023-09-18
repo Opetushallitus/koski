@@ -72,6 +72,7 @@ const kulosaarenAlaAsteTableContent = `
 
 const aapajaoenKouluTableContent = `
   Aaapajoen-peruskoulusta-valmistunut Valpas              | 16.2.2005   | 9C | 29.5.2021  | Ei hakemusta         | –                           | –                         | –                                                                          |
+  Amis-ja-YO Valpas                                       | 30.8.2005   | 9C | 29.5.2021  | Ei hakemusta         | –                           | –                         | –                                                                          |
   Kahdella-oppija-oidilla Valpas                          | 15.2.2005   | 9C | 29.5.2021  | Hakenut open_in_new  | Varasija: Ressun lukio      | –                         | doneJyväskylän normaalikoulu, Lukiokoulutus                                |
   Kahdella-oppija-oidilla-ilmo Valpas                     | 4.6.2005    | 9C | 29.5.2021  | Ei hakemusta         | –                           | –                         | doneJyväskylän normaalikoulu, Lukiokoulutus                                |
   KahdenKoulunYsi-ilmo Valpas                             | 21.11.2004  | 9C | 29.5.2021  | Ei hakemusta         | –                           | –                         | –                                                                          |
@@ -202,9 +203,10 @@ describe("Hakutilannenäkymä", () => {
 
     await selectOrganisaatioByNimi("LAKKAUTETTU: Aapajoen koulu")
     await urlIsEventually(pathToUrl(aapajoenKouluHakutilannePath))
+    await waitTableLoadingHasFinished(".hakutilanne")
     await textEventuallyEquals(
       ".card__header",
-      "Hakeutumisvelvollisia oppijoita (4)"
+      "Hakeutumisvelvollisia oppijoita (5)"
     )
 
     await dataTableEventuallyEquals(
@@ -219,7 +221,7 @@ describe("Hakutilannenäkymä", () => {
 
     await selectOrganisaatio(1)
     await urlIsEventually(pathToUrl(kulosaariHakutilannePath))
-
+    await waitTableLoadingHasFinished(".hakutilanne")
     await openOppijaView(kulosaarenOppijaOid)
     await urlIsEventually(
       pathToUrl(
