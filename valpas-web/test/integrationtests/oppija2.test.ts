@@ -586,10 +586,9 @@ describe("Oppijakohtainen näkymä 2/2", () => {
     await opiskeluhistoriaEquals(
       merge(
         historiaOpintoOikeus({
-          otsikko: "Ylioppilastutkinto 2021 – 2021",
+          otsikko: "Ylioppilastutkinto 2021",
           tila: "Valmistunut",
           toimipiste: "Ylioppilastutkintolautakunta",
-          alkamispäivä: "5.9.2021",
           päättymispäivä: "5.9.2021",
         }),
         historiaOpintoOikeus({

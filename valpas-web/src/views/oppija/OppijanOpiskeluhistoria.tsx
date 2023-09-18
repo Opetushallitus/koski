@@ -156,12 +156,14 @@ const OpiskeluhistoriaOpinto = ({
   const tarkastelupäivänTila =
     myöhempienOpintojenTarkastelupäivänTila(opiskeluoikeus)
 
-  const range = yearRangeString(alkamispäivä, päättymispäivä)
+  const rangeOrYear = !isYlioppilastutkinnonOpiskeluoikeus(opiskeluoikeus)
+    ? yearRangeString(alkamispäivä, päättymispäivä)
+    : yearString(päättymispäivä)
 
   return (
     <IconSection icon={<OpiskeluIcon color="gray" />}>
       <IconSectionHeading>
-        {nimi} {range}
+        {nimi} {rangeOrYear}
       </IconSectionHeading>
       <InfoTable size="tighter">
         {tarkastelupäivänTila && (
@@ -197,10 +199,12 @@ const OpiskeluhistoriaOpinto = ({
             value={t("oppija__vuosiluokkiin_sitomaton_opetus")}
           />
         )}
-        <InfoTableRow
-          label={t("oppija__opiskeluoikeuden_alkamispäivä")}
-          value={formatDate(aiempienOpintojenAlkamispäivä(opiskeluoikeus))}
-        />
+        {!isYlioppilastutkinnonOpiskeluoikeus(opiskeluoikeus) && (
+          <InfoTableRow
+            label={t("oppija__opiskeluoikeuden_alkamispäivä")}
+            value={formatDate(aiempienOpintojenAlkamispäivä(opiskeluoikeus))}
+          />
+        )}
         {isValmistunutEuropeanSchoolinPerusopetuksestaAiemminTaiLähitulevaisuudessa(
           opiskeluoikeus
         ) && (
