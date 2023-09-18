@@ -774,4 +774,38 @@ describe("Oppijakohtainen näkymä 2/2", () => {
       })
     )
   })
+
+  it("Näyttää ammattiopintoja opiskelevan oppijan, jolla YO-tutkinto, tiedot, mukaanlukien YO-tutkinnon", async () => {
+    await loginAs(yoTutkintoJaAmmatillisiaPath, "valpas-monta", true)
+    await mainHeadingEquals("Amis-ja-YO Valpas (300805A756F)")
+    await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000175")
+    await opiskeluhistoriaEquals(
+      merge(
+        historiaOpintoOikeus({
+          otsikko: "Ylioppilastutkinto 2021 – 2021",
+          tila: "Valmistunut",
+          toimipiste: "Ylioppilastutkintolautakunta",
+          alkamispäivä: "5.9.2021",
+          päättymispäivä: "5.9.2021",
+        }),
+        historiaOpintoOikeus({
+          otsikko: "Ammatillinen tutkinto 2021 – 2021",
+          tila: "Eronnut",
+          maksuttomuus: ["1.8.2021– maksuton"],
+          toimipiste:
+            "Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka",
+          alkamispäivä: "1.8.2021",
+          päättymispäivä: "2.9.2021",
+        }),
+        historiaOpintoOikeus({
+          otsikko: "Perusopetus 2012 – 2021",
+          tila: "Valmistunut",
+          toimipiste: "Jyväskylän normaalikoulu",
+          ryhmä: "9C",
+          alkamispäivä: "14.8.2012",
+          päättymispäivä: "29.5.2021",
+        })
+      )
+    )
+  })
 })

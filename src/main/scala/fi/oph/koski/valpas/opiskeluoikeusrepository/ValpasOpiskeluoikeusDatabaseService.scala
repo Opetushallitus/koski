@@ -1635,7 +1635,77 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       ) AS toisen_asteen_suorituksia
   )
   -- ********************************************************************************************************
-  -- CTE: MUUT KUIN PERUSOPETUS/ISH/ESH
+  -- CTE: VALMISTUNEET YO-TUTKINNOT
+  --      Pitää hakea erikseen, koska tilatiedot ovat erilaiset
+  -- ********************************************************************************************************
+  , yo_opiskeluoikeus AS (
+      SELECT
+        oppija_oid.master_oid,
+        r_opiskeluoikeus.opiskeluoikeus_oid,
+        r_opiskeluoikeus.koulutusmuoto,
+        r_opiskeluoikeus.oppilaitos_oid,
+        r_opiskeluoikeus.oppilaitos_nimi,
+        TRUE as oppivelvollisuuden_suorittamiseen_kelpaava,
+        kaikki_paatason_suoritukset.data AS paatason_suoritukset,
+        r_paatason_suoritus.vahvistus_paiva as alkamispaiva, -- YO-tutkinnoilla ei ole mitään alkamispäivää
+        r_paatason_suoritus.vahvistus_paiva as paattymispaiva,
+        'valmistunut' AS tarkastelupaivan_tila,
+        NULL::jsonb AS perusopetus_tiedot,
+        jsonb_build_object(
+          'alkamispäivä', r_paatason_suoritus.vahvistus_paiva, -- YO-tutkinnoilla ei ole mitään alkamispäivää
+          'päättymispäivä', r_paatason_suoritus.vahvistus_paiva,
+          'päättymispäiväMerkittyTulevaisuuteen', FALSE,
+          'tarkastelupäivänTila', jsonb_build_object(
+            'koodiarvo', 'valmistunut',
+            'koodistoUri', 'valpasopiskeluoikeudentila'
+          ),
+          'tarkastelupäivänKoskiTila', jsonb_build_object(
+            'koodiarvo', 'valmistunut',
+            'koodistoUri', 'koskiopiskeluoikeudentila'
+          ),
+          'tarkastelupäivänKoskiTilanAlkamispäivä', r_paatason_suoritus.vahvistus_paiva,
+          'valmistunutAiemminTaiLähitulevaisuudessa', TRUE,
+          'näytäMuunaPerusopetuksenJälkeisenäOpintona', TRUE
+        ) AS muu_kuin_perusopetus_tiedot,
+        NULL::jsonb AS maksuttomuus,
+        NULL::jsonb AS oikeutta_maksuttomuuteen_pidennetty
+      FROM
+        oppija_oid
+        JOIN r_opiskeluoikeus ON r_opiskeluoikeus.oppija_oid = oppija_oid.oppija_oid
+          AND r_opiskeluoikeus.koulutusmuoto = 'ylioppilastutkinto'
+        JOIN r_paatason_suoritus ON r_paatason_suoritus.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
+          AND r_paatason_suoritus.vahvistus_paiva IS NOT NULL
+          AND r_paatason_suoritus.vahvistus_paiva <= $tarkastelupäivä
+        CROSS JOIN LATERAL (
+          SELECT jsonb_agg(
+            jsonb_build_object(
+              'suorituksenTyyppi', jsonb_build_object(
+                'koodiarvo', pts.suorituksen_tyyppi,
+                'koodistoUri', 'suorituksentyyppi'
+              ),
+              'toimipiste', jsonb_build_object(
+                'oid', pts.toimipiste_oid,
+                'nimi', jsonb_build_object(
+                  'fi', pts.toimipiste_nimi
+                )
+              ),
+              'ryhmä', NULL::jsonb
+            )
+            -- Haetaan päätason suoritukset vahvistus- tai arviointipäivien mukaisessa järjestyksessä.
+            -- Yleensä käytetään tässä järjestyksessä ensimmäistä, mutta tähän on poikkeus.
+            -- Teoriassa voisi tutkia päätason suorituksen osasuorituksiin kirjattuja päivämääriä, mutta se on aika
+            -- monimutkaista ja luultavasti myös hidasta.
+            ORDER BY
+              pts.vahvistus_paiva DESC NULLS FIRST,
+              pts.arviointi_paiva DESC NULLS FIRST
+          ) AS data
+          FROM r_paatason_suoritus pts
+          WHERE pts.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
+          GROUP BY pts.opiskeluoikeus_oid
+        ) AS kaikki_paatason_suoritukset
+      )
+  -- ********************************************************************************************************
+  -- CTE: MUUT KUIN PERUSOPETUS/ISH/ESH/YO
   --      Pitää hakea erikseen, koska säännöt päätason suorituksen kenttien osalta ovat erilaiset, koska datat ovat erilaiset
   -- ********************************************************************************************************
   , muu_opiskeluoikeus AS (
@@ -1698,8 +1768,6 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       JOIN r_opiskeluoikeus ON r_opiskeluoikeus.oppija_oid = oppija_oid.oppija_oid
         AND r_opiskeluoikeus.koulutusmuoto <> 'perusopetus'
         AND r_opiskeluoikeus.koulutusmuoto <> 'internationalschool'
-        -- Toistaiseksi YO-tutkintoja ei haluta Valppaassa näkyviin. Huom! Pelkästään tämän poistaminen ei riitä niiden näkyviin saamiseksi,
-        -- koska YO-tutkinnoilla ei esim. ole samanlaisia tilatietoja kuin muilla.
         AND r_opiskeluoikeus.koulutusmuoto <> 'ylioppilastutkinto'
         AND r_opiskeluoikeus.koulutusmuoto <> 'europeanschoolofhelsinki'
       LEFT JOIN r_opiskeluoikeus_aikajakso aikajakson_keskella
@@ -1762,6 +1830,11 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
     FROM
       esh_opiskeluoikeus
     UNION ALL
+    SELECT
+        *
+      FROM
+        yo_opiskeluoikeus
+      UNION ALL
     SELECT
       *
     FROM

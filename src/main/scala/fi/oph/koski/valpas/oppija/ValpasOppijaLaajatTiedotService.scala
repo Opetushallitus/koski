@@ -188,7 +188,7 @@ class ValpasOppijaLaajatTiedotService(
           opiskeluoikeudet
         } else {
           opiskeluoikeudet.filter(o => o.päätasonSuoritukset.exists(s =>
-            !Set("lukionoppiaineenoppimaara", "lukionaineopinnot").contains(s.suorituksenTyyppi.koodiarvo)
+            !Set("lukionoppiaineenoppimaara", "lukionaineopinnot", "ylioppilastutkinto").contains(s.suorituksenTyyppi.koodiarvo)
           ))
         }
       }
