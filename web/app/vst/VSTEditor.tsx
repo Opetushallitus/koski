@@ -122,9 +122,12 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
   )
 
   const createOsasuoritus = useCallback(
-    async (suoritusPath: any, osasuoritus: VSTOsasuoritus) => {
-      const filledOsasuoritus = await fillKoodistot(osasuoritus)
-      appendOsasuoritus(suoritusPath, filledOsasuoritus)
+    (suoritusPath: any, osasuoritus: VSTOsasuoritus) => {
+      fillKoodistot(osasuoritus)
+        .then((filledOsasuoritus) => {
+          appendOsasuoritus(suoritusPath, filledOsasuoritus)
+        })
+        .catch(console.error)
     },
     [appendOsasuoritus, fillKoodistot]
   )
