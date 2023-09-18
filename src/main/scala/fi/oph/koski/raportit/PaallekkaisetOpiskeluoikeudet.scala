@@ -327,7 +327,10 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
       case (_, ("perusopetuksenvuosiluokka", _)) => t.get("raportti-excel-default-value-perusopetuksenoppimäärä")
       case (_, ("vstoppivelvollisillesuunnattukoulutus", _)) => t.get("raportti-excel-default-value-vst")
       case (_, ("vstvapaatavoitteinenkoulutus", _)) => t.get("raportti-excel-default-value-vst-vapaatavoitteinen")
+      case (_, ("vstjotpakoulutus", _)) => t.get("raportti-excel-default-value-vst-jotpa")
+      case (_, ("vstmaahanmuuttajienkotoutumiskoulutus", _)) => t.get("raportti-excel-default-value-vst-maahanmuuttajienkotoutumiskoulutus")
       case (_, ("tuvakoulutuksensuoritus", _)) => t.get("raportti-excel-default-value-tuva")
+      case (_, ("muukuinsaanneltykoulutus", _)) => t.get("raportti-excel-default-value-muks")
       case (acc, (_, _)) => acc
     }
     if (nimi.forall(_.isLower)) logger.error(s"Unhandled suorituksen tyyppi $nimi. Raportin voi ladata, mutta päällekkäisen opiskeluoikeuden suorituksen nimenä käytettiin suorituksen tyyppiä")
