@@ -36,7 +36,7 @@ object FixtureUtil extends Logging {
     app.valpasRajapäivätService.asInstanceOf[MockValpasRajapäivätService].asetaMockTarkastelupäivä(tarkastelupäivä)
     new ValpasDatabaseFixtureLoader(app).reset()
     if (resetKoskiFixtures) {
-      app.fixtureCreator.resetFixtures(app.fixtureCreator.valpasFixtureState, reloadRaportointikanta = true)
+      app.fixtureCreator.resetFixtures(app.fixtureCreator.valpasFixtureState, reloadRaportointikanta = true, reloadYtrData = true)
     }
     logger.info("Valpas mock data reset DONE")
     FixtureState(app)
