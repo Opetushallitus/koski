@@ -105,7 +105,7 @@ describe("Oppivelvollisuudesta vapauttaminen", () => {
     const validateTiedot = () =>
       oppivelvollisuustiedotEquals(
         oppivelvollisuustiedot({
-          opiskelutilanne: "Opiskelemassa",
+          opiskelutilanne: "Kyllä",
           oppivelvollisuus: "21.11.2023 asti",
           maksuttomuusoikeus: "31.12.2025 asti",
           oppivelvollisuudenKeskeytysBtn: true,

@@ -5,7 +5,7 @@ import {
   expectElementEventuallyVisible,
 } from "../integrationtests-env/browser/content"
 
-export const jklNormaalikouluTableHead = "Hakeutumisvelvollisia oppijoita (47)"
+export const jklNormaalikouluTableHead = "Hakeutumisvelvollisia (47)"
 export const jklNormaalikouluTableContent = `
   Amis-valmistunut-eronnut-valmasta Valpas                | 18.6.2005   | 9C | 30.5.2021  | Ei hakemusta         | –                           | –                         | done3 opiskeluoikeutta                                                     |
   Epäonninen Valpas                                       | 30.10.2005  | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
@@ -56,8 +56,7 @@ export const jklNormaalikouluTableContent = `
   Ysiluokka-valmis-syksyllä-2021 Valpas                   | 19.6.2004   | 9C | 1.9.2021  | Ei hakemusta         | –                           | –                         | –                                                                          |
 `
 
-export const internationalSchoolTableHead =
-  "Hakeutumisvelvollisia oppijoita (13)"
+export const internationalSchoolTableHead = "Hakeutumisvelvollisia (13)"
 export const internationalSchoolTableContent = `
   Int-school-10-luokalla-ilman-alkamispäivää Valpas                                 | 14.3.2005  | 10B | 30.5.2021           | Ei hakemusta | – | – | International School of Helsinki, International school                                   |
   Int-school-9-luokalta-kesken-eroaja-myöhemmin Valpas                              | 21.4.2005  | 9B  | –                   | Ei hakemusta | – | – | –                                                                                        |
@@ -74,15 +73,14 @@ export const internationalSchoolTableContent = `
   Oppivelvollinen-int-school-kesken-keväällä-2021 Valpas                            | 18.2.2005  | 9B  | –                   | Ei hakemusta | – | – | –                                                                                        |
 `
 
-export const europeanSchoolOfHelsinkiTableHead =
-  "Hakeutumisvelvollisia oppijoita (2)"
+export const europeanSchoolOfHelsinkiTableHead = "Hakeutumisvelvollisia (2)"
 export const europeanSchoolOfHelsinkiTableContent = `
   ESH-s4-jälkeen-s5-aloittanut Valpas                    | 20.3.2005   | S5A | 31.5.2021 | Ei hakemusta | – | – | –                                                               |
   ESH-s4-kesken-keväällä-2021 Valpas                     | 11.5.2005   | S4A | –         | Ei hakemusta | – | – | –                                                               |
 `
 
 export const europeanSchoolOfHelsinkiTableHeadLater =
-  "Hakeutumisvelvollisia oppijoita (1)"
+  "Hakeutumisvelvollisia (1)"
 export const europeanSchoolOfHelsinkiTableContentLater = `
   ESH-s4-kesken-keväällä-2021 Valpas                     | 11.5.2005   | S4A | –         | Ei hakemusta | – | – | –                                                               |
 `

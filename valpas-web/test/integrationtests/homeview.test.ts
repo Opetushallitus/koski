@@ -42,7 +42,7 @@ describe("Etusivun väliaikainen näkymä", () => {
 
     await textEventuallyEquals(
       ".card__header",
-      "Hakeutumisvelvollisia oppijoita (0)",
+      "Hakeutumisvelvollisia (0)",
       defaultTimeout
     )
   })
@@ -64,7 +64,7 @@ describe("Etusivun väliaikainen näkymä", () => {
 
     // await textEventuallyEquals(
     //   ".card__header",
-    //   "Hakeutumisvelvollisia oppijoita (0)",
+    //   "Hakeutumisvelvollisia (0)",
     //   defaultTimeout
     // )
   })

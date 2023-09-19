@@ -183,7 +183,7 @@ describe("Oppijahaku", () => {
     await fillQueryField("070302A402D", "maksuttomuusoppijasearch")
     await submit("maksuttomuusoppijasearch")
     await expectResultToBe(
-      "Henkilö ei ole laajennetun oppivelvollisuuden piirissä, kotikunta ei ole Suomessa, tai hän on suorittanut oppivelvollisuutensa eikä hänellä ole oikeutta maksuttomaan koulutukseen.",
+      "Henkilö ei ole laajennetun oppivelvollisuuden piirissä, tai hän on suorittanut oppivelvollisuutensa eikä hänellä ole oikeutta maksuttomaan koulutukseen.",
       undefined,
       "maksuttomuusoppijasearch"
     )
@@ -224,7 +224,7 @@ describe("Oppijahaku", () => {
     await fillQueryField("180304A082P", "maksuttomuusoppijasearch")
     await submit("maksuttomuusoppijasearch")
     await expectResultToBe(
-      "Henkilö ei ole laajennetun oppivelvollisuuden piirissä, kotikunta ei ole Suomessa, tai hän on suorittanut oppivelvollisuutensa eikä hänellä ole oikeutta maksuttomaan koulutukseen.",
+      "Henkilö ei ole laajennetun oppivelvollisuuden piirissä, tai hän on suorittanut oppivelvollisuutensa eikä hänellä ole oikeutta maksuttomaan koulutukseen.",
       undefined,
       "maksuttomuusoppijasearch"
     )
@@ -270,7 +270,7 @@ describe("Oppijahaku", () => {
     await fillQueryField("080905A0798", "maksuttomuusoppijasearch")
     await submit("maksuttomuusoppijasearch")
     await expectResultToBe(
-      "Henkilö ei ole laajennetun oppivelvollisuuden piirissä, kotikunta ei ole Suomessa, tai hän on suorittanut oppivelvollisuutensa eikä hänellä ole oikeutta maksuttomaan koulutukseen.",
+      "Henkilö ei ole laajennetun oppivelvollisuuden piirissä, tai hän on suorittanut oppivelvollisuutensa eikä hänellä ole oikeutta maksuttomaan koulutukseen.",
       undefined,
       "maksuttomuusoppijasearch"
     )
@@ -285,7 +285,7 @@ describe("Oppijahaku", () => {
     await fillQueryField("090605A517L", "maksuttomuusoppijasearch")
     await submit("maksuttomuusoppijasearch")
     await expectResultToBe(
-      "Henkilö ei ole laajennetun oppivelvollisuuden piirissä, kotikunta ei ole Suomessa, tai hän on suorittanut oppivelvollisuutensa eikä hänellä ole oikeutta maksuttomaan koulutukseen.",
+      "Henkilö ei ole laajennetun oppivelvollisuuden piirissä, tai hän on suorittanut oppivelvollisuutensa eikä hänellä ole oikeutta maksuttomaan koulutukseen.",
       undefined,
       "maksuttomuusoppijasearch"
     )
@@ -404,7 +404,7 @@ describe("Oppijahaku", () => {
     await fillQueryField("130805A850J", "maksuttomuusoppijasearch")
     await submit("maksuttomuusoppijasearch")
     await expectResultToBe(
-      "Henkilö ei ole laajennetun oppivelvollisuuden piirissä, kotikunta ei ole Suomessa, tai hän on suorittanut oppivelvollisuutensa eikä hänellä ole oikeutta maksuttomaan koulutukseen.",
+      "Henkilö ei ole laajennetun oppivelvollisuuden piirissä, tai hän on suorittanut oppivelvollisuutensa eikä hänellä ole oikeutta maksuttomaan koulutukseen.",
       undefined,
       "maksuttomuusoppijasearch"
     )
@@ -452,7 +452,7 @@ describe("Oppijahaku", () => {
       await fillQueryField(hetu, "maksuttomuusoppijasearch")
       await submit("maksuttomuusoppijasearch")
       await expectResultToBe(
-        "Henkilö ei ole laajennetun oppivelvollisuuden piirissä, kotikunta ei ole Suomessa, tai hän on suorittanut oppivelvollisuutensa eikä hänellä ole oikeutta maksuttomaan koulutukseen.",
+        "Henkilö ei ole laajennetun oppivelvollisuuden piirissä, tai hän on suorittanut oppivelvollisuutensa eikä hänellä ole oikeutta maksuttomaan koulutukseen.",
         undefined,
         "maksuttomuusoppijasearch"
       )
