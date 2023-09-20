@@ -129,7 +129,7 @@ test.describe('Vapaan sivistystyön koulutus', () => {
           await expect(
             page.getByTestId('opiskeluoikeus.tila.value')
           ).toHaveText(
-            'Tila1.1.2023Läsnä (Jatkuvan oppimisen ja työllisuuden palvelukeskuksen rahoitus)'
+            'Tila1.1.2023Läsnä (Jatkuvan oppimisen ja työllisyyden palvelukeskuksen rahoitus)'
           )
           await expect(page.getByTestId('suoritukset.0.tab')).toHaveText(
             'Vapaan sivistystyön koulutus'
