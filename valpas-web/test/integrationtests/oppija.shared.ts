@@ -48,9 +48,9 @@ export const oppivelvollisuustiedot = (p: {
   vapautuksenMitätöintiBtn?: boolean
 }) =>
   [
-    ...rivi("Opiskelutilanne", p.opiskelutilanne),
+    ...rivi("Opiskelee", p.opiskelutilanne),
     ...rivi(
-      "Oppivelvollisuus",
+      "Oppivelvollisuus voimassa",
       [
         p.oppivelvollisuus,
         p.vapautuksenMitätöintiBtn ? "mode_edit" : null,
@@ -77,7 +77,10 @@ export const oppivelvollisuustiedot = (p: {
     .join("\n")
 
 export const historiaEiOpiskeluhistoriaa = () =>
-  ["school", "Oppijalle ei löytynyt opiskeluhistoriaa"].join("\n")
+  [
+    "school",
+    "Oppijalle ei löytynyt oppivelvollisuuden suorittamiseen kelpaavaa opiskeluhistoriaa",
+  ].join("\n")
 
 export const historiaOpintoOikeus = (p: {
   otsikko: string
@@ -94,7 +97,7 @@ export const historiaOpintoOikeus = (p: {
     "school",
     p.otsikko,
     ...rivi("Tila", p.tila),
-    ...rivi("Maksuttomuus", p.maksuttomuus?.join("\n")),
+    ...rivi("Koulutuksen maksuttomuus", p.maksuttomuus?.join("\n")),
     ...rivi("Oppilaitos/toimipiste", p.toimipiste),
     ...rivi("Ryhmä", p.ryhmä),
     ...rivi(
@@ -162,7 +165,7 @@ export const virallisetYhteystiedot = (p: {
   sähköposti?: string
 }) =>
   [
-    "Viralliset yhteystiedot",
+    "Viralliset yhteystiedot Digi- ja väestötietovirastossa (DVV)",
     "keyboard_arrow_rightVTJ: Kotiosoite",
     ...rivi("Lähiosoite", p.lähiosoite),
     ...rivi("Postitoimipaikka", p.postitoimipaikka),

@@ -144,7 +144,7 @@ const expectHuollettavaOppivelvollinenKaikkiTiedot = async () => {
 
   await oppivelvollisuustiedotEquals(
     oppivelvollisuustiedot({
-      opiskelutilanne: "Opiskelemassa",
+      opiskelutilanne: "Kyllä",
       oppivelvollisuus: "21.11.2023 asti",
       maksuttomuusoikeus: "31.12.2025 asti",
     })
@@ -213,7 +213,7 @@ const expectEiKoskessaOppivelvollinenKaikkiTiedot = async () => {
 
   await oppivelvollisuustiedotEquals(
     oppivelvollisuustiedot({
-      opiskelutilanne: "Ei opiskelupaikkaa",
+      opiskelutilanne: "Ei",
       oppivelvollisuus: "23.1.2023 asti",
       maksuttomuusoikeus: "31.12.2025 asti",
     })
@@ -251,7 +251,7 @@ const expectEiKoskessaOppivelvollinenKeskeytyksiäJaIlmoituksiaKaikkiTiedot =
 
     await oppivelvollisuustiedotEquals(
       oppivelvollisuustiedot({
-        opiskelutilanne: "Ei opiskelupaikkaa",
+        opiskelutilanne: "Ei",
         oppivelvollisuus: "Keskeytetty toistaiseksi 1.9.2021 alkaen",
         oppivelvollisuudenKeskeytykset: ["1.1.2019 – 1.12.2019"],
         maksuttomuusoikeus: "31.12.2025 asti",
@@ -312,7 +312,7 @@ const expectHuollettavaTurvakieltoPerustiedot = async () => {
 
   await oppivelvollisuustiedotEquals(
     oppivelvollisuustiedot({
-      opiskelutilanne: "Opiskelemassa",
+      opiskelutilanne: "Kyllä",
       oppivelvollisuus: "28.9.2022 asti",
       maksuttomuusoikeus: "31.12.2024 asti",
     })
@@ -324,7 +324,7 @@ const expectHuollettavaTurvakieltoPerustiedot = async () => {
   `)
 
   await virallisetYhteystiedotEquals(`
-    Viralliset yhteystiedot
+    Viralliset yhteystiedot Digi- ja väestötietovirastossa (DVV)
     Henkilöllä on turvakielto
   `)
 }

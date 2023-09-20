@@ -19,7 +19,7 @@ describe("Lokalisointi", () => {
 
     await clickElement("#sv")
 
-    await textEventuallyEquals(".card__header", "Logga in")
+    await textEventuallyEquals(".card__header", "Inloggning")
 
     await clickElement("#en")
 

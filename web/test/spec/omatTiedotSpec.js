@@ -102,7 +102,7 @@ describe('Omat tiedot', function () {
 
           it('Näytetään englanninkielinen ingressi', function () {
             expect(omattiedot.ingressi()).to.equal(
-              'This page shows all electronically stored study info, from individual courses to whole examinations.'
+              'This page displays all electronically stored study information, from individual credits to completed degrees.'
             )
           })
         })
@@ -239,7 +239,7 @@ describe('Omat tiedot', function () {
               it('mailto-linkissä on oikea viestipohja', function () {
                 expect(form.sähköpostiButtonMailtoContents()).to.equal(
                   'mailto:joku.osoite@example.com?' +
-                    'subject=Tiedustelu%20opintopolun%20tiedoista&' +
+                    'subject=Tiedustelu%20Opintopolun%20tiedoista&' +
                     'body=' +
                     encodeURIComponent(
                       '***Kirjoita viestisi tähän***\n\n' +
@@ -716,7 +716,7 @@ describe('Omat tiedot', function () {
                 'Studier' +
                   'Miia Monikoululainen' +
                   'f. 18.4.1997' +
-                  'Tiedot koneluettavassa muodossa'
+                  'Uppgifterna i maskinläsbart format'
               )
             })
 
@@ -737,7 +737,7 @@ describe('Omat tiedot', function () {
                 'Studies' +
                   'Miia Monikoululainen' +
                   'b. 18.4.1997' +
-                  'Tiedot koneluettavassa muodossa'
+                  'Data in machine readable form'
               )
             })
 

@@ -2,7 +2,7 @@ package fi.oph.koski.valpas.oppija
 
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.http.{ErrorDetail, HttpStatus}
-import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString}
+import fi.oph.koski.schema.{Finnish, Koodistokoodiviite, LocalizedString}
 import fi.oph.koski.valpas.opiskeluoikeusfixture.ValpasMockOppijat
 import fi.oph.koski.valpas.opiskeluoikeusrepository.MockValpasRajapäivätService
 import fi.oph.koski.valpas.valpasuser.ValpasMockUsers
@@ -61,7 +61,7 @@ class ValpasOppijaLaajatTiedotServiceVainOnrSpec extends ValpasOppijaTestBase {
             hakuOid = "",
             hakemusOid = ""
           ),
-          yhteystietoryhmänNimi = LocalizedString.finnish("Yhteystiedot"),
+          yhteystietoryhmänNimi = Finnish("Yhteystiedot", Some("Kontaktuppgifter")),
           henkilönimi = None,
           sähköposti = Some("Valpas.Kosketon@gmail.com"),
           puhelinnumero = None,
@@ -76,7 +76,10 @@ class ValpasOppijaLaajatTiedotServiceVainOnrSpec extends ValpasOppijaTestBase {
             alkuperä = Koodistokoodiviite("alkupera1", "yhteystietojenalkupera"), // VTJ
             tyyppi = Koodistokoodiviite("yhteystietotyyppi1", "yhteystietotyypit"), // Kotiosoite
           ),
-          yhteystietoryhmänNimi = LocalizedString.finnish("Viralliset yhteystiedot"),
+          yhteystietoryhmänNimi = Finnish(
+            "Viralliset yhteystiedot Digi- ja väestötietovirastossa (DVV)",
+            Some("Officiella kontaktuppgifter hos Myndigheten för digitalisering och befolkningsdata (MDB)"),
+            Some("Official contact information in the Digital and Population Data Services Agency (DVV)")),
           henkilönimi = None,
           sähköposti = Some("valpas@gmail.com"),
           puhelinnumero = Some("0401122334"),

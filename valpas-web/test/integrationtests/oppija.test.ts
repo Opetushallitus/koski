@@ -84,7 +84,7 @@ describe("Oppijakohtainen näkymä 1/2", () => {
     await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000001")
     await oppivelvollisuustiedotEquals(
       oppivelvollisuustiedot({
-        opiskelutilanne: "Opiskelemassa",
+        opiskelutilanne: "Kyllä",
         oppivelvollisuus: "21.11.2023 asti",
         maksuttomuusoikeus: "31.12.2025 asti",
         kuntailmoitusBtn: true,
@@ -167,7 +167,7 @@ describe("Oppijakohtainen näkymä 1/2", () => {
     await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000011")
     await oppivelvollisuustiedotEquals(
       oppivelvollisuustiedot({
-        opiskelutilanne: "Ei opiskelupaikkaa",
+        opiskelutilanne: "Ei",
         oppivelvollisuus: "18.6.2023 asti",
         maksuttomuusoikeus: "31.12.2025 asti",
         kuntailmoitusBtn: true,
@@ -195,7 +195,7 @@ describe("Oppijakohtainen näkymä 1/2", () => {
     await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000098")
     await oppivelvollisuustiedotEquals(
       oppivelvollisuustiedot({
-        opiskelutilanne: "Opiskelemassa",
+        opiskelutilanne: "Kyllä",
         oppivelvollisuus: "11.5.2023 asti",
         maksuttomuusoikeus: "31.12.2025 asti",
         kuntailmoitusBtn: true,
@@ -237,7 +237,7 @@ describe("Oppijakohtainen näkymä 1/2", () => {
     await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000171")
     await oppivelvollisuustiedotEquals(
       oppivelvollisuustiedot({
-        opiskelutilanne: "Opiskelemassa",
+        opiskelutilanne: "Kyllä",
         oppivelvollisuus: "19.3.2023 asti",
         maksuttomuusoikeus: "31.12.2025 asti",
       })
@@ -298,7 +298,7 @@ describe("Oppijakohtainen näkymä 1/2", () => {
     await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000003")
     await oppivelvollisuustiedotEquals(
       oppivelvollisuustiedot({
-        opiskelutilanne: "Opiskelemassa",
+        opiskelutilanne: "Kyllä",
         oppivelvollisuus: "5.6.2023 asti",
         maksuttomuusoikeus: "31.12.2025 asti",
         kuntailmoitusBtn: true,
@@ -330,7 +330,7 @@ describe("Oppijakohtainen näkymä 1/2", () => {
     await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000015")
     await oppivelvollisuustiedotEquals(
       oppivelvollisuustiedot({
-        opiskelutilanne: "Opiskelemassa",
+        opiskelutilanne: "Kyllä",
         oppivelvollisuus: "28.4.2023 asti",
         maksuttomuusoikeus: "31.12.2025 asti",
         kuntailmoitusBtn: true,
@@ -368,7 +368,7 @@ describe("Oppijakohtainen näkymä 1/2", () => {
     await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000016")
     await oppivelvollisuustiedotEquals(
       oppivelvollisuustiedot({
-        opiskelutilanne: "Ei opiskelupaikkaa",
+        opiskelutilanne: "Ei",
         oppivelvollisuus: "17.4.2023 asti",
         maksuttomuusoikeus: "31.12.2025 asti",
         kuntailmoitusBtn: true,
@@ -482,7 +482,7 @@ describe("Oppijakohtainen näkymä 1/2", () => {
     )
 
     await virallisetYhteystiedotEquals(`
-      Viralliset yhteystiedot
+      Viralliset yhteystiedot Digi- ja väestötietovirastossa (DVV)
       Henkilöllä on turvakielto
     `)
   })
@@ -543,7 +543,7 @@ describe("Oppijakohtainen näkymä 1/2", () => {
     await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000004")
     await oppivelvollisuustiedotEquals(
       oppivelvollisuustiedot({
-        opiskelutilanne: "Opiskelemassa",
+        opiskelutilanne: "Kyllä",
         oppivelvollisuus: "6.5.2022 asti",
         maksuttomuusoikeus: "31.12.2024 asti",
       })
@@ -567,7 +567,7 @@ describe("Oppijakohtainen näkymä 1/2", () => {
     await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000004")
     await oppivelvollisuustiedotEquals(
       oppivelvollisuustiedot({
-        opiskelutilanne: "Opiskelemassa",
+        opiskelutilanne: "Kyllä",
         oppivelvollisuus: "6.5.2022 asti",
         maksuttomuusoikeus: "31.12.2024 asti",
         kuntailmoitusBtn: true,
@@ -613,7 +613,7 @@ describe("Oppijakohtainen näkymä 1/2", () => {
       await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000004")
       await oppivelvollisuustiedotEquals(
         oppivelvollisuustiedot({
-          opiskelutilanne: "Opiskelemassa",
+          opiskelutilanne: "Kyllä",
           oppivelvollisuus: "6.5.2022 asti",
           maksuttomuusoikeus: "31.12.2024 asti",
         })

@@ -4637,7 +4637,7 @@ describe('Perusopetus', function () {
         expect(extractAsText(S('.oppiaineet'))).to.equal(
           'Arviointiasteikko\n' +
             'Arvostelu 4-10, S (suoritettu) tai H (hylätty)\n' +
-            'Perusopetuksen valmistavan opetuksen opinnot Oppiaine Arvosana Laajuus\n' +
+            'Perusopetukseen valmistavan opetuksen opinnot Oppiaine Arvosana Laajuus\n' +
             'Äidinkieli S 10 vuosiviikkotuntia\n' +
             'Sanallinen arviointi Keskustelee sujuvasti suomeksi\n' +
             'Opetuksen sisältö Suullinen ilmaisu ja kuullun ymmärtäminen Perusopetuksen oppimäärään sisältyvät opinnot Oppiaine Arvosana Laajuus\n' +

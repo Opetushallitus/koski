@@ -123,7 +123,7 @@ describe("Oppijakohtainen näkymä 2/2", () => {
     await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000004")
     await oppivelvollisuustiedotEquals(
       oppivelvollisuustiedot({
-        opiskelutilanne: "Opiskelemassa",
+        opiskelutilanne: "Kyllä",
         oppivelvollisuus: "6.5.2022 asti",
         maksuttomuusoikeus: "31.12.2024 asti",
         kuntailmoitusBtn: true,
@@ -166,7 +166,7 @@ describe("Oppijakohtainen näkymä 2/2", () => {
     )
     await oppivelvollisuustiedotEquals(
       oppivelvollisuustiedot({
-        opiskelutilanne: "Opiskelemassa",
+        opiskelutilanne: "Kyllä",
         oppivelvollisuus: "17.10.2023 asti",
         oppivelvollisuudenKeskeytykset: [
           "1.9.2021 – 30.9.2021",
@@ -201,7 +201,7 @@ describe("Oppijakohtainen näkymä 2/2", () => {
     )
     await oppivelvollisuustiedotEquals(
       oppivelvollisuustiedot({
-        opiskelutilanne: "Opiskelemassa",
+        opiskelutilanne: "Kyllä",
         oppivelvollisuus: "Keskeytetty toistaiseksi 1.1.2021 alkaen",
         maksuttomuusoikeus: "31.12.2025 asti",
         kuntailmoitusBtn: true,
@@ -253,7 +253,7 @@ describe("Oppijakohtainen näkymä 2/2", () => {
 
     await oppivelvollisuustiedotEquals(
       oppivelvollisuustiedot({
-        opiskelutilanne: "Ei opiskelupaikkaa",
+        opiskelutilanne: "Ei",
         oppivelvollisuudenKeskeytykset: ["toistaiseksi 16.8.2021 alkaen"],
         maksuttomuusoikeus: "31.12.2025 asti",
         oppivelvollisuudenKeskeytysBtn: true,
@@ -279,10 +279,7 @@ describe("Oppijakohtainen näkymä 2/2", () => {
 
     // Avaa ov-keskeytysmodaali
     await clickElement("#ovkeskeytys-btn")
-    await textEventuallyEquals(
-      ".modal__title",
-      "Oppivelvollisuuden keskeytyksen lisäys"
-    )
+    await textEventuallyEquals(".modal__title", "Oppivelvollisuuden keskeytys")
     await textEventuallyEquals(
       ".modal__container .heading--secondary",
       "Oppivelvollisuus-keskeytetty-ei-opiskele Valpas (011005A115P)"
@@ -330,7 +327,7 @@ describe("Oppijakohtainen näkymä 2/2", () => {
 
     await oppivelvollisuustiedotEquals(
       oppivelvollisuustiedot({
-        opiskelutilanne: "Ei opiskelupaikkaa",
+        opiskelutilanne: "Ei",
         oppivelvollisuus: "30.9.2023 asti",
         maksuttomuusoikeus: "31.12.2025 asti",
         oppivelvollisuudenKeskeytysBtn: true,
@@ -520,7 +517,7 @@ describe("Oppijakohtainen näkymä 2/2", () => {
     await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000148")
     await oppivelvollisuustiedotEquals(
       oppivelvollisuustiedot({
-        opiskelutilanne: "Ei opiskelupaikkaa",
+        opiskelutilanne: "Ei",
         oppivelvollisuudenKeskeytykset: [
           "toistaiseksi 1.9.2021 alkaen",
           "1.1.2019 – 1.12.2019",
@@ -532,7 +529,7 @@ describe("Oppijakohtainen näkymä 2/2", () => {
     )
     await contentEventuallyEquals(
       testId("ei-opiskeluoikeushistoria-opintoja-text"),
-      "Oppijalle ei löytynyt opiskeluhistoriaa"
+      "Oppijalle ei löytynyt oppivelvollisuuden suorittamiseen kelpaavaa opiskeluhistoriaa"
     )
   })
 
@@ -551,7 +548,7 @@ describe("Oppijakohtainen näkymä 2/2", () => {
     await clickElement(testId("ovkeskeytys-btn"))
     await textEventuallyEquals(
       testId("ovkeskeytys-modal__container-header-title"),
-      "Oppivelvollisuuden keskeytyksen lisäys"
+      "Oppivelvollisuuden keskeytys"
     )
 
     await textEventuallyEquals(
@@ -566,7 +563,7 @@ describe("Oppijakohtainen näkymä 2/2", () => {
 
     await oppivelvollisuustiedotEquals(
       oppivelvollisuustiedot({
-        opiskelutilanne: "Ei opiskelupaikkaa",
+        opiskelutilanne: "Ei",
         oppivelvollisuudenKeskeytykset: [
           "toistaiseksi 5.9.2021 alkaen",
           "toistaiseksi 1.9.2021 alkaen",
@@ -655,7 +652,7 @@ describe("Oppijakohtainen näkymä 2/2", () => {
       )
       await oppivelvollisuustiedotEquals(
         oppivelvollisuustiedot({
-          opiskelutilanne: "Opiskelemassa",
+          opiskelutilanne: "Kyllä",
           oppivelvollisuus: "17.10.2023 asti",
           oppivelvollisuudenKeskeytykset: [
             "1.9.2021 – 30.9.2021",
@@ -696,7 +693,7 @@ describe("Oppijakohtainen näkymä 2/2", () => {
       await clickElement("#ovkeskeytys-btn")
       await textEventuallyEquals(
         ".modal__title",
-        "Oppivelvollisuuden keskeytyksen lisäys"
+        "Oppivelvollisuuden keskeytys"
       )
       await textEventuallyEquals(
         ".modal__container .heading--secondary",
@@ -714,7 +711,7 @@ describe("Oppijakohtainen näkymä 2/2", () => {
 
       await oppivelvollisuustiedotEquals(
         oppivelvollisuustiedot({
-          opiskelutilanne: "Opiskelemassa",
+          opiskelutilanne: "Kyllä",
           oppivelvollisuudenKeskeytykset: [
             `toistaiseksi 11.11.2022 alkaen`,
             `1.9.2021 – 30.9.2021`,
@@ -750,7 +747,7 @@ describe("Oppijakohtainen näkymä 2/2", () => {
 
       await oppivelvollisuustiedotEquals(
         oppivelvollisuustiedot({
-          opiskelutilanne: "Opiskelemassa",
+          opiskelutilanne: "Kyllä",
           oppivelvollisuus: "17.10.2023 asti",
           oppivelvollisuudenKeskeytykset: [
             `1.9.2021 – 30.9.2021`,

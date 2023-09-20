@@ -1,5 +1,4 @@
-export const ressunLukioTableHead_syyskuu2021 =
-  "Hakeutumisvelvollisia oppijoita (4)"
+export const ressunLukioTableHead_syyskuu2021 = "Hakeutumisvelvollisia (4)"
 export const ressunLukioTableContent_syyskuu2021 = `
   Aikuisten-perusopetuksesta-alle-2kk-aiemmin-valmistunut Valpas    | 13.10.2004  | Aikuisten perusopetus | 1.1.2021  | 10.8.2021   | Ei hakemusta  | – | – | – |
   Aikuisten-perusopetuksesta-keväällä-valmistunut Valpas            | 7.3.2004    | Aikuisten perusopetus | 1.1.2021  | 29.5.2021   | Ei hakemusta  | – | – | – |
@@ -7,8 +6,7 @@ export const ressunLukioTableContent_syyskuu2021 = `
   Aikuisten-perusopetuksesta-tulevaisuudessa-valmistuva Valpas      | 12.11.2004  | Aikuisten perusopetus | 1.1.2021  | 10.12.2021  | Ei hakemusta  | – | – | – |
 `
 
-export const ressunLukioTableHead_lokakuu2021 =
-  "Hakeutumisvelvollisia oppijoita (14)"
+export const ressunLukioTableHead_lokakuu2021 = "Hakeutumisvelvollisia (14)"
 export const ressunLukioTableContent_lokakuu2021 = `
   Aikuisten-perusopetuksessa Valpas                                   | 2.3.2004    | Aikuisten perusopetus                         | 15.8.2021 | –           | Ei hakemusta  | – | – | –                               |
   Aikuisten-perusopetuksessa-syksyn-rajapäivän-jälkeen Valpas         | 25.2.2004   | Aikuisten perusopetus                         | 1.10.2021 | –           | Ei hakemusta  | – | – | –                               |

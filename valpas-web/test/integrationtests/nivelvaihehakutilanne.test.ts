@@ -105,10 +105,7 @@ describe("Nivelvaiheen hakutilannenäkymä", () => {
   it("Näyttää tyhjän listan virheittä, jos ei oppijoita x", async () => {
     await loginAs(nivelvaiheenHakutilannePath, "valpas-monta")
     await urlIsEventually(pathToUrl(saksalainenKouluHakutilannePath))
-    await textEventuallyEquals(
-      ".card__header",
-      "Hakeutumisvelvollisia oppijoita (0)"
-    )
+    await textEventuallyEquals(".card__header", "Hakeutumisvelvollisia (0)")
 
     await waitTableLoadingHasFinished(".hakutilanne")
   })
@@ -130,10 +127,7 @@ describe("Nivelvaiheen hakutilannenäkymä", () => {
 
     await selectOrganisaatioByNimi(internationalSchoolOid)
     await urlIsEventually(pathToUrl(internationalSchoolHakutilannePath))
-    await textEventuallyEquals(
-      ".card__header",
-      "Hakeutumisvelvollisia oppijoita (0)"
-    )
+    await textEventuallyEquals(".card__header", "Hakeutumisvelvollisia (0)")
     await waitTableLoadingHasFinished(".hakutilanne")
   })
 
@@ -142,10 +136,7 @@ describe("Nivelvaiheen hakutilannenäkymä", () => {
 
     await selectOrganisaatioByNimi(ressunLukioOid)
     await urlIsEventually(pathToUrl(ressunLukioHakutilannePath))
-    await textEventuallyEquals(
-      ".card__header",
-      "Hakeutumisvelvollisia oppijoita (4)"
-    )
+    await textEventuallyEquals(".card__header", "Hakeutumisvelvollisia (4)")
 
     await dataTableEventuallyEquals(
       ".hakutilanne",
@@ -159,10 +150,7 @@ describe("Nivelvaiheen hakutilannenäkymä", () => {
 
     await selectOrganisaatioByNimi("LAKKAUTETTU: Aapajoen koulu")
     await urlIsEventually(pathToUrl(aapajoenKouluHakutilannePath))
-    await textEventuallyEquals(
-      ".card__header",
-      "Hakeutumisvelvollisia oppijoita (0)"
-    )
+    await textEventuallyEquals(".card__header", "Hakeutumisvelvollisia (0)")
     await waitTableLoadingHasFinished(".hakutilanne")
   })
 
@@ -255,10 +243,7 @@ describe("Nivelvaiheen hakutilannenäkymä", () => {
 
     const stateBeforeOrgChange = await getState()
     await selectOrganisaatioByNimi(internationalSchoolOid)
-    await textEventuallyEquals(
-      ".card__header",
-      "Hakeutumisvelvollisia oppijoita (0)"
-    )
+    await textEventuallyEquals(".card__header", "Hakeutumisvelvollisia (0)")
 
     await selectOrganisaatioByNimi(ressunLukioOid)
     await textEventuallyEquals(
