@@ -1,33 +1,79 @@
 {
   "koodistoUri": "koskikoulutustendiaarinumerot",
-  "versio": 1,
-  "metadata": [
-    {
-      "kieli": "FI",
-      "nimi": "Koski - koulutusten diaarinumerot",
-      "kuvaus": "Koodisto sisältää diaarinumerot, joiden mukaisille perusteille ei Koskessa suoriteta validointeja. Perusteeseen liittyviä validointeja ei haluta suorittaa jos esimerkiksi diaarinumeron mukaista perustetta ei ole saatavilla ePerusteet rajapinnasta."
-    },
-    {
-      "kieli": "SV",
-      "nimi": "Koski - koulutusten diaarinumerot",
-      "kuvaus": "Koodisto sisältää diaarinumerot, joiden mukaisille perusteille ei Koskessa suoriteta validointeja. Perusteeseen liittyviä validointeja ei haluta suorittaa jos esimerkiksi diaarinumeron mukaista perustetta ei ole saatavilla ePerusteet rajapinnasta."
-    },
-    {
-      "kieli": "EN",
-      "nimi": "Koski - koulutusten diaarinumerot",
-      "kuvaus": "Koodisto sisältää diaarinumerot, joiden mukaisille perusteille ei Koskessa suoriteta validointeja. Perusteeseen liittyviä validointeja ei haluta suorittaa jos esimerkiksi diaarinumeron mukaista perustetta ei ole saatavilla ePerusteet rajapinnasta."
-    }
-  ],
-  "codesGroupUri": "koski",
-  "voimassaAlkuPvm": "2017-03-23",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/koskikoulutustendiaarinumerot",
+  "omistaja": "Opetushallitus",
   "organisaatioOid": "1.2.246.562.10.00000000001",
+  "lukittu": null,
   "withinCodes": [
     {
       "codesUri": "koulutustyyppi",
       "codesVersion": 2,
-      "passive": false
+      "passive": false,
+      "nimi": {
+        "SV": "koulutustyyppi",
+        "FI": "koulutustyyppi",
+        "EN": "koulutustyyppi"
+      },
+      "kuvaus": {
+        "SV": "koulutustyyppi",
+        "FI": "Koulutustarjontapalvelun käyttöliittymän käytössä oleva koodisto",
+        "EN": "koulutustyyppi"
+      }
     }
   ],
+  "includesCodes": [],
+  "levelsWithCodes": [],
+  "codesGroupUri": "koski",
+  "version": 2,
+  "versio": 1,
+  "paivitysPvm": "2022-10-19",
+  "paivittajaOid": "1.2.246.562.24.39880720348",
+  "voimassaAlkuPvm": "2017-03-23",
+  "voimassaLoppuPvm": null,
   "tila": "LUONNOS",
-  "version": 2
+  "metadata": [
+    {
+      "kieli": "SV",
+      "nimi": "Koski - koulutusten diaarinumerot",
+      "kuvaus": "Koodisto sisältää diaarinumerot, joiden mukaisille perusteille ei Koskessa suoriteta validointeja. Perusteeseen liittyviä validointeja ei haluta suorittaa jos esimerkiksi diaarinumeron mukaista perustetta ei ole saatavilla ePerusteet rajapinnasta.",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    },
+    {
+      "kieli": "EN",
+      "nimi": "Koski - koulutusten diaarinumerot",
+      "kuvaus": "Koodisto sisältää diaarinumerot, joiden mukaisille perusteille ei Koskessa suoriteta validointeja. Perusteeseen liittyviä validointeja ei haluta suorittaa jos esimerkiksi diaarinumeron mukaista perustetta ei ole saatavilla ePerusteet rajapinnasta.",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    },
+    {
+      "kieli": "FI",
+      "nimi": "Koski - koulutusten diaarinumerot",
+      "kuvaus": "Koodisto sisältää diaarinumerot, joiden mukaisille perusteille ei Koskessa suoriteta validointeja. Perusteeseen liittyviä validointeja ei haluta suorittaa jos esimerkiksi diaarinumeron mukaista perustetta ei ole saatavilla ePerusteet rajapinnasta.",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    }
+  ],
+  "codesVersions": []
 }

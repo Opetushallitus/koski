@@ -1,27 +1,63 @@
 {
   "koodistoUri": "arviointiasteikkoammatillinent1k3",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/arviointiasteikkoammatillinent1k3",
+  "omistaja": null,
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "lukittu": null,
+  "withinCodes": [],
+  "includesCodes": [],
+  "levelsWithCodes": [],
+  "codesGroupUri": "koski",
+  "version": 1,
   "versio": 1,
+  "paivitysPvm": "2018-05-09",
+  "paivittajaOid": null,
+  "voimassaAlkuPvm": "2015-10-01",
+  "voimassaLoppuPvm": null,
+  "tila": "LUONNOS",
   "metadata": [
-    {
-      "kieli": "FI",
-      "nimi": "Arviointiasteikko ammatillinen T1-K3",
-      "kuvaus": ""
-    },
     {
       "kieli": "SV",
       "nimi": "Arviointiasteikko ammatillinen T1-K3",
-      "kuvaus": ""
+      "kuvaus": "",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    },
+    {
+      "kieli": "FI",
+      "nimi": "Arviointiasteikko ammatillinen T1-K3",
+      "kuvaus": "",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
     },
     {
       "kieli": "EN",
       "nimi": "Arviointiasteikko ammatillinen T1-K3",
-      "kuvaus": ""
+      "kuvaus": "",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
     }
   ],
-  "codesGroupUri": "koski",
-  "voimassaAlkuPvm": "2015-10-01",
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "withinCodes": [],
-  "tila": "LUONNOS",
-  "version": 1
+  "codesVersions": []
 }

@@ -1,182 +1,252 @@
 [
   {
-    "koodiUri": "koskiyoarvosanat_a",
-    "koodiArvo": "A",
     "metadata": [
       {
         "nimi": "Approbatur",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "koskiyoarvosanat_a",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "A"
   },
   {
-    "koodiUri": "koskiyoarvosanat_b",
-    "koodiArvo": "B",
     "metadata": [
       {
         "nimi": "Lubenter approbatur",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "koskiyoarvosanat_b",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "B"
   },
   {
-    "koodiUri": "koskiyoarvosanat_c",
-    "koodiArvo": "C",
     "metadata": [
       {
         "nimi": "Cum laude approbatur",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "koskiyoarvosanat_c",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "C"
   },
   {
-    "koodiUri": "koskiyoarvosanat_e",
-    "koodiArvo": "E",
     "metadata": [
       {
         "nimi": "Eximia cum laude approbatur",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "koskiyoarvosanat_e",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "E"
   },
   {
+    "metadata": [
+      {
+        "nimi": "Improbatur",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "koskiyoarvosanat_i",
-    "koodiArvo": "I",
+    "versio": 1,
+    "koodiArvo": "I"
+  },
+  {
     "metadata": [
       {
         "nimi": "Improbatur",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "koskiyoarvosanat_i-1",
-    "koodiArvo": "I+",
+    "versio": 1,
+    "koodiArvo": "I+"
+  },
+  {
     "metadata": [
       {
         "nimi": "Improbatur",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "koskiyoarvosanat_i-2",
-    "koodiArvo": "I-",
+    "versio": 1,
+    "koodiArvo": "I-"
+  },
+  {
     "metadata": [
       {
         "nimi": "Improbatur",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "koskiyoarvosanat_i-3",
-    "koodiArvo": "I=",
-    "metadata": [
-      {
-        "nimi": "Improbatur",
-        "kieli": "FI"
-      },
-      {
-        "kieli": "SV"
-      },
-      {
-        "kieli": "EN"
-      }
-    ],
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "I="
   },
   {
-    "koodiUri": "koskiyoarvosanat_l",
-    "koodiArvo": "L",
     "metadata": [
       {
         "nimi": "Laudatur",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "koskiyoarvosanat_l",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "L"
   },
   {
-    "koodiUri": "koskiyoarvosanat_m",
-    "koodiArvo": "M",
     "metadata": [
       {
         "nimi": "Magna cum laude approbatur",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "koskiyoarvosanat_m",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "M"
   }
 ]

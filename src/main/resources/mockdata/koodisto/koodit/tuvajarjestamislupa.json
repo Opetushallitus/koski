@@ -1,74 +1,83 @@
 [
   {
-    "koodiUri": "tuvajarjestamislupa_ammatillinen",
-    "koodiArvo": "ammatillinen",
     "metadata": [
       {
         "nimi": "Ammatillisen koulutuksen järjestämislupa (TUVA)",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Tillstånd att ordna yrkesutbildning (Hux)",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Authorisation to provide vocational education and training (TUVA)",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "tuvajarjestamislupa_ammatillinen",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "ammatillinen"
   },
   {
-    "koodiUri": "tuvajarjestamislupa_lukio",
-    "koodiArvo": "lukio",
     "metadata": [
       {
         "nimi": "Lukiokoulutuksen järjestämislupa (TUVA)",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Tillstånd att ordna gymnasieutbildning (Hux)",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Authorisation to provide general upper secondary education (TUVA)",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "tuvajarjestamislupa_lukio",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "lukio"
   },
   {
-    "koodiUri": "tuvajarjestamislupa_perusopetus",
-    "koodiArvo": "perusopetus",
     "metadata": [
       {
         "nimi": "Perusopetuksen järjestämislupa (TUVA)",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Tillstånd att ordna grundläggande utbildning (Hux)",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Authorisation to provide basic education (TUVA)",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "tuvajarjestamislupa_perusopetus",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "perusopetus"
   }
 ]

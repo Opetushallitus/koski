@@ -1,52 +1,57 @@
 [
   {
-    "koodiUri": "tutkinnonosatvalinnanmahdollisuus_1",
-    "koodiArvo": "1",
     "metadata": [
       {
         "nimi": "Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja",
-        "lyhytNimi": "Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja",
         "kuvaus": "",
+        "lyhytNimi": "Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja",
         "kieli": "FI"
       },
       {
         "nimi": "Delområden av gemensamma examensdelar, gymnasiestudier eller andra studier som stödjer färdigheter för fortsatta studier",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Sections of common units, studies in general upper secondary school or other studies that support readiness for further education",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "tutkinnonosatvalinnanmahdollisuus_1",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "1"
   },
   {
-    "koodiUri": "tutkinnonosatvalinnanmahdollisuus_2",
-    "koodiArvo": "2",
     "metadata": [
       {
         "nimi": "Korkeakouluopinnot",
-        "lyhytNimi": "Korkeakouluopinnot",
         "kuvaus": "",
+        "lyhytNimi": "Korkeakouluopinnot",
         "kieli": "FI"
       },
       {
         "nimi": "Högskolestudier",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Studies in higher education institution",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "tutkinnonosatvalinnanmahdollisuus_2",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "2"
   }
 ]

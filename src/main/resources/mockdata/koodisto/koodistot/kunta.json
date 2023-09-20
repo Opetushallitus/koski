@@ -1,43 +1,277 @@
 {
   "koodistoUri": "kunta",
-  "versio": 2,
-  "metadata": [
-    {
-      "kieli": "FI",
-      "nimi": "kunta",
-      "kuvaus": "Kunta on tietyn alueen ja sen asukkaiden muodostama yhteisö. Kunta on rajoiltaan määrätty alue niin, että kunkin kunnan toiminta kohdistuu sen alueeseen, siellä asuviin ja oleskeleviin ihmisiin ja siellä tapahtuvaan toimintaan. Uusien kuntien perustamisesta päättää valtioneuvosto ja uusista kuntanumeroista valtiovarainministeriön kuntaosasto. Vuonna 1995 voimaan tullut kuntalaki tuntee virallisena kuntamuotona vain kunnan, mutta kunta voi käyttää kaupunki-nimitystä, jos se itse katsoo täyttävänsä kaupunkimaiselle yhdyskunnalle asetettavat vaatimukset. \n\nKoodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja, niissä olevia koodeja sekä niiden selitteitä ja kuvauksia"
-    },
-    {
-      "kieli": "SV",
-      "nimi": "kommun",
-      "kuvaus": "Kunta on tietyn alueen ja sen asukkaiden muodostama yhteisö. Kunta on rajoiltaan määrätty alue niin, että kunkin kunnan toiminta kohdistuu sen alueeseen, siellä asuviin ja oleskeleviin ihmisiin ja siellä tapahtuvaan toimintaan. Uusien kuntien perustamisesta päättää valtioneuvosto ja uusista kuntanumeroista valtiovarainministeriön kuntaosasto. Vuonna 1995 voimaan tullut kuntalaki tuntee virallisena kuntamuotona vain kunnan, mutta kunta voi käyttää kaupunki-nimitystä, jos se itse katsoo täyttävänsä kaupunkimaiselle yhdyskunnalle asetettavat vaatimukset. \n\nKoodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja, niissä olevia koodeja sekä niiden selitteitä ja kuvauksia"
-    },
-    {
-      "kieli": "EN",
-      "nimi": "municipality",
-      "kuvaus": "Kunta on tietyn alueen ja sen asukkaiden muodostama yhteisö. Kunta on rajoiltaan määrätty alue niin, että kunkin kunnan toiminta kohdistuu sen alueeseen, siellä asuviin ja oleskeleviin ihmisiin ja siellä tapahtuvaan toimintaan. Uusien kuntien perustamisesta päättää valtioneuvosto ja uusista kuntanumeroista valtiovarainministeriön kuntaosasto. Vuonna 1995 voimaan tullut kuntalaki tuntee virallisena kuntamuotona vain kunnan, mutta kunta voi käyttää kaupunki-nimitystä, jos se itse katsoo täyttävänsä kaupunkimaiselle yhdyskunnalle asetettavat vaatimukset. \n\nKoodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja, niissä olevia koodeja sekä niiden selitteitä ja kuvauksia"
-    }
-  ],
-  "codesGroupUri": "alueet",
-  "voimassaAlkuPvm": "2018-02-08",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/kunta",
+  "omistaja": "Opetushallitus",
   "organisaatioOid": "1.2.246.562.10.00000000001",
+  "lukittu": null,
   "withinCodes": [
     {
       "codesUri": "aluehallintovirasto",
-      "codesVersion": 1,
-      "passive": true
-    },
-    {
-      "codesUri": "aluehallintovirasto",
       "codesVersion": 2,
-      "passive": false
+      "passive": false,
+      "nimi": {
+        "FI": "aluehallintovirasto (AVI)",
+        "SV": "regionförvaltningsverken (RFV)",
+        "EN": "regional State Administrative Agencies (AVI)"
+      },
+      "kuvaus": {
+        "FI": "Aluehallintovirastot (AVI)\nValtion aluehallintoyksikköinä toimivat aluehallintovirastot aloittivat toimintansa 1.1.2010. Aluehallintovirastojen lukumääristä, toimialueista, nimistä ja toimipaikoista säädetään valtioneuvoston asetuksella. Aluehallintovirastojen yleishallinnollinen ohjaus kuuluu valtiovarainministeriölle, ja niiden toiminnallisesta ohjauksesta vastaavat muut ministeriöt kukin omilla toimialoillaan. Aluehallintovirastoilla on viisi vastuualuetta: peruspalvelut, oikeusturvat ja luvat: työsuojelu; ympäristöluvat; pelastustoimi ja varautuminen; sekä poliisitoimi. Ahvenanmaan maakunnassa on vastaavana valtionhallinnon viranomaisena Ahvenanmaan valtionvirasto.\nKoodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja, niissä olevia koodeja sekä niiden selitteitä ja kuvauksia",
+        "SV": "regionförvaltningsverken (RFV)",
+        "EN": "regional State Administrative Agencies (AVI)"
+      }
     },
     {
       "codesUri": "oppilaitosnumero",
       "codesVersion": 1,
-      "passive": false
+      "passive": false,
+      "nimi": {
+        "FI": "oppilaitosnumero",
+        "SV": "oppilaitosnumero",
+        "EN": "oppilaitosnumero"
+      },
+      "kuvaus": {
+        "FI": "Tilastokeskus on antanut oppilaitoksille yksilöintitunnuksen. Tunnus on viisimerkkinen ja tunnukselle on varattu numerosarja 00000-99999. Tunnus on annettu ja annetaan ainoastaa pääkoululle. Samaa oppilaitostunnusta käytetään kaikissa oppilaitokseen liittyvissä toimintayksiköissä. Tietoa ylläpidetään organisaatiopalvelussa josta se kopioituu tähän koodistoon.\n\nKoodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja ja niissä olevia koodeja.",
+        "SV": "Tilastokeskus on antanut oppilaitoksille yksilöintitunnuksen. Tunnus on viisimerkkinen ja tunnukselle on varattu numerosarja 00000-99999. Tunnus on annettu ja annetaan ainoastaa pääkoululle. Samaa oppilaitostunnusta käytetään kaikissa oppilaitokseen liittyvissä toimintayksiköissä. Tietoa ylläpidetään organisaatiopalvelussa josta se kopioituu tähän koodistoon.\n\nKoodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja ja niissä olevia koodeja.",
+        "EN": "Tilastokeskus on antanut oppilaitoksille yksilöintitunnuksen. Tunnus on viisimerkkinen ja tunnukselle on varattu numerosarja 00000-99999. Tunnus on annettu ja annetaan ainoastaa pääkoululle. Samaa oppilaitostunnusta käytetään kaikissa oppilaitokseen liittyvissä toimintayksiköissä. Tietoa ylläpidetään organisaatiopalvelussa josta se kopioituu tähän koodistoon.\n\nKoodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja ja niissä olevia koodeja."
+      }
+    },
+    {
+      "codesUri": "aluehallintovirasto",
+      "codesVersion": 1,
+      "passive": true,
+      "nimi": {
+        "FI": "aluehallintovirasto (AVI)",
+        "SV": "regionförvaltningsverken (RFV)",
+        "EN": "regional State Administrative Agencies (AVI)"
+      },
+      "kuvaus": {
+        "FI": "Aluehallintovirastot (AVI)\nValtion aluehallintoyksikköinä toimivat aluehallintovirastot aloittivat toimintansa 1.1.2010. Aluehallintovirastojen lukumääristä, toimialueista, nimistä ja toimipaikoista säädetään valtioneuvoston asetuksella. Aluehallintovirastojen yleishallinnollinen ohjaus kuuluu valtiovarainministeriölle, ja niiden toiminnallisesta ohjauksesta vastaavat muut ministeriöt kukin omilla toimialoillaan. Aluehallintovirastoilla on viisi vastuualuetta: peruspalvelut, oikeusturvat ja luvat: työsuojelu; ympäristöluvat; pelastustoimi ja varautuminen; sekä poliisitoimi. Ahvenanmaan maakunnassa on vastaavana valtionhallinnon viranomaisena Ahvenanmaan valtionvirasto.Koodistoa ylläpitää Heidi Bergström",
+        "SV": "regionförvaltningsverken (RFV)",
+        "EN": "regional State Administrative Agencies (AVI)"
+      }
     }
   ],
+  "includesCodes": [
+    {
+      "codesUri": "elykeskus",
+      "codesVersion": 2,
+      "passive": false,
+      "nimi": {
+        "SV": "närings-, trafik- och miljöcentralerna (NTM-centralerna)",
+        "FI": "elinkeino-, liikenne- ja ympäristökeskukset (ELY-keskukset)",
+        "EN": "Centres for Economic Development, Transport and the Environment (ELY Centres)"
+      },
+      "kuvaus": {
+        "SV": "närings-, trafik- och miljöcentralerna (NTM-centralerna)",
+        "FI": "Elinkeino-, liikenne - ja ympäristökeskukset aloittivat toimintansa 1.1.2010. Ne muodostuvat maakunnista ja maakuntien yhdistelmistä. Keskukset ovat valtion elimiä ja hoitavat entisten työ- ja elinkeinokeskusten, alueellisten ympäristökeskusten, tiepiirien ja lääninhallitusten täytäntöönpano- ja kehittämistehtäviä.\n \nElinkeino-, liikenne- ja ympäristökeskusten vastuualueet ovat\n elinkeinot, työvoima, osaaminen ja kulttuuri\n liikenne ja infrastruktuuri\n ympäristö ja luonnonvarat.\n \nELY-keskus -luokitus koostuu 15:sta ELY-keskuksesta sekä Ahvenanmaasta. Ahvenamaa ei virallisesti muodosta omaa ELY-keskustaan, mutta se on otettu mukaan tähän luokitukseen alueellisen kattavuuden vuoksi\n\nKoodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja, niissä olevia koodeja sekä niiden selitteitä ja kuvauksia",
+        "EN": "Centres for Economic Development, Transport and the Environment (ELY Centres)"
+      }
+    },
+    {
+      "codesUri": "kuntaryhma",
+      "codesVersion": 2,
+      "passive": false,
+      "nimi": {
+        "FI": "tilastollinen kuntaryhmä",
+        "SV": "statistisk kommungruppering",
+        "EN": "statistical grouping of municipalities"
+      },
+      "kuvaus": {
+        "FI": "Tilastollinen kuntaryhmitys on Tilastokeskuksessa kehitetty kaupunkimaisuuden kuvaaja, joka on ollut käytössä vuodesta 1989 lähtien. Se jakaa kunnat taajamaväestön osuuden ja suurimman taajaman väkiluvun perusteella kaupunkimaisiin, taajaan asuttuihin ja maaseutumaisiin kuntiin.\nTaajama ei ole riippuvainen hallinnollisista aluejaoista, joten se voi ulottua useamman kuin yhden kunnan alueelle.\n\nKoodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja, niissä olevia koodeja sekä niiden selitteitä ja kuvauksia\n \nTilastollinen kuntaryhmitys perustuu 24.10.2011 lähtien kerran vuodessa tehtävään taajamarajaukseen ja siitä saatuun tietoon taajamaväestöstä.\n \nTaajamakäsite:\n \nTaajama on rakennustihentymä, jossa on vähintään 200 asukasta. Taajaman määrittely perustuu Suomen ympäristökeskuksen (SYKE) paikkatietomenetelmillä tekemiin määritelmiin, joissa on käytetty Tilastokeskuksen250m x 250m - ruutuaineiston rakennus- ja väestötietoja. Määrittelyssä tarkastellaan rakennuksia sisältävien ruutujen ja niiden naapuriruutujen rakennusten määrää sekä rakennusten kerrosalamäärää. Määrittelyssä syntyneistä yhtenäisistä rakennustihentymistä valitaan ne, joissa on vähinään 200 asukasta.",
+        "SV": "statistisk kommungruppering",
+        "EN": "statistical grouping of municipalities"
+      }
+    },
+    {
+      "codesUri": "maakunta",
+      "codesVersion": 1,
+      "passive": true,
+      "nimi": {
+        "FI": "maakunta",
+        "SV": "landskapen",
+        "EN": "regions"
+      },
+      "kuvaus": {
+        "FI": "Maakunta on alue, johon kuuluvat kunnat muodostavat toiminnallisesti ja taloudellisesti sekä alueen suunnittelun kannalta tarkoituksenmukaisen kokonaisuuden. Maakuntien liitot huolehtivat aluekehitysviranomaisina alueensa kuntien edunvalvonnasta ja toimialueensa alueellisesta kehittämisestä. Maakuntien lukumäärästä, alueista ja nimistä päättää valtioneuvosto asianomaisia maakuntien liittoja ja kuntia kuultuaan. Maakuntien suomen- ja ruotsinkieliset nimet on virallistettu valtioneuvoston päätöksellä 26.2.1998, ja ne astuivat voimaan 1.3.1998.",
+        "SV": "Maakunta on alue, johon kuuluvat kunnat muodostavat toiminnallisesti ja taloudellisesti sekä alueen suunnittelun kannalta tarkoituksenmukaisen kokonaisuuden. Maakuntien liitot huolehtivat aluekehitysviranomaisina alueensa kuntien edunvalvonnasta ja toimialueensa alueellisesta kehittämisestä. Maakuntien lukumäärästä, alueista ja nimistä päättää valtioneuvosto asianomaisia maakuntien liittoja ja kuntia kuultuaan. Maakuntien suomen- ja ruotsinkieliset nimet on virallistettu valtioneuvoston päätöksellä 26.2.1998, ja ne astuivat voimaan 1.3.1998.",
+        "EN": "Maakunta on alue, johon kuuluvat kunnat muodostavat toiminnallisesti ja taloudellisesti sekä alueen suunnittelun kannalta tarkoituksenmukaisen kokonaisuuden. Maakuntien liitot huolehtivat aluekehitysviranomaisina alueensa kuntien edunvalvonnasta ja toimialueensa alueellisesta kehittämisestä. Maakuntien lukumäärästä, alueista ja nimistä päättää valtioneuvosto asianomaisia maakuntien liittoja ja kuntia kuultuaan. Maakuntien suomen- ja ruotsinkieliset nimet on virallistettu valtioneuvoston päätöksellä 26.2.1998, ja ne astuivat voimaan 1.3.1998."
+      }
+    },
+    {
+      "codesUri": "elykeskus",
+      "codesVersion": 1,
+      "passive": true,
+      "nimi": {
+        "FI": "elinkeino-, liikenne- ja ympäristökeskukset (ELY-keskukset)",
+        "SV": "närings-, trafik- och miljöcentralerna (NTM-centralerna)",
+        "EN": "Centres for Economic Development, Transport and the Environment (ELY Centres)"
+      },
+      "kuvaus": {
+        "FI": "Elinkeino-, liikenne - ja ympäristökeskukset aloittivat toimintansa 1.1.2010. Ne muodostuvat maakunnista ja maakuntien yhdistelmistä. Keskukset ovat valtion elimiä ja hoitavat entisten työ- ja elinkeinokeskusten, alueellisten ympäristökeskusten, tiepiirien ja lääninhallitusten täytäntöönpano- ja kehittämistehtäviä.\n \nElinkeino-, liikenne- ja ympäristökeskusten vastuualueet ovat\n elinkeinot, työvoima, osaaminen ja kulttuuri\n liikenne ja infrastruktuuri\n ympäristö ja luonnonvarat.\n \nELY-keskus -luokitus koostuu 15:sta ELY-keskuksesta sekä Ahvenanmaasta. Ahvenamaa ei virallisesti muodosta omaa ELY-keskustaan, mutta se on otettu mukaan tähän luokitukseen alueellisen kattavuuden vuoksi\n\nKoodistoa ylläpitää Heidi Bergström",
+        "SV": "närings-, trafik- och miljöcentralerna (NTM-centralerna)",
+        "EN": "Centres for Economic Development, Transport and the Environment (ELY Centres)"
+      }
+    },
+    {
+      "codesUri": "kuntaryhma",
+      "codesVersion": 1,
+      "passive": true,
+      "nimi": {
+        "FI": "tilastollinen kuntaryhmä",
+        "SV": "statistisk kommungruppering",
+        "EN": "statistical grouping of municipalities"
+      },
+      "kuvaus": {
+        "FI": "Tilastollinen kuntaryhmitys on Tilastokeskuksessa kehitetty kaupunkimaisuuden kuvaaja, joka on ollut käytössä vuodesta 1989 lähtien. Se jakaa kunnat taajamaväestön osuuden ja suurimman taajaman väkiluvun perusteella kaupunkimaisiin, taajaan asuttuihin ja maaseutumaisiin kuntiin.\nTaajama ei ole riippuvainen hallinnollisista aluejaoista, joten se voi ulottua useamman kuin yhden kunnan alueelle.\n \nTilastollinen kuntaryhmitys perustuu 24.10.2011 lähtien kerran vuodessa tehtävään taajamarajaukseen ja siitä saatuun tietoon taajamaväestöstä.\n \nTaajamakäsite:\n \nTaajama on rakennustihentymä, jossa on vähintään 200 asukasta. Taajaman määrittely perustuu Suomen ympäristökeskuksen (SYKE) paikkatietomenetelmillä tekemiin määritelmiin, joissa on käytetty Tilastokeskuksen250m x 250m - ruutuaineiston rakennus- ja väestötietoja. Määrittelyssä tarkastellaan rakennuksia sisältävien ruutujen ja niiden naapuriruutujen rakennusten määrää sekä rakennusten kerrosalamäärää. Määrittelyssä syntyneistä yhtenäisistä rakennustihentymistä valitaan ne, joissa on vähinään 200 asukasta.",
+        "SV": "statistisk kommungruppering",
+        "EN": "statistical grouping of municipalities"
+      }
+    },
+    {
+      "codesUri": "kielisuhde",
+      "codesVersion": 2,
+      "passive": false,
+      "nimi": {
+        "SV": "språklig",
+        "FI": "kielisuhde",
+        "EN": "language distribution"
+      },
+      "kuvaus": {
+        "SV": "språklig",
+        "FI": "Kielisuhde jakaa kunnat yksikielisiin suomen- tai ruotsinkielisiin kuntiin sekä kaksikielisiin kuntiin, joissa enemmistön kieli voi olla joko suomi tai ruotsi. Näin luokkia on yhteensä neljä. Valtioneuvosto määrää kuntien suomen-, ruotsin- tai kaksikielisyydestä kymmeneksi vuodeksi kerrallaan. Viimeisin päätös  (423/2003) koskee vuosia 2013-2022. Koodistoa käytetään ainakin aluekoodistossa.\n\nKoodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja, niissä olevia koodeja sekä niiden selitteitä ja kuvauksia",
+        "EN": "language distribution"
+      }
+    },
+    {
+      "codesUri": "kielisuhde",
+      "codesVersion": 1,
+      "passive": true,
+      "nimi": {
+        "FI": "kielisuhde",
+        "SV": "språklig",
+        "EN": "language distribution"
+      },
+      "kuvaus": {
+        "FI": "Kielisuhde jakaa kunnat yksikielisiin suomen- tai ruotsinkielisiin kuntiin sekä kaksikielisiin kuntiin, joissa enemmistön kieli voi olla joko suomi tai ruotsi. Näin luokkia on yhteensä neljä. Valtioneuvosto määrää kuntien suomen-, ruotsin- tai kaksikielisyydestä kymmeneksi vuodeksi kerrallaan. Viimeisin päätös  (423/2003) koskee vuosia 2013-2022. Koodistoa käytetään ainakin aluekoodistossa.\n\nHeidi Bergström ylläpitää tätä koodistoa",
+        "SV": "språklig",
+        "EN": "language distribution"
+      }
+    },
+    {
+      "codesUri": "seutukunta",
+      "codesVersion": 1,
+      "passive": false,
+      "nimi": {
+        "FI": "seutukunta",
+        "SV": "de ekonomiska regionerna",
+        "EN": "Sub-regional units"
+      },
+      "kuvaus": {
+        "FI": "Seutukunnat ovat kahden tai useamman kunnan muodostamia aluekokonaisuuksia, jotka on määritelty aluepoliittisten tukialuejaon perusalueiksi. Seutukuntien muodostamisen kriteerinä on käytetty kuntien välistä yhteistyötä, työssäkäyntiä ja liikenneyhteyksiä. Seutukuntajako otettiin käyttöön vuonna 1994. Työ- ja elinkeinoministeriö vahvistaa seutukuntajaon, mutta seutukunnat päättävät itse nimistään. Seutukuntien ruotsinkielisistä nimistä ei ole virallista päätöstä tai suositusta.\nHeidi Bergström ylläpitää tätä koodistoa.",
+        "SV": "de ekonomiska regionerna",
+        "EN": "Sub-regional units"
+      }
+    },
+    {
+      "codesUri": "laani97",
+      "codesVersion": 1,
+      "passive": false,
+      "nimi": {
+        "FI": "läänit 1960-1997",
+        "SV": "läänit 1960-1997",
+        "EN": "läänit 1960-1997"
+      },
+      "kuvaus": {
+        "FI": "Läänit Suomessa 1960–1997.\nVuonna 1960 perustettiin kaksi uutta lääniä: Kuopion läänistä erotettiin uusi Pohjois-Karjalan lääni ja uusi Keski-Suomen lääni muodostettiin pääosin Vaasan sekä osin myös Hämeen, Mikkelin ja Kuopion lääneihin kuuluneista alueista.\nLäänijaosta seurasi Suomessa myös se, että monet tunnukset määriteltiin läänijaon perusteella. Tällaisia läänijakoja olivat mm. autojen rekisteritunnusten ensimmäiset kirjaimet ja radioamatöörien kutsutunnusten numero-osa.",
+        "SV": "Läänit Suomessa 1960–1997.\nVuonna 1960 perustettiin kaksi uutta lääniä: Kuopion läänistä erotettiin uusi Pohjois-Karjalan lääni ja uusi Keski-Suomen lääni muodostettiin pääosin Vaasan sekä osin myös Hämeen, Mikkelin ja Kuopion lääneihin kuuluneista alueista.\nLäänijaosta seurasi Suomessa myös se, että monet tunnukset määriteltiin läänijaon perusteella. Tällaisia läänijakoja olivat mm. autojen rekisteritunnusten ensimmäiset kirjaimet ja radioamatöörien kutsutunnusten numero-osa.",
+        "EN": "Läänit Suomessa 1960–1997.\nVuonna 1960 perustettiin kaksi uutta lääniä: Kuopion läänistä erotettiin uusi Pohjois-Karjalan lääni ja uusi Keski-Suomen lääni muodostettiin pääosin Vaasan sekä osin myös Hämeen, Mikkelin ja Kuopion lääneihin kuuluneista alueista.\nLäänijaosta seurasi Suomessa myös se, että monet tunnukset määriteltiin läänijaon perusteella. Tällaisia läänijakoja olivat mm. autojen rekisteritunnusten ensimmäiset kirjaimet ja radioamatöörien kutsutunnusten numero-osa."
+      }
+    },
+    {
+      "codesUri": "laani",
+      "codesVersion": 1,
+      "passive": false,
+      "nimi": {
+        "FI": "laanit 1997-2009",
+        "SV": "laanit 1997-2009",
+        "EN": "laanit 1997-2009"
+      },
+      "kuvaus": {
+        "FI": "Tilastoissa käytettävien alueluokitusten tarkoituksena on ilmiöiden alueellisten vaihtelujen ja aluerakenteen kuvaaminen. Useimpien alueluokitusten tapaan läänijako perustuu hallinnolliseen aluejakoon.\n\nLäänit ovat valtion aluehallintoyksiköitä. Läänissä on yleisenä hallintoviranomaisena ja erikseen säädettävien muiden tehtävien hoitamista varten lääninhallitus. Lääninhallitukset hoitavat seitsemän ministeriön aluehallintotehtäviä, jotka liittyvät mm. sosiaali-, opetus-, poliisi-, liikenne- ja oikeushallintoon.\n\nEduskunnan päätöksellä läänien määrä väheni 1.9.1997 alkaen kuuteen. Läänijaosta säädetään tammikuussa 1997 annetussa lääninhallituslaissa (22/1997). Valtion aluejakojen yhtenäistämisestä tehdyn periaatepäätöksen mukaisesti (VN 6.2.1997) maakunnan liittojen aluejako on myös uuden läänijaon pohjana. 31.12.2009 Läänit lakkautettiin, ja niitä korvaavat 1.1.2010 alkaen Aluehallintovirastot (AVI).",
+        "SV": "laani",
+        "EN": "laani"
+      }
+    },
+    {
+      "codesUri": "maakunta",
+      "codesVersion": 2,
+      "passive": false,
+      "nimi": {
+        "FI": "maakunta",
+        "SV": "landskapen",
+        "EN": "regions"
+      },
+      "kuvaus": {
+        "FI": "Maakunta on alue, johon kuuluvat kunnat muodostavat toiminnallisesti ja taloudellisesti sekä alueen suunnittelun kannalta tarkoituksenmukaisen kokonaisuuden. Maakuntien liitot huolehtivat aluekehitysviranomaisina alueensa kuntien edunvalvonnasta ja toimialueensa alueellisesta kehittämisestä. Maakuntien lukumäärästä, alueista ja nimistä päättää valtioneuvosto asianomaisia maakuntien liittoja ja kuntia kuultuaan. Maakuntien suomen- ja ruotsinkieliset nimet on virallistettu valtioneuvoston päätöksellä 26.2.1998, ja ne astuivat voimaan 1.3.1998. Koodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja, niissä olevia koodeja sekä niiden selitteitä ja kuvauksia",
+        "SV": "Maakunta on alue, johon kuuluvat kunnat muodostavat toiminnallisesti ja taloudellisesti sekä alueen suunnittelun kannalta tarkoituksenmukaisen kokonaisuuden. Maakuntien liitot huolehtivat aluekehitysviranomaisina alueensa kuntien edunvalvonnasta ja toimialueensa alueellisesta kehittämisestä. Maakuntien lukumäärästä, alueista ja nimistä päättää valtioneuvosto asianomaisia maakuntien liittoja ja kuntia kuultuaan. Maakuntien suomen- ja ruotsinkieliset nimet on virallistettu valtioneuvoston päätöksellä 26.2.1998, ja ne astuivat voimaan 1.3.1998. Koodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja, niissä olevia koodeja sekä niiden selitteitä ja kuvauksia",
+        "EN": "Maakunta on alue, johon kuuluvat kunnat muodostavat toiminnallisesti ja taloudellisesti sekä alueen suunnittelun kannalta tarkoituksenmukaisen kokonaisuuden. Maakuntien liitot huolehtivat aluekehitysviranomaisina alueensa kuntien edunvalvonnasta ja toimialueensa alueellisesta kehittämisestä. Maakuntien lukumäärästä, alueista ja nimistä päättää valtioneuvosto asianomaisia maakuntien liittoja ja kuntia kuultuaan. Maakuntien suomen- ja ruotsinkieliset nimet on virallistettu valtioneuvoston päätöksellä 26.2.1998, ja ne astuivat voimaan 1.3.1998. Koodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja, niissä olevia koodeja sekä niiden selitteitä ja kuvauksia"
+      }
+    }
+  ],
+  "levelsWithCodes": [],
+  "codesGroupUri": "alueet",
+  "version": 8,
+  "versio": 2,
+  "paivitysPvm": "2022-11-25",
+  "paivittajaOid": "1.2.246.562.24.25909319372",
+  "voimassaAlkuPvm": "2018-02-08",
+  "voimassaLoppuPvm": null,
   "tila": "LUONNOS",
-  "version": 8
+  "metadata": [
+    {
+      "kieli": "SV",
+      "nimi": "kommun",
+      "kuvaus": "Kunta on tietyn alueen ja sen asukkaiden muodostama yhteisö. Kunta on rajoiltaan määrätty alue niin, että kunkin kunnan toiminta kohdistuu sen alueeseen, siellä asuviin ja oleskeleviin ihmisiin ja siellä tapahtuvaan toimintaan. Uusien kuntien perustamisesta päättää valtioneuvosto ja uusista kuntanumeroista valtiovarainministeriön kuntaosasto. Vuonna 1995 voimaan tullut kuntalaki tuntee virallisena kuntamuotona vain kunnan, mutta kunta voi käyttää kaupunki-nimitystä, jos se itse katsoo täyttävänsä kaupunkimaiselle yhdyskunnalle asetettavat vaatimukset. \n\nKoodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja, niissä olevia koodeja sekä niiden selitteitä ja kuvauksia",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    },
+    {
+      "kieli": "EN",
+      "nimi": "municipality",
+      "kuvaus": "Kunta on tietyn alueen ja sen asukkaiden muodostama yhteisö. Kunta on rajoiltaan määrätty alue niin, että kunkin kunnan toiminta kohdistuu sen alueeseen, siellä asuviin ja oleskeleviin ihmisiin ja siellä tapahtuvaan toimintaan. Uusien kuntien perustamisesta päättää valtioneuvosto ja uusista kuntanumeroista valtiovarainministeriön kuntaosasto. Vuonna 1995 voimaan tullut kuntalaki tuntee virallisena kuntamuotona vain kunnan, mutta kunta voi käyttää kaupunki-nimitystä, jos se itse katsoo täyttävänsä kaupunkimaiselle yhdyskunnalle asetettavat vaatimukset. \n\nKoodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja, niissä olevia koodeja sekä niiden selitteitä ja kuvauksia",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    },
+    {
+      "kieli": "FI",
+      "nimi": "kunta",
+      "kuvaus": "Kunta on tietyn alueen ja sen asukkaiden muodostama yhteisö. Kunta on rajoiltaan määrätty alue niin, että kunkin kunnan toiminta kohdistuu sen alueeseen, siellä asuviin ja oleskeleviin ihmisiin ja siellä tapahtuvaan toimintaan. Uusien kuntien perustamisesta päättää valtioneuvosto ja uusista kuntanumeroista valtiovarainministeriön kuntaosasto. Vuonna 1995 voimaan tullut kuntalaki tuntee virallisena kuntamuotona vain kunnan, mutta kunta voi käyttää kaupunki-nimitystä, jos se itse katsoo täyttävänsä kaupunkimaiselle yhdyskunnalle asetettavat vaatimukset. \n\nKoodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja, niissä olevia koodeja sekä niiden selitteitä ja kuvauksia",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    }
+  ],
+  "codesVersions": [
+    1
+  ]
 }

@@ -1,102 +1,127 @@
 [
   {
-    "koodiUri": "vstkoto2022yhteiskuntajatyoosaamiskoulutus_ammattijakoulutus",
-    "koodiArvo": "ammattijakoulutus",
     "metadata": [
       {
         "nimi": "Ammatti- ja koulutuspalvelut",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
         "nimi": "Ammatti- ja koulutuspalvelut",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Ammatti- ja koulutuspalvelut",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "vstkoto2022yhteiskuntajatyoosaamiskoulutus_ammattijakoulutus",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "ammattijakoulutus"
   },
   {
-    "koodiUri": "vstkoto2022yhteiskuntajatyoosaamiskoulutus_tyoelamatietous",
-    "koodiArvo": "tyoelamatietous",
     "metadata": [
       {
         "nimi": "Työelämätietous",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
         "nimi": "Kunskap om arbetslivet",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Työelämätietous",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "vstkoto2022yhteiskuntajatyoosaamiskoulutus_tyoelamatietous",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "tyoelamatietous"
   },
   {
-    "koodiUri": "vstkoto2022yhteiskuntajatyoosaamiskoulutus_tyossaoppiminen",
-    "koodiArvo": "tyossaoppiminen",
     "metadata": [
       {
         "nimi": "Työssäoppiminen",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
         "nimi": "Lärande i arbete",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Työssäoppiminen",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "vstkoto2022yhteiskuntajatyoosaamiskoulutus_tyossaoppiminen",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "tyossaoppiminen"
   },
   {
-    "koodiUri": "vstkoto2022yhteiskuntajatyoosaamiskoulutus_yhteiskunnanperuspalvelut",
-    "koodiArvo": "yhteiskunnanperuspalvelut",
     "metadata": [
       {
         "nimi": "Yhteiskunnan peruspalvelut",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
         "nimi": "Samhällets basservice",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Yhteiskunnan peruspalvelut",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "vstkoto2022yhteiskuntajatyoosaamiskoulutus_yhteiskunnanperuspalvelut",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "yhteiskunnanperuspalvelut"
   },
   {
-    "koodiUri": "vstkoto2022yhteiskuntajatyoosaamiskoulutus_yhteiskunnanperusrakenteet",
-    "koodiArvo": "yhteiskunnanperusrakenteet",
     "metadata": [
       {
         "nimi": "Yhteiskunnan perusrakenteet ja maantuntemus",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
         "nimi": "Samhällets grundläggande strukturer och kunskap om Finland",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Yhteiskunnan perusrakenteet ja maantuntemus",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "vstkoto2022yhteiskuntajatyoosaamiskoulutus_yhteiskunnanperusrakenteet",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "yhteiskunnanperusrakenteet"
   }
 ]

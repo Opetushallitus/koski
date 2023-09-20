@@ -1,17 +1,35 @@
 {
   "koodistoUri": "lukionkurssintyyppi",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/lukionkurssintyyppi",
+  "omistaja": null,
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "lukittu": null,
+  "withinCodes": [],
+  "includesCodes": [],
+  "levelsWithCodes": [],
+  "codesGroupUri": "koski",
+  "version": 0,
   "versio": 1,
+  "paivitysPvm": "2016-10-28",
+  "paivittajaOid": null,
+  "voimassaAlkuPvm": "2016-09-21",
+  "voimassaLoppuPvm": null,
+  "tila": "LUONNOS",
   "metadata": [
     {
       "kieli": "FI",
       "nimi": "Lukion kurssin tyyppi",
-      "kuvaus": "Lukion kurssin tyypin tiedot"
+      "kuvaus": "Lukion kurssin tyypin tiedot",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
     }
   ],
-  "codesGroupUri": "koski",
-  "voimassaAlkuPvm": "2016-09-21",
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "withinCodes": [],
-  "tila": "LUONNOS",
-  "version": 0
+  "codesVersions": []
 }

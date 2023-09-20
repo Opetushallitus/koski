@@ -1,17 +1,35 @@
 {
   "koodistoUri": "perusopetuksentoimintaalue",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/perusopetuksentoimintaalue",
+  "omistaja": null,
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "lukittu": null,
+  "withinCodes": [],
+  "includesCodes": [],
+  "levelsWithCodes": [],
+  "codesGroupUri": "koski",
+  "version": 1,
   "versio": 1,
+  "paivitysPvm": "2017-12-13",
+  "paivittajaOid": null,
+  "voimassaAlkuPvm": "2015-11-01",
+  "voimassaLoppuPvm": null,
+  "tila": "LUONNOS",
   "metadata": [
     {
       "kieli": "EN",
       "nimi": "perusopetuksentoimintaalue",
-      "kuvaus": "Perusopetuksen toiminta-alue"
+      "kuvaus": "Perusopetuksen toiminta-alue",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
     }
   ],
-  "codesGroupUri": "koski",
-  "voimassaAlkuPvm": "2015-11-01",
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "withinCodes": [],
-  "tila": "LUONNOS",
-  "version": 1
+  "codesVersions": []
 }

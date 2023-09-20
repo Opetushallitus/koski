@@ -1,27 +1,63 @@
 {
   "koodistoUri": "yhteystietojenalkupera",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/yhteystietojenalkupera",
+  "omistaja": "Opetushallitus",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "lukittu": null,
+  "withinCodes": [],
+  "includesCodes": [],
+  "levelsWithCodes": [],
+  "codesGroupUri": "alueet",
+  "version": 3,
   "versio": 1,
+  "paivitysPvm": "2022-11-23",
+  "paivittajaOid": "1.2.246.562.24.25909319372",
+  "voimassaAlkuPvm": "2014-09-08",
+  "voimassaLoppuPvm": null,
+  "tila": "LUONNOS",
   "metadata": [
     {
       "kieli": "FI",
       "nimi": "Yhteystietojen alkuperä",
-      "kuvaus": "Yhteystietojen alkuperätiedot"
-    },
-    {
-      "kieli": "SV",
-      "nimi": "Yhteystietojen alkuperä",
-      "kuvaus": "Yhteystietojen alkuperätiedot"
+      "kuvaus": "Yhteystietojen alkuperätiedot",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
     },
     {
       "kieli": "EN",
       "nimi": "Yhteystietojen alkuperä",
-      "kuvaus": "Yhteystietojen alkuperätiedot"
+      "kuvaus": "Yhteystietojen alkuperätiedot",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    },
+    {
+      "kieli": "SV",
+      "nimi": "Yhteystietojen alkuperä",
+      "kuvaus": "Yhteystietojen alkuperätiedot",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
     }
   ],
-  "codesGroupUri": "alueet",
-  "voimassaAlkuPvm": "2014-09-08",
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "withinCodes": [],
-  "tila": "LUONNOS",
-  "version": 3
+  "codesVersions": []
 }

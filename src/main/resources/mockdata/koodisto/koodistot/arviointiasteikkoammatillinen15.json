@@ -1,24 +1,63 @@
 {
   "koodistoUri": "arviointiasteikkoammatillinen15",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/arviointiasteikkoammatillinen15",
+  "omistaja": null,
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "lukittu": null,
+  "withinCodes": [],
+  "includesCodes": [],
+  "levelsWithCodes": [],
+  "codesGroupUri": "koski",
+  "version": 1,
   "versio": 1,
+  "paivitysPvm": "2017-11-09",
+  "paivittajaOid": null,
+  "voimassaAlkuPvm": "2017-10-06",
+  "voimassaLoppuPvm": null,
+  "tila": "LUONNOS",
   "metadata": [
     {
-      "kieli": "FI",
-      "nimi": "Arviointiasteikko ammatillinen 1-5"
+      "kieli": "SV",
+      "nimi": "Arviointiasteikko ammatillinen 1-5",
+      "kuvaus": null,
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
     },
     {
-      "kieli": "SV",
-      "nimi": "Arviointiasteikko ammatillinen 1-5"
+      "kieli": "FI",
+      "nimi": "Arviointiasteikko ammatillinen 1-5",
+      "kuvaus": null,
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
     },
     {
       "kieli": "EN",
-      "nimi": "Arviointiasteikko ammatillinen 1-5"
+      "nimi": "Arviointiasteikko ammatillinen 1-5",
+      "kuvaus": null,
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
     }
   ],
-  "codesGroupUri": "koski",
-  "voimassaAlkuPvm": "2017-10-06",
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "withinCodes": [],
-  "tila": "LUONNOS",
-  "version": 1
+  "codesVersions": []
 }

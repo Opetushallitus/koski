@@ -1,142 +1,162 @@
 [
   {
-    "koodiUri": "lukionmuutopinnot_ld",
-    "koodiArvo": "LD",
     "metadata": [
       {
         "nimi": "Lukiodiplomit",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Gymnasiediplom",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "General upper secondary school diploma",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "lukionmuutopinnot_ld",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "LD"
   },
   {
-    "koodiUri": "lukionmuutopinnot_ms",
-    "koodiArvo": "MS",
     "metadata": [
       {
         "nimi": "Muut suoritukset",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Övriga prestationer",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Other credits",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "lukionmuutopinnot_ms",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "MS"
   },
   {
-    "koodiUri": "lukionmuutopinnot_oa",
-    "koodiArvo": "OA",
     "metadata": [
       {
         "nimi": "Oman äidinkielen opinnot",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Studier i det egna modersmålet",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Studies of one's own mother tongue",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "lukionmuutopinnot_oa",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "OA"
   },
   {
-    "koodiUri": "lukionmuutopinnot_to",
-    "koodiArvo": "TO",
     "metadata": [
       {
         "nimi": "Teemaopinnot",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Temastudier",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Thematic studies",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "lukionmuutopinnot_to",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "TO"
   },
   {
+    "metadata": [
+      {
+        "nimi": "Taiteiden väliset kurssit",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Ämnesövergripande kurser i konststudier",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Interdisciplinary courses in the arts",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "lukionmuutopinnot_tvk",
-    "koodiArvo": "TVK",
-    "metadata": [
-      {
-        "nimi": "Taiteiden väliset kurssit",
-        "kieli": "FI"
-      },
-      {
-        "nimi": "Ämnesövergripande kurser i konststudier",
-        "kieli": "SV"
-      },
-      {
-        "nimi": "Interdisciplinary courses in the arts",
-        "kieli": "EN"
-      }
-    ],
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "TVK"
   },
   {
-    "koodiUri": "lukionmuutopinnot_tvo",
-    "koodiArvo": "TVO",
     "metadata": [
       {
         "nimi": "Taiteiden väliset kurssit",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Ämnesövergripande kurser i konststudier",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Interdisciplinary courses in the arts",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "lukionmuutopinnot_tvo",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "TVO"
   }
 ]

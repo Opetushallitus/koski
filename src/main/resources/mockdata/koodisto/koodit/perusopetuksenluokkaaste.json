@@ -1,218 +1,245 @@
 [
   {
-    "koodiUri": "perusopetuksenluokkaaste_1",
-    "koodiArvo": "1",
     "metadata": [
       {
         "nimi": "1. vuosiluokka",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Årskurs 1",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "1st grade",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "perusopetuksenluokkaaste_1",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "1"
   },
   {
-    "koodiUri": "perusopetuksenluokkaaste_2",
-    "koodiArvo": "2",
     "metadata": [
       {
         "nimi": "2. vuosiluokka",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Årskurs 2",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "2nd grade",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "perusopetuksenluokkaaste_2",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "2"
   },
   {
-    "koodiUri": "perusopetuksenluokkaaste_3",
-    "koodiArvo": "3",
     "metadata": [
       {
         "nimi": "3. vuosiluokka",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Årskurs 3",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "3rd grade",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "perusopetuksenluokkaaste_3",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "3"
   },
   {
-    "koodiUri": "perusopetuksenluokkaaste_4",
-    "koodiArvo": "4",
     "metadata": [
       {
         "nimi": "4. vuosiluokka",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Årskurs 4",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "4th grade",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "perusopetuksenluokkaaste_4",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "4"
   },
   {
-    "koodiUri": "perusopetuksenluokkaaste_5",
-    "koodiArvo": "5",
     "metadata": [
       {
         "nimi": "5. vuosiluokka",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Årskurs 5",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "5th grade",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "perusopetuksenluokkaaste_5",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "5"
   },
   {
-    "koodiUri": "perusopetuksenluokkaaste_6",
-    "koodiArvo": "6",
     "metadata": [
       {
         "nimi": "6. vuosiluokka",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Årskurs 6",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "6th grade",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "perusopetuksenluokkaaste_6",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "6"
   },
   {
-    "koodiUri": "perusopetuksenluokkaaste_7",
-    "koodiArvo": "7",
     "metadata": [
       {
         "nimi": "7. vuosiluokka",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Årskurs 7",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "7th grade",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "perusopetuksenluokkaaste_7",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "7"
   },
   {
-    "koodiUri": "perusopetuksenluokkaaste_8",
-    "koodiArvo": "8",
     "metadata": [
       {
         "nimi": "8. vuosiluokka",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Årskurs 8",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "8th grade",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "perusopetuksenluokkaaste_8",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "8"
   },
   {
-    "koodiUri": "perusopetuksenluokkaaste_9",
-    "koodiArvo": "9",
     "metadata": [
       {
         "nimi": "9. vuosiluokka",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Årskurs 9",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "9th grade",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "perusopetuksenluokkaaste_9",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "9"
   }
 ]

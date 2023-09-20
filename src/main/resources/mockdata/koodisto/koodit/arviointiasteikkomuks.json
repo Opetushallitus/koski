@@ -1,50 +1,57 @@
 [
   {
-    "koodiUri": "arviointiasteikkomuks_hylatty",
-    "koodiArvo": "hylatty",
     "metadata": [
       {
         "nimi": "Hylätty",
-        "lyhytNimi": "Hylätty",
         "kuvaus": "",
+        "lyhytNimi": "Hylätty",
         "kieli": "FI"
       },
       {
         "nimi": "Underkänd",
-        "lyhytNimi": "Underkänd",
         "kuvaus": "",
+        "lyhytNimi": "Underkänd",
         "kieli": "SV"
       },
       {
         "nimi": "Fail",
-        "lyhytNimi": "Fail",
         "kuvaus": "",
+        "lyhytNimi": "Fail",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkomuks_hylatty",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "hylatty"
   },
   {
-    "koodiUri": "arviointiasteikkomuks_hyvaksytty",
-    "koodiArvo": "hyvaksytty",
     "metadata": [
       {
         "nimi": "Hyväksytty",
+        "kuvaus": null,
         "lyhytNimi": "Hyväksytty",
         "kieli": "FI"
       },
       {
         "nimi": "Godkänd",
+        "kuvaus": null,
         "lyhytNimi": "Godkänd",
         "kieli": "SV"
       },
       {
         "nimi": "Pass",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkomuks_hyvaksytty",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "hyvaksytty"
   }
 ]

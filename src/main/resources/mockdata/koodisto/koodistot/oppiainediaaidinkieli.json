@@ -1,27 +1,63 @@
 {
   "koodistoUri": "oppiainediaaidinkieli",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/oppiainediaaidinkieli",
+  "omistaja": null,
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "lukittu": null,
+  "withinCodes": [],
+  "includesCodes": [],
+  "levelsWithCodes": [],
+  "codesGroupUri": "koski",
+  "version": 0,
   "versio": 1,
+  "paivitysPvm": "2018-12-17",
+  "paivittajaOid": null,
+  "voimassaAlkuPvm": "2019-01-01",
+  "voimassaLoppuPvm": null,
+  "tila": "LUONNOS",
   "metadata": [
-    {
-      "kieli": "FI",
-      "nimi": "Oppiaine Dia Aidinkieli",
-      "kuvaus": "Oppiaine Äidinkieli"
-    },
     {
       "kieli": "SV",
       "nimi": "Oppiaine Dia Aidinkieli",
-      "kuvaus": "Oppiaine Äidinkieli"
+      "kuvaus": "Oppiaine Äidinkieli",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
     },
     {
       "kieli": "EN",
       "nimi": "Oppiaine Dia Aidinkieli",
-      "kuvaus": "Oppiaine Äidinkieli"
+      "kuvaus": "Oppiaine Äidinkieli",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    },
+    {
+      "kieli": "FI",
+      "nimi": "Oppiaine Dia Aidinkieli",
+      "kuvaus": "Oppiaine Äidinkieli",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
     }
   ],
-  "codesGroupUri": "koski",
-  "voimassaAlkuPvm": "2019-01-01",
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "withinCodes": [],
-  "tila": "LUONNOS",
-  "version": 0
+  "codesVersions": []
 }

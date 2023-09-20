@@ -1,436 +1,529 @@
 [
   {
-    "koodiUri": "virtaopiskeluoikeudentyyppi_1",
-    "koodiArvo": "1",
     "metadata": [
       {
         "nimi": "Ammattikorkeakoulututkinto",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
         "nimi": "Yrkeshögskoleexamen",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtaopiskeluoikeudentyyppi_1",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "1"
   },
   {
-    "koodiUri": "virtaopiskeluoikeudentyyppi_10",
-    "koodiArvo": "10",
     "metadata": [
       {
         "nimi": "Täydennyskoulutus",
-        "lyhytNimi": "",
         "kuvaus": "Opiskeluoikeuden tyyppi on täydennyskoulutus, kun oppija täydentää aiemmin hankittua osaamistaan opinnoilla, jotka eivät tuota pätevyyttä.",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Fortbildning",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtaopiskeluoikeudentyyppi_10",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "10"
   },
   {
-    "koodiUri": "virtaopiskeluoikeudentyyppi_11",
-    "koodiArvo": "11",
     "metadata": [
       {
         "nimi": "Pätevöitymiskoulutus",
-        "lyhytNimi": "",
         "kuvaus": "Opiskeluoikeuden tyyppi on pätevöitymiskoulutus, kun oppija suorittaa opintoja, jotka tuottavat pätevyyden. Poistuva opiskeluoikeuden tyyppi, ei käytetä enää vuoden 2018 tiedoista alkaen. Pätevyystiedot tuodaan VIRTAan pätevyyskoodiston arvoina.",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Behörighetsutbildning",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtaopiskeluoikeudentyyppi_11",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "11"
   },
   {
-    "koodiUri": "virtaopiskeluoikeudentyyppi_12",
-    "koodiArvo": "12",
     "metadata": [
       {
         "nimi": "Erikoistumisopinnot",
-        "lyhytNimi": "",
         "kuvaus": "Ammatilliset erikoistumisopinnot ovat ammattikorkeakoulututkintoon pohjautuvia täydennyskoulutusohjelmia, joiden laajuus on 30–60 opintopistettä.",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Specialiseringsstudier",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtaopiskeluoikeudentyyppi_12",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "12"
   },
   {
-    "koodiUri": "virtaopiskeluoikeudentyyppi_13",
-    "koodiArvo": "13",
     "metadata": [
       {
         "nimi": "Avoimen opinnot",
-        "lyhytNimi": "",
         "kuvaus": "Opiskeluoikeuden tyyppi on avoimet opinnot, kun oppija suorittaa tutkintoon johtamatonta koulutusta avoimessa yliopistossa tai ammattikorkeakoulussa.",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Öppna studier",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtaopiskeluoikeudentyyppi_13",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "13"
   },
   {
-    "koodiUri": "virtaopiskeluoikeudentyyppi_14",
-    "koodiArvo": "14",
     "metadata": [
       {
         "nimi": "Opettajan pedagogiset opinnot",
-        "lyhytNimi": "",
         "kuvaus": "Opiskeluoikeuden tyyppi on opettajan pedagogiset opinnot, kun oppija suorittaa opettajan pedagogisia opintoja erillisopintoina.",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Pedagogiska studier för lärare",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "-",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtaopiskeluoikeudentyyppi_14",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "14"
   },
   {
-    "koodiUri": "virtaopiskeluoikeudentyyppi_15",
-    "koodiArvo": "15",
     "metadata": [
       {
         "nimi": "Ammatillinen opettajankoulutus",
-        "lyhytNimi": "",
         "kuvaus": "Opiskeluoikeuden tyyppi on ammatillinen opettajankoulutus, kun oppija suorittaa ammatillista opettajankoulutusta erillisinä opintoina.",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Yrkeslärarutbildning",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtaopiskeluoikeudentyyppi_15",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "15"
   },
   {
-    "koodiUri": "virtaopiskeluoikeudentyyppi_16",
-    "koodiArvo": "16",
     "metadata": [
       {
         "nimi": "Oppisopimus-tyyppinen koulutus",
-        "lyhytNimi": "",
         "kuvaus": "Opiskeluoikeuden tyyppi on korkeakoulutettujen oppisopimustyyppistä täydennyskoulutusta.",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Utbildning av läroavtalsformat",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtaopiskeluoikeudentyyppi_16",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "16"
   },
   {
-    "koodiUri": "virtaopiskeluoikeudentyyppi_17",
-    "koodiArvo": "17",
     "metadata": [
       {
         "nimi": "Valmentava koulutus",
-        "lyhytNimi": "",
         "kuvaus": "Opiskeluoikeuden tyyppi on valmentava koulutus, kun oppija suorittaa esim. maahanmuuttajien valmentavaa koulutusta.",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Handledande utbildning",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtaopiskeluoikeudentyyppi_17",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "17"
   },
   {
-    "koodiUri": "virtaopiskeluoikeudentyyppi_18",
-    "koodiArvo": "18",
     "metadata": [
       {
         "nimi": "Erillisoikeus",
-        "lyhytNimi": "",
         "kuvaus": "Opiskeluoikeuden tyyppi on erillinen opiskeluoikeus, kun korkeakoulu on myöntänyt oppijalle ajallisesti ja sisällöllisesti rajatun oikeuden suorittaa tietyn koulutuksen (opintojakson tai -kokonaisuuden) ilman tutkinnonsuorittamisoikeutta.",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Särskild rätt",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtaopiskeluoikeudentyyppi_18",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "18"
   },
   {
-    "koodiUri": "virtaopiskeluoikeudentyyppi_19",
-    "koodiArvo": "19",
     "metadata": [
       {
         "nimi": "Erikoistumiskoulutus",
-        "lyhytNimi": "",
         "kuvaus": "Opiskeluoikeuden tyyppi on erikoistumiskoulutus.",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Specialiseringsutbildning",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtaopiskeluoikeudentyyppi_19",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "19"
   },
   {
-    "koodiUri": "virtaopiskeluoikeudentyyppi_2",
-    "koodiArvo": "2",
     "metadata": [
       {
         "nimi": "Alempi korkeakoulututkinto",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
         "nimi": "Lägre högskoleexamen",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtaopiskeluoikeudentyyppi_2",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "2"
   },
   {
-    "koodiUri": "virtaopiskeluoikeudentyyppi_20",
-    "koodiArvo": "20",
     "metadata": [
       {
         "nimi": "Opiskeluyhteistyö muun kuin korkeakoulun kanssa",
-        "lyhytNimi": "",
         "kuvaus": "Opiskeluoikeus perustuu muun organisaation kuin korkeakoulun kanssa tehtyyn yhteistyösopimukseen.\n\nKotimainen korkeakoulu on tehnyt yhteistyösopimuksen kotimaisen tai ulkomaisen muun organisaation kuin korkeakoulun kanssa (esim. toisen asteen yhteistyö). Opinnot ovat maksutomia.",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtaopiskeluoikeudentyyppi_20",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "20"
   },
   {
-    "koodiUri": "virtaopiskeluoikeudentyyppi_3",
-    "koodiArvo": "3",
     "metadata": [
       {
         "nimi": "Ylempi ammattikorkeakoulututkinto",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
         "nimi": "Högre yrkeshögskoleexamen",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtaopiskeluoikeudentyyppi_3",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "3"
   },
   {
-    "koodiUri": "virtaopiskeluoikeudentyyppi_4",
-    "koodiArvo": "4",
     "metadata": [
       {
         "nimi": "Ylempi korkeakoulututkinto",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
         "nimi": "Högre högskoleexamen",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtaopiskeluoikeudentyyppi_4",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "4"
   },
   {
-    "koodiUri": "virtaopiskeluoikeudentyyppi_5",
-    "koodiArvo": "5",
     "metadata": [
       {
         "nimi": "Erikoislääkäri- ja erikoishammaslääkärikoulutus",
-        "lyhytNimi": "",
         "kuvaus": "Aiempi muoto ollut Lääkärien erikoistumiskoulutus. Päätetty muutoksesta Oppijan tietovirtojen ja VIRTA-opintotietopalvelun ohjausryhmässä 29.11.2018",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Specialistläkarutbildning och specialisttandläkarutbildning",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtaopiskeluoikeudentyyppi_5",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "5"
   },
   {
-    "koodiUri": "virtaopiskeluoikeudentyyppi_6",
-    "koodiArvo": "6",
     "metadata": [
       {
         "nimi": "Lisensiaatintutkinto",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
         "nimi": "Licentiatexamen",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtaopiskeluoikeudentyyppi_6",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "6"
   },
   {
-    "koodiUri": "virtaopiskeluoikeudentyyppi_7",
-    "koodiArvo": "7",
     "metadata": [
       {
         "nimi": "Tohtorintutkinto",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
         "nimi": "Doktorsexamen",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtaopiskeluoikeudentyyppi_7",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "7"
   },
   {
-    "koodiUri": "virtaopiskeluoikeudentyyppi_8",
-    "koodiArvo": "8",
     "metadata": [
       {
         "nimi": "Kotimainen opiskelijaliikkuvuus",
-        "lyhytNimi": "",
         "kuvaus": "Korkeakoulujen välisiin sopimuksiin perustuva kotimainen opiskelijaliikkuvuus.",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Inhemsk studerandemobilitet",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtaopiskeluoikeudentyyppi_8",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "8"
   },
   {
-    "koodiUri": "virtaopiskeluoikeudentyyppi_9",
-    "koodiArvo": "9",
     "metadata": [
       {
         "nimi": "Kansainvälinen vaihto",
-        "lyhytNimi": "",
         "kuvaus": "Liikkuva opiskelija suorittaa kokonaista korkeakoulututkintoa (perus- tai jatkotutkintoa) ulkomailla ja suorittaa osan opinnoistaan niin, että Suomessa suoritetut opinnot luetaan hyväksi tutkintoon.",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Internationellt utbyte",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtaopiskeluoikeudentyyppi_9",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "9"
   }
 ]

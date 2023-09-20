@@ -1,98 +1,110 @@
 [
   {
-    "koodiUri": "ammatillisennaytonarviointikohde_1",
-    "koodiArvo": "1",
     "metadata": [
       {
         "nimi": "Työprosessin hallinta",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Behärskande av arbetsprocessen",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Overall command of the work process",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ammatillisennaytonarviointikohde_1",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "1"
   },
   {
-    "koodiUri": "ammatillisennaytonarviointikohde_2",
-    "koodiArvo": "2",
     "metadata": [
       {
         "nimi": "Työmenetelmien, -välineiden ja materiaalin hallinta",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Behärskande av arbetsmetoder, -redskap och material",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Overall command of working methods, tools and materials",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ammatillisennaytonarviointikohde_2",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "2"
   },
   {
-    "koodiUri": "ammatillisennaytonarviointikohde_3",
-    "koodiArvo": "3",
     "metadata": [
       {
         "nimi": "Työn perustana olevan tiedon hallinta",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Behärskande av den kunskap som ligger till grund för arbetet",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Overall command of the knowledge base",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ammatillisennaytonarviointikohde_3",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "3"
   },
   {
-    "koodiUri": "ammatillisennaytonarviointikohde_4",
-    "koodiArvo": "4",
     "metadata": [
       {
         "nimi": "Elinikäisen oppimisen avaintaidot",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Nyckelkompetenser för livslångt lärande",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Key competences for lifelong learning",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ammatillisennaytonarviointikohde_4",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "4"
   }
 ]

@@ -1,59 +1,77 @@
 [
   {
+    "metadata": [
+      {
+        "nimi": "A",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "A",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "europeanschoolofhelsinkis7oppiaineenkomponentti_a",
-    "koodiArvo": "A",
+    "versio": 1,
+    "koodiArvo": "A"
+  },
+  {
     "metadata": [
       {
-        "nimi": "A",
+        "nimi": "B",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "A",
+        "nimi": "B",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "europeanschoolofhelsinkis7oppiaineenkomponentti_b",
-    "koodiArvo": "B",
-    "metadata": [
-      {
-        "nimi": "B",
-        "kieli": "FI"
-      },
-      {
-        "kieli": "SV"
-      },
-      {
-        "nimi": "B",
-        "kieli": "EN"
-      }
-    ],
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "B"
   },
   {
-    "koodiUri": "europeanschoolofhelsinkis7oppiaineenkomponentti_yearmark",
-    "koodiArvo": "yearmark",
     "metadata": [
       {
         "nimi": "Year mark",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Year mark",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "europeanschoolofhelsinkis7oppiaineenkomponentti_yearmark",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "yearmark"
   }
 ]

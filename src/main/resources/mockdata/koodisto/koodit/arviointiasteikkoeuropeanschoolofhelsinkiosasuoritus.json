@@ -1,44 +1,56 @@
 [
   {
-    "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkiosasuoritus_fail",
-    "koodiArvo": "fail",
     "metadata": [
       {
         "nimi": "fail",
+        "kuvaus": null,
         "lyhytNimi": "fail",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "fail",
+        "kuvaus": null,
         "lyhytNimi": "fail",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkiosasuoritus_fail",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "fail"
   },
   {
-    "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkiosasuoritus_pass",
-    "koodiArvo": "pass",
     "metadata": [
       {
         "nimi": "pass",
+        "kuvaus": null,
         "lyhytNimi": "pass",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "pass",
+        "kuvaus": null,
         "lyhytNimi": "pass",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkiosasuoritus_pass",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "pass"
   }
 ]

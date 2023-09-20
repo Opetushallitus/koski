@@ -1,59 +1,80 @@
 [
   {
-    "koodiUri": "ytrtutkintokokonaisuudentyyppi_aftergraduation",
-    "koodiArvo": "after-graduation",
     "metadata": [
       {
         "nimi": "Tutkinnon korottaminen ja/tai täydentäminen",
+        "kuvaus": null,
         "lyhytNimi": "Korottaminen",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ytrtutkintokokonaisuudentyyppi_aftergraduation",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "after-graduation"
   },
   {
-    "koodiUri": "ytrtutkintokokonaisuudentyyppi_candidate",
-    "koodiArvo": "candidate",
     "metadata": [
       {
         "nimi": "Tutkinnon suorittaminen",
+        "kuvaus": null,
         "lyhytNimi": "Tutkinnon suorittaminen",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ytrtutkintokokonaisuudentyyppi_candidate",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "candidate"
   },
   {
-    "koodiUri": "ytrtutkintokokonaisuudentyyppi_separateexam",
-    "koodiArvo": "separate-exam",
     "metadata": [
       {
         "nimi": "Erillisen kokeen suorittaminen",
+        "kuvaus": null,
         "lyhytNimi": "Erilliskoe",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ytrtutkintokokonaisuudentyyppi_separateexam",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "separate-exam"
   }
 ]

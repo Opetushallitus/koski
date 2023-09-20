@@ -1,17 +1,35 @@
 {
   "koodistoUri": "ammatillisennaytonarviointikeskusteluunosallistuneet",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/ammatillisennaytonarviointikeskusteluunosallistuneet",
+  "omistaja": null,
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "lukittu": null,
+  "withinCodes": [],
+  "includesCodes": [],
+  "levelsWithCodes": [],
+  "codesGroupUri": "koski",
+  "version": 0,
   "versio": 1,
+  "paivitysPvm": "2016-10-28",
+  "paivittajaOid": null,
+  "voimassaAlkuPvm": "2015-11-01",
+  "voimassaLoppuPvm": null,
+  "tila": "LUONNOS",
   "metadata": [
     {
       "kieli": "FI",
       "nimi": "Ammatillisen näytön arviointikeskusteluun osallistuneet",
-      "kuvaus": "Näytön arviointikeskusteluun osallistuneet tahot, 1-numeroisella koodiarvolla"
+      "kuvaus": "Näytön arviointikeskusteluun osallistuneet tahot, 1-numeroisella koodiarvolla",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
     }
   ],
-  "codesGroupUri": "koski",
-  "voimassaAlkuPvm": "2015-11-01",
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "withinCodes": [],
-  "tila": "LUONNOS",
-  "version": 0
+  "codesVersions": []
 }

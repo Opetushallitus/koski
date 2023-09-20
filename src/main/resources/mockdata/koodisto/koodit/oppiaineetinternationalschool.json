@@ -1,718 +1,916 @@
 [
   {
+    "metadata": [
+      {
+        "nimi": "Advisory",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Advisory",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetinternationalschool_ad",
-    "koodiArvo": "AD",
+    "versio": 1,
+    "koodiArvo": "AD"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Advisory",
+        "nimi": "Art",
+        "kuvaus": "Art",
+        "lyhytNimi": "Art",
         "kieli": "FI"
       },
       {
+        "nimi": "Art",
+        "kuvaus": "Art",
+        "lyhytNimi": "Art",
         "kieli": "SV"
       },
       {
-        "nimi": "Advisory",
+        "nimi": "Art",
+        "kuvaus": "Art",
+        "lyhytNimi": "Art",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetinternationalschool_art",
-    "koodiArvo": "ART",
+    "versio": 1,
+    "koodiArvo": "ART"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Art",
-        "lyhytNimi": "Art",
-        "kuvaus": "Art",
+        "nimi": "Digital Design",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
-        "nimi": "Art",
-        "lyhytNimi": "Art",
-        "kuvaus": "Art",
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Art",
-        "lyhytNimi": "Art",
-        "kuvaus": "Art",
+        "nimi": "Digital Design",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetinternationalschool_dd",
-    "koodiArvo": "DD",
+    "versio": 1,
+    "koodiArvo": "DD"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Digital Design",
+        "nimi": "Design",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Digital Design",
+        "nimi": "Design",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetinternationalschool_de",
-    "koodiArvo": "DE",
+    "versio": 1,
+    "koodiArvo": "DE"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Design",
+        "nimi": "Drama",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Design",
+        "nimi": "Drama",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetinternationalschool_dr",
-    "koodiArvo": "DR",
+    "versio": 1,
+    "koodiArvo": "DR"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Drama",
+        "nimi": "English as an additional language",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Drama",
+        "nimi": "English as an additional language",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetinternationalschool_eal",
-    "koodiArvo": "EAL",
+    "versio": 1,
+    "koodiArvo": "EAL"
+  },
+  {
     "metadata": [
       {
-        "nimi": "English as an additional language",
+        "nimi": "Extended Mathematics",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "English as an additional language",
+        "nimi": "Extended Mathematics",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetinternationalschool_ema",
-    "koodiArvo": "EMA",
+    "versio": 1,
+    "koodiArvo": "EMA"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Extended Mathematics",
+        "nimi": "Film",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Extended Mathematics",
+        "nimi": "Film",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetinternationalschool_f",
-    "koodiArvo": "F",
+    "versio": 1,
+    "koodiArvo": "F"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Film",
+        "nimi": "Finnish Foreign Language",
+        "kuvaus": "Finnish Foreign Language",
+        "lyhytNimi": "Finnish Foreign Language",
         "kieli": "FI"
       },
       {
+        "nimi": "Finnish Foreign Language",
+        "kuvaus": "Finnish Foreign Language",
+        "lyhytNimi": "Finnish Foreign Language",
         "kieli": "SV"
       },
       {
-        "nimi": "Film",
+        "nimi": "Finnish Foreign Language",
+        "kuvaus": "Finnish Foreign Language",
+        "lyhytNimi": "Finnish Foreign Language",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetinternationalschool_ffl",
-    "koodiArvo": "FFL",
+    "versio": 1,
+    "koodiArvo": "FFL"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Finnish Foreign Language",
-        "lyhytNimi": "Finnish Foreign Language",
-        "kuvaus": "Finnish Foreign Language",
+        "nimi": "Foreign language",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
-        "nimi": "Finnish Foreign Language",
-        "lyhytNimi": "Finnish Foreign Language",
-        "kuvaus": "Finnish Foreign Language",
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Finnish Foreign Language",
-        "lyhytNimi": "Finnish Foreign Language",
-        "kuvaus": "Finnish Foreign Language",
+        "nimi": "Foreign language",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetinternationalschool_fl",
-    "koodiArvo": "FL",
+    "versio": 1,
+    "koodiArvo": "FL"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Foreign language",
+        "nimi": "Finnish Mother Tongue",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Foreign language",
+        "nimi": "Finnish Mother Tongue",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetinternationalschool_fmt",
-    "koodiArvo": "FMT",
+    "versio": 1,
+    "koodiArvo": "FMT"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Finnish Mother Tongue",
+        "nimi": "French",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Finnish Mother Tongue",
+        "nimi": "French",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetinternationalschool_fr",
-    "koodiArvo": "FR",
+    "versio": 1,
+    "koodiArvo": "FR"
+  },
+  {
     "metadata": [
       {
-        "nimi": "French",
+        "nimi": "Fitness and Well-Being",
+        "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "French",
+        "nimi": "Fitness and Well-Being",
+        "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetinternationalschool_hawb",
-    "koodiArvo": "HAWB",
+    "versio": 1,
+    "koodiArvo": "HAWB"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Fitness and Well-Being",
-        "lyhytNimi": "",
-        "kuvaus": "",
+        "nimi": "HS Consumer Math 11/12",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Fitness and Well-Being",
-        "lyhytNimi": "",
-        "kuvaus": "",
+        "nimi": "HS Consumer Math 11/12",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetinternationalschool_hscm",
-    "koodiArvo": "HSCM",
+    "versio": 1,
+    "koodiArvo": "HSCM"
+  },
+  {
     "metadata": [
       {
-        "nimi": "HS Consumer Math 11/12",
+        "nimi": "ICT",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "HS Consumer Math 11/12",
+        "nimi": "ICT",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetinternationalschool_ict",
-    "koodiArvo": "ICT",
+    "versio": 1,
+    "koodiArvo": "ICT"
+  },
+  {
     "metadata": [
       {
-        "nimi": "ICT",
+        "nimi": "Independent language studies",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "ICT",
+        "nimi": "Independent language studies",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetinternationalschool_ils",
-    "koodiArvo": "ILS",
+    "versio": 1,
+    "koodiArvo": "ILS"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Independent language studies",
+        "nimi": "Integrated Studies",
+        "kuvaus": "Integrated Studies",
+        "lyhytNimi": "Integrated Studies",
         "kieli": "FI"
       },
       {
+        "nimi": "Integrated Studies",
+        "kuvaus": "Integrated Studies",
+        "lyhytNimi": "Integrated Studies",
         "kieli": "SV"
       },
       {
-        "nimi": "Independent language studies",
+        "nimi": "Integrated Studies",
+        "kuvaus": "Integrated Studies",
+        "lyhytNimi": "Integrated Studies",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetinternationalschool_ins",
-    "koodiArvo": "INS",
+    "versio": 1,
+    "koodiArvo": "INS"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Integrated Studies",
-        "lyhytNimi": "Integrated Studies",
-        "kuvaus": "Integrated Studies",
+        "nimi": "Individuals and Societies",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
-        "nimi": "Integrated Studies",
-        "lyhytNimi": "Integrated Studies",
-        "kuvaus": "Integrated Studies",
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Integrated Studies",
-        "lyhytNimi": "Integrated Studies",
-        "kuvaus": "Integrated Studies",
+        "nimi": "Individuals and Societies",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetinternationalschool_is",
-    "koodiArvo": "IS",
+    "versio": 1,
+    "koodiArvo": "IS"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Individuals and Societies",
+        "nimi": "Information Technology in a Global Society",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Individuals and Societies",
+        "nimi": "Information Technology in a Global Society",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetinternationalschool_itgs",
-    "koodiArvo": "ITGS",
+    "versio": 1,
+    "koodiArvo": "ITGS"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Information Technology in a Global Society",
+        "nimi": "Language Arts",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Information Technology in a Global Society",
+        "nimi": "Language Arts",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetinternationalschool_la",
-    "koodiArvo": "LA",
+    "versio": 1,
+    "koodiArvo": "LA"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Language Arts",
+        "nimi": "Language Acquisition",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Language Arts",
+        "nimi": "Language Acquisition",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetinternationalschool_lac",
-    "koodiArvo": "LAC",
+    "versio": 1,
+    "koodiArvo": "LAC"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Language Acquisition",
+        "nimi": "Library",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Language Acquisition",
+        "nimi": "Library",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetinternationalschool_lib",
-    "koodiArvo": "LIB",
+    "versio": 1,
+    "koodiArvo": "LIB"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Library",
+        "nimi": "Language and Literature",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Library",
+        "nimi": "Language and Literature",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetinternationalschool_ll",
-    "koodiArvo": "LL",
+    "versio": 1,
+    "koodiArvo": "LL"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Language and Literature",
+        "nimi": "Mathematics",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Language and Literature",
+        "nimi": "Mathematics",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetinternationalschool_ma",
-    "koodiArvo": "MA",
+    "versio": 1,
+    "koodiArvo": "MA"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Mathematics",
+        "nimi": "Mathematics: Analysis and Approaches",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Mathematics",
+        "nimi": "Mathematics: Analysis and Approaches",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetinternationalschool_maa",
-    "koodiArvo": "MAA",
+    "versio": 1,
+    "koodiArvo": "MAA"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Mathematics: Analysis and Approaches",
+        "nimi": "Mathematics: Applications and Interpretation",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Mathematics: Analysis and Approaches",
+        "nimi": "Mathematics: Applications and Interpretation",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetinternationalschool_mai",
-    "koodiArvo": "MAI",
+    "versio": 1,
+    "koodiArvo": "MAI"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Mathematics: Applications and Interpretation",
+        "nimi": "Media",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Mathematics: Applications and Interpretation",
+        "nimi": "Media",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetinternationalschool_me",
-    "koodiArvo": "ME",
+    "versio": 1,
+    "koodiArvo": "ME"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Media",
+        "nimi": "Math Foundations",
+        "kuvaus": "Math Foundations",
+        "lyhytNimi": "Math Foundations",
         "kieli": "FI"
       },
       {
+        "nimi": "Math Foundations",
+        "kuvaus": "Math Foundations",
+        "lyhytNimi": "Math Foundations",
         "kieli": "SV"
       },
       {
-        "nimi": "Media",
+        "nimi": "Math Foundations",
+        "kuvaus": "Math Foundations",
+        "lyhytNimi": "Math Foundations",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetinternationalschool_mf",
-    "koodiArvo": "MF",
+    "versio": 1,
+    "koodiArvo": "MF"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Math Foundations",
-        "lyhytNimi": "Math Foundations",
-        "kuvaus": "Math Foundations",
+        "nimi": "Music",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
-        "nimi": "Math Foundations",
-        "lyhytNimi": "Math Foundations",
-        "kuvaus": "Math Foundations",
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Math Foundations",
-        "lyhytNimi": "Math Foundations",
-        "kuvaus": "Math Foundations",
+        "nimi": "Music",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetinternationalschool_mu",
-    "koodiArvo": "MU",
+    "versio": 1,
+    "koodiArvo": "MU"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Music",
+        "nimi": "Physical Education",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Music",
+        "nimi": "Physical Education",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetinternationalschool_pe",
-    "koodiArvo": "PE",
+    "versio": 1,
+    "koodiArvo": "PE"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Physical Education",
+        "nimi": "Physical and Health Education",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Physical Education",
+        "nimi": "Physical and Health Education",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetinternationalschool_phe",
-    "koodiArvo": "PHE",
+    "versio": 1,
+    "koodiArvo": "PHE"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Physical and Health Education",
+        "nimi": "Personal project",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Physical and Health Education",
+        "nimi": "Personal project",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetinternationalschool_pp",
-    "koodiArvo": "PP",
+    "versio": 1,
+    "koodiArvo": "PP"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Personal project",
+        "nimi": "Sciences",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Personal project",
+        "nimi": "Sciences",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetinternationalschool_sci",
-    "koodiArvo": "SCI",
+    "versio": 1,
+    "koodiArvo": "SCI"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Sciences",
+        "nimi": "Standard Mathematics",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Sciences",
+        "nimi": "Standard Mathematics",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetinternationalschool_sma",
-    "koodiArvo": "SMA",
+    "versio": 1,
+    "koodiArvo": "SMA"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Standard Mathematics",
+        "nimi": "Social Studies",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Standard Mathematics",
+        "nimi": "Social Studies",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetinternationalschool_ss",
-    "koodiArvo": "SS",
-    "metadata": [
-      {
-        "nimi": "Social Studies",
-        "kieli": "FI"
-      },
-      {
-        "kieli": "SV"
-      },
-      {
-        "nimi": "Social Studies",
-        "kieli": "EN"
-      }
-    ],
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "SS"
   },
   {
-    "koodiUri": "oppiaineetinternationalschool_va",
-    "koodiArvo": "VA",
     "metadata": [
       {
         "nimi": "Visual Art",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Visual Art",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiaineetinternationalschool_va",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "VA"
   }
 ]

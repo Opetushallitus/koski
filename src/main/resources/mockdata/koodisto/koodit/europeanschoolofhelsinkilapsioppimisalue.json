@@ -1,65 +1,83 @@
 [
   {
+    "metadata": [
+      {
+        "nimi": "The Child As a Learner",
+        "kuvaus": null,
+        "lyhytNimi": "The Child As a Learner",
+        "kieli": "FI"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "The Child As a Learner",
+        "kuvaus": null,
+        "lyhytNimi": "The Child As a Learner",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "europeanschoolofhelsinkilapsioppimisalue_tcaal",
-    "koodiArvo": "TCAAL",
+    "versio": 1,
+    "koodiArvo": "TCAAL"
+  },
+  {
     "metadata": [
       {
-        "nimi": "The Child As a Learner",
-        "lyhytNimi": "The Child As a Learner",
+        "nimi": "The Child As a Person",
+        "kuvaus": null,
+        "lyhytNimi": "The Child As a Person",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "The Child As a Learner",
-        "lyhytNimi": "The Child As a Learner",
+        "nimi": "The Child As a Person",
+        "kuvaus": null,
+        "lyhytNimi": "The Child As a Person",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "europeanschoolofhelsinkilapsioppimisalue_tcaap",
-    "koodiArvo": "TCAAP",
-    "metadata": [
-      {
-        "nimi": "The Child As a Person",
-        "lyhytNimi": "The Child As a Person",
-        "kieli": "FI"
-      },
-      {
-        "kieli": "SV"
-      },
-      {
-        "nimi": "The Child As a Person",
-        "lyhytNimi": "The Child As a Person",
-        "kieli": "EN"
-      }
-    ],
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "TCAAP"
   },
   {
-    "koodiUri": "europeanschoolofhelsinkilapsioppimisalue_tcao",
-    "koodiArvo": "TCAO",
     "metadata": [
       {
         "nimi": "The Child And Others",
+        "kuvaus": null,
         "lyhytNimi": "The Child And Others",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "The Child And Others",
+        "kuvaus": null,
         "lyhytNimi": "The Child And Others",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "europeanschoolofhelsinkilapsioppimisalue_tcao",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "TCAO"
   }
 ]

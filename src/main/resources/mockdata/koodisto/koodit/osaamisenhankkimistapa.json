@@ -1,74 +1,83 @@
 [
   {
-    "koodiUri": "osaamisenhankkimistapa_koulutussopimus",
-    "koodiArvo": "koulutussopimus",
     "metadata": [
       {
         "nimi": "Koulutussopimus",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Utbildningsavtal",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Training agreement",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "osaamisenhankkimistapa_koulutussopimus",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "koulutussopimus"
   },
   {
-    "koodiUri": "osaamisenhankkimistapa_oppilaitosmuotoinenkoulutus",
-    "koodiArvo": "oppilaitosmuotoinenkoulutus",
     "metadata": [
       {
         "nimi": "Oppilaitosmuotoinen koulutus",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Utbildningen som när-, distansundervisning eller på en arbetsplats",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Education as contact instruction, distance learning or at the workplace",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "osaamisenhankkimistapa_oppilaitosmuotoinenkoulutus",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "oppilaitosmuotoinenkoulutus"
   },
   {
-    "koodiUri": "osaamisenhankkimistapa_oppisopimus",
-    "koodiArvo": "oppisopimus",
     "metadata": [
       {
         "nimi": "Oppisopimus",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Läroavtalsutbildning",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Apprenticeship agreement",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "osaamisenhankkimistapa_oppisopimus",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "oppisopimus"
   }
 ]

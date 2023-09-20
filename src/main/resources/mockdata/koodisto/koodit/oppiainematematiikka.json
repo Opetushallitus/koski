@@ -1,62 +1,77 @@
 [
   {
-    "koodiUri": "oppiainematematiikka_maa",
-    "koodiArvo": "MAA",
     "metadata": [
       {
         "nimi": " Matematiikka, pitkä oppimäärä",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
         "nimi": "Matematik, lång lärokurs",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Mathematics, advanced syllabus",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiainematematiikka_maa",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "MAA"
   },
   {
-    "koodiUri": "oppiainematematiikka_mab",
-    "koodiArvo": "MAB",
     "metadata": [
       {
         "nimi": "Matematiikka, lyhyt oppimäärä",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
         "nimi": "Matematik, kort lärokurs",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Mathematics, basic syllabus",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiainematematiikka_mab",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "MAB"
   },
   {
-    "koodiUri": "oppiainematematiikka_may",
-    "koodiArvo": "MAY",
     "metadata": [
       {
         "nimi": "Matematiikka, yhteinen opintokokonaisuus",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
         "nimi": "Matematik, gemensam studiehelhet",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Mathematics, common study module",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiainematematiikka_may",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "MAY"
   }
 ]

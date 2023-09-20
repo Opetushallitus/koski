@@ -1,77 +1,89 @@
 [
   {
-    "koodiUri": "hakutyyppi_01",
-    "koodiArvo": "01",
     "metadata": [
       {
         "nimi": "Varsinainen haku",
-        "lyhytNimi": "VH",
         "kuvaus": "Varsinainen haku",
+        "lyhytNimi": "VH",
         "kieli": "FI"
       },
       {
         "nimi": "Egentlig ansökan",
-        "lyhytNimi": "EA",
         "kuvaus": "Egentlig ansökan",
+        "lyhytNimi": "EA",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "hakutapa_03",
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "hakutyyppi_01",
+    "versio": 1,
+    "koodiArvo": "01"
   },
   {
-    "koodiUri": "hakutyyppi_02",
-    "koodiArvo": "02",
     "metadata": [
       {
         "nimi": "Täydennyshaku",
-        "lyhytNimi": "TH",
         "kuvaus": "Täydennyshaku",
+        "lyhytNimi": "TH",
         "kieli": "FI"
       },
       {
         "nimi": "Tilläggsansögan",
-        "lyhytNimi": "TA",
         "kuvaus": "Tilläggsansögan",
+        "lyhytNimi": "TA",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "hakutyyppi_02",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "02"
   },
   {
-    "koodiUri": "hakutyyppi_03",
-    "koodiArvo": "03",
     "metadata": [
       {
         "nimi": "Lisähaku",
-        "lyhytNimi": "LH",
         "kuvaus": "Lisähaku",
+        "lyhytNimi": "LH",
         "kieli": "FI"
       },
       {
         "nimi": "Kompletteringansökan",
-        "lyhytNimi": "KA",
         "kuvaus": "Kompletteringansökan",
+        "lyhytNimi": "KA",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "hakutyyppi_03",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "03"
   }
 ]

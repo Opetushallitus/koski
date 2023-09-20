@@ -1,24 +1,63 @@
 {
   "koodistoUri": "ytrtutkintokokonaisuudentyyppi",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/ytrtutkintokokonaisuudentyyppi",
+  "omistaja": null,
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "lukittu": null,
+  "withinCodes": [],
+  "includesCodes": [],
+  "levelsWithCodes": [],
+  "codesGroupUri": "koski",
+  "version": 0,
   "versio": 1,
+  "paivitysPvm": "2023-03-01",
+  "paivittajaOid": "1.2.246.562.24.98063222086",
+  "voimassaAlkuPvm": "2016-09-09",
+  "voimassaLoppuPvm": null,
+  "tila": "LUONNOS",
   "metadata": [
     {
-      "kieli": "FI",
-      "nimi": "YTR tutkintokokonaisuuden tyyppi"
-    },
-    {
       "kieli": "SV",
-      "nimi": "YTR tutkintokokonaisuuden tyyppi"
+      "nimi": "YTR tutkintokokonaisuuden tyyppi",
+      "kuvaus": null,
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
     },
     {
       "kieli": "EN",
-      "nimi": "YTR tutkintokokonaisuuden tyyppi"
+      "nimi": "YTR tutkintokokonaisuuden tyyppi",
+      "kuvaus": null,
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    },
+    {
+      "kieli": "FI",
+      "nimi": "YTR tutkintokokonaisuuden tyyppi",
+      "kuvaus": null,
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
     }
   ],
-  "codesGroupUri": "koski",
-  "voimassaAlkuPvm": "2016-09-09",
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "withinCodes": [],
-  "tila": "LUONNOS",
-  "version": 0
+  "codesVersions": []
 }

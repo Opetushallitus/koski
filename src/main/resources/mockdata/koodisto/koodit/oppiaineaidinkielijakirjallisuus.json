@@ -1,261 +1,480 @@
 [
   {
-    "koodiUri": "oppiaineaidinkielijakirjallisuus_ai1",
-    "koodiArvo": "AI1",
     "metadata": [
       {
         "nimi": "Suomen kieli ja kirjallisuus",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
         "nimi": "Finska och litteratur",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Finnish language and literature",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai1-1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai2-1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai3-1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai4-1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai5-1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai6-1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai7-1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai8-1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai9-1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai10-1",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiaineaidinkielijakirjallisuus_ai1",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "AI1"
   },
   {
-    "koodiUri": "oppiaineaidinkielijakirjallisuus_ai10",
-    "koodiArvo": "AI10",
     "metadata": [
       {
         "nimi": "Ruotsi saamenkielisille",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
         "nimi": "Svenska för samisktalande",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Swedish for Saami speakers",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiaineaidinkielijakirjallisuus_ai10",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "AI10"
   },
   {
-    "koodiUri": "oppiaineaidinkielijakirjallisuus_ai11",
-    "koodiArvo": "AI11",
     "metadata": [
       {
         "nimi": "Suomi viittomakielisille",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
         "nimi": "Finska för teckenspråkiga",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Finnish for sign language speakers",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiaineaidinkielijakirjallisuus_ai11",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "AI11"
   },
   {
-    "koodiUri": "oppiaineaidinkielijakirjallisuus_ai12",
-    "koodiArvo": "AI12",
     "metadata": [
       {
         "nimi": "Ruotsi viittomakielisille",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
         "nimi": "Svenska för teckenspråkiga",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Swedish for sign language speakers",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiaineaidinkielijakirjallisuus_ai12",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "AI12"
   },
   {
-    "koodiUri": "oppiaineaidinkielijakirjallisuus_ai2",
-    "koodiArvo": "AI2",
     "metadata": [
       {
         "nimi": "Ruotsin kieli ja kirjallisuus",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
         "nimi": "Svenska och litteratur",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Swedish language and literature",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai2",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai3",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai4",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai5",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai6",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai7",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai8",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai9",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai10",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiaineaidinkielijakirjallisuus_ai2",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "AI2"
   },
   {
-    "koodiUri": "oppiaineaidinkielijakirjallisuus_ai3",
-    "koodiArvo": "AI3",
     "metadata": [
       {
         "nimi": "Saamen kieli ja kirjallisuus",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
         "nimi": "Samiska och litteratur",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Saami language and literature",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiaineaidinkielijakirjallisuus_ai3",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "AI3"
   },
   {
-    "koodiUri": "oppiaineaidinkielijakirjallisuus_ai4",
-    "koodiArvo": "AI4",
     "metadata": [
       {
         "nimi": "Romanikieli ja kirjallisuus",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
         "nimi": "Romani och litteratur",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Romani and literature",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiaineaidinkielijakirjallisuus_ai4",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "AI4"
   },
   {
-    "koodiUri": "oppiaineaidinkielijakirjallisuus_ai5",
-    "koodiArvo": "AI5",
     "metadata": [
       {
         "nimi": "Viittomakieli ja kirjallisuus",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
         "nimi": "Teckenspråk och litteratur",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Sign language and literature",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiaineaidinkielijakirjallisuus_ai5",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "AI5"
   },
   {
-    "koodiUri": "oppiaineaidinkielijakirjallisuus_ai6",
-    "koodiArvo": "AI6",
     "metadata": [
       {
         "nimi": "Muu oppilaan äidinkieli",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
         "nimi": "Annat modersmål",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Other mother tongue",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiaineaidinkielijakirjallisuus_ai6",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "AI6"
   },
   {
-    "koodiUri": "oppiaineaidinkielijakirjallisuus_ai7",
-    "koodiArvo": "AI7",
     "metadata": [
       {
         "nimi": "Suomi toisena kielenä ja kirjallisuus",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
         "nimi": "Finska som andraspråk och litteratur",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Finnish as a second language and literature",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_s21",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_s22",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_s23",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_s24",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_s25",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_s26",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_s27",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_s28",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_s29",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_s210",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiaineaidinkielijakirjallisuus_ai7",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "AI7"
   },
   {
-    "koodiUri": "oppiaineaidinkielijakirjallisuus_ai8",
-    "koodiArvo": "AI8",
     "metadata": [
       {
         "nimi": "Ruotsi toisena kielenä ja kirjallisuus",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
         "nimi": "Svenska som andraspråk och litteratur",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Swedish as a second language and literature",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiaineaidinkielijakirjallisuus_ai8",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "AI8"
   },
   {
-    "koodiUri": "oppiaineaidinkielijakirjallisuus_ai9",
-    "koodiArvo": "AI9",
     "metadata": [
       {
         "nimi": "Suomi saamenkielisille",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
         "nimi": "Finska för samisktalande",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Finnish for Saami speakers",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiaineaidinkielijakirjallisuus_ai9",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "AI9"
   },
   {
-    "koodiUri": "oppiaineaidinkielijakirjallisuus_aiai",
-    "koodiArvo": "AIAI",
     "metadata": [
       {
         "nimi": "Suomen kieli, äidinkielenomainen suomi",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
         "nimi": "Finska, modersmålsinriktad finska",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiaineaidinkielijakirjallisuus_aiai",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "AIAI"
   }
 ]

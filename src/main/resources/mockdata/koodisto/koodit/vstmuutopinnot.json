@@ -1,25 +1,29 @@
 [
   {
-    "koodiUri": "vstmuutopinnot_valinnaisetsuuntautumisopinnot",
-    "koodiArvo": "valinnaisetsuuntautumisopinnot",
     "metadata": [
       {
         "nimi": "Valinnaiset suuntautumisopinnot",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Inriktade studier",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "vstmuutopinnot_valinnaisetsuuntautumisopinnot",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "valinnaisetsuuntautumisopinnot"
   }
 ]

@@ -1,54 +1,58 @@
 [
   {
-    "koodiUri": "taiteenperusopetuskoulutuksentoteutustapa_hankintakoulutus",
-    "koodiArvo": "hankintakoulutus",
     "metadata": [
       {
         "nimi": "Hankintakoulutus",
-        "lyhytNimi": "Hankintakoulutus",
         "kuvaus": "",
+        "lyhytNimi": "Hankintakoulutus",
         "kieli": "FI"
       },
       {
-        "nimi": "Hankintakoulutus",
-        "lyhytNimi": "Hankintakoulutus",
+        "nimi": "Anskaffad utbildning",
         "kuvaus": "",
+        "lyhytNimi": "Anskaffad utbildning",
         "kieli": "SV"
       },
       {
         "nimi": "Hankintakoulutus",
-        "lyhytNimi": "Hankintakoulutus",
         "kuvaus": "",
+        "lyhytNimi": "Hankintakoulutus",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "taiteenperusopetuskoulutuksentoteutustapa_hankintakoulutus",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "hankintakoulutus"
   },
   {
-    "koodiUri": "taiteenperusopetuskoulutuksentoteutustapa_itsejarjestettykoulutus",
-    "koodiArvo": "itsejarjestettykoulutus",
     "metadata": [
       {
         "nimi": "Itse järjestetty koulutus",
-        "lyhytNimi": "Itse järjestetty koulutus",
         "kuvaus": "",
+        "lyhytNimi": "Itse järjestetty koulutus",
         "kieli": "FI"
       },
       {
-        "nimi": "Itse järjestetty koulutus",
-        "lyhytNimi": "Itse järjestetty koulutus",
+        "nimi": "Självanordnad utbildning",
         "kuvaus": "",
+        "lyhytNimi": "Självanordnad utbildning",
         "kieli": "SV"
       },
       {
         "nimi": "Itse järjestetty koulutus",
-        "lyhytNimi": "Itse järjestetty koulutus",
         "kuvaus": "",
+        "lyhytNimi": "Itse järjestetty koulutus",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "taiteenperusopetuskoulutuksentoteutustapa_itsejarjestettykoulutus",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "itsejarjestettykoulutus"
   }
 ]

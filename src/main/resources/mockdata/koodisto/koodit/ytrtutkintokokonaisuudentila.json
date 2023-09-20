@@ -1,78 +1,106 @@
 [
   {
-    "koodiUri": "ytrtutkintokokonaisuudentila_failed",
-    "koodiArvo": "failed",
     "metadata": [
       {
         "nimi": "Tutkintokokonaisuus on hylätty",
+        "kuvaus": null,
         "lyhytNimi": "Hylätty",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ytrtutkintokokonaisuudentila_failed",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "failed"
   },
   {
-    "koodiUri": "ytrtutkintokokonaisuudentila_graduated",
-    "koodiArvo": "graduated",
     "metadata": [
       {
         "nimi": "Tutkintokokonaisuus on valmistunut",
+        "kuvaus": null,
         "lyhytNimi": "Valmistunut",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ytrtutkintokokonaisuudentila_graduated",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "graduated"
   },
   {
-    "koodiUri": "ytrtutkintokokonaisuudentila_ongoing",
-    "koodiArvo": "ongoing",
     "metadata": [
       {
         "nimi": "Tutkinnon suorittaminen on käynnissä",
+        "kuvaus": null,
         "lyhytNimi": "käynnissä",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ytrtutkintokokonaisuudentila_ongoing",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "ongoing"
   },
   {
-    "koodiUri": "ytrtutkintokokonaisuudentila_terminated",
-    "koodiArvo": "terminated",
     "metadata": [
       {
         "nimi": "Tutkintokokokonaisuus on päätetty ennenaikaisesti",
+        "kuvaus": null,
         "lyhytNimi": "Päättynyt",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ytrtutkintokokonaisuudentila_terminated",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "terminated"
   }
 ]

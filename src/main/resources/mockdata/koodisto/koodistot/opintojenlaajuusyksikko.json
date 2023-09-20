@@ -1,98 +1,274 @@
 {
   "koodistoUri": "opintojenlaajuusyksikko",
-  "versio": 1,
-  "metadata": [
-    {
-      "kieli": "FI",
-      "nimi": "opintojen laajuusyksikko",
-      "kuvaus": "opintojen laajuusyksikko"
-    },
-    {
-      "kieli": "SV",
-      "nimi": "opintojen laajuusyksikko",
-      "kuvaus": "opintojen laajuusyksikko"
-    },
-    {
-      "kieli": "EN",
-      "nimi": "opintojen laajuusyksikko",
-      "kuvaus": "opintojen laajuusyksikko"
-    }
-  ],
-  "codesGroupUri": "koulutuskoodistot",
-  "voimassaAlkuPvm": "2013-01-01",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/opintojenlaajuusyksikko",
+  "omistaja": "Opetushallitus",
   "organisaatioOid": "1.2.246.562.10.00000000001",
+  "lukittu": null,
   "withinCodes": [
     {
-      "codesUri": "koulutus",
+      "codesUri": "lukiolinjat",
       "codesVersion": 1,
-      "passive": true
-    },
-    {
-      "codesUri": "koulutus",
-      "codesVersion": 2,
-      "passive": true
-    },
-    {
-      "codesUri": "koulutus",
-      "codesVersion": 3,
-      "passive": true
+      "passive": true,
+      "nimi": {
+        "SV": "lukiolinjat",
+        "FI": "lukiolinjat",
+        "EN": "lukiolinjat"
+      },
+      "kuvaus": {
+        "SV": "lukiolinjat",
+        "FI": "lukiolinjat",
+        "EN": "lukiolinjat"
+      }
     },
     {
       "codesUri": "koulutus",
       "codesVersion": 4,
-      "passive": true
-    },
-    {
-      "codesUri": "koulutus",
-      "codesVersion": 5,
-      "passive": true
-    },
-    {
-      "codesUri": "koulutus",
-      "codesVersion": 6,
-      "passive": true
-    },
-    {
-      "codesUri": "koulutus",
-      "codesVersion": 7,
-      "passive": true
-    },
-    {
-      "codesUri": "koulutus",
-      "codesVersion": 8,
-      "passive": true
-    },
-    {
-      "codesUri": "koulutus",
-      "codesVersion": 9,
-      "passive": true
+      "passive": true,
+      "nimi": {
+        "FI": "koulutus",
+        "SV": "koulutus",
+        "EN": "koulutus"
+      },
+      "kuvaus": {
+        "FI": "koulutus",
+        "SV": "koulutus",
+        "EN": "koulutus"
+      }
     },
     {
       "codesUri": "koulutus",
       "codesVersion": 10,
-      "passive": true
-    },
-    {
-      "codesUri": "koulutus",
-      "codesVersion": 11,
-      "passive": true
-    },
-    {
-      "codesUri": "koulutus",
-      "codesVersion": 12,
-      "passive": false
-    },
-    {
-      "codesUri": "lukiolinjat",
-      "codesVersion": 1,
-      "passive": true
+      "passive": true,
+      "nimi": {
+        "SV": "koulutus",
+        "FI": "koulutus",
+        "EN": "koulutus"
+      },
+      "kuvaus": {
+        "SV": "koulutus",
+        "FI": "koulutus",
+        "EN": "koulutus"
+      }
     },
     {
       "codesUri": "lukiolinjat",
       "codesVersion": 2,
-      "passive": false
+      "passive": false,
+      "nimi": {
+        "SV": "lukiolinjat",
+        "FI": "lukiolinjat",
+        "EN": "lukiolinjat"
+      },
+      "kuvaus": {
+        "SV": "Huom! Ei käytössä koutassa! Käytössä koodistot:\nhttps://virkailija.opintopolku.fi/koodisto-app/koodisto/view/lukiopainotukset\nhttps://virkailija.opintopolku.fi/koodisto-app/koodisto/view/lukiolinjaterityinenkoulutustehtava",
+        "FI": "Huom! Ei käytössä koutassa! Käytössä koodistot:\nhttps://virkailija.opintopolku.fi/koodisto-app/koodisto/view/lukiopainotukset\nhttps://virkailija.opintopolku.fi/koodisto-app/koodisto/view/lukiolinjaterityinenkoulutustehtava",
+        "EN": "Huom! Ei käytössä koutassa! Käytössä koodistot:\nhttps://virkailija.opintopolku.fi/koodisto-app/koodisto/view/lukiopainotukset\nhttps://virkailija.opintopolku.fi/koodisto-app/koodisto/view/lukiolinjaterityinenkoulutustehtava"
+      }
+    },
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 2,
+      "passive": true,
+      "nimi": {
+        "SV": "koulutus",
+        "FI": "koulutus",
+        "EN": "koulutus"
+      },
+      "kuvaus": {
+        "SV": "koulutus",
+        "FI": "koulutus",
+        "EN": "koulutus"
+      }
+    },
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 9,
+      "passive": true,
+      "nimi": {
+        "SV": "koulutus",
+        "FI": "koulutus",
+        "EN": "koulutus"
+      },
+      "kuvaus": {
+        "SV": "koulutus",
+        "FI": "koulutus",
+        "EN": "koulutus"
+      }
+    },
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 11,
+      "passive": true,
+      "nimi": {
+        "SV": "koulutus",
+        "FI": "koulutus",
+        "EN": "koulutus"
+      },
+      "kuvaus": {
+        "SV": "koulutus",
+        "FI": "Koodistoa ylläpitävät Tuija Koskela (Opetushallitus,  Ammatillinen osaaminen yksikkö)  ja yhteishaun osalta Outi Kivipelto (Opetushallitus, Oppijanpalvelut yksikkö). Koodistoa käytetään mm. hakujen koulutustarjonnassa, KOSKEn tiedonsiirroissa ja OIVAssa.",
+        "EN": "koulutus"
+      }
+    },
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 3,
+      "passive": true,
+      "nimi": {
+        "FI": "koulutus",
+        "SV": "koulutus",
+        "EN": "koulutus"
+      },
+      "kuvaus": {
+        "FI": "koulutus",
+        "SV": "koulutus",
+        "EN": "koulutus"
+      }
+    },
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 8,
+      "passive": true,
+      "nimi": {
+        "FI": "koulutus",
+        "SV": "koulutus",
+        "EN": "koulutus"
+      },
+      "kuvaus": {
+        "FI": "koulutus",
+        "SV": "koulutus",
+        "EN": "koulutus"
+      }
+    },
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 7,
+      "passive": true,
+      "nimi": {
+        "FI": "koulutus",
+        "SV": "koulutus",
+        "EN": "koulutus"
+      },
+      "kuvaus": {
+        "FI": "koulutus",
+        "SV": "koulutus",
+        "EN": "koulutus"
+      }
+    },
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 1,
+      "passive": true,
+      "nimi": {
+        "SV": "koulutus",
+        "FI": "koulutus",
+        "EN": "koulutus"
+      },
+      "kuvaus": {
+        "SV": "koulutus",
+        "FI": "koulutus",
+        "EN": "koulutus"
+      }
+    },
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 12,
+      "passive": false,
+      "nimi": {
+        "FI": "koulutus",
+        "SV": "koulutus",
+        "EN": "koulutus"
+      },
+      "kuvaus": {
+        "FI": "Koodistoa ylläpitävät Noora Vauhkonen (ammatilliset koulutukset), Riku Hanhinen (korkeakoulutukset), Juho Helminen (yleissivistävä koulutus). Koodistoa käytetään mm. hakujen koulutustarjonnassa, KOSKI-palvelun tiedonsiirroissa, OIVAssa ja OKM Virta-palvelussa. Tilastokeskus vastaa koodiston koodituksesta (https://www2.tilastokeskus.fi/fi/luokitukset/koulutus/). Koodeja ylläpidetään käsin. Koodiston ja Tilastokeskuksen välillä ei ole integraatiota.",
+        "SV": "koulutus",
+        "EN": "koulutus"
+      }
+    },
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 6,
+      "passive": true,
+      "nimi": {
+        "FI": "koulutus",
+        "SV": "koulutus",
+        "EN": "koulutus"
+      },
+      "kuvaus": {
+        "FI": "koulutus",
+        "SV": "koulutus",
+        "EN": "koulutus"
+      }
+    },
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 5,
+      "passive": true,
+      "nimi": {
+        "FI": "koulutus",
+        "SV": "koulutus",
+        "EN": "koulutus"
+      },
+      "kuvaus": {
+        "FI": "koulutus",
+        "SV": "koulutus",
+        "EN": "koulutus"
+      }
     }
   ],
+  "includesCodes": [],
+  "levelsWithCodes": [],
+  "codesGroupUri": "koulutuskoodistot",
+  "version": 0,
+  "versio": 1,
+  "paivitysPvm": "2013-10-28",
+  "paivittajaOid": null,
+  "voimassaAlkuPvm": "2013-01-01",
+  "voimassaLoppuPvm": null,
   "tila": "LUONNOS",
-  "version": 0
+  "metadata": [
+    {
+      "kieli": "SV",
+      "nimi": "opintojen laajuusyksikko",
+      "kuvaus": "opintojen laajuusyksikko",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    },
+    {
+      "kieli": "FI",
+      "nimi": "opintojen laajuusyksikko",
+      "kuvaus": "opintojen laajuusyksikko",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    },
+    {
+      "kieli": "EN",
+      "nimi": "opintojen laajuusyksikko",
+      "kuvaus": "opintojen laajuusyksikko",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    }
+  ],
+  "codesVersions": []
 }

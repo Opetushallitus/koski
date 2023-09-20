@@ -1,172 +1,167 @@
 [
   {
-    "koodiUri": "virtaopiskeluoikeudentila_1",
-    "koodiArvo": "1",
     "metadata": [
       {
         "nimi": "aktiivinen",
-        "lyhytNimi": "",
         "kuvaus": "Opiskeluoikeuden tila on aktiivinen silloin, kun opiskelijalla on oikeus suorittaa aktiiviseen opiskeluoikeuteen liittyviä opintoja.",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "aktiv",
-        "lyhytNimi": "",
         "kuvaus": "Den studerande studerar vid utbildningen.",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "active",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtaopiskeluoikeudentila_1",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "1"
   },
   {
-    "koodiUri": "virtaopiskeluoikeudentila_2",
-    "koodiArvo": "2",
     "metadata": [
       {
         "nimi": "optio",
-        "lyhytNimi": "",
         "kuvaus": "Opiskeluoikeuden tila optio tarkoittaa, että oppijalle on myönnetty opiskeluoikeus kyseiseen koulutukseen, mutta oppija ei ole vielä kyseisen koulutuksen opiskelija.",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "option",
-        "lyhytNimi": "",
         "kuvaus": "En studierätt som beviljats men inte ännu aktiverats.",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "option",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtaopiskeluoikeudentila_2",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "2"
   },
   {
-    "koodiUri": "virtaopiskeluoikeudentila_3",
-    "koodiArvo": "3",
     "metadata": [
       {
         "nimi": "valmistunut",
+        "kuvaus": "Opiskeluoikeuden tila on päättynyt, kun koulutus on saatu päätökseen tarkoitetulla tavalla.",
         "lyhytNimi": "",
-        "kuvaus": "Opiskeluoikeuden tila on päättynyt, kun koulutus on saatu päätökseen tarkoitetulla tavalla. Huom aiemmin tämän tilan nimi oli 'päättynyt'.",
         "kieli": "FI"
       },
       {
         "nimi": "slutförd",
-        "lyhytNimi": "",
         "kuvaus": "Studierätten har avslutats till följd av att utbildningen har slutförts.",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "concluded",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtaopiskeluoikeudentila_3",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "3"
   },
   {
-    "koodiUri": "virtaopiskeluoikeudentila_4",
-    "koodiArvo": "4",
     "metadata": [
       {
         "nimi": "passivoitu",
-        "lyhytNimi": "",
         "kuvaus": "Opiskeluoikeuden tila on passivoitu, kun korkeakoulun päätöksen seurauksena oppijalla ei pysyvästi tai tilapäisesti ole enää oikeutta opiskella.",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "passiverad",
-        "lyhytNimi": "",
         "kuvaus": "Högskolan har passiverat studierätten, tillfälligt eller permanent.",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "passivated",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtaopiskeluoikeudentila_4",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "4"
   },
   {
-    "koodiUri": "virtaopiskeluoikeudentila_5",
-    "koodiArvo": "5",
     "metadata": [
       {
         "nimi": "luopunut",
-        "lyhytNimi": "",
         "kuvaus": "Opiskeluoikeuden tila on luopunut, mikäli oppija on pysyvästi tai väliaikaisesti luopunut oikeudestaan opiskella siten, että opiskelu ei korkeakoulun sääntöjen mukaan ole mahdollista ilman erillisiä toimenpiteitä opiskeluoikeuden uudelleen aktivoimiseksi.",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "avstått",
-        "lyhytNimi": "",
         "kuvaus": "Personen har aktivt avstått från sin studierätt, tillfälligt eller permanent.",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "discontinued",
+        "kuvaus": "",
         "lyhytNimi": "",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtaopiskeluoikeudentila_5",
+    "versio": 1,
+    "koodiArvo": "5"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "päättynyt",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "-",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "-",
         "kuvaus": "",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtaopiskeluoikeudentila_6",
     "versio": 1,
-    "withinCodeElements": []
-  }, {
-  "koodiUri": "virtaopiskeluoikeudentila_6",
-  "koodiArvo": "6",
-  "metadata": [
-    {
-      "nimi": "-",
-      "kuvaus": "",
-      "kayttoohje": null,
-      "kasite": null,
-      "sisaltaaMerkityksen": null,
-      "eiSisallaMerkitysta": null,
-      "huomioitavaKoodi": null,
-      "sisaltaaKoodiston": null,
-      "kieli": "EN"
-    },
-    {
-      "nimi": "-",
-      "kuvaus": "",
-      "kayttoohje": null,
-      "kasite": null,
-      "sisaltaaMerkityksen": null,
-      "eiSisallaMerkitysta": null,
-      "huomioitavaKoodi": null,
-      "sisaltaaKoodiston": null,
-      "kieli": "SV"
-    },
-    {
-      "nimi": "päättynyt",
-      "kuvaus": "",
-      "kayttoohje": null,
-      "kasite": null,
-      "sisaltaaMerkityksen": null,
-      "eiSisallaMerkitysta": null,
-      "huomioitavaKoodi": null,
-      "sisaltaaKoodiston": null,
-      "kieli": "FI"
-    }
-  ],
-  "versio": 1,
-  "withinCodeElements": []
-}
+    "koodiArvo": "6"
+  }
 ]

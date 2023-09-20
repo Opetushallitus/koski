@@ -1,68 +1,83 @@
 [
   {
-    "koodiUri": "oppiainediaaidinkieli_de",
-    "koodiArvo": "DE",
     "metadata": [
       {
         "nimi": "saksa",
+        "kuvaus": null,
         "lyhytNimi": "saksa",
         "kieli": "FI"
       },
       {
         "nimi": "tyska",
+        "kuvaus": null,
         "lyhytNimi": "tyska",
         "kieli": "SV"
       },
       {
         "nimi": "German",
+        "kuvaus": null,
         "lyhytNimi": "German",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiainediaaidinkieli_de",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "DE"
   },
   {
-    "koodiUri": "oppiainediaaidinkieli_fi",
-    "koodiArvo": "FI",
     "metadata": [
       {
         "nimi": "suomi",
+        "kuvaus": null,
         "lyhytNimi": "suomi",
         "kieli": "FI"
       },
       {
         "nimi": "finska",
+        "kuvaus": null,
         "lyhytNimi": "finska",
         "kieli": "SV"
       },
       {
         "nimi": "Finnish",
+        "kuvaus": null,
         "lyhytNimi": "Finnish",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiainediaaidinkieli_fi",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "FI"
   },
   {
-    "koodiUri": "oppiainediaaidinkieli_s2",
-    "koodiArvo": "S2",
     "metadata": [
       {
         "nimi": "suomi toisena kielenä",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
         "nimi": "finska som andraspråk och litteratur",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Finnish as a second language and literature",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiainediaaidinkieli_s2",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "S2"
   }
 ]

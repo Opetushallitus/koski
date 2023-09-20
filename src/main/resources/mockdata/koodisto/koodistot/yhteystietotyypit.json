@@ -1,27 +1,63 @@
 {
   "koodistoUri": "yhteystietotyypit",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/yhteystietotyypit",
+  "omistaja": "Opetushallitus",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "lukittu": null,
+  "withinCodes": [],
+  "includesCodes": [],
+  "levelsWithCodes": [],
+  "codesGroupUri": "alueet",
+  "version": 4,
   "versio": 1,
+  "paivitysPvm": "2022-11-23",
+  "paivittajaOid": "1.2.246.562.24.25909319372",
+  "voimassaAlkuPvm": "2014-04-07",
+  "voimassaLoppuPvm": null,
+  "tila": "LUONNOS",
   "metadata": [
+    {
+      "kieli": "EN",
+      "nimi": "Yhteystietotyypit",
+      "kuvaus": "Yhteystietotyypit",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    },
     {
       "kieli": "FI",
       "nimi": "Yhteystietotyypit",
-      "kuvaus": "Yhteystietotyypit"
+      "kuvaus": "Yhteystietotyypit",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
     },
     {
       "kieli": "SV",
       "nimi": "Yhteystietotyypit",
-      "kuvaus": "Yhteystietotyypit"
-    },
-    {
-      "kieli": "EN",
-      "nimi": "Yhteystietotyypit",
-      "kuvaus": "Yhteystietotyypit"
+      "kuvaus": "Yhteystietotyypit",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
     }
   ],
-  "codesGroupUri": "alueet",
-  "voimassaAlkuPvm": "2014-04-07",
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "withinCodes": [],
-  "tila": "LUONNOS",
-  "version": 4
+  "codesVersions": []
 }

@@ -1,17 +1,35 @@
 {
   "koodistoUri": "arviointiasteikkointernationalschool",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/arviointiasteikkointernationalschool",
+  "omistaja": null,
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "lukittu": null,
+  "withinCodes": [],
+  "includesCodes": [],
+  "levelsWithCodes": [],
+  "codesGroupUri": "koski",
+  "version": 0,
   "versio": 1,
+  "paivitysPvm": "2019-05-03",
+  "paivittajaOid": "1.2.246.562.24.98063222086",
+  "voimassaAlkuPvm": "2019-04-26",
+  "voimassaLoppuPvm": null,
+  "tila": "LUONNOS",
   "metadata": [
     {
       "kieli": "FI",
       "nimi": "arviointiasteikkointernationalschool",
-      "kuvaus": "International school arviointiasteikko"
+      "kuvaus": "International school arviointiasteikko",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
     }
   ],
-  "codesGroupUri": "koski",
-  "voimassaAlkuPvm": "2019-04-26",
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "withinCodes": [],
-  "tila": "LUONNOS",
-  "version": 0
+  "codesVersions": []
 }

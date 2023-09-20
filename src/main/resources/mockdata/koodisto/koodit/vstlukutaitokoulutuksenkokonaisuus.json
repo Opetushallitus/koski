@@ -1,106 +1,114 @@
 [
   {
-    "koodiUri": "vstlukutaitokoulutuksenkokonaisuus_vstlukutaitokoulutuksennumeeristentaitojenkokonaisuudensuoritus",
-    "koodiArvo": "vstlukutaitokoulutuksennumeeristentaitojenkokonaisuudensuoritus",
     "metadata": [
       {
         "nimi": "Numeeriset taidot",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Numeriska färdigheter",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Numeeriset taidot",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "vstlukutaitokoulutuksenkokonaisuus_vstlukutaitokoulutuksennumeeristentaitojenkokonaisuudensuoritus",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "vstlukutaitokoulutuksennumeeristentaitojenkokonaisuudensuoritus"
   },
   {
-    "koodiUri": "vstlukutaitokoulutuksenkokonaisuus_vstlukutaitokoulutuksentekstienkirjoittamisenkokonaisuudensuoritus",
-    "koodiArvo": "vstlukutaitokoulutuksentekstienkirjoittamisenkokonaisuudensuoritus",
     "metadata": [
       {
         "nimi": "Tekstien kirjoittaminen ja tuottaminen",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Förmåga att skriva och producera texter",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Tekstien kirjoittaminen ja tuottaminen",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "vstlukutaitokoulutuksenkokonaisuus_vstlukutaitokoulutuksentekstienkirjoittamisenkokonaisuudensuoritus",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "vstlukutaitokoulutuksentekstienkirjoittamisenkokonaisuudensuoritus"
   },
   {
-    "koodiUri": "vstlukutaitokoulutuksenkokonaisuus_vstlukutaitokoulutuksentekstienlukemisenkokonaisuudensuoritus",
-    "koodiArvo": "vstlukutaitokoulutuksentekstienlukemisenkokonaisuudensuoritus",
     "metadata": [
       {
         "nimi": "Tekstien lukeminen ja tulkitseminen",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Förmåga att läsa och tolka texter",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Tekstien lukeminen ja tulkitseminen",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "vstlukutaitokoulutuksenkokonaisuus_vstlukutaitokoulutuksentekstienlukemisenkokonaisuudensuoritus",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "vstlukutaitokoulutuksentekstienlukemisenkokonaisuudensuoritus"
   },
   {
-    "koodiUri": "vstlukutaitokoulutuksenkokonaisuus_vstlukutaitokoulutuksenvuorovaikutustilannekokonaisuudensuoritus",
-    "koodiArvo": "vstlukutaitokoulutuksenvuorovaikutustilannekokonaisuudensuoritus",
     "metadata": [
       {
         "nimi": "Vuorovaikutustilanteissa toimiminen",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Förmåga att kommunicera",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Vuorovaikutustilanteissa toimiminen",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "vstlukutaitokoulutuksenkokonaisuus_vstlukutaitokoulutuksenvuorovaikutustilannekokonaisuudensuoritus",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "vstlukutaitokoulutuksenvuorovaikutustilannekokonaisuudensuoritus"
   }
 ]

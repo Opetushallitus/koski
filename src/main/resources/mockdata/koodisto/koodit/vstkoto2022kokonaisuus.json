@@ -1,82 +1,102 @@
 [
   {
-    "koodiUri": "vstkoto2022kokonaisuus_kielijaviestintaosaaminen",
-    "koodiArvo": "kielijaviestintaosaaminen",
     "metadata": [
       {
         "nimi": "Kieli- ja viestintäosaaminen",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
         "nimi": "Språkliga färdigheter och kommunikationsfärdigheter",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Language and communication skills",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "vstkoto2022kokonaisuus_kielijaviestintaosaaminen",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "kielijaviestintaosaaminen"
   },
   {
-    "koodiUri": "vstkoto2022kokonaisuus_ohjaus",
-    "koodiArvo": "ohjaus",
     "metadata": [
       {
         "nimi": "Ohjaus",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
         "nimi": "Handledning",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Guidance",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "vstkoto2022kokonaisuus_ohjaus",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "ohjaus"
   },
   {
-    "koodiUri": "vstkoto2022kokonaisuus_valinnaisetopinnot",
-    "koodiArvo": "valinnaisetopinnot",
     "metadata": [
       {
         "nimi": "Valinnaiset opinnot",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
         "nimi": "Valbara studier",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Optional studies",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "vstkoto2022kokonaisuus_valinnaisetopinnot",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "valinnaisetopinnot"
   },
   {
-    "koodiUri": "vstkoto2022kokonaisuus_yhteiskuntajatyoelamaosaaminen",
-    "koodiArvo": "yhteiskuntajatyoelamaosaaminen",
     "metadata": [
       {
         "nimi": "Yhteiskunta- ja työelämäosaaminen",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
         "nimi": "Samhälls- och arbetslivsfärdigheter",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Citizenship and working life competence",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "vstkoto2022kokonaisuus_yhteiskuntajatyoelamaosaaminen",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "yhteiskuntajatyoelamaosaaminen"
   }
 ]

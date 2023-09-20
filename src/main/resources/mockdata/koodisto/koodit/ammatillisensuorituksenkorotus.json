@@ -1,54 +1,58 @@
 [
   {
-    "koodiUri": "ammatillisensuorituksenkorotus_korotettu",
-    "koodiArvo": "korotettu",
     "metadata": [
       {
         "nimi": "Korotettu suoritus",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
-        "nimi": "Korotettu suoritus",
-        "lyhytNimi": "",
+        "nimi": "Höjd prestation",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
-        "nimi": "Korotettu suoritus",
-        "lyhytNimi": "",
+        "nimi": "Improved grade",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ammatillisensuorituksenkorotus_korotettu",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "korotettu"
   },
   {
-    "koodiUri": "ammatillisensuorituksenkorotus_korotuksenyritys",
-    "koodiArvo": "korotuksenyritys",
     "metadata": [
       {
         "nimi": "Korotuksen yritys",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
-        "nimi": "Korotuksen yritys",
-        "lyhytNimi": "",
+        "nimi": "Höjningsförsök",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
-        "nimi": "Korotuksen yritys",
-        "lyhytNimi": "",
+        "nimi": "Attempt to improve grade",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ammatillisensuorituksenkorotus_korotuksenyritys",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "korotuksenyritys"
   }
 ]

@@ -1,23 +1,29 @@
 [
   {
-    "koodiUri": "europeanschoolofhelsinkicurriculum_2023",
-    "koodiArvo": "2023",
     "metadata": [
       {
         "nimi": "Curriculum 2023",
+        "kuvaus": null,
         "lyhytNimi": "Curriculum 2023",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Curriculum 2023",
+        "kuvaus": null,
         "lyhytNimi": "Curriculum 2023",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "europeanschoolofhelsinkicurriculum_2023",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "2023"
   }
 ]

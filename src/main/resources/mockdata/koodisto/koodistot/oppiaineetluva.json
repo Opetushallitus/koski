@@ -1,22 +1,61 @@
 {
   "koodistoUri": "oppiaineetluva",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/oppiaineetluva",
+  "omistaja": null,
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "lukittu": null,
+  "withinCodes": [],
+  "includesCodes": [
+    {
+      "codesUri": "lukioonvalmistavankoulutuksenkurssit2015",
+      "codesVersion": 1,
+      "passive": false,
+      "nimi": {
+        "FI": "Lukioon valmistavan koulutuksen kurssit 2015"
+      },
+      "kuvaus": {
+        "FI": ""
+      }
+    }
+  ],
+  "levelsWithCodes": [],
+  "codesGroupUri": "koski",
+  "version": 1,
   "versio": 1,
+  "paivitysPvm": "2018-04-24",
+  "paivittajaOid": null,
+  "voimassaAlkuPvm": "2017-03-24",
+  "voimassaLoppuPvm": null,
+  "tila": "LUONNOS",
   "metadata": [
     {
       "kieli": "FI",
       "nimi": "Oppiaineet LUVA",
-      "kuvaus": "Oppiaineet LUVA"
+      "kuvaus": "Oppiaineet LUVA",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
     },
     {
       "kieli": "SV",
       "nimi": "Samhällskunskap och kulturkännedom",
-      "kuvaus": ""
+      "kuvaus": "",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
     }
   ],
-  "codesGroupUri": "koski",
-  "voimassaAlkuPvm": "2017-03-24",
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "withinCodes": [],
-  "tila": "LUONNOS",
-  "version": 1
+  "codesVersions": []
 }

@@ -1,146 +1,164 @@
 [
   {
-    "koodiUri": "ammatillisennaytonarviointikeskusteluunosallistuneet_1",
-    "koodiArvo": "1",
     "metadata": [
       {
         "nimi": "Opettaja",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Lärare",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Teacher",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ammatillisennaytonarviointikeskusteluunosallistuneet_1",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "1"
   },
   {
-    "koodiUri": "ammatillisennaytonarviointikeskusteluunosallistuneet_2",
-    "koodiArvo": "2",
     "metadata": [
       {
         "nimi": "Työntekijä",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Arbetstagare",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Employee",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ammatillisennaytonarviointikeskusteluunosallistuneet_2",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "2"
   },
   {
-    "koodiUri": "ammatillisennaytonarviointikeskusteluunosallistuneet_3",
-    "koodiArvo": "3",
     "metadata": [
       {
         "nimi": "Työnantaja/Työelämän edustaja",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Arbetsgivare",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Employer/representative of working life",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ammatillisennaytonarviointikeskusteluunosallistuneet_3",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "3"
   },
   {
-    "koodiUri": "ammatillisennaytonarviointikeskusteluunosallistuneet_4",
-    "koodiArvo": "4",
     "metadata": [
       {
         "nimi": "Itsenäinen ammatinharjoittaja",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Självständig yrkesutövare",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Self-employed person",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ammatillisennaytonarviointikeskusteluunosallistuneet_4",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "4"
   },
   {
-    "koodiUri": "ammatillisennaytonarviointikeskusteluunosallistuneet_5",
-    "koodiArvo": "5",
     "metadata": [
       {
         "nimi": "Opiskelija",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Studerande",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Student",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ammatillisennaytonarviointikeskusteluunosallistuneet_5",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "5"
   },
   {
-    "koodiUri": "ammatillisennaytonarviointikeskusteluunosallistuneet_6",
-    "koodiArvo": "6",
     "metadata": [
       {
         "nimi": "Arviointikeskustelua ei pidetty",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Arviointikeskustelua ei pidetty",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "No evaluation discussion was held",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ammatillisennaytonarviointikeskusteluunosallistuneet_6",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "6"
   }
 ]

@@ -1,33 +1,97 @@
 {
   "koodistoUri": "oppilaitoksenopetuskieli",
-  "versio": 2,
-  "metadata": [
-    {
-      "kieli": "FI",
-      "nimi": "oppilaitoksen opetuskieli",
-      "kuvaus": "Käytössä organisaatiopalvelussa. \n\nOrganisaation kieli on mainittu OKMn tai VMn opetuksen- tai koulutuksen järjestäjän antamassa koulutustehtäväpäätöksessä. Koodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja, niissä olevia koodeja sekä niiden selitteitä ja kuvauksia\n\nYleisin kieli on suomi ja ruotsi tai niiden yhdistelmä."
-    },
-    {
-      "kieli": "SV",
-      "nimi": "oppilaitoksen opetuskieli",
-      "kuvaus": "Käytössä organisaatiopalvelussa. \n\nOrganisaation kieli on mainittu OKMn tai VMn opetuksen- tai koulutuksen järjestäjän antamassa koulutustehtäväpäätöksessä. Koodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja, niissä olevia koodeja sekä niiden selitteitä ja kuvauksia\n\nYleisin kieli on suomi ja ruotsi tai niiden yhdistelmä."
-    },
-    {
-      "kieli": "EN",
-      "nimi": "oppilaitoksen opetuskieli",
-      "kuvaus": "Käytössä organisaatiopalvelussa. \n\nOrganisaation kieli on mainittu OKMn tai VMn opetuksen- tai koulutuksen järjestäjän antamassa koulutustehtäväpäätöksessä. Koodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja, niissä olevia koodeja sekä niiden selitteitä ja kuvauksia\n\nYleisin kieli on suomi ja ruotsi tai niiden yhdistelmä."
-    }
-  ],
-  "codesGroupUri": "oppilaitoskoodistot",
-  "voimassaAlkuPvm": "2021-06-08",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/oppilaitoksenopetuskieli",
+  "omistaja": "Opetushallitus",
   "organisaatioOid": "1.2.246.562.10.00000000001",
+  "lukittu": null,
   "withinCodes": [
     {
       "codesUri": "oppilaitosnumero",
       "codesVersion": 1,
-      "passive": false
+      "passive": false,
+      "nimi": {
+        "FI": "oppilaitosnumero",
+        "SV": "oppilaitosnumero",
+        "EN": "oppilaitosnumero"
+      },
+      "kuvaus": {
+        "FI": "Tilastokeskus on antanut oppilaitoksille yksilöintitunnuksen. Tunnus on viisimerkkinen ja tunnukselle on varattu numerosarja 00000-99999. Tunnus on annettu ja annetaan ainoastaa pääkoululle. Samaa oppilaitostunnusta käytetään kaikissa oppilaitokseen liittyvissä toimintayksiköissä. Tietoa ylläpidetään organisaatiopalvelussa josta se kopioituu tähän koodistoon.\n\nKoodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja ja niissä olevia koodeja.",
+        "SV": "Tilastokeskus on antanut oppilaitoksille yksilöintitunnuksen. Tunnus on viisimerkkinen ja tunnukselle on varattu numerosarja 00000-99999. Tunnus on annettu ja annetaan ainoastaa pääkoululle. Samaa oppilaitostunnusta käytetään kaikissa oppilaitokseen liittyvissä toimintayksiköissä. Tietoa ylläpidetään organisaatiopalvelussa josta se kopioituu tähän koodistoon.\n\nKoodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja ja niissä olevia koodeja.",
+        "EN": "Tilastokeskus on antanut oppilaitoksille yksilöintitunnuksen. Tunnus on viisimerkkinen ja tunnukselle on varattu numerosarja 00000-99999. Tunnus on annettu ja annetaan ainoastaa pääkoululle. Samaa oppilaitostunnusta käytetään kaikissa oppilaitokseen liittyvissä toimintayksiköissä. Tietoa ylläpidetään organisaatiopalvelussa josta se kopioituu tähän koodistoon.\n\nKoodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja ja niissä olevia koodeja."
+      }
     }
   ],
+  "includesCodes": [],
+  "levelsWithCodes": [
+    {
+      "codesUri": "kieli",
+      "codesVersion": 1,
+      "passive": false,
+      "nimi": {
+        "SV": "virallinen kielikoodisto (ISO-639-1)",
+        "FI": "virallinen kielikoodisto (ISO-639-1)",
+        "EN": "virallinen kielikoodisto (ISO-639-1)"
+      },
+      "kuvaus": {
+        "SV": "Luokitus perustuu ISO 639-1 -standardiin (Codes for the representation of names of languages, Part 1: Alpha-2 code, 15.7.2002). Standardi koostuu kielten nimistä ja niille annetuista kaksikirjaimisista koodeista. Se korvaa vuonna 1988 ilmestyneen ISO 639 -standardin.\n\nISO 639-1 -standardia ylläpitää Infoterm (International Information Centre for Terminology).\nTunnusjärjestelmään kuuluvat kielten kaksikirjaimiset tunnukset kirjoitetaan pienaakkosin. Tunnukset muodostetaan kunkin kielen omakielisen nimen pohjalta. Poikkeuksena ovat japanin, suomen ja unkarin kielet, joiden tunnukset on muodostettu näiden maiden toivomuksen mukaisesti englanninkielisen nimen pohjalta.\n\nViimeisin koodisto on vuodelta 2010.\n\nKoodistoa käytetään koulutustarjonnan lukion kielivalikoimassa ja henkilötiedonsiirroissa.\n\nKoodistoon on lisätty muutama koodi joita tarvitaan Opintopolussa. Näitä on vk=viittomakieli (koodi merkitty lakkautuneeksi), 98=ei virallinen kieli ja 99=tuntematon\n\nKoodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja, niissä olevia koodeja sekä niiden selitteitä ja kuvauksia\n\nKoodistoa käyttää mm. KOSKi-palvelu",
+        "FI": "Luokitus perustuu ISO 639-1 -standardiin (Codes for the representation of names of languages, Part 1: Alpha-2 code, 15.7.2002). Standardi koostuu kielten nimistä ja niille annetuista kaksikirjaimisista koodeista. Se korvaa vuonna 1988 ilmestyneen ISO 639 -standardin.\n\nISO 639-1 -standardia ylläpitää Infoterm (International Information Centre for Terminology).\nTunnusjärjestelmään kuuluvat kielten kaksikirjaimiset tunnukset kirjoitetaan pienaakkosin. Tunnukset muodostetaan kunkin kielen omakielisen nimen pohjalta. Poikkeuksena ovat japanin, suomen ja unkarin kielet, joiden tunnukset on muodostettu näiden maiden toivomuksen mukaisesti englanninkielisen nimen pohjalta.\n\nViimeisin koodisto on vuodelta 2010.\n\nKoodistoa käytetään koulutustarjonnan lukion kielivalikoimassa ja henkilötiedonsiirroissa.\n\nKoodistoon on lisätty muutama koodi joita tarvitaan Opintopolussa. Näitä on vk=viittomakieli (koodi merkitty lakkautuneeksi), 98=ei virallinen kieli ja 99=tuntematon\n\nKoodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja, niissä olevia koodeja sekä niiden selitteitä ja kuvauksia\n\nKoodistoa käyttää mm. KOSKi-palvelu",
+        "EN": "Luokitus perustuu ISO 639-1 -standardiin (Codes for the representation of names of languages, Part 1: Alpha-2 code, 15.7.2002). Standardi koostuu kielten nimistä ja niille annetuista kaksikirjaimisista koodeista. Se korvaa vuonna 1988 ilmestyneen ISO 639 -standardin.\n\nISO 639-1 -standardia ylläpitää Infoterm (International Information Centre for Terminology).\nTunnusjärjestelmään kuuluvat kielten kaksikirjaimiset tunnukset kirjoitetaan pienaakkosin. Tunnukset muodostetaan kunkin kielen omakielisen nimen pohjalta. Poikkeuksena ovat japanin, suomen ja unkarin kielet, joiden tunnukset on muodostettu näiden maiden toivomuksen mukaisesti englanninkielisen nimen pohjalta.\n\nViimeisin koodisto on vuodelta 2010.\n\nKoodistoa käytetään koulutustarjonnan lukion kielivalikoimassa ja henkilötiedonsiirroissa.\n\nKoodistoon on lisätty muutama koodi joita tarvitaan Opintopolussa. Näitä on vk=viittomakieli (koodi merkitty lakkautuneeksi), 98=ei virallinen kieli ja 99=tuntematon\n\nKoodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja, niissä olevia koodeja sekä niiden selitteitä ja kuvauksia\n\nKoodistoa käyttää mm. KOSKi-palvelu"
+      }
+    }
+  ],
+  "codesGroupUri": "oppilaitoskoodistot",
+  "version": 5,
+  "versio": 2,
+  "paivitysPvm": "2023-07-26",
+  "paivittajaOid": "1.2.246.562.24.42485718933",
+  "voimassaAlkuPvm": "2021-06-08",
+  "voimassaLoppuPvm": null,
   "tila": "LUONNOS",
-  "version": 4
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "oppilaitoksen opetuskieli",
+      "kuvaus": "Käytössä organisaatiopalvelussa. \n\nOrganisaation kieli on mainittu OKMn tai VMn opetuksen- tai koulutuksen järjestäjän antamassa koulutustehtäväpäätöksessä. Koodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja, niissä olevia koodeja sekä niiden selitteitä ja kuvauksia\n\nYleisin kieli on suomi ja ruotsi tai niiden yhdistelmä.",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    },
+    {
+      "kieli": "SV",
+      "nimi": "oppilaitoksen opetuskieli",
+      "kuvaus": "Käytössä organisaatiopalvelussa. \n\nOrganisaation kieli on mainittu OKMn tai VMn opetuksen- tai koulutuksen järjestäjän antamassa koulutustehtäväpäätöksessä. Koodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja, niissä olevia koodeja sekä niiden selitteitä ja kuvauksia\n\nYleisin kieli on suomi ja ruotsi tai niiden yhdistelmä.",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    },
+    {
+      "kieli": "EN",
+      "nimi": "oppilaitoksen opetuskieli",
+      "kuvaus": "Käytössä organisaatiopalvelussa. \n\nOrganisaation kieli on mainittu OKMn tai VMn opetuksen- tai koulutuksen järjestäjän antamassa koulutustehtäväpäätöksessä. Koodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja, niissä olevia koodeja sekä niiden selitteitä ja kuvauksia\n\nYleisin kieli on suomi ja ruotsi tai niiden yhdistelmä.",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    }
+  ],
+  "codesVersions": [
+    1
+  ]
 }

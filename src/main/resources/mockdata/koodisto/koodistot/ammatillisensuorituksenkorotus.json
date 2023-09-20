@@ -1,27 +1,63 @@
 {
   "koodistoUri": "ammatillisensuorituksenkorotus",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/ammatillisensuorituksenkorotus",
+  "omistaja": null,
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "lukittu": null,
+  "withinCodes": [],
+  "includesCodes": [],
+  "levelsWithCodes": [],
+  "codesGroupUri": "koski",
+  "version": 0,
   "versio": 1,
+  "paivitysPvm": "2023-03-13",
+  "paivittajaOid": "1.2.246.562.24.98063222086",
+  "voimassaAlkuPvm": "2023-01-01",
+  "voimassaLoppuPvm": null,
+  "tila": "LUONNOS",
   "metadata": [
-    {
-      "kieli": "FI",
-      "nimi": "Ammatillisen suorituksen korotus",
-      "kuvaus": "Ammatillisen suorituksen korotus"
-    },
     {
       "kieli": "SV",
       "nimi": "Ammatillisen suorituksen korotus",
-      "kuvaus": "Ammatillisen suorituksen korotus"
+      "kuvaus": "Ammatillisen suorituksen korotus",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
     },
     {
       "kieli": "EN",
       "nimi": "Ammatillisen suorituksen korotus",
-      "kuvaus": "Ammatillisen suorituksen korotus"
+      "kuvaus": "Ammatillisen suorituksen korotus",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    },
+    {
+      "kieli": "FI",
+      "nimi": "Ammatillisen suorituksen korotus",
+      "kuvaus": "Ammatillisen suorituksen korotus",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
     }
   ],
-  "codesGroupUri": "koski",
-  "voimassaAlkuPvm": "2023-01-01",
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "withinCodes": [],
-  "tila": "LUONNOS",
-  "version": 0
+  "codesVersions": []
 }

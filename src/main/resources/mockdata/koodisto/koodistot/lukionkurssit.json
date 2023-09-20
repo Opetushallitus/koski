@@ -1,17 +1,35 @@
 {
   "koodistoUri": "lukionkurssit",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/lukionkurssit",
+  "omistaja": null,
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "lukittu": null,
+  "withinCodes": [],
+  "includesCodes": [],
+  "levelsWithCodes": [],
+  "codesGroupUri": "koulutuskoodistot",
+  "version": 7,
   "versio": 1,
+  "paivitysPvm": "2018-04-09",
+  "paivittajaOid": null,
+  "voimassaAlkuPvm": "2015-09-22",
+  "voimassaLoppuPvm": null,
+  "tila": "LUONNOS",
   "metadata": [
     {
       "kieli": "FI",
       "nimi": "Lukion kurssit",
-      "kuvaus": "Lukion kurssit, sisältää perusteiden kurssikoodit"
+      "kuvaus": "Lukion kurssit, sisältää perusteiden kurssikoodit",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
     }
   ],
-  "codesGroupUri": "koulutuskoodistot",
-  "voimassaAlkuPvm": "2015-09-22",
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "withinCodes": [],
-  "tila": "LUONNOS",
-  "version": 7
+  "codesVersions": []
 }

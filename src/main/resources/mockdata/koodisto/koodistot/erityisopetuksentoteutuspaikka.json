@@ -1,17 +1,35 @@
 {
   "koodistoUri": "erityisopetuksentoteutuspaikka",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/erityisopetuksentoteutuspaikka",
+  "omistaja": null,
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "lukittu": null,
+  "withinCodes": [],
+  "includesCodes": [],
+  "levelsWithCodes": [],
+  "codesGroupUri": "koski",
+  "version": 0,
   "versio": 1,
+  "paivitysPvm": "2018-05-09",
+  "paivittajaOid": null,
+  "voimassaAlkuPvm": "2018-05-02",
+  "voimassaLoppuPvm": null,
+  "tila": "LUONNOS",
   "metadata": [
     {
       "kieli": "FI",
       "nimi": "Erityisopetuksen toteutuspaikka",
-      "kuvaus": "Erityisopetuksen toteutuspaikka"
+      "kuvaus": "Erityisopetuksen toteutuspaikka",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
     }
   ],
-  "codesGroupUri": "koski",
-  "voimassaAlkuPvm": "2018-05-02",
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "withinCodes": [],
-  "tila": "LUONNOS",
-  "version": 0
+  "codesVersions": []
 }

@@ -1,92 +1,127 @@
 [
   {
-    "koodiUri": "arviointiasteikkolisapisteetib_0",
-    "koodiArvo": "0",
     "metadata": [
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "0",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkolisapisteetib_0",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "0"
   },
   {
-    "koodiUri": "arviointiasteikkolisapisteetib_1",
-    "koodiArvo": "1",
     "metadata": [
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "1",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkolisapisteetib_1",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "1"
   },
   {
-    "koodiUri": "arviointiasteikkolisapisteetib_2",
-    "koodiArvo": "2",
     "metadata": [
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "2",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkolisapisteetib_2",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "2"
   },
   {
-    "koodiUri": "arviointiasteikkolisapisteetib_3",
-    "koodiArvo": "3",
     "metadata": [
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "3",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkolisapisteetib_3",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "3"
   },
   {
-    "koodiUri": "arviointiasteikkolisapisteetib_f",
-    "koodiArvo": "F",
     "metadata": [
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Failing condition",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkolisapisteetib_f",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "F"
   }
 ]

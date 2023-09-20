@@ -1,27 +1,63 @@
 {
   "koodistoUri": "oppiainematematiikka",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/oppiainematematiikka",
+  "omistaja": null,
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "lukittu": null,
+  "withinCodes": [],
+  "includesCodes": [],
+  "levelsWithCodes": [],
+  "codesGroupUri": "koski",
+  "version": 1,
   "versio": 1,
+  "paivitysPvm": "2018-05-14",
+  "paivittajaOid": null,
+  "voimassaAlkuPvm": "2013-01-01",
+  "voimassaLoppuPvm": null,
+  "tila": "LUONNOS",
   "metadata": [
-    {
-      "kieli": "FI",
-      "nimi": "Oppiaine matematiikka",
-      "kuvaus": "Oppiaine matematiikka"
-    },
     {
       "kieli": "SV",
       "nimi": "Oppiaine matematiikka",
-      "kuvaus": "Oppiaine matematiikka"
+      "kuvaus": "Oppiaine matematiikka",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
     },
     {
       "kieli": "EN",
       "nimi": "Oppiaine matematiikka",
-      "kuvaus": "Oppiaine matematiikka"
+      "kuvaus": "Oppiaine matematiikka",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    },
+    {
+      "kieli": "FI",
+      "nimi": "Oppiaine matematiikka",
+      "kuvaus": "Oppiaine matematiikka",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
     }
   ],
-  "codesGroupUri": "koski",
-  "voimassaAlkuPvm": "2013-01-01",
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "withinCodes": [],
-  "tila": "LUONNOS",
-  "version": 1
+  "codesVersions": []
 }

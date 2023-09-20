@@ -1,42 +1,52 @@
 [
   {
-    "koodiUri": "lasnaolotila_lasna",
-    "koodiArvo": "lasna",
     "metadata": [
       {
         "nimi": "Läsnä",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
         "nimi": "Närvarande",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Present",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "lasnaolotila_lasna",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "lasna"
   },
   {
-    "koodiUri": "lasnaolotila_poissa",
-    "koodiArvo": "poissa",
     "metadata": [
       {
         "nimi": "Poissa",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
         "nimi": "Frånvarande",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Absent",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "lasnaolotila_poissa",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "poissa"
   }
 ]

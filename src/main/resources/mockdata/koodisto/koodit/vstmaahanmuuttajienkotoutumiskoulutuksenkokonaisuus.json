@@ -1,91 +1,108 @@
 [
   {
-    "koodiUri": "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus_vstmaahanmuuttajienkotoutumiskoulutuksenkieliopintojensuoritus",
-    "koodiArvo": "vstmaahanmuuttajienkotoutumiskoulutuksenkieliopintojensuoritus",
     "metadata": [
       {
         "nimi": "Suomen kieli ja viestintätaidot",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Svenska och kommunikativa färdigheter",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus_vstmaahanmuuttajienkotoutumiskoulutuksenkieliopintojensuoritus",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "vstmaahanmuuttajienkotoutumiskoulutuksenkieliopintojensuoritus"
   },
   {
-    "koodiUri": "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus_vstmaahanmuuttajienkotoutumiskoulutuksenohjauksensuoritus",
-    "koodiArvo": "vstmaahanmuuttajienkotoutumiskoulutuksenohjauksensuoritus",
     "metadata": [
       {
         "nimi": "Ohjaus",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Handledning",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus_vstmaahanmuuttajienkotoutumiskoulutuksenohjauksensuoritus",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "vstmaahanmuuttajienkotoutumiskoulutuksenohjauksensuoritus"
   },
   {
-    "koodiUri": "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus_vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojenkokonaisuudensuoritus",
-    "koodiArvo": "vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojenkokonaisuudensuoritus",
     "metadata": [
       {
         "nimi": "Työelämä- ja yhteiskuntataidot",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
         "nimi": "Färdigheter för arbetsliv och samhälle",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Työelämä- ja yhteiskuntataidot",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus_vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojenkokonaisuudensuoritus",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojenkokonaisuudensuoritus"
   },
   {
-    "koodiUri": "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus_vstmaahanmuuttajienkotoutumiskoulutuksenvalinnaistensuoritus",
-    "koodiArvo": "vstmaahanmuuttajienkotoutumiskoulutuksenvalinnaistensuoritus",
     "metadata": [
       {
         "nimi": "Valinnaiset opinnot",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Valfria studier",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus_vstmaahanmuuttajienkotoutumiskoulutuksenvalinnaistensuoritus",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "vstmaahanmuuttajienkotoutumiskoulutuksenvalinnaistensuoritus"
   }
 ]

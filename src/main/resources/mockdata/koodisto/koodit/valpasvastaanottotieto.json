@@ -1,46 +1,54 @@
 [
   {
-    "koodiUri": "valpasvastaanottotieto_ehdollinen",
-    "koodiArvo": "ehdollinen",
     "metadata": [
       {
         "nimi": "Otettu vastaan ehdollisesti",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Villkorligt mottagen",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Conditionally accepted",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "valpasvastaanottotieto_ehdollinen",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "ehdollinen"
   },
   {
-    "koodiUri": "valpasvastaanottotieto_vastaanotettu",
-    "koodiArvo": "vastaanotettu",
     "metadata": [
       {
         "nimi": "Otettu vastaan",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Godkänd",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Accepted",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "valpasvastaanottotieto_vastaanotettu",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "vastaanotettu"
   }
 ]

@@ -1,42 +1,52 @@
 [
   {
-    "koodiUri": "lukionoppimaara_aikuistenops",
-    "koodiArvo": "aikuistenops",
     "metadata": [
       {
         "nimi": "Lukio suoritetaan aikuisten opetussuunnitelman mukaan",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
-        "nimi": "Gymnasiet genomförs enligt läroplanen vuxna",
+        "nimi": "Gymnasiet genomförs enligt läroplanen för vuxna",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "General upper secondary education is completed in accordance with the curriculum for adults",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "lukionoppimaara_aikuistenops",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "aikuistenops"
   },
   {
-    "koodiUri": "lukionoppimaara_nuortenops",
-    "koodiArvo": "nuortenops",
     "metadata": [
       {
         "nimi": "Lukio suoritetaan nuorten opetussuunnitelman mukaan",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
         "nimi": "Gymnasiet genomförs enligt läroplanen för unga",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "General upper secondary education is completed in accordance with the curriculum for youths",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "lukionoppimaara_nuortenops",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "nuortenops"
   }
 ]

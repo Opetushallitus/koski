@@ -1,2123 +1,2729 @@
 [
   {
+    "metadata": [
+      {
+        "nimi": "0",
+        "kuvaus": null,
+        "lyhytNimi": "0",
+        "kieli": "FI"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "0",
+        "kuvaus": null,
+        "lyhytNimi": "0",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_0",
-    "koodiArvo": "0",
+    "versio": 1,
+    "koodiArvo": "0"
+  },
+  {
     "metadata": [
       {
-        "nimi": "0",
-        "lyhytNimi": "0",
+        "nimi": "0.1",
+        "kuvaus": null,
+        "lyhytNimi": "0.1",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "0",
-        "lyhytNimi": "0",
+        "nimi": "0.1",
+        "kuvaus": null,
+        "lyhytNimi": "0.1",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_01",
-    "koodiArvo": "0.1",
+    "versio": 1,
+    "koodiArvo": "0.1"
+  },
+  {
     "metadata": [
       {
-        "nimi": "0.1",
-        "lyhytNimi": "0.1",
+        "nimi": "0.2",
+        "kuvaus": null,
+        "lyhytNimi": "0.2",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "0.1",
-        "lyhytNimi": "0.1",
+        "nimi": "0.2",
+        "kuvaus": null,
+        "lyhytNimi": "0.2",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_02",
-    "koodiArvo": "0.2",
+    "versio": 1,
+    "koodiArvo": "0.2"
+  },
+  {
     "metadata": [
       {
-        "nimi": "0.2",
-        "lyhytNimi": "0.2",
+        "nimi": "0.3",
+        "kuvaus": null,
+        "lyhytNimi": "0.3",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "0.2",
-        "lyhytNimi": "0.2",
+        "nimi": "0.3",
+        "kuvaus": null,
+        "lyhytNimi": "0.3",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_03",
-    "koodiArvo": "0.3",
+    "versio": 1,
+    "koodiArvo": "0.3"
+  },
+  {
     "metadata": [
       {
-        "nimi": "0.3",
-        "lyhytNimi": "0.3",
+        "nimi": "0.4",
+        "kuvaus": null,
+        "lyhytNimi": "0.4",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "0.3",
-        "lyhytNimi": "0.3",
+        "nimi": "0.4",
+        "kuvaus": null,
+        "lyhytNimi": "0.4",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_04",
-    "koodiArvo": "0.4",
+    "versio": 1,
+    "koodiArvo": "0.4"
+  },
+  {
     "metadata": [
       {
-        "nimi": "0.4",
-        "lyhytNimi": "0.4",
+        "nimi": "0.5",
+        "kuvaus": null,
+        "lyhytNimi": "0.5",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "0.4",
-        "lyhytNimi": "0.4",
+        "nimi": "0.5",
+        "kuvaus": null,
+        "lyhytNimi": "0.5",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_05",
-    "koodiArvo": "0.5",
+    "versio": 1,
+    "koodiArvo": "0.5"
+  },
+  {
     "metadata": [
       {
-        "nimi": "0.5",
-        "lyhytNimi": "0.5",
+        "nimi": "0.6",
+        "kuvaus": null,
+        "lyhytNimi": "0.6",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "0.5",
-        "lyhytNimi": "0.5",
+        "nimi": "0.6",
+        "kuvaus": null,
+        "lyhytNimi": "0.6",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_06",
-    "koodiArvo": "0.6",
+    "versio": 1,
+    "koodiArvo": "0.6"
+  },
+  {
     "metadata": [
       {
-        "nimi": "0.6",
-        "lyhytNimi": "0.6",
+        "nimi": "0.7",
+        "kuvaus": null,
+        "lyhytNimi": "0.7",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "0.6",
-        "lyhytNimi": "0.6",
+        "nimi": "0.7",
+        "kuvaus": null,
+        "lyhytNimi": "0.7",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_07",
-    "koodiArvo": "0.7",
+    "versio": 1,
+    "koodiArvo": "0.7"
+  },
+  {
     "metadata": [
       {
-        "nimi": "0.7",
-        "lyhytNimi": "0.7",
+        "nimi": "0.8",
+        "kuvaus": null,
+        "lyhytNimi": "0.8",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "0.7",
-        "lyhytNimi": "0.7",
+        "nimi": "0.8",
+        "kuvaus": null,
+        "lyhytNimi": "0.8",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_08",
-    "koodiArvo": "0.8",
+    "versio": 1,
+    "koodiArvo": "0.8"
+  },
+  {
     "metadata": [
       {
-        "nimi": "0.8",
-        "lyhytNimi": "0.8",
+        "nimi": "0.9",
+        "kuvaus": null,
+        "lyhytNimi": "0.9",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "0.8",
-        "lyhytNimi": "0.8",
+        "nimi": "0.9",
+        "kuvaus": null,
+        "lyhytNimi": "0.9",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_09",
-    "koodiArvo": "0.9",
+    "versio": 1,
+    "koodiArvo": "0.9"
+  },
+  {
     "metadata": [
       {
-        "nimi": "0.9",
-        "lyhytNimi": "0.9",
+        "nimi": "1.0",
+        "kuvaus": null,
+        "lyhytNimi": "1.0",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "0.9",
-        "lyhytNimi": "0.9",
+        "nimi": "1.0",
+        "kuvaus": null,
+        "lyhytNimi": "1.0",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_10",
-    "koodiArvo": "1.0",
+    "versio": 1,
+    "koodiArvo": "1.0"
+  },
+  {
     "metadata": [
       {
-        "nimi": "1.0",
-        "lyhytNimi": "1.0",
+        "nimi": "10",
+        "kuvaus": null,
+        "lyhytNimi": "10",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "1.0",
-        "lyhytNimi": "1.0",
+        "nimi": "10",
+        "kuvaus": null,
+        "lyhytNimi": "10",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
-    "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_11",
-    "koodiArvo": "1.1",
-    "metadata": [
-      {
-        "nimi": "1.1",
-        "lyhytNimi": "1.1",
-        "kieli": "FI"
-      },
-      {
-        "kieli": "SV"
-      },
-      {
-        "nimi": "1.1",
-        "lyhytNimi": "1.1",
-        "kieli": "EN"
-      }
-    ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
-    "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_12",
-    "koodiArvo": "1.2",
-    "metadata": [
-      {
-        "nimi": "1.2",
-        "lyhytNimi": "1.2",
-        "kieli": "FI"
-      },
-      {
-        "kieli": "SV"
-      },
-      {
-        "nimi": "1.2",
-        "lyhytNimi": "1.2",
-        "kieli": "EN"
-      }
-    ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
-    "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_13",
-    "koodiArvo": "1.3",
-    "metadata": [
-      {
-        "nimi": "1.3",
-        "lyhytNimi": "1.3",
-        "kieli": "FI"
-      },
-      {
-        "kieli": "SV"
-      },
-      {
-        "nimi": "1.3",
-        "lyhytNimi": "1.3",
-        "kieli": "EN"
-      }
-    ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
-    "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_14",
-    "koodiArvo": "1.4",
-    "metadata": [
-      {
-        "nimi": "1.4",
-        "lyhytNimi": "1.4",
-        "kieli": "FI"
-      },
-      {
-        "kieli": "SV"
-      },
-      {
-        "nimi": "1.4",
-        "lyhytNimi": "1.4",
-        "kieli": "EN"
-      }
-    ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
-    "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_15",
-    "koodiArvo": "1.5",
-    "metadata": [
-      {
-        "nimi": "1.5",
-        "lyhytNimi": "1.5",
-        "kieli": "FI"
-      },
-      {
-        "kieli": "SV"
-      },
-      {
-        "nimi": "1.5",
-        "lyhytNimi": "1.5",
-        "kieli": "EN"
-      }
-    ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
-    "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_16",
-    "koodiArvo": "1.6",
-    "metadata": [
-      {
-        "nimi": "1.6",
-        "lyhytNimi": "1.6",
-        "kieli": "FI"
-      },
-      {
-        "kieli": "SV"
-      },
-      {
-        "nimi": "1.6",
-        "lyhytNimi": "1.6",
-        "kieli": "EN"
-      }
-    ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
-    "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_17",
-    "koodiArvo": "1.7",
-    "metadata": [
-      {
-        "nimi": "1.7",
-        "lyhytNimi": "1.7",
-        "kieli": "FI"
-      },
-      {
-        "kieli": "SV"
-      },
-      {
-        "nimi": "1.7",
-        "lyhytNimi": "1.7",
-        "kieli": "EN"
-      }
-    ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
-    "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_18",
-    "koodiArvo": "1.8",
-    "metadata": [
-      {
-        "nimi": "1.8",
-        "lyhytNimi": "1.8",
-        "kieli": "FI"
-      },
-      {
-        "kieli": "SV"
-      },
-      {
-        "nimi": "1.8",
-        "lyhytNimi": "1.8",
-        "kieli": "EN"
-      }
-    ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
-    "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_19",
-    "koodiArvo": "1.9",
-    "metadata": [
-      {
-        "nimi": "1.9",
-        "lyhytNimi": "1.9",
-        "kieli": "FI"
-      },
-      {
-        "kieli": "SV"
-      },
-      {
-        "nimi": "1.9",
-        "lyhytNimi": "1.9",
-        "kieli": "EN"
-      }
-    ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_10-1",
-    "koodiArvo": "10",
+    "versio": 1,
+    "koodiArvo": "10"
+  },
+  {
     "metadata": [
       {
-        "nimi": "10",
-        "lyhytNimi": "10",
+        "nimi": "1.1",
+        "kuvaus": null,
+        "lyhytNimi": "1.1",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "10",
-        "lyhytNimi": "10",
+        "nimi": "1.1",
+        "kuvaus": null,
+        "lyhytNimi": "1.1",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_11",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "1.1"
   },
   {
+    "metadata": [
+      {
+        "nimi": "1.2",
+        "kuvaus": null,
+        "lyhytNimi": "1.2",
+        "kieli": "FI"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "1.2",
+        "kuvaus": null,
+        "lyhytNimi": "1.2",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_12",
+    "versio": 1,
+    "koodiArvo": "1.2"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "1.3",
+        "kuvaus": null,
+        "lyhytNimi": "1.3",
+        "kieli": "FI"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "1.3",
+        "kuvaus": null,
+        "lyhytNimi": "1.3",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_13",
+    "versio": 1,
+    "koodiArvo": "1.3"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "1.4",
+        "kuvaus": null,
+        "lyhytNimi": "1.4",
+        "kieli": "FI"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "1.4",
+        "kuvaus": null,
+        "lyhytNimi": "1.4",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_14",
+    "versio": 1,
+    "koodiArvo": "1.4"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "1.5",
+        "kuvaus": null,
+        "lyhytNimi": "1.5",
+        "kieli": "FI"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "1.5",
+        "kuvaus": null,
+        "lyhytNimi": "1.5",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_15",
+    "versio": 1,
+    "koodiArvo": "1.5"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "1.6",
+        "kuvaus": null,
+        "lyhytNimi": "1.6",
+        "kieli": "FI"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "1.6",
+        "kuvaus": null,
+        "lyhytNimi": "1.6",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_16",
+    "versio": 1,
+    "koodiArvo": "1.6"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "1.7",
+        "kuvaus": null,
+        "lyhytNimi": "1.7",
+        "kieli": "FI"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "1.7",
+        "kuvaus": null,
+        "lyhytNimi": "1.7",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_17",
+    "versio": 1,
+    "koodiArvo": "1.7"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "1.8",
+        "kuvaus": null,
+        "lyhytNimi": "1.8",
+        "kieli": "FI"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "1.8",
+        "kuvaus": null,
+        "lyhytNimi": "1.8",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_18",
+    "versio": 1,
+    "koodiArvo": "1.8"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "1.9",
+        "kuvaus": null,
+        "lyhytNimi": "1.9",
+        "kieli": "FI"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "1.9",
+        "kuvaus": null,
+        "lyhytNimi": "1.9",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_19",
+    "versio": 1,
+    "koodiArvo": "1.9"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "2.0",
+        "kuvaus": null,
+        "lyhytNimi": "2.0",
+        "kieli": "FI"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "2.0",
+        "kuvaus": null,
+        "lyhytNimi": "2.0",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_20",
-    "koodiArvo": "2.0",
+    "versio": 1,
+    "koodiArvo": "2.0"
+  },
+  {
     "metadata": [
       {
-        "nimi": "2.0",
-        "lyhytNimi": "2.0",
+        "nimi": "2.1",
+        "kuvaus": null,
+        "lyhytNimi": "2.1",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "2.0",
-        "lyhytNimi": "2.0",
+        "nimi": "2.1",
+        "kuvaus": null,
+        "lyhytNimi": "2.1",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_21",
-    "koodiArvo": "2.1",
+    "versio": 1,
+    "koodiArvo": "2.1"
+  },
+  {
     "metadata": [
       {
-        "nimi": "2.1",
-        "lyhytNimi": "2.1",
+        "nimi": "2.2",
+        "kuvaus": null,
+        "lyhytNimi": "2.2",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "2.1",
-        "lyhytNimi": "2.1",
+        "nimi": "2.2",
+        "kuvaus": null,
+        "lyhytNimi": "2.2",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_22",
-    "koodiArvo": "2.2",
+    "versio": 1,
+    "koodiArvo": "2.2"
+  },
+  {
     "metadata": [
       {
-        "nimi": "2.2",
-        "lyhytNimi": "2.2",
+        "nimi": "2.3",
+        "kuvaus": null,
+        "lyhytNimi": "2.3",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "2.2",
-        "lyhytNimi": "2.2",
+        "nimi": "2.3",
+        "kuvaus": null,
+        "lyhytNimi": "2.3",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_23",
-    "koodiArvo": "2.3",
+    "versio": 1,
+    "koodiArvo": "2.3"
+  },
+  {
     "metadata": [
       {
-        "nimi": "2.3",
-        "lyhytNimi": "2.3",
+        "nimi": "2.4",
+        "kuvaus": null,
+        "lyhytNimi": "2.4",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "2.3",
-        "lyhytNimi": "2.3",
+        "nimi": "2.4",
+        "kuvaus": null,
+        "lyhytNimi": "2.4",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_24",
-    "koodiArvo": "2.4",
+    "versio": 1,
+    "koodiArvo": "2.4"
+  },
+  {
     "metadata": [
       {
-        "nimi": "2.4",
-        "lyhytNimi": "2.4",
+        "nimi": "2.5",
+        "kuvaus": null,
+        "lyhytNimi": "2.5",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "2.4",
-        "lyhytNimi": "2.4",
+        "nimi": "2.5",
+        "kuvaus": null,
+        "lyhytNimi": "2.5",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_25",
-    "koodiArvo": "2.5",
+    "versio": 1,
+    "koodiArvo": "2.5"
+  },
+  {
     "metadata": [
       {
-        "nimi": "2.5",
-        "lyhytNimi": "2.5",
+        "nimi": "2.6",
+        "kuvaus": null,
+        "lyhytNimi": "2.6",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "2.5",
-        "lyhytNimi": "2.5",
+        "nimi": "2.6",
+        "kuvaus": null,
+        "lyhytNimi": "2.6",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_26",
-    "koodiArvo": "2.6",
+    "versio": 1,
+    "koodiArvo": "2.6"
+  },
+  {
     "metadata": [
       {
-        "nimi": "2.6",
-        "lyhytNimi": "2.6",
+        "nimi": "2.7",
+        "kuvaus": null,
+        "lyhytNimi": "2.7",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "2.6",
-        "lyhytNimi": "2.6",
+        "nimi": "2.7",
+        "kuvaus": null,
+        "lyhytNimi": "2.7",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_27",
-    "koodiArvo": "2.7",
+    "versio": 1,
+    "koodiArvo": "2.7"
+  },
+  {
     "metadata": [
       {
-        "nimi": "2.7",
-        "lyhytNimi": "2.7",
+        "nimi": "2.8",
+        "kuvaus": null,
+        "lyhytNimi": "2.8",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "2.7",
-        "lyhytNimi": "2.7",
+        "nimi": "2.8",
+        "kuvaus": null,
+        "lyhytNimi": "2.8",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_28",
-    "koodiArvo": "2.8",
+    "versio": 1,
+    "koodiArvo": "2.8"
+  },
+  {
     "metadata": [
       {
-        "nimi": "2.8",
-        "lyhytNimi": "2.8",
+        "nimi": "2.9",
+        "kuvaus": null,
+        "lyhytNimi": "2.9",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "2.8",
-        "lyhytNimi": "2.8",
+        "nimi": "2.9",
+        "kuvaus": null,
+        "lyhytNimi": "2.9",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_29",
-    "koodiArvo": "2.9",
+    "versio": 1,
+    "koodiArvo": "2.9"
+  },
+  {
     "metadata": [
       {
-        "nimi": "2.9",
-        "lyhytNimi": "2.9",
+        "nimi": "3.0",
+        "kuvaus": null,
+        "lyhytNimi": "3.0",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "2.9",
-        "lyhytNimi": "2.9",
+        "nimi": "3.0",
+        "kuvaus": null,
+        "lyhytNimi": "3.0",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_30",
-    "koodiArvo": "3.0",
+    "versio": 1,
+    "koodiArvo": "3.0"
+  },
+  {
     "metadata": [
       {
-        "nimi": "3.0",
-        "lyhytNimi": "3.0",
+        "nimi": "3.1",
+        "kuvaus": null,
+        "lyhytNimi": "3.1",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "3.0",
-        "lyhytNimi": "3.0",
+        "nimi": "3.1",
+        "kuvaus": null,
+        "lyhytNimi": "3.1",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_31",
-    "koodiArvo": "3.1",
+    "versio": 1,
+    "koodiArvo": "3.1"
+  },
+  {
     "metadata": [
       {
-        "nimi": "3.1",
-        "lyhytNimi": "3.1",
+        "nimi": "3.2",
+        "kuvaus": null,
+        "lyhytNimi": "3.2",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "3.1",
-        "lyhytNimi": "3.1",
+        "nimi": "3.2",
+        "kuvaus": null,
+        "lyhytNimi": "3.2",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_32",
-    "koodiArvo": "3.2",
+    "versio": 1,
+    "koodiArvo": "3.2"
+  },
+  {
     "metadata": [
       {
-        "nimi": "3.2",
-        "lyhytNimi": "3.2",
+        "nimi": "3.3",
+        "kuvaus": null,
+        "lyhytNimi": "3.3",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "3.2",
-        "lyhytNimi": "3.2",
+        "nimi": "3.3",
+        "kuvaus": null,
+        "lyhytNimi": "3.3",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_33",
-    "koodiArvo": "3.3",
+    "versio": 1,
+    "koodiArvo": "3.3"
+  },
+  {
     "metadata": [
       {
-        "nimi": "3.3",
-        "lyhytNimi": "3.3",
+        "nimi": "3.4",
+        "kuvaus": null,
+        "lyhytNimi": "3.4",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "3.3",
-        "lyhytNimi": "3.3",
+        "nimi": "3.4",
+        "kuvaus": null,
+        "lyhytNimi": "3.4",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_34",
-    "koodiArvo": "3.4",
+    "versio": 1,
+    "koodiArvo": "3.4"
+  },
+  {
     "metadata": [
       {
-        "nimi": "3.4",
-        "lyhytNimi": "3.4",
+        "nimi": "3.5",
+        "kuvaus": null,
+        "lyhytNimi": "3.5",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "3.4",
-        "lyhytNimi": "3.4",
+        "nimi": "3.5",
+        "kuvaus": null,
+        "lyhytNimi": "3.5",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_35",
-    "koodiArvo": "3.5",
+    "versio": 1,
+    "koodiArvo": "3.5"
+  },
+  {
     "metadata": [
       {
-        "nimi": "3.5",
-        "lyhytNimi": "3.5",
+        "nimi": "3.6",
+        "kuvaus": null,
+        "lyhytNimi": "3.6",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "3.5",
-        "lyhytNimi": "3.5",
+        "nimi": "3.6",
+        "kuvaus": null,
+        "lyhytNimi": "3.6",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_36",
-    "koodiArvo": "3.6",
+    "versio": 1,
+    "koodiArvo": "3.6"
+  },
+  {
     "metadata": [
       {
-        "nimi": "3.6",
-        "lyhytNimi": "3.6",
+        "nimi": "3.7",
+        "kuvaus": null,
+        "lyhytNimi": "3.7",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "3.6",
-        "lyhytNimi": "3.6",
+        "nimi": "3.7",
+        "kuvaus": null,
+        "lyhytNimi": "3.7",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_37",
-    "koodiArvo": "3.7",
+    "versio": 1,
+    "koodiArvo": "3.7"
+  },
+  {
     "metadata": [
       {
-        "nimi": "3.7",
-        "lyhytNimi": "3.7",
+        "nimi": "3.8",
+        "kuvaus": null,
+        "lyhytNimi": "3.8",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "3.7",
-        "lyhytNimi": "3.7",
+        "nimi": "3.8",
+        "kuvaus": null,
+        "lyhytNimi": "3.8",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_38",
-    "koodiArvo": "3.8",
+    "versio": 1,
+    "koodiArvo": "3.8"
+  },
+  {
     "metadata": [
       {
-        "nimi": "3.8",
-        "lyhytNimi": "3.8",
+        "nimi": "3.9",
+        "kuvaus": null,
+        "lyhytNimi": "3.9",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "3.8",
-        "lyhytNimi": "3.8",
+        "nimi": "3.9",
+        "kuvaus": null,
+        "lyhytNimi": "3.9",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_39",
-    "koodiArvo": "3.9",
+    "versio": 1,
+    "koodiArvo": "3.9"
+  },
+  {
     "metadata": [
       {
-        "nimi": "3.9",
-        "lyhytNimi": "3.9",
+        "nimi": "4.0",
+        "kuvaus": null,
+        "lyhytNimi": "4.0",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "3.9",
-        "lyhytNimi": "3.9",
+        "nimi": "4.0",
+        "kuvaus": null,
+        "lyhytNimi": "4.0",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_40",
-    "koodiArvo": "4.0",
+    "versio": 1,
+    "koodiArvo": "4.0"
+  },
+  {
     "metadata": [
       {
-        "nimi": "4.0",
-        "lyhytNimi": "4.0",
+        "nimi": "4.1",
+        "kuvaus": null,
+        "lyhytNimi": "4.1",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "4.0",
-        "lyhytNimi": "4.0",
+        "nimi": "4.1",
+        "kuvaus": null,
+        "lyhytNimi": "4.1",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_41",
-    "koodiArvo": "4.1",
+    "versio": 1,
+    "koodiArvo": "4.1"
+  },
+  {
     "metadata": [
       {
-        "nimi": "4.1",
-        "lyhytNimi": "4.1",
+        "nimi": "4.2",
+        "kuvaus": null,
+        "lyhytNimi": "4.2",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "4.1",
-        "lyhytNimi": "4.1",
+        "nimi": "4.2",
+        "kuvaus": null,
+        "lyhytNimi": "4.2",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_42",
-    "koodiArvo": "4.2",
+    "versio": 1,
+    "koodiArvo": "4.2"
+  },
+  {
     "metadata": [
       {
-        "nimi": "4.2",
-        "lyhytNimi": "4.2",
+        "nimi": "4.3",
+        "kuvaus": null,
+        "lyhytNimi": "4.3",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "4.2",
-        "lyhytNimi": "4.2",
+        "nimi": "4.3",
+        "kuvaus": null,
+        "lyhytNimi": "4.3",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_43",
-    "koodiArvo": "4.3",
+    "versio": 1,
+    "koodiArvo": "4.3"
+  },
+  {
     "metadata": [
       {
-        "nimi": "4.3",
-        "lyhytNimi": "4.3",
+        "nimi": "4.4",
+        "kuvaus": null,
+        "lyhytNimi": "4.4",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "4.3",
-        "lyhytNimi": "4.3",
+        "nimi": "4.4",
+        "kuvaus": null,
+        "lyhytNimi": "4.4",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_44",
-    "koodiArvo": "4.4",
+    "versio": 1,
+    "koodiArvo": "4.4"
+  },
+  {
     "metadata": [
       {
-        "nimi": "4.4",
-        "lyhytNimi": "4.4",
+        "nimi": "4.5",
+        "kuvaus": null,
+        "lyhytNimi": "4.5",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "4.4",
-        "lyhytNimi": "4.4",
+        "nimi": "4.5",
+        "kuvaus": null,
+        "lyhytNimi": "4.5",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_45",
-    "koodiArvo": "4.5",
+    "versio": 1,
+    "koodiArvo": "4.5"
+  },
+  {
     "metadata": [
       {
-        "nimi": "4.5",
-        "lyhytNimi": "4.5",
+        "nimi": "4.6",
+        "kuvaus": null,
+        "lyhytNimi": "4.6",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "4.5",
-        "lyhytNimi": "4.5",
+        "nimi": "4.6",
+        "kuvaus": null,
+        "lyhytNimi": "4.6",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_46",
-    "koodiArvo": "4.6",
+    "versio": 1,
+    "koodiArvo": "4.6"
+  },
+  {
     "metadata": [
       {
-        "nimi": "4.6",
-        "lyhytNimi": "4.6",
+        "nimi": "4.7",
+        "kuvaus": null,
+        "lyhytNimi": "4.7",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "4.6",
-        "lyhytNimi": "4.6",
+        "nimi": "4.7",
+        "kuvaus": null,
+        "lyhytNimi": "4.7",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_47",
-    "koodiArvo": "4.7",
+    "versio": 1,
+    "koodiArvo": "4.7"
+  },
+  {
     "metadata": [
       {
-        "nimi": "4.7",
-        "lyhytNimi": "4.7",
+        "nimi": "4.8",
+        "kuvaus": null,
+        "lyhytNimi": "4.8",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "4.7",
-        "lyhytNimi": "4.7",
+        "nimi": "4.8",
+        "kuvaus": null,
+        "lyhytNimi": "4.8",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_48",
-    "koodiArvo": "4.8",
+    "versio": 1,
+    "koodiArvo": "4.8"
+  },
+  {
     "metadata": [
       {
-        "nimi": "4.8",
-        "lyhytNimi": "4.8",
+        "nimi": "4.9",
+        "kuvaus": null,
+        "lyhytNimi": "4.9",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "4.8",
-        "lyhytNimi": "4.8",
+        "nimi": "4.9",
+        "kuvaus": null,
+        "lyhytNimi": "4.9",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_49",
-    "koodiArvo": "4.9",
+    "versio": 1,
+    "koodiArvo": "4.9"
+  },
+  {
     "metadata": [
       {
-        "nimi": "4.9",
-        "lyhytNimi": "4.9",
+        "nimi": "5.0",
+        "kuvaus": null,
+        "lyhytNimi": "5.0",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "4.9",
-        "lyhytNimi": "4.9",
+        "nimi": "5.0",
+        "kuvaus": null,
+        "lyhytNimi": "5.0",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_50",
-    "koodiArvo": "5.0",
+    "versio": 1,
+    "koodiArvo": "5.0"
+  },
+  {
     "metadata": [
       {
-        "nimi": "5.0",
-        "lyhytNimi": "5.0",
+        "nimi": "5.1",
+        "kuvaus": null,
+        "lyhytNimi": "5.1",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "5.0",
-        "lyhytNimi": "5.0",
+        "nimi": "5.1",
+        "kuvaus": null,
+        "lyhytNimi": "5.1",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_51",
-    "koodiArvo": "5.1",
+    "versio": 1,
+    "koodiArvo": "5.1"
+  },
+  {
     "metadata": [
       {
-        "nimi": "5.1",
-        "lyhytNimi": "5.1",
+        "nimi": "5.2",
+        "kuvaus": null,
+        "lyhytNimi": "5.2",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "5.1",
-        "lyhytNimi": "5.1",
+        "nimi": "5.2",
+        "kuvaus": null,
+        "lyhytNimi": "5.2",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_52",
-    "koodiArvo": "5.2",
+    "versio": 1,
+    "koodiArvo": "5.2"
+  },
+  {
     "metadata": [
       {
-        "nimi": "5.2",
-        "lyhytNimi": "5.2",
+        "nimi": "5.3",
+        "kuvaus": null,
+        "lyhytNimi": "5.3",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "5.2",
-        "lyhytNimi": "5.2",
+        "nimi": "5.3",
+        "kuvaus": null,
+        "lyhytNimi": "5.3",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_53",
-    "koodiArvo": "5.3",
+    "versio": 1,
+    "koodiArvo": "5.3"
+  },
+  {
     "metadata": [
       {
-        "nimi": "5.3",
-        "lyhytNimi": "5.3",
+        "nimi": "5.4",
+        "kuvaus": null,
+        "lyhytNimi": "5.4",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "5.3",
-        "lyhytNimi": "5.3",
+        "nimi": "5.4",
+        "kuvaus": null,
+        "lyhytNimi": "5.4",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_54",
-    "koodiArvo": "5.4",
+    "versio": 1,
+    "koodiArvo": "5.4"
+  },
+  {
     "metadata": [
       {
-        "nimi": "5.4",
-        "lyhytNimi": "5.4",
+        "nimi": "5.5",
+        "kuvaus": null,
+        "lyhytNimi": "5.5",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "5.4",
-        "lyhytNimi": "5.4",
+        "nimi": "5.5",
+        "kuvaus": null,
+        "lyhytNimi": "5.5",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_55",
-    "koodiArvo": "5.5",
+    "versio": 1,
+    "koodiArvo": "5.5"
+  },
+  {
     "metadata": [
       {
-        "nimi": "5.5",
-        "lyhytNimi": "5.5",
+        "nimi": "5.6",
+        "kuvaus": null,
+        "lyhytNimi": "5.6",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "5.5",
-        "lyhytNimi": "5.5",
+        "nimi": "5.6",
+        "kuvaus": null,
+        "lyhytNimi": "5.6",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_56",
-    "koodiArvo": "5.6",
+    "versio": 1,
+    "koodiArvo": "5.6"
+  },
+  {
     "metadata": [
       {
-        "nimi": "5.6",
-        "lyhytNimi": "5.6",
+        "nimi": "5.7",
+        "kuvaus": null,
+        "lyhytNimi": "5.7",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "5.6",
-        "lyhytNimi": "5.6",
+        "nimi": "5.7",
+        "kuvaus": null,
+        "lyhytNimi": "5.7",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_57",
-    "koodiArvo": "5.7",
+    "versio": 1,
+    "koodiArvo": "5.7"
+  },
+  {
     "metadata": [
       {
-        "nimi": "5.7",
-        "lyhytNimi": "5.7",
+        "nimi": "5.8",
+        "kuvaus": null,
+        "lyhytNimi": "5.8",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "5.7",
-        "lyhytNimi": "5.7",
+        "nimi": "5.8",
+        "kuvaus": null,
+        "lyhytNimi": "5.8",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_58",
-    "koodiArvo": "5.8",
+    "versio": 1,
+    "koodiArvo": "5.8"
+  },
+  {
     "metadata": [
       {
-        "nimi": "5.8",
-        "lyhytNimi": "5.8",
+        "nimi": "5.9",
+        "kuvaus": null,
+        "lyhytNimi": "5.9",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "5.8",
-        "lyhytNimi": "5.8",
+        "nimi": "5.9",
+        "kuvaus": null,
+        "lyhytNimi": "5.9",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_59",
-    "koodiArvo": "5.9",
+    "versio": 1,
+    "koodiArvo": "5.9"
+  },
+  {
     "metadata": [
       {
-        "nimi": "5.9",
-        "lyhytNimi": "5.9",
+        "nimi": "6.0",
+        "kuvaus": null,
+        "lyhytNimi": "6.0",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "5.9",
-        "lyhytNimi": "5.9",
+        "nimi": "6.0",
+        "kuvaus": null,
+        "lyhytNimi": "6.0",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_60",
-    "koodiArvo": "6.0",
+    "versio": 1,
+    "koodiArvo": "6.0"
+  },
+  {
     "metadata": [
       {
-        "nimi": "6.0",
-        "lyhytNimi": "6.0",
+        "nimi": "6.1",
+        "kuvaus": null,
+        "lyhytNimi": "6.1",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "6.0",
-        "lyhytNimi": "6.0",
+        "nimi": "6.1",
+        "kuvaus": null,
+        "lyhytNimi": "6.1",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_61",
-    "koodiArvo": "6.1",
+    "versio": 1,
+    "koodiArvo": "6.1"
+  },
+  {
     "metadata": [
       {
-        "nimi": "6.1",
-        "lyhytNimi": "6.1",
+        "nimi": "6.2",
+        "kuvaus": null,
+        "lyhytNimi": "6.2",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "6.1",
-        "lyhytNimi": "6.1",
+        "nimi": "6.2",
+        "kuvaus": null,
+        "lyhytNimi": "6.2",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_62",
-    "koodiArvo": "6.2",
+    "versio": 1,
+    "koodiArvo": "6.2"
+  },
+  {
     "metadata": [
       {
-        "nimi": "6.2",
-        "lyhytNimi": "6.2",
+        "nimi": "6.3",
+        "kuvaus": null,
+        "lyhytNimi": "6.3",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "6.2",
-        "lyhytNimi": "6.2",
+        "nimi": "6.3",
+        "kuvaus": null,
+        "lyhytNimi": "6.3",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_63",
-    "koodiArvo": "6.3",
+    "versio": 1,
+    "koodiArvo": "6.3"
+  },
+  {
     "metadata": [
       {
-        "nimi": "6.3",
-        "lyhytNimi": "6.3",
+        "nimi": "6.4",
+        "kuvaus": null,
+        "lyhytNimi": "6.4",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "6.3",
-        "lyhytNimi": "6.3",
+        "nimi": "6.4",
+        "kuvaus": null,
+        "lyhytNimi": "6.4",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_64",
-    "koodiArvo": "6.4",
+    "versio": 1,
+    "koodiArvo": "6.4"
+  },
+  {
     "metadata": [
       {
-        "nimi": "6.4",
-        "lyhytNimi": "6.4",
+        "nimi": "6.5",
+        "kuvaus": null,
+        "lyhytNimi": "6.5",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "6.4",
-        "lyhytNimi": "6.4",
+        "nimi": "6.5",
+        "kuvaus": null,
+        "lyhytNimi": "6.5",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_65",
-    "koodiArvo": "6.5",
+    "versio": 1,
+    "koodiArvo": "6.5"
+  },
+  {
     "metadata": [
       {
-        "nimi": "6.5",
-        "lyhytNimi": "6.5",
+        "nimi": "6.6",
+        "kuvaus": null,
+        "lyhytNimi": "6.6",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "6.5",
-        "lyhytNimi": "6.5",
+        "nimi": "6.6",
+        "kuvaus": null,
+        "lyhytNimi": "6.6",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_66",
-    "koodiArvo": "6.6",
+    "versio": 1,
+    "koodiArvo": "6.6"
+  },
+  {
     "metadata": [
       {
-        "nimi": "6.6",
-        "lyhytNimi": "6.6",
+        "nimi": "6.7",
+        "kuvaus": null,
+        "lyhytNimi": "6.7",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "6.6",
-        "lyhytNimi": "6.6",
+        "nimi": "6.7",
+        "kuvaus": null,
+        "lyhytNimi": "6.7",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_67",
-    "koodiArvo": "6.7",
+    "versio": 1,
+    "koodiArvo": "6.7"
+  },
+  {
     "metadata": [
       {
-        "nimi": "6.7",
-        "lyhytNimi": "6.7",
+        "nimi": "6.8",
+        "kuvaus": null,
+        "lyhytNimi": "6.8",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "6.7",
-        "lyhytNimi": "6.7",
+        "nimi": "6.8",
+        "kuvaus": null,
+        "lyhytNimi": "6.8",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_68",
-    "koodiArvo": "6.8",
+    "versio": 1,
+    "koodiArvo": "6.8"
+  },
+  {
     "metadata": [
       {
-        "nimi": "6.8",
-        "lyhytNimi": "6.8",
+        "nimi": "6.9",
+        "kuvaus": null,
+        "lyhytNimi": "6.9",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "6.8",
-        "lyhytNimi": "6.8",
+        "nimi": "6.9",
+        "kuvaus": null,
+        "lyhytNimi": "6.9",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_69",
-    "koodiArvo": "6.9",
+    "versio": 1,
+    "koodiArvo": "6.9"
+  },
+  {
     "metadata": [
       {
-        "nimi": "6.9",
-        "lyhytNimi": "6.9",
+        "nimi": "7.0",
+        "kuvaus": null,
+        "lyhytNimi": "7.0",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "6.9",
-        "lyhytNimi": "6.9",
+        "nimi": "7.0",
+        "kuvaus": null,
+        "lyhytNimi": "7.0",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_70",
-    "koodiArvo": "7.0",
+    "versio": 1,
+    "koodiArvo": "7.0"
+  },
+  {
     "metadata": [
       {
-        "nimi": "7.0",
-        "lyhytNimi": "7.0",
+        "nimi": "7.1",
+        "kuvaus": null,
+        "lyhytNimi": "7.1",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "7.0",
-        "lyhytNimi": "7.0",
+        "nimi": "7.1",
+        "kuvaus": null,
+        "lyhytNimi": "7.1",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_71",
-    "koodiArvo": "7.1",
+    "versio": 1,
+    "koodiArvo": "7.1"
+  },
+  {
     "metadata": [
       {
-        "nimi": "7.1",
-        "lyhytNimi": "7.1",
+        "nimi": "7.2",
+        "kuvaus": null,
+        "lyhytNimi": "7.2",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "7.1",
-        "lyhytNimi": "7.1",
+        "nimi": "7.2",
+        "kuvaus": null,
+        "lyhytNimi": "7.2",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_72",
-    "koodiArvo": "7.2",
+    "versio": 1,
+    "koodiArvo": "7.2"
+  },
+  {
     "metadata": [
       {
-        "nimi": "7.2",
-        "lyhytNimi": "7.2",
+        "nimi": "7.3",
+        "kuvaus": null,
+        "lyhytNimi": "7.3",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "7.2",
-        "lyhytNimi": "7.2",
+        "nimi": "7.3",
+        "kuvaus": null,
+        "lyhytNimi": "7.3",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_73",
-    "koodiArvo": "7.3",
+    "versio": 1,
+    "koodiArvo": "7.3"
+  },
+  {
     "metadata": [
       {
-        "nimi": "7.3",
-        "lyhytNimi": "7.3",
+        "nimi": "7.4",
+        "kuvaus": null,
+        "lyhytNimi": "7.4",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "7.3",
-        "lyhytNimi": "7.3",
+        "nimi": "7.4",
+        "kuvaus": null,
+        "lyhytNimi": "7.4",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_74",
-    "koodiArvo": "7.4",
+    "versio": 1,
+    "koodiArvo": "7.4"
+  },
+  {
     "metadata": [
       {
-        "nimi": "7.4",
-        "lyhytNimi": "7.4",
+        "nimi": "7.5",
+        "kuvaus": null,
+        "lyhytNimi": "7.5",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "7.4",
-        "lyhytNimi": "7.4",
+        "nimi": "7.5",
+        "kuvaus": null,
+        "lyhytNimi": "7.5",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_75",
-    "koodiArvo": "7.5",
+    "versio": 1,
+    "koodiArvo": "7.5"
+  },
+  {
     "metadata": [
       {
-        "nimi": "7.5",
-        "lyhytNimi": "7.5",
+        "nimi": "7.6",
+        "kuvaus": null,
+        "lyhytNimi": "7.6",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "7.5",
-        "lyhytNimi": "7.5",
+        "nimi": "7.6",
+        "kuvaus": null,
+        "lyhytNimi": "7.6",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_76",
-    "koodiArvo": "7.6",
+    "versio": 1,
+    "koodiArvo": "7.6"
+  },
+  {
     "metadata": [
       {
-        "nimi": "7.6",
-        "lyhytNimi": "7.6",
+        "nimi": "7.7",
+        "kuvaus": null,
+        "lyhytNimi": "7.7",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "7.6",
-        "lyhytNimi": "7.6",
+        "nimi": "7.7",
+        "kuvaus": null,
+        "lyhytNimi": "7.7",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_77",
-    "koodiArvo": "7.7",
+    "versio": 1,
+    "koodiArvo": "7.7"
+  },
+  {
     "metadata": [
       {
-        "nimi": "7.7",
-        "lyhytNimi": "7.7",
+        "nimi": "7.8",
+        "kuvaus": null,
+        "lyhytNimi": "7.8",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "7.7",
-        "lyhytNimi": "7.7",
+        "nimi": "7.8",
+        "kuvaus": null,
+        "lyhytNimi": "7.8",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_78",
-    "koodiArvo": "7.8",
+    "versio": 1,
+    "koodiArvo": "7.8"
+  },
+  {
     "metadata": [
       {
-        "nimi": "7.8",
-        "lyhytNimi": "7.8",
+        "nimi": "7.9",
+        "kuvaus": null,
+        "lyhytNimi": "7.9",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "7.8",
-        "lyhytNimi": "7.8",
+        "nimi": "7.9",
+        "kuvaus": null,
+        "lyhytNimi": "7.9",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_79",
-    "koodiArvo": "7.9",
+    "versio": 1,
+    "koodiArvo": "7.9"
+  },
+  {
     "metadata": [
       {
-        "nimi": "7.9",
-        "lyhytNimi": "7.9",
+        "nimi": "8.0",
+        "kuvaus": null,
+        "lyhytNimi": "8.0",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "7.9",
-        "lyhytNimi": "7.9",
+        "nimi": "8.0",
+        "kuvaus": null,
+        "lyhytNimi": "8.0",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_80",
-    "koodiArvo": "8.0",
+    "versio": 1,
+    "koodiArvo": "8.0"
+  },
+  {
     "metadata": [
       {
-        "nimi": "8.0",
-        "lyhytNimi": "8.0",
+        "nimi": "8.1",
+        "kuvaus": null,
+        "lyhytNimi": "8.1",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "8.0",
-        "lyhytNimi": "8.0",
+        "nimi": "8.1",
+        "kuvaus": null,
+        "lyhytNimi": "8.1",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_81",
-    "koodiArvo": "8.1",
+    "versio": 1,
+    "koodiArvo": "8.1"
+  },
+  {
     "metadata": [
       {
-        "nimi": "8.1",
-        "lyhytNimi": "8.1",
+        "nimi": "8.2",
+        "kuvaus": null,
+        "lyhytNimi": "8.2",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "8.1",
-        "lyhytNimi": "8.1",
+        "nimi": "8.2",
+        "kuvaus": null,
+        "lyhytNimi": "8.2",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_82",
-    "koodiArvo": "8.2",
+    "versio": 1,
+    "koodiArvo": "8.2"
+  },
+  {
     "metadata": [
       {
-        "nimi": "8.2",
-        "lyhytNimi": "8.2",
+        "nimi": "8.3",
+        "kuvaus": null,
+        "lyhytNimi": "8.3",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "8.2",
-        "lyhytNimi": "8.2",
+        "nimi": "8.3",
+        "kuvaus": null,
+        "lyhytNimi": "8.3",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_83",
-    "koodiArvo": "8.3",
+    "versio": 1,
+    "koodiArvo": "8.3"
+  },
+  {
     "metadata": [
       {
-        "nimi": "8.3",
-        "lyhytNimi": "8.3",
+        "nimi": "8.4",
+        "kuvaus": null,
+        "lyhytNimi": "8.4",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "8.3",
-        "lyhytNimi": "8.3",
+        "nimi": "8.4",
+        "kuvaus": null,
+        "lyhytNimi": "8.4",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_84",
-    "koodiArvo": "8.4",
+    "versio": 1,
+    "koodiArvo": "8.4"
+  },
+  {
     "metadata": [
       {
-        "nimi": "8.4",
-        "lyhytNimi": "8.4",
+        "nimi": "8.5",
+        "kuvaus": null,
+        "lyhytNimi": "8.5",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "8.4",
-        "lyhytNimi": "8.4",
+        "nimi": "8.5",
+        "kuvaus": null,
+        "lyhytNimi": "8.5",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_85",
-    "koodiArvo": "8.5",
+    "versio": 1,
+    "koodiArvo": "8.5"
+  },
+  {
     "metadata": [
       {
-        "nimi": "8.5",
-        "lyhytNimi": "8.5",
+        "nimi": "8.6",
+        "kuvaus": null,
+        "lyhytNimi": "8.6",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "8.5",
-        "lyhytNimi": "8.5",
+        "nimi": "8.6",
+        "kuvaus": null,
+        "lyhytNimi": "8.6",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_86",
-    "koodiArvo": "8.6",
+    "versio": 1,
+    "koodiArvo": "8.6"
+  },
+  {
     "metadata": [
       {
-        "nimi": "8.6",
-        "lyhytNimi": "8.6",
+        "nimi": "8.7",
+        "kuvaus": null,
+        "lyhytNimi": "8.7",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "8.6",
-        "lyhytNimi": "8.6",
+        "nimi": "8.7",
+        "kuvaus": null,
+        "lyhytNimi": "8.7",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_87",
-    "koodiArvo": "8.7",
+    "versio": 1,
+    "koodiArvo": "8.7"
+  },
+  {
     "metadata": [
       {
-        "nimi": "8.7",
-        "lyhytNimi": "8.7",
+        "nimi": "8.8",
+        "kuvaus": null,
+        "lyhytNimi": "8.8",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "8.7",
-        "lyhytNimi": "8.7",
+        "nimi": "8.8",
+        "kuvaus": null,
+        "lyhytNimi": "8.8",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_88",
-    "koodiArvo": "8.8",
+    "versio": 1,
+    "koodiArvo": "8.8"
+  },
+  {
     "metadata": [
       {
-        "nimi": "8.8",
-        "lyhytNimi": "8.8",
+        "nimi": "8.9",
+        "kuvaus": null,
+        "lyhytNimi": "8.9",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "8.8",
-        "lyhytNimi": "8.8",
+        "nimi": "8.9",
+        "kuvaus": null,
+        "lyhytNimi": "8.9",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_89",
-    "koodiArvo": "8.9",
+    "versio": 1,
+    "koodiArvo": "8.9"
+  },
+  {
     "metadata": [
       {
-        "nimi": "8.9",
-        "lyhytNimi": "8.9",
+        "nimi": "9.0",
+        "kuvaus": null,
+        "lyhytNimi": "9.0",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "8.9",
-        "lyhytNimi": "8.9",
+        "nimi": "9.0",
+        "kuvaus": null,
+        "lyhytNimi": "9.0",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_90",
-    "koodiArvo": "9.0",
+    "versio": 1,
+    "koodiArvo": "9.0"
+  },
+  {
     "metadata": [
       {
-        "nimi": "9.0",
-        "lyhytNimi": "9.0",
+        "nimi": "9.1",
+        "kuvaus": null,
+        "lyhytNimi": "9.1",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "9.0",
-        "lyhytNimi": "9.0",
+        "nimi": "9.1",
+        "kuvaus": null,
+        "lyhytNimi": "9.1",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_91",
-    "koodiArvo": "9.1",
+    "versio": 1,
+    "koodiArvo": "9.1"
+  },
+  {
     "metadata": [
       {
-        "nimi": "9.1",
-        "lyhytNimi": "9.1",
+        "nimi": "9.2",
+        "kuvaus": null,
+        "lyhytNimi": "9.2",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "9.1",
-        "lyhytNimi": "9.1",
+        "nimi": "9.2",
+        "kuvaus": null,
+        "lyhytNimi": "9.2",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_92",
-    "koodiArvo": "9.2",
+    "versio": 1,
+    "koodiArvo": "9.2"
+  },
+  {
     "metadata": [
       {
-        "nimi": "9.2",
-        "lyhytNimi": "9.2",
+        "nimi": "9.3",
+        "kuvaus": null,
+        "lyhytNimi": "9.3",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "9.2",
-        "lyhytNimi": "9.2",
+        "nimi": "9.3",
+        "kuvaus": null,
+        "lyhytNimi": "9.3",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_93",
-    "koodiArvo": "9.3",
+    "versio": 1,
+    "koodiArvo": "9.3"
+  },
+  {
     "metadata": [
       {
-        "nimi": "9.3",
-        "lyhytNimi": "9.3",
+        "nimi": "9.4",
+        "kuvaus": null,
+        "lyhytNimi": "9.4",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "9.3",
-        "lyhytNimi": "9.3",
+        "nimi": "9.4",
+        "kuvaus": null,
+        "lyhytNimi": "9.4",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_94",
-    "koodiArvo": "9.4",
+    "versio": 1,
+    "koodiArvo": "9.4"
+  },
+  {
     "metadata": [
       {
-        "nimi": "9.4",
-        "lyhytNimi": "9.4",
+        "nimi": "9.5",
+        "kuvaus": null,
+        "lyhytNimi": "9.5",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "9.4",
-        "lyhytNimi": "9.4",
+        "nimi": "9.5",
+        "kuvaus": null,
+        "lyhytNimi": "9.5",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_95",
-    "koodiArvo": "9.5",
+    "versio": 1,
+    "koodiArvo": "9.5"
+  },
+  {
     "metadata": [
       {
-        "nimi": "9.5",
-        "lyhytNimi": "9.5",
+        "nimi": "9.6",
+        "kuvaus": null,
+        "lyhytNimi": "9.6",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "9.5",
-        "lyhytNimi": "9.5",
+        "nimi": "9.6",
+        "kuvaus": null,
+        "lyhytNimi": "9.6",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_96",
-    "koodiArvo": "9.6",
+    "versio": 1,
+    "koodiArvo": "9.6"
+  },
+  {
     "metadata": [
       {
-        "nimi": "9.6",
-        "lyhytNimi": "9.6",
+        "nimi": "9.7",
+        "kuvaus": null,
+        "lyhytNimi": "9.7",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "9.6",
-        "lyhytNimi": "9.6",
+        "nimi": "9.7",
+        "kuvaus": null,
+        "lyhytNimi": "9.7",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_97",
-    "koodiArvo": "9.7",
+    "versio": 1,
+    "koodiArvo": "9.7"
+  },
+  {
     "metadata": [
       {
-        "nimi": "9.7",
-        "lyhytNimi": "9.7",
+        "nimi": "9.8",
+        "kuvaus": null,
+        "lyhytNimi": "9.8",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "9.7",
-        "lyhytNimi": "9.7",
+        "nimi": "9.8",
+        "kuvaus": null,
+        "lyhytNimi": "9.8",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_98",
-    "koodiArvo": "9.8",
-    "metadata": [
-      {
-        "nimi": "9.8",
-        "lyhytNimi": "9.8",
-        "kieli": "FI"
-      },
-      {
-        "kieli": "SV"
-      },
-      {
-        "nimi": "9.8",
-        "lyhytNimi": "9.8",
-        "kieli": "EN"
-      }
-    ],
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "9.8"
   },
   {
-    "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_99",
-    "koodiArvo": "9.9",
     "metadata": [
       {
         "nimi": "9.9",
+        "kuvaus": null,
         "lyhytNimi": "9.9",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "9.9",
+        "kuvaus": null,
         "lyhytNimi": "9.9",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_99",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "9.9"
   }
 ]

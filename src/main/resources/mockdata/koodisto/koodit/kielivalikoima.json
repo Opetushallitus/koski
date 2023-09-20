@@ -1,1020 +1,3043 @@
 [
   {
-    "koodiUri": "kielivalikoima_97",
-    "koodiArvo": "97",
     "metadata": [
       {
         "nimi": "Ei suoritusta",
-        "lyhytNimi": "Ei suoritusta",
         "kuvaus": "Ei suoritusta",
+        "lyhytNimi": "Ei suoritusta",
         "kieli": "FI"
       },
       {
         "nimi": "Ej avlagd",
-        "lyhytNimi": "Ej avlagd",
         "kuvaus": "Ej avlagd",
+        "lyhytNimi": "Ej avlagd",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_97",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "97"
   },
   {
-    "koodiUri": "kielivalikoima_ar",
-    "koodiArvo": "AR",
+    "metadata": [
+      {
+        "nimi": "afrikaans",
+        "kuvaus": "\n",
+        "lyhytNimi": "afrikaans",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "afrikaans",
+        "kuvaus": null,
+        "lyhytNimi": "afrikaans",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "afrikaans",
+        "kuvaus": null,
+        "lyhytNimi": "Afrikaans",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_af",
+    "versio": 1,
+    "koodiArvo": "AF"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "amhara",
+        "kuvaus": null,
+        "lyhytNimi": "amhara",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "amhariska",
+        "kuvaus": null,
+        "lyhytNimi": "amhariska",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Amharic",
+        "kuvaus": null,
+        "lyhytNimi": "Amharic",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_am",
+    "versio": 1,
+    "koodiArvo": "AM"
+  },
+  {
     "metadata": [
       {
         "nimi": "arabia",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
         "nimi": "arabiska",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Arabic",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_ar",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "AR"
   },
   {
-    "koodiUri": "kielivalikoima_de",
-    "koodiArvo": "DE",
+    "metadata": [
+      {
+        "nimi": "azeri",
+        "kuvaus": null,
+        "lyhytNimi": "azeri",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "azerbajdzjanska",
+        "kuvaus": null,
+        "lyhytNimi": "azerbajdzjanska",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Azerbaijani",
+        "kuvaus": null,
+        "lyhytNimi": "Azerbaijani",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_az",
+    "versio": 1,
+    "koodiArvo": "AZ"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "bulgaria",
+        "kuvaus": null,
+        "lyhytNimi": "bulgaria",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "bulgariska",
+        "kuvaus": null,
+        "lyhytNimi": "bulgariska",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Bulgarian",
+        "kuvaus": null,
+        "lyhytNimi": "Bulgarian",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_bg",
+    "versio": 1,
+    "koodiArvo": "BG"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "bengali",
+        "kuvaus": null,
+        "lyhytNimi": "bengali",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "bengali",
+        "kuvaus": null,
+        "lyhytNimi": "bengali",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Bengali, Bangla",
+        "kuvaus": null,
+        "lyhytNimi": "Bengali, Bangla",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_bn",
+    "versio": 1,
+    "koodiArvo": "BN"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "bosnia",
+        "kuvaus": null,
+        "lyhytNimi": "bosnia",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "bosniska",
+        "kuvaus": null,
+        "lyhytNimi": "bosniska",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Bosnian",
+        "kuvaus": null,
+        "lyhytNimi": "Bosnian",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_bs",
+    "versio": 1,
+    "koodiArvo": "BS"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "katalaani",
+        "kuvaus": null,
+        "lyhytNimi": "katalaani",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "katalanska",
+        "kuvaus": null,
+        "lyhytNimi": "katalanska",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Catalan",
+        "kuvaus": null,
+        "lyhytNimi": "Catalan",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_ca",
+    "versio": 1,
+    "koodiArvo": "CA"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "tšekki",
+        "kuvaus": null,
+        "lyhytNimi": "tšekki",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "tjeckiska",
+        "kuvaus": null,
+        "lyhytNimi": "tjeckiska",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Czech",
+        "kuvaus": null,
+        "lyhytNimi": "Czech",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_cs",
+    "versio": 1,
+    "koodiArvo": "CS"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "tanska",
+        "kuvaus": null,
+        "lyhytNimi": "tanska",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "danska",
+        "kuvaus": null,
+        "lyhytNimi": "danska",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Danish",
+        "kuvaus": null,
+        "lyhytNimi": "Danish",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_da",
+    "versio": 1,
+    "koodiArvo": "DA"
+  },
+  {
     "metadata": [
       {
         "nimi": "saksa",
-        "lyhytNimi": "saksa",
         "kuvaus": "saksa",
+        "lyhytNimi": "saksa",
         "kieli": "FI"
       },
       {
         "nimi": "tyska",
-        "lyhytNimi": "tyska",
         "kuvaus": "tyska",
+        "lyhytNimi": "tyska",
         "kieli": "SV"
       },
       {
         "nimi": "German",
-        "lyhytNimi": "German",
         "kuvaus": "German",
+        "lyhytNimi": "German",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_asaa2",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_saa1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_saa6",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_asaa3",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_asaa1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_saa2",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_saa7",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_asaa4",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_saa8",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_saa5",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_saa3",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_saa6",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_saa1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_saa4",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_saa8",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_saa7",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_saa3",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_saa4",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_saa2",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_saa5",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_de",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "DE"
   },
   {
-    "koodiUri": "kielivalikoima_el",
-    "koodiArvo": "EL",
     "metadata": [
       {
         "nimi": "kreikka",
-        "lyhytNimi": "kreikka",
         "kuvaus": "kreikka",
+        "lyhytNimi": "kreikka",
         "kieli": "FI"
       },
       {
         "nimi": "grekiska",
-        "lyhytNimi": "grekiska",
         "kuvaus": "grekiska",
+        "lyhytNimi": "grekiska",
         "kieli": "SV"
       },
       {
         "nimi": "Greek",
-        "lyhytNimi": "Greek",
         "kuvaus": "Greek",
+        "lyhytNimi": "Greek",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_el",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "EL"
   },
   {
-    "koodiUri": "kielivalikoima_en",
-    "koodiArvo": "EN",
     "metadata": [
       {
         "nimi": "englanti",
-        "lyhytNimi": "englanti",
         "kuvaus": "englanti",
+        "lyhytNimi": "englanti",
         "kieli": "FI"
       },
       {
         "nimi": "engelska",
-        "lyhytNimi": "engelska",
         "kuvaus": "engelska",
+        "lyhytNimi": "engelska",
         "kieli": "SV"
       },
       {
         "nimi": "English",
-        "lyhytNimi": "English",
         "kuvaus": "English",
+        "lyhytNimi": "English",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_aena2",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_aena3",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_aena1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_aena4",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_ena4",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_ena2",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_ena1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_ena5",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_ena3",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_ena8",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_ena3",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_ena7",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_ena6",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_ena10",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_ena11",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_ena8",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_ena9",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_ena5",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_ena12",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_ena6",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_ena7",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_ena2",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_ena4",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_ena1",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_en",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "EN"
   },
   {
-    "koodiUri": "kielivalikoima_es",
-    "koodiArvo": "ES",
     "metadata": [
       {
         "nimi": "espanja",
-        "lyhytNimi": "espanja",
         "kuvaus": "espanja",
+        "lyhytNimi": "espanja",
         "kieli": "FI"
       },
       {
         "nimi": "spanska",
-        "lyhytNimi": "spanska",
         "kuvaus": "spanska",
+        "lyhytNimi": "spanska",
         "kieli": "SV"
       },
       {
         "nimi": "Spanish",
-        "lyhytNimi": "Spanish",
         "kuvaus": "Spanish",
+        "lyhytNimi": "Spanish",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_eaa6",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_eaa5",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_eaa7",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_aeaa2",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_aeaa3",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_eaa2",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_eaa3",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_eaa8",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_eaa5",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_eaa6",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_aeaa4",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_eaa1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_eaa3",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_eaa7",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_eaa8",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_aeaa1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_eaa4",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_eaa1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_eaa2",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_es",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "ES"
   },
   {
-    "koodiUri": "kielivalikoima_et",
-    "koodiArvo": "ET",
     "metadata": [
       {
         "nimi": "viro, eesti",
-        "lyhytNimi": "viro, eesti",
         "kuvaus": "viro, eesti",
+        "lyhytNimi": "viro, eesti",
         "kieli": "FI"
       },
       {
         "nimi": "estniska",
-        "lyhytNimi": "estniska",
         "kuvaus": "estniska",
+        "lyhytNimi": "estniska",
         "kieli": "SV"
       },
       {
         "nimi": "Estonian",
-        "lyhytNimi": "Estonian",
         "kuvaus": "Estonian",
+        "lyhytNimi": "Estonian",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_et",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "ET"
   },
   {
-    "koodiUri": "kielivalikoima_fa",
-    "koodiArvo": "FA",
     "metadata": [
       {
         "nimi": "persia, farsi",
-        "lyhytNimi": "persia, farsi",
         "kuvaus": "persia, farsi",
+        "lyhytNimi": "persia, farsi",
         "kieli": "FI"
       },
       {
         "nimi": "persiska",
-        "lyhytNimi": "persiska",
         "kuvaus": "persiska",
+        "lyhytNimi": "persiska",
         "kieli": "SV"
       },
       {
         "nimi": "Persian, Farsi",
-        "lyhytNimi": "Persian, Farsi",
         "kuvaus": "Persian, Farsi",
+        "lyhytNimi": "Persian, Farsi",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_fa",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "FA"
   },
   {
-    "koodiUri": "kielivalikoima_fi",
-    "koodiArvo": "FI",
     "metadata": [
       {
         "nimi": "suomi",
-        "lyhytNimi": "suomi",
         "kuvaus": "suomi",
+        "lyhytNimi": "suomi",
         "kieli": "FI"
       },
       {
         "nimi": "finska",
-        "lyhytNimi": "finska",
         "kuvaus": "finska",
+        "lyhytNimi": "finska",
         "kieli": "SV"
       },
       {
         "nimi": "Finnish",
-        "lyhytNimi": "Finnish",
         "kuvaus": "Finnish",
+        "lyhytNimi": "Finnish",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_fi",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "FI"
   },
   {
-    "koodiUri": "kielivalikoima_fr",
-    "koodiArvo": "FR",
+    "metadata": [
+      {
+        "nimi": "filipino",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_fil",
+    "versio": 1,
+    "koodiArvo": "fil"
+  },
+  {
     "metadata": [
       {
         "nimi": "ranska",
-        "lyhytNimi": "ranska",
         "kuvaus": "ranska",
+        "lyhytNimi": "ranska",
         "kieli": "FI"
       },
       {
         "nimi": "franska",
-        "lyhytNimi": "franska",
         "kuvaus": "franska",
+        "lyhytNimi": "franska",
         "kieli": "SV"
       },
       {
         "nimi": "French",
-        "lyhytNimi": "French",
         "kuvaus": "French",
+        "lyhytNimi": "French",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_araa1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_raa2",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_raa8",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_raa5",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_raa7",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_raa6",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_raa1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_raa5",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_raa4",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_raa3",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_raa4",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_raa1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_raa6",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_raa7",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_raa2",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_raa8",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_raa3",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_fr",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "FR"
   },
   {
-    "koodiUri": "kielivalikoima_he",
-    "koodiArvo": "HE",
     "metadata": [
       {
         "nimi": "heprea",
-        "lyhytNimi": "heprea",
         "kuvaus": "",
+        "lyhytNimi": "heprea",
         "kieli": "FI"
       },
       {
         "nimi": "hebreiska",
-        "lyhytNimi": "hebreiska",
         "kuvaus": "",
+        "lyhytNimi": "hebreiska",
         "kieli": "SV"
       },
       {
         "nimi": "Hebrew",
-        "lyhytNimi": "Hebrew",
         "kuvaus": "",
+        "lyhytNimi": "Hebrew",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_he",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "HE"
   },
   {
-    "koodiUri": "kielivalikoima_hi",
-    "koodiArvo": "HI",
     "metadata": [
       {
         "nimi": "hindi",
-        "lyhytNimi": "hindi",
         "kuvaus": "hindi",
+        "lyhytNimi": "hindi",
         "kieli": "FI"
       },
       {
         "nimi": "hindi",
-        "lyhytNimi": "hindi",
         "kuvaus": "hindi",
+        "lyhytNimi": "hindi",
         "kieli": "SV"
       },
       {
         "nimi": "Hindi",
-        "lyhytNimi": "Hindi",
         "kuvaus": "Hindi",
+        "lyhytNimi": "Hindi",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_hi",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "HI"
   },
   {
-    "koodiUri": "kielivalikoima_hu",
-    "koodiArvo": "HU",
+    "metadata": [
+      {
+        "nimi": "kroatia",
+        "kuvaus": null,
+        "lyhytNimi": "kroatia",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "kroatiska",
+        "kuvaus": null,
+        "lyhytNimi": "kroatiska",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Croatian",
+        "kuvaus": null,
+        "lyhytNimi": "Croatian",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_hr",
+    "versio": 1,
+    "koodiArvo": "HR"
+  },
+  {
     "metadata": [
       {
         "nimi": "unkari",
-        "lyhytNimi": "unkari",
         "kuvaus": "unkari",
+        "lyhytNimi": "unkari",
         "kieli": "FI"
       },
       {
         "nimi": "ungerska",
-        "lyhytNimi": "ungerska",
         "kuvaus": "ungerska",
+        "lyhytNimi": "ungerska",
         "kieli": "SV"
       },
       {
         "nimi": "Hungarian",
-        "lyhytNimi": "Hungarian",
         "kuvaus": "Hungarian",
+        "lyhytNimi": "Hungarian",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_hu",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "HU"
   },
   {
-    "koodiUri": "kielivalikoima_it",
-    "koodiArvo": "IT",
+    "metadata": [
+      {
+        "nimi": "armenia",
+        "kuvaus": null,
+        "lyhytNimi": "armenia",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "armeniska",
+        "kuvaus": null,
+        "lyhytNimi": "armeniska",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Armenian",
+        "kuvaus": null,
+        "lyhytNimi": "Armenian",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_hy",
+    "versio": 1,
+    "koodiArvo": "HY"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "indonesia",
+        "kuvaus": null,
+        "lyhytNimi": "indonesia",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "indonesiska",
+        "kuvaus": null,
+        "lyhytNimi": "indonesiska",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Indonesian",
+        "kuvaus": null,
+        "lyhytNimi": "Indonesian",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_id",
+    "versio": 1,
+    "koodiArvo": "ID"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "islanti",
+        "kuvaus": null,
+        "lyhytNimi": "islanti",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "isländska",
+        "kuvaus": null,
+        "lyhytNimi": "isländska",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Icelandic",
+        "kuvaus": null,
+        "lyhytNimi": "Icelandic",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_is",
+    "versio": 1,
+    "koodiArvo": "IS"
+  },
+  {
     "metadata": [
       {
         "nimi": "italia",
-        "lyhytNimi": "italia",
         "kuvaus": "italia",
+        "lyhytNimi": "italia",
         "kieli": "FI"
       },
       {
         "nimi": "italienska",
-        "lyhytNimi": "italienska",
         "kuvaus": "italienska",
+        "lyhytNimi": "italienska",
         "kieli": "SV"
       },
       {
         "nimi": "Italian",
-        "lyhytNimi": "Italian",
         "kuvaus": "Italian",
+        "lyhytNimi": "Italian",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_aiaa1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_iaa2",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_iaa7",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_iaa6",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_iaa1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_iaa8",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_aiaa2",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_iaa3",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_iaa6",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_iaa3",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_iaa4",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_aiaa3",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_iaa4",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_iaa5",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_iaa2",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_iaa8",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_aiaa4",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_iaa1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_iaa5",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_iaa7",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_it",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "IT"
   },
   {
-    "koodiUri": "kielivalikoima_ja",
-    "koodiArvo": "JA",
     "metadata": [
       {
         "nimi": "japani",
-        "lyhytNimi": "japani",
         "kuvaus": "japani",
+        "lyhytNimi": "japani",
         "kieli": "FI"
       },
       {
         "nimi": "japanska",
-        "lyhytNimi": "japanska",
         "kuvaus": "japanska",
+        "lyhytNimi": "japanska",
         "kieli": "SV"
       },
       {
         "nimi": "Japanese",
-        "lyhytNimi": "Japanese",
         "kuvaus": "Japanese",
+        "lyhytNimi": "Japanese",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_ja",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "JA"
   },
   {
-    "koodiUri": "kielivalikoima_ko",
-    "koodiArvo": "KO",
+    "metadata": [
+      {
+        "nimi": "georgia",
+        "kuvaus": null,
+        "lyhytNimi": "georgia",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "georgiska",
+        "kuvaus": null,
+        "lyhytNimi": "georgiska",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Georgian",
+        "kuvaus": null,
+        "lyhytNimi": "Georgian",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_ka",
+    "versio": 1,
+    "koodiArvo": "KA"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "keskikhmer",
+        "kuvaus": null,
+        "lyhytNimi": "keskikhmer",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "khmeriska, kambodjanska",
+        "kuvaus": null,
+        "lyhytNimi": "khmeriska, kambodjanska",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Cambodian, Khmer",
+        "kuvaus": null,
+        "lyhytNimi": "Cambodian, Khmer",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_km",
+    "versio": 1,
+    "koodiArvo": "KM"
+  },
+  {
     "metadata": [
       {
         "nimi": "korea",
-        "lyhytNimi": "korea",
         "kuvaus": "korea",
+        "lyhytNimi": "korea",
         "kieli": "FI"
       },
       {
         "nimi": "koreanska",
-        "lyhytNimi": "koreanska",
         "kuvaus": "koreanska",
+        "lyhytNimi": "koreanska",
         "kieli": "SV"
       },
       {
         "nimi": "Korean",
-        "lyhytNimi": "Korean",
         "kuvaus": "Korean",
+        "lyhytNimi": "Korean",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_ko",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "KO"
   },
   {
-    "koodiUri": "kielivalikoima_ku",
-    "koodiArvo": "KU",
     "metadata": [
       {
         "nimi": "kurdi",
-        "lyhytNimi": "kurdi",
         "kuvaus": "kurdi",
+        "lyhytNimi": "kurdi",
         "kieli": "FI"
       },
       {
         "nimi": "kurdiska",
-        "lyhytNimi": "kurdiska",
         "kuvaus": "kurdiska",
+        "lyhytNimi": "kurdiska",
         "kieli": "SV"
       },
       {
         "nimi": "Kurdish",
-        "lyhytNimi": "Kurdish",
         "kuvaus": "Kurdish",
+        "lyhytNimi": "Kurdish",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_ku",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "KU"
   },
   {
-    "koodiUri": "kielivalikoima_la",
-    "koodiArvo": "LA",
     "metadata": [
       {
         "nimi": "latina",
-        "lyhytNimi": "latina",
         "kuvaus": "latina",
+        "lyhytNimi": "latina",
         "kieli": "FI"
       },
       {
         "nimi": "latin",
-        "lyhytNimi": "latin",
         "kuvaus": "latin",
+        "lyhytNimi": "latin",
         "kieli": "SV"
       },
       {
         "nimi": "Latin",
-        "lyhytNimi": "Latin",
         "kuvaus": "Latin",
+        "lyhytNimi": "Latin",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_alaa2",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_alaa3",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_alaa1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_alaa4",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_laa3",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_laa7",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_laa5",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_laa2",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_laa3",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_laa8",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_laa8",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_laa5",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_laa4",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_laa7",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_laa1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_laa4",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_laa6",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_laa1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_laa2",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_laa6",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_la",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "LA"
   },
   {
-    "koodiUri": "kielivalikoima_lt",
-    "koodiArvo": "LT",
     "metadata": [
       {
         "nimi": "liettua",
-        "lyhytNimi": "liettua",
         "kuvaus": "liettua",
+        "lyhytNimi": "liettua",
         "kieli": "FI"
       },
       {
         "nimi": "litauiska",
-        "lyhytNimi": "litauiska",
         "kuvaus": "litauiska",
+        "lyhytNimi": "litauiska",
         "kieli": "SV"
       },
       {
         "nimi": "Lithuanian",
-        "lyhytNimi": "Lithuanian",
         "kuvaus": "Lithuanian",
+        "lyhytNimi": "Lithuanian",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_lt",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "LT"
   },
   {
-    "koodiUri": "kielivalikoima_lv",
-    "koodiArvo": "LV",
     "metadata": [
       {
         "nimi": "latvia, lätti",
-        "lyhytNimi": "latvia, lätti",
         "kuvaus": "latvia, lätti",
+        "lyhytNimi": "latvia, lätti",
         "kieli": "FI"
       },
       {
         "nimi": "lettiska",
-        "lyhytNimi": "lettiska",
         "kuvaus": "lettiska",
+        "lyhytNimi": "lettiska",
         "kieli": "SV"
       },
       {
         "nimi": "Latvian",
-        "lyhytNimi": "Latvian",
         "kuvaus": "Latvian",
+        "lyhytNimi": "Latvian",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_lv",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "LV"
   },
   {
-    "koodiUri": "kielivalikoima_ne",
-    "koodiArvo": "NE",
+    "metadata": [
+      {
+        "nimi": "makedonia",
+        "kuvaus": null,
+        "lyhytNimi": "makedonia",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "makedonska",
+        "kuvaus": null,
+        "lyhytNimi": "makedonska",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Macedonian",
+        "kuvaus": null,
+        "lyhytNimi": "Macedonian",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_mk",
+    "versio": 1,
+    "koodiArvo": "MK"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "mongoli",
+        "kuvaus": null,
+        "lyhytNimi": "mongoli",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "mongoliska",
+        "kuvaus": null,
+        "lyhytNimi": "mongoliska",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Mongolian",
+        "kuvaus": null,
+        "lyhytNimi": "Mongolian",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_mn",
+    "versio": 1,
+    "koodiArvo": "MN"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "malaiji",
+        "kuvaus": null,
+        "lyhytNimi": "malaiji",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "malajiska",
+        "kuvaus": null,
+        "lyhytNimi": "malajiska",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Malay",
+        "kuvaus": null,
+        "lyhytNimi": "Malay",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_ms",
+    "versio": 1,
+    "koodiArvo": "MS"
+  },
+  {
     "metadata": [
       {
         "nimi": "nepali",
-        "lyhytNimi": "nepali",
         "kuvaus": "nepali",
+        "lyhytNimi": "nepali",
         "kieli": "FI"
       },
       {
         "nimi": "nepali",
-        "lyhytNimi": "nepali",
         "kuvaus": "nepali",
+        "lyhytNimi": "nepali",
         "kieli": "SV"
       },
       {
         "nimi": "Nepali",
-        "lyhytNimi": "Nepali",
         "kuvaus": "Nepali",
+        "lyhytNimi": "Nepali",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_ne",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "NE"
   },
   {
-    "koodiUri": "kielivalikoima_pl",
-    "koodiArvo": "PL",
+    "metadata": [
+      {
+        "nimi": "hollanti",
+        "kuvaus": null,
+        "lyhytNimi": "hollanti",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "holländska",
+        "kuvaus": null,
+        "lyhytNimi": "holländska",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Dutch",
+        "kuvaus": null,
+        "lyhytNimi": "Dutch",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_nl",
+    "versio": 1,
+    "koodiArvo": "NL"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "norja",
+        "kuvaus": null,
+        "lyhytNimi": "norja",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "norska",
+        "kuvaus": null,
+        "lyhytNimi": "norska",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Norwegian",
+        "kuvaus": null,
+        "lyhytNimi": "Norwegian",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_no",
+    "versio": 1,
+    "koodiArvo": "NO"
+  },
+  {
     "metadata": [
       {
         "nimi": "puola",
-        "lyhytNimi": "puola",
         "kuvaus": "puola",
+        "lyhytNimi": "puola",
         "kieli": "FI"
       },
       {
         "nimi": "polska",
-        "lyhytNimi": "polska",
         "kuvaus": "polska",
+        "lyhytNimi": "polska",
         "kieli": "SV"
       },
       {
         "nimi": "Polish",
-        "lyhytNimi": "Polish",
         "kuvaus": "Polish",
+        "lyhytNimi": "Polish",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_pl",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "PL"
   },
   {
-    "koodiUri": "kielivalikoima_pt",
-    "koodiArvo": "PT",
     "metadata": [
       {
         "nimi": "portugali",
-        "lyhytNimi": "portugali",
         "kuvaus": "portugali",
+        "lyhytNimi": "portugali",
         "kieli": "FI"
       },
       {
         "nimi": "portugisiska",
-        "lyhytNimi": "portugisiska",
         "kuvaus": "portugisiska",
+        "lyhytNimi": "portugisiska",
         "kieli": "SV"
       },
       {
         "nimi": "Portuguese",
-        "lyhytNimi": "Portuguese",
         "kuvaus": "Portuguese",
+        "lyhytNimi": "Portuguese",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_araa3",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_poa1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_poa4",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_poa6",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_araa2",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_araa4",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_apoa4",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_poa2",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_poa3",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_poa8",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_poa6",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_poa5",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_poa7",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_poa7",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_apoa2",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_poa3",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_poa1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_apoa3",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_poa8",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_apoa1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_poa5",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_poa2",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_poa4",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_pt",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "PT"
   },
   {
-    "koodiUri": "kielivalikoima_ri",
-    "koodiArvo": "RI",
     "metadata": [
       {
         "nimi": "romani",
-        "lyhytNimi": "romani",
         "kuvaus": "romani",
+        "lyhytNimi": "romani",
         "kieli": "FI"
       },
       {
         "nimi": "romani",
-        "lyhytNimi": "romani",
         "kuvaus": "romani",
+        "lyhytNimi": "romani",
         "kieli": "SV"
       },
       {
         "nimi": "Romani",
-        "lyhytNimi": "Romani",
         "kuvaus": "Romani",
+        "lyhytNimi": "Romani",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_ri",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "RI"
   },
   {
-    "koodiUri": "kielivalikoima_ru",
-    "koodiArvo": "RU",
+    "metadata": [
+      {
+        "nimi": "romania",
+        "kuvaus": null,
+        "lyhytNimi": "romania",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "rumänska",
+        "kuvaus": null,
+        "lyhytNimi": "rumänska",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Romanian",
+        "kuvaus": null,
+        "lyhytNimi": "Romanian",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_ro",
+    "versio": 1,
+    "koodiArvo": "RO"
+  },
+  {
     "metadata": [
       {
         "nimi": "venäjä",
-        "lyhytNimi": "venäjä",
         "kuvaus": "venäjä",
+        "lyhytNimi": "venäjä",
         "kieli": "FI"
       },
       {
         "nimi": "ryska",
-        "lyhytNimi": "ryska",
         "kuvaus": "ryska",
+        "lyhytNimi": "ryska",
         "kieli": "SV"
       },
       {
         "nimi": "Russian",
-        "lyhytNimi": "Russian",
         "kuvaus": "Russian",
+        "lyhytNimi": "Russian",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_vea3",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_vea4",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_vea7",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_avea2",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_avea1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_vea2",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_vea1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_vea2",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_vea8",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_vea6",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_vea7",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_avea3",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_vea8",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_vea5",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_vea4",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_vea1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_avea4",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_vea6",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_vea5",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_vea3",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_ru",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "RU"
   },
   {
-    "koodiUri": "kielivalikoima_se",
-    "koodiArvo": "SE",
     "metadata": [
       {
         "nimi": "saame, lappi",
-        "lyhytNimi": "saame, lappi",
         "kuvaus": "saame, lappi",
+        "lyhytNimi": "saame, lappi",
         "kieli": "FI"
       },
       {
         "nimi": "samiska",
-        "lyhytNimi": "samiska",
         "kuvaus": "samiska",
+        "lyhytNimi": "samiska",
         "kieli": "SV"
       },
       {
         "nimi": "Northern Sami",
-        "lyhytNimi": "Northern Sami",
         "kuvaus": "Northern Sami",
+        "lyhytNimi": "Northern Sami",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_asma2",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_asma3",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_asma1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_asma4",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_sma6",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_sma7",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_sma1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_sma4",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_sma2",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_sma8",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_sma6",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_sma4",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_sma5",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_sma8",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_sma7",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_sma2",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_sma3",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_sma1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_sma3",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_sma5",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_se",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "SE"
   },
   {
-    "koodiUri": "kielivalikoima_sq",
-    "koodiArvo": "SQ",
+    "metadata": [
+      {
+        "nimi": "slovakki",
+        "kuvaus": null,
+        "lyhytNimi": "slovakki",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "slovakiska",
+        "kuvaus": null,
+        "lyhytNimi": "slovakiska",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Slovak",
+        "kuvaus": null,
+        "lyhytNimi": "Slovak",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_sk",
+    "versio": 1,
+    "koodiArvo": "SK"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "sloveeni",
+        "kuvaus": null,
+        "lyhytNimi": "sloveeni",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "slovenska",
+        "kuvaus": null,
+        "lyhytNimi": "slovenska",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Slovenian",
+        "kuvaus": null,
+        "lyhytNimi": "Slovenian",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_sl",
+    "versio": 1,
+    "koodiArvo": "SL"
+  },
+  {
     "metadata": [
       {
         "nimi": "albania",
-        "lyhytNimi": "albania",
         "kuvaus": "albania",
+        "lyhytNimi": "albania",
         "kieli": "FI"
       },
       {
         "nimi": "albanska",
-        "lyhytNimi": "albanska",
         "kuvaus": "albanska",
+        "lyhytNimi": "albanska",
         "kieli": "SV"
       },
       {
         "nimi": "Albanian",
-        "lyhytNimi": "Albanian",
         "kuvaus": "Albanian",
+        "lyhytNimi": "Albanian",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_sq",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "SQ"
   },
   {
-    "koodiUri": "kielivalikoima_sv",
-    "koodiArvo": "SV",
+    "metadata": [
+      {
+        "nimi": "serbia",
+        "kuvaus": null,
+        "lyhytNimi": "serbia",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "serbiska",
+        "kuvaus": null,
+        "lyhytNimi": "serbiska",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Serbian",
+        "kuvaus": null,
+        "lyhytNimi": "Serbian",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_sr",
+    "versio": 1,
+    "koodiArvo": "SR"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "swazi",
+        "kuvaus": null,
+        "lyhytNimi": "swazi",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "swazi",
+        "kuvaus": null,
+        "lyhytNimi": "swazi",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Siswati, Swazi, Swati",
+        "kuvaus": null,
+        "lyhytNimi": "Siswati, Swazi, Swati",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_ss",
+    "versio": 1,
+    "koodiArvo": "SS"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "eteläsotho",
+        "kuvaus": null,
+        "lyhytNimi": "eteläsotho",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "sotho",
+        "kuvaus": null,
+        "lyhytNimi": "sotho",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Sesotho, Southern Sotho",
+        "kuvaus": null,
+        "lyhytNimi": "Sesotho, Southern Sotho",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_st",
+    "versio": 1,
+    "koodiArvo": "ST"
+  },
+  {
     "metadata": [
       {
         "nimi": "ruotsi",
-        "lyhytNimi": "ruotsi",
         "kuvaus": "ruotsi",
+        "lyhytNimi": "ruotsi",
         "kieli": "FI"
       },
       {
         "nimi": "svenska",
-        "lyhytNimi": "svenska",
         "kuvaus": "svenska",
+        "lyhytNimi": "svenska",
         "kieli": "SV"
       },
       {
         "nimi": "Swedish",
-        "lyhytNimi": "Swedish",
         "kuvaus": "Swedish",
+        "lyhytNimi": "Swedish",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_rub1-1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_rub2-1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_rub3-1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_rub4-1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_rub5-1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_rub6-1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_rub7-1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_rub8-1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_rub2",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_rub3",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_rub8",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_rub6",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_rub7",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_rub4",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_rub5",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_rub6",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_rub1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_rub3",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_rub7",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_rub8",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_rub5",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_rub1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_rub2",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_rub4",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_sv",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "SV"
   },
   {
-    "koodiUri": "kielivalikoima_th",
-    "koodiArvo": "TH",
+    "metadata": [
+      {
+        "nimi": "suahili",
+        "kuvaus": null,
+        "lyhytNimi": "suahili",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "swahili",
+        "kuvaus": null,
+        "lyhytNimi": "swahili",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Swahili, Kiswahili",
+        "kuvaus": null,
+        "lyhytNimi": "Swahili, Kiswahili",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_sw",
+    "versio": 1,
+    "koodiArvo": "SW"
+  },
+  {
     "metadata": [
       {
         "nimi": "thai",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
         "nimi": "thai",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_th",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "TH"
   },
   {
-    "koodiUri": "kielivalikoima_tr",
-    "koodiArvo": "TR",
     "metadata": [
       {
         "nimi": "turkki",
-        "lyhytNimi": "turkki",
         "kuvaus": "turkki",
+        "lyhytNimi": "turkki",
         "kieli": "FI"
       },
       {
         "nimi": "turkiska",
-        "lyhytNimi": "turkiska",
         "kuvaus": "turkiska",
+        "lyhytNimi": "turkiska",
         "kieli": "SV"
       },
       {
         "nimi": "Turkish",
-        "lyhytNimi": "Turkish",
         "kuvaus": "Turkish",
+        "lyhytNimi": "Turkish",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_tr",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "TR"
   },
   {
-    "koodiUri": "kielivalikoima_uk",
-    "koodiArvo": "UK",
     "metadata": [
       {
         "nimi": "ukraina",
-        "lyhytNimi": "ukraina",
         "kuvaus": "ukraina",
+        "lyhytNimi": "ukraina",
         "kieli": "FI"
       },
       {
         "nimi": "ukrainska",
-        "lyhytNimi": "ukrainska",
         "kuvaus": "ukrainska",
+        "lyhytNimi": "ukrainska",
         "kieli": "SV"
       },
       {
         "nimi": "Ukrainian",
-        "lyhytNimi": "Ukrainian",
         "kuvaus": "Ukrainian",
+        "lyhytNimi": "Ukrainian",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_uk",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "UK"
   },
   {
-    "koodiUri": "kielivalikoima_vi",
-    "koodiArvo": "VI",
+    "metadata": [
+      {
+        "nimi": "urdu",
+        "kuvaus": null,
+        "lyhytNimi": "urdu",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "urdu",
+        "kuvaus": null,
+        "lyhytNimi": "urdu",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Urdu",
+        "kuvaus": null,
+        "lyhytNimi": "Urdu",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_ur",
+    "versio": 1,
+    "koodiArvo": "UR"
+  },
+  {
     "metadata": [
       {
         "nimi": "vietnam",
-        "lyhytNimi": "vietnam",
         "kuvaus": "vietnam",
+        "lyhytNimi": "vietnam",
         "kieli": "FI"
       },
       {
         "nimi": "vietnamesiska",
-        "lyhytNimi": "vietnamesiska",
         "kuvaus": "vietnamesiska",
+        "lyhytNimi": "vietnamesiska",
         "kieli": "SV"
       },
       {
         "nimi": "Vietnamese",
-        "lyhytNimi": "Vietnamese",
         "kuvaus": "Vietnamese",
+        "lyhytNimi": "Vietnamese",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_vi",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "VI"
   },
   {
-    "koodiUri": "kielivalikoima_vk",
-    "koodiArvo": "VK",
     "metadata": [
       {
         "nimi": "viittomakieli",
-        "lyhytNimi": "viittomakieli",
         "kuvaus": "viittomakieli",
+        "lyhytNimi": "viittomakieli",
         "kieli": "FI"
       },
       {
         "nimi": "teckenspråk",
-        "lyhytNimi": "teckenspråk",
         "kuvaus": "teckenspråk",
+        "lyhytNimi": "teckenspråk",
         "kieli": "SV"
       },
       {
         "nimi": "Sign language",
-        "lyhytNimi": "Sign language",
         "kuvaus": "Sign language",
+        "lyhytNimi": "Sign language",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_vk",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "VK"
   },
   {
-    "koodiUri": "kielivalikoima_xai11",
-    "koodiArvo": "XAI11",
     "metadata": [
       {
         "nimi": "suomi viittomakielisille",
-        "lyhytNimi": "suomi viittomakielisille",
         "kuvaus": "suomi viittomakielisille",
+        "lyhytNimi": "suomi viittomakielisille",
         "kieli": "FI"
       },
       {
         "nimi": "finska för teckenspråkiga",
-        "lyhytNimi": "finska för teckenspråkiga",
         "kuvaus": "finska för teckenspråkiga",
+        "lyhytNimi": "finska för teckenspråkiga",
         "kieli": "SV"
       },
       {
         "nimi": "Finnish for sign language users",
-        "lyhytNimi": "Finnish for sign language users",
         "kuvaus": "Finnish for sign language users",
+        "lyhytNimi": "Finnish for sign language users",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_xai11",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "XAI11"
   },
   {
-    "koodiUri": "kielivalikoima_xai12",
-    "koodiArvo": "XAI12",
     "metadata": [
       {
         "nimi": "ruotsi viittomakielisille",
-        "lyhytNimi": "ruotsi viittomakielisille",
         "kuvaus": "ruotsi viittomakielisille",
+        "lyhytNimi": "ruotsi viittomakielisille",
         "kieli": "FI"
       },
       {
         "nimi": "svenska för teckenspråkiga",
-        "lyhytNimi": "svenska för teckenspråkiga",
         "kuvaus": "svenska för teckenspråkiga",
+        "lyhytNimi": "svenska för teckenspråkiga",
         "kieli": "SV"
       },
       {
         "nimi": "Swedish for sign language users",
-        "lyhytNimi": "Swedish for sign language users",
         "kuvaus": "Swedish for sign language users",
+        "lyhytNimi": "Swedish for sign language users",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_xai12",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "XAI12"
   },
   {
-    "koodiUri": "kielivalikoima_xai7",
-    "koodiArvo": "XAI7",
     "metadata": [
       {
         "nimi": "suomi toisena kielenä",
-        "lyhytNimi": "suomi toisena kielenä",
         "kuvaus": "suomi toisena kielenä",
+        "lyhytNimi": "suomi toisena kielenä",
         "kieli": "FI"
       },
       {
         "nimi": "finska som andraspråk",
-        "lyhytNimi": "finska som andraspråk",
         "kuvaus": "finska som andraspråk",
+        "lyhytNimi": "finska som andraspråk",
         "kieli": "SV"
       },
       {
         "nimi": "Finnish as a second language",
-        "lyhytNimi": "Finnish as a second language",
         "kuvaus": "Finnish as a second language",
+        "lyhytNimi": "Finnish as a second language",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_xai7",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "XAI7"
   },
   {
-    "koodiUri": "kielivalikoima_xai8",
-    "koodiArvo": "XAI8",
     "metadata": [
       {
         "nimi": "ruotsi toisena kielenä",
-        "lyhytNimi": "ruotsi toisena kielenä",
         "kuvaus": "ruotsi toisena kielenä",
+        "lyhytNimi": "ruotsi toisena kielenä",
         "kieli": "FI"
       },
       {
         "nimi": "svenska som andraspråk",
-        "lyhytNimi": "svenska som andraspråk",
         "kuvaus": "svenska som andraspråk",
+        "lyhytNimi": "svenska som andraspråk",
         "kieli": "SV"
       },
       {
         "nimi": "Swedish as a second language",
-        "lyhytNimi": "Swedish as a second language",
         "kuvaus": "Swedish as a second language",
+        "lyhytNimi": "Swedish as a second language",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_xai8",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "XAI8"
   },
   {
-    "koodiUri": "kielivalikoima_xx",
-    "koodiArvo": "XX",
     "metadata": [
       {
         "nimi": "muu kieli",
-        "lyhytNimi": "muu kieli",
         "kuvaus": "muu kieli",
+        "lyhytNimi": "muu kieli",
         "kieli": "FI"
       },
       {
         "nimi": "övrigt språk",
-        "lyhytNimi": "övrigt språk",
         "kuvaus": "övrigt språk",
+        "lyhytNimi": "övrigt språk",
         "kieli": "SV"
       },
       {
         "nimi": "Other languages",
-        "lyhytNimi": "Other languages",
         "kuvaus": "Other languages",
+        "lyhytNimi": "Other languages",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_akxa1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_kxa5",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_akxa4",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_kxa1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_kxa7",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_kxa8",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_akxa2",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_kxa8",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_kxa6",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_kxa7",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_kxa3",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_akxa3",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_kxa4",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_kxa4",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenkurssit2015_kxa2",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_kxa3",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_kxa1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_kxa2",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_kxa5",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017_kxa6",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_xx",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "XX"
   },
   {
-    "koodiUri": "kielivalikoima_zh",
-    "koodiArvo": "ZH",
     "metadata": [
       {
         "nimi": "kiina",
-        "lyhytNimi": "kiina",
         "kuvaus": "kiina",
+        "lyhytNimi": "kiina",
         "kieli": "FI"
       },
       {
         "nimi": "kinesiska",
-        "lyhytNimi": "kinesiska",
         "kuvaus": "kinesiska",
+        "lyhytNimi": "kinesiska",
         "kieli": "SV"
       },
       {
         "nimi": "Chinese",
-        "lyhytNimi": "Chinese",
         "kuvaus": "Chinese",
+        "lyhytNimi": "Chinese",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_zh",
     "versio": 1,
-    "withinCodeElements": []
-  },
-  {
-    "koodiUri": "kielivalikoima_fil",
-    "koodiArvo": "fil",
-    "metadata": [
-      {
-        "nimi": "filipino",
-        "lyhytNimi": "",
-        "kuvaus": "",
-        "kieli": "FI"
-      },
-      {
-        "kieli": "SV"
-      },
-      {
-        "kieli": "EN"
-      }
-    ],
-    "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "ZH"
   }
 ]
