@@ -91,6 +91,7 @@ const filterByOpiskeluoikeudenTyyppi = (
       return tilat.filter((t) =>
         internationalSchoolTilat.includes(koodiarvo(t))
       )
+    // TODO: TOR-2052 - EB-tutkinto
     case 'europeanschoolofhelsinki':
       return tilat.filter((t) =>
         europeanSchoolOfHelsinkiTilat.includes(koodiarvo(t))

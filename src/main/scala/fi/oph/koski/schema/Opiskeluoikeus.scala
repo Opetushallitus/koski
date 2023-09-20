@@ -123,6 +123,8 @@ trait Opiskeluoikeus extends Lähdejärjestelmällinen with OrganisaatioonLiitty
       case _: PerusopetuksenOpiskeluoikeus =>
         val vuosiluokkasuorituksetPerusopetus = suoritukset.collect { case s: PerusopetuksenVuosiluokanSuoritus => s }
         vuosiluokkasuorituksetPerusopetus.sortBy(_.koulutusmoduuli.tunniste.koodiarvo).reverse.headOption.map(_.luokka)
+      // TODO: TOR-2052 - EB-tutkinto
+
       case oo: EuropeanSchoolOfHelsinkiOpiskeluoikeus =>
         oo.vuosiluokkasuorituksetJärjestyksessä.reverse.headOption.flatMap(_.luokka)
       case _ => None

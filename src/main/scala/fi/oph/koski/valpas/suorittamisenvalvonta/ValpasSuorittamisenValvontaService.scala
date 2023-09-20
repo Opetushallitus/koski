@@ -97,6 +97,7 @@ class ValpasSuorittamisenValvontaService(
       // International school on toista astetta, jos siinä on luokka-asteen 10+ suoritus.
       // European school of Helsinki on toista astetta, jos siinä on S6 tai S7 suoritus. Nämä on tarkistettu jo SQL:ssä.
       // joten tässä riittää tutkia, onko perusopetuksen jälkeisiä tietoja määritelty.
+      // TODO: TOR-2052 - EB-tutkinto
       case "internationalschool" |
            "europeanschoolofhelsinki" if oo.perusopetuksenJälkeinenTiedot.isDefined => true
       // Lukiokoulutus on toista astetta, jos siinä ei ole pelkkiä aineopintoja:

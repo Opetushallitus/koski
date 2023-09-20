@@ -5,6 +5,8 @@ describe('Helsingin eurooppalainen koulu', function () {
 
   before(Authentication().login(), resetFixtures)
 
+  // TODO: TOR-2052 - EB-tutkinto
+
   describe('Helsingin eurooppalainen koulu', function () {
     before(
       page.openPage,

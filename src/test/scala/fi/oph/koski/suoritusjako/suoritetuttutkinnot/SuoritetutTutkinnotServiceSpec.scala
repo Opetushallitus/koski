@@ -260,6 +260,7 @@ class SuoritetutTutkinnotServiceSpec
     }
   }
 
+  // TODO: TOR-2052 - EB-tutkinto
   "EB-tutkinto" - {
     "vahvistetun tutkinnon tiedot palautetaan" in {
       val oppija = KoskiSpecificMockOppijat.europeanSchoolOfHelsinki
@@ -560,6 +561,7 @@ class SuoritetutTutkinnotServiceSpec
         expectedOoData: schema.AmmatillinenOpiskeluoikeus,
         expectedSuoritusData: schema.MuunAmmatillisenKoulutuksenSuoritus
       ) => verifyMuuAmmatillinen(actualOo, actualSuoritus, expectedOoData, expectedSuoritusData)
+      // TODO: TOR-2052 - EB-tutkinto
       case (
         actualOo: SuoritetutTutkinnotEuropeanSchoolOfHelsinkiOpiskeluoikeus,
         actualSuoritus: SuoritetutTutkinnotEBTutkinnonSuoritus,
@@ -714,6 +716,8 @@ class SuoritetutTutkinnotServiceSpec
     actualSuoritus.tyyppi.koodiarvo should equal(expectedSuoritusData.tyyppi.koodiarvo)
   }
 
+
+  // TODO: TOR-2052 - EB-tutkinto
   private def verifyEBTutkinto(
     actualOo: SuoritetutTutkinnotEuropeanSchoolOfHelsinkiOpiskeluoikeus,
     actualSuoritus: SuoritetutTutkinnotEBTutkinnonSuoritus,

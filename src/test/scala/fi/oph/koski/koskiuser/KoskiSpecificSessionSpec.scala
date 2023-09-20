@@ -120,6 +120,7 @@ class KoskiSpecificSessionSpec
         session.allowedOpiskeluoikeusTyypit should equal(expectedOpiskeluoikeustyypit)
       }
       "viranomainen toinen aste" in {
+        // TODO: TOR-2052 - EB-tutkinto
         val session = createAndVerifySession("Teuvo", MockUsers.toinenAsteViranomainen.ldapUser)
         val expectedOpiskeluoikeustyypit = Set(tuva, ammatillinenkoulutus, ibtutkinto, diatutkinto, lukiokoulutus, luva, vapaansivistystyonkoulutus, ylioppilastutkinto, internationalschool, europeanschoolofhelsinki).map(_.koodiarvo)
         session.allowedOpiskeluoikeusTyypit should equal(expectedOpiskeluoikeustyypit)

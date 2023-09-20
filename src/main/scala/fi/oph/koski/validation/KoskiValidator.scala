@@ -1106,6 +1106,7 @@ class KoskiValidator(
         => EuropeanSchoolOfHelsinkiValidation.osasuorituksetKunnossa(s)
       case s: DeprecatedEBTutkinnonSuoritus
         => EuropeanSchoolOfHelsinkiValidation.osasuorituksetKunnossa(s)
+      // TODO: TOR-2052 - EB-tutkinto
       case s: TaiteenPerusopetuksenPäätasonSuoritus => true
       case s => s.osasuoritusLista.nonEmpty
     }
@@ -1175,6 +1176,7 @@ class KoskiValidator(
       KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia(s"Suoritus ${suorituksenTunniste(s)} on merkitty valmiiksi, mutta sillä on tyhjä osasuorituslista tai joltain sen osasuoritukselta puuttuu vaadittavat arvioidut osasuoritukset (joko A ja B, tai yearmark), tai opiskeluoikeudelta puuttuu linkitys")
     case s: DeprecatedEBTutkinnonSuoritus =>
       KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia(s"Suoritus ${suorituksenTunniste(s)} on merkitty valmiiksi, mutta sillä on tyhjä osasuorituslista tai joltain sen osasuoritukselta puuttuu vaadittava arvioitu Final-osasuoritus, tai opiskeluoikeudelta puuttuu linkitys")
+    // TODO: TOR-2052 - EB-tutkinto
     case s =>
       KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia(s"Suoritus ${suorituksenTunniste(s)} on merkitty valmiiksi, mutta sillä on tyhjä osasuorituslista tai opiskeluoikeudelta puuttuu linkitys")
   }

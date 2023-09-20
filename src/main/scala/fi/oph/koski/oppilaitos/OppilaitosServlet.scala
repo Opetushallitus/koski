@@ -20,6 +20,7 @@ class OppilaitosServlet(implicit val application: KoskiApplication) extends Kosk
   val internationalSchoolTyypit = List(OpiskeluoikeudenTyyppi.internationalschool)
   val vapaanSivistysTyönTyypit = List(OpiskeluoikeudenTyyppi.vapaansivistystyonkoulutus)
   val tuvaTyypit = List(OpiskeluoikeudenTyyppi.tuva)
+  // TODO: TOR-2052 - EB-tutkinto
   val eshTyypit = List(OpiskeluoikeudenTyyppi.europeanschoolofhelsinki)
   val muunKuinSäännellynKoulutuksenTyypit = List(OpiskeluoikeudenTyyppi.muukuinsaanneltykoulutus)
   val taiteenPerusopetuksenTyypit = List(OpiskeluoikeudenTyyppi.taiteenperusopetus)

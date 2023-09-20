@@ -101,6 +101,8 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
     )
   })
 
+
+  // TODO: TOR-2052 - EB-tutkinto halutulla tavalla Valppaaseen
   private def queryOppijat(
     oppijaOids: Seq[String],
     oppilaitosOids: Option[Seq[String]],

@@ -11,6 +11,8 @@ import java.time.LocalDate
 
 object EuropeanSchoolOfHelsinkiValidation {
 
+  // TODO: TOR-2052 - EB-tutkinto, validoinnit valituilta osin
+
   def validateOpiskeluoikeus(config: Config)(oo: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
     oo match {
       case eshOo: EuropeanSchoolOfHelsinkiOpiskeluoikeus =>

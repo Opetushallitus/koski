@@ -6,6 +6,8 @@ import fi.oph.scalaschema.annotation.Title
 
 import java.time.LocalDate
 
+// TODO: TOR-2052 - EB-tutkinto rinnalle
+
 @Title("European School of Helsinki -opiskeluoikeus")
 case class AktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiOpiskeluoikeus(
   oid: Option[String],

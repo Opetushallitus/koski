@@ -286,6 +286,7 @@ export const suoritusProperties = (
       case eshSuorituksenTyyppi.nursery:
       case eshSuorituksenTyyppi.primary:
       case eshSuorituksenTyyppi.ebtutkinto:
+        // TODO: TOR-2052 - EB-tutkinto
         return defaultsForView
           .concat(arvioitsijat)
           .concat(arvioinninKuvaus)

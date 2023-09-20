@@ -3,6 +3,7 @@ package fi.oph.koski.editor
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.schema._
 
+// TODO: TOR-2052 - EB-tutkinto, tarvinnee vastaavan käliä varten.
 case class EuropeanSchoolOfHelsinkiOppiaineet(koodistoViitePalvelu: KoodistoViitePalvelu) {
   def eshOsaSuoritukset(koulutusmoduulinTunniste: String): List[EuropeanSchoolOfHelsinkiOsasuoritus] = {
     koulutusmoduulinTunniste match {

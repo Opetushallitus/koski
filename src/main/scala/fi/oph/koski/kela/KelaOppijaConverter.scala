@@ -56,6 +56,7 @@ object KelaOppijaConverter extends Logging {
          _: schema.AikuistenPerusopetuksenOpiskeluoikeus |
          _: schema.TutkintokoulutukseenValmentavanOpiskeluoikeus |
          _: schema.MuunKuinSäännellynKoulutuksenOpiskeluoikeus |
+         // TODO: TOR-2052 - EB-tutkinto
          _: schema.EuropeanSchoolOfHelsinkiOpiskeluoikeus => Some(opiskeluoikeus)
     // Vapaatavoitteisen koulutuksen kohdalla täytyisi ottaa huomioon
     // suostumuksen peruminen jos Kelalle halutaan antaa tieto ko. suorituksesta.

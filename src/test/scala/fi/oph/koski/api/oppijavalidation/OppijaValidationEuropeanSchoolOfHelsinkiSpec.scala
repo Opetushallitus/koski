@@ -17,6 +17,8 @@ import org.scalatest.freespec.AnyFreeSpec
 
 import java.time.LocalDate
 
+// TODO: TOR-2052 - EB-tutkinnoille vastaavat testit
+
 class OppijaValidationEuropeanSchoolOfHelsinkiSpec
   extends AnyFreeSpec
     with KoskiHttpSpec
@@ -517,6 +519,7 @@ class OppijaValidationEuropeanSchoolOfHelsinkiSpec
     )
   }
 
+  // TODO: TOR-2052 - EB-tutkinto
   private def putAndGetOpiskeluoikeus(oo: EuropeanSchoolOfHelsinkiOpiskeluoikeus): EuropeanSchoolOfHelsinkiOpiskeluoikeus = putOpiskeluoikeus(oo) {
     verifyResponseStatusOk()
     getOpiskeluoikeus(readPutOppijaResponse.opiskeluoikeudet.head.oid)

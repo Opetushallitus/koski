@@ -8,6 +8,8 @@ import fi.oph.koski.schema._
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
+
+// TODO: TOR-2052 - EB-tutkinto, lisää esimerkki
 object ExamplesEuropeanSchoolOfHelsinki {
   val alkamispäivä = date(2004, 8, 1)
   val päättymispäivä = alkamispäivä.plusYears(20).withMonth(5).withDayOfMonth(31)
@@ -39,6 +41,7 @@ object ExamplesEuropeanSchoolOfHelsinki {
   val s7 = secondaryUpperSuoritusS7("S7", alkamispäivä.plusYears(14))
 
   val eb = ebTutkinnonSuoritus(alkamispäivä.plusYears(14))
+
 
   val opiskeluoikeus = EuropeanSchoolOfHelsinkiOpiskeluoikeus(
     oppilaitos = Some(europeanSchoolOfHelsinki),

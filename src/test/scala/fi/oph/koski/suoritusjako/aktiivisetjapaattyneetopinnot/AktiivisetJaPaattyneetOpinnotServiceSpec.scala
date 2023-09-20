@@ -302,6 +302,9 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
   }
 
   "ESH" - {
+
+    // TODO: TOR-2052 - EB-tutkinto
+
     val oppijat = Seq(
       KoskiSpecificMockOppijat.europeanSchoolOfHelsinki,
     )
@@ -333,6 +336,7 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
       }
     })
 
+    // TODO: TOR-2052 - EB-tutkinto, ei palauteta aktiivisena, mutta palautetaan päättyneenä? Vai miten
     "Palautetaan S5-vuosiluokan suoritus" in {
       val oppija = KoskiSpecificMockOppijat.europeanSchoolOfHelsinki
 
@@ -362,6 +366,7 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
       })
     }
 
+    // TODO: TOR-2052 - EB-tutkinto
     "Ei palauteta opiskeluoikeutta, jolla ei ole S5-suoritusta eikä secondary upper -vuosiluokan tai EB-tutkinnon suorituksia" in {
       val oppija = KoskiSpecificMockOppijat.europeanSchoolOfHelsinki
 
@@ -776,6 +781,7 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
             expectedOoData: schema.TutkintokoulutukseenValmentavanOpiskeluoikeus,
             expectedSuoritusData: schema.TutkintokoulutukseenValmentavanKoulutuksenSuoritus
             ) => verifyTuva(actualOo, actualSuoritus, expectedOoData, expectedSuoritusData)
+          // TODO: TOR-2052 - EB-tutkinto
           case (
             actualOo: AktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiOpiskeluoikeus,
             actualSuoritus: AktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiPäätasonSuoritus,
@@ -845,6 +851,7 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
     verifyPäätasonSuoritus(actualSuoritus, expectedSuoritusData)
   }
 
+  // TODO: TOR-2052 - EB-tutkinto
   private def verifyESH(
     actualOo: AktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiOpiskeluoikeus,
     actualSuoritus: AktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiPäätasonSuoritus,

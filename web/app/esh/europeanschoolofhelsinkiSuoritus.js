@@ -1,5 +1,6 @@
 import { formatISODate } from '../date/date'
 
+// TODO: TOR-2052 - EB-tutkinto
 export const makeSuoritus = (
   oppilaitos,
   koulutusmoduulinTunniste,

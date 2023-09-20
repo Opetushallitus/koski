@@ -46,6 +46,7 @@ object OpiskeluoikeusChangeMigrator {
          _: EsiopetuksenSuoritus |
          _: NuortenPerusopetuksenOppiaineenOppimääränSuoritus |
          _: AikuistenPerusopetuksenOppiaineenOppimääränSuoritus |
+         // TODO: TOR-2052 - EB-tutkinto
          _: EuropeanSchoolOfHelsinkiPäätasonSuoritus |
          _: TaiteenPerusopetuksenPäätasonSuoritus => false
     case _ => true
