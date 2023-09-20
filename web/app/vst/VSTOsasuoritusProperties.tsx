@@ -153,7 +153,10 @@ import { VSTKotoutumiskoulutuksenKieliopintojenKoulutusmoduuli } from '../types/
 import { VSTKotoutumiskoulutuksenOhjauksenKoulutusmoduuli2022 } from '../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenOhjauksenKoulutusmoduuli2022'
 import { VSTKotoutumiskoulutuksenValinnaistenOpintojenKoulutusmoduuli2022 } from '../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenValinnaistenOpintojenKoulutusmoduuli2022'
 import { VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenKoulutusmoduuli2022 } from '../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenYhteiskuntaJaTyoelamaosaaminenKoulutusmoduuli2022'
-import { useKoodistoFiller } from '../appstate/koodisto'
+import { Oppilaitos } from '../types/fi/oph/koski/schema/Oppilaitos'
+import { Koulutustoimija } from '../types/fi/oph/koski/schema/Koulutustoimija'
+import { LaajuusOpintopisteissä } from '../types/fi/oph/koski/schema/LaajuusOpintopisteissa'
+import { usePreferences } from '../appstate/preferences'
 
 type AddNewVSTOsasuoritusViewProps = {
   level: number
@@ -168,6 +171,7 @@ type AddNewVSTOsasuoritusViewProps = {
     | VSTOsasuoritusOsasuorituksilla
     | VapaanSivistystyönPäätasonSuoritus
   >
+  organisaatio: Oppilaitos | Koulutustoimija | undefined
 }
 
 export const AddNewVSTOsasuoritusView: React.FC<
@@ -178,15 +182,44 @@ export const AddNewVSTOsasuoritusView: React.FC<
     [props.form.state, props.pathWithOsasuoritukset]
   )
   const { pathWithOsasuoritukset, createOsasuoritus } = props
+
+  const preferencesType =
+    isVapaanSivistystyönJotpaKoulutuksenSuoritus(data) ||
+    isVapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus(data)
+      ? 'vapaansivistystyonjotpakoulutuksenosasuoritus'
+      : undefined
+
+  const osasuoritukset =
+    usePreferences<VapaanSivistystyönJotpaKoulutuksenOsasuoritus>(
+      props.organisaatio?.oid,
+      preferencesType
+    )
+
+  const storedOsasuoritustunnisteet = useMemo(
+    () => osasuoritukset.preferences.map((p) => p.tunniste),
+    [osasuoritukset.preferences]
+  )
+
   const onKoodistoSelect = useCallback(
-    (osasuoritus: VSTOsasuoritus) => {
+    (osasuoritus: VSTOsasuoritus, isNew = false) => {
       if (pathWithOsasuoritukset !== undefined) {
         createOsasuoritus(pathWithOsasuoritukset, osasuoritus)
+        if (
+          isNew &&
+          isVapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus(
+            osasuoritus
+          )
+        ) {
+          osasuoritukset.store(
+            osasuoritus.koulutusmoduuli.tunniste.koodiarvo,
+            osasuoritus.koulutusmoduuli
+          )
+        }
       } else {
         console.warn('pathWithOsasuoritukset is undefined')
       }
     },
-    [createOsasuoritus, pathWithOsasuoritukset]
+    [createOsasuoritus, pathWithOsasuoritukset, osasuoritukset]
   )
   const onRemoveKoodisto = useCallback(
     (_tunniste: Koodistokoodiviite<string, string>) => {
@@ -195,11 +228,12 @@ export const AddNewVSTOsasuoritusView: React.FC<
     []
   )
   const onRemovePaikallinenKoodisto = useCallback(
-    (paikallinen: PaikallinenKoodi) => {
-      console.log('TODO: onRemovePaikallinenKoodisto')
+    (tunniste: PaikallinenKoodi) => {
+      osasuoritukset.remove(tunniste.koodiarvo)
     },
-    []
+    [osasuoritukset]
   )
+
   if (data === undefined) {
     console.warn('Data is undefined')
     return null
@@ -234,7 +268,7 @@ export const AddNewVSTOsasuoritusView: React.FC<
         ) && (
           <PaikallinenOsasuoritusSelect
             addNewText={t('Lisää paikallinen opintokokonaisuus')}
-            onSelect={(tunniste) =>
+            onSelect={(tunniste, isNew) =>
               onKoodistoSelect(
                 OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus(
                   {
@@ -381,18 +415,20 @@ export const AddNewVSTOsasuoritusView: React.FC<
           isVapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus(data)) && (
           <PaikallinenOsasuoritusSelect
             addNewText={t('Lisää osasuoritus')}
-            onSelect={(tunniste) =>
+            onSelect={(tunniste, isNew) =>
               onKoodistoSelect(
                 VapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus({
                   koulutusmoduuli:
                     VapaanSivistystyönJotpaKoulutuksenOsasuoritus({
                       tunniste,
-                      laajuus: defaultLaajuusOpintopisteissa
+                      laajuus: LaajuusOpintopisteissä({ arvo: 1 })
                     })
-                })
+                }),
+                isNew
               )
             }
             onRemove={onRemovePaikallinenKoodisto}
+            tunnisteet={storedOsasuoritustunnisteet}
           />
         )}
         {isOppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus(

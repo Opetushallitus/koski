@@ -80,6 +80,8 @@ import { Infobox } from '../components/Infobox'
 import { useOsasuorituksetExpand } from './../osasuoritus/hooks'
 import { useInfoLink } from './infoLinkHook'
 import { useKoodistoFiller } from '../appstate/koodisto'
+import { assortedPreferenceType, usePreferences } from '../appstate/preferences'
+import { TaiteenPerusopetuksenPaikallinenOpintokokonaisuus } from '../types/fi/oph/koski/schema/TaiteenPerusopetuksenPaikallinenOpintokokonaisuus'
 
 type VSTEditorProps =
   AdaptedOpiskeluoikeusEditorProps<VapaanSivistystyönOpiskeluoikeus>
@@ -380,7 +382,8 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
             level: rootLevel,
             // Polku, johon uusi osasuoritus lisätään. Polun tulee sisältää "osasuoritukset"-property.
             // @ts-expect-error Korjaa tyyppi
-            pathWithOsasuoritukset: päätasonSuoritus.path
+            pathWithOsasuoritukset: päätasonSuoritus.path,
+            organisaatio
           }}
           completed={(rowIndex) => {
             const osasuoritus = (päätasonSuoritus.suoritus.osasuoritukset ||
