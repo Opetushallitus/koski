@@ -157,6 +157,24 @@ import { Oppilaitos } from '../types/fi/oph/koski/schema/Oppilaitos'
 import { Koulutustoimija } from '../types/fi/oph/koski/schema/Koulutustoimija'
 import { LaajuusOpintopisteissä } from '../types/fi/oph/koski/schema/LaajuusOpintopisteissa'
 import { usePreferences } from '../appstate/preferences'
+import {
+  createMuuallaSuoritettuOppivelvollisilleSuunnatunVapaanSivistystyönOpintojenSuoritus,
+  createOppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus,
+  createOppivelvollisilleSuunnatunVapaanSivistystyönOsaamiskokonaisuudenSuoritus,
+  createVapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus,
+  createVapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus,
+  createVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenSuoritus,
+  createVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOhjauksenSuoritus,
+  createVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataidot,
+  createVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenOpintojenSuoritus,
+  createVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenTyöelämäJakso,
+  createVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus,
+  createVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenSuoritus,
+  createVapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus,
+  createVSTKotoutumiskoulutuksenKieliJaViestintäosaamisenOsasuoritus,
+  createVSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenAlaosasuoritus,
+  createVSTKotoutumiskoulutusValinnaistenOpintojenAlaosasuoritus
+} from './VSTOsasuoritukset'
 
 type AddNewVSTOsasuoritusViewProps = {
   level: number
@@ -246,17 +264,8 @@ export const AddNewVSTOsasuoritusView: React.FC<
             addNewText={t('Lisää osasuoritus')}
             onSelect={(tunniste) =>
               onKoodistoSelect(
-                VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus(
-                  {
-                    koulutusmoduuli:
-                      VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuoritus(
-                        {
-                          tunniste,
-                          kuvaus: defaultFinnishKuvaus,
-                          laajuus: defaultLaajuusOpintopisteissa
-                        }
-                      )
-                  }
+                createVapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus(
+                  tunniste
                 )
               )
             }
@@ -270,17 +279,8 @@ export const AddNewVSTOsasuoritusView: React.FC<
             addNewText={t('Lisää paikallinen opintokokonaisuus')}
             onSelect={(tunniste, isNew) =>
               onKoodistoSelect(
-                OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus(
-                  {
-                    koulutusmoduuli:
-                      OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus(
-                        {
-                          kuvaus: defaultFinnishKuvaus,
-                          laajuus: defaultLaajuusOpintopisteissa,
-                          tunniste
-                        }
-                      )
-                  }
+                createOppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus(
+                  tunniste
                 )
               )
             }
@@ -296,15 +296,8 @@ export const AddNewVSTOsasuoritusView: React.FC<
               addNewText={t('Lisää muualla suoritettu opinto')}
               onSelect={(tunniste) =>
                 onKoodistoSelect(
-                  MuuallaSuoritettuOppivelvollisilleSuunnatunVapaanSivistystyönOpintojenSuoritus(
-                    {
-                      koulutusmoduuli:
-                        MuuallaSuoritetutVapaanSivistystyönOpinnot({
-                          tunniste,
-                          kuvaus: defaultFinnishKuvaus,
-                          laajuus: defaultLaajuusOpintopisteissa
-                        })
-                    }
+                  createMuuallaSuoritettuOppivelvollisilleSuunnatunVapaanSivistystyönOpintojenSuoritus(
+                    tunniste
                   )
                 )
               }
@@ -314,17 +307,8 @@ export const AddNewVSTOsasuoritusView: React.FC<
               addNewText={t('Lisää paikallinen opintokokonaisuus')}
               onSelect={(tunniste) =>
                 onKoodistoSelect(
-                  OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus(
-                    {
-                      koulutusmoduuli:
-                        OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus(
-                          {
-                            kuvaus: defaultFinnishKuvaus,
-                            laajuus: defaultLaajuusOpintopisteissa,
-                            tunniste
-                          }
-                        )
-                    }
+                  createOppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus(
+                    tunniste
                   )
                 )
               }
@@ -343,16 +327,8 @@ export const AddNewVSTOsasuoritusView: React.FC<
               namePlaceholder={t('Työelämäjakson nimi')}
               onSelect={(tunniste) =>
                 onKoodistoSelect(
-                  VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenTyöelämäJakso(
-                    {
-                      koulutusmoduuli:
-                        VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOpintojenOsasuoritus(
-                          {
-                            kuvaus: defaultFinnishKuvaus,
-                            tunniste
-                          }
-                        )
-                    }
+                  createVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenTyöelämäJakso(
+                    tunniste
                   )
                 )
               }
@@ -371,16 +347,8 @@ export const AddNewVSTOsasuoritusView: React.FC<
               namePlaceholder={t('Opintokokonaisuuden nimi')}
               onSelect={(tunniste) =>
                 onKoodistoSelect(
-                  VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataidot(
-                    {
-                      koulutusmoduuli:
-                        VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOpintojenOsasuoritus(
-                          {
-                            kuvaus: defaultFinnishKuvaus,
-                            tunniste
-                          }
-                        )
-                    }
+                  createVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataidot(
+                    tunniste
                   )
                 )
               }
@@ -393,18 +361,10 @@ export const AddNewVSTOsasuoritusView: React.FC<
         ) && (
           <PaikallinenOsasuoritusSelect
             addNewText={t('Lisää valinnaiset')}
-            onSelect={(p) =>
+            onSelect={(tunniste) =>
               onKoodistoSelect(
-                VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus(
-                  {
-                    koulutusmoduuli:
-                      VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOpintojenOsasuoritus(
-                        {
-                          tunniste: p,
-                          kuvaus: defaultFinnishKuvaus
-                        }
-                      )
-                  }
+                createVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus(
+                  tunniste
                 )
               )
             }
@@ -417,13 +377,9 @@ export const AddNewVSTOsasuoritusView: React.FC<
             addNewText={t('Lisää osasuoritus')}
             onSelect={(tunniste, isNew) =>
               onKoodistoSelect(
-                VapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus({
-                  koulutusmoduuli:
-                    VapaanSivistystyönJotpaKoulutuksenOsasuoritus({
-                      tunniste,
-                      laajuus: LaajuusOpintopisteissä({ arvo: 1 })
-                    })
-                }),
+                createVapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus(
+                  tunniste
+                ),
                 isNew
               )
             }
@@ -440,16 +396,8 @@ export const AddNewVSTOsasuoritusView: React.FC<
               addNewText={t('Lisää osaamiskokonaisuus')}
               onSelect={(tunniste) => {
                 onKoodistoSelect(
-                  OppivelvollisilleSuunnatunVapaanSivistystyönOsaamiskokonaisuudenSuoritus(
-                    {
-                      koulutusmoduuli:
-                        OppivelvollisilleSuunnattuVapaanSivistystyönOsaamiskokonaisuus(
-                          {
-                            tunniste,
-                            laajuus: defaultLaajuusOpintopisteissa
-                          }
-                        )
-                    }
+                  createOppivelvollisilleSuunnatunVapaanSivistystyönOsaamiskokonaisuudenSuoritus(
+                    tunniste
                   )
                 )
               }}
@@ -487,21 +435,7 @@ export const AddNewVSTOsasuoritusView: React.FC<
                 onClick={() =>
                   props.createOsasuoritus(
                     props.pathWithOsasuoritukset,
-                    VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenSuoritus(
-                      {
-                        koulutusmoduuli:
-                          VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenKoulutusmoduuli(
-                            {
-                              tunniste: Koodistokoodiviite({
-                                koodiarvo:
-                                  'vstmaahanmuuttajienkotoutumiskoulutuksenkieliopintojensuoritus',
-                                koodistoUri:
-                                  'vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus'
-                              })
-                            }
-                          )
-                      }
-                    )
+                    createVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenSuoritus()
                   )
                 }
               >
@@ -516,21 +450,7 @@ export const AddNewVSTOsasuoritusView: React.FC<
                 onClick={() =>
                   props.createOsasuoritus(
                     props.pathWithOsasuoritukset,
-                    VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenOpintojenSuoritus(
-                      {
-                        koulutusmoduuli:
-                          VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenOpintojenKoulutusmoduuli(
-                            {
-                              tunniste: Koodistokoodiviite({
-                                koodiarvo:
-                                  'vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojenkokonaisuudensuoritus',
-                                koodistoUri:
-                                  'vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus'
-                              })
-                            }
-                          )
-                      }
-                    )
+                    createVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenOpintojenSuoritus()
                   )
                 }
               >
@@ -545,21 +465,7 @@ export const AddNewVSTOsasuoritusView: React.FC<
                 onClick={() =>
                   props.createOsasuoritus(
                     props.pathWithOsasuoritukset,
-                    VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOhjauksenSuoritus(
-                      {
-                        koulutusmoduuli:
-                          VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOhjauksenKoulutusmoduuli(
-                            {
-                              tunniste: Koodistokoodiviite({
-                                koodiarvo:
-                                  'vstmaahanmuuttajienkotoutumiskoulutuksenohjauksensuoritus',
-                                koodistoUri:
-                                  'vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus'
-                              })
-                            }
-                          )
-                      }
-                    )
+                    createVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOhjauksenSuoritus()
                   )
                 }
               >
@@ -574,21 +480,7 @@ export const AddNewVSTOsasuoritusView: React.FC<
                 onClick={() =>
                   props.createOsasuoritus(
                     props.pathWithOsasuoritukset,
-                    VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenSuoritus(
-                      {
-                        koulutusmoduuli:
-                          VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenKoulutusmoduuli(
-                            {
-                              tunniste: Koodistokoodiviite({
-                                koodiarvo:
-                                  'vstmaahanmuuttajienkotoutumiskoulutuksenvalinnaistensuoritus',
-                                koodistoUri:
-                                  'vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus'
-                              })
-                            }
-                          )
-                      }
-                    )
+                    createVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenSuoritus()
                   )
                 }
               >
@@ -604,17 +496,8 @@ export const AddNewVSTOsasuoritusView: React.FC<
             addNewText={t('Lisää osasuoritus')}
             onSelect={(tunniste) =>
               onKoodistoSelect(
-                VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus(
-                  {
-                    koulutusmoduuli:
-                      VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuoritus(
-                        {
-                          kuvaus: defaultFinnishKuvaus,
-                          laajuus: defaultLaajuusOpintopisteissa,
-                          tunniste
-                        }
-                      )
-                  }
+                createVapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus(
+                  tunniste
                 )
               )
             }
@@ -631,15 +514,9 @@ export const AddNewVSTOsasuoritusView: React.FC<
             )}
             onSelect={(tunniste, _isNew) => {
               onKoodistoSelect(
-                VSTKotoutumiskoulutuksenKieliJaViestintäosaamisenOsasuoritus({
-                  koulutusmoduuli:
-                    VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenKoulutusmoduuli2022(
-                      {
-                        tunniste,
-                        laajuus: defaultLaajuusOpintopisteissa
-                      }
-                    )
-                })
+                createVSTKotoutumiskoulutuksenKieliJaViestintäosaamisenOsasuoritus(
+                  tunniste
+                )
               )
             }}
             onRemove={onRemoveKoodisto}
@@ -651,12 +528,9 @@ export const AddNewVSTOsasuoritusView: React.FC<
             addNewText={t('Lisää kokonaisuus')}
             onSelect={(tunniste, _isNew) => {
               onKoodistoSelect(
-                VapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus({
-                  koulutusmoduuli: VapaanSivistystyönLukutaidonKokonaisuus({
-                    tunniste,
-                    laajuus: defaultLaajuusOpintopisteissa
-                  })
-                })
+                createVapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus(
+                  tunniste
+                )
               )
             }}
             onRemove={onRemoveKoodisto}
@@ -748,16 +622,8 @@ export const AddNewVSTOsasuoritusView: React.FC<
             )}
             onSelect={(tunniste, _isNew) => {
               onKoodistoSelect(
-                VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenAlaosasuoritus(
-                  {
-                    koulutusmoduuli:
-                      VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaamisenAlasuorituksenKoulutusmoduuli2022(
-                        {
-                          tunniste,
-                          laajuus: defaultLaajuusOpintopisteissa
-                        }
-                      )
-                  }
+                createVSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenAlaosasuoritus(
+                  tunniste
                 )
               )
             }}
@@ -771,16 +637,9 @@ export const AddNewVSTOsasuoritusView: React.FC<
             addNewText={t('Lisää osasuoritus')}
             onSelect={(tunniste, _isNew) => {
               onKoodistoSelect(
-                VSTKotoutumiskoulutusValinnaistenOpintojenAlaosasuoritus({
-                  koulutusmoduuli:
-                    VSTKotoutumiskoulutuksenValinnaistenOpintojenAlasuorituksenKoulutusmoduuli2022(
-                      {
-                        tunniste,
-                        kuvaus: defaultFinnishKuvaus,
-                        laajuus: defaultLaajuusOpintopisteissa
-                      }
-                    )
-                })
+                createVSTKotoutumiskoulutusValinnaistenOpintojenAlaosasuoritus(
+                  tunniste
+                )
               )
             }}
             onRemove={onRemovePaikallinenKoodisto}
