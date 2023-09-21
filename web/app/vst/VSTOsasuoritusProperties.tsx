@@ -261,7 +261,10 @@ export const AddNewVSTOsasuoritusView: React.FC<
   return (
     <ColumnRow indent={props.level + 1}>
       <Column span={10}>
-        {isVapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus(data) && (
+        {(isVapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus(data) ||
+          isVapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus(
+            data
+          )) && (
           <PaikallinenOsasuoritusSelect
             addNewText={t('Lisää osasuoritus')}
             onSelect={(tunniste) =>
@@ -273,6 +276,73 @@ export const AddNewVSTOsasuoritusView: React.FC<
             }
             onRemove={onRemovePaikallinenKoodisto}
           />
+        )}
+        {(isVapaanSivistystyönJotpaKoulutuksenSuoritus(data) ||
+          isVapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus(data)) && (
+          <PaikallinenOsasuoritusSelect
+            addNewText={t('Lisää osasuoritus')}
+            onSelect={(tunniste, isNew) =>
+              onKoodistoSelect(
+                createVapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus(
+                  tunniste
+                ),
+                isNew
+              )
+            }
+            onRemove={onRemovePaikallinenKoodisto}
+            tunnisteet={storedOsasuoritustunnisteet}
+          />
+        )}
+        {isVapaanSivistystyönLukutaitokoulutuksenSuoritus(data) && (
+          <KoodistoSelect
+            koodistoUri="vstlukutaitokoulutuksenkokonaisuus"
+            addNewText={t('Lisää kokonaisuus')}
+            onSelect={(tunniste, _isNew) => {
+              onKoodistoSelect(
+                createVapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus(
+                  tunniste
+                )
+              )
+            }}
+            onRemove={onRemoveKoodisto}
+          />
+        )}
+        {isOppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus(
+          data
+        ) && (
+          <>
+            <KoodistoSelect
+              koodistoUri="vstosaamiskokonaisuus"
+              addNewText={t('Lisää osaamiskokonaisuus')}
+              onSelect={(tunniste) => {
+                onKoodistoSelect(
+                  createOppivelvollisilleSuunnatunVapaanSivistystyönOsaamiskokonaisuudenSuoritus(
+                    tunniste
+                  )
+                )
+              }}
+              onRemove={onRemoveKoodisto}
+            />
+            <KoodistoSelect
+              koodistoUri="vstmuutopinnot"
+              addNewText={t('Lisää suuntautumisopinto')}
+              onSelect={(tunniste) => {
+                onKoodistoSelect(
+                  OppivelvollisilleSuunnatunVapaanSivistystyönValinnaistenSuuntautumisopintojenSuoritus(
+                    {
+                      koulutusmoduuli: {
+                        $class:
+                          'fi.oph.koski.schema.OppivelvollisilleSuunnatunVapaanSivistystyönValinnaisetSuuntautumisopinnot',
+                        // @ts-expect-error Tyyppi kavennettu jo
+                        tunniste
+                      }
+                    }
+                  )
+                )
+              }}
+              onRemove={onRemoveKoodisto}
+            />
+          </>
         )}
         {isOppivelvollisilleSuunnatunVapaanSivistystyönOsaamiskokonaisuudenSuoritus(
           data
@@ -373,59 +443,6 @@ export const AddNewVSTOsasuoritusView: React.FC<
             onRemove={onRemovePaikallinenKoodisto}
           />
         )}
-        {(isVapaanSivistystyönJotpaKoulutuksenSuoritus(data) ||
-          isVapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus(data)) && (
-          <PaikallinenOsasuoritusSelect
-            addNewText={t('Lisää osasuoritus')}
-            onSelect={(tunniste, isNew) =>
-              onKoodistoSelect(
-                createVapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus(
-                  tunniste
-                ),
-                isNew
-              )
-            }
-            onRemove={onRemovePaikallinenKoodisto}
-            tunnisteet={storedOsasuoritustunnisteet}
-          />
-        )}
-        {isOppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus(
-          data
-        ) && (
-          <>
-            <KoodistoSelect
-              koodistoUri="vstosaamiskokonaisuus"
-              addNewText={t('Lisää osaamiskokonaisuus')}
-              onSelect={(tunniste) => {
-                onKoodistoSelect(
-                  createOppivelvollisilleSuunnatunVapaanSivistystyönOsaamiskokonaisuudenSuoritus(
-                    tunniste
-                  )
-                )
-              }}
-              onRemove={onRemoveKoodisto}
-            />
-            <KoodistoSelect
-              koodistoUri="vstmuutopinnot"
-              addNewText={t('Lisää suuntautumisopinto')}
-              onSelect={(tunniste) => {
-                onKoodistoSelect(
-                  OppivelvollisilleSuunnatunVapaanSivistystyönValinnaistenSuuntautumisopintojenSuoritus(
-                    {
-                      koulutusmoduuli: {
-                        $class:
-                          'fi.oph.koski.schema.OppivelvollisilleSuunnatunVapaanSivistystyönValinnaisetSuuntautumisopinnot',
-                        // @ts-expect-error Tyyppi kavennettu jo
-                        tunniste
-                      }
-                    }
-                  )
-                )
-              }}
-              onRemove={onRemoveKoodisto}
-            />
-          </>
-        )}
         {isOppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus(
           data
         ) && (
@@ -491,21 +508,6 @@ export const AddNewVSTOsasuoritusView: React.FC<
             )}
           </>
         )}
-        {isVapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus(
-          data
-        ) && (
-          <PaikallinenOsasuoritusSelect
-            addNewText={t('Lisää osasuoritus')}
-            onSelect={(tunniste) =>
-              onKoodistoSelect(
-                createVapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus(
-                  tunniste
-                )
-              )
-            }
-            onRemove={onRemovePaikallinenKoodisto}
-          />
-        )}
         {isVSTKotoutumiskoulutuksenKieliJaViestintäosaamisenSuoritus2022(
           data
         ) && (
@@ -517,20 +519,6 @@ export const AddNewVSTOsasuoritusView: React.FC<
             onSelect={(tunniste, _isNew) => {
               onKoodistoSelect(
                 createVSTKotoutumiskoulutuksenKieliJaViestintäosaamisenOsasuoritus(
-                  tunniste
-                )
-              )
-            }}
-            onRemove={onRemoveKoodisto}
-          />
-        )}
-        {isVapaanSivistystyönLukutaitokoulutuksenSuoritus(data) && (
-          <KoodistoSelect
-            koodistoUri="vstlukutaitokoulutuksenkokonaisuus"
-            addNewText={t('Lisää kokonaisuus')}
-            onSelect={(tunniste, _isNew) => {
-              onKoodistoSelect(
-                createVapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus(
                   tunniste
                 )
               )
