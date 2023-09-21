@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback, useContext, useEffect, useMemo } from 'react'
 import { useSchema } from '../appstate/constraints'
 import { append } from '../util/fp/arrays'
 import { KansalainenOnly } from '../components-v2/access/KansalainenOnly'
@@ -80,8 +80,7 @@ import { Infobox } from '../components/Infobox'
 import { useOsasuorituksetExpand } from './../osasuoritus/hooks'
 import { useInfoLink } from './infoLinkHook'
 import { useKoodistoFiller } from '../appstate/koodisto'
-import { assortedPreferenceType, usePreferences } from '../appstate/preferences'
-import { TaiteenPerusopetuksenPaikallinenOpintokokonaisuus } from '../types/fi/oph/koski/schema/TaiteenPerusopetuksenPaikallinenOpintokokonaisuus'
+import { OpiskeluoikeusContext } from '../appstate/opiskeluoikeus'
 
 type VSTEditorProps =
   AdaptedOpiskeluoikeusEditorProps<VapaanSivistystyönOpiskeluoikeus>
@@ -96,9 +95,15 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
 
   const fillKoodistot = useKoodistoFiller()
 
+  const { setOrganisaatio } = useContext(OpiskeluoikeusContext)
+
   // Oppilaitos
   const organisaatio =
     props.opiskeluoikeus.oppilaitos || props.opiskeluoikeus.koulutustoimija
+
+  useEffect(() => {
+    setOrganisaatio(organisaatio)
+  }, [organisaatio, setOrganisaatio])
 
   // Päätason suoritus
   const [päätasonSuoritus, setPäätasonSuoritus] = usePäätasonSuoritus(form)
@@ -382,8 +387,7 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
             level: rootLevel,
             // Polku, johon uusi osasuoritus lisätään. Polun tulee sisältää "osasuoritukset"-property.
             // @ts-expect-error Korjaa tyyppi
-            pathWithOsasuoritukset: päätasonSuoritus.path,
-            organisaatio
+            pathWithOsasuoritukset: päätasonSuoritus.path
           }}
           completed={(rowIndex) => {
             const osasuoritus = (päätasonSuoritus.suoritus.osasuoritukset ||

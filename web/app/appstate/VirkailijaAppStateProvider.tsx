@@ -7,6 +7,7 @@ import { OrganisaatioHierarkiaProvider } from './organisaatioHierarkia'
 import { PerusteProvider } from './peruste'
 import { PreferencesProvider } from './preferences'
 import { UserProvider } from './user'
+import { OpiskeluoikeusProvider } from './opiskeluoikeus'
 
 export type AppStateProviderProps = React.PropsWithChildren<{
   user: UserWithAccessRights
@@ -21,7 +22,11 @@ export const VirkailijaAppStateProvider: React.FC<AppStateProviderProps> = (
         <KoodistoProvider>
           <OrganisaatioHierarkiaProvider>
             <PreferencesProvider>
-              <ConstraintsProvider>{props.children}</ConstraintsProvider>
+              <ConstraintsProvider>
+                <OpiskeluoikeusProvider>
+                  {props.children}
+                </OpiskeluoikeusProvider>
+              </ConstraintsProvider>
             </PreferencesProvider>
           </OrganisaatioHierarkiaProvider>
         </KoodistoProvider>

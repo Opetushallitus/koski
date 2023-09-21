@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback, useContext, useMemo } from 'react'
 import { DateEdit, DateView } from '../components-v2/controls/DateField'
 import { LocalizedTextView } from '../components-v2/controls/LocalizedTestField'
 import { FormField } from '../components-v2/forms/FormField'
@@ -175,6 +175,7 @@ import {
   createVSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenAlaosasuoritus,
   createVSTKotoutumiskoulutusValinnaistenOpintojenAlaosasuoritus
 } from './VSTOsasuoritukset'
+import { OpiskeluoikeusContext } from '../appstate/opiskeluoikeus'
 
 type AddNewVSTOsasuoritusViewProps = {
   level: number
@@ -189,7 +190,6 @@ type AddNewVSTOsasuoritusViewProps = {
     | VSTOsasuoritusOsasuorituksilla
     | VapaanSivistystyönPäätasonSuoritus
   >
-  organisaatio: Oppilaitos | Koulutustoimija | undefined
 }
 
 export const AddNewVSTOsasuoritusView: React.FC<
@@ -201,6 +201,8 @@ export const AddNewVSTOsasuoritusView: React.FC<
   )
   const { pathWithOsasuoritukset, createOsasuoritus } = props
 
+  const { organisaatio } = useContext(OpiskeluoikeusContext)
+
   const preferencesType =
     isVapaanSivistystyönJotpaKoulutuksenSuoritus(data) ||
     isVapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus(data)
@@ -209,7 +211,7 @@ export const AddNewVSTOsasuoritusView: React.FC<
 
   const osasuoritukset =
     usePreferences<VapaanSivistystyönJotpaKoulutuksenOsasuoritus>(
-      props.organisaatio?.oid,
+      organisaatio?.oid,
       preferencesType
     )
 
