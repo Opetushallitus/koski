@@ -20,14 +20,14 @@ jobs:
       - name: Set up Java 11
         uses: actions/setup-java@v3
         with:
-          java-version: '11'
-          architecture: 'x64'
-          distribution: 'zulu'
+          java-version: "11"
+          architecture: "x64"
+          distribution: "zulu"
 
       - name: Setup Node 16
         uses: actions/setup-node@v3
         with:
-          node-version: "16.19.0"
+          node-version: "18.18.0"
 
       - name: Cache Maven packages
         uses: actions/cache@v3
@@ -62,7 +62,7 @@ jobs:
         if: ${{ failure() }}
         with:
           status: ${{ job.status }}
-          notification_title: 'Run Valpas performance tests: failure in valpas-organisaatio-listaus'
+          notification_title: "Run Valpas performance tests: failure in valpas-organisaatio-listaus"
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
@@ -75,14 +75,14 @@ jobs:
       - name: Set up Java 11
         uses: actions/setup-java@v3
         with:
-          java-version: '11'
-          architecture: 'x64'
-          distribution: 'zulu'
+          java-version: "11"
+          architecture: "x64"
+          distribution: "zulu"
 
       - name: Setup Node 16
         uses: actions/setup-node@v3
         with:
-          node-version: "16.19.0"
+          node-version: "18.18.0"
 
       - name: Cache Maven packages
         uses: actions/cache@v3
@@ -117,6 +117,6 @@ jobs:
         if: ${{ failure() }}
         with:
           status: ${{ job.status }}
-          notification_title: 'Run Valpas performance tests: failure in valpas-oppija-detaalit'
+          notification_title: "Run Valpas performance tests: failure in valpas-oppija-detaalit"
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

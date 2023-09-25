@@ -26,14 +26,14 @@ jobs:
       - name: Set up Java 11
         uses: actions/setup-java@v3
         with:
-          java-version: '11'
-          architecture: 'x64'
-          distribution: 'zulu'
+          java-version: "11"
+          architecture: "x64"
+          distribution: "zulu"
 
       - name: Setup Node 16
         uses: actions/setup-node@v3
         with:
-          node-version: "16.19.0"
+          node-version: "18.18.0"
 
       - name: Cache Maven packages
         uses: actions/cache@v3
@@ -64,12 +64,12 @@ jobs:
         if: ${{ failure() }}
         with:
           status: ${{ job.status }}
-          notification_title: 'Run performance tests: failure in randomget-light'
+          notification_title: "Run performance tests: failure in randomget-light"
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
   insert_light:
-    needs: [ random_get_light ]
+    needs: [random_get_light]
     name: insert-light
     runs-on: ubuntu-20.04
     steps:
@@ -78,14 +78,14 @@ jobs:
       - name: Set up Java 11
         uses: actions/setup-java@v3
         with:
-          java-version: '11'
-          architecture: 'x64'
-          distribution: 'zulu'
+          java-version: "11"
+          architecture: "x64"
+          distribution: "zulu"
 
       - name: Setup Node 16
         uses: actions/setup-node@v3
         with:
-          node-version: "16.19.0"
+          node-version: "18.18.0"
 
       - name: Cache Maven packages
         uses: actions/cache@v3
@@ -116,12 +116,12 @@ jobs:
         if: ${{ failure() }}
         with:
           status: ${{ job.status }}
-          notification_title: 'Run performance tests: failure in insert-light'
+          notification_title: "Run performance tests: failure in insert-light"
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
   mixed-overload:
-    needs: [ insert_light ]
+    needs: [insert_light]
     name: mixed-overload
     runs-on: ubuntu-20.04
     steps:
@@ -130,14 +130,14 @@ jobs:
       - name: Set up Java 11
         uses: actions/setup-java@v3
         with:
-          java-version: '11'
-          architecture: 'x64'
-          distribution: 'zulu'
+          java-version: "11"
+          architecture: "x64"
+          distribution: "zulu"
 
       - name: Setup Node 16
         uses: actions/setup-node@v3
         with:
-          node-version: "16.19.0"
+          node-version: "18.18.0"
 
       - name: Cache Maven packages
         uses: actions/cache@v3
@@ -168,12 +168,12 @@ jobs:
         if: ${{ failure() }}
         with:
           status: ${{ job.status }}
-          notification_title: 'Run performance tests: failure in mixed-overload'
+          notification_title: "Run performance tests: failure in mixed-overload"
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
   valpas-organisaatio-listaus:
-    needs: [ insert_light ]
+    needs: [insert_light]
     name: valpas-organisaatio-listaus
     runs-on: ubuntu-20.04
     steps:
@@ -182,14 +182,14 @@ jobs:
       - name: Set up Java 11
         uses: actions/setup-java@v3
         with:
-          java-version: '11'
-          architecture: 'x64'
-          distribution: 'zulu'
+          java-version: "11"
+          architecture: "x64"
+          distribution: "zulu"
 
       - name: Setup Node 16
         uses: actions/setup-node@v3
         with:
-          node-version: "16.19.0"
+          node-version: "18.18.0"
 
       - name: Cache Maven packages
         uses: actions/cache@v3
@@ -224,12 +224,12 @@ jobs:
         if: ${{ failure() }}
         with:
           status: ${{ job.status }}
-          notification_title: 'Run performance tests: failure in valpas-organisaatio-listaus'
+          notification_title: "Run performance tests: failure in valpas-organisaatio-listaus"
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
   valpas-oppija-detaalit:
-    needs: [ insert_light ]
+    needs: [insert_light]
     name: valpas-oppija-detaalit
     runs-on: ubuntu-20.04
     steps:
@@ -238,14 +238,14 @@ jobs:
       - name: Set up Java 11
         uses: actions/setup-java@v3
         with:
-          java-version: '11'
-          architecture: 'x64'
-          distribution: 'zulu'
+          java-version: "11"
+          architecture: "x64"
+          distribution: "zulu"
 
       - name: Setup Node 16
         uses: actions/setup-node@v3
         with:
-          node-version: "16.19.0"
+          node-version: "18.18.0"
 
       - name: Cache Maven packages
         uses: actions/cache@v3
@@ -280,6 +280,6 @@ jobs:
         if: ${{ failure() }}
         with:
           status: ${{ job.status }}
-          notification_title: 'Run performance tests: failure in valpas-oppija-detaalit'
+          notification_title: "Run performance tests: failure in valpas-oppija-detaalit"
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

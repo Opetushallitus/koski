@@ -1,5 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0">
+<project
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0">
   <modelVersion>4.0.0</modelVersion>
   <groupId>fi.vm.sade</groupId>
   <artifactId>koski</artifactId>
@@ -394,7 +396,7 @@
             </goals>
             <configuration>
               <workingDirectory>web</workingDirectory>
-              <nodeVersion>v16.19.0</nodeVersion>
+              <nodeVersion>v18.18.0</nodeVersion>
             </configuration>
           </execution>
           <execution>
@@ -434,7 +436,7 @@
             </goals>
             <configuration>
               <workingDirectory>valpas-web</workingDirectory>
-              <nodeVersion>v16.19.0</nodeVersion>
+              <nodeVersion>v18.18.0</nodeVersion>
             </configuration>
           </execution>
           <execution>
@@ -552,7 +554,8 @@
             </goals>
             <configuration>
               <executable>bash</executable>
-              <commandlineArgs>scripts/create-buildversion.sh ${basedir}/target/webapp/buildversion.txt ${project.version}</commandlineArgs>
+              <commandlineArgs>scripts/create-buildversion.sh
+                ${basedir}/target/webapp/buildversion.txt ${project.version}</commandlineArgs>
             </configuration>
           </execution>
           <execution>
