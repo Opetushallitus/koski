@@ -1,115 +1,157 @@
 [
   {
-    "koodiUri": "arviointiasteikkocorerequirementsib_a",
-    "koodiArvo": "A",
     "metadata": [
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Excellent",
+        "kuvaus": null,
         "lyhytNimi": "A",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkocorerequirementsib_a",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "A"
   },
   {
-    "koodiUri": "arviointiasteikkocorerequirementsib_b",
-    "koodiArvo": "B",
     "metadata": [
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Good",
+        "kuvaus": null,
         "lyhytNimi": "B",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkocorerequirementsib_b",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "B"
   },
   {
-    "koodiUri": "arviointiasteikkocorerequirementsib_c",
-    "koodiArvo": "C",
     "metadata": [
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Satisfactory",
+        "kuvaus": null,
         "lyhytNimi": "C",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkocorerequirementsib_c",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "C"
   },
   {
-    "koodiUri": "arviointiasteikkocorerequirementsib_d",
-    "koodiArvo": "D",
     "metadata": [
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Mediocre",
+        "kuvaus": null,
         "lyhytNimi": "D",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkocorerequirementsib_d",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "D"
   },
   {
-    "koodiUri": "arviointiasteikkocorerequirementsib_e",
-    "koodiArvo": "E",
     "metadata": [
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Elementary",
+        "kuvaus": null,
         "lyhytNimi": "E",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkocorerequirementsib_e",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "E"
   },
   {
-    "koodiUri": "arviointiasteikkocorerequirementsib_p",
-    "koodiArvo": "P",
     "metadata": [
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Pass",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkocorerequirementsib_p",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "P"
   }
 ]

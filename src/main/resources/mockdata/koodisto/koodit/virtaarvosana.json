@@ -1,393 +1,573 @@
 [
   {
+    "metadata": [
+      {
+        "nimi": "1",
+        "kuvaus": "",
+        "lyhytNimi": "1",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "1",
+        "kuvaus": "",
+        "lyhytNimi": "1",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "virtaarvosanaasteikko_1",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
     "koodiUri": "virtaarvosana_1",
-    "koodiArvo": "1",
+    "versio": 1,
+    "koodiArvo": "1"
+  },
+  {
     "metadata": [
       {
-        "nimi": "1",
-        "lyhytNimi": "1",
+        "nimi": "2",
         "kuvaus": "",
+        "lyhytNimi": "2",
         "kieli": "FI"
       },
       {
-        "nimi": "1",
-        "lyhytNimi": "1",
+        "nimi": "2",
         "kuvaus": "",
+        "lyhytNimi": "2",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "virtaarvosanaasteikko_1",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
     "koodiUri": "virtaarvosana_2",
-    "koodiArvo": "2",
+    "versio": 1,
+    "koodiArvo": "2"
+  },
+  {
     "metadata": [
       {
-        "nimi": "2",
-        "lyhytNimi": "2",
+        "nimi": "3",
         "kuvaus": "",
+        "lyhytNimi": "3",
         "kieli": "FI"
       },
       {
-        "nimi": "2",
-        "lyhytNimi": "2",
+        "nimi": "3",
         "kuvaus": "",
+        "lyhytNimi": "3",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "virtaarvosanaasteikko_1",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
     "koodiUri": "virtaarvosana_3",
-    "koodiArvo": "3",
+    "versio": 1,
+    "koodiArvo": "3"
+  },
+  {
     "metadata": [
       {
-        "nimi": "3",
-        "lyhytNimi": "3",
+        "nimi": "4",
         "kuvaus": "",
+        "lyhytNimi": "4",
         "kieli": "FI"
       },
       {
-        "nimi": "3",
-        "lyhytNimi": "3",
+        "nimi": "4",
         "kuvaus": "",
+        "lyhytNimi": "4",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "virtaarvosanaasteikko_1",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
     "koodiUri": "virtaarvosana_4",
-    "koodiArvo": "4",
+    "versio": 1,
+    "koodiArvo": "4"
+  },
+  {
     "metadata": [
       {
-        "nimi": "4",
-        "lyhytNimi": "4",
+        "nimi": "5",
         "kuvaus": "",
+        "lyhytNimi": "5",
         "kieli": "FI"
       },
       {
-        "nimi": "4",
-        "lyhytNimi": "4",
+        "nimi": "5",
         "kuvaus": "",
+        "lyhytNimi": "5",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "virtaarvosanaasteikko_1",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
     "koodiUri": "virtaarvosana_5",
-    "koodiArvo": "5",
+    "versio": 1,
+    "koodiArvo": "5"
+  },
+  {
     "metadata": [
       {
-        "nimi": "5",
-        "lyhytNimi": "5",
+        "nimi": "approbatur",
         "kuvaus": "",
+        "lyhytNimi": "A",
         "kieli": "FI"
       },
       {
-        "nimi": "5",
-        "lyhytNimi": "5",
+        "nimi": "approbatur",
         "kuvaus": "",
+        "lyhytNimi": "A",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "virtaarvosanaasteikko_5",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
     "koodiUri": "virtaarvosana_a",
-    "koodiArvo": "A",
-    "metadata": [
-      {
-        "nimi": "approbatur",
-        "lyhytNimi": "A",
-        "kuvaus": "",
-        "kieli": "FI"
-      },
-      {
-        "nimi": "approbatur",
-        "lyhytNimi": "A",
-        "kuvaus": "",
-        "kieli": "SV"
-      },
-      {
-        "kieli": "EN"
-      }
-    ],
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "A"
   },
   {
-    "koodiUri": "virtaarvosana_arvosanaeikaytossa",
-    "koodiArvo": "Arvosana ei kaytossa",
     "metadata": [
       {
         "nimi": "Arvosana ei käytössä",
-        "lyhytNimi": "EiKaytossa",
         "kuvaus": "",
+        "lyhytNimi": "EiKaytossa",
         "kieli": "FI"
       },
       {
         "nimi": "Vitsord ej i bruk",
+        "kuvaus": "",
         "lyhytNimi": "EjIBruk",
-        "kuvaus": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "virtaarvosanaasteikko_6",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtaarvosana_arvosanaeikaytossa",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "Arvosana ei kaytossa"
   },
   {
+    "metadata": [
+      {
+        "nimi": "lubenter approbatur",
+        "kuvaus": "",
+        "lyhytNimi": "B",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "lubenter approbatur",
+        "kuvaus": "",
+        "lyhytNimi": "B",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "virtaarvosanaasteikko_5",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
     "koodiUri": "virtaarvosana_b",
-    "koodiArvo": "B",
+    "versio": 1,
+    "koodiArvo": "B"
+  },
+  {
     "metadata": [
       {
-        "nimi": "lubenter approbatur",
-        "lyhytNimi": "B",
+        "nimi": "cum laude approbatur",
         "kuvaus": "",
+        "lyhytNimi": "C",
         "kieli": "FI"
       },
       {
-        "nimi": "lubenter approbatur",
-        "lyhytNimi": "B",
+        "nimi": "cum laude approbatur",
         "kuvaus": "",
+        "lyhytNimi": "C",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "virtaarvosanaasteikko_5",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
     "koodiUri": "virtaarvosana_c",
-    "koodiArvo": "C",
+    "versio": 1,
+    "koodiArvo": "C"
+  },
+  {
     "metadata": [
       {
-        "nimi": "cum laude approbatur",
-        "lyhytNimi": "C",
+        "nimi": "eximia cum laude approbatur",
         "kuvaus": "",
+        "lyhytNimi": "E",
         "kieli": "FI"
       },
       {
-        "nimi": "cum laude approbatur",
-        "lyhytNimi": "C",
+        "nimi": "eximia cum laude approbatur",
         "kuvaus": "",
+        "lyhytNimi": "E",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "virtaarvosanaasteikko_5",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
     "koodiUri": "virtaarvosana_e",
-    "koodiArvo": "E",
-    "metadata": [
-      {
-        "nimi": "eximia cum laude approbatur",
-        "lyhytNimi": "E",
-        "kuvaus": "",
-        "kieli": "FI"
-      },
-      {
-        "nimi": "eximia cum laude approbatur",
-        "lyhytNimi": "E",
-        "kuvaus": "",
-        "kieli": "SV"
-      },
-      {
-        "kieli": "EN"
-      }
-    ],
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "E"
   },
   {
-    "koodiUri": "virtaarvosana_ht",
-    "koodiArvo": "HT",
     "metadata": [
       {
         "nimi": "hyvät tiedot",
-        "lyhytNimi": "HT",
         "kuvaus": "",
+        "lyhytNimi": "HT",
         "kieli": "FI"
       },
       {
         "nimi": "goda insikter",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "virtaarvosanaasteikko_3",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtaarvosana_ht",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "HT"
   },
   {
-    "koodiUri": "virtaarvosana_hyv",
-    "koodiArvo": "HYV",
     "metadata": [
       {
         "nimi": "hyväksytty",
-        "lyhytNimi": "HYV",
         "kuvaus": "",
+        "lyhytNimi": "HYV",
         "kieli": "FI"
       },
       {
         "nimi": "godkänd",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "virtaarvosanaasteikko_1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "virtaarvosanaasteikko_2",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "virtaarvosanaasteikko_4",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtaarvosana_hyv",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "HYV"
   },
   {
-    "koodiUri": "virtaarvosana_kh",
-    "koodiArvo": "KH",
     "metadata": [
       {
         "nimi": "kiittäen hyväksytty",
-        "lyhytNimi": "KH",
         "kuvaus": "",
+        "lyhytNimi": "KH",
         "kieli": "FI"
       },
       {
         "nimi": "med beröm godkänd",
+        "kuvaus": "",
         "lyhytNimi": "",
-        "kuvaus": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "virtaarvosanaasteikko_4",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtaarvosana_kh",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "KH"
   },
   {
+    "metadata": [
+      {
+        "nimi": "laudatur",
+        "kuvaus": "",
+        "lyhytNimi": "L",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "laudatur",
+        "kuvaus": "",
+        "lyhytNimi": "L",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "virtaarvosanaasteikko_5",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
     "koodiUri": "virtaarvosana_l",
-    "koodiArvo": "L",
+    "versio": 1,
+    "koodiArvo": "L"
+  },
+  {
     "metadata": [
       {
-        "nimi": "laudatur",
-        "lyhytNimi": "L",
+        "nimi": "magna cum laude approbatur",
         "kuvaus": "",
+        "lyhytNimi": "M",
         "kieli": "FI"
       },
       {
-        "nimi": "laudatur",
-        "lyhytNimi": "L",
+        "nimi": "magna cum laude approbatur",
         "kuvaus": "",
+        "lyhytNimi": "M",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "virtaarvosanaasteikko_5",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
     "koodiUri": "virtaarvosana_m",
-    "koodiArvo": "M",
+    "versio": 1,
+    "koodiArvo": "M"
+  },
+  {
     "metadata": [
       {
-        "nimi": "magna cum laude approbatur",
-        "lyhytNimi": "M",
+        "nimi": "non sine laude approbatur",
         "kuvaus": "",
+        "lyhytNimi": "N",
         "kieli": "FI"
       },
       {
-        "nimi": "magna cum laude approbatur",
-        "lyhytNimi": "M",
+        "nimi": "non sine laude approbatur",
         "kuvaus": "",
+        "lyhytNimi": "N",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "virtaarvosanaasteikko_5",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
     "koodiUri": "virtaarvosana_n",
-    "koodiArvo": "N",
-    "metadata": [
-      {
-        "nimi": "non sine laude approbatur",
-        "lyhytNimi": "N",
-        "kuvaus": "",
-        "kieli": "FI"
-      },
-      {
-        "nimi": "non sine laude approbatur",
-        "lyhytNimi": "N",
-        "kuvaus": "",
-        "kieli": "SV"
-      },
-      {
-        "kieli": "EN"
-      }
-    ],
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "N"
   },
   {
-    "koodiUri": "virtaarvosana_tt",
-    "koodiArvo": "TT",
     "metadata": [
       {
         "nimi": "tyydyttävät tiedot",
-        "lyhytNimi": "TT",
         "kuvaus": "",
+        "lyhytNimi": "TT",
         "kieli": "FI"
       },
       {
         "nimi": "nöjaktiga insikter",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "virtaarvosanaasteikko_3",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtaarvosana_tt",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "TT"
   }
 ]

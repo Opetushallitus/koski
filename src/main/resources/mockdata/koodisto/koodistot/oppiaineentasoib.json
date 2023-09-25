@@ -1,27 +1,63 @@
 {
   "koodistoUri": "oppiaineentasoib",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/oppiaineentasoib",
+  "omistaja": null,
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "lukittu": null,
+  "withinCodes": [],
+  "includesCodes": [],
+  "levelsWithCodes": [],
+  "codesGroupUri": "koski",
+  "version": 1,
   "versio": 1,
+  "paivitysPvm": "2016-10-31",
+  "paivittajaOid": null,
+  "voimassaAlkuPvm": "2016-09-13",
+  "voimassaLoppuPvm": null,
+  "tila": "LUONNOS",
   "metadata": [
     {
-      "kieli": "FI",
+      "kieli": "EN",
       "nimi": "Oppiaineentaso IB",
-      "kuvaus": "Oppiaineen taso"
+      "kuvaus": "Oppiaineen taso",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
     },
     {
       "kieli": "SV",
       "nimi": "Oppiaineentaso IB",
-      "kuvaus": "Oppiaineen taso"
+      "kuvaus": "Oppiaineen taso",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
     },
     {
-      "kieli": "EN",
+      "kieli": "FI",
       "nimi": "Oppiaineentaso IB",
-      "kuvaus": "Oppiaineen taso"
+      "kuvaus": "Oppiaineen taso",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
     }
   ],
-  "codesGroupUri": "koski",
-  "voimassaAlkuPvm": "2016-09-13",
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "withinCodes": [],
-  "tila": "LUONNOS",
-  "version": 1
+  "codesVersions": []
 }

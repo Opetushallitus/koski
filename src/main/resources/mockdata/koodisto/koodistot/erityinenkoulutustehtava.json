@@ -1,17 +1,37 @@
 {
   "koodistoUri": "erityinenkoulutustehtava",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/erityinenkoulutustehtava",
+  "omistaja": null,
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "lukittu": null,
+  "withinCodes": [],
+  "includesCodes": [],
+  "levelsWithCodes": [],
+  "codesGroupUri": "koski",
+  "version": 2,
   "versio": 2,
+  "paivitysPvm": "2020-01-13",
+  "paivittajaOid": "1.2.246.562.24.47108241986",
+  "voimassaAlkuPvm": "2020-01-13",
+  "voimassaLoppuPvm": null,
+  "tila": "LUONNOS",
   "metadata": [
     {
       "kieli": "FI",
       "nimi": "erityinenkoulutustehtava",
-      "kuvaus": "erityinenkoulutustehtava"
+      "kuvaus": "erityinenkoulutustehtava",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
     }
   ],
-  "codesGroupUri": "koski",
-  "voimassaAlkuPvm": "2020-01-13",
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "withinCodes": [],
-  "tila": "LUONNOS",
-  "version": 2
+  "codesVersions": [
+    1
+  ]
 }

@@ -1,116 +1,158 @@
 [
   {
-    "koodiUri": "aineryhmaib_1",
-    "koodiArvo": "1",
     "metadata": [
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Studies in language and literature",
+        "kuvaus": null,
         "lyhytNimi": "Group 1",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aineryhmaib_1",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "1"
   },
   {
-    "koodiUri": "aineryhmaib_2",
-    "koodiArvo": "2",
     "metadata": [
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Language acquisition",
+        "kuvaus": null,
         "lyhytNimi": "Group 2",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aineryhmaib_2",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "2"
   },
   {
-    "koodiUri": "aineryhmaib_3",
-    "koodiArvo": "3",
     "metadata": [
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Individuals and societies",
+        "kuvaus": null,
         "lyhytNimi": "Group 3",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aineryhmaib_3",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "3"
   },
   {
-    "koodiUri": "aineryhmaib_4",
-    "koodiArvo": "4",
     "metadata": [
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Experimental sciences",
+        "kuvaus": null,
         "lyhytNimi": "Group 4",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aineryhmaib_4",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "4"
   },
   {
-    "koodiUri": "aineryhmaib_5",
-    "koodiArvo": "5",
     "metadata": [
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Mathematics",
+        "kuvaus": null,
         "lyhytNimi": "Group 5",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aineryhmaib_5",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "5"
   },
   {
-    "koodiUri": "aineryhmaib_6",
-    "koodiArvo": "6",
     "metadata": [
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "The arts",
+        "kuvaus": null,
         "lyhytNimi": "Group 6",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aineryhmaib_6",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "6"
   }
 ]

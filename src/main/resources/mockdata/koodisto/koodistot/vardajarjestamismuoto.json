@@ -1,22 +1,49 @@
 {
   "koodistoUri": "vardajarjestamismuoto",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/vardajarjestamismuoto",
+  "omistaja": "Opetushallitus",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "lukittu": null,
+  "withinCodes": [],
+  "includesCodes": [],
+  "levelsWithCodes": [],
+  "codesGroupUri": "varda",
+  "version": 2,
   "versio": 1,
+  "paivitysPvm": "2021-05-14",
+  "paivittajaOid": "1.2.246.562.24.21543894150",
+  "voimassaAlkuPvm": "2019-01-01",
+  "voimassaLoppuPvm": null,
+  "tila": "LUONNOS",
   "metadata": [
     {
       "kieli": "FI",
       "nimi": "Varda Järjestämismuoto",
-      "kuvaus": "Vardan Järjestämismuoto koodisto. Ylläpitäjä Opetushallitus, Varda-tiimi."
+      "kuvaus": "Vardan Järjestämismuoto koodisto. Ylläpitäjä Opetushallitus, Varda-tiimi.",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
     },
     {
       "kieli": "SV",
       "nimi": "Varda Form för anordnandet",
-      "kuvaus": "Varda Form för anordnandet"
+      "kuvaus": "Varda Form för anordnandet",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
     }
   ],
-  "codesGroupUri": "varda",
-  "voimassaAlkuPvm": "2019-01-01",
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "withinCodes": [],
-  "tila": "LUONNOS",
-  "version": 2
+  "codesVersions": []
 }

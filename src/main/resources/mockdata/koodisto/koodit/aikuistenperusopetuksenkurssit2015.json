@@ -1,107 +1,276 @@
 [
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_bi1",
-    "koodiArvo": "BI1",
+    "metadata": [
+      {
+        "nimi": "Suomen kielen ja kirjallisuuden perusteet",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [
+      {
+        "codeElementUri": "koskioppiaineetyleissivistava_ai",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_ai1",
+    "versio": 1,
+    "koodiArvo": "ÄI1"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Monimuotoiset tekstit",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [
+      {
+        "codeElementUri": "koskioppiaineetyleissivistava_ai",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_ai2",
+    "versio": 1,
+    "koodiArvo": "ÄI2"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Tekstien tuottaminen ja tulkitseminen",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [
+      {
+        "codeElementUri": "koskioppiaineetyleissivistava_ai",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_ai3",
+    "versio": 1,
+    "koodiArvo": "ÄI3"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Kieli ja kulttuuri",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [
+      {
+        "codeElementUri": "koskioppiaineetyleissivistava_ai",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_ai4",
+    "versio": 1,
+    "koodiArvo": "ÄI4"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Ilmaisutaidon kurssi",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [
+      {
+        "codeElementUri": "koskioppiaineetyleissivistava_ai",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_ai5",
+    "versio": 1,
+    "koodiArvo": "ÄI5"
+  },
+  {
     "metadata": [
       {
         "nimi": "Mitä elämä on?",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Vad är liv?",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "koskioppiaineetyleissivistava_bi",
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_bi1",
+    "versio": 1,
+    "koodiArvo": "BI1"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_bi2",
-    "koodiArvo": "BI2",
     "metadata": [
       {
         "nimi": "Kaupunkiekologia ja kestävä tulevaisuus",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Stadsekologi och hållbar utveckling",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "koskioppiaineetyleissivistava_bi",
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_bi2",
+    "versio": 1,
+    "koodiArvo": "BI2"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_bi3",
-    "koodiArvo": "BI3",
     "metadata": [
       {
         "nimi": "Ihminen",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Människan",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "koskioppiaineetyleissivistava_bi",
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_bi3",
+    "versio": 1,
+    "koodiArvo": "BI3"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_eaa1",
-    "koodiArvo": "EAA1",
     "metadata": [
       {
         "nimi": "Kielitaidon alkeet: Lähtökohtia opiskelulle",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "kielivalikoima_es",
@@ -113,24 +282,31 @@
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_eaa1",
+    "versio": 1,
+    "koodiArvo": "EAA1"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_eaa2",
-    "koodiArvo": "EAA2",
     "metadata": [
       {
         "nimi": "Kehittyvä kielitaito: Palvelu- ja viranomaistilanteet ja osallistuva kansalainen",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "kielivalikoima_es",
@@ -142,24 +318,31 @@
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_eaa2",
+    "versio": 1,
+    "koodiArvo": "EAA2"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_eaa3",
-    "koodiArvo": "EAA3",
     "metadata": [
       {
         "nimi": "Kehittyvä kielitaito: Kertomuksia minusta ja ympäristöstäni",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "kielivalikoima_es",
@@ -171,24 +354,31 @@
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_eaa3",
+    "versio": 1,
+    "koodiArvo": "EAA3"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_eaa4",
-    "koodiArvo": "EAA4",
     "metadata": [
       {
         "nimi": "Kehittyvä kielitaito: Ajankohtaiset ilmiöt",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "kielivalikoima_es",
@@ -200,24 +390,31 @@
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_eaa4",
+    "versio": 1,
+    "koodiArvo": "EAA4"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_eaa5",
-    "koodiArvo": "EAA5",
     "metadata": [
       {
         "nimi": "Kulttuurikohtaamisia",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "kielivalikoima_es",
@@ -229,24 +426,31 @@
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_eaa5",
+    "versio": 1,
+    "koodiArvo": "EAA5"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_eaa6",
-    "koodiArvo": "EAA6",
     "metadata": [
       {
         "nimi": "Kieli maailmassa",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "kielivalikoima_es",
@@ -258,24 +462,31 @@
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_eaa6",
+    "versio": 1,
+    "koodiArvo": "EAA6"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_eaa7",
-    "koodiArvo": "EAA7",
     "metadata": [
       {
         "nimi": "Liikkuvuus ja kansainvälisyys",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "kielivalikoima_es",
@@ -287,24 +498,31 @@
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_eaa7",
+    "versio": 1,
+    "koodiArvo": "EAA7"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_eaa8",
-    "koodiArvo": "EAA8",
     "metadata": [
       {
         "nimi": "Avaimet elinikäiseen kieltenopiskeluun",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "kielivalikoima_es",
@@ -316,751 +534,850 @@
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_eaa8",
+    "versio": 1,
+    "koodiArvo": "EAA8"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_ena1",
-    "koodiArvo": "ENA1",
     "metadata": [
       {
         "nimi": "Kielitaidon alkeet: Lähtökohtia englannin opiskelulle",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Grunderna i språket: Utgångspunkter för studier i engelska",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
-      {
-        "codeElementUri": "kielivalikoima_en",
-        "codeElementVersion": 1,
-        "passive": false
-      },
       {
         "codeElementUri": "koskioppiaineetyleissivistava_a1",
         "codeElementVersion": 1,
         "passive": false
+      },
+      {
+        "codeElementUri": "kielivalikoima_en",
+        "codeElementVersion": 1,
+        "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_ena1",
+    "versio": 1,
+    "koodiArvo": "ENA1"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_ena10",
-    "koodiArvo": "ENA10",
     "metadata": [
       {
         "nimi": "Globaalienglanti",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Global engelska",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
-      {
-        "codeElementUri": "kielivalikoima_en",
-        "codeElementVersion": 1,
-        "passive": false
-      },
       {
         "codeElementUri": "koskioppiaineetyleissivistava_a1",
         "codeElementVersion": 1,
         "passive": false
+      },
+      {
+        "codeElementUri": "kielivalikoima_en",
+        "codeElementVersion": 1,
+        "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_ena10",
+    "versio": 1,
+    "koodiArvo": "ENA10"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_ena11",
-    "koodiArvo": "ENA11",
     "metadata": [
       {
         "nimi": "Liikkuvuus ja kansainvälisyys",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Rörlighet och internationella kontakter",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
-      {
-        "codeElementUri": "kielivalikoima_en",
-        "codeElementVersion": 1,
-        "passive": false
-      },
       {
         "codeElementUri": "koskioppiaineetyleissivistava_a1",
         "codeElementVersion": 1,
         "passive": false
+      },
+      {
+        "codeElementUri": "kielivalikoima_en",
+        "codeElementVersion": 1,
+        "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_ena11",
+    "versio": 1,
+    "koodiArvo": "ENA11"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_ena12",
-    "koodiArvo": "ENA12",
     "metadata": [
       {
         "nimi": "Avaimet elinikäiseen kieltenopiskeluun",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Nycklar till livslångt språklärande",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
-      {
-        "codeElementUri": "kielivalikoima_en",
-        "codeElementVersion": 1,
-        "passive": false
-      },
       {
         "codeElementUri": "koskioppiaineetyleissivistava_a1",
         "codeElementVersion": 1,
         "passive": false
+      },
+      {
+        "codeElementUri": "kielivalikoima_en",
+        "codeElementVersion": 1,
+        "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_ena12",
+    "versio": 1,
+    "koodiArvo": "ENA12"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_ena2",
-    "koodiArvo": "ENA2",
     "metadata": [
       {
         "nimi": "Kielitaidon alkeet: Perusviestintää arkipäivän sosiaalisissa tilanteissa",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Grunderna i språket: Grundläggande kommunikation i sociala situationer i vardagen",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
-      {
-        "codeElementUri": "kielivalikoima_en",
-        "codeElementVersion": 1,
-        "passive": false
-      },
       {
         "codeElementUri": "koskioppiaineetyleissivistava_a1",
         "codeElementVersion": 1,
         "passive": false
+      },
+      {
+        "codeElementUri": "kielivalikoima_en",
+        "codeElementVersion": 1,
+        "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_ena2",
+    "versio": 1,
+    "koodiArvo": "ENA2"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_ena3",
-    "koodiArvo": "ENA3",
     "metadata": [
       {
         "nimi": "Kielitaidon alkeet: Vuorovaikutus asiointitilanteissa",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Grunderna i språket: Kommunikation vid uträttande av ärenden",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
-      {
-        "codeElementUri": "kielivalikoima_en",
-        "codeElementVersion": 1,
-        "passive": false
-      },
       {
         "codeElementUri": "koskioppiaineetyleissivistava_a1",
         "codeElementVersion": 1,
         "passive": false
+      },
+      {
+        "codeElementUri": "kielivalikoima_en",
+        "codeElementVersion": 1,
+        "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_ena3",
+    "versio": 1,
+    "koodiArvo": "ENA3"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_ena4",
-    "koodiArvo": "ENA4",
     "metadata": [
       {
         "nimi": "Kehittyvä kielitaito: Opiskelu ja koulutus",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Växande språkkunskap: Studier och utbildning",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
-      {
-        "codeElementUri": "kielivalikoima_en",
-        "codeElementVersion": 1,
-        "passive": false
-      },
       {
         "codeElementUri": "koskioppiaineetyleissivistava_a1",
         "codeElementVersion": 1,
         "passive": false
+      },
+      {
+        "codeElementUri": "kielivalikoima_en",
+        "codeElementVersion": 1,
+        "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_ena4",
+    "versio": 1,
+    "koodiArvo": "ENA4"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_ena5",
-    "koodiArvo": "ENA5",
     "metadata": [
       {
         "nimi": "Kehittyvä kielitaito: Työelämässä toiminen ja muita muodollisia tilanteita",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Växande språkkunskap: Kommunikation i arbetslivet och i andra formella situationer",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
-      {
-        "codeElementUri": "kielivalikoima_en",
-        "codeElementVersion": 1,
-        "passive": false
-      },
       {
         "codeElementUri": "koskioppiaineetyleissivistava_a1",
         "codeElementVersion": 1,
         "passive": false
+      },
+      {
+        "codeElementUri": "kielivalikoima_en",
+        "codeElementVersion": 1,
+        "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_ena5",
+    "versio": 1,
+    "koodiArvo": "ENA5"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_ena6",
-    "koodiArvo": "ENA6",
     "metadata": [
       {
         "nimi": "Kehittyvä kielitaito: Palvelu- ja viranomaistilanteet ja osallistuva kansalainen",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Växande språkkunskap: Kommunikation i servicesituationer och med myndigheter, aktivt medborgarskap",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
-      {
-        "codeElementUri": "kielivalikoima_en",
-        "codeElementVersion": 1,
-        "passive": false
-      },
       {
         "codeElementUri": "koskioppiaineetyleissivistava_a1",
         "codeElementVersion": 1,
         "passive": false
+      },
+      {
+        "codeElementUri": "kielivalikoima_en",
+        "codeElementVersion": 1,
+        "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_ena6",
+    "versio": 1,
+    "koodiArvo": "ENA6"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_ena7",
-    "koodiArvo": "ENA7",
     "metadata": [
       {
         "nimi": "Kehittyvä kielitaito: Kertomuksia minusta ja ympäristöstäni",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Växande språkkunskap: Jag och min miljö",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
-      {
-        "codeElementUri": "kielivalikoima_en",
-        "codeElementVersion": 1,
-        "passive": false
-      },
       {
         "codeElementUri": "koskioppiaineetyleissivistava_a1",
         "codeElementVersion": 1,
         "passive": false
+      },
+      {
+        "codeElementUri": "kielivalikoima_en",
+        "codeElementVersion": 1,
+        "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_ena7",
+    "versio": 1,
+    "koodiArvo": "ENA7"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_ena8",
-    "koodiArvo": "ENA8",
     "metadata": [
       {
         "nimi": "Kehittyvä kielitaito: Ajankohtaiset ilmiöt",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Växande språkkunskap: Aktuella företeelser",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
-      {
-        "codeElementUri": "kielivalikoima_en",
-        "codeElementVersion": 1,
-        "passive": false
-      },
       {
         "codeElementUri": "koskioppiaineetyleissivistava_a1",
         "codeElementVersion": 1,
         "passive": false
+      },
+      {
+        "codeElementUri": "kielivalikoima_en",
+        "codeElementVersion": 1,
+        "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_ena8",
+    "versio": 1,
+    "koodiArvo": "ENA8"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_ena9",
-    "koodiArvo": "ENA9",
     "metadata": [
       {
         "nimi": "Kulttuurikohtaamisia",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Kulturmöten",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
+      {
+        "codeElementUri": "koskioppiaineetyleissivistava_a1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
       {
         "codeElementUri": "kielivalikoima_en",
         "codeElementVersion": 1,
         "passive": false
-      },
-      {
-        "codeElementUri": "koskioppiaineetyleissivistava_a1",
-        "codeElementVersion": 1,
-        "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_ena9",
+    "versio": 1,
+    "koodiArvo": "ENA9"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_et1",
-    "koodiArvo": "ET1",
     "metadata": [
       {
         "nimi": "Katsomukset ja ihmisoikeudet",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Livsåskådningar och mänskliga rättigheter",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "koskioppiaineetyleissivistava_kt",
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_et1",
+    "versio": 1,
+    "koodiArvo": "ET1"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_et2",
-    "koodiArvo": "ET2",
     "metadata": [
       {
         "nimi": "Ihmisenä kasvaminen",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Att växa som människa",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "koskioppiaineetyleissivistava_kt",
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_et2",
+    "versio": 1,
+    "koodiArvo": "ET2"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_fy1",
-    "koodiArvo": "FY1",
     "metadata": [
       {
         "nimi": "Fysiikka omassa elämässä ja elinympäristössä",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Fysik i det egna livet och livsmiljön",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "koskioppiaineetyleissivistava_fy",
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_fy1",
+    "versio": 1,
+    "koodiArvo": "FY1"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_fy2",
-    "koodiArvo": "FY2",
     "metadata": [
       {
         "nimi": "Fysiikka maailmankuvan rakentajana",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Fysiken som grund för världsbilden",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "koskioppiaineetyleissivistava_fy",
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_fy2",
+    "versio": 1,
+    "koodiArvo": "FY2"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_fy3",
-    "koodiArvo": "FY3",
     "metadata": [
       {
         "nimi": "Fysiikka yhteiskunnassa",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Fysik i samhället",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "koskioppiaineetyleissivistava_fy",
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_fy3",
+    "versio": 1,
+    "koodiArvo": "FY3"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_ge1",
-    "koodiArvo": "GE1",
     "metadata": [
       {
         "nimi": "Toimiva maapallo",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Vårt jordklot",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "koskioppiaineetyleissivistava_ge",
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_ge1",
+    "versio": 1,
+    "koodiArvo": "GE1"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_ge2",
-    "koodiArvo": "GE2",
     "metadata": [
       {
         "nimi": "Maapallo ihmisen elinympäristönä",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Jorden som livsmiljö för människan",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "koskioppiaineetyleissivistava_ge",
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_ge2",
+    "versio": 1,
+    "koodiArvo": "GE2"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_ge3",
-    "koodiArvo": "GE3",
     "metadata": [
       {
         "nimi": "Muuttuva maapallo ja kestävä tulevaisuus",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "En föränderlig värld och en hållbar framtid",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "koskioppiaineetyleissivistava_ge",
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_ge3",
+    "versio": 1,
+    "koodiArvo": "GE3"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_hi1",
-    "koodiArvo": "HI1",
     "metadata": [
       {
         "nimi": "Antiikista uuden ajan murrokseen",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Från antiken till modern tid",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "koskioppiaineetyleissivistava_hi",
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_hi1",
+    "versio": 1,
+    "koodiArvo": "HI1"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_hi2",
-    "koodiArvo": "HI2",
     "metadata": [
       {
         "nimi": "Teollisuusyhteiskunnan synnystä nykyaikaan",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Från industrisamhälle till nutid",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "koskioppiaineetyleissivistava_hi",
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_hi2",
+    "versio": 1,
+    "koodiArvo": "HI2"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_hi3",
-    "koodiArvo": "HI3",
     "metadata": [
       {
         "nimi": "Suomen historian käännekohdat",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Vändpunkter i Finlands historia",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "koskioppiaineetyleissivistava_hi",
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_hi3",
+    "versio": 1,
+    "koodiArvo": "HI3"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_iaa1",
-    "koodiArvo": "IAA1",
     "metadata": [
       {
         "nimi": "Kielitaidon alkeet: Lähtökohtia opiskelulle",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "kielivalikoima_it",
@@ -1072,24 +1389,31 @@
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_iaa1",
+    "versio": 1,
+    "koodiArvo": "IAA1"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_iaa2",
-    "koodiArvo": "IAA2",
     "metadata": [
       {
         "nimi": "Kehittyvä kielitaito: Palvelu- ja viranomaistilanteet ja osallistuva kansalainen",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "kielivalikoima_it",
@@ -1101,24 +1425,31 @@
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_iaa2",
+    "versio": 1,
+    "koodiArvo": "IAA2"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_iaa3",
-    "koodiArvo": "IAA3",
     "metadata": [
       {
         "nimi": "Kehittyvä kielitaito: Kertomuksia minusta ja ympäristöstäni",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "kielivalikoima_it",
@@ -1130,24 +1461,31 @@
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_iaa3",
+    "versio": 1,
+    "koodiArvo": "IAA3"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_iaa4",
-    "koodiArvo": "IAA4",
     "metadata": [
       {
         "nimi": "Kehittyvä kielitaito: Ajankohtaiset ilmiöt",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "kielivalikoima_it",
@@ -1159,24 +1497,31 @@
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_iaa4",
+    "versio": 1,
+    "koodiArvo": "IAA4"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_iaa5",
-    "koodiArvo": "IAA5",
     "metadata": [
       {
         "nimi": "Kulttuurikohtaamisia",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "kielivalikoima_it",
@@ -1188,24 +1533,31 @@
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_iaa5",
+    "versio": 1,
+    "koodiArvo": "IAA5"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_iaa6",
-    "koodiArvo": "IAA6",
     "metadata": [
       {
         "nimi": "Kieli maailmassa",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "kielivalikoima_it",
@@ -1217,24 +1569,31 @@
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_iaa6",
+    "versio": 1,
+    "koodiArvo": "IAA6"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_iaa7",
-    "koodiArvo": "IAA7",
     "metadata": [
       {
         "nimi": "Liikkuvuus ja kansainvälisyys",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "kielivalikoima_it",
@@ -1246,24 +1605,31 @@
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_iaa7",
+    "versio": 1,
+    "koodiArvo": "IAA7"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_iaa8",
-    "koodiArvo": "IAA8",
     "metadata": [
       {
         "nimi": "Avaimet elinikäiseen kieltenopiskeluun",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "kielivalikoima_it",
@@ -1275,111 +1641,166 @@
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_iaa8",
+    "versio": 1,
+    "koodiArvo": "IAA8"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_ke1",
-    "koodiArvo": "KE1",
     "metadata": [
       {
         "nimi": "Kemia omassa elämässä ja elinympäristössä",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Kemi i det egna livet och livsmiljön",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "koskioppiaineetyleissivistava_ke",
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_ke1",
+    "versio": 1,
+    "koodiArvo": "KE1"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_ke2",
-    "koodiArvo": "KE2",
     "metadata": [
       {
         "nimi": "Kemia maailmankuvan rakentajana",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Kemin som grund för världsbilden",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "koskioppiaineetyleissivistava_ke",
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_ke2",
+    "versio": 1,
+    "koodiArvo": "KE2"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_ke3",
-    "koodiArvo": "KE3",
     "metadata": [
       {
         "nimi": "Kemia yhteiskunnassa",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Kemi i samhället",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "koskioppiaineetyleissivistava_ke",
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_ke3",
+    "versio": 1,
+    "koodiArvo": "KE3"
   },
   {
+    "metadata": [
+      {
+        "nimi": "Kielitaidon alkeet: Lähtökohtia opiskelulle",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [
+      {
+        "codeElementUri": "kielivalikoima_xx",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koskioppiaineetyleissivistava_a1",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "aikuistenperusopetuksenkurssit2015_kxa1",
-    "koodiArvo": "KXA1",
+    "versio": 1,
+    "koodiArvo": "KXA1"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Kielitaidon alkeet: Lähtökohtia opiskelulle",
+        "nimi": "Kehittyvä kielitaito: Palvelu- ja viranomaistilanteet ja osallistuva kansalainen",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "kielivalikoima_xx",
@@ -1391,53 +1812,31 @@
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
-  },
-  {
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "aikuistenperusopetuksenkurssit2015_kxa2",
-    "koodiArvo": "KXA2",
-    "metadata": [
-      {
-        "nimi": "Kehittyvä kielitaito: Palvelu- ja viranomaistilanteet ja osallistuva kansalainen",
-        "kieli": "FI"
-      },
-      {
-        "kieli": "SV"
-      },
-      {
-        "kieli": "EN"
-      }
-    ],
     "versio": 1,
-    "withinCodeElements": [
-      {
-        "codeElementUri": "kielivalikoima_xx",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
-        "codeElementUri": "koskioppiaineetyleissivistava_a1",
-        "codeElementVersion": 1,
-        "passive": false
-      }
-    ]
+    "koodiArvo": "KXA2"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_kxa3",
-    "koodiArvo": "KXA3",
     "metadata": [
       {
         "nimi": "Kehittyvä kielitaito: Kertomuksia minusta ja ympäristöstäni",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "kielivalikoima_xx",
@@ -1449,24 +1848,31 @@
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_kxa3",
+    "versio": 1,
+    "koodiArvo": "KXA3"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_kxa4",
-    "koodiArvo": "KXA4",
     "metadata": [
       {
         "nimi": "Kehittyvä kielitaito: Ajankohtaiset ilmiöt",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "kielivalikoima_xx",
@@ -1478,24 +1884,31 @@
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_kxa4",
+    "versio": 1,
+    "koodiArvo": "KXA4"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_kxa5",
-    "koodiArvo": "KXA5",
     "metadata": [
       {
         "nimi": "Kulttuurikohtaamisia",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "kielivalikoima_xx",
@@ -1507,24 +1920,31 @@
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_kxa5",
+    "versio": 1,
+    "koodiArvo": "KXA5"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_kxa6",
-    "koodiArvo": "KXA6",
     "metadata": [
       {
         "nimi": "Kieli maailmassa",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "kielivalikoima_xx",
@@ -1536,24 +1956,31 @@
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_kxa6",
+    "versio": 1,
+    "koodiArvo": "KXA6"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_kxa7",
-    "koodiArvo": "KXA7",
     "metadata": [
       {
         "nimi": "Liikkuvuus ja kansainvälisyys",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "kielivalikoima_xx",
@@ -1565,24 +1992,31 @@
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_kxa7",
+    "versio": 1,
+    "koodiArvo": "KXA7"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_kxa8",
-    "koodiArvo": "KXA8",
     "metadata": [
       {
         "nimi": "Avaimet elinikäiseen kieltenopiskeluun",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "kielivalikoima_xx",
@@ -1594,24 +2028,31 @@
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_kxa8",
+    "versio": 1,
+    "koodiArvo": "KXA8"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_laa1",
-    "koodiArvo": "LAA1",
     "metadata": [
       {
         "nimi": "Kielitaidon alkeet: Lähtökohtia opiskelulle",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "kielivalikoima_la",
@@ -1623,24 +2064,31 @@
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_laa1",
+    "versio": 1,
+    "koodiArvo": "LAA1"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_laa2",
-    "koodiArvo": "LAA2",
     "metadata": [
       {
         "nimi": "Kehittyvä kielitaito: Palvelu- ja viranomaistilanteet ja osallistuva kansalainen",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "kielivalikoima_la",
@@ -1652,24 +2100,31 @@
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_laa2",
+    "versio": 1,
+    "koodiArvo": "LAA2"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_laa3",
-    "koodiArvo": "LAA3",
     "metadata": [
       {
         "nimi": "Kehittyvä kielitaito: Kertomuksia minusta ja ympäristöstäni",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "kielivalikoima_la",
@@ -1681,24 +2136,31 @@
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_laa3",
+    "versio": 1,
+    "koodiArvo": "LAA3"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_laa4",
-    "koodiArvo": "LAA4",
     "metadata": [
       {
         "nimi": "Kehittyvä kielitaito: Ajankohtaiset ilmiöt",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "kielivalikoima_la",
@@ -1710,24 +2172,31 @@
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_laa4",
+    "versio": 1,
+    "koodiArvo": "LAA4"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_laa5",
-    "koodiArvo": "LAA5",
     "metadata": [
       {
         "nimi": "Kulttuurikohtaamisia",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "kielivalikoima_la",
@@ -1739,24 +2208,31 @@
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_laa5",
+    "versio": 1,
+    "koodiArvo": "LAA5"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_laa6",
-    "koodiArvo": "LAA6",
     "metadata": [
       {
         "nimi": "Kieli maailmassa",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "kielivalikoima_la",
@@ -1768,24 +2244,31 @@
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_laa6",
+    "versio": 1,
+    "koodiArvo": "LAA6"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_laa7",
-    "koodiArvo": "LAA7",
     "metadata": [
       {
         "nimi": "Liikkuvuus ja kansainvälisyys",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "kielivalikoima_la",
@@ -1797,24 +2280,31 @@
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_laa7",
+    "versio": 1,
+    "koodiArvo": "LAA7"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_laa8",
-    "koodiArvo": "LAA8",
     "metadata": [
       {
         "nimi": "Avaimet elinikäiseen kieltenopiskeluun",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "kielivalikoima_la",
@@ -1826,517 +2316,616 @@
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_laa8",
+    "versio": 1,
+    "koodiArvo": "LAA8"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_ma1",
-    "koodiArvo": "MA1",
     "metadata": [
       {
         "nimi": "Luvut ja laskutoimitukset I",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Tal och räkneoperationer I",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "koskioppiaineetyleissivistava_ma",
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_ma1",
+    "versio": 1,
+    "koodiArvo": "MA1"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_ma2",
-    "koodiArvo": "MA2",
     "metadata": [
       {
         "nimi": "Luvut ja laskutoimitukset II",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Tal och räkneoperationer II",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "koskioppiaineetyleissivistava_ma",
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_ma2",
+    "versio": 1,
+    "koodiArvo": "MA2"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_ma3",
-    "koodiArvo": "MA3",
     "metadata": [
       {
         "nimi": "Lausekkeet",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Uttryck",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "koskioppiaineetyleissivistava_ma",
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_ma3",
+    "versio": 1,
+    "koodiArvo": "MA3"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_ma4",
-    "koodiArvo": "MA4",
     "metadata": [
       {
         "nimi": "Yhtälöt",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Ekvationer",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "koskioppiaineetyleissivistava_ma",
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_ma4",
+    "versio": 1,
+    "koodiArvo": "MA4"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_ma5",
-    "koodiArvo": "MA5",
     "metadata": [
       {
         "nimi": "Geometria",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Geometri",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "koskioppiaineetyleissivistava_ma",
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_ma5",
+    "versio": 1,
+    "koodiArvo": "MA5"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_ma6",
-    "koodiArvo": "MA6",
     "metadata": [
       {
         "nimi": "Prosentit",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Procent",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "koskioppiaineetyleissivistava_ma",
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_ma6",
+    "versio": 1,
+    "koodiArvo": "MA6"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_ma7",
-    "koodiArvo": "MA7",
     "metadata": [
       {
         "nimi": "Funktiot ja tilastot",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Funktioner och statistik",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "koskioppiaineetyleissivistava_ma",
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_ma7",
+    "versio": 1,
+    "koodiArvo": "MA7"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_ma8",
-    "koodiArvo": "MA8",
     "metadata": [
       {
         "nimi": "Geometria ja trigonometria",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Geometri och trigonometri",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "koskioppiaineetyleissivistava_ma",
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_ma8",
+    "versio": 1,
+    "koodiArvo": "MA8"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_ma9",
-    "koodiArvo": "MA9",
     "metadata": [
       {
         "nimi": "Lausekkeita ja yhtälöitä",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Uttryck och ekvationer",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "koskioppiaineetyleissivistava_ma",
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_ma9",
+    "versio": 1,
+    "koodiArvo": "MA9"
   },
   {
+    "metadata": [
+      {
+        "nimi": "Kielitaidon alkeet: Lähtökohtia opiskelulle",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [
+      {
+        "codeElementUri": "koskioppiaineetyleissivistava_a1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "kielivalikoima_pt",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "aikuistenperusopetuksenkurssit2015_poa1",
-    "koodiArvo": "POA1",
+    "versio": 1,
+    "koodiArvo": "POA1"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Kielitaidon alkeet: Lähtökohtia opiskelulle",
+        "nimi": "Kehittyvä kielitaito: Palvelu- ja viranomaistilanteet ja osallistuva kansalainen",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
-      {
-        "codeElementUri": "kielivalikoima_pt",
-        "codeElementVersion": 1,
-        "passive": false
-      },
       {
         "codeElementUri": "koskioppiaineetyleissivistava_a1",
         "codeElementVersion": 1,
         "passive": false
+      },
+      {
+        "codeElementUri": "kielivalikoima_pt",
+        "codeElementVersion": 1,
+        "passive": false
       }
-    ]
-  },
-  {
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "aikuistenperusopetuksenkurssit2015_poa2",
-    "koodiArvo": "POA2",
-    "metadata": [
-      {
-        "nimi": "Kehittyvä kielitaito: Palvelu- ja viranomaistilanteet ja osallistuva kansalainen",
-        "kieli": "FI"
-      },
-      {
-        "kieli": "SV"
-      },
-      {
-        "kieli": "EN"
-      }
-    ],
     "versio": 1,
-    "withinCodeElements": [
-      {
-        "codeElementUri": "kielivalikoima_pt",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
-        "codeElementUri": "koskioppiaineetyleissivistava_a1",
-        "codeElementVersion": 1,
-        "passive": false
-      }
-    ]
+    "koodiArvo": "POA2"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_poa3",
-    "koodiArvo": "POA3",
     "metadata": [
       {
         "nimi": "Kehittyvä kielitaito: Kertomuksia minusta ja ympäristöstäni",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
-      {
-        "codeElementUri": "kielivalikoima_pt",
-        "codeElementVersion": 1,
-        "passive": false
-      },
       {
         "codeElementUri": "koskioppiaineetyleissivistava_a1",
         "codeElementVersion": 1,
         "passive": false
+      },
+      {
+        "codeElementUri": "kielivalikoima_pt",
+        "codeElementVersion": 1,
+        "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_poa3",
+    "versio": 1,
+    "koodiArvo": "POA3"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_poa4",
-    "koodiArvo": "POA4",
     "metadata": [
       {
         "nimi": "Kehittyvä kielitaito: Ajankohtaiset ilmiöt",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
-      {
-        "codeElementUri": "kielivalikoima_pt",
-        "codeElementVersion": 1,
-        "passive": false
-      },
       {
         "codeElementUri": "koskioppiaineetyleissivistava_a1",
         "codeElementVersion": 1,
         "passive": false
+      },
+      {
+        "codeElementUri": "kielivalikoima_pt",
+        "codeElementVersion": 1,
+        "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_poa4",
+    "versio": 1,
+    "koodiArvo": "POA4"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_poa5",
-    "koodiArvo": "POA5",
     "metadata": [
       {
         "nimi": "Kulttuurikohtaamisia",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
-      {
-        "codeElementUri": "kielivalikoima_pt",
-        "codeElementVersion": 1,
-        "passive": false
-      },
       {
         "codeElementUri": "koskioppiaineetyleissivistava_a1",
         "codeElementVersion": 1,
         "passive": false
+      },
+      {
+        "codeElementUri": "kielivalikoima_pt",
+        "codeElementVersion": 1,
+        "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_poa5",
+    "versio": 1,
+    "koodiArvo": "POA5"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_poa6",
-    "koodiArvo": "POA6",
     "metadata": [
       {
         "nimi": "Kieli maailmassa",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
-      {
-        "codeElementUri": "kielivalikoima_pt",
-        "codeElementVersion": 1,
-        "passive": false
-      },
       {
         "codeElementUri": "koskioppiaineetyleissivistava_a1",
         "codeElementVersion": 1,
         "passive": false
+      },
+      {
+        "codeElementUri": "kielivalikoima_pt",
+        "codeElementVersion": 1,
+        "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_poa6",
+    "versio": 1,
+    "koodiArvo": "POA6"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_poa7",
-    "koodiArvo": "POA7",
     "metadata": [
       {
         "nimi": "Liikkuvuus ja kansainvälisyys",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
-      {
-        "codeElementUri": "kielivalikoima_pt",
-        "codeElementVersion": 1,
-        "passive": false
-      },
       {
         "codeElementUri": "koskioppiaineetyleissivistava_a1",
         "codeElementVersion": 1,
         "passive": false
+      },
+      {
+        "codeElementUri": "kielivalikoima_pt",
+        "codeElementVersion": 1,
+        "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_poa7",
+    "versio": 1,
+    "koodiArvo": "POA7"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_poa8",
-    "koodiArvo": "POA8",
     "metadata": [
       {
         "nimi": "Avaimet elinikäiseen kieltenopiskeluun",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
-      {
-        "codeElementUri": "kielivalikoima_pt",
-        "codeElementVersion": 1,
-        "passive": false
-      },
       {
         "codeElementUri": "koskioppiaineetyleissivistava_a1",
         "codeElementVersion": 1,
         "passive": false
+      },
+      {
+        "codeElementUri": "kielivalikoima_pt",
+        "codeElementVersion": 1,
+        "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_poa8",
+    "versio": 1,
+    "koodiArvo": "POA8"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_raa1",
-    "koodiArvo": "RAA1",
     "metadata": [
       {
         "nimi": "Kielitaidon alkeet: Lähtökohtia opiskelulle",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "kielivalikoima_fr",
@@ -2348,24 +2937,31 @@
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_raa1",
+    "versio": 1,
+    "koodiArvo": "RAA1"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_raa2",
-    "koodiArvo": "RAA2",
     "metadata": [
       {
         "nimi": "Kehittyvä kielitaito: Palvelu- ja viranomaistilanteet ja osallistuva kansalainen",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "kielivalikoima_fr",
@@ -2377,24 +2973,31 @@
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_raa2",
+    "versio": 1,
+    "koodiArvo": "RAA2"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_raa3",
-    "koodiArvo": "RAA3",
     "metadata": [
       {
         "nimi": "Kehittyvä kielitaito: Kertomuksia minusta ja ympäristöstäni",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "kielivalikoima_fr",
@@ -2406,24 +3009,31 @@
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_raa3",
+    "versio": 1,
+    "koodiArvo": "RAA3"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_raa4",
-    "koodiArvo": "RAA4",
     "metadata": [
       {
         "nimi": "Kehittyvä kielitaito: Ajankohtaiset ilmiöt",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "kielivalikoima_fr",
@@ -2435,24 +3045,31 @@
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_raa4",
+    "versio": 1,
+    "koodiArvo": "RAA4"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_raa5",
-    "koodiArvo": "RAA5",
     "metadata": [
       {
         "nimi": "Kulttuurikohtaamisia",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "kielivalikoima_fr",
@@ -2464,24 +3081,31 @@
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_raa5",
+    "versio": 1,
+    "koodiArvo": "RAA5"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_raa6",
-    "koodiArvo": "RAA6",
     "metadata": [
       {
         "nimi": "Kieli maailmassa",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "kielivalikoima_fr",
@@ -2493,24 +3117,31 @@
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_raa6",
+    "versio": 1,
+    "koodiArvo": "RAA6"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_raa7",
-    "koodiArvo": "RAA7",
     "metadata": [
       {
         "nimi": "Liikkuvuus ja kansainvälisyys",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "kielivalikoima_fr",
@@ -2522,24 +3153,31 @@
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_raa7",
+    "versio": 1,
+    "koodiArvo": "RAA7"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_raa8",
-    "koodiArvo": "RAA8",
     "metadata": [
       {
         "nimi": "Avaimet elinikäiseen kieltenopiskeluun",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "kielivalikoima_fr",
@@ -2551,633 +3189,772 @@
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_raa8",
+    "versio": 1,
+    "koodiArvo": "RAA8"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_rub1",
-    "koodiArvo": "RUB1",
     "metadata": [
       {
         "nimi": "Kielitaidon alkeet: Lähtökohtia ruotsin opiskelulle",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
-      {
-        "codeElementUri": "kielivalikoima_sv",
-        "codeElementVersion": 1,
-        "passive": false
-      },
       {
         "codeElementUri": "koskioppiaineetyleissivistava_b1",
         "codeElementVersion": 1,
         "passive": false
+      },
+      {
+        "codeElementUri": "kielivalikoima_sv",
+        "codeElementVersion": 1,
+        "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_rub1",
+    "versio": 1,
+    "koodiArvo": "RUB1"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_rub2",
-    "koodiArvo": "RUB2",
     "metadata": [
       {
         "nimi": "Kielitaidon alkeet: Perusviestintää arkipäivän sosiaalisissa tilanteissa",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
-      {
-        "codeElementUri": "kielivalikoima_sv",
-        "codeElementVersion": 1,
-        "passive": false
-      },
       {
         "codeElementUri": "koskioppiaineetyleissivistava_b1",
         "codeElementVersion": 1,
         "passive": false
+      },
+      {
+        "codeElementUri": "kielivalikoima_sv",
+        "codeElementVersion": 1,
+        "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_rub2",
+    "versio": 1,
+    "koodiArvo": "RUB2"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_rub3",
-    "koodiArvo": "RUB3",
     "metadata": [
       {
         "nimi": "Kielitaidon alkeet: Vuorovaikutus asiointitilanteissa",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
-      {
-        "codeElementUri": "kielivalikoima_sv",
-        "codeElementVersion": 1,
-        "passive": false
-      },
       {
         "codeElementUri": "koskioppiaineetyleissivistava_b1",
         "codeElementVersion": 1,
         "passive": false
+      },
+      {
+        "codeElementUri": "kielivalikoima_sv",
+        "codeElementVersion": 1,
+        "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_rub3",
+    "versio": 1,
+    "koodiArvo": "RUB3"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_rub4",
-    "koodiArvo": "RUB4",
     "metadata": [
       {
         "nimi": "Kielitaidon alkeet: Selviytyminen muodollisemmista tilanteista",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
-      {
-        "codeElementUri": "kielivalikoima_sv",
-        "codeElementVersion": 1,
-        "passive": false
-      },
       {
         "codeElementUri": "koskioppiaineetyleissivistava_b1",
         "codeElementVersion": 1,
         "passive": false
+      },
+      {
+        "codeElementUri": "kielivalikoima_sv",
+        "codeElementVersion": 1,
+        "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_rub4",
+    "versio": 1,
+    "koodiArvo": "RUB4"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_rub5",
-    "koodiArvo": "RUB5",
     "metadata": [
       {
         "nimi": "Kielitaidon alkeet: Palvelu- ja viranomaistilanteet",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
-      {
-        "codeElementUri": "kielivalikoima_sv",
-        "codeElementVersion": 1,
-        "passive": false
-      },
       {
         "codeElementUri": "koskioppiaineetyleissivistava_b1",
         "codeElementVersion": 1,
         "passive": false
+      },
+      {
+        "codeElementUri": "kielivalikoima_sv",
+        "codeElementVersion": 1,
+        "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_rub5",
+    "versio": 1,
+    "koodiArvo": "RUB5"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_rub6",
-    "koodiArvo": "RUB6",
     "metadata": [
       {
         "nimi": "Kielitaidon alkeet: Ajankohtaiset ilmiöt",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
-      {
-        "codeElementUri": "kielivalikoima_sv",
-        "codeElementVersion": 1,
-        "passive": false
-      },
       {
         "codeElementUri": "koskioppiaineetyleissivistava_b1",
         "codeElementVersion": 1,
         "passive": false
+      },
+      {
+        "codeElementUri": "kielivalikoima_sv",
+        "codeElementVersion": 1,
+        "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_rub6",
+    "versio": 1,
+    "koodiArvo": "RUB6"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_rub7",
-    "koodiArvo": "RUB7",
     "metadata": [
       {
         "nimi": "Kehittyvä kielitaito: Miksi Suomessa puhutaan ruotsia?",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
-      {
-        "codeElementUri": "kielivalikoima_sv",
-        "codeElementVersion": 1,
-        "passive": false
-      },
       {
         "codeElementUri": "koskioppiaineetyleissivistava_b1",
         "codeElementVersion": 1,
         "passive": false
+      },
+      {
+        "codeElementUri": "kielivalikoima_sv",
+        "codeElementVersion": 1,
+        "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_rub7",
+    "versio": 1,
+    "koodiArvo": "RUB7"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_rub8",
-    "koodiArvo": "RUB8",
     "metadata": [
       {
         "nimi": "Kehittyvä kielitaito: Avaimet elinikäiseen kieltenopiskeluun",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
-      {
-        "codeElementUri": "kielivalikoima_sv",
-        "codeElementVersion": 1,
-        "passive": false
-      },
       {
         "codeElementUri": "koskioppiaineetyleissivistava_b1",
         "codeElementVersion": 1,
         "passive": false
+      },
+      {
+        "codeElementUri": "kielivalikoima_sv",
+        "codeElementVersion": 1,
+        "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_rub8",
+    "versio": 1,
+    "koodiArvo": "RUB8"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_s21",
-    "koodiArvo": "S21",
     "metadata": [
       {
         "nimi": "Uutisia ja mielipiteitä",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Nyheter och opinion",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "koskioppiaineetyleissivistava_ai",
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_s21",
+    "versio": 1,
+    "koodiArvo": "S21"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_s22",
-    "koodiArvo": "S22",
     "metadata": [
       {
         "nimi": "Tekstit tutuiksi",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Textanalys",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "koskioppiaineetyleissivistava_ai",
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_s22",
+    "versio": 1,
+    "koodiArvo": "S22"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_s23",
-    "koodiArvo": "S23",
     "metadata": [
       {
         "nimi": "Kirjoittaminen prosessina",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Skrivprocessen",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "koskioppiaineetyleissivistava_ai",
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_s23",
+    "versio": 1,
+    "koodiArvo": "S23"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_s24",
-    "koodiArvo": "S24",
     "metadata": [
       {
         "nimi": "Kulttuuri ja identiteetti",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Kultur och identitet",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "koskioppiaineetyleissivistava_ai",
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_s24",
+    "versio": 1,
+    "koodiArvo": "S24"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_s25",
-    "koodiArvo": "S25",
     "metadata": [
       {
         "nimi": "Kieli avaimena maailmaan",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Språket som nyckel till världen",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "koskioppiaineetyleissivistava_ai",
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_s25",
+    "versio": 1,
+    "koodiArvo": "S25"
   },
   {
+    "metadata": [
+      {
+        "nimi": "Kielitaidon alkeet: Lähtökohtia opiskelulle",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [
+      {
+        "codeElementUri": "koskioppiaineetyleissivistava_a1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "kielivalikoima_de",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "aikuistenperusopetuksenkurssit2015_saa1",
-    "koodiArvo": "SAA1",
+    "versio": 1,
+    "koodiArvo": "SAA1"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Kielitaidon alkeet: Lähtökohtia opiskelulle",
+        "nimi": "Kehittyvä kielitaito: Palvelu- ja viranomaistilanteet ja osallistuva kansalainen",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
-      {
-        "codeElementUri": "kielivalikoima_de",
-        "codeElementVersion": 1,
-        "passive": false
-      },
       {
         "codeElementUri": "koskioppiaineetyleissivistava_a1",
         "codeElementVersion": 1,
         "passive": false
+      },
+      {
+        "codeElementUri": "kielivalikoima_de",
+        "codeElementVersion": 1,
+        "passive": false
       }
-    ]
-  },
-  {
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "aikuistenperusopetuksenkurssit2015_saa2",
-    "koodiArvo": "SAA2",
-    "metadata": [
-      {
-        "nimi": "Kehittyvä kielitaito: Palvelu- ja viranomaistilanteet ja osallistuva kansalainen",
-        "kieli": "FI"
-      },
-      {
-        "kieli": "SV"
-      },
-      {
-        "kieli": "EN"
-      }
-    ],
     "versio": 1,
-    "withinCodeElements": [
-      {
-        "codeElementUri": "kielivalikoima_de",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
-        "codeElementUri": "koskioppiaineetyleissivistava_a1",
-        "codeElementVersion": 1,
-        "passive": false
-      }
-    ]
+    "koodiArvo": "SAA2"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_saa3",
-    "koodiArvo": "SAA3",
     "metadata": [
       {
         "nimi": "Kehittyvä kielitaito: Kertomuksia minusta ja ympäristöstäni",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
-      {
-        "codeElementUri": "kielivalikoima_de",
-        "codeElementVersion": 1,
-        "passive": false
-      },
       {
         "codeElementUri": "koskioppiaineetyleissivistava_a1",
         "codeElementVersion": 1,
         "passive": false
+      },
+      {
+        "codeElementUri": "kielivalikoima_de",
+        "codeElementVersion": 1,
+        "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_saa3",
+    "versio": 1,
+    "koodiArvo": "SAA3"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_saa4",
-    "koodiArvo": "SAA4",
     "metadata": [
       {
         "nimi": "Kehittyvä kielitaito: Ajankohtaiset ilmiöt",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
-      {
-        "codeElementUri": "kielivalikoima_de",
-        "codeElementVersion": 1,
-        "passive": false
-      },
       {
         "codeElementUri": "koskioppiaineetyleissivistava_a1",
         "codeElementVersion": 1,
         "passive": false
+      },
+      {
+        "codeElementUri": "kielivalikoima_de",
+        "codeElementVersion": 1,
+        "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_saa4",
+    "versio": 1,
+    "koodiArvo": "SAA4"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_saa5",
-    "koodiArvo": "SAA5",
     "metadata": [
       {
         "nimi": "Kulttuurikohtaamisia",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
-      {
-        "codeElementUri": "kielivalikoima_de",
-        "codeElementVersion": 1,
-        "passive": false
-      },
       {
         "codeElementUri": "koskioppiaineetyleissivistava_a1",
         "codeElementVersion": 1,
         "passive": false
+      },
+      {
+        "codeElementUri": "kielivalikoima_de",
+        "codeElementVersion": 1,
+        "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_saa5",
+    "versio": 1,
+    "koodiArvo": "SAA5"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_saa6",
-    "koodiArvo": "SAA6",
     "metadata": [
       {
         "nimi": "Kieli maailmassa",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
-      {
-        "codeElementUri": "kielivalikoima_de",
-        "codeElementVersion": 1,
-        "passive": false
-      },
       {
         "codeElementUri": "koskioppiaineetyleissivistava_a1",
         "codeElementVersion": 1,
         "passive": false
+      },
+      {
+        "codeElementUri": "kielivalikoima_de",
+        "codeElementVersion": 1,
+        "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_saa6",
+    "versio": 1,
+    "koodiArvo": "SAA6"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_saa7",
-    "koodiArvo": "SAA7",
     "metadata": [
       {
         "nimi": "Liikkuvuus ja kansainvälisyys",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
-      {
-        "codeElementUri": "kielivalikoima_de",
-        "codeElementVersion": 1,
-        "passive": false
-      },
       {
         "codeElementUri": "koskioppiaineetyleissivistava_a1",
         "codeElementVersion": 1,
         "passive": false
+      },
+      {
+        "codeElementUri": "kielivalikoima_de",
+        "codeElementVersion": 1,
+        "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_saa7",
+    "versio": 1,
+    "koodiArvo": "SAA7"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_saa8",
-    "koodiArvo": "SAA8",
     "metadata": [
       {
         "nimi": "Avaimet elinikäiseen kieltenopiskeluun",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
-      {
-        "codeElementUri": "kielivalikoima_de",
-        "codeElementVersion": 1,
-        "passive": false
-      },
       {
         "codeElementUri": "koskioppiaineetyleissivistava_a1",
         "codeElementVersion": 1,
         "passive": false
+      },
+      {
+        "codeElementUri": "kielivalikoima_de",
+        "codeElementVersion": 1,
+        "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_saa8",
+    "versio": 1,
+    "koodiArvo": "SAA8"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_sma1",
-    "koodiArvo": "SMA1",
     "metadata": [
       {
         "nimi": "Kielitaidon alkeet: Lähtökohtia opiskelulle",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "kielivalikoima_se",
@@ -3189,24 +3966,31 @@
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_sma1",
+    "versio": 1,
+    "koodiArvo": "SMA1"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_sma2",
-    "koodiArvo": "SMA2",
     "metadata": [
       {
         "nimi": "Kehittyvä kielitaito: Palvelu- ja viranomaistilanteet ja osallistuva kansalainen",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "kielivalikoima_se",
@@ -3218,24 +4002,31 @@
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_sma2",
+    "versio": 1,
+    "koodiArvo": "SMA2"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_sma3",
-    "koodiArvo": "SMA3",
     "metadata": [
       {
         "nimi": "Kehittyvä kielitaito: Kertomuksia minusta ja ympäristöstäni",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "kielivalikoima_se",
@@ -3247,24 +4038,31 @@
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_sma3",
+    "versio": 1,
+    "koodiArvo": "SMA3"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_sma4",
-    "koodiArvo": "SMA4",
     "metadata": [
       {
         "nimi": "Kehittyvä kielitaito: Ajankohtaiset ilmiöt",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "kielivalikoima_se",
@@ -3276,24 +4074,31 @@
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_sma4",
+    "versio": 1,
+    "koodiArvo": "SMA4"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_sma5",
-    "koodiArvo": "SMA5",
     "metadata": [
       {
         "nimi": "Kulttuurikohtaamisia",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "kielivalikoima_se",
@@ -3305,24 +4110,31 @@
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_sma5",
+    "versio": 1,
+    "koodiArvo": "SMA5"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_sma6",
-    "koodiArvo": "SMA6",
     "metadata": [
       {
         "nimi": "Kieli maailmassa",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "kielivalikoima_se",
@@ -3334,24 +4146,31 @@
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_sma6",
+    "versio": 1,
+    "koodiArvo": "SMA6"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_sma7",
-    "koodiArvo": "SMA7",
     "metadata": [
       {
         "nimi": "Liikkuvuus ja kansainvälisyys",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "kielivalikoima_se",
@@ -3363,24 +4182,31 @@
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_sma7",
+    "versio": 1,
+    "koodiArvo": "SMA7"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_sma8",
-    "koodiArvo": "SMA8",
     "metadata": [
       {
         "nimi": "Avaimet elinikäiseen kieltenopiskeluun",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "kielivalikoima_se",
@@ -3392,503 +4218,464 @@
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_sma8",
+    "versio": 1,
+    "koodiArvo": "SMA8"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_u1",
-    "koodiArvo": "U1",
     "metadata": [
       {
         "nimi": "Uskonnot maailmassa",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Religionerna i världen",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "koskioppiaineetyleissivistava_kt",
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_u1",
+    "versio": 1,
+    "koodiArvo": "U1"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_u2",
-    "koodiArvo": "U2",
     "metadata": [
       {
         "nimi": "Ihmisenä kasvaminen",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Att växa som människa",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "koskioppiaineetyleissivistava_kt",
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_u2",
+    "versio": 1,
+    "koodiArvo": "U2"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_vea1",
-    "koodiArvo": "VEA1",
     "metadata": [
       {
         "nimi": "Kielitaidon alkeet: Lähtökohtia opiskelulle",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
-      {
-        "codeElementUri": "kielivalikoima_ru",
-        "codeElementVersion": 1,
-        "passive": false
-      },
       {
         "codeElementUri": "koskioppiaineetyleissivistava_a1",
         "codeElementVersion": 1,
         "passive": false
+      },
+      {
+        "codeElementUri": "kielivalikoima_ru",
+        "codeElementVersion": 1,
+        "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_vea1",
+    "versio": 1,
+    "koodiArvo": "VEA1"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_vea2",
-    "koodiArvo": "VEA2",
     "metadata": [
       {
         "nimi": "Kehittyvä kielitaito: Palvelu- ja viranomaistilanteet ja osallistuva kansalainen",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
-      {
-        "codeElementUri": "kielivalikoima_ru",
-        "codeElementVersion": 1,
-        "passive": false
-      },
       {
         "codeElementUri": "koskioppiaineetyleissivistava_a1",
         "codeElementVersion": 1,
         "passive": false
+      },
+      {
+        "codeElementUri": "kielivalikoima_ru",
+        "codeElementVersion": 1,
+        "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_vea2",
+    "versio": 1,
+    "koodiArvo": "VEA2"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_vea3",
-    "koodiArvo": "VEA3",
     "metadata": [
       {
         "nimi": "Kehittyvä kielitaito: Kertomuksia minusta ja ympäristöstäni",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
-      {
-        "codeElementUri": "kielivalikoima_ru",
-        "codeElementVersion": 1,
-        "passive": false
-      },
       {
         "codeElementUri": "koskioppiaineetyleissivistava_a1",
         "codeElementVersion": 1,
         "passive": false
+      },
+      {
+        "codeElementUri": "kielivalikoima_ru",
+        "codeElementVersion": 1,
+        "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_vea3",
+    "versio": 1,
+    "koodiArvo": "VEA3"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_vea4",
-    "koodiArvo": "VEA4",
     "metadata": [
       {
         "nimi": "Kehittyvä kielitaito: Ajankohtaiset ilmiöt",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
-      {
-        "codeElementUri": "kielivalikoima_ru",
-        "codeElementVersion": 1,
-        "passive": false
-      },
       {
         "codeElementUri": "koskioppiaineetyleissivistava_a1",
         "codeElementVersion": 1,
         "passive": false
+      },
+      {
+        "codeElementUri": "kielivalikoima_ru",
+        "codeElementVersion": 1,
+        "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_vea4",
+    "versio": 1,
+    "koodiArvo": "VEA4"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_vea5",
-    "koodiArvo": "VEA5",
     "metadata": [
       {
         "nimi": "Kulttuurikohtaamisia",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
-      {
-        "codeElementUri": "kielivalikoima_ru",
-        "codeElementVersion": 1,
-        "passive": false
-      },
       {
         "codeElementUri": "koskioppiaineetyleissivistava_a1",
         "codeElementVersion": 1,
         "passive": false
+      },
+      {
+        "codeElementUri": "kielivalikoima_ru",
+        "codeElementVersion": 1,
+        "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_vea5",
+    "versio": 1,
+    "koodiArvo": "VEA5"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_vea6",
-    "koodiArvo": "VEA6",
     "metadata": [
       {
         "nimi": "Kieli maailmassa",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
-      {
-        "codeElementUri": "kielivalikoima_ru",
-        "codeElementVersion": 1,
-        "passive": false
-      },
       {
         "codeElementUri": "koskioppiaineetyleissivistava_a1",
         "codeElementVersion": 1,
         "passive": false
+      },
+      {
+        "codeElementUri": "kielivalikoima_ru",
+        "codeElementVersion": 1,
+        "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_vea6",
+    "versio": 1,
+    "koodiArvo": "VEA6"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_vea7",
-    "koodiArvo": "VEA7",
     "metadata": [
       {
         "nimi": "Liikkuvuus ja kansainvälisyys",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
-      {
-        "codeElementUri": "kielivalikoima_ru",
-        "codeElementVersion": 1,
-        "passive": false
-      },
       {
         "codeElementUri": "koskioppiaineetyleissivistava_a1",
         "codeElementVersion": 1,
         "passive": false
+      },
+      {
+        "codeElementUri": "kielivalikoima_ru",
+        "codeElementVersion": 1,
+        "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_vea7",
+    "versio": 1,
+    "koodiArvo": "VEA7"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_vea8",
-    "koodiArvo": "VEA8",
     "metadata": [
       {
         "nimi": "Avaimet elinikäiseen kieltenopiskeluun",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
-      {
-        "codeElementUri": "kielivalikoima_ru",
-        "codeElementVersion": 1,
-        "passive": false
-      },
       {
         "codeElementUri": "koskioppiaineetyleissivistava_a1",
         "codeElementVersion": 1,
         "passive": false
+      },
+      {
+        "codeElementUri": "kielivalikoima_ru",
+        "codeElementVersion": 1,
+        "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_vea8",
+    "versio": 1,
+    "koodiArvo": "VEA8"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_yh1",
-    "koodiArvo": "YH1",
     "metadata": [
       {
         "nimi": "Yhteiskuntajärjestelmä sekä julkiset palvelut",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Samhällssystemet och offentliga tjänster",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "koskioppiaineetyleissivistava_yh",
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_yh1",
+    "versio": 1,
+    "koodiArvo": "YH1"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_yh2",
-    "koodiArvo": "YH2",
     "metadata": [
       {
         "nimi": "Työelämän tuntemus ja oma talous",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Kunskap om arbetslivet, egen ekonomi",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "koskioppiaineetyleissivistava_yh",
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
+    ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_yh2",
+    "versio": 1,
+    "koodiArvo": "YH2"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_yh3",
-    "koodiArvo": "YH3",
     "metadata": [
       {
         "nimi": "Aktiivinen kansalaisuus ja vaikuttaminen",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Aktivt medborgarskap, att påverka",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
     "withinCodeElements": [
       {
         "codeElementUri": "koskioppiaineetyleissivistava_yh",
         "codeElementVersion": 1,
         "passive": false
       }
-    ]
-  },
-  {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_ai1",
-    "koodiArvo": "ÄI1",
-    "metadata": [
-      {
-        "nimi": "Suomen kielen ja kirjallisuuden perusteet",
-        "kieli": "FI"
-      },
-      {
-        "kieli": "SV"
-      },
-      {
-        "kieli": "EN"
-      }
     ],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenkurssit2015_yh3",
     "versio": 1,
-    "withinCodeElements": [
-      {
-        "codeElementUri": "koskioppiaineetyleissivistava_ai",
-        "codeElementVersion": 1,
-        "passive": false
-      }
-    ]
-  },
-  {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_ai2",
-    "koodiArvo": "ÄI2",
-    "metadata": [
-      {
-        "nimi": "Monimuotoiset tekstit",
-        "kieli": "FI"
-      },
-      {
-        "kieli": "SV"
-      },
-      {
-        "kieli": "EN"
-      }
-    ],
-    "versio": 1,
-    "withinCodeElements": [
-      {
-        "codeElementUri": "koskioppiaineetyleissivistava_ai",
-        "codeElementVersion": 1,
-        "passive": false
-      }
-    ]
-  },
-  {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_ai3",
-    "koodiArvo": "ÄI3",
-    "metadata": [
-      {
-        "nimi": "Tekstien tuottaminen ja tulkitseminen",
-        "kieli": "FI"
-      },
-      {
-        "kieli": "SV"
-      },
-      {
-        "kieli": "EN"
-      }
-    ],
-    "versio": 1,
-    "withinCodeElements": [
-      {
-        "codeElementUri": "koskioppiaineetyleissivistava_ai",
-        "codeElementVersion": 1,
-        "passive": false
-      }
-    ]
-  },
-  {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_ai4",
-    "koodiArvo": "ÄI4",
-    "metadata": [
-      {
-        "nimi": "Kieli ja kulttuuri",
-        "kieli": "FI"
-      },
-      {
-        "kieli": "SV"
-      },
-      {
-        "kieli": "EN"
-      }
-    ],
-    "versio": 1,
-    "withinCodeElements": [
-      {
-        "codeElementUri": "koskioppiaineetyleissivistava_ai",
-        "codeElementVersion": 1,
-        "passive": false
-      }
-    ]
-  },
-  {
-    "koodiUri": "aikuistenperusopetuksenkurssit2015_ai5",
-    "koodiArvo": "ÄI5",
-    "metadata": [
-      {
-        "nimi": "Ilmaisutaidon kurssi",
-        "kieli": "FI"
-      },
-      {
-        "kieli": "SV"
-      },
-      {
-        "kieli": "EN"
-      }
-    ],
-    "versio": 1,
-    "withinCodeElements": [
-      {
-        "codeElementUri": "koskioppiaineetyleissivistava_ai",
-        "codeElementVersion": 1,
-        "passive": false
-      }
-    ]
+    "koodiArvo": "YH3"
   }
 ]

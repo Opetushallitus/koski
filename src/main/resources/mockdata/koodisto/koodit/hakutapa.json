@@ -1,158 +1,176 @@
 [
   {
-    "koodiUri": "hakutapa_01",
-    "koodiArvo": "01",
     "metadata": [
       {
         "nimi": "Yhteishaku",
-        "lyhytNimi": "YH",
         "kuvaus": "Yhteishaku",
+        "lyhytNimi": "YH",
         "kieli": "FI"
       },
       {
         "nimi": "Gemensam ansökan",
-        "lyhytNimi": "GA",
         "kuvaus": "Gemensam ansökan",
+        "lyhytNimi": "GA",
         "kieli": "SV"
       },
       {
         "nimi": "Joint application",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "hakutapa_01",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "01"
   },
   {
-    "koodiUri": "hakutapa_02",
-    "koodiArvo": "02",
     "metadata": [
       {
         "nimi": "Erillishaku",
-        "lyhytNimi": "EH",
         "kuvaus": "Erillishaku",
+        "lyhytNimi": "EH",
         "kieli": "FI"
       },
       {
         "nimi": "Separata antagningar",
-        "lyhytNimi": "SA",
         "kuvaus": "Separata antagningar",
+        "lyhytNimi": "SA",
         "kieli": "SV"
       },
       {
         "nimi": "Separate application",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "hakutapa_02",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "02"
   },
   {
-    "koodiUri": "hakutapa_03",
-    "koodiArvo": "03",
     "metadata": [
       {
         "nimi": "Jatkuva haku",
-        "lyhytNimi": "JH",
         "kuvaus": "Jatkuva haku",
+        "lyhytNimi": "JH",
         "kieli": "FI"
       },
       {
         "nimi": "Kontinuerlig ansökan",
-        "lyhytNimi": "FA",
         "kuvaus": "Kontinuerlig ansökan",
+        "lyhytNimi": "FA",
         "kieli": "SV"
       },
       {
         "nimi": "Rolling admission (upper secondary level)",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "hakutyyppi_01",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "hakutapa_03",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "03"
   },
   {
-    "koodiUri": "hakutapa_04",
-    "koodiArvo": "04",
     "metadata": [
       {
         "nimi": "Joustava haku",
-        "lyhytNimi": "",
         "kuvaus": "Uusi tarjonta (kouta), korkeakouluilla käytössä oleva hakutapa",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Flexibel ansökan",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Rolling admission (higher education)",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "hakutapa_04",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "04"
   },
   {
-    "koodiUri": "hakutapa_05",
-    "koodiArvo": "05",
     "metadata": [
       {
         "nimi": "Siirtohaku",
-        "lyhytNimi": "",
         "kuvaus": "käytössä kouta",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Ansökan om överflyttning",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Transfer application",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "hakutapa_05",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "05"
   },
   {
-    "koodiUri": "hakutapa_06",
-    "koodiArvo": "06",
     "metadata": [
       {
         "nimi": "Lisähaku",
-        "lyhytNimi": "",
         "kuvaus": "käytössä kouta",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Tilläggsansökan",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Supplementary application",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "hakutapa_06",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "06"
   }
 ]

@@ -1,65 +1,80 @@
 [
   {
-    "koodiUri": "diaosaalue_1",
-    "koodiArvo": "1",
     "metadata": [
       {
         "nimi": "Kielet, kirjallisuus, taide",
+        "kuvaus": null,
         "lyhytNimi": "Kielet, kirjallisuus, taide",
         "kieli": "FI"
       },
       {
         "nimi": "Språk, litteratur, konst",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Languages, literature, art",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "diaosaalue_1",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "1"
   },
   {
-    "koodiUri": "diaosaalue_2",
-    "koodiArvo": "2",
     "metadata": [
       {
         "nimi": "Matematiikka ja luonnontieteet",
+        "kuvaus": null,
         "lyhytNimi": "Matematiikka ja luonnontieteet",
         "kieli": "FI"
       },
       {
         "nimi": "Matematik och naturvetenskap",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Mathematics and science",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "diaosaalue_2",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "2"
   },
   {
-    "koodiUri": "diaosaalue_3",
-    "koodiArvo": "3",
     "metadata": [
       {
         "nimi": "Yhteiskuntatieteet",
+        "kuvaus": null,
         "lyhytNimi": "Yhteiskuntatieteet",
         "kieli": "FI"
       },
       {
         "nimi": "Samhällsvetenskap",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Social sciences",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "diaosaalue_3",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "3"
   }
 ]

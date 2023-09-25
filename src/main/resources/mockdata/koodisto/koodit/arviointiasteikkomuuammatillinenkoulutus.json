@@ -1,42 +1,52 @@
 [
   {
-    "koodiUri": "arviointiasteikkomuuammatillinenkoulutus_osallistunut",
-    "koodiArvo": "Osallistunut",
     "metadata": [
       {
         "nimi": "Osallistunut",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
         "nimi": "Deltagit",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Participated",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkomuuammatillinenkoulutus_osallistunut",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "Osallistunut"
   },
   {
-    "koodiUri": "arviointiasteikkomuuammatillinenkoulutus_suoritettu",
-    "koodiArvo": "Suoritettu",
     "metadata": [
       {
         "nimi": "Suoritettu",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
         "nimi": "Slutförd",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Completed",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkomuuammatillinenkoulutus_suoritettu",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "Suoritettu"
   }
 ]

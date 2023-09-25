@@ -1,278 +1,377 @@
 [
   {
-    "koodiUri": "uskonnonoppimaara_ad",
-    "koodiArvo": "AD",
     "metadata": [
       {
         "nimi": "Adventistinen uskonto",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "uskonnonoppimaara_ad",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "AD"
   },
   {
-    "koodiUri": "uskonnonoppimaara_ba",
-    "koodiArvo": "BA",
     "metadata": [
       {
         "nimi": "Bahá’í-uskonto",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "uskonnonoppimaara_ba",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "BA"
   },
   {
-    "koodiUri": "uskonnonoppimaara_bu",
-    "koodiArvo": "BU",
     "metadata": [
       {
         "nimi": "Buddhalainen uskonto",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "uskonnonoppimaara_bu",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "BU"
   },
   {
-    "koodiUri": "uskonnonoppimaara_ev",
-    "koodiArvo": "EV",
     "metadata": [
       {
         "nimi": "Evankelis-luterilainen uskonto",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
         "nimi": "Evangelisk-luthersk tro",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "uskonnonoppimaara_ev",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "EV"
   },
   {
-    "koodiUri": "uskonnonoppimaara_he",
-    "koodiArvo": "HE",
     "metadata": [
       {
         "nimi": "Helluntailiikkeen uskonto",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "uskonnonoppimaara_he",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "HE"
   },
   {
-    "koodiUri": "uskonnonoppimaara_hk",
-    "koodiArvo": "HK",
     "metadata": [
       {
         "nimi": "Herran kansa ry:n uskonto",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "uskonnonoppimaara_hk",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "HK"
   },
   {
+    "metadata": [
+      {
+        "nimi": "Islam",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Islam",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "uskonnonoppimaara_is",
-    "koodiArvo": "IS",
+    "versio": 1,
+    "koodiArvo": "IS"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Islam",
+        "nimi": "Juutalainen uskonto",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
-        "nimi": "Islam",
+        "nimi": "Juutalainen uskonto",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "uskonnonoppimaara_ju",
-    "koodiArvo": "JU",
+    "versio": 1,
+    "koodiArvo": "JU"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Juutalainen uskonto",
+        "nimi": "Katolinen uskonto",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
-        "nimi": "Juutalainen uskonto",
+        "nimi": "Katolinen uskonto",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "uskonnonoppimaara_ka",
-    "koodiArvo": "KA",
-    "metadata": [
-      {
-        "nimi": "Katolinen uskonto",
-        "kieli": "FI"
-      },
-      {
-        "nimi": "Katolinen uskonto",
-        "kieli": "SV"
-      },
-      {
-        "kieli": "EN"
-      }
-    ],
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "KA"
   },
   {
-    "koodiUri": "uskonnonoppimaara_kr",
-    "koodiArvo": "KR",
     "metadata": [
       {
         "nimi": "Krishna-uskonto",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "uskonnonoppimaara_kr",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "KR"
   },
   {
-    "koodiUri": "uskonnonoppimaara_ky",
-    "koodiArvo": "KY",
     "metadata": [
       {
         "nimi": "Kristiyhteisön uskonto",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "uskonnonoppimaara_ky",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "KY"
   },
   {
-    "koodiUri": "uskonnonoppimaara_ma",
-    "koodiArvo": "MA",
     "metadata": [
       {
         "nimi": "Myöhempien Aikojen Pyhien Jeesuksen Kristuksen Kirkon uskonto",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "uskonnonoppimaara_ma",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "MA"
   },
   {
-    "koodiUri": "uskonnonoppimaara_mu",
-    "koodiArvo": "MU",
     "metadata": [
       {
         "nimi": "Muut uskonnot",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
         "nimi": "Andra religioner",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "uskonnonoppimaara_mu",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "MU"
   },
   {
-    "koodiUri": "uskonnonoppimaara_or",
-    "koodiArvo": "OR",
     "metadata": [
       {
         "nimi": "Ortodoksinen uskonto",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
         "nimi": "Ortodox tro",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "uskonnonoppimaara_or",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "OR"
   },
   {
-    "koodiUri": "uskonnonoppimaara_va",
-    "koodiArvo": "VA",
     "metadata": [
       {
         "nimi": "Vapaakirkollinen uskonto",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "uskonnonoppimaara_va",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "VA"
   }
 ]

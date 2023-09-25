@@ -1,74 +1,83 @@
 [
   {
-    "koodiUri": "ammatillisennaytonsuorituspaikka_1",
-    "koodiArvo": "1",
     "metadata": [
       {
         "nimi": "työpaikka",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "arbetsplats",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "workplace",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ammatillisennaytonsuorituspaikka_1",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "1"
   },
   {
-    "koodiUri": "ammatillisennaytonsuorituspaikka_2",
-    "koodiArvo": "2",
     "metadata": [
       {
         "nimi": "oppilaitos",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "läroanstalt",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "educational institution",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ammatillisennaytonsuorituspaikka_2",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "2"
   },
   {
-    "koodiUri": "ammatillisennaytonsuorituspaikka_3",
-    "koodiArvo": "3",
     "metadata": [
       {
         "nimi": "työpaikka ja oppilaitos",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "arbetsplats och läroanstalt",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "workplace and educational institution",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ammatillisennaytonsuorituspaikka_3",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "3"
   }
 ]

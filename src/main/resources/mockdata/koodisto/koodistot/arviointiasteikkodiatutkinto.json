@@ -1,24 +1,63 @@
 {
   "koodistoUri": "arviointiasteikkodiatutkinto",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/arviointiasteikkodiatutkinto",
+  "omistaja": null,
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "lukittu": null,
+  "withinCodes": [],
+  "includesCodes": [],
+  "levelsWithCodes": [],
+  "codesGroupUri": "koski",
+  "version": 1,
   "versio": 1,
+  "paivitysPvm": "2018-12-17",
+  "paivittajaOid": null,
+  "voimassaAlkuPvm": "2019-01-01",
+  "voimassaLoppuPvm": null,
+  "tila": "LUONNOS",
   "metadata": [
     {
       "kieli": "FI",
-      "nimi": "Arviointiasteikko dia tutkinto"
+      "nimi": "Arviointiasteikko dia tutkinto",
+      "kuvaus": null,
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
     },
     {
       "kieli": "SV",
-      "nimi": "Arviointiasteikko dia tutkinto"
+      "nimi": "Arviointiasteikko dia tutkinto",
+      "kuvaus": null,
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
     },
     {
       "kieli": "EN",
-      "nimi": "Arviointiasteikko dia tutkinto"
+      "nimi": "Arviointiasteikko dia tutkinto",
+      "kuvaus": null,
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
     }
   ],
-  "codesGroupUri": "koski",
-  "voimassaAlkuPvm": "2019-01-01",
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "withinCodes": [],
-  "tila": "LUONNOS",
-  "version": 1
+  "codesVersions": []
 }

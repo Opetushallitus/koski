@@ -1,116 +1,158 @@
 [
   {
-    "koodiUri": "dialukukausi_1",
-    "koodiArvo": "1",
     "metadata": [
       {
         "nimi": "10/I",
+        "kuvaus": null,
         "lyhytNimi": "10/I",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "dialukukausi_1",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "1"
   },
   {
-    "koodiUri": "dialukukausi_2",
-    "koodiArvo": "2",
     "metadata": [
       {
         "nimi": "10/II",
+        "kuvaus": null,
         "lyhytNimi": "10/II",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "dialukukausi_2",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "2"
   },
   {
-    "koodiUri": "dialukukausi_3",
-    "koodiArvo": "3",
     "metadata": [
       {
         "nimi": "11/I",
+        "kuvaus": null,
         "lyhytNimi": "11/I",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "dialukukausi_3",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "3"
   },
   {
-    "koodiUri": "dialukukausi_4",
-    "koodiArvo": "4",
     "metadata": [
       {
         "nimi": "11/II",
+        "kuvaus": null,
         "lyhytNimi": "11/II",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "dialukukausi_4",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "4"
   },
   {
-    "koodiUri": "dialukukausi_5",
-    "koodiArvo": "5",
     "metadata": [
       {
         "nimi": "12/I",
+        "kuvaus": null,
         "lyhytNimi": "12/I",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "dialukukausi_5",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "5"
   },
   {
-    "koodiUri": "dialukukausi_6",
-    "koodiArvo": "6",
     "metadata": [
       {
         "nimi": "12/II",
+        "kuvaus": null,
         "lyhytNimi": "12/II",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "dialukukausi_6",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "6"
   }
 ]

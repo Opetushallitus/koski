@@ -1,878 +1,991 @@
 [
   {
+    "metadata": [
+      {
+        "nimi": "Language A: literature",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Language A: literature",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Language A: literature",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetib_a",
-    "koodiArvo": "A",
+    "versio": 1,
+    "koodiArvo": "A"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Language A: literature",
-        "lyhytNimi": "",
+        "nimi": "Language A: language and literature",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
-        "nimi": "Language A: literature",
-        "lyhytNimi": "",
+        "nimi": "Language A: language and literature",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
-        "nimi": "Language A: literature",
-        "lyhytNimi": "",
+        "nimi": "Language A: language and literature",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetib_a2",
-    "koodiArvo": "A2",
+    "versio": 1,
+    "koodiArvo": "A2"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Language A: language and literature",
-        "lyhytNimi": "",
-        "kuvaus": "",
+        "nimi": "ab initio",
+        "kuvaus": "ab initio",
+        "lyhytNimi": "ab initio",
         "kieli": "FI"
       },
       {
-        "nimi": "Language A: language and literature",
-        "lyhytNimi": "",
-        "kuvaus": "",
+        "nimi": "ab initio",
+        "kuvaus": "ab initio",
+        "lyhytNimi": "ab initio",
         "kieli": "SV"
       },
       {
-        "nimi": "Language A: language and literature",
-        "lyhytNimi": "",
-        "kuvaus": "",
+        "nimi": "ab initio",
+        "kuvaus": "ab initio",
+        "lyhytNimi": "ab initio",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetib_ab",
-    "koodiArvo": "AB",
+    "versio": 1,
+    "koodiArvo": "AB"
+  },
+  {
     "metadata": [
       {
-        "nimi": "ab initio",
-        "lyhytNimi": "ab initio",
-        "kuvaus": "ab initio",
+        "nimi": "B-language",
+        "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
-        "nimi": "ab initio",
-        "lyhytNimi": "ab initio",
-        "kuvaus": "ab initio",
+        "nimi": "B-language",
+        "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
-        "nimi": "ab initio",
-        "lyhytNimi": "ab initio",
-        "kuvaus": "ab initio",
+        "nimi": "B-language",
+        "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetib_b",
-    "koodiArvo": "B",
+    "versio": 1,
+    "koodiArvo": "B"
+  },
+  {
     "metadata": [
       {
-        "nimi": "B-language",
-        "lyhytNimi": "",
+        "nimi": "Biology",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
-        "nimi": "B-language",
-        "lyhytNimi": "",
+        "nimi": "Biology",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
-        "nimi": "B-language",
-        "lyhytNimi": "",
+        "nimi": "Biology",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetib_bio",
-    "koodiArvo": "BIO",
+    "versio": 1,
+    "koodiArvo": "BIO"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Biology",
-        "lyhytNimi": "",
+        "nimi": "Business and management",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
-        "nimi": "Biology",
-        "lyhytNimi": "",
+        "nimi": "Business and management",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
-        "nimi": "Biology",
-        "lyhytNimi": "",
+        "nimi": "Business and management",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetib_bu",
-    "koodiArvo": "BU",
+    "versio": 1,
+    "koodiArvo": "BU"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Business and management",
-        "lyhytNimi": "",
+        "nimi": "Creativity, activity, service",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
-        "nimi": "Business and management",
-        "lyhytNimi": "",
+        "nimi": "Creativity, activity, service",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
-        "nimi": "Business and management",
-        "lyhytNimi": "",
+        "nimi": "Creativity, activity, service",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetib_cas",
-    "koodiArvo": "CAS",
+    "versio": 1,
+    "koodiArvo": "CAS"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Creativity, activity, service",
-        "lyhytNimi": "",
+        "nimi": "Chemistry",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
-        "nimi": "Creativity, activity, service",
-        "lyhytNimi": "",
+        "nimi": "Chemistry",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
-        "nimi": "Creativity, activity, service",
-        "lyhytNimi": "",
+        "nimi": "Chemistry",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetib_che",
-    "koodiArvo": "CHE",
+    "versio": 1,
+    "koodiArvo": "CHE"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Chemistry",
-        "lyhytNimi": "",
-        "kuvaus": "",
+        "nimi": "Classical languages",
+        "kuvaus": null,
+        "lyhytNimi": "Classical languages",
         "kieli": "FI"
       },
       {
-        "nimi": "Chemistry",
-        "lyhytNimi": "",
-        "kuvaus": "",
+        "nimi": "Classical languages",
+        "kuvaus": null,
+        "lyhytNimi": "Classical languages",
         "kieli": "SV"
       },
       {
-        "nimi": "Chemistry",
-        "lyhytNimi": "",
-        "kuvaus": "",
+        "nimi": "Classical languages",
+        "kuvaus": null,
+        "lyhytNimi": "Classical languages",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetib_cla",
-    "koodiArvo": "CLA",
+    "versio": 1,
+    "koodiArvo": "CLA"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Classical languages",
-        "lyhytNimi": "Classical languages",
+        "nimi": "Computer science",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
-        "nimi": "Classical languages",
-        "lyhytNimi": "Classical languages",
+        "nimi": "Computer science",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Classical languages",
-        "lyhytNimi": "Classical languages",
+        "nimi": "Computer science",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetib_cs",
-    "koodiArvo": "CS",
+    "versio": 1,
+    "koodiArvo": "CS"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Computer science",
+        "nimi": "Dance",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
-        "nimi": "Computer science",
+        "nimi": "Dance",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Computer science",
+        "nimi": "Dance",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetib_dan",
-    "koodiArvo": "DAN",
+    "versio": 1,
+    "koodiArvo": "DAN"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Dance",
+        "nimi": "Design technology",
+        "kuvaus": null,
+        "lyhytNimi": "Design technology",
         "kieli": "FI"
       },
       {
-        "nimi": "Dance",
+        "nimi": "Design technology",
+        "kuvaus": null,
+        "lyhytNimi": "Design technology",
         "kieli": "SV"
       },
       {
-        "nimi": "Dance",
+        "nimi": "Design technology",
+        "kuvaus": null,
+        "lyhytNimi": "Design technology",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetib_des",
-    "koodiArvo": "DES",
+    "versio": 1,
+    "koodiArvo": "DES"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Design technology",
-        "lyhytNimi": "Design technology",
+        "nimi": "Economics",
+        "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
-        "nimi": "Design technology",
-        "lyhytNimi": "Design technology",
+        "nimi": "Economics",
+        "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
-        "nimi": "Design technology",
-        "lyhytNimi": "Design technology",
+        "nimi": "Economics",
+        "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetib_eco",
-    "koodiArvo": "ECO",
+    "versio": 1,
+    "koodiArvo": "ECO"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Economics",
-        "lyhytNimi": "",
+        "nimi": "Extended essay",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
-        "nimi": "Economics",
-        "lyhytNimi": "",
+        "nimi": "Extended essay",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
-        "nimi": "Economics",
-        "lyhytNimi": "",
+        "nimi": "Extended essay",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetib_ee",
-    "koodiArvo": "EE",
+    "versio": 1,
+    "koodiArvo": "EE"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Extended essay",
-        "lyhytNimi": "",
+        "nimi": "Environmental systems and societies",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
-        "nimi": "Extended essay",
-        "lyhytNimi": "",
-        "kuvaus": "",
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Extended essay",
-        "lyhytNimi": "",
+        "nimi": "Environmental systems and societies",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetib_ess",
-    "koodiArvo": "ESS",
+    "versio": 1,
+    "koodiArvo": "ESS"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Environmental systems and societies",
-        "lyhytNimi": "",
-        "kuvaus": "",
+        "nimi": "Film",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": "Film",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Environmental systems and societies",
-        "lyhytNimi": "",
-        "kuvaus": "",
+        "nimi": "Film",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetib_fil",
-    "koodiArvo": "FIL",
+    "versio": 1,
+    "koodiArvo": "FIL"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Film",
+        "nimi": "Geography",
+        "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
-        "nimi": "Film",
+        "nimi": "Geography",
+        "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
-        "nimi": "Film",
+        "nimi": "Geography",
+        "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetib_geo",
-    "koodiArvo": "GEO",
+    "versio": 1,
+    "koodiArvo": "GEO"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Geography",
-        "lyhytNimi": "",
+        "nimi": "History",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
-        "nimi": "Geography",
-        "lyhytNimi": "",
+        "nimi": "History",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
-        "nimi": "Geography",
-        "lyhytNimi": "",
+        "nimi": "History",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetib_his",
-    "koodiArvo": "HIS",
+    "versio": 1,
+    "koodiArvo": "HIS"
+  },
+  {
     "metadata": [
       {
-        "nimi": "History",
-        "lyhytNimi": "",
-        "kuvaus": "",
+        "nimi": "Information technology in a global society",
+        "kuvaus": null,
+        "lyhytNimi": "Information technology in a global society",
         "kieli": "FI"
       },
       {
-        "nimi": "History",
-        "lyhytNimi": "",
-        "kuvaus": "",
+        "nimi": "Information technology in a global society",
+        "kuvaus": null,
+        "lyhytNimi": "Information technology in a global society",
         "kieli": "SV"
       },
       {
-        "nimi": "History",
-        "lyhytNimi": "",
-        "kuvaus": "",
+        "nimi": "Information technology in a global society",
+        "kuvaus": null,
+        "lyhytNimi": "Information technology in a global society",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetib_inf",
-    "koodiArvo": "INF",
+    "versio": 1,
+    "koodiArvo": "INF"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Information technology in a global society",
-        "lyhytNimi": "Information technology in a global society",
+        "nimi": "Literature and performance",
+        "kuvaus": null,
+        "lyhytNimi": "Literature and performance",
         "kieli": "FI"
       },
       {
-        "nimi": "Information technology in a global society",
-        "lyhytNimi": "Information technology in a global society",
+        "nimi": "Literature and performance",
+        "kuvaus": null,
+        "lyhytNimi": "Literature and performance",
         "kieli": "SV"
       },
       {
-        "nimi": "Information technology in a global society",
-        "lyhytNimi": "Information technology in a global society",
+        "nimi": "Literature and performance",
+        "kuvaus": null,
+        "lyhytNimi": "Literature and performance",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetib_lit",
-    "koodiArvo": "LIT",
+    "versio": 1,
+    "koodiArvo": "LIT"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Literature and performance",
-        "lyhytNimi": "Literature and performance",
+        "nimi": "Mathematics",
+        "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
-        "nimi": "Literature and performance",
-        "lyhytNimi": "Literature and performance",
+        "nimi": "Mathematics",
+        "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
-        "nimi": "Literature and performance",
-        "lyhytNimi": "Literature and performance",
+        "nimi": "Mathematics",
+        "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetib_mat",
-    "koodiArvo": "MAT",
+    "versio": 1,
+    "koodiArvo": "MAT"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Mathematics",
-        "lyhytNimi": "",
-        "kuvaus": "",
+        "nimi": "Mathematics: analysis and approaches",
+        "kuvaus": null,
+        "lyhytNimi": "Mathematics: analysis and approaches",
         "kieli": "FI"
       },
       {
-        "nimi": "Mathematics",
-        "lyhytNimi": "",
-        "kuvaus": "",
+        "nimi": "Mathematics: analysis and approaches",
+        "kuvaus": null,
+        "lyhytNimi": "Mathematics: analysis and approaches",
         "kieli": "SV"
       },
       {
-        "nimi": "Mathematics",
-        "lyhytNimi": "",
-        "kuvaus": "",
+        "nimi": "Mathematics: analysis and approaches",
+        "kuvaus": null,
+        "lyhytNimi": "Mathematics: analysis and approaches",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetib_mataa",
-    "koodiArvo": "MATAA",
+    "versio": 1,
+    "koodiArvo": "MATAA"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Mathematics: analysis and approaches",
-        "lyhytNimi": "Mathematics: analysis and approaches",
+        "nimi": "Mathematics: applications and interpretation",
+        "kuvaus": null,
+        "lyhytNimi": "Mathematics: applications and interpretation",
         "kieli": "FI"
       },
       {
-        "nimi": "Mathematics: analysis and approaches",
-        "lyhytNimi": "Mathematics: analysis and approaches",
+        "nimi": "Mathematics: applications and interpretation",
+        "kuvaus": null,
+        "lyhytNimi": "Mathematics: applications and interpretation",
         "kieli": "SV"
       },
       {
-        "nimi": "Mathematics: analysis and approaches",
-        "lyhytNimi": "Mathematics: analysis and approaches",
+        "nimi": "Mathematics: applications and interpretation",
+        "kuvaus": null,
+        "lyhytNimi": "Mathematics: applications and interpretation",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetib_matai",
-    "koodiArvo": "MATAI",
+    "versio": 1,
+    "koodiArvo": "MATAI"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Mathematics: applications and interpretation",
-        "lyhytNimi": "Mathematics: applications and interpretation",
+        "nimi": "Further mathematics",
+        "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
-        "nimi": "Mathematics: applications and interpretation",
-        "lyhytNimi": "Mathematics: applications and interpretation",
+        "nimi": "Further mathematics",
+        "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
-        "nimi": "Mathematics: applications and interpretation",
-        "lyhytNimi": "Mathematics: applications and interpretation",
+        "nimi": "Further mathematics",
+        "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetib_matft",
-    "koodiArvo": "MATFT",
+    "versio": 1,
+    "koodiArvo": "MATFT"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Further mathematics",
-        "lyhytNimi": "",
+        "nimi": "Mathematical studies",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
-        "nimi": "Further mathematics",
-        "lyhytNimi": "",
+        "nimi": "Mathematical studies",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
-        "nimi": "Further mathematics",
-        "lyhytNimi": "",
+        "nimi": "Mathematical studies",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetib_matst",
-    "koodiArvo": "MATST",
+    "versio": 1,
+    "koodiArvo": "MATST"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Mathematical studies",
-        "lyhytNimi": "",
-        "kuvaus": "",
+        "nimi": "Music",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
-        "nimi": "Mathematical studies",
-        "lyhytNimi": "",
-        "kuvaus": "",
+        "nimi": "Music",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Mathematical studies",
-        "lyhytNimi": "",
-        "kuvaus": "",
+        "nimi": "Music",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetib_mus",
-    "koodiArvo": "MUS",
+    "versio": 1,
+    "koodiArvo": "MUS"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Music",
+        "nimi": "Philosophy",
+        "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
-        "nimi": "Music",
+        "nimi": "Philosophy",
+        "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
-        "nimi": "Music",
+        "nimi": "Philosophy",
+        "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetib_phi",
-    "koodiArvo": "PHI",
+    "versio": 1,
+    "koodiArvo": "PHI"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Philosophy",
-        "lyhytNimi": "",
+        "nimi": "Physics",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
-        "nimi": "Philosophy",
-        "lyhytNimi": "",
+        "nimi": "Physics",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
-        "nimi": "Philosophy",
-        "lyhytNimi": "",
+        "nimi": "Physics",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetib_phy",
-    "koodiArvo": "PHY",
+    "versio": 1,
+    "koodiArvo": "PHY"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Physics",
-        "lyhytNimi": "",
+        "nimi": "Global politics",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
-        "nimi": "Physics",
-        "lyhytNimi": "",
+        "nimi": "Global politics",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
-        "nimi": "Physics",
-        "lyhytNimi": "",
+        "nimi": "Global politics",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetib_pol",
-    "koodiArvo": "POL",
+    "versio": 1,
+    "koodiArvo": "POL"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Global politics",
-        "lyhytNimi": "",
+        "nimi": "Psychology",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
-        "nimi": "Global politics",
-        "lyhytNimi": "",
+        "nimi": "Psychology",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
-        "nimi": "Global politics",
-        "lyhytNimi": "",
+        "nimi": "Psychology",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetib_psy",
-    "koodiArvo": "PSY",
+    "versio": 1,
+    "koodiArvo": "PSY"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Psychology",
-        "lyhytNimi": "",
+        "nimi": "World religions",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
-        "nimi": "Psychology",
-        "lyhytNimi": "",
+        "nimi": "World religions",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
-        "nimi": "Psychology",
-        "lyhytNimi": "",
+        "nimi": "World religions",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetib_rel",
-    "koodiArvo": "REL",
+    "versio": 1,
+    "koodiArvo": "REL"
+  },
+  {
     "metadata": [
       {
-        "nimi": "World religions",
-        "lyhytNimi": "",
+        "nimi": "Social and cultural anthropology",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
-        "nimi": "World religions",
-        "lyhytNimi": "",
+        "nimi": "Social and cultural anthropology",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
-        "nimi": "World religions",
-        "lyhytNimi": "",
+        "nimi": "Social and cultural anthropology",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetib_soc",
-    "koodiArvo": "SOC",
+    "versio": 1,
+    "koodiArvo": "SOC"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Social and cultural anthropology",
-        "lyhytNimi": "",
-        "kuvaus": "",
+        "nimi": "Sports, exercise and health science",
+        "kuvaus": null,
+        "lyhytNimi": "Sports, exercise and health science",
         "kieli": "FI"
       },
       {
-        "nimi": "Social and cultural anthropology",
-        "lyhytNimi": "",
-        "kuvaus": "",
+        "nimi": "Sports, exercise and health science",
+        "kuvaus": null,
+        "lyhytNimi": "Sports, exercise and health science",
         "kieli": "SV"
       },
       {
-        "nimi": "Social and cultural anthropology",
-        "lyhytNimi": "",
-        "kuvaus": "",
+        "nimi": "Sports, exercise and health science",
+        "kuvaus": null,
+        "lyhytNimi": "Sports, exercise and health science",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetib_spo",
-    "koodiArvo": "SPO",
+    "versio": 1,
+    "koodiArvo": "SPO"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Sports, exercise and health science",
-        "lyhytNimi": "Sports, exercise and health science",
+        "nimi": "Theatre",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
-        "nimi": "Sports, exercise and health science",
-        "lyhytNimi": "Sports, exercise and health science",
+        "nimi": "Theatre",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Sports, exercise and health science",
-        "lyhytNimi": "Sports, exercise and health science",
+        "nimi": "Theatre",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetib_the",
-    "koodiArvo": "THE",
+    "versio": 1,
+    "koodiArvo": "THE"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Theatre",
+        "nimi": "Theory of knowledge",
+        "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
-        "nimi": "Theatre",
+        "nimi": "Theory of knowledge",
+        "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
-        "nimi": "Theatre",
+        "nimi": "Theory of knowledge",
+        "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "oppiaineetib_tok",
-    "koodiArvo": "TOK",
-    "metadata": [
-      {
-        "nimi": "Theory of knowledge",
-        "lyhytNimi": "",
-        "kuvaus": "",
-        "kieli": "FI"
-      },
-      {
-        "nimi": "Theory of knowledge",
-        "lyhytNimi": "",
-        "kuvaus": "",
-        "kieli": "SV"
-      },
-      {
-        "nimi": "Theory of knowledge",
-        "lyhytNimi": "",
-        "kuvaus": "",
-        "kieli": "EN"
-      }
-    ],
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "TOK"
   },
   {
-    "koodiUri": "oppiaineetib_va",
-    "koodiArvo": "VA",
     "metadata": [
       {
         "nimi": "Visual arts",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
         "nimi": "Visual arts",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Visual arts",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiaineetib_va",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "VA"
   }
 ]

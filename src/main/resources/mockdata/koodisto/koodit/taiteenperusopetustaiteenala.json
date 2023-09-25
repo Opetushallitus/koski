@@ -1,236 +1,254 @@
 [
   {
-    "koodiUri": "taiteenperusopetustaiteenala_arkkitehtuuri",
-    "koodiArvo": "arkkitehtuuri",
     "metadata": [
       {
         "nimi": "Arkkitehtuuri",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Arkitektur",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Architecture",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "taiteenperusopetustaiteenala_arkkitehtuuri",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "arkkitehtuuri"
   },
   {
-    "koodiUri": "taiteenperusopetustaiteenala_kasityo",
-    "koodiArvo": "kasityo",
     "metadata": [
       {
         "nimi": "Käsityö",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Slöjd",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Crafts",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "taiteenperusopetustaiteenala_kasityo",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "kasityo"
   },
   {
-    "koodiUri": "taiteenperusopetustaiteenala_kuvataide",
-    "koodiArvo": "kuvataide",
     "metadata": [
       {
         "nimi": "Kuvataide",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Bildkonst",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Visual arts",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "taiteenperusopetustaiteenala_kuvataide",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "kuvataide"
   },
   {
-    "koodiUri": "taiteenperusopetustaiteenala_mediataiteet",
-    "koodiArvo": "mediataiteet",
     "metadata": [
       {
         "nimi": "Mediataiteet",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Mediekonst",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Media arts",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "taiteenperusopetustaiteenala_mediataiteet",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "mediataiteet"
   },
   {
-    "koodiUri": "taiteenperusopetustaiteenala_musiikki",
-    "koodiArvo": "musiikki",
     "metadata": [
       {
         "nimi": "Musiikki",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Musik",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Music",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "taiteenperusopetustaiteenala_musiikki",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "musiikki"
   },
   {
-    "koodiUri": "taiteenperusopetustaiteenala_sanataide",
-    "koodiArvo": "sanataide",
     "metadata": [
       {
         "nimi": "Sanataide",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Ordkonst",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Literary art",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "taiteenperusopetustaiteenala_sanataide",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "sanataide"
   },
   {
-    "koodiUri": "taiteenperusopetustaiteenala_sirkustaide",
-    "koodiArvo": "sirkustaide",
     "metadata": [
       {
         "nimi": "Sirkustaide",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Cirkuskonst",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Circus arts",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "taiteenperusopetustaiteenala_sirkustaide",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "sirkustaide"
   },
   {
-    "koodiUri": "taiteenperusopetustaiteenala_tanssi",
-    "koodiArvo": "tanssi",
     "metadata": [
       {
         "nimi": "Tanssi",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Dans",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Dance",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "taiteenperusopetustaiteenala_tanssi",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "tanssi"
   },
   {
-    "koodiUri": "taiteenperusopetustaiteenala_teatteritaide",
-    "koodiArvo": "teatteritaide",
     "metadata": [
       {
         "nimi": "Teatteritaide",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Teaterkonst",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Theatre",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "taiteenperusopetustaiteenala_teatteritaide",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "teatteritaide"
   }
 ]

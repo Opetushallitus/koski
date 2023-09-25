@@ -1,27 +1,97 @@
 {
   "koodistoUri": "kielivalikoima",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/kielivalikoima",
+  "omistaja": "Opetushallitus",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "lukittu": null,
+  "withinCodes": [],
+  "includesCodes": [
+    {
+      "codesUri": "aikuistenperusopetuksenkurssit2015",
+      "codesVersion": 1,
+      "passive": false,
+      "nimi": {
+        "FI": "Aikuisten perusopetuksen kurssit 2015"
+      },
+      "kuvaus": {
+        "FI": ""
+      }
+    },
+    {
+      "codesUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017",
+      "codesVersion": 1,
+      "passive": false,
+      "nimi": {
+        "FI": "Aikuisten perusopetuksen alkuvaiheen kurssit 2017"
+      },
+      "kuvaus": {
+        "FI": ""
+      }
+    },
+    {
+      "codesUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017",
+      "codesVersion": 1,
+      "passive": false,
+      "nimi": {
+        "FI": "Aikuisten perusopetuksen päättövaiheen kurssit 2017"
+      },
+      "kuvaus": {
+        "FI": ""
+      }
+    }
+  ],
+  "levelsWithCodes": [],
+  "codesGroupUri": "koulutuskoodistot",
+  "version": 1,
   "versio": 1,
+  "paivitysPvm": "2021-08-12",
+  "paivittajaOid": "1.2.246.562.24.50832216012",
+  "voimassaAlkuPvm": "2013-01-01",
+  "voimassaLoppuPvm": null,
+  "tila": "LUONNOS",
   "metadata": [
     {
       "kieli": "FI",
       "nimi": "kielivalikoima",
-      "kuvaus": "kielivalikoima - käytetään ainakin KOSKI-palvelussa oppiaineiden kieliä määriteltäessä"
-    },
-    {
-      "kieli": "SV",
-      "nimi": "kielivalikoima",
-      "kuvaus": "kielivalikoima"
+      "kuvaus": "kielivalikoima - käytetään ainakin KOSKI-palvelussa oppiaineiden kieliä määriteltäessä",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
     },
     {
       "kieli": "EN",
       "nimi": "kielivalikoima",
-      "kuvaus": "kielivalikoima"
+      "kuvaus": "kielivalikoima",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    },
+    {
+      "kieli": "SV",
+      "nimi": "kielivalikoima",
+      "kuvaus": "kielivalikoima",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
     }
   ],
-  "codesGroupUri": "koulutuskoodistot",
-  "voimassaAlkuPvm": "2013-01-01",
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "withinCodes": [],
-  "tila": "LUONNOS",
-  "version": 1
+  "codesVersions": []
 }

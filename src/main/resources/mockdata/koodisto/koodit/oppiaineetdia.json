@@ -1,626 +1,752 @@
 [
   {
-    "koodiUri": "oppiaineetdia_a",
-    "koodiArvo": "A",
     "metadata": [
       {
         "nimi": "A-kieli",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "A-språk",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "A-language",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiaineetdia_a",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "A"
   },
   {
-    "koodiUri": "oppiaineetdia_ai",
-    "koodiArvo": "AI",
     "metadata": [
       {
         "nimi": "Äidinkieli",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Modersmål",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Mother tongue",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiaineetdia_ai",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "AI"
   },
   {
-    "koodiUri": "oppiaineetdia_b1",
-    "koodiArvo": "B1",
     "metadata": [
       {
         "nimi": "B1-kieli",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "B1-språk",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "B1-language",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiaineetdia_b1",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "B1"
   },
   {
-    "koodiUri": "oppiaineetdia_b2",
-    "koodiArvo": "B2",
     "metadata": [
       {
         "nimi": "B2-kieli",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "B2-språk",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "B2-language",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiaineetdia_b2",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "B2"
   },
   {
-    "koodiUri": "oppiaineetdia_b3",
-    "koodiArvo": "B3",
     "metadata": [
       {
         "nimi": "B3-kieli",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "B3-språk",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "B3-language",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiaineetdia_b3",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "B3"
   },
   {
-    "koodiUri": "oppiaineetdia_bi",
-    "koodiArvo": "BI",
     "metadata": [
       {
         "nimi": "Biologia",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Biologi",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Biology",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiaineetdia_bi",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "BI"
   },
   {
-    "koodiUri": "oppiaineetdia_ccea",
-    "koodiArvo": "CCEA",
     "metadata": [
       {
         "nimi": "Cambridge Certificate of Advanced English",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiaineetdia_ccea",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "CCEA"
   },
   {
-    "koodiUri": "oppiaineetdia_cloe",
-    "koodiArvo": "CLOE",
     "metadata": [
       {
         "nimi": "CertiLingua label of excellence",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiaineetdia_cloe",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "CLOE"
   },
   {
-    "koodiUri": "oppiaineetdia_eli",
-    "koodiArvo": "ELI",
     "metadata": [
       {
         "nimi": "Englanti, lisäkurssi",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
         "nimi": "Engelska, extra kurs",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "English, additional course",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiaineetdia_eli",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "ELI"
   },
   {
-    "koodiUri": "oppiaineetdia_et",
-    "koodiArvo": "ET",
     "metadata": [
       {
         "nimi": "Elämänkatsomustieto",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Livsåskådningskunskap",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Ethics",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiaineetdia_et",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "ET"
   },
   {
-    "koodiUri": "oppiaineetdia_fi",
-    "koodiArvo": "FI",
     "metadata": [
       {
         "nimi": "Filosofia",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Filosofi",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Philosophy",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiaineetdia_fi",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "FI"
   },
   {
-    "koodiUri": "oppiaineetdia_fy",
-    "koodiArvo": "FY",
     "metadata": [
       {
         "nimi": "Fysiikka",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Fysik",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Physics",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiaineetdia_fy",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "FY"
   },
   {
-    "koodiUri": "oppiaineetdia_hi",
-    "koodiArvo": "HI",
     "metadata": [
       {
         "nimi": "Historia",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Historia",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "History",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiaineetdia_hi",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "HI"
   },
   {
-    "koodiUri": "oppiaineetdia_ke",
-    "koodiArvo": "KE",
     "metadata": [
       {
         "nimi": "Kemia",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Kemi",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Chemistry",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiaineetdia_ke",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "KE"
   },
   {
-    "koodiUri": "oppiaineetdia_ku",
-    "koodiArvo": "KU",
     "metadata": [
       {
         "nimi": "Kuvataide",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Bildkonst",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Visual arts",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiaineetdia_ku",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "KU"
   },
   {
-    "koodiUri": "oppiaineetdia_li",
-    "koodiArvo": "LI",
     "metadata": [
       {
         "nimi": "Liikunta",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Gymnastik",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Physical education",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiaineetdia_li",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "LI"
   },
   {
-    "koodiUri": "oppiaineetdia_lt",
-    "koodiArvo": "LT",
     "metadata": [
       {
         "nimi": "Lakitieto",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Lagkunskap",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Legal knowledge",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiaineetdia_lt",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "LT"
   },
   {
-    "koodiUri": "oppiaineetdia_ma",
-    "koodiArvo": "MA",
     "metadata": [
       {
         "nimi": "Matematiikka",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Matematik",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Mathematics",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiaineetdia_ma",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "MA"
   },
   {
-    "koodiUri": "oppiaineetdia_maa",
-    "koodiArvo": "MAA",
     "metadata": [
       {
         "nimi": "Maantiede (saksa ja englanti)",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Geografi (tyska och engelska)",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Geography (German and English)",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiaineetdia_maa",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "MAA"
   },
   {
-    "koodiUri": "oppiaineetdia_mali",
-    "koodiArvo": "MALI",
     "metadata": [
       {
         "nimi": "Matematiikka, lisäkurssi",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Matematik, extra kurs",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Mathematics, additional course",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiaineetdia_mali",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "MALI"
   },
   {
-    "koodiUri": "oppiaineetdia_masy",
-    "koodiArvo": "MASY",
     "metadata": [
       {
         "nimi": "Matematiikka, syventävä",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Matematik, fördjupande",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Mathematics, advanced",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiaineetdia_masy",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "MASY"
   },
   {
-    "koodiUri": "oppiaineetdia_mu",
-    "koodiArvo": "MU",
     "metadata": [
       {
         "nimi": "Musiikki",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Musik",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Music",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiaineetdia_mu",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "MU"
   },
   {
-    "koodiUri": "oppiaineetdia_rali",
-    "koodiArvo": "RALI",
     "metadata": [
       {
         "nimi": "Ranska, lisäkurssi",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
         "nimi": "Franska, extra kurs",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "French, additional course",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiaineetdia_rali",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "RALI"
   },
   {
-    "koodiUri": "oppiaineetdia_ta",
-    "koodiArvo": "TA",
     "metadata": [
       {
         "nimi": "Taloustieto ja yhteiskuntaoppi",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Ekonomisk kunskap och samhällslära",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Economics and social studies",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiaineetdia_ta",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "TA"
   },
   {
-    "koodiUri": "oppiaineetdia_ti",
-    "koodiArvo": "TI",
     "metadata": [
       {
         "nimi": "Tietotekniikka",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Informationsteknik",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Information and communications technology",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiaineetdia_ti",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "TI"
   },
   {
-    "koodiUri": "oppiaineetdia_tk",
-    "koodiArvo": "TK",
     "metadata": [
       {
         "nimi": "Tietojenkäsittely",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Databehandling",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Computing and software",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiaineetdia_tk",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "TK"
   },
   {
-    "koodiUri": "oppiaineetdia_us",
-    "koodiArvo": "US",
     "metadata": [
       {
         "nimi": "Uskonto",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Religion",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Religion",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiaineetdia_us",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "US"
   },
   {
-    "koodiUri": "oppiaineetdia_veli",
-    "koodiArvo": "VELI",
     "metadata": [
       {
         "nimi": "Venäjä, lisäkurssi",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
         "nimi": "Ryska, extra kurs",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Russian, additional course",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiaineetdia_veli",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "VELI"
   },
   {
-    "koodiUri": "oppiaineetdia_vt",
-    "koodiArvo": "VT",
     "metadata": [
       {
         "nimi": "Vanhojen tanssit",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiaineetdia_vt",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "VT"
   }
 ]

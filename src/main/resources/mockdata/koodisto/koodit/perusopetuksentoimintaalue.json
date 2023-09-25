@@ -1,122 +1,137 @@
 [
   {
-    "koodiUri": "perusopetuksentoimintaalue_1",
-    "koodiArvo": "1",
     "metadata": [
       {
         "nimi": "motoriset taidot",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "motoriska färdigheter",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "motor skills",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "perusopetuksentoimintaalue_1",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "1"
   },
   {
-    "koodiUri": "perusopetuksentoimintaalue_2",
-    "koodiArvo": "2",
     "metadata": [
       {
         "nimi": "kieli ja kommunikaatio",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "språkliga och kommunikativa färdigheter",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "language and communication",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "perusopetuksentoimintaalue_2",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "2"
   },
   {
-    "koodiUri": "perusopetuksentoimintaalue_3",
-    "koodiArvo": "3",
     "metadata": [
       {
         "nimi": "sosiaaliset taidot",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "sociala färdigheter",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "social skills",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "perusopetuksentoimintaalue_3",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "3"
   },
   {
-    "koodiUri": "perusopetuksentoimintaalue_4",
-    "koodiArvo": "4",
     "metadata": [
       {
         "nimi": "päivittäisten toimintojen taidot",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "vardagsfärdigheter",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "everyday skills",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "perusopetuksentoimintaalue_4",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "4"
   },
   {
-    "koodiUri": "perusopetuksentoimintaalue_5",
-    "koodiArvo": "5",
     "metadata": [
       {
         "nimi": "kognitiiviset taidot",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "kognitiva färdigheter",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "cognitive skills",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "perusopetuksentoimintaalue_5",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "5"
   }
 ]

@@ -1,50 +1,56 @@
 [
   {
-    "koodiUri": "perusopetuksensuoritustapa_erityinentutkinto",
-    "koodiArvo": "erityinentutkinto",
     "metadata": [
       {
         "nimi": "Erityinen tutkinto",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Särskild examen",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Separate basic education examination",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "perusopetuksensuoritustapa_erityinentutkinto",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "erityinentutkinto"
   },
   {
-    "koodiUri": "perusopetuksensuoritustapa_koulutus",
-    "koodiArvo": "koulutus",
     "metadata": [
       {
         "nimi": "Koulutus",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Utbildning",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Education",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "perusopetuksensuoritustapa_koulutus",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "koulutus"
   }
 ]

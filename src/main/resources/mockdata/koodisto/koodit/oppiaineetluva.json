@@ -1,244 +1,405 @@
 [
   {
-    "koodiUri": "oppiaineetluva_lvaik",
-    "koodiArvo": "LVAIK",
     "metadata": [
       {
         "nimi": "Äidinkieli ja kirjallisuus",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Modersmål och litteratur",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Mother tongue and literature",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "lukioonvalmistavankoulutuksenkurssit2015_lvs1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "lukioonvalmistavankoulutuksenkurssit2015_lvs10",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "lukioonvalmistavankoulutuksenkurssit2015_lvs2",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "lukioonvalmistavankoulutuksenkurssit2015_lvs3",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "lukioonvalmistavankoulutuksenkurssit2015_lvs4",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "lukioonvalmistavankoulutuksenkurssit2015_lvs5",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "lukioonvalmistavankoulutuksenkurssit2015_lvs6",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "lukioonvalmistavankoulutuksenkurssit2015_lvs7",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "lukioonvalmistavankoulutuksenkurssit2015_lvs8",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "lukioonvalmistavankoulutuksenkurssit2015_lvs9",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiaineetluva_lvaik",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "LVAIK"
   },
   {
-    "koodiUri": "oppiaineetluva_lvak",
-    "koodiArvo": "LVAK",
     "metadata": [
       {
         "nimi": "Lukiokoulutukseen valmistavassa koulutuksessa alkava kieli",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
         "nimi": "Språk som påbörjas i utbildningen som förbereder för gymnasieutbildning",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Language studies commenced during preparatory education for general upper secondary education",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "lukioonvalmistavankoulutuksenkurssit2015_lvkb1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "lukioonvalmistavankoulutuksenkurssit2015_lvkb2",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "lukioonvalmistavankoulutuksenkurssit2015_lvkb3",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiaineetluva_lvak",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "LVAK"
   },
   {
-    "koodiUri": "oppiaineetluva_lvhiyh",
-    "koodiArvo": "LVHIYH",
     "metadata": [
       {
         "nimi": "Historia ja yhteiskuntaoppi",
-        "lyhytNimi": "Historia ja yhteiskuntaoppi",
         "kuvaus": "Historia ja yhteiskuntaoppi",
+        "lyhytNimi": "Historia ja yhteiskuntaoppi",
         "kieli": "FI"
       },
       {
         "nimi": "Historia och samhällslära",
-        "lyhytNimi": "Historia ja yhteiskuntaoppi",
         "kuvaus": "Historia ja yhteiskuntaoppi",
+        "lyhytNimi": "Historia ja yhteiskuntaoppi",
         "kieli": "SV"
       },
       {
         "nimi": "History and social studies",
-        "lyhytNimi": "Historia ja yhteiskuntaoppi",
         "kuvaus": "Historia ja yhteiskuntaoppi",
+        "lyhytNimi": "Historia ja yhteiskuntaoppi",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiaineetluva_lvhiyh",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "LVHIYH"
   },
   {
-    "koodiUri": "oppiaineetluva_lvmai",
-    "koodiArvo": "LVMAI",
     "metadata": [
       {
         "nimi": "Opiskelijan oma äidinkieli",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
         "nimi": "Den studerandes eget modersmål",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "The student's own native language",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "lukioonvalmistavankoulutuksenkurssit2015_lvmai1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "lukioonvalmistavankoulutuksenkurssit2015_lvmai2",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "lukioonvalmistavankoulutuksenkurssit2015_lvmai3",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiaineetluva_lvmai",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "LVMAI"
   },
   {
-    "koodiUri": "oppiaineetluva_lvmaluo",
-    "koodiArvo": "LVMALUO",
     "metadata": [
       {
         "nimi": "Matemaattiset ja luonnontieteelliset opinnot",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Matematiska och naturvetenskapliga studier",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Mathematics and natural sciences",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "lukioonvalmistavankoulutuksenkurssit2015_lvluma1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "lukioonvalmistavankoulutuksenkurssit2015_lvluma2",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiaineetluva_lvmaluo",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "LVMALUO"
   },
   {
-    "koodiUri": "oppiaineetluva_lvmfkbm",
-    "koodiArvo": "LVMFKBM",
     "metadata": [
       {
         "nimi": "Matematiikka, fysiikka, kemia, biologia, maantiede",
-        "lyhytNimi": "Matematiikka, fysiikka, kemia, biologia, maantiede",
         "kuvaus": "Matematiikka, fysiikka, kemia, biologia, maantiede",
+        "lyhytNimi": "Matematiikka, fysiikka, kemia, biologia, maantiede",
         "kieli": "FI"
       },
       {
         "nimi": "Matematik, fysik, kemi, biologi, geografi",
-        "lyhytNimi": "Matematiikka, fysiikka, kemia, biologia, maantiede",
         "kuvaus": "Matematiikka, fysiikka, kemia, biologia, maantiede",
+        "lyhytNimi": "Matematiikka, fysiikka, kemia, biologia, maantiede",
         "kieli": "SV"
       },
       {
         "nimi": "Mathematics, physics, chemistry, biology, geography",
-        "lyhytNimi": "Matematiikka, fysiikka, kemia, biologia, maantiede",
         "kuvaus": "Matematiikka, fysiikka, kemia, biologia, maantiede",
+        "lyhytNimi": "Matematiikka, fysiikka, kemia, biologia, maantiede",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiaineetluva_lvmfkbm",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "LVMFKBM"
   },
   {
-    "koodiUri": "oppiaineetluva_lvmuutk",
-    "koodiArvo": "LVMUUTK",
     "metadata": [
       {
         "nimi": "Muut kielet",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Övriga språk",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Other languages",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiaineetluva_lvmuutk",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "LVMUUTK"
   },
   {
-    "koodiUri": "oppiaineetluva_lvopo",
-    "koodiArvo": "LVOPO",
     "metadata": [
       {
         "nimi": "Opinto-ohjaus",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Studiehandledning",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Guidance counselling",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "lukioonvalmistavankoulutuksenkurssit2015_lvop1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "lukioonvalmistavankoulutuksenkurssit2015_lvop2",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiaineetluva_lvopo",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "LVOPO"
   },
   {
-    "koodiUri": "oppiaineetluva_lvpoak",
-    "koodiArvo": "LVPOAK",
     "metadata": [
       {
         "nimi": "Perusopetuksessa alkanut kieli",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
         "nimi": "Språk som påbörjats i den grundläggande utbildningen",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Language commenced in basic education",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "lukioonvalmistavankoulutuksenkurssit2015_lvka1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "lukioonvalmistavankoulutuksenkurssit2015_lvka2",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "lukioonvalmistavankoulutuksenkurssit2015_lvka3",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiaineetluva_lvpoak",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "LVPOAK"
   },
   {
-    "koodiUri": "oppiaineetluva_lvyhku",
-    "koodiArvo": "LVYHKU",
     "metadata": [
       {
         "nimi": "Yhteiskuntatietous ja kulttuurintuntemus",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Samhällskunskap och kulturkännedom",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Civic education and cultural knowledge",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "lukioonvalmistavankoulutuksenkurssit2015_lvhy1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "lukioonvalmistavankoulutuksenkurssit2015_lvhy2",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiaineetluva_lvyhku",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "LVYHKU"
   }
 ]

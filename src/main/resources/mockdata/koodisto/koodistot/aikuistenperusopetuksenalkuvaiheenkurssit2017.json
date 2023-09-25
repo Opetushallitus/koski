@@ -1,32 +1,77 @@
 {
   "koodistoUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017",
-  "versio": 1,
-  "metadata": [
-    {
-      "kieli": "FI",
-      "nimi": "Aikuisten perusopetuksen alkuvaiheen kurssit 2017"
-    }
-  ],
-  "codesGroupUri": "koski",
-  "voimassaAlkuPvm": "2017-07-04",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/aikuistenperusopetuksenalkuvaiheenkurssit2017",
+  "omistaja": null,
   "organisaatioOid": "1.2.246.562.10.00000000001",
+  "lukittu": null,
   "withinCodes": [
+    {
+      "codesUri": "oppiaineaidinkielijakirjallisuus",
+      "codesVersion": 1,
+      "passive": false,
+      "nimi": {
+        "FI": "Oppiaine Äidinkieli ja kirjallisuus",
+        "SV": "Oppiaine Äidinkieli ja kirjallisuus",
+        "EN": "Oppiaine Äidinkieli ja kirjallisuus"
+      },
+      "kuvaus": {
+        "FI": "Oppiaine Äidinkieli ja kirjallisuus",
+        "SV": "Oppiaine Äidinkieli ja kirjallisuus",
+        "EN": "Oppiaine Äidinkieli ja kirjallisuus"
+      }
+    },
     {
       "codesUri": "aikuistenperusopetuksenalkuvaiheenoppiaineet",
       "codesVersion": 1,
-      "passive": false
+      "passive": false,
+      "nimi": {
+        "FI": "Aikuisten perusopetuksen alkuvaiheen oppiaineet"
+      },
+      "kuvaus": {
+        "FI": ""
+      }
     },
     {
       "codesUri": "kielivalikoima",
       "codesVersion": 1,
-      "passive": false
-    },
-    {
-      "codesUri": "oppiaineaidinkielijakirjallisuus",
-      "codesVersion": 1,
-      "passive": false
+      "passive": false,
+      "nimi": {
+        "FI": "kielivalikoima",
+        "SV": "kielivalikoima",
+        "EN": "kielivalikoima"
+      },
+      "kuvaus": {
+        "FI": "kielivalikoima - käytetään ainakin KOSKI-palvelussa oppiaineiden kieliä määriteltäessä",
+        "SV": "kielivalikoima",
+        "EN": "kielivalikoima"
+      }
     }
   ],
+  "includesCodes": [],
+  "levelsWithCodes": [],
+  "codesGroupUri": "koski",
+  "version": 3,
+  "versio": 1,
+  "paivitysPvm": "2018-04-24",
+  "paivittajaOid": null,
+  "voimassaAlkuPvm": "2017-07-04",
+  "voimassaLoppuPvm": null,
   "tila": "LUONNOS",
-  "version": 3
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "Aikuisten perusopetuksen alkuvaiheen kurssit 2017",
+      "kuvaus": null,
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    }
+  ],
+  "codesVersions": []
 }

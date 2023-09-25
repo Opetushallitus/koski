@@ -1,149 +1,191 @@
 [
   {
+    "metadata": [
+      {
+        "nimi": "A",
+        "kuvaus": null,
+        "lyhytNimi": "A",
+        "kieli": "FI"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "A",
+        "kuvaus": null,
+        "lyhytNimi": "A",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkisecondarygrade_a",
-    "koodiArvo": "A",
+    "versio": 1,
+    "koodiArvo": "A"
+  },
+  {
     "metadata": [
       {
-        "nimi": "A",
-        "lyhytNimi": "A",
+        "nimi": "B",
+        "kuvaus": null,
+        "lyhytNimi": "B",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "A",
-        "lyhytNimi": "A",
+        "nimi": "B",
+        "kuvaus": null,
+        "lyhytNimi": "B",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkisecondarygrade_b",
-    "koodiArvo": "B",
+    "versio": 1,
+    "koodiArvo": "B"
+  },
+  {
     "metadata": [
       {
-        "nimi": "B",
-        "lyhytNimi": "B",
+        "nimi": "C",
+        "kuvaus": null,
+        "lyhytNimi": "C",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "B",
-        "lyhytNimi": "B",
+        "nimi": "C",
+        "kuvaus": null,
+        "lyhytNimi": "C",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkisecondarygrade_c",
-    "koodiArvo": "C",
+    "versio": 1,
+    "koodiArvo": "C"
+  },
+  {
     "metadata": [
       {
-        "nimi": "C",
-        "lyhytNimi": "C",
+        "nimi": "D",
+        "kuvaus": null,
+        "lyhytNimi": "D",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "C",
-        "lyhytNimi": "C",
+        "nimi": "D",
+        "kuvaus": null,
+        "lyhytNimi": "D",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkisecondarygrade_d",
-    "koodiArvo": "D",
+    "versio": 1,
+    "koodiArvo": "D"
+  },
+  {
     "metadata": [
       {
-        "nimi": "D",
-        "lyhytNimi": "D",
+        "nimi": "E",
+        "kuvaus": null,
+        "lyhytNimi": "E",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "D",
-        "lyhytNimi": "D",
+        "nimi": "E",
+        "kuvaus": null,
+        "lyhytNimi": "E",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkisecondarygrade_e",
-    "koodiArvo": "E",
+    "versio": 1,
+    "koodiArvo": "E"
+  },
+  {
     "metadata": [
       {
-        "nimi": "E",
-        "lyhytNimi": "E",
+        "nimi": "F",
+        "kuvaus": null,
+        "lyhytNimi": "F",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "E",
-        "lyhytNimi": "E",
+        "nimi": "F",
+        "kuvaus": null,
+        "lyhytNimi": "F",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkisecondarygrade_f",
-    "koodiArvo": "F",
-    "metadata": [
-      {
-        "nimi": "F",
-        "lyhytNimi": "F",
-        "kieli": "FI"
-      },
-      {
-        "kieli": "SV"
-      },
-      {
-        "nimi": "F",
-        "lyhytNimi": "F",
-        "kieli": "EN"
-      }
-    ],
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "F"
   },
   {
-    "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkisecondarygrade_fx",
-    "koodiArvo": "FX",
     "metadata": [
       {
         "nimi": "FX",
+        "kuvaus": null,
         "lyhytNimi": "FX",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "FX",
+        "kuvaus": null,
         "lyhytNimi": "FX",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkisecondarygrade_fx",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "FX"
   }
 ]

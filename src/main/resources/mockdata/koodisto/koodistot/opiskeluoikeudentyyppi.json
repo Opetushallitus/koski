@@ -1,25 +1,63 @@
 {
   "koodistoUri": "opiskeluoikeudentyyppi",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/opiskeluoikeudentyyppi",
+  "omistaja": null,
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "lukittu": null,
+  "withinCodes": [],
+  "includesCodes": [],
+  "levelsWithCodes": [],
+  "codesGroupUri": "koski",
+  "version": 0,
   "versio": 1,
+  "paivitysPvm": "2016-10-28",
+  "paivittajaOid": null,
+  "voimassaAlkuPvm": "2016-04-04",
+  "voimassaLoppuPvm": null,
+  "tila": "LUONNOS",
   "metadata": [
+    {
+      "kieli": "SV",
+      "nimi": "Opiskeluoikeuden tyyppi",
+      "kuvaus": null,
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    },
     {
       "kieli": "FI",
       "nimi": "Opiskeluoikeuden tyyppi",
-      "kuvaus": "Opiskeluoikeuden tyyppi"
-    },
-    {
-      "kieli": "SV",
-      "nimi": "Opiskeluoikeuden tyyppi"
+      "kuvaus": "Opiskeluoikeuden tyyppi",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
     },
     {
       "kieli": "EN",
-      "nimi": "Opiskeluoikeuden tyyppi"
+      "nimi": "Opiskeluoikeuden tyyppi",
+      "kuvaus": null,
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
     }
   ],
-  "codesGroupUri": "koski",
-  "voimassaAlkuPvm": "2016-04-04",
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "withinCodes": [],
-  "tila": "LUONNOS",
-  "version": 0
+  "codesVersions": []
 }

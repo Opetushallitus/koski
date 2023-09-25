@@ -1,206 +1,266 @@
 [
   {
-    "koodiUri": "arviointiasteikkoib_1",
-    "koodiArvo": "1",
     "metadata": [
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "very poor",
+        "kuvaus": null,
         "lyhytNimi": "1",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkoib_1",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "1"
   },
   {
-    "koodiUri": "arviointiasteikkoib_2",
-    "koodiArvo": "2",
     "metadata": [
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "poor",
+        "kuvaus": null,
         "lyhytNimi": "2",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkoib_2",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "2"
   },
   {
-    "koodiUri": "arviointiasteikkoib_3",
-    "koodiArvo": "3",
     "metadata": [
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "mediocre",
+        "kuvaus": null,
         "lyhytNimi": "3",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkoib_3",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "3"
   },
   {
-    "koodiUri": "arviointiasteikkoib_4",
-    "koodiArvo": "4",
     "metadata": [
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "satisfactory",
+        "kuvaus": null,
         "lyhytNimi": "4",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkoib_4",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "4"
   },
   {
-    "koodiUri": "arviointiasteikkoib_5",
-    "koodiArvo": "5",
     "metadata": [
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "good",
+        "kuvaus": null,
         "lyhytNimi": "5",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkoib_5",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "5"
   },
   {
-    "koodiUri": "arviointiasteikkoib_6",
-    "koodiArvo": "6",
     "metadata": [
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "very good",
+        "kuvaus": null,
         "lyhytNimi": "6",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkoib_6",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "6"
   },
   {
-    "koodiUri": "arviointiasteikkoib_7",
-    "koodiArvo": "7",
     "metadata": [
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "excellent",
+        "kuvaus": null,
         "lyhytNimi": "7",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkoib_7",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "7"
   },
   {
-    "koodiUri": "arviointiasteikkoib_fail",
-    "koodiArvo": "F",
     "metadata": [
       {
         "nimi": "fail",
-        "lyhytNimi": "fail",
         "kuvaus": "fail",
+        "lyhytNimi": "fail",
         "kieli": "FI"
       },
       {
         "nimi": "fail",
-        "lyhytNimi": "fail",
         "kuvaus": "fail",
+        "lyhytNimi": "fail",
         "kieli": "SV"
       },
       {
         "nimi": "fail",
-        "lyhytNimi": "fail",
         "kuvaus": "fail",
+        "lyhytNimi": "fail",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkoib_fail",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "F"
   },
   {
-    "koodiUri": "arviointiasteikkoib_o",
-    "koodiArvo": "O",
     "metadata": [
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "not completed",
+        "kuvaus": null,
         "lyhytNimi": "O",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkoib_o",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "O"
   },
   {
-    "koodiUri": "arviointiasteikkoib_s",
-    "koodiArvo": "S",
     "metadata": [
       {
         "nimi": "pass",
-        "lyhytNimi": "pass",
         "kuvaus": "pass",
+        "lyhytNimi": "pass",
         "kieli": "FI"
       },
       {
         "nimi": "pass",
-        "lyhytNimi": "pass",
         "kuvaus": "pass",
+        "lyhytNimi": "pass",
         "kieli": "SV"
       },
       {
         "nimi": "pass",
-        "lyhytNimi": "pass",
         "kuvaus": "pass",
+        "lyhytNimi": "pass",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkoib_s",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "S"
   }
 ]

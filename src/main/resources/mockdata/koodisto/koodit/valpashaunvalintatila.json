@@ -1,178 +1,210 @@
 [
   {
-    "koodiUri": "valpashaunvalintatila_hylatty",
-    "koodiArvo": "hylatty",
     "metadata": [
       {
         "nimi": "Hylätty",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Avslagits",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Rejected",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "valpashaunvalintatila_hylatty",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "hylatty"
   },
   {
-    "koodiUri": "valpashaunvalintatila_hyvaksytty",
-    "koodiArvo": "hyvaksytty",
     "metadata": [
       {
         "nimi": "Hyväksytty",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Godkänd",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Accepted",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "valpashaunvalintatila_hyvaksytty",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "hyvaksytty"
   },
   {
-    "koodiUri": "valpashaunvalintatila_kesken",
-    "koodiArvo": "kesken",
     "metadata": [
       {
         "nimi": "Kesken",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Pågående",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Unfinished",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "valpashaunvalintatila_kesken",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "kesken"
   },
   {
-    "koodiUri": "valpashaunvalintatila_perunut",
-    "koodiArvo": "perunut",
     "metadata": [
       {
         "nimi": "Perunut",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Canceled",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Upphävt",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "valpashaunvalintatila_perunut",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "perunut"
   },
   {
-    "koodiUri": "valpashaunvalintatila_peruttu",
-    "koodiArvo": "peruttu",
     "metadata": [
       {
         "nimi": "Peruttu",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Cancelled",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Upphävd",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "valpashaunvalintatila_peruttu",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "peruttu"
   },
   {
-    "koodiUri": "valpashaunvalintatila_peruuntunut",
-    "koodiArvo": "peruuntunut",
     "metadata": [
       {
         "nimi": "Peruuntunut",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Upphävd",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Canceled",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "valpashaunvalintatila_peruuntunut",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "peruuntunut"
   },
   {
-    "koodiUri": "valpashaunvalintatila_peruutettu",
-    "koodiArvo": "peruutettu",
     "metadata": [
       {
         "nimi": "Peruutettu",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Upphävd",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Cancelled",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "valpashaunvalintatila_peruutettu",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "peruutettu"
   },
   {
-    "koodiUri": "valpashaunvalintatila_varasijalla",
-    "koodiArvo": "varasijalla",
     "metadata": [
       {
         "nimi": "Varasijalla",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "På reservlistan",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "On reserve list",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "valpashaunvalintatila_varasijalla",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "varasijalla"
   }
 ]

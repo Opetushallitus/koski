@@ -1,17 +1,35 @@
 {
   "koodistoUri": "virtaopiskeluoikeudenluokittelu",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/virtaopiskeluoikeudenluokittelu",
+  "omistaja": null,
+  "organisaatioOid": "1.2.246.562.10.2013112012294919827487",
+  "lukittu": null,
+  "withinCodes": [],
+  "includesCodes": [],
+  "levelsWithCodes": [],
+  "codesGroupUri": "virta",
+  "version": 2,
   "versio": 1,
+  "paivitysPvm": "2016-04-10",
+  "paivittajaOid": null,
+  "voimassaAlkuPvm": "2016-04-27",
+  "voimassaLoppuPvm": null,
+  "tila": "LUONNOS",
   "metadata": [
     {
       "kieli": "FI",
       "nimi": "VIRTA Opiskeluoikeuden luokittelu",
-      "kuvaus": "Opiskeluoikeuden luokittelu (ks. https://confluence.csc.fi/display/VIRTA/Tietovarannon+koodistot)"
+      "kuvaus": "Opiskeluoikeuden luokittelu (ks. https://confluence.csc.fi/display/VIRTA/Tietovarannon+koodistot)",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
     }
   ],
-  "codesGroupUri": "virta",
-  "voimassaAlkuPvm": "2016-04-27",
-  "organisaatioOid": "1.2.246.562.10.2013112012294919827487",
-  "withinCodes": [],
-  "tila": "LUONNOS",
-  "version": 2
+  "codesVersions": []
 }

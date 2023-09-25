@@ -1,276 +1,377 @@
 [
   {
-    "koodiUri": "arviointiasteikkokehittyvankielitaidontasot_a11",
-    "koodiArvo": "A1.1",
     "metadata": [
       {
         "nimi": "A1.1",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkokehittyvankielitaidontasot_a11",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "A1.1"
   },
   {
-    "koodiUri": "arviointiasteikkokehittyvankielitaidontasot_a12",
-    "koodiArvo": "A1.2",
     "metadata": [
       {
         "nimi": "A1.2",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkokehittyvankielitaidontasot_a12",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "A1.2"
   },
   {
-    "koodiUri": "arviointiasteikkokehittyvankielitaidontasot_a13",
-    "koodiArvo": "A1.3",
     "metadata": [
       {
         "nimi": "A1.3",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkokehittyvankielitaidontasot_a13",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "A1.3"
   },
   {
-    "koodiUri": "arviointiasteikkokehittyvankielitaidontasot_a21",
-    "koodiArvo": "A2.1",
     "metadata": [
       {
         "nimi": "A2.1",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkokehittyvankielitaidontasot_a21",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "A2.1"
   },
   {
-    "koodiUri": "arviointiasteikkokehittyvankielitaidontasot_a22",
-    "koodiArvo": "A2.2",
     "metadata": [
       {
         "nimi": "A2.2",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkokehittyvankielitaidontasot_a22",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "A2.2"
   },
   {
-    "koodiUri": "arviointiasteikkokehittyvankielitaidontasot_b11",
-    "koodiArvo": "B1.1",
-    "metadata": [
-      {
-        "nimi": "B1.1",
-        "kieli": "FI"
-      },
-      {
-        "kieli": "SV"
-      },
-      {
-        "kieli": "EN"
-      }
-    ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
-    "koodiUri": "arviointiasteikkokehittyvankielitaidontasot_b12",
-    "koodiArvo": "B1.2",
-    "metadata": [
-      {
-        "nimi": "B1.2",
-        "kieli": "FI"
-      },
-      {
-        "kieli": "SV"
-      },
-      {
-        "kieli": "EN"
-      }
-    ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
-    "koodiUri": "arviointiasteikkokehittyvankielitaidontasot_b21",
-    "koodiArvo": "B2.1",
-    "metadata": [
-      {
-        "nimi": "B2.1",
-        "kieli": "FI"
-      },
-      {
-        "kieli": "SV"
-      },
-      {
-        "kieli": "EN"
-      }
-    ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
-    "koodiUri": "arviointiasteikkokehittyvankielitaidontasot_b22",
-    "koodiArvo": "B2.2",
-    "metadata": [
-      {
-        "nimi": "B2.2",
-        "kieli": "FI"
-      },
-      {
-        "kieli": "SV"
-      },
-      {
-        "kieli": "EN"
-      }
-    ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
-    "koodiUri": "arviointiasteikkokehittyvankielitaidontasot_c11",
-    "koodiArvo": "C1.1",
-    "metadata": [
-      {
-        "nimi": "C1.1",
-        "kieli": "FI"
-      },
-      {
-        "kieli": "SV"
-      },
-      {
-        "kieli": "EN"
-      }
-    ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
-    "koodiUri": "arviointiasteikkokehittyvankielitaidontasot_c12",
-    "koodiArvo": "C1.2",
-    "metadata": [
-      {
-        "nimi": "C1.2",
-        "kieli": "FI"
-      },
-      {
-        "kieli": "SV"
-      },
-      {
-        "kieli": "EN"
-      }
-    ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
-    "koodiUri": "arviointiasteikkokehittyvankielitaidontasot_c21",
-    "koodiArvo": "C2.1",
-    "metadata": [
-      {
-        "nimi": "C2.1",
-        "kieli": "FI"
-      },
-      {
-        "kieli": "SV"
-      },
-      {
-        "kieli": "EN"
-      }
-    ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
-    "koodiUri": "arviointiasteikkokehittyvankielitaidontasot_c22",
-    "koodiArvo": "C2.2",
-    "metadata": [
-      {
-        "nimi": "C2.2",
-        "kieli": "FI"
-      },
-      {
-        "kieli": "SV"
-      },
-      {
-        "kieli": "EN"
-      }
-    ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
-    "koodiUri": "arviointiasteikkokehittyvankielitaidontasot_allea11",
-    "koodiArvo": "alle_A1.1",
     "metadata": [
       {
         "nimi": "Alle A1.1",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
         "nimi": "Under A1.1",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Under A1.1",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkokehittyvankielitaidontasot_allea11",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "alle_A1.1"
   },
   {
-    "koodiUri": "arviointiasteikkokehittyvankielitaidontasot_ylic11",
-    "koodiArvo": "yli_C1.1",
+    "metadata": [
+      {
+        "nimi": "B1.1",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkokehittyvankielitaidontasot_b11",
+    "versio": 1,
+    "koodiArvo": "B1.1"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "B1.2",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkokehittyvankielitaidontasot_b12",
+    "versio": 1,
+    "koodiArvo": "B1.2"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "B2.1",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkokehittyvankielitaidontasot_b21",
+    "versio": 1,
+    "koodiArvo": "B2.1"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "B2.2",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkokehittyvankielitaidontasot_b22",
+    "versio": 1,
+    "koodiArvo": "B2.2"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "C1.1",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkokehittyvankielitaidontasot_c11",
+    "versio": 1,
+    "koodiArvo": "C1.1"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "C1.2",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkokehittyvankielitaidontasot_c12",
+    "versio": 1,
+    "koodiArvo": "C1.2"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "C2.1",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkokehittyvankielitaidontasot_c21",
+    "versio": 1,
+    "koodiArvo": "C2.1"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "C2.2",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkokehittyvankielitaidontasot_c22",
+    "versio": 1,
+    "koodiArvo": "C2.2"
+  },
+  {
     "metadata": [
       {
         "nimi": "Yli C1.1",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
         "nimi": "Över C1.1",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Over C1.1",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkokehittyvankielitaidontasot_ylic11",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "yli_C1.1"
   }
 ]

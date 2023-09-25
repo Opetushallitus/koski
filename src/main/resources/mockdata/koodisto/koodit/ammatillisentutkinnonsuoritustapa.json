@@ -1,78 +1,85 @@
 [
   {
-    "koodiUri": "ammatillisentutkinnonsuoritustapa_naytto",
-    "koodiArvo": "naytto",
     "metadata": [
       {
         "nimi": "Näyttötutkinto",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Fristående examen",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Competency-based qualification",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ammatillisentutkinnonsuoritustapa_naytto",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "naytto"
   },
   {
-    "koodiUri": "ammatillisentutkinnonsuoritustapa_ops",
-    "koodiArvo": "ops",
     "metadata": [
       {
         "nimi": "Ammatillinen perustutkinto",
-        "lyhytNimi": "ops",
         "kuvaus": "Opetussuunnitelman mukainen",
+        "lyhytNimi": "ops",
         "kieli": "FI"
       },
       {
         "nimi": "Yrkesinriktad grundexamen",
-        "lyhytNimi": "ops",
         "kuvaus": "Läroplansbaserad",
+        "lyhytNimi": "ops",
         "kieli": "SV"
       },
       {
         "nimi": "Initial vocational qualification",
-        "lyhytNimi": "ops",
         "kuvaus": "",
+        "lyhytNimi": "ops",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ammatillisentutkinnonsuoritustapa_ops",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "ops"
   },
   {
-    "koodiUri": "ammatillisentutkinnonsuoritustapa_reformi",
-    "koodiArvo": "reformi",
     "metadata": [
       {
         "nimi": "Reformin mukainen näyttö",
-        "lyhytNimi": "Reformi",
         "kuvaus": "",
+        "lyhytNimi": "Reformi",
         "kieli": "FI"
       },
       {
         "nimi": "Reform",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Reform",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ammatillisentutkinnonsuoritustapa_reformi",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "reformi"
   }
 ]

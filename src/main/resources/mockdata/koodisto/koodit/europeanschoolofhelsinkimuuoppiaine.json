@@ -1,527 +1,677 @@
 [
   {
+    "metadata": [
+      {
+        "nimi": "Art",
+        "kuvaus": null,
+        "lyhytNimi": "Art",
+        "kieli": "FI"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Art",
+        "kuvaus": null,
+        "lyhytNimi": "Art",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "europeanschoolofhelsinkimuuoppiaine_art",
-    "koodiArvo": "ART",
+    "versio": 1,
+    "koodiArvo": "ART"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Art",
-        "lyhytNimi": "Art",
+        "nimi": "Biology",
+        "kuvaus": null,
+        "lyhytNimi": "Biology",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Art",
-        "lyhytNimi": "Art",
+        "nimi": "Biology",
+        "kuvaus": null,
+        "lyhytNimi": "Biology",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "europeanschoolofhelsinkimuuoppiaine_bi",
-    "koodiArvo": "BI",
+    "versio": 1,
+    "koodiArvo": "BI"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Biology",
-        "lyhytNimi": "Biology",
+        "nimi": "Practical Biology",
+        "kuvaus": null,
+        "lyhytNimi": "Practical Biology",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Biology",
-        "lyhytNimi": "Biology",
+        "nimi": "Practical Biology",
+        "kuvaus": null,
+        "lyhytNimi": "Practical Biology",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "europeanschoolofhelsinkimuuoppiaine_bipra",
-    "koodiArvo": "BIpra",
+    "versio": 1,
+    "koodiArvo": "BIpra"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Practical Biology",
-        "lyhytNimi": "Practical Biology",
+        "nimi": "Chemistry",
+        "kuvaus": null,
+        "lyhytNimi": "Chemistry",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Practical Biology",
-        "lyhytNimi": "Practical Biology",
+        "nimi": "Chemistry",
+        "kuvaus": null,
+        "lyhytNimi": "Chemistry",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "europeanschoolofhelsinkimuuoppiaine_ch",
-    "koodiArvo": "CH",
+    "versio": 1,
+    "koodiArvo": "CH"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Chemistry",
-        "lyhytNimi": "Chemistry",
+        "nimi": "Practical Chemistry",
+        "kuvaus": null,
+        "lyhytNimi": "Practical Chemistry",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Chemistry",
-        "lyhytNimi": "Chemistry",
+        "nimi": "Practical Chemistry",
+        "kuvaus": null,
+        "lyhytNimi": "Practical Chemistry",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "europeanschoolofhelsinkimuuoppiaine_chepra",
-    "koodiArvo": "CHEpra",
+    "versio": 1,
+    "koodiArvo": "CHEpra"
+  },
+  {
     "metadata": [
       {
         "nimi": "Practical Chemistry",
+        "kuvaus": null,
         "lyhytNimi": "Practical Chemistry",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Practical Chemistry",
+        "kuvaus": null,
         "lyhytNimi": "Practical Chemistry",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "europeanschoolofhelsinkimuuoppiaine_chpra",
-    "koodiArvo": "CHpra",
+    "versio": 1,
+    "koodiArvo": "CHpra"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Practical Chemistry",
-        "lyhytNimi": "Practical Chemistry",
+        "nimi": "Discovery of the World",
+        "kuvaus": null,
+        "lyhytNimi": "Discovery of the World",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Practical Chemistry",
-        "lyhytNimi": "Practical Chemistry",
+        "nimi": "Discovery of the World",
+        "kuvaus": null,
+        "lyhytNimi": "Discovery of the World",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "europeanschoolofhelsinkimuuoppiaine_dow",
-    "koodiArvo": "DOW",
+    "versio": 1,
+    "koodiArvo": "DOW"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Discovery of the World",
-        "lyhytNimi": "Discovery of the World",
+        "nimi": "Economics",
+        "kuvaus": null,
+        "lyhytNimi": "Economics",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Discovery of the World",
-        "lyhytNimi": "Discovery of the World",
+        "nimi": "Economics",
+        "kuvaus": null,
+        "lyhytNimi": "Economics",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "europeanschoolofhelsinkimuuoppiaine_eco",
-    "koodiArvo": "ECO",
+    "versio": 1,
+    "koodiArvo": "ECO"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Economics",
-        "lyhytNimi": "Economics",
+        "nimi": "European Hours",
+        "kuvaus": null,
+        "lyhytNimi": "European Hours",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Economics",
-        "lyhytNimi": "Economics",
+        "nimi": "European Hours",
+        "kuvaus": null,
+        "lyhytNimi": "European Hours",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "europeanschoolofhelsinkimuuoppiaine_euh",
-    "koodiArvo": "EuH",
+    "versio": 1,
+    "koodiArvo": "EuH"
+  },
+  {
     "metadata": [
       {
-        "nimi": "European Hours",
-        "lyhytNimi": "European Hours",
+        "nimi": "Geography",
+        "kuvaus": null,
+        "lyhytNimi": "Geography",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "European Hours",
-        "lyhytNimi": "European Hours",
+        "nimi": "Geography",
+        "kuvaus": null,
+        "lyhytNimi": "Geography",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "europeanschoolofhelsinkimuuoppiaine_geo",
-    "koodiArvo": "GEO",
+    "versio": 1,
+    "koodiArvo": "GEO"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Geography",
-        "lyhytNimi": "Geography",
+        "nimi": "Health Education",
+        "kuvaus": null,
+        "lyhytNimi": "Health Education",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Geography",
-        "lyhytNimi": "Geography",
+        "nimi": "Health Education",
+        "kuvaus": null,
+        "lyhytNimi": "Health Education",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "europeanschoolofhelsinkimuuoppiaine_he",
-    "koodiArvo": "HE",
+    "versio": 1,
+    "koodiArvo": "HE"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Health Education",
-        "lyhytNimi": "Health Education",
+        "nimi": "History",
+        "kuvaus": null,
+        "lyhytNimi": "History",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Health Education",
-        "lyhytNimi": "Health Education",
+        "nimi": "History",
+        "kuvaus": null,
+        "lyhytNimi": "History",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "europeanschoolofhelsinkimuuoppiaine_hi",
-    "koodiArvo": "HI",
+    "versio": 1,
+    "koodiArvo": "HI"
+  },
+  {
     "metadata": [
       {
-        "nimi": "History",
-        "lyhytNimi": "History",
+        "nimi": "Human Sciences",
+        "kuvaus": null,
+        "lyhytNimi": "Human Sciences",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "History",
-        "lyhytNimi": "History",
+        "nimi": "Human Sciences",
+        "kuvaus": null,
+        "lyhytNimi": "Human Sciences",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "europeanschoolofhelsinkimuuoppiaine_hus",
-    "koodiArvo": "HUS",
+    "versio": 1,
+    "koodiArvo": "HUS"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Human Sciences",
-        "lyhytNimi": "Human Sciences",
+        "nimi": "Information and Communication Technology",
+        "kuvaus": null,
+        "lyhytNimi": "Information and Communication Technology",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Human Sciences",
-        "lyhytNimi": "Human Sciences",
+        "nimi": "Information and Communication Technology",
+        "kuvaus": null,
+        "lyhytNimi": "Information and Communication Technology",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "europeanschoolofhelsinkimuuoppiaine_ict",
-    "koodiArvo": "ICT",
+    "versio": 1,
+    "koodiArvo": "ICT"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Information and Communication Technology",
-        "lyhytNimi": "Information and Communication Technology",
+        "nimi": "Mathematics",
+        "kuvaus": null,
+        "lyhytNimi": "Mathematics",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Information and Communication Technology",
-        "lyhytNimi": "Information and Communication Technology",
+        "nimi": "Mathematics",
+        "kuvaus": null,
+        "lyhytNimi": "Mathematics",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "europeanschoolofhelsinkimuuoppiaine_ma",
-    "koodiArvo": "MA",
+    "versio": 1,
+    "koodiArvo": "MA"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Mathematics",
-        "lyhytNimi": "Mathematics",
+        "nimi": "Advanced Mathematics",
+        "kuvaus": null,
+        "lyhytNimi": "Advanced Mathematics",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Mathematics",
-        "lyhytNimi": "Mathematics",
+        "nimi": "Advanced Mathematics",
+        "kuvaus": null,
+        "lyhytNimi": "Advanced Mathematics",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "europeanschoolofhelsinkimuuoppiaine_maadv",
-    "koodiArvo": "MAadv",
+    "versio": 1,
+    "koodiArvo": "MAadv"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Advanced Mathematics",
-        "lyhytNimi": "Advanced Mathematics",
+        "nimi": "Music",
+        "kuvaus": null,
+        "lyhytNimi": "Music",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Advanced Mathematics",
-        "lyhytNimi": "Advanced Mathematics",
+        "nimi": "Music",
+        "kuvaus": null,
+        "lyhytNimi": "Music",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "europeanschoolofhelsinkimuuoppiaine_mu",
-    "koodiArvo": "MU",
+    "versio": 1,
+    "koodiArvo": "MU"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Music",
-        "lyhytNimi": "Music",
+        "nimi": "Physical Education",
+        "kuvaus": null,
+        "lyhytNimi": "Physical Education",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Music",
-        "lyhytNimi": "Music",
+        "nimi": "Physical Education",
+        "kuvaus": null,
+        "lyhytNimi": "Physical Education",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "europeanschoolofhelsinkimuuoppiaine_pe",
-    "koodiArvo": "PE",
+    "versio": 1,
+    "koodiArvo": "PE"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Physical Education",
-        "lyhytNimi": "Physical Education",
+        "nimi": "Philosophy",
+        "kuvaus": null,
+        "lyhytNimi": "Philosophy",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Physical Education",
-        "lyhytNimi": "Physical Education",
+        "nimi": "Philosophy",
+        "kuvaus": null,
+        "lyhytNimi": "Philosophy",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "europeanschoolofhelsinkimuuoppiaine_ph",
-    "koodiArvo": "PH",
+    "versio": 1,
+    "koodiArvo": "PH"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Philosophy",
-        "lyhytNimi": "Philosophy",
+        "nimi": "Physics",
+        "kuvaus": null,
+        "lyhytNimi": "Physics",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Philosophy",
-        "lyhytNimi": "Philosophy",
+        "nimi": "Physics",
+        "kuvaus": null,
+        "lyhytNimi": "Physics",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "europeanschoolofhelsinkimuuoppiaine_phy",
-    "koodiArvo": "PHY",
+    "versio": 1,
+    "koodiArvo": "PHY"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Physics",
-        "lyhytNimi": "Physics",
+        "nimi": "Practical Physics",
+        "kuvaus": null,
+        "lyhytNimi": "Practical Physics",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Physics",
-        "lyhytNimi": "Physics",
+        "nimi": "Practical Physics",
+        "kuvaus": null,
+        "lyhytNimi": "Practical Physics",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "europeanschoolofhelsinkimuuoppiaine_phypra",
-    "koodiArvo": "PHYpra",
+    "versio": 1,
+    "koodiArvo": "PHYpra"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Practical Physics",
-        "lyhytNimi": "Practical Physics",
+        "nimi": "Political Science",
+        "kuvaus": null,
+        "lyhytNimi": "Political Science",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Practical Physics",
-        "lyhytNimi": "Practical Physics",
+        "nimi": "Political Science",
+        "kuvaus": null,
+        "lyhytNimi": "Political Science",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "europeanschoolofhelsinkimuuoppiaine_polsci",
-    "koodiArvo": "POLSCI",
+    "versio": 1,
+    "koodiArvo": "POLSCI"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Political Science",
-        "lyhytNimi": "Political Science",
+        "nimi": "Religious Education",
+        "kuvaus": null,
+        "lyhytNimi": "Religious Education",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Political Science",
-        "lyhytNimi": "Political Science",
+        "nimi": "Religious Education",
+        "kuvaus": null,
+        "lyhytNimi": "Religious Education",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "europeanschoolofhelsinkimuuoppiaine_re",
-    "koodiArvo": "RE",
+    "versio": 1,
+    "koodiArvo": "RE"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Religious Education",
-        "lyhytNimi": "Religious Education",
+        "nimi": "Integrated Science",
+        "kuvaus": null,
+        "lyhytNimi": "Integrated Science",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Religious Education",
-        "lyhytNimi": "Religious Education",
+        "nimi": "Integrated Science",
+        "kuvaus": null,
+        "lyhytNimi": "Integrated Science",
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "europeanschoolofhelsinkimuuoppiaine_sc",
-    "koodiArvo": "SC",
-    "metadata": [
-      {
-        "nimi": "Integrated Science",
-        "lyhytNimi": "Integrated Science",
-        "kieli": "FI"
-      },
-      {
-        "kieli": "SV"
-      },
-      {
-        "nimi": "Integrated Science",
-        "lyhytNimi": "Integrated Science",
-        "kieli": "EN"
-      }
-    ],
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "SC"
   },
   {
-    "koodiUri": "europeanschoolofhelsinkimuuoppiaine_soc",
-    "koodiArvo": "SOC",
     "metadata": [
       {
         "nimi": "Sociology",
+        "kuvaus": null,
         "lyhytNimi": "Sociology",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Sociology",
+        "kuvaus": null,
         "lyhytNimi": "Sociology",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "europeanschoolofhelsinkimuuoppiaine_soc",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "SOC"
   }
 ]

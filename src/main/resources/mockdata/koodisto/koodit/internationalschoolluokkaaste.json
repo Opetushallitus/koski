@@ -1,249 +1,327 @@
 [
   {
+    "metadata": [
+      {
+        "nimi": "Grade 1",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Grade 1",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "internationalschoolluokkaaste_1",
-    "koodiArvo": "1",
+    "versio": 1,
+    "koodiArvo": "1"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Grade 1",
+        "nimi": "Grade 10",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Grade 1",
+        "nimi": "Grade 10",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "internationalschoolluokkaaste_10",
-    "koodiArvo": "10",
+    "versio": 1,
+    "koodiArvo": "10"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Grade 10",
+        "nimi": "Grade 11",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Grade 10",
+        "nimi": "Grade 11",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "internationalschoolluokkaaste_11",
-    "koodiArvo": "11",
+    "versio": 1,
+    "koodiArvo": "11"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Grade 11",
+        "nimi": "Grade 12",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Grade 11",
+        "nimi": "Grade 12",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "internationalschoolluokkaaste_12",
-    "koodiArvo": "12",
+    "versio": 1,
+    "koodiArvo": "12"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Grade 12",
+        "nimi": "Grade 2",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Grade 12",
+        "nimi": "Grade 2",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "internationalschoolluokkaaste_2",
-    "koodiArvo": "2",
+    "versio": 1,
+    "koodiArvo": "2"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Grade 2",
+        "nimi": "Grade 3",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Grade 2",
+        "nimi": "Grade 3",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "internationalschoolluokkaaste_3",
-    "koodiArvo": "3",
+    "versio": 1,
+    "koodiArvo": "3"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Grade 3",
+        "nimi": "Grade 4",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Grade 3",
+        "nimi": "Grade 4",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "internationalschoolluokkaaste_4",
-    "koodiArvo": "4",
+    "versio": 1,
+    "koodiArvo": "4"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Grade 4",
+        "nimi": "Grade 5",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Grade 4",
+        "nimi": "Grade 5",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "internationalschoolluokkaaste_5",
-    "koodiArvo": "5",
+    "versio": 1,
+    "koodiArvo": "5"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Grade 5",
+        "nimi": "Grade 6",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Grade 5",
+        "nimi": "Grade 6",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "internationalschoolluokkaaste_6",
-    "koodiArvo": "6",
+    "versio": 1,
+    "koodiArvo": "6"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Grade 6",
+        "nimi": "Grade 7",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Grade 6",
+        "nimi": "Grade 7",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "internationalschoolluokkaaste_7",
-    "koodiArvo": "7",
+    "versio": 1,
+    "koodiArvo": "7"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Grade 7",
+        "nimi": "Grade 8",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Grade 7",
+        "nimi": "Grade 8",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "internationalschoolluokkaaste_8",
-    "koodiArvo": "8",
+    "versio": 1,
+    "koodiArvo": "8"
+  },
+  {
     "metadata": [
       {
-        "nimi": "Grade 8",
+        "nimi": "Grade 9",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "Grade 8",
+        "nimi": "Grade 9",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
     "koodiUri": "internationalschoolluokkaaste_9",
-    "koodiArvo": "9",
-    "metadata": [
-      {
-        "nimi": "Grade 9",
-        "kieli": "FI"
-      },
-      {
-        "kieli": "SV"
-      },
-      {
-        "nimi": "Grade 9",
-        "kieli": "EN"
-      }
-    ],
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "9"
   },
   {
-    "koodiUri": "internationalschoolluokkaaste_explorer",
-    "koodiArvo": "explorer",
     "metadata": [
       {
         "nimi": "Grade explorer",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Grade explorer",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "internationalschoolluokkaaste_explorer",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "explorer"
   }
 ]

@@ -1,163 +1,758 @@
 [
   {
-    "koodiUri": "aikuistenperusopetuksenalkuvaiheenoppiaineet_a1",
-    "koodiArvo": "A1",
     "metadata": [
       {
         "nimi": "Vieras kieli",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Främmande språk",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_aena2",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_aena3",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_aena1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_alaa2",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_alaa3",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_aena4",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_alaa1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_asma2",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_asma3",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_alaa4",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_asma1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_asaa2",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_asma4",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_araa3",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_aiaa1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_akxa1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_asaa3",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_asaa1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_araa2",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_araa1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_avea2",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_araa4",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_avea1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_apoa4",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_akxa4",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_asaa4",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_avea3",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_aiaa2",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_aeaa2",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_aeaa3",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_apoa2",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_aiaa3",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_apoa3",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_aeaa4",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_akxa2",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_avea4",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_aiaa4",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_akxa3",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_aeaa1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_apoa1",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenalkuvaiheenoppiaineet_a1",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "A1"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
-    "koodiArvo": "AI",
     "metadata": [
       {
         "nimi": "Äidinkieli ja kirjallisuus",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Modersmål och litteratur",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_is21",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_imo1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_lai1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_lai4",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_lai5",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_lai2",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_lai3",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_lai8",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_lai9",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_lai6",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_lai7",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_lai12",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_lai13",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_lai10",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_lai11",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_lai14",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_lai15",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_as28",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_aai1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_aai2",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_aai5",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_aai6",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_aai7",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_aai8",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_aai17",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_as22",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_as23",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_as27",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_as29",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_as26",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_aai3",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_aai4",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_aai9",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_aai13",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_aai14",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_as212",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_as213",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_as215",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_aai10",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_as21",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_aai15",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_as24",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_as25",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_as217",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_as214",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_aai11",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_as210",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_as211",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_aai12",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_aai16",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_as216",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "AI"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenalkuvaiheenoppiaineet_ma",
-    "koodiArvo": "MA",
     "metadata": [
       {
         "nimi": "Matematiikka",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Matematik",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_ama5",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_lma1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_lma2",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_lma3",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_ama3",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_ama4",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_ama1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_ama2",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenalkuvaiheenoppiaineet_ma",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "MA"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenalkuvaiheenoppiaineet_op",
-    "koodiArvo": "OP",
     "metadata": [
       {
         "nimi": "Opinto-ohjaus ja työelämän taidot",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Studiehandledning och handledning i arbetslivsfärdigheter",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_aot1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_aot2",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_lot1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_lot2",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenalkuvaiheenoppiaineet_op",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "OP"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenalkuvaiheenoppiaineet_te",
-    "koodiArvo": "TE",
     "metadata": [
       {
         "nimi": "Terveystieto",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Hälsokunskap",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_ate1",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenalkuvaiheenoppiaineet_te",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "TE"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenalkuvaiheenoppiaineet_yh",
-    "koodiArvo": "YH",
     "metadata": [
       {
         "nimi": "Yhteiskuntatietous ja kulttuurintuntemus",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Samhällskunskap och kulturkännedom",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_ayk2",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_ayk3",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_ayk1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_lyk2",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_lyk1",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenalkuvaiheenoppiaineet_yh",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "YH"
   },
   {
-    "koodiUri": "aikuistenperusopetuksenalkuvaiheenoppiaineet_yl",
-    "koodiArvo": "YL",
     "metadata": [
       {
         "nimi": "Ympäristö- ja luonnontieto",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Miljö- och naturkunskap",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_ayl1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_ayl2",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_lyl1",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "aikuistenperusopetuksenalkuvaiheenoppiaineet_yl",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "YL"
   }
 ]

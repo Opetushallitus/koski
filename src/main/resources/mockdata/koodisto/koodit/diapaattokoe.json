@@ -1,63 +1,80 @@
 [
   {
-    "koodiUri": "diapaattokoe_kirjallinenkoe",
-    "koodiArvo": "kirjallinenkoe",
     "metadata": [
       {
         "nimi": "Kirjallinen koe",
+        "kuvaus": null,
         "lyhytNimi": "Kirjallinen",
         "kieli": "FI"
       },
       {
         "nimi": "Written exam",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Skriftligt prov",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "diapaattokoe_kirjallinenkoe",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "kirjallinenkoe"
   },
   {
-    "koodiUri": "diapaattokoe_nayttotutkinto",
-    "koodiArvo": "nayttotutkinto",
     "metadata": [
       {
         "nimi": "Erityisosaamisen näyttötutkinto",
+        "kuvaus": null,
         "lyhytNimi": "Näyttötutkinto",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "diapaattokoe_nayttotutkinto",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "nayttotutkinto"
   },
   {
-    "koodiUri": "diapaattokoe_suullinenkoe",
-    "koodiArvo": "suullinenkoe",
     "metadata": [
       {
         "nimi": "Suullinen koe",
+        "kuvaus": null,
         "lyhytNimi": "Suullinen",
         "kieli": "FI"
       },
       {
         "nimi": "Muntligt prov",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Oral exam",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "diapaattokoe_suullinenkoe",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "suullinenkoe"
   }
 ]

@@ -1,54 +1,58 @@
 [
   {
-    "koodiUri": "taiteenperusopetusoppimaara_laajaoppimaara",
-    "koodiArvo": "laajaoppimaara",
     "metadata": [
       {
         "nimi": "Taiteen perusopetuksen laaja oppimäärä",
-        "lyhytNimi": "Laaja oppimäärä",
         "kuvaus": "",
+        "lyhytNimi": "Laaja oppimäärä",
         "kieli": "FI"
       },
       {
         "nimi": "Fördjupade lärokursen i grundläggande konstundervisning",
-        "lyhytNimi": "Laaja oppimäärä",
         "kuvaus": "",
+        "lyhytNimi": "Laaja oppimäärä",
         "kieli": "SV"
       },
       {
         "nimi": "Extended syllabus for basic education in the arts",
-        "lyhytNimi": "Laaja oppimäärä",
         "kuvaus": "",
+        "lyhytNimi": "Laaja oppimäärä",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "taiteenperusopetusoppimaara_laajaoppimaara",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "laajaoppimaara"
   },
   {
-    "koodiUri": "taiteenperusopetusoppimaara_yleinenoppimaara",
-    "koodiArvo": "yleinenoppimaara",
     "metadata": [
       {
         "nimi": "Taiteen perusopetuksen yleinen oppimäärä",
-        "lyhytNimi": "Yleinen oppimäärä",
         "kuvaus": "",
+        "lyhytNimi": "Yleinen oppimäärä",
         "kieli": "FI"
       },
       {
         "nimi": "Allmänna lärokursen i grundläggande konstundervisning",
-        "lyhytNimi": "Yleinen oppimäärä",
         "kuvaus": "",
+        "lyhytNimi": "Yleinen oppimäärä",
         "kieli": "SV"
       },
       {
         "nimi": "General syllabus for basic education in the arts",
-        "lyhytNimi": "Yleinen oppimäärä",
         "kuvaus": "",
+        "lyhytNimi": "Yleinen oppimäärä",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "taiteenperusopetusoppimaara_yleinenoppimaara",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "yleinenoppimaara"
   }
 ]

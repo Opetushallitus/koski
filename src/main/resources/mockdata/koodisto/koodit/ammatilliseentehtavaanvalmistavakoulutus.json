@@ -1,71 +1,83 @@
 [
   {
-    "koodiUri": "ammatilliseentehtavaanvalmistavakoulutus_1",
-    "koodiArvo": "1",
     "metadata": [
       {
         "nimi": "Ansio- ja liikennelentäjä",
-        "lyhytNimi": "",
         "kuvaus": "Ansio- ja liikennelentäjän tehtäviin valmistava koulutus",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Förvärvs- och trafikflygare",
-        "lyhytNimi": "",
         "kuvaus": "Utbildning som förbereder för uppgiften som förvärvs- och trafikflygare",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ammatilliseentehtavaanvalmistavakoulutus_1",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "1"
   },
   {
-    "koodiUri": "ammatilliseentehtavaanvalmistavakoulutus_2",
-    "koodiArvo": "2",
     "metadata": [
       {
         "nimi": "Lennonjohtaja",
-        "lyhytNimi": "",
         "kuvaus": "Lennonjohtajan tehtäviin valmistava koulutus",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Flygledare",
-        "lyhytNimi": "",
         "kuvaus": "Utbildning som förbereder för uppgiften som flygledare",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ammatilliseentehtavaanvalmistavakoulutus_2",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "2"
   },
   {
-    "koodiUri": "ammatilliseentehtavaanvalmistavakoulutus_3",
-    "koodiArvo": "3",
     "metadata": [
       {
         "nimi": "Kaupunkiraideliikenteen kuljettaja",
-        "lyhytNimi": "",
         "kuvaus": "Kaupunkiraideliikenteen kuljettajien tehtäviin valmistava koulutus",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Förare i spårbunden stadstrafik",
-        "lyhytNimi": "",
         "kuvaus": "Utbildning som förbereder för uppgiften som förare i spårbunden stadstrafik",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ammatilliseentehtavaanvalmistavakoulutus_3",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "3"
   }
 ]

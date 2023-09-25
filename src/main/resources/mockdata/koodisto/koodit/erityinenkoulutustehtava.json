@@ -1,411 +1,486 @@
 [
   {
-    "koodiUri": "erityinenkoulutustehtava_101",
-    "koodiArvo": "101",
     "metadata": [
       {
         "nimi": "IB-opetus",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "IB-undervisning",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "erityinenkoulutustehtava_101",
     "versio": 2,
-    "withinCodeElements": []
+    "koodiArvo": "101"
   },
   {
-    "koodiUri": "erityinenkoulutustehtava_102",
-    "koodiArvo": "102",
     "metadata": [
       {
         "nimi": "Ilmaisutaitoon painottuva opetus",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Undervisning med betoning på uttrycksförmåga",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "erityinenkoulutustehtava_102",
     "versio": 2,
-    "withinCodeElements": []
+    "koodiArvo": "102"
   },
   {
-    "koodiUri": "erityinenkoulutustehtava_103",
-    "koodiArvo": "103",
     "metadata": [
       {
         "nimi": "Kieliin painottuva koulutus",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Undervisning med betoning på språk",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "erityinenkoulutustehtava_103",
     "versio": 2,
-    "withinCodeElements": []
+    "koodiArvo": "103"
   },
   {
-    "koodiUri": "erityinenkoulutustehtava_104",
-    "koodiArvo": "104",
     "metadata": [
       {
         "nimi": "Kuvataiteeseen painottuva opetus",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Undervisning med betoning på bildkonst",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "erityinenkoulutustehtava_104",
     "versio": 2,
-    "withinCodeElements": []
+    "koodiArvo": "104"
   },
   {
-    "koodiUri": "erityinenkoulutustehtava_105",
-    "koodiArvo": "105",
     "metadata": [
       {
         "nimi": "Musiikkiin ja tanssiin painottuva opetus",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Undervisning med betoning på musik och dans",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "erityinenkoulutustehtava_105",
     "versio": 2,
-    "withinCodeElements": []
+    "koodiArvo": "105"
   },
   {
-    "koodiUri": "erityinenkoulutustehtava_106",
-    "koodiArvo": "106",
     "metadata": [
       {
         "nimi": "Liikuntaan tai urheiluun painottuva opetus",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Undervisning med betoning på motion eller idrott",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "erityinenkoulutustehtava_106",
     "versio": 2,
-    "withinCodeElements": []
+    "koodiArvo": "106"
   },
   {
-    "koodiUri": "erityinenkoulutustehtava_107",
-    "koodiArvo": "107",
     "metadata": [
       {
         "nimi": "Matematiikkaan ja luonnontieteisiin painottuva opetus",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Undervisning med betoning på matematik och naturvetenskap",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "erityinenkoulutustehtava_107",
     "versio": 2,
-    "withinCodeElements": []
+    "koodiArvo": "107"
   },
   {
-    "koodiUri": "erityinenkoulutustehtava_108",
-    "koodiArvo": "108",
     "metadata": [
       {
         "nimi": "Yrittäjyyteen painottuva koulutus",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Undervisning med betoning på företagande",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "erityinenkoulutustehtava_108",
     "versio": 2,
-    "withinCodeElements": []
+    "koodiArvo": "108"
   },
   {
-    "koodiUri": "erityinenkoulutustehtava_109",
-    "koodiArvo": "109",
     "metadata": [
       {
         "nimi": "Steiner-pedagogiikkaan painottuva koulutus",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Undervisning med betoning på Steiner-pedagogik",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "erityinenkoulutustehtava_109",
     "versio": 2,
-    "withinCodeElements": []
+    "koodiArvo": "109"
   },
   {
-    "koodiUri": "erityinenkoulutustehtava_208",
-    "koodiArvo": "208",
     "metadata": [
       {
         "nimi": "Luonnontieteisiin, yrittäjyyteen ja kansainvälisyyskasvatukseen painottuva opetus (EI KÄYTÖSSÄ)",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Undervisning med betoning på naturvetenskap, företagande och internationell fostran (INTE I ANDVÄNDING)",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "erityinenkoulutustehtava_208",
     "versio": 2,
-    "withinCodeElements": []
+    "koodiArvo": "208"
   },
   {
-    "koodiUri": "erityinenkoulutustehtava_211",
-    "koodiArvo": "211",
     "metadata": [
       {
         "nimi": "Ympäristöpainoitteinen opetus (EI KÄYTÖSSÄ)",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Undervisning med betoning på miljö (INTE I ANDVÄNDING)",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "erityinenkoulutustehtava_211",
     "versio": 2,
-    "withinCodeElements": []
+    "koodiArvo": "211"
   },
   {
-    "koodiUri": "erityinenkoulutustehtava_ib-1",
-    "koodiArvo": "ib",
     "metadata": [
       {
         "nimi": "Erityisenä koulutustehtävänä IB (EI KÄYTÖSSÄ)",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "erityinenkoulutustehtava_ib-1",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "ib"
   },
   {
-    "koodiUri": "erityinenkoulutustehtava_kielijakansainvalisyys",
-    "koodiArvo": "kielijakansainvalisyys",
     "metadata": [
       {
         "nimi": "Erityisenä koulutustehtävänä kieli ja kansainvälisyys (EI KÄYTÖSSÄ)",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Särskild utbildningsuppgift språk och internationalisering (INTE I ANDVÄNDING)",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "erityinenkoulutustehtava_kielijakansainvalisyys",
     "versio": 2,
-    "withinCodeElements": []
+    "koodiArvo": "kielijakansainvalisyys"
   },
   {
-    "koodiUri": "erityinenkoulutustehtava_matematiikkaluonnontiedeymparistotekniikka",
-    "koodiArvo": "matematiikka-luonnontiede-ymparisto-tekniikka",
     "metadata": [
       {
         "nimi": "Erityisenä koulutustehtävänä matematiikka, luonnontiede, ympäristö ja tekniikka (EI KÄYTÖSSÄ)",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Särkild utbildningsuppgift matematik, naturvetenskaper, miljö och teknik (INTE I ANDVÄNDING)",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "erityinenkoulutustehtava_matematiikkaluonnontiedeymparistotekniikka",
     "versio": 2,
-    "withinCodeElements": []
+    "koodiArvo": "matematiikka-luonnontiede-ymparisto-tekniikka"
   },
   {
-    "koodiUri": "erityinenkoulutustehtava_muu",
-    "koodiArvo": "muu",
     "metadata": [
       {
         "nimi": "Jokin muu erityinen koulutustehtävä (EI KÄYTÖSSÄ)",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Någon annan särskild utbildningsuppgift (INTE I ANDVÄNDING)",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "erityinenkoulutustehtava_muu",
     "versio": 2,
-    "withinCodeElements": []
+    "koodiArvo": "muu"
   },
   {
-    "koodiUri": "erityinenkoulutustehtava_steiner",
-    "koodiArvo": "steiner",
     "metadata": [
       {
         "nimi": "Erityisenä koulutustehtävänä steinerkoulu (EI KÄYTÖSSÄ)",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Särskild utbildningsuppgift steinerskola (INTE I ANDVÄNDING)",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "erityinenkoulutustehtava_steiner",
     "versio": 2,
-    "withinCodeElements": []
+    "koodiArvo": "steiner"
   },
   {
-    "koodiUri": "erityinenkoulutustehtava_taide",
-    "koodiArvo": "taide",
     "metadata": [
       {
         "nimi": "Erityisenä koulutustehtävänä taide (EI KÄYTÖSSÄ)",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Särskild utbildningsuppgift konst (INTE I ANDVÄNDING)",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "erityinenkoulutustehtava_taide",
     "versio": 2,
-    "withinCodeElements": []
+    "koodiArvo": "taide"
   },
   {
-    "koodiUri": "erityinenkoulutustehtava_urheilu",
-    "koodiArvo": "urheilu",
     "metadata": [
       {
         "nimi": "Erityisenä koulutustehtävänä urheilu (EI KÄYTÖSSÄ)",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Särskild utbildningsuppgift idrott (INTE I ANDVÄNDING)",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "erityinenkoulutustehtava_urheilu",
     "versio": 2,
-    "withinCodeElements": []
+    "koodiArvo": "urheilu"
   }
 ]

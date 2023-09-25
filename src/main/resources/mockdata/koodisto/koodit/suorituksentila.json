@@ -1,71 +1,83 @@
 [
   {
-    "koodiUri": "suorituksentila_kesken",
-    "koodiArvo": "KESKEN",
     "metadata": [
       {
         "nimi": "Suoritus kesken",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Prestationen icke slutförd",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "suorituksentila_kesken",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "KESKEN"
   },
   {
-    "koodiUri": "suorituksentila_keskeytynyt",
-    "koodiArvo": "KESKEYTYNYT",
     "metadata": [
       {
         "nimi": "Suoritus keskeytynyt",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Prestationen avbruten",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "suorituksentila_keskeytynyt",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "KESKEYTYNYT"
   },
   {
-    "koodiUri": "suorituksentila_valmis",
-    "koodiArvo": "VALMIS",
     "metadata": [
       {
         "nimi": "Suoritus valmis",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Prestationen slutförd",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "suorituksentila_valmis",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "VALMIS"
   }
 ]

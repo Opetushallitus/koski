@@ -1,98 +1,110 @@
 [
   {
-    "koodiUri": "perusopetuksentodistuksenliitetieto_kayttaytyminen",
-    "koodiArvo": "kayttaytyminen",
     "metadata": [
       {
         "nimi": "Käyttäytyminen",
-        "lyhytNimi": "",
         "kuvaus": "Arvio oppilaan käyttäytymisestä",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Uppförande",
-        "lyhytNimi": "",
         "kuvaus": "Bedömning av elevens uppförande",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Behaviour",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "perusopetuksentodistuksenliitetieto_kayttaytyminen",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "kayttaytyminen"
   },
   {
-    "koodiUri": "perusopetuksentodistuksenliitetieto_painotettuopetus",
-    "koodiArvo": "painotettuopetus",
     "metadata": [
       {
         "nimi": "Painotettu opetus",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Betonad undervisning",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Weighted curriculum",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "perusopetuksentodistuksenliitetieto_painotettuopetus",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "painotettuopetus"
   },
   {
-    "koodiUri": "perusopetuksentodistuksenliitetieto_tyoskentely",
-    "koodiArvo": "tyoskentely",
     "metadata": [
       {
         "nimi": "Työskentely",
-        "lyhytNimi": "",
         "kuvaus": "Arvio oppilaan työskentelystä",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Arbetet",
-        "lyhytNimi": "",
         "kuvaus": "Bedömning av arbetet",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Effort",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "perusopetuksentodistuksenliitetieto_tyoskentely",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "tyoskentely"
   },
   {
-    "koodiUri": "perusopetuksentodistuksenliitetieto_valinnaisetaineet",
-    "koodiArvo": "valinnaisetaineet",
     "metadata": [
       {
         "nimi": "Valinnaiset aineet",
-        "lyhytNimi": "",
         "kuvaus": "Sanallinen liite alle kaksi vuosiviikkotuntia käsittävistä valinnaisista aineista",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Valfria ämnen",
-        "lyhytNimi": "",
         "kuvaus": "En verbal bedömning som bilaga över valfria ämnen som omfattar mindre än två årsveckotimmar",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Elective subjects",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "perusopetuksentodistuksenliitetieto_valinnaisetaineet",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "valinnaisetaineet"
   }
 ]

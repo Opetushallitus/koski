@@ -1,84 +1,107 @@
 [
   {
-    "koodiUri": "yhteystietotyypit_yhteystietotyyppi1",
-    "koodiArvo": "yhteystietotyyppi1",
     "metadata": [
       {
         "nimi": "Kotiosoite",
-        "lyhytNimi": "Kotiosoite",
         "kuvaus": "Kotiosoite",
+        "lyhytNimi": "Kotiosoite",
         "kieli": "FI"
       },
       {
         "nimi": "Hemadress",
-        "lyhytNimi": "Hemadress",
         "kuvaus": "Hemadress",
+        "lyhytNimi": "Hemadress",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "yhteystietotyypit_yhteystietotyyppi1",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "yhteystietotyyppi1"
   },
   {
-    "koodiUri": "yhteystietotyypit_yhteystietotyyppi10",
-    "koodiArvo": "yhteystietotyyppi10",
     "metadata": [
       {
         "nimi": "VTJ tilapäinen ulkomainen osoite",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "yhteystietotyypit_yhteystietotyyppi10",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "yhteystietotyyppi10"
   },
   {
-    "koodiUri": "yhteystietotyypit_yhteystietotyyppi11",
-    "koodiArvo": "yhteystietotyyppi11",
     "metadata": [
       {
         "nimi": "VTJ kotimainen postiosoite",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "yhteystietotyypit_yhteystietotyyppi11",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "yhteystietotyyppi11"
   },
   {
-    "koodiUri": "yhteystietotyypit_yhteystietotyyppi12",
-    "koodiArvo": "yhteystietotyyppi12",
     "metadata": [
       {
         "nimi": "VTJ ulkomainen postiosoite",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "yhteystietotyypit_yhteystietotyyppi12",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "yhteystietotyyppi12"
   },
   {
-    "koodiUri": "yhteystietotyypit_yhteystietotyyppi13",
-    "koodiArvo": "yhteystietotyyppi13",
     "metadata": [
       {
         "nimi": "Oikeustulkkirekisterin yhteystiedot",
@@ -87,188 +110,232 @@
       },
       {
         "nimi": "Oikeustulkkirekisterin yhteystiedot",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "Oikeustulkkirekisterin yhteystiedot",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "yhteystietotyypit_yhteystietotyyppi13",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "yhteystietotyyppi13"
   },
   {
-    "koodiUri": "yhteystietotyypit_yhteystietotyyppi2",
-    "koodiArvo": "yhteystietotyyppi2",
     "metadata": [
       {
         "nimi": "Työosoite",
-        "lyhytNimi": "Työosoite",
         "kuvaus": "Työosoite",
+        "lyhytNimi": "Työosoite",
         "kieli": "FI"
       },
       {
         "nimi": "Arbetsadress",
-        "lyhytNimi": "Arbetsadress",
         "kuvaus": "Arbetsadress",
+        "lyhytNimi": "Arbetsadress",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "yhteystietotyypit_yhteystietotyyppi2",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "yhteystietotyyppi2"
   },
   {
-    "koodiUri": "yhteystietotyypit_yhteystietotyyppi3",
-    "koodiArvo": "yhteystietotyyppi3",
     "metadata": [
       {
         "nimi": "Vapaa-ajan osoite",
-        "lyhytNimi": "Vapaa-ajan osoite",
         "kuvaus": "Vapaa-ajan osoite",
+        "lyhytNimi": "Vapaa-ajan osoite",
         "kieli": "FI"
       },
       {
         "nimi": "Fritidsadress",
-        "lyhytNimi": "Fritidsadress",
         "kuvaus": "Fritidsadress",
+        "lyhytNimi": "Fritidsadress",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "yhteystietotyypit_yhteystietotyyppi3",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "yhteystietotyyppi3"
   },
   {
-    "koodiUri": "yhteystietotyypit_yhteystietotyyppi4",
-    "koodiArvo": "yhteystietotyyppi4",
     "metadata": [
       {
         "nimi": "VTJ Vakinainen kotimainen osoite",
-        "lyhytNimi": "VTJ Vak. kotim. os.",
         "kuvaus": "VTJ Vakinainen kotimainen osoite",
+        "lyhytNimi": "VTJ Vak. kotim. os.",
         "kieli": "FI"
       },
       {
         "nimi": "BDS Stadigvarande adress i hemlandet",
-        "lyhytNimi": "BDS Stadigv. adress i hemland.t",
         "kuvaus": "BDS Stadigvarande adress i hemlandet",
+        "lyhytNimi": "BDS Stadigv. adress i hemland.t",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "yhteystietotyypit_yhteystietotyyppi4",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "yhteystietotyyppi4"
   },
   {
-    "koodiUri": "yhteystietotyypit_yhteystietotyyppi5",
-    "koodiArvo": "yhteystietotyyppi5",
     "metadata": [
       {
         "nimi": "VTJ Vakinainen ulkomainen osoite",
-        "lyhytNimi": "VTJ Vak. ulkom. os.",
         "kuvaus": "VTJ Vakinainen ulkomainen osoite",
+        "lyhytNimi": "VTJ Vak. ulkom. os.",
         "kieli": "FI"
       },
       {
         "nimi": "BDS Stadigvarande adress utomlands",
-        "lyhytNimi": "BDS Stadigv. adress utomlands",
         "kuvaus": "BDS Stadigvarande adress utomlands",
+        "lyhytNimi": "BDS Stadigv. adress utomlands",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "yhteystietotyypit_yhteystietotyyppi5",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "yhteystietotyyppi5"
   },
   {
-    "koodiUri": "yhteystietotyypit_yhteystietotyyppi6",
-    "koodiArvo": "yhteystietotyyppi6",
     "metadata": [
       {
         "nimi": "Hakemukselta tuleva yhteystieto",
-        "lyhytNimi": "Hakemukselta tuleva yhteystieto",
         "kuvaus": "Hakemukselta tuleva yhteystieto",
+        "lyhytNimi": "Hakemukselta tuleva yhteystieto",
         "kieli": "FI"
       },
       {
         "nimi": "Kontaktinformation som härstammar från ansökan",
-        "lyhytNimi": "Kontaktinformation som härstammar från ansökan",
         "kuvaus": "Kontaktinformation som härstammar från ansökan",
+        "lyhytNimi": "Kontaktinformation som härstammar från ansökan",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "yhteystietotyypit_yhteystietotyyppi6",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "yhteystietotyyppi6"
   },
   {
-    "koodiUri": "yhteystietotyypit_yhteystietotyyppi7",
-    "koodiArvo": "yhteystietotyyppi7",
     "metadata": [
       {
         "nimi": "Muu osoite",
-        "lyhytNimi": "Muu osoite",
         "kuvaus": "Muu osoite",
+        "lyhytNimi": "Muu osoite",
         "kieli": "FI"
       },
       {
         "nimi": "Annan adress",
-        "lyhytNimi": "Annan adress",
         "kuvaus": "Annan adress",
+        "lyhytNimi": "Annan adress",
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "yhteystietotyypit_yhteystietotyyppi7",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "yhteystietotyyppi7"
   },
   {
-    "koodiUri": "yhteystietotyypit_yhteystietotyyppi8",
-    "koodiArvo": "yhteystietotyyppi8",
     "metadata": [
       {
         "nimi": "VTJ Sähköinen osoite",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "yhteystietotyypit_yhteystietotyyppi8",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "yhteystietotyyppi8"
   },
   {
-    "koodiUri": "yhteystietotyypit_yhteystietotyyppi9",
-    "koodiArvo": "yhteystietotyyppi9",
     "metadata": [
       {
         "nimi": "VTJ tilapäinen kotimainen osoite",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "yhteystietotyypit_yhteystietotyyppi9",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "yhteystietotyyppi9"
   }
 ]

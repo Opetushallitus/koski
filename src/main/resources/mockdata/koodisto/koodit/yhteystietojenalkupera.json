@@ -1,128 +1,177 @@
 [
   {
-    "koodiUri": "yhteystietojenalkupera_alkupera1",
-    "koodiArvo": "alkupera1",
     "metadata": [
       {
         "nimi": "VTJ",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "yhteystietojenalkupera_alkupera1",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "alkupera1"
   },
   {
-    "koodiUri": "yhteystietojenalkupera_alkupera2",
-    "koodiArvo": "alkupera2",
     "metadata": [
       {
         "nimi": "Virkailijan UI",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "yhteystietojenalkupera_alkupera2",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "alkupera2"
   },
   {
-    "koodiUri": "yhteystietojenalkupera_alkupera3",
-    "koodiArvo": "alkupera3",
     "metadata": [
       {
         "nimi": "Omat tiedot UI",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "yhteystietojenalkupera_alkupera3",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "alkupera3"
   },
   {
-    "koodiUri": "yhteystietojenalkupera_alkupera4",
-    "koodiArvo": "alkupera4",
     "metadata": [
       {
         "nimi": "Hakulomake",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "yhteystietojenalkupera_alkupera4",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "alkupera4"
   },
   {
-    "koodiUri": "yhteystietojenalkupera_alkupera5",
-    "koodiArvo": "alkupera5",
     "metadata": [
       {
         "nimi": "Tiedonsiirrot",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "yhteystietojenalkupera_alkupera5",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "alkupera5"
   },
   {
-    "koodiUri": "yhteystietojenalkupera_alkupera6",
-    "koodiArvo": "alkupera6",
     "metadata": [
       {
         "nimi": "Muu alkuperä",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "yhteystietojenalkupera_alkupera6",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "alkupera6"
   },
   {
-    "koodiUri": "yhteystietojenalkupera_alkupera7",
-    "koodiArvo": "alkupera7",
     "metadata": [
       {
         "nimi": "Oikeustulkkirekisteri",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "yhteystietojenalkupera_alkupera7",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "alkupera7"
   }
 ]

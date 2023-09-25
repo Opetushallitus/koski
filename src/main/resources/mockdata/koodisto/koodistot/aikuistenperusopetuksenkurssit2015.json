@@ -1,33 +1,81 @@
 {
   "koodistoUri": "aikuistenperusopetuksenkurssit2015",
-  "versio": 1,
-  "metadata": [
-    {
-      "kieli": "FI",
-      "nimi": "Aikuisten perusopetuksen kurssit 2015",
-      "kuvaus": ""
-    }
-  ],
-  "codesGroupUri": "koski",
-  "voimassaAlkuPvm": "2017-07-04",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/aikuistenperusopetuksenkurssit2015",
+  "omistaja": null,
   "organisaatioOid": "1.2.246.562.10.00000000001",
+  "lukittu": null,
   "withinCodes": [
+    {
+      "codesUri": "oppiaineaidinkielijakirjallisuus",
+      "codesVersion": 1,
+      "passive": false,
+      "nimi": {
+        "FI": "Oppiaine Äidinkieli ja kirjallisuus",
+        "SV": "Oppiaine Äidinkieli ja kirjallisuus",
+        "EN": "Oppiaine Äidinkieli ja kirjallisuus"
+      },
+      "kuvaus": {
+        "FI": "Oppiaine Äidinkieli ja kirjallisuus",
+        "SV": "Oppiaine Äidinkieli ja kirjallisuus",
+        "EN": "Oppiaine Äidinkieli ja kirjallisuus"
+      }
+    },
     {
       "codesUri": "kielivalikoima",
       "codesVersion": 1,
-      "passive": false
+      "passive": false,
+      "nimi": {
+        "FI": "kielivalikoima",
+        "SV": "kielivalikoima",
+        "EN": "kielivalikoima"
+      },
+      "kuvaus": {
+        "FI": "kielivalikoima - käytetään ainakin KOSKI-palvelussa oppiaineiden kieliä määriteltäessä",
+        "SV": "kielivalikoima",
+        "EN": "kielivalikoima"
+      }
     },
     {
       "codesUri": "koskioppiaineetyleissivistava",
       "codesVersion": 1,
-      "passive": false
-    },
-    {
-      "codesUri": "oppiaineaidinkielijakirjallisuus",
-      "codesVersion": 1,
-      "passive": false
+      "passive": false,
+      "nimi": {
+        "SV": "Koski oppiaineet yleissivistava",
+        "FI": "Koski oppiaineet yleissivistava",
+        "EN": "Koski oppiaineet yleissivistava"
+      },
+      "kuvaus": {
+        "SV": "Koski oppiaineet yleissivistava",
+        "FI": "Koski oppiaineet yleissivistava",
+        "EN": "Koski oppiaineet yleissivistava"
+      }
     }
   ],
+  "includesCodes": [],
+  "levelsWithCodes": [],
+  "codesGroupUri": "koski",
+  "version": 2,
+  "versio": 1,
+  "paivitysPvm": "2017-12-22",
+  "paivittajaOid": null,
+  "voimassaAlkuPvm": "2017-07-04",
+  "voimassaLoppuPvm": null,
   "tila": "PASSIIVINEN",
-  "version": 2
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "Aikuisten perusopetuksen kurssit 2015",
+      "kuvaus": "",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    }
+  ],
+  "codesVersions": []
 }

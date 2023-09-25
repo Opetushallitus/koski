@@ -1,17 +1,47 @@
 {
   "koodistoUri": "virtaarvosana",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/virtaarvosana",
+  "omistaja": null,
+  "organisaatioOid": "1.2.246.562.10.2013112012294919827487",
+  "lukittu": null,
+  "withinCodes": [],
+  "includesCodes": [
+    {
+      "codesUri": "virtaarvosanaasteikko",
+      "codesVersion": 1,
+      "passive": false,
+      "nimi": {
+        "FI": "VIRTA Arvosana-asteikko"
+      },
+      "kuvaus": {
+        "FI": "Arvosana-asteikko (https://confluence.csc.fi/display/VIRTA/Tietovarannon+koodistot)"
+      }
+    }
+  ],
+  "levelsWithCodes": [],
+  "codesGroupUri": "virta",
+  "version": 4,
   "versio": 1,
+  "paivitysPvm": "2016-02-14",
+  "paivittajaOid": null,
+  "voimassaAlkuPvm": "2014-11-01",
+  "voimassaLoppuPvm": null,
+  "tila": "LUONNOS",
   "metadata": [
     {
       "kieli": "FI",
       "nimi": "VIRTA Arvosana",
-      "kuvaus": "Arvosana (ks. https://confluence.csc.fi/display/VIRTA/Tietovarannon+koodistot)"
+      "kuvaus": "Arvosana (ks. https://confluence.csc.fi/display/VIRTA/Tietovarannon+koodistot)",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
     }
   ],
-  "codesGroupUri": "virta",
-  "voimassaAlkuPvm": "2014-11-01",
-  "organisaatioOid": "1.2.246.562.10.2013112012294919827487",
-  "withinCodes": [],
-  "tila": "LUONNOS",
-  "version": 4
+  "codesVersions": []
 }

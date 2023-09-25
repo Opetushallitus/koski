@@ -1,27 +1,97 @@
 {
   "koodistoUri": "oppiaineaidinkielijakirjallisuus",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/oppiaineaidinkielijakirjallisuus",
+  "omistaja": null,
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "lukittu": null,
+  "withinCodes": [],
+  "includesCodes": [
+    {
+      "codesUri": "aikuistenperusopetuksenkurssit2015",
+      "codesVersion": 1,
+      "passive": false,
+      "nimi": {
+        "FI": "Aikuisten perusopetuksen kurssit 2015"
+      },
+      "kuvaus": {
+        "FI": ""
+      }
+    },
+    {
+      "codesUri": "aikuistenperusopetuksenpaattovaiheenkurssit2017",
+      "codesVersion": 1,
+      "passive": false,
+      "nimi": {
+        "FI": "Aikuisten perusopetuksen päättövaiheen kurssit 2017"
+      },
+      "kuvaus": {
+        "FI": ""
+      }
+    },
+    {
+      "codesUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017",
+      "codesVersion": 1,
+      "passive": false,
+      "nimi": {
+        "FI": "Aikuisten perusopetuksen alkuvaiheen kurssit 2017"
+      },
+      "kuvaus": {
+        "FI": ""
+      }
+    }
+  ],
+  "levelsWithCodes": [],
+  "codesGroupUri": "koski",
+  "version": 1,
   "versio": 1,
+  "paivitysPvm": "2018-05-14",
+  "paivittajaOid": null,
+  "voimassaAlkuPvm": "2013-01-01",
+  "voimassaLoppuPvm": null,
+  "tila": "LUONNOS",
   "metadata": [
+    {
+      "kieli": "EN",
+      "nimi": "Oppiaine Äidinkieli ja kirjallisuus",
+      "kuvaus": "Oppiaine Äidinkieli ja kirjallisuus",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    },
     {
       "kieli": "FI",
       "nimi": "Oppiaine Äidinkieli ja kirjallisuus",
-      "kuvaus": "Oppiaine Äidinkieli ja kirjallisuus"
+      "kuvaus": "Oppiaine Äidinkieli ja kirjallisuus",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
     },
     {
       "kieli": "SV",
       "nimi": "Oppiaine Äidinkieli ja kirjallisuus",
-      "kuvaus": "Oppiaine Äidinkieli ja kirjallisuus"
-    },
-    {
-      "kieli": "EN",
-      "nimi": "Oppiaine Äidinkieli ja kirjallisuus",
-      "kuvaus": "Oppiaine Äidinkieli ja kirjallisuus"
+      "kuvaus": "Oppiaine Äidinkieli ja kirjallisuus",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
     }
   ],
-  "codesGroupUri": "koski",
-  "voimassaAlkuPvm": "2013-01-01",
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "withinCodes": [],
-  "tila": "LUONNOS",
-  "version": 1
+  "codesVersions": []
 }

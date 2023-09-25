@@ -1,58 +1,78 @@
 [
   {
-    "koodiUri": "effortasteikkoib_a",
-    "koodiArvo": "A",
     "metadata": [
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "very good",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "effortasteikkoib_a",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "A"
   },
   {
-    "koodiUri": "effortasteikkoib_b",
-    "koodiArvo": "B",
     "metadata": [
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "good",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "effortasteikkoib_b",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "B"
   },
   {
-    "koodiUri": "effortasteikkoib_c",
-    "koodiArvo": "C",
     "metadata": [
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "needs improvement",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "effortasteikkoib_c",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "C"
   }
 ]

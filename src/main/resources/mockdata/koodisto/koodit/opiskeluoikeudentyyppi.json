@@ -1,435 +1,489 @@
 [
   {
-    "koodiUri": "opiskeluoikeudentyyppi_aikuistenperusopetus",
-    "koodiArvo": "aikuistenperusopetus",
     "metadata": [
       {
         "nimi": "Aikuisten perusopetus",
-        "lyhytNimi": "Aikuisten perusopetus",
         "kuvaus": "",
+        "lyhytNimi": "Aikuisten perusopetus",
         "kieli": "FI"
       },
       {
         "nimi": "Grundläggande utbildning för vuxna",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Basic education for adults",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "opiskeluoikeudentyyppi_aikuistenperusopetus",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "aikuistenperusopetus"
   },
   {
-    "koodiUri": "opiskeluoikeudentyyppi_ammatillinenkoulutus",
-    "koodiArvo": "ammatillinenkoulutus",
     "metadata": [
       {
         "nimi": "Ammatillinen koulutus",
-        "lyhytNimi": "Ammatillinen koulutus",
         "kuvaus": "",
+        "lyhytNimi": "Ammatillinen koulutus",
         "kieli": "FI"
       },
       {
         "nimi": "Yrkesutbildning",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Vocational education and training",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "opiskeluoikeudentyyppi_ammatillinenkoulutus",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "ammatillinenkoulutus"
   },
   {
-    "koodiUri": "opiskeluoikeudentyyppi_diatutkinto",
-    "koodiArvo": "diatutkinto",
     "metadata": [
       {
         "nimi": "DIA-tutkinto",
-        "lyhytNimi": "DIA-tutkinto",
         "kuvaus": "",
+        "lyhytNimi": "DIA-tutkinto",
         "kieli": "FI"
       },
       {
         "nimi": "DIA-examen",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Deutsches Internationales Abitur degree (DIA)",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "opiskeluoikeudentyyppi_diatutkinto",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "diatutkinto"
   },
   {
-    "koodiUri": "opiskeluoikeudentyyppi_esiopetus",
-    "koodiArvo": "esiopetus",
     "metadata": [
       {
         "nimi": "Esiopetus",
-        "lyhytNimi": "Esiopetus",
         "kuvaus": "",
+        "lyhytNimi": "Esiopetus",
         "kieli": "FI"
       },
       {
         "nimi": "Förskoleundervisning",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Pre-primary education",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "opiskeluoikeudentyyppi_esiopetus",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "esiopetus"
   },
   {
-    "koodiUri": "opiskeluoikeudentyyppi_europeanschoolofhelsinki",
-    "koodiArvo": "europeanschoolofhelsinki",
     "metadata": [
       {
         "nimi": "European School of Helsinki",
-        "lyhytNimi": "European School of Helsinki",
         "kuvaus": "",
+        "lyhytNimi": "European School of Helsinki",
         "kieli": "FI"
       },
       {
         "nimi": "Europeiska skolan i Helsingfors",
-        "lyhytNimi": "European School of Helsinki",
         "kuvaus": "",
+        "lyhytNimi": "European School of Helsinki",
         "kieli": "SV"
       },
       {
         "nimi": "European School of Helsinki",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "opiskeluoikeudentyyppi_europeanschoolofhelsinki",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "europeanschoolofhelsinki"
   },
   {
-    "koodiUri": "opiskeluoikeudentyyppi_ibtutkinto",
-    "koodiArvo": "ibtutkinto",
     "metadata": [
       {
         "nimi": "IB-tutkinto",
-        "lyhytNimi": "IB-tutkinto",
         "kuvaus": "",
+        "lyhytNimi": "IB-tutkinto",
         "kieli": "FI"
       },
       {
         "nimi": "IB-examen",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "IB diploma",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "opiskeluoikeudentyyppi_ibtutkinto",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "ibtutkinto"
   },
   {
-    "koodiUri": "opiskeluoikeudentyyppi_internationalschool",
-    "koodiArvo": "internationalschool",
     "metadata": [
       {
         "nimi": "International school",
-        "lyhytNimi": "International school",
         "kuvaus": "",
+        "lyhytNimi": "International school",
         "kieli": "FI"
       },
       {
         "nimi": "International school",
-        "lyhytNimi": "International school",
         "kuvaus": "",
+        "lyhytNimi": "International school",
         "kieli": "SV"
       },
       {
         "nimi": "International school",
+        "kuvaus": null,
         "lyhytNimi": "International school",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "opiskeluoikeudentyyppi_internationalschool",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "internationalschool"
   },
   {
-    "koodiUri": "opiskeluoikeudentyyppi_korkeakoulutus",
-    "koodiArvo": "korkeakoulutus",
     "metadata": [
       {
         "nimi": "Korkeakoulutus",
-        "lyhytNimi": "Korkeakoulutus",
         "kuvaus": "",
+        "lyhytNimi": "Korkeakoulutus",
         "kieli": "FI"
       },
       {
         "nimi": "Högskoleutbildning",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Higher education",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "opiskeluoikeudentyyppi_korkeakoulutus",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "korkeakoulutus"
   },
   {
-    "koodiUri": "opiskeluoikeudentyyppi_lukiokoulutus",
-    "koodiArvo": "lukiokoulutus",
     "metadata": [
       {
         "nimi": "Lukiokoulutus",
-        "lyhytNimi": "Lukiokoulutus",
         "kuvaus": "",
+        "lyhytNimi": "Lukiokoulutus",
         "kieli": "FI"
       },
       {
         "nimi": "Gymnasieutbildning",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "General upper secondary education",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "opiskeluoikeudentyyppi_lukiokoulutus",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "lukiokoulutus"
   },
   {
-    "koodiUri": "opiskeluoikeudentyyppi_luva",
-    "koodiArvo": "luva",
     "metadata": [
       {
         "nimi": "Lukioon valmistava koulutus (LUVA)",
-        "lyhytNimi": "Luva",
         "kuvaus": "",
+        "lyhytNimi": "Luva",
         "kieli": "FI"
       },
       {
         "nimi": "Förberedande utbildning för gymnasieutbildning",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Instruction preparing for general upper secondary education",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "opiskeluoikeudentyyppi_luva",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "luva"
   },
   {
-    "koodiUri": "opiskeluoikeudentyyppi_muukuinsaanneltykoulutus",
-    "koodiArvo": "muukuinsaanneltykoulutus",
     "metadata": [
       {
         "nimi": "Muu kuin säännelty koulutus",
-        "lyhytNimi": "MUKS",
         "kuvaus": "",
+        "lyhytNimi": "MUKS",
         "kieli": "FI"
       },
       {
         "nimi": "Annan än reglerad utbildning",
-        "lyhytNimi": "MUKS",
         "kuvaus": "",
+        "lyhytNimi": "MUKS",
         "kieli": "SV"
       },
       {
         "nimi": "Other than regulated education",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "opiskeluoikeudentyyppi_muukuinsaanneltykoulutus",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "muukuinsaanneltykoulutus"
   },
   {
-    "koodiUri": "opiskeluoikeudentyyppi_perusopetukseenvalmistavaopetus",
-    "koodiArvo": "perusopetukseenvalmistavaopetus",
     "metadata": [
       {
         "nimi": "Perusopetukseen valmistava opetus",
-        "lyhytNimi": "Perusopetukseen valmistava opetus",
         "kuvaus": "",
+        "lyhytNimi": "Perusopetukseen valmistava opetus",
         "kieli": "FI"
       },
       {
         "nimi": "Förberedande undervisning för den grundläggande utbildningen",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Instruction preparing for basic education",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "opiskeluoikeudentyyppi_perusopetukseenvalmistavaopetus",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "perusopetukseenvalmistavaopetus"
   },
   {
-    "koodiUri": "opiskeluoikeudentyyppi_perusopetuksenlisaopetus",
-    "koodiArvo": "perusopetuksenlisaopetus",
     "metadata": [
       {
         "nimi": "Perusopetuksen lisäopetus",
-        "lyhytNimi": "Perusopetuksen lisäopetus",
         "kuvaus": "",
+        "lyhytNimi": "Perusopetuksen lisäopetus",
         "kieli": "FI"
       },
       {
         "nimi": "Påbyggnadsundervisning",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Voluntary additional basic education",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "opiskeluoikeudentyyppi_perusopetuksenlisaopetus",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "perusopetuksenlisaopetus"
   },
   {
-    "koodiUri": "opiskeluoikeudentyyppi_perusopetus",
-    "koodiArvo": "perusopetus",
     "metadata": [
       {
         "nimi": "Perusopetus",
-        "lyhytNimi": "Perusopetus",
         "kuvaus": "",
+        "lyhytNimi": "Perusopetus",
         "kieli": "FI"
       },
       {
         "nimi": "Grundläggande utbildning",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Basic education",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "opiskeluoikeudentyyppi_perusopetus",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "perusopetus"
   },
   {
-    "koodiUri": "opiskeluoikeudentyyppi_taiteenperusopetus",
-    "koodiArvo": "taiteenperusopetus",
     "metadata": [
       {
         "nimi": "Taiteen perusopetus",
-        "lyhytNimi": "Taiteen perusopetus",
         "kuvaus": "",
+        "lyhytNimi": "Taiteen perusopetus",
         "kieli": "FI"
       },
       {
         "nimi": "Grundläggande konstundervisning",
-        "lyhytNimi": "Grundläggande konstundervisning",
         "kuvaus": "",
+        "lyhytNimi": "Grundläggande konstundervisning",
         "kieli": "SV"
       },
       {
         "nimi": "Basic education in the arts",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "opiskeluoikeudentyyppi_taiteenperusopetus",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "taiteenperusopetus"
   },
   {
-    "koodiUri": "opiskeluoikeudentyyppi_tuva",
-    "koodiArvo": "tuva",
     "metadata": [
       {
         "nimi": "Tutkintokoulutukseen valmentava koulutus",
-        "lyhytNimi": "Tutkintokoulutukseen valmentava koulutus",
         "kuvaus": "",
+        "lyhytNimi": "Tutkintokoulutukseen valmentava koulutus",
         "kieli": "FI"
       },
       {
         "nimi": "Utbildning som handleder för examensutbildning",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Preparatory education for an upper secondary qualification",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "opiskeluoikeudentyyppi_tuva",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "tuva"
   },
   {
-    "koodiUri": "opiskeluoikeudentyyppi_vapaansivistystyonkoulutus",
-    "koodiArvo": "vapaansivistystyonkoulutus",
     "metadata": [
       {
         "nimi": "Vapaan sivistystyön koulutus",
-        "lyhytNimi": "Vapaan sivistystyön koulutus",
         "kuvaus": "",
+        "lyhytNimi": "Vapaan sivistystyön koulutus",
         "kieli": "FI"
       },
       {
         "nimi": "Fritt bildningsarbete",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Liberal adult education",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "opiskeluoikeudentyyppi_vapaansivistystyonkoulutus",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "vapaansivistystyonkoulutus"
   },
   {
-    "koodiUri": "opiskeluoikeudentyyppi_ylioppilastutkinto",
-    "koodiArvo": "ylioppilastutkinto",
     "metadata": [
       {
         "nimi": "Ylioppilastutkinto",
-        "lyhytNimi": "Ylioppilastutkinto",
         "kuvaus": "",
+        "lyhytNimi": "Ylioppilastutkinto",
         "kieli": "FI"
       },
       {
         "nimi": "Studentexamen",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Matriculation Examination",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "opiskeluoikeudentyyppi_ylioppilastutkinto",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "ylioppilastutkinto"
   }
 ]

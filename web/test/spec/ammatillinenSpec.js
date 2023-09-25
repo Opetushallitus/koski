@@ -74,8 +74,8 @@ describe('Ammatillinen koulutus', function () {
             'Ammatillisen osaamisen pilotit 2019',
             'Ammatillisen osaamisen pilotit 2019 (työvoimakoulutus)',
             'Työvoimakoulutus (valtiosopimukseen perustuva rahoitus)',
-            'Jatkuvan oppimisen ja työllisuuden palvelukeskuksen rahoitus',
-            'Jatkuvan oppimisen ja työllisuuden palvelukeskuksen rahoitus (RRF)'
+            'Jatkuvan oppimisen ja työllisyyden palvelukeskuksen rahoitus',
+            'Jatkuvan oppimisen ja työllisyyden palvelukeskuksen rahoitus (RRF)'
           ])
         })
 
@@ -1085,7 +1085,9 @@ describe('Ammatillinen koulutus', function () {
       describe('Tutkinnon osan lisääminen', function () {
         before(
           editor.edit,
-          opinnot.tutkinnonOsat('1').lisääTutkinnonOsa('Huolto- ja korjaustyöt'),
+          opinnot
+            .tutkinnonOsat('1')
+            .lisääTutkinnonOsa('Huolto- ja korjaustyöt'),
           opinnot
             .tutkinnonOsat('1')
             .tutkinnonOsa(0)

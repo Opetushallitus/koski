@@ -1,48 +1,58 @@
 [
   {
-    "koodiUri": "arviointiasteikkotaiteenperusopetus_hylatty",
-    "koodiArvo": "hylatty",
     "metadata": [
       {
         "nimi": "Hylätty",
+        "kuvaus": null,
         "lyhytNimi": "Hylätty",
         "kieli": "FI"
       },
       {
         "nimi": "Underkänd",
+        "kuvaus": null,
         "lyhytNimi": "Underkänd",
         "kieli": "SV"
       },
       {
         "nimi": "Fail",
+        "kuvaus": null,
         "lyhytNimi": "Fail",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkotaiteenperusopetus_hylatty",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "hylatty"
   },
   {
-    "koodiUri": "arviointiasteikkotaiteenperusopetus_hyvaksytty",
-    "koodiArvo": "hyvaksytty",
     "metadata": [
       {
         "nimi": "Hyväksytty",
+        "kuvaus": null,
         "lyhytNimi": "Hyväksytty",
         "kieli": "FI"
       },
       {
         "nimi": "Godkänd",
+        "kuvaus": null,
         "lyhytNimi": "Godkänd",
         "kieli": "SV"
       },
       {
         "nimi": "Pass",
+        "kuvaus": null,
         "lyhytNimi": "Pass",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkotaiteenperusopetus_hyvaksytty",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "hyvaksytty"
   }
 ]

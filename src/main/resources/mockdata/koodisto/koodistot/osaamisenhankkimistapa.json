@@ -1,17 +1,35 @@
 {
   "koodistoUri": "osaamisenhankkimistapa",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/osaamisenhankkimistapa",
+  "omistaja": null,
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "lukittu": null,
+  "withinCodes": [],
+  "includesCodes": [],
+  "levelsWithCodes": [],
+  "codesGroupUri": "koski",
+  "version": 4,
   "versio": 1,
+  "paivitysPvm": "2017-12-04",
+  "paivittajaOid": null,
+  "voimassaAlkuPvm": "2017-11-01",
+  "voimassaLoppuPvm": null,
+  "tila": "LUONNOS",
   "metadata": [
     {
       "kieli": "FI",
       "nimi": "Osaamisen hankkimistapa",
-      "kuvaus": "Osaamisen hankkimistapa"
+      "kuvaus": "Osaamisen hankkimistapa",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
     }
   ],
-  "codesGroupUri": "koski",
-  "voimassaAlkuPvm": "2017-11-01",
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "withinCodes": [],
-  "tila": "LUONNOS",
-  "version": 4
+  "codesVersions": []
 }

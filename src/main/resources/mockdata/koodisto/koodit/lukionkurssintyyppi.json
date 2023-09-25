@@ -1,74 +1,83 @@
 [
   {
-    "koodiUri": "lukionkurssintyyppi_pakollinen",
-    "koodiArvo": "pakollinen",
     "metadata": [
       {
         "nimi": "Pakollinen",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Obligatorisk",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Compulsory",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "lukionkurssintyyppi_pakollinen",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "pakollinen"
   },
   {
-    "koodiUri": "lukionkurssintyyppi_soveltava",
-    "koodiArvo": "soveltava",
     "metadata": [
       {
         "nimi": "Soveltava",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Tillämpad",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Applied",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "lukionkurssintyyppi_soveltava",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "soveltava"
   },
   {
-    "koodiUri": "lukionkurssintyyppi_syventava",
-    "koodiArvo": "syventava",
     "metadata": [
       {
         "nimi": "Syventävä",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "FI"
       },
       {
         "nimi": "Fördjupad",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "Advanced",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "lukionkurssintyyppi_syventava",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "syventava"
   }
 ]

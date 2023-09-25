@@ -1,16 +1,35 @@
 {
   "koodistoUri": "lukioonvalmistavankoulutuksenmoduulit2019",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/lukioonvalmistavankoulutuksenmoduulit2019",
+  "omistaja": null,
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "lukittu": null,
+  "withinCodes": [],
+  "includesCodes": [],
+  "levelsWithCodes": [],
+  "codesGroupUri": "koski",
+  "version": 1,
   "versio": 1,
+  "paivitysPvm": "2021-06-08",
+  "paivittajaOid": "1.2.246.562.24.69766176992",
+  "voimassaAlkuPvm": "2021-08-01",
+  "voimassaLoppuPvm": null,
+  "tila": "LUONNOS",
   "metadata": [
     {
       "kieli": "FI",
-      "nimi": "Lukioon valmistavan koulutuksen moduulit 2019"
+      "nimi": "Lukioon valmistavan koulutuksen moduulit 2019",
+      "kuvaus": null,
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
     }
   ],
-  "codesGroupUri": "koski",
-  "voimassaAlkuPvm": "2021-08-01",
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "withinCodes": [],
-  "tila": "LUONNOS",
-  "version": 1
+  "codesVersions": []
 }

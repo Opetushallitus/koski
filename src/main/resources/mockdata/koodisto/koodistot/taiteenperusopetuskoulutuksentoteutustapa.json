@@ -1,24 +1,63 @@
 {
   "koodistoUri": "taiteenperusopetuskoulutuksentoteutustapa",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/taiteenperusopetuskoulutuksentoteutustapa",
+  "omistaja": null,
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "lukittu": null,
+  "withinCodes": [],
+  "includesCodes": [],
+  "levelsWithCodes": [],
+  "codesGroupUri": "koski",
+  "version": 0,
   "versio": 1,
+  "paivitysPvm": "2023-02-15",
+  "paivittajaOid": "1.2.246.562.24.98063222086",
+  "voimassaAlkuPvm": "2020-01-01",
+  "voimassaLoppuPvm": null,
+  "tila": "LUONNOS",
   "metadata": [
     {
+      "kieli": "EN",
+      "nimi": "Taiteen perusopetus koulutuksen toteutustapa",
+      "kuvaus": null,
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    },
+    {
       "kieli": "FI",
-      "nimi": "Taiteen perusopetus koulutuksen toteutustapa"
+      "nimi": "Taiteen perusopetus koulutuksen toteutustapa",
+      "kuvaus": null,
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
     },
     {
       "kieli": "SV",
-      "nimi": "Taiteen perusopetus koulutuksen toteutustapa"
-    },
-    {
-      "kieli": "EN",
-      "nimi": "Taiteen perusopetus koulutuksen toteutustapa"
+      "nimi": "Taiteen perusopetus koulutuksen toteutustapa",
+      "kuvaus": null,
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
     }
   ],
-  "codesGroupUri": "koski",
-  "voimassaAlkuPvm": "2020-01-01",
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "withinCodes": [],
-  "tila": "LUONNOS",
-  "version": 0
+  "codesVersions": []
 }

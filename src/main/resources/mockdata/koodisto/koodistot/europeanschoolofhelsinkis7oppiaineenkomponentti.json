@@ -1,17 +1,35 @@
 {
   "koodistoUri": "europeanschoolofhelsinkis7oppiaineenkomponentti",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/europeanschoolofhelsinkis7oppiaineenkomponentti",
+  "omistaja": null,
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "lukittu": null,
+  "withinCodes": [],
+  "includesCodes": [],
+  "levelsWithCodes": [],
+  "codesGroupUri": "koski",
+  "version": 0,
   "versio": 1,
+  "paivitysPvm": "2022-11-09",
+  "paivittajaOid": "1.2.246.562.24.98063222086",
+  "voimassaAlkuPvm": "2023-01-01",
+  "voimassaLoppuPvm": null,
+  "tila": "LUONNOS",
   "metadata": [
     {
       "kieli": "FI",
       "nimi": "European School of Helsinki S7-oppiaineen komponentti",
-      "kuvaus": "European School of Helsinki S7-oppiaineen komponentti"
+      "kuvaus": "European School of Helsinki S7-oppiaineen komponentti",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
     }
   ],
-  "codesGroupUri": "koski",
-  "voimassaAlkuPvm": "2023-01-01",
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "withinCodes": [],
-  "tila": "LUONNOS",
-  "version": 0
+  "codesVersions": []
 }

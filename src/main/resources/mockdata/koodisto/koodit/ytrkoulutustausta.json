@@ -1,78 +1,106 @@
 [
   {
-    "koodiUri": "ytrkoulutustausta_1",
-    "koodiArvo": "1",
     "metadata": [
       {
         "nimi": "Lukio",
+        "kuvaus": null,
         "lyhytNimi": "lukio",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ytrkoulutustausta_1",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "1"
   },
   {
-    "koodiUri": "ytrkoulutustausta_2",
-    "koodiArvo": "2",
     "metadata": [
       {
         "nimi": "Ammatillinen",
+        "kuvaus": null,
         "lyhytNimi": "ammatillinen",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ytrkoulutustausta_2",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "2"
   },
   {
-    "koodiUri": "ytrkoulutustausta_3",
-    "koodiArvo": "3",
     "metadata": [
       {
         "nimi": "Yhdistelmä",
+        "kuvaus": null,
         "lyhytNimi": "yhdistelmä",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ytrkoulutustausta_3",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "3"
   },
   {
-    "koodiUri": "ytrkoulutustausta_4",
-    "koodiArvo": "4",
     "metadata": [
       {
         "nimi": "Tuntematon",
+        "kuvaus": null,
         "lyhytNimi": "tuntematon",
         "kieli": "FI"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
+        "nimi": null,
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ytrkoulutustausta_4",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "4"
   }
 ]

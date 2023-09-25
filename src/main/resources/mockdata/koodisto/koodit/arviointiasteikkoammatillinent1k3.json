@@ -1,124 +1,138 @@
 [
   {
-    "koodiUri": "arviointiasteikkoammatillinent1k3_0",
-    "koodiArvo": "0",
     "metadata": [
       {
         "nimi": "hylätty",
-        "lyhytNimi": "H",
         "kuvaus": "",
+        "lyhytNimi": "H",
         "kieli": "FI"
       },
       {
         "nimi": "underkänd",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "fail",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkoammatillinent1k3_0",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "0"
   },
   {
-    "koodiUri": "arviointiasteikkoammatillinent1k3_1",
-    "koodiArvo": "1",
     "metadata": [
       {
         "nimi": "tyydyttävä",
-        "lyhytNimi": "T1",
         "kuvaus": "",
+        "lyhytNimi": "T1",
         "kieli": "FI"
       },
       {
         "nimi": "nöjaktig",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "satisfactory",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkoammatillinent1k3_1",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "1"
   },
   {
-    "koodiUri": "arviointiasteikkoammatillinent1k3_2",
-    "koodiArvo": "2",
     "metadata": [
       {
         "nimi": "hyvä",
-        "lyhytNimi": "H2",
         "kuvaus": "",
+        "lyhytNimi": "H2",
         "kieli": "FI"
       },
       {
         "nimi": "god",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "good",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkoammatillinent1k3_2",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "2"
   },
   {
-    "koodiUri": "arviointiasteikkoammatillinent1k3_3",
-    "koodiArvo": "3",
     "metadata": [
       {
         "nimi": "kiitettävä",
-        "lyhytNimi": "K3",
         "kuvaus": "",
+        "lyhytNimi": "K3",
         "kieli": "FI"
       },
       {
         "nimi": "berömlig",
-        "lyhytNimi": "",
         "kuvaus": "",
+        "lyhytNimi": "",
         "kieli": "SV"
       },
       {
         "nimi": "excellent",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkoammatillinent1k3_3",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "3"
   },
   {
-    "koodiUri": "arviointiasteikkoammatillinent1k3_hyvaksytty",
-    "koodiArvo": "Hyväksytty",
     "metadata": [
       {
         "nimi": "Hyväksytty",
-        "lyhytNimi": "Hyväksytty",
         "kuvaus": "Hyväksytty",
+        "lyhytNimi": "Hyväksytty",
         "kieli": "FI"
       },
       {
         "nimi": "Godkänd",
-        "lyhytNimi": "Godkänd",
         "kuvaus": "Godkänd",
+        "lyhytNimi": "Godkänd",
         "kieli": "SV"
       },
       {
         "nimi": "Pass",
-        "lyhytNimi": "Pass",
         "kuvaus": "Pass",
+        "lyhytNimi": "Pass",
         "kieli": "EN"
       }
     ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkoammatillinent1k3_hyvaksytty",
     "versio": 1,
-    "withinCodeElements": []
+    "koodiArvo": "Hyväksytty"
   }
 ]
