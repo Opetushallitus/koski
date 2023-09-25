@@ -4,14 +4,14 @@ runs:
     - name: Set up Java 11
       uses: actions/setup-java@v3
       with:
-        java-version: '11'
-        architecture: 'x64'
-        distribution: 'zulu'
+        java-version: "11"
+        architecture: "x64"
+        distribution: "zulu"
 
     - name: Setup Node 16
       uses: actions/setup-node@v3
       with:
-        node-version: "16.19.0"
+        node-version: "18.18.0"
 
     - name: Cache Maven packages
       uses: actions/cache@v3
@@ -47,4 +47,3 @@ runs:
         max_attempts: 1
         timeout_minutes: 20
         command: mvn test-compile --batch-mode
-
