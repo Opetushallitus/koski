@@ -12,7 +12,11 @@ object MockEPerusteetRepository extends EPerusteetRepository {
   lazy val kokoRakenteet: List[EPerusteKokoRakenne] = haeRakenteetTiedostoista[EPerusteKokoRakenne]
 
   private def haeRakenteetTiedostoista[T: TypeTag]: List[T] = rakennenimet.map { id =>
-    JsonSerializer.extract[T](JsonResources.readResourceIfExists("/mockdata/eperusteet/" + id + ".json").get, ignoreExtras = true)
+    try {
+      JsonSerializer.extract[T](JsonResources.readResourceIfExists("/mockdata/eperusteet/" + id + ".json").get, ignoreExtras = true)
+    } catch {
+      case e: Exception => throw new RuntimeException(s"Rakenteen $id haku epäonnistui: ${e.getMessage}")
+    }
   }
 
   private val rakennenimet = List(
