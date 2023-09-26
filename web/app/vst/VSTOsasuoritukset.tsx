@@ -1,10 +1,7 @@
 import { PaikallinenKoodi } from '../types/fi/oph/koski/schema/PaikallinenKoodi'
 import { VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus'
 import { VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonVapaatavoitteisenKoulutuksenOsasuoritus'
-import {
-  defaultFinnishKuvaus,
-  defaultLaajuusOpintopisteissa
-} from './resolvers'
+import { laajuusOpintopisteissa } from './resolvers'
 import { OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus } from '../types/fi/oph/koski/schema/OppivelvollisilleSuunnattuVapaanSivistystyonOpintokokonaisuus'
 import { OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus } from '../types/fi/oph/koski/schema/OppivelvollisilleSuunnatunVapaanSivistystyonOpintokokonaisuudenSuoritus'
 import { MuuallaSuoritettuOppivelvollisilleSuunnatunVapaanSivistystyönOpintojenSuoritus } from '../types/fi/oph/koski/schema/MuuallaSuoritettuOppivelvollisilleSuunnatunVapaanSivistystyonOpintojenSuoritus'
@@ -35,6 +32,10 @@ import { VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaamisenAlasuorituksen
 import { VSTKotoutumiskoulutusValinnaistenOpintojenAlaosasuoritus } from '../types/fi/oph/koski/schema/VSTKotoutumiskoulutusValinnaistenOpintojenAlaosasuoritus'
 import { VSTKotoutumiskoulutuksenValinnaistenOpintojenAlasuorituksenKoulutusmoduuli2022 } from '../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenValinnaistenOpintojenAlasuorituksenKoulutusmoduuli2022'
 import { VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenSuoritus'
+import { Finnish } from '../types/fi/oph/koski/schema/Finnish'
+
+const defaultLaajuus = laajuusOpintopisteissa(1)
+export const defaultFinnishKuvaus = Finnish({ fi: ' ' })
 
 export const createVapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus =
   (tunniste: PaikallinenKoodi) =>
@@ -43,7 +44,7 @@ export const createVapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksen
         VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuoritus({
           tunniste,
           kuvaus: defaultFinnishKuvaus,
-          laajuus: defaultLaajuusOpintopisteissa
+          laajuus: defaultLaajuus
         })
     })
 
@@ -53,7 +54,7 @@ export const createOppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuu
       koulutusmoduuli:
         OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus({
           kuvaus: defaultFinnishKuvaus,
-          laajuus: defaultLaajuusOpintopisteissa,
+          laajuus: defaultLaajuus,
           tunniste
         })
     })
@@ -65,7 +66,7 @@ export const createMuuallaSuoritettuOppivelvollisilleSuunnatunVapaanSivistystyö
         koulutusmoduuli: MuuallaSuoritetutVapaanSivistystyönOpinnot({
           tunniste,
           kuvaus: defaultFinnishKuvaus,
-          laajuus: defaultLaajuusOpintopisteissa
+          laajuus: defaultLaajuus
         })
       }
     )
@@ -92,6 +93,7 @@ export const createVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöe
           VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOpintojenOsasuoritus(
             {
               kuvaus: defaultFinnishKuvaus,
+              laajuus: defaultLaajuus,
               tunniste
             }
           )
@@ -106,6 +108,7 @@ export const createVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValin
           VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOpintojenOsasuoritus(
             {
               tunniste,
+              laajuus: defaultLaajuus,
               kuvaus: defaultFinnishKuvaus
             }
           )
@@ -128,7 +131,7 @@ export const createOppivelvollisilleSuunnatunVapaanSivistystyönOsaamiskokonaisu
       koulutusmoduuli:
         OppivelvollisilleSuunnattuVapaanSivistystyönOsaamiskokonaisuus({
           tunniste,
-          laajuus: defaultLaajuusOpintopisteissa
+          laajuus: defaultLaajuus
         })
     })
 
@@ -210,7 +213,7 @@ export const createVSTKotoutumiskoulutuksenKieliJaViestintäosaamisenOsasuoritus
         VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenKoulutusmoduuli2022(
           {
             tunniste,
-            laajuus: defaultLaajuusOpintopisteissa
+            laajuus: defaultLaajuus
           }
         )
     })
@@ -222,7 +225,7 @@ export const createVapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus 
     VapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus({
       koulutusmoduuli: VapaanSivistystyönLukutaidonKokonaisuus({
         tunniste,
-        laajuus: defaultLaajuusOpintopisteissa
+        laajuus: defaultLaajuus
       })
     })
 
@@ -238,7 +241,7 @@ export const createVSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenAlao
         VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaamisenAlasuorituksenKoulutusmoduuli2022(
           {
             tunniste,
-            laajuus: defaultLaajuusOpintopisteissa
+            laajuus: defaultLaajuus
           }
         )
     })
@@ -252,7 +255,7 @@ export const createVSTKotoutumiskoulutusValinnaistenOpintojenAlaosasuoritus = (
         {
           tunniste,
           kuvaus: defaultFinnishKuvaus,
-          laajuus: defaultLaajuusOpintopisteissa
+          laajuus: defaultLaajuus
         }
       )
   })

@@ -266,5 +266,3 @@ export const laajuusOpintopisteissa = (arvo: number) =>
   })
 
 export const defaultLaajuusOpintopisteissa = laajuusOpintopisteissa(0)
-
-export const defaultFinnishKuvaus = Finnish({ fi: '' })
