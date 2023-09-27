@@ -76,6 +76,7 @@ object MockEPerusteetRepository extends EPerusteetRepository {
     kokoRakenteet
       .filter(r => koulutustyypit.map(k => s"${k.koodistoUri}_${k.koodiarvo}").contains(r.koulutustyyppi))
       .map(_.toEPeruste)
+      .sortBy(_.diaarinumero)
   }
 
   def findTarkatRakenteet(diaariNumero: String, päivä: Option[LocalDate]): List[EPerusteTarkkaRakenne] = {
