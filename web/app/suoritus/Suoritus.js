@@ -96,6 +96,7 @@ export const suoritusTitle = (suoritus) => {
     case 'lukionaineopinnot':
     case 'aikuistenperusopetuksenoppimaara':
     case 'ebtutkinto':
+    case 'vstlukutaitokoulutus':
       return modelTitle(suoritus, 'tyyppi')
     case 'taiteenperusopetuksenlaajanoppimaaranperusopinnot':
     case 'taiteenperusopetuksenlaajanoppimaaransyventavatopinnot':
