@@ -23,7 +23,10 @@
       "opintoalakoodi": "opintoalaoph2002_998"
     }
   ],
-  "kielet": ["fi", "sv"],
+  "kielet": [
+    "sv",
+    "fi"
+  ],
   "kuvaus": {
     "_id": "4314846",
     "_tunniste": "293675fb-bf61-4484-9122-ad686cd0e74d",
@@ -52,6 +55,8 @@
   "tyotehtavatJoissaVoiToimia": null,
   "suorittaneenOsaaminen": null,
   "perusteenAikataulut": [],
+  "poikkeamismaaraysTarkennus": null,
+  "poikkeamismaaraysTyyppi": null,
   "suoritustavat": [
     {
       "suoritustapakoodi": "reformi",
@@ -462,8 +467,7 @@
         "arvo": "400005",
         "uri": "tutkinnonosat_400005",
         "koodisto": "tutkinnonosat",
-        "versio": null,
-        "temporary": false
+        "versio": null
       },
       "koodiUri": "tutkinnonosat_400005",
       "koodiArvo": "400005",
@@ -804,8 +808,7 @@
         "arvo": "400006",
         "uri": "tutkinnonosat_400006",
         "koodisto": "tutkinnonosat",
-        "versio": null,
-        "temporary": false
+        "versio": null
       },
       "koodiUri": "tutkinnonosat_400006",
       "koodiArvo": "400006",
@@ -1039,8 +1042,7 @@
         "arvo": "400007",
         "uri": "tutkinnonosat_400007",
         "koodisto": "tutkinnonosat",
-        "versio": null,
-        "temporary": false
+        "versio": null
       },
       "koodiUri": "tutkinnonosat_400007",
       "koodiArvo": "400007",

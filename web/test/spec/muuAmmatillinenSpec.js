@@ -163,7 +163,7 @@ describe('Muu ammatillinen koulutus', function () {
 
         it('tutkinnon voi valita', function () {
           expect(editor.property('täydentääTutkintoa').getText()).to.equal(
-            'Täydentää tutkintoa Autoalan työnjohdon erikoisammattitutkinto 357305 40/011/2001'
+            'Täydentää tutkintoa Autoalan työnjohdon erikoisammattitutkinto 457305 40/011/2001'
           )
         })
       })

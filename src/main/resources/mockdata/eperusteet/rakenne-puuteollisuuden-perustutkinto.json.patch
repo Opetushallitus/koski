@@ -1,2 +1,13 @@
 .voimassaoloLoppuu = null
 | .siirtymaPaattyy = null
+| .koulutukset += [{
+        "nimi": {
+        "fi": "Puuteollisuuden perustutkinto",
+        "sv": "Grundexamen inom träindustrin",
+        "en": "Vocational qualification in the Wood Industry"
+        },
+        "koulutuskoodiArvo": "451741",
+        "koulutuskoodiUri": "koulutus_451741",
+        "koulutusalakoodi": "koulutusalaoph2002_5",
+        "opintoalakoodi": "opintoalaoph2002_507"
+    }]

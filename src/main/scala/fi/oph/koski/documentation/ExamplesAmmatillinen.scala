@@ -108,7 +108,7 @@ object ReforminMukainenErikoisammattitutkintoExample {
 
 object AmmattitutkintoExample {
   lazy val tutkinto: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(
-    Koodistokoodiviite("357305", Some("Autoalan työnjohdon erikoisammattitutkinto"), "koulutus", None),
+    Koodistokoodiviite("457305", Some("Autoalan työnjohdon erikoisammattitutkinto"), "koulutus", None),
     Some("40/011/2001")
   )
 
@@ -541,7 +541,7 @@ object AmmatillinenOldExamples {
 
   lazy val muunAmmatillisenTutkinnonOsanSuoritus = MuunAmmatillisenTutkinnonOsanSuoritus(
     koulutusmoduuli = MuuValtakunnallinenTutkinnonOsa(Koodistokoodiviite("104052", "tutkinnonosat"), true, None),
-    tutkinto = Some(AmmatillinenTutkintoKoulutus(Koodistokoodiviite("357305", "koulutus"), Some("40/011/2001"))),
+    tutkinto = Some(AmmatillinenTutkintoKoulutus(Koodistokoodiviite("457305", "koulutus"), Some("40/011/2001"))),
     suorituskieli = None,
     alkamispäivä = None,
     toimipiste = Some(stadinToimipiste),

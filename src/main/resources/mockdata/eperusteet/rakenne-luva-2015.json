@@ -12,7 +12,10 @@
   "koulutustyyppi": "koulutustyyppi_23",
   "toteutus": "yksinkertainen",
   "koulutukset": [],
-  "kielet": ["fi", "sv"],
+  "kielet": [
+    "sv",
+    "fi"
+  ],
   "kuvaus": null,
   "maarayskirje": {
     "id": 1940621,
@@ -36,6 +39,8 @@
   "tyotehtavatJoissaVoiToimia": null,
   "suorittaneenOsaaminen": null,
   "perusteenAikataulut": [],
+  "poikkeamismaaraysTarkennus": null,
+  "poikkeamismaaraysTyyppi": null,
   "suoritustavat": [
     {
       "suoritustapakoodi": "lukiokoulutus",

@@ -538,8 +538,8 @@
             "en": "Supervisor Vehicle Tech., SQ",
             "_id": "1116963"
           },
-          "koulutuskoodiArvo": "357305",
-          "koulutuskoodiUri": "koulutus_357305",
+          "koulutuskoodiArvo": "457305",
+          "koulutuskoodiUri": "koulutus_457305",
           "koulutusalakoodi": "koulutusalaoph2002_5",
           "opintoalakoodi": "opintoalaoph2002_509"
         }
@@ -933,10 +933,7 @@
           "opintoalakoodi": "opintoalaoph2002_605"
         }
       ],
-      "kielet": [
-        "fi",
-        "sv"
-      ],
+      "kielet": ["fi", "sv"],
       "kuvaus": {
         "fi": "Alan ympäristömyönteinen toiminta kohdistuu ympäristön hoitoon ja kunnossapitoon sekä luonnonmonipuoliseen hyödyntämiseen. Luonto- ja ympäristöyrittäjyydellä on huomattavaa kasvupotentiaalia maaseudulla. Haasteena on uusien luontoyrittäjyysmuotojen hyödyntäminen. Näitä ovat muun muassa luontomatkailu ja luonnontuotteiden tuotteistaminen joko elintarvikkeiksi tai koriste- tai hyötykäyttöön. Luonto- ja ympäristöala ammattilaisilla on vahva osaaminen ympäristön ja luonnon kestävään käyttöön. \nLuonto- ja ympäristöala tarjoaa työtä muun muassa taajamien ja maaseutualueiden ympäristönhoidon, luontomatkailun ja poronhoidon tehtävissä. Luonto- ja ympäristöneuvontaan erikoistunut voi toimia eri järjestöjen, luontokoulujen ja hyvinvointiyritysten palveluksessa. Alalla tarvitaan myös yrittäjiä.",
         "sv": "<p>Inom natur- och miljöbranschen inriktar man sig på miljövård och underhåll samt på ett mångsidigt bruk av naturen. På landsbygden finns det en betydande tillväxtpotential för företagsamhet inom branschen. En utmaning är utnyttjandet av nya former av naturföretag. Sådana är bl.a. naturturism och produktifiering av naturprodukter antingen till livsmedel eller till prydnads- eller nyttoprodukter. De som avlagt grundexamen inom natur och miljö har goda kunskaper om ett hållbart bruk av natur och miljö. Branschen erbjuder arbete bland annat inom miljövården i tätorter eller på landsbygden, inom naturturism och inom renskötsel. Den som är specialiserad på natur- och miljörådgivning kan arbeta i olika organisationer, naturskolor och välfärdsföretag. Det behövs också företagare inom branschen.</p>",
@@ -954,9 +951,7 @@
       "muokattu": 1455103140759,
       "tila": "valmis",
       "tyyppi": "normaali",
-      "korvattavatDiaarinumerot": [
-        "31/011/2009"
-      ],
+      "korvattavatDiaarinumerot": ["31/011/2009"],
       "osaamisalat": [
         {
           "nimi": {

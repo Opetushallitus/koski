@@ -1,7 +1,7 @@
 {
   "id": 7534950,
   "globalVersion": {
-    "aikaleima": 1650969352242
+    "aikaleima": 1687165518789
   },
   "nimi": {
     "_id": "7788280",
@@ -23,25 +23,62 @@
       "opintoalakoodi": null
     }
   ],
-  "kielet": ["sv", "fi"],
+  "kielet": [
+    "sv",
+    "fi"
+  ],
   "kuvaus": {
     "_id": "7534933",
     "_tunniste": "894d8090-fc1b-4550-b5d9-077fbb3c1f05",
     "fi": "Uudet perusteet"
   },
-  "maarayskirje": null,
-  "muutosmaaraykset": [],
+  "maarayskirje": {
+    "id": 8890603,
+    "url": {},
+    "liitteet": {
+      "fi": {
+        "id": "046657be-5a65-4e48-a490-647e1e79b729",
+        "nimi": "TUVA_määräyskirje_oph_1488_2021.pdf"
+      },
+      "sv": {
+        "id": "a8417a1c-0a7f-4696-8e3f-10799093f071",
+        "nimi": "Hux_föreskriftsbrev_oph_1488_2021.pdf"
+      }
+    }
+  },
+  "muutosmaaraykset": [
+    {
+      "id": 8913402,
+      "nimi": null,
+      "url": null,
+      "liitteet": {
+        "fi": {
+          "id": "f944a0bf-8d66-40f9-9506-2a34c69f71db",
+          "nimi": "TUVA_muutosmääräys_oph_3061_2023.pdf"
+        },
+        "sv": {
+          "id": "86e2a482-7641-470b-9ea2-1e6cec3b0dcf",
+          "nimi": "Hux_ändringsföreskrift_oph_3061_2023.pdf"
+        }
+      }
+    }
+  ],
   "diaarinumero": "OPH-1488-2021",
   "voimassaoloAlkaa": 1659301200000,
   "siirtymaPaattyy": null,
   "voimassaoloLoppuu": null,
   "paatospvm": 1620248400000,
+  "viimeisinJulkaisuAika": 1687337234729,
   "luotu": 1610688380032,
-  "muokattu": 1650969352242,
+  "muokattu": 1685610928513,
   "tila": "valmis",
   "tyyppi": "normaali",
   "koulutusvienti": false,
-  "korvattavatDiaarinumerot": [],
+  "korvattavatDiaarinumerot": [
+    "OPH-2658-2017",
+    "105/011/2014",
+    "56/011/2015"
+  ],
   "osaamisalat": [],
   "tyotehtavatJoissaVoiToimia": null,
   "suorittaneenOsaaminen": null,
@@ -123,6 +160,673 @@
       "tapahtuma": "luominen",
       "tapahtumapaiva": 1610688369525,
       "julkinen": false
+    }
+  ],
+  "poikkeamismaaraysTarkennus": null,
+  "poikkeamismaaraysTyyppi": null,
+  "koulutuksenOsat": [
+    {
+      "id": 7535560,
+      "luotu": 1610690435100,
+      "muokattu": 1650969125595,
+      "muokkaaja": "1.2.246.562.24.71880188605",
+      "nimi": {
+        "_id": "8332019",
+        "_tunniste": "6e60834b-3529-4933-a209-f849b61be432",
+        "fi": "Opiskelu- ja urasuunnittelutaidot",
+        "sv": "Studiefärdigheter och karriärplaneringsfärdigheter"
+      },
+      "tila": "luonnos",
+      "nimiKoodi": {
+        "id": 7788176,
+        "nimi": {
+          "fi": "Opiskelu- ja urasuunnittelutaidot",
+          "sv": "Studiefärdigheter och karriärplaneringsfärdigheter"
+        },
+        "arvo": "101",
+        "uri": "koulutuksenosattuva_101",
+        "koodisto": "koulutuksenosattuva",
+        "versio": 1
+      },
+      "laajuusMinimi": 2,
+      "laajuusMaksimi": 10,
+      "koulutusOsanKoulutustyyppi": "tutkintokoulutukseenvalmentava",
+      "koulutusOsanTyyppi": "yhteinen",
+      "kuvaus": {
+        "_id": "7786630",
+        "_tunniste": "8539cac3-f6c8-4622-8a6c-d56771983557",
+        "fi": "<p>Tutkintokoulutukseen valmentavassa koulutuksessa kehitetään opiskelijan opiskelu- ja urasuunnittelutaitoja, kuten kykyä työskennellä ja opiskella itsenäisesti, suunnitella omia opintoja ja ajankäyttöä sekä tehdä opintoihin liittyviä valintoja. Opiskelijaa tuetaan tiedostamaan koulutuksen&nbsp;ja työnteon merkitys omassa elämässään. Opiskelu- ja urasuunnittelutaitojen kehittymiseen liittyvät kiinteästi opiskelu/tutkintokielen taidon ja erityisesti urasuunnitteluun liittyvien tekstitaitojen hallinta.</p>",
+        "sv": "<p>I utbildningen som handleder för examensutbildning ska den studerande utveckla sina studiefärdigheter och sina karriärplaneringsfärdigheter, såsom förmågan att arbeta och studera självständigt, förmågan att planera sina egna studier och sin tidsanvändning samt förmågan att göra val som berör studierna. Den studerande ska stödjas att komma till insikt om vilken betydelse utbildning och arbete har för hens eget liv. Utvecklingen av studiefärdigheterna och karriärplaneringsfärdigheterna är starkt kopplade till den studerandes kunskaper i undervisningsspråket och särskilt till förmågan att hantera och producera text som berör karriärplanering.</p>"
+      },
+      "tavoitteenKuvaus": null,
+      "tavoitteet": [
+        {
+          "_id": "7786632",
+          "_tunniste": "6f9a6b5c-9eba-44e5-bd33-90a220b94f27",
+          "fi": "asettaa ja arvioi oman elämänsä tavoitteita ja toiveita",
+          "sv": "ställer upp och utvärderar mål och önskemål som berör hens eget liv"
+        },
+        {
+          "_id": "7786633",
+          "_tunniste": "d7b83489-6a9a-4721-87fb-d4e948900ce7",
+          "fi": "osaa kuvata itseänsä oppijana ja opiskelijana",
+          "sv": "kan beskriva sig själv som studerande och hur hen lär sig"
+        },
+        {
+          "_id": "7786634",
+          "_tunniste": "f4eed9ca-7f4a-415c-957a-2882cf929593",
+          "fi": "tutustuu erilaisiin tapoihin oppia ja hankkia osaamista",
+          "sv": "bekantar sig med olika sätt att lära sig och förvärva kunnande"
+        },
+        {
+          "_id": "7786635",
+          "_tunniste": "e61dc5f8-5184-439f-9162-f4750e3359c4",
+          "fi": "käyttää soveltuvia opiskelutaitoja",
+          "sv": "använder lämpliga studiemetoder"
+        },
+        {
+          "_id": "7786636",
+          "_tunniste": "5b100306-d5f4-4f65-94f8-8486631fbd90",
+          "fi": "osaa suunnitella omia opintojaan tavoitteellisesti",
+          "sv": "kan målinriktat planera sina egna studier"
+        },
+        {
+          "_id": "7786637",
+          "_tunniste": "4cc6a873-9ec9-4d56-872c-44c86076ef59",
+          "fi": "osaa etsiä tietoa itseään kiinnostavista jatko-opinnoista sekä työelämävaihtoehdoista",
+          "sv": "kan söka information om fortsatta studier och alternativ för arbetslivet som intresserar hen"
+        },
+        {
+          "_id": "7786638",
+          "_tunniste": "26c5a72d-bcb5-4e30-a952-d8ce1176b95c",
+          "fi": "tarkastelee vaihtoehtoisia uramahdollisuuksiaan myös tulevaisuuden näkökulmasta",
+          "sv": "bekantar sig med sina olika karriärmöjligheter även ur ett framtidsperspektiv"
+        },
+        {
+          "_id": "7786639",
+          "_tunniste": "3d92b69d-f2ef-4e0b-979c-1494ed7cccf9",
+          "fi": "arvioi omaa soveltuvuuttaan eri aloille",
+          "sv": "bedömer hur lämplig hen är för olika branscher"
+        },
+        {
+          "_id": "7786650",
+          "_tunniste": "bb988592-4235-4ea7-afd3-f2e4f8809017",
+          "fi": "osaa tehdä realistisen jatko-opintosuunnitelman ja hakeutuu sen mukaisesti koulutukseen",
+          "sv": "kan göra upp en realistisk plan för fortsatta studier och söker sig till utbildning i enlighet med den"
+        },
+        {
+          "_id": "7786651",
+          "_tunniste": "f4cf5e3d-b319-4215-9396-aa2b3cc03820",
+          "fi": "valmistautuu opiskelemaan lukiokoulutuksessa tai ammatillisessa koulutuksessa",
+          "sv": "förbereder sig för studier inom gymnasieutbildning eller yrkesutbildning"
+        },
+        {
+          "_id": "7786652",
+          "_tunniste": "f210a51c-e0bc-4e8a-b7ac-edaf32b6c96c",
+          "fi": "ymmärtää ja osaa käyttää opiskelu- ja urasuunnitteluun liittyvää kieltä.",
+          "sv": "förstår och kan använda ett språk som är karakteristiskt för studie- och karriärplanering."
+        }
+      ],
+      "keskeinenSisalto": {
+        "_id": "7788122",
+        "_tunniste": "41e939c2-cdfd-43cf-95a0-2b41c6ef7e62",
+        "fi": "<p>Keskeinen sisältö</p><ul><li><p>Opiskelutaidot</p></li><li><p>Tutustuminen jatko-opintoihin ja suomalaiseen koulutusjärjestelmään</p></li><li><p>Tutustuminen lukiokoulutuksen ja/tai ammatillisen koulutuksen toteutustapoihin ja käytänteisiin</p></li><li><p>Tutustuminen eri alojen koulutukseen sekä koulutusvierailut ja -kokeilut</p></li></ul>",
+        "sv": "<ul><li><p>Studiefärdigheter</p></li><li><p>Den studerande bekantar sig med fortsatta studier och det finländska utbildningssystemet</p></li><li><p>Den studerande bekantar sig med hur man genomför gymnasieutbildning och/eller yrkesutbildning och med rutinerna inom utbildningarna</p></li><li><p>Den studerande bekantar sig med utbildningar inom olika branscher samt deltar i utbildningsbesök och utbildningsprövning</p></li></ul>"
+      },
+      "laajaAlaisenOsaamisenKuvaus": {
+        "_id": "7786658",
+        "_tunniste": "ddd8ca3f-2e1e-40b3-bd1d-847fb61ec64e",
+        "fi": "<p>Koulutuksen järjestäjä kuvaa laaja-alaisen osaamisen osa-alueet suunnitelmassaan koulutuksen toteuttamiseksi. Niiden tulee perustua tutkintokoulutukseen valmentavan koulutuksen perusteiden &nbsp;laaja-alaiseen&nbsp;osaamisen&nbsp;osa-alueiden&nbsp;kuvauksiin.&nbsp;</p>",
+        "sv": "<p>Utbildningsanordnaren ska i sin plan för genomförandet av utbildningen beskriva delområdena som ingår i den mångsidiga kompetensen. De ska basera sig på beskrivningarna av mångsidig kompetens som ingår i grunderna för utbildningen som handleder för examensutbildning.</p>"
+      },
+      "arvioinninKuvaus": {
+        "_id": "7788124",
+        "_tunniste": "5749d58a-3331-46ac-9dd7-02184646ee82",
+        "fi": "<p>Koulutuksen osa katsotaan hyväksytysti suoritetuksi, kun opiskelija on saavuttanut hänelle henkilökohtaisessa opiskelusuunnitelmassa asetetut tavoitteet. Osaaminen arvioidaan asteikolla hyväksytty/hylätty. </p>",
+        "sv": "<p>Utbildningsdelen anses vara godkänd då den studerande har uppnått målen som fastställts för hen i den personliga studieplanen. Kunnandet bedöms med skalan godkänd/underkänd.</p>"
+      },
+      "viiteId": 7535291,
+      "osanTyyppi": "koulutuksenosa"
+    },
+    {
+      "id": 7535561,
+      "luotu": 1610693268745,
+      "muokattu": 1687165450824,
+      "muokkaaja": "1.2.246.562.24.35128937253",
+      "nimi": {
+        "_id": "8963168",
+        "_tunniste": "e42286f4-2081-41ab-af5f-fc7e1ac1b79e",
+        "en": "Perustaitojen vahvistaminen",
+        "fi": "Perustaitojen vahvistaminen",
+        "sv": "Stärkande av grundläggande färdigheter"
+      },
+      "tila": "luonnos",
+      "nimiKoodi": {
+        "id": 8332160,
+        "nimi": {
+          "en": "Perustaitojen vahvistaminen",
+          "fi": "Perustaitojen vahvistaminen",
+          "sv": "Stärkande av grundläggande färdigheter"
+        },
+        "arvo": "107",
+        "uri": "koulutuksenosattuva_107",
+        "koodisto": "koulutuksenosattuva",
+        "versio": 1
+      },
+      "laajuusMinimi": 0,
+      "laajuusMaksimi": 30,
+      "koulutusOsanKoulutustyyppi": "perusopetus",
+      "koulutusOsanTyyppi": "valinnainen",
+      "kuvaus": {
+        "_id": "7787533",
+        "_tunniste": "82d9324f-0e2c-4a00-a422-6c39b1a73d1d",
+        "fi": "<p>Koulutuksen osan tavoitteena on vahvistaa opiskelijan lukutaitoon, numeerisiin taitoihin ja digitaitoihin liittyvää osaamista. Lisäksi koulutuksen osa mahdollistaa perusopetuksen oppimäärän arvosanojen korottamisen erityisessä tutkinnossa. Keskeistä opiskelussa on eri tiedonalojen tekstitaitojen sekä opiskelutaitojen vahvistaminen.</p>",
+        "sv": "<p>Målet för utbildningsdelen är att stärka den studerandes kunnande som anknyter till läskunnighet, numeriska färdigheter och digitala färdigheter. Utbildningsdelen ger också möjlighet att höja vitsord från den grundläggande utbildningens lärokurs i en särskild examen. Centralt i studierna är att stärka textkompetensen inom olika ämnesområden samt studiefärdigheterna.</p><p>&nbsp;</p>"
+      },
+      "tavoitteenKuvaus": null,
+      "tavoitteet": [
+        {
+          "_id": "7787534",
+          "_tunniste": "4d2bf16b-5619-4699-8ca1-5e8c7a7186b5",
+          "fi": "saavuttaa sellaiset perustaidot (luku-, numero- ja digitaidot), joiden avulla hän pystyy opiskelemaan toisen asteen opinnoissa",
+          "sv": "uppnår sådana grundläggande färdigheter (läskunnighet, numeriska färdigheter och digitala färdigheter) som hen behöver för studier på andra stadiet"
+        },
+        {
+          "_id": "7787535",
+          "_tunniste": "816fc73b-de21-45df-a424-35a75b8c5f0e",
+          "fi": "saavuttaa sellaisen opiskelu/tutkintokielen taidon, että se mahdollistaa toisen asteen koulutukseen osallistumiseen",
+          "sv": "uppnår sådana kunskaper i undervisningsspråket som gör det möjligt att delta i utbildning på andra stadiet"
+        },
+        {
+          "_id": "7787536",
+          "_tunniste": "7da88a54-9f1d-4b4c-93cf-7a2da1958b00",
+          "fi": "kehittää eri tiedonalojen kielen osaamista ja käyttää opiskeltavaan aineeseen sopivia opiskelumenetelmiä",
+          "sv": "utvecklar sina kunskaper i språket som är specifikt inom olika kunskapsområden och tillämpar studiemetoder som lämpar sig för ämnet som hen studerar"
+        },
+        {
+          "_id": "7787537",
+          "_tunniste": "b6a121f9-5496-4bce-99a2-c42e45221bb2",
+          "fi": "korottaa perusopetuksen oppimäärän arvosanoja erityisessä tutkinnossa, mikäli se on toiselle asteelle hakeutumisen näkökulmasta tarpeellista",
+          "sv": "höjer vitsord från den grundläggande utbildningen i en särskild examen, om det behövs för att kunna söka till studier på andra stadiet."
+        }
+      ],
+      "keskeinenSisalto": {
+        "_id": "7787951",
+        "_tunniste": "34f1ca38-b4ce-467c-97ac-17b6e25bba55",
+        "fi": "<p>Opiskelija vahvistaa valmiuksiaan hakeutua toisen asteen koulutukseen ja suoriutua siitä tavoitteidensa mukaisesti. Perusopetuksen tai aikuisten perusopetuksen opetussuunnitelman perusteissa määritellään ainekohtaiset sisällöt ja tavoitteet, jotka opiskelija tarvitsee selviytyäkseen toisen asteen opinnoista.</p><p>Opetuksen lähtökohtana ovat perusopetuksen tai aikuisten perusopetuksen opetussuunnitelman perusteissa määritellyt oppiaineiden tavoitteet ja sisällöt.</p><p>Kaikessa opetuksessa tuetaan opiskelu/tutkintokielen taitoja, opetettavan tiedonalan tekstitaitoja, oppimistaitoja ja digitaalisia taitoja. Kun opiskelija korottaa perusopetuksen päättöarvosanoja erityisessä tutkinnossa, opetuksen sisällöt, tavoitteet ja arviointi toteutuvat perusopetuksen opetussuunnitelman perusteiden ja lainsäädännön mukaisesti.</p>",
+        "sv": "<p>Den studerande stärker sina färdigheter att söka till utbildning på andra stadiet och att avlägga utbildningen i enlighet med sina mål. I grunderna för läroplanen för den grundläggande utbildningen eller i grunderna för läroplanen för den grundläggande utbildningen för vuxna beskrivs för respektive läroämne de innehåll och mål som den studerande behöver för att kunna avlägga studier på andra stadiet.</p><p>Undervisningen ska utgå från målen och innehållen som fastställts i grunderna för läroplanen för den grundläggande utbildningen eller i grunderna för läroplanen för den grundläggande utbildningen för vuxna.</p><p>Den studerandes kunskaper i undervisningsspråket, textkompetens i ämnesområdet som undervisas, inlärningsfärdigheter samt digitala färdigheter ska stödjas i all undervisning. När en studerande höjer slutvitsord från den grundläggande utbildningen i en särskild examen ska undervisningens innehåll och mål samt bedömningen genomföras i enlighet med grunderna för läroplanen för den grundläggande utbildningen och lagstiftningen för den grundläggande utbildningen. </p>"
+      },
+      "laajaAlaisenOsaamisenKuvaus": {
+        "_id": "7787560",
+        "_tunniste": "64cee246-ec3f-4d1c-bae5-8db30dcd8933",
+        "fi": "<p>Koulutuksen järjestäjä kuvaa laaja-alaisen osaamisen osa-alueet suunnitelmassaan koulutuksen toteuttamiseksi. Niiden tulee perustua tutkintokoulutukseen valmentavan koulutuksen perusteiden &nbsp;laaja-alaiseen&nbsp;osaamisen&nbsp;osa-alueiden&nbsp;kuvauksiin.&nbsp;</p>",
+        "sv": "<p>Utbildningsanordnaren ska i sin plan för genomförandet av utbildningen beskriva delområdena som ingår i den mångsidiga kompetensen. De ska basera sig på beskrivningarna av mångsidig kompetens som ingår i grunderna för utbildningen som handleder för examensutbildning.</p>"
+      },
+      "arvioinninKuvaus": {
+        "_id": "7787538",
+        "_tunniste": "91d6523c-7339-4cca-aa44-14d2f7e4e078",
+        "fi": "<p>Koulutuksen osa katsotaan hyväksytysti suoritetuksi, kun opiskelija on saavuttanut hänelle henkilökohtaisessa opiskelusuunnitelmassa asetetut tavoitteet. Osaaminen arvioidaan asteikolla hyväksytty/hylätty.</p><p>Jos opiskelija korottaa perusopetuksen arvosanoja, arvioidaan ne perusopetuksen lainsäädännön ja perusopetuksen opetussuunnitelmassa määriteltyjen päättöarvioinnin kriteerien mukaisesti (<a href=\"https://www.finlex.fi/fi/laki/ajantasa/1998/19980628#L8P38\" target=\"_blank\" rel=\"noopener noreferrer nofollow\">perusopetuslain 628/1998, 38 §:n mukaisessa erityisessä tutkinnossa</a>). Vastuu arvioinnista on sillä koulutuksen järjestäjällä, jolla on perusopetuksen järjestämislupa.  Arvioinnista päättävät perusopetuslainsäädännön mukaisesti perusopetuksen&nbsp;opettajat.</p>",
+        "sv": "<p>Utbildningsdelen anses vara godkänd då den studerande har uppnått målen som fastställts i den personliga studieplanen. Kunnandet bedöms med skalan godkänd/underkänd.</p><p>Om en studerande höjer vitsord från den grundläggande utbildningen ska de bedömas i enlighet med lagstiftningen för den grundläggande utbildningen och de bedömningskriterier för slutbedömningen som fastställts i grunderna för läroplanen för den grundläggande utbildningen (i en särskild examen som avses i 38 § i lagen om grundläggande utbildning 628/1998). Den utbildningsanordnare som har tillstånd att ordna grundläggande utbildning ansvarar för bedömningen. Beslut om bedömningen fattas i enlighet med lagstiftningen som berör den grundläggande utbildningen av lärarna inom den grundläggande utbildningen.</p>"
+      },
+      "viiteId": 7535292,
+      "osanTyyppi": "koulutuksenosa"
+    },
+    {
+      "id": 7535563,
+      "luotu": 1610693860652,
+      "muokattu": 1687165479144,
+      "muokkaaja": "1.2.246.562.24.35128937253",
+      "nimi": {
+        "_id": "8963169",
+        "_tunniste": "6ac07c09-37bf-40d5-b911-93e9cb962cf4",
+        "en": "Ammatillisen koulutuksen opinnot ja niihin valmentautuminen",
+        "fi": "Ammatillisen koulutuksen opinnot ja niihin valmentautuminen",
+        "sv": "Studier inom yrkesutbildning och studier som förbereder för dem"
+      },
+      "tila": "luonnos",
+      "nimiKoodi": {
+        "id": 8332162,
+        "nimi": {
+          "en": "Ammatillisen koulutuksen opinnot ja niihin valmentautuminen",
+          "fi": "Ammatillisen koulutuksen opinnot ja niihin valmentautuminen",
+          "sv": "Studier inom yrkesutbildning och studier som förbereder för dem"
+        },
+        "arvo": "105",
+        "uri": "koulutuksenosattuva_105",
+        "koodisto": "koulutuksenosattuva",
+        "versio": 1
+      },
+      "laajuusMinimi": 0,
+      "laajuusMaksimi": 30,
+      "koulutusOsanKoulutustyyppi": "ammatillinenkoulutus",
+      "koulutusOsanTyyppi": "valinnainen",
+      "kuvaus": {
+        "_id": "7788449",
+        "_tunniste": "df883783-56af-40f6-bb43-e10c8f9efa60",
+        "fi": "<p>Koulutuksen osa sisältää ammatillisia perustutkintojen tutkinnon osia sekä tutkinnon osia pienempiä kokonaisuuksia tai yhteisten tutkinnon osien osa-alueita opiskelijan valmiuksien mukaisesti. On tärkeää, että opiskelija saa opiskeluun riittävästi tukea sekä valmentavassa koulutuksessa että suorittaessaan ammatillisia opintoja valmentavan koulutuksen aikana.&nbsp;</p><p>Opiskelija vahvistaa tutkintokielen hallintaa, opiskelutaitoja sekä tieto- ja viestintätekniikan käyttämistä osana opiskelua. Opiskelija harjoittelee ammatillisessa koulutuksessa tarvittavaa monilukutaitoa: erilaisten tekstien lukemista ja tulkintaa sekä erilaisten tekstien tuottamista. Tavoitteena on, että opiskelija saavuttaa riittävät tiedot ja taidot ammatilliseen opiskeluun sekä vahvistaa erityisesti ammatillisessa koulutuksessa tarvittavaa kielitaitoa.</p><p>Opiskelija tutustuu ammatilliseen koulutukseen ja sen vaatimuksiin. Opiskelija voi suorittaa omien tavoitteidensa, valmiuksiensa ja kiinnostuksensa mukaan tutkinnon osia sekä pienempiä kokonaisuuksia tai yhteisten tukinnon osien osa-alueita. Valmentavan koulutuksen aikana opiskelija voi käyttää näiden suorittamiseen enemmän aikaa kuin varsinaisessa ammatillisessa koulutuksessa.</p><p></p>",
+        "sv": "<p>Utbildningsdelen ska innehålla examensdelar från yrkesinriktade grundexamina och mindre helheter av examensdelar eller delområden av gemensamma examensdelar, utgående från den studerandes färdigheter. Det är viktigt att den studerande får tillräckligt med stöd för studierna, både i den handledande utbildningen och då hen avlägger yrkesinriktade studier under den handledande utbildningens gång.&nbsp;&nbsp;</p><p>Den studerande ska stärka sina kunskaper i undervisningsspråket, sina studiefärdigheter samt sin förmåga att använda informations- och kommunikationsteknik som en del av studierna. Den studerande övar på multilitteracitet som behövs inom yrkesutbildningen genom att läsa och tolka samt producera olika typer av texter. Målet är att den studerande uppnår tillräckliga kunskaper och färdigheter för yrkesinriktade studier. Målet är i synnerhet att den studerande stärker de språkfärdigheter som behövs inom yrkesutbildningen.&nbsp;</p><p>Den studerande bekantar sig med yrkesutbildningen och de krav som ställs. Den studerande kan utifrån sina egna mål, färdigheter och intressen avlägga examensdelar och mindre helheter eller delområden av gemensamma examensdelar. Under den handledande utbildningen kan den studerande använda mer tid för att avlägga de här studierna än vad som är möjligt i den egentliga yrkesutbildningen.</p>"
+      },
+      "tavoitteenKuvaus": null,
+      "tavoitteet": [
+        {
+          "_id": "7787610",
+          "_tunniste": "1b040858-0673-4776-bf6e-499fa7076fe6",
+          "fi": "saavuttaa riittävän taidon ammatillisten opintojen opetuskielessä ja eri tiedonalojen tekstitaidoissa (sanavarasto, luetun ymmärtämis- ja tulkintataidot sekä tuottamistaidot)",
+          "sv": "uppnår tillräckliga kunskaper i undervisningsspråket inom de yrkesinriktade studierna samt tillräcklig textkompetens inom olika ämnesområden (ordförråd och förmåga att förstå, tolka och producera text)"
+        },
+        {
+          "_id": "7787611",
+          "_tunniste": "0b5383f5-05e7-431a-8782-1fe00229fd75",
+          "fi": "osaa käyttää alakohtaiseen koulutukseen sopivia opiskelumenetelmiä ja tieto- ja viestintätekniikkaa opiskelun apuna",
+          "sv": "kan använda studiemetoder som lämpar sig för utbildning inom en viss bransch och informations- och kommunikationsteknik som stöd i studierna"
+        },
+        {
+          "_id": "7787612",
+          "_tunniste": "8e821756-c527-484f-80df-fc6fce32ecd8",
+          "fi": "tutustuu ammatilliseen koulutukseen, sen käytäntöihin sekä arviointimenetelmiin",
+          "sv": "bekantar sig med yrkesutbildningen, verksamheten och bedömningsmetoderna"
+        },
+        {
+          "_id": "7787613",
+          "_tunniste": "39736740-8cc1-406e-8520-00f461e354ad",
+          "fi": "osaa arvioida ammatillisen koulutuksen sopivuuden itselleen",
+          "sv": "kan bedöma hur lämplig yrkesutbildningen är som utbildningsform för hen själv"
+        },
+        {
+          "_id": "7787614",
+          "_tunniste": "cadb0bde-02a2-4fed-95a8-df89a1bdf091",
+          "fi": "suorittaa itselleen sopivan ammatillisen koulutuksen opintoja (ammatilliset tutkinnon osat tai yhteiset tutkinnon osat).",
+          "sv": "avlägger sådana studier inom yrkesutbildningen (yrkesinriktade examensdelar eller gemensamma examensdelar) som är lämpliga för hen själv."
+        }
+      ],
+      "keskeinenSisalto": {
+        "_id": "7787616",
+        "_tunniste": "7d62598c-2cfd-4e2f-9e79-5aba2f631ad6",
+        "fi": "<p>Opiskelija tutustuu ammatilliseen koulutukseen, ja sen asettamiin vaatimuksiin. Opiskelija voi valita omien tavoitteidensa, valmiuksiensa ja kiinnostuksensa mukaan ammatillisia opintoja, joita hän suorittaa osana valmentavaa koulutusta. Ammatillisten opintojen rinnalla opiskelija vahvistaa tutkintokielen hallintaa, opiskelutaitoja sekä tieto- ja viestintätekniikan käyttämistä osana opiskelua. Osana tutkintokielen vahvistamista opiskelija harjoittelee ammatillisessa koulutuksessa tarvittavaa monilukutaitoa: erilaisten tekstien lukemista ja tulkintaa sekä erilaisten tekstien tuottamista.&nbsp;</p><p>Tutkinnon perusteissa määritellään tutkinnon osien ammattitaitovaatimukset ja osaamistavoitteet. Opiskelija voi suorittaa valmentavan koulutuksen aikana yhteisiä tutkinnon osia tai osa-alueita, ammatillisen tutkinnon osia sekä tutkinnon osia pienempiä kokonaisuuksia omien valmiuksiensa ja kiinnostuksensa mukaan.</p>",
+        "sv": "<p>Den studerande bekantar sig med yrkesutbildningen och de krav som ställs. Den studerande väljer utifrån sina egna mål, färdigheter och intressen yrkesinriktade studier som hen avlägger som en del av den handledande utbildningen. Den studerande stärker parallellt med de yrkesinriktade studierna sina kunskaper i undervisningsspråket, sina studiefärdigheter samt sin förmåga att använda informations- och kommunikationsteknik som en del av studierna. För att stärka kunskaperna i undervisningsspråket övar den studerande på multilitteracitet som behövs inom yrkesutbildningen genom att läsa och tolka samt producera olika typer av texter.&nbsp;&nbsp;</p><p>I examensgrunderna fastställs kraven på yrkesskicklighet och målen för kunnandet inom de olika examensdelarna. Den studerande kan utifrån sina färdigheter och intressen välja att avlägga yrkesinriktade examensdelar eller mindre helheter av examensdelar samt gemensamma examensdelar eller delområden av dem.</p>"
+      },
+      "laajaAlaisenOsaamisenKuvaus": {
+        "_id": "7787615",
+        "_tunniste": "74b433a7-9879-4a37-829b-6eee0147c987",
+        "fi": "<p>Koulutuksen järjestäjä kuvaa laaja-alaisen osaamisen osa-alueet suunnitelmassaan koulutuksen toteuttamiseksi. Niiden tulee perustua tutkintokoulutukseen valmentavan koulutuksen perusteiden laaja-alaiseen osaamisen&nbsp;osa-alueiden kuvauksiin.&nbsp;</p>",
+        "sv": "<p>Utbildningsanordnaren ska i sin plan för genomförandet av utbildningen beskriva delområdena som ingår i den mångsidiga kompetensen. De ska basera sig på beskrivningarna av mångsidig kompetens som ingår i grunderna för utbildningen som handleder för examensutbildning.</p>"
+      },
+      "arvioinninKuvaus": {
+        "_id": "7787617",
+        "_tunniste": "4ded2d00-8bd3-4653-a75f-56a67f0d6176",
+        "fi": "<p>Koulutuksen osa katsotaan hyväksytysti suoritetuksi, kun opiskelija on saavuttanut hänelle henkilökohtaisessa opiskelusuunnitelmassa asetetut tavoitteet. Osaaminen arvioidaan asteikolla hyväksytty/hylätty.</p><p>Jos opiskelija suorittaa ammatillisen tutkinnon osia, arvioidaan ne ammatillisen koulutuksen lainsäädännön ja tutkinnon perusteiden mukaisesti. Vastuu arvioinnista on sillä koulutuksen järjestäjällä, jolla on ammatillisen koulutuksen järjestämislupa. Arvioinnista <s>&nbsp;</s>päättävät ammatillisesta koulutuksesta annetussa lainsäädännössä tarkoitetut arvioijat.&nbsp;</p>",
+        "sv": "<p>Utbildningsdelen anses vara godkänd då den studerande har uppnått målen som fastställts i den personliga studieplanen. Kunnandet bedöms med skalan godkänd/underkänd.</p><p>Om den studerande avlägger yrkesinriktade examensdelar ska de bedömas i enlighet med yrkesutbildningens lagstiftning och examensgrunder. Den utbildningsanordnare som har tillstånd att ordna yrkesutbildning ansvarar för bedömningen. Beslut om bedömningen fattas i enlighet med lagstiftningen som berör yrkesutbildningen av lärarna inom yrkesutbildningen.</p>"
+      },
+      "viiteId": 7535294,
+      "osanTyyppi": "koulutuksenosa"
+    },
+    {
+      "id": 7535562,
+      "luotu": 1610693475421,
+      "muokattu": 1687165490682,
+      "muokkaaja": "1.2.246.562.24.35128937253",
+      "nimi": {
+        "_id": "8963300",
+        "_tunniste": "cbad4586-f472-4e57-851d-2df1f097feb4",
+        "en": "Lukiokoulutuksen opinnot ja niihin valmentautuminen",
+        "fi": "Lukiokoulutuksen opinnot ja niihin valmentautuminen",
+        "sv": "Studier inom gymnasieutbildning och studier som förbereder för dem"
+      },
+      "tila": "luonnos",
+      "nimiKoodi": {
+        "id": 8332161,
+        "nimi": {
+          "en": "Lukiokoulutuksen opinnot ja niihin valmentautuminen",
+          "fi": "Lukiokoulutuksen opinnot ja niihin valmentautuminen",
+          "sv": "Studier inom gymnasieutbildning och studier som förbereder för dem"
+        },
+        "arvo": "106",
+        "uri": "koulutuksenosattuva_106",
+        "koodisto": "koulutuksenosattuva",
+        "versio": 1
+      },
+      "laajuusMinimi": 0,
+      "laajuusMaksimi": 30,
+      "koulutusOsanKoulutustyyppi": "lukiokoulutus",
+      "koulutusOsanTyyppi": "valinnainen",
+      "kuvaus": {
+        "_id": "7787562",
+        "_tunniste": "02706a3f-b243-45a2-8271-3991fb6e81e7",
+        "fi": "<p>Koulutuksen osa sisältää lukiokoulutukseen valmentavaa koulutusta ja lukio-opintoja opiskelijan valmiuksien mukaisesti. Suorittaessaan lukio-opintoja opiskelija&nbsp;saa&nbsp;tukea&nbsp;opiskelutaitojen ja&nbsp;-valmiuksien kehittämiseen&nbsp;osana valmentavaa koulutusta.&nbsp;</p><p>Opiskelija vahvistaa opiskelukielen hallintaa, opiskelutaitoja sekä tieto- ja viestintätekniikan käyttämistä osana opiskelua. Opiskelija harjoittelee lukiossa tarvittavaa monilukutaitoa: erilaisten tekstien lukemista ja tulkintaa sekä erilaisten tekstien tuottamista. Tavoitteena on, että opiskelija saavuttaa riittävät tiedot ja taidot lukio-opiskeluun sekä vahvistaa erityisesti tiedonalojen kielen taitoaan eli eri oppiaineiden tekstitaitoja.</p><p>Opiskelija tutustuu lukiokoulutukseen ja sen vaatimuksiin. Opiskelija voi valita omien tavoitteidensa, valmiuksiensa ja kiinnostuksensa mukaan lukion opintojakson tai opintojaksoja, joita hän suorittaa osana valmentavaa koulutusta. Valmentavan koulutuksen aikana opiskelija voi käyttää näiden suorittamiseen enemmän aikaa kuin varsinaisessa lukiokoulutuksessa.</p>",
+        "sv": "<p>Utbildningsdelen ska innehålla utbildning som förbereder för gymnasieutbildning samt gymnasiestudier enligt den studerandes färdigheter. När en studerande avlägger gymnasiestudier ska hen som en del av den handledande utbildningen få stöd i att utveckla sina studiefärdigheter och sin studieförmåga.&nbsp;</p><p>Den studerande ska stärka sina kunskaper i undervisningsspråket, sina studiefärdigheter samt sin förmåga att använda informations- och kommunikationsteknik som en del av studierna. Den studerande övar på multilitteracitet som behövs i gymnasiet genom att läsa och tolka samt producera olika typer av texter. Målet är att den studerande uppnår tillräckliga kunskaper och färdigheter för gymnasiestudier. Målet är i synnerhet att hen stärker sina kunskaper i språket inom de olika ämnesområdena samt sin textkompetens inom olika läroämnen.&nbsp;</p><p>Den studerande bekantar sig med gymnasieutbildningen och de krav som ställs. Den studerande kan utifrån sina egna mål, färdigheter och intressen välja ett eller flera studieavsnitt i gymnasiet som hen avlägger som en del av den handledande utbildningen. Under den handledande utbildningen kan den studerande använda mer tid för att avlägga studieavsnitten än vad som är möjligt i den egentliga gymnasieutbildningen.</p>"
+      },
+      "tavoitteenKuvaus": null,
+      "tavoitteet": [
+        {
+          "_id": "7787563",
+          "_tunniste": "e024dd5e-25f1-4d5a-a997-bcf0b1881d87",
+          "fi": "saavuttaa riittävän taidon lukion opetuskielessä ja eri tiedonalojen tekstitaidoissa (sanavarasto, luetun ymmärtämis- ja tulkintataidot sekä tuottamistaidot)",
+          "sv": "uppnår tillräckliga kunskaper i gymnasiets undervisningsspråk och tillräcklig textkompetens inom olika ämnesområden (ordförråd, förmåga att förstå, tolka och producera text)"
+        },
+        {
+          "_id": "7787564",
+          "_tunniste": "f77cb423-a401-4e35-8b70-d6f2e5c87a13",
+          "fi": "osaa käyttää opiskeltavaan oppiaineeseen sopivia opiskelumenetelmiä ja tieto- ja viestintätekniikkaa opiskelun apuna",
+          "sv": "kan använda studiemetoder som är lämpliga för läroämnet hen studerar och kan använda informations- och kommunikationsteknik som stöd i studierna"
+        },
+        {
+          "_id": "7787565",
+          "_tunniste": "51c14fe0-f4e3-4a88-aeb4-3ad40fc844e5",
+          "fi": "tutustuu lukiokoulutukseen ja sen käytäntöihin sekä arviointimenetelmiin",
+          "sv": "bekantar sig med gymnasieutbildningen, verksamheten och bedömningsmetoderna"
+        },
+        {
+          "_id": "7787566",
+          "_tunniste": "6d98cf73-bde8-4d5e-a751-bee032f90406",
+          "fi": "osaa arvioida lukio-opintojen sopivuuden itselleen",
+          "sv": "kan bedöma hur lämpliga gymnasiestudier är för hen själv"
+        },
+        {
+          "_id": "7787567",
+          "_tunniste": "61c7d3e9-7a93-4838-b1a8-15207cb4a71a",
+          "fi": "suorittaa kiinnostusten ja tavoitteidensa mukaisia lukion opintoja",
+          "sv": "avlägger gymnasiestudier som motsvarar hens egna intressen och mål."
+        }
+      ],
+      "keskeinenSisalto": {
+        "_id": "7787879",
+        "_tunniste": "869fc93f-332c-4a03-ab5a-72cde9ccb2e1",
+        "fi": "<p>Lukiossa vaadittavia taitoja ennakoidaan keskittymällä monilukutaitoon ja siihen liittyen eri oppiaineiden tekstitaitoihin. Opiskelukielen taitoja varmistetaan kaikilla osa-alueilla. Tähän kiinnitetään erityistä huomiota silloin, kun opiskelija opiskelee suomi/ruotsi toisena kielenä -oppimäärää.</p><p>Lukiokoulutuksen opetussuunnitelman perusteissa määritellään ainekohtaiset sisällöt ja tavoitteet. Opiskelija voi suorittaa sekä lukion pakollisia että valinnaisia opintojaksoja omien valmiuksiensa ja kiinnostuksensa mukaan.</p>",
+        "sv": "<p>Man ska beakta vilka färdigheter som krävs i gymnasiet genom att fokusera på färdigheter i multilitteracitet och därtill hörande textkompetens inom olika läroämnen. Den studerandes kunskaper i undervisningsspråket ska säkerställas inom alla delområden. Särskild uppmärksamhet ska fästas vid detta då den studerande studerar enligt lärokursen svenska/finska som andraspråk.&nbsp;</p><p>I grunderna för gymnasiets läroplan definieras innehållen i och målen för respektive läroämne. Den studerande kan utifrån sina egna färdigheter och intressen avlägga både obligatoriska och valfria studier och studieavsnitt i gymnasiet.&nbsp;</p>"
+      },
+      "laajaAlaisenOsaamisenKuvaus": {
+        "_id": "7787878",
+        "_tunniste": "17df16b6-791b-4295-9e48-ef057c8890c7",
+        "fi": "<p>Koulutuksen järjestäjä kuvaa laaja-alaisen osaamisen osa-alueet suunnitelmassaan koulutuksen toteuttamiseksi. Niiden tulee perustua tutkintokoulutukseen valmentavan koulutuksen perusteiden laaja-alaiseen osaamisen&nbsp;osa-alueiden kuvauksiin.&nbsp;</p>",
+        "sv": "<p>Utbildningsanordnaren ska i sin plan för genomförandet av utbildningen beskriva delområdena som ingår i den mångsidiga kompetensen. De ska basera sig på beskrivningarna av mångsidig kompetens som ingår i grunderna för utbildningen som handleder för examensutbildning.&nbsp;</p>"
+      },
+      "arvioinninKuvaus": {
+        "_id": "7787950",
+        "_tunniste": "418dadc2-7ddf-4b68-9ba7-3c26ae387fe9",
+        "fi": "<p>Koulutuksen osa katsotaan hyväksytysti suoritetuksi, kun opiskelija on saavuttanut hänelle henkilökohtaisessa opiskelusuunnitelmassa asetetut tavoitteet. Osaaminen arvioidaan asteikolla hyväksytty/hylätty.</p><p>Jos opiskelija suorittaa lukiokoulutuksen opintoja, arvioidaan ne lukiokoulutuksen lainsäädännön ja opetussuunnitelman perusteiden mukaisesti. Vastuu arvioinnista on sillä koulutuksen järjestäjällä, jolla on lukiokoulutuksen järjestämislupa. Arvioinnista päättävät lukiolainsäädännön mukaisesti lukiokoulutuksen&nbsp;opettajat.</p>",
+        "sv": "<p>Utbildningsdelen anses vara godkänd då den studerande har uppnått målen som fastställts i den personliga studieplanen. Kunnandet bedöms med skalan godkänd/underkänd.</p><p>Om den studerande avlägger studier inom gymnasieutbildning ska de bedömas i enlighet med lagstiftningen för gymnasieutbildning och grunderna för gymnasiets läroplan. Den utbildningsanordnare som har tillstånd att ordna gymnasieutbildning ansvarar för bedömningen. Beslut om bedömningen fattas i enlighet med lagstiftningen som berör gymnasieutbildningen av lärarna inom gymnasieutbildningen.</p>"
+      },
+      "viiteId": 7535293,
+      "osanTyyppi": "koulutuksenosa"
+    },
+    {
+      "id": 7535565,
+      "luotu": 1610694380075,
+      "muokattu": 1687165500625,
+      "muokkaaja": "1.2.246.562.24.35128937253",
+      "nimi": {
+        "_id": "8963301",
+        "_tunniste": "4b8d1199-4ac5-4b0b-a6db-21587ba191c0",
+        "fi": "Arjen taidot ja yhteiskunnallinen osallisuus",
+        "sv": "Vardagskompetens och delaktighet i samhället"
+      },
+      "tila": "luonnos",
+      "nimiKoodi": {
+        "id": 8332164,
+        "nimi": {
+          "fi": "Arjen taidot ja yhteiskunnallinen osallisuus",
+          "sv": "Vardagskompetens och delaktighet i samhället"
+        },
+        "arvo": "103",
+        "uri": "koulutuksenosattuva_103",
+        "koodisto": "koulutuksenosattuva",
+        "versio": 1
+      },
+      "laajuusMinimi": 0,
+      "laajuusMaksimi": 20,
+      "koulutusOsanKoulutustyyppi": "tutkintokoulutukseenvalmentava",
+      "koulutusOsanTyyppi": "valinnainen",
+      "kuvaus": {
+        "_id": "7787770",
+        "_tunniste": "c7168b85-431b-4fcc-939a-2564f9e02707",
+        "fi": "<p>Koulutuksen osassa painottuvat opiskelijan arjessa toimimisen ja yhteiskunnallisen osallisuuden taitojen vahvistaminen. Arjen toimintakyvyn vahvistaminen ja osallisuuden edistäminen nähdään opiskelijan terveyttä ja hyvinvointia sekä osallisuutta edistävänä. Tavoitteena on myös&nbsp;vahvistaa arjen&nbsp;taitojen&nbsp;ja yhteiskunnallisen osallisuuden edellyttämiä tekstitaitoja.&nbsp;</p>",
+        "sv": "<p>I utbildningsdelen ska tyngdpunkten ligga på att stärka den studerandes färdigheter i vardagen och förmåga att vara delaktig i samhället. Att stärka förmågan att fungera i vardagen och främja delaktigheten i samhället ses som åtgärder som främjar den studerandes hälsa och välbefinnande samt delaktighet. Målet är också att stärka den textkompetens som behövs för vardagsfärdigheter och för att delta i samhället.</p><p>&nbsp;</p>"
+      },
+      "tavoitteenKuvaus": null,
+      "tavoitteet": [
+        {
+          "_id": "7787793",
+          "_tunniste": "019c88d5-95ea-488b-9a82-39d8ca6d2d34",
+          "fi": "arvioi ja vahvistaa toimintakykyään sekä hyvinvointiaan",
+          "sv": "utvärderar och stärker sin funktionsförmåga och sitt välbefinnande"
+        },
+        {
+          "_id": "7787794",
+          "_tunniste": "03f16634-9ad5-436c-834c-7ebb3386802f",
+          "fi": "tuntee mielen hyvinvoinnin perusteet ja tapoja vahvistaa sitä",
+          "sv": "känner till vad det psykiska välbefinnandet bygger på och på vilka sätt man kan stärka det"
+        },
+        {
+          "_id": "7787795",
+          "_tunniste": "78f905c1-11a7-4cc3-83c6-c6b75abaaee2",
+          "fi": "kehittää kotitalousosaamistaan",
+          "sv": "utvecklar sin hushållskunskap"
+        },
+        {
+          "_id": "7787796",
+          "_tunniste": "3f9410d4-b435-4953-a4eb-60c11fea6839",
+          "fi": "vahvistaa arjen ja yhteiskunnallisen osallisuuden edellyttämiä tekstitaitoja ja harjaantuu kielenkäyttäjänä niihin liittyvissä tilanteissa",
+          "sv": "stärker den textkompetens som förutsätts i vardagen och för att vara delaktig i samhället och övar sig på att använda språket som behövs i dessa situationer"
+        },
+        {
+          "_id": "7787797",
+          "_tunniste": "10700db3-2f57-49f6-8046-8a35d6b30aa6",
+          "fi": "perehtyy yhteiskunnan tarjoamiin palveluihin ja osaa hakea tarvitsemiaan palveluja",
+          "sv": "lär känna vilka tjänster som erbjuds i samhället och kan söka de tjänster som hen behöver"
+        },
+        {
+          "_id": "7787798",
+          "_tunniste": "4ad57dbf-2565-446d-a244-33604841b906",
+          "fi": "tuntee yhteiskunnallisen vaikuttamisen tapoja ja toimintaa",
+          "sv": "känner till sätt och metoder med vilka man kan påverka i samhället"
+        },
+        {
+          "_id": "7787799",
+          "_tunniste": "12fdcb91-9d04-44d2-8ab7-54290f41ea44",
+          "fi": "hankkii tietoja ja taitoja taloudellisen päätöksentekonsa tueksi",
+          "sv": "inhämtar kunskaper och färdigheter som stöd för sina ekonomiska beslut"
+        },
+        {
+          "_id": "7787810",
+          "_tunniste": "4841ad21-e2da-4297-a6fc-9eb5d46cfe2c",
+          "fi": "suunnittelee ja tekee arkielämään liittyviä valintoja, päätöksiä ja hankintoja sekä pohtii itsenäisen asumisen mahdollisuuksia ja edellytyksiä",
+          "sv": "planerar och gör val samt fattar beslut i vardagen och reflekterar över möjligheterna och förutsättningarna för självständigt boende"
+        },
+        {
+          "_id": "7787811",
+          "_tunniste": "5a3683af-b58b-463a-ba43-3fa82594a0f9",
+          "fi": "tuntee turvalliset, vastuulliset ja kestävät toimintatavat opiskelu- ja asuinympäristössään",
+          "sv": "känner till hur man agerar på ett tryggt, ansvarsfull och hållbart sätt i studie- och boendemiljön"
+        },
+        {
+          "_id": "7787812",
+          "_tunniste": "e3d766a7-a1e3-442c-b4f9-84853932de09",
+          "fi": "tutustuu erilaisiin vapaa-ajanviettomahdollisuuksiin liikunnan, taiteen, kulttuurin tai muiden tapahtumien avulla",
+          "sv": "bekantar sig med olika fritidsaktiviteter med hjälp av motion, konst, kultur eller andra evenemang."
+        }
+      ],
+      "keskeinenSisalto": {
+        "_id": "7787816",
+        "_tunniste": "11b6c690-b7a3-4078-86c7-64b700d6bb23",
+        "fi": "<p>Opiskelija tunnistaa omaan hyvinvointiinsa liittyviä tekijöitä ja osaa vahvistaa omaa hyvinvointiaan arjessa. Hän tutustuu itselleen sopiviin yhteiskunnan tarjoamiin palveluihin.</p>",
+        "sv": "<p>Den studerande känner igen faktorer som hör samman med det egna välbefinnandet och kan främja sitt eget välbefinnande i vardagen. De ska basera sig på beskrivningarna av mångsidig kompetens som ingår i grunderna för utbildningen som handleder för examensutbildning.</p>"
+      },
+      "laajaAlaisenOsaamisenKuvaus": {
+        "_id": "7787870",
+        "_tunniste": "26d92aad-97e4-427f-b24f-1fea5fd2f950",
+        "fi": "<p>Koulutuksen järjestäjä kuvaa laaja-alaisen osaamisen osa-alueet suunnitelmassaan koulutuksen toteuttamiseksi. Niiden tulee perustua tutkintokoulutukseen valmentavan koulutuksen perusteiden laaja-alaiseen osaamisen&nbsp;osa-alueiden kuvauksiin. </p>",
+        "sv": "<p>Utbildningsanordnaren ska i sin plan för genomförandet av utbildningen beskriva delområdena som ingår i den mångsidiga kompetensen. De ska basera sig på den mångsidiga kompetens som definieras i grunderna för utbildningen som handleder för examensutbildning.&nbsp;</p>"
+      },
+      "arvioinninKuvaus": {
+        "_id": "7787818",
+        "_tunniste": "e33a11e5-ec0b-4dab-affd-f87232152335",
+        "fi": "<p>Koulutuksen osa katsotaan hyväksytysti suoritetuksi, kun opiskelija on saavuttanut hänelle henkilökohtaisessa opiskelusuunnitelmassa asetetut tavoitteet. Osaaminen arvioidaan asteikolla hyväksytty/hylätty. </p>",
+        "sv": "<p>Utbildningsdelen anses vara godkänd då den studerande har uppnått målen som fastställts i den personliga studieplanen. Kunnandet bedöms med skalan godkänd/underkänd.</p>"
+      },
+      "viiteId": 7535296,
+      "osanTyyppi": "koulutuksenosa"
+    },
+    {
+      "id": 7535564,
+      "luotu": 1610694142001,
+      "muokattu": 1687165509482,
+      "muokkaaja": "1.2.246.562.24.35128937253",
+      "nimi": {
+        "_id": "8963302",
+        "_tunniste": "9c4fc350-017d-4dd1-95c9-6c80eb4afc93",
+        "fi": "Työelämätaidot ja työelämässä tapahtuva oppiminen",
+        "sv": "Arbetslivsfärdigheter och lärande i arbetslivet"
+      },
+      "tila": "luonnos",
+      "nimiKoodi": {
+        "id": 8332163,
+        "nimi": {
+          "fi": "Työelämätaidot ja työelämässä tapahtuva oppiminen",
+          "sv": "Arbetslivsfärdigheter och lärande i arbetslivet"
+        },
+        "arvo": "102",
+        "uri": "koulutuksenosattuva_102",
+        "koodisto": "koulutuksenosattuva",
+        "versio": 1
+      },
+      "laajuusMinimi": 0,
+      "laajuusMaksimi": 20,
+      "koulutusOsanKoulutustyyppi": "tutkintokoulutukseenvalmentava",
+      "koulutusOsanTyyppi": "valinnainen",
+      "kuvaus": {
+        "_id": "7787682",
+        "_tunniste": "a570bd1a-56d5-43ad-89b1-8562c8c0fd89",
+        "fi": "<p>Koulutuksen osassa keskitytään keskeisiin työelämätaitoihin ja tuetaan työelämässä tapahtuvaa oppimista. Tavoitteena on vahvistaa opiskelijan oman toiminnan ohjaamista sekä viestintä-, vuorovaikutus- ja yhteistyötaitoja. Opiskelija tutustuu työelämässä tapahtuvaan koulutukseen.</p>",
+        "sv": "<p>Tyngdpunkten för utbildningsdelen ska ligga på färdigheter som är centrala i arbetslivet och på att stödja lärande på arbetsplatsen. Målet är att stärka den studerandes förmåga till självstyrning samt hens färdigheter i kommunikation, interaktion och samarbete. Den studerande bekantar sig med lärande i arbetslivet.</p>"
+      },
+      "tavoitteenKuvaus": null,
+      "tavoitteet": [
+        {
+          "_id": "7788126",
+          "_tunniste": "48a39b1a-2bb1-4c04-b68a-f6af4a404116",
+          "fi": "tuntee työnhaun prosessin",
+          "sv": "känner till processen att söka arbete"
+        },
+        {
+          "_id": "7788127",
+          "_tunniste": "36b19daf-270b-493f-b261-f999eaf37751",
+          "fi": "tutustuu työpaikkoihin oppimisympäristöinä",
+          "sv": "bekantar sig med arbetsplatser som lärmiljöer"
+        },
+        {
+          "_id": "7788128",
+          "_tunniste": "b9b44b64-81f8-4842-b31f-18d8aa047d31",
+          "fi": "tuntee työelämän ja yrittäjyyden keskeiset periaatteet",
+          "sv": "känner till de centrala principerna som berör arbetsliv och företagsamhet"
+        },
+        {
+          "_id": "7788129",
+          "_tunniste": "b3f03e63-1907-4900-8628-25c0784b3559",
+          "fi": "osaa toimia työyhteisön jäsenenä työpaikalla",
+          "sv": "kan fungera som en medlem i arbetsgemenskapen på arbetsplatsen"
+        },
+        {
+          "_id": "7788180",
+          "_tunniste": "0a09e336-8190-4ba2-a28b-9a4b30fe3eeb",
+          "fi": "osaa ajankäytön suunnittelua ja hallintaa",
+          "sv": "kan planera och hantera sin tidsanvändning"
+        },
+        {
+          "_id": "7788181",
+          "_tunniste": "fa5879b1-2220-45ca-83bc-7ca6ee98539d",
+          "fi": "tuntee omat oikeutensa ja velvollisuutensa työpaikalla",
+          "sv": "känner till sina egna rättigheter och skyldigheter på arbetsplatsen"
+        },
+        {
+          "_id": "7788182",
+          "_tunniste": "16f009f0-ba54-4958-9d66-4a8a0adf2e2a",
+          "fi": "tuntee mahdollisuutensa kansainvälisyysosaamisen kehittämiseen ja osallistuu mahdollisuuksien mukaan kansainväliseen toimintaan",
+          "sv": "känner till sina möjligheter att utveckla sin internationella kompetens och deltar i mån av möjlighet i internationell verksamhet"
+        },
+        {
+          "_id": "7788183",
+          "_tunniste": "d951c53d-9521-4df3-89a2-eddcf34916a3",
+          "fi": "tutustuu yleisimpiin työpaikalla käytössä oleviin tietokoneohjelmiin ja työpaikan vuorovaikutustilanteiden kieleen",
+          "sv": "bekantar sig med de vanligaste datorprogrammen som används på en arbetsplats och med språket som behövs för att kommunicera på arbetsplatsen"
+        },
+        {
+          "_id": "7788184",
+          "_tunniste": "f3816af5-62c4-4b45-b514-748ac0292e37",
+          "fi": "tiedostaa tulevaisuuden haasteet ja työelämän muutokset",
+          "sv": "är medveten om framtidens utmaningar och förändringar i arbetslivet"
+        }
+      ],
+      "keskeinenSisalto": {
+        "_id": "7787726",
+        "_tunniste": "75e2efc6-bb8c-4fcf-98e7-91be53d8091d",
+        "fi": "<ul><li><p>työn hakeminen; sopivan työpaikan löytäminen, työhakemuksen tekeminen, työhaastattelussa toimiminen</p></li><li><p>työelämän pelisäännöt</p></li><li><p>osaamiskortit (esim. hygieniapassi, työturvallisuuskortti)</p></li><li><p>yrittäjyyden perusteet</p></li><li><p>työelämään tutustuminen / työelämässä tapahtuva oppiminen</p></li></ul>",
+        "sv": "<ul><li><p>Hur man söker arbete; att hitta en lämplig arbetsplats, göra en arbetsansökan, hur man fungerar under en arbetsintervju</p></li><li><p>Spelregler i arbetslivet</p></li><li><p>Kompetenskort (till exempel hygienpass, arbetssäkerhetskort)</p></li><li><p>Grunderna för företagsamhet</p></li><li><p>Den studerande bekantar sig med arbetslivet / lärande som sker i arbetslivet</p></li></ul>"
+      },
+      "laajaAlaisenOsaamisenKuvaus": {
+        "_id": "7787724",
+        "_tunniste": "a0b0288c-9386-48d7-b00d-19caf61b2476",
+        "fi": "<p>Koulutuksen järjestäjä kuvaa laaja-alaisen osaamisen osa-alueet suunnitelmassaan koulutuksen toteuttamiseksi. Niiden tulee perustua tutkintokoulutukseen valmentavan koulutuksen perusteiden laaja-alaiseen osaamisen&nbsp;osa-alueiden kuvauksiin. </p>",
+        "sv": "<p>Utbildningsanordnaren ska i sin plan för genomförandet av utbildningen beskriva delområdena som ingår i den mångsidiga kompetensen. De ska basera sig på beskrivningarna av mångsidig kompetens som ingår i grunderna för utbildningen som handleder för examensutbildning.</p><p>&nbsp;</p>"
+      },
+      "arvioinninKuvaus": {
+        "_id": "7787728",
+        "_tunniste": "cf747681-d8bd-4f92-8d70-a91dc533145f",
+        "fi": "<p>Koulutuksen osa katsotaan hyväksytysti suoritetuksi, kun opiskelija on saavuttanut hänelle henkilökohtaisessa opiskelusuunnitelmassa asetetut tavoitteet. Osaaminen arvioidaan asteikolla hyväksytty/hylätty. </p>",
+        "sv": "<p>Utbildningsdelen anses vara godkänd då den studerande har uppnått målen som fastställts i den personliga studieplanen. Kunnandet bedöms med skalan godkänd/underkänd.</p><p>&nbsp;</p>"
+      },
+      "viiteId": 7535295,
+      "osanTyyppi": "koulutuksenosa"
+    },
+    {
+      "id": 7535567,
+      "luotu": 1610694845009,
+      "muokattu": 1687165518785,
+      "muokkaaja": "1.2.246.562.24.35128937253",
+      "nimi": {
+        "_id": "8963303",
+        "_tunniste": "ec2a7402-451a-4d9c-a29e-121234079a20",
+        "fi": "Valinnaiset opinnot",
+        "sv": "Valbara utbildningsdelar"
+      },
+      "tila": "luonnos",
+      "nimiKoodi": {
+        "id": 8332165,
+        "nimi": {
+          "fi": "Valinnaiset opinnot",
+          "sv": "Valbara utbildningsdelar"
+        },
+        "arvo": "104",
+        "uri": "koulutuksenosattuva_104",
+        "koodisto": "koulutuksenosattuva",
+        "versio": 1
+      },
+      "laajuusMinimi": 0,
+      "laajuusMaksimi": 10,
+      "koulutusOsanKoulutustyyppi": "tutkintokoulutukseenvalmentava",
+      "koulutusOsanTyyppi": "valinnainen",
+      "kuvaus": {
+        "_id": "7787872",
+        "_tunniste": "f2d96386-212f-4a39-b941-0a1e97baf019",
+        "fi": "<p>Opiskelija voi henkilökohtaisen opiskelusuunnitelmansa mukaisesti suorittaa valinnaisia koulutuksen osia omien yksilöllisten tarpeiden, kiinnostuksen ja valmiuksien mukaan koulutuksen järjestäjän paikallisesta tarjonnasta ja/tai muusta (alueellisesta tai valtakunnallisesta) tarjonnasta. Valinnaiset koulutuksen osat voivat koostua yhdestä tai useammasta osasta. Opiskelijoille, joiden äidinkieli&nbsp;on muu kuin opiskelukieli, voidaan järjestää oman äidinkielen opetusta. Valinnaiset opinnot voivat sisältää myös esimerkiksi järjestöissä tehtävää vapaaehtoistyötä ja siihen liittyviä kursseja.</p>",
+        "sv": "<p>Den studerande kan i enlighet med sin personliga studieplan och utifrån sina egna individuella behov, intressen och färdigheter avlägga valbara utbildningsdelar ur utbildningsanordnarens lokala utbud och/eller det övriga regionala eller nationella utbudet. De valbara utbildningsdelarna kan bestå av en eller flera delar. För studerande vars modersmål är något annat språk än studiespråket kan man ordna undervisning i det egna modersmålet. De valbara studierna kan också innehålla till exempel frivilligarbete inom organisationer och därtill hörande kurser.</p>"
+      },
+      "tavoitteenKuvaus": null,
+      "tavoitteet": [],
+      "keskeinenSisalto": null,
+      "laajaAlaisenOsaamisenKuvaus": {
+        "_id": "7787874",
+        "_tunniste": "b1f02322-8647-4771-8642-6d938106cdf9",
+        "fi": "<p>Koulutuksen järjestäjä kuvaa laaja-alaisen osaamisen osa-alueet suunnitelmassaan koulutuksen toteuttamiseksi. Niiden tulee perustua tutkintokoulutukseen valmentavan koulutuksen perusteiden laaja-alaiseen osaamisen&nbsp;osa-alueiden kuvauksiin.&nbsp;</p>",
+        "sv": "<p>Utbildningsanordnaren ska i sin plan för genomförandet av utbildningen beskriva delområdena som ingår i den mångsidiga kompetensen. De ska basera sig på den mångsidiga kompetens som definieras i grunderna för utbildningen som handleder för examensutbildning.</p>"
+      },
+      "arvioinninKuvaus": {
+        "_id": "7787876",
+        "_tunniste": "0d56bd73-dce8-4d5a-b821-cc17a8ec11e3",
+        "fi": "<p>Koulutuksen osa katsotaan hyväksytysti suoritetuksi, kun opiskelija on saavuttanut hänelle henkilökohtaisessa opiskelusuunnitelmassa asetetut tavoitteet. Osaaminen arvioidaan asteikolla hyväksytty/hylätty. </p>",
+        "sv": "<p>Utbildningsdelen anses vara godkänd då den studerande har uppnått målen som fastställts i den personliga studieplanen. Kunnandet bedöms med skalan godkänd/underkänd.</p>"
+      },
+      "viiteId": 7535298,
+      "osanTyyppi": "koulutuksenosa"
     }
   ],
   "tutkintoonvalmentava": {
@@ -241,8 +945,8 @@
               "perusteenOsa": {
                 "id": 7535034,
                 "luotu": 1610688581209,
-                "muokattu": 1622812919335,
-                "muokkaaja": "1.2.246.562.24.72805652720",
+                "muokattu": 1685610132042,
+                "muokkaaja": "1.2.246.562.24.35128937253",
                 "nimi": {
                   "_id": "7786055",
                   "_tunniste": "5651c91c-2791-411d-b5c2-6ad20dcd37ec",
@@ -251,10 +955,10 @@
                 },
                 "tila": "luonnos",
                 "teksti": {
-                  "_id": "7787026",
+                  "_id": "8913955",
                   "_tunniste": "18b6c6b6-4f35-483e-a082-769eefa4d7c5",
-                  "fi": "<p>Koulutuksen laajuus on 38 viikkoa ja suoritusaika enintään yksi vuosi (<abbr data-viite=\"111620799224899\">1215/2020, 11 §</abbr>). Opiskelija voi osallistua valmentavaan koulutukseen&nbsp;myös lyhyemmän&nbsp;ajanjakson omien tavoitteidensa ja osaamistarpeidensa mukaisesti&nbsp;ja siirtyä joustavasti tutkintotavoitteiseen koulutukseen.&nbsp;&nbsp;</p><p>Opiskelijan opinnot rakentuvat kaikille tutkintokoulutukseen valmentavasta koulutukseen osallistuville yhteisestä Opinto- ja uraohjaus -koulutuksen osasta sekä vähintään kahdesta valinnaisesta koulutuksen osasta. Opiskelijan yksilöllinen opintopolku rakennetaan opiskelijan tavoitteiden ja osaamistarpeiden mukaisesti.</p><p>Kaikille yhteinen koulutuksen osa:</p><ul><li><p>Opiskelu- ja urasuunnittelutaidot (2-10 viikkoa)</p></li></ul><p>Valinnaiset koulutuksen osat, joista opiskelija suorittaa vähintään kaksi:</p><ul><li><p>Perustaitojen vahvistaminen (1-30 viikkoa)</p></li><li><p>Ammatillisen koulutuksen opinnot ja niihin valmentautuminen (1-30 viikkoa)</p></li><li><p>Lukiokoulutuksen opinnot ja niihin valmentautuminen (1-30 viikkoa)</p></li><li><p>Arjen taidot ja yhteiskunnallinen osallisuus (1-20 viikkoa)</p></li><li><p>Työelämätaidot ja työelämässä tapahtuva oppiminen (1-20 viikkoa)</p></li><li><p>Valinnaiset opinnot (1-10 viikkoa)</p></li></ul><p>Koulutuksen osien laajuudet on ilmoitettu vaihteluvälillä, joiden sisällä koulutus voidaan suunnitella opiskelijoiden tarpeiden mukaisesti. Koulutuksen osien tavoitteet on määritelty laajuudeltaan koulutuksen osan suurimman mahdollisen laajuuden mukaan. Koulutuksen järjestäjä voi laatia niistä pienempiä kokonaisuuksia koulutuksen osan tavoitteiden pohjalta.</p><p></p><img data-uid=\"18c834fa-b132-496d-9fdc-4aebe6f8a423\" alt=\"Tutkintokoulutuksen muodostuminen\" figcaption=\"Tutkintokoulutuksen muodostuminen\"><p></p>",
-                  "sv": "<p>Utbildningen ska omfatta 38 veckor och den ska avläggas på högst ett år (1215/2020, 11 §). Den studerande kan också delta i handledande utbildning för en kortare tidsperiod i enlighet med sina egna mål och behov av kunnande och flexibelt övergå till en examensinriktad utbildning.&nbsp;</p><p>Den studerandes studier byggs upp av utbildningsdelen Studiefärdigheter och karriärplaneringsfärdigheter, som är gemensam för alla som deltar i utbildning som handleder för examensutbildning, samt av minst två valbara utbildningsdelar. Den studerandes individuella studieväg ska byggas upp utgående från den studerandes mål och behov av kunnande.</p><p>Utbildningsdel som är gemensam för alla:</p><ul><li><p>Studiefärdigheter och karriärplaneringsfärdigheter (2–10 veckor)</p></li></ul><p>Valbara utbildningsdelar, av vilka den studerande ska avlägga minst två:</p><ul><li><p>Stärkande av grundläggande färdigheter (1–30 veckor)</p></li><li><p>Studier inom yrkesutbildning och studier som förbereder för dem (1–30 veckor)</p></li><li><p>Studier inom gymnasieutbildning och studier som förbereder för dem (1–30 veckor)</p></li><li><p>Vardagskompetens och delaktighet i samhället (1–20 veckor)</p></li><li><p>Arbetslivsfärdigheter och lärande i arbetslivet (1–20 veckor)</p></li><li><p>Valbara studier (1–10 veckor)</p></li></ul><p>Omfattningen på utbildningsdelarna varierar i antal veckor, inom vilka utbildning kan avläggas utgående från den studerandes behov. Målen för utbildningsdelarna har till sin omfattning definierats utgående från den största möjliga omfattningen som respektive del kan ha. Utbildningsanordnaren kan göra upp mindre helheter utifrån målen för respektive utbildningsdel.</p><img data-uid=\"f724f238-3e18-4104-9ac0-d107f67dde6f\" alt=\"Uppbyggnad av examensutbildning\" figcaption=\"\"><p></p>"
+                  "fi": "<p>Koulutuksen laajuus on 38 viikkoa ja suoritusaika enintään yksi vuosi (<abbr data-viite=\"111620799224899\">1215/2020, 11 §</abbr>). Koulutus tulee järjestää siten, että opiskelija voi hakeutua tutkintotavoitteiseen koulutukseen kesken valmentavan koulutuksen, jos hän on saavuttanut riittävät valmiudet tutkintotavoitteiseen koulutukseen siirtymiseksi. Opiskelija osallistuu valmentavaan koulutukseen&nbsp;omien tavoitteidensa ja osaamistarpeidensa mukaisesti. Opiskelija voi osallistua valmentavaan koulutukseen lyhyemmän ajanjakson kuin 38 viikkoa.</p><p>Opiskelijan opinnot muodostuvat kaikille yhteisestä Opiskelu- ja urasuunnittelutaidot -koulutuksen osasta ja valinnaisista koulutuksen osista.</p><p>Kaikille yhteinen koulutuksen osa:</p><ul><li><p>Opiskelu- ja urasuunnittelutaidot (2-10 viikkoa)</p></li></ul><p>Valinnaiset koulutuksen osat:</p><ul><li><p>Perustaitojen vahvistaminen (0–30 viikkoa)</p></li><li><p>Ammatillisen koulutuksen opinnot ja niihin valmentautuminen (0–30 viikkoa)</p></li><li><p>Lukiokoulutuksen opinnot ja niihin valmentautuminen (0–30 viikkoa)</p></li><li><p>Arjen taidot ja yhteiskunnallinen osallisuus (0–20 viikkoa)</p></li><li><p>Työelämätaidot ja työelämässä tapahtuva oppiminen (0–20 viikkoa)</p></li><li><p>Valinnaiset opinnot (0–10 viikkoa)</p></li></ul><p>Koulutuksen osien laajuudet on ilmoitettu vaihteluvälillä, joiden sisällä koulutus voidaan suunnitella opiskelijoiden tarpeiden mukaisesti. Koulutuksen osien tavoitteet on määritelty laajuudeltaan koulutuksen osan suurimman mahdollisen laajuuden mukaan. Koulutuksen järjestäjä voi laatia niistä pienempiä kokonaisuuksia koulutuksen osan tavoitteiden pohjalta.</p><p></p><img data-uid=\"14cd21bd-a9b0-4617-b5b8-3df336cdfd7e\" alt=\"Tutkintokoulutukseen valmentavan koulutuksen muodostuminen\" figcaption=\"Tutkintokoulutukseen valmentavan koulutuksen muodostuminen\"><p></p>",
+                  "sv": "<p>Utbildningen ska omfatta 38 veckor och den ska avläggas på högst ett år (1215/2020, 11 §). Utbildningen ska ordnas så att den studerande kan söka till examensinriktad utbildning under den handledande utbildningen, om hen har uppnått tillräckliga färdigheter för att övergå till examensinriktad utbildning. Den studerande deltar i handledande utbildning i enlighet med sina egna mål och behov av kunnande. Den studerande kan delta i den handledande utbildningen en kortare tidsperiod än 38 veckor.</p><p>Den studerandes studier består av den gemensamma utbildningsdelen Studiefärdigheter och karriärplaneringsfärdigheter samt av valbara utbildningsdelar.</p><p>Utbildningsdel som är gemensam för alla:</p><ul><li><p>Studiefärdigheter och karriärplaneringsfärdigheter (2–10 veckor)</p></li></ul><p>Valbara utbildningsdelar:</p><ul><li><p>Stärkande av grundläggande färdigheter (0–30 veckor)</p></li><li><p>Studier inom yrkesutbildning och studier som förbereder för dem (0–30 veckor)</p></li><li><p>Studier inom gymnasieutbildning och studier som förbereder för dem (0–30 veckor)</p></li><li><p>Vardagskompetens och delaktighet i samhället (0–20 veckor)</p></li><li><p>Arbetslivsfärdigheter och lärande i arbetslivet (0–20 veckor)</p></li><li><p>Valbara studier (0–10 veckor)</p></li></ul><p>Omfattningen på utbildningsdelarna varierar i antal veckor, inom vilka utbildning kan avläggas utgående från den studerandes behov. Målen för utbildningsdelarna har till sin omfattning definierats utgående från den största möjliga omfattningen som respektive del kan ha. Utbildningsanordnaren kan göra upp mindre helheter utifrån målen för respektive utbildningsdel.</p><img data-uid=\"26802c03-e3ec-4ae6-aab7-11af0a68be27\" alt=\"Uppbyggnad av utbildning som handleder för examensutbildning\" figcaption=\"Uppbyggnad av utbildning som handleder för examensutbildning\"><p></p>"
                 },
                 "koodit": [],
                 "liite": false,
@@ -377,8 +1081,8 @@
               "perusteenOsa": {
                 "id": 7535170,
                 "luotu": 1610688737404,
-                "muokattu": 1622810398879,
-                "muokkaaja": "1.2.246.562.24.72805652720",
+                "muokattu": 1671005674742,
+                "muokkaaja": "1.2.246.562.24.16958963306",
                 "nimi": {
                   "_id": "7786183",
                   "_tunniste": "5b49d39d-c5b3-47df-a42c-cdf9f17cc364",
@@ -387,10 +1091,10 @@
                 },
                 "tila": "luonnos",
                 "teksti": {
-                  "_id": "7786931",
+                  "_id": "8563569",
                   "_tunniste": "9bef581d-a8a2-41a2-806a-a77d4749b625",
-                  "fi": "<p>Tutkintokoulutukseen valmentavan koulutuksen opiskelijat ovat oikeutettuja opiskeluhuoltoon. Opiskeluhuollon järjestämistä ja toteuttamista koskevat samat periaatteet kuin perusopetuksessa, lukiokoulutuksessa tai ammatillisessa koulutuksessa (<abbr data-viite=\"1287201311620800894634\">1287/2013</abbr>).</p><p>Koulutuksen järjestäjällä tulee olla oppilas- ja opiskelijahuoltolain edellyttämä oppilaitoskohtainen opiskeluhuoltosuunnitelma. Tutkintokoulutukseen valmentavassa koulutuksessa noudatetaan koulutuksen järjestäjän opiskeluhuoltosuunnitelmaa.</p><p>Opiskeluhuoltoa toteutetaan sekä yhteisöllisenä että yksilökohtaisena. Yhteisöllinen opiskeluhuolto on osa oppilaitoksen toimintakulttuuria ja ensisijainen tapa toteuttaa opiskeluhuoltoa. Yhteisöllinen opiskeluhuolto on ennaltaehkäisevää ja sen tehtävänä on edistää opiskelijoiden oppimista ja hyvinvointia sekä vahvistaa vuorovaikutusta ja osallisuutta sekä opiskeluympäristön terveellisyyttä, turvallisuutta ja esteettömyyttä. &nbsp;</p><p>Yksilökohtaiseen opiskeluhuoltoon kuuluvat opiskeluhuollon palvelut, joita ovat psykologi- ja kuraattoripalvelut sekä koulu- ja opiskeluterveydenhuollon palvelut sekä monialaisen asiantuntijaryhmän tarjoama tuki.&nbsp;Yksilökohtaista opiskeluhuoltoa toteutetaan voimassa olevan oppilas- ja opiskeluhuoltolainsäädännön sekä koulutuksen järjestäjän opiskeluhuoltosuunnitelman mukaisesti.</p>",
-                  "sv": "<p>Studerande som deltar i utbildning som handleder för examensutbildning är berättigade till studerandevård. Vid ordnandet och genomförandet av studerandevården gäller samma principer som inom den grundläggande utbildningen, gymnasieutbildningen eller yrkesutbildningen (lagen om elev- och studerandevård 1287/2013).</p><p>Utbildningsanordnaren ska i enlighet med lagen om elev- och studerandevård ha en för läroanstalten specifik studerandevårdsplan. I utbildningen som handleder för examensutbildning ska man iaktta utbildningsanordnarens studerandevårdsplan.</p><p>Studerandevården ska genomföras som både gemensam och individuell studerandevård. Den gemensamma studerandevården ska vara en del av läroanstaltens verksamhetskultur och vara det primära sättet att genomföra studerandevård. Den gemensamma studerandevården ska vara förebyggande och dess syfte är att främja de studerandes lärande och välbefinnande samt stärka deras samverkan och delaktighet. Syftet med den gemensamma studerandevården är också att främja en sund, trygg och tillgänglig studiemiljö. &nbsp;&nbsp;<s>&nbsp;</s></p><p>Till den individuella studerandevården hör studerandevårdens tjänster, det vill säga psykolog- och kuratorstjänster samt skol- och studerandehälsovårdens tjänster och stödet som erbjuds av en yrkesövergripande expertgrupp. Den individuella studerandevården ska genomföras i enlighet med den gällande lagstiftningen som berör elev- och studerandevård samt i enlighet med utbildningsanordnarens studerandevårdsplan.</p>"
+                  "fi": "<p>Opiskeluhuollolla tarkoitetaan opiskelijan hyvän oppimisen, hyvän psyykkisen ja fyysisen terveyden sekä sosiaalisen hyvinvoinnin edistämistä ja ylläpitämistä sekä niiden edellytyksiä lisäävää toimintaa koulu- ja oppilaitosyhteisössä (oppilas- ja opiskelijahuoltolaki 1287/2013, 3 §). Opiskelijalla on oikeus saada maksutta sellainen opiskeluhuolto, jota opetukseen tai koulutukseen osallistuminen edellyttää lukuun ottamatta yli 18-vuotiaiden opiskelijoiden sairaanhoitopalveluja (oppilas- ja opiskelijahuoltolaki 1287/2013, 9 §). Opiskeluhuollon järjestämistä ja toteuttamista koskevat samat periaatteet kuin perusopetuksessa, lukiokoulutuksessa tai ammatillisessa koulutuksessa.</p><p>Koulutuksen järjestäjällä tulee olla opiskeluhuollon kokonaisuuden toteuttamiseksi opetuksen tai koulutuksen järjestäjän opiskeluhuoltosuunnitelma (oppilas- ja opiskelijahuoltolaki 1287/2013, 13 §, muutettu lailla 377/2022). Opetuksen tai koulutuksen järjestäjän opiskeluhuoltosuunnitelma korvaa opiskeluhuollon osalta paikallista opetussuunnitelmaa. Tutkintokoulutukseen valmentavassa koulutuksessa noudatetaan opetuksen tai<strong> </strong>koulutuksen järjestäjän opiskeluhuoltosuunnitelmaa.</p><p>Opiskeluhuoltoa toteutetaan sekä yhteisöllisenä että yksilökohtaisena. Yhteisöllinen opiskeluhuolto on osa koulun ja oppilaitoksen toimintakulttuuria ja ensisijainen tapa toteuttaa opiskeluhuoltoa. Se on ennaltaehkäisevää ja sen tehtävänä on edistää opiskelijoiden oppimista ja hyvinvointia sekä vahvistaa vuorovaikutusta ja osallisuutta sekä opiskeluympäristön terveellisyyttä, turvallisuutta ja esteettömyyttä. Yhteisöllinen opiskeluhuolto on kaikkien koulu- ja oppilaitosyhteisössä työskentelevien ammattilaisten yhteinen tehtävä. (Oppilas- ja opiskelijahuoltolaki 1287/2013, 4 §.)</p><p>Yksilökohtaiseen opiskeluhuoltoon kuuluvat opiskeluhuoltopalvelut, joita ovat koulu- ja opiskeluterveydenhuolto ja kuraattori- ja psykologipalvelut sekä monialaisen asiantuntijaryhmän tarjoama tuki (oppilas- ja opiskelijahuoltolaki 1287/2013 5 §).&nbsp;Yksilökohtainen opiskeluhuolto perustuu opiskelijan suostumukseen (Eduskunnan sivistysvaliokunnan mietintö 14/2013 vp.). Opiskeluhuoltopalvelut järjestetään ensisijaisesti lähipalveluna, jolle opetuksen tai koulutuksen järjestäjän tulee tarjota asianmukaiset tilat (terveydenhuoltolaki 378/2022 15 a § ja<strong> </strong>oppilas- ja opiskelijahuoltolaki 1287/2013 9 §). Opiskeluterveydenhuollon palveluja voidaan järjestää myös keskitetyssä opiskeluterveydenhuollon toimipisteessä. Tällöinkin palvelun on oltava helposti opiskelijoiden saavutettavissa. (Terveydenhuoltolaki 378/2022 15 § ja oppilas- ja opiskelijahuoltolaki 1287/2013 9 §).</p>",
+                  "sv": "<p>Med studerandevård avses främjande och upprätthållande av den studerandes studieframgång, goda psykiska och fysiska hälsa och sociala välbefinnande samt understödjande verksamheter inom skol- och läroanstaltsgemenskapen (lag om elev- och studerandevård 1287/2013 3 §). Den studerande har rätt till sådan avgiftsfri studerandevård som förutsätts för att delta i undervisningen eller utbildningen, med undantag för sjukvårdstjänster för studerande över 18 år (lag om elev- och studerandevård 1287/2013 9 §). Vid ordnandet och genomförandet av studerandevården gäller samma principer som inom den grundläggande utbildningen, gymnasieutbildningen eller yrkesutbildningen.</p><p>Utbildningsanordnaren ska göra upp en studerandevårdsplan för genomförandet av studerandevården som helhet (lag om elev- och studerandevård 1287/2013 13 §, ändrad genom lag 377/2022). Utbildningsanordnarens studerandevårdsplan ersätter den lokala läroplanen för studerandevårdens del. I utbildningen som handleder för examensutbildning ska man iaktta utbildningsanordnarens studerandevårdsplan.</p><p>Studerandevården ska genomföras som både gemensam och individuell studerandevård. Den gemensamma studerandevården ska vara en del av skolans och läroanstaltens verksamhetskultur och vara det primära sättet att genomföra studerandevård. Den gemensamma studerandevården ska vara förebyggande och dess syfte är att främja de studerandes lärande och välbefinnande samt stärka deras samverkan och delaktighet. Syftet med den gemensamma studerandevården är också att främja en sund, trygg och tillgänglig studiemiljö. Den gemensamma studerandevården är en gemensam uppgift för alla yrkesverksamma i skolan eller vid läroanstalten. (Lag om elev- och studerandevård 1287/2013 4 §)</p><p>Till den individuella studerandevården hör studerandevårdens tjänster, det vill säga skol- och studerandehälsovårdens tjänster samt kurators- och psykologtjänster och stödet som erbjuds av en sektorsövergripande expertgrupp (lag om elev- och studerandevård 287/2013 5 §).&nbsp;Den individuella studerandevården bygger på den studerandes samtycke (Kulturutskottets betänkande 14/2013). Studerandevårdstjänsterna ska i första hand ordnas som närservice, som utbildningsanordnaren ska erbjuda ändamålsenliga lokaler för (hälso- och sjukvårdslag 378/2022, 15 a § och lag om elev- och studerandevård 1287/2013 9 §). Studerandehälsovårdstjänsterna kan även anordnas centraliserat vid studerandehälsovårdens verksamhetsställe. Även i detta fall ska tjänsterna vara lättillgängliga för de studerande. (Hälso- och sjukvårdslag 378/2022 15 § och lag om elev- och studerandevård 1287/2013 9 §).</p>"
                 },
                 "koodit": [],
                 "liite": false,
@@ -508,8 +1212,8 @@
               "perusteenOsa": {
                 "id": 7535175,
                 "luotu": 1610688860635,
-                "muokattu": 1623010915968,
-                "muokkaaja": "1.2.246.562.24.72805652720",
+                "muokattu": 1685610262296,
+                "muokkaaja": "1.2.246.562.24.35128937253",
                 "nimi": {
                   "_id": "7786935",
                   "_tunniste": "5e5c69de-5d27-43b8-80f9-4779a0be27dd",
@@ -518,10 +1222,10 @@
                 },
                 "tila": "luonnos",
                 "teksti": {
-                  "_id": "7788120",
+                  "_id": "8913956",
                   "_tunniste": "2beb1f41-ac70-443d-a597-a3b3ff7e68d1",
-                  "fi": "<p>Koulutuksen järjestäjä antaa opiskelijalle todistuksen suoritetuista koulutuksen osista, kun opiskelija päättää tutkintokoulutukseen valmentavan koulutuksen suorittamisen.&nbsp;Koulutuksen järjestäjän&nbsp;tulee&nbsp;antaa todistus suoritetuista koulutuksen osista&nbsp;myös opiskelijan pyynnöstä. (<abbr data-viite=\"161620794851571\">1215/2020, 16 §.</abbr>)</p><p>Koulutuksen päättämisellä tarkoitetaan tilannetta, jolloin opiskelija&nbsp;on suorittanut&nbsp;hyväksytysti&nbsp;koko valmentavan koulutuksen (38 viikkoa) tai henkilökohtaisessa opiskelusuunnitelmassaan&nbsp;tavoitteeksi asetetut koulutuksen osat.&nbsp;&nbsp;</p><p><strong>Todistukseen suoritetuista koulutuksen osista</strong> merkitään seuraavat tiedot:&nbsp;</p><ul><li><p>opiskelijan nimi, oppijanumero ja henkilötunnus&nbsp;</p></li><li><p>koulutuksen nimi&nbsp;&nbsp;</p></li><li><p>opiskelijan suorittaman koulutuksen laajuus&nbsp;viikkoina&nbsp;</p></li><li><p>opiskelijan suorittamat koulutuksen osat ryhmiteltyinä koulutuksen perusteiden mukaisesti, laajuudet viikkoina ja arvosana (hyväksytty/hylätty)&nbsp;&nbsp;</p></li><li><p>päiväys ja allekirjoitus&nbsp;</p></li></ul><p><strong>&nbsp;</strong>&nbsp;Todistuksessa suoritetuista koulutuksen osista tulee lisäksi ilmetä&nbsp;</p><ul><li><p>todistuksen antavan koulutuksen järjestäjän ja oppilaitoksen yhteystiedot&nbsp;</p></li><li><p>opetus‐ ja kulttuuriministeriön myöntämä tutkintojen ja koulutuksen järjestämisluvan päivämäärä ja diaarinumero&nbsp;</p></li><li><p>lainsäädäntö, johon koulutus perustuu&nbsp;&nbsp;</p></li><li><p>maininta, että koulutus on toteutettu Opetushallituksen määräämien koulutuksen perusteiden mukaisesti (perustemääräyksen päätöspäivämäärä ja diaarinumero)&nbsp;</p></li><li><p>maininta, että tutkintokoulutukseen valmentava koulutus sijoittuu tasolle 3 tutkintojen ja muiden osaamiskokonaisuuksien viitekehyksestä annetun valtioneuvoston asetuksen (<abbr data-viite=\"12020171620822756268\">120/2017</abbr>) liitteen mukaisesti&nbsp;&nbsp;</p></li><li><p>arviointiasteikko</p></li><li><p>muut tarpeelliset lisätiedot&nbsp;</p></li></ul><p>Todistuksen liitteenä opiskelijalle voidaan antaa opintosuoritusote, jossa näkyy tarkemmin opiskelijan suorittaman koulutuksen sisältö.&nbsp;&nbsp;</p><p>Opiskelija saa&nbsp;lisäksi&nbsp;erillisen todistuksen tai opintosuoritusotteen koulutuksen aikana suoritetuista&nbsp; perusopetuksen, lukiokoulutuksen tai ammatillisen koulutuksen opinnoista.&nbsp;Tämän todistuksen tai opintosuoritusotteen antaa se koulutuksen järjestäjä, jolla on kyseisen koulutuksen järjestämislupa. Näissä todistuksissa tai opintosuoritusotteissa noudatetaan kyseessä olevan koulutusmuodon säädöksiä.&nbsp;</p><p>Jos opiskelija eroaa tai keskeyttää opintonsa suorittamatta yhtään koulutuksen osaa oman henkilökohtaisen opiskelusuunnitelmansa mukaisesti, koulutuksen järjestäjä antaa todistuksen suoritetuista opinnoista.&nbsp;</p><p><strong>Todistukseen suoritetuista opinnoista</strong> merkitään seuraavat tiedot:&nbsp;&nbsp;&nbsp;</p><ul><li><p>opiskelijan nimi, oppijanumero ja henkilötunnus&nbsp;</p></li><li><p>koulutuksen nimi&nbsp;</p></li><li><p>opiskelijan suorittama koulutuksen laajuus viikkoina&nbsp;</p></li><li><p>päiväys ja allekirjoitus&nbsp;</p></li></ul><p>Todistuksessa suoritetuista&nbsp;opinnoista&nbsp;tulee lisäksi ilmetä&nbsp;</p><ul><li><p>todistuksen antavan koulutuksen järjestäjän ja oppilaitoksen yhteystiedot&nbsp;</p></li><li><p>opetus‐ ja kulttuuriministeriön myöntämä tutkintojen ja koulutuksen järjestämisluvan päivämäärä ja diaarinumero&nbsp;</p></li><li><p>lainsäädäntö, johon koulutus perustuu&nbsp;&nbsp;</p></li><li><p>maininta, että koulutus on toteutettu Opetushallituksen määräämien koulutuksen perusteiden mukaisesti (perustemääräyksen päätöspäivämäärä ja diaarinumero)&nbsp;</p></li><li><p>maininta, että tutkintokoulutukseen valmentava koulutus sijoittuu tasolle 3 tutkintojen ja muiden osaamiskokonaisuuksien viitekehyksestä annetun valtioneuvoston asetuksen (<abbr data-viite=\"12020171620822756268\">120/2017</abbr>) liitteen mukaisesti&nbsp;&nbsp;</p></li><li><p>arviointiasteikko tai arviointiasteikot&nbsp;</p></li><li><p>muut tarpeelliset lisätiedot.&nbsp;</p></li></ul><p>Todistuksen liitteenä opiskelijalle&nbsp;voidaan&nbsp;antaa opintosuoritusote, jossa näkyy tarkemmin opiskelijan suorittaman koulutuksen sisältö.&nbsp;&nbsp;</p>",
-                  "sv": "<p>Utbildningsanordnaren ska ge den studerande ett betyg över avlagda utbildningsdelar när den studerande slutför utbildningen som handleder för examensutbildning. Utbildningsanordnaren ska utfärda ett betyg över avlagda utbildningsdelar även på den studerandes begäran. (1215/2020, 16 §)&nbsp;</p><p>Med slutförande av utbildningen avses en situation då den studerande med godkänt resultat har avlagt hela den handledande utbildningen (38 veckor) eller de utbildningsdelar som ställts upp som mål i den personliga studieplanen.</p><p>I betyget över avlagda utbildningsdelar antecknas följande uppgifter:</p><ul><li><p>den studerandes namn, studerandenummer och personbeteckning</p></li><li><p>utbildningens namn</p></li><li><p>den avlagda utbildningens omfattning i veckor</p></li><li><p>utbildningsdelar som den studerande avlagt indelade enligt grunderna för utbildningen, omfattning i veckor och vitsord (godkänd/underkänd)</p></li><li><p>datum och underskrift.</p></li></ul><p>Av betyget över avlagda utbildningsdelar ska även framgå:</p><ul><li><p>kontaktuppgifterna till utbildningsanordnaren som utfärdar betyget och till läroanstalten</p></li><li><p>datumet och diarienumret på det av undervisnings- och kulturministeriet beviljade tillståndet att ordna examina och utbildning</p></li><li><p>den lagstiftning som utbildningen grundar sig på</p></li><li><p>en anteckning om att utbildningen har genomförts i enlighet med grunderna för utbildningen som fastställts av Utbildningsstyrelsen (datum och diarienummer på föreskriften till grunderna)</p></li><li><p>en anteckning om att utbildningen som handleder för examensutbildning motsvarar nivå tre enligt statsrådets förordning om en referensram för examina och övriga samlade kompetenser (120/2017)</p></li><li><p>bedömningsskalan</p></li><li><p>övriga nödvändiga tilläggsuppgifter.</p></li></ul><p>Som bilaga till betyget kan den studerande ges ett utdrag över studieprestationer där innehållet i utbildningen som den studerande avlagt beskrivs närmare.</p><p>Den studerande får därtill ett separat betyg eller prestationsutdrag över studier som den studerande under utbildningens gång har avlagt inom grundläggande utbildning, gymnasieutbildning eller yrkesutbildning. Det här betyget eller prestationsutdraget utfärdas av den utbildningsanordnare som har tillstånd att ordna utbildningen i fråga. I fråga om dessa betyg eller prestationsutdrag ska man iaktta de författningar som gäller för utbildningsformen i fråga.</p><p>Om en studerande avgår eller avbryter sina studier utan att avlägga en enda utbildningsdel enligt sin egen personliga studieplan, ska utbildningsanordnaren utfärda ett intyg över avlagda studier.</p><p>I intyget över avlagda studier antecknas följande uppgifter:&nbsp;</p><ul><li><p>den studerandes namn, studerandenummer och personbeteckning</p></li><li><p>utbildningens namn</p></li><li><p>utbildningens omfattning i veckor</p></li><li><p>datum och underskrift.</p></li></ul><p>Av intyget över avlagda studier ska även framgå:</p><ul><li><p>kontaktuppgifterna till utbildningsanordnaren som utfärdar betyget och till läroanstalten</p></li><li><p>datumet och diarienumret på det av undervisnings- och kulturministeriet beviljade tillståndet att ordna examina och utbildning</p></li><li><p>den lagstiftning som utbildningen grundar sig på</p></li><li><p>en anteckning om att utbildningen har genomförts i enlighet med grunderna för utbildningen som fastställts av Utbildningsstyrelsen (datum och diarienummer på föreskriften till grunderna)</p></li><li><p>en anteckning om att utbildningen som handleder för examensutbildning motsvarar nivå tre enligt statsrådets förordning om en referensram för examina och övriga samlade kompetenser (120/2017)</p></li><li><p>bedömningsskalan eller bedömningsskalorna</p></li><li><p>övriga nödvändiga tilläggsuppgifter.</p></li></ul><p>Som bilaga till betyget kan den studerande ges ett utdrag över studieprestationer där innehållet i utbildningen som den studerande avlagt beskrivs närmare.</p>"
+                  "fi": "<p>Tutkintokoulutukseen valmentavassa koulutuksessa käytetään seuraavia todistuksia:</p><ul><li><p>Todistus suoritetuista koulutuksen osista</p></li><li><p>Todistus suoritetuista opinnoista</p><p></p></li></ul><p><strong>Todistus suoritetuista koulutuksen osista</strong></p><p>Koulutuksen järjestäjä antaa opiskelijalle todistuksen suoritetuista koulutuksen osista, kun opiskelija päättää tutkintokoulutukseen valmentavan koulutuksen suorittamisen.&nbsp;Koulutuksen päättämisellä tarkoitetaan tilannetta, jolloin opiskelija&nbsp;on suorittanut&nbsp;hyväksytysti henkilökohtaisessa opiskelusuunnitelmassaan tavoitteeksi asetetut koulutuksen osat. Jos opiskelija eroaa tai keskeyttää koulutuksen, hänelle annetaan todistus ennen eroamista tai keskeyttämistä suoritetuista koulutuksen osista.</p><p>Koulutuksen järjestäjän&nbsp;tulee&nbsp;antaa todistus suoritetuista koulutuksen osista&nbsp;myös opiskelijan pyynnöstä.&nbsp;(<abbr data-viite=\"161620794851571\">1215/2020, 16 §.</abbr>)</p><p>&nbsp;Todistukseen suoritetuista koulutuksen osista merkitään seuraavat tiedot:&nbsp;</p><ul><li><p>opiskelijan nimi, oppijanumero ja henkilötunnus&nbsp;</p></li><li><p>koulutuksen nimi&nbsp;&nbsp;</p></li><li><p>opiskelijan suorittaman koulutuksen laajuus&nbsp;viikkoina&nbsp;</p></li><li><p>opiskelijan suorittamat koulutuksen osat ryhmiteltyinä koulutuksen perusteiden mukaisesti, laajuudet viikkoina ja arvosana (hyväksytty/hylätty)&nbsp;&nbsp;</p></li><li><p>päiväys ja allekirjoitus&nbsp;</p></li><li><p>todistuksen antavan koulutuksen järjestäjän ja oppilaitoksen yhteystiedot&nbsp;</p></li><li><p>opetus‐ ja kulttuuriministeriön myöntämä tutkintojen ja koulutuksen järjestämisluvan päivämäärä ja diaarinumero&nbsp;</p></li><li><p>lainsäädäntö, johon koulutus perustuu&nbsp;&nbsp;</p></li><li><p>maininta, että koulutus on toteutettu Opetushallituksen määräämien koulutuksen perusteiden mukaisesti (perustemääräyksen päätöspäivämäärä ja diaarinumero)&nbsp;</p></li><li><p>maininta, että tutkintokoulutukseen valmentava koulutus sijoittuu tasolle 3 tutkintojen ja muiden osaamiskokonaisuuksien viitekehyksestä annetun valtioneuvoston asetuksen (<abbr data-viite=\"12020171620822756268\">120/2017</abbr>) liitteen mukaisesti&nbsp;&nbsp;</p></li><li><p>arviointiasteikko</p></li><li><p>muut tarpeelliset lisätiedot&nbsp;</p></li></ul><p>Todistuksen liitteenä opiskelijalle voidaan antaa opintosuoritusote, jossa näkyy tarkemmin opiskelijan suorittaman koulutuksen sisältö.&nbsp;&nbsp;</p><p>Opiskelija saa&nbsp;lisäksi&nbsp;erillisen todistuksen tai opintosuoritusotteen koulutuksen aikana suoritetuista perusopetuksen, lukiokoulutuksen tai ammatillisen koulutuksen opinnoista.&nbsp;Tämän todistuksen tai opintosuoritusotteen antaa se koulutuksen järjestäjä, jolla on kyseisen koulutuksen järjestämislupa. Näissä todistuksissa tai opintosuoritusotteissa noudatetaan kyseessä olevan koulutusmuodon säädöksiä.&nbsp;</p><p></p><p><strong>Todistus suoritetuista opinnoista</strong></p><p>Koulutuksen järjestäjä antaa opiskelijan pyynnöstä todistuksen suoritetuista opinnoista, jos opiskelija eroaa tai keskeyttää koulutuksen suorittamisen. Todistus suoritetuista opinnoista annetaan niistä opinnoista, joissa koulutuksen osan suorittaminen oman henkilökohtaisen opiskelusuunnitelman mukaisesti on jäänyt kesken.</p><p>Todistukseen suoritetuista opinnoista merkitään seuraavat tiedot:&nbsp;&nbsp;&nbsp;</p><ul><li><p>opiskelijan nimi, oppijanumero ja henkilötunnus&nbsp;</p></li><li><p>koulutuksen nimi&nbsp;</p></li><li><p>opiskelijan suorittama koulutuksen laajuus viikkoina&nbsp;</p></li><li><p>päiväys ja allekirjoitus&nbsp;</p></li><li><p>todistuksen antavan koulutuksen järjestäjän ja oppilaitoksen yhteystiedot&nbsp;</p></li><li><p>opetus‐ ja kulttuuriministeriön myöntämä tutkintojen ja koulutuksen järjestämisluvan päivämäärä ja diaarinumero&nbsp;</p></li><li><p>lainsäädäntö, johon koulutus perustuu&nbsp;&nbsp;</p></li><li><p>maininta, että koulutus on toteutettu Opetushallituksen määräämien koulutuksen perusteiden mukaisesti (perustemääräyksen päätöspäivämäärä ja diaarinumero)&nbsp;</p></li><li><p>maininta, että tutkintokoulutukseen valmentava koulutus sijoittuu tasolle 3 tutkintojen ja muiden osaamiskokonaisuuksien viitekehyksestä annetun valtioneuvoston asetuksen (<abbr data-viite=\"12020171620822756268\">120/2017</abbr>) liitteen mukaisesti&nbsp;&nbsp;</p></li><li><p>arviointiasteikko tai arviointiasteikot&nbsp;</p></li><li><p>muut tarpeelliset lisätiedot</p></li></ul><p>Todistuksen liitteenä opiskelijalle&nbsp;voidaan&nbsp;antaa opintosuoritusote, jossa näkyy tarkemmin opiskelijan suorittamien opintojen sisältö.&nbsp;&nbsp;</p>",
+                  "sv": "<p>Följande betyg och intyg utfärdas i utbildning som handleder för examensutbildning:</p><ul><li><p>Betyg över avlagda utbildningsdelar</p></li><li><p>Intyg över avlagda studier</p><p></p></li></ul><p><strong>Betyg över avlagda utbildningsdelar</strong></p><p>Utbildningsanordnaren ska ge den studerande ett betyg över avlagda utbildningsdelar när den studerande slutför utbildningen som handleder för examensutbildning. Med slutförande av utbildningen avses en situation då den studerande med godkänt resultat har avlagt de utbildningsdelar som ställts upp som mål i den personliga studieplanen. Om den studerande avgår eller avbryter utbildningen ska den studerande få ett betyg över de utbildningsdelar som är avlagda innan hen avgått eller avbrutit utbildningen.</p><p>Utbildningsanordnaren ska utfärda ett betyg över avlagda utbildningsdelar även på den studerandes begäran. (1215/2020, 16 §)&nbsp;</p><p>I betyget över avlagda utbildningsdelar antecknas följande uppgifter:</p><ul><li><p>den studerandes namn, studerandenummer och personbeteckning</p></li><li><p>utbildningens namn</p></li><li><p>den avlagda utbildningens omfattning i veckor</p></li><li><p>utbildningsdelar som den studerande avlagt indelade enligt grunderna för utbildningen, omfattning i veckor och vitsord (godkänd/underkänd)</p></li><li><p>datum och underskrift</p></li><li><p>kontaktuppgifterna till utbildningsanordnaren som utfärdar betyget och till läroanstalten</p></li><li><p>datumet och diarienumret på det av undervisnings- och kulturministeriet beviljade tillståndet att ordna examina och utbildning</p></li><li><p>den lagstiftning som utbildningen grundar sig på</p></li><li><p>en anteckning om att utbildningen har genomförts i enlighet med grunderna för utbildningen som fastställts av Utbildningsstyrelsen (datum och diarienummer på föreskriften till grunderna)</p></li><li><p>en anteckning om att utbildningen som handleder för examensutbildning motsvarar nivå tre enligt statsrådets förordning om en referensram för examina och övriga samlade kompetenser (120/2017)</p></li><li><p>bedömningsskalan</p></li><li><p>övriga nödvändiga tilläggsuppgifter.</p></li></ul><p>Som bilaga till betyget kan den studerande ges ett utdrag över studieprestationer där innehållet i utbildningen som den studerande avlagt beskrivs närmare.</p><p>Den studerande får därtill ett separat betyg eller prestationsutdrag över studier som den studerande under utbildningens gång har avlagt inom grundläggande utbildning, gymnasieutbildning eller yrkesutbildning. Det här betyget eller prestationsutdraget utfärdas av den utbildningsanordnare som har tillstånd att ordna utbildningen i fråga. I fråga om dessa betyg eller prestationsutdrag ska man iaktta de författningar som gäller för utbildningsformen i fråga.</p><p></p><p><strong>Intyg över avlagda studier</strong></p><p>Utbildningsanordnaren ska på begäran av den studerande utfärda ett intyg över avlagda studier, om en studerande avgår eller avbryter sina studier. Ett intyg över avlagda studier utfärdas över de studier, där avläggandet av en utbildningsdel har avbrutits enligt den personliga studieplanen.</p><p>I intyget över avlagda studier antecknas följande uppgifter:&nbsp;</p><ul><li><p>den studerandes namn, studerandenummer och personbeteckning</p></li><li><p>utbildningens namn</p></li><li><p>utbildningens omfattning i veckor</p></li><li><p>datum och underskrift</p></li><li><p>kontaktuppgifterna till utbildningsanordnaren som utfärdar betyget och till läroanstalten</p></li><li><p>datumet och diarienumret på det av undervisnings- och kulturministeriet beviljade tillståndet att ordna examina och utbildning</p></li><li><p>den lagstiftning som utbildningen grundar sig på</p></li><li><p>en anteckning om att utbildningen har genomförts i enlighet med grunderna för utbildningen som fastställts av Utbildningsstyrelsen (datum och diarienummer på föreskriften till grunderna)</p></li><li><p>en anteckning om att utbildningen som handleder för examensutbildning motsvarar nivå tre enligt statsrådets förordning om en referensram för examina och övriga samlade kompetenser (120/2017)</p></li><li><p>bedömningsskalan eller bedömningsskalorna</p></li><li><p>övriga nödvändiga tilläggsuppgifter.</p></li></ul><p>Som bilaga till intyget kan den studerande ges ett utdrag över studieprestationer där innehållet i studierna som den studerande avlagt beskrivs närmare.</p>"
                 },
                 "koodit": [],
                 "liite": false,
@@ -681,8 +1385,7 @@
                       "arvo": "001",
                       "uri": "tutkintokoulutukseenvalmentavakoulutuslaajaalainenosaaminen_001",
                       "koodisto": "tutkintokoulutukseenvalmentavakoulutuslaajaalainenosaaminen",
-                      "versio": 1,
-                      "temporary": false
+                      "versio": 1
                     },
                     "teksti": {
                       "_id": "7786494",
@@ -717,8 +1420,7 @@
                       "arvo": "002",
                       "uri": "tutkintokoulutukseenvalmentavakoulutuslaajaalainenosaaminen_002",
                       "koodisto": "tutkintokoulutukseenvalmentavakoulutuslaajaalainenosaaminen",
-                      "versio": 1,
-                      "temporary": false
+                      "versio": 1
                     },
                     "teksti": {
                       "_id": "7786496",
@@ -753,8 +1455,7 @@
                       "arvo": "003",
                       "uri": "tutkintokoulutukseenvalmentavakoulutuslaajaalainenosaaminen_003",
                       "koodisto": "tutkintokoulutukseenvalmentavakoulutuslaajaalainenosaaminen",
-                      "versio": 1,
-                      "temporary": false
+                      "versio": 1
                     },
                     "teksti": {
                       "_id": "7786498",
@@ -789,8 +1490,7 @@
                       "arvo": "004",
                       "uri": "tutkintokoulutukseenvalmentavakoulutuslaajaalainenosaaminen_004",
                       "koodisto": "tutkintokoulutukseenvalmentavakoulutuslaajaalainenosaaminen",
-                      "versio": 1,
-                      "temporary": false
+                      "versio": 1
                     },
                     "teksti": {
                       "_id": "7786560",
@@ -825,8 +1525,7 @@
                       "arvo": "005",
                       "uri": "tutkintokoulutukseenvalmentavakoulutuslaajaalainenosaaminen_005",
                       "koodisto": "tutkintokoulutukseenvalmentavakoulutuslaajaalainenosaaminen",
-                      "versio": 1,
-                      "temporary": false
+                      "versio": 1
                     },
                     "teksti": {
                       "_id": "7786562",
@@ -861,8 +1560,7 @@
                       "arvo": "006",
                       "uri": "tutkintokoulutukseenvalmentavakoulutuslaajaalainenosaaminen_006",
                       "koodisto": "tutkintokoulutukseenvalmentavakoulutuslaajaalainenosaaminen",
-                      "versio": 1,
-                      "temporary": false
+                      "versio": 1
                     },
                     "teksti": {
                       "_id": "7786564",
@@ -897,8 +1595,7 @@
                       "arvo": "007",
                       "uri": "tutkintokoulutukseenvalmentavakoulutuslaajaalainenosaaminen_007",
                       "koodisto": "tutkintokoulutukseenvalmentavakoulutuslaajaalainenosaaminen",
-                      "versio": 1,
-                      "temporary": false
+                      "versio": 1
                     },
                     "teksti": {
                       "_id": "7786566",
@@ -933,8 +1630,7 @@
                       "arvo": "008",
                       "uri": "tutkintokoulutukseenvalmentavakoulutuslaajaalainenosaaminen_008",
                       "koodisto": "tutkintokoulutukseenvalmentavakoulutuslaajaalainenosaaminen",
-                      "versio": 1,
-                      "temporary": false
+                      "versio": 1
                     },
                     "teksti": {
                       "_id": "7786568",
@@ -974,8 +1670,7 @@
                   "arvo": "101",
                   "uri": "koulutuksenosattuva_101",
                   "koodisto": "koulutuksenosattuva",
-                  "versio": 1,
-                  "temporary": false
+                  "versio": 1
                 },
                 "laajuusMinimi": 2,
                 "laajuusMaksimi": 10,
@@ -1074,6 +1769,7 @@
                   "fi": "<p>Koulutuksen osa katsotaan hyväksytysti suoritetuksi, kun opiskelija on saavuttanut hänelle henkilökohtaisessa opiskelusuunnitelmassa asetetut tavoitteet. Osaaminen arvioidaan asteikolla hyväksytty/hylätty. </p>",
                   "sv": "<p>Utbildningsdelen anses vara godkänd då den studerande har uppnått målen som fastställts för hen i den personliga studieplanen. Kunnandet bedöms med skalan godkänd/underkänd.</p>"
                 },
+                "viiteId": 7535560,
                 "osanTyyppi": "koulutuksenosa"
               },
               "lapset": [],
@@ -1084,14 +1780,14 @@
               "perusteenOsa": {
                 "id": 7535561,
                 "luotu": 1610693268745,
-                "muokattu": 1650969157751,
-                "muokkaaja": "1.2.246.562.24.71880188605",
+                "muokattu": 1687165450824,
+                "muokkaaja": "1.2.246.562.24.35128937253",
                 "nimi": {
-                  "_id": "8332150",
-                  "_tunniste": "6d588cfc-67b6-4f13-918f-32054e9d0f44",
+                  "_id": "8963168",
+                  "_tunniste": "e42286f4-2081-41ab-af5f-fc7e1ac1b79e",
                   "en": "Perustaitojen vahvistaminen",
                   "fi": "Perustaitojen vahvistaminen",
-                  "sv": "Perustaitojen vahvistaminen"
+                  "sv": "Stärkande av grundläggande färdigheter"
                 },
                 "tila": "luonnos",
                 "nimiKoodi": {
@@ -1099,15 +1795,14 @@
                   "nimi": {
                     "en": "Perustaitojen vahvistaminen",
                     "fi": "Perustaitojen vahvistaminen",
-                    "sv": "Perustaitojen vahvistaminen"
+                    "sv": "Stärkande av grundläggande färdigheter"
                   },
                   "arvo": "107",
                   "uri": "koulutuksenosattuva_107",
                   "koodisto": "koulutuksenosattuva",
-                  "versio": 1,
-                  "temporary": false
+                  "versio": 1
                 },
-                "laajuusMinimi": 1,
+                "laajuusMinimi": 0,
                 "laajuusMaksimi": 30,
                 "koulutusOsanKoulutustyyppi": "perusopetus",
                 "koulutusOsanTyyppi": "valinnainen",
@@ -1162,118 +1857,25 @@
                   "fi": "<p>Koulutuksen osa katsotaan hyväksytysti suoritetuksi, kun opiskelija on saavuttanut hänelle henkilökohtaisessa opiskelusuunnitelmassa asetetut tavoitteet. Osaaminen arvioidaan asteikolla hyväksytty/hylätty.</p><p>Jos opiskelija korottaa perusopetuksen arvosanoja, arvioidaan ne perusopetuksen lainsäädännön ja perusopetuksen opetussuunnitelmassa määriteltyjen päättöarvioinnin kriteerien mukaisesti (<a href=\"https://www.finlex.fi/fi/laki/ajantasa/1998/19980628#L8P38\" target=\"_blank\" rel=\"noopener noreferrer nofollow\">perusopetuslain 628/1998, 38 §:n mukaisessa erityisessä tutkinnossa</a>). Vastuu arvioinnista on sillä koulutuksen järjestäjällä, jolla on perusopetuksen järjestämislupa.  Arvioinnista päättävät perusopetuslainsäädännön mukaisesti perusopetuksen&nbsp;opettajat.</p>",
                   "sv": "<p>Utbildningsdelen anses vara godkänd då den studerande har uppnått målen som fastställts i den personliga studieplanen. Kunnandet bedöms med skalan godkänd/underkänd.</p><p>Om en studerande höjer vitsord från den grundläggande utbildningen ska de bedömas i enlighet med lagstiftningen för den grundläggande utbildningen och de bedömningskriterier för slutbedömningen som fastställts i grunderna för läroplanen för den grundläggande utbildningen (i en särskild examen som avses i 38 § i lagen om grundläggande utbildning 628/1998). Den utbildningsanordnare som har tillstånd att ordna grundläggande utbildning ansvarar för bedömningen. Beslut om bedömningen fattas i enlighet med lagstiftningen som berör den grundläggande utbildningen av lärarna inom den grundläggande utbildningen.</p>"
                 },
+                "viiteId": 7535561,
                 "osanTyyppi": "koulutuksenosa"
               },
               "lapset": [],
               "_perusteenOsa": "7535561"
             },
             {
-              "id": 7535293,
-              "perusteenOsa": {
-                "id": 7535562,
-                "luotu": 1610693475421,
-                "muokattu": 1650969196619,
-                "muokkaaja": "1.2.246.562.24.71880188605",
-                "nimi": {
-                  "_id": "8332151",
-                  "_tunniste": "8284e09e-4042-481a-8c82-373a1d02421d",
-                  "en": "Lukiokoulutuksen opinnot ja niihin valmentautuminen",
-                  "fi": "Lukiokoulutuksen opinnot ja niihin valmentautuminen",
-                  "sv": "Lukiokoulutuksen opinnot ja niihin valmentautuminen"
-                },
-                "tila": "luonnos",
-                "nimiKoodi": {
-                  "id": 8332161,
-                  "nimi": {
-                    "en": "Lukiokoulutuksen opinnot ja niihin valmentautuminen",
-                    "fi": "Lukiokoulutuksen opinnot ja niihin valmentautuminen",
-                    "sv": "Lukiokoulutuksen opinnot ja niihin valmentautuminen"
-                  },
-                  "arvo": "106",
-                  "uri": "koulutuksenosattuva_106",
-                  "koodisto": "koulutuksenosattuva",
-                  "versio": 1,
-                  "temporary": false
-                },
-                "laajuusMinimi": 1,
-                "laajuusMaksimi": 30,
-                "koulutusOsanKoulutustyyppi": "lukiokoulutus",
-                "koulutusOsanTyyppi": "valinnainen",
-                "kuvaus": {
-                  "_id": "7787562",
-                  "_tunniste": "02706a3f-b243-45a2-8271-3991fb6e81e7",
-                  "fi": "<p>Koulutuksen osa sisältää lukiokoulutukseen valmentavaa koulutusta ja lukio-opintoja opiskelijan valmiuksien mukaisesti. Suorittaessaan lukio-opintoja opiskelija&nbsp;saa&nbsp;tukea&nbsp;opiskelutaitojen ja&nbsp;-valmiuksien kehittämiseen&nbsp;osana valmentavaa koulutusta.&nbsp;</p><p>Opiskelija vahvistaa opiskelukielen hallintaa, opiskelutaitoja sekä tieto- ja viestintätekniikan käyttämistä osana opiskelua. Opiskelija harjoittelee lukiossa tarvittavaa monilukutaitoa: erilaisten tekstien lukemista ja tulkintaa sekä erilaisten tekstien tuottamista. Tavoitteena on, että opiskelija saavuttaa riittävät tiedot ja taidot lukio-opiskeluun sekä vahvistaa erityisesti tiedonalojen kielen taitoaan eli eri oppiaineiden tekstitaitoja.</p><p>Opiskelija tutustuu lukiokoulutukseen ja sen vaatimuksiin. Opiskelija voi valita omien tavoitteidensa, valmiuksiensa ja kiinnostuksensa mukaan lukion opintojakson tai opintojaksoja, joita hän suorittaa osana valmentavaa koulutusta. Valmentavan koulutuksen aikana opiskelija voi käyttää näiden suorittamiseen enemmän aikaa kuin varsinaisessa lukiokoulutuksessa.</p>",
-                  "sv": "<p>Utbildningsdelen ska innehålla utbildning som förbereder för gymnasieutbildning samt gymnasiestudier enligt den studerandes färdigheter. När en studerande avlägger gymnasiestudier ska hen som en del av den handledande utbildningen få stöd i att utveckla sina studiefärdigheter och sin studieförmåga.&nbsp;</p><p>Den studerande ska stärka sina kunskaper i undervisningsspråket, sina studiefärdigheter samt sin förmåga att använda informations- och kommunikationsteknik som en del av studierna. Den studerande övar på multilitteracitet som behövs i gymnasiet genom att läsa och tolka samt producera olika typer av texter. Målet är att den studerande uppnår tillräckliga kunskaper och färdigheter för gymnasiestudier. Målet är i synnerhet att hen stärker sina kunskaper i språket inom de olika ämnesområdena samt sin textkompetens inom olika läroämnen.&nbsp;</p><p>Den studerande bekantar sig med gymnasieutbildningen och de krav som ställs. Den studerande kan utifrån sina egna mål, färdigheter och intressen välja ett eller flera studieavsnitt i gymnasiet som hen avlägger som en del av den handledande utbildningen. Under den handledande utbildningen kan den studerande använda mer tid för att avlägga studieavsnitten än vad som är möjligt i den egentliga gymnasieutbildningen.</p>"
-                },
-                "tavoitteenKuvaus": null,
-                "tavoitteet": [
-                  {
-                    "_id": "7787563",
-                    "_tunniste": "e024dd5e-25f1-4d5a-a997-bcf0b1881d87",
-                    "fi": "saavuttaa riittävän taidon lukion opetuskielessä ja eri tiedonalojen tekstitaidoissa (sanavarasto, luetun ymmärtämis- ja tulkintataidot sekä tuottamistaidot)",
-                    "sv": "uppnår tillräckliga kunskaper i gymnasiets undervisningsspråk och tillräcklig textkompetens inom olika ämnesområden (ordförråd, förmåga att förstå, tolka och producera text)"
-                  },
-                  {
-                    "_id": "7787564",
-                    "_tunniste": "f77cb423-a401-4e35-8b70-d6f2e5c87a13",
-                    "fi": "osaa käyttää opiskeltavaan oppiaineeseen sopivia opiskelumenetelmiä ja tieto- ja viestintätekniikkaa opiskelun apuna",
-                    "sv": "kan använda studiemetoder som är lämpliga för läroämnet hen studerar och kan använda informations- och kommunikationsteknik som stöd i studierna"
-                  },
-                  {
-                    "_id": "7787565",
-                    "_tunniste": "51c14fe0-f4e3-4a88-aeb4-3ad40fc844e5",
-                    "fi": "tutustuu lukiokoulutukseen ja sen käytäntöihin sekä arviointimenetelmiin",
-                    "sv": "bekantar sig med gymnasieutbildningen, verksamheten och bedömningsmetoderna"
-                  },
-                  {
-                    "_id": "7787566",
-                    "_tunniste": "6d98cf73-bde8-4d5e-a751-bee032f90406",
-                    "fi": "osaa arvioida lukio-opintojen sopivuuden itselleen",
-                    "sv": "kan bedöma hur lämpliga gymnasiestudier är för hen själv"
-                  },
-                  {
-                    "_id": "7787567",
-                    "_tunniste": "61c7d3e9-7a93-4838-b1a8-15207cb4a71a",
-                    "fi": "suorittaa kiinnostusten ja tavoitteidensa mukaisia lukion opintoja",
-                    "sv": "avlägger gymnasiestudier som motsvarar hens egna intressen och mål."
-                  }
-                ],
-                "keskeinenSisalto": {
-                  "_id": "7787879",
-                  "_tunniste": "869fc93f-332c-4a03-ab5a-72cde9ccb2e1",
-                  "fi": "<p>Lukiossa vaadittavia taitoja ennakoidaan keskittymällä monilukutaitoon ja siihen liittyen eri oppiaineiden tekstitaitoihin. Opiskelukielen taitoja varmistetaan kaikilla osa-alueilla. Tähän kiinnitetään erityistä huomiota silloin, kun opiskelija opiskelee suomi/ruotsi toisena kielenä -oppimäärää.</p><p>Lukiokoulutuksen opetussuunnitelman perusteissa määritellään ainekohtaiset sisällöt ja tavoitteet. Opiskelija voi suorittaa sekä lukion pakollisia että valinnaisia opintojaksoja omien valmiuksiensa ja kiinnostuksensa mukaan.</p>",
-                  "sv": "<p>Man ska beakta vilka färdigheter som krävs i gymnasiet genom att fokusera på färdigheter i multilitteracitet och därtill hörande textkompetens inom olika läroämnen. Den studerandes kunskaper i undervisningsspråket ska säkerställas inom alla delområden. Särskild uppmärksamhet ska fästas vid detta då den studerande studerar enligt lärokursen svenska/finska som andraspråk.&nbsp;</p><p>I grunderna för gymnasiets läroplan definieras innehållen i och målen för respektive läroämne. Den studerande kan utifrån sina egna färdigheter och intressen avlägga både obligatoriska och valfria studier och studieavsnitt i gymnasiet.&nbsp;</p>"
-                },
-                "laajaAlaisenOsaamisenKuvaus": {
-                  "_id": "7787878",
-                  "_tunniste": "17df16b6-791b-4295-9e48-ef057c8890c7",
-                  "fi": "<p>Koulutuksen järjestäjä kuvaa laaja-alaisen osaamisen osa-alueet suunnitelmassaan koulutuksen toteuttamiseksi. Niiden tulee perustua tutkintokoulutukseen valmentavan koulutuksen perusteiden laaja-alaiseen osaamisen&nbsp;osa-alueiden kuvauksiin.&nbsp;</p>",
-                  "sv": "<p>Utbildningsanordnaren ska i sin plan för genomförandet av utbildningen beskriva delområdena som ingår i den mångsidiga kompetensen. De ska basera sig på beskrivningarna av mångsidig kompetens som ingår i grunderna för utbildningen som handleder för examensutbildning.&nbsp;</p>"
-                },
-                "arvioinninKuvaus": {
-                  "_id": "7787950",
-                  "_tunniste": "418dadc2-7ddf-4b68-9ba7-3c26ae387fe9",
-                  "fi": "<p>Koulutuksen osa katsotaan hyväksytysti suoritetuksi, kun opiskelija on saavuttanut hänelle henkilökohtaisessa opiskelusuunnitelmassa asetetut tavoitteet. Osaaminen arvioidaan asteikolla hyväksytty/hylätty.</p><p>Jos opiskelija suorittaa lukiokoulutuksen opintoja, arvioidaan ne lukiokoulutuksen lainsäädännön ja opetussuunnitelman perusteiden mukaisesti. Vastuu arvioinnista on sillä koulutuksen järjestäjällä, jolla on lukiokoulutuksen järjestämislupa. Arvioinnista päättävät lukiolainsäädännön mukaisesti lukiokoulutuksen&nbsp;opettajat.</p>",
-                  "sv": "<p>Utbildningsdelen anses vara godkänd då den studerande har uppnått målen som fastställts i den personliga studieplanen. Kunnandet bedöms med skalan godkänd/underkänd.</p><p>Om den studerande avlägger studier inom gymnasieutbildning ska de bedömas i enlighet med lagstiftningen för gymnasieutbildning och grunderna för gymnasiets läroplan. Den utbildningsanordnare som har tillstånd att ordna gymnasieutbildning ansvarar för bedömningen. Beslut om bedömningen fattas i enlighet med lagstiftningen som berör gymnasieutbildningen av lärarna inom gymnasieutbildningen.</p>"
-                },
-                "osanTyyppi": "koulutuksenosa"
-              },
-              "lapset": [],
-              "_perusteenOsa": "7535562"
-            },
-            {
               "id": 7535294,
               "perusteenOsa": {
                 "id": 7535563,
                 "luotu": 1610693860652,
-                "muokattu": 1650969227984,
-                "muokkaaja": "1.2.246.562.24.71880188605",
+                "muokattu": 1687165479144,
+                "muokkaaja": "1.2.246.562.24.35128937253",
                 "nimi": {
-                  "_id": "8332152",
-                  "_tunniste": "65a99cd7-3580-49b1-ac11-8adaea3cf022",
+                  "_id": "8963169",
+                  "_tunniste": "6ac07c09-37bf-40d5-b911-93e9cb962cf4",
                   "en": "Ammatillisen koulutuksen opinnot ja niihin valmentautuminen",
                   "fi": "Ammatillisen koulutuksen opinnot ja niihin valmentautuminen",
-                  "sv": "Ammatillisen koulutuksen opinnot ja niihin valmentautuminen"
+                  "sv": "Studier inom yrkesutbildning och studier som förbereder för dem"
                 },
                 "tila": "luonnos",
                 "nimiKoodi": {
@@ -1281,15 +1883,14 @@
                   "nimi": {
                     "en": "Ammatillisen koulutuksen opinnot ja niihin valmentautuminen",
                     "fi": "Ammatillisen koulutuksen opinnot ja niihin valmentautuminen",
-                    "sv": "Ammatillisen koulutuksen opinnot ja niihin valmentautuminen"
+                    "sv": "Studier inom yrkesutbildning och studier som förbereder för dem"
                   },
                   "arvo": "105",
                   "uri": "koulutuksenosattuva_105",
                   "koodisto": "koulutuksenosattuva",
-                  "versio": 1,
-                  "temporary": false
+                  "versio": 1
                 },
-                "laajuusMinimi": 1,
+                "laajuusMinimi": 0,
                 "laajuusMaksimi": 30,
                 "koulutusOsanKoulutustyyppi": "ammatillinenkoulutus",
                 "koulutusOsanTyyppi": "valinnainen",
@@ -1350,154 +1951,132 @@
                   "fi": "<p>Koulutuksen osa katsotaan hyväksytysti suoritetuksi, kun opiskelija on saavuttanut hänelle henkilökohtaisessa opiskelusuunnitelmassa asetetut tavoitteet. Osaaminen arvioidaan asteikolla hyväksytty/hylätty.</p><p>Jos opiskelija suorittaa ammatillisen tutkinnon osia, arvioidaan ne ammatillisen koulutuksen lainsäädännön ja tutkinnon perusteiden mukaisesti. Vastuu arvioinnista on sillä koulutuksen järjestäjällä, jolla on ammatillisen koulutuksen järjestämislupa. Arvioinnista <s>&nbsp;</s>päättävät ammatillisesta koulutuksesta annetussa lainsäädännössä tarkoitetut arvioijat.&nbsp;</p>",
                   "sv": "<p>Utbildningsdelen anses vara godkänd då den studerande har uppnått målen som fastställts i den personliga studieplanen. Kunnandet bedöms med skalan godkänd/underkänd.</p><p>Om den studerande avlägger yrkesinriktade examensdelar ska de bedömas i enlighet med yrkesutbildningens lagstiftning och examensgrunder. Den utbildningsanordnare som har tillstånd att ordna yrkesutbildning ansvarar för bedömningen. Beslut om bedömningen fattas i enlighet med lagstiftningen som berör yrkesutbildningen av lärarna inom yrkesutbildningen.</p>"
                 },
+                "viiteId": 7535563,
                 "osanTyyppi": "koulutuksenosa"
               },
               "lapset": [],
               "_perusteenOsa": "7535563"
             },
             {
-              "id": 7535295,
+              "id": 7535293,
               "perusteenOsa": {
-                "id": 7535564,
-                "luotu": 1610694142001,
-                "muokattu": 1650969263245,
-                "muokkaaja": "1.2.246.562.24.71880188605",
+                "id": 7535562,
+                "luotu": 1610693475421,
+                "muokattu": 1687165490682,
+                "muokkaaja": "1.2.246.562.24.35128937253",
                 "nimi": {
-                  "_id": "8332153",
-                  "_tunniste": "ff6a664c-f450-48b1-afbc-89be89a9ceb8",
-                  "fi": "Työelämätaidot ja työpaikalla tapahtuva oppiminen",
-                  "sv": "Arbetslivsfärdigheter och lärande i arbetslivet"
+                  "_id": "8963300",
+                  "_tunniste": "cbad4586-f472-4e57-851d-2df1f097feb4",
+                  "en": "Lukiokoulutuksen opinnot ja niihin valmentautuminen",
+                  "fi": "Lukiokoulutuksen opinnot ja niihin valmentautuminen",
+                  "sv": "Studier inom gymnasieutbildning och studier som förbereder för dem"
                 },
                 "tila": "luonnos",
                 "nimiKoodi": {
-                  "id": 8332163,
+                  "id": 8332161,
                   "nimi": {
-                    "fi": "Työelämätaidot ja työpaikalla tapahtuva oppiminen",
-                    "sv": "Arbetslivsfärdigheter och lärande i arbetslivet"
+                    "en": "Lukiokoulutuksen opinnot ja niihin valmentautuminen",
+                    "fi": "Lukiokoulutuksen opinnot ja niihin valmentautuminen",
+                    "sv": "Studier inom gymnasieutbildning och studier som förbereder för dem"
                   },
-                  "arvo": "102",
-                  "uri": "koulutuksenosattuva_102",
+                  "arvo": "106",
+                  "uri": "koulutuksenosattuva_106",
                   "koodisto": "koulutuksenosattuva",
-                  "versio": 1,
-                  "temporary": false
+                  "versio": 1
                 },
-                "laajuusMinimi": 1,
-                "laajuusMaksimi": 20,
-                "koulutusOsanKoulutustyyppi": "tutkintokoulutukseenvalmentava",
+                "laajuusMinimi": 0,
+                "laajuusMaksimi": 30,
+                "koulutusOsanKoulutustyyppi": "lukiokoulutus",
                 "koulutusOsanTyyppi": "valinnainen",
                 "kuvaus": {
-                  "_id": "7787682",
-                  "_tunniste": "a570bd1a-56d5-43ad-89b1-8562c8c0fd89",
-                  "fi": "<p>Koulutuksen osassa keskitytään keskeisiin työelämätaitoihin ja tuetaan työelämässä tapahtuvaa oppimista. Tavoitteena on vahvistaa opiskelijan oman toiminnan ohjaamista sekä viestintä-, vuorovaikutus- ja yhteistyötaitoja. Opiskelija tutustuu työelämässä tapahtuvaan koulutukseen.</p>",
-                  "sv": "<p>Tyngdpunkten för utbildningsdelen ska ligga på färdigheter som är centrala i arbetslivet och på att stödja lärande på arbetsplatsen. Målet är att stärka den studerandes förmåga till självstyrning samt hens färdigheter i kommunikation, interaktion och samarbete. Den studerande bekantar sig med lärande i arbetslivet.</p>"
+                  "_id": "7787562",
+                  "_tunniste": "02706a3f-b243-45a2-8271-3991fb6e81e7",
+                  "fi": "<p>Koulutuksen osa sisältää lukiokoulutukseen valmentavaa koulutusta ja lukio-opintoja opiskelijan valmiuksien mukaisesti. Suorittaessaan lukio-opintoja opiskelija&nbsp;saa&nbsp;tukea&nbsp;opiskelutaitojen ja&nbsp;-valmiuksien kehittämiseen&nbsp;osana valmentavaa koulutusta.&nbsp;</p><p>Opiskelija vahvistaa opiskelukielen hallintaa, opiskelutaitoja sekä tieto- ja viestintätekniikan käyttämistä osana opiskelua. Opiskelija harjoittelee lukiossa tarvittavaa monilukutaitoa: erilaisten tekstien lukemista ja tulkintaa sekä erilaisten tekstien tuottamista. Tavoitteena on, että opiskelija saavuttaa riittävät tiedot ja taidot lukio-opiskeluun sekä vahvistaa erityisesti tiedonalojen kielen taitoaan eli eri oppiaineiden tekstitaitoja.</p><p>Opiskelija tutustuu lukiokoulutukseen ja sen vaatimuksiin. Opiskelija voi valita omien tavoitteidensa, valmiuksiensa ja kiinnostuksensa mukaan lukion opintojakson tai opintojaksoja, joita hän suorittaa osana valmentavaa koulutusta. Valmentavan koulutuksen aikana opiskelija voi käyttää näiden suorittamiseen enemmän aikaa kuin varsinaisessa lukiokoulutuksessa.</p>",
+                  "sv": "<p>Utbildningsdelen ska innehålla utbildning som förbereder för gymnasieutbildning samt gymnasiestudier enligt den studerandes färdigheter. När en studerande avlägger gymnasiestudier ska hen som en del av den handledande utbildningen få stöd i att utveckla sina studiefärdigheter och sin studieförmåga.&nbsp;</p><p>Den studerande ska stärka sina kunskaper i undervisningsspråket, sina studiefärdigheter samt sin förmåga att använda informations- och kommunikationsteknik som en del av studierna. Den studerande övar på multilitteracitet som behövs i gymnasiet genom att läsa och tolka samt producera olika typer av texter. Målet är att den studerande uppnår tillräckliga kunskaper och färdigheter för gymnasiestudier. Målet är i synnerhet att hen stärker sina kunskaper i språket inom de olika ämnesområdena samt sin textkompetens inom olika läroämnen.&nbsp;</p><p>Den studerande bekantar sig med gymnasieutbildningen och de krav som ställs. Den studerande kan utifrån sina egna mål, färdigheter och intressen välja ett eller flera studieavsnitt i gymnasiet som hen avlägger som en del av den handledande utbildningen. Under den handledande utbildningen kan den studerande använda mer tid för att avlägga studieavsnitten än vad som är möjligt i den egentliga gymnasieutbildningen.</p>"
                 },
                 "tavoitteenKuvaus": null,
                 "tavoitteet": [
                   {
-                    "_id": "7788126",
-                    "_tunniste": "48a39b1a-2bb1-4c04-b68a-f6af4a404116",
-                    "fi": "tuntee työnhaun prosessin",
-                    "sv": "känner till processen att söka arbete"
+                    "_id": "7787563",
+                    "_tunniste": "e024dd5e-25f1-4d5a-a997-bcf0b1881d87",
+                    "fi": "saavuttaa riittävän taidon lukion opetuskielessä ja eri tiedonalojen tekstitaidoissa (sanavarasto, luetun ymmärtämis- ja tulkintataidot sekä tuottamistaidot)",
+                    "sv": "uppnår tillräckliga kunskaper i gymnasiets undervisningsspråk och tillräcklig textkompetens inom olika ämnesområden (ordförråd, förmåga att förstå, tolka och producera text)"
                   },
                   {
-                    "_id": "7788127",
-                    "_tunniste": "36b19daf-270b-493f-b261-f999eaf37751",
-                    "fi": "tutustuu työpaikkoihin oppimisympäristöinä",
-                    "sv": "bekantar sig med arbetsplatser som lärmiljöer"
+                    "_id": "7787564",
+                    "_tunniste": "f77cb423-a401-4e35-8b70-d6f2e5c87a13",
+                    "fi": "osaa käyttää opiskeltavaan oppiaineeseen sopivia opiskelumenetelmiä ja tieto- ja viestintätekniikkaa opiskelun apuna",
+                    "sv": "kan använda studiemetoder som är lämpliga för läroämnet hen studerar och kan använda informations- och kommunikationsteknik som stöd i studierna"
                   },
                   {
-                    "_id": "7788128",
-                    "_tunniste": "b9b44b64-81f8-4842-b31f-18d8aa047d31",
-                    "fi": "tuntee työelämän ja yrittäjyyden keskeiset periaatteet",
-                    "sv": "känner till de centrala principerna som berör arbetsliv och företagsamhet"
+                    "_id": "7787565",
+                    "_tunniste": "51c14fe0-f4e3-4a88-aeb4-3ad40fc844e5",
+                    "fi": "tutustuu lukiokoulutukseen ja sen käytäntöihin sekä arviointimenetelmiin",
+                    "sv": "bekantar sig med gymnasieutbildningen, verksamheten och bedömningsmetoderna"
                   },
                   {
-                    "_id": "7788129",
-                    "_tunniste": "b3f03e63-1907-4900-8628-25c0784b3559",
-                    "fi": "osaa toimia työyhteisön jäsenenä työpaikalla",
-                    "sv": "kan fungera som en medlem i arbetsgemenskapen på arbetsplatsen"
+                    "_id": "7787566",
+                    "_tunniste": "6d98cf73-bde8-4d5e-a751-bee032f90406",
+                    "fi": "osaa arvioida lukio-opintojen sopivuuden itselleen",
+                    "sv": "kan bedöma hur lämpliga gymnasiestudier är för hen själv"
                   },
                   {
-                    "_id": "7788180",
-                    "_tunniste": "0a09e336-8190-4ba2-a28b-9a4b30fe3eeb",
-                    "fi": "osaa ajankäytön suunnittelua ja hallintaa",
-                    "sv": "kan planera och hantera sin tidsanvändning"
-                  },
-                  {
-                    "_id": "7788181",
-                    "_tunniste": "fa5879b1-2220-45ca-83bc-7ca6ee98539d",
-                    "fi": "tuntee omat oikeutensa ja velvollisuutensa työpaikalla",
-                    "sv": "känner till sina egna rättigheter och skyldigheter på arbetsplatsen"
-                  },
-                  {
-                    "_id": "7788182",
-                    "_tunniste": "16f009f0-ba54-4958-9d66-4a8a0adf2e2a",
-                    "fi": "tuntee mahdollisuutensa kansainvälisyysosaamisen kehittämiseen ja osallistuu mahdollisuuksien mukaan kansainväliseen toimintaan",
-                    "sv": "känner till sina möjligheter att utveckla sin internationella kompetens och deltar i mån av möjlighet i internationell verksamhet"
-                  },
-                  {
-                    "_id": "7788183",
-                    "_tunniste": "d951c53d-9521-4df3-89a2-eddcf34916a3",
-                    "fi": "tutustuu yleisimpiin työpaikalla käytössä oleviin tietokoneohjelmiin ja työpaikan vuorovaikutustilanteiden kieleen",
-                    "sv": "bekantar sig med de vanligaste datorprogrammen som används på en arbetsplats och med språket som behövs för att kommunicera på arbetsplatsen"
-                  },
-                  {
-                    "_id": "7788184",
-                    "_tunniste": "f3816af5-62c4-4b45-b514-748ac0292e37",
-                    "fi": "tiedostaa tulevaisuuden haasteet ja työelämän muutokset",
-                    "sv": "är medveten om framtidens utmaningar och förändringar i arbetslivet"
+                    "_id": "7787567",
+                    "_tunniste": "61c7d3e9-7a93-4838-b1a8-15207cb4a71a",
+                    "fi": "suorittaa kiinnostusten ja tavoitteidensa mukaisia lukion opintoja",
+                    "sv": "avlägger gymnasiestudier som motsvarar hens egna intressen och mål."
                   }
                 ],
                 "keskeinenSisalto": {
-                  "_id": "7787726",
-                  "_tunniste": "75e2efc6-bb8c-4fcf-98e7-91be53d8091d",
-                  "fi": "<ul><li><p>työn hakeminen; sopivan työpaikan löytäminen, työhakemuksen tekeminen, työhaastattelussa toimiminen</p></li><li><p>työelämän pelisäännöt</p></li><li><p>osaamiskortit (esim. hygieniapassi, työturvallisuuskortti)</p></li><li><p>yrittäjyyden perusteet</p></li><li><p>työelämään tutustuminen / työelämässä tapahtuva oppiminen</p></li></ul>",
-                  "sv": "<ul><li><p>Hur man söker arbete; att hitta en lämplig arbetsplats, göra en arbetsansökan, hur man fungerar under en arbetsintervju</p></li><li><p>Spelregler i arbetslivet</p></li><li><p>Kompetenskort (till exempel hygienpass, arbetssäkerhetskort)</p></li><li><p>Grunderna för företagsamhet</p></li><li><p>Den studerande bekantar sig med arbetslivet / lärande som sker i arbetslivet</p></li></ul>"
+                  "_id": "7787879",
+                  "_tunniste": "869fc93f-332c-4a03-ab5a-72cde9ccb2e1",
+                  "fi": "<p>Lukiossa vaadittavia taitoja ennakoidaan keskittymällä monilukutaitoon ja siihen liittyen eri oppiaineiden tekstitaitoihin. Opiskelukielen taitoja varmistetaan kaikilla osa-alueilla. Tähän kiinnitetään erityistä huomiota silloin, kun opiskelija opiskelee suomi/ruotsi toisena kielenä -oppimäärää.</p><p>Lukiokoulutuksen opetussuunnitelman perusteissa määritellään ainekohtaiset sisällöt ja tavoitteet. Opiskelija voi suorittaa sekä lukion pakollisia että valinnaisia opintojaksoja omien valmiuksiensa ja kiinnostuksensa mukaan.</p>",
+                  "sv": "<p>Man ska beakta vilka färdigheter som krävs i gymnasiet genom att fokusera på färdigheter i multilitteracitet och därtill hörande textkompetens inom olika läroämnen. Den studerandes kunskaper i undervisningsspråket ska säkerställas inom alla delområden. Särskild uppmärksamhet ska fästas vid detta då den studerande studerar enligt lärokursen svenska/finska som andraspråk.&nbsp;</p><p>I grunderna för gymnasiets läroplan definieras innehållen i och målen för respektive läroämne. Den studerande kan utifrån sina egna färdigheter och intressen avlägga både obligatoriska och valfria studier och studieavsnitt i gymnasiet.&nbsp;</p>"
                 },
                 "laajaAlaisenOsaamisenKuvaus": {
-                  "_id": "7787724",
-                  "_tunniste": "a0b0288c-9386-48d7-b00d-19caf61b2476",
-                  "fi": "<p>Koulutuksen järjestäjä kuvaa laaja-alaisen osaamisen osa-alueet suunnitelmassaan koulutuksen toteuttamiseksi. Niiden tulee perustua tutkintokoulutukseen valmentavan koulutuksen perusteiden laaja-alaiseen osaamisen&nbsp;osa-alueiden kuvauksiin. </p>",
-                  "sv": "<p>Utbildningsanordnaren ska i sin plan för genomförandet av utbildningen beskriva delområdena som ingår i den mångsidiga kompetensen. De ska basera sig på beskrivningarna av mångsidig kompetens som ingår i grunderna för utbildningen som handleder för examensutbildning.</p><p>&nbsp;</p>"
+                  "_id": "7787878",
+                  "_tunniste": "17df16b6-791b-4295-9e48-ef057c8890c7",
+                  "fi": "<p>Koulutuksen järjestäjä kuvaa laaja-alaisen osaamisen osa-alueet suunnitelmassaan koulutuksen toteuttamiseksi. Niiden tulee perustua tutkintokoulutukseen valmentavan koulutuksen perusteiden laaja-alaiseen osaamisen&nbsp;osa-alueiden kuvauksiin.&nbsp;</p>",
+                  "sv": "<p>Utbildningsanordnaren ska i sin plan för genomförandet av utbildningen beskriva delområdena som ingår i den mångsidiga kompetensen. De ska basera sig på beskrivningarna av mångsidig kompetens som ingår i grunderna för utbildningen som handleder för examensutbildning.&nbsp;</p>"
                 },
                 "arvioinninKuvaus": {
-                  "_id": "7787728",
-                  "_tunniste": "cf747681-d8bd-4f92-8d70-a91dc533145f",
-                  "fi": "<p>Koulutuksen osa katsotaan hyväksytysti suoritetuksi, kun opiskelija on saavuttanut hänelle henkilökohtaisessa opiskelusuunnitelmassa asetetut tavoitteet. Osaaminen arvioidaan asteikolla hyväksytty/hylätty. </p>",
-                  "sv": "<p>Utbildningsdelen anses vara godkänd då den studerande har uppnått målen som fastställts i den personliga studieplanen. Kunnandet bedöms med skalan godkänd/underkänd.</p><p>&nbsp;</p>"
+                  "_id": "7787950",
+                  "_tunniste": "418dadc2-7ddf-4b68-9ba7-3c26ae387fe9",
+                  "fi": "<p>Koulutuksen osa katsotaan hyväksytysti suoritetuksi, kun opiskelija on saavuttanut hänelle henkilökohtaisessa opiskelusuunnitelmassa asetetut tavoitteet. Osaaminen arvioidaan asteikolla hyväksytty/hylätty.</p><p>Jos opiskelija suorittaa lukiokoulutuksen opintoja, arvioidaan ne lukiokoulutuksen lainsäädännön ja opetussuunnitelman perusteiden mukaisesti. Vastuu arvioinnista on sillä koulutuksen järjestäjällä, jolla on lukiokoulutuksen järjestämislupa. Arvioinnista päättävät lukiolainsäädännön mukaisesti lukiokoulutuksen&nbsp;opettajat.</p>",
+                  "sv": "<p>Utbildningsdelen anses vara godkänd då den studerande har uppnått målen som fastställts i den personliga studieplanen. Kunnandet bedöms med skalan godkänd/underkänd.</p><p>Om den studerande avlägger studier inom gymnasieutbildning ska de bedömas i enlighet med lagstiftningen för gymnasieutbildning och grunderna för gymnasiets läroplan. Den utbildningsanordnare som har tillstånd att ordna gymnasieutbildning ansvarar för bedömningen. Beslut om bedömningen fattas i enlighet med lagstiftningen som berör gymnasieutbildningen av lärarna inom gymnasieutbildningen.</p>"
                 },
+                "viiteId": 7535562,
                 "osanTyyppi": "koulutuksenosa"
               },
               "lapset": [],
-              "_perusteenOsa": "7535564"
+              "_perusteenOsa": "7535562"
             },
             {
               "id": 7535296,
               "perusteenOsa": {
                 "id": 7535565,
                 "luotu": 1610694380075,
-                "muokattu": 1650969306187,
-                "muokkaaja": "1.2.246.562.24.71880188605",
+                "muokattu": 1687165500625,
+                "muokkaaja": "1.2.246.562.24.35128937253",
                 "nimi": {
-                  "_id": "8332154",
-                  "_tunniste": "0aa74012-f5fb-4487-8542-5f56b599e38a",
-                  "fi": "Arjen ja yhteiskunnallisen osallisuuden taidot",
+                  "_id": "8963301",
+                  "_tunniste": "4b8d1199-4ac5-4b0b-a6db-21587ba191c0",
+                  "fi": "Arjen taidot ja yhteiskunnallinen osallisuus",
                   "sv": "Vardagskompetens och delaktighet i samhället"
                 },
                 "tila": "luonnos",
                 "nimiKoodi": {
                   "id": 8332164,
                   "nimi": {
-                    "fi": "Arjen ja yhteiskunnallisen osallisuuden taidot",
+                    "fi": "Arjen taidot ja yhteiskunnallinen osallisuus",
                     "sv": "Vardagskompetens och delaktighet i samhället"
                   },
                   "arvo": "103",
                   "uri": "koulutuksenosattuva_103",
                   "koodisto": "koulutuksenosattuva",
-                  "versio": 1,
-                  "temporary": false
+                  "versio": 1
                 },
-                "laajuusMinimi": 1,
+                "laajuusMinimi": 0,
                 "laajuusMaksimi": 20,
                 "koulutusOsanKoulutustyyppi": "tutkintokoulutukseenvalmentava",
                 "koulutusOsanTyyppi": "valinnainen",
@@ -1588,38 +2167,154 @@
                   "fi": "<p>Koulutuksen osa katsotaan hyväksytysti suoritetuksi, kun opiskelija on saavuttanut hänelle henkilökohtaisessa opiskelusuunnitelmassa asetetut tavoitteet. Osaaminen arvioidaan asteikolla hyväksytty/hylätty. </p>",
                   "sv": "<p>Utbildningsdelen anses vara godkänd då den studerande har uppnått målen som fastställts i den personliga studieplanen. Kunnandet bedöms med skalan godkänd/underkänd.</p>"
                 },
+                "viiteId": 7535565,
                 "osanTyyppi": "koulutuksenosa"
               },
               "lapset": [],
               "_perusteenOsa": "7535565"
             },
             {
+              "id": 7535295,
+              "perusteenOsa": {
+                "id": 7535564,
+                "luotu": 1610694142001,
+                "muokattu": 1687165509482,
+                "muokkaaja": "1.2.246.562.24.35128937253",
+                "nimi": {
+                  "_id": "8963302",
+                  "_tunniste": "9c4fc350-017d-4dd1-95c9-6c80eb4afc93",
+                  "fi": "Työelämätaidot ja työelämässä tapahtuva oppiminen",
+                  "sv": "Arbetslivsfärdigheter och lärande i arbetslivet"
+                },
+                "tila": "luonnos",
+                "nimiKoodi": {
+                  "id": 8332163,
+                  "nimi": {
+                    "fi": "Työelämätaidot ja työelämässä tapahtuva oppiminen",
+                    "sv": "Arbetslivsfärdigheter och lärande i arbetslivet"
+                  },
+                  "arvo": "102",
+                  "uri": "koulutuksenosattuva_102",
+                  "koodisto": "koulutuksenosattuva",
+                  "versio": 1
+                },
+                "laajuusMinimi": 0,
+                "laajuusMaksimi": 20,
+                "koulutusOsanKoulutustyyppi": "tutkintokoulutukseenvalmentava",
+                "koulutusOsanTyyppi": "valinnainen",
+                "kuvaus": {
+                  "_id": "7787682",
+                  "_tunniste": "a570bd1a-56d5-43ad-89b1-8562c8c0fd89",
+                  "fi": "<p>Koulutuksen osassa keskitytään keskeisiin työelämätaitoihin ja tuetaan työelämässä tapahtuvaa oppimista. Tavoitteena on vahvistaa opiskelijan oman toiminnan ohjaamista sekä viestintä-, vuorovaikutus- ja yhteistyötaitoja. Opiskelija tutustuu työelämässä tapahtuvaan koulutukseen.</p>",
+                  "sv": "<p>Tyngdpunkten för utbildningsdelen ska ligga på färdigheter som är centrala i arbetslivet och på att stödja lärande på arbetsplatsen. Målet är att stärka den studerandes förmåga till självstyrning samt hens färdigheter i kommunikation, interaktion och samarbete. Den studerande bekantar sig med lärande i arbetslivet.</p>"
+                },
+                "tavoitteenKuvaus": null,
+                "tavoitteet": [
+                  {
+                    "_id": "7788126",
+                    "_tunniste": "48a39b1a-2bb1-4c04-b68a-f6af4a404116",
+                    "fi": "tuntee työnhaun prosessin",
+                    "sv": "känner till processen att söka arbete"
+                  },
+                  {
+                    "_id": "7788127",
+                    "_tunniste": "36b19daf-270b-493f-b261-f999eaf37751",
+                    "fi": "tutustuu työpaikkoihin oppimisympäristöinä",
+                    "sv": "bekantar sig med arbetsplatser som lärmiljöer"
+                  },
+                  {
+                    "_id": "7788128",
+                    "_tunniste": "b9b44b64-81f8-4842-b31f-18d8aa047d31",
+                    "fi": "tuntee työelämän ja yrittäjyyden keskeiset periaatteet",
+                    "sv": "känner till de centrala principerna som berör arbetsliv och företagsamhet"
+                  },
+                  {
+                    "_id": "7788129",
+                    "_tunniste": "b3f03e63-1907-4900-8628-25c0784b3559",
+                    "fi": "osaa toimia työyhteisön jäsenenä työpaikalla",
+                    "sv": "kan fungera som en medlem i arbetsgemenskapen på arbetsplatsen"
+                  },
+                  {
+                    "_id": "7788180",
+                    "_tunniste": "0a09e336-8190-4ba2-a28b-9a4b30fe3eeb",
+                    "fi": "osaa ajankäytön suunnittelua ja hallintaa",
+                    "sv": "kan planera och hantera sin tidsanvändning"
+                  },
+                  {
+                    "_id": "7788181",
+                    "_tunniste": "fa5879b1-2220-45ca-83bc-7ca6ee98539d",
+                    "fi": "tuntee omat oikeutensa ja velvollisuutensa työpaikalla",
+                    "sv": "känner till sina egna rättigheter och skyldigheter på arbetsplatsen"
+                  },
+                  {
+                    "_id": "7788182",
+                    "_tunniste": "16f009f0-ba54-4958-9d66-4a8a0adf2e2a",
+                    "fi": "tuntee mahdollisuutensa kansainvälisyysosaamisen kehittämiseen ja osallistuu mahdollisuuksien mukaan kansainväliseen toimintaan",
+                    "sv": "känner till sina möjligheter att utveckla sin internationella kompetens och deltar i mån av möjlighet i internationell verksamhet"
+                  },
+                  {
+                    "_id": "7788183",
+                    "_tunniste": "d951c53d-9521-4df3-89a2-eddcf34916a3",
+                    "fi": "tutustuu yleisimpiin työpaikalla käytössä oleviin tietokoneohjelmiin ja työpaikan vuorovaikutustilanteiden kieleen",
+                    "sv": "bekantar sig med de vanligaste datorprogrammen som används på en arbetsplats och med språket som behövs för att kommunicera på arbetsplatsen"
+                  },
+                  {
+                    "_id": "7788184",
+                    "_tunniste": "f3816af5-62c4-4b45-b514-748ac0292e37",
+                    "fi": "tiedostaa tulevaisuuden haasteet ja työelämän muutokset",
+                    "sv": "är medveten om framtidens utmaningar och förändringar i arbetslivet"
+                  }
+                ],
+                "keskeinenSisalto": {
+                  "_id": "7787726",
+                  "_tunniste": "75e2efc6-bb8c-4fcf-98e7-91be53d8091d",
+                  "fi": "<ul><li><p>työn hakeminen; sopivan työpaikan löytäminen, työhakemuksen tekeminen, työhaastattelussa toimiminen</p></li><li><p>työelämän pelisäännöt</p></li><li><p>osaamiskortit (esim. hygieniapassi, työturvallisuuskortti)</p></li><li><p>yrittäjyyden perusteet</p></li><li><p>työelämään tutustuminen / työelämässä tapahtuva oppiminen</p></li></ul>",
+                  "sv": "<ul><li><p>Hur man söker arbete; att hitta en lämplig arbetsplats, göra en arbetsansökan, hur man fungerar under en arbetsintervju</p></li><li><p>Spelregler i arbetslivet</p></li><li><p>Kompetenskort (till exempel hygienpass, arbetssäkerhetskort)</p></li><li><p>Grunderna för företagsamhet</p></li><li><p>Den studerande bekantar sig med arbetslivet / lärande som sker i arbetslivet</p></li></ul>"
+                },
+                "laajaAlaisenOsaamisenKuvaus": {
+                  "_id": "7787724",
+                  "_tunniste": "a0b0288c-9386-48d7-b00d-19caf61b2476",
+                  "fi": "<p>Koulutuksen järjestäjä kuvaa laaja-alaisen osaamisen osa-alueet suunnitelmassaan koulutuksen toteuttamiseksi. Niiden tulee perustua tutkintokoulutukseen valmentavan koulutuksen perusteiden laaja-alaiseen osaamisen&nbsp;osa-alueiden kuvauksiin. </p>",
+                  "sv": "<p>Utbildningsanordnaren ska i sin plan för genomförandet av utbildningen beskriva delområdena som ingår i den mångsidiga kompetensen. De ska basera sig på beskrivningarna av mångsidig kompetens som ingår i grunderna för utbildningen som handleder för examensutbildning.</p><p>&nbsp;</p>"
+                },
+                "arvioinninKuvaus": {
+                  "_id": "7787728",
+                  "_tunniste": "cf747681-d8bd-4f92-8d70-a91dc533145f",
+                  "fi": "<p>Koulutuksen osa katsotaan hyväksytysti suoritetuksi, kun opiskelija on saavuttanut hänelle henkilökohtaisessa opiskelusuunnitelmassa asetetut tavoitteet. Osaaminen arvioidaan asteikolla hyväksytty/hylätty. </p>",
+                  "sv": "<p>Utbildningsdelen anses vara godkänd då den studerande har uppnått målen som fastställts i den personliga studieplanen. Kunnandet bedöms med skalan godkänd/underkänd.</p><p>&nbsp;</p>"
+                },
+                "viiteId": 7535564,
+                "osanTyyppi": "koulutuksenosa"
+              },
+              "lapset": [],
+              "_perusteenOsa": "7535564"
+            },
+            {
               "id": 7535298,
               "perusteenOsa": {
                 "id": 7535567,
                 "luotu": 1610694845009,
-                "muokattu": 1650969352221,
-                "muokkaaja": "1.2.246.562.24.71880188605",
+                "muokattu": 1687165518785,
+                "muokkaaja": "1.2.246.562.24.35128937253",
                 "nimi": {
-                  "_id": "8332155",
-                  "_tunniste": "48e1504c-7254-479f-95f0-eed7f4eca3fe",
-                  "fi": "Valinnaiset koulutuksen osat",
+                  "_id": "8963303",
+                  "_tunniste": "ec2a7402-451a-4d9c-a29e-121234079a20",
+                  "fi": "Valinnaiset opinnot",
                   "sv": "Valbara utbildningsdelar"
                 },
                 "tila": "luonnos",
                 "nimiKoodi": {
                   "id": 8332165,
                   "nimi": {
-                    "fi": "Valinnaiset koulutuksen osat",
+                    "fi": "Valinnaiset opinnot",
                     "sv": "Valbara utbildningsdelar"
                   },
                   "arvo": "104",
                   "uri": "koulutuksenosattuva_104",
                   "koodisto": "koulutuksenosattuva",
-                  "versio": 1,
-                  "temporary": false
+                  "versio": 1
                 },
-                "laajuusMinimi": 1,
+                "laajuusMinimi": 0,
                 "laajuusMaksimi": 10,
                 "koulutusOsanKoulutustyyppi": "tutkintokoulutukseenvalmentava",
                 "koulutusOsanTyyppi": "valinnainen",
@@ -1644,6 +2339,7 @@
                   "fi": "<p>Koulutuksen osa katsotaan hyväksytysti suoritetuksi, kun opiskelija on saavuttanut hänelle henkilökohtaisessa opiskelusuunnitelmassa asetetut tavoitteet. Osaaminen arvioidaan asteikolla hyväksytty/hylätty. </p>",
                   "sv": "<p>Utbildningsdelen anses vara godkänd då den studerande har uppnått målen som fastställts i den personliga studieplanen. Kunnandet bedöms med skalan godkänd/underkänd.</p>"
                 },
+                "viiteId": 7535567,
                 "osanTyyppi": "koulutuksenosa"
               },
               "lapset": [],

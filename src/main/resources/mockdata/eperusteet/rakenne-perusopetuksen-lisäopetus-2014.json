@@ -22,7 +22,10 @@
       "opintoalakoodi": "opintoalaoph2002_002"
     }
   ],
-  "kielet": ["fi", "sv"],
+  "kielet": [
+    "sv",
+    "fi"
+  ],
   "kuvaus": {
     "_id": "1887450",
     "fi": "<p>Lisäopetuksen opetussuunitelman perusteet 2014</p>"
@@ -44,11 +47,16 @@
   "tila": "valmis",
   "tyyppi": "normaali",
   "koulutusvienti": false,
-  "korvattavatDiaarinumerot": ["17/011/2014", "3/011/2004"],
+  "korvattavatDiaarinumerot": [
+    "17/011/2014",
+    "3/011/2004"
+  ],
   "osaamisalat": [],
   "tyotehtavatJoissaVoiToimia": null,
   "suorittaneenOsaaminen": null,
   "perusteenAikataulut": [],
+  "poikkeamismaaraysTarkennus": null,
+  "poikkeamismaaraysTyyppi": null,
   "esiopetus": {
     "sisalto": {
       "id": 718920,

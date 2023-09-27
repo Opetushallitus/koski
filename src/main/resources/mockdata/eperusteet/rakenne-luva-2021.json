@@ -11,7 +11,9 @@
   "koulutustyyppi": "koulutustyyppi_23",
   "toteutus": "lops2019",
   "koulutukset": [],
-  "kielet": ["fi"],
+  "kielet": [
+    "fi"
+  ],
   "kuvaus": null,
   "maarayskirje": {
     "id": 7956241,
@@ -35,6 +37,8 @@
   "tyotehtavatJoissaVoiToimia": null,
   "suorittaneenOsaaminen": null,
   "perusteenAikataulut": [],
+  "poikkeamismaaraysTarkennus": null,
+  "poikkeamismaaraysTyyppi": null,
   "suoritustavat": [
     {
       "suoritustapakoodi": "lukiokoulutus2019",
@@ -62,8 +66,7 @@
             "arvo": "01",
             "uri": "laajaalainenosaaminenlops2021_01",
             "koodisto": "laajaalainenosaaminenlops2021",
-            "versio": null,
-            "temporary": false
+            "versio": null
           },
           "kuvaus": {
             "_id": "7845041",
@@ -88,8 +91,7 @@
             "arvo": "02",
             "uri": "laajaalainenosaaminenlops2021_02",
             "koodisto": "laajaalainenosaaminenlops2021",
-            "versio": null,
-            "temporary": false
+            "versio": null
           },
           "kuvaus": {
             "_id": "7845042",
@@ -114,8 +116,7 @@
             "arvo": "03",
             "uri": "laajaalainenosaaminenlops2021_03",
             "koodisto": "laajaalainenosaaminenlops2021",
-            "versio": null,
-            "temporary": false
+            "versio": null
           },
           "kuvaus": {
             "_id": "7845043",
@@ -140,8 +141,7 @@
             "arvo": "04",
             "uri": "laajaalainenosaaminenlops2021_04",
             "koodisto": "laajaalainenosaaminenlops2021",
-            "versio": null,
-            "temporary": false
+            "versio": null
           },
           "kuvaus": {
             "_id": "7845044",
@@ -166,8 +166,7 @@
             "arvo": "05",
             "uri": "laajaalainenosaaminenlops2021_05",
             "koodisto": "laajaalainenosaaminenlops2021",
-            "versio": null,
-            "temporary": false
+            "versio": null
           },
           "kuvaus": {
             "_id": "7845045",
@@ -192,8 +191,7 @@
             "arvo": "06",
             "uri": "laajaalainenosaaminenlops2021_06",
             "koodisto": "laajaalainenosaaminenlops2021",
-            "versio": null,
-            "temporary": false
+            "versio": null
           },
           "kuvaus": {
             "_id": "7845046",
@@ -238,8 +236,6 @@
           {
             "id": 7823728,
             "nimi": {
-              "_id": "7864803",
-              "_tunniste": "0bf401d6-db56-48aa-91fe-ba9a89e105be",
               "fi": "Perusopetuksessa alkanut kieli"
             },
             "koodi": {
@@ -250,8 +246,7 @@
               "arvo": "POAK",
               "uri": "oppiaineetjaoppimaaratlops2021_poak",
               "koodisto": "oppiaineetjaoppimaaratlops2021",
-              "versio": null,
-              "temporary": false
+              "versio": null
             },
             "_oppiaine": "7823727",
             "arviointi": {
@@ -303,8 +298,7 @@
                   "arvo": "LVKA1",
                   "uri": "moduulikoodistolops2021_lvka1",
                   "koodisto": "moduulikoodistolops2021",
-                  "versio": null,
-                  "temporary": false
+                  "versio": null
                 },
                 "laajuus": 2,
                 "kuvaus": null,
@@ -377,8 +371,7 @@
                   "arvo": "LVKA2",
                   "uri": "moduulikoodistolops2021_lvka2",
                   "koodisto": "moduulikoodistolops2021",
-                  "versio": null,
-                  "temporary": false
+                  "versio": null
                 },
                 "laajuus": 2,
                 "kuvaus": null,
@@ -456,8 +449,7 @@
                   "arvo": "LVKA3",
                   "uri": "moduulikoodistolops2021_lvka3",
                   "koodisto": "moduulikoodistolops2021",
-                  "versio": null,
-                  "temporary": false
+                  "versio": null
                 },
                 "laajuus": 2,
                 "kuvaus": null,
@@ -510,8 +502,6 @@
           {
             "id": 7823729,
             "nimi": {
-              "_id": "7864807",
-              "_tunniste": "badc568f-2ddb-4256-9209-fe5b4218c0cf",
               "fi": "Lukiokoulutukseen valmistavassa koulutuksessa alkava kieli"
             },
             "koodi": {
@@ -522,8 +512,7 @@
               "arvo": "LVAK",
               "uri": "oppiaineetjaoppimaaratlops2021_lvak",
               "koodisto": "oppiaineetjaoppimaaratlops2021",
-              "versio": null,
-              "temporary": false
+              "versio": null
             },
             "_oppiaine": "7823727",
             "arviointi": {
@@ -569,8 +558,7 @@
                   "arvo": "LVKB1",
                   "uri": "moduulikoodistolops2021_lvkb1",
                   "koodisto": "moduulikoodistolops2021",
-                  "versio": null,
-                  "temporary": false
+                  "versio": null
                 },
                 "laajuus": 2,
                 "kuvaus": null,
@@ -638,8 +626,7 @@
                   "arvo": "LVKB2",
                   "uri": "moduulikoodistolops2021_lvkb2",
                   "koodisto": "moduulikoodistolops2021",
-                  "versio": null,
-                  "temporary": false
+                  "versio": null
                 },
                 "laajuus": 2,
                 "kuvaus": null,
@@ -717,8 +704,7 @@
                   "arvo": "LVKB3",
                   "uri": "moduulikoodistolops2021_lvkb3",
                   "koodisto": "moduulikoodistolops2021",
-                  "versio": null,
-                  "temporary": false
+                  "versio": null
                 },
                 "laajuus": 2,
                 "kuvaus": null,
@@ -776,8 +762,6 @@
           {
             "id": 7838524,
             "nimi": {
-              "_id": "7864971",
-              "_tunniste": "eb52ae24-2990-47ba-b3c5-674d4eabc502",
               "fi": "Opiskelijan oma äidinkieli"
             },
             "koodi": {
@@ -788,8 +772,7 @@
               "arvo": "AIAI6",
               "uri": "oppiaineetjaoppimaaratlops2021_aiai6",
               "koodisto": "oppiaineetjaoppimaaratlops2021",
-              "versio": null,
-              "temporary": false
+              "versio": null
             },
             "_oppiaine": "7823727",
             "arviointi": {
@@ -835,8 +818,7 @@
                   "arvo": "LVMAI1",
                   "uri": "moduulikoodistolops2021_lvmai1",
                   "koodisto": "moduulikoodistolops2021",
-                  "versio": null,
-                  "temporary": false
+                  "versio": null
                 },
                 "laajuus": 2,
                 "kuvaus": null,
@@ -904,8 +886,7 @@
                   "arvo": "LVMAI2",
                   "uri": "moduulikoodistolops2021_lvmai2",
                   "koodisto": "moduulikoodistolops2021",
-                  "versio": null,
-                  "temporary": false
+                  "versio": null
                 },
                 "laajuus": 2,
                 "kuvaus": null,
@@ -968,8 +949,7 @@
                   "arvo": "LVMAI3",
                   "uri": "moduulikoodistolops2021_lvmai3",
                   "koodisto": "moduulikoodistolops2021",
-                  "versio": null,
-                  "temporary": false
+                  "versio": null
                 },
                 "laajuus": 2,
                 "kuvaus": null,
@@ -1057,8 +1037,6 @@
       {
         "id": 7823725,
         "nimi": {
-          "_id": "7837861",
-          "_tunniste": "4ad10928-c8f4-4fa1-aae0-dcc21e93b2f5",
           "fi": "Äidinkieli ja kirjallisuus",
           "sv": "Modersmål och litteratur"
         },
@@ -1071,8 +1049,7 @@
           "arvo": "AI",
           "uri": "oppiaineetjaoppimaaratlops2021_ai",
           "koodisto": "oppiaineetjaoppimaaratlops2021",
-          "versio": null,
-          "temporary": false
+          "versio": null
         },
         "_oppiaine": null,
         "arviointi": null,
@@ -1090,8 +1067,6 @@
           {
             "id": 7823726,
             "nimi": {
-              "_id": "7853471",
-              "_tunniste": "e16f3b5a-4752-4f7a-9cc8-fcbfdf7d3549",
               "fi": "Suomi toisena kielenä ja kirjallisuus"
             },
             "koodi": {
@@ -1102,8 +1077,7 @@
               "arvo": "AI6",
               "uri": "oppiaineetjaoppimaaratlops2021_ai6",
               "koodisto": "oppiaineetjaoppimaaratlops2021",
-              "versio": null,
-              "temporary": false
+              "versio": null
             },
             "_oppiaine": "7823725",
             "arviointi": {
@@ -1149,8 +1123,7 @@
                   "arvo": "LVS1",
                   "uri": "moduulikoodistolops2021_lvs1",
                   "koodisto": "moduulikoodistolops2021",
-                  "versio": null,
-                  "temporary": false
+                  "versio": null
                 },
                 "laajuus": 2,
                 "kuvaus": null,
@@ -1233,8 +1206,7 @@
                   "arvo": "LVS2",
                   "uri": "moduulikoodistolops2021_lvs2",
                   "koodisto": "moduulikoodistolops2021",
-                  "versio": null,
-                  "temporary": false
+                  "versio": null
                 },
                 "laajuus": 2,
                 "kuvaus": null,
@@ -1302,8 +1274,7 @@
                   "arvo": "LVS3",
                   "uri": "moduulikoodistolops2021_lvs3",
                   "koodisto": "moduulikoodistolops2021",
-                  "versio": null,
-                  "temporary": false
+                  "versio": null
                 },
                 "laajuus": 2,
                 "kuvaus": null,
@@ -1386,8 +1357,7 @@
                   "arvo": "LVS4",
                   "uri": "moduulikoodistolops2021_lvs4",
                   "koodisto": "moduulikoodistolops2021",
-                  "versio": null,
-                  "temporary": false
+                  "versio": null
                 },
                 "laajuus": 1,
                 "kuvaus": null,
@@ -1465,8 +1435,7 @@
                   "arvo": "LVS5",
                   "uri": "moduulikoodistolops2021_lvs5",
                   "koodisto": "moduulikoodistolops2021",
-                  "versio": null,
-                  "temporary": false
+                  "versio": null
                 },
                 "laajuus": 1,
                 "kuvaus": null,
@@ -1533,8 +1502,7 @@
                   "arvo": "LVS6",
                   "uri": "moduulikoodistolops2021_lvs6",
                   "koodisto": "moduulikoodistolops2021",
-                  "versio": null,
-                  "temporary": false
+                  "versio": null
                 },
                 "laajuus": 2,
                 "kuvaus": null,
@@ -1612,8 +1580,7 @@
                   "arvo": "LVS7",
                   "uri": "moduulikoodistolops2021_lvs7",
                   "koodisto": "moduulikoodistolops2021",
-                  "versio": null,
-                  "temporary": false
+                  "versio": null
                 },
                 "laajuus": 1,
                 "kuvaus": null,
@@ -1686,8 +1653,7 @@
                   "arvo": "LVS8",
                   "uri": "moduulikoodistolops2021_lvs8",
                   "koodisto": "moduulikoodistolops2021",
-                  "versio": null,
-                  "temporary": false
+                  "versio": null
                 },
                 "laajuus": 1,
                 "kuvaus": null,
@@ -1755,8 +1721,7 @@
                   "arvo": "LVS9",
                   "uri": "moduulikoodistolops2021_lvs9",
                   "koodisto": "moduulikoodistolops2021",
-                  "versio": null,
-                  "temporary": false
+                  "versio": null
                 },
                 "laajuus": 2,
                 "kuvaus": null,
@@ -1824,8 +1789,7 @@
                   "arvo": "LVS10",
                   "uri": "moduulikoodistolops2021_lvs10",
                   "koodisto": "moduulikoodistolops2021",
-                  "versio": null,
-                  "temporary": false
+                  "versio": null
                 },
                 "laajuus": 2,
                 "kuvaus": null,
@@ -1918,8 +1882,7 @@
                   "arvo": "LVS11",
                   "uri": "moduulikoodistolops2021_lvs11",
                   "koodisto": "moduulikoodistolops2021",
-                  "versio": null,
-                  "temporary": false
+                  "versio": null
                 },
                 "laajuus": 2,
                 "kuvaus": null,
@@ -2002,8 +1965,7 @@
                   "arvo": "LVS12",
                   "uri": "moduulikoodistolops2021_lvs12",
                   "koodisto": "moduulikoodistolops2021",
-                  "versio": null,
-                  "temporary": false
+                  "versio": null
                 },
                 "laajuus": 2,
                 "kuvaus": null,
@@ -2071,8 +2033,6 @@
           {
             "id": 7838525,
             "nimi": {
-              "_id": "7865109",
-              "_tunniste": "22b9ffef-f8be-4ebc-90fb-1942a0181bf4",
               "fi": "Ruotsi toisena kielenä ja kirjallisuus",
               "sv": "Svenska som andraspråk och litteratur"
             },
@@ -2085,8 +2045,7 @@
               "arvo": "AI7",
               "uri": "oppiaineetjaoppimaaratlops2021_ai7",
               "koodisto": "oppiaineetjaoppimaaratlops2021",
-              "versio": null,
-              "temporary": false
+              "versio": null
             },
             "_oppiaine": "7823725",
             "arviointi": {
@@ -2132,8 +2091,7 @@
                   "arvo": "LVS1",
                   "uri": "moduulikoodistolops2021_lvs1",
                   "koodisto": "moduulikoodistolops2021",
-                  "versio": null,
-                  "temporary": false
+                  "versio": null
                 },
                 "laajuus": 2,
                 "kuvaus": null,
@@ -2216,8 +2174,7 @@
                   "arvo": "LVS2",
                   "uri": "moduulikoodistolops2021_lvs2",
                   "koodisto": "moduulikoodistolops2021",
-                  "versio": null,
-                  "temporary": false
+                  "versio": null
                 },
                 "laajuus": 2,
                 "kuvaus": null,
@@ -2285,8 +2242,7 @@
                   "arvo": "LVS3",
                   "uri": "moduulikoodistolops2021_lvs3",
                   "koodisto": "moduulikoodistolops2021",
-                  "versio": null,
-                  "temporary": false
+                  "versio": null
                 },
                 "laajuus": null,
                 "kuvaus": null,
@@ -2364,8 +2320,7 @@
                   "arvo": "LVS4",
                   "uri": "moduulikoodistolops2021_lvs4",
                   "koodisto": "moduulikoodistolops2021",
-                  "versio": null,
-                  "temporary": false
+                  "versio": null
                 },
                 "laajuus": 1,
                 "kuvaus": null,
@@ -2443,8 +2398,7 @@
                   "arvo": "LVS5",
                   "uri": "moduulikoodistolops2021_lvs5",
                   "koodisto": "moduulikoodistolops2021",
-                  "versio": null,
-                  "temporary": false
+                  "versio": null
                 },
                 "laajuus": 1,
                 "kuvaus": null,
@@ -2512,8 +2466,7 @@
                   "arvo": "LVS6",
                   "uri": "moduulikoodistolops2021_lvs6",
                   "koodisto": "moduulikoodistolops2021",
-                  "versio": null,
-                  "temporary": false
+                  "versio": null
                 },
                 "laajuus": 2,
                 "kuvaus": null,
@@ -2591,8 +2544,7 @@
                   "arvo": "LVS7",
                   "uri": "moduulikoodistolops2021_lvs7",
                   "koodisto": "moduulikoodistolops2021",
-                  "versio": null,
-                  "temporary": false
+                  "versio": null
                 },
                 "laajuus": 1,
                 "kuvaus": null,
@@ -2665,8 +2617,7 @@
                   "arvo": "LVS8",
                   "uri": "moduulikoodistolops2021_lvs8",
                   "koodisto": "moduulikoodistolops2021",
-                  "versio": null,
-                  "temporary": false
+                  "versio": null
                 },
                 "laajuus": 1,
                 "kuvaus": null,
@@ -2734,8 +2685,7 @@
                   "arvo": "LVS9",
                   "uri": "moduulikoodistolops2021_lvs9",
                   "koodisto": "moduulikoodistolops2021",
-                  "versio": null,
-                  "temporary": false
+                  "versio": null
                 },
                 "laajuus": 2,
                 "kuvaus": null,
@@ -2803,8 +2753,7 @@
                   "arvo": "LVS10",
                   "uri": "moduulikoodistolops2021_lvs10",
                   "koodisto": "moduulikoodistolops2021",
-                  "versio": null,
-                  "temporary": false
+                  "versio": null
                 },
                 "laajuus": 2,
                 "kuvaus": null,
@@ -2897,8 +2846,7 @@
                   "arvo": "LVS11",
                   "uri": "moduulikoodistolops2021_lvs11",
                   "koodisto": "moduulikoodistolops2021",
-                  "versio": null,
-                  "temporary": false
+                  "versio": null
                 },
                 "laajuus": 2,
                 "kuvaus": null,
@@ -2981,8 +2929,7 @@
                   "arvo": "LVS12",
                   "uri": "moduulikoodistolops2021_lvs12",
                   "koodisto": "moduulikoodistolops2021",
-                  "versio": null,
-                  "temporary": false
+                  "versio": null
                 },
                 "laajuus": 2,
                 "kuvaus": null,
@@ -3052,8 +2999,6 @@
       {
         "id": 7838521,
         "nimi": {
-          "_id": "7840160",
-          "_tunniste": "ea338d07-e00e-488d-9756-398dd90c9d1b",
           "fi": "Opinto-ohjaus"
         },
         "koodi": {
@@ -3064,8 +3009,7 @@
           "arvo": "OP",
           "uri": "oppiaineetjaoppimaaratlops2021_op",
           "koodisto": "oppiaineetjaoppimaaratlops2021",
-          "versio": null,
-          "temporary": false
+          "versio": null
         },
         "_oppiaine": null,
         "arviointi": {
@@ -3117,8 +3061,7 @@
               "arvo": "LVOP",
               "uri": "moduulikoodistolops2021_lvop",
               "koodisto": "moduulikoodistolops2021",
-              "versio": null,
-              "temporary": false
+              "versio": null
             },
             "laajuus": 4,
             "kuvaus": null,
@@ -3261,8 +3204,6 @@
       {
         "id": 7838522,
         "nimi": {
-          "_id": "7865461",
-          "_tunniste": "441ddcb8-1193-4b3f-80d0-e582dec230aa",
           "fi": "Matematiikka"
         },
         "koodi": {
@@ -3273,8 +3214,7 @@
           "arvo": "MA",
           "uri": "oppiaineetjaoppimaaratlops2021_ma",
           "koodisto": "oppiaineetjaoppimaaratlops2021",
-          "versio": null,
-          "temporary": false
+          "versio": null
         },
         "_oppiaine": null,
         "arviointi": {
@@ -3320,8 +3260,7 @@
               "arvo": "LVMA",
               "uri": "moduulikoodistolops2021_lvma",
               "koodisto": "moduulikoodistolops2021",
-              "versio": null,
-              "temporary": false
+              "versio": null
             },
             "laajuus": 2,
             "kuvaus": null,
@@ -3364,8 +3303,6 @@
       {
         "id": 7838523,
         "nimi": {
-          "_id": "7865467",
-          "_tunniste": "2aef9e85-02d3-4c34-b7e0-82c0649b3781",
           "fi": "Historia"
         },
         "koodi": {
@@ -3376,8 +3313,7 @@
           "arvo": "HI",
           "uri": "oppiaineetjaoppimaaratlops2021_hi",
           "koodisto": "oppiaineetjaoppimaaratlops2021",
-          "versio": null,
-          "temporary": false
+          "versio": null
         },
         "_oppiaine": null,
         "arviointi": {
@@ -3423,8 +3359,7 @@
               "arvo": "LVHY1",
               "uri": "moduulikoodistolops2021_lvhy1",
               "koodisto": "moduulikoodistolops2021",
-              "versio": null,
-              "temporary": false
+              "versio": null
             },
             "laajuus": 2,
             "kuvaus": null,
@@ -3487,8 +3422,6 @@
       {
         "id": 7838526,
         "nimi": {
-          "_id": "7865469",
-          "_tunniste": "4a501ef3-18bc-4929-8a13-10efcd6aed83",
           "fi": "Fysiikka"
         },
         "koodi": {
@@ -3499,8 +3432,7 @@
           "arvo": "FY",
           "uri": "oppiaineetjaoppimaaratlops2021_fy",
           "koodisto": "oppiaineetjaoppimaaratlops2021",
-          "versio": null,
-          "temporary": false
+          "versio": null
         },
         "_oppiaine": null,
         "arviointi": {
@@ -3546,8 +3478,7 @@
               "arvo": "LVFYKE",
               "uri": "moduulikoodistolops2021_lvfyke",
               "koodisto": "moduulikoodistolops2021",
-              "versio": null,
-              "temporary": false
+              "versio": null
             },
             "laajuus": 1,
             "kuvaus": null,
@@ -3600,8 +3531,6 @@
       {
         "id": 7838527,
         "nimi": {
-          "_id": "7865561",
-          "_tunniste": "5643c38e-2301-4ce7-975a-84f94317211d",
           "fi": "Kemia"
         },
         "koodi": {
@@ -3612,8 +3541,7 @@
           "arvo": "KE",
           "uri": "oppiaineetjaoppimaaratlops2021_ke",
           "koodisto": "oppiaineetjaoppimaaratlops2021",
-          "versio": null,
-          "temporary": false
+          "versio": null
         },
         "_oppiaine": null,
         "arviointi": {
@@ -3659,8 +3587,7 @@
               "arvo": "LVFYKE",
               "uri": "moduulikoodistolops2021_lvfyke",
               "koodisto": "moduulikoodistolops2021",
-              "versio": null,
-              "temporary": false
+              "versio": null
             },
             "laajuus": 1,
             "kuvaus": null,
@@ -3713,8 +3640,6 @@
       {
         "id": 7838528,
         "nimi": {
-          "_id": "7865563",
-          "_tunniste": "ebdd12b6-7abc-45b5-8788-0b8ff1d3f0d7",
           "fi": "Biologia"
         },
         "koodi": {
@@ -3725,8 +3650,7 @@
           "arvo": "BI",
           "uri": "oppiaineetjaoppimaaratlops2021_bi",
           "koodisto": "oppiaineetjaoppimaaratlops2021",
-          "versio": null,
-          "temporary": false
+          "versio": null
         },
         "_oppiaine": null,
         "arviointi": {
@@ -3772,8 +3696,7 @@
               "arvo": "LVBG",
               "uri": "moduulikoodistolops2021_lvbg",
               "koodisto": "moduulikoodistolops2021",
-              "versio": null,
-              "temporary": false
+              "versio": null
             },
             "laajuus": 1,
             "kuvaus": null,
@@ -3826,8 +3749,6 @@
       {
         "id": 7838529,
         "nimi": {
-          "_id": "7865565",
-          "_tunniste": "f23f3b44-63c5-4b02-a659-700bca65e52a",
           "fi": "Maantiede"
         },
         "koodi": {
@@ -3838,8 +3759,7 @@
           "arvo": "GE",
           "uri": "oppiaineetjaoppimaaratlops2021_ge",
           "koodisto": "oppiaineetjaoppimaaratlops2021",
-          "versio": null,
-          "temporary": false
+          "versio": null
         },
         "_oppiaine": null,
         "arviointi": {
@@ -3885,8 +3805,7 @@
               "arvo": "LVBG",
               "uri": "moduulikoodistolops2021_lvbg",
               "koodisto": "moduulikoodistolops2021",
-              "versio": null,
-              "temporary": false
+              "versio": null
             },
             "laajuus": 1,
             "kuvaus": null,
@@ -3939,8 +3858,6 @@
       {
         "id": 7853560,
         "nimi": {
-          "_id": "7865567",
-          "_tunniste": "62a73aba-7e25-448e-9be3-9b54695f54f3",
           "fi": "Yhteiskuntaoppi"
         },
         "koodi": {
@@ -3951,8 +3868,7 @@
           "arvo": "YH",
           "uri": "oppiaineetjaoppimaaratlops2021_yh",
           "koodisto": "oppiaineetjaoppimaaratlops2021",
-          "versio": null,
-          "temporary": false
+          "versio": null
         },
         "_oppiaine": null,
         "arviointi": {
@@ -4000,8 +3916,7 @@
               "arvo": "LVHY2",
               "uri": "moduulikoodistolops2021_lvhy2",
               "koodisto": "moduulikoodistolops2021",
-              "versio": null,
-              "temporary": false
+              "versio": null
             },
             "laajuus": 2,
             "kuvaus": null,

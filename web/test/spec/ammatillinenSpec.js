@@ -3056,7 +3056,7 @@ describe('Ammatillinen koulutus', function () {
             )
           ).to.equal(
             'Koulutus Näyttötutkintoon valmistava koulutus\n' +
-              'Tutkinto Autoalan työnjohdon erikoisammattitutkinto 357305 40/011/2001\n' +
+              'Tutkinto Autoalan työnjohdon erikoisammattitutkinto 457305 40/011/2001\n' +
               'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
               'Alkamispäivä 1.9.2012\n' +
               'Päättymispäivä 31.5.2015\n' +
@@ -3189,7 +3189,7 @@ describe('Ammatillinen koulutus', function () {
               S('.suoritus > .properties, .suoritus > .tila-vahvistus')
             )
           ).to.equal(
-            'Koulutus Autoalan työnjohdon erikoisammattitutkinto 357305 40/011/2001\n' +
+            'Koulutus Autoalan työnjohdon erikoisammattitutkinto 457305 40/011/2001\n' +
               'Suoritustapa Näyttötutkinto\n' +
               'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
               'Suorituskieli suomi\n' +
