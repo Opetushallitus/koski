@@ -227,7 +227,7 @@ class AmmatillinenTutkintoRaporttiSpec
         rivit(0).valmiitTutkintoaYksilöllisestiLaajentavatTutkinnonOsatLkm should equal("0")
 
         rivit(1).opiskeluoikeudenAlkamispäivä should equal(Some(date(2012, 9, 1)))
-        rivit(1).tutkinto should equal("357305")
+        rivit(1).tutkinto should equal("457305")
         rivit(1).osaamisalat should equal(None)
         rivit(1).tutkintonimike should equal("")
         rivit(1).päätasonSuorituksenNimi should equal("Autoalan työnjohdon erikoisammattitutkinto")
@@ -289,7 +289,7 @@ class AmmatillinenTutkintoRaporttiSpec
           rivit(0).ostettu should equal(false)
 
           rivit(1).opiskeluoikeudenAlkamispäivä should equal(Some(date(2012, 9, 1)))
-          rivit(1).tutkinto should equal("357305")
+          rivit(1).tutkinto should equal("457305")
           rivit(1).osaamisalat should equal(None)
           rivit(1).tutkintonimike should equal("")
           rivit(1).päätasonSuorituksenNimi should equal("Autoalan työnjohdon erikoisammattitutkinto")

@@ -1,17 +1,19 @@
 {
   "id": 7675672,
   "globalVersion": {
-    "aikaleima": 1623418711098
+    "aikaleima": 1630568875288
   },
   "nimi": {
-    "_id": "7723871",
-    "_tunniste": "35be7734-99e9-4cae-b476-3f4354bfad81",
+    "_id": "7925615",
+    "_tunniste": "7a0a45f5-a296-4c11-a762-80b6db05e4cb",
     "fi": "Aikuisten maahanmuuttajien kotoutumiskoulutuksen opetussuunnitelman perusteet 2012"
   },
   "koulutustyyppi": "koulutustyyppi_30",
   "toteutus": "vapaasivistystyo",
   "koulutukset": [],
-  "kielet": ["fi"],
+  "kielet": [
+    "fi"
+  ],
   "kuvaus": null,
   "maarayskirje": null,
   "muutosmaaraykset": [],
@@ -19,10 +21,11 @@
   "voimassaoloAlkaa": 1623099600000,
   "siirtymaPaattyy": null,
   "voimassaoloLoppuu": null,
-  "paatospvm": null,
+  "paatospvm": 1328047200000,
+  "viimeisinJulkaisuAika": null,
   "luotu": 1619612188823,
-  "muokattu": 1623418711067,
-  "tila": "luonnos",
+  "muokattu": 1630568875288,
+  "tila": "valmis",
   "tyyppi": "normaali",
   "koulutusvienti": false,
   "korvattavatDiaarinumerot": [],
@@ -35,15 +38,15 @@
       "peruste": {
         "id": 7675672,
         "nimi": {
-          "_id": "7723871",
-          "_tunniste": "35be7734-99e9-4cae-b476-3f4354bfad81",
+          "_id": "7925615",
+          "_tunniste": "7a0a45f5-a296-4c11-a762-80b6db05e4cb",
           "fi": "Aikuisten maahanmuuttajien kotoutumiskoulutuksen opetussuunnitelman perusteet 2012"
         },
-        "tila": "luonnos",
+        "tila": "valmis",
         "tyyppi": "normaali",
         "koulutustyyppi": "koulutustyyppi_30",
         "esikatseltavissa": false,
-        "voimassaoloAlkaa": 1623099600000,
+        "voimassaoloAlkaa": 1328047200000,
         "voimassaoloLoppuu": null
       },
       "tavoite": {
@@ -56,18 +59,45 @@
       "julkinen": false
     }
   ],
+  "poikkeamismaaraysTarkennus": null,
+  "poikkeamismaaraysTyyppi": null,
   "vapaasivistystyo": {
     "id": 7675681,
     "sisalto": {
       "id": 7679071,
       "lapset": [
         {
+          "id": 7937020,
+          "perusteenOsa": {
+            "id": 7918347,
+            "luotu": 1630401372941,
+            "muokattu": 1630402578141,
+            "muokkaaja": "1.2.246.562.24.29853335725",
+            "nimi": {
+              "_id": "7936939",
+              "_tunniste": "8637b289-97a7-48c8-b5db-a52a27bae0a5",
+              "fi": "Johdanto"
+            },
+            "tila": "luonnos",
+            "teksti": {
+              "_id": "7937118",
+              "_tunniste": "f52428a6-2ecd-45ba-962c-e490731c20fc",
+              "fi": "<p><abbr data-viite=\"Lakikotoutumisenedistmisest1386201011630401905615\">Kotoutumislain</abbr> tavoitteena on edistää maahanmuuttajien kotoutumista ja tukea heidän aktiivista osallistumistaan suomalaisen yhteiskunnan toimintaan. Maahanmuuttajien kotoutumisen tehostamiseksi ja työllistymisen nopeuttamiseksi kotoutumislaissa säädetään kotoutumista edistävistä ja tukevista toimenpiteistä ja palveluista.</p><p><abbr data-viite=\"Lakikotoutumisenedistmisest1386201071630401925232\">Kotoutumislain</abbr> tavoitteena on myös, että kaikki maahanmuuttajat saisivat tietoa oikeuksistaan ja velvollisuuksistaan suomalaisessa työelämässä ja yhteiskunnassa, palvelujärjestelmästä sekä kotoutumislain mukaisista kotoutumista edistävistä toimenpiteistä. Laissa säädetään maahanmuuttajan kotoutumista edistävistä alkuvaiheen toimenpiteistä ja palveluista, joita ovat perustietojen antaminen, ohjaus ja neuvonta, alkukartoitus sekä kotoutumissuunnitelma, jossa voidaan sopia kotoutumiskoulutuksesta. Perustietoaineisto suomalaisesta yhteiskunnasta annetaan kaikille Suomeen muuttaville oleskelulupapäätöksen tiedoksiannon, oleskeluoikeuden rekisteröinnin tai kotikunnan ja väestötietojen rekisteröinnin yhteydessä.</p><p><abbr data-viite=\"Lakikotoutumisenedistmisest1386201091630401966598\">Kotoutumislain</abbr> mukaisessa alkukartoituksessa arvioidaan alustavasti maahanmuuttajan työllistymis-, opiskelu- ja muut kotoutumisvalmiudet sekä kielikoulutuksen ja muiden kotoutumista edistävien toimenpiteiden ja palveluiden tarpeet.</p><p>Alkukartoituksen perusteella maahanmuuttaja ohjataan hänen tarpeitaan vastaaviin toimenpiteisiin ja palveluihin. Alkukartoitukseen ovat oikeutettuja työttömät ja toimeentulotukea muuten kuin tilapäisesti saavat maahanmuuttajat. Alkukartoitus voidaan tehdä myös sitä pyytäneelle muulle maahanmuuttajalle, jos tämän arvioidaan sitä tarvitsevan. Alkukartoituksen toteuttamisesta vastaa joko työ- ja elinkeinotoimisto (TE-toimisto) tai kunta.</p><p>Alkukartoituksen perusteella laadittavan <abbr data-viite=\"Lakikotoutumisenedistmisest13862010111630401989909\">kotoutumissuunnitelman</abbr> tarkoituksena on maahanmuuttajan tukeminen ja ohjaaminen kotoutumista edistäviin toimenpiteisiin ja palveluihin erityisesti maahanmuuton alkuvaiheessa. Maahanmuuttajalla on oikeus <abbr data-viite=\"Lakikotoutumisenedistmisest13862010121630402007892\">kotoutumissuunnitelmaan</abbr>, jos hän on työtön tai jos hän saa toimeentulotukea muuten kuin tilapäisesti. Kotoutumissuunnitelma voidaan laatia myös muulle maahanmuuttajalle, jos hänen arvioidaan alkukartoituksen perusteella tarvitsevan suunnitelmaa kotoutumisen edistämiseksi. Kotoutumissuunnitelmassa kunta ja/tai TE-toimisto sopivat yhdessä maahanmuuttajan <abbr data-viite=\"Lakikotoutumisenedistmisest13862010131630402027797\">kanssa</abbr> niistä toimenpiteistä ja palveluista, joiden tarkoituksena on tukea maahanmuuttajaa hankkimaan suomen tai ruotsin kielen taito sekä muita työelämässä ja yhteiskunnassa tarvittavia tietoja ja taitoja.</p><p><abbr data-viite=\"Lakikotoutumisenedistmisest13862010211630402049905\">Kotoutumiskoulutusta</abbr><strong> </strong>järjestetään oppivelvollisuusiän ylittäneelle maahanmuuttajalle pääsääntöisesti työvoimapoliittisena aikuiskoulutuksena. Kotoutumiskoulutus voidaan toteuttaa myös omaehtoisena opiskeluna. Työvoimapoliittisena koulutuksena järjestettävään kotoutumiskoulutukseen voivat osallistua työttömät tai työttömyysuhan alaiset henkilöt. Myös työssä olevat voivat tietyissä tilanteissa hakeutua koulutukseen. Opiskelijat voivat hakeutua omaehtoiseen opiskeluun oman harkintansa mukaan, opiskelusta on kuitenkin sovittava TE-toimiston kanssa kotoutumissuunnitelmassa ennen opintojen aloittamista niissä tilanteissa, joissa opiskellaan kotoutumistuella. Luku- ja kirjoitustaidottomille aikuisille maahanmuuttajille järjestetään luku- ja kirjoitustaidon opetussuunnitelman perusteiden mukaista luku- ja kirjoitustaidon koulutusta.</p><p><abbr data-viite=\"Lakikotoutumisenedistmisest13862010201623152239879\">Kotoutumiskoulutuksena</abbr> järjestetään suomen tai ruotsin kielen opetusta sekä muuta opetusta, joka edistää maahanmuuttajan pääsyä työelämään ja jatkokoulutukseen ja joka edistää maahanmuuttajan yhteiskunnallisia, kulttuurisia ja elämänhallintaan liittyviä valmiuksia. Kotoutumiskoulutuksen tavoitteena on, että maahanmuuttaja saavuttaa suomen tai ruotsin kielessä toimivan peruskielitaidon. Kotoutumista tukevien toimenpiteiden ja palvelujen tuottajalla, jonka asiakkaaksi maahanmuuttaja ohjataan, on oikeus saada maksutta ja salassapitosäännösten estämättä työ- ja elinkeinotoimistolta ja kunnan viranomaiselta koulutuksen järjestämiseksi välttämättömät tiedot.</p><p><abbr data-viite=\"Lakikotoutumisenedistmisest13862010201630402083013\">Työvoimapoliittinen kotoutumiskoulutus annetaan näiden Opetushallituksen antamien Aikuisten maahanmuuttajien kotoutumiskoulutuksen opetussuunnitelman perusteiden mukaisesti</abbr>. Mikäli oppivelvollisuusiän ylittäneelle maahanmuuttajalle järjestetään muuta koulutusta, esimerkiksi perusopetusta tai ammatillista koulutusta, noudatetaan kyseisen koulutuksen opetussuunnitelman perusteita. Jos koulutuksella ei ole opetussuunnitelman perusteita, koulutuksen järjestäjä voi noudattaa näitä opetussuunnitelman perusteita.</p>"
+            },
+            "koodit": [],
+            "liite": false,
+            "osanTyyppi": "tekstikappale"
+          },
+          "lapset": [],
+          "_perusteenOsa": "7918347"
+        },
+        {
           "id": 7679072,
           "perusteenOsa": {
             "id": 7679012,
             "luotu": 1619612233406,
-            "muokattu": 1619612388708,
-            "muokkaaja": "1.2.246.562.24.77925329174",
+            "muokattu": 1630408026799,
+            "muokkaaja": "1.2.246.562.24.29853335725",
             "nimi": {
               "_id": "7679027",
               "_tunniste": "9fa50d31-f47f-448a-909e-7ae8069420f3",
@@ -75,9 +105,9 @@
             },
             "tila": "luonnos",
             "teksti": {
-              "_id": "7679300",
+              "_id": "7937514",
               "_tunniste": "dcb37ad7-e54b-4218-8410-9f415d5ab3aa",
-              "fi": "<p>Aikuisten maahanmuuttajien kotoutumiskoulutus tulee kotoutumislain mukaan antaa näiden Opetushallituksen antamien opetussuunnitelman perusteiden mukaisesti. Opetushallitus suosittelee, että näiden perusteiden pohjalta laa­ditaan koulutuksen järjestäjän oma opetussuunnitelma. Opetussuunnitelman hyväksyy kunkin oppilaitoksen tai muun koulutuksen tarjoajan sen omassa johtosäännössä tai vastaavassa säädöksessä päättämä taho. Aikuisten maa­hanmuuttajien&nbsp;&nbsp; kotoutumisen&nbsp;&nbsp;&nbsp; opetussuunnitelmaa &nbsp;laatiessaan&nbsp;koulutuksen järjestäjän tulee ottaa huomioon toiminta-alueensa kotoutumisohjelma ja aikaisemmista kotoutumiskoulutuksista saatu palaute. Opetussuunnitelmaan sisällytetään niitä seikkoja, jotka kullakin kotoutumispaikkakunnalla erityisesti edistävät kotoutumista.</p>"
+              "fi": "<p><abbr data-viite=\"Lakikotoutumisenedistmisest13862010201623153408300\">Aikuisten maahanmuuttajien kotoutumiskoulutus tulee kotoutumislain mukaan antaa näiden Opetushallituksen antamien opetussuunnitelman perusteiden mukaisesti</abbr>. Opetushallitus suosittelee, että näiden perusteiden pohjalta laa­ditaan koulutuksen järjestäjän oma opetussuunnitelma. Opetussuunnitelman hyväksyy kunkin oppilaitoksen tai muun koulutuksen tarjoajan sen omassa johtosäännössä tai vastaavassa säädöksessä päättämä taho. Aikuisten maa­hanmuuttajien&nbsp;&nbsp; kotoutumisen&nbsp;&nbsp;&nbsp; opetussuunnitelmaa &nbsp;laatiessaan&nbsp;koulutuksen järjestäjän tulee ottaa huomioon toiminta-alueensa <abbr data-viite=\"Lakikotoutumisenedistmisest13862010321623152364002\">kotoutumisohjelma</abbr> ja aikaisemmista kotoutumiskoulutuksista saatu palaute. Opetussuunnitelmaan sisällytetään niitä seikkoja, jotka kullakin kotoutumispaikkakunnalla erityisesti edistävät kotoutumista.</p><p>Opetussuunnitelma sisältää seuraavat osat</p><ul><li><p>koulutuksen järjestämisen lähtökohdat ja kohderyhmän kuvaus</p></li><li><p>kotoutumiskoulutuksen toteuttamisen erityispiirteet koskien oppimiskäsi­ tystä, oppimisympäristöä ja työtapoja, toimintakulttuuria sekä eheyttämistä ja eriyttämistä</p></li><li><p>opiskelijoiden henkilökohtaisen opiskelusuunnitelman laadinta sekä menettelytavat opiskelijan lähtötason ja opiskelijalle sopivan opintopolun arvioimiseksi ja olemassa olevan osaamisen selvittämiseksi sekä tämän tiedon dokumentoimiseksi</p></li><li><p>kotoutumiskoulutuksen yleiset tavoitteet, suo men/ ruotsin kielen ja viestin­ tätaitojen, työelämä- ja yhteiskuntataitojen, tarjottavien valinnaisten opinto­ jen tavoitteet ja keskeiset sisällöt</p></li><li><p>ohjauksen tavoitteet ja järjestämine n, opiskelijan tukeminen ja tuen järjestä­ minen sekä kuvaus ohjaukseen ja tuen antamiseen osallistuvien tehtävistä ja työnjaosta</p></li><li><p>opiskelijan arviointi, arvioinnin muodot ja käytännöt koulutuksen aikana ja päättyessä, palautteen antamisen käytännöt, arviointiasteikko, todistus ja siihen merkittävät tiedot</p></li><li><p>yhteistyö muiden oppilaitosten, kansalaisjärjestöjen ja muiden tahojen kanssa</p></li><li><p>yhteistyö työelämäjakson järjestämiseksi</p></li></ul><p>Opetussuunnitelmassa voi olla alueellisia tai seudullisia, kuntakohtaisia ja oppi­ laitoskohtaisia osia.</p>"
             },
             "koodit": [],
             "liite": false,
@@ -110,15 +140,19 @@
               "perusteenOsa": {
                 "id": 7679015,
                 "luotu": 1619683450631,
-                "muokattu": 1619683450631,
-                "muokkaaja": "1.2.246.562.24.77925329174",
+                "muokattu": 1630403633474,
+                "muokkaaja": "1.2.246.562.24.29853335725",
                 "nimi": {
                   "_id": "7681838",
                   "_tunniste": "1a02a428-8e44-4084-9108-b2096982b65e",
                   "fi": "Arvoperusta"
                 },
                 "tila": "luonnos",
-                "teksti": null,
+                "teksti": {
+                  "_id": "7937119",
+                  "_tunniste": "128ea04f-6c6c-40d6-a136-eac0bb6f92ca",
+                  "fi": "<p>Aikuisten maahanmuuttajien kotoutumiskoulutuksen arvoperusta noudattaa suomalaisen koulutusjärjestelmän arvoperustaa. <abbr data-viite=\"Perustuslaki731199961623152776700\">Suomi turvaa perustuslain nojalla maahanmuuttajien tasa-arvoiset ja yhdenvertaiset oikeudet</abbr>. Koulutuk­sen järjestämisen näkökulmasta tasa-arvo tarkoittaa alueellista ja sukupuolten välistä tasa-arvoa sekä koulutettavan taloudellisesta asemasta tai muista hen­kilökohtaisista ominaisuuksista riippumatonta tasa-arvoa. <abbr data-viite=\"Yhdenvertaisuuslaki21200461623152810220\">Yhdenvertaisuuslain mukaan ketään ei saa syrjiä iän, etnisen tai kansallisen alkuperän, kansalai­suuden, kielen, uskonnon, vakaumuksen, mielipiteen, terveydentilan, vam­maisuuden , sukupuolisen suuntautumisen tai muun henkilöön liittyvän syyn perusteella</abbr>. <abbr data-viite=\"Yhdenvertaisuuslaki21200441623152836101\">Yhdenvertaisuuslaki edellyttää myös yhdenvertaisuuden aktii­vista edistämistä</abbr>.</p><p>Kotoutumiskoulutuksen yleisenä arvolähtökohtana on elämän ja ihmisoikeuk­sien kunnioitus. Sivistysihanteena on pyrkimys hyvyyteen, totuuteen ja inhi­millisyyteen. Koulutus edistää yhteiskunnallista oikeudenmukaisuutta, luo edellytyksiä avoimelle demokratialle ja hyvinvoinnille sekä ehkäisee syrjäy­tymistä. Lisäksi kotoutumiskoulutus harjaannuttaa aikuisia maahanmuuttajia suomalaisen yhteiskunnan toimintatapoihin, kestävään elämäntapaan ja arjen taitoihin.</p><p>Aikuisten maahanmuuttajien kotoutumiskoulutus ohjaa tunnistamaan eri kult­tuureita yhdistäviä elämänarvoja ja periaatteita. Opiskelu tukee maahanmuut­tajien omia kulttuuriperinteitä sekä auttaa arvioimaan ja uudistamaan niitä, jos ne ovat ristiriidassa Suomessa vallitsevien lakien kanssa. Opiskelu vahvistaa opiskelijan taitoja toimia monikulttuurisessa yhteiskunnassa sekä kartuttaa opiskelijan interkulttuurista osaamista. Koulutus kannustaa vuorovaikutukseen eri kulttuuriryhmien välillä ja kantaväestön kanssa. Kotoutumiskoulutuksessa edistetään hyviä etnisiä suhteita eikä sallita syrjintää missään muodossa eikä keneltäkään.</p><p>Opiskelijaa rohkaistaan arvioimaan julkilausuttujen arvojen ja todellisuuden yhtäpitävyyttä ja mahdollisia ristiriitoja sekä pohtimaan kriittisesti suomalaisen yhteiskunnan mahdollisuuksia ja epäkohtia. Opiskelussa arvoja ja periaatteita kielennetään mahdollisuuksien mukaan. Tavoitteena on arvojen toteuttaminen koulutuksen järje s tämi stavoissa ja opetuksessa sekä eetoksessa ja toimintakult­tuurissa. Arvojen ja todellisuuden yhtäpitävyyttä pyritään arvioimaan osana koulutusta.</p>"
+                },
                 "koodit": [],
                 "liite": false,
                 "osanTyyppi": "tekstikappale"
@@ -131,15 +165,19 @@
               "perusteenOsa": {
                 "id": 7679016,
                 "luotu": 1619683486537,
-                "muokattu": 1619683486537,
-                "muokkaaja": "1.2.246.562.24.77925329174",
+                "muokattu": 1623153096324,
+                "muokkaaja": "1.2.246.562.24.47321363845",
                 "nimi": {
                   "_id": "7681839",
                   "_tunniste": "6a8d7b1b-43b8-4735-9fdd-3a54a69615d5",
                   "fi": "Kotoutumiskoulutus osana kotoutumista"
                 },
                 "tila": "luonnos",
-                "teksti": null,
+                "teksti": {
+                  "_id": "7789211",
+                  "_tunniste": "6261983a-1157-47bb-9ce1-55bcb9c9f28d",
+                  "fi": "<p>Jokaisen maahanmuuttajan kotoutuminen etenee yksilöllisesti. Siihen vaikut­tavat muun muassa maahanmuuttajan yksilölliset ominaisuudet ja edellytykset sekä tarpeet ja toiveet. Myös maahanmuuttajan omalla motivaatiolla on kotou­tumisessa keskeinen rooli. Onnistunut kotoutumin en edellyttää yhteiskunnan panostuk en lisäksi maahanmuuttajan omatoimisuutta, tavoitteellista osallistu­mista ja sitoutumista kotoutumisprosessiin.</p><p>Kotoutumisessa ei&nbsp; ole&nbsp; kyse&nbsp; pelkästään&nbsp; maahanmuuttajan&nbsp; henkilökohtaisesta ja hänen perheensä kotoutumisprosessista. Kotoutuminen on kaksisuuntainen prosessi, jossa sekä maahanmuuttaja että maahanmuuttajan lähiyhteisö ovat vuorovaikutuksessa toistensa kanssa. Tärkeä osa kotoutumista on maahan­muuttajien ja kantaväestön välinen jatkuva kanssakäyminen arkipäivän tilan­teissa ja lähiyhteisöissä.</p><p>Kotoutuminen on aina myös kokemuksena yksilöllinen: ulkoisesti samassa tilanteessa olevien maahanmuuttajien omat kokemukset kotoutumisesta voivat olla hyvin erilaisia. Yhteiskunta tukee maahanmuuttajien kotoutumista erilais­ten palvelujen ja toimenpiteiden avulla erityisesti maassa olon ensimmäisten vuosien aikana, mutta kotoutumisprosessi ei pääty kotoutumislain mukaisen kotoutumisajan päätyttyä.</p><p>Kotoutumiskoulutuksen tavoitteena on tukea maahanmuuttajan kotoutumista kehittämällä sellaisia kielellisiä, yhteiskunnallisia, kulttuurisia&nbsp; ja&nbsp; elämänhallint­aan liittyviä valmiuksia, joiden avulla maahanmuuttaja selviytyy jo kapäiväisen elämän tilanteissa uudessa ympäristössään sekä kykenee toimimaan työelämässä ja hakeutumaan jatko-opintoihin.</p>"
+                },
                 "koodit": [],
                 "liite": false,
                 "osanTyyppi": "tekstikappale"
@@ -152,15 +190,19 @@
               "perusteenOsa": {
                 "id": 7679017,
                 "luotu": 1619683525732,
-                "muokattu": 1619683525732,
-                "muokkaaja": "1.2.246.562.24.77925329174",
+                "muokattu": 1623154012279,
+                "muokkaaja": "1.2.246.562.24.47321363845",
                 "nimi": {
                   "_id": "7682190",
                   "_tunniste": "01c9950f-5508-4703-8f03-c0659a8d8eb8",
                   "fi": "Koulutuksen laajuus ja rakenne"
                 },
                 "tila": "luonnos",
-                "teksti": null,
+                "teksti": {
+                  "_id": "7789217",
+                  "_tunniste": "17bac3e8-b785-4f82-8c05-aff9d794bca6",
+                  "fi": "<p>Kotoutumiskoulutuksen laajuus ja sisältö vaihtelevat lähtötason arvioinnissa selvitettyjen opiskelijan yksilöllisten tarpeiden mukaan. Koulutukseen osallis­tuvan&nbsp; aikuisen&nbsp; maahanmuuttajan&nbsp; opintopolku&nbsp; voi&nbsp; laajuudeltaan olla&nbsp; enintään 60 opintoviikkoa. Yksi opintoviikko vastaa opiskelijan noin 35&nbsp; tunnin työpa­nosta.</p><p><abbr data-viite=\"Lakikotoutumisenedistmisest13862010201623153408300\">Kotoutumislain</abbr> mukaan kotoutumiskoulutuksen tavoitteena on, että opis­ kelija saavuttaa suomen/motsin kielessä taitotason Bl.1. Koulutuksen aikana saavutettava kielitaitotasotavoite voi kuitenkin vaihdella opiskelijan työllisty­ mismahdollisuuksien ja ammatillisten jatkosuunnitelmien edellyttämällä tavalla, esimerkiksi korkeasti koulutettujen opiskelijoiden kohdalla. Kielitaito ja viestin­ tätaidot eivät myöskään aina kehity samassa tahdissa muiden työelämävalmiuk­ sien kanssa, joten tason Bl.1 saavuttaneella opiskelijalla voi olla vielä puutteita muissa työelämävalmiuksissa.</p><p>Laissa julkisista <abbr data-viite=\"Lakijulkisestatyvoimapalvelusta1526200911623153464214\">työvoimapalveluista</abbr> todetaan, että työvoimapoliittinen aikuis­koulutus on pääasiassa ammatillisia valmiuksia edistävää koulutusta. Yleissi­vistävää koulutusta voidaan hankkia ammattiin tai tehtävään valmentavana koulutuksena silloin, kun sen puuttuminen estää työllistymistä tai osallistumista ammatilliseen koulutukseen. Hankittavaan koulutukseen voi käytännön amma­tillisten valmiuksien parantamiseksi sisältyä oppimista ja harjoittelua.</p><p>Kotoutumiskoulutuksen opetussuunnitelman tulee sisältää seuraavia opintoja, jotka integroidaan toisiinsa, ja toteutetaan opiskelijan henkilökohtaisen opiske­lusuunnitelman mukaisesti:</p><ul><li><p><strong>suomen kieli/ruotsin kieli ja viestintätaidot </strong>(30-40 opintoviikkoa)</p></li><li><p><strong>työelämä- ja yhteiskuntataidot </strong>05-25 opintoviikkoa)</p></li><li><p><strong>ohjaus </strong>(5 opintoviikkoa)</p><p></p></li></ul><p>Työelämä- ja yhteiskuntataitojen opintoihin tulee sisällyttää&nbsp; yksi&nbsp; tai&nbsp; useam­pia työelämäjaksoja, joiden yhteinen laajuus on vähintään kuusi&nbsp; opintoviik­koa. Lisäksi opetussuunnitelmaan voi kuulua valinnaisia opintoja. Opintoihin voidaan integroida myös esimerkiksi oman äidinkielen sekä arjen ja vanhem­muuden taitoja, jotka voidaan toteuttaa yhdessä kolmannen sektorin toimijoi­den kanssa.</p><p>Kotoutumiskoulutus koostuu suomen/motsin kielen ja viestintätaitojen, työ­elämä- ja yhteiskuntataitojen sekä valinnaisten opintojen sisällöistä sekä ohja­uksesta (ryhmä-, pienryhmä- sekä yksilöohjaus). Koulutuksen suunnittelussa otetaan huomioon opiskelijan koulutustarpeiden mukainen opintopolku sekä alueellinen koulutustarjonta. Kotoutumiskoulutus voidaan jakaa moduuleihin, joilla tarkoitetaan opintojaksoja, joiden kesto ja etenemisnopeus voivat vaih­della eri opintopoluilla. Kotoutumiskoulutus voi koostua 2-5 moduulista.</p><p>&nbsp;</p><img data-uid=\"23b6c526-8333-47f6-9839-1ea871534e47\" alt=\"Kuvio opintojen koostumisesta, suhteesta toisiinsa osana kokonaisuutta\" figcaption=\"Kuvio 1. Kotoutumiskoulutuksen opintokokonaisuudet.\"><p>Koulutusta on mahdollista tarjota ajallisesti ja toteutustavaltaan joustavasti: päivä- ja iltaopetuksena sekä etä- ja monimuoto-opetuksena. Kaksikielisillä paikkakunnilla voidaan toteuttaa kotoutumiskoulutusta molemmilla kielillä.</p>"
+                },
                 "koodit": [],
                 "liite": false,
                 "osanTyyppi": "tekstikappale"
@@ -173,15 +215,19 @@
               "perusteenOsa": {
                 "id": 7679018,
                 "luotu": 1619683567645,
-                "muokattu": 1619683567645,
-                "muokkaaja": "1.2.246.562.24.77925329174",
+                "muokattu": 1623154792243,
+                "muokkaaja": "1.2.246.562.24.47321363845",
                 "nimi": {
                   "_id": "7682191",
                   "_tunniste": "80163c0c-3ad6-4cf7-97fb-35c44274932e",
                   "fi": "Lähtötason arviointi ja opintopolut kotoutumiskoulutuksessa"
                 },
                 "tila": "luonnos",
-                "teksti": null,
+                "teksti": {
+                  "_id": "7789310",
+                  "_tunniste": "37833c67-4b62-4fca-a267-3bc6520d6370",
+                  "fi": "<p>Ennen kotoutumiskoulutusta on opiskelijalle tehty kotoutumislain mukainen <abbr data-viite=\"171623154631111\">alkukartoitus</abbr>, jossa on selvitetty työllistymis-, opiskelu- ja muut kotoutumis­valmiudet sekä kielikoulutuksen ja muiden kotoutumista edistävien toimenpi­teiden ja palveluiden tarpeet. Alkukartoitus on tehty työ- ja elinkeinotoimiston tai kunnan toimesta ennen kotoutumissuunnitelman laadintaa.</p><p>Kotoutumiskoulutuksen alussa opiskelijalle tehdään lähtötason arviointi, jonka avulla opiskelija ohjataan sopivalle opintopolulle, sopivaan moduuliin ja ope­tusryhmään. Lähtötason arvioinnin tuloksia hyödynnetään myös opiskelun hen­kilökohtaistamisessa sekä henkilökohtaisen opiskelusuunnitelman laadinnassa.</p><p>Lähtötason arvioinnissa tulee selvittää opiskelijan luku- ja kirjoitustaito latina­ laisin aakkosin, suomen kielen suullinen ja kirjallinen taito, aiempi opiskelu- ja työkokemus, nykyinen elämäntilanne sekä omat työllistymis- ja koulutustoiveet. Tietoja kerätään sekä opiskelijaa haastattelemalla että erilaisin kartoituksin.</p><p>Opiskelija voidaan ohjata sopivalle opintopolulle huomioiden muun muassa seuraavat tekijät:</p><ul><li><p><strong>peruspolku </strong>on tarkoitettu opiskelijoille, joilla on pernsopiskeluvalmiudet, toiminnallinen luku- ja kirjoitustaito latinalaisin aakkosin ja aikaisempaa kokemusta vähintään yhden vieraan kielen opiskelusta, tavoitteena on työllistyminen tai ammatillinen koulutus</p><p></p></li><li><p><strong>hitaasti etenevien polku </strong>on tarkoitettu opiskelijoille, joilla on puutteita opiskeluvalmiuksissa tai muita oppimisen hitauteen, kuten elämäntilan­ teeseen vaikuttavia tekijöitä, luku- ja kirjoitustaito latinalaisin aakkosin on tyydyttävä tai harjaantumaton, tavoitteena on työllistyminen tai ammatilli­ nen koulutus</p><p></p></li><li><p><strong>nopeasti etenevien polku </strong>on tarkoitettu kielenopiskeluun tottuneille opiskelijoille, joiden luku- ja kirjoitustaito latinalaisin aakkosin on sujuva, joilla on erinomaiset opiskelutaidot ja valmiudet itsenäiseen ja oma­ aloitteeseen opiskeluun sekä korkeakoulutus tai kokemusta akateemisesta opiskelusta, tavoitteena on työllistyminen akateemiseen ammattiin&nbsp; tai oman alan täydennyskoulutus</p></li></ul><p>Opiskelijan opintopolku voi toteutua opintopolun mukaisessa opiskelijaryh­ mässä tai heterogeenisen ryhmän sisällä eriyttämällä opiskelijan henkilökoh­ taisen opiskelusuunnitelman mukaan. Toteutustapaan vaikuttavat alueelliset resurssit ja opiskelijoiden määrä. Esimerkki opiskelijoiden jakamisesta lähtötason arvioinnin perusteella eri opintopoluille sekä kotoutumiskoulutuksen moduuleihin on esitetty liitteessä 3.</p><p>Kotoutumiskoulutuksen aikana koulutuksen järjestäjä voi tarjota mahdollisuutta vaihtaa opintopolkua. Opiskelija voi vaihtaa esimerkiksi nopealta&nbsp; opintopo­ lulta peruspolulle, jos vaihto tukee paremmin oppimista. Päätös vaihtamisesta tehdään ohjauskeskustelussa yhdessä opiskelijan ja kouluttajan kanssa.</p><p>Kotoutumiskoulutuksessa tulee huomioida myös erityisryhmät, esimerkiksi luku- ja kirjoitustaidon koulutuksen suorittaneet, jotka saattavat tarvita koulu­ tuksessa yksilöllisten tarpeiden lisäksi erityistukea. Kotoutumista tuetaan paitsi työllistymisen myös elämänhallinnan näkökulmasta.</p>"
+                },
                 "koodit": [],
                 "liite": false,
                 "osanTyyppi": "tekstikappale"
@@ -194,15 +240,19 @@
               "perusteenOsa": {
                 "id": 7679019,
                 "luotu": 1619683607578,
-                "muokattu": 1619683607578,
-                "muokkaaja": "1.2.246.562.24.77925329174",
+                "muokattu": 1623154924591,
+                "muokkaaja": "1.2.246.562.24.47321363845",
                 "nimi": {
                   "_id": "7682192",
                   "_tunniste": "675c7a48-b1e2-4cd2-9a24-0cc17875c916",
                   "fi": "Yhteistyö eri tahojen kanssa"
                 },
                 "tila": "luonnos",
-                "teksti": null,
+                "teksti": {
+                  "_id": "7789311",
+                  "_tunniste": "e498e4ed-c0e5-4cfc-8c01-db31ac94232b",
+                  "fi": "<p>Kotoutumiskoulutuksen järjestäjän tulee tehdä koulutukseen liittyvää yhteis­työtä muiden tahojen kanssa omalla toiminta-alueellaan. Yhteistyön&nbsp; tarkoitus on paitsi maahanmuuttajan tehokkaampi ja nopeampi kotoutuminen Suomeen myös yhteiskunnan eri toimijoiden nykyistä suurempi sitouttaminen maa­hanmuuttajien kotoutumiseen. Yhteistyössä on tärkeää hyödyntää moniammatillisuutta tavoitteena tehostaa työelämään ja yhteiskuntaan orientoivan koulutuksen vaikutusta sekä kielenoppimista.</p><p>Yhteistyötä voidaan tehdä jatkuvasti, esimerkiksi ennen koulutusjakson aloit­tamista, koulutusjakson aikana ja koulutusjakson jälkeen. Yhteistyö voi liittyä moniin kotoutumiskoulutuksen sisältöihin kuten työelämäjakson järjestämi­seen, työelämä- ja yhteiskuntataitojen opetusta tukeviin tutustumiskäynteihin sekä valinnaisiin opintoihin. Yhteistyötä voidaan tehdä niin julkisen, yksityisen kuin kolmannenkin sektorin organisaatioiden kanssa.</p><p>Koulutuksen järjestäjän on hyödyllistä tehdä yhteistyötä kolmannen sektorin organisaatioiden kanssa. Niistä tärkeässä asemassa ovat maahanmuuttajien omat organisaatiot sekä niiden hankkeet ja projektit; maahanmuuttajien organisaa­tioista maahanmuuttajaopiskelija voi saada kotoutumisessaan tarvitsemaansa vertaistukea. Myös muut kolmannen sektorin organisaatiot, kansalaisjärjestöt ja yhdistykset voivat edistää on maahanmuuttajan kotoutumista.</p><p>Koulutuksen järjestäjän&nbsp; tulee tehdä tiivistä yhteistyötä työelämän toimijoiden ja työhallinnon kanssa. Työnantajien kanssa voidaan luoda yhteistyömalleja, joiden avulla maahanmuuttajien pääsy työelämäjaksoille ja niiden kautta palk­katyöhön, oppisopimuskoulutukseen tai työelämävalmennukseen helpottuu. Yhteistyön kautta koulutuksenjärjestäjä hankkii itselleen ajantasaisen käsityk­sen työelämän maahanmuuttajilta vaatimista tiedoista ja taidoista.</p><p>Koulutuksen järjestäjän on tarpeellista harjoittaa yhteistyötä muiden koulu­tuksenjärjestäjien kanssa. Sen tarkoituksena on helpottaa maahanmuuttajien tavoitteellisten koulutusratkaisujen rakentamista. Yhteistyön kautta koulu­tuksenjärjestäjä voi hankkia itselleen ajantasaisen kuvan toiminta-alueellaan tarjolla olevasta maahanmuuttajille sopivasta koulutuksesta. Kotoutumiskoulu­tusta järjestävän organisaation sisällä tulee tehdä kotoutumiskoulutusta tehosta­vaa ja sen järjestämistä helpottavaa yhteistyötä organisaation eri yksiköiden tai muiden vastaavien välillä.</p><p>Koulutuksen järjestäjän on hyödyllistä tehdä yhteistyötä maahanmuuttajan arki­ ja yksityiselämään liittyviä palveluita tarjoavien tahojen kanssa. Näitä ovat esi­ merkiksi sosiaalitoimisto, Kela ja poliisi.</p>"
+                },
                 "koodit": [],
                 "liite": false,
                 "osanTyyppi": "tekstikappale"
@@ -218,12 +268,12 @@
           "perusteenOsa": {
             "id": 7682230,
             "luotu": 1619683627250,
-            "muokattu": 1619683627250,
-            "muokkaaja": "1.2.246.562.24.77925329174",
+            "muokattu": 1623155192565,
+            "muokkaaja": "1.2.246.562.24.47321363845",
             "nimi": {
-              "_id": "7682193",
+              "_id": "7789314",
               "_tunniste": "916b7080-8fc6-44bd-8826-e92acbfe6f8b",
-              "fi": "Koulutuksen toteuttaminen"
+              "fi": "Kotoutumiskoulutuksen toteuttaminen"
             },
             "tila": "luonnos",
             "teksti": null,
@@ -237,15 +287,19 @@
               "perusteenOsa": {
                 "id": 7682231,
                 "luotu": 1619683655875,
-                "muokattu": 1619683655875,
-                "muokkaaja": "1.2.246.562.24.77925329174",
+                "muokattu": 1623155284875,
+                "muokkaaja": "1.2.246.562.24.47321363845",
                 "nimi": {
                   "_id": "7682194",
                   "_tunniste": "333a34ce-5457-4275-9964-0fbcc01da185",
                   "fi": "Oppimiskäsitys"
                 },
                 "tila": "luonnos",
-                "teksti": null,
+                "teksti": {
+                  "_id": "7789315",
+                  "_tunniste": "a6b10a11-4bf3-41e2-a5f9-eed28113c256",
+                  "fi": "<p>Aikuisten maahanmuuttajien kotoutumiskoulutuksen opetussuunnitelman perusteet pohjautuvat sosiokonstruktivistiseen oppimiskäsitykseen. Oppiminen on seurausta opiskelijan aktiivisesta ja tavoitteellisesta toiminnasta, jossa uusi opittava asia liitetään jo opittuun. Oppiminen on&nbsp; perusluonteeltaan opiskelijan&nbsp; ja hänen ympäristönsä välinen vuorovaikutusprosessi. Ympäristö kokonaisuu­dessaan vaikuttaa siihen, millä tavalla yksilö paneutuu oppimiseen, millaisia tavoitteita ja päämääriä hän asettaa itselleen ja millaisia oppimisen ja opiskelun strategioita hän käyttää. Tiedon ja kokemusten vaihto, jakaminen ja yhteinen pohdinta ovat syvenevän ymmärryksen ja oppimiseen sisältyvän muutoksen välttämättömiä edellytyksiä.</p><p>Opetuksessa kohdataan aikuinen oppijana, joten opetuksessa korostuu opis­kelijan aiempien kokemusten huomioiminen. Aikuiselle oppijalle on tärkeää opittavan asian merkityksellisyys ja yhteys ympäröivään maailmaan. Oppiessa avautuu uusia mahdollisuuksia ymmärtää kulttuurin sisältämiä merkityksiä ja osallistua yhteiskunnan toimintaan.</p><p>Kotoutumiskoulutuksen keskeisenä tavoitteena on lisätä opiskelijoiden oma­-aloitteisuutta ja oppimaan oppimisen taitoja. Oppimaan oppimisen myötä opiskelijaa autetaan näkemään ja ymmärtämään oman toiminnan vaikutukset oppimiseen. Opiskelija kiinnittää aktiivisesti huomiota omiin oppimis- ja työs­ kentelytapoihinsa ja ymmärtää niiden vaikutuksen oppimiseen. Lopputuloksen kannalta on merkitystä sillä, näkeekö hän itsensä oman oppimisen subjektiksi vai opetuksen kohteeksi.</p><p>Oppimisprosessi vahvistaa opiskelijan tietoisuutta itsestään oppijana. Oppimi­nen näkyy muutoksena oppijan ajattelu- ja toimintatavoissa. Muutos voi olla uusi taito tai vanhan toimintatavan muuttuminen mielekkäämmäksi tai tehok­kaammaksi. Oppiminen voi näkyä myös oman toiminnan jäsentymisenä ja elä­ mänhallinnan paranemisena.</p>"
+                },
                 "koodit": [],
                 "liite": false,
                 "osanTyyppi": "tekstikappale"
@@ -258,15 +312,19 @@
               "perusteenOsa": {
                 "id": 7682232,
                 "luotu": 1619683682704,
-                "muokattu": 1619683682704,
-                "muokkaaja": "1.2.246.562.24.77925329174",
+                "muokattu": 1623155593972,
+                "muokkaaja": "1.2.246.562.24.47321363845",
                 "nimi": {
                   "_id": "7682195",
                   "_tunniste": "d3bf1853-3f0d-4e34-ac6c-66e6f2ac13e8",
                   "fi": "Oppimisympäristö ja työtavat"
                 },
                 "tila": "luonnos",
-                "teksti": null,
+                "teksti": {
+                  "_id": "7789316",
+                  "_tunniste": "a7460244-90f9-4371-bbfb-c73deaf01879",
+                  "fi": "<p>Kotoutumiskoulutuksen oppimisympäristön ja käytettävien työtapojen&nbsp; tulee olla sellaisia, että ne tukevat aikaisempiin kokemuksiin pohjautuvaa tiedonra­kentumista ja auttavat oppimaan asetettujen tavoitteiden saavuttamista edistäviä työtapoja. Aikuisopetuksessa korostetaan yhteistoiminnallisuutta, vuorovaikut­ teisuutta, itseohjautuvuutta sekä verkostoissa toimimista. Opiskelijalle tulee luoda edellytyksiä vastuunkantamiseen omasta oppimisestaan ja oppimis­ tavoitteiden suuntaisesta toiminnasta. Vastuun ottaminen merkitsee sitä, että opiskelijoita ohjataan arvioimaan opittavia asioita ja arvioimaan toimintaansa suhteessa itseensä, toisiin ihmisiin ja laajemmin koko yhteiskuntaan.</p><p>Oppimisympäristön tuleekin tarjota mahdollisuus omien tavoitteiden asettami­seen. Tavoitteiden tulee olla realistisia ja konkreettisia ja samalla tulee myös kuvata, millä keinoilla tavoitteet voidaan saavuttaa. Tavoitteet kannattaa purkaa osatavoitteiksi, jolloin voidaan helpommin arvioida tavoitteiden saavuttamiseen tarvittava aika ja muut resurssit. Tavoitteiden asettaminen ja niiden toteutumisen seuraaminen henkilökohtaistavat oppimista, lisäävät opiskelijan motivaatiota ja oppimisen merkityksellisyyttä sekä kehittävät opiskelijan&nbsp; oppimaan&nbsp; oppimi­sen taitoja. Oppimisympäristön tulee myös antaa tilaisuuksia kokeilla ja löytää omalle oppimistyylilleen sopivia työskentelymuotoja. Opiskelijoita tulee ohjata tiedostamaan, arvioimaan ja tarvittaessa korjaamaan omia työskentelytapojaan. Oman äidinkielen tai muiden kielten taitoa voidaan hyödyntää opiskelussa.</p><p>Koulutuksen suunnittelussa ja toteutuksessa huomioidaan erilaisten oppi­misympäristöjen erityispiirteet. Psyykkiseen oppimisympäristöön vaikuttavat oppilaitoksen johtamiskulttuuri, kouluttajien ja koulutettavien motivaatio ja sitoutuminen, rakentava kyseenalaistaminen ja ennakkoluuttomuus, yhteisön jäsenten vaikuttamismahdollisuudet, konfliktien sieto- ja ratkaisukyky sekä yhteistyö ja yhteiset tapahtumat. Teknisessä oppimisympäristössä on opiske­lutilojen ja -välineiden oltava sellaisia, että ne mahdollistavat monipuolisten opiskelumenetelmien ja työtapojen käytön. Opiskelijoita tulee perehdyttää tiedonhaun menetelmiin sekä ohjata käyttämään tieto- ja viestintätekniikkaa esimerkiksi palvelujen yhteydessä. Tieto- ja viestintätekniikan avulla on myös mahdollista laajentaa oppimisympäristöä oppilaitoksen fyysisten rajojen ulko­puolelle. Osa opiskelusta voidaan järjestää etäopiskeluna verkko-opetusta hyö­dyntäen. Tällöin tieto- ja viestintätekniikan soveltaminen kuvataan paikallisessa opetussuunnitelmassa.</p><p>Opiskeluun sovelletaan yhteistoiminnallisia toimintatapoja. Oppimista ediste­tään monentyyppisellä pari- ja ryhmätyöskentelyllä, joka osaltaan valmentaa työelämään. Opiskeluun sisältyy olennaisena osana keskustelua ja pohdintaa yhdessä opettajan ja muiden opiskelijoiden kanssa. Yhteisissä keskusteluissa opiskelijoiden ajatteluprosessit ja kokemukset tulevat näkyviksi niin itselle kuin muillekin, minkä avulla on mahdollista lisätä keskinäistä yhteisymmärrystä ja yhteisten näkemysten muodostumista. Opettaja aktivoi opiskelijoita yhteistyö­hön. Vertaistuki ja ryhmän tuki ovat opettajan ohella tärkeitä oppimisen tuki­joita.</p><p>Työtapojen valinnan perusteita ovat, että ne</p><ul><li><p>virittävät halun oppia ja liittyvät aikuisen elämänkokemuksiin</p></li><li><p>ottavat huomioon oppimisen prosessuaalisen ja tavoitteellisen luonteen</p></li><li><p>edistävät jäsentyneen tietorakenteen muodostumista sekä taitojen oppi­mista ja niissä harjaantumista</p></li><li><p>kehittävät tiedon hankkimisen, soveltamisen ja arvioimisen taitoja</p></li><li><p>tukevat opiskelijoiden keskinäisessä vuorovaikutuksessa tapahtuvaa oppi­mista</p></li><li><p>edistävät vastuun kantamista ja kykyä toimia rakentavassa yhteistyössä muiden kanssa</p></li><li><p>kehittävät valmiuksia ottaa vastuuta ja arvioida omaa oppimista</p></li><li><p>aktivoivat työskentelemään tavoitteellisesti sekä kehittävät opiskelijan oppi­misstrategioita ja taitoja soveltaa niitä uusissa tilanteissa</p></li><li><p>tukevat autenttisen opiskelumateriaalin hyödyntämistä</p></li><li><p>tarjoavat mahdollisuuksia vuorovaikutukseen ympäröivän yhteisön kanssa.</p></li></ul><p>Opetuksessa on myös otettava huomioon, että opiskelijoiden kyky opiskella itsenäisesti vaihtelee ja&nbsp; että&nbsp; he&nbsp; tarvitsevat&nbsp; eri&nbsp; tavoin&nbsp; opettajaa&nbsp; opiskelunsa ohjaajana. Joidenkin työtapojen käyttäminen voi myös edellyttää harjaantu­mista tai poisoppimista totutuista tavoista työskennellä. Eriyttämisen kolme keskeistä ulottuvuutta liittyvät opiskelun laajuuden, syvyyden ja etenemis­nopeuden vaihteluun. Eriyttäminen voi kohdistua muun muassa opetuksen sisältöihin, käytettäviin opetusmateriaaleihin ja -menetelmiin, työtapoihin sekä tehtävien määrään ja käytettävissä olevaan aikaan. Oppimisympäristöä ja työ­tapoja voidaan muokata esimerkiksi luomalla tilaisuuksia opiskelijoiden osal­listumiseen, tarjoamalla valinnanmahdollisuuksia, säätelemällä tilankäyttöä, ryhmittelemällä opiskelijoita joustavasti ja hyödyntämällä oppilaitoksen ulko­puolella tapahtuvia oppimistilanteita. Opiskelijaa ohjataan oppimaan itselleen parhaiten soveltuvalla tavalla. Opetuksessa otetaan huomioon opiskelijoiden kiinnostuksen kohteet kytkemällä opittavat tiedot ja taidot opiskelijalle merki­tyksellisiin kokemuksiin ja toimintamuo toihin . Opiskelijat voivat tarvita erilaisia mahdollisuuksia osaamisensa ja edistymisensä näyttämiseen ja hyötyvät aina yksilöllisestä palautteesta.</p>"
+                },
                 "koodit": [],
                 "liite": false,
                 "osanTyyppi": "tekstikappale"
@@ -279,15 +337,19 @@
               "perusteenOsa": {
                 "id": 7682233,
                 "luotu": 1619683711409,
-                "muokattu": 1619683711409,
-                "muokkaaja": "1.2.246.562.24.77925329174",
+                "muokattu": 1623155690652,
+                "muokkaaja": "1.2.246.562.24.47321363845",
                 "nimi": {
                   "_id": "7682196",
                   "_tunniste": "426c5f29-43ec-4095-bb83-9c8da1978596",
                   "fi": "Toimintakulttuuri"
                 },
                 "tila": "luonnos",
-                "teksti": null,
+                "teksti": {
+                  "_id": "7789317",
+                  "_tunniste": "582fcd12-146e-4b7a-8b8a-ec68fc6efe86",
+                  "fi": "<p>Toimintakulttuuri sisältää kaikki oppilaitoksen toimintatavat, käyttäytymismallit sekä arvot, periaatteet ja kriteerit, joihin opetustyön laatu perustuu. Toiminta­ kulttuuri tulee esiin yksilö-, ryhmä- ja yhteistyötasolla. Kotoutumiskoulutuksen erityispiirteenä on monikulttuurisuus ja monikielisyys. Monikulttuurisen yhtei­sön rakentaminen edellyttää koko oppilaitokselta yhteisön monimuotoisuuden tiedostamista ja moniarvoisuutta tukeviin toimintatapoihin ja käytänteisiin sitoutumista.</p><p>Tavoitteena on, että kotoutumiskoulutusta järjestävät oppilaitokset ovat oppivia organisaatioita. Toimintakulttuurin tulee kannustaa kouluttajia, opiskelijoita ja oppilaitoksen muuta henkilöstöä avoimeen vuorovaikutukseen ja yhteisöllisyy­teen niin oppilaitoksen sisällä kuin sen ulkopuolellakin. Tämä edellyttää toimin­taperiaatteista keskustelemista ja käytänteiden tekemistä näkyväksi sekä kykyä ratkaista ristiriitatilanteita rakentavasti. Yhteisössä pyritään eri kulttuurit huomi­oivaan ammattitaitoon, joka koostuu muun muassa&nbsp; erilaisten&nbsp; todellisuuksien&nbsp; ja elämänmuotojen ymmärtämisestä ja oman kulttuuritaustan tiedostamisesta.</p><p>Oppilaitoksen käytänteitä rakennetaan johdonmukaisesti tukemaan monikult­tuurisen yhteisön toimivuutta ja opetustyölle asetettujen tavoitteiden saavutta­ mista. Tavoitellun ja toteutuneen toimintakulttuurin yhtäpitävyyden arviointi on edellytys oppilaitoksen jatkuvalle kehittämiselle. Arvioinnissa ja toimintakult­tuurin kehittämisessä huomioidaan muuttuvan ja monikulttuurisen toimintaym­päristön vaatimukset. Tavoiteltavan toimintakulttuurin pääpiirteet kuvataan opetussuunnitelmassa.</p>"
+                },
                 "koodit": [],
                 "liite": false,
                 "osanTyyppi": "tekstikappale"
@@ -299,15 +361,116 @@
           "_perusteenOsa": "7682230"
         },
         {
-          "id": 7723770,
+          "id": 7789341,
           "perusteenOsa": {
-            "id": 7723780,
-            "luotu": 1623320093694,
-            "muokattu": 1623320093694,
-            "muokkaaja": "1.2.246.562.24.77925329174",
+            "id": 7789351,
+            "luotu": 1623155737516,
+            "muokattu": 1623218832833,
+            "muokkaaja": "1.2.246.562.24.47321363845",
             "nimi": {
-              "_id": "7723790",
-              "_tunniste": "25196f81-6280-42fd-a65a-05c4320b697b",
+              "_id": "7789318",
+              "_tunniste": "e4992e62-ee2d-4810-89fe-90a06e191579",
+              "fi": "Opiskelijan tukeminen ja ohjaus"
+            },
+            "tila": "luonnos",
+            "teksti": {
+              "_id": "7789726",
+              "_tunniste": "5c70d7d7-8e19-4071-8891-b70e565041fe",
+              "fi": "<p>Opiskelijan ohjaus ja tukeminen tarkoittaa opiskelijan opastamista kotoutumis­koulutuksen suorittamisessa sekä jatkosuunnitelmien laadinnassa. Opiskelija saa henkilökohtaisesti suunniteltua ja toteutettua ohjausta ja neuvontaa sekä muita tukimuotoja. Ohjausta ja tukea antavat sekä ohjausalan ammattilaiset että muut opettajat. Ohjausta ja tukea voidaan järjestää ryhmämuotoisesti, pienryhmämuotoisesti sekä henkilökohtaisesti.</p><p>Erityistä huomiota on kiinnitettävä niiden opiskelijoiden tukemiseen ja ohja­ukseen, joilla on opiskelu- tai oppimisvaikeuksia tai elämänhallintaan liittyviä vaikeuksia. Mikäli opiskelun alussa tai aikana havaitaan joitakin opiskelijoiden fyysiseen, psyykkiseen tai sosiaaliseen tilanteeseen liittyvä seikkoja, jotka tuli­sivat vaikeuttamaan opinnoissa etenemistä, on tilanne selvitettävä mahdollisim­man pian ja pyrittävä löytämään keinoja opiskelijan tukemiseen. Koulutuksen järjestäjä etsii ratkaisuja tukitoimiin aina opiskelijan tilanteesta riippuen. Tarvit­taessa konsultoidaan ja tehdään yhteistyötä paikallisten tai alueellisten eri alan asiantuntijoiden kanssa opiskelijan opiskeluvaikeuksien ratkaisemiseksi.</p>"
+            },
+            "koodit": [],
+            "liite": false,
+            "osanTyyppi": "tekstikappale"
+          },
+          "lapset": [
+            {
+              "id": 7789342,
+              "perusteenOsa": {
+                "id": 7789352,
+                "luotu": 1623155764497,
+                "muokattu": 1623219079325,
+                "muokkaaja": "1.2.246.562.24.47321363845",
+                "nimi": {
+                  "_id": "7789319",
+                  "_tunniste": "cfe3ac88-9d39-4c18-ba9d-16febb60002f",
+                  "fi": "Ohjaus osana kotoutumiskoulutusta"
+                },
+                "tila": "luonnos",
+                "teksti": {
+                  "_id": "7789727",
+                  "_tunniste": "5f6123b9-19b9-4e59-a8fe-d2534307ed64",
+                  "fi": "<p>Ohjauksen avulla edistetään opiskelijoiden osallisuutta sekä yhteiskunnallista tasa-arvoa. Koulutuksen järjestäjän laatimaan opetussuunnitelmaan tulee sisäl­lyttää ohjaussuunnitelma, jossa&nbsp;kuvataan ohjaukseen osallistuvien tehtävät ja työnjako. Ohjaussuunnitelmassa&nbsp; kuvataan,&nbsp; miten&nbsp; ohjaus&nbsp; omassa&nbsp; oppilaitok­sessa järjestetään. Siinä määritellään myös mahdollinen yhteistyö oppilaitoksen ulkopuolisten asiantuntijoiden kanssa.</p><p>Kotoutumiskoulutuksessa maahanmuuttajien ohjauksen tavoitteena on vahvis­taa ja tukea maahanmuuttajaopiskelijaa niin, että hän osaisi tehdä omaa elä­mänuraa, koulutusta ja työllistymistä koskevia valintoja ja ratkaisuja. Ohjauksen avulla hän oppii tunnistamaan myös elämäntilanteeseensa mahdollisesti liit­tyviä ongelmia ja osaa hakea tukea niiden ratkaisemiseen. Ohjauksella lisä­tään opiskelijan hyvinvointia, tuetaan opiskelijan ammatillista kasvua, ennalta ehkäistään opintojen keskeyttämistä, edistetään työhön sijoittumista ja tuetaan jatko-opintoihin hakeutumista. Työllistymistä ja jatkosuunnitelmaa tukevat toi­menpiteet kulkevat kotoutumisprosessin mukana&nbsp; koulutukseen&nbsp; hakeutumisesta aina mahdolliseen jälkiohjaukseen saakka.</p><p>Opiskelija saa ohjauksessa tukea oman elämänhallintaan, opiskeluun ja oppi­miseen sekä ammatin valintaan. Ohjauksessa opiskelijalla on mahdollisuus sel­kiyttää omia valintojaan sekä suunnitella opiskelujensa sisältöjä ja rakennetta omien voimavarojensa mukaisesti. Ohjauksessa otetaan huomioon opiskelijan tavoitteet ja elämäntilanne ja autetaan löytämään hänelle itselleen sopivia ratkaisuvaihtoehtoja. Vastuu ratkaisuista on opiskelijalla itsellään.</p><p>Ohjauksen tavoitteet:</p><ul><li><p>Opiskelijan henkilökohtaisen koulutus- ja/tai työllistymissuunnitelman laadinta</p></li><li><p>Opiskelijan ura- ja elämänsuunnittelutaitojen edistäminen</p></li><li><p>Opiskelijan kasvun ja opiskelun tukeminen opiskelun eri vaiheissa</p></li><li><p>Vuorovaikutus- ja sosiaalisten taitojen edistäminen</p></li><li><p>Opiskeluun liittyvien vaikeuksien ennalta ehkäiseminen</p></li></ul><p>Keskeiset sisällöt:</p><ul><li><p>oppimisen ohjaus, opiskelutaidot</p></li><li><p>erityistä tukea tarvitsevien opiskelijoiden ohjaus</p></li><li><p>koulutus- ja työllistymisväyläsuunnittelu</p></li><li><p>ohjaus ja tuki eri ongelmatilanteissa</p></li><li><p>työ- ja harjoittelupaikan hakuun liittyvät erityisasiat ja ohjaus</p></li><li><p>osaamisen tunnistaminen ja tunnustaminen</p></li><li><p>oppilaitoksen tarjoamat muut tukipalvelut</p></li></ul>"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "7789352"
+            },
+            {
+              "id": 7789343,
+              "perusteenOsa": {
+                "id": 7789353,
+                "luotu": 1623155784926,
+                "muokattu": 1623219259153,
+                "muokkaaja": "1.2.246.562.24.47321363845",
+                "nimi": {
+                  "_id": "7789450",
+                  "_tunniste": "9884eec7-d9f7-4ed3-a872-c2162d75ae70",
+                  "fi": "Henkilökohtaisen opiskelusuunnitelman laadinta"
+                },
+                "tila": "luonnos",
+                "teksti": {
+                  "_id": "7789728",
+                  "_tunniste": "3794f588-a95c-4c86-851b-71fcd5cb96e2",
+                  "fi": "<p>Kotoutumiskoulutuksen laajuus ja sisältö suunnitellaan opiskelijalle tehtävän lähtötason arvioinnin perusteella. Arvioinnin tuloksia hyödynnetään opiske­lijalle laadittavassa henkilökohtaisessa opiskelusuunnitelmassa. Henkilökoh­taisen opiskelusuunnitelman laadinnassa hyödynnetään myös opiskelijalle jo aikaisemmin tehtyä alkukartoitusta ja kotoutumissuunnitelmaa.</p><p>Koulutuksen järjestäjän tulee huolehtia siitä, että opiskelijalle laaditaan yksi­löllisiin lähtökohtiin perustuva henkilökohtainen opiskelusuunnitelma, jota päivitetään koulutuksen aikana. Henkilökohtainen opiskelusuunnitelma laa­ditaan opiskelijan ja opettajan kanssa yhteistyössä. Suunnitelman laatimiseen voi tarvittaessa osallistua myös opetusta tarjoavan oppilaitoksen ulkopuolisia asiantuntijoita tai viranomaisia.</p><p>Henkilökohtainen opiskelusuunnitelma tukee opiskelijan jatkosuunnitelmia ja kehittää hänen valmiuksiaan itsearviointiin. Omien valintojensa kautta opiskelija sitoutuu ja motivoituu koulutuksen suorittamiseen. Henkilökohtaisessa opiskelusuunnitelmassa otetaan huomioon&nbsp; opiskelijan&nbsp; lähtötilanne,&nbsp; koulutus­tausta&nbsp; ja&nbsp; koulutustarpeet.&nbsp; Samoin&nbsp; selvitetään&nbsp; opiskelijan&nbsp; aikaisempi&nbsp; osaami­nen. Lisäksi selvitetään tukitoimien tarve erityisesti suomen tai ruotsin kielen ja viestintätaitojen sekä tieto- ja viestintäteknisten valmiuksien osalta. Lähtökulttuuriin ja elämäntilanteeseen liittyvät tekijät, jotka voivat vaikuttaa opintoihin sitoutumiseen, käydään myös läpi. Mahdolliset oppimista vaikeuttavat seikat tunnistetaan ja opiskelijan itseohjautuvuutta ja valmiuksia opiskella ohjataan ja tuetaan.</p><p>Henkilökohtaisessa opiskelusuunnitelmassa huomioidaan opiskeluun vaikutta­vat taustatekijät, määritellään opiskelun tavoitteet ja keskeiset sisällöt, opintojen suorittaminen ja suoritustavat, henkilökohtainen ohjaus ja mahdolliset tukitoi­met. Suunnitelma sisältää myös opiskelijan koulutus- ja muut suunnitelmat.</p><p>Henkilökohtaisen opiskelusuunnitelman toteutumista ja opintojen edistymistä seurataan kotoutumiskoulutuksen aikana ja tarvittaessa opiskelijalle annetaan tukiopetusta. Opiskelijaa ohjataan tekemään omaa oppimistaan koskevia pää­töksiä sekä tarkentamaan ja muuttamaan suunnitelmaa opintojen edetessä. Henkilökohtaisen opiskelun suunnitteluun liittyvää ohjausta voidaan mahdolli­suuksien mukaan antaa myös opiskelijan omalla äidinkielellä.</p>"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "7789353"
+            },
+            {
+              "id": 7789344,
+              "perusteenOsa": {
+                "id": 7789354,
+                "luotu": 1623156006722,
+                "muokattu": 1623219328411,
+                "muokkaaja": "1.2.246.562.24.47321363845",
+                "nimi": {
+                  "_id": "7789451",
+                  "_tunniste": "dab27615-9521-49cf-ab2f-7ecaea751a07",
+                  "fi": "Ammatillinen ohjaus ja jatkosuunnitelmat"
+                },
+                "tila": "luonnos",
+                "teksti": {
+                  "_id": "7789729",
+                  "_tunniste": "2bd5bddd-7dd2-4dc7-9ffe-cb2e1ae8405d",
+                  "fi": "<p>Ammatillista osaamista ja sen kehittymistarpeita käsitellään ohjauskeskuste­luissa yhdessä opiskelijan kanssa ja sitä arvioidaan työelämäjaksolla. Osaamisen selvittämisessä arvioidaan opiskelijan tietoja, taitoja ja pätevyyttä. Työelämäjak­solle valmentautumisessa opiskelija saa ohjausta ja tukea. Ohjausta antavilla tulee olla hyvä käsitys oman alueen työmarkkinatilanteesta sekä työ- ja har­joittelupaikoista sekä yhteydet työelämään. Työelämäjakson aikana ohjausta antavat sekä työnantajan edustaja että oppilaitoksen edustaja. Työelämäjakson suorituspaikkapaikkojen valinnassa painotetaan työllistymisnäkökulmaa.</p><p>Ammatillisen ohjauksen avulla opiskelija tekee itselleen sopivan jatkosuunni­telman. Jatkosuunnitelma sisältää pitkän aikavälin ammatilliset tavoitteet sekä niihin pääsemiseksi tarvittavat lähitulevaisuuden toimenpiteet. Opiskelija saa ohjauskeskustelujen ja työelämäjakson avulla tietoa ja palautetta ammattitaidostaan ja osaamisestaan sekä niiden soveltumisesta suomalaiseen työelämään. Ammatillinen ohjaus on jatkuva ja muuttuva prosessi, joka tukee opiskelijan omien tavoitteiden selkiytymistä ja opiskelijan urasuunnitelmaa.</p>"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "7789354"
+            }
+          ],
+          "_perusteenOsa": "7789351"
+        },
+        {
+          "id": 7789345,
+          "perusteenOsa": {
+            "id": 7789355,
+            "luotu": 1623156021848,
+            "muokattu": 1623156021848,
+            "muokkaaja": "1.2.246.562.24.47321363845",
+            "nimi": {
+              "_id": "7789452",
+              "_tunniste": "2a8a1b6e-8f07-4377-b825-6470970a78c6",
               "fi": "Kotoutumiskoulutuksen tavoitteet ja keskeiset sisällöt"
             },
             "tila": "luonnos",
@@ -318,95 +481,721 @@
           },
           "lapset": [
             {
-              "id": 7723771,
+              "id": 7789346,
               "perusteenOsa": {
-                "id": 7723781,
-                "luotu": 1623320105544,
-                "muokattu": 1623320678963,
-                "muokkaaja": "1.2.246.562.24.77925329174",
+                "id": 7789356,
+                "luotu": 1623156040848,
+                "muokattu": 1623220315651,
+                "muokkaaja": "1.2.246.562.24.47321363845",
                 "nimi": {
-                  "_id": "7723791",
-                  "_tunniste": "97a3850c-f74c-4774-9ce2-5757609285d8",
+                  "_id": "7789453",
+                  "_tunniste": "1a9f3d29-4dcd-41ff-b179-cfaa819ab661",
+                  "fi": "Kotoutumiskoulutuksen yleiset tavoitteet"
+                },
+                "tila": "luonnos",
+                "teksti": {
+                  "_id": "7789809",
+                  "_tunniste": "73cf30b9-93e3-4f52-a03c-7505b57befa7",
+                  "fi": "<p>Aikuisten maahanmuuttajien kotoutumiskoulutus edistää ja tukee opiskelijan mahdollisuuksia&nbsp; osallistua&nbsp; suomalaiseen&nbsp; yhteiskuntaan&nbsp; sen&nbsp; aktiivisena&nbsp;&nbsp; jäse­nenä. Koulutuksen tavoitteena on, että opiskelija saavuttaa suomen tai ruotsin kielessä toimivan <abbr data-viite=\"181623219667695\">peruskielitaidon</abbr>. Kotoutumiskoulutuksessa&nbsp; opiskelijan&nbsp; siis tulee saavuttaa sellaiset suomen&nbsp; tai&nbsp; ruotsin&nbsp; kielen&nbsp; valmiudet,&nbsp; joita&nbsp; hän&nbsp; tarvitsee&nbsp; toimiakseen&nbsp; arkielämässä,&nbsp; suomalaisessa&nbsp;&nbsp; yhteiskunnassa,&nbsp;&nbsp; työelämässä ja jatkokoulutuksessa. Kotoutumiskoulutuksena maahanmuuttajalle annetaan kotoutumislain mukaan myös muuta opetusta, joka edistää työelämään ja jat­ kokoulutukseen pääsyä sekä yhteiskunnallisia, kulttuurisia ja elämänhallintaan liittyviä valmiuksia. Kotoutumiskoulutukseen voi sisältyä myös aikaisemmin hankitun&nbsp; osaamisen&nbsp; tunnistamista&nbsp; ja&nbsp; tutkinnon&nbsp; tunnustamista&nbsp; sekä&nbsp;&nbsp; ammatil­lista suunnittelua ja <abbr data-viite=\"191623220310908\">uraohjausta</abbr>. Koulutus auttaa siten opiskelijaa jäsentämään omaa koulutuspolkuaan ja elämänsuunnitelmiaan. Koulutus&nbsp; tukee&nbsp; opiskelijan oman kulttuurin ylläpitämistä ja&nbsp; sen&nbsp; yhteensovittamista&nbsp; ympäröivään&nbsp; kulttuu­riin.</p><p>Koulutuksen sisältökokonaisuuksia ovat suomen tai ruotsin kieli ja viestintätai­dot, yhteiskunta- ja työelämätaidot sekä ohjaus. Lisäksi opintoihin voi sisältyä valinnaisia opintoja. Näiden opintojen laajuutta käsitellään luvussa 2.3. Kai­kessa opetuksessa rakennetaan opiskelijan kotoutumisen kannalta mielekkäitä oppimiskokemuksia sekä vahvistetaan kieli- ja viestintätaitoja sekä opiskelutai ­toja. Opintoihin sisältyy läpäisevästi harjaantumista arjen taitoihin sekä tieto- ja viestintätekniikan käyttöön.</p><p>Kotoutumiskoulutuksen opiskelutaitoihin liittyvänä yleisenä tavoitteena on, että opiskelija osaa asettaa henkilökohtaisia oppimistavoitteita ja suunnitella oppi­mistaan realistisesti omien tarpeidensa mukaisesti sekä arvioida oppimistaan ja osaamistaan. Opiskelija hallitsee opiskeluun liittyvää sanastoa ja käsitteitä sekä harjaantuu erilaisiin&nbsp; opiskelumuotoihin&nbsp; ja&nbsp; -tekniikoihin&nbsp; (muun muassa&nbsp; lähi­- ja etäopiskelu, itseopiskelu, ryhmätyöskentely, projektimainen työskentely, verkko-opiskelu). Opiskelija osaa hankkia tietoa eri lähteistä ja käyttää tietoko­netta tiedonhankinnan ja vuorovaikutuksen apuvälineenä. Opiskelija tutustuu suomalaiseen koulutusjärjestelmään ja osaa asemoida itsensä siihen sekä tietää, miten aiemmin hankittu osaaminen ja koulutus voidaan tunnustaa. Opiskelija osaa hakeutua jatkokoulutukseen ja työllistymistä edistäviin toimenpiteisiin.</p><p>Kotoutuminen on yksilöllisesti etenevä prosessi. Vaikka kotoutumisen perusta­voitteet ovat samansuuntaisia kaikille, opiskelijan yksilölliset valmiudet, moti­vaatio, tavoitteet ja tarpeet vaihtelevat. Kotoutumiskoulutuksessa opiskelijaa tuetaan henkilökohtaisten tavoitteiden asettamisessa ja saavuttamisessa. Ohjaus on tässä keskeisessä asemassa. Koulutus pyritään järjestämään joustavasti siten, että se antaa mahdollisuuden henkilökohtaisen opintopolun rakentamiseen.&nbsp; Näitä vaihtoehtoja kuvataan luvussa 2.4.</p><p>Opetussuunnitelmassa voidaan täydentää yleisiä tavoitteita sekä päättää kou­lutuksen järjestäjän integrointikäytännöistä. Opetussuunnitelmassa voidaan päättää myös erityyppisille koulutettavaryhmille suunniteltujen opintopolkujen tarjonnasta.</p>"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "7789356"
+            },
+            {
+              "id": 7797490,
+              "perusteenOsa": {
+                "id": 7797500,
+                "luotu": 1623323453635,
+                "muokattu": 1623324265997,
+                "muokkaaja": "1.2.246.562.24.47321363845",
+                "nimi": {
+                  "_id": "7797602",
+                  "_tunniste": "4b5562be-efbb-4f41-8e23-8d0dc85b5845",
                   "fi": "Suomen kieli ja viestintätaidot"
                 },
                 "tila": "luonnos",
                 "nimiKoodi": {
-                  "id": 7723840,
+                  "id": 7797612,
                   "nimi": {
                     "fi": "Suomen kieli ja viestintätaidot"
                   },
                   "arvo": "05",
                   "uri": "tavoitesisaltoalueenotsikko_05",
                   "koodisto": "tavoitesisaltoalueenotsikko",
-                  "versio": 1,
-                  "temporary": false
+                  "versio": 1
                 },
                 "kuvaus": {
-                  "_id": "7723792",
-                  "_tunniste": "b3bf2093-fd3b-4dac-8b5c-db52cb8f7bb5",
-                  "fi": "<p>Kotoutumiskoulutuksen suomen kielen ja viestintätaitojen tavoitteena on, että opiskelijat saavuttavat keskimäärin kielitaidon tasojen kuvausasteikossa (liite 1) määritellyn taitotason B1.1 eli toimivan peruskielitaidon. Kielitaidon eri osa­ alueiden osaamista kuvaava kielitaitoprofiili voi vaihdella opiskelijakohtaisesti. Opiskelija voi siis henkilökohtaisen opiskelusuunnitelmansa ja opintopolkunsa mukaisesti joillakin kielitaidon osa-alueilla ylittää tai alittaa kotoutumiskoulu­ tuksen tavoitetason.</p><p>Kotoutumisprosessin onnistumisen keskeinen edellytys on toimiva suomen tai ruotsin kielen taito. Suomen kielen ja viestintätaitojen opetus perustuu toimin­nalliseen kielitaitokäsitykseen, jonka mukaan opiskelija nähdään sosiaalisena toimijana, joka käyttää kieltä omiin viestintätarpeisiinsa.</p><p>Aikuisen maahanmuuttajan kielellisessä selviytymisessä viestintätaidot ovat kotoutumiskoulutuksen aikana, kielitaidon kehittymisen varhaisvaiheessa ensi­sijaisia verrattuna esimerkiksi kielelliseen tarkkuuteen. Pragmaattinen kompe­tenssi (keskustelu- ja vuorovaikutusstrategiat) ja sosiolingvistinen kompetenssi (tilanteeseen sopivuus; kohteliaisuus, rekisterit) korostuvat. Kohdekielinen ympäristö antaa kieli- ja viestintätaitojen harjoitteluun paljon mahdollisuuksia, joita tulisi hyödyntää koko koulutuksen ajan, jotta kotoutuja oppii arvioimaan omia taitojaan ja kielenkäyttötarpeitaan.</p><p>Suomen kielen ja viestintätaitojen tavoitteet ja sisällöt on esitelty kielitaitota­soille A1, A2, B1.1. Keskeiset sisällöt on jaettu kullakin kielitaitotasolla kolmeen osaan: aihealueisiin, viestintätaitoihin ja kielenkäyttötarkoituksiin eli funktioi­hin. Aihealueet ja niihin liittyvä sanasto toistuvat ja syvenevät tasolta toiselle, ja näin tasot muodostavat jatkumon. Monipuolisten aihealueiden tarkoituksena on myös, että oppija saa tarvitsemiaan kiellisia valmiuksia työelämä- ja yhteistuntataitojen kartuttamiseen. Tarkastelemalla aihealueita ja viestitätilanteita rinnakkain saa kuvan siitä, millaisista tilanteista oppijan odotetaan kullakin taitotasolla aihepiirin puitteissa selviävän. Oppimisen kannalta on tärkeää, että keskeinen sanasto toistuu monen kanavan kautta ja että sanastoa opetetaan systemaattisesti konkreettisesta kohti käsitteellisempää. KIelenkäyttötarkoitukset ja viestintätaidot kehittyvät tasolta toiselle ja tarjoavat oppijalle yhä monipuolisempia ilmaisukeinoja. Seuraamalla kielenkäyttötarkoituksia ja viestintätaitoja tasolta toiselle saa yleiskuvan sisällön progressiosta ja koulutuskokonaisuuden tavoitteista.</p><p></p>"
+                  "_id": "7797601",
+                  "_tunniste": "b2570d3e-ab74-4c2e-8daf-ed9ce928f398",
+                  "fi": "<p>Kotoutumiskoulutuksen suomen kielen ja viestintätaitojen tavoitteena on, että opiskelijat saavuttavat keskimäärin kielitaidon tasojen kuvausasteikossa (liite 1) määritellyn taitotason B1.1 eli toimivan peruskielitaidon. Kielitaidon eri osa alueiden osaamista kuvaava kielitaitoprofiili voi vaihdella opiskelijakohtaisesti. Opiskelija voi siis henkilökohtaisen opiskelusuunnitelmansa ja opintopolkunsa mukaisesti joillakin kielitaidon osa-alueilla ylittää tai alittaa kotoutumiskoulu tuksen tavoitetason.</p><p>Kotoutumisprosessin onnistumisen keskeinen edellytys on toimiva suomen tai ruotsin kielen taito. Suomen kielen ja viestintätaitojen opetus perustuu toiminnalliseen kielitaitokäsitykseen, jonka mukaan opiskelija nähdään sosiaalisena toimijana, joka käyttää kieltä omiin viestintätarpeisiinsa.</p><p>Aikuisen maahanmuuttajan kielellisessä selviytymisessä viestintätaidot ovat kotoutumiskoulutuksen aikana, kielitaidon kehittymisen varhaisvaiheessa ensisijaisia verrattuna esimerkiksi kielelliseen tarkkuuteen. Pragmaattinen kompetenssi (keskustelu- ja vuorovaikutusstrategiat) ja sosiolingvistinen kompetenssi (tilanteeseen sopivuus; kohteliaisuus, rekisterit) korostuvat. Kohdekielinen ympäristö antaa kieli- ja viestintätaitojen harjoitteluun paljon mahdollisuuksia, joita tulisi hyödyntää koko koulutuksen ajan, jotta kotoutuja oppii arvioimaan omia taitojaan ja kielenkäyttötarpeitaan.</p><p>Suomen kielen ja viestintätaitojen tavoitteet ja sisällöt on esitelty kielitaitotasoille A1, A2, B1.1. Keskeiset sisällöt on jaettu kullakin kielitaitotasolla kolmeen osaan: aihealueisiin, viestintätaitoihin ja kielenkäyttötarkoituksiin eli funktioihin. Aihealueet ja niihin liittyvä sanasto toistuvat ja syvenevät tasolta toiselle, ja näin tasot muodostavat jatkumon. Monipuolisten aihealueiden tarkoituksena on myös, että oppija saa tarvitsemiaan kiellisia valmiuksia työelämä- ja yhteistuntataitojen kartuttamiseen. Tarkastelemalla aihealueita ja viestitätilanteita rinnakkain saa kuvan siitä, millaisista tilanteista oppijan odotetaan kullakin taitotasolla aihepiirin puitteissa selviävän. Oppimisen kannalta on tärkeää, että keskeinen sanasto toistuu monen kanavan kautta ja että sanastoa opetetaan systemaattisesti konkreettisesta kohti käsitteellisempää. KIelenkäyttötarkoitukset ja viestintätaidot kehittyvät tasolta toiselle ja tarjoavat oppijalle yhä monipuolisempia ilmaisukeinoja. Seuraamalla kielenkäyttötarkoituksia ja viestintätaitoja tasolta toiselle saa yleiskuvan sisällön progressiosta ja koulutuskokonaisuuden tavoitteista.</p>"
                 },
                 "taitotasot": [
                   {
-                    "id": 7723850,
+                    "id": 7797560,
                     "nimi": {
-                      "id": 7723841,
+                      "id": 7797613,
                       "nimi": {
                         "fi": "Toimiva alkeiskielitaito (A1)"
                       },
                       "arvo": "1001",
                       "uri": "kotoutumiskoulutustavoitteet_1001",
                       "koodisto": "kotoutumiskoulutustavoitteet",
-                      "versio": 1,
-                      "temporary": false
+                      "versio": 1
                     },
                     "tavoitteet": {
-                      "_id": "7723795",
-                      "_tunniste": "ce9d3702-ee64-4dde-bb0a-9562f739fcd9",
-                      "fi": "<p>Kuullun ymmärtämisen tavoitteena on, että opiskelija pystyy seuraamaan hyvin hidasta, huolellisesti äännettyä puhetta ja ymmärtämään kasvokkain annettuja neuvoja. Opiskelija pystyy puhumaan yksinkertaisella kielellä välittömistä tar­peista ja hyvin tutuista aiheista. Luetun ymmärtämisen tavoitteena on, että opiskelija pystyy ymmärtämään erittäin lyhyitä, yksinkertaisia tekstin osia. Opiskelija tunnistaa tutut nimet, sanat ja aivan tavalliset ilmaukset kaikkein yleisimmissä arkipäivän tilanteissa. Kirjoittamisen tavoitteena on, että opiskelija pystyy kirjoittamaan yksinkertaisia, irrallisia ilmauksia ja lauseita.</p>"
+                      "_id": "7797528",
+                      "_tunniste": "43322566-c706-4f8b-873e-a942d4cb4e66",
+                      "fi": "<p>Kuullun ymmärtämisen tavoitteena on, että opiskelija pystyy seuraamaan hyvin hidasta, huolellisesti äännettyä puhetta ja ymmärtämään kasvokkain annettuja neuvoja. Opiskelija pystyy puhumaan yksinkertaisella kielellä välittömistä tarpeista ja hyvin tutuista aiheista. Luetun ymmärtämisen tavoitteena on, että opiskelija pystyy ymmärtämään erittäin lyhyitä, yksinkertaisia tekstin osia. Opiskelija tunnistaa tutut nimet, sanat ja aivan tavalliset ilmaukset kaikkein yleisimmissä arkipäivän tilanteissa. Kirjoittamisen tavoitteena on, että opiskelija pystyy kirjoittamaan yksinkertaisia, irrallisia ilmauksia ja lauseita.</p>"
                     },
                     "kielenkayttotarkoitus": {
-                      "_id": "7723794",
-                      "_tunniste": "def15264-9c07-4712-8bd8-1c01908a469d",
+                      "_id": "7797527",
+                      "_tunniste": "8a50b260-c7fa-4398-8aee-9ed668714d1d",
                       "fi": "<ul><li><p>yksinkertainen kysyminen ja vastaaminen</p></li><li><p>esittäytyminen</p></li><li><p>nimeäminen</p></li><li><p>tervehtiminen</p></li><li><p>kuulumisten kertominen ja kysyminen</p></li><li><p>kiittäminen ja anteeksi pyytäminen</p></li><li><p>kysyminen</p></li><li><p>tiedon etsiminen</p></li><li><p>kuvaileminen</p></li></ul>"
                     },
                     "aihealueet": {
-                      "_id": "7723793",
-                      "_tunniste": "971c6306-d702-4035-9957-59d4167ecdae",
-                      "fi": "<ul><li><p>ihminen ja lähipiiri</p></li><li><p>(henkilötiedot, perhe, ystävät, koti ja asumi­ nen)</p></li><li><p>arkielämä ja asiointi</p></li><li><p>(päivärytmi, ostosten teko ja palvelujen käyt­täminen, pankki, posti jne., ruoka, vaatteet, liikenne)</p></li><li><p>peruspalvelut</p></li><li><p>(päiväkoti ja koulu, viranomaisasiointi, kirjasto)</p></li><li><p>terveys ja hyvinvointi</p></li><li><p>(vointi, ruumiinosat, sairastuminen ja tapatur­ mat, hätätapauksessa toimiminen)</p></li><li><p>yhteiskunta ja ympäristö</p></li><li><p>(maantuntemus, historia, poliittinen järjestel­ mä, yhdenvertaisuus, elinkeinorakenne, luonto ja ilmasto)</p></li><li><p>vapaa-aika ja harrastukset</p></li><li><p>(omat harrastukset ja kiinnostuksen kohteet, kulttuuritarjonta, tapakulttuuri)</p></li><li><p>työ ja koulutus</p></li><li><p>(koulutusjärjestelmä, ammatit, työnhaku ja työmarkkinat, työelämä (loma, palkka, työtur­ vallisuus yms.), työkulttuuri)</p></li><li><p>ajankohtaiset aiheet (joukkoviestimet)</p></li><li><p>opiskeluvalmiudet ja tiedonhaku</p></li><li><p>(kohdekielisen ympäristön hyödyntäminen, erilaiset opiskelutavat, tiedonhaku, opiskelusanosto)</p></li></ul>"
+                      "_id": "7797526",
+                      "_tunniste": "760b8a77-6c78-4597-90c1-54266ed9113c",
+                      "fi": "<ul><li><p>ihminen ja lähipiiri</p></li><li><p>(henkilötiedot, perhe, ystävät, koti ja asumi nen)</p></li><li><p>arkielämä ja asiointi</p></li><li><p>(päivärytmi, ostosten teko ja palvelujen käyttäminen, pankki, posti jne., ruoka, vaatteet, liikenne)</p></li><li><p>peruspalvelut</p></li><li><p>(päiväkoti ja koulu, viranomaisasiointi, kirjasto)</p></li><li><p>terveys ja hyvinvointi</p></li><li><p>(vointi, ruumiinosat, sairastuminen ja tapatur mat, hätätapauksessa toimiminen)</p></li><li><p>yhteiskunta ja ympäristö</p></li><li><p>(maantuntemus, historia, poliittinen järjestel mä, yhdenvertaisuus, elinkeinorakenne, luonto ja ilmasto)</p></li><li><p>vapaa-aika ja harrastukset</p></li><li><p>(omat harrastukset ja kiinnostuksen kohteet, kulttuuritarjonta, tapakulttuuri)</p></li><li><p>työ ja koulutus</p></li><li><p>(koulutusjärjestelmä, ammatit, työnhaku ja työmarkkinat, työelämä (loma, palkka, työtur vallisuus yms.), työkulttuuri)</p></li><li><p>ajankohtaiset aiheet (joukkoviestimet)</p></li><li><p>opiskeluvalmiudet ja tiedonhaku</p></li><li><p>(kohdekielisen ympäristön hyödyntäminen, erilaiset opiskelutavat, tiedonhaku, opiskelusanosto)</p></li></ul>"
                     },
                     "viestintataidot": {
-                      "_id": "7723796",
-                      "_tunniste": "b2e248c0-c868-414d-bdde-58dfdf8a4cc4",
-                      "fi": "<ul><li><p>osaa antaa perustiedot itsestään ja vastata itseään koskeviin yksinkertaisiin kysymyksiin</p></li><li><p>osaa elämään ja arkipäivään liittyvää sanastoa</p></li><li><p>tulee auttavasti toimeen tavallisimmissa vuoro- vaikutustilanteissa</p></li><li><p>reagoi yksinkertaisiin kehotuksiin</p></li><li><p>osaa kirjoittaa lyhyen viestin</p></li><li><p>ymmärtää lukiessaan sanoja ja tekstin osasia jokapäiväisistä teksteistä</p></li><li><p>osaa ilmaista välittömät tarpeensa fraasein</p></li><li><p>osaa ääntää sana- ja lauseketasolla jokseenkin ymmärrettävästi</p></li><li><p>osaa tehdä havaintoja ja poimia informaatiota kielen käytöstä omassa lähiympäristössä (kyl­tit, opasteet, asiakaspalvelun fraasit, kartat)</p></li><li><p>tunnistaa visuaalisesti joitakin tekstilajeja,</p></li><li><p>esimerkiksi hintalappu, kuitti, ruokalista, kauppalista</p></li><li><p>osaa poimia yksittäisiä tietoja autenttisista teksteistä</p></li><li><p>osaa ilmaista, ymmärtääkö</p></li><li><p>osaa pyytää toistamaan</p></li></ul>"
+                      "_id": "7797529",
+                      "_tunniste": "bdde615b-2d06-4cf7-89b0-ff88cc3a67fd",
+                      "fi": "<ul><li><p>osaa antaa perustiedot itsestään ja vastata itseään koskeviin yksinkertaisiin kysymyksiin</p></li><li><p>osaa elämään ja arkipäivään liittyvää sanastoa</p></li><li><p>tulee auttavasti toimeen tavallisimmissa vuoro- vaikutustilanteissa</p></li><li><p>reagoi yksinkertaisiin kehotuksiin</p></li><li><p>osaa kirjoittaa lyhyen viestin</p></li><li><p>ymmärtää lukiessaan sanoja ja tekstin osasia jokapäiväisistä teksteistä</p></li><li><p>osaa ilmaista välittömät tarpeensa fraasein</p></li><li><p>osaa ääntää sana- ja lauseketasolla jokseenkin ymmärrettävästi</p></li><li><p>osaa tehdä havaintoja ja poimia informaatiota kielen käytöstä omassa lähiympäristössä (kyltit, opasteet, asiakaspalvelun fraasit, kartat)</p></li><li><p>tunnistaa visuaalisesti joitakin tekstilajeja,</p></li><li><p>esimerkiksi hintalappu, kuitti, ruokalista, kauppalista</p></li><li><p>osaa poimia yksittäisiä tietoja autenttisista teksteistä</p></li><li><p>osaa ilmaista, ymmärtääkö</p></li><li><p>osaa pyytää toistamaan</p></li></ul>"
                     },
-                    "opiskelijantaidot": null
+                    "opiskelijantaidot": null,
+                    "opiskelijanTyoelamataidot": null,
+                    "tyoelamaOpintoMinimiLaajuus": null,
+                    "tyoelamaOpintoMaksimiLaajuus": null,
+                    "suullinenVastaanottaminen": null,
+                    "suullinenTuottaminen": null,
+                    "vuorovaikutusJaMediaatio": null
+                  },
+                  {
+                    "id": 7797561,
+                    "nimi": {
+                      "id": 7797614,
+                      "nimi": {
+                        "fi": "Peruskielitaidon alkuvaihe ja kehittyvä peruskielitaito (A2)"
+                      },
+                      "arvo": "1002",
+                      "uri": "kotoutumiskoulutustavoitteet_1002",
+                      "koodisto": "kotoutumiskoulutustavoitteet",
+                      "versio": 1
+                    },
+                    "tavoitteet": {
+                      "_id": "7797605",
+                      "_tunniste": "0283641a-0eb2-44e1-b21c-ce83da0d970b",
+                      "fi": "<p>Kuullunymmärtämisen tavoitteena on, että opiskelija ymmärtää hidasta ja selkeää puhetta sen verran, että pystyy tyydyttämän konkreetit tarpeensa. Puheessa opiskelija selviää suhteellisen hyvin tavanomaisista puhetilanteista ja pystyy osallistumaan melko aktiivisesti ennakoitavissa oleviin keskusteluihin. Opiskelija pystyy myös kertomaan oman elämänpiirinsä arkiasioista. Luetun ymmärtämisen tavoitteena on, että opiskelija ymmärtää lyhyitä, yksinkertaisia tekstejä, jotka käsittelevät tuttuja konkreetteja aiheita. Kirjoittamisen tavoitteena on, että opiskelija pystyy kirjoittamaan itselleen tarpeellisia tekstejä, joissa hän kuvaa myös paikallisia ja ajallisia siirtymiä.</p>"
+                    },
+                    "kielenkayttotarkoitus": {
+                      "_id": "7797604",
+                      "_tunniste": "64fa7296-18e3-4756-87e6-5a47b3f68e1e",
+                      "fi": "<ul><li><p>omaan elämänpiiriin liittyvien tietojen antaminen, kuvaileminen ja kysyminen</p></li><li><p>sosiaalisten normien ja käytänteiden mukainen toimiminen perusilmausten ja fraasien tasolla</p></li><li><p>pyytäminen, käskeminen ja kieltäminen</p></li><li><p>keskustelun aloittaminen ja ylläpitäminen omien jokapäiväisten tarpeiden hoitamiseen</p></li><li><p>omien mieltymysten ilmaiseminen ja perusteleminen</p></li></ul>"
+                    },
+                    "aihealueet": {
+                      "_id": "7797603",
+                      "_tunniste": "d599f4a1-2fef-437c-9b19-fd140244fc6f",
+                      "fi": "<ul><li><p>ihminen ja lähipiiri</p></li><li><p>(henkilötiedot, perhe, ystävät, koti ja asuminen)</p></li><li><p>arkielämä ja asiointi</p></li><li><p>(päivärytmi, ostosten teko ja palvelujen käyttäminen, pankki, posti jne., ruoka, vaatteet, liikenne)</p></li><li><p>peruspalvelut</p></li><li><p>(päiväkoti ja koulu, viranomaisasiointi, kirjasto)</p></li><li><p>terveys ja hyvinvointi</p></li><li><p>(vointi, ruumiinosat, sairastuminen ja tapaturmat, hätätapauksessa toimiminen)</p></li><li><p>yhteiskunta ja ympäristö</p></li><li><p>(maantuntemus, historia, poliittinen järjestelmä, yhdenvertaisuus, elinkeinorakenne, luonto ja ilmasto)</p></li><li><p>vapaa-aika ja harrastukset</p></li><li><p>(omat harrastukset ja kiinnostuksen kohteet, kulttuuritarjonta, tapakulttuuri)</p></li><li><p>työ ja koulutus</p></li><li><p>(koulutusjärjestelmä, ammatit, työnhaku ja työmarkkinat, työelämä (loma, palkka, työturvallisuus yms.), työkulttuuri)</p></li><li><p>ajankohtaiset aiheet (joukkoviestimet)</p></li><li><p>oppimaanoppiminen</p></li><li><p>(kohdekielisen ympäristön hyödyntäminen, erilaiset opiskelutavat, tiedonhaku, opiskelusanasto)</p></li></ul>"
+                    },
+                    "viestintataidot": {
+                      "_id": "7797606",
+                      "_tunniste": "b56f602d-1560-468c-abe2-c0176749d6e0",
+                      "fi": "<ul><li><p>osaa yksinkertaisesti kuvailla lähiympäristöään, sen ominaisuuksia ja toimintaa</p></li><li><p>osaa esittää kutsun, sopia ja perua tapaamisia</p></li><li><p>harjaantuu erilaisiin välittömään elämänpiiriin liittyviin asiointitilanteisiin</p></li><li><p>osaa keskustella tutuista asioista ja ilmaista suppeasti mielipiteensä (yksimielisyys, erimieli syys, mielipidefraasit)</p></li><li><p>osaa pyytää tarkennusta asioihin, joita ei ymmärrä</p></li><li><p>osaa hoitaa asioitaan tavallisten viestintävälineiden avulla</p></li><li><p>osaa esittää lyhyitä sosiaalisten normien mu kaisia ohjeita ja pyyntöjä ja pystyy reagoimaan niihin</p></li><li><p>osaa kirjoittaa lyhyen viestin tai kirjeen, muistilapun ja sähköpostin, täyttää perustietonsa lomakkeeseen ja tehdä lyhyitä muistiinpanoja</p></li><li><p>harjaantuu tunnistamaan itselleen merkityksellisten tekstilajien pääpiirteitä</p></li><li><p>osaa käyttää opiskelun metakieltä</p></li><li><p>pystyy etsimään tietoa itselleen merkityksellisistä asioista ja käyttämään tässä hyväkseen tieto- ja viestintätekniikkaa</p></li><li><p>harjaantuu erilaisiin opiskelutapoihin (ryhmätyöskentely, etäopiskelu, projektimainen työskentely) ja osaa viestiä niissä tarkoituksenmukaisesti</p></li><li><p>hallitsee keinoja, joilla voi kehittää sanavarastoaan edelleen</p></li><li><p>tottuu puheen ja kirjoituksen eroihin</p></li></ul>"
+                    },
+                    "opiskelijantaidot": null,
+                    "opiskelijanTyoelamataidot": null,
+                    "tyoelamaOpintoMinimiLaajuus": null,
+                    "tyoelamaOpintoMaksimiLaajuus": null,
+                    "suullinenVastaanottaminen": null,
+                    "suullinenTuottaminen": null,
+                    "vuorovaikutusJaMediaatio": null
+                  },
+                  {
+                    "id": 7797562,
+                    "nimi": {
+                      "id": 7797615,
+                      "nimi": {
+                        "fi": "Toimiva peruskielitaito (B1.1)"
+                      },
+                      "arvo": "1003",
+                      "uri": "kotoutumiskoulutustavoitteet_1003",
+                      "koodisto": "kotoutumiskoulutustavoitteet",
+                      "versio": 1
+                    },
+                    "tavoitteet": {
+                      "_id": "7797609",
+                      "_tunniste": "2d1a1dea-48fd-45ed-927b-e08a44eea040",
+                      "fi": "<p>Kuullun ymmärtämisen tavoitteena on, että opiskelija pystyy seuraamaan selkeällä yleiskielellä esitettyä puhetta tai selostusta yleisistä asioista. Puheessa opiskelija kykenee osallistumaan aloitteellisesti itselleen tuttuja tai kiinnostavia aiheita käsittelevään keskusteluun ja ilmaisemaan niistä käsityksensä ja mielipiteensä. Luetun ymmärtämisen tavoitteena on, että opiskelija pystyy ymmärtämään pääasiat ja hakemaan tietoa itseään kiinnostavista tai omaan alaansa liittyvistä teksteistä. Kirjoittamisen tavoitteena on, että opiskelija kykenee kirjoittamaan yhtenäisen, ymmättettävän asiatekstin ja välittämään siinä tietoa ja ajatuksia konkreettisista ja osin abstraktisemmistakin aiheista.</p>"
+                    },
+                    "kielenkayttotarkoitus": {
+                      "_id": "7797608",
+                      "_tunniste": "c1aa6374-38b7-4851-be8e-d99d3d9af956",
+                      "fi": "<ul><li><p>kertominen, selostaminen</p></li><li><p>selittäminen, tarkentaminen, korjaaminen ja niiden pyytäminen</p></li><li><p>oma suhtautuminen (tunteet ja asenteet, mielipide, perustelu, ehdotus, aikomus, varmuus/ epävarmuus)</p></li><li><p>viestinnän sääteleminen, esimerkiksi jonkinasteinen aloitteellisuus</p></li><li><p>sosiaalisten käytänteiden ja normien seuraaminen ennakoitavissa tilanteissa, esimerkiksi kohteliaisuus, avun tarjoaminen</p></li></ul>"
+                    },
+                    "aihealueet": {
+                      "_id": "7797607",
+                      "_tunniste": "a04c0d27-afd5-4387-9fa5-4ac71e6cfa30",
+                      "fi": "<ul><li><p>ihminen ja lähipiiri</p></li><li><p>(henkilötiedot, perhe, ystävät, koti ja asuminen)</p></li><li><p>arkielämä ja asiointi</p></li><li><p>(päivärytmi, ostosten teko ja palvelujen käyttäminen, pankki, posti jne., ruoka, vaatteet, liikenne)</p></li><li><p>peruspalvelut</p></li><li><p>(päiväkoti ja koulu, viranomaisasiointi, kirjasto)</p></li><li><p>terveys ja hyvinvointi</p></li><li><p>(vointi, ruumiinosat, sairastuminen ja tapaturmat, hätätapauksessa toimiminen)</p></li><li><p>yhteiskunta ja ympäristö</p></li><li><p>(maantuntemus, historia, poliittinen järjestelmä, yhdenvertaisuus, elinkeinorakenne, luonto ja ilmasto)</p></li><li><p>vapaa-aika ja harrastukset</p></li><li><p>(omat harrastukset ja kiinnostuksen kohteet, kulttuuritarjonta, tapakulttuuri)</p></li><li><p>työ ja koulutus</p></li><li><p>(koulutusjärjestelmä, ammatit, työnhaku ja työmarkkinat, työelämä (loma, palkka, työturvallisuus yms.), työkulttuuri)</p></li><li><p>ajankohtaiset aiheet (joukkoviestimet)</p></li><li><p>opiskeluvalmiudet ja tiedonhaku</p></li><li><p>(kohdekielisen ympäristön hyödyntäminen, erilaiset opiskelutavat, tiedonhaku, opiskelusanasto)</p></li></ul>"
+                    },
+                    "viestintataidot": {
+                      "_id": "7797630",
+                      "_tunniste": "6bc6abf1-f49b-4602-a78f-87367d911526",
+                      "fi": "<ul><li><p>selviää kohtalaisesti tavallisissa ennakoitavissa arkisissa viestintä- ja keskustelutilanteissa työssä ja vapaa-aikana</p></li><li><p>osaa viestiä ymmärrettävästi itselleen tärkeistä asioista myös hieman vaativammissa tilanteissa (esim. viranomaisasiointi, (puhelin)neuvonta)</p></li><li><p>ymmärtää yleisiä aihepiirejä käsittelevän puheen pääajatukset ja itselle keskeisiä yksityiskohtia</p></li><li><p>pystyy kirjoittamalla välittämään tuttua tietoa suhteellisen tehokkaasti, esim. kirjoittamaan ymmärrettävän, riittävän sidosteisen asiatekstin (sähköpostiviesti, tiedote, kirje, hakemus)</p></li><li><p>pystyy lukemaan monenlaisia, eripituisia tekstejä ja löytämään tekstistä pääajatuksia, avainsanoja ja tärkeitä yksityiskohtia; osaa hakea tietoa ja päätellä</p></li><li><p>tunnistaa eri tekstilajeja ja niiden käyttötarkoituksia (viralliset ja puoliviralliset tekstit, käyttöohjeet, artikkelit, helppo kaunokirjallisuus)</p></li><li><p>osaa käyttää melko laajaa jokapäiväistä sanastoa ja joitakin yleisiä fraaseja ja idiomeja</p></li><li><p>tunnistaa kielen tilanteista vaihtelua, sosiaalisia käytänteitä ja normeja</p></li><li><p>ymmärtää ääntämykseltään erilaisia puhujia</p></li><li><p>ääntäminen on suhteellisen vaivattomasti ymmärrettävää</p></li></ul>"
+                    },
+                    "opiskelijantaidot": null,
+                    "opiskelijanTyoelamataidot": null,
+                    "tyoelamaOpintoMinimiLaajuus": null,
+                    "tyoelamaOpintoMaksimiLaajuus": null,
+                    "suullinenVastaanottaminen": null,
+                    "suullinenTuottaminen": null,
+                    "vuorovaikutusJaMediaatio": null
                   }
                 ],
                 "osanTyyppi": "koto_kielitaitotaso"
               },
               "lapset": [],
-              "_perusteenOsa": "7723781"
+              "_perusteenOsa": "7797500"
             },
             {
-              "id": 7723772,
+              "id": 7797493,
               "perusteenOsa": {
-                "id": 7723782,
-                "luotu": 1623320497505,
-                "muokattu": 1623320497505,
-                "muokkaaja": "1.2.246.562.24.77925329174",
-                "nimi": null,
+                "id": 7797503,
+                "luotu": 1623325009173,
+                "muokattu": 1623325179678,
+                "muokkaaja": "1.2.246.562.24.47321363845",
+                "nimi": {
+                  "_id": "7797900",
+                  "_tunniste": "2ccc7b2a-d823-4218-bc2e-54227aa1f5d3",
+                  "fi": "Työelämä- ja yhteiskuntataidot"
+                },
                 "tila": "luonnos",
-                "nimiKoodi": null,
-                "kuvaus": null,
-                "taitotasot": [],
-                "osanTyyppi": "koto_opinto"
+                "teksti": {
+                  "_id": "7797901",
+                  "_tunniste": "e18671fc-a34e-4a53-b5d6-953eb5c0114b",
+                  "fi": "<p>Kotoutumiskoulutukseen kuuluvat työelämä- ja yhteiskuntataitojen opinnot tukevat maahanmuuttajan kotoutumisprosessia. Niiden avulla opiskelija saa realistisen ja ajantasaisen kuvan sekä suomalaisen yhteiskunnan toimintamekanismeista että omista mahdollisuuksistaan yhteiskunnan jäsenenä työelämässä ja muussa toiminnassa. Koulutus tarjoaa välineitä ammatillisten ja muiden jatkosuunnitelmien tueksi sekä tietoa suomalaisesta työkulttuurista; sen avulla opiskelija kykenee suunnistamaan uudessa elämäntilanteessa ja tekemään valintoja . Työelämä- ja yhteiskuntataitojen opinnot kulkevat rinnakkain muiden kotoutumiskoulutukseen kuuluvien opintojen kanssa. Sisältökokonaisuuksia on tarkoitus opiskella integroidusti kotoutumiskoulutuksen alusta lähtien ja sen kaikilla poluilla. Sisältökokonaisuuksia voidaan vaihdella opiskelijoiden ja opiskelijaryhmien tarpeiden ja tavoitteiden mukaisesti.</p>"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [
+                {
+                  "id": 7797491,
+                  "perusteenOsa": {
+                    "id": 7797501,
+                    "luotu": 1623324295417,
+                    "muokattu": 1623325295214,
+                    "muokkaaja": "1.2.246.562.24.47321363845",
+                    "nimi": {
+                      "_id": "7797902",
+                      "_tunniste": "e12f60f0-e360-4e44-bb00-2fe46914a2e8",
+                      "fi": "Työelämä- ja yhteiskuntataidot"
+                    },
+                    "tila": "luonnos",
+                    "nimiKoodi": {
+                      "id": 7797861,
+                      "nimi": {
+                        "fi": "Työelämätaidot"
+                      },
+                      "arvo": "06",
+                      "uri": "tavoitesisaltoalueenotsikko_06",
+                      "koodisto": "tavoitesisaltoalueenotsikko",
+                      "versio": 1
+                    },
+                    "kuvaus": {
+                      "_id": "7797903",
+                      "_tunniste": "cd968a5d-1d34-4427-af81-8199340ea956",
+                      "fi": "<p>Työelämätaidot ovat yleisiä taitoja ja tietoja, joita tarvitaan työelämässä. Työelämätaitoja kehittämällä helpotetaan opiskelijan siirtymistä työelämään ja selviytymistä suomalaisessa työelämässä.</p>"
+                    },
+                    "taitotasot": [
+                      {
+                        "id": 7797563,
+                        "nimi": {
+                          "id": 7797862,
+                          "nimi": {
+                            "fi": "Työelämätietous"
+                          },
+                          "arvo": "1004",
+                          "uri": "kotoutumiskoulutustavoitteet_1004",
+                          "koodisto": "kotoutumiskoulutustavoitteet",
+                          "versio": 1
+                        },
+                        "tavoitteet": {
+                          "_id": "7797635",
+                          "_tunniste": "fa6686de-511e-4c75-be8e-4e608586e521",
+                          "fi": "<p>Tavoitteena on, että opiskelija tietää työlainsäädäntöön ja työelämän käytän töihin liittyviä perusasioita ja kehittää työelämässä tarvittavia sosiaalisia taitoja. Tavoitteena on myös, että opiskelija osaa hakea työtä ja tietää työllistymiseen liittyviä tekijöitä. Työelämätietous sisältää tietoa suomalaisesta työlainsäädännöstä, työmarkkinoiden toimintamekanismeista ja ajankohtaisesta tilanteesta sekä yleisistä suomalaiseen työkulttuuriin liittyvistä tavoista. Työelämätietoudessa kehitetään myös opiskelijan tiedonhaku- ja työnhakuvalmiuksia.</p>"
+                        },
+                        "kielenkayttotarkoitus": null,
+                        "aihealueet": {
+                          "_id": "7797633",
+                          "_tunniste": "10cfa4b0-2dec-447c-9a08-33dc1ee54b67",
+                          "fi": "<ul><li><p>työkulttuuri ja työn merkitys suomalaisessa yhteiskunnassa</p></li><li><p>työmarkkinajärjestelmä</p></li><li><p>työntekijän ja työnantajan oikeudet ja velvollisuudet</p></li><li><p>työn muodot</p></li><li><p>keskeinen työlainsäädäntö</p></li><li><p>verotus</p></li><li><p>työnhaku</p></li></ul>"
+                        },
+                        "viestintataidot": null,
+                        "opiskelijantaidot": {
+                          "_id": "7797634",
+                          "_tunniste": "4bd5ad0f-5e87-44ff-a5ad-72035f65b7ee",
+                          "fi": "<ul><li><p>tuntee työntekijän aseman, oikeudet ja velvollisuudet</p></li><li><p>perehtyy työelämän toimintatapoihin</p></li><li><p>tuntee Suomen työmarkkinat</p></li><li><p>osaa laatia ja päivittää työnhaun asiakirjat (työhakemus, ansioluettelo)</p></li><li><p>tunnistaa erilaiset työnhaun toimintatavat ja osaa hakea itsenäisesti työtä</p></li><li><p>osaa käyttää tieto- ja viestintätekniikkaa apuna työnhaussa</p></li><li><p>ymmärtää kielitaidon merkityksen työtehtävissä ja työelämän vuorovaikutustilanteissa</p></li><li><p>tuntee yleistä työnhaun ja työelämän sanastoa</p></li><li><p>osaa toimia työhaastattelutilanteessa</p></li></ul>"
+                        },
+                        "opiskelijanTyoelamataidot": null,
+                        "tyoelamaOpintoMinimiLaajuus": null,
+                        "tyoelamaOpintoMaksimiLaajuus": null,
+                        "suullinenVastaanottaminen": null,
+                        "suullinenTuottaminen": null,
+                        "vuorovaikutusJaMediaatio": null
+                      },
+                      {
+                        "id": 7797564,
+                        "nimi": {
+                          "id": 7797863,
+                          "nimi": {
+                            "fi": "Ammatin valinta ja ohjaus"
+                          },
+                          "arvo": "1005",
+                          "uri": "kotoutumiskoulutustavoitteet_1005",
+                          "koodisto": "kotoutumiskoulutustavoitteet",
+                          "versio": 1
+                        },
+                        "tavoitteet": {
+                          "_id": "7797747",
+                          "_tunniste": "8f6cb243-707c-468e-8c47-1a968e9c211c",
+                          "fi": "<p>Tavoitteena on, että opiskelija saa ohjauskeskustelujen, työelämäjaksosta saadun palautteen sekä muun mahdollisen ammatillisen osaamisen kartoittamisen avulla tietoa ammattitaidostaan sekä sen soveltumisesta suomalaiseen työelämään. Näiden pohjalta opiskelija yhdessä ohjaajan kanssa laatii jatkosuunnitelman, joka sisältää pitkän aikavälin ammatilliset tavoitteet sekä niihin pääsemiseksi tarvittavat lähitulevaisuuden toimenpiteet. Opiskelija saa henkilökohtaista ohjausta itselleen sopivan ammattialan löytämiseksi tai oman ammattialan päivittämiseksi suomalaiseen työelämään soveltuvaksi. Opiskelija todentaa mahdollisuuksien mukaan opiskelu- ja työhistoriaansa liittyvät dokumentit ja saattaa ne suomalaisessa työelämässä hyväksyttävään ajantasaiseen muotoon ja/ tai osoittaa mahdollisesti olemassa olevan ammattitaitonsa muilla keinoin. Lisäksi perehdytään eri ammatteihin sekä niiden osaamis- ja pätevyysvaatimuksiin. Tavoitteena on, että opiskelija saa monipuolisen kuvan ammateista, koulutuksesta ja työelämästä jatkosuunnitelmiensa tueksi.</p>"
+                        },
+                        "kielenkayttotarkoitus": null,
+                        "aihealueet": {
+                          "_id": "7797745",
+                          "_tunniste": "608070d5-e895-4cf7-ac57-5082835c8d8e",
+                          "fi": "<ul><li><p>opiskelutaidot</p></li><li><p>suomalaiset ammatit ja niiden vaatimukset</p></li><li><p>ammatillisen osaamisen tunnistaminen ja oman ammattitaidon ja pätevyyden arviointi</p></li><li><p>Suomen koulutusjärjestelmä ja eri koulutusalojen hakumenettely</p></li><li><p>näyttötutkintojärjestelmä</p></li><li><p>opintojen rahoitus</p></li><li><p>jatkosuunnitelmat</p></li></ul>"
+                        },
+                        "viestintataidot": null,
+                        "opiskelijantaidot": {
+                          "_id": "7797746",
+                          "_tunniste": "25b08524-66dc-49e2-84df-fbb1b3cc749a",
+                          "fi": "<ul><li><p>tuntee erilaisia opiskelu- ja työskentelytapoja ja osaa hyödyntää tietotekniikkaa opinnoissaan</p></li><li><p>saa realistisen kuvan ammateista, työtehtävistä ja niiden asettamista vaatimuksista</p></li><li><p>osaa suhteuttaa omaa ammattitaitoaan suomalaisen työelämän vaatimuksiin ja hakeutua tarvittavaan täydennyskoulutukseen</p></li><li><p>tuntee omat mahdollisuutensa työmarkkinoilla</p></li><li><p>tietää ammatin ja koulutuksen välisen yhteyden sekä tapoja hankkia ammatti</p></li><li><p>muodostaa käsityksen kieli- ja viestintätaitojensa riittävyydestä työelämässä omalla ammattialallaan</p></li><li><p>saa valmiudet täydentää oman alansa ammattikielen taitoa</p></li><li><p>osaa arvioida omia mahdollisuuksiaan toimia yrittäjänä</p></li><li><p>osaa tehdä koulutusta ja työllistymistä koskevia valintoja</p></li></ul>"
+                        },
+                        "opiskelijanTyoelamataidot": null,
+                        "tyoelamaOpintoMinimiLaajuus": null,
+                        "tyoelamaOpintoMaksimiLaajuus": null,
+                        "suullinenVastaanottaminen": null,
+                        "suullinenTuottaminen": null,
+                        "vuorovaikutusJaMediaatio": null
+                      },
+                      {
+                        "id": 7797565,
+                        "nimi": {
+                          "id": 7797864,
+                          "nimi": {
+                            "fi": "Työelämäjakso"
+                          },
+                          "arvo": "1006",
+                          "uri": "kotoutumiskoulutustavoitteet_1006",
+                          "koodisto": "kotoutumiskoulutustavoitteet",
+                          "versio": 1
+                        },
+                        "tavoitteet": {
+                          "_id": "7797772",
+                          "_tunniste": "7501b346-6764-4b90-867a-0d7e281d6158",
+                          "fi": "<p>Tavoitteena on, että opiskelija tutustuu suomalaiseen työelämään ja kehittää työelämävalmiuksiaan ja työelämässä tarvittavia viestintätaitoja. Työelämäjakson tavoitteena on myös edistää opiskelijan työhönsijoittumista sekä lisätä opiskelijan valmiuksia oman koulutus- ja työllistymissuunnitelman laadintaan. Työelämäjakson avulla opiskelija lisää työelämän tuntemusta ja saa kokemuksia erilaisista työtehtävistä ja selkeyttää omia jatkosuunnitelmiaan.</p><p></p><p>Työelämäjakson kesto ja ajankohta voivat vaihdella opiskelijan henkilökohtaisen opiskelusuunnitelman mukaan. Tavoitteena on, että työelämäjakso on vähintään 6 viikkoa. Sen voi suorittaa yhtäjaksoisesti tai lyhyemmissä jaksoissa. Jaksojen välillä opiskelija opiskelee kotoutumiskoulutuksen muita sisältöjä. Työelämäjakso voidaan suorittaa useilla eri työpaikoilla ja/tai tutustumalla ammatilliseen tai muuhun koulutukseen. Kun opiskelijalla on työelämäjakson suorituspaikka, oppilaitoksen työelämäjakson vastuuhenkilö selvittää työelä</p><p>mäjakson suorituspaikalla erilaiset sen suorittamista koskevat asiakirjat ja sopii työelämäjakson suorituspaikalla tapahtuvasta perehdyttämisestä ja ohjauksesta. Lisäksi sovitaan ohjauksesta ja kouluttajan käynneistä työelämäjakson suorituspaikalla. Opiskelija tutustuu työpaikalla turvallisuusohjeisiin ja muihin työyhteisön sääntöihin.</p><p>Työelämäjakson aikana kouluttaja pitää säännöllisesti yhteyttä opiskelijaan ja käy työpaikalla. Opiskelijan ohjaajana toimii nimetty työpaikkaohjaaja. Opiskelija, kouluttaja ja työpaikkaohjaaja seuraavat harjoittelun etenemistä ja arvioivat sitä yhdessä. Työelämäjakson alussa ohjaus on työtehtäviin ja työpaikan toimintakulttuuriin painottuvaa. Tämän jälkeen ohjaus painottuu niiden tavoitteiden suhteen, jotka opiskelija, kouluttaja ja työelämäjakson suorituspaikan edustaja ovat yhdessä sopineet.</p><p>Työelämäjakson suorittamisen aikana opiskelija saa palautetta kouluttajalta ja työpaikkaohjaajalta. Harjoittelun lopussa käydään palautekeskustelu, jossa ovat mukana opiskelija sekä työpaikan ja koulun edustaja. Työelämäjakson ohjaaja antaa työelämäjakson suorittamisesta kirjallisen palautteen, joka jää opiskelijalle työtodistukseksi.</p>"
+                        },
+                        "kielenkayttotarkoitus": null,
+                        "aihealueet": {
+                          "_id": "7797748",
+                          "_tunniste": "5c42bf83-ef9a-44e5-95ea-81f654ee519a",
+                          "fi": "<ul><li><p>suomalainen työelämä ja -kulttuuri</p></li><li><p>oman osaamisen tunnistaminen</p></li><li><p>työelämän säännöt (mm. työaika, työsuojelu ja -turvallisuus, työntekijän oikeudet ja velvollisuudet)</p></li><li><p>työntekijän rooli</p></li><li><p>työssä käytettävät koneet, laitteet ja välineet</p></li><li><p>ammatin sisällöt ja vaatimukset</p></li><li><p>työelämän kieli- ja viestintävalmiudet</p></li><li><p>työpaikan kieli</p></li></ul>"
+                        },
+                        "viestintataidot": null,
+                        "opiskelijantaidot": {
+                          "_id": "7797749",
+                          "_tunniste": "3f70f467-a7cc-4f71-98be-60b694e7af79",
+                          "fi": "<ul><li><p>tunnistaa ammatillista osaamistaan ja tunnistaa työssä tarvittavia taitoja</p></li><li><p>tunnistaa ammattitaidon vaatimukset ja arvioi omaa osaamistaan</p></li><li><p>tunnistaa ja arvioi omaa työkykyään ja sen kehittämistarpeita</p></li><li><p>tunnistaa vahvuuksiaan ja valmiuksiaan elämänuraa suunniteltaessa</p></li><li><p>tunnistaa vahvuuksiaan ja valmiuksiaan ammatillista opiskelua suunniteltaessa</p></li><li><p>tietää työelämäjaksoon liittyvän alansa tärkeimmät työsuojelumääräykset ja -ohjeet ja tunnistaa työhön liittyvät vaarat</p></li><li><p>ymmärtää työpaikan suullisia ja kirjallisia ohjeita ja viestejä, pystyy toimimaan vuorovaikutuksessa työyhteisönsä ja asiakkaiden kanssa</p></li></ul>"
+                        },
+                        "opiskelijanTyoelamataidot": null,
+                        "tyoelamaOpintoMinimiLaajuus": null,
+                        "tyoelamaOpintoMaksimiLaajuus": null,
+                        "suullinenVastaanottaminen": null,
+                        "suullinenTuottaminen": null,
+                        "vuorovaikutusJaMediaatio": null
+                      }
+                    ],
+                    "osanTyyppi": "koto_opinto"
+                  },
+                  "lapset": [],
+                  "_perusteenOsa": "7797501"
+                },
+                {
+                  "id": 7797494,
+                  "perusteenOsa": {
+                    "id": 7797504,
+                    "luotu": 1623325501124,
+                    "muokattu": 1623325723861,
+                    "muokkaaja": "1.2.246.562.24.47321363845",
+                    "nimi": {
+                      "_id": "7797909",
+                      "_tunniste": "c134ef4c-264f-4b62-b41f-e38168ce393c",
+                      "fi": "Yhteiskuntataidot ja kulttuurintuntemus"
+                    },
+                    "tila": "luonnos",
+                    "nimiKoodi": {
+                      "id": 7797866,
+                      "nimi": {
+                        "fi": "Yhteiskuntataidot ja kulttuurintuntemus"
+                      },
+                      "arvo": "02",
+                      "uri": "tavoitesisaltoalueenotsikko_02",
+                      "koodisto": "tavoitesisaltoalueenotsikko",
+                      "versio": 1
+                    },
+                    "kuvaus": {
+                      "_id": "7797908",
+                      "_tunniste": "a1ce726d-c626-4d34-a5c2-47d6499b5981",
+                      "fi": "<p>Yhteiskuntataidot ja kulttuurintuntemus ovat yleisiä taitoja ja tietoja, joita tarvitaan Suomessa elettäessä. Yhteiskuntataitoja ja kulttuurintuntemusta kehittämällä helpotetaan opiskelijan toimimista suomalaisessa yhteiskunnassa ja kulttuurissa. Yhteiskuntataitoihin sisältyy yhteiskunnan perusrakenteiden ja maan sekä yhteiskunnan peruspalvelujen tuntemusta. Kulttuurintuntemus sisältää kulttuuri-identiteettiä ja monikulttuurista vuorovaikutusta kehittäviä ja syventäviä aihesisältöjä. Oppisisällöissä otetaan huomioon ne käytännön tarpeet, joita opiskelijalla on eri elämäntilanteissa. Opinnoissa edetään arki elämän tilanteista kohti laajempia yhteiskuntataitoja ja syvällisempää yhteiskunnan tuntemusta. Tavoitteena on myös paikallistuntemuksen lisääminen ja alueellisten erityispiirteiden huomioon ottaminen. Opintojen järjestämiseen hankitaan tarvittaessa oppilaitoksen ulkopuolista asiantuntemusta. Opintojen sisältökokonaisuudet ja tavoitteet ovat seuraavat:</p>"
+                    },
+                    "taitotasot": [
+                      {
+                        "id": 7797566,
+                        "nimi": {
+                          "id": 7797867,
+                          "nimi": {
+                            "fi": "Yhteiskunnan perusrakenteet ja maantuntemus"
+                          },
+                          "arvo": "1007",
+                          "uri": "kotoutumiskoulutustavoitteet_1007",
+                          "koodisto": "kotoutumiskoulutustavoitteet",
+                          "versio": 1
+                        },
+                        "tavoitteet": {
+                          "_id": "7797992",
+                          "_tunniste": "57f564ed-f19c-43d5-95e2-6b3158f1af51",
+                          "fi": "<p>Tavoitteena on, että opiskelija tuntee yhteiskuntamme rakennetta ja toimintaa sekä saa perustiedot voidakseen toimia aktiivisena ja tasa-arvoisena kansalaisena. Opiskelija tuntee pääpiirteittäin Suomen ja lähialueiden maantiedettä sekä Suomen asemaa ja toimintaa osana Pohjoismaita, Eurooppaa ja maailmaa. Opiskelija tutustuu yhteiskunnalliseen toimintaan, elinkeinoihin ja luontoon asuinpaikkakunnallaan.</p>"
+                        },
+                        "kielenkayttotarkoitus": null,
+                        "aihealueet": {
+                          "_id": "7797990",
+                          "_tunniste": "65f3e35d-407c-4561-8c9b-2c908722c898",
+                          "fi": "<ul><li><p>Suomen historia</p></li><li><p>yhteiskuntajärjestelmä: valtioelimet ja paikallishallinto</p></li><li><p>poliittinen järjestelmä puolueineen</p></li><li><p>vaikuttamismahdollisuudet kolmannen sektorin organisaatioiden kautta</p></li><li><p>Suomi maantieteellisesti, luonnonolot sekä lähiluonto ja rakennettu ympäristö</p></li><li><p>Suomen talousjärjestelmä ja elinkeinorakenne</p></li><li><p>Suomi kansainvälisenä toimijana</p></li><li><p>perustietoa lainsäädännöstä ja oikeuslaitoksen toiminnasta (perustuslaki, tasa-arvolaki, yhdenvertaisuuslaki, lastensuojelulaki, kansalaisuuslaki ja kotoutumislaki) sekä jokamiehenoikeudet</p></li></ul>"
+                        },
+                        "viestintataidot": null,
+                        "opiskelijantaidot": {
+                          "_id": "7797991",
+                          "_tunniste": "0fbaa284-bad1-43a4-987c-ea00c3b7277b",
+                          "fi": "<ul><li><p>tuntee Suomen historian sekä yhteiskunta- ja talousjärjestelmän peruspiirteet</p></li><li><p>tietää Suomessa oleskelevan ja kansalaisen perusoikeudet ja velvollisuudet sekä osaa käyttää oikeuksiaan ja täyttää velvollisuutensa</p></li><li><p>tuntee ja osaa käyttää poliittisia ja muita yhteiskunnallisia vaikutusmahdollisuuksia</p></li><li><p>tuntee perheen sekä lapsen ja nuoren aseman sekä sukupuolten välisen tasa-arvon Suomessa</p></li><li><p>tietää yhdenvertaisuuden periaatteet</p></li><li><p>tuntee Suomen luontoa sekä ympäristönsuojelun ja kestävän kehityksen periaatteita ja osaa hyödyntää jokamiehenoikeuksia</p></li></ul>"
+                        },
+                        "opiskelijanTyoelamataidot": null,
+                        "tyoelamaOpintoMinimiLaajuus": null,
+                        "tyoelamaOpintoMaksimiLaajuus": null,
+                        "suullinenVastaanottaminen": null,
+                        "suullinenTuottaminen": null,
+                        "vuorovaikutusJaMediaatio": null
+                      },
+                      {
+                        "id": 7797567,
+                        "nimi": {
+                          "id": 7797868,
+                          "nimi": {
+                            "fi": "Yhteiskunnan peruspalvelut"
+                          },
+                          "arvo": "1008",
+                          "uri": "kotoutumiskoulutustavoitteet_1008",
+                          "koodisto": "kotoutumiskoulutustavoitteet",
+                          "versio": 1
+                        },
+                        "tavoitteet": {
+                          "_id": "7797995",
+                          "_tunniste": "48a323f0-eec0-4ef9-8503-ab9fe57eba1b",
+                          "fi": "<p>Tavoitteena on, että opiskelija perehtyy Suomen sosiaaliturvaan, terveydenhoitopalveluihin, koulutuspalveluihin sekä työllistymistä edistäviin ja muihin palveluihin. Opiskelija perehtyy omiin oikeuksiinsa ja velvollisuuksiinsa. Opiskelija tutustuu asuinpaikkakuntansa peruspalveluihin ja muihin julkisiin palveluihin.</p>"
+                        },
+                        "kielenkayttotarkoitus": null,
+                        "aihealueet": {
+                          "_id": "7797993",
+                          "_tunniste": "4235ac48-dfdb-4ec7-a311-f29decac775a",
+                          "fi": "<ul><li><p>peruspalvelut ja muut julkiset palvelut</p></li><li><p>verotus</p></li><li><p>keskeiset viranomaiset</p></li><li><p>yksityiset palvelut sekä kolmannen sektorin toiminta</p></li><li><p>yksilön oikeudet ja velvollisuudet kuluttajana ja suhteessa palveluntuottajiin</p></li><li><p>asuminen</p></li><li><p>turvallisuus</p></li></ul>"
+                        },
+                        "viestintataidot": null,
+                        "opiskelijantaidot": {
+                          "_id": "7797994",
+                          "_tunniste": "977b9291-f630-4ee8-9aff-4dbae7c28d2e",
+                          "fi": "<ul><li><p>tuntee ja osaa hyödyntää tärkeimpiä kunnan ja valtion viranomaisten järjestämiä palveluita</p></li><li><p>(esimerkiksi Kela, päivähoito, lasten, nuorten ja aikuisten koulutuspalvelut, poliisi, sosiaalitoimisto, terveyspalvelut, TE-toimisto, kirjasto-, liikunta-, ja nuorisotoimi)</p></li><li><p>tuntee ja osaa käyttää yksityisiä palveluita (esimerkiksi pankit, vakuutusyhtiöt, teleliikenne)</p></li><li><p>tuntee kolmannen sektorin toimintaa (esimerkiksi eri alojen yhdistykset ja seurat, maahanmuuttajien ystävyystoiminta ja kielikoulutus) ja osaa hakeutua sen piiriin</p></li><li><p>tuntee oikeutensa kuluttajana</p></li><li><p>osaa toimia vastuullisena asukkaana</p></li></ul>"
+                        },
+                        "opiskelijanTyoelamataidot": null,
+                        "tyoelamaOpintoMinimiLaajuus": null,
+                        "tyoelamaOpintoMaksimiLaajuus": null,
+                        "suullinenVastaanottaminen": null,
+                        "suullinenTuottaminen": null,
+                        "vuorovaikutusJaMediaatio": null
+                      },
+                      {
+                        "id": 7797568,
+                        "nimi": {
+                          "id": 7797869,
+                          "nimi": {
+                            "fi": "Kulttuuri-identiteetti ja monikulttuurinen vuorovaikutus"
+                          },
+                          "arvo": "1009",
+                          "uri": "kotoutumiskoulutustavoitteet_1009",
+                          "koodisto": "kotoutumiskoulutustavoitteet",
+                          "versio": 1
+                        },
+                        "tavoitteet": {
+                          "_id": "7797998",
+                          "_tunniste": "b0b9bbd7-a211-46d9-ab8e-a27417e52822",
+                          "fi": "<p>Tavoitteena on, että opiskelija oppii havainnoimaan ja tulkitsemaan omaan kulttuuriinsa ja suomalaiseen kulttuuriin liittyviä tapoja, arvoja, normeja ja asenteita. Opiskelija kehittää vuorovaikutustaitojaan kulttuuritaustaltaan erilaisten ihmisten kanssa. Opiskelija oppii toimimaan rakentavasti monikulttuurisen yhteisön jäsenenä sekä torjumaan rasismia kaikki etnisiä ryhmiä kohtaan. Vaikka kielitaito olisi vähäinen, opiskelija selviytyy erilaisissa tilanteissa selkokielen, havainnollistamisen, huumorin, hyvän tahdon ja kulttuurisensitiivisyyden avulla. Opetuksessa tulee pyrkiä tunnistamaan ja käsittelemään sellaisia näkymättömiä kulttuurieroja, joihin törmääminen voi aiheuttaa eripuraa tai ristiriitoja.</p>"
+                        },
+                        "kielenkayttotarkoitus": null,
+                        "aihealueet": {
+                          "_id": "7797996",
+                          "_tunniste": "82146633-fab8-4140-bc39-fe2b3ffa10f5",
+                          "fi": "<ul><li><p>erilaisia kulttuurimuotoja ja niiden rakennuselementtejä (esimerkiksi luonto, elinkeinot, historia, tarinat, uskonto, taidekokemukset, perhesuhteet jne.)</p></li><li><p>kulttuurien moninaisuus</p></li><li><p>yksilön kulttuuri-identiteetin rakentuminen erilaisissa kulttuureissa; identiteettien moninaisuus, kerroksellisuus ja muuntuvuus</p></li><li><p>opiskelijan oman kulttuuri-identiteetin tukeminen sekä kotoutumisprosessin vaikutuksen pohtiminen</p></li><li><p>tutustuminen suomalaisen kulttuurin tapoihin, arvoihin ja normeihin</p></li><li><p>uskonto ja uskonnonvapaus Suomessa</p></li><li><p>suvaitseva suhtautuminen kulttuurieroihin, maailmankansalaisen etiikka yhteistä hyvää rakentavana mahdollisuutena</p></li><li><p>rajan asettaminen kulttuuripiirteille, joita Suomessa ei saa hyväksyä</p></li><li><p>aineettomien kulttuurierojen havaitseminen ja pohdinta (esimerkiksi roolit, hierarkiat, kasvatusköytönnöt, kunnian ja häpeän käsitteet, yksityisyyden raja)</p></li><li><p>kulttuurisen vuorovaikutuksen kehittyminen</p></li><li><p>kulttuurien välisten sosiaalisten suhteiden ja verkostojen muodostaminen; osallisuus, ryhmään kuuluminen ja yhteisöllisyys</p></li></ul>"
+                        },
+                        "viestintataidot": null,
+                        "opiskelijantaidot": {
+                          "_id": "7797997",
+                          "_tunniste": "5ae0273e-f546-4fca-b854-d9d529caaddf",
+                          "fi": "<ul><li><p>tunnistaa oman kulttuurinsa erityispiirteitä sekä osaa tarkastella oman kulttuurinsa ja suomalaisen kulttuurin välisiä eroja ja näiden erojen syitä</p></li><li><p>tiedostaa oman kotoutumisprosessinsa eri vaiheet ja osaa tarkastella omaa tilannettaan sen pohjalta</p></li><li><p>suhtautuu hyväksyvästi kulttuurisesti erilaisten näkemyksien olemassaoloon ja pystyy vertailemaan erilaisia näkemyksiä kriittisesti</p></li><li><p>tuntee suomalaisen kulttuurin tapoja, arvoja ja normeja</p></li><li><p>on kiinnostunut hyvää yhteiselämää kaikille rakentavasta maailmankansalaisen etiikasta</p></li></ul>"
+                        },
+                        "opiskelijanTyoelamataidot": null,
+                        "tyoelamaOpintoMinimiLaajuus": null,
+                        "tyoelamaOpintoMaksimiLaajuus": null,
+                        "suullinenVastaanottaminen": null,
+                        "suullinenTuottaminen": null,
+                        "vuorovaikutusJaMediaatio": null
+                      }
+                    ],
+                    "osanTyyppi": "koto_opinto"
+                  },
+                  "lapset": [],
+                  "_perusteenOsa": "7797504"
+                }
+              ],
+              "_perusteenOsa": "7797503"
+            },
+            {
+              "id": 7789541,
+              "perusteenOsa": {
+                "id": 7789551,
+                "luotu": 1623156117624,
+                "muokattu": 1623233127094,
+                "muokkaaja": "1.2.246.562.24.47321363845",
+                "nimi": {
+                  "_id": "7789458",
+                  "_tunniste": "daf9a28c-e5ee-40ee-84e8-c2906eb02584",
+                  "fi": "Valinnaiset opinnot"
+                },
+                "tila": "luonnos",
+                "teksti": {
+                  "_id": "7790336",
+                  "_tunniste": "8df79a65-4cc7-4fc5-9f13-366aa13a1502",
+                  "fi": "<p>Koulutuksen järjestäjä voi tarjota opiskelijalle koulutuksen sisällöissä myös sel­laisia valinnaisia opintoja, joiden tavoitteena on auttaa häntä kohti työelämää, jatko-opintoja ja yhteiskuntaan kotoutumista. Opintojen tulee olla sisällöltään perusteltavissa niin, että ne sopivat opiskelijan henkilökohtaiseen opiskelu- ja kotoutumissuunnitelmaan tukevat hänen persoonallista kasvuaan. Valinnaiset opinnot sisällytetään kotoutumiskoulutukseen opiskelijan henkilökohtaisten tarpeiden mukaan ja niistä sovitaan henkilökohtaisessa opiskelusuunnitelmassa. Valinnaisten opintojen tarjonnassa voidaan hyödyntää koko alueen opintotar­jontaa.</p><p>Valinnaisia opintoja voivat olla esimerkiksi</p><ul><li><p>oman ammattialan osaamisen päivitykseen liittyvät täydennyskoulutusosiot</p></li><li><p>oman äidinkielen opinnot</p></li><li><p>yrittäjyysopinnot</p><p></p></li></ul><p>Valinnaisia opintoja ja niistä saatavia todistuksia voivat olla esimerkiksi :</p><ul><li><p>anniskelupassi</p></li><li><p>ensiapukoulutukset (EAl, EA2 )</p></li><li><p>hitsaajan pätevyyskokeet</p></li><li><p>hygieniaosaamistodistus</p></li><li><p>tietokoneen ajokortit (kansalaisen @-kortti, A-kortti, AB-kortti, ECDL)</p></li><li><p>trukkikortti</p></li><li><p>tulityökortti</p></li><li><p>työturvallisuuskortti</p></li><li><p>yleiset kielitutkinnot</p><p></p></li></ul><p>Valinnaisiin opintoihin voi kuulua myös</p><ul><li><p>taiteen, liikunnan opintoja</p></li><li><p>muiden kielten opintoja (esim. ruotsin kieli)</p></li><li><p>ohjattuja tutustumiskäyntejä ja -jaksoja oppilaitoksissa (myös perusopetus ja lukio) ja yrityksissä opiskelijan jatkosuunnitelman mukaan</p></li></ul><p>Valinnaisia opintoja voidaan mahdollisuuksien mukaan järjestää myös omalla äidinkielellä.</p>"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
               },
               "lapset": [],
-              "_perusteenOsa": "7723782"
+              "_perusteenOsa": "7789551"
             }
           ],
-          "_perusteenOsa": "7723780"
+          "_perusteenOsa": "7789355"
+        },
+        {
+          "id": 7789542,
+          "perusteenOsa": {
+            "id": 7789552,
+            "luotu": 1623156131981,
+            "muokattu": 1623233191240,
+            "muokkaaja": "1.2.246.562.24.47321363845",
+            "nimi": {
+              "_id": "7789459",
+              "_tunniste": "2c385efc-083f-422d-9ea1-5a2a26290489",
+              "fi": "Arviointi ja todistukset"
+            },
+            "tila": "luonnos",
+            "teksti": null,
+            "koodit": [],
+            "liite": false,
+            "osanTyyppi": "tekstikappale"
+          },
+          "lapset": [
+            {
+              "id": 7789543,
+              "perusteenOsa": {
+                "id": 7789553,
+                "luotu": 1623156155668,
+                "muokattu": 1623233199245,
+                "muokkaaja": "1.2.246.562.24.47321363845",
+                "nimi": {
+                  "_id": "7789590",
+                  "_tunniste": "ac87837f-cc03-475c-a983-d56f77fcf3ce",
+                  "fi": "Arvioinnin tehtävät ja tavoitteet"
+                },
+                "tila": "luonnos",
+                "teksti": {
+                  "_id": "7790338",
+                  "_tunniste": "5f188acb-3bc2-4ba3-a6ab-2fb2d09ee599",
+                  "fi": "<p>Aikuisten maahanmuuttajien kotoutumiskoulutuksen suorittamisesta tarvitaan tietoa opiskelijan kotoutumisen jatkosuunnittelua ja työ- ja elinkeinohallintoa varten. Arvioinnin tarkoituksena on myös antaa opiskelijalle kannustavaa palautetta niistä taidoista, jotka hän on oppinut. Arvioinnin avulla opiskelija saa palautetta myös siitä, mitä taitoja hänen tulee vielä kehittää ja harjoitella. Näin arviointi tukee kunkin yksilöllistä oppimista.</p><p>Opiskelijan edistymistä ja oppimistuloksia arvioidaan sekä koulutuksen aikana että sen päättyessä. Lisäksi arviointi ja arviointipalautteen antaminen on tärkeää seuraavaan moduuliin tai toiselle polulle siirryttäessä.</p><p>Arvioinnin tulee olla oppimista tukevaa ja monipuolista. Hyvä arviointi osallistaa oppijan; se on linjassa oppimistavoitteiden ja toiminnallisen taitokäsityksen kanssa. Arvioinnin avulla oppijan on mahdollista muodostaa realistinen käsitys omasta osaamisestaan ja kehittää oppimaan oppimisen taitojaan.</p><p>Arviointiin osallistuvat kaikki opiskelijaa opettavat ja ohjaavat yhteistyössä. Kaikille opiskelijoille ja arviointiin osallistuville tiedotetaan kotoutumiskoulutuk­sen arvioinnin periaatteista ja niiden soveltamisesta, kuten arvioinnin tehtävistä, kohteista ja dokumentoinnista (arviosta päättäminen, arvioinnin uusiminen) sekä koulutuksesta annettavan todistuksen sisällöstä.</p>"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "7789553"
+            },
+            {
+              "id": 7789544,
+              "perusteenOsa": {
+                "id": 7789554,
+                "luotu": 1623156175683,
+                "muokattu": 1623233269371,
+                "muokkaaja": "1.2.246.562.24.47321363845",
+                "nimi": {
+                  "_id": "7789591",
+                  "_tunniste": "a5b436ec-d5d1-4c3f-ae17-bd1eb5db972a",
+                  "fi": "Arviointi opintojen aikana"
+                },
+                "tila": "luonnos",
+                "teksti": {
+                  "_id": "7790339",
+                  "_tunniste": "7f2a4844-679f-444d-81ba-be046ab61f19",
+                  "fi": "<p>Arviointi on jatkuva prosessi, joka kestää koko koulutuksen ajan. Se kohdistuu sekä oppimistuloksiin että oppimisprosessiin. Sen tavoitteena on antaa henkilökohtaista ja rakentavaa palautetta ja tukea opiskelijalle. Arviointia suoritetaan kotoutumiskoulutuksessa lähtötason arvioinnissa, oppimisen edistymistä arvioitaessa, seuraavaan moduuliin tai toiseen ryhmään sijoitettaessa sekä kotoutumiskoulutuksen päättyessä.</p><p>Opiskelijan osaamista on arvioitava suhteessa kotoutumiskoulutuksen tai moduulien tavoitteisiin ja keskeisiin sisältöihin sekä niistä johdettuihin arviointikriteereihin. Opiskelijan tulee saada koulutuksen aikana riittävästi monipuolista palautetta edistymisestään ja oppimisestaan.</p><p>Jatkuvan arvioinnin tarkoituksena on auttaa opiskelijaa suunnittelemaan omaa opiskeluaan. Itsearvioinnin ja työskentelyn arvioinnin kehittymiseen on kiinnitettävä erityistä huomiota. Oppimisen arvioinnin tavoite on, että opiskelija tietää, mitä osaa ja miten hänen on vielä kehitettävä osaamistaan. Oppimisen arvioinnissa käytetään opiskelijaa motivoivia ja aktivoivia menetelmiä. Niiden avulla tuetaan ja motivoidaan opiskelijaa tavoitteiden saavuttamisessa sekä kehitetään opiskelijan itsearviointitaitoa.</p><p>Oppimista arvioidaan koko koulutuksen ja opiskelun ajan antamalla opiskelijalle suullista tai kirjallista arviointipalautetta oppimisen etenemisestä. Oppimisen arvioinnin perusteella tehdään tarvittavat muutokset opiskelijan henkilökohtaiseen opiskelusuunnitelmaan ja ne otetaan huomioon opetuksen järjestämisessä ja oppimisen tukemisessa. Mikäli koulutus on jaettu moduuleihin, voidaan moduulin suorittamisesta antaa todistus, johon sisältyy arvio opiskelijan kielitaitotasosta kielitaidon tasojen kuvausasteikon (liite 1) mukaan.</p><p>Kotoutumiskoulutuksen arvioinnissa käytetään monipuolisia ja opiskelijoiden taustan ja osaamisen huomioon ottavia joustavia menetelmiä siten, että jokainen voi osoittaa osaamisensa. Samalla on varmistettava, että opiskelija ymmärtää arvioinnin periaatteet, merkityksen ja arviointitavan kielitaidon mahdollisista puutteista huolimatta.</p>"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "7789554"
+            },
+            {
+              "id": 7789545,
+              "perusteenOsa": {
+                "id": 7789555,
+                "luotu": 1623156190323,
+                "muokattu": 1623233465723,
+                "muokkaaja": "1.2.246.562.24.47321363845",
+                "nimi": {
+                  "_id": "7789592",
+                  "_tunniste": "102a6d67-72ce-468b-b4f0-3ce27f96b480",
+                  "fi": "Arviointi kotoutumiskoulutuksen päättyessä ja todistus"
+                },
+                "tila": "luonnos",
+                "teksti": {
+                  "_id": "7790422",
+                  "_tunniste": "2ef56c6c-e3fb-42c4-8d14-b308554c67bd",
+                  "fi": "<p>Kotoutumiskoulutuksen päättyessä opiskelijoita arvioidaan suhteessa koko koulutukselle asetettuihin tavoitteisiin. Arvioinnin tulee kohdistua opiskelijan yleiseen edistymiseen sekä koulutuksen eri osa-alueiden tavoitteiden saavuttamiseen. Opiskelijan on arvioinnin perusteella saatava realistinen käsitys omasta osaamisestaan.</p><p>Arvioinnissa huomioidaan kaikki kotoutumiskoulutuksen osa-alueet: suomen tai ruotsin kieli ja viestintätaidot, työelämä- ja yhteiskuntataidot sekä valinnaiset opinnot. Kaikki nämä osa-alueet arvioidaan erikseen. Arvioinnin tulee olla luotettavaa ja oikeudenmukaista. Suoritettavasta aikuisten maahanmuuttajien kotoutumiskoulutuksesta annetaan koulutuksen päättyessä todistus.</p><p>Todistus sisältää seuraavat tiedot:</p><ul><li><p>koulutusorganisaation nimi sekä mahdollinen oppilaitoksen nimi</p></li><li><p>opiskelijan nimi ja syntymäaika</p></li><li><p>koulutuksen nimi ja laajuus sekä koulutuksen sisältökokonaisuuksien laajuus (päivien ja oppituntien määrä/opintoviikkojen määrä)</p></li><li><p>todistuksen antopäivä</p></li><li><p>koulutusorganisaation/oppilaitoksen leima</p></li><li><p>mahdolliset lisätiedot (esimerkiksi suositus seuraavaksi koulutukseksi)</p></li><li><p>allekirjoitukset</p></li><li><p>tieto siitä, että kotoutumiskoulutus on toteutettu noudattaen näitä Opetus­ hallituksen laatimia aikuisten maahanmuuttajien kotoutumiskoulutuksen opetussuunnitelman perusteita (Opetushallituksen määräys 1/011/2012).</p><p></p></li></ul><p>Kotoutumiskoulutuksen eri osa-alueet arvioidaan todistuksessa seuraavasti:</p><ul><li><p><strong>Suomen/ruotsin kieli ja viestintätaidot </strong>arvioidaan siten, että arvioinnissa huomioidaan kielitaidon kaikki osa-alueet. Arvioinnissa on otettava huomioon, että opiskelijoiden kielitaitoprofiili voi olla hyvinkin epätasainen.</p></li></ul><p>Saavutettu&nbsp;&nbsp; kielitaitotaso arvioidaan kielitaidon&nbsp; tasojen&nbsp; kuvausasteikon (liite 1) mukaan seuraavista kielitaidon osa-alueista:</p><ul><li><p>kuullun ymmärtäminen</p></li><li><p>puhuminen</p></li><li><p>luetun ymmärtäminen</p></li><li><p>kirjoittaminen.</p><p></p></li></ul><p>Todistukseen merkitään opiskelijan saavuttama kielitaitotaso sekä taitotason kuvaus (liite 2).</p><ul><li><p><strong>Työelämä- ja yhteiskuntataidot </strong>arvioidaan merkinnällä <em>suoritettu/-.</em></p></li><li><p>Lisäksi todistukseen merkitään opiskelijan saama <strong>ohjauksen määrä </strong>opintoviikkoina.</p></li><li><p>Mikäli opiskelija on suorittanut <strong>valinnaisia opintoja, </strong>niiden nimet ja laajuudet merkitään todistukseen.</p><p></p></li></ul><p>Kotoutumiskoulutuksen todistusmalli on liitteessä 4.</p>"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "7789555"
+            }
+          ],
+          "_perusteenOsa": "7789552"
+        },
+        {
+          "id": 7789547,
+          "perusteenOsa": {
+            "id": 7789557,
+            "luotu": 1623233669328,
+            "muokattu": 1623325380221,
+            "muokkaaja": "1.2.246.562.24.47321363845",
+            "nimi": {
+              "_id": "7797904",
+              "_tunniste": "6d73b62e-cff7-4df2-98d5-1c84186dd79a",
+              "fi": "Liite 1. Kielitaidon tasojen kuvausasteikko"
+            },
+            "tila": "luonnos",
+            "teksti": {
+              "_id": "7793987",
+              "_tunniste": "1160e51d-8f89-4616-92c8-1457f2fc6045",
+              "fi": "<p>Kuvausasteikko on Suomessa laadittu&nbsp; sovellusasteikoista,&nbsp; jotka&nbsp; sisältyvät Euroopan neuvoston toimesta&nbsp; kehitettyyn&nbsp; Kielten oppimisen, opettamisen&nbsp; ja arvioinnin yhteiseen eurooppalaiseen viitekehykseen.</p><p>&nbsp;</p><img data-uid=\"00640c46-e1bc-42ba-8c20-75f127960449\" alt=\"Taulukko, jossa kuvattu kielellistä taitotasoa A1.1\" figcaption=\"Taitotaso A1.1\"><p></p><p></p><p></p><img data-uid=\"9fe24ef7-16dd-40fa-8117-e08e082c3a17\" alt=\"Taulukko, jossa kuvattu kielellinen taitotaso A1.2\" figcaption=\"Taitotaso A1.2\"><p></p><img data-uid=\"a9f37b5b-a1b7-4380-865c-f7c612922a30\" alt=\"Taulukko, jossa on kuvailtu kielitaidon taitotasoa A1.3\" figcaption=\"Taitotaso A1.3\"><p><strong>&nbsp;</strong></p><img data-uid=\"c1f340a5-4de7-45ad-91b4-ae8ab930922b\" alt=\"Taulukko, jossa kuvataan kielellistä taitotasoa A2.1\" figcaption=\"Taitotaso A2.1\"><p></p><img data-uid=\"cc605d19-74c0-47f1-a35f-3dfee9846bf0\" alt=\"Taulukko, jossa kuvataan kielitaidon taitotasoa A2.2\" figcaption=\"Taitotaso A2.2\"><p></p><img data-uid=\"f7b66573-c9be-43c7-9f88-39ee9a1f8233\" alt=\"Taulukko, jossa kuvataan kielitaidon tasoa B1.1\" figcaption=\"Taitotaso B1.1\"><p></p><img data-uid=\"4c508c2c-8203-43d5-bd20-8a0be074ad4a\" alt=\"Taulukko, jossa kuvaillaan kielitason taitotasoa B1.2\" figcaption=\"Taitotaso B1.2\"><p></p><img data-uid=\"77bca294-f811-46d6-bc14-2379bb21f9bc\" alt=\"Taulukko, jossa kuvaillaan kielitaidon taitotasoa B2.1\" figcaption=\"Taitotaso B2.1\"><p></p><img data-uid=\"497726da-5021-4194-b123-265f3ffa5e02\" alt=\"Taulukko, jossa kuvaillaan kielitaidon taitotasoa B2.2\" figcaption=\"Taitotaso B2.2\"><p></p><img data-uid=\"7d8041a4-bcc7-474a-bc69-7e610362a1f6\" alt=\"Taulukko, jossa kuvaillaan kielitaidon taitotasoa C1.1\" figcaption=\"Taitotaso C1.1\"><p></p>"
+            },
+            "koodit": [],
+            "liite": true,
+            "osanTyyppi": "tekstikappale"
+          },
+          "lapset": [],
+          "_perusteenOsa": "7789557"
+        },
+        {
+          "id": 7789548,
+          "perusteenOsa": {
+            "id": 7789558,
+            "luotu": 1623233678760,
+            "muokattu": 1623325402443,
+            "muokkaaja": "1.2.246.562.24.47321363845",
+            "nimi": {
+              "_id": "7797905",
+              "_tunniste": "805e304d-7044-411e-83f5-8caa16ba574a",
+              "fi": "Liite 2. Kielitaitotasojen  kuvaukset"
+            },
+            "tila": "luonnos",
+            "teksti": {
+              "_id": "7794265",
+              "_tunniste": "af1b006f-f589-4ef4-9896-439b37a0b456",
+              "fi": "<p><strong>&nbsp;</strong></p><table><tbody><tr><td colspan=\"2\" style=\"background-color: rgb(219, 221, 221);\"><p><strong>KUULLUN YMMÄRTÄ-</strong></p><p><strong>MINEN</strong></p></td><td style=\"background-color: rgb(219, 221, 221);\"><p><strong>PUHUMINEN</strong></p></td><td style=\"background-color: rgb(219, 221, 221);\"><p><strong>LUETUN YMMÄRTÄ- MINEN</strong></p></td><td style=\"background-color: rgb(219, 221, 221);\"><p><strong>KIRJOITTAMINEN</strong></p></td></tr><tr><td style=\"background-color: rgb(237, 239, 240);\"><p><strong>Al. l.</strong></p></td><td style=\"background-color: rgb(237, 239, 240);\"><p>Ymmärtää joitakin sanoja ja fraaseja.</p></td><td style=\"background-color: rgb(237, 239, 240);\"><p>Osaa vastata itseään koskeviin kysymyksiin.</p></td><td style=\"background-color: rgb(237, 239, 240);\"><p>Tunnistaa joitakin itselleen tuttuja sanoja.</p></td><td style=\"background-color: rgb(237, 239, 240);\"><p>Osaa kirjoittaa joitakin tuttuja sanoja.</p></td></tr><tr><td style=\"background-color: rgb(237, 239, 240);\"><p><strong>Al.2.</strong></p></td><td style=\"background-color: rgb(237, 239, 240);\"><p>Ymmärtää joitakin lyhyitä lauseita ja ilmauksia.</p></td><td style=\"background-color: rgb(237, 239, 240);\"><p>Osaa kysyä ja vastata suppeasti itseä koskeviin kysymyksiin ja kysyä jotakin.</p></td><td style=\"background-color: rgb(237, 239, 240);\"><p>Löytää erittäin lyhyestä tekstistä yksittäisiä tietoja.</p></td><td style=\"background-color: rgb(237, 239, 240);\"><p>Osaa kirjoittaa joitakin lyhyitä lauseita.</p></td></tr><tr><td style=\"background-color: rgb(237, 239, 240);\"><p><strong>Al.3.</strong></p></td><td style=\"background-color: rgb(237, 239, 240);\"><p>Ymmärtää joitakin lyhyitä rutiininomaisia keskusteluja.</p></td><td style=\"background-color: rgb(237, 239, 240);\"><p>Osaa kertoa itsestään ja lähipiiristään ja toimia kaikkein yksinkertaisimmista puhetilanteista.</p></td><td style=\"background-color: rgb(237, 239, 240);\"><p>Ymmärtää pääasian lyhyestä ja yksinkertaisesta arkisesta viestistä tai ohjeesta.</p></td><td style=\"background-color: rgb(237, 239, 240);\"><p>Osaa viestiä tutussa arkitilanteessa kirjoittamalla muutaman yksinkertaisen lauseen.</p></td></tr><tr><td style=\"background-color: rgb(237, 239, 240);\"><p><strong>A2.l.</strong></p></td><td style=\"background-color: rgb(237, 239, 240);\"><p>Ymmärtää yksinkertaista puhetta sekä lyhyitä viestejä joka- päiväisistä asioista.</p></td><td style=\"background-color: rgb(237, 239, 240);\"><p>Selviytyy tavallisista ja helpoista joka- päiväisistä puhe- ja palvelutilanteista.</p></td><td style=\"background-color: rgb(237, 239, 240);\"><p>Ymmärtää jokapäiväistä sanastoa sisältäviä yksinkertaisia</p><p>tekstejä.</p></td><td style=\"background-color: rgb(237, 239, 240);\"><p>Osaa kirjoittaa lyhyitä tekstejä ja luettelomaisia kuvauksia tutuista asioista ja tapahtumista.</p></td></tr><tr><td style=\"background-color: rgb(237, 239, 240);\"><p><strong>A2.2.</strong></p></td><td style=\"background-color: rgb(237, 239, 240);\"><p>Ymmärtää helppoa ja selkeää asiapuhetta ja keskustelua tutuista aiheista.</p></td><td style=\"background-color: rgb(237, 239, 240);\"><p>Osaa kuvata lyhyesti tuttuja asioita ja tapahtumia ja pystyy osallistumaan rutiinin· omaisiin keskusteluihin, joissa vaihdetaan tietoa.</p></td><td style=\"background-color: rgb(237, 239, 240);\"><p>Ymmärtää tavallisia jokapäiväiseen elämään liittyviä tekstejä ja pystyy hankkimaan uutta tietoa lyhyestä ja selkeästä tekstistä, mikäli aihe on tuttu.</p></td><td style=\"background-color: rgb(237, 239, 240);\"><p>Selviytyy kirjoitta- maila tavanomaisissa arkitilanteissa ja osaa kirjoittaa yksinkertaisen kuvauksen menneistä tapahtumista.</p></td></tr><tr><td style=\"background-color: rgb(219, 221, 221);\"><p><strong>Bl.l.</strong></p></td><td style=\"background-color: rgb(219, 221, 221);\"><p>Ymmärtää selkeää yleiskielistä puhetta jo kerrontaa yleisistä aiheista.</p></td><td style=\"background-color: rgb(219, 221, 221);\"><p>Selviää tavallisimmista arkielämän puhetilanteista ja epävirallisista keskusteluista.</p></td><td style=\"background-color: rgb(219, 221, 221);\"><p>Pystyy ymmärtämään pääajatukset ja tärkeimmät yksityis- kohdat muutaman sivun mittaisista käytännön läheisistä teksteistä.</p></td><td style=\"background-color: rgb(219, 221, 221);\"><p>Osaa kirjoittaa lyhyen ja yhtenäisen tekstin ja välittää kirjallisesti tietoa yleisistä aiheista.</p></td></tr></tbody></table><p>&nbsp;</p><table><tbody><tr><td style=\"background-color: rgb(219, 221, 221);\"><p><strong>B1.2.</strong></p></td><td style=\"background-color: rgb(219, 221, 221);\"><p>Ymmärtää tavallista asiapuhetta ja keskusteluja erilaisissa vapaa-ajan ja työelämän tilanteissa.</p></td><td style=\"background-color: rgb(219, 221, 221);\"><p>Osaa viestiä suullisesti useimmissa vapaa-ajan ja työelämän tilanteissa.</p></td><td style=\"background-color: rgb(219, 221, 221);\"><p>Ymmärtää ja pystyy yhdistelemään perus- tietoja erilaisia aiheita käsittelevistä selkeistä teksteistä.</p></td><td style=\"background-color: rgb(219, 221, 221);\"><p>Osaa kirjoittaa lyhyitä, selkeitä ja ymmärrettäviä tekstejä erilaisista aiheista.</p></td></tr><tr><td style=\"background-color: rgb(219, 221, 221);\"><p><strong>B2.1.</strong></p></td><td style=\"background-color: rgb(219, 221, 221);\"><p>Ymmärtää erilaisia aiheita ja omaa eri· koisalaansa koskevaa yksityiskohtaista puhetta ja keskustelua.</p></td><td style=\"background-color: rgb(219, 221, 221);\"><p>Pystyy osallistumaan aktiivisesti useimpiin sosiaalisiin tilanteisiin ja melko muodollisiin keskusteluihin.</p></td><td style=\"background-color: rgb(219, 221, 221);\"><p>Ymmärtää erilaisia tekstejä sekä yleisistä että oman alansa aiheista ja pystyy tunnistamaan kirjoittajan ja tekstin tarkoituksen.</p></td><td style=\"background-color: rgb(219, 221, 221);\"><p>Osaa kirjoittaa selkeitä ja yksityiskohtaisia tekstejä erilaisista itseään kiinnostavista aiheista.</p></td></tr><tr><td style=\"background-color: rgb(219, 221, 221);\"><p><strong>B2.2.</strong></p></td><td style=\"background-color: rgb(219, 221, 221);\"><p>Ymmärtää sekä epämuodollista että muodollista puhetta ja keskustelua lähes kaikissa tilanteissa.</p></td><td style=\"background-color: rgb(219, 221, 221);\"><p>Osaa ilmaista itseään sujuvasti, selkeästi ja kohteliaasti tilanteen vaatimalla tavalla.</p></td><td style=\"background-color: rgb(219, 221, 221);\"><p>Ymmärtää eri tarkoituksiin laadittuja monimutkaisia tekstejä ja osaa tiivistää tekstin pääkohdat.</p></td><td style=\"background-color: rgb(219, 221, 221);\"><p>Osaa kirjoittaa</p><p>selkeitä ja yksityiskohtaisia sekä muodollisia että epämuodollisia tekstejä erilaisista aiheista.</p></td></tr><tr><td style=\"background-color: rgb(198, 198, 200);\"><p><strong>C1.1.</strong></p></td><td style=\"background-color: rgb(198, 198, 200);\"><p>Ymmärtää kaikenlaista sekä epämuodollista että virallista puhetta erilasista yleisistä aiheista jokseenkin vaivattomasti.</p></td><td style=\"background-color: rgb(198, 198, 200);\"><p>Osaa viestiä sujuvasti, spontaanisti ja lähes vaivattomasti erilaisissa sosiaalisissa vuorovaikutustilanteissa ja vaihdella ilmaisuaan asian ja tilanteen mukaan.</p></td><td style=\"background-color: rgb(198, 198, 200);\"><p>Ymmärtää yksityiskohtaisesti kaikenlaisia monimutkaisiakin tekstejä erilaisista yleisistä aiheista.</p></td><td style=\"background-color: rgb(198, 198, 200);\"><p>Pystyy kirjoittamaa erilaisia tekstejä monimutkaisistakin aiheista selkeästi ja yksityiskohtaisesti ja ottamaan huomioon vastaanottajan.</p></td></tr><tr><td style=\"background-color: rgb(198, 198, 200);\"><p><strong>C1.2.</strong></p></td><td colspan=\"4\" style=\"background-color: rgb(198, 198, 200);\"><p>Toimiva taitava kielitaito</p></td></tr><tr><td style=\"background-color: rgb(198, 198, 200);\"><p><strong>C2.1.</strong></p><p><strong>C2.2.</strong></p></td><td colspan=\"4\" style=\"background-color: rgb(198, 198, 200);\"><p>Äidinkielen kaltainen kielitaito</p></td></tr></tbody></table><p></p>"
+            },
+            "koodit": [],
+            "liite": true,
+            "osanTyyppi": "tekstikappale"
+          },
+          "lapset": [],
+          "_perusteenOsa": "7789558"
+        },
+        {
+          "id": 7790491,
+          "perusteenOsa": {
+            "id": 7790501,
+            "luotu": 1623238445409,
+            "muokattu": 1623325432943,
+            "muokkaaja": "1.2.246.562.24.47321363845",
+            "nimi": {
+              "_id": "7797906",
+              "_tunniste": "d72d1897-7b24-44b4-be26-6c103f08b06d",
+              "fi": "Liite 3.  Esimerkki opiskelijoiden jakamisesta lähtötason arvioinnin perusteella eri opintopoluille sekä kotoutumiskoulutuksen moduuleihin"
+            },
+            "tila": "luonnos",
+            "teksti": {
+              "_id": "7791404",
+              "_tunniste": "438da1fb-381e-47bb-a2bc-a6ce65b4e9ca",
+              "fi": "<p>Esimerkki opiskelijoiden jakamisesta lähtötason arvioinnin perusteella eri opintopoluille sekä kotoutumiskoulutuksen moduuleihin.</p><p></p><img data-uid=\"ad138b4f-9423-422c-95fc-648d1c2de5b8\" alt=\"Nuolikuvaaja, joka kuvaa eri lähtötason opiskelijoiden etenemistä nuolien avulla\" figcaption=\"Esimerkki opiskelijoiden jakamisesta lähtötason arvioinnin perusteella eri opintopoluille \">"
+            },
+            "koodit": [],
+            "liite": true,
+            "osanTyyppi": "tekstikappale"
+          },
+          "lapset": [],
+          "_perusteenOsa": "7790501"
+        },
+        {
+          "id": 7790490,
+          "perusteenOsa": {
+            "id": 7790500,
+            "luotu": 1623233698051,
+            "muokattu": 1623312131119,
+            "muokkaaja": "1.2.246.562.24.47321363845",
+            "nimi": {
+              "_id": "7794266",
+              "_tunniste": "61c3109b-2ade-4d22-8c13-0392185b94c1",
+              "fi": "Liite 4. Kotoutumiskoulutuksen todistusmalli"
+            },
+            "tila": "luonnos",
+            "teksti": {
+              "_id": "7790427",
+              "_tunniste": "135368c3-8409-4e8b-805f-d27512fc444f",
+              "fi": "<p></p><img data-uid=\"e86cb674-b096-45c7-89dc-36210ded8db8\" alt=\"Kotoutumiskoulutuksen todistusmalli\" figcaption=\"Kotoutumiskoulutuksen todistusmalli\"><p></p>"
+            },
+            "koodit": [],
+            "liite": true,
+            "osanTyyppi": "tekstikappale"
+          },
+          "lapset": [],
+          "_perusteenOsa": "7790500"
         }
       ]
     },

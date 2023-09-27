@@ -22,9 +22,7 @@ describe('EPerusteet', function () {
 
   describe('Kun perustetta ei löydy eperusteista', function () {
     before(
-      page.oppijaHaku.searchAndSelect(
-        'Aikuinen, AikuisopiskelijaMuuKuinVos'
-      )
+      page.oppijaHaku.searchAndSelect('Aikuinen, AikuisopiskelijaMuuKuinVos')
     )
 
     it('peruste näytetään ilman linkkiä', function () {
@@ -63,7 +61,7 @@ describe('EPerusteet', function () {
         })
       )
       it('linkki osoittaa oikeaan eperusteeseen', function () {
-        expect(S('.diaarinumero a')[0].href).to.contain('2434074')
+        expect(S('.diaarinumero a')[0].href).to.contain('-1') // -1 on tarkoituksellinen epävalidi id testidatassa
       })
     })
 

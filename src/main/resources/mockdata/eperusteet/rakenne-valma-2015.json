@@ -22,7 +22,10 @@
       "opintoalakoodi": "opintoalaoph2002_998"
     }
   ],
-  "kielet": ["fi", "sv"],
+  "kielet": [
+    "sv",
+    "fi"
+  ],
   "kuvaus": null,
   "maarayskirje": {
     "id": 1391576,
@@ -51,6 +54,8 @@
   "tyotehtavatJoissaVoiToimia": null,
   "suorittaneenOsaaminen": null,
   "perusteenAikataulut": [],
+  "poikkeamismaaraysTarkennus": null,
+  "poikkeamismaaraysTyyppi": null,
   "suoritustavat": [
     {
       "suoritustapakoodi": "ops",
@@ -418,16 +423,16 @@
           "_tutkinnonOsa": "1389913"
         },
         {
-          "id": 1384924,
-          "laajuus": 10,
-          "laajuusMaksimi": 20,
-          "_tutkinnonOsa": "1389912"
-        },
-        {
           "id": 1384923,
           "laajuus": 10,
           "laajuusMaksimi": 30,
           "_tutkinnonOsa": "1385357"
+        },
+        {
+          "id": 1384924,
+          "laajuus": 10,
+          "laajuusMaksimi": 20,
+          "_tutkinnonOsa": "1389912"
         }
       ]
     }
@@ -461,8 +466,7 @@
         "arvo": "300001",
         "uri": "tutkinnonosat_300001",
         "koodisto": "tutkinnonosat",
-        "versio": null,
-        "temporary": false
+        "versio": null
       },
       "koodiUri": "tutkinnonosat_300001",
       "koodiArvo": "300001",
@@ -803,8 +807,7 @@
         "arvo": "300002",
         "uri": "tutkinnonosat_300002",
         "koodisto": "tutkinnonosat",
-        "versio": null,
-        "temporary": false
+        "versio": null
       },
       "koodiUri": "tutkinnonosat_300002",
       "koodiArvo": "300002",
@@ -1142,8 +1145,7 @@
         "arvo": "300003",
         "uri": "tutkinnonosat_300003",
         "koodisto": "tutkinnonosat",
-        "versio": null,
-        "temporary": false
+        "versio": null
       },
       "koodiUri": "tutkinnonosat_300003",
       "koodiArvo": "300003",
@@ -1309,8 +1311,7 @@
         "arvo": "300004",
         "uri": "tutkinnonosat_300004",
         "koodisto": "tutkinnonosat",
-        "versio": null,
-        "temporary": false
+        "versio": null
       },
       "koodiUri": "tutkinnonosat_300004",
       "koodiArvo": "300004",

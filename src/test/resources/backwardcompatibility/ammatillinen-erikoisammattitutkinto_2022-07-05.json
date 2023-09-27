@@ -1,646 +1,692 @@
 {
-  "henkilö" : {
-    "hetu" : "280618-402H",
-    "etunimet" : "Aarne",
-    "kutsumanimi" : "Aarne",
-    "sukunimi" : "Ammattilainen"
+  "henkilö": {
+    "hetu": "280618-402H",
+    "etunimet": "Aarne",
+    "kutsumanimi": "Aarne",
+    "sukunimi": "Ammattilainen"
   },
-  "opiskeluoikeudet" : [ {
-    "oppilaitos" : {
-      "oid" : "1.2.246.562.10.52251087186",
-      "oppilaitosnumero" : {
-        "koodiarvo" : "10105",
-        "koodistoUri" : "oppilaitosnumero"
-      },
-      "nimi" : {
-        "fi" : "Stadin ammattiopisto"
-      }
-    },
-    "arvioituPäättymispäivä" : "2015-05-31",
-    "ostettu" : false,
-    "tila" : {
-      "opiskeluoikeusjaksot" : [ {
-        "alku" : "2012-09-01",
-        "tila" : {
-          "koodiarvo" : "lasna",
-          "nimi" : {
-            "fi" : "Läsnä"
-          },
-          "koodistoUri" : "koskiopiskeluoikeudentila",
-          "koodistoVersio" : 1
+  "opiskeluoikeudet": [
+    {
+      "oppilaitos": {
+        "oid": "1.2.246.562.10.52251087186",
+        "oppilaitosnumero": {
+          "koodiarvo": "10105",
+          "koodistoUri": "oppilaitosnumero"
         },
-        "opintojenRahoitus" : {
-          "koodiarvo" : "1",
-          "koodistoUri" : "opintojenrahoitus"
-        }
-      }, {
-        "alku" : "2016-05-31",
-        "tila" : {
-          "koodiarvo" : "valmistunut",
-          "nimi" : {
-            "fi" : "Valmistunut"
-          },
-          "koodistoUri" : "koskiopiskeluoikeudentila",
-          "koodistoVersio" : 1
-        },
-        "opintojenRahoitus" : {
-          "koodiarvo" : "1",
-          "koodistoUri" : "opintojenrahoitus"
-        }
-      } ]
-    },
-    "suoritukset" : [ {
-      "koulutusmoduuli" : {
-        "tunniste" : {
-          "koodiarvo" : "999904",
-          "koodistoUri" : "koulutus"
+        "nimi": {
+          "fi": "Stadin ammattiopisto"
         }
       },
-      "tutkinto" : {
-        "tunniste" : {
-          "koodiarvo" : "357305",
-          "nimi" : {
-            "fi" : "Autoalan työnjohdon erikoisammattitutkinto"
-          },
-          "koodistoUri" : "koulutus"
-        },
-        "perusteenDiaarinumero" : "40/011/2001"
-      },
-      "toimipiste" : {
-        "oid" : "1.2.246.562.10.42456023292",
-        "nimi" : {
-          "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
-        }
-      },
-      "alkamispäivä" : "2012-09-01",
-      "vahvistus" : {
-        "päivä" : "2015-05-31",
-        "paikkakunta" : {
-          "koodiarvo" : "091",
-          "nimi" : {
-            "fi" : "Helsinki"
-          },
-          "koodistoUri" : "kunta"
-        },
-        "myöntäjäOrganisaatio" : {
-          "oid" : "1.2.246.562.10.52251087186",
-          "oppilaitosnumero" : {
-            "koodiarvo" : "10105",
-            "koodistoUri" : "oppilaitosnumero"
-          },
-          "nimi" : {
-            "fi" : "Stadin ammattiopisto"
-          }
-        },
-        "myöntäjäHenkilöt" : [ {
-          "nimi" : "Reijo Reksi",
-          "titteli" : {
-            "fi" : "rehtori"
-          },
-          "organisaatio" : {
-            "oid" : "1.2.246.562.10.52251087186",
-            "oppilaitosnumero" : {
-              "koodiarvo" : "10105",
-              "koodistoUri" : "oppilaitosnumero"
-            },
-            "nimi" : {
-              "fi" : "Stadin ammattiopisto"
-            }
-          }
-        } ]
-      },
-      "suorituskieli" : {
-        "koodiarvo" : "FI",
-        "nimi" : {
-          "fi" : "suomi"
-        },
-        "koodistoUri" : "kieli"
-      },
-      "osasuoritukset" : [ {
-        "koulutusmoduuli" : {
-          "tunniste" : {
-            "koodiarvo" : "104052",
-            "nimi" : {
-              "fi" : "Johtaminen ja henkilöstön kehittäminen"
-            }
-          },
-          "kuvaus" : {
-            "fi" : "Johtamisen ja henkilöstön kehittämisen valmistava koulutus"
-          }
-        },
-        "tyyppi" : {
-          "koodiarvo" : "nayttotutkintoonvalmistavankoulutuksenosa",
-          "koodistoUri" : "suorituksentyyppi"
-        }
-      }, {
-        "koulutusmoduuli" : {
-          "tunniste" : {
-            "koodiarvo" : "100037",
-            "nimi" : {
-              "fi" : "Auton lisävarustetyöt"
-            },
-            "koodistoUri" : "tutkinnonosat"
-          },
-          "pakollinen" : false,
-          "laajuus" : {
-            "arvo" : 15.0,
-            "yksikkö" : {
-              "koodiarvo" : "6",
-              "nimi" : {
-                "fi" : "osaamispistettä",
-                "sv" : "kompetenspoäng",
-                "en" : "ECVET competence points"
+      "arvioituPäättymispäivä": "2015-05-31",
+      "ostettu": false,
+      "tila": {
+        "opiskeluoikeusjaksot": [
+          {
+            "alku": "2012-09-01",
+            "tila": {
+              "koodiarvo": "lasna",
+              "nimi": {
+                "fi": "Läsnä"
               },
-              "lyhytNimi" : {
-                "fi" : "osp",
-                "sv" : "kp",
-                "en" : "competence points"
-              },
-              "koodistoUri" : "opintojenlaajuusyksikko"
+              "koodistoUri": "koskiopiskeluoikeudentila",
+              "koodistoVersio": 1
+            },
+            "opintojenRahoitus": {
+              "koodiarvo": "1",
+              "koodistoUri": "opintojenrahoitus"
             }
           },
-          "kuvaus" : {
-            "fi" : "valojärjestelmät"
-          }
-        },
-        "tyyppi" : {
-          "koodiarvo" : "nayttotutkintoonvalmistavankoulutuksenosa",
-          "koodistoUri" : "suorituksentyyppi"
-        }
-      }, {
-        "koulutusmoduuli" : {
-          "tunniste" : {
-            "koodiarvo" : "100037",
-            "nimi" : {
-              "fi" : "Auton lisävarustetyöt"
-            },
-            "koodistoUri" : "tutkinnonosat"
-          },
-          "pakollinen" : false,
-          "laajuus" : {
-            "arvo" : 15.0,
-            "yksikkö" : {
-              "koodiarvo" : "6",
-              "nimi" : {
-                "fi" : "osaamispistettä",
-                "sv" : "kompetenspoäng",
-                "en" : "ECVET competence points"
+          {
+            "alku": "2016-05-31",
+            "tila": {
+              "koodiarvo": "valmistunut",
+              "nimi": {
+                "fi": "Valmistunut"
               },
-              "lyhytNimi" : {
-                "fi" : "osp",
-                "sv" : "kp",
-                "en" : "competence points"
-              },
-              "koodistoUri" : "opintojenlaajuusyksikko"
-            }
-          },
-          "kuvaus" : {
-            "fi" : "lämmitysjärjestelmät"
-          }
-        },
-        "tyyppi" : {
-          "koodiarvo" : "nayttotutkintoonvalmistavankoulutuksenosa",
-          "koodistoUri" : "suorituksentyyppi"
-        }
-      } ],
-      "tyyppi" : {
-        "koodiarvo" : "nayttotutkintoonvalmistavakoulutus",
-        "koodistoUri" : "suorituksentyyppi"
-      }
-    }, {
-      "koulutusmoduuli" : {
-        "tunniste" : {
-          "koodiarvo" : "357305",
-          "nimi" : {
-            "fi" : "Autoalan työnjohdon erikoisammattitutkinto"
-          },
-          "koodistoUri" : "koulutus"
-        },
-        "perusteenDiaarinumero" : "40/011/2001"
-      },
-      "suoritustapa" : {
-        "koodiarvo" : "naytto",
-        "nimi" : {
-          "fi" : "Näyttö"
-        },
-        "koodistoUri" : "ammatillisentutkinnonsuoritustapa",
-        "koodistoVersio" : 1
-      },
-      "toimipiste" : {
-        "oid" : "1.2.246.562.10.42456023292",
-        "nimi" : {
-          "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
-        }
-      },
-      "vahvistus" : {
-        "päivä" : "2016-05-31",
-        "paikkakunta" : {
-          "koodiarvo" : "091",
-          "nimi" : {
-            "fi" : "Helsinki"
-          },
-          "koodistoUri" : "kunta"
-        },
-        "myöntäjäOrganisaatio" : {
-          "oid" : "1.2.246.562.10.52251087186",
-          "oppilaitosnumero" : {
-            "koodiarvo" : "10105",
-            "koodistoUri" : "oppilaitosnumero"
-          },
-          "nimi" : {
-            "fi" : "Stadin ammattiopisto"
-          }
-        },
-        "myöntäjäHenkilöt" : [ {
-          "nimi" : "Reijo Reksi",
-          "titteli" : {
-            "fi" : "rehtori"
-          },
-          "organisaatio" : {
-            "oid" : "1.2.246.562.10.52251087186",
-            "oppilaitosnumero" : {
-              "koodiarvo" : "10105",
-              "koodistoUri" : "oppilaitosnumero"
+              "koodistoUri": "koskiopiskeluoikeudentila",
+              "koodistoVersio": 1
             },
-            "nimi" : {
-              "fi" : "Stadin ammattiopisto"
+            "opintojenRahoitus": {
+              "koodiarvo": "1",
+              "koodistoUri": "opintojenrahoitus"
             }
           }
-        } ]
+        ]
       },
-      "suorituskieli" : {
-        "koodiarvo" : "FI",
-        "nimi" : {
-          "fi" : "suomi"
-        },
-        "koodistoUri" : "kieli"
-      },
-      "järjestämismuodot" : [ {
-        "alku" : "2014-08-01",
-        "järjestämismuoto" : {
-          "tunniste" : {
-            "koodiarvo" : "10",
-            "nimi" : {
-              "fi" : "Oppilaitosmuotoinen"
-            },
-            "koodistoUri" : "jarjestamismuoto",
-            "koodistoVersio" : 1
-          }
-        }
-      }, {
-        "alku" : "2015-05-31",
-        "järjestämismuoto" : {
-          "tunniste" : {
-            "koodiarvo" : "20",
-            "nimi" : {
-              "fi" : "Oppisopimusmuotoinen"
-            },
-            "koodistoUri" : "jarjestamismuoto",
-            "koodistoVersio" : 1
-          },
-          "oppisopimus" : {
-            "työnantaja" : {
-              "nimi" : {
-                "fi" : "Autokorjaamo Oy"
-              },
-              "yTunnus" : "1234567-8"
-            }
-          }
-        }
-      }, {
-        "alku" : "2016-03-31",
-        "järjestämismuoto" : {
-          "tunniste" : {
-            "koodiarvo" : "10",
-            "nimi" : {
-              "fi" : "Oppilaitosmuotoinen"
-            },
-            "koodistoUri" : "jarjestamismuoto",
-            "koodistoVersio" : 1
-          }
-        }
-      } ],
-      "osasuoritukset" : [ {
-        "koulutusmoduuli" : {
-          "tunniste" : {
-            "koodiarvo" : "104052",
-            "nimi" : {
-              "fi" : "Johtaminen ja henkilöstön kehittäminen"
-            },
-            "koodistoUri" : "tutkinnonosat"
-          },
-          "pakollinen" : true
-        },
-        "toimipiste" : {
-          "oid" : "1.2.246.562.10.42456023292",
-          "nimi" : {
-            "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
-          }
-        },
-        "arviointi" : [ {
-          "arvosana" : {
-            "koodiarvo" : "Hyväksytty",
-            "nimi" : {
-              "fi" : "Hyväksytty"
-            },
-            "koodistoUri" : "arviointiasteikkoammatillinenhyvaksyttyhylatty",
-            "koodistoVersio" : 1
-          },
-          "päivä" : "2014-10-20",
-          "hyväksytty" : true
-        } ],
-        "vahvistus" : {
-          "päivä" : "2016-05-31",
-          "myöntäjäOrganisaatio" : {
-            "oid" : "1.2.246.562.10.52251087186",
-            "oppilaitosnumero" : {
-              "koodiarvo" : "10105",
-              "koodistoUri" : "oppilaitosnumero"
-            },
-            "nimi" : {
-              "fi" : "Stadin ammattiopisto"
+      "suoritukset": [
+        {
+          "koulutusmoduuli": {
+            "tunniste": {
+              "koodiarvo": "999904",
+              "koodistoUri": "koulutus"
             }
           },
-          "myöntäjäHenkilöt" : [ {
-            "nimi" : "Reijo Reksi",
-            "titteli" : {
-              "fi" : "rehtori"
-            },
-            "organisaatio" : {
-              "oid" : "1.2.246.562.10.52251087186",
-              "oppilaitosnumero" : {
-                "koodiarvo" : "10105",
-                "koodistoUri" : "oppilaitosnumero"
+          "tutkinto": {
+            "tunniste": {
+              "koodiarvo": "457305",
+              "nimi": {
+                "fi": "Autoalan työnjohdon erikoisammattitutkinto"
               },
-              "nimi" : {
-                "fi" : "Stadin ammattiopisto"
+              "koodistoUri": "koulutus"
+            },
+            "perusteenDiaarinumero": "40/011/2001"
+          },
+          "toimipiste": {
+            "oid": "1.2.246.562.10.42456023292",
+            "nimi": {
+              "fi": "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+            }
+          },
+          "alkamispäivä": "2012-09-01",
+          "vahvistus": {
+            "päivä": "2015-05-31",
+            "paikkakunta": {
+              "koodiarvo": "091",
+              "nimi": {
+                "fi": "Helsinki"
+              },
+              "koodistoUri": "kunta"
+            },
+            "myöntäjäOrganisaatio": {
+              "oid": "1.2.246.562.10.52251087186",
+              "oppilaitosnumero": {
+                "koodiarvo": "10105",
+                "koodistoUri": "oppilaitosnumero"
+              },
+              "nimi": {
+                "fi": "Stadin ammattiopisto"
+              }
+            },
+            "myöntäjäHenkilöt": [
+              {
+                "nimi": "Reijo Reksi",
+                "titteli": {
+                  "fi": "rehtori"
+                },
+                "organisaatio": {
+                  "oid": "1.2.246.562.10.52251087186",
+                  "oppilaitosnumero": {
+                    "koodiarvo": "10105",
+                    "koodistoUri": "oppilaitosnumero"
+                  },
+                  "nimi": {
+                    "fi": "Stadin ammattiopisto"
+                  }
+                }
+              }
+            ]
+          },
+          "suorituskieli": {
+            "koodiarvo": "FI",
+            "nimi": {
+              "fi": "suomi"
+            },
+            "koodistoUri": "kieli"
+          },
+          "osasuoritukset": [
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "104052",
+                  "nimi": {
+                    "fi": "Johtaminen ja henkilöstön kehittäminen"
+                  }
+                },
+                "kuvaus": {
+                  "fi": "Johtamisen ja henkilöstön kehittämisen valmistava koulutus"
+                }
+              },
+              "tyyppi": {
+                "koodiarvo": "nayttotutkintoonvalmistavankoulutuksenosa",
+                "koodistoUri": "suorituksentyyppi"
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "100037",
+                  "nimi": {
+                    "fi": "Auton lisävarustetyöt"
+                  },
+                  "koodistoUri": "tutkinnonosat"
+                },
+                "pakollinen": false,
+                "laajuus": {
+                  "arvo": 15.0,
+                  "yksikkö": {
+                    "koodiarvo": "6",
+                    "nimi": {
+                      "fi": "osaamispistettä",
+                      "sv": "kompetenspoäng",
+                      "en": "ECVET competence points"
+                    },
+                    "lyhytNimi": {
+                      "fi": "osp",
+                      "sv": "kp",
+                      "en": "competence points"
+                    },
+                    "koodistoUri": "opintojenlaajuusyksikko"
+                  }
+                },
+                "kuvaus": {
+                  "fi": "valojärjestelmät"
+                }
+              },
+              "tyyppi": {
+                "koodiarvo": "nayttotutkintoonvalmistavankoulutuksenosa",
+                "koodistoUri": "suorituksentyyppi"
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "100037",
+                  "nimi": {
+                    "fi": "Auton lisävarustetyöt"
+                  },
+                  "koodistoUri": "tutkinnonosat"
+                },
+                "pakollinen": false,
+                "laajuus": {
+                  "arvo": 15.0,
+                  "yksikkö": {
+                    "koodiarvo": "6",
+                    "nimi": {
+                      "fi": "osaamispistettä",
+                      "sv": "kompetenspoäng",
+                      "en": "ECVET competence points"
+                    },
+                    "lyhytNimi": {
+                      "fi": "osp",
+                      "sv": "kp",
+                      "en": "competence points"
+                    },
+                    "koodistoUri": "opintojenlaajuusyksikko"
+                  }
+                },
+                "kuvaus": {
+                  "fi": "lämmitysjärjestelmät"
+                }
+              },
+              "tyyppi": {
+                "koodiarvo": "nayttotutkintoonvalmistavankoulutuksenosa",
+                "koodistoUri": "suorituksentyyppi"
               }
             }
-          } ]
-        },
-        "tyyppi" : {
-          "koodiarvo" : "ammatillisentutkinnonosa",
-          "koodistoUri" : "suorituksentyyppi"
-        }
-      }, {
-        "koulutusmoduuli" : {
-          "tunniste" : {
-            "koodiarvo" : "104053",
-            "nimi" : {
-              "fi" : "Asiakaspalvelu ja korjaamopalvelujen markkinointi"
-            },
-            "koodistoUri" : "tutkinnonosat"
-          },
-          "pakollinen" : true
-        },
-        "toimipiste" : {
-          "oid" : "1.2.246.562.10.42456023292",
-          "nimi" : {
-            "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+          ],
+          "tyyppi": {
+            "koodiarvo": "nayttotutkintoonvalmistavakoulutus",
+            "koodistoUri": "suorituksentyyppi"
           }
         },
-        "arviointi" : [ {
-          "arvosana" : {
-            "koodiarvo" : "Hyväksytty",
-            "nimi" : {
-              "fi" : "Hyväksytty"
+        {
+          "koulutusmoduuli": {
+            "tunniste": {
+              "koodiarvo": "457305",
+              "nimi": {
+                "fi": "Autoalan työnjohdon erikoisammattitutkinto"
+              },
+              "koodistoUri": "koulutus"
             },
-            "koodistoUri" : "arviointiasteikkoammatillinenhyvaksyttyhylatty",
-            "koodistoVersio" : 1
+            "perusteenDiaarinumero": "40/011/2001"
           },
-          "päivä" : "2014-10-20",
-          "hyväksytty" : true
-        } ],
-        "vahvistus" : {
-          "päivä" : "2016-05-31",
-          "myöntäjäOrganisaatio" : {
-            "oid" : "1.2.246.562.10.52251087186",
-            "oppilaitosnumero" : {
-              "koodiarvo" : "10105",
-              "koodistoUri" : "oppilaitosnumero"
+          "suoritustapa": {
+            "koodiarvo": "naytto",
+            "nimi": {
+              "fi": "Näyttö"
             },
-            "nimi" : {
-              "fi" : "Stadin ammattiopisto"
+            "koodistoUri": "ammatillisentutkinnonsuoritustapa",
+            "koodistoVersio": 1
+          },
+          "toimipiste": {
+            "oid": "1.2.246.562.10.42456023292",
+            "nimi": {
+              "fi": "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
             }
           },
-          "myöntäjäHenkilöt" : [ {
-            "nimi" : "Reijo Reksi",
-            "titteli" : {
-              "fi" : "rehtori"
-            },
-            "organisaatio" : {
-              "oid" : "1.2.246.562.10.52251087186",
-              "oppilaitosnumero" : {
-                "koodiarvo" : "10105",
-                "koodistoUri" : "oppilaitosnumero"
+          "vahvistus": {
+            "päivä": "2016-05-31",
+            "paikkakunta": {
+              "koodiarvo": "091",
+              "nimi": {
+                "fi": "Helsinki"
               },
-              "nimi" : {
-                "fi" : "Stadin ammattiopisto"
+              "koodistoUri": "kunta"
+            },
+            "myöntäjäOrganisaatio": {
+              "oid": "1.2.246.562.10.52251087186",
+              "oppilaitosnumero": {
+                "koodiarvo": "10105",
+                "koodistoUri": "oppilaitosnumero"
+              },
+              "nimi": {
+                "fi": "Stadin ammattiopisto"
+              }
+            },
+            "myöntäjäHenkilöt": [
+              {
+                "nimi": "Reijo Reksi",
+                "titteli": {
+                  "fi": "rehtori"
+                },
+                "organisaatio": {
+                  "oid": "1.2.246.562.10.52251087186",
+                  "oppilaitosnumero": {
+                    "koodiarvo": "10105",
+                    "koodistoUri": "oppilaitosnumero"
+                  },
+                  "nimi": {
+                    "fi": "Stadin ammattiopisto"
+                  }
+                }
+              }
+            ]
+          },
+          "suorituskieli": {
+            "koodiarvo": "FI",
+            "nimi": {
+              "fi": "suomi"
+            },
+            "koodistoUri": "kieli"
+          },
+          "järjestämismuodot": [
+            {
+              "alku": "2014-08-01",
+              "järjestämismuoto": {
+                "tunniste": {
+                  "koodiarvo": "10",
+                  "nimi": {
+                    "fi": "Oppilaitosmuotoinen"
+                  },
+                  "koodistoUri": "jarjestamismuoto",
+                  "koodistoVersio": 1
+                }
+              }
+            },
+            {
+              "alku": "2015-05-31",
+              "järjestämismuoto": {
+                "tunniste": {
+                  "koodiarvo": "20",
+                  "nimi": {
+                    "fi": "Oppisopimusmuotoinen"
+                  },
+                  "koodistoUri": "jarjestamismuoto",
+                  "koodistoVersio": 1
+                },
+                "oppisopimus": {
+                  "työnantaja": {
+                    "nimi": {
+                      "fi": "Autokorjaamo Oy"
+                    },
+                    "yTunnus": "1234567-8"
+                  }
+                }
+              }
+            },
+            {
+              "alku": "2016-03-31",
+              "järjestämismuoto": {
+                "tunniste": {
+                  "koodiarvo": "10",
+                  "nimi": {
+                    "fi": "Oppilaitosmuotoinen"
+                  },
+                  "koodistoUri": "jarjestamismuoto",
+                  "koodistoVersio": 1
+                }
               }
             }
-          } ]
-        },
-        "tyyppi" : {
-          "koodiarvo" : "ammatillisentutkinnonosa",
-          "koodistoUri" : "suorituksentyyppi"
-        }
-      }, {
-        "koulutusmoduuli" : {
-          "tunniste" : {
-            "koodiarvo" : "104054",
-            "nimi" : {
-              "fi" : "Työnsuunnittelu ja organisointi"
+          ],
+          "osasuoritukset": [
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "104052",
+                  "nimi": {
+                    "fi": "Johtaminen ja henkilöstön kehittäminen"
+                  },
+                  "koodistoUri": "tutkinnonosat"
+                },
+                "pakollinen": true
+              },
+              "toimipiste": {
+                "oid": "1.2.246.562.10.42456023292",
+                "nimi": {
+                  "fi": "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+                }
+              },
+              "arviointi": [
+                {
+                  "arvosana": {
+                    "koodiarvo": "Hyväksytty",
+                    "nimi": {
+                      "fi": "Hyväksytty"
+                    },
+                    "koodistoUri": "arviointiasteikkoammatillinenhyvaksyttyhylatty",
+                    "koodistoVersio": 1
+                  },
+                  "päivä": "2014-10-20",
+                  "hyväksytty": true
+                }
+              ],
+              "vahvistus": {
+                "päivä": "2016-05-31",
+                "myöntäjäOrganisaatio": {
+                  "oid": "1.2.246.562.10.52251087186",
+                  "oppilaitosnumero": {
+                    "koodiarvo": "10105",
+                    "koodistoUri": "oppilaitosnumero"
+                  },
+                  "nimi": {
+                    "fi": "Stadin ammattiopisto"
+                  }
+                },
+                "myöntäjäHenkilöt": [
+                  {
+                    "nimi": "Reijo Reksi",
+                    "titteli": {
+                      "fi": "rehtori"
+                    },
+                    "organisaatio": {
+                      "oid": "1.2.246.562.10.52251087186",
+                      "oppilaitosnumero": {
+                        "koodiarvo": "10105",
+                        "koodistoUri": "oppilaitosnumero"
+                      },
+                      "nimi": {
+                        "fi": "Stadin ammattiopisto"
+                      }
+                    }
+                  }
+                ]
+              },
+              "tyyppi": {
+                "koodiarvo": "ammatillisentutkinnonosa",
+                "koodistoUri": "suorituksentyyppi"
+              }
             },
-            "koodistoUri" : "tutkinnonosat"
-          },
-          "pakollinen" : true
-        },
-        "toimipiste" : {
-          "oid" : "1.2.246.562.10.42456023292",
-          "nimi" : {
-            "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "104053",
+                  "nimi": {
+                    "fi": "Asiakaspalvelu ja korjaamopalvelujen markkinointi"
+                  },
+                  "koodistoUri": "tutkinnonosat"
+                },
+                "pakollinen": true
+              },
+              "toimipiste": {
+                "oid": "1.2.246.562.10.42456023292",
+                "nimi": {
+                  "fi": "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+                }
+              },
+              "arviointi": [
+                {
+                  "arvosana": {
+                    "koodiarvo": "Hyväksytty",
+                    "nimi": {
+                      "fi": "Hyväksytty"
+                    },
+                    "koodistoUri": "arviointiasteikkoammatillinenhyvaksyttyhylatty",
+                    "koodistoVersio": 1
+                  },
+                  "päivä": "2014-10-20",
+                  "hyväksytty": true
+                }
+              ],
+              "vahvistus": {
+                "päivä": "2016-05-31",
+                "myöntäjäOrganisaatio": {
+                  "oid": "1.2.246.562.10.52251087186",
+                  "oppilaitosnumero": {
+                    "koodiarvo": "10105",
+                    "koodistoUri": "oppilaitosnumero"
+                  },
+                  "nimi": {
+                    "fi": "Stadin ammattiopisto"
+                  }
+                },
+                "myöntäjäHenkilöt": [
+                  {
+                    "nimi": "Reijo Reksi",
+                    "titteli": {
+                      "fi": "rehtori"
+                    },
+                    "organisaatio": {
+                      "oid": "1.2.246.562.10.52251087186",
+                      "oppilaitosnumero": {
+                        "koodiarvo": "10105",
+                        "koodistoUri": "oppilaitosnumero"
+                      },
+                      "nimi": {
+                        "fi": "Stadin ammattiopisto"
+                      }
+                    }
+                  }
+                ]
+              },
+              "tyyppi": {
+                "koodiarvo": "ammatillisentutkinnonosa",
+                "koodistoUri": "suorituksentyyppi"
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "104054",
+                  "nimi": {
+                    "fi": "Työnsuunnittelu ja organisointi"
+                  },
+                  "koodistoUri": "tutkinnonosat"
+                },
+                "pakollinen": true
+              },
+              "toimipiste": {
+                "oid": "1.2.246.562.10.42456023292",
+                "nimi": {
+                  "fi": "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+                }
+              },
+              "arviointi": [
+                {
+                  "arvosana": {
+                    "koodiarvo": "Hyväksytty",
+                    "nimi": {
+                      "fi": "Hyväksytty"
+                    },
+                    "koodistoUri": "arviointiasteikkoammatillinenhyvaksyttyhylatty",
+                    "koodistoVersio": 1
+                  },
+                  "päivä": "2014-10-20",
+                  "hyväksytty": true
+                }
+              ],
+              "vahvistus": {
+                "päivä": "2016-05-31",
+                "myöntäjäOrganisaatio": {
+                  "oid": "1.2.246.562.10.52251087186",
+                  "oppilaitosnumero": {
+                    "koodiarvo": "10105",
+                    "koodistoUri": "oppilaitosnumero"
+                  },
+                  "nimi": {
+                    "fi": "Stadin ammattiopisto"
+                  }
+                },
+                "myöntäjäHenkilöt": [
+                  {
+                    "nimi": "Reijo Reksi",
+                    "titteli": {
+                      "fi": "rehtori"
+                    },
+                    "organisaatio": {
+                      "oid": "1.2.246.562.10.52251087186",
+                      "oppilaitosnumero": {
+                        "koodiarvo": "10105",
+                        "koodistoUri": "oppilaitosnumero"
+                      },
+                      "nimi": {
+                        "fi": "Stadin ammattiopisto"
+                      }
+                    }
+                  }
+                ]
+              },
+              "tyyppi": {
+                "koodiarvo": "ammatillisentutkinnonosa",
+                "koodistoUri": "suorituksentyyppi"
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "104055",
+                  "nimi": {
+                    "fi": "Taloudellinen toiminta"
+                  },
+                  "koodistoUri": "tutkinnonosat"
+                },
+                "pakollinen": true
+              },
+              "toimipiste": {
+                "oid": "1.2.246.562.10.42456023292",
+                "nimi": {
+                  "fi": "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+                }
+              },
+              "arviointi": [
+                {
+                  "arvosana": {
+                    "koodiarvo": "Hyväksytty",
+                    "nimi": {
+                      "fi": "Hyväksytty"
+                    },
+                    "koodistoUri": "arviointiasteikkoammatillinenhyvaksyttyhylatty",
+                    "koodistoVersio": 1
+                  },
+                  "päivä": "2014-10-20",
+                  "hyväksytty": true
+                }
+              ],
+              "vahvistus": {
+                "päivä": "2016-05-31",
+                "myöntäjäOrganisaatio": {
+                  "oid": "1.2.246.562.10.52251087186",
+                  "oppilaitosnumero": {
+                    "koodiarvo": "10105",
+                    "koodistoUri": "oppilaitosnumero"
+                  },
+                  "nimi": {
+                    "fi": "Stadin ammattiopisto"
+                  }
+                },
+                "myöntäjäHenkilöt": [
+                  {
+                    "nimi": "Reijo Reksi",
+                    "titteli": {
+                      "fi": "rehtori"
+                    },
+                    "organisaatio": {
+                      "oid": "1.2.246.562.10.52251087186",
+                      "oppilaitosnumero": {
+                        "koodiarvo": "10105",
+                        "koodistoUri": "oppilaitosnumero"
+                      },
+                      "nimi": {
+                        "fi": "Stadin ammattiopisto"
+                      }
+                    }
+                  }
+                ]
+              },
+              "tyyppi": {
+                "koodiarvo": "ammatillisentutkinnonosa",
+                "koodistoUri": "suorituksentyyppi"
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "104059",
+                  "nimi": {
+                    "fi": "Yrittäjyys"
+                  },
+                  "koodistoUri": "tutkinnonosat"
+                },
+                "pakollinen": true
+              },
+              "toimipiste": {
+                "oid": "1.2.246.562.10.42456023292",
+                "nimi": {
+                  "fi": "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+                }
+              },
+              "arviointi": [
+                {
+                  "arvosana": {
+                    "koodiarvo": "Hyväksytty",
+                    "nimi": {
+                      "fi": "Hyväksytty"
+                    },
+                    "koodistoUri": "arviointiasteikkoammatillinenhyvaksyttyhylatty",
+                    "koodistoVersio": 1
+                  },
+                  "päivä": "2014-10-20",
+                  "hyväksytty": true
+                }
+              ],
+              "vahvistus": {
+                "päivä": "2016-05-31",
+                "myöntäjäOrganisaatio": {
+                  "oid": "1.2.246.562.10.52251087186",
+                  "oppilaitosnumero": {
+                    "koodiarvo": "10105",
+                    "koodistoUri": "oppilaitosnumero"
+                  },
+                  "nimi": {
+                    "fi": "Stadin ammattiopisto"
+                  }
+                },
+                "myöntäjäHenkilöt": [
+                  {
+                    "nimi": "Reijo Reksi",
+                    "titteli": {
+                      "fi": "rehtori"
+                    },
+                    "organisaatio": {
+                      "oid": "1.2.246.562.10.52251087186",
+                      "oppilaitosnumero": {
+                        "koodiarvo": "10105",
+                        "koodistoUri": "oppilaitosnumero"
+                      },
+                      "nimi": {
+                        "fi": "Stadin ammattiopisto"
+                      }
+                    }
+                  }
+                ]
+              },
+              "tyyppi": {
+                "koodiarvo": "ammatillisentutkinnonosa",
+                "koodistoUri": "suorituksentyyppi"
+              }
+            }
+          ],
+          "tyyppi": {
+            "koodiarvo": "ammatillinentutkinto",
+            "koodistoUri": "suorituksentyyppi"
           }
-        },
-        "arviointi" : [ {
-          "arvosana" : {
-            "koodiarvo" : "Hyväksytty",
-            "nimi" : {
-              "fi" : "Hyväksytty"
-            },
-            "koodistoUri" : "arviointiasteikkoammatillinenhyvaksyttyhylatty",
-            "koodistoVersio" : 1
-          },
-          "päivä" : "2014-10-20",
-          "hyväksytty" : true
-        } ],
-        "vahvistus" : {
-          "päivä" : "2016-05-31",
-          "myöntäjäOrganisaatio" : {
-            "oid" : "1.2.246.562.10.52251087186",
-            "oppilaitosnumero" : {
-              "koodiarvo" : "10105",
-              "koodistoUri" : "oppilaitosnumero"
-            },
-            "nimi" : {
-              "fi" : "Stadin ammattiopisto"
-            }
-          },
-          "myöntäjäHenkilöt" : [ {
-            "nimi" : "Reijo Reksi",
-            "titteli" : {
-              "fi" : "rehtori"
-            },
-            "organisaatio" : {
-              "oid" : "1.2.246.562.10.52251087186",
-              "oppilaitosnumero" : {
-                "koodiarvo" : "10105",
-                "koodistoUri" : "oppilaitosnumero"
-              },
-              "nimi" : {
-                "fi" : "Stadin ammattiopisto"
-              }
-            }
-          } ]
-        },
-        "tyyppi" : {
-          "koodiarvo" : "ammatillisentutkinnonosa",
-          "koodistoUri" : "suorituksentyyppi"
         }
-      }, {
-        "koulutusmoduuli" : {
-          "tunniste" : {
-            "koodiarvo" : "104055",
-            "nimi" : {
-              "fi" : "Taloudellinen toiminta"
-            },
-            "koodistoUri" : "tutkinnonosat"
-          },
-          "pakollinen" : true
-        },
-        "toimipiste" : {
-          "oid" : "1.2.246.562.10.42456023292",
-          "nimi" : {
-            "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
-          }
-        },
-        "arviointi" : [ {
-          "arvosana" : {
-            "koodiarvo" : "Hyväksytty",
-            "nimi" : {
-              "fi" : "Hyväksytty"
-            },
-            "koodistoUri" : "arviointiasteikkoammatillinenhyvaksyttyhylatty",
-            "koodistoVersio" : 1
-          },
-          "päivä" : "2014-10-20",
-          "hyväksytty" : true
-        } ],
-        "vahvistus" : {
-          "päivä" : "2016-05-31",
-          "myöntäjäOrganisaatio" : {
-            "oid" : "1.2.246.562.10.52251087186",
-            "oppilaitosnumero" : {
-              "koodiarvo" : "10105",
-              "koodistoUri" : "oppilaitosnumero"
-            },
-            "nimi" : {
-              "fi" : "Stadin ammattiopisto"
-            }
-          },
-          "myöntäjäHenkilöt" : [ {
-            "nimi" : "Reijo Reksi",
-            "titteli" : {
-              "fi" : "rehtori"
-            },
-            "organisaatio" : {
-              "oid" : "1.2.246.562.10.52251087186",
-              "oppilaitosnumero" : {
-                "koodiarvo" : "10105",
-                "koodistoUri" : "oppilaitosnumero"
-              },
-              "nimi" : {
-                "fi" : "Stadin ammattiopisto"
-              }
-            }
-          } ]
-        },
-        "tyyppi" : {
-          "koodiarvo" : "ammatillisentutkinnonosa",
-          "koodistoUri" : "suorituksentyyppi"
-        }
-      }, {
-        "koulutusmoduuli" : {
-          "tunniste" : {
-            "koodiarvo" : "104059",
-            "nimi" : {
-              "fi" : "Yrittäjyys"
-            },
-            "koodistoUri" : "tutkinnonosat"
-          },
-          "pakollinen" : true
-        },
-        "toimipiste" : {
-          "oid" : "1.2.246.562.10.42456023292",
-          "nimi" : {
-            "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
-          }
-        },
-        "arviointi" : [ {
-          "arvosana" : {
-            "koodiarvo" : "Hyväksytty",
-            "nimi" : {
-              "fi" : "Hyväksytty"
-            },
-            "koodistoUri" : "arviointiasteikkoammatillinenhyvaksyttyhylatty",
-            "koodistoVersio" : 1
-          },
-          "päivä" : "2014-10-20",
-          "hyväksytty" : true
-        } ],
-        "vahvistus" : {
-          "päivä" : "2016-05-31",
-          "myöntäjäOrganisaatio" : {
-            "oid" : "1.2.246.562.10.52251087186",
-            "oppilaitosnumero" : {
-              "koodiarvo" : "10105",
-              "koodistoUri" : "oppilaitosnumero"
-            },
-            "nimi" : {
-              "fi" : "Stadin ammattiopisto"
-            }
-          },
-          "myöntäjäHenkilöt" : [ {
-            "nimi" : "Reijo Reksi",
-            "titteli" : {
-              "fi" : "rehtori"
-            },
-            "organisaatio" : {
-              "oid" : "1.2.246.562.10.52251087186",
-              "oppilaitosnumero" : {
-                "koodiarvo" : "10105",
-                "koodistoUri" : "oppilaitosnumero"
-              },
-              "nimi" : {
-                "fi" : "Stadin ammattiopisto"
-              }
-            }
-          } ]
-        },
-        "tyyppi" : {
-          "koodiarvo" : "ammatillisentutkinnonosa",
-          "koodistoUri" : "suorituksentyyppi"
-        }
-      } ],
-      "tyyppi" : {
-        "koodiarvo" : "ammatillinentutkinto",
-        "koodistoUri" : "suorituksentyyppi"
-      }
-    } ],
-    "tyyppi" : {
-      "koodiarvo" : "ammatillinenkoulutus",
-      "koodistoUri" : "opiskeluoikeudentyyppi"
-    },
-    "alkamispäivä" : "2012-09-01",
-    "päättymispäivä" : "2016-05-31"
-  } ]
+      ],
+      "tyyppi": {
+        "koodiarvo": "ammatillinenkoulutus",
+        "koodistoUri": "opiskeluoikeudentyyppi"
+      },
+      "alkamispäivä": "2012-09-01",
+      "päättymispäivä": "2016-05-31"
+    }
+  ]
 }

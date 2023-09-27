@@ -11,7 +11,10 @@
   "koulutustyyppi": "koulutustyyppi_14",
   "toteutus": "lops",
   "koulutukset": [],
-  "kielet": ["fi", "sv"],
+  "kielet": [
+    "sv",
+    "fi"
+  ],
   "kuvaus": null,
   "maarayskirje": {
     "id": 2055520,
@@ -64,6 +67,8 @@
   "tyotehtavatJoissaVoiToimia": null,
   "suorittaneenOsaaminen": null,
   "perusteenAikataulut": [],
+  "poikkeamismaaraysTarkennus": null,
+  "poikkeamismaaraysTyyppi": null,
   "suoritustavat": [
     {
       "suoritustapakoodi": "lukiokoulutus",

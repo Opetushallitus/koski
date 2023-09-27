@@ -14,6 +14,7 @@
   "koulutukset": [
     {
       "nimi": {
+        "en": "Basic education in the arts",
         "fi": "Taiteen perusopetus",
         "sv": "Grundläggande konstundervisning"
       },
@@ -23,7 +24,10 @@
       "opintoalakoodi": null
     }
   ],
-  "kielet": ["sv", "fi"],
+  "kielet": [
+    "sv",
+    "fi"
+  ],
   "kuvaus": null,
   "maarayskirje": {
     "id": 4015086,
@@ -36,7 +40,7 @@
   "siirtymaPaattyy": null,
   "voimassaoloLoppuu": null,
   "paatospvm": 1505854800000,
-  "viimeisinJulkaisuAika": null,
+  "viimeisinJulkaisuAika": 1633022851447,
   "luotu": 1510066861135,
   "muokattu": 1595487830323,
   "tila": "valmis",
@@ -53,6 +57,8 @@
   "tyotehtavatJoissaVoiToimia": null,
   "suorittaneenOsaaminen": null,
   "perusteenAikataulut": [],
+  "poikkeamismaaraysTarkennus": null,
+  "poikkeamismaaraysTyyppi": null,
   "tpo": {
     "sisalto": {
       "id": 3700101,
@@ -662,8 +668,7 @@
             "muokattu": 1595487830280,
             "muokkaaja": "1.2.246.562.24.77925329174",
             "nimi": {
-              "_id": "7300734",
-              "_tunniste": "b0ba514a-2cf0-4122-a0f5-6a8d4fb41374",
+              "en": "Arkkitehtuuri",
               "fi": "Arkkitehtuuri",
               "sv": "Arkitektur"
             },
@@ -677,15 +682,17 @@
             "koodi": {
               "id": 7300703,
               "nimi": {
-                "fi": "Arkkitehtuuri"
+                "en": "Arkkitehtuuri",
+                "fi": "Arkkitehtuuri",
+                "sv": "Arkitektur"
               },
               "arvo": "TPOAT",
               "uri": "oppiaineetyleissivistava2_tpoat",
               "koodisto": "oppiaineetyleissivistava2",
-              "versio": null,
-              "temporary": false
+              "versio": null
             },
             "kasvatus": {
+              "id": 7300757,
               "nimi": {
                 "_id": "4027874",
                 "_tunniste": "9a836a3a-b4fb-42af-8560-0b3f48394b1d",
@@ -701,6 +708,7 @@
               "jnro": 1
             },
             "yhteisetOpinnot": {
+              "id": 7300801,
               "nimi": {
                 "_id": "4027992",
                 "_tunniste": "860570f7-5ec4-4f34-953a-998892b0d0d7",
@@ -716,6 +724,7 @@
               "jnro": 5
             },
             "teemaopinnot": {
+              "id": 7300759,
               "nimi": {
                 "_id": "4027878",
                 "_tunniste": "3b67599c-5af9-4c90-8c3c-6fd2e66ecd4a",
@@ -731,6 +740,7 @@
               "jnro": 3
             },
             "aikuistenOpetus": {
+              "id": 7300756,
               "nimi": {
                 "_id": "4027872",
                 "_tunniste": "7f8b05a2-6868-4e99-a453-3201719661e5",
@@ -746,6 +756,7 @@
               "jnro": 0
             },
             "tyotavatOpetuksessa": {
+              "id": 7300800,
               "nimi": {
                 "_id": "4027990",
                 "_tunniste": "fd81dbea-f305-48a7-ba33-90afa701503c",
@@ -761,6 +772,7 @@
               "jnro": 4
             },
             "oppimisenArviointiOpetuksessa": {
+              "id": 7300758,
               "nimi": {
                 "_id": "4027876",
                 "_tunniste": "d63d5032-4c50-40a6-a640-2e2f71381136",
@@ -775,9 +787,11 @@
               },
               "jnro": 2
             },
+            "vapaatTekstit": [],
             "osanTyyppi": "taiteenala",
             "osaavainMap": {
               "aikuistenOpetus": {
+                "id": 7300756,
                 "nimi": {
                   "_id": "4027872",
                   "_tunniste": "7f8b05a2-6868-4e99-a453-3201719661e5",
@@ -793,6 +807,7 @@
                 "jnro": 0
               },
               "kasvatus": {
+                "id": 7300757,
                 "nimi": {
                   "_id": "4027874",
                   "_tunniste": "9a836a3a-b4fb-42af-8560-0b3f48394b1d",
@@ -808,6 +823,7 @@
                 "jnro": 1
               },
               "oppimisenArviointiOpetuksessa": {
+                "id": 7300758,
                 "nimi": {
                   "_id": "4027876",
                   "_tunniste": "d63d5032-4c50-40a6-a640-2e2f71381136",
@@ -823,6 +839,7 @@
                 "jnro": 2
               },
               "teemaopinnot": {
+                "id": 7300759,
                 "nimi": {
                   "_id": "4027878",
                   "_tunniste": "3b67599c-5af9-4c90-8c3c-6fd2e66ecd4a",
@@ -838,6 +855,7 @@
                 "jnro": 3
               },
               "tyotavatOpetuksessa": {
+                "id": 7300800,
                 "nimi": {
                   "_id": "4027990",
                   "_tunniste": "fd81dbea-f305-48a7-ba33-90afa701503c",
@@ -853,6 +871,7 @@
                 "jnro": 4
               },
               "yhteisetOpinnot": {
+                "id": 7300801,
                 "nimi": {
                   "_id": "4027992",
                   "_tunniste": "860570f7-5ec4-4f34-953a-998892b0d0d7",
@@ -880,8 +899,7 @@
             "muokattu": 1595487830270,
             "muokkaaja": "1.2.246.562.24.77925329174",
             "nimi": {
-              "_id": "7300739",
-              "_tunniste": "12253a87-28e8-4deb-b135-467c9278ac76",
+              "en": "Kuvataide",
               "fi": "Kuvataide",
               "sv": "Bildkonst"
             },
@@ -895,15 +913,17 @@
             "koodi": {
               "id": 7300705,
               "nimi": {
-                "fi": "Kuvataide"
+                "en": "Kuvataide",
+                "fi": "Kuvataide",
+                "sv": "Bildkonst"
               },
               "arvo": "TPOKU",
               "uri": "oppiaineetyleissivistava2_tpoku",
               "koodisto": "oppiaineetyleissivistava2",
-              "versio": null,
-              "temporary": false
+              "versio": null
             },
             "kasvatus": {
+              "id": 7300809,
               "nimi": {
                 "_id": "4027997",
                 "_tunniste": "696a8de4-bc2b-4a1a-b082-f5d41b371ad9",
@@ -919,6 +939,7 @@
               "jnro": 1
             },
             "yhteisetOpinnot": {
+              "id": 7300833,
               "nimi": {
                 "_id": "4028016",
                 "_tunniste": "0a73bb3d-366d-47a1-9f24-c23ae9072144",
@@ -934,6 +955,7 @@
               "jnro": 5
             },
             "teemaopinnot": {
+              "id": 7300831,
               "nimi": {
                 "_id": "4028011",
                 "_tunniste": "fe6a35ad-244b-448c-be1b-f63e67199a73",
@@ -949,6 +971,7 @@
               "jnro": 3
             },
             "aikuistenOpetus": {
+              "id": 7300808,
               "nimi": {
                 "_id": "4027995",
                 "_tunniste": "30b5ba26-877b-4cba-8b9e-604c3e25fba9",
@@ -964,6 +987,7 @@
               "jnro": 0
             },
             "tyotavatOpetuksessa": {
+              "id": 7300832,
               "nimi": {
                 "_id": "4028014",
                 "_tunniste": "61cb7ae5-7574-418a-bccc-5386ff7edda7",
@@ -979,6 +1003,7 @@
               "jnro": 4
             },
             "oppimisenArviointiOpetuksessa": {
+              "id": 7300830,
               "nimi": {
                 "_id": "4027999",
                 "_tunniste": "c39d97ea-90bc-490e-95af-907f5d6549b9",
@@ -993,9 +1018,11 @@
               },
               "jnro": 2
             },
+            "vapaatTekstit": [],
             "osanTyyppi": "taiteenala",
             "osaavainMap": {
               "aikuistenOpetus": {
+                "id": 7300808,
                 "nimi": {
                   "_id": "4027995",
                   "_tunniste": "30b5ba26-877b-4cba-8b9e-604c3e25fba9",
@@ -1011,6 +1038,7 @@
                 "jnro": 0
               },
               "kasvatus": {
+                "id": 7300809,
                 "nimi": {
                   "_id": "4027997",
                   "_tunniste": "696a8de4-bc2b-4a1a-b082-f5d41b371ad9",
@@ -1026,6 +1054,7 @@
                 "jnro": 1
               },
               "oppimisenArviointiOpetuksessa": {
+                "id": 7300830,
                 "nimi": {
                   "_id": "4027999",
                   "_tunniste": "c39d97ea-90bc-490e-95af-907f5d6549b9",
@@ -1041,6 +1070,7 @@
                 "jnro": 2
               },
               "teemaopinnot": {
+                "id": 7300831,
                 "nimi": {
                   "_id": "4028011",
                   "_tunniste": "fe6a35ad-244b-448c-be1b-f63e67199a73",
@@ -1056,6 +1086,7 @@
                 "jnro": 3
               },
               "tyotavatOpetuksessa": {
+                "id": 7300832,
                 "nimi": {
                   "_id": "4028014",
                   "_tunniste": "61cb7ae5-7574-418a-bccc-5386ff7edda7",
@@ -1071,6 +1102,7 @@
                 "jnro": 4
               },
               "yhteisetOpinnot": {
+                "id": 7300833,
                 "nimi": {
                   "_id": "4028016",
                   "_tunniste": "0a73bb3d-366d-47a1-9f24-c23ae9072144",
@@ -1098,8 +1130,7 @@
             "muokattu": 1595487830274,
             "muokkaaja": "1.2.246.562.24.77925329174",
             "nimi": {
-              "_id": "7300842",
-              "_tunniste": "c0e04109-d8b4-4360-94f7-8b7acad96f43",
+              "en": "Käsityö",
               "fi": "Käsityö",
               "sv": "Slöjd"
             },
@@ -1113,15 +1144,17 @@
             "koodi": {
               "id": 7300706,
               "nimi": {
-                "fi": "Käsityö"
+                "en": "Käsityö",
+                "fi": "Käsityö",
+                "sv": "Slöjd"
               },
               "arvo": "TPOKS",
               "uri": "oppiaineetyleissivistava2_tpoks",
               "koodisto": "oppiaineetyleissivistava2",
-              "versio": null,
-              "temporary": false
+              "versio": null
             },
             "kasvatus": {
+              "id": 7300835,
               "nimi": {
                 "_id": "4028031",
                 "_tunniste": "4ccb7305-f944-40d8-8ff1-a0e3d0625c16",
@@ -1137,6 +1170,7 @@
               "jnro": 1
             },
             "yhteisetOpinnot": {
+              "id": 7300839,
               "nimi": {
                 "_id": "4028050",
                 "_tunniste": "c3e97056-f5d9-4ec3-a7c0-a5035530cf70",
@@ -1152,6 +1186,7 @@
               "jnro": 5
             },
             "teemaopinnot": {
+              "id": 7300837,
               "nimi": {
                 "_id": "4028035",
                 "_tunniste": "6929d56f-6d16-4402-b3c9-f354b08c7ac1",
@@ -1167,6 +1202,7 @@
               "jnro": 3
             },
             "aikuistenOpetus": {
+              "id": 7300834,
               "nimi": {
                 "_id": "4028019",
                 "_tunniste": "b62856ac-5dac-404e-ae55-f9b85f55267b",
@@ -1182,6 +1218,7 @@
               "jnro": 0
             },
             "tyotavatOpetuksessa": {
+              "id": 7300838,
               "nimi": {
                 "_id": "4028038",
                 "_tunniste": "0bb04161-34d6-42cc-bd73-123a8b889865",
@@ -1197,6 +1234,7 @@
               "jnro": 4
             },
             "oppimisenArviointiOpetuksessa": {
+              "id": 7300836,
               "nimi": {
                 "_id": "4028033",
                 "_tunniste": "8bfe3580-7cfe-4106-adb3-73afe827feff",
@@ -1211,9 +1249,11 @@
               },
               "jnro": 2
             },
+            "vapaatTekstit": [],
             "osanTyyppi": "taiteenala",
             "osaavainMap": {
               "aikuistenOpetus": {
+                "id": 7300834,
                 "nimi": {
                   "_id": "4028019",
                   "_tunniste": "b62856ac-5dac-404e-ae55-f9b85f55267b",
@@ -1229,6 +1269,7 @@
                 "jnro": 0
               },
               "kasvatus": {
+                "id": 7300835,
                 "nimi": {
                   "_id": "4028031",
                   "_tunniste": "4ccb7305-f944-40d8-8ff1-a0e3d0625c16",
@@ -1244,6 +1285,7 @@
                 "jnro": 1
               },
               "oppimisenArviointiOpetuksessa": {
+                "id": 7300836,
                 "nimi": {
                   "_id": "4028033",
                   "_tunniste": "8bfe3580-7cfe-4106-adb3-73afe827feff",
@@ -1259,6 +1301,7 @@
                 "jnro": 2
               },
               "teemaopinnot": {
+                "id": 7300837,
                 "nimi": {
                   "_id": "4028035",
                   "_tunniste": "6929d56f-6d16-4402-b3c9-f354b08c7ac1",
@@ -1274,6 +1317,7 @@
                 "jnro": 3
               },
               "tyotavatOpetuksessa": {
+                "id": 7300838,
                 "nimi": {
                   "_id": "4028038",
                   "_tunniste": "0bb04161-34d6-42cc-bd73-123a8b889865",
@@ -1289,6 +1333,7 @@
                 "jnro": 4
               },
               "yhteisetOpinnot": {
+                "id": 7300839,
                 "nimi": {
                   "_id": "4028050",
                   "_tunniste": "c3e97056-f5d9-4ec3-a7c0-a5035530cf70",
@@ -1316,8 +1361,7 @@
             "muokattu": 1595487830275,
             "muokkaaja": "1.2.246.562.24.77925329174",
             "nimi": {
-              "_id": "7300843",
-              "_tunniste": "869e50e4-a660-421b-9e1e-a4627532bfc4",
+              "en": "Mediataiteet",
               "fi": "Mediataiteet",
               "sv": "Mediekonst"
             },
@@ -1331,15 +1375,17 @@
             "koodi": {
               "id": 7300707,
               "nimi": {
-                "fi": "Mediataiteet"
+                "en": "Mediataiteet",
+                "fi": "Mediataiteet",
+                "sv": "Mediekonst"
               },
               "arvo": "TPOMT",
               "uri": "oppiaineetyleissivistava2_tpomt",
               "koodisto": "oppiaineetyleissivistava2",
-              "versio": null,
-              "temporary": false
+              "versio": null
             },
             "kasvatus": {
+              "id": 7300871,
               "nimi": {
                 "_id": "4028055",
                 "_tunniste": "f282cf55-6da8-468f-a246-1c83023bf10c",
@@ -1355,6 +1401,7 @@
               "jnro": 1
             },
             "yhteisetOpinnot": {
+              "id": 7300875,
               "nimi": {
                 "_id": "4028084",
                 "_tunniste": "a4818381-a8f4-43af-8a8b-f747a4f121cb",
@@ -1370,6 +1417,7 @@
               "jnro": 5
             },
             "teemaopinnot": {
+              "id": 7300873,
               "nimi": {
                 "_id": "4028059",
                 "_tunniste": "f87c7725-efa9-4e0f-8508-f07e05bfea58",
@@ -1385,6 +1433,7 @@
               "jnro": 3
             },
             "aikuistenOpetus": {
+              "id": 7300870,
               "nimi": {
                 "_id": "4028053",
                 "_tunniste": "475adac3-0269-4231-b3bd-fbecb55097c1",
@@ -1400,6 +1449,7 @@
               "jnro": 0
             },
             "tyotavatOpetuksessa": {
+              "id": 7300874,
               "nimi": {
                 "_id": "4028082",
                 "_tunniste": "b4cf564a-6d28-470a-8e12-54476007ca12",
@@ -1415,6 +1465,7 @@
               "jnro": 4
             },
             "oppimisenArviointiOpetuksessa": {
+              "id": 7300872,
               "nimi": {
                 "_id": "4028057",
                 "_tunniste": "6f9fe265-8f4c-4e9c-8781-26e00fa0d351",
@@ -1429,9 +1480,11 @@
               },
               "jnro": 2
             },
+            "vapaatTekstit": [],
             "osanTyyppi": "taiteenala",
             "osaavainMap": {
               "aikuistenOpetus": {
+                "id": 7300870,
                 "nimi": {
                   "_id": "4028053",
                   "_tunniste": "475adac3-0269-4231-b3bd-fbecb55097c1",
@@ -1447,6 +1500,7 @@
                 "jnro": 0
               },
               "kasvatus": {
+                "id": 7300871,
                 "nimi": {
                   "_id": "4028055",
                   "_tunniste": "f282cf55-6da8-468f-a246-1c83023bf10c",
@@ -1462,6 +1516,7 @@
                 "jnro": 1
               },
               "oppimisenArviointiOpetuksessa": {
+                "id": 7300872,
                 "nimi": {
                   "_id": "4028057",
                   "_tunniste": "6f9fe265-8f4c-4e9c-8781-26e00fa0d351",
@@ -1477,6 +1532,7 @@
                 "jnro": 2
               },
               "teemaopinnot": {
+                "id": 7300873,
                 "nimi": {
                   "_id": "4028059",
                   "_tunniste": "f87c7725-efa9-4e0f-8508-f07e05bfea58",
@@ -1492,6 +1548,7 @@
                 "jnro": 3
               },
               "tyotavatOpetuksessa": {
+                "id": 7300874,
                 "nimi": {
                   "_id": "4028082",
                   "_tunniste": "b4cf564a-6d28-470a-8e12-54476007ca12",
@@ -1507,6 +1564,7 @@
                 "jnro": 4
               },
               "yhteisetOpinnot": {
+                "id": 7300875,
                 "nimi": {
                   "_id": "4028084",
                   "_tunniste": "a4818381-a8f4-43af-8a8b-f747a4f121cb",
@@ -1534,8 +1592,7 @@
             "muokattu": 1595487830281,
             "muokkaaja": "1.2.246.562.24.77925329174",
             "nimi": {
-              "_id": "7300844",
-              "_tunniste": "de729168-2178-45f2-a0ed-db4661ab1dbb",
+              "en": "Musiikki",
               "fi": "Musiikki",
               "sv": "Musik"
             },
@@ -1549,15 +1606,17 @@
             "koodi": {
               "id": 7300708,
               "nimi": {
-                "fi": "Musiikki"
+                "en": "Musiikki",
+                "fi": "Musiikki",
+                "sv": "Musik"
               },
               "arvo": "TPOMU",
               "uri": "oppiaineetyleissivistava2_tpomu",
               "koodisto": "oppiaineetyleissivistava2",
-              "versio": null,
-              "temporary": false
+              "versio": null
             },
             "kasvatus": {
+              "id": 7300877,
               "nimi": {
                 "_id": "4028089",
                 "_tunniste": "7d6ae327-9eb1-448c-9dd7-d1003fbaea8f",
@@ -1573,6 +1632,7 @@
               "jnro": 1
             },
             "yhteisetOpinnot": {
+              "id": 7300891,
               "nimi": {
                 "_id": "4028118",
                 "_tunniste": "df9fbe9b-6ef0-43b3-b549-896c8870c630",
@@ -1588,6 +1648,7 @@
               "jnro": 5
             },
             "teemaopinnot": {
+              "id": 7300879,
               "nimi": {
                 "_id": "4028113",
                 "_tunniste": "513c9902-89d1-49d7-ba8a-7a4d69799c22",
@@ -1603,6 +1664,7 @@
               "jnro": 3
             },
             "aikuistenOpetus": {
+              "id": 7300876,
               "nimi": {
                 "_id": "4028087",
                 "_tunniste": "d0543505-dbd4-4faa-a0d8-ad7eca16e54b",
@@ -1618,6 +1680,7 @@
               "jnro": 0
             },
             "tyotavatOpetuksessa": {
+              "id": 7300890,
               "nimi": {
                 "_id": "4028116",
                 "_tunniste": "d695b672-5b6d-47ce-934e-147fc6916b39",
@@ -1633,6 +1696,7 @@
               "jnro": 4
             },
             "oppimisenArviointiOpetuksessa": {
+              "id": 7300878,
               "nimi": {
                 "_id": "4028111",
                 "_tunniste": "a39d0eb9-4a44-493d-abae-6f1a760d2436",
@@ -1647,9 +1711,11 @@
               },
               "jnro": 2
             },
+            "vapaatTekstit": [],
             "osanTyyppi": "taiteenala",
             "osaavainMap": {
               "aikuistenOpetus": {
+                "id": 7300876,
                 "nimi": {
                   "_id": "4028087",
                   "_tunniste": "d0543505-dbd4-4faa-a0d8-ad7eca16e54b",
@@ -1665,6 +1731,7 @@
                 "jnro": 0
               },
               "kasvatus": {
+                "id": 7300877,
                 "nimi": {
                   "_id": "4028089",
                   "_tunniste": "7d6ae327-9eb1-448c-9dd7-d1003fbaea8f",
@@ -1680,6 +1747,7 @@
                 "jnro": 1
               },
               "oppimisenArviointiOpetuksessa": {
+                "id": 7300878,
                 "nimi": {
                   "_id": "4028111",
                   "_tunniste": "a39d0eb9-4a44-493d-abae-6f1a760d2436",
@@ -1695,6 +1763,7 @@
                 "jnro": 2
               },
               "teemaopinnot": {
+                "id": 7300879,
                 "nimi": {
                   "_id": "4028113",
                   "_tunniste": "513c9902-89d1-49d7-ba8a-7a4d69799c22",
@@ -1710,6 +1779,7 @@
                 "jnro": 3
               },
               "tyotavatOpetuksessa": {
+                "id": 7300890,
                 "nimi": {
                   "_id": "4028116",
                   "_tunniste": "d695b672-5b6d-47ce-934e-147fc6916b39",
@@ -1725,6 +1795,7 @@
                 "jnro": 4
               },
               "yhteisetOpinnot": {
+                "id": 7300891,
                 "nimi": {
                   "_id": "4028118",
                   "_tunniste": "df9fbe9b-6ef0-43b3-b549-896c8870c630",
@@ -1752,8 +1823,7 @@
             "muokattu": 1595487830283,
             "muokkaaja": "1.2.246.562.24.77925329174",
             "nimi": {
-              "_id": "7300847",
-              "_tunniste": "39af9158-7565-48b7-9fdc-05b982feb30f",
+              "en": "Sanataide",
               "fi": "Sanataide",
               "sv": "Ordkonst"
             },
@@ -1767,15 +1837,17 @@
             "koodi": {
               "id": 7300709,
               "nimi": {
-                "fi": "Sanataide"
+                "en": "Sanataide",
+                "fi": "Sanataide",
+                "sv": "Ordkonst"
               },
               "arvo": "TPOST",
               "uri": "oppiaineetyleissivistava2_tpost",
               "koodisto": "oppiaineetyleissivistava2",
-              "versio": null,
-              "temporary": false
+              "versio": null
             },
             "kasvatus": {
+              "id": 7300893,
               "nimi": {
                 "_id": "4028133",
                 "_tunniste": "30dbe846-41ab-4203-a33e-81a2db5892fd",
@@ -1791,6 +1863,7 @@
               "jnro": 1
             },
             "yhteisetOpinnot": {
+              "id": 7300897,
               "nimi": {
                 "_id": "4028152",
                 "_tunniste": "15c7aab4-42fa-4dff-8c05-30199344c678",
@@ -1806,6 +1879,7 @@
               "jnro": 5
             },
             "teemaopinnot": {
+              "id": 7300895,
               "nimi": {
                 "_id": "4028137",
                 "_tunniste": "3a7ae4ac-170e-4999-bbcd-ad46efc69432",
@@ -1821,6 +1895,7 @@
               "jnro": 3
             },
             "aikuistenOpetus": {
+              "id": 7300892,
               "nimi": {
                 "_id": "4028131",
                 "_tunniste": "1a217bda-1c5d-444e-8485-e5dcec19251c",
@@ -1836,6 +1911,7 @@
               "jnro": 0
             },
             "tyotavatOpetuksessa": {
+              "id": 7300896,
               "nimi": {
                 "_id": "4028150",
                 "_tunniste": "aab9bc0c-d3eb-4506-b011-ee7c105cdd6f",
@@ -1851,6 +1927,7 @@
               "jnro": 4
             },
             "oppimisenArviointiOpetuksessa": {
+              "id": 7300894,
               "nimi": {
                 "_id": "4028135",
                 "_tunniste": "61794b56-d008-4db0-87d6-5a38a860213c",
@@ -1865,9 +1942,11 @@
               },
               "jnro": 2
             },
+            "vapaatTekstit": [],
             "osanTyyppi": "taiteenala",
             "osaavainMap": {
               "aikuistenOpetus": {
+                "id": 7300892,
                 "nimi": {
                   "_id": "4028131",
                   "_tunniste": "1a217bda-1c5d-444e-8485-e5dcec19251c",
@@ -1883,6 +1962,7 @@
                 "jnro": 0
               },
               "kasvatus": {
+                "id": 7300893,
                 "nimi": {
                   "_id": "4028133",
                   "_tunniste": "30dbe846-41ab-4203-a33e-81a2db5892fd",
@@ -1898,6 +1978,7 @@
                 "jnro": 1
               },
               "oppimisenArviointiOpetuksessa": {
+                "id": 7300894,
                 "nimi": {
                   "_id": "4028135",
                   "_tunniste": "61794b56-d008-4db0-87d6-5a38a860213c",
@@ -1913,6 +1994,7 @@
                 "jnro": 2
               },
               "teemaopinnot": {
+                "id": 7300895,
                 "nimi": {
                   "_id": "4028137",
                   "_tunniste": "3a7ae4ac-170e-4999-bbcd-ad46efc69432",
@@ -1928,6 +2010,7 @@
                 "jnro": 3
               },
               "tyotavatOpetuksessa": {
+                "id": 7300896,
                 "nimi": {
                   "_id": "4028150",
                   "_tunniste": "aab9bc0c-d3eb-4506-b011-ee7c105cdd6f",
@@ -1943,6 +2026,7 @@
                 "jnro": 4
               },
               "yhteisetOpinnot": {
+                "id": 7300897,
                 "nimi": {
                   "_id": "4028152",
                   "_tunniste": "15c7aab4-42fa-4dff-8c05-30199344c678",
@@ -1970,8 +2054,7 @@
             "muokattu": 1595487830273,
             "muokkaaja": "1.2.246.562.24.77925329174",
             "nimi": {
-              "_id": "7300848",
-              "_tunniste": "ec0ec8aa-4c81-4ada-9e9f-c2fc2a5450e8",
+              "en": "Sirkustaide",
               "fi": "Sirkustaide",
               "sv": "Cirkuskonst"
             },
@@ -1985,15 +2068,17 @@
             "koodi": {
               "id": 7300920,
               "nimi": {
-                "fi": "Sirkustaide"
+                "en": "Sirkustaide",
+                "fi": "Sirkustaide",
+                "sv": "Cirkuskonst"
               },
               "arvo": "TPOSI",
               "uri": "oppiaineetyleissivistava2_tposi",
               "koodisto": "oppiaineetyleissivistava2",
-              "versio": null,
-              "temporary": false
+              "versio": null
             },
             "kasvatus": {
+              "id": 7300899,
               "nimi": {
                 "_id": "4028157",
                 "_tunniste": "ce4c3611-dfda-4e8a-bec7-b55e2d2a6e6a",
@@ -2009,6 +2094,7 @@
               "jnro": 1
             },
             "yhteisetOpinnot": {
+              "id": 7300943,
               "nimi": {
                 "_id": "4028176",
                 "_tunniste": "7bce8078-82ea-47fa-ac9b-f768de3fb5cd",
@@ -2024,6 +2110,7 @@
               "jnro": 5
             },
             "teemaopinnot": {
+              "id": 7300941,
               "nimi": {
                 "_id": "4028171",
                 "_tunniste": "cbae7b45-377f-4674-9fac-9ca1cb98514f",
@@ -2039,6 +2126,7 @@
               "jnro": 3
             },
             "aikuistenOpetus": {
+              "id": 7300898,
               "nimi": {
                 "_id": "4028155",
                 "_tunniste": "5564b2c2-111d-4d72-af2f-a7d12eb2028e",
@@ -2054,6 +2142,7 @@
               "jnro": 0
             },
             "tyotavatOpetuksessa": {
+              "id": 7300942,
               "nimi": {
                 "_id": "4028174",
                 "_tunniste": "289e28ce-5b1d-40e7-b567-969b7de82274",
@@ -2069,6 +2158,7 @@
               "jnro": 4
             },
             "oppimisenArviointiOpetuksessa": {
+              "id": 7300940,
               "nimi": {
                 "_id": "4028159",
                 "_tunniste": "67f693eb-02c7-4405-9c7d-708a703a9854",
@@ -2083,9 +2173,11 @@
               },
               "jnro": 2
             },
+            "vapaatTekstit": [],
             "osanTyyppi": "taiteenala",
             "osaavainMap": {
               "aikuistenOpetus": {
+                "id": 7300898,
                 "nimi": {
                   "_id": "4028155",
                   "_tunniste": "5564b2c2-111d-4d72-af2f-a7d12eb2028e",
@@ -2101,6 +2193,7 @@
                 "jnro": 0
               },
               "kasvatus": {
+                "id": 7300899,
                 "nimi": {
                   "_id": "4028157",
                   "_tunniste": "ce4c3611-dfda-4e8a-bec7-b55e2d2a6e6a",
@@ -2116,6 +2209,7 @@
                 "jnro": 1
               },
               "oppimisenArviointiOpetuksessa": {
+                "id": 7300940,
                 "nimi": {
                   "_id": "4028159",
                   "_tunniste": "67f693eb-02c7-4405-9c7d-708a703a9854",
@@ -2131,6 +2225,7 @@
                 "jnro": 2
               },
               "teemaopinnot": {
+                "id": 7300941,
                 "nimi": {
                   "_id": "4028171",
                   "_tunniste": "cbae7b45-377f-4674-9fac-9ca1cb98514f",
@@ -2146,6 +2241,7 @@
                 "jnro": 3
               },
               "tyotavatOpetuksessa": {
+                "id": 7300942,
                 "nimi": {
                   "_id": "4028174",
                   "_tunniste": "289e28ce-5b1d-40e7-b567-969b7de82274",
@@ -2161,6 +2257,7 @@
                 "jnro": 4
               },
               "yhteisetOpinnot": {
+                "id": 7300943,
                 "nimi": {
                   "_id": "4028176",
                   "_tunniste": "7bce8078-82ea-47fa-ac9b-f768de3fb5cd",
@@ -2188,8 +2285,7 @@
             "muokattu": 1595487830272,
             "muokkaaja": "1.2.246.562.24.77925329174",
             "nimi": {
-              "_id": "7300932",
-              "_tunniste": "38a65ba4-9690-4cfb-af5c-ac5fd359dbec",
+              "en": "Tanssi",
               "fi": "Tanssi",
               "sv": "Dans"
             },
@@ -2203,15 +2299,17 @@
             "koodi": {
               "id": 7300921,
               "nimi": {
-                "fi": "Tanssi"
+                "en": "Tanssi",
+                "fi": "Tanssi",
+                "sv": "Dans"
               },
               "arvo": "TPOTA",
               "uri": "oppiaineetyleissivistava2_tpota",
               "koodisto": "oppiaineetyleissivistava2",
-              "versio": null,
-              "temporary": false
+              "versio": null
             },
             "kasvatus": {
+              "id": 7300945,
               "nimi": {
                 "_id": "4028191",
                 "_tunniste": "93b16068-b310-49d2-8177-eb5cfda9e3f8",
@@ -2227,6 +2325,7 @@
               "jnro": 1
             },
             "yhteisetOpinnot": {
+              "id": 7300949,
               "nimi": {
                 "_id": "4028210",
                 "_tunniste": "15d42503-6e64-4cf6-a167-cbcaa7c27ac9",
@@ -2242,6 +2341,7 @@
               "jnro": 5
             },
             "teemaopinnot": {
+              "id": 7300947,
               "nimi": {
                 "_id": "4028195",
                 "_tunniste": "15b6a4a7-8791-4f07-86ee-b2bffda0ba73",
@@ -2257,6 +2357,7 @@
               "jnro": 3
             },
             "aikuistenOpetus": {
+              "id": 7300944,
               "nimi": {
                 "_id": "4028179",
                 "_tunniste": "557c407d-0eaf-40ef-a6ae-770ffd97e3f5",
@@ -2272,6 +2373,7 @@
               "jnro": 0
             },
             "tyotavatOpetuksessa": {
+              "id": 7300948,
               "nimi": {
                 "_id": "4028198",
                 "_tunniste": "aa9d61c9-ad61-4ef8-8a69-0fb33ee363b9",
@@ -2287,6 +2389,7 @@
               "jnro": 4
             },
             "oppimisenArviointiOpetuksessa": {
+              "id": 7300946,
               "nimi": {
                 "_id": "4028193",
                 "_tunniste": "70bf6612-9fea-4dc6-b5d1-16e80f24b195",
@@ -2301,9 +2404,11 @@
               },
               "jnro": 2
             },
+            "vapaatTekstit": [],
             "osanTyyppi": "taiteenala",
             "osaavainMap": {
               "aikuistenOpetus": {
+                "id": 7300944,
                 "nimi": {
                   "_id": "4028179",
                   "_tunniste": "557c407d-0eaf-40ef-a6ae-770ffd97e3f5",
@@ -2319,6 +2424,7 @@
                 "jnro": 0
               },
               "kasvatus": {
+                "id": 7300945,
                 "nimi": {
                   "_id": "4028191",
                   "_tunniste": "93b16068-b310-49d2-8177-eb5cfda9e3f8",
@@ -2334,6 +2440,7 @@
                 "jnro": 1
               },
               "oppimisenArviointiOpetuksessa": {
+                "id": 7300946,
                 "nimi": {
                   "_id": "4028193",
                   "_tunniste": "70bf6612-9fea-4dc6-b5d1-16e80f24b195",
@@ -2349,6 +2456,7 @@
                 "jnro": 2
               },
               "teemaopinnot": {
+                "id": 7300947,
                 "nimi": {
                   "_id": "4028195",
                   "_tunniste": "15b6a4a7-8791-4f07-86ee-b2bffda0ba73",
@@ -2364,6 +2472,7 @@
                 "jnro": 3
               },
               "tyotavatOpetuksessa": {
+                "id": 7300948,
                 "nimi": {
                   "_id": "4028198",
                   "_tunniste": "aa9d61c9-ad61-4ef8-8a69-0fb33ee363b9",
@@ -2379,6 +2488,7 @@
                 "jnro": 4
               },
               "yhteisetOpinnot": {
+                "id": 7300949,
                 "nimi": {
                   "_id": "4028210",
                   "_tunniste": "15d42503-6e64-4cf6-a167-cbcaa7c27ac9",
@@ -2406,8 +2516,7 @@
             "muokattu": 1595487830276,
             "muokkaaja": "1.2.246.562.24.77925329174",
             "nimi": {
-              "_id": "7300933",
-              "_tunniste": "b938f5da-3b0d-4bcf-a06c-84b168d255c7",
+              "en": "Teatteritaide",
               "fi": "Teatteritaide",
               "sv": "Teaterkonst"
             },
@@ -2421,15 +2530,17 @@
             "koodi": {
               "id": 7300922,
               "nimi": {
-                "fi": "Teatteritaide"
+                "en": "Teatteritaide",
+                "fi": "Teatteritaide",
+                "sv": "Teaterkonst"
               },
               "arvo": "TPOTT",
               "uri": "oppiaineetyleissivistava2_tpott",
               "koodisto": "oppiaineetyleissivistava2",
-              "versio": null,
-              "temporary": false
+              "versio": null
             },
             "kasvatus": {
+              "id": 7300971,
               "nimi": {
                 "_id": "4028215",
                 "_tunniste": "bfb379fd-fc99-4025-b104-473392961fe1",
@@ -2445,6 +2556,7 @@
               "jnro": 1
             },
             "yhteisetOpinnot": {
+              "id": 7300975,
               "nimi": {
                 "_id": "4028234",
                 "_tunniste": "799a0534-c3ee-4535-b936-351ab1227db5",
@@ -2460,6 +2572,7 @@
               "jnro": 5
             },
             "teemaopinnot": {
+              "id": 7300973,
               "nimi": {
                 "_id": "4028219",
                 "_tunniste": "f0fb95ad-952a-47c7-9826-fc0c1b401a8e",
@@ -2475,6 +2588,7 @@
               "jnro": 3
             },
             "aikuistenOpetus": {
+              "id": 7300970,
               "nimi": {
                 "_id": "4028213",
                 "_tunniste": "2e315131-8ef3-4ff3-afb7-7a8d53896429",
@@ -2490,6 +2604,7 @@
               "jnro": 0
             },
             "tyotavatOpetuksessa": {
+              "id": 7300974,
               "nimi": {
                 "_id": "4028232",
                 "_tunniste": "28c81c4e-6b5f-4773-833f-07547ea0e2d5",
@@ -2505,6 +2620,7 @@
               "jnro": 4
             },
             "oppimisenArviointiOpetuksessa": {
+              "id": 7300972,
               "nimi": {
                 "_id": "4028217",
                 "_tunniste": "176c2406-206f-4ff2-837f-7cf8102c68c4",
@@ -2519,9 +2635,11 @@
               },
               "jnro": 2
             },
+            "vapaatTekstit": [],
             "osanTyyppi": "taiteenala",
             "osaavainMap": {
               "aikuistenOpetus": {
+                "id": 7300970,
                 "nimi": {
                   "_id": "4028213",
                   "_tunniste": "2e315131-8ef3-4ff3-afb7-7a8d53896429",
@@ -2537,6 +2655,7 @@
                 "jnro": 0
               },
               "kasvatus": {
+                "id": 7300971,
                 "nimi": {
                   "_id": "4028215",
                   "_tunniste": "bfb379fd-fc99-4025-b104-473392961fe1",
@@ -2552,6 +2671,7 @@
                 "jnro": 1
               },
               "oppimisenArviointiOpetuksessa": {
+                "id": 7300972,
                 "nimi": {
                   "_id": "4028217",
                   "_tunniste": "176c2406-206f-4ff2-837f-7cf8102c68c4",
@@ -2567,6 +2687,7 @@
                 "jnro": 2
               },
               "teemaopinnot": {
+                "id": 7300973,
                 "nimi": {
                   "_id": "4028219",
                   "_tunniste": "f0fb95ad-952a-47c7-9826-fc0c1b401a8e",
@@ -2582,6 +2703,7 @@
                 "jnro": 3
               },
               "tyotavatOpetuksessa": {
+                "id": 7300974,
                 "nimi": {
                   "_id": "4028232",
                   "_tunniste": "28c81c4e-6b5f-4773-833f-07547ea0e2d5",
@@ -2597,6 +2719,7 @@
                 "jnro": 4
               },
               "yhteisetOpinnot": {
+                "id": 7300975,
                 "nimi": {
                   "_id": "4028234",
                   "_tunniste": "799a0534-c3ee-4535-b936-351ab1227db5",
