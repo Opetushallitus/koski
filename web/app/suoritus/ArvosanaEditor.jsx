@@ -15,6 +15,9 @@ import * as L from 'partial.lenses'
 import { sortGrades } from '../util/sorting'
 import { fetchAlternativesBasedOnPrototypes } from '../editor/EnumEditor'
 import { fixArviointi } from './Suoritus'
+import { last, sort } from 'fp-ts/lib/Array'
+import { contramap, fromCompare } from 'fp-ts/lib/Ord'
+import { Ord as StringOrd } from 'fp-ts/lib/string'
 
 export const ArvosanaEditor = ({
   model,
@@ -106,12 +109,15 @@ export const resolveArvosanaModel = (
 }
 
 const parasArviointi = (suoritus, arviointiField = 'arviointi') => {
-  let arviointi = modelLookup(suoritus, `${arviointiField}.-1`)
+  const arvioinnit = sort(ArviointiDateOrd)(
+    modelItems(suoritus, arviointiField)
+  )
+  let arviointi = arvioinnit[arvioinnit.length - 1]
   let arvosana = arviointi
     ? modelLookup(suoritus, `${arviointiField}.-1.arvosana`)
     : null
 
-  modelItems(suoritus, arviointiField).map((item) => {
+  arvioinnit.map((item) => {
     const nthArvosana = modelLookup(item, 'arvosana')
     if (
       nthArvosana.value.data !== undefined &&
@@ -126,3 +132,7 @@ const parasArviointi = (suoritus, arviointiField = 'arviointi') => {
 
   return arviointi
 }
+
+const ArviointiDateOrd = contramap(
+  (a) => modelData(a, 'päivä') || '0000-00-00'
+)(StringOrd)
