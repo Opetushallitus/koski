@@ -58,11 +58,11 @@ object Lukio2019ArvosanaValidation {
   private def validateValtakunnallinenModuuli(suoritus: Suoritus): HttpStatus = (suoritus) match {
     case _: LukionModuulinSuoritus2019 | _: PreIBLukionModuulinSuoritus2019
       if !opintoOhjausModuulit.contains(suoritus.koulutusmoduuli.tunniste.koodiarvo) &&
-        suoritus.arviointi.toList.flatten.exists(a => kirjainarvosanat.contains(a.arvosana.koodiarvo)) =>
+        suoritus.sortedArviointi.exists(a => kirjainarvosanat.contains(a.arvosana.koodiarvo)) =>
       KoskiErrorCategory.badRequest.validation.arviointi.epäsopivaArvosana(s"Valtakunnallisen moduulin ${suorituksenTunniste(suoritus)} arvosanan on oltava numero")
     case _: LukionModuulinSuoritus2019 | _: PreIBLukionModuulinSuoritus2019
       if opintoOhjausModuulit.contains(suoritus.koulutusmoduuli.tunniste.koodiarvo) &&
-        !suoritus.arviointi.toList.flatten.exists(a => kirjainarvosanat.contains(a.arvosana.koodiarvo)) =>
+        !suoritus.sortedArviointi.exists(a => kirjainarvosanat.contains(a.arvosana.koodiarvo)) =>
       KoskiErrorCategory.badRequest.validation.arviointi.epäsopivaArvosana(s"Opinto-ohjauksen moduulin ${suorituksenTunniste(suoritus)} arvosanan on oltava S tai H")
     case _ =>
       HttpStatus.ok

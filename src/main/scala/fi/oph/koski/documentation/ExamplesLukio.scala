@@ -333,7 +333,11 @@ object ExamplesLukio {
           osasuoritukset = Some(List(
             suoritus(lukionÄidinkieli("AI1", pakollinen = true)).copy(arviointi = None).copy(osasuoritukset = Some(List(
               kurssisuoritus(valtakunnallinenKurssi("ÄI1")).copy(arviointi = numeerinenArviointi(8)),
-              kurssisuoritus(valtakunnallinenKurssi("ÄI2")).copy(arviointi = numeerinenArviointi(8)),
+              kurssisuoritus(valtakunnallinenKurssi("ÄI2")).copy(arviointi = Some(
+                sanallinenArviointi("H", None, date(2016, 4, 2)).get
+                  ++ numeerinenArviointi(8, date(2016, 6, 4)).get
+                  ++ sanallinenArviointi("H", None, date(2016, 5, 3)).get
+              )),
               kurssisuoritus(valtakunnallinenKurssi("ÄI3")).copy(arviointi = None)
             )))
           ))

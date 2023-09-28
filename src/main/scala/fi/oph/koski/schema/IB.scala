@@ -3,6 +3,7 @@ package fi.oph.koski.schema
 import java.time.{LocalDate, LocalDateTime}
 import fi.oph.koski.schema.LocalizedString.english
 import fi.oph.koski.schema.annotation.{Deprecated, FlattenInUI, Hidden, KoodistoKoodiarvo, KoodistoUri, OksaUri}
+import fi.oph.koski.util.DateOrdering.localDateOrdering
 import fi.oph.scalaschema.annotation._
 
 @Description("IB-tutkinnon opiskeluoikeus")
@@ -78,9 +79,12 @@ case class IBOppiaineenSuoritus(
 ) extends IBSuoritus {
   override def ryhmittelytekijä: Option[String] = koulutusmoduuli.taso.map(_.koodiarvo)
   override def parasArviointi: Option[Arviointi] = {
-    val arvioinnit: List[Arviointi] = arviointi.fold(predictedArviointi.toList.flatten)(_.map(IBOppiaineenPredictedArviointi.apply))
-    arvioinnit.reduceOption((a, b) => Arviointi.korkeampiArviointi(a, b))
+    arviointi
+      .map(_.sortBy(_.arviointipäivä))
+      .fold(sortedPredictedArviointi)(_.map(IBOppiaineenPredictedArviointi.apply))
+      .reduceOption(Arviointi.korkeampiArviointi)
   }
+  def sortedPredictedArviointi = predictedArviointi.toList.flatten.sortBy(_.arviointipäivä)
 }
 
 @Description("Theory of Knowledge-suorituksen tiedot")

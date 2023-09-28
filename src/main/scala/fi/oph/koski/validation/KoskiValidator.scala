@@ -910,7 +910,7 @@ class KoskiValidator(
   }
 
   private def validateSuoritus(suoritus: Suoritus, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, parent: List[Suoritus])(implicit user: KoskiSpecificSession, accessType: AccessType.Value): HttpStatus = {
-    val arviointipäivät: List[LocalDate] = suoritus.arviointi.toList.flatten.flatMap(_.arviointipäivä)
+    val arviointipäivät: List[LocalDate] = suoritus.sortedArviointi.flatMap(_.arviointipäivä)
     val alkamispäivä: (String, Iterable[LocalDate]) = ("suoritus.alkamispäivä", suoritus.alkamispäivä)
     val vahvistuspäivät: Option[LocalDate] = suoritus.vahvistus.map(_.päivä)
     val parentVahvistuspäivät = parent.flatMap(_.vahvistus.map(_.päivä))
@@ -1242,7 +1242,7 @@ class KoskiValidator(
       case _ => Nil
     }
 
-    numeerisetArvosanat(suoritus.arviointi.toList.flatten) ++ näytönArvosanat ++ suoritus.osasuoritusLista.flatMap(extractNumeerisetArvosanat)
+    numeerisetArvosanat(suoritus.sortedArviointi) ++ näytönArvosanat ++ suoritus.osasuoritusLista.flatMap(extractNumeerisetArvosanat)
   }
 
   private def validatePäätasonSuoritustenStatus(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) = {
