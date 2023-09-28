@@ -5,6 +5,7 @@ import fi.oph.koski.koodisto.{KoodistoViite, MockKoodistoViitePalvelu}
 import fi.oph.koski.koskiuser.Rooli
 import fi.oph.koski.schema.LocalizedString.unlocalized
 import fi.oph.koski.schema.annotation._
+import fi.oph.koski.util.DateOrdering.localDateOrdering
 import fi.oph.scalaschema.annotation._
 import mojave.{Traversal, traversal}
 
@@ -38,26 +39,13 @@ trait Suoritus {
   def rekursiivisetOsasuoritukset: List[Suoritus] = {
     osasuoritusLista ++ osasuoritusLista.flatMap(_.rekursiivisetOsasuoritukset)
   }
-  def viimeisinArviointi: Option[Arviointi] = arviointi.toList.flatten.lastOption
-  def parasArviointi: Option[Arviointi] = arviointi.toList.flatten.reduceOption((a, b) => {
+  def viimeisinArviointi: Option[Arviointi] = sortedArviointi.lastOption
+  def parasArviointi: Option[Arviointi] = sortedArviointi.reduceOption((a, b) => {
     Arviointi.korkeampiArviointi(a, b)
   })
   def parasArviointiPäivä: Option[LocalDate] = parasArviointi.flatMap(_.arviointipäivä)
   def viimeisinArvosana: Option[String] = viimeisinArviointi.map(_.arvosana.koodiarvo)
-  def ensimmäinenArviointi: Option[Arviointi] = {
-    arviointi.toList.flatten.reduceOption((a, b) => {
-      (a.arviointipäivä, b.arviointipäivä) match {
-        case (Some(aPäivä), Some(bPäivä)) => {
-          if (aPäivä.isBefore(bPäivä)) {
-            a
-          } else {
-            b
-          }
-        }
-        case _ => a
-      }
-    })
-  }
+  def ensimmäinenArviointi: Option[Arviointi] = sortedArviointi.headOption
   def ensimmäinenArviointiPäivä: Option[LocalDate] = ensimmäinenArviointi match {
     case Some(arviointi) => arviointi.arviointipäivä
     case _ => None
@@ -88,6 +76,8 @@ trait Suoritus {
     import mojave._
     shapeless.lens[Suoritus].field[Option[List[Suoritus]]]("osasuoritukset").set(this)(oss)
   }
+
+  def sortedArviointi: List[Arviointi] = arviointi.toList.flatten.sortBy(_.arviointipäivä)
 }
 
 object Suoritus {

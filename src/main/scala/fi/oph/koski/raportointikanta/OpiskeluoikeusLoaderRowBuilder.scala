@@ -438,13 +438,7 @@ object OpiskeluoikeusLoaderRowBuilder extends Logging {
       arviointiArvosanaKoodisto = os.parasArviointi.flatMap(a => convertKoodisto(a.arvosana)),
       arviointiHyväksytty = os.parasArviointi.map(_.hyväksytty),
       arviointiPäivä = os.parasArviointi.flatMap(_.arviointipäivä).map(v => Date.valueOf(v)),
-      ensimmäinenArviointiPäivä = os.arviointi.toList.flatten.map(_.arviointipäivä).flatten.map(v => Date.valueOf(v)).reduceOption((a, b) => {
-        if (a.toLocalDate.isBefore(b.toLocalDate)) {
-          a
-        } else {
-          b
-        }
-      }),
+      ensimmäinenArviointiPäivä = os.sortedArviointi.flatMap(_.arviointipäivä).headOption.map(Date.valueOf),
       korotettuEriVuonna = (os.ensimmäinenArviointiPäivä, os.parasArviointiPäivä) match {
         case (Some(eka), Some(paras)) => {
           if (eka.get(ChronoField.YEAR) != paras.get(ChronoField.YEAR)) {
