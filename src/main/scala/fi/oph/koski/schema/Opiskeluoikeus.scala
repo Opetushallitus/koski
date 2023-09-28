@@ -169,6 +169,7 @@ object OpiskeluoikeudenTyyppi {
   val vapaansivistystyonkoulutus = apply("vapaansivistystyonkoulutus")
   val tuva = apply("tuva")
   val europeanschoolofhelsinki = apply("europeanschoolofhelsinki")
+  val ebtutkinto = apply("ebtutkinto")
   val muukuinsaanneltykoulutus = apply("muukuinsaanneltykoulutus")
   val taiteenperusopetus = apply("taiteenperusopetus")
 
