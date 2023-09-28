@@ -372,15 +372,15 @@ class OppijaValidationEuropeanSchoolOfHelsinkiSpec
         ),
         suoritukset = List(ExamplesEuropeanSchoolOfHelsinki.eb.copy(
           osasuoritukset = Some(List(
-            EBTutkinnonOsasuoritus(
+            DeprecatedEBTutkinnonOsasuoritus(
               koulutusmoduuli =  EuropeanSchoolOfHelsinkiMuuOppiaine(
                 Koodistokoodiviite("MA", "europeanschoolofhelsinkimuuoppiaine"),
                 laajuus = LaajuusVuosiviikkotunneissa(4)
               ),
               suorituskieli = ExampleData.englanti,
               osasuoritukset = Some(List(
-                EBOppiaineenAlaosasuoritus(
-                  koulutusmoduuli = EBOppiaineKomponentti(
+                DeprecatedEBOppiaineenAlaosasuoritus(
+                  koulutusmoduuli = DeprecatedEBOppiaineKomponentti(
                     tunniste = Koodistokoodiviite("Preliminary", "ebtutkinnonoppiaineenkomponentti")
                   ),
                   arviointi = ebTutkintoPreliminaryMarkArviointi(päivä = alkamispäivä.plusMonths(3))
@@ -405,15 +405,15 @@ class OppijaValidationEuropeanSchoolOfHelsinkiSpec
         ),
         suoritukset = List(ExamplesEuropeanSchoolOfHelsinki.eb.copy(
           osasuoritukset = Some(List(
-            EBTutkinnonOsasuoritus(
+            DeprecatedEBTutkinnonOsasuoritus(
               koulutusmoduuli =  EuropeanSchoolOfHelsinkiMuuOppiaine(
                 Koodistokoodiviite("MA", "europeanschoolofhelsinkimuuoppiaine"),
                 laajuus = LaajuusVuosiviikkotunneissa(4)
               ),
               suorituskieli = ExampleData.englanti,
               osasuoritukset = Some(List(
-                EBOppiaineenAlaosasuoritus(
-                  koulutusmoduuli = EBOppiaineKomponentti(
+                DeprecatedEBOppiaineenAlaosasuoritus(
+                  koulutusmoduuli = DeprecatedEBOppiaineKomponentti(
                     tunniste = Koodistokoodiviite("Final", "ebtutkinnonoppiaineenkomponentti")
                   ),
                   arviointi = None
@@ -438,15 +438,15 @@ class OppijaValidationEuropeanSchoolOfHelsinkiSpec
         ),
         suoritukset = List(ExamplesEuropeanSchoolOfHelsinki.eb.copy(
           osasuoritukset = Some(List(
-            EBTutkinnonOsasuoritus(
+            DeprecatedEBTutkinnonOsasuoritus(
               koulutusmoduuli =  EuropeanSchoolOfHelsinkiMuuOppiaine(
                 Koodistokoodiviite("MA", "europeanschoolofhelsinkimuuoppiaine"),
                 laajuus = LaajuusVuosiviikkotunneissa(4)
               ),
               suorituskieli = ExampleData.englanti,
               osasuoritukset = Some(List(
-                EBOppiaineenAlaosasuoritus(
-                  koulutusmoduuli = EBOppiaineKomponentti(
+                DeprecatedEBOppiaineenAlaosasuoritus(
+                  koulutusmoduuli = DeprecatedEBOppiaineKomponentti(
                     tunniste = Koodistokoodiviite("Final", "ebtutkinnonoppiaineenkomponentti")
                   ),
                   arviointi = ebTutkintoFinalMarkArviointi(päivä = alkamispäivä.plusMonths(3))

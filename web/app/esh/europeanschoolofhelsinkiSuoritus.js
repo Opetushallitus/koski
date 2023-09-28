@@ -36,8 +36,8 @@ export const eshSuorituksenTyyppi = {
 export const eshSuorituksenClass = {
   nursery: 'nurseryvuosiluokansuoritus',
   primary: 'primaryvuosiluokansuoritus',
-  ebtutkinto: 'ebtutkinnonsuoritus',
-  ebtutkintoOsasuoritus: 'ebtutkinnonosasuoritus',
+  ebtutkinto: 'deprecatedebtutkinnonsuoritus',
+  ebtutkintoOsasuoritus: 'deprecatedebtutkinnonosasuoritus',
   secondaryLowerVuosiluokka: 'secondarylowervuosiluokansuoritus',
   secondaryLowerOppiaine: 'secondaryloweroppiaineensuoritus',
   secondaryUpperOppiaine: 'secondaryupperoppiaineensuoritus',

@@ -1104,7 +1104,7 @@ class KoskiValidator(
         => true
       case s: SecondaryUpperVuosiluokanSuoritus if s.koulutusmoduuli.tunniste.koodiarvo == "S7"
         => EuropeanSchoolOfHelsinkiValidation.osasuorituksetKunnossa(s)
-      case s: EBTutkinnonSuoritus
+      case s: DeprecatedEBTutkinnonSuoritus
         => EuropeanSchoolOfHelsinkiValidation.osasuorituksetKunnossa(s)
       case s: TaiteenPerusopetuksenPäätasonSuoritus => true
       case s => s.osasuoritusLista.nonEmpty
@@ -1173,7 +1173,7 @@ class KoskiValidator(
       KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia(s"Suorituksen ${suorituksenTunniste(suoritus)} opiskeluoikeuden tiedoissa oppimäärä on merkitty suoritetuksi, mutta sillä ei ole 88 op osasuorituksia, tai opiskeluoikeudelta puuttuu linkitys")
     case s: SecondaryUpperVuosiluokanSuoritus =>
       KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia(s"Suoritus ${suorituksenTunniste(s)} on merkitty valmiiksi, mutta sillä on tyhjä osasuorituslista tai joltain sen osasuoritukselta puuttuu vaadittavat arvioidut osasuoritukset (joko A ja B, tai yearmark), tai opiskeluoikeudelta puuttuu linkitys")
-    case s: EBTutkinnonSuoritus =>
+    case s: DeprecatedEBTutkinnonSuoritus =>
       KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia(s"Suoritus ${suorituksenTunniste(s)} on merkitty valmiiksi, mutta sillä on tyhjä osasuorituslista tai joltain sen osasuoritukselta puuttuu vaadittava arvioitu Final-osasuoritus, tai opiskeluoikeudelta puuttuu linkitys")
     case s =>
       KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia(s"Suoritus ${suorituksenTunniste(s)} on merkitty valmiiksi, mutta sillä on tyhjä osasuorituslista tai opiskeluoikeudelta puuttuu linkitys")
@@ -1224,7 +1224,7 @@ class KoskiValidator(
       validatePäättötodistuksenSanallinenArviointi(n)
     case _: LukionPäätasonSuoritus2019 | _: PreIBSuoritus2019 =>
       Lukio2019ArvosanaValidation.validatePäätasonSuoritus(suoritus)
-    case s: EBTutkinnonSuoritus =>
+    case s: DeprecatedEBTutkinnonSuoritus =>
       EuropeanSchoolOfHelsinkiValidation.validateEBTutkinnonArvioinnit(s)
     case _ => HttpStatus.ok
   }

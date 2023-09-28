@@ -187,7 +187,7 @@ export const EshSuoritusColumn: ESHSuoritusColumn = {
 }
 
 const isEBOsasuoritus = (model: any) =>
-  model.value.classes.includes('ebtutkinnonsuoritus')
+  model.value.classes.includes('deprecatedebtutkinnonsuoritus')
 
 // EshArvosanaColumn
 export type EshArvosanaColumnShowProps = {

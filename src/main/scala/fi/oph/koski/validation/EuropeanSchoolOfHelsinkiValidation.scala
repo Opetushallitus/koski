@@ -4,7 +4,7 @@ import com.typesafe.config.Config
 import fi.oph.koski.documentation.ExampleData.muutaKauttaRahoitettu
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
-import fi.oph.koski.schema.{EBTutkinnonOsasuoritus, EBTutkinnonSuoritus, EuropeanSchoolOfHelsinkiOpiskeluoikeus, EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso, EuropeanSchoolOfHelsinkiPäätasonSuoritus, EuropeanSchoolOfHelsinkiVuosiluokanSuoritus, Koodistokoodiviite, KoskeenTallennettavaOpiskeluoikeus, NurseryVuosiluokanSuoritus, PrimaryVuosiluokanSuoritus, SecondaryLowerVuosiluokanSuoritus, SecondaryUpperOppiaineenSuoritus, SecondaryUpperVuosiluokanSuoritus}
+import fi.oph.koski.schema.{DeprecatedEBTutkinnonOsasuoritus, DeprecatedEBTutkinnonSuoritus, EuropeanSchoolOfHelsinkiOpiskeluoikeus, EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso, EuropeanSchoolOfHelsinkiPäätasonSuoritus, EuropeanSchoolOfHelsinkiVuosiluokanSuoritus, Koodistokoodiviite, KoskeenTallennettavaOpiskeluoikeus, NurseryVuosiluokanSuoritus, PrimaryVuosiluokanSuoritus, SecondaryLowerVuosiluokanSuoritus, SecondaryUpperOppiaineenSuoritus, SecondaryUpperVuosiluokanSuoritus}
 import fi.oph.koski.util.FinnishDateFormat.finnishDateFormat
 
 import java.time.LocalDate
@@ -43,7 +43,7 @@ object EuropeanSchoolOfHelsinkiValidation {
     }
   }
 
-  def validateEBTutkinnonArvioinnit(suoritus: EBTutkinnonSuoritus): HttpStatus = {
+  def validateEBTutkinnonArvioinnit(suoritus: DeprecatedEBTutkinnonSuoritus): HttpStatus = {
     if (suoritus.vahvistettu && suoritus.yleisarvosana.isEmpty) {
       KoskiErrorCategory.badRequest.validation.esh.yleisarvosana()
     } else {
@@ -107,7 +107,7 @@ object EuropeanSchoolOfHelsinkiValidation {
           koulutustyyppi = eshKoulutustyyppi(koodistoPalvelu)
         )
       )
-      case s: EBTutkinnonSuoritus => s.copy(
+      case s: DeprecatedEBTutkinnonSuoritus => s.copy(
         koulutusmoduuli = s.koulutusmoduuli.copy(
           koulutustyyppi = eshKoulutustyyppi(koodistoPalvelu)
         )
@@ -130,11 +130,11 @@ object EuropeanSchoolOfHelsinkiValidation {
     (sisältää("A") && sisältää("B")) || sisältää("yearmark")
   }
 
-  def osasuorituksetKunnossa(s: EBTutkinnonSuoritus): Boolean = {
+  def osasuorituksetKunnossa(s: DeprecatedEBTutkinnonSuoritus): Boolean = {
     s.osasuoritukset.exists(os => !os.isEmpty && os.forall(osasuorituksetKunnossa))
   }
 
-  private def osasuorituksetKunnossa(s: EBTutkinnonOsasuoritus): Boolean = {
+  private def osasuorituksetKunnossa(s: DeprecatedEBTutkinnonOsasuoritus): Boolean = {
     def sisältää(koodiarvo: String) =
       s.osasuoritukset.exists(_.exists(_.koulutusmoduuli.tunniste.koodiarvo == koodiarvo))
 
