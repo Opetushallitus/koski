@@ -11,6 +11,8 @@ const europeanSchoolOfHelsinkiTilat = [
   'valiaikaisestikeskeytynyt',
   'mitatoity'
 ]
+const ebTilat = ['eronnut', 'lasna', 'valmistunut', 'mitatoity']
+
 const oppivelvollisilleSuunnatunVapaanSivistystyönKoulutuksenTilat = [
   'lasna',
   'valiaikaisestikeskeytynyt',
@@ -91,7 +93,8 @@ const filterByOpiskeluoikeudenTyyppi = (
       return tilat.filter((t) =>
         internationalSchoolTilat.includes(koodiarvo(t))
       )
-    // TODO: TOR-2052 - EB-tutkinto
+    case 'ebtutkinto':
+      return tilat.filter((t) => ebTilat.includes(koodiarvo(t)))
     case 'europeanschoolofhelsinki':
       return tilat.filter((t) =>
         europeanSchoolOfHelsinkiTilat.includes(koodiarvo(t))

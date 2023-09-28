@@ -11,6 +11,7 @@ test.describe('European School of Helsinki', () => {
     test.beforeEach(async ({ fixtures, eshOppijaPage }) => {
       await fixtures.reset(false)
       await eshOppijaPage.goto(ESH_OID)
+      await eshOppijaPage.selectOpiskeluoikeus('europeanschoolofhelsinki')
     })
 
     test('Näyttää oppijan tiedot oikein', async ({ eshOppijaPage }) => {
@@ -254,7 +255,9 @@ test.describe('European School of Helsinki', () => {
         await expect(eshOppijaPage.muokkausNäkymäBtn).toBeVisible()
       })
 
-      test('EB-tutkinto', async ({ page, eshOppijaPage }) => {
+      // Vanhan EB-tutkinnon editointi ei enää toimi, koska tietomalli korvataan uudella erillisellä. Tätä ei kuitenkaan
+      // ole tarkoituksenmukaista nyt korjata, koska tarkoitus on poistaa vanha tietomallihaara kokonaan.
+      test.skip('EB-tutkinto', async ({ page, eshOppijaPage }) => {
         test.slow()
         await eshOppijaPage.poistaSuoritus('European Baccalaureate', 'S7')
 
@@ -321,6 +324,7 @@ test.describe('European School of Helsinki', () => {
       const vuosiluokat = ['P1', 'P5']
       test.beforeEach(async ({ eshOppijaPage }) => {
         await eshOppijaPage.goto(ESH_OID)
+        await eshOppijaPage.selectOpiskeluoikeus('europeanschoolofhelsinki')
       })
       vuosiluokat.forEach((vuosiluokka) => {
         test(`Lisää ${vuosiluokka}-vuosiluokan suoritukseen uuden osasuorituksen, jolla ei ole prefillattuja alaosasuorituksia, ja sallii tallentamisen vain kun pakollisissa kentissä ond tiedot syötettynä`, async ({

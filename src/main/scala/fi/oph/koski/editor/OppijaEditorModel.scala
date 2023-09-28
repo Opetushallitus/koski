@@ -68,7 +68,6 @@ object OppijaEditorModel extends Timing {
       case oo: IBOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy(ibSuoritustenJärjestysKriteeri))
       case oo: DIAOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy(diaSuoritustenJärjestysKriteeri))
       case oo: InternationalSchoolOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy(internationalSchoolJärjestysKriteeri))
-      // TODO: TOR-2052 - EB-tutkinto
       case oo: EuropeanSchoolOfHelsinkiOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy(_.suorituksenJärjestysKriteeriAlustaLoppuun).reverse)
       case oo: TaiteenPerusopetuksenOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy(taiteenPerusopetuksenSuoritustenJärjestysKriteeri))
       case oo: KorkeakoulunOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy(_.vahvistus.map(_.päivä))(localDateOptionOrdering).reverse)

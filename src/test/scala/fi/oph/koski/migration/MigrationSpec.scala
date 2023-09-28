@@ -36,7 +36,7 @@ class MigrationSpec extends AnyFreeSpec with Matchers {
       "Korjaa tämän testin md5-tarkastusluvut vasta kun olet varma siitä että nykyinen toteutus voidaan viedä eteenpäin." in {
       val dir = "./src/main/scala/fi/oph/koski/raportointikanta"
       val expectedChecksums = Map(
-        "AikajaksoRowBuilder.scala"                                 -> "581190491d31f3b0d4a40c2e62579ffa",
+        "AikajaksoRowBuilder.scala"                                 -> "721282fff8f8b9f1bae1675bf3f900bd",
         "HenkiloLoader.scala"                                       -> "8bb9b09ac2dd771c741dff417b34f79e",
         "KoodistoLoader.scala"                                      -> "86c90ec069d1c5ec5ee9faa65fb1399e",
         "KoskiEventBridgeClient.scala"                              -> "f8a09d358ebb3fe2ed4d8875ccccef12",
@@ -56,7 +56,7 @@ class MigrationSpec extends AnyFreeSpec with Matchers {
         "RaportointikantaTestServlet.scala"                         -> "d457be86e60dd84545378ae415236d26",
         "RaportointikantaTableQueries.scala"                        -> "b97f971fa7a5896ec3c4d69882ca705d",
         "TOPKSAmmatillinenRaporttiRowBuilder.scala"                 -> "a9c26a13385ff576810f3ef831240437",
-        "OpiskeluoikeusLoaderRowBuilder.scala"                      -> "5b02ffcdcf655db4a8a215de4297427b",
+        "OpiskeluoikeusLoaderRowBuilder.scala"                      -> "b0b61408739912de00dc111d2ce73ebd",
         "IncrementalUpdateOpiskeluoikeusLoader.scala"               -> "fd0687df6c413b981947246909b1c91d",
         "FullReloadOpiskeluoikeusLoader.scala"                      -> "b36cbb43bd51df20c82bd31d7402a253",
         "VipunenExport.scala"                                       -> "9563ec86b4214f871fbd085e44c048cb",

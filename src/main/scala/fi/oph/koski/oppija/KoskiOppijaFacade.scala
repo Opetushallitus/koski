@@ -395,7 +395,8 @@ class KoskiOppijaFacade(
         Right(t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ TutkintokoulutukseenValmentavanOpiskeluoikeusjakso(mitatointiPvm, mitätöity)))
       case t: KorkeakoulunOpiskeluoikeudenTila => Left(KoskiErrorCategory.badRequest())
       case t: YlioppilastutkinnonOpiskeluoikeudenTila => Left(KoskiErrorCategory.badRequest())
-      // TODO: TOR-2052 - EB-tutkinto
+      case t: EBOpiskeluoikeudenTila =>
+        Right(t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ EBOpiskeluoikeusjakso(mitatointiPvm, mitätöity)))
       case t: EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila =>
         Right(t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(mitatointiPvm, mitätöity)))
       case t: MuunKuinSäännellynKoulutuksenTila =>
@@ -417,7 +418,6 @@ class KoskiOppijaFacade(
               | _: AikuistenPerusopetuksenOpiskeluoikeus
               | _: AmmatillinenOpiskeluoikeus
               | _: InternationalSchoolOpiskeluoikeus
-              // TODO: TOR-2052 - EB-tutkinto
               | _: EuropeanSchoolOfHelsinkiOpiskeluoikeus
               | _: IBOpiskeluoikeus
               | _: EsiopetuksenOpiskeluoikeus

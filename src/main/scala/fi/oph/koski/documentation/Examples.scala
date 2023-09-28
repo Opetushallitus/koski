@@ -27,6 +27,7 @@ object Examples {
     ExamplesTutkintokoulutukseenValmentavaKoulutus.examples ++
     ExamplesVapaaSivistystyöKotoutuskoulutus2022.Examples.examples ++
     ExamplesEuropeanSchoolOfHelsinki.examples ++
+    ExamplesEB.examples ++
     ExamplesVapaaSivistystyöJotpa.Examples.examples ++
     ExamplesTaiteenPerusopetus.examples
 

@@ -1,0 +1,414 @@
+{
+  "henkilö" : {
+    "hetu" : "050707A130V",
+    "etunimet" : "Emilia",
+    "kutsumanimi" : "Emilia",
+    "sukunimi" : "Eurooppalainen"
+  },
+  "opiskeluoikeudet" : [ {
+    "oppilaitos" : {
+      "oid" : "1.2.246.562.10.13349113236",
+      "oppilaitosnumero" : {
+        "koodiarvo" : "03782",
+        "koodistoUri" : "oppilaitosnumero"
+      },
+      "nimi" : {
+        "fi" : "European School of Helsinki"
+      }
+    },
+    "tila" : {
+      "opiskeluoikeusjaksot" : [ {
+        "alku" : "2023-06-14",
+        "tila" : {
+          "koodiarvo" : "lasna",
+          "nimi" : {
+            "fi" : "Läsnä"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        }
+      }, {
+        "alku" : "2023-06-15",
+        "tila" : {
+          "koodiarvo" : "valmistunut",
+          "nimi" : {
+            "fi" : "Valmistunut"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        }
+      } ]
+    },
+    "suoritukset" : [ {
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "301104",
+          "koodistoUri" : "koulutus"
+        },
+        "curriculum" : {
+          "koodiarvo" : "2023",
+          "koodistoUri" : "europeanschoolofhelsinkicurriculum"
+        }
+      },
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.13349113236",
+        "oppilaitosnumero" : {
+          "koodiarvo" : "03782",
+          "koodistoUri" : "oppilaitosnumero"
+        },
+        "nimi" : {
+          "fi" : "European School of Helsinki"
+        }
+      },
+      "vahvistus" : {
+        "päivä" : "2023-06-15",
+        "paikkakunta" : {
+          "koodiarvo" : "091",
+          "nimi" : {
+            "fi" : "Helsinki"
+          },
+          "koodistoUri" : "kunta"
+        },
+        "myöntäjäOrganisaatio" : {
+          "oid" : "1.2.246.562.10.13349113236",
+          "oppilaitosnumero" : {
+            "koodiarvo" : "03782",
+            "koodistoUri" : "oppilaitosnumero"
+          },
+          "nimi" : {
+            "fi" : "European School of Helsinki"
+          }
+        },
+        "myöntäjäHenkilöt" : [ {
+          "nimi" : "Reijo Reksi",
+          "titteli" : {
+            "fi" : "rehtori"
+          },
+          "organisaatio" : {
+            "oid" : "1.2.246.562.10.13349113236",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "03782",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "European School of Helsinki"
+            }
+          }
+        } ]
+      },
+      "tyyppi" : {
+        "koodiarvo" : "ebtutkinto",
+        "koodistoUri" : "suorituksentyyppi"
+      },
+      "todistuksellaNäkyvätLisätiedot" : {
+        "fi" : "The marks of Ethics/Religion are not considered for the calculation of the European Baccalaureate preliminary and final marks."
+      },
+      "yleisarvosana" : 89.68,
+      "osasuoritukset" : [ {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "MA",
+            "koodistoUri" : "europeanschoolofhelsinkimuuoppiaine"
+          },
+          "laajuus" : {
+            "arvo" : 4.0,
+            "yksikkö" : {
+              "koodiarvo" : "3",
+              "nimi" : {
+                "fi" : "vuosiviikkotuntia",
+                "sv" : "årsveckotimmar",
+                "en" : "weekly lessons per year"
+              },
+              "lyhytNimi" : {
+                "fi" : "vuosiviikkotuntia",
+                "sv" : "årsveckotimmar",
+                "en" : "weekly lessons per year"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "tyyppi" : {
+          "koodiarvo" : "ebtutkinnonosasuoritus",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "suorituskieli" : {
+          "koodiarvo" : "EN",
+          "nimi" : {
+            "fi" : "englanti"
+          },
+          "koodistoUri" : "kieli"
+        },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "Written",
+              "koodistoUri" : "ebtutkinnonoppiaineenkomponentti"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "8.67",
+              "koodistoUri" : "arviointiasteikkoeuropeanschoolofhelsinkifinalmark"
+            },
+            "päivä" : "2023-06-15",
+            "arvioitsijat" : [ {
+              "nimi" : "Pekka Paunanen"
+            } ],
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ebtutkinnonalaosasuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "Final",
+              "koodistoUri" : "ebtutkinnonoppiaineenkomponentti"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "8.67",
+              "koodistoUri" : "arviointiasteikkoeuropeanschoolofhelsinkifinalmark"
+            },
+            "päivä" : "2023-06-15",
+            "arvioitsijat" : [ {
+              "nimi" : "Pekka Paunanen"
+            } ],
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ebtutkinnonalaosasuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ]
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "L1",
+            "koodistoUri" : "europeanschoolofhelsinkikielioppiaine"
+          },
+          "laajuus" : {
+            "arvo" : 4.0,
+            "yksikkö" : {
+              "koodiarvo" : "3",
+              "nimi" : {
+                "fi" : "vuosiviikkotuntia",
+                "sv" : "årsveckotimmar",
+                "en" : "weekly lessons per year"
+              },
+              "lyhytNimi" : {
+                "fi" : "vuosiviikkotuntia",
+                "sv" : "årsveckotimmar",
+                "en" : "weekly lessons per year"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          },
+          "kieli" : {
+            "koodiarvo" : "FR",
+            "nimi" : {
+              "fi" : "ranska"
+            },
+            "koodistoUri" : "kieli"
+          }
+        },
+        "tyyppi" : {
+          "koodiarvo" : "ebtutkinnonosasuoritus",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "suorituskieli" : {
+          "koodiarvo" : "EN",
+          "nimi" : {
+            "fi" : "englanti"
+          },
+          "koodistoUri" : "kieli"
+        },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "Written",
+              "koodistoUri" : "ebtutkinnonoppiaineenkomponentti"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "8.67",
+              "koodistoUri" : "arviointiasteikkoeuropeanschoolofhelsinkifinalmark"
+            },
+            "päivä" : "2023-06-15",
+            "arvioitsijat" : [ {
+              "nimi" : "Pekka Paunanen"
+            } ],
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ebtutkinnonalaosasuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "Oral",
+              "koodistoUri" : "ebtutkinnonoppiaineenkomponentti"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "8.67",
+              "koodistoUri" : "arviointiasteikkoeuropeanschoolofhelsinkifinalmark"
+            },
+            "päivä" : "2023-06-15",
+            "arvioitsijat" : [ {
+              "nimi" : "Pekka Paunanen"
+            } ],
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ebtutkinnonalaosasuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "Final",
+              "koodistoUri" : "ebtutkinnonoppiaineenkomponentti"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "8.67",
+              "koodistoUri" : "arviointiasteikkoeuropeanschoolofhelsinkifinalmark"
+            },
+            "päivä" : "2023-06-15",
+            "arvioitsijat" : [ {
+              "nimi" : "Pekka Paunanen"
+            } ],
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ebtutkinnonalaosasuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ]
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "L2",
+            "koodistoUri" : "europeanschoolofhelsinkikielioppiaine"
+          },
+          "laajuus" : {
+            "arvo" : 4.0,
+            "yksikkö" : {
+              "koodiarvo" : "3",
+              "nimi" : {
+                "fi" : "vuosiviikkotuntia",
+                "sv" : "årsveckotimmar",
+                "en" : "weekly lessons per year"
+              },
+              "lyhytNimi" : {
+                "fi" : "vuosiviikkotuntia",
+                "sv" : "årsveckotimmar",
+                "en" : "weekly lessons per year"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          },
+          "kieli" : {
+            "koodiarvo" : "DE",
+            "nimi" : {
+              "fi" : "saksa"
+            },
+            "koodistoUri" : "kieli"
+          }
+        },
+        "tyyppi" : {
+          "koodiarvo" : "ebtutkinnonosasuoritus",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "suorituskieli" : {
+          "koodiarvo" : "EN",
+          "nimi" : {
+            "fi" : "englanti"
+          },
+          "koodistoUri" : "kieli"
+        },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "Written",
+              "koodistoUri" : "ebtutkinnonoppiaineenkomponentti"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "8.67",
+              "koodistoUri" : "arviointiasteikkoeuropeanschoolofhelsinkifinalmark"
+            },
+            "päivä" : "2023-06-15",
+            "arvioitsijat" : [ {
+              "nimi" : "Pekka Paunanen"
+            } ],
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ebtutkinnonalaosasuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "Oral",
+              "koodistoUri" : "ebtutkinnonoppiaineenkomponentti"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "8.67",
+              "koodistoUri" : "arviointiasteikkoeuropeanschoolofhelsinkifinalmark"
+            },
+            "päivä" : "2023-06-15",
+            "arvioitsijat" : [ {
+              "nimi" : "Pekka Paunanen"
+            } ],
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ebtutkinnonalaosasuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "Final",
+              "koodistoUri" : "ebtutkinnonoppiaineenkomponentti"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "8.67",
+              "koodistoUri" : "arviointiasteikkoeuropeanschoolofhelsinkifinalmark"
+            },
+            "päivä" : "2023-06-15",
+            "arvioitsijat" : [ {
+              "nimi" : "Pekka Paunanen"
+            } ],
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ebtutkinnonalaosasuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ]
+      } ]
+    } ],
+    "tyyppi" : {
+      "koodiarvo" : "ebtutkinto",
+      "koodistoUri" : "opiskeluoikeudentyyppi"
+    },
+    "alkamispäivä" : "2023-06-14",
+    "päättymispäivä" : "2023-06-15"
+  } ]
+}
