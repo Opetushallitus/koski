@@ -3,6 +3,11 @@ import { expect, Page } from '@playwright/test'
 export class KoskiFixtures {
   constructor(private readonly page: Page) {}
 
+  /**
+   * Resetoi Koski-fixturet.
+   * @param reloadRaportointikanta Raportointikannan reload
+   * @param reloadYTR YTR:n reload
+   */
   async reset(reloadRaportointikanta = false, reloadYTR = false) {
     const params = new URLSearchParams({
       reloadRaportointikanta: reloadRaportointikanta ? 'true' : 'false',

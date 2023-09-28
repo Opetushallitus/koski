@@ -22,7 +22,7 @@ services:
     ports:
     - "9200:9200"
     volumes:
-    - "./opensearch/opensearch-docker.yml:/usr/share/opensearch/config/opensearch.yml:ro"
+    - "./opensearch/opensearch-docker.yml:/usr/share/opensearch/config/opensearch.yml"
 
   dynamodb:
     image: "amazon/dynamodb-local@sha256:f02384481c5133136cfd7edc82c6aed431e85a27bf5886fd637b889bdc0af6d5"

@@ -1,20 +1,56 @@
-import { Page, Locator, expect } from '@playwright/test'
-import { KoskiOppijaPage } from './KoskiOppijaPage'
+import { Page } from '@playwright/test'
+import { KoskiOppijaPageV2 } from './KoskiOppijaPageV2'
+import { arrayOf } from './uiV2builder/builder'
+import { Button } from './uiV2builder/Button'
+import { FormField } from './uiV2builder/controls'
+import { Input } from './uiV2builder/Input'
+import { Label } from './uiV2builder/Label'
+import { OpiskeluoikeusHeader } from './uiV2builder/OpiskeluoikeusHeader'
+import { Select } from './uiV2builder/Select'
+import { SuorituksenVahvistus } from './uiV2builder/SuorituksenVahvistus'
 
-export class KoskiVSTOppijaPage extends KoskiOppijaPage {
-  readonly __NEW_UI_opiskeluoikeuksienTiedot: Locator
-
+export class KoskiVSTOppijaPage extends KoskiOppijaPageV2<
+  typeof VapaanSivistystyönTestIds
+> {
   constructor(page: Page) {
-    super(page)
-    this.__NEW_UI_opiskeluoikeuksienTiedot = page.getByTestId('opiskeluoikeuksientiedot')
+    super(page, VapaanSivistystyönTestIds)
   }
+}
 
-  async expectSuoritusUrl(suoritus: string, hyväksyttyPostfix = '.*') {
-    await expect(this.page).toHaveURL(
-      new RegExp(
-        `koski\\/oppija\\/1\\.2\\..*\\?1\\.2\\..*\\.suoritus=${suoritus}${hyväksyttyPostfix}$`
-      ),
-      { timeout: 30000 }
-    )
-  }
+const VapaanSivistystyönTestIds = {
+  opiskeluoikeus: OpiskeluoikeusHeader(),
+  suoritukset: arrayOf({
+    tab: Button,
+    oppilaitos: FormField(Label),
+    koulutus: FormField(Label),
+    opetuskieli: FormField(Label),
+    lisatiedot: FormField(Label),
+
+    suorituksenVahvistus: SuorituksenVahvistus(),
+    expand: Button,
+    taso: arrayOf({
+      osasuoritukset: arrayOf({
+        expand: Button,
+        arvosana: FormField(Label, Select),
+        taitotaso: FormField(Label, Select),
+        laajuus: FormField(Label, Input),
+        nimi: FormField(Label),
+        properties: {
+          arvosana: FormField(Label),
+          arvostelunPvm: FormField(Label),
+          tunnustettu: FormField(Label)
+        },
+        delete: Button
+      })
+    }),
+
+    addOsasuoritus: {
+      select: Select,
+      modal: {
+        nimi: FormField(Input, Input),
+        cancel: Button,
+        submit: Button
+      }
+    }
+  })
 }

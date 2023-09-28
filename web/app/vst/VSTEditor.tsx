@@ -81,6 +81,7 @@ import { useOsasuorituksetExpand } from './../osasuoritus/hooks'
 import { useInfoLink } from './infoLinkHook'
 import { useKoodistoFiller } from '../appstate/koodisto'
 import { OpiskeluoikeusContext } from '../appstate/opiskeluoikeus'
+import { subTestId } from '../components-v2/CommonProps'
 
 type VSTEditorProps =
   AdaptedOpiskeluoikeusEditorProps<VapaanSivistystyönOpiskeluoikeus>
@@ -189,7 +190,7 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
         )}
         lisätiedotContainer={VSTLisatiedot}
         onChangeSuoritus={setPäätasonSuoritus}
-        testId="vst-editor-container"
+        testId={`${päätasonSuoritus.testId}.editor-container`}
       >
         <KansalainenOnly>
           <PäätasonSuorituksenSuostumuksenPeruminen
@@ -201,7 +202,7 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
         <KeyValueTable>
           <KeyValueRow
             label="Oppilaitos / toimipiste"
-            testId={`vst.suoritukset.${päätasonSuoritus.index}.oppilaitos`}
+            testId={`${päätasonSuoritus.testId}.toimipiste`}
           >
             <FormField
               form={form}
@@ -220,7 +221,7 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
           </KeyValueRow>
           <KeyValueRow
             label="Koulutus"
-            testId={`vst.suoritukset.${päätasonSuoritus.index}.koulutus`}
+            testId={`${päätasonSuoritus.testId}.koulutusmoduuli.tunniste`}
           >
             <Trans>
               {päätasonSuoritus.suoritus.koulutusmoduuli.tunniste.nimi}
@@ -229,7 +230,7 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
           <KeyValueRow
             label="Koulutusmoduuli"
             indent={2}
-            testId={`vst.suoritukset.${päätasonSuoritus.index}.koulutusmoduuli`}
+            testId={`${päätasonSuoritus.testId}.koulutusmoduuli.tunniste.koodiarvo`}
           >
             {päätasonSuoritus.suoritus.koulutusmoduuli.tunniste.koodiarvo}
           </KeyValueRow>
@@ -239,7 +240,7 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
             <KeyValueRow
               label="Peruste"
               indent={2}
-              testId={`vst.suoritukset.${päätasonSuoritus.index}.peruste`}
+              testId={`${päätasonSuoritus.testId}.peruste`}
             >
               <FormField
                 form={form}
@@ -250,7 +251,7 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
                   .optional()}
                 view={PerusteView}
                 edit={PerusteEdit}
-                testId="koulutusmoduuli.peruste"
+                testId={`${päätasonSuoritus.testId}.peruste.koulutusmoduuli`}
                 editProps={{
                   diaariNumero: resolveDiaarinumero(
                     päätasonSuoritus.suoritus.koulutusmoduuli
@@ -264,7 +265,7 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
               <KeyValueRow
                 label="Opintokokonaisuus"
                 indent={2}
-                testId={`vst.suoritukset.${päätasonSuoritus.index}.peruste`}
+                testId={`${päätasonSuoritus.testId}.opintokokonaisuus`}
               >
                 <FormField
                   form={form}
@@ -302,7 +303,7 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
             <KeyValueRow
               label="Laajuus"
               indent={2}
-              testId={`vst.suoritukset.${päätasonSuoritus.index}.koulutuksen-laajuus`}
+              testId={`${päätasonSuoritus.testId}.koulutuksen-laajuus`}
             >
               <FormField
                 form={form}
@@ -327,7 +328,7 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
           )}
           <KeyValueRow
             label="Opetuskieli"
-            testId={`vst.suoritukset.${päätasonSuoritus.index}.opetuskieli`}
+            testId={`${päätasonSuoritus.testId}.opetuskieli`}
           >
             <FormField
               form={form}
@@ -338,7 +339,7 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
           </KeyValueRow>
           <KeyValueRow
             label="Todistuksella näkyvät lisätiedot"
-            testId={`vst.suoritukset.${päätasonSuoritus.index}.todistuksella-nakyvat-lisatiedot`}
+            testId={`${päätasonSuoritus.testId}.todistuksella-nakyvat-lisatiedot`}
           >
             <FormField
               form={form}
@@ -361,7 +362,7 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
         <Spacer />
         {päätasonSuoritus.suoritus.osasuoritukset && (
           <RaisedButton
-            data-testid={`suoritukset.${päätasonSuoritus.index}.expand`}
+            data-testid={`${päätasonSuoritus.testId}.expand-all`}
             onClick={(e) => {
               e.preventDefault()
               if (rootLevelOsasuoritusOpen) {
@@ -376,6 +377,7 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
         )}
         <Spacer />
         <OsasuoritusTable
+          testId={päätasonSuoritus.testId}
           editMode={form.editMode}
           level={rootLevel}
           openState={osasuorituksetOpenState}
@@ -421,7 +423,8 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
                 osasuoritusIndex,
                 setOsasuoritusOpen: setOsasuorituksetStateHandler,
                 suoritusIndex: päätasonSuoritus.index,
-                suoritusPath: päätasonSuoritus.path
+                suoritusPath: päätasonSuoritus.path,
+                testId: `${päätasonSuoritus.testId}.osasuoritus.${osasuoritusIndex}`
               })
           )}
           onRemove={(i) => {
@@ -435,7 +438,7 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
         <KeyValueTable>
           <KeyValueRow
             label="Yhteensä"
-            testId={`vst.suoritukset.${päätasonSuoritus.index}.yhteensa`}
+            testId={`${päätasonSuoritus.testId}.yhteensa`}
           >
             {(
               (päätasonSuoritus.suoritus.osasuoritukset || []) as Array<

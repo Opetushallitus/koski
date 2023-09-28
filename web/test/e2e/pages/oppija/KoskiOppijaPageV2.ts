@@ -27,6 +27,12 @@ export class KoskiOppijaPageV2<T extends IdNodeObject<string>> {
     this.editMode = false
   }
 
+  async gotoWithQueryParams(oid: string, queryParams: Record<string, string>) {
+    const params = new URLSearchParams(queryParams)
+    await this.page.goto(`/koski/oppija/${oid}?${params.toString()}`)
+    await expect(this.page).toHaveURL(/\/koski\/oppija\/1\.2\..*/)
+  }
+
   async selectOpiskeluoikeus(tyyppi: string) {
     const opiskeluoikeusTab = this.page.getByTestId(
       `opiskeluoikeustyyppi-${tyyppi}`

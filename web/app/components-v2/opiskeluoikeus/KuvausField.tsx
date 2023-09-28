@@ -1,13 +1,17 @@
 import React, { useCallback, useState } from 'react'
 import { Finnish, isFinnish } from '../../types/fi/oph/koski/schema/Finnish'
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
-import { common, CommonProps } from '../CommonProps'
+import { common, CommonProps, testId } from '../CommonProps'
 import { FieldEditorProps } from '../forms/FormField'
 
 export type KuvausViewProps = CommonProps<FieldEditorProps<LocalizedString, {}>>
 
-export const KuvausView: React.FC<KuvausViewProps> = ({ value }) => {
-  return <span>{isFinnish(value) ? value?.fi : value?.en || '-'}</span>
+export const KuvausView: React.FC<KuvausViewProps> = (props) => {
+  return (
+    <span {...common(props)} {...testId(props)}>
+      {isFinnish(props.value) ? props.value?.fi : props.value?.en || '-'}
+    </span>
+  )
 }
 
 export type KuvausEditProps = CommonProps<FieldEditorProps<LocalizedString, {}>>

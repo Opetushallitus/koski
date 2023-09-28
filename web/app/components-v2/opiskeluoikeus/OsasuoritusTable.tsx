@@ -6,7 +6,7 @@ import {
   OsasuorituksetExpandedState,
   SetOsasuoritusOpen
 } from '../../osasuoritus/hooks'
-import { CommonProps, subTestId } from '../CommonProps'
+import { CommonProps, subTestId, testId } from '../CommonProps'
 import {
   Column,
   ColumnRow,
@@ -96,7 +96,7 @@ export const OsasuoritusTable = <DATA_KEYS extends string, P>(
               )
             }}
             onRemove={onRemoveCb(index)}
-            testId={`suoritukset.${row.suoritusIndex}.taso.${props.level}.osasuoritukset.${row.osasuoritusIndex}`}
+            testId={subTestId(props, `osasuoritus.${row.osasuoritusIndex}`)}
           />
         )
       })}
@@ -175,7 +175,7 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
                 props.onClickExpand()
               }}
               label={t('Osasuoritus')}
-              testId={subTestId(props, 'expand')}
+              {...testId(props, 'expand')}
             />
           )}
         </Column>
@@ -213,7 +213,9 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
       {expandable && expanded && props.row.content && (
         <LayoutProvider indent={1}>
           <Section testId={subTestId(props, 'properties')}>
-            {props.row.content}
+            {React.cloneElement(props.row.content, {
+              testId: subTestId(props, 'properties')
+            })}
           </Section>
         </LayoutProvider>
       )}

@@ -68,8 +68,11 @@ export const test = base.extend<Fixtures>({
   vstOppijaPage: async ({ page }, use) => {
     await use(new KoskiVSTOppijaPage(page))
   },
-  fixtures: async ({ page }, use) => {
+  fixtures: async ({ browser }, use) => {
+    const ctx = await browser.newContext()
+    const page = await ctx.newPage()
     await use(new KoskiFixtures(page))
+    await page.close()
   },
   makeAxeBuilder: async ({ page }, use) => {
     const makeAxeBuilder = () =>

@@ -30,7 +30,15 @@ export const common = <T extends object>(
 export const subTestId = <T extends object>(
   props: CommonProps<T>,
   subId: string
-) => props.testId && `${props.testId}.${subId}`
+) => {
+  if (subId === '') {
+    throw new Error('subId must not be empty')
+  }
+  if (props.testId === undefined) {
+    console.warn(`props.testId undefined, trying to add subId ${subId}`)
+  }
+  return props.testId && `${props.testId}.${subId}`
+}
 
 export const testId = <T extends object>(
   props: CommonProps<T>,
