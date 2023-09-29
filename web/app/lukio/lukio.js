@@ -1,4 +1,5 @@
 import { modelData } from '../editor/EditorModel'
+import { parasArviointi, viimeisinArviointi } from '../util/arviointi'
 
 const perusteenDiaarinumeroToOppimäärä = (diaarinumero) => {
   switch (diaarinumero) {
@@ -20,14 +21,18 @@ const sallitutRahoituskoodiarvot = ['1', '6']
 const suoritetutKurssit = (kurssit) =>
   kurssit.map((k) => modelData(k)).filter((k) => k.arviointi)
 
+const parasArvosana = (suoritus) =>
+  modelData(parasArviointi(suoritus), 'arvosana.koodiarvo')
+const viimeisinArvosana = (suoritus) =>
+  viimeisinArviointi(suoritus)?.arvosana.koodiarvo
+
 const hylkäämättömätOsasuoritukset = (kurssit) =>
-  kurssit.filter((k) => modelData(k, 'arviointi.-1.arvosana.koodiarvo') !== 'H')
+  kurssit.filter((k) => viimeisinArvosana(k) !== 'H')
 const arvioidutOsasuoritukset = (kurssit) =>
-  kurssit.filter((k) => modelData(k, 'arviointi.-1.arvosana.koodiarvo') !== 'O')
+  kurssit.filter((k) => !['O', undefined].includes(viimeisinArvosana(k)))
 const hyväksytystiArvioidutOsasuoritukset = (osasuoritukset) =>
   osasuoritukset.filter(
-    (k) =>
-      !['H', 'O', '4'].includes(modelData(k, 'arviointi.-1.arvosana.koodiarvo'))
+    (k) => !['H', 'O', '4', undefined].includes(parasArvosana(k))
   )
 
 const laajuudet = (osasuoritukset) =>
