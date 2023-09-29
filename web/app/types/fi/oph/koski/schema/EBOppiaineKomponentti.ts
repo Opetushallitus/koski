@@ -8,11 +8,17 @@ import { LocalizedString } from './LocalizedString'
  */
 export type EBOppiaineKomponentti = {
   $class: 'fi.oph.koski.schema.EBOppiaineKomponentti'
-  tunniste: Koodistokoodiviite<'ebtutkinnonoppiaineenkomponentti', string>
+  tunniste: Koodistokoodiviite<
+    'ebtutkinnonoppiaineenkomponentti',
+    'Final' | 'Oral' | 'Written'
+  >
 }
 
 export const EBOppiaineKomponentti = (o: {
-  tunniste: Koodistokoodiviite<'ebtutkinnonoppiaineenkomponentti', string>
+  tunniste: Koodistokoodiviite<
+    'ebtutkinnonoppiaineenkomponentti',
+    'Final' | 'Oral' | 'Written'
+  >
 }): EBOppiaineKomponentti => ({
   $class: 'fi.oph.koski.schema.EBOppiaineKomponentti',
   ...o
