@@ -1,5 +1,6 @@
 import { test, expect } from './base'
 import { virkailija } from './setup/auth'
+import { Page } from '@playwright/test'
 
 // TODO: Hetut?
 const kotoutumiskoulutus = '1.2.246.562.24.00000000106'
@@ -10,15 +11,70 @@ const lukutaitokoulutus = '1.2.246.562.24.00000000107'
 const kansanopisto = '1.2.246.562.24.00000000105'
 const vstKoulutus = '1.2.246.562.24.00000000108'
 
+const testaaUusiPaikallinenKoodistoJääTalteen = async (
+  testIdPrefix: string,
+  page: Page
+) => {
+  await page.getByTestId(testIdPrefix + '.select.input').click()
+  await page.getByTestId(testIdPrefix + '.select.options.__NEW__.item').click()
+  await page
+    .getByTestId(testIdPrefix + '.modal.nimi.edit.input')
+    .fill('Playwright-opinnot')
+  await page.getByTestId(testIdPrefix + '.modal.submit').click()
+  await page.getByTestId(testIdPrefix + '.select.input').click()
+  await expect(
+    // Köyhän miehen tapa hakea paikallinen koodi
+    page.locator('.Removable__content').getByText('Playwright-opinnot')
+  ).toBeVisible()
+}
+
 test.describe('Vapaan sivistystyön koulutus', () => {
   test.describe('VST', () => {
+    test.use({ storageState: virkailija('kalle') })
+    test.beforeEach(async ({ fixtures, vstOppijaPage }) => {
+      await fixtures.reset(false)
+      await vstOppijaPage.gotoWithQueryParams(vstKoulutus, {
+        newVSTUI: 'true'
+      })
+    })
     test('Näyttää oikeat tiedot', () => {
       expect(1).toEqual(1)
     })
+    test.describe('Muokkausnäkymä - vapaatavoitteinen', () => {
+      test('Lisää vapaatavoitteiselle uusi osasuoritus', async ({ page }) => {
+        await page.getByTestId('opiskeluoikeus.edit').click()
+        await testaaUusiPaikallinenKoodistoJääTalteen(
+          'vapaatavoitteinen-osasuoritus',
+          page
+        )
+      })
+    })
   })
   test.describe('Kansanopistojen vapaan sivistystyön koulutus oppivelvollisille', () => {
+    test.use({ storageState: virkailija('kalle') })
+    test.beforeEach(async ({ fixtures, vstOppijaPage }) => {
+      await fixtures.reset(false)
+      await vstOppijaPage.gotoWithQueryParams(oppivelvollisilleSuunnattu, {
+        newVSTUI: 'true'
+      })
+    })
     test('Näyttää oikeat tiedot', () => {
       expect(1).toEqual(1)
+    })
+    test.describe('Muokkausnäkymä - oppivelvollisille', () => {
+      test('Lisää oppivelvollisille suunnattuun uusi osasuoritus', async ({
+        page
+      }) => {
+        await expect(page.getByTestId('opiskeluoikeus.edit')).toBeVisible()
+        await page.getByTestId('opiskeluoikeus.edit').click()
+        await page
+          .getByTestId('suoritukset.0.taso.0.osasuoritukset.5.expand')
+          .click()
+        await testaaUusiPaikallinenKoodistoJääTalteen(
+          'oppivelvollisille-paikallinen-opintokokonaisuus',
+          page
+        )
+      })
     })
   })
   test.describe('Lukutaitokoulutus oppivelvollisille', () => {
@@ -82,7 +138,7 @@ test.describe('Vapaan sivistystyön koulutus', () => {
           ).toHaveText('54 op')
         })
       })
-      test.describe('Muokkausnäkymä', () => {
+      test.describe('Muokkausnäkymä kotoutumiskoulutus', () => {
         test('Avaa ja sulkee muokkausnäkymän', async ({ page }) => {
           await expect(page.getByTestId('opiskeluoikeus.edit')).toBeVisible()
           await expect(
@@ -98,17 +154,18 @@ test.describe('Vapaan sivistystyön koulutus', () => {
 
           await page.getByTestId('opiskeluoikeus.cancelEdit').click()
         })
-        test.skip('Lisää uuden osasuorituksen', async ({ page }) => {
-          await expect(page.getByTestId('opiskeluoikeus.edit')).toBeVisible()
-          await page.getByTestId('opiskeluoikeus.edit').click()
-          await page.getByRole('button', { name: 'Lisää osasuoritus' }).click()
-          await page
-            .getByPlaceholder('Opintokokonaisuus')
-            .fill('Playwright-opinnot')
-          await page.locator('form').getByText('Lisää osasuoritus').click()
-          await page.getByRole('button', { name: 'Lisää osasuoritus' }).click()
-          await page.locator('form').getByText('Peruuta').click()
-        })
+      })
+      test('Lisää kotoutumiskoulutukselle paikallinen osasuoritus', async ({
+        page
+      }) => {
+        await page.getByTestId('opiskeluoikeus.edit').click()
+        await page
+          .getByTestId('suoritukset.0.taso.0.osasuoritukset.3.expand')
+          .click()
+        await testaaUusiPaikallinenKoodistoJääTalteen(
+          'koto-valinnaisten-paikallinen-osasuoritus',
+          page
+        )
       })
     })
   })
@@ -156,6 +213,25 @@ test.describe('Vapaan sivistystyön koulutus', () => {
           await expect(
             page.getByTestId('vst.suoritukset.0.yhteensa.value')
           ).toHaveText('3 op')
+        })
+      })
+      test.describe('Muokkausnäkymä JOTPA', () => {
+        test('Lisää uuden osasuorituksen', async ({ page }) => {
+          await expect(page.getByTestId('opiskeluoikeus.edit')).toBeVisible()
+          await page.getByTestId('opiskeluoikeus.edit').click()
+          await page.getByTestId('jotpa-osasuoritus.select.input').click()
+          await page
+            .getByTestId('jotpa-osasuoritus.select.options.__NEW__.item')
+            .click()
+          await page
+            .getByTestId('jotpa-osasuoritus.modal.nimi.edit.input')
+            .fill('Playwright-opinnot')
+          await page.getByTestId('jotpa-osasuoritus.modal.submit').click()
+          await page.getByTestId('jotpa-osasuoritus.select.input').click()
+          await expect(
+            // Köyhän miehen tapa hakea paikallinen koodi
+            page.locator('.Removable__content').getByText('Playwright-opinnot')
+          ).toBeVisible()
         })
       })
     })

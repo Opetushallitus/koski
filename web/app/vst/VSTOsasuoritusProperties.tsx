@@ -128,6 +128,7 @@ import { OpiskeluoikeusContext } from '../appstate/opiskeluoikeus'
 import { OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus } from '../types/fi/oph/koski/schema/OppivelvollisilleSuunnattuVapaanSivistystyonOpintokokonaisuus'
 import { isOppivelvollisilleSuunnatunVapaanSivistystyönOsasuoritus } from '../types/fi/oph/koski/schema/OppivelvollisilleSuunnatunVapaanSivistystyonOsasuoritus'
 import { isOppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus } from '../types/fi/oph/koski/schema/OppivelvollisilleSuunnatunVapaanSivistystyonOpintokokonaisuudenSuoritus'
+import { isVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus'
 
 type AddNewVSTOsasuoritusViewProps = {
   level: number
@@ -232,6 +233,9 @@ export const AddNewVSTOsasuoritusView: React.FC<
             ) ||
             isOppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus(
               osasuoritus
+            ) ||
+            isVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus(
+              osasuoritus
             ))
         ) {
           osasuoritukset.store(
@@ -278,6 +282,7 @@ export const AddNewVSTOsasuoritusView: React.FC<
             }
             onRemove={onRemovePaikallinenKoodisto}
             tunnisteet={storedOsasuoritustunnisteet}
+            testId={'vapaatavoitteinen-osasuoritus'}
           />
         )}
         {isVstJotpa && (
@@ -293,6 +298,7 @@ export const AddNewVSTOsasuoritusView: React.FC<
             }
             onRemove={onRemovePaikallinenKoodisto}
             tunnisteet={storedOsasuoritustunnisteet}
+            testId={'jotpa-osasuoritus'}
           />
         )}
         {isVapaanSivistystyönLukutaitokoulutuksenSuoritus(data) && (
@@ -361,6 +367,7 @@ export const AddNewVSTOsasuoritusView: React.FC<
             }
             onRemove={onRemovePaikallinenKoodisto}
             tunnisteet={storedOsasuoritustunnisteet}
+            testId={'oppivelvollisille-paikallinen-opintokokonaisuus'}
           />
         )}
         {isOppivelvollisilleSuunnatunVapaanSivistystyönValinnaistenSuuntautumisopintojenSuoritus(
@@ -391,6 +398,7 @@ export const AddNewVSTOsasuoritusView: React.FC<
               }
               onRemove={onRemovePaikallinenKoodisto}
               tunnisteet={storedOsasuoritustunnisteet}
+              testId={'oppivelvollisille-paikallinen-opintokokonaisuus'}
             />
           </>
         )}
@@ -594,6 +602,7 @@ export const AddNewVSTOsasuoritusView: React.FC<
             }
             onRemove={onRemovePaikallinenKoodisto}
             tunnisteet={storedOsasuoritustunnisteet}
+            testId={'koto-valinnaisten-paikallinen-osasuoritus'}
           />
         )}
         {isVSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenSuoritus2022(
