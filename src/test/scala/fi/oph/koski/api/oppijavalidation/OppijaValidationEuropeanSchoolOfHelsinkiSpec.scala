@@ -431,7 +431,7 @@ class OppijaValidationEuropeanSchoolOfHelsinkiSpec
       }
     }
 
-    "voi tehdä, jos on pelkkä year mark" in {
+    "voi tehdä, jos on pelkkä final" in {
       val oo = defaultOpiskeluoikeus.copy(
         tila = EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila(
           List(
