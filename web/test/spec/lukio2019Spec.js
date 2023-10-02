@@ -93,6 +93,26 @@ describe('Lukiokoulutus2019', function () {
       })
     })
 
+    describe('Oppimäärän arvioitujen moduulien laajuudet', function () {
+      before(
+        page.openPage,
+        page.oppijaHaku.searchAndSelect('010105A1995'),
+        opinnot.opiskeluoikeudet.valitseOpiskeluoikeudenTyyppi('lukiokoulutus')
+      )
+
+      it('arvioidut laajuudet näkyvät oikein', function () {
+        expect(
+          extractAsText(S('.oppiaine-rivi.FY .laajuus:not(.arvioitu)'))
+        ).to.equal('6')
+      })
+
+      it('hyväksytysti arvioidut laajuudet näkyvät oikein', function () {
+        expect(
+          extractAsText(S('.oppiaine-rivi.FY .laajuus.arvioitu'))
+        ).to.equal('4')
+      })
+    })
+
     describe('Moduulin tiedot', function () {
       var moduuli = opinnot.oppiaineet.oppiaine('FY').kurssi('FY124')
       before(
