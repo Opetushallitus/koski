@@ -176,6 +176,21 @@ object ExamplesLukio2019 {
       suoritukset = List(oppiaineidenOppimäärienSuoritus.copy(vahvistus = None))
     )
 
+  lazy val aktiivinenVähänOpiskeltuOppiaineenOppimääräOpiskeluoikeus: LukionOpiskeluoikeus = aktiivinenOppiaineenOppimääräOpiskeluoikeus.copy(
+    suoritukset = List(oppiaineidenOppimäärienSuoritus.copy(
+      vahvistus = None,
+      osasuoritukset = Some(List(
+        oppiaineenSuoritus(Lukio2019ExampleData.lukionOppiaine("FY")).copy(arviointi = None).copy(osasuoritukset = Some(List(
+          moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("FY1")).copy(arviointi = numeerinenArviointi(5)),
+          moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("FY2")).copy(arviointi = Some(
+            numeerinenArviointi(5, date(2021, 9, 24)).get ++ numeerinenArviointi(4, date(2021, 9, 4)).get
+          )),
+          moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("FY3")).copy(arviointi = numeerinenArviointi(4)),
+          moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("FY4")).copy(arviointi = None),
+        )),
+      )))
+    )),
+  )
 
   lazy val oppija = Oppija(asUusiOppija(uusiLukio), List(opiskeluoikeus))
   lazy val oppiaineidenOppimäärienOppija = Oppija(asUusiOppija(uusiLukionAineopiskelija), List(oppiaineenOppimääräOpiskeluoikeus))
