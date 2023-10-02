@@ -47,6 +47,7 @@ class OppijaValidationApiSpec extends AnyFreeSpec with KoskiHttpSpec with Opiske
         case (KoskiSpecificMockOppijat.tunnisteenKoodiarvoPoistettu.oid, _) => result.errors.map(_.key) should equal(List("badRequest.validation.jsonSchema"))
         case (KoskiSpecificMockOppijat.montaKoulutuskoodiaAmis.oid, _) => result.errors.map(_.key) should equal(List("badRequest.validation.jsonSchema"))
         case (KoskiSpecificMockOppijat.kelaRikkinäinenOpiskeluoikeus.oid, _) => result.errors.map(_.key) should equal(List("badRequest.validation.jsonSchema"))
+        case (KoskiSpecificMockOppijat.europeanSchoolOfHelsinki.oid, "ebtutkinto") => result.errors.map(_.key) should equal(List("badRequest.validation.eb.puuttuvaESHS7"))
         case _ => result.errors should equal(Nil)
       }
 

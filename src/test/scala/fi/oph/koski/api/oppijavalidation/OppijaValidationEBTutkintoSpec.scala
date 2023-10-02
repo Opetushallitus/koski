@@ -3,7 +3,7 @@ package fi.oph.koski.api.oppijavalidation
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigValueFactory.fromAnyRef
 import fi.oph.koski.api.misc.PutOpiskeluoikeusTestMethods
-import fi.oph.koski.documentation.{ExampleData, ExamplesEB, LukioExampleData}
+import fi.oph.koski.documentation.{ExampleData, ExamplesEB, ExamplesEuropeanSchoolOfHelsinki, LukioExampleData}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
@@ -24,10 +24,10 @@ class OppijaValidationEBTutkintoSpec
 
   override def defaultOpiskeluoikeus = ExamplesEB.opiskeluoikeus
 
-  val oppija = KoskiSpecificMockOppijat.europeanSchoolOfHelsinki
+  private val eshHenkilö = KoskiSpecificMockOppijat.europeanSchoolOfHelsinki
 
   "Example-opiskeluoikeus voidaan kirjoittaa tietokantaan" in {
-    putOpiskeluoikeus(defaultOpiskeluoikeus, henkilö = oppija) {
+    putOpiskeluoikeus(defaultOpiskeluoikeus, henkilö = eshHenkilö) {
       verifyResponseStatusOk()
     }
   }
@@ -51,6 +51,38 @@ class OppijaValidationEBTutkintoSpec
 
     def koulutustyypit(oo: EBOpiskeluoikeus): List[String] = {
       oo.suoritukset.flatMap(_.koulutusmoduuli.koulutustyyppi).map(_.koodiarvo)
+    }
+  }
+
+  "EB-tutkinnon opiskeluoikeuden linkitys opiskeluoikeutta luotaessa" - {
+    "EB-opiskeluoikeutta ei voi luoda tai muokata, jos oppijalla ei ole ESH-opiskeluoikeutta, jossa S7" in {
+      val oppija = KoskiSpecificMockOppijat.eero
+
+      val eshIlmanS7 = ExamplesEuropeanSchoolOfHelsinki.opiskeluoikeus.copy(
+        suoritukset = ExamplesEuropeanSchoolOfHelsinki.opiskeluoikeus.suoritukset.filterNot(_.koulutusmoduuli.tunniste.koodiarvo == "S7")
+      )
+
+      putOpiskeluoikeus(eshIlmanS7, henkilö = oppija) {
+        verifyResponseStatusOk()
+      }
+
+      putOpiskeluoikeus(defaultOpiskeluoikeus, henkilö = oppija) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.eb.puuttuvaESHS7("EB-tutkinnon opiskeluoikeutta ei voi kirjata, jos oppijalla ei ole European School of Helsinki -opiskeluoikeutta, jossa S7-suoritus"))
+      }
+    }
+
+    "Tunnistetaan myös eri oppija-oidilla oleva ESH-opiskeluoikeus, jossa S7" in {
+      val eshOppija = KoskiSpecificMockOppijat.slave.henkilö
+
+      putOpiskeluoikeus(ExamplesEuropeanSchoolOfHelsinki.opiskeluoikeus, henkilö = eshOppija) {
+        verifyResponseStatusOk()
+      }
+
+      val ebOppija = KoskiSpecificMockOppijat.master
+
+      putOpiskeluoikeus(defaultOpiskeluoikeus, henkilö = ebOppija) {
+        verifyResponseStatusOk()
+      }
     }
   }
 
@@ -83,7 +115,7 @@ class OppijaValidationEBTutkintoSpec
         ))
       )
 
-      putOpiskeluoikeus(oo) {
+      putOpiskeluoikeus(oo, henkilö = eshHenkilö) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia("Suoritus koulutus/301104 on merkitty valmiiksi, mutta sillä on tyhjä osasuorituslista tai joltain sen osasuoritukselta puuttuu vaadittava arvioitu Final-osasuoritus, tai opiskeluoikeudelta puuttuu linkitys"))
       }
     }
@@ -116,7 +148,7 @@ class OppijaValidationEBTutkintoSpec
         ))
       )
 
-      putOpiskeluoikeus(oo) {
+      putOpiskeluoikeus(oo, henkilö = eshHenkilö) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.keskeneräinenOsasuoritus("Valmiiksi merkityllä suorituksella koulutus/301104 on keskeneräinen osasuoritus ebtutkinnonoppiaineenkomponentti/Final"))
       }
     }
@@ -149,7 +181,7 @@ class OppijaValidationEBTutkintoSpec
         ))
       )
 
-      putOpiskeluoikeus(oo) {
+      putOpiskeluoikeus(oo, henkilö = eshHenkilö) {
         verifyResponseStatusOk()
       }
     }
@@ -166,14 +198,14 @@ class OppijaValidationEBTutkintoSpec
         ))
       )
 
-      putOpiskeluoikeus(oo) {
+      putOpiskeluoikeus(oo, henkilö = eshHenkilö) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.eb.yleisarvosana())
       }
     }
   }
 
   "Ei voi tallentaa ennen rajapäivää" in {
-    val oppija = Oppija(defaultHenkilö, List(defaultOpiskeluoikeus))
+    val oppija = Oppija(eshHenkilö, List(defaultOpiskeluoikeus))
     val huominenPäivä = LocalDate.now().plusDays(1)
 
     val config = KoskiApplicationForTests.config.withValue("validaatiot.europeanSchoolOfHelsinkiAikaisinSallittuTallennuspaiva", fromAnyRef(huominenPäivä.toString))
@@ -185,7 +217,7 @@ class OppijaValidationEBTutkintoSpec
 
   "Ei voi tallentaa, jos päättynyt ennen rajapäivää" in {
     defaultOpiskeluoikeus.päättymispäivä.isDefined should be(true)
-    val oppija = Oppija(defaultHenkilö, List(defaultOpiskeluoikeus))
+    val oppija = Oppija(eshHenkilö, List(defaultOpiskeluoikeus))
     val päättymispäivänjälkeinenPäivä = defaultOpiskeluoikeus.päättymispäivä.get.plusDays(1)
 
     val config = KoskiApplicationForTests.config.withValue("validaatiot.europeanSchoolOfHelsinkiAikaisinSallittuPaattymispaiva", fromAnyRef(päättymispäivänjälkeinenPäivä.toString))
@@ -210,7 +242,7 @@ class OppijaValidationEBTutkintoSpec
     )
   }
 
-  private def putAndGetOpiskeluoikeus(oo: EBOpiskeluoikeus): EBOpiskeluoikeus = putOpiskeluoikeus(oo) {
+  private def putAndGetOpiskeluoikeus(oo: EBOpiskeluoikeus): EBOpiskeluoikeus = putOpiskeluoikeus(oo, henkilö = eshHenkilö) {
     verifyResponseStatusOk()
     getOpiskeluoikeus(readPutOppijaResponse.opiskeluoikeudet.head.oid)
   }.asInstanceOf[EBOpiskeluoikeus]

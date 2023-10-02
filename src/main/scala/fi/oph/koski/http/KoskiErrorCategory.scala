@@ -261,6 +261,7 @@ object KoskiErrorCategory {
         "EB-tutkinnon kirjauksiin liittyvä validointivirhe"
       ) {
         val yleisarvosana = subcategory("yleisarvosana", "EB-tutkintoa ei voi vahvistaa ilman yleisarvosanaa")
+        val puuttuvaESHS7 = subcategory("puuttuvaESHS7", "EB-tutkinnon opiskeluoikeutta ei voi kirjata, jos oppijalla ei ole European School of Helsinki -opiskeluoikeutta, jossa S7-suoritus")
       }
 
       val eb = new EB

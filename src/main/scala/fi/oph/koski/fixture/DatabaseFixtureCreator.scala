@@ -28,6 +28,7 @@ abstract class DatabaseFixtureCreator(application: KoskiApplication, opiskeluoik
     }
 
   private lazy val opiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = validateFixture(defaultOpiskeluOikeudet) ++ invalidOpiskeluoikeudet
+  private lazy val secondBatchOpiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = validateFixture(secondBatchOpiskeluOikeudet)
 
   private var fixtureCacheCreated = false
   private var cachedPerustiedot: Option[Seq[OpiskeluoikeudenOsittaisetTiedot]] = None
@@ -53,7 +54,8 @@ abstract class DatabaseFixtureCreator(application: KoskiApplication, opiskeluoik
 
     if (!fixtureCacheCreated) {
       cachedPerustiedot = Some(
-        luoOpiskeluoikeudetJaPerustiedot(opiskeluoikeudet)
+        luoOpiskeluoikeudetJaPerustiedot(opiskeluoikeudet) ++
+        luoOpiskeluoikeudetJaPerustiedot(secondBatchOpiskeluoikeudet)
       )
 
       application.perustiedotIndexer.sync(refresh = true)
@@ -121,4 +123,6 @@ abstract class DatabaseFixtureCreator(application: KoskiApplication, opiskeluoik
   protected def invalidOpiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)]
 
   protected def defaultOpiskeluOikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)]
+
+  protected def secondBatchOpiskeluOikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)]
 }

@@ -20,13 +20,12 @@ case class EBOpiskeluoikeus(
   suoritukset: List[EBTutkinnonSuoritus],
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.ebtutkinto.koodiarvo)
   tyyppi: Koodistokoodiviite = OpiskeluoikeudenTyyppi.ebtutkinto,
-  organisaatiohistoria: Option[List[OpiskeluoikeudenOrganisaatiohistoria]] = None
+  organisaatiohistoria: Option[List[OpiskeluoikeudenOrganisaatiohistoria]] = None,
 ) extends KoskeenTallennettavaOpiskeluoikeus {
   override def withOppilaitos(oppilaitos: Oppilaitos) = this.copy(oppilaitos = Some(oppilaitos))
   override def withKoulutustoimija(koulutustoimija: Koulutustoimija) = this.copy(koulutustoimija = Some(koulutustoimija))
-  // TODO: TOR-2052: Käytetäänkö tätä samaa linkittämiseen ESH-opiskeluoikeuteen?
-  override def sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus] = None
   override def lisätiedot: Option[OpiskeluoikeudenLisätiedot] = None
+  override def sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus] = None
 }
 
 case class EBOpiskeluoikeudenTila(
