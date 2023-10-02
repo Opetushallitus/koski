@@ -210,6 +210,9 @@ test.describe('European School of Helsinki', () => {
         await (
           await mathematicsOsasuoritus.lisääOsasuoritus('Year mark')
         ).valitseArvosana('6.4')
+        await (
+          await mathematicsOsasuoritus.lisääOsasuoritus('Preliminary')
+        ).valitseArvosana('6.8')
 
         const poistettavatOsasuoritukset = [
           'Second language',
