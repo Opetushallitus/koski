@@ -2,46 +2,50 @@ import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
 import { EBTutkinto } from './EBTutkinto'
 import { OrganisaatioWithOid } from './OrganisaatioWithOid'
-import { EBTutkinnonOsasuoritus } from './EBTutkinnonOsasuoritus'
+import { DeprecatedEBTutkinnonOsasuoritus } from './DeprecatedEBTutkinnonOsasuoritus'
 import { HenkilövahvistusPaikkakunnalla } from './HenkilovahvistusPaikkakunnalla'
 
 /**
- * EBTutkinnonSuoritus
+ * DeprecatedEBTutkinnonSuoritus
  *
- * @see `fi.oph.koski.schema.EBTutkinnonSuoritus`
+ * @see `fi.oph.koski.schema.DeprecatedEBTutkinnonSuoritus`
  */
-export type EBTutkinnonSuoritus = {
-  $class: 'fi.oph.koski.schema.EBTutkinnonSuoritus'
+export type DeprecatedEBTutkinnonSuoritus = {
+  $class: 'fi.oph.koski.schema.DeprecatedEBTutkinnonSuoritus'
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'ebtutkinto'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
+  luokka?: string
   todistuksellaNäkyvätLisätiedot?: LocalizedString
   yleisarvosana?: number
   koulutusmoduuli: EBTutkinto
   toimipiste: OrganisaatioWithOid
-  osasuoritukset?: Array<EBTutkinnonOsasuoritus>
+  osasuoritukset?: Array<DeprecatedEBTutkinnonOsasuoritus>
   vahvistus?: HenkilövahvistusPaikkakunnalla
 }
 
-export const EBTutkinnonSuoritus = (o: {
+export const DeprecatedEBTutkinnonSuoritus = (o: {
   tyyppi?: Koodistokoodiviite<'suorituksentyyppi', 'ebtutkinto'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
+  luokka?: string
   todistuksellaNäkyvätLisätiedot?: LocalizedString
   yleisarvosana?: number
   koulutusmoduuli: EBTutkinto
   toimipiste: OrganisaatioWithOid
-  osasuoritukset?: Array<EBTutkinnonOsasuoritus>
+  osasuoritukset?: Array<DeprecatedEBTutkinnonOsasuoritus>
   vahvistus?: HenkilövahvistusPaikkakunnalla
-}): EBTutkinnonSuoritus => ({
+}): DeprecatedEBTutkinnonSuoritus => ({
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'ebtutkinto',
     koodistoUri: 'suorituksentyyppi'
   }),
-  $class: 'fi.oph.koski.schema.EBTutkinnonSuoritus',
+  $class: 'fi.oph.koski.schema.DeprecatedEBTutkinnonSuoritus',
   ...o
 })
 
-EBTutkinnonSuoritus.className =
-  'fi.oph.koski.schema.EBTutkinnonSuoritus' as const
+DeprecatedEBTutkinnonSuoritus.className =
+  'fi.oph.koski.schema.DeprecatedEBTutkinnonSuoritus' as const
 
-export const isEBTutkinnonSuoritus = (a: any): a is EBTutkinnonSuoritus =>
-  a?.$class === 'fi.oph.koski.schema.EBTutkinnonSuoritus'
+export const isDeprecatedEBTutkinnonSuoritus = (
+  a: any
+): a is DeprecatedEBTutkinnonSuoritus =>
+  a?.$class === 'fi.oph.koski.schema.DeprecatedEBTutkinnonSuoritus'

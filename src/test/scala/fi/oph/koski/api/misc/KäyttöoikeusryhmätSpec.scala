@@ -290,7 +290,7 @@ class KäyttöoikeusryhmätSpec
     }
 
     "näkee vain toisen asteen opiskeluoikeudet" in {
-      queryOppijat(user = toinenAsteViranomainen).flatMap(_.opiskeluoikeudet).map(_.tyyppi.koodiarvo).toSet should be(Set("tuva", "ammatillinenkoulutus", "europeanschoolofhelsinki", "ibtutkinto", "internationalschool", "lukiokoulutus", "luva", "diatutkinto", "vapaansivistystyonkoulutus"))
+      queryOppijat(user = toinenAsteViranomainen).flatMap(_.opiskeluoikeudet).map(_.tyyppi.koodiarvo).toSet should be(Set("tuva", "ammatillinenkoulutus", "europeanschoolofhelsinki", "ebtutkinto", "ibtutkinto", "internationalschool", "lukiokoulutus", "luva", "diatutkinto", "vapaansivistystyonkoulutus"))
       authGet("api/oppija/" + KoskiSpecificMockOppijat.ylioppilas.oid, toinenAsteViranomainen) {
         verifyResponseStatusOk()
       }

@@ -1,3 +1,7 @@
+## 2.10.2023
+
+- Lisätty tietomalliin mahdollisuus tallentaa EB-tutkinto omassa opiskeluoikeudessa erillään European School of Helsingin opinnoista.
+
 ## 14.09.2023
 
 - Lisätty uuden opetussuunnitelman mukaisen lukion oppimäärän oman äidinkielen opetuksen alle siirrettävät osasuoritukset.

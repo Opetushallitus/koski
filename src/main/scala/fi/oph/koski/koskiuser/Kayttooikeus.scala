@@ -1,6 +1,6 @@
 package fi.oph.koski.koskiuser
 
-import fi.oph.koski.koskiuser.Rooli.{ESH, _}
+import fi.oph.koski.koskiuser.Rooli.{_}
 import fi.oph.koski.schema.{Koulutustoimija, OpiskeluoikeudenTyyppi, OrganisaatioWithOid}
 
 object Rooli {
@@ -50,6 +50,7 @@ object Rooli {
   val VAPAANSIVISTYSTYONKOULUTUS = "VAPAANSIVISTYSTYONKOULUTUS"
   val TUVA = "TUVA" // Ei käyttöoikeus-palvelussa
   val ESH = "EUROPEANSCHOOLOFHELSINKI" // Ei käyttöoikeus-palvelussa
+  val EBTUTKINTO = "EBTUTKINTO" // Ei käyttöoikeus-palvelussa
   val MUUKUINSAANNELTYKOULUTUS = "MUUKUINSAANNELTYKOULUTUS" // Ei käyttöoikeus-palvelussa
   val TAITEENPERUSOPETUS = "TAITEENPERUSOPETUS" // Ei käyttöoikeus-palvelussa
   val TAITEENPERUSOPETUS_HANKINTAKOULUTUS = "TAITEENPERUSOPETUS_HANKINTAKOULUTUS"
@@ -129,6 +130,7 @@ object Käyttöoikeus {
       VAPAANSIVISTYSTYONKOULUTUS,
       TUVA,
       ESH,
+      EBTUTKINTO
     ).map(Palvelurooli(_))
     case Palvelurooli("KOSKI", READ_UPDATE_ESIOPETUS) => List(Palvelurooli(ESIOPETUS))
     case Palvelurooli("KOSKI", LUKU_ESIOPETUS) => List(Palvelurooli(ESIOPETUS))

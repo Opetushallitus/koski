@@ -1493,44 +1493,43 @@ object EuropeanSchoolOfHelsinkiExampleData {
     )))
   }
 
-  def ebTutkinnonSuoritus(alkamispäivä: LocalDate) = {
-    val vahvistusPäivä = alkamispäivä.plusYears(1).withMonth(6).withDayOfMonth(25)
-    EBTutkinnonSuoritus(
+  def ebTutkinnonSuoritus(vahvistuspäivä: LocalDate) = {
+    DeprecatedEBTutkinnonSuoritus(
       koulutusmoduuli = EBTutkinto(),
       luokka = Some(s"S7 EN"),
       toimipiste = europeanSchoolOfHelsinki,
-      vahvistus = suoritusVahvistus(vahvistusPäivä),
+      vahvistus = suoritusVahvistus(vahvistuspäivä),
       todistuksellaNäkyvätLisätiedot = Some(LocalizedString.finnish("The marks of Ethics/Religion are not considered for the calculation of the European Baccalaureate preliminary and final marks.")),
       yleisarvosana = Some(89.68),
       osasuoritukset = Some(List(
-        EBTutkinnonOsasuoritus(
+        DeprecatedEBTutkinnonOsasuoritus(
           koulutusmoduuli =  EuropeanSchoolOfHelsinkiMuuOppiaine(
             Koodistokoodiviite("MA", "europeanschoolofhelsinkimuuoppiaine"),
             laajuus = LaajuusVuosiviikkotunneissa(4)
           ),
           suorituskieli = ExampleData.englanti,
           osasuoritukset = Some(List(
-            EBOppiaineenAlaosasuoritus(
-              koulutusmoduuli = EBOppiaineKomponentti(
+            DeprecatedEBOppiaineenAlaosasuoritus(
+              koulutusmoduuli = DeprecatedEBOppiaineKomponentti(
                 tunniste = Koodistokoodiviite("Preliminary", "ebtutkinnonoppiaineenkomponentti")
               ),
-              arviointi = ebTutkintoPreliminaryMarkArviointi(päivä = vahvistusPäivä)
+              arviointi = ebTutkintoPreliminaryMarkArviointi(päivä = vahvistuspäivä)
             ),
-            EBOppiaineenAlaosasuoritus(
-              koulutusmoduuli = EBOppiaineKomponentti(
+            DeprecatedEBOppiaineenAlaosasuoritus(
+              koulutusmoduuli = DeprecatedEBOppiaineKomponentti(
                 tunniste = Koodistokoodiviite("Written", "ebtutkinnonoppiaineenkomponentti")
               ),
-              arviointi = ebTutkintoFinalMarkArviointi(päivä = vahvistusPäivä)
+              arviointi = ebTutkintoFinalMarkArviointi(päivä = vahvistuspäivä)
             ),
-            EBOppiaineenAlaosasuoritus(
-              koulutusmoduuli = EBOppiaineKomponentti(
+            DeprecatedEBOppiaineenAlaosasuoritus(
+              koulutusmoduuli = DeprecatedEBOppiaineKomponentti(
                 tunniste = Koodistokoodiviite("Final", "ebtutkinnonoppiaineenkomponentti")
               ),
-              arviointi = ebTutkintoFinalMarkArviointi(päivä = vahvistusPäivä)
+              arviointi = ebTutkintoFinalMarkArviointi(päivä = vahvistuspäivä)
             )
           ))
         ),
-        EBTutkinnonOsasuoritus(
+        DeprecatedEBTutkinnonOsasuoritus(
           koulutusmoduuli =  EuropeanSchoolOfHelsinkiKielioppiaine(
             Koodistokoodiviite("L1", "europeanschoolofhelsinkikielioppiaine"),
             laajuus = LaajuusVuosiviikkotunneissa(4),
@@ -1538,33 +1537,33 @@ object EuropeanSchoolOfHelsinkiExampleData {
           ),
           suorituskieli = ExampleData.englanti,
           osasuoritukset = Some(List(
-            EBOppiaineenAlaosasuoritus(
-              koulutusmoduuli = EBOppiaineKomponentti(
+            DeprecatedEBOppiaineenAlaosasuoritus(
+              koulutusmoduuli = DeprecatedEBOppiaineKomponentti(
                 tunniste = Koodistokoodiviite("Preliminary", "ebtutkinnonoppiaineenkomponentti")
               ),
-              arviointi = ebTutkintoPreliminaryMarkArviointi(päivä = vahvistusPäivä)
+              arviointi = ebTutkintoPreliminaryMarkArviointi(päivä = vahvistuspäivä)
             ),
-            EBOppiaineenAlaosasuoritus(
-              koulutusmoduuli = EBOppiaineKomponentti(
+            DeprecatedEBOppiaineenAlaosasuoritus(
+              koulutusmoduuli = DeprecatedEBOppiaineKomponentti(
                 tunniste = Koodistokoodiviite("Written", "ebtutkinnonoppiaineenkomponentti")
               ),
-              arviointi = ebTutkintoFinalMarkArviointi(päivä = vahvistusPäivä)
+              arviointi = ebTutkintoFinalMarkArviointi(päivä = vahvistuspäivä)
             ),
-            EBOppiaineenAlaosasuoritus(
-              koulutusmoduuli = EBOppiaineKomponentti(
+            DeprecatedEBOppiaineenAlaosasuoritus(
+              koulutusmoduuli = DeprecatedEBOppiaineKomponentti(
                 tunniste = Koodistokoodiviite("Oral", "ebtutkinnonoppiaineenkomponentti")
               ),
-              arviointi = ebTutkintoFinalMarkArviointi(päivä = vahvistusPäivä)
+              arviointi = ebTutkintoFinalMarkArviointi(päivä = vahvistuspäivä)
             ),
-            EBOppiaineenAlaosasuoritus(
-              koulutusmoduuli = EBOppiaineKomponentti(
+            DeprecatedEBOppiaineenAlaosasuoritus(
+              koulutusmoduuli = DeprecatedEBOppiaineKomponentti(
                 tunniste = Koodistokoodiviite("Final", "ebtutkinnonoppiaineenkomponentti")
               ),
-              arviointi = ebTutkintoFinalMarkArviointi(päivä = vahvistusPäivä)
+              arviointi = ebTutkintoFinalMarkArviointi(päivä = vahvistuspäivä)
             )
           ))
         ),
-        EBTutkinnonOsasuoritus(
+        DeprecatedEBTutkinnonOsasuoritus(
           koulutusmoduuli =  EuropeanSchoolOfHelsinkiKielioppiaine(
             Koodistokoodiviite("L2", "europeanschoolofhelsinkikielioppiaine"),
             laajuus = LaajuusVuosiviikkotunneissa(4),
@@ -1572,29 +1571,29 @@ object EuropeanSchoolOfHelsinkiExampleData {
           ),
           suorituskieli = ExampleData.englanti,
           osasuoritukset = Some(List(
-            EBOppiaineenAlaosasuoritus(
-              koulutusmoduuli = EBOppiaineKomponentti(
+            DeprecatedEBOppiaineenAlaosasuoritus(
+              koulutusmoduuli = DeprecatedEBOppiaineKomponentti(
                 tunniste = Koodistokoodiviite("Preliminary", "ebtutkinnonoppiaineenkomponentti")
               ),
-              arviointi = ebTutkintoPreliminaryMarkArviointi(päivä = vahvistusPäivä)
+              arviointi = ebTutkintoPreliminaryMarkArviointi(päivä = vahvistuspäivä)
             ),
-            EBOppiaineenAlaosasuoritus(
-              koulutusmoduuli = EBOppiaineKomponentti(
+            DeprecatedEBOppiaineenAlaosasuoritus(
+              koulutusmoduuli = DeprecatedEBOppiaineKomponentti(
                 tunniste = Koodistokoodiviite("Written", "ebtutkinnonoppiaineenkomponentti")
               ),
-              arviointi = ebTutkintoFinalMarkArviointi(päivä = vahvistusPäivä)
+              arviointi = ebTutkintoFinalMarkArviointi(päivä = vahvistuspäivä)
             ),
-            EBOppiaineenAlaosasuoritus(
-              koulutusmoduuli = EBOppiaineKomponentti(
+            DeprecatedEBOppiaineenAlaosasuoritus(
+              koulutusmoduuli = DeprecatedEBOppiaineKomponentti(
                 tunniste = Koodistokoodiviite("Oral", "ebtutkinnonoppiaineenkomponentti")
               ),
-              arviointi = ebTutkintoFinalMarkArviointi(päivä = vahvistusPäivä)
+              arviointi = ebTutkintoFinalMarkArviointi(päivä = vahvistuspäivä)
             ),
-            EBOppiaineenAlaosasuoritus(
-              koulutusmoduuli = EBOppiaineKomponentti(
+            DeprecatedEBOppiaineenAlaosasuoritus(
+              koulutusmoduuli = DeprecatedEBOppiaineKomponentti(
                 tunniste = Koodistokoodiviite("Final", "ebtutkinnonoppiaineenkomponentti")
               ),
-              arviointi = ebTutkintoFinalMarkArviointi(päivä = vahvistusPäivä)
+              arviointi = ebTutkintoFinalMarkArviointi(päivä = vahvistuspäivä)
             )
           ))
         ),
@@ -1606,8 +1605,8 @@ object EuropeanSchoolOfHelsinkiExampleData {
     arvosana: String = "8.6",
     arvioitsijat: Option[List[Arvioitsija]] = Some(List(Arvioitsija("Pekka Paunanen"))),
     päivä: LocalDate
-  ): Option[List[EBTutkintoPreliminaryMarkArviointi]] = {
-    Some(List(EBTutkintoPreliminaryMarkArviointi(
+  ): Option[List[DeprecatedEBTutkintoPreliminaryMarkArviointi]] = {
+    Some(List(DeprecatedEBTutkintoPreliminaryMarkArviointi(
       arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark"),
       päivä = Some(päivä),
       arvioitsijat = arvioitsijat
@@ -1618,8 +1617,8 @@ object EuropeanSchoolOfHelsinkiExampleData {
     arvosana: String = "8.67",
     arvioitsijat: Option[List[Arvioitsija]] = Some(List(Arvioitsija("Pekka Paunanen"))),
     päivä: LocalDate
-  ): Option[List[EBTutkintoFinalMarkArviointi]] = {
-    Some(List(EBTutkintoFinalMarkArviointi(
+  ): Option[List[DeprecatedEBTutkintoFinalMarkArviointi]] = {
+    Some(List(DeprecatedEBTutkintoFinalMarkArviointi(
       arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoeuropeanschoolofhelsinkifinalmark"),
       päivä = Some(päivä),
       arvioitsijat = arvioitsijat

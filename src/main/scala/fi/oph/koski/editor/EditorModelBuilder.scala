@@ -374,6 +374,7 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
            _: EsiopetuksenSuoritus |
            _: AmmatillinenPäätasonSuoritus |
            _: InternationalSchoolVuosiluokanSuoritus |
+           _: EBTutkinnonSuoritus |
            _: EuropeanSchoolOfHelsinkiPäätasonSuoritus |
            _: IBPäätasonSuoritus |
            _: LukionOppiaineenOppimääränSuoritus2015 => context.invalidatable

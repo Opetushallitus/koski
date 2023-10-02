@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 2.10.2023
+
+- Lisätty erilliselle EB-tutkinnon opiskeluoikeudelle vastaavia validaatioita kuin European School of Helsingin opiskeluoikeudelle.
+
 ## 15.9.2023
 
 - LOPS 2019 -mukaista lukion oppimäärän suorituksen kokonaislaajuutta ei validoida, jos oppimäärän suorituksesta löytyy oman äidinkielen suorituksia.

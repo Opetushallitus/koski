@@ -219,6 +219,7 @@ export const resolveOsasuorituksetEditor = (mdl: OsasuoritusEditorModel) => {
       />
     )
   }
+  // TODO: TOR-2052 - EB-tutkinto
   // Nursery-suoritustyypillä ei ole osasuorituksia, joten editoria ei tarvitse näyttää
   if (firstClassOneOf(eshSuorituksenClass.nursery)) {
     return null

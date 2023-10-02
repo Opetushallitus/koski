@@ -260,12 +260,13 @@ class SuoritetutTutkinnotServiceSpec
     }
   }
 
+  // TODO: TOR-2052 - EB-tutkinto
   "EB-tutkinto" - {
     "vahvistetun tutkinnon tiedot palautetaan" in {
       val oppija = KoskiSpecificMockOppijat.europeanSchoolOfHelsinki
 
       val expectedOoData = getOpiskeluoikeus(oppija.oid, schema.OpiskeluoikeudenTyyppi.europeanschoolofhelsinki.koodiarvo)
-      val expectedSuoritusData = expectedOoData.suoritukset.collectFirst { case eb: schema.EBTutkinnonSuoritus => eb }.get
+      val expectedSuoritusData = expectedOoData.suoritukset.collectFirst { case eb: schema.DeprecatedEBTutkinnonSuoritus => eb }.get
 
       val result = suoritetutTutkinnotService.findSuoritetutTutkinnotOppija(oppija.oid)
 
@@ -560,11 +561,12 @@ class SuoritetutTutkinnotServiceSpec
         expectedOoData: schema.AmmatillinenOpiskeluoikeus,
         expectedSuoritusData: schema.MuunAmmatillisenKoulutuksenSuoritus
       ) => verifyMuuAmmatillinen(actualOo, actualSuoritus, expectedOoData, expectedSuoritusData)
+      // TODO: TOR-2052 - EB-tutkinto
       case (
         actualOo: SuoritetutTutkinnotEuropeanSchoolOfHelsinkiOpiskeluoikeus,
         actualSuoritus: SuoritetutTutkinnotEBTutkinnonSuoritus,
         expectedOoData: schema.EuropeanSchoolOfHelsinkiOpiskeluoikeus,
-        expectedSuoritusData: schema.EBTutkinnonSuoritus
+        expectedSuoritusData: schema.DeprecatedEBTutkinnonSuoritus
         ) => verifyEBTutkinto(actualOo, actualSuoritus, expectedOoData, expectedSuoritusData)
       case (
         actualOo: SuoritetutTutkinnotDIAOpiskeluoikeus,
@@ -714,11 +716,13 @@ class SuoritetutTutkinnotServiceSpec
     actualSuoritus.tyyppi.koodiarvo should equal(expectedSuoritusData.tyyppi.koodiarvo)
   }
 
+
+  // TODO: TOR-2052 - EB-tutkinto
   private def verifyEBTutkinto(
     actualOo: SuoritetutTutkinnotEuropeanSchoolOfHelsinkiOpiskeluoikeus,
     actualSuoritus: SuoritetutTutkinnotEBTutkinnonSuoritus,
     expectedOoData: schema.EuropeanSchoolOfHelsinkiOpiskeluoikeus,
-    expectedSuoritusData: schema.EBTutkinnonSuoritus
+    expectedSuoritusData: schema.DeprecatedEBTutkinnonSuoritus
   ): Unit = {
     verifyKoskiOpiskeluoikeudenKentät(actualOo, expectedOoData)
     actualOo.suoritukset.length should equal(1)

@@ -311,6 +311,7 @@ object AikajaksoRowBuilder {
         ) ++
           isol.oikeuttaMaksuttomuuteenPidennetty.toList.flatten.map(j => Aikajakso(j.alku, Some(j.loppu))) ++
           isol.kaikkiUlkomaanaikajaksot
+      // TODO: TOR-2052 - EB-tutkinto
       case eshol: EuropeanSchoolOfHelsinkiOpiskeluoikeudenLisätiedot =>
         toSeq(
           eshol.maksuttomuus

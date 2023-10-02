@@ -8,6 +8,7 @@ import fi.oph.koski.schema._
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
+
 object ExamplesEuropeanSchoolOfHelsinki {
   val alkamispäivä = date(2004, 8, 1)
   val päättymispäivä = alkamispäivä.plusYears(20).withMonth(5).withDayOfMonth(31)
@@ -38,7 +39,7 @@ object ExamplesEuropeanSchoolOfHelsinki {
   val s6 = secondaryUpperSuoritusS6("S6", alkamispäivä.plusYears(13))
   val s7 = secondaryUpperSuoritusS7("S7", alkamispäivä.plusYears(14))
 
-  val eb = ebTutkinnonSuoritus(alkamispäivä.plusYears(14))
+  val eb = ebTutkinnonSuoritus(alkamispäivä.plusYears(15).withMonth(6).withDayOfMonth(25))
 
   val opiskeluoikeus = EuropeanSchoolOfHelsinkiOpiskeluoikeus(
     oppilaitos = Some(europeanSchoolOfHelsinki),

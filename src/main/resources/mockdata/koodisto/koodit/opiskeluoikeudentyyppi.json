@@ -135,6 +135,29 @@
     "koodiArvo": "europeanschoolofhelsinki"
   },
   {
+    "koodiUri": "opiskeluoikeudentyyppi_ebtutkinto",
+    "koodiArvo": "ebtutkinto",
+    "metadata": [
+      {
+        "nimi": "EB-tutkinto",
+        "lyhytNimi": "EB-tutkinto",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "EB-examen",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "EB diploma",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
     "metadata": [
       {
         "nimi": "IB-tutkinto",

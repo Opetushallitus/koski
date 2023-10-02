@@ -25,6 +25,7 @@ case class LukioDiaIbInternationalESHOpiskelijamaaratRaportti(db: DB) extends Qu
     )
   }
 
+  // TODO: TOR-2052 - EB-tutkinto
   private def query(oppilaitosOids: Seq[String], päivä: LocalDate, lang: String)  = {
     val organisaatioNimiSarake = if(lang == "sv") "nimi_sv" else "nimi"
    sql"""

@@ -11,6 +11,10 @@ import {
   isDIAOpiskeluoikeudenTila
 } from './DIAOpiskeluoikeudenTila'
 import {
+  EBOpiskeluoikeudenTila,
+  isEBOpiskeluoikeudenTila
+} from './EBOpiskeluoikeudenTila'
+import {
   EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila,
   isEuropeanSchoolOfHelsinkiOpiskeluoikeudenTila
 } from './EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila'
@@ -64,6 +68,7 @@ export type OpiskeluoikeudenTila =
   | AikuistenPerusopetuksenOpiskeluoikeudenTila
   | AmmatillinenOpiskeluoikeudenTila
   | DIAOpiskeluoikeudenTila
+  | EBOpiskeluoikeudenTila
   | EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila
   | InternationalSchoolOpiskeluoikeudenTila
   | KorkeakoulunOpiskeluoikeudenTila
@@ -80,6 +85,7 @@ export const isOpiskeluoikeudenTila = (a: any): a is OpiskeluoikeudenTila =>
   isAikuistenPerusopetuksenOpiskeluoikeudenTila(a) ||
   isAmmatillinenOpiskeluoikeudenTila(a) ||
   isDIAOpiskeluoikeudenTila(a) ||
+  isEBOpiskeluoikeudenTila(a) ||
   isEuropeanSchoolOfHelsinkiOpiskeluoikeudenTila(a) ||
   isInternationalSchoolOpiskeluoikeudenTila(a) ||
   isKorkeakoulunOpiskeluoikeudenTila(a) ||

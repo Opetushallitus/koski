@@ -121,7 +121,19 @@ class KoskiSpecificSessionSpec
       }
       "viranomainen toinen aste" in {
         val session = createAndVerifySession("Teuvo", MockUsers.toinenAsteViranomainen.ldapUser)
-        val expectedOpiskeluoikeustyypit = Set(tuva, ammatillinenkoulutus, ibtutkinto, diatutkinto, lukiokoulutus, luva, vapaansivistystyonkoulutus, ylioppilastutkinto, internationalschool, europeanschoolofhelsinki).map(_.koodiarvo)
+        val expectedOpiskeluoikeustyypit = Set(
+          tuva,
+          ammatillinenkoulutus,
+          ibtutkinto,
+          diatutkinto,
+          lukiokoulutus,
+          luva,
+          vapaansivistystyonkoulutus,
+          ylioppilastutkinto,
+          internationalschool,
+          europeanschoolofhelsinki,
+          ebtutkinto
+        ).map(_.koodiarvo)
         session.allowedOpiskeluoikeusTyypit should equal(expectedOpiskeluoikeustyypit)
       }
       "viranomainen korkeakoulu" in {

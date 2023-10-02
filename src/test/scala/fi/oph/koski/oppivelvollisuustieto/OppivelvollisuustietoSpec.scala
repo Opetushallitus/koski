@@ -440,6 +440,7 @@ class OppivelvollisuustietoSpec
     )
   }
 
+  // TODO: TOR-2052 - EB-tutkinto
   private def europeanSchoolOfHelsinkiToinenAsteEB(vahvistusEB: Option[LocalDate], lisääMaksuttomuus: Boolean = true): Opiskeluoikeus = {
     val alkamispäivä = date(2004, 8, 15)
     ExamplesEuropeanSchoolOfHelsinki.opiskeluoikeus.copy(

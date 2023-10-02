@@ -17,6 +17,8 @@ import org.scalatest.freespec.AnyFreeSpec
 
 import java.time.LocalDate
 
+// TODO: TOR-2052 - EB-tutkinnoille vastaavat testit
+
 class OppijaValidationEuropeanSchoolOfHelsinkiSpec
   extends AnyFreeSpec
     with KoskiHttpSpec
@@ -372,15 +374,15 @@ class OppijaValidationEuropeanSchoolOfHelsinkiSpec
         ),
         suoritukset = List(ExamplesEuropeanSchoolOfHelsinki.eb.copy(
           osasuoritukset = Some(List(
-            EBTutkinnonOsasuoritus(
+            DeprecatedEBTutkinnonOsasuoritus(
               koulutusmoduuli =  EuropeanSchoolOfHelsinkiMuuOppiaine(
                 Koodistokoodiviite("MA", "europeanschoolofhelsinkimuuoppiaine"),
                 laajuus = LaajuusVuosiviikkotunneissa(4)
               ),
               suorituskieli = ExampleData.englanti,
               osasuoritukset = Some(List(
-                EBOppiaineenAlaosasuoritus(
-                  koulutusmoduuli = EBOppiaineKomponentti(
+                DeprecatedEBOppiaineenAlaosasuoritus(
+                  koulutusmoduuli = DeprecatedEBOppiaineKomponentti(
                     tunniste = Koodistokoodiviite("Preliminary", "ebtutkinnonoppiaineenkomponentti")
                   ),
                   arviointi = ebTutkintoPreliminaryMarkArviointi(päivä = alkamispäivä.plusMonths(3))
@@ -405,15 +407,15 @@ class OppijaValidationEuropeanSchoolOfHelsinkiSpec
         ),
         suoritukset = List(ExamplesEuropeanSchoolOfHelsinki.eb.copy(
           osasuoritukset = Some(List(
-            EBTutkinnonOsasuoritus(
+            DeprecatedEBTutkinnonOsasuoritus(
               koulutusmoduuli =  EuropeanSchoolOfHelsinkiMuuOppiaine(
                 Koodistokoodiviite("MA", "europeanschoolofhelsinkimuuoppiaine"),
                 laajuus = LaajuusVuosiviikkotunneissa(4)
               ),
               suorituskieli = ExampleData.englanti,
               osasuoritukset = Some(List(
-                EBOppiaineenAlaosasuoritus(
-                  koulutusmoduuli = EBOppiaineKomponentti(
+                DeprecatedEBOppiaineenAlaosasuoritus(
+                  koulutusmoduuli = DeprecatedEBOppiaineKomponentti(
                     tunniste = Koodistokoodiviite("Final", "ebtutkinnonoppiaineenkomponentti")
                   ),
                   arviointi = None
@@ -438,15 +440,15 @@ class OppijaValidationEuropeanSchoolOfHelsinkiSpec
         ),
         suoritukset = List(ExamplesEuropeanSchoolOfHelsinki.eb.copy(
           osasuoritukset = Some(List(
-            EBTutkinnonOsasuoritus(
+            DeprecatedEBTutkinnonOsasuoritus(
               koulutusmoduuli =  EuropeanSchoolOfHelsinkiMuuOppiaine(
                 Koodistokoodiviite("MA", "europeanschoolofhelsinkimuuoppiaine"),
                 laajuus = LaajuusVuosiviikkotunneissa(4)
               ),
               suorituskieli = ExampleData.englanti,
               osasuoritukset = Some(List(
-                EBOppiaineenAlaosasuoritus(
-                  koulutusmoduuli = EBOppiaineKomponentti(
+                DeprecatedEBOppiaineenAlaosasuoritus(
+                  koulutusmoduuli = DeprecatedEBOppiaineKomponentti(
                     tunniste = Koodistokoodiviite("Final", "ebtutkinnonoppiaineenkomponentti")
                   ),
                   arviointi = ebTutkintoFinalMarkArviointi(päivä = alkamispäivä.plusMonths(3))
@@ -517,6 +519,7 @@ class OppijaValidationEuropeanSchoolOfHelsinkiSpec
     )
   }
 
+  // TODO: TOR-2052 - EB-tutkinto
   private def putAndGetOpiskeluoikeus(oo: EuropeanSchoolOfHelsinkiOpiskeluoikeus): EuropeanSchoolOfHelsinkiOpiskeluoikeus = putOpiskeluoikeus(oo) {
     verifyResponseStatusOk()
     getOpiskeluoikeus(readPutOppijaResponse.opiskeluoikeudet.head.oid)

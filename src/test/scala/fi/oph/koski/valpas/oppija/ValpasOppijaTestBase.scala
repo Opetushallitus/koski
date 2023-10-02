@@ -293,6 +293,7 @@ trait ValpasOppijaTestBase extends ValpasTestBase with BeforeAndAfterEach {
           case p: InternationalSchoolVuosiluokanSuoritus => Some(p)
           case _ => None
         }).sortBy(s => s.alkamispäivä)(localDateOptionOrdering).reverse.headOption.flatMap(r => r.luokka)
+      // TODO: TOR-2052 - EB-tutkinto
       case oo: EuropeanSchoolOfHelsinkiOpiskeluoikeus =>
         oo.suoritukset.flatMap({
           case p: EuropeanSchoolOfHelsinkiVuosiluokanSuoritus => Some(p)

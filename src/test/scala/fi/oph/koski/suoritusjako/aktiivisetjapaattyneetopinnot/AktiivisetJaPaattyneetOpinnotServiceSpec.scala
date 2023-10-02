@@ -302,6 +302,9 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
   }
 
   "ESH" - {
+
+    // TODO: TOR-2052 - EB-tutkinto
+
     val oppijat = Seq(
       KoskiSpecificMockOppijat.europeanSchoolOfHelsinki,
     )
@@ -311,7 +314,7 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
         val expectedOoData = getOpiskeluoikeus(oppija.oid, schema.OpiskeluoikeudenTyyppi.europeanschoolofhelsinki.koodiarvo)
         val expectedSuoritusDatat = expectedOoData.suoritukset.collect {
           case s: schema.SecondaryUpperVuosiluokanSuoritus => s
-          case s: schema.EBTutkinnonSuoritus => s
+          case s: schema.DeprecatedEBTutkinnonSuoritus => s
           case s: schema.SecondaryLowerVuosiluokanSuoritus if s.koulutusmoduuli.tunniste.koodiarvo == "S5" => s
         }
 
@@ -333,6 +336,7 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
       }
     })
 
+    // TODO: TOR-2052 - EB-tutkinto, ei palauteta aktiivisena, mutta palautetaan päättyneenä? Vai miten
     "Palautetaan S5-vuosiluokan suoritus" in {
       val oppija = KoskiSpecificMockOppijat.europeanSchoolOfHelsinki
 
@@ -362,6 +366,7 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
       })
     }
 
+    // TODO: TOR-2052 - EB-tutkinto
     "Ei palauteta opiskeluoikeutta, jolla ei ole S5-suoritusta eikä secondary upper -vuosiluokan tai EB-tutkinnon suorituksia" in {
       val oppija = KoskiSpecificMockOppijat.europeanSchoolOfHelsinki
 
@@ -370,7 +375,7 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
       val ooIlmanSecondaryUpperSuorituksia = alkuperäinenOo
         .withSuoritukset(
         alkuperäinenOo.suoritukset.collect {
-          case s if !s.isInstanceOf[schema.SecondaryUpperVuosiluokanSuoritus] && !s.isInstanceOf[schema.EBTutkinnonSuoritus] && s.koulutusmoduuli.tunniste.koodiarvo != "S5" => s
+          case s if !s.isInstanceOf[schema.SecondaryUpperVuosiluokanSuoritus] && !s.isInstanceOf[schema.DeprecatedEBTutkinnonSuoritus] && s.koulutusmoduuli.tunniste.koodiarvo != "S5" => s
         }
       )
 
@@ -776,6 +781,7 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
             expectedOoData: schema.TutkintokoulutukseenValmentavanOpiskeluoikeus,
             expectedSuoritusData: schema.TutkintokoulutukseenValmentavanKoulutuksenSuoritus
             ) => verifyTuva(actualOo, actualSuoritus, expectedOoData, expectedSuoritusData)
+          // TODO: TOR-2052 - EB-tutkinto
           case (
             actualOo: AktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiOpiskeluoikeus,
             actualSuoritus: AktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiPäätasonSuoritus,
@@ -845,6 +851,7 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
     verifyPäätasonSuoritus(actualSuoritus, expectedSuoritusData)
   }
 
+  // TODO: TOR-2052 - EB-tutkinto
   private def verifyESH(
     actualOo: AktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiOpiskeluoikeus,
     actualSuoritus: AktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiPäätasonSuoritus,
