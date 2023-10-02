@@ -254,6 +254,16 @@ object KoskiErrorCategory {
         val yleisarvosana = subcategory("yleisarvosana", "EB-tutkintoa ei voi vahvistaa ilman yleisarvosanaa")
       }
       val esh = new ESH
+
+      class EB extends ErrorCategory(
+        Validation.this,
+        "eb",
+        "EB-tutkinnon kirjauksiin liittyvä validointivirhe"
+      ) {
+        val yleisarvosana = subcategory("yleisarvosana", "EB-tutkintoa ei voi vahvistaa ilman yleisarvosanaa")
+      }
+
+      val eb = new EB
     }
     val validation = new Validation
   }

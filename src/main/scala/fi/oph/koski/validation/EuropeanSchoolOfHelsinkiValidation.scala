@@ -63,7 +63,7 @@ object EuropeanSchoolOfHelsinkiValidation {
 
   def validateEBTutkinnonArvioinnit(suoritus: EBTutkinnonSuoritus): HttpStatus = {
     if (suoritus.vahvistettu && suoritus.yleisarvosana.isEmpty) {
-      KoskiErrorCategory.badRequest.validation.esh.yleisarvosana()
+      KoskiErrorCategory.badRequest.validation.eb.yleisarvosana()
     } else {
       HttpStatus.ok
     }
