@@ -33,7 +33,10 @@ import { OsasuoritusEditorModel } from '../types/OsasuoritusEditorModel'
 import { ObjectModel, ObjectModelProperty } from '../types/EditorModels'
 import { OpintokokonaisuudellinenKoulutusmoduuliEditor } from './OpintokokonaisuudellinenKoulutusmoduuliEditor'
 import { EuropeanSchoolOfHelsinkiOsasuorituksetEditor } from '../esh/EuropeanSchoolOfHelsinkiOsasuorituksetEditor'
-import { eshSuorituksenClass } from '../esh/europeanschoolofhelsinkiSuoritus'
+import {
+  ebSuorituksenClass,
+  eshSuorituksenClass
+} from '../esh/europeanschoolofhelsinkiSuoritus'
 import { MuuKuinSäänneltySuoritustaulukko } from '../jotpa/MuuKuinSäänneltySuoritustaulukko'
 import { opintokokonaisuuteenKuuluvatPäätasonSuoritukset } from '../util/opintokokonaisuus'
 
@@ -219,7 +222,6 @@ export const resolveOsasuorituksetEditor = (mdl: OsasuoritusEditorModel) => {
       />
     )
   }
-  // TODO: TOR-2052 - EB-tutkinto
   // Nursery-suoritustyypillä ei ole osasuorituksia, joten editoria ei tarvitse näyttää
   if (firstClassOneOf(eshSuorituksenClass.nursery)) {
     return null
@@ -229,7 +231,9 @@ export const resolveOsasuorituksetEditor = (mdl: OsasuoritusEditorModel) => {
       eshSuorituksenClass.primary,
       eshSuorituksenClass.secondaryLowerVuosiluokka,
       eshSuorituksenClass.secondaryUpperVuosiluokka,
-      eshSuorituksenClass.ebtutkinto
+      eshSuorituksenClass.ebtutkinto,
+      // TODO: TOR-2052: Käytetään (toistaiseksi) uudelle EB-tutkinnolle samaa käyttöliitymää kuin vanhalle ESH:n yhteydessä olevalle.
+      ebSuorituksenClass.ebtutkinto
     )
   ) {
     return <EuropeanSchoolOfHelsinkiOsasuorituksetEditor model={mdl} />

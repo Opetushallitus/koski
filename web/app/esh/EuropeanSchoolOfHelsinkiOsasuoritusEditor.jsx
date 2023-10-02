@@ -9,7 +9,10 @@ import {
 } from '../editor/EditorModel'
 import { PropertiesEditor } from '../editor/PropertiesEditor'
 import { suoritusProperties } from '../suoritus/SuoritustaulukkoCommon'
-import { eshSuorituksenClass } from './europeanschoolofhelsinkiSuoritus'
+import {
+  ebSuorituksenClass,
+  eshSuorituksenClass
+} from './europeanschoolofhelsinkiSuoritus'
 import { EuropeanSchoolOfHelsinkiSuoritustaulukko } from './EuropeanSchoolOfHelsinkiSuoritustaulukko'
 import { t } from '../i18n/i18n'
 
@@ -40,6 +43,9 @@ export class EuropeanSchoolOfHelsinkiOsasuoritusEditor extends React.Component {
       (model.value.classes.includes(
         eshSuorituksenClass.ebtutkintoOsasuoritus
       ) ||
+        model.value.classes.includes(
+          ebSuorituksenClass.ebtutkintoOsasuoritus
+        ) ||
         model.value.classes.includes(eshSuorituksenClass.secondaryUppers7) ||
         model.value.classes.includes(eshSuorituksenClass.primaryOsasuoritus))
 

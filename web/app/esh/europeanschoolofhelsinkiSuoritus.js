@@ -31,6 +31,10 @@ export const eshSuorituksenTyyppi = {
   ebtutkinto: 'ebtutkinto'
 }
 
+export const ebSuorituksenTyyppi = {
+  ebtutkinto: 'ebtutkinto2'
+}
+
 /**
  * European School of Helsinki -opiskeluoikeudessa käytettyjen suoritusten class:t
  */
@@ -47,6 +51,11 @@ export const eshSuorituksenClass = {
   secondaryUppers7: 'secondaryupperoppiaineensuorituss7',
   secondaryUppers7alaosasuoritus: 's7oppiaineenalaosasuoritus',
   primaryOsasuoritus: 'primaryosasuoritus'
+}
+
+export const ebSuorituksenClass = {
+  ebtutkinto: 'ebtutkinnonsuoritus',
+  ebtutkintoOsasuoritus: 'ebtutkinnonosasuoritus'
 }
 
 /**
@@ -81,19 +90,39 @@ export const suoritusTyyppi = (koulutusmoduulinTunniste) => {
   throw new Error(`suoritusTyyppi not found for ${koulutusmoduulinTunniste}`)
 }
 
-export const suoritusPrototypeKey = (suorituksenTyyppi) => {
-  switch (suorituksenTyyppi) {
-    case eshSuorituksenTyyppi.nursery:
-      return eshSuorituksenClass.nursery
-    case eshSuorituksenTyyppi.primary:
-      return eshSuorituksenClass.primary
-    case eshSuorituksenTyyppi.secondaryLower:
-      return eshSuorituksenClass.secondaryLowerVuosiluokka
-    case eshSuorituksenTyyppi.secondaryUpper:
-      return eshSuorituksenClass.secondaryUpperVuosiluokka
-    case eshSuorituksenTyyppi.ebtutkinto:
-      return eshSuorituksenClass.ebtutkinto
-    default:
-      throw new Error(`suoritusProtypeKey not found for ${suorituksenTyyppi}`)
+export const suoritusPrototypeKey = (
+  opiskeluoikeudenTyyppi,
+  suorituksenTyyppi
+) => {
+  if (opiskeluoikeudenTyyppi === 'europeanschoolofhelsinki') {
+    switch (suorituksenTyyppi) {
+      case eshSuorituksenTyyppi.nursery:
+        return eshSuorituksenClass.nursery
+      case eshSuorituksenTyyppi.primary:
+        return eshSuorituksenClass.primary
+      case eshSuorituksenTyyppi.secondaryLower:
+        return eshSuorituksenClass.secondaryLowerVuosiluokka
+      case eshSuorituksenTyyppi.secondaryUpper:
+        return eshSuorituksenClass.secondaryUpperVuosiluokka
+      case eshSuorituksenTyyppi.ebtutkinto:
+        return eshSuorituksenClass.ebtutkinto
+      default:
+        throw new Error(
+          `suoritusProtypeKey not found for ${opiskeluoikeudenTyyppi}, ${suorituksenTyyppi}`
+        )
+    }
+  } else if (opiskeluoikeudenTyyppi === 'ebtutkinto') {
+    switch (suorituksenTyyppi) {
+      case ebSuorituksenTyyppi.ebtutkinto:
+        return ebSuorituksenClass.ebtutkinto
+      default:
+        throw new Error(
+          `suoritusProtypeKey not found for ${opiskeluoikeudenTyyppi}, ${suorituksenTyyppi}`
+        )
+    }
+  } else {
+    throw new Error(
+      `suoritusProtypeKey not found for ${opiskeluoikeudenTyyppi}, ${suorituksenTyyppi}`
+    )
   }
 }
