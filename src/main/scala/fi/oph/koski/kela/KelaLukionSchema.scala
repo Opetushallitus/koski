@@ -1,9 +1,9 @@
 package fi.oph.koski.kela
 
 import fi.oph.koski.schema
-import fi.oph.koski.schema.{OmanÄidinkielenOpinnotLaajuusOpintopisteinä, OpiskeluoikeudenTyyppi, PuhviKoe2019, SuullisenKielitaidonKoe2019}
-import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
-import fi.oph.scalaschema.annotation.{Description, Title}
+import fi.oph.koski.schema.annotation.{ComplexObject, Hidden, KoodistoKoodiarvo, KoodistoUri}
+import fi.oph.koski.schema._
+import fi.oph.scalaschema.annotation.{Description, SyntheticProperty, Title}
 
 import java.time.{LocalDate, LocalDateTime}
 
@@ -51,14 +51,47 @@ case class KelaLukionPäätasonSuoritus(
   oppimäärä: Option[KelaKoodistokoodiviite],
   vahvistus: Option[Vahvistus],
   osasuoritukset: Option[List[KelaLukionOsasuoritus]],
-  omanÄidinkielenOpinnot: Option[OmanÄidinkielenOpinnotLaajuusOpintopisteinä] = None,
+  omanÄidinkielenOpinnot: Option[KelaLukionOmanÄidinkielenOpinnot] = None,
   puhviKoe: Option[PuhviKoe2019] = None,
   suullisenKielitaidonKokeet: Option[List[SuullisenKielitaidonKoe2019]] = None,
   tyyppi: schema.Koodistokoodiviite,
   tila: Option[KelaKoodistokoodiviite]
 ) extends Suoritus {
-  def withEmptyArvosana = copy(
-    osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana))
+  def withEmptyArvosana: KelaLukionPäätasonSuoritus = copy(
+    osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana)),
+    omanÄidinkielenOpinnot = omanÄidinkielenOpinnot.map(_.withEmptyArvosana),
+  )
+}
+
+case class KelaLukionOmanÄidinkielenOpinnot(
+  arvosana: Option[Koodistokoodiviite],
+  arviointipäivä: Option[LocalDate],
+  laajuus: LaajuusOpintopisteissä,
+  osasuoritukset: Option[List[KelaLukionOmanÄidinkielenOpintojenOsasuoritus]],
+  hyväksytty: Option[Boolean],
+) {
+  def withEmptyArvosana: KelaLukionOmanÄidinkielenOpinnot = copy(
+    arvosana = None,
+    hyväksytty = arvosana.map(YleissivistävänKoulutuksenArviointi.hyväksytty),
+    osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana)),
+  )
+}
+
+case class KelaLukionOmanÄidinkielenOpintojenOsasuoritus(
+  @Hidden
+  tyyppi: Koodistokoodiviite,
+  @Title("Kurssi")
+  koulutusmoduuli: LukionOmanÄidinkielenOpinto,
+  arviointi: Option[List[KelaLukionOsasuorituksenArvionti]] = None,
+  @ComplexObject
+  @Hidden
+  tunnustettu: Option[OsaamisenTunnustaminen] = None,
+) extends Osasuoritus {
+  def description: LocalizedString = koulutusmoduuli.nimi
+  def nimi: LocalizedString = koulutusmoduuli.nimi
+
+  def withEmptyArvosana: KelaLukionOmanÄidinkielenOpintojenOsasuoritus = copy(
+    arviointi = arviointi.map(_.map(_.withEmptyArvosana)),
   )
 }
 

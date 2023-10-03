@@ -538,6 +538,13 @@ class KelaSpec
 
       päätasonSuoritus.puhviKoe should not be (None)
       päätasonSuoritus.omanÄidinkielenOpinnot should not be (None)
+      päätasonSuoritus.omanÄidinkielenOpinnot.get.osasuoritukset should not be (None)
+      päätasonSuoritus.omanÄidinkielenOpinnot.get.osasuoritukset.get.length should not equal(0)
+      päätasonSuoritus.omanÄidinkielenOpinnot.get.osasuoritukset.get.foreach { osasuoritus =>
+        osasuoritus.arviointi.foreach(_.foreach { arviointi =>
+          arviointi.arvosana should be (None)
+          arviointi.hyväksytty.isDefined should be (true)
+        })}
       päätasonSuoritus.suullisenKielitaidonKokeet should not be (None)
     }
   }
