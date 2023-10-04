@@ -1,6 +1,8 @@
 package fi.oph.koski.eperusteet
 
 import fi.oph.scalaschema.annotation.Discriminator
+import org.json4s.JValue
+import org.json4s.jackson.Json
 
 import java.time.{Instant, LocalDate, ZoneId, ZonedDateTime}
 
@@ -132,7 +134,8 @@ case class EPerusteKokoRakenne(
   osaamisalat: List[EOsaamisala],
   lukiokoulutus: Option[ELukiokoulutus],
   luotu: Option[Long],
-  muokattu: Option[Long]
+  muokattu: Option[Long],
+  lops2019: Option[JValue],
 ) extends EPerusteTarkkaRakenne {
   def toEPeruste: EPerusteRakenne = EPerusteOsaRakenne(
     id,

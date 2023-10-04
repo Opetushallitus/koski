@@ -76,7 +76,7 @@ describe('Lukiokoulutus2019', function () {
         ).to.equal(
           'Oppiaine Arvioitu (opintopistettä) Hyväksytysti arvioitu (opintopistettä) Arvosana\n' +
             'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus\nÄI1\n8 ÄI2\n8 ÄI3\n8 6 6 9\n' +
-            'Matematiikka, pitkä oppimäärä\nMAB2\n8 MAB3\n8 MAB4\n9 6 6 9\n' +
+            'Matematiikka, lyhyt oppimäärä\nMAB2\n8 MAB3\n8 MAB4\n9 6 6 9\n' +
             'Opinto-ohjaus\nOP1\nH OP2\nS 4 2 H\n' +
             'Uskonto/Elämänkatsomustieto\nUE1\n4 1,5 0 4\n' +
             'Äidinkielenomainen kieli A-oppimäärä, ruotsi\nRUA4\n7 1 1 9\n' +
@@ -573,7 +573,7 @@ describe('Lukiokoulutus2019', function () {
         expect(extractAsText(S('.osasuoritukset'))).to.equal(
           'Oppiaine Arvioitu (opintopistettä) Hyväksytysti arvioitu (opintopistettä) Arvosana\n' +
             'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus\nÄI1\n8 ÄI2\n8 ÄI3\n8 6 6 9\n' +
-            'Matematiikka, pitkä oppimäärä\nMAB2\n8 MAB3\n8 MAB4\n9 6 6 9\n' +
+            'Matematiikka, lyhyt oppimäärä\nMAB2\n8 MAB3\n8 MAB4\n9 6 6 9\n' +
             'Opinto-ohjaus\nOP1\nH OP2\nS 4 2 H\n' +
             'Uskonto/Elämänkatsomustieto\nUE1\n4 1,5 0 4\n' +
             'Äidinkielenomainen kieli A-oppimäärä, ruotsi\nRUA4\n7 1 1 9\n' +

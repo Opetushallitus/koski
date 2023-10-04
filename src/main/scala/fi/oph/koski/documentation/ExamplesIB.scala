@@ -88,7 +88,7 @@ object ExamplesIB {
         (Lukio2019ExampleData.muuModuuliOppiaineissa("ÄI2").copy(pakollinen = false), "8")
       )).copy(arviointi = Lukio2019ExampleData.numeerinenLukionOppiaineenArviointi(9)),
 
-      lukionOppiaineenPreIBSuoritus2019(Lukio2019ExampleData.matematiikka("MAA"), List(
+      lukionOppiaineenPreIBSuoritus2019(Lukio2019ExampleData.matematiikka("MAB"), List(
         (Lukio2019ExampleData.muuModuuliOppiaineissa("MAB2"), "10"),
         (Lukio2019ExampleData.muuModuuliOppiaineissa("MAB3"), "10")
       )).copy(arviointi = Lukio2019ExampleData.numeerinenLukionOppiaineenArviointi(10)),

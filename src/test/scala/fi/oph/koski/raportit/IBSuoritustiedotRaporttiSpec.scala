@@ -165,6 +165,7 @@ class IBSuoritustiedotRaporttiSpec extends AnyFreeSpec with Matchers with Raport
           "FY Fysiikka valtakunnallinen" -> "Arvosana 7, 1.0 kurssia",
           "KE Kemia valtakunnallinen" -> "Arvosana 8, 1.0 kurssia",
           "FI Filosofia valtakunnallinen" -> "Arvosana 7, 1.0 kurssia",
+          "MA Matematiikka, lyhyt oppimäärä valtakunnallinen" -> "",
           "PS Psykologia valtakunnallinen" -> "Arvosana 8, 1.0 kurssia",
           "HI Historia valtakunnallinen" -> "Arvosana 8, 3.0 kurssia",
           "YH Yhteiskuntaoppi valtakunnallinen" -> "Arvosana 8, 1.0 kurssia",
@@ -227,7 +228,7 @@ class IBSuoritustiedotRaporttiSpec extends AnyFreeSpec with Matchers with Raport
           "B1 Ruotsi valtakunnallinen" -> "",
           "B2 Ranska valtakunnallinen" -> "",
           "B3 Espanja valtakunnallinen" -> "",
-          "MA Matematiikka, pitkä oppimäärä valtakunnallinen" -> "Arvosana 10, 4.0 opintopistettä",
+          "MA Matematiikka, lyhyt oppimäärä valtakunnallinen" -> "Arvosana 10, 4.0 opintopistettä",
           "BI Biologia valtakunnallinen" -> "",
           "GE Maantieto valtakunnallinen" -> "",
           "FY Fysiikka valtakunnallinen" -> "Arvosana 8, 0.0 kurssia",
@@ -247,6 +248,7 @@ class IBSuoritustiedotRaporttiSpec extends AnyFreeSpec with Matchers with Raport
           "LD Lukiodiplomit valtakunnallinen" -> "Ei arvosanaa",
           "MS Muut suoritukset valtakunnallinen" -> "Ei arvosanaa",
           "A Englanti valtakunnallinen" -> "Arvosana 9, 4.0 opintopistettä",
+          "MA Matematiikka, pitkä oppimäärä valtakunnallinen" -> "",
           "A Espanja valtakunnallinen" -> "Arvosana 6, 4.0 opintopistettä",
           "ITT Tanssi ja liike paikallinen" -> "Arvosana 6, 2.0 opintopistettä"
         )

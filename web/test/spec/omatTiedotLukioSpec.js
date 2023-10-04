@@ -152,7 +152,7 @@ describe('Omat tiedot - lukio', function () {
               'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus\n' +
               '(6 opintopistettä) 9\n' +
               '+\n' +
-              'Matematiikka, pitkä oppimäärä\n' +
+              'Matematiikka, lyhyt oppimäärä\n' +
               '(6 opintopistettä) 9\n' +
               '+\n' +
               'Opinto-ohjaus\n' +
@@ -452,7 +452,7 @@ describe('Omat tiedot - lukio', function () {
               '8 ÄI2\n' +
               '8 ÄI3\n' +
               '8\n' +
-              'Matematiikka, pitkä oppimäärä\n' +
+              'Matematiikka, lyhyt oppimäärä\n' +
               '(6 opintopistettä) 9\n' +
               'MAB2\n' +
               '8 MAB3\n' +
@@ -759,7 +759,7 @@ describe('Omat tiedot - lukio', function () {
               'ÄI1\n' +
               '8 ÄI2\n' +
               '8\n' +
-              'Matematiikka, pitkä oppimäärä\n' +
+              'Matematiikka, lyhyt oppimäärä\n' +
               '(4 opintopistettä) 10\n' +
               'MAB2\n' +
               '10 MAB3\n' +

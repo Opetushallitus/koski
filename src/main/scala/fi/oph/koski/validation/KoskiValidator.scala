@@ -5,7 +5,7 @@ import java.time.LocalDate
 import com.typesafe.config.Config
 import fi.oph.koski.config.Environment
 import fi.oph.koski.documentation.ExamplesEsiopetus.{peruskoulunEsiopetuksenTunniste, päiväkodinEsiopetuksenTunniste}
-import fi.oph.koski.eperusteetvalidation.{EPerusteetFiller, EPerusteisiinPerustuvaValidator}
+import fi.oph.koski.eperusteetvalidation.{EPerusteetFiller, EPerusteetLops2019Validator, EPerusteisiinPerustuvaValidator}
 import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
@@ -34,6 +34,7 @@ class KoskiValidator(
   koskiOpiskeluoikeudet: KoskiOpiskeluoikeusRepository,
   henkilöRepository: HenkilöRepository,
   ePerusteetValidator: EPerusteisiinPerustuvaValidator,
+  ePerusteetLops2019Validator: EPerusteetLops2019Validator,
   ePerusteetFiller: EPerusteetFiller,
   validatingAndResolvingExtractor: ValidatingAndResolvingExtractor,
   suostumuksenPeruutusService: SuostumuksenPeruutusService,
@@ -134,6 +135,7 @@ class KoskiValidator(
                 Lukio2015Validation.validateOppimääräSuoritettu(opiskeluoikeus),
                 AmmatillinenValidation.validateAmmatillinenOpiskeluoikeus(opiskeluoikeus, henkilö, koskiOpiskeluoikeudet),
                 ePerusteetValidator.validateAmmatillinenOpiskeluoikeus(opiskeluoikeus),
+                ePerusteetLops2019Validator.validate(opiskeluoikeus),
                 VSTKotoutumiskoulutus2022Validation.validate(opiskeluoikeus),
                 VapaaSivistystyöValidation.validateVapaanSivistystyönPäätasonOpintokokonaisuus(opiskeluoikeus),
                 JotpaValidation.validateOpiskeluoikeus(opiskeluoikeus, JotpaValidation.jotpaRahoitusVoimassaAlkaen(config)),

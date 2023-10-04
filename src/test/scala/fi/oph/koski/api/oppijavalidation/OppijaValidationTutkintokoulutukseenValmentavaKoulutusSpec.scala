@@ -4,7 +4,7 @@ import com.typesafe.config.Config
 import com.typesafe.config.ConfigValueFactory.fromAnyRef
 import fi.oph.koski.documentation.ExamplesTutkintokoulutukseenValmentavaKoulutus._
 import fi.oph.koski.documentation.{ExampleData, LukioExampleData}
-import fi.oph.koski.eperusteetvalidation.{EPerusteetFiller, EPerusteisiinPerustuvaValidator}
+import fi.oph.koski.eperusteetvalidation.{EPerusteetFiller, EPerusteetLops2019Validator, EPerusteisiinPerustuvaValidator}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
@@ -849,6 +849,7 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
           KoskiApplicationForTests.possu,
           KoskiApplicationForTests.henkilöRepository,
           KoskiApplicationForTests.ePerusteetValidator,
+          KoskiApplicationForTests.ePerusteetLops2019Validator,
           KoskiApplicationForTests.ePerusteetFiller,
           KoskiApplicationForTests.validatingAndResolvingExtractor,
           KoskiApplicationForTests.suostumuksenPeruutusService,
@@ -895,6 +896,7 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
         KoskiApplicationForTests.tutkintoRepository,
         KoskiApplicationForTests.koodistoViitePalvelu
       ),
+      new EPerusteetLops2019Validator(KoskiApplicationForTests.ePerusteet),
       new EPerusteetFiller(
         KoskiApplicationForTests.ePerusteet,
         KoskiApplicationForTests.tutkintoRepository,
