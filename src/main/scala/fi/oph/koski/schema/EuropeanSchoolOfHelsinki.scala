@@ -112,7 +112,6 @@ trait EuropeanSchoolOfHelsinkiPäätasonSuoritus
 }
 
 @Title("EB-tutkinnon suoritus")
-@OnlyWhen("../../tyyppi/koodiarvo", "europeanschoolofhelsinki")
 case class DeprecatedEBTutkinnonSuoritus(
   @Title("Koulutus")
   koulutusmoduuli: EBTutkinto,
