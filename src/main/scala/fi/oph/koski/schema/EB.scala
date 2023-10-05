@@ -44,15 +44,14 @@ case class EBOpiskeluoikeusjakso(
 ) extends KoskiOpiskeluoikeusjakso
 
 @Title("EB-tutkinnon suoritus")
-@OnlyWhen("../../tyyppi/koodiarvo", "ebtutkinto")
 case class EBTutkinnonSuoritus(
   @Title("Koulutus")
   koulutusmoduuli: EBTutkinto,
   toimipiste: OrganisaatioWithOid,
   vahvistus: Option[HenkilövahvistusPaikkakunnalla],
   @Title("Koulutus")
-  @KoodistoKoodiarvo("ebtutkinto")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("ebtutkinto", "suorituksentyyppi"),
+  @KoodistoKoodiarvo("ebtutkinto2")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("ebtutkinto2", "suorituksentyyppi"),
   @Tooltip("Todistuksella näkyvät lisätiedot. Esimerkiksi vuosiluokan sanallinen yleisarviointi.")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
