@@ -90,7 +90,7 @@
     "mkdirp": "^1.0.4",
     "mocha": "^10.2.0",
     "mocha-chrome": "github:Opetushallitus/mocha-chrome#4.0.0",
-    "postcss": "^8.4.24",
+    "postcss": "^8.4.31",
     "postcss-loader": "^7.3.3",
     "postcss-preset-env": "^8.5.1",
     "prettier": "2.8.8",
