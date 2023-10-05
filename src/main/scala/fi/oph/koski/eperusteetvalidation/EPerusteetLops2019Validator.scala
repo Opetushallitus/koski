@@ -2,19 +2,26 @@ package fi.oph.koski.eperusteetvalidation
 
 import fi.oph.koski.eperusteet.{EPerusteKokoRakenne, EPerusteetRepository}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.log.Logging
 import fi.oph.koski.schema._
 import fi.oph.scalaschema.Serializer.format
 import org.json4s.JsonAST.JObject
 import org.json4s._
 
-class EPerusteetLops2019Validator(ePerusteet: EPerusteetRepository) {
+class EPerusteetLops2019Validator(ePerusteet: EPerusteetRepository) extends Logging {
 
   def validate(oo: KoskeenTallennettavaOpiskeluoikeus): HttpStatus =
-    HttpStatus.fold(oo.suoritukset.map(validate))
+    HttpStatus.fold(oo.suoritukset.map(s => validate(oo.oid.getOrElse("???"), s)))
 
-  def validate(pts: PäätasonSuoritus): HttpStatus =
+  def validate(oid: String, pts: PäätasonSuoritus): HttpStatus =
     pts match {
-      case pts: LukionPäätasonSuoritus2019 => validatePäätasonSuoritus(pts, lops2019Validointirakenne.get)
+      case pts: LukionPäätasonSuoritus2019 =>
+        // TODO TOR-1119: Palauta `result` ja poista varoituksen tulostus
+        val result = validatePäätasonSuoritus(pts, lops2019Validointirakenne.get)
+        if (result.isError) {
+          logger.warn(s"Opiskeluoikeuden $oid lops 2019 ePeruste-rakennevalidointi ei menisi läpi: ${result.errorString.getOrElse("virheviesti puuttuu")}")
+        }
+        HttpStatus.ok
       case _ => HttpStatus.ok
     }
 
