@@ -97,7 +97,7 @@
         } ]
       },
       "tyyppi" : {
-        "koodiarvo" : "ebtutkinto",
+        "koodiarvo" : "ebtutkinto2",
         "koodistoUri" : "suorituksentyyppi"
       },
       "todistuksellaNäkyvätLisätiedot" : {
