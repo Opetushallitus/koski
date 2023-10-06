@@ -638,7 +638,7 @@ describe('IB', function () {
             'ÄI1\n' +
             '8 ÄI2\n' +
             '8 4 4 9\n' +
-            'Matematiikka, pitkä oppimäärä\n' +
+            'Matematiikka, lyhyt oppimäärä\n' +
             'MAB2\n' +
             '10 MAB3\n' +
             '10 4 4 10\n' +

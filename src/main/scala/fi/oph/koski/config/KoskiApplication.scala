@@ -5,7 +5,7 @@ import fi.oph.koski.cache.CacheManager
 import fi.oph.koski.db.{KoskiDatabase, KoskiTables, RaportointiDatabaseConfig, RaportointiGenerointiDatabaseConfig, ValpasDatabaseConfig}
 import fi.oph.koski.opensearch.{IndexManager, OpenSearch}
 import fi.oph.koski.eperusteet.EPerusteetRepository
-import fi.oph.koski.eperusteetvalidation.{EPerusteetFiller, EPerusteetOpiskeluoikeusChangeValidator, EPerusteisiinPerustuvaValidator}
+import fi.oph.koski.eperusteetvalidation.{EPerusteetFiller, EPerusteetLops2019Validator, EPerusteetOpiskeluoikeusChangeValidator, EPerusteisiinPerustuvaValidator}
 import fi.oph.koski.executors.GlobalExecutionContext
 import fi.oph.koski.fixture.FixtureCreator
 import fi.oph.koski.healthcheck.{HealthCheck, HealthMonitoring}
@@ -102,6 +102,7 @@ class KoskiApplication(
   lazy val ePerusteetValidator = new EPerusteisiinPerustuvaValidator(ePerusteet, tutkintoRepository, koodistoViitePalvelu)
   lazy val ePerusteetChangeValidator = new EPerusteetOpiskeluoikeusChangeValidator(ePerusteet, tutkintoRepository, koodistoViitePalvelu)
   lazy val ePerusteetFiller = new EPerusteetFiller(ePerusteet, tutkintoRepository, koodistoViitePalvelu)
+  lazy val ePerusteetLops2019Validator = new EPerusteetLops2019Validator(ePerusteet)
   lazy val possu = TimedProxy[KoskiOpiskeluoikeusRepository](new PostgresKoskiOpiskeluoikeusRepository(
     masterDatabase.db,
     new PostgresKoskiOpiskeluoikeusRepositoryActions(
@@ -155,6 +156,7 @@ class KoskiApplication(
     possu,
     henkilöRepository,
     ePerusteetValidator,
+    ePerusteetLops2019Validator,
     ePerusteetFiller,
     validatingAndResolvingExtractor,
     suostumuksenPeruutusService,

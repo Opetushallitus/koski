@@ -797,6 +797,7 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
         KoskiApplicationForTests.possu,
         KoskiApplicationForTests.henkilöRepository,
         KoskiApplicationForTests.ePerusteetValidator,
+        KoskiApplicationForTests.ePerusteetLops2019Validator,
         KoskiApplicationForTests.ePerusteetFiller,
         KoskiApplicationForTests.validatingAndResolvingExtractor,
         KoskiApplicationForTests.suostumuksenPeruutusService,
