@@ -52,7 +52,11 @@ class EPerusteetLops2019Validator(ePerusteet: EPerusteetRepository) extends Logg
     s match {
       case s: LukionModuulinSuoritusOppiaineissa2019 =>
         val moduuli = s.koulutusmoduuli.tunniste.koodiarvo
-        if (rakenne.containsLeaf(moduuli) || !kaikkiPerusteetTuntematModuulit.contains(moduuli)) {
+        if (
+          rakenne.containsLeaf(moduuli) // Moduuli on osa tutkittavaa oppiainetta tai -määrää
+            || !kaikkiPerusteetTuntematModuulit.contains(moduuli) // Moduulit, jotka eivät ole ePerusteessa, jätetään varmuuden vuoksi käsittelemättä
+            || onOkMatematiikanYhteinenOpintokokonaisuus(s, rakenne) // Poikkeus: MAY1-moduulin voi suorittaa sekä pitkän että lyhyen matematiikan alla
+        ) {
           HttpStatus.ok
         } else {
           val oppiaineExpected = lops2019Validointirakenne
@@ -67,6 +71,9 @@ class EPerusteetLops2019Validator(ePerusteet: EPerusteetRepository) extends Logg
         }
       case _ => HttpStatus.ok
     }
+
+  def onOkMatematiikanYhteinenOpintokokonaisuus(s: LukionModuulinTaiPaikallisenOpintojaksonSuoritus2019, rakenne: OsasuoritustenValidointirakenne): Boolean =
+    s.koulutusmoduuli.tunniste.koodiarvo == "MAY1" && List("MAA", "MAB").contains(rakenne.arvo)
 
   private def parseLops2019(lops2019: Any): List[OsasuoritustenValidointirakenne] =
     lops2019 match {
