@@ -39,7 +39,8 @@ class EPerusteetLops2019Validator(ePerusteet: EPerusteetRepository) extends Logg
         (os.koulutusmoduuli match {
           case o: LukionMatematiikka2019 => oppimääränRakenne.get(o.oppimäärä.koodiarvo)
           case o: LukionUskonto2019 => o.uskonnonOppimäärä.map(k => oppimääränRakenne.get(k.koodiarvo))
-          case o: LukionÄidinkieliJaKirjallisuus2019 => oppimääränRakenne.get(o.kieli.koodiarvo)
+          // TODO TOR-1165: Validoidaan äidinkieli, kunhan koodisto ja ePerusteet saadaan niiden moduulien kannalta korjattua yhteneväisiksi
+          // case o: LukionÄidinkieliJaKirjallisuus2019 => oppimääränRakenne.get(o.kieli.koodiarvo)
           case _ => None
         }).fold(HttpStatus.ok) {
           case r: OsasuoritustenValidointirakenne => HttpStatus.fold(osasuoritukset.map(s => validateModuulinSuoritus(s, r)))
