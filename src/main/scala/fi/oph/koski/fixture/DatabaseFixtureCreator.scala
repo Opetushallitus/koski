@@ -27,10 +27,10 @@ abstract class DatabaseFixtureCreator(application: KoskiApplication, opiskeluoik
       case Left(status) => throw new RuntimeException("Fixture insert failed for " + JsonSerializer.write(oo) + ": " + status)
     }
 
-  protected lazy val opiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = validatedOpiskeluoikeudet ++ invalidOpiskeluoikeudet
+  private lazy val opiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = validateFixture(defaultOpiskeluOikeudet) ++ invalidOpiskeluoikeudet
 
-  var fixtureCacheCreated = false
-  var cachedPerustiedot: Option[Seq[OpiskeluoikeudenOsittaisetTiedot]] = None
+  private var fixtureCacheCreated = false
+  private var cachedPerustiedot: Option[Seq[OpiskeluoikeudenOsittaisetTiedot]] = None
 
   def resetFixtures: Unit = {
     if (!application.masterDatabase.isLocal) throw new IllegalStateException("Trying to reset fixtures in remote database")
@@ -52,15 +52,10 @@ abstract class DatabaseFixtureCreator(application: KoskiApplication, opiskeluoik
     application.perustiedotIndexer.deleteByOppijaOids(henkilöOids, refresh = false)
 
     if (!fixtureCacheCreated) {
-      cachedPerustiedot = Some(opiskeluoikeudet.zipWithIndex.map { case ((henkilö, opiskeluoikeus), index) =>
-        val id = application.opiskeluoikeusRepository
-          .createOrUpdate(VerifiedHenkilöOid(henkilö), opiskeluoikeus, allowUpdate = false)
-          .fold(
-            error => throw new Exception(s"Fikstuurin opiskeluoikeutta ${index + 1}/${opiskeluoikeudet.length} ei saatu luotua: $error"),
-            result => result.id
-          )
-        OpiskeluoikeudenPerustiedot.makePerustiedot(id, opiskeluoikeus, application.henkilöRepository.opintopolku.withMasterInfo(henkilö))
-      })
+      cachedPerustiedot = Some(
+        luoOpiskeluoikeudetJaPerustiedot(opiskeluoikeudet)
+      )
+
       application.perustiedotIndexer.sync(refresh = true)
       val henkilöOidsIn = henkilöOids.map("'" + _ + "'").mkString(",")
       runDbSync(DBIO.seq(
@@ -81,10 +76,20 @@ abstract class DatabaseFixtureCreator(application: KoskiApplication, opiskeluoik
     }
   }
 
-  protected def oppijat: List[OppijaHenkilöWithMasterInfo]
+  private def luoOpiskeluoikeudetJaPerustiedot(opiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)]): Seq[OpiskeluoikeudenOsittaisetTiedot] = {
+    opiskeluoikeudet.zipWithIndex.map { case ((henkilö, opiskeluoikeus), index) =>
+      val id = application.opiskeluoikeusRepository
+        .createOrUpdate(VerifiedHenkilöOid(henkilö), opiskeluoikeus, allowUpdate = false)
+        .fold(
+          error => throw new Exception(s"Fikstuurin opiskeluoikeutta ${index + 1}/${opiskeluoikeudet.length} ei saatu luotua: $error"),
+          result => result.id
+        )
+      OpiskeluoikeudenPerustiedot.makePerustiedot(id, opiskeluoikeus, application.henkilöRepository.opintopolku.withMasterInfo(henkilö))
+    }
+  }
 
-  protected lazy val validatedOpiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = {
-    defaultOpiskeluOikeudet.zipWithIndex.map { case ((henkilö, oikeus), index) =>
+  private def validateFixture(fixture: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)]): List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = {
+    fixture.zipWithIndex.map { case ((henkilö, oikeus), index) =>
       timed(s"Validating fixture ${index}", 500) {
 
         val globaaliValidointiStatus = application.globaaliValidator.validateOpiskeluoikeus(
@@ -110,6 +115,8 @@ abstract class DatabaseFixtureCreator(application: KoskiApplication, opiskeluoik
       }
     }
   }
+
+  protected def oppijat: List[OppijaHenkilöWithMasterInfo]
 
   protected def invalidOpiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)]
 
