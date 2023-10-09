@@ -55,7 +55,15 @@ class EPerusteetLops2019Validator(ePerusteet: EPerusteetRepository) extends Logg
         if (rakenne.containsLeaf(moduuli) || !kaikkiPerusteetTuntematModuulit.contains(moduuli)) {
           HttpStatus.ok
         } else {
-          KoskiErrorCategory.badRequest.validation.rakenne(s"Moduulia $moduuli ei voi siirtää oppiaineen ${rakenne.arvo} alle. Sallittuja moduuleja ovat: ${rakenne.leafs.mkString(", ")}")
+          val oppiaineExpected = lops2019Validointirakenne
+            .flatMap(_.findParentOf(moduuli))
+            .map(_.arvo)
+            .getOrElse("???")
+          val moduulitExpected = rakenne.leafs.mkString(", ")
+          val oppiaineActual = rakenne.arvo
+          KoskiErrorCategory.badRequest.validation.rakenne(
+            s"Moduulia $moduuli ei voi siirtää oppiaineen/-määrän $oppiaineActual alle, koska se on oppiaineen/-määrän $oppiaineExpected moduuli. Sallittuja $oppiaineActual-moduuleja ovat $moduulitExpected."
+          )
         }
       case _ => HttpStatus.ok
     }
@@ -116,4 +124,9 @@ case class OsasuoritustenValidointirakenne(
   def get(a: String): Option[OsasuoritustenValidointirakenne] = osat.find(_.arvo == a)
   def containsLeaf(leaf: String): Boolean = if (osat.isEmpty) arvo == leaf else osat.exists(_.containsLeaf(leaf))
   def leafs: List[String] = if (osat.isEmpty) List(arvo) else osat.flatMap(_.leafs)
+  def findParentOf(a: String): Option[OsasuoritustenValidointirakenne] =
+    osat.find(_.arvo == a) match {
+      case Some(_) => Some(this)
+      case None => osat.flatMap(_.findParentOf(a)).headOption
+    }
 }
