@@ -889,7 +889,7 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
         KoskiApplicationForTests.tutkintoRepository,
         KoskiApplicationForTests.koodistoViitePalvelu
       ),
-      new EPerusteetLops2019Validator(KoskiApplicationForTests.ePerusteet),
+      new EPerusteetLops2019Validator(KoskiApplicationForTests.config, KoskiApplicationForTests.ePerusteet),
       new EPerusteetFiller(
         KoskiApplicationForTests.ePerusteet,
         KoskiApplicationForTests.tutkintoRepository,
