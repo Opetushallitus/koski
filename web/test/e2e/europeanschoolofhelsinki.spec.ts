@@ -19,10 +19,8 @@ test.describe('European School of Helsinki', () => {
         'Eurooppalainen, Emilia (050707A130V)'
       )
       await expect(eshOppijaPage.hetu).toContainText('050707A130V')
-      await expect(eshOppijaPage.koulutusmoduuli).toContainText(
-        'European Baccalaureate2023'
-      )
-      await expect(eshOppijaPage.luokka).toContainText('S7 EN')
+      await expect(eshOppijaPage.koulutusmoduuli).toContainText('S72023')
+      await expect(eshOppijaPage.luokka).toContainText('S7A')
       await expect(eshOppijaPage.toimipiste).toContainText(
         'Helsingin eurooppalainen koulu'
       )
@@ -175,7 +173,7 @@ test.describe('European School of Helsinki', () => {
         test.slow()
         const vuosiluokka = 'S7'
 
-        await eshOppijaPage.poistaSuoritus(vuosiluokka)
+        await eshOppijaPage.poistaSuoritus(vuosiluokka, 'S6')
 
         await eshOppijaPage.poistaViimeisinTila()
 

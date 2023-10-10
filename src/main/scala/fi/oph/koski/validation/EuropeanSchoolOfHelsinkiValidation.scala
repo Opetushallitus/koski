@@ -18,6 +18,7 @@ object EuropeanSchoolOfHelsinkiValidation {
     oo match {
       case eshOo: EuropeanSchoolOfHelsinkiOpiskeluoikeus =>
         HttpStatus.fold(
+          validateEiEB(eshOo),
           validateTallennuspäivä(
             LocalDate.parse(config.getString("validaatiot.europeanSchoolOfHelsinkiAikaisinSallittuTallennuspaiva"))
           ),
@@ -39,6 +40,17 @@ object EuropeanSchoolOfHelsinkiValidation {
         )
       case _ => HttpStatus.ok
     }
+  }
+
+  private def validateEiEB(oo: EuropeanSchoolOfHelsinkiOpiskeluoikeus): HttpStatus = {
+    HttpStatus.validate(
+      !oo.suoritukset.exists {
+        case _: DeprecatedEBTutkinnonSuoritus => true
+        case _ => false
+      }
+    )(
+      KoskiErrorCategory.badRequest.validation.esh.mukanaEB()
+    )
   }
 
   private def validateTallennuspäivä(aikaisinTallennuspäivä: LocalDate): HttpStatus = {
