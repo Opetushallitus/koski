@@ -1,6 +1,5 @@
 import { formatISODate } from '../date/date'
 
-// TODO: TOR-2052 - EB-tutkinto
 export const makeSuoritus = (
   oppilaitos,
   koulutusmoduulinTunniste,
@@ -15,6 +14,22 @@ export const makeSuoritus = (
     alkamispäivä: alkamispäivä ? formatISODate(alkamispäivä) : undefined,
     tyyppi: {
       koodiarvo: suoritusTyyppi(koulutusmoduulinTunniste),
+      koodistoUri: 'suorituksentyyppi'
+    }
+  }
+}
+
+export const makeEBSuoritus = (oppilaitos, curriculum) => {
+  if (!oppilaitos || !curriculum) return null
+
+  return {
+    koulutusmoduuli: {
+      tunniste: { koodiarvo: '301104', koodistoUri: 'koulutus' },
+      curriculum
+    },
+    toimipiste: oppilaitos,
+    tyyppi: {
+      koodiarvo: ebSuorituksenTyyppi.ebtutkinto,
       koodistoUri: 'suorituksentyyppi'
     }
   }

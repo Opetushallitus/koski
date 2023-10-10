@@ -85,6 +85,23 @@ function AddOppijaPage() {
           .then(wait.forAjax)
       }
     },
+    enterValidDataEbTutkinto: function (params) {
+      params = _.merge(
+        {
+          oppilaitos: 'Helsingin eurooppalainen koulu',
+          alkamispäivä: '1.1.2022'
+        },
+        {},
+        params
+      )
+      return function () {
+        return api
+          .enterData(params)()
+          .then(api.selectOpiskeluoikeudenTyyppi('EB-tutkinto'))
+          .then(api.selectAloituspäivä(params.alkamispäivä))
+          .then(wait.forAjax)
+      }
+    },
     enterValidDataPerusopetus: function (params) {
       params = _.merge(
         { oppilaitos: 'Jyväskylän normaalikoulu', alkamispäivä: '1.1.2018' },

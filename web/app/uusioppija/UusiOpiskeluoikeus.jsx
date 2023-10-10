@@ -58,6 +58,7 @@ import { jotpaSallitutRahoituskoodiarvot } from '../jotpa/jotpa'
 import UusiMuunKuinSäännellynKoulutuksenSuoritus from './UusiMuunKuinSäännellynKoulutuksenSuoritus'
 import { modelData } from '../editor/EditorModel'
 import UusiTaiteenPerusopetuksenSuoritus from './UusiTaiteenPerusopetuksenSuoritus'
+import UusiEBTutkinnonSuoritus from './UusiEBTutkinnonSuoritus'
 
 export default ({ opiskeluoikeusAtom }) => {
   const dateAtom = Atom(new Date())
@@ -352,6 +353,13 @@ export default ({ opiskeluoikeusAtom }) => {
               dateAtom={dateAtom}
               näytäKoulutusValitsin={false}
               näytäAlkamispäiväValitsin={false}
+            />
+          )
+        if (tyyppi === 'ebtutkinto')
+          return (
+            <UusiEBTutkinnonSuoritus
+              suoritusAtom={suoritusAtom}
+              oppilaitosAtom={oppilaitosAtom}
             />
           )
         if (tyyppi === 'vapaansivistystyonkoulutus')

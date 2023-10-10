@@ -232,7 +232,6 @@ export const resolveOsasuorituksetEditor = (mdl: OsasuoritusEditorModel) => {
       eshSuorituksenClass.secondaryLowerVuosiluokka,
       eshSuorituksenClass.secondaryUpperVuosiluokka,
       eshSuorituksenClass.ebtutkinto,
-      // TODO: TOR-2052: Käytetään (toistaiseksi) uudelle EB-tutkinnolle samaa käyttöliitymää kuin vanhalle ESH:n yhteydessä olevalle.
       ebSuorituksenClass.ebtutkinto
     )
   ) {
