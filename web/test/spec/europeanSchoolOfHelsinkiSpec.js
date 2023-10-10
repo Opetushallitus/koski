@@ -60,20 +60,17 @@ describe('Helsingin eurooppalainen koulu', function () {
 
         describe('Kun painetaan Lisää-nappia', function () {
           before(
-            addOppija.submitAndExpectSuccess(
-              'Tyhjä, Tero (070998-798T)',
-              'European Baccalaureate'
-            )
+            addOppija.submitAndExpectSuccess('Tyhjä, Tero (070998-798T)', 'N1')
           )
 
           it('lisätty oppija näytetään', function () {})
 
           describe('Käyttöliittymän tila', function () {
             it('Lisätty opiskeluoikeus näytetään', function () {
-              expect(opinnot.getTutkinto()).to.equal('European Baccalaureate')
+              expect(opinnot.getTutkinto()).to.equal('N1')
               expect(
                 extractAsText(S("[data-testid='koulutusmoduuli-value']"))
-              ).to.deep.equal('European Baccalaureate 2023')
+              ).to.deep.equal('N1 2023')
               expect(opinnot.getOppilaitos()).to.equal(
                 'Helsingin eurooppalainen koulu'
               )

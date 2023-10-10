@@ -349,6 +349,7 @@ export default ({ opiskeluoikeusAtom }) => {
             <UusiEuropeanSchoolOfHelsinkiSuoritus
               suoritusAtom={suoritusAtom}
               oppilaitosAtom={oppilaitosAtom}
+              dateAtom={dateAtom}
               näytäKoulutusValitsin={false}
               näytäAlkamispäiväValitsin={false}
             />

@@ -511,7 +511,7 @@ test.describe('European School of Helsinki', () => {
         )
       })
 
-      test('Opiskeluoikeuden luonti onnistuu ja luo uuden opiskeluoikeuden tyhjällä EB-tutkinnon suorituksella', async ({
+      test('Opiskeluoikeuden luonti onnistuu ja luo uuden opiskeluoikeuden tyhjällä N1-suorituksella', async ({
         uusiOppijaPage,
         eshOppijaPage
       }) => {
@@ -523,9 +523,7 @@ test.describe('European School of Helsinki', () => {
           `${oppija.sukunimi}, ${oppija.etunimet} (${hetu})`
         )
         await expect(eshOppijaPage.hetu).toContainText(`${hetu}`)
-        await expect(eshOppijaPage.koulutusmoduuli).toContainText(
-          'European Baccalaureate2023'
-        )
+        await expect(eshOppijaPage.koulutusmoduuli).toContainText('N1')
         await expect(eshOppijaPage.toimipiste).toContainText(
           `${oppija.oppilaitos}`
         )

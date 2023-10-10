@@ -70,6 +70,8 @@ export const UusiEuropeanSchoolOfHelsinkiVuosiluokanSuoritus = ({
 }) => {
   const suoritusAtom = Atom()
   const oppilaitosAtom = Atom(modelData(opiskeluoikeus, 'oppilaitos'))
+  const dateAtom = Atom(new Date())
+
   const lisääSuoritus = () => {
     const suoritus = suoritusAtom.get()
 
@@ -129,6 +131,7 @@ export const UusiEuropeanSchoolOfHelsinkiVuosiluokanSuoritus = ({
         <UusiEuropeanSchoolOfHelsinkiSuoritus
           suoritusAtom={suoritusAtom}
           oppilaitosAtom={oppilaitosAtom}
+          dateAtom={dateAtom}
           näytäKoulutusValitsin={true}
           näytäAlkamispäiväValitsin={true}
         />
