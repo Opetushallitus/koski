@@ -39,7 +39,8 @@ class EPerusteetLops2019Validator(ePerusteet: EPerusteetRepository) extends Logg
         (os.koulutusmoduuli match {
           case o: LukionMatematiikka2019 => oppimääränRakenne.get(o.oppimäärä.koodiarvo)
           case o: LukionUskonto2019 => o.uskonnonOppimäärä.map(k => oppimääränRakenne.get(k.koodiarvo))
-          case o: LukionÄidinkieliJaKirjallisuus2019 => oppimääränRakenne.get(o.kieli.koodiarvo)
+          // TODO TOR-1165: Validoidaan äidinkieli, kunhan koodisto ja ePerusteet saadaan niiden moduulien kannalta korjattua yhteneväisiksi
+          // case o: LukionÄidinkieliJaKirjallisuus2019 => oppimääränRakenne.get(o.kieli.koodiarvo)
           case _ => None
         }).fold(HttpStatus.ok) {
           case r: OsasuoritustenValidointirakenne => HttpStatus.fold(osasuoritukset.map(s => validateModuulinSuoritus(s, r)))
@@ -52,13 +53,28 @@ class EPerusteetLops2019Validator(ePerusteet: EPerusteetRepository) extends Logg
     s match {
       case s: LukionModuulinSuoritusOppiaineissa2019 =>
         val moduuli = s.koulutusmoduuli.tunniste.koodiarvo
-        if (rakenne.containsLeaf(moduuli) || !kaikkiPerusteetTuntematModuulit.contains(moduuli)) {
+        if (
+          rakenne.containsLeaf(moduuli) // Moduuli on osa tutkittavaa oppiainetta tai -määrää
+            || !kaikkiPerusteetTuntematModuulit.contains(moduuli) // Moduulit, jotka eivät ole ePerusteessa, jätetään varmuuden vuoksi käsittelemättä
+            || onOkMatematiikanYhteinenOpintokokonaisuus(s, rakenne) // Poikkeus: MAY1-moduulin voi suorittaa sekä pitkän että lyhyen matematiikan alla
+        ) {
           HttpStatus.ok
         } else {
-          KoskiErrorCategory.badRequest.validation.rakenne(s"Moduulia $moduuli ei voi siirtää oppiaineen ${rakenne.arvo} alle. Sallittuja moduuleja ovat: ${rakenne.leafs.mkString(", ")}")
+          val oppiaineExpected = lops2019Validointirakenne
+            .flatMap(_.findParentOf(moduuli))
+            .map(_.arvo)
+            .getOrElse("???")
+          val moduulitExpected = rakenne.leafs.mkString(", ")
+          val oppiaineActual = rakenne.arvo
+          KoskiErrorCategory.badRequest.validation.rakenne(
+            s"Moduulia $moduuli ei voi siirtää oppiaineen/-määrän $oppiaineActual alle, koska se on oppiaineen/-määrän $oppiaineExpected moduuli. Sallittuja $oppiaineActual-moduuleja ovat $moduulitExpected."
+          )
         }
       case _ => HttpStatus.ok
     }
+
+  def onOkMatematiikanYhteinenOpintokokonaisuus(s: LukionModuulinTaiPaikallisenOpintojaksonSuoritus2019, rakenne: OsasuoritustenValidointirakenne): Boolean =
+    s.koulutusmoduuli.tunniste.koodiarvo == "MAY1" && List("MAA", "MAB").contains(rakenne.arvo)
 
   private def parseLops2019(lops2019: Any): List[OsasuoritustenValidointirakenne] =
     lops2019 match {
@@ -116,4 +132,9 @@ case class OsasuoritustenValidointirakenne(
   def get(a: String): Option[OsasuoritustenValidointirakenne] = osat.find(_.arvo == a)
   def containsLeaf(leaf: String): Boolean = if (osat.isEmpty) arvo == leaf else osat.exists(_.containsLeaf(leaf))
   def leafs: List[String] = if (osat.isEmpty) List(arvo) else osat.flatMap(_.leafs)
+  def findParentOf(a: String): Option[OsasuoritustenValidointirakenne] =
+    osat.find(_.arvo == a) match {
+      case Some(_) => Some(this)
+      case None => osat.flatMap(_.findParentOf(a)).headOption
+    }
 }

@@ -153,7 +153,7 @@ describe('Omat tiedot - lukio', function () {
               '(6 opintopistettä) 9\n' +
               '+\n' +
               'Matematiikka, lyhyt oppimäärä\n' +
-              '(6 opintopistettä) 9\n' +
+              '(8 opintopistettä) 9\n' +
               '+\n' +
               'Opinto-ohjaus\n' +
               '(4 opintopistettä) H\n' +
@@ -453,8 +453,9 @@ describe('Omat tiedot - lukio', function () {
               '8 ÄI3\n' +
               '8\n' +
               'Matematiikka, lyhyt oppimäärä\n' +
-              '(6 opintopistettä) 9\n' +
-              'MAB2\n' +
+              '(8 opintopistettä) 9\n' +
+              'MAY1\n' +
+              '8 MAB2\n' +
               '8 MAB3\n' +
               '8 MAB4\n' +
               '9\n' +
