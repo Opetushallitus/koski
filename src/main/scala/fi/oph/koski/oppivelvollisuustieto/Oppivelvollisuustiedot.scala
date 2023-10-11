@@ -188,16 +188,16 @@ object Oppivelvollisuustiedot {
 
         ),
 
-        europeanschoolofhelsinki as (
+        ebtutkinto as (
 
             select
               distinct master_oid,
-              first_value(vahvistus_paiva) over (partition by master_oid order by vahvistus_paiva asc nulls last) european_school_of_helsinki_toisen_asteen_vahvistus_paiva
+              first_value(vahvistus_paiva) over (partition by master_oid order by vahvistus_paiva asc nulls last) ebtutkinto_toisen_asteen_vahvistus_paiva
             from
               oppivelvolliset_henkilot
               join #${s.name}.r_opiskeluoikeus opiskeluoikeus on oppivelvolliset_henkilot.oppija_oid = opiskeluoikeus.oppija_oid
               join #${s.name}.r_paatason_suoritus paatason_suoritus on opiskeluoikeus.opiskeluoikeus_oid = paatason_suoritus.opiskeluoikeus_oid
-            where paatason_suoritus.suorituksen_tyyppi = 'ebtutkinto'
+            where paatason_suoritus.suorituksen_tyyppi = 'ebtutkinto2' -- TODO: TOR-2052: Jos vaihdetaan takaisin ebtutkinto2 => ebtutkinto, muuta myös tämä
               and paatason_suoritus.koulutusmoduuli_koodiarvo = '301104'
               and paatason_suoritus.vahvistus_paiva is not null
 
@@ -241,14 +241,14 @@ object Oppivelvollisuustiedot {
             when suorittaa_ammattitutkintoa then least(
               oppivelvollisuudesta_vapautus,
               dia_tutkinnon_vahvistuspaiva,
-              european_school_of_helsinki_toisen_asteen_vahvistus_paiva,
+              ebtutkinto_toisen_asteen_vahvistus_paiva,
               ammattitutkinnon_vahvistus_paiva,
               (syntymaaika + interval '#$oppivelvollisuusLoppuuIka year' - interval '1 day')::date)
 
             else least(
               oppivelvollisuudesta_vapautus,
               dia_tutkinnon_vahvistuspaiva,
-              european_school_of_helsinki_toisen_asteen_vahvistus_paiva,
+              ebtutkinto_toisen_asteen_vahvistus_paiva,
               ylioppilastutkinnon_vahvistus_paiva,
               (syntymaaika + interval '#$oppivelvollisuusLoppuuIka year' - interval '1 day')::date)
           end
@@ -260,20 +260,20 @@ object Oppivelvollisuustiedot {
             when suorittaa_ammattitutkintoa and (suorittaa_lukionoppimaaraa or suorittaa_lukionaineopintoja) then least(
               oppivelvollisuudesta_vapautus,
               dia_tutkinnon_vahvistuspaiva,
-              european_school_of_helsinki_toisen_asteen_vahvistus_paiva,
+              ebtutkinto_toisen_asteen_vahvistus_paiva,
               #${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '#$maksuttomuusLoppuuIka year'))
 
             when suorittaa_ammattitutkintoa then least(
               oppivelvollisuudesta_vapautus,
               dia_tutkinnon_vahvistuspaiva,
-              european_school_of_helsinki_toisen_asteen_vahvistus_paiva,
+              ebtutkinto_toisen_asteen_vahvistus_paiva,
               ammattitutkinnon_vahvistus_paiva,
               #${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '#$maksuttomuusLoppuuIka year'))
 
             else least(
               oppivelvollisuudesta_vapautus,
               dia_tutkinnon_vahvistuspaiva,
-              european_school_of_helsinki_toisen_asteen_vahvistus_paiva,
+              ebtutkinto_toisen_asteen_vahvistus_paiva,
               ylioppilastutkinnon_vahvistus_paiva,
               #${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '#$maksuttomuusLoppuuIka year'))
           end
@@ -284,7 +284,7 @@ object Oppivelvollisuustiedot {
           left join ammattitutkinto on oppivelvolliset_henkilot.master_oid = ammattitutkinto.master_oid
           left join lukionoppimaara on oppivelvolliset_henkilot.master_oid = lukionoppimaara.master_oid
           left join lukionaineopinnot on oppivelvolliset_henkilot.master_oid = lukionaineopinnot.master_oid
-          left join europeanschoolofhelsinki on oppivelvolliset_henkilot.master_oid = europeanschoolofhelsinki.master_oid
+          left join ebtutkinto on oppivelvolliset_henkilot.master_oid = ebtutkinto.master_oid
           left join diatutkinto on oppivelvolliset_henkilot.master_oid = diatutkinto.master_oid
           left join oppivelvollisuudesta_vapautus on oppivelvolliset_henkilot.master_oid = oppivelvollisuudesta_vapautus.master_oid
           left join ylioppilastutkinto on oppivelvolliset_henkilot.master_oid = ylioppilastutkinto.master_oid
