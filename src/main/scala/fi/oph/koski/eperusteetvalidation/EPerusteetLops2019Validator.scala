@@ -38,10 +38,11 @@ class EPerusteetLops2019Validator(ePerusteet: EPerusteetRepository) extends Logg
       case (Some(osasuoritukset), Some(oppimääränRakenne)) =>
         (os.koulutusmoduuli match {
           case o: LukionMatematiikka2019 => oppimääränRakenne.get(o.oppimäärä.koodiarvo)
-          case o: LukionUskonto2019 => o.uskonnonOppimäärä.map(k => oppimääränRakenne.get(k.koodiarvo))
+          case _: LukionUskonto2019 => rakenne
+          case _: LukionMuuValtakunnallinenOppiaine2019 => rakenne
           // TODO TOR-1165: Validoidaan äidinkieli, kunhan koodisto ja ePerusteet saadaan niiden moduulien kannalta korjattua yhteneväisiksi
           // case o: LukionÄidinkieliJaKirjallisuus2019 => oppimääränRakenne.get(o.kieli.koodiarvo)
-          case _ => None
+          case _: Any => None
         }).fold(HttpStatus.ok) {
           case r: OsasuoritustenValidointirakenne => HttpStatus.fold(osasuoritukset.map(s => validateModuulinSuoritus(s, r)))
           case _ => HttpStatus.ok
@@ -120,7 +121,11 @@ class EPerusteetLops2019Validator(ePerusteet: EPerusteetRepository) extends Logg
       .find(_.lops2019.isDefined)
       .flatMap(_.lops2019)
       .map(parseLops2019)
-      .map(osat => OsasuoritustenValidointirakenne("lops2019", osat))
+      .map(osat => OsasuoritustenValidointirakenne("lops2019", osat.map {
+        // Uskontoa ei validoida oppimäärän tarkkuudella, vaan kaikki uskonnon moduulit kelpaavat uskonnon oppiaineen suoritukseen
+        case osa: OsasuoritustenValidointirakenne if osa.arvo == "KT" => osa.flatten
+        case osa: OsasuoritustenValidointirakenne => osa
+      }))
 
   lazy val kaikkiPerusteetTuntematModuulit: Seq[String] = lops2019Validointirakenne.map(_.leafs).getOrElse(Nil)
 }
@@ -137,4 +142,6 @@ case class OsasuoritustenValidointirakenne(
       case Some(_) => Some(this)
       case None => osat.flatMap(_.findParentOf(a)).headOption
     }
+
+  def flatten: OsasuoritustenValidointirakenne = copy(osat = osat ++ osat.map(_.flatten))
 }
