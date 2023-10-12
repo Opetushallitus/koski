@@ -92,6 +92,12 @@ export const europeanSchoolOfHelsinkiSuorittaminenTableContent = `
   ESH-s4-jälkeen-s5-aloittanut Valpas                 | 20.3.2005   | European School of Helsinki | Läsnä | Helsingin eurooppalainen koulu  | –         | – | –                                       | 19.3.2023 asti
 `
 
+export const europeanSchoolOfHelsinki2023SuorittaminenTableHead =
+  "Oppivelvolliset (1)"
+
+export const europeanSchoolOfHelsinki2023SuorittaminenTableContent = `
+  ESH-kesken-EB-tutkinnon-aloittanut Valpas                 | 2.11.2010   | European School of Helsinki | Läsnä | Helsingin eurooppalainen koulu  | 1.9.2022 | – | Helsingin eurooppalainen koulu, EB-tutkinto | 1.11.2028 asti
+`
 export const suorittaminenListaPath = suorittaminenPath.href("/virkailija")
 
 export const suorittaminenListaJklPath = suorittaminenPathWithOrg.href(

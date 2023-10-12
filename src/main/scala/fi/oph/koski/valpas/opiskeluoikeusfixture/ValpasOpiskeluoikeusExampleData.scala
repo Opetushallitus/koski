@@ -19,6 +19,7 @@ import fi.oph.koski.schema._
 import java.time.LocalDate.{of => date}
 import fi.oph.koski.documentation.ExamplesInternationalSchool.{grade1, grade10, grade11, grade12, grade2, grade3, grade4, grade5, grade6, grade7, grade8, grade9, gradeExplorer}
 import fi.oph.koski.documentation.ExamplesPerusopetuksenLisaopetus.lisäopetuksenSuoritus
+import fi.oph.koski.localization.LocalizedStringImplicits._
 
 object ValpasOpiskeluoikeusExampleData {
   def oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus = PerusopetuksenOpiskeluoikeus(
@@ -1540,6 +1541,50 @@ object ValpasOpiskeluoikeusExampleData {
         vahvistus = None
       )
     )
+  )
+
+  def eshS7Valmistunut = ExamplesEuropeanSchoolOfHelsinki.opiskeluoikeus.copy(
+    tila = EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila(
+      List(
+        EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(LocalDate.of(2022, 9, 1), LukioExampleData.opiskeluoikeusAktiivinen),
+        EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(LocalDate.of(2023, 5, 31), LukioExampleData.opiskeluoikeusPäättynyt)
+      )
+    ),
+    suoritukset = List(
+      EuropeanSchoolOfHelsinkiExampleData.secondaryUpperSuoritusS7("S7", LocalDate.of(2022, 9, 1))
+    )
+  )
+  def eshS7Kesken = ExamplesEuropeanSchoolOfHelsinki.opiskeluoikeus.copy(
+    tila = EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila(
+      List(
+        EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(LocalDate.of(2022, 9, 1), LukioExampleData.opiskeluoikeusAktiivinen)
+      )
+    ),
+    suoritukset = List(
+      EuropeanSchoolOfHelsinkiExampleData.secondaryUpperSuoritusS7("S7", LocalDate.of(2022, 9, 1)).copy(
+        vahvistus = None
+      )
+    )
+  )
+
+  def ebEBTutkinnonAloittanut = ExamplesEB.ebOpiskeluoikeus(
+    alkamispäivä = LocalDate.of(2023, 6, 15),
+    arviointipäivä = LocalDate.of(2023, 6, 15),
+    vahvistuspäivä = None,
+    päättymispäiväJaTila = None
+  )
+  def ebEBTutkinnostaValmistunut = ExamplesEB.ebOpiskeluoikeus(
+    alkamispäivä = LocalDate.of(2023, 6, 15),
+    arviointipäivä = LocalDate.of(2023, 8, 30),
+    vahvistuspäivä = Some(LocalDate.of(2023, 8, 30)),
+    päättymispäiväJaTila = Some((LocalDate.of(2023, 8, 30), LukioExampleData.opiskeluoikeusPäättynyt))
+  )
+
+  def ebEBTutkinnostaEronnut = ExamplesEB.ebOpiskeluoikeus(
+    alkamispäivä = LocalDate.of(2023, 6, 15),
+    arviointipäivä = LocalDate.of(2023, 8, 30),
+    vahvistuspäivä = None,
+    päättymispäiväJaTila = Some((LocalDate.of(2023, 8, 30), Koodistokoodiviite("eronnut", Some("Eronnut"), "koskiopiskeluoikeudentila", Some(1))))
   )
 
   def aikuistenPerusopetuksessa: AikuistenPerusopetuksenOpiskeluoikeus =

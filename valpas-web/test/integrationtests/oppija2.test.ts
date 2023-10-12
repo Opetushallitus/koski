@@ -102,6 +102,10 @@ const pelkkäESHNurseryPath = oppijaPath.href("/virkailija", {
   oppijaOid: "1.2.246.562.24.00000000173",
 })
 
+const eshKeskenEbTutkinnonAloittanutPath = oppijaPath.href("/virkailija", {
+  oppijaOid: "1.2.246.562.24.00000000179",
+})
+
 const lukionAineopintojaJaAmmatillisiaPath = oppijaPath.href("/virkailija", {
   oppijaOid: "1.2.246.562.24.00000000174",
 })
@@ -610,6 +614,36 @@ describe("Oppijakohtainen näkymä 2/2", () => {
   })
 
   describe("Kun tarkastelupäivä vaihdetaan", () => {
+    it("Näyttää EB-tutkintoa opiskelevan tiedot", async () => {
+      await loginAs(eshKeskenEbTutkinnonAloittanutPath, "valpas-monta", true)
+
+      await resetMockData("2023-09-05")
+      await goToLocation(eshKeskenEbTutkinnonAloittanutPath)
+
+      await mainHeadingEquals(
+        "ESH-kesken-EB-tutkinnon-aloittanut Valpas (021110A1065)"
+      )
+      await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000179")
+      await opiskeluhistoriaEquals(
+        merge(
+          historiaOpintoOikeus({
+            otsikko: "European Baccalaureate 2023 –",
+            tila: "Läsnä",
+            toimipiste: "Helsingin eurooppalainen koulu",
+            alkamispäivä: "15.6.2023",
+          }),
+          historiaOpintoOikeus({
+            otsikko: "European School of Helsinki 2022 –",
+            tila: "Läsnä",
+            toimipiste: "Helsingin eurooppalainen koulu",
+            alkamispäivä: "1.9.2022",
+            ryhmä: "S7A",
+            maksuttomuus: ["Ei"],
+          })
+        )
+      )
+    })
+
     it("Ei näytä detaljisivua kuntakäyttäjälle lukio-oppijasta oppivelvollisuuden päätyttyä", async () => {
       allowNetworkError("/valpas/api/oppija/", FORBIDDEN)
       await loginAs(lukioOpiskelijaPath, "valpas-helsinki")

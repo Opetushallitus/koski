@@ -162,7 +162,7 @@ object OpiskeluoikeusLoaderRowBuilder extends Logging {
     o.tyyppi.koodiarvo match {
       case "perusopetus" => true
       case "internationalschool" => true
-      // TODO: TOR-2052 - EB-tutkinto, miten käsitellään? Vastaava kuin YO tms.?
+      case "ebtutkinto" => true
       case "europeanschoolofhelsinki"
         if o.asInstanceOf[EuropeanSchoolOfHelsinkiOpiskeluoikeus].suoritukset.exists {
           case _: OppivelvollisuudenSuorittamiseenKelpaavaESHVuosiluokanSuoritus => true

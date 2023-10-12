@@ -248,11 +248,20 @@ class ValpasOpiskeluoikeusDatabaseFixtureCreator(application: KoskiApplication) 
     (ValpasMockOppijat.amisValmistunutEronnutValmasta, ValpasOpiskeluoikeusExampleData.ammattikouluValmaOpiskeluoikeusEronnut),
     (ValpasMockOppijat.amisValmistunutEronnutValmasta, ValpasOpiskeluoikeusExampleData.ammattikouluValmistunutOpiskeluoikeus(LocalDate.of(2022, 1, 10), LocalDate.of(2023, 4, 28))),
     (ValpasMockOppijat.eshNurseryssä, ValpasOpiskeluoikeusExampleData.eshNurseryssä),
+    (ValpasMockOppijat.eshEbTutkinnonAloittanut, ValpasOpiskeluoikeusExampleData.eshS7Valmistunut),
+    (ValpasMockOppijat.eshEbTutkinnostaValmistunut, ValpasOpiskeluoikeusExampleData.eshS7Valmistunut),
+    (ValpasMockOppijat.eshEbTutkinnostaEronnut, ValpasOpiskeluoikeusExampleData.eshS7Valmistunut),
+    (ValpasMockOppijat.eshKeskenEbTutkinnonAloittanut, ValpasOpiskeluoikeusExampleData.eshS7Kesken),
     (ValpasMockOppijat.lukionAineOpinnotJaAmmatillisia, ValpasOpiskeluoikeusExampleData.lukionAineopintojenOpiskeluoikeusAlkaa2021Syksyllä(None)),
     (ValpasMockOppijat.lukionAineOpinnotJaAmmatillisia, ValpasOpiskeluoikeusExampleData.ammattikouluOpiskeluoikeus),
     (ValpasMockOppijat.oppijaJollaAmisJaValmistunutYO, ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainenToinenKoulu),
     (ValpasMockOppijat.oppijaJollaAmisJaValmistunutYO, ValpasOpiskeluoikeusExampleData.ammattikouluEronnutOpiskeluoikeus),
   )
 
-  protected def secondBatchOpiskeluOikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = List.empty
+  protected def secondBatchOpiskeluOikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = List(
+    (ValpasMockOppijat.eshEbTutkinnonAloittanut, ValpasOpiskeluoikeusExampleData.ebEBTutkinnonAloittanut),
+    (ValpasMockOppijat.eshEbTutkinnostaValmistunut, ValpasOpiskeluoikeusExampleData.ebEBTutkinnostaValmistunut),
+    (ValpasMockOppijat.eshEbTutkinnostaEronnut, ValpasOpiskeluoikeusExampleData.ebEBTutkinnostaEronnut),
+    (ValpasMockOppijat.eshKeskenEbTutkinnonAloittanut, ValpasOpiskeluoikeusExampleData.ebEBTutkinnonAloittanut),
+  )
 }
