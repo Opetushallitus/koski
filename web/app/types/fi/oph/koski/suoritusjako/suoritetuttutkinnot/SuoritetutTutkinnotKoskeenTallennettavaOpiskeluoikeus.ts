@@ -7,9 +7,9 @@ import {
   isSuoritetutTutkinnotDIAOpiskeluoikeus
 } from './SuoritetutTutkinnotDIAOpiskeluoikeus'
 import {
-  SuoritetutTutkinnotEuropeanSchoolOfHelsinkiOpiskeluoikeus,
-  isSuoritetutTutkinnotEuropeanSchoolOfHelsinkiOpiskeluoikeus
-} from './SuoritetutTutkinnotEuropeanSchoolOfHelsinkiOpiskeluoikeus'
+  SuoritetutTutkinnotEBTutkinnonOpiskeluoikeus,
+  isSuoritetutTutkinnotEBTutkinnonOpiskeluoikeus
+} from './SuoritetutTutkinnotEBTutkinnonOpiskeluoikeus'
 
 /**
  * SuoritetutTutkinnotKoskeenTallennettavaOpiskeluoikeus
@@ -19,11 +19,11 @@ import {
 export type SuoritetutTutkinnotKoskeenTallennettavaOpiskeluoikeus =
   | SuoritetutTutkinnotAmmatillinenOpiskeluoikeus
   | SuoritetutTutkinnotDIAOpiskeluoikeus
-  | SuoritetutTutkinnotEuropeanSchoolOfHelsinkiOpiskeluoikeus
+  | SuoritetutTutkinnotEBTutkinnonOpiskeluoikeus
 
 export const isSuoritetutTutkinnotKoskeenTallennettavaOpiskeluoikeus = (
   a: any
 ): a is SuoritetutTutkinnotKoskeenTallennettavaOpiskeluoikeus =>
   isSuoritetutTutkinnotAmmatillinenOpiskeluoikeus(a) ||
   isSuoritetutTutkinnotDIAOpiskeluoikeus(a) ||
-  isSuoritetutTutkinnotEuropeanSchoolOfHelsinkiOpiskeluoikeus(a)
+  isSuoritetutTutkinnotEBTutkinnonOpiskeluoikeus(a)

@@ -19,7 +19,6 @@ export type AktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiPäätasonSuo
       string,
       | 'europeanschoolofhelsinkivuosiluokkasecondarylower'
       | 'europeanschoolofhelsinkivuosiluokkasecondaryupper'
-      | 'ebtutkinto'
     >
   }
 
@@ -32,7 +31,6 @@ export const AktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiPäätasonSu
       string,
       | 'europeanschoolofhelsinkivuosiluokkasecondarylower'
       | 'europeanschoolofhelsinkivuosiluokkasecondaryupper'
-      | 'ebtutkinto'
     >
   }): AktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiPäätasonSuoritus => ({
     $class:

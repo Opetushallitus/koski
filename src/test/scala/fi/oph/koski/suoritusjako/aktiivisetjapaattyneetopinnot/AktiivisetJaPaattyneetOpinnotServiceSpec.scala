@@ -301,21 +301,21 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
     })
   }
 
-  "ESH" - {
-
-    // TODO: TOR-2052 - EB-tutkinto
-
+  "ESH ja EB" - {
     val oppijat = Seq(
       KoskiSpecificMockOppijat.europeanSchoolOfHelsinki,
     )
 
     oppijat.foreach(oppija => {
       s"Tiedot oppijasta, jolla secondary upper -vuosiluokan suorituksia, palautetaan ${oppija.sukunimi} ${oppija.etunimet} (${oppija.hetu.getOrElse("EI HETUA")})" in {
-        val expectedOoData = getOpiskeluoikeus(oppija.oid, schema.OpiskeluoikeudenTyyppi.europeanschoolofhelsinki.koodiarvo)
-        val expectedSuoritusDatat = expectedOoData.suoritukset.collect {
+        val expectedEshOoData = getOpiskeluoikeus(oppija.oid, schema.OpiskeluoikeudenTyyppi.europeanschoolofhelsinki.koodiarvo)
+        val expectedEbOoData = getOpiskeluoikeus(oppija.oid, schema.OpiskeluoikeudenTyyppi.ebtutkinto.koodiarvo)
+        val expectedEshSuoritusDatat = expectedEshOoData.suoritukset.collect {
           case s: schema.SecondaryUpperVuosiluokanSuoritus => s
-          case s: schema.DeprecatedEBTutkinnonSuoritus => s
           case s: schema.SecondaryLowerVuosiluokanSuoritus if s.koulutusmoduuli.tunniste.koodiarvo == "S5" => s
+        }
+        val expectedEbSuoritusDatat = expectedEbOoData.suoritukset.collect {
+          case s: schema.EBTutkinnonSuoritus => s
         }
 
         val result = aktiivisetJaPäättyneetOpinnotService.findOppija(oppija.oid)
@@ -325,28 +325,29 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
         result.map(o => {
           verifyOppija(oppija, o)
 
-          o.opiskeluoikeudet should have length 1
-          o.opiskeluoikeudet.head shouldBe a[AktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiOpiskeluoikeus]
+          o.opiskeluoikeudet should have length 2
 
-          val actualOo = o.opiskeluoikeudet.head
-          val actualSuoritukset = actualOo.suoritukset
+          val actualEshOo = o.opiskeluoikeudet.collectFirst { case esh: AktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiOpiskeluoikeus => esh}.get
+          val actualEbOo = o.opiskeluoikeudet.collectFirst { case eb: AktiivisetJaPäättyneetOpinnotEBTutkinnonOpiskeluoikeus => eb}.get
+          val actualEshSuoritukset = actualEshOo.suoritukset
+          val actualEbSuoritukset = actualEbOo.suoritukset
 
-          verifyOpiskeluoikeusJaSuoritus(actualOo, actualSuoritukset, expectedOoData, expectedSuoritusDatat)
+          verifyOpiskeluoikeusJaSuoritus(actualEshOo, actualEshSuoritukset, expectedEshOoData, expectedEshSuoritusDatat)
+          verifyOpiskeluoikeusJaSuoritus(actualEbOo, actualEbSuoritukset, expectedEbOoData, expectedEbSuoritusDatat)
         })
       }
     })
 
-    // TODO: TOR-2052 - EB-tutkinto, ei palauteta aktiivisena, mutta palautetaan päättyneenä? Vai miten
     "Palautetaan S5-vuosiluokan suoritus" in {
       val oppija = KoskiSpecificMockOppijat.europeanSchoolOfHelsinki
 
-      val expectedOo = getOpiskeluoikeus(oppija.oid, schema.OpiskeluoikeudenTyyppi.europeanschoolofhelsinki.koodiarvo).asInstanceOf[schema.EuropeanSchoolOfHelsinkiOpiskeluoikeus]
+      val expectedEshOo = getOpiskeluoikeus(oppija.oid, schema.OpiskeluoikeudenTyyppi.europeanschoolofhelsinki.koodiarvo).asInstanceOf[schema.EuropeanSchoolOfHelsinkiOpiskeluoikeus]
 
-      val expectedSuoritukset = expectedOo.suoritukset.collect {
+      val expectedEshSuoritukset = expectedEshOo.suoritukset.collect {
         case s: schema.SecondaryLowerVuosiluokanSuoritus if s.koulutusmoduuli.tunniste.koodiarvo == "S5" => s
       }
 
-      expectedSuoritukset should have length 1
+      expectedEshSuoritukset should have length 1
 
       val result = aktiivisetJaPäättyneetOpinnotService.findOppija(oppija.oid)
 
@@ -355,19 +356,17 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
       result.map(o => {
         verifyOppija(oppija, o)
 
-        o.opiskeluoikeudet should have length 1
-        o.opiskeluoikeudet.head shouldBe a[AktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiOpiskeluoikeus]
+        o.opiskeluoikeudet should have length 2
 
-        val actualOo = o.opiskeluoikeudet.head
+        val actualEshOo = o.opiskeluoikeudet.collectFirst { case esh: AktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiOpiskeluoikeus => esh }.get
 
-        actualOo.suoritukset.exists(s =>
+        actualEshOo.suoritukset.exists(s =>
           s.tyyppi.koodiarvo == "europeanschoolofhelsinkivuosiluokkasecondarylower" && s.koulutusmoduuli.tunniste.koodiarvo == "S5"
         ) should be(true)
       })
     }
 
-    // TODO: TOR-2052 - EB-tutkinto
-    "Ei palauteta opiskeluoikeutta, jolla ei ole S5-suoritusta eikä secondary upper -vuosiluokan tai EB-tutkinnon suorituksia" in {
+    "Ei palauteta ESH opiskeluoikeutta, jolla ei ole S5-suoritusta eikä secondary upper -vuosiluokan suorituksia" in {
       val oppija = KoskiSpecificMockOppijat.europeanSchoolOfHelsinki
 
       val alkuperäinenOo = getOpiskeluoikeus(oppija.oid, schema.OpiskeluoikeudenTyyppi.europeanschoolofhelsinki.koodiarvo).asInstanceOf[schema.EuropeanSchoolOfHelsinkiOpiskeluoikeus]
@@ -379,12 +378,21 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
         }
       )
 
-      // Korvaa oppijan opiskeluoikeus sellaisella, mistä secondary upper -vuosiluokat on poistettu
+      // Korvaa oppijan ESH opiskeluoikeus sellaisella, mistä secondary upper -vuosiluokat on poistettu
       putOpiskeluoikeus(ooIlmanSecondaryUpperSuorituksia, oppija) {
         verifyResponseStatusOk()
       }
 
-      verifyEiOpiskeluoikeuksia(oppija)
+      // Tarkista, että pelkkä EB-tutkinnon opiskeluoikeus palautetaan
+      val result = aktiivisetJaPäättyneetOpinnotService.findOppija(oppija.oid)
+
+      result.isRight should be(true)
+      result.map(o => {
+        verifyOppija(oppija, o)
+
+        o.opiskeluoikeudet should have length 1
+        o.opiskeluoikeudet.head shouldBe a[AktiivisetJaPäättyneetOpinnotEBTutkinnonOpiskeluoikeus]
+      })
 
       // Palauta vanha data
       putOpiskeluoikeus(
@@ -781,13 +789,18 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
             expectedOoData: schema.TutkintokoulutukseenValmentavanOpiskeluoikeus,
             expectedSuoritusData: schema.TutkintokoulutukseenValmentavanKoulutuksenSuoritus
             ) => verifyTuva(actualOo, actualSuoritus, expectedOoData, expectedSuoritusData)
-          // TODO: TOR-2052 - EB-tutkinto
           case (
             actualOo: AktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiOpiskeluoikeus,
             actualSuoritus: AktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiPäätasonSuoritus,
             expectedOoData: schema.EuropeanSchoolOfHelsinkiOpiskeluoikeus,
             expectedSuoritusData: schema.EuropeanSchoolOfHelsinkiPäätasonSuoritus
             ) => verifyESH(actualOo, actualSuoritus, expectedOoData, expectedSuoritusData)
+          case (
+            actualOo: AktiivisetJaPäättyneetOpinnotEBTutkinnonOpiskeluoikeus,
+            actualSuoritus: AktiivisetJaPäättyneetOpinnotEBTutkinnonPäätasonSuoritus,
+            expectedOoData: schema.EBOpiskeluoikeus,
+            expectedSuoritusData: schema.EBTutkinnonSuoritus,
+            ) => verifyEB(actualOo, actualSuoritus, expectedOoData, expectedSuoritusData)
           case (
             actualOo: AktiivisetJaPäättyneetOpinnotInternationalSchoolOpiskeluoikeus,
             actualSuoritus: AktiivisetJaPäättyneetOpinnotInternationalSchoolVuosiluokanSuoritus,
@@ -851,12 +864,23 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
     verifyPäätasonSuoritus(actualSuoritus, expectedSuoritusData)
   }
 
-  // TODO: TOR-2052 - EB-tutkinto
   private def verifyESH(
     actualOo: AktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiOpiskeluoikeus,
     actualSuoritus: AktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiPäätasonSuoritus,
     expectedOoData: schema.EuropeanSchoolOfHelsinkiOpiskeluoikeus,
     expectedSuoritusData: schema.EuropeanSchoolOfHelsinkiPäätasonSuoritus
+  ): Unit = {
+    verifyKoskiOpiskeluoikeudenKentät(actualOo, expectedOoData)
+
+    actualSuoritus.tyyppi.koodiarvo should equal(expectedSuoritusData.tyyppi.koodiarvo)
+    actualSuoritus.koulutusmoduuli.tunniste.koodiarvo should equal(expectedSuoritusData.koulutusmoduuli.tunniste.koodiarvo)
+  }
+
+  private def verifyEB(
+    actualOo: AktiivisetJaPäättyneetOpinnotEBTutkinnonOpiskeluoikeus,
+    actualSuoritus: AktiivisetJaPäättyneetOpinnotEBTutkinnonPäätasonSuoritus,
+    expectedOoData: schema.EBOpiskeluoikeus,
+    expectedSuoritusData: schema.EBTutkinnonSuoritus
   ): Unit = {
     verifyKoskiOpiskeluoikeudenKentät(actualOo, expectedOoData)
 

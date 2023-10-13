@@ -11,6 +11,10 @@ import {
   isAktiivisetJaPäättyneetOpinnotDIAOpiskeluoikeus
 } from './AktiivisetJaPaattyneetOpinnotDIAOpiskeluoikeus'
 import {
+  AktiivisetJaPäättyneetOpinnotEBTutkinnonOpiskeluoikeus,
+  isAktiivisetJaPäättyneetOpinnotEBTutkinnonOpiskeluoikeus
+} from './AktiivisetJaPaattyneetOpinnotEBTutkinnonOpiskeluoikeus'
+import {
   AktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiOpiskeluoikeus,
   isAktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiOpiskeluoikeus
 } from './AktiivisetJaPaattyneetOpinnotEuropeanSchoolOfHelsinkiOpiskeluoikeus'
@@ -48,6 +52,7 @@ export type AktiivisetJaPäättyneetOpinnotKoskeenTallennettavaOpiskeluoikeus =
   | AktiivisetJaPäättyneetOpinnotAikuistenPerusopetuksenOpiskeluoikeus
   | AktiivisetJaPäättyneetOpinnotAmmatillinenOpiskeluoikeus
   | AktiivisetJaPäättyneetOpinnotDIAOpiskeluoikeus
+  | AktiivisetJaPäättyneetOpinnotEBTutkinnonOpiskeluoikeus
   | AktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiOpiskeluoikeus
   | AktiivisetJaPäättyneetOpinnotIBOpiskeluoikeus
   | AktiivisetJaPäättyneetOpinnotInternationalSchoolOpiskeluoikeus
@@ -63,6 +68,7 @@ export const isAktiivisetJaPäättyneetOpinnotKoskeenTallennettavaOpiskeluoikeus
     isAktiivisetJaPäättyneetOpinnotAikuistenPerusopetuksenOpiskeluoikeus(a) ||
     isAktiivisetJaPäättyneetOpinnotAmmatillinenOpiskeluoikeus(a) ||
     isAktiivisetJaPäättyneetOpinnotDIAOpiskeluoikeus(a) ||
+    isAktiivisetJaPäättyneetOpinnotEBTutkinnonOpiskeluoikeus(a) ||
     isAktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiOpiskeluoikeus(a) ||
     isAktiivisetJaPäättyneetOpinnotIBOpiskeluoikeus(a) ||
     isAktiivisetJaPäättyneetOpinnotInternationalSchoolOpiskeluoikeus(a) ||
