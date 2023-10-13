@@ -71,6 +71,14 @@ class OppijaValidationEBTutkintoSpec
       }
     }
 
+    "EB-tutkintoa ei voi luoda uudelle oppijalle" in {
+      val oppija = KoskiSpecificMockOppijat.tyhjä
+
+      putOpiskeluoikeus(defaultOpiskeluoikeus, henkilö = oppija) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.eb.puuttuvaESHS7("EB-tutkinnon opiskeluoikeutta ei voi kirjata, jos oppijalla ei ole European School of Helsinki -opiskeluoikeutta, jossa S7-suoritus"))
+      }
+    }
+
     "Tunnistetaan myös eri oppija-oidilla oleva ESH-opiskeluoikeus, jossa S7" in {
       val eshOppija = KoskiSpecificMockOppijat.slave.henkilö
 

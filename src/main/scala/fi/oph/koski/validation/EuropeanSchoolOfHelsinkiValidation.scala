@@ -90,10 +90,11 @@ object EuropeanSchoolOfHelsinkiValidation {
 
     henkilöOid
       .flatMap(henkilöOid => henkilöRepository.findByOid(henkilöOid, findMasterIfSlaveOid = true))
-      .map(hlö => oppijallaOnESHS7(hlö.kaikkiOidit)) match {
+      .map(hlö => oppijallaOnESHS7(hlö.kaikkiOidit))
+    match {
         case Some(true) => HttpStatus.ok
         case _ => KoskiErrorCategory.badRequest.validation.eb.puuttuvaESHS7()
-      }
+    }
   }
 
   def validateEBTutkinnonArvioinnit(suoritus: DeprecatedEBTutkinnonSuoritus): HttpStatus = {
