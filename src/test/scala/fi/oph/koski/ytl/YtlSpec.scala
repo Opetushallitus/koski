@@ -591,7 +591,7 @@ class YtlSpec
         KoskiSpecificMockOppijat.ibPreIB2019,
         KoskiSpecificMockOppijat.dia,
         KoskiSpecificMockOppijat.internationalschool,
-        // TODO: TOR-1685 Eurooppalainen koulu
+        // TODO: TOR-1685 Eurooppalainen koulu ja TOR-2052 EB-tutkinto: Pitää lisätä tietoluovutussopimuksiin ensin
         KoskiSpecificMockOppijat.eskari,
         KoskiSpecificMockOppijat.eskariAikaisillaLisätiedoilla,
         KoskiSpecificMockOppijat.master,

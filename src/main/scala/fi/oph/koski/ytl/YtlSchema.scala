@@ -13,7 +13,7 @@ object YtlSchema {
     SchemaToJson.toJsonSchema(schema.KoskiSchema.createSchema(classOf[YtlOppija]).asInstanceOf[ClassSchema])
 
   val schemassaTuetutOpiskeluoikeustyypit: List[String] =
-  // TODO: TOR-1685 Eurooppalainen koulu
+    // TODO: TOR-1685 Eurooppalainen koulu ja TOR-2052 EB-tutkinto: Pitää lisätä tietoluovutussopimuksiin ensin
     List("lukiokoulutus", "ammatillinenkoulutus", "ibtutkinto", "internationalschool")
 }
 

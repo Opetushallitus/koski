@@ -30,7 +30,7 @@ object ConvertMigriSchema {
          _: DIAOpiskeluoikeus |
          _: IBOpiskeluoikeus |
          _: InternationalSchoolOpiskeluoikeus |
-         // TODO: TOR-1685 Eurooppalainen koulu
+         // TODO: TOR-1685 Eurooppalainen koulu ja TOR-2052 EB-tutkinto: Pitää lisätä tietoluovutussopimuksiin ensin
          _: KorkeakoulunOpiskeluoikeus |
          _: LukionOpiskeluoikeus |
          _: PerusopetuksenOpiskeluoikeus |
@@ -48,7 +48,7 @@ object ConvertMigriSchema {
          _: PreIBSuoritus2015 |
          _: PreIBSuoritus2019 |
          _: DiplomaVuosiluokanSuoritus |
-         // TODO: TOR-1685 Eurooppalainen koulu
+         // TODO: TOR-1685 Eurooppalainen koulu ja TOR-2052 EB-tutkinto: Pitää lisätä tietoluovutussopimuksiin ensin
          _: KorkeakoulunOpintojaksonSuoritus |
          _: KorkeakoulututkinnonSuoritus |
          _: MuuKorkeakoulunSuoritus |
@@ -151,7 +151,7 @@ object ConvertMigriSchema {
             tunniste = convertKoodistoviite(suoritus.koulutusmoduuli.tunniste),
             diplomaType = suoritus.koulutusmoduuli match {
               case x: DiplomaLuokkaAste => Some(x.diplomaType)
-              // TODO: TOR-1685 Eurooppalainen koulu, jos tarvitsee
+              // TODO: TOR-1685 Eurooppalainen koulu ja TOR-2052 EB-tutkinto: Pitää lisätä tietoluovutussopimuksiin ensin
               case _ => None
             },
             nimi = suoritus.koulutusmoduuli.nimi,
