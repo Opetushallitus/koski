@@ -1,5 +1,10 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 18.10.2023
+
+- Sallittu EB-tutkinnon opiskeluoikeuden siirtäminen vain, jos samalla oppijalla on ESH-opiskeluoikeus, jossa S7-vuosiluokan suoritus
+- Estetty EB-tutkinnon siirtäminen ESH-opiskeluoikeuden mukana jatkossa. Sen sijaan on käytettävä erillistä EB-tutkinnon opiskeluoikeutta.
+
 ## 2.10.2023
 
 - Lisätty erilliselle EB-tutkinnon opiskeluoikeudelle vastaavia validaatioita kuin European School of Helsingin opiskeluoikeudelle.
