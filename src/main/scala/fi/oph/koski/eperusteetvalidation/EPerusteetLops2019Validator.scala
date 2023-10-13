@@ -122,13 +122,12 @@ class EPerusteetLops2019Validator(ePerusteet: EPerusteetRepository) extends Logg
       .flatMap(_.lops2019)
       .map(parseLops2019)
       .map(osat => OsasuoritustenValidointirakenne("lops2019", osat))
-      .map(rakenne => {
-        rakenne.copy(osat = rakenne.osat.map {
+      .map(rakenne => rakenne.copy(osat = rakenne.osat.map {
           // Uskontoa ei validoida oppimäärän tarkkuudella, vaan kaikki uskonnon ja elämänkatsomustiedon moduulit kelpaavat uskonnon oppiaineen suoritukseen
           case uskonto: OsasuoritustenValidointirakenne if uskonto.arvo == "KT" => uskonto.flatten.merge(rakenne.get("ET"))
+          case et: OsasuoritustenValidointirakenne if et.arvo == "ET" => et.merge(rakenne.get("KT").map(_.flatten))
           case osa: OsasuoritustenValidointirakenne => osa
-        })
-      })
+        }))
 
   lazy val kaikkiPerusteetTuntematModuulit: Seq[String] = lops2019Validointirakenne.map(_.leafs).getOrElse(Nil)
 }
