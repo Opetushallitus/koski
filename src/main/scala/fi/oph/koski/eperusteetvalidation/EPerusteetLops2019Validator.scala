@@ -121,11 +121,14 @@ class EPerusteetLops2019Validator(ePerusteet: EPerusteetRepository) extends Logg
       .find(_.lops2019.isDefined)
       .flatMap(_.lops2019)
       .map(parseLops2019)
-      .map(osat => OsasuoritustenValidointirakenne("lops2019", osat.map {
-        // Uskontoa ei validoida oppimäärän tarkkuudella, vaan kaikki uskonnon moduulit kelpaavat uskonnon oppiaineen suoritukseen
-        case osa: OsasuoritustenValidointirakenne if osa.arvo == "KT" => osa.flatten
-        case osa: OsasuoritustenValidointirakenne => osa
-      }))
+      .map(osat => OsasuoritustenValidointirakenne("lops2019", osat))
+      .map(rakenne => {
+        rakenne.copy(osat = rakenne.osat.map {
+          // Uskontoa ei validoida oppimäärän tarkkuudella, vaan kaikki uskonnon ja elämänkatsomustiedon moduulit kelpaavat uskonnon oppiaineen suoritukseen
+          case uskonto: OsasuoritustenValidointirakenne if uskonto.arvo == "KT" => uskonto.flatten.merge(rakenne.get("ET"))
+          case osa: OsasuoritustenValidointirakenne => osa
+        })
+      })
 
   lazy val kaikkiPerusteetTuntematModuulit: Seq[String] = lops2019Validointirakenne.map(_.leafs).getOrElse(Nil)
 }
@@ -144,4 +147,5 @@ case class OsasuoritustenValidointirakenne(
     }
 
   def flatten: OsasuoritustenValidointirakenne = copy(osat = osat ++ osat.map(_.flatten))
+  def merge(rakenne: Option[OsasuoritustenValidointirakenne]): OsasuoritustenValidointirakenne = copy(osat = osat ++ rakenne.map(_.osat).getOrElse(Nil))
 }
