@@ -31,6 +31,7 @@ object KelaSchema {
     "tuva",
     "muukuinsaanneltykoulutus",
     "europeanschoolofhelsinki",
+    "ebtutkinto",
   ).filter(_.nonEmpty)
 
   def kelallePalautettavatOpiskeluoikeustyypit(config: Config): List[String] = {
