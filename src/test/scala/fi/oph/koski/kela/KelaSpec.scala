@@ -582,6 +582,26 @@ class KelaSpec
     }
   }
 
+  "Palauttaa EB-tutkinnon" in {
+    postHetu(KoskiSpecificMockOppijat.europeanSchoolOfHelsinki.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+      verifyResponseStatusOk()
+
+      val oppija = JsonSerializer.parse[KelaOppija](body)
+      oppija.opiskeluoikeudet.length should be(2) // ESH & EB
+
+      val ebTutkinnot = oppija.opiskeluoikeudet collect {
+        case x: KelaEBOpiskeluoikeus => x
+      }
+
+      ebTutkinnot.length shouldBe 1
+      val ebTutkinto = ebTutkinnot.head
+      ebTutkinto.suoritukset.length shouldBe 1
+      val suoritus = ebTutkinto.suoritukset.head
+      suoritus.tyyppi.koodiarvo shouldBe "ebtutkinto"
+      suoritus.osasuoritukset.get.length shouldBe 3
+    }
+  }
+
   private def getHetu[A](hetu: String, user: MockUser = MockUsers.kelaSuppeatOikeudet)(f: => A)= {
     authGet(s"kela/$hetu", user)(f)
   }
