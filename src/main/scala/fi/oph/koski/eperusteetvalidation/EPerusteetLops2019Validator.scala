@@ -54,12 +54,17 @@ class EPerusteetLops2019Validator(ePerusteet: EPerusteetRepository) extends Logg
     s match {
       case s: LukionModuulinSuoritusOppiaineissa2019 =>
         val moduuli = s.koulutusmoduuli.tunniste.koodiarvo
+        val leaf = rakenne.findLeaf(moduuli)
         if (
-          rakenne.containsLeaf(moduuli) // Moduuli on osa tutkittavaa oppiainetta tai -määrää
+           leaf.isDefined // Moduuli on osa tutkittavaa oppiainetta tai -määrää
             || !kaikkiPerusteetTuntematModuulit.contains(moduuli) // Moduulit, jotka eivät ole ePerusteessa, jätetään varmuuden vuoksi käsittelemättä
             || onOkMatematiikanYhteinenOpintokokonaisuus(s, rakenne) // Poikkeus: MAY1-moduulin voi suorittaa sekä pitkän että lyhyen matematiikan alla
         ) {
-          HttpStatus.ok
+          if (leaf.exists(_.toisenRakenteenOsa) && s.koulutusmoduuli.pakollinen) {
+            KoskiErrorCategory.badRequest.validation.rakenne(s"Moduulia $moduuli ei voi siirtää oppiaineen ${rakenne.arvo} alle pakollisena.")
+          } else {
+            HttpStatus.ok
+          }
         } else {
           val oppiaineExpected = lops2019Validointirakenne
             .flatMap(_.findParentOf(moduuli))
@@ -123,13 +128,12 @@ class EPerusteetLops2019Validator(ePerusteet: EPerusteetRepository) extends Logg
       .map(parseLops2019)
       .map(osat => OsasuoritustenValidointirakenne("lops2019", osat))
       .map(rakenne => {
-        val diplomimoduulit = rakenne.get("LD").map(_.osat).getOrElse(Nil)
         rakenne.copy(osat = rakenne.osat.flatMap {
           // Uskontoa ei validoida oppimäärän tarkkuudella, vaan kaikki uskonnon ja elämänkatsomustiedon moduulit kelpaavat uskonnon oppiaineen suoritukseen
           case uskonto: OsasuoritustenValidointirakenne if uskonto.arvo == "KT" => Some(uskonto.flatten.merge(rakenne.get("ET")))
           case et: OsasuoritustenValidointirakenne if et.arvo == "ET" => Some(et.merge(rakenne.get("KT").map(_.flatten)))
-          case osa: OsasuoritustenValidointirakenne if osa.arvo == "LD" => None // Diplomimoduulit siirretään oikeiden oppiaineiden alle
-          case osa: OsasuoritustenValidointirakenne => Some(osa.merge(diplomimoduulit.filter(_.arvo.startsWith(osa.arvo))))
+          case osa: OsasuoritustenValidointirakenne if osa.arvo == "LD" => None // Diplomimoduuleja ei validoida
+          case osa: OsasuoritustenValidointirakenne => Some(osa)
         })
       })
 
@@ -139,9 +143,15 @@ class EPerusteetLops2019Validator(ePerusteet: EPerusteetRepository) extends Logg
 case class OsasuoritustenValidointirakenne(
   arvo: String,
   osat: List[OsasuoritustenValidointirakenne] = Nil,
+  toisenRakenteenOsa: Boolean = false,
 ) {
   def get(a: String): Option[OsasuoritustenValidointirakenne] = osat.find(_.arvo == a)
-  def containsLeaf(leaf: String): Boolean = if (osat.isEmpty) arvo == leaf else osat.exists(_.containsLeaf(leaf))
+  def findLeaf(leaf: String): Option[OsasuoritustenValidointirakenne] =
+    if (osat.isEmpty) {
+      if (arvo == leaf) Some(this) else None
+    } else {
+      osat.flatMap(_.findLeaf(leaf)).headOption
+    }
   def leafs: List[String] = if (osat.isEmpty) List(arvo) else osat.flatMap(_.leafs)
   def findParentOf(a: String): Option[OsasuoritustenValidointirakenne] =
     osat.find(_.arvo == a) match {
@@ -151,5 +161,7 @@ case class OsasuoritustenValidointirakenne(
 
   def flatten: OsasuoritustenValidointirakenne = copy(osat = osat ++ osat.map(_.flatten))
   def merge(rakenne: Option[OsasuoritustenValidointirakenne]): OsasuoritustenValidointirakenne = merge(rakenne.map(_.osat).getOrElse(Nil))
-  def merge(lisäosat: List[OsasuoritustenValidointirakenne]): OsasuoritustenValidointirakenne = copy(osat = osat ++ lisäosat)
+  def merge(lisäosat: List[OsasuoritustenValidointirakenne]): OsasuoritustenValidointirakenne =
+    copy(osat = osat ++ lisäosat.map(_.asToisenRakenteenOsa))
+  def asToisenRakenteenOsa: OsasuoritustenValidointirakenne = copy(toisenRakenteenOsa = true, osat = osat.map(_.asToisenRakenteenOsa))
 }
