@@ -35,6 +35,8 @@ export const valmiitaSuorituksia = (oppiaineSuoritukset) =>
   )
 
 export const onEshPäätasonKoulutusmoduuliProperty = (property) =>
-  property.model.parent.value.classes.includes(
+  (property.model.parent.value.classes.includes(
     'europeanschoolofhelsinkipaatasonsuoritus'
-  ) && property.key === 'koulutusmoduuli'
+  ) ||
+    property.model.parent.value.classes.includes('ebtutkinnonsuoritus')) &&
+  property.key === 'koulutusmoduuli'

@@ -315,7 +315,6 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
       case (_, ("europeanschoolofhelsinkivuosiluokkaprimary", _)) => t.get("raportti-excel-default-value-eshperusopetus")
       case (_, ("europeanschoolofhelsinkivuosiluokkasecondarylower", _)) => t.get("raportti-excel-default-value-eshperusopetus")
       case (_, ("europeanschoolofhelsinkivuosiluokkasecondaryupper", _)) => t.get("raportti-excel-default-value-eshlukio")
-      // TODO: TOR-2052 - EB-tutkinto, muuttuuko tämä jotenkin?
       case (_, ("ebtutkinto", _)) => t.get("raportti-excel-default-value-ebtutkinto")
       case (_, ("lukionoppiaineenoppimaara", _)) => t.get("raportti-excel-default-value-lukionaineopiskelija")
       case (_, ("lukionaineopinnot", _)) => t.get("raportti-excel-default-value-lukionaineopiskelija")

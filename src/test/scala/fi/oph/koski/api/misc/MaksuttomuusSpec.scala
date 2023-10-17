@@ -268,7 +268,6 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
 
           resetFixtures()
         }
-        // TODO: TOR-2052 - EB-tutkinto
         "European School of Helsinki -koulun S4 ilman opiskeluoikeuden päättymistä" in {
           val opiskeluoikeus = ExamplesEuropeanSchoolOfHelsinki.opiskeluoikeus.copy(
             tila = EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila(
@@ -445,8 +444,6 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
       }
     }
   }
-
-  // TODO: TOR-2052 - EB-tutkinto
 
   "European School of Helsinki secondary upper vuosiluokan suoritus" - {
     val lisätiedot = EuropeanSchoolOfHelsinkiOpiskeluoikeudenLisätiedot(maksuttomuus = Some(List(Maksuttomuus(date(2021, 8, 1), None, true))))

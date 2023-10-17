@@ -70,11 +70,17 @@ export const UusiEuropeanSchoolOfHelsinkiVuosiluokanSuoritus = ({
 }) => {
   const suoritusAtom = Atom()
   const oppilaitosAtom = Atom(modelData(opiskeluoikeus, 'oppilaitos'))
+  const dateAtom = Atom(new Date())
+
   const lisääSuoritus = () => {
     const suoritus = suoritusAtom.get()
+
     let proto = newSuoritusProto(
       opiskeluoikeus,
-      suoritusPrototypeKey(suoritus.tyyppi.koodiarvo)
+      suoritusPrototypeKey(
+        modelData(opiskeluoikeus, 'tyyppi.koodiarvo'),
+        suoritus.tyyppi.koodiarvo
+      )
     )
     proto = withKoulutusmoduulinTunniste(
       proto,
@@ -125,6 +131,7 @@ export const UusiEuropeanSchoolOfHelsinkiVuosiluokanSuoritus = ({
         <UusiEuropeanSchoolOfHelsinkiSuoritus
           suoritusAtom={suoritusAtom}
           oppilaitosAtom={oppilaitosAtom}
+          dateAtom={dateAtom}
           näytäKoulutusValitsin={true}
           näytäAlkamispäiväValitsin={true}
         />

@@ -173,7 +173,8 @@ const OpiskeluhistoriaOpinto = ({
           />
         )}
         {isPerusopetuksenJälkeinenOpiskeluoikeus(opiskeluoikeus) &&
-          !isYlioppilastutkinnonOpiskeluoikeus(opiskeluoikeus) && (
+          !isYlioppilastutkinnonOpiskeluoikeus(opiskeluoikeus) &&
+          !isEBTutkinnonOpiskeluoikeus(opiskeluoikeus) && (
             <InfoTableRow
               label={t("oppija__maksuttomuus")}
               value={maksuttomuusValue(opiskeluoikeus)}
@@ -480,6 +481,9 @@ const isPerusopetuksenJälkeinenOpiskeluoikeus = (
 
 const isYlioppilastutkinnonOpiskeluoikeus = (oo: MinimiOpiskeluoikeus) =>
   oo.tyyppi?.koodiarvo === "ylioppilastutkinto"
+
+const isEBTutkinnonOpiskeluoikeus = (oo: MinimiOpiskeluoikeus) =>
+  oo.tyyppi?.koodiarvo === "ebtutkinto"
 
 const kuntailmoitusAikaleimaOrd = Ord.contramap(
   (kuntailmoitus: MinimiOppijaKuntailmoitus) =>

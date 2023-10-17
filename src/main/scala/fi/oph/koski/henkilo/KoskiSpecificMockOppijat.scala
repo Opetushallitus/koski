@@ -186,6 +186,8 @@ object KoskiSpecificMockOppijat {
   val jotpaMuuKuinSäänneltySuoritettu = koskiSpecificOppijat.oppija("Suorituinen", "Muksu", "150100A254N")
   val pelkkäYoKannassaUudenOvLainPiirissä = koskiSpecificOppijat.oppija("YO-opiskeluoikeus", "Valpas", "060807A7787", syntymäaika = Some(LocalDate.of(2007, 8, 6)), kotikunta = Some("091"))
   val lukioVajaaSuoritus = koskiSpecificOppijat.oppija("Vajaa-Suoritus", "Lukiolainen", "010105A1995")
+  val deprecatedEuropeanSchoolOfHelsinki = koskiSpecificOppijat.oppija("Deprecated-Eurooppalainen", "Emma", "171005A010M")
+  val pelkkäESH = koskiSpecificOppijat.oppija("Eurooppalainen", "Eeva", "100906A5544")
 
   //Jos luot uuden oppijan voi hetun generoida täältä: http://www.lintukoto.net/muut/henkilotunnus/index.php
   //Huomaa, että hetun pitää olla oikean kaltainen

@@ -6,16 +6,16 @@ import fi.oph.scalaschema.annotation.Title
 
 import java.time.LocalDate
 
-@Title("European School of Helsinki -opiskeluoikeus")
-case class AktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiOpiskeluoikeus(
+@Title("EB-tutkinnon opiskeluoikeus")
+case class AktiivisetJaPäättyneetOpinnotEBTutkinnonOpiskeluoikeus(
   oid: Option[String],
   versionumero: Option[Int],
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija],
   sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus],
   tila: AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila,
-  suoritukset: List[AktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiPäätasonSuoritus],
-  @KoodistoKoodiarvo(schema.OpiskeluoikeudenTyyppi.europeanschoolofhelsinki.koodiarvo)
+  suoritukset: List[AktiivisetJaPäättyneetOpinnotEBTutkinnonPäätasonSuoritus],
+  @KoodistoKoodiarvo(schema.OpiskeluoikeudenTyyppi.ebtutkinto.koodiarvo)
   tyyppi: schema.Koodistokoodiviite,
 ) extends AktiivisetJaPäättyneetOpinnotKoskeenTallennettavaOpiskeluoikeus {
 
@@ -23,22 +23,21 @@ case class AktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiOpiskeluoikeus
 
   override def withSuoritukset(suoritukset: List[Suoritus]): AktiivisetJaPäättyneetOpinnotKoskeenTallennettavaOpiskeluoikeus =
     this.copy(
-      suoritukset = suoritukset.collect { case s : AktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiPäätasonSuoritus => s }
+      suoritukset = suoritukset.collect { case s : AktiivisetJaPäättyneetOpinnotEBTutkinnonPäätasonSuoritus => s }
     )
   override def withoutSisältyyOpiskeluoikeuteen: AktiivisetJaPäättyneetOpinnotKoskeenTallennettavaOpiskeluoikeus = this.copy(sisältyyOpiskeluoikeuteen = None)
 }
 
-@Title("European School of Helsinki päätason suoritus")
-case class AktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiPäätasonSuoritus(
-  koulutusmoduuli: AktiivisetJaPäättyneetOpinnotESHKoulutusmoduuli,
+@Title("EB-tutkinnon päätason suoritus")
+case class AktiivisetJaPäättyneetOpinnotEBTutkinnonPäätasonSuoritus(
+  koulutusmoduuli: AktiivisetJaPäättyneetOpinnotEBTutkinnonKoulutusmoduuli,
   vahvistus: Option[Vahvistus],
   toimipiste: Option[Toimipiste],
-  @KoodistoKoodiarvo("europeanschoolofhelsinkivuosiluokkasecondarylower")
-  @KoodistoKoodiarvo("europeanschoolofhelsinkivuosiluokkasecondaryupper")
+  @KoodistoKoodiarvo("ebtutkinto2")
   tyyppi: schema.Koodistokoodiviite,
 ) extends Suoritus
 
-case class AktiivisetJaPäättyneetOpinnotESHKoulutusmoduuli(
+case class AktiivisetJaPäättyneetOpinnotEBTutkinnonKoulutusmoduuli(
   tunniste: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite,
   curriculum: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite,
   koulutustyyppi: Option[AktiivisetJaPäättyneetOpinnotKoodistokoodiviite]

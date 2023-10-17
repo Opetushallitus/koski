@@ -120,8 +120,6 @@ object LukioDiaIbInternationalESHOpiskelijaMaaratRaporttiFixtures {
     )
   )
 
-  // TODO: TOR-2052 - EB-tutkinto, miten pitäisi näkyä raporteilla? tai jäädä näkymättä?
-
   val esh = EuropeanSchoolOfHelsinkiOpiskeluoikeus(
     oppilaitos = Some(ressunLukio),
     tila = EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila(

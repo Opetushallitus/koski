@@ -81,7 +81,7 @@ export class KoskiEshOppijaPage extends KoskiOppijaPage {
 
   async poistaSuoritus(
     vuosiluokka: string,
-    aktiivinenSuoritusPoistonJälkeen = 'EB-tutkinto'
+    aktiivinenSuoritusPoistonJälkeen = 'S7'
   ) {
     await this.clickSuoritusTabByLabel(vuosiluokka, 'first')
     await this.avaaMuokkausnäkymä()

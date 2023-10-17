@@ -260,13 +260,12 @@ class SuoritetutTutkinnotServiceSpec
     }
   }
 
-  // TODO: TOR-2052 - EB-tutkinto
   "EB-tutkinto" - {
     "vahvistetun tutkinnon tiedot palautetaan" in {
       val oppija = KoskiSpecificMockOppijat.europeanSchoolOfHelsinki
 
-      val expectedOoData = getOpiskeluoikeus(oppija.oid, schema.OpiskeluoikeudenTyyppi.europeanschoolofhelsinki.koodiarvo)
-      val expectedSuoritusData = expectedOoData.suoritukset.collectFirst { case eb: schema.DeprecatedEBTutkinnonSuoritus => eb }.get
+      val expectedOoData = getOpiskeluoikeus(oppija.oid, schema.OpiskeluoikeudenTyyppi.ebtutkinto.koodiarvo)
+      val expectedSuoritusData = expectedOoData.suoritukset.collectFirst { case eb: schema.EBTutkinnonSuoritus => eb }.get
 
       val result = suoritetutTutkinnotService.findSuoritetutTutkinnotOppija(oppija.oid)
 
@@ -276,7 +275,7 @@ class SuoritetutTutkinnotServiceSpec
         verifyOppija(oppija, o)
 
         o.opiskeluoikeudet should have length 1
-        o.opiskeluoikeudet.head shouldBe a[SuoritetutTutkinnotEuropeanSchoolOfHelsinkiOpiskeluoikeus]
+        o.opiskeluoikeudet.head shouldBe a[SuoritetutTutkinnotEBTutkinnonOpiskeluoikeus]
 
         val actualOo = o.opiskeluoikeudet.head
         val actualSuoritus = actualOo.suoritukset.head
@@ -561,12 +560,11 @@ class SuoritetutTutkinnotServiceSpec
         expectedOoData: schema.AmmatillinenOpiskeluoikeus,
         expectedSuoritusData: schema.MuunAmmatillisenKoulutuksenSuoritus
       ) => verifyMuuAmmatillinen(actualOo, actualSuoritus, expectedOoData, expectedSuoritusData)
-      // TODO: TOR-2052 - EB-tutkinto
       case (
-        actualOo: SuoritetutTutkinnotEuropeanSchoolOfHelsinkiOpiskeluoikeus,
+        actualOo: SuoritetutTutkinnotEBTutkinnonOpiskeluoikeus,
         actualSuoritus: SuoritetutTutkinnotEBTutkinnonSuoritus,
-        expectedOoData: schema.EuropeanSchoolOfHelsinkiOpiskeluoikeus,
-        expectedSuoritusData: schema.DeprecatedEBTutkinnonSuoritus
+        expectedOoData: schema.EBOpiskeluoikeus,
+        expectedSuoritusData: schema.EBTutkinnonSuoritus
         ) => verifyEBTutkinto(actualOo, actualSuoritus, expectedOoData, expectedSuoritusData)
       case (
         actualOo: SuoritetutTutkinnotDIAOpiskeluoikeus,
@@ -716,13 +714,11 @@ class SuoritetutTutkinnotServiceSpec
     actualSuoritus.tyyppi.koodiarvo should equal(expectedSuoritusData.tyyppi.koodiarvo)
   }
 
-
-  // TODO: TOR-2052 - EB-tutkinto
   private def verifyEBTutkinto(
-    actualOo: SuoritetutTutkinnotEuropeanSchoolOfHelsinkiOpiskeluoikeus,
+    actualOo: SuoritetutTutkinnotEBTutkinnonOpiskeluoikeus,
     actualSuoritus: SuoritetutTutkinnotEBTutkinnonSuoritus,
-    expectedOoData: schema.EuropeanSchoolOfHelsinkiOpiskeluoikeus,
-    expectedSuoritusData: schema.DeprecatedEBTutkinnonSuoritus
+    expectedOoData: schema.EBOpiskeluoikeus,
+    expectedSuoritusData: schema.EBTutkinnonSuoritus
   ): Unit = {
     verifyKoskiOpiskeluoikeudenKentät(actualOo, expectedOoData)
     actualOo.suoritukset.length should equal(1)

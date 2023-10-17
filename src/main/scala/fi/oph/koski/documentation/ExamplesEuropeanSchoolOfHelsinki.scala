@@ -65,7 +65,12 @@ object ExamplesEuropeanSchoolOfHelsinki {
       s4,
       s5,
       s6,
-      s7,
+      s7
+    )
+  )
+
+  def validoitumatonEBTutkinnonSisältäväOpiskeluoikeus = opiskeluoikeus.copy(
+    suoritukset = opiskeluoikeus.suoritukset ++ List(
       eb
     )
   )

@@ -36,7 +36,10 @@ import {
 import { BaseContext, Contextualized } from '../types/EditorModelContext'
 import { Bus, Observable } from 'baconjs'
 import classNames from 'classnames'
-import { eshSuorituksenTyyppi } from '../esh/europeanschoolofhelsinkiSuoritus'
+import {
+  ebSuorituksenTyyppi,
+  eshSuorituksenTyyppi
+} from '../esh/europeanschoolofhelsinkiSuoritus'
 
 export type SuoritusModel<T extends object = object> = ObjectModel &
   OptionalModel &
@@ -84,7 +87,8 @@ export const isVapaanSivistystyönOppivelvollistenSuoritus = (
 export const isEshPäätasonSuoritus = (suoritus: SuoritusModel) =>
   suoritus.value.classes.includes('europeanschoolofhelsinkipäätasonsuoritus')
 export const isEB = (suoritus: SuoritusModel) =>
-  suoritus.value.classes.includes('deprecatedebtutkinnonsuoritus')
+  suoritus.value.classes.includes('deprecatedebtutkinnonsuoritus') ||
+  suoritus.value.classes.includes('ebtutkinnonsuoritus')
 export const isEshS7 = (suoritus: SuoritusModel) =>
   suoritus.value.classes.includes('secondaryuppervuosiluokansuoritus') &&
   modelData(suoritus, 'koulutusmoduuli.tunniste.koodiarvo') === 'S7'
@@ -286,7 +290,7 @@ export const suoritusProperties = (
       case eshSuorituksenTyyppi.nursery:
       case eshSuorituksenTyyppi.primary:
       case eshSuorituksenTyyppi.ebtutkinto:
-        // TODO: TOR-2052 - EB-tutkinto
+      case ebSuorituksenTyyppi.ebtutkinto:
         return defaultsForView
           .concat(arvioitsijat)
           .concat(arvioinninKuvaus)

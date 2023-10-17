@@ -78,3 +78,4 @@ case class AktiivisetJaPäättyneetOpinnotYlioppilastutkinnonPäätasonSuoritus(
 case class AktiivisetJaPäättyneetOpinnotYlioppilastutkinnonSuorituksenKoulutusmoduuli(
   tunniste: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite,
 ) extends SuorituksenKoulutusmoduuli
+

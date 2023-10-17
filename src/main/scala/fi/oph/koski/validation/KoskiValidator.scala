@@ -12,6 +12,7 @@ import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
 import fi.oph.koski.opiskeluoikeus.KoskiOpiskeluoikeusRepository
+import fi.oph.koski.oppija.KoskiOppijaFacade
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
@@ -140,7 +141,7 @@ class KoskiValidator(
                 VapaaSivistystyöValidation.validateVapaanSivistystyönPäätasonOpintokokonaisuus(opiskeluoikeus),
                 JotpaValidation.validateOpiskeluoikeus(opiskeluoikeus, JotpaValidation.jotpaRahoitusVoimassaAlkaen(config)),
                 TutkintokoulutukseenValmentavaKoulutusValidation.validateOpiskeluoikeus(opiskeluoikeus),
-                EuropeanSchoolOfHelsinkiValidation.validateOpiskeluoikeus(config)(opiskeluoikeus),
+                EuropeanSchoolOfHelsinkiValidation.validateOpiskeluoikeus(config)(henkilöRepository, koskiOpiskeluoikeudet, henkilö, opiskeluoikeus),
                 TaiteenPerusopetusValidation.validateOpiskeluoikeus(config)(opiskeluoikeus, suostumuksenPeruutusService),
                 IBValidation.validateIbOpiskeluoikeus(config)(opiskeluoikeus),
               )

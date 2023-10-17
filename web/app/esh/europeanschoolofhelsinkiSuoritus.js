@@ -1,6 +1,5 @@
 import { formatISODate } from '../date/date'
 
-// TODO: TOR-2052 - EB-tutkinto
 export const makeSuoritus = (
   oppilaitos,
   koulutusmoduulinTunniste,
@@ -20,6 +19,22 @@ export const makeSuoritus = (
   }
 }
 
+export const makeEBSuoritus = (oppilaitos, curriculum) => {
+  if (!oppilaitos || !curriculum) return null
+
+  return {
+    koulutusmoduuli: {
+      tunniste: { koodiarvo: '301104', koodistoUri: 'koulutus' },
+      curriculum
+    },
+    toimipiste: oppilaitos,
+    tyyppi: {
+      koodiarvo: ebSuorituksenTyyppi.ebtutkinto,
+      koodistoUri: 'suorituksentyyppi'
+    }
+  }
+}
+
 /**
  * European School of Helsinki -opiskeluoikeudessa käytettyjen koulutusmoduulin tunnisteiden suorituksen tyypit
  */
@@ -29,6 +44,10 @@ export const eshSuorituksenTyyppi = {
   secondaryLower: 'europeanschoolofhelsinkivuosiluokkasecondarylower',
   secondaryUpper: 'europeanschoolofhelsinkivuosiluokkasecondaryupper',
   ebtutkinto: 'ebtutkinto'
+}
+
+export const ebSuorituksenTyyppi = {
+  ebtutkinto: 'ebtutkinto2'
 }
 
 /**
@@ -47,6 +66,11 @@ export const eshSuorituksenClass = {
   secondaryUppers7: 'secondaryupperoppiaineensuorituss7',
   secondaryUppers7alaosasuoritus: 's7oppiaineenalaosasuoritus',
   primaryOsasuoritus: 'primaryosasuoritus'
+}
+
+export const ebSuorituksenClass = {
+  ebtutkinto: 'ebtutkinnonsuoritus',
+  ebtutkintoOsasuoritus: 'ebtutkinnonosasuoritus'
 }
 
 /**
@@ -81,19 +105,39 @@ export const suoritusTyyppi = (koulutusmoduulinTunniste) => {
   throw new Error(`suoritusTyyppi not found for ${koulutusmoduulinTunniste}`)
 }
 
-export const suoritusPrototypeKey = (suorituksenTyyppi) => {
-  switch (suorituksenTyyppi) {
-    case eshSuorituksenTyyppi.nursery:
-      return eshSuorituksenClass.nursery
-    case eshSuorituksenTyyppi.primary:
-      return eshSuorituksenClass.primary
-    case eshSuorituksenTyyppi.secondaryLower:
-      return eshSuorituksenClass.secondaryLowerVuosiluokka
-    case eshSuorituksenTyyppi.secondaryUpper:
-      return eshSuorituksenClass.secondaryUpperVuosiluokka
-    case eshSuorituksenTyyppi.ebtutkinto:
-      return eshSuorituksenClass.ebtutkinto
-    default:
-      throw new Error(`suoritusProtypeKey not found for ${suorituksenTyyppi}`)
+export const suoritusPrototypeKey = (
+  opiskeluoikeudenTyyppi,
+  suorituksenTyyppi
+) => {
+  if (opiskeluoikeudenTyyppi === 'europeanschoolofhelsinki') {
+    switch (suorituksenTyyppi) {
+      case eshSuorituksenTyyppi.nursery:
+        return eshSuorituksenClass.nursery
+      case eshSuorituksenTyyppi.primary:
+        return eshSuorituksenClass.primary
+      case eshSuorituksenTyyppi.secondaryLower:
+        return eshSuorituksenClass.secondaryLowerVuosiluokka
+      case eshSuorituksenTyyppi.secondaryUpper:
+        return eshSuorituksenClass.secondaryUpperVuosiluokka
+      case eshSuorituksenTyyppi.ebtutkinto:
+        return eshSuorituksenClass.ebtutkinto
+      default:
+        throw new Error(
+          `suoritusProtypeKey not found for ${opiskeluoikeudenTyyppi}, ${suorituksenTyyppi}`
+        )
+    }
+  } else if (opiskeluoikeudenTyyppi === 'ebtutkinto') {
+    switch (suorituksenTyyppi) {
+      case ebSuorituksenTyyppi.ebtutkinto:
+        return ebSuorituksenClass.ebtutkinto
+      default:
+        throw new Error(
+          `suoritusProtypeKey not found for ${opiskeluoikeudenTyyppi}, ${suorituksenTyyppi}`
+        )
+    }
+  } else {
+    throw new Error(
+      `suoritusProtypeKey not found for ${opiskeluoikeudenTyyppi}, ${suorituksenTyyppi}`
+    )
   }
 }

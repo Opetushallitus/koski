@@ -7,9 +7,9 @@ import {
   isSuoritetutTutkinnotDIAOpiskeluoikeus
 } from './SuoritetutTutkinnotDIAOpiskeluoikeus'
 import {
-  SuoritetutTutkinnotEuropeanSchoolOfHelsinkiOpiskeluoikeus,
-  isSuoritetutTutkinnotEuropeanSchoolOfHelsinkiOpiskeluoikeus
-} from './SuoritetutTutkinnotEuropeanSchoolOfHelsinkiOpiskeluoikeus'
+  SuoritetutTutkinnotEBTutkinnonOpiskeluoikeus,
+  isSuoritetutTutkinnotEBTutkinnonOpiskeluoikeus
+} from './SuoritetutTutkinnotEBTutkinnonOpiskeluoikeus'
 import {
   SuoritetutTutkinnotKorkeakoulunOpiskeluoikeus,
   isSuoritetutTutkinnotKorkeakoulunOpiskeluoikeus
@@ -27,7 +27,7 @@ import {
 export type SuoritetutTutkinnotOpiskeluoikeus =
   | SuoritetutTutkinnotAmmatillinenOpiskeluoikeus
   | SuoritetutTutkinnotDIAOpiskeluoikeus
-  | SuoritetutTutkinnotEuropeanSchoolOfHelsinkiOpiskeluoikeus
+  | SuoritetutTutkinnotEBTutkinnonOpiskeluoikeus
   | SuoritetutTutkinnotKorkeakoulunOpiskeluoikeus
   | SuoritetutTutkinnotYlioppilastutkinnonOpiskeluoikeus
 
@@ -36,6 +36,6 @@ export const isSuoritetutTutkinnotOpiskeluoikeus = (
 ): a is SuoritetutTutkinnotOpiskeluoikeus =>
   isSuoritetutTutkinnotAmmatillinenOpiskeluoikeus(a) ||
   isSuoritetutTutkinnotDIAOpiskeluoikeus(a) ||
-  isSuoritetutTutkinnotEuropeanSchoolOfHelsinkiOpiskeluoikeus(a) ||
+  isSuoritetutTutkinnotEBTutkinnonOpiskeluoikeus(a) ||
   isSuoritetutTutkinnotKorkeakoulunOpiskeluoikeus(a) ||
   isSuoritetutTutkinnotYlioppilastutkinnonOpiskeluoikeus(a)

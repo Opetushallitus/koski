@@ -101,8 +101,6 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
     )
   })
 
-
-  // TODO: TOR-2052 - EB-tutkinto halutulla tavalla Valppaaseen
   private def queryOppijat(
     oppijaOids: Seq[String],
     oppilaitosOids: Option[Seq[String]],
@@ -932,6 +930,8 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         ov_kelvollinen_opiskeluoikeus.koulutusmuoto <> 'lukiokoulutus'
         OR lukio_oppimaaran_suorituksia.loytyi IS TRUE
       )
+      -- (1d) EB-tutkinto ei ole koskaan suorittamisvalvottava, vaikka se kelpaakin oppivelvollisuuden suorittamiseen
+      AND (ov_kelvollinen_opiskeluoikeus.koulutusmuoto <> 'ebtutkinto')
       AND (
         -- (2a) opiskeluoikeus on läsnä tai väliaikaisesti keskeytynyt tai lomalla tällä hetkellä.
         -- Huomaa, että tulevaisuuteen luotuja opiskeluoikeuksia ei tarkoituksella haluta näkyviin.

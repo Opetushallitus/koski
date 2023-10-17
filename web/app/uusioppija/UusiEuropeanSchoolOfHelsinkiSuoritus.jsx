@@ -11,20 +11,19 @@ import { ift } from '../util/util'
 export default ({
   suoritusAtom,
   oppilaitosAtom,
+  dateAtom,
   näytäKoulutusValitsin,
   näytäAlkamispäiväValitsin
 }) => {
-  const dateAtom = näytäAlkamispäiväValitsin ? Atom(new Date()) : undefined
-
   // ESH-opiskeluoikeuden suorituksen koulutusmoduuli
   const koulutusmoduuliAtom = Atom()
 
   const koulutusmoduulitP = Bacon.combineWith(
     (p1, p2) => p1.concat(p2),
-    koodistoValues('koulutus', ['301104']),
     koodistoValues('europeanschoolofhelsinkiluokkaaste').map(
       (koulutusmoduulit) => koulutusmoduulit.sort(byAste)
-    )
+    ),
+    koodistoValues('koulutus', ['301104'])
   )
 
   koulutusmoduulitP.onValue((koulutusmoduulit) => {
@@ -69,15 +68,9 @@ export default ({
         enableFilter={false}
       />
       <div>
-        {ift(
-          koulutusmoduuliAtom.map((koulutusmoduuli) => {
-            return (
-              koulutusmoduuli?.koodistoUri ===
-              'europeanschoolofhelsinkiluokkaaste'
-            )
-          }),
+        {näytäAlkamispäiväValitsin ? (
           <Aloituspäivä dateAtom={dateAtom} />
-        )}
+        ) : null}
       </div>
     </>
   )

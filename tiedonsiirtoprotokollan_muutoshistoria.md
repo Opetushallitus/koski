@@ -1,3 +1,7 @@
+## 16.10.2023
+
+- Lisätty ESH-opiskeluoikeuden S7-vuosiluokalle mahdollisuus kirjata Preliminary-arvosanat
+
 ## 2.10.2023
 
 - Lisätty tietomalliin mahdollisuus tallentaa EB-tutkinto omassa opiskeluoikeudessa erillään European School of Helsingin opinnoista.

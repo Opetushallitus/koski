@@ -20,7 +20,7 @@ object AktiivisetJaPäättyneetOpinnotSchema {
     schema.OpiskeluoikeudenTyyppi.ibtutkinto.koodiarvo,
     schema.OpiskeluoikeudenTyyppi.lukiokoulutus.koodiarvo,
     schema.OpiskeluoikeudenTyyppi.tuva.koodiarvo,
-    // TODO: TOR-2052 - EB-tutkinto
+    schema.OpiskeluoikeudenTyyppi.ebtutkinto.koodiarvo, // Vain vahvistetut
     schema.OpiskeluoikeudenTyyppi.europeanschoolofhelsinki.koodiarvo, // Vain ne, missä on lukiota vastaavia luokkia
     schema.OpiskeluoikeudenTyyppi.internationalschool.koodiarvo, // Vain ne, missä on lukiota vastaavia luokkia
     schema.OpiskeluoikeudenTyyppi.muukuinsaanneltykoulutus.koodiarvo,

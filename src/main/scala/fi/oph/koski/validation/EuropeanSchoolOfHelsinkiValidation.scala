@@ -2,19 +2,23 @@ package fi.oph.koski.validation
 
 import com.typesafe.config.Config
 import fi.oph.koski.documentation.ExampleData.muutaKauttaRahoitettu
+import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
-import fi.oph.koski.schema.{DeprecatedEBTutkinnonOsasuoritus, DeprecatedEBTutkinnonSuoritus, EBOpiskeluoikeus, EBTutkinnonOsasuoritus, EBTutkinnonSuoritus, EuropeanSchoolOfHelsinkiOpiskeluoikeus, EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso, EuropeanSchoolOfHelsinkiPäätasonSuoritus, EuropeanSchoolOfHelsinkiVuosiluokanSuoritus, Koodistokoodiviite, KoskeenTallennettavaOpiskeluoikeus, NurseryVuosiluokanSuoritus, Opiskeluoikeus, PrimaryVuosiluokanSuoritus, SecondaryLowerVuosiluokanSuoritus, SecondaryUpperOppiaineenSuoritus, SecondaryUpperVuosiluokanSuoritus}
+import fi.oph.koski.koskiuser.KoskiSpecificSession
+import fi.oph.koski.opiskeluoikeus.KoskiOpiskeluoikeusRepository
+import fi.oph.koski.schema.{DeprecatedEBTutkinnonOsasuoritus, DeprecatedEBTutkinnonSuoritus, EBOpiskeluoikeus, EBTutkinnonOsasuoritus, EBTutkinnonSuoritus, EuropeanSchoolOfHelsinkiOpiskeluoikeus, EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso, EuropeanSchoolOfHelsinkiPäätasonSuoritus, EuropeanSchoolOfHelsinkiVuosiluokanSuoritus, Henkilö, HenkilöWithOid, Koodistokoodiviite, KoskeenTallennettavaOpiskeluoikeus, NurseryVuosiluokanSuoritus, Opiskeluoikeus, PrimaryVuosiluokanSuoritus, SecondaryLowerVuosiluokanSuoritus, SecondaryUpperOppiaineenSuoritus, SecondaryUpperVuosiluokanSuoritus, UusiHenkilö}
 import fi.oph.koski.util.FinnishDateFormat.finnishDateFormat
 
 import java.time.LocalDate
 
 object EuropeanSchoolOfHelsinkiValidation {
 
-  def validateOpiskeluoikeus(config: Config)(oo: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
+  def validateOpiskeluoikeus(config: Config)(henkilöRepository: HenkilöRepository, koskiOpiskeluoikeudet: KoskiOpiskeluoikeusRepository, henkilö: Option[Henkilö], oo: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
     oo match {
       case eshOo: EuropeanSchoolOfHelsinkiOpiskeluoikeus =>
         HttpStatus.fold(
+          validateEiEB(eshOo),
           validateTallennuspäivä(
             LocalDate.parse(config.getString("validaatiot.europeanSchoolOfHelsinkiAikaisinSallittuTallennuspaiva"))
           ),
@@ -31,10 +35,22 @@ object EuropeanSchoolOfHelsinkiValidation {
           validatePäättymispäivä(
             ebOo,
             LocalDate.parse(config.getString("validaatiot.europeanSchoolOfHelsinkiAikaisinSallittuPaattymispaiva")),
-          )
+          ),
+          validateESHS7SamallaOppijalla(henkilöRepository, koskiOpiskeluoikeudet, henkilö)
         )
       case _ => HttpStatus.ok
     }
+  }
+
+  private def validateEiEB(oo: EuropeanSchoolOfHelsinkiOpiskeluoikeus): HttpStatus = {
+    HttpStatus.validate(
+      !oo.suoritukset.exists {
+        case _: DeprecatedEBTutkinnonSuoritus => true
+        case _ => false
+      }
+    )(
+      KoskiErrorCategory.badRequest.validation.esh.mukanaEB()
+    )
   }
 
   private def validateTallennuspäivä(aikaisinTallennuspäivä: LocalDate): HttpStatus = {
@@ -53,6 +69,34 @@ object EuropeanSchoolOfHelsinkiValidation {
     }
   }
 
+  private def validateESHS7SamallaOppijalla(henkilöRepository: HenkilöRepository, koskiOpiskeluoikeudet: KoskiOpiskeluoikeusRepository, henkilö: Option[Henkilö]): HttpStatus = {
+    def oppijallaOnESHS7(oppijaOidit: List[Henkilö.Oid]) = {
+      val oot = koskiOpiskeluoikeudet.findByOppijaOids(oppijaOidit)(KoskiSpecificSession.systemUser)
+
+      oot.exists {
+        case eshOo: EuropeanSchoolOfHelsinkiOpiskeluoikeus if eshOo.suoritukset.exists(_.koulutusmoduuli.tunniste.koodiarvo == "S7") => true
+        case _ => false
+      }
+    }
+
+    val henkilöOid = henkilö match {
+      case Some(h: HenkilöWithOid) => Some(h.oid)
+      case Some(h: UusiHenkilö) => henkilöRepository.opintopolku.findByHetu(h.hetu) match {
+        case Some(henkilö) => Some(henkilö.oid)
+        case _ => None
+      }
+      case _ => None
+    }
+
+    henkilöOid
+      .flatMap(henkilöOid => henkilöRepository.findByOid(henkilöOid, findMasterIfSlaveOid = true))
+      .map(hlö => oppijallaOnESHS7(hlö.kaikkiOidit))
+    match {
+        case Some(true) => HttpStatus.ok
+        case _ => KoskiErrorCategory.badRequest.validation.eb.puuttuvaESHS7()
+    }
+  }
+
   def validateEBTutkinnonArvioinnit(suoritus: DeprecatedEBTutkinnonSuoritus): HttpStatus = {
     if (suoritus.vahvistettu && suoritus.yleisarvosana.isEmpty) {
       KoskiErrorCategory.badRequest.validation.esh.yleisarvosana()
@@ -63,11 +107,12 @@ object EuropeanSchoolOfHelsinkiValidation {
 
   def validateEBTutkinnonArvioinnit(suoritus: EBTutkinnonSuoritus): HttpStatus = {
     if (suoritus.vahvistettu && suoritus.yleisarvosana.isEmpty) {
-      KoskiErrorCategory.badRequest.validation.esh.yleisarvosana()
+      KoskiErrorCategory.badRequest.validation.eb.yleisarvosana()
     } else {
       HttpStatus.ok
     }
   }
+
 
   def fillRahoitusmuodot(koodistoPalvelu: KoodistoViitePalvelu)(oo: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus = {
     oo match {

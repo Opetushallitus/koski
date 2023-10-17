@@ -447,7 +447,6 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
           result.suoritukset.map(_.koulutusmoduuli.tunniste.koodiarvo) should equal(List(uusiSuoritus.koulutusmoduuli.tunniste.koodiarvo))
         }
       }
-      // TODO: TOR-2052 - EB-tutkinto, tosin siinä varmaan vain yksi suoritus?
       "European School of Helsingin suorituksia ei säilytetä" in {
         resetFixtures
         val vanhaValmisSuoritus = ExamplesEuropeanSchoolOfHelsinki.p2

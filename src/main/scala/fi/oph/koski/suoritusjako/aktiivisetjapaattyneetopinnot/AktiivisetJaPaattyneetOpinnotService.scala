@@ -55,6 +55,7 @@ class AktiivisetJaPäättyneetOpinnotService(application: KoskiApplication) exte
           opiskeluoikeus.suoritukset
             .filter(josInternationalSchoolNiinLukiotaVastaava)
             .filter(josYOTutkintoNiinVahvistettu)
+            .filter(josEBTutkintoNiinVahvistettu)
             .filter(vähintäänS5josESHSecondaryLower)
         )
       }.filter(_.suoritukset.nonEmpty)
@@ -79,6 +80,15 @@ class AktiivisetJaPäättyneetOpinnotService(application: KoskiApplication) exte
         => s.vahvistus.isDefined
       case _
         => true
+    }
+  }
+
+  private def josEBTutkintoNiinVahvistettu(s: Suoritus): Boolean = {
+    s match {
+      case s: AktiivisetJaPäättyneetOpinnotEBTutkinnonPäätasonSuoritus
+      => s.vahvistus.isDefined
+      case _
+      => true
     }
   }
 

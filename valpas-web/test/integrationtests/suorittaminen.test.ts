@@ -43,6 +43,8 @@ import {
   valitsimenOrganisaatiot,
 } from "./organisaatiovalitsin-helpers"
 import {
+  europeanSchoolOfHelsinki2023SuorittaminenTableContent,
+  europeanSchoolOfHelsinki2023SuorittaminenTableHead,
   europeanSchoolOfHelsinkiSuorittaminenTableContent,
   europeanSchoolOfHelsinkiSuorittaminenTableHead,
   internationalSchoolSuorittaminenTableContent,
@@ -446,6 +448,25 @@ describe("Suorittamisen valvonta -näkymä", () => {
         "|"
       )
     })
+  })
+
+  it("Näyttää ESH:ssa vain ESH:ta suorittavat, ei pelkkää EB:tä suorittavia", async () => {
+    await loginAs(suorittaminenListaPath, "valpas-esh")
+    await urlIsEventually(pathToUrl(europeanSchoolOfHelsinkiSuorittaminenPath))
+
+    await resetMockData("2023-06-20")
+
+    await goToLocation(europeanSchoolOfHelsinkiSuorittaminenPath)
+
+    await textEventuallyEquals(
+      ".card__header",
+      europeanSchoolOfHelsinki2023SuorittaminenTableHead
+    )
+    await dataTableEventuallyEquals(
+      ".suorittaminen",
+      europeanSchoolOfHelsinki2023SuorittaminenTableContent,
+      "|"
+    )
   })
 })
 

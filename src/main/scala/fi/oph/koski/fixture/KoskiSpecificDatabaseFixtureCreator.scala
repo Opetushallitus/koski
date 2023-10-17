@@ -41,6 +41,8 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
       }
     )
 
+    val validESHOpiskeluoikeus = updateFieldsAndValidateOpiskeluoikeus(ExamplesEuropeanSchoolOfHelsinki.opiskeluoikeus)
+
     val hkiTallentaja = MockUsers.helsinkiTallentaja.toKoskiSpecificSession(application.käyttöoikeusRepository)
     List(
       (KoskiSpecificMockOppijat.organisaatioHistoria, validOpiskeluoikeus.copy(organisaatiohistoria = Some(AmmatillinenExampleData.opiskeluoikeudenOrganisaatioHistoria))),
@@ -130,7 +132,12 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
             ))
           )
         )
-      ))
+      )),
+      (KoskiSpecificMockOppijat.deprecatedEuropeanSchoolOfHelsinki, validESHOpiskeluoikeus.copy(
+        suoritukset = validESHOpiskeluoikeus.suoritukset ++ List(
+          ExamplesEuropeanSchoolOfHelsinki.eb
+        )
+      )),
     )
   }
 
@@ -204,7 +211,6 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
       (KoskiSpecificMockOppijat.erkkiEiperusteissa, AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto, koulutusKoodi = 334117, diaariNumero = "22/011/2004", versio = Some(11))),
       (KoskiSpecificMockOppijat.internationalschool, ExamplesInternationalSchool.opiskeluoikeus),
       (KoskiSpecificMockOppijat.europeanSchoolOfHelsinki, ExamplesEuropeanSchoolOfHelsinki.opiskeluoikeus),
-      (KoskiSpecificMockOppijat.europeanSchoolOfHelsinki, ExamplesEB.opiskeluoikeus),
       (KoskiSpecificMockOppijat.valviraaKiinnostavaTutkinto, AmmatillinenExampleData.sosiaaliJaTerveysalaOpiskeluoikeus()),
       (KoskiSpecificMockOppijat.valviraaKiinnostavaTutkintoKesken, AmmatillinenExampleData.sosiaaliJaTerveysalaOpiskeluoikeusKesken()),
       (KoskiSpecificMockOppijat.kelaErityyppisiaOpiskeluoikeuksia, ExamplesEsiopetus.esioppilas.tallennettavatOpiskeluoikeudet.head),
@@ -301,6 +307,13 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
       (KoskiSpecificMockOppijat.ammatilliseenTetäväänValmistavaMuuAmmatillinenVahvistettu, MuunAmmatillisenKoulutuksenExample.ammatilliseenTehtäväänValmistavaKoulutusOpiskeluoikeusVahvistettu),
       (KoskiSpecificMockOppijat.jotpaMuuKuinSäänneltySuoritettu, ExamplesMuuKuinSäänneltyKoulutus.Opiskeluoikeus.suoritettu),
       (KoskiSpecificMockOppijat.lukioVajaaSuoritus, ExamplesLukio2019.aktiivinenVähänOpiskeltuOppiaineenOppimääräOpiskeluoikeus),
+      (KoskiSpecificMockOppijat.pelkkäESH, ExamplesEuropeanSchoolOfHelsinki.opiskeluoikeus)
+    )
+  }
+
+  protected def secondBatchOpiskeluOikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = {
+    List(
+      (KoskiSpecificMockOppijat.europeanSchoolOfHelsinki, ExamplesEB.opiskeluoikeus), // Ei validoidu ilman, että ESH-opiskeluoikeus on jo aikaisemmin tietokannassa
     )
   }
 

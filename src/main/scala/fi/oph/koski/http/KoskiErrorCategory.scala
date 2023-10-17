@@ -252,8 +252,20 @@ object KoskiErrorCategory {
         val tallennuspäivä = subcategory("tallennuspäivä", "Helsingin eurooppalaisen koulun opiskeluoikeuksia ei saa vielä tallentaa")
         val päättymispäivä = subcategory("päättymispäivä", "Helsingin eurooppalaisen koulun tallennettavat opiskeluoikeudet eivät voi päättyä ennen lain voimaantuloa")
         val yleisarvosana = subcategory("yleisarvosana", "EB-tutkintoa ei voi vahvistaa ilman yleisarvosanaa")
+        val mukanaEB = subcategory("mukanaEB", "EB-tutkintoa ei voi enää tallentaa osaksi ESH-opiskeluoikeutta")
       }
       val esh = new ESH
+
+      class EB extends ErrorCategory(
+        Validation.this,
+        "eb",
+        "EB-tutkinnon kirjauksiin liittyvä validointivirhe"
+      ) {
+        val yleisarvosana = subcategory("yleisarvosana", "EB-tutkintoa ei voi vahvistaa ilman yleisarvosanaa")
+        val puuttuvaESHS7 = subcategory("puuttuvaESHS7", "EB-tutkinnon opiskeluoikeutta ei voi kirjata, jos oppijalla ei ole European School of Helsinki -opiskeluoikeutta, jossa S7-suoritus")
+      }
+
+      val eb = new EB
     }
     val validation = new Validation
   }

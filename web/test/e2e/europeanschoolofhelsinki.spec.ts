@@ -19,10 +19,8 @@ test.describe('European School of Helsinki', () => {
         'Eurooppalainen, Emilia (050707A130V)'
       )
       await expect(eshOppijaPage.hetu).toContainText('050707A130V')
-      await expect(eshOppijaPage.koulutusmoduuli).toContainText(
-        'European Baccalaureate2023'
-      )
-      await expect(eshOppijaPage.luokka).toContainText('S7 EN')
+      await expect(eshOppijaPage.koulutusmoduuli).toContainText('S72023')
+      await expect(eshOppijaPage.luokka).toContainText('S7A')
       await expect(eshOppijaPage.toimipiste).toContainText(
         'Helsingin eurooppalainen koulu'
       )
@@ -175,7 +173,7 @@ test.describe('European School of Helsinki', () => {
         test.slow()
         const vuosiluokka = 'S7'
 
-        await eshOppijaPage.poistaSuoritus(vuosiluokka)
+        await eshOppijaPage.poistaSuoritus(vuosiluokka, 'S6')
 
         await eshOppijaPage.poistaViimeisinTila()
 
@@ -210,6 +208,9 @@ test.describe('European School of Helsinki', () => {
         await (
           await mathematicsOsasuoritus.lisääOsasuoritus('Year mark')
         ).valitseArvosana('6.4')
+        await (
+          await mathematicsOsasuoritus.lisääOsasuoritus('Preliminary')
+        ).valitseArvosana('6.8')
 
         const poistettavatOsasuoritukset = [
           'Second language',
@@ -508,7 +509,7 @@ test.describe('European School of Helsinki', () => {
         )
       })
 
-      test('Opiskeluoikeuden luonti onnistuu ja luo uuden opiskeluoikeuden tyhjällä EB-tutkinnon suorituksella', async ({
+      test('Opiskeluoikeuden luonti onnistuu ja luo uuden opiskeluoikeuden tyhjällä N1-suorituksella', async ({
         uusiOppijaPage,
         eshOppijaPage
       }) => {
@@ -520,9 +521,7 @@ test.describe('European School of Helsinki', () => {
           `${oppija.sukunimi}, ${oppija.etunimet} (${hetu})`
         )
         await expect(eshOppijaPage.hetu).toContainText(`${hetu}`)
-        await expect(eshOppijaPage.koulutusmoduuli).toContainText(
-          'European Baccalaureate2023'
-        )
+        await expect(eshOppijaPage.koulutusmoduuli).toContainText('N1')
         await expect(eshOppijaPage.toimipiste).toContainText(
           `${oppija.oppilaitos}`
         )

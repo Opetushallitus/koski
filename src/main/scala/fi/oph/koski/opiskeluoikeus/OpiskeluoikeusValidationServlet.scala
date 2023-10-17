@@ -43,7 +43,7 @@ class OpiskeluoikeusValidationServlet(implicit val application: KoskiApplication
       if (validateHenkilö) result = result + context.validateHenkilö(row)
       result
     } catch {
-      case e: Exception => ValidationResult(row.oppijaOid, row.oid, List(ErrorDetail(KoskiErrorCategory.internalError.key, e.getMessage)))
+      case e: Exception => ValidationResult(row.oppijaOid, row.oid, row.koulutusmuoto, List(ErrorDetail(KoskiErrorCategory.internalError.key, e.getMessage)))
     }
 
     val validationResults: Observable[ValidationResult] = validate(errorsOnly, validateRow, systemUser)
@@ -82,12 +82,12 @@ case class ValidateContext(validator: KoskiValidator, historyRepository: KoskiOp
           }
         case Left(error) => error
       }) match {
-        case HttpStatus.ok => ValidationResult(row.oppijaOid, row.oid, Nil)
-        case status: HttpStatus => ValidationResult(row.oppijaOid, row.oid, status.errors)
+        case HttpStatus.ok => ValidationResult(row.oppijaOid, row.oid, row.koulutusmuoto, Nil)
+        case status: HttpStatus => ValidationResult(row.oppijaOid, row.oid, row.koulutusmuoto, status.errors)
       }
     } catch {
       case e: MappingException =>
-        ValidationResult(row.oppijaOid, row.oid, List(ErrorDetail("deserializationFailed", s"Opiskeluoikeuden ${row.oid} deserialisointi epäonnistui")))
+        ValidationResult(row.oppijaOid, row.oid, row.koulutusmuoto, List(ErrorDetail("deserializationFailed", s"Opiskeluoikeuden ${row.oid} deserialisointi epäonnistui")))
     }
   }
 
@@ -102,9 +102,9 @@ case class ValidateContext(validator: KoskiValidator, historyRepository: KoskiOp
   private def renderValidationResult(row: KoskiOpiskeluoikeusRow, validationResult: Either[HttpStatus, Opiskeluoikeus]) = {
     validationResult match {
       case Right(oppija) =>
-        ValidationResult(row.oppijaOid, row.oid, Nil)
+        ValidationResult(row.oppijaOid, row.oid, row.koulutusmuoto, Nil)
       case Left(status) =>
-        val result = ValidationResult(row.oppijaOid, row.oid, status.errors)
+        val result = ValidationResult(row.oppijaOid, row.oid, row.koulutusmuoto, status.errors)
         logger.warn(s"Validation failed $result")
         result
     }
@@ -112,9 +112,9 @@ case class ValidateContext(validator: KoskiValidator, historyRepository: KoskiOp
 
   def validateHenkilö(row: KoskiOpiskeluoikeusRow): ValidationResult = {
     if (henkilöRepository.henkilöExists(row.oppijaOid)) {
-      ValidationResult(row.oppijaOid, row.oid, Nil)
+      ValidationResult(row.oppijaOid, row.oid, row.koulutusmuoto, Nil)
     } else {
-      ValidationResult(row.oppijaOid, row.oid, List(ErrorDetail("oppijaaEiLöydy", s"Oppijaa ${row.oppijaOid} ei löydy henkilöpalvelusta")))
+      ValidationResult(row.oppijaOid, row.oid, row.koulutusmuoto, List(ErrorDetail("oppijaaEiLöydy", s"Oppijaa ${row.oppijaOid} ei löydy henkilöpalvelusta")))
     }
   }
 
@@ -123,9 +123,9 @@ case class ValidateContext(validator: KoskiValidator, historyRepository: KoskiOp
   }
 }
 
-case class ValidationResult(henkilöOid: Henkilö.Oid, opiskeluoikeusOid: String, errors: List[ErrorDetail]) {
+case class ValidationResult(henkilöOid: Henkilö.Oid, opiskeluoikeusOid: String, opiskeluoikeusTyyppi: String, errors: List[ErrorDetail]) {
   def isOk = errors.isEmpty
-  def +(other: ValidationResult) = ValidationResult(henkilöOid, opiskeluoikeusOid, errors ++ other.errors)
+  def +(other: ValidationResult) = ValidationResult(henkilöOid, opiskeluoikeusOid, opiskeluoikeusTyyppi, errors ++ other.errors)
 }
 
 case class HistoryInconsistency(message: String, @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT)) diff: JValue)

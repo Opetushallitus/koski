@@ -39,6 +39,7 @@ export type Opiskeluoikeudentyyppi = KoodistoKoodiviite<
   | "tuva"
   | "vapaansivistystyonkoulutus"
   | "ylioppilastutkinto"
+  | "ebtutkinto"
 >
 
 export type Kieli = KoodistoKoodiviite<"kieli", "FI" | "SV">
