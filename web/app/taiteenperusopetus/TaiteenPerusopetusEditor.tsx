@@ -282,6 +282,7 @@ export const TaiteenPerusopetusEditor: React.FC<
               </RaisedButton>
               <Spacer />
               <OsasuoritusTable
+                testId={päätasonSuoritus.testId}
                 editMode={form.editMode}
                 level={0}
                 openState={osasuorituksetOpenState}
@@ -291,7 +292,6 @@ export const TaiteenPerusopetusEditor: React.FC<
                     osasuoritusToTableRow(
                       form,
                       päätasonSuoritus.path,
-                      0,
                       päätasonSuoritus.index,
                       osasuoritusIndex
                     )
@@ -326,7 +326,6 @@ const osasuoritusToTableRow = (
     TaiteenPerusopetuksenOpiskeluoikeus,
     TaiteenPerusopetuksenPäätasonSuoritus
   >,
-  levelIndex: number,
   suoritusIndex: number,
   osasuoritusIndex: number
 ): OsasuoritusRowData<'Osasuoritus' | 'Laajuus' | 'Arviointi'> => {
@@ -345,12 +344,7 @@ const osasuoritusToTableRow = (
           form={form}
           path={osasuoritus.path('koulutusmoduuli.tunniste.nimi')}
           view={LocalizedTextView}
-          testId={osasuoritusTestId(
-            suoritusIndex,
-            levelIndex,
-            osasuoritusIndex,
-            'nimi'
-          )}
+          testId={osasuoritusTestId(suoritusIndex, osasuoritusIndex, 'nimi')}
         />
       ),
       Laajuus: (
@@ -359,12 +353,7 @@ const osasuoritusToTableRow = (
           path={osasuoritus.path('koulutusmoduuli.laajuus')}
           view={LaajuusView}
           edit={LaajuusOpintopisteissäEdit}
-          testId={osasuoritusTestId(
-            suoritusIndex,
-            levelIndex,
-            osasuoritusIndex,
-            'laajuus'
-          )}
+          testId={osasuoritusTestId(suoritusIndex, osasuoritusIndex, 'laajuus')}
         />
       ),
       Arviointi: (
@@ -377,7 +366,6 @@ const osasuoritusToTableRow = (
           )}
           testId={osasuoritusTestId(
             suoritusIndex,
-            levelIndex,
             osasuoritusIndex,
             'arvosana'
           )}
@@ -390,7 +378,6 @@ const osasuoritusToTableRow = (
         osasuoritusPath={osasuoritus}
         testId={osasuoritusTestId(
           suoritusIndex,
-          levelIndex,
           osasuoritusIndex,
           'properties'
         )}

@@ -1036,7 +1036,7 @@ export const VSTOsasuoritusProperties: React.FC<
                 osasuorituksetExpandedState: props.osasuoritusOpenState,
                 suoritusIndex: props.osasuoritusIndex,
                 testId: String(
-                  subTestId(props, `osasuoritus.${osasuoritusIndex}`)
+                  subTestId(props, `osasuoritukset.${osasuoritusIndex}`)
                 )
               })
             }

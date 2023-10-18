@@ -31,14 +31,12 @@ export class KoskiTpoOppijaPage extends KoskiOppijaPageV2<
 
   async osasuoritustieto(key: 'nimi' | 'laajuus' | 'arvosana') {
     return this.$.suoritukset(this.suoritusIndex)
-      .taso(this.taso)
       .osasuoritukset(this.osasuoritusIndex)
       [key].value(this.editMode)
   }
 
   async osasuoritusProperty(key: 'arvosana' | 'arvostelunPvm' | 'tunnustettu') {
     return this.$.suoritukset(this.suoritusIndex)
-      .taso(this.taso)
       .osasuoritukset(this.osasuoritusIndex)
       .properties[key].value(this.editMode)
   }
@@ -48,6 +46,7 @@ export class KoskiTpoOppijaPage extends KoskiOppijaPageV2<
     await element.select.set('__NEW__')
     await element.modal.nimi.set(nimi)
     await element.modal.submit.click()
+    await this.page.waitForLoadState('networkidle')
   }
 
   async addOsasuoritus(koodiarvo: string) {
@@ -55,9 +54,8 @@ export class KoskiTpoOppijaPage extends KoskiOppijaPageV2<
     await element.select.set(koodiarvo)
   }
 
-  async removeOsasuoritus(taso: number, index: number) {
+  async removeOsasuoritus(index: number) {
     await this.$.suoritukset(this.suoritusIndex)
-      .taso(taso)
       .osasuoritukset(index)
       .delete.click()
   }
@@ -68,9 +66,8 @@ export class KoskiTpoOppijaPage extends KoskiOppijaPageV2<
     )
   }
 
-  async setOsasuorituksenLaajuus(taso: number, opintopisteet: number) {
+  async setOsasuorituksenLaajuus(opintopisteet: number) {
     await this.$.suoritukset(this.suoritusIndex)
-      .taso(taso)
       .osasuoritukset(this.osasuoritusIndex)
       .laajuus.set(opintopisteet.toString())
   }
@@ -79,7 +76,6 @@ export class KoskiTpoOppijaPage extends KoskiOppijaPageV2<
     arvosana: KoodiviiteIdOf<TaiteenPerusopetuksenArviointi['arvosana']>
   ) {
     await this.$.suoritukset(this.suoritusIndex)
-      .taso(this.taso)
       .osasuoritukset(this.osasuoritusIndex)
       .arvosana.set(arvosana)
   }
@@ -138,19 +134,18 @@ const TaiteenPerusopetusTestIds = {
 
     suorituksenVahvistus: SuorituksenVahvistus(),
     expand: Button,
-    taso: arrayOf({
-      osasuoritukset: arrayOf({
-        expand: Button,
-        arvosana: FormField(Label, Select),
-        laajuus: FormField(Label, Input),
-        nimi: FormField(Label),
-        properties: {
-          arvosana: FormField(Label),
-          arvostelunPvm: FormField(Label),
-          tunnustettu: FormField(Label)
-        },
-        delete: Button
-      })
+
+    osasuoritukset: arrayOf({
+      expand: Button,
+      arvosana: FormField(Label, Select),
+      laajuus: FormField(Label, Input),
+      nimi: FormField(Label),
+      properties: {
+        arvosana: FormField(Label),
+        arvostelunPvm: FormField(Label),
+        tunnustettu: FormField(Label)
+      },
+      delete: Button
     }),
 
     addOsasuoritus: {

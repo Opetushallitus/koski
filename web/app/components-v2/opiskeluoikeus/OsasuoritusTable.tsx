@@ -96,7 +96,7 @@ export const OsasuoritusTable = <DATA_KEYS extends string, P>(
               )
             }}
             onRemove={onRemoveCb(index)}
-            testId={subTestId(props, `osasuoritus.${row.osasuoritusIndex}`)}
+            testId={subTestId(props, `osasuoritukset.${row.osasuoritusIndex}`)}
           />
         )
       })}
@@ -255,9 +255,8 @@ const getSpans = (dataObj: object, depth?: number, canRemove?: boolean) => {
 
 export const osasuoritusTestId = (
   suoritusIndex: number,
-  levelIndex: number,
   osasuoritusIndex: number,
   subItem?: string
 ): string =>
-  `suoritukset.${suoritusIndex}.taso.${levelIndex}.osasuoritukset.${osasuoritusIndex}` +
+  `suoritukset.${suoritusIndex}.osasuoritukset.${osasuoritusIndex}` +
   (subItem ? `.${subItem}` : '')

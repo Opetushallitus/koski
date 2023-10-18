@@ -424,7 +424,7 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
                 setOsasuoritusOpen: setOsasuorituksetStateHandler,
                 suoritusIndex: päätasonSuoritus.index,
                 suoritusPath: päätasonSuoritus.path,
-                testId: `${päätasonSuoritus.testId}.osasuoritus.${osasuoritusIndex}`
+                testId: `${päätasonSuoritus.testId}.osasuoritukset.${osasuoritusIndex}`
               })
           )}
           onRemove={(i) => {

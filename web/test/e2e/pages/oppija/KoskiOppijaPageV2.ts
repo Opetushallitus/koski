@@ -7,14 +7,12 @@ export class KoskiOppijaPageV2<T extends IdNodeObject<string>> {
   editMode: boolean
   suoritusIndex: number
   osasuoritusIndex: number
-  taso: number
 
   constructor(page: Page, idHierarchy: T) {
     this.page = page
     this.$ = build(page, idHierarchy)
     this.suoritusIndex = 0
     this.osasuoritusIndex = 0
-    this.taso = 0
     this.editMode = false
   }
 
@@ -56,12 +54,10 @@ export class KoskiOppijaPageV2<T extends IdNodeObject<string>> {
     await this.$.suoritukset(this.suoritusIndex).expand.click()
   }
 
-  async openOsasuoritus(taso: number, index: number) {
+  async openOsasuoritus(index: number) {
     await this.$.suoritukset(this.suoritusIndex)
-      .taso(taso)
       .osasuoritukset(index)
       .expand.click()
-    this.taso = taso
     this.osasuoritusIndex = index
   }
 
