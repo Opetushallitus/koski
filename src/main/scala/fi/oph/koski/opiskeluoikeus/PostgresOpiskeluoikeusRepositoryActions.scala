@@ -116,12 +116,19 @@ trait PostgresOpiskeluoikeusRepositoryActions[OOROW <: OpiskeluoikeusRow, OOTABL
     allowUpdate: Boolean,
     allowDeleteCompleted: Boolean = false
   )(implicit user: KoskiSpecificSession): dbio.DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write with Transactional] = {
-    findByIdentifierAction(OpiskeluoikeusIdentifier(
-      oppijaOid.oppijaOid, opiskeluoikeus
-    ))
-      .flatMap { rows: Either[HttpStatus, List[OOROW]] =>
+    val identifier = OpiskeluoikeusIdentifier(oppijaOid.oppijaOid, opiskeluoikeus)
+    findByIdentifierAction(identifier)
+      .flatMap { rows: Either[HttpStatus, List[OOROW]] => {
+        rows.foreach(opiskeluoikeudet => {
+          identifier match {
+            case id: OppijaOidOrganisaatioJaTyyppi if allowUpdate && !opiskeluoikeudet.isEmpty =>
+              logger.info(s"Olemassaolevan opiskeluoikeuden päivitysyritys ilman tunnistetta. Päivitettävä oid: ${opiskeluoikeudet.map(_.oid).mkString(", ")}. Päivittävä tunniste: ${id.copy(oppijaOid = "****")}")
+            case _ =>
+          }
+        })
         createOrUpdateActionBasedOnDbResult(oppijaOid, opiskeluoikeus, allowUpdate, allowDeleteCompleted, rows)
       }
+    }
   }
 
   private def findByIdentifierAction(identifier: OpiskeluoikeusIdentifier)(implicit user: KoskiSpecificSession): dbio.DBIOAction[Either[HttpStatus, List[OOROW]], NoStream, Read] = {
