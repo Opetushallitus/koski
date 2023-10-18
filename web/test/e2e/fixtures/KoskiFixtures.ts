@@ -29,4 +29,27 @@ export class KoskiFixtures {
     // TODO: Teardown voisi resetoida fixturet
     await Promise.resolve(true)
   }
+
+  /**
+   * Kirjautuu Koski-palveluun tekemällä POST-pyynnön resurssiin /koski/user/login.
+   * @param username Username
+   * @param password Password
+   */
+  async apiLoginAsUser(username: string, password: string) {
+    const request = await this.page.request.post('/koski/user/login', {
+      data: {
+        username,
+        password
+      }
+    })
+    expect(request.ok()).toBeTruthy()
+  }
+
+  /**
+   * Kirjautuu ulos Koski-palvelusta tekemällä pyynnön resurssiin /koski/user/logout.
+   */
+  async apiLogout() {
+    const request = await this.page.request.get('/koski/user/logout')
+    expect(request.ok()).toBeTruthy()
+  }
 }
