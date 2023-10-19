@@ -156,7 +156,7 @@ class OppijaValidationVapaaSivistystyöJotpaSpec extends AnyFreeSpec with PutOpi
         }
       }
 
-      "JOTPA-oppiskeluoikeuksien luominen ja päivitys" - {
+      "JOTPA-opiskeluoikeuksien luominen ja päivitys" - {
         val keskeneräinenOoIlmanTunnistetietoja = ExamplesVapaaSivistystyöJotpa.Opiskeluoikeus.keskeneräinen
 
         "JOTPAssa sallitaan samansisältöiset keskeneräiset opiskeluoikeudet" in {

@@ -71,7 +71,7 @@ const toCreateOppija = (henkilö, opiskeluoikeus) => {
 }
 
 export const postNewOppija = (oppija) =>
-  Http.post('/koski/api/v2/oppija', oppija, {
+  Http.post('/koski/api/oppija', oppija, {
     errorHandler: (e) => {
       if (e.httpStatus === 409) {
         e.text = (
