@@ -7,7 +7,9 @@ import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusKatsotaanEronneeksi
 import fi.oph.koski.documentation.ExamplesVapaaSivistystyöJotpa
 import fi.oph.koski.documentation.ExamplesVapaaSivistystyöJotpa.rahoitusJotpa
 import fi.oph.koski.documentation.VapaaSivistystyöExample._
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
+import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.MockUsers.varsinaisSuomiPalvelukäyttäjä
 import fi.oph.koski.schema._
 import org.scalatest.freespec.AnyFreeSpec
@@ -153,6 +155,46 @@ class OppijaValidationVapaaSivistystyöJotpaSpec extends AnyFreeSpec with PutOpi
           }
         }
       }
+
+      "JOTPA-oppiskeluoikeuksien luominen ja päivitys" - {
+        val keskeneräinenOoIlmanTunnistetietoja = ExamplesVapaaSivistystyöJotpa.Opiskeluoikeus.keskeneräinen
+
+        "JOTPAssa sallitaan samansisältöiset keskeneräiset opiskeluoikeudet" in {
+          resetFixtures()
+
+          var alkuperäinenOoCount = -1
+          val expectedUusiaOpiskeluoikeuksiaCount = 2
+
+          authGet("api/oppija/" + KoskiSpecificMockOppijat.eero.oid) {
+            verifyResponseStatusOk()
+            val oppija = JsonSerializer.parse[Oppija](body)
+            alkuperäinenOoCount = oppija.opiskeluoikeudet.length
+          }
+
+          postOpiskeluoikeus(keskeneräinenOoIlmanTunnistetietoja) {
+            verifyResponseStatusOk()
+          }
+
+          // Toisen täsmälleen samanlaisen Jotpa-opiskeluoikeuden luominen oppijalle onnistuu
+          val toinenSamanlainenOo = postAndGetOpiskeluoikeus(keskeneräinenOoIlmanTunnistetietoja)
+
+          authGet("api/oppija/" + KoskiSpecificMockOppijat.eero.oid) {
+            verifyResponseStatusOk()
+            val oppija = JsonSerializer.parse[Oppija](body)
+            oppija.opiskeluoikeudet.length should be(alkuperäinenOoCount + expectedUusiaOpiskeluoikeuksiaCount)
+          }
+
+          // Päivittäminen ilman tunnistetta epäonnistuu, koska on mahdotonta tunnistaa, kumpaa luoduista halutaan päivittää
+          putOpiskeluoikeus(keskeneräinenOoIlmanTunnistetietoja) {
+            verifyResponseStatus(409, Nil)
+          }
+
+          // Päivittäminen oid-tunnisteen kanssa onnistuu
+          putOpiskeluoikeus(toinenSamanlainenOo) {
+            verifyResponseStatusOk()
+          }
+        }
+      }
     }
 
     "Rahoitus" - {
@@ -174,6 +216,12 @@ class OppijaValidationVapaaSivistystyöJotpaSpec extends AnyFreeSpec with PutOpi
 
   private def putAndGetOpiskeluoikeus(oo: VapaanSivistystyönOpiskeluoikeus): VapaanSivistystyönOpiskeluoikeus =
     putOpiskeluoikeus(oo) {
+      verifyResponseStatusOk()
+      getOpiskeluoikeus(readPutOppijaResponse.opiskeluoikeudet.head.oid)
+    }.asInstanceOf[VapaanSivistystyönOpiskeluoikeus]
+
+  private def postAndGetOpiskeluoikeus(oo: VapaanSivistystyönOpiskeluoikeus): VapaanSivistystyönOpiskeluoikeus =
+    postOpiskeluoikeus(oo) {
       verifyResponseStatusOk()
       getOpiskeluoikeus(readPutOppijaResponse.opiskeluoikeudet.head.oid)
     }.asInstanceOf[VapaanSivistystyönOpiskeluoikeus]

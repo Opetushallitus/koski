@@ -76,10 +76,14 @@ class PostgresKoskiOpiskeluoikeusRepositoryActions(
     opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
     rows: List[KoskiOpiskeluoikeusRow]
   )(implicit user: KoskiSpecificSession): DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write] = {
-    val opiskeluoikeusPäättynyt = rows.exists(_.toOpiskeluoikeusUnsafe.tila.opiskeluoikeusjaksot.last.opiskeluoikeusPäättynyt)
-    val duplikoivanOpiskeluoikeudenLuontiSallittu = rows.exists(row => allowOpiskeluoikeusCreationOnConflict(opiskeluoikeus, row))
+    val onVstJotpa = opiskeluoikeus.suoritukset.exists {
+      case _: VapaanSivistystyönJotpaKoulutuksenSuoritus => true
+      case _ => false
+    }
+    lazy val opiskeluoikeusPäättynyt = rows.exists(_.toOpiskeluoikeusUnsafe.tila.opiskeluoikeusjaksot.last.opiskeluoikeusPäättynyt)
+    lazy val duplikoivanOpiskeluoikeudenLuontiSallittu = rows.exists(row => allowOpiskeluoikeusCreationOnConflict(opiskeluoikeus, row))
 
-    if (opiskeluoikeusPäättynyt && duplikoivanOpiskeluoikeudenLuontiSallittu) {
+    if (onVstJotpa || (opiskeluoikeusPäättynyt && duplikoivanOpiskeluoikeudenLuontiSallittu)) {
       createAction(oppijaOid, opiskeluoikeus)
     } else {
       DBIO.successful(Left(KoskiErrorCategory.conflict.exists()))
