@@ -1,10 +1,13 @@
 import { createControl } from './controls'
 
 export const Select = createControl((_self, child) => {
-  const showOptions = () => child('input').click()
+  const showOptions = async () => {
+    await child('input').click()
+  }
 
   return {
     set: async (key: string) => {
+      await _self.page().waitForLoadState('networkidle')
       await showOptions()
       await child(`options.${key}.item`).click()
     },

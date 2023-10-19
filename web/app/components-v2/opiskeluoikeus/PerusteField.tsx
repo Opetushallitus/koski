@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Peruste, usePeruste } from '../../appstate/peruste'
 import { t } from '../../i18n/i18n'
-import { CommonProps } from '../CommonProps'
+import { CommonProps, testId } from '../CommonProps'
 import { OptionList, Select } from '../controls/Select'
 import { FieldViewerProps, FieldEditorProps } from '../forms/FormField'
 
@@ -58,6 +58,7 @@ export const PerusteEdit: React.FC<PerusteEditProps> = (props) => {
   }))
   return (
     <Select
+      testId={props.testId}
       onChange={(opt) => {
         props.onChange(opt?.value || '')
       }}

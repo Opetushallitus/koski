@@ -103,7 +103,10 @@ export const OsasuoritusTable = <DATA_KEYS extends string, P>(
       <Spacer />
       {editMode && AddNewOsasuoritusView !== undefined && (
         // @ts-expect-error React.JSX.IntristicAttributes virhe
-        <AddNewOsasuoritusView {...(props.addNewOsasuoritusViewProps || {})} />
+        <AddNewOsasuoritusView
+          testId={subTestId(props, 'addOsasuoritus')}
+          {...(props.addNewOsasuoritusViewProps || {})}
+        />
       )}
       <Spacer />
     </>

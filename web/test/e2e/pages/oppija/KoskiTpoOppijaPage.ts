@@ -9,7 +9,11 @@ import { Input } from './uiV2builder/Input'
 import { Label } from './uiV2builder/Label'
 import { OpiskeluoikeusHeader } from './uiV2builder/OpiskeluoikeusHeader'
 import { Select } from './uiV2builder/Select'
-import { SuorituksenVahvistus } from './uiV2builder/SuorituksenVahvistus'
+import {
+  SuorituksenVahvistus,
+  vahvistaSuoritusTallennetullaHenkilöllä,
+  vahvistaSuoritusUudellaHenkilöllä
+} from './uiV2builder/SuorituksenVahvistus'
 
 export class KoskiTpoOppijaPage extends KoskiOppijaPageV2<
   typeof TaiteenPerusopetusTestIds
@@ -93,31 +97,20 @@ export class KoskiTpoOppijaPage extends KoskiOppijaPageV2<
     titteli: string,
     pvm: string
   ) {
-    const vahvistus = this.$.suoritukset(this.suoritusIndex)
-      .suorituksenVahvistus.edit
-
-    await vahvistus.merkitseValmiiksi.click()
-
-    await vahvistus.modal.date.set(pvm)
-
-    const myöntäjät = vahvistus.modal.myöntäjät.edit
-    await myöntäjät.add.set('__NEW__')
-
-    const henkilö = myöntäjät.newHenkilö(0)
-    await henkilö.nimi.set(nimi)
-    await henkilö.titteli.set(titteli)
-
-    await vahvistus.modal.submit.click()
+    await vahvistaSuoritusUudellaHenkilöllä(
+      this.$.suoritukset(this.suoritusIndex).suorituksenVahvistus,
+      nimi,
+      titteli,
+      pvm
+    )
   }
 
   async vahvistaSuoritusTallennetullaHenkilöllä(nimi: string, pvm: string) {
-    const vahvistus = this.$.suoritukset(this.suoritusIndex)
-      .suorituksenVahvistus.edit
-
-    await vahvistus.merkitseValmiiksi.click()
-    await vahvistus.modal.date.set(pvm)
-    await vahvistus.modal.myöntäjät.edit.add.set(nimi)
-    await vahvistus.modal.submit.click()
+    await vahvistaSuoritusTallennetullaHenkilöllä(
+      this.$.suoritukset(this.suoritusIndex).suorituksenVahvistus,
+      nimi,
+      pvm
+    )
   }
 }
 

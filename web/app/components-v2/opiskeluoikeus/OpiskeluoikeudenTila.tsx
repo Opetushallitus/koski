@@ -160,7 +160,7 @@ export const OpiskeluoikeudenTilaEdit = <T extends OpiskeluoikeudenTila>(
                   isRahoituksellinenOpiskeluoikeusjakso(jakso) && (
                     <>
                       {' '}
-                      <span>
+                      <span {...testId(props, `items.${index}.rahoitus`)}>
                         {'('}
                         {t(jakso.opintojenRahoitus?.nimi)}
                         {')'}

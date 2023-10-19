@@ -36,6 +36,7 @@ export const KuvausEdit: React.FC<KuvausEditProps> = ({
   return (
     <textarea
       {...common({ ...rest }, ['KuvausEdit'])}
+      {...testId(rest, 'input')}
       rows={5}
       cols={40}
       value={isFinnish(value) ? value?.fi : value?.en}

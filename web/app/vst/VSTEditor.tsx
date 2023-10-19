@@ -1,32 +1,41 @@
 import React, { useCallback, useContext, useEffect, useMemo } from 'react'
 import { useSchema } from '../appstate/constraints'
-import { append } from '../util/fp/arrays'
+import { useKoodistoFiller } from '../appstate/koodisto'
+import { OpiskeluoikeusContext } from '../appstate/opiskeluoikeus'
 import { KansalainenOnly } from '../components-v2/access/KansalainenOnly'
 import {
   EditorContainer,
   usePäätasonSuoritus
 } from '../components-v2/containers/EditorContainer'
-import { FormOptic, useForm } from '../components-v2/forms/FormModel'
-import { AdaptedOpiskeluoikeusEditorProps } from '../components-v2/interoperability/useUiAdapter'
-import { Spacer } from '../components-v2/layout/Spacer'
-import { PäätasonSuorituksenSuostumuksenPeruminen } from '../components-v2/opiskeluoikeus/OpiskeluoikeudenSuostumuksenPeruminen'
-import { OpiskeluoikeusTitle } from '../components-v2/opiskeluoikeus/OpiskeluoikeusTitle'
-import { t } from '../i18n/i18n'
-import { VapaanSivistystyönOpiskeluoikeus } from '../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeus'
-import { VapaanSivistystyönPäätasonSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonPaatasonSuoritus'
 import {
   KeyValueRow,
   KeyValueTable
 } from '../components-v2/containers/KeyValueTable'
-import { Trans } from '../components-v2/texts/Trans'
-import { SuorituksenVahvistusField } from '../components-v2/opiskeluoikeus/SuorituksenVahvistus'
-import { OsasuoritusTable } from '../components-v2/opiskeluoikeus/OsasuoritusTable'
+import { RaisedButton } from '../components-v2/controls/RaisedButton'
 import { FormField } from '../components-v2/forms/FormField'
+import { FormOptic, useForm } from '../components-v2/forms/FormModel'
+import { AdaptedOpiskeluoikeusEditorProps } from '../components-v2/interoperability/useUiAdapter'
+import { Spacer } from '../components-v2/layout/Spacer'
 import {
   LaajuusEdit,
   LaajuusView
 } from '../components-v2/opiskeluoikeus/LaajuusField'
-import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
+import {
+  OpintokokonaisuusEdit,
+  OpintokokonaisuusView
+} from '../components-v2/opiskeluoikeus/OpintokokonaisuusField'
+import { PäätasonSuorituksenSuostumuksenPeruminen } from '../components-v2/opiskeluoikeus/OpiskeluoikeudenSuostumuksenPeruminen'
+import {
+  ToimipisteEdit,
+  ToimipisteView
+} from '../components-v2/opiskeluoikeus/OpiskeluoikeudenToimipiste'
+import { OpiskeluoikeusTitle } from '../components-v2/opiskeluoikeus/OpiskeluoikeusTitle'
+import { OsasuoritusTable } from '../components-v2/opiskeluoikeus/OsasuoritusTable'
+import {
+  PerusteEdit,
+  PerusteView
+} from '../components-v2/opiskeluoikeus/PerusteField'
+import { SuorituksenVahvistusField } from '../components-v2/opiskeluoikeus/SuorituksenVahvistus'
 import {
   SuorituskieliEdit,
   SuorituskieliView
@@ -35,53 +44,44 @@ import {
   TodistuksellaNäkyvätLisätiedotEdit,
   TodistuksellaNäkyvätLisätiedotView
 } from '../components-v2/opiskeluoikeus/TodistuksellaNäkyvätLisätiedotField'
-import { VapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonJotpaKoulutuksenOsasuorituksenSuoritus'
-import { RaisedButton } from '../components-v2/controls/RaisedButton'
+import { Trans } from '../components-v2/texts/Trans'
+import { Infobox } from '../components/Infobox'
+import { t } from '../i18n/i18n'
+import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { LaajuusOpintopisteissä } from '../types/fi/oph/koski/schema/LaajuusOpintopisteissa'
+import { OppivelvollisilleSuunnatunVapaanSivistystyönOsasuoritus } from '../types/fi/oph/koski/schema/OppivelvollisilleSuunnatunVapaanSivistystyonOsasuoritus'
+import { VSTKotoutumiskoulutuksenKokonaisuudenOsasuoritus2022 } from '../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenKokonaisuudenOsasuoritus2022'
+import { VSTKotoutumiskoulutuksenOhjauksenSuoritus2022 } from '../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenOhjauksenSuoritus2022'
+import { VapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonJotpaKoulutuksenOsasuorituksenSuoritus'
+import { VapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonLukutaitokoulutuksenKokonaisuudenSuoritus'
+import { VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKokonaisuudenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenKokonaisuudenSuoritus'
+import { VapaanSivistystyönOpiskeluoikeus } from '../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeus'
+import { VapaanSivistystyönPäätasonSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonPaatasonSuoritus'
+import { VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus'
+import { append } from '../util/fp/arrays'
+import { viimeisinArviointi } from '../util/schema'
+import { useOsasuorituksetExpand } from './../osasuoritus/hooks'
+import { VSTLisatiedot } from './VSTLisatiedot'
 import {
-  ToimipisteEdit,
-  ToimipisteView
-} from '../components-v2/opiskeluoikeus/OpiskeluoikeudenToimipiste'
-import {
-  isVSTOsasuoritusArvioinnilla,
-  hasOpintokokonaisuus,
-  isLaajuuksellinenVSTKoulutusmoduuli,
-  isPerusteellinenVSTKoulutusmoduuli,
-  VSTOsasuoritus
-} from './typeguards'
+  AddNewVSTOsasuoritusView,
+  osasuoritusToTableRow
+} from './VSTOsasuoritusProperties'
+import { useInfoLink } from './infoLinkHook'
 import {
   createVstOpiskeluoikeusjakso,
+  kaikkiOsasuorituksetVahvistettu,
   resolveDiaarinumero,
   resolveOpiskeluoikeudenTilaClass,
   vstNimi,
   vstSuorituksenNimi
 } from './resolvers'
-import { VSTLisatiedot } from './VSTLisatiedot'
 import {
-  OpintokokonaisuusEdit,
-  OpintokokonaisuusView
-} from '../components-v2/opiskeluoikeus/OpintokokonaisuusField'
-import { VSTKotoutumiskoulutuksenOhjauksenSuoritus2022 } from '../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenOhjauksenSuoritus2022'
-import {
-  PerusteEdit,
-  PerusteView
-} from '../components-v2/opiskeluoikeus/PerusteField'
-import { VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus'
-import { VapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonLukutaitokoulutuksenKokonaisuudenSuoritus'
-import {
-  AddNewVSTOsasuoritusView,
-  osasuoritusToTableRow
-} from './VSTOsasuoritusProperties'
-import { VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKokonaisuudenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenKokonaisuudenSuoritus'
-import { VSTKotoutumiskoulutuksenKokonaisuudenOsasuoritus2022 } from '../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenKokonaisuudenOsasuoritus2022'
-import { OppivelvollisilleSuunnatunVapaanSivistystyönOsasuoritus } from '../types/fi/oph/koski/schema/OppivelvollisilleSuunnatunVapaanSivistystyonOsasuoritus'
-import { viimeisinArviointi } from '../util/schema'
-import { Infobox } from '../components/Infobox'
-import { useOsasuorituksetExpand } from './../osasuoritus/hooks'
-import { useInfoLink } from './infoLinkHook'
-import { useKoodistoFiller } from '../appstate/koodisto'
-import { OpiskeluoikeusContext } from '../appstate/opiskeluoikeus'
-import { subTestId } from '../components-v2/CommonProps'
+  VSTOsasuoritus,
+  hasOpintokokonaisuus,
+  isLaajuuksellinenVSTKoulutusmoduuli,
+  isPerusteellinenVSTKoulutusmoduuli,
+  isVSTOsasuoritusArvioinnilla
+} from './typeguards'
 
 type VSTEditorProps =
   AdaptedOpiskeluoikeusEditorProps<VapaanSivistystyönOpiskeluoikeus>
@@ -182,6 +182,7 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
         invalidatable={props.invalidatable}
         oppijaOid={props.oppijaOid}
         suorituksenNimi={vstSuorituksenNimi}
+        suorituksetVahvistettu={kaikkiOsasuorituksetVahvistettu(form.state)}
         createOpiskeluoikeusjakso={createVstOpiskeluoikeusjakso(
           päätasonSuoritus
         )}

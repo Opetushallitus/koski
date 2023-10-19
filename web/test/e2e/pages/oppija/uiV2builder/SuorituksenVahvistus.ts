@@ -1,9 +1,13 @@
-import { arrayOf } from './builder'
+import { arrayOf, BuiltIdNode } from './builder'
 import { Button } from './Button'
 import { FormField } from './controls'
 import { Input } from './Input'
 import { Label } from './Label'
 import { Select } from './Select'
+
+export type BuiltSuorituksenVahvistus = BuiltIdNode<
+  ReturnType<typeof SuorituksenVahvistus>
+>
 
 export const SuorituksenVahvistus = () => ({
   value: {
@@ -34,3 +38,49 @@ export const SuorituksenVahvistus = () => ({
     }
   }
 })
+
+export const vahvistaSuoritusUudellaHenkilöllä = async (
+  suoritusIds: BuiltSuorituksenVahvistus,
+  nimi: string,
+  titteli: string,
+  pvm: string
+) => {
+  const vahvistus = suoritusIds.edit
+  await vahvistus.merkitseValmiiksi.click()
+
+  await vahvistus.modal.date.set(pvm)
+
+  const myöntäjät = vahvistus.modal.myöntäjät.edit
+  await myöntäjät.add.set('__NEW__')
+
+  const henkilö = myöntäjät.newHenkilö(0)
+  await henkilö.nimi.set(nimi)
+  await henkilö.titteli.set(titteli)
+
+  await vahvistus.modal.submit.click()
+}
+
+export const vahvistaSuoritusTallennetullaHenkilöllä = async (
+  suoritusIds: BuiltSuorituksenVahvistus,
+  nimi: string,
+  pvm: string
+) => {
+  const vahvistus = suoritusIds.edit
+
+  await vahvistus.merkitseValmiiksi.click()
+  await vahvistus.modal.date.set(pvm)
+  await vahvistus.modal.myöntäjät.edit.add.set(nimi)
+  await vahvistus.modal.submit.click()
+}
+
+export const isMerkitseKeskeneräiseksiDisabled = async (
+  suoritusIds: BuiltSuorituksenVahvistus
+) => {
+  return suoritusIds.edit.merkitseKeskeneräiseksi.isDisabled()
+}
+
+export const isMerkitseValmiiksiDisabled = async (
+  suoritusIds: BuiltSuorituksenVahvistus
+) => {
+  return suoritusIds.edit.merkitseValmiiksi.isDisabled()
+}

@@ -1,31 +1,25 @@
-import { test, expect as _expect } from './base'
+import { foreachAsync, repeatAsync } from '../util/iterating'
+import { expect as _expect, test } from './base'
+import { KoskiVSTOppijaPage } from './pages/oppija/KoskiVSTOppijaPage'
 import { virkailija } from './setup/auth'
-import { Page } from '@playwright/test'
 
-const kotoutumiskoulutus = '1.2.246.562.24.00000000106'
-const kotoutumiskoulutusOppivelvollisille = '1.2.246.562.24.00000000135'
+const kotoutumiskoulutus2022 = '1.2.246.562.24.00000000135'
 const oppivelvollisilleSuunnattu = '1.2.246.562.24.00000000143'
 const jotpaKoulutus = '1.2.246.562.24.00000000140'
 const lukutaitokoulutus = '1.2.246.562.24.00000000107'
 const kansanopisto = '1.2.246.562.24.00000000105'
 const vstKoulutus = '1.2.246.562.24.00000000108'
 
-const testaaUusiPaikallinenKoodistoJääTalteen = async (
-  testIdPrefix: string,
-  page: Page
-) => {
-  await page.getByTestId(testIdPrefix + '.select.input').click()
-  await page.getByTestId(testIdPrefix + '.select.options.__NEW__.item').click()
-  await page
-    .getByTestId(testIdPrefix + '.modal.nimi.edit.input')
-    .fill('Playwright-opinnot')
-  await page.getByTestId(testIdPrefix + '.modal.submit').click()
-  await page.getByTestId(testIdPrefix + '.select.input').click()
-  await expect(
-    // Köyhän miehen tapa hakea paikallinen koodi
-    page.locator('.Removable__content').getByText('Playwright-opinnot')
-  ).toBeVisible()
-}
+const openOppijaPage =
+  (oppijaOid: string, edit: boolean) =>
+  async ({ vstOppijaPage }: { vstOppijaPage: KoskiVSTOppijaPage }) => {
+    await vstOppijaPage.gotoWithQueryParams(oppijaOid, {
+      newVSTUI: 'true'
+    })
+    if (edit) {
+      await vstOppijaPage.edit()
+    }
+  }
 
 test.describe('Vapaa sivistystyö', () => {
   test.describe('Katselunäkymä', () => {
@@ -34,11 +28,7 @@ test.describe('Vapaa sivistystyö', () => {
       await fixtures.reset()
     })
     test.describe('VST JOTPA', () => {
-      test.beforeEach(async ({ vstOppijaPage }) => {
-        await vstOppijaPage.gotoWithQueryParams(jotpaKoulutus, {
-          newVSTUI: 'true'
-        })
-      })
+      test.beforeEach(openOppijaPage(jotpaKoulutus, false))
       test('Näyttää tiedot oikein', async ({ page }) => {
         const expect = _expect.configure({
           timeout: 2000
@@ -121,11 +111,7 @@ test.describe('Vapaa sivistystyö', () => {
       })
     })
     test.describe('VST lukutaitokoulutus', () => {
-      test.beforeEach(async ({ vstOppijaPage }) => {
-        await vstOppijaPage.gotoWithQueryParams(lukutaitokoulutus, {
-          newVSTUI: 'true'
-        })
-      })
+      test.beforeEach(openOppijaPage(lukutaitokoulutus, false))
       test('Näyttää tiedot oikein', async ({ page }) => {
         const expect = _expect.configure({
           timeout: 1000
@@ -238,11 +224,7 @@ test.describe('Vapaa sivistystyö', () => {
       })
     })
     test.describe('VST kansanopisto', () => {
-      test.beforeEach(async ({ vstOppijaPage }) => {
-        await vstOppijaPage.gotoWithQueryParams(kansanopisto, {
-          newVSTUI: 'true'
-        })
-      })
+      test.beforeEach(openOppijaPage(kansanopisto, false))
       test('Näyttää tiedot oikein', async ({ page }) => {
         const expect = _expect.configure({
           timeout: 2000
@@ -583,11 +565,7 @@ test.describe('Vapaa sivistystyö', () => {
       })
     })
     test.describe('VST Oppivelvollisille suunnattu', () => {
-      test.beforeEach(async ({ vstOppijaPage }) => {
-        await vstOppijaPage.gotoWithQueryParams(oppivelvollisilleSuunnattu, {
-          newVSTUI: 'true'
-        })
-      })
+      test.beforeEach(openOppijaPage(oppivelvollisilleSuunnattu, false))
       test('Näyttää tiedot oikein', async ({ page }) => {
         const expect = _expect.configure({
           timeout: 2000
@@ -928,14 +906,7 @@ test.describe('Vapaa sivistystyö', () => {
       })
     })
     test.describe('VST Kotoutumiskoulutus oppivelvollisille', () => {
-      test.beforeEach(async ({ vstOppijaPage }) => {
-        await vstOppijaPage.gotoWithQueryParams(
-          kotoutumiskoulutusOppivelvollisille,
-          {
-            newVSTUI: 'true'
-          }
-        )
-      })
+      test.beforeEach(openOppijaPage(kotoutumiskoulutus2022, false))
       test('Näyttää tiedot oikein', async ({ page }) => {
         const expect = _expect.configure({
           timeout: 2000
@@ -1141,11 +1112,7 @@ test.describe('Vapaa sivistystyö', () => {
       })
     })
     test.describe('Vapaatavoitteinen vst-koulutus', () => {
-      test.beforeEach(async ({ vstOppijaPage }) => {
-        await vstOppijaPage.gotoWithQueryParams(vstKoulutus, {
-          newVSTUI: 'true'
-        })
-      })
+      test.beforeEach(openOppijaPage(vstKoulutus, false))
       test('Näyttää tiedot oikein', async ({ page }) => {
         const expect = _expect.configure({
           timeout: 2000
@@ -1285,6 +1252,638 @@ test.describe('Vapaa sivistystyö', () => {
         await expect(
           page.getByTestId('suoritukset.0.yhteensa.value')
         ).toHaveText('5 op')
+      })
+    })
+  })
+
+  test.describe('Muokkanäkymä', () => {
+    const expect = _expect.configure({
+      timeout: 2000
+    })
+    test.use({ storageState: virkailija('kalle') })
+    test.beforeEach(async ({ fixtures }) => {
+      await fixtures.reset()
+    })
+
+    test.describe('Vapaatavoitteinen', () => {
+      test.beforeEach(openOppijaPage(vstKoulutus, true))
+
+      test('Uuden osasuorituksen lisäys', async ({ vstOppijaPage }) => {
+        const nimi = 'Lopeta turha kiihkoilu'
+        await expect(await vstOppijaPage.osasuoritusOptions()).toEqual([
+          'Lisää osasuoritus'
+        ])
+        await vstOppijaPage.addNewOsasuoritus(nimi)
+        await expect(await vstOppijaPage.osasuoritusOptions()).toEqual([
+          'Lisää osasuoritus',
+          nimi
+        ])
+        expect(await vstOppijaPage.laajuudetYhteensä()).toEqual('6 op')
+      })
+
+      test('Vaihda laajuutta ja arvosanaa', async ({ vstOppijaPage }) => {
+        const osasuoritus = vstOppijaPage.osasuoritus(0)
+        await osasuoritus.setLaajuus(3)
+        await osasuoritus.setVapaatavoitteinenArvosana(4)
+
+        expect(await osasuoritus.nimi()).toEqual('Sienestämisen kokonaisuus')
+        expect(await osasuoritus.laajuus()).toEqual('3')
+        expect(await osasuoritus.arvosana()).toEqual('4')
+
+        await osasuoritus.setSuoritusarvosana(true, true)
+
+        expect(await osasuoritus.nimi()).toEqual('Sienestämisen kokonaisuus')
+        expect(await osasuoritus.laajuus()).toEqual('3')
+        expect(await osasuoritus.arvosana()).toEqual('Hyväksytty')
+      })
+
+      test('Vaihda arvostelun päivämäärää', async ({ vstOppijaPage }) => {
+        const osasuoritus = vstOppijaPage.osasuoritus(0)
+        await osasuoritus.expand()
+        await osasuoritus.setArvostelunPvm('1.1.2022')
+        expect(await osasuoritus.arvostelunPvm()).toEqual('1.1.2022')
+      })
+
+      test('Lisää alaosasuoritus', async ({ vstOppijaPage }) => {
+        const nimi = 'Sienien tunnistaminen 2'
+        const osasuoritus = vstOppijaPage.osasuoritus(0)
+        await osasuoritus.expand()
+        await osasuoritus.addNewAlaosasuoritus(nimi)
+
+        await expect(await osasuoritus.alaosasuoritusOptions()).toEqual([
+          'Lisää osasuoritus',
+          nimi
+        ])
+        await expect(await osasuoritus.alaosasuoritus(1).nimi()).toEqual(nimi)
+      })
+
+      test('Osasuorituksen poisto', async ({ vstOppijaPage }) => {
+        // Lisää suoritukseen toinen osasuoritus
+        const nimi = 'Testikurssi'
+        await vstOppijaPage.addNewOsasuoritus(nimi)
+
+        // Poista ensimmäinen osasuoritus
+        const osasuoritus = vstOppijaPage.osasuoritus(0)
+        await osasuoritus.delete()
+
+        // Kärkeen noussut osasuoritus pitäisi olla sama mikä luotiin hetki sitten
+        const osasuoritus2 = vstOppijaPage.osasuoritus(0)
+        expect(await osasuoritus.nimi()).toEqual(nimi)
+      })
+
+      test('Alaosasuorituksen poisto', async ({ vstOppijaPage }) => {
+        // Lisää osasuoritukseen toinen alaosasuoritus
+        const nimi = 'Testikurssi'
+        const osasuoritus = vstOppijaPage.osasuoritus(0)
+
+        await osasuoritus.expand()
+        await osasuoritus.addNewAlaosasuoritus(nimi)
+
+        // Poista ensimmäinen alaosasuoritus
+        await osasuoritus.deleteAlaosasuoritus(0)
+
+        // Kärkeen noussut alaosasuoritus pitäisi olla sama mikä luotiin hetki sitten
+        expect(await osasuoritus.alaosasuoritus(0).nimi()).toEqual(nimi)
+      })
+
+      test('Tilan muokkaaminen', async ({ vstOppijaPage }) => {
+        const tila = vstOppijaPage.$.opiskeluoikeus.tila.edit
+        expect(await tila.add.isVisible()).toBeFalsy()
+        await tila.items(0).remove.click()
+        expect(await tila.add.isVisible()).toBeTruthy()
+        await tila.add.click()
+        await tila.modal.date.set('1.1.2022')
+        await tila.modal.tila.set('keskeytynyt')
+        await tila.modal.submit.click()
+        expect(await tila.items(0).date.value()).toEqual('1.1.2022')
+        expect(await tila.items(0).tila.value()).toEqual('Keskeytynyt')
+      })
+
+      test('Suorituksen vahvistus', async ({ vstOppijaPage }) => {
+        const vahvistaminen =
+          vstOppijaPage.$.suoritukset(0).suorituksenVahvistus
+
+        // Palauta keskeneräiseksi
+        expect(
+          await vahvistaminen.edit.merkitseKeskeneräiseksi.isDisabled()
+        ).toBeTruthy()
+        await vstOppijaPage.$.opiskeluoikeus.tila.edit.items(0).remove.click()
+        await vahvistaminen.edit.merkitseKeskeneräiseksi.click()
+
+        // Merkitse takaisin valmiiksi
+        await vstOppijaPage.vahvistaSuoritusUudellaHenkilöllä(
+          'Reijo',
+          'Rehtori',
+          '1.1.2023'
+        )
+      })
+    })
+
+    test.describe('Lukutaitokoulutus', () => {
+      test.beforeEach(openOppijaPage(lukutaitokoulutus, true))
+
+      const kokonaisuudet = {
+        vstlukutaitokoulutuksennumeeristentaitojenkokonaisuudensuoritus:
+          'Numeeriset taidot',
+        vstlukutaitokoulutuksentekstienkirjoittamisenkokonaisuudensuoritus:
+          'Tekstien kirjoittaminen ja tuottaminen',
+        vstlukutaitokoulutuksentekstienlukemisenkokonaisuudensuoritus:
+          'Tekstien lukeminen ja tulkitseminen',
+        vstlukutaitokoulutuksenvuorovaikutustilannekokonaisuudensuoritus:
+          'Vuorovaikutustilanteissa toimiminen'
+      }
+
+      const poistaKaikkiKokonaisuudet = async (
+        vstOppijaPage: KoskiVSTOppijaPage
+      ) => repeatAsync(4)(() => vstOppijaPage.removeOsasuoritus(0))
+
+      test('Uusien kokonaisuuksien lisäys', async ({ vstOppijaPage }) => {
+        await expect(await vstOppijaPage.osasuoritusOptions()).toEqual(
+          Object.values(kokonaisuudet)
+        )
+        await poistaKaikkiKokonaisuudet(vstOppijaPage)
+        for (const koodi of Object.keys(kokonaisuudet)) {
+          await vstOppijaPage.addOsasuoritus(koodi)
+        }
+        await foreachAsync(Object.values(kokonaisuudet))(async (nimi, i) => {
+          const kokonaisuus = vstOppijaPage.osasuoritus(i)
+          expect(await kokonaisuus.nimi()).toEqual(nimi)
+          await kokonaisuus.setLaajuus(2)
+          expect(await kokonaisuus.laajuus()).toEqual('2')
+        })
+        expect(await vstOppijaPage.laajuudetYhteensä()).toEqual(
+          `${Object.values(kokonaisuudet).length * 2} op`
+        )
+      })
+
+      test('Vaihda laajuutta, arvosanaa ja taitotasoa', async ({
+        vstOppijaPage
+      }) => {
+        await poistaKaikkiKokonaisuudet(vstOppijaPage)
+        await vstOppijaPage.addOsasuoritus(
+          'vstlukutaitokoulutuksenvuorovaikutustilannekokonaisuudensuoritus'
+        )
+
+        const osasuoritus = vstOppijaPage.osasuoritus(0)
+        expect(await osasuoritus.nimi()).toEqual(
+          'Vuorovaikutustilanteissa toimiminen'
+        )
+        expect(await osasuoritus.laajuus()).toEqual('1')
+        expect(await osasuoritus.arvosana()).toEqual('')
+        expect(await osasuoritus.taitotaso()).toEqual('')
+
+        await osasuoritus.setLaajuus(20)
+        await osasuoritus.setSuoritusarvosana(true)
+        await osasuoritus.setKielenTaitotaso('C1.1')
+
+        expect(await osasuoritus.laajuus()).toEqual('20')
+        expect(await osasuoritus.arvosana()).toEqual('Hyväksytty')
+        expect(await osasuoritus.taitotaso()).toEqual('C1.1')
+      })
+
+      test('Vaihda arvostelun päivämäärää', async ({ vstOppijaPage }) => {
+        const osasuoritus = vstOppijaPage.osasuoritus(0)
+        await osasuoritus.expand()
+        await osasuoritus.setArvostelunPvm('1.1.2022')
+        expect(await osasuoritus.arvostelunPvm()).toEqual('1.1.2022')
+      })
+
+      test('Tilan muokkaaminen', async ({ vstOppijaPage }) => {
+        const tila = vstOppijaPage.$.opiskeluoikeus.tila.edit
+        await tila.add.click()
+        await tila.modal.date.set('1.1.2023')
+        await tila.modal.tila.set('valmistunut')
+        await tila.modal.submit.click()
+        expect(await tila.items(0).date.value()).toEqual('1.9.2021')
+        expect(await tila.items(0).tila.value()).toEqual('Läsnä')
+        expect(await tila.items(1).date.value()).toEqual('1.1.2023')
+        expect(await tila.items(1).tila.value()).toEqual('Valmistunut')
+      })
+
+      test('Suorituksen vahvistus', async ({ vstOppijaPage }) => {
+        const vahvistaminen =
+          vstOppijaPage.$.suoritukset(0).suorituksenVahvistus
+
+        // Palauta keskeneräiseksi
+        await vstOppijaPage.$.opiskeluoikeus.tila.edit.items(0).remove.click()
+        await vahvistaminen.edit.merkitseKeskeneräiseksi.click()
+
+        // Merkitse takaisin valmiiksi
+        await vstOppijaPage.vahvistaSuoritusUudellaHenkilöllä(
+          'Reijo',
+          'Rehtori',
+          '1.1.2023'
+        )
+      })
+    })
+
+    test.describe('Oppivelvollisille suunnattu vst-koulutus', () => {
+      test.beforeEach(openOppijaPage(oppivelvollisilleSuunnattu, true))
+
+      const osaamiskokonaisuudet = {
+        1002: 'Arjen taidot ja elämänhallinta',
+        1003: 'Opiskelu-, itsetuntemus- ja työelämätaidot',
+        1004: 'Vuorovaikutus- ja viestintätaidot',
+        1005: 'Matemaattiset perustaidot ja ongelmanratkaisutaidot',
+        1006: 'Aktiivinen kansalaisuus',
+        1007: 'Opiskelu- ja urasuunnittelutaidot',
+        1008: 'Valinnaiset suuntautumisopinnot'
+      }
+
+      const poistaKaikkiOsasuoritukset = async (
+        vstOppijaPage: KoskiVSTOppijaPage
+      ) => repeatAsync(6)(() => vstOppijaPage.removeOsasuoritus(0))
+
+      test('Osaamiskokonaisuuksien lisäys', async ({ vstOppijaPage }) => {
+        await poistaKaikkiOsasuoritukset(vstOppijaPage)
+        await expect(await vstOppijaPage.osasuoritusOptions()).toEqual(
+          Object.values(osaamiskokonaisuudet)
+        )
+        for (const koodi of Object.keys(osaamiskokonaisuudet)) {
+          await vstOppijaPage.addOsasuoritus(koodi)
+        }
+        await foreachAsync(Object.values(osaamiskokonaisuudet))(
+          async (nimi, i) => {
+            const osasuoritus = vstOppijaPage.osasuoritus(i)
+            expect(await osasuoritus.nimi()).toEqual(nimi)
+            await osasuoritus.setLaajuus(2)
+            expect(await osasuoritus.laajuus()).toEqual('2')
+          }
+        )
+        expect(await vstOppijaPage.laajuudetYhteensä()).toEqual(
+          `${Object.values(osaamiskokonaisuudet).length * 2} op`
+        )
+      })
+
+      test('Suuntautumisopintojen lisäys', async ({ vstOppijaPage }) => {
+        const muuallaSuoritutetutOpinnot = {
+          ammatillisentutkinnonosat: 'Ammatillisen tutkinnon osat',
+          avoimetkorkeakouluopinnot: 'Avoimet korkeakouluopinnot',
+          lukioopinnot: 'Lukio-opinnot',
+          perusopetuksenarvosanankorottaminen:
+            'Perusopetuksen arvosanan korottaminen',
+          tyoelamaantutustuminen: 'Työelämään tutustuminen',
+          vapaansivistystyonopinnot: 'Vapaan sivistystyön opinnot'
+        }
+
+        await poistaKaikkiOsasuoritukset(vstOppijaPage)
+        await expect(await vstOppijaPage.suuntautumisopinnotOptions()).toEqual([
+          'Valinnaiset suuntautumisopinnot'
+        ])
+
+        await vstOppijaPage.addSuuntautumisopinto()
+        const suuntautumisopinto = vstOppijaPage.osasuoritus(0)
+
+        await suuntautumisopinto.expand()
+        await foreachAsync(Object.keys(muuallaSuoritutetutOpinnot))((koodi) =>
+          suuntautumisopinto.addAlaosasuoritus(koodi)
+        )
+        await foreachAsync(Object.values(muuallaSuoritutetutOpinnot))(
+          async (nimi, i) => {
+            const kokonaisuus = suuntautumisopinto.alaosasuoritus(i)
+            await kokonaisuus.setLaajuus(1 + i)
+            await kokonaisuus.setSuoritusarvosana(true)
+
+            expect(await kokonaisuus.nimi()).toEqual(nimi)
+            expect(await kokonaisuus.arvosana()).toEqual('Hyväksytty')
+            expect(await kokonaisuus.laajuus()).toEqual(`${i + 1}`)
+          }
+        )
+      })
+
+      test('Paikallisen suuntautumisopinnon lisäys', async ({
+        vstOppijaPage
+      }) => {
+        await poistaKaikkiOsasuoritukset(vstOppijaPage)
+        await expect(await vstOppijaPage.suuntautumisopinnotOptions()).toEqual([
+          'Valinnaiset suuntautumisopinnot'
+        ])
+
+        await vstOppijaPage.addSuuntautumisopinto()
+        const suuntautumisopinto = vstOppijaPage.osasuoritus(0)
+
+        await suuntautumisopinto.expand()
+        suuntautumisopinto.addPaikallinenOpintokokonaisuus(
+          'Työelämäharjoittelu'
+        )
+
+        const paikallinen = suuntautumisopinto.alaosasuoritus(0)
+        await paikallinen.setLaajuus(3)
+        await paikallinen.setSuoritusarvosana(true)
+
+        expect(await paikallinen.nimi()).toEqual('Työelämäharjoittelu')
+        expect(await paikallinen.laajuus()).toEqual('3')
+        expect(await paikallinen.arvosana()).toEqual('Hyväksytty')
+      })
+
+      test('Vaihda laajuutta ja arvosanaa', async ({ vstOppijaPage }) => {
+        const osasuoritus = vstOppijaPage.osasuoritus(0)
+        await osasuoritus.setLaajuus(3)
+
+        expect(await osasuoritus.nimi()).toEqual(
+          'Arjen taidot ja elämänhallinta'
+        )
+
+        await osasuoritus.expand()
+        await osasuoritus.alaosasuoritus(0).setLaajuus(5)
+      })
+
+      test('Alaosasuorituksen poisto', async ({ vstOppijaPage }) => {
+        const kokonaisuus = vstOppijaPage.osasuoritus(0)
+        await kokonaisuus.expand()
+        const head = kokonaisuus.alaosasuoritus(0)
+        expect(await head.nimi()).toEqual('Arjen rahankäyttö')
+        await head.delete()
+        expect(await head.nimi()).toEqual('Mielen liikkeet')
+      })
+
+      test('Tilan muokkaaminen', async ({ vstOppijaPage }) => {
+        const tila = vstOppijaPage.$.opiskeluoikeus.tila.edit
+        await tila.add.click()
+        await tila.modal.date.set('1.1.2021')
+        await tila.modal.date.set('1.1.2023')
+        await tila.modal.tila.set('valmistunut')
+        await tila.modal.submit.click()
+
+        expect(await tila.items(0).date.value()).toEqual('1.9.2021')
+        expect(await tila.items(0).tila.value()).toEqual('Läsnä')
+        expect(await tila.items(1).date.value()).toEqual('1.1.2023')
+        expect(await tila.items(1).tila.value()).toEqual('Valmistunut')
+        expect(await tila.add.isVisible()).toBeFalsy()
+      })
+
+      test('Suorituksen vahvistus', async ({ vstOppijaPage }) => {
+        const vahvistaminen =
+          vstOppijaPage.$.suoritukset(0).suorituksenVahvistus
+
+        // Palauta keskeneräiseksi
+        await vstOppijaPage.$.opiskeluoikeus.tila.edit.items(0).remove.click()
+        await vahvistaminen.edit.merkitseKeskeneräiseksi.click()
+
+        // Merkitse takaisin valmiiksi
+        await vstOppijaPage.vahvistaSuoritusUudellaHenkilöllä(
+          'Reijo',
+          'Rehtori',
+          '1.1.2023'
+        )
+      })
+    })
+
+    test.describe('Kotoutumiskoulutus 2022', () => {
+      test.beforeEach(openOppijaPage(kotoutumiskoulutus2022, true))
+
+      const osasuoritukset = {
+        kielijaviestintaosaaminen: 'Kieli- ja viestintäosaaminen',
+        ohjaus: 'Ohjaus',
+        valinnaisetopinnot: 'Valinnaiset opinnot',
+        yhteiskuntajatyoelamaosaaminen: 'Yhteiskunta- ja työelämäosaaminen'
+      }
+
+      const poistaKaikkiOsasuoritukset = async (
+        vstOppijaPage: KoskiVSTOppijaPage
+      ) => repeatAsync(4)(() => vstOppijaPage.removeOsasuoritus(0))
+
+      test('Osasuorituksien lisäys sekä laajuuksien ja arvosanan asettaminen', async ({
+        vstOppijaPage
+      }) => {
+        await poistaKaikkiOsasuoritukset(vstOppijaPage)
+        await expect(await vstOppijaPage.osasuoritusOptions()).toEqual(
+          Object.values(osasuoritukset)
+        )
+        await foreachAsync(Object.entries(osasuoritukset))(
+          async ([koodi, nimi], index) => {
+            await vstOppijaPage.addOsasuoritus(koodi)
+            const osasuoritus = vstOppijaPage.osasuoritus(index)
+            expect(await osasuoritus.nimi()).toEqual(nimi)
+
+            await osasuoritus.setLaajuus(1 + index)
+            expect(await osasuoritus.laajuus()).toEqual(`${1 + index}`)
+
+            if (koodi !== 'ohjaus') {
+              await osasuoritus.setSuoritusarvosana(true)
+              expect(await osasuoritus.arvosana()).toEqual('Hyväksytty')
+            }
+          }
+        )
+        expect(await vstOppijaPage.laajuudetYhteensä()).toEqual('10 op')
+      })
+
+      test('Kieli- ja viestintäosaamisen muokkaaminen', async ({
+        vstOppijaPage
+      }) => {
+        const kieliopinnot = {
+          kirjoittaminen: 'Kirjoittaminen (kirjallinen tuottaminen)',
+          kuullunymmartaminen:
+            'Kuullun ymmärtäminen (suullinen vastaanottaminen)',
+          luetunymmartaminen:
+            'Luetun ymmärtäminen (kirjallinen vastaanottaminen)',
+          puhuminen: 'Puhuminen (suullinen tuottaminen)'
+        }
+
+        const kieliosaaminen = vstOppijaPage.osasuoritus(0)
+        await kieliosaaminen.expand()
+        await repeatAsync(2)(() => kieliosaaminen.deleteAlaosasuoritus(0))
+
+        expect(await kieliosaaminen.alaosasuoritusOptions()).toEqual(
+          Object.values(kieliopinnot)
+        )
+
+        await foreachAsync(Object.entries(kieliopinnot))(
+          async ([koodi, nimi], i) => {
+            await kieliosaaminen.addAlaosasuoritus(koodi)
+            const alaosasuoritus = kieliosaaminen.alaosasuoritus(i)
+            expect(await alaosasuoritus.nimi()).toEqual(nimi)
+            await alaosasuoritus.setLaajuus(i + 1)
+            expect(await alaosasuoritus.laajuus()).toEqual(`${i + 1}`)
+            await alaosasuoritus.setArvosana(
+              'arviointiasteikkokehittyvankielitaidontasot',
+              'A1.1'
+            )
+            expect(await alaosasuoritus.arvosana()).toEqual('A1.1')
+          }
+        )
+      })
+
+      test('Yhteiskunta- ja työelämäosaaminen', async ({ vstOppijaPage }) => {
+        const yhteiskuntaopinnot = {
+          ammattijakoulutus: 'Ammatti- ja koulutuspalvelut',
+          tyoelamatietous: 'Työelämätietous',
+          tyossaoppiminen: 'Työssäoppiminen',
+          yhteiskunnanperuspalvelut: 'Yhteiskunnan peruspalvelut',
+          yhteiskunnanperusrakenteet:
+            'Yhteiskunnan perusrakenteet ja maantuntemus'
+        }
+
+        const yhteiskuntaosaaminen = vstOppijaPage.osasuoritus(1)
+        await yhteiskuntaosaaminen.expand()
+        await repeatAsync(4)(() => yhteiskuntaosaaminen.deleteAlaosasuoritus(0))
+
+        expect(await yhteiskuntaosaaminen.alaosasuoritusOptions()).toEqual(
+          Object.values(yhteiskuntaopinnot)
+        )
+
+        await foreachAsync(Object.entries(yhteiskuntaopinnot))(
+          async ([koodi, nimi], i) => {
+            await yhteiskuntaosaaminen.addAlaosasuoritus(koodi)
+            const alaosasuoritus = yhteiskuntaosaaminen.alaosasuoritus(i)
+            expect(await alaosasuoritus.nimi()).toEqual(nimi)
+            await alaosasuoritus.setLaajuus(i + 1)
+            expect(await alaosasuoritus.laajuus()).toEqual(`${i + 1}`)
+          }
+        )
+      })
+
+      test('Valinnaiset opinnot', async ({ vstOppijaPage }) => {
+        const valinnaiset = vstOppijaPage.osasuoritus(3)
+        await valinnaiset.expand()
+        await valinnaiset.deleteAlaosasuoritus(0)
+
+        await valinnaiset.addNewAlaosasuoritus('Testaaminen')
+        const alaosasuoritus = valinnaiset.alaosasuoritus(0)
+
+        expect(await alaosasuoritus.nimi()).toEqual('Testaaminen')
+        await alaosasuoritus.setLaajuus(10)
+        expect(await alaosasuoritus.laajuus()).toEqual('10')
+
+        await alaosasuoritus.expand()
+        await alaosasuoritus.setKuvaus('Toimii')
+        expect(await alaosasuoritus.kuvaus()).toEqual('Toimii')
+      })
+
+      test('Tilan muokkaaminen', async ({ vstOppijaPage }) => {
+        await vstOppijaPage.osasuoritus(0).setSuoritusarvosana(true)
+        await vstOppijaPage.osasuoritus(1).setSuoritusarvosana(true)
+        await vstOppijaPage.osasuoritus(3).setSuoritusarvosana(true)
+
+        const tila = vstOppijaPage.$.opiskeluoikeus.tila.edit
+        await tila.add.click()
+        await tila.modal.date.set('1.1.2023')
+        await tila.modal.tila.set('valmistunut')
+        await tila.modal.submit.click()
+        expect(await tila.items(0).date.value()).toEqual('1.8.2022')
+        expect(await tila.items(0).tila.value()).toEqual('Läsnä')
+        expect(await tila.items(1).date.value()).toEqual('1.1.2023')
+        expect(await tila.items(1).tila.value()).toEqual('Valmistunut')
+        expect(await tila.add.isVisible()).toBeFalsy()
+      })
+
+      test('Perusteen vaihtaminen', async ({ vstOppijaPage }) => {
+        await vstOppijaPage.setPeruste('OPH-649-2022')
+        expect(await vstOppijaPage.peruste()).toEqual(
+          'OPH-649-2022 Aikuisten maahanmuuttajien kotoutumiskoulutuksen opetussuunnitelman perusteet 2012'
+        )
+      })
+
+      test('Suorituksen vahvistus', async ({ vstOppijaPage }) => {
+        // Merkitse osasuoritukset suoritetuksi
+        await vstOppijaPage.osasuoritus(0).setSuoritusarvosana(true)
+        await vstOppijaPage.osasuoritus(1).setSuoritusarvosana(true)
+        await vstOppijaPage.osasuoritus(3).setSuoritusarvosana(true)
+
+        // Merkitse takaisin valmiiksi
+        await vstOppijaPage.vahvistaSuoritusUudellaHenkilöllä(
+          'Reijo',
+          'Rehtori',
+          '1.1.2023'
+        )
+      })
+    })
+
+    test.describe('JOTPA', () => {
+      test.beforeEach(openOppijaPage(jotpaKoulutus, true))
+
+      const poistaKaikkiOsasuoritukset = async (
+        vstOppijaPage: KoskiVSTOppijaPage
+      ) => repeatAsync(3)(() => vstOppijaPage.removeOsasuoritus(0))
+
+      test('Osasuoritusten muokkaus', async ({ vstOppijaPage }) => {
+        await poistaKaikkiOsasuoritukset(vstOppijaPage)
+        expect(await vstOppijaPage.osasuoritusOptions()).toEqual([
+          'Lisää osasuoritus'
+        ])
+
+        const osasuoritukset = ['Esimerkki 1', 'Esimerkki 2', 'Esimerkki 3']
+        await foreachAsync(osasuoritukset)(async (nimi, i) => {
+          await vstOppijaPage.addNewOsasuoritus(nimi)
+
+          const osasuoritus = vstOppijaPage.osasuoritus(i)
+          expect(await osasuoritus.nimi()).toEqual(nimi)
+
+          await osasuoritus.setLaajuus(1 + i)
+          expect(await osasuoritus.laajuus()).toEqual(`${i + 1}`)
+
+          await osasuoritus.setJotpaArvosana(4 + i)
+          expect(await osasuoritus.arvosana()).toEqual(`${4 + i}`)
+
+          await osasuoritus.setSuoritusarvosana(true, true)
+          expect(await osasuoritus.arvosana()).toEqual('Hyväksytty')
+        })
+
+        expect(await vstOppijaPage.osasuoritusOptions()).toEqual([
+          'Lisää osasuoritus',
+          ...osasuoritukset
+        ])
+        expect(await vstOppijaPage.laajuudetYhteensä()).toEqual('6 op')
+      })
+
+      test('Tilan muokkaaminen', async ({ vstOppijaPage }) => {
+        const tila = vstOppijaPage.$.opiskeluoikeus.tila.edit
+
+        // Tsekkaa, ettei voi merkitä suoritetuksi puuttuvan arvosanan takia
+        await tila.add.click()
+        expect(
+          await tila.modal.tila.isDisabled('hyvaksytystisuoritettu')
+        ).toBeTruthy()
+        await tila.modal.cancel.click()
+
+        // Lisää arvosana ja yritä uudelleen
+        await vstOppijaPage.osasuoritus(2).setSuoritusarvosana(true, true)
+
+        await tila.add.click()
+        await tila.modal.date.set('1.3.2023')
+        await tila.modal.tila.set('hyvaksytystisuoritettu')
+        await tila.modal.submit.click()
+
+        expect(await tila.items(0).date.value()).toEqual('1.1.2023')
+        expect(await tila.items(0).tila.value()).toEqual('Läsnä')
+        expect(await tila.items(0).rahoitus.value()).toEqual(
+          '(Jatkuvan oppimisen ja työllisyyden palvelukeskuksen rahoitus)'
+        )
+        expect(await tila.items(1).date.value()).toEqual('1.3.2023')
+        expect(await tila.items(1).tila.value()).toEqual(
+          'Hyväksytysti suoritettu'
+        )
+        expect(await tila.items(1).rahoitus.value()).toEqual(
+          '(Jatkuvan oppimisen ja työllisyyden palvelukeskuksen rahoitus)'
+        )
+        expect(await tila.add.isVisible()).toBeFalsy()
+      })
+
+      test('Suorituksen vahvistus', async ({ vstOppijaPage }) => {
+        expect(await vstOppijaPage.isMerkitseValmiiksiDisabled()).toBeTruthy()
+        await vstOppijaPage.osasuoritus(2).setSuoritusarvosana(true, true)
+        expect(await vstOppijaPage.isMerkitseValmiiksiDisabled()).toBeFalsy()
+
+        // Merkitse takaisin valmiiksi
+        await vstOppijaPage.vahvistaSuoritusUudellaHenkilöllä(
+          'Reijo',
+          'Rehtori',
+          '1.1.2023'
+        )
+
+        expect(
+          await vstOppijaPage.isMerkitseKeskeneräiseksiDisabled()
+        ).toBeFalsy()
+
+        const tila = vstOppijaPage.$.opiskeluoikeus.tila.edit
+        await tila.add.click()
+        await tila.modal.date.set('1.3.2023')
+        await tila.modal.tila.set('hyvaksytystisuoritettu')
+        await tila.modal.submit.click()
+
+        expect(
+          await vstOppijaPage.isMerkitseKeskeneräiseksiDisabled()
+        ).toBeTruthy()
       })
     })
   })

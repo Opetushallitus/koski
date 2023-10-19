@@ -40,7 +40,11 @@ import { VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenSuoritus2022 }
 import { VSTKotoutumiskoulutus2022 } from '../types/fi/oph/koski/schema/VSTKotoutumiskoulutus2022'
 import { KoodiarvotOf } from '../util/koodisto'
 import { assertNever } from '../util/selfcare'
-import { CreateVSTArviointi, VSTOsasuoritusArvioinnilla } from './typeguards'
+import {
+  CreateVSTArviointi,
+  isVSTOsasuoritusArvioinnilla,
+  VSTOsasuoritusArvioinnilla
+} from './typeguards'
 
 function isHyväksytty(
   arvosana:
@@ -266,3 +270,11 @@ export const laajuusOpintopisteissa = (arvo: number) =>
   })
 
 export const defaultLaajuusOpintopisteissa = laajuusOpintopisteissa(0)
+
+export const kaikkiOsasuorituksetVahvistettu = (
+  oo: VapaanSivistystyönOpiskeluoikeus
+): boolean =>
+  oo.suoritukset
+    .flatMap<any>((s) => s.osasuoritukset || [])
+    .filter(isVSTOsasuoritusArvioinnilla)
+    .filter((os) => os.arviointi === undefined).length === 0

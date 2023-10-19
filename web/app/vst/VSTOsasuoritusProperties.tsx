@@ -1,116 +1,116 @@
 import React, { useCallback, useContext, useMemo } from 'react'
+import { OpiskeluoikeusContext } from '../appstate/opiskeluoikeus'
+import { usePreferences } from '../appstate/preferences'
+import { CommonProps, subTestId } from '../components-v2/CommonProps'
+import { Column, ColumnRow } from '../components-v2/containers/Columns'
 import { DateEdit, DateView } from '../components-v2/controls/DateField'
 import { LocalizedTextView } from '../components-v2/controls/LocalizedTestField'
+import { RaisedButton } from '../components-v2/controls/RaisedButton'
 import { FormField } from '../components-v2/forms/FormField'
 import {
   FormModel,
   FormOptic,
   getValue
 } from '../components-v2/forms/FormModel'
+import { Spacer } from '../components-v2/layout/Spacer'
 import {
-  ArvosanaView,
-  ArvosanaEdit
+  ArvosanaEdit,
+  ArvosanaView
 } from '../components-v2/opiskeluoikeus/ArvosanaField'
 import {
-  LaajuusView,
-  LaajuusOpintopisteissäEdit
+  KehittyvänKielenTaitotasoEdit,
+  KehittyvänKielenTaitotasoView
+} from '../components-v2/opiskeluoikeus/KehittyvänKielenTaitotasoField'
+import { KoodistoSelect } from '../components-v2/opiskeluoikeus/KoodistoSelect'
+import {
+  KuvausEdit,
+  KuvausView
+} from '../components-v2/opiskeluoikeus/KuvausField'
+import {
+  LaajuusOpintopisteissäEdit,
+  LaajuusView
 } from '../components-v2/opiskeluoikeus/LaajuusField'
 import {
   OsasuoritusProperty,
   OsasuoritusSubproperty
 } from '../components-v2/opiskeluoikeus/OsasuoritusProperty'
 import {
-  OsasuoritusTable,
-  osasuoritusTestId,
-  OsasuoritusRowData
+  OsasuoritusRowData,
+  OsasuoritusTable
 } from '../components-v2/opiskeluoikeus/OsasuoritusTable'
-import {
-  TaitotasoView,
-  TaitotasoEdit
-} from '../components-v2/opiskeluoikeus/TaitotasoField'
-import { isVapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonLukutaitokoulutuksenKokonaisuudenSuoritus'
-import { VapaanSivistystyönOpiskeluoikeus } from '../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeus'
-import { VapaanSivistystyönPäätasonSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonPaatasonSuoritus'
-import { VSTKotoutumiskoulutuksenOhjauksenSuoritus2022 } from '../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenOhjauksenSuoritus2022'
-import { lastElement, päätasonSuoritusPath } from '../util/optics'
-import { createVstArviointi, defaultLaajuusOpintopisteissa } from './resolvers'
-import {
-  VSTOsasuoritus,
-  VSTOsasuoritusOsasuorituksilla,
-  isVSTOsasuoritusArvioinnilla,
-  isVSTOsasuoritusJollaOsasuorituksia,
-  isVSTKoulutusmoduuliKuvauksella,
-  isTunnustettuVSTOsasuoritus,
-  hasPäiväInArviointi
-} from './typeguards'
-import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
-import { PaikallinenKoodi } from '../types/fi/oph/koski/schema/PaikallinenKoodi'
-import { VSTKotoutumiskoulutuksenKieliJaViestintäosaamisenSuoritus2022 } from '../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenKieliJaViestintaosaamisenSuoritus2022'
-import { Column, ColumnRow } from '../components-v2/containers/Columns'
-import { KoodistoSelect } from '../components-v2/opiskeluoikeus/KoodistoSelect'
-import { t } from '../i18n/i18n'
-import { isOppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus2022 } from '../types/fi/oph/koski/schema/OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus2022'
-import {
-  isVSTKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus2022,
-  VSTKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus2022
-} from '../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus2022'
-import {
-  isVSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenSuoritus2022,
-  VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenSuoritus2022
-} from '../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenYhteiskuntaJaTyoelamaosaaminenSuoritus2022'
 import { PaikallinenOsasuoritusSelect } from '../components-v2/opiskeluoikeus/PaikallinenOsasuoritusSelect'
-import { isVapaanSivistystyönLukutaitokoulutuksenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonLukutaitokoulutuksenSuoritus'
-import { isVapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonVapaatavoitteisenKoulutuksenSuoritus'
-import { isVapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus'
-import { isOppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus } from '../types/fi/oph/koski/schema/OppivelvollisilleSuunnattuVapaanSivistystyonKoulutuksenSuoritus'
-import { isOppivelvollisilleSuunnatunVapaanSivistystyönOsaamiskokonaisuudenSuoritus } from '../types/fi/oph/koski/schema/OppivelvollisilleSuunnatunVapaanSivistystyonOsaamiskokonaisuudenSuoritus'
 import {
-  isOppivelvollisilleSuunnatunVapaanSivistystyönValinnaistenSuuntautumisopintojenSuoritus,
-  OppivelvollisilleSuunnatunVapaanSivistystyönValinnaistenSuuntautumisopintojenSuoritus
-} from '../types/fi/oph/koski/schema/OppivelvollisilleSuunnatunVapaanSivistystyonValinnaistenSuuntautumisopintojenSuoritus'
-import { isVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenOpintojenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenTyoelamaJaYhteiskuntataitojenOpintojenSuoritus'
-import { isVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenSuoritus'
-import { isOppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus } from '../types/fi/oph/koski/schema/OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus'
-import { RaisedButton } from '../components-v2/controls/RaisedButton'
-import { Spacer } from '../components-v2/layout/Spacer'
-import { isVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenSuoritus'
-import { isVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOhjauksenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenOhjauksenSuoritus'
-import { isVapaanSivistystyönJotpaKoulutuksenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonJotpaKoulutuksenSuoritus'
-import { isVapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonJotpaKoulutuksenOsasuorituksenSuoritus'
-import {
-  KuvausEdit,
-  KuvausView
-} from '../components-v2/opiskeluoikeus/KuvausField'
+  TaitotasoEdit,
+  TaitotasoView
+} from '../components-v2/opiskeluoikeus/TaitotasoField'
 import {
   TunnustusEdit,
   TunnustusView
 } from '../components-v2/opiskeluoikeus/TunnustusField'
-import { VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonVapaatavoitteisenKoulutuksenOsasuoritus'
-import { VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOpintojenOsasuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenOpintojenOsasuoritus'
+import { t } from '../i18n/i18n'
+import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
+import { isOppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus } from '../types/fi/oph/koski/schema/OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus'
+import { isOppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus2022 } from '../types/fi/oph/koski/schema/OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus2022'
+import { isOppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus } from '../types/fi/oph/koski/schema/OppivelvollisilleSuunnattuVapaanSivistystyonKoulutuksenSuoritus'
+import { OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus } from '../types/fi/oph/koski/schema/OppivelvollisilleSuunnattuVapaanSivistystyonOpintokokonaisuus'
+import { isOppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus } from '../types/fi/oph/koski/schema/OppivelvollisilleSuunnatunVapaanSivistystyonOpintokokonaisuudenSuoritus'
+import { isOppivelvollisilleSuunnatunVapaanSivistystyönOsaamiskokonaisuudenSuoritus } from '../types/fi/oph/koski/schema/OppivelvollisilleSuunnatunVapaanSivistystyonOsaamiskokonaisuudenSuoritus'
 import {
-  KehittyvänKielenTaitotasoEdit,
-  KehittyvänKielenTaitotasoView
-} from '../components-v2/opiskeluoikeus/KehittyvänKielenTaitotasoField'
+  OppivelvollisilleSuunnatunVapaanSivistystyönValinnaistenSuuntautumisopintojenSuoritus,
+  isOppivelvollisilleSuunnatunVapaanSivistystyönValinnaistenSuuntautumisopintojenSuoritus
+} from '../types/fi/oph/koski/schema/OppivelvollisilleSuunnatunVapaanSivistystyonValinnaistenSuuntautumisopintojenSuoritus'
+import { PaikallinenKoodi } from '../types/fi/oph/koski/schema/PaikallinenKoodi'
+import {
+  VSTKotoutumiskoulutuksenKieliJaViestintäosaamisenSuoritus2022,
+  isVSTKotoutumiskoulutuksenKieliJaViestintäosaamisenSuoritus2022
+} from '../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenKieliJaViestintaosaamisenSuoritus2022'
+import { VSTKotoutumiskoulutuksenKieliopintojenKoulutusmoduuli } from '../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenKieliopintojenKoulutusmoduuli'
+import { VSTKotoutumiskoulutuksenOhjauksenKoulutusmoduuli2022 } from '../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenOhjauksenKoulutusmoduuli2022'
+import { VSTKotoutumiskoulutuksenOhjauksenSuoritus2022 } from '../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenOhjauksenSuoritus2022'
+import {
+  VSTKotoutumiskoulutuksenValinnaistenOpintojenAlasuorituksenKoulutusmoduuli2022,
+  isVSTKotoutumiskoulutuksenValinnaistenOpintojenAlasuorituksenKoulutusmoduuli2022
+} from '../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenValinnaistenOpintojenAlasuorituksenKoulutusmoduuli2022'
+import { VSTKotoutumiskoulutuksenValinnaistenOpintojenKoulutusmoduuli2022 } from '../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenValinnaistenOpintojenKoulutusmoduuli2022'
+import {
+  VSTKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus2022,
+  isVSTKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus2022
+} from '../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus2022'
+import { VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenKoulutusmoduuli2022 } from '../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenYhteiskuntaJaTyoelamaosaaminenKoulutusmoduuli2022'
+import {
+  VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenSuoritus2022,
+  isVSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenSuoritus2022
+} from '../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenYhteiskuntaJaTyoelamaosaaminenSuoritus2022'
+import { isVapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonJotpaKoulutuksenOsasuorituksenSuoritus'
+import { VapaanSivistystyönJotpaKoulutuksenOsasuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonJotpaKoulutuksenOsasuoritus'
+import { isVapaanSivistystyönJotpaKoulutuksenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonJotpaKoulutuksenSuoritus'
+import { isVapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonLukutaitokoulutuksenKokonaisuudenSuoritus'
+import { isVapaanSivistystyönLukutaitokoulutuksenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonLukutaitokoulutuksenSuoritus'
+import { isVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenSuoritus'
+import { isVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOhjauksenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenOhjauksenSuoritus'
+import { VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOpintojenOsasuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenOpintojenOsasuoritus'
+import { isVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenOpintojenKoulutusmoduuli } from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenTyoelamaJaYhteiskuntataitojenOpintojenKoulutusmoduuli'
+import { isVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenOpintojenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenTyoelamaJaYhteiskuntataitojenOpintojenSuoritus'
+import { isVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus'
+import { isVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenSuoritus'
 import { VapaanSivistystyönOpintojenSuorituksenOsaamisenTunnustaminen } from '../types/fi/oph/koski/schema/VapaanSivistystyonOpintojenSuorituksenOsaamisenTunnustaminen'
+import { VapaanSivistystyönOpiskeluoikeus } from '../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeus'
+import { VapaanSivistystyönPäätasonSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonPaatasonSuoritus'
+import { isVapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus'
+import { VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonVapaatavoitteisenKoulutuksenOsasuoritus'
+import { isVapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonVapaatavoitteisenKoulutuksenSuoritus'
+import { lastElement } from '../util/optics'
 import {
   OsasuorituksetExpandedState,
   SetOsasuoritusOpen
 } from './../osasuoritus/hooks'
-import { VapaanSivistystyönJotpaKoulutuksenOsasuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonJotpaKoulutuksenOsasuoritus'
-import { isVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenOpintojenKoulutusmoduuli } from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenTyoelamaJaYhteiskuntataitojenOpintojenKoulutusmoduuli'
-import {
-  isVSTKotoutumiskoulutuksenValinnaistenOpintojenAlasuorituksenKoulutusmoduuli2022,
-  VSTKotoutumiskoulutuksenValinnaistenOpintojenAlasuorituksenKoulutusmoduuli2022
-} from '../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenValinnaistenOpintojenAlasuorituksenKoulutusmoduuli2022'
-import { VSTKotoutumiskoulutuksenKieliopintojenKoulutusmoduuli } from '../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenKieliopintojenKoulutusmoduuli'
-import { VSTKotoutumiskoulutuksenOhjauksenKoulutusmoduuli2022 } from '../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenOhjauksenKoulutusmoduuli2022'
-import { VSTKotoutumiskoulutuksenValinnaistenOpintojenKoulutusmoduuli2022 } from '../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenValinnaistenOpintojenKoulutusmoduuli2022'
-import { VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenKoulutusmoduuli2022 } from '../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenYhteiskuntaJaTyoelamaosaaminenKoulutusmoduuli2022'
-import { usePreferences } from '../appstate/preferences'
 import {
   createMuuallaSuoritettuOppivelvollisilleSuunnatunVapaanSivistystyönOpintojenSuoritus,
   createOppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus,
   createOppivelvollisilleSuunnatunVapaanSivistystyönOsaamiskokonaisuudenSuoritus,
+  createVSTKotoutumiskoulutuksenKieliJaViestintäosaamisenOsasuoritus,
+  createVSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenAlaosasuoritus,
+  createVSTKotoutumiskoulutusValinnaistenOpintojenAlaosasuoritus,
   createVapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus,
   createVapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus,
   createVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenSuoritus,
@@ -120,17 +120,20 @@ import {
   createVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenTyöelämäJakso,
   createVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus,
   createVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenSuoritus,
-  createVapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus,
-  createVSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenAlaosasuoritus,
-  createVSTKotoutumiskoulutusValinnaistenOpintojenAlaosasuoritus
+  createVapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus
 } from './VSTOsasuoritukset'
-import { OpiskeluoikeusContext } from '../appstate/opiskeluoikeus'
-import { OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus } from '../types/fi/oph/koski/schema/OppivelvollisilleSuunnattuVapaanSivistystyonOpintokokonaisuus'
-import { isOppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus } from '../types/fi/oph/koski/schema/OppivelvollisilleSuunnatunVapaanSivistystyonOpintokokonaisuudenSuoritus'
-import { isVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus'
-import { subTestId } from '../components-v2/CommonProps'
+import { createVstArviointi, defaultLaajuusOpintopisteissa } from './resolvers'
+import {
+  VSTOsasuoritus,
+  VSTOsasuoritusOsasuorituksilla,
+  hasPäiväInArviointi,
+  isTunnustettuVSTOsasuoritus,
+  isVSTKoulutusmoduuliKuvauksella,
+  isVSTOsasuoritusArvioinnilla,
+  isVSTOsasuoritusJollaOsasuorituksia
+} from './typeguards'
 
-type AddNewVSTOsasuoritusViewProps = {
+type AddNewVSTOsasuoritusViewProps = CommonProps<{
   level: number
   form: FormModel<VapaanSivistystyönOpiskeluoikeus>
   createOsasuoritus: (
@@ -143,7 +146,7 @@ type AddNewVSTOsasuoritusViewProps = {
     | VSTOsasuoritusOsasuorituksilla
     | VapaanSivistystyönPäätasonSuoritus
   >
-}
+}>
 
 export const AddNewVSTOsasuoritusView: React.FC<
   AddNewVSTOsasuoritusViewProps
@@ -173,7 +176,7 @@ export const AddNewVSTOsasuoritusView: React.FC<
       data
     )
 
-  const isVstMamu =
+  const isVstKoto2012 =
     isVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenOpintojenSuoritus(
       data
     ) ||
@@ -181,7 +184,7 @@ export const AddNewVSTOsasuoritusView: React.FC<
       data
     )
 
-  const isVstKoto =
+  const isVstKoto2022 =
     isVSTKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus2022(data)
 
   const preferencesType = isVstJotpa
@@ -190,9 +193,9 @@ export const AddNewVSTOsasuoritusView: React.FC<
     ? 'vapaansivistystyonvapaatavoitteisenkoulutuksenosasuoritus'
     : isVstOppivelvollisille
     ? 'oppivelvollisillesuunnattuvapaansivistystyonopintokokonaisuus'
-    : isVstMamu
+    : isVstKoto2012
     ? 'vapaansivistystyonmaahanmuuttajienkotoutumiskoulutuksenopintojenosasuoritus'
-    : isVstKoto
+    : isVstKoto2022
     ? 'vstkotoutumiskoulutuksenvalinnaistenopintojenalasuorituksenkoulutusmoduuli2022'
     : undefined
 
@@ -282,7 +285,7 @@ export const AddNewVSTOsasuoritusView: React.FC<
             }
             onRemove={onRemovePaikallinenKoodisto}
             tunnisteet={storedOsasuoritustunnisteet}
-            testId={'vapaatavoitteinen-osasuoritus'}
+            testId={props.testId}
           />
         )}
         {isVstJotpa && (
@@ -298,12 +301,12 @@ export const AddNewVSTOsasuoritusView: React.FC<
             }
             onRemove={onRemovePaikallinenKoodisto}
             tunnisteet={storedOsasuoritustunnisteet}
-            testId={'jotpa-osasuoritus'}
+            testId={props.testId}
           />
         )}
         {isVapaanSivistystyönLukutaitokoulutuksenSuoritus(data) && (
           <KoodistoSelect
-            testId="vstlukutaitokoulutuksenkokonaisuus"
+            testId={props.testId}
             koodistoUri="vstlukutaitokoulutuksenkokonaisuus"
             addNewText={t('Lisää kokonaisuus')}
             onSelect={(tunniste, _isNew) => {
@@ -321,7 +324,7 @@ export const AddNewVSTOsasuoritusView: React.FC<
         ) && (
           <>
             <KoodistoSelect
-              testId="vstosaamiskokonaisuus"
+              testId={props.testId}
               koodistoUri="vstosaamiskokonaisuus"
               addNewText={t('Lisää osaamiskokonaisuus')}
               onSelect={(tunniste) => {
@@ -334,7 +337,7 @@ export const AddNewVSTOsasuoritusView: React.FC<
               onRemove={onRemoveKoodisto}
             />
             <KoodistoSelect
-              testId="vstmuutopinnot"
+              testId={subTestId(props, 'suuntautumisopinto')}
               koodistoUri="vstmuutopinnot"
               addNewText={t('Lisää suuntautumisopinto')}
               onSelect={(tunniste) => {
@@ -370,7 +373,7 @@ export const AddNewVSTOsasuoritusView: React.FC<
             }
             onRemove={onRemovePaikallinenKoodisto}
             tunnisteet={storedOsasuoritustunnisteet}
-            testId={'oppivelvollisille-paikallinen-opintokokonaisuus'}
+            testId={subTestId(props, 'paikallinen')}
           />
         )}
         {isOppivelvollisilleSuunnatunVapaanSivistystyönValinnaistenSuuntautumisopintojenSuoritus(
@@ -378,7 +381,7 @@ export const AddNewVSTOsasuoritusView: React.FC<
         ) && (
           <>
             <KoodistoSelect
-              testId="vstmuuallasuoritetutopinnot"
+              testId={props.testId}
               koodistoUri="vstmuuallasuoritetutopinnot"
               addNewText={t('Lisää muualla suoritettu opinto')}
               onSelect={(tunniste) =>
@@ -402,7 +405,7 @@ export const AddNewVSTOsasuoritusView: React.FC<
               }
               onRemove={onRemovePaikallinenKoodisto}
               tunnisteet={storedOsasuoritustunnisteet}
-              testId={'oppivelvollisille-paikallinen-opintokokonaisuus'}
+              testId={subTestId(props, 'paikallinen')}
             />
           </>
         )}
@@ -475,7 +478,7 @@ export const AddNewVSTOsasuoritusView: React.FC<
           data
         ) && (
           <KoodistoSelect
-            testId="vstkoto2022kokonaisuus"
+            testId={props.testId}
             koodistoUri="vstkoto2022kokonaisuus"
             addNewText={t('Lisää osasuoritus')}
             onSelect={(tunniste, _isNew) => {
@@ -610,10 +613,30 @@ export const AddNewVSTOsasuoritusView: React.FC<
             testId={'koto-valinnaisten-paikallinen-osasuoritus'}
           />
         )}
+        {isVSTKotoutumiskoulutuksenKieliJaViestintäosaamisenSuoritus2022(
+          data
+        ) && (
+          <KoodistoSelect
+            testId={props.testId}
+            koodistoUri="vstkoto2022kielijaviestintakoulutus"
+            addNewText={t(
+              'Lisää kieli- ja viestintäkoulutuksen alaosasuoritus'
+            )}
+            onSelect={(tunniste, _isNew) => {
+              onKoodistoSelect(
+                createVSTKotoutumiskoulutuksenKieliJaViestintäosaamisenOsasuoritus(
+                  tunniste
+                )
+              )
+            }}
+            onRemove={onRemoveKoodisto}
+          />
+        )}
         {isVSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenSuoritus2022(
           data
         ) && (
           <KoodistoSelect
+            testId={props.testId}
             koodistoUri="vstkoto2022yhteiskuntajatyoosaamiskoulutus"
             addNewText={t(
               'Lisää yhteiskunta- ja työosaamiskoulutuksen alaosasuoritus'
@@ -632,6 +655,7 @@ export const AddNewVSTOsasuoritusView: React.FC<
           data
         ) && (
           <PaikallinenOsasuoritusSelect
+            testId={props.testId}
             addNewText={t('Lisää osasuoritus')}
             onSelect={(tunniste, isNew) => {
               onKoodistoSelect(
