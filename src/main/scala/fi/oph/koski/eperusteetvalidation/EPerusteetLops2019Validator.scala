@@ -58,7 +58,6 @@ class EPerusteetLops2019Validator(ePerusteet: EPerusteetRepository) extends Logg
         if (
            leaf.isDefined // Moduuli on osa tutkittavaa oppiainetta tai -määrää
             || !kaikkiPerusteetTuntematModuulit.contains(moduuli) // Moduulit, jotka eivät ole ePerusteessa, jätetään varmuuden vuoksi käsittelemättä
-            || onOkMatematiikanYhteinenOpintokokonaisuus(s, rakenne) // Poikkeus: MAY1-moduulin voi suorittaa sekä pitkän että lyhyen matematiikan alla
         ) {
           if (leaf.exists(_.toisenRakenteenOsa) && s.koulutusmoduuli.pakollinen) {
             KoskiErrorCategory.badRequest.validation.rakenne(s"Moduulia $moduuli ei voi siirtää oppiaineen ${rakenne.arvo} alle pakollisena.")
@@ -78,9 +77,6 @@ class EPerusteetLops2019Validator(ePerusteet: EPerusteetRepository) extends Logg
         }
       case _ => HttpStatus.ok
     }
-
-  def onOkMatematiikanYhteinenOpintokokonaisuus(s: LukionModuulinTaiPaikallisenOpintojaksonSuoritus2019, rakenne: OsasuoritustenValidointirakenne): Boolean =
-    s.koulutusmoduuli.tunniste.koodiarvo == "MAY1" && List("MAA", "MAB").contains(rakenne.arvo)
 
   private def parseLops2019(lops2019: Any): List[OsasuoritustenValidointirakenne] =
     lops2019 match {
@@ -130,9 +126,25 @@ class EPerusteetLops2019Validator(ePerusteet: EPerusteetRepository) extends Logg
       .map(rakenne => {
         rakenne.copy(osat = rakenne.osat.flatMap {
           // Uskontoa ei validoida oppimäärän tarkkuudella, vaan kaikki uskonnon ja elämänkatsomustiedon moduulit kelpaavat uskonnon oppiaineen suoritukseen
-          case uskonto: OsasuoritustenValidointirakenne if uskonto.arvo == "KT" => Some(uskonto.flatten.merge(rakenne.get("ET")))
-          case et: OsasuoritustenValidointirakenne if et.arvo == "ET" => Some(et.merge(rakenne.get("KT").map(_.flatten)))
-          case osa: OsasuoritustenValidointirakenne if osa.arvo == "LD" => None // Diplomimoduuleja ei validoida
+          // Lisäksi uskonnon alle voi siirtää ET-moduuleja valinnaisena
+          case uskonto: OsasuoritustenValidointirakenne if uskonto.arvo == "KT" => Some(uskonto.flatten.withModuulitValinnaisena(rakenne.get("ET")))
+          // ET:n alle voi siirtää uskonnon moduuleja valinnaisena
+          case et: OsasuoritustenValidointirakenne if et.arvo == "ET" => Some(et.withModuulitValinnaisena(rakenne.get("KT").map(_.flatten)))
+          // Pitkän matematiikan alle voi siirtää lyhyen matematiikan moduuleja valinnaisena ja toisinpäin.
+          // Matematiikan yhteisen opinnon moduulin voi siirtää sekä lyhyeen että pitkään matematiikkaan.
+          case matematiikka: OsasuoritustenValidointirakenne if matematiikka.arvo == "MA" =>
+            Some(matematiikka.copy(osat = matematiikka.osat.map {
+              case maa: OsasuoritustenValidointirakenne if maa.arvo == "MAA" => maa
+                .withModuulit(matematiikka.get("MAY"))
+                .withModuulitValinnaisena(matematiikka.get("MAB"))
+              case mab: OsasuoritustenValidointirakenne if mab.arvo == "MAB" => mab
+                .withModuulit(matematiikka.get("MAY"))
+                .withModuulitValinnaisena(matematiikka.get("MAA"))
+              case ma: OsasuoritustenValidointirakenne => ma
+            }))
+          // Diplomimoduuleja ei validoida
+          case osa: OsasuoritustenValidointirakenne if osa.arvo == "LD" => None
+          // Muihin moduuleihin ei liity erityissääntöjä
           case osa: OsasuoritustenValidointirakenne => Some(osa)
         })
       })
@@ -146,6 +158,8 @@ case class OsasuoritustenValidointirakenne(
   toisenRakenteenOsa: Boolean = false,
 ) {
   def get(a: String): Option[OsasuoritustenValidointirakenne] = osat.find(_.arvo == a)
+//  def findNode(a: String): Option[OsasuoritustenValidointirakenne] =
+//    if (arvo == a) Some(this) else osat.flatMap(_.findNode(a)).headOption
   def findLeaf(leaf: String): Option[OsasuoritustenValidointirakenne] =
     if (osat.isEmpty) {
       if (arvo == leaf) Some(this) else None
@@ -160,8 +174,12 @@ case class OsasuoritustenValidointirakenne(
     }
 
   def flatten: OsasuoritustenValidointirakenne = copy(osat = osat ++ osat.map(_.flatten))
-  def merge(rakenne: Option[OsasuoritustenValidointirakenne]): OsasuoritustenValidointirakenne = merge(rakenne.map(_.osat).getOrElse(Nil))
-  def merge(lisäosat: List[OsasuoritustenValidointirakenne]): OsasuoritustenValidointirakenne =
-    copy(osat = osat ++ lisäosat.map(_.asToisenRakenteenOsa))
+  def merge(lisäosat: List[OsasuoritustenValidointirakenne]): OsasuoritustenValidointirakenne = copy(osat = osat ++ lisäosat)
+
+  def withModuulit(rakenne: Option[OsasuoritustenValidointirakenne]): OsasuoritustenValidointirakenne =
+    merge(rakenne.map(_.osat).getOrElse(Nil))
+
+  def withModuulitValinnaisena(rakenne: Option[OsasuoritustenValidointirakenne]): OsasuoritustenValidointirakenne =
+    merge(rakenne.map(_.osat).getOrElse(Nil).map(_.asToisenRakenteenOsa))
   def asToisenRakenteenOsa: OsasuoritustenValidointirakenne = copy(toisenRakenteenOsa = true, osat = osat.map(_.asToisenRakenteenOsa))
 }
