@@ -162,8 +162,6 @@ case class OsasuoritustenValidointirakenne(
   toisenRakenteenOsa: Boolean = false,
 ) {
   def get(a: String): Option[OsasuoritustenValidointirakenne] = osat.find(_.arvo == a)
-//  def findNode(a: String): Option[OsasuoritustenValidointirakenne] =
-//    if (arvo == a) Some(this) else osat.flatMap(_.findNode(a)).headOption
   def findLeaf(leaf: String): Option[OsasuoritustenValidointirakenne] =
     if (osat.isEmpty) {
       if (arvo == leaf) Some(this) else None
