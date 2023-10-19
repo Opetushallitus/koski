@@ -105,7 +105,7 @@ class KoskiApplication(
   lazy val ePerusteetLops2019Validator = new EPerusteetLops2019Validator(ePerusteet)
   lazy val possu = TimedProxy[KoskiOpiskeluoikeusRepository](new PostgresKoskiOpiskeluoikeusRepository(
     masterDatabase.db,
-    new PostgresKoskiOpiskeluoikeusRepositoryActions(
+    new PostgresKoskiOpiskeluoikeusRepositoryActionsV2(
       masterDatabase.db,
       oidGenerator,
       henkilöRepository.opintopolku,
