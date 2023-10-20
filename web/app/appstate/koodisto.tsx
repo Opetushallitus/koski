@@ -19,6 +19,8 @@ import * as C from '../util/constraints'
 import { nonNull } from '../util/fp/arrays'
 import { mapObjectValues } from '../util/fp/objects'
 import { fetchKoodistot } from '../util/koskiApi'
+import * as Ord from 'fp-ts/Ord'
+import { t } from '../i18n/i18n'
 
 /**
  * Palauttaa annetun koodiston koodiarvot. Jos koodiarvot-argumentti on annettu,
@@ -251,3 +253,17 @@ export const KoodistoProvider = (props: KoodistoProviderProps) => {
 }
 
 const distinct = A.uniq(string.Eq)
+
+export const KoodistokoodiviiteKoodistonNimelläOrd = Ord.contramap(
+  (k: KoodistokoodiviiteKoodistonNimellä) =>
+    analyzeItem(t(k.koodiviite.nimi) || '')
+)(string.Ord)
+
+const analyzeItem = (value: string): string =>
+  value
+    .split(' ')
+    .map((x) => {
+      const n = parseFloat(x.replace(',', '.'))
+      return Number.isFinite(n) ? x.padStart(16, '0') : x
+    })
+    .join(' ')
