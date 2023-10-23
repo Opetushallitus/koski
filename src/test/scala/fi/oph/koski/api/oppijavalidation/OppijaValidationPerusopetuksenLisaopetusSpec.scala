@@ -23,7 +23,7 @@ class OppijaValidationPerusopetuksenLisäopetusSpec extends TutkinnonPerusteetTe
 
   "Osa-aikainen erityisopetus" - {
     "Opiskeluoikeudella on erityisen tuen päätös muusta kuin osa-aikaisesta erityisopetuksesta, muttei tietoa suorituksessa -> HTTP 200" in {
-      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(
         lisätiedot = perusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedotJoissaErityisenTuenPäätösIlmanOsaAikaistaErityisopetusta
       )) {
         verifyResponseStatusOk()
@@ -31,7 +31,7 @@ class OppijaValidationPerusopetuksenLisäopetusSpec extends TutkinnonPerusteetTe
     }
 
     "Opiskeluoikeudella on tehostetun tuen päätös muusta kuin osa-aikaisesta erityisopetuksesta, muttei tietoa suorituksessa -> HTTP 200" in {
-      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(
         lisätiedot = perusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedotJoissaTehostetunTuenPäätösIlmanOsaAikaistaErityisopetusta
       )) {
         verifyResponseStatusOk()
@@ -45,7 +45,7 @@ class OppijaValidationPerusopetuksenLisäopetusSpec extends TutkinnonPerusteetTe
         NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2016, 1, 1), opiskeluoikeusLäsnä),
         NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2017, 1, 1), opiskeluoikeusEronnut)
       )))
-    putOpiskeluoikeus(opiskeluoikeus) {
+    setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
       verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaEronnutTaiKatsotaanEronneeksiVaikkaVahvistettuPäätasonSuoritus())
     }
   }
@@ -59,7 +59,7 @@ class OppijaValidationPerusopetuksenLisäopetusSpec extends TutkinnonPerusteetTe
     ).withSuoritukset(
       List(defaultLisäopetuksenSuoritus)
     )
-    putOpiskeluoikeus(opiskeluoikeus) {
+    setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
       verifyResponseStatusOk()
     }
   }
@@ -73,7 +73,7 @@ class OppijaValidationPerusopetuksenLisäopetusSpec extends TutkinnonPerusteetTe
     ).withSuoritukset(
       List(defaultLisäopetuksenSuoritus)
     )
-    putOpiskeluoikeus(opiskeluoikeus) {
+    setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
       verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.perusopetuksenLisäopetuksenTilaEiSallittu())
     }
   }
@@ -93,7 +93,7 @@ class OppijaValidationPerusopetuksenLisäopetusSpec extends TutkinnonPerusteetTe
         )
         ))
 
-      val tallennettuna = putAndGetOpiskeluoikeus(oo)
+      val tallennettuna = setupOppijaWithAndGetOpiskeluoikeus(oo)
 
       tallennettuna.lisätiedot.get.perusopetuksenAloittamistaLykätty should equal (None)
       tallennettuna.lisätiedot.get.aloittanutEnnenOppivelvollisuutta should equal (None)
@@ -111,13 +111,13 @@ class OppijaValidationPerusopetuksenLisäopetusSpec extends TutkinnonPerusteetTe
         ))
       )
 
-      val tallennettuna = putAndGetOpiskeluoikeus(oo)
+      val tallennettuna = setupOppijaWithAndGetOpiskeluoikeus(oo)
 
       tallennettuna.suoritukset.head.osaAikainenErityisopetus should equal (None)
     }
   }
 
-  private def putAndGetOpiskeluoikeus(oo: KoskeenTallennettavaOpiskeluoikeus): PerusopetuksenLisäopetuksenOpiskeluoikeus = putOpiskeluoikeus(oo) {
+  private def setupOppijaWithAndGetOpiskeluoikeus(oo: KoskeenTallennettavaOpiskeluoikeus): PerusopetuksenLisäopetuksenOpiskeluoikeus = setupOppijaWithOpiskeluoikeus(oo) {
     verifyResponseStatusOk()
     getOpiskeluoikeus(readPutOppijaResponse.opiskeluoikeudet.head.oid)
   }.asInstanceOf[PerusopetuksenLisäopetuksenOpiskeluoikeus]

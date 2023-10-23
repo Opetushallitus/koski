@@ -19,7 +19,7 @@ class PerusopetusOmattiedotSpec extends AnyFreeSpec with KoskiHttpSpec with Opis
   "Perusopetuksen oppimäärän suoritus" - {
     "kun suoritus on valmis" - {
       "palautetaan osasuoritukset" in {
-        putOpiskeluoikeus(opiskeluoikeus = defaultOpiskeluoikeus, henkilö = defaultHenkilö.copy(hetu = "251014-5651")) {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus = defaultOpiskeluoikeus, henkilö = defaultHenkilö.copy(hetu = "251014-5651")) {
           verifyResponseStatusOk()
         }
         get("api/omattiedot/editor", headers = kansalainenLoginHeaders("251014-5651")) {
@@ -35,8 +35,7 @@ class PerusopetusOmattiedotSpec extends AnyFreeSpec with KoskiHttpSpec with Opis
     "kun suoritus on kesken" - {
       "ja suoritus ei ole opiskeluoikeuden ainoa päätason suoritus" - {
         "piilotetaan perusopetuksen oppimäärän suoritus" in {
-          resetFixtures
-          putOpiskeluoikeus(opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(vahvistus = None), kahdeksannenLuokanSuoritus)), henkilö = defaultHenkilö.copy(hetu = "251014-5651")) {
+          setupOppijaWithOpiskeluoikeus(opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(vahvistus = None), kahdeksannenLuokanSuoritus)), henkilö = defaultHenkilö.copy(hetu = "251014-5651")) {
             verifyResponseStatusOk()
           }
           get("api/omattiedot/editor", headers = kansalainenLoginHeaders("251014-5651")) {
@@ -48,8 +47,7 @@ class PerusopetusOmattiedotSpec extends AnyFreeSpec with KoskiHttpSpec with Opis
       }
       "ja suoritus on opiskeluoikeuden ainoa päätason suoritus" - {
         "piilotetaan perusopetuksen oppimäärän osasuoritukset" in {
-          resetFixtures
-          putOpiskeluoikeus(opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(vahvistus = None))), henkilö = defaultHenkilö.copy(hetu = "251014-5651")) {
+          setupOppijaWithOpiskeluoikeus(opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(vahvistus = None))), henkilö = defaultHenkilö.copy(hetu = "251014-5651")) {
             verifyResponseStatusOk()
           }
           get("api/omattiedot/editor", headers = kansalainenLoginHeaders("251014-5651")) {
@@ -66,7 +64,7 @@ class PerusopetusOmattiedotSpec extends AnyFreeSpec with KoskiHttpSpec with Opis
           yhdeksännenLuokanSuoritus.copy(vahvistus = vahvistus.map(_.copy(päivä = LocalDate.now().minusDays(4)))),
           päättötodistusSuoritus.copy(vahvistus = vahvistus.map(_.copy(päivä = LocalDate.now().minusDays(4))))
         ))
-        putOpiskeluoikeus(opiskeluoikeus = opiskeluoikeus, henkilö = defaultHenkilö.copy(hetu = "251014-5651")) {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus = opiskeluoikeus, henkilö = defaultHenkilö.copy(hetu = "251014-5651")) {
           verifyResponseStatusOk()
         }
         get("api/omattiedot/editor", headers = kansalainenLoginHeaders("251014-5651")) {
@@ -80,7 +78,7 @@ class PerusopetusOmattiedotSpec extends AnyFreeSpec with KoskiHttpSpec with Opis
         päättötodistusSuoritus.copy(vahvistus = vahvistus.map(_.copy(päivä = LocalDate.now().minusDays(5))))
       ))
       "palautetaan arvosanat" in {
-        putOpiskeluoikeus(opiskeluoikeus = opiskeluoikeus, henkilö = defaultHenkilö.copy(hetu = "251014-5651")) {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus = opiskeluoikeus, henkilö = defaultHenkilö.copy(hetu = "251014-5651")) {
           verifyResponseStatusOk()
         }
         get("api/omattiedot/editor", headers = kansalainenLoginHeaders("251014-5651")) {
@@ -92,8 +90,7 @@ class PerusopetusOmattiedotSpec extends AnyFreeSpec with KoskiHttpSpec with Opis
   "Perusopetuksen vuosiluokan suoritus" - {
     "kun suoritus on valmis" - {
       "palautetaan arvosanat" in {
-        resetFixtures
-        putOpiskeluoikeus(opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(kahdeksannenLuokanSuoritus)), henkilö = defaultHenkilö.copy(hetu = "251014-5651")) {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(kahdeksannenLuokanSuoritus)), henkilö = defaultHenkilö.copy(hetu = "251014-5651")) {
           verifyResponseStatusOk()
         }
         get("api/omattiedot/editor", headers = kansalainenLoginHeaders("251014-5651")) {
@@ -104,7 +101,7 @@ class PerusopetusOmattiedotSpec extends AnyFreeSpec with KoskiHttpSpec with Opis
     }
     "kun suoritus on kesken" - {
       "piilotetaan arvosanat" in {
-        putOpiskeluoikeus(opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(kahdeksannenLuokanSuoritus.copy(vahvistus = None))), henkilö = defaultHenkilö.copy(hetu = "251014-5651")) {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(kahdeksannenLuokanSuoritus.copy(vahvistus = None))), henkilö = defaultHenkilö.copy(hetu = "251014-5651")) {
           verifyResponseStatusOk()
         }
         get("api/omattiedot/editor", headers = kansalainenLoginHeaders("251014-5651")) {
@@ -116,7 +113,7 @@ class PerusopetusOmattiedotSpec extends AnyFreeSpec with KoskiHttpSpec with Opis
     "kun suoritus on valmistunut alle 5 päivää sitten" - {
       "piilotetaan arvosanat" in {
         val opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(kahdeksannenLuokanSuoritus.copy(vahvistus = vahvistus.map(_.copy(päivä = LocalDate.now().minusDays(4))))))
-        putOpiskeluoikeus(opiskeluoikeus = opiskeluoikeus, henkilö = defaultHenkilö.copy(hetu = "251014-5651")) {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus = opiskeluoikeus, henkilö = defaultHenkilö.copy(hetu = "251014-5651")) {
           verifyResponseStatusOk()
         }
         get("api/omattiedot/editor", headers = kansalainenLoginHeaders("251014-5651")) {
@@ -128,7 +125,7 @@ class PerusopetusOmattiedotSpec extends AnyFreeSpec with KoskiHttpSpec with Opis
     "kun suoritus on valmistut vähintään 5 päivää sitten" - {
       val opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(kahdeksannenLuokanSuoritus.copy(vahvistus = vahvistus.map(_.copy(päivä = LocalDate.now().minusDays(5))))))
       "palautetaan arvosanat" in {
-        putOpiskeluoikeus(opiskeluoikeus = opiskeluoikeus, henkilö = defaultHenkilö.copy(hetu = "251014-5651")) {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus = opiskeluoikeus, henkilö = defaultHenkilö.copy(hetu = "251014-5651")) {
           verifyResponseStatusOk()
         }
         get("api/omattiedot/editor", headers = kansalainenLoginHeaders("251014-5651")) {
@@ -151,8 +148,7 @@ class PerusopetusOmattiedotSpec extends AnyFreeSpec with KoskiHttpSpec with Opis
       )
     "kun suoritus on valmis" - {
       "palautetaan arvosanat" in {
-        resetFixtures
-        putOpiskeluoikeus(opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(oppiaineenOppimääränSuoritus)), henkilö = defaultHenkilö.copy(hetu = "251014-5651")) {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(oppiaineenOppimääränSuoritus)), henkilö = defaultHenkilö.copy(hetu = "251014-5651")) {
           verifyResponseStatusOk()
         }
         get("api/omattiedot/editor", headers = kansalainenLoginHeaders("251014-5651")) {
@@ -162,7 +158,7 @@ class PerusopetusOmattiedotSpec extends AnyFreeSpec with KoskiHttpSpec with Opis
     }
     "kun suoritus on kesken" - {
       "piilotetaan arvosanat" in {
-        putOpiskeluoikeus(opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(oppiaineenOppimääränSuoritus.copy(vahvistus = None))), henkilö = defaultHenkilö.copy(hetu = "251014-5651")) {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(oppiaineenOppimääränSuoritus.copy(vahvistus = None))), henkilö = defaultHenkilö.copy(hetu = "251014-5651")) {
           verifyResponseStatusOk()
         }
         get("api/omattiedot/editor", headers = kansalainenLoginHeaders("251014-5651")) {
@@ -173,7 +169,7 @@ class PerusopetusOmattiedotSpec extends AnyFreeSpec with KoskiHttpSpec with Opis
     "kun suoritus on valmistunut alle 5 päivää sitten" - {
       "piilotetaan arvosanat" in {
         val opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(oppiaineenOppimääränSuoritus.copy(vahvistus = vahvistus.map(_.copy(päivä = LocalDate.now().minusDays(4))))))
-        putOpiskeluoikeus(opiskeluoikeus = opiskeluoikeus, henkilö = defaultHenkilö.copy(hetu = "251014-5651")) {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus = opiskeluoikeus, henkilö = defaultHenkilö.copy(hetu = "251014-5651")) {
           verifyResponseStatusOk()
         }
         get("api/omattiedot/editor", headers = kansalainenLoginHeaders("251014-5651")) {
@@ -184,7 +180,7 @@ class PerusopetusOmattiedotSpec extends AnyFreeSpec with KoskiHttpSpec with Opis
     "kun suoritus on valmistut vähintään 5 päivää sitten" - {
       val opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(oppiaineenOppimääränSuoritus.copy(vahvistus = vahvistus.map(_.copy(päivä = LocalDate.now().minusDays(5))))))
       "palautetaan arvosanat" in {
-        putOpiskeluoikeus(opiskeluoikeus = opiskeluoikeus, henkilö = defaultHenkilö.copy(hetu = "251014-5651")) {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus = opiskeluoikeus, henkilö = defaultHenkilö.copy(hetu = "251014-5651")) {
           verifyResponseStatusOk()
         }
         get("api/omattiedot/editor", headers = kansalainenLoginHeaders("251014-5651")) {
@@ -201,7 +197,7 @@ class PerusopetusOmattiedotSpec extends AnyFreeSpec with KoskiHttpSpec with Opis
       val opiskeluoikeus = defaultOpiskeluoikeus.withSuoritukset(List(yhdeksännenLuokanSuoritus, päätasonSuoritus.withOsasuoritukset(Some(List(pakollinenOppiaine, valinnainenOppiaine)))))
       val henkilö = defaultHenkilö.copy(hetu = hetu)
 
-      putOpiskeluoikeus(opiskeluoikeus, henkilö) {
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus, henkilö) {
         verifyResponseStatusOk()
         get("api/omattiedot/editor", headers = kansalainenLoginHeaders(hetu)) {
           verifyResponse

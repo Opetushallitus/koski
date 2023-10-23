@@ -24,7 +24,7 @@ class OppijaValidationMuuKuinSäänneltySpec extends AnyFreeSpec with PutOpiskel
           tila = opiskeluoikeudenTila(List(opiskeluoikeusKatsotaanEronneeksi))
         )
 
-        putOpiskeluoikeus(oo) {
+        setupOppijaWithOpiskeluoikeus(oo) {
           verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*enumValueMismatch.*".r))
         }
       }
@@ -34,7 +34,7 @@ class OppijaValidationMuuKuinSäänneltySpec extends AnyFreeSpec with PutOpiskel
           tila = opiskeluoikeudenTila(List(opiskeluoikeusValmistunut))
         )
 
-        putOpiskeluoikeus(oo) {
+        setupOppijaWithOpiskeluoikeus(oo) {
           verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*enumValueMismatch.*".r))
         }
       }
@@ -45,7 +45,7 @@ class OppijaValidationMuuKuinSäänneltySpec extends AnyFreeSpec with PutOpiskel
         val oo = ExamplesMuuKuinSäänneltyKoulutus.Opiskeluoikeus.kesken.copy(
           tila = opiskeluoikeudenTila(List(opiskeluoikeusLäsnä), None),
         )
-        putOpiskeluoikeus(oo) {
+        setupOppijaWithOpiskeluoikeus(oo) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaltaPuuttuuRahoitusmuoto("Opiskeluoikeuden tilalta lasna puuttuu rahoitusmuoto"))
         }
       }
@@ -54,7 +54,7 @@ class OppijaValidationMuuKuinSäänneltySpec extends AnyFreeSpec with PutOpiskel
         val oo = ExamplesMuuKuinSäänneltyKoulutus.Opiskeluoikeus.suoritettu.copy(
           tila = opiskeluoikeudenTila(List(opiskeluoikeusHyväksytystiSuoritettu), None),
         )
-        putOpiskeluoikeus(oo) {
+        setupOppijaWithOpiskeluoikeus(oo) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaltaPuuttuuRahoitusmuoto("Opiskeluoikeuden tilalta hyvaksytystisuoritettu puuttuu rahoitusmuoto"))
         }
       }

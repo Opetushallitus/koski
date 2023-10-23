@@ -14,31 +14,31 @@ class OppijaValidationLukionOppiaineidenOppimaarat2019Spec extends TutkinnonPeru
     val suorituksenKoulutusmoduuliNuortenPerusteella = oppiaineidenOppimäärienSuoritus.koulutusmoduuli.copy(perusteenDiaarinumero = Some("OPH-2263-2019"))
 
     "Vanha diaarinumero aiheuttaa virheen" in {
-      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppiaineidenOppimäärienSuoritus.copy(koulutusmoduuli = suorituksenKoulutusmoduuliVanhallaPerusteella)))) {
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppiaineidenOppimäärienSuoritus.copy(koulutusmoduuli = suorituksenKoulutusmoduuliVanhallaPerusteella)))) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.vääräDiaari("""Väärä diaarinumero "60/011/2015" suorituksella lukionaineopinnot, sallitut arvot: OPH-2263-2019"""))
       }
     }
 
     "Väärä nuorten diaarinumero aiheuttaa virheen" in {
-      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppiaineidenOppimäärienSuoritus.copy(koulutusmoduuli = suorituksenKoulutusmoduuliAikuistenPerusteella)))) {
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppiaineidenOppimäärienSuoritus.copy(koulutusmoduuli = suorituksenKoulutusmoduuliAikuistenPerusteella)))) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.vääräDiaari("""Väärä diaarinumero "OPH-2267-2019" suorituksella lukionaineopinnot, sallitut arvot: OPH-2263-2019"""))
       }
     }
 
     "Väärä aikuisten diaarinumero aiheuttaa virheen" in {
-      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppiaineidenOppimäärienSuoritus.copy(oppimäärä = aikuistenOpetussuunnitelma, koulutusmoduuli = suorituksenKoulutusmoduuliNuortenPerusteella)))) {
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppiaineidenOppimäärienSuoritus.copy(oppimäärä = aikuistenOpetussuunnitelma, koulutusmoduuli = suorituksenKoulutusmoduuliNuortenPerusteella)))) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.vääräDiaari("""Väärä diaarinumero "OPH-2263-2019" suorituksella lukionaineopinnot, sallitut arvot: OPH-2267-2019"""))
       }
     }
 
     "Nuorten diaarinumero sallitaan" in {
-      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppiaineidenOppimäärienSuoritus.copy(koulutusmoduuli = suorituksenKoulutusmoduuliNuortenPerusteella)))) {
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppiaineidenOppimäärienSuoritus.copy(koulutusmoduuli = suorituksenKoulutusmoduuliNuortenPerusteella)))) {
         verifyResponseStatusOk()
       }
     }
 
     "Aikuisten diaarinumero sallitaan" in {
-      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppiaineidenOppimäärienSuoritus.copy(oppimäärä = aikuistenOpetussuunnitelma, koulutusmoduuli = suorituksenKoulutusmoduuliAikuistenPerusteella)))) {
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppiaineidenOppimäärienSuoritus.copy(oppimäärä = aikuistenOpetussuunnitelma, koulutusmoduuli = suorituksenKoulutusmoduuliAikuistenPerusteella)))) {
         verifyResponseStatusOk()
       }
     }
@@ -46,7 +46,7 @@ class OppijaValidationLukionOppiaineidenOppimaarat2019Spec extends TutkinnonPeru
 
   "Suoritukset" - {
     "Useampi ryhmittelevä lukionaineopinnot-suoritus aiheuttaa virheen" in {
-      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppiaineidenOppimäärienSuoritus, oppiaineidenOppimäärienSuoritus))) {
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppiaineidenOppimäärienSuoritus, oppiaineidenOppimäärienSuoritus))) {
         verifyResponseStatus(400,
           KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaSuorituksia(
           """Opiskeluoikeudella on enemmän kuin yksi oppiaineiden oppimäärät ryhmittelevä lukionaineopinnot-tyyppinen suoritus"""
@@ -56,7 +56,7 @@ class OppijaValidationLukionOppiaineidenOppimaarat2019Spec extends TutkinnonPeru
     }
 
     "Muiden lukio-opintojen suoritusten tallentaminen onnistuu" in {
-      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppiaineidenOppimäärienLukioDiplominSuoritus))) {
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppiaineidenOppimäärienLukioDiplominSuoritus))) {
         verifyResponseStatusOk()
       }
     }

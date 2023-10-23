@@ -44,7 +44,7 @@ class OppijaValidationNuortenPerusopetuksenOppiaineenOppimaaraSpec extends Tutki
         suorituskieli = suomenKieli
       )))
 
-      putOpiskeluoikeus(eitiedossa) {
+      setupOppijaWithOpiskeluoikeus(eitiedossa) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tyhjänOppiaineenVahvistus(""""Ei tiedossa"-oppiainetta ei voi merkitä valmiiksi"""))
       }
     }
@@ -71,7 +71,7 @@ class OppijaValidationNuortenPerusopetuksenOppiaineenOppimaaraSpec extends Tutki
           suorituskieli = suomenKieli
         )))
 
-      putOpiskeluoikeus(eitiedossa) {
+      setupOppijaWithOpiskeluoikeus(eitiedossa) {
         verifyResponseStatus(400, HttpStatus(400, KoskiErrorCategory.badRequest.validation.tila.nuortenPerusopetuksenLuokkaAsteSamaUseammassaSuorituksessa("""Samaa luokka-astetta ei voi olla useammalla nuorten perusopetuksen erityisen tutkinnon suorituksella.""").errors ++ KoskiErrorCategory.badRequest.validation.tila.nuortenPerusopetuksenLuokkaAsteSamaUseammassaSuorituksessa("""Samaa luokka-astetta ei voi olla useammalla nuorten perusopetuksen erityisen tutkinnon suorituksella.""").errors))
       }
 
@@ -91,7 +91,7 @@ class OppijaValidationNuortenPerusopetuksenOppiaineenOppimaaraSpec extends Tutki
         suorituskieli = suomenKieli
       )))
 
-      putOpiskeluoikeus(eitiedossa) {
+      setupOppijaWithOpiskeluoikeus(eitiedossa) {
         verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*opiskeluoikeudet.0.suoritukset.0.luokkaAste.*".r))
       }
     }

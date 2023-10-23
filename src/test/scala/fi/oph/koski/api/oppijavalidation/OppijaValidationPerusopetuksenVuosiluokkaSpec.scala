@@ -19,13 +19,13 @@ class OppijaValidationPerusopetuksenVuosiluokkaSpec extends TutkinnonPerusteetTe
 
   "9. vuosiluokka" - {
     "Oppiaineita syötetty kun oppija ei jää luokalle -> HTTP 400" in {
-      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(vuosiluokkasuoritus.copy(jääLuokalle = false, osasuoritukset = kaikkiAineet)))) {
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(vuosiluokkasuoritus.copy(jääLuokalle = false, osasuoritukset = kaikkiAineet)))) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.oppiaineitaEiSallita())
       }
     }
 
     "Oppiaineita syötetty kun oppija jää luokalle -> HTTP 200" in {
-      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(vuosiluokkasuoritus.copy(jääLuokalle = true, osasuoritukset = kaikkiAineet)))) {
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(vuosiluokkasuoritus.copy(jääLuokalle = true, osasuoritukset = kaikkiAineet)))) {
         verifyResponseStatusOk()
       }
     }
@@ -33,20 +33,20 @@ class OppijaValidationPerusopetuksenVuosiluokkaSpec extends TutkinnonPerusteetTe
 
   "Alkamispäivä, skeemassa alkamispäivä on määritelty optionaaliseksi" - {
     "Suorituksella ei ole alkamispäivää -> HTTP 400" in {
-      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(vuosiluokkasuoritus.copy(alkamispäivä = None)))) {
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(vuosiluokkasuoritus.copy(alkamispäivä = None)))) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.alkamispäiväPuuttuu("Suoritukselle perusopetuksenluokkaaste/9 ei ole merkitty alkamispäivää"))
       }
     }
   }
 
   "Jos oppilas jää luokalle, vahvistetulta vuosiluokan suoritukselta ei vaadita osasuorituksia" in {
-    putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(PerusopetusExampleData.seitsemännenLuokanLuokallejääntiSuoritus.copy(osasuoritukset = None)))) {
+    setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(PerusopetusExampleData.seitsemännenLuokanLuokallejääntiSuoritus.copy(osasuoritukset = None)))) {
       verifyResponseStatusOk()
     }
   }
 
   "Jos oppilaalle on merkitty vuosiluokkiin sitomaton opetus, vahvistetulta vuosiluokan suoritukselta ei vaadita osasuorituksia" in {
-    putOpiskeluoikeus(defaultOpiskeluoikeus.copy(
+    setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(
       suoritukset = List(PerusopetusExampleData.seitsemännenLuokanSuoritus.copy(osasuoritukset = None)),
       lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
         vuosiluokkiinSitoutumatonOpetus = true
@@ -57,7 +57,7 @@ class OppijaValidationPerusopetuksenVuosiluokkaSpec extends TutkinnonPerusteetTe
   }
 
   "Jos oppilaalle ei ole merkitty vuosiluokkiin sitomatonta opetusta, vahvistetulta vuosiluokan suoritukselta vaaditaan osasuorituksia" in {
-    putOpiskeluoikeus(defaultOpiskeluoikeus.copy(
+    setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(
       suoritukset = List(PerusopetusExampleData.seitsemännenLuokanSuoritus.copy(osasuoritukset = None)),
       lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
         vuosiluokkiinSitoutumatonOpetus = false

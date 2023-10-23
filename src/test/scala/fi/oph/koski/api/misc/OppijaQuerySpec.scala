@@ -2,11 +2,13 @@ package fi.oph.koski.api.misc
 
 import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.documentation.{ExampleData, PerusopetusExampleData}
+import fi.oph.koski.fixture.AmmatillinenOpiskeluoikeusTestData
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.MockUsers.{stadinAmmattiopistoKatselija, stadinVastuukäyttäjä}
 import fi.oph.koski.koskiuser.UserWithPassword
 import fi.oph.koski.log.AuditLogTester
+import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
@@ -22,9 +24,12 @@ class OppijaQuerySpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeus
   "Kyselyrajapinta" - {
     "kun haku osuu" - {
       "päättymispäivämäärä" in {
-        resetFixtures
-        insert(päättymispäivällä(defaultOpiskeluoikeus, date(2016, 1, 9)), eero)
-        insert(päättymispäivällä(defaultOpiskeluoikeus, date(2015, 8, 9)), teija)
+        setupOppijaWithOpiskeluoikeus(päättymispäivällä(defaultOpiskeluoikeus, date(2016, 1, 9)), eero) {
+          verifyResponseStatusOk()
+        }
+        setupOppijaWithOpiskeluoikeus(päättymispäivällä(defaultOpiskeluoikeus, date(2015, 8, 9)), teija) {
+          verifyResponseStatusOk()
+        }
 
         val queryString: String = "opiskeluoikeusPäättynytAikaisintaan=2016-01-01&opiskeluoikeusPäättynytViimeistään=2016-12-31"
         val oppijat = queryOppijat("?" + queryString)
@@ -36,28 +41,45 @@ class OppijaQuerySpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeus
         AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_HAKU", "target" -> Map("hakuEhto" -> queryString)))
       }
       "alkamispäivämäärä" in {
-        resetFixtures
-        insert(makeOpiskeluoikeus(date(2100, 1, 2)), eero)
-        insert(makeOpiskeluoikeus(date(2110, 1, 1)), teija)
+        setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(date(2100, 1, 2)), eero) {
+          verifyResponseStatusOk()
+        }
+        setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(date(2110, 1, 1)), teija) {
+          verifyResponseStatusOk()
+        }
         val alkamispäivät = queryOppijat("?opiskeluoikeusAlkanutAikaisintaan=2100-01-02&opiskeluoikeusAlkanutViimeistään=2100-01-02")
           .flatMap(_.opiskeluoikeudet.flatMap(_.alkamispäivä))
         alkamispäivät should equal(List(date(2100, 1, 2)))
       }
       "opiskeluoikeuden tyyppi" in {
-        resetFixtures
-        insert(makeOpiskeluoikeus(date(2100, 1, 2)), eero)
+        setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(date(2100, 1, 2)), eero) {
+          verifyResponseStatusOk()
+        }
+        setupOppijaWithOpiskeluoikeus(AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto, versio = Some(11)), teija) {
+          verifyResponseStatusOk()
+        }
+
         queryOppijat("?opiskeluoikeusAlkanutAikaisintaan=2100-01-02&opiskeluoikeudenTyyppi=ammatillinenkoulutus").length should equal(1)
         queryOppijat("?opiskeluoikeusAlkanutAikaisintaan=2100-01-02&opiskeluoikeudenTyyppi=perusopetus").length should equal(0)
       }
       "suorituksen tyyppi" in {
-        resetFixtures
-        insert(makeOpiskeluoikeus(date(2100, 1, 2)), eero)
+        setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(date(2100, 1, 2)), eero) {
+          verifyResponseStatusOk()
+        }
+        setupOppijaWithOpiskeluoikeus(AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto, versio = Some(11)), teija) {
+          verifyResponseStatusOk()
+        }
+
         queryOppijat("?opiskeluoikeusAlkanutAikaisintaan=2100-01-02&suorituksenTyyppi=ammatillinentutkinto").length should equal(1)
         queryOppijat("?opiskeluoikeusAlkanutAikaisintaan=2100-01-02&suorituksenTyyppi=lukionoppimaara").length should equal(0)
       }
       "opiskeluoikeuden tila" in {
-        resetFixtures
-        insert(makeOpiskeluoikeus(date(2100, 1, 2)), eero)
+        setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(date(2100, 1, 2)), eero) {
+          verifyResponseStatusOk()
+        }
+        setupOppijaWithOpiskeluoikeus(AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto, versio = Some(11)), teija) {
+          verifyResponseStatusOk()
+        }
         queryOppijat("?opiskeluoikeusAlkanutAikaisintaan=2100-01-02&opiskeluoikeudenTila=lasna").length should equal(1)
         queryOppijat("?opiskeluoikeusAlkanutAikaisintaan=2100-01-02&opiskeluoikeudenTila=eronnut").length should equal(0)
       }
@@ -65,23 +87,33 @@ class OppijaQuerySpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeus
         resetFixtures
         val ooCount = queryOppijat().flatMap(_.opiskeluoikeudet).length
         val opiskeluoikeus = makeOpiskeluoikeus()
-        insert(opiskeluoikeus.copy(tila =
+        putOpiskeluoikeus(opiskeluoikeus.copy(tila =
           opiskeluoikeus.tila.copy(opiskeluoikeusjaksot =
             opiskeluoikeus.tila.opiskeluoikeusjaksot :+ AmmatillinenOpiskeluoikeusjakso(LocalDate.now, ExampleData.opiskeluoikeusMitätöity)
           )
-        ), KoskiSpecificMockOppijat.koululainen)
+        ), KoskiSpecificMockOppijat.koululainen) {
+          verifyResponseStatusOk()
+        }
         queryOppijat().flatMap(_.opiskeluoikeudet).length should equal(ooCount)
       }
       "toimipistehaku" - {
         "toimipisteen OID:lla" in {
-          resetFixtures
-          insert(makeOpiskeluoikeus(date(2100, 1, 2)), eero)
+          setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(date(2100, 1, 2)), eero) {
+            verifyResponseStatusOk()
+          }
+          setupOppijaWithOpiskeluoikeus(AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto, versio = Some(11)), teija) {
+            verifyResponseStatusOk()
+          }
           queryOppijat("?opiskeluoikeusAlkanutAikaisintaan=2100-01-02&toimipiste=1.2.246.562.10.42456023292").length should equal(1)
         }
 
         "oppilaitoksen OID:lla" in {
-          resetFixtures
-          insert(makeOpiskeluoikeus(date(2100, 1, 2)), eero)
+          setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(date(2100, 1, 2)), eero) {
+            verifyResponseStatusOk()
+          }
+          setupOppijaWithOpiskeluoikeus(AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto, versio = Some(11)), teija) {
+            verifyResponseStatusOk()
+          }
           queryOppijat("?opiskeluoikeusAlkanutAikaisintaan=2100-01-02&toimipiste=1.2.246.562.10.52251087186").length should equal(1)
         }
 
@@ -120,17 +152,20 @@ class OppijaQuerySpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeus
 
     "luokkahaku" - {
       "luokan osittaisella tai koko nimellä" in {
-        resetFixtures
-        insert(PerusopetusExampleData.opiskeluoikeus(
+        setupOppijaWithOpiskeluoikeus(PerusopetusExampleData.opiskeluoikeus(
           alkamispäivä = date(2000, 1, 2),
           päättymispäivä = None,
           suoritukset = List(PerusopetusExampleData.kahdeksannenLuokanSuoritus.copy(luokka = "8C"))
-        ), eero)
-        insert(PerusopetusExampleData.opiskeluoikeus(
+        ), eero) {
+          verifyResponseStatusOk()
+        }
+        setupOppijaWithOpiskeluoikeus(PerusopetusExampleData.opiskeluoikeus(
           alkamispäivä = date(2000, 1, 2),
           päättymispäivä = None,
           suoritukset = List(PerusopetusExampleData.kahdeksannenLuokanSuoritus.copy(luokka = "8D"))
-        ), teija)
+        ), teija) {
+          verifyResponseStatusOk()
+        }
         queryOppijat("?opiskeluoikeusAlkanutViimeistään=2000-01-02&luokkahaku=8").length should equal(2)
         queryOppijat("?opiskeluoikeusAlkanutViimeistään=2000-01-02&luokkahaku=8c").length should equal(1)
       }
@@ -138,7 +173,9 @@ class OppijaQuerySpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeus
 
     "Kun haku ei osu" - {
       "palautetaan tyhjä lista" in {
-        insert(päättymispäivällä(defaultOpiskeluoikeus, date(2016,1,9)), eero)
+        setupOppijaWithOpiskeluoikeus(päättymispäivällä(defaultOpiskeluoikeus, date(2016,1,9)), eero) {
+          verifyResponseStatusOk()
+        }
         val oppijat = queryOppijat("?opiskeluoikeusPäättynytViimeistään=2014-04-30&opiskeluoikeusPäättynytAikaisintaan=2014-01-01")
         oppijat.length should equal(0)
         resetFixtures
@@ -157,12 +194,6 @@ class OppijaQuerySpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeus
       "palautetaan kaikki oppijat" in {
         val oppijat = queryOppijat()
         oppijat.length should be >= 2
-      }
-    }
-
-    def insert(opiskeluoikeus: Opiskeluoikeus, henkilö: Henkilö) = {
-      putOpiskeluoikeus(opiskeluoikeus, henkilö) {
-        verifyResponseStatusOk()
       }
     }
   }

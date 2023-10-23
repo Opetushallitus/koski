@@ -44,7 +44,7 @@ class KoulusivistyskieliPerusopetusSpec extends AnyFreeSpec with KoskiHttpSpec w
   }
 
   def verifyKoulusivistyskielet(opiskeluoikeus: PerusopetuksenOpiskeluoikeus, expected: Option[List[Koodistokoodiviite]]) = {
-    putOpiskeluoikeus(opiskeluoikeus) {
+    setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
       verifyResponseStatusOk()
       val koulusivistyskielet = lastOpiskeluoikeusByHetu(defaultHenkilö).suoritukset.collect {
         case x: NuortenPerusopetuksenOppimääränSuoritus => x.koulusivistyskieli

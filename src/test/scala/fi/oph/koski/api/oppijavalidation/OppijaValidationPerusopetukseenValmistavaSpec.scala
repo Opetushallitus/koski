@@ -17,7 +17,7 @@ class OppijaValidationPerusopetukseenValmistavaSpec extends TutkinnonPerusteetTe
         arviointi = PerusopetusExampleData.arviointi("O", kuvaus = None)
       ))))
 
-      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(suoritus))) {
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(suoritus))) {
         verifyResponseStatusOk()
       }
     }
@@ -29,7 +29,7 @@ class OppijaValidationPerusopetukseenValmistavaSpec extends TutkinnonPerusteetTe
         arviointi = arviointi(9)
       ))))
 
-      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(suoritus))) {
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(suoritus))) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.oppiaineenLaajuusPuuttuu("Oppiaineen koskioppiaineetyleissivistava/FY laajuus puuttuu"))
       }
     }
@@ -42,7 +42,7 @@ class OppijaValidationPerusopetukseenValmistavaSpec extends TutkinnonPerusteetTe
         suoritustapa = Some(PerusopetusExampleData.suoritustapaErityinenTutkinto)
       ))))
 
-      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(suoritus))) {
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(suoritus))) {
         verifyResponseStatusOk()
       }
     }

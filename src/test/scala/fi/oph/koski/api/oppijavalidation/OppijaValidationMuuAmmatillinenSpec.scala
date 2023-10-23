@@ -12,7 +12,7 @@ class OppijaValidationMuuAmmatillinenSpec extends MuuAmmatillinenSpecification[M
       koulutussopimukset = Some(List(koulutussopimusjakso)),
       ryhmä = Some("XY")
     )
-    "palautetaan HTTP 200" in putTutkintoSuoritus(suoritus)(verifyResponseStatusOk())
+    "palautetaan HTTP 200" in setupOppijaWithTutkintoSuoritus(suoritus)(verifyResponseStatusOk())
   }
 
   override def defaultPäätasonSuoritus: MuunAmmatillisenKoulutuksenSuoritus = kiinteistösihteerinMuuAmmatillinenKoulutus()

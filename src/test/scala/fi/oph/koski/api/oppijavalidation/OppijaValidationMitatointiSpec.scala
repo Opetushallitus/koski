@@ -21,7 +21,7 @@ class OppijaValidationMitätöintiSpec extends AnyFreeSpec with PutOpiskeluoikeu
     val validoitumatonMaksuttomuusTieto =
       List(Maksuttomuus(date(2020, 12, 31), None, true))
 
-    val opiskeluoikeusOid = putAndGetOpiskeluoikeus(oo).oid.get
+    val opiskeluoikeusOid = setupOppijaWithAndGetOpiskeluoikeus(oo).oid.get
 
     val mitätöityJaMuutettuOpiskeluoikeus = mitätöityOpiskeluoikeus(oo).copy(
       oid = Some(opiskeluoikeusOid),
@@ -47,11 +47,6 @@ class OppijaValidationMitätöintiSpec extends AnyFreeSpec with PutOpiskeluoikeu
     mitätöityOoTietokannasta.oppilaitos.map(_.oid) should be(Some(varsinaisSuomenKansanopisto.oid))
     mitätöityOoTietokannasta.koulutustoimija.map(_.oid) should be(Some(varsinaisSuomenAikuiskoulutussäätiö.oid))
     mitätöityOoTietokannasta.suoritukset(0).osasuoritusLista(0).koulutusmoduuli.getLaajuus.map(_.arvo) should be(Some(4.0))
-  }
-
-  private def putAndGetOpiskeluoikeus(oo: VapaanSivistystyönOpiskeluoikeus): VapaanSivistystyönOpiskeluoikeus = putOpiskeluoikeus(oo) {
-    verifyResponseStatusOk()
-    getOpiskeluoikeus(readPutOppijaResponse.opiskeluoikeudet.head.oid).asInstanceOf[VapaanSivistystyönOpiskeluoikeus]
   }
 
   private def mitätöityOpiskeluoikeus(oo: VapaanSivistystyönOpiskeluoikeus): VapaanSivistystyönOpiskeluoikeus = {

@@ -149,6 +149,8 @@ class PostgresKoskiOpiskeluoikeusRepository(
     )
   })
 
+  // TODO: Tässä logiikassa on bugi: Muut opiskeluoikeudet pitäisi olla mahdollista tunnistaa myös muulla keinoin
+  // kuin oidilla (eli myös lähdejärjestelmän id:llä, aikaisemmin myös oppilaitos yms. tyypeillä)
   def getLukionMuidenOpiskeluoikeuksienAlkamisajatIlmanKäyttöoikeustarkistusta(
     oppijaOid: String,
     muutettavanOpiskeluoikeudenOid: Option[String]

@@ -31,7 +31,7 @@ class OppijaValidationLukioonValmistavaSpec extends TutkinnonPerusteetTest[Lukio
         ))
       )
 
-      putOpiskeluoikeus(opiskeluoikeus) {
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.lukioonValmistavallaKoulutuksellaVääräLaajuudenArvo())
       }
     }
@@ -39,7 +39,7 @@ class OppijaValidationLukioonValmistavaSpec extends TutkinnonPerusteetTest[Lukio
 
   "Opintojen rahoitus" - {
     "lasna -tilalta vaaditaan opintojen rahoitus" in {
-      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä))))) {
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä))))) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaltaPuuttuuRahoitusmuoto("Opiskeluoikeuden tilalta lasna puuttuu rahoitusmuoto"))
       }
     }
@@ -48,7 +48,7 @@ class OppijaValidationLukioonValmistavaSpec extends TutkinnonPerusteetTest[Lukio
         LukionOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
         LukionOpiskeluoikeusjakso(date(2016, 8, 1), opiskeluoikeusValmistunut))
       )
-      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(tila = tila)) {
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(tila = tila)) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaltaPuuttuuRahoitusmuoto("Opiskeluoikeuden tilalta valmistunut puuttuu rahoitusmuoto"))
       }
     }
@@ -75,7 +75,7 @@ class OppijaValidationLukioonValmistavaSpec extends TutkinnonPerusteetTest[Lukio
           ))
         )
 
-        putOpiskeluoikeus(opiskeluoikeus) {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.lukioonValmistavassaVanhanOpsinKurssiSuorituksia("Lukioon valmistavan koulutuksen kurssilla lukioonvalmistavankoulutuksenkurssit2015/LVS1 on vanhan opetussuunniteleman mukainen koodi. 1.8.2021 jälkeen alkaneiden kurssien tulee käyttää vuoden 2021 opetussuunnitelmaa."))
         }
       }
@@ -98,7 +98,7 @@ class OppijaValidationLukioonValmistavaSpec extends TutkinnonPerusteetTest[Lukio
           ))
         )
 
-        putOpiskeluoikeus(opiskeluoikeus) {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
           verifyResponseStatusOk()
         }
       }
@@ -124,7 +124,7 @@ class OppijaValidationLukioonValmistavaSpec extends TutkinnonPerusteetTest[Lukio
           ))
         )
 
-        putOpiskeluoikeus(opiskeluoikeus) {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.lukioonValmistavallaKoulutuksellaVääräLaajuudenArvo())
         }
       }
@@ -150,7 +150,7 @@ class OppijaValidationLukioonValmistavaSpec extends TutkinnonPerusteetTest[Lukio
           ))
         )
 
-        putOpiskeluoikeus(opiskeluoikeus) {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.lukioonValmistavallaKoulutuksellaVääräLaajuudenArvo(
             "Lukioon valmistavan koulutuksen suorituksella voi olla laajuuden koodiyksikkönä vain '4', jos suorituksen diaarinumero on '56/011/2015'"
           ))

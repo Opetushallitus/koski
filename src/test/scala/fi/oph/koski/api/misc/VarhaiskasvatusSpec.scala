@@ -16,7 +16,7 @@ class VarhaiskasvatusSpec extends AnyFreeSpec with EsiopetusSpecification {
     "kun järjestämismuoto syötetty" - {
       "voi luoda, lukea, päivittää ja mitätöidä päiväkodissa järjestettävän esiopetuksen opiskeluoikeuden organisaatiohierarkiansa ulkopuolelta" in {
         val opiskeluoikeus = päiväkotiEsiopetus(päiväkotiTouhula, ostopalvelu)
-        val resp = putOpiskeluoikeus(opiskeluoikeus, headers = authHeaders(MockUsers.helsinkiTallentaja) ++ jsonContent) {
+        val resp = setupOppijaWithOpiskeluoikeus(opiskeluoikeus, headers = authHeaders(MockUsers.helsinkiTallentaja) ++ jsonContent) {
           verifyResponseStatusOk()
           readPutOppijaResponse
         }
@@ -44,28 +44,28 @@ class VarhaiskasvatusSpec extends AnyFreeSpec with EsiopetusSpecification {
 
       "ei voi tallentaa opiskeluoikeutta jonka oppilaitos on päiväkoti joka on omassa organisaatiohierarkiassa" in {
         val opiskeluoikeus = päiväkotiEsiopetus(päiväkotiVironniemi, ostopalvelu)
-        putOpiskeluoikeus(opiskeluoikeus, headers = authHeaders(MockUsers.helsinkiTallentaja) ++ jsonContent) {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus, headers = authHeaders(MockUsers.helsinkiTallentaja) ++ jsonContent) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.organisaatio.järjestämismuoto())
         }
       }
 
       "voi tallentaa opiskeluoikeuden jonka oppilaitoksena on yksityinen päiväkoti joka ei ole koulutustoimijan alla organisaatiohierarkiassa" in {
         val opiskeluoikeus = päiväkotiEsiopetus(oidOrganisaatio(päiväkotiTarina), ostopalvelu).copy(koulutustoimija = hki)
-        putOpiskeluoikeus(opiskeluoikeus, headers = authHeaders(MockUsers.helsinkiTallentaja) ++ jsonContent) {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus, headers = authHeaders(MockUsers.helsinkiTallentaja) ++ jsonContent) {
           verifyResponseStatusOk()
         }
       }
 
       "voi siirtää koulutustoimijatiedon" in {
         val opiskeluoikeus = päiväkotiEsiopetus(päiväkotiTouhula, ostopalvelu).copy(koulutustoimija = hki)
-        putOpiskeluoikeus(opiskeluoikeus, headers = authHeaders(MockUsers.helsinkiTallentaja) ++ jsonContent) {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus, headers = authHeaders(MockUsers.helsinkiTallentaja) ++ jsonContent) {
           verifyResponseStatusOk()
         }
       }
 
       "koulutustoimija voi siirtää väärän koulutustoimijatiedon ostopalvelun opiskeluoikeudessa ja väärä koulutustoimija ylikirjoitetaan käyttäjätietojen koulutustoimijalla" in {
         val opiskeluoikeus = päiväkotiEsiopetus(jyväskylänNormaalikoulu, ostopalvelu).copy(koulutustoimija = tornio)
-        val resp = putOpiskeluoikeus(opiskeluoikeus, headers = authHeaders(MockUsers.helsinkiTallentaja) ++ jsonContent) {
+        val resp = setupOppijaWithOpiskeluoikeus(opiskeluoikeus, headers = authHeaders(MockUsers.helsinkiTallentaja) ++ jsonContent) {
           verifyResponseStatusOk()
           readPutOppijaResponse
         }
@@ -75,20 +75,20 @@ class VarhaiskasvatusSpec extends AnyFreeSpec with EsiopetusSpecification {
       }
 
       "voi luoda perusopetuksessa järjestettävän esiopetuksen opiskeluoikeuden organisaatiohierarkian ulkopuoliselle peruskoululle" in {
-        putOpiskeluoikeus(peruskouluEsiopetus(kulosaarenAlaAste, ostopalvelu), headers = authHeaders(MockUsers.pyhtäänTallentaja) ++ jsonContent) {
+        setupOppijaWithOpiskeluoikeus(peruskouluEsiopetus(kulosaarenAlaAste, ostopalvelu), headers = authHeaders(MockUsers.pyhtäänTallentaja) ++ jsonContent) {
           verifyResponseStatusOk()
         }
       }
 
       "ei voi luoda perusopetuksessa järjestettävien esiopetuksen opiskeluoikeuksia organisaatiohierarkiansa ulkopuolelle varhaiskasvatuksen toimipisteeseen" in {
-        putOpiskeluoikeus(peruskouluEsiopetus(päiväkotiTouhula, ostopalvelu), headers = authHeaders(MockUsers.helsinkiTallentaja) ++ jsonContent) {
+        setupOppijaWithOpiskeluoikeus(peruskouluEsiopetus(päiväkotiTouhula, ostopalvelu), headers = authHeaders(MockUsers.helsinkiTallentaja) ++ jsonContent) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.koodisto.vääräKoulutuksenTunniste(s"Varhaiskasvatustoimipisteeseen voi tallentaa vain päiväkodin esiopetusta (koulutus $päiväkodinEsiopetuksenTunniste)"))
         }
       }
 
       "ei voi lukea, päivittää tai poistaa muiden luomia opiskeluoikeuksia organisaatiohierarkiansa ulkopuolelta" in {
         val esiopetuksenOpiskeluoikeus: EsiopetuksenOpiskeluoikeus = päiväkotiEsiopetus(päiväkotiTouhula, ostopalvelu)
-        val resp = putOpiskeluoikeus(esiopetuksenOpiskeluoikeus, headers = authHeaders(MockUsers.helsinkiTallentaja) ++ jsonContent) {
+        val resp = setupOppijaWithOpiskeluoikeus(esiopetuksenOpiskeluoikeus, headers = authHeaders(MockUsers.helsinkiTallentaja) ++ jsonContent) {
           verifyResponseStatusOk()
           readPutOppijaResponse
         }
@@ -115,14 +115,14 @@ class VarhaiskasvatusSpec extends AnyFreeSpec with EsiopetusSpecification {
     "kun järjestämismuotoa ei syötetty" - {
       "ei voi luoda opiskeluoikeuksia organisaatiohierarkian ulkopuolelle" in {
         val opiskeluoikeus = päiväkotiEsiopetus(päiväkotiTouhula).copy(koulutustoimija = hki)
-        putOpiskeluoikeus(opiskeluoikeus, headers = authHeaders(MockUsers.helsinkiTallentaja) ++ jsonContent) {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus, headers = authHeaders(MockUsers.helsinkiTallentaja) ++ jsonContent) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.organisaatio.vääräKoulutustoimija(s"Annettu koulutustoimija ${MockOrganisaatiot.helsinginKaupunki} ei vastaa organisaatiopalvelusta löytyvää koulutustoimijaa ${MockOrganisaatiot.pyhtäänKunta}"))
         }
       }
 
       "ei voi siirtää muiden luomia opiskeluoikeuksia organisaatiohierarkiansa ulkopuolelta oman organisaationsa alle" in {
         val esiopetuksenOpiskeluoikeus: EsiopetuksenOpiskeluoikeus = päiväkotiEsiopetus(päiväkotiTouhula, ostopalvelu)
-        val opiskeluoikeusOid = putOpiskeluoikeus(esiopetuksenOpiskeluoikeus, headers = authHeaders(MockUsers.helsinkiTallentaja) ++ jsonContent) {
+        val opiskeluoikeusOid = setupOppijaWithOpiskeluoikeus(esiopetuksenOpiskeluoikeus, headers = authHeaders(MockUsers.helsinkiTallentaja) ++ jsonContent) {
           verifyResponseStatusOk()
           readPutOppijaResponse.opiskeluoikeudet.head.oid
         }
@@ -134,7 +134,7 @@ class VarhaiskasvatusSpec extends AnyFreeSpec with EsiopetusSpecification {
 
       "ei voi tallentaa opiskeluoikeutta jonka oppilaitoksena on yksityinen päiväkoti joka ei ole koulutustoimijan alla organisaatiohierarkiassa" in {
         val opiskeluoikeus = päiväkotiEsiopetus(oidOrganisaatio(päiväkotiTarina))
-        putOpiskeluoikeus(opiskeluoikeus, headers = authHeaders(MockUsers.helsinkiTallentaja) ++ jsonContent) {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus, headers = authHeaders(MockUsers.helsinkiTallentaja) ++ jsonContent) {
           verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon " + päiväkotiTarina))
         }
       }
@@ -145,21 +145,21 @@ class VarhaiskasvatusSpec extends AnyFreeSpec with EsiopetusSpecification {
     "kun koulutustoimija ja järjestämismuoto on syötetty" - {
       "ei voi tallentaa opiskeluoikeutta jonka oppilaitoksena on päiväkoti joka on koulutustoimijan alla organisaatiohierarkiassa" in {
         val opiskeluoikeus = päiväkotiEsiopetus(päiväkotiVironniemi, ostopalvelu).copy(koulutustoimija = hki)
-        putOpiskeluoikeus(opiskeluoikeus, headers = authHeaders(MockUsers.paakayttaja) ++ jsonContent) {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus, headers = authHeaders(MockUsers.paakayttaja) ++ jsonContent) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.organisaatio.järjestämismuoto())
         }
       }
 
       "voi tallentaa opiskeluoikeuden jonka oppilaitoksena on päiväkoti joka ei ole koulutustoimijan alla organisaatiohierarkiassa" in {
         val opiskeluoikeus = päiväkotiEsiopetus(päiväkotiTouhula, ostopalvelu).copy(koulutustoimija = hki)
-        putOpiskeluoikeus(opiskeluoikeus, headers = authHeaders(MockUsers.paakayttaja) ++ jsonContent) {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus, headers = authHeaders(MockUsers.paakayttaja) ++ jsonContent) {
           verifyResponseStatusOk()
         }
       }
 
       "voi tallentaa opiskeluoikeuden jonka oppilaitoksena on yksityinen päiväkoti joka ei ole koulutustoimijan alla organisaatiohierarkiassa" in {
         val opiskeluoikeus = päiväkotiEsiopetus(oidOrganisaatio(päiväkotiTarina), ostopalvelu).copy(koulutustoimija = hki)
-        putOpiskeluoikeus(opiskeluoikeus, headers = authHeaders(MockUsers.paakayttaja) ++ jsonContent) {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus, headers = authHeaders(MockUsers.paakayttaja) ++ jsonContent) {
           verifyResponseStatusOk()
         }
       }
@@ -169,7 +169,7 @@ class VarhaiskasvatusSpec extends AnyFreeSpec with EsiopetusSpecification {
   "Varhaiskasvatuksen järjestäjä kahden koulutustoimijan käyttäjä, järjestämismuoto syötetty" - {
     "voi luoda ja muokata esiopetuksen opiskeluoikeuden organisaatiohierarkiansa ulkopuolelle jos koulutustoimija on syötetty" in {
       val opiskeluoikeus = päiväkotiEsiopetus(päiväkotiTouhula, ostopalvelu).copy(koulutustoimija = hki)
-      val resp = putOpiskeluoikeus(opiskeluoikeus, headers = authHeaders(MockUsers.helsinkiSekäTornioTallentaja) ++ jsonContent) {
+      val resp = setupOppijaWithOpiskeluoikeus(opiskeluoikeus, headers = authHeaders(MockUsers.helsinkiSekäTornioTallentaja) ++ jsonContent) {
         verifyResponseStatusOk()
         readPutOppijaResponse
       }
@@ -181,7 +181,7 @@ class VarhaiskasvatusSpec extends AnyFreeSpec with EsiopetusSpecification {
 
     "ei voi luoda ilman koulutustoimijatietoa" in {
       val opiskeluoikeus = päiväkotiEsiopetus(päiväkotiTouhula, ostopalvelu)
-      putOpiskeluoikeus(opiskeluoikeus, headers = authHeaders(MockUsers.helsinkiSekäTornioTallentaja) ++ jsonContent) {
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus, headers = authHeaders(MockUsers.helsinkiSekäTornioTallentaja) ++ jsonContent) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.organisaatio.koulutustoimijaPakollinen(s"Koulutustoimijaa ei voi yksiselitteisesti päätellä käyttäjätunnuksesta. Koulutustoimija on pakollinen."))
       }
     }
@@ -189,7 +189,7 @@ class VarhaiskasvatusSpec extends AnyFreeSpec with EsiopetusSpecification {
 
   "Koulutustoimija joka ei ole varhaiskasvatuksen järjestäjä" - {
     "ei voi luoda päiväkodissa järjestettävän esiopetuksen opiskeluoikeuden organisaatiohierarkiansa ulkopuolella" in {
-      putOpiskeluoikeus(päiväkotiEsiopetus(päiväkotiTouhula, ostopalvelu), headers = authHeaders(MockUsers.jyväskyläTallentaja) ++ jsonContent) {
+      setupOppijaWithOpiskeluoikeus(päiväkotiEsiopetus(päiväkotiTouhula, ostopalvelu), headers = authHeaders(MockUsers.jyväskyläTallentaja) ++ jsonContent) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden.vainVarhaiskasvatuksenJärjestäjä("Operaatio on sallittu vain käyttäjälle joka on luotu varhaiskasvatusta järjestävälle koulutustoimijalle"))
       }
     }
@@ -197,13 +197,13 @@ class VarhaiskasvatusSpec extends AnyFreeSpec with EsiopetusSpecification {
 
   "Päiväkodin virkailija" - {
     lazy val eeronOpiskeluoikeus = päiväkotiEsiopetus(päiväkotiTouhula, ostopalvelu)
-    lazy val eeroResp = putOpiskeluoikeus(eeronOpiskeluoikeus, henkilö = defaultHenkilö, headers = authHeaders(MockUsers.helsinkiTallentaja) ++ jsonContent) {
+    lazy val eeroResp = setupOppijaWithOpiskeluoikeus(eeronOpiskeluoikeus, henkilö = defaultHenkilö, headers = authHeaders(MockUsers.helsinkiTallentaja) ++ jsonContent) {
       verifyResponseStatusOk()
       readPutOppijaResponse
     }
 
     "näkee kaikki omaan organisaatioon luodut opiskeluoikeudet" in {
-      val ysiluokkalainenResp = putOpiskeluoikeus(päiväkotiEsiopetus(päiväkotiTouhula, ostopalvelu), henkilö = asUusiOppija(ysiluokkalainen), headers = authHeaders(MockUsers.tornioTallentaja) ++ jsonContent) {
+      val ysiluokkalainenResp = setupOppijaWithOpiskeluoikeus(päiväkotiEsiopetus(päiväkotiTouhula, ostopalvelu), henkilö = asUusiOppija(ysiluokkalainen), headers = authHeaders(MockUsers.tornioTallentaja) ++ jsonContent) {
         verifyResponseStatusOk()
         readPutOppijaResponse
       }
@@ -222,13 +222,13 @@ class VarhaiskasvatusSpec extends AnyFreeSpec with EsiopetusSpecification {
     }
 
     "Ei voi muokata toisen koulutustoimijan luomia opiskeluoikeuksia" in {
-      putOpiskeluoikeus(eeronOpiskeluoikeus.copy(oid = Some(eeroResp.opiskeluoikeudet.head.oid), koulutustoimija = hki, lisätiedot = None), headers = authHeaders(MockUsers.touholaTallentaja) ++ jsonContent) {
+      setupOppijaWithOpiskeluoikeus(eeronOpiskeluoikeus.copy(oid = Some(eeroResp.opiskeluoikeudet.head.oid), koulutustoimija = hki, lisätiedot = None), headers = authHeaders(MockUsers.touholaTallentaja) ++ jsonContent) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden.vainVarhaiskasvatuksenJärjestäjä("Operaatio on sallittu vain käyttäjälle joka on luotu varhaiskasvatusta järjestävälle koulutustoimijalle"))
       }
     }
 
     "Ei ylikirjoita koulutustoimijan luomia opiskeluoikeuksia" in {
-      val resp= putOpiskeluoikeus(päiväkotiEsiopetus(päiväkotiTouhula), henkilö = defaultHenkilö, headers = authHeaders(MockUsers.pyhtäänTallentaja) ++ jsonContent) {
+      val resp= setupOppijaWithOpiskeluoikeus(päiväkotiEsiopetus(päiväkotiTouhula), henkilö = defaultHenkilö, headers = authHeaders(MockUsers.pyhtäänTallentaja) ++ jsonContent) {
         verifyResponseStatusOk()
         readPutOppijaResponse
       }
@@ -239,10 +239,10 @@ class VarhaiskasvatusSpec extends AnyFreeSpec with EsiopetusSpecification {
 
   "Varhaiskasvatustoimipisteeseen" - {
     "ei voi tallentaa muita kuin päiväkodin esiopetuksen opiskeluoikeuksia" in {
-      putOpiskeluoikeus(päiväkotiEsiopetus(päiväkotiTouhula), headers = authHeaders(MockUsers.pyhtäänTallentaja) ++ jsonContent) {
+      setupOppijaWithOpiskeluoikeus(päiväkotiEsiopetus(päiväkotiTouhula), headers = authHeaders(MockUsers.pyhtäänTallentaja) ++ jsonContent) {
         verifyResponseStatusOk()
       }
-      putOpiskeluoikeus(peruskouluEsiopetus(päiväkotiTouhula), headers = authHeaders(MockUsers.pyhtäänTallentaja) ++ jsonContent) {
+      setupOppijaWithOpiskeluoikeus(peruskouluEsiopetus(päiväkotiTouhula), headers = authHeaders(MockUsers.pyhtäänTallentaja) ++ jsonContent) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.koodisto.vääräKoulutuksenTunniste("Varhaiskasvatustoimipisteeseen voi tallentaa vain päiväkodin esiopetusta (koulutus 001102)"))
       }
     }

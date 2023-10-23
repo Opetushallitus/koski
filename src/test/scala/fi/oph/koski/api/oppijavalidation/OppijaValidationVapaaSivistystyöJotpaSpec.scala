@@ -33,7 +33,7 @@ class OppijaValidationVapaaSivistystyöJotpaSpec extends AnyFreeSpec with PutOpi
           )
         )
 
-        putOpiskeluoikeus(oo) {
+        setupOppijaWithOpiskeluoikeus(oo) {
           verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*notAnyOf.*".r))
         }
       }
@@ -47,7 +47,7 @@ class OppijaValidationVapaaSivistystyöJotpaSpec extends AnyFreeSpec with PutOpi
           )
         )
 
-        putOpiskeluoikeus(oo) {
+        setupOppijaWithOpiskeluoikeus(oo) {
           verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*notAnyOf.*".r))
         }
       }
@@ -59,7 +59,7 @@ class OppijaValidationVapaaSivistystyöJotpaSpec extends AnyFreeSpec with PutOpi
       )
 
       "Happy path" in {
-        putOpiskeluoikeus(opiskeluoikeus, headers = authHeaders(varsinaisSuomiPalvelukäyttäjä) ++ jsonContent) {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus, headers = authHeaders(varsinaisSuomiPalvelukäyttäjä) ++ jsonContent) {
           verifyResponseStatusOk()
         }
       }
@@ -68,7 +68,7 @@ class OppijaValidationVapaaSivistystyöJotpaSpec extends AnyFreeSpec with PutOpi
         val oo = opiskeluoikeus.copy(
           tila = opiskeluoikeudenTila(List(opiskeluoikeusLäsnä, opiskeluoikeusKeskeytynyt)),
         )
-        putOpiskeluoikeus(oo, headers = authHeaders(varsinaisSuomiPalvelukäyttäjä) ++ jsonContent) {
+        setupOppijaWithOpiskeluoikeus(oo, headers = authHeaders(varsinaisSuomiPalvelukäyttäjä) ++ jsonContent) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönVapaatavoitteeisenKoulutuksenVahvistus("Vahvistetulla jatkuvaan oppimiseen suunnatulla vapaan sivistystyön koulutuksella ei voi olla päättävänä tilana 'Keskeytynyt'"))
         }
       }
@@ -96,7 +96,7 @@ class OppijaValidationVapaaSivistystyöJotpaSpec extends AnyFreeSpec with PutOpi
             ))
           ))
         )
-        putOpiskeluoikeus(oo, headers = authHeaders(varsinaisSuomiPalvelukäyttäjä) ++ jsonContent) {
+        setupOppijaWithOpiskeluoikeus(oo, headers = authHeaders(varsinaisSuomiPalvelukäyttäjä) ++ jsonContent) {
           verifyResponseStatus(400,
             KoskiErrorCategory.badRequest.validation.laajuudet("Vahvistetulta jatkuvaan oppimiseen suunnatulta vapaan sivistystyön koulutuksen suoritukselta koulutus/099999 puuttuu laajuus"),
             KoskiErrorCategory.badRequest.validation.laajuudet("Vahvistetulta jatkuvaan oppimiseen suunnatulta vapaan sivistystyön koulutuksen osasuoritukselta 1138-3 (Tussitekniikat I ja II) puuttuu laajuus"),
@@ -127,7 +127,7 @@ class OppijaValidationVapaaSivistystyöJotpaSpec extends AnyFreeSpec with PutOpi
             ))
           ))
         )
-        putOpiskeluoikeus(oo, headers = authHeaders(varsinaisSuomiPalvelukäyttäjä) ++ jsonContent) {
+        setupOppijaWithOpiskeluoikeus(oo, headers = authHeaders(varsinaisSuomiPalvelukäyttäjä) ++ jsonContent) {
           verifyResponseStatusOk()
         }
       }
@@ -138,7 +138,7 @@ class OppijaValidationVapaaSivistystyöJotpaSpec extends AnyFreeSpec with PutOpi
             vahvistus = None,
           ))
         )
-        putOpiskeluoikeus(oo, headers = authHeaders(varsinaisSuomiPalvelukäyttäjä) ++ jsonContent) {
+        setupOppijaWithOpiskeluoikeus(oo, headers = authHeaders(varsinaisSuomiPalvelukäyttäjä) ++ jsonContent) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönVapaatavoitteeisenKoulutuksenVahvistus("Vahvistamattomalla jatkuvaan oppimiseen suunnatulla vapaan sivistystyön koulutuksella ei voi olla päättävänä tilana 'Hyväksytysti suoritettu'"))
         }
       }
@@ -146,7 +146,7 @@ class OppijaValidationVapaaSivistystyöJotpaSpec extends AnyFreeSpec with PutOpi
       "Kun opiskeluoikeus on mitätöity" - {
         "Ei validointivirhettä, jos päätason suoritus vahvistettu, eikä tila ole 'Hyväksytysti suoritettu'" in {
           resetFixtures()
-          val oo = putAndGetOpiskeluoikeus(ExamplesVapaaSivistystyöJotpa.Opiskeluoikeus.suoritettu.copy(
+          val oo = setupOppijaWithAndGetOpiskeluoikeus(ExamplesVapaaSivistystyöJotpa.Opiskeluoikeus.suoritettu.copy(
             tila = opiskeluoikeudenTila(List(opiskeluoikeusLäsnä))
           ))
 
@@ -200,22 +200,22 @@ class OppijaValidationVapaaSivistystyöJotpaSpec extends AnyFreeSpec with PutOpi
     "Rahoitus" - {
       "Rahoitusmuoto pitää olla ilmoitettu opiskeluoikeuden tilalle läsnä" in {
         val oo = ExamplesVapaaSivistystyöJotpa.Opiskeluoikeus.keskeneräinen.copy(tila = opiskeluoikeudenTila(List(opiskeluoikeusLäsnä), None))
-        putOpiskeluoikeus(oo) {
+        setupOppijaWithOpiskeluoikeus(oo) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaltaPuuttuuRahoitusmuoto())
         }
       }
 
       "Rahoitusmuoto pitää olla ilmoitettu opiskeluoikeuden tilalle hyväksytysti suoritettu" in {
         val oo = ExamplesVapaaSivistystyöJotpa.Opiskeluoikeus.suoritettu.copy(tila = opiskeluoikeudenTila(List(opiskeluoikeusHyväksytystiSuoritettu), None, LocalDate.of(2023, 2, 1)))
-        putOpiskeluoikeus(oo) {
+        setupOppijaWithOpiskeluoikeus(oo) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaltaPuuttuuRahoitusmuoto())
         }
       }
     }
   }
 
-  private def putAndGetOpiskeluoikeus(oo: VapaanSivistystyönOpiskeluoikeus): VapaanSivistystyönOpiskeluoikeus =
-    putOpiskeluoikeus(oo) {
+  private def setupOppijaWithAndGetOpiskeluoikeus(oo: VapaanSivistystyönOpiskeluoikeus): VapaanSivistystyönOpiskeluoikeus =
+    setupOppijaWithOpiskeluoikeus(oo) {
       verifyResponseStatusOk()
       getOpiskeluoikeus(readPutOppijaResponse.opiskeluoikeudet.head.oid)
     }.asInstanceOf[VapaanSivistystyönOpiskeluoikeus]

@@ -15,7 +15,7 @@ class OppijaValidationErityisenKoulutustehtävänJaksoSpec extends AnyFreeSpec w
       val lisätiedot = LukionOpiskeluoikeudenLisätiedot(erityisenKoulutustehtävänJaksot = Some(List(ekj)))
       val oo = defaultOpiskeluoikeus.copy(lisätiedot = Some(lisätiedot))
 
-      putOpiskeluoikeus(oo) {
+      setupOppijaWithOpiskeluoikeus(oo) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.koodisto.tuntematonKoodi(
           "Koodiarvo 'taide' ei ole sallittu erityisen koulutustehtävän jaksolle"
         ))
@@ -27,7 +27,7 @@ class OppijaValidationErityisenKoulutustehtävänJaksoSpec extends AnyFreeSpec w
       val lisätiedot = LukionOpiskeluoikeudenLisätiedot(erityisenKoulutustehtävänJaksot = Some(List(ekj)))
       val oo = defaultOpiskeluoikeus.copy(lisätiedot = Some(lisätiedot))
 
-      putOpiskeluoikeus(oo) {
+      setupOppijaWithOpiskeluoikeus(oo) {
         verifyResponseStatusOk()
       }
     }

@@ -32,7 +32,7 @@ class OpiskeluoikeusGetByOidSpec extends AnyFreeSpec with Matchers with KoskiHtt
         }
       }
       "with mitätöity oid" in {
-        val mitätöity = mitätöiOpiskeluoikeus(createOpiskeluoikeus(KoskiSpecificMockOppijat.eero, defaultOpiskeluoikeus))
+        val mitätöity = mitätöiOpiskeluoikeus(setupOppijaWithAndGetOpiskeluoikeus(defaultOpiskeluoikeus, KoskiSpecificMockOppijat.eero))
         List(defaultUser, MockUsers.paakayttaja).foreach { user =>
           get("api/opiskeluoikeus/" + mitätöity.oid.get, headers = authHeaders(user = user)) {
             verifyResponseStatus(404, KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia("Opiskeluoikeutta ei löydy annetulla oid:llä tai käyttäjällä ei ole siihen oikeuksia"))

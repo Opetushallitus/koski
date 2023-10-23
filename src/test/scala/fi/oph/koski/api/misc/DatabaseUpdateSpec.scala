@@ -19,16 +19,13 @@ class DatabaseUpdateSpec
     with DatabaseTestMethods {
   "Kun opiskeluoikeus päivitetään" - {
     "Oppilaitoksen muuttuessa oppilaitos_oid päivittyy" in {
-      val opiskeluoikeus = createOpiskeluoikeus(defaultHenkilö, defaultOpiskeluoikeus, user = stadinAmmattiopistoTallentaja, resetFixtures = true)
+      val opiskeluoikeus = setupOppijaWithAndGetOpiskeluoikeus(defaultOpiskeluoikeus, defaultHenkilö, stadinAmmattiopistoTallentaja)
       putOpiskeluoikeus(opiskeluoikeus.copy(oppilaitos = Some(Oppilaitos(omnia)), koulutustoimija = None)) {
         verifyResponseStatusOk()
       }
       opiskeluoikeus.oid.flatMap(oppilaitosOid) should equal(Some(omnia))
     }
   }
-
-  def opiskeluoikeusId(oo: AmmatillinenOpiskeluoikeus): Option[Int] =
-    oo.oid.flatMap(oid => runDbSync(KoskiOpiskeluOikeudetWithAccessCheck(systemUser).filter(_.oid === oid).map(_.id).result).headOption)
 
   private def oppilaitosOid(opiskeluoikeusOid: String): Option[String] =
     runDbSync(KoskiOpiskeluOikeudetWithAccessCheck(systemUser).filter(_.oid === opiskeluoikeusOid).map(_.oppilaitosOid).result).headOption

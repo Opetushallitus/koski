@@ -12,7 +12,7 @@ class OppijaValidationAmmatillisenTutkinnonOsaaPienemmistäKokonaisuuksistaKoost
       koulutussopimukset = Some(List(koulutussopimusjakso)),
       ryhmä = Some("XY")
     )
-    "palautetaan HTTP 200" in putTutkintoSuoritus(suoritus)(verifyResponseStatusOk())
+    "palautetaan HTTP 200" in setupAmmatillinenPäätasonSuoritus(suoritus)(verifyResponseStatusOk())
   }
 
   override def defaultPäätasonSuoritus: TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus = kiinteistösihteerinTutkinnonOsaaPienempiMuuAmmatillinenKokonaisuus()

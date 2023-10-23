@@ -20,7 +20,7 @@ class OppijaValidationInternationalSchoolSpec extends AnyFreeSpec with KoskiHttp
         ))
       )))
 
-      putOpiskeluoikeus(oo) {
+      setupOppijaWithOpiskeluoikeus(oo) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.duplikaattiOsasuoritus("Osasuoritus (oppiaineetib/A,kielivalikoima/FI) esiintyy useammin kuin kerran"))
       }
     }
@@ -33,7 +33,7 @@ class OppijaValidationInternationalSchoolSpec extends AnyFreeSpec with KoskiHttp
         ))
       )))
 
-      putOpiskeluoikeus(oo) {
+      setupOppijaWithOpiskeluoikeus(oo) {
         verifyResponseStatusOk()
       }
     }
@@ -47,7 +47,7 @@ class OppijaValidationInternationalSchoolSpec extends AnyFreeSpec with KoskiHttp
         )
       ))
 
-      putOpiskeluoikeus(oo) {
+      setupOppijaWithOpiskeluoikeus(oo) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.alkamispäiväPuuttuu("Suoritukselle internationalschoolluokkaaste/12 ei ole merkitty alkamispäivää"))
       }
     }
@@ -66,7 +66,7 @@ class OppijaValidationInternationalSchoolSpec extends AnyFreeSpec with KoskiHttp
         )
       ))
 
-      putOpiskeluoikeus(oo) {
+      setupOppijaWithOpiskeluoikeus(oo) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.alkamispäiväPuuttuu("Suoritukselle internationalschoolluokkaaste/10 ei ole merkitty alkamispäivää"))
       }
     }
@@ -85,7 +85,7 @@ class OppijaValidationInternationalSchoolSpec extends AnyFreeSpec with KoskiHttp
         )
       ))
 
-      putOpiskeluoikeus(oo) {
+      setupOppijaWithOpiskeluoikeus(oo) {
         verifyResponseStatusOk()
       }
     }
@@ -104,7 +104,7 @@ class OppijaValidationInternationalSchoolSpec extends AnyFreeSpec with KoskiHttp
         )
       ))
 
-      putOpiskeluoikeus(oo) {
+      setupOppijaWithOpiskeluoikeus(oo) {
         verifyResponseStatusOk()
       }
     }

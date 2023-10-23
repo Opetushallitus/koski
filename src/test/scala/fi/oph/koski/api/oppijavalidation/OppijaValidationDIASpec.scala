@@ -22,7 +22,7 @@ class OppijaValidationDIASpec extends AnyFreeSpec with KoskiHttpSpec with Opiske
         )))))
       )))
 
-      putOpiskeluoikeus(oo) {
+      setupOppijaWithOpiskeluoikeus(oo) {
         verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*enumValueMismatch.*".r))
       }
     }
@@ -34,7 +34,7 @@ class OppijaValidationDIASpec extends AnyFreeSpec with KoskiHttpSpec with Opiske
         )))))
       )))
 
-      putOpiskeluoikeus(oo) {
+      setupOppijaWithOpiskeluoikeus(oo) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.osasuoritustenLaajuuksienSumma("Suorituksen oppiaineetdia/MA osasuoritusten laajuuksien summa 1.0 ei vastaa suorituksen laajuutta 2.0"))
       }
     }
@@ -47,7 +47,7 @@ class OppijaValidationDIASpec extends AnyFreeSpec with KoskiHttpSpec with Opiske
         )))))
       )))
 
-      putOpiskeluoikeus(oo) {
+      setupOppijaWithOpiskeluoikeus(oo) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.osasuoritustenLaajuuksienSumma("Suorituksen oppiaineetdia/MA osasuoritusten laajuuksien summa 1.0 ei vastaa suorituksen laajuutta 2.0"))
       }
     }
@@ -61,7 +61,7 @@ class OppijaValidationDIASpec extends AnyFreeSpec with KoskiHttpSpec with Opiske
         )))))
       )))
 
-      putOpiskeluoikeus(oo) {
+      setupOppijaWithOpiskeluoikeus(oo) {
         verifyResponseStatusOk()
       }
     }
@@ -76,7 +76,7 @@ class OppijaValidationDIASpec extends AnyFreeSpec with KoskiHttpSpec with Opiske
         )))))
       )))
 
-      putOpiskeluoikeus(oo) {
+      setupOppijaWithOpiskeluoikeus(oo) {
         verifyResponseStatusOk()
       }
     }
@@ -88,7 +88,7 @@ class OppijaValidationDIASpec extends AnyFreeSpec with KoskiHttpSpec with Opiske
         )))))
       )))
 
-      putOpiskeluoikeus(oo) {
+      setupOppijaWithOpiskeluoikeus(oo) {
         verifyResponseStatusOk()
       }
     }
@@ -101,7 +101,7 @@ class OppijaValidationDIASpec extends AnyFreeSpec with KoskiHttpSpec with Opiske
         )))))
       )))
 
-      putOpiskeluoikeus(oo) {
+      setupOppijaWithOpiskeluoikeus(oo) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.oppiaineenLaajuusPuuttuu("Suoritus koulutus/301103 on merkitty valmiiksi, mutta se sisältää oppiaineen, jolta puuttuu laajuus"))
       }
     }
@@ -120,7 +120,7 @@ class OppijaValidationDIASpec extends AnyFreeSpec with KoskiHttpSpec with Opiske
         ))
       )))
 
-      putOpiskeluoikeus(oo) {
+      setupOppijaWithOpiskeluoikeus(oo) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.duplikaattiOsasuoritus("Osasuoritus (oppiaineetdia/AI,oppiainediaaidinkieli/FI) esiintyy useammin kuin kerran"))
       }
     }
@@ -137,7 +137,7 @@ class OppijaValidationDIASpec extends AnyFreeSpec with KoskiHttpSpec with Opiske
         ))
       )))
 
-      putOpiskeluoikeus(oo) {
+      setupOppijaWithOpiskeluoikeus(oo) {
         verifyResponseStatusOk()
       }
     }
@@ -148,7 +148,7 @@ class OppijaValidationDIASpec extends AnyFreeSpec with KoskiHttpSpec with Opiske
     val date = LocalDate.of(2016, 10, 1)
 
     "lasna -tilalta vaaditaan opintojen rahoitus" in {
-      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(tila = DIAOpiskeluoikeudenTila(List(DIAOpiskeluoikeusjakso(date, opiskeluoikeusLäsnä, opintojenRahoitus = None))))) {
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(tila = DIAOpiskeluoikeudenTila(List(DIAOpiskeluoikeusjakso(date, opiskeluoikeusLäsnä, opintojenRahoitus = None))))) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaltaPuuttuuRahoitusmuoto("Opiskeluoikeuden tilalta lasna puuttuu rahoitusmuoto"))
       }
     }
@@ -159,14 +159,14 @@ class OppijaValidationDIASpec extends AnyFreeSpec with KoskiHttpSpec with Opiske
         DIAOpiskeluoikeusjakso(date.plusMonths(1), opiskeluoikeusValmistunut, opintojenRahoitus = None)
       ))
 
-      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(tila = tila, suoritukset = List(ExamplesDIA.diaValmistavanVaiheenSuoritus))) {
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(tila = tila, suoritukset = List(ExamplesDIA.diaValmistavanVaiheenSuoritus))) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaltaPuuttuuRahoitusmuoto("Opiskeluoikeuden tilalta valmistunut puuttuu rahoitusmuoto"))
       }
     }
 
     "Opintojen rahoitus on kielletty muilta tiloilta" in {
       def verifyRahoitusmuotoKielletty(tila: Koodistokoodiviite) = {
-        putOpiskeluoikeus(defaultOpiskeluoikeus.copy(tila = DIAOpiskeluoikeudenTila(List(DIAOpiskeluoikeusjakso(date, tila, Some(valtionosuusRahoitteinen)))))) {
+        setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(tila = DIAOpiskeluoikeudenTila(List(DIAOpiskeluoikeusjakso(date, tila, Some(valtionosuusRahoitteinen)))))) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilallaEiSaaOllaRahoitusmuotoa(s"Opiskeluoikeuden tilalla ${tila.koodiarvo} ei saa olla rahoitusmuotoa"))
         }
       }

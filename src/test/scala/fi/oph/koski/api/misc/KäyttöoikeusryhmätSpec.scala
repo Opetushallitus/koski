@@ -4,6 +4,7 @@ import fi.oph.koski.db.KoskiTables
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.documentation.ExamplesEsiopetus
+import fi.oph.koski.fixture.AmmatillinenOpiskeluoikeusTestData
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
@@ -29,7 +30,7 @@ class KäyttöoikeusryhmätSpec
   "koski-oph-pääkäyttäjä" - {
     val user = MockUsers.paakayttaja
     "voi muokata kaikkia opiskeluoikeuksia" in {
-      putOpiskeluoikeus(defaultOpiskeluoikeus, headers = authHeaders(user) ++ jsonContent) {
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus, headers = authHeaders(user) ++ jsonContent) {
         verifyResponseStatusOk()
       }
     }
@@ -50,7 +51,7 @@ class KäyttöoikeusryhmätSpec
     val user = MockUsers.viranomainen
 
     "ei voi muokata opiskeluoikeuksia" in {
-      putOpiskeluoikeus(defaultOpiskeluoikeus, headers = authHeaders(user) ++ jsonContent) {
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus, headers = authHeaders(user) ++ jsonContent) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon 1.2.246.562.10.52251087186"))
       }
     }
@@ -74,7 +75,7 @@ class KäyttöoikeusryhmätSpec
   "tallennusoikeudet muttei LUOTTAMUKSELLINEN_KAIKKI_TIEDOT-roolia" - {
     val user = MockUsers.tallentajaEiLuottamuksellinen
     "ei voi muokata opiskeluoikeuksia" in {
-      putOpiskeluoikeus(opiskeluoikeusLähdejärjestelmästäOmnia, henkilö = OidHenkilö(KoskiSpecificMockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeusLähdejärjestelmästäOmnia, henkilö = OidHenkilö(KoskiSpecificMockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon 1.2.246.562.10.51720121923"))
       }
     }
@@ -83,18 +84,22 @@ class KäyttöoikeusryhmätSpec
   "koski-oppilaitos-palvelukäyttäjä jolla LUOTTAMUKSELLINEN_KAIKKI_TIEDOT käyttöoikeus" - {
     val user = MockUsers.omniaPalvelukäyttäjä
     "voi muokata opiskeluoikeuksia omassa organisaatiossa" in {
-      putOpiskeluoikeus(opiskeluoikeusLähdejärjestelmästäOmnia, henkilö = OidHenkilö(KoskiSpecificMockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeusLähdejärjestelmästäOmnia, henkilö = OidHenkilö(KoskiSpecificMockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
         verifyResponseStatusOk()
       }
     }
 
     "voi muokata vain lähdejärjestelmällisiä opiskeluoikeuksia" in {
-      putOpiskeluoikeus(opiskeluoikeusOmnia, henkilö = OidHenkilö(KoskiSpecificMockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeusOmnia, henkilö = OidHenkilö(KoskiSpecificMockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden.lähdejärjestelmäIdPuuttuu("Käyttäjä on palvelukäyttäjä mutta lähdejärjestelmää ei ole määritelty"))
       }
     }
 
     "voi hakea ja katsella opiskeluoikeuksia vain omassa organisaatiossa" in {
+      setupOppijaWithOpiskeluoikeus(AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.omnia, versio = Some(11)).copy(ostettu = true), henkilö = KoskiSpecificMockOppijat.markkanen) {
+        verifyResponseStatusOk()
+      }
+
       searchForNames("eero", user) should equal(List("Eéro Jorma-Petteri Markkanen-Fagerström"))
       authGet("api/oppija/" + KoskiSpecificMockOppijat.markkanen.oid, user) {
         verifyResponseStatusOk()
@@ -106,7 +111,7 @@ class KäyttöoikeusryhmätSpec
     }
 
     "ei voi muokata opiskeluoikeuksia muussa organisaatiossa" in {
-      putOpiskeluoikeus(defaultOpiskeluoikeus, headers = authHeaders(user) ++ jsonContent) {
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus, headers = authHeaders(user) ++ jsonContent) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon 1.2.246.562.10.52251087186"))
       }
     }
@@ -153,7 +158,7 @@ class KäyttöoikeusryhmätSpec
 
   "palvelukäyttäjä, jolla useampi juuriorganisaatio" - {
     "voi tallentaa tietoja" in {
-      putOpiskeluoikeus(opiskeluoikeusLähdejärjestelmästäOmnia, headers = authHeaders(MockUsers.kahdenOrganisaatioPalvelukäyttäjä) ++ jsonContent) {
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeusLähdejärjestelmästäOmnia, headers = authHeaders(MockUsers.kahdenOrganisaatioPalvelukäyttäjä) ++ jsonContent) {
         verifyResponseStatusOk()
       }
     }
@@ -162,12 +167,16 @@ class KäyttöoikeusryhmätSpec
   "koski-oppilaitos-katselija" - {
     val user = MockUsers.omniaKatselija
     "ei voi muokata opiskeluoikeuksia omassa organisaatiossa" in {
-      putOpiskeluoikeus(opiskeluoikeusOmnia, henkilö = OidHenkilö(KoskiSpecificMockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeusOmnia, henkilö = OidHenkilö(KoskiSpecificMockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon 1.2.246.562.10.51720121923"))
       }
     }
 
     "voi hakea ja katsella opiskeluoikeuksia omassa organisaatiossa" in {
+      setupOppijaWithOpiskeluoikeus(AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.omnia, versio = Some(11)).copy(ostettu = true), henkilö = KoskiSpecificMockOppijat.markkanen) {
+        verifyResponseStatusOk()
+      }
+
       searchForNames("eero", user) should equal(List("Eéro Jorma-Petteri Markkanen-Fagerström"))
       authGet("api/oppija/" + KoskiSpecificMockOppijat.markkanen.oid, user) {
         verifyResponseStatusOk()
@@ -179,7 +188,7 @@ class KäyttöoikeusryhmätSpec
   "koski-oppilaitos-esiopetus-katselija" - {
     val user = MockUsers.jyväskylänKatselijaEsiopetus
     "ei voi muokata opiskeluoikeuksia omassa organisaatiossa" in {
-      putOpiskeluoikeus(ExamplesEsiopetus.opiskeluoikeus, henkilö = OidHenkilö(KoskiSpecificMockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
+      setupOppijaWithOpiskeluoikeus(ExamplesEsiopetus.opiskeluoikeus, henkilö = OidHenkilö(KoskiSpecificMockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio(s"Ei oikeuksia organisatioon ${MockOrganisaatiot.jyväskylänNormaalikoulu}"))
       }
     }
@@ -202,13 +211,13 @@ class KäyttöoikeusryhmätSpec
   "koski-oppilaitos-tallentaja" - {
     val user = MockUsers.omniaTallentaja
     "voi muokata opiskeluoikeuksia omassa organisaatiossa" in {
-      putOpiskeluoikeus(opiskeluoikeusOmnia, henkilö = OidHenkilö(KoskiSpecificMockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeusOmnia, henkilö = OidHenkilö(KoskiSpecificMockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
         verifyResponseStatusOk()
       }
     }
 
     "ei voi tallentaa opiskeluoikeuksia käyttäen lähdejärjestelmä-id:tä" in {
-      putOpiskeluoikeus(opiskeluoikeusLähdejärjestelmästäOmnia, henkilö = OidHenkilö(KoskiSpecificMockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeusLähdejärjestelmästäOmnia, henkilö = OidHenkilö(KoskiSpecificMockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden.lähdejärjestelmäIdEiSallittu("Lähdejärjestelmä määritelty, mutta käyttäjä ei ole palvelukäyttäjä"))
       }
     }
@@ -216,7 +225,7 @@ class KäyttöoikeusryhmätSpec
     "ei voi muokata lähdejärjestelmän tallentamia opiskeluoikeuksia" - {
       val oppija = KoskiSpecificMockOppijat.tyhjä
       "ilman opiskeluoikeuden oid:ia luodaan uusi opiskeluoikeus" in {
-        putOpiskeluoikeus(opiskeluoikeusLähdejärjestelmästäOmnia, henkilö = oppija, headers = authHeaders(MockUsers.omniaPalvelukäyttäjä) ++ jsonContent) {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeusLähdejärjestelmästäOmnia, henkilö = oppija, headers = authHeaders(MockUsers.omniaPalvelukäyttäjä) ++ jsonContent) {
           verifyResponseStatusOk()
           haeOpiskeluoikeudetHetulla(oppija.hetu, user).count(_.tyyppi.koodiarvo == "ammatillinenkoulutus") should equal(1)
           putOpiskeluoikeus(opiskeluoikeusOmnia, henkilö = oppija, headers = authHeaders(user) ++ jsonContent) {
@@ -247,12 +256,16 @@ class KäyttöoikeusryhmätSpec
     }
 
     "ei voi muokata opiskeluoikeuksia" in {
-      putOpiskeluoikeus(opiskeluoikeusLähdejärjestelmästäOmnia, henkilö = OidHenkilö(KoskiSpecificMockOppijat.markkanen.oid), headers = authHeaders(viranomainenGlobaaliKatselija) ++ jsonContent) {
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeusLähdejärjestelmästäOmnia, henkilö = OidHenkilö(KoskiSpecificMockOppijat.markkanen.oid), headers = authHeaders(viranomainenGlobaaliKatselija) ++ jsonContent) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon 1.2.246.562.10.51720121923"))
       }
     }
 
     "voi hakea kaikkia opiskeluoikeuksia" in {
+      setupOppijaWithOpiskeluoikeus(AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.omnia, versio = Some(11)).copy(ostettu = true), henkilö = KoskiSpecificMockOppijat.markkanen) {
+        verifyResponseStatusOk()
+      }
+
       searchForNames("eero", viranomainenGlobaaliKatselija) should equal(List("Jouni Çelik-Eerola", "Eero Esimerkki", "Eéro Jorma-Petteri Markkanen-Fagerström"))
     }
 
@@ -283,6 +296,10 @@ class KäyttöoikeusryhmätSpec
 
   "viranomainen jolla oikeudet toiseen asteeseen" - {
     "voi hakea toisen asteen opiskeluoikeuksia" in {
+      setupOppijaWithOpiskeluoikeus(AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.omnia, versio = Some(11)).copy(ostettu = true), henkilö = KoskiSpecificMockOppijat.markkanen) {
+        verifyResponseStatusOk()
+      }
+
       searchForNames("ylermi", toinenAsteViranomainen) should be(empty)
       searchForNames(KoskiSpecificMockOppijat.dippainssi.hetu.get, toinenAsteViranomainen) should be(empty)
       searchForNames(KoskiSpecificMockOppijat.ylioppilas.hetu.get, toinenAsteViranomainen) should equal(List("Ynjevi Ylioppilas"))

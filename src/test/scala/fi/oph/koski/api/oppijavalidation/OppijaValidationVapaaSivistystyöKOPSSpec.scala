@@ -30,7 +30,7 @@ class OppijaValidationVapaaSivistystyöKOPSSpec extends TutkinnonPerusteetTest[V
             ))
           )))
 
-          val opiskeluoikeus: Opiskeluoikeus = putAndGetOpiskeluoikeus(oo)
+          val opiskeluoikeus: Opiskeluoikeus = setupOppijaWithAndGetOpiskeluoikeus(oo)
           opiskeluoikeus.suoritukset.head.osasuoritusLista.head.koulutusmoduuli.laajuusArvo(0) should equal(53.0)
         }
 
@@ -52,7 +52,7 @@ class OppijaValidationVapaaSivistystyöKOPSSpec extends TutkinnonPerusteetTest[V
             ))
           )))
 
-          val opiskeluoikeus: Opiskeluoikeus = putAndGetOpiskeluoikeus(oo)
+          val opiskeluoikeus: Opiskeluoikeus = setupOppijaWithAndGetOpiskeluoikeus(oo)
           opiskeluoikeus.suoritukset.head.osasuoritusLista.head.koulutusmoduuli.laajuusArvo(0) should equal(53.0)
         }
 
@@ -63,7 +63,7 @@ class OppijaValidationVapaaSivistystyöKOPSSpec extends TutkinnonPerusteetTest[V
               osasuoritukset = Some(List(tyhjäOsaamiskokonaisuudenSuoritus("1003", Some(laajuus(5.0)))))
             )))
 
-          val opiskeluoikeus: Opiskeluoikeus = putAndGetOpiskeluoikeus(oo)
+          val opiskeluoikeus: Opiskeluoikeus = setupOppijaWithAndGetOpiskeluoikeus(oo)
           opiskeluoikeus.suoritukset.head.osasuoritusLista.head.koulutusmoduuli.getLaajuus should equal(None)
         }
 
@@ -73,7 +73,7 @@ class OppijaValidationVapaaSivistystyöKOPSSpec extends TutkinnonPerusteetTest[V
             osasuoritukset = Some(List(tyhjäSuuntautumisopintojenSuoritus(Some(laajuus(5.0)))))
           )))
 
-          val opiskeluoikeus: Opiskeluoikeus = putAndGetOpiskeluoikeus(oo)
+          val opiskeluoikeus: Opiskeluoikeus = setupOppijaWithAndGetOpiskeluoikeus(oo)
           opiskeluoikeus.suoritukset.head.osasuoritusLista.head.koulutusmoduuli.getLaajuus should equal(None)
         }
 
@@ -95,7 +95,7 @@ class OppijaValidationVapaaSivistystyöKOPSSpec extends TutkinnonPerusteetTest[V
             ))
           )))
 
-          putOpiskeluoikeus(oo) {
+          setupOppijaWithOpiskeluoikeus(oo) {
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönVahvistetunPäätasonSuorituksenLaajuus("Päätason suoritus koulutus/999909 on vahvistettu, mutta sillä on hyväksytyksi arvioituja osaamiskokonaisuuksia, joiden laajuus on alle 4 opintopistettä"))
           }
         }
@@ -120,7 +120,7 @@ class OppijaValidationVapaaSivistystyöKOPSSpec extends TutkinnonPerusteetTest[V
         ))
       )))
 
-      putOpiskeluoikeus(oo) {
+      setupOppijaWithOpiskeluoikeus(oo) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.eronneeksiKatsotunOpiskeluoikeudenArvioinnit("Katsotaan eronneeksi -tilaan päättyvällä opiskeluoikeudella ei saa olla osasuorituksia, joista puuttuu arviointi"))
       }
     }
@@ -128,14 +128,14 @@ class OppijaValidationVapaaSivistystyöKOPSSpec extends TutkinnonPerusteetTest[V
       val oo = defaultOpiskeluoikeus.copy(suoritukset = List(suoritusKOPS.copy(
         koulutusmoduuli = OppivelvollisilleSuunnattuVapaanSivistystyönKoulutus(perusteenDiaarinumero = Some("OPH-5410-2021")) // ajoneuvoalan perustutkinto
       )))
-      putOpiskeluoikeus(oo) {
+      setupOppijaWithOpiskeluoikeus(oo) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.vääräKoulutustyyppi("Suoritukselle OppivelvollisilleSuunnattuVapaanSivistystyönKoulutus ei voi käyttää opiskeluoikeuden voimassaoloaikana voimassaollutta perustetta OPH-5410-2021 (7614470), jonka koulutustyyppi on 1(Ammatillinen perustutkinto). Tälle suoritukselle hyväksytyt perusteen koulutustyypit ovat 10(Vapaan sivistystyön koulutus)."))
       }
     }
   }
 
 
-  private def putAndGetOpiskeluoikeus(oo: KoskeenTallennettavaOpiskeluoikeus): Opiskeluoikeus = putOpiskeluoikeus(oo) {
+  private def setupOppijaWithAndGetOpiskeluoikeus(oo: KoskeenTallennettavaOpiskeluoikeus): Opiskeluoikeus = setupOppijaWithOpiskeluoikeus(oo) {
     verifyResponseStatusOk()
     getOpiskeluoikeus(readPutOppijaResponse.opiskeluoikeudet.head.oid)
   }

@@ -26,7 +26,7 @@ class OppijaValidationVapaaSivistystyöKOTOSpec extends AnyFreeSpec with PutOpis
             vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOhjauksenSuoritus(laajuus = LaajuusOpintopisteissä(9))
           ))
       )))
-      val result = putAndGetOpiskeluoikeus(opiskeluoikeus)
+      val result = setupOppijaWithAndGetOpiskeluoikeus(opiskeluoikeus)
       result.suoritukset.head.koulutusmoduuli.laajuusArvo(0) shouldBe(69)
     }
 
@@ -36,7 +36,7 @@ class OppijaValidationVapaaSivistystyöKOTOSpec extends AnyFreeSpec with PutOpis
           koulutusmoduuli = VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutus(perusteenDiaarinumero = Some("OPH-5410-2021")) // ajoneuvoalan perustutkinto
         )
       ))
-      putOpiskeluoikeus(oo) {
+      setupOppijaWithOpiskeluoikeus(oo) {
         verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*notAnyOf.*".r))
       }
     }
@@ -45,7 +45,7 @@ class OppijaValidationVapaaSivistystyöKOTOSpec extends AnyFreeSpec with PutOpis
   "KOTO 2022" - {
     "Päätason suorituksen ja osasuorituksen laajuudeet lasketaan automaattisesti (ala)osasuoritusten laajuuksista" in {
       val opiskeluoikeus = Koto2022.Opiskeluoikeus.suoritettu
-      val result = putAndGetOpiskeluoikeus(opiskeluoikeus)
+      val result = setupOppijaWithAndGetOpiskeluoikeus(opiskeluoikeus)
 
       val suoritus = result.suoritukset.head
       val kieliopinnot = suoritus.osasuoritukset.flatMap(_.find(_.koulutusmoduuli.tunniste.koodiarvo == "kielijaviestintaosaaminen")).get
@@ -69,7 +69,7 @@ class OppijaValidationVapaaSivistystyöKOTOSpec extends AnyFreeSpec with PutOpis
         ))
       )
 
-      val result = putAndGetOpiskeluoikeus(opiskeluoikeus)
+      val result = setupOppijaWithAndGetOpiskeluoikeus(opiskeluoikeus)
       result.suoritukset.head.koulutusmoduuli.laajuusArvo(0) shouldBe(75)
     }
 
@@ -117,7 +117,7 @@ class OppijaValidationVapaaSivistystyöKOTOSpec extends AnyFreeSpec with PutOpis
           )
         )
 
-        putOpiskeluoikeus(opiskeluoikeus) {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.osasuoritusPuuttuu("Kielten ja viestinnän osasuoritusta ei voi hyväksyä ennen kuin kaikki pakolliset alaosasuoritukset on arvioitu"))
         }
       }
@@ -163,7 +163,7 @@ class OppijaValidationVapaaSivistystyöKOTOSpec extends AnyFreeSpec with PutOpis
           )
         )
 
-        putOpiskeluoikeus(opiskeluoikeus) {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.oppiaineenLaajuusLiianSuppea(s"Oppiaineen 'Työssäoppiminen' suoritettu laajuus liian suppea (4.0 op, pitäisi olla vähintään 8.0 op)"))
         }
       }
@@ -181,7 +181,7 @@ class OppijaValidationVapaaSivistystyöKOTOSpec extends AnyFreeSpec with PutOpis
           ))
         )
 
-        putOpiskeluoikeus(opiskeluoikeus) {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.vapaaSivistystyö.puuttuvaOpintokokonaisuus("Suoritusta ei voi vahvistaa ennen kuin kaikki pakolliset osasuoritukset on arvioitu"))
         }
       }
@@ -198,7 +198,7 @@ class OppijaValidationVapaaSivistystyöKOTOSpec extends AnyFreeSpec with PutOpis
           ))
         )
 
-        putOpiskeluoikeus(opiskeluoikeus) {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.oppiaineenLaajuusLiianSuppea(s"Oppiaineen 'Ohjaus' suoritettu laajuus liian suppea (4.0 op, pitäisi olla vähintään 7.0 op)"))
         }
       }
@@ -212,7 +212,7 @@ class OppijaValidationVapaaSivistystyöKOTOSpec extends AnyFreeSpec with PutOpis
           )),
         )
 
-        putOpiskeluoikeus(opiskeluoikeus) {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.vapaaSivistystyö.kotoAlkamispäivä2022())
         }
       }
@@ -225,7 +225,7 @@ class OppijaValidationVapaaSivistystyöKOTOSpec extends AnyFreeSpec with PutOpis
           arvioituPäättymispäivä = Some(LocalDate.of(2022, 9, 1)),
         )
 
-        putOpiskeluoikeus(opiskeluoikeus) {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.vapaaSivistystyö.kotoAlkamispäivä2012())
         }
       }
@@ -239,13 +239,13 @@ class OppijaValidationVapaaSivistystyöKOTOSpec extends AnyFreeSpec with PutOpis
           )
       ))
 
-      putOpiskeluoikeus(oo) {
+      setupOppijaWithOpiskeluoikeus(oo) {
         verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*notAnyOf.*".r))
       }
     }
   }
 
-  private def putAndGetOpiskeluoikeus(oo: KoskeenTallennettavaOpiskeluoikeus): Opiskeluoikeus = putOpiskeluoikeus(oo) {
+  private def setupOppijaWithAndGetOpiskeluoikeus(oo: KoskeenTallennettavaOpiskeluoikeus): Opiskeluoikeus = setupOppijaWithOpiskeluoikeus(oo) {
     verifyResponseStatusOk()
     getOpiskeluoikeus(readPutOppijaResponse.opiskeluoikeudet.head.oid)
   }

@@ -32,18 +32,18 @@ class OpiskeluoikeusHistorySpec
   "Muutoshistoria" - {
     "Luotaessa uusi opiskeluoikeus" - {
       "Luodaan historiarivi" in {
-        val opiskeluoikeus = createOpiskeluoikeus(oppija, uusiOpiskeluoikeus, resetFixtures = true)
+        val opiskeluoikeus = setupOppijaWithAndGetOpiskeluoikeus(uusiOpiskeluoikeus, oppija)
         verifyHistory(opiskeluoikeus.oid.get, List(1))
       }
 
       "osasuorituksilla" in {
-        val opiskeluoikeus = createOpiskeluoikeus(oppija, AmmatillinenOldExamples.full.opiskeluoikeudet(0), resetFixtures = true)
+        val opiskeluoikeus = setupOppijaWithAndGetOpiskeluoikeus(AmmatillinenOldExamples.full.opiskeluoikeudet(0), oppija)
         verifyHistory(opiskeluoikeus.oid.get, List(1))
       }
     }
     "Päivitettäessä" - {
       "Luodaan uusi versiorivi" in {
-        val opiskeluoikeus = createOpiskeluoikeus(oppija, uusiOpiskeluoikeus, resetFixtures = true)
+        val opiskeluoikeus = setupOppijaWithAndGetOpiskeluoikeus(uusiOpiskeluoikeus, oppija)
         val modified: Opiskeluoikeus = createOrUpdate(oppija, opiskeluoikeus.copy(arvioituPäättymispäivä = Some(LocalDate.now)))
         verifyHistory(modified.oid.get, List(1, 2))
       }
@@ -51,7 +51,7 @@ class OpiskeluoikeusHistorySpec
       "Jos mikään ei ole muuttunut" - {
         "Ei luoda uutta versioriviä" in {
           val uusiAikaleima = Some(LocalDateTime.now())
-          val opiskeluoikeus = createOpiskeluoikeus(oppija, uusiOpiskeluoikeus, resetFixtures = true).copy(aikaleima = uusiAikaleima) // varmistetaan samalla että uusi arvo aikaleima-kentässä ei vaikuta vertailuun
+          val opiskeluoikeus = setupOppijaWithAndGetOpiskeluoikeus(uusiOpiskeluoikeus, oppija).copy(aikaleima = uusiAikaleima) // varmistetaan samalla että uusi arvo aikaleima-kentässä ei vaikuta vertailuun
           val modified: Opiskeluoikeus = createOrUpdate(oppija, opiskeluoikeus)
           verifyHistory(modified.oid.get, List(1))
         }
@@ -60,7 +60,7 @@ class OpiskeluoikeusHistorySpec
       "Kun syötteessä annetaan versionumero" - {
         "Versionumero sama kuin viimeisin" - {
           "Päivitys hyväksytään" in {
-            val opiskeluoikeus = createOpiskeluoikeus(oppija, uusiOpiskeluoikeus, resetFixtures = true)
+            val opiskeluoikeus = setupOppijaWithAndGetOpiskeluoikeus(uusiOpiskeluoikeus, oppija)
             val modified: Opiskeluoikeus = createOrUpdate(oppija, opiskeluoikeus.copy(arvioituPäättymispäivä = Some(LocalDate.now), versionumero = Some(1)))
             verifyHistory(modified.oid.get, List(1, 2))
           }
@@ -68,7 +68,7 @@ class OpiskeluoikeusHistorySpec
 
         "Versionumero ei täsmää" - {
           "Päivitys hylätään" in {
-            val opiskeluoikeus = createOpiskeluoikeus(oppija, uusiOpiskeluoikeus, resetFixtures = true)
+            val opiskeluoikeus = setupOppijaWithAndGetOpiskeluoikeus(uusiOpiskeluoikeus, oppija)
             val modified: Opiskeluoikeus = createOrUpdate(oppija, opiskeluoikeus.copy(arvioituPäättymispäivä = Some(LocalDate.now), versionumero = Some(3)), {
               verifyResponseStatus(409, KoskiErrorCategory.conflict.versionumero("Annettu versionumero 3 <> 1"))
             })
@@ -81,7 +81,7 @@ class OpiskeluoikeusHistorySpec
     "Käyttöoikeudet" - {
       "Kun haetaan historiaa opiskeluoikeudelle, johon käyttäjällä ei oikeuksia" - {
         "Palautetaan 404" in {
-          val opiskeluoikeus = createOpiskeluoikeus(oppija, uusiOpiskeluoikeus)
+          val opiskeluoikeus = setupOppijaWithAndGetOpiskeluoikeus(uusiOpiskeluoikeus, oppija)
           authGet("api/opiskeluoikeus/historia/" + opiskeluoikeus.oid.get, MockUsers.omniaPalvelukäyttäjä) {
             verifyResponseStatus(404, KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia())
           }
@@ -98,7 +98,7 @@ class OpiskeluoikeusHistorySpec
     }
     "Versiohistorian hakeminen" - {
       "Onnistuu ja tuottaa auditlog-merkinnän" in {
-        val opiskeluoikeus = createOpiskeluoikeus(oppija, uusiOpiskeluoikeus, resetFixtures = true)
+        val opiskeluoikeus = setupOppijaWithAndGetOpiskeluoikeus(uusiOpiskeluoikeus, oppija)
         authGet("api/opiskeluoikeus/historia/" + opiskeluoikeus.oid.get) {
           val JArray(muutokset) = readHistory.head.muutos
           muutokset should not(be(empty))
@@ -107,7 +107,7 @@ class OpiskeluoikeusHistorySpec
       }
 
       "Ei näytä muutoksia käyttäjälle jolta puuttuu LUOTTAMUKSELLINEN_KAIKKI_TIEDOT-rooli" in {
-        val opiskeluoikeus = createOpiskeluoikeus(oppija, uusiOpiskeluoikeus, resetFixtures = true)
+        val opiskeluoikeus = setupOppijaWithAndGetOpiskeluoikeus(uusiOpiskeluoikeus, oppija)
         authGet("api/opiskeluoikeus/historia/" + opiskeluoikeus.oid.get, user = MockUsers.stadinVastuukäyttäjä) {
           readHistory.map(_.muutos) should equal(List(JNothing))
           AuditLogTester.verifyAuditLogMessage(Map("operation" -> "MUUTOSHISTORIA_KATSOMINEN"))
@@ -117,7 +117,7 @@ class OpiskeluoikeusHistorySpec
 
     "Yksittäisen version hakeminen" - {
       "Onnistuu ja tuottaa auditlog-merkinnän" in {
-        val opiskeluoikeus = createOpiskeluoikeus(oppija, uusiOpiskeluoikeus, resetFixtures = true)
+        val opiskeluoikeus = setupOppijaWithAndGetOpiskeluoikeus(uusiOpiskeluoikeus, oppija)
         authGet("api/opiskeluoikeus/historia/" + opiskeluoikeus.oid.get + "/1") {
           verifyResponseStatusOk()
           val versio = readOpiskeluoikeus
@@ -127,7 +127,7 @@ class OpiskeluoikeusHistorySpec
       }
       "Tuntematon versionumero" - {
         "Palautetaan 404" in {
-          val opiskeluoikeus = createOpiskeluoikeus(oppija, uusiOpiskeluoikeus, resetFixtures = true)
+          val opiskeluoikeus = setupOppijaWithAndGetOpiskeluoikeus(uusiOpiskeluoikeus, oppija)
           authGet("api/opiskeluoikeus/historia/" + opiskeluoikeus.oid.get + "/2") {
             verifyResponseStatus(404, ErrorMatcher.regex(notFound.versiotaEiLöydy, """Versiota 2 ei löydy opiskeluoikeuden [^ ]+ historiasta.""".r))
           }
@@ -137,14 +137,17 @@ class OpiskeluoikeusHistorySpec
 
     "Virheentarkistus" - {
       "Virhe historiatietojen tuottamisesta lokitetaan" in {
+        val opiskeluoikeusOid = setupOppijaWithAndGetOpiskeluoikeus(Reformi.opiskeluoikeus, KoskiSpecificMockOppijat.reformitutkinto).oid
+
         val suoritus = Reformi.tutkinnonSuoritus.copy(osasuoritukset = Some(Reformi.osasuoritukset.drop(1)))
-        val opiskeluoikeus = putOpiskeluoikeus(Reformi.opiskeluoikeus.copy(suoritukset = List(suoritus)), henkilö = reformitutkinto) {
+        val opiskeluoikeus = putOpiskeluoikeus(Reformi.opiskeluoikeus.copy(oid = opiskeluoikeusOid, suoritukset = List(suoritus)), henkilö = reformitutkinto) {
+          verifyResponseStatusOk()
           val oo = readPutOppijaResponse.opiskeluoikeudet.head
           updateOpiskeluoikeusHistory(oo.oid, oo.versionumero, "[]")
           oo
         }
 
-        putOpiskeluoikeus(Reformi.opiskeluoikeus.copy(suoritukset = List(Reformi.tutkinnonSuoritus)), henkilö = reformitutkinto) {
+        putOpiskeluoikeus(Reformi.opiskeluoikeus.copy(oid = opiskeluoikeusOid, suoritukset = List(Reformi.tutkinnonSuoritus)), henkilö = reformitutkinto) {
           verifyResponseStatusOk()
         }
 
@@ -162,19 +165,24 @@ class OpiskeluoikeusHistorySpec
       }
 
       "Virhe historiatiedoissa lokitetaan" in {
+        val opiskeluoikeusOid = setupOppijaWithAndGetOpiskeluoikeus(Reformi.opiskeluoikeus, KoskiSpecificMockOppijat.reformitutkinto).oid
+
         val suoritus = Reformi.tutkinnonSuoritus.copy(osasuoritukset = Some(Reformi.osasuoritukset.drop(1)))
-        putOpiskeluoikeus(Reformi.opiskeluoikeus.copy(suoritukset = List(suoritus)), henkilö = reformitutkinto) {
+        putOpiskeluoikeus(Reformi.opiskeluoikeus.copy(oid = opiskeluoikeusOid, suoritukset = List(suoritus)), henkilö = reformitutkinto) {
+          verifyResponseStatusOk()
           val oo = readPutOppijaResponse.opiskeluoikeudet.head
           updateOpiskeluoikeusHistory(oo.oid, oo.versionumero, " [{\"op\": \"remove\", \"path\": \"/suoritukset/0/osasuoritukset/0/näyttö\"}]")
+          oo
         }
 
-        val opiskeluoikeus = putOpiskeluoikeus(Reformi.opiskeluoikeus.copy(suoritukset = List(Reformi.tutkinnonSuoritus)), henkilö = reformitutkinto) {
+        val opiskeluoikeus = putOpiskeluoikeus(Reformi.opiskeluoikeus.copy(oid = opiskeluoikeusOid, suoritukset = List(Reformi.tutkinnonSuoritus)), henkilö = reformitutkinto) {
+          verifyResponseStatusOk()
           val oo = readPutOppijaResponse.opiskeluoikeudet.head
           updateOpiskeluoikeusHistory(oo.oid, oo.versionumero, "[]")
           oo
         }
 
-        putOpiskeluoikeus(Reformi.opiskeluoikeus.copy(suoritukset = List(suoritus)), henkilö = reformitutkinto) {
+        putOpiskeluoikeus(Reformi.opiskeluoikeus.copy(oid = opiskeluoikeusOid, suoritukset = List(suoritus)), henkilö = reformitutkinto) {
           verifyResponseStatusOk()
         }
 

@@ -39,7 +39,7 @@ class OppijaValidationLukionOppiaineenOppimaaraSpec extends TutkinnonPerusteetTe
           vahvistus = Some(HenkilövahvistusPaikkakunnalla(date(2016, 6, 4), jyväskylä, jyväskylänNormaalikoulu, List(Organisaatiohenkilö("Reijo Reksi", "rehtori", jyväskylänNormaalikoulu))))
         )))
 
-      putOpiskeluoikeus(eitiedossa) {
+      setupOppijaWithOpiskeluoikeus(eitiedossa) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tyhjänOppiaineenVahvistus(""""Ei tiedossa"-oppiainetta ei voi merkitä valmiiksi"""))
       }
     }
@@ -51,7 +51,7 @@ class OppijaValidationLukionOppiaineenOppimaaraSpec extends TutkinnonPerusteetTe
         oppimääräSuoritettu = Some(true)
       )
 
-      putOpiskeluoikeus(oo) {
+      setupOppijaWithOpiskeluoikeus(oo) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.oppimääräSuoritettuIlmanVahvistettuaOppiaineenOppimäärää())
       }
     }
@@ -61,7 +61,7 @@ class OppijaValidationLukionOppiaineenOppimaaraSpec extends TutkinnonPerusteetTe
         oppimääräSuoritettu = Some(false)
       )
 
-      putOpiskeluoikeus(oo) {
+      setupOppijaWithOpiskeluoikeus(oo) {
         verifyResponseStatusOk()
       }
     }
@@ -81,7 +81,7 @@ class OppijaValidationLukionOppiaineenOppimaaraSpec extends TutkinnonPerusteetTe
         )
       )
 
-      putOpiskeluoikeus(oo) {
+      setupOppijaWithOpiskeluoikeus(oo) {
         verifyResponseStatusOk()
       }
     }

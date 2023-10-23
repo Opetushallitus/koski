@@ -44,6 +44,7 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
     }
     "Saa siirtää jos lukion aiemman kuin 2019 opsin mukainen opiskeluoikeus on alkanut 1.8.2021 tai myöhemmin" in {
       val alkamispäivä = date(2021, 8, 1)
+      mitätöiOppijanKaikkiOpiskeluoikeudet(KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021)
       putMaksuttomuus(
         List(
           Maksuttomuus(alkamispäivä, None, true)
@@ -520,6 +521,7 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
       )
     }
     "Jakson päättymispäiväksi päätellään aina seuraavan jakson alkamispäivä, vain yksi" in {
+      mitätöiOppijanKaikkiOpiskeluoikeudet(KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021)
       val oppija = KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021
       putMaksuttomuus(List(Maksuttomuus(date(2021, 8, 1), Some(date(2021, 8, 1)), false)), oppija, opiskeluoikeusAlkamispäivällä) {
         verifyResponseStatusOk()
@@ -540,6 +542,7 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
       }
     }
     "Siirretyt jaksot järjestetään päivämäärä järjestykseen jakson alkamispäivän mukaan" in {
+      mitätöiOppijanKaikkiOpiskeluoikeudet(KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021)
       val oppija = KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021
       putMaksuttomuus(List(
         Maksuttomuus(date(2021, 8, 1), None,false),
@@ -609,6 +612,8 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
       }
     }
     "Jaksot järjestetään päivämääräjärjestykseen" in {
+      mitätöiOppijanKaikkiOpiskeluoikeudet(oppija)
+
       putMaksuttomuuttaPidennetty(List(
         OikeuttaMaksuttomuuteenPidennetty(date(2021, 8, 2), date(2021, 8, 2)),
         OikeuttaMaksuttomuuteenPidennetty(date(2021, 8, 4), date(2021, 8, 4)),

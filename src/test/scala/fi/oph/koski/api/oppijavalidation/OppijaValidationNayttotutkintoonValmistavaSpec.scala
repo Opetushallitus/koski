@@ -22,13 +22,13 @@ class OppijaValidationNayttotutkintoonValmistavaSpec extends TutkinnonPerusteetT
   override def vääräntyyppisenPerusteenId: Long = 1372910
 
   "Voi merkitä valmiiksi vaikka ei sisällä osasuorituksia" in {
-     putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(näyttötutkintoonValmistavanKoulutuksenSuoritus.copy(osasuoritukset = None)))) {
+     setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(näyttötutkintoonValmistavanKoulutuksenSuoritus.copy(osasuoritukset = None)))) {
        verifyResponseStatusOk()
      }
   }
 
   "Opiskeluoikeus voi päättyä tilaan 'Katsotaan eronneeksi' vaikka suoritus on vahvistettu" in {
-    putOpiskeluoikeus(defaultOpiskeluoikeus.copy(
+    setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(
       tila = AmmatillinenOpiskeluoikeudenTila(List(
         AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)),
         AmmatillinenOpiskeluoikeusjakso(date(2016, 5, 31), opiskeluoikeusKatsotaanEronneeksi, Some(ExampleData.valtionosuusRahoitteinen))
@@ -48,7 +48,7 @@ class OppijaValidationNayttotutkintoonValmistavaSpec extends TutkinnonPerusteetT
         AmmatillinenOpiskeluoikeusjakso(date(2016, 8, 1), opiskeluoikeusKatsotaanEronneeksi, Some(ExampleData.valtionosuusRahoitteinen))
       )))
 
-    putOpiskeluoikeus(oo) {
+    setupOppijaWithOpiskeluoikeus(oo) {
       verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaEronnutTaiKatsotaanEronneeksiVaikkaVahvistettuPäätasonSuoritus())
     }
   }
@@ -63,7 +63,7 @@ class OppijaValidationNayttotutkintoonValmistavaSpec extends TutkinnonPerusteetT
         AmmatillinenOpiskeluoikeusjakso(date(2066, 5, 13), opiskeluoikeusValmistunut, Some(ExampleData.valtionosuusRahoitteinen))
       )))
 
-    putOpiskeluoikeus(oo) {
+    setupOppijaWithOpiskeluoikeus(oo) {
       verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.perusteEiVoimassa())
     }
   }

@@ -19,7 +19,7 @@ class OppijaValidationVapaaSivistystyöLukutaitoSpec extends TutkinnonPerusteetT
           vapaanSivistystyönLukutaitokoulutuksenTekstienLukeminenJaTulkitseminenSuoritus(laajuus = LaajuusOpintopisteissä(9))
         )))
       ))
-      val result = putAndGetOpiskeluoikeus(opiskeluoikeus)
+      val result = setupOppijaWithAndGetOpiskeluoikeus(opiskeluoikeus)
       result.suoritukset.head.koulutusmoduuli.laajuusArvo(0) shouldBe(69)
     }
 
@@ -37,7 +37,7 @@ class OppijaValidationVapaaSivistystyöLukutaitoSpec extends TutkinnonPerusteetT
         )
       )
 
-      putOpiskeluoikeus(opiskeluoikeus) {
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
         verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*notAnyOf.*".r))
       }
     }
@@ -56,7 +56,7 @@ class OppijaValidationVapaaSivistystyöLukutaitoSpec extends TutkinnonPerusteetT
         )
       )
 
-      putOpiskeluoikeus(opiskeluoikeus) {
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
         verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*notAnyOf.*".r))
       }
     }
@@ -69,13 +69,13 @@ class OppijaValidationVapaaSivistystyöLukutaitoSpec extends TutkinnonPerusteetT
           )
       ))
 
-      putOpiskeluoikeus(oo) {
+      setupOppijaWithOpiskeluoikeus(oo) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.vääräKoulutustyyppi("Suoritukselle VapaanSivistystyönLukutaitokoulutus ei voi käyttää opiskeluoikeuden voimassaoloaikana voimassaollutta perustetta OPH-5410-2021 (7614470), jonka koulutustyyppi on 1(Ammatillinen perustutkinto). Tälle suoritukselle hyväksytyt perusteen koulutustyypit ovat 35(Vapaan sivistystyön lukutaitokoulutus)."))
       }
     }
   }
 
-  private def putAndGetOpiskeluoikeus(oo: KoskeenTallennettavaOpiskeluoikeus): Opiskeluoikeus = putOpiskeluoikeus(oo) {
+  private def setupOppijaWithAndGetOpiskeluoikeus(oo: KoskeenTallennettavaOpiskeluoikeus): Opiskeluoikeus = setupOppijaWithOpiskeluoikeus(oo) {
     verifyResponseStatusOk()
     getOpiskeluoikeus(readPutOppijaResponse.opiskeluoikeudet.head.oid)
   }
