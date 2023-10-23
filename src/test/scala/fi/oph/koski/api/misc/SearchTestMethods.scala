@@ -31,7 +31,7 @@ trait SearchTestMethods extends HttpSpecification {
     }
   }
 
-  def postHetu[T](hetu: String, user: UserWithPassword = defaultUser)(f: => T): T =
+  def postHenkilöHetu[T](hetu: String, user: UserWithPassword = defaultUser)(f: => T): T =
     post(
       "api/henkilo/hetu",
       JsonSerializer.writeWithRoot(Map("hetu" -> hetu)),
