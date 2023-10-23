@@ -119,14 +119,14 @@ trait PostgresOpiskeluoikeusRepositoryActions[OOROW <: OpiskeluoikeusRow, OOTABL
     val identifier = OpiskeluoikeusIdentifier(oppijaOid.oppijaOid, opiskeluoikeus)
     findByIdentifierAction(identifier)
       .flatMap { rows: Either[HttpStatus, List[OOROW]] => {
-        rows.foreach(opiskeluoikeudet => {
-          identifier match {
-            case id: OppijaOidOrganisaatioJaTyyppi if allowUpdate && !opiskeluoikeudet.isEmpty =>
-              logger.info(s"Olemassaolevan opiskeluoikeuden päivitysyritys ilman tunnistetta. Päivitettävä oid: ${opiskeluoikeudet.map(_.oid).mkString(", ")}. Päivittävä tunniste: ${id.copy(oppijaOid = "****")}")
-            case _ =>
-          }
-        })
-        createOrUpdateActionBasedOnDbResult(oppijaOid, opiskeluoikeus, allowUpdate, allowDeleteCompleted, rows)
+        (identifier, rows) match {
+          case (id: OppijaOidOrganisaatioJaTyyppi, Right(opiskeluoikeudet)) if allowUpdate && !opiskeluoikeudet.isEmpty =>
+            dbio.DBIOAction.successful(Left(KoskiErrorCategory.conflict.exists("" +
+              s"Olemassaolevan opiskeluoikeuden päivitystä ilman tunnistetta ei tueta. Päivitettävä opiskeluoikeus-oid: ${opiskeluoikeudet.map(_.oid).mkString(", ")}. Päivittävä tunniste: ${id.copy(oppijaOid = "****")}"
+            )))
+          case _ =>
+            createOrUpdateActionBasedOnDbResult(oppijaOid, opiskeluoikeus, allowUpdate, allowDeleteCompleted, rows)
+        }
       }
     }
   }
