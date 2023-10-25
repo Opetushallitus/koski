@@ -17,6 +17,7 @@ JAVA_OPTS="\
 -Dlog4j.log.dir=/home/koski/logs \
 -Dfile.encoding=UTF-8 \
 -Dresourcebase=. \
+-Dnetworkaddress.cache.ttl=30 \
 "
 
 JAR=$(ls WEB-INF/lib/koski*)
