@@ -113,15 +113,6 @@ export const useForm = <O extends object>(
     dispatch({ type: 'cancel' })
   }, [])
 
-  const updateAt: FormModelProp<'updateAt'> = useCallback(
-    <T>(optic: FormOptic<O, T>, modify: (t: T) => T) => {
-      if (editMode) {
-        dispatch({ type: 'modify', modify: modifyValue(optic)(modify) })
-      }
-    },
-    [editMode]
-  )
-
   const validate: FormModelProp<'validate'> = useCallback(() => {
     if (constraint && editMode) {
       dispatch({ type: 'validate', constraint, rules: validationRules || [] })
@@ -131,6 +122,17 @@ export const useForm = <O extends object>(
   useEffect(() => {
     validate()
   }, [validate])
+
+  const updateAt: FormModelProp<'updateAt'> = useCallback(
+    <T>(optic: FormOptic<O, T>, modify: (t: T) => T) => {
+      if (editMode) {
+        dispatch({ type: 'modify', modify: modifyValue(optic)(modify) })
+        // Validate after modify
+        validate()
+      }
+    },
+    [editMode, validate]
+  )
 
   const { push: setErrors } = globalErrors
   const save: FormModelProp<'save'> = useCallback(

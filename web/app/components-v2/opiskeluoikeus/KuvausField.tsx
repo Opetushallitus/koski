@@ -2,6 +2,7 @@ import React, { useCallback, useState } from 'react'
 import { Finnish, isFinnish } from '../../types/fi/oph/koski/schema/Finnish'
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
 import { common, CommonProps, testId } from '../CommonProps'
+import { FieldErrors } from '../forms/FieldErrors'
 import { FieldEditorProps } from '../forms/FormField'
 
 export type KuvausViewProps = CommonProps<FieldEditorProps<LocalizedString, {}>>
@@ -19,6 +20,7 @@ export type KuvausEditProps = CommonProps<FieldEditorProps<LocalizedString, {}>>
 export const KuvausEdit: React.FC<KuvausEditProps> = ({
   onChange,
   initialValue,
+  errors,
   ...rest
 }) => {
   const [value, setValue] = useState(initialValue)
@@ -34,13 +36,16 @@ export const KuvausEdit: React.FC<KuvausEditProps> = ({
   )
 
   return (
-    <textarea
-      {...common({ ...rest }, ['KuvausEdit'])}
-      {...testId(rest, 'input')}
-      rows={5}
-      cols={40}
-      value={isFinnish(value) ? value?.fi : value?.en}
-      onChange={onChangeCB}
-    />
+    <div>
+      <textarea
+        {...common({ ...rest }, ['KuvausEdit'])}
+        {...testId(rest, 'input')}
+        rows={5}
+        cols={40}
+        value={isFinnish(value) ? value?.fi : value?.en}
+        onChange={onChangeCB}
+      />
+      {errors && <FieldErrors errors={errors} />}
+    </div>
   )
 }
