@@ -50,6 +50,7 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
         with:
           registries: ${{ secrets.ECR_ACCOUNT_ID }}
+          mask-password: true
 
       - name: Check if container image already exists in ECR
         env:
@@ -125,6 +126,7 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
         with:
           registries: ${{ secrets.ECR_ACCOUNT_ID }}
+          mask-password: true
 
       - name: Get task definition ARN
         id: get-taskdef-arn

@@ -33,6 +33,7 @@ jobs:
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
+        mask-password: true
 
       - name: Set up SSH agent
         run: |
@@ -104,6 +105,7 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
         with:
           registries: ${{ secrets.ECR_ACCOUNT_ID }}
+          mask-password: true
 
       - name: Get task definition ARN
         id: get-taskdef-arn
@@ -220,6 +222,7 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
         with:
           registries: ${{ secrets.ECR_ACCOUNT_ID }}
+          mask-password: true
 
       - name: Get task definition ARN
         id: get-taskdef-arn
@@ -336,6 +339,7 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
         with:
           registries: ${{ secrets.ECR_ACCOUNT_ID }}
+          mask-password: true
 
       - name: Get task definition ARN
         id: get-taskdef-arn
