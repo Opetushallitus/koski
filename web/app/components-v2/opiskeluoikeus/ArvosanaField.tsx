@@ -6,9 +6,9 @@ import { useSchema } from '../../appstate/constraints'
 import { useKoodistoOfConstraint } from '../../appstate/koodisto'
 import { t } from '../../i18n/i18n'
 import { Arviointi } from '../../types/fi/oph/koski/schema/Arviointi'
+import { parasArviointi } from '../../util/arvioinnit'
 import * as C from '../../util/constraints'
 import { koodiviiteId, KoodiviiteWithOptionalUri } from '../../util/koodisto'
-import { viimeisinArviointi } from '../../util/schema'
 import { schemaClassName } from '../../util/types'
 import { common, CommonProps, testId } from '../CommonProps'
 import {
@@ -31,7 +31,7 @@ export type ArvosanaViewProps<T extends Arviointi> = CommonProps<
 export const ArvosanaView = <T extends Arviointi>(
   props: ArvosanaViewProps<T>
 ) => {
-  const arviointi = props.value !== undefined && viimeisinArviointi(props.value)
+  const arviointi = props.value !== undefined && parasArviointi(props.value)
   return arviointi ? (
     <span {...common(props)} {...testId(props)}>
       {t(arviointi.arvosana?.nimi)}
@@ -64,10 +64,10 @@ export const ArvosanaEdit = <T extends Arviointi>(
   )
 
   const initialArviointi =
-    props.initialValue && viimeisinArviointi(props.initialValue)
+    props.initialValue && parasArviointi(props.initialValue)
   const initialValue =
     initialArviointi?.arvosana && koodiviiteId(initialArviointi.arvosana)
-  const arviointi = props.value && viimeisinArviointi(props.value)
+  const arviointi = props.value && parasArviointi(props.value)
   const selectedValue = arviointi?.arvosana && koodiviiteId(arviointi?.arvosana)
 
   const onChange = (option?: SelectOption<ArvosanaOf<T>>) => {

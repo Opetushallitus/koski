@@ -59,7 +59,6 @@ import { VapaanSivistystyönOpiskeluoikeus } from '../types/fi/oph/koski/schema/
 import { VapaanSivistystyönPäätasonSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonPaatasonSuoritus'
 import { VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus'
 import { append } from '../util/fp/arrays'
-import { viimeisinArviointi } from '../util/schema'
 import { useOsasuorituksetExpand } from './../osasuoritus/hooks'
 import { VSTLisatiedot } from './VSTLisatiedot'
 import {
@@ -82,6 +81,8 @@ import {
   isPerusteellinenVSTKoulutusmoduuli,
   isVSTOsasuoritusArvioinnilla
 } from './typeguards'
+import { parasArviointi } from '../util/arvioinnit'
+import { Arviointi } from '../types/fi/oph/koski/schema/Arviointi'
 
 type VSTEditorProps =
   AdaptedOpiskeluoikeusEditorProps<VapaanSivistystyönOpiskeluoikeus>
@@ -158,7 +159,7 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
       (osasuoritus) => {
         if (isVSTOsasuoritusArvioinnilla(osasuoritus)) {
           if ('arviointi' in osasuoritus) {
-            return viimeisinArviointi(osasuoritus.arviointi as any)
+            return parasArviointi<Arviointi>(osasuoritus.arviointi || [])
           } else {
             return undefined
           }

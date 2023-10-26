@@ -1,9 +1,7 @@
-import * as A from 'fp-ts/Array'
-import { pipe } from 'fp-ts/lib/function'
 import * as O from 'fp-ts/Option'
 import * as Ord from 'fp-ts/Ord'
+import { pipe } from 'fp-ts/lib/function'
 import { Ord as StringOrd } from 'fp-ts/string'
-import { Arviointi } from '../types/fi/oph/koski/schema/Arviointi'
 import {
   HenkilövahvistusPaikkakunnalla,
   isHenkilövahvistusPaikkakunnalla
@@ -17,7 +15,6 @@ import {
   isHenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla
 } from '../types/fi/oph/koski/schema/HenkilovahvistusValinnaisellaTittelillaJaValinnaisellaPaikkakunnalla'
 import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
-import { LukutaitokoulutuksenArviointi } from '../types/fi/oph/koski/schema/LukutaitokoulutuksenArviointi'
 import { OpiskeluoikeudenTila } from '../types/fi/oph/koski/schema/OpiskeluoikeudenTila'
 import { Opiskeluoikeusjakso } from '../types/fi/oph/koski/schema/Opiskeluoikeusjakso'
 import { Vahvistus } from '../types/fi/oph/koski/schema/Vahvistus'
@@ -49,15 +46,6 @@ export const viimeisinOpiskelujaksonTila = (
     O.map((a) => a.tila),
     O.toUndefined
   )
-
-export const viimeisinArviointi = (
-  arviointi: Arviointi[]
-): Arviointi | undefined => pipe(A.last(arviointi), O.toUndefined)
-
-export const viimeisinLukutaitokoulutuksenArviointi = (
-  arviointi: LukutaitokoulutuksenArviointi[]
-): LukutaitokoulutuksenArviointi | undefined =>
-  pipe(A.last(arviointi), O.toUndefined)
 
 export const isHenkilövahvistus = (
   vahvistus: Vahvistus

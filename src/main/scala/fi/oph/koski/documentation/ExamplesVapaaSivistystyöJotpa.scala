@@ -83,10 +83,16 @@ object ExamplesVapaaSivistystyöJotpa {
 
     lazy val osasuoritus1: VapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus = VapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus(
       koulutusmoduuli = Koulutusmoduuli.kurssi1,
-      arviointi = Some(List(VapaanSivistystyöJotpaKoulutuksenArviointi(
-        arvosana = Koodistokoodiviite("9", "arviointiasteikkovstjotpa"),
-        päivä = LocalDate.of(2023, 2, 1)
-      )))
+      arviointi = Some(List(
+        VapaanSivistystyöJotpaKoulutuksenArviointi(
+          arvosana = Koodistokoodiviite("9", "arviointiasteikkovstjotpa"),
+          päivä = LocalDate.of(2023, 2, 1)
+        ),
+        VapaanSivistystyöJotpaKoulutuksenArviointi(
+          arvosana = Koodistokoodiviite("Hylätty", "arviointiasteikkovst"),
+          päivä = LocalDate.of(2023, 1, 1)
+        ),
+      ))
     )
 
     lazy val osasuoritus2: VapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus = VapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus(

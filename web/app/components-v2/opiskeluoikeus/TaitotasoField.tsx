@@ -6,7 +6,6 @@ import { useKoodisto } from '../../appstate/koodisto'
 import { t } from '../../i18n/i18n'
 import { LukutaitokoulutuksenArviointi } from '../../types/fi/oph/koski/schema/LukutaitokoulutuksenArviointi'
 import { koodiviiteId, KoodiviiteWithOptionalUri } from '../../util/koodisto'
-import { viimeisinLukutaitokoulutuksenArviointi } from '../../util/schema'
 import { common, CommonProps, testId } from '../CommonProps'
 import {
   groupKoodistoToOptions,
@@ -15,6 +14,7 @@ import {
   SelectOption
 } from '../controls/Select'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
+import { parasArviointi } from '../../util/arvioinnit'
 
 type TaitotasoOf<T extends LukutaitokoulutuksenArviointi> = Exclude<
   T['taitotaso'],
@@ -27,12 +27,10 @@ export type TaitotasoViewProps<T extends LukutaitokoulutuksenArviointi> =
 export const TaitotasoView = <T extends LukutaitokoulutuksenArviointi>(
   props: TaitotasoViewProps<T>
 ) => {
-  const viimeisinArviointi = viimeisinLukutaitokoulutuksenArviointi(
-    props.value || []
-  )
-  return viimeisinArviointi !== undefined ? (
+  const arvionti = parasArviointi(props.value || [])
+  return arvionti !== undefined ? (
     <span {...common(props)} {...testId(props)}>
-      {t(viimeisinArviointi.taitotaso.nimi)}
+      {t(arvionti.taitotaso.nimi)}
     </span>
   ) : null
 }
@@ -50,17 +48,13 @@ export const TaitotasoEdit = <T extends LukutaitokoulutuksenArviointi>(
   )
 
   const initialArviointi =
-    props.initialValue &&
-    viimeisinLukutaitokoulutuksenArviointi(props.initialValue)
+    props.initialValue && parasArviointi(props.initialValue)
   const initialValue =
     initialArviointi?.taitotaso && koodiviiteId(initialArviointi.taitotaso)
-  const arviointi =
-    props.value && viimeisinLukutaitokoulutuksenArviointi(props.value)
+  const arviointi = props.value && parasArviointi(props.value)
   const selectedValue =
     arviointi?.taitotaso && koodiviiteId(arviointi?.taitotaso)
-  const viimeisinArviointi = viimeisinLukutaitokoulutuksenArviointi(
-    props.value || []
-  )
+  const paras = parasArviointi(props.value || [])
 
   const onChange = (option?: SelectOption<TaitotasoOf<T>>) => {
     if (option !== undefined && option.value !== undefined) {
@@ -68,7 +62,7 @@ export const TaitotasoEdit = <T extends LukutaitokoulutuksenArviointi>(
         option?.value &&
           updateLukutaitokoulutuksenArvioinnit(
             // @ts-expect-error TODO: Tarkista tyypityksen korjaus
-            { ...viimeisinArviointi, taitotaso: option.value },
+            { ...paras, taitotaso: option.value },
             props.initialValue || []
           )
       )

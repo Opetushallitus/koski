@@ -1,12 +1,8 @@
-import * as A from 'fp-ts/Array'
-import { pipe } from 'fp-ts/lib/function'
-import * as O from 'fp-ts/Option'
 import React, { useMemo } from 'react'
 import { useKoodisto } from '../../appstate/koodisto'
 import { t } from '../../i18n/i18n'
-import { LukutaitokoulutuksenArviointi } from '../../types/fi/oph/koski/schema/LukutaitokoulutuksenArviointi'
+import { VSTKehittyvänKielenTaitotasonArviointi } from '../../types/fi/oph/koski/schema/VSTKehittyvanKielenTaitotasonArviointi'
 import { koodiviiteId, KoodiviiteWithOptionalUri } from '../../util/koodisto'
-import { viimeisinLukutaitokoulutuksenArviointi } from '../../util/schema'
 import { common, CommonProps, testId } from '../CommonProps'
 import {
   groupKoodistoToOptions,
@@ -15,7 +11,6 @@ import {
   SelectOption
 } from '../controls/Select'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
-import { VSTKehittyvänKielenTaitotasonArviointi } from '../../types/fi/oph/koski/schema/VSTKehittyvanKielenTaitotasonArviointi'
 
 type TaitotasoOf<T extends VSTKehittyvänKielenTaitotasonArviointi> = Exclude<
   T['taso'],
