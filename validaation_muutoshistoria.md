@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 26.10.2023
+
+- Sallittu samana päivänäkin alkavat keskeneräiset VST JOTPA -opiskeluoikeudet
+
 ## 18.10.2023
 
 - Sallittu EB-tutkinnon opiskeluoikeuden siirtäminen vain, jos samalla oppijalla on ESH-opiskeluoikeus, jossa S7-vuosiluokan suoritus

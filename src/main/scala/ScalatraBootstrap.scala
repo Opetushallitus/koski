@@ -21,7 +21,7 @@ import fi.oph.koski.mydata.{ApiProxyServlet, MyDataReactServlet, MyDataServlet}
 import fi.oph.koski.omaopintopolkuloki.OmaOpintoPolkuLokiServlet
 import fi.oph.koski.omattiedot.{OmatTiedotHtmlServlet, OmatTiedotServlet, OmatTiedotServletV2}
 import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusServlet, OpiskeluoikeusValidationServlet}
-import fi.oph.koski.oppija.{OppijaServlet, OppijaServletV2}
+import fi.oph.koski.oppija.OppijaServlet
 import fi.oph.koski.oppilaitos.OppilaitosServlet
 import fi.oph.koski.oppivelvollisuustieto.OppivelvollisuustietoServlet
 import fi.oph.koski.organisaatio.OrganisaatioServlet
@@ -110,7 +110,6 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing with GlobalEx
     mount("/koski/api/opiskeluoikeus/historia", new KoskiHistoryServlet)
     mount("/koski/api/opiskeluoikeus/suostumuksenperuutus", new SuostumuksenPeruutusServlet)
     mount("/koski/api/oppija", new OppijaServlet)
-    mount("/koski/api/v2/oppija", new OppijaServletV2)
     mount("/koski/api/oppilaitos", new OppilaitosServlet)
     mount("/koski/api/oppivelvollisuustieto", new OppivelvollisuustietoServlet)
     mount("/koski/api/organisaatio", new OrganisaatioServlet)

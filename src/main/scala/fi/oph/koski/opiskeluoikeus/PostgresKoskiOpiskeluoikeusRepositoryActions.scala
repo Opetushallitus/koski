@@ -76,41 +76,68 @@ class PostgresKoskiOpiskeluoikeusRepositoryActions(
     opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
     rows: List[KoskiOpiskeluoikeusRow]
   )(implicit user: KoskiSpecificSession): DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write] = {
-    val opiskeluoikeusPäättynyt = rows.exists(_.toOpiskeluoikeusUnsafe.tila.opiskeluoikeusjaksot.last.opiskeluoikeusPäättynyt)
-    val duplikoivanOpiskeluoikeudenLuontiSallittu = rows.exists(row => allowOpiskeluoikeusCreationOnConflict(opiskeluoikeus, row))
 
-    if (opiskeluoikeusPäättynyt && duplikoivanOpiskeluoikeudenLuontiSallittu) {
+    if (vastaavanRinnakkaisenOpiskeluoikeudenLisääminenSallittu(opiskeluoikeus, rows)) {
       createAction(oppijaOid, opiskeluoikeus)
     } else {
       DBIO.successful(Left(KoskiErrorCategory.conflict.exists()))
     }
   }
 
-  protected override def generateOid(oppija: OppijaHenkilöWithMasterInfo): String = {
-    oidGenerator.generateKoskiOid(oppija.henkilö.oid)
+  private def vastaavanRinnakkaisenOpiskeluoikeudenLisääminenSallittu(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, rows: List[KoskiOpiskeluoikeusRow])(implicit user: KoskiSpecificSession): Boolean = {
+    lazy val aiempiOpiskeluoikeusPäättynyt = rows.exists(_.toOpiskeluoikeusUnsafe.tila.opiskeluoikeusjaksot.last.opiskeluoikeusPäättynyt)
+
+    opiskeluoikeus match {
+      case _: MuunKuinSäännellynKoulutuksenOpiskeluoikeus =>
+        true
+      case _: TaiteenPerusopetuksenOpiskeluoikeus =>
+        true
+      case oo: VapaanSivistystyönOpiskeluoikeus =>
+        isJotpa(oo) || aiempiOpiskeluoikeusPäättynyt
+      case oo: AmmatillinenOpiskeluoikeus =>
+        isMuuAmmatillinenOpiskeluoikeus(oo) || (aiempiOpiskeluoikeusPäättynyt && isAmmatillinenJolleAiemmanOpiskeluoikeudenPäätyttyäRinnakkainenOpiskeluoikeusSallitaan(oo, rows))
+      case _ =>
+        aiempiOpiskeluoikeusPäättynyt
+    }
   }
 
-  protected def allowOpiskeluoikeusCreationOnConflict(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, row: KoskiOpiskeluoikeusRow): Boolean = {
+  private def isMuuAmmatillinenOpiskeluoikeus(opiskeluoikeus: AmmatillinenOpiskeluoikeus): Boolean =
+    opiskeluoikeus.suoritukset.forall {
+      case _: MuunAmmatillisenKoulutuksenSuoritus => true
+      case _ => false
+    }
+
+  private def isJotpa(opiskeluoikeus: VapaanSivistystyönOpiskeluoikeus): Boolean =
+    opiskeluoikeus.suoritukset.forall {
+      case _: VapaanSivistystyönJotpaKoulutuksenSuoritus => true
+      case _ => false
+    }
+
+  private def isAmmatillinenJolleAiemmanOpiskeluoikeudenPäätyttyäRinnakkainenOpiskeluoikeusSallitaan(opiskeluoikeus: AmmatillinenOpiskeluoikeus, rows: List[KoskiOpiskeluoikeusRow]): Boolean = {
+    rows.exists(row => allowOpiskeluoikeusCreationOnConflict(opiskeluoikeus, row))
+  }
+
+  private def allowOpiskeluoikeusCreationOnConflict(oo: AmmatillinenOpiskeluoikeus, row: KoskiOpiskeluoikeusRow): Boolean = {
     lazy val perusteenDiaarinumero: Option[String] = {
       val value = (row.data \ "suoritukset")(0) \ "koulutusmoduuli" \ "perusteenDiaarinumero"
       Option(value.extract[String])
     }
 
-    opiskeluoikeus match {
-      case oo: AmmatillinenOpiskeluoikeus =>
-        // Jos oppilaitos ja perusteen diaarinumero ovat samat, ei sallita päällekkäisen opiskeluoikeuden luontia...
-        (!oo.oppilaitos.exists(_.oid == row.oppilaitosOid) || // Tänne ei pitäisi tulla eriävällä oppilaitoksella, mutta tulevien mahdollisten muutosten varalta tehdään tässä eksplisiittinen tarkastus
-          !oo.suoritukset
-            .collect { case s: AmmatillisenTutkinnonSuoritus => s }
-            .exists(s =>
-              s.koulutusmoduuli.perusteenDiaarinumero.isDefined &&
-                s.koulutusmoduuli.perusteenDiaarinumero == perusteenDiaarinumero
+    // Jos oppilaitos ja perusteen diaarinumero ovat samat, ei sallita päällekkäisen opiskeluoikeuden luontia...
+    (!oo.oppilaitos.exists(_.oid == row.oppilaitosOid) || // Tänne ei pitäisi tulla eriävällä oppilaitoksella, mutta tulevien mahdollisten muutosten varalta tehdään tässä eksplisiittinen tarkastus
+      !oo.suoritukset
+        .collect { case s: AmmatillisenTutkinnonSuoritus => s }
+        .exists(s =>
+          s.koulutusmoduuli.perusteenDiaarinumero.isDefined &&
+            s.koulutusmoduuli.perusteenDiaarinumero == perusteenDiaarinumero
 
-            )) ||
-          // ...paitsi jos ne ovat toisistaan ajallisesti täysin erillään
-          !Aikajakso(oo.alkamispäivä.getOrElse(LocalDate.of(0, 1, 1)), oo.päättymispäivä)
-            .overlaps(Aikajakso(row.alkamispäivä.toLocalDate, row.päättymispäivä.map(_.toLocalDate)))
-      case _ => true
-    }
+        )) ||
+      // ...paitsi jos ne ovat toisistaan ajallisesti täysin erillään
+      !Aikajakso(oo.alkamispäivä.getOrElse(LocalDate.of(0, 1, 1)), oo.päättymispäivä)
+        .overlaps(Aikajakso(row.alkamispäivä.toLocalDate, row.päättymispäivä.map(_.toLocalDate)))
+  }
+
+  protected override def generateOid(oppija: OppijaHenkilöWithMasterInfo): String = {
+    oidGenerator.generateKoskiOid(oppija.henkilö.oid)
   }
 }

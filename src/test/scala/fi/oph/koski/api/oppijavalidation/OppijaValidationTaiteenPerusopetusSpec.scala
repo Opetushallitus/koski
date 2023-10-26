@@ -1603,7 +1603,7 @@ class OppijaValidationTaiteenPerusopetusSpec
     headers: Headers = authHeaders() ++ jsonContent
   )(f: => A): A = {
     val jsonString = JsonMethods.pretty(makeOppija(henkilö, List(oo)))
-    post("api/v2/oppija", body = jsonString, headers = headers) {
+    post("api/oppija", body = jsonString, headers = headers) {
       f
     }
   }
@@ -1614,7 +1614,7 @@ class OppijaValidationTaiteenPerusopetusSpec
     headers: Headers = authHeaders() ++ jsonContent
   ): TaiteenPerusopetuksenOpiskeluoikeus = {
     val jsonString = JsonMethods.pretty(makeOppija(henkilö, List(oo)))
-    post("api/v2/oppija", body = jsonString, headers = headers) {
+    post("api/oppija", body = jsonString, headers = headers) {
       verifyResponseStatusOk()
       val response = readPutOppijaResponse
       response.opiskeluoikeudet.size shouldBe 1
