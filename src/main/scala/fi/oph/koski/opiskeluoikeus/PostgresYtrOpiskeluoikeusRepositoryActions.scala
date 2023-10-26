@@ -12,7 +12,7 @@ import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.schema._
 import org.json4s.{JArray, JValue}
-import slick.dbio.Effect.{Read, Write}
+import slick.dbio.Effect.{Read, Transactional, Write}
 import slick.dbio.{DBIOAction, NoStream}
 
 class PostgresYtrOpiskeluoikeusRepositoryActions(
@@ -41,6 +41,20 @@ class PostgresYtrOpiskeluoikeusRepositoryActions(
     result: Either[HttpStatus, CreateOrUpdateResult]
   )(implicit user: KoskiSpecificSession): DBIOAction[Any, NoStream, Read with Write] = {
     DBIO.successful(Unit)
+  }
+
+  protected override def createOrUpdateAction(
+    oppijaOid: PossiblyUnverifiedHenkilöOid,
+    opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
+    allowUpdate: Boolean,
+    allowDeleteCompleted: Boolean
+  )(implicit user: KoskiSpecificSession): DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write with Transactional] = {
+    val identifier = OpiskeluoikeusIdentifier(oppijaOid.oppijaOid, opiskeluoikeus)
+    findByIdentifierAction(identifier)
+      .flatMap { rows: Either[HttpStatus, List[YtrOpiskeluoikeusRow]] => {
+        createOrUpdateActionBasedOnDbResult(oppijaOid, opiskeluoikeus, allowUpdate, allowDeleteCompleted, rows)
+      }
+      }
   }
 
   protected override def createInsteadOfUpdate(

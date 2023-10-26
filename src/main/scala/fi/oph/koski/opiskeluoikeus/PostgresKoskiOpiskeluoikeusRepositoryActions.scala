@@ -14,7 +14,7 @@ import fi.oph.koski.perustiedot.{OpiskeluoikeudenPerustiedot, PerustiedotSyncRep
 import fi.oph.koski.schema._
 import fi.oph.scalaschema.Serializer.format
 import org.json4s._
-import slick.dbio.Effect.{Read, Write}
+import slick.dbio.Effect.{Read, Transactional, Write}
 import slick.dbio.{DBIOAction, NoStream}
 
 import java.time.LocalDate
@@ -69,6 +69,27 @@ class PostgresKoskiOpiskeluoikeusRepositoryActions(
             throw new RuntimeException(s"Oppija not found: $oppijaOid")
         }
     }
+  }
+
+  protected override def createOrUpdateAction(
+    oppijaOid: PossiblyUnverifiedHenkilöOid,
+    opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
+    allowUpdate: Boolean,
+    allowDeleteCompleted: Boolean
+  )(implicit user: KoskiSpecificSession): DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write with Transactional] = {
+    val identifier = OpiskeluoikeusIdentifier(oppijaOid.oppijaOid, opiskeluoikeus)
+    findByIdentifierAction(identifier)
+      .flatMap { rows: Either[HttpStatus, List[KoskiOpiskeluoikeusRow]] => {
+        (identifier, rows) match {
+          case (id: OppijaOidOrganisaatioJaTyyppi, Right(opiskeluoikeudet)) if allowUpdate && !opiskeluoikeudet.isEmpty =>
+            DBIOAction.successful(Left(KoskiErrorCategory.conflict.exists("" +
+              s"Olemassaolevan opiskeluoikeuden päivitystä ilman tunnistetta ei tueta. Päivitettävä opiskeluoikeus-oid: ${opiskeluoikeudet.map(_.oid).mkString(", ")}. Päivittävä tunniste: ${id.copy(oppijaOid = "****")}"
+            )))
+          case _ =>
+            createOrUpdateActionBasedOnDbResult(oppijaOid, opiskeluoikeus, allowUpdate, allowDeleteCompleted, rows)
+        }
+      }
+      }
   }
 
   protected override def createInsteadOfUpdate(

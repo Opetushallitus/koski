@@ -110,28 +110,14 @@ trait PostgresOpiskeluoikeusRepositoryActions[OOROW <: OpiskeluoikeusRow, OOTABL
     result: Either[HttpStatus, CreateOrUpdateResult]
   )(implicit user: KoskiSpecificSession): DBIOAction[Any, NoStream, Read with Write]
 
-  private def createOrUpdateAction(
+  protected def createOrUpdateAction(
     oppijaOid: PossiblyUnverifiedHenkilöOid,
     opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
     allowUpdate: Boolean,
     allowDeleteCompleted: Boolean = false
-  )(implicit user: KoskiSpecificSession): dbio.DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write with Transactional] = {
-    val identifier = OpiskeluoikeusIdentifier(oppijaOid.oppijaOid, opiskeluoikeus)
-    findByIdentifierAction(identifier)
-      .flatMap { rows: Either[HttpStatus, List[OOROW]] => {
-        (identifier, rows) match {
-          case (id: OppijaOidOrganisaatioJaTyyppi, Right(opiskeluoikeudet)) if allowUpdate && !opiskeluoikeudet.isEmpty =>
-            dbio.DBIOAction.successful(Left(KoskiErrorCategory.conflict.exists("" +
-              s"Olemassaolevan opiskeluoikeuden päivitystä ilman tunnistetta ei tueta. Päivitettävä opiskeluoikeus-oid: ${opiskeluoikeudet.map(_.oid).mkString(", ")}. Päivittävä tunniste: ${id.copy(oppijaOid = "****")}"
-            )))
-          case _ =>
-            createOrUpdateActionBasedOnDbResult(oppijaOid, opiskeluoikeus, allowUpdate, allowDeleteCompleted, rows)
-        }
-      }
-    }
-  }
+  )(implicit user: KoskiSpecificSession): dbio.DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write with Transactional]
 
-  private def findByIdentifierAction(identifier: OpiskeluoikeusIdentifier)(implicit user: KoskiSpecificSession): dbio.DBIOAction[Either[HttpStatus, List[OOROW]], NoStream, Read] = {
+  protected def findByIdentifierAction(identifier: OpiskeluoikeusIdentifier)(implicit user: KoskiSpecificSession): dbio.DBIOAction[Either[HttpStatus, List[OOROW]], NoStream, Read] = {
     identifier match {
       case OpiskeluoikeusByOid(oid) => OpiskeluOikeudetWithAccessCheck.filter(_.oid === oid).result.map { rows =>
         rows.headOption match {
