@@ -7,7 +7,7 @@ import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.opiskeluoikeus.KoskiOpiskeluoikeusRepository
-import fi.oph.koski.schema.{DeprecatedEBTutkinnonOsasuoritus, DeprecatedEBTutkinnonSuoritus, EBOpiskeluoikeus, EBTutkinnonOsasuoritus, EBTutkinnonSuoritus, EuropeanSchoolOfHelsinkiOpiskeluoikeus, EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso, EuropeanSchoolOfHelsinkiPäätasonSuoritus, EuropeanSchoolOfHelsinkiVuosiluokanSuoritus, Henkilö, HenkilöWithOid, Koodistokoodiviite, KoskeenTallennettavaOpiskeluoikeus, NurseryVuosiluokanSuoritus, Opiskeluoikeus, PrimaryVuosiluokanSuoritus, SecondaryLowerVuosiluokanSuoritus, SecondaryUpperOppiaineenSuoritus, SecondaryUpperVuosiluokanSuoritus, UusiHenkilö}
+import fi.oph.koski.schema.{EBOpiskeluoikeus, EBTutkinnonOsasuoritus, EBTutkinnonSuoritus, EuropeanSchoolOfHelsinkiOpiskeluoikeus, EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso, EuropeanSchoolOfHelsinkiPäätasonSuoritus, Henkilö, HenkilöWithOid, Koodistokoodiviite, KoskeenTallennettavaOpiskeluoikeus, NurseryVuosiluokanSuoritus, Opiskeluoikeus, PrimaryVuosiluokanSuoritus, SecondaryLowerVuosiluokanSuoritus, SecondaryUpperOppiaineenSuoritus, SecondaryUpperVuosiluokanSuoritus, UusiHenkilö}
 import fi.oph.koski.util.FinnishDateFormat.finnishDateFormat
 
 import java.time.LocalDate
@@ -18,7 +18,6 @@ object EuropeanSchoolOfHelsinkiValidation {
     oo match {
       case eshOo: EuropeanSchoolOfHelsinkiOpiskeluoikeus =>
         HttpStatus.fold(
-          validateEiEB(eshOo),
           validateTallennuspäivä(
             LocalDate.parse(config.getString("validaatiot.europeanSchoolOfHelsinkiAikaisinSallittuTallennuspaiva"))
           ),
@@ -40,17 +39,6 @@ object EuropeanSchoolOfHelsinkiValidation {
         )
       case _ => HttpStatus.ok
     }
-  }
-
-  private def validateEiEB(oo: EuropeanSchoolOfHelsinkiOpiskeluoikeus): HttpStatus = {
-    HttpStatus.validate(
-      !oo.suoritukset.exists {
-        case _: DeprecatedEBTutkinnonSuoritus => true
-        case _ => false
-      }
-    )(
-      KoskiErrorCategory.badRequest.validation.esh.mukanaEB()
-    )
   }
 
   private def validateTallennuspäivä(aikaisinTallennuspäivä: LocalDate): HttpStatus = {
@@ -97,14 +85,6 @@ object EuropeanSchoolOfHelsinkiValidation {
     }
   }
 
-  def validateEBTutkinnonArvioinnit(suoritus: DeprecatedEBTutkinnonSuoritus): HttpStatus = {
-    if (suoritus.vahvistettu && suoritus.yleisarvosana.isEmpty) {
-      KoskiErrorCategory.badRequest.validation.esh.yleisarvosana()
-    } else {
-      HttpStatus.ok
-    }
-  }
-
   def validateEBTutkinnonArvioinnit(suoritus: EBTutkinnonSuoritus): HttpStatus = {
     if (suoritus.vahvistettu && suoritus.yleisarvosana.isEmpty) {
       KoskiErrorCategory.badRequest.validation.eb.yleisarvosana()
@@ -112,7 +92,6 @@ object EuropeanSchoolOfHelsinkiValidation {
       HttpStatus.ok
     }
   }
-
 
   def fillRahoitusmuodot(koodistoPalvelu: KoodistoViitePalvelu)(oo: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus = {
     oo match {
@@ -174,11 +153,6 @@ object EuropeanSchoolOfHelsinkiValidation {
           koulutustyyppi = eshKoulutustyyppi(koodistoPalvelu)
         )
       )
-      case s: DeprecatedEBTutkinnonSuoritus => s.copy(
-        koulutusmoduuli = s.koulutusmoduuli.copy(
-          koulutustyyppi = eshKoulutustyyppi(koodistoPalvelu)
-        )
-      )
     }
   }
 
@@ -203,17 +177,6 @@ object EuropeanSchoolOfHelsinkiValidation {
       s.osasuoritukset.exists(_.exists(_.koulutusmoduuli.tunniste.koodiarvo == koodiarvo))
 
     (sisältää("A") && sisältää("B")) || sisältää("yearmark")
-  }
-
-  def osasuorituksetKunnossa(s: DeprecatedEBTutkinnonSuoritus): Boolean = {
-    s.osasuoritukset.exists(os => !os.isEmpty && os.forall(osasuorituksetKunnossa))
-  }
-
-  private def osasuorituksetKunnossa(s: DeprecatedEBTutkinnonOsasuoritus): Boolean = {
-    def sisältää(koodiarvo: String) =
-      s.osasuoritukset.exists(_.exists(_.koulutusmoduuli.tunniste.koodiarvo == koodiarvo))
-
-    sisältää("Final")
   }
 
   def osasuorituksetKunnossa(s: EBTutkinnonSuoritus): Boolean = {

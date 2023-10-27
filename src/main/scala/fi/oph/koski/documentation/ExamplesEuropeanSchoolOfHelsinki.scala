@@ -39,8 +39,6 @@ object ExamplesEuropeanSchoolOfHelsinki {
   val s6 = secondaryUpperSuoritusS6("S6", alkamispäivä.plusYears(13))
   val s7 = secondaryUpperSuoritusS7("S7", alkamispäivä.plusYears(14))
 
-  val eb = ebTutkinnonSuoritus(alkamispäivä.plusYears(15).withMonth(6).withDayOfMonth(25))
-
   val opiskeluoikeus = EuropeanSchoolOfHelsinkiOpiskeluoikeus(
     oppilaitos = Some(europeanSchoolOfHelsinki),
     lisätiedot = Some(lisätiedot),
@@ -66,12 +64,6 @@ object ExamplesEuropeanSchoolOfHelsinki {
       s5,
       s6,
       s7
-    )
-  )
-
-  def validoitumatonEBTutkinnonSisältäväOpiskeluoikeus = opiskeluoikeus.copy(
-    suoritukset = opiskeluoikeus.suoritukset ++ List(
-      eb
     )
   )
 

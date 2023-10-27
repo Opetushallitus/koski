@@ -231,7 +231,6 @@ export const resolveOsasuorituksetEditor = (mdl: OsasuoritusEditorModel) => {
       eshSuorituksenClass.primary,
       eshSuorituksenClass.secondaryLowerVuosiluokka,
       eshSuorituksenClass.secondaryUpperVuosiluokka,
-      eshSuorituksenClass.ebtutkinto,
       ebSuorituksenClass.ebtutkinto
     )
   ) {

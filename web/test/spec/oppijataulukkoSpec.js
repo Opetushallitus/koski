@@ -250,7 +250,6 @@ describe('Oppijataulukko', function () {
           'Ammatillinen-Osittainen, Raitsu',
           'Ammattilainen, Aarne',
           'Çelik-Eerola, Jouni',
-          'Deprecated-Eurooppalainen, Emma',
           'Dia, Dia',
           'e, erikois',
           'e, erikois',
@@ -337,9 +336,10 @@ describe('Oppijataulukko', function () {
           'v, virheellisestiSiirretty',
           'v, virheellisestiSiirretty',
           'v, virheellisestiSiirrettyVieraskielinen',
-          'v, virheellisestiSiirrettyVieraskielinen'
+          'v, virheellisestiSiirrettyVieraskielinen',
+          'Valviralle, Veera'
         ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('112')
+        expect(page.opiskeluoikeudeTotal()).to.equal('111')
       })
     })
 

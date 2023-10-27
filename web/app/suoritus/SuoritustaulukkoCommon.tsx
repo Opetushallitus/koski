@@ -87,7 +87,6 @@ export const isVapaanSivistystyönOppivelvollistenSuoritus = (
 export const isEshPäätasonSuoritus = (suoritus: SuoritusModel) =>
   suoritus.value.classes.includes('europeanschoolofhelsinkipäätasonsuoritus')
 export const isEB = (suoritus: SuoritusModel) =>
-  suoritus.value.classes.includes('deprecatedebtutkinnonsuoritus') ||
   suoritus.value.classes.includes('ebtutkinnonsuoritus')
 export const isEshS7 = (suoritus: SuoritusModel) =>
   suoritus.value.classes.includes('secondaryuppervuosiluokansuoritus') &&
@@ -289,7 +288,6 @@ export const suoritusProperties = (
       case eshSuorituksenTyyppi.secondaryLower:
       case eshSuorituksenTyyppi.nursery:
       case eshSuorituksenTyyppi.primary:
-      case eshSuorituksenTyyppi.ebtutkinto:
       case ebSuorituksenTyyppi.ebtutkinto:
         return defaultsForView
           .concat(arvioitsijat)

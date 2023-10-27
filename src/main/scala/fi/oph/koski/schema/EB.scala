@@ -64,6 +64,16 @@ case class EBTutkinnonSuoritus(
   with Arvioinniton
   with SisältääTodistuksellaNäkyvätLisätiedot
 
+@Title("EB-tutkinto")
+case class EBTutkinto(
+  @KoodistoUri("koulutus")
+  @KoodistoKoodiarvo("301104")
+  tunniste: Koodistokoodiviite = Koodistokoodiviite("301104", "koulutus"),
+  @KoodistoKoodiarvo("21")
+  koulutustyyppi: Option[Koodistokoodiviite] = None,
+  curriculum: Koodistokoodiviite = Koodistokoodiviite("2023", "europeanschoolofhelsinkicurriculum")
+) extends KoulutustyypinSisältäväEuropeanSchoolOfHelsinkiPäätasonKoulutusmoduuli
+
 @Title("EB-tutkinnon osasuoritus")
 case class EBTutkinnonOsasuoritus(
   @Title("Oppiaine")

@@ -71,18 +71,6 @@ import {
   isDIAValmistavanVaiheenSuoritus
 } from './DIAValmistavanVaiheenSuoritus'
 import {
-  DeprecatedEBOppiaineenAlaosasuoritus,
-  isDeprecatedEBOppiaineenAlaosasuoritus
-} from './DeprecatedEBOppiaineenAlaosasuoritus'
-import {
-  DeprecatedEBTutkinnonOsasuoritus,
-  isDeprecatedEBTutkinnonOsasuoritus
-} from './DeprecatedEBTutkinnonOsasuoritus'
-import {
-  DeprecatedEBTutkinnonSuoritus,
-  isDeprecatedEBTutkinnonSuoritus
-} from './DeprecatedEBTutkinnonSuoritus'
-import {
   DiplomaCoreRequirementsOppiaineenSuoritus,
   isDiplomaCoreRequirementsOppiaineenSuoritus
 } from './DiplomaCoreRequirementsOppiaineenSuoritus'
@@ -619,9 +607,6 @@ export type Suoritus =
   | DIAOppiaineenValmistavanVaiheenSuoritus
   | DIATutkinnonSuoritus
   | DIAValmistavanVaiheenSuoritus
-  | DeprecatedEBOppiaineenAlaosasuoritus
-  | DeprecatedEBTutkinnonOsasuoritus
-  | DeprecatedEBTutkinnonSuoritus
   | DiplomaCoreRequirementsOppiaineenSuoritus
   | DiplomaOppiaineenSuoritus
   | DiplomaVuosiluokanSuoritus
@@ -775,9 +760,6 @@ export const isSuoritus = (a: any): a is Suoritus =>
   isDIAOppiaineenValmistavanVaiheenSuoritus(a) ||
   isDIATutkinnonSuoritus(a) ||
   isDIAValmistavanVaiheenSuoritus(a) ||
-  isDeprecatedEBOppiaineenAlaosasuoritus(a) ||
-  isDeprecatedEBTutkinnonOsasuoritus(a) ||
-  isDeprecatedEBTutkinnonSuoritus(a) ||
   isDiplomaCoreRequirementsOppiaineenSuoritus(a) ||
   isDiplomaOppiaineenSuoritus(a) ||
   isDiplomaVuosiluokanSuoritus(a) ||

@@ -89,13 +89,6 @@ class SerializationSpec extends AnyFreeSpec with TestEnvironment with Matchers w
                    _: VSTKotoutumiskoulutuksenAlaosasuoritus2022 => true
               case _: SecondaryLowerOppiaineenSuoritus |
                    _: SecondaryUpperOppiaineenSuoritus => true
-              // EB-tutkinnon suoritus ei deserialisoidu oikein ennenkuin se poistetaan ESH-opiskeluoikeudesta kokonaan.
-              case _: EBTutkinnonSuoritus |
-                   _: DeprecatedEBTutkinnonSuoritus |
-                   _: EBTutkinnonOsasuoritus |
-                   _: DeprecatedEBTutkinnonOsasuoritus |
-                   _: EBOppiaineenAlaosasuoritus |
-                   _: DeprecatedEBOppiaineenAlaosasuoritus => true
               case _ => false
             }
 

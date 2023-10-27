@@ -111,32 +111,6 @@ trait EuropeanSchoolOfHelsinkiPäätasonSuoritus
   protected def tyypinMukainenJärjestysKriteeri: Int
 }
 
-@Title("EB-tutkinnon suoritus")
-case class DeprecatedEBTutkinnonSuoritus(
-  @Title("Koulutus")
-  koulutusmoduuli: EBTutkinto,
-  luokka: Option[String] = None,
-  toimipiste: OrganisaatioWithOid,
-  vahvistus: Option[HenkilövahvistusPaikkakunnalla],
-  @KoodistoKoodiarvo("ebtutkinto")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("ebtutkinto", "suorituksentyyppi"),
-  todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
-  @MinValue(0)
-  @MaxValue(100)
-  @Scale(2)
-  yleisarvosana: Option[Double] = None,
-  override val osasuoritukset: Option[List[DeprecatedEBTutkinnonOsasuoritus]] = None
-) extends EuropeanSchoolOfHelsinkiPäätasonSuoritus {
-
-  override def suorituksenJärjestysKriteeriAlustaLoppuun: (Int, Boolean) =
-    (
-      tyypinMukainenJärjestysKriteeri,
-      !valmis
-    )
-
-  override protected def tyypinMukainenJärjestysKriteeri: Int = 500
-}
-
 trait EuropeanSchoolOfHelsinkiVuosiluokanSuoritus
   extends EuropeanSchoolOfHelsinkiPäätasonSuoritus
   with LuokalleJääntiTiedonSisältäväSuoritus
@@ -232,16 +206,6 @@ trait KoulutustyypinSisältäväEuropeanSchoolOfHelsinkiPäätasonKoulutusmoduul
   @KoodistoKoodiarvo("21")
   def koulutustyyppi: Option[Koodistokoodiviite]
 }
-
-@Title("EB-tutkinto")
-case class EBTutkinto(
-  @KoodistoUri("koulutus")
-  @KoodistoKoodiarvo("301104")
-  tunniste: Koodistokoodiviite = Koodistokoodiviite("301104", "koulutus"),
-  @KoodistoKoodiarvo("21")
-  koulutustyyppi: Option[Koodistokoodiviite] = None,
-  curriculum: Koodistokoodiviite = Koodistokoodiviite("2023", "europeanschoolofhelsinkicurriculum")
-) extends KoulutustyypinSisältäväEuropeanSchoolOfHelsinkiPäätasonKoulutusmoduuli
 
 trait EuropeanSchoolOfHelsinkiLuokkaAste extends EuropeanSchoolOfHelsinkiPäätasonKoulutusmoduuli {
   @KoodistoUri("europeanschoolofhelsinkiluokkaaste")
@@ -399,16 +363,6 @@ case class SecondaryUpperOppiaineenSuoritusS7(
   override val osasuoritukset: Option[List[S7OppiaineenAlaosasuoritus]] = None
 ) extends SecondaryUpperOppiaineenSuoritus with Arvioinniton with Välisuoritus
 
-@Title("EB-tutkinnon osasuoritus")
-case class DeprecatedEBTutkinnonOsasuoritus(
-  @Title("Oppiaine")
-  koulutusmoduuli: SecondaryOppiaine,
-  @KoodistoKoodiarvo("ebtutkinnonosasuoritus")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "ebtutkinnonosasuoritus", koodistoUri = "suorituksentyyppi"),
-  suorituskieli: Koodistokoodiviite,
-  override val osasuoritukset: Option[List[DeprecatedEBOppiaineenAlaosasuoritus]] = None
-) extends EuropeanSchoolOfHelsinkiSuorituskielellinenOsasuoritus with Arvioinniton with Välisuoritus
-
 /******************************************************************************
  * OSASUORITUKSET - KOULUTUSMODUULIT
  *****************************************************************************/
@@ -497,15 +451,6 @@ case class S7OppiaineenAlaosasuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "europeanschoolofhelsinkialaosasuorituss7", koodistoUri = "suorituksentyyppi")
 ) extends EuropeanSchoolOfHelsinkiOsasuorituksenAlaosasuoritus
 
-@Title("EB-oppiaineen alaosasuoritus")
-case class DeprecatedEBOppiaineenAlaosasuoritus(
-  @Title("Arviointikomponentti")
-  koulutusmoduuli: DeprecatedEBOppiaineKomponentti,
-  arviointi: Option[List[DeprecatedEBArviointi]] = None,
-  @KoodistoKoodiarvo("ebtutkinnonalaosasuoritus")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "ebtutkinnonalaosasuoritus", koodistoUri = "suorituksentyyppi")
-) extends EuropeanSchoolOfHelsinkiOsasuorituksenAlaosasuoritus
-
 /******************************************************************************
  * OSASUORITUKSET - ALAOSASUORITUSTEN KOULUTUSMODUULIT
  *****************************************************************************/
@@ -522,12 +467,6 @@ case class PrimaryAlaoppimisalue(
 
 case class S7OppiaineKomponentti(
   @KoodistoUri("europeanschoolofhelsinkis7oppiaineenkomponentti")
-  tunniste: Koodistokoodiviite
-) extends EuropeanSchoolOfHelsinkiAlaosasuorituksenKoulutusmoduuli
-
-@Title("EB-oppiainekomponentti")
-case class DeprecatedEBOppiaineKomponentti(
-  @KoodistoUri("ebtutkinnonoppiaineenkomponentti")
   tunniste: Koodistokoodiviite
 ) extends EuropeanSchoolOfHelsinkiAlaosasuorituksenKoulutusmoduuli
 
@@ -625,21 +564,3 @@ case class SecondaryS7PreliminaryMarkArviointi(
   päivä: Option[LocalDate],
   arvioitsijat: Option[List[Arvioitsija]] = None
 ) extends EuropeanSchoolOfHelsinkiKoodistostaLöytyväSanallinenArviointi
-
-trait DeprecatedEBArviointi extends EuropeanSchoolOfHelsinkiArviointi with KoodistostaLöytyväArviointi
-
-@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "Preliminary")
-case class DeprecatedEBTutkintoPreliminaryMarkArviointi(
-  @KoodistoUri("arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark")
-  arvosana: Koodistokoodiviite,
-  päivä: Option[LocalDate],
-  arvioitsijat: Option[List[Arvioitsija]] = None
-) extends DeprecatedEBArviointi
-
-@NotWhen("../../koulutusmoduuli/tunniste/koodiarvo", List("Preliminary"))
-case class DeprecatedEBTutkintoFinalMarkArviointi(
-  @KoodistoUri("arviointiasteikkoeuropeanschoolofhelsinkifinalmark")
-  arvosana: Koodistokoodiviite,
-  päivä: Option[LocalDate],
-  arvioitsijat: Option[List[Arvioitsija]] = None
-) extends DeprecatedEBArviointi

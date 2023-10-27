@@ -27,10 +27,6 @@ import {
   isDIAValmistavanVaiheenSuoritus
 } from './DIAValmistavanVaiheenSuoritus'
 import {
-  DeprecatedEBTutkinnonSuoritus,
-  isDeprecatedEBTutkinnonSuoritus
-} from './DeprecatedEBTutkinnonSuoritus'
-import {
   DiplomaVuosiluokanSuoritus,
   isDiplomaVuosiluokanSuoritus
 } from './DiplomaVuosiluokanSuoritus'
@@ -210,7 +206,6 @@ export type PäätasonSuoritus =
   | AmmatillisenTutkinnonSuoritus
   | DIATutkinnonSuoritus
   | DIAValmistavanVaiheenSuoritus
-  | DeprecatedEBTutkinnonSuoritus
   | DiplomaVuosiluokanSuoritus
   | EBTutkinnonSuoritus
   | EsiopetuksenSuoritus
@@ -263,7 +258,6 @@ export const isPäätasonSuoritus = (a: any): a is PäätasonSuoritus =>
   isAmmatillisenTutkinnonSuoritus(a) ||
   isDIATutkinnonSuoritus(a) ||
   isDIAValmistavanVaiheenSuoritus(a) ||
-  isDeprecatedEBTutkinnonSuoritus(a) ||
   isDiplomaVuosiluokanSuoritus(a) ||
   isEBTutkinnonSuoritus(a) ||
   isEsiopetuksenSuoritus(a) ||
