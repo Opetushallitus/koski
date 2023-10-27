@@ -11,6 +11,7 @@ import { ValidationError } from './validator'
 export type FieldViewerProps<FieldValue, ViewerProps> = ViewerProps & {
   value?: FieldValue | undefined
   testId?: string
+  index?: number
 }
 
 export type FieldEditorProps<FieldValue, EditorProps> = EditorProps & {
@@ -20,6 +21,7 @@ export type FieldEditorProps<FieldValue, EditorProps> = EditorProps & {
   errors?: NEA.NonEmptyArray<ValidationError>
   value?: FieldValue | undefined
   testId?: string
+  index?: number
 }
 
 type ComponentType<T> =
@@ -62,6 +64,8 @@ export type FormFieldProps<
   // Polku mitä käytetään virheiden hakemiseen, jos eri kuin mikä voidaan muodostaa path-propertysta.
   errorsFromPath?: string
   testId?: string
+  // Komponenteille vietävä indeksi. Käytetään automaattiesti FormListFieldin kanssa.
+  index?: number
 } & ( // Polku (Lens tai Prism) joka osoittaa mitä arvoa lomakkeen datasta ollaan muokkaamassa
   | { path: FormOptic<FormState, FieldValue>; optional?: false }
   | { path: FormOptic<FormState, FieldValue | undefined>; optional: true }
@@ -189,6 +193,7 @@ export const FormField = <
           errors={A.isNonEmpty(errors) ? errors : undefined}
           path={path}
           testId={testId && `${testId}.edit`}
+          index={props.index}
         />
       )
     }
@@ -196,7 +201,12 @@ export const FormField = <
 
   return (
     // @ts-expect-error - TODO: tyyppicastaus?
-    <View {...viewProps} value={value} testId={testId && `${testId}.value`} />
+    <View
+      {...viewProps}
+      value={value}
+      testId={testId && `${testId}.value`}
+      index={props.index}
+    />
   )
 }
 

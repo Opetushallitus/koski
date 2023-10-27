@@ -260,7 +260,7 @@ export type VSTTaitotaso = NonNullable<
 
 export type CreateVSTArviointi = (
   o: VSTOsasuoritusArvioinnilla
-) => (arvosana: any) => VSTArviointi | null
+) => (arvosana: any) => VSTArviointi
 
 export type CreateVSTTaitotaso = (
   o: VSTOsasuoritusLukutaitokoulutuksenArvioinnilla

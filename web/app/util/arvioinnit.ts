@@ -70,3 +70,12 @@ export const parasArviointi = <T extends Arviointi>(
   arvioinnit: T[]
 ): T | undefined =>
   pipe(arvioinnit, A.sort(ArviointiOrd), A.last, O.toUndefined)
+
+export const parasArviointiIndex = <T extends Arviointi>(
+  arvioinnit: T[]
+): number | undefined =>
+  pipe(
+    O.fromNullable(parasArviointi(arvioinnit)),
+    O.map((a) => arvioinnit.indexOf(a)),
+    O.toUndefined
+  )

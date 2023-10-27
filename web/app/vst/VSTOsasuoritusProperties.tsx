@@ -14,8 +14,8 @@ import {
 } from '../components-v2/forms/FormModel'
 import { Spacer } from '../components-v2/layout/Spacer'
 import {
-  ArvosanaEdit,
-  ArvosanaView
+  ParasArvosanaEdit,
+  ParasArvosanaView
 } from '../components-v2/opiskeluoikeus/ArvosanaField'
 import {
   KehittyvänKielenTaitotasoEdit,
@@ -99,7 +99,7 @@ import { VapaanSivistystyönPäätasonSuoritus } from '../types/fi/oph/koski/sch
 import { isVapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus'
 import { VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonVapaatavoitteisenKoulutuksenOsasuoritus'
 import { isVapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonVapaatavoitteisenKoulutuksenSuoritus'
-import { lastElement } from '../util/optics'
+import { lastElement, parasArviointiElement } from '../util/optics'
 import {
   OsasuorituksetExpandedState,
   SetOsasuoritusOpen
@@ -132,6 +132,8 @@ import {
   isVSTOsasuoritusArvioinnilla,
   isVSTOsasuoritusJollaOsasuorituksia
 } from './typeguards'
+import { FormListField } from '../components-v2/forms/FormListField'
+import { VSTArviointiEdit, VSTArviointiView } from './VSTArviointiField'
 
 type AddNewVSTOsasuoritusViewProps = CommonProps<{
   level: number
@@ -760,8 +762,9 @@ export const osasuoritusToTableRow = ({
       <FormField
         form={form}
         path={osasuoritus.path('arviointi')}
-        view={ArvosanaView}
+        view={ParasArvosanaView}
         edit={(arvosanaProps) => {
+          console.log('arvosanaProps', arvosanaProps)
           if (osasuoritusValue === undefined) {
             return null
           }
@@ -769,7 +772,7 @@ export const osasuoritusToTableRow = ({
             return null
           }
           return (
-            <ArvosanaEdit
+            <ParasArvosanaEdit
               {...arvosanaProps}
               createArviointi={(arvosana) => {
                 return createVstArviointi(osasuoritusValue)(arvosana)
@@ -859,7 +862,7 @@ export const VSTOsasuoritusProperties: React.FC<
   const viimeisinArviointiPath = osasuoritusArvioinnillaPath
     .prop('arviointi')
     .optional()
-    .compose(lastElement())
+    .compose(parasArviointiElement())
 
   const osasuoritus = getValue(props.osasuoritusPath)(props.form.state)
 
@@ -873,38 +876,14 @@ export const VSTOsasuoritusProperties: React.FC<
     <div>
       {arvioitu && (
         <OsasuoritusProperty label="Arviointi">
-          <OsasuoritusSubproperty label="Arvosana">
-            <FormField
-              form={props.form}
-              path={osasuoritusArvioinnillaPath.prop('arviointi').optional()}
-              view={ArvosanaView}
-              edit={(arvosanaProps) => {
-                if (!isVSTOsasuoritusArvioinnilla(osasuoritus)) {
-                  return <div>{'Ei arviointia'}</div>
-                }
-                return (
-                  <ArvosanaEdit
-                    {...arvosanaProps}
-                    createArviointi={(arvosana) => {
-                      return createVstArviointi(osasuoritus)(arvosana)
-                    }}
-                  />
-                )
-              }}
-              testId={subTestId(props, 'arviointi.arvosana')}
-            />
-          </OsasuoritusSubproperty>
-          <OsasuoritusSubproperty rowNumber={1} label="Päivämäärä">
-            <FormField
-              form={props.form}
-              path={viimeisinArviointiPath
-                .guard(hasPäiväInArviointi)
-                .prop('päivä')}
-              view={DateView}
-              edit={DateEdit}
-              testId={subTestId(props, 'arviointi.päivä')}
-            />
-          </OsasuoritusSubproperty>
+          <FormListField
+            form={props.form}
+            path={osasuoritusArvioinnillaPath.prop('arviointi')}
+            view={VSTArviointiView}
+            edit={VSTArviointiEdit}
+            editProps={{ osasuoritus }}
+            testId={subTestId(props, 'arviointi')}
+          />
         </OsasuoritusProperty>
       )}
       {osasuoritus?.koulutusmoduuli !== undefined &&

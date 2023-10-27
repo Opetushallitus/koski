@@ -1,3 +1,4 @@
+import * as A from 'fp-ts/Array'
 import * as $ from 'optics-ts'
 import { useMemo } from 'react'
 import { FormOptic, getValue } from '../components-v2/forms/FormModel'
@@ -6,6 +7,9 @@ import { Finnish } from '../types/fi/oph/koski/schema/Finnish'
 import { LocalizedString } from '../types/fi/oph/koski/schema/LocalizedString'
 import { Opiskeluoikeus } from '../types/fi/oph/koski/schema/Opiskeluoikeus'
 import { PäätasonSuoritusOf } from './opiskeluoikeus'
+import { parasArviointi, parasArviointiIndex } from './arvioinnit'
+import { Arviointi } from '../types/fi/oph/koski/schema/Arviointi'
+import { deleteAt, updateAt } from './array'
 
 /**
  * Palauttaa polun, johon optiikka osoittaa annetussa datassa. Polku on muotoa esimerkiksi "lapset.0.nimi.fi".
@@ -68,6 +72,22 @@ export const lastElement = <T>() =>
     .lens(
       (as): T | undefined => as[as.length - 1],
       (as, v) => (v === undefined ? as.slice(0, -1) : [...as.slice(0, -1), v])
+    )
+    .optional()
+
+/**
+ * Linssi, jolla voi viitata parhaaseen arvosanaan
+ */
+export const addToArviointi = <T extends Arviointi>(
+  arviointi: T[],
+  uusi: T
+): T[] => (arviointi.length < 2 ? [uusi] : [...arviointi, uusi])
+
+export const parasArviointiElement = <T extends Arviointi>() =>
+  $.optic_<T[]>()
+    .lens(
+      (as): T | undefined => parasArviointi(as),
+      (as, v) => (v === undefined ? as.slice(0, -1) : addToArviointi(as, v)) // uusi arviointi laitetaan silti edelleen listan perään
     )
     .optional()
 

@@ -1,6 +1,6 @@
 import { Page } from '@playwright/test'
 import { KoskiOppijaPageV2 } from './KoskiOppijaPageV2'
-import { BuiltIdNode, arrayOf } from './uiV2builder/builder'
+import { BuiltIdNode, arrayOf, composedField } from './uiV2builder/builder'
 import { Button } from './uiV2builder/Button'
 import { FormField } from './uiV2builder/controls'
 import { Input } from './uiV2builder/Input'
@@ -179,11 +179,14 @@ export class VSTOsasuoritus {
   }
 
   async setArvostelunPvm(pvm: string) {
-    return this.osasuoritus.properties.arviointi.päivä.set(pvm)
+    const x = this.osasuoritus.properties.arviointi(0)
+    return this.osasuoritus.properties.arviointi(0).edit.päivä.set(pvm)
   }
 
   async arvostelunPvm() {
-    return this.osasuoritus.properties.arviointi.päivä.value(this.editMode)
+    return this.osasuoritus.properties
+      .arviointi(0)
+      [this.editMode ? 'edit' : 'view'].päivä.value()
   }
 
   async setKuvaus(kuvaus: string) {
@@ -262,10 +265,16 @@ const VapaanSivistystyönOsasuoritusTestIds = (_index: number) => ({
   laajuus: FormField(Label, Input),
   nimi: FormField(Label),
   properties: {
-    arviointi: {
-      arvosana: FormField(Label, Input),
-      päivä: FormField(Label, Input)
-    },
+    arviointi: arrayOf({
+      view: {
+        arvosana: Label,
+        päivä: Label
+      },
+      edit: {
+        arvosana: Input,
+        päivä: Input
+      }
+    }),
     tunnustettu: FormField(Label),
     kuvaus: FormField(Label, Input),
     addOsasuoritus: {

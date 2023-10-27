@@ -19,8 +19,8 @@ import { useRemovePäätasonSuoritus } from '../components-v2/forms/useRemovePaa
 import { AdaptedOpiskeluoikeusEditorProps } from '../components-v2/interoperability/useUiAdapter'
 import { Spacer } from '../components-v2/layout/Spacer'
 import {
-  ArvosanaEdit,
-  ArvosanaView
+  ParasArvosanaEdit,
+  ParasArvosanaView
 } from '../components-v2/opiskeluoikeus/ArvosanaField'
 import {
   LaajuusOpintopisteissäEdit,
@@ -360,9 +360,12 @@ const osasuoritusToTableRow = (
         <FormField
           form={form}
           path={osasuoritus.prop('arviointi')}
-          view={(props) => <ArvosanaView {...props} />}
+          view={(props) => <ParasArvosanaView {...props} />}
           edit={(props) => (
-            <ArvosanaEdit {...props} createArviointi={createTpoArviointi} />
+            <ParasArvosanaEdit
+              {...props}
+              createArviointi={createTpoArviointi}
+            />
           )}
           testId={osasuoritusTestId(
             suoritusIndex,

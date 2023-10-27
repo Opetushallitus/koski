@@ -25,6 +25,7 @@ export type SelectProps<T> = CommonProps<{
   onSearch?: (query: string) => void
   placeholder?: string | LocalizedString
   hideEmpty?: boolean
+  disabled?: boolean
 }>
 
 export type OptionList<T> = Array<SelectOption<T>>
@@ -66,6 +67,7 @@ export const Select = <T,>(props: SelectProps<T>) => {
         value={select.filter === null ? select.displayValue : select.filter}
         type="search"
         autoComplete="off"
+        disabled={props.disabled}
         {...select.inputEventListeners}
         {...testId(props, 'input')}
       />

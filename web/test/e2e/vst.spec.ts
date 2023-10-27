@@ -85,23 +85,33 @@ test.describe('Vapaa sivistystyö', () => {
         })
         await expect(
           page.getByTestId(
-            'suoritukset.0.osasuoritukset.0.properties.arviointi.arvosana.value'
+            'suoritukset.0.osasuoritukset.0.properties.arviointi.0.value.arvosana'
           )
         ).toHaveText('9')
         await expect(
           page.getByTestId(
-            'suoritukset.0.osasuoritukset.0.properties.arviointi.päivä.value'
+            'suoritukset.0.osasuoritukset.0.properties.arviointi.0.value.päivä'
           )
         ).toHaveText('1.2.2023')
+        await expect(
+          page.getByTestId(
+            'suoritukset.0.osasuoritukset.0.properties.arviointi.1.value.arvosana'
+          )
+        ).toHaveText('Hylätty')
+        await expect(
+          page.getByTestId(
+            'suoritukset.0.osasuoritukset.0.properties.arviointi.1.value.päivä'
+          )
+        ).toHaveText('1.1.2023')
         await page.getByTestId('suoritukset.0.osasuoritukset.1.expand').click()
         await expect(
           page.getByTestId(
-            'suoritukset.0.osasuoritukset.1.properties.arviointi.arvosana.value'
+            'suoritukset.0.osasuoritukset.1.properties.arviointi.0.value.arvosana'
           )
         ).toHaveText('Hyväksytty')
         await expect(
           page.getByTestId(
-            'suoritukset.0.osasuoritukset.1.properties.arviointi.päivä.value'
+            'suoritukset.0.osasuoritukset.1.properties.arviointi.0.value.päivä'
           )
         ).toHaveText('1.3.2023')
         await page.getByTestId('suoritukset.0.osasuoritukset.2.expand').click()
@@ -208,12 +218,12 @@ test.describe('Vapaa sivistystyö', () => {
             .click()
           await expect(
             page.getByTestId(
-              `suoritukset.0.osasuoritukset.${i}.properties.arviointi.arvosana.value`
+              `suoritukset.0.osasuoritukset.${i}.properties.arviointi.0.value.arvosana`
             )
           ).toHaveText(osasuoritus.expander.arvosana)
           await expect(
             page.getByTestId(
-              `suoritukset.0.osasuoritukset.${i}.properties.arviointi.päivä.value`
+              `suoritukset.0.osasuoritukset.${i}.properties.arviointi.0.value.päivä`
             )
           ).toHaveText(osasuoritus.expander.arvosanaPvm)
           i++
@@ -542,12 +552,12 @@ test.describe('Vapaa sivistystyö', () => {
                   if (alaosasuoritus.extra.arviointi !== undefined) {
                     await expect(
                       page.getByTestId(
-                        `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.properties.arviointi.arvosana.value`
+                        `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.properties.arviointi.0.value.arvosana`
                       )
                     ).toHaveText(alaosasuoritus.extra.arviointi.arvosana)
                     await expect(
                       page.getByTestId(
-                        `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.properties.arviointi.päivä.value`
+                        `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.properties.arviointi.0.value.päivä`
                       )
                     ).toHaveText(alaosasuoritus.extra.arviointi.pvm)
                   }
@@ -883,12 +893,12 @@ test.describe('Vapaa sivistystyö', () => {
                   if (alaosasuoritus.extra.arviointi !== undefined) {
                     await expect(
                       page.getByTestId(
-                        `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.properties.arviointi.arvosana.value`
+                        `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.properties.arviointi.0.value.arvosana`
                       )
                     ).toHaveText(alaosasuoritus.extra.arviointi.arvosana)
                     await expect(
                       page.getByTestId(
-                        `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.properties.arviointi.päivä.value`
+                        `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.properties.arviointi.0.value.päivä`
                       )
                     ).toHaveText(alaosasuoritus.extra.arviointi.pvm)
                   }
@@ -1089,14 +1099,9 @@ test.describe('Vapaa sivistystyö', () => {
                   if (alaosasuoritus.extra.arviointi !== undefined) {
                     await expect(
                       page.getByTestId(
-                        `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.properties.arviointi.arvosana.value`
+                        `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.properties.arviointi.0.value.arvosana`
                       )
                     ).toHaveText(alaosasuoritus.extra.arviointi.arvosana)
-                    await expect(
-                      page.getByTestId(
-                        `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.properties.arviointi.päivä.value`
-                      )
-                    ).toHaveText(alaosasuoritus.extra.arviointi.pvm)
                   }
                 }
                 a++
@@ -1232,12 +1237,12 @@ test.describe('Vapaa sivistystyö', () => {
                   if (alaosasuoritus.extra.arviointi !== undefined) {
                     await expect(
                       page.getByTestId(
-                        `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.properties.arviointi.arvosana.value`
+                        `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.properties.arviointi.0.value.arvosana`
                       )
                     ).toHaveText(alaosasuoritus.extra.arviointi.arvosana)
                     await expect(
                       page.getByTestId(
-                        `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.properties.arviointi.päivä.value`
+                        `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.properties.arviointi.0.value.päivä`
                       )
                     ).toHaveText(alaosasuoritus.extra.arviointi.pvm)
                   }
