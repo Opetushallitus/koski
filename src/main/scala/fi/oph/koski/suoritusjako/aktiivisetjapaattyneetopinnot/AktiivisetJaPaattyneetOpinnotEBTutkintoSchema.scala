@@ -33,7 +33,7 @@ case class AktiivisetJaPäättyneetOpinnotEBTutkinnonPäätasonSuoritus(
   koulutusmoduuli: AktiivisetJaPäättyneetOpinnotEBTutkinnonKoulutusmoduuli,
   vahvistus: Option[Vahvistus],
   toimipiste: Option[Toimipiste],
-  @KoodistoKoodiarvo("ebtutkinto2")
+  @KoodistoKoodiarvo("ebtutkinto")
   tyyppi: schema.Koodistokoodiviite,
 ) extends Suoritus
 

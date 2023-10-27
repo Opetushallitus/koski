@@ -47,7 +47,7 @@ export const eshSuorituksenTyyppi = {
 }
 
 export const ebSuorituksenTyyppi = {
-  ebtutkinto: 'ebtutkinto2'
+  ebtutkinto: 'ebtutkinto'
 }
 
 /**

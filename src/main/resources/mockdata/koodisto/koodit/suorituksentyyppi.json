@@ -622,34 +622,6 @@
   {
     "metadata": [
       {
-        "nimi": "European Baccalaureate",
-        "kuvaus": "",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      },
-      {
-        "nimi": "European Baccalaureate",
-        "kuvaus": "",
-        "lyhytNimi": "",
-        "kieli": "SV"
-      },
-      {
-        "nimi": "European Baccalaureate",
-        "kuvaus": "",
-        "lyhytNimi": "",
-        "kieli": "EN"
-      }
-    ],
-    "withinCodeElements": [],
-    "includesCodeElements": [],
-    "levelsWithCodeElements": [],
-    "koodiUri": "suorituksentyyppi_ebtutkinto2",
-    "versio": 1,
-    "koodiArvo": "ebtutkinto2"
-  },
-  {
-    "metadata": [
-      {
         "nimi": "Esiopetuksen suoritus",
         "kuvaus": null,
         "kieli": "FI"

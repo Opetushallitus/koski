@@ -14,14 +14,14 @@ export type SuoritetutTutkinnotEBTutkinnonSuoritus = {
   koulutusmoduuli: SuoritetutTutkinnotEBTutkinto
   toimipiste?: Toimipiste
   vahvistus?: Vahvistus
-  tyyppi: Koodistokoodiviite<string, 'ebtutkinto2'>
+  tyyppi: Koodistokoodiviite<string, 'ebtutkinto'>
 }
 
 export const SuoritetutTutkinnotEBTutkinnonSuoritus = (o: {
   koulutusmoduuli: SuoritetutTutkinnotEBTutkinto
   toimipiste?: Toimipiste
   vahvistus?: Vahvistus
-  tyyppi: Koodistokoodiviite<string, 'ebtutkinto2'>
+  tyyppi: Koodistokoodiviite<string, 'ebtutkinto'>
 }): SuoritetutTutkinnotEBTutkinnonSuoritus => ({
   $class:
     'fi.oph.koski.suoritusjako.suoritetuttutkinnot.SuoritetutTutkinnotEBTutkinnonSuoritus',
