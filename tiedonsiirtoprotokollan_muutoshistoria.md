@@ -1,3 +1,8 @@
+## 31.10.2023
+
+- Poistettu EB-tutkinto kokonaan European School of Helsingin opiskeluoikeudesta
+- Vaihdettu EB-tutkinnon opiskeluoikeudessa suorituksen tyyppi arvoon ebtutkinto, aiemman ebtutkinto2 sijasta
+
 ## 16.10.2023
 
 - Lisätty ESH-opiskeluoikeuden S7-vuosiluokalle mahdollisuus kirjata Preliminary-arvosanat
