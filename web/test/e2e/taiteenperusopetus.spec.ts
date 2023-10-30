@@ -141,11 +141,11 @@ test.describe('Taiteen perusopetus', () => {
       expect(await page.suoritustieto('oppilaitos')).toBe(
         'Varsinais-Suomen kansanopisto'
       )
-      expect(await page.suoritustieto('laajuus')).toBe('29.6 op')
+      expect(await page.suoritustieto('laajuus')).toBe('29,6 op')
 
       await page.selectSuoritus(1)
 
-      expect(await page.suoritustieto('laajuus')).toBe('18.5 op')
+      expect(await page.suoritustieto('laajuus')).toBe('18,5 op')
     })
 
     test('Näyttää osasuorituksien tiedot oikein', async ({
@@ -155,7 +155,7 @@ test.describe('Taiteen perusopetus', () => {
         await page.openOsasuoritus(osasuoritusIndex)
         expect(await page.osasuoritustieto('nimi')).toBe('Musiikin kurssi')
         expect(await page.osasuoritustieto('laajuus')).toBe(
-          ['10 op', '10 op', '9.6 op'][osasuoritusIndex]
+          ['10 op', '10 op', '9,6 op'][osasuoritusIndex]
         )
         expect(await page.osasuoritustieto('arvosana')).toBe('Hyväksytty')
 
@@ -227,7 +227,7 @@ test.describe('Taiteen perusopetus', () => {
         page.osasuoritusIndex = 1
         await page.setOsasuorituksenLaajuus(3.1)
 
-        expect(await page.suoritustieto('laajuus')).toEqual('6.3 op')
+        expect(await page.suoritustieto('laajuus')).toEqual('6,3 op')
       })
 
       test('Osasuorituksen arvosanan asetus toimii', async ({

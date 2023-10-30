@@ -83,6 +83,8 @@ import {
 } from './typeguards'
 import { parasArviointi } from '../util/arvioinnit'
 import { Arviointi } from '../types/fi/oph/koski/schema/Arviointi'
+import { formatNumber, sum } from '../util/numbers'
+import { pipe } from 'fp-ts/lib/function'
 
 type VSTEditorProps =
   AdaptedOpiskeluoikeusEditorProps<VapaanSivistystyönOpiskeluoikeus>
@@ -442,30 +444,24 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
             label="Yhteensä"
             testId={`${päätasonSuoritus.testId}.yhteensa`}
           >
-            {(
-              (päätasonSuoritus.suoritus.osasuoritukset || []) as Array<
-                | VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKokonaisuudenSuoritus
-                | VSTKotoutumiskoulutuksenKokonaisuudenOsasuoritus2022
-                | OppivelvollisilleSuunnatunVapaanSivistystyönOsasuoritus
-                | VapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus
-                | VapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus
-                | VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus
-              >
-            ).reduce(
-              (prev: number, curr) =>
-                prev + (curr.koulutusmoduuli.laajuus?.arvo || 0),
-              0
-            )}{' '}
-            {päätasonSuoritus.suoritus.osasuoritukset !== undefined &&
-              päätasonSuoritus.suoritus.osasuoritukset.length > 0 && (
-                <Trans>
-                  {päätasonSuoritus.suoritus.osasuoritukset[0].koulutusmoduuli
-                    .laajuus?.yksikkö?.lyhytNimi || ''}
-                </Trans>
-              )}
+            {laajuudetYhteensä(päätasonSuoritus.suoritus)}
           </KeyValueRow>
         </KeyValueTable>
       </EditorContainer>
     </>
   )
+}
+
+const laajuudetYhteensä = (pts: VapaanSivistystyönPäätasonSuoritus): string => {
+  const n = formatNumber(
+    sum(
+      (pts.osasuoritukset || []).map(
+        (os) => os.koulutusmoduuli.laajuus?.arvo || 0
+      )
+    )
+  )
+  const yksikkö =
+    pts.osasuoritukset?.[0]?.koulutusmoduuli.laajuus?.yksikkö.lyhytNimi || ''
+
+  return `${n} ${t(yksikkö)}`
 }
