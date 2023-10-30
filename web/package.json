@@ -29,7 +29,7 @@
     "optics-ts": "^2.4.0",
     "partial.lenses": "^9.8.0",
     "prop-types": "^15.8.1",
-    "ramda": "^0.29.0",
+    "ramda": "^0.29.1",
     "react": "^16.14.0",
     "react-day-picker": "^7.4.10",
     "react-dom": "^16.14.0",
