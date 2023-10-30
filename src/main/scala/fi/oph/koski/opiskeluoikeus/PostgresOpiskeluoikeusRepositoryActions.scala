@@ -53,7 +53,7 @@ trait PostgresOpiskeluoikeusRepositoryActions[OOROW <: OpiskeluoikeusRow, OOTABL
       .flatMap(oid => OpiskeluOikeudetWithAccessCheck.filter(_.oppijaOid === oid))
       .result
 
-  private def oppijaOidsByOppijaOid(oid: String): DBIOAction[List[String], NoStream, Read] = {
+  protected def oppijaOidsByOppijaOid(oid: String): DBIOAction[List[String], NoStream, Read] = {
     Henkilöt.filter(_.oid === oid).result.map { henkilöt =>
       henkilöt.headOption match {
         case Some(h) =>
@@ -145,39 +145,6 @@ trait PostgresOpiskeluoikeusRepositoryActions[OOROW <: OpiskeluoikeusRow, OOTABL
     }
   }
 
-  protected def createOrUpdateActionBasedOnDbResult(
-    oppijaOid: PossiblyUnverifiedHenkilöOid,
-    opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
-    allowUpdate: Boolean,
-    allowDeleteCompleted: Boolean,
-    rows: Either[HttpStatus, List[OOROW]]
-  )(implicit user: KoskiSpecificSession): dbio.DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write with Transactional] = (allowUpdate, rows) match {
-    case (_, Right(Nil)) => createAction(oppijaOid, opiskeluoikeus)
-    case (true, Right(List(vanhaOpiskeluoikeus))) =>
-      if (oppijaOid.oppijaOid == vanhaOpiskeluoikeus.oppijaOid) {
-        updateAction(vanhaOpiskeluoikeus, opiskeluoikeus, allowDeleteCompleted)
-      } else { // Check if oppija oid belongs to master of slave oppija oids
-        oppijaOidsByOppijaOid(vanhaOpiskeluoikeus.oppijaOid).flatMap { oids =>
-          if (oids.contains(oppijaOid.oppijaOid)) {
-            updateAction(vanhaOpiskeluoikeus, opiskeluoikeus, allowDeleteCompleted)
-          } else {
-            DBIO.successful(Left(KoskiErrorCategory.forbidden.oppijaOidinMuutos("Oppijan oid: " + oppijaOid.oppijaOid + " ei löydy opiskeluoikeuden oppijan oideista: " + oids.mkString(", "))))
-          }
-        }
-      }
-    case (true, Right(rows)) =>
-      DBIO.successful(Left(KoskiErrorCategory.conflict.löytyiEnemmänKuinYksiRivi(s"Löytyi enemmän kuin yksi rivi päivitettäväksi (${rows.map(_.oid)})")))
-    case (false, Right(rows)) =>
-      createInsteadOfUpdate(oppijaOid, opiskeluoikeus, rows)
-    case (_, Left(err)) => DBIO.successful(Left(err))
-  }
-
-  protected def createInsteadOfUpdate(
-    oppijaOid: PossiblyUnverifiedHenkilöOid,
-    opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
-    rows: List[OOROW]
-  )(implicit user: KoskiSpecificSession): DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write]
-
   protected def createAction(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiSpecificSession): dbio.DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write] = {
     oppijaOid.verified match {
       case Some(henkilö) =>
@@ -225,6 +192,25 @@ trait PostgresOpiskeluoikeusRepositoryActions[OOROW <: OpiskeluoikeusRow, OOTABL
       case t: TaiteenPerusopetuksenOpiskeluoikeus =>
         user.hasTaiteenPerusopetusAccess(t.getOppilaitos.oid, t.koulutustoimija.map(_.oid), AccessType.editOnly)
       case _ => false
+    }
+  }
+
+  protected def updateAction(
+    oppijaOid: PossiblyUnverifiedHenkilöOid,
+    oldRow: OOROW,
+    uusiOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
+    allowDeleteCompletedSuoritukset: Boolean
+  )(implicit user: KoskiSpecificSession): DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write with Transactional] = {
+    if (oppijaOid.oppijaOid == oldRow.oppijaOid) {
+      updateAction(oldRow, uusiOpiskeluoikeus, allowDeleteCompletedSuoritukset)
+    } else { // Check if oppija oid belongs to master of slave oppija oids
+      oppijaOidsByOppijaOid(oldRow.oppijaOid).flatMap { oids =>
+        if (oids.contains(oppijaOid.oppijaOid)) {
+          updateAction(oldRow, uusiOpiskeluoikeus, allowDeleteCompletedSuoritukset)
+        } else {
+          DBIO.successful(Left(KoskiErrorCategory.forbidden.oppijaOidinMuutos("Oppijan oid: " + oppijaOid.oppijaOid + " ei löydy opiskeluoikeuden oppijan oideista: " + oids.mkString(", "))))
+        }
+      }
     }
   }
 

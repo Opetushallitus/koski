@@ -78,30 +78,37 @@ class PostgresKoskiOpiskeluoikeusRepositoryActions(
     allowDeleteCompleted: Boolean
   )(implicit user: KoskiSpecificSession): DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write with Transactional] = {
     val identifier = OpiskeluoikeusIdentifier(oppijaOid.oppijaOid, opiskeluoikeus)
-    findByIdentifierAction(identifier)
-      .flatMap { rows: Either[HttpStatus, List[KoskiOpiskeluoikeusRow]] => {
-        (identifier, rows) match {
-          case (id: OppijaOidOrganisaatioJaTyyppi, Right(opiskeluoikeudet)) if allowUpdate && !opiskeluoikeudet.isEmpty =>
-            DBIOAction.successful(Left(KoskiErrorCategory.conflict.exists("" +
-              s"Olemassaolevan opiskeluoikeuden päivitystä ilman tunnistetta ei tueta. Päivitettävä opiskeluoikeus-oid: ${opiskeluoikeudet.map(_.oid).mkString(", ")}. Päivittävä tunniste: ${id.copy(oppijaOid = "****")}"
-            )))
-          case _ =>
-            createOrUpdateActionBasedOnDbResult(oppijaOid, opiskeluoikeus, allowUpdate, allowDeleteCompleted, rows)
-        }
-      }
-      }
+
+    findByIdentifierAction(identifier).flatMap {
+      case Right(Nil) =>
+        createAction(oppijaOid, opiskeluoikeus)
+      case Right(aiemmatOpiskeluoikeudet) if allowUpdate =>
+        updateAction(oppijaOid, opiskeluoikeus, identifier, aiemmatOpiskeluoikeudet, allowDeleteCompleted)
+      case Right(aiemmatOpiskeluoikeudet) if vastaavanRinnakkaisenOpiskeluoikeudenLisääminenSallittu(opiskeluoikeus, aiemmatOpiskeluoikeudet) =>
+        createAction(oppijaOid, opiskeluoikeus)
+      case Right(_) =>
+        DBIO.successful(Left(KoskiErrorCategory.conflict.exists()))
+      case Left(err) =>
+        DBIO.successful(Left(err))
+    }
   }
 
-  protected override def createInsteadOfUpdate(
+  private def updateAction(
     oppijaOid: PossiblyUnverifiedHenkilöOid,
     opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
-    rows: List[KoskiOpiskeluoikeusRow]
-  )(implicit user: KoskiSpecificSession): DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write] = {
-
-    if (vastaavanRinnakkaisenOpiskeluoikeudenLisääminenSallittu(opiskeluoikeus, rows)) {
-      createAction(oppijaOid, opiskeluoikeus)
-    } else {
-      DBIO.successful(Left(KoskiErrorCategory.conflict.exists()))
+    identifier: OpiskeluoikeusIdentifier,
+    aiemmatOpiskeluoikeudet: List[KoskiOpiskeluoikeusRow],
+    allowDeleteCompleted: Boolean
+  )(implicit user: KoskiSpecificSession): DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write with Transactional] = {
+    (identifier, aiemmatOpiskeluoikeudet) match {
+      case (id: OppijaOidOrganisaatioJaTyyppi, _) =>
+        DBIOAction.successful(Left(KoskiErrorCategory.conflict.exists("" +
+          s"Olemassaolevan opiskeluoikeuden päivitystä ilman tunnistetta ei tueta. Päivitettävä opiskeluoikeus-oid: ${aiemmatOpiskeluoikeudet.map(_.oid).mkString(", ")}. Päivittävä tunniste: ${id.copy(oppijaOid = "****")}"
+        )))
+      case (_, List(vanhaOpiskeluoikeus)) =>
+        updateAction(oppijaOid, vanhaOpiskeluoikeus, opiskeluoikeus, allowDeleteCompleted)
+      case _ =>
+        DBIO.successful(Left(KoskiErrorCategory.conflict.löytyiEnemmänKuinYksiRivi(s"Löytyi enemmän kuin yksi rivi päivitettäväksi (${aiemmatOpiskeluoikeudet.map(_.oid)})")))
     }
   }
 

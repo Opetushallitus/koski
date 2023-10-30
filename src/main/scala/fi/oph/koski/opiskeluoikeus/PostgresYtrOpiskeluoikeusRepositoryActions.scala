@@ -50,19 +50,32 @@ class PostgresYtrOpiskeluoikeusRepositoryActions(
     allowDeleteCompleted: Boolean
   )(implicit user: KoskiSpecificSession): DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write with Transactional] = {
     val identifier = OpiskeluoikeusIdentifier(oppijaOid.oppijaOid, opiskeluoikeus)
+
     findByIdentifierAction(identifier)
-      .flatMap { rows: Either[HttpStatus, List[YtrOpiskeluoikeusRow]] => {
-        createOrUpdateActionBasedOnDbResult(oppijaOid, opiskeluoikeus, allowUpdate, allowDeleteCompleted, rows)
-      }
+      .flatMap {
+        case Right(Nil) =>
+          createAction(oppijaOid, opiskeluoikeus)
+        case Right(aiemmatOpiskeluoikeudet) if allowUpdate =>
+          updateAction(oppijaOid, opiskeluoikeus, aiemmatOpiskeluoikeudet, allowDeleteCompleted)
+        case Right(_) =>
+          DBIO.successful(Left(KoskiErrorCategory.conflict.exists())) // Ei tehdä uutta, koska vastaava vanha YO-opiskeluoikeus on olemassa
+        case Left(err) =>
+          DBIO.successful(Left(err))
       }
   }
 
-  protected override def createInsteadOfUpdate(
+  private def updateAction(
     oppijaOid: PossiblyUnverifiedHenkilöOid,
     opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
-    rows: List[YtrOpiskeluoikeusRow]
-  )(implicit user: KoskiSpecificSession): DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write] = {
-    DBIO.successful(Left(KoskiErrorCategory.conflict.exists())) // Ei tehdä uutta, koska vastaava vanha YO-opiskeluoikeus on olemassa
+    aiemmatOpiskeluoikeudet: List[YtrOpiskeluoikeusRow],
+    allowDeleteCompleted: Boolean
+  )(implicit user: KoskiSpecificSession): DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write with Transactional] = {
+    aiemmatOpiskeluoikeudet match {
+      case List(vanhaOpiskeluoikeus) =>
+        updateAction(oppijaOid, vanhaOpiskeluoikeus, opiskeluoikeus, allowDeleteCompleted)
+      case _ =>
+        DBIO.successful(Left(KoskiErrorCategory.conflict.löytyiEnemmänKuinYksiRivi(s"Löytyi enemmän kuin yksi rivi päivitettäväksi (${aiemmatOpiskeluoikeudet.map(_.oid)})")))
+    }
   }
 
   protected override def generateOid(oppija: OppijaHenkilöWithMasterInfo): String = {
