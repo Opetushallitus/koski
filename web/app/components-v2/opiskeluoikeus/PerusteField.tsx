@@ -1,17 +1,11 @@
 import React, { useEffect, useState } from 'react'
+import { Peruste, usePeruste } from '../../appstate/peruste'
 import { t } from '../../i18n/i18n'
-import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
-import { CommonProps } from '../CommonProps'
+import { CommonProps, testId } from '../CommonProps'
 import { OptionList, Select } from '../controls/Select'
 import { FieldViewerProps, FieldEditorProps } from '../forms/FormField'
 
 type PerusteViewProps = CommonProps<FieldViewerProps<string | undefined, {}>>
-
-// TODO: Tyypitys paremmaksi
-type Peruste = Omit<
-  Koodistokoodiviite<string, string>,
-  '$class' | 'koodistoVersio' | 'lyhytNimi'
->
 
 // TODO: Perusteen linkitys
 export const PerusteView: React.FC<PerusteViewProps> = (props) => {
@@ -56,14 +50,15 @@ function useTutkinnonPerusteet(diaariNumero: string) {
 }
 
 export const PerusteEdit: React.FC<PerusteEditProps> = (props) => {
-  const perusteet = useTutkinnonPerusteet(props.diaariNumero)
-  const mappedPerusteet: OptionList<string> = perusteet.map((p) => ({
+  const perusteet = usePeruste(props.diaariNumero)
+  const mappedPerusteet: OptionList<string> = (perusteet || []).map((p) => ({
     key: p.koodiarvo,
     label: `${p.koodiarvo} ${t(p.nimi)}`,
     value: p.koodiarvo
   }))
   return (
     <Select
+      testId={props.testId}
       onChange={(opt) => {
         props.onChange(opt?.value || '')
       }}

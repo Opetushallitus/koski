@@ -14,14 +14,12 @@ const oppilaitokset = {
 }
 
 test.describe('Suoritusjako', () => {
-  test.beforeEach(
-    async ({ fixtures, virkailijaLoginPage, kansalainenLoginPage }) => {
-      await virkailijaLoginPage.apiLoginAsUser('kalle', 'kalle')
-      await fixtures.reset()
-      await virkailijaLoginPage.apiLogout()
-      await kansalainenLoginPage.loginWithHetu(hetut.taiteenPerusopetusValmis)
-    }
-  )
+  test.beforeEach(async ({ fixtures, page }) => {
+    await fixtures.apiLoginAsUser('kalle', 'kalle')
+    await fixtures.reset()
+    await fixtures.apiLogout()
+    page.goto('/koski/omattiedot')
+  })
 
   test.describe('Kansalaisen opintotiedot', () => {
     test.use({ storageState: kansalainen(hetut.taiteenPerusopetusValmis) })

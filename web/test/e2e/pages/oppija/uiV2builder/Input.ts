@@ -6,6 +6,6 @@ export const Input = createControl((self, child) => ({
   set: async (value: string) => {
     const input = child('input')
     await input.clear()
-    await input.type(value)
+    await input.fill(value)
   }
 }))

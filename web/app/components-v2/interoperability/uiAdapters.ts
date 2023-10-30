@@ -11,10 +11,7 @@ const url = new URL(window.location.href)
 const useNewVST = url.searchParams.has('newVSTUI')
 if (useNewVST) {
   console.warn(`WARNING: Using new user interface for VST.
-
   Stuff might be broken.
-
-
   To unset, remove the "newVSTUI" query parameter from your URL.
   `)
   editors['vapaansivistystyonkoulutus'] = VSTEditor

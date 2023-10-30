@@ -2,7 +2,10 @@ import * as A from 'fp-ts/Array'
 import { flow } from 'fp-ts/lib/function'
 import * as NEA from 'fp-ts/NonEmptyArray'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { KoodistokoodiviiteKoodistonNimellä } from '../../appstate/koodisto'
+import {
+  KoodistokoodiviiteKoodistonNimellä,
+  KoodistokoodiviiteKoodistonNimelläOrd
+} from '../../appstate/koodisto'
 import { t } from '../../i18n/i18n'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
@@ -22,6 +25,7 @@ export type SelectProps<T> = CommonProps<{
   onSearch?: (query: string) => void
   placeholder?: string | LocalizedString
   hideEmpty?: boolean
+  disabled?: boolean
 }>
 
 export type OptionList<T> = Array<SelectOption<T>>
@@ -63,6 +67,7 @@ export const Select = <T,>(props: SelectProps<T>) => {
         value={select.filter === null ? select.displayValue : select.filter}
         type="search"
         autoComplete="off"
+        disabled={props.disabled}
         {...select.inputEventListeners}
         {...testId(props, 'input')}
       />
@@ -318,11 +323,13 @@ export const groupKoodistoToOptions: <T extends string>(
       key: groupName,
       label: groupName,
       isGroup: true,
-      children: koodit.map((k) => ({
-        key: k.id,
-        label: t(k.koodiviite.nimi) || k.koodiviite.koodiarvo,
-        value: k.koodiviite
-      }))
+      children: A.sort(KoodistokoodiviiteKoodistonNimelläOrd)(koodit).map(
+        (k) => ({
+          key: k.id,
+          label: t(k.koodiviite.nimi) || k.koodiviite.koodiarvo,
+          value: k.koodiviite
+        })
+      )
     }))
 )
 

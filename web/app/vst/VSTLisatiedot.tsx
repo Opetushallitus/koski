@@ -1,5 +1,5 @@
-import { append } from 'fp-ts/lib/Array'
-import React, { useCallback } from 'react'
+import { append, isNonEmpty } from 'fp-ts/lib/Array'
+import React, { useCallback, useMemo } from 'react'
 import { DateEdit } from '../components-v2/controls/DateField'
 import { FlatButton } from '../components-v2/controls/FlatButton'
 import { RaisedButton } from '../components-v2/controls/RaisedButton'
@@ -9,6 +9,7 @@ import { Maksuttomuus } from '../types/fi/oph/koski/schema/Maksuttomuus'
 import { OikeuttaMaksuttomuuteenPidennetty } from '../types/fi/oph/koski/schema/OikeuttaMaksuttomuuteenPidennetty'
 import { VapaanSivistystyönOpiskeluoikeudenLisätiedot } from '../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeudenLisatiedot'
 import { VapaanSivistystyönOpiskeluoikeus } from '../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeus'
+import { deleteAt } from '../util/fp/arrays'
 
 interface VSTLisatiedotProps {
   form: FormModel<VapaanSivistystyönOpiskeluoikeus>
@@ -17,6 +18,14 @@ interface VSTLisatiedotProps {
 export const VSTLisatiedot: React.FC<VSTLisatiedotProps> = ({ form }) => {
   const lisatiedotPath = form.root.prop('lisätiedot')
   const lisätiedot = getValue(lisatiedotPath)(form.state)
+  const maksuttomuus = useMemo(
+    () => lisätiedot?.maksuttomuus || [],
+    [lisätiedot?.maksuttomuus]
+  )
+  const oikeuttaMaksuttomuuteenPidennetty = useMemo(
+    () => lisätiedot?.oikeuttaMaksuttomuuteenPidennetty || [],
+    [lisätiedot?.oikeuttaMaksuttomuuteenPidennetty]
+  )
 
   const addKoulutuksenMaksuttomuus = useCallback(() => {
     const currentDate = new Date()
@@ -32,43 +41,50 @@ export const VSTLisatiedot: React.FC<VSTLisatiedotProps> = ({ form }) => {
       }
       return {
         ...lisatiedot,
-        maksuttomuus: append(newMaksuttomuus)(lisatiedot.maksuttomuus || [])
+        maksuttomuus: append(newMaksuttomuus)(maksuttomuus)
       }
     })
-  }, [form, lisatiedotPath])
+  }, [form, lisatiedotPath, maksuttomuus])
+
   const addOikeuttaMaksuttomuuteenPidennetty = useCallback(() => {
     const currentDate = new Date()
-    const newOikeus = OikeuttaMaksuttomuuteenPidennetty({
+    const newOikeuttaMaksuttomuuteen = OikeuttaMaksuttomuuteenPidennetty({
       alku: `${currentDate.getFullYear()}-01-01`,
       loppu: `${currentDate.getFullYear()}-12-30`
     })
     form.updateAt(lisatiedotPath, (lisatiedot) => {
       if (lisatiedot === undefined) {
         return VapaanSivistystyönOpiskeluoikeudenLisätiedot({
-          oikeuttaMaksuttomuuteenPidennetty: append(newOikeus)([])
+          oikeuttaMaksuttomuuteenPidennetty: append(newOikeuttaMaksuttomuuteen)(
+            oikeuttaMaksuttomuuteenPidennetty
+          )
         })
       }
       return {
         ...lisatiedot,
-        oikeuttaMaksuttomuuteenPidennetty: append(newOikeus)(
-          lisatiedot.oikeuttaMaksuttomuuteenPidennetty || []
+        oikeuttaMaksuttomuuteenPidennetty: append(newOikeuttaMaksuttomuuteen)(
+          oikeuttaMaksuttomuuteenPidennetty
         )
       }
     })
-  }, [form, lisatiedotPath])
+  }, [form, lisatiedotPath, oikeuttaMaksuttomuuteenPidennetty])
+
+  const maksuttomuusPath = lisatiedotPath
+    .optional()
+    .prop('maksuttomuus')
+    .optional()
+  const oikeuttaMaksuttomuuteenPath = lisatiedotPath
+    .optional()
+    .prop('oikeuttaMaksuttomuuteenPidennetty')
+    .optional()
 
   return (
     <div className={'vst-lisatiedot'}>
       <div className="vst-lisatiedot__koulutuksen-maksuttomuus">
         <div>{t('Koulutuksen maksuttomuus')}</div>
         <div className="vst-lisatiedot__koulutuksen-maksuttomuus__inner-container">
-          {lisätiedot?.maksuttomuus !== undefined &&
-            lisätiedot?.maksuttomuus.length > 0 &&
-            lisätiedot?.maksuttomuus.map((m, i) => {
-              const maksuttomuusPath = lisatiedotPath
-                .optional()
-                .prop('maksuttomuus')
-                .optional()
+          {isNonEmpty(maksuttomuus || []) &&
+            maksuttomuus.map((m, i) => {
               return (
                 <div
                   key={`maksuttomuus_${i}`}
@@ -107,6 +123,7 @@ export const VSTLisatiedot: React.FC<VSTLisatiedotProps> = ({ form }) => {
                             .prop('maksuttomuus')
                             .optional()
                             .at(i),
+                          // eslint-disable-next-line @typescript-eslint/no-shadow
                           (maksuttomuus) =>
                             Maksuttomuus({
                               alku: maksuttomuus.alku,
@@ -123,15 +140,14 @@ export const VSTLisatiedot: React.FC<VSTLisatiedotProps> = ({ form }) => {
                         fullWidth={false}
                         onClick={(e) => {
                           e.preventDefault()
-                          form.updateAt(maksuttomuusPath, (maksuttomuudet) =>
-                            maksuttomuudet.filter(
-                              (_val, maksuttomuusIndex) =>
-                                maksuttomuusIndex !== i
-                            )
-                          )
+                          form.updateAt(lisatiedotPath.optional(), (l) => ({
+                            ...l,
+                            maksuttomuus:
+                              deleteAt(l?.maksuttomuus || [], i) || []
+                          }))
                         }}
                       >
-                        {t('Poista')}
+                        {t(`Poista`)}
                       </RaisedButton>
                     )}
                   </div>
@@ -155,13 +171,8 @@ export const VSTLisatiedot: React.FC<VSTLisatiedotProps> = ({ form }) => {
       <div className="vst-lisatiedot__oikeutta-maksuttomuuteen-pidennetty">
         <div>{t('Oikeutta maksuttomuuteen pidennetty')}</div>
         <div className="vst-lisatiedot__oikeutta-maksuttomuuteen-pidennetty__inner-container">
-          {lisätiedot?.oikeuttaMaksuttomuuteenPidennetty !== undefined &&
-            lisätiedot?.oikeuttaMaksuttomuuteenPidennetty.length > 0 &&
-            lisätiedot?.oikeuttaMaksuttomuuteenPidennetty.map((m, i) => {
-              const oikeuttaMaksuttomuuteenPath = lisatiedotPath
-                .optional()
-                .prop('oikeuttaMaksuttomuuteenPidennetty')
-                .optional()
+          {isNonEmpty(oikeuttaMaksuttomuuteenPidennetty || []) &&
+            oikeuttaMaksuttomuuteenPidennetty.map((m, i) => {
               return (
                 <div
                   className="vst-lisatiedot__oikeutta-maksuttomuuteen-pidennetty__row"
@@ -204,11 +215,11 @@ export const VSTLisatiedot: React.FC<VSTLisatiedotProps> = ({ form }) => {
                         onClick={(e) => {
                           e.preventDefault()
                           form.updateAt(oikeuttaMaksuttomuuteenPath, (omp) =>
-                            omp.filter((_val, index) => index !== i)
+                            deleteAt(omp, i)
                           )
                         }}
                       >
-                        {t('Poista')}
+                        {t(`Poista`)}
                       </RaisedButton>
                     )}
                   </div>

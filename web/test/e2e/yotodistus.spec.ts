@@ -16,19 +16,19 @@ const oidit = {
 
 test.describe('Digitaalinen yo-todistus', () => {
   test.beforeEach(async ({ fixtures, virkailijaLoginPage }) => {
-    await virkailijaLoginPage.apiLoginAsUser('kalle', 'kalle')
+    await fixtures.apiLoginAsUser('kalle', 'kalle')
     await fixtures.reset()
-    await virkailijaLoginPage.apiLogout()
+    await fixtures.apiLogout()
   })
 
   test.describe('Todistuksen lataaminen onnistuneesti', () => {
     test.use({ storageState: kansalainen(hetut.ylioppilas) })
 
     test('Oman todistuksen lataaminen onnistuu', async ({
-      kansalainenLoginPage,
+      page,
       kansalainenPage
     }) => {
-      await kansalainenLoginPage.loginWithHetu(hetut.ylioppilas)
+      await page.goto('/koski/omattiedot')
       await kansalainenPage.openOpiskeluoikeus('Ylioppilastutkinto')
       await kansalainenPage.setYoTodistusLanguage('en')
       await kansalainenPage.generateYoTodistus()
@@ -36,10 +36,10 @@ test.describe('Digitaalinen yo-todistus', () => {
     })
 
     test('Vaikka todistus on luotu yhdelle kielelle, sitä ei ole vielä muille', async ({
-      kansalainenLoginPage,
+      page,
       kansalainenPage
     }) => {
-      await kansalainenLoginPage.loginWithHetu(hetut.ylioppilas)
+      await page.goto('/koski/omattiedot')
       await kansalainenPage.openOpiskeluoikeus('Ylioppilastutkinto')
       await kansalainenPage.setYoTodistusLanguage('en')
       await kansalainenPage.generateYoTodistus()
@@ -54,10 +54,10 @@ test.describe('Digitaalinen yo-todistus', () => {
     test.use({ storageState: kansalainen(hetut.huoltaja) })
 
     test('Huollettavan todistuksen lataaminen onnistuu', async ({
-      kansalainenLoginPage,
-      kansalainenPage
+      kansalainenPage,
+      page
     }) => {
-      await kansalainenLoginPage.loginWithHetu(hetut.huoltaja)
+      await page.goto('/koski/omattiedot')
       await kansalainenPage.openOppija(oidit.ynjevi)
       await kansalainenPage.openOpiskeluoikeus('Ylioppilastutkinto')
       await kansalainenPage.generateYoTodistus()
@@ -66,8 +66,6 @@ test.describe('Digitaalinen yo-todistus', () => {
   })
 
   test.describe('Virheiden hallinta', () => {
-    test.use({ storageState: kansalainen(hetut.ylioppilas) })
-
     test('Lataaminen estetty, jos vanha tutkinto', async ({
       kansalainenLoginPage,
       kansalainenPage

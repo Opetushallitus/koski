@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useContext, useMemo, useState } from 'react'
 import { ISO2FinnishDate } from '../../date/date'
 import { t } from '../../i18n/i18n'
 import { HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla } from '../../types/fi/oph/koski/schema/HenkilovahvistusValinnaisellaTittelillaJaValinnaisellaPaikkakunnalla'
@@ -33,6 +33,7 @@ import {
 import { FormModel, FormOptic } from '../forms/FormModel'
 import { Trans } from '../texts/Trans'
 import { SuorituksenVahvistusModal } from './SuorituksenVahvistusModal'
+import { OpiskeluoikeusContext } from '../../appstate/opiskeluoikeus'
 
 // Suorituksen vahvitus field
 

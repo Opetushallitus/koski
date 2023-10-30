@@ -40,6 +40,7 @@ import {
   UusiOpiskeluoikeusjakso
 } from './UusiOpiskeluoikeudenTilaModal'
 import { isVapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/VapaanSivistystyonJotpaKoulutuksenOpiskeluoikeusjakso'
+import { FieldErrors } from '../forms/FieldErrors'
 
 type RahoituksellinenOpiskeluoikeusjakso = Extract<
   Opiskeluoikeusjakso,
@@ -159,7 +160,7 @@ export const OpiskeluoikeudenTilaEdit = <T extends OpiskeluoikeudenTila>(
                   isRahoituksellinenOpiskeluoikeusjakso(jakso) && (
                     <>
                       {' '}
-                      <span>
+                      <span {...testId(props, `items.${index}.rahoitus`)}>
                         {'('}
                         {t(jakso.opintojenRahoitus?.nimi)}
                         {')'}
@@ -210,6 +211,7 @@ export const OpiskeluoikeudenTilaEdit = <T extends OpiskeluoikeudenTila>(
           testId={subTestId(props, 'modal')}
         />
       )}
+      <FieldErrors errors={props.errors} />
     </>
   )
 }

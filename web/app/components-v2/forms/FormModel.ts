@@ -113,15 +113,6 @@ export const useForm = <O extends object>(
     dispatch({ type: 'cancel' })
   }, [])
 
-  const updateAt: FormModelProp<'updateAt'> = useCallback(
-    <T>(optic: FormOptic<O, T>, modify: (t: T) => T) => {
-      if (editMode) {
-        dispatch({ type: 'modify', modify: modifyValue(optic)(modify) })
-      }
-    },
-    [editMode]
-  )
-
   const validate: FormModelProp<'validate'> = useCallback(() => {
     if (constraint && editMode) {
       dispatch({ type: 'validate', constraint, rules: validationRules || [] })
@@ -131,6 +122,21 @@ export const useForm = <O extends object>(
   useEffect(() => {
     validate()
   }, [validate])
+
+  const updateAt: FormModelProp<'updateAt'> = useCallback(
+    <T>(optic: FormOptic<O, T>, modify: (t: T) => T) => {
+      if (editMode) {
+        dispatch({
+          type: 'modify',
+          modify: modifyValue(optic)(modify),
+          modifyInitialData: modifiesShape(optic, modify, initialData)
+        })
+        // Validate after modify
+        validate()
+      }
+    },
+    [editMode, initialData, validate]
+  )
 
   const { push: setErrors } = globalErrors
   const save: FormModelProp<'save'> = useCallback(
@@ -216,7 +222,11 @@ const internalInitialState = <O>(
 })
 
 type StartEdit = { type: 'startEdit'; constraint?: Constraint | null }
-type ModifyData<O> = { type: 'modify'; modify: (o: O) => O }
+type ModifyData<O> = {
+  type: 'modify'
+  modify: (o: O) => O
+  modifyInitialData?: boolean
+}
 type Cancel = { type: 'cancel' }
 type EndEdit<O> = { type: 'endEdit'; value: O }
 type Validate = {
@@ -233,10 +243,14 @@ const reducer = <O>(
   switch (action.type) {
     case 'modify': {
       const data = action.modify(state.data)
+      const initialData = action.modifyInitialData
+        ? action.modify(state.initialData)
+        : state.initialData
       return state.editMode
         ? {
             ...state,
             data,
+            initialData,
             hasChanged: state.hasChanged || !deepEqual(state.data, data)
           }
         : state
@@ -318,3 +332,18 @@ const modifyValue =
         return assertNever(optic)
     }
   }
+
+const modifiesShape = <O extends object, T>(
+  optic: FormOptic<O, T>,
+  modify: (t: T) => T,
+  data: O
+): boolean => {
+  const value = getValue(optic)(data)
+  if (Array.isArray(value)) {
+    const result = modify(value)
+    if (!Array.isArray(result) || result.length !== value.length) {
+      return true
+    }
+  }
+  return false
+}

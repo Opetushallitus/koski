@@ -7,8 +7,8 @@ import {
   getValue
 } from '../components-v2/forms/FormModel'
 import {
-  ArvosanaEdit,
-  ArvosanaView
+  ParasArvosanaEdit,
+  ParasArvosanaView
 } from '../components-v2/opiskeluoikeus/ArvosanaField'
 import {
   OsasuoritusProperty,
@@ -56,8 +56,8 @@ export const TpoOsasuoritusProperties: React.FC<
             <FormField
               form={props.form}
               path={props.osasuoritusPath.prop('arviointi')}
-              view={ArvosanaView}
-              edit={ArvosanaEdit}
+              view={ParasArvosanaView}
+              edit={ParasArvosanaEdit}
               editProps={{
                 // @ts-expect-error TypeScript ei tajua, että tämä on oikeasti ok. createTpoArviointi -funktion parametrin tyyppi on väärä.
                 createArviointi: createTpoArviointi

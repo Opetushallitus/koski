@@ -2,7 +2,11 @@ import React, { useCallback } from 'react'
 import { t } from '../../i18n/i18n'
 import { Opiskeluoikeus } from '../../types/fi/oph/koski/schema/Opiskeluoikeus'
 import { useLayout } from '../../util/useDepth'
-import { CommonProps, subTestId } from '../CommonProps'
+import {
+  OsasuorituksetExpandedState,
+  SetOsasuoritusOpen
+} from '../../osasuoritus/hooks'
+import { CommonProps, subTestId, testId } from '../CommonProps'
 import {
   Column,
   ColumnRow,
@@ -19,38 +23,7 @@ import { CHARCODE_REMOVE } from '../texts/Icon'
 
 export const OSASUORITUSTABLE_DEPTH_KEY = 'OsasuoritusTable'
 
-export type ExpandState = {
-  key: string
-  expanded: boolean
-}
-
-export type OsasuorituksetExpandedState = Record<string, boolean>
-
-export const constructOsasuorituksetOpenState = (
-  prevState: Record<string, boolean>,
-  level: number,
-  suoritusIndex: number,
-  osasuoritukset: any[]
-): Record<string, boolean> => {
-  const newState = { ...prevState }
-  osasuoritukset.map((_os, i) => {
-    const key = `level_${level}_suoritus_${suoritusIndex}_osasuoritus_${i}`
-    const existing = newState[key]
-    if (existing === undefined) {
-      newState[key] = false
-    } else {
-      newState[key] = !existing
-    }
-  })
-  return newState
-}
-
 type Completed = (osasuoritusIndex: number) => boolean | undefined
-export type SetOsasuoritusOpen = (key: string, value: boolean) => void
-export type ToggleOsasuoritusOpen = () => void
-
-export type OpenOsasuorituksetHandler = () => void
-export type CloseOsasuorituksetHandler = () => void
 
 export type OsasuoritusTableProps<
   DATA_KEYS extends string,
@@ -123,14 +96,17 @@ export const OsasuoritusTable = <DATA_KEYS extends string, P>(
               )
             }}
             onRemove={onRemoveCb(index)}
-            testId={`suoritukset.${row.suoritusIndex}.taso.${props.level}.osasuoritukset.${row.osasuoritusIndex}`}
+            testId={subTestId(props, `osasuoritukset.${row.osasuoritusIndex}`)}
           />
         )
       })}
       <Spacer />
       {editMode && AddNewOsasuoritusView !== undefined && (
         // @ts-expect-error React.JSX.IntristicAttributes virhe
-        <AddNewOsasuoritusView {...(props.addNewOsasuoritusViewProps || {})} />
+        <AddNewOsasuoritusView
+          testId={subTestId(props, 'addOsasuoritus')}
+          {...(props.addNewOsasuoritusViewProps || {})}
+        />
       )}
       <Spacer />
     </>
@@ -202,7 +178,7 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
                 props.onClickExpand()
               }}
               label={t('Osasuoritus')}
-              testId={subTestId(props, 'expand')}
+              {...testId(props, 'expand')}
             />
           )}
         </Column>
@@ -240,7 +216,9 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
       {expandable && expanded && props.row.content && (
         <LayoutProvider indent={1}>
           <Section testId={subTestId(props, 'properties')}>
-            {props.row.content}
+            {React.cloneElement(props.row.content, {
+              testId: subTestId(props, 'properties')
+            })}
           </Section>
         </LayoutProvider>
       )}
@@ -280,9 +258,8 @@ const getSpans = (dataObj: object, depth?: number, canRemove?: boolean) => {
 
 export const osasuoritusTestId = (
   suoritusIndex: number,
-  levelIndex: number,
   osasuoritusIndex: number,
   subItem?: string
 ): string =>
-  `suoritukset.${suoritusIndex}.taso.${levelIndex}.osasuoritukset.${osasuoritusIndex}` +
+  `suoritukset.${suoritusIndex}.osasuoritukset.${osasuoritusIndex}` +
   (subItem ? `.${subItem}` : '')

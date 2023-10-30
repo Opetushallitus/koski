@@ -8,9 +8,11 @@ export type IdNode =
   | IdNodeObject<string>
   | DynamicNumberIdNode<any>
   | DynamicStringIdNode<any>
+  | ComposedFieldNode<any>
 export type IdNodeObject<K extends string> = { [_ in K]: IdNode }
 export type DynamicNumberIdNode<T extends IdNode> = (index: number) => T
 export type DynamicStringIdNode<T extends IdNode> = (key: string) => T
+export type ComposedFieldNode<T extends IdNode> = (editMode: boolean) => T
 
 export type BuiltIdNode<T extends IdNode> = T extends Control<infer S>
   ? S
@@ -63,12 +65,19 @@ export function build(page: Page, node: IdNode, prefix?: string): any {
     )(node)
   }
   if (typeof node === 'function') {
-    return (index: number | string) => {
+    return (index: number | string | boolean) => {
       return build(
         page,
         // @ts-ignore
         node(index),
-        mergeId(prefix, index.toString())
+        mergeId(
+          prefix,
+          typeof index === 'boolean'
+            ? index
+              ? 'edit'
+              : 'view'
+            : index.toString()
+        )
       )
     }
   }
@@ -83,6 +92,11 @@ export const arrayOf =
 export const objectOf =
   <T extends IdNode>(node: T) =>
   (_key: string): T =>
+    node
+
+export const composedField =
+  <T extends IdNode>(node: T) =>
+  (_editMode: boolean): T =>
     node
 
 const mergeId = (...tokens: Array<string | undefined>): string =>

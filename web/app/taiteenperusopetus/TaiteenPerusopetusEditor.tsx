@@ -19,8 +19,8 @@ import { useRemovePäätasonSuoritus } from '../components-v2/forms/useRemovePaa
 import { AdaptedOpiskeluoikeusEditorProps } from '../components-v2/interoperability/useUiAdapter'
 import { Spacer } from '../components-v2/layout/Spacer'
 import {
-  ArvosanaEdit,
-  ArvosanaView
+  ParasArvosanaEdit,
+  ParasArvosanaView
 } from '../components-v2/opiskeluoikeus/ArvosanaField'
 import {
   LaajuusOpintopisteissäEdit,
@@ -31,13 +31,12 @@ import { OpiskeluoikeusTitle } from '../components-v2/opiskeluoikeus/Opiskeluoik
 import {
   osasuoritusTestId,
   OsasuoritusRowData,
-  OsasuoritusTable,
-  constructOsasuorituksetOpenState,
-  OsasuorituksetExpandedState
+  OsasuoritusTable
 } from '../components-v2/opiskeluoikeus/OsasuoritusTable'
 import { PaikallinenOsasuoritusSelect } from '../components-v2/opiskeluoikeus/PaikallinenOsasuoritusSelect'
 import { SuorituksenVahvistusField } from '../components-v2/opiskeluoikeus/SuorituksenVahvistus'
 import { localize, t } from '../i18n/i18n'
+import { useOsasuorituksetExpand } from '../osasuoritus/hooks'
 import { LaajuusOpintopisteissä } from '../types/fi/oph/koski/schema/LaajuusOpintopisteissa'
 import { PaikallinenKoodi } from '../types/fi/oph/koski/schema/PaikallinenKoodi'
 import { TaiteenPerusopetuksenOpiskeluoikeus } from '../types/fi/oph/koski/schema/TaiteenPerusopetuksenOpiskeluoikeus'
@@ -171,52 +170,13 @@ export const TaiteenPerusopetusEditor: React.FC<
   const suorituksetVahvistettu =
     form.state.suoritukset.filter((s) => Boolean(s.vahvistus)).length >= 2
 
-  const rootLevel = 0
-
-  const [osasuorituksetOpenState, setOsasuorituksetOpenState] =
-    useState<OsasuorituksetExpandedState>({})
-
-  const rootLevelOsasuoritusOpen = Object.entries(osasuorituksetOpenState)
-    .filter(([k, _v]) => k.indexOf('level_0_') === 0)
-    .some(([_key, val]) => val === true)
-
-  /**
-   * Avaa kaikki ylimmän tason osasuoritukset
-   */
-  const openAllOsasuoritukset = useCallback(() => {
-    setOsasuorituksetOpenState((oldState) => {
-      const expandedState = constructOsasuorituksetOpenState(
-        {},
-        rootLevel,
-        päätasonSuoritus.index,
-        päätasonSuoritus.suoritus.osasuoritukset || []
-      )
-      const newExpandedState = Object.entries(expandedState).reduce(
-        (prev, [key, _val]) => {
-          return { ...prev, [key]: true }
-        },
-        expandedState
-      )
-      return newExpandedState
-    })
-  }, [päätasonSuoritus.index, päätasonSuoritus.suoritus.osasuoritukset])
-
-  /**
-   * Sulkee kaikki osasuoritukset
-   */
-  const closeAllOsasuoritukset = useCallback(() => {
-    setOsasuorituksetOpenState({})
-  }, [])
-
-  const setOsasuorituksetStateHandler = useCallback(
-    (key: string, expanded: boolean) => {
-      setOsasuorituksetOpenState((oldState) => ({
-        ...oldState,
-        [key]: expanded
-      }))
-    },
-    []
-  )
+  const {
+    closeAllOsasuoritukset,
+    openAllOsasuoritukset,
+    osasuorituksetOpenState,
+    rootLevelOsasuoritusOpen,
+    setOsasuorituksetStateHandler
+  } = useOsasuorituksetExpand(päätasonSuoritus)
 
   // Render
 
@@ -322,6 +282,7 @@ export const TaiteenPerusopetusEditor: React.FC<
               </RaisedButton>
               <Spacer />
               <OsasuoritusTable
+                testId={päätasonSuoritus.testId}
                 editMode={form.editMode}
                 level={0}
                 openState={osasuorituksetOpenState}
@@ -331,7 +292,6 @@ export const TaiteenPerusopetusEditor: React.FC<
                     osasuoritusToTableRow(
                       form,
                       päätasonSuoritus.path,
-                      0,
                       päätasonSuoritus.index,
                       osasuoritusIndex
                     )
@@ -366,7 +326,6 @@ const osasuoritusToTableRow = (
     TaiteenPerusopetuksenOpiskeluoikeus,
     TaiteenPerusopetuksenPäätasonSuoritus
   >,
-  levelIndex: number,
   suoritusIndex: number,
   osasuoritusIndex: number
 ): OsasuoritusRowData<'Osasuoritus' | 'Laajuus' | 'Arviointi'> => {
@@ -385,12 +344,7 @@ const osasuoritusToTableRow = (
           form={form}
           path={osasuoritus.path('koulutusmoduuli.tunniste.nimi')}
           view={LocalizedTextView}
-          testId={osasuoritusTestId(
-            suoritusIndex,
-            levelIndex,
-            osasuoritusIndex,
-            'nimi'
-          )}
+          testId={osasuoritusTestId(suoritusIndex, osasuoritusIndex, 'nimi')}
         />
       ),
       Laajuus: (
@@ -399,25 +353,22 @@ const osasuoritusToTableRow = (
           path={osasuoritus.path('koulutusmoduuli.laajuus')}
           view={LaajuusView}
           edit={LaajuusOpintopisteissäEdit}
-          testId={osasuoritusTestId(
-            suoritusIndex,
-            levelIndex,
-            osasuoritusIndex,
-            'laajuus'
-          )}
+          testId={osasuoritusTestId(suoritusIndex, osasuoritusIndex, 'laajuus')}
         />
       ),
       Arviointi: (
         <FormField
           form={form}
           path={osasuoritus.prop('arviointi')}
-          view={(props) => <ArvosanaView {...props} />}
+          view={(props) => <ParasArvosanaView {...props} />}
           edit={(props) => (
-            <ArvosanaEdit {...props} createArviointi={createTpoArviointi} />
+            <ParasArvosanaEdit
+              {...props}
+              createArviointi={createTpoArviointi}
+            />
           )}
           testId={osasuoritusTestId(
             suoritusIndex,
-            levelIndex,
             osasuoritusIndex,
             'arvosana'
           )}
@@ -430,7 +381,6 @@ const osasuoritusToTableRow = (
         osasuoritusPath={osasuoritus}
         testId={osasuoritusTestId(
           suoritusIndex,
-          levelIndex,
           osasuoritusIndex,
           'properties'
         )}

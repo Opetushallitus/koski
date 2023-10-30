@@ -15,12 +15,13 @@ import { tapLeftP } from './fp/either'
 import { queryString } from './url'
 import { SuoritetutTutkinnotOppija } from '../types/fi/oph/koski/suoritusjako/suoritetuttutkinnot/SuoritetutTutkinnotOppija'
 import { AktiivisetJaPäättyneetOpinnotOppija } from '../types/fi/oph/koski/suoritusjako/aktiivisetjapaattyneetopinnot/AktiivisetJaPaattyneetOpinnotOppija'
+import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
 
 const apiUrl = (path: string, query?: object): string =>
   `/koski/api/${path}${queryString({ class_refs: 'true', ...query })}`
 
 export const fetchOppija = (oppijaOid: string) =>
-  handleExpiredSession(apiGet<Oppija>(apiUrl(`oppija/${oppijaOid}`)))
+  handleExpiredSession(apiGet<Oppija>(apiUrl(`oppija/${oppijaOid}/uiv2`)))
 
 export const fetchOpiskeluoikeus = (
   opiskeluoikeusOid: string,
@@ -74,6 +75,20 @@ export const deletePäätasonSuoritus = (
 export const fetchKoodistot = (koodistoUris: string[]) =>
   handleExpiredSession(
     apiGet<GroupedKoodistot>(apiUrl(`types/koodisto/${koodistoUris.join(',')}`))
+  )
+
+export const fetchPeruste = (diaarinumero: string) =>
+  handleExpiredSession(
+    apiGet<
+      Omit<
+        Koodistokoodiviite<string, string>,
+        '$class' | 'koodistoVersio' | 'lyhytNimi'
+      >
+    >(
+      apiUrl(
+        `tutkinnonperusteet/diaarinumerot/suorituksentyyppi/${diaarinumero}`
+      )
+    )
   )
 
 export const fetchConstraint = (schemaClass: string) =>

@@ -1,3 +1,3 @@
-FROM opensearchproject/opensearch:1.2.4
+FROM opensearchproject/opensearch:2.10.0
 
 RUN bin/opensearch-plugin install --batch analysis-icu
