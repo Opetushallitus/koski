@@ -86,6 +86,12 @@ class OppijaServlet(implicit val application: KoskiApplication)
     }.flatMap(_.warningsToLeft))
   }
 
+  get("/:oid/uiv2") {
+    renderEither[Oppija](HenkilöOid.validateHenkilöOid(params("oid")).right.flatMap { oid =>
+      application.oppijaFacade.findOppija(oid, useVirta = false, useYtr = false)(session)
+    }.flatMap(_.warningsToLeft))
+  }
+
   get("/:oid/ytr-json") {
     if (!onOikeusNähdäYtrJson) {
       haltWithStatus(KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus())

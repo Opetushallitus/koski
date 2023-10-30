@@ -4,10 +4,12 @@ import {
   ApiMethodHook,
   useApiMethod,
   useMergedApiData,
+  useOnApiError,
   useOnApiSuccess,
   useSafeState
 } from '../../api-fetch'
 import { modelData } from '../../editor/EditorModel'
+import { t } from '../../i18n/i18n'
 import { Contextualized } from '../../types/EditorModelContext'
 import { ObjectModel } from '../../types/EditorModels'
 import { Opiskeluoikeus } from '../../types/fi/oph/koski/schema/Opiskeluoikeus'
@@ -183,6 +185,22 @@ const useUiAdapterImpl = <T extends any[]>(
               />
             )
           : undefined
+      }
+    })
+  })
+
+  useOnApiError(oppija, () => {
+    setAdapter({
+      isLoadingV2: false,
+      getOpiskeluoikeusEditor(opiskeluoikeusModel) {
+        const tyyppi = modelData(opiskeluoikeusModel, 'tyyppi')?.koodiarvo
+        if (Object.keys(opiskeluoikeusEditors).includes(tyyppi)) {
+          return () => (
+            <div className="error">
+              {t('Näkymää ei saada ladattua. Yritä hetken päästä uudelleen.')}
+            </div>
+          )
+        }
       }
     })
   })
