@@ -4,7 +4,7 @@ import React, { useCallback } from 'react'
 import { t } from '../../i18n/i18n'
 import { Laajuus } from '../../types/fi/oph/koski/schema/Laajuus'
 import { LaajuusOpintopisteissä } from '../../types/fi/oph/koski/schema/LaajuusOpintopisteissa'
-import { removeFloatingPointDrift } from '../../util/numbers'
+import { formatNumber, removeFloatingPointDrift } from '../../util/numbers'
 import { CollectableOptic } from '../../util/types'
 import { common, CommonProps, testId } from '../CommonProps'
 import { NumberField } from '../controls/NumberField'
@@ -24,7 +24,7 @@ export const LaajuusView = (props: LaajuusViewProps) => {
   return (
     <span {...common(props)} {...testId(props)}>
       {props.value
-        ? props.value.arvo +
+        ? formatNumber(props.value.arvo) +
           ' ' +
           t(props.value.yksikkö.lyhytNimi || props.value.yksikkö.nimi)
         : '–'}
