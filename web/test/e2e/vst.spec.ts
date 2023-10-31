@@ -152,7 +152,7 @@ test.describe('Vapaa sivistystyö', () => {
           page.getByTestId('suoritukset.0.peruste.value')
         ).toHaveText('OPH-2984-2017')
         await expect(
-          page.getByTestId('suoritukset.0.koulutuksen-laajuus.value')
+          page.getByTestId('suoritukset.0.laajuus.value')
         ).toHaveText('80 op')
 
         const osasuoritukset = [
@@ -1261,7 +1261,7 @@ test.describe('Vapaa sivistystyö', () => {
     })
   })
 
-  test.describe('Muokkanäkymä', () => {
+  test.describe('Muokkausnäkymä', () => {
     const expect = _expect.configure({
       timeout: 2000
     })
@@ -1275,31 +1275,43 @@ test.describe('Vapaa sivistystyö', () => {
 
       test('Uuden osasuorituksen lisäys', async ({ vstOppijaPage }) => {
         const nimi = 'Lopeta turha kiihkoilu'
-        await expect(await vstOppijaPage.osasuoritusOptions()).toEqual([
-          'Lisää osasuoritus'
-        ])
         await vstOppijaPage.addNewOsasuoritus(nimi)
         await expect(await vstOppijaPage.osasuoritusOptions()).toEqual([
           'Lisää osasuoritus',
           nimi
         ])
-        expect(await vstOppijaPage.laajuudetYhteensä()).toEqual('6 op')
+        expect(await vstOppijaPage.suorituksenLaajuus()).toEqual('6 op')
+
+        await vstOppijaPage.tallenna()
+
+        expect(await vstOppijaPage.osasuoritus(1).nimi()).toEqual(nimi)
+        expect(await vstOppijaPage.osasuoritus(1).laajuus()).toEqual('1 op')
+        expect(await vstOppijaPage.suorituksenLaajuus()).toEqual('6 op')
       })
 
       test('Vaihda laajuutta ja arvosanaa', async ({ vstOppijaPage }) => {
         const osasuoritus = vstOppijaPage.osasuoritus(0)
-        await osasuoritus.setLaajuus(3)
+        await osasuoritus.setLaajuus(5)
         await osasuoritus.setVapaatavoitteinenArvosana(4)
 
         expect(await osasuoritus.nimi()).toEqual('Sienestämisen kokonaisuus')
-        expect(await osasuoritus.laajuus()).toEqual('3')
+        expect(await osasuoritus.laajuus()).toEqual('5')
         expect(await osasuoritus.arvosana()).toEqual('4')
 
         await osasuoritus.setSuoritusarvosana(true, true)
 
         expect(await osasuoritus.nimi()).toEqual('Sienestämisen kokonaisuus')
-        expect(await osasuoritus.laajuus()).toEqual('3')
+        expect(await osasuoritus.laajuus()).toEqual('5')
         expect(await osasuoritus.arvosana()).toEqual('Hyväksytty')
+
+        await vstOppijaPage.tallenna()
+
+        const tallennettuOsasuoritus = vstOppijaPage.osasuoritus(0)
+        expect(await tallennettuOsasuoritus.nimi()).toEqual(
+          'Sienestämisen kokonaisuus'
+        )
+        expect(await tallennettuOsasuoritus.laajuus()).toEqual('5 op')
+        expect(await tallennettuOsasuoritus.arvosana()).toEqual('Hyväksytty')
       })
 
       test('Vaihda arvostelun päivämäärää', async ({ vstOppijaPage }) => {
@@ -1307,6 +1319,11 @@ test.describe('Vapaa sivistystyö', () => {
         await osasuoritus.expand()
         await osasuoritus.setArvostelunPvm('1.1.2022')
         expect(await osasuoritus.arvostelunPvm()).toEqual('1.1.2022')
+
+        await vstOppijaPage.tallenna()
+
+        const tallennettuOsasuoritus = vstOppijaPage.osasuoritus(0)
+        expect(await tallennettuOsasuoritus.arvostelunPvm()).toEqual('1.1.2022')
       })
 
       test('Lisää alaosasuoritus', async ({ vstOppijaPage }) => {
@@ -1320,6 +1337,11 @@ test.describe('Vapaa sivistystyö', () => {
           nimi
         ])
         await expect(await osasuoritus.alaosasuoritus(1).nimi()).toEqual(nimi)
+
+        await vstOppijaPage.tallennaVirheellisenä(
+          'Valmiiksi merkityllä suorituksella SK-K (Sienestämisen kokonaisuus) on keskeneräinen osasuoritus Sienien tunnistaminen 2 (Sienien tunnistaminen 2)',
+          'Suorituksen SK-K (Sienestämisen kokonaisuus) osasuoritusten laajuuksien summa 6.0 ei vastaa suorituksen laajuutta 5.0'
+        )
       })
 
       test('Osasuorituksen poisto', async ({ vstOppijaPage }) => {
@@ -1334,6 +1356,10 @@ test.describe('Vapaa sivistystyö', () => {
         // Kärkeen noussut osasuoritus pitäisi olla sama mikä luotiin hetki sitten
         const osasuoritus2 = vstOppijaPage.osasuoritus(0)
         expect(await osasuoritus.nimi()).toEqual(nimi)
+
+        await vstOppijaPage.tallennaVirheellisenä(
+          'Vapaatavoitteisella vapaan sivistystyön koulutuksella tulee olla vähintään yksi arvioitu osasuoritus'
+        )
       })
 
       test('Alaosasuorituksen poisto', async ({ vstOppijaPage }) => {
@@ -1349,6 +1375,11 @@ test.describe('Vapaa sivistystyö', () => {
 
         // Kärkeen noussut alaosasuoritus pitäisi olla sama mikä luotiin hetki sitten
         expect(await osasuoritus.alaosasuoritus(0).nimi()).toEqual(nimi)
+
+        await vstOppijaPage.tallennaVirheellisenä(
+          'Valmiiksi merkityllä suorituksella SK-K (Sienestämisen kokonaisuus) on keskeneräinen osasuoritus Testikurssi (Testikurssi)',
+          'Suorituksen SK-K (Sienestämisen kokonaisuus) osasuoritusten laajuuksien summa 1.0 ei vastaa suorituksen laajuutta 5.0'
+        )
       })
 
       test('Tilan muokkaaminen', async ({ vstOppijaPage }) => {
@@ -1362,6 +1393,11 @@ test.describe('Vapaa sivistystyö', () => {
         await tila.modal.submit.click()
         expect(await tila.items(0).date.value()).toEqual('1.1.2022')
         expect(await tila.items(0).tila.value()).toEqual('Keskeytynyt')
+
+        await vstOppijaPage.tallennaVirheellisenä(
+          'suoritus.vahvistus.päivä (2022-05-31) oltava sama tai aiempi kuin päättymispäivä (2022-01-01)',
+          "Vahvistetulla vapaan sivistystyön vapaatavoitteisella koulutuksella ei voi olla päättävänä tilana 'Keskeytynyt'"
+        )
       })
 
       test('Suorituksen vahvistus', async ({ vstOppijaPage }) => {
@@ -1380,6 +1416,10 @@ test.describe('Vapaa sivistystyö', () => {
           'Reijo',
           'Rehtori',
           '1.1.2023'
+        )
+
+        await vstOppijaPage.tallennaVirheellisenä(
+          'lessThanMinimumNumberOfItems: opiskeluoikeudet.0.tila.opiskeluoikeusjaksot'
         )
       })
     })
@@ -1416,9 +1456,17 @@ test.describe('Vapaa sivistystyö', () => {
           await kokonaisuus.setLaajuus(2)
           expect(await kokonaisuus.laajuus()).toEqual('2')
         })
-        expect(await vstOppijaPage.laajuudetYhteensä()).toEqual(
+        expect(await vstOppijaPage.suorituksenLaajuus()).toEqual(
           `${Object.values(kokonaisuudet).length * 2} op`
         )
+
+        await vstOppijaPage.tallenna()
+
+        await foreachAsync(Object.values(kokonaisuudet))(async (nimi, i) => {
+          const kokonaisuus = vstOppijaPage.osasuoritus(i)
+          expect(await kokonaisuus.nimi()).toEqual(nimi)
+          expect(await kokonaisuus.laajuus()).toEqual('2 op')
+        })
       })
 
       test('Vaihda laajuutta, arvosanaa ja taitotasoa', async ({
@@ -1444,6 +1492,13 @@ test.describe('Vapaa sivistystyö', () => {
         expect(await osasuoritus.laajuus()).toEqual('20')
         expect(await osasuoritus.arvosana()).toEqual('Hyväksytty')
         expect(await osasuoritus.taitotaso()).toEqual('C1.1')
+
+        await vstOppijaPage.tallenna()
+
+        const tallennettu = vstOppijaPage.osasuoritus(0)
+        expect(await tallennettu.laajuus()).toEqual('20 op')
+        expect(await tallennettu.arvosana()).toEqual('Hyväksytty')
+        expect(await tallennettu.taitotaso()).toEqual('C1.1')
       })
 
       test('Vaihda arvostelun päivämäärää', async ({ vstOppijaPage }) => {
@@ -1451,6 +1506,11 @@ test.describe('Vapaa sivistystyö', () => {
         await osasuoritus.expand()
         await osasuoritus.setArvostelunPvm('1.1.2022')
         expect(await osasuoritus.arvostelunPvm()).toEqual('1.1.2022')
+
+        await vstOppijaPage.tallenna()
+
+        const tallennettu = vstOppijaPage.osasuoritus(0)
+        expect(await tallennettu.arvostelunPvm()).toEqual('1.1.2022')
       })
 
       test('Tilan muokkaaminen', async ({ vstOppijaPage }) => {
@@ -1463,6 +1523,8 @@ test.describe('Vapaa sivistystyö', () => {
         expect(await tila.items(0).tila.value()).toEqual('Läsnä')
         expect(await tila.items(1).date.value()).toEqual('1.1.2023')
         expect(await tila.items(1).tila.value()).toEqual('Valmistunut')
+
+        await vstOppijaPage.tallenna()
       })
 
       test('Suorituksen vahvistus', async ({ vstOppijaPage }) => {
@@ -1478,6 +1540,10 @@ test.describe('Vapaa sivistystyö', () => {
           'Reijo',
           'Rehtori',
           '1.1.2023'
+        )
+
+        await vstOppijaPage.tallennaVirheellisenä(
+          'lessThanMinimumNumberOfItems: opiskeluoikeudet.0.tila.opiskeluoikeusjaksot'
         )
       })
     })
@@ -1515,8 +1581,14 @@ test.describe('Vapaa sivistystyö', () => {
             expect(await osasuoritus.laajuus()).toEqual('2')
           }
         )
+
         expect(await vstOppijaPage.laajuudetYhteensä()).toEqual(
           `${Object.values(osaamiskokonaisuudet).length * 2} op`
+        )
+
+        await vstOppijaPage.tallennaVirheellisenä(
+          'Päätason suoritus koulutus/999909 on vahvistettu, mutta sillä ei ole 53 opintopisteen edestä hyväksytyksi arvioituja suorituksia',
+          'Päätason suoritus koulutus/999909 on vahvistettu, mutta sillä on hyväksytyksi arvioituja osaamiskokonaisuuksia, joiden laajuus on alle 4 opintopistettä'
         )
       })
 
@@ -1554,6 +1626,10 @@ test.describe('Vapaa sivistystyö', () => {
             expect(await kokonaisuus.laajuus()).toEqual(`${i + 1}`)
           }
         )
+
+        await vstOppijaPage.tallennaVirheellisenä(
+          'Päätason suoritus koulutus/999909 on vahvistettu, mutta sillä ei ole 53 opintopisteen edestä hyväksytyksi arvioituja suorituksia'
+        )
       })
 
       test('Paikallisen suuntautumisopinnon lisäys', async ({
@@ -1579,6 +1655,26 @@ test.describe('Vapaa sivistystyö', () => {
         expect(await paikallinen.nimi()).toEqual('Työelämäharjoittelu')
         expect(await paikallinen.laajuus()).toEqual('3')
         expect(await paikallinen.arvosana()).toEqual('Hyväksytty')
+
+        await vstOppijaPage.tallennaVirheellisenä(
+          'Päätason suoritus koulutus/999909 on vahvistettu, mutta sillä ei ole 53 opintopisteen edestä hyväksytyksi arvioituja suorituksia'
+        )
+      })
+
+      test('Osaamiskokonaisuuden lisäys olemassaolevaan opintokokonaisuuteen', async ({
+        vstOppijaPage
+      }) => {
+        const osaamiskokonaisuus = vstOppijaPage.osasuoritus(0)
+        await osaamiskokonaisuus.expand()
+        await osaamiskokonaisuus.addPaikallinenOpintokokonaisuus('Testi')
+
+        const opintokokonaisuus = osaamiskokonaisuus.alaosasuoritus(0)
+        await opintokokonaisuus.setLaajuus(3)
+        expect(await opintokokonaisuus.laajuus()).toEqual('3')
+        await opintokokonaisuus.setSuoritusarvosana(true)
+        expect(await opintokokonaisuus.arvosana()).toEqual('Hyväksytty')
+
+        await vstOppijaPage.tallenna()
       })
 
       test('Vaihda laajuutta ja arvosanaa', async ({ vstOppijaPage }) => {
@@ -1591,6 +1687,13 @@ test.describe('Vapaa sivistystyö', () => {
 
         await osasuoritus.expand()
         await osasuoritus.alaosasuoritus(0).setLaajuus(5)
+
+        await vstOppijaPage.tallenna()
+
+        const tallennettu = vstOppijaPage.osasuoritus(0)
+        expect(await tallennettu.nimi()).toEqual(
+          'Arjen taidot ja elämänhallinta'
+        )
       })
 
       test('Alaosasuorituksen poisto', async ({ vstOppijaPage }) => {
@@ -1600,6 +1703,10 @@ test.describe('Vapaa sivistystyö', () => {
         expect(await head.nimi()).toEqual('Arjen rahankäyttö')
         await head.delete()
         expect(await head.nimi()).toEqual('Mielen liikkeet')
+
+        await vstOppijaPage.tallennaVirheellisenä(
+          'Päätason suoritus koulutus/999909 on vahvistettu, mutta sillä on hyväksytyksi arvioituja osaamiskokonaisuuksia, joiden laajuus on alle 4 opintopistettä'
+        )
       })
 
       test('Tilan muokkaaminen', async ({ vstOppijaPage }) => {
@@ -1615,6 +1722,8 @@ test.describe('Vapaa sivistystyö', () => {
         expect(await tila.items(1).date.value()).toEqual('1.1.2023')
         expect(await tila.items(1).tila.value()).toEqual('Valmistunut')
         expect(await tila.add.isVisible()).toBeFalsy()
+
+        await vstOppijaPage.tallenna()
       })
 
       test('Suorituksen vahvistus', async ({ vstOppijaPage }) => {
@@ -1630,6 +1739,10 @@ test.describe('Vapaa sivistystyö', () => {
           'Reijo',
           'Rehtori',
           '1.1.2023'
+        )
+
+        await vstOppijaPage.tallennaVirheellisenä(
+          'lessThanMinimumNumberOfItems: opiskeluoikeudet.0.tila.opiskeluoikeusjaksot'
         )
       })
     })
@@ -1670,7 +1783,13 @@ test.describe('Vapaa sivistystyö', () => {
             }
           }
         )
-        expect(await vstOppijaPage.laajuudetYhteensä()).toEqual('10 op')
+        expect(await vstOppijaPage.suorituksenLaajuus()).toEqual('10 op')
+
+        await vstOppijaPage.tallennaVirheellisenä(
+          'Kielten ja viestinnän osasuoritusta ei voi hyväksyä ennen kuin kaikki pakolliset alaosasuoritukset on arvioitu',
+          'Oppiaineen laajuus puuttuu',
+          'Oppiaineen laajuus puuttuu'
+        )
       })
 
       test('Kieli- ja viestintäosaamisen muokkaaminen', async ({
@@ -1707,6 +1826,18 @@ test.describe('Vapaa sivistystyö', () => {
             expect(await alaosasuoritus.arvosana()).toEqual('A1.1')
           }
         )
+
+        await vstOppijaPage.tallenna()
+
+        const tallennettu = vstOppijaPage.osasuoritus(0)
+        await foreachAsync(Object.entries(kieliopinnot))(
+          async ([koodi, nimi], i) => {
+            const alaosasuoritus = tallennettu.alaosasuoritus(i)
+            expect(await alaosasuoritus.nimi()).toEqual(nimi)
+            expect(await alaosasuoritus.laajuus()).toEqual(`${i + 1} op`)
+            expect(await alaosasuoritus.arvosana()).toEqual('A1.1')
+          }
+        )
       })
 
       test('Yhteiskunta- ja työelämäosaaminen', async ({ vstOppijaPage }) => {
@@ -1736,6 +1867,17 @@ test.describe('Vapaa sivistystyö', () => {
             expect(await alaosasuoritus.laajuus()).toEqual(`${i + 1}`)
           }
         )
+
+        await vstOppijaPage.tallenna()
+
+        const tallennettu = vstOppijaPage.osasuoritus(1)
+        await foreachAsync(Object.values(yhteiskuntaopinnot))(
+          async (nimi, i) => {
+            const alaosasuoritus = tallennettu.alaosasuoritus(i)
+            expect(await alaosasuoritus.nimi()).toEqual(nimi)
+            expect(await alaosasuoritus.laajuus()).toEqual(`${i + 1} op`)
+          }
+        )
       })
 
       test('Valinnaiset opinnot', async ({ vstOppijaPage }) => {
@@ -1753,6 +1895,13 @@ test.describe('Vapaa sivistystyö', () => {
         await alaosasuoritus.expand()
         await alaosasuoritus.setKuvaus('Toimii')
         expect(await alaosasuoritus.kuvaus()).toEqual('Toimii')
+
+        await vstOppijaPage.tallenna()
+
+        const tallennettu = vstOppijaPage.osasuoritus(3).alaosasuoritus(0)
+        expect(await tallennettu.nimi()).toEqual('Testaaminen')
+        expect(await tallennettu.laajuus()).toEqual('10 op')
+        expect(await tallennettu.kuvaus()).toEqual('Toimii')
       })
 
       test('Tilan muokkaaminen', async ({ vstOppijaPage }) => {
@@ -1770,13 +1919,27 @@ test.describe('Vapaa sivistystyö', () => {
         expect(await tila.items(1).date.value()).toEqual('1.1.2023')
         expect(await tila.items(1).tila.value()).toEqual('Valmistunut')
         expect(await tila.add.isVisible()).toBeFalsy()
+
+        await vstOppijaPage.tallennaVirheellisenä(
+          'Suoritukselta koulutus/999910 puuttuu vahvistus, vaikka opiskeluoikeus on tilassa Valmistunut',
+          'Kielten ja viestinnän osasuoritusta ei voi hyväksyä ennen kuin kaikki pakolliset alaosasuoritukset on arvioitu',
+          "Oppiaineen 'Yhteiskunta- ja työelämäosaaminen' suoritettu laajuus liian suppea (12.0 op, pitäisi olla vähintään 20.0 op)",
+          "Oppiaineen 'Työssäoppiminen' suoritettu laajuus liian suppea (4.0 op, pitäisi olla vähintään 8.0 op)"
+        )
       })
 
       test('Perusteen vaihtaminen', async ({ vstOppijaPage }) => {
+        await vstOppijaPage.setPeruste('OPH-123-2021')
+        expect(await vstOppijaPage.peruste()).toEqual(
+          'OPH-123-2021 Aikuisten maahanmuuttajien kotoutumiskoulutuksen opetussuunnitelman perusteet 2012'
+        )
+
         await vstOppijaPage.setPeruste('OPH-649-2022')
         expect(await vstOppijaPage.peruste()).toEqual(
           'OPH-649-2022 Aikuisten maahanmuuttajien kotoutumiskoulutuksen opetussuunnitelman perusteet 2012'
         )
+
+        await vstOppijaPage.tallenna()
       })
 
       test('Suorituksen vahvistus', async ({ vstOppijaPage }) => {
@@ -1790,6 +1953,13 @@ test.describe('Vapaa sivistystyö', () => {
           'Reijo',
           'Rehtori',
           '1.1.2023'
+        )
+
+        await vstOppijaPage.tallennaVirheellisenä(
+          'Kielten ja viestinnän osasuoritusta ei voi hyväksyä ennen kuin kaikki pakolliset alaosasuoritukset on arvioitu',
+          "Oppiaineen 'Yhteiskunta- ja työelämäosaaminen' suoritettu laajuus liian suppea (12.0 op, pitäisi olla vähintään 20.0 op)",
+          "Oppiaineen 'Työssäoppiminen' suoritettu laajuus liian suppea (4.0 op, pitäisi olla vähintään 8.0 op)",
+          "Oppiaineen 'Ohjaus' suoritettu laajuus liian suppea (4.0 op, pitäisi olla vähintään 7.0 op)"
         )
       })
     })
@@ -1829,6 +1999,15 @@ test.describe('Vapaa sivistystyö', () => {
           ...osasuoritukset
         ])
         expect(await vstOppijaPage.laajuudetYhteensä()).toEqual('6 op')
+
+        await vstOppijaPage.tallenna()
+
+        await foreachAsync(osasuoritukset)(async (nimi, i) => {
+          const osasuoritus = vstOppijaPage.osasuoritus(i)
+          expect(await osasuoritus.nimi()).toEqual(nimi)
+          expect(await osasuoritus.laajuus()).toEqual(`${i + 1} op`)
+          expect(await osasuoritus.arvosana()).toEqual('Hyväksytty')
+        })
       })
 
       test('Tilan muokkaaminen', async ({ vstOppijaPage }) => {
@@ -1862,6 +2041,10 @@ test.describe('Vapaa sivistystyö', () => {
           '(Jatkuvan oppimisen ja työllisyyden palvelukeskuksen rahoitus)'
         )
         expect(await tila.add.isVisible()).toBeFalsy()
+
+        await vstOppijaPage.tallennaVirheellisenä(
+          "Vahvistamattomalla jatkuvaan oppimiseen suunnatulla vapaan sivistystyön koulutuksella ei voi olla päättävänä tilana 'Hyväksytysti suoritettu'"
+        )
       })
 
       test('Suorituksen vahvistus', async ({ vstOppijaPage }) => {
@@ -1889,6 +2072,8 @@ test.describe('Vapaa sivistystyö', () => {
         expect(
           await vstOppijaPage.isMerkitseKeskeneräiseksiDisabled()
         ).toBeTruthy()
+
+        await vstOppijaPage.tallenna()
       })
     })
   })

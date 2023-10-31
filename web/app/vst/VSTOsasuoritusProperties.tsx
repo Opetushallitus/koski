@@ -764,7 +764,6 @@ export const osasuoritusToTableRow = ({
         path={osasuoritus.path('arviointi')}
         view={ParasArvosanaView}
         edit={(arvosanaProps) => {
-          console.log('arvosanaProps', arvosanaProps)
           if (osasuoritusValue === undefined) {
             return null
           }

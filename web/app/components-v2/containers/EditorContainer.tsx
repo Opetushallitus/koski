@@ -199,7 +199,11 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
       <div key={suoritusIndex}>{props.children}</div>
 
       <EditBar form={props.form} onSave={onSave} />
-      {props.form.isSaved && <Snackbar>{'Tallennettu'}</Snackbar>}
+      {props.form.isSaved && (
+        <Snackbar testId="opiskeluoikeus.saveSnackbar">
+          {'Tallennettu'}
+        </Snackbar>
+      )}
     </article>
   )
 }

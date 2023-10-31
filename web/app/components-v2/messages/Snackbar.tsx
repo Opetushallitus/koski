@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
 import { Trans } from '../texts/Trans'
+import { CommonProps, testId } from '../CommonProps'
 
-export type SnackbarProps = {
+export type SnackbarProps = CommonProps<{
   timeout?: number
   children: string | LocalizedString
-}
+}>
 
 export const Snackbar: React.FC<SnackbarProps> = (props) => {
   const [visible, setVisible] = useState(true)
@@ -15,7 +16,11 @@ export const Snackbar: React.FC<SnackbarProps> = (props) => {
   }, [props.timeout])
 
   return visible ? (
-    <aside className="Snackbar" onClick={() => setVisible(false)}>
+    <aside
+      className="Snackbar"
+      onClick={() => setVisible(false)}
+      {...testId(props)}
+    >
       <Trans>{props.children}</Trans>
     </aside>
   ) : null

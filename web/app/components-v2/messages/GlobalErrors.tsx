@@ -10,7 +10,7 @@ export const GlobalErrors: React.FC = () => {
     <div className="GlobalErrors">
       <ContentContainer>
         <div className="GlobalErrors__container">
-          <ul className="GlobalErrors__list">
+          <ul className="GlobalErrors__list" data-testid="globalErrors">
             {state.errors.map((error, index) => (
               <li className="GlobalErrors__message" key={index}>
                 {error.message}

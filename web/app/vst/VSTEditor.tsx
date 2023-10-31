@@ -17,8 +17,8 @@ import { FormOptic, useForm } from '../components-v2/forms/FormModel'
 import { AdaptedOpiskeluoikeusEditorProps } from '../components-v2/interoperability/useUiAdapter'
 import { Spacer } from '../components-v2/layout/Spacer'
 import {
-  LaajuusEdit,
-  LaajuusView
+  LaajuusView,
+  laajuusSum
 } from '../components-v2/opiskeluoikeus/LaajuusField'
 import {
   OpintokokonaisuusEdit,
@@ -47,18 +47,13 @@ import {
 import { Trans } from '../components-v2/texts/Trans'
 import { Infobox } from '../components/Infobox'
 import { t } from '../i18n/i18n'
-import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
-import { LaajuusOpintopisteissä } from '../types/fi/oph/koski/schema/LaajuusOpintopisteissa'
-import { OppivelvollisilleSuunnatunVapaanSivistystyönOsasuoritus } from '../types/fi/oph/koski/schema/OppivelvollisilleSuunnatunVapaanSivistystyonOsasuoritus'
-import { VSTKotoutumiskoulutuksenKokonaisuudenOsasuoritus2022 } from '../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenKokonaisuudenOsasuoritus2022'
+import { Arviointi } from '../types/fi/oph/koski/schema/Arviointi'
 import { VSTKotoutumiskoulutuksenOhjauksenSuoritus2022 } from '../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenOhjauksenSuoritus2022'
-import { VapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonJotpaKoulutuksenOsasuorituksenSuoritus'
-import { VapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonLukutaitokoulutuksenKokonaisuudenSuoritus'
-import { VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKokonaisuudenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenKokonaisuudenSuoritus'
 import { VapaanSivistystyönOpiskeluoikeus } from '../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeus'
 import { VapaanSivistystyönPäätasonSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonPaatasonSuoritus'
-import { VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus'
+import { parasArviointi } from '../util/arvioinnit'
 import { append } from '../util/fp/arrays'
+import { formatNumber, sum } from '../util/numbers'
 import { useOsasuorituksetExpand } from './../osasuoritus/hooks'
 import { VSTLisatiedot } from './VSTLisatiedot'
 import {
@@ -81,10 +76,6 @@ import {
   isPerusteellinenVSTKoulutusmoduuli,
   isVSTOsasuoritusArvioinnilla
 } from './typeguards'
-import { parasArviointi } from '../util/arvioinnit'
-import { Arviointi } from '../types/fi/oph/koski/schema/Arviointi'
-import { formatNumber, sum } from '../util/numbers'
-import { pipe } from 'fp-ts/lib/function'
 
 type VSTEditorProps =
   AdaptedOpiskeluoikeusEditorProps<VapaanSivistystyönOpiskeluoikeus>
@@ -304,11 +295,7 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
           {isLaajuuksellinenVSTKoulutusmoduuli(
             päätasonSuoritus.suoritus.koulutusmoduuli
           ) && (
-            <KeyValueRow
-              label="Laajuus"
-              indent={2}
-              testId={`${päätasonSuoritus.testId}.koulutuksen-laajuus`}
-            >
+            <KeyValueRow label="Laajuus" indent={2}>
               <FormField
                 form={form}
                 path={päätasonSuoritus.path
@@ -316,17 +303,14 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
                   .guard(isLaajuuksellinenVSTKoulutusmoduuli)
                   .prop('laajuus')}
                 view={LaajuusView}
-                edit={LaajuusEdit}
-                editProps={{
-                  createLaajuus: (arvo: number) =>
-                    LaajuusOpintopisteissä({
-                      arvo,
-                      yksikkö: Koodistokoodiviite({
-                        koodistoUri: 'opintojenlaajuusyksikko',
-                        koodiarvo: '2'
-                      })
-                    })
-                }}
+                auto={laajuusSum(
+                  päätasonSuoritus.path
+                    .prop('osasuoritukset')
+                    .elems()
+                    .path('koulutusmoduuli.laajuus'),
+                  form.state
+                )}
+                testId={`${päätasonSuoritus.testId}.laajuus`}
               />
             </KeyValueRow>
           )}

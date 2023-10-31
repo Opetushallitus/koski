@@ -70,6 +70,10 @@ export class KoskiVSTOppijaPage extends KoskiOppijaPageV2<
     await this.$.suoritukset(0).osasuoritukset(index).delete.click()
   }
 
+  async suorituksenLaajuus() {
+    return this.$.suoritukset(0).laajuus.value()
+  }
+
   async laajuudetYhteensä() {
     return this.$.suoritukset(0).yhteensa.value()
   }
@@ -186,7 +190,7 @@ export class VSTOsasuoritus {
   async arvostelunPvm() {
     return this.osasuoritus.properties
       .arviointi(0)
-      [this.editMode ? 'edit' : 'view'].päivä.value()
+      [this.editMode ? 'edit' : 'value'].päivä.value()
   }
 
   async setKuvaus(kuvaus: string) {
@@ -266,7 +270,7 @@ const VapaanSivistystyönOsasuoritusTestIds = (_index: number) => ({
   nimi: FormField(Label),
   properties: {
     arviointi: arrayOf({
-      view: {
+      value: {
         arvosana: Label,
         päivä: Label
       },
@@ -297,6 +301,7 @@ const VapaanSivistystyönTestIds = {
     peruste: {
       koulutusmoduuli: FormField(Label, Select)
     },
+    laajuus: FormField(Label),
 
     suorituksenVahvistus: SuorituksenVahvistus(),
     expand: Button,
