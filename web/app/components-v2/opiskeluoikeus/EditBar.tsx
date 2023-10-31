@@ -29,11 +29,17 @@ export const EditBar = <T extends object>(props: EditBarProps<T>) => {
   return props.form.editMode ? (
     <FooterBar>
       <ButtonGroup>
-        <FlatButton onClick={cancel} testId="opiskeluoikeus.cancelEdit">
+        <FlatButton
+          disabled={props.form.pending}
+          onClick={cancel}
+          testId="opiskeluoikeus.cancelEdit"
+        >
           {'Peruuta'}
         </FlatButton>
         <RaisedButton
-          disabled={!props.form.hasChanged || !props.form.isValid}
+          disabled={
+            props.form.pending || !props.form.hasChanged || !props.form.isValid
+          }
           onClick={save}
           testId="opiskeluoikeus.save"
         >

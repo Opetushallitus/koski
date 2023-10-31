@@ -20,6 +20,8 @@ export type FormModel<O extends object> = {
   readonly initialState: O
   // Muokkaustila päällä/pois
   readonly editMode: boolean
+  // Onko muokkausten tallennus kesken
+  readonly pending: boolean
   // Lomakkeelle on tehty muutoksia
   readonly hasChanged: boolean
   // Tiedot on tallennettu viimeisimmän muokkaustilaan siirtymisen jälkeen
@@ -35,6 +37,16 @@ export type FormModel<O extends object> = {
    * Aseta lomake muokkaustilaan
    */
   readonly startEdit: () => void
+
+  /**
+   * Asettaa lomakkeen pending-tilaan esim. API operaatioiden ajaksi
+   */
+  readonly startPending: () => void
+
+  /**
+   * Ottaa lomakkeen pois pending-tilasta esim. kun API-operaatiot ovat valmistuneet.
+   */
+  readonly endPending: () => void
 
   /**
    * Päivitä lomakkeen tietoja polun määrittelemästä paikasta.
@@ -97,7 +109,7 @@ export const useForm = <O extends object>(
   )
 
   const [
-    { data, initialData, editMode, hasChanged, isSaved, errors },
+    { data, initialData, editMode, hasChanged, isSaved, errors, pending },
     dispatch
   ] = useReducer<Reducer<InternalFormState<O>, Action<O>>>(reducer, init)
 
@@ -111,6 +123,13 @@ export const useForm = <O extends object>(
 
   const cancel: FormModelProp<'cancel'> = useCallback(() => {
     dispatch({ type: 'cancel' })
+  }, [])
+
+  const startPending: FormModelProp<'startPending'> = useCallback(() => {
+    dispatch({ type: 'startPending' })
+  }, [])
+  const endPending: FormModelProp<'endPending'> = useCallback(() => {
+    dispatch({ type: 'endPending' })
   }, [])
 
   const validate: FormModelProp<'validate'> = useCallback(() => {
@@ -146,20 +165,23 @@ export const useForm = <O extends object>(
     ) => {
       if (editMode) {
         clearErrors()
+        // Asetetaan UI pending-tilaan, jolla mahdollistetaan käyttöliittymäelementtien disablointi.
+        startPending()
         pipe(
           await api(data),
-          tap((response) =>
+          tap((response) => {
             dispatch({ type: 'endEdit', value: merge(response.data)(data) })
-          ),
-          tapLeft((errorResponse) =>
+          }),
+          tapLeft((errorResponse) => {
+            endPending()
             setErrors(
               errorResponse.errors.map((e) => ({ message: t(e.messageKey) }))
             )
-          )
+          })
         )
       }
     },
-    [clearErrors, data, editMode, setErrors]
+    [clearErrors, data, editMode, endPending, setErrors, startPending]
   )
 
   const root: FormModelProp<'root'> = useMemo(() => $.optic_<O>(), [])
@@ -174,6 +196,9 @@ export const useForm = <O extends object>(
       isValid: A.isEmpty(errors),
       root,
       startEdit,
+      pending,
+      startPending,
+      endPending,
       updateAt,
       validate,
       save,
@@ -189,6 +214,9 @@ export const useForm = <O extends object>(
       errors,
       root,
       startEdit,
+      pending,
+      startPending,
+      endPending,
       updateAt,
       validate,
       save,
@@ -201,6 +229,7 @@ type InternalFormState<O> = {
   initialData: O
   data: O
   editMode: boolean
+  pending: boolean
   hasChanged: boolean
   isSaved: boolean
   errors: ValidationError[]
@@ -215,12 +244,16 @@ const internalInitialState = <O>(
   data: initialState,
   editMode: startWithEditMode,
   hasChanged: false,
+  pending: false,
   isSaved: false,
   errors:
     constraint && startWithEditMode
       ? validateData(initialState, constraint)
       : []
 })
+
+type StartPending = { type: 'startPending' }
+type EndPending = { type: 'endPending' }
 
 type StartEdit = { type: 'startEdit'; constraint?: Constraint | null }
 type ModifyData<O> = {
@@ -235,7 +268,14 @@ type Validate = {
   constraint?: Constraint
   rules: ValidationRule[]
 }
-type Action<O> = StartEdit | ModifyData<O> | Cancel | EndEdit<O> | Validate
+type Action<O> =
+  | StartEdit
+  | ModifyData<O>
+  | Cancel
+  | EndEdit<O>
+  | Validate
+  | StartPending
+  | EndPending
 
 const reducer = <O>(
   state: InternalFormState<O>,
@@ -282,6 +322,16 @@ const reducer = <O>(
         editMode: false,
         isSaved: true,
         errors: []
+      }
+    case 'startPending':
+      return {
+        ...state,
+        pending: true
+      }
+    case 'endPending':
+      return {
+        ...state,
+        pending: false
       }
     case 'validate': {
       const schemaErrors = action.constraint
