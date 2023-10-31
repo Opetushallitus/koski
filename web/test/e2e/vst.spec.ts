@@ -1283,6 +1283,10 @@ test.describe('Vapaa sivistystyö', () => {
         expect(await vstOppijaPage.suorituksenLaajuus()).toEqual('6 op')
 
         await vstOppijaPage.tallenna()
+
+        expect(await vstOppijaPage.osasuoritus(1).nimi()).toEqual(nimi)
+        expect(await vstOppijaPage.osasuoritus(1).laajuus()).toEqual('1 op')
+        expect(await vstOppijaPage.suorituksenLaajuus()).toEqual('6 op')
       })
 
       test('Vaihda laajuutta ja arvosanaa', async ({ vstOppijaPage }) => {
@@ -1301,6 +1305,13 @@ test.describe('Vapaa sivistystyö', () => {
         expect(await osasuoritus.arvosana()).toEqual('Hyväksytty')
 
         await vstOppijaPage.tallenna()
+
+        const tallennettuOsasuoritus = vstOppijaPage.osasuoritus(0)
+        expect(await tallennettuOsasuoritus.nimi()).toEqual(
+          'Sienestämisen kokonaisuus'
+        )
+        expect(await tallennettuOsasuoritus.laajuus()).toEqual('5 op')
+        expect(await tallennettuOsasuoritus.arvosana()).toEqual('Hyväksytty')
       })
 
       test('Vaihda arvostelun päivämäärää', async ({ vstOppijaPage }) => {
@@ -1310,6 +1321,9 @@ test.describe('Vapaa sivistystyö', () => {
         expect(await osasuoritus.arvostelunPvm()).toEqual('1.1.2022')
 
         await vstOppijaPage.tallenna()
+
+        const tallennettuOsasuoritus = vstOppijaPage.osasuoritus(0)
+        expect(await tallennettuOsasuoritus.arvostelunPvm()).toEqual('1.1.2022')
       })
 
       test('Lisää alaosasuoritus', async ({ vstOppijaPage }) => {
@@ -1447,6 +1461,12 @@ test.describe('Vapaa sivistystyö', () => {
         )
 
         await vstOppijaPage.tallenna()
+
+        await foreachAsync(Object.values(kokonaisuudet))(async (nimi, i) => {
+          const kokonaisuus = vstOppijaPage.osasuoritus(i)
+          expect(await kokonaisuus.nimi()).toEqual(nimi)
+          expect(await kokonaisuus.laajuus()).toEqual('2 op')
+        })
       })
 
       test('Vaihda laajuutta, arvosanaa ja taitotasoa', async ({
@@ -1474,6 +1494,11 @@ test.describe('Vapaa sivistystyö', () => {
         expect(await osasuoritus.taitotaso()).toEqual('C1.1')
 
         await vstOppijaPage.tallenna()
+
+        const tallennettu = vstOppijaPage.osasuoritus(0)
+        expect(await tallennettu.laajuus()).toEqual('20 op')
+        expect(await tallennettu.arvosana()).toEqual('Hyväksytty')
+        expect(await tallennettu.taitotaso()).toEqual('C1.1')
       })
 
       test('Vaihda arvostelun päivämäärää', async ({ vstOppijaPage }) => {
@@ -1483,6 +1508,9 @@ test.describe('Vapaa sivistystyö', () => {
         expect(await osasuoritus.arvostelunPvm()).toEqual('1.1.2022')
 
         await vstOppijaPage.tallenna()
+
+        const tallennettu = vstOppijaPage.osasuoritus(0)
+        expect(await tallennettu.arvostelunPvm()).toEqual('1.1.2022')
       })
 
       test('Tilan muokkaaminen', async ({ vstOppijaPage }) => {
@@ -1661,6 +1689,11 @@ test.describe('Vapaa sivistystyö', () => {
         await osasuoritus.alaosasuoritus(0).setLaajuus(5)
 
         await vstOppijaPage.tallenna()
+
+        const tallennettu = vstOppijaPage.osasuoritus(0)
+        expect(await tallennettu.nimi()).toEqual(
+          'Arjen taidot ja elämänhallinta'
+        )
       })
 
       test('Alaosasuorituksen poisto', async ({ vstOppijaPage }) => {
@@ -1795,6 +1828,16 @@ test.describe('Vapaa sivistystyö', () => {
         )
 
         await vstOppijaPage.tallenna()
+
+        const tallennettu = vstOppijaPage.osasuoritus(0)
+        await foreachAsync(Object.entries(kieliopinnot))(
+          async ([koodi, nimi], i) => {
+            const alaosasuoritus = tallennettu.alaosasuoritus(i)
+            expect(await alaosasuoritus.nimi()).toEqual(nimi)
+            expect(await alaosasuoritus.laajuus()).toEqual(`${i + 1} op`)
+            expect(await alaosasuoritus.arvosana()).toEqual('A1.1')
+          }
+        )
       })
 
       test('Yhteiskunta- ja työelämäosaaminen', async ({ vstOppijaPage }) => {
@@ -1826,6 +1869,15 @@ test.describe('Vapaa sivistystyö', () => {
         )
 
         await vstOppijaPage.tallenna()
+
+        const tallennettu = vstOppijaPage.osasuoritus(1)
+        await foreachAsync(Object.values(yhteiskuntaopinnot))(
+          async (nimi, i) => {
+            const alaosasuoritus = tallennettu.alaosasuoritus(i)
+            expect(await alaosasuoritus.nimi()).toEqual(nimi)
+            expect(await alaosasuoritus.laajuus()).toEqual(`${i + 1} op`)
+          }
+        )
       })
 
       test('Valinnaiset opinnot', async ({ vstOppijaPage }) => {
@@ -1845,6 +1897,11 @@ test.describe('Vapaa sivistystyö', () => {
         expect(await alaosasuoritus.kuvaus()).toEqual('Toimii')
 
         await vstOppijaPage.tallenna()
+
+        const tallennettu = vstOppijaPage.osasuoritus(3).alaosasuoritus(0)
+        expect(await tallennettu.nimi()).toEqual('Testaaminen')
+        expect(await tallennettu.laajuus()).toEqual('10 op')
+        expect(await tallennettu.kuvaus()).toEqual('Toimii')
       })
 
       test('Tilan muokkaaminen', async ({ vstOppijaPage }) => {
@@ -1944,6 +2001,13 @@ test.describe('Vapaa sivistystyö', () => {
         expect(await vstOppijaPage.laajuudetYhteensä()).toEqual('6 op')
 
         await vstOppijaPage.tallenna()
+
+        await foreachAsync(osasuoritukset)(async (nimi, i) => {
+          const osasuoritus = vstOppijaPage.osasuoritus(i)
+          expect(await osasuoritus.nimi()).toEqual(nimi)
+          expect(await osasuoritus.laajuus()).toEqual(`${i + 1} op`)
+          expect(await osasuoritus.arvosana()).toEqual('Hyväksytty')
+        })
       })
 
       test('Tilan muokkaaminen', async ({ vstOppijaPage }) => {

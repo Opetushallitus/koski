@@ -190,7 +190,7 @@ export class VSTOsasuoritus {
   async arvostelunPvm() {
     return this.osasuoritus.properties
       .arviointi(0)
-      [this.editMode ? 'edit' : 'view'].päivä.value()
+      [this.editMode ? 'edit' : 'value'].päivä.value()
   }
 
   async setKuvaus(kuvaus: string) {
@@ -270,7 +270,7 @@ const VapaanSivistystyönOsasuoritusTestIds = (_index: number) => ({
   nimi: FormField(Label),
   properties: {
     arviointi: arrayOf({
-      view: {
+      value: {
         arvosana: Label,
         päivä: Label
       },
