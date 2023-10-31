@@ -87,7 +87,7 @@ class PostgresKoskiOpiskeluoikeusRepositoryActions(
       case Right(aiemmatOpiskeluoikeudet) if vastaavanRinnakkaisenOpiskeluoikeudenLisääminenSallittu(opiskeluoikeus, aiemmatOpiskeluoikeudet) =>
         createAction(oppijaOid, opiskeluoikeus)
       case Right(_) =>
-        DBIO.successful(Left(KoskiErrorCategory.conflict.exists()))
+        DBIO.successful(Left(KoskiErrorCategory.conflict.exists("Vastaava opiskeluoikeus on jo olemassa.")))
       case Left(err) =>
         DBIO.successful(Left(err))
     }
