@@ -18,7 +18,8 @@ import { AdaptedOpiskeluoikeusEditorProps } from '../components-v2/interoperabil
 import { Spacer } from '../components-v2/layout/Spacer'
 import {
   LaajuusEdit,
-  LaajuusView
+  LaajuusView,
+  laajuusSum
 } from '../components-v2/opiskeluoikeus/LaajuusField'
 import {
   OpintokokonaisuusEdit,
@@ -85,6 +86,7 @@ import { parasArviointi } from '../util/arvioinnit'
 import { Arviointi } from '../types/fi/oph/koski/schema/Arviointi'
 import { formatNumber, sum } from '../util/numbers'
 import { pipe } from 'fp-ts/lib/function'
+import { subTestId } from '../components-v2/CommonProps'
 
 type VSTEditorProps =
   AdaptedOpiskeluoikeusEditorProps<VapaanSivistystyönOpiskeluoikeus>
@@ -304,11 +306,7 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
           {isLaajuuksellinenVSTKoulutusmoduuli(
             päätasonSuoritus.suoritus.koulutusmoduuli
           ) && (
-            <KeyValueRow
-              label="Laajuus"
-              indent={2}
-              testId={`${päätasonSuoritus.testId}.koulutuksen-laajuus`}
-            >
+            <KeyValueRow label="Laajuus" indent={2}>
               <FormField
                 form={form}
                 path={päätasonSuoritus.path
@@ -316,17 +314,14 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
                   .guard(isLaajuuksellinenVSTKoulutusmoduuli)
                   .prop('laajuus')}
                 view={LaajuusView}
-                edit={LaajuusEdit}
-                editProps={{
-                  createLaajuus: (arvo: number) =>
-                    LaajuusOpintopisteissä({
-                      arvo,
-                      yksikkö: Koodistokoodiviite({
-                        koodistoUri: 'opintojenlaajuusyksikko',
-                        koodiarvo: '2'
-                      })
-                    })
-                }}
+                auto={laajuusSum(
+                  päätasonSuoritus.path
+                    .prop('osasuoritukset')
+                    .elems()
+                    .path('koulutusmoduuli.laajuus'),
+                  form.state
+                )}
+                testId={`${päätasonSuoritus.testId}.laajuus`}
               />
             </KeyValueRow>
           )}

@@ -70,6 +70,10 @@ export class KoskiVSTOppijaPage extends KoskiOppijaPageV2<
     await this.$.suoritukset(0).osasuoritukset(index).delete.click()
   }
 
+  async suorituksenLaajuus() {
+    return this.$.suoritukset(0).laajuus.value()
+  }
+
   async laajuudetYhteensä() {
     return this.$.suoritukset(0).yhteensa.value()
   }
@@ -297,6 +301,7 @@ const VapaanSivistystyönTestIds = {
     peruste: {
       koulutusmoduuli: FormField(Label, Select)
     },
+    laajuus: FormField(Label),
 
     suorituksenVahvistus: SuorituksenVahvistus(),
     expand: Button,
