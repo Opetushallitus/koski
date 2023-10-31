@@ -83,7 +83,7 @@ class PostgresKoskiOpiskeluoikeusRepositoryActions(
       case Right(Nil) =>
         createAction(oppijaOid, opiskeluoikeus)
       case Right(aiemmatOpiskeluoikeudet) if allowUpdate =>
-        updateAction(oppijaOid, opiskeluoikeus, identifier, aiemmatOpiskeluoikeudet, allowDeleteCompleted)
+        updateIfUnambiguousAiempiOpiskeluoikeusAction(oppijaOid, opiskeluoikeus, identifier, aiemmatOpiskeluoikeudet, allowDeleteCompleted)
       case Right(aiemmatOpiskeluoikeudet) if vastaavanRinnakkaisenOpiskeluoikeudenLisääminenSallittu(opiskeluoikeus, aiemmatOpiskeluoikeudet) =>
         createAction(oppijaOid, opiskeluoikeus)
       case Right(_) =>
@@ -93,7 +93,7 @@ class PostgresKoskiOpiskeluoikeusRepositoryActions(
     }
   }
 
-  private def updateAction(
+  private def updateIfUnambiguousAiempiOpiskeluoikeusAction(
     oppijaOid: PossiblyUnverifiedHenkilöOid,
     opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
     identifier: OpiskeluoikeusIdentifier,
@@ -106,7 +106,7 @@ class PostgresKoskiOpiskeluoikeusRepositoryActions(
           s"Olemassaolevan opiskeluoikeuden päivitystä ilman tunnistetta ei tueta. Päivitettävä opiskeluoikeus-oid: ${aiemmatOpiskeluoikeudet.map(_.oid).mkString(", ")}. Päivittävä tunniste: ${id.copy(oppijaOid = "****")}"
         )))
       case (_, List(vanhaOpiskeluoikeus)) =>
-        updateAction(oppijaOid, vanhaOpiskeluoikeus, opiskeluoikeus, allowDeleteCompleted)
+        updateIfSameOppijaAction(oppijaOid, vanhaOpiskeluoikeus, opiskeluoikeus, allowDeleteCompleted)
       case _ =>
         DBIO.successful(Left(KoskiErrorCategory.conflict.löytyiEnemmänKuinYksiRivi(s"Löytyi enemmän kuin yksi rivi päivitettäväksi (${aiemmatOpiskeluoikeudet.map(_.oid)})")))
     }

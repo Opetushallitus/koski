@@ -195,7 +195,7 @@ trait PostgresOpiskeluoikeusRepositoryActions[OOROW <: OpiskeluoikeusRow, OOTABL
     }
   }
 
-  protected def updateAction(
+  protected def updateIfSameOppijaAction(
     oppijaOid: PossiblyUnverifiedHenkilöOid,
     oldRow: OOROW,
     uusiOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,

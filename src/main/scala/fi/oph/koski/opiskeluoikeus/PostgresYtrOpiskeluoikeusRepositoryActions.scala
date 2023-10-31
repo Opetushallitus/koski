@@ -56,7 +56,7 @@ class PostgresYtrOpiskeluoikeusRepositoryActions(
         case Right(Nil) =>
           createAction(oppijaOid, opiskeluoikeus)
         case Right(aiemmatOpiskeluoikeudet) if allowUpdate =>
-          updateAction(oppijaOid, opiskeluoikeus, aiemmatOpiskeluoikeudet, allowDeleteCompleted)
+          updateIfUnambiguousAiempiOpiskeluoikeusAction(oppijaOid, opiskeluoikeus, aiemmatOpiskeluoikeudet, allowDeleteCompleted)
         case Right(_) =>
           DBIO.successful(Left(KoskiErrorCategory.conflict.exists())) // Ei tehdä uutta, koska vastaava vanha YO-opiskeluoikeus on olemassa
         case Left(err) =>
@@ -64,7 +64,7 @@ class PostgresYtrOpiskeluoikeusRepositoryActions(
       }
   }
 
-  private def updateAction(
+  private def updateIfUnambiguousAiempiOpiskeluoikeusAction(
     oppijaOid: PossiblyUnverifiedHenkilöOid,
     opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
     aiemmatOpiskeluoikeudet: List[YtrOpiskeluoikeusRow],
@@ -72,7 +72,7 @@ class PostgresYtrOpiskeluoikeusRepositoryActions(
   )(implicit user: KoskiSpecificSession): DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write with Transactional] = {
     aiemmatOpiskeluoikeudet match {
       case List(vanhaOpiskeluoikeus) =>
-        updateAction(oppijaOid, vanhaOpiskeluoikeus, opiskeluoikeus, allowDeleteCompleted)
+        updateIfSameOppijaAction(oppijaOid, vanhaOpiskeluoikeus, opiskeluoikeus, allowDeleteCompleted)
       case _ =>
         DBIO.successful(Left(KoskiErrorCategory.conflict.löytyiEnemmänKuinYksiRivi(s"Löytyi enemmän kuin yksi rivi päivitettäväksi (${aiemmatOpiskeluoikeudet.map(_.oid)})")))
     }
