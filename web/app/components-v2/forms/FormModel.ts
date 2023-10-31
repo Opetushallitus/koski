@@ -138,13 +138,14 @@ export const useForm = <O extends object>(
     [editMode, initialData, validate]
   )
 
-  const { push: setErrors } = globalErrors
+  const { push: setErrors, clearAll: clearErrors } = globalErrors
   const save: FormModelProp<'save'> = useCallback(
     async <T>(
       api: (data: O) => Promise<ApiResponse<T>>,
       merge: (response: T) => (data: O) => O
     ) => {
       if (editMode) {
+        clearErrors()
         pipe(
           await api(data),
           tap((response) =>
@@ -158,7 +159,7 @@ export const useForm = <O extends object>(
         )
       }
     },
-    [data, editMode, setErrors]
+    [clearErrors, data, editMode, setErrors]
   )
 
   const root: FormModelProp<'root'> = useMemo(() => $.optic_<O>(), [])
