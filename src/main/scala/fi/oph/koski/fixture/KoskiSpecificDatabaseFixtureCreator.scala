@@ -133,11 +133,6 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
           )
         )
       )),
-      (KoskiSpecificMockOppijat.deprecatedEuropeanSchoolOfHelsinki, validESHOpiskeluoikeus.copy(
-        suoritukset = validESHOpiskeluoikeus.suoritukset ++ List(
-          ExamplesEuropeanSchoolOfHelsinki.eb
-        )
-      )),
     )
   }
 

@@ -55,17 +55,15 @@ describe('EB-tutkinto', function () {
         before(
           addOppija.submitAndExpectSuccessModal(
             'Eurooppalainen, Eeva (100906A5544)',
-            'EB-tutkinto (European Baccalaureate)'
+            'European Baccalaureate'
           )
         )
 
         it('Lisätty opiskeluoikeus näytetään', function () {
-          expect(opinnot.getTutkinto()).to.equal(
-            'EB-tutkinto (European Baccalaureate)'
-          )
+          expect(opinnot.getTutkinto()).to.equal('European Baccalaureate')
           expect(
             extractAsText(S("[data-testid='koulutusmoduuli-value']"))
-          ).to.deep.equal('EB-tutkinto (European Baccalaureate) 2023')
+          ).to.deep.equal('European Baccalaureate 2023')
           expect(opinnot.getOppilaitos()).to.equal(
             'Helsingin eurooppalainen koulu'
           )

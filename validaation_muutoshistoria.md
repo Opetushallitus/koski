@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 31.10.2023
+
+- Päivitetty validaatiot ottamaan huomioon EB-tutkinnon poistuminen ESH-opiskeluoikeudesta
+
 ## 26.10.2023
 
 - Sallittu samana päivänäkin alkavat keskeneräiset VST JOTPA -opiskeluoikeudet

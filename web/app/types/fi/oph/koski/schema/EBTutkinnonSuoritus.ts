@@ -12,7 +12,7 @@ import { HenkilövahvistusPaikkakunnalla } from './HenkilovahvistusPaikkakunnall
  */
 export type EBTutkinnonSuoritus = {
   $class: 'fi.oph.koski.schema.EBTutkinnonSuoritus'
-  tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'ebtutkinto2'>
+  tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'ebtutkinto'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
   todistuksellaNäkyvätLisätiedot?: LocalizedString
   yleisarvosana?: number
@@ -23,7 +23,7 @@ export type EBTutkinnonSuoritus = {
 }
 
 export const EBTutkinnonSuoritus = (o: {
-  tyyppi?: Koodistokoodiviite<'suorituksentyyppi', 'ebtutkinto2'>
+  tyyppi?: Koodistokoodiviite<'suorituksentyyppi', 'ebtutkinto'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
   todistuksellaNäkyvätLisätiedot?: LocalizedString
   yleisarvosana?: number
@@ -33,7 +33,7 @@ export const EBTutkinnonSuoritus = (o: {
   vahvistus?: HenkilövahvistusPaikkakunnalla
 }): EBTutkinnonSuoritus => ({
   tyyppi: Koodistokoodiviite({
-    koodiarvo: 'ebtutkinto2',
+    koodiarvo: 'ebtutkinto',
     koodistoUri: 'suorituksentyyppi'
   }),
   $class: 'fi.oph.koski.schema.EBTutkinnonSuoritus',

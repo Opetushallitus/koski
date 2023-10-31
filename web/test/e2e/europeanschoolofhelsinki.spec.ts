@@ -255,69 +255,6 @@ test.describe('European School of Helsinki', () => {
         await eshOppijaPage.expectSuoritusUrl(vuosiluokka, '')
         await expect(eshOppijaPage.muokkausNäkymäBtn).toBeVisible()
       })
-
-      // Vanhan EB-tutkinnon editointi ei enää toimi, koska tietomalli korvataan uudella erillisellä. Tätä ei kuitenkaan
-      // ole tarkoituksenmukaista nyt korjata, koska tarkoitus on poistaa vanha tietomallihaara kokonaan.
-      test.skip('EB-tutkinto', async ({ page, eshOppijaPage }) => {
-        test.slow()
-        await eshOppijaPage.poistaSuoritus('European Baccalaureate', 'S7')
-
-        await eshOppijaPage.poistaViimeisinTila()
-
-        await eshOppijaPage.lisääEBTutkinnonSuoritus()
-
-        const yleisarvosanaInput = page
-          .getByTestId('yleisarvosana-value')
-          .locator('input[type="text"]')
-        await yleisarvosanaInput.click()
-        await yleisarvosanaInput.fill('7,77')
-
-        const firstLanguageOsasuoritus = await eshOppijaPage.lisääOsasuoritus(
-          'First language'
-        )
-        await firstLanguageOsasuoritus.valitseKieli('englanti')
-        await firstLanguageOsasuoritus.valitseSuorituskieli('englanti')
-        await firstLanguageOsasuoritus.syötäLaajuus('3')
-
-        const mathematicsOsasuoritus = await eshOppijaPage.lisääOsasuoritus(
-          'Mathematics'
-        )
-
-        await mathematicsOsasuoritus.valitseSuorituskieli('aimara')
-        await mathematicsOsasuoritus.syötäLaajuus('6')
-
-        await eshOppijaPage.avaaKaikkiOsasuoritukset()
-
-        await (
-          await firstLanguageOsasuoritus.lisääOsasuoritus('Preliminary')
-        ).valitseArvosana('6.4')
-        await (
-          await firstLanguageOsasuoritus.lisääOsasuoritus('Written')
-        ).valitseArvosana('6.98')
-        await (
-          await firstLanguageOsasuoritus.lisääOsasuoritus('Oral')
-        ).valitseArvosana('8.91')
-        await (
-          await firstLanguageOsasuoritus.lisääOsasuoritus('Final')
-        ).valitseArvosana('7.44')
-        await (
-          await mathematicsOsasuoritus.lisääOsasuoritus('Final')
-        ).valitseArvosana('7.44')
-
-        await eshOppijaPage.vahvistaSuoritus('1.1.2020')
-
-        await eshOppijaPage.opiskeluoikeudenTila.lisääTila(
-          '31.5.2024',
-          'Valmistunut'
-        )
-
-        await eshOppijaPage.tallenna()
-        await eshOppijaPage.expectSuoritusUrl(
-          'EB-tutkinto\\%20\\(European\\%20Baccalaureate\\)',
-          ''
-        )
-        await expect(eshOppijaPage.muokkausNäkymäBtn).toBeVisible()
-      })
     })
 
     test.describe('Primary-vuosiluokan suoritukset', () => {

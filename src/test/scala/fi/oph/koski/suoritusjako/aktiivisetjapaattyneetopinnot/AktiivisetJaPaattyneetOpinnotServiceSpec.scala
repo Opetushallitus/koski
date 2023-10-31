@@ -374,7 +374,7 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
       val ooIlmanSecondaryUpperSuorituksia = alkuperäinenOo
         .withSuoritukset(
         alkuperäinenOo.suoritukset.collect {
-          case s if !s.isInstanceOf[schema.SecondaryUpperVuosiluokanSuoritus] && !s.isInstanceOf[schema.DeprecatedEBTutkinnonSuoritus] && s.koulutusmoduuli.tunniste.koodiarvo != "S5" => s
+          case s if !s.isInstanceOf[schema.SecondaryUpperVuosiluokanSuoritus] && s.koulutusmoduuli.tunniste.koodiarvo != "S5" => s
         }
       )
 

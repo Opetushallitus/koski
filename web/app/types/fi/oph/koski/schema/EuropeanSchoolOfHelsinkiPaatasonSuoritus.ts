@@ -1,8 +1,4 @@
 import {
-  DeprecatedEBTutkinnonSuoritus,
-  isDeprecatedEBTutkinnonSuoritus
-} from './DeprecatedEBTutkinnonSuoritus'
-import {
   NurseryVuosiluokanSuoritus,
   isNurseryVuosiluokanSuoritus
 } from './NurseryVuosiluokanSuoritus'
@@ -25,7 +21,6 @@ import {
  * @see `fi.oph.koski.schema.EuropeanSchoolOfHelsinkiPäätasonSuoritus`
  */
 export type EuropeanSchoolOfHelsinkiPäätasonSuoritus =
-  | DeprecatedEBTutkinnonSuoritus
   | NurseryVuosiluokanSuoritus
   | PrimaryVuosiluokanSuoritus
   | SecondaryLowerVuosiluokanSuoritus
@@ -34,7 +29,6 @@ export type EuropeanSchoolOfHelsinkiPäätasonSuoritus =
 export const isEuropeanSchoolOfHelsinkiPäätasonSuoritus = (
   a: any
 ): a is EuropeanSchoolOfHelsinkiPäätasonSuoritus =>
-  isDeprecatedEBTutkinnonSuoritus(a) ||
   isNurseryVuosiluokanSuoritus(a) ||
   isPrimaryVuosiluokanSuoritus(a) ||
   isSecondaryLowerVuosiluokanSuoritus(a) ||

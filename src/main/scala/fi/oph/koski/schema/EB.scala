@@ -49,8 +49,8 @@ case class EBTutkinnonSuoritus(
   toimipiste: OrganisaatioWithOid,
   vahvistus: Option[HenkilövahvistusPaikkakunnalla],
   @Title("Koulutus")
-  @KoodistoKoodiarvo("ebtutkinto2")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("ebtutkinto2", "suorituksentyyppi"),
+  @KoodistoKoodiarvo("ebtutkinto")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("ebtutkinto", "suorituksentyyppi"),
   @Tooltip("Todistuksella näkyvät lisätiedot. Esimerkiksi vuosiluokan sanallinen yleisarviointi.")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
@@ -63,6 +63,16 @@ case class EBTutkinnonSuoritus(
   with Toimipisteellinen
   with Arvioinniton
   with SisältääTodistuksellaNäkyvätLisätiedot
+
+@Title("EB-tutkinto")
+case class EBTutkinto(
+  @KoodistoUri("koulutus")
+  @KoodistoKoodiarvo("301104")
+  tunniste: Koodistokoodiviite = Koodistokoodiviite("301104", "koulutus"),
+  @KoodistoKoodiarvo("21")
+  koulutustyyppi: Option[Koodistokoodiviite] = None,
+  curriculum: Koodistokoodiviite = Koodistokoodiviite("2023", "europeanschoolofhelsinkicurriculum")
+) extends KoulutustyypinSisältäväEuropeanSchoolOfHelsinkiPäätasonKoulutusmoduuli
 
 @Title("EB-tutkinnon osasuoritus")
 case class EBTutkinnonOsasuoritus(

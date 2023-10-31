@@ -47,7 +47,7 @@ export const eshSuorituksenTyyppi = {
 }
 
 export const ebSuorituksenTyyppi = {
-  ebtutkinto: 'ebtutkinto2'
+  ebtutkinto: 'ebtutkinto'
 }
 
 /**
@@ -56,8 +56,6 @@ export const ebSuorituksenTyyppi = {
 export const eshSuorituksenClass = {
   nursery: 'nurseryvuosiluokansuoritus',
   primary: 'primaryvuosiluokansuoritus',
-  ebtutkinto: 'deprecatedebtutkinnonsuoritus',
-  ebtutkintoOsasuoritus: 'deprecatedebtutkinnonosasuoritus',
   secondaryLowerVuosiluokka: 'secondarylowervuosiluokansuoritus',
   secondaryLowerOppiaine: 'secondaryloweroppiaineensuoritus',
   secondaryUpperOppiaine: 'secondaryupperoppiaineensuoritus',
@@ -95,12 +93,6 @@ export const suoritusTyyppi = (koulutusmoduulinTunniste) => {
   if (secondaryUpper.includes(koulutusmoduulinTunniste.koodiarvo)) {
     return eshSuorituksenTyyppi.secondaryUpper
   }
-  if (
-    koulutusmoduulinTunniste.koodistoUri === 'koulutus' &&
-    koulutusmoduulinTunniste.koodiarvo === '301104'
-  ) {
-    return eshSuorituksenTyyppi.ebtutkinto
-  }
 
   throw new Error(`suoritusTyyppi not found for ${koulutusmoduulinTunniste}`)
 }
@@ -119,8 +111,6 @@ export const suoritusPrototypeKey = (
         return eshSuorituksenClass.secondaryLowerVuosiluokka
       case eshSuorituksenTyyppi.secondaryUpper:
         return eshSuorituksenClass.secondaryUpperVuosiluokka
-      case eshSuorituksenTyyppi.ebtutkinto:
-        return eshSuorituksenClass.ebtutkinto
       default:
         throw new Error(
           `suoritusProtypeKey not found for ${opiskeluoikeudenTyyppi}, ${suorituksenTyyppi}`

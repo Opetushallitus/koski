@@ -15,14 +15,6 @@ import {
   isDIAOppiaineenValmistavanVaiheenLukukaudenArviointi
 } from './DIAOppiaineenValmistavanVaiheenLukukaudenArviointi'
 import {
-  DeprecatedEBTutkintoFinalMarkArviointi,
-  isDeprecatedEBTutkintoFinalMarkArviointi
-} from './DeprecatedEBTutkintoFinalMarkArviointi'
-import {
-  DeprecatedEBTutkintoPreliminaryMarkArviointi,
-  isDeprecatedEBTutkintoPreliminaryMarkArviointi
-} from './DeprecatedEBTutkintoPreliminaryMarkArviointi'
-import {
   EBTutkintoFinalMarkArviointi,
   isEBTutkintoFinalMarkArviointi
 } from './EBTutkintoFinalMarkArviointi'
@@ -220,8 +212,6 @@ export type Arviointi =
   | DIAOppiaineenTutkintovaiheenNumeerinenArviointi
   | DIAOppiaineenTutkintovaiheenSuoritusmerkintäArviointi
   | DIAOppiaineenValmistavanVaiheenLukukaudenArviointi
-  | DeprecatedEBTutkintoFinalMarkArviointi
-  | DeprecatedEBTutkintoPreliminaryMarkArviointi
   | EBTutkintoFinalMarkArviointi
   | EuropeanSchoolOfHelsinkiOsasuoritusArviointi
   | IBCASOppiaineenArviointi
@@ -277,8 +267,6 @@ export const isArviointi = (a: any): a is Arviointi =>
   isDIAOppiaineenTutkintovaiheenNumeerinenArviointi(a) ||
   isDIAOppiaineenTutkintovaiheenSuoritusmerkintäArviointi(a) ||
   isDIAOppiaineenValmistavanVaiheenLukukaudenArviointi(a) ||
-  isDeprecatedEBTutkintoFinalMarkArviointi(a) ||
-  isDeprecatedEBTutkintoPreliminaryMarkArviointi(a) ||
   isEBTutkintoFinalMarkArviointi(a) ||
   isEuropeanSchoolOfHelsinkiOsasuoritusArviointi(a) ||
   isIBCASOppiaineenArviointi(a) ||

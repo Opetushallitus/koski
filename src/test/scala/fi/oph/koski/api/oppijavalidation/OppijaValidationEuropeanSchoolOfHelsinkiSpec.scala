@@ -37,16 +37,6 @@ class OppijaValidationEuropeanSchoolOfHelsinkiSpec
     }
   }
 
-  "Example-opiskeluoikeutta ei voida kirjoittaa tietokantaan EB-tutkinnon kanssa" in {
-    val ebOpiskeluoikeus = defaultOpiskeluoikeus.copy(
-      suoritukset = defaultOpiskeluoikeus.suoritukset ++
-        List(ExamplesEuropeanSchoolOfHelsinki.eb)
-    )
-    putOpiskeluoikeus(ebOpiskeluoikeus, henkilö = oppija) {
-      verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.esh.mukanaEB())
-    }
-  }
-
   "Koulutustyyppi" - {
     "Täydennetään" in {
       val putOo = defaultOpiskeluoikeus.copy(
@@ -396,14 +386,6 @@ class OppijaValidationEuropeanSchoolOfHelsinkiSpec
     implicit val accessType = AccessType.write
     mockKoskiValidator(config).updateFieldsAndValidateAsJson(oppija)
       .left.get should equal(KoskiErrorCategory.badRequest.validation.esh.päättymispäivä(s"Helsingin eurooppalaisen koulun tallennettavat opiskeluoikeudet eivät voi olla päättyneet ennen lain voimaantuloa ${finnishDateFormat.format(päättymispäivänjälkeinenPäivä)}"))
-  }
-
-  "EB-tutkinnon sisältävän ESH-opiskeluoikeuden voi mitätöidä, vaikka se ei validoidu" in {
-    val mitätöity = mitätöityOpiskeluoikeus(ExamplesEuropeanSchoolOfHelsinki.validoitumatonEBTutkinnonSisältäväOpiskeluoikeus)
-
-    putOpiskeluoikeus(mitätöity, KoskiSpecificMockOppijat.deprecatedEuropeanSchoolOfHelsinki) {
-      verifyResponseStatusOk()
-    }
   }
 
   def mockKoskiValidator(config: Config) = {
