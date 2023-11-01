@@ -130,33 +130,6 @@
     "withinCodeElements": [],
     "includesCodeElements": [],
     "levelsWithCodeElements": [],
-    "koodiUri": "europeanschoolofhelsinkimuuoppiaine_chepra",
-    "versio": 1,
-    "koodiArvo": "CHEpra"
-  },
-  {
-    "metadata": [
-      {
-        "nimi": "Practical Chemistry",
-        "kuvaus": null,
-        "lyhytNimi": "Practical Chemistry",
-        "kieli": "FI"
-      },
-      {
-        "nimi": null,
-        "kuvaus": null,
-        "kieli": "SV"
-      },
-      {
-        "nimi": "Practical Chemistry",
-        "kuvaus": null,
-        "lyhytNimi": "Practical Chemistry",
-        "kieli": "EN"
-      }
-    ],
-    "withinCodeElements": [],
-    "includesCodeElements": [],
-    "levelsWithCodeElements": [],
     "koodiUri": "europeanschoolofhelsinkimuuoppiaine_chpra",
     "versio": 1,
     "koodiArvo": "CHpra"
