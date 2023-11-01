@@ -1276,7 +1276,8 @@ test.describe('Vapaa sivistystyö', () => {
       test('Uuden osasuorituksen lisäys', async ({ vstOppijaPage }) => {
         const nimi = 'Lopeta turha kiihkoilu'
         await vstOppijaPage.addNewOsasuoritus(nimi)
-        await expect(await vstOppijaPage.osasuoritusOptions()).toEqual([
+
+        expect(await vstOppijaPage.osasuoritusOptions()).toEqual([
           'Lisää osasuoritus',
           nimi
         ])
@@ -1332,7 +1333,7 @@ test.describe('Vapaa sivistystyö', () => {
         await osasuoritus.expand()
         await osasuoritus.addNewAlaosasuoritus(nimi)
 
-        await expect(await osasuoritus.alaosasuoritusOptions()).toEqual([
+        expect(await osasuoritus.alaosasuoritusOptions()).toEqual([
           'Lisää osasuoritus',
           nimi
         ])
@@ -1443,7 +1444,7 @@ test.describe('Vapaa sivistystyö', () => {
       ) => repeatAsync(4)(() => vstOppijaPage.removeOsasuoritus(0))
 
       test('Uusien kokonaisuuksien lisäys', async ({ vstOppijaPage }) => {
-        await expect(await vstOppijaPage.osasuoritusOptions()).toEqual(
+        expect(await vstOppijaPage.osasuoritusOptions()).toEqual(
           Object.values(kokonaisuudet)
         )
         await poistaKaikkiKokonaisuudet(vstOppijaPage)
@@ -1567,7 +1568,7 @@ test.describe('Vapaa sivistystyö', () => {
 
       test('Osaamiskokonaisuuksien lisäys', async ({ vstOppijaPage }) => {
         await poistaKaikkiOsasuoritukset(vstOppijaPage)
-        await expect(await vstOppijaPage.osasuoritusOptions()).toEqual(
+        expect(await vstOppijaPage.osasuoritusOptions()).toEqual(
           Object.values(osaamiskokonaisuudet)
         )
         for (const koodi of Object.keys(osaamiskokonaisuudet)) {
@@ -1604,7 +1605,7 @@ test.describe('Vapaa sivistystyö', () => {
         }
 
         await poistaKaikkiOsasuoritukset(vstOppijaPage)
-        await expect(await vstOppijaPage.suuntautumisopinnotOptions()).toEqual([
+        expect(await vstOppijaPage.suuntautumisopinnotOptions()).toEqual([
           'Valinnaiset suuntautumisopinnot'
         ])
 
@@ -1636,7 +1637,7 @@ test.describe('Vapaa sivistystyö', () => {
         vstOppijaPage
       }) => {
         await poistaKaikkiOsasuoritukset(vstOppijaPage)
-        await expect(await vstOppijaPage.suuntautumisopinnotOptions()).toEqual([
+        expect(await vstOppijaPage.suuntautumisopinnotOptions()).toEqual([
           'Valinnaiset suuntautumisopinnot'
         ])
 
@@ -1765,7 +1766,7 @@ test.describe('Vapaa sivistystyö', () => {
         vstOppijaPage
       }) => {
         await poistaKaikkiOsasuoritukset(vstOppijaPage)
-        await expect(await vstOppijaPage.osasuoritusOptions()).toEqual(
+        expect(await vstOppijaPage.osasuoritusOptions()).toEqual(
           Object.values(osasuoritukset)
         )
         await foreachAsync(Object.entries(osasuoritukset))(
