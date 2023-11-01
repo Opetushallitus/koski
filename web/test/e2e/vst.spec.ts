@@ -1612,7 +1612,7 @@ test.describe('Vapaa sivistystyö', () => {
         await vstOppijaPage.addSuuntautumisopinto()
         const suuntautumisopinto = vstOppijaPage.osasuoritus(0)
 
-        await suuntautumisopinto.expand()
+        expect(await suuntautumisopinto.isExpanded()).toBeTruthy()
         await foreachAsync(Object.keys(muuallaSuoritutetutOpinnot))((koodi) =>
           suuntautumisopinto.addAlaosasuoritus(koodi)
         )
