@@ -3,7 +3,7 @@ package fi.oph.koski.api.misc
 import fi.oph.koski.henkilo.OppijaHenkilö
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koodisto.{KoodistoViitePalvelu, MockKoodistoViitePalvelu}
-import fi.oph.koski.koskiuser.{KoskiSpecificSession, UserWithPassword}
+import fi.oph.koski.koskiuser.{KoskiSpecificSession, MockUsers, UserWithPassword}
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema._
 import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}
@@ -13,7 +13,7 @@ import org.json4s.jackson.JsonMethods
 import scala.language.implicitConversions
 import scala.reflect.runtime.universe.TypeTag
 
-trait PutOpiskeluoikeusTestMethods[Oikeus <: Opiskeluoikeus] extends OpiskeluoikeusTestMethods with OpiskeluoikeusData[Oikeus] {
+trait PutOpiskeluoikeusTestMethods[Oikeus <: Opiskeluoikeus] extends OpiskeluoikeusTestMethods with OpiskeluoikeusData[Oikeus] with SearchTestMethods {
   private implicit val context: ExtractionContext = strictDeserialization
 
   def tag: TypeTag[Oikeus]
@@ -25,8 +25,69 @@ trait PutOpiskeluoikeusTestMethods[Oikeus <: Opiskeluoikeus] extends Opiskeluoik
 
   implicit def oppijaHenkilöToHenkilöJaOid(o: OppijaHenkilö): HenkilötiedotJaOid = o.toHenkilötiedotJaOid
 
+  def putAndGetOpiskeluoikeus[T <: Opiskeluoikeus](oo: T, henkilö: Henkilö = defaultHenkilö, headers: Headers = authHeaders() ++ jsonContent): T = {
+    putOpiskeluoikeus(
+      opiskeluoikeus = oo,
+      henkilö = henkilö,
+      headers = headers
+    ) {
+      verifyResponseStatusOk()
+      get("api/opiskeluoikeus/" + readPutOppijaResponse.opiskeluoikeudet.head.oid, headers = headers) {
+        verifyResponseStatusOk()
+        readOpiskeluoikeus
+      }
+    }.asInstanceOf[T]
+  }
+
   def putOpiskeluoikeus[A](opiskeluoikeus: Opiskeluoikeus, henkilö: Henkilö = defaultHenkilö, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
     putOppija(makeOppija(henkilö, List(opiskeluoikeus)), headers)(f)
+  }
+
+  def setupOppijaWithAndGetOpiskeluoikeus[T <: Opiskeluoikeus](oo: T, henkilö: Henkilö, user: UserWithPassword): T = {
+    setupOppijaWithAndGetOpiskeluoikeus(oo, henkilö, authHeaders(user) ++ jsonContent)
+  }
+
+  def setupOppijaWithAndGetOpiskeluoikeus[T <: Opiskeluoikeus](oo: T, henkilö: Henkilö = defaultHenkilö, headers: Headers = authHeaders() ++ jsonContent): T = {
+    setupOppijaWithOpiskeluoikeus(
+      opiskeluoikeus = oo,
+      henkilö = henkilö,
+      headers = headers
+    ) {
+      verifyResponseStatusOk()
+      get("api/opiskeluoikeus/" + readPutOppijaResponse.opiskeluoikeudet.head.oid, headers = headers) {
+        verifyResponseStatusOk()
+        readOpiskeluoikeus
+      }
+    }.asInstanceOf[T]
+  }
+
+  def setupOppijaWithOpiskeluoikeus[A](opiskeluoikeus: Opiskeluoikeus, henkilö: Henkilö, user: UserWithPassword)(f: => A): A = {
+    setupOppijaWithOpiskeluoikeus(opiskeluoikeus, henkilö, authHeaders(user) ++ jsonContent)(f)
+  }
+
+  def setupOppijaWithOpiskeluoikeus[A](opiskeluoikeus: Opiskeluoikeus, henkilö: Henkilö = defaultHenkilö, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
+    mitätöiOppijanKaikkiOpiskeluoikeudet(henkilö)
+    // TODO: Jos tässä siivoaisi mitätöinnin sijaan opiskeluoikeuden kaikki jäljet kaikista tauluista, resetFixtures-kutsuja voisi vähentää vielä enemmän. Esim. suostumuksen
+    // peruutuksissa yms. voisi siivota vain testioppijan datat jne.
+    putOppija(makeOppija(henkilö, List(opiskeluoikeus)), headers)(f)
+  }
+
+  def mitätöiOppijanKaikkiOpiskeluoikeudet(henkilö: Henkilö = defaultHenkilö) = {
+    val user = MockUsers.paakayttaja
+
+    val henkilöOidit: Seq[Henkilö.Oid] = henkilö match {
+      case h: HenkilöWithOid => List(h.oid)
+      case uh: UusiHenkilö =>
+        searchForHenkilötiedot(uh.hetu, user).map(_.oid)
+    }
+
+    if (!henkilöOidit.isEmpty) {
+      getOpiskeluoikeudet(henkilöOidit.head, user).map(oo =>
+        delete(s"api/opiskeluoikeus/${oo.oid.get}", headers = authHeaders(user)) {
+          verifyResponseStatusOk()
+        }
+      )
+    }
   }
 
   def postOpiskeluoikeus[A](opiskeluoikeus: Opiskeluoikeus, henkilö: Henkilö = defaultHenkilö, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {

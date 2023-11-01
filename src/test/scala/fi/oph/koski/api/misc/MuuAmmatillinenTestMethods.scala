@@ -12,7 +12,17 @@ trait MuuAmmatillinenTestMethods[T <: AmmatillinenPäätasonSuoritus] extends Pu
   override def tag: TypeTag[AmmatillinenOpiskeluoikeus] = implicitly[TypeTag[AmmatillinenOpiskeluoikeus]]
   override def defaultOpiskeluoikeus: AmmatillinenOpiskeluoikeus = makeOpiskeluoikeus(alkamispäivä = longTimeAgo)
 
+  protected def setupOppijaWithTutkintoSuoritus[A](suoritus: T, henkilö: Henkilö = defaultHenkilö, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
+    mitätöiOppijanKaikkiOpiskeluoikeudet(henkilö)
+    putTutkintoSuoritus(suoritus, henkilö, headers)(f)
+  }
+
   protected def putTutkintoSuoritus[A](suoritus: T, henkilö: Henkilö = defaultHenkilö, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
+    putAmmatillinenPäätasonSuoritus(suoritus, henkilö, headers)(f)
+  }
+
+  protected def setupAmmatillinenPäätasonSuoritus[A](suoritus: AmmatillinenPäätasonSuoritus, henkilö: Henkilö = defaultHenkilö, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
+    mitätöiOppijanKaikkiOpiskeluoikeudet(henkilö)
     putAmmatillinenPäätasonSuoritus(suoritus, henkilö, headers)(f)
   }
 
@@ -21,7 +31,7 @@ trait MuuAmmatillinenTestMethods[T <: AmmatillinenPäätasonSuoritus] extends Pu
     putOppija(makeOppija(henkilö, List(JsonSerializer.serializeWithRoot(opiskeluoikeus))), headers)(f)
   }
 
-  protected def makeOpiskeluoikeus(alkamispäivä: LocalDate = longTimeAgo) = AmmatillinenOpiskeluoikeus(
+  private def makeOpiskeluoikeus(alkamispäivä: LocalDate = longTimeAgo) = AmmatillinenOpiskeluoikeus(
     tila = AmmatillinenOpiskeluoikeudenTila(List(AmmatillinenOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)))),
     oppilaitos = Some(Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto)),
     suoritukset = List(defaultPäätasonSuoritus)

@@ -32,7 +32,7 @@ class OppijaValidationEuropeanSchoolOfHelsinkiSpec
   val oppija = KoskiSpecificMockOppijat.europeanSchoolOfHelsinki
 
   "Example-opiskeluoikeus voidaan kirjoittaa tietokantaan" in {
-    putOpiskeluoikeus(defaultOpiskeluoikeus, henkilö = oppija) {
+    setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus, henkilö = oppija) {
       verifyResponseStatusOk()
     }
   }
@@ -55,7 +55,7 @@ class OppijaValidationEuropeanSchoolOfHelsinkiSpec
 
       koulutustyypit(putOo) should be(List.empty)
 
-      val oo = putAndGetOpiskeluoikeus(putOo)
+      val oo = setupOppijaWithAndGetOpiskeluoikeus(putOo)
 
       koulutustyypit(oo) should be(List("21", "21", "21"))
     }
@@ -75,7 +75,7 @@ class OppijaValidationEuropeanSchoolOfHelsinkiSpec
     val päättymispäivä = alkamispäivä.plusYears(20)
 
     "lasna -tilalle täydennetään opintojen rahoitus, koska vaihtoehtoja on toistaiseksi vain yksi" in {
-      val oo = putAndGetOpiskeluoikeus(defaultOpiskeluoikeus.copy(tila = EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila(List(EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(alkamispäivä, ExampleData.opiskeluoikeusLäsnä, opintojenRahoitus = None)))))
+      val oo = setupOppijaWithAndGetOpiskeluoikeus(defaultOpiskeluoikeus.copy(tila = EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila(List(EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(alkamispäivä, ExampleData.opiskeluoikeusLäsnä, opintojenRahoitus = None)))))
 
       val täydennetytRahoitusmuodot = oo.tila.opiskeluoikeusjaksot.flatMap(_.opintojenRahoitus)
       täydennetytRahoitusmuodot should be(List(ExampleData.muutaKauttaRahoitettu))
@@ -87,7 +87,7 @@ class OppijaValidationEuropeanSchoolOfHelsinkiSpec
         EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(päättymispäivä, ExampleData.opiskeluoikeusValmistunut, opintojenRahoitus = None)
       ))
 
-      val oo = putAndGetOpiskeluoikeus(defaultOpiskeluoikeus.copy(tila = tila))
+      val oo = setupOppijaWithAndGetOpiskeluoikeus(defaultOpiskeluoikeus.copy(tila = tila))
 
       val täydennetytRahoitusmuodot = oo.tila.opiskeluoikeusjaksot.flatMap(_.opintojenRahoitus)
       täydennetytRahoitusmuodot should be(List(ExampleData.muutaKauttaRahoitettu, ExampleData.muutaKauttaRahoitettu))
@@ -95,7 +95,7 @@ class OppijaValidationEuropeanSchoolOfHelsinkiSpec
 
     "Opintojen rahoitus on kielletty muilta tiloilta" in {
       def verifyRahoitusmuotoKielletty(tila: Koodistokoodiviite) = {
-        putOpiskeluoikeus(defaultOpiskeluoikeus.copy(tila = EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila(List(
+        setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(tila = EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila(List(
           EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(alkamispäivä, ExampleData.opiskeluoikeusLäsnä, Some(ExampleData.muutaKauttaRahoitettu)),
           EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(päättymispäivä, tila, Some(ExampleData.muutaKauttaRahoitettu))
         )))) {
@@ -112,7 +112,7 @@ class OppijaValidationEuropeanSchoolOfHelsinkiSpec
 
   "Päätason suorituksen alkamispäivä" - {
     "Vaaditaan" in {
-      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(
         tila =
           EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila(
             List(
@@ -156,7 +156,7 @@ class OppijaValidationEuropeanSchoolOfHelsinkiSpec
       ))
     )
 
-    putOpiskeluoikeus(oo) {
+    setupOppijaWithOpiskeluoikeus(oo) {
       verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.keskeneräinenOsasuoritus("Valmiiksi merkityllä suorituksella europeanschoolofhelsinkikielioppiaine/ONL on keskeneräinen osasuoritus europeanschoolofhelsinkiprimaryalaoppimisalue/Listening and understanding"))
     }
   }
@@ -184,7 +184,7 @@ class OppijaValidationEuropeanSchoolOfHelsinkiSpec
         ))
       )
 
-      putOpiskeluoikeus(oo) {
+      setupOppijaWithOpiskeluoikeus(oo) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia("Suoritus europeanschoolofhelsinkiluokkaaste/S7 on merkitty valmiiksi, mutta sillä on tyhjä osasuorituslista tai joltain sen osasuoritukselta puuttuu vaadittavat arvioidut osasuoritukset (joko A ja B, tai yearmark), tai opiskeluoikeudelta puuttuu linkitys"))
       }
     }
@@ -216,7 +216,7 @@ class OppijaValidationEuropeanSchoolOfHelsinkiSpec
         ))
       )
 
-      putOpiskeluoikeus(oo) {
+      setupOppijaWithOpiskeluoikeus(oo) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia("Suoritus europeanschoolofhelsinkiluokkaaste/S7 on merkitty valmiiksi, mutta sillä on tyhjä osasuorituslista tai joltain sen osasuoritukselta puuttuu vaadittavat arvioidut osasuoritukset (joko A ja B, tai yearmark), tai opiskeluoikeudelta puuttuu linkitys"))
       }
     }
@@ -254,7 +254,7 @@ class OppijaValidationEuropeanSchoolOfHelsinkiSpec
         ))
       )
 
-      putOpiskeluoikeus(oo) {
+      setupOppijaWithOpiskeluoikeus(oo) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.keskeneräinenOsasuoritus("Valmiiksi merkityllä suorituksella europeanschoolofhelsinkiluokkaaste/S7 on keskeneräinen osasuoritus europeanschoolofhelsinkis7oppiaineenkomponentti/B"))
       }
     }
@@ -293,7 +293,7 @@ class OppijaValidationEuropeanSchoolOfHelsinkiSpec
         ))
       )
 
-      putOpiskeluoikeus(oo) {
+      setupOppijaWithOpiskeluoikeus(oo) {
         verifyResponseStatusOk()
       }
     }
@@ -326,7 +326,7 @@ class OppijaValidationEuropeanSchoolOfHelsinkiSpec
         ))
       )
 
-      putOpiskeluoikeus(oo) {
+      setupOppijaWithOpiskeluoikeus(oo) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.keskeneräinenOsasuoritus("Valmiiksi merkityllä suorituksella europeanschoolofhelsinkiluokkaaste/S7 on keskeneräinen osasuoritus europeanschoolofhelsinkis7oppiaineenkomponentti/yearmark"))
       }
     }
@@ -359,7 +359,7 @@ class OppijaValidationEuropeanSchoolOfHelsinkiSpec
         ))
       )
 
-      putOpiskeluoikeus(oo) {
+      setupOppijaWithOpiskeluoikeus(oo) {
         verifyResponseStatusOk()
       }
     }
@@ -402,11 +402,6 @@ class OppijaValidationEuropeanSchoolOfHelsinkiSpec
       config
     )
   }
-
-  private def putAndGetOpiskeluoikeus(oo: EuropeanSchoolOfHelsinkiOpiskeluoikeus): EuropeanSchoolOfHelsinkiOpiskeluoikeus = putOpiskeluoikeus(oo) {
-    verifyResponseStatusOk()
-    getOpiskeluoikeus(readPutOppijaResponse.opiskeluoikeudet.head.oid)
-  }.asInstanceOf[EuropeanSchoolOfHelsinkiOpiskeluoikeus]
 
   private def mitätöityOpiskeluoikeus(oo: EuropeanSchoolOfHelsinkiOpiskeluoikeus): EuropeanSchoolOfHelsinkiOpiskeluoikeus = {
     oo.copy(

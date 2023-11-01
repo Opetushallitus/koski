@@ -44,7 +44,7 @@ class KoulusivistyskieliLukioSpec extends AnyFreeSpec with KoskiHttpSpec with Op
 
 
   def verifyKoulusivistyskieli(opiskeluoikeus: LukionOpiskeluoikeus, expected: Option[List[Koodistokoodiviite]]) = {
-    putOpiskeluoikeus(opiskeluoikeus) {
+    setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
       verifyResponseStatusOk()
       val koulusivistyskielet = lastOpiskeluoikeusByHetu(defaultHenkilö).suoritukset.collect {
         case x: LukionOppimääränSuoritus2015 => x.koulusivistyskieli

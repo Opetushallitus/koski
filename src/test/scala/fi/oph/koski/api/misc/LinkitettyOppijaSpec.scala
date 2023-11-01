@@ -1,5 +1,6 @@
 package fi.oph.koski.api.misc
 
+import fi.oph.koski.documentation.{ExamplesLukio, ExamplesPerusopetus}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.{DirtiesFixtures, KoskiHttpSpec}
 import org.scalatest.freespec.AnyFreeSpec
@@ -25,7 +26,12 @@ class LinkitettyOppijaSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluo
 
     "Päivitettäessä slaveen liittyvä opiskeluoikeus käyttäen master-oppijaa" - {
       "Opiskeluoikeus päivittyy ja säilyy linkitettynä slaveen" in {
-        putOpiskeluoikeus(defaultOpiskeluoikeus, KoskiSpecificMockOppijat.master) {
+        setupOppijaWithOpiskeluoikeus(ExamplesPerusopetus.päättötodistus.tallennettavatOpiskeluoikeudet.head, KoskiSpecificMockOppijat.master) {
+          verifyResponseStatusOk()
+        }
+        val alkuperäinenSlavenOo = setupOppijaWithAndGetOpiskeluoikeus(ExamplesLukio.päättötodistus(), KoskiSpecificMockOppijat.slave.henkilö)
+
+        putOpiskeluoikeus(defaultOpiskeluoikeus.copy(oid = alkuperäinenSlavenOo.oid), KoskiSpecificMockOppijat.master) {
           verifyResponseStatusOk()
           val masterOikeudet = getOpiskeluoikeudet(KoskiSpecificMockOppijat.master.oid)
           masterOikeudet.map(_.tyyppi.koodiarvo) should equal(List("perusopetus", "lukiokoulutus"))

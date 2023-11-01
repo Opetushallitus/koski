@@ -27,7 +27,7 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
         "Arvosana S" - {
           "Palautetaan HTTP/200" in {
             val opiskeluoikeus = opiskeluoikeusIBTutkinnollaWithCASArvosana("S")
-            putOpiskeluoikeus(opiskeluoikeus) {
+            setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
               verifyResponseStatusOk()
           }}
         }
@@ -35,7 +35,7 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
         "Arvosana numeerinen" - {
           "Palautetaan HTTP/400" in {
             val opiskeluoikeus = opiskeluoikeusIBTutkinnollaWithCASArvosana("4")
-            putOpiskeluoikeus(opiskeluoikeus) {
+            setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
               verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*enumValueMismatch.*".r))
           }}
         }
@@ -48,7 +48,7 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
             historiaOppiaine(higherLevel, "S"),
             historiaOppiaine(higherLevel, "1")
           ))
-          "Palautetaan HTTP/400" in { putOpiskeluoikeus(opiskeluoikeus) {
+          "Palautetaan HTTP/400" in { setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.duplikaattiOsasuoritus("Osasuoritus oppiaineetib/HIS esiintyy useammin kuin kerran ryhmässä HL"))
           }}
         }
@@ -58,7 +58,7 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
             historiaOppiaine(higherLevel, "2"),
             historiaOppiaine(standardLevel, "O")
           ))
-          "Palautetaan HTTP/200" in { putOpiskeluoikeus(opiskeluoikeus) {
+          "Palautetaan HTTP/200" in { setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
             verifyResponseStatusOk()
           }}
         }
@@ -68,7 +68,7 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
             historiaOppiaine(higherLevel, "3"),
             historiaOppiaine(standardLevel, "4")
           ))
-          "Palautetaa HTTP/400" in { putOpiskeluoikeus(opiskeluoikeus) {
+          "Palautetaa HTTP/400" in { setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.kaksiSamaaOppiainettaNumeroarvioinnilla("Kahdella saman oppiaineen suorituksella oppiaineetib/HIS ei molemmilla voi olla numeerista arviointia"))
           }}
         }
@@ -78,7 +78,7 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
             historiaOppiaine(higherLevel, "S"),
             historiaOppiaine(standardLevel, "S")
           ))
-          "Palautetaan HTTP/200" in { putOpiskeluoikeus(opiskeluoikeus) {
+          "Palautetaan HTTP/200" in { setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
             verifyResponseStatusOk()
           }}
         }
@@ -87,7 +87,7 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
 
     "Opintojen rahoitus" - {
       "lasna -tilalta vaaditaan opintojen rahoitus" in {
-        putOpiskeluoikeus(defaultOpiskeluoikeus.copy(tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä))))) {
+        setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä))))) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaltaPuuttuuRahoitusmuoto("Opiskeluoikeuden tilalta lasna puuttuu rahoitusmuoto"))
         }
       }
@@ -96,7 +96,7 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
           LukionOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
           LukionOpiskeluoikeusjakso(date(2018, 1, 1), opiskeluoikeusValmistunut)
         ))
-        putOpiskeluoikeus(defaultOpiskeluoikeus.copy(tila = tila)) {
+        setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(tila = tila)) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaltaPuuttuuRahoitusmuoto("Opiskeluoikeuden tilalta valmistunut puuttuu rahoitusmuoto"))
         }
       }
@@ -114,7 +114,7 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
               )
             )
           )
-          putOpiskeluoikeus(opiskeluoikeus, henkilö = vuonna2004SyntynytPeruskouluValmis2021) {
+          setupOppijaWithOpiskeluoikeus(opiskeluoikeus, henkilö = vuonna2004SyntynytPeruskouluValmis2021) {
             verifyResponseStatusOk()
           }
         }
@@ -130,7 +130,7 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
               )
             )
           )
-          putOpiskeluoikeus(opiskeluoikeus, henkilö = vuonna2004SyntynytPeruskouluValmis2021) {
+          setupOppijaWithOpiskeluoikeus(opiskeluoikeus, henkilö = vuonna2004SyntynytPeruskouluValmis2021) {
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä oppija on aloittanut Pre-IB opinnot aiemmin kuin 1.1.2021."))
           }
         }
@@ -145,7 +145,7 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
           predictedArviointi = ibPredictedArviointi("4"),
         )))
         val opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(suoritus.copy(osasuoritukset = osasuoritukset)))
-        putOpiskeluoikeus(opiskeluoikeus) {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
           verifyResponseStatus(400,
             KoskiErrorCategory.badRequest.validation.tila.keskeneräinenOsasuoritus("Valmiiksi merkityllä suorituksella koulutus/301102 on keskeneräinen osasuoritus oppiaineetib/A"),
             KoskiErrorCategory.badRequest.validation.arviointi.arviointiPuuttuu("Vahvistetun suorituksen koulutus/301102 osasuoritukselta oppiaineetib/A puuttuu päättöarvosana"),
@@ -165,7 +165,7 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
           predictedArviointi = None,
         )))
         val opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(suoritus.copy(osasuoritukset = osasuoritukset)))
-        putOpiskeluoikeus(opiskeluoikeus) {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
           verifyResponseStatus(400,
             KoskiErrorCategory.badRequest.validation.arviointi.arviointiPuuttuu("Vahvistetun suorituksen koulutus/301102 osasuoritukselta oppiaineetib/A puuttuu predicted grade"),
             KoskiErrorCategory.badRequest.validation.arviointi.arviointiPuuttuu("Vahvistetun suorituksen koulutus/301102 osasuoritukselta oppiaineetib/A2 puuttuu predicted grade"),
@@ -184,7 +184,7 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
           predictedArviointi = ibPredictedArviointi("4"),
         )))
         val opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(suoritus.copy(osasuoritukset = osasuoritukset)))
-        putOpiskeluoikeus(opiskeluoikeus) {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
           verifyResponseStatusOk()
         }
       }

@@ -86,7 +86,7 @@ class AikuistenPerusopetuksenOppimääränKurssikertymätSpec
 
   "Aikuisten perusopetuksen oppimääräopiskelijoiden kurssikertymien raportti" - {
       "Syötetään pihvi ja kuori" in {
-        val jyväskylänOpiskeluoikeus: AikuistenPerusopetuksenOpiskeluoikeus = createOpiskeluoikeus(defaultHenkilö, defaultOpiskeluoikeus, user = paakayttaja, resetFixtures = false)
+        val jyväskylänOpiskeluoikeus: AikuistenPerusopetuksenOpiskeluoikeus = setupOppijaWithAndGetOpiskeluoikeus(defaultOpiskeluoikeus, defaultHenkilö, user = paakayttaja)
         val kuoriOpiskeluoikeus = createLinkitetytOpiskeluoikeudet(jyväskylänOpiskeluoikeus, MockOrganisaatiot.jyväskylänNormaalikoulu).copy(
           suoritukset = List(
             aikuistenPerusopetuksenAlkuvaiheenSuoritus,
@@ -148,6 +148,7 @@ class AikuistenPerusopetuksenOppimääränKurssikertymätSpec
 
   private def createLinkitetytOpiskeluoikeudet(kuoriOpiskeluoikeus: AikuistenPerusopetuksenOpiskeluoikeus, pihviOppilaitos: Oid) = {
     val pihviOpiskeluoikeus = makeOpiskeluoikeus(oppilaitos = Oppilaitos(pihviOppilaitos)).copy(
+      oid = kuoriOpiskeluoikeus.oid,
       suoritukset = List(
         aikuistenPerusopetuksenAlkuvaiheenSuoritus,
         aikuistenPerusopetukseOppimääränSuoritus(aikuistenPerusopetus2017, oppiaineidenSuoritukset2017)

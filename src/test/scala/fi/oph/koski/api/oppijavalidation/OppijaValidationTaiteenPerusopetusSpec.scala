@@ -48,23 +48,15 @@ class OppijaValidationTaiteenPerusopetusSpec
 
   val oppija = KoskiSpecificMockOppijat.taiteenPerusopetusAloitettu
 
-  val taiteenPerusopetusAloitettuOpiskeluoikeus = getOpiskeluoikeudet(
-    KoskiSpecificMockOppijat.taiteenPerusopetusAloitettu.oid
-  ).head match {
-    case oo: TaiteenPerusopetuksenOpiskeluoikeus => oo
-  }
-  val taiteenPerusopetusAloitettuOpiskeluoikeusOid = taiteenPerusopetusAloitettuOpiskeluoikeus.oid.get
-
-
   "Opiskeluoikeuden lisääminen" - {
     "aloittanut example-opiskeluoikeus voidaan kirjoittaa tietokantaan" in {
-      putOpiskeluoikeus(defaultOpiskeluoikeus, henkilö = oppija) {
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus, henkilö = oppija) {
         verifyResponseStatusOk()
       }
     }
 
     "valmistunut example-opiskeluoikeus voidaan kirjoittaa tietokantaan" in {
-      putOpiskeluoikeus(TPO.Opiskeluoikeus.hyväksytystiSuoritettuLaajaOppimäärä, henkilö = oppija) {
+      setupOppijaWithOpiskeluoikeus(TPO.Opiskeluoikeus.hyväksytystiSuoritettuLaajaOppimäärä, henkilö = oppija) {
         verifyResponseStatusOk()
       }
     }
@@ -86,7 +78,7 @@ class OppijaValidationTaiteenPerusopetusSpec
         suoritukset = List(TPO.PäätasonSuoritus.laajojenPerusopintojenSuoritusArvioituJaVahvistettuJaOsasuorituksia)
       )
 
-      putOpiskeluoikeus(oo, henkilö = oppija) {
+      setupOppijaWithOpiskeluoikeus(oo, henkilö = oppija) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vahvistusPuuttuu("Suoritukselta puuttuu vahvistus, vaikka opiskeluoikeus on tilassa hyväksytysti suoritettu"))
       }
     }
@@ -281,10 +273,14 @@ class OppijaValidationTaiteenPerusopetusSpec
     }
 
     "Opiskeluoikeuden muokkaamisen oikeudet" - {
-      resetFixtures()
-      val oid = lastOpiskeluoikeusByHetu(KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus).oid.get
+      def setupAndGetOid = setupOppijaWithAndGetOpiskeluoikeus(
+        TPO.Opiskeluoikeus.hankintakoulutuksenaHyväksytystiSuoritettuLaajaOppimäärä,
+        KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus,
+        authHeaders(MockUsers.paakayttaja) ++ jsonContent
+      ).oid.get
 
       "pääkäyttäjä voi muokata hankintakoulutuksena järjestettävän opiskeluoikeuden" in {
+        val oid = setupAndGetOid
         putOpiskeluoikeus(
           TPO.Opiskeluoikeus.hankintakoulutuksenaHyväksytystiSuoritettuLaajaOppimäärä.copy(
             oid = Some(oid),
@@ -298,6 +294,7 @@ class OppijaValidationTaiteenPerusopetusSpec
       }
 
       "koulutustoimijan käyttäjä voi muokata hankintakoulutuksena järjestettävää opiskeluoikeutta" in {
+        val oid = setupAndGetOid
         putOpiskeluoikeus(
           TPO.Opiskeluoikeus.hankintakoulutuksenaHyväksytystiSuoritettuLaajaOppimäärä.copy(
             oid = Some(oid),
@@ -311,6 +308,7 @@ class OppijaValidationTaiteenPerusopetusSpec
       }
 
       "väärän koulutustoimijan käyttäjä ei voi muokata hankintakoulutuksena järjestettävää opiskeluoikeutta" in {
+        val oid = setupAndGetOid
         putOpiskeluoikeus(
           TPO.Opiskeluoikeus.hankintakoulutuksenaHyväksytystiSuoritettuLaajaOppimäärä.copy(
             oid = Some(oid),
@@ -324,6 +322,7 @@ class OppijaValidationTaiteenPerusopetusSpec
       }
 
       "oppilaitoksen käyttäjä ei voi muokata hankintakoulutuksena järjestettävää opiskeluoikeutta" in {
+        val oid = setupAndGetOid
         putOpiskeluoikeus(
           TPO.Opiskeluoikeus.hankintakoulutuksenaHyväksytystiSuoritettuLaajaOppimäärä.copy(
             oid = Some(oid),
@@ -337,6 +336,7 @@ class OppijaValidationTaiteenPerusopetusSpec
       }
 
       "oppilaitoksen hankintakoulutuksen käyttäjä voi muokata hankintakoulutuksena järjestettävää opiskeluoikeutta" in {
+        val oid = setupAndGetOid
         putOpiskeluoikeus(
           TPO.Opiskeluoikeus.hankintakoulutuksenaHyväksytystiSuoritettuLaajaOppimäärä.copy(
             oid = Some(oid),
@@ -350,6 +350,7 @@ class OppijaValidationTaiteenPerusopetusSpec
       }
 
       "väärän oppilaitoksen käyttäjä ei voi muokata hankintakoulutuksena järjestettävää opiskeluoikeutta" in {
+        val oid = setupAndGetOid
         putOpiskeluoikeus(
           TPO.Opiskeluoikeus.hankintakoulutuksenaHyväksytystiSuoritettuLaajaOppimäärä.copy(
             oid = Some(oid),
@@ -375,9 +376,12 @@ class OppijaValidationTaiteenPerusopetusSpec
       }
 
       "oppilaitoksen pääkäyttäjä voi mitätöidä lähdejärjestelmällisen itse järjestetyn opiskeluoikeuden" in {
-        resetFixtures()
+        val oid = setupOppijaWithAndGetOpiskeluoikeus(
+          TPO.Opiskeluoikeus.hyväksytystiSuoritettuLaajaOppimäärä,
+          KoskiSpecificMockOppijat.taiteenPerusopetusValmis,
+          authHeaders(MockUsers.paakayttaja) ++ jsonContent
+        ).oid.get
 
-        val oid = getOpiskeluoikeudet(KoskiSpecificMockOppijat.taiteenPerusopetusValmis.oid, user = MockUsers.paakayttaja).head.oid.get
         val oo = TPO.Opiskeluoikeus.hyväksytystiSuoritettuLaajaOppimäärä.copy(
           oid = Some(oid),
           lähdejärjestelmänId = Some(
@@ -396,8 +400,12 @@ class OppijaValidationTaiteenPerusopetusSpec
 
       "oppilaitoksen pääkäyttäjä voi mitätöidä lähdejärjestelmällisen hankintakoulutuksena järjestettävän opiskeluoikeuden" in {
         resetFixtures()
+        val oid = setupOppijaWithAndGetOpiskeluoikeus(
+          TPO.Opiskeluoikeus.hankintakoulutuksenaHyväksytystiSuoritettuLaajaOppimäärä,
+          KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus,
+          authHeaders(MockUsers.paakayttaja) ++ jsonContent
+        ).oid.get
 
-        val oid = getOpiskeluoikeudet(KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus.oid, user = MockUsers.paakayttaja).head.oid.get
         val oo = TPO.Opiskeluoikeus.hankintakoulutuksenaHyväksytystiSuoritettuLaajaOppimäärä.copy(
           oid = Some(oid),
           lähdejärjestelmänId = Some(
@@ -415,42 +423,62 @@ class OppijaValidationTaiteenPerusopetusSpec
       }
 
       "koulutustoimijan käyttäjä voi mitätöidä itse järjestetyn opiskeluoikeuden" in {
-        resetFixtures()
-        val oid = getOpiskeluoikeudet(KoskiSpecificMockOppijat.taiteenPerusopetusValmis.oid, user = MockUsers.paakayttaja).head.oid.get
+        val oid = setupOppijaWithAndGetOpiskeluoikeus(
+          TPO.Opiskeluoikeus.hyväksytystiSuoritettuLaajaOppimäärä,
+          KoskiSpecificMockOppijat.taiteenPerusopetusValmis,
+          authHeaders(MockUsers.paakayttaja) ++ jsonContent
+        ).oid.get
+
         mitätöiOpiskeluoikeus(oid, user = MockUsers.varsinaisSuomiKoulutustoimija)
       }
 
       "koulutustoimijan käyttäjä voi mitätöidä hankintakoulutuksena järjestettävän opiskeluoikeuden" in {
-        resetFixtures()
-        val oid = getOpiskeluoikeudet(KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus.oid, user = MockUsers.paakayttaja).head.oid.get
+        val oid = setupOppijaWithAndGetOpiskeluoikeus(
+          TPO.Opiskeluoikeus.hankintakoulutuksenaHyväksytystiSuoritettuLaajaOppimäärä,
+          KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus,
+          authHeaders(MockUsers.paakayttaja) ++ jsonContent
+        ).oid.get
+
         mitätöiOpiskeluoikeus(oid, user = MockUsers.helsinkiTallentaja)
       }
 
       "väärän kaupungin koulutustoimijan käyttäjä ei voi mitätöidä hankintakoulutuksena järjestettävää opiskeluoikeutta" in {
-        resetFixtures()
-        val oid = getOpiskeluoikeudet(KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus.oid, user = MockUsers.paakayttaja).head.oid.get
+        val oid = setupOppijaWithAndGetOpiskeluoikeus(
+          TPO.Opiskeluoikeus.hankintakoulutuksenaHyväksytystiSuoritettuLaajaOppimäärä,
+          KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus,
+          authHeaders(MockUsers.paakayttaja) ++ jsonContent
+        ).oid.get
         mitätöiOpiskeluoikeusCallback(oid, user = MockUsers.tornioTallentaja) {
           verifyResponseStatus(404, KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia("Opiskeluoikeutta ei löydy annetulla oid:llä tai käyttäjällä ei ole siihen oikeuksia"))
         }
       }
 
       "oppilaitoksen käyttäjä voi mitätöidä itse järjestettävän opiskeluoikeuden" in {
-        resetFixtures()
-        val oid = getOpiskeluoikeudet(KoskiSpecificMockOppijat.taiteenPerusopetusValmis.oid, user = MockUsers.paakayttaja).head.oid.get
+        val oid = setupOppijaWithAndGetOpiskeluoikeus(
+          TPO.Opiskeluoikeus.hyväksytystiSuoritettuLaajaOppimäärä,
+          KoskiSpecificMockOppijat.taiteenPerusopetusValmis,
+          authHeaders(MockUsers.paakayttaja) ++ jsonContent
+        ).oid.get
         mitätöiOpiskeluoikeus(oid, user = MockUsers.varsinaisSuomiOppilaitosTallentaja)
       }
 
       "oppilaitoksen käyttäjä ei voi mitätöidä hankintakoulutuksena järjestettävää opiskeluoikeutta DELETE-routella" in {
-        resetFixtures()
-        val oid = getOpiskeluoikeudet(KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus.oid, user = MockUsers.paakayttaja).head.oid.get
+        val oid = setupOppijaWithAndGetOpiskeluoikeus(
+          TPO.Opiskeluoikeus.hankintakoulutuksenaHyväksytystiSuoritettuLaajaOppimäärä,
+          KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus,
+          authHeaders(MockUsers.paakayttaja) ++ jsonContent
+        ).oid.get
         mitätöiOpiskeluoikeusCallback(oid, user = MockUsers.varsinaisSuomiOppilaitosTallentaja) {
           verifyResponseStatus(403, KoskiErrorCategory.forbidden("Mitätöinti ei sallittu"))
         }
       }
 
       "oppilaitoksen käyttäjä ei voi mitätöidä hankintakoulutuksena järjestettävää opiskeluoikeutta PUT-routella" in {
-        resetFixtures()
-        val oid = getOpiskeluoikeudet(KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus.oid, user = MockUsers.paakayttaja).head.oid.get
+        val oid = setupOppijaWithAndGetOpiskeluoikeus(
+          TPO.Opiskeluoikeus.hankintakoulutuksenaHyväksytystiSuoritettuLaajaOppimäärä,
+          KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus,
+          authHeaders(MockUsers.paakayttaja) ++ jsonContent
+        ).oid.get
         val oo = TPO.Opiskeluoikeus.hankintakoulutuksenaHyväksytystiSuoritettuLaajaOppimäärä.copy(
           oid = Some(oid),
           tila = TPO.Opiskeluoikeus.tilaMitätöity()
@@ -462,22 +490,31 @@ class OppijaValidationTaiteenPerusopetusSpec
       }
 
       "oppilaitoksen hankintakoulutuksen käyttäjä voi mitätöidä itse järjestettävän opiskeluoikeuden" in {
-        resetFixtures()
-        val oid = getOpiskeluoikeudet(KoskiSpecificMockOppijat.taiteenPerusopetusValmis.oid, user = MockUsers.paakayttaja).head.oid.get
+        val oid = setupOppijaWithAndGetOpiskeluoikeus(
+          TPO.Opiskeluoikeus.hyväksytystiSuoritettuLaajaOppimäärä,
+          KoskiSpecificMockOppijat.taiteenPerusopetusValmis,
+          authHeaders(MockUsers.paakayttaja) ++ jsonContent
+        ).oid.get
         mitätöiOpiskeluoikeus(oid, user = MockUsers.varsinaisSuomiHankintakoulutusOppilaitosTallentaja)
       }
 
       "oppilaitoksen hankintakoulutuksen käyttäjä ei voi mitätöidä hankintakoulutuksena järjestettävää opiskeluoikeutta DELETE-routella" in {
-        resetFixtures()
-        val oid = getOpiskeluoikeudet(KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus.oid, user = MockUsers.paakayttaja).head.oid.get
+        val oid = setupOppijaWithAndGetOpiskeluoikeus(
+          TPO.Opiskeluoikeus.hankintakoulutuksenaHyväksytystiSuoritettuLaajaOppimäärä,
+          KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus,
+          authHeaders(MockUsers.paakayttaja) ++ jsonContent
+        ).oid.get
         mitätöiOpiskeluoikeusCallback(oid, user = MockUsers.varsinaisSuomiHankintakoulutusOppilaitosTallentaja) {
           verifyResponseStatus(403, KoskiErrorCategory.forbidden("Mitätöinti ei sallittu"))
         }
       }
 
       "oppilaitoksen hankintakoulutuksen käyttäjä ei voi mitätöidä hankintakoulutuksena järjestettävää opiskeluoikeutta PUT-routella" in {
-        resetFixtures()
-        val oid = getOpiskeluoikeudet(KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus.oid, user = MockUsers.paakayttaja).head.oid.get
+        val oid = setupOppijaWithAndGetOpiskeluoikeus(
+          TPO.Opiskeluoikeus.hankintakoulutuksenaHyväksytystiSuoritettuLaajaOppimäärä,
+          KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus,
+          authHeaders(MockUsers.paakayttaja) ++ jsonContent
+        ).oid.get
         val oo = TPO.Opiskeluoikeus.hankintakoulutuksenaHyväksytystiSuoritettuLaajaOppimäärä.copy(
           oid = Some(oid),
           tila = TPO.Opiskeluoikeus.tilaMitätöity()
@@ -489,16 +526,22 @@ class OppijaValidationTaiteenPerusopetusSpec
       }
 
       "helsinkiläisen oppilaitoksen käyttäjä ei voi mitätöidä helsingistä hankittua hankintakoulutuksena järjestettyä opiskeluoikeutta" in {
-        resetFixtures()
-        val oid = getOpiskeluoikeudet(KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus.oid, user = MockUsers.paakayttaja).head.oid.get
+        val oid = setupOppijaWithAndGetOpiskeluoikeus(
+          TPO.Opiskeluoikeus.hankintakoulutuksenaHyväksytystiSuoritettuLaajaOppimäärä,
+          KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus,
+          authHeaders(MockUsers.paakayttaja) ++ jsonContent
+        ).oid.get
         mitätöiOpiskeluoikeusCallback(oid, user = MockUsers.stadinAmmattiopistoPääkäyttäjä) {
           verifyResponseStatus(404, KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia())
         }
       }
 
       "väärän oppilaitoksen käyttäjä ei voi mitätöidä hankintakoulutuksena järjestettävää opiskeluoikeutta eri oppilaitoksesta" in {
-        resetFixtures()
-        val oid = getOpiskeluoikeudet(KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus.oid, user = MockUsers.paakayttaja).head.oid.get
+        val oid = setupOppijaWithAndGetOpiskeluoikeus(
+          TPO.Opiskeluoikeus.hankintakoulutuksenaHyväksytystiSuoritettuLaajaOppimäärä,
+          KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus,
+          authHeaders(MockUsers.paakayttaja) ++ jsonContent
+        ).oid.get
         mitätöiOpiskeluoikeusCallback(oid, user = MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä) {
           verifyResponseStatus(404, KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia())
         }
@@ -522,7 +565,7 @@ class OppijaValidationTaiteenPerusopetusSpec
         )
       )
 
-      putOpiskeluoikeus(oo, henkilö = oppija) {
+      setupOppijaWithOpiskeluoikeus(oo, henkilö = oppija) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vahvistusIlmanArviointia("Suorituksella koulutus/999907 on vahvistus, vaikka arviointi puuttuu"))
       }
     }
@@ -545,7 +588,7 @@ class OppijaValidationTaiteenPerusopetusSpec
         )
       )
 
-      putOpiskeluoikeus(oo, henkilö = oppija) {
+      setupOppijaWithOpiskeluoikeus(oo, henkilö = oppija) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vahvistusIlmanArviointia("Suorituksella koulutus/999907 on vahvistus, vaikka arviointi puuttuu"))
       }
     }
@@ -560,7 +603,7 @@ class OppijaValidationTaiteenPerusopetusSpec
         )
       )
 
-      putOpiskeluoikeus(oo, henkilö = oppija) {
+      setupOppijaWithOpiskeluoikeus(oo, henkilö = oppija) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vahvistusIlmanArviointia("Suorituksella koulutus/999907 on vahvistus, vaikka arviointi puuttuu"))
       }
     }
@@ -576,7 +619,7 @@ class OppijaValidationTaiteenPerusopetusSpec
         )
       )
 
-      putOpiskeluoikeus(oo, henkilö = oppija) {
+      setupOppijaWithOpiskeluoikeus(oo, henkilö = oppija) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vahvistusPuuttuu ("Suoritukselta puuttuu vahvistus, vaikka opiskeluoikeus on tilassa hyväksytysti suoritettu"))
       }
     }
@@ -591,7 +634,7 @@ class OppijaValidationTaiteenPerusopetusSpec
         )
       )
 
-      putOpiskeluoikeus(oo, henkilö = oppija) {
+      setupOppijaWithOpiskeluoikeus(oo, henkilö = oppija) {
         verifyResponseStatusOk()
       }
     }
@@ -611,7 +654,7 @@ class OppijaValidationTaiteenPerusopetusSpec
         )
       )
 
-      putOpiskeluoikeus(oo, henkilö = oppija) {
+      setupOppijaWithOpiskeluoikeus(oo, henkilö = oppija) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.taiteenPerusopetuksenLaajuus ("Yleisen oppimäärän yhteisten opintojen laajuus on oltava vähintään 11.1 opintopistettä."))
       }
     }
@@ -631,7 +674,7 @@ class OppijaValidationTaiteenPerusopetusSpec
         )
       )
 
-      putOpiskeluoikeus(oo, henkilö = oppija) {
+      setupOppijaWithOpiskeluoikeus(oo, henkilö = oppija) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.taiteenPerusopetuksenLaajuus ("Yleisen oppimäärän yhteisten opintojen laajuus on oltava vähintään 11.1 opintopistettä."))
       }
     }
@@ -649,7 +692,7 @@ class OppijaValidationTaiteenPerusopetusSpec
         )
       )
 
-      putOpiskeluoikeus(oo, henkilö = oppija) {
+      setupOppijaWithOpiskeluoikeus(oo, henkilö = oppija) {
         verifyResponseStatusOk()
       }
     }
@@ -669,7 +712,7 @@ class OppijaValidationTaiteenPerusopetusSpec
         )
       )
 
-      putOpiskeluoikeus(oo, henkilö = oppija) {
+      setupOppijaWithOpiskeluoikeus(oo, henkilö = oppija) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.taiteenPerusopetuksenLaajuus ("Yleisen oppimäärän teemaopintojen laajuus on oltava vähintään 7.4 opintopistettä."))
       }
     }
@@ -687,7 +730,7 @@ class OppijaValidationTaiteenPerusopetusSpec
         )
       )
 
-      putOpiskeluoikeus(oo, henkilö = oppija) {
+      setupOppijaWithOpiskeluoikeus(oo, henkilö = oppija) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.taiteenPerusopetuksenLaajuus ("Laajan oppimäärän perusopintojen laajuus on oltava vähintään 29.6 opintopistettä."))
       }
     }
@@ -705,7 +748,7 @@ class OppijaValidationTaiteenPerusopetusSpec
         )
       )
 
-      putOpiskeluoikeus(oo, henkilö = oppija) {
+      setupOppijaWithOpiskeluoikeus(oo, henkilö = oppija) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.taiteenPerusopetuksenLaajuus("Laajan oppimäärän syventävien opintojen laajuus on oltava vähintään 18.5 opintopistettä."))
       }
     }
@@ -725,7 +768,7 @@ class OppijaValidationTaiteenPerusopetusSpec
         )
       )
 
-      putOpiskeluoikeus(oo, henkilö = oppija) {
+      setupOppijaWithOpiskeluoikeus(oo, henkilö = oppija) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.osasuoritustenLaajuuksienSumma ("Suorituksen koulutus/999907 osasuoritusten laajuuksien summa 19.0 ei vastaa suorituksen laajuutta 20.0"))
       }
     }
@@ -747,7 +790,7 @@ class OppijaValidationTaiteenPerusopetusSpec
         )
       )
 
-      putOpiskeluoikeus(oo, henkilö = oppija) {
+      setupOppijaWithOpiskeluoikeus(oo, henkilö = oppija) {
         verifyResponseStatusOk()
       }
     }
@@ -761,7 +804,7 @@ class OppijaValidationTaiteenPerusopetusSpec
         )
       )
 
-      putOpiskeluoikeus(oo, henkilö = oppija) {
+      setupOppijaWithOpiskeluoikeus(oo, henkilö = oppija) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.tpoVääräOpintotaso ("Suorituksen opintotaso ei sisälly opiskeluoikeuden oppimäärään."))
       }
     }
@@ -780,7 +823,7 @@ class OppijaValidationTaiteenPerusopetusSpec
         )
       )
 
-      putOpiskeluoikeus(oo, henkilö = oppija) {
+      setupOppijaWithOpiskeluoikeus(oo, henkilö = oppija) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.tpoVääräOpintotaso ("Suorituksen opintotaso ei sisälly opiskeluoikeuden oppimäärään."))
       }
     }
@@ -797,7 +840,7 @@ class OppijaValidationTaiteenPerusopetusSpec
         )
       )
 
-      putOpiskeluoikeus(oo, henkilö = oppija) {
+      setupOppijaWithOpiskeluoikeus(oo, henkilö = oppija) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.tpoEriTaiteenalat ("Taiteen perusopetuksen opiskeluoikeudella ei voi olla suorituksia eri taiteenaloilta."))
       }
     }
@@ -815,7 +858,7 @@ class OppijaValidationTaiteenPerusopetusSpec
         )
       )
 
-      putOpiskeluoikeus(oo, henkilö = oppija) {
+      setupOppijaWithOpiskeluoikeus(oo, henkilö = oppija) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.vääräDiaari(s"""Väärä diaarinumero "OPH-2068-2017" suorituksella taiteenperusopetuksenyleisenoppimaaranteemaopinnot, sallitut arvot: OPH-2069-2017"""))
       }
     }
@@ -831,7 +874,7 @@ class OppijaValidationTaiteenPerusopetusSpec
         )
       )
 
-      putOpiskeluoikeus(oo, henkilö = oppija) {
+      setupOppijaWithOpiskeluoikeus(oo, henkilö = oppija) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.vääräDiaari(s"""Väärä diaarinumero "OPH-2069-2017" suorituksella taiteenperusopetuksenlaajanoppimaaranperusopinnot, sallitut arvot: OPH-2068-2017"""))
       }
     }
@@ -846,7 +889,7 @@ class OppijaValidationTaiteenPerusopetusSpec
         )
       )
 
-      putOpiskeluoikeus(oo, henkilö = oppija) {
+      setupOppijaWithOpiskeluoikeus(oo, henkilö = oppija) {
         verifyResponseStatus(
           400,
           KoskiErrorCategory.badRequest.validation.rakenne.perusteEiVoimassa("Perusteen tulee olla voimassa opiskeluoikeuden voimassaoloaikana."),
@@ -858,8 +901,11 @@ class OppijaValidationTaiteenPerusopetusSpec
 
   "Mitätöinti" - {
     "Opiskeluoikeuden voi mitätöidä PUT-rajapinnalla ja mitätöinti on poisto" in {
-      resetFixtures()
-      val oo = taiteenPerusopetusAloitettuOpiskeluoikeus.copy(
+      val oo = setupOppijaWithAndGetOpiskeluoikeus(
+        TPO.Opiskeluoikeus.aloitettuYleinenOppimäärä,
+        oppija,
+        authHeaders(MockUsers.paakayttaja) ++ jsonContent
+      ).copy(
         lähdejärjestelmänId = Some(
           LähdejärjestelmäId(
             id = Some("tpo1"),
@@ -868,6 +914,7 @@ class OppijaValidationTaiteenPerusopetusSpec
         ),
         tila = TPO.Opiskeluoikeus.tilaMitätöity()
       )
+      val taiteenPerusopetusAloitettuOpiskeluoikeusOid = oo.oid.get
 
       putOpiskeluoikeus(oo, henkilö = oppija, headers = authHeaders(MockUsers.varsinaisSuomiPääkäyttäjä) ++ jsonContent) {
         verifyResponseStatusOk()
@@ -884,7 +931,7 @@ class OppijaValidationTaiteenPerusopetusSpec
 
       poistettuRivi.map(ooRow => {
         ooRow.oid should be(taiteenPerusopetusAloitettuOpiskeluoikeusOid)
-        ooRow.versionumero should be(taiteenPerusopetusAloitettuOpiskeluoikeus.versionumero.get + 1)
+        ooRow.versionumero should be(oo.versionumero.get + 1)
         ooRow.aikaleima.toString should include(LocalDate.now.toString)
         ooRow.oppijaOid should be(KoskiSpecificMockOppijat.taiteenPerusopetusAloitettu.oid)
         ooRow.oppilaitosOid should be("")
@@ -904,7 +951,13 @@ class OppijaValidationTaiteenPerusopetusSpec
     }
 
     "Opiskeluoikeuden voi mitätöidä DELETE-rajapinnalla ja mitätöinti on poisto" in {
-      resetFixtures()
+      val taiteenPerusopetusAloitettuOpiskeluoikeus = setupOppijaWithAndGetOpiskeluoikeus(
+        TPO.Opiskeluoikeus.aloitettuYleinenOppimäärä,
+        oppija,
+        authHeaders(MockUsers.paakayttaja) ++ jsonContent
+      )
+      val taiteenPerusopetusAloitettuOpiskeluoikeusOid = taiteenPerusopetusAloitettuOpiskeluoikeus.oid.get
+
       mitätöiOpiskeluoikeus(taiteenPerusopetusAloitettuOpiskeluoikeusOid)
 
       val poistettuRivi: Either[HttpStatus, KoskiOpiskeluoikeusRow] =
@@ -940,18 +993,17 @@ class OppijaValidationTaiteenPerusopetusSpec
 
   "Suostumuksen peruutus päätason suoritukselta" - {
     "suostumuksen peruutus opiskeluoikeuden ainoalta suoritukselta - opiskeluoikeus poistuu" in {
-      resetFixtures()
-      AuditLogTester.clearMessages
-      RootLogTester.clearMessages
-
       // Syötä opiskeluoikeus
-      val oo = postAndGetOpiskeluoikeusV2(
+      val oo = setupOppijaWithAndGetOpiskeluoikeus(
         TPO.Opiskeluoikeus.aloitettuYleinenOppimäärä.copy(
           suoritukset = List(TPO.PäätasonSuoritus.yleistenYhteistenOpintojenSuoritusEiArvioituEiOsasuorituksia)
-        ), henkilö = KoskiSpecificMockOppijat.tyhjä
+        ),
+        KoskiSpecificMockOppijat.tyhjä
       )
-
       oo.oid should not be empty
+
+      AuditLogTester.clearMessages
+      RootLogTester.clearMessages
 
       // Oppija-listauksen pituus ennen suostumuksen peruuttamista
       KoskiApplicationForTests.perustiedotIndexer.sync(true)
@@ -996,10 +1048,10 @@ class OppijaValidationTaiteenPerusopetusSpec
 
       // Suostumuksen peruutuksesta on jäänyt tiedot audit logille
       val logMessages = AuditLogTester.getLogMessages
-      logMessages.length should equal(4)
+      logMessages.length should equal(2)
 
       AuditLogTester.verifyAuditLogString(
-        logMessages(3), Map(
+        logMessages(1), Map(
           "operation" -> KoskiOperation.KANSALAINEN_SUOSTUMUS_PERUMINEN.toString,
           "target" -> Map(
             KoskiAuditLogMessageField.opiskeluoikeusOid.toString -> oo.oid.get,
@@ -1017,18 +1069,19 @@ class OppijaValidationTaiteenPerusopetusSpec
     }
 
     "suostumuksen peruutus suoritukselta kun opiskeluoikeulla enemmän kuin yksi suoritus - opiskeluoikeus säilyy mutta toinen suoritus poistuu" in {
-      resetFixtures()
-      AuditLogTester.clearMessages
-      RootLogTester.clearMessages
       val poistettavaSuoritus = TPO.PäätasonSuoritus.yleistenYhteistenOpintojenSuoritusEiArvioituEiOsasuorituksia
 
       // Syötä opiskeluoikeus
       val henkilö = KoskiSpecificMockOppijat.tyhjä
-      val oo = postAndGetOpiskeluoikeusV2(
+
+      val oo = setupOppijaWithAndGetOpiskeluoikeus(
         TPO.Opiskeluoikeus.aloitettuYleinenOppimäärä,
-        henkilö = henkilö
+        henkilö
       )
       oo.oid should not be empty
+
+      AuditLogTester.clearMessages
+      RootLogTester.clearMessages
 
       // Oppija-listauksen pituus ennen suostumuksen peruuttamista
       KoskiApplicationForTests.perustiedotIndexer.sync(true)
@@ -1075,10 +1128,10 @@ class OppijaValidationTaiteenPerusopetusSpec
 
       // Suostumuksen peruutuksesta on jäänyt tiedot audit logille
       val logMessages = AuditLogTester.getLogMessages
-      logMessages.length should equal(5)
+      logMessages.length should equal(3)
 
       AuditLogTester.verifyAuditLogString(
-        logMessages(3), Map(
+        logMessages(1), Map(
           "operation" -> KoskiOperation.KANSALAINEN_SUOSTUMUS_PERUMINEN.toString,
           "target" -> Map(
             KoskiAuditLogMessageField.opiskeluoikeusOid.toString -> oo.oid.get,
@@ -1102,18 +1155,18 @@ class OppijaValidationTaiteenPerusopetusSpec
     }
 
     "suostumuksen peruutus vuorotellen suorituksilta kun opiskeluoikeulla enemmän kuin yksi suoritus - opiskeluoikeus poistuu" in {
-      resetFixtures()
-      AuditLogTester.clearMessages
-      RootLogTester.clearMessages
       val ekaPoistettavaSuoritus = TPO.PäätasonSuoritus.yleistenYhteistenOpintojenSuoritusEiArvioituEiOsasuorituksia
       val tokaPoistettavaSuoritus = TPO.PäätasonSuoritus.yleistenTeemaopintojenSuoritusEiArvioituEiOsasuorituksia
 
       // Syötä opiskeluoikeus
-      val oo = postAndGetOpiskeluoikeusV2(
+      val oo = setupOppijaWithAndGetOpiskeluoikeus(
         TPO.Opiskeluoikeus.aloitettuYleinenOppimäärä,
-        henkilö = KoskiSpecificMockOppijat.tyhjä
+        KoskiSpecificMockOppijat.tyhjä
       )
       oo.oid should not be empty
+
+      AuditLogTester.clearMessages
+      RootLogTester.clearMessages
 
       // Oppija-listauksen pituus ennen suostumuksen peruuttamista
       KoskiApplicationForTests.perustiedotIndexer.sync(true)
@@ -1156,10 +1209,10 @@ class OppijaValidationTaiteenPerusopetusSpec
 
       // Suostumuksen peruutuksesta on jäänyt tiedot audit logille
       val logMessages = AuditLogTester.getLogMessages
-      logMessages.length should equal(5)
+      logMessages.length should equal(3)
 
       AuditLogTester.verifyAuditLogString(
-        logMessages(3), Map(
+        logMessages(1), Map(
           "operation" -> KoskiOperation.KANSALAINEN_SUOSTUMUS_PERUMINEN.toString,
           "target" -> Map(
             KoskiAuditLogMessageField.opiskeluoikeusOid.toString -> oo.oid.get,
@@ -1168,7 +1221,7 @@ class OppijaValidationTaiteenPerusopetusSpec
         )
       )
       AuditLogTester.verifyAuditLogString(
-        logMessages(4), Map(
+        logMessages(2), Map(
           "operation" -> KoskiOperation.KANSALAINEN_SUOSTUMUS_PERUMINEN.toString,
           "target" -> Map(
             KoskiAuditLogMessageField.opiskeluoikeusOid.toString -> oo.oid.get,
@@ -1186,9 +1239,12 @@ class OppijaValidationTaiteenPerusopetusSpec
     }
 
     "kansalainen ei voi peruuttaa kenenkään muun suostumusta suoritukselta" in {
-      resetFixtures()
       val poistettavaSuoritus = TPO.PäätasonSuoritus.yleistenYhteistenOpintojenSuoritusEiArvioituEiOsasuorituksia
-      val oo = getOpiskeluoikeudet(KoskiSpecificMockOppijat.taiteenPerusopetusAloitettu.oid).head
+      val oo = setupOppijaWithAndGetOpiskeluoikeus(
+        TPO.Opiskeluoikeus.aloitettuYleinenOppimäärä,
+        KoskiSpecificMockOppijat.taiteenPerusopetusAloitettu,
+        authHeaders(MockUsers.paakayttaja) ++ jsonContent
+      )
 
       val loginHeadersKansalainen = kansalainenLoginHeaders(KoskiSpecificMockOppijat.taiteenPerusopetusValmis.hetu.get)
       post(
@@ -1205,17 +1261,17 @@ class OppijaValidationTaiteenPerusopetusSpec
     }
 
     "säilyneen suorituksen päivittäminen onnistuu vaikka toiselta suoritukselta on peruttu suostumus" in {
-      resetFixtures()
-      AuditLogTester.clearMessages
       val poistettavaSuoritus = TPO.PäätasonSuoritus.yleistenYhteistenOpintojenSuoritusEiArvioituEiOsasuorituksia
       val säilytettäväSuoritus = TPO.PäätasonSuoritus.yleistenTeemaopintojenSuoritusEiArvioituEiOsasuorituksia
 
       // Syötä opiskeluoikeus
-      val oo = postAndGetOpiskeluoikeusV2(
+      val oo = setupOppijaWithAndGetOpiskeluoikeus(
         TPO.Opiskeluoikeus.aloitettuYleinenOppimäärä,
-        henkilö = KoskiSpecificMockOppijat.tyhjä
+        KoskiSpecificMockOppijat.tyhjä
       )
       oo.oid should not be empty
+
+      AuditLogTester.clearMessages
 
       // Peru suostumus käyttäjän omilla oikeuksilla
       val loginHeadersKansalainen = kansalainenLoginHeaders(KoskiSpecificMockOppijat.tyhjä.hetu)
@@ -1229,6 +1285,7 @@ class OppijaValidationTaiteenPerusopetusSpec
       // Säilyneen opiskeluoikeuden jäljellä olevan suorituksen päivittäminen
       putOpiskeluoikeus(
         TPO.Opiskeluoikeus.aloitettuYleinenOppimäärä.copy(
+          oid = oo.oid,
           suoritukset = List(
             säilytettäväSuoritus.copy(
               osasuoritukset = Some(List(TPO.Osasuoritus.osasuoritusMusiikki("MU1", 1.0)))
@@ -1259,17 +1316,17 @@ class OppijaValidationTaiteenPerusopetusSpec
     }
 
     "opiskeluoikeus poistuu kun sen ainoalta suoritukselta perutaan suostumus - uutta erityyppistä suoritusta ei voi lisätä poistuneelle opiskeluoikeudelle" in {
-      resetFixtures()
       val poistettavaSuoritus = TPO.PäätasonSuoritus.yleistenYhteistenOpintojenSuoritusEiArvioituEiOsasuorituksia
       val lisättäväSuoritus = TPO.PäätasonSuoritus.yleistenTeemaopintojenSuoritusEiArvioituEiOsasuorituksia
 
       // Syötä opiskeluoikeus
-      val oo = postAndGetOpiskeluoikeusV2(
+      val oo = setupOppijaWithAndGetOpiskeluoikeus(
         TPO.Opiskeluoikeus.aloitettuYleinenOppimäärä.copy(
           suoritukset = List(
             poistettavaSuoritus
           )
-        ), henkilö = KoskiSpecificMockOppijat.tyhjä
+        ),
+        KoskiSpecificMockOppijat.tyhjä
       )
       oo.oid should not be empty
 
@@ -1293,16 +1350,16 @@ class OppijaValidationTaiteenPerusopetusSpec
     }
 
     "suoritusta jolta on peruttu suostumus, ei voi lisätä uudelleen - opiskeluoikeudella yksi suoritus" in {
-      resetFixtures()
       val suoritus = TPO.PäätasonSuoritus.yleistenYhteistenOpintojenSuoritusEiArvioituEiOsasuorituksia
 
       // Syötä opiskeluoikeus jolla yksi suoritus
-      val oo = postAndGetOpiskeluoikeusV2(
+      val oo = setupOppijaWithAndGetOpiskeluoikeus(
         TPO.Opiskeluoikeus.aloitettuYleinenOppimäärä.copy(
           suoritukset = List(
             suoritus
           )
-        ), henkilö = KoskiSpecificMockOppijat.tyhjä
+        ),
+        KoskiSpecificMockOppijat.tyhjä
       )
       oo.oid should not be empty
 
@@ -1326,20 +1383,20 @@ class OppijaValidationTaiteenPerusopetusSpec
     }
 
     "suoritusta jolta on peruttu suostumus, ei voi lisätä uudelleen - opiskeluoikeudella kaksi suoritusta" in {
-      resetFixtures()
       val poistettavaJaLisättäväSuoritus = TPO
         .PäätasonSuoritus
         .yleistenYhteistenOpintojenSuoritusEiArvioituEiOsasuorituksia
       val säilyväSuoritus = TPO.PäätasonSuoritus.yleistenTeemaopintojenSuoritusEiArvioituEiOsasuorituksia
 
       // Syötä opiskeluoikeus jolla kaksi suoritusta
-      val oo = postAndGetOpiskeluoikeusV2(
+      val oo = setupOppijaWithAndGetOpiskeluoikeus(
         TPO.Opiskeluoikeus.aloitettuYleinenOppimäärä.copy(
           suoritukset = List(
             poistettavaJaLisättäväSuoritus,
             säilyväSuoritus
           )
-        ), henkilö = KoskiSpecificMockOppijat.tyhjä
+        ),
+        KoskiSpecificMockOppijat.tyhjä
       )
       oo.oid should not be empty
 
@@ -1366,15 +1423,17 @@ class OppijaValidationTaiteenPerusopetusSpec
 
   "Suostumuksen peruutus ja suoritusjako päätason suorituksen tasolla" - {
     "suoritusjaon tekeminen estää suostumuksen peruuttamisen suoritukselta - yksi päätason suoritus" in {
-      resetFixtures()
       val suoritus = TPO.PäätasonSuoritus.yleistenYhteistenOpintojenSuoritusEiArvioituEiOsasuorituksia
 
       // Syötä opiskeluoikeus jolla yksi suoritus
-      val oo = postAndGetOpiskeluoikeusV2(TPO.Opiskeluoikeus.aloitettuYleinenOppimäärä.copy(
-        suoritukset = List(
-          suoritus
-        )
-      ), henkilö = KoskiSpecificMockOppijat.tyhjä)
+      val oo = setupOppijaWithAndGetOpiskeluoikeus(
+        TPO.Opiskeluoikeus.aloitettuYleinenOppimäärä.copy(
+          suoritukset = List(
+            suoritus
+          )
+        ),
+        KoskiSpecificMockOppijat.tyhjä
+      )
       oo.oid should not be empty
 
       // Tee suoritusjako
@@ -1403,11 +1462,13 @@ class OppijaValidationTaiteenPerusopetusSpec
     }
 
     "suoritusjaon tekeminen estää suostumuksen peruuttamisen suoritukselta - kaksi päätason suoritusta" in {
-      resetFixtures()
       val suoritus = TPO.PäätasonSuoritus.yleistenYhteistenOpintojenSuoritusEiArvioituEiOsasuorituksia
 
       // Syötä opiskeluoikeus jolla yksi suoritus
-      val oo = postAndGetOpiskeluoikeusV2(TPO.Opiskeluoikeus.aloitettuYleinenOppimäärä, henkilö = KoskiSpecificMockOppijat.tyhjä)
+      val oo = setupOppijaWithAndGetOpiskeluoikeus(
+        TPO.Opiskeluoikeus.aloitettuYleinenOppimäärä,
+        KoskiSpecificMockOppijat.tyhjä
+      )
       oo.oid should not be empty
 
       // Tee suoritusjako
@@ -1441,7 +1502,10 @@ class OppijaValidationTaiteenPerusopetusSpec
       val jaettavaSuoritus = TPO.PäätasonSuoritus.yleistenTeemaopintojenSuoritusEiArvioituEiOsasuorituksia
 
       // Syötä opiskeluoikeus jolla kaksi suoritusta
-      val oo = postAndGetOpiskeluoikeusV2(TPO.Opiskeluoikeus.aloitettuYleinenOppimäärä, henkilö = KoskiSpecificMockOppijat.tyhjä)
+      val oo = setupOppijaWithAndGetOpiskeluoikeus(
+        TPO.Opiskeluoikeus.aloitettuYleinenOppimäärä,
+        KoskiSpecificMockOppijat.tyhjä
+      )
       oo.oid should not be empty
 
       // Tee suoritusjako
@@ -1462,11 +1526,13 @@ class OppijaValidationTaiteenPerusopetusSpec
     }
 
     "suoritusjakoon ei sisälly rinnakkaisen opiskeluoikeuden vastaava suoritus ja rinnakkaisen opiskeluoikeuden suoritukselta voi perua suostumuksen" in {
-      resetFixtures()
       val poistettavaSuoritus = TPO.PäätasonSuoritus.yleistenYhteistenOpintojenSuoritusEiArvioituEiOsasuorituksia
 
       // Syötä opiskeluoikeudet
-      val oo = postAndGetOpiskeluoikeusV2(TPO.Opiskeluoikeus.aloitettuYleinenOppimäärä, henkilö = KoskiSpecificMockOppijat.tyhjä)
+      val oo = setupOppijaWithAndGetOpiskeluoikeus(
+        TPO.Opiskeluoikeus.aloitettuYleinenOppimäärä,
+        KoskiSpecificMockOppijat.tyhjä
+      )
       oo.oid should not be empty
 
       val oo2 = postAndGetOpiskeluoikeusV2(TPO.Opiskeluoikeus.aloitettuYleinenOppimäärä, henkilö = KoskiSpecificMockOppijat.tyhjä)
@@ -1503,7 +1569,10 @@ class OppijaValidationTaiteenPerusopetusSpec
       val eiJaettuSuoritus = TPO.PäätasonSuoritus.yleistenTeemaopintojenSuoritusEiArvioituEiOsasuorituksia
 
       // Syötä opiskeluoikeudet
-      val oo = postAndGetOpiskeluoikeusV2(TPO.Opiskeluoikeus.aloitettuYleinenOppimäärä, henkilö = KoskiSpecificMockOppijat.tyhjä)
+      val oo = setupOppijaWithAndGetOpiskeluoikeus(
+        TPO.Opiskeluoikeus.aloitettuYleinenOppimäärä,
+        KoskiSpecificMockOppijat.tyhjä
+      )
       oo.oid should not be empty
 
       // Tee suoritusjako
@@ -1542,16 +1611,11 @@ class OppijaValidationTaiteenPerusopetusSpec
 
   "Koulutuksen toteutustapa" - {
     "ei voi muuttua opiskeluoikeudelle" in {
-      resetFixtures()
-      putOpiskeluoikeus(
+      val oo = setupOppijaWithAndGetOpiskeluoikeus(
         TPO.Opiskeluoikeus.hankintakoulutuksenaHyväksytystiSuoritettuLaajaOppimäärä,
         henkilö = KoskiSpecificMockOppijat.tyhjä,
         headers = authHeaders(MockUsers.paakayttaja) ++ jsonContent
-      ) {
-        verifyResponseStatusOk()
-      }
-
-      val oo = lastOpiskeluoikeusByHetu(KoskiSpecificMockOppijat.tyhjä)
+      )
       val oid = oo.oid.get
 
       putOpiskeluoikeus(

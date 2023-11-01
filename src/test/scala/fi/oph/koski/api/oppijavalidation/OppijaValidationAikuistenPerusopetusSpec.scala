@@ -49,13 +49,13 @@ class OppijaValidationAikuistenPerusopetusSpec
 
   "Kurssisuoritukset" - {
     "OPS 2015, mutta kurssisuorituksissa 2017 koodisto -> HTTP 400" in {
-      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(aikuistenPerusopetuksenOppimääränSuoritus(Some("19/011/2015")).copy(osasuoritukset = oppiaineidenSuoritukset2017)))) {
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(aikuistenPerusopetuksenOppimääränSuoritus(Some("19/011/2015")).copy(osasuoritukset = oppiaineidenSuoritukset2017)))) {
         verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*aikuistenperusopetuksenpaattovaiheenkurssit2017.*".r))
       }
     }
 
     "OPS 2017, mutta kurssisuorituksissa 2015 koodisto -> HTTP 400" in {
-      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(aikuistenPerusopetuksenOppimääränSuoritus(Some("OPH-1280-2017")).copy(osasuoritukset = oppiaineidenSuoritukset2015)))) {
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(aikuistenPerusopetuksenOppimääränSuoritus(Some("OPH-1280-2017")).copy(osasuoritukset = oppiaineidenSuoritukset2015)))) {
         verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*aikuistenperusopetuksenkurssit2015.*".r))
       }
     }
@@ -81,7 +81,7 @@ class OppijaValidationAikuistenPerusopetusSpec
             osasuoritukset = aikuistenPerusopetuksenAlkuvaiheenSuoritus.osasuoritukset.map(_.map(_.copy(arviointi = None)))
           ))
         )
-        putOpiskeluoikeus(opiskeluoikeus) {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
           verifyResponseStatusOk()
         }
       }
@@ -97,7 +97,7 @@ class OppijaValidationAikuistenPerusopetusSpec
               ))
             ))
         )
-        putOpiskeluoikeus(opiskeluoikeus) {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
           verifyResponseStatus(400, HttpStatus.append(
             KoskiErrorCategory.badRequest.validation.tila.keskeneräinenOsasuoritus("Valmiiksi merkityllä suorituksella suorituksentyyppi/aikuistenperusopetuksenoppimaaranalkuvaihe on keskeneräinen osasuoritus aikuistenperusopetuksenalkuvaiheenkurssit2017/LÄI1"),
             KoskiErrorCategory.badRequest.validation.tila.keskeneräinenOsasuoritus("Valmiiksi merkityllä suorituksella aikuistenperusopetuksenalkuvaiheenoppiaineet/AI on keskeneräinen osasuoritus aikuistenperusopetuksenalkuvaiheenkurssit2017/LÄI1"))
@@ -115,7 +115,7 @@ class OppijaValidationAikuistenPerusopetusSpec
             osasuoritukset = aikuistenPerusopetuksenAlkuvaiheenSuoritus.osasuoritukset.map(xs => xs.head :: xs)
           ))
         )
-        putOpiskeluoikeus(opiskeluoikeus) {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
           verifyResponseStatusOk()
         }
       }
@@ -126,7 +126,7 @@ class OppijaValidationAikuistenPerusopetusSpec
           suoritukset = List(aikuistenPerusopetuksenOppimääränSuoritus().copy(
             osasuoritukset = oppiaineidenSuoritukset2015.map(xs => xs.head :: xs))
           ))
-        putOpiskeluoikeus(opiskeluoikeus) {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.duplikaattiOsasuoritus("Osasuoritus (koskioppiaineetyleissivistava/AI,oppiaineaidinkielijakirjallisuus/AI1) esiintyy useammin kuin kerran ryhmässä pakolliset"))
         }
       }
@@ -141,7 +141,7 @@ class OppijaValidationAikuistenPerusopetusSpec
           aikuistenPerusopetuksenAlkuvaiheenSuoritus
         )
       )
-      putOpiskeluoikeus(opiskeluoikeus) {
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
         verifyResponseStatusOk()
       }
     }
@@ -152,7 +152,7 @@ class OppijaValidationAikuistenPerusopetusSpec
           aikuistenPerusopetuksenAlkuvaiheenSuoritus.copy(vahvistus = None)
         )
       )
-      putOpiskeluoikeus(opiskeluoikeus) {
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
         verifyResponseStatusOk()
       }
     }
@@ -160,7 +160,7 @@ class OppijaValidationAikuistenPerusopetusSpec
       val opiskeluoikeus = opiskeluoikeusWithValmistunutTila.copy(
         suoritukset = List(aikuistenPerusopetuksenOppimääränSuoritus().copy(vahvistus = None))
       )
-      putOpiskeluoikeus(opiskeluoikeus) {
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vahvistusPuuttuu("Suoritukselta koulutus/201101 puuttuu vahvistus, vaikka opiskeluoikeus on tilassa Valmistunut"))
       }
     }
@@ -171,13 +171,13 @@ class OppijaValidationAikuistenPerusopetusSpec
           aikuistenPerusopetuksenOppimääränSuoritus().copy(vahvistus = None)
         )
       )
-      putOpiskeluoikeus(opiskeluoikeus) {
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vahvistusPuuttuu("Suoritukselta koulutus/201101 puuttuu vahvistus, vaikka opiskeluoikeus on tilassa Valmistunut"))
       }
     }
     "Ei voida asettaa kun vahvistettu alkuvaihe on ainoa suoritus" in {
       val opiskeluoikeus = opiskeluoikeusWithValmistunutTila.copy(suoritukset = List(aikuistenPerusopetuksenAlkuvaiheenSuoritus))
-      putOpiskeluoikeus(opiskeluoikeus) {
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.suoritusPuuttuu("Opiskeluoikeutta aikuistenperusopetus ei voi merkitä valmiiksi kun siitä puuttuu suoritus aikuistenperusopetuksenoppimaara tai perusopetuksenoppiaineenoppimaara"))
       }
     }
@@ -185,7 +185,7 @@ class OppijaValidationAikuistenPerusopetusSpec
       val opiskeluoikeus = opiskeluoikeusWithValmistunutTila.copy(
         suoritukset = List(aikuistenPerusopetuksenAlkuvaiheenSuoritus.copy(vahvistus = None))
       )
-      putOpiskeluoikeus(opiskeluoikeus) {
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.suoritusPuuttuu("Opiskeluoikeutta aikuistenperusopetus ei voi merkitä valmiiksi kun siitä puuttuu suoritus aikuistenperusopetuksenoppimaara tai perusopetuksenoppiaineenoppimaara"))
       }
     }
@@ -193,7 +193,7 @@ class OppijaValidationAikuistenPerusopetusSpec
 
   "Opintojen rahoitus" - {
     "lasna -tilalta vaaditaan opintojen rahoitus" in {
-      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(List(AikuistenPerusopetuksenOpiskeluoikeusjakso(date(2008, 1, 1), opiskeluoikeusLäsnä))))) {
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(List(AikuistenPerusopetuksenOpiskeluoikeusjakso(date(2008, 1, 1), opiskeluoikeusLäsnä))))) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaltaPuuttuuRahoitusmuoto("Opiskeluoikeuden tilalta lasna puuttuu rahoitusmuoto"))
       }
     }
@@ -202,7 +202,7 @@ class OppijaValidationAikuistenPerusopetusSpec
         AikuistenPerusopetuksenOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
         AikuistenPerusopetuksenOpiskeluoikeusjakso(date(2018, 1, 1), opiskeluoikeusValmistunut)
       ))
-      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(tila = tila, suoritukset = List(aikuistenPerusopetuksenOppimääränSuoritus()))) {
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(tila = tila, suoritukset = List(aikuistenPerusopetuksenOppimääränSuoritus()))) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaltaPuuttuuRahoitusmuoto("Opiskeluoikeuden tilalta valmistunut puuttuu rahoitusmuoto"))
       }
     }
@@ -216,7 +216,7 @@ class OppijaValidationAikuistenPerusopetusSpec
         AikuistenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2016, 1, 1), opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
         AikuistenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2017, 1, 1), opiskeluoikeusEronnut)
       )))
-    putOpiskeluoikeus(opiskeluoikeus) {
+    setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
       verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaEronnutTaiKatsotaanEronneeksiVaikkaVahvistettuPäätasonSuoritus())
     }
   }
@@ -235,7 +235,7 @@ class OppijaValidationAikuistenPerusopetusSpec
           sisäoppilaitosmainenMajoitus = Some(List(Aikajakso(LocalDate.now(), None)))
       )))
 
-      val tallennettuna = putAndGetOpiskeluoikeus(oo)
+      val tallennettuna = setupOppijaWithAndGetOpiskeluoikeus(oo)
 
       tallennettuna.lisätiedot.get.tukimuodot should equal (None)
       tallennettuna.lisätiedot.get.tehostetunTuenPäätös should equal (None)
@@ -257,7 +257,7 @@ class OppijaValidationAikuistenPerusopetusSpec
     }
   }
 
-  private def putAndGetOpiskeluoikeus(oo: KoskeenTallennettavaOpiskeluoikeus): AikuistenPerusopetuksenOpiskeluoikeus = putOpiskeluoikeus(oo) {
+  private def setupOppijaWithAndGetOpiskeluoikeus(oo: KoskeenTallennettavaOpiskeluoikeus): AikuistenPerusopetuksenOpiskeluoikeus = setupOppijaWithOpiskeluoikeus(oo) {
     verifyResponseStatusOk()
     getOpiskeluoikeus(readPutOppijaResponse.opiskeluoikeudet.head.oid)
   }.asInstanceOf[AikuistenPerusopetuksenOpiskeluoikeus]

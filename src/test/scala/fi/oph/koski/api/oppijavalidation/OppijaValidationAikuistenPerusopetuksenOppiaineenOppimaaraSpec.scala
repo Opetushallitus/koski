@@ -43,7 +43,7 @@ class OppijaValidationAikuistenPerusopetuksenOppiaineenOppimaaraSpec extends Tut
         suorituskieli = suomenKieli
       )))
 
-      putOpiskeluoikeus(eitiedossa) {
+      setupOppijaWithOpiskeluoikeus(eitiedossa) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tyhjänOppiaineenVahvistus(""""Ei tiedossa"-oppiainetta ei voi merkitä valmiiksi"""))
       }
     }

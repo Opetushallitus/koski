@@ -6,6 +6,7 @@ import fi.oph.koski.api.misc.{OpiskeluoikeusTestMethodsLukio2015, PutOpiskeluoik
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.ExamplesLukio.aikuistenOpsinPerusteet2015
 import fi.oph.koski.documentation.LukioExampleData._
+import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.ressunLukio
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.schema._
@@ -23,11 +24,9 @@ class OppijaValidationLukioAlkamispäiväSpec
 {
   override protected def beforeEach() {
     super.beforeEach()
-    resetFixtures()
   }
 
   override protected def afterEach(): Unit = {
-    resetFixtures()
     super.afterEach()
   }
 
@@ -37,28 +36,35 @@ class OppijaValidationLukioAlkamispäiväSpec
 
     "Lukion oppimäärässä" - {
       "Sallitaan 2005 tai myöhemmin syntyneelle, jos on aiempi lukion opiskeluoikeus" in {
-
-        putOpiskeluoikeus(
-          defaultOpiskeluoikeus.copy(tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(aiempiAlkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen))))),
+        setupOppijaWithOpiskeluoikeus(
+          defaultOpiskeluoikeus.copy(
+            tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(aiempiAlkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen))))
+          ),
           KoskiSpecificMockOppijat.vuonna2005SyntynytPeruskouluValmis2021
         ) {
-          verifyResponseStatusOk()
+           verifyResponseStatusOk()
         }
 
         putOpiskeluoikeus(
-          defaultOpiskeluoikeus.copy(tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen))))),
+          defaultOpiskeluoikeus.copy(
+            oppilaitos = Some(ressunLukio),
+            suoritukset = List(päättötodistusSuoritus.copy(
+              toimipiste = ressunLukio
+            )),
+            tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen))))
+          ),
           KoskiSpecificMockOppijat.vuonna2005SyntynytPeruskouluValmis2021
         ) {
           verifyResponseStatusOk()
         }
       }
       "Sallitaan 2004 tai aiemmin syntyneelle, jos ei ole aiempia lukion opiskeluoikeuksia" in {
-        putOpiskeluoikeus(defaultOpiskeluoikeus.copy(tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)))))) {
+        setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)))))) {
           verifyResponseStatusOk()
         }
       }
       "Ei sallita 2005 tai myöhemmin syntyneelle, jos ei ole aiempia lukion opiskeluoikeuksia" in {
-        putOpiskeluoikeus(
+        setupOppijaWithOpiskeluoikeus(
           defaultOpiskeluoikeus.copy(tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen))))),
           KoskiSpecificMockOppijat.vuonna2005SyntynytPeruskouluValmis2021
         ) {
@@ -68,7 +74,7 @@ class OppijaValidationLukioAlkamispäiväSpec
         }
       }
       "Ei sallita 2005 tai myöhemmin syntyneelle, jos ei ole aiempia lukion opiskeluoikeuksia, paitsi se, jota ollaan parhaillaan muokkaamassa" in {
-        val luodunOpiskeluoikeudenOid = putOpiskeluoikeus(
+        val luodunOpiskeluoikeudenOid = setupOppijaWithOpiskeluoikeus(
           defaultOpiskeluoikeus.copy(tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(aiempiAlkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen))))),
           KoskiSpecificMockOppijat.vuonna2005SyntynytPeruskouluValmis2021
         ) {
@@ -76,7 +82,7 @@ class OppijaValidationLukioAlkamispäiväSpec
           readPutOppijaResponse.opiskeluoikeudet.head.oid
         }
 
-        putOpiskeluoikeus(
+        setupOppijaWithOpiskeluoikeus(
           defaultOpiskeluoikeus.copy(
             oid = Some(luodunOpiskeluoikeudenOid),
             tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen))))
@@ -90,7 +96,7 @@ class OppijaValidationLukioAlkamispäiväSpec
       }
       "Sallitaan jos opiskelee aikuisten opsilla" - {
         "Oppimäärä" in {
-          putOpiskeluoikeus(
+          setupOppijaWithOpiskeluoikeus(
             defaultOpiskeluoikeus.copy(
               tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)))),
               suoritukset = List(päättötodistusSuoritus.copy(oppimäärä = aikuistenOpetussuunnitelma))),
@@ -100,7 +106,7 @@ class OppijaValidationLukioAlkamispäiväSpec
           }
         }
         "Oppiaineen oppimäärä" in {
-          putOpiskeluoikeus(
+          setupOppijaWithOpiskeluoikeus(
             defaultOpiskeluoikeus.copy(
               tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)))),
               suoritukset = List(lukionOppiaineenOppimääränSuoritusYhteiskuntaoppi.copy(
@@ -115,9 +121,10 @@ class OppijaValidationLukioAlkamispäiväSpec
     }
     "Lukion oppiaineen oppimäärässä" - {
       "Sallitaan 2005 tai myöhemmin syntyneelle, jos on aiempi lukion opiskeluoikeus" in {
-
-        putOpiskeluoikeus(
-          defaultOpiskeluoikeus.copy(tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(aiempiAlkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen))))),
+        setupOppijaWithOpiskeluoikeus(
+          defaultOpiskeluoikeus.copy(
+            tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(aiempiAlkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen))))
+          ),
           KoskiSpecificMockOppijat.vuonna2005SyntynytPeruskouluValmis2021
         ) {
           verifyResponseStatusOk()
@@ -134,7 +141,7 @@ class OppijaValidationLukioAlkamispäiväSpec
         }
       }
       "Sallitaan 2004 tai aiemmin syntyneelle, jos ei ole aiempia lukion opiskeluoikeuksia" in {
-        putOpiskeluoikeus(defaultOpiskeluoikeus.copy(
+        setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(
           tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)))),
           suoritukset = List(lukionOppiaineenOppimääränSuoritusYhteiskuntaoppi)
         )) {
@@ -142,7 +149,7 @@ class OppijaValidationLukioAlkamispäiväSpec
         }
       }
       "Ei sallita 2005 tai myöhemmin syntyneelle, jos ei ole aiempia lukion opiskeluoikeuksia" in {
-        putOpiskeluoikeus(
+        setupOppijaWithOpiskeluoikeus(
           defaultOpiskeluoikeus.copy(
             tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)))),
             suoritukset = List(lukionOppiaineenOppimääränSuoritusYhteiskuntaoppi)
@@ -155,7 +162,7 @@ class OppijaValidationLukioAlkamispäiväSpec
         }
       }
       "Sallitaan, jos on ulkomainen vaihto-opiskelija" in {
-        putOpiskeluoikeus(
+        setupOppijaWithOpiskeluoikeus(
           defaultOpiskeluoikeus.copy(
             tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)))),
             suoritukset = List(lukionOppiaineenOppimääränSuoritusYhteiskuntaoppi),

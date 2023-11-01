@@ -40,19 +40,19 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
       }
 
       "jaksolla pitää olla rahoitusmuoto kun tila on läsnä" in {
-        putOpiskeluoikeus(ilmanRahoitusta(tuvaOpiskeluOikeusEiValmistunut, tuvaTilaLäsnä), henkilö = tuvaHenkilöValmis, headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent) {
+        setupOppijaWithOpiskeluoikeus(ilmanRahoitusta(tuvaOpiskeluOikeusEiValmistunut, tuvaTilaLäsnä), henkilö = tuvaHenkilöValmis, headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaltaPuuttuuRahoitusmuoto())
         }
       }
 
       "jaksolla pitää olla rahoitusmuoto kun tila on valmistunut" in {
-        putOpiskeluoikeus(ilmanRahoitusta(tuvaOpiskeluOikeusValmistunut, tuvaTilaValmistunut), henkilö = tuvaHenkilöValmis, headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent) {
+        setupOppijaWithOpiskeluoikeus(ilmanRahoitusta(tuvaOpiskeluOikeusValmistunut, tuvaTilaValmistunut), henkilö = tuvaHenkilöValmis, headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaltaPuuttuuRahoitusmuoto())
         }
       }
 
       "jaksolla pitää olla rahoitusmuoto kun tila on loma" in {
-        putOpiskeluoikeus(ilmanRahoitusta(tuvaOpiskeluOikeusLoma, tuvaTilaLoma).copy(
+        setupOppijaWithOpiskeluoikeus(ilmanRahoitusta(tuvaOpiskeluOikeusLoma, tuvaTilaLoma).copy(
           järjestämislupa = Koodistokoodiviite("ammatillinen", "tuvajarjestamislupa")
         ), henkilö = tuvaHenkilöValmis, headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaltaPuuttuuRahoitusmuoto())
@@ -62,13 +62,13 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
 
     "Suoritukset" - {
       "valmistuneen päätason suorituksen kesto ja osasuoritukset vaatimusten mukaiset" in {
-        putOpiskeluoikeus(tuvaOpiskeluOikeusValmistunut, henkilö = tuvaHenkilöValmis, headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent) {
+        setupOppijaWithOpiskeluoikeus(tuvaOpiskeluOikeusValmistunut, henkilö = tuvaHenkilöValmis, headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent) {
           verifyResponseStatusOk()
         }
       }
 
       "keskeneräisen päätason suorituksen kesto ja osasuoritukset vaatimusten mukaiset" in {
-        putOpiskeluoikeus(tuvaOpiskeluOikeusEiValmistunut, henkilö = tuvaHenkilöEiValmis, headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent) {
+        setupOppijaWithOpiskeluoikeus(tuvaOpiskeluOikeusEiValmistunut, henkilö = tuvaHenkilöEiValmis, headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent) {
           verifyResponseStatusOk()
         }
       }
@@ -114,7 +114,7 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
           )))
 
 
-        val tuva = putAndGetOpiskeluoikeus(oo, tuvaHenkilöValmis)
+        val tuva = setupOppijaWithAndGetOpiskeluoikeus(oo, tuvaHenkilöValmis)
         tuva.suoritukset.head.koulutusmoduuli.laajuusArvo(0) shouldBe 12.0
         tuva.suoritukset.head.osasuoritusLista.last.koulutusmoduuli.laajuusArvo(0.0) shouldBe 8.0
       }
@@ -286,7 +286,7 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
           ))
         )
 
-        val tuva = putAndGetOpiskeluoikeus(oo, tuvaHenkilöValmis)
+        val tuva = setupOppijaWithAndGetOpiskeluoikeus(oo, tuvaHenkilöValmis)
         tuva.suoritukset.head.koulutusmoduuli.laajuusArvo(0) shouldBe 10.0
         tuva.suoritukset.head.osasuoritusLista.last.koulutusmoduuli.laajuusArvo(0.0) shouldBe 6.0
       }
@@ -318,7 +318,7 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
           ))
         ))
 
-        putOpiskeluoikeus(
+        setupOppijaWithOpiskeluoikeus(
           oo,
           henkilö = tuvaHenkilöValmis,
           headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent
@@ -406,7 +406,7 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
           ))
         )
 
-        putOpiskeluoikeus(oo, henkilö = tuvaHenkilöValmis, headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent) {
+        setupOppijaWithOpiskeluoikeus(oo, henkilö = tuvaHenkilöValmis, headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent) {
           verifyResponseStatus(
             expectedStatus = 400,
             KoskiErrorCategory.badRequest.validation.laajuudet.tuvaOsaSuoritusVääräLaajuus(
@@ -436,7 +436,7 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
           ))
         )
 
-        putOpiskeluoikeus(oo, henkilö = tuvaHenkilöValmis, headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent) {
+        setupOppijaWithOpiskeluoikeus(oo, henkilö = tuvaHenkilöValmis, headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.tuvaOpiskeluJaUrasuunnittelutaitojenOsasuoritusPuuttuu())
         }
       }
@@ -529,7 +529,7 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
         }
         defaultKoulutustyyppi shouldBe None
 
-        val tuva = putAndGetOpiskeluoikeus(defaultOpiskeluoikeus, tuvaHenkilöValmis)
+        val tuva = setupOppijaWithAndGetOpiskeluoikeus(defaultOpiskeluoikeus, tuvaHenkilöValmis)
         val täydennettyKoulutustyyppi = tuva.suoritukset.head.koulutusmoduuli match {
           case k: TutkintokoulutukseenValmentavanKoulutus => k.koulutustyyppi.map(_.koodiarvo)
         }
@@ -572,7 +572,7 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
         )
       )
 
-      putOpiskeluoikeus(oo, henkilö = tuvaHenkilöValmis, headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent) {
+      setupOppijaWithOpiskeluoikeus(oo, henkilö = tuvaHenkilöValmis, headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent) {
         verifyResponseStatus(400,
           KoskiErrorCategory.badRequest.validation.tila.eronneeksiKatsotunOpiskeluoikeudenArvioinnit(
             "Katsotaan eronneeksi -tilaan päättyvällä opiskeluoikeudella ei saa olla osasuorituksia, joista puuttuu arviointi"
@@ -582,8 +582,10 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
 
     "Opiskeluoikeudet" - {
       "opiskeluoikeuden järjestämislupa ei saa muuttua opiskeluoikeuden luonnin jälkeen" in {
+        val tallennettuTuvaOpiskeluOikeusEiValmistunut = setupOppijaWithAndGetOpiskeluoikeus(tuvaOpiskeluOikeusEiValmistunut, tuvaHenkilöEiValmis)
+
         putOpiskeluoikeus(
-          tuvaOpiskeluOikeusEiValmistunut
+          tallennettuTuvaOpiskeluOikeusEiValmistunut
             .copy(järjestämislupa = Koodistokoodiviite("ammatillinen", "tuvajarjestamislupa"), lisätiedot = None),
           henkilö = tuvaHenkilöEiValmis,
           headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent
@@ -602,7 +604,7 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
     "Opiskeluoikeuden tila" - {
       """Opiskeluoikeuden tilaa "eronnut" ei saa käyttää""" in {
         // Tämä tilan tarkistus on tehty validaationa eikä tietomalliin siksi, että tuotantoon ehti livahtaa väärää dataa.
-        putOpiskeluoikeus(
+        setupOppijaWithOpiskeluoikeus(
           tuvaOpiskeluOikeusValmistunut.copy(tila = TutkintokoulutukseenValmentavanOpiskeluoikeudenTila(
             opiskeluoikeusjaksot = List(
               tuvaOpiskeluOikeusjakso(date(2021, 8, 1), "lasna"),
@@ -623,7 +625,7 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
       }
 
       """Opiskeluoikeuden tila "loma" sallitaan, kun opiskeluoikeuden järjestämislupa on ammatillisen koulutuksen järjestämisluvan piirissä""" in {
-        putOpiskeluoikeus(
+        setupOppijaWithOpiskeluoikeus(
           tuvaOpiskeluOikeusLoma.copy(
             järjestämislupa = Koodistokoodiviite("ammatillinen", "tuvajarjestamislupa"),
             lisätiedot = Some(TutkintokoulutukseenValmentavanOpiskeluoikeudenAmmatillisenLuvanLisätiedot(
@@ -644,7 +646,7 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
         }
       }
       """Opiskeluoikeuden tila ei saa olla "loma", kun opiskeluoikeuden järjestämislupa on jokin muu kuin ammatillisen koulutuksen järjestämisluvan piirissä""" in {
-        putOpiskeluoikeus(
+        setupOppijaWithOpiskeluoikeus(
           tuvaOpiskeluOikeusLoma.copy(
             lisätiedot = Some(
               TutkintokoulutukseenValmentavanOpiskeluoikeudenLukiokoulutuksenLuvanLisätiedot(
@@ -860,15 +862,6 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
 
     }
   }
-
-  def putAndGetOpiskeluoikeus(oo: KoskeenTallennettavaOpiskeluoikeus, henkilö: Henkilö): TutkintokoulutukseenValmentavanOpiskeluoikeus = putOpiskeluoikeus(
-    oo,
-    henkilö = henkilö,
-    headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent
-  ) {
-    verifyResponseStatusOk()
-    getOpiskeluoikeus(readPutOppijaResponse.opiskeluoikeudet.head.oid)
-  }.asInstanceOf[TutkintokoulutukseenValmentavanOpiskeluoikeus]
 
   override def defaultOpiskeluoikeus: TutkintokoulutukseenValmentavanOpiskeluoikeus = tuvaOpiskeluOikeusValmistunut
 

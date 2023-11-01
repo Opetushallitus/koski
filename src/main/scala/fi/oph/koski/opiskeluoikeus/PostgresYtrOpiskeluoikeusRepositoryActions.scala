@@ -12,7 +12,7 @@ import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.schema._
 import org.json4s.{JArray, JValue}
-import slick.dbio.Effect.{Read, Write}
+import slick.dbio.Effect.{Read, Transactional, Write}
 import slick.dbio.{DBIOAction, NoStream}
 
 class PostgresYtrOpiskeluoikeusRepositoryActions(
@@ -43,12 +43,39 @@ class PostgresYtrOpiskeluoikeusRepositoryActions(
     DBIO.successful(Unit)
   }
 
-  protected override def createInsteadOfUpdate(
+  protected override def createOrUpdateAction(
     oppijaOid: PossiblyUnverifiedHenkilöOid,
     opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
-    rows: List[YtrOpiskeluoikeusRow]
-  )(implicit user: KoskiSpecificSession): DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write] = {
-    DBIO.successful(Left(KoskiErrorCategory.conflict.exists())) // Ei tehdä uutta, koska vastaava vanha YO-opiskeluoikeus on olemassa
+    allowUpdate: Boolean,
+    allowDeleteCompleted: Boolean
+  )(implicit user: KoskiSpecificSession): DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write with Transactional] = {
+    val identifier = OpiskeluoikeusIdentifier(oppijaOid.oppijaOid, opiskeluoikeus)
+
+    findByIdentifierAction(identifier)
+      .flatMap {
+        case Right(Nil) =>
+          createAction(oppijaOid, opiskeluoikeus)
+        case Right(aiemmatOpiskeluoikeudet) if allowUpdate =>
+          updateIfUnambiguousAiempiOpiskeluoikeusAction(oppijaOid, opiskeluoikeus, aiemmatOpiskeluoikeudet, allowDeleteCompleted)
+        case Right(_) =>
+          DBIO.successful(Left(KoskiErrorCategory.conflict.exists())) // Ei tehdä uutta, koska vastaava vanha YO-opiskeluoikeus on olemassa
+        case Left(err) =>
+          DBIO.successful(Left(err))
+      }
+  }
+
+  private def updateIfUnambiguousAiempiOpiskeluoikeusAction(
+    oppijaOid: PossiblyUnverifiedHenkilöOid,
+    opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
+    aiemmatOpiskeluoikeudet: List[YtrOpiskeluoikeusRow],
+    allowDeleteCompleted: Boolean
+  )(implicit user: KoskiSpecificSession): DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write with Transactional] = {
+    aiemmatOpiskeluoikeudet match {
+      case List(vanhaOpiskeluoikeus) =>
+        updateIfSameOppijaAction(oppijaOid, vanhaOpiskeluoikeus, opiskeluoikeus, allowDeleteCompleted)
+      case _ =>
+        DBIO.successful(Left(KoskiErrorCategory.conflict.löytyiEnemmänKuinYksiRivi(s"Löytyi enemmän kuin yksi rivi päivitettäväksi (${aiemmatOpiskeluoikeudet.map(_.oid)})")))
+    }
   }
 
   protected override def generateOid(oppija: OppijaHenkilöWithMasterInfo): String = {

@@ -21,12 +21,12 @@ trait TutkinnonPerusteetTest[T <: Opiskeluoikeus] extends AnyFreeSpec with PutOp
   "Tutkinnon perusteet" - {
     "Valideilla tiedoilla" - {
       "palautetaan HTTP 200" in {
-        putOpiskeluoikeus(defaultOpiskeluoikeus) {
+        setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus) {
           verifyResponseStatusOk()
         }
       }
       "myös ePerusteista löytymätön, mutta koodistosta \"koskikoulutusdiaarinumerot\" löytyvä diaarinumero kelpaa" in {
-        putOpiskeluoikeus(opiskeluoikeusWithPerusteenDiaarinumero(Some(eperusteistaLöytymätönValidiDiaarinumero))) {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeusWithPerusteenDiaarinumero(Some(eperusteistaLöytymätönValidiDiaarinumero))) {
           verifyResponseStatusOk()
         }
       }

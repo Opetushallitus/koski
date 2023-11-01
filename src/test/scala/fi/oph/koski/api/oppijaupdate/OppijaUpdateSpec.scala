@@ -29,8 +29,7 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
 
   "Opiskeluoikeuden lisääminen" - {
     "Palauttaa oidin ja versiot" in {
-      resetFixtures
-      putOppija(Oppija(oppija, List(defaultOpiskeluoikeus))) {
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus, oppija) {
         verifyResponseStatusOk()
         val result = JsonSerializer.parse[HenkilönOpiskeluoikeusVersiot](response.body)
         result.henkilö.oid should startWith("1.2.246.562.24.00000000")
@@ -40,22 +39,22 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
     "Puuttuvien tietojen täyttäminen" - {
       "Oppilaitoksen tiedot" - {
         "Ilman nimeä -> haetaan nimi" in {
-          val opiskeluoikeus = createOpiskeluoikeus(oppija, defaultOpiskeluoikeus)
+          val opiskeluoikeus = setupOppija(oppija, defaultOpiskeluoikeus)
           opiskeluoikeus.getOppilaitos.nimi.get.get("fi") should equal("Stadin ammatti- ja aikuisopisto")
           opiskeluoikeus.getOppilaitos.oppilaitosnumero.get.koodiarvo should equal("10105")
         }
         "Väärällä nimellä -> korvataan nimi" in {
-          val opiskeluoikeus = createOpiskeluoikeus(oppija, defaultOpiskeluoikeus.copy(oppilaitos = Some(Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto, nimi = Some(LocalizedString.finnish("Läppäkoulu"))))))
+          val opiskeluoikeus = setupOppija(oppija, defaultOpiskeluoikeus.copy(oppilaitos = Some(Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto, nimi = Some(LocalizedString.finnish("Läppäkoulu"))))))
           opiskeluoikeus.getOppilaitos.nimi.get.get("fi") should equal("Stadin ammatti- ja aikuisopisto")
         }
 
         "Oppilaitos puuttuu" - {
           "Suoritukselta löytyy toimipiste -> Täytetään oppilaitos" in {
-            val opiskeluoikeus = createOpiskeluoikeus(oppija, defaultOpiskeluoikeus.copy(oppilaitos = None))
+            val opiskeluoikeus = setupOppija(oppija, defaultOpiskeluoikeus.copy(oppilaitos = None))
             opiskeluoikeus.getOppilaitos.oid should equal(MockOrganisaatiot.stadinAmmattiopisto)
           }
           "Suorituksilta löytyy toimipisteitä, joilla sama oppilaitos -> Täytetään oppilaitos" in {
-            val opiskeluoikeus = createOpiskeluoikeus(oppija, ammatillinenOpiskeluoikeusNäyttötutkinnonJaNäyttöönValmistavanSuorituksilla())
+            val opiskeluoikeus = setupOppija(oppija, ammatillinenOpiskeluoikeusNäyttötutkinnonJaNäyttöönValmistavanSuorituksilla())
             opiskeluoikeus.getOppilaitos.oid should equal(MockOrganisaatiot.stadinAmmattiopisto)
           }
           "Suorituksilta löytyy toimipisteet, joilla eri oppilaitos -> FAIL" in {
@@ -75,48 +74,44 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
       }
       "Koodistojen tiedot" - {
         "Ilman nimeä -> haetaan nimi" in {
-          val opiskeluoikeus = createOpiskeluoikeus(oppija, defaultOpiskeluoikeus)
+          val opiskeluoikeus = setupOppija(oppija, defaultOpiskeluoikeus)
           val suoritus = opiskeluoikeus.suoritukset(0).asInstanceOf[AmmatillisenTutkinnonSuoritus]
-          suoritus.koulutusmoduuli.tunniste.nimi.get.get("fi") should equal("Sosiaali- ja terveysalan perustutkinto")
-          suoritus.koulutusmoduuli.tunniste.nimi.get.get("sv") should equal("Grundexamen inom social- och hälsovårdsbranschen")
+          suoritus.koulutusmoduuli.tunniste.nimi.get.get("fi") should equal("Autoalan perustutkinto")
+          suoritus.koulutusmoduuli.tunniste.nimi.get.get("sv") should equal("Grundexamen inom bilbranschen")
         }
         "Väärällä nimellä -> korvataan nimi" in {
-          val opiskeluoikeus = createOpiskeluoikeus(oppija, defaultOpiskeluoikeus.copy(suoritukset = List(autoalanPerustutkinnonSuoritus().copy(koulutusmoduuli = autoalanPerustutkinnonSuoritus().koulutusmoduuli.copy(tunniste = Koodistokoodiviite(koodiarvo = "351301", nimi=Some(LocalizedString.finnish("Läppätutkinto")), koodistoUri = "koulutus"))))))
+          val opiskeluoikeus = setupOppija(oppija, defaultOpiskeluoikeus.copy(suoritukset = List(autoalanPerustutkinnonSuoritus().copy(koulutusmoduuli = autoalanPerustutkinnonSuoritus().koulutusmoduuli.copy(tunniste = Koodistokoodiviite(koodiarvo = "351301", nimi=Some(LocalizedString.finnish("Läppätutkinto")), koodistoUri = "koulutus"))))))
 
-          opiskeluoikeus.suoritukset(0).asInstanceOf[AmmatillisenTutkinnonSuoritus].koulutusmoduuli.tunniste.nimi.get.get("fi") should equal("Sosiaali- ja terveysalan perustutkinto")
+          opiskeluoikeus.suoritukset(0).asInstanceOf[AmmatillisenTutkinnonSuoritus].koulutusmoduuli.tunniste.nimi.get.get("fi") should equal("Ajoneuvoalan perustutkinto")
         }
       }
       "Koulutustyyppi" - {
         "nuorten perusopetus" in {
-          resetFixtures
           val oo = PerusopetuksenOpiskeluoikeus(
             oppilaitos = Some(jyväskylänNormaalikoulu),
             suoritukset = List(yhdeksännenLuokanSuoritus, perusopetuksenOppimääränSuoritus),
             tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(NuortenPerusopetuksenOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä)))
           )
-          createOpiskeluoikeus(oppija, oo).suoritukset.find(_.isInstanceOf[PerusopetuksenOppimääränSuoritus]).get.koulutusmoduuli.asInstanceOf[Koulutus].koulutustyyppi.get.koodiarvo should equal("16")
+          setupOppija(oppija, oo).suoritukset.find(_.isInstanceOf[PerusopetuksenOppimääränSuoritus]).get.koulutusmoduuli.asInstanceOf[Koulutus].koulutustyyppi.get.koodiarvo should equal("16")
         }
 
         "aikuisten perusopetus" in {
-          resetFixtures
           val oo = AikuistenPerusopetuksenOpiskeluoikeus(
             oppilaitos = Some(jyväskylänNormaalikoulu),
             suoritukset = List(aikuistenPerusopetukseOppimääränSuoritus(aikuistenPerusopetus2017, oppiaineidenSuoritukset2017)),
             tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(List(AikuistenPerusopetuksenOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen))))
           )
-          createOpiskeluoikeus(oppija, oo).suoritukset.head.koulutusmoduuli.asInstanceOf[Koulutus].koulutustyyppi.get.koodiarvo should equal("17")
+          setupOppija(oppija, oo).suoritukset.head.koulutusmoduuli.asInstanceOf[Koulutus].koulutustyyppi.get.koodiarvo should equal("17")
         }
 
         "ammatillinen" in {
-          resetFixtures
-          val oo = createOpiskeluoikeus(oppija, defaultOpiskeluoikeus.copy(suoritukset = List(autoalanPerustutkinnonSuoritus())))
+          val oo = setupOppija(oppija, defaultOpiskeluoikeus.copy(suoritukset = List(autoalanPerustutkinnonSuoritus())))
           oo.suoritukset.head.koulutusmoduuli.asInstanceOf[Koulutus].koulutustyyppi.get.koodiarvo should equal("1")
         }
       }
 
       "Koulutustoimijan tiedot" in {
-        resetFixtures
-        val opiskeluoikeus = createOpiskeluoikeus(oppija, defaultOpiskeluoikeus)
+        val opiskeluoikeus = setupOppija(oppija, defaultOpiskeluoikeus)
         opiskeluoikeus.koulutustoimija.map(_.oid) should equal(Some("1.2.246.562.10.346830761110"))
       }
     }
@@ -131,7 +126,7 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
       def osasuoritus(opiskeluoikeus: Opiskeluoikeus): AmmatillisenTutkinnonOsanSuoritus = tutkinnonSuoritus(opiskeluoikeus).osasuoritukset.toList.flatten.head
 
       "Käytetään uusinta nimeä, jos opiskeluoikeus ei ole päättynyt" in {
-        val opiskeluoikeus = createOpiskeluoikeus(oppija, oo)
+        val opiskeluoikeus = setupOppija(oppija, oo)
         nimi(opiskeluoikeus.getOppilaitos) should equal("Stadin ammatti- ja aikuisopisto")
         nimi(opiskeluoikeus.koulutustoimija.get) should equal("Helsingin kaupunki")
         nimi(tutkinnonSuoritus(opiskeluoikeus).toimipiste) should equal("Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka")
@@ -139,7 +134,7 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
       }
 
       "Käytetään nimeä joka organisaatiolla oli opiskeluoikeuden päättymisen aikaan" in {
-        val opiskeluoikeus = createOpiskeluoikeus(
+        val opiskeluoikeus = setupOppija(
           oppija, päättymispäivällä(
             oo = oo.copy(suoritukset = List(autoalanErikoisammattitutkinnonSuoritus().copy(
               suoritustapa = Koodistokoodiviite("naytto", "ammatillisentutkinnonsuoritustapa")
@@ -164,7 +159,6 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
 
     "Käytettäessä opiskeluoikeus-oid:ia" - {
       "Muokkaa olemassaolevaa opiskeluoikeutta" in {
-        resetFixtures
         import fi.oph.koski.util.DateOrdering._
         val d: LocalDate = date(2020, 1, 1)
         var aikaleima: Option[LocalDateTime] = None
@@ -181,7 +175,6 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
       }
 
       "Aikaleima on Suomen aikavyöhykkeessä" in {
-        resetFixtures
         verifyChange(change = { existing: AmmatillinenOpiskeluoikeus =>
           existing.copy(arvioituPäättymispäivä = Some(date(2020, 1, 1)))
         }) {
@@ -194,7 +187,6 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
       }
 
       "Sallii oppilaitoksen vaihtamisen" in {
-        resetFixtures
         verifyChange(change = {existing: AmmatillinenOpiskeluoikeus => existing.copy(koulutustoimija = None, oppilaitos = Some(Oppilaitos(MockOrganisaatiot.omnia)))}) {
           verifyResponseStatusOk()
           val result: KoskeenTallennettavaOpiskeluoikeus = lastOpiskeluoikeusByHetu(oppija)
@@ -219,7 +211,7 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
       }
 
       "Estää opiskeluoikeuden siirtymisen eri henkilölle" in {
-        val original = createOpiskeluoikeus(KoskiSpecificMockOppijat.eero, defaultOpiskeluoikeus)
+        val original = setupOppija(KoskiSpecificMockOppijat.eero, defaultOpiskeluoikeus)
 
         putOpiskeluoikeus(original.copy(arvioituPäättymispäivä = Some(LocalDate.now())), oppija) {
           verifyResponseStatus(403, ErrorMatcher.regex(KoskiErrorCategory.forbidden.oppijaOidinMuutos, "Oppijan oid.*ei löydy opiskeluoikeuden oppijan oideista.*".r))
@@ -244,7 +236,6 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
       val original: AmmatillinenOpiskeluoikeus = defaultOpiskeluoikeus.copy(lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId("win-03520f")))
 
       "Muokkaa olemassaolevaa opiskeluoikeutta, kun lähdejärjestelmä-id on sama" in {
-        resetFixtures
         val d: LocalDate = date(2020, 1, 1)
         verifyChange(original = original, user = helsinginKaupunkiPalvelukäyttäjä, change = { existing: AmmatillinenOpiskeluoikeus => existing.copy(oid = None, versionumero = None, arvioituPäättymispäivä = Some(d))}) {
           verifyResponseStatusOk()
@@ -255,10 +246,8 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
       }
 
       "Salli siirtää kaksi saman oppijan opiskeluoikeutta samalla lähdejärjestelmän id:llä kun kyseessä on eri oppilaitos" in {
-        resetFixtures
-
         // Tallenna ensimmäinen opiskeluoikeus, sisältää lähdejärjestelmän id:n
-        putOppija(Oppija(oppija, List(original)), headers = authHeaders(paakayttaja) ++ jsonContent) {
+        setupOppijaWithOpiskeluoikeus(original, oppija, authHeaders(paakayttaja) ++ jsonContent) {
           verifyResponseStatusOk()
         }
         val ensimmäinenOpiskeluoikeus = lastOpiskeluoikeusByHetu(oppija).asInstanceOf[AmmatillinenOpiskeluoikeus]
@@ -280,10 +269,8 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
       }
 
       "Opiskeluoikeuden päivittäminen pelkän lähdejärjestelmän id:n perusteella ei onnistu, kun kaksi saman oppijan opiskeluoikeutta on tallennettu samalla lähdejärjestelmän id:llä samaan oppilaitokseen" in {
-        resetFixtures
-
         // Tallenna ensimmäinen opiskeluoikeus, sisältää lähdejärjestelmän id:n
-        putOppija(Oppija(oppija, List(original)), headers = authHeaders(paakayttaja) ++ jsonContent) {
+        setupOppijaWithOpiskeluoikeus(original, oppija, authHeaders(paakayttaja) ++ jsonContent) {
           verifyResponseStatusOk()
         }
         val ensimmäinenOpiskeluoikeus = lastOpiskeluoikeusByHetu(oppija).asInstanceOf[AmmatillinenOpiskeluoikeus]
@@ -326,7 +313,6 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
       }
 
       "Jos oppilaitos vaihtuu, tekee uuden opiskeluoikeuden" in {
-        resetFixtures
         verifyChange(original = original, user = paakayttaja, change = {existing: AmmatillinenOpiskeluoikeus => existing.copy(oid = None, versionumero = None, koulutustoimija = None, oppilaitos = Some(Oppilaitos(MockOrganisaatiot.omnia)))}) {
           verifyResponseStatusOk()
           val results = oppijaByHetu(oppija.hetu, paakayttaja).tallennettavatOpiskeluoikeudet
@@ -342,7 +328,6 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
       }
 
       "Mahdollistaa toisen opiskeluoikeuden luonnin samalla tyypillä ja oppilaitoksella, kunhan lähdejärjestelmä-id on eri" in {
-        resetFixtures
         val lähdejärjestelmänId2 = LähdejärjestelmäId(Some("123452"), AmmatillinenExampleData.lähdeWinnova)
         verifyChange(original = original, user = helsinginKaupunkiPalvelukäyttäjä, change = { existing: AmmatillinenOpiskeluoikeus => existing.copy(oid = None, versionumero = None, lähdejärjestelmänId = Some(lähdejärjestelmänId2))}) {
           verifyResponseStatusOk()
@@ -364,19 +349,14 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
     }
 
     "Käytettäessä vain oppilaitoksen tietoa ja opiskeluoikeuden tyyppiä" - {
-      "Muokkaa olemassaolevaa opiskeluoikeutta, jos sama oppilaitos ja opiskeluoikeustyyppi (estää siis useamman luonnin)" in {
-        resetFixtures
+      "Estää olemassaolevan muokkauksen pelkällä oppilaitoksella ja opiskeluoikeuden tyypillä" in {
         val d: LocalDate = date(2020, 1, 1)
         verifyChange(change = {existing: AmmatillinenOpiskeluoikeus => existing.copy(oid = None, arvioituPäättymispäivä = Some(d))}) {
-          verifyResponseStatusOk()
-          val result: KoskeenTallennettavaOpiskeluoikeus = lastOpiskeluoikeusByHetu(oppija)
-          result.arvioituPäättymispäivä should equal(Some(d))
-          result.versionumero should equal(Some(2))
+          verifyResponseStatus(409, Nil)
         }
       }
 
       "Jos olemassa olevassa opiskeluoikeudessa on lähdejärjestelmä-id, ei päivitetä" in {
-        resetFixtures
         val lähdejärjestelmänId = LähdejärjestelmäId(Some("12345"), AmmatillinenExampleData.lähdeWinnova)
         verifyChange(original = defaultOpiskeluoikeus.copy(lähdejärjestelmänId = Some(lähdejärjestelmänId)), user = helsinginKaupunkiPalvelukäyttäjä, user2 = Some(kalle), change = { existing: AmmatillinenOpiskeluoikeus => existing.copy(oid = None, lähdejärjestelmänId = None)}) {
           verifyResponseStatusOk()
@@ -386,7 +366,6 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
       }
 
       "Jos oppilaitos vaihtuu, tekee uuden opiskeluoikeuden" in {
-        resetFixtures
         verifyChange(change = {existing: AmmatillinenOpiskeluoikeus => existing.copy(oid = None, versionumero = None, koulutustoimija = None, oppilaitos = Some(Oppilaitos(MockOrganisaatiot.omnia)))}) {
           verifyResponseStatusOk()
           val result: KoskeenTallennettavaOpiskeluoikeus = lastOpiskeluoikeusByHetu(oppija)
@@ -396,7 +375,6 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
       }
 
       "Jos tyyppi vaihtuu, tekee uuden opiskeluoikeuden" in {
-        resetFixtures
         verifyChange(change = {existing: AmmatillinenOpiskeluoikeus => TestMethodsLukio.lukionOpiskeluoikeus.copy(oppilaitos = existing.oppilaitos)}) {
           verifyResponseStatusOk()
           val result: KoskeenTallennettavaOpiskeluoikeus = lastOpiskeluoikeusByHetu(oppija)
@@ -408,7 +386,6 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
 
     "Jos valmis päätason suoritus on poistunut" - {
       "lukionoppiaineenoppimaara:n suorituksia ei säilytetä" in {
-        resetFixtures
         val vanhaValmisSuoritus = LukioExampleData.lukionOppiaineenOppimääränSuoritusYhteiskuntaoppi
         val vanhaKeskeneräinenSuoritus = LukioExampleData.lukionOppiaineenOppimääränSuoritusFilosofia.copy(vahvistus = None)
         val uusiSuoritus = ExamplesLukio.aineopiskelija.suoritukset.head
@@ -421,7 +398,6 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
         }
       }
       "perusopetuksenoppiaineenoppimaara:n suorituksia ei säilytetä" in {
-        resetFixtures
         val diaarinumero = Some("OPH-1280-2017")
         val vanhaValmisSuoritus = ExamplesAikuistenPerusopetus.oppiaineenOppimääränSuoritus(ExamplesAikuistenPerusopetus.aikuistenOppiaine("YH").copy(perusteenDiaarinumero = diaarinumero))
         val vanhaKeskeneräinenSuoritus = ExamplesAikuistenPerusopetus.oppiaineenOppimääränSuoritus(ExamplesAikuistenPerusopetus.aikuistenOppiaine("FI").copy(perusteenDiaarinumero = diaarinumero)).copy(vahvistus = None)
@@ -435,7 +411,6 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
         }
       }
       "nuortenperusopetuksenoppiaineenoppimaara:n suorituksia ei säilytetä" in {
-        resetFixtures
         val vanhaValmisSuoritus = PerusopetusExampleData.nuortenPerusOpetuksenOppiaineenOppimääränSuoritus("KU")
         val vanhaKeskeneräinenSuoritus = PerusopetusExampleData.nuortenPerusOpetuksenOppiaineenOppimääränSuoritus("LI")
         val uusiSuoritus = PerusopetusExampleData.nuortenPerusOpetuksenOppiaineenOppimääränSuoritus("FI")
@@ -448,7 +423,6 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
         }
       }
       "European School of Helsingin suorituksia ei säilytetä" in {
-        resetFixtures
         val vanhaValmisSuoritus = ExamplesEuropeanSchoolOfHelsinki.p2
         val vanhaKeskeneräinenSuoritus = ExamplesEuropeanSchoolOfHelsinki.s3.copy(vahvistus = None)
         val uusiSuoritus = ExamplesEuropeanSchoolOfHelsinki.opiskeluoikeus.suoritukset.head
@@ -468,7 +442,6 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
         }
       }
       "Muuten aiemmin tallennettu suoritus säilytetään" in {
-        resetFixtures
         val vanhaValmisSuoritus = PerusopetusExampleData.seitsemännenLuokanSuoritus
         val vanhaKeskenSuoritus = PerusopetusExampleData.kahdeksannenLuokanSuoritus.copy(vahvistus = None)
         val uusiSuoritus = PerusopetusExampleData.yhdeksännenLuokanSuoritus.copy(vahvistus = None)
@@ -525,7 +498,7 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
     )
 
     def verifyChange[T <: Opiskeluoikeus](original: T = defaultOpiskeluoikeus, user: UserWithPassword = defaultUser, user2: Option[UserWithPassword] = None, change: T => KoskeenTallennettavaOpiskeluoikeus)(block: => Unit) = {
-      putOppija(Oppija(oppija, List(original)), authHeaders(user) ++ jsonContent) {
+      setupOppijaWithOpiskeluoikeus(original, oppija, authHeaders(user) ++ jsonContent) {
         verifyResponseStatusOk()
         val existing = lastOpiskeluoikeusByHetu(oppija).asInstanceOf[T]
         val updated: KoskeenTallennettavaOpiskeluoikeus = change(existing)
@@ -567,15 +540,13 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
     }
 
     "NULL merkki datassa" in {
-      resetFixtures
-
       val opiskeluoikeus: AmmatillinenOpiskeluoikeus = defaultOpiskeluoikeus.copy(
         lisätiedot = Some(AmmatillinenExampleData.opiskeluoikeudenLisätiedot.copy(
           ulkomaanjaksot = Some(List(Ulkomaanjakso(
             alku = date(2012, 9, 1), loppu = None, maa = ExampleData.ruotsi, kuvaus = LocalizedString.finnish("kuv\u0000aus")
           ))))))
 
-      putOppija(Oppija(oppija, List(opiskeluoikeus))) {
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus, oppija) {
         verifyResponseStatusOk()
         lastOpiskeluoikeusByHetu(oppija)
           .lisätiedot.collect { case l: AmmatillisenOpiskeluoikeudenLisätiedot => l }.get
@@ -597,10 +568,9 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
         }
       }
       "Vanha oppilaitos on aktiivinen -> muutos on estetty" in {
-        resetFixtures
-
         val opiskeluoikeus = defaultOpiskeluoikeus.copy(oppilaitos = Some(Oppilaitos(MockOrganisaatiot.ressunLukio)))
-        putOppija(Oppija(oppija, List(opiskeluoikeus))) {
+
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus, oppija) {
           verifyResponseStatusOk()
         }
         val ensimmäinenOpiskeluoikeus = lastOpiskeluoikeusByHetu(oppija)
@@ -611,10 +581,8 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
         }
       }
       "Vanha oppilaitos on passivoitu -> muutos sallitaan" in {
-        resetFixtures
-
         val opiskeluoikeus = defaultOpiskeluoikeus.copy(oppilaitos = Some(Oppilaitos(MockOrganisaatiot.lakkautettuOppilaitosHelsingissä)))
-        putOppija(Oppija(oppija, List(opiskeluoikeus))) {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus, oppija) {
           verifyResponseStatusOk()
         }
         val ensimmäinenOpiskeluoikeus = lastOpiskeluoikeusByHetu(oppija)
@@ -625,8 +593,6 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
         }
       }
       "Oppilaitoksen vaihto pelkän lähdejärjestelmän id:hen perustuvassa siirrossa luo uuden opiskeluoikeuden, koska päivitys kohdistuu lähdejärjestelmän id:n ja oppilaitoksen oid:n perusteella" in {
-        resetFixtures
-
         val opiskeluoikeus = ExamplesEsiopetus.opiskeluoikeus.copy(
           lähdejärjestelmänId = Some(LähdejärjestelmäId(Some("654321"), lähdeWinnova)),
           oppilaitos = Some(Oppilaitos(YleissivistavakoulutusExampleData.päiväkotiVironniemi.oid)),
@@ -636,7 +602,7 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
               tunniste = päiväkodinEsiopetuksenTunniste,
               toimipiste = Oppilaitos(YleissivistavakoulutusExampleData.päiväkotiVironniemi.oid))),
         )
-        putOppija(Oppija(oppija, List(opiskeluoikeus)), headers = authHeaders(paakayttaja) ++ jsonContent) {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus, oppija, authHeaders(paakayttaja) ++ jsonContent) {
           verifyResponseStatusOk()
         }
 
@@ -659,10 +625,8 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
       }
     }
     "Jos koulutustoimija muuttuu, voi aktiivisesta oppilaitosta muuttaa" in {
-      resetFixtures
-
       val opiskeluoikeus = defaultOpiskeluoikeus.copy(oppilaitos = Some(Oppilaitos(MockOrganisaatiot.ressunLukio)))
-      putOppija(Oppija(oppija, List(opiskeluoikeus))) {
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus, oppija) {
         verifyResponseStatusOk()
       }
 
@@ -679,11 +643,10 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
 
     "Jos oppilaitos muuttuu, sallitaan siirto poikkeustapauksessa" - {
       "Kallavaden lukio (1.2.246.562.10.63813695861) oppilaitokseen Kuopion aikuislukio (1.2.246.562.10.42923230215)" in {
-        resetFixtures
-
         val opiskeluoikeus = defaultOpiskeluoikeus.copy(oppilaitos = Some(Oppilaitos(MockOrganisaatiot.kallavedenLukio)))
           .withKoulutustoimija(Koulutustoimija(MockOrganisaatiot.kuopionKaupunki))
-        putOppija(Oppija(oppija, List(opiskeluoikeus))) {
+
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus, oppija) {
           verifyResponseStatusOk()
         }
 
@@ -699,4 +662,7 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
       }
     }
   }
+
+  def setupOppija[T <: Opiskeluoikeus](oppija: Henkilö, opiskeluoikeus: T, user: UserWithPassword = defaultUser): T =
+    setupOppijaWithAndGetOpiskeluoikeus(opiskeluoikeus, oppija, authHeaders(user) ++ jsonContent)
 }

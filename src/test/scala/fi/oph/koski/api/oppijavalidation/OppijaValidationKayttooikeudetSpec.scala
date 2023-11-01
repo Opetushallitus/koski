@@ -18,7 +18,7 @@ class OppijaValidationKayttooikeudetSpec
     "Käyttäjällä ei ole oikeuksia annettuun opiskeluoikeuden tyyppiin" in {
       val opiskeluoikeus: AmmatillinenOpiskeluoikeus = defaultOpiskeluoikeus
       val esiopetusTallentaja = authHeaders(MockUsers.esiopetusTallentaja)
-      putOpiskeluoikeus(opiskeluoikeus, headers = esiopetusTallentaja ++ jsonContent) {
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus, headers = esiopetusTallentaja ++ jsonContent) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden.opiskeluoikeudenTyyppi("Ei oikeuksia opiskeluoikeuden tyyppiin ammatillinenkoulutus"))
       }
     }

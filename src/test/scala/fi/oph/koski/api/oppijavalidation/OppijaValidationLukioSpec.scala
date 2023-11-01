@@ -31,7 +31,7 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
           osasuoritukset = Some(List( kurssisuoritus(LukioExampleData.valtakunnallinenKurssi("GE1").copy(laajuus = Some(laajuus(1.0f, "5")))) ))
         )))
       )))
-      putOpiskeluoikeus(oo) {
+      setupOppijaWithOpiskeluoikeus(oo) {
         verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*enumValueMismatch.*".r))
       }
     }
@@ -44,7 +44,7 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
           ))
         )))
       )))
-      putOpiskeluoikeus(oo) {
+      setupOppijaWithOpiskeluoikeus(oo) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.osasuoritustenLaajuuksienSumma("Suorituksen koskioppiaineetyleissivistava/GE osasuoritusten laajuuksien summa 1.0 ei vastaa suorituksen laajuutta 2.0"))
       }
     }
@@ -61,7 +61,7 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
           ))
         )))
       )))
-      putOpiskeluoikeus(oo) {
+      setupOppijaWithOpiskeluoikeus(oo) {
         verifyResponseStatusOk()
       }
     }
@@ -75,7 +75,7 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
           ))
         )))
       )))
-      putOpiskeluoikeus(oo) {
+      setupOppijaWithOpiskeluoikeus(oo) {
         verifyResponseStatusOk()
       }
     }
@@ -83,7 +83,7 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
 
   "Kaksi samaa oppiainetta" - {
     "Identtisillä tiedoilla -> HTTP 400" in {
-      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(osasuoritukset = Some(List(
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(osasuoritukset = Some(List(
         suoritus(LukioExampleData.lukionÄidinkieli("AI1", pakollinen = true)).copy(arviointi = arviointi("9")),
         suoritus(LukioExampleData.lukionÄidinkieli("AI1", pakollinen = true)).copy(arviointi = arviointi("9"))
       )))))) {
@@ -91,7 +91,7 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
       }
     }
     "Eri kielivalinnalla -> HTTP 200" in {
-      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(osasuoritukset = Some(List(
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(osasuoritukset = Some(List(
         suoritus(LukioExampleData.lukionÄidinkieli("AI1", pakollinen = true)).copy(arviointi = arviointi("9")),
         suoritus(LukioExampleData.lukionÄidinkieli("AI2", pakollinen = true)).copy(arviointi = arviointi("9"))
       )))))) {
@@ -99,7 +99,7 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
       }
     }
     "Eri matematiikan oppimäärällä -> HTTP 400" in {
-      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(osasuoritukset = Some(List(
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(osasuoritukset = Some(List(
         suoritus(LukioExampleData.matematiikka("MAA", None)).copy(arviointi = arviointi("9")),
         suoritus(LukioExampleData.matematiikka("MAB", None)).copy(arviointi = arviointi("9"))
       )))))) {
@@ -114,7 +114,7 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
         vahvistus = None,
         osasuoritukset = Some(List(suoritus(LukioExampleData.lukionOppiaine("GE", None)).copy(arviointi = arviointi("9"))))
       )))
-      putOpiskeluoikeus(oo) {
+      setupOppijaWithOpiskeluoikeus(oo) {
         verifyResponseStatusOk()
       }
     }
@@ -128,7 +128,7 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
             ))
           )))
       )))
-      putOpiskeluoikeus(oo) {
+      setupOppijaWithOpiskeluoikeus(oo) {
         verifyResponseStatusOk()
       }
     }
@@ -144,7 +144,7 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
             suoritus(LukioExampleData.lukionÄidinkieli("AI1", laajuus(1.0f, "4"), pakollinen = true)).copy(arviointi = arviointi("9"))
           ))
         )))
-      putOpiskeluoikeus(opiskeluoikeus) {
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaEronnutTaiKatsotaanEronneeksiVaikkaVahvistettuPäätasonSuoritus(), KoskiErrorCategory.badRequest.validation.laajuudet.lops2015VääräLaajuusNuoret())
       }
     }
@@ -152,7 +152,7 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
 
   "Opintojen rahoitus" - {
     "lasna -tilalta vaaditaan opintojen rahoitus" in {
-      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä))))) {
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä))))) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaltaPuuttuuRahoitusmuoto("Opiskeluoikeuden tilalta lasna puuttuu rahoitusmuoto"))
       }
     }
@@ -161,7 +161,7 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
         LukionOpiskeluoikeusjakso(date(2015, 9, 1), opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
         LukionOpiskeluoikeusjakso(date(2019, 6, 8), opiskeluoikeusValmistunut))
       )
-      putOpiskeluoikeus(ExamplesLukio.päättötodistus().copy(tila = tila)) {
+      setupOppijaWithOpiskeluoikeus(ExamplesLukio.päättötodistus().copy(tila = tila)) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaltaPuuttuuRahoitusmuoto("Opiskeluoikeuden tilalta valmistunut puuttuu rahoitusmuoto"))
       }
     }
@@ -175,7 +175,7 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
 
       assertEquals(41, oppiaineet.flatMap(f => f.osasuoritusLista).size)
 
-      putOpiskeluoikeus(lukionSuoritus.copy(suoritukset = List(päätasonSuoritus.copy(osasuoritukset = Some(oppiaineet))))) {
+      setupOppijaWithOpiskeluoikeus(lukionSuoritus.copy(suoritukset = List(päätasonSuoritus.copy(osasuoritukset = Some(oppiaineet))))) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.lops2015VääräLaajuusNuoret("Lukion nuorten oppimäärän LOPS2015 voi merkitä valmiiksi vain kun vähintään 75 kurssia on suoritettu"))
       }
     }
@@ -187,7 +187,7 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
 
       assertEquals(41, oppiaineet.flatMap(f => f.osasuoritusLista).size)
 
-      putOpiskeluoikeus(lukionSuoritus.copy(suoritukset = List(päätasonSuoritus.copy(osasuoritukset = Some(oppiaineet))))) {
+      setupOppijaWithOpiskeluoikeus(lukionSuoritus.copy(suoritukset = List(päätasonSuoritus.copy(osasuoritukset = Some(oppiaineet))))) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.lops2015VääräLaajuusAikuiset("Lukion aikuisten oppimäärän LOPS2015 voi merkitä valmiiksi vain kun vähintään 44 kurssia on suoritettu"))
       }
     }
@@ -199,7 +199,7 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
 
       assertEquals(41, oppiaineet.flatMap(f => f.osasuoritusLista).size)
 
-      putOpiskeluoikeus(lukionSuoritus.copy(
+      setupOppijaWithOpiskeluoikeus(lukionSuoritus.copy(
         oppilaitos = Some(Oppilaitos(MockOrganisaatiot.oulunAikuislukio)),
         suoritukset = List(päätasonSuoritus.copy(osasuoritukset = Some(oppiaineet)))
       )) {
@@ -215,7 +215,7 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
 
       assertEquals(41, oppiaineet.flatMap(f => f.osasuoritusLista).size)
 
-      putOpiskeluoikeus(lukionSuoritus.copy(suoritukset = List(päätasonSuoritus.copy(osasuoritukset = Some(oppiaineet))))) {
+      setupOppijaWithOpiskeluoikeus(lukionSuoritus.copy(suoritukset = List(päätasonSuoritus.copy(osasuoritukset = Some(oppiaineet))))) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.lops2015VääräLaajuusNuoret("Lukion nuorten oppimäärän LOPS2015 voi merkitä valmiiksi vain kun vähintään 75 kurssia on suoritettu"))
       }
     }
@@ -224,7 +224,7 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
   "Diaarinumero" - {
     "Lukion oppimäärässä" - {
       "Lukion 2019 opetussuunnitelman nuorten diaarinumeron käyttöä ei sallita" in {
-        putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(
+        setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(
           koulutusmoduuli = LukionOppimäärä(perusteenDiaarinumero = Some("OPH-2263-2019")),
           osasuoritukset = Some(List(
             suoritus(LukioExampleData.lukionÄidinkieli("AI1", laajuus(1.0f, "4"), pakollinen = true)).copy(arviointi = arviointi("9"))
@@ -235,7 +235,7 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
       }
 
       "Lukion 2019 opetussuunnitelman aikuisten diaarinumeron käyttöä ei sallita" in {
-        putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(
+        setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(
           koulutusmoduuli = LukionOppimäärä(perusteenDiaarinumero = lops2019AikuistenPerusteenDiaarinumero),
           osasuoritukset = Some(List(
             suoritus(LukioExampleData.lukionÄidinkieli("AI1", laajuus(1.0f, "4"), pakollinen = true)).copy(arviointi = arviointi("9"))
@@ -247,13 +247,13 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
     }
     "Lukion oppiaineen oppimäärässä" - {
       "Lukion 2019 opetussuunnitelman nuorten diaarinumeron käyttöä ei sallita" in {
-        putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(lukionOppiaineenOppimääränSuoritusYhteiskuntaoppi.copy(koulutusmoduuli = lukionOppiaine("YH", diaarinumero = lops2019perusteenDiaarinumero))))) {
+        setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(lukionOppiaineenOppimääränSuoritusYhteiskuntaoppi.copy(koulutusmoduuli = lukionOppiaine("YH", diaarinumero = lops2019perusteenDiaarinumero))))) {
           verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*Not allowed, when koulutusmoduuli/perusteenDiaarinumero.*".r))
         }
       }
 
       "Lukion 2019 opetussuunnitelman aikuisten diaarinumeron käyttöä ei sallita" in {
-        putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(lukionOppiaineenOppimääränSuoritusYhteiskuntaoppi.copy(koulutusmoduuli = lukionOppiaine("YH", diaarinumero = lops2019AikuistenPerusteenDiaarinumero))))) {
+        setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(lukionOppiaineenOppimääränSuoritusYhteiskuntaoppi.copy(koulutusmoduuli = lukionOppiaine("YH", diaarinumero = lops2019AikuistenPerusteenDiaarinumero))))) {
           verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*Not allowed, when koulutusmoduuli/perusteenDiaarinumero.*".r))
         }
       }
@@ -274,7 +274,7 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
           perusteenDiaarinumero = Some("70/011/2015")
         )
       )))
-      val result = putAndGetOpiskeluoikeus(oo)
+      val result = setupOppijaWithAndGetOpiskeluoikeus(oo)
       result.suoritukset.head.osasuoritusLista.head.osasuoritusLista.find(_.koulutusmoduuli.tunniste.koodiarvo == "HI2").get.koulutusmoduuli.nimi.get("fi") should equal ("Itsenäisen Suomen historia")
       result.suoritukset.head.osasuoritusLista.head.osasuoritusLista.find(_.koulutusmoduuli.tunniste.koodiarvo == "HI3").get.koulutusmoduuli.nimi.get("fi") should equal ("Kansainväliset suhteet")
 
@@ -292,7 +292,7 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
           koulutusmoduuli = koulutusmoduuli
         ))
       )
-      val result = putAndGetOpiskeluoikeus(oo)
+      val result = setupOppijaWithAndGetOpiskeluoikeus(oo)
       result.suoritukset.head.osasuoritusLista.find(_.koulutusmoduuli.tunniste.koodiarvo == "HI2").get.koulutusmoduuli.nimi.get("fi") should equal ("Itsenäisen Suomen historia")
       result.suoritukset.head.osasuoritusLista.find(_.koulutusmoduuli.tunniste.koodiarvo == "HI3").get.koulutusmoduuli.nimi.get("fi") should equal ("Kansainväliset suhteet")
 
@@ -301,7 +301,7 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
     }
 
     "Perusteen diaarinumerona jokin muu kuin '70/011/2015'; Konversiota ei tehdä" in {
-      val result = putAndGetOpiskeluoikeus(ExamplesLukio.aineopiskelija)
+      val result = setupOppijaWithAndGetOpiskeluoikeus(ExamplesLukio.aineopiskelija)
       result.suoritukset.head.osasuoritusLista.find(_.koulutusmoduuli.tunniste.koodiarvo == "HI2").get.koulutusmoduuli.nimi.get("fi") should not equal ("Itsenäisen Suomen historia")
       result.suoritukset.head.osasuoritusLista.find(_.koulutusmoduuli.tunniste.koodiarvo == "HI3").get.koulutusmoduuli.nimi.get("fi") should not equal ("Kansainväliset suhteet")
 
@@ -318,7 +318,7 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
         ))
       )
 
-      putOpiskeluoikeus(oo) {
+      setupOppijaWithOpiskeluoikeus(oo) {
         expect
       }
     }
@@ -348,14 +348,14 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
           alle18vuotiaanAikuistenLukiokoulutuksenAloittamisenSyy = Some(LocalizedString.finnish("Testisyy"))
         )))
 
-      val tallennettuna = putAndGetOpiskeluoikeus(oo.asInstanceOf[LukionOpiskeluoikeus]).asInstanceOf[LukionOpiskeluoikeus]
+      val tallennettuna = setupOppijaWithAndGetOpiskeluoikeus(oo.asInstanceOf[LukionOpiskeluoikeus]).asInstanceOf[LukionOpiskeluoikeus]
 
       tallennettuna.lisätiedot.get.yksityisopiskelija should equal (None)
       tallennettuna.lisätiedot.get.alle18vuotiaanAikuistenLukiokoulutuksenAloittamisenSyy should equal (None)
     }
   }
 
-  private def putAndGetOpiskeluoikeus(oo: LukionOpiskeluoikeus): Opiskeluoikeus = putOpiskeluoikeus(oo) {
+  private def setupOppijaWithAndGetOpiskeluoikeus(oo: LukionOpiskeluoikeus): Opiskeluoikeus = setupOppijaWithOpiskeluoikeus(oo) {
     verifyResponseStatusOk()
     getOpiskeluoikeus(readPutOppijaResponse.opiskeluoikeudet.head.oid)
   }

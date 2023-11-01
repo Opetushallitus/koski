@@ -21,7 +21,7 @@ class SisältyväOpiskeluoikeusSpec extends AnyFreeSpec with Matchers with Opisk
   "Sisältyvä opiskeluoikeus" - {
     lazy val fixture = new {
       resetFixtures
-      val original: AmmatillinenOpiskeluoikeus = createOpiskeluoikeus(defaultHenkilö, defaultOpiskeluoikeus, user = stadinAmmattiopistoTallentaja)
+      val original: AmmatillinenOpiskeluoikeus = setupOppijaWithAndGetOpiskeluoikeus(defaultOpiskeluoikeus, defaultHenkilö, headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent)
 
       val sisältyvä: AmmatillinenOpiskeluoikeus = defaultOpiskeluoikeus.copy(
         oppilaitos = Some(Oppilaitos(omnia)),

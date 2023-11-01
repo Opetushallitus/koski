@@ -67,14 +67,14 @@ class OppijaSearchSpec extends AnyFreeSpec with Matchers with SearchTestMethods 
     "POST hetu endpoint" - {
       "Allow access for users with write access" in {
         AccessLogTester.clearMessages
-        postHetu("010101-123N") {
+        postHenkilöHetu("010101-123N") {
           verifyResponseStatusOk()
         }
       }
 
       "Does not allow access for user with read-only access" in {
         AccessLogTester.clearMessages
-        postHetu("010101-123N", omniaKatselija) {
+        postHenkilöHetu("010101-123N", omniaKatselija) {
           verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus("Ei sallittu ilman muokkausoikeuksia"))
         }
       }

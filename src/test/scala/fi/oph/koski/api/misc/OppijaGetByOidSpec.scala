@@ -44,7 +44,7 @@ class OppijaGetByOidSpec
         }
       }
       "with mitätöity oid" in {
-        val oo = createOpiskeluoikeus(KoskiSpecificMockOppijat.eero, defaultOpiskeluoikeus, resetFixtures = true)
+        val oo = setupOppijaWithAndGetOpiskeluoikeus(defaultOpiskeluoikeus, KoskiSpecificMockOppijat.eero)
         val mitätöity = oo.copy(tila = defaultOpiskeluoikeus.tila.copy(opiskeluoikeusjaksot =
           defaultOpiskeluoikeus.tila.opiskeluoikeusjaksot :+ AmmatillinenOpiskeluoikeusjakso(alku = LocalDate.now, opiskeluoikeusMitätöity)
         ))

@@ -28,7 +28,7 @@ class OppijaValidationValmaSpec extends TutkinnonPerusteetTest[AmmatillinenOpisk
         koulutusmoduuli = ValmaKoulutus(laajuus = Some(LaajuusOsaamispisteissä(65)), perusteenDiaarinumero = Some("OOO-2658-2017"))
       ))
     )
-    putOpiskeluoikeus(opiskeluoikeus) {
+    setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
       verifyResponseStatusOk()
     }
   }
@@ -42,7 +42,7 @@ class OppijaValidationValmaSpec extends TutkinnonPerusteetTest[AmmatillinenOpisk
         koulutusmoduuli = ValmaKoulutus(laajuus = Some(LaajuusOsaamispisteissä(65)), perusteenDiaarinumero = Some("OOO-2658-2017"))
       ))
     )
-    putOpiskeluoikeus(opiskeluoikeus) {
+    setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
       verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.valmaTilaEiSallittu())
     }
   }

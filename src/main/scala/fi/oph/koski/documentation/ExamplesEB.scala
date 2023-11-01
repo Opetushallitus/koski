@@ -153,6 +153,6 @@ object ExamplesEB {
 
 
   val examples = List(
-    Example("EB-tutkinto", "EB-tutkinto", Oppija(asUusiOppija(KoskiSpecificMockOppijat.europeanSchoolOfHelsinki), List(opiskeluoikeus)))
+    Example("EB-tutkinto", "EB-tutkinto", Oppija(asUusiOppija(KoskiSpecificMockOppijat.europeanSchoolOfHelsinki), List(opiskeluoikeus)), 400)
   )
 }

@@ -27,13 +27,13 @@ class OppijaValidationSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluo
   "Opiskeluoikeuden lisääminen" - {
     "Valideilla tiedoilla" - {
       "palautetaan HTTP 200" in {
-        putOpiskeluoikeus(defaultOpiskeluoikeus) {
+        setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus) {
           verifyResponseStatusOk()
         }
       }
 
       "opiskeluoikeuden oid tunnisteen konflikti" in {
-        putOpiskeluoikeus(opiskeluoikeus = defaultOpiskeluoikeus, henkilö = opiskeluoikeudenOidKonflikti) {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus = defaultOpiskeluoikeus, henkilö = opiskeluoikeudenOidKonflikti) {
           verifyResponseStatusOk()
         }
         putOpiskeluoikeus(opiskeluoikeus = defaultOpiskeluoikeus.copy(oppilaitos = Some(Oppilaitos(MockOrganisaatiot.jyväskylänNormaalikoulu))), henkilö = opiskeluoikeudenOidKonflikti) {
@@ -44,7 +44,7 @@ class OppijaValidationSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluo
 
     "Ilman tunnistautumista" - {
       "palautetaan HTTP 401" in {
-        putOpiskeluoikeus(defaultOpiskeluoikeus, headers = jsonContent) {
+        setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus, headers = jsonContent) {
           verifyResponseStatus(401, KoskiErrorCategory.unauthorized.notAuthenticated())
         }
       }
@@ -66,9 +66,9 @@ class OppijaValidationSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluo
 
     "Omien tietojen muokkaaminen" - {
       "On estetty" in {
-        putOpiskeluoikeus(opiskeluoikeus(oppilaitos = Oppilaitos(omnia), tutkinto = AmmatillinenExampleData.autoalanPerustutkinnonSuoritus(Oppilaitos(omnia))),
-                          henkilö = KoskiSpecificMockOppijat.omattiedot,
-                          headers = authHeaders(MockUsers.omattiedot) ++ jsonContent) {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus(oppilaitos = Oppilaitos(omnia), tutkinto = AmmatillinenExampleData.autoalanPerustutkinnonSuoritus(Oppilaitos(omnia))),
+                                      henkilö = KoskiSpecificMockOppijat.omattiedot,
+                                      headers = authHeaders(MockUsers.omattiedot) ++ jsonContent) {
           verifyResponseStatus(403, KoskiErrorCategory.forbidden.omienTietojenMuokkaus())
         }
       }
@@ -140,25 +140,37 @@ class OppijaValidationSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluo
 
       "Käytettäessä oppijan oidia" - {
         "Oid ok" - {
-          "palautetaan HTTP 200"  in (putHenkilö(OidHenkilö(KoskiSpecificMockOppijat.eero.oid)) (verifyResponseStatusOk()))
+          "palautetaan HTTP 200"  in {
+            mitätöiOppijanKaikkiOpiskeluoikeudet(KoskiSpecificMockOppijat.eero)
+            putHenkilö(OidHenkilö(KoskiSpecificMockOppijat.eero.oid)) (verifyResponseStatusOk())
+          }
         }
 
         "Oid virheellinen" - {
-          "palautetaan HTTP 400"  in (putHenkilö(OidHenkilö("123.123.123")) (verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*henkilö.oid.*regularExpressionMismatch.*".r))))
+          "palautetaan HTTP 400"  in {
+            putHenkilö(OidHenkilö("123.123.123")) (verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*henkilö.oid.*regularExpressionMismatch.*".r)))
+          }
         }
 
         "Oppijaa ei löydy oidilla" - {
-          "palautetaan HTTP 404"  in (putHenkilö(OidHenkilö("1.2.246.562.24.19999999999")) (verifyResponseStatus(404, KoskiErrorCategory.notFound.oppijaaEiLöydy("Oppijaa 1.2.246.562.24.19999999999 ei löydy."))))
+          "palautetaan HTTP 404"  in {
+            putHenkilö(OidHenkilö("1.2.246.562.24.19999999999")) (verifyResponseStatus(404, KoskiErrorCategory.notFound.oppijaaEiLöydy("Oppijaa 1.2.246.562.24.19999999999 ei löydy.")))
+          }
         }
       }
 
       "Käytettäessä oppijan kaikkia tietoja" - {
         "Oid ok" - {
-          "palautetaan HTTP 200"  in (putHenkilö(KoskiSpecificMockOppijat.eero) (verifyResponseStatusOk()))
+          "palautetaan HTTP 200"  in {
+            mitätöiOppijanKaikkiOpiskeluoikeudet(KoskiSpecificMockOppijat.eero)
+            putHenkilö(KoskiSpecificMockOppijat.eero) (verifyResponseStatusOk())
+          }
         }
 
         "Oid virheellinen" - {
-          "palautetaan HTTP 400"  in (putHenkilö(TäydellisetHenkilötiedot("123.123.123", Some("010101-123N"), None, "Testi", "Testi", "Toivola", None, None)) (verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*henkilö.oid.*regularExpressionMismatch.*".r))))
+          "palautetaan HTTP 400"  in {
+            putHenkilö(TäydellisetHenkilötiedot("123.123.123", Some("010101-123N"), None, "Testi", "Testi", "Toivola", None, None)) (verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*henkilö.oid.*regularExpressionMismatch.*".r)))
+          }
         }
       }
     }
@@ -205,7 +217,7 @@ class OppijaValidationSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluo
               loppu = Some(date(2019, 5, 31))
             ))
           ))))
-          putOpiskeluoikeus(oo) {
+          setupOppijaWithOpiskeluoikeus(oo) {
             verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, """.*"Jakson alku 2020-05-31 on jakson lopun 2019-05-31 jälkeen","errorType":"jaksonLoppuEnnenAlkua".*""".r))
           }
         }
@@ -216,31 +228,31 @@ class OppijaValidationSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluo
       def oppilaitoksella(oid: String) = defaultOpiskeluoikeus.copy(oppilaitos = Some(Oppilaitos(oid)))
 
       "Kun opinto-oikeutta yritetään lisätä oppilaitokseen, johon käyttäjällä ei ole oikeuksia" - {
-        "palautetaan HTTP 403 virhe"  in { putOpiskeluoikeus(oppilaitoksella("1.2.246.562.10.93135224694"), headers = authHeaders(MockUsers.omniaPalvelukäyttäjä) ++ jsonContent) (
+        "palautetaan HTTP 403 virhe"  in { setupOppijaWithOpiskeluoikeus(oppilaitoksella("1.2.246.562.10.93135224694"), headers = authHeaders(MockUsers.omniaPalvelukäyttäjä) ++ jsonContent) (
           verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon 1.2.246.562.10.93135224694")))
         }
       }
 
       "Kun opinto-oikeutta yritetään lisätä koulutustoimijaan oppilaitoksen sijaan" - {
-        "palautetaan HTTP 400 virhe"  in { putOpiskeluoikeus(oppilaitoksella("1.2.246.562.10.346830761110")) (
+        "palautetaan HTTP 400 virhe"  in { setupOppijaWithOpiskeluoikeus(oppilaitoksella("1.2.246.562.10.346830761110")) (
           verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, """.*"Organisaatio 1.2.246.562.10.346830761110 ei ole oppilaitos vaan koulutustoimija","errorType":"vääränTyyppinenOrganisaatio".*""".r)))
         }
       }
 
       "Kun opinto-oikeutta yritetään lisätä oppilaitokseen, jota ei löydy organisaatiopalvelusta" - {
-        "palautetaan HTTP 400 virhe"  in { putOpiskeluoikeus(oppilaitoksella("1.2.246.562.10.146810761111")) (
+        "palautetaan HTTP 400 virhe"  in { setupOppijaWithOpiskeluoikeus(oppilaitoksella("1.2.246.562.10.146810761111")) (
           verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, """.*"message":"Organisaatiota 1.2.246.562.10.146810761111 ei löydy organisaatiopalvelusta","errorType":"organisaatioTuntematon"}.*""".r)))
         }
       }
 
       "Kun oppilaitoksen oid on virheellistä muotoa" - {
-        "palautetaan HTTP 400 virhe"  in { putOpiskeluoikeus(oppilaitoksella("asdf")) (
+        "palautetaan HTTP 400 virhe"  in { setupOppijaWithOpiskeluoikeus(oppilaitoksella("asdf")) (
           verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*opiskeluoikeudet.0.oppilaitos.oid.*regularExpressionMismatch.*".r)))
         }
       }
 
       "Kun annetaan koulutustoimija, joka ei vastaa organisaatiopalvelun oppilaitokselle määrittämää koulutustoimijaa" - {
-        "palautetaan HTTP 400 virhe"  in { putOpiskeluoikeus(defaultOpiskeluoikeus.copy(koulutustoimija = Some(Koulutustoimija("1.2.246.562.10.53814745062")))) (
+        "palautetaan HTTP 400 virhe"  in { setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(koulutustoimija = Some(Koulutustoimija("1.2.246.562.10.53814745062")))) (
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.organisaatio.vääräKoulutustoimija("Annettu koulutustoimija 1.2.246.562.10.53814745062 ei vastaa organisaatiopalvelusta löytyvää koulutustoimijaa 1.2.246.562.10.346830761110")))
         }
       }
@@ -250,14 +262,14 @@ class OppijaValidationSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluo
       def toimipisteellä(oid: String) = defaultOpiskeluoikeus.copy(suoritukset = List(autoalanPerustutkinnonSuoritus().copy(toimipiste = OidOrganisaatio(oid))))
 
       "Kun yritetään käyttää toimipistettä, johon käyttäjällä ei ole oikeuksia" - {
-        "palautetaan HTTP 403 virhe"  in { putOpiskeluoikeus(toimipisteellä(MockOrganisaatiot.helsinginKaupunki)) (
+        "palautetaan HTTP 403 virhe"  in { setupOppijaWithOpiskeluoikeus(toimipisteellä(MockOrganisaatiot.helsinginKaupunki)) (
           verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon " + MockOrganisaatiot.helsinginKaupunki)))
         }
       }
 
       "Kun toimipiste ei ole oppilaitoksen aliorganisaatio" - {
         "Palautetaan HTTP 200" in {
-          putOpiskeluoikeus(toimipisteellä(MockOrganisaatiot.omnia)) (
+          setupOppijaWithOpiskeluoikeus(toimipisteellä(MockOrganisaatiot.omnia)) (
             verifyResponseStatusOk())
         }
       }
@@ -266,18 +278,18 @@ class OppijaValidationSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluo
     "Opiskeluoikeuden tila ja päivämäärät" - {
       "Alkaminen ja päättyminen" - {
         "Päivämäärät kunnossa -> palautetaan HTTP 200" in {
-          putOpiskeluoikeus(defaultOpiskeluoikeus.copy(arvioituPäättymispäivä = Some(date(2018, 5, 31))))(verifyResponseStatusOk())
+          setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(arvioituPäättymispäivä = Some(date(2018, 5, 31))))(verifyResponseStatusOk())
         }
 
-        "alkamispäivä tänään -> palautetaan HTTP 200"  in (putOpiskeluoikeus(makeOpiskeluoikeus(alkamispäivä = LocalDate.now)) {
+        "alkamispäivä tänään -> palautetaan HTTP 200"  in (setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(alkamispäivä = LocalDate.now)) {
           verifyResponseStatusOk()
         })
 
-        "alkamispäivä tulevaisuudessa -> palautetaan HTTP 200"  in (putOpiskeluoikeus(makeOpiskeluoikeus(alkamispäivä = date(2100, 5, 31))) {
+        "alkamispäivä tulevaisuudessa -> palautetaan HTTP 200"  in (setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(alkamispäivä = date(2100, 5, 31))) {
           verifyResponseStatusOk()
         })
 
-        "päättymispäivä tulevaisuudessa -> palautetaan HTTP 400"  in (putOpiskeluoikeus(päättymispäivällä(defaultOpiskeluoikeus, date(2100, 5, 31))) {
+        "päättymispäivä tulevaisuudessa -> palautetaan HTTP 400"  in (setupOppijaWithOpiskeluoikeus(päättymispäivällä(defaultOpiskeluoikeus, date(2100, 5, 31))) {
           verifyResponseStatusOk()
         })
 
@@ -288,6 +300,7 @@ class OppijaValidationSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluo
             suoritus.merge(apMap)
           }
 
+          mitätöiOppijanKaikkiOpiskeluoikeudet()
           putOpiskeluoikeusWithSomeMergedJson(Map[String, JValue]()) {
             verifyResponseStatusOk()
           }
@@ -298,7 +311,7 @@ class OppijaValidationSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluo
         }
 
         "Väärä päivämääräjärjestys" - {
-          "alkamispäivä > päättymispäivä"  in (putOpiskeluoikeus(päättymispäivällä(makeOpiskeluoikeus(alkamispäivä = date(2020, 1, 1)), päättymispäivä = date(2019, 5, 31))) {
+          "alkamispäivä > päättymispäivä"  in (setupOppijaWithOpiskeluoikeus(päättymispäivällä(makeOpiskeluoikeus(alkamispäivä = date(2020, 1, 1)), päättymispäivä = date(2019, 5, 31))) {
             verifyResponseStatus(400, List(
               exact(KoskiErrorCategory.badRequest.validation.date.päättymisPäiväEnnenAlkamispäivää, "alkamispäivä (2020-01-01) oltava sama tai aiempi kuin päättymispäivä (2019-05-31)"),
               exact(KoskiErrorCategory.badRequest.validation.date.opiskeluoikeusjaksojenPäivämäärät, "tila.opiskeluoikeusjaksot: 2020-01-01 on oltava aiempi kuin 2019-05-31"),
@@ -306,7 +319,7 @@ class OppijaValidationSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluo
             ))
           })
 
-          "alkamispäivä > arvioituPäättymispäivä"  in (putOpiskeluoikeus(defaultOpiskeluoikeus.copy(arvioituPäättymispäivä = Some(date(1999, 5, 31)))){
+          "alkamispäivä > arvioituPäättymispäivä"  in (setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(arvioituPäättymispäivä = Some(date(1999, 5, 31)))){
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.arvioituPäättymisPäiväEnnenAlkamispäivää("alkamispäivä (2000-01-01) oltava sama tai aiempi kuin arvioituPäättymispäivä (1999-05-31)"))
           })
 
@@ -316,7 +329,7 @@ class OppijaValidationSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluo
               case s: AmmatillisenTutkinnonSuoritus => s.copy(vahvistus = vahvistus(date(2017, 6, 30), stadinAmmattiopisto, Some(helsinki)))
             }.head
 
-            putOpiskeluoikeus(oo.copy(suoritukset = List(tutkinto))) {
+            setupOppijaWithOpiskeluoikeus(oo.copy(suoritukset = List(tutkinto))) {
               verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.päättymispäiväEnnenVahvistusta("suoritus.vahvistus.päivä (2017-06-30) oltava sama tai aiempi kuin päättymispäivä (2017-05-31)"))
             }
           }
@@ -328,7 +341,7 @@ class OppijaValidationSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluo
             }.head
             val ooSuorituksilla = oo.copy(suoritukset = List(tutkinto))
 
-            putOpiskeluoikeus(ooSuorituksilla) {
+            setupOppijaWithOpiskeluoikeus(ooSuorituksilla) {
               verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.suorituksenAlkamispäiväEnnenOpiskeluoikeudenAlkamispäivää(
                 "opiskeluoikeuden ensimmäisen tilan alkamispäivä (2020-04-20) oltava sama tai aiempi kuin päätason suorituksen alkamispäivä (2020-04-16)"
               ))
@@ -336,7 +349,7 @@ class OppijaValidationSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluo
           }
         }
 
-        "Opiskeluoikeuden tila muuttunut vielä valmistumisen jälkeen -> HTTP 400" in (putOpiskeluoikeus(
+        "Opiskeluoikeuden tila muuttunut vielä valmistumisen jälkeen -> HTTP 400" in (setupOppijaWithOpiskeluoikeus(
           lisääTila(päättymispäivällä(defaultOpiskeluoikeus, date(2016, 5, 31)), date(2016, 6, 30), ExampleData.opiskeluoikeusLäsnä)
         ) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaMuuttunutLopullisenTilanJälkeen("Opiskeluoikeuden tila muuttunut lopullisen tilan (valmistunut) jälkeen"))
@@ -348,7 +361,7 @@ class OppijaValidationSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluo
               (date(2018, 1, 1), Koodistokoodiviite("valiaikaisestikeskeytynyt", "koskiopiskeluoikeudentila")),
               (date (2018, 1, 1), Koodistokoodiviite("lasna", "koskiopiskeluoikeudentila"))
             ))
-            putOpiskeluoikeus(opiskeluoikeus) {
+            setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
               verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.opiskeluoikeusjaksojenPäivämäärät("tila.opiskeluoikeusjaksot: valiaikaisestikeskeytynyt 2018-01-01 ei voi olla samalla päivämäärällä kuin lasna 2018-01-01"))
             }
           }
@@ -357,7 +370,7 @@ class OppijaValidationSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluo
               (date(2018, 1, 1), Koodistokoodiviite("valmistunut", "koskiopiskeluoikeudentila")),
               (date(2018, 1, 1), Koodistokoodiviite("mitatoity", "koskiopiskeluoikeudentila"))
             ))
-            putOpiskeluoikeus(opiskeluoikeus) {
+            setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
               verifyResponseStatusOk()
             }
           }
@@ -369,7 +382,7 @@ class OppijaValidationSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluo
               (date(2018, 1, 1), Koodistokoodiviite("valmistunut", "koskiopiskeluoikeudentila")),
               (date(2018, 2, 2), Koodistokoodiviite("mitatoity", "koskiopiskeluoikeudentila"))
             ))
-            putOpiskeluoikeus(opiskeluoikeus) {
+            setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
               verifyResponseStatusOk()
             }
           }
@@ -378,7 +391,7 @@ class OppijaValidationSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluo
               (date(2018, 1, 1), Koodistokoodiviite("mitatoity", "koskiopiskeluoikeudentila")),
               (date(2018, 1, 2), Koodistokoodiviite("eronnut", "koskiopiskeluoikeudentila"))
             ))
-            putOpiskeluoikeus(opiskeluoikeus) {
+            setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
               verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.montaPäättävääTilaa("Opiskeluoikeudella voi olla vain yksi opiskeluoikeuden päättävä tila"))
             }
           }
@@ -387,7 +400,7 @@ class OppijaValidationSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluo
               (date(2017, 1, 1), Koodistokoodiviite("valmistunut", "koskiopiskeluoikeudentila")),
               (date(2018, 1, 1), Koodistokoodiviite("eronnut", "koskiopiskeluoikeudentila"))
             ))
-            putOpiskeluoikeus(opiskeluoikeus) {
+            setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
               verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.montaPäättävääTilaa("Opiskeluoikeudella voi olla vain yksi opiskeluoikeuden päättävä tila"))
             }
           }
@@ -399,17 +412,17 @@ class OppijaValidationSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluo
       def withName(name: LocalizedString) = defaultOpiskeluoikeus.copy(tyyppi = defaultOpiskeluoikeus.tyyppi.copy(nimi = Some(name)))
 
       "suomi riittää" in {
-        putOpiskeluoikeus(withName(LocalizedString.finnish("Jotain"))) {
+        setupOppijaWithOpiskeluoikeus(withName(LocalizedString.finnish("Jotain"))) {
           verifyResponseStatusOk()
         }
       }
       "ruotsi riittää" in {
-        putOpiskeluoikeus(withName(LocalizedString.swedish("Något"))) {
+        setupOppijaWithOpiskeluoikeus(withName(LocalizedString.swedish("Något"))) {
           verifyResponseStatusOk()
         }
       }
       "englanti riittää" in {
-        putOpiskeluoikeus(withName(LocalizedString.english("Something"))) {
+        setupOppijaWithOpiskeluoikeus(withName(LocalizedString.english("Something"))) {
           verifyResponseStatusOk()
         }
       }

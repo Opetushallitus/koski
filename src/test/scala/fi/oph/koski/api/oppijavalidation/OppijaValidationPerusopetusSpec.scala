@@ -33,19 +33,19 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
 
   "Suoritusten tila" - {
     "Vahvistettu päättötodistus -> HTTP 200" in {
-      putOpiskeluoikeus(defaultOpiskeluoikeus) {
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus) {
         verifyResponseStatusOk()
       }
     }
 
     "Vahvistettu päättötodistus ilman yhtään oppiainetta -> HTTP 400" in {
-      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusSuoritus.copy(osasuoritukset = Some(Nil))))) {
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusSuoritus.copy(osasuoritukset = Some(Nil))))) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.oppiaineetPuuttuvat("Suorituksella ei ole osasuorituksena yhtään oppiainetta, vaikka sillä on vahvistus"))
       }
     }
 
     "Vahvistamaton päättötodistus ilman yhtään oppiainetta -> HTTP 200" in {
-      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(vahvistus = None, osasuoritukset = Some(Nil))))) {
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(vahvistus = None, osasuoritukset = Some(Nil))))) {
         verifyResponseStatusOk()
       }
     }
@@ -58,14 +58,14 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
         .items.items
         .field[Option[List[Arviointi]]]("arviointi")
 
-      putOpiskeluoikeus(oppiaineidenArvioinnit.set(defaultOpiskeluoikeus)(None)) {
+      setupOppijaWithOpiskeluoikeus(oppiaineidenArvioinnit.set(defaultOpiskeluoikeus)(None)) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.keskeneräinenOsasuoritus("Valmiiksi merkityllä suorituksella koulutus/201101 on keskeneräinen osasuoritus koskioppiaineetyleissivistava/AI"))
       }
     }
 
     "Kaksi samaa oppiainetta" - {
       "Identtisillä tiedoilla -> HTTP 400" in {
-        putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusSuoritus.copy(osasuoritukset = Some(List(
+        setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusSuoritus.copy(osasuoritukset = Some(List(
           suoritus(äidinkieli("AI1")).copy(arviointi = arviointi(9)),
           suoritus(äidinkieli("AI1")).copy(arviointi = arviointi(9))
         )))))) {
@@ -73,7 +73,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
         }
       }
       "Eri kielivalinnalla -> HTTP 200" in {
-        putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusSuoritus.copy(osasuoritukset = Some(List(
+        setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusSuoritus.copy(osasuoritukset = Some(List(
           suoritus(äidinkieli("AI1")).copy(arviointi = arviointi(9)),
           suoritus(äidinkieli("AI2")).copy(arviointi = arviointi(9))
         )))))) {
@@ -81,7 +81,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
         }
       }
       "Valinnaisissa oppiaineissa -> HTTP 200" in {
-        putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusSuoritus.copy(osasuoritukset = Some(List(
+        setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusSuoritus.copy(osasuoritukset = Some(List(
           suoritus(äidinkieli("AI1").copy(pakollinen = false)).copy(arviointi = arviointi(9)),
           suoritus(äidinkieli("AI1").copy(pakollinen = false)).copy(arviointi = arviointi(9))
         )))))) {
@@ -91,7 +91,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
     }
 
     "Opiskeluoikeudelta puuttuu päättötodistus opiskeluoikeuden tilan ollessa 'valmistunut' -> HTTP 400" in {
-      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(
         suoritukset = List(
           yhdeksännenLuokanSuoritus.copy(alkamispäivä = Some(LocalDate.of(2016, 1, 1)))
         ),
@@ -106,7 +106,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
 
     "Opiskeluoikeudella ei saa olla sama alkamispäivä kahdella vuosiluokalla" - {
       "Siirto estetty" in {
-        putOpiskeluoikeus(defaultOpiskeluoikeus.copy(
+        setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(
           suoritukset = List(
             yhdeksännenLuokanSuoritus.copy(alkamispäivä = Some(LocalDate.of(2006, 1, 1))),
             kahdeksannenLuokanSuoritus.copy(alkamispäivä = Some(LocalDate.of(2006, 1, 1)))
@@ -120,7 +120,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
           suoritukset = List(seitsemännenLuokanSuoritus.copy(alkamispäivä = Some(LocalDate.of(2006, 1, 1))))
         )
 
-        putOpiskeluoikeus(opiskeluoikeus, KoskiSpecificMockOppijat.eero) {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus, KoskiSpecificMockOppijat.eero) {
           verifyResponseStatusOk()
         }
 
@@ -141,7 +141,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
           NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2015, 1, 1), opiskeluoikeusLäsnä),
           NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2017, 1, 1), opiskeluoikeusEronnut)
         )))
-      putOpiskeluoikeus(opiskeluoikeus) {
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaEronnutTaiKatsotaanEronneeksiVaikkaVahvistettuPäätasonSuoritus())
       }
     }
@@ -157,13 +157,13 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
         val pakollinenS = äidinkielenSuoritus.copy(arviointi = hyväksytty)
 
         "Sallitaan pakollisten oppiaineiden suorituksilta" in {
-          putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(vahvistamatonPäättötodistus.copy(osasuoritukset = Some(List(pakollinenS)))))) {
+          setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(vahvistamatonPäättötodistus.copy(osasuoritukset = Some(List(pakollinenS)))))) {
             verifyResponseStatusOk()
           }
         }
 
         "Sallitaan valinnaisten oppiaineiden suorituksilta joiden laajuus on 2 vuosiviikkotuntia tai yli" in {
-          putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(vahvistamatonPäättötodistus.copy(osasuoritukset = Some(List(valinnainenS)))))) {
+          setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(vahvistamatonPäättötodistus.copy(osasuoritukset = Some(List(valinnainenS)))))) {
             verifyResponseStatusOk()
           }
         }
@@ -174,13 +174,13 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
         val pakollinenO = äidinkielenSuoritus.copy(arviointi = osallistunut)
 
         "Sallittu pakollisten oppiaineiden suorituksilta" in {
-          putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(vahvistamatonPäättötodistus.copy(osasuoritukset = Some(List(pakollinenO)))))) {
+          setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(vahvistamatonPäättötodistus.copy(osasuoritukset = Some(List(pakollinenO)))))) {
             verifyResponseStatusOk()
           }
         }
 
         "Sallittu valinnaisten oppiaineiden suorituksilta joiden laajuus on 2 vuosiviikkotuntia tai yli" in {
-          putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(vahvistamatonPäättötodistus.copy(osasuoritukset = Some(List(valinnainenO)))))) {
+          setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(vahvistamatonPäättötodistus.copy(osasuoritukset = Some(List(valinnainenO)))))) {
             verifyResponseStatusOk()
           }
         }
@@ -193,47 +193,47 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
         val pakollinenS = äidinkielenSuoritus.copy(arviointi = hyväksytty)
 
         "Kielletty pakollisten oppiaineiden suorituksilta" in {
-          putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusSuoritus.copy(osasuoritukset = Some(List(pakollinenS)))))) {
+          setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusSuoritus.copy(osasuoritukset = Some(List(pakollinenS)))))) {
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.arviointi.sallittuVainValinnaiselle("Arviointi S on sallittu vain jos oppimäärä on yksilöllistetty tai valinnaisille oppiaineille joiden laajuus on alle kaksi vuosiviikkotuntia"))
           }
         }
 
         "Sallittu yksilöllistetyille pakollisille" in {
-          putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusSuoritus.copy(osasuoritukset = Some(List(pakollinenS.copy(yksilöllistettyOppimäärä = true))))))) {
+          setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusSuoritus.copy(osasuoritukset = Some(List(pakollinenS.copy(yksilöllistettyOppimäärä = true))))))) {
             verifyResponseStatusOk()
           }
         }
 
         "Sallittu väliaikaisesti valinnaisten oppiaineiden suorituksille joiden laajuus on 2 vuosiviikkotuntia tai yli" in {
-          putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusSuoritus.copy(osasuoritukset = Some(List(valinnainenS)))))) {
+          setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusSuoritus.copy(osasuoritukset = Some(List(valinnainenS)))))) {
             verifyResponseStatusOk()
           }
         }
 
         "Sallittu valinnaisten kielioppiaineiden suorituksilta joiden laajuus on 2 vuosiviikkotuntia tai yli" in {
           val valinnainenKieliS = suoritus(kieli("B1", "SV").copy(pakollinen = false, laajuus = vuosiviikkotuntia(2))).copy(arviointi = hyväksytty)
-          putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusSuoritus.copy(osasuoritukset = Some(List(valinnainenKieliS)))))) {
+          setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusSuoritus.copy(osasuoritukset = Some(List(valinnainenKieliS)))))) {
             verifyResponseStatusOk()
           }
         }
 
         "Sallittu valinnaisille oppiaineiden suorituksille joiden laajuus on alle 2" in {
           val valinnainenLaajuusAlle2 = suoritus(oppiaine("HI").copy(pakollinen = false, laajuus = vuosiviikkotuntia(1.9))).copy(arviointi = hyväksytty)
-          putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusSuoritus.copy(osasuoritukset = Some(List(valinnainenLaajuusAlle2)))))) {
+          setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusSuoritus.copy(osasuoritukset = Some(List(valinnainenLaajuusAlle2)))))) {
             verifyResponseStatusOk()
           }
         }
 
         "Sallittu paikallisille oppiaineille joiden laajuus 2 vuosiviikkotuntia tai yli" in {
           val paikallinenLaajuus2 = suoritus(paikallinenOppiaine("HI", "Historia", "Opiskellaan historiaa", vuosiviikkotuntia(2))).copy(arviointi = hyväksytty)
-          putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusSuoritus.copy(osasuoritukset = Some(List(paikallinenLaajuus2)))))) {
+          setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusSuoritus.copy(osasuoritukset = Some(List(paikallinenLaajuus2)))))) {
             verifyResponseStatusOk()
           }
         }
 
         "Sallittu paikallisille oppiaineille joiden laajuus on alle 2 vuosiviikkotuntia" in {
           val paikallinenLaajuus2 = suoritus(paikallinenOppiaine("HI", "Historia", "Opiskellaan historiaa", vuosiviikkotuntia(1.9))).copy(arviointi = hyväksytty)
-          putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusSuoritus.copy(osasuoritukset = Some(List(paikallinenLaajuus2)))))) {
+          setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusSuoritus.copy(osasuoritukset = Some(List(paikallinenLaajuus2)))))) {
             verifyResponseStatusOk()
           }
         }
@@ -244,47 +244,47 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
         val pakollinenO = äidinkielenSuoritus.copy(arviointi = osallistunut)
 
         "Kielletty pakollisten oppiaineiden suorituksilta" in {
-          putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusSuoritus.copy(osasuoritukset = Some(List(pakollinenO)))))) {
+          setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusSuoritus.copy(osasuoritukset = Some(List(pakollinenO)))))) {
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.arviointi.sallittuVainValinnaiselle("Arviointi O on sallittu vain jos oppimäärä on yksilöllistetty tai valinnaisille oppiaineille joiden laajuus on alle kaksi vuosiviikkotuntia"))
           }
         }
 
         "Sallittu yksilöllistetyille pakollisille" in {
-          putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusSuoritus.copy(osasuoritukset = Some(List(pakollinenO.copy(yksilöllistettyOppimäärä = true))))))) {
+          setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusSuoritus.copy(osasuoritukset = Some(List(pakollinenO.copy(yksilöllistettyOppimäärä = true))))))) {
             verifyResponseStatusOk()
           }
         }
 
         "Kielletty valinnaisten oppiaineiden suorituksilta joiden laajuus on 2 vuosiviikkotuntia tai yli" in {
-          putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusSuoritus.copy(osasuoritukset = Some(List(valinnainenO)))))) {
+          setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusSuoritus.copy(osasuoritukset = Some(List(valinnainenO)))))) {
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.arviointi.sallittuVainValinnaiselle("Arviointi O on sallittu vain jos oppimäärä on yksilöllistetty tai valinnaisille oppiaineille joiden laajuus on alle kaksi vuosiviikkotuntia"))
           }
         }
 
         "Kielletty valinnaisten kielioppiaineiden suorituksilta joiden laajuus on 2 vuosiviikkotuntia tai yli" in {
           val valinnainenKieliO = suoritus(kieli("B1", "SV").copy(pakollinen = false, laajuus = vuosiviikkotuntia(2))).copy(arviointi = osallistunut)
-          putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusSuoritus.copy(osasuoritukset = Some(List(valinnainenKieliO)))))) {
+          setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusSuoritus.copy(osasuoritukset = Some(List(valinnainenKieliO)))))) {
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.arviointi.sallittuVainValinnaiselle("Arviointi O on sallittu vain jos oppimäärä on yksilöllistetty tai valinnaisille oppiaineille joiden laajuus on alle kaksi vuosiviikkotuntia"))
           }
         }
 
         "Sallittu valinnaisille oppiaineiden suorituksille joiden laajuus on alle 2" in {
           val valinnainenLaajuusAlle2 = suoritus(äidinkieli("AI1").copy(pakollinen = false, laajuus = vuosiviikkotuntia(1.9))).copy(arviointi = osallistunut)
-          putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusSuoritus.copy(osasuoritukset = Some(List(valinnainenLaajuusAlle2)))))) {
+          setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusSuoritus.copy(osasuoritukset = Some(List(valinnainenLaajuusAlle2)))))) {
             verifyResponseStatusOk()
           }
         }
 
         "Sallittu paikallisille oppiaineille joiden laajuus on alle 2 vuosiviikkotuntia" in {
           val paikallinenLaajuusAlle2 = suoritus(paikallinenOppiaine("HI", "Historia", "Opiskellaan historiaa", vuosiviikkotuntia(1.9))).copy(arviointi = osallistunut)
-          putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusSuoritus.copy(osasuoritukset = Some(List(paikallinenLaajuusAlle2)))))) {
+          setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusSuoritus.copy(osasuoritukset = Some(List(paikallinenLaajuusAlle2)))))) {
             verifyResponseStatusOk()
           }
         }
 
         "Kielletty paikallisten oppiaineden suorituksilta joiden laajuus on 2 vuosiviikkotuntia tai yli" in {
           val paikallinenLaajuus2 = suoritus(paikallinenOppiaine("HI", "Historia", "Opiskellaan historiaa", vuosiviikkotuntia(2))).copy(arviointi = osallistunut)
-          putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusSuoritus.copy(osasuoritukset = Some(List(paikallinenLaajuus2)))))) {
+          setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusSuoritus.copy(osasuoritukset = Some(List(paikallinenLaajuus2)))))) {
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.arviointi.sallittuVainValinnaiselle("Arviointi O on sallittu vain jos oppimäärä on yksilöllistetty tai valinnaisille oppiaineille joiden laajuus on alle kaksi vuosiviikkotuntia"))
           }
         }
@@ -296,7 +296,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
             oppiaine("BI").copy(pakollinen = false, laajuus = vuosiviikkotuntia(1.9))
           ).copy(arviointi = arviointi(9))
 
-          putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusSuoritus.copy(osasuoritukset = Some(List(valinnainenLaajuusAlle2)))))) {
+          setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusSuoritus.copy(osasuoritukset = Some(List(valinnainenLaajuusAlle2)))))) {
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.arviointi.eiSallittuSuppealleValinnaiselle(
 
             ))
@@ -308,7 +308,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
             oppiaine("BI").copy(pakollinen = false, laajuus = vuosiviikkotuntia(2))
           ).copy(arviointi = arviointi(9))
 
-          putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusSuoritus.copy(osasuoritukset = Some(List(valinnainenLaajuus2)))))) {
+          setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusSuoritus.copy(osasuoritukset = Some(List(valinnainenLaajuus2)))))) {
             verifyResponseStatusOk()
           }
         }
@@ -317,13 +317,13 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
       "Opinto-ohjaus (OP) oppiaineena" - {
         "Sallitaan aina arvosana S" in {
           val opinto_ohjaus_S = suoritus(oppiaine("OP")).copy(arviointi = hyväksytty)
-          putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusSuoritus.copy(osasuoritukset = Some(List(opinto_ohjaus_S)))))) {
+          setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusSuoritus.copy(osasuoritukset = Some(List(opinto_ohjaus_S)))))) {
             verifyResponseStatusOk()
           }
         }
         "Sallitaan aina arvosana O" in {
           val opinto_ohjaus_O = suoritus(oppiaine("OP")).copy(arviointi = osallistunut)
-          putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusSuoritus.copy(osasuoritukset = Some(List(opinto_ohjaus_O)))))) {
+          setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusSuoritus.copy(osasuoritukset = Some(List(opinto_ohjaus_O)))))) {
             verifyResponseStatusOk()
           }
         }
@@ -338,7 +338,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
       pakollisenOppiaineenSuoritustapa: Option[Koodistokoodiviite] = None
     )(fn: => A): A = {
       val pakollinenEiLaajuutta = suoritus(oppiaine("GE").copy(pakollinen = true, laajuus = None)).copy(arviointi = arviointi(9), suoritustapa = pakollisenOppiaineenSuoritustapa)
-      putOpiskeluoikeus(opiskeluoikeus.withSuoritukset(List(
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus.withSuoritukset(List(
         yhdeksännenLuokanSuoritus,
         päätasonSuoritus.withOsasuoritukset(Some(List(pakollinenEiLaajuutta))))
       )) {
@@ -363,7 +363,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
       }
       "Toiminta-alueittain opiskeltu" - {
         "Laajuutta ei vaadita osasuorituksilta" in {
-          putOpiskeluoikeus(
+          setupOppijaWithOpiskeluoikeus(
             defaultOpiskeluoikeus.copy(
               suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusToimintaAlueilla.copy(vahvistus = vahvistusPaikkakunnalla(LocalDate.of(2020, 8, 1))))
             )) {
@@ -476,7 +476,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
 
   "Osa-aikainen erityisopetus" - {
     "Opiskeluoikeudella on erityisen tuen päätös muusta kuin osa-aikaisesta erityisopetuksesta, muttei tietoa suorituksessa -> HTTP 200" in {
-      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(
         lisätiedot = perusopetuksenOpiskeluoikeudenLisätiedotJoissaErityisenTuenPäätösIlmanOsaAikaistaErityisopetusta,
         suoritukset = List(vuosiluokkasuoritus.copy(osaAikainenErityisopetus = None))
       )) {
@@ -485,7 +485,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
     }
 
     "Opiskeluoikeudella on tehostetun tuen päätös muusta kuin osa-aikaisesta erityisopetuksesta, muttei tietoa suorituksessa -> HTTP 200" in {
-      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(
         lisätiedot = perusopetuksenOpiskeluoikeudenLisätiedotJoissaTehostetunTuenPäätösIlmanOsaAikaistaErityisopetusta,
         suoritukset = List(vuosiluokkasuoritus.copy(osaAikainenErityisopetus = None))
       )) {
@@ -505,7 +505,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
         ))
       )
 
-      putOpiskeluoikeus(oo) {
+      setupOppijaWithOpiskeluoikeus(oo) {
         expect
       }
     }
@@ -538,7 +538,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
         )
       ))
 
-      val tallennettuna = putAndGetOpiskeluoikeus(oo)
+      val tallennettuna = setupOppijaWithAndGetOpiskeluoikeus(oo)
 
       tallennettuna.lisätiedot.get.perusopetuksenAloittamistaLykätty should equal (None)
       tallennettuna.lisätiedot.get.tehostetunTuenPäätös should equal (None)
@@ -553,7 +553,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
           ))
         )
 
-      val tallennettuna = putAndGetOpiskeluoikeus(oo)
+      val tallennettuna = setupOppijaWithAndGetOpiskeluoikeus(oo)
 
       tallennettuna.suoritukset.find(_.isInstanceOf[PerusopetuksenVuosiluokanSuoritus]).get
         .asInstanceOf[PerusopetuksenVuosiluokanSuoritus].osaAikainenErityisopetus should equal (None)
@@ -561,7 +561,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
   }
 
   "Opiskeluoikeuden päättymispäivä on vuosiluokaan suorituksen alkamispäivää ennen -> HTTP 400" in {
-    putOpiskeluoikeus(defaultOpiskeluoikeus.copy(
+    setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(
       suoritukset = List(
         yhdeksännenLuokanSuoritus.copy(alkamispäivä = Some(LocalDate.of(2017, 1, 2)),
           vahvistus = None
@@ -588,7 +588,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
       ))
     )
 
-    putOpiskeluoikeus(seiskaluokanSuoritus, headers = authHeaders(jyväskylänNormaalikoulunPalvelukäyttäjä) ++ jsonContent) {
+    setupOppijaWithOpiskeluoikeus(seiskaluokanSuoritus, headers = authHeaders(jyväskylänNormaalikoulunPalvelukäyttäjä) ++ jsonContent) {
       verifyResponseStatus(200)
     }
 
@@ -619,13 +619,13 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
     )
 
     "Opiskeluoikeus ilman poikkeavia lisätietoja -> HTTP 400" in {
-      putOpiskeluoikeus(oo) {
+      setupOppijaWithOpiskeluoikeus(oo) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.nuortenPerusopetuksenValmistunutTilaIlmanYsiluokanSuoritusta())
       }
     }
 
     "Lisätiedoissa vuosiluokkiin sitoutumaton opetus -> HTTP 200" in {
-      putOpiskeluoikeus(oo.copy(
+      setupOppijaWithOpiskeluoikeus(oo.copy(
         lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
           vuosiluokkiinSitoutumatonOpetus = true
         ))
@@ -635,7 +635,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
     }
 
     "Opiskelija ollut valmistuessa kotiopetuksessa -> HTTP 200" in {
-      putOpiskeluoikeus(oo.copy(
+      setupOppijaWithOpiskeluoikeus(oo.copy(
         suoritukset = List(päättötodistusSuoritus.copy(
           vahvistus = vahvistusPaikkakunnalla(LocalDate.of(2016, 6, 4))
         )),
@@ -648,7 +648,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
     }
 
     "Päättötodistuksessa suoritustapa 'erityinen tutkinto' -> HTTP 200" in {
-      putOpiskeluoikeus(oo.withSuoritukset(
+      setupOppijaWithOpiskeluoikeus(oo.withSuoritukset(
         List(päättötodistusSuoritus.copy(
           suoritustapa = suoritustapaErityinenTutkinto
         ))
@@ -658,7 +658,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
     }
   }
 
-  private def putAndGetOpiskeluoikeus(oo: KoskeenTallennettavaOpiskeluoikeus): PerusopetuksenOpiskeluoikeus = putOpiskeluoikeus(oo) {
+  private def setupOppijaWithAndGetOpiskeluoikeus(oo: KoskeenTallennettavaOpiskeluoikeus): PerusopetuksenOpiskeluoikeus = setupOppijaWithOpiskeluoikeus(oo) {
     verifyResponseStatusOk()
     getOpiskeluoikeus(readPutOppijaResponse.opiskeluoikeudet.head.oid)
   }.asInstanceOf[PerusopetuksenOpiskeluoikeus]

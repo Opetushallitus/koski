@@ -17,13 +17,13 @@ import java.time.LocalDate
 
 class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenOpiskeluoikeus] with EsiopetusSpecification {
   "Peruskoulun esiopetus -> HTTP 200" in {
-    putOpiskeluoikeus(defaultOpiskeluoikeus) {
+    setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus) {
       verifyResponseStatusOk()
     }
   }
 
   "Päiväkodin esiopetus -> HTTP 200" in {
-    putOpiskeluoikeus(päiväkodinEsiopetuksenOpiskeluoikeus) {
+    setupOppijaWithOpiskeluoikeus(päiväkodinEsiopetuksenOpiskeluoikeus) {
       verifyResponseStatusOk()
     }
   }
@@ -46,13 +46,13 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
 
   "Osa-aikainen erityisopetus" - {
     "Opiskeluoikeudella on erityisen tuen päätös muusta kuin osa-aikaisesta erityisopetuksesta, muttei tietoa suorituksessa -> HTTP 200" in {
-      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(lisätiedot = lisätiedotJoissaErityisenTuenPäätösIlmanOsaAikaistaErityisopetusta)) {
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(lisätiedot = lisätiedotJoissaErityisenTuenPäätösIlmanOsaAikaistaErityisopetusta)) {
         verifyResponseStatusOk()
       }
     }
 
     "Opiskeluoikeudella on erityisen tuen päätös osa-aikaisesta erityisopetuksesta ja tieto suorituksessa -> HTTP 200" in {
-      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(
         lisätiedot = lisätiedotJoissaOsaAikainenErityisopetusErityisenTuenPäätöksessä,
         suoritukset = List(defaultEsiopetuksenSuoritus.copy(
           osaAikainenErityisopetus = Some(List(Koodistokoodiviite("LV1","osaaikainenerityisopetuslukuvuodenaikana")))
@@ -68,7 +68,7 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
           NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2016, 1, 1), opiskeluoikeusLäsnä),
           NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2017, 1, 1), opiskeluoikeusEronnut)
         )))
-      putOpiskeluoikeus(opiskeluoikeus) {
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaEronnutTaiKatsotaanEronneeksiVaikkaVahvistettuPäätasonSuoritus())
       }
     }
@@ -85,7 +85,7 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
           )))
         )))
 
-      val tallennettuna = putAndGetOpiskeluoikeus(oo)
+      val tallennettuna = setupOppijaWithAndGetOpiskeluoikeus(oo)
 
       tallennettuna.lisätiedot.get.tukimuodot should equal (None)
       tallennettuna.lisätiedot.get.erityisenTuenPäätökset.head.head.tukimuodot should equal (None)
@@ -807,7 +807,7 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
     }
   }
 
-  private def putAndGetOpiskeluoikeus(oo: KoskeenTallennettavaOpiskeluoikeus): EsiopetuksenOpiskeluoikeus = putOpiskeluoikeus(oo) {
+  private def setupOppijaWithAndGetOpiskeluoikeus(oo: KoskeenTallennettavaOpiskeluoikeus): EsiopetuksenOpiskeluoikeus = setupOppijaWithOpiskeluoikeus(oo) {
     verifyResponseStatusOk()
     getOpiskeluoikeus(readPutOppijaResponse.opiskeluoikeudet.head.oid)
   }.asInstanceOf[EsiopetuksenOpiskeluoikeus]

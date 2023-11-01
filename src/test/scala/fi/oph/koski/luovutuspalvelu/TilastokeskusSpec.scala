@@ -109,8 +109,8 @@ class TilastokeskusSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoike
     "Kyselyparametrit" - {
       "päättymispäivämäärä" in {
         resetFixtures
-        insert(päättymispäivällä(defaultOpiskeluoikeus, date(2016,1,9)), KoskiSpecificMockOppijat.eero)
-        insert(päättymispäivällä(defaultOpiskeluoikeus, date(2015, 8, 9)), KoskiSpecificMockOppijat.teija)
+        setup(päättymispäivällä(defaultOpiskeluoikeus, date(2016,1,9)), KoskiSpecificMockOppijat.eero)
+        setup(päättymispäivällä(defaultOpiskeluoikeus, date(2015, 8, 9)), KoskiSpecificMockOppijat.teija)
 
         val queryString = "opiskeluoikeusPäättynytAikaisintaan=2016-01-01&opiskeluoikeusPäättynytViimeistään=2016-12-31&v=1"
         val oppijat = performQuery("?" + queryString)
@@ -124,8 +124,8 @@ class TilastokeskusSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoike
 
       "alkamispäivämäärä" in {
         resetFixtures
-        insert(makeOpiskeluoikeus(date(2100, 1, 2)), KoskiSpecificMockOppijat.eero)
-        insert(makeOpiskeluoikeus(date(2110, 1, 1)), KoskiSpecificMockOppijat.teija)
+        setup(makeOpiskeluoikeus(date(2100, 1, 2)), KoskiSpecificMockOppijat.eero)
+        setup(makeOpiskeluoikeus(date(2110, 1, 1)), KoskiSpecificMockOppijat.teija)
         val alkamispäivät = performQuery("?v=1&opiskeluoikeusAlkanutAikaisintaan=2100-01-02&opiskeluoikeusAlkanutViimeistään=2100-01-02")
           .flatMap(_.opiskeluoikeudet.flatMap(_.alkamispäivä))
         alkamispäivät should equal(List(date(2100, 1, 2)))
@@ -134,15 +134,16 @@ class TilastokeskusSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoike
 
       "opiskeluoikeuden tyypit" in {
         resetFixtures
-        insert(makeOpiskeluoikeus(date(2100, 1, 2)), KoskiSpecificMockOppijat.eero)
+        setup(makeOpiskeluoikeus(date(2100, 1, 2)), KoskiSpecificMockOppijat.eero)
         performQuery("?v=1&opiskeluoikeusAlkanutAikaisintaan=2100-01-02&opiskeluoikeudenTyyppi=ammatillinenkoulutus").flatMap(_.opiskeluoikeudet).length should equal(1)
         performQuery("?v=1&opiskeluoikeusAlkanutAikaisintaan=2100-01-02&opiskeluoikeudenTyyppi=perusopetus").flatMap(_.opiskeluoikeudet).length should equal(0)
-        insert(makeLukio2019Opiskeluoikeus(date(2100, 1, 2)), KoskiSpecificMockOppijat.eero)
+        setup(makeLukio2019Opiskeluoikeus(date(2100, 1, 2)), KoskiSpecificMockOppijat.eero)
         performQuery("?v=1&opiskeluoikeusAlkanutAikaisintaan=2100-01-02&opiskeluoikeudenTyyppi=ammatillinenkoulutus&opiskeluoikeudenTyyppi=lukiokoulutus").flatMap(_.opiskeluoikeudet).length should equal(2)
       }
 
       "aikaleima" in {
-        resetFixtures
+        mitätöiOppijanKaikkiOpiskeluoikeudet(KoskiSpecificMockOppijat.eero)
+
         val now = ZonedDateTime.now
 
         performQuery(s"?v=1&muuttunutEnnen=${now.format(ISO_INSTANT)}").length should equal(performQuery().length)
@@ -151,7 +152,9 @@ class TilastokeskusSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoike
         performQuery(s"?v=1&muuttunutEnnen=${now.minusDays(1).format(ISO_INSTANT)}").length should equal(0)
         performQuery(s"?v=1&muuttunutJälkeen=${now.minusDays(1).format(ISO_INSTANT)}").length should equal(performQuery().length)
 
-        insert(makeOpiskeluoikeus(LocalDate.now), KoskiSpecificMockOppijat.eero)
+        putOpiskeluoikeus(makeOpiskeluoikeus(LocalDate.now), KoskiSpecificMockOppijat.eero) {
+          verifyResponseStatusOk()
+        }
 
         val oppijat = performQuery(s"?v=1&muuttunutJälkeen=${now.format(ISO_INSTANT)}")
         oppijat.length should equal(1)
@@ -159,29 +162,38 @@ class TilastokeskusSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoike
       }
 
       "Aikaleima ja sivutus: oppijan opiskeluoikeudet jakautuvat tarvittaessa 2 sivulle" in {
-        resetFixtures
+        mitätöiOppijanKaikkiOpiskeluoikeudet(KoskiSpecificMockOppijat.eero)
+        mitätöiOppijanKaikkiOpiskeluoikeudet(KoskiSpecificMockOppijat.eerola)
 
         val now = ZonedDateTime.now
 
         // Varmista, että testi toimii, vaikka tietokanta olisi hieman väärässä ajassa:
         Thread.sleep(2000)
 
-        insert(makeOpiskeluoikeus(
+        putOpiskeluoikeus(makeOpiskeluoikeus(
           alkamispäivä = LocalDate.now
-        ), KoskiSpecificMockOppijat.eero)
-        insert(makeOpiskeluoikeus(
+        ), KoskiSpecificMockOppijat.eero) {
+          verifyResponseStatusOk()
+        }
+        putOpiskeluoikeus(makeOpiskeluoikeus(
           alkamispäivä = LocalDate.now,
           toimpiste = AmmatillinenExampleData.kiipulanAmmattiopistoNokianToimipaikka,
           oppilaitos = AmmatillinenExampleData.kiipulanAmmattiopisto.oid
-        ), KoskiSpecificMockOppijat.eero, MockUsers.paakayttaja)
-        insert(makeOpiskeluoikeus(
+        ), KoskiSpecificMockOppijat.eero, authHeaders(MockUsers.paakayttaja) ++ jsonContent) {
+          verifyResponseStatusOk()
+        }
+        putOpiskeluoikeus(makeOpiskeluoikeus(
           alkamispäivä = LocalDate.now
-        ), KoskiSpecificMockOppijat.eerola)
-        insert(makeOpiskeluoikeus(
+        ), KoskiSpecificMockOppijat.eerola) {
+          verifyResponseStatusOk()
+        }
+        putOpiskeluoikeus(makeOpiskeluoikeus(
           alkamispäivä = LocalDate.now,
           toimpiste = AmmatillinenExampleData.kiipulanAmmattiopistoNokianToimipaikka,
           oppilaitos = AmmatillinenExampleData.kiipulanAmmattiopisto.oid
-        ), KoskiSpecificMockOppijat.eerola, MockUsers.paakayttaja)
+        ), KoskiSpecificMockOppijat.eerola, authHeaders(MockUsers.paakayttaja) ++ jsonContent) {
+          verifyResponseStatusOk()
+        }
 
         val aikaleima = now.format(ISO_INSTANT)
 
@@ -243,14 +255,12 @@ class TilastokeskusSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoike
     }
   }
 
-  private def insert(
+  private def setup(
     opiskeluoikeus: Opiskeluoikeus,
     henkilö: Henkilö,
     user: UserWithPassword = defaultUser
   ) =
-    putOpiskeluoikeus(opiskeluoikeus, henkilö, authHeaders(user) ++ jsonContent) {
-      verifyResponseStatusOk()
-    }
+    setupOppijaWithAndGetOpiskeluoikeus(opiskeluoikeus, henkilö, authHeaders(user) ++ jsonContent)
 
   private def makeLukio2019Opiskeluoikeus(alkamispäivä: LocalDate) = ExamplesLukio2019.opiskeluoikeus.copy(
     tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(alku = alkamispäivä, tila = LukioExampleData.opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))))
