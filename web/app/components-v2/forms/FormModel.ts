@@ -13,6 +13,12 @@ import { assertNever } from '../../util/selfcare'
 import { ValidationRule } from './ValidationRule'
 import { validateData, ValidationError } from './validator'
 
+export enum EditMode {
+  View = 0,
+  Edit = 1,
+  Saving = 2
+}
+
 export type FormModel<O extends object> = {
   // Lomakkeen tietojen viimeisin tila
   readonly state: O
@@ -21,7 +27,7 @@ export type FormModel<O extends object> = {
   // Muokkaustila päällä/pois
   readonly editMode: boolean
   // Onko muokkausten tallennus kesken
-  readonly pending: boolean
+  readonly isSaving: boolean
   // Lomakkeelle on tehty muutoksia
   readonly hasChanged: boolean
   // Tiedot on tallennettu viimeisimmän muokkaustilaan siirtymisen jälkeen
@@ -37,16 +43,6 @@ export type FormModel<O extends object> = {
    * Aseta lomake muokkaustilaan
    */
   readonly startEdit: () => void
-
-  /**
-   * Asettaa lomakkeen pending-tilaan esim. API operaatioiden ajaksi
-   */
-  readonly startPending: () => void
-
-  /**
-   * Ottaa lomakkeen pois pending-tilasta esim. kun API-operaatiot ovat valmistuneet.
-   */
-  readonly endPending: () => void
 
   /**
    * Päivitä lomakkeen tietoja polun määrittelemästä paikasta.
@@ -125,11 +121,8 @@ export const useForm = <O extends object>(
     dispatch({ type: 'cancel' })
   }, [])
 
-  const startPending: FormModelProp<'startPending'> = useCallback(() => {
-    dispatch({ type: 'startPending' })
-  }, [])
-  const endPending: FormModelProp<'endPending'> = useCallback(() => {
-    dispatch({ type: 'endPending' })
+  const setEditMode = useCallback((mode: EditMode) => {
+    dispatch({ type: 'setEditMode', editMode: mode })
   }, [])
 
   const validate: FormModelProp<'validate'> = useCallback(() => {
@@ -166,14 +159,14 @@ export const useForm = <O extends object>(
       if (editMode) {
         clearErrors()
         // Asetetaan UI pending-tilaan, jolla mahdollistetaan käyttöliittymäelementtien disablointi.
-        startPending()
+        setEditMode(EditMode.Saving)
         pipe(
           await api(data),
           tap((response) => {
             dispatch({ type: 'endEdit', value: merge(response.data)(data) })
           }),
           tapLeft((errorResponse) => {
-            endPending()
+            setEditMode(EditMode.Edit)
             setErrors(
               errorResponse.errors.map((e) => ({ message: t(e.messageKey) }))
             )
@@ -181,7 +174,7 @@ export const useForm = <O extends object>(
         )
       }
     },
-    [clearErrors, data, editMode, endPending, setErrors, startPending]
+    [clearErrors, data, editMode, setEditMode, setErrors]
   )
 
   const root: FormModelProp<'root'> = useMemo(() => $.optic_<O>(), [])
@@ -190,15 +183,14 @@ export const useForm = <O extends object>(
     () => ({
       state: data,
       initialState: initialData,
-      editMode,
+      editMode: editMode !== EditMode.View,
+      isSaving: editMode === EditMode.Saving,
       hasChanged,
       isSaved,
       isValid: A.isEmpty(errors),
       root,
       startEdit,
       pending,
-      startPending,
-      endPending,
       updateAt,
       validate,
       save,
@@ -215,8 +207,6 @@ export const useForm = <O extends object>(
       root,
       startEdit,
       pending,
-      startPending,
-      endPending,
       updateAt,
       validate,
       save,
@@ -228,7 +218,7 @@ export const useForm = <O extends object>(
 type InternalFormState<O> = {
   initialData: O
   data: O
-  editMode: boolean
+  editMode: EditMode
   pending: boolean
   hasChanged: boolean
   isSaved: boolean
@@ -242,7 +232,7 @@ const internalInitialState = <O>(
 ): InternalFormState<O> => ({
   initialData: initialState,
   data: initialState,
-  editMode: startWithEditMode,
+  editMode: startWithEditMode ? EditMode.Edit : EditMode.View,
   hasChanged: false,
   pending: false,
   isSaved: false,
@@ -251,9 +241,6 @@ const internalInitialState = <O>(
       ? validateData(initialState, constraint)
       : []
 })
-
-type StartPending = { type: 'startPending' }
-type EndPending = { type: 'endPending' }
 
 type StartEdit = { type: 'startEdit'; constraint?: Constraint | null }
 type ModifyData<O> = {
@@ -268,14 +255,15 @@ type Validate = {
   constraint?: Constraint
   rules: ValidationRule[]
 }
+type SetEditMode = { type: 'setEditMode'; editMode: EditMode }
+
 type Action<O> =
   | StartEdit
   | ModifyData<O>
   | Cancel
   | EndEdit<O>
   | Validate
-  | StartPending
-  | EndPending
+  | SetEditMode
 
 const reducer = <O>(
   state: InternalFormState<O>,
@@ -299,7 +287,7 @@ const reducer = <O>(
     case 'startEdit':
       return {
         ...state,
-        editMode: true,
+        editMode: EditMode.Edit,
         isSaved: false,
         hasChanged: false,
         errors: action.constraint
@@ -309,7 +297,7 @@ const reducer = <O>(
     case 'cancel':
       return {
         ...state,
-        editMode: false,
+        editMode: EditMode.View,
         data: state.initialData,
         isSaved: false,
         errors: []
@@ -319,19 +307,14 @@ const reducer = <O>(
         ...state,
         data: action.value,
         initialData: action.value,
-        editMode: false,
+        editMode: EditMode.View,
         isSaved: true,
         errors: []
       }
-    case 'startPending':
+    case 'setEditMode':
       return {
         ...state,
-        pending: true
-      }
-    case 'endPending':
-      return {
-        ...state,
-        pending: false
+        editMode: action.editMode
       }
     case 'validate': {
       const schemaErrors = action.constraint

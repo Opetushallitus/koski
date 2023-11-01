@@ -30,7 +30,7 @@ export const EditBar = <T extends object>(props: EditBarProps<T>) => {
     <FooterBar>
       <ButtonGroup>
         <FlatButton
-          disabled={props.form.pending}
+          disabled={props.form.isSaving}
           onClick={cancel}
           testId="opiskeluoikeus.cancelEdit"
         >
@@ -38,7 +38,7 @@ export const EditBar = <T extends object>(props: EditBarProps<T>) => {
         </FlatButton>
         <RaisedButton
           disabled={
-            props.form.pending || !props.form.hasChanged || !props.form.isValid
+            props.form.isSaving || !props.form.hasChanged || !props.form.isValid
           }
           onClick={save}
           testId="opiskeluoikeus.save"
