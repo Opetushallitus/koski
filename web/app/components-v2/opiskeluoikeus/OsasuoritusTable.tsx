@@ -1,18 +1,15 @@
 import React, { useCallback } from 'react'
+import { useTree } from '../../appstate/tree'
 import { t } from '../../i18n/i18n'
 import { Opiskeluoikeus } from '../../types/fi/oph/koski/schema/Opiskeluoikeus'
 import { useLayout } from '../../util/useDepth'
-import {
-  OsasuorituksetExpandedState,
-  SetOsasuoritusOpen
-} from '../../osasuoritus/hooks'
 import { CommonProps, subTestId, testId } from '../CommonProps'
 import {
+  COLUMN_COUNT,
   Column,
   ColumnRow,
-  COLUMN_COUNT,
-  mapResponsiveValue,
-  ResponsiveValue
+  ResponsiveValue,
+  mapResponsiveValue
 } from '../containers/Columns'
 import { Section } from '../containers/Section'
 import { ExpandButton } from '../controls/ExpandButton'
@@ -30,9 +27,6 @@ export type OsasuoritusTableProps<
   P = object
 > = CommonProps<{
   editMode: FormModel<object>['editMode']
-  level: number
-  setOsasuoritusOpen: SetOsasuoritusOpen
-  openState: OsasuorituksetExpandedState
   rows: Array<OsasuoritusRowData<DATA_KEYS>>
   completed?: Completed
   onRemove?: (index: number) => void
@@ -52,15 +46,7 @@ export type OsasuoritusRowData<DATA_KEYS extends string> = {
 export const OsasuoritusTable = <DATA_KEYS extends string, P>(
   props: OsasuoritusTableProps<DATA_KEYS, P>
 ) => {
-  const {
-    editMode,
-    level,
-    onRemove,
-    setOsasuoritusOpen,
-    completed,
-    rows,
-    openState
-  } = props
+  const { editMode, onRemove, completed, rows } = props
 
   const onRemoveCb = useCallback(
     (index: number) => {
@@ -78,30 +64,19 @@ export const OsasuoritusTable = <DATA_KEYS extends string, P>(
   return (
     <>
       {rows[0] && <OsasuoritusHeader row={rows[0]} editMode={editMode} />}
-      {rows.map((row, index) => {
-        const k = `level_${level}_suoritus_${row.suoritusIndex}_osasuoritus_${row.osasuoritusIndex}`
-        return (
-          <OsasuoritusRow
-            key={index}
-            editMode={editMode}
-            row={row}
-            isExpanded={openState[k] === undefined ? false : openState[k]}
-            expandedState={openState}
-            expandable={row.expandable}
-            completed={completed ? completed(index) : undefined}
-            onClickExpand={() => {
-              setOsasuoritusOpen(
-                k,
-                openState[k] === undefined ? true : !openState[k]
-              )
-            }}
-            onRemove={onRemoveCb(index)}
-            testId={subTestId(props, `osasuoritukset.${row.osasuoritusIndex}`)}
-          />
-        )
-      })}
+      {rows.map((row, index) => (
+        <OsasuoritusRow
+          key={index}
+          editMode={editMode}
+          row={row}
+          expandable={row.expandable}
+          completed={completed ? completed(index) : undefined}
+          onRemove={onRemoveCb(index)}
+          testId={subTestId(props, `osasuoritukset.${row.osasuoritusIndex}`)}
+        />
+      ))}
       <Spacer />
-      {editMode && AddNewOsasuoritusView !== undefined && (
+      {editMode && AddNewOsasuoritusView && (
         // @ts-expect-error React.JSX.IntristicAttributes virhe
         <AddNewOsasuoritusView
           testId={subTestId(props, 'addOsasuoritus')}
@@ -118,17 +93,12 @@ export type OsasuoritusRowProps<DATA_KEYS extends string> = CommonProps<{
   completed?: boolean
   expandable?: boolean
   row: OsasuoritusRowData<DATA_KEYS>
-  expandedState: OsasuorituksetExpandedState
-  isExpanded: boolean
-  onClickExpand: () => void
   onRemove?: () => void
+  initiallyOpen?: boolean
 }>
 
 export const OsasuoritusHeader = <DATA_KEYS extends string>(
-  props: Omit<
-    OsasuoritusRowProps<DATA_KEYS>,
-    'expandedState' | 'isExpanded' | 'onClickExpand'
-  >
+  props: Omit<OsasuoritusRowProps<DATA_KEYS>, 'initiallyOpen'>
 ) => {
   const [indentation] = useLayout(OSASUORITUSTABLE_DEPTH_KEY)
   const spans = getSpans(props.row.columns, indentation)
@@ -162,10 +132,11 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
   )
 
   const expandable = props.expandable === undefined ? true : props.expandable
-  const expanded = props.isExpanded
+
+  const { TreeNode, ...tree } = useTree(props.initiallyOpen)
 
   return (
-    <>
+    <TreeNode>
       <ColumnRow className="OsasuoritusRow">
         {spans.indent > 0 && (
           <Column span={spans.indent} className="OsasuoritusHeader__indent" />
@@ -173,9 +144,10 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
         <Column span={spans.leftIcons} align="right">
           {props.row.content && expandable && (
             <ExpandButton
-              expanded={expanded}
+              expanded={tree.isOpen}
               onChange={() => {
-                props.onClickExpand()
+                tree.toggle()
+                // props.onClickExpand() // TODO: Pois?
               }}
               label={t('Osasuoritus')}
               {...testId(props, 'expand')}
@@ -213,7 +185,7 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
           </Column>
         )}
       </ColumnRow>
-      {expandable && expanded && props.row.content && (
+      {expandable && tree.isOpen && props.row.content && (
         <LayoutProvider indent={1}>
           <Section testId={subTestId(props, 'properties')}>
             {React.cloneElement(props.row.content, {
@@ -222,7 +194,7 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
           </Section>
         </LayoutProvider>
       )}
-    </>
+    </TreeNode>
   )
 }
 
