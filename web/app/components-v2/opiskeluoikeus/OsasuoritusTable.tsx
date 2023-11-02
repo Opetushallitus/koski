@@ -17,6 +17,7 @@ import { IconButton } from '../controls/IconButton'
 import { FormModel, FormOptic } from '../forms/FormModel'
 import { Spacer } from '../layout/Spacer'
 import { CHARCODE_REMOVE } from '../texts/Icon'
+import { useNewItems } from '../../appstate/newItems'
 
 export const OSASUORITUSTABLE_DEPTH_KEY = 'OsasuoritusTable'
 
@@ -43,6 +44,9 @@ export type OsasuoritusRowData<DATA_KEYS extends string> = {
   content?: React.ReactElement
 }
 
+const getRowId = (row: OsasuoritusRowData<string>) =>
+  `${row.suoritusIndex}_${row.osasuoritusIndex}`
+
 export const OsasuoritusTable = <DATA_KEYS extends string, P>(
   props: OsasuoritusTableProps<DATA_KEYS, P>
 ) => {
@@ -60,6 +64,7 @@ export const OsasuoritusTable = <DATA_KEYS extends string, P>(
   )
 
   const { addNewOsasuoritusView: AddNewOsasuoritusView } = props
+  const newOsasuoritusIds = useNewItems(getRowId, props.rows)
 
   return (
     <>
@@ -69,6 +74,7 @@ export const OsasuoritusTable = <DATA_KEYS extends string, P>(
           key={index}
           editMode={editMode}
           row={row}
+          initiallyOpen={newOsasuoritusIds.includes(getRowId(row))}
           expandable={row.expandable}
           completed={completed ? completed(index) : undefined}
           onRemove={onRemoveCb(index)}
@@ -145,10 +151,7 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
           {props.row.content && expandable && (
             <ExpandButton
               expanded={tree.isOpen}
-              onChange={() => {
-                tree.toggle()
-                // props.onClickExpand() // TODO: Pois?
-              }}
+              onChange={tree.toggle}
               label={t('Osasuoritus')}
               {...testId(props, 'expand')}
             />
