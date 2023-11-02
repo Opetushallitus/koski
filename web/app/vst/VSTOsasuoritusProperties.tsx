@@ -128,6 +128,7 @@ import {
   isVSTOsasuoritusArvioinnilla,
   isVSTOsasuoritusJollaOsasuorituksia
 } from './typeguards'
+import { VSTJotpaProperties } from './jotpa/VSTJotpaProperties'
 
 type AddNewVSTOsasuoritusViewProps = CommonProps<{
   level: number
@@ -830,6 +831,20 @@ export const osasuoritusToTableRow = ({
 export const VSTOsasuoritusProperties: React.FC<
   VSTOsasuoritusPropertiesProps
 > = (props) => {
+  const osasuoritus = getValue(props.osasuoritusPath)(props.form.state)
+
+  // Refaktorointisiirtymän aikaiset "adaptaatiot":
+  if (osasuoritus) {
+    if (
+      isVapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus(osasuoritus)
+    ) {
+      // @ts-expect-error TODO: Tää on väliaikaista koodia, joten ei edes yritetä tyypittää pathia kuntoon
+      return <VSTJotpaProperties {...props} />
+    }
+  }
+
+  // Vanha komponentti:
+
   const osasuoritusArvioinnillaPath = props.osasuoritusPath.guard(
     isVSTOsasuoritusArvioinnilla
   )
@@ -843,8 +858,6 @@ export const VSTOsasuoritusProperties: React.FC<
     .prop('arviointi')
     .optional()
     .compose(parasArviointiElement())
-
-  const osasuoritus = getValue(props.osasuoritusPath)(props.form.state)
 
   const arvioitu =
     osasuoritus !== undefined &&
