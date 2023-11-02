@@ -129,6 +129,7 @@ import {
   isVSTOsasuoritusJollaOsasuorituksia
 } from './typeguards'
 import { VSTJotpaProperties } from './jotpa/VSTJotpaProperties'
+import { VSTVapaatavoitteinenProperties } from './vapaatavoitteinen/VSTVapaatavoitteinenProperties'
 
 type AddNewVSTOsasuoritusViewProps = CommonProps<{
   level: number
@@ -840,6 +841,10 @@ export const VSTOsasuoritusProperties: React.FC<
     ) {
       // @ts-expect-error TODO: Tää on väliaikaista koodia, joten ei edes yritetä tyypittää pathia kuntoon
       return <VSTJotpaProperties {...props} />
+    }
+    if (isVapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus(osasuoritus)) {
+      // @ts-expect-error TODO: Tää on väliaikaista koodia, joten ei edes yritetä tyypittää pathia kuntoon
+      return <VSTVapaatavoitteinenProperties {...props} />
     }
   }
 
