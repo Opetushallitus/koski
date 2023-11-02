@@ -540,7 +540,7 @@
             "koodistoUri" : "koskioppiaineetyleissivistava"
           },
           "oppimäärä" : {
-            "koodiarvo" : "MAA",
+            "koodiarvo" : "MAB",
             "koodistoUri" : "oppiainematematiikka"
           },
           "pakollinen" : true

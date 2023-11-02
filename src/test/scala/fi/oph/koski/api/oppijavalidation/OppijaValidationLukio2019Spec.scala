@@ -254,7 +254,7 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
           moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI2")).copy(arviointi = numeerinenArviointi(8)),
           moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI3").copy(pakollinen = false)).copy(arviointi = numeerinenArviointi(8))
         ))),
-        oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAA")).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = Some(List(
+        oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAB")).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = Some(List(
           moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAB2")).copy(arviointi = numeerinenArviointi(8)),
         )))
       )))))) {
@@ -275,7 +275,7 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
           moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI2")).copy(arviointi = numeerinenArviointi(10)),
           moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI3").copy(pakollinen = false)).copy(arviointi = numeerinenArviointi(8))
         ))),
-        oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAA")).copy(osasuoritukset = Some(List(
+        oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAB")).copy(osasuoritukset = Some(List(
           moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAB2")).copy(arviointi = numeerinenArviointi(8)),
         )))
       )))))) {
@@ -288,7 +288,7 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
     "oppiainetasolla sallii oppiaineen ilman osasuorituksia ja suorituksen merkitsemisen vahvistetuksi vajaalla yhteislaajuudella" in {
       setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(osasuoritukset = Some(List(
         oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", true)).copy(suoritettuErityisenäTutkintona = true, arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = None),
-        oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAA")).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = Some(List(
+        oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAB")).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = Some(List(
           moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAB2")).copy(arviointi = numeerinenArviointi(10)),
           moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAB3")).copy(arviointi = numeerinenArviointi(10)),
           moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAB4")).copy(arviointi = numeerinenArviointi(10))
@@ -306,7 +306,7 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
           moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI3").copy(pakollinen = false)).copy(arviointi = numeerinenArviointi(8)),
           paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("FY123", "Keittiöfysiikka", "Keittiöfysiikan kokeelliset perusteet, kiehumisreaktiot")).copy(arviointi = numeerinenArviointi(10))
         ))),
-        oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAA")).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = Some(List(
+        oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAB")).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = Some(List(
           moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAB2")).copy(arviointi = numeerinenArviointi(10)),
           moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAB3")).copy(arviointi = numeerinenArviointi(10)),
           moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAB4")).copy(arviointi = numeerinenArviointi(10))
@@ -357,7 +357,7 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
           moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI2")).copy(arviointi = numeerinenArviointi(8)),
           moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI3").copy(pakollinen = false)).copy(arviointi = numeerinenArviointi(8))
         ))),
-        oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAA")).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = Some(List(
+        oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAB")).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = Some(List(
           moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAB2")).copy(arviointi = numeerinenArviointi(10)),
           moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAB3")).copy(arviointi = numeerinenArviointi(10)),
           moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAB4")).copy(arviointi = numeerinenArviointi(10)),
@@ -514,7 +514,7 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
           suorituskieli = Some(englanti),
           arviointi = numeerinenLukionOppiaineenArviointi(9),
           osasuoritukset = None),
-        oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAA")).copy(
+        oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAB")).copy(
           suorituskieli = Some(suomenKieli),
           arviointi = numeerinenLukionOppiaineenArviointi(9),
           osasuoritukset = Some(List(
@@ -1632,7 +1632,7 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
 
   private def vahvistamatonOppimääränSuoritusIlmanSuullisenKielitaidonKokeita = vahvistamatonOppimääränSuoritus.copy(suullisenKielitaidonKokeet = None)
 
-  private def valmistumiseenRiittäväMatematiikanSuoritus = oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAA")).copy(
+  private def valmistumiseenRiittäväMatematiikanSuoritus = oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAB")).copy(
     arviointi = numeerinenLukionOppiaineenArviointi(9),
     osasuoritukset = Some(List(
       moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAB2", 150)).copy(arviointi = numeerinenArviointi(8)),
@@ -1854,6 +1854,150 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
 
       result.suoritukset.head.osasuoritusLista.head.osasuoritusLista.find(_.koulutusmoduuli.tunniste.koodiarvo == "HI2").get.koulutusmoduuli.nimi.get("sv") should not equal("Det självständiga Finlands historia")
       result.suoritukset.head.osasuoritusLista.head.osasuoritusLista.find(_.koulutusmoduuli.tunniste.koodiarvo == "HI3").get.koulutusmoduuli.nimi.get("sv") should not equal("Internationella relationer")
+    }
+  }
+
+  "Perusteen rakennetta vasten tehdyt validaatiot" - {
+    "Matematiikka" - {
+      def opiskeluoikeus(oppimäärä: String, moduulit: List[String], pakollinen: Boolean) = defaultOpiskeluoikeus.copy(
+        oppimääräSuoritettu = Some(false),
+        tila = LukionOpiskeluoikeudenTila(
+          List(LukionOpiskeluoikeusjakso(alku = date(2019, 8, 1), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)))
+        ),
+        suoritukset = List(oppiaineidenOppimäärienSuoritus.copy(
+          osasuoritukset = Some(List(oppiaineenSuoritus(Lukio2019ExampleData.matematiikka(oppimäärä)).copy(osasuoritukset = Some(
+            moduulit.map(m => moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa(m).copy(pakollinen = pakollinen))),
+          )))
+        ))),
+      )
+
+      "Salli MAY1 pitkän matematiikan oppimäärän suoritukseen" in {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus("MAA", List("MAY1", "MAA2"), pakollinen = true)) {
+          verifyResponseStatusOk()
+        }
+      }
+
+      "Salli MAY1 lyhyen matematiikan oppimäärän suoritukseen" in {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus("MAB", List("MAY1", "MAB2"), pakollinen = true)) {
+          verifyResponseStatusOk()
+        }
+      }
+
+      "Salli MAY1 matematiikan yhteisen oppimäärän suoritukseen" in {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus("MAY", List("MAY1"), pakollinen = true)) {
+          verifyResponseStatusOk()
+        }
+      }
+
+      "Älä salli pakollista lyhyen matematiikan moduulia pitkän matematiikan oppimäärän suoritukseen" in {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus("MAA", List("MAB2"), pakollinen = true)) {
+          verifyResponseStatus(400,
+            KoskiErrorCategory.badRequest.validation.rakenne(
+              s"Moduulia MAB2 ei voi siirtää oppiaineen MAA alle pakollisena."
+            )
+          )
+        }
+      }
+
+      "Salli valinnainen lyhyen matematiikan moduuli pitkän matematiikan oppimäärän suoritukseen" in {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus("MAA", List("MAB2"), pakollinen = false)) {
+          verifyResponseStatusOk()
+        }
+      }
+
+      "Älä salli pitkän pakollista matematiikan moduulia lyhyen matematiikan oppimäärän suoritukseen" in {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus("MAB", List("MAA2"), pakollinen = true)) {
+          verifyResponseStatus(400,
+            KoskiErrorCategory.badRequest.validation.rakenne(
+              s"Moduulia MAA2 ei voi siirtää oppiaineen MAB alle pakollisena."
+            )
+          )
+        }
+      }
+
+      "Salli valinnainen pitkän matematiikan moduuli lyhyen matematiikan oppimäärän suoritukseen" in {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus("MAB", List("MAA2"), pakollinen = false)) {
+          verifyResponseStatusOk()
+        }
+      }
+    }
+
+    "Uskonto" - {
+      def opiskeluoikeus(moduulit: List[String], pakollinen: Boolean) = defaultOpiskeluoikeus.copy(
+        oppimääräSuoritettu = Some(false),
+        tila = LukionOpiskeluoikeudenTila(
+          List(LukionOpiskeluoikeusjakso(alku = date(2019, 8, 1), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)))
+        ),
+        suoritukset = List(oppiaineidenOppimäärienSuoritus.copy(
+          osasuoritukset = Some(List(oppiaineenSuoritus(Lukio2019ExampleData.lukionUskonto(None)).copy(osasuoritukset = Some(
+            moduulit.map(m => moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa(m).copy(pakollinen = pakollinen))),
+          )))
+        ))),
+      )
+
+      "Eri uskontojen moduuleja voi siirtää uskonnon suoritukseen" in {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus(List("UE1", "UO1", "UK3"), pakollinen = true)) {
+          verifyResponseStatusOk()
+        }
+      }
+
+      "Elämänkatsomustiedon moduulin voi siirtää uskonnon suoritukseen" in {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus(List("ET1"), pakollinen = false)) {
+          verifyResponseStatusOk()
+        }
+      }
+
+      "Elämänkatsomustiedon moduulia ei voi siirtää uskonnon suoritukseen pakollisena" in {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus(List("ET1"), pakollinen = true)) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne("Moduulia ET1 ei voi siirtää oppiaineen KT alle pakollisena."))
+        }
+      }
+
+      "Biologian moduulia ei voi siirtää uskonnon suoritukseen" in {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus(List("BI1"), pakollinen = false)) {
+          verifyResponseStatus(400,
+            KoskiErrorCategory.badRequest.validation.rakenne(
+              s"Moduulia BI1 ei voi siirtää oppiaineen/-määrän KT alle, koska se on oppiaineen/-määrän BI moduuli. Sallittuja KT-moduuleja ovat UE1, UE2, UE3, UE4, UE5, UE6, UO1, UO2, UO3, UO4, UO5, UO6, UX, UK1, UK2, UK3, UK4, UK5, UK6, UJ1, UJ2, UJ3, UJ4, UJ5, UJ6, UI1, UI2, UI3, UI4, UI5, UI6, UBA1, UBA2, UBA3, UBA4, UBA5, UBA6, UBU1, UBU2, UBU3, UBU4, UBU5, UBU6, UKR1, UKR2, UKR3, UKR4, UKR5, UKR6, UE1, UE2, UE3, UE4, UE5, UE6, UE1, UE2, UE3, UE4, UE5, UE6, UO1, UO2, UO3, UO4, UO5, UO6, UO1, UO2, UO3, UO4, UO5, UO6, UX, UK1, UK2, UK3, UK4, UK5, UK6, UK1, UK2, UK3, UK4, UK5, UK6, UJ1, UJ2, UJ3, UJ4, UJ5, UJ6, UJ1, UJ2, UJ3, UJ4, UJ5, UJ6, UI1, UI2, UI3, UI4, UI5, UI6, UI1, UI2, UI3, UI4, UI5, UI6, UBA1, UBA2, UBA3, UBA4, UBA5, UBA6, UBA1, UBA2, UBA3, UBA4, UBA5, UBA6, UBU1, UBU2, UBU3, UBU4, UBU5, UBU6, UBU1, UBU2, UBU3, UBU4, UBU5, UBU6, UKR1, UKR2, UKR3, UKR4, UKR5, UKR6, UKR1, UKR2, UKR3, UKR4, UKR5, UKR6, ET1, ET2, ET3, ET4, ET5, ET6."
+            )
+          )
+        }
+      }
+    }
+
+    "Muut aineet" - {
+      def opiskeluoikeus(oppiaine: String, moduulit: List[String], pakollinen: Boolean) = defaultOpiskeluoikeus.copy(
+        oppimääräSuoritettu = Some(false),
+        tila = LukionOpiskeluoikeudenTila(
+          List(LukionOpiskeluoikeusjakso(alku = date(2019, 8, 1), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)))
+        ),
+        suoritukset = List(oppiaineidenOppimäärienSuoritus.copy(
+          osasuoritukset = Some(List(oppiaineenSuoritus(Lukio2019ExampleData.lukionOppiaine(oppiaine)).copy(osasuoritukset = Some(
+            moduulit.map(m => moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa(m).copy(pakollinen = pakollinen))),
+          )))
+        ))),
+      )
+
+      "Uskonnon moduuleja voi siirtää elämänkatsomustiedon suoritukseen" in {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus("ET", List("UE1", "UO1", "UK3"), pakollinen = false)) {
+          verifyResponseStatusOk()
+        }
+      }
+
+      "Uskonnon moduuleja ei voi siirtää elämänkatsomustiedon suoritukseen pakollisena" in {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus("ET", List("UE1"), pakollinen = true)) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne("Moduulia UE1 ei voi siirtää oppiaineen ET alle pakollisena."))
+        }
+      }
+
+      "Biologian moduulia ei voi siirtää maantiedon suoritukseen" in {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus("GE", List("BI1"), pakollinen = false)) {
+          verifyResponseStatus(400,
+            KoskiErrorCategory.badRequest.validation.rakenne(
+              s"Moduulia BI1 ei voi siirtää oppiaineen/-määrän GE alle, koska se on oppiaineen/-määrän BI moduuli. Sallittuja GE-moduuleja ovat GE1, GE2, GE3, GE4."
+            )
+          )
+        }
+      }
     }
   }
 

@@ -1,5 +1,6 @@
 package fi.oph.koski.eperusteetvalidation
 
+import com.typesafe.config.Config
 import fi.oph.koski.eperusteet.{EPerusteKokoRakenne, EPerusteetRepository}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.log.Logging
@@ -8,20 +9,23 @@ import fi.oph.scalaschema.Serializer.format
 import org.json4s.JsonAST.JObject
 import org.json4s._
 
-class EPerusteetLops2019Validator(ePerusteet: EPerusteetRepository) extends Logging {
+import java.time.LocalDate
+
+class EPerusteetLops2019Validator(config: Config, ePerusteet: EPerusteetRepository) extends Logging {
+  def enabled = !LocalDate.parse(config.getString("validaatiot.lops2019EPerusteValidaatioAstuuVoimaan")).isAfter(LocalDate.now())
 
   def validate(oo: KoskeenTallennettavaOpiskeluoikeus): HttpStatus =
-    HttpStatus.fold(oo.suoritukset.map(s => validate(oo.oid.getOrElse("???"), s)))
+    HttpStatus.fold(oo.suoritukset.map(validate))
 
-  def validate(oid: String, pts: PäätasonSuoritus): HttpStatus =
+  def validate(pts: PäätasonSuoritus): HttpStatus =
     pts match {
-      case pts: LukionPäätasonSuoritus2019 =>
-        // TODO TOR-1119: Palauta `result` ja poista varoituksen tulostus
+      case pts: LukionPäätasonSuoritus2019 => {
         val result = validatePäätasonSuoritus(pts, lops2019Validointirakenne.get)
-        if (result.isError) {
-          logger.warn(s"Opiskeluoikeuden $oid lops 2019 ePeruste-rakennevalidointi ei menisi läpi: ${result.errorString.getOrElse("virheviesti puuttuu")}")
+        if (enabled) result else {
+          logger.warn(s"Lops2019-ePeruste-rakennevalidointi ei menisi läpi: ${result.errorString.getOrElse("virheviesti puuttuu")}")
+          HttpStatus.ok
         }
-        HttpStatus.ok
+      }
       case _ => HttpStatus.ok
     }
 
@@ -158,8 +162,6 @@ case class OsasuoritustenValidointirakenne(
   toisenRakenteenOsa: Boolean = false,
 ) {
   def get(a: String): Option[OsasuoritustenValidointirakenne] = osat.find(_.arvo == a)
-//  def findNode(a: String): Option[OsasuoritustenValidointirakenne] =
-//    if (arvo == a) Some(this) else osat.flatMap(_.findNode(a)).headOption
   def findLeaf(leaf: String): Option[OsasuoritustenValidointirakenne] =
     if (osat.isEmpty) {
       if (arvo == leaf) Some(this) else None
