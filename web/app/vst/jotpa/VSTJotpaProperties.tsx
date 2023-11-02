@@ -2,7 +2,6 @@ import React from 'react'
 import { subTestId } from '../../components-v2/CommonProps'
 import { LocalizedTextView } from '../../components-v2/controls/LocalizedTestField'
 import { FormField } from '../../components-v2/forms/FormField'
-import { FormListField } from '../../components-v2/forms/FormListField'
 import {
   FormModel,
   FormOptic,
@@ -16,7 +15,6 @@ import {
   LaajuusOpintopisteissäEdit,
   LaajuusView
 } from '../../components-v2/opiskeluoikeus/LaajuusField'
-import { OsasuoritusProperty } from '../../components-v2/opiskeluoikeus/OsasuoritusProperty'
 import {
   OsasuoritusRowData,
   OsasuoritusTable
@@ -26,7 +24,7 @@ import { VapaanSivistystyönJotpaKoulutuksenSuoritus } from '../../types/fi/oph/
 import { VapaanSivistystyönOpiskeluoikeus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeus'
 import { VapaanSivistystyönPäätasonSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonPaatasonSuoritus'
 import { deleteAt } from '../../util/array'
-import { VSTArviointiEdit, VSTArviointiView } from '../VSTArviointiField'
+import { VSTArviointiField } from '../common/propertyFields'
 import { createVstArviointi } from '../resolvers'
 import { VSTOsasuoritus } from '../typeguards'
 import { AddJotpaOsasuoritusView } from './AddJotpaOsasuoritus'
@@ -50,22 +48,14 @@ export const VSTJotpaProperties: React.FC<VSTJotpaPropertiesProps> = (
   props
 ) => {
   const osasuoritus = getValue(props.osasuoritusPath)(props.form.state)
-  const arvioitu = (osasuoritus?.arviointi?.length || 0) > 0
 
   return (
     <div>
-      {arvioitu && (
-        <OsasuoritusProperty label="Arviointi">
-          <FormListField
-            form={props.form}
-            path={props.osasuoritusPath.prop('arviointi')}
-            view={VSTArviointiView}
-            edit={VSTArviointiEdit}
-            editProps={{ osasuoritus }}
-            testId={subTestId(props, 'arviointi')}
-          />
-        </OsasuoritusProperty>
-      )}
+      <VSTArviointiField
+        form={props.form}
+        path={props.osasuoritusPath}
+        testId={props.testId}
+      />
       <OsasuoritusTable
         testId={props.testId}
         editMode={props.form.editMode}

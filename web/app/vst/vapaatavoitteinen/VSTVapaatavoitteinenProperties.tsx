@@ -2,7 +2,6 @@ import React from 'react'
 import { subTestId } from '../../components-v2/CommonProps'
 import { LocalizedTextView } from '../../components-v2/controls/LocalizedTestField'
 import { FormField } from '../../components-v2/forms/FormField'
-import { FormListField } from '../../components-v2/forms/FormListField'
 import {
   FormModel,
   FormOptic,
@@ -32,7 +31,7 @@ import { VapaanSivistystyönOpiskeluoikeus } from '../../types/fi/oph/koski/sche
 import { VapaanSivistystyönPäätasonSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonPaatasonSuoritus'
 import { VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus'
 import { deleteAt } from '../../util/array'
-import { VSTArviointiEdit, VSTArviointiView } from '../VSTArviointiField'
+import { VSTArviointiField } from '../common/propertyFields'
 import { createVstArviointi } from '../resolvers'
 import { VSTOsasuoritus, isVSTOsasuoritusArvioinnilla } from '../typeguards'
 import { AddVapaatavoitteinenOsasuoritus } from './AddVapaatavoitteinenOsasuoritus'
@@ -61,18 +60,11 @@ export const VSTVapaatavoitteinenProperties: React.FC<
 
   return (
     <div>
-      {arvioitu && (
-        <OsasuoritusProperty label="Arviointi">
-          <FormListField
-            form={props.form}
-            path={props.osasuoritusPath.prop('arviointi')}
-            view={VSTArviointiView}
-            edit={VSTArviointiEdit}
-            editProps={{ osasuoritus }}
-            testId={subTestId(props, 'arviointi')}
-          />
-        </OsasuoritusProperty>
-      )}
+      <VSTArviointiField
+        form={props.form}
+        path={props.osasuoritusPath}
+        testId={props.testId}
+      />
       <OsasuoritusProperty label="">
         <OsasuoritusSubproperty label="Kuvaus">
           <FormField

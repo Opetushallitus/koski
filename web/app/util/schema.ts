@@ -19,6 +19,13 @@ import { OpiskeluoikeudenTila } from '../types/fi/oph/koski/schema/Opiskeluoikeu
 import { Opiskeluoikeusjakso } from '../types/fi/oph/koski/schema/Opiskeluoikeusjakso'
 import { Vahvistus } from '../types/fi/oph/koski/schema/Vahvistus'
 import { ItemOf } from './types'
+import { Suoritus } from '../types/fi/oph/koski/schema/Suoritus'
+
+export type OsasuoritusOf<T extends Suoritus> = T extends {
+  osasuoritukset?: Array<infer S>
+}
+  ? S
+  : never
 
 export type OpiskeluoikeusjaksotOf<T extends OpiskeluoikeudenTila> =
   T['opiskeluoikeusjaksot']
@@ -26,6 +33,12 @@ export type OpiskeluoikeusjaksotOf<T extends OpiskeluoikeudenTila> =
 export type OpiskeluoikeusjaksoOf<T extends OpiskeluoikeudenTila> = ItemOf<
   T['opiskeluoikeusjaksot']
 >
+
+export type ArviointiOf<T extends Suoritus> = T extends {
+  arviointi?: Array<infer S>
+}
+  ? S
+  : never
 
 export const OpiskeluoikeusjaksoOrd = Ord.contramap(
   (j: Opiskeluoikeusjakso) => j.alku
