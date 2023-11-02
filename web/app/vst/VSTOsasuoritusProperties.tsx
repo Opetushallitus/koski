@@ -3,10 +3,10 @@ import { OpiskeluoikeusContext } from '../appstate/opiskeluoikeus'
 import { usePreferences } from '../appstate/preferences'
 import { CommonProps, subTestId } from '../components-v2/CommonProps'
 import { Column, ColumnRow } from '../components-v2/containers/Columns'
-import { DateEdit, DateView } from '../components-v2/controls/DateField'
 import { LocalizedTextView } from '../components-v2/controls/LocalizedTestField'
 import { RaisedButton } from '../components-v2/controls/RaisedButton'
 import { FormField } from '../components-v2/forms/FormField'
+import { FormListField } from '../components-v2/forms/FormListField'
 import {
   FormModel,
   FormOptic,
@@ -100,10 +100,7 @@ import { isVapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus
 import { VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonVapaatavoitteisenKoulutuksenOsasuoritus'
 import { isVapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonVapaatavoitteisenKoulutuksenSuoritus'
 import { lastElement, parasArviointiElement } from '../util/optics'
-import {
-  OsasuorituksetExpandedState,
-  SetOsasuoritusOpen
-} from './../osasuoritus/hooks'
+import { VSTArviointiEdit, VSTArviointiView } from './VSTArviointiField'
 import {
   createMuuallaSuoritettuOppivelvollisilleSuunnatunVapaanSivistystyönOpintojenSuoritus,
   createOppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus,
@@ -126,14 +123,11 @@ import { createVstArviointi, defaultLaajuusOpintopisteissa } from './resolvers'
 import {
   VSTOsasuoritus,
   VSTOsasuoritusOsasuorituksilla,
-  hasPäiväInArviointi,
   isTunnustettuVSTOsasuoritus,
   isVSTKoulutusmoduuliKuvauksella,
   isVSTOsasuoritusArvioinnilla,
   isVSTOsasuoritusJollaOsasuorituksia
 } from './typeguards'
-import { FormListField } from '../components-v2/forms/FormListField'
-import { VSTArviointiEdit, VSTArviointiView } from './VSTArviointiField'
 
 type AddNewVSTOsasuoritusViewProps = CommonProps<{
   level: number
@@ -679,8 +673,6 @@ export const AddNewVSTOsasuoritusView: React.FC<
 type VSTOsasuoritusPropertiesProps = {
   osasuoritusIndex: number
   level: number
-  setOpenStateHandler: SetOsasuoritusOpen
-  osasuoritusOpenState: OsasuorituksetExpandedState
   form: FormModel<VapaanSivistystyönOpiskeluoikeus>
   osasuoritusPath: FormOptic<VapaanSivistystyönOpiskeluoikeus, VSTOsasuoritus>
   createOsasuoritus: (
@@ -700,10 +692,6 @@ interface OsasuoritusToTableRowParams {
   >
   suoritusIndex: number
   osasuoritusIndex: number
-  // Tilanhallintaa modaalien availuun ja osasuoritusikkunan toimintaan
-  osasuorituksetExpandedState: OsasuorituksetExpandedState
-  setOsasuoritusOpen: SetOsasuoritusOpen
-  allOsasuorituksetOpen: boolean
   createOsasuoritus: (
     path: FormOptic<VapaanSivistystyönPäätasonSuoritus, any>,
     osasuoritus: VSTOsasuoritus
@@ -718,9 +706,6 @@ export const osasuoritusToTableRow = ({
   form,
   level,
   createOsasuoritus,
-  allOsasuorituksetOpen,
-  osasuorituksetExpandedState,
-  setOsasuoritusOpen,
   testId
 }: OsasuoritusToTableRowParams): OsasuoritusRowData<
   'Osasuoritus' | 'Laajuus' | 'Arvosana' | 'Taitotaso'
@@ -832,10 +817,6 @@ export const osasuoritusToTableRow = ({
       <VSTOsasuoritusProperties
         level={level}
         osasuoritusIndex={osasuoritusIndex}
-        osasuoritusOpenState={osasuorituksetExpandedState}
-        setOpenStateHandler={setOsasuoritusOpen}
-        toggleOsasuoritusOpen={setOsasuoritusOpen}
-        allOpen={allOsasuorituksetOpen}
         form={form}
         // @ts-expect-error Korjaa tyypitys
         osasuoritusPath={osasuoritus}
@@ -1002,8 +983,6 @@ export const VSTOsasuoritusProperties: React.FC<
           testId={props.testId}
           editMode={props.form.editMode}
           level={props.level + 1}
-          openState={props.osasuoritusOpenState}
-          setOsasuoritusOpen={props.setOpenStateHandler}
           // Näkymä, jolla mahdollistetaan rekursiivinen osasuorituksen lisäys
           addNewOsasuoritusView={AddNewVSTOsasuoritusView}
           addNewOsasuoritusViewProps={{
@@ -1034,8 +1013,6 @@ export const VSTOsasuoritusProperties: React.FC<
                 // @ts-expect-error
                 suoritusPath: props.osasuoritusPath,
                 osasuoritusIndex: osasuoritusIndex,
-                setOsasuoritusOpen: props.setOpenStateHandler,
-                osasuorituksetExpandedState: props.osasuoritusOpenState,
                 suoritusIndex: props.osasuoritusIndex,
                 testId: String(
                   subTestId(props, `osasuoritukset.${osasuoritusIndex}`)

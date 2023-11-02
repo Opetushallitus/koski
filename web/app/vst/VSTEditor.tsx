@@ -2,6 +2,7 @@ import React, { useCallback, useContext, useEffect, useMemo } from 'react'
 import { useSchema } from '../appstate/constraints'
 import { useKoodistoFiller } from '../appstate/koodisto'
 import { OpiskeluoikeusContext } from '../appstate/opiskeluoikeus'
+import { OpenAllButton, useTree } from '../appstate/tree'
 import { KansalainenOnly } from '../components-v2/access/KansalainenOnly'
 import {
   EditorContainer,
@@ -11,7 +12,6 @@ import {
   KeyValueRow,
   KeyValueTable
 } from '../components-v2/containers/KeyValueTable'
-import { RaisedButton } from '../components-v2/controls/RaisedButton'
 import { FormField } from '../components-v2/forms/FormField'
 import { FormOptic, useForm } from '../components-v2/forms/FormModel'
 import { AdaptedOpiskeluoikeusEditorProps } from '../components-v2/interoperability/useUiAdapter'
@@ -54,7 +54,6 @@ import { VapaanSivistystyönPäätasonSuoritus } from '../types/fi/oph/koski/sch
 import { parasArviointi } from '../util/arvioinnit'
 import { append } from '../util/fp/arrays'
 import { formatNumber, sum } from '../util/numbers'
-import { useOsasuorituksetExpand } from './../osasuoritus/hooks'
 import { VSTLisatiedot } from './VSTLisatiedot'
 import {
   AddNewVSTOsasuoritusView,
@@ -135,14 +134,7 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
   )
 
   const rootLevel = 0
-
-  const {
-    osasuorituksetOpenState,
-    rootLevelOsasuoritusOpen,
-    closeAllOsasuoritukset,
-    openAllOsasuoritukset,
-    setOsasuorituksetStateHandler
-  } = useOsasuorituksetExpand(päätasonSuoritus)
+  const { TreeNode, ...tree } = useTree()
 
   const suorituksenVahvistus = useMemo(() => {
     if (päätasonSuoritus.suoritus.osasuoritukset === undefined) {
@@ -166,7 +158,7 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
 
   // Render
   return (
-    <>
+    <TreeNode>
       <OpiskeluoikeusTitle
         opiskeluoikeus={form.state}
         opiskeluoikeudenNimi={vstNimi(form.state)}
@@ -348,28 +340,16 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
           testId={päätasonSuoritus.testId}
         />
         <Spacer />
+
         {päätasonSuoritus.suoritus.osasuoritukset && (
-          <RaisedButton
-            data-testid={`${päätasonSuoritus.testId}.expand-all`}
-            onClick={(e) => {
-              e.preventDefault()
-              if (rootLevelOsasuoritusOpen) {
-                closeAllOsasuoritukset()
-              } else {
-                openAllOsasuoritukset()
-              }
-            }}
-          >
-            {rootLevelOsasuoritusOpen ? t('Sulje kaikki') : t('Avaa kaikki')}
-          </RaisedButton>
+          <OpenAllButton {...tree} />
         )}
+
         <Spacer />
         <OsasuoritusTable
           testId={päätasonSuoritus.testId}
           editMode={form.editMode}
           level={rootLevel}
-          openState={osasuorituksetOpenState}
-          setOsasuoritusOpen={setOsasuorituksetStateHandler}
           addNewOsasuoritusView={AddNewVSTOsasuoritusView}
           addNewOsasuoritusViewProps={{
             form,
@@ -405,11 +385,8 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
               osasuoritusToTableRow({
                 level: rootLevel,
                 form,
-                allOsasuorituksetOpen: rootLevelOsasuoritusOpen,
                 createOsasuoritus,
-                osasuorituksetExpandedState: osasuorituksetOpenState,
                 osasuoritusIndex,
-                setOsasuoritusOpen: setOsasuorituksetStateHandler,
                 suoritusIndex: päätasonSuoritus.index,
                 suoritusPath: päätasonSuoritus.path,
                 testId: `${päätasonSuoritus.testId}.osasuoritukset.${osasuoritusIndex}`
@@ -432,7 +409,7 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
           </KeyValueRow>
         </KeyValueTable>
       </EditorContainer>
-    </>
+    </TreeNode>
   )
 }
 

@@ -1,17 +1,17 @@
 import { isNonEmpty } from 'fp-ts/lib/Array'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { useSchema } from '../appstate/constraints'
 import { useKoodistoFiller } from '../appstate/koodisto'
 import { assortedPreferenceType, usePreferences } from '../appstate/preferences'
-import { KansalainenOnly } from '../components-v2/access/KansalainenOnly'
+import { OpenAllButton, useTree } from '../appstate/tree'
 import { subTestId } from '../components-v2/CommonProps'
+import { KansalainenOnly } from '../components-v2/access/KansalainenOnly'
 import { Column, ColumnRow } from '../components-v2/containers/Columns'
 import {
   EditorContainer,
   usePäätasonSuoritus
 } from '../components-v2/containers/EditorContainer'
 import { LocalizedTextView } from '../components-v2/controls/LocalizedTestField'
-import { RaisedButton } from '../components-v2/controls/RaisedButton'
 import { RemoveArrayItemField } from '../components-v2/controls/RemoveArrayItemField'
 import { FormField } from '../components-v2/forms/FormField'
 import { FormModel, FormOptic, useForm } from '../components-v2/forms/FormModel'
@@ -29,14 +29,13 @@ import {
 import { PäätasonSuorituksenSuostumuksenPeruminen } from '../components-v2/opiskeluoikeus/OpiskeluoikeudenSuostumuksenPeruminen'
 import { OpiskeluoikeusTitle } from '../components-v2/opiskeluoikeus/OpiskeluoikeusTitle'
 import {
-  osasuoritusTestId,
   OsasuoritusRowData,
-  OsasuoritusTable
+  OsasuoritusTable,
+  osasuoritusTestId
 } from '../components-v2/opiskeluoikeus/OsasuoritusTable'
 import { PaikallinenOsasuoritusSelect } from '../components-v2/opiskeluoikeus/PaikallinenOsasuoritusSelect'
 import { SuorituksenVahvistusField } from '../components-v2/opiskeluoikeus/SuorituksenVahvistus'
 import { localize, t } from '../i18n/i18n'
-import { useOsasuorituksetExpand } from '../osasuoritus/hooks'
 import { LaajuusOpintopisteissä } from '../types/fi/oph/koski/schema/LaajuusOpintopisteissa'
 import { PaikallinenKoodi } from '../types/fi/oph/koski/schema/PaikallinenKoodi'
 import { TaiteenPerusopetuksenOpiskeluoikeus } from '../types/fi/oph/koski/schema/TaiteenPerusopetuksenOpiskeluoikeus'
@@ -46,17 +45,17 @@ import { TaiteenPerusopetuksenPaikallinenOpintokokonaisuus } from '../types/fi/o
 import { TaiteenPerusopetuksenPaikallisenOpintokokonaisuudenSuoritus } from '../types/fi/oph/koski/schema/TaiteenPerusopetuksenPaikallisenOpintokokonaisuudenSuoritus'
 import { append, deleteAt, isSingularArray } from '../util/fp/arrays'
 import { TaiteenPerusopetuksenTiedot } from './TaiteenPerusopetuksenTiedot'
-import {
-  createTpoArviointi,
-  minimimääräArvioitujaOsasuorituksia,
-  TaiteenPerusopetuksenPäätasonSuoritusEq,
-  taiteenPerusopetuksenSuorituksenNimi
-} from './tpoCommon'
 import { TpoOsasuoritusProperties } from './TpoOsasuoritusProperties'
 import {
-  createCompanionSuoritus,
-  UusiTaiteenPerusopetuksenPäätasonSuoritusModal
+  UusiTaiteenPerusopetuksenPäätasonSuoritusModal,
+  createCompanionSuoritus
 } from './UusiTaiteenPerusopetuksenPäätasonSuoritus'
+import {
+  TaiteenPerusopetuksenPäätasonSuoritusEq,
+  createTpoArviointi,
+  minimimääräArvioitujaOsasuorituksia,
+  taiteenPerusopetuksenSuorituksenNimi
+} from './tpoCommon'
 
 export type TaiteenPerusopetusEditorProps =
   AdaptedOpiskeluoikeusEditorProps<TaiteenPerusopetuksenOpiskeluoikeus>
@@ -170,18 +169,12 @@ export const TaiteenPerusopetusEditor: React.FC<
   const suorituksetVahvistettu =
     form.state.suoritukset.filter((s) => Boolean(s.vahvistus)).length >= 2
 
-  const {
-    closeAllOsasuoritukset,
-    openAllOsasuoritukset,
-    osasuorituksetOpenState,
-    rootLevelOsasuoritusOpen,
-    setOsasuorituksetStateHandler
-  } = useOsasuorituksetExpand(päätasonSuoritus)
+  const { TreeNode, ...tree } = useTree()
 
   // Render
 
   return (
-    <>
+    <TreeNode>
       <OpiskeluoikeusTitle
         opiskeluoikeus={form.state}
         opiskeluoikeudenNimi={tpoKoulutuksenNimi(form.state)}
@@ -265,28 +258,11 @@ export const TaiteenPerusopetusEditor: React.FC<
         {päätasonSuoritus.suoritus.osasuoritukset &&
           isNonEmpty(päätasonSuoritus.suoritus.osasuoritukset) && (
             <>
-              <RaisedButton
-                data-testid={`suoritukset.${päätasonSuoritus.index}.expand`}
-                onClick={(e) => {
-                  e.preventDefault()
-                  if (rootLevelOsasuoritusOpen) {
-                    closeAllOsasuoritukset()
-                  } else {
-                    openAllOsasuoritukset()
-                  }
-                }}
-              >
-                {rootLevelOsasuoritusOpen
-                  ? t('Sulje kaikki')
-                  : t('Avaa kaikki')}
-              </RaisedButton>
+              <OpenAllButton {...tree} />
               <Spacer />
               <OsasuoritusTable
                 testId={päätasonSuoritus.testId}
                 editMode={form.editMode}
-                level={0}
-                openState={osasuorituksetOpenState}
-                setOsasuoritusOpen={setOsasuorituksetStateHandler}
                 rows={päätasonSuoritus.suoritus.osasuoritukset.map(
                   (_, osasuoritusIndex) =>
                     osasuoritusToTableRow(
@@ -316,7 +292,7 @@ export const TaiteenPerusopetusEditor: React.FC<
           </ColumnRow>
         )}
       </EditorContainer>
-    </>
+    </TreeNode>
   )
 }
 
