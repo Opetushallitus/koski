@@ -172,6 +172,29 @@ class KoskiOppijaFacade(
     }
   }
 
+  def findVersion
+    (opiskeluoikeusOid: String, versionumero: Int)
+      (implicit user: KoskiSpecificSession)
+  : Either[HttpStatus, OppijaYksilöintitiedolla] = {
+    opiskeluoikeusRepository.getMasterOppijaOidForOpiskeluoikeus(opiskeluoikeusOid).flatMap( oppijaOid => {
+      historyRepository.findVersion(opiskeluoikeusOid, versionumero).flatMap { history =>
+        henkilöRepository.findByOid(oppijaOid)
+          .toRight(notFound(oppijaOid))
+          .flatMap(henkilö => withOpiskeluoikeudet(henkilö, WithWarnings(List(history), Nil)))
+          .flatMap(_.warningsToLeft)
+          .map {
+            case (henkilö, opiskeluoikeudet) =>
+              OppijaYksilöintitiedolla(
+                piilotaOppijanTietojaTarvittaessa(
+                  Oppija(henkilöRepository.oppijaHenkilöToTäydellisetHenkilötiedot(henkilö), opiskeluoikeudet)
+                ),
+                henkilö.yksilöity
+              )
+          }
+      }
+    })
+  }
+
   def createOrUpdate(
     oppija: Oppija,
     allowUpdate: Boolean,

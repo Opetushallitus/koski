@@ -13,6 +13,7 @@ import fi.oph.koski.util.Futures
 import org.json4s.JsonAST.JValue
 import rx.lang.scala.Observable
 
+import java.time.LocalDateTime
 import scala.concurrent.Future
 import scala.concurrent.duration.DurationInt
 
@@ -104,6 +105,19 @@ class KelaService(application: KoskiApplication) extends GlobalExecutionContext 
     (opiskeluoikeudet, ytrResult)
   }
 
+  def opiskeluoikeudenHistoriaV2(opiskeluoikeusOid: String)
+    (implicit koskiSession: KoskiSpecificSession): Option[List[KelaOpiskeluoikeusHistoryPatch]] = {
+    opiskeluoikeudenHistoria(opiskeluoikeusOid).map(
+      _.map(täysiHistoriaPatch =>
+        KelaOpiskeluoikeusHistoryPatch(
+          täysiHistoriaPatch.opiskeluoikeusOid,
+          täysiHistoriaPatch.versionumero,
+          täysiHistoriaPatch.aikaleima.toLocalDateTime
+        )
+      )
+    )
+  }
+
   def opiskeluoikeudenHistoria(opiskeluoikeusOid: String)
     (implicit koskiSession: KoskiSpecificSession): Option[List[OpiskeluoikeusHistoryPatch]] = {
     val history: Option[List[OpiskeluoikeusHistoryPatch]] = application
@@ -116,6 +130,13 @@ class KelaService(application: KoskiApplication) extends GlobalExecutionContext 
   def findKelaOppijaVersion(oppijaOid: String, opiskeluoikeusOid: String, version: Int)
     (implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, KelaOppija] = {
     application.oppijaFacade.findVersion(oppijaOid, opiskeluoikeusOid, version)
+      .map(t => t.oppija)
+      .flatMap(KelaOppijaConverter.convertOppijaToKelaOppija)
+  }
+
+  def findKelaOppijaVersion(opiskeluoikeusOid: String, version: Int)
+    (implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, KelaOppija] = {
+    application.oppijaFacade.findVersion(opiskeluoikeusOid, version)
       .map(t => t.oppija)
       .flatMap(KelaOppijaConverter.convertOppijaToKelaOppija)
   }
@@ -163,3 +184,5 @@ class KelaService(application: KoskiApplication) extends GlobalExecutionContext 
         )
       )
 }
+
+case class KelaOpiskeluoikeusHistoryPatch(opiskeluoikeusOid: String, versionumero: Int, aikaleima: LocalDateTime)

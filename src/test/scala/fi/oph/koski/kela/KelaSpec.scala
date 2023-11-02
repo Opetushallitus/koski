@@ -379,6 +379,48 @@ class KelaSpec
       luoVersiohistoriaanRivi(KoskiSpecificMockOppijat.amis, opiskeluoikeus.asInstanceOf[AmmatillinenOpiskeluoikeus])
     }
 
+    "Luovutuspalvelu-API" - {
+
+      "Opiskeluoikeuden versiohistorian haku tuottaa AuditLogin" in {
+
+        AuditLogTester.clearMessages
+
+        getVersiohistoria(historiaFixture.opiskeluoikeus.oid.get) {
+          verifyResponseStatusOk()
+          val history = JsonSerializer.parse[List[KelaOpiskeluoikeusHistoryPatch]](body)
+
+          history.length should equal(2)
+          AuditLogTester.verifyAuditLogMessage(Map("operation" -> "MUUTOSHISTORIA_KATSOMINEN", "target" -> Map("opiskeluoikeusOid" -> historiaFixture.opiskeluoikeus.oid.get)))
+        }
+      }
+
+      "Tietyn version haku opiskeluoikeudesta tuottaa AuditLogin" in {
+        AuditLogTester.clearMessages
+
+        getOpiskeluoikeudenVersio(historiaFixture.opiskeluoikeus.oid.get, 1) {
+          verifyResponseStatusOk()
+          val response = JsonSerializer.parse[KelaOppija](body)
+
+          response.opiskeluoikeudet.headOption.flatMap(_.versionumero) should equal(Some(1))
+          AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN", "target" -> Map("oppijaHenkiloOid" -> KoskiSpecificMockOppijat.amis.oid)))
+        }
+      }
+
+      "Timestampit ovat samat historialistauksessa ja opiskeluoikeudessa" in {
+        val historia = getVersiohistoria(historiaFixture.opiskeluoikeus.oid.get) {
+          verifyResponseStatusOk()
+          JsonSerializer.parse[List[KelaOpiskeluoikeusHistoryPatch]](body)
+        }
+
+        val ooVersio = getOpiskeluoikeudenVersio(historiaFixture.opiskeluoikeus.oid.get, 1) {
+          verifyResponseStatusOk()
+          JsonSerializer.parse[KelaOppija](body)
+        }
+
+        ooVersio.opiskeluoikeudet(0).aikaleima should equal(Some(historia(0).aikaleima))
+      }
+    }
+
     "UI" - {
       "Opiskeluoikeuden versiohistorian haku tuottaa AuditLogin" in {
         AuditLogTester.clearMessages
@@ -678,6 +720,10 @@ class KelaSpec
     authGet(s"api/luovutuspalvelu/kela/versiohistoria-ui/$opiskeluoikeudenOid", user)(f)
   }
 
+  private def getVersiohistoria[A](opiskeluoikeudenOid: String, user: MockUser = MockUsers.kelaLaajatOikeudet)(f: => A): A = {
+    authGet(s"api/luovutuspalvelu/kela/versiohistoria/$opiskeluoikeudenOid", user)(f)
+  }
+
   private def getOpiskeluoikeudenVersioUI[A](
     oppijaOid: String,
     opiskeluoikeudenOid: String,
@@ -685,6 +731,14 @@ class KelaSpec
     user: MockUser = MockUsers.kelaLaajatOikeudet
   )(f: => A): A = {
     authGet(s"api/luovutuspalvelu/kela/versiohistoria-ui/$oppijaOid/$opiskeluoikeudenOid/$versio", user)(f)
+  }
+
+  private def getOpiskeluoikeudenVersio[A](
+    opiskeluoikeudenOid: String,
+    versio: Int,
+    user: MockUser = MockUsers.kelaLaajatOikeudet
+  )(f: => A): A = {
+    authGet(s"api/luovutuspalvelu/kela/versiohistoria/$opiskeluoikeudenOid/$versio", user)(f)
   }
 
   private def luoVersiohistoriaanRivi(oppija: Henkilö, opiskeluoikeus: AmmatillinenOpiskeluoikeus): Unit = {

@@ -199,6 +199,8 @@ Esimerkkivastaus
       ]
     }
 
+Palautettavan JSON-rakenteen tietomallin dokumentaatio on
+<a href="/koski/json-schema-viewer/?schema=kela-oppija-schema.json">täällä</a>.
 
 ## /koski/api/luovutuspalvelu/kela/hetut
 
@@ -244,6 +246,67 @@ Esimerkkivastaus
       },
       ...
     ]
+
+Palautettavan JSON-rakenteen tietomallin dokumentaatio on
+<a href="/koski/json-schema-viewer/?schema=kela-oppija-schema.json">täällä</a>.
+
+## /koski/api/luovutuspalvelu/kela/versiohistoria/:opiskeluoikeusOid
+
+Tällä kutsulla haetaan taulukkomuodossa tiedot yhden opiskeluoikeuden historian versionumeroista ja aikaleimoista.
+
+Esimerkkipyyntö
+
+    GET /koski/api/luovutuspalvelu/kela/versiohistoria/1.2.246.562.15.67702618348 HTTP/1.1
+
+Esimerkkivastaus
+
+    [
+      {
+        "opiskeluoikeusOid": "1.2.246.562.15.67702618348",
+        "versionumero": 1,
+        "aikaleima": "2023-10-07T16:55:53.909669"
+      },
+      {
+        "opiskeluoikeusOid": "1.2.246.562.15.67702618348",
+        "versionumero": 2,
+        "aikaleima": "2023-11-01T16:57:03.182493"
+      },
+      {
+        "opiskeluoikeusOid": "1.2.246.562.15.67702618348",
+        "versionumero": 3,
+        "aikaleima": "2023-11-08T08:08:54.436018"
+      }
+    ]
+
+## /koski/api/luovutuspalvelu/kela/versiohistoria/:opiskeluoikeusOid/:versionumero
+
+Esimerkkipyyntö
+
+    GET /koski/api/luovutuspalvelu/kela/versiohistoria/1.2.246.562.15.67702618348/2 HTTP/1.1
+
+Tällä kutsulla haetaan yhden opiskeluoikeuden tiedot versiohistoriasta. Palautettavan datan rakenne on sama kuin päärajapinnassa
+/koski/api/luovutuspalvelu/kela/hetu . Eli oppijan tiedot palautetaan, ja opiskeluoikeus palautetaan taulukossa, jossa on ainoastaan
+pyydetty opiskeluoikeus.
+
+Esimerkkivastaus
+
+    {
+      "henkilö": {
+        "oid": "1.2.246.562.24.00000000007",
+        "hetu": "220109-784L",
+        "etunimet": "Kaisa",
+        "sukunimi": "Koululainen",
+        "kutsumanimi": "Kaisa"
+      },
+      "opiskeluoikeudet": [
+        {
+          "oid": "1.2.246.562.15.67702618348",
+          "versionumero": 2,
+          "aikaleima": "2023-11-01T16:57:03.182493",
+          ...
+        }
+      ]
+    }
 
 Palautettavan JSON-rakenteen tietomallin dokumentaatio on
 <a href="/koski/json-schema-viewer/?schema=kela-oppija-schema.json">täällä</a>.

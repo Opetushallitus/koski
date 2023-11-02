@@ -56,6 +56,21 @@ class KelaServlet(implicit val application: KoskiApplication) extends KoskiSpeci
 
     renderEither(oppija)
   }
+
+  get("/versiohistoria/:opiskeluoikeusOid") {
+    renderOption[List[KelaOpiskeluoikeusHistoryPatch]](KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia) {
+      kelaService.opiskeluoikeudenHistoriaV2(getStringParam("opiskeluoikeusOid"))
+    }
+  }
+
+  get("/versiohistoria/:opiskeluoikeusOid/:version") {
+    val oppija = for {
+      opiskeluoikeusOid <- OpiskeluoikeusOid.validateOpiskeluoikeusOid(getStringParam("opiskeluoikeusOid"))
+      oppija <- kelaService.findKelaOppijaVersion(opiskeluoikeusOid, getIntegerParam("version"))
+    } yield oppija
+
+    renderEither(oppija)
+  }
 }
 
 object KelaRequest {
