@@ -11,7 +11,7 @@ export const KelaVersiohistoria = ({ opiskeluoikeus, oppijaOid }) => {
   if (!(opiskeluoikeudenOid || versionumero)) return null
 
   const historyObs = Http.cachedGet(
-    `/koski/api/luovutuspalvelu/kela/versiohistoria/${opiskeluoikeudenOid}`
+    `/koski/api/luovutuspalvelu/kela/versiohistoria-ui/${opiskeluoikeudenOid}`
   )
   const showHistoryAtom = Atom(false)
 

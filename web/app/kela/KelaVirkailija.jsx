@@ -54,7 +54,7 @@ const kaikkiUusimmatOpiskeluoikeudet = (hetu) =>
 
 const opiskeluoikeudenVersio = (oppijaOid, opiskeluoikeusOid, versio) =>
   Http.get(
-    `/koski/api/luovutuspalvelu/kela/versiohistoria/${oppijaOid}/${opiskeluoikeusOid}/${versio}`,
+    `/koski/api/luovutuspalvelu/kela/versiohistoria-ui/${oppijaOid}/${opiskeluoikeusOid}/${versio}`,
     { willHandleErrors: true }
   ).toProperty()
 

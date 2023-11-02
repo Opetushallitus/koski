@@ -19,6 +19,8 @@ import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 
 import java.time.LocalDate
 
+import scala.language.reflectiveCalls
+
 class KelaSpec
   extends AnyFreeSpec
     with KoskiHttpSpec
@@ -368,38 +370,39 @@ class KelaSpec
     }
   }
 
-  "Opiskeluoikeuden versiohistorian haku tuottaa AuditLogin" in {
-    resetFixtures
-    val opiskeluoikeus = lastOpiskeluoikeusByHetu(KoskiSpecificMockOppijat.amis)
+  "Opiskeluoikeushistoria" - {
+    lazy val historiaFixture = new {
+      resetFixtures
 
-    luoVersiohistoriaanRivi(KoskiSpecificMockOppijat.amis, opiskeluoikeus.asInstanceOf[AmmatillinenOpiskeluoikeus])
+      val opiskeluoikeus = lastOpiskeluoikeusByHetu(KoskiSpecificMockOppijat.amis)
 
-    AuditLogTester.clearMessages
-
-    getVersiohistoria(opiskeluoikeus.oid.get) {
-      verifyResponseStatusOk()
-      val history = JsonSerializer.parse[List[OpiskeluoikeusHistoryPatch]](body)
-
-      history.length should equal(2)
-      AuditLogTester.verifyAuditLogMessage(Map("operation" -> "MUUTOSHISTORIA_KATSOMINEN", "target" -> Map("opiskeluoikeusOid" -> opiskeluoikeus.oid.get)))
+      luoVersiohistoriaanRivi(KoskiSpecificMockOppijat.amis, opiskeluoikeus.asInstanceOf[AmmatillinenOpiskeluoikeus])
     }
-  }
 
-  "Tietyn version haku opiskeluoikeudesta tuottaa AuditLogin" in {
-    resetFixtures
+    "UI" - {
+      "Opiskeluoikeuden versiohistorian haku tuottaa AuditLogin" in {
+        AuditLogTester.clearMessages
 
-    val opiskeluoikeus = lastOpiskeluoikeusByHetu(KoskiSpecificMockOppijat.amis)
+        getVersiohistoriaUI(historiaFixture.opiskeluoikeus.oid.get) {
+          verifyResponseStatusOk()
+          val history = JsonSerializer.parse[List[OpiskeluoikeusHistoryPatch]](body)
 
-    luoVersiohistoriaanRivi(KoskiSpecificMockOppijat.amis, opiskeluoikeus.asInstanceOf[AmmatillinenOpiskeluoikeus])
+          history.length should equal(2)
+          AuditLogTester.verifyAuditLogMessage(Map("operation" -> "MUUTOSHISTORIA_KATSOMINEN", "target" -> Map("opiskeluoikeusOid" -> historiaFixture.opiskeluoikeus.oid.get)))
+        }
+      }
 
-    AuditLogTester.clearMessages
+      "Tietyn version haku opiskeluoikeudesta tuottaa AuditLogin" in {
+        AuditLogTester.clearMessages
 
-    getOpiskeluoikeudenVersio(KoskiSpecificMockOppijat.amis.oid, opiskeluoikeus.oid.get, 1) {
-      verifyResponseStatusOk()
-      val response = JsonSerializer.parse[KelaOppija](body)
+        getOpiskeluoikeudenVersioUI(KoskiSpecificMockOppijat.amis.oid, historiaFixture.opiskeluoikeus.oid.get, 1) {
+          verifyResponseStatusOk()
+          val response = JsonSerializer.parse[KelaOppija](body)
 
-      response.opiskeluoikeudet.headOption.flatMap(_.versionumero) should equal(Some(1))
-      AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN", "target" -> Map("oppijaHenkiloOid" -> KoskiSpecificMockOppijat.amis.oid)))
+          response.opiskeluoikeudet.headOption.flatMap(_.versionumero) should equal(Some(1))
+          AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN", "target" -> Map("oppijaHenkiloOid" -> KoskiSpecificMockOppijat.amis.oid)))
+        }
+      }
     }
   }
 
@@ -671,17 +674,17 @@ class KelaSpec
     )(f)
   }
 
-  private def getVersiohistoria[A](opiskeluoikeudenOid: String, user: MockUser = MockUsers.kelaLaajatOikeudet)(f: => A): A = {
-    authGet(s"api/luovutuspalvelu/kela/versiohistoria/$opiskeluoikeudenOid", user)(f)
+  private def getVersiohistoriaUI[A](opiskeluoikeudenOid: String, user: MockUser = MockUsers.kelaLaajatOikeudet)(f: => A): A = {
+    authGet(s"api/luovutuspalvelu/kela/versiohistoria-ui/$opiskeluoikeudenOid", user)(f)
   }
 
-  private def getOpiskeluoikeudenVersio[A](
+  private def getOpiskeluoikeudenVersioUI[A](
     oppijaOid: String,
     opiskeluoikeudenOid: String,
     versio: Int,
     user: MockUser = MockUsers.kelaLaajatOikeudet
   )(f: => A): A = {
-    authGet(s"api/luovutuspalvelu/kela/versiohistoria/$oppijaOid/$opiskeluoikeudenOid/$versio", user)(f)
+    authGet(s"api/luovutuspalvelu/kela/versiohistoria-ui/$oppijaOid/$opiskeluoikeudenOid/$versio", user)(f)
   }
 
   private def luoVersiohistoriaanRivi(oppija: Henkilö, opiskeluoikeus: AmmatillinenOpiskeluoikeus): Unit = {
