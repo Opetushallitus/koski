@@ -19,14 +19,15 @@ import {
   OsasuoritusRowData,
   OsasuoritusTable
 } from '../../components-v2/opiskeluoikeus/OsasuoritusTable'
+import { VapaanSivistystyöJotpaKoulutuksenArviointi } from '../../types/fi/oph/koski/schema/VapaanSivistystyoJotpaKoulutuksenArviointi'
 import { VapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonJotpaKoulutuksenOsasuorituksenSuoritus'
 import { VapaanSivistystyönJotpaKoulutuksenSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonJotpaKoulutuksenSuoritus'
 import { VapaanSivistystyönOpiskeluoikeus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeus'
 import { VapaanSivistystyönPäätasonSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonPaatasonSuoritus'
 import { deleteAt } from '../../util/array'
+import { createArviointi } from '../common/arviointi'
 import { VSTArviointiField } from '../common/propertyFields'
-import { createVstArviointi } from '../resolvers'
-import { VSTOsasuoritus } from '../typeguards'
+import { VSTSuoritus } from '../common/types'
 import { AddJotpaOsasuoritusView } from './AddJotpaOsasuoritus'
 
 type VSTJotpaPropertiesProps = {
@@ -39,7 +40,7 @@ type VSTJotpaPropertiesProps = {
   >
   createOsasuoritus: (
     path: FormOptic<VapaanSivistystyönPäätasonSuoritus, any>,
-    osasuoritus: VSTOsasuoritus
+    osasuoritus: VSTSuoritus
   ) => void
   testId: string
 }
@@ -106,7 +107,7 @@ interface OsasuoritusToTableRowParams {
   osasuoritusIndex: number
   createOsasuoritus: (
     path: FormOptic<VapaanSivistystyönPäätasonSuoritus, any>,
-    osasuoritus: VSTOsasuoritus
+    osasuoritus: VSTSuoritus
   ) => void
   testId: string
 }
@@ -126,8 +127,6 @@ export const osasuoritusToTableRow = ({
     .prop('osasuoritukset')
     .optional()
     .at(osasuoritusIndex)
-
-  const osasuoritusValue = getValue(osasuoritus)(form.state)
 
   return {
     suoritusIndex,
@@ -157,19 +156,14 @@ export const osasuoritusToTableRow = ({
           form={form}
           path={osasuoritus.path('arviointi')}
           view={ParasArvosanaView}
-          edit={(arvosanaProps) => {
-            if (osasuoritusValue === undefined) {
-              return null
-            }
-            return (
-              <ParasArvosanaEdit
-                {...arvosanaProps}
-                createArviointi={(arvosana) => {
-                  return createVstArviointi(osasuoritusValue)(arvosana)
-                }}
-              />
-            )
-          }}
+          edit={(arvosanaProps) => (
+            <ParasArvosanaEdit
+              {...arvosanaProps}
+              createArviointi={createArviointi(
+                VapaanSivistystyöJotpaKoulutuksenArviointi
+              )}
+            />
+          )}
           testId={`${testId}.arvosana`}
         />
       )

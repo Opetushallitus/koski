@@ -27,13 +27,14 @@ import {
   OsasuoritusRowData,
   OsasuoritusTable
 } from '../../components-v2/opiskeluoikeus/OsasuoritusTable'
+import { VapaanSivistystyöVapaatavoitteisenKoulutuksenArviointi } from '../../types/fi/oph/koski/schema/VapaanSivistystyoVapaatavoitteisenKoulutuksenArviointi'
 import { VapaanSivistystyönOpiskeluoikeus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeus'
 import { VapaanSivistystyönPäätasonSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonPaatasonSuoritus'
 import { VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus'
 import { deleteAt } from '../../util/array'
+import { createArviointi } from '../common/arviointi'
 import { VSTArviointiField } from '../common/propertyFields'
-import { createVstArviointi } from '../resolvers'
-import { VSTOsasuoritus, isVSTOsasuoritusArvioinnilla } from '../typeguards'
+import { VSTSuoritus } from '../common/types'
 import { AddVapaatavoitteinenOsasuoritus } from './AddVapaatavoitteinenOsasuoritus'
 
 type VSTVapaatavoitteinenPropertiesProps = {
@@ -46,7 +47,7 @@ type VSTVapaatavoitteinenPropertiesProps = {
   >
   createOsasuoritus: (
     path: FormOptic<VapaanSivistystyönPäätasonSuoritus, any>,
-    osasuoritus: VSTOsasuoritus
+    osasuoritus: VSTSuoritus
   ) => void
   allOpen: boolean
   testId: string
@@ -117,7 +118,7 @@ export const VSTVapaatavoitteinenProperties: React.FC<
   )
 }
 
-interface OsasuoritusToTableRowParams {
+type OsasuoritusToTableRowParams = {
   level: number
   form: FormModel<VapaanSivistystyönOpiskeluoikeus>
   suoritusPath: FormOptic<
@@ -128,7 +129,7 @@ interface OsasuoritusToTableRowParams {
   osasuoritusIndex: number
   createOsasuoritus: (
     path: FormOptic<VapaanSivistystyönPäätasonSuoritus, any>,
-    osasuoritus: VSTOsasuoritus
+    osasuoritus: VSTSuoritus
   ) => void
   testId: string
 }
@@ -148,8 +149,6 @@ export const osasuoritusToTableRow = ({
     .prop('osasuoritukset')
     .optional()
     .at(osasuoritusIndex)
-
-  const osasuoritusValue = getValue(osasuoritus)(form.state)
 
   return {
     suoritusIndex,
@@ -179,22 +178,14 @@ export const osasuoritusToTableRow = ({
           form={form}
           path={osasuoritus.path('arviointi')}
           view={ParasArvosanaView}
-          edit={(arvosanaProps) => {
-            if (osasuoritusValue === undefined) {
-              return null
-            }
-            if (!isVSTOsasuoritusArvioinnilla(osasuoritusValue)) {
-              return null
-            }
-            return (
-              <ParasArvosanaEdit
-                {...arvosanaProps}
-                createArviointi={(arvosana) => {
-                  return createVstArviointi(osasuoritusValue)(arvosana)
-                }}
-              />
-            )
-          }}
+          edit={(arvosanaProps) => (
+            <ParasArvosanaEdit
+              {...arvosanaProps}
+              createArviointi={createArviointi(
+                VapaanSivistystyöVapaatavoitteisenKoulutuksenArviointi
+              )}
+            />
+          )}
           testId={`${testId}.arvosana`}
         />
       )
