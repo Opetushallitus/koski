@@ -108,7 +108,6 @@ import {
   createVSTKotoutumiskoulutuksenKieliJaViestintäosaamisenOsasuoritus,
   createVSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenAlaosasuoritus,
   createVSTKotoutumiskoulutusValinnaistenOpintojenAlaosasuoritus,
-  createVapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus,
   createVapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus,
   createVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenSuoritus,
   createVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOhjauksenSuoritus,
@@ -116,9 +115,10 @@ import {
   createVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenOpintojenSuoritus,
   createVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenTyöelämäJakso,
   createVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus,
-  createVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenSuoritus,
-  createVapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus
+  createVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenSuoritus
 } from './VSTOsasuoritukset'
+import { VSTSuoritus } from './common/types'
+import { VSTJotpaProperties } from './jotpa/VSTJotpaProperties'
 import { createVstArviointi, defaultLaajuusOpintopisteissa } from './resolvers'
 import {
   VSTOsasuoritus,
@@ -128,7 +128,6 @@ import {
   isVSTOsasuoritusArvioinnilla,
   isVSTOsasuoritusJollaOsasuorituksia
 } from './typeguards'
-import { VSTJotpaProperties } from './jotpa/VSTJotpaProperties'
 import { VSTVapaatavoitteinenProperties } from './vapaatavoitteinen/VSTVapaatavoitteinenProperties'
 
 type AddNewVSTOsasuoritusViewProps = CommonProps<{
@@ -270,38 +269,6 @@ export const AddNewVSTOsasuoritusView: React.FC<
   return (
     <ColumnRow indent={props.level + 1}>
       <Column span={10}>
-        {isVstVapaatavoitteinen && (
-          <PaikallinenOsasuoritusSelect
-            addNewText={t('Lisää osasuoritus')}
-            onSelect={(tunniste, isNew) =>
-              onKoodistoSelect(
-                createVapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus(
-                  tunniste
-                ),
-                isNew
-              )
-            }
-            onRemove={onRemovePaikallinenKoodisto}
-            tunnisteet={storedOsasuoritustunnisteet}
-            testId={props.testId}
-          />
-        )}
-        {isVstJotpa && (
-          <PaikallinenOsasuoritusSelect
-            addNewText={t('Lisää osasuoritus')}
-            onSelect={(tunniste, isNew) =>
-              onKoodistoSelect(
-                createVapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus(
-                  tunniste
-                ),
-                isNew
-              )
-            }
-            onRemove={onRemovePaikallinenKoodisto}
-            tunnisteet={storedOsasuoritustunnisteet}
-            testId={props.testId}
-          />
-        )}
         {isVapaanSivistystyönLukutaitokoulutuksenSuoritus(data) && (
           <KoodistoSelect
             testId={props.testId}
@@ -676,6 +643,7 @@ type VSTOsasuoritusPropertiesProps = {
   osasuoritusIndex: number
   level: number
   form: FormModel<VapaanSivistystyönOpiskeluoikeus>
+  suoritusPath: FormOptic<VapaanSivistystyönOpiskeluoikeus, VSTSuoritus>
   osasuoritusPath: FormOptic<VapaanSivistystyönOpiskeluoikeus, VSTOsasuoritus>
   createOsasuoritus: (
     path: FormOptic<VapaanSivistystyönPäätasonSuoritus, any>,
@@ -820,6 +788,8 @@ export const osasuoritusToTableRow = ({
         level={level}
         osasuoritusIndex={osasuoritusIndex}
         form={form}
+        // @ts-expect-error Korjaa tyypitys
+        suoritusPath={suoritusPath}
         // @ts-expect-error Korjaa tyypitys
         osasuoritusPath={osasuoritus}
         createOsasuoritus={createOsasuoritus}

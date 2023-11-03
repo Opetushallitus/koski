@@ -21,19 +21,25 @@ import {
 } from '../../components-v2/opiskeluoikeus/OsasuoritusTable'
 import { VapaanSivistystyöJotpaKoulutuksenArviointi } from '../../types/fi/oph/koski/schema/VapaanSivistystyoJotpaKoulutuksenArviointi'
 import { VapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonJotpaKoulutuksenOsasuorituksenSuoritus'
-import { VapaanSivistystyönJotpaKoulutuksenSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonJotpaKoulutuksenSuoritus'
 import { VapaanSivistystyönOpiskeluoikeus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeus'
 import { VapaanSivistystyönPäätasonSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonPaatasonSuoritus'
 import { deleteAt } from '../../util/array'
 import { createArviointi } from '../common/arviointi'
 import { VSTArviointiField } from '../common/propertyFields'
-import { VSTSuoritus } from '../common/types'
-import { AddJotpaOsasuoritusView } from './AddJotpaOsasuoritus'
+import {
+  VSTSuoritus,
+  VSTSuoritusPaikallisillaOsasuorituksilla
+} from '../common/types'
+import { AddJotpaOsasuoritus } from './AddJotpaOsasuoritus'
 
 type VSTJotpaPropertiesProps = {
   osasuoritusIndex: number
   level: number
   form: FormModel<VapaanSivistystyönOpiskeluoikeus>
+  suoritusPath: FormOptic<
+    VapaanSivistystyönOpiskeluoikeus,
+    VSTSuoritusPaikallisillaOsasuorituksilla
+  >
   osasuoritusPath: FormOptic<
     VapaanSivistystyönOpiskeluoikeus,
     VapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus
@@ -60,13 +66,11 @@ export const VSTJotpaProperties: React.FC<VSTJotpaPropertiesProps> = (
       <OsasuoritusTable
         testId={props.testId}
         editMode={props.form.editMode}
-        addNewOsasuoritusView={AddJotpaOsasuoritusView}
+        addNewOsasuoritusView={AddJotpaOsasuoritus}
         addNewOsasuoritusViewProps={{
           form: props.form,
-          level: props.level + 1,
-          createOsasuoritus: props.createOsasuoritus,
-          // @ts-expect-error TODO: Tyypitä fiksusti
-          pathWithOsasuoritukset: props.osasuoritusPath
+          osasuoritusPath: props.osasuoritusPath,
+          level: props.level + 1
         }}
         onRemove={(i) => {
           props.form.updateAt(
@@ -101,7 +105,7 @@ interface OsasuoritusToTableRowParams {
   form: FormModel<VapaanSivistystyönOpiskeluoikeus>
   suoritusPath: FormOptic<
     VapaanSivistystyönOpiskeluoikeus,
-    VapaanSivistystyönJotpaKoulutuksenSuoritus
+    VSTSuoritusPaikallisillaOsasuorituksilla
   >
   suoritusIndex: number
   osasuoritusIndex: number
@@ -173,6 +177,8 @@ export const osasuoritusToTableRow = ({
         level={level}
         osasuoritusIndex={osasuoritusIndex}
         form={form}
+        suoritusPath={suoritusPath}
+        // @ts-expect-error Korjaa tyypitys
         osasuoritusPath={osasuoritus}
         createOsasuoritus={createOsasuoritus}
         testId={testId}

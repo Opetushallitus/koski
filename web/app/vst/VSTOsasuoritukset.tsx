@@ -37,17 +37,6 @@ import { Finnish } from '../types/fi/oph/koski/schema/Finnish'
 const defaultLaajuus = laajuusOpintopisteissa(1)
 export const defaultFinnishKuvaus = Finnish({ fi: ' ' })
 
-export const createVapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus =
-  (tunniste: PaikallinenKoodi) =>
-    VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus({
-      koulutusmoduuli:
-        VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuoritus({
-          tunniste,
-          kuvaus: defaultFinnishKuvaus,
-          laajuus: defaultLaajuus
-        })
-    })
-
 export const createOppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus =
   (tunniste: PaikallinenKoodi) =>
     OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus({
@@ -114,16 +103,6 @@ export const createVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValin
           )
       }
     )
-
-export const createVapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus = (
-  tunniste: PaikallinenKoodi
-) =>
-  VapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus({
-    koulutusmoduuli: VapaanSivistystyönJotpaKoulutuksenOsasuoritus({
-      tunniste,
-      laajuus: LaajuusOpintopisteissä({ arvo: 1 })
-    })
-  })
 
 export const createOppivelvollisilleSuunnatunVapaanSivistystyönOsaamiskokonaisuudenSuoritus =
   (tunniste: Koodistokoodiviite<'vstosaamiskokonaisuus', string>) =>

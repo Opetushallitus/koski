@@ -34,12 +34,6 @@ export type OpiskeluoikeusjaksoOf<T extends OpiskeluoikeudenTila> = ItemOf<
   T['opiskeluoikeusjaksot']
 >
 
-export type ArviointiOf<T extends Suoritus> = T extends {
-  arviointi?: Array<infer S>
-}
-  ? S
-  : never
-
 export const OpiskeluoikeusjaksoOrd = Ord.contramap(
   (j: Opiskeluoikeusjakso) => j.alku
 )(StringOrd)
@@ -71,3 +65,11 @@ export const isHenkilövahvistus = (
   isHenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla(
     vahvistus
   )
+
+export type ArviointiOf<T extends Suoritus> = T extends {
+  arviointi?: Array<infer S>
+}
+  ? S
+  : never
+
+export type KoulutusmoduuliOf<T extends Suoritus> = T['koulutusmoduuli']

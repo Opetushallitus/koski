@@ -34,13 +34,20 @@ import { VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus }
 import { deleteAt } from '../../util/array'
 import { createArviointi } from '../common/arviointi'
 import { VSTArviointiField } from '../common/propertyFields'
-import { VSTSuoritus } from '../common/types'
+import {
+  VSTSuoritus,
+  VSTSuoritusPaikallisillaOsasuorituksilla
+} from '../common/types'
 import { AddVapaatavoitteinenOsasuoritus } from './AddVapaatavoitteinenOsasuoritus'
 
 type VSTVapaatavoitteinenPropertiesProps = {
   osasuoritusIndex: number
   level: number
   form: FormModel<VapaanSivistystyönOpiskeluoikeus>
+  suoritusPath: FormOptic<
+    VapaanSivistystyönOpiskeluoikeus,
+    VSTSuoritusPaikallisillaOsasuorituksilla
+  >
   osasuoritusPath: FormOptic<
     VapaanSivistystyönOpiskeluoikeus,
     VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus
@@ -57,7 +64,6 @@ export const VSTVapaatavoitteinenProperties: React.FC<
   VSTVapaatavoitteinenPropertiesProps
 > = (props) => {
   const osasuoritus = getValue(props.osasuoritusPath)(props.form.state)
-  const arvioitu = (osasuoritus?.arviointi?.length || 0) > 0
 
   return (
     <div>
@@ -85,9 +91,8 @@ export const VSTVapaatavoitteinenProperties: React.FC<
         addNewOsasuoritusView={AddVapaatavoitteinenOsasuoritus}
         addNewOsasuoritusViewProps={{
           form: props.form,
-          level: props.level + 1,
-          createOsasuoritus: props.createOsasuoritus,
-          pathWithOsasuoritukset: props.osasuoritusPath
+          osasuoritusPath: props.osasuoritusPath,
+          level: props.level + 1
         }}
         onRemove={(i) => {
           props.form.updateAt(
@@ -123,7 +128,7 @@ type OsasuoritusToTableRowParams = {
   form: FormModel<VapaanSivistystyönOpiskeluoikeus>
   suoritusPath: FormOptic<
     VapaanSivistystyönOpiskeluoikeus,
-    VapaanSivistystyönPäätasonSuoritus
+    VSTSuoritusPaikallisillaOsasuorituksilla
   >
   suoritusIndex: number
   osasuoritusIndex: number
@@ -195,6 +200,7 @@ export const osasuoritusToTableRow = ({
         level={level}
         osasuoritusIndex={osasuoritusIndex}
         form={form}
+        suoritusPath={suoritusPath}
         // @ts-expect-error Korjaa tyypitys
         osasuoritusPath={osasuoritus}
         createOsasuoritus={createOsasuoritus}
