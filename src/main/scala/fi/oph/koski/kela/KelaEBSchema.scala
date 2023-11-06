@@ -1,7 +1,7 @@
 package fi.oph.koski.kela
 
+import fi.oph.koski.schema
 import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri}
-import fi.oph.koski.schema.{Arvioitsija, HenkilövahvistusPaikkakunnalla, Koodistokoodiviite, OpiskeluoikeudenTyyppi}
 import fi.oph.scalaschema.annotation.Title
 
 import java.time.{LocalDate, LocalDateTime}
@@ -16,8 +16,8 @@ case class KelaEBOpiskeluoikeus(
   arvioituPäättymispäivä: Option[LocalDate],
   tila: KelaEBOpiskeluoikeudenTila,
   suoritukset: List[KelaEBTutkinnonSuoritus],
-  @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.ebtutkinto.koodiarvo)
-  tyyppi: Koodistokoodiviite,
+  @KoodistoKoodiarvo(schema.OpiskeluoikeudenTyyppi.ebtutkinto.koodiarvo)
+  tyyppi: schema.Koodistokoodiviite,
   organisaatioHistoria: Option[List[OrganisaatioHistoria]],
   organisaatiohistoria: Option[List[OrganisaatioHistoria]],
 ) extends KelaOpiskeluoikeus {
@@ -52,24 +52,25 @@ case class KelaEBOpiskeluoikeudenJakso(
 case class KelaEBTutkinnonSuoritus(
   koulutusmoduuli: KelaEBTutkinto,
   toimipiste: Toimipiste,
-  vahvistus: Option[HenkilövahvistusPaikkakunnalla],
+  vahvistus: Option[Vahvistus],
   @Title("Koulutus")
   @KoodistoKoodiarvo("ebtutkinto")
-  tyyppi: Koodistokoodiviite,
+  tyyppi: schema.Koodistokoodiviite,
   override val osasuoritukset: Option[List[KelaEBTutkinnonOsasuoritus]] = None
 ) extends Suoritus {
-  override def withEmptyArvosana: KelaEBTutkinnonSuoritus = this
+  override def withEmptyArvosana: KelaEBTutkinnonSuoritus = copy(
+    osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana))
+  )
 }
 
 @Title("EB-tutkinnon osasuoritus")
 case class KelaEBTutkinnonOsasuoritus(
   koulutusmoduuli: KelaESHSecondaryGradeOppiaine,
   @KoodistoKoodiarvo("ebtutkinnonosasuoritus")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "ebtutkinnonosasuoritus", koodistoUri = "suorituksentyyppi"),
-  suorituskieli: Koodistokoodiviite,
+  tyyppi: schema.Koodistokoodiviite,
   osasuoritukset: Option[List[KelaEBOppiaineenAlaosasuoritus]] = None
 ) extends Osasuoritus {
-  override def withEmptyArvosana: Osasuoritus = copy(osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana)))
+  override def withEmptyArvosana: KelaEBTutkinnonOsasuoritus = copy(osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana)))
 }
 
 @Title("EB-oppiaineen alaosasuoritus")
@@ -78,9 +79,11 @@ case class KelaEBOppiaineenAlaosasuoritus(
   koulutusmoduuli: KelaEBOppiaineKomponentti,
   arviointi: Option[List[KelaEBArviointi]] = None,
   @KoodistoKoodiarvo("ebtutkinnonalaosasuoritus")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "ebtutkinnonalaosasuoritus", koodistoUri = "suorituksentyyppi")
+  tyyppi: schema.Koodistokoodiviite
 ) extends Osasuoritus {
-  override def withEmptyArvosana: KelaEBOppiaineenAlaosasuoritus = copy(arviointi = None)
+  override def withEmptyArvosana: KelaEBOppiaineenAlaosasuoritus = copy(
+    arviointi = arviointi.map(_.map(_.withEmptyArvosana))
+  )
 }
 
 @Title("EB-oppiainekomponentti")
@@ -89,23 +92,28 @@ case class KelaEBOppiaineKomponentti(
   @KoodistoKoodiarvo("Final")
   @KoodistoKoodiarvo("Oral")
   @KoodistoKoodiarvo("Written")
-  tunniste: Koodistokoodiviite
+  tunniste: schema.Koodistokoodiviite
 )
 
 @Title("EB-tutkinnon arviointi")
 case class KelaEBArviointi(
   @KoodistoUri("arviointiasteikkoeuropeanschoolofhelsinkifinalmark")
-  arvosana: Koodistokoodiviite,
+  arvosana: Option[schema.Koodistokoodiviite],
   päivä: Option[LocalDate],
-  arvioitsijat: Option[List[Arvioitsija]] = None
-)
+  hyväksytty: Option[Boolean]
+) extends OsasuorituksenArviointi {
+  override def withEmptyArvosana: KelaEBArviointi = copy(
+    arvosana = None,
+    hyväksytty = arvosana.map(schema.EuropeanSchoolOfHelsinkiArviointi.hyväksytty)
+  )
+}
 
 @Title("EB-tutkinto")
 case class KelaEBTutkinto(
   @KoodistoUri("koulutus")
   @KoodistoKoodiarvo("301104")
-  tunniste: Koodistokoodiviite = Koodistokoodiviite("301104", "koulutus"),
+  tunniste: schema.Koodistokoodiviite,
   @KoodistoKoodiarvo("21")
-  koulutustyyppi: Option[Koodistokoodiviite] = None,
-  curriculum: Koodistokoodiviite = Koodistokoodiviite("2023", "europeanschoolofhelsinkicurriculum")
+  koulutustyyppi: Option[schema.Koodistokoodiviite],
+  curriculum: schema.Koodistokoodiviite
 ) extends SuorituksenKoulutusmoduuli

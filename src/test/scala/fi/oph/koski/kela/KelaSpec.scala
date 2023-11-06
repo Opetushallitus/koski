@@ -432,34 +432,35 @@ class KelaSpec
       val osasuoritus = päätasonSuoritus.osasuoritukset.get.head
       osasuoritus.koulutusmoduuli.tunniste.koodiarvo shouldBe "Maalaus"
       osasuoritus.koulutusmoduuli.tunniste.nimi shouldBe Some(finnish("Maalaus"))
+      osasuoritus.arviointi.foreach(_.foreach(a => {
+        a.arvosana should be (None)
+        a.hyväksytty.isDefined should be (true)
+      }))
     }
   }
 
   "Palauttaa European School of Helsinki -opiskeluoikeuden" in {
     postHetu(KoskiSpecificMockOppijat.europeanSchoolOfHelsinki.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
       val oppija = JsonSerializer.parse[KelaOppija](body)
-      val eshOpiskeluoikeus = oppija.opiskeluoikeudet.last match { case x: KelaESHOpiskeluoikeus => x }
+      val eshOpiskeluoikeus = oppija.opiskeluoikeudet.collectFirst { case x: KelaESHOpiskeluoikeus => x }.get
 
       eshOpiskeluoikeus.oppilaitos.get.oid shouldBe EuropeanSchoolOfHelsinki.oppilaitos
       eshOpiskeluoikeus.koulutustoimija.get.oid shouldBe EuropeanSchoolOfHelsinki.koulutustoimija
 
-      val s5 = eshOpiskeluoikeus.suoritukset.find {
-        case s: KelaESHSecondaryLowerVuosiluokanSuoritus if s.koulutusmoduuli.tunniste.koodiarvo == "S5" => true
-        case _ => false
+      val s5 = eshOpiskeluoikeus.suoritukset.collectFirst {
+        case s: KelaESHSecondaryLowerVuosiluokanSuoritus if s.koulutusmoduuli.tunniste.koodiarvo == "S5" => s
       }
       s5 shouldNot be(None)
       s5.get.osasuoritukset.get.length shouldBe EuropeanSchoolOfHelsinkiExampleData.secondaryLowerSuoritus45("S5", LocalDate.now(), false).osasuoritukset.get.length
 
-      val s6 = eshOpiskeluoikeus.suoritukset.find {
-        case s: KelaESHSecondaryUpperVuosiluokanSuoritus if s.koulutusmoduuli.tunniste.koodiarvo == "S6" => true
-        case _ => false
+      val s6 = eshOpiskeluoikeus.suoritukset.collectFirst {
+        case s: KelaESHSecondaryUpperVuosiluokanSuoritus if s.koulutusmoduuli.tunniste.koodiarvo == "S6" => s
       }
       s6 shouldNot be(None)
       s6.get.osasuoritukset.get.length shouldBe EuropeanSchoolOfHelsinkiExampleData.secondaryUpperSuoritusS6("S6", LocalDate.now(), false).osasuoritukset.get.length
 
-      val s7 = eshOpiskeluoikeus.suoritukset.find {
-        case s: KelaESHSecondaryUpperVuosiluokanSuoritus if s.koulutusmoduuli.tunniste.koodiarvo == "S7" => true
-        case _ => false
+      val s7 = eshOpiskeluoikeus.suoritukset.collectFirst {
+        case s: KelaESHSecondaryUpperVuosiluokanSuoritus if s.koulutusmoduuli.tunniste.koodiarvo == "S7" => s
       }
       s7 shouldNot be(None)
       val expectedS7Osasuoritukset = EuropeanSchoolOfHelsinkiExampleData.secondaryUpperSuoritusS7("S7", LocalDate.now(), false).osasuoritukset.get
@@ -475,6 +476,33 @@ class KelaSpec
           }
         case (_, actual) => throw new Error(s"Unexpected type: $actual")
       }
+
+      s5.foreach(_.osasuoritukset.foreach(_.foreach(os =>{
+        os.arviointi.foreach(_.foreach(a => {
+          a.arvosana should be (None)
+          a.hyväksytty.isDefined should be (true)
+        }))
+      })))
+
+      s6.foreach(_.osasuoritukset.foreach(_.foreach(os => {
+        os.asInstanceOf[KelaESHSecondaryUpperOppiaineenSuoritusS6].arviointi.foreach(_.foreach(a => {
+          a.arvosana should be(None)
+          a.hyväksytty.isDefined should be(true)
+        }))
+      })))
+
+      s7.foreach(_.osasuoritukset.foreach(_.foreach(os => {
+        os.asInstanceOf[KelaESHSecondaryUpperOppiaineenSuoritusS7].arviointi.foreach(_.foreach(a => {
+          a.arvosana should be(None)
+          a.hyväksytty.isDefined should be(true)
+        }))
+        os.asInstanceOf[KelaESHSecondaryUpperOppiaineenSuoritusS7].osasuoritukset.foreach(_.foreach(_.arviointi.foreach(_.foreach( a => {
+          a.arvosana should be(None)
+          a.hyväksytty.isDefined should be(true)
+        }))))
+      })))
+
+
     }
   }
 
@@ -486,7 +514,7 @@ class KelaSpec
     }
   }
 
-  "Palauttaa VST KOTO 2022 opiskeuoikeus" in {
+  "Palauttaa VST KOTO 2022 opiskeluoikeus" in {
     postHetu(KoskiSpecificMockOppijat.vstKoto2022Suorittanut.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
       verifyResponseStatusOk()
 
@@ -517,7 +545,7 @@ class KelaSpec
     }
   }
 
-  "Palauttaa lukio-opintoihin liittyvät puhvit yms" in {
+  "Palauttaa lukio-opintoihin liittyvät rahoitustiedot, puhvit yms, ilman tarkkoja arvosanoja" in {
     postHetu(KoskiSpecificMockOppijat.uusiLukio.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
       verifyResponseStatusOk()
 
@@ -528,9 +556,17 @@ class KelaSpec
         case x: KelaLukionOpiskeluoikeus => x
       }.head
 
+      lukioOpiskeluoikeus.tila.opiskeluoikeusjaksot.length should be >(0)
+      lukioOpiskeluoikeus.tila.opiskeluoikeusjaksot.foreach(jakso => {
+        jakso.opintojenRahoitus should not be (None)
+      })
+
       val päätasonSuoritus = lukioOpiskeluoikeus.suoritukset.head
 
       päätasonSuoritus.puhviKoe should not be (None)
+      päätasonSuoritus.puhviKoe.get.arvosana should be (None)
+      päätasonSuoritus.puhviKoe.get.päivä should not be (None)
+      päätasonSuoritus.puhviKoe.get.hyväksytty.isDefined should be (true)
       päätasonSuoritus.omanÄidinkielenOpinnot should not be (None)
       päätasonSuoritus.omanÄidinkielenOpinnot.get.osasuoritukset should not be (None)
       päätasonSuoritus.omanÄidinkielenOpinnot.get.osasuoritukset.get.length should not equal(0)
@@ -540,6 +576,13 @@ class KelaSpec
           arviointi.hyväksytty.isDefined should be (true)
         })}
       päätasonSuoritus.suullisenKielitaidonKokeet should not be (None)
+      päätasonSuoritus.suullisenKielitaidonKokeet.get.length should not equal(0)
+      päätasonSuoritus.suullisenKielitaidonKokeet.get.foreach { koe =>
+        koe.arvosana should be (None)
+        koe.hyväksytty.isDefined should be (true)
+        koe.taitotaso.isDefined should be (true)
+      }
+
     }
   }
 
@@ -593,6 +636,12 @@ class KelaSpec
       val suoritus = ebTutkinto.suoritukset.head
       suoritus.tyyppi.koodiarvo shouldBe "ebtutkinto"
       suoritus.osasuoritukset.get.length shouldBe 3
+      suoritus.osasuoritukset.foreach(_.foreach(_.osasuoritukset.foreach(_.foreach(os => {
+        os.arviointi.foreach(_.foreach(a => {
+          a.arvosana should be (None)
+          a.hyväksytty.isDefined should be (true)
+        }))
+      }))))
     }
   }
 

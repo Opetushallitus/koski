@@ -77,7 +77,7 @@ case class KelaIBOsasuorituksenArvionti(
   arvosana: Option[schema.Koodistokoodiviite],
   hyväksytty: Option[Boolean],
   päivä: Option[LocalDate]
-) extends OsasuorituksenArvionti {
+) extends OsasuorituksenArviointi {
   def withEmptyArvosana: KelaIBOsasuorituksenArvionti = copy(
     arvosana = None,
     hyväksytty = arvosana.map(a => schema.IBArviointi.hyväksytty(a) && schema.CoreRequirementsArvionti.hyväksytty(a))

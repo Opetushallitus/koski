@@ -120,7 +120,7 @@ case class KelaOpiskeluoikeusjakso(
 case class KelaOpiskeluoikeusjaksoRahoituksella(
   alku: LocalDate,
   tila: KelaKoodistokoodiviite,
-
+  opintojenRahoitus: Option[KelaKoodistokoodiviite]
 ) extends Opiskeluoikeusjakso
 
 trait Opiskeluoikeusjakso {
@@ -195,12 +195,12 @@ case class OsaamisenTunnustaminen(selite: schema.LocalizedString, rahoituksenPii
 case class Vahvistus(päivä: LocalDate)
 
 @Title("Osasuorituksen arviointi")
-trait OsasuorituksenArvionti{
+trait OsasuorituksenArviointi{
   @Deprecated("Ei palauteta Kela-API:ssa. Kenttä on näkyvissä skeemassa vain teknisistä syistä.")
   def arvosana: Option[schema.Koodistokoodiviite]
   def hyväksytty: Option[Boolean]
   def päivä: Option[LocalDate]
-  def withEmptyArvosana: OsasuorituksenArvionti
+  def withEmptyArvosana: OsasuorituksenArviointi
 }
 
 case class Oppilaitos(

@@ -161,7 +161,7 @@ case class KelaVSTOsasuorituksenArviointi (
   arvosana: Option[schema.Koodistokoodiviite],
   hyväksytty: Option[Boolean],
   päivä: Option[LocalDate]
-) extends OsasuorituksenArvionti {
+) extends OsasuorituksenArviointi {
   def withEmptyArvosana: KelaVSTOsasuorituksenArviointi = copy(
     arvosana = None,
     hyväksytty = arvosana.map(schema.VapaanSivistystyönKoulutuksenArviointi.hyväksytty)
@@ -180,7 +180,7 @@ case class VSTMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenArviointi (
   luetunYmmärtämisenTaitotaso: Option[VSTKielenTaitotasonArviointi],
   @Deprecated("Poistettu palautettavien tietojen joukosta")
   kirjoittamisenTaitotaso: Option[VSTKielenTaitotasonArviointi]
-) extends OsasuorituksenArvionti {
+) extends OsasuorituksenArviointi {
   def withEmptyArvosana: VSTMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenArviointi = copy(
     arvosana = None,
     hyväksytty = arvosana.map(schema.VapaanSivistystyönKoulutuksenArviointi.hyväksytty),
