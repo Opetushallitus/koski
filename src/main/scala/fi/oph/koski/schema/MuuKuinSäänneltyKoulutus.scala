@@ -80,9 +80,13 @@ case class MuunKuinSäännellynKoulutuksenArviointi(
   arvosana: Koodistokoodiviite,
   arviointipäivä: Option[LocalDate],
 ) extends KoodistostaLöytyväArviointi {
-  override def hyväksytty: Boolean = true
+  override def hyväksytty: Boolean = MuunKuinSäännellynKoulutuksenArviointi.hyväksytty(arvosana)
   override def arvosanaKirjaimin: LocalizedString = LocalizedString.finnish(arvosana.koodiarvo)
   override def arvioitsijat: Option[List[SuorituksenArvioitsija]] = None
+}
+
+object MuunKuinSäännellynKoulutuksenArviointi {
+  def hyväksytty(arvosana: Koodistokoodiviite): Boolean = arvosana.koodiarvo == "hyvaksytty"
 }
 
 case class MuunKuinSäännellynKoulutuksenOsasuoritus(
