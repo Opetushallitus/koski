@@ -60,6 +60,7 @@ export const FormListField = <
             errorsFromPath={errorsFromPath}
             testId={testId}
             index={index}
+            key={index}
           />
         )
       })}
