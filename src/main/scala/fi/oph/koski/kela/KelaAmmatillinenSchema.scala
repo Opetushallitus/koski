@@ -130,7 +130,7 @@ case class KelaAmmatillisenOsasuorituksenArviointi(
   arvosana: Option[schema.Koodistokoodiviite],
   hyväksytty: Option[Boolean],
   päivä: Option[LocalDate]
-) extends OsasuorituksenArvionti {
+) extends OsasuorituksenArviointi {
   def withEmptyArvosana: KelaAmmatillisenOsasuorituksenArviointi = copy(
     arvosana = None,
     hyväksytty = arvosana.map(schema.AmmatillinenKoodistostaLöytyväArviointi.hyväksytty)

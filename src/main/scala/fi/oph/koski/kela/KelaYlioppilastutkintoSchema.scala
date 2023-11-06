@@ -131,6 +131,6 @@ case class KelaYlioppilastutkinnonOsasuorituksenArvionti(
   arvosana: Option[schema.Koodistokoodiviite],
   hyväksytty: Option[Boolean],
   päivä: Option[LocalDate]
-) extends OsasuorituksenArvionti {
+) extends OsasuorituksenArviointi {
   override def withEmptyArvosana: KelaYlioppilastutkinnonOsasuorituksenArvionti = copy(arvosana = None)
 }

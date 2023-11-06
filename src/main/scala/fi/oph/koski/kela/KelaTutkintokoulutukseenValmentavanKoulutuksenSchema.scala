@@ -100,7 +100,7 @@ case class KelaTuvaOsasuorituksenArvionti(
   arvosana: Option[schema.Koodistokoodiviite],
   hyväksytty: Option[Boolean],
   päivä: Option[LocalDate]
-) extends OsasuorituksenArvionti {
+) extends OsasuorituksenArviointi {
   def withEmptyArvosana: KelaTuvaOsasuorituksenArvionti = copy(
     arvosana = None,
     hyväksytty = arvosana.map(

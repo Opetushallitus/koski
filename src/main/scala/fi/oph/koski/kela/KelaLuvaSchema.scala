@@ -1,7 +1,6 @@
 package fi.oph.koski.kela
 
 import fi.oph.koski.schema
-import fi.oph.koski.schema.OpiskeluoikeudenTyyppi
 import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
 import fi.oph.scalaschema.annotation.{Description, Title}
 
@@ -20,7 +19,7 @@ case class KelaLuvaOpiskeluoikeus(
   tila: KelaOpiskeluoikeudenTila,
   suoritukset: List[KelaLuvaPäätasonSuoritus],
   lisätiedot: Option[KelaLuvaOpiskeluoikeudenLisätiedot],
-  @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.luva.koodiarvo)
+  @KoodistoKoodiarvo(schema.OpiskeluoikeudenTyyppi.luva.koodiarvo)
   tyyppi: schema.Koodistokoodiviite,
   organisaatioHistoria: Option[List[OrganisaatioHistoria]],
   organisaatiohistoria: Option[List[OrganisaatioHistoria]]
@@ -80,7 +79,7 @@ case class KelaLuvaOsasuorituksenArvionti(
   arvosana: Option[schema.Koodistokoodiviite],
   hyväksytty: Option[Boolean],
   päivä: Option[LocalDate]
-) extends OsasuorituksenArvionti {
+) extends OsasuorituksenArviointi {
   def withEmptyArvosana: KelaLuvaOsasuorituksenArvionti = copy(
     arvosana = None,
     hyväksytty = arvosana.map(schema.YleissivistävänKoulutuksenArviointi.hyväksytty)
