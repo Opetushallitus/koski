@@ -38,7 +38,7 @@ import {
   VSTSuoritus,
   VSTSuoritusPaikallisillaOsasuorituksilla
 } from '../common/types'
-import { AddVapaatavoitteinenOsasuoritus } from './AddVapaatavoitteinenOsasuoritus'
+import { AddVapaatavoitteinenAlaosasuoritus } from './AddVapaatavoitteinenAlaosasuoritus'
 
 type VSTVapaatavoitteinenPropertiesProps = {
   osasuoritusIndex: number
@@ -88,7 +88,7 @@ export const VSTVapaatavoitteinenProperties: React.FC<
       <OsasuoritusTable
         testId={props.testId}
         editMode={props.form.editMode}
-        addNewOsasuoritusView={AddVapaatavoitteinenOsasuoritus}
+        addNewOsasuoritusView={AddVapaatavoitteinenAlaosasuoritus}
         addNewOsasuoritusViewProps={{
           form: props.form,
           osasuoritusPath: props.osasuoritusPath,

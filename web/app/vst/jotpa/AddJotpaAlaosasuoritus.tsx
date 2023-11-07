@@ -32,5 +32,6 @@ export const AddJotpaAlaosasuoritus: React.FC<AddJotpaOsasuoritusProps> = (
     }
     preferenceStoreName="vapaansivistystyonjotpakoulutuksenosasuoritus"
     level={props.level}
+    testId={props.testId}
   />
 )

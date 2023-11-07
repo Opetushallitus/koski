@@ -13,12 +13,14 @@ import { Arviointi } from '../types/fi/oph/koski/schema/Arviointi'
 import { isVapaanSivistystyönJotpaKoulutuksenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonJotpaKoulutuksenSuoritus'
 import { VapaanSivistystyönOpiskeluoikeus } from '../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeus'
 import { VapaanSivistystyönPäätasonSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonPaatasonSuoritus'
+import { isVapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonVapaatavoitteisenKoulutuksenSuoritus'
 import { parasArviointi } from '../util/arvioinnit'
 import { append } from '../util/fp/arrays'
 import { VSTSuoritus } from './common/types'
 import { VSTJotpaEditor } from './jotpa/VSTJotpaEditor'
 import { vstNimi } from './resolvers'
 import { VSTOsasuoritus, isVSTOsasuoritusArvioinnilla } from './typeguards'
+import { VSTVapaatavoitteinenEditor } from './vapaatavoitteinen/VSTVapaatavoitteinenEditor'
 
 type VSTEditorProps =
   AdaptedOpiskeluoikeusEditorProps<VapaanSivistystyönOpiskeluoikeus>
@@ -106,6 +108,21 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
         päätasonSuoritus
       ) && (
         <VSTJotpaEditor
+          form={form}
+          oppijaOid={props.oppijaOid}
+          päätasonSuoritus={päätasonSuoritus}
+          organisaatio={organisaatio}
+          suoritusVahvistettu={suoritusVahvistettu}
+          invalidatable={props.invalidatable}
+          onChangeSuoritus={setPäätasonSuoritus}
+          onCreateOsasuoritus={createOsasuoritus}
+        />
+      )}
+      {hasPäätasonsuoritusOf(
+        isVapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus,
+        päätasonSuoritus
+      ) && (
+        <VSTVapaatavoitteinenEditor
           form={form}
           oppijaOid={props.oppijaOid}
           päätasonSuoritus={päätasonSuoritus}
