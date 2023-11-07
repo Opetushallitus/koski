@@ -82,6 +82,20 @@ class KelaSpec
       }
     }
 
+    "Palauttaa oppijan, jolla pelkkä YO-opiskeluoikeus, tiedot" in {
+      val pelkkäYo = KoskiSpecificMockOppijat.ylioppilas
+      postHetu(pelkkäYo.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+        verifyResponseStatusOk()
+        val oppija = JsonSerializer.parse[KelaOppija](body)
+        oppija.opiskeluoikeudet.length should be(1)
+        val opiskeluoikeus = oppija.opiskeluoikeudet.collectFirst { case oo: KelaYlioppilastutkinnonOpiskeluoikeus => oo }.get
+
+        opiskeluoikeus.oid should be (None)
+        opiskeluoikeus.tyyppi should be (OpiskeluoikeudenTyyppi.ylioppilastutkinto)
+        opiskeluoikeus.suoritukset.length shouldBe 1
+      }
+    }
+
     "Palauttaa TUVA-perusopetuksen erityisen tuen jaksot" in {
       postHetu(KoskiSpecificMockOppijat.tuvaPerus.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
         verifyResponseStatusOk()

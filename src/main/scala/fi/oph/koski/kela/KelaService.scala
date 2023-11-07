@@ -164,7 +164,7 @@ class KelaService(application: KoskiApplication) extends GlobalExecutionContext 
         .map(deserializeAndCleanKelaOpiskeluoikeus)
         .collect { case Right(oo) => oo }
 
-    if (opiskeluoikeudet.nonEmpty) {
+    if (opiskeluoikeudet.nonEmpty || ytrOpiskeluoikeudet.nonEmpty) {
       Right(
         KelaOppija(
           henkilö = Henkilo.fromOppijaHenkilö(oppijaHenkilö),
