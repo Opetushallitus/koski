@@ -34,6 +34,24 @@ export type VSTSuoritusPaikallisillaOsasuorituksilla = Extract<
   { osasuoritukset?: VSTPaikallinenOsasuoritus[] }
 >
 
+export type VSTPäätasonSuoritusLaajuudella = Extract<
+  VapaanSivistystyönPäätasonSuoritus,
+  {
+    koulutusmoduuli: {
+      laajuus?: object
+    }
+  }
+>
+
+export type VSTPäätasonSuoritusOpintokokonaisuudella = Extract<
+  VapaanSivistystyönPäätasonSuoritus,
+  {
+    koulutusmoduuli: {
+      opintokokonaisuus?: object
+    }
+  }
+>
+
 export const isVSTSuoritusPaikallisillaOsasuorituksilla = (
   s: VSTSuoritusPaikallisillaOsasuorituksilla
 ): s is VSTSuoritusPaikallisillaOsasuorituksilla =>

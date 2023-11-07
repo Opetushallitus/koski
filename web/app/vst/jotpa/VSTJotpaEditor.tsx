@@ -10,35 +10,12 @@ import {
   KeyValueRow,
   KeyValueTable
 } from '../../components-v2/containers/KeyValueTable'
-import { FormField } from '../../components-v2/forms/FormField'
 import { FormModel, FormOptic } from '../../components-v2/forms/FormModel'
 import { Spacer } from '../../components-v2/layout/Spacer'
-import {
-  LaajuusView,
-  laajuusSum
-} from '../../components-v2/opiskeluoikeus/LaajuusField'
-import {
-  OpintokokonaisuusEdit,
-  OpintokokonaisuusView
-} from '../../components-v2/opiskeluoikeus/OpintokokonaisuusField'
 import { PäätasonSuorituksenSuostumuksenPeruminen } from '../../components-v2/opiskeluoikeus/OpiskeluoikeudenSuostumuksenPeruminen'
-import {
-  ToimipisteEdit,
-  ToimipisteView
-} from '../../components-v2/opiskeluoikeus/OpiskeluoikeudenToimipiste'
 import { OsasuoritusTable } from '../../components-v2/opiskeluoikeus/OsasuoritusTable'
 import { SuorituksenVahvistusField } from '../../components-v2/opiskeluoikeus/SuorituksenVahvistus'
-import {
-  SuorituskieliEdit,
-  SuorituskieliView
-} from '../../components-v2/opiskeluoikeus/SuorituskieliField'
-import {
-  TodistuksellaNäkyvätLisätiedotEdit,
-  TodistuksellaNäkyvätLisätiedotView
-} from '../../components-v2/opiskeluoikeus/TodistuksellaNäkyvätLisätiedotField'
 import { UusiOpiskeluoikeusjakso } from '../../components-v2/opiskeluoikeus/UusiOpiskeluoikeudenTilaModal'
-import { InfoLink } from '../../components-v2/texts/InfoLink'
-import { Trans } from '../../components-v2/texts/Trans'
 import { finnish, t } from '../../i18n/i18n'
 import { Koulutustoimija } from '../../types/fi/oph/koski/schema/Koulutustoimija'
 import { Oppilaitos } from '../../types/fi/oph/koski/schema/Oppilaitos'
@@ -50,6 +27,7 @@ import { VapaanSivistystyönPäätasonSuoritus } from '../../types/fi/oph/koski/
 import { deleteAt } from '../../util/array'
 import { formatNumber, sum } from '../../util/numbers'
 import { VSTLisatiedot } from '../VSTLisatiedot'
+import * as Suoritus from '../common/suoritusFields'
 import {
   VSTSuoritus,
   VSTSuoritusPaikallisillaOsasuorituksilla
@@ -96,7 +74,7 @@ export const VSTJotpaEditor: React.FC<VSTJotpaEditorProps> = ({
         oppijaOid={oppijaOid}
         suorituksenNimi={() => finnish('Vapaan sivistystyön koulutus')}
         suorituksetVahvistettu={kaikkiOsasuorituksetVahvistettu(form.state)}
-        createOpiskeluoikeusjakso={createVstJotpaOpiskeluoikeusjakso} // TODO TOR-2086: Tsekkaa tästä pois mahdollinen turha indirektio
+        createOpiskeluoikeusjakso={createVstJotpaOpiskeluoikeusjakso}
         lisätiedotContainer={VSTLisatiedot}
         onChangeSuoritus={onChangeSuoritus}
         testId={`${päätasonSuoritus.testId}.editor-container`}
@@ -110,98 +88,16 @@ export const VSTJotpaEditor: React.FC<VSTJotpaEditorProps> = ({
         </KansalainenOnly>
         <Spacer />
         <KeyValueTable>
-          <KeyValueRow
-            label="Oppilaitos / toimipiste"
-            testId={`${päätasonSuoritus.testId}.toimipiste`}
-          >
-            <FormField
-              form={form}
-              path={päätasonSuoritus.path.prop('toimipiste')}
-              view={ToimipisteView}
-              edit={ToimipisteEdit}
-              editProps={{
-                onChangeToimipiste: (data: any) => {
-                  form.updateAt(
-                    päätasonSuoritus.path.prop('toimipiste').optional(),
-                    () => data
-                  )
-                }
-              }}
-            />
-          </KeyValueRow>
-          <KeyValueRow
-            label="Koulutus"
-            testId={`${päätasonSuoritus.testId}.koulutusmoduuli.tunniste`}
-          >
-            <Trans>
-              {päätasonSuoritus.suoritus.koulutusmoduuli.tunniste.nimi}
-            </Trans>
-          </KeyValueRow>
-          <KeyValueRow
-            label="Koulutusmoduuli"
-            indent={2}
-            testId={`${päätasonSuoritus.testId}.koulutusmoduuli.tunniste.koodiarvo`}
-          >
-            {päätasonSuoritus.suoritus.koulutusmoduuli.tunniste.koodiarvo}
-          </KeyValueRow>
-          <KeyValueRow
-            label="Opintokokonaisuus"
-            indent={2}
-            testId={`${päätasonSuoritus.testId}.opintokokonaisuus`}
-          >
-            <FormField
-              form={form}
-              path={päätasonSuoritus.path
-                .prop('koulutusmoduuli')
-                .prop('opintokokonaisuus')
-                .optional()}
-              view={OpintokokonaisuusView}
-              edit={OpintokokonaisuusEdit}
-            />
-          </KeyValueRow>
-          {/* TODO TOR-2086: Tämä linkki taitaa asemoitua joskus väärin... */}
-          <InfoLink koulutusmoduuliClass="fi.oph.koski.schema.VapaanSivistystyönJotpaKoulutus" />
-          <KeyValueRow label="Laajuus" indent={2}>
-            <FormField
-              form={form}
-              path={päätasonSuoritus.path
-                .prop('koulutusmoduuli')
-                .prop('laajuus')}
-              view={LaajuusView}
-              auto={laajuusSum(
-                päätasonSuoritus.path
-                  .prop('osasuoritukset')
-                  .elems()
-                  .path('koulutusmoduuli.laajuus'),
-                form.state
-              )}
-              testId={`${päätasonSuoritus.testId}.laajuus`}
-            />
-          </KeyValueRow>
-          <KeyValueRow
-            label="Opetuskieli"
-            testId={`${päätasonSuoritus.testId}.opetuskieli`}
-          >
-            <FormField
-              form={form}
-              path={päätasonSuoritus.path.prop('suorituskieli')}
-              view={SuorituskieliView}
-              edit={SuorituskieliEdit}
-            />
-          </KeyValueRow>
-          <KeyValueRow
-            label="Todistuksella näkyvät lisätiedot"
-            testId={`${päätasonSuoritus.testId}.todistuksella-nakyvat-lisatiedot`}
-          >
-            <FormField
-              form={form}
-              path={päätasonSuoritus.path.prop(
-                'todistuksellaNäkyvätLisätiedot'
-              )}
-              view={TodistuksellaNäkyvätLisätiedotView}
-              edit={TodistuksellaNäkyvätLisätiedotEdit}
-            />
-          </KeyValueRow>
+          <Suoritus.Oppilaitos form={form} suoritus={päätasonSuoritus} />
+          <Suoritus.Koulutus form={form} suoritus={päätasonSuoritus} />
+          <Suoritus.Koulutusmoduuli form={form} suoritus={päätasonSuoritus} />
+          <Suoritus.Opintokokonaisuus form={form} suoritus={päätasonSuoritus} />
+          <Suoritus.Laajuus form={form} suoritus={päätasonSuoritus} />
+          <Suoritus.Opetuskieli form={form} suoritus={päätasonSuoritus} />
+          <Suoritus.TodistuksenLisätiedot
+            form={form}
+            suoritus={päätasonSuoritus}
+          />
         </KeyValueTable>
         <Spacer />
         <SuorituksenVahvistusField
@@ -288,6 +184,7 @@ const laajuudetYhteensä = (pts: VapaanSivistystyönPäätasonSuoritus): string 
 
 export const createVstJotpaOpiskeluoikeusjakso = (
   seed: UusiOpiskeluoikeusjakso<VapaanSivistystyönOpiskeluoikeusjakso>
-) => {
-  return VapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso(seed as any)
-}
+) =>
+  VapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso(
+    seed as UusiOpiskeluoikeusjakso<VapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso>
+  )

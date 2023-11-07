@@ -10,6 +10,7 @@ import { common, CommonProps, testId } from '../CommonProps'
 import { NumberField } from '../controls/NumberField'
 import { FieldErrors } from '../forms/FieldErrors'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
+import { nonNull } from '../../util/fp/arrays'
 
 /* ---------------------------------------------------------------------
  *
@@ -103,9 +104,12 @@ export const LaajuusOpintopisteissäEdit: React.FC<
  */
 
 export const laajuusSum =
-  <S, A extends Laajuus>(laajuusPath: CollectableOptic<S, A>, data: S) =>
+  <S, A extends Laajuus>(
+    laajuusPath: CollectableOptic<S, A | undefined>,
+    data: S
+  ) =>
   (): A | undefined => {
-    const laajuudet = $.collect(laajuusPath)(data)
+    const laajuudet = $.collect(laajuusPath)(data).filter(nonNull)
     return isNonEmpty(laajuudet)
       ? {
           ...laajuudet[0],

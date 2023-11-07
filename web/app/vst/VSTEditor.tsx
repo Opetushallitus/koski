@@ -298,6 +298,7 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
                 auto={laajuusSum(
                   päätasonSuoritus.path
                     .prop('osasuoritukset')
+                    .optional()
                     .elems()
                     .path('koulutusmoduuli.laajuus'),
                   form.state
