@@ -100,7 +100,7 @@ export const VSTJotpaProperties: React.FC<VSTJotpaPropertiesProps> = (
   )
 }
 
-interface OsasuoritusToTableRowParams {
+export type OsasuoritusToTableRowParams = {
   level: number
   form: FormModel<VapaanSivistystyönOpiskeluoikeus>
   suoritusPath: FormOptic<

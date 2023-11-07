@@ -1,56 +1,34 @@
 import React from 'react'
 import { OpenAllButton, useTree } from '../../appstate/tree'
-import { CommonProps } from '../../components-v2/CommonProps'
 import { KansalainenOnly } from '../../components-v2/access/KansalainenOnly'
-import {
-  ActivePäätasonSuoritus,
-  EditorContainer
-} from '../../components-v2/containers/EditorContainer'
+import { EditorContainer } from '../../components-v2/containers/EditorContainer'
 import { KeyValueTable } from '../../components-v2/containers/KeyValueTable'
-import { FormModel, FormOptic } from '../../components-v2/forms/FormModel'
+import { FormOptic } from '../../components-v2/forms/FormModel'
 import { Spacer } from '../../components-v2/layout/Spacer'
 import { PäätasonSuorituksenSuostumuksenPeruminen } from '../../components-v2/opiskeluoikeus/OpiskeluoikeudenSuostumuksenPeruminen'
 import { OsasuoritusTable } from '../../components-v2/opiskeluoikeus/OsasuoritusTable'
 import { SuorituksenVahvistusField } from '../../components-v2/opiskeluoikeus/SuorituksenVahvistus'
 import { UusiOpiskeluoikeusjakso } from '../../components-v2/opiskeluoikeus/UusiOpiskeluoikeudenTilaModal'
 import { finnish } from '../../i18n/i18n'
-import { Koulutustoimija } from '../../types/fi/oph/koski/schema/Koulutustoimija'
-import { Oppilaitos } from '../../types/fi/oph/koski/schema/Oppilaitos'
 import { VapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/VapaanSivistystyonJotpaKoulutuksenOpiskeluoikeusjakso'
 import { VapaanSivistystyönJotpaKoulutuksenSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonJotpaKoulutuksenSuoritus'
 import { VapaanSivistystyönOpiskeluoikeus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeus'
 import { VapaanSivistystyönOpiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeusjakso'
-import { VapaanSivistystyönPäätasonSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonPaatasonSuoritus'
 import { deleteAt } from '../../util/array'
 import { VSTLisatiedot } from '../VSTLisatiedot'
 import { VSTLaajuudetYhteensä } from '../common/VSTLaajuudetYhteensa'
 import { isCompletedJotpaOsasuoritus } from '../common/osasuoritukset'
 import * as Suoritus from '../common/suoritusFields'
 import {
-  VSTSuoritus,
+  VSTPäätasonSuoritusEditorProps,
   VSTSuoritusPaikallisillaOsasuorituksilla
 } from '../common/types'
 import { kaikkiOsasuorituksetVahvistettu } from '../resolvers'
 import { AddJotpaOsasuoritus } from './AddJotpaOsasuoritus'
 import { osasuoritusToTableRow } from './VSTJotpaProperties'
 
-// TODO TOR-2086: Tee tästä yleinen tyyppi, jonka kaikki vst-editorit spesfoivat
-export type VSTJotpaEditorProps = CommonProps<{
-  form: FormModel<VapaanSivistystyönOpiskeluoikeus>
-  oppijaOid: string
-  päätasonSuoritus: ActivePäätasonSuoritus<
-    VapaanSivistystyönOpiskeluoikeus,
-    VapaanSivistystyönJotpaKoulutuksenSuoritus
-  >
-  organisaatio?: Koulutustoimija | Oppilaitos
-  invalidatable: boolean
-  onChangeSuoritus: (suoritusIndex: number) => void
-  onCreateOsasuoritus: (
-    suoritusPath: FormOptic<VapaanSivistystyönPäätasonSuoritus, any>,
-    osasuoritus: VSTSuoritus
-  ) => void // TODO TOR-2086: Tyypitys
-  suoritusVahvistettu: boolean
-}>
+export type VSTJotpaEditorProps =
+  VSTPäätasonSuoritusEditorProps<VapaanSivistystyönJotpaKoulutuksenSuoritus>
 
 export const VSTJotpaEditor: React.FC<VSTJotpaEditorProps> = ({
   form,

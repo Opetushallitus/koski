@@ -1,7 +1,30 @@
+import { CommonProps } from '../../components-v2/CommonProps'
+import { ActivePäätasonSuoritus } from '../../components-v2/containers/EditorContainer'
+import { FormModel, FormOptic } from '../../components-v2/forms/FormModel'
+import { Koulutustoimija } from '../../types/fi/oph/koski/schema/Koulutustoimija'
+import { Oppilaitos } from '../../types/fi/oph/koski/schema/Oppilaitos'
 import { PaikallinenKoulutusmoduuli } from '../../types/fi/oph/koski/schema/PaikallinenKoulutusmoduuli'
 import { VapaanSivistystyönJotpaKoulutuksenSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonJotpaKoulutuksenSuoritus'
+import { VapaanSivistystyönOpiskeluoikeus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeus'
 import { VapaanSivistystyönPäätasonSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonPaatasonSuoritus'
+import { PäätasonSuoritusOf } from '../../util/opiskeluoikeus'
 import { ArviointiOf, OsasuoritusOf } from '../../util/schema'
+
+export type VSTPäätasonSuoritusEditorProps<
+  T extends PäätasonSuoritusOf<VapaanSivistystyönOpiskeluoikeus>
+> = CommonProps<{
+  form: FormModel<VapaanSivistystyönOpiskeluoikeus>
+  oppijaOid: string
+  päätasonSuoritus: ActivePäätasonSuoritus<VapaanSivistystyönOpiskeluoikeus, T>
+  organisaatio?: Koulutustoimija | Oppilaitos
+  invalidatable: boolean
+  onChangeSuoritus: (suoritusIndex: number) => void
+  onCreateOsasuoritus: (
+    suoritusPath: FormOptic<VapaanSivistystyönPäätasonSuoritus, any>,
+    osasuoritus: VSTSuoritus
+  ) => void // TODO TOR-2086: Tyypitys
+  suoritusVahvistettu: boolean
+}>
 
 export type VSTSuoritus =
   | VapaanSivistystyönPäätasonSuoritus
