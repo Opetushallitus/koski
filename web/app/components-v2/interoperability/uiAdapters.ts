@@ -1,5 +1,5 @@
 import { TaiteenPerusopetusEditor } from '../../taiteenperusopetus/TaiteenPerusopetusEditor'
-import { VSTEditor } from '../../vst/VSTEditor'
+import { VSTEditor } from '../../vst/VSTEditor2'
 import { AdaptedOpiskeluoikeusEditorCollection } from './useUiAdapter'
 
 const editors: AdaptedOpiskeluoikeusEditorCollection = {

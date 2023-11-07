@@ -52,10 +52,13 @@ export type EditorContainerProps<T extends Opiskeluoikeus> =
     lisätiedotContainer?: React.FC<any>
   }>
 
-export type ActivePäätasonSuoritus<T extends Opiskeluoikeus> = {
+export type ActivePäätasonSuoritus<
+  T extends Opiskeluoikeus,
+  S extends PäätasonSuoritusOf<T> = PäätasonSuoritusOf<T>
+> = {
   index: number
-  path: FormOptic<T, PäätasonSuoritusOf<T>>
-  suoritus: PäätasonSuoritusOf<T>
+  path: FormOptic<T, S>
+  suoritus: S
   testId: string
 }
 
@@ -226,3 +229,12 @@ export const usePäätasonSuoritus = <T extends Opiskeluoikeus>(
 
 const defaultSuorituksenNimi = (s: Suoritus): LocalizedString =>
   s.tyyppi.lyhytNimi || s.tyyppi.nimi || localize(s.tyyppi.koodiarvo)
+
+export const hasPäätasonsuoritusOf = <
+  T extends Opiskeluoikeus,
+  S extends PäätasonSuoritusOf<T>
+>(
+  guard: (s: any) => s is S,
+  pts: ActivePäätasonSuoritus<T>
+  // @ts-ignore
+): pts is ActivePäätasonSuoritus<T, S> => guard(pts.suoritus)

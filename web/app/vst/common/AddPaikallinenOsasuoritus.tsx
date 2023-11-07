@@ -10,6 +10,7 @@ import { PaikallinenKoodi } from '../../types/fi/oph/koski/schema/PaikallinenKoo
 import { VapaanSivistystyönOpiskeluoikeus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeus'
 import { KoulutusmoduuliOf, OsasuoritusOf } from '../../util/schema'
 import { VSTSuoritusPaikallisillaOsasuorituksilla } from './types'
+import { useKoodistoFiller } from '../../appstate/koodisto'
 
 type AddPaikallinenOsasuoritusProps<
   T extends VSTSuoritusPaikallisillaOsasuorituksilla
@@ -28,6 +29,7 @@ export const AddPaikallinenOsasuoritus = <
 ) => {
   const { createOsasuoritus, form, suoritusPath } = props
   const { organisaatio } = useContext(OpiskeluoikeusContext)
+  const fillKoodistot = useKoodistoFiller()
 
   const osasuoritukset = usePreferences<KoulutusmoduuliOf<OsasuoritusOf<T>>>(
     organisaatio?.oid,
@@ -40,14 +42,14 @@ export const AddPaikallinenOsasuoritus = <
   )
 
   const onSelect = useCallback(
-    (tunniste: PaikallinenKoodi, isNew = false) => {
+    async (tunniste: PaikallinenKoodi, isNew = false) => {
       const osasuorituksetPath = suoritusPath
         .prop('osasuoritukset')
         .optional() as any as FormOptic<
         VapaanSivistystyönOpiskeluoikeus,
         OsasuoritusOf<T>[]
       >
-      const osasuoritus = createOsasuoritus(tunniste)
+      const osasuoritus = await fillKoodistot(createOsasuoritus(tunniste))
       form.updateAt(osasuorituksetPath, (os: OsasuoritusOf<T>[]) => [
         ...os,
         osasuoritus
@@ -59,7 +61,7 @@ export const AddPaikallinenOsasuoritus = <
         )
       }
     },
-    [createOsasuoritus, form, osasuoritukset, suoritusPath]
+    [createOsasuoritus, fillKoodistot, form, osasuoritukset, suoritusPath]
   )
 
   const onRemovePaikallinenKoodisto = useCallback(

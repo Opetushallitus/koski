@@ -4,7 +4,9 @@ import { Opiskeluoikeus } from '../types/fi/oph/koski/schema/Opiskeluoikeus'
 import { isObjectConstraint } from '../types/fi/oph/koski/typemodel/ObjectConstraint'
 import { isOptionalConstraint } from '../types/fi/oph/koski/typemodel/OptionalConstraint'
 
-type KoulutusmoduuliClassName =
+// TODO TOR-2086: Tee tästä yleinen toteutus kaikille opiskeluoikeuksille ja siirrä suoraan InfoLink-komponentin alle
+
+export type KoulutusmoduuliClassName =
   Opiskeluoikeus['suoritukset'][number]['koulutusmoduuli']['$class']
 
 export function useInfoLink(className: KoulutusmoduuliClassName) {

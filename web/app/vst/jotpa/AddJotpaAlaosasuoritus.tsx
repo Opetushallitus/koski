@@ -6,17 +6,17 @@ import { VapaanSivistystyönJotpaKoulutuksenOsasuoritus } from '../../types/fi/o
 import { VapaanSivistystyönOpiskeluoikeus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeus'
 import { AddPaikallinenOsasuoritus } from '../common/AddPaikallinenOsasuoritus'
 import { laajuusOpintopisteissa } from '../common/constructors'
-import { VapaanSivistystyönJotpaKoulutuksenSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonJotpaKoulutuksenSuoritus'
 
 type AddJotpaOsasuoritusProps = CommonProps<{
   form: FormModel<VapaanSivistystyönOpiskeluoikeus>
   osasuoritusPath: FormOptic<
     VapaanSivistystyönOpiskeluoikeus,
-    VapaanSivistystyönJotpaKoulutuksenSuoritus
+    VapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus
   >
+  level: number
 }>
 
-export const AddJotpaOsasuoritus: React.FC<AddJotpaOsasuoritusProps> = (
+export const AddJotpaAlaosasuoritus: React.FC<AddJotpaOsasuoritusProps> = (
   props
 ) => (
   <AddPaikallinenOsasuoritus
@@ -31,7 +31,6 @@ export const AddJotpaOsasuoritus: React.FC<AddJotpaOsasuoritusProps> = (
       })
     }
     preferenceStoreName="vapaansivistystyonjotpakoulutuksenosasuoritus"
-    level={0}
-    testId={props.testId}
+    level={props.level}
   />
 )

@@ -373,6 +373,9 @@ const modifiesShape = <O extends object, T>(
   data: O
 ): boolean => {
   const value = getValue(optic)(data)
+  if (value === undefined) {
+    return true
+  }
   if (Array.isArray(value)) {
     const result = modify(value)
     if (!Array.isArray(result) || result.length !== value.length) {

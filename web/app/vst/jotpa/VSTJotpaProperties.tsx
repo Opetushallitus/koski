@@ -30,7 +30,7 @@ import {
   VSTSuoritus,
   VSTSuoritusPaikallisillaOsasuorituksilla
 } from '../common/types'
-import { AddJotpaOsasuoritus } from './AddJotpaOsasuoritus'
+import { AddJotpaAlaosasuoritus } from './AddJotpaAlaosasuoritus'
 
 type VSTJotpaPropertiesProps = {
   osasuoritusIndex: number
@@ -66,7 +66,7 @@ export const VSTJotpaProperties: React.FC<VSTJotpaPropertiesProps> = (
       <OsasuoritusTable
         testId={props.testId}
         editMode={props.form.editMode}
-        addNewOsasuoritusView={AddJotpaOsasuoritus}
+        addNewOsasuoritusView={AddJotpaAlaosasuoritus}
         addNewOsasuoritusViewProps={{
           form: props.form,
           osasuoritusPath: props.osasuoritusPath,

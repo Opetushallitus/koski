@@ -82,3 +82,5 @@ export const localize = (str: string): LocalizedString =>
     : lang === 'sv'
     ? Swedish({ sv: str })
     : English({ en: str })
+
+export const finnish = (fi: string): LocalizedString => Finnish({ fi })

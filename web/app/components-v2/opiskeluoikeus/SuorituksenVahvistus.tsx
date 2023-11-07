@@ -37,16 +37,21 @@ import { OpiskeluoikeusContext } from '../../appstate/opiskeluoikeus'
 
 // Suorituksen vahvitus field
 
-export type SuorituksenVahvistusFieldProps<T extends Opiskeluoikeus> =
-  CommonProps<{
-    form: FormModel<T>
-    suoritusPath: FormOptic<T, PäätasonSuoritusOf<T>>
-    organisaatio?: Oppilaitos | Koulutustoimija
-    disableAdd?: boolean
-  }>
+export type SuorituksenVahvistusFieldProps<
+  T extends Opiskeluoikeus,
+  S extends PäätasonSuoritusOf<T> = PäätasonSuoritusOf<T>
+> = CommonProps<{
+  form: FormModel<T>
+  suoritusPath: FormOptic<T, S>
+  organisaatio?: Oppilaitos | Koulutustoimija
+  disableAdd?: boolean
+}>
 
-export const SuorituksenVahvistusField = <T extends Opiskeluoikeus>(
-  props: SuorituksenVahvistusFieldProps<T>
+export const SuorituksenVahvistusField = <
+  T extends Opiskeluoikeus,
+  S extends PäätasonSuoritusOf<T> = PäätasonSuoritusOf<T>
+>(
+  props: SuorituksenVahvistusFieldProps<T, S>
 ): React.ReactElement => {
   const tila = viimeisinOpiskelujaksonTila(props.form.state.tila)
   const disableRemoval = Boolean(tila && isValmistuvaTerminaalitila(tila))
