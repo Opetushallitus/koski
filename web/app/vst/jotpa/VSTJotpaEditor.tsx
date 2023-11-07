@@ -35,6 +35,7 @@ import {
 import { kaikkiOsasuorituksetVahvistettu } from '../resolvers'
 import { AddJotpaOsasuoritus } from './AddJotpaOsasuoritus'
 import { osasuoritusToTableRow } from './VSTJotpaProperties'
+import { VSTLaajuudetYhteensä } from '../common/VSTLaajuudetYhteensa'
 
 // TODO TOR-2086: Tee tästä yleinen tyyppi, jonka kaikki vst-editorit spesfoivat
 export type VSTJotpaEditorProps = CommonProps<{
@@ -155,31 +156,13 @@ export const VSTJotpaEditor: React.FC<VSTJotpaEditorProps> = ({
             )
           }}
         />
-        <KeyValueTable>
-          <KeyValueRow
-            label="Yhteensä"
-            testId={`${päätasonSuoritus.testId}.yhteensa`}
-          >
-            {laajuudetYhteensä(päätasonSuoritus.suoritus)}
-          </KeyValueRow>
-        </KeyValueTable>
+        <VSTLaajuudetYhteensä
+          suoritus={päätasonSuoritus.suoritus}
+          testId={päätasonSuoritus.testId}
+        />
       </EditorContainer>
     </TreeNode>
   )
-}
-
-const laajuudetYhteensä = (pts: VapaanSivistystyönPäätasonSuoritus): string => {
-  const n = formatNumber(
-    sum(
-      (pts.osasuoritukset || []).map(
-        (os) => os.koulutusmoduuli.laajuus?.arvo || 0
-      )
-    )
-  )
-  const yksikkö =
-    pts.osasuoritukset?.[0]?.koulutusmoduuli.laajuus?.yksikkö.lyhytNimi || ''
-
-  return `${n} ${t(yksikkö)}`
 }
 
 export const createVstJotpaOpiskeluoikeusjakso = (
