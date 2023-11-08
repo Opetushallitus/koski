@@ -21,6 +21,8 @@ import { VSTJotpaEditor } from './jotpa/VSTJotpaEditor'
 import { vstNimi } from './resolvers'
 import { VSTOsasuoritus, isVSTOsasuoritusArvioinnilla } from './typeguards'
 import { VSTVapaatavoitteinenEditor } from './vapaatavoitteinen/VSTVapaatavoitteinenEditor'
+import { isVapaanSivistystyönLukutaitokoulutuksenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonLukutaitokoulutuksenSuoritus'
+import { VSTLukutaitoEditor } from './lukutaito/VSTLukutaitoEditor'
 
 type VSTEditorProps =
   AdaptedOpiskeluoikeusEditorProps<VapaanSivistystyönOpiskeluoikeus>
@@ -123,6 +125,21 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
         päätasonSuoritus
       ) && (
         <VSTVapaatavoitteinenEditor
+          form={form}
+          oppijaOid={props.oppijaOid}
+          päätasonSuoritus={päätasonSuoritus}
+          organisaatio={organisaatio}
+          suoritusVahvistettu={suoritusVahvistettu}
+          invalidatable={props.invalidatable}
+          onChangeSuoritus={setPäätasonSuoritus}
+          onCreateOsasuoritus={createOsasuoritus}
+        />
+      )}
+      {hasPäätasonsuoritusOf(
+        isVapaanSivistystyönLukutaitokoulutuksenSuoritus,
+        päätasonSuoritus
+      ) && (
+        <VSTLukutaitoEditor
           form={form}
           oppijaOid={props.oppijaOid}
           päätasonSuoritus={päätasonSuoritus}

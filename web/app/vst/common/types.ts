@@ -75,6 +75,15 @@ export type VSTPäätasonSuoritusOpintokokonaisuudella = Extract<
   }
 >
 
+export type VSTPäätasonSuoritusPerusteella = Extract<
+  VapaanSivistystyönPäätasonSuoritus,
+  {
+    koulutusmoduuli: {
+      perusteenDiaarinumero?: string
+    }
+  }
+>
+
 export const isVSTSuoritusPaikallisillaOsasuorituksilla = (
   s: VSTSuoritusPaikallisillaOsasuorituksilla
 ): s is VSTSuoritusPaikallisillaOsasuorituksilla =>

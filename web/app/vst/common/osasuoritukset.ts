@@ -1,4 +1,5 @@
 import { VapaanSivistystyönJotpaKoulutuksenSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonJotpaKoulutuksenSuoritus'
+import { VapaanSivistystyönLukutaitokoulutuksenSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonLukutaitokoulutuksenSuoritus'
 import { VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonVapaatavoitteisenKoulutuksenSuoritus'
 import { VSTSuoritusArvioinnilla } from './types'
 
@@ -12,5 +13,10 @@ export const isCompletedJotpaOsasuoritus =
 
 export const isCompletedVapaatavoitteinenOsasuoritus =
   (suoritus: VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus) =>
+  (rowIndex: number) =>
+    isArvioitu((suoritus.osasuoritukset || [])[rowIndex])
+
+export const isCompletedLukutaitokoulutuksenOsasuoritus =
+  (suoritus: VapaanSivistystyönLukutaitokoulutuksenSuoritus) =>
   (rowIndex: number) =>
     isArvioitu((suoritus.osasuoritukset || [])[rowIndex])

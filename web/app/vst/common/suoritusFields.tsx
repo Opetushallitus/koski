@@ -29,8 +29,13 @@ import { VapaanSivistystyönOpiskeluoikeus } from '../../types/fi/oph/koski/sche
 import { VapaanSivistystyönPäätasonSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonPaatasonSuoritus'
 import {
   VSTPäätasonSuoritusLaajuudella,
-  VSTPäätasonSuoritusOpintokokonaisuudella
+  VSTPäätasonSuoritusOpintokokonaisuudella,
+  VSTPäätasonSuoritusPerusteella
 } from './types'
+import {
+  PerusteEdit,
+  PerusteView
+} from '../../components-v2/opiskeluoikeus/PerusteField'
 
 export type SuoritusFieldProps<T extends VapaanSivistystyönPäätasonSuoritus> = {
   form: FormModel<VapaanSivistystyönOpiskeluoikeus>
@@ -82,6 +87,27 @@ export const Koulutusmoduuli = <T extends VapaanSivistystyönPäätasonSuoritus>
     testId={`${päätasonSuoritus.testId}.koulutusmoduuli.tunniste.koodiarvo`}
   >
     {päätasonSuoritus.suoritus.koulutusmoduuli.tunniste.koodiarvo}
+  </KeyValueRow>
+)
+
+export const Peruste = <T extends VSTPäätasonSuoritusPerusteella>({
+  form,
+  suoritus
+}: SuoritusFieldProps<T>) => (
+  <KeyValueRow label="Peruste" indent={2} testId={`${suoritus.testId}.peruste`}>
+    <FormField
+      form={form}
+      path={suoritus.path
+        .prop('koulutusmoduuli')
+        .prop('perusteenDiaarinumero')
+        .optional()}
+      view={PerusteView}
+      edit={PerusteEdit}
+      testId={`${suoritus.testId}.peruste.koulutusmoduuli`}
+      editProps={{
+        diaariNumero: suoritus.suoritus.tyyppi.koodiarvo
+      }}
+    />
   </KeyValueRow>
 )
 
