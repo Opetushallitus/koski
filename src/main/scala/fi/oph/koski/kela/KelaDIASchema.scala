@@ -28,7 +28,12 @@ case class KelaDIAOpiskeluoikeus(
 ) extends KelaOpiskeluoikeus {
   override def alkamispäivä: Option[LocalDate] = super.alkamispäivä
   override def päättymispäivä: Option[LocalDate] = super.päättymispäivä
-  def withSuorituksetVastaavuusKopioitu: KelaDIAOpiskeluoikeus = copy(
+
+  override def withCleanedData: KelaDIAOpiskeluoikeus = {
+    super.withCleanedData.asInstanceOf[KelaDIAOpiskeluoikeus].withSuorituksetVastaavuusKopioitu
+  }
+
+  private def withSuorituksetVastaavuusKopioitu: KelaDIAOpiskeluoikeus = copy(
     suoritukset = suoritukset.map(_.withOsasuorituksetVastaavuusKopioitu)
   )
   def withEmptyArvosana: KelaDIAOpiskeluoikeus = copy(

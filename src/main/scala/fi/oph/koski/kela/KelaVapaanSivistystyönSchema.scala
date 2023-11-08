@@ -59,6 +59,8 @@ case class KelaVapaanSivistystyönPäätasonSuoritus(
   toimipiste: Option[Toimipiste],
   vahvistus: Option[Vahvistus],
   osasuoritukset: Option[List[KelaVapaanSivistystyönOsasuoritus]],
+  @KoodistoKoodiarvo("vstoppivelvollisillesuunnattukoulutus")
+  @KoodistoKoodiarvo("vstlukutaitokoulutus")
   tyyppi: schema.Koodistokoodiviite,
   tila: Option[KelaKoodistokoodiviite],
 ) extends VstSuoritus {

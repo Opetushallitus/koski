@@ -1,7 +1,8 @@
 package fi.oph.koski.kela
 
 import fi.oph.koski.api.misc.OpiskeluoikeusTestMethodsAmmatillinen
-import fi.oph.koski.documentation.{EuropeanSchoolOfHelsinkiExampleData, ExamplesVapaaSivistystyöKotoutuskoulutus2022}
+import fi.oph.koski.documentation.ExampleData.opiskeluoikeusMitätöity
+import fi.oph.koski.documentation.{EuropeanSchoolOfHelsinkiExampleData, ExamplesPerusopetus, ExamplesVapaaSivistystyöKotoutuskoulutus2022}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.history.OpiskeluoikeusHistoryPatch
 import fi.oph.koski.http.KoskiErrorCategory
@@ -18,7 +19,6 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 
 import java.time.LocalDate
-
 import scala.language.reflectiveCalls
 
 class KelaSpec
@@ -144,6 +144,7 @@ class KelaSpec
         oppija.opiskeluoikeudet.length should be(2)
       }
     }
+
     "Palauttaa rikkinäisen opiskeluoikeuden" in {
       postHetu(KoskiSpecificMockOppijat.kelaRikkinäinenOpiskeluoikeus.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
         verifyResponseStatusOk()
@@ -295,7 +296,7 @@ class KelaSpec
   }
 
   "Kelan käyttöoikeudet" - {
-    "Suppeilla Kelan käyttöoikeuksilla ei nää kaikkia lisätietoja" in {
+    "Suppeilla Kelan käyttöoikeuksilla ei näe kaikkia lisätietoja" in {
       postHetu(KoskiSpecificMockOppijat.amis.hetu.get, user = MockUsers.kelaSuppeatOikeudet) {
         verifyResponseStatusOk()
         val opiskeluoikeudet = JsonSerializer.parse[KelaOppija](body).opiskeluoikeudet
@@ -308,6 +309,23 @@ class KelaSpec
         opiskeluoikeudet.length should be(1)
       }
     }
+    "Suppeilla Kelan käyttöoikeuksilla ei näe kaikkia lisätietoja historian kautta" in {
+      val ooOid = lastOpiskeluoikeusByHetu(KoskiSpecificMockOppijat.amis).oid.get
+
+      val ooVersio = getOpiskeluoikeudenVersio(ooOid, 1, user = MockUsers.kelaSuppeatOikeudet) {
+        verifyResponseStatusOk()
+        JsonSerializer.parse[KelaOppija](body)
+      }
+
+      val lisatiedot = ooVersio.opiskeluoikeudet.head.lisätiedot.get match {
+        case l: KelaAmmatillisenOpiskeluoikeudenLisätiedot => l
+      }
+
+      lisatiedot.hojks should equal(None)
+
+      ooVersio.opiskeluoikeudet.length should be(1)
+    }
+
     "Laajoilla Kelan käyttöoikeuksilla näkee kaikki KelaSchema:n lisätiedot" in {
       postHetu(KoskiSpecificMockOppijat.amis.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
         verifyResponseStatusOk()
@@ -377,6 +395,10 @@ class KelaSpec
       val opiskeluoikeus = lastOpiskeluoikeusByHetu(KoskiSpecificMockOppijat.amis)
 
       luoVersiohistoriaanRivi(KoskiSpecificMockOppijat.amis, opiskeluoikeus.asInstanceOf[AmmatillinenOpiskeluoikeus])
+
+      val slaveOppijanOpiskeluoikeus = lastOpiskeluoikeusByHetu(KoskiSpecificMockOppijat.slave.henkilö)
+
+      val mitätöitäväOo = putAndGetOpiskeluoikeus(ExamplesPerusopetus.ysinOpiskeluoikeusKesken, KoskiSpecificMockOppijat.tyhjä)
     }
 
     "Luovutuspalvelu-API" - {
@@ -418,6 +440,147 @@ class KelaSpec
         }
 
         ooVersio.opiskeluoikeudet(0).aikaleima should equal(Some(historia(0).aikaleima))
+      }
+
+      "Slave-oppijalle tallennetun opiskeluoikeuden versiohistoria voidaan hakea ja palautuu master-oppijan tietojen kanssa" in {
+        val historia = getVersiohistoria(historiaFixture.slaveOppijanOpiskeluoikeus.oid.get) {
+          verifyResponseStatusOk()
+          JsonSerializer.parse[List[KelaOpiskeluoikeusHistoryPatch]](body)
+        }
+
+        val ooVersio = getOpiskeluoikeudenVersio(historiaFixture.slaveOppijanOpiskeluoikeus.oid.get, historia.last.versionumero) {
+          verifyResponseStatusOk()
+          JsonSerializer.parse[KelaOppija](body)
+        }
+
+        val masterOppija = KoskiSpecificMockOppijat.master
+
+        val expectedHenkilo = Henkilo(
+          oid = masterOppija.oid,
+          hetu = masterOppija.hetu,
+          syntymäaika = masterOppija.syntymäaika,
+          etunimet = masterOppija.etunimet,
+          sukunimi = masterOppija.sukunimi,
+          kutsumanimi = masterOppija.kutsumanimi
+        )
+
+        ooVersio.henkilö should equal(expectedHenkilo)
+      }
+
+      "Ei palauta mitätöidyn opiskeluoikeuden tietoja" in {
+        getVersiohistoria(historiaFixture.mitätöitäväOo.oid.get) {
+          verifyResponseStatusOk()
+        }
+
+        getOpiskeluoikeudenVersio(historiaFixture.mitätöitäväOo.oid.get, 1) {
+          verifyResponseStatusOk()
+        }
+
+        val mitätöitynä = historiaFixture.mitätöitäväOo.copy(tila =
+          historiaFixture.mitätöitäväOo.tila.copy(opiskeluoikeusjaksot =
+            historiaFixture.mitätöitäväOo.tila.opiskeluoikeusjaksot :+ NuortenPerusopetuksenOpiskeluoikeusjakso(alku = LocalDate.now, opiskeluoikeusMitätöity)
+          )
+        )
+
+        putOpiskeluoikeus(mitätöitynä, KoskiSpecificMockOppijat.tyhjä) {
+          verifyResponseStatusOk()
+        }
+
+        getVersiohistoria(historiaFixture.mitätöitäväOo.oid.get) {
+          verifyResponseStatus(404, Nil)
+        }
+
+        getOpiskeluoikeudenVersio(historiaFixture.mitätöitäväOo.oid.get, 1) {
+          verifyResponseStatus(404, Nil)
+        }
+       }
+
+      "Jos opiskeluoikeus voidaan hakea hetulla, saadaan sama opiskeluoikeus myös historian kautta" in {
+        var iteraatioLkm = 0
+
+        val kaikkiHetut: Seq[String] = KoskiSpecificMockOppijat.defaultOppijat
+          .map(_.henkilö.hetu)
+          .filterNot(_.isEmpty)
+          .map(_.get)
+          .toSet
+          .toSeq
+
+        kaikkiHetut
+          .foreach(hetu => {
+            withClue(s"${hetu}") {
+              val oppija = postHetu(hetu, user = MockUsers.kelaLaajatOikeudet) {
+                if (response.status == 200) {
+                  Some(JsonSerializer.parse[KelaOppija](body))
+                } else {
+                  None
+                }
+              }
+
+              oppija.map(_.opiskeluoikeudet.filterNot(_.oid.isEmpty).map(oo => {
+                val oppijaHistorianKautta = getOpiskeluoikeudenVersio(oo.oid.get, oo.versionumero.get) {
+                  verifyResponseStatusOk()
+                  JsonSerializer.parse[KelaOppija](body)
+                }
+
+                val ooHistorianKautta = oppijaHistorianKautta.opiskeluoikeudet(0)
+
+                ooHistorianKautta should equal(oo)
+
+                iteraatioLkm = iteraatioLkm + 1
+              }))
+            }
+          })
+
+        iteraatioLkm should be >(130)
+      }
+
+      "Jos opiskeluoikeuden historia voidaan hakea, saadaan sama opiskeluoikeus haettua myös Kelan oppija-API:lla" in {
+        var iteraatioLkm = 0
+        koskeenTallennetutOppijat
+          .foreach(oppija => {
+            val henkilö = oppija.henkilö.asInstanceOf[Henkilötiedot]
+
+            oppija.opiskeluoikeudet.filter(_.oid.isDefined).foreach(oo => {
+              val henkilöTunniste = henkilö.hetu.getOrElse(henkilö.sukunimi + henkilö.etunimet)
+              val ooOid = oo.oid.get
+              val ooVersio = oo.versionumero.get
+              val ooTunniste = oo.tyyppi.koodiarvo + " - " + ooOid
+
+              withClue(s"${henkilöTunniste} - ${ooTunniste}") {
+                val maybeOppijaHistorianKautta = getOpiskeluoikeudenVersio(oo.oid.get, ooVersio) {
+                  if (response.status == 200) {
+                    Some(JsonSerializer.parse[KelaOppija](body))
+                  } else {
+                    None
+                  }
+                }
+
+                maybeOppijaHistorianKautta match {
+                  case Some(oppijaHistorianKautta) => {
+                    // Kela-API:n kautta pystyy hakemaan vain hetullisia oppijoita, joten historiankaan kautta ei muun pitäisi onnistua
+                    oppijaHistorianKautta.henkilö.hetu.isDefined should be(true)
+
+                    val ooHistorianKautta = oppijaHistorianKautta.opiskeluoikeudet(0)
+
+                    val oo = postHetu(oppijaHistorianKautta.henkilö.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+                      verifyResponseStatusOk()
+                      JsonSerializer.parse[KelaOppija](body)
+                    }
+                      .opiskeluoikeudet
+                      .find(_.oid == ooHistorianKautta.oid)
+                      .get
+
+                    oo should equal(ooHistorianKautta)
+
+                    iteraatioLkm = iteraatioLkm + 1
+                  }
+                  case _ =>
+                }
+              }
+            })
+          })
+
+        iteraatioLkm should be >(130)
       }
     }
 

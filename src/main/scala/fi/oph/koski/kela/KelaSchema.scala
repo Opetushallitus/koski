@@ -1,6 +1,5 @@
 package fi.oph.koski.kela
 
-import com.typesafe.config.{Config, ConfigList}
 import fi.oph.koski.henkilo.OppijaHenkilö
 import fi.oph.koski.schema
 import fi.oph.koski.schema.annotation.{Deprecated, KoodistoUri, UnitOfMeasure}
@@ -9,40 +8,10 @@ import fi.oph.scalaschema.{ClassSchema, SchemaToJson}
 import org.json4s.JValue
 
 import java.time.{LocalDate, LocalDateTime}
-import scala.collection.JavaConverters._
 
 object KelaSchema {
   lazy val schemaJson: JValue =
     SchemaToJson.toJsonSchema(schema.KoskiSchema.createSchema(classOf[KelaOppija]).asInstanceOf[ClassSchema])
-
-  val schemassaTuetutOpiskeluoikeustyypit: List[String] = List(
-    "aikuistenperusopetus",
-    "ammatillinenkoulutus",
-    "ibtutkinto",
-    "diatutkinto",
-    "internationalschool",
-    "lukiokoulutus",
-    "luva",
-    "perusopetukseenvalmistavaopetus",
-    "perusopetuksenlisaopetus",
-    "perusopetus",
-    "ylioppilastutkinto",
-    "vapaansivistystyonkoulutus",
-    "tuva",
-    "muukuinsaanneltykoulutus",
-    "europeanschoolofhelsinki",
-    "ebtutkinto",
-  ).filter(_.nonEmpty)
-
-  def kelallePalautettavatOpiskeluoikeustyypit(config: Config): List[String] = {
-    val configKey = "kela.palautettavatOpiskeluoikeustyypit"
-    if (config.hasPath(configKey)) {
-      val allowList = config.getList(configKey)
-      schemassaTuetutOpiskeluoikeustyypit.intersect(allowList.unwrapped().asScala.toList)
-    } else {
-      schemassaTuetutOpiskeluoikeustyypit
-    }
-  }
 }
 
 case class KelaOppija(
@@ -91,8 +60,10 @@ trait KelaOpiskeluoikeus {
   @Deprecated("Ei palauteta Kela-API:ssa. Kenttä on näkyvissä skeemassa vain teknisistä syistä.")
   def organisaatiohistoria: Option[List[OrganisaatioHistoria]]
 
-  def withOrganisaatiohistoria: KelaOpiskeluoikeus
-  def withEmptyArvosana: KelaOpiskeluoikeus
+  def withCleanedData: KelaOpiskeluoikeus = this.withOrganisaatiohistoria.withEmptyArvosana
+
+  protected def withOrganisaatiohistoria: KelaOpiskeluoikeus
+  protected def withEmptyArvosana: KelaOpiskeluoikeus
 }
 
 case class SisältäväOpiskeluoikeus(
