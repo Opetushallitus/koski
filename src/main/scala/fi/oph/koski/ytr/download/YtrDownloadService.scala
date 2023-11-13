@@ -275,7 +275,7 @@ class YtrDownloadService(
         result match {
           case Left(error) =>
             val triesLeft = maxTimes - tries
-            logger.warn(s"YTR-datan tallennus epäonnistui (syntymäkuukausi ${oppija.birthMonth}, yrityksiä jäljellä: $triesLeft): ${error.errorString.getOrElse("-")}s")
+            logger.warn(s"YTR-datan tallennus epäonnistui (syntymäkuukausi ${oppija.birthMonth}, yrityksiä jäljellä: $triesLeft): ${error.errorString.getOrElse("-")}")
             if (sleepBetweenTriesMs > 0) Thread.sleep(sleepBetweenTriesMs)
             if (triesLeft == 0) onError()
           case _ => timed("tallennaAlkuperäinenJson", thresholdMs = 1) {
