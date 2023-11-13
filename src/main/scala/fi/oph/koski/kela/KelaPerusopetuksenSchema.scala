@@ -62,7 +62,7 @@ case class KelaPerusopetuksenSuoritus(
   tila: Option[KelaKoodistokoodiviite],
   alkamispäivä: Option[LocalDate],
   jääLuokalle: Option[Boolean],
-  omanÄidinkielenOpinnot: Option[OmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina] = None
+  omanÄidinkielenOpinnot: Option[OmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina]
 ) extends Suoritus {
   def withHyväksyntämerkinnälläKorvattuArvosana: KelaPerusopetuksenSuoritus = copy(
     osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))

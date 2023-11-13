@@ -50,9 +50,9 @@ case class KelaLukionPäätasonSuoritus(
   oppimäärä: Option[KelaKoodistokoodiviite],
   vahvistus: Option[Vahvistus],
   osasuoritukset: Option[List[KelaLukionOsasuoritus]],
-  omanÄidinkielenOpinnot: Option[KelaLukionOmanÄidinkielenOpinnot] = None,
-  puhviKoe: Option[KelaPuhviKoe2019] = None,
-  suullisenKielitaidonKokeet: Option[List[KelaSuullisenKielitaidonKoe2019]] = None,
+  omanÄidinkielenOpinnot: Option[KelaLukionOmanÄidinkielenOpinnot],
+  puhviKoe: Option[KelaPuhviKoe2019],
+  suullisenKielitaidonKokeet: Option[List[KelaSuullisenKielitaidonKoe2019]],
   tyyppi: schema.Koodistokoodiviite,
   tila: Option[KelaKoodistokoodiviite]
 ) extends Suoritus {
@@ -107,10 +107,10 @@ case class KelaLukionOmanÄidinkielenOpintojenOsasuoritus(
   tyyppi: schema.Koodistokoodiviite,
   @Title("Kurssi")
   koulutusmoduuli: KelaLukionOmanÄidinkielenOpinto,
-  arviointi: Option[List[KelaLukionOsasuorituksenArviointi]] = None,
+  arviointi: Option[List[KelaLukionOsasuorituksenArviointi]],
   @ComplexObject
   @Hidden
-  tunnustettu: Option[OsaamisenTunnustaminen] = None,
+  tunnustettu: Option[OsaamisenTunnustaminen],
 ) extends Osasuoritus {
   def withHyväksyntämerkinnälläKorvattuArvosana: KelaLukionOmanÄidinkielenOpintojenOsasuoritus = copy(
     arviointi = arviointi.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),

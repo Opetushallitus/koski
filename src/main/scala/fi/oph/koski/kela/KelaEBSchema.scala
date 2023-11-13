@@ -56,7 +56,7 @@ case class KelaEBTutkinnonSuoritus(
   @Title("Koulutus")
   @KoodistoKoodiarvo("ebtutkinto")
   tyyppi: schema.Koodistokoodiviite,
-  override val osasuoritukset: Option[List[KelaEBTutkinnonOsasuoritus]] = None
+  override val osasuoritukset: Option[List[KelaEBTutkinnonOsasuoritus]]
 ) extends Suoritus {
   override def withHyväksyntämerkinnälläKorvattuArvosana: KelaEBTutkinnonSuoritus = copy(
     osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
@@ -68,7 +68,7 @@ case class KelaEBTutkinnonOsasuoritus(
   koulutusmoduuli: KelaESHSecondaryGradeOppiaine,
   @KoodistoKoodiarvo("ebtutkinnonosasuoritus")
   tyyppi: schema.Koodistokoodiviite,
-  osasuoritukset: Option[List[KelaEBOppiaineenAlaosasuoritus]] = None
+  osasuoritukset: Option[List[KelaEBOppiaineenAlaosasuoritus]]
 ) extends Osasuoritus {
   override def withHyväksyntämerkinnälläKorvattuArvosana: KelaEBTutkinnonOsasuoritus = copy(osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)))
 }
@@ -77,7 +77,7 @@ case class KelaEBTutkinnonOsasuoritus(
 case class KelaEBOppiaineenAlaosasuoritus(
   @Title("Arviointikomponentti")
   koulutusmoduuli: KelaEBOppiaineKomponentti,
-  arviointi: Option[List[KelaEBArviointi]] = None,
+  arviointi: Option[List[KelaEBArviointi]],
   @KoodistoKoodiarvo("ebtutkinnonalaosasuoritus")
   tyyppi: schema.Koodistokoodiviite
 ) extends Osasuoritus {

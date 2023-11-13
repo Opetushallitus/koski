@@ -194,8 +194,8 @@ case class Koulutustoimija(
 
 case class Toimipiste(
   oid: String,
-  nimi: Option[schema.LocalizedString] = None,
-  kotipaikka: Option[KelaKoodistokoodiviite] = None
+  nimi: Option[schema.LocalizedString],
+  kotipaikka: Option[KelaKoodistokoodiviite]
 )
 
 case class KelaLaajuus(arvo: Double, yksikkö: KelaKoodistokoodiviite)
@@ -223,7 +223,7 @@ case class KelaMaksuttomuus(
 case class KelaTehostetunTuenPäätös(
   alku: LocalDate,
   loppu: Option[LocalDate],
-  tukimuodot: Option[List[KelaKoodistokoodiviite]] = None
+  tukimuodot: Option[List[KelaKoodistokoodiviite]]
 ) extends KelaJakso
 
 trait KelaJakso {
@@ -242,8 +242,8 @@ case class KelaOikeuttaMaksuttomuuteenPidennetty(
 @ReadFlattened
 case class KelaOsaamisalajakso(
   osaamisala: KelaKoodistokoodiviite,
-  alku: Option[LocalDate] = None,
-  loppu: Option[LocalDate] = None
+  alku: Option[LocalDate],
+  loppu: Option[LocalDate]
 )
 
 case class KelaOpiskeluvalmiuksiaTukevienOpintojenJakso(
