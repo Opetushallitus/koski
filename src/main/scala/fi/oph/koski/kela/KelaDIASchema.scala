@@ -36,8 +36,8 @@ case class KelaDIAOpiskeluoikeus(
   private def withSuorituksetVastaavuusKopioitu: KelaDIAOpiskeluoikeus = copy(
     suoritukset = suoritukset.map(_.withOsasuorituksetVastaavuusKopioitu)
   )
-  def withEmptyArvosana: KelaDIAOpiskeluoikeus = copy(
-    suoritukset = suoritukset.map(_.withEmptyArvosana)
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaDIAOpiskeluoikeus = copy(
+    suoritukset = suoritukset.map(_.withHyväksyntämerkinnälläKorvattuArvosana)
   )
   override def withOrganisaatiohistoria: KelaOpiskeluoikeus = copy(
     organisaatioHistoria = organisaatiohistoria,
@@ -64,8 +64,8 @@ case class KelaDIAPäätasonSuoritus(
   def withOsasuorituksetVastaavuusKopioitu: KelaDIAPäätasonSuoritus = copy(
     osasuoritukset = osasuoritukset.map(os => os.map(_.withVastaavuusKopioitu))
   )
-  def withEmptyArvosana = copy(
-    osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana))
+  def withHyväksyntämerkinnälläKorvattuArvosana = copy(
+    osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
   )
 }
 
@@ -84,9 +84,9 @@ case class KelaDIAOsasuoritus(
     vastaavuusTodistuksenTiedot = vastaavuustodistuksenTiedot,
     vastaavuustodistuksenTiedot = None
   )
-  def withEmptyArvosana: KelaDIAOsasuoritus = copy(
-    arviointi = arviointi.map(_.map(_.withEmptyArvosana)),
-    osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana))
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaDIAOsasuoritus = copy(
+    arviointi = arviointi.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
+    osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
   )
 }
 
@@ -95,7 +95,7 @@ case class KelaDIAOsasuorituksenArvionti(
   hyväksytty: Option[Boolean],
   päivä: Option[LocalDate]
 ) extends OsasuorituksenArviointi {
-  def withEmptyArvosana: KelaDIAOsasuorituksenArvionti = copy(
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaDIAOsasuorituksenArvionti = copy(
     arvosana = None,
     hyväksytty = Some(true)
   )

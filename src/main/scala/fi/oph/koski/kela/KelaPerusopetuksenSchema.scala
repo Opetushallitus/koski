@@ -28,8 +28,8 @@ case class KelaPerusopetuksenOpiskeluoikeus(
   override def alkamispäivä: Option[LocalDate] = super.alkamispäivä
   override def päättymispäivä: Option[LocalDate] = super.päättymispäivä
   override def arvioituPäättymispäivä = None
-  def withEmptyArvosana: KelaPerusopetuksenOpiskeluoikeus = copy(
-    suoritukset = suoritukset.map(_.withEmptyArvosana)
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaPerusopetuksenOpiskeluoikeus = copy(
+    suoritukset = suoritukset.map(_.withHyväksyntämerkinnälläKorvattuArvosana)
   )
   override def withOrganisaatiohistoria: KelaOpiskeluoikeus = copy(
     organisaatioHistoria = organisaatiohistoria,
@@ -64,8 +64,8 @@ case class KelaPerusopetuksenSuoritus(
   jääLuokalle: Option[Boolean],
   omanÄidinkielenOpinnot: Option[OmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina] = None
 ) extends Suoritus {
-  def withEmptyArvosana: KelaPerusopetuksenSuoritus = copy(
-    osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana))
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaPerusopetuksenSuoritus = copy(
+    osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
   )
 }
 
@@ -78,8 +78,8 @@ case class KelaPerusopetuksenOsasuoritus(
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   yksilöllistettyOppimäärä: Option[Boolean]
 ) extends Osasuoritus with YksilöllistettyOppimäärä {
-  def withEmptyArvosana: KelaPerusopetuksenOsasuoritus = copy(
-    arviointi = arviointi.map(_.map(_.withEmptyArvosana))
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaPerusopetuksenOsasuoritus = copy(
+    arviointi = arviointi.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
   )
 }
 
@@ -88,7 +88,7 @@ case class KelaPerusopetuksenOsasuorituksenArviointi(
   hyväksytty: Option[Boolean],
   päivä: Option[LocalDate]
 ) extends OsasuorituksenArviointi {
-  def withEmptyArvosana: KelaPerusopetuksenOsasuorituksenArviointi = copy(
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaPerusopetuksenOsasuorituksenArviointi = copy(
     arvosana = None,
     hyväksytty = arvosana.map(schema.YleissivistävänKoulutuksenArviointi.hyväksytty)
   )

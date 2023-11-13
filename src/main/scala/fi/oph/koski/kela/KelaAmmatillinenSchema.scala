@@ -30,8 +30,8 @@ case class KelaAmmatillinenOpiskeluoikeus(
 ) extends KelaOpiskeluoikeus {
   override def alkamispäivä: Option[LocalDate] = super.alkamispäivä
   override def päättymispäivä: Option[LocalDate] = super.päättymispäivä
-  def withEmptyArvosana: KelaAmmatillinenOpiskeluoikeus = copy(
-    suoritukset = suoritukset.map(_.withEmptyArvosana)
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaAmmatillinenOpiskeluoikeus = copy(
+    suoritukset = suoritukset.map(_.withHyväksyntämerkinnälläKorvattuArvosana)
   )
   override def withOrganisaatiohistoria: KelaOpiskeluoikeus = copy(
     organisaatioHistoria = organisaatiohistoria,
@@ -91,8 +91,8 @@ case class KelaAmmatillinenPäätasonSuoritus(
   tutkinto: Option[Tutkinto],               // Näyttötutkintoon valmistava
   päättymispäivä: Option[LocalDate]         // Näyttötutkintoon valmistava
 ) extends Suoritus {
-  def withEmptyArvosana = copy(
-    osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana))
+  def withHyväksyntämerkinnälläKorvattuArvosana = copy(
+    osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
   )
 }
 
@@ -119,10 +119,10 @@ case class KelaAmmatillinenOsasuoritus(
   @KoodistoUri("ammatillisensuorituksenkorotus")
   korotettu: Option[KelaKoodistokoodiviite],
 ) extends Osasuoritus {
-  def withEmptyArvosana: KelaAmmatillinenOsasuoritus = copy(
-    arviointi = arviointi.map(_.map(_.withEmptyArvosana)),
-    osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana)),
-    näyttö = näyttö.map(_.withEmptyArvosana)
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaAmmatillinenOsasuoritus = copy(
+    arviointi = arviointi.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
+    osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
+    näyttö = näyttö.map(_.withHyväksyntämerkinnälläKorvattuArvosana)
   )
 }
 
@@ -131,7 +131,7 @@ case class KelaAmmatillisenOsasuorituksenArviointi(
   hyväksytty: Option[Boolean],
   päivä: Option[LocalDate]
 ) extends OsasuorituksenArviointi {
-  def withEmptyArvosana: KelaAmmatillisenOsasuorituksenArviointi = copy(
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaAmmatillisenOsasuorituksenArviointi = copy(
     arvosana = None,
     hyväksytty = arvosana.map(schema.AmmatillinenKoodistostaLöytyväArviointi.hyväksytty)
   )
@@ -168,7 +168,7 @@ case class Näyttö(
   työssäoppimisenYhteydessä: Boolean,
   arviointi: Option[NäytönArviointi],
 ) {
-  def withEmptyArvosana: Näyttö = copy(arviointi = arviointi.map(_.withEmptyArvosana))
+  def withHyväksyntämerkinnälläKorvattuArvosana: Näyttö = copy(arviointi = arviointi.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
 }
 
 case class NäytönSuorituspaikka(
@@ -186,8 +186,8 @@ case class NäytönArviointi(
   arvosana: Option[schema.Koodistokoodiviite],
   hyväksytty: Option[Boolean],
   päivä: LocalDate,
-) {
-  def withEmptyArvosana: NäytönArviointi = copy(
+) extends SisältääHyväksyntämerkinnälläKorvatunArvosanan {
+  def withHyväksyntämerkinnälläKorvattuArvosana: NäytönArviointi = copy(
     arvosana = None,
     hyväksytty = arvosana.map(schema.AmmatillinenKoodistostaLöytyväArviointi.hyväksytty)
   )

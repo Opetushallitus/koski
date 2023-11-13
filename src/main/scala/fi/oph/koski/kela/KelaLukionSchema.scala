@@ -26,8 +26,8 @@ case class KelaLukionOpiskeluoikeus(
 ) extends KelaOpiskeluoikeus {
   override def alkamispäivä: Option[LocalDate] = super.alkamispäivä
   override def päättymispäivä: Option[LocalDate] = super.päättymispäivä
-  def withEmptyArvosana: KelaLukionOpiskeluoikeus = copy(
-    suoritukset = suoritukset.map(_.withEmptyArvosana)
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaLukionOpiskeluoikeus = copy(
+    suoritukset = suoritukset.map(_.withHyväksyntämerkinnälläKorvattuArvosana)
   )
   override def withOrganisaatiohistoria: KelaOpiskeluoikeus = copy(
     organisaatioHistoria = organisaatiohistoria,
@@ -56,11 +56,11 @@ case class KelaLukionPäätasonSuoritus(
   tyyppi: schema.Koodistokoodiviite,
   tila: Option[KelaKoodistokoodiviite]
 ) extends Suoritus {
-  def withEmptyArvosana: KelaLukionPäätasonSuoritus = copy(
-    osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana)),
-    omanÄidinkielenOpinnot = omanÄidinkielenOpinnot.map(_.withEmptyArvosana),
-    puhviKoe = puhviKoe.map(_.withEmptyArvosana),
-    suullisenKielitaidonKokeet = suullisenKielitaidonKokeet.map(_.map(_.withEmptyArvosana))
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaLukionPäätasonSuoritus = copy(
+    osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
+    omanÄidinkielenOpinnot = omanÄidinkielenOpinnot.map(_.withHyväksyntämerkinnälläKorvattuArvosana),
+    puhviKoe = puhviKoe.map(_.withHyväksyntämerkinnälläKorvattuArvosana),
+    suullisenKielitaidonKokeet = suullisenKielitaidonKokeet.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
   )
 }
 
@@ -68,8 +68,8 @@ case class KelaPuhviKoe2019(
   arvosana: Option[schema.Koodistokoodiviite],
   päivä: LocalDate,
   hyväksytty: Option[Boolean]
-) {
-  def withEmptyArvosana: KelaPuhviKoe2019 = copy(
+) extends SisältääHyväksyntämerkinnälläKorvatunArvosanan {
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaPuhviKoe2019 = copy(
     arvosana = None,
     hyväksytty = arvosana.map(schema.YleissivistävänKoulutuksenArviointi.hyväksytty)
   )
@@ -81,8 +81,8 @@ case class KelaSuullisenKielitaidonKoe2019(
   taitotaso: Option[KelaKoodistokoodiviite],
   päivä: LocalDate,
   hyväksytty: Option[Boolean]
-) {
-  def withEmptyArvosana: KelaSuullisenKielitaidonKoe2019 = copy(
+) extends SisältääHyväksyntämerkinnälläKorvatunArvosanan {
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaSuullisenKielitaidonKoe2019 = copy(
     arvosana = None,
     hyväksytty = arvosana.map(schema.YleissivistävänKoulutuksenArviointi.hyväksytty)
   )
@@ -94,11 +94,11 @@ case class KelaLukionOmanÄidinkielenOpinnot(
   laajuus: Option[schema.LaajuusOpintopisteissäTaiKursseissa],
   osasuoritukset: Option[List[KelaLukionOmanÄidinkielenOpintojenOsasuoritus]],
   hyväksytty: Option[Boolean],
-) {
-  def withEmptyArvosana: KelaLukionOmanÄidinkielenOpinnot = copy(
+) extends SisältääHyväksyntämerkinnälläKorvatunArvosanan {
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaLukionOmanÄidinkielenOpinnot = copy(
     arvosana = None,
     hyväksytty = arvosana.map(schema.YleissivistävänKoulutuksenArviointi.hyväksytty),
-    osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana)),
+    osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
   )
 }
 
@@ -112,8 +112,8 @@ case class KelaLukionOmanÄidinkielenOpintojenOsasuoritus(
   @Hidden
   tunnustettu: Option[OsaamisenTunnustaminen] = None,
 ) extends Osasuoritus {
-  def withEmptyArvosana: KelaLukionOmanÄidinkielenOpintojenOsasuoritus = copy(
-    arviointi = arviointi.map(_.map(_.withEmptyArvosana)),
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaLukionOmanÄidinkielenOpintojenOsasuoritus = copy(
+    arviointi = arviointi.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
   )
 }
 
@@ -133,9 +133,9 @@ case class KelaLukionOsasuoritus(
   suoritettuLukiodiplomina: Option[Boolean],
   suoritettuSuullisenaKielikokeena: Option[Boolean]
 ) extends Osasuoritus {
-  def withEmptyArvosana: KelaLukionOsasuoritus = copy(
-    arviointi = arviointi.map(_.map(_.withEmptyArvosana)),
-    osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana))
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaLukionOsasuoritus = copy(
+    arviointi = arviointi.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
+    osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
   )
 }
 
@@ -144,7 +144,7 @@ case class KelaLukionOsasuorituksenArviointi(
   hyväksytty: Option[Boolean],
   päivä: Option[LocalDate]
 ) extends OsasuorituksenArviointi {
-  def withEmptyArvosana: KelaLukionOsasuorituksenArviointi = copy(
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaLukionOsasuorituksenArviointi = copy(
     arvosana = None,
     hyväksytty = arvosana.map(schema.YleissivistävänKoulutuksenArviointi.hyväksytty)
   )

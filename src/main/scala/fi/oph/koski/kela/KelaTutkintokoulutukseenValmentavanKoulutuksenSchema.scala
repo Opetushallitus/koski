@@ -29,8 +29,8 @@ case class KelaTutkintokoulutukseenValmentavanOpiskeluoikeus(
 ) extends KelaOpiskeluoikeus {
   override def alkamispäivä: Option[LocalDate] = super.alkamispäivä
   override def päättymispäivä: Option[LocalDate] = super.päättymispäivä
-  def withEmptyArvosana: KelaTutkintokoulutukseenValmentavanOpiskeluoikeus = copy(
-    suoritukset = suoritukset.map(_.withEmptyArvosana)
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaTutkintokoulutukseenValmentavanOpiskeluoikeus = copy(
+    suoritukset = suoritukset.map(_.withHyväksyntämerkinnälläKorvattuArvosana)
   )
   override def withOrganisaatiohistoria: KelaOpiskeluoikeus = copy(
     organisaatioHistoria = organisaatiohistoria,
@@ -76,8 +76,8 @@ case class KelaTuvaPäätasonSuoritus(
   override val osasuoritukset: Option[List[KelaTuvaOsasuoritus]],
   tila: Option[KelaKoodistokoodiviite],
 ) extends Suoritus {
-  def withEmptyArvosana: KelaTuvaPäätasonSuoritus = copy(
-    osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana))
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaTuvaPäätasonSuoritus = copy(
+    osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
   )
 }
 
@@ -90,9 +90,9 @@ case class KelaTuvaOsasuoritus(
   tunnustettu: Option[OsaamisenTunnustaminen],
   tila: Option[KelaKoodistokoodiviite],
 ) extends Osasuoritus {
-  def withEmptyArvosana: KelaTuvaOsasuoritus = copy(
-    arviointi = arviointi.map(_.map(_.withEmptyArvosana)),
-    osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana))
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaTuvaOsasuoritus = copy(
+    arviointi = arviointi.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
+    osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
   )
 }
 
@@ -101,7 +101,7 @@ case class KelaTuvaOsasuorituksenArvionti(
   hyväksytty: Option[Boolean],
   päivä: Option[LocalDate]
 ) extends OsasuorituksenArviointi {
-  def withEmptyArvosana: KelaTuvaOsasuorituksenArvionti = copy(
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaTuvaOsasuorituksenArvionti = copy(
     arvosana = None,
     hyväksytty = arvosana.map(
       schema.SanallinenTutkintokoulutukseenValmentavanKoulutuksenSuorituksenArviointi.hyväksytty

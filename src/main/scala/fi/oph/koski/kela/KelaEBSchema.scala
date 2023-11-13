@@ -21,7 +21,7 @@ case class KelaEBOpiskeluoikeus(
   organisaatioHistoria: Option[List[OrganisaatioHistoria]],
   organisaatiohistoria: Option[List[OrganisaatioHistoria]],
 ) extends KelaOpiskeluoikeus {
-  def withEmptyArvosana: KelaEBOpiskeluoikeus = copy(suoritukset = suoritukset.map(_.withEmptyArvosana))
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaEBOpiskeluoikeus = copy(suoritukset = suoritukset.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
 
   override def withOrganisaatiohistoria: KelaEBOpiskeluoikeus = copy(
     organisaatioHistoria = organisaatiohistoria,
@@ -58,8 +58,8 @@ case class KelaEBTutkinnonSuoritus(
   tyyppi: schema.Koodistokoodiviite,
   override val osasuoritukset: Option[List[KelaEBTutkinnonOsasuoritus]] = None
 ) extends Suoritus {
-  override def withEmptyArvosana: KelaEBTutkinnonSuoritus = copy(
-    osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana))
+  override def withHyväksyntämerkinnälläKorvattuArvosana: KelaEBTutkinnonSuoritus = copy(
+    osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
   )
 }
 
@@ -70,7 +70,7 @@ case class KelaEBTutkinnonOsasuoritus(
   tyyppi: schema.Koodistokoodiviite,
   osasuoritukset: Option[List[KelaEBOppiaineenAlaosasuoritus]] = None
 ) extends Osasuoritus {
-  override def withEmptyArvosana: KelaEBTutkinnonOsasuoritus = copy(osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana)))
+  override def withHyväksyntämerkinnälläKorvattuArvosana: KelaEBTutkinnonOsasuoritus = copy(osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)))
 }
 
 @Title("EB-oppiaineen alaosasuoritus")
@@ -81,8 +81,8 @@ case class KelaEBOppiaineenAlaosasuoritus(
   @KoodistoKoodiarvo("ebtutkinnonalaosasuoritus")
   tyyppi: schema.Koodistokoodiviite
 ) extends Osasuoritus {
-  override def withEmptyArvosana: KelaEBOppiaineenAlaosasuoritus = copy(
-    arviointi = arviointi.map(_.map(_.withEmptyArvosana))
+  override def withHyväksyntämerkinnälläKorvattuArvosana: KelaEBOppiaineenAlaosasuoritus = copy(
+    arviointi = arviointi.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
   )
 }
 
@@ -102,7 +102,7 @@ case class KelaEBArviointi(
   päivä: Option[LocalDate],
   hyväksytty: Option[Boolean]
 ) extends OsasuorituksenArviointi {
-  override def withEmptyArvosana: KelaEBArviointi = copy(
+  override def withHyväksyntämerkinnälläKorvattuArvosana: KelaEBArviointi = copy(
     arvosana = None,
     hyväksytty = arvosana.map(schema.EuropeanSchoolOfHelsinkiArviointi.hyväksytty)
   )

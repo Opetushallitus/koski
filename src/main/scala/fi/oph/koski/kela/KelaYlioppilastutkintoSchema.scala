@@ -83,7 +83,7 @@ case class KelaYlioppilastutkinnonOpiskeluoikeus(
   override def organisaatiohistoria = None
   override def aikaleima = None
 
-  override def withEmptyArvosana: KelaOpiskeluoikeus = this
+  override def withHyväksyntämerkinnälläKorvattuArvosana: KelaOpiskeluoikeus = this
   override def withOrganisaatiohistoria: KelaOpiskeluoikeus = this
 }
 
@@ -98,7 +98,7 @@ case class KelaYlioppilastutkinnonPäätasonSuoritus(
   alkamispäivä: Option[LocalDate],
   pakollisetKokeetSuoritettu: Option[Boolean],
 ) extends Suoritus {
-  override def withEmptyArvosana: Suoritus = this
+  override def withHyväksyntämerkinnälläKorvattuArvosana: Suoritus = this
 }
 
 @Title("Ylioppilastutkinnon osasuoritus")
@@ -109,7 +109,7 @@ case class KelaYlioppilastutkinnonOsasuoritus(
   tila: Option[KelaKoodistokoodiviite],
   tutkintokerta: Option[KelaYlioppilastutkinnonTutkintokerta],
 ) extends Osasuoritus {
-  override def withEmptyArvosana: Osasuoritus = this
+  override def withHyväksyntämerkinnälläKorvattuArvosana: Osasuoritus = this
 }
 
 case class KelaYlioppilastutkinnonSuorituksenKoulutusmoduuli(
@@ -132,5 +132,5 @@ case class KelaYlioppilastutkinnonOsasuorituksenArvionti(
   hyväksytty: Option[Boolean],
   päivä: Option[LocalDate]
 ) extends OsasuorituksenArviointi {
-  override def withEmptyArvosana: KelaYlioppilastutkinnonOsasuorituksenArvionti = copy(arvosana = None)
+  override def withHyväksyntämerkinnälläKorvattuArvosana: KelaYlioppilastutkinnonOsasuorituksenArvionti = copy(arvosana = None)
 }

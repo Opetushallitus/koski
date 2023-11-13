@@ -60,10 +60,10 @@ trait KelaOpiskeluoikeus {
   @Deprecated("Ei palauteta Kela-API:ssa. Kenttä on näkyvissä skeemassa vain teknisistä syistä.")
   def organisaatiohistoria: Option[List[OrganisaatioHistoria]]
 
-  def withCleanedData: KelaOpiskeluoikeus = this.withOrganisaatiohistoria.withEmptyArvosana
+  def withCleanedData: KelaOpiskeluoikeus = this.withOrganisaatiohistoria.withHyväksyntämerkinnälläKorvattuArvosana
 
   protected def withOrganisaatiohistoria: KelaOpiskeluoikeus
-  protected def withEmptyArvosana: KelaOpiskeluoikeus
+  protected def withHyväksyntämerkinnälläKorvattuArvosana: KelaOpiskeluoikeus
 }
 
 case class SisältäväOpiskeluoikeus(
@@ -113,13 +113,13 @@ trait Suoritus{
   def koulutusmoduuli: SuorituksenKoulutusmoduuli
   @Discriminator
   def tyyppi: schema.Koodistokoodiviite
-  def withEmptyArvosana: Suoritus
+  def withHyväksyntämerkinnälläKorvattuArvosana: Suoritus
 }
 
 trait Osasuoritus{
   @Discriminator
   def tyyppi: schema.Koodistokoodiviite
-  def withEmptyArvosana: Osasuoritus
+  def withHyväksyntämerkinnälläKorvattuArvosana: Osasuoritus
 }
 
 trait YksilöllistettyOppimäärä {
@@ -165,13 +165,17 @@ case class OsaamisenTunnustaminen(selite: schema.LocalizedString, rahoituksenPii
 
 case class Vahvistus(päivä: LocalDate)
 
-@Title("Osasuorituksen arviointi")
-trait OsasuorituksenArviointi{
+trait SisältääHyväksyntämerkinnälläKorvatunArvosanan {
   @Deprecated("Ei palauteta Kela-API:ssa. Kenttä on näkyvissä skeemassa vain teknisistä syistä.")
   def arvosana: Option[schema.Koodistokoodiviite]
   def hyväksytty: Option[Boolean]
-  def päivä: Option[LocalDate]
-  def withEmptyArvosana: OsasuorituksenArviointi
+  def withHyväksyntämerkinnälläKorvattuArvosana: SisältääHyväksyntämerkinnälläKorvatunArvosanan
+}
+
+@Title("Osasuorituksen arviointi")
+trait OsasuorituksenArviointi extends SisältääHyväksyntämerkinnälläKorvatunArvosanan {
+  def hyväksytty: Option[Boolean]
+  def withHyväksyntämerkinnälläKorvattuArvosana: OsasuorituksenArviointi
 }
 
 case class Oppilaitos(

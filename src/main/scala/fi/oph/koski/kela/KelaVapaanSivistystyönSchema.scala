@@ -27,8 +27,8 @@ case class KelaVapaanSivistystyönOpiskeluoikeus(
   override def alkamispäivä: Option[LocalDate] = super.alkamispäivä
   override def päättymispäivä: Option[LocalDate] = super.päättymispäivä
   override def sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus] = None
-  def withEmptyArvosana: KelaVapaanSivistystyönOpiskeluoikeus = copy(
-    suoritukset = suoritukset.map(_.withEmptyArvosana)
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaVapaanSivistystyönOpiskeluoikeus = copy(
+    suoritukset = suoritukset.map(_.withHyväksyntämerkinnälläKorvattuArvosana)
   )
   override def withOrganisaatiohistoria: KelaOpiskeluoikeus = copy(
     organisaatioHistoria = organisaatiohistoria,
@@ -64,8 +64,8 @@ case class KelaVapaanSivistystyönPäätasonSuoritus(
   tyyppi: schema.Koodistokoodiviite,
   tila: Option[KelaKoodistokoodiviite],
 ) extends VstSuoritus {
-  def withEmptyArvosana: KelaVapaanSivistystyönPäätasonSuoritus = copy(
-    osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana))
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaVapaanSivistystyönPäätasonSuoritus = copy(
+    osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
   )
 }
 
@@ -79,8 +79,8 @@ case class KelaVapaanSivistystyönMaahanmuuttajienKotoutumisenSuoritus(
   tyyppi: schema.Koodistokoodiviite,
   tila: Option[KelaKoodistokoodiviite],
 ) extends VstSuoritus {
-  def withEmptyArvosana: KelaVapaanSivistystyönMaahanmuuttajienKotoutumisenSuoritus = copy(
-    osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana))
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaVapaanSivistystyönMaahanmuuttajienKotoutumisenSuoritus = copy(
+    osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
   )
 }
 
@@ -94,8 +94,8 @@ case class KelaVapaanSivistystyönJotpaSuoritus(
   tyyppi: schema.Koodistokoodiviite,
   tila: Option[KelaKoodistokoodiviite],
 ) extends VstSuoritus {
-  def withEmptyArvosana: KelaVapaanSivistystyönJotpaSuoritus = copy(
-    osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana))
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaVapaanSivistystyönJotpaSuoritus = copy(
+    osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
   )
 }
 
@@ -108,14 +108,14 @@ case class KelaVapaanSivistystyönJotpaOsasuoritus(
   tyyppi: schema.Koodistokoodiviite,
   tila: Option[KelaKoodistokoodiviite],
 ) extends Osasuoritus {
-  def withEmptyArvosana: KelaVapaanSivistystyönJotpaOsasuoritus = copy(
-    arviointi = arviointi.map(_.map(_.withEmptyArvosana)),
-    osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana))
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaVapaanSivistystyönJotpaOsasuoritus = copy(
+    arviointi = arviointi.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
+    osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
   )
 }
 
 trait VstSuoritus extends Suoritus {
-  def withEmptyArvosana: VstSuoritus
+  def withHyväksyntämerkinnälläKorvattuArvosana: VstSuoritus
 }
 
 @Title("Vapaan sivistystyön osasuoritus")
@@ -126,9 +126,9 @@ case class KelaVapaanSivistystyönOsasuoritus(
   tyyppi: schema.Koodistokoodiviite,
   tila: Option[KelaKoodistokoodiviite],
 ) extends Osasuoritus {
-  def withEmptyArvosana: KelaVapaanSivistystyönOsasuoritus = copy(
-    arviointi = arviointi.map(_.map(_.withEmptyArvosana)),
-    osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana))
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaVapaanSivistystyönOsasuoritus = copy(
+    arviointi = arviointi.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
+    osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
   )
 }
 
@@ -140,9 +140,9 @@ case class KelaVapaanSivistystyönMaahanmuuttajienKototutumisenOsasuoritus(
   tyyppi: schema.Koodistokoodiviite,
   tila: Option[KelaKoodistokoodiviite],
 ) extends Osasuoritus {
-  def withEmptyArvosana: KelaVapaanSivistystyönMaahanmuuttajienKototutumisenOsasuoritus = copy(
-    arviointi = arviointi.map(_.map(_.withEmptyArvosana)),
-    osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana))
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaVapaanSivistystyönMaahanmuuttajienKototutumisenOsasuoritus = copy(
+    arviointi = arviointi.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
+    osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
   )
 }
 
@@ -164,7 +164,7 @@ case class KelaVSTOsasuorituksenArviointi (
   hyväksytty: Option[Boolean],
   päivä: Option[LocalDate]
 ) extends OsasuorituksenArviointi {
-  def withEmptyArvosana: KelaVSTOsasuorituksenArviointi = copy(
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaVSTOsasuorituksenArviointi = copy(
     arvosana = None,
     hyväksytty = arvosana.map(schema.VapaanSivistystyönKoulutuksenArviointi.hyväksytty)
   )
@@ -183,7 +183,7 @@ case class VSTMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenArviointi (
   @Deprecated("Poistettu palautettavien tietojen joukosta")
   kirjoittamisenTaitotaso: Option[VSTKielenTaitotasonArviointi]
 ) extends OsasuorituksenArviointi {
-  def withEmptyArvosana: VSTMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenArviointi = copy(
+  def withHyväksyntämerkinnälläKorvattuArvosana: VSTMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenArviointi = copy(
     arvosana = None,
     hyväksytty = arvosana.map(schema.VapaanSivistystyönKoulutuksenArviointi.hyväksytty),
     kuullunYmmärtämisenTaitotaso = None,
@@ -207,7 +207,7 @@ case class KelaVSTKOTO2022Suoritus(
   tyyppi: schema.Koodistokoodiviite,
   tila: Option[KelaKoodistokoodiviite],
 ) extends VstSuoritus {
-  override def withEmptyArvosana: VstSuoritus = this.copy(
-    osasuoritukset = this.osasuoritukset.map(_.map(_.withEmptyArvosana)),
+  override def withHyväksyntämerkinnälläKorvattuArvosana: VstSuoritus = this.copy(
+    osasuoritukset = this.osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
   )
 }

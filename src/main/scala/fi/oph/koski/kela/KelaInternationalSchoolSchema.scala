@@ -26,8 +26,8 @@ case class KelaInternationalSchoolOpiskeluoikeus(
   override def alkamispäivä: Option[LocalDate] = super.alkamispäivä
   override def päättymispäivä: Option[LocalDate] = super.päättymispäivä
   override def sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus] = None
-  def withEmptyArvosana: KelaInternationalSchoolOpiskeluoikeus = copy(
-    suoritukset = suoritukset.map(_.withEmptyArvosana)
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaInternationalSchoolOpiskeluoikeus = copy(
+    suoritukset = suoritukset.map(_.withHyväksyntämerkinnälläKorvattuArvosana)
   )
   override def withOrganisaatiohistoria: KelaOpiskeluoikeus = copy(
     organisaatioHistoria = organisaatiohistoria,
@@ -51,8 +51,8 @@ case class KelaInternationalSchoolPäätasonSuoritus(
   tila: Option[KelaKoodistokoodiviite],
   alkamispäivä: Option[LocalDate]
 ) extends Suoritus {
-  def withEmptyArvosana: KelaInternationalSchoolPäätasonSuoritus = copy(
-    osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana))
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaInternationalSchoolPäätasonSuoritus = copy(
+    osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
   )
 }
 
@@ -63,8 +63,8 @@ case class KelaInternationalSchoolOsasuoritus(
   tyyppi: schema.Koodistokoodiviite,
   tila: Option[KelaKoodistokoodiviite],
 ) extends Osasuoritus {
-  def withEmptyArvosana: KelaInternationalSchoolOsasuoritus = copy(
-    arviointi = arviointi.map(_.map(_.withEmptyArvosana))
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaInternationalSchoolOsasuoritus = copy(
+    arviointi = arviointi.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
   )
 }
 
@@ -73,7 +73,7 @@ case class KelaInternationalSchoolOsasuorituksenArvionti(
   hyväksytty: Option[Boolean],
   päivä: Option[LocalDate]
 ) extends OsasuorituksenArviointi {
-  def withEmptyArvosana: KelaInternationalSchoolOsasuorituksenArvionti = copy(
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaInternationalSchoolOsasuorituksenArvionti = copy(
     arvosana = None,
     hyväksytty = arvosana.map(schema.InternationalSchoolArviointi.hyväksytty)
   )

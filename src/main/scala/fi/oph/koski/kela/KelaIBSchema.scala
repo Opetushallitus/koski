@@ -26,8 +26,8 @@ case class KelaIBOpiskeluoikeus(
 ) extends KelaOpiskeluoikeus {
   override def alkamispäivä: Option[LocalDate] = super.alkamispäivä
   override def päättymispäivä: Option[LocalDate] = super.päättymispäivä
-  def withEmptyArvosana: KelaIBOpiskeluoikeus = copy(
-    suoritukset = suoritukset.map(_.withEmptyArvosana)
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaIBOpiskeluoikeus = copy(
+    suoritukset = suoritukset.map(_.withHyväksyntämerkinnälläKorvattuArvosana)
   )
   override def withOrganisaatiohistoria: KelaOpiskeluoikeus = copy(
     organisaatioHistoria = organisaatiohistoria,
@@ -47,11 +47,11 @@ case class KelaIBPäätasonSuoritus(
   extendedEssay: Option[IBExtendedEssaySuoritus],
   creativityActionService: Option[IBCASSuoritus]
 ) extends Suoritus {
-  def withEmptyArvosana: KelaIBPäätasonSuoritus = copy(
-    osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana)),
-    theoryOfKnowledge = theoryOfKnowledge.map(_.withEmptyArvosana),
-    extendedEssay = extendedEssay.map(_.withEmptyArvosana),
-    creativityActionService = creativityActionService.map(_.withEmptyArvosana)
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaIBPäätasonSuoritus = copy(
+    osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
+    theoryOfKnowledge = theoryOfKnowledge.map(_.withHyväksyntämerkinnälläKorvattuArvosana),
+    extendedEssay = extendedEssay.map(_.withHyväksyntämerkinnälläKorvattuArvosana),
+    creativityActionService = creativityActionService.map(_.withHyväksyntämerkinnälläKorvattuArvosana)
   )
 }
 
@@ -67,9 +67,9 @@ case class KelaIBOsasuoritus(
   suoritettuLukiodiplomina: Option[Boolean],
   suoritettuSuullisenaKielikokeena: Option[Boolean]
 ) extends Osasuoritus {
-  def withEmptyArvosana: KelaIBOsasuoritus = copy(
-    arviointi = arviointi.map(_.map(_.withEmptyArvosana)),
-    osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana))
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaIBOsasuoritus = copy(
+    arviointi = arviointi.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
+    osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
   )
 }
 
@@ -78,7 +78,7 @@ case class KelaIBOsasuorituksenArvionti(
   hyväksytty: Option[Boolean],
   päivä: Option[LocalDate]
 ) extends OsasuorituksenArviointi {
-  def withEmptyArvosana: KelaIBOsasuorituksenArvionti = copy(
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaIBOsasuorituksenArvionti = copy(
     arvosana = None,
     hyväksytty = arvosana.map(a => schema.IBArviointi.hyväksytty(a) && schema.CoreRequirementsArvionti.hyväksytty(a))
   )
@@ -109,9 +109,9 @@ case class IBTheoryOfKnowledgeSuoritus(
   osasuoritukset: Option[List[KelaIBOsasuoritus]],
   tyyppi: KelaKoodistokoodiviite
 ) {
-  def withEmptyArvosana: IBTheoryOfKnowledgeSuoritus = copy(
-    arviointi = arviointi.map(_.map(_.withEmptyArvosana)),
-    osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana))
+  def withHyväksyntämerkinnälläKorvattuArvosana: IBTheoryOfKnowledgeSuoritus = copy(
+    arviointi = arviointi.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
+    osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
   )
 }
 
@@ -126,8 +126,8 @@ case class IBExtendedEssaySuoritus(
   arviointi: Option[List[KelaIBOsasuorituksenArvionti]] = None,
   tyyppi: KelaKoodistokoodiviite
 ) {
-  def withEmptyArvosana: IBExtendedEssaySuoritus = copy(
-    arviointi = arviointi.map(_.map(_.withEmptyArvosana))
+  def withHyväksyntämerkinnälläKorvattuArvosana: IBExtendedEssaySuoritus = copy(
+    arviointi = arviointi.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
   )
 }
 
@@ -142,7 +142,7 @@ case class IBCASSuoritus(
   tyyppi: KelaKoodistokoodiviite,
   tila: Option[KelaKoodistokoodiviite]
 ) {
-  def withEmptyArvosana: IBCASSuoritus = copy(
-    arviointi = arviointi.map(_.map(_.withEmptyArvosana))
+  def withHyväksyntämerkinnälläKorvattuArvosana: IBCASSuoritus = copy(
+    arviointi = arviointi.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
   )
 }

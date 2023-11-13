@@ -24,8 +24,8 @@ case class KelaMUKSOpiskeluoikeus(
 ) extends KelaOpiskeluoikeus {
   override def alkamispäivä: Option[LocalDate] = super.alkamispäivä
   override def päättymispäivä: Option[LocalDate] = super.päättymispäivä
-  def withEmptyArvosana: KelaMUKSOpiskeluoikeus = copy(
-    suoritukset = suoritukset.map(_.withEmptyArvosana)
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaMUKSOpiskeluoikeus = copy(
+    suoritukset = suoritukset.map(_.withHyväksyntämerkinnälläKorvattuArvosana)
   )
   override def withOrganisaatiohistoria: KelaMUKSOpiskeluoikeus = copy(
     organisaatioHistoria = organisaatiohistoria,
@@ -64,8 +64,8 @@ case class KelaMUKSPäätasonSuoritus(
   osasuoritukset: Option[List[KelaMUKSOsasuoritus]],
   arviointi: Option[List[KelaMUKSArviointi]],
 ) extends Suoritus  {
-  def withEmptyArvosana: KelaMUKSPäätasonSuoritus = copy(
-    osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana)),
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaMUKSPäätasonSuoritus = copy(
+    osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
   )
 }
 
@@ -89,8 +89,8 @@ case class KelaMUKSOsasuoritus(
   arviointi: Option[List[KelaMUKSArviointi]],
   osasuoritukset: Option[List[KelaMUKSOsasuoritus]],
 ) extends Osasuoritus {
-  override def withEmptyArvosana: KelaMUKSOsasuoritus = this.copy(
-    arviointi = arviointi.map(_.map(_.withEmptyArvosana))
+  override def withHyväksyntämerkinnälläKorvattuArvosana: KelaMUKSOsasuoritus = this.copy(
+    arviointi = arviointi.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
   )
 }
 
@@ -106,7 +106,7 @@ case class KelaMUKSArviointi(
   päivä: Option[LocalDate],
   hyväksytty: Option[Boolean],
 ) extends OsasuorituksenArviointi {
-  override def withEmptyArvosana: KelaMUKSArviointi = copy(
+  override def withHyväksyntämerkinnälläKorvattuArvosana: KelaMUKSArviointi = copy(
     arvosana = None,
     hyväksytty = arvosana.map(schema.MuunKuinSäännellynKoulutuksenArviointi.hyväksytty)
   )
