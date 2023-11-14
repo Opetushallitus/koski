@@ -39,6 +39,7 @@ case class KelaPerusopetuksenOpiskeluoikeus(
 
 case class KelaPerusopetuksenOpiskeluoikeudenLisätiedot(
   sisäoppilaitosmainenMajoitus: Option[List[KelaAikajakso]],
+  // TODO: TOR-1732: Päätietomallissa ei ole näin monimutkaista ulkomaanjakso-rakennetta perusopetuksessa, joten korvaa simppelimmällä Kelallekin?
   ulkomaanjaksot: Option[List[Ulkomaanjakso]],
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   koulukoti: Option[List[KelaAikajakso]],
@@ -62,6 +63,7 @@ case class KelaPerusopetuksenSuoritus(
   tila: Option[KelaKoodistokoodiviite],
   alkamispäivä: Option[LocalDate],
   jääLuokalle: Option[Boolean],
+  // TODO: TOR-1732: Töstä varmasti pitäisi poistaa myös tarkka arvosana ja korvata hyväksyntätietoina
   omanÄidinkielenOpinnot: Option[OmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina]
 ) extends Suoritus {
   def withHyväksyntämerkinnälläKorvattuArvosana: KelaPerusopetuksenSuoritus = copy(

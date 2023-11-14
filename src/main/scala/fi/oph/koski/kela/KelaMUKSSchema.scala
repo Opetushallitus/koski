@@ -44,6 +44,8 @@ case class KelaMUKSOpiskeluoikeudenTila(
 @Title("Muun kuin säännellyn koulutuksen opiskeluoikeuden jakso")
 case class KelaMUKSOpiskeluoikeudenJakso(
   @KoodistoUri("koskiopiskeluoikeudentila")
+
+  // TODO: TOR-1732: poista turhat annotaatiot, nöitä ei kuitenkaan muista ylläpitää päätietomallin mahdollisesti muuttuessa..
   @KoodistoKoodiarvo("lasna")
   @KoodistoKoodiarvo("hyvaksytystisuoritettu")
   @KoodistoKoodiarvo("keskeytynyt")
@@ -73,10 +75,13 @@ case class KelaMUKSPäätasonSuoritus(
 case class KelaMUKSKoulutus(
   @KoodistoUri("koulutus")
   @KoodistoKoodiarvo("999951")
+  // TODO: Onko tässä tarve ylläpitää riippuvuutta pääskeemaan, vai voisiko olla vain KelaKoodistokoodiviite?
   tunniste: schema.Koodistokoodiviite,
+  // TODO: Onko tässä tarve ylläpitää riippuvuutta pääskeemaan, vai voisiko olla vain KelaKoodistokoodiviite?
   @KoodistoUri("koulutustyyppi")
   koulutustyyppi: Option[schema.Koodistokoodiviite],
   laajuus: Option[KelaLaajuus],
+  // TODO: Onko tässä tarve ylläpitää riippuvuutta pääskeemaan, vai voisiko olla vain KelaKoodistokoodiviite?
   @KoodistoUri("opintokokonaisuudet")
   opintokokonaisuus: schema.Koodistokoodiviite,
 ) extends SuorituksenKoulutusmoduuli

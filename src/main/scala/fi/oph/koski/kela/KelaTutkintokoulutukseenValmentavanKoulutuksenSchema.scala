@@ -56,7 +56,11 @@ case class KelaTuvaOpiskeluoikeudenLisätiedot(
   sisäoppilaitosmainenMajoitus: Option[List[KelaAikajakso]],
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   vaativanErityisenTuenYhteydessäJärjestettäväMajoitus: Option[List[KelaAikajakso]],
+  // TODO: TOR-1732: Tässä vain perusopetuksen erityisen tuen päätökset. Ammatillisen koulutuksen erityinenTuki puuttuu,
+  // mutta on speksissä mustalla ja luottamuksellisena. Pitäisi varmaan lisätä tähän.
+  // TODO: TOR-1732: Ammatillisen majoitus-kenttä puuttuu, mutta on speksissä.
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
+  // TODO: TOR-1732: Datan pitäisi tässä sallia myös puuttuva alkupäivä. KelaAikajakso-tyyppi ei sitä salli.
   erityisenTuenPäätökset: Option[List[KelaAikajakso]],
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   vaativanErityisenTuenErityinenTehtävä: Option[List[KelaAikajakso]],
@@ -88,6 +92,8 @@ case class KelaTuvaOsasuoritus(
   osasuoritukset: Option[List[KelaTuvaOsasuoritus]],
   tyyppi: schema.Koodistokoodiviite,
   tunnustettu: Option[OsaamisenTunnustaminen],
+  // TODO: TOR-1732: Näitä suorituksen tila -kenttiä, joita ei Koski-dataan käsittääkseni tallenneta on tässä ja joissain muissakin Kela-schemassa.
+  // Pitäisikö poistaa? Speksissä näitä on jossain opiskelumuodoissa poistettu, jossain ei, ja toteutusta on tehty "speksin mukaan".
   tila: Option[KelaKoodistokoodiviite],
 ) extends Osasuoritus {
   def withHyväksyntämerkinnälläKorvattuArvosana: KelaTuvaOsasuoritus = copy(

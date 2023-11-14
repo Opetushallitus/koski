@@ -77,6 +77,7 @@ case class KelaESHSecondaryLowerVuosiluokanSuoritus(
 @Title("Secondary lower luokka-aste")
 case class KelaESHSecondaryLowerLuokkaAste(
   @KoodistoUri("europeanschoolofhelsinkiluokkaaste")
+  // TODO: TOR-1732: Tuskin täällä tarvitsee käsitellä annotaatioiden kanssa näitä, korvaa KelaKoodistokoodiviitteellä kaikki?
   @KoodistoKoodiarvo("S1")
   @KoodistoKoodiarvo("S2")
   @KoodistoKoodiarvo("S3")
@@ -114,6 +115,7 @@ case class KelaESHSecondaryUpperVuosiluokanSuoritus(
   @KoodistoUri("suorituksentyyppi")
   @KoodistoKoodiarvo("europeanschoolofhelsinkivuosiluokkasecondaryupper")
   tyyppi: schema.Koodistokoodiviite,
+  // TODO: TOR-1732: Miksei tämä ole luottamuksellinen? Pitäisi varmaan olla.
   jääLuokalle: Boolean,
   osasuoritukset: Option[List[KelaESHSecondaryUpperOppiaineenSuoritus]],
 ) extends KelaESHPäätasonSuoritus {

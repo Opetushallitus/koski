@@ -240,9 +240,6 @@ case class Koulutussopimusjakso(
   työssäoppimispaikka: Option[schema.LocalizedString],
   paikkakunta: KelaKoodistokoodiviite,
   maa: KelaKoodistokoodiviite,
-  @Description("Työssäoppimispaikan Y-tunnus")
-  @RegularExpression("^\\d{7}-\\d$")
-  @Example("1234567-8")
   @Title("Työssäoppimispaikan Y-tunnus")
   työssäoppimispaikanYTunnus: Option[String],
 )
@@ -259,6 +256,8 @@ case class Järjestämismuotojakso(
 
 case class Oppisopimus(
   työnantaja: Yritys,
+  // TODO: TOR-1732: Tämä oppisoopimuksen purkaminen on speksin mkaan rajattu pois, tässä mukana.
+  // Pitänee poistaa?
   oppisopimuksenPurkaminen: Option[OppisopimuksenPurkaminen]
 )
 

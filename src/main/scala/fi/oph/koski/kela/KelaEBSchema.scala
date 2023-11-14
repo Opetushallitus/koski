@@ -37,6 +37,7 @@ case class KelaEBOpiskeluoikeudenTila(
   opiskeluoikeusjaksot: List[KelaEBOpiskeluoikeudenJakso]
 ) extends OpiskeluoikeudenTila
 
+// TODO: TOR-1732: tarvitaanko oma aikajaksluokka? Vai voisiko käyttä KelaScheman yleistä?
 @Title("EB-tutkinnon opiskeluoikeuden jakso")
 case class KelaEBOpiskeluoikeudenJakso(
   @KoodistoUri("koskiopiskeluoikeudentila")

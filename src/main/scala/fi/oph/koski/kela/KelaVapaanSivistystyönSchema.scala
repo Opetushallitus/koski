@@ -40,6 +40,7 @@ case class KelaVapaansivistystyönOpiskeluoikeudenTila(
   opiskeluoikeusjaksot: List[KelaVapaanSivistystyönOpiskeluoikeusjakso]
 ) extends OpiskeluoikeudenTila
 
+// TODO: TOR-1732: Miksi tämä luokka on erikseen? Miksei voi käyttää vain KelaOpiskeluoikeusjaksoRahoituksella luokkaa, kuten muissa?
 case class KelaVapaanSivistystyönOpiskeluoikeusjakso(
   alku: LocalDate,
   tila: KelaKoodistokoodiviite,
@@ -86,6 +87,8 @@ case class KelaVapaanSivistystyönMaahanmuuttajienKotoutumisenSuoritus(
 
 @Title("Jatkuvaan oppimiseen suunnattu vapaan sivistystyön koulutuksen suoritus")
 case class KelaVapaanSivistystyönJotpaSuoritus(
+  // TODO: TOR-1732: Jotpan päätason koulutusmoduulissa pitäisi speksin mukaan olla myös koulutustyyppi ja opintokokonaisuus, ei diaarinumeroa.
+  // Splittaa omaksi koulutusmoduulikseen.
   koulutusmoduuli: KelaVapaanSivistystyönSuorituksenKoulutusmoduuli,
   toimipiste: Option[Toimipiste],
   vahvistus: Option[Vahvistus],
@@ -174,6 +177,9 @@ case class VSTMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenArviointi (
   arvosana: Option[schema.Koodistokoodiviite],
   hyväksytty: Option[Boolean],
   päivä: Option[LocalDate],
+  // TODO: TOR-1732: Miksei vaan poisteta kokonaan tietomallista?
+  // Turha näitä on deprecated-merkinnöillä roikottaa speksissä?
+  // Poistetaanko näitä edes osana deserialisointia?
   @Deprecated("Poistettu palautettavien tietojen joukosta")
   kuullunYmmärtämisenTaitotaso: Option[VSTKielenTaitotasonArviointi],
   @Deprecated("Poistettu palautettavien tietojen joukosta")
@@ -186,6 +192,7 @@ case class VSTMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenArviointi (
   def withHyväksyntämerkinnälläKorvattuArvosana: VSTMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenArviointi = copy(
     arvosana = None,
     hyväksytty = arvosana.map(schema.VapaanSivistystyönKoulutuksenArviointi.hyväksytty),
+    // TODO: TOR-1732: miksei vaan kokonaan kenttiä pois tietomallista, jolloin deserialisointi hoitaisi tämän?
     kuullunYmmärtämisenTaitotaso = None,
     puhumisenTaitotaso = None,
     luetunYmmärtämisenTaitotaso = None,
@@ -197,6 +204,7 @@ case class VSTKielenTaitotasonArviointi(
   taso: KelaKoodistokoodiviite
 )
 
+// TODO: TOR-1732: Riittääkö tämä OnlyWhen? Ettei voi jossain muodossa deserialisoitua myös vanhemmaksi Kotoksi?
 @OnlyWhen("koulutusmoduuli/perusteenDiaarinumero", VSTKoto2022Peruste.diaarinumero)
 case class KelaVSTKOTO2022Suoritus(
   koulutusmoduuli: KelaVapaanSivistystyönSuorituksenKoulutusmoduuli, // TODO:
