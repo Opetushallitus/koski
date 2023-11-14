@@ -3,15 +3,22 @@
 @font-face {
   font-family: "Roboto";
   src:
-    url('../fonts/Roboto/Roboto-Black.ttf') format('truetype'),
+    url('../fonts/Roboto/Roboto-Regular.ttf') format('truetype'),
+    url('../fonts/Roboto/Roboto-Medium.ttf') format('truetype'),
+    url('../fonts/Roboto/Roboto-Thin.ttf') format('truetype'),
     url('../fonts/Roboto/Roboto-Bold.ttf') format('truetype'),
     url('../fonts/Roboto/Roboto-Light.ttf') format('truetype');
-  /* Add more formats as needed */
   font-weight: normal;
   font-style: normal;
 }
 
-/* fallback */
+@font-face {
+  font-family: "Source Sans Pro";
+  src: url('../fonts/Source_Sans_3/SourceSans3-VariableFont_wght.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 @font-face {
   font-family: 'Material Icons';
   font-style: normal;
@@ -36,7 +43,7 @@
 }
 
 
-@font-family: "Roboto", sans-serif;
+@font-family: "Source Sans Pro", "Roboto", sans-serif;
 
 @font-size-medium: .pxToRem(14) [];
 @font-size-small: .pxToRem(12) [];
