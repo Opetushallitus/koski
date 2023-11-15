@@ -2,8 +2,7 @@ package fi.oph.koski.kela
 
 import fi.oph.koski.koskiuser.Rooli
 import fi.oph.koski.schema
-import fi.oph.koski.schema.OppisopimuksenPurkaminen
-import fi.oph.koski.schema.annotation.{Deprecated, KoodistoKoodiarvo, SensitiveData}
+import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, SensitiveData}
 import fi.oph.scalaschema.annotation.{DefaultValue, Description, Title}
 
 import java.time.{LocalDate, LocalDateTime}
@@ -254,9 +253,12 @@ case class Järjestämismuotojakso(
 
 case class Oppisopimus(
   työnantaja: Yritys,
-  // TODO: TOR-1732: Tämä oppisoopimuksen purkaminen on speksin mkaan rajattu pois, tässä mukana.
-  // Pitänee poistaa?
   oppisopimuksenPurkaminen: Option[OppisopimuksenPurkaminen]
+)
+
+case class OppisopimuksenPurkaminen(
+  päivä: LocalDate,
+  purettuKoeajalla: Boolean
 )
 
 case class Yritys(
