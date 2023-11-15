@@ -59,8 +59,7 @@ case class KelaTuvaOpiskeluoikeudenLisätiedot(
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   erityinenTuki: Option[List[KelaAikajakso]],
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
-  // TODO: TOR-1732: Datan pitäisi tässä sallia myös puuttuva alkupäivä. KelaAikajakso-tyyppi ei sitä salli.
-  erityisenTuenPäätökset: Option[List[KelaAikajakso]],
+  erityisenTuenPäätökset: Option[List[KelaMahdollisestiAlkupäivätönAikajakso]],
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   vaativanErityisenTuenErityinenTehtävä: Option[List[KelaAikajakso]],
   ulkomaanjaksot: Option[List[Ulkomaanjakso]],
