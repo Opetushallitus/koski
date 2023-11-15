@@ -11,7 +11,7 @@ import fi.oph.koski.koskiuser.{MockUser, MockUsers}
 import fi.oph.koski.log.{AccessLogTester, AuditLogTester}
 import fi.oph.koski.organisaatio.MockOrganisaatiot.{EuropeanSchoolOfHelsinki, MuuKuinSäänneltyKoulutusToimija}
 import fi.oph.koski.schema.LocalizedString.finnish
-import fi.oph.koski.schema._
+import fi.oph.koski.schema
 import fi.oph.koski.ytr.MockYtrClient
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import org.scalatest.freespec.AnyFreeSpec
@@ -58,7 +58,7 @@ class KelaSpec
         val response = JsonSerializer.parse[KelaOppija](body)
 
         response.henkilö.hetu should equal(KoskiSpecificMockOppijat.kelaErityyppisiaOpiskeluoikeuksia.hetu)
-        response.opiskeluoikeudet.map(_.tyyppi.koodiarvo) should equal(List(OpiskeluoikeudenTyyppi.perusopetus.koodiarvo, OpiskeluoikeudenTyyppi.ylioppilastutkinto.koodiarvo))
+        response.opiskeluoikeudet.map(_.tyyppi.koodiarvo) should equal(List(schema.OpiskeluoikeudenTyyppi.perusopetus.koodiarvo, schema.OpiskeluoikeudenTyyppi.ylioppilastutkinto.koodiarvo))
       }
     }
     "Palauttaa TUVA opiskeluoikeuden tiedot" in {
@@ -91,7 +91,7 @@ class KelaSpec
         val opiskeluoikeus = oppija.opiskeluoikeudet.collectFirst { case oo: KelaYlioppilastutkinnonOpiskeluoikeus => oo }.get
 
         opiskeluoikeus.oid should be (None)
-        opiskeluoikeus.tyyppi should be (OpiskeluoikeudenTyyppi.ylioppilastutkinto)
+        opiskeluoikeus.tyyppi should be (schema.OpiskeluoikeudenTyyppi.ylioppilastutkinto)
         opiskeluoikeus.suoritukset.length shouldBe 1
       }
     }
@@ -408,7 +408,7 @@ class KelaSpec
 
       val opiskeluoikeus = lastOpiskeluoikeusByHetu(KoskiSpecificMockOppijat.amis)
 
-      luoVersiohistoriaanRivi(KoskiSpecificMockOppijat.amis, opiskeluoikeus.asInstanceOf[AmmatillinenOpiskeluoikeus])
+      luoVersiohistoriaanRivi(KoskiSpecificMockOppijat.amis, opiskeluoikeus.asInstanceOf[schema.AmmatillinenOpiskeluoikeus])
 
       val slaveOppijanOpiskeluoikeus = lastOpiskeluoikeusByHetu(KoskiSpecificMockOppijat.slave.henkilö)
 
@@ -492,7 +492,7 @@ class KelaSpec
 
         val mitätöitynä = historiaFixture.mitätöitäväOo.copy(tila =
           historiaFixture.mitätöitäväOo.tila.copy(opiskeluoikeusjaksot =
-            historiaFixture.mitätöitäväOo.tila.opiskeluoikeusjaksot :+ NuortenPerusopetuksenOpiskeluoikeusjakso(alku = LocalDate.now, opiskeluoikeusMitätöity)
+            historiaFixture.mitätöitäväOo.tila.opiskeluoikeusjaksot :+ schema.NuortenPerusopetuksenOpiskeluoikeusjakso(alku = LocalDate.now, opiskeluoikeusMitätöity)
           )
         )
 
@@ -552,7 +552,7 @@ class KelaSpec
         var iteraatioLkm = 0
         koskeenTallennetutOppijat
           .foreach(oppija => {
-            val henkilö = oppija.henkilö.asInstanceOf[Henkilötiedot]
+            val henkilö = oppija.henkilö.asInstanceOf[schema.Henkilötiedot]
 
             oppija.opiskeluoikeudet.filter(_.oid.isDefined).foreach(oo => {
               val henkilöTunniste = henkilö.hetu.getOrElse(henkilö.sukunimi + henkilö.etunimet)
@@ -653,7 +653,7 @@ class KelaSpec
       val päätasonSuoritus = muksOpiskeluoikeus.suoritukset.head
       päätasonSuoritus.koulutusmoduuli.tunniste.koodiarvo shouldBe "999951"
       päätasonSuoritus.koulutusmoduuli.opintokokonaisuus.koodiarvo shouldBe "1138"
-      päätasonSuoritus.koulutusmoduuli.opintokokonaisuus.nimi shouldBe Some(Finnish("Kuvallisen ilmaisun perusteet ja välineet"))
+      päätasonSuoritus.koulutusmoduuli.opintokokonaisuus.nimi shouldBe Some(schema.Finnish("Kuvallisen ilmaisun perusteet ja välineet"))
 
       päätasonSuoritus.osasuoritukset shouldNot be(None)
       päätasonSuoritus.osasuoritukset.get.length shouldBe 1
@@ -694,7 +694,7 @@ class KelaSpec
       val expectedS7Osasuoritukset = EuropeanSchoolOfHelsinkiExampleData.secondaryUpperSuoritusS7("S7", LocalDate.now(), false).osasuoritukset.get
       s7.get.osasuoritukset.get.length shouldBe expectedS7Osasuoritukset.length
       expectedS7Osasuoritukset.zip(s7.get.osasuoritukset.get).foreach {
-        case (expected :SecondaryUpperOppiaineenSuoritus, actual: KelaESHSecondaryUpperOppiaineenSuoritusS7) =>
+        case (expected :schema.SecondaryUpperOppiaineenSuoritus, actual: KelaESHSecondaryUpperOppiaineenSuoritusS7) =>
           actual.tyyppi shouldBe expected.tyyppi
           expected.osasuoritukset.fold({ actual.osasuoritukset shouldBe None; () }) { osasuoritukset =>
             osasuoritukset.length shouldBe actual.osasuoritukset.get.length
@@ -918,7 +918,7 @@ class KelaSpec
     authGet(s"api/luovutuspalvelu/kela/versiohistoria/$opiskeluoikeudenOid/$versio", user)(f)
   }
 
-  private def luoVersiohistoriaanRivi(oppija: Henkilö, opiskeluoikeus: AmmatillinenOpiskeluoikeus): Unit = {
+  private def luoVersiohistoriaanRivi(oppija: schema.Henkilö, opiskeluoikeus: schema.AmmatillinenOpiskeluoikeus): Unit = {
     createOrUpdate(oppija, opiskeluoikeus.copy(arvioituPäättymispäivä = Some(LocalDate.now)))
   }
 }
