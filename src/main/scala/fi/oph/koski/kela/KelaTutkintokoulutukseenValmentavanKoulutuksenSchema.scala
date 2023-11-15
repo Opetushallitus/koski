@@ -58,7 +58,6 @@ case class KelaTuvaOpiskeluoikeudenLisätiedot(
   vaativanErityisenTuenYhteydessäJärjestettäväMajoitus: Option[List[KelaAikajakso]],
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   erityinenTuki: Option[List[KelaAikajakso]],
-  // TODO: TOR-1732: Ammatillisen majoitus-kenttä puuttuu, mutta on speksissä.
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   // TODO: TOR-1732: Datan pitäisi tässä sallia myös puuttuva alkupäivä. KelaAikajakso-tyyppi ei sitä salli.
   erityisenTuenPäätökset: Option[List[KelaAikajakso]],
