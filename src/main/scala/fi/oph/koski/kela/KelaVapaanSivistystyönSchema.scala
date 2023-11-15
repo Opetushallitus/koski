@@ -77,9 +77,7 @@ case class KelaVapaanSivistystyönMaahanmuuttajienKotoutumisenSuoritus(
 
 @Title("Jatkuvaan oppimiseen suunnattu vapaan sivistystyön koulutuksen suoritus")
 case class KelaVapaanSivistystyönJotpaSuoritus(
-  // TODO: TOR-1732: Jotpan päätason koulutusmoduulissa pitäisi speksin mukaan olla myös koulutustyyppi ja opintokokonaisuus, ei diaarinumeroa.
-  // Splittaa omaksi koulutusmoduulikseen.
-  koulutusmoduuli: KelaVapaanSivistystyönSuorituksenKoulutusmoduuli,
+  koulutusmoduuli: KelaVapaanSivistystyönJotpaKoulutus,
   toimipiste: Option[Toimipiste],
   vahvistus: Option[Vahvistus],
   osasuoritukset: Option[List[KelaVapaanSivistystyönJotpaOsasuoritus]],
@@ -91,6 +89,13 @@ case class KelaVapaanSivistystyönJotpaSuoritus(
     osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
   )
 }
+
+case class KelaVapaanSivistystyönJotpaKoulutus(
+  tunniste: KelaKoodistokoodiviite,
+  laajuus: Option[KelaLaajuus],
+  koulutustyyppi: Option[KelaKoodistokoodiviite],
+  opintokokonaisuus: KelaKoodistokoodiviite
+) extends SuorituksenKoulutusmoduuli
 
 @Title("Jatkuvaan oppimiseen suunnattu vapaan sivistystyön koulutuksen osasuoritus")
 case class KelaVapaanSivistystyönJotpaOsasuoritus(
