@@ -36,17 +36,8 @@ case class KelaVapaanSivistystyönOpiskeluoikeus(
 }
 
 case class KelaVapaansivistystyönOpiskeluoikeudenTila(
-  opiskeluoikeusjaksot: List[KelaVapaanSivistystyönOpiskeluoikeusjakso]
+  opiskeluoikeusjaksot: List[KelaOpiskeluoikeusjaksoRahoituksella]
 ) extends OpiskeluoikeudenTila
-
-// TODO: TOR-1732: Miksi tämä luokka on erikseen? Miksei voi käyttää vain KelaOpiskeluoikeusjaksoRahoituksella luokkaa, kuten muissa?
-case class KelaVapaanSivistystyönOpiskeluoikeusjakso(
-  alku: LocalDate,
-  tila: KelaKoodistokoodiviite,
-  @KoodistoKoodiarvo("14")
-  @KoodistoKoodiarvo("15")
-  opintojenRahoitus: Option[KelaKoodistokoodiviite],
-) extends Opiskeluoikeusjakso
 
 case class KelaVapaanSivistystyönOpiskeluoikeudenLisätiedot(
   maksuttomuus: Option[List[KelaMaksuttomuus]],
