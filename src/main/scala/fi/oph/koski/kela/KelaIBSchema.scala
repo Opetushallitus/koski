@@ -133,8 +133,18 @@ case class IBExtendedEssaySuoritus(
 
 case class IBExtendedEssaySuoritusKoulutusmoduuli(
   tunniste: KelaKoodistokoodiviite,
+  aine: KelaIBAineRyhmäOppiaine,
   pakollinen: Boolean
 )
+
+case class KelaIBAineRyhmäOppiaine(
+  tunniste: KelaKoodistokoodiviite,
+  laajuus: Option[KelaLaajuus],
+  pakollinen: Boolean,
+  kieli: Option[KelaKoodistokoodiviite],
+  taso: Option[KelaKoodistokoodiviite],
+  ryhmä: KelaKoodistokoodiviite,
+) extends OsasuorituksenKoulutusmoduuli
 
 case class IBCASSuoritus(
   koulutusmoduuli: KelaIBSuorituksenKoulutusmoduuli,

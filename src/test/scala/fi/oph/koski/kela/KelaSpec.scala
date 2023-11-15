@@ -2,7 +2,7 @@ package fi.oph.koski.kela
 
 import fi.oph.koski.api.misc.OpiskeluoikeusTestMethodsAmmatillinen
 import fi.oph.koski.documentation.ExampleData.opiskeluoikeusMitätöity
-import fi.oph.koski.documentation.{EuropeanSchoolOfHelsinkiExampleData, ExamplesPerusopetus, ExamplesVapaaSivistystyöKotoutuskoulutus2022}
+import fi.oph.koski.documentation.{EuropeanSchoolOfHelsinkiExampleData, ExamplesIB, ExamplesPerusopetus, ExamplesVapaaSivistystyöKotoutuskoulutus2022}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.history.OpiskeluoikeusHistoryPatch
 import fi.oph.koski.http.KoskiErrorCategory
@@ -223,6 +223,24 @@ class KelaSpec
           .head
         val osasuoritus = suoritus.osasuoritukset.get.head
         osasuoritus.predictedArviointi.get.head.päivä shouldBe Some(LocalDate.of(2016, 6, 4))
+      }
+    }
+    "Palauttaa IB:n extendEssayn koulutusmoduulissa oppiaineen tiedot" in {
+      postHetu(KoskiSpecificMockOppijat.ibFinal.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+        verifyResponseStatusOk()
+        val oppija = JsonSerializer.parse[KelaOppija](body)
+        val suoritus = oppija.opiskeluoikeudet.head.suoritukset
+          .collect { case s: KelaIBPäätasonSuoritus if s.tyyppi.koodiarvo == "ibtutkinto" => s }
+          .head
+        val actualOppiaine =
+          suoritus.extendedEssay.map(_.koulutusmoduuli).map(_.aine).get
+
+        val expectedOppiaine =
+          ExamplesIB.opiskeluoikeus.suoritukset.collectFirst { case s: schema.IBTutkinnonSuoritus => s}.map(_.extendedEssay).get.map(_.koulutusmoduuli).map(_.aine).get
+            .asInstanceOf[schema.IBOppiaineLanguage]
+
+        actualOppiaine.tunniste.koodiarvo should equal(expectedOppiaine.tunniste.koodiarvo)
+        actualOppiaine.kieli.map(_.koodiarvo) should equal(Some(expectedOppiaine.kieli.koodiarvo))
       }
     }
   }
