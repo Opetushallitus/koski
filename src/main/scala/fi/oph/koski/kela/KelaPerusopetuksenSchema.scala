@@ -63,11 +63,13 @@ case class KelaPerusopetuksenSuoritus(
   tila: Option[KelaKoodistokoodiviite],
   alkamispäivä: Option[LocalDate],
   jääLuokalle: Option[Boolean],
+  arviointi: Option[List[KelaYleissivistävänKoulutuksenArviointi]],
   // TODO: TOR-1732: Töstä varmasti pitäisi poistaa myös tarkka arvosana ja korvata hyväksyntätietoina
   omanÄidinkielenOpinnot: Option[OmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina]
 ) extends Suoritus {
   def withHyväksyntämerkinnälläKorvattuArvosana: KelaPerusopetuksenSuoritus = copy(
-    osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
+    osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
+    arviointi = arviointi.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
   )
 }
 

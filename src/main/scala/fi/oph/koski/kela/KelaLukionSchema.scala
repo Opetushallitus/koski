@@ -107,7 +107,7 @@ case class KelaLukionOmanÄidinkielenOpintojenOsasuoritus(
   tyyppi: schema.Koodistokoodiviite,
   @Title("Kurssi")
   koulutusmoduuli: KelaLukionOmanÄidinkielenOpinto,
-  arviointi: Option[List[KelaLukionOsasuorituksenArviointi]],
+  arviointi: Option[List[KelaYleissivistävänKoulutuksenArviointi]],
   @ComplexObject
   @Hidden
   tunnustettu: Option[OsaamisenTunnustaminen],
@@ -125,7 +125,7 @@ case class KelaLukionOmanÄidinkielenOpinto(
 @Title("Lukion osasuoritus")
 case class KelaLukionOsasuoritus(
   koulutusmoduuli: KelaLukionOsasuorituksenKoulutusmoduuli,
-  arviointi: Option[List[KelaLukionOsasuorituksenArviointi]],
+  arviointi: Option[List[KelaYleissivistävänKoulutuksenArviointi]],
   osasuoritukset: Option[List[KelaLukionOsasuoritus]],
   tyyppi: schema.Koodistokoodiviite,
   tila: Option[KelaKoodistokoodiviite],
@@ -136,17 +136,6 @@ case class KelaLukionOsasuoritus(
   def withHyväksyntämerkinnälläKorvattuArvosana: KelaLukionOsasuoritus = copy(
     arviointi = arviointi.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
     osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
-  )
-}
-
-case class KelaLukionOsasuorituksenArviointi(
-  arvosana: Option[schema.Koodistokoodiviite],
-  hyväksytty: Option[Boolean],
-  päivä: Option[LocalDate]
-) extends OsasuorituksenArviointi {
-  def withHyväksyntämerkinnälläKorvattuArvosana: KelaLukionOsasuorituksenArviointi = copy(
-    arvosana = None,
-    hyväksytty = arvosana.map(schema.YleissivistävänKoulutuksenArviointi.hyväksytty)
   )
 }
 

@@ -59,9 +59,11 @@ case class KelaAikuistenPerusopetuksenSuoritus(
   osasuoritukset: Option[List[KelaAikuistenPerusopetuksenOsasuoritus]],
   tyyppi: schema.Koodistokoodiviite,
   tila: Option[KelaKoodistokoodiviite],
+  arviointi: Option[List[KelaYleissivistävänKoulutuksenArviointi]],
 ) extends Suoritus {
   def withHyväksyntämerkinnälläKorvattuArvosana: KelaAikuistenPerusopetuksenSuoritus = copy(
-    osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
+    osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
+    arviointi = arviointi.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
   )
 }
 

@@ -178,6 +178,17 @@ trait OsasuorituksenArviointi extends SisältääHyväksyntämerkinnälläKorvat
   def withHyväksyntämerkinnälläKorvattuArvosana: OsasuorituksenArviointi
 }
 
+case class KelaYleissivistävänKoulutuksenArviointi(
+  arvosana: Option[schema.Koodistokoodiviite],
+  hyväksytty: Option[Boolean],
+  päivä: Option[LocalDate]
+) extends OsasuorituksenArviointi {
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaYleissivistävänKoulutuksenArviointi = copy(
+    arvosana = None,
+    hyväksytty = arvosana.map(schema.YleissivistävänKoulutuksenArviointi.hyväksytty)
+  )
+}
+
 case class Oppilaitos(
   oid: String,
   oppilaitosnumero: Option[KelaKoodistokoodiviite],
