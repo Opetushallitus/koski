@@ -35,7 +35,6 @@ case class KelaIBOpiskeluoikeus(
   )
 }
 
-@Title("IB-tutkinnon suoritus")
 case class KelaIBPäätasonSuoritus(
   koulutusmoduuli: KelaIBSuorituksenKoulutusmoduuli,
   toimipiste: Option[Toimipiste],
@@ -45,13 +44,19 @@ case class KelaIBPäätasonSuoritus(
   tila: Option[KelaKoodistokoodiviite],
   theoryOfKnowledge: Option[IBTheoryOfKnowledgeSuoritus],
   extendedEssay: Option[IBExtendedEssaySuoritus],
-  creativityActionService: Option[IBCASSuoritus]
+  creativityActionService: Option[IBCASSuoritus],
+  omanÄidinkielenOpinnot: Option[KelaLukionOmanÄidinkielenOpinnot],
+  puhviKoe: Option[KelaPuhviKoe2019],
+  suullisenKielitaidonKokeet: Option[List[KelaSuullisenKielitaidonKoe2019]],
 ) extends Suoritus {
   def withHyväksyntämerkinnälläKorvattuArvosana: KelaIBPäätasonSuoritus = copy(
     osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
     theoryOfKnowledge = theoryOfKnowledge.map(_.withHyväksyntämerkinnälläKorvattuArvosana),
     extendedEssay = extendedEssay.map(_.withHyväksyntämerkinnälläKorvattuArvosana),
-    creativityActionService = creativityActionService.map(_.withHyväksyntämerkinnälläKorvattuArvosana)
+    creativityActionService = creativityActionService.map(_.withHyväksyntämerkinnälläKorvattuArvosana),
+    omanÄidinkielenOpinnot = omanÄidinkielenOpinnot.map(_.withHyväksyntämerkinnälläKorvattuArvosana),
+    puhviKoe = puhviKoe.map(_.withHyväksyntämerkinnälläKorvattuArvosana),
+    suullisenKielitaidonKokeet = suullisenKielitaidonKokeet.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
   )
 }
 
