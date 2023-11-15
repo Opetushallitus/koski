@@ -1,8 +1,7 @@
 package fi.oph.koski.kela
 
 import fi.oph.koski.schema
-import fi.oph.koski.schema.annotation.{Deprecated, KoodistoKoodiarvo}
-import fi.oph.koski.schema.{OpiskeluoikeudenTyyppi, VSTKoto2022Peruste}
+import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
 import fi.oph.scalaschema.annotation.{Description, OnlyWhen, Title}
 
 import java.time.{LocalDate, LocalDateTime}
@@ -19,7 +18,7 @@ case class KelaVapaanSivistystyönOpiskeluoikeus(
   tila: KelaVapaansivistystyönOpiskeluoikeudenTila,
   suoritukset: List[VstSuoritus],
   lisätiedot: Option[KelaVapaanSivistystyönOpiskeluoikeudenLisätiedot],
-  @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.vapaansivistystyonkoulutus.koodiarvo)
+  @KoodistoKoodiarvo(schema.OpiskeluoikeudenTyyppi.vapaansivistystyonkoulutus.koodiarvo)
   tyyppi: schema.Koodistokoodiviite,
   organisaatioHistoria: Option[List[OrganisaatioHistoria]],
   organisaatiohistoria: Option[List[OrganisaatioHistoria]]
@@ -188,10 +187,9 @@ case class VSTKielenTaitotasonArviointi(
   taso: KelaKoodistokoodiviite
 )
 
-// TODO: TOR-1732: Riittääkö tämä OnlyWhen? Ettei voi jossain muodossa deserialisoitua myös vanhemmaksi Kotoksi?
-@OnlyWhen("koulutusmoduuli/perusteenDiaarinumero", VSTKoto2022Peruste.diaarinumero)
+@OnlyWhen("koulutusmoduuli/perusteenDiaarinumero", schema.VSTKoto2022Peruste.diaarinumero)
 case class KelaVSTKOTO2022Suoritus(
-  koulutusmoduuli: KelaVapaanSivistystyönSuorituksenKoulutusmoduuli, // TODO:
+  koulutusmoduuli: KelaVapaanSivistystyönSuorituksenKoulutusmoduuli,
   toimipiste: Option[Toimipiste],
   vahvistus: Option[Vahvistus],
   osasuoritukset: Option[List[KelaVapaanSivistystyönMaahanmuuttajienKototutumisenOsasuoritus]],
