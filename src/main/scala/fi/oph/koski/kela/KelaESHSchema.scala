@@ -2,7 +2,7 @@ package fi.oph.koski.kela
 
 import fi.oph.koski.schema
 import fi.oph.koski.koskiuser.Rooli
-import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri, SensitiveData}
+import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, SensitiveData}
 import fi.oph.scalaschema.annotation.Title
 
 import java.time.{LocalDate, LocalDateTime}
@@ -15,7 +15,7 @@ case class KelaESHOpiskeluoikeus(
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija],
   arvioituPäättymispäivä: Option[LocalDate],
-  tila: KelaESHOpiskeluoikeudenTila,
+  tila: KelaOpiskeluoikeudenTilaRahoitustiedoilla,
   suoritukset: List[KelaESHPäätasonSuoritus],
   @KoodistoKoodiarvo(schema.OpiskeluoikeudenTyyppi.europeanschoolofhelsinki.koodiarvo)
   tyyppi: schema.Koodistokoodiviite,
@@ -33,25 +33,6 @@ case class KelaESHOpiskeluoikeus(
   override def sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus] = None
 }
 
-@Title("European School of Helsingin opiskeluoikeuden tila")
-case class KelaESHOpiskeluoikeudenTila(
-  opiskeluoikeusjaksot: List[KelaESHOpiskeluoikeudenJakso]
-) extends OpiskeluoikeudenTila
-
-@Title("European School of Helsingin opiskeluoikeusjakso")
-case class KelaESHOpiskeluoikeudenJakso(
-  @KoodistoUri("koskiopiskeluoikeudentila")
-  @KoodistoKoodiarvo("eronnut")
-  @KoodistoKoodiarvo("lasna")
-  @KoodistoKoodiarvo("mitatoity")
-  @KoodistoKoodiarvo("valiaikaisestikeskeytynyt")
-  @KoodistoKoodiarvo("valmistunut")
-  tila: KelaKoodistokoodiviite,
-  alku: LocalDate,
-  @KoodistoKoodiarvo("6")
-  opintojenRahoitus: Option[schema.Koodistokoodiviite],
-) extends Opiskeluoikeusjakso
-
 @Title("European School of Helsingin päätason suoritus")
 trait KelaESHPäätasonSuoritus extends Suoritus {
   def withHyväksyntämerkinnälläKorvattuArvosana: KelaESHPäätasonSuoritus
@@ -59,10 +40,9 @@ trait KelaESHPäätasonSuoritus extends Suoritus {
 
 @Title("Secondary lower vuosiluokan suoritus")
 case class KelaESHSecondaryLowerVuosiluokanSuoritus(
-  koulutusmoduuli: KelaESHSecondaryLowerLuokkaAste,
+  koulutusmoduuli: KelaESHSecondaryLuokkaAste,
   toimipiste: Toimipiste,
   vahvistus: Option[Vahvistus],
-  @KoodistoUri("suorituksentyyppi")
   @KoodistoKoodiarvo("europeanschoolofhelsinkivuosiluokkasecondarylower")
   tyyppi: schema.Koodistokoodiviite,
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
@@ -74,31 +54,12 @@ case class KelaESHSecondaryLowerVuosiluokanSuoritus(
   )
 }
 
-@Title("Secondary lower luokka-aste")
-case class KelaESHSecondaryLowerLuokkaAste(
-  @KoodistoUri("europeanschoolofhelsinkiluokkaaste")
-  // TODO: TOR-1732: Tuskin täällä tarvitsee käsitellä annotaatioiden kanssa näitä, korvaa KelaKoodistokoodiviitteellä kaikki?
-  @KoodistoKoodiarvo("S1")
-  @KoodistoKoodiarvo("S2")
-  @KoodistoKoodiarvo("S3")
-  @KoodistoKoodiarvo("S4")
-  @KoodistoKoodiarvo("S5")
-  tunniste: schema.Koodistokoodiviite,
-  @KoodistoUri("europeanschoolofhelsinkicurriculum")
-  curriculum: schema.Koodistokoodiviite,
-  @KoodistoUri("koulutustyyppi")
-  @KoodistoKoodiarvo("21")
-  koulutustyyppi: Option[schema.Koodistokoodiviite],
-) extends SuorituksenKoulutusmoduuli
-
-
 @Title("Secondary lower oppiaineen suoritus")
 case class KelaESHSecondaryLowerOppiaineenSuoritus(
   koulutusmoduuli: KelaESHSecondaryGradeOppiaine,
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   yksilöllistettyOppimäärä: Boolean,
   arviointi: Option[List[KelaESHArviointi]],
-  @KoodistoUri("suorituksentyyppi")
   @KoodistoKoodiarvo("europeanschoolofhelsinkiosasuoritussecondarylower")
   tyyppi: schema.Koodistokoodiviite,
 ) extends Osasuoritus {
@@ -109,10 +70,9 @@ case class KelaESHSecondaryLowerOppiaineenSuoritus(
 
 @Title("Secondary upper vuosiluokan suoritus")
 case class KelaESHSecondaryUpperVuosiluokanSuoritus(
-  koulutusmoduuli: KelaESHSecondaryUpperLuokkaAste,
+  koulutusmoduuli: KelaESHSecondaryLuokkaAste,
   toimipiste: Toimipiste,
   vahvistus: Option[Vahvistus],
-  @KoodistoUri("suorituksentyyppi")
   @KoodistoKoodiarvo("europeanschoolofhelsinkivuosiluokkasecondaryupper")
   tyyppi: schema.Koodistokoodiviite,
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
@@ -124,17 +84,11 @@ case class KelaESHSecondaryUpperVuosiluokanSuoritus(
   )
 }
 
-@Title("Secondary upper luokka-aste")
-case class KelaESHSecondaryUpperLuokkaAste(
-  @KoodistoUri("europeanschoolofhelsinkiluokkaaste")
-  @KoodistoKoodiarvo("S6")
-  @KoodistoKoodiarvo("S7")
-  tunniste: schema.Koodistokoodiviite,
-  @KoodistoUri("europeanschoolofhelsinkicurriculum")
-  curriculum: schema.Koodistokoodiviite,
-  @KoodistoUri("koulutustyyppi")
-  @KoodistoKoodiarvo("21")
-  koulutustyyppi: Option[schema.Koodistokoodiviite],
+@Title("Secondary luokka-aste")
+case class KelaESHSecondaryLuokkaAste(
+  tunniste: KelaKoodistokoodiviite,
+  curriculum: KelaKoodistokoodiviite,
+  koulutustyyppi: Option[KelaKoodistokoodiviite],
 ) extends SuorituksenKoulutusmoduuli
 
 @Title("Secondary upper oppiaineen suoritus")
@@ -148,7 +102,6 @@ case class KelaESHSecondaryUpperOppiaineenSuoritusS6(
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   yksilöllistettyOppimäärä: Boolean,
   arviointi: Option[List[KelaESHArviointi]],
-  @KoodistoUri("suorituksentyyppi")
   @KoodistoKoodiarvo("europeanschoolofhelsinkiosasuorituss6")
   tyyppi: schema.Koodistokoodiviite,
 ) extends KelaESHSecondaryUpperOppiaineenSuoritus {
@@ -163,7 +116,6 @@ case class KelaESHSecondaryUpperOppiaineenSuoritusS7(
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   yksilöllistettyOppimäärä: Boolean,
   arviointi: Option[List[KelaESHArviointi]],
-  @KoodistoUri("suorituksentyyppi")
   @KoodistoKoodiarvo("europeanschoolofhelsinkiosasuorituss7")
   tyyppi: schema.Koodistokoodiviite,
   osasuoritukset: Option[List[KelaESHS7OppiaineenAlaosasuoritus]],
@@ -179,17 +131,14 @@ trait KelaESHSecondaryGradeOppiaine extends SuorituksenKoulutusmoduuli
 
 @Title("European School of Helsingin kielioppiaine")
 case class KelaESHKielioppiaine(
-  @KoodistoUri("europeanschoolofhelsinkikielioppiaine")
-  tunniste: schema.Koodistokoodiviite,
+  tunniste: KelaKoodistokoodiviite,
   laajuus: Option[KelaLaajuus],
-  @KoodistoUri("kieli")
-  kieli: schema.Koodistokoodiviite,
+  kieli: KelaKoodistokoodiviite,
 ) extends KelaESHSecondaryGradeOppiaine
 
 @Title("European School of Helsingin muu oppiaine")
 case class KelaESHMuuOppiaine(
-  @KoodistoUri("europeanschoolofhelsinkimuuoppiaine")
-  tunniste: schema.Koodistokoodiviite,
+  tunniste: KelaKoodistokoodiviite,
   laajuus: Option[KelaLaajuus],
 ) extends KelaESHSecondaryGradeOppiaine
 
@@ -197,7 +146,6 @@ case class KelaESHMuuOppiaine(
 case class KelaESHS7OppiaineenAlaosasuoritus(
   koulutusmoduuli: KelaESHS7Oppiainekomponentti,
   arviointi: Option[List[KelaESHArviointi]],
-  @KoodistoUri("suorituksentyyppi")
   @KoodistoKoodiarvo("europeanschoolofhelsinkialaosasuorituss7")
   tyyppi: schema.Koodistokoodiviite,
 ) extends Suoritus {
@@ -209,8 +157,7 @@ case class KelaESHS7OppiaineenAlaosasuoritus(
 
 @Title("European School of Helsingin S7-luokan oppiainekomponentti")
 case class KelaESHS7Oppiainekomponentti(
-  @KoodistoUri("europeanschoolofhelsinkis7oppiaineenkomponentti")
-  tunniste: schema.Koodistokoodiviite,
+  tunniste: KelaKoodistokoodiviite,
 ) extends SuorituksenKoulutusmoduuli
 
 case class KelaESHArviointi(

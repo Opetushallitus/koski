@@ -25,7 +25,7 @@ case class KelaTutkintokoulutukseenValmentavanOpiskeluoikeus(
   tyyppi: schema.Koodistokoodiviite,
   organisaatioHistoria: Option[List[OrganisaatioHistoria]],
   organisaatiohistoria: Option[List[OrganisaatioHistoria]],
-  järjestämislupa: schema.Koodistokoodiviite
+  järjestämislupa: KelaKoodistokoodiviite
 ) extends KelaOpiskeluoikeus {
   override def alkamispäivä: Option[LocalDate] = super.alkamispäivä
   override def päättymispäivä: Option[LocalDate] = super.päättymispäivä

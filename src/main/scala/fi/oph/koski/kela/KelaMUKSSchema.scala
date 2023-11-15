@@ -1,6 +1,6 @@
 package fi.oph.koski.kela
 
-import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri}
+import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
 import fi.oph.koski.schema
 import fi.oph.scalaschema.annotation.{Description, Title}
 
@@ -15,7 +15,7 @@ case class KelaMUKSOpiskeluoikeus(
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija],
   arvioituPäättymispäivä: Option[LocalDate],
-  tila: KelaMUKSOpiskeluoikeudenTila,
+  tila: KelaOpiskeluoikeudenTilaRahoitustiedoilla,
   suoritukset: List[KelaMUKSPäätasonSuoritus],
   @KoodistoKoodiarvo(schema.OpiskeluoikeudenTyyppi.muukuinsaanneltykoulutus.koodiarvo)
   tyyppi: schema.Koodistokoodiviite,
@@ -36,27 +36,6 @@ case class KelaMUKSOpiskeluoikeus(
   override def lisätiedot: Option[OpiskeluoikeudenLisätiedot] = None
 }
 
-@Title("Muun kuin säännellyn koulutuksen opiskeluoikeuden tila")
-case class KelaMUKSOpiskeluoikeudenTila(
-  opiskeluoikeusjaksot: List[KelaMUKSOpiskeluoikeudenJakso],
-) extends OpiskeluoikeudenTila
-
-@Title("Muun kuin säännellyn koulutuksen opiskeluoikeuden jakso")
-case class KelaMUKSOpiskeluoikeudenJakso(
-  @KoodistoUri("koskiopiskeluoikeudentila")
-
-  // TODO: TOR-1732: poista turhat annotaatiot, nöitä ei kuitenkaan muista ylläpitää päätietomallin mahdollisesti muuttuessa..
-  @KoodistoKoodiarvo("lasna")
-  @KoodistoKoodiarvo("hyvaksytystisuoritettu")
-  @KoodistoKoodiarvo("keskeytynyt")
-  @KoodistoKoodiarvo("mitatoity")
-  tila: KelaKoodistokoodiviite,
-  alku: LocalDate,
-  @KoodistoKoodiarvo("14")
-  @KoodistoKoodiarvo("15")
-  opintojenRahoitus: Option[schema.Koodistokoodiviite],
-) extends Opiskeluoikeusjakso
-
 @Title("Muun kuin säännellyn koulutuksen päätason suoritus")
 case class KelaMUKSPäätasonSuoritus(
   koulutusmoduuli: KelaMUKSKoulutus,
@@ -73,17 +52,10 @@ case class KelaMUKSPäätasonSuoritus(
 
 @Title("Muun kuin säännellyn koulutuksen koulutusmoduuli")
 case class KelaMUKSKoulutus(
-  @KoodistoUri("koulutus")
-  @KoodistoKoodiarvo("999951")
-  // TODO: Onko tässä tarve ylläpitää riippuvuutta pääskeemaan, vai voisiko olla vain KelaKoodistokoodiviite?
-  tunniste: schema.Koodistokoodiviite,
-  // TODO: Onko tässä tarve ylläpitää riippuvuutta pääskeemaan, vai voisiko olla vain KelaKoodistokoodiviite?
-  @KoodistoUri("koulutustyyppi")
-  koulutustyyppi: Option[schema.Koodistokoodiviite],
+  tunniste: KelaKoodistokoodiviite,
+  koulutustyyppi: Option[KelaKoodistokoodiviite],
   laajuus: Option[KelaLaajuus],
-  // TODO: Onko tässä tarve ylläpitää riippuvuutta pääskeemaan, vai voisiko olla vain KelaKoodistokoodiviite?
-  @KoodistoUri("opintokokonaisuudet")
-  opintokokonaisuus: schema.Koodistokoodiviite,
+  opintokokonaisuus: KelaKoodistokoodiviite,
 ) extends SuorituksenKoulutusmoduuli
 
 @Title("Muun kuin säännellyn koulutuksen osasuoritus")

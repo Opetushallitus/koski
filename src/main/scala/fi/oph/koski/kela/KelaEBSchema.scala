@@ -1,7 +1,7 @@
 package fi.oph.koski.kela
 
 import fi.oph.koski.schema
-import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri}
+import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
 import fi.oph.scalaschema.annotation.Title
 
 import java.time.{LocalDate, LocalDateTime}
@@ -14,7 +14,7 @@ case class KelaEBOpiskeluoikeus(
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija],
   arvioituPäättymispäivä: Option[LocalDate],
-  tila: KelaEBOpiskeluoikeudenTila,
+  tila: KelaOpiskeluoikeudenTila,
   suoritukset: List[KelaEBTutkinnonSuoritus],
   @KoodistoKoodiarvo(schema.OpiskeluoikeudenTyyppi.ebtutkinto.koodiarvo)
   tyyppi: schema.Koodistokoodiviite,
@@ -32,30 +32,11 @@ case class KelaEBOpiskeluoikeus(
   override def lisätiedot: Option[OpiskeluoikeudenLisätiedot] = None
 }
 
-@Title("EB-tutkinnon opiskeluoikeuden tila")
-case class KelaEBOpiskeluoikeudenTila(
-  opiskeluoikeusjaksot: List[KelaEBOpiskeluoikeudenJakso]
-) extends OpiskeluoikeudenTila
-
-// TODO: TOR-1732: tarvitaanko oma aikajaksluokka? Vai voisiko käyttä KelaScheman yleistä?
-@Title("EB-tutkinnon opiskeluoikeuden jakso")
-case class KelaEBOpiskeluoikeudenJakso(
-  @KoodistoUri("koskiopiskeluoikeudentila")
-  @KoodistoKoodiarvo("eronnut")
-  @KoodistoKoodiarvo("lasna")
-  @KoodistoKoodiarvo("mitatoity")
-  @KoodistoKoodiarvo("valmistunut")
-  tila: KelaKoodistokoodiviite,
-  alku: LocalDate,
-) extends Opiskeluoikeusjakso
-
 @Title("EB-tutkinnon suoritus")
 case class KelaEBTutkinnonSuoritus(
   koulutusmoduuli: KelaEBTutkinto,
   toimipiste: Toimipiste,
   vahvistus: Option[Vahvistus],
-  @Title("Koulutus")
-  @KoodistoKoodiarvo("ebtutkinto")
   tyyppi: schema.Koodistokoodiviite,
   override val osasuoritukset: Option[List[KelaEBTutkinnonOsasuoritus]]
 ) extends Suoritus {
@@ -67,7 +48,6 @@ case class KelaEBTutkinnonSuoritus(
 @Title("EB-tutkinnon osasuoritus")
 case class KelaEBTutkinnonOsasuoritus(
   koulutusmoduuli: KelaESHSecondaryGradeOppiaine,
-  @KoodistoKoodiarvo("ebtutkinnonosasuoritus")
   tyyppi: schema.Koodistokoodiviite,
   osasuoritukset: Option[List[KelaEBOppiaineenAlaosasuoritus]]
 ) extends Osasuoritus {
@@ -79,7 +59,6 @@ case class KelaEBOppiaineenAlaosasuoritus(
   @Title("Arviointikomponentti")
   koulutusmoduuli: KelaEBOppiaineKomponentti,
   arviointi: Option[List[KelaEBArviointi]],
-  @KoodistoKoodiarvo("ebtutkinnonalaosasuoritus")
   tyyppi: schema.Koodistokoodiviite
 ) extends Osasuoritus {
   override def withHyväksyntämerkinnälläKorvattuArvosana: KelaEBOppiaineenAlaosasuoritus = copy(
@@ -89,16 +68,11 @@ case class KelaEBOppiaineenAlaosasuoritus(
 
 @Title("EB-oppiainekomponentti")
 case class KelaEBOppiaineKomponentti(
-  @KoodistoUri("ebtutkinnonoppiaineenkomponentti")
-  @KoodistoKoodiarvo("Final")
-  @KoodistoKoodiarvo("Oral")
-  @KoodistoKoodiarvo("Written")
-  tunniste: schema.Koodistokoodiviite
+  tunniste: KelaKoodistokoodiviite
 )
 
 @Title("EB-tutkinnon arviointi")
 case class KelaEBArviointi(
-  @KoodistoUri("arviointiasteikkoeuropeanschoolofhelsinkifinalmark")
   arvosana: Option[schema.Koodistokoodiviite],
   päivä: Option[LocalDate],
   hyväksytty: Option[Boolean]
@@ -111,10 +85,7 @@ case class KelaEBArviointi(
 
 @Title("EB-tutkinto")
 case class KelaEBTutkinto(
-  @KoodistoUri("koulutus")
-  @KoodistoKoodiarvo("301104")
-  tunniste: schema.Koodistokoodiviite,
-  @KoodistoKoodiarvo("21")
-  koulutustyyppi: Option[schema.Koodistokoodiviite],
-  curriculum: schema.Koodistokoodiviite
+  tunniste: KelaKoodistokoodiviite,
+  koulutustyyppi: Option[KelaKoodistokoodiviite],
+  curriculum: KelaKoodistokoodiviite
 ) extends SuorituksenKoulutusmoduuli
