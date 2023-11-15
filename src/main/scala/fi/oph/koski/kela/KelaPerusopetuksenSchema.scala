@@ -2,9 +2,8 @@ package fi.oph.koski.kela
 
 import fi.oph.koski.koskiuser.Rooli
 import fi.oph.koski.schema
-import fi.oph.koski.schema.{OmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina, OpiskeluoikeudenTyyppi}
 import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, SensitiveData}
-import fi.oph.scalaschema.annotation.{Description, Discriminator, OnlyWhen, Title}
+import fi.oph.scalaschema.annotation.{Description, Title}
 
 import java.time.{LocalDate, LocalDateTime}
 
@@ -20,7 +19,7 @@ case class KelaPerusopetuksenOpiskeluoikeus(
   tila: KelaOpiskeluoikeudenTila,
   suoritukset: List[KelaPerusopetuksenSuoritus],
   lisätiedot: Option[KelaPerusopetuksenOpiskeluoikeudenLisätiedot],
-  @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.perusopetus.koodiarvo)
+  @KoodistoKoodiarvo(schema.OpiskeluoikeudenTyyppi.perusopetus.koodiarvo)
   tyyppi: schema.Koodistokoodiviite,
   organisaatioHistoria: Option[List[OrganisaatioHistoria]],
   organisaatiohistoria: Option[List[OrganisaatioHistoria]]
@@ -64,12 +63,12 @@ case class KelaPerusopetuksenSuoritus(
   alkamispäivä: Option[LocalDate],
   jääLuokalle: Option[Boolean],
   arviointi: Option[List[KelaYleissivistävänKoulutuksenArviointi]],
-  // TODO: TOR-1732: Töstä varmasti pitäisi poistaa myös tarkka arvosana ja korvata hyväksyntätietoina
-  omanÄidinkielenOpinnot: Option[OmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina]
+  omanÄidinkielenOpinnot: Option[KelaOmanÄidinkielenOpinnot]
 ) extends Suoritus {
   def withHyväksyntämerkinnälläKorvattuArvosana: KelaPerusopetuksenSuoritus = copy(
     osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
-    arviointi = arviointi.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
+    arviointi = arviointi.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
+    omanÄidinkielenOpinnot = omanÄidinkielenOpinnot.map(_.withHyväksyntämerkinnälläKorvattuArvosana)
   )
 }
 

@@ -174,7 +174,6 @@ trait SisältääHyväksyntämerkinnälläKorvatunArvosanan {
 
 @Title("Osasuorituksen arviointi")
 trait OsasuorituksenArviointi extends SisältääHyväksyntämerkinnälläKorvatunArvosanan {
-  def hyväksytty: Option[Boolean]
   def withHyväksyntämerkinnälläKorvattuArvosana: OsasuorituksenArviointi
 }
 
@@ -184,6 +183,18 @@ case class KelaYleissivistävänKoulutuksenArviointi(
   päivä: Option[LocalDate]
 ) extends OsasuorituksenArviointi {
   def withHyväksyntämerkinnälläKorvattuArvosana: KelaYleissivistävänKoulutuksenArviointi = copy(
+    arvosana = None,
+    hyväksytty = arvosana.map(schema.YleissivistävänKoulutuksenArviointi.hyväksytty)
+  )
+}
+
+case class KelaOmanÄidinkielenOpinnot(
+  arvosana: Option[schema.Koodistokoodiviite],
+  arviointipäivä: Option[LocalDate],
+  laajuus: Option[KelaLaajuus],
+  hyväksytty: Option[Boolean],
+) extends SisältääHyväksyntämerkinnälläKorvatunArvosanan {
+  override def withHyväksyntämerkinnälläKorvattuArvosana: KelaOmanÄidinkielenOpinnot = copy(
     arvosana = None,
     hyväksytty = arvosana.map(schema.YleissivistävänKoulutuksenArviointi.hyväksytty)
   )
