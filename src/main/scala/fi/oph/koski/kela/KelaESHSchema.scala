@@ -115,7 +115,7 @@ case class KelaESHSecondaryUpperVuosiluokanSuoritus(
   @KoodistoUri("suorituksentyyppi")
   @KoodistoKoodiarvo("europeanschoolofhelsinkivuosiluokkasecondaryupper")
   tyyppi: schema.Koodistokoodiviite,
-  // TODO: TOR-1732: Miksei tämä ole luottamuksellinen? Pitäisi varmaan olla.
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   jääLuokalle: Boolean,
   osasuoritukset: Option[List[KelaESHSecondaryUpperOppiaineenSuoritus]],
 ) extends KelaESHPäätasonSuoritus {
