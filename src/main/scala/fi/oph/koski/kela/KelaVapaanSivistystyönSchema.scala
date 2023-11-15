@@ -177,26 +177,10 @@ case class VSTMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenArviointi (
   arvosana: Option[schema.Koodistokoodiviite],
   hyväksytty: Option[Boolean],
   päivä: Option[LocalDate],
-  // TODO: TOR-1732: Miksei vaan poisteta kokonaan tietomallista?
-  // Turha näitä on deprecated-merkinnöillä roikottaa speksissä?
-  // Poistetaanko näitä edes osana deserialisointia?
-  @Deprecated("Poistettu palautettavien tietojen joukosta")
-  kuullunYmmärtämisenTaitotaso: Option[VSTKielenTaitotasonArviointi],
-  @Deprecated("Poistettu palautettavien tietojen joukosta")
-  puhumisenTaitotaso: Option[VSTKielenTaitotasonArviointi],
-  @Deprecated("Poistettu palautettavien tietojen joukosta")
-  luetunYmmärtämisenTaitotaso: Option[VSTKielenTaitotasonArviointi],
-  @Deprecated("Poistettu palautettavien tietojen joukosta")
-  kirjoittamisenTaitotaso: Option[VSTKielenTaitotasonArviointi]
 ) extends OsasuorituksenArviointi {
   def withHyväksyntämerkinnälläKorvattuArvosana: VSTMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenArviointi = copy(
     arvosana = None,
     hyväksytty = arvosana.map(schema.VapaanSivistystyönKoulutuksenArviointi.hyväksytty),
-    // TODO: TOR-1732: miksei vaan kokonaan kenttiä pois tietomallista, jolloin deserialisointi hoitaisi tämän?
-    kuullunYmmärtämisenTaitotaso = None,
-    puhumisenTaitotaso = None,
-    luetunYmmärtämisenTaitotaso = None,
-    kirjoittamisenTaitotaso = None,
   )
 }
 

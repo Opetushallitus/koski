@@ -781,10 +781,7 @@ class KelaSpec
           actualOsasuoritus.tyyppi shouldBe expectedOsasuoritus.tyyppi
           actualOsasuoritus.osasuoritukset.foreach(_.foreach { osasuoritus =>
             osasuoritus.arviointi.foreach(_.foreach { arviointi =>
-              arviointi.puhumisenTaitotaso shouldBe None
-              arviointi.kirjoittamisenTaitotaso shouldBe None
-              arviointi.kuullunYmmärtämisenTaitotaso shouldBe None
-              arviointi.luetunYmmärtämisenTaitotaso shouldBe None
+              arviointi.arvosana shouldBe None
             })
           })
       }
