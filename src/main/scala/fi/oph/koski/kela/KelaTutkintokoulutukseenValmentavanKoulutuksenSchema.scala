@@ -57,6 +57,7 @@ case class KelaTuvaOpiskeluoikeudenLisätiedot(
   vankilaopetuksessa: Option[List[KelaAikajakso]],
   majoitusetu: Option[KelaAikajakso],
   koulukoti: Option[List[KelaAikajakso]],
+  koulutusvienti: Option[Boolean],
 ) extends OpiskeluoikeudenLisätiedot
 
 @Title("Tutkintokoulutukseen valmentavan koulutuksen suoritus")
