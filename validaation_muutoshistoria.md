@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 17.11.2023
+
+- Sallittu oppilaitoksen vaihtaminen oppilaitoksesta 1.2.246.562.10.82407007176 oppilaitokseen 1.2.246.562.10.51885744782
+
 ## 31.10.2023
 
 - Päivitetty validaatiot ottamaan huomioon EB-tutkinnon poistuminen ESH-opiskeluoikeudesta
