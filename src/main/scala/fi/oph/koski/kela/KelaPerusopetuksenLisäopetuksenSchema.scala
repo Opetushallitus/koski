@@ -39,7 +39,7 @@ case class KelaPerusopetuksenLisäopetuksenOpiskeluoikeus(
 
 case class KelaPerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot(
   sisäoppilaitosmainenMajoitus: Option[List[KelaAikajakso]],
-  ulkomaanjaksot: Option[List[Ulkomaanjakso]],
+  ulkomaanjaksot: Option[List[KelaAikajakso]],
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   koulukoti: Option[List[KelaAikajakso]],
   majoitusetu: Option[KelaAikajakso],

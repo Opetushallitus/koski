@@ -38,8 +38,7 @@ case class KelaPerusopetuksenOpiskeluoikeus(
 
 case class KelaPerusopetuksenOpiskeluoikeudenLisätiedot(
   sisäoppilaitosmainenMajoitus: Option[List[KelaAikajakso]],
-  // TODO: TOR-1732: Päätietomallissa ei ole näin monimutkaista ulkomaanjakso-rakennetta perusopetuksessa, joten korvaa simppelimmällä Kelallekin?
-  ulkomaanjaksot: Option[List[Ulkomaanjakso]],
+  ulkomaanjaksot: Option[List[KelaAikajakso]],
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   koulukoti: Option[List[KelaAikajakso]],
   majoitusetu: Option[KelaAikajakso],
