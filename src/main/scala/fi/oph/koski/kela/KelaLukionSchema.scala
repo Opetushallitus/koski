@@ -77,7 +77,6 @@ case class KelaPuhviKoe2019(
 case class KelaSuullisenKielitaidonKoe2019(
   kieli: KelaKoodistokoodiviite,
   arvosana: Option[schema.Koodistokoodiviite],
-  taitotaso: Option[KelaKoodistokoodiviite],
   päivä: LocalDate,
   hyväksytty: Option[Boolean]
 ) extends SisältääHyväksyntämerkinnälläKorvatunArvosanan {

@@ -420,7 +420,7 @@ class KelaSpec
     }
   }
 
-  "Mitään arvosana-nimisiä kenttiä ei palauteta" in {
+  "Arvosanadataa sisältäviltä vaikuttavia kenttiä ei palauteta" in {
     var iteraatioLkm = 0
 
     val kaikkiHetut: Seq[String] = KoskiSpecificMockOppijat.defaultOppijat
@@ -437,7 +437,8 @@ class KelaSpec
             val oppija = JsonSerializer.parse[KelaOppija](body)
             withClue(s"${hetu} ${oppija.henkilö.sukunimi} ${oppija.henkilö.etunimet} ${oppija.opiskeluoikeudet.map(_.tyyppi.koodiarvo).mkString(",")}") {
               iteraatioLkm = iteraatioLkm + 1
-              body.contains("arvosana") should be(false)
+              body.toLowerCase.contains("arvosana") should be(false)
+              body.toLowerCase.contains("taitotaso") should be(false)
             }
           }
         }
@@ -849,7 +850,6 @@ class KelaSpec
       päätasonSuoritus.suullisenKielitaidonKokeet.get.foreach { koe =>
         koe.arvosana should be (None)
         koe.hyväksytty.isDefined should be (true)
-        koe.taitotaso.isDefined should be (true)
       }
 
     }
