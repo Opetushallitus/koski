@@ -63,8 +63,8 @@ case class KelaIBPäätasonSuoritus(
 @Title("IB-tutkinnon osasuoritus")
 case class KelaIBOsasuoritus(
   koulutusmoduuli: KelaIBOsasuorituksenKoulutusmoduuli,
-  arviointi: Option[List[KelaIBOsasuorituksenArvionti]],
-  predictedArviointi: Option[List[KelaIBOsasuorituksenArvionti]],
+  arviointi: Option[List[KelaIBOsasuorituksenArviointi]],
+  predictedArviointi: Option[List[KelaIBOsasuorituksenArviointi]],
   osasuoritukset: Option[List[KelaIBOsasuoritus]],
   tyyppi: schema.Koodistokoodiviite,
   tila: Option[KelaKoodistokoodiviite],
@@ -74,16 +74,17 @@ case class KelaIBOsasuoritus(
 ) extends Osasuoritus {
   def withHyväksyntämerkinnälläKorvattuArvosana: KelaIBOsasuoritus = copy(
     arviointi = arviointi.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
-    osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
+    predictedArviointi = predictedArviointi.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
+    osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
   )
 }
 
-case class KelaIBOsasuorituksenArvionti(
+case class KelaIBOsasuorituksenArviointi(
   arvosana: Option[schema.Koodistokoodiviite],
   hyväksytty: Option[Boolean],
   päivä: Option[LocalDate]
 ) extends OsasuorituksenArviointi {
-  def withHyväksyntämerkinnälläKorvattuArvosana: KelaIBOsasuorituksenArvionti = copy(
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaIBOsasuorituksenArviointi = copy(
     arvosana = None,
     hyväksytty = arvosana.map(a => schema.IBArviointi.hyväksytty(a) && schema.CoreRequirementsArvionti.hyväksytty(a))
   )
@@ -110,7 +111,7 @@ case class KelaIBOsasuorituksenKoulutusmoduuli(
 case class IBTheoryOfKnowledgeSuoritus(
   koulutusmoduuli: IBTheoryOfKnowledgeSuoritusKoulutusmoduuli,
   tila: Option[KelaKoodistokoodiviite],
-  arviointi: Option[List[KelaIBOsasuorituksenArvionti]] = None,
+  arviointi: Option[List[KelaIBOsasuorituksenArviointi]] = None,
   osasuoritukset: Option[List[KelaIBOsasuoritus]],
   tyyppi: KelaKoodistokoodiviite
 ) {
@@ -128,7 +129,7 @@ case class IBTheoryOfKnowledgeSuoritusKoulutusmoduuli(
 case class IBExtendedEssaySuoritus(
   koulutusmoduuli: IBExtendedEssaySuoritusKoulutusmoduuli,
   tila: Option[KelaKoodistokoodiviite],
-  arviointi: Option[List[KelaIBOsasuorituksenArvionti]] = None,
+  arviointi: Option[List[KelaIBOsasuorituksenArviointi]] = None,
   tyyppi: KelaKoodistokoodiviite
 ) {
   def withHyväksyntämerkinnälläKorvattuArvosana: IBExtendedEssaySuoritus = copy(
@@ -153,7 +154,7 @@ case class KelaIBAineRyhmäOppiaine(
 
 case class IBCASSuoritus(
   koulutusmoduuli: KelaIBSuorituksenKoulutusmoduuli,
-  arviointi: Option[List[KelaIBOsasuorituksenArvionti]] = None,
+  arviointi: Option[List[KelaIBOsasuorituksenArviointi]] = None,
   tyyppi: KelaKoodistokoodiviite,
   tila: Option[KelaKoodistokoodiviite]
 ) {

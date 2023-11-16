@@ -420,6 +420,32 @@ class KelaSpec
     }
   }
 
+  "Mitään arvosana-nimisiä kenttiä ei palauteta" in {
+    var iteraatioLkm = 0
+
+    val kaikkiHetut: Seq[String] = KoskiSpecificMockOppijat.defaultOppijat
+      .map(_.henkilö.hetu)
+      .filterNot(_.isEmpty)
+      .map(_.get)
+      .toSet
+      .toSeq
+
+    kaikkiHetut
+      .foreach(hetu => {
+        postHetu(hetu, user = MockUsers.kelaLaajatOikeudet) {
+          if (response.status == 200) {
+            val oppija = JsonSerializer.parse[KelaOppija](body)
+            withClue(s"${hetu} ${oppija.henkilö.sukunimi} ${oppija.henkilö.etunimet} ${oppija.opiskeluoikeudet.map(_.tyyppi.koodiarvo).mkString(",")}") {
+              iteraatioLkm = iteraatioLkm + 1
+              body.contains("arvosana") should be(false)
+            }
+          }
+        }
+      })
+
+    iteraatioLkm should be > (120)
+  }
+
   "Opiskeluoikeushistoria" - {
     lazy val historiaFixture = new {
       resetFixtures
