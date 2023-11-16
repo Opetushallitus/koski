@@ -41,7 +41,6 @@ case class KelaIBPäätasonSuoritus(
   vahvistus: Option[Vahvistus],
   osasuoritukset: Option[List[KelaIBOsasuoritus]],
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[KelaKoodistokoodiviite],
   theoryOfKnowledge: Option[IBTheoryOfKnowledgeSuoritus],
   extendedEssay: Option[IBExtendedEssaySuoritus],
   creativityActionService: Option[IBCASSuoritus],
@@ -67,7 +66,6 @@ case class KelaIBOsasuoritus(
   predictedArviointi: Option[List[KelaIBOsasuorituksenArviointi]],
   osasuoritukset: Option[List[KelaIBOsasuoritus]],
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[KelaKoodistokoodiviite],
   tunnustettu: Option[OsaamisenTunnustaminen],
   suoritettuLukiodiplomina: Option[Boolean],
   suoritettuSuullisenaKielikokeena: Option[Boolean]
@@ -110,7 +108,6 @@ case class KelaIBOsasuorituksenKoulutusmoduuli(
 
 case class IBTheoryOfKnowledgeSuoritus(
   koulutusmoduuli: IBTheoryOfKnowledgeSuoritusKoulutusmoduuli,
-  tila: Option[KelaKoodistokoodiviite],
   arviointi: Option[List[KelaIBOsasuorituksenArviointi]] = None,
   osasuoritukset: Option[List[KelaIBOsasuoritus]],
   tyyppi: KelaKoodistokoodiviite
@@ -128,7 +125,6 @@ case class IBTheoryOfKnowledgeSuoritusKoulutusmoduuli(
 
 case class IBExtendedEssaySuoritus(
   koulutusmoduuli: IBExtendedEssaySuoritusKoulutusmoduuli,
-  tila: Option[KelaKoodistokoodiviite],
   arviointi: Option[List[KelaIBOsasuorituksenArviointi]] = None,
   tyyppi: KelaKoodistokoodiviite
 ) {
@@ -156,7 +152,6 @@ case class IBCASSuoritus(
   koulutusmoduuli: KelaIBSuorituksenKoulutusmoduuli,
   arviointi: Option[List[KelaIBOsasuorituksenArviointi]] = None,
   tyyppi: KelaKoodistokoodiviite,
-  tila: Option[KelaKoodistokoodiviite]
 ) {
   def withHyväksyntämerkinnälläKorvattuArvosana: IBCASSuoritus = copy(
     arviointi = arviointi.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))

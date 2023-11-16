@@ -76,7 +76,6 @@ case class KelaTuvaPäätasonSuoritus(
   koulutusmoduuli: KelaTuvaSuorituksenKoulutusmoduuli,
   vahvistus: Option[Vahvistus],
   override val osasuoritukset: Option[List[KelaTuvaOsasuoritus]],
-  tila: Option[KelaKoodistokoodiviite],
 ) extends Suoritus {
   def withHyväksyntämerkinnälläKorvattuArvosana: KelaTuvaPäätasonSuoritus = copy(
     osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
@@ -90,9 +89,6 @@ case class KelaTuvaOsasuoritus(
   osasuoritukset: Option[List[KelaTuvaOsasuoritus]],
   tyyppi: schema.Koodistokoodiviite,
   tunnustettu: Option[OsaamisenTunnustaminen],
-  // TODO: TOR-1732: Näitä suorituksen tila -kenttiä, joita ei Koski-dataan käsittääkseni tallenneta on tässä ja joissain muissakin Kela-schemassa.
-  // Pitäisikö poistaa? Speksissä näitä on jossain opiskelumuodoissa poistettu, jossain ei, ja toteutusta on tehty "speksin mukaan".
-  tila: Option[KelaKoodistokoodiviite],
 ) extends Osasuoritus {
   def withHyväksyntämerkinnälläKorvattuArvosana: KelaTuvaOsasuoritus = copy(
     arviointi = arviointi.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),

@@ -53,7 +53,6 @@ case class KelaVapaanSivistystyönPäätasonSuoritus(
   @KoodistoKoodiarvo("vstoppivelvollisillesuunnattukoulutus")
   @KoodistoKoodiarvo("vstlukutaitokoulutus")
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[KelaKoodistokoodiviite],
 ) extends VstSuoritus {
   def withHyväksyntämerkinnälläKorvattuArvosana: KelaVapaanSivistystyönPäätasonSuoritus = copy(
     osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
@@ -68,7 +67,6 @@ case class KelaVapaanSivistystyönMaahanmuuttajienKotoutumisenSuoritus(
   osasuoritukset: Option[List[KelaVapaanSivistystyönMaahanmuuttajienKototutumisenOsasuoritus]],
   @KoodistoKoodiarvo("vstmaahanmuuttajienkotoutumiskoulutus")
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[KelaKoodistokoodiviite],
 ) extends VstSuoritus {
   def withHyväksyntämerkinnälläKorvattuArvosana: KelaVapaanSivistystyönMaahanmuuttajienKotoutumisenSuoritus = copy(
     osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
@@ -83,7 +81,6 @@ case class KelaVapaanSivistystyönJotpaSuoritus(
   osasuoritukset: Option[List[KelaVapaanSivistystyönJotpaOsasuoritus]],
   @KoodistoKoodiarvo("vstjotpakoulutus")
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[KelaKoodistokoodiviite],
 ) extends VstSuoritus {
   def withHyväksyntämerkinnälläKorvattuArvosana: KelaVapaanSivistystyönJotpaSuoritus = copy(
     osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
@@ -104,7 +101,6 @@ case class KelaVapaanSivistystyönJotpaOsasuoritus(
   osasuoritukset: Option[List[KelaVapaanSivistystyönJotpaOsasuoritus]],
   @KoodistoKoodiarvo("vstjotpakoulutuksenosasuoritus")
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[KelaKoodistokoodiviite],
 ) extends Osasuoritus {
   def withHyväksyntämerkinnälläKorvattuArvosana: KelaVapaanSivistystyönJotpaOsasuoritus = copy(
     arviointi = arviointi.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
@@ -122,7 +118,6 @@ case class KelaVapaanSivistystyönOsasuoritus(
   arviointi: Option[List[KelaVSTOsasuorituksenArviointi]],
   osasuoritukset: Option[List[KelaVapaanSivistystyönOsasuoritus]],
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[KelaKoodistokoodiviite],
 ) extends Osasuoritus {
   def withHyväksyntämerkinnälläKorvattuArvosana: KelaVapaanSivistystyönOsasuoritus = copy(
     arviointi = arviointi.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
@@ -136,7 +131,6 @@ case class KelaVapaanSivistystyönMaahanmuuttajienKototutumisenOsasuoritus(
   arviointi: Option[List[VSTMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenArviointi]],
   osasuoritukset: Option[List[KelaVapaanSivistystyönMaahanmuuttajienKototutumisenOsasuoritus]],
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[KelaKoodistokoodiviite],
 ) extends Osasuoritus {
   def withHyväksyntämerkinnälläKorvattuArvosana: KelaVapaanSivistystyönMaahanmuuttajienKototutumisenOsasuoritus = copy(
     arviointi = arviointi.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
@@ -191,7 +185,6 @@ case class KelaVSTKOTO2022Suoritus(
   osasuoritukset: Option[List[KelaVapaanSivistystyönMaahanmuuttajienKototutumisenOsasuoritus]],
   @KoodistoKoodiarvo("vstmaahanmuuttajienkotoutumiskoulutus")
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[KelaKoodistokoodiviite],
 ) extends VstSuoritus {
   override def withHyväksyntämerkinnälläKorvattuArvosana: VstSuoritus = this.copy(
     osasuoritukset = this.osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),

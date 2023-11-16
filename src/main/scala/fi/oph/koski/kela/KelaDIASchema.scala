@@ -59,7 +59,6 @@ case class KelaDIAPäätasonSuoritus(
   vahvistus: Option[Vahvistus],
   osasuoritukset: Option[List[KelaDIAOsasuoritus]],
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[KelaKoodistokoodiviite]
 ) extends Suoritus {
   def withOsasuorituksetVastaavuusKopioitu: KelaDIAPäätasonSuoritus = copy(
     osasuoritukset = osasuoritukset.map(os => os.map(_.withVastaavuusKopioitu))
@@ -75,7 +74,6 @@ case class KelaDIAOsasuoritus(
   arviointi: Option[List[KelaDIAOsasuorituksenArvionti]],
   osasuoritukset: Option[List[KelaDIAOsasuoritus]],
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[KelaKoodistokoodiviite],
   vastaavuusTodistuksenTiedot: Option[VastaavuusTodistuksenTiedot],
   @Deprecated("Ei palauteta Kela-API:ssa. Kenttä on näkyvissä skeemassa vain teknisistä syistä.")
   vastaavuustodistuksenTiedot: Option[VastaavuusTodistuksenTiedot]

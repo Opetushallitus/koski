@@ -46,7 +46,6 @@ object KelaYlioppilastutkinnonOpiskeluoikeus {
         ),
         os.arviointi.map(opt => opt.map(a => KelaYlioppilastutkinnonOsasuorituksenArvionti(None, Some(a.hyväksytty), a.arviointipäivä))),
         os.tyyppi,
-        os.tila.map(KelaKoodistokoodiviite.fromKoskiSchema),
         Some(KelaYlioppilastutkinnonTutkintokerta(
           os.tutkintokerta.koodiarvo,
           os.tutkintokerta.vuosi,
@@ -54,7 +53,6 @@ object KelaYlioppilastutkinnonOpiskeluoikeus {
         ))
       ))),
       tyyppi = s.tyyppi,
-      tila = s.tila.map(KelaKoodistokoodiviite.fromKoskiSchema),
       alkamispäivä = s.alkamispäivä,
       pakollisetKokeetSuoritettu = Some(s.pakollisetKokeetSuoritettu)
     )),
@@ -94,7 +92,6 @@ case class KelaYlioppilastutkinnonPäätasonSuoritus(
   vahvistus: Option[Vahvistus],
   osasuoritukset: Option[List[KelaYlioppilastutkinnonOsasuoritus]],
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[KelaKoodistokoodiviite],
   alkamispäivä: Option[LocalDate],
   pakollisetKokeetSuoritettu: Option[Boolean],
 ) extends Suoritus {
@@ -106,7 +103,6 @@ case class KelaYlioppilastutkinnonOsasuoritus(
   koulutusmoduuli: KelaYlioppilastutkinnonOsasuorituksenKoulutusmoduuli,
   arviointi: Option[List[KelaYlioppilastutkinnonOsasuorituksenArvionti]],
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[KelaKoodistokoodiviite],
   tutkintokerta: Option[KelaYlioppilastutkinnonTutkintokerta],
 ) extends Osasuoritus {
   override def withHyväksyntämerkinnälläKorvattuArvosana: Osasuoritus = this

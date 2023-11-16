@@ -58,7 +58,6 @@ case class KelaPerusopetuksenSuoritus(
   vahvistus: Option[Vahvistus],
   osasuoritukset: Option[List[KelaPerusopetuksenOsasuoritus]],
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[KelaKoodistokoodiviite],
   alkamispäivä: Option[LocalDate],
   jääLuokalle: Option[Boolean],
   arviointi: Option[List[KelaYleissivistävänKoulutuksenArviointi]],
@@ -76,7 +75,6 @@ case class KelaPerusopetuksenOsasuoritus(
   koulutusmoduuli: KelaPerusopetuksenOsasuorituksenKoulutusmoduuli,
   arviointi: Option[List[KelaPerusopetuksenOsasuorituksenArviointi]],
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[KelaKoodistokoodiviite],
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   yksilöllistettyOppimäärä: Option[Boolean]
 ) extends Osasuoritus with YksilöllistettyOppimäärä {

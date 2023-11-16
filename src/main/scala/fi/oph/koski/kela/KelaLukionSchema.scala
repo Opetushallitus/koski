@@ -54,7 +54,6 @@ case class KelaLukionPäätasonSuoritus(
   puhviKoe: Option[KelaPuhviKoe2019],
   suullisenKielitaidonKokeet: Option[List[KelaSuullisenKielitaidonKoe2019]],
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[KelaKoodistokoodiviite]
 ) extends Suoritus {
   def withHyväksyntämerkinnälläKorvattuArvosana: KelaLukionPäätasonSuoritus = copy(
     osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
@@ -128,7 +127,6 @@ case class KelaLukionOsasuoritus(
   arviointi: Option[List[KelaYleissivistävänKoulutuksenArviointi]],
   osasuoritukset: Option[List[KelaLukionOsasuoritus]],
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[KelaKoodistokoodiviite],
   tunnustettu: Option[OsaamisenTunnustaminen],
   suoritettuLukiodiplomina: Option[Boolean],
   suoritettuSuullisenaKielikokeena: Option[Boolean]

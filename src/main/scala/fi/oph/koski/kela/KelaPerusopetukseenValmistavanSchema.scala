@@ -43,7 +43,6 @@ case class KelaPerusopetukseenValmistavanPäätasonSuoritus(
   vahvistus: Option[Vahvistus],
   osasuoritukset: Option[List[KelaPerusopetukseenValmistavanOsasuoritus]],
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[KelaKoodistokoodiviite],
   kokonaislaajuus: Option[KelaLaajuus]
 ) extends Suoritus {
   def withHyväksyntämerkinnälläKorvattuArvosana: KelaPerusopetukseenValmistavanPäätasonSuoritus = copy(
@@ -56,7 +55,6 @@ case class KelaPerusopetukseenValmistavanOsasuoritus(
   koulutusmoduuli: KelaPerusopetukseenValmistavanOsasuorituksenKoulutusmoduuli,
   arviointi: Option[List[KelaPerusopetuksenOsasuorituksenArviointi]],
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[KelaKoodistokoodiviite],
   luokkaAste: Option[KelaKoodistokoodiviite],
 ) extends Osasuoritus {
   def withHyväksyntämerkinnälläKorvattuArvosana: KelaPerusopetukseenValmistavanOsasuoritus = copy(

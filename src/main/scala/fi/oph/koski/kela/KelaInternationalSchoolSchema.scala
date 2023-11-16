@@ -48,7 +48,6 @@ case class KelaInternationalSchoolPäätasonSuoritus(
   vahvistus: Option[Vahvistus],
   osasuoritukset: Option[List[KelaInternationalSchoolOsasuoritus]],
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[KelaKoodistokoodiviite],
   alkamispäivä: Option[LocalDate]
 ) extends Suoritus {
   def withHyväksyntämerkinnälläKorvattuArvosana: KelaInternationalSchoolPäätasonSuoritus = copy(
@@ -61,7 +60,6 @@ case class KelaInternationalSchoolOsasuoritus(
   koulutusmoduuli: KelaInternationalSchoolOsasuorituksenKoulutusmoduuli,
   arviointi: Option[List[KelaInternationalSchoolOsasuorituksenArvionti]],
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[KelaKoodistokoodiviite],
 ) extends Osasuoritus {
   def withHyväksyntämerkinnälläKorvattuArvosana: KelaInternationalSchoolOsasuoritus = copy(
     arviointi = arviointi.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))

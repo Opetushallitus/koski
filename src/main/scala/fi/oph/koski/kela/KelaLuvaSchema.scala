@@ -51,7 +51,6 @@ case class KelaLuvaPäätasonSuoritus(
   vahvistus: Option[Vahvistus],
   osasuoritukset: Option[List[KelaLuvaOsasuoritus]],
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[KelaKoodistokoodiviite]
 ) extends Suoritus {
   def withHyväksyntämerkinnälläKorvattuArvosana = copy(
     osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
@@ -64,7 +63,6 @@ case class KelaLuvaOsasuoritus(
   arviointi: Option[List[KelaLuvaOsasuorituksenArvionti]],
   osasuoritukset: Option[List[KelaLuvaOsasuoritus]],
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[KelaKoodistokoodiviite],
   tunnustettu: Option[OsaamisenTunnustaminen],
   suoritettuLukiodiplomina: Option[Boolean],
   suoritettuSuullisenaKielikokeena: Option[Boolean]
