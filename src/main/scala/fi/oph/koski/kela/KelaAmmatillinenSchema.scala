@@ -19,7 +19,7 @@ case class KelaAmmatillinenOpiskeluoikeus(
   arvioituPäättymispäivä: Option[LocalDate],
   @DefaultValue(false)
   ostettu: Boolean = false,
-  tila: KelaAmmatillisenOpiskeluoikeudenTila,
+  tila: KelaOpiskeluoikeudenTilaRahoitustiedoilla,
   suoritukset: List[KelaAmmatillinenPäätasonSuoritus],
   lisätiedot: Option[KelaAmmatillisenOpiskeluoikeudenLisätiedot],
   @KoodistoKoodiarvo("ammatillinenkoulutus")
@@ -37,16 +37,6 @@ case class KelaAmmatillinenOpiskeluoikeus(
     organisaatiohistoria = None
   )
 }
-
-case class KelaAmmatillisenOpiskeluoikeudenTila(
-  opiskeluoikeusjaksot: List[KelaAmmatillisenOpiskeluoikeusjakso]
-) extends OpiskeluoikeudenTila
-
-case class KelaAmmatillisenOpiskeluoikeusjakso(
-  alku: LocalDate,
-  tila: KelaKoodistokoodiviite,
-  opintojenRahoitus: Option[KelaKoodistokoodiviite]
-) extends Opiskeluoikeusjakso
 
 case class KelaAmmatillisenOpiskeluoikeudenLisätiedot(
   majoitus: Option[List[KelaAikajakso]],

@@ -15,7 +15,7 @@ case class KelaVapaanSivistystyönOpiskeluoikeus(
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija],
   arvioituPäättymispäivä: Option[LocalDate],
-  tila: KelaVapaansivistystyönOpiskeluoikeudenTila,
+  tila: KelaOpiskeluoikeudenTilaRahoitustiedoilla,
   suoritukset: List[VstSuoritus],
   lisätiedot: Option[KelaVapaanSivistystyönOpiskeluoikeudenLisätiedot],
   @KoodistoKoodiarvo(schema.OpiskeluoikeudenTyyppi.vapaansivistystyonkoulutus.koodiarvo)
@@ -34,10 +34,6 @@ case class KelaVapaanSivistystyönOpiskeluoikeus(
     organisaatiohistoria = None
   )
 }
-
-case class KelaVapaansivistystyönOpiskeluoikeudenTila(
-  opiskeluoikeusjaksot: List[KelaOpiskeluoikeusjaksoRahoituksella]
-) extends OpiskeluoikeudenTila
 
 case class KelaVapaanSivistystyönOpiskeluoikeudenLisätiedot(
   maksuttomuus: Option[List[KelaMaksuttomuus]],

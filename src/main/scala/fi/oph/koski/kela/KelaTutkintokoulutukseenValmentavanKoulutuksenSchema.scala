@@ -18,7 +18,7 @@ case class KelaTutkintokoulutukseenValmentavanOpiskeluoikeus(
   koulutustoimija: Option[Koulutustoimija],
   sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus],
   arvioituPäättymispäivä: Option[LocalDate],
-  tila: KelaTuvaOpiskeluoikeudenTila,
+  tila: KelaOpiskeluoikeudenTilaRahoitustiedoilla,
   suoritukset: List[KelaTuvaPäätasonSuoritus],
   lisätiedot: Option[KelaTuvaOpiskeluoikeudenLisätiedot],
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.tuva.koodiarvo)
@@ -37,16 +37,6 @@ case class KelaTutkintokoulutukseenValmentavanOpiskeluoikeus(
     organisaatiohistoria = None
   )
 }
-
-case class KelaTuvaOpiskeluoikeudenTila(
-  opiskeluoikeusjaksot: List[KelaTuvaOpiskeluoikeusjakso]
-) extends OpiskeluoikeudenTila
-
-case class KelaTuvaOpiskeluoikeusjakso(
-  alku: LocalDate,
-  tila: KelaKoodistokoodiviite,
-  opintojenRahoitus: Option[KelaKoodistokoodiviite]
-) extends Opiskeluoikeusjakso
 
 @Title("Tutkintokoulutukseen valmentavan opiskeluoikeuden järjestämisluvan lisätiedot")
 case class KelaTuvaOpiskeluoikeudenLisätiedot(
