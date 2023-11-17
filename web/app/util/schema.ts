@@ -21,6 +21,11 @@ import { Vahvistus } from '../types/fi/oph/koski/schema/Vahvistus'
 import { ItemOf } from './types'
 import { Suoritus } from '../types/fi/oph/koski/schema/Suoritus'
 
+export const isKoodistoviiteOf =
+  <T extends string>(uri: T) =>
+  (viite: Koodistokoodiviite): viite is Koodistokoodiviite<T> =>
+    viite.koodistoUri === uri
+
 export type OsasuoritusOf<T extends Suoritus> = T extends {
   osasuoritukset?: Array<infer S>
 }

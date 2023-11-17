@@ -84,3 +84,5 @@ export const localize = (str: string): LocalizedString =>
     : English({ en: str })
 
 export const finnish = (fi: string): LocalizedString => Finnish({ fi })
+
+export const emptyLocalizedString: LocalizedString = finnish('')
