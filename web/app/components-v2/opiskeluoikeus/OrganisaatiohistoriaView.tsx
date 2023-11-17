@@ -5,6 +5,7 @@ import { CommonProps } from '../CommonProps'
 import { KeyValueTable, KeyValueRow } from '../containers/KeyValueTable'
 import { FieldEditorProps } from '../forms/FormField'
 import { Spacer } from '../layout/Spacer'
+import { useTestId } from '../../appstate/useTestId'
 
 export type OrganisaatiohistoriaViewProps = CommonProps<
   FieldEditorProps<OpiskeluoikeudenOrganisaatiohistoria[], {}>
@@ -13,11 +14,12 @@ export type OrganisaatiohistoriaViewProps = CommonProps<
 export const OrganisaatiohistoriaView: React.FC<
   OrganisaatiohistoriaViewProps
 > = (props) => {
+  const testId = useTestId('organisaatiohistoria.value')
   if (!props.value) {
     return null
   }
   return (
-    <KeyValueTable testId={props.testId}>
+    <KeyValueTable data-testid={testId}>
       <KeyValueRow label={'Organisaatiohistoria'}>
         {props.value.map((row, i) => (
           <>

@@ -2,7 +2,6 @@ import React from 'react'
 import { OpenAllButton, useTree } from '../../appstate/tree'
 import { KansalainenOnly } from '../../components-v2/access/KansalainenOnly'
 import { EditorContainer } from '../../components-v2/containers/EditorContainer'
-import { KeyValueTable } from '../../components-v2/containers/KeyValueTable'
 import { FormOptic } from '../../components-v2/forms/FormModel'
 import { Spacer } from '../../components-v2/layout/Spacer'
 import { PäätasonSuorituksenSuostumuksenPeruminen } from '../../components-v2/opiskeluoikeus/OpiskeluoikeudenSuostumuksenPeruminen'
@@ -19,6 +18,7 @@ import { VSTLisatiedot } from '../VSTLisatiedot'
 import { VSTLaajuudetYhteensä } from '../common/VSTLaajuudetYhteensa'
 import { isCompletedJotpaOsasuoritus } from '../common/osasuoritukset'
 import * as Suoritus from '../common/suoritusFields'
+import { PäätasosuorituksenTiedot } from '../common/suoritusFields'
 import {
   VSTPäätasonSuoritusEditorProps,
   VSTSuoritusPaikallisillaOsasuorituksilla
@@ -53,7 +53,6 @@ export const VSTJotpaEditor: React.FC<VSTJotpaEditorProps> = ({
         createOpiskeluoikeusjakso={createVstJotpaOpiskeluoikeusjakso}
         lisätiedotContainer={VSTLisatiedot}
         onChangeSuoritus={onChangeSuoritus}
-        testId={`${päätasonSuoritus.testId}.editor-container`}
         opiskeluoikeusJaksoClassName="fi.oph.koski.schema.VapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso"
       >
         <KansalainenOnly>
@@ -63,7 +62,7 @@ export const VSTJotpaEditor: React.FC<VSTJotpaEditorProps> = ({
           />
         </KansalainenOnly>
         <Spacer />
-        <KeyValueTable>
+        <PäätasosuorituksenTiedot>
           <Suoritus.Oppilaitos form={form} suoritus={päätasonSuoritus} />
           <Suoritus.Koulutus form={form} suoritus={päätasonSuoritus} />
           <Suoritus.Koulutusmoduuli form={form} suoritus={päätasonSuoritus} />
@@ -74,14 +73,13 @@ export const VSTJotpaEditor: React.FC<VSTJotpaEditorProps> = ({
             form={form}
             suoritus={päätasonSuoritus}
           />
-        </KeyValueTable>
+        </PäätasosuorituksenTiedot>
         <Spacer />
         <SuorituksenVahvistusField
           form={form}
           suoritusPath={päätasonSuoritus.path}
           organisaatio={organisaatio}
           disableAdd={suoritusVahvistettu}
-          testId={päätasonSuoritus.testId}
         />
         <Spacer />
 
@@ -91,7 +89,6 @@ export const VSTJotpaEditor: React.FC<VSTJotpaEditorProps> = ({
 
         <Spacer />
         <OsasuoritusTable
-          testId={päätasonSuoritus.testId}
           editMode={form.editMode}
           addNewOsasuoritusView={AddJotpaOsasuoritus}
           addNewOsasuoritusViewProps={{
@@ -110,8 +107,7 @@ export const VSTJotpaEditor: React.FC<VSTJotpaEditorProps> = ({
                 suoritusPath: päätasonSuoritus.path as FormOptic<
                   VapaanSivistystyönOpiskeluoikeus,
                   VSTSuoritusPaikallisillaOsasuorituksilla
-                >,
-                testId: `${päätasonSuoritus.testId}.osasuoritukset.${osasuoritusIndex}`
+                >
               })
           )}
           onRemove={(i) => {

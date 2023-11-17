@@ -1,7 +1,8 @@
 import React from 'react'
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
-import { common, CommonProps, testId } from '../CommonProps'
+import { common, CommonProps } from '../CommonProps'
 import { Trans } from '../texts/Trans'
+import { useTestId } from '../../appstate/useTestId'
 
 export type RaisedButtonType = 'default' | 'dangerzone'
 
@@ -11,6 +12,7 @@ export type RaisedButtonProps = CommonProps<{
   disabled?: boolean
   fullWidth?: boolean
   type?: RaisedButtonType
+  testId?: string
 }>
 
 export const RaisedButton = (props: RaisedButtonProps) => (
@@ -20,7 +22,7 @@ export const RaisedButton = (props: RaisedButtonProps) => (
       props.fullWidth && 'RaisedButton__fullWidth',
       props.type && `RaisedButton__${props.type}`
     ])}
-    {...testId(props)}
+    data-testid={useTestId(props.testId)}
     onClick={props.onClick}
     disabled={props.disabled}
   >

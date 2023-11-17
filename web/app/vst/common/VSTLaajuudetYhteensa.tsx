@@ -6,6 +6,7 @@ import {
 import { VapaanSivistystyönPäätasonSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonPaatasonSuoritus'
 import { formatNumber, sum } from '../../util/numbers'
 import { t } from '../../i18n/i18n'
+import { TestIdText } from '../../appstate/useTestId'
 
 export type VSTLaajuudetYhteensäProps = {
   testId: string
@@ -17,8 +18,8 @@ export const VSTLaajuudetYhteensä: React.FC<VSTLaajuudetYhteensäProps> = ({
   testId
 }) => (
   <KeyValueTable>
-    <KeyValueRow label="Yhteensä" testId={`${testId}.yhteensa`}>
-      {laajuudetYhteensä(suoritus)}
+    <KeyValueRow label="Yhteensä">
+      <TestIdText id="yhteensa">{laajuudetYhteensä(suoritus)}</TestIdText>
     </KeyValueRow>
   </KeyValueTable>
 )

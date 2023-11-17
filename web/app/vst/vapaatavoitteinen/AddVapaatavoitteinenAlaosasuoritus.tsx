@@ -22,7 +22,7 @@ export const AddVapaatavoitteinenAlaosasuoritus: React.FC<
 > = (props) => (
   <AddPaikallinenOsasuoritus
     form={props.form}
-    suoritusPath={props.osasuoritusPath}
+    path={props.osasuoritusPath}
     createOsasuoritus={(tunniste) =>
       VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus({
         koulutusmoduuli:
@@ -35,6 +35,5 @@ export const AddVapaatavoitteinenAlaosasuoritus: React.FC<
     }
     preferenceStoreName="vapaansivistystyonvapaatavoitteisenkoulutuksenosasuoritus"
     level={props.level}
-    testId={props.testId}
   />
 )

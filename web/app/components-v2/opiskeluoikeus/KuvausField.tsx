@@ -1,17 +1,18 @@
 import React, { useCallback, useState } from 'react'
 import { Finnish, isFinnish } from '../../types/fi/oph/koski/schema/Finnish'
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
-import { common, CommonProps, testId } from '../CommonProps'
+import { common, CommonProps } from '../CommonProps'
 import { FieldErrors } from '../forms/FieldErrors'
 import { FieldEditorProps } from '../forms/FormField'
+import { TestIdLayer, TestIdText, useTestId } from '../../appstate/useTestId'
 
 export type KuvausViewProps = CommonProps<FieldEditorProps<LocalizedString, {}>>
 
 export const KuvausView: React.FC<KuvausViewProps> = (props) => {
   return (
-    <span {...common(props)} {...testId(props)}>
+    <TestIdText {...common(props)} id="kuvaus.value">
       {isFinnish(props.value) ? props.value?.fi : props.value?.en || '-'}
-    </span>
+    </TestIdText>
   )
 }
 
@@ -23,6 +24,7 @@ export const KuvausEdit: React.FC<KuvausEditProps> = ({
   errors,
   ...rest
 }) => {
+  const testId = useTestId('kuvaus.edit.input')
   const [value, setValue] = useState(initialValue)
 
   const onChangeCB = useCallback<React.ChangeEventHandler<HTMLTextAreaElement>>(
@@ -39,13 +41,17 @@ export const KuvausEdit: React.FC<KuvausEditProps> = ({
     <div>
       <textarea
         {...common({ ...rest }, ['KuvausEdit'])}
-        {...testId(rest, 'input')}
         rows={5}
         cols={40}
         value={isFinnish(value) ? value?.fi : value?.en}
         onChange={onChangeCB}
+        data-testid={testId}
       />
-      {errors && <FieldErrors errors={errors} />}
+      {errors && (
+        <TestIdLayer id="kuvaus.edit">
+          <FieldErrors errors={errors} />
+        </TestIdLayer>
+      )}
     </div>
   )
 }

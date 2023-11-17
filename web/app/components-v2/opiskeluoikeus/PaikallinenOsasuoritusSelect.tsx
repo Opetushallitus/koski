@@ -4,7 +4,7 @@ import { localize, t } from '../../i18n/i18n'
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
 import { PaikallinenKoodi } from '../../types/fi/oph/koski/schema/PaikallinenKoodi'
 import { allLanguages } from '../../util/optics'
-import { common, CommonProps, subTestId } from '../CommonProps'
+import { common, CommonProps } from '../CommonProps'
 import { Modal, ModalBody, ModalFooter, ModalTitle } from '../containers/Modal'
 import { FlatButton } from '../controls/FlatButton'
 import { RaisedButton } from '../controls/RaisedButton'
@@ -12,6 +12,7 @@ import { OptionList, Select, SelectOption } from '../controls/Select'
 import { TextEdit, TextView } from '../controls/TextField'
 import { FormField, sideUpdate } from '../forms/FormField'
 import { useForm } from '../forms/FormModel'
+import { TestIdLayer, useTestId } from '../../appstate/useTestId'
 
 const NEW_KEY = '__NEW__'
 
@@ -80,14 +81,14 @@ export const PaikallinenOsasuoritusSelect: React.FC<
   )
 
   return (
-    <>
+    <TestIdLayer id="addOsasuoritus">
       <Select
         placeholder={props.addNewText || t('Lisää osasuoritus')}
         options={options}
         hideEmpty
         onChange={onChangeCB}
         onRemove={onRemoveCB}
-        testId={subTestId(props, 'select')}
+        testId="select"
       />
       {modalIsVisible && (
         <UusiOsasuoritusModal
@@ -95,10 +96,9 @@ export const PaikallinenOsasuoritusSelect: React.FC<
           placeholder={namePlaceholder}
           onClose={hideModal}
           onSubmit={onCreateNew}
-          testId={subTestId(props, 'modal')}
         />
       )}
-    </>
+    </TestIdLayer>
   )
 }
 
@@ -107,14 +107,16 @@ const emptyPaikallinenKoodi = PaikallinenKoodi({
   nimi: localize('')
 })
 
-type UusiOsasuoritusModalProps = CommonProps<{
+export type UusiOsasuoritusModalProps = CommonProps<{
   onClose: () => void
   title?: string
   placeholder?: string
   onSubmit: (paikallinenKoodi: PaikallinenKoodi) => void
 }>
 
-const UusiOsasuoritusModal: React.FC<UusiOsasuoritusModalProps> = (props) => {
+export const UusiOsasuoritusModal: React.FC<UusiOsasuoritusModalProps> = (
+  props
+) => {
   const paikallinenKoodiSchema = useSchema('PaikallinenKoodi')
   const form = useForm(emptyPaikallinenKoodi, true, paikallinenKoodiSchema)
   const koodiarvoPath = form.root.prop('koodiarvo')
@@ -145,26 +147,23 @@ const UusiOsasuoritusModal: React.FC<UusiOsasuoritusModalProps> = (props) => {
           updateAlso={[updateOsasuoritusNimi]}
           errorsFromPath="nimi"
           view={TextView}
-          edit={(editProps) => (
-            <TextEdit
-              {...editProps}
-              placeholder={
-                props.placeholder ? props.placeholder : t('Osasuorituksen nimi')
-              }
-              autoFocus
-              testId={subTestId(props, 'nimi.edit')}
-            />
-          )}
+          edit={TextEdit}
+          editProps={{
+            placeholder: props.placeholder
+              ? props.placeholder
+              : t('Osasuorituksen nimi')
+          }}
+          testId="nimi"
         />
       </ModalBody>
       <ModalFooter>
-        <FlatButton onClick={props.onClose} testId={subTestId(props, 'cancel')}>
+        <FlatButton onClick={props.onClose} testId="cancel">
           {'Peruuta'}
         </FlatButton>
         <RaisedButton
           disabled={!form.isValid}
           onClick={onSubmitCB}
-          testId={subTestId(props, 'submit')}
+          testId="submit"
         >
           {'Lisää'}
         </RaisedButton>

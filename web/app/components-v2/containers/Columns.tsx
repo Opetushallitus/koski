@@ -1,7 +1,7 @@
 import React, { PropsWithChildren } from 'react'
 import { nonNull } from '../../util/fp/arrays'
 import { mapRecordValues } from '../../util/fp/objects'
-import { common, CommonProps, testId } from '../CommonProps'
+import { common, CommonProps } from '../CommonProps'
 
 export const COLUMN_COUNT = 24
 
@@ -74,7 +74,6 @@ export const Column = (props: ColumnProps) => {
         ),
         props.row !== undefined && `Column-row-${props.row + 1}`
       ])}
-      {...testId(props)}
     >
       {props.children}
     </Component>

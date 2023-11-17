@@ -5,10 +5,11 @@ import React, {
   useMemo,
   useState
 } from 'react'
-import { CommonProps, testId } from '../components-v2/CommonProps'
+import { CommonProps } from '../components-v2/CommonProps'
 import { RaisedButton } from '../components-v2/controls/RaisedButton'
 import { t } from '../i18n/i18n'
 import { assertNever } from '../util/selfcare'
+import { useTestId } from './useTestId'
 
 export type TreeContext = {
   id: string
@@ -109,7 +110,7 @@ export type OpenAllButtonProps = CommonProps<
 export const OpenAllButton: React.FC<OpenAllButtonProps> = (props) => {
   return (
     <RaisedButton
-      {...testId(props)}
+      data-testid={useTestId('expandAll')}
       onClick={(e) => {
         e.preventDefault()
         props.toggleAll()

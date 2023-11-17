@@ -2,13 +2,19 @@ import { CommonProps } from '../../components-v2/CommonProps'
 import { ActivePäätasonSuoritus } from '../../components-v2/containers/EditorContainer'
 import { FormModel, FormOptic } from '../../components-v2/forms/FormModel'
 import { Koulutustoimija } from '../../types/fi/oph/koski/schema/Koulutustoimija'
+import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
 import { Oppilaitos } from '../../types/fi/oph/koski/schema/Oppilaitos'
 import { PaikallinenKoulutusmoduuli } from '../../types/fi/oph/koski/schema/PaikallinenKoulutusmoduuli'
 import { VapaanSivistystyönJotpaKoulutuksenSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonJotpaKoulutuksenSuoritus'
+import { VapaanSivistystyönOpintojenSuorituksenOsaamisenTunnustaminen } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpintojenSuorituksenOsaamisenTunnustaminen'
 import { VapaanSivistystyönOpiskeluoikeus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeus'
 import { VapaanSivistystyönPäätasonSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonPaatasonSuoritus'
 import { PäätasonSuoritusOf } from '../../util/opiskeluoikeus'
-import { ArviointiOf, OsasuoritusOf } from '../../util/schema'
+import {
+  ArviointiOf,
+  KoulutusmoduuliOf,
+  OsasuoritusOf
+} from '../../util/schema'
 
 export type VSTPäätasonSuoritusEditorProps<
   T extends PäätasonSuoritusOf<VapaanSivistystyönOpiskeluoikeus>
@@ -30,6 +36,16 @@ export type VSTSuoritus =
   | VapaanSivistystyönPäätasonSuoritus
   | VSTOsasuoritus
   | VSTAlaosasuoritus
+
+export type VSTKoulutusmoduuli = KoulutusmoduuliOf<VSTSuoritus>
+export type VSTKoulutusmoduuliKuvauksella = Extract<
+  VSTKoulutusmoduuli,
+  { kuvaus: LocalizedString }
+>
+export type VSTKoulutusmoduuliLaajuudella = Extract<
+  VSTKoulutusmoduuli,
+  { laajuus?: object }
+>
 
 export type VSTOsasuoritus = OsasuoritusOf<VapaanSivistystyönPäätasonSuoritus>
 
@@ -57,13 +73,19 @@ export type VSTSuoritusPaikallisillaOsasuorituksilla = Extract<
   { osasuoritukset?: VSTPaikallinenOsasuoritus[] }
 >
 
+export type VSTSuoritusKuvauksella = Extract<
+  VSTSuoritus,
+  { koulutusmoduuli: VSTKoulutusmoduuliKuvauksella }
+>
+
+export type VSTSuoritusTunnustuksella = Extract<
+  VSTSuoritus,
+  { tunnustettu?: VapaanSivistystyönOpintojenSuorituksenOsaamisenTunnustaminen }
+>
+
 export type VSTPäätasonSuoritusLaajuudella = Extract<
   VapaanSivistystyönPäätasonSuoritus,
-  {
-    koulutusmoduuli: {
-      laajuus?: object
-    }
-  }
+  { koulutusmoduuli: VSTKoulutusmoduuliLaajuudella }
 >
 
 export type VSTPäätasonSuoritusOpintokokonaisuudella = Extract<

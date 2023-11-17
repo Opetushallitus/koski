@@ -15,7 +15,7 @@ type AddKoodistonOsasuoritusProps<
   URI extends string
 > = CommonProps<{
   form: FormModel<VapaanSivistystyönOpiskeluoikeus>
-  suoritusPath: FormOptic<VapaanSivistystyönOpiskeluoikeus, T>
+  path: FormOptic<VapaanSivistystyönOpiskeluoikeus, T>
   koodistoUri: URI
   createOsasuoritus: (koodiviite: Koodistokoodiviite<URI>) => OsasuoritusOf<T>
   level: number
@@ -28,12 +28,12 @@ export const AddKoodistonOsasuoritus = <
 >(
   props: AddKoodistonOsasuoritusProps<T, URI>
 ) => {
-  const { createOsasuoritus, form, suoritusPath } = props
+  const { createOsasuoritus, form, path } = props
   const fillKoodistot = useKoodistoFiller()
 
   const onSelect = useCallback(
     async (koodiviite: Koodistokoodiviite<URI>) => {
-      const osasuorituksetPath = suoritusPath
+      const osasuorituksetPath = path
         .prop('osasuoritukset')
         .optional() as any as FormOptic<
         VapaanSivistystyönOpiskeluoikeus,
@@ -45,17 +45,17 @@ export const AddKoodistonOsasuoritus = <
         osasuoritus
       ])
     },
-    [createOsasuoritus, fillKoodistot, form, suoritusPath]
+    [createOsasuoritus, fillKoodistot, form, path]
   )
 
   return (
     <ColumnRow indent={props.level + 1}>
       <Column span={10}>
         <KoodistoSelect
-          testId={props.testId}
           koodistoUri={props.koodistoUri}
           addNewText={props.placeholder || t('Lisää osasuoritus')}
           onSelect={onSelect}
+          testId="addOsasuoritus"
         />
       </Column>
     </ColumnRow>

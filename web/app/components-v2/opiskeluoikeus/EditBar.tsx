@@ -1,12 +1,12 @@
 import React, { useCallback } from 'react'
 import { useGlobalErrors } from '../../appstate/globalErrors'
-import { testId } from '../CommonProps'
 import { ButtonGroup } from '../containers/ButtonGroup'
 import { FooterBar } from '../containers/FooterBar'
 import { FlatButton } from '../controls/FlatButton'
 import { RaisedButton } from '../controls/RaisedButton'
 import { FormModel } from '../forms/FormModel'
 import { Trans } from '../texts/Trans'
+import { TestIdRoot, TestIdText } from '../../appstate/useTestId'
 
 export type EditBarProps<T extends object> = {
   form: FormModel<T>
@@ -32,7 +32,7 @@ export const EditBar = <T extends object>(props: EditBarProps<T>) => {
         <FlatButton
           disabled={props.form.isSaving}
           onClick={cancel}
-          testId="opiskeluoikeus.cancelEdit"
+          testId="cancelEdit"
         >
           {'Peruuta'}
         </FlatButton>
@@ -41,19 +41,19 @@ export const EditBar = <T extends object>(props: EditBarProps<T>) => {
             props.form.isSaving || !props.form.hasChanged || !props.form.isValid
           }
           onClick={save}
-          testId="opiskeluoikeus.save"
+          testId="save"
         >
           {'Tallenna'}
         </RaisedButton>
         {!props.form.hasChanged && (
-          <span {...testId({ testId: 'opiskeluoikeus.editStatus' })}>
+          <TestIdText id="editStatus">
             <Trans>{'Ei tallentamattomia muutoksia'}</Trans>
-          </span>
+          </TestIdText>
         )}
         {!props.form.isValid && (
-          <span {...testId({ testId: 'opiskeluoikeus.editStatus' })}>
+          <TestIdText id="editStatus">
             <Trans>{'Korjaa virheelliset tiedot.'}</Trans>
-          </span>
+          </TestIdText>
         )}
       </ButtonGroup>
     </FooterBar>

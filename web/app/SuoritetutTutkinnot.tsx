@@ -24,10 +24,8 @@ __webpack_nonce__ = window.nonce
 import(/* webpackChunkName: "styles" */ './style/main.less')
 
 const secret = R.last(document.location.pathname.split('/')) ?? ''
-interface SuoritetutTutkinnotProps {
-  testId?: string
-}
-const SuoritetutTutkinnot = ({ testId }: SuoritetutTutkinnotProps) => {
+
+const SuoritetutTutkinnot = () => {
   const response = useApiWithParams(fetchSuoritetutTutkinnot, [secret])
   return (
     <>
@@ -43,10 +41,7 @@ const SuoritetutTutkinnot = ({ testId }: SuoritetutTutkinnotProps) => {
       {mapSuccess(response, (responseData: SuoritetutTutkinnotOppija) => (
         <>
           <SuoritusjakoTopBar />
-          <ContentContainer
-            className="content-area suoritusjako suoritusjako-page"
-            testId={testId}
-          >
+          <ContentContainer className="content-area suoritusjako suoritusjako-page">
             <div className="main-content">
               <h1>
                 <Trans>{'Suoritetut tutkinnot'}</Trans>

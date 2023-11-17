@@ -7,7 +7,7 @@ import {
   parseFinnishDate
 } from '../../date/date'
 import { t } from '../../i18n/i18n'
-import { common, CommonProps, cx, subTestId, testId } from '../CommonProps'
+import { common, CommonProps, cx } from '../CommonProps'
 import {
   PositionalPopup,
   PositionalPopupHolder
@@ -15,18 +15,21 @@ import {
 import { FieldErrors } from '../forms/FieldErrors'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
 import { IconButton } from './IconButton'
+import { useTestId } from '../../appstate/useTestId'
 
 // Date viewer
 
 export type DateViewProps = CommonProps<FieldViewerProps<string, {}>>
 
 export const DateView: React.FC<DateViewProps> = (props) => {
+  const testId = useTestId('date.value')
   const formattedDate = useMemo(
     () => (props.value ? ISO2FinnishDate(props.value) : '–'),
     [props.value]
   )
+
   return (
-    <span {...common(props, ['DateView'])} {...testId(props)}>
+    <span {...common(props, ['DateView'])} data-testid={testId}>
       {formattedDate}
     </span>
   )
@@ -55,6 +58,8 @@ export const DateEdit: React.FC<DateEditProps> = (props) => {
     onDayClick,
     onChange
   } = useDateEditState(props)
+  const inputId = useTestId('date.edit.input')
+  const buttonId = useTestId('date.edit.calendarButton')
 
   return (
     <label {...common(props, ['DateEdit'])}>
@@ -67,7 +72,7 @@ export const DateEdit: React.FC<DateEditProps> = (props) => {
             'DateEdit__input',
             hasError && 'DateEdit__input--error'
           )}
-          {...testId(props, 'input')}
+          data-testid={inputId}
         />
         <PositionalPopupHolder>
           <IconButton
@@ -75,7 +80,7 @@ export const DateEdit: React.FC<DateEditProps> = (props) => {
             label={t('Valitse päivämäärä')}
             size="input"
             onClick={toggleDayPicker}
-            testId={subTestId(props, 'calendarButton')}
+            data-testid={buttonId}
           />
           <PositionalPopup open={datePickerVisible}>
             <DayPickerInput
@@ -89,7 +94,7 @@ export const DateEdit: React.FC<DateEditProps> = (props) => {
           </PositionalPopup>
         </PositionalPopupHolder>
       </div>
-      <FieldErrors errors={props.errors} testId={props.testId} />
+      <FieldErrors errors={props.errors} />
     </label>
   )
 }

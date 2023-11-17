@@ -1,11 +1,12 @@
 import * as A from 'fp-ts/Array'
-import { pipe } from 'fp-ts/lib/function'
-import { NonEmptyArray } from 'fp-ts/lib/NonEmptyArray'
 import * as O from 'fp-ts/Option'
 import * as Ord from 'fp-ts/Ord'
+import { NonEmptyArray } from 'fp-ts/lib/NonEmptyArray'
+import { pipe } from 'fp-ts/lib/function'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useChildClassNames } from '../../appstate/constraints'
-import { addDaysISO, ISO2FinnishDate } from '../../date/date'
+import { TestIdLayer, TestIdText } from '../../appstate/useTestId'
+import { ISO2FinnishDate, addDaysISO } from '../../date/date'
 import { t } from '../../i18n/i18n'
 import { isAikuistenPerusopetuksenOpiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/AikuistenPerusopetuksenOpiskeluoikeusjakso'
 import { isAmmatillinenOpiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/AmmatillinenOpiskeluoikeusjakso'
@@ -14,9 +15,10 @@ import { isEuropeanSchoolOfHelsinkiOpiskeluoikeusjakso } from '../../types/fi/op
 import { isInternationalSchoolOpiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/InternationalSchoolOpiskeluoikeusjakso'
 import { isLukionOpiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/LukionOpiskeluoikeusjakso'
 import { isMuunKuinSäännellynKoulutuksenOpiskeluoikeudenJakso } from '../../types/fi/oph/koski/schema/MuunKuinSaannellynKoulutuksenOpiskeluoikeudenJakso'
-import { isTutkintokoulutukseenValmentavanOpiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/TutkintokoulutukseenValmentavanOpiskeluoikeusjakso'
 import { OpiskeluoikeudenTila } from '../../types/fi/oph/koski/schema/OpiskeluoikeudenTila'
 import { Opiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/Opiskeluoikeusjakso'
+import { isTutkintokoulutukseenValmentavanOpiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/TutkintokoulutukseenValmentavanOpiskeluoikeusjakso'
+import { isVapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/VapaanSivistystyonJotpaKoulutuksenOpiskeluoikeusjakso'
 import { isVapaanSivistystyönOpiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeusjakso'
 import { isTerminaalitila } from '../../util/opiskeluoikeus'
 import {
@@ -24,7 +26,7 @@ import {
   OpiskeluoikeusjaksoOrd
 } from '../../util/schema'
 import { ClassOf } from '../../util/types'
-import { CommonProps, subTestId, testId } from '../CommonProps'
+import { CommonProps } from '../CommonProps'
 import {
   KeyColumnedValuesRow,
   KeyValueTable
@@ -32,15 +34,14 @@ import {
 import { DateEdit } from '../controls/DateField'
 import { IconButton } from '../controls/IconButton'
 import { RaisedButton } from '../controls/RaisedButton'
+import { FieldErrors } from '../forms/FieldErrors'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
-import { isValidationError, ValidationError } from '../forms/validator'
+import { ValidationError, isValidationError } from '../forms/validator'
 import { CHARCODE_REMOVE } from '../texts/Icon'
 import {
   UusiOpiskeluoikeudenTilaModal,
   UusiOpiskeluoikeusjakso
 } from './UusiOpiskeluoikeudenTilaModal'
-import { isVapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/VapaanSivistystyonJotpaKoulutuksenOpiskeluoikeusjakso'
-import { FieldErrors } from '../forms/FieldErrors'
 
 type RahoituksellinenOpiskeluoikeusjakso = Extract<
   Opiskeluoikeusjakso,
@@ -80,32 +81,42 @@ export const OpiskeluoikeudenTilaView = <T extends OpiskeluoikeudenTila>(
   )
 
   return (
-    <KeyValueTable testId={props.testId}>
-      {sortedJaksot.map((jakso, index) => (
-        <KeyColumnedValuesRow
-          name={index === 0 ? 'Tila' : undefined}
-          key={index}
-          className={index === 0 ? 'OpiskeluoikeudenTila-viimeisin' : undefined}
-          columnSpans={{ default: [2, '*'], phone: [4, '*'] }}
-          testId={subTestId(props, `items.${index}`)}
-          testIds={['date', 'tila']}
-        >
-          {[
-            <time key={`jakso_time_${index}`} dateTime={jakso.alku}>
-              {ISO2FinnishDate(jakso.alku)}
-            </time>,
-            <React.Fragment key={`jakso_tila_lisatiedot_${index}`}>
-              <span>{t(jakso.tila.nimi)}</span>
-              <span>
-                {isVapaanSivistystyönOpiskeluoikeusjakso(jakso) &&
-                  isRahoituksellinenOpiskeluoikeusjakso(jakso) &&
-                  ` (${t(jakso.opintojenRahoitus?.nimi)})`}
-              </span>
-            </React.Fragment>
-          ]}
-        </KeyColumnedValuesRow>
-      ))}
-    </KeyValueTable>
+    <TestIdLayer id="tila.value">
+      <KeyValueTable>
+        <TestIdLayer id="items">
+          {sortedJaksot.map((jakso, index) => (
+            <TestIdLayer key={index} id={index}>
+              <KeyColumnedValuesRow
+                name={index === 0 ? 'Tila' : undefined}
+                className={
+                  index === 0 ? 'OpiskeluoikeudenTila-viimeisin' : undefined
+                }
+                columnSpans={{ default: [2, '*'], phone: [4, '*'] }}
+              >
+                {[
+                  <time key={`jakso_time_${index}`} dateTime={jakso.alku}>
+                    <TestIdText id="date">
+                      {' '}
+                      {ISO2FinnishDate(jakso.alku)}
+                    </TestIdText>
+                  </time>,
+                  <React.Fragment key={`jakso_tila_lisatiedot_${index}`}>
+                    <TestIdText id="tila">
+                      <span>{t(jakso.tila.nimi)}</span>
+                      <span>
+                        {isVapaanSivistystyönOpiskeluoikeusjakso(jakso) &&
+                          isRahoituksellinenOpiskeluoikeusjakso(jakso) &&
+                          ` (${t(jakso.opintojenRahoitus?.nimi)})`}
+                      </span>
+                    </TestIdText>
+                  </React.Fragment>
+                ]}
+              </KeyColumnedValuesRow>
+            </TestIdLayer>
+          ))}
+        </TestIdLayer>
+      </KeyValueTable>
+    </TestIdLayer>
   )
 }
 
@@ -130,57 +141,60 @@ export const OpiskeluoikeudenTilaEdit = <T extends OpiskeluoikeudenTila>(
   const oo = useOpiskeluoikeudenTilaState(props)
 
   return (
-    <>
-      <KeyValueTable testId={props.testId}>
-        {oo.jaksot.map(({ jakso, index, min, max, isLatest }, arrIndex) => (
-          <KeyColumnedValuesRow
-            name={arrIndex === 0 ? 'Tila' : undefined}
-            className={isLatest ? 'OpiskeluoikeudenTila-viimeisin' : undefined}
-            columnSpans={{
-              default: [6, '*'],
-              small: [8, '*'],
-              phone: [24, '*']
-            }}
-            key={`${index}_${arrIndex}`}
-          >
-            {[
-              <DateEdit
-                key={`date_${index}_${arrIndex}`}
-                value={jakso.alku}
-                min={min}
-                max={max}
-                onChange={oo.onChangeDate(index)}
-                testId={subTestId(props, `items.${index}.date`)}
-              />,
-              <div key="jakso">
-                <span {...testId(props, `items.${index}.tila`)}>
-                  {t(jakso.tila.nimi)}
-                </span>
-                {isVapaanSivistystyönOpiskeluoikeusjakso(jakso) &&
-                  isRahoituksellinenOpiskeluoikeusjakso(jakso) && (
-                    <>
-                      {' '}
-                      <span {...testId(props, `items.${index}.rahoitus`)}>
-                        {'('}
-                        {t(jakso.opintojenRahoitus?.nimi)}
-                        {')'}
-                      </span>
-                    </>
-                  )}
-                {isLatest && (
-                  <IconButton
-                    charCode={CHARCODE_REMOVE}
-                    label={t('Poista')}
-                    size="input"
-                    onClick={oo.onRemoveLatest}
-                    testId={subTestId(props, `items.${index}.remove`)}
-                    key={`IconButton_${index}_${arrIndex}`}
-                  />
-                )}
-              </div>
-            ]}
-          </KeyColumnedValuesRow>
-        ))}
+    <TestIdLayer id="tila.edit">
+      <KeyValueTable>
+        <TestIdLayer id="items">
+          {oo.jaksot.map(({ jakso, index, min, max, isLatest }, arrIndex) => (
+            <TestIdLayer key={`${index}_${arrIndex}`} id={index}>
+              <KeyColumnedValuesRow
+                name={arrIndex === 0 ? 'Tila' : undefined}
+                className={
+                  isLatest ? 'OpiskeluoikeudenTila-viimeisin' : undefined
+                }
+                columnSpans={{
+                  default: [6, '*'],
+                  small: [8, '*'],
+                  phone: [24, '*']
+                }}
+              >
+                {[
+                  <DateEdit
+                    key={`date_${index}_${arrIndex}`}
+                    value={jakso.alku}
+                    min={min}
+                    max={max}
+                    onChange={oo.onChangeDate(index)}
+                  />,
+                  <div key="jakso">
+                    <TestIdText id="tila">{t(jakso.tila.nimi)}</TestIdText>
+                    {isVapaanSivistystyönOpiskeluoikeusjakso(jakso) &&
+                      isRahoituksellinenOpiskeluoikeusjakso(jakso) && (
+                        <>
+                          {' '}
+                          <TestIdText id="rahoitus">
+                            {'('}
+                            {t(jakso.opintojenRahoitus?.nimi)}
+                            {')'}
+                          </TestIdText>
+                        </>
+                      )}
+                    {isLatest && (
+                      <IconButton
+                        charCode={CHARCODE_REMOVE}
+                        label={t('Poista')}
+                        size="input"
+                        onClick={oo.onRemoveLatest}
+                        testId="remove"
+                        key={`IconButton_${index}_${arrIndex}`}
+                      />
+                    )}
+                  </div>
+                ]}
+              </KeyColumnedValuesRow>
+            </TestIdLayer>
+          ))}
+        </TestIdLayer>
+
         {!oo.isTerminated && (
           <KeyColumnedValuesRow
             name={A.isEmpty(oo.jaksot) ? 'Tila' : undefined}
@@ -194,7 +208,7 @@ export const OpiskeluoikeudenTilaEdit = <T extends OpiskeluoikeudenTila>(
               <RaisedButton
                 key="RaisedButton"
                 onClick={oo.openModal}
-                testId={subTestId(props, 'add')}
+                testId="add"
               >
                 {'Lisää uusi'}
               </RaisedButton>
@@ -208,11 +222,10 @@ export const OpiskeluoikeudenTilaEdit = <T extends OpiskeluoikeudenTila>(
           onClose={oo.closeModal}
           opiskeluoikeusjaksoClass={oo.opiskeluoikeusjaksoClass}
           enableValmistuminen={props.enableValmistuminen}
-          testId={subTestId(props, 'modal')}
         />
       )}
       <FieldErrors errors={props.errors} />
-    </>
+    </TestIdLayer>
   )
 }
 

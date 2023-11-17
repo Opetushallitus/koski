@@ -4,7 +4,7 @@ import * as O from 'fp-ts/Option'
 import React, { useCallback, useState } from 'react'
 import { t } from '../../i18n/i18n'
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
-import { CommonProps, testId } from '../CommonProps'
+import { CommonProps } from '../CommonProps'
 import { FieldEditorProps, FormField } from '../forms/FormField'
 import { FormModel, FormOptic } from '../forms/FormModel'
 import { FlatButton } from './FlatButton'
@@ -36,7 +36,6 @@ export const RemoveArrayItemField = <S extends object, A extends any[]>(
     view={NullView}
     edit={RemoveArrayItemButton}
     editProps={props}
-    testId={props.testId}
   />
 )
 
@@ -71,24 +70,17 @@ const RemoveArrayItemButton = <T extends any[]>(
 
   return props.confirmation && confirmationVisible ? (
     <>
-      <RaisedButton
-        onClick={remove}
-        type="dangerzone"
-        {...testId(props, 'confirm')}
-      >
+      <RaisedButton onClick={remove} type="dangerzone" testId="confirm">
         {t(props.confirmation.confirm)}
       </RaisedButton>
-      <FlatButton
-        onClick={() => setConfirmationVisible(false)}
-        {...testId(props, 'cancel')}
-      >
+      <FlatButton onClick={() => setConfirmationVisible(false)} testId="cancel">
         {t(props.confirmation.cancel)}
       </FlatButton>
     </>
   ) : (
     <FlatButton
       onClick={props.confirmation ? () => setConfirmationVisible(true) : remove}
-      {...testId(props, 'button')}
+      testId="button"
     >
       {props.label}
     </FlatButton>

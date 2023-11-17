@@ -12,6 +12,7 @@ import {
 } from '../components-v2/opiskeluoikeus/LaajuusField'
 import { Trans } from '../components-v2/texts/Trans'
 import { TaiteenPerusopetuksenOpiskeluoikeus } from '../types/fi/oph/koski/schema/TaiteenPerusopetuksenOpiskeluoikeus'
+import { TestIdText } from '../appstate/useTestId'
 
 export type TaiteenPerusopetuksenTiedotProps = {
   form: FormModel<TaiteenPerusopetuksenOpiskeluoikeus>
@@ -40,37 +41,42 @@ export const TaiteenPerusopetuksenTiedot: React.FC<
 
   return (
     <KeyValueTable>
-      <KeyValueRow label="Taiteenala" testId={`${testIdPrefix}.taiteenala`}>
-        <Trans>
-          {päätasonSuoritus.suoritus.koulutusmoduuli.taiteenala.nimi}
-        </Trans>
+      <KeyValueRow label="Taiteenala">
+        <TestIdText id="taiteenala.value">
+          <Trans>
+            {päätasonSuoritus.suoritus.koulutusmoduuli.taiteenala.nimi}
+          </Trans>
+        </TestIdText>
       </KeyValueRow>
-      <KeyValueRow label="Oppimäärä" testId={`${testIdPrefix}.oppimäärä`}>
-        <Trans>{opiskeluoikeus.oppimäärä.nimi}</Trans>
+      <KeyValueRow label="Oppimäärä">
+        <TestIdText id="oppimäärä.value">
+          <Trans>{opiskeluoikeus.oppimäärä.nimi}</Trans>
+        </TestIdText>
       </KeyValueRow>
-      <KeyValueRow
-        label="Koulutuksen toteutustapa"
-        testId={`${testIdPrefix}.koulutuksenToteutustapa`}
-      >
-        <Trans>{form.state.koulutuksenToteutustapa.nimi}</Trans>
+      <KeyValueRow label="Koulutuksen toteutustapa">
+        <TestIdText id="koulutuksenToteutustapa.value">
+          <Trans>{form.state.koulutuksenToteutustapa.nimi}</Trans>
+        </TestIdText>
       </KeyValueRow>
       {opiskeluoikeus.koulutuksenToteutustapa.koodiarvo ===
         'hankintakoulutus' && (
-        <KeyValueRow
-          label="Koulutuksen järjestäjä"
-          testId={`${testIdPrefix}.koulutustoimija`}
-        >
-          <Trans>{opiskeluoikeus.koulutustoimija?.nimi}</Trans>
+        <KeyValueRow label="Koulutuksen järjestäjä">
+          <TestIdText id="koulutustoimija.value">
+            <Trans>{opiskeluoikeus.koulutustoimija?.nimi}</Trans>
+          </TestIdText>
         </KeyValueRow>
       )}
-      <KeyValueRow label="Oppilaitos" testId={`${testIdPrefix}.oppilaitos`}>
-        <Trans>{opiskeluoikeus.oppilaitos?.nimi}</Trans>
+      <KeyValueRow label="Oppilaitos">
+        <TestIdText id="oppilaitos.value">
+          <Trans>{opiskeluoikeus.oppilaitos?.nimi}</Trans>
+        </TestIdText>
       </KeyValueRow>
-      <KeyValueRow label="Laajuus" testId={`${testIdPrefix}.laajuus`}>
+      <KeyValueRow label="Laajuus">
         <FormField
           form={form}
           path={opiskeluoikeudenLaajuusPath}
           view={LaajuusView}
+          // @ts-ignore TODO TOR-2086: tutki miksi hajosi
           auto={laajuusSum(osasuoritustenLaajuudetPath, form.state)}
         />
       </KeyValueRow>

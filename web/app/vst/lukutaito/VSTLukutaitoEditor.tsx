@@ -53,7 +53,6 @@ export const VSTLukutaitoEditor: React.FC<VSTLukutaitoEditorProps> = ({
         createOpiskeluoikeusjakso={createVstLukutaitoOpiskeluoikeusjakso}
         lisätiedotContainer={VSTLisatiedot}
         onChangeSuoritus={onChangeSuoritus}
-        testId={`${päätasonSuoritus.testId}.editor-container`}
         opiskeluoikeusJaksoClassName="fi.oph.koski.schema.OppivelvollisilleSuunnattuVapaanSivistystyönOpiskeluoikeusjakso"
       >
         <KansalainenOnly>
@@ -63,26 +62,24 @@ export const VSTLukutaitoEditor: React.FC<VSTLukutaitoEditorProps> = ({
           />
         </KansalainenOnly>
         <Spacer />
-        <KeyValueTable>
+        <Suoritus.PäätasosuorituksenTiedot>
           <Suoritus.Oppilaitos form={form} suoritus={päätasonSuoritus} />
           <Suoritus.Koulutus form={form} suoritus={päätasonSuoritus} />
           <Suoritus.Koulutusmoduuli form={form} suoritus={päätasonSuoritus} />
           <Suoritus.Peruste form={form} suoritus={päätasonSuoritus} />
-          {/* <Suoritus.Opintokokonaisuus form={form} suoritus={päätasonSuoritus} /> */}
           <Suoritus.Laajuus form={form} suoritus={päätasonSuoritus} />
           <Suoritus.Opetuskieli form={form} suoritus={päätasonSuoritus} />
           <Suoritus.TodistuksenLisätiedot
             form={form}
             suoritus={päätasonSuoritus}
           />
-        </KeyValueTable>
+        </Suoritus.PäätasosuorituksenTiedot>
         <Spacer />
         <SuorituksenVahvistusField
           form={form}
           suoritusPath={päätasonSuoritus.path}
           organisaatio={organisaatio}
           disableAdd={suoritusVahvistettu}
-          testId={päätasonSuoritus.testId}
         />
         <Spacer />
 
@@ -92,7 +89,6 @@ export const VSTLukutaitoEditor: React.FC<VSTLukutaitoEditorProps> = ({
 
         <Spacer />
         <OsasuoritusTable
-          testId={päätasonSuoritus.testId}
           editMode={form.editMode}
           addNewOsasuoritusView={AddLukutaitoOsasuoritus}
           addNewOsasuoritusViewProps={{
@@ -113,8 +109,7 @@ export const VSTLukutaitoEditor: React.FC<VSTLukutaitoEditorProps> = ({
                 suoritusPath: päätasonSuoritus.path as FormOptic<
                   VapaanSivistystyönOpiskeluoikeus,
                   VSTSuoritusOsasuorituksilla
-                >,
-                testId: `${päätasonSuoritus.testId}.osasuoritukset.${osasuoritusIndex}`
+                >
               })
           )}
           onRemove={(i) => {

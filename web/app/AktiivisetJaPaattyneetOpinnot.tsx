@@ -22,12 +22,7 @@ __webpack_nonce__ = window.nonce
 import(/* webpackChunkName: "styles" */ './style/main.less')
 
 const secret = R.last(document.location.pathname.split('/')) ?? ''
-interface AktiivisetJaPäättyneetOpinnotProps {
-  testId?: string
-}
-const AktiivisetJaPäättyneetOpinnot = ({
-  testId
-}: AktiivisetJaPäättyneetOpinnotProps) => {
+const AktiivisetJaPäättyneetOpinnot = () => {
   const response = useApiWithParams(fetchAktiivisetJaPäättyneetOpinnot, [
     secret
   ])
@@ -47,10 +42,7 @@ const AktiivisetJaPäättyneetOpinnot = ({
         (responseData: AktiivisetJaPäättyneetOpinnotOppija) => (
           <>
             <SuoritusjakoTopBar />
-            <ContentContainer
-              className="content-area suoritusjako suoritusjako-page"
-              testId={testId}
-            >
+            <ContentContainer className="content-area suoritusjako suoritusjako-page">
               <div className="main-content">
                 <h1>
                   <Trans>{'Aktiiviset ja päättyneet opinnot'}</Trans>

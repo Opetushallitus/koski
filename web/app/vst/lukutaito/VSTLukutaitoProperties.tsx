@@ -20,7 +20,7 @@ import { VapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus } from '..
 import { VapaanSivistystyönOpiskeluoikeus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeus'
 import { VapaanSivistystyönPäätasonSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonPaatasonSuoritus'
 import { createArviointi } from '../common/arviointi'
-import { VSTArviointiField } from '../common/propertyFields'
+import { ArviointiProperty } from '../common/propertyFields'
 import { VSTSuoritus, VSTSuoritusOsasuorituksilla } from '../common/types'
 
 type VSTLukutaitoPropertiesProps = {
@@ -47,11 +47,7 @@ export const VSTLukutaitoProperties: React.FC<VSTLukutaitoPropertiesProps> = (
 ) => {
   return (
     <div>
-      <VSTArviointiField
-        form={props.form}
-        path={props.osasuoritusPath}
-        testId={props.testId}
-      />
+      <ArviointiProperty form={props.form} path={props.osasuoritusPath} />
     </div>
   )
 }
@@ -69,7 +65,6 @@ export type OsasuoritusToTableRowParams = {
     path: FormOptic<VapaanSivistystyönPäätasonSuoritus, any>,
     osasuoritus: VSTSuoritus
   ) => void
-  testId: string
 }
 
 export const osasuoritusToTableRow = ({
@@ -78,8 +73,7 @@ export const osasuoritusToTableRow = ({
   osasuoritusIndex,
   form,
   level,
-  createOsasuoritus,
-  testId
+  createOsasuoritus
 }: OsasuoritusToTableRowParams): OsasuoritusRowData<
   'Osasuoritus' | 'Laajuus' | 'Arvosana' | 'Taitotaso'
 > => {
@@ -99,7 +93,7 @@ export const osasuoritusToTableRow = ({
           form={form}
           path={osasuoritus.path('koulutusmoduuli.tunniste.nimi')}
           view={LocalizedTextView}
-          testId={`${testId}.nimi`}
+          testId="nimi"
         />
       ),
       Laajuus: (
@@ -108,7 +102,6 @@ export const osasuoritusToTableRow = ({
           path={osasuoritus.path('koulutusmoduuli.laajuus')}
           view={LaajuusView}
           edit={LaajuusOpintopisteissäEdit}
-          testId={`${testId}.laajuus`}
         />
       ),
       Arvosana: (
@@ -124,7 +117,6 @@ export const osasuoritusToTableRow = ({
               )}
             />
           )}
-          testId={`${testId}.arvosana`}
         />
       ),
       Taitotaso: (
@@ -133,7 +125,6 @@ export const osasuoritusToTableRow = ({
           path={osasuoritus.path('arviointi')}
           view={TaitotasoView}
           edit={TaitotasoEdit}
-          testId={`${testId}.taitotaso`}
         />
       )
     },
@@ -146,7 +137,6 @@ export const osasuoritusToTableRow = ({
         // @ts-expect-error Korjaa tyypitys
         osasuoritusPath={osasuoritus}
         createOsasuoritus={createOsasuoritus}
-        testId={testId}
       />
     )
   }

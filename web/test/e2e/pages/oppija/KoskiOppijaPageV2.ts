@@ -20,7 +20,7 @@ export class KoskiOppijaPageV2<T extends IdNodeObject<string>> {
     this.editMode = false
 
     this.saveBtn = page.getByTestId('opiskeluoikeus.save')
-    this.saveSnackbar = page.getByTestId('opiskeluoikeus.saveSnackbar')
+    this.saveSnackbar = page.getByTestId('opiskeluoikeus.saved.snackbar')
     this.errors = page.getByTestId('globalErrors')
   }
 
@@ -53,7 +53,7 @@ export class KoskiOppijaPageV2<T extends IdNodeObject<string>> {
   }
 
   async selectSuoritus(index: number) {
-    await this.$.suoritukset(index).tab.click()
+    await this.$.suoritusTabs(index).tab.click()
     this.suoritusIndex = index
     this.osasuoritusIndex = 0
   }
@@ -72,7 +72,7 @@ export class KoskiOppijaPageV2<T extends IdNodeObject<string>> {
   async opiskeluoikeudenTila(index: number) {
     const item =
       this.$.opiskeluoikeus.tila[this.editMode ? 'edit' : 'value'].items(index)
-    return `${await item.date.value()} ${await item.tila.value()}`
+    return `${await item.date.value(this.editMode)} ${await item.tila.value()}`
   }
 
   async removeOpiskeluoikeudenTila(index: number) {

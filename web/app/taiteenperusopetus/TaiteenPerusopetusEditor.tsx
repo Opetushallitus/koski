@@ -4,7 +4,6 @@ import { useSchema } from '../appstate/constraints'
 import { useKoodistoFiller } from '../appstate/koodisto'
 import { assortedPreferenceType, usePreferences } from '../appstate/preferences'
 import { OpenAllButton, useTree } from '../appstate/tree'
-import { subTestId } from '../components-v2/CommonProps'
 import { KansalainenOnly } from '../components-v2/access/KansalainenOnly'
 import { Column, ColumnRow } from '../components-v2/containers/Columns'
 import {
@@ -56,6 +55,7 @@ import {
   minimimääräArvioitujaOsasuorituksia,
   taiteenPerusopetuksenSuorituksenNimi
 } from './tpoCommon'
+import { TestIdRoot } from '../appstate/useTestId'
 
 export type TaiteenPerusopetusEditorProps =
   AdaptedOpiskeluoikeusEditorProps<TaiteenPerusopetuksenOpiskeluoikeus>
@@ -175,123 +175,121 @@ export const TaiteenPerusopetusEditor: React.FC<
 
   return (
     <TreeNode>
-      <OpiskeluoikeusTitle
-        opiskeluoikeus={form.state}
-        opiskeluoikeudenNimi={tpoKoulutuksenNimi(form.state)}
-      />
-
-      <EditorContainer
-        form={form}
-        oppijaOid={props.oppijaOid}
-        invalidatable={props.invalidatable}
-        onChangeSuoritus={setPäätasonSuoritus}
-        createOpiskeluoikeusjakso={TaiteenPerusopetuksenOpiskeluoikeusjakso}
-        suorituksenNimi={taiteenPerusopetuksenSuorituksenNimi}
-        suorituksenLisäys={
-          companionPäätasonSuoritus
-            ? localize(
-                t('Lisää') +
-                  ' ' +
-                  t(
-                    taiteenPerusopetuksenSuorituksenNimi(
-                      companionPäätasonSuoritus
-                    )
-                  ).toLowerCase()
-              )
-            : undefined
-        }
-        onCreateSuoritus={() => setNewSuoritusModalVisible(true)}
-        suorituksetVahvistettu={suorituksetVahvistettu}
-      >
-        {companionPäätasonSuoritus && newSuoritusModalVisible && (
-          <UusiTaiteenPerusopetuksenPäätasonSuoritusModal
-            opiskeluoikeus={form.state}
-            suoritus={companionPäätasonSuoritus}
-            onCreate={createPäätasonSuoritus}
-            onDismiss={() => setNewSuoritusModalVisible(false)}
-          />
-        )}
-
-        <KansalainenOnly>
-          <PäätasonSuorituksenSuostumuksenPeruminen
-            opiskeluoikeus={form.state}
-            suoritus={päätasonSuoritus.suoritus}
-          />
-        </KansalainenOnly>
-
-        {form.state.suoritukset.length > 1 && (
-          <ColumnRow>
-            <Column span={24} align="right">
-              <RemoveArrayItemField
-                form={form}
-                path={form.root.prop('suoritukset')}
-                removeAt={päätasonSuoritus.index}
-                label="Poista suoritus"
-                onRemove={removePäätasonSuoritus}
-                confirmation={{
-                  confirm: 'Vahvista poisto, operaatiota ei voi peruuttaa',
-                  cancel: 'Peruuta poisto'
-                }}
-                testId={`${päätasonSuoritus.testId}.invalidate`}
-              />
-            </Column>
-          </ColumnRow>
-        )}
-
-        <TaiteenPerusopetuksenTiedot
-          form={form}
-          päätasonSuoritus={päätasonSuoritus}
+      <TestIdRoot id={päätasonSuoritus.testId}>
+        <OpiskeluoikeusTitle
+          opiskeluoikeus={form.state}
+          opiskeluoikeudenNimi={tpoKoulutuksenNimi(form.state)}
         />
-        <Spacer />
 
-        <SuorituksenVahvistusField
+        <EditorContainer
           form={form}
-          suoritusPath={päätasonSuoritus.path}
-          organisaatio={organisaatio}
-          disableAdd={
-            !minimimääräArvioitujaOsasuorituksia(päätasonSuoritus.suoritus)
+          oppijaOid={props.oppijaOid}
+          invalidatable={props.invalidatable}
+          onChangeSuoritus={setPäätasonSuoritus}
+          createOpiskeluoikeusjakso={TaiteenPerusopetuksenOpiskeluoikeusjakso}
+          suorituksenNimi={taiteenPerusopetuksenSuorituksenNimi}
+          suorituksenLisäys={
+            companionPäätasonSuoritus
+              ? localize(
+                  t('Lisää') +
+                    ' ' +
+                    t(
+                      taiteenPerusopetuksenSuorituksenNimi(
+                        companionPäätasonSuoritus
+                      )
+                    ).toLowerCase()
+                )
+              : undefined
           }
-          testId={päätasonSuoritus.testId}
-        />
-        <Spacer />
-
-        {päätasonSuoritus.suoritus.osasuoritukset &&
-          isNonEmpty(päätasonSuoritus.suoritus.osasuoritukset) && (
-            <>
-              <OpenAllButton {...tree} />
-              <Spacer />
-              <OsasuoritusTable
-                testId={päätasonSuoritus.testId}
-                editMode={form.editMode}
-                rows={päätasonSuoritus.suoritus.osasuoritukset.map(
-                  (_, osasuoritusIndex) =>
-                    osasuoritusToTableRow(
-                      form,
-                      päätasonSuoritus.path,
-                      päätasonSuoritus.index,
-                      osasuoritusIndex
-                    )
-                )}
-                onRemove={onRemoveOsasuoritus}
-              />
-              <Spacer />
-            </>
+          onCreateSuoritus={() => setNewSuoritusModalVisible(true)}
+          suorituksetVahvistettu={suorituksetVahvistettu}
+        >
+          {companionPäätasonSuoritus && newSuoritusModalVisible && (
+            <UusiTaiteenPerusopetuksenPäätasonSuoritusModal
+              opiskeluoikeus={form.state}
+              suoritus={companionPäätasonSuoritus}
+              onCreate={createPäätasonSuoritus}
+              onDismiss={() => setNewSuoritusModalVisible(false)}
+            />
           )}
 
-        {form.editMode && (
-          <ColumnRow>
-            <Column span={{ default: 1, phone: 0 }} />
-            <Column span={{ default: 14, small: 10, phone: 24 }}>
-              <PaikallinenOsasuoritusSelect
-                tunnisteet={storedOsasuoritustunnisteet}
-                onSelect={onAddOsasuoritus}
-                onRemove={onRemoveStoredOsasuoritus}
-                testId={subTestId(päätasonSuoritus, 'addOsasuoritus')}
-              />
-            </Column>
-          </ColumnRow>
-        )}
-      </EditorContainer>
+          <KansalainenOnly>
+            <PäätasonSuorituksenSuostumuksenPeruminen
+              opiskeluoikeus={form.state}
+              suoritus={päätasonSuoritus.suoritus}
+            />
+          </KansalainenOnly>
+
+          {form.state.suoritukset.length > 1 && (
+            <ColumnRow>
+              <Column span={24} align="right">
+                <RemoveArrayItemField
+                  form={form}
+                  path={form.root.prop('suoritukset')}
+                  removeAt={päätasonSuoritus.index}
+                  label="Poista suoritus"
+                  onRemove={removePäätasonSuoritus}
+                  confirmation={{
+                    confirm: 'Vahvista poisto, operaatiota ei voi peruuttaa',
+                    cancel: 'Peruuta poisto'
+                  }}
+                />
+              </Column>
+            </ColumnRow>
+          )}
+
+          <TaiteenPerusopetuksenTiedot
+            form={form}
+            päätasonSuoritus={päätasonSuoritus}
+          />
+          <Spacer />
+
+          <SuorituksenVahvistusField
+            form={form}
+            suoritusPath={päätasonSuoritus.path}
+            organisaatio={organisaatio}
+            disableAdd={
+              !minimimääräArvioitujaOsasuorituksia(päätasonSuoritus.suoritus)
+            }
+          />
+          <Spacer />
+
+          {päätasonSuoritus.suoritus.osasuoritukset &&
+            isNonEmpty(päätasonSuoritus.suoritus.osasuoritukset) && (
+              <>
+                <OpenAllButton {...tree} />
+                <Spacer />
+                <OsasuoritusTable
+                  editMode={form.editMode}
+                  rows={päätasonSuoritus.suoritus.osasuoritukset.map(
+                    (_, osasuoritusIndex) =>
+                      osasuoritusToTableRow(
+                        form,
+                        päätasonSuoritus.path,
+                        päätasonSuoritus.index,
+                        osasuoritusIndex
+                      )
+                  )}
+                  onRemove={onRemoveOsasuoritus}
+                />
+                <Spacer />
+              </>
+            )}
+
+          {form.editMode && (
+            <ColumnRow>
+              <Column span={{ default: 1, phone: 0 }} />
+              <Column span={{ default: 14, small: 10, phone: 24 }}>
+                <PaikallinenOsasuoritusSelect
+                  tunnisteet={storedOsasuoritustunnisteet}
+                  onSelect={onAddOsasuoritus}
+                  onRemove={onRemoveStoredOsasuoritus}
+                />
+              </Column>
+            </ColumnRow>
+          )}
+        </EditorContainer>
+      </TestIdRoot>
     </TreeNode>
   )
 }
@@ -320,7 +318,7 @@ const osasuoritusToTableRow = (
           form={form}
           path={osasuoritus.path('koulutusmoduuli.tunniste.nimi')}
           view={LocalizedTextView}
-          testId={osasuoritusTestId(suoritusIndex, osasuoritusIndex, 'nimi')}
+          testId="nimi"
         />
       ),
       Laajuus: (
@@ -329,7 +327,7 @@ const osasuoritusToTableRow = (
           path={osasuoritus.path('koulutusmoduuli.laajuus')}
           view={LaajuusView}
           edit={LaajuusOpintopisteissäEdit}
-          testId={osasuoritusTestId(suoritusIndex, osasuoritusIndex, 'laajuus')}
+          testId="laajuus"
         />
       ),
       Arviointi: (
@@ -343,11 +341,7 @@ const osasuoritusToTableRow = (
               createArviointi={createTpoArviointi}
             />
           )}
-          testId={osasuoritusTestId(
-            suoritusIndex,
-            osasuoritusIndex,
-            'arvosana'
-          )}
+          testId="arvosana"
         />
       )
     },

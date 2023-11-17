@@ -23,6 +23,9 @@ import { VSTOsasuoritus, isVSTOsasuoritusArvioinnilla } from './typeguards'
 import { VSTVapaatavoitteinenEditor } from './vapaatavoitteinen/VSTVapaatavoitteinenEditor'
 import { isVapaanSivistystyönLukutaitokoulutuksenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonLukutaitokoulutuksenSuoritus'
 import { VSTLukutaitoEditor } from './lukutaito/VSTLukutaitoEditor'
+import { isOppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus } from '../types/fi/oph/koski/schema/OppivelvollisilleSuunnattuVapaanSivistystyonKoulutuksenSuoritus'
+import { KOPSEditor } from './kops/KOPSEditor'
+import { TestIdLayer, TestIdRoot } from '../appstate/useTestId'
 
 type VSTEditorProps =
   AdaptedOpiskeluoikeusEditorProps<VapaanSivistystyönOpiskeluoikeus>
@@ -100,7 +103,7 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
 
   // Render
   return (
-    <>
+    <TestIdRoot id={päätasonSuoritus.testId}>
       <OpiskeluoikeusTitle
         opiskeluoikeus={form.state}
         opiskeluoikeudenNimi={vstNimi(form.state)}
@@ -150,6 +153,21 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
           onCreateOsasuoritus={createOsasuoritus}
         />
       )}
-    </>
+      {hasPäätasonsuoritusOf(
+        isOppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus,
+        päätasonSuoritus
+      ) && (
+        <KOPSEditor
+          form={form}
+          oppijaOid={props.oppijaOid}
+          päätasonSuoritus={päätasonSuoritus}
+          organisaatio={organisaatio}
+          suoritusVahvistettu={suoritusVahvistettu}
+          invalidatable={props.invalidatable}
+          onChangeSuoritus={setPäätasonSuoritus}
+          onCreateOsasuoritus={createOsasuoritus}
+        />
+      )}
+    </TestIdRoot>
   )
 }

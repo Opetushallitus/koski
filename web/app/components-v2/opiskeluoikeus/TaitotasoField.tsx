@@ -6,7 +6,7 @@ import { useKoodisto } from '../../appstate/koodisto'
 import { t } from '../../i18n/i18n'
 import { LukutaitokoulutuksenArviointi } from '../../types/fi/oph/koski/schema/LukutaitokoulutuksenArviointi'
 import { koodiviiteId, KoodiviiteWithOptionalUri } from '../../util/koodisto'
-import { common, CommonProps, testId } from '../CommonProps'
+import { common, CommonProps } from '../CommonProps'
 import {
   groupKoodistoToOptions,
   OptionList,
@@ -15,6 +15,7 @@ import {
 } from '../controls/Select'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
 import { parasArviointi } from '../../util/arvioinnit'
+import { TestIdText } from '../../appstate/useTestId'
 
 type TaitotasoOf<T extends LukutaitokoulutuksenArviointi> = Exclude<
   T['taitotaso'],
@@ -29,9 +30,9 @@ export const TaitotasoView = <T extends LukutaitokoulutuksenArviointi>(
 ) => {
   const arvionti = parasArviointi(props.value || [])
   return arvionti !== undefined ? (
-    <span {...common(props)} {...testId(props)}>
+    <TestIdText {...common(props)} id="taitotaso.value">
       {t(arvionti.taitotaso.nimi)}
-    </span>
+    </TestIdText>
   ) : null
 }
 
@@ -76,7 +77,7 @@ export const TaitotasoEdit = <T extends LukutaitokoulutuksenArviointi>(
         value={selectedValue}
         options={groupedKoodisto as OptionList<TaitotasoOf<T>>}
         onChange={onChange}
-        testId={props.testId}
+        testId="taitotaso.edit"
       />
     )
   )

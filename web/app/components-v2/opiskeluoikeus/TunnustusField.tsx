@@ -1,21 +1,16 @@
 import * as $ from 'optics-ts'
 import React from 'react'
-import { localize, t } from '../../i18n/i18n'
-import { MuuallaSuoritettuOppivelvollisilleSuunnatunVapaanSivistystyönOpintojenSuoritus } from '../../types/fi/oph/koski/schema/MuuallaSuoritettuOppivelvollisilleSuunnatunVapaanSivistystyonOpintojenSuoritus'
-import { OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus } from '../../types/fi/oph/koski/schema/OppivelvollisilleSuunnatunVapaanSivistystyonOpintokokonaisuudenSuoritus'
-import { OsaamisenTunnustaminen } from '../../types/fi/oph/koski/schema/OsaamisenTunnustaminen'
+import { t } from '../../i18n/i18n'
 import { SelitettyOsaamisenTunnustaminen } from '../../types/fi/oph/koski/schema/SelitettyOsaamisenTunnustaminen'
-import { TaiteenPerusopetuksenOsasuorituksenTunnustus } from '../../types/fi/oph/koski/schema/TaiteenPerusopetuksenOsasuorituksenTunnustus'
 import { VapaanSivistystyönOpintojenSuorituksenOsaamisenTunnustaminen } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpintojenSuorituksenOsaamisenTunnustaminen'
 import { allLanguages } from '../../util/optics'
-import { assertNever } from '../../util/selfcare'
-import { ClassOf } from '../../util/types'
-import { common, CommonProps, testId } from '../CommonProps'
+import { CommonProps, common } from '../CommonProps'
 import { FlatButton } from '../controls/FlatButton'
 import { Removable } from '../controls/Removable'
 import { MultilineTextEdit } from '../controls/TextField'
 import { FieldErrors } from '../forms/FieldErrors'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
+import { useTestId } from '../../appstate/useTestId'
 
 export type TunnustusViewProps<T extends SelitettyOsaamisenTunnustaminen> =
   // eslint-disable-next-line @typescript-eslint/ban-types
@@ -24,8 +19,10 @@ export type TunnustusViewProps<T extends SelitettyOsaamisenTunnustaminen> =
 export const TunnustusView = <T extends SelitettyOsaamisenTunnustaminen>(
   props: TunnustusViewProps<T>
 ): React.ReactElement | null => {
+  const testId = useTestId('tunnustus.value')
+
   return (
-    <div {...common(props, ['TunnustusView'])} {...testId(props)}>
+    <div {...common(props, ['TunnustusView'])} data-testid={testId}>
       {t(props.value?.selite) || '–'}
     </div>
   )
@@ -38,7 +35,7 @@ export type TunnustusEditProps<
 > = FieldEditorProps<
   T,
   {
-    tunnustusClass: ClassOf<T>
+    createEmptyTunnustus: () => T
   }
 >
 
@@ -58,47 +55,26 @@ export const TunnustusEdit = <
   const onChange = (s?: string) =>
     props.onChange($.set(selitePath)(s)(props.value) as T)
 
-  const add = () =>
-    props.onChange(createEmptyTunnustus(props.tunnustusClass) as any)
+  const add = () => props.onChange(props.createEmptyTunnustus())
   const remove = () => props.onChange(undefined)
 
   return (
     <div {...common(props, ['TunnustusEdit'])}>
       {props.value === undefined ? (
-        <FlatButton onClick={add}>{'lisää'}</FlatButton>
+        <FlatButton onClick={add} testId="add">
+          {t('lisää')}
+        </FlatButton>
       ) : (
-        <Removable onClick={remove} testId={props.testId}>
+        <Removable onClick={remove}>
           <MultilineTextEdit
             value={value}
             onChange={onChange}
             placeholder="Selite"
-            testId={props.testId}
+            testId="selite"
           />
         </Removable>
       )}
       <FieldErrors errors={props.errors} />
     </div>
   )
-}
-
-const createEmptyTunnustus = <
-  T extends
-    | SelitettyOsaamisenTunnustaminen
-    | VapaanSivistystyönOpintojenSuorituksenOsaamisenTunnustaminen
->(
-  className: ClassOf<T>
-): T => {
-  const selite = localize('')
-  switch (className) {
-    case OsaamisenTunnustaminen.className:
-      return OsaamisenTunnustaminen({ selite }) as T
-    case TaiteenPerusopetuksenOsasuorituksenTunnustus.className:
-      return TaiteenPerusopetuksenOsasuorituksenTunnustus({ selite }) as T
-    case VapaanSivistystyönOpintojenSuorituksenOsaamisenTunnustaminen.className:
-      return VapaanSivistystyönOpintojenSuorituksenOsaamisenTunnustaminen({
-        selite
-      }) as T
-    default:
-      return assertNever(className)
-  }
 }

@@ -275,6 +275,7 @@ const reducer = <O>(
       const initialData = action.modifyInitialData
         ? action.modify(state.initialData)
         : state.initialData
+
       return state.editMode
         ? {
             ...state,

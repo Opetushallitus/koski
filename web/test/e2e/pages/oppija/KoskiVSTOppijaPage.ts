@@ -42,12 +42,6 @@ export class KoskiVSTOppijaPage extends KoskiOppijaPageV2<
     return await this.$.suoritukset(0).addOsasuoritus.select.options()
   }
 
-  async suuntautumisopinnotOptions() {
-    return await this.$.suoritukset(
-      0
-    ).addOsasuoritus.suuntautumisopinto.select.options()
-  }
-
   async addOsasuoritus(arvo: string) {
     await this.$.suoritukset(0).addOsasuoritus.select.set(arvo)
   }
@@ -58,12 +52,6 @@ export class KoskiVSTOppijaPage extends KoskiOppijaPageV2<
     await element.modal.nimi.set(nimi)
     await element.modal.submit.click()
     await this.page.waitForLoadState('networkidle')
-  }
-
-  async addSuuntautumisopinto() {
-    await this.$.suoritukset(0).addOsasuoritus.suuntautumisopinto.select.set(
-      'valinnaisetsuuntautumisopinnot'
-    )
   }
 
   async removeOsasuoritus(index: number) {
@@ -183,14 +171,11 @@ export class VSTOsasuoritus {
   }
 
   async setArvostelunPvm(pvm: string) {
-    const x = this.osasuoritus.properties.arviointi(0)
-    return this.osasuoritus.properties.arviointi(0).edit.päivä.set(pvm)
+    return this.osasuoritus.properties.arviointi(0).date.set(pvm)
   }
 
   async arvostelunPvm() {
-    return this.osasuoritus.properties
-      .arviointi(0)
-      [this.editMode ? 'edit' : 'value'].päivä.value()
+    return this.osasuoritus.properties.arviointi(0).date.value(this.editMode)
   }
 
   async setKuvaus(kuvaus: string) {
@@ -205,19 +190,11 @@ export class VSTOsasuoritus {
     return this.osasuoritus.properties.addOsasuoritus.select.set(koodi)
   }
 
-  async addNewAlaosasuoritus(nimi: string) {
+  async addNewAlaosasuoritus(nimi: string, optionId = '__NEW__') {
     const addNew = this.osasuoritus.properties.addOsasuoritus
-    await addNew.select.set('__NEW__')
+    await addNew.select.set(optionId)
     await addNew.modal.nimi.set(nimi)
     await addNew.modal.submit.click()
-    await this.page.waitForLoadState('networkidle')
-  }
-
-  async addPaikallinenOpintokokonaisuus(nimi: string) {
-    const adder = this.osasuoritus.properties.addOsasuoritus.paikallinen
-    await adder.select.set('__NEW__')
-    await adder.modal.nimi.set(nimi)
-    await adder.modal.submit.click()
     await this.page.waitForLoadState('networkidle')
   }
 
@@ -270,28 +247,25 @@ const VapaanSivistystyönOsasuoritusTestIds = (_index: number) => ({
   nimi: FormField(Label),
   properties: {
     arviointi: arrayOf({
-      value: {
-        arvosana: Label,
-        päivä: Label
-      },
-      edit: {
-        arvosana: Input,
-        päivä: Input
-      }
+      date: FormField(Label, Input),
+      arvosana: FormField(Label, Input)
     }),
     tunnustettu: FormField(Label),
     kuvaus: FormField(Label, Input),
+
+    osasuoritukset: VapaanSivistystyönOsasuoritusTestIds,
     addOsasuoritus: {
       ...AddOsasuoritusField,
       paikallinen: AddOsasuoritusField
-    },
-    osasuoritukset: VapaanSivistystyönOsasuoritusTestIds
+    }
   },
+
   delete: Button
 })
 
 const VapaanSivistystyönTestIds = {
   opiskeluoikeus: OpiskeluoikeusHeader(),
+  suoritusTabs: arrayOf({ tab: Button }),
   suoritukset: arrayOf({
     tab: Button,
     oppilaitos: FormField(Label),
@@ -306,11 +280,8 @@ const VapaanSivistystyönTestIds = {
     suorituksenVahvistus: SuorituksenVahvistus(),
     expand: Button,
     osasuoritukset: VapaanSivistystyönOsasuoritusTestIds,
-    addOsasuoritus: {
-      ...AddOsasuoritusField,
-      suuntautumisopinto: AddOsasuoritusField
-    },
+    addOsasuoritus: AddOsasuoritusField,
 
-    yhteensa: FormField(Label)
+    yhteensa: Label
   })
 }

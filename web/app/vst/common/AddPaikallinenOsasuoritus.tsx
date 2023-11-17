@@ -1,4 +1,5 @@
 import React, { useCallback, useContext, useMemo } from 'react'
+import { useKoodistoFiller } from '../../appstate/koodisto'
 import { OpiskeluoikeusContext } from '../../appstate/opiskeluoikeus'
 import { usePreferences } from '../../appstate/preferences'
 import { CommonProps } from '../../components-v2/CommonProps'
@@ -10,16 +11,17 @@ import { PaikallinenKoodi } from '../../types/fi/oph/koski/schema/PaikallinenKoo
 import { VapaanSivistystyönOpiskeluoikeus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeus'
 import { KoulutusmoduuliOf, OsasuoritusOf } from '../../util/schema'
 import { VSTSuoritusPaikallisillaOsasuorituksilla } from './types'
-import { useKoodistoFiller } from '../../appstate/koodisto'
+import { appendOptional } from '../../util/array'
 
 type AddPaikallinenOsasuoritusProps<
   T extends VSTSuoritusPaikallisillaOsasuorituksilla
 > = CommonProps<{
   form: FormModel<VapaanSivistystyönOpiskeluoikeus>
-  suoritusPath: FormOptic<VapaanSivistystyönOpiskeluoikeus, T>
+  path: FormOptic<VapaanSivistystyönOpiskeluoikeus, T>
   createOsasuoritus: (tunniste: PaikallinenKoodi) => OsasuoritusOf<T>
   level: number
   preferenceStoreName: string
+  placeholder?: string
 }>
 
 export const AddPaikallinenOsasuoritus = <
@@ -27,7 +29,7 @@ export const AddPaikallinenOsasuoritus = <
 >(
   props: AddPaikallinenOsasuoritusProps<T>
 ) => {
-  const { createOsasuoritus, form, suoritusPath } = props
+  const { createOsasuoritus, form, path } = props
   const { organisaatio } = useContext(OpiskeluoikeusContext)
   const fillKoodistot = useKoodistoFiller()
 
@@ -43,17 +45,9 @@ export const AddPaikallinenOsasuoritus = <
 
   const onSelect = useCallback(
     async (tunniste: PaikallinenKoodi, isNew = false) => {
-      const osasuorituksetPath = suoritusPath
-        .prop('osasuoritukset')
-        .optional() as any as FormOptic<
-        VapaanSivistystyönOpiskeluoikeus,
-        OsasuoritusOf<T>[]
-      >
+      const osasuorituksetPath = path.prop('osasuoritukset')
       const osasuoritus = await fillKoodistot(createOsasuoritus(tunniste))
-      form.updateAt(osasuorituksetPath, (os: OsasuoritusOf<T>[]) => [
-        ...os,
-        osasuoritus
-      ])
+      form.updateAt(osasuorituksetPath as any, appendOptional(osasuoritus))
       if (isNew) {
         osasuoritukset.store(
           osasuoritus.koulutusmoduuli.tunniste.koodiarvo,
@@ -61,7 +55,7 @@ export const AddPaikallinenOsasuoritus = <
         )
       }
     },
-    [createOsasuoritus, fillKoodistot, form, osasuoritukset, suoritusPath]
+    [createOsasuoritus, fillKoodistot, form, osasuoritukset, path]
   )
 
   const onRemovePaikallinenKoodisto = useCallback(
@@ -75,11 +69,10 @@ export const AddPaikallinenOsasuoritus = <
     <ColumnRow indent={props.level + 1}>
       <Column span={10}>
         <PaikallinenOsasuoritusSelect
-          addNewText={t('Lisää osasuoritus')}
+          addNewText={props.placeholder || t('Lisää osasuoritus')}
           onSelect={onSelect}
           onRemove={onRemovePaikallinenKoodisto}
           tunnisteet={storedOsasuoritustunnisteet}
-          testId={props.testId}
         />
       </Column>
     </ColumnRow>

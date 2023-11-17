@@ -21,7 +21,7 @@ export const AddJotpaAlaosasuoritus: React.FC<AddJotpaOsasuoritusProps> = (
 ) => (
   <AddPaikallinenOsasuoritus
     form={props.form}
-    suoritusPath={props.osasuoritusPath}
+    path={props.osasuoritusPath}
     createOsasuoritus={(tunniste) =>
       VapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus({
         koulutusmoduuli: VapaanSivistystyönJotpaKoulutuksenOsasuoritus({
@@ -32,6 +32,5 @@ export const AddJotpaAlaosasuoritus: React.FC<AddJotpaOsasuoritusProps> = (
     }
     preferenceStoreName="vapaansivistystyonjotpakoulutuksenosasuoritus"
     level={props.level}
-    testId={props.testId}
   />
 )

@@ -21,7 +21,7 @@ export const AddLukutaitoOsasuoritus: React.FC<AddLukutaitoOsasuoritusProps> = (
 ) => (
   <AddKoodistonOsasuoritus
     form={props.form}
-    suoritusPath={props.osasuoritusPath}
+    path={props.osasuoritusPath}
     koodistoUri="vstlukutaitokoulutuksenkokonaisuus"
     createOsasuoritus={(tunniste) =>
       VapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus({
@@ -32,6 +32,5 @@ export const AddLukutaitoOsasuoritus: React.FC<AddLukutaitoOsasuoritusProps> = (
       })
     }
     level={0}
-    testId={props.testId}
   />
 )

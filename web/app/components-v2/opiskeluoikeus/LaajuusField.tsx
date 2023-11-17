@@ -6,11 +6,12 @@ import { Laajuus } from '../../types/fi/oph/koski/schema/Laajuus'
 import { LaajuusOpintopisteissä } from '../../types/fi/oph/koski/schema/LaajuusOpintopisteissa'
 import { formatNumber, removeFloatingPointDrift } from '../../util/numbers'
 import { CollectableOptic } from '../../util/types'
-import { common, CommonProps, testId } from '../CommonProps'
+import { common, CommonProps } from '../CommonProps'
 import { NumberField } from '../controls/NumberField'
 import { FieldErrors } from '../forms/FieldErrors'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
 import { nonNull } from '../../util/fp/arrays'
+import { TestIdLayer, TestIdText, useTestId } from '../../appstate/useTestId'
 
 /* ---------------------------------------------------------------------
  *
@@ -23,13 +24,13 @@ export type LaajuusViewProps = CommonProps<FieldViewerProps<Laajuus, {}>>
 
 export const LaajuusView = (props: LaajuusViewProps) => {
   return (
-    <span {...common(props)} {...testId(props)}>
+    <TestIdText {...common(props)} id="laajuus.value">
       {props.value
         ? formatNumber(props.value.arvo) +
           ' ' +
           t(props.value.yksikkö.lyhytNimi || props.value.yksikkö.nimi)
         : '–'}
-    </span>
+    </TestIdText>
   )
 }
 
@@ -64,13 +65,15 @@ export const LaajuusEdit: React.FC<LaajuusEditProps<Laajuus>> = (props) => {
           value={props.value?.arvo}
           onChange={onChangeCB}
           hasErrors={Boolean(props.errors)}
-          testId={props.testId}
+          testId="laajuus.edit"
         />
         <span className="LaajuusField__yksikko">
           {t(props.value?.yksikkö.lyhytNimi || props.value?.yksikkö.nimi)}
         </span>
       </div>
-      <FieldErrors errors={props.errors} testId={props.testId} />
+      <TestIdLayer id="laajuus.edit">
+        <FieldErrors errors={props.errors} />
+      </TestIdLayer>
     </label>
   )
 }

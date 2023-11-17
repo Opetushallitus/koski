@@ -1,32 +1,25 @@
 import { constant } from 'fp-ts/lib/function'
 import { isNumber } from 'fp-ts/lib/number'
 import React, { useMemo } from 'react'
+import { TestIdLayer } from '../../appstate/useTestId'
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
-import { mapTimes, nonNull } from '../../util/fp/arrays'
+import { mapTimes } from '../../util/fp/arrays'
 import { sum } from '../../util/numbers'
-import {
-  common,
-  CommonProps,
-  CommonPropsWithChildren,
-  subTestId,
-  testId
-} from '../CommonProps'
+import { CommonProps, CommonPropsWithChildren, common } from '../CommonProps'
 import { Trans } from '../texts/Trans'
 import {
+  COLUMN_COUNT,
   Column,
   ColumnRow,
-  COLUMN_COUNT,
+  ResponsiveValue,
   getResponsiveValueAt,
-  mapResponsiveValue,
-  ResponsiveValue
+  mapResponsiveValue
 } from './Columns'
 
 export type KeyValueTableProps = CommonPropsWithChildren
 
 export const KeyValueTable = (props: KeyValueTableProps) => (
-  <ul {...common(props, ['KeyValueTable'])} {...testId(props)}>
-    {props.children}
-  </ul>
+  <ul {...common(props, ['KeyValueTable'])}>{props.children}</ul>
 )
 
 export type KeyValueRowProps = CommonPropsWithChildren<{
@@ -49,10 +42,13 @@ export const KeyValueRow = (props: KeyValueRowProps) => {
       </Column>
       <Column
         className="KeyValueRow__value"
-        span={{ default: 20 - indent, small: 16 - indent, phone: 12 - indent }}
+        span={{
+          default: 20 - indent,
+          small: 16 - indent,
+          phone: 12 - indent
+        }}
         valign="top"
         component="span"
-        testId={subTestId(props, 'value')}
       >
         {props.children}
       </Column>
@@ -64,7 +60,6 @@ export type KeyColumnedValuesRowProps = CommonProps<{
   name?: string | LocalizedString
   children: React.ReactNode[]
   columnSpans?: ResponsiveValue<Array<number | '*'>>
-  testIds?: string[]
 }>
 
 const NAME_WIDTH: ResponsiveValue<number> = { default: 4 }
@@ -97,9 +92,6 @@ export const KeyColumnedValuesRow = (props: KeyColumnedValuesRowProps) => {
           valign="top"
           component="span"
           key={index}
-          testId={[props.testId, props.testIds?.[index]]
-            .filter(nonNull)
-            .join('.')}
         >
           {child}
         </Column>

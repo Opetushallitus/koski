@@ -5,9 +5,9 @@ import { t } from '../../i18n/i18n'
 import { Arviointi } from '../../types/fi/oph/koski/schema/Arviointi'
 import { parasArviointi, parasArviointiIndex } from '../../util/arvioinnit'
 import * as C from '../../util/constraints'
-import { KoodiviiteWithOptionalUri, koodiviiteId } from '../../util/koodisto'
+import { koodiviiteId } from '../../util/koodisto'
 import { schemaClassName } from '../../util/types'
-import { CommonProps, common, testId } from '../CommonProps'
+import { CommonProps, common } from '../CommonProps'
 import {
   OptionList,
   Select,
@@ -15,11 +15,9 @@ import {
   groupKoodistoToOptions
 } from '../controls/Select'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
+import { TestIdLayer, TestIdText } from '../../appstate/useTestId'
 
-type ArvosanaOf<T extends Arviointi> = T['arvosana'] //Exclude<
-//   T['arvosana'],
-//   KoodiviiteWithOptionalUri
-// >
+type ArvosanaOf<T extends Arviointi> = T['arvosana']
 
 export type ArvosanaViewProps<T extends Arviointi> = CommonProps<
   FieldViewerProps<T | undefined, {}>
@@ -29,9 +27,9 @@ export const ArvosanaView = <T extends Arviointi>(
   props: ArvosanaViewProps<T>
 ) => {
   return props.value ? (
-    <span {...common(props)} {...testId(props)}>
+    <TestIdText {...props} id="arvosana.value">
       {t(props.value.arvosana?.nimi)}
-    </span>
+    </TestIdText>
   ) : null
 }
 
@@ -87,8 +85,8 @@ export const ArvosanaEdit = <T extends Arviointi>(
         value={selectedValue}
         options={groupedKoodisto as OptionList<ArvosanaOf<T>>}
         onChange={onChange}
-        testId={props.testId}
         disabled={props.disabled}
+        testId="arvosana.edit"
       />
     )
   )
@@ -125,7 +123,6 @@ export const ParasArvosanaEdit = <T extends Arviointi>(
       onChange={onChange}
       createArviointi={props.createArviointi}
       disabled={disabled}
-      testId={props.testId}
     />
   )
 }

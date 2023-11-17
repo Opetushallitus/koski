@@ -10,6 +10,7 @@ import { Column, ColumnRow } from '../containers/Columns'
 import { FlatButton } from '../controls/FlatButton'
 import { RaisedButton } from '../controls/RaisedButton'
 import { Trans } from '../texts/Trans'
+import { TestIdLayer, TestIdRoot, TestIdText } from '../../appstate/useTestId'
 
 export type OpiskeluoikeusEditToolbarProps = {
   opiskeluoikeus: Opiskeluoikeus
@@ -26,22 +27,21 @@ export const OpiskeluoikeusEditToolbar = (
 
   return (
     <ColumnRow>
-      <Column
-        span={{ default: spans[0], phone: 24 }}
-        testId="opiskeluoikeus.voimassaoloaika"
-      >
-        <Trans>{'Opiskeluoikeuden voimassaoloaika'}</Trans>
-        {': '}
-        {'arvioituPäättymispäivä' in props.opiskeluoikeus &&
-        !props.opiskeluoikeus.päättymispäivä
-          ? `${formatDateRange(
-              props.opiskeluoikeus.alkamispäivä,
-              props.opiskeluoikeus.arvioituPäättymispäivä
-            )} (${t('Arvioitu päättymispäivä')})`
-          : formatDateRange(
-              props.opiskeluoikeus.alkamispäivä,
-              props.opiskeluoikeus.päättymispäivä
-            )}
+      <Column span={{ default: spans[0], phone: 24 }}>
+        <TestIdText id="voimassaoloaika">
+          <Trans>{'Opiskeluoikeuden voimassaoloaika'}</Trans>
+          {': '}
+          {'arvioituPäättymispäivä' in props.opiskeluoikeus &&
+          !props.opiskeluoikeus.päättymispäivä
+            ? `${formatDateRange(
+                props.opiskeluoikeus.alkamispäivä,
+                props.opiskeluoikeus.arvioituPäättymispäivä
+              )} (${t('Arvioitu päättymispäivä')})`
+            : formatDateRange(
+                props.opiskeluoikeus.alkamispäivä,
+                props.opiskeluoikeus.päättymispäivä
+              )}
+        </TestIdText>
       </Column>
       <Column
         span={{ default: spans[1], phone: 24 }}
@@ -54,11 +54,7 @@ export const OpiskeluoikeusEditToolbar = (
               <MitätöintiButton opiskeluoikeusOid={opiskeluoikeusOid} />
             )
           ) : (
-            <RaisedButton
-              fullWidth
-              onClick={props.onStartEdit}
-              testId="opiskeluoikeus.edit"
-            >
+            <RaisedButton fullWidth onClick={props.onStartEdit} testId="edit">
               {'Muokkaa'}
             </RaisedButton>
           )}
@@ -79,28 +75,32 @@ const MitätöintiButton: React.FC<MitätöintiButtonProps> = (props) => {
     window.location.replace('/koski/virkailija')
   })
 
-  return confirmationVisible ? (
-    <>
-      <RaisedButton
-        type="dangerzone"
-        onClick={() => invalidate.call(props.opiskeluoikeusOid)}
-        testId="opiskeluoikeus.invalidate.confirm"
-      >
-        {'Vahvista mitätöinti, operaatiota ei voi peruuttaa'}
-      </RaisedButton>
-      <FlatButton
-        onClick={() => setConfirmationVisible(false)}
-        testId="opiskeluoikeus.invalidate.cancel"
-      >
-        {'Peruuta mitätöinti'}
-      </FlatButton>
-    </>
-  ) : (
-    <FlatButton
-      onClick={() => setConfirmationVisible(true)}
-      testId="opiskeluoikeus.invalidate.button"
-    >
-      {'Mitätöi opiskeluoikeus'}
-    </FlatButton>
+  return (
+    <TestIdLayer id="invalidate">
+      {confirmationVisible ? (
+        <>
+          <RaisedButton
+            type="dangerzone"
+            onClick={() => invalidate.call(props.opiskeluoikeusOid)}
+            testId="confirm"
+          >
+            {'Vahvista mitätöinti, operaatiota ei voi peruuttaa'}
+          </RaisedButton>
+          <FlatButton
+            onClick={() => setConfirmationVisible(false)}
+            testId="cancel"
+          >
+            {'Peruuta mitätöinti'}
+          </FlatButton>
+        </>
+      ) : (
+        <FlatButton
+          onClick={() => setConfirmationVisible(true)}
+          testId="button"
+        >
+          {'Mitätöi opiskeluoikeus'}
+        </FlatButton>
+      )}
+    </TestIdLayer>
   )
 }

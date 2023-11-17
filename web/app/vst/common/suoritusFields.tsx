@@ -1,6 +1,10 @@
 import React from 'react'
+import { TestIdText } from '../../appstate/useTestId'
 import { ActivePäätasonSuoritus } from '../../components-v2/containers/EditorContainer'
-import { KeyValueRow } from '../../components-v2/containers/KeyValueTable'
+import {
+  KeyValueRow,
+  KeyValueTable
+} from '../../components-v2/containers/KeyValueTable'
 import { FormField } from '../../components-v2/forms/FormField'
 import { FormModel, FormOptic } from '../../components-v2/forms/FormModel'
 import {
@@ -15,6 +19,10 @@ import {
   ToimipisteEdit,
   ToimipisteView
 } from '../../components-v2/opiskeluoikeus/OpiskeluoikeudenToimipiste'
+import {
+  PerusteEdit,
+  PerusteView
+} from '../../components-v2/opiskeluoikeus/PerusteField'
 import {
   SuorituskieliEdit,
   SuorituskieliView
@@ -32,10 +40,10 @@ import {
   VSTPäätasonSuoritusOpintokokonaisuudella,
   VSTPäätasonSuoritusPerusteella
 } from './types'
-import {
-  PerusteEdit,
-  PerusteView
-} from '../../components-v2/opiskeluoikeus/PerusteField'
+
+export const PäätasosuorituksenTiedot: React.FC<{
+  children: React.ReactNode
+}> = (props) => <KeyValueTable>{props.children}</KeyValueTable>
 
 export type SuoritusFieldProps<T extends VapaanSivistystyönPäätasonSuoritus> = {
   form: FormModel<VapaanSivistystyönOpiskeluoikeus>
@@ -46,10 +54,7 @@ export const Oppilaitos = <T extends VapaanSivistystyönPäätasonSuoritus>({
   form,
   suoritus: päätasonSuoritus
 }: SuoritusFieldProps<T>) => (
-  <KeyValueRow
-    label="Oppilaitos / toimipiste"
-    testId={`${päätasonSuoritus.testId}.toimipiste`}
-  >
+  <KeyValueRow label="Oppilaitos / toimipiste">
     <FormField
       form={form}
       path={päätasonSuoritus.path.prop('toimipiste')}
@@ -70,23 +75,20 @@ export const Oppilaitos = <T extends VapaanSivistystyönPäätasonSuoritus>({
 export const Koulutus = <T extends VapaanSivistystyönPäätasonSuoritus>({
   suoritus: päätasonSuoritus
 }: SuoritusFieldProps<T>) => (
-  <KeyValueRow
-    label="Koulutus"
-    testId={`${päätasonSuoritus.testId}.koulutusmoduuli.tunniste`}
-  >
-    <Trans>{päätasonSuoritus.suoritus.koulutusmoduuli.tunniste.nimi}</Trans>
+  <KeyValueRow label="Koulutus">
+    <TestIdText id="tunniste.nimi">
+      <Trans>{päätasonSuoritus.suoritus.koulutusmoduuli.tunniste.nimi}</Trans>
+    </TestIdText>
   </KeyValueRow>
 )
 
 export const Koulutusmoduuli = <T extends VapaanSivistystyönPäätasonSuoritus>({
   suoritus: päätasonSuoritus
 }: SuoritusFieldProps<T>) => (
-  <KeyValueRow
-    label="Koulutusmoduuli"
-    indent={2}
-    testId={`${päätasonSuoritus.testId}.koulutusmoduuli.tunniste.koodiarvo`}
-  >
-    {päätasonSuoritus.suoritus.koulutusmoduuli.tunniste.koodiarvo}
+  <KeyValueRow label="Koulutusmoduuli" indent={2}>
+    <TestIdText id="tunniste.koodiarvo">
+      {päätasonSuoritus.suoritus.koulutusmoduuli.tunniste.koodiarvo}
+    </TestIdText>
   </KeyValueRow>
 )
 
@@ -94,7 +96,7 @@ export const Peruste = <T extends VSTPäätasonSuoritusPerusteella>({
   form,
   suoritus
 }: SuoritusFieldProps<T>) => (
-  <KeyValueRow label="Peruste" indent={2} testId={`${suoritus.testId}.peruste`}>
+  <KeyValueRow label="Peruste" indent={2}>
     <FormField
       form={form}
       path={suoritus.path
@@ -103,7 +105,6 @@ export const Peruste = <T extends VSTPäätasonSuoritusPerusteella>({
         .optional()}
       view={PerusteView}
       edit={PerusteEdit}
-      testId={`${suoritus.testId}.peruste.koulutusmoduuli`}
       editProps={{
         diaariNumero: suoritus.suoritus.tyyppi.koodiarvo
       }}
@@ -117,11 +118,7 @@ export const Opintokokonaisuus = <
   form,
   suoritus
 }: SuoritusFieldProps<T>) => (
-  <KeyValueRow
-    label="Opintokokonaisuus"
-    indent={2}
-    testId={`${suoritus.testId}.opintokokonaisuus`}
-  >
+  <KeyValueRow label="Opintokokonaisuus" indent={2}>
     <FormField
       form={form}
       path={suoritus.path
@@ -157,7 +154,6 @@ export const Laajuus = <T extends VSTPäätasonSuoritusLaajuudella>({
             .path('koulutusmoduuli.laajuus'),
           form.state
         )}
-        testId={`${suoritus.testId}.laajuus`}
       />
     </KeyValueRow>
   )
@@ -167,10 +163,7 @@ export const Opetuskieli = <T extends VapaanSivistystyönPäätasonSuoritus>({
   form,
   suoritus: päätasonSuoritus
 }: SuoritusFieldProps<T>) => (
-  <KeyValueRow
-    label="Opetuskieli"
-    testId={`${päätasonSuoritus.testId}.opetuskieli`}
-  >
+  <KeyValueRow label="Opetuskieli">
     <FormField
       form={form}
       path={päätasonSuoritus.path.prop('suorituskieli')}
@@ -186,10 +179,7 @@ export const TodistuksenLisätiedot = <
   form,
   suoritus: päätasonSuoritus
 }: SuoritusFieldProps<T>) => (
-  <KeyValueRow
-    label="Todistuksella näkyvät lisätiedot"
-    testId={`${päätasonSuoritus.testId}.todistuksella-nakyvat-lisatiedot`}
-  >
+  <KeyValueRow label="Todistuksella näkyvät lisätiedot">
     <FormField
       form={form}
       path={päätasonSuoritus.path.prop('todistuksellaNäkyvätLisätiedot')}

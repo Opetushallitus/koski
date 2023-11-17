@@ -1,7 +1,8 @@
+// @ts-nocheck
 import React, { useCallback, useContext, useMemo } from 'react'
 import { OpiskeluoikeusContext } from '../appstate/opiskeluoikeus'
 import { usePreferences } from '../appstate/preferences'
-import { CommonProps, subTestId } from '../components-v2/CommonProps'
+import { CommonProps } from '../components-v2/CommonProps'
 import { Column, ColumnRow } from '../components-v2/containers/Columns'
 import { LocalizedTextView } from '../components-v2/controls/LocalizedTestField'
 import { RaisedButton } from '../components-v2/controls/RaisedButton'
@@ -43,10 +44,6 @@ import {
   TaitotasoEdit,
   TaitotasoView
 } from '../components-v2/opiskeluoikeus/TaitotasoField'
-import {
-  TunnustusEdit,
-  TunnustusView
-} from '../components-v2/opiskeluoikeus/TunnustusField'
 import { t } from '../i18n/i18n'
 import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { isOppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus } from '../types/fi/oph/koski/schema/OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus'
@@ -93,7 +90,6 @@ import { isVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJa
 import { isVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenOpintojenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenTyoelamaJaYhteiskuntataitojenOpintojenSuoritus'
 import { isVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus'
 import { isVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenSuoritus'
-import { VapaanSivistystyönOpintojenSuorituksenOsaamisenTunnustaminen } from '../types/fi/oph/koski/schema/VapaanSivistystyonOpintojenSuorituksenOsaamisenTunnustaminen'
 import { VapaanSivistystyönOpiskeluoikeus } from '../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeus'
 import { VapaanSivistystyönPäätasonSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonPaatasonSuoritus'
 import { isVapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus'
@@ -271,7 +267,6 @@ export const AddNewVSTOsasuoritusView: React.FC<
       <Column span={10}>
         {isVapaanSivistystyönLukutaitokoulutuksenSuoritus(data) && (
           <KoodistoSelect
-            testId={props.testId}
             koodistoUri="vstlukutaitokoulutuksenkokonaisuus"
             addNewText={t('Lisää kokonaisuus')}
             onSelect={(tunniste, _isNew) => {
@@ -289,7 +284,6 @@ export const AddNewVSTOsasuoritusView: React.FC<
         ) && (
           <>
             <KoodistoSelect
-              testId={props.testId}
               koodistoUri="vstosaamiskokonaisuus"
               addNewText={t('Lisää osaamiskokonaisuus')}
               onSelect={(tunniste) => {
@@ -302,7 +296,7 @@ export const AddNewVSTOsasuoritusView: React.FC<
               onRemove={onRemoveKoodisto}
             />
             <KoodistoSelect
-              testId={subTestId(props, 'suuntautumisopinto')}
+              // testId={subTestId(props, 'suuntautumisopinto')}
               koodistoUri="vstmuutopinnot"
               addNewText={t('Lisää suuntautumisopinto')}
               onSelect={(tunniste) => {
@@ -338,7 +332,6 @@ export const AddNewVSTOsasuoritusView: React.FC<
             }
             onRemove={onRemovePaikallinenKoodisto}
             tunnisteet={storedOsasuoritustunnisteet}
-            testId={subTestId(props, 'paikallinen')}
           />
         )}
         {isOppivelvollisilleSuunnatunVapaanSivistystyönValinnaistenSuuntautumisopintojenSuoritus(
@@ -346,7 +339,6 @@ export const AddNewVSTOsasuoritusView: React.FC<
         ) && (
           <>
             <KoodistoSelect
-              testId={props.testId}
               koodistoUri="vstmuuallasuoritetutopinnot"
               addNewText={t('Lisää muualla suoritettu opinto')}
               onSelect={(tunniste) =>
@@ -370,7 +362,6 @@ export const AddNewVSTOsasuoritusView: React.FC<
               }
               onRemove={onRemovePaikallinenKoodisto}
               tunnisteet={storedOsasuoritustunnisteet}
-              testId={subTestId(props, 'paikallinen')}
             />
           </>
         )}
@@ -443,7 +434,6 @@ export const AddNewVSTOsasuoritusView: React.FC<
           data
         ) && (
           <KoodistoSelect
-            testId={props.testId}
             koodistoUri="vstkoto2022kokonaisuus"
             addNewText={t('Lisää osasuoritus')}
             onSelect={(tunniste, _isNew) => {
@@ -575,14 +565,12 @@ export const AddNewVSTOsasuoritusView: React.FC<
             }
             onRemove={onRemovePaikallinenKoodisto}
             tunnisteet={storedOsasuoritustunnisteet}
-            testId={'koto-valinnaisten-paikallinen-osasuoritus'}
           />
         )}
         {isVSTKotoutumiskoulutuksenKieliJaViestintäosaamisenSuoritus2022(
           data
         ) && (
           <KoodistoSelect
-            testId={props.testId}
             koodistoUri="vstkoto2022kielijaviestintakoulutus"
             addNewText={t(
               'Lisää kieli- ja viestintäkoulutuksen alaosasuoritus'
@@ -601,7 +589,6 @@ export const AddNewVSTOsasuoritusView: React.FC<
           data
         ) && (
           <KoodistoSelect
-            testId={props.testId}
             koodistoUri="vstkoto2022yhteiskuntajatyoosaamiskoulutus"
             addNewText={t(
               'Lisää yhteiskunta- ja työosaamiskoulutuksen alaosasuoritus'
@@ -620,7 +607,6 @@ export const AddNewVSTOsasuoritusView: React.FC<
           data
         ) && (
           <PaikallinenOsasuoritusSelect
-            testId={props.testId}
             addNewText={t('Lisää osasuoritus')}
             onSelect={(tunniste, isNew) => {
               onKoodistoSelect(
@@ -850,7 +836,6 @@ export const VSTOsasuoritusProperties: React.FC<
             view={VSTArviointiView}
             edit={VSTArviointiEdit}
             editProps={{ osasuoritus }}
-            testId={subTestId(props, 'arviointi')}
           />
         </OsasuoritusProperty>
       )}
@@ -865,12 +850,11 @@ export const VSTOsasuoritusProperties: React.FC<
                 edit={(kuvausProps) => {
                   return <KuvausEdit {...kuvausProps} />
                 }}
-                testId={subTestId(props, 'kuvaus')}
               />
             </OsasuoritusSubproperty>
           </OsasuoritusProperty>
         )}
-      {osasuoritus?.koulutusmoduuli !== undefined &&
+      {/* {osasuoritus?.koulutusmoduuli !== undefined &&
         isTunnustettuVSTOsasuoritus(osasuoritus) && (
           <OsasuoritusProperty label="">
             <OsasuoritusSubproperty label="Tunnustettu">
@@ -887,7 +871,7 @@ export const VSTOsasuoritusProperties: React.FC<
               />
             </OsasuoritusSubproperty>
           </OsasuoritusProperty>
-        )}
+        )} */}
       {isVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenSuoritus(
         osasuoritus
       ) && (
@@ -906,7 +890,7 @@ export const VSTOsasuoritusProperties: React.FC<
                   .prop('kuullunYmmärtämisenTaitotaso')}
                 view={KehittyvänKielenTaitotasoView}
                 edit={KehittyvänKielenTaitotasoEdit}
-                testId={subTestId(props, 'kuullunYmmartaminen')}
+                testId="kuullunYmmartaminen"
               />
             </OsasuoritusSubproperty>
           </OsasuoritusProperty>
@@ -924,7 +908,7 @@ export const VSTOsasuoritusProperties: React.FC<
                   .prop('puhumisenTaitotaso')}
                 view={KehittyvänKielenTaitotasoView}
                 edit={KehittyvänKielenTaitotasoEdit}
-                testId={subTestId(props, 'puhuminen')}
+                testId="puhuminen"
               />
             </OsasuoritusSubproperty>
           </OsasuoritusProperty>
@@ -942,7 +926,7 @@ export const VSTOsasuoritusProperties: React.FC<
                   .prop('luetunYmmärtämisenTaitotaso')}
                 view={KehittyvänKielenTaitotasoView}
                 edit={KehittyvänKielenTaitotasoEdit}
-                testId={subTestId(props, 'luetunYmmartaminen')}
+                testId="luetunYmmartaminen"
               />
             </OsasuoritusSubproperty>
           </OsasuoritusProperty>
@@ -960,7 +944,7 @@ export const VSTOsasuoritusProperties: React.FC<
                   .prop('kirjoittamisenTaitotaso')}
                 view={KehittyvänKielenTaitotasoView}
                 edit={KehittyvänKielenTaitotasoEdit}
-                testId={subTestId(props, 'kirjoittaminen')}
+                testId="kirjoittaminen"
               />
             </OsasuoritusSubproperty>
           </OsasuoritusProperty>
@@ -1002,9 +986,7 @@ export const VSTOsasuoritusProperties: React.FC<
                 suoritusPath: props.osasuoritusPath,
                 osasuoritusIndex: osasuoritusIndex,
                 suoritusIndex: props.osasuoritusIndex,
-                testId: String(
-                  subTestId(props, `osasuoritukset.${osasuoritusIndex}`)
-                )
+                testId: `osasuoritukset.${osasuoritusIndex}`
               })
             }
           )}

@@ -1,7 +1,8 @@
 import React, { useEffect, useCallback, useState } from 'react'
-import { common, CommonProps, cx, testId } from '../CommonProps'
+import { common, CommonProps, cx } from '../CommonProps'
 import { FieldErrors } from '../forms/FieldErrors'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
+import { useTestId } from '../../appstate/useTestId'
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export type TextViewProps = CommonProps<FieldViewerProps<string, {}>>
@@ -16,11 +17,14 @@ export type TextEditProps = CommonProps<
     {
       placeholder?: string
       autoFocus?: boolean
+      testId?: string
     }
   >
 >
 
 export const TextEdit: React.FC<TextEditProps> = (props) => {
+  const testId = useTestId(props.testId, 'input')
+
   const [internalValue, setInternalValue] = useState(props.value)
   useEffect(() => setInternalValue(props.value), [props.value])
 
@@ -44,7 +48,7 @@ export const TextEdit: React.FC<TextEditProps> = (props) => {
         value={internalValue}
         onChange={onChangeCB}
         autoFocus={props.autoFocus}
-        {...testId(props, 'input')}
+        data-testid={testId}
       />
       <FieldErrors errors={props.errors} />
     </label>
@@ -52,6 +56,8 @@ export const TextEdit: React.FC<TextEditProps> = (props) => {
 }
 
 export const MultilineTextEdit: React.FC<TextEditProps> = (props) => {
+  const testId = useTestId(props.testId, 'input')
+
   const { onChange } = props
   const onChangeCB: React.ChangeEventHandler<HTMLTextAreaElement> = useCallback(
     (event) => {
@@ -71,7 +77,7 @@ export const MultilineTextEdit: React.FC<TextEditProps> = (props) => {
         value={props.value}
         onChange={onChangeCB}
         autoFocus={props.autoFocus}
-        {...testId(props, 'input')}
+        data-testid={testId}
       />
       <FieldErrors errors={props.errors} />
     </label>

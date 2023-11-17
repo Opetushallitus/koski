@@ -13,8 +13,13 @@ import { nonNull } from '../../util/fp/arrays'
 import { pluck } from '../../util/fp/objects'
 import { clamp } from '../../util/numbers'
 import { textSearch } from '../../util/strings'
-import { common, CommonProps, cx, subTestId, testId } from '../CommonProps'
+import { common, CommonProps, cx } from '../CommonProps'
 import { Removable } from './Removable'
+import {
+  TestIdLayer,
+  useParentTestId,
+  useTestId
+} from '../../appstate/useTestId'
 
 export type SelectProps<T> = CommonProps<{
   initialValue?: OptionKey
@@ -26,6 +31,7 @@ export type SelectProps<T> = CommonProps<{
   placeholder?: string | LocalizedString
   hideEmpty?: boolean
   disabled?: boolean
+  testId: string | number
 }>
 
 export type OptionList<T> = Array<SelectOption<T>>
@@ -57,32 +63,36 @@ export type SelectOption<T> = FlatOption<T> & {
 export type OptionKey = string
 
 export const Select = <T,>(props: SelectProps<T>) => {
+  const inputTestId = useTestId(props.testId, 'input')
   const select = useSelectState(props)
 
   return (
-    <div {...common(props, ['Select'])} {...select.containerEventListeners}>
-      <input
-        className="Select__input"
-        placeholder={t(props.placeholder || 'Valitse...')}
-        value={select.filter === null ? select.displayValue : select.filter}
-        type="search"
-        autoComplete="off"
-        disabled={props.disabled}
-        {...select.inputEventListeners}
-        {...testId(props, 'input')}
-      />
-      {select.dropdownVisible && (
-        <div className="Select__optionListContainer">
-          <OptionList
-            options={select.options}
-            hoveredOption={select.hoveredOption}
-            onRemove={props.onRemove}
-            {...select.dropdownEventListeners}
-            testId={subTestId(props, 'options')}
-          />
-        </div>
-      )}
-    </div>
+    <TestIdLayer id={props.testId}>
+      <div {...common(props, ['Select'])} {...select.containerEventListeners}>
+        <input
+          className="Select__input"
+          placeholder={t(props.placeholder || 'Valitse...')}
+          value={select.filter === null ? select.displayValue : select.filter}
+          type="search"
+          autoComplete="off"
+          disabled={props.disabled}
+          {...select.inputEventListeners}
+          data-testid={inputTestId}
+        />
+        {select.dropdownVisible && (
+          <div className="Select__optionListContainer">
+            <TestIdLayer wrap="div" id="options">
+              <OptionList
+                options={select.options}
+                hoveredOption={select.hoveredOption}
+                onRemove={props.onRemove}
+                {...select.dropdownEventListeners}
+              />
+            </TestIdLayer>
+          </div>
+        )}
+      </div>
+    </TestIdLayer>
   )
 }
 
@@ -95,6 +105,8 @@ type OptionListProps<T> = CommonProps<{
 }>
 
 const OptionList = <T,>(props: OptionListProps<T>): React.ReactElement => {
+  const parentTestId = useParentTestId()
+
   const onClick = (option: SelectOption<T>) => (event: React.MouseEvent) => {
     event.preventDefault()
     event.stopPropagation()
@@ -104,43 +116,37 @@ const OptionList = <T,>(props: OptionListProps<T>): React.ReactElement => {
   const { options, onRemove, ...rest } = props
 
   return (
-    <ul {...common(props, ['Select__optionList'])} {...testId(props)}>
+    <ul {...common(props, ['Select__optionList'])}>
       {options.map((opt) => (
-        <li
-          className="Select__option"
-          key={opt.key}
-          onClick={opt.isGroup ? undefined : onClick(opt)}
-        >
-          <Removable
-            isRemovable={Boolean(opt.removable && props.onRemove)}
-            onClick={() => onRemove?.(opt)}
-            testId={subTestId(props, opt.key)}
+        <TestIdLayer key={opt.key} id={opt.key}>
+          <li
+            className="Select__option"
+            onClick={opt.isGroup ? undefined : onClick(opt)}
           >
-            <div
-              className={cx(
-                'Select__optionLabel',
-                props.hoveredOption?.key === opt.key &&
-                  'Select__optionLabel--hover',
-                opt.isGroup && 'Select__optionGroup'
-              )}
-              onMouseOver={
-                opt.isGroup
-                  ? undefined
-                  : (event) => props.onMouseOver(opt, event)
-              }
-              {...testId(props, `${opt.key}.item`)}
+            <Removable
+              isRemovable={Boolean(opt.removable && props.onRemove)}
+              onClick={() => onRemove?.(opt)}
             >
-              {opt.display || opt.label}
-            </div>
-          </Removable>
-          {opt.children && (
-            <OptionList
-              options={opt.children}
-              {...rest}
-              testId={subTestId(props, opt.key)}
-            />
-          )}
-        </li>
+              <div
+                className={cx(
+                  'Select__optionLabel',
+                  props.hoveredOption?.key === opt.key &&
+                    'Select__optionLabel--hover',
+                  opt.isGroup && 'Select__optionGroup'
+                )}
+                onMouseOver={
+                  opt.isGroup
+                    ? undefined
+                    : (event) => props.onMouseOver(opt, event)
+                }
+                data-testid={`${parentTestId}.${opt.key}.item`}
+              >
+                {opt.display || opt.label}
+              </div>
+            </Removable>
+            {opt.children && <OptionList options={opt.children} {...rest} />}
+          </li>
+        </TestIdLayer>
       ))}
     </ul>
   )

@@ -13,13 +13,14 @@ import { viimeisinOpiskelujaksonTila } from '../../util/schema'
 import { uncapitalize } from '../../util/strings'
 import { currentQueryWith, parseQuery } from '../../util/url'
 import { VirkailijaOnly } from '../access/VirkailijaOnly'
-import { common, CommonProps, cx, subTestId } from '../CommonProps'
+import { common, CommonProps, cx } from '../CommonProps'
 import { Column, ColumnRow } from '../containers/Columns'
 import { PositionalPopup } from '../containers/PositionalPopup'
 import { FlatButton } from '../controls/FlatButton'
 import { LinkButton } from '../controls/LinkButton'
 import { Lowercase } from '../texts/Lowercase'
 import { Trans } from '../texts/Trans'
+import { TestIdLayer, TestIdRoot, TestIdText } from '../../appstate/useTestId'
 
 export type OpiskeluoikeusTitleProps = CommonProps<{
   opiskeluoikeus: Opiskeluoikeus
@@ -49,38 +50,39 @@ export const OpiskeluoikeusTitle = (props: OpiskeluoikeusTitleProps) => {
   const oid: string | undefined = (props.opiskeluoikeus as any).oid
 
   return (
-    <h3 {...common(props, ['OpiskeluoikeusTitle', 'darkBackground'])}>
-      <ColumnRow>
-        <Column
-          className="OpiskeluoikeusTitle__title"
-          span={{ default: 12, small: 24 }}
-          testId="opiskeluoikeus.nimi"
-        >
-          {oppilaitosJaKoulutus} {'('}
-          <Lowercase>{aikaväliJaTila}</Lowercase>
-          {')'}
-        </Column>
-
-        {oid && (
+    <TestIdRoot id="opiskeluoikeus">
+      <h3 {...common(props, ['OpiskeluoikeusTitle', 'darkBackground'])}>
+        <ColumnRow>
           <Column
-            className="OpiskeluoikeusTitle__oid"
+            className="OpiskeluoikeusTitle__title"
             span={{ default: 12, small: 24 }}
-            align={{ default: 'right', small: 'left' }}
-            testId="opiskeluoikeus.oid"
           >
-            <Trans>{'Opiskeluoikeuden oid'}</Trans>
-            {': '}
-            {oid}
-            <VirkailijaOnly>
-              <VersiohistoriaButton
-                opiskeluoikeusOid={oid}
-                testId="opiskeluoikeus.versiohistoria"
-              />
-            </VirkailijaOnly>
+            <TestIdText id="nimi">
+              {oppilaitosJaKoulutus} {'('}
+              <Lowercase>{aikaväliJaTila}</Lowercase>
+              {')'}
+            </TestIdText>
           </Column>
-        )}
-      </ColumnRow>
-    </h3>
+
+          {oid && (
+            <Column
+              className="OpiskeluoikeusTitle__oid"
+              span={{ default: 12, small: 24 }}
+              align={{ default: 'right', small: 'left' }}
+            >
+              <TestIdText id="oid">
+                <Trans>{'Opiskeluoikeuden oid'}</Trans>
+                {': '}
+                {oid}
+              </TestIdText>
+              <VirkailijaOnly>
+                <VersiohistoriaButton opiskeluoikeusOid={oid} />
+              </VirkailijaOnly>
+            </Column>
+          )}
+        </ColumnRow>
+      </h3>
+    </TestIdRoot>
   )
 }
 
@@ -98,28 +100,29 @@ const VersiohistoriaButton: React.FC<VersiohistoriaButtonProps> = (props) => {
   const hideList = useCallback(() => setVersiohistoriaVisible(false), [])
 
   return (
-    <span className="VersiohistoriaButton" ref={buttonRef}>
-      <FlatButton
-        onClick={toggleList}
-        aria-haspopup="menu"
-        aria-expanded={versiohistoriaVisible}
-        testId={subTestId(props, 'button')}
-      >
-        {t('Versiohistoria')}
-      </FlatButton>
-      <PositionalPopup
-        align="right"
-        onDismiss={hideList}
-        open={versiohistoriaVisible}
-        parentRef={buttonRef}
-      >
-        <VersiohistoriaList
-          opiskeluoikeusOid={props.opiskeluoikeusOid}
+    <TestIdLayer id="versiohistoria">
+      <span className="VersiohistoriaButton" ref={buttonRef}>
+        <FlatButton
+          onClick={toggleList}
+          aria-haspopup="menu"
+          aria-expanded={versiohistoriaVisible}
+          testId="button"
+        >
+          {t('Versiohistoria')}
+        </FlatButton>
+        <PositionalPopup
+          align="right"
+          onDismiss={hideList}
           open={versiohistoriaVisible}
-          testId={subTestId(props, 'list')}
-        />
-      </PositionalPopup>
-    </span>
+          parentRef={buttonRef}
+        >
+          <VersiohistoriaList
+            opiskeluoikeusOid={props.opiskeluoikeusOid}
+            open={versiohistoriaVisible}
+          />
+        </PositionalPopup>
+      </span>
+    </TestIdLayer>
   )
 }
 
@@ -147,27 +150,30 @@ const VersiohistoriaList: React.FC<VersiohistoriaListProps> = (props) => {
   }, [historia])
 
   return isSuccess(historia) ? (
-    <ul className="VersiohistoriaList" role="navigation">
-      {historia.data.map((versio) => (
-        <li
-          key={versio.versionumero}
-          className={cx(
-            'VersiohistoriaList__item',
-            currentVersion === versio.versionumero &&
-              'VersiohistoriaList__item--current'
-          )}
-        >
-          <LinkButton
-            href={currentQueryWith({
-              opiskeluoikeus: props.opiskeluoikeusOid,
-              versionumero: versio.versionumero
-            })}
-            testId={subTestId(props, versio.versionumero.toString())}
+    <TestIdLayer id="list">
+      <ul className="VersiohistoriaList" role="navigation">
+        {historia.data.map((versio) => (
+          <li
+            key={versio.versionumero}
+            className={cx(
+              'VersiohistoriaList__item',
+              currentVersion === versio.versionumero &&
+                'VersiohistoriaList__item--current'
+            )}
           >
-            {`v${versio.versionumero}`} {ISO2FinnishDateTime(versio.aikaleima)}
-          </LinkButton>
-        </li>
-      ))}
-    </ul>
+            <LinkButton
+              href={currentQueryWith({
+                opiskeluoikeus: props.opiskeluoikeusOid,
+                versionumero: versio.versionumero
+              })}
+              testId={versio.versionumero}
+            >
+              {`v${versio.versionumero}`}{' '}
+              {ISO2FinnishDateTime(versio.aikaleima)}
+            </LinkButton>
+          </li>
+        ))}
+      </ul>
+    </TestIdLayer>
   ) : null
 }

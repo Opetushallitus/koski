@@ -1,5 +1,4 @@
 import React from 'react'
-import { subTestId } from '../../components-v2/CommonProps'
 import { LocalizedTextView } from '../../components-v2/controls/LocalizedTestField'
 import { FormField } from '../../components-v2/forms/FormField'
 import {
@@ -33,7 +32,7 @@ import { VapaanSivistystyönPäätasonSuoritus } from '../../types/fi/oph/koski/
 import { VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus'
 import { deleteAt } from '../../util/array'
 import { createArviointi } from '../common/arviointi'
-import { VSTArviointiField } from '../common/propertyFields'
+import { ArviointiProperty } from '../common/propertyFields'
 import {
   VSTSuoritus,
   VSTSuoritusPaikallisillaOsasuorituksilla
@@ -57,7 +56,6 @@ type VSTVapaatavoitteinenPropertiesProps = {
     osasuoritus: VSTSuoritus
   ) => void
   allOpen: boolean
-  testId: string
 }
 
 export const VSTVapaatavoitteinenProperties: React.FC<
@@ -67,11 +65,7 @@ export const VSTVapaatavoitteinenProperties: React.FC<
 
   return (
     <div>
-      <VSTArviointiField
-        form={props.form}
-        path={props.osasuoritusPath}
-        testId={props.testId}
-      />
+      <ArviointiProperty form={props.form} path={props.osasuoritusPath} />
       <OsasuoritusProperty label="">
         <OsasuoritusSubproperty label="Kuvaus">
           <FormField
@@ -81,12 +75,10 @@ export const VSTVapaatavoitteinenProperties: React.FC<
             edit={(kuvausProps) => {
               return <KuvausEdit {...kuvausProps} />
             }}
-            testId={subTestId(props, 'kuvaus')}
           />
         </OsasuoritusSubproperty>
       </OsasuoritusProperty>
       <OsasuoritusTable
-        testId={props.testId}
         editMode={props.form.editMode}
         addNewOsasuoritusView={AddVapaatavoitteinenAlaosasuoritus}
         addNewOsasuoritusViewProps={{
@@ -112,9 +104,7 @@ export const VSTVapaatavoitteinenProperties: React.FC<
               suoritusPath: props.osasuoritusPath,
               osasuoritusIndex: osasuoritusIndex,
               suoritusIndex: props.osasuoritusIndex,
-              testId: String(
-                subTestId(props, `osasuoritukset.${osasuoritusIndex}`)
-              )
+              testId: `osasuoritukset.${osasuoritusIndex}`
             })
           }
         )}
@@ -136,7 +126,6 @@ type OsasuoritusToTableRowParams = {
     path: FormOptic<VapaanSivistystyönPäätasonSuoritus, any>,
     osasuoritus: VSTSuoritus
   ) => void
-  testId: string
 }
 
 export const osasuoritusToTableRow = ({
@@ -145,8 +134,7 @@ export const osasuoritusToTableRow = ({
   osasuoritusIndex,
   form,
   level,
-  createOsasuoritus,
-  testId
+  createOsasuoritus
 }: OsasuoritusToTableRowParams): OsasuoritusRowData<
   'Osasuoritus' | 'Laajuus' | 'Arvosana'
 > => {
@@ -166,7 +154,7 @@ export const osasuoritusToTableRow = ({
           form={form}
           path={osasuoritus.path('koulutusmoduuli.tunniste.nimi')}
           view={LocalizedTextView}
-          testId={`${testId}.nimi`}
+          testId="nimi"
         />
       ),
       Laajuus: (
@@ -175,7 +163,6 @@ export const osasuoritusToTableRow = ({
           path={osasuoritus.path('koulutusmoduuli.laajuus')}
           view={LaajuusView}
           edit={LaajuusOpintopisteissäEdit}
-          testId={`${testId}.laajuus`}
         />
       ),
       Arvosana: (
@@ -191,7 +178,6 @@ export const osasuoritusToTableRow = ({
               )}
             />
           )}
-          testId={`${testId}.arvosana`}
         />
       )
     },
@@ -204,7 +190,6 @@ export const osasuoritusToTableRow = ({
         // @ts-expect-error Korjaa tyypitys
         osasuoritusPath={osasuoritus}
         createOsasuoritus={createOsasuoritus}
-        testId={testId}
       />
     )
   }

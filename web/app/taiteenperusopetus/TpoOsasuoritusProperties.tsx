@@ -84,10 +84,6 @@ export const TpoOsasuoritusProperties: React.FC<
               path={tunnustusPath}
               view={TunnustusView}
               edit={TunnustusEdit}
-              editProps={{
-                tunnustusClass:
-                  TaiteenPerusopetuksenOsasuorituksenTunnustus.className
-              }}
               testId={`${props.testId}.tunnustettu`}
             />
           </OsasuoritusPropertyValue>

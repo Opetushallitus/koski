@@ -3,13 +3,14 @@ import { useKoodisto } from '../../appstate/koodisto'
 import { t } from '../../i18n/i18n'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { koodiviiteId } from '../../util/koodisto'
-import { common, CommonProps, testId } from '../CommonProps'
+import { common, CommonProps } from '../CommonProps'
 import {
   groupKoodistoToOptions,
   Select,
   SelectOption
 } from '../controls/Select'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
+import { TestIdText } from '../../appstate/useTestId'
 
 export type Suorituskielikoodiviite = Koodistokoodiviite<'kieli'>
 
@@ -18,8 +19,8 @@ export type SuorituskieliViewProps = CommonProps<
 >
 
 export const SuorituskieliView: React.FC<SuorituskieliViewProps> = (props) => (
-  <div {...common(props, ['SuorituskieliView'])} {...testId(props)}>
-    {t(props.value?.nimi)}
+  <div {...common(props, ['SuorituskieliView'])}>
+    <TestIdText id="suorituskieli.value">{t(props.value?.nimi)}</TestIdText>
   </div>
 )
 
@@ -54,7 +55,7 @@ export const SuorituskieliEdit: React.FC<SuorituskieliEditProps> = (props) => {
       options={options}
       value={selected}
       onChange={onChangeCB}
-      testId={props.testId}
+      testId="suorituskieli.edit"
     />
   ) : (
     <SuorituskieliView value={props.value} />
