@@ -23,11 +23,11 @@ export class KoskiVSTOppijaPage extends KoskiOppijaPageV2<
   }
 
   async setPeruste(diaarinumero: string) {
-    await this.$.suoritukset(0).peruste.koulutusmoduuli.set(diaarinumero)
+    await this.$.suoritukset(0).peruste.set(diaarinumero)
   }
 
   async peruste() {
-    return this.$.suoritukset(0).peruste.koulutusmoduuli.value(this.editMode)
+    return this.$.suoritukset(0).peruste.value(this.editMode)
   }
 
   osasuoritus(index: number) {
@@ -272,9 +272,7 @@ const VapaanSivistystyönTestIds = {
     koulutus: FormField(Label),
     opetuskieli: FormField(Label),
     lisatiedot: FormField(Label),
-    peruste: {
-      koulutusmoduuli: FormField(Label, Select)
-    },
+    peruste: FormField(Label, Select),
     laajuus: FormField(Label),
 
     suorituksenVahvistus: SuorituksenVahvistus(),

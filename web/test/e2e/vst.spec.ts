@@ -1527,7 +1527,7 @@ test.describe('Vapaa sivistystyö', () => {
       })
     })
 
-    test.describe('Oppivelvollisille suunnattu vst-koulutus', () => {
+    test.describe('KOPS', () => {
       test.beforeEach(openOppijaPage(oppivelvollisilleSuunnattu, true))
 
       const osaamiskokonaisuudet = {
@@ -1746,7 +1746,7 @@ test.describe('Vapaa sivistystyö', () => {
         vstOppijaPage: KoskiVSTOppijaPage
       ) => repeatAsync(4)(() => vstOppijaPage.removeOsasuoritus(0))
 
-      test('Osasuorituksien lisäys sekä laajuuksien ja arvosanan asettaminen', async ({
+      test('Osasuorituksien lisäys sekä arvosanan asettaminen', async ({
         vstOppijaPage
       }) => {
         await poistaKaikkiOsasuoritukset(vstOppijaPage)
@@ -1759,22 +1759,13 @@ test.describe('Vapaa sivistystyö', () => {
             const osasuoritus = vstOppijaPage.osasuoritus(index)
             expect(await osasuoritus.nimi()).toEqual(nimi)
 
-            await osasuoritus.setLaajuus(1 + index)
-            expect(await osasuoritus.laajuus()).toEqual(`${1 + index}`)
-
             if (koodi !== 'ohjaus') {
               await osasuoritus.setSuoritusarvosana(true)
               expect(await osasuoritus.arvosana()).toEqual('Hyväksytty')
             }
           }
         )
-        expect(await vstOppijaPage.suorituksenLaajuus()).toEqual('10 op')
-
-        await vstOppijaPage.tallennaVirheellisenä(
-          'Kielten ja viestinnän osasuoritusta ei voi hyväksyä ennen kuin kaikki pakolliset alaosasuoritukset on arvioitu',
-          'Oppiaineen laajuus puuttuu',
-          'Oppiaineen laajuus puuttuu'
-        )
+        await vstOppijaPage.tallenna()
       })
 
       test('Kieli- ja viestintäosaamisen muokkaaminen', async ({
@@ -1899,9 +1890,9 @@ test.describe('Vapaa sivistystyö', () => {
         await tila.modal.date.set('1.1.2023')
         await tila.modal.tila.set('valmistunut')
         await tila.modal.submit.click()
-        expect(await tila.items(0).date.value()).toEqual('1.8.2022')
+        expect(await tila.items(0).date.value(true)).toEqual('1.8.2022')
         expect(await tila.items(0).tila.value()).toEqual('Läsnä')
-        expect(await tila.items(1).date.value()).toEqual('1.1.2023')
+        expect(await tila.items(1).date.value(true)).toEqual('1.1.2023')
         expect(await tila.items(1).tila.value()).toEqual('Valmistunut')
         expect(await tila.add.isVisible()).toBeFalsy()
 

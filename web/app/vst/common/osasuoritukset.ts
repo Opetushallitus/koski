@@ -1,4 +1,5 @@
-import { OppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus } from '../../types/fi/oph/koski/schema/OppivelvollisilleSuunnattuVapaanSivistystyonKoulutuksenSuoritus'
+import { OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus2022 } from '../../types/fi/oph/koski/schema/OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus2022'
+import { isVSTKotoutumiskoulutuksenOhjauksenSuoritus2022 } from '../../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenOhjauksenSuoritus2022'
 import { VapaanSivistystyönJotpaKoulutuksenSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonJotpaKoulutuksenSuoritus'
 import { VapaanSivistystyönLukutaitokoulutuksenSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonLukutaitokoulutuksenSuoritus'
 import { VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonVapaatavoitteisenKoulutuksenSuoritus'
@@ -21,3 +22,14 @@ export const isCompletedLukutaitokoulutuksenOsasuoritus =
   (suoritus: VapaanSivistystyönLukutaitokoulutuksenSuoritus) =>
   (rowIndex: number) =>
     isArvioitu((suoritus.osasuoritukset || [])[rowIndex])
+
+export const isCompletedKoto2022Osasuoritus =
+  (
+    suoritus: OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus2022
+  ) =>
+  (rowIndex: number) => {
+    const osasuoritus = (suoritus.osasuoritukset || [])[rowIndex]
+    return isVSTKotoutumiskoulutuksenOhjauksenSuoritus2022(osasuoritus)
+      ? undefined
+      : isArvioitu(osasuoritus)
+  }

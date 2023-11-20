@@ -10,6 +10,7 @@ import {
   ArvosanaView
 } from '../components-v2/opiskeluoikeus/ArvosanaField'
 import { OsasuoritusSubproperty } from '../components-v2/opiskeluoikeus/OsasuoritusProperty'
+import { isVSTKotoutumiskoulutuksenKieliJaViestintäosaamisenArviointi } from '../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenKieliJaViestintaosaamisenArviointi'
 import { createVstArviointi } from './resolvers'
 import {
   VSTArviointi,

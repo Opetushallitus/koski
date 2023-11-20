@@ -20,6 +20,7 @@ import { Opiskeluoikeusjakso } from '../types/fi/oph/koski/schema/Opiskeluoikeus
 import { Vahvistus } from '../types/fi/oph/koski/schema/Vahvistus'
 import { ItemOf } from './types'
 import { Suoritus } from '../types/fi/oph/koski/schema/Suoritus'
+import { Arviointi } from '../types/fi/oph/koski/schema/Arviointi'
 
 export const isKoodistoviiteOf =
   <T extends string>(uri: T) =>
@@ -76,5 +77,7 @@ export type ArviointiOf<T extends Suoritus> = T extends {
 }
   ? S
   : never
+
+export type ArvosanaOf<T extends Arviointi> = T['arvosana']
 
 export type KoulutusmoduuliOf<T extends Suoritus> = T['koulutusmoduuli']

@@ -30,6 +30,7 @@ import {
 import { VapaanSivistystyönOpintojenSuorituksenOsaamisenTunnustaminen } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpintojenSuorituksenOsaamisenTunnustaminen'
 import { emptyLocalizedString, finnish } from '../../i18n/i18n'
 import { TestIdLayer } from '../../appstate/useTestId'
+import { VSTTaitotasoEdit, VSTTaitotasoView } from '../VSTTaitotasoField'
 
 export type VSTPropertyFieldProps<T extends VSTSuoritus = VSTSuoritus> =
   CommonProps<{
@@ -96,5 +97,26 @@ export const TunnustettuProperty = <T extends VSTSuoritusTunnustuksella>(
         />
       </OsasuoritusPropertyValue>
     </OsasuoritusProperty>
+  ) : null
+}
+
+export const TaitotasoProperty = <T extends VSTSuoritusArvioinnilla>(
+  props: VSTPropertyFieldProps<T>
+) => {
+  const osasuoritus = getValue(props.path)(props.form.state)
+  const arvioitu = (osasuoritus?.arviointi?.length || 0) > 0
+
+  return arvioitu ? (
+    <TestIdLayer id="arviointi">
+      <OsasuoritusProperty label="Arviointi">
+        <FormListField
+          form={props.form}
+          path={props.path.prop('arviointi')}
+          view={VSTTaitotasoView}
+          edit={VSTTaitotasoEdit}
+          editProps={{ osasuoritus }}
+        />
+      </OsasuoritusProperty>
+    </TestIdLayer>
   ) : null
 }
