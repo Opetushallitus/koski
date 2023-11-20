@@ -107,8 +107,8 @@ export const LaajuusOpintopisteissäEdit: React.FC<
  */
 
 export const laajuusSum =
-  <S, A extends Laajuus>(
-    laajuusPath: CollectableOptic<S, A | undefined>,
+  <S, A extends Laajuus | undefined>(
+    laajuusPath: CollectableOptic<S, A>,
     data: S
   ) =>
   (): A | undefined => {
@@ -117,7 +117,7 @@ export const laajuusSum =
       ? {
           ...laajuudet[0],
           arvo: removeFloatingPointDrift(
-            laajuudet.reduce((acc, laajuus) => acc + laajuus.arvo, 0)
+            laajuudet.reduce((acc, laajuus) => acc + (laajuus?.arvo ?? 0), 0)
           )
         }
       : undefined

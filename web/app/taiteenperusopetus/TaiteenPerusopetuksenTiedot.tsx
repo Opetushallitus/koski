@@ -76,7 +76,6 @@ export const TaiteenPerusopetuksenTiedot: React.FC<
           form={form}
           path={opiskeluoikeudenLaajuusPath}
           view={LaajuusView}
-          // @ts-ignore TODO TOR-2086: tutki miksi hajosi
           auto={laajuusSum(osasuoritustenLaajuudetPath, form.state)}
         />
       </KeyValueRow>
