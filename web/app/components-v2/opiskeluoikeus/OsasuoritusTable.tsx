@@ -175,15 +175,13 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
         )}
         {props.editMode && props.onRemove && (
           <Column span={spans.rightIcons}>
-            {props.row.content && (
-              <IconButton
-                charCode={CHARCODE_REMOVE}
-                label={t('Poista')}
-                size="input"
-                onClick={props.onRemove}
-                testId="delete"
-              />
-            )}
+            <IconButton
+              charCode={CHARCODE_REMOVE}
+              label={t('Poista')}
+              size="input"
+              onClick={props.onRemove}
+              testId="delete"
+            />
           </Column>
         )}
       </ColumnRow>
