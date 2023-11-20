@@ -44,10 +44,6 @@ export type KOPSSuuntautumisopintojenOsasuoritusPropertiesProps = {
     VapaanSivistystyönOpiskeluoikeus,
     OppivelvollisilleSuunnatunVapaanSivistystyönValinnaistenSuuntautumisopintojenSuoritus
   >
-  createOsasuoritus: (
-    path: FormOptic<VapaanSivistystyönPäätasonSuoritus, any>,
-    osasuoritus: VSTSuoritus
-  ) => void
   organisaatioOid: string
   testId: string
 }

@@ -36,7 +36,6 @@ export const KOPSEditor: React.FC<KOPSEditorProps> = ({
   päätasonSuoritus,
   invalidatable,
   onChangeSuoritus,
-  onCreateOsasuoritus,
   organisaatio,
   suoritusVahvistettu
 }) => {
@@ -105,7 +104,6 @@ export const KOPSEditor: React.FC<KOPSEditorProps> = ({
               kopsOsasuoritusToTableRow({
                 level: 0,
                 form,
-                createOsasuoritus: onCreateOsasuoritus,
                 osasuoritusIndex,
                 suoritusIndex: päätasonSuoritus.index,
                 suoritusPath: päätasonSuoritus.path as FormOptic<

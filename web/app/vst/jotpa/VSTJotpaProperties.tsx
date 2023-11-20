@@ -43,10 +43,6 @@ type VSTJotpaPropertiesProps = {
     VapaanSivistystyönOpiskeluoikeus,
     VapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus
   >
-  createOsasuoritus: (
-    path: FormOptic<VapaanSivistystyönPäätasonSuoritus, any>,
-    osasuoritus: VSTSuoritus
-  ) => void
   testId: string
 }
 
@@ -78,7 +74,6 @@ export const VSTJotpaProperties: React.FC<VSTJotpaPropertiesProps> = (
               level: props.level + 1,
               form: props.form,
               osasuoritusPath: props.osasuoritusPath,
-              createOsasuoritus: props.createOsasuoritus,
               // @ts-expect-error
               suoritusPath: props.osasuoritusPath,
               osasuoritusIndex: osasuoritusIndex,
@@ -101,10 +96,6 @@ interface OsasuoritusToTableRowParams {
   >
   suoritusIndex: number
   osasuoritusIndex: number
-  createOsasuoritus: (
-    path: FormOptic<VapaanSivistystyönPäätasonSuoritus, any>,
-    osasuoritus: VSTSuoritus
-  ) => void
 }
 
 export const osasuoritusToTableRow = ({
@@ -112,8 +103,7 @@ export const osasuoritusToTableRow = ({
   suoritusIndex,
   osasuoritusIndex,
   form,
-  level,
-  createOsasuoritus
+  level
 }: OsasuoritusToTableRowParams): OsasuoritusRowData<
   'Osasuoritus' | 'Laajuus' | 'Arvosana'
 > => {
@@ -168,7 +158,6 @@ export const osasuoritusToTableRow = ({
         suoritusPath={suoritusPath}
         // @ts-expect-error Korjaa tyypitys
         osasuoritusPath={osasuoritus}
-        createOsasuoritus={createOsasuoritus}
       />
     )
   }

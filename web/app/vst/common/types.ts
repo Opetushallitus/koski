@@ -25,10 +25,6 @@ export type VSTPäätasonSuoritusEditorProps<
   organisaatio?: Koulutustoimija | Oppilaitos
   invalidatable: boolean
   onChangeSuoritus: (suoritusIndex: number) => void
-  onCreateOsasuoritus: (
-    suoritusPath: FormOptic<VapaanSivistystyönPäätasonSuoritus, any>,
-    osasuoritus: VSTSuoritus
-  ) => void // TODO TOR-2086: Tyypitys
   suoritusVahvistettu: boolean
 }>
 

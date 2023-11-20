@@ -51,11 +51,6 @@ type VSTVapaatavoitteinenPropertiesProps = {
     VapaanSivistystyönOpiskeluoikeus,
     VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus
   >
-  createOsasuoritus: (
-    path: FormOptic<VapaanSivistystyönPäätasonSuoritus, any>,
-    osasuoritus: VSTSuoritus
-  ) => void
-  allOpen: boolean
 }
 
 export const VSTVapaatavoitteinenProperties: React.FC<
@@ -98,8 +93,6 @@ export const VSTVapaatavoitteinenProperties: React.FC<
               level: props.level + 1,
               form: props.form,
               osasuoritusPath: props.osasuoritusPath,
-              allOsasuorituksetOpen: props.allOpen,
-              createOsasuoritus: props.createOsasuoritus,
               // @ts-expect-error
               suoritusPath: props.osasuoritusPath,
               osasuoritusIndex: osasuoritusIndex,
@@ -122,10 +115,6 @@ type OsasuoritusToTableRowParams = {
   >
   suoritusIndex: number
   osasuoritusIndex: number
-  createOsasuoritus: (
-    path: FormOptic<VapaanSivistystyönPäätasonSuoritus, any>,
-    osasuoritus: VSTSuoritus
-  ) => void
 }
 
 export const osasuoritusToTableRow = ({
@@ -133,8 +122,7 @@ export const osasuoritusToTableRow = ({
   suoritusIndex,
   osasuoritusIndex,
   form,
-  level,
-  createOsasuoritus
+  level
 }: OsasuoritusToTableRowParams): OsasuoritusRowData<
   'Osasuoritus' | 'Laajuus' | 'Arvosana'
 > => {
@@ -189,7 +177,6 @@ export const osasuoritusToTableRow = ({
         suoritusPath={suoritusPath}
         // @ts-expect-error Korjaa tyypitys
         osasuoritusPath={osasuoritus}
-        createOsasuoritus={createOsasuoritus}
       />
     )
   }

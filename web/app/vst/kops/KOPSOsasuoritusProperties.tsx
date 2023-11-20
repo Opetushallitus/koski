@@ -36,10 +36,6 @@ type KOPSOsasuoritusPropertiesProps = {
     VapaanSivistystyönOpiskeluoikeus,
     OppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus
   >
-  createOsasuoritus: (
-    path: FormOptic<VapaanSivistystyönPäätasonSuoritus, any>,
-    osasuoritus: VSTSuoritus
-  ) => void
   testId: string
 }
 
@@ -67,7 +63,6 @@ export const KOPSOsasuoritusProperties: React.FC<
           level: props.level + 1,
           form: props.form,
           osasuoritusPath: props.osasuoritusPath,
-          createOsasuoritus: props.createOsasuoritus,
           // @ts-expect-error
           suoritusPath: props.osasuoritusPath,
           osasuoritusIndex: osasuoritusIndex,
@@ -87,10 +82,6 @@ export type KOPSOsasuoritusToTableRowParams = {
   >
   suoritusIndex: number
   osasuoritusIndex: number
-  createOsasuoritus: (
-    path: FormOptic<VapaanSivistystyönPäätasonSuoritus, any>,
-    osasuoritus: VSTSuoritus
-  ) => void
 }
 
 export const kopsOsasuoritusToTableRow = ({
@@ -98,8 +89,7 @@ export const kopsOsasuoritusToTableRow = ({
   suoritusIndex,
   osasuoritusIndex,
   form,
-  level,
-  createOsasuoritus
+  level
 }: KOPSOsasuoritusToTableRowParams): OsasuoritusRowData<
   'Osasuoritus' | 'Laajuus'
 > => {
@@ -143,7 +133,6 @@ export const kopsOsasuoritusToTableRow = ({
           suoritusPath={suoritusPath}
           // @ts-expect-error Korjaa tyypitys
           osasuoritusPath={osasuoritusPath}
-          createOsasuoritus={createOsasuoritus}
         />
       ) : (
         <KOPSOsaamiskokonaisuudenOsasuoritusProperties
@@ -153,7 +142,6 @@ export const kopsOsasuoritusToTableRow = ({
           suoritusPath={suoritusPath}
           // @ts-expect-error Korjaa tyypitys
           osasuoritusPath={osasuoritusPath}
-          createOsasuoritus={createOsasuoritus}
         />
       )
   }

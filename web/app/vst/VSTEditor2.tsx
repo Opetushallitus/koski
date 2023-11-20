@@ -50,37 +50,6 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
   // Päätason suoritus
   const [päätasonSuoritus, setPäätasonSuoritus] = usePäätasonSuoritus(form)
 
-  // TODO TOR-2086: Posta appendOsasuoritus ja createOsasuoritus refaktoroinnin jälkeen
-  const appendOsasuoritus = useCallback(
-    (
-      path: FormOptic<VapaanSivistystyönPäätasonSuoritus, any>,
-      uusiOsasuoritus: VSTOsasuoritus
-    ) => {
-      if (form.editMode) {
-        form.updateAt(path, (osasuoritus) => ({
-          ...osasuoritus,
-          osasuoritukset: append(uusiOsasuoritus)(osasuoritus.osasuoritukset)
-        }))
-      }
-    },
-    [form]
-  )
-
-  const createOsasuoritus = useCallback(
-    (
-      suoritusPath: FormOptic<VapaanSivistystyönPäätasonSuoritus, any>,
-      osasuoritus: VSTSuoritus
-    ) => {
-      console.log('createOsasuoritus', { suoritusPath, osasuoritus })
-      fillKoodistot(osasuoritus)
-        .then((filledOsasuoritus) => {
-          appendOsasuoritus(suoritusPath, filledOsasuoritus as any)
-        })
-        .catch(console.error)
-    },
-    [appendOsasuoritus, fillKoodistot]
-  )
-
   const suoritusVahvistettu = useMemo(() => {
     if (päätasonSuoritus.suoritus.osasuoritukset === undefined) {
       return false

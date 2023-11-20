@@ -18,10 +18,9 @@ import {
 import { OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi } from '../../types/fi/oph/koski/schema/OppivelvollisilleSuunnatunVapaanSivistystyonOpintokokonaisuudenArviointi'
 import { VapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonLukutaitokoulutuksenKokonaisuudenSuoritus'
 import { VapaanSivistystyönOpiskeluoikeus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeus'
-import { VapaanSivistystyönPäätasonSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonPaatasonSuoritus'
 import { createArviointi } from '../common/arviointi'
 import { ArviointiProperty } from '../common/propertyFields'
-import { VSTSuoritus, VSTSuoritusOsasuorituksilla } from '../common/types'
+import { VSTSuoritusOsasuorituksilla } from '../common/types'
 
 type VSTLukutaitoPropertiesProps = {
   osasuoritusIndex: number
@@ -35,10 +34,6 @@ type VSTLukutaitoPropertiesProps = {
     VapaanSivistystyönOpiskeluoikeus,
     VapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus
   >
-  createOsasuoritus: (
-    path: FormOptic<VapaanSivistystyönPäätasonSuoritus, any>,
-    osasuoritus: VSTSuoritus
-  ) => void
   testId: string
 }
 
@@ -61,10 +56,6 @@ export type OsasuoritusToTableRowParams = {
   >
   suoritusIndex: number
   osasuoritusIndex: number
-  createOsasuoritus: (
-    path: FormOptic<VapaanSivistystyönPäätasonSuoritus, any>,
-    osasuoritus: VSTSuoritus
-  ) => void
 }
 
 export const osasuoritusToTableRow = ({
@@ -72,8 +63,7 @@ export const osasuoritusToTableRow = ({
   suoritusIndex,
   osasuoritusIndex,
   form,
-  level,
-  createOsasuoritus
+  level
 }: OsasuoritusToTableRowParams): OsasuoritusRowData<
   'Osasuoritus' | 'Laajuus' | 'Arvosana' | 'Taitotaso'
 > => {
@@ -136,7 +126,6 @@ export const osasuoritusToTableRow = ({
         suoritusPath={suoritusPath}
         // @ts-expect-error Korjaa tyypitys
         osasuoritusPath={osasuoritus}
-        createOsasuoritus={createOsasuoritus}
       />
     )
   }

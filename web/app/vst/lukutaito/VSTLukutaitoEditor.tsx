@@ -36,7 +36,6 @@ export const VSTLukutaitoEditor: React.FC<VSTLukutaitoEditorProps> = ({
   päätasonSuoritus,
   invalidatable,
   onChangeSuoritus,
-  onCreateOsasuoritus,
   organisaatio,
   suoritusVahvistettu
 }) => {
@@ -103,7 +102,6 @@ export const VSTLukutaitoEditor: React.FC<VSTLukutaitoEditorProps> = ({
               osasuoritusToTableRow({
                 level: 0,
                 form,
-                createOsasuoritus: onCreateOsasuoritus,
                 osasuoritusIndex,
                 suoritusIndex: päätasonSuoritus.index,
                 suoritusPath: päätasonSuoritus.path as FormOptic<

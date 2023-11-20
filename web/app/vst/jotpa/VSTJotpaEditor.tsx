@@ -36,7 +36,6 @@ export const VSTJotpaEditor: React.FC<VSTJotpaEditorProps> = ({
   päätasonSuoritus,
   invalidatable,
   onChangeSuoritus,
-  onCreateOsasuoritus,
   organisaatio,
   suoritusVahvistettu
 }) => {
@@ -101,7 +100,6 @@ export const VSTJotpaEditor: React.FC<VSTJotpaEditorProps> = ({
               osasuoritusToTableRow({
                 level: 0,
                 form,
-                createOsasuoritus: onCreateOsasuoritus,
                 osasuoritusIndex,
                 suoritusIndex: päätasonSuoritus.index,
                 suoritusPath: päätasonSuoritus.path as FormOptic<

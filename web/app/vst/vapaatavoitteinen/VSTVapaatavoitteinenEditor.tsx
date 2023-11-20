@@ -38,7 +38,6 @@ export const VSTVapaatavoitteinenEditor: React.FC<
   päätasonSuoritus,
   invalidatable,
   onChangeSuoritus,
-  onCreateOsasuoritus,
   organisaatio,
   suoritusVahvistettu
 }) => {
@@ -107,7 +106,6 @@ export const VSTVapaatavoitteinenEditor: React.FC<
               osasuoritusToTableRow({
                 level: 0,
                 form,
-                createOsasuoritus: onCreateOsasuoritus,
                 osasuoritusIndex,
                 suoritusIndex: päätasonSuoritus.index,
                 suoritusPath: päätasonSuoritus.path as FormOptic<
