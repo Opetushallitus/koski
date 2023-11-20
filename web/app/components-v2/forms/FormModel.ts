@@ -325,10 +325,12 @@ const reducer = <O>(
         validateData(state.data, rule)
       )
       const errors = [...schemaErrors, ...ruleErrors]
-      return {
-        ...state,
-        errors: deepEqual(errors, state.errors) ? state.errors : errors
-      }
+      return deepEqual(errors, state.errors)
+        ? state
+        : {
+            ...state,
+            errors
+          }
     }
     default:
       return state
