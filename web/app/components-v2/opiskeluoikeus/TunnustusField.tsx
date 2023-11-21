@@ -10,7 +10,7 @@ import { Removable } from '../controls/Removable'
 import { MultilineTextEdit } from '../controls/TextField'
 import { FieldErrors } from '../forms/FieldErrors'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
-import { useTestId } from '../../appstate/useTestId'
+import { TestIdLayer, useTestId } from '../../appstate/useTestId'
 
 export type TunnustusViewProps<T extends SelitettyOsaamisenTunnustaminen> =
   // eslint-disable-next-line @typescript-eslint/ban-types
@@ -19,7 +19,7 @@ export type TunnustusViewProps<T extends SelitettyOsaamisenTunnustaminen> =
 export const TunnustusView = <T extends SelitettyOsaamisenTunnustaminen>(
   props: TunnustusViewProps<T>
 ): React.ReactElement | null => {
-  const testId = useTestId('tunnustus.value')
+  const testId = useTestId('tunnustettu.value')
 
   return (
     <div {...common(props, ['TunnustusView'])} data-testid={testId}>
@@ -60,21 +60,23 @@ export const TunnustusEdit = <
 
   return (
     <div {...common(props, ['TunnustusEdit'])}>
-      {props.value === undefined ? (
-        <FlatButton onClick={add} testId="add">
-          {t('lisää')}
-        </FlatButton>
-      ) : (
-        <Removable onClick={remove}>
-          <MultilineTextEdit
-            value={value}
-            onChange={onChange}
-            placeholder="Selite"
-            testId="selite"
-          />
-        </Removable>
-      )}
-      <FieldErrors errors={props.errors} />
+      <TestIdLayer id="tunnustettu.edit">
+        {props.value === undefined ? (
+          <FlatButton onClick={add} testId="add">
+            {t('lisää')}
+          </FlatButton>
+        ) : (
+          <Removable onClick={remove}>
+            <MultilineTextEdit
+              value={value}
+              onChange={onChange}
+              placeholder="Selite"
+              testId="selite"
+            />
+          </Removable>
+        )}
+        <FieldErrors errors={props.errors} />
+      </TestIdLayer>
     </div>
   )
 }

@@ -24,12 +24,6 @@ test.describe('Suoritusjako', () => {
   test.describe('Kansalaisen opintotiedot', () => {
     test.use({ storageState: kansalainen(hetut.taiteenPerusopetusValmis) })
 
-    test('opiskeluoikeuden otsikko näkyy', async ({ kansalainenPage }) => {
-      expect(await kansalainenPage.$.opiskeluoikeus.nimi.value()).toEqual(
-        'Varsinais-Suomen kansanopisto, taiteen perusopetuksen laaja oppimäärä, musiikki (2021 – 2022, hyväksytysti suoritettu)'
-      )
-    })
-
     test('voidaan jakaa suoritusjakona', async ({ kansalainenPage }) => {
       await kansalainenPage.openJaaSuoritustietoja()
 

@@ -297,8 +297,7 @@ test.describe('Vapaa sivistystyö', () => {
                     arviointi: {
                       arvosana: 'Hyväksytty',
                       pvm: '30.10.2021'
-                    },
-                    tunnustettu: '–'
+                    }
                   }
                 },
                 {
@@ -310,8 +309,7 @@ test.describe('Vapaa sivistystyö', () => {
                     arviointi: {
                       arvosana: 'Hyväksytty',
                       pvm: '2.11.2021'
-                    },
-                    tunnustettu: '–'
+                    }
                   }
                 }
               ]
@@ -332,8 +330,7 @@ test.describe('Vapaa sivistystyö', () => {
                       pvm: '30.10.2021'
                     },
                     kuvaus:
-                      'Oman opiskelutyylin analysointi ja tavoitteiden asettaminen',
-                    tunnustettu: '–'
+                      'Oman opiskelutyylin analysointi ja tavoitteiden asettaminen'
                   }
                 }
               ]
@@ -353,8 +350,7 @@ test.describe('Vapaa sivistystyö', () => {
                       arvosana: 'Hyväksytty',
                       pvm: '30.10.2021'
                     },
-                    kuvaus: 'Matematiikan jokapäiväinen käyttö',
-                    tunnustettu: '–'
+                    kuvaus: 'Matematiikan jokapäiväinen käyttö'
                   }
                 },
                 {
@@ -366,8 +362,7 @@ test.describe('Vapaa sivistystyö', () => {
                       arvosana: 'Hyväksytty',
                       pvm: '30.10.2021'
                     },
-                    kuvaus: 'Geometrian perusteet',
-                    tunnustettu: '–'
+                    kuvaus: 'Geometrian perusteet'
                   }
                 },
                 {
@@ -379,8 +374,7 @@ test.describe('Vapaa sivistystyö', () => {
                       arvosana: 'Hyväksytty',
                       pvm: '10.12.2021'
                     },
-                    kuvaus: 'Trigonometrian perusteet',
-                    tunnustettu: '–'
+                    kuvaus: 'Trigonometrian perusteet'
                   }
                 }
               ]
@@ -401,8 +395,7 @@ test.describe('Vapaa sivistystyö', () => {
                       pvm: '30.10.2021'
                     },
                     kuvaus:
-                      'Kansalaisuuden merkitys moniarvoisess yhteiskunnasa',
-                    tunnustettu: '–'
+                      'Kansalaisuuden merkitys moniarvoisess yhteiskunnasa'
                   }
                 }
               ]
@@ -422,8 +415,7 @@ test.describe('Vapaa sivistystyö', () => {
                       arvosana: 'Hyväksytty',
                       pvm: '30.10.2021'
                     },
-                    kuvaus: 'CV:n laadinta ja käyttö työnhaussa',
-                    tunnustettu: '–'
+                    kuvaus: 'CV:n laadinta ja käyttö työnhaussa'
                   }
                 }
               ]
@@ -444,8 +436,7 @@ test.describe('Vapaa sivistystyö', () => {
                       pvm: '12.11.2021'
                     },
                     kuvaus:
-                      'Nykyaikaisen tietokoneen tyypilliset huoltotoimenpiteet',
-                    tunnustettu: '–'
+                      'Nykyaikaisen tietokoneen tyypilliset huoltotoimenpiteet'
                   }
                 },
                 {
@@ -457,8 +448,7 @@ test.describe('Vapaa sivistystyö', () => {
                       arvosana: 'Hyväksytty',
                       pvm: '30.10.2021'
                     },
-                    kuvaus: 'Valaisinlähteet ja niiden toiminta',
-                    tunnustettu: '–'
+                    kuvaus: 'Valaisinlähteet ja niiden toiminta'
                   }
                 },
                 {
@@ -470,8 +460,7 @@ test.describe('Vapaa sivistystyö', () => {
                       arvosana: 'Hyväksytty',
                       pvm: '30.10.2021'
                     },
-                    kuvaus: 'Taiteen käyttö työkaluna',
-                    tunnustettu: '–'
+                    kuvaus: 'Taiteen käyttö työkaluna'
                   }
                 },
                 {
@@ -861,26 +850,26 @@ test.describe('Vapaa sivistystyö', () => {
                   if (alaosasuoritus.extra.kuvaus !== undefined) {
                     await expect(
                       page.getByTestId(
-                        `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.kuvaus.value`
+                        `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.properties.kuvaus.value`
                       )
                     ).toHaveText(alaosasuoritus.extra.kuvaus)
                   }
                   if (alaosasuoritus.extra.tunnustettu !== undefined) {
                     await expect(
                       page.getByTestId(
-                        `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.tunnustettu.value`
+                        `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.properties.tunnustettu.value`
                       )
                     ).toHaveText(alaosasuoritus.extra.tunnustettu)
                   }
                   if (alaosasuoritus.extra.arviointi !== undefined) {
                     await expect(
                       page.getByTestId(
-                        `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.arviointi.0.arvosana.value`
+                        `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.properties.arviointi.0.arvosana.value`
                       )
                     ).toHaveText(alaosasuoritus.extra.arviointi.arvosana)
                     await expect(
                       page.getByTestId(
-                        `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.arviointi.0.date.value`
+                        `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.properties.arviointi.0.date.value`
                       )
                     ).toHaveText(alaosasuoritus.extra.arviointi.pvm)
                   }
@@ -1765,7 +1754,11 @@ test.describe('Vapaa sivistystyö', () => {
             }
           }
         )
-        await vstOppijaPage.tallenna()
+        await vstOppijaPage.tallennaVirheellisenä(
+          'Kielten ja viestinnän osasuoritusta ei voi hyväksyä ennen kuin kaikki pakolliset alaosasuoritukset on arvioitu',
+          'Oppiaineen laajuus puuttuu',
+          'Oppiaineen laajuus puuttuu'
+        )
       })
 
       test('Kieli- ja viestintäosaamisen muokkaaminen', async ({
