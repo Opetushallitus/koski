@@ -24,11 +24,10 @@ import { VSTKotoutumiskoulutuksenKieliJaViestintäosaamisenSuoritus2022 } from '
 import { VapaanSivistystyönOpiskeluoikeus } from '../../../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeus'
 import { deleteAt } from '../../../util/array'
 import { ArvosanaOf } from '../../../util/schema'
-import {
-  ArviointiProperty,
-  TaitotasoProperty
-} from '../../common/propertyFields'
+import { ArviointiProperty } from '../../common/propertyFields'
 import { AddKieliJaViestintaOsasuoritus } from './AddKieliJaViestintaOsasuoritus'
+import { VSTKotoutumiskoulutuksenOsasuorituksenArviointi2022 } from '../../../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenOsasuorituksenArviointi2022'
+import { VSTKoto2022KielitaitotasoProperty } from './VSTKoto2022KielitaitotasoField'
 
 type VSTKoto2022KieliJaViestintaPropertiesProps = {
   osasuoritusIndex: number
@@ -46,7 +45,11 @@ export const VSTKoto2022KieliJaViestintaProperties: React.FC<
 
   return (
     <div>
-      <ArviointiProperty form={props.form} path={props.osasuoritusPath} />
+      <ArviointiProperty
+        form={props.form}
+        path={props.osasuoritusPath}
+        arviointi={VSTKotoutumiskoulutuksenOsasuorituksenArviointi2022}
+      />
       <OsasuoritusTable
         editMode={props.form.editMode}
         addNewOsasuoritusView={AddKieliJaViestintaOsasuoritus}
@@ -134,7 +137,9 @@ export const osasuoritusToTableRow = ({
         />
       )
     },
-    content: <TaitotasoProperty form={form} path={osasuoritusPath} />
+    content: (
+      <VSTKoto2022KielitaitotasoProperty form={form} path={osasuoritusPath} />
+    )
   }
 }
 

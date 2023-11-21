@@ -10,8 +10,7 @@ import {
   ArvosanaView
 } from '../components-v2/opiskeluoikeus/ArvosanaField'
 import { OsasuoritusSubproperty } from '../components-v2/opiskeluoikeus/OsasuoritusProperty'
-import { isVSTKotoutumiskoulutuksenKieliJaViestintäosaamisenArviointi } from '../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenKieliJaViestintaosaamisenArviointi'
-import { createVstArviointi } from './resolvers'
+import { ArvosanaOf } from '../util/schema'
 import {
   VSTArviointi,
   VSTOsasuoritus,
@@ -39,16 +38,19 @@ export const VSTArviointiView = (props: VSTArviointiViewProps) => {
   ) : null
 }
 
-export type VSTArviointiEditProps = CommonProps<
+export type VSTArviointiEditProps<T extends VSTArviointi> = CommonProps<
   FieldEditorProps<
-    VSTArviointi,
+    T,
     {
+      createArviointi: (arvosana: ArvosanaOf<T>) => T
       osasuoritus: VSTOsasuoritus
     }
   >
 >
 
-export const VSTArviointiEdit = (props: VSTArviointiEditProps) => {
+export const VSTArviointiEdit = <T extends VSTArviointi>(
+  props: VSTArviointiEditProps<T>
+) => {
   if (!isVSTOsasuoritusArvioinnilla(props.osasuoritus)) {
     return <div>{'Ei arviointia'}</div>
   }
@@ -57,17 +59,14 @@ export const VSTArviointiEdit = (props: VSTArviointiEditProps) => {
   return props.value ? (
     <>
       <OsasuoritusSubproperty rowNumber={startRow} label="Arvosana">
-        <ArvosanaEdit
-          {...props}
-          createArviointi={createVstArviointi(props.osasuoritus)}
-        />
+        <ArvosanaEdit {...props} createArviointi={props.createArviointi} />
       </OsasuoritusSubproperty>
       {hasPäiväInArviointi(props.value) && (
         <OsasuoritusSubproperty rowNumber={startRow + 1} label="Päivämäärä">
           <DateEdit
             value={props.value.päivä}
             onChange={(päivä) =>
-              päivä && props.onChange({ ...props.value, päivä } as VSTArviointi)
+              päivä && props.onChange({ ...props.value, päivä } as T)
             }
           />
         </OsasuoritusSubproperty>

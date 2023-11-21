@@ -142,7 +142,13 @@ export const osaamiskokonaisuudenOsasuoritusToTableRow = ({
     content: (
       <>
         <KuvausProperty form={form} path={osasuoritusPath} />
-        <ArviointiProperty form={form} path={osasuoritusPath} />
+        <ArviointiProperty
+          form={form}
+          path={osasuoritusPath}
+          arviointi={
+            OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi
+          }
+        />
         <TunnustettuProperty form={form} path={osasuoritusPath} />
       </>
     )

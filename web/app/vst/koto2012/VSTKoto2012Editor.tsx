@@ -38,16 +38,19 @@ import { VapaanSivistystyönOpiskeluoikeusjakso } from '../../types/fi/oph/koski
 import { deleteAt } from '../../util/array'
 import { VSTLisatiedot } from '../VSTLisatiedot'
 import { VSTLaajuudetYhteensä } from '../common/VSTLaajuudetYhteensa'
-import { createArviointi } from '../common/arviointi'
+import {
+  createArviointi,
+  kaikkiOsasuorituksetVahvistettu
+} from '../common/arviointi'
 import { isCompletedKoto2012Osasuoritus } from '../common/osasuoritukset'
 import { ArviointiProperty } from '../common/propertyFields'
 import * as Suoritus from '../common/suoritusFields'
 import { PäätasosuorituksenTiedot } from '../common/suoritusFields'
 import { VSTPäätasonSuoritusEditorProps } from '../common/types'
-import { kaikkiOsasuorituksetVahvistettu } from '../resolvers'
 import { VSTKoto2012KieliProperties } from './VSTKoto2012KieliProperties'
-import { VSTKoto2012YhteiskuntaJaTyoelamaosaaminenProperties } from './yhteiskuntajatyoelama/VSTKoto2012YhteiskuntaJaTyoelamaosaaminenProperties'
 import { VSTKoto2012ValinnaisetProperties } from './valinnaiset/VSTKoto2012ValinnaisetProperties'
+import { VSTKoto2012YhteiskuntaJaTyoelamaosaaminenProperties } from './yhteiskuntajatyoelama/VSTKoto2012YhteiskuntaJaTyoelamaosaaminenProperties'
+import { OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi } from '../../types/fi/oph/koski/schema/OppivelvollisilleSuunnatunVapaanSivistystyonOpintokokonaisuudenArviointi'
 
 export type VSTKoto2012EditorProps =
   VSTPäätasonSuoritusEditorProps<OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus>
@@ -222,7 +225,13 @@ export const osasuoritusToTableRow = ({
       ) : isVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOhjauksenSuoritus(
           osasuoritus
         ) ? (
-        <ArviointiProperty form={form} path={osasuoritusPath} />
+        <ArviointiProperty
+          form={form}
+          path={osasuoritusPath}
+          arviointi={
+            OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi
+          }
+        />
       ) : isVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenOpintojenSuoritus(
           osasuoritus
         ) ? (

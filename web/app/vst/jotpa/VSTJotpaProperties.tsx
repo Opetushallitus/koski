@@ -53,7 +53,11 @@ export const VSTJotpaProperties: React.FC<VSTJotpaPropertiesProps> = (
 
   return (
     <div>
-      <ArviointiProperty form={props.form} path={props.osasuoritusPath} />
+      <ArviointiProperty
+        form={props.form}
+        path={props.osasuoritusPath}
+        arviointi={VapaanSivistystyöJotpaKoulutuksenArviointi}
+      />
       <OsasuoritusTable
         editMode={props.form.editMode}
         addNewOsasuoritusView={AddJotpaAlaosasuoritus}

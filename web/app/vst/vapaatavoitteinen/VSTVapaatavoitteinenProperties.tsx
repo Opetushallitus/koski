@@ -28,15 +28,11 @@ import {
 } from '../../components-v2/opiskeluoikeus/OsasuoritusTable'
 import { VapaanSivistystyöVapaatavoitteisenKoulutuksenArviointi } from '../../types/fi/oph/koski/schema/VapaanSivistystyoVapaatavoitteisenKoulutuksenArviointi'
 import { VapaanSivistystyönOpiskeluoikeus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeus'
-import { VapaanSivistystyönPäätasonSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonPaatasonSuoritus'
 import { VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus'
 import { deleteAt } from '../../util/array'
 import { createArviointi } from '../common/arviointi'
 import { ArviointiProperty } from '../common/propertyFields'
-import {
-  VSTSuoritus,
-  VSTSuoritusPaikallisillaOsasuorituksilla
-} from '../common/types'
+import { VSTSuoritusPaikallisillaOsasuorituksilla } from '../common/types'
 import { AddVapaatavoitteinenAlaosasuoritus } from './AddVapaatavoitteinenAlaosasuoritus'
 
 type VSTVapaatavoitteinenPropertiesProps = {
@@ -60,7 +56,11 @@ export const VSTVapaatavoitteinenProperties: React.FC<
 
   return (
     <div>
-      <ArviointiProperty form={props.form} path={props.osasuoritusPath} />
+      <ArviointiProperty
+        form={props.form}
+        path={props.osasuoritusPath}
+        arviointi={VapaanSivistystyöVapaatavoitteisenKoulutuksenArviointi}
+      />
       <OsasuoritusProperty label="">
         <OsasuoritusSubproperty label="Kuvaus">
           <FormField

@@ -19,6 +19,7 @@ import { VapaanSivistystyönOpiskeluoikeus } from '../../../types/fi/oph/koski/s
 import { deleteAt } from '../../../util/array'
 import { ArviointiProperty } from '../../common/propertyFields'
 import { AddYhteiskuntaJaTyoelamaosaaminenOsasuoritus } from './AddYhteiskuntaJaTyoelamaosaaminenOsasuoritus'
+import { VSTKotoutumiskoulutuksenOsasuorituksenArviointi2022 } from '../../../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenOsasuorituksenArviointi2022'
 
 type VSTKoto2022YhteiskuntaJaTyoelamaosaaminenPropertiesProps = {
   osasuoritusIndex: number
@@ -36,7 +37,11 @@ export const VSTKoto2022YhteiskuntaJaTyoelamaosaaminenProperties: React.FC<
 
   return (
     <div>
-      <ArviointiProperty form={props.form} path={props.osasuoritusPath} />
+      <ArviointiProperty
+        form={props.form}
+        path={props.osasuoritusPath}
+        arviointi={VSTKotoutumiskoulutuksenOsasuorituksenArviointi2022}
+      />
       <OsasuoritusTable
         editMode={props.form.editMode}
         addNewOsasuoritusView={AddYhteiskuntaJaTyoelamaosaaminenOsasuoritus}

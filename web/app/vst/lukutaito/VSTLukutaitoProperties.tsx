@@ -19,18 +19,14 @@ import { OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArvioin
 import { VapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonLukutaitokoulutuksenKokonaisuudenSuoritus'
 import { VapaanSivistystyönOpiskeluoikeus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeus'
 import { createArviointi } from '../common/arviointi'
-import { ArviointiProperty } from '../common/propertyFields'
 import { VSTSuoritusOsasuorituksilla } from '../common/types'
+import { VSTLukutaitoKielitaitotasoProperty } from './VSTLukutaitoKielitaitotasoField'
 
 type VSTLukutaitoPropertiesProps = {
   osasuoritusIndex: number
   level: number
   form: FormModel<VapaanSivistystyönOpiskeluoikeus>
   suoritusPath: FormOptic<
-    VapaanSivistystyönOpiskeluoikeus,
-    VSTSuoritusOsasuorituksilla
-  >
-  osasuoritusPath: FormOptic<
     VapaanSivistystyönOpiskeluoikeus,
     VapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus
   >
@@ -39,13 +35,12 @@ type VSTLukutaitoPropertiesProps = {
 
 export const VSTLukutaitoProperties: React.FC<VSTLukutaitoPropertiesProps> = (
   props
-) => {
-  return (
-    <div>
-      <ArviointiProperty form={props.form} path={props.osasuoritusPath} />
-    </div>
-  )
-}
+) => (
+  <VSTLukutaitoKielitaitotasoProperty
+    form={props.form}
+    path={props.suoritusPath}
+  />
+)
 
 export type OsasuoritusToTableRowParams = {
   level: number
@@ -67,7 +62,7 @@ export const osasuoritusToTableRow = ({
 }: OsasuoritusToTableRowParams): OsasuoritusRowData<
   'Osasuoritus' | 'Laajuus' | 'Arvosana' | 'Taitotaso'
 > => {
-  const osasuoritus = suoritusPath
+  const osasuoritusPath = suoritusPath
     .prop('osasuoritukset')
     .optional()
     .at(osasuoritusIndex)
@@ -81,7 +76,7 @@ export const osasuoritusToTableRow = ({
       Osasuoritus: (
         <FormField
           form={form}
-          path={osasuoritus.path('koulutusmoduuli.tunniste.nimi')}
+          path={osasuoritusPath.path('koulutusmoduuli.tunniste.nimi')}
           view={LocalizedTextView}
           testId="nimi"
         />
@@ -89,7 +84,7 @@ export const osasuoritusToTableRow = ({
       Laajuus: (
         <FormField
           form={form}
-          path={osasuoritus.path('koulutusmoduuli.laajuus')}
+          path={osasuoritusPath.path('koulutusmoduuli.laajuus')}
           view={LaajuusView}
           edit={LaajuusOpintopisteissäEdit}
         />
@@ -97,7 +92,7 @@ export const osasuoritusToTableRow = ({
       Arvosana: (
         <FormField
           form={form}
-          path={osasuoritus.path('arviointi')}
+          path={osasuoritusPath.path('arviointi')}
           view={ParasArvosanaView}
           edit={(arvosanaProps) => (
             <ParasArvosanaEdit
@@ -112,7 +107,7 @@ export const osasuoritusToTableRow = ({
       Taitotaso: (
         <FormField
           form={form}
-          path={osasuoritus.path('arviointi')}
+          path={osasuoritusPath.path('arviointi')}
           view={TaitotasoView}
           edit={TaitotasoEdit}
         />
@@ -123,9 +118,8 @@ export const osasuoritusToTableRow = ({
         level={level}
         osasuoritusIndex={osasuoritusIndex}
         form={form}
-        suoritusPath={suoritusPath}
         // @ts-expect-error Korjaa tyypitys
-        osasuoritusPath={osasuoritus}
+        suoritusPath={osasuoritusPath}
       />
     )
   }

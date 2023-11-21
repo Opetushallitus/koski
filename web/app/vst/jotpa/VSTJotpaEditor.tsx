@@ -16,6 +16,7 @@ import { VapaanSivistystyönOpiskeluoikeusjakso } from '../../types/fi/oph/koski
 import { deleteAt } from '../../util/array'
 import { VSTLisatiedot } from '../VSTLisatiedot'
 import { VSTLaajuudetYhteensä } from '../common/VSTLaajuudetYhteensa'
+import { kaikkiOsasuorituksetVahvistettu } from '../common/arviointi'
 import { isCompletedJotpaOsasuoritus } from '../common/osasuoritukset'
 import * as Suoritus from '../common/suoritusFields'
 import { PäätasosuorituksenTiedot } from '../common/suoritusFields'
@@ -23,7 +24,6 @@ import {
   VSTPäätasonSuoritusEditorProps,
   VSTSuoritusPaikallisillaOsasuorituksilla
 } from '../common/types'
-import { kaikkiOsasuorituksetVahvistettu } from '../resolvers'
 import { AddJotpaOsasuoritus } from './AddJotpaOsasuoritus'
 import { osasuoritusToTableRow } from './VSTJotpaProperties'
 

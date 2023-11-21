@@ -19,8 +19,6 @@ export type KoodistoSelectProps<T extends string> = CommonProps<{
 export function KoodistoSelect<T extends string>(
   props: KoodistoSelectProps<T>
 ) {
-  const testId = useTestId('select')
-
   const koodisto = useKoodisto(props.koodistoUri)
   const { filter } = props
   const options: OptionList<Koodistokoodiviite<T>> = useMemo(

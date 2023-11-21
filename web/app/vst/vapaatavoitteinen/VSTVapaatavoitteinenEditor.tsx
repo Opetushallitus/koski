@@ -16,6 +16,7 @@ import { VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus } from '../../t
 import { deleteAt } from '../../util/array'
 import { VSTLisatiedot } from '../VSTLisatiedot'
 import { VSTLaajuudetYhteensä } from '../common/VSTLaajuudetYhteensa'
+import { kaikkiOsasuorituksetVahvistettu } from '../common/arviointi'
 import { isCompletedVapaatavoitteinenOsasuoritus } from '../common/osasuoritukset'
 import * as Suoritus from '../common/suoritusFields'
 import { PäätasosuorituksenTiedot } from '../common/suoritusFields'
@@ -23,7 +24,6 @@ import {
   VSTPäätasonSuoritusEditorProps,
   VSTSuoritusPaikallisillaOsasuorituksilla
 } from '../common/types'
-import { kaikkiOsasuorituksetVahvistettu } from '../resolvers'
 import { AddVapaatavoitteinenOsasuoritus } from './AddVapaatavoitteinenOsasuoritus'
 import { osasuoritusToTableRow } from './VSTVapaatavoitteinenProperties'
 

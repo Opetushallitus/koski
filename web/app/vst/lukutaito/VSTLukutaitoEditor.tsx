@@ -2,7 +2,6 @@ import React from 'react'
 import { OpenAllButton, useTree } from '../../appstate/tree'
 import { KansalainenOnly } from '../../components-v2/access/KansalainenOnly'
 import { EditorContainer } from '../../components-v2/containers/EditorContainer'
-import { KeyValueTable } from '../../components-v2/containers/KeyValueTable'
 import { FormOptic } from '../../components-v2/forms/FormModel'
 import { Spacer } from '../../components-v2/layout/Spacer'
 import { PäätasonSuorituksenSuostumuksenPeruminen } from '../../components-v2/opiskeluoikeus/OpiskeluoikeudenSuostumuksenPeruminen'
@@ -17,13 +16,13 @@ import { VapaanSivistystyönOpiskeluoikeusjakso } from '../../types/fi/oph/koski
 import { deleteAt } from '../../util/array'
 import { VSTLisatiedot } from '../VSTLisatiedot'
 import { VSTLaajuudetYhteensä } from '../common/VSTLaajuudetYhteensa'
+import { kaikkiOsasuorituksetVahvistettu } from '../common/arviointi'
 import { isCompletedLukutaitokoulutuksenOsasuoritus } from '../common/osasuoritukset'
 import * as Suoritus from '../common/suoritusFields'
 import {
   VSTPäätasonSuoritusEditorProps,
   VSTSuoritusOsasuorituksilla
 } from '../common/types'
-import { kaikkiOsasuorituksetVahvistettu } from '../resolvers'
 import { AddLukutaitoOsasuoritus } from './AddLukutaitoOsasuoritus'
 import { osasuoritusToTableRow } from './VSTLukutaitoProperties'
 

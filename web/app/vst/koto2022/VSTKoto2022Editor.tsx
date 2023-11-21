@@ -2,12 +2,23 @@ import React from 'react'
 import { OpenAllButton, useTree } from '../../appstate/tree'
 import { KansalainenOnly } from '../../components-v2/access/KansalainenOnly'
 import { EditorContainer } from '../../components-v2/containers/EditorContainer'
+import { LocalizedTextView } from '../../components-v2/controls/LocalizedTestField'
+import { FormField } from '../../components-v2/forms/FormField'
 import {
   FormModel,
   FormOptic,
   getValue
 } from '../../components-v2/forms/FormModel'
 import { Spacer } from '../../components-v2/layout/Spacer'
+import {
+  ParasArvosanaEdit,
+  ParasArvosanaView
+} from '../../components-v2/opiskeluoikeus/ArvosanaField'
+import {
+  LaajuusOpintopisteissäEdit,
+  LaajuusView,
+  laajuusSum
+} from '../../components-v2/opiskeluoikeus/LaajuusField'
 import { PäätasonSuorituksenSuostumuksenPeruminen } from '../../components-v2/opiskeluoikeus/OpiskeluoikeudenSuostumuksenPeruminen'
 import {
   OsasuoritusRowData,
@@ -18,37 +29,28 @@ import { UusiOpiskeluoikeusjakso } from '../../components-v2/opiskeluoikeus/Uusi
 import { finnish } from '../../i18n/i18n'
 import { OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus2022 } from '../../types/fi/oph/koski/schema/OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus2022'
 import { OppivelvollisilleSuunnattuVapaanSivistystyönOpiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/OppivelvollisilleSuunnattuVapaanSivistystyonOpiskeluoikeusjakso'
+import { isVSTKotoutumiskoulutuksenKieliJaViestintäosaamisenSuoritus2022 } from '../../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenKieliJaViestintaosaamisenSuoritus2022'
+import { isVSTKotoutumiskoulutuksenOhjauksenSuoritus2022 } from '../../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenOhjauksenSuoritus2022'
+import { VSTKotoutumiskoulutuksenOsasuorituksenArviointi2022 } from '../../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenOsasuorituksenArviointi2022'
+import { isVSTKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus2022 } from '../../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus2022'
+import { isVSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenSuoritus2022 } from '../../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenYhteiskuntaJaTyoelamaosaaminenSuoritus2022'
 import { VapaanSivistystyönOpiskeluoikeus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeus'
 import { VapaanSivistystyönOpiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeusjakso'
 import { deleteAt } from '../../util/array'
 import { VSTLisatiedot } from '../VSTLisatiedot'
 import { VSTLaajuudetYhteensä } from '../common/VSTLaajuudetYhteensa'
+import {
+  createArviointi,
+  kaikkiOsasuorituksetVahvistettu
+} from '../common/arviointi'
 import { isCompletedKoto2022Osasuoritus } from '../common/osasuoritukset'
 import * as Suoritus from '../common/suoritusFields'
 import { PäätasosuorituksenTiedot } from '../common/suoritusFields'
 import { VSTPäätasonSuoritusEditorProps } from '../common/types'
-import { kaikkiOsasuorituksetVahvistettu } from '../resolvers'
 import { AddKoto2022Osasuoritus } from './AddKoto2022Osasuoritus'
-import { isVSTKotoutumiskoulutuksenOhjauksenSuoritus2022 } from '../../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenOhjauksenSuoritus2022'
-import { FormField } from '../../components-v2/forms/FormField'
-import { LocalizedTextView } from '../../components-v2/controls/LocalizedTestField'
-import { isVSTKotoutumiskoulutuksenKieliJaViestintäosaamisenSuoritus2022 } from '../../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenKieliJaViestintaosaamisenSuoritus2022'
-import { isVSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenSuoritus2022 } from '../../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenYhteiskuntaJaTyoelamaosaaminenSuoritus2022'
-import { isVSTKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus2022 } from '../../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus2022'
-import {
-  LaajuusOpintopisteissäEdit,
-  LaajuusView,
-  laajuusSum
-} from '../../components-v2/opiskeluoikeus/LaajuusField'
-import {
-  ParasArvosanaEdit,
-  ParasArvosanaView
-} from '../../components-v2/opiskeluoikeus/ArvosanaField'
-import { VSTKotoutumiskoulutuksenOsasuorituksenArviointi2022 } from '../../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenOsasuorituksenArviointi2022'
 import { VSTKoto2022KieliJaViestintaProperties } from './kielijaviestinta/VSTKoto2022KieliJaViestintaProperties'
-import { createArviointi } from '../common/arviointi'
-import { VSTKoto2022YhteiskuntaJaTyoelamaosaaminenProperties } from './yhteiskuntajatyoelama/VSTKoto2022YhteiskuntaJaTyoelamaosaaminenProperties'
 import { VSTKoto2022ValinnaisetProperties } from './valinnaiset/VSTKoto2022ValinnaisetProperties'
+import { VSTKoto2022YhteiskuntaJaTyoelamaosaaminenProperties } from './yhteiskuntajatyoelama/VSTKoto2022YhteiskuntaJaTyoelamaosaaminenProperties'
 
 export type VSTKoto2022EditorProps =
   VSTPäätasonSuoritusEditorProps<OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus2022>

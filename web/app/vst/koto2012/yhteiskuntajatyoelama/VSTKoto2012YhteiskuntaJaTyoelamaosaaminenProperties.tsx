@@ -18,6 +18,7 @@ import { VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYh
 import { VapaanSivistystyönOpiskeluoikeus } from '../../../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeus'
 import { deleteAt } from '../../../util/array'
 import { ArviointiProperty, KuvausProperty } from '../../common/propertyFields'
+import { OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi } from '../../../types/fi/oph/koski/schema/OppivelvollisilleSuunnatunVapaanSivistystyonOpintokokonaisuudenArviointi'
 
 type VSTKoto2012YhteiskuntaJaTyoelamaosaaminenPropertiesProps = {
   osasuoritusIndex: number
@@ -35,7 +36,13 @@ export const VSTKoto2012YhteiskuntaJaTyoelamaosaaminenProperties: React.FC<
 
   return (
     <div>
-      <ArviointiProperty form={props.form} path={props.osasuoritusPath} />
+      <ArviointiProperty
+        form={props.form}
+        path={props.osasuoritusPath}
+        arviointi={
+          OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi
+        }
+      />
       <OsasuoritusTable
         editMode={props.form.editMode}
         onRemove={(i) => {
@@ -107,7 +114,13 @@ export const osasuoritusToTableRow = ({
     },
     content: (
       <>
-        <ArviointiProperty form={form} path={osasuoritusPath} />
+        <ArviointiProperty
+          form={form}
+          path={osasuoritusPath}
+          arviointi={
+            OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi
+          }
+        />
         <KuvausProperty form={form} path={osasuoritusPath} />
       </>
     )
