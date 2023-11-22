@@ -62,10 +62,7 @@ export const Oppilaitos = <T extends VapaanSivistystyönPäätasonSuoritus>({
       edit={ToimipisteEdit}
       editProps={{
         onChangeToimipiste: (data: any) => {
-          form.updateAt(
-            päätasonSuoritus.path.prop('toimipiste').optional(),
-            () => data
-          )
+          form.updateAt(päätasonSuoritus.path.prop('toimipiste'), () => data)
         }
       }}
     />
@@ -99,10 +96,7 @@ export const Peruste = <T extends VSTPäätasonSuoritusPerusteella>({
   <KeyValueRow label="Peruste" indent={2}>
     <FormField
       form={form}
-      path={suoritus.path
-        .prop('koulutusmoduuli')
-        .prop('perusteenDiaarinumero')
-        .optional()}
+      path={suoritus.path.prop('koulutusmoduuli').prop('perusteenDiaarinumero')}
       view={PerusteView}
       edit={PerusteEdit}
       editProps={{
@@ -121,10 +115,7 @@ export const Opintokokonaisuus = <
   <KeyValueRow label="Opintokokonaisuus" indent={2}>
     <FormField
       form={form}
-      path={suoritus.path
-        .prop('koulutusmoduuli')
-        .prop('opintokokonaisuus')
-        .optional()}
+      path={suoritus.path.prop('koulutusmoduuli').prop('opintokokonaisuus')}
       view={OpintokokonaisuusView}
       edit={OpintokokonaisuusEdit}
     />
