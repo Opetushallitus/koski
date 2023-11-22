@@ -1,44 +1,43 @@
 import React from 'react'
 import { hasModelProperty, modelData, modelLookup } from '../editor/EditorModel'
 
-import { PerusopetuksenOppiaineetEditor } from '../perusopetus/PerusopetuksenOppiaineetEditor'
-import { PropertiesEditor } from '../editor/PropertiesEditor'
-import { LukionOppiaineetEditor } from '../lukio/LukionOppiaineetEditor'
-import { LuvaEditor } from '../lukio/LuvaEditor'
-import { PropertyEditor } from '../editor/PropertyEditor'
-import { Editor } from '../editor/Editor'
-import { sortLanguages } from '../util/sorting'
-import { ArvosanaEditor } from './ArvosanaEditor'
-import {
-  LukionOppiaineenOppimaaranSuoritus,
-  OmatTiedotLukionOppiaineenOppimaaranSuoritus
-} from '../lukio/LukionOppiaineenOppimaaranSuoritus'
-import {
-  CreativityActionService,
-  ExtendedEssay,
-  TheoryOfKnowledge
-} from '../ib/IBYhteinenSuoritus'
-import RyhmiteltyOppiaineetEditor from './RyhmiteltyOppiaineetEditor'
-import OmatTiedotSuoritustaulukko from './OmatTiedotSuoritustaulukko'
-import OmatTiedotLukionOppiaineet from '../lukio/OmatTiedotLukionOppiaineet'
-import OmatTiedotPerusopetuksenOppiaineet from '../perusopetus/OmatTiedotPerusopetuksenOppiaineet'
-import OmatTiedotRyhmiteltyOppiaineet from './OmatTiedotRyhmiteltyOppiaineet'
-import TäydentääTutkintoaEditor from '../ammatillinen/TaydentaaTutkintoaEditor'
-import InternationalSchoolOppiaineetEditor from '../internationalschool/InternationalSchoolOppiaineetEditor'
 import { AikuistenPerusopetuksenKurssitEditor } from '../aikuistenperusopetus/AikuistenPerusopetuksenKurssitEditor'
-import { Suoritustaulukko } from './Suoritustaulukko'
-import { VapaanSivistystyonSuoritustaulukko } from '../vapaasivistystyo/VapaanSivistystyonSuoritustaulukko'
-import { TutkintokoulutukseenValmentavanKoulutuksenSuoritustaulukko } from '../tuva/TutkintokoulutukseenValmentavanKoulutuksenSuoritustaulukko'
-import { OsasuoritusEditorModel } from '../types/OsasuoritusEditorModel'
-import { ObjectModel, ObjectModelProperty } from '../types/EditorModels'
-import { OpintokokonaisuudellinenKoulutusmoduuliEditor } from './OpintokokonaisuudellinenKoulutusmoduuliEditor'
+import TäydentääTutkintoaEditor from '../ammatillinen/TaydentaaTutkintoaEditor'
+import { Editor } from '../editor/Editor'
+import { PropertiesEditor } from '../editor/PropertiesEditor'
+import { PropertyEditor } from '../editor/PropertyEditor'
 import { EuropeanSchoolOfHelsinkiOsasuorituksetEditor } from '../esh/EuropeanSchoolOfHelsinkiOsasuorituksetEditor'
 import {
   ebSuorituksenClass,
   eshSuorituksenClass
 } from '../esh/europeanschoolofhelsinkiSuoritus'
+import {
+  CreativityActionService,
+  ExtendedEssay,
+  TheoryOfKnowledge
+} from '../ib/IBYhteinenSuoritus'
+import InternationalSchoolOppiaineetEditor from '../internationalschool/InternationalSchoolOppiaineetEditor'
 import { MuuKuinSäänneltySuoritustaulukko } from '../jotpa/MuuKuinSäänneltySuoritustaulukko'
+import {
+  LukionOppiaineenOppimaaranSuoritus,
+  OmatTiedotLukionOppiaineenOppimaaranSuoritus
+} from '../lukio/LukionOppiaineenOppimaaranSuoritus'
+import { LukionOppiaineetEditor } from '../lukio/LukionOppiaineetEditor'
+import { LuvaEditor } from '../lukio/LuvaEditor'
+import OmatTiedotLukionOppiaineet from '../lukio/OmatTiedotLukionOppiaineet'
+import OmatTiedotPerusopetuksenOppiaineet from '../perusopetus/OmatTiedotPerusopetuksenOppiaineet'
+import { PerusopetuksenOppiaineetEditor } from '../perusopetus/PerusopetuksenOppiaineetEditor'
+import { TutkintokoulutukseenValmentavanKoulutuksenSuoritustaulukko } from '../tuva/TutkintokoulutukseenValmentavanKoulutuksenSuoritustaulukko'
+import { ObjectModel, ObjectModelProperty } from '../types/EditorModels'
+import { OsasuoritusEditorModel } from '../types/OsasuoritusEditorModel'
 import { opintokokonaisuuteenKuuluvatPäätasonSuoritukset } from '../util/opintokokonaisuus'
+import { sortLanguages } from '../util/sorting'
+import { ArvosanaEditor } from './ArvosanaEditor'
+import OmatTiedotRyhmiteltyOppiaineet from './OmatTiedotRyhmiteltyOppiaineet'
+import OmatTiedotSuoritustaulukko from './OmatTiedotSuoritustaulukko'
+import { OpintokokonaisuudellinenKoulutusmoduuliEditor } from './OpintokokonaisuudellinenKoulutusmoduuliEditor'
+import RyhmiteltyOppiaineetEditor from './RyhmiteltyOppiaineetEditor'
+import { Suoritustaulukko } from './Suoritustaulukko'
 
 export const resolveOsasuorituksetEditor = (mdl: OsasuoritusEditorModel) => {
   const oneOf = (...classes: string[]) =>
@@ -89,23 +88,6 @@ export const resolveOsasuorituksetEditor = (mdl: OsasuoritusEditorModel) => {
       : Suoritustaulukko
     return (
       <SuoritustaulukkoComponent
-        suorituksetModel={modelLookup(mdl, 'osasuoritukset')}
-      />
-    )
-  }
-  if (
-    oneOf(
-      'oppivelvollisillesuunnattuvapaansivistystyonkoulutuksensuoritus',
-      'oppivelvollisillesuunnattumaahanmuuttajienkotoutumiskoulutuksensuoritus',
-      'vapaansivistystyonlukutaitokoulutuksensuoritus',
-      'vapaansivistystyonvapaatavoitteisenkoulutuksensuoritus',
-      'oppivelvollisillesuunnattumaahanmuuttajienkotoutumiskoulutuksensuoritus2022',
-      'vapaansivistystyonjotpakoulutuksensuoritus'
-    )
-  ) {
-    return (
-      <VapaanSivistystyonSuoritustaulukko
-        parentSuoritus={mdl}
         suorituksetModel={modelLookup(mdl, 'osasuoritukset')}
       />
     )
