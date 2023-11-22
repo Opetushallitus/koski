@@ -131,9 +131,7 @@ export const useKansalainenUiAdapter = (
 
   return useUiAdapterImpl(
     ooTyypit,
-    () => {
-      oppija.call(suoritusjakoId || 'xxx')
-    },
+    () => oppija.call(suoritusjakoId || ''),
     oppija
   )
 }

@@ -1,4 +1,4 @@
-import { Page } from '@playwright/test'
+import { Locator, Page } from '@playwright/test'
 import { YoTodistusLanguage } from '../../../../app/components-v2/yotutkinto/YoTodistus'
 import { expect } from '../../base'
 import { build, BuiltIdNode } from '../oppija/uiV2builder/builder'
@@ -10,9 +10,11 @@ import { SuoritusotePage } from './SuoritusotePage'
 
 export class KoskiKansalainenPage {
   $: BuiltIdNode<KansalainenUIV2TestIds>
+  peruSuostumusLinkki: Locator
 
   constructor(private readonly page: Page) {
     this.$ = build(page, KansalainenUIV2TestIds)
+    this.peruSuostumusLinkki = page.locator('.peru-suostumus-linkki')
   }
 
   static create(page: Page) {
@@ -100,6 +102,30 @@ export class KoskiKansalainenPage {
     const suoritusotePagePromise = this.page.waitForEvent('popup')
     await this.katsoSuoritusoteLink().click()
     return new SuoritusotePage(await suoritusotePagePromise)
+  }
+
+  async expectSuostumusPeruttavissa(attached: boolean) {
+    await expect(this.peruSuostumusLinkki).toBeAttached({
+      attached,
+      timeout: 15000
+    })
+  }
+
+  async peruSuostumus() {
+    await this.peruSuostumusLinkki.click()
+
+    const confirmBtn = this.page.getByText('Kyllä, peru suostumus')
+    await expect(confirmBtn).toBeDisabled()
+
+    await this.page.locator('.SuostumuksenPeruminen .Checkbox__input').click()
+
+    await confirmBtn.click()
+
+    await expect(
+      this.page.getByText(
+        'Tiedoillasi ei löydy opintosuorituksia eikä opiskeluoikeuksia.'
+      )
+    ).toBeAttached()
   }
 }
 

@@ -2,7 +2,8 @@ import { sort } from 'fp-ts/lib/Array'
 import { foreachAsync, repeatAsync } from '../util/iterating'
 import { expect as _expect, test } from './base'
 import { KoskiVSTOppijaPage } from './pages/oppija/KoskiVSTOppijaPage'
-import { virkailija } from './setup/auth'
+import { kansalainen, virkailija } from './setup/auth'
+import { KoskiKansalainenPage } from './pages/kansalainen/KoskiKansalainenPage'
 
 const kotoutumiskoulutus2022 = '1.2.246.562.24.00000000135'
 const oppivelvollisilleSuunnattu = '1.2.246.562.24.00000000143'
@@ -14,15 +15,17 @@ const vstKoulutus = '1.2.246.562.24.00000000108'
 const openOppijaPage =
   (oppijaOid: string, edit: boolean) =>
   async ({ vstOppijaPage }: { vstOppijaPage: KoskiVSTOppijaPage }) => {
-    await vstOppijaPage.gotoWithQueryParams(oppijaOid, {
-      newVSTUI: 'true'
-    })
+    await vstOppijaPage.goto(oppijaOid)
     if (edit) {
       await vstOppijaPage.edit()
     }
   }
 
 test.describe('Vapaa sivistystyö', () => {
+  const expect = _expect.configure({
+    timeout: 2000
+  })
+
   test.describe('Katselunäkymä', () => {
     test.use({ storageState: virkailija('kalle') })
     test.beforeAll(async ({ fixtures }) => {
@@ -31,9 +34,6 @@ test.describe('Vapaa sivistystyö', () => {
     test.describe('VST JOTPA', () => {
       test.beforeEach(openOppijaPage(jotpaKoulutus, false))
       test('Näyttää tiedot oikein', async ({ page }) => {
-        const expect = _expect.configure({
-          timeout: 2000
-        })
         await expect(
           page.getByTestId('opiskeluoikeus.tila.value.items.0.date')
         ).toHaveText('1.1.2023')
@@ -1229,9 +1229,6 @@ test.describe('Vapaa sivistystyö', () => {
   })
 
   test.describe('Muokkausnäkymä', () => {
-    const expect = _expect.configure({
-      timeout: 2000
-    })
     test.use({ storageState: virkailija('kalle') })
     test.beforeEach(async ({ fixtures }) => {
       await fixtures.reset()
@@ -2043,6 +2040,52 @@ test.describe('Vapaa sivistystyö', () => {
         ).toBeTruthy()
 
         await vstOppijaPage.tallenna()
+      })
+    })
+  })
+
+  test.describe('Kansalaisen näkymä', () => {
+    test.beforeEach(async ({ fixtures, page }) => {
+      await fixtures.apiLoginAsUser('kalle', 'kalle')
+      await fixtures.reset()
+      await fixtures.apiLogout()
+      await page.goto('/koski/omattiedot')
+    })
+
+    test.describe('Suostumuksen peruutus', () => {
+      test.describe('Vapaatavoitteinen VST', () => {
+        test.use({ storageState: kansalainen('010917-156A') })
+        test('Suostumuksen voi perua', async ({ kansalainenPage }) => {
+          await kansalainenPage.expectSuostumusPeruttavissa(true)
+          await kansalainenPage.peruSuostumus()
+        })
+
+        test('Suostumusta ei voi perua, jos siitä on tehty suoritusjako', async ({
+          kansalainenPage,
+          page
+        }) => {
+          await kansalainenPage.openJaaSuoritustietoja()
+          await kansalainenPage
+            .suoritustietoLabel(
+              '1.2.246.562.10.31915273374',
+              'vstvapaatavoitteinenkoulutus',
+              '099999'
+            )
+            .click()
+          await kansalainenPage.jaaValitsemasiOpinnotButton().click()
+
+          await page.reload() // TODO: Käli olisi hyvä fiksata niin, ettei tätä tarvita
+          await kansalainenPage.expectSuostumusPeruttavissa(false)
+        })
+      })
+
+      test.describe('Lukutaitokoulutus', () => {
+        test.use({ storageState: kansalainen('231158-467R') })
+        test('Suostumusta ei voi perua, koska se ei ole peruttavaa tyyppiä', async ({
+          kansalainenPage
+        }) => {
+          await kansalainenPage.expectSuostumusPeruttavissa(false)
+        })
       })
     })
   })
