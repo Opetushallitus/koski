@@ -12,6 +12,7 @@ import { deepEqual } from '../../util/fp/objects'
 import { assertNever } from '../../util/selfcare'
 import { ValidationRule } from './ValidationRule'
 import { validateData, ValidationError } from './validator'
+import { storeDeferredPreferences } from '../../appstate/preferences'
 
 export enum EditMode {
   View = 0,
@@ -162,7 +163,8 @@ export const useForm = <O extends object>(
         setEditMode(EditMode.Saving)
         pipe(
           await api(data),
-          tap((response) => {
+          tap(async (response) => {
+            await storeDeferredPreferences()
             dispatch({ type: 'endEdit', value: merge(response.data)(data) })
           }),
           tapLeft((errorResponse) => {

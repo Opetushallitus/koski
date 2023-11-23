@@ -7,19 +7,21 @@ import {
   getValue
 } from '../../../components-v2/forms/FormModel'
 import {
-  LaajuusOpintopisteissäEdit,
-  LaajuusView
-} from '../../../components-v2/opiskeluoikeus/LaajuusField'
-import {
   OsasuoritusRowData,
   OsasuoritusTable
 } from '../../../components-v2/opiskeluoikeus/OsasuoritusTable'
+import {
+  PaikallisenKoulutusmoduulinLaajuusEdit,
+  PaikallisenKoulutusmoduulinLaajuusView
+} from '../../../components-v2/opiskeluoikeus/PaikallisenKoulutusmoduulinLaajuusField'
+import { LaajuusOpintopisteissä } from '../../../types/fi/oph/koski/schema/LaajuusOpintopisteissa'
+import { VSTKotoutumiskoulutuksenOsasuorituksenArviointi2022 } from '../../../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenOsasuorituksenArviointi2022'
+import { VSTKotoutumiskoulutuksenValinnaistenOpintojenAlasuorituksenKoulutusmoduuli2022 } from '../../../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenValinnaistenOpintojenAlasuorituksenKoulutusmoduuli2022'
 import { VSTKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus2022 } from '../../../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus2022'
 import { VapaanSivistystyönOpiskeluoikeus } from '../../../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeus'
 import { deleteAt } from '../../../util/array'
 import { ArviointiProperty, KuvausProperty } from '../../common/propertyFields'
 import { AddValinnaisetOpinnotOsasuoritus } from './AddValinnaisetOpinnotOsasuoritus'
-import { VSTKotoutumiskoulutuksenOsasuorituksenArviointi2022 } from '../../../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenOsasuorituksenArviointi2022'
 
 type VSTKoto2022ValinnaisetPropertiesProps = {
   osasuoritusIndex: number
@@ -110,9 +112,14 @@ export const osasuoritusToTableRow = ({
       Laajuus: (
         <FormField
           form={form}
-          path={osasuoritusPath.path('koulutusmoduuli.laajuus')}
-          view={LaajuusView}
-          edit={LaajuusOpintopisteissäEdit}
+          path={osasuoritusPath.prop('koulutusmoduuli')}
+          view={PaikallisenKoulutusmoduulinLaajuusView}
+          edit={PaikallisenKoulutusmoduulinLaajuusEdit}
+          editProps={{
+            koulutusmoduuli:
+              VSTKotoutumiskoulutuksenValinnaistenOpintojenAlasuorituksenKoulutusmoduuli2022,
+            template: LaajuusOpintopisteissä
+          }}
         />
       )
     },

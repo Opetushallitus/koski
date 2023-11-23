@@ -46,12 +46,26 @@ export const AddPaikallinenOsasuoritus = <
   const onSelect = useCallback(
     async (tunniste: PaikallinenKoodi, isNew = false) => {
       const osasuorituksetPath = path.prop('osasuoritukset')
-      const osasuoritus = await fillKoodistot(createOsasuoritus(tunniste))
-      form.updateAt(osasuorituksetPath as any, appendOptional(osasuoritus))
+      const osasuoritus = createOsasuoritus(tunniste)
+
+      // Hae preferenceistä oletuslaajuus ja kuvaus jne.
+      const koulutusmoduuli = osasuoritukset.preferences.find(
+        (os) => os.tunniste.koodiarvo === tunniste.koodiarvo
+      )
+      if (koulutusmoduuli) {
+        osasuoritus.koulutusmoduuli = koulutusmoduuli
+      }
+
+      const filledOsasuoritus = await fillKoodistot(osasuoritus)
+      form.updateAt(
+        osasuorituksetPath as any,
+        appendOptional(filledOsasuoritus)
+      )
+
       if (isNew) {
         osasuoritukset.store(
-          osasuoritus.koulutusmoduuli.tunniste.koodiarvo,
-          osasuoritus.koulutusmoduuli
+          filledOsasuoritus.koulutusmoduuli.tunniste.koodiarvo,
+          filledOsasuoritus.koulutusmoduuli
         )
       }
     },

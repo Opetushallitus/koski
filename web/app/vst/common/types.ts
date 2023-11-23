@@ -108,3 +108,10 @@ export const isVSTSuoritusPaikallisillaOsasuorituksilla = (
   [VapaanSivistystyönJotpaKoulutuksenSuoritus]
     .map((c) => c.className as string)
     .includes(s.$class)
+
+export const nonNullable = <T>(t?: T): T => {
+  if (t === undefined) {
+    throw new Error('Unexpected undefined value')
+  }
+  return t
+}

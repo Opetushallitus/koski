@@ -50,7 +50,7 @@ export type LaajuusEditProps<T extends Laajuus> = CommonProps<
  * ---------------------------------------------------------------------
  */
 
-export const LaajuusEdit: React.FC<LaajuusEditProps<Laajuus>> = (props) => {
+export const LaajuusEdit = <T extends Laajuus>(props: LaajuusEditProps<T>) => {
   const { onChange, createLaajuus } = props
   const onChangeCB = useCallback(
     (arvo: number) => onChange(createLaajuus(arvo)),
@@ -92,7 +92,6 @@ export type DefaultLaajuusEditProps<T extends Laajuus> = CommonProps<
 export const LaajuusOpintopisteissäEdit: React.FC<
   DefaultLaajuusEditProps<LaajuusOpintopisteissä>
 > = (props) => (
-  // @ts-expect-error TypeScript ei tykkää..
   <LaajuusEdit
     {...props}
     createLaajuus={(arvo: any) => LaajuusOpintopisteissä({ arvo }) as any}

@@ -1,5 +1,7 @@
 import React from 'react'
+import { TestIdLayer } from '../../appstate/useTestId'
 import { CommonProps } from '../../components-v2/CommonProps'
+import { FormField } from '../../components-v2/forms/FormField'
 import { FormListField } from '../../components-v2/forms/FormListField'
 import {
   FormModel,
@@ -7,35 +9,29 @@ import {
   getValue
 } from '../../components-v2/forms/FormModel'
 import {
+  KuvausEdit,
+  KuvausView
+} from '../../components-v2/opiskeluoikeus/KuvausField'
+import {
   OsasuoritusProperty,
   OsasuoritusPropertyValue
 } from '../../components-v2/opiskeluoikeus/OsasuoritusProperty'
+import {
+  TunnustusEdit,
+  TunnustusView
+} from '../../components-v2/opiskeluoikeus/TunnustusField'
+import { emptyLocalizedString } from '../../i18n/i18n'
+import { VapaanSivistystyönOpintojenSuorituksenOsaamisenTunnustaminen } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpintojenSuorituksenOsaamisenTunnustaminen'
 import { VapaanSivistystyönOpiskeluoikeus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeus'
+import { ArviointiOf, ArvosanaOf } from '../../util/schema'
 import { VSTArviointiEdit, VSTArviointiView } from '../VSTArviointiField'
+import { createArviointi } from './arviointi'
 import {
   VSTSuoritus,
   VSTSuoritusArvioinnilla,
   VSTSuoritusKuvauksella,
   VSTSuoritusTunnustuksella
 } from './types'
-import {
-  KuvausEdit,
-  KuvausView
-} from '../../components-v2/opiskeluoikeus/KuvausField'
-import { FormField } from '../../components-v2/forms/FormField'
-import {
-  TunnustusEdit,
-  TunnustusView
-} from '../../components-v2/opiskeluoikeus/TunnustusField'
-import { VapaanSivistystyönOpintojenSuorituksenOsaamisenTunnustaminen } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpintojenSuorituksenOsaamisenTunnustaminen'
-import { emptyLocalizedString, finnish } from '../../i18n/i18n'
-import { TestIdLayer } from '../../appstate/useTestId'
-import {
-  VSTKoto2022KielitaitotasoEdit,
-  VSTKoto2022KielitaitotasoView
-} from '../koto2022/kielijaviestinta/VSTKoto2022KielitaitotasoField'
-import { ArviointiOf, ArvosanaOf } from '../../util/schema'
-import { createArviointi } from './arviointi'
 
 export type VSTPropertyFieldProps<T extends VSTSuoritus = VSTSuoritus> =
   CommonProps<{
@@ -79,7 +75,7 @@ export const KuvausProperty = <T extends VSTSuoritusKuvauksella>(
     <OsasuoritusPropertyValue>
       <FormField
         form={props.form}
-        path={props.path.prop('koulutusmoduuli').prop('kuvaus')}
+        path={props.path.prop('koulutusmoduuli')}
         view={KuvausView}
         edit={KuvausEdit}
       />

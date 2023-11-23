@@ -34,6 +34,12 @@ import { createArviointi } from '../common/arviointi'
 import { ArviointiProperty } from '../common/propertyFields'
 import { VSTSuoritusPaikallisillaOsasuorituksilla } from '../common/types'
 import { AddVapaatavoitteinenAlaosasuoritus } from './AddVapaatavoitteinenAlaosasuoritus'
+import {
+  PaikallisenKoulutusmoduulinLaajuusEdit,
+  PaikallisenKoulutusmoduulinLaajuusView
+} from '../../components-v2/opiskeluoikeus/PaikallisenKoulutusmoduulinLaajuusField'
+import { VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonVapaatavoitteisenKoulutuksenOsasuoritus'
+import { LaajuusOpintopisteissä } from '../../types/fi/oph/koski/schema/LaajuusOpintopisteissa'
 
 type VSTVapaatavoitteinenPropertiesProps = {
   osasuoritusIndex: number
@@ -65,7 +71,7 @@ export const VSTVapaatavoitteinenProperties: React.FC<
         <OsasuoritusSubproperty label="Kuvaus">
           <FormField
             form={props.form}
-            path={props.osasuoritusPath.prop('koulutusmoduuli').prop('kuvaus')}
+            path={props.osasuoritusPath.prop('koulutusmoduuli')}
             view={KuvausView}
             edit={(kuvausProps) => {
               return <KuvausEdit {...kuvausProps} />
@@ -148,9 +154,14 @@ export const osasuoritusToTableRow = ({
       Laajuus: (
         <FormField
           form={form}
-          path={osasuoritus.path('koulutusmoduuli.laajuus')}
-          view={LaajuusView}
-          edit={LaajuusOpintopisteissäEdit}
+          path={osasuoritus.prop('koulutusmoduuli')}
+          view={PaikallisenKoulutusmoduulinLaajuusView}
+          edit={PaikallisenKoulutusmoduulinLaajuusEdit}
+          editProps={{
+            koulutusmoduuli:
+              VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuoritus,
+            template: LaajuusOpintopisteissä
+          }}
         />
       ),
       Arvosana: (

@@ -30,6 +30,13 @@ import {
   VSTSuoritusPaikallisillaOsasuorituksilla
 } from '../common/types'
 import { AddJotpaAlaosasuoritus } from './AddJotpaAlaosasuoritus'
+import {
+  PaikallisenKoulutusmoduulinLaajuusView,
+  PaikallisenKoulutusmoduulinLaajuusEdit
+} from '../../components-v2/opiskeluoikeus/PaikallisenKoulutusmoduulinLaajuusField'
+import { LaajuusOpintopisteissä } from '../../types/fi/oph/koski/schema/LaajuusOpintopisteissa'
+import { VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonVapaatavoitteisenKoulutuksenOsasuoritus'
+import { VapaanSivistystyönJotpaKoulutuksenOsasuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonJotpaKoulutuksenOsasuoritus'
 
 type VSTJotpaPropertiesProps = {
   osasuoritusIndex: number
@@ -133,9 +140,13 @@ export const osasuoritusToTableRow = ({
       Laajuus: (
         <FormField
           form={form}
-          path={osasuoritus.path('koulutusmoduuli.laajuus')}
-          view={LaajuusView}
-          edit={LaajuusOpintopisteissäEdit}
+          path={osasuoritus.prop('koulutusmoduuli')}
+          view={PaikallisenKoulutusmoduulinLaajuusView}
+          edit={PaikallisenKoulutusmoduulinLaajuusEdit}
+          editProps={{
+            koulutusmoduuli: VapaanSivistystyönJotpaKoulutuksenOsasuoritus,
+            template: LaajuusOpintopisteissä
+          }}
         />
       ),
       Arvosana: (

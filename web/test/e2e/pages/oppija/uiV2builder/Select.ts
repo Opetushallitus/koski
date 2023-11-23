@@ -23,6 +23,7 @@ export const Select = createControl((self, child) => {
         throw e
       }
       await child('options').waitFor({ state: 'hidden' })
+      await new Promise((resolve) => setTimeout(resolve, 250)) // Todella rumaa flakyn korjailua
     },
     value: async () => {
       return await child('input').inputValue()
