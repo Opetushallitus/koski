@@ -66,7 +66,7 @@ export const DateEdit: React.FC<DateEditProps> = (props) => {
       <div className="DateEdit__field">
         <input
           type="text"
-          value={displayDate}
+          defaultValue={displayDate}
           onChange={onChange}
           className={cx(
             'DateEdit__input',

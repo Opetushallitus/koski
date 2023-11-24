@@ -25,15 +25,13 @@ export type TodistuksellaNäkyvätLisätiedotEditProps = CommonProps<
 
 export const TodistuksellaNäkyvätLisätiedotEdit: React.FC<
   TodistuksellaNäkyvätLisätiedotEditProps
-> = ({ onChange, initialValue, ...rest }) => {
-  const [value, setValue] = useState(initialValue)
+> = ({ onChange, value, initialValue, ...rest }) => {
   const testId = useTestId('lisätiedot.edit')
 
   const onChangeCB = useCallback<React.ChangeEventHandler<HTMLTextAreaElement>>(
     (e) => {
       e.preventDefault()
       const fi = e.target.value
-      setValue(Finnish({ fi }))
       onChange(Finnish({ fi }))
     },
     [onChange]
@@ -42,7 +40,7 @@ export const TodistuksellaNäkyvätLisätiedotEdit: React.FC<
   return (
     <textarea
       {...common({ ...rest }, ['TodistuksellaNäkyvätLisätiedotEdit'])}
-      value={isFinnish(value) ? value?.fi : value?.en}
+      defaultValue={isFinnish(value) ? value?.fi : value?.en}
       onChange={onChangeCB}
       data-testid={testId}
     />

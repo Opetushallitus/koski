@@ -75,7 +75,7 @@ export const Select = <T,>(props: SelectProps<T>) => {
           value={select.filter === null ? select.displayValue : select.filter}
           type="search"
           autoComplete="off"
-          disabled={props.disabled}
+          disabled={props.disabled || select.options.length === 0}
           {...select.inputEventListeners}
           data-testid={inputTestId}
         />
@@ -309,7 +309,8 @@ const useSelectState = <T,>(props: SelectProps<T>) => {
       onBlur
     },
     inputEventListeners: {
-      onChange: onUserType
+      onChange: onUserType,
+      onClick: onFocus
     },
     dropdownEventListeners: {
       onClick: onClickOption,

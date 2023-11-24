@@ -68,6 +68,7 @@ export const VSTArviointiEdit = <T extends VSTArviointi>(
             onChange={(päivä) =>
               päivä && props.onChange({ ...props.value, päivä } as T)
             }
+            errors={props.errors}
           />
         </OsasuoritusSubproperty>
       )}
