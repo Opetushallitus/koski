@@ -291,7 +291,7 @@ trait YksilöllistettyEuropeanSchoolOfHelsinkiOsasuoritus extends EuropeanSchool
   @DefaultValue(false)
   @Description("Tieto siitä, onko oppimäärä yksilöllistetty (true/false).")
   @Tooltip("Onko oppilas opiskellut yksilöllisen oppimäärän.")
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   def yksilöllistettyOppimäärä: Boolean
 }
 

@@ -222,7 +222,7 @@ case class LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot(
   @RedundantData
   oikeusMaksuttomaanAsuntolapaikkaan: Option[Boolean] = None,
   @Description("Tieto onko oppija sisäoppilaitosmaisessa majoituksessa. Rahoituksen laskennassa hyödynnettävä tieto.")
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_SUPPEA, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   sisäoppilaitosmainenMajoitus: Option[List[Aikajakso]] = None,
   maksuttomuus: Option[List[Maksuttomuus]] = None,
   oikeuttaMaksuttomuuteenPidennetty: Option[List[OikeuttaMaksuttomuuteenPidennetty]] = None

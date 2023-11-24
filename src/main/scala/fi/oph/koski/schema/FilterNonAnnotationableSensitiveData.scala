@@ -43,7 +43,7 @@ object FilterNonAnnotationableSensitiveData {
         val lisätiedot = if(lisätiedollinen.lisätiedot.nonEmpty) {
           Some(lisätiedollinen.lisätiedot.toList.flatten.filter(
             _.tunniste.koodiarvo != "mukautettu" ||
-              user.sensitiveDataAllowed(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA, Rooli.TIEDONSIIRTO_LUOVUTUSPALVELU))
+              user.sensitiveDataAllowed(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.TIEDONSIIRTO_LUOVUTUSPALVELU))
           ))
         } else {
           None
@@ -64,7 +64,7 @@ object FilterNonAnnotationableSensitiveData {
         if (suoritus.osasuoritusLista.nonEmpty) {
           suoritus.withOsasuoritukset(
             Some(suoritus.osasuoritusLista.filter{
-              case _: PerusopetuksenToiminta_AlueenSuoritus => user.sensitiveDataAllowed(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
+              case _: PerusopetuksenToiminta_AlueenSuoritus => user.sensitiveDataAllowed(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
               case _ => true
             })
           ) }
