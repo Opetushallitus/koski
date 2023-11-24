@@ -32,7 +32,14 @@ describe('EB-tutkinto', function () {
         ),
         opinnot.opiskeluoikeudet.lisääOpiskeluoikeus,
         addOppija.selectOppilaitos('Helsingin eurooppalainen koulu'),
-        addOppija.selectOpiskeluoikeudenTyyppi('EB-tutkinto')
+        addOppija.selectOpiskeluoikeudenTyyppi('EB-tutkinto'),
+        addOppija.selectAloituspäivä(
+          new Date().getDate() +
+            '.' +
+            (1 + new Date().getMonth()) +
+            '.' +
+            (new Date().getFullYear() - 1)
+        )
       )
 
       it('Lisää-nappi on enabloitu', function () {
