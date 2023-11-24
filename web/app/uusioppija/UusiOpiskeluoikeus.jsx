@@ -233,7 +233,8 @@ export default ({ opiskeluoikeusAtom }) => {
             tyyppi &&
             tyyppi.koodiarvo !== 'internationalschool' &&
             tyyppi.koodiarvo !== 'europeanschoolofhelsinki' &&
-            tyyppi.koodiarvo !== 'taiteenperusopetus'
+            tyyppi.koodiarvo !== 'taiteenperusopetus' &&
+            tyyppi.koodiarvo !== 'ebtutkinto'
         ),
         <Suorituskieli
           suorituskieliAtom={suorituskieliAtom}
