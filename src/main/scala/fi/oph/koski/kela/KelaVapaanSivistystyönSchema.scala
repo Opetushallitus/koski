@@ -173,6 +173,7 @@ case class VSTKielenTaitotasonArviointi(
   taso: KelaKoodistokoodiviite
 )
 
+@Title("Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen suoritus 2022")
 @OnlyWhen("koulutusmoduuli/perusteenDiaarinumero", schema.VSTKoto2022Peruste.diaarinumero)
 case class KelaVSTKOTO2022Suoritus(
   koulutusmoduuli: KelaVapaanSivistystyönSuorituksenKoulutusmoduuli,
