@@ -1817,4 +1817,16 @@ object ValpasOpiskeluoikeusExampleData {
       )
     )
   )
+
+  def taiteenPerusopetusPäättynyt: TaiteenPerusopetuksenOpiskeluoikeus = {
+    val oo = ExamplesTaiteenPerusopetus.Opiskeluoikeus.aloitettuYleinenOppimäärä
+    oo.copy(
+      tila = oo.tila.copy(
+        opiskeluoikeusjaksot = List(
+          ExamplesTaiteenPerusopetus.Opiskeluoikeus.jaksoLäsnä(LocalDate.of(2021, 1, 1)),
+          ExamplesTaiteenPerusopetus.Opiskeluoikeus.jaksoPäättynyt(LocalDate.of(2021, 1, 2)),
+        )
+      )
+    )
+  }
 }
