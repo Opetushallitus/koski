@@ -19,7 +19,11 @@ export const makeSuoritus = (
   }
 }
 
-export const makeEBSuoritus = (oppilaitos, curriculum) => {
+export const makeEBSuoritus = (
+  oppilaitos,
+  date, // date mukana vain bacon/React-yhteistoiminnan "korjaamiseksi": päivämäärän vaihto dialogilla sotkee muuten suoritus-atomin väärän tyyppiseksi
+  curriculum
+) => {
   if (!oppilaitos || !curriculum) return null
 
   return {

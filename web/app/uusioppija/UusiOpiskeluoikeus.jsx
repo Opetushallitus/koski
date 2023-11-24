@@ -360,6 +360,7 @@ export default ({ opiskeluoikeusAtom }) => {
           return (
             <UusiEBTutkinnonSuoritus
               suoritusAtom={suoritusAtom}
+              dateAtom={dateAtom}
               oppilaitosAtom={oppilaitosAtom}
             />
           )
