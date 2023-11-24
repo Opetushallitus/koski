@@ -1076,6 +1076,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         ('mitatoity', 'mitatoity'),
         ('keskeytynyt', 'keskeytynyt'),
         ('hyvaksytystisuoritettu', 'hyvaksytystisuoritettu'),
+        ('paattynyt', 'keskeytynyt'),
         (NULL, 'tuntematon')
       ) t
   )
