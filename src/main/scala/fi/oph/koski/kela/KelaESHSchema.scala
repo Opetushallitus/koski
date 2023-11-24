@@ -76,7 +76,7 @@ case class KelaESHSecondaryUpperVuosiluokanSuoritus(
   @KoodistoKoodiarvo("europeanschoolofhelsinkivuosiluokkasecondaryupper")
   tyyppi: schema.Koodistokoodiviite,
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
-  jääLuokalle: Boolean,
+  jääLuokalle: Option[Boolean],
   osasuoritukset: Option[List[KelaESHSecondaryUpperOppiaineenSuoritus]],
 ) extends KelaESHPäätasonSuoritus {
   def withHyväksyntämerkinnälläKorvattuArvosana: KelaESHSecondaryUpperVuosiluokanSuoritus = copy(
