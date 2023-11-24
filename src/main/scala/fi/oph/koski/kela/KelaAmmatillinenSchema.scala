@@ -41,7 +41,7 @@ case class KelaAmmatillinenOpiskeluoikeus(
 case class KelaAmmatillisenOpiskeluoikeudenLisätiedot(
   majoitus: Option[List[KelaAikajakso]],
   sisäoppilaitosmainenMajoitus: Option[List[KelaAikajakso]],
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_SUPPEA))
   vaativanErityisenTuenYhteydessäJärjestettäväMajoitus: Option[List[KelaAikajakso]],
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   erityinenTuki: Option[List[KelaAikajakso]],
