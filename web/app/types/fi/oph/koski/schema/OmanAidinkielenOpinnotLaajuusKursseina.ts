@@ -11,7 +11,7 @@ export type OmanÄidinkielenOpinnotLaajuusKursseina = {
   $class: 'fi.oph.koski.schema.OmanÄidinkielenOpinnotLaajuusKursseina'
   arvosana: Koodistokoodiviite<
     'arviointiasteikkoyleissivistava',
-    'O' | '4' | '5' | '6' | '7' | '8' | '9' | '10'
+    'O' | 'S' | 'H' | '4' | '5' | '6' | '7' | '8' | '9' | '10'
   >
   kieli: Koodistokoodiviite<'kielivalikoima', string>
   hyväksytty?: boolean
@@ -22,7 +22,7 @@ export type OmanÄidinkielenOpinnotLaajuusKursseina = {
 export const OmanÄidinkielenOpinnotLaajuusKursseina = (o: {
   arvosana: Koodistokoodiviite<
     'arviointiasteikkoyleissivistava',
-    'O' | '4' | '5' | '6' | '7' | '8' | '9' | '10'
+    'O' | 'S' | 'H' | '4' | '5' | '6' | '7' | '8' | '9' | '10'
   >
   kieli: Koodistokoodiviite<'kielivalikoima', string>
   hyväksytty?: boolean

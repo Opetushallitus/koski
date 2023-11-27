@@ -12,7 +12,7 @@ export type LukionOmanÄidinkielenOpinnot = {
   $class: 'fi.oph.koski.schema.LukionOmanÄidinkielenOpinnot'
   arvosana: Koodistokoodiviite<
     'arviointiasteikkoyleissivistava',
-    'O' | '4' | '5' | '6' | '7' | '8' | '9' | '10'
+    'O' | 'S' | 'H' | '4' | '5' | '6' | '7' | '8' | '9' | '10'
   >
   kieli: Koodistokoodiviite<'kielivalikoima', string>
   hyväksytty?: boolean
@@ -24,7 +24,7 @@ export type LukionOmanÄidinkielenOpinnot = {
 export const LukionOmanÄidinkielenOpinnot = (o: {
   arvosana: Koodistokoodiviite<
     'arviointiasteikkoyleissivistava',
-    'O' | '4' | '5' | '6' | '7' | '8' | '9' | '10'
+    'O' | 'S' | 'H' | '4' | '5' | '6' | '7' | '8' | '9' | '10'
   >
   kieli: Koodistokoodiviite<'kielivalikoima', string>
   hyväksytty?: boolean
