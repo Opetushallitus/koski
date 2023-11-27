@@ -114,6 +114,10 @@ const yoTutkintoJaAmmatillisiaPath = oppijaPath.href("/virkailija", {
   oppijaOid: "1.2.246.562.24.00000000175",
 })
 
+const taiteenPerusopetusPäättynytPath = oppijaPath.href("/virkailija", {
+  oppijaOid: "1.2.246.562.24.00000000180",
+})
+
 const mainHeadingEquals = (expected: string) =>
   textEventuallyEquals("h1.heading--primary", expected)
 const secondaryHeadingEquals = (expected: string) =>
@@ -846,6 +850,15 @@ describe("Oppijakohtainen näkymä 2/2", () => {
           alkamispäivä: "1.9.2012",
         })
       )
+    })
+  })
+
+  describe("Taiteen perusopetus", () => {
+    it("Päättynyt-tila käsitellään oikein", async () => {
+      await loginAs(taiteenPerusopetusPäättynytPath, "valpas-pää")
+      await resetMockData("2021-08-15")
+      await mainHeadingEquals("Taiteilija Petra (010110A955U)")
+      await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000180")
     })
   })
 })

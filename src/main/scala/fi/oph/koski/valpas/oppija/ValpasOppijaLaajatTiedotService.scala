@@ -179,7 +179,7 @@ class ValpasOppijaLaajatTiedotService(
     validatingAndResolvingExtractor
       .extract[List[ValpasOpiskeluoikeusLaajatTiedot]](strictDeserialization)(dbRow.opiskeluoikeudet)
       .left.map(e => {
-        logger.error(e.toString)
+        logger.error(s"Oppijan ${dbRow.oppijaOid} deserialisointi epäonnistui: ${e.toString}")
         ValpasErrorCategory.internalError("Oppijan tietojen haku epäonnistui")
       })
       .map(opiskeluoikeudet => {

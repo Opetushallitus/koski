@@ -1,5 +1,6 @@
 package fi.oph.koski.valpas.opiskeluoikeusfixture
 
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.koskiSpecificOppijat
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.valpas.valpasuser.ValpasMockUsers
 
@@ -187,6 +188,7 @@ object ValpasMockOppijat {
   val eshEbTutkinnostaValmistunut = valpasOppijat.oppijaSyntymäaikaHetusta("ESH-EB-tutkinnosta-valmistunut", "Valpas", hetu = "010410A5783", kotikunta = Some("624"))
   val eshEbTutkinnostaEronnut = valpasOppijat.oppijaSyntymäaikaHetusta("ESH-EB-tutkinnosta-eronnut", "Valpas", hetu = "180610A758F", kotikunta = Some("624"))
   val eshKeskenEbTutkinnonAloittanut = valpasOppijat.oppijaSyntymäaikaHetusta("ESH-kesken-EB-tutkinnon-aloittanut", "Valpas", hetu = "021110A1065", kotikunta = Some("624"))
+  val taiteenPerusopetusPäättynyt = valpasOppijat.oppijaSyntymäaikaHetusta("Taiteilija", "Petra", "010110A955U", kotikunta = Some("091"))
 
   // Kutsumanimi ja yhteystiedot haetaan oppijanumerorekisteristä Valpas-käyttäjälle, tallennetaan siksi käyttäjä myös "oppijana" mockeihin
   val käyttäjäValpasJklNormaalikoulu = valpasOppijat.oppija(
