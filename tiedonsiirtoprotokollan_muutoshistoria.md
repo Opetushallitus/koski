@@ -1,3 +1,7 @@
+## 28.11.2023
+
+- Sallitaan oman äidinkielen opinnoissa myös arvosanat S ja H
+
 ## 31.10.2023
 
 - Poistettu EB-tutkinto kokonaan European School of Helsingin opiskeluoikeudesta

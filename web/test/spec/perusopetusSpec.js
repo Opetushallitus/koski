@@ -764,7 +764,7 @@ describe('Perusopetus', function () {
             Page(S('.omanÄidinkielenOpinnot')).getInputOptions(
               '.arvosana .dropdown'
             )
-          ).to.deep.equal(['4', '5', '6', '7', '8', '9', '10', 'O'])
+          ).to.deep.equal(['4', '5', '6', '7', '8', '9', '10', 'H', 'O', 'S'])
         })
 
         after(editor.cancelChanges)

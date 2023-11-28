@@ -74,6 +74,8 @@ trait SanallinenYleissivistävänKoulutuksenArviointi extends YleissivistävänK
 
 trait OmanÄidinkielenArviointi extends NumeerinenYleissivistävänKoulutuksenArviointi {
   @KoodistoKoodiarvo("O")
+  @KoodistoKoodiarvo("S")
+  @KoodistoKoodiarvo("H")
   override def arvosana: Koodistokoodiviite
   @Description("Mikä kieli on kyseessä")
   @KoodistoUri("kielivalikoima")

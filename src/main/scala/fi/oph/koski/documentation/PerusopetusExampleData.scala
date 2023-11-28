@@ -35,7 +35,7 @@ object PerusopetusExampleData {
   val perusopetuksenOppimäärä = Koodistokoodiviite("perusopetus", "perusopetuksenoppimaara")
 
   val omanÄidinkielenOpinnotSaame = Some(OmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina(
-    arvosana = Koodistokoodiviite(koodiarvo = "8", koodistoUri = "arviointiasteikkoyleissivistava"),
+    arvosana = Koodistokoodiviite(koodiarvo = "S", koodistoUri = "arviointiasteikkoyleissivistava"),
     arviointipäivä = None,
     kieli = Kielivalikoima.saame,
     laajuus = Some(LaajuusVuosiviikkotunneissa(1))
