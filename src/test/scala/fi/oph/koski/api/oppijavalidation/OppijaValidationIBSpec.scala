@@ -138,27 +138,19 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
     }
 
     "Suorituksen vahvistaminen" - {
-      "Ei onnistu, jos päättöarvosana puuttuu" in {
+      "Ei onnistu, jos ei yhtään osasuoritusta" in {
         val suoritus = ibTutkinnonSuoritus(predicted = false)
-        val osasuoritukset = suoritus.osasuoritukset.map(_.map(_.copy(
-          arviointi = None,
-          predictedArviointi = ibPredictedArviointi("4"),
-        )))
+        val osasuoritukset = None
         val opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(suoritus.copy(osasuoritukset = osasuoritukset)))
         setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
           verifyResponseStatus(400,
-            KoskiErrorCategory.badRequest.validation.tila.keskeneräinenOsasuoritus("Valmiiksi merkityllä suorituksella koulutus/301102 on keskeneräinen osasuoritus oppiaineetib/A"),
-            KoskiErrorCategory.badRequest.validation.arviointi.arviointiPuuttuu("Vahvistetun suorituksen koulutus/301102 osasuoritukselta oppiaineetib/A puuttuu päättöarvosana"),
-            KoskiErrorCategory.badRequest.validation.arviointi.arviointiPuuttuu("Vahvistetun suorituksen koulutus/301102 osasuoritukselta oppiaineetib/A2 puuttuu päättöarvosana"),
-            KoskiErrorCategory.badRequest.validation.arviointi.arviointiPuuttuu("Vahvistetun suorituksen koulutus/301102 osasuoritukselta oppiaineetib/HIS puuttuu päättöarvosana"),
-            KoskiErrorCategory.badRequest.validation.arviointi.arviointiPuuttuu("Vahvistetun suorituksen koulutus/301102 osasuoritukselta oppiaineetib/PSY puuttuu päättöarvosana"),
-            KoskiErrorCategory.badRequest.validation.arviointi.arviointiPuuttuu("Vahvistetun suorituksen koulutus/301102 osasuoritukselta oppiaineetib/BIO puuttuu päättöarvosana"),
-            KoskiErrorCategory.badRequest.validation.arviointi.arviointiPuuttuu("Vahvistetun suorituksen koulutus/301102 osasuoritukselta oppiaineetib/MATST puuttuu päättöarvosana"),
+            KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia("Suoritus koulutus/301102 on merkitty valmiiksi, mutta sillä on tyhjä osasuorituslista tai opiskeluoikeudelta puuttuu linkitys"),
+            KoskiErrorCategory.badRequest.validation.arviointi.arviointiPuuttuu("Vahvistettu suoritus koulutus/301102 ei sisällä vähintään yhtä osasuoritusta, jolla on predicted grade"),
           )
         }
       }
 
-      "Ei onnistu, jos predicted grade puuttuu" in {
+      "Ei onnistu, jos millään osasuorituksella ei ole predicted-arvosanaa" in {
         val suoritus = ibTutkinnonSuoritus(predicted = false)
         val osasuoritukset = suoritus.osasuoritukset.map(_.map(_.copy(
           arviointi = ibArviointi("5"),
@@ -167,13 +159,34 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
         val opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(suoritus.copy(osasuoritukset = osasuoritukset)))
         setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
           verifyResponseStatus(400,
-            KoskiErrorCategory.badRequest.validation.arviointi.arviointiPuuttuu("Vahvistetun suorituksen koulutus/301102 osasuoritukselta oppiaineetib/A puuttuu predicted grade"),
-            KoskiErrorCategory.badRequest.validation.arviointi.arviointiPuuttuu("Vahvistetun suorituksen koulutus/301102 osasuoritukselta oppiaineetib/A2 puuttuu predicted grade"),
-            KoskiErrorCategory.badRequest.validation.arviointi.arviointiPuuttuu("Vahvistetun suorituksen koulutus/301102 osasuoritukselta oppiaineetib/HIS puuttuu predicted grade"),
-            KoskiErrorCategory.badRequest.validation.arviointi.arviointiPuuttuu("Vahvistetun suorituksen koulutus/301102 osasuoritukselta oppiaineetib/PSY puuttuu predicted grade"),
-            KoskiErrorCategory.badRequest.validation.arviointi.arviointiPuuttuu("Vahvistetun suorituksen koulutus/301102 osasuoritukselta oppiaineetib/BIO puuttuu predicted grade"),
-            KoskiErrorCategory.badRequest.validation.arviointi.arviointiPuuttuu("Vahvistetun suorituksen koulutus/301102 osasuoritukselta oppiaineetib/MATST puuttuu predicted grade"),
+            KoskiErrorCategory.badRequest.validation.arviointi.arviointiPuuttuu("Vahvistettu suoritus koulutus/301102 ei sisällä vähintään yhtä osasuoritusta, jolla on predicted grade"),
           )
+        }
+      }
+
+      "Ei onnistu, jos joltain osasuoritukselta puuttuu päättöarvosana" in {
+        val suoritus = ibTutkinnonSuoritus(predicted = false)
+        val osasuoritukset = suoritus.osasuoritukset.map(_.map(os => os.copy(
+          arviointi = (if (os.koulutusmoduuli.tunniste.koodiarvo == "A2") { None } else { ibArviointi("5") }),
+          predictedArviointi = ibPredictedArviointi("4"),
+        )))
+        val opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(suoritus.copy(osasuoritukset = osasuoritukset)))
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
+          verifyResponseStatus(400,
+            KoskiErrorCategory.badRequest.validation.tila.keskeneräinenOsasuoritus("Valmiiksi merkityllä suorituksella koulutus/301102 on keskeneräinen osasuoritus oppiaineetib/A2")
+          )
+        }
+      }
+
+      "Onnistuu, kun kaikilla osasuorituksilla on päättöarvosana ja osalla niistä predicted-arvosana" in {
+        val suoritus = ibTutkinnonSuoritus(predicted = false)
+        val osasuoritukset = suoritus.osasuoritukset.map(_.map(os => os.copy(
+          arviointi = ibArviointi("5"),
+          predictedArviointi = (if (os.koulutusmoduuli.tunniste.koodiarvo != "A2") { None } else { ibPredictedArviointi("4") }),
+        )))
+        val opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(suoritus.copy(osasuoritukset = osasuoritukset)))
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
+          verifyResponseStatusOk()
         }
       }
 

@@ -16,42 +16,26 @@ object IBValidation {
 
   private def validateIbTutkinnonSuoritus(opiskeluoikeus: IBOpiskeluoikeus, config: Config): HttpStatus =
     opiskeluoikeus.suoritukset.headOption match {
-      case Some(s: IBTutkinnonSuoritus) if predictedJaPäättöarvioinninVaatiminenVoimassa(config) =>
-        suorituksenVahvistusVaatiiPredictedJaPäättöarvosanan(s)
+      case Some(s: IBTutkinnonSuoritus) if predictedArvioinninVaatiminenVoimassa(config) =>
+        suorituksenVahvistusVaatiiPredictedArvioinnin(s)
       case _ =>
         HttpStatus.ok
     }
 
-  def suorituksenVahvistusVaatiiPredictedJaPäättöarvosanan(päätasonSuoritus: IBTutkinnonSuoritus): HttpStatus =
+  def suorituksenVahvistusVaatiiPredictedArvioinnin(päätasonSuoritus: IBTutkinnonSuoritus): HttpStatus =
     if (päätasonSuoritus.vahvistettu) {
-      HttpStatus.fold(
-        päätasonSuoritus.osasuoritukset
-          .getOrElse(List.empty)
-          .map(vaadiPredictedJaPäättöarvosana(päätasonSuoritus))
-      )
+      HttpStatus.validate(päätasonSuoritus.osasuoritukset.exists(_.exists(_.predictedArviointi.exists(!_.isEmpty)))) {
+        KoskiErrorCategory.badRequest.validation.arviointi.arviointiPuuttuu(s"Vahvistettu suoritus ${päätasonSuoritus.koulutusmoduuli.tunniste} ei sisällä vähintään yhtä osasuoritusta, jolla on predicted grade")
+      }
     } else {
       HttpStatus.ok
     }
 
-  def vaadiPredictedJaPäättöarvosana(päätasonSuoritus: IBTutkinnonSuoritus)(osasuoritus: IBOppiaineenSuoritus): HttpStatus = {
-    val (päättöarvioinnit, predictedGrades) = ibOppiaineenArvioinnit(osasuoritus)
-    if (päättöarvioinnit.isEmpty) {
-      KoskiErrorCategory.badRequest.validation.arviointi.arviointiPuuttuu(s"Vahvistetun suorituksen ${päätasonSuoritus.koulutusmoduuli.tunniste} osasuoritukselta ${osasuoritus.koulutusmoduuli.tunniste} puuttuu päättöarvosana")
-    } else if (predictedGrades.isEmpty) {
-      KoskiErrorCategory.badRequest.validation.arviointi.arviointiPuuttuu(s"Vahvistetun suorituksen ${päätasonSuoritus.koulutusmoduuli.tunniste} osasuoritukselta ${osasuoritus.koulutusmoduuli.tunniste} puuttuu predicted grade")
-    } else {
-      HttpStatus.ok
-    }
-  }
-
-  // Primus lähettää arvosanat väärin (päättöarvosanoillakin on predicted-lippu), joten käytännössä tässä ei tehdä mitään:
-  // arviointi-kentässäkin olevat predicted=true lipulla varustetut arvioinnit katsotaan päättöarvioinneiksi.
-  def ibOppiaineenArvioinnit(osasuoritus: IBOppiaineenSuoritus): (List[IBOppiaineenArviointi], List[IBOppiaineenPredictedArviointi]) = (
-    osasuoritus.arviointi.getOrElse(List.empty),
+  def ibOppiaineenPredictedArvioinnit(osasuoritus: IBOppiaineenSuoritus):  List[IBOppiaineenPredictedArviointi] = (
     osasuoritus.predictedArviointi.getOrElse(List.empty)
   )
 
-  def predictedJaPäättöarvioinninVaatiminenVoimassa(config: Config): Boolean =
-    Option(LocalDate.parse(config.getString("validaatiot.ibSuorituksenVahvistusVaatiiPredictedJaPäättöarvosanan")))
+  def predictedArvioinninVaatiminenVoimassa(config: Config): Boolean =
+    Option(LocalDate.parse(config.getString("validaatiot.ibSuorituksenVahvistusVaatiiPredictedArvosanan")))
       .exists(_.isEqualOrBefore(LocalDate.now()))
 }

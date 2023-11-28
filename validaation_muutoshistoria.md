@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 28.11.2023
+
+- IB-tutkinnossa vaaditaan vähintään yksi predicted -arvosanalla arvioitu osasuoritus ennen vahvistusta. Validaatio menee päälle 1.2.2023.
+
 ## 17.11.2023
 
 - Sallittu oppilaitoksen vaihtaminen oppilaitoksesta 1.2.246.562.10.82407007176 oppilaitokseen 1.2.246.562.10.51885744782
