@@ -82,7 +82,7 @@ export const Koulutus = <T extends VapaanSivistystyönPäätasonSuoritus>({
 export const Koulutusmoduuli = <T extends VapaanSivistystyönPäätasonSuoritus>({
   suoritus: päätasonSuoritus
 }: SuoritusFieldProps<T>) => (
-  <KeyValueRow label="Koulutusmoduuli" indent={2}>
+  <KeyValueRow label="Koulutusmoduuli">
     <TestIdText id="tunniste.koodiarvo">
       {päätasonSuoritus.suoritus.koulutusmoduuli.tunniste.koodiarvo}
     </TestIdText>
@@ -93,7 +93,7 @@ export const Peruste = <T extends VSTPäätasonSuoritusPerusteella>({
   form,
   suoritus
 }: SuoritusFieldProps<T>) => (
-  <KeyValueRow label="Peruste" indent={2}>
+  <KeyValueRow label="Peruste">
     <FormField
       form={form}
       path={suoritus.path.prop('koulutusmoduuli').prop('perusteenDiaarinumero')}
@@ -112,7 +112,7 @@ export const Opintokokonaisuus = <
   form,
   suoritus
 }: SuoritusFieldProps<T>) => (
-  <KeyValueRow label="Opintokokonaisuus" indent={2}>
+  <KeyValueRow label="Opintokokonaisuus">
     <FormField
       form={form}
       path={suoritus.path.prop('koulutusmoduuli').prop('opintokokonaisuus')}
@@ -132,7 +132,7 @@ export const Laajuus = <T extends VSTPäätasonSuoritusLaajuudella>({
     VSTPäätasonSuoritusLaajuudella
   >
   return (
-    <KeyValueRow label="Laajuus" indent={2}>
+    <KeyValueRow label="Laajuus">
       <FormField
         form={form}
         path={suoritus.path.prop('koulutusmoduuli').prop('laajuus')}
