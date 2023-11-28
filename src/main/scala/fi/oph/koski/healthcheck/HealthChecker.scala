@@ -16,6 +16,7 @@ import fi.oph.koski.schema._
 import fi.oph.koski.userdirectory.Password
 import fi.oph.koski.util.Timing
 import fi.vm.sade.utils.cas.CasClientException
+import org.json4s.JString
 
 import scala.concurrent.duration.{DurationInt, FiniteDuration}
 import scala.language.postfixOps
@@ -31,19 +32,26 @@ trait HealthCheck extends Logging {
     application.validator.updateFieldsAndValidateAsJson(Oppija(OidHenkilö(oid), List(perustutkintoOpiskeluoikeusValmis())))
   }
 
+  val internalSystems: Seq[String] = List(
+    Subsystem.KoskiDatabase,
+    Subsystem.RaportointiDatabase,
+    Subsystem.ValpasDatabase,
+    Subsystem.PerustiedotIndex,
+    Subsystem.TiedonsiirtoIndex,
+  )
+
+  val externalSystems: Seq[String] = List(
+    Subsystem.Oppijanumerorekisteri,
+    Subsystem.OpenSearch,
+    Subsystem.Koodistopalvelu,
+    Subsystem.Organisaatiopalvelu,
+    Subsystem.EPerusteet,
+    Subsystem.CAS,
+  )
+
   def healthcheckWithExternalSystems: HttpStatus = {
     logger.debug("Performing healthcheck")
-    val oppija = findOrCreateOppija
-    val checks: Map[String, () => HttpStatus] = Map(
-      Subsystem.Oppijanumerorekisteri -> (() => oppijaCheck(oppija)),
-      Subsystem.OpenSearch -> (() => openSearchCheck(oppija)),
-      Subsystem.Koodistopalvelu -> (() => koodistopalveluCheck),
-      Subsystem.Organisaatiopalvelu -> (() => organisaatioPalveluCheck),
-      Subsystem.EPerusteet -> (() => ePerusteetCheck),
-      Subsystem.CAS -> (() => casCheck),
-    )
-
-    val results = checks.par.mapValues(_.apply).seq
+    val results = checkSystems(externalSystems)
     val status = HttpStatus.fold(results.values)
     if (status.isError) {
       logger.warn(s"Healthcheck with external systems status failed $status")
@@ -53,15 +61,7 @@ trait HealthCheck extends Logging {
   }
 
   def internalHealthcheck: HttpStatus = {
-    val checks: Map[String, () => HttpStatus] = Map(
-      Subsystem.KoskiDatabase -> (() => assertTrue("koski database", application.masterDatabase.util.databaseIsOnline)),
-      Subsystem.RaportointiDatabase -> (() => assertTrue("raportointi database", application.raportointiDatabase.util.databaseIsOnline)),
-      Subsystem.ValpasDatabase -> (() => assertTrue("valpas database", application.valpasDatabase.util.databaseIsOnline)),
-      Subsystem.PerustiedotIndex -> (() => assertTrue("perustiedot index", application.perustiedotIndexer.index.isOnline)),
-      Subsystem.TiedonsiirtoIndex -> (() => assertTrue("tiedonsiirrot index", application.tiedonsiirtoService.index.isOnline)),
-    )
-
-    val results = checks.par.mapValues(_.apply).seq
+    val results = checkSystems(internalSystems)
     val status = HttpStatus.fold(results.values)
     if (status.isError) {
       logger.error(s"Internal healthcheck failed: $status")
@@ -69,6 +69,29 @@ trait HealthCheck extends Logging {
     logHealthStatus(results)
     status
   }
+
+  def checkSystems(systems: Seq[String]): Map[String, HttpStatus] =
+    systems
+      .par
+      .map(system => system -> checkSystem(system))
+      .toMap
+      .seq
+
+  def checkSystem(system: String) =
+    system match {
+      case Subsystem.Oppijanumerorekisteri => oppijaCheck(findOrCreateOppija)
+      case Subsystem.OpenSearch => openSearchCheck(findOrCreateOppija)
+      case Subsystem.Koodistopalvelu => koodistopalveluCheck
+      case Subsystem.Organisaatiopalvelu => organisaatioPalveluCheck
+      case Subsystem.EPerusteet => ePerusteetCheck
+      case Subsystem.CAS => casCheck
+      case Subsystem.KoskiDatabase => assertTrue("koski database", application.masterDatabase.util.databaseIsOnline)
+      case Subsystem.RaportointiDatabase => assertTrue("raportointi database", application.raportointiDatabase.util.databaseIsOnline)
+      case Subsystem.ValpasDatabase => assertTrue("valpas database", application.valpasDatabase.util.databaseIsOnline)
+      case Subsystem.PerustiedotIndex => assertTrue("perustiedot index", application.perustiedotIndexer.index.isOnline)
+      case Subsystem.TiedonsiirtoIndex => assertTrue("tiedonsiirrot index", application.tiedonsiirtoService.index.isOnline)
+      case other: String => HttpStatus(404, List(ErrorDetail("invalid subsystem", JString(other))))
+    }
 
   private def oppijaCheck(oppija: Either[HttpStatus, NimellinenHenkilö]): HttpStatus = oppija.left.getOrElse(HttpStatus.ok)
 
