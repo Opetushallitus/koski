@@ -1,0 +1,26 @@
+{
+  "name": "radiator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "ts-node src/index.ts prod",
+    "monitor:local": "ts-node src/index.ts local",
+    "monitor:dev": "ts-node src/index.ts dev",
+    "monitor:qa": "ts-node src/index.ts qa",
+    "monitor:prod": "ts-node src/index.ts prod",
+    "types-check": "tsc --noEmit --project tsconfig.json"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "fp-ts": "^2.13.1",
+    "tail": "^2.2.6",
+    "ts-node": "^10.9.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@types/tail": "^2.2.1",
+    "typescript": "^4.9.5"
+  }
+}
