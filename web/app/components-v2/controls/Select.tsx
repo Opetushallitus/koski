@@ -65,6 +65,7 @@ export type OptionKey = string
 export const Select = <T,>(props: SelectProps<T>) => {
   const inputTestId = useTestId(props.testId, 'input')
   const select = useSelectState(props)
+  const input = useRef<HTMLInputElement>(null)
 
   return (
     <TestIdLayer id={props.testId}>
@@ -78,11 +79,13 @@ export const Select = <T,>(props: SelectProps<T>) => {
           disabled={props.disabled || select.options.length === 0}
           {...select.inputEventListeners}
           data-testid={inputTestId}
+          ref={input}
         />
         {select.dropdownVisible && (
           <div className="Select__optionListContainer">
             <TestIdLayer wrap="div" id="options">
               <OptionList
+                inputRef={input}
                 options={select.options}
                 hoveredOption={select.hoveredOption}
                 onRemove={props.onRemove}
@@ -97,6 +100,7 @@ export const Select = <T,>(props: SelectProps<T>) => {
 }
 
 type OptionListProps<T> = CommonProps<{
+  inputRef: React.RefObject<HTMLInputElement>
   options: OptionList<T>
   hoveredOption?: SelectOption<T>
   onClick: (o: SelectOption<T>, event: React.MouseEvent) => void
@@ -115,8 +119,28 @@ const OptionList = <T,>(props: OptionListProps<T>): React.ReactElement => {
 
   const { options, onRemove, ...rest } = props
 
+  const [maxHeight, setMaxHeight] = useState(300)
+  useEffect(() => {
+    const updateMaxHeight = () => {
+      if (props.inputRef.current) {
+        const h = window.innerHeight
+        const rect = props.inputRef.current.getBoundingClientRect()
+        setMaxHeight(clamp(50, 500)(h - rect.y - rect.height - 20))
+      }
+    }
+
+    window.addEventListener('scroll', updateMaxHeight)
+    window.addEventListener('resize', updateMaxHeight)
+    updateMaxHeight()
+
+    return () => {
+      window.removeEventListener('scroll', updateMaxHeight)
+      window.removeEventListener('resize', updateMaxHeight)
+    }
+  }, [props.inputRef])
+
   return (
-    <ul {...common(props, ['Select__optionList'])}>
+    <ul {...common(props, ['Select__optionList'])} style={{ maxHeight }}>
       {options.map((opt) => (
         <TestIdLayer key={opt.key} id={opt.key}>
           <li
