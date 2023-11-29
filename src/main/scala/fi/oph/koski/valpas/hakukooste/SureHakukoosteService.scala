@@ -2,6 +2,7 @@ package fi.oph.koski.valpas.hakukooste
 
 import com.typesafe.config.Config
 import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.healthcheck.{HealthMonitoring, Subsystem}
 import fi.oph.koski.http.Http.{StringToUriConverter, parseJsonWithDeserialize, unsafeRetryingClient}
 import fi.oph.koski.http.{Http, HttpException, HttpStatus, ServiceConfig, VirkailijaHttpClient}
 import fi.oph.koski.json.Json4sHttp4s.json4sEncoderOf
@@ -19,7 +20,8 @@ import scala.concurrent.duration.{DurationInt, FiniteDuration}
 class SureHakukoosteService(
   valpasLocalizationRepository: LocalizationRepository,
   validatingAndResolvingExtractor: ValidatingAndResolvingExtractor,
-  config: Config
+  config: Config,
+  healthMonitoring: HealthMonitoring,
 ) extends ValpasHakukoosteService
   with Logging
   with Timing {
@@ -81,6 +83,10 @@ class SureHakukoosteService(
           oppijaOids.toSeq,
           timeout = totalTimeout
         )(encoder)(decoder)
+          .map { response =>
+            healthMonitoring.setSubsystemStatus(Subsystem.Suoritusrekisteri, operational = response.isRight)
+            response
+          }
           .handleError {
             case e: HttpException =>
               logger.error(s"Bad response from Suoritusrekisteri for ${errorClue}: ${e.toString}")

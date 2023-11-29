@@ -62,7 +62,8 @@ object ValpasHakukoosteService {
       new SureHakukoosteService(
         application.valpasLocalizationRepository,
         application.validatingAndResolvingExtractor,
-        config
+        config,
+        application.healthMonitoring,
       )
     }
   }

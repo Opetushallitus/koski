@@ -14,7 +14,7 @@ class RadiatorService(application: KoskiApplication) extends Logging {
   def getHealth: HealthDataResult = {
     val results = healthCheck.checkSystems(healthCheck.internalSystems ++ healthCheck.externalSystems)
     val now = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
-    val instance = InetAddress.getLocalHost.getHostName
+    val instance = "KOSKI"
 
     val checks = results.map { case (system, status) =>
       HealthDataEntry(
