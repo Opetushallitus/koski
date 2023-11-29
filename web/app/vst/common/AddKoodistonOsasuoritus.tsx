@@ -9,6 +9,7 @@ import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokood
 import { VapaanSivistystyönOpiskeluoikeus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeus'
 import { OsasuoritusOf } from '../../util/schema'
 import { VSTSuoritusOsasuorituksilla } from './types'
+import { appendOptional } from '../../util/array'
 
 type AddKoodistonOsasuoritusProps<
   T extends VSTSuoritusOsasuorituksilla,
@@ -33,17 +34,14 @@ export const AddKoodistonOsasuoritus = <
 
   const onSelect = useCallback(
     async (koodiviite: Koodistokoodiviite<URI>) => {
-      const osasuorituksetPath = path
-        .prop('osasuoritukset')
-        .optional() as any as FormOptic<
+      const osasuorituksetPath = path.prop(
+        'osasuoritukset'
+      ) as any as FormOptic<
         VapaanSivistystyönOpiskeluoikeus,
-        OsasuoritusOf<T>[]
+        OsasuoritusOf<T>[] | undefined
       >
       const osasuoritus = await fillKoodistot(createOsasuoritus(koodiviite))
-      form.updateAt(osasuorituksetPath, (os: OsasuoritusOf<T>[]) => [
-        ...os,
-        osasuoritus
-      ])
+      form.updateAt(osasuorituksetPath, appendOptional(osasuoritus))
     },
     [createOsasuoritus, fillKoodistot, form, path]
   )

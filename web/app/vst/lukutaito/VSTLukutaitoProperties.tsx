@@ -70,7 +70,7 @@ export const osasuoritusToTableRow = ({
   return {
     suoritusIndex,
     osasuoritusIndex,
-    osasuoritusPath: suoritusPath.prop('osasuoritukset').optional(),
+    osasuoritusPath: suoritusPath.prop('osasuoritukset'),
     expandable: true,
     columns: {
       Osasuoritus: (
