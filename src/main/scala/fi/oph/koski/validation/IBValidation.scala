@@ -30,11 +30,7 @@ object IBValidation {
     } else {
       HttpStatus.ok
     }
-
-  def ibOppiaineenPredictedArvioinnit(osasuoritus: IBOppiaineenSuoritus):  List[IBOppiaineenPredictedArviointi] = (
-    osasuoritus.predictedArviointi.getOrElse(List.empty)
-  )
-
+  
   def predictedArvioinninVaatiminenVoimassa(config: Config): Boolean =
     Option(LocalDate.parse(config.getString("validaatiot.ibSuorituksenVahvistusVaatiiPredictedArvosanan")))
       .exists(_.isEqualOrBefore(LocalDate.now()))
