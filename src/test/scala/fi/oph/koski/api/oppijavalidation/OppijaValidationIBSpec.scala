@@ -4,12 +4,14 @@ import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.api.misc.PutOpiskeluoikeusTestMethods
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.ExamplesIB._
+import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.ressunLukio
 import fi.oph.koski.documentation.{ExampleData, LukioExampleData}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.schema._
 import org.scalatest.freespec.AnyFreeSpec
 
+import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
 class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpiskeluoikeusTestMethods[IBOpiskeluoikeus] {
@@ -138,67 +140,148 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
     }
 
     "Suorituksen vahvistaminen" - {
-      "Ei onnistu, jos ei yhtään osasuoritusta" in {
-        val suoritus = ibTutkinnonSuoritus(predicted = false)
-        val osasuoritukset = None
-        val opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(suoritus.copy(osasuoritukset = osasuoritukset)))
-        setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
-          verifyResponseStatus(400,
-            KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia("Suoritus koulutus/301102 on merkitty valmiiksi, mutta sillä on tyhjä osasuorituslista tai opiskeluoikeudelta puuttuu linkitys"),
-            KoskiErrorCategory.badRequest.validation.arviointi.arviointiPuuttuu("Vahvistettu suoritus koulutus/301102 ei sisällä vähintään yhtä osasuoritusta, jolla on predicted grade"),
+
+      "jos vahvistuspäivä 1.1.2024 tai myöhemmin" - {
+
+        "Ei onnistu, jos ei yhtään osasuoritusta" in {
+          val suoritus = ibTutkinnonSuoritus(
+            predicted = false,
+            vahvistus = ExampleData.vahvistusPaikkakunnalla(
+              päivä = LocalDate.of(2024, 1, 1),
+              org = ressunLukio,
+              kunta = helsinki
+            )
           )
-        }
-      }
-
-      "Ei onnistu, jos millään osasuorituksella ei ole predicted-arvosanaa" in {
-        val suoritus = ibTutkinnonSuoritus(predicted = false)
-        val osasuoritukset = suoritus.osasuoritukset.map(_.map(_.copy(
-          arviointi = ibArviointi("5"),
-          predictedArviointi = None,
-        )))
-        val opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(suoritus.copy(osasuoritukset = osasuoritukset)))
-        setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
-          verifyResponseStatus(400,
-            KoskiErrorCategory.badRequest.validation.arviointi.arviointiPuuttuu("Vahvistettu suoritus koulutus/301102 ei sisällä vähintään yhtä osasuoritusta, jolla on predicted grade"),
+          val osasuoritukset = None
+          val opiskeluoikeus = defaultOpiskeluoikeus.copy(
+            tila = LukionOpiskeluoikeudenTila(
+              List(
+                LukionOpiskeluoikeusjakso(date(2012, 9, 1), LukioExampleData.opiskeluoikeusAktiivinen, Some(ExampleData.valtionosuusRahoitteinen)),
+                LukionOpiskeluoikeusjakso(date(2024, 1, 1), LukioExampleData.opiskeluoikeusPäättynyt, Some(ExampleData.valtionosuusRahoitteinen))
+              )
+            ),
+            suoritukset = List(suoritus.copy(osasuoritukset = osasuoritukset))
           )
+          setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
+            verifyResponseStatus(400,
+              KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia("Suoritus koulutus/301102 on merkitty valmiiksi, mutta sillä on tyhjä osasuorituslista tai opiskeluoikeudelta puuttuu linkitys"),
+              KoskiErrorCategory.badRequest.validation.arviointi.arviointiPuuttuu("Vahvistettu suoritus koulutus/301102 ei sisällä vähintään yhtä osasuoritusta, jolla on predicted grade"),
+            )
+          }
         }
-      }
 
-      "Ei onnistu, jos joltain osasuoritukselta puuttuu päättöarvosana" in {
-        val suoritus = ibTutkinnonSuoritus(predicted = false)
-        val osasuoritukset = suoritus.osasuoritukset.map(_.map(os => os.copy(
-          arviointi = (if (os.koulutusmoduuli.tunniste.koodiarvo == "A2") { None } else { ibArviointi("5") }),
-          predictedArviointi = ibPredictedArviointi("4"),
-        )))
-        val opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(suoritus.copy(osasuoritukset = osasuoritukset)))
-        setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
-          verifyResponseStatus(400,
-            KoskiErrorCategory.badRequest.validation.tila.keskeneräinenOsasuoritus("Valmiiksi merkityllä suorituksella koulutus/301102 on keskeneräinen osasuoritus oppiaineetib/A2")
+        "Ei onnistu, jos millään osasuorituksella ei ole predicted-arvosanaa" in {
+          val suoritus = ibTutkinnonSuoritus(
+            predicted = false,
+            vahvistus = ExampleData.vahvistusPaikkakunnalla(
+              päivä = LocalDate.of(2024, 1, 1),
+              org = ressunLukio,
+              kunta = helsinki
+            )
           )
+
+          val osasuoritukset = suoritus.osasuoritukset.map(_.map(_.copy(
+            arviointi = ibArviointi("5"),
+            predictedArviointi = None,
+          )))
+          val opiskeluoikeus = defaultOpiskeluoikeus.copy(
+            tila = LukionOpiskeluoikeudenTila(
+              List(
+                LukionOpiskeluoikeusjakso(date(2012, 9, 1), LukioExampleData.opiskeluoikeusAktiivinen, Some(ExampleData.valtionosuusRahoitteinen)),
+                LukionOpiskeluoikeusjakso(date(2024, 1, 1), LukioExampleData.opiskeluoikeusPäättynyt, Some(ExampleData.valtionosuusRahoitteinen))
+              )
+            ),
+            suoritukset = List(suoritus.copy(osasuoritukset = osasuoritukset))
+          )
+          setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
+            verifyResponseStatus(400,
+              KoskiErrorCategory.badRequest.validation.arviointi.arviointiPuuttuu("Vahvistettu suoritus koulutus/301102 ei sisällä vähintään yhtä osasuoritusta, jolla on predicted grade"),
+            )
+          }
+        }
+
+        "Ei onnistu, jos joltain osasuoritukselta puuttuu päättöarvosana" in {
+          val suoritus = ibTutkinnonSuoritus(
+            predicted = false,
+            vahvistus = ExampleData.vahvistusPaikkakunnalla(
+              päivä = LocalDate.of(2024, 1, 1),
+              org = ressunLukio,
+              kunta = helsinki
+            )
+          )
+          val osasuoritukset = suoritus.osasuoritukset.map(_.map(os => os.copy(
+            arviointi = (if (os.koulutusmoduuli.tunniste.koodiarvo == "A2") { None } else { ibArviointi("5") }),
+            predictedArviointi = ibPredictedArviointi("4"),
+          )))
+          val opiskeluoikeus = defaultOpiskeluoikeus.copy(
+            tila = LukionOpiskeluoikeudenTila(
+              List(
+                LukionOpiskeluoikeusjakso(date(2012, 9, 1), LukioExampleData.opiskeluoikeusAktiivinen, Some(ExampleData.valtionosuusRahoitteinen)),
+                LukionOpiskeluoikeusjakso(date(2024, 1, 1), LukioExampleData.opiskeluoikeusPäättynyt, Some(ExampleData.valtionosuusRahoitteinen))
+              )
+            ),
+            suoritukset = List(suoritus.copy(osasuoritukset = osasuoritukset))
+          )
+          setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
+            verifyResponseStatus(400,
+              KoskiErrorCategory.badRequest.validation.tila.keskeneräinenOsasuoritus("Valmiiksi merkityllä suorituksella koulutus/301102 on keskeneräinen osasuoritus oppiaineetib/A2")
+            )
+          }
+        }
+
+        "Onnistuu, kun kaikilla osasuorituksilla on päättöarvosana ja osalla niistä predicted-arvosana" in {
+          val suoritus = ibTutkinnonSuoritus(predicted = false)
+          val osasuoritukset = suoritus.osasuoritukset.map(_.map(os => os.copy(
+            arviointi = ibArviointi("5"),
+            predictedArviointi = (if (os.koulutusmoduuli.tunniste.koodiarvo != "A2") { None } else { ibPredictedArviointi("4") }),
+          )))
+          val opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(suoritus.copy(osasuoritukset = osasuoritukset)))
+          setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
+            verifyResponseStatusOk()
+          }
+        }
+
+        "Onnistuu, kun molemmat arvosanat on annettu" in {
+          val suoritus = ibTutkinnonSuoritus(predicted = false)
+          val osasuoritukset = suoritus.osasuoritukset.map(_.map(_.copy(
+            arviointi = ibArviointi("5"),
+            predictedArviointi = ibPredictedArviointi("4"),
+          )))
+          val opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(suoritus.copy(osasuoritukset = osasuoritukset)))
+          setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
+            verifyResponseStatusOk()
+          }
         }
       }
 
-      "Onnistuu, kun kaikilla osasuorituksilla on päättöarvosana ja osalla niistä predicted-arvosana" in {
-        val suoritus = ibTutkinnonSuoritus(predicted = false)
-        val osasuoritukset = suoritus.osasuoritukset.map(_.map(os => os.copy(
-          arviointi = ibArviointi("5"),
-          predictedArviointi = (if (os.koulutusmoduuli.tunniste.koodiarvo != "A2") { None } else { ibPredictedArviointi("4") }),
-        )))
-        val opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(suoritus.copy(osasuoritukset = osasuoritukset)))
-        setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
-          verifyResponseStatusOk()
-        }
-      }
+      "jos vahvistuspäivä 31.12.2023 tai aiemmin" - {
 
-      "Onnistuu, kun molemmat arvosanat on annettu" in {
-        val suoritus = ibTutkinnonSuoritus(predicted = false)
-        val osasuoritukset = suoritus.osasuoritukset.map(_.map(_.copy(
-          arviointi = ibArviointi("5"),
-          predictedArviointi = ibPredictedArviointi("4"),
-        )))
-        val opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(suoritus.copy(osasuoritukset = osasuoritukset)))
-        setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
-          verifyResponseStatusOk()
+        "Onnistuu, vaikka millään osasuorituksella ei ole predicted-arvosanaa" in {
+          val suoritus = ibTutkinnonSuoritus(
+            predicted = false,
+            vahvistus = ExampleData.vahvistusPaikkakunnalla(
+              päivä = LocalDate.of(2023, 12, 31),
+              org = ressunLukio,
+              kunta = helsinki
+            )
+          )
+
+          val osasuoritukset = suoritus.osasuoritukset.map(_.map(_.copy(
+            arviointi = ibArviointi("5"),
+            predictedArviointi = None,
+          )))
+          val opiskeluoikeus = defaultOpiskeluoikeus.copy(
+            tila = LukionOpiskeluoikeudenTila(
+              List(
+                LukionOpiskeluoikeusjakso(date(2012, 9, 1), LukioExampleData.opiskeluoikeusAktiivinen, Some(ExampleData.valtionosuusRahoitteinen)),
+                LukionOpiskeluoikeusjakso(date(2024, 12, 31), LukioExampleData.opiskeluoikeusPäättynyt, Some(ExampleData.valtionosuusRahoitteinen))
+              )
+            ),
+            suoritukset = List(suoritus.copy(osasuoritukset = osasuoritukset))
+          )
+          setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
+            verifyResponseStatusOk()
+          }
         }
       }
     }

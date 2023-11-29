@@ -2,7 +2,8 @@
 
 ## 28.11.2023
 
-- IB-tutkinnossa vaaditaan vähintään yksi predicted -arvosanalla arvioitu osasuoritus ennen vahvistusta. Validaatio menee päälle 1.2.2023.
+- IB-tutkinnossa vaaditaan vähintään yksi predicted -arvosanalla arvioitu osasuoritus ennen vahvistusta,
+  jos vahvistuspäivä on 1.1.2024 tai myöhemmin. Validaatio menee päälle 1.2.2023.
 
 ## 17.11.2023
 
