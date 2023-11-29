@@ -41,6 +41,7 @@ object Subsystem {
   val EPerusteet = "EPerusteet"
   val CAS = "CAS"
   val Virta = "Virta"
+  val Suoritusrekisteri = "Suoritusrekisteri"
 }
 
 case class SubsystemHealthStatus(
