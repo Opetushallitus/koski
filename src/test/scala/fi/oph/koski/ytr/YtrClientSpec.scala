@@ -89,21 +89,21 @@ class YtrClientSpec extends AnyFreeSpec with TestEnvironment with Matchers with 
 
   "YtrClient" - {
     "palauttaa ytr oppijan" in {
-      val result = mockClient.oppijaByHetu(hetu)
+      val result = mockClient.oppijaByHetu(YtrSsnWithPreviousSsns(hetu))
       result.get should equal(expectedOppija)
     }
     "ei välitä ylimääräisistä kentistä" in {
       mockEndpoints(defaultOppijaResponse + ("Foo" -> "Bar"))
-      val result = mockClient.oppijaByHetu(hetu)
+      val result = mockClient.oppijaByHetu(YtrSsnWithPreviousSsns(hetu))
       result.get should equal(expectedOppija)
     }
   }
 
   def mockEndpoints(oppijaResponse: Map[String, Any]  = defaultOppijaResponse) =  {
-    val ytrJsonUrl = s"/api/oph-koski/student/$hetu"
+    val ytrJsonUrl = s"/api/oph-koski/student"
 
     wireMockServer.stubFor(
-      WireMock.get(urlPathEqualTo(ytrJsonUrl))
+      WireMock.post(urlPathEqualTo(ytrJsonUrl))
         .willReturn(ok().withBody(write(oppijaResponse)))
     )
   }

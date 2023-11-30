@@ -18,10 +18,10 @@ import java.time.{LocalDate, ZonedDateTime}
 
 trait YtrClient {
   // Rajapinnat, joilla haetaan kaikki YTL:n datat.
-  def oppijaByHetu(hetu: String): Option[YtrOppija] = oppijaJsonByHetu(hetu).map(JsonSerializer.extract[YtrOppija](_, ignoreExtras = true))
+  def oppijaByHetu(ssn: YtrSsnWithPreviousSsns): Option[YtrOppija] = oppijaJsonByHetu(ssn).map(JsonSerializer.extract[YtrOppija](_, ignoreExtras = true))
   def oppijatByHetut(ssnData: YtrSsnData): List[YtrLaajaOppija] = oppijatJsonByHetut(ssnData).map(JsonSerializer.extract[List[YtrLaajaOppija]](_, ignoreExtras = true)).getOrElse(List.empty)
 
-  def oppijaJsonByHetu(hetu: String): Option[JValue]
+  def oppijaJsonByHetu(ssn: YtrSsnWithPreviousSsns): Option[JValue]
   protected def oppijatJsonByHetut(ssnData: YtrSsnData): Option[JValue]
 
   def getHetutBySyntymäaika(birthmonthStart: String, birthmonthEnd: String): Option[YtrSsnData] = getJsonHetutBySyntymäaika(birthmonthStart, birthmonthEnd).map(JsonSerializer.extract[YtrSsnData](_, ignoreExtras = true))
@@ -69,7 +69,7 @@ case class YoTodistusOidRequest(
 )
 
 object EmptyYtrClient extends YtrClient {
-  override def oppijaJsonByHetu(hetu: String): None.type = None
+  override def oppijaJsonByHetu(ssn: YtrSsnWithPreviousSsns): Option[JValue] = None
 
   override protected def getJsonHetutBySyntymäaika(birthmonthStart: String, birthmonthEnd: String): Option[JValue] = None
 
@@ -89,7 +89,8 @@ object MockYrtClient extends YtrClient {
   private var failureHetu: Option[String] = None
   private var timeoutHetu: Option[String] = None
 
-  def oppijaJsonByHetu(hetu: String): Option[JValue] = {
+  override def oppijaJsonByHetu(ssn: YtrSsnWithPreviousSsns): Option[JValue] = {
+    val hetu = ssn.ssn
     if (timeoutHetu.contains(hetu)) {
       Thread.sleep(20000)
     }
@@ -186,8 +187,8 @@ case class RemoteYtrClient(rootUrl: String, user: String, password: String) exte
     password = password
   ))
 
-  def oppijaJsonByHetu(hetu: String): Option[JValue] = {
-    runIO(http.get(uri"/api/oph-koski/student/$hetu")(Http.parseJsonOptional[JValue]))
+  def oppijaJsonByHetu(ssn: YtrSsnWithPreviousSsns): Option[JValue] = {
+    runIO(postRetryingHttp.post(uri"/api/oph-koski/student", ssn)(json4sEncoderOf[YtrSsnWithPreviousSsns])(Http.parseJsonOptional[JValue]))
   }
 
   override protected def getJsonHetutBySyntymäaika(birthmonthStart: String, birthmonthEnd: String): Option[JValue] = {
@@ -238,3 +239,8 @@ object YtrConfig {
     cachedSecretsClient.getStructuredSecret[YtrConfig](secretId)
   }
 }
+
+case class YtrSsnWithPreviousSsns(
+  ssn: String,
+  previousSsns: Option[List[String]] = None
+)
