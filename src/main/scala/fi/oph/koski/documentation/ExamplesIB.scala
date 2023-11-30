@@ -236,10 +236,10 @@ object ExamplesIB {
       ))
   )
 
-  def ibTutkinnonSuoritus(predicted: Boolean) = IBTutkinnonSuoritus(
+  def ibTutkinnonSuoritus(predicted: Boolean, vahvistus: Option[HenkilövahvistusPaikkakunnalla] = ExampleData.vahvistusPaikkakunnalla(org = ressunLukio, kunta = helsinki)) = IBTutkinnonSuoritus(
     toimipiste = ressunLukio,
     suorituskieli = englanti,
-    vahvistus = ExampleData.vahvistusPaikkakunnalla(org = ressunLukio, kunta = helsinki),
+    vahvistus = vahvistus,
     osasuoritukset = Some(osasuoritukset(vainPredictedArviointi = predicted)),
     theoryOfKnowledge = Some(IBTheoryOfKnowledgeSuoritus(
       IBOppiaineTheoryOfKnowledge(), ibCoreArviointi("A", predicted = predicted), osasuoritukset = Some(List(
