@@ -21,5 +21,5 @@ class YtrRepository(client: YtrClient)(implicit cacheInvalidator: CacheManager) 
     cache(key)
 
   private def uncachedFind(key: YtrCacheKey): Option[YtrOppija] =
-    key.hetut.flatMap(client.oppijaByHetu).headOption
+    key.hetut.map(hetu => YtrSsnWithPreviousSsns(hetu)).flatMap(client.oppijaByHetu).headOption
 }
