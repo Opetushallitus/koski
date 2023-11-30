@@ -17,7 +17,6 @@ import org.json4s.JValue
 import java.time.{LocalDate, ZonedDateTime}
 
 trait YtrClient {
-  // Rajapinnat, joilla haetaan kaikki YTL:n datat.
   def oppijaByHetu(ssn: YtrSsnWithPreviousSsns): Option[YtrOppija] = oppijaJsonByHetu(ssn).map(JsonSerializer.extract[YtrOppija](_, ignoreExtras = true))
   def oppijatByHetut(ssnData: YtrSsnData): List[YtrLaajaOppija] = oppijatJsonByHetut(ssnData).map(JsonSerializer.extract[List[YtrLaajaOppija]](_, ignoreExtras = true)).getOrElse(List.empty)
 
