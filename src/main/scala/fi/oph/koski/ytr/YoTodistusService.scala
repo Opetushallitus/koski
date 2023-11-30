@@ -39,8 +39,10 @@ abstract class YoTodistusService(application: KoskiApplication) {
   private def toHetuReq(req: YoTodistusOidRequest): Either[HttpStatus, YoTodistusHetuRequest] =
     henkilöRepository
       .findByOid(req.oid)
-      .flatMap(_.hetu)
-      .map(hetu => YoTodistusHetuRequest(ssn = hetu, language = req.language))
+      .flatMap {
+        case henkilö if henkilö.hetu.isDefined => Some(YoTodistusHetuRequest(ssn = henkilö.hetu.get, previousSsns = henkilö.vanhatHetut, language = req.language))
+        case _ => None
+      }
       .toRight(KoskiErrorCategory.notFound())
 }
 

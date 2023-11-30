@@ -59,6 +59,7 @@ object YtrClient extends Logging {
 
 case class YoTodistusHetuRequest(
   ssn: String,
+  previousSsns: List[String],
   language: String,
 )
 
