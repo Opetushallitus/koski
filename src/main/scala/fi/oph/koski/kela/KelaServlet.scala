@@ -17,6 +17,7 @@ class KelaServlet(implicit val application: KoskiApplication) extends KoskiSpeci
   post("/hetu") {
     withJsonBody { json =>
       val hetu = KelaRequest.parse(json)
+        .flatMap(hetu => application.hetu.validate(hetu))
       val oppija = hetu.flatMap(kelaService.findKelaOppijaByHetu(_)(session))
       renderEither(oppija)
     }()
@@ -25,8 +26,13 @@ class KelaServlet(implicit val application: KoskiApplication) extends KoskiSpeci
   post("/hetut") {
     withJsonBody { json =>
       KelaRequest.parseBulk(json) match {
-        case Right(hetut) =>
-          streamResponse[JValue](kelaService.streamOppijatByHetu(hetut), session)
+        case Right(hetut) => {
+          val validitHetut = hetut.filter(hetu => application.hetu.validate(hetu).isRight)
+          if (hetut.length != validitHetut.length) {
+            logger.warn(s"Kelan pyynnöstä filtteröitiin pois ${hetut.length - validitHetut.length}/${hetut.length} epävalidia hetua")
+          }
+          streamResponse[JValue](kelaService.streamOppijatByHetu(validitHetut), session)
+        }
         case Left(status) =>
           haltWithStatus(status)
       }

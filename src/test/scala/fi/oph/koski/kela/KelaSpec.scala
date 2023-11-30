@@ -40,6 +40,11 @@ class KelaSpec
         AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN", "target" -> Map("oppijaHenkiloOid" -> KoskiSpecificMockOppijat.amis.oid)))
       }
     }
+    "Palautetaan 400 jos pyyntö tehdään epävalidilla hetulla" in {
+      postHetu("230305A015A") {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.henkilötiedot.hetu("Virheellinen tarkistusmerkki hetussa: 230305A015A"))
+      }
+    }
     "Palautetaan 404 jos opiskelijalla ei ole ollenkaan Kelaa kiinnostavia opiskeluoikeuksia" in {
       postHetu(KoskiSpecificMockOppijat.monimutkainenKorkeakoululainen.hetu.get) {
         verifyResponseStatus(404, KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia("Oppijaa (hetu) ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun."))
@@ -162,18 +167,19 @@ class KelaSpec
   }
 
   "Usean oppijan rajapinta" - {
-    "Voidaan hakea usea oppija, jos jollain oppijalla ei löydy Kosken kantaan tallennettuja opintoja, se puuttuu vastauksesta" in {
+    "Voidaan hakea usea oppija, jos jollain oppijalla ei löydy Kosken kantaan tallennettuja opintoja tai hetu on epävalidi, se puuttuu vastauksesta" in {
+      val epävalidiHetu = "230305A015A"
       val hetut = List(
         KoskiSpecificMockOppijat.amis,
         KoskiSpecificMockOppijat.ibFinal,
         KoskiSpecificMockOppijat.koululainen,
         KoskiSpecificMockOppijat.ylioppilas
-      ).map(_.hetu.get)
+      ).map(_.hetu.get) ++ List(epävalidiHetu)
 
       postHetut(hetut) {
         verifyResponseStatusOk()
         val response = JsonSerializer.parse[List[KelaOppija]](body)
-        response.map(_.henkilö.hetu.get).sorted should equal(hetut.sorted.filterNot(_ == KoskiSpecificMockOppijat.ylioppilas.hetu.get))
+        response.map(_.henkilö.hetu.get).sorted should equal(hetut.sorted.filterNot(List(KoskiSpecificMockOppijat.ylioppilas.hetu.get, epävalidiHetu).contains))
       }
     }
     "Luo AuditLogin" in {
