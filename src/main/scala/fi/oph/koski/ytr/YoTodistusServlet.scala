@@ -16,19 +16,19 @@ class YoTodistusServlet(implicit val application: KoskiApplication)
   val service: YoTodistusService = application.yoTodistusService
 
   get("/status/:lang/:oppijaOid") {
-    renderEither(getRequest.flatMap(service.currentStatus))
+    renderEither(getRequestAndCheckAccess.flatMap(service.currentStatus))
   }
 
   get("/generate/:lang/:oppijaOid") {
     renderEither(
-      getRequest
+      getRequestAndCheckAccess
         .flatMap(service.initiateGenerating)
         .tap(_ => mkAuditLog(session, YTR_YOTODISTUKSEN_LUONTI))
     )
   }
 
   get("/download/:lang/:oppijaOid/:filename") {
-    getRequest.flatMap(service.currentStatus) match {
+    getRequestAndCheckAccess.flatMap(service.currentStatus) match {
       case Right(state: YtrCertificateCompleted) =>
         mkAuditLog(session, YTR_YOTODISTUKSEN_LATAAMINEN)
         contentType = "application/pdf"
@@ -38,7 +38,7 @@ class YoTodistusServlet(implicit val application: KoskiApplication)
     }
   }
 
-  private def getRequest: Either[HttpStatus, YoTodistusOidRequest] =
+  private def getRequestAndCheckAccess: Either[HttpStatus, YoTodistusOidRequest] =
     Right(YoTodistusOidRequest(
       oid = params("oppijaOid"),
       language = params("lang"),
