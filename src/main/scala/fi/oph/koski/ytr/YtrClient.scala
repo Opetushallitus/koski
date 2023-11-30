@@ -187,6 +187,7 @@ case class RemoteYtrClient(rootUrl: String, user: String, password: String) exte
   ))
 
   def oppijaJsonByHetu(ssn: YtrSsnWithPreviousSsns): Option[JValue] = {
+    logger.info(s"Pyyntö: ssn: ${ssn.ssn.toCharArray.mkString(" ")} previousSsns: ${ssn.previousSsns}")
     runIO(postRetryingHttp.post(uri"/api/oph-koski/student", ssn)(json4sEncoderOf[YtrSsnWithPreviousSsns])(Http.parseJsonOptional[JValue]))
   }
 
