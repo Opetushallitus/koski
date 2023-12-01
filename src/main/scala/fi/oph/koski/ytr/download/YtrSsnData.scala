@@ -1,11 +1,10 @@
 package fi.oph.koski.ytr.download
 
 import fi.oph.koski.henkilo.Hetu
-import fi.oph.koski.util.DateOrdering.{localDateOptionOrdering, localDateOrdering}
+import fi.oph.koski.util.DateOrdering.{localDateOptionOrdering}
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-
 
 case class YtrSsnData(
   ssns: Option[List[String]]

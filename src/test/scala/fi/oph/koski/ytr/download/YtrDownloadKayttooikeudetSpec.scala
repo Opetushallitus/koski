@@ -6,7 +6,7 @@ import fi.oph.koski.http.{ErrorDetail, HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession, MockUsers, UserWithPassword}
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.schema.{Oppija, UusiHenkilö, YlioppilastutkinnonOpiskeluoikeus}
-import fi.oph.koski.ytr.MockYrtClient
+import fi.oph.koski.ytr.{MockYrtClient, YtrSsnWithPreviousSsns}
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
@@ -36,7 +36,7 @@ class YtrDownloadKäyttöoikeudetSpec
   lazy val oppijaOid =
     KoskiApplicationForTests.opintopolkuHenkilöFacade.findOppijaByHetu(hetu).get.oid
 
-  private lazy val ytrOppijat = MockYrtClient.oppijatByHetut(YtrSsnData(ssns = Some(List("080380-2432", "140380-336X", "220680-7850", "240680-087S", "060807A7787", "300805A756F"))))
+  private lazy val ytrOppijat = MockYrtClient.oppijatByHetut(YtrSsnDataWithPreviousSsns(ssns = Some(List("080380-2432", "140380-336X", "220680-7850", "240680-087S", "060807A7787", "300805A756F").map(ssn => YtrSsnWithPreviousSsns(ssn)))))
   private lazy val ytrOppija = ytrOppijat.find(_.ssn == hetu).get
 
   private lazy val henkilö = UusiHenkilö(

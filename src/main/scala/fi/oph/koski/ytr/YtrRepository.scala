@@ -30,11 +30,7 @@ class YtrRepository(client: YtrClient)(implicit cacheInvalidator: CacheManager) 
       tunnisteet.hetu.toList.map(
         ssn => YtrSsnWithPreviousSsns(
           ssn,
-          if (tunnisteet.vanhatHetut.isEmpty) {
-            None
-          } else {
-            Some(tunnisteet.vanhatHetut)
-          }
+          tunnisteet.vanhatHetut
         )
       )
     )

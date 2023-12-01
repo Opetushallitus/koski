@@ -3,6 +3,7 @@ package fi.oph.koski.ytr.download
 import fi.oph.koski.api.misc.OpiskeluoikeusTestMethods
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import fi.oph.koski.koskiuser.MockUsers
+import fi.oph.koski.ytr.YtrSsnWithPreviousSsns
 import junit.framework.Assert.{assertEquals, assertNotNull, assertNotSame}
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.freespec.AnyFreeSpec

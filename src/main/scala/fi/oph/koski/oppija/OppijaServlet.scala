@@ -15,7 +15,8 @@ import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 import fi.oph.koski.tiedonsiirto.TiedonsiirtoError
 import fi.oph.koski.util.{Pagination, Timing, XML}
 import fi.oph.koski.virta.{VirtaHakuehtoHetu, VirtaHakuehtoKansallinenOppijanumero}
-import fi.oph.koski.ytr.download.{YtrLaajaOppija, YtrSsnData}
+import fi.oph.koski.ytr.YtrSsnWithPreviousSsns
+import fi.oph.koski.ytr.download.{YtrLaajaOppija, YtrSsnData, YtrSsnDataWithPreviousSsns}
 
 import javax.servlet.http.HttpServletRequest
 import org.json4s.JsonAST.{JBool, JObject, JString}
@@ -176,10 +177,12 @@ class OppijaServlet(implicit val application: KoskiApplication)
         .flatMap(oid =>
           application.opintopolkuHenkilöFacade.findMasterOppija(oid).toRight(KoskiErrorCategory.notFound.oppijaaEiLöydy())
         )
-        .map(henkilö => {
-          val hetut = henkilö.hetu.toList ++ henkilö.vanhatHetut
-          YtrSsnData(Some(hetut))
-        })
+        .flatMap {
+          case henkilö if henkilö.hetu.isDefined =>
+            Right(YtrSsnDataWithPreviousSsns(Some(List(YtrSsnWithPreviousSsns(henkilö.hetu.get, henkilö.vanhatHetut)))))
+          case _ =>
+            Left(KoskiErrorCategory.notFound())
+        }
         .map(application.ytrClient.oppijatByHetut)
         .map(
           auditLogYtrKatsominen(oppijaOid.getOrElse(""))

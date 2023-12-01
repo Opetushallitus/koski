@@ -11,6 +11,7 @@ import fi.oph.koski.oppija.HenkilönOpiskeluoikeusVersiot
 import fi.oph.koski.schema.{KoskiSchema, Oppija, UusiHenkilö, YlioppilastutkinnonOpiskeluoikeus}
 import fi.oph.koski.util.DateOrdering.localDateOrdering
 import fi.oph.koski.util.{Timing, Wait}
+import fi.oph.koski.ytr.YtrSsnWithPreviousSsns
 import fi.oph.scalaschema.{SerializationContext, Serializer}
 import rx.lang.scala.schedulers.NewThreadScheduler
 import rx.lang.scala.{Observable, Scheduler}
@@ -218,6 +219,33 @@ class YtrDownloadService(
       .doOnEach(o =>
         logger.info(s"Downloading a batch of ${o.ssns.map(_.length).getOrElse("-")} students from YTR from ${o.minMonth} to ${o.maxMonth}")
       )
+      .map(data => {
+        val ssnsWithPreviousSsns = data.ssns.toList.flatten
+          .map(ssn => {
+            // TODO: TOR-2001: Kun todettu tuotannossa, että toimii, poista turhat info-tason debug-printit.
+            application.opintopolkuHenkilöFacade.findOppijaByHetu(ssn) match {
+              case Some(oppija) if oppija.hetu.exists(_ == ssn) =>
+                // Tavallinen tapaus: opintopolusta löytyi oppija samalla hetulla kuin YTR:stä saatiin
+                if (!oppija.vanhatHetut.isEmpty) {
+                  logger.info(s"Lähetetään YTR:lle monihetullisen oppijan ${oppija.oid} voimassaoleva ja vanhat hetut")
+                }
+                YtrSsnWithPreviousSsns(ssn, oppija.vanhatHetut)
+              case Some(oppija) if oppija.hetu.isDefined && oppija.vanhatHetut.contains(ssn) =>
+                logger.info(s"YTR:ssä on oppijan ${oppija.oid} tiedot vanhalla hetulla. Pyydetään tiedot opintopolun tiedoilla.")
+                YtrSsnWithPreviousSsns(oppija.hetu.get, oppija.vanhatHetut)
+              case Some(oppija) if oppija.hetu.isDefined =>
+                logger.error(s"Opintopolusta löytyi oppija ${oppija.oid} YTR:n hetulla, mutta hänen opintopolun tiedoissaan ei ole YTR:n hetua lainkaan. Pyydetään tiedot vain YTR:n antamalla hetulla.")
+                YtrSsnWithPreviousSsns(ssn)
+              case Some(oppija) =>
+                logger.error(s"Oppijalle ${oppija.oid} ei löytynyt opintopolusta nykyistä hetua, vaikka tiedot YTR:n antamalla hetulla löytyivätkin. Pyydetään tiedot vain YTR:n antamalla hetulla.")
+                YtrSsnWithPreviousSsns(ssn)
+              case None =>
+                // Harvinaisempi, mutta normaali, tapaus: YTR:ssä on hetu, jota ei ole vielä opintopolussa.
+                YtrSsnWithPreviousSsns(ssn)
+            }
+          })
+        YtrSsnDataWithPreviousSsns(Some(ssnsWithPreviousSsns))
+      })
       .flatMap(a => Observable.from(application.ytrClient.oppijatByHetut(a)))
 
     oppijat
