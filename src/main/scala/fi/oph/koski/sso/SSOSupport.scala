@@ -38,6 +38,7 @@ trait SSOSupport extends ScalatraBase with Logging {
 
   def setKansalaisCookie(user: AuthenticationUser) = {
     cookieDomains.foreach(cookieDomain => setCookie("koskiOppija", user, domain = cookieDomain))
+    removeCookie("koskiUser")
   }
 
   private def setCookie(name: String, user: AuthenticationUser, domain: String = "") =
