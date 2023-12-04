@@ -39,6 +39,7 @@ export type SuorituksenVahvistusFieldProps<
   suoritusPath: FormOptic<T, S>
   organisaatio?: Oppilaitos | Koulutustoimija
   disableAdd?: boolean
+  disableRemoval?: boolean
 }>
 
 export const SuorituksenVahvistusField = <
@@ -48,7 +49,8 @@ export const SuorituksenVahvistusField = <
   props: SuorituksenVahvistusFieldProps<T, S>
 ): React.ReactElement => {
   const tila = viimeisinOpiskelujaksonTila(props.form.state.tila)
-  const disableRemoval = Boolean(tila && isValmistuvaTerminaalitila(tila))
+  const disableRemoval =
+    props.disableRemoval ?? Boolean(tila && isValmistuvaTerminaalitila(tila))
 
   return (
     <FormField

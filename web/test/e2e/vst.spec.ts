@@ -1372,7 +1372,7 @@ test.describe('Vapaa sivistystyö', () => {
         // Palauta keskeneräiseksi
         expect(
           await vahvistaminen.edit.merkitseKeskeneräiseksi.isDisabled()
-        ).toBeTruthy()
+        ).toBeFalsy()
         await vstOppijaPage.$.opiskeluoikeus.tila.edit.items(0).remove.click()
         await vahvistaminen.edit.merkitseKeskeneräiseksi.click()
 

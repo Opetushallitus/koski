@@ -82,6 +82,7 @@ export const VSTVapaatavoitteinenEditor: React.FC<
           suoritusPath={päätasonSuoritus.path}
           organisaatio={organisaatio}
           disableAdd={suoritusVahvistettu}
+          disableRemoval={false}
         />
         <Spacer />
 
