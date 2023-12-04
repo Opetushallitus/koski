@@ -1,26 +1,26 @@
 import React from 'react'
 import { useKoodistoFiller, useKoodistot } from '../../appstate/koodisto'
+import { TestIdLayer } from '../../appstate/useTestId'
 import { CommonProps } from '../../components-v2/CommonProps'
+import { Column, ColumnRow } from '../../components-v2/containers/Columns'
 import {
   Select,
   SelectOption,
   groupKoodistoToOptions
 } from '../../components-v2/controls/Select'
 import { FormModel, FormOptic } from '../../components-v2/forms/FormModel'
-import { OppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus } from '../../types/fi/oph/koski/schema/OppivelvollisilleSuunnattuVapaanSivistystyonKoulutuksenSuoritus'
-import { VapaanSivistystyönOpiskeluoikeus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeus'
-import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { t } from '../../i18n/i18n'
-import { append } from 'fp-ts/lib/Array'
-import { OppivelvollisilleSuunnatunVapaanSivistystyönOsasuoritus } from '../../types/fi/oph/koski/schema/OppivelvollisilleSuunnatunVapaanSivistystyonOsasuoritus'
-import { OppivelvollisilleSuunnatunVapaanSivistystyönOsaamiskokonaisuudenSuoritus } from '../../types/fi/oph/koski/schema/OppivelvollisilleSuunnatunVapaanSivistystyonOsaamiskokonaisuudenSuoritus'
-import { OppivelvollisilleSuunnatunVapaanSivistystyönValinnaistenSuuntautumisopintojenSuoritus } from '../../types/fi/oph/koski/schema/OppivelvollisilleSuunnatunVapaanSivistystyonValinnaistenSuuntautumisopintojenSuoritus'
-import { isKoodistoviiteOf } from '../../util/schema'
+import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
+import { OppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus } from '../../types/fi/oph/koski/schema/OppivelvollisilleSuunnattuVapaanSivistystyonKoulutuksenSuoritus'
 import { OppivelvollisilleSuunnattuVapaanSivistystyönOsaamiskokonaisuus } from '../../types/fi/oph/koski/schema/OppivelvollisilleSuunnattuVapaanSivistystyonOsaamiskokonaisuus'
-import { laajuusOpintopisteissa } from '../common/constructors'
+import { OppivelvollisilleSuunnatunVapaanSivistystyönOsaamiskokonaisuudenSuoritus } from '../../types/fi/oph/koski/schema/OppivelvollisilleSuunnatunVapaanSivistystyonOsaamiskokonaisuudenSuoritus'
+import { OppivelvollisilleSuunnatunVapaanSivistystyönOsasuoritus } from '../../types/fi/oph/koski/schema/OppivelvollisilleSuunnatunVapaanSivistystyonOsasuoritus'
 import { OppivelvollisilleSuunnatunVapaanSivistystyönValinnaisetSuuntautumisopinnot } from '../../types/fi/oph/koski/schema/OppivelvollisilleSuunnatunVapaanSivistystyonValinnaisetSuuntautumisopinnot'
-import { Column, ColumnRow } from '../../components-v2/containers/Columns'
-import { TestIdLayer } from '../../appstate/useTestId'
+import { OppivelvollisilleSuunnatunVapaanSivistystyönValinnaistenSuuntautumisopintojenSuoritus } from '../../types/fi/oph/koski/schema/OppivelvollisilleSuunnatunVapaanSivistystyonValinnaistenSuuntautumisopintojenSuoritus'
+import { VapaanSivistystyönOpiskeluoikeus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeus'
+import { appendOptional } from '../../util/array'
+import { isKoodistoviiteOf } from '../../util/schema'
+import { laajuusOpintopisteissa } from '../common/constructors'
 
 export type AddKOPSOsasuoritusProps = CommonProps<{
   form: FormModel<VapaanSivistystyönOpiskeluoikeus>
@@ -36,14 +36,14 @@ export const AddKOPSOsasuoritus: React.FC<AddKOPSOsasuoritusProps> = ({
 }) => {
   const options = useOptions()
   const fillKoodistot = useKoodistoFiller()
-  const osasuoritukset = path.prop('osasuoritukset').optional()
+  const osasuoritukset = path.prop('osasuoritukset')
 
   const onAdd = async (option?: SelectOption<Koodistokoodiviite>) => {
     const tunniste = option?.value
     if (tunniste) {
       form.updateAt(
         osasuoritukset,
-        append(await fillKoodistot(createOsasuoritus(tunniste)))
+        appendOptional(await fillKoodistot(createOsasuoritus(tunniste)))
       )
     }
   }
