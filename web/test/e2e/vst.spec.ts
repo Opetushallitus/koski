@@ -1,7 +1,9 @@
+import { sort } from 'fp-ts/lib/Array'
 import { foreachAsync, repeatAsync } from '../util/iterating'
 import { expect as _expect, test } from './base'
 import { KoskiVSTOppijaPage } from './pages/oppija/KoskiVSTOppijaPage'
-import { virkailija } from './setup/auth'
+import { kansalainen, virkailija } from './setup/auth'
+import { KoskiKansalainenPage } from './pages/kansalainen/KoskiKansalainenPage'
 
 const kotoutumiskoulutus2022 = '1.2.246.562.24.00000000135'
 const oppivelvollisilleSuunnattu = '1.2.246.562.24.00000000143'
@@ -13,15 +15,17 @@ const vstKoulutus = '1.2.246.562.24.00000000108'
 const openOppijaPage =
   (oppijaOid: string, edit: boolean) =>
   async ({ vstOppijaPage }: { vstOppijaPage: KoskiVSTOppijaPage }) => {
-    await vstOppijaPage.gotoWithQueryParams(oppijaOid, {
-      newVSTUI: 'true'
-    })
+    await vstOppijaPage.goto(oppijaOid)
     if (edit) {
       await vstOppijaPage.edit()
     }
   }
 
 test.describe('Vapaa sivistystyö', () => {
+  const expect = _expect.configure({
+    timeout: 2000
+  })
+
   test.describe('Katselunäkymä', () => {
     test.use({ storageState: virkailija('kalle') })
     test.beforeAll(async ({ fixtures }) => {
@@ -30,9 +34,6 @@ test.describe('Vapaa sivistystyö', () => {
     test.describe('VST JOTPA', () => {
       test.beforeEach(openOppijaPage(jotpaKoulutus, false))
       test('Näyttää tiedot oikein', async ({ page }) => {
-        const expect = _expect.configure({
-          timeout: 2000
-        })
         await expect(
           page.getByTestId('opiskeluoikeus.tila.value.items.0.date')
         ).toHaveText('1.1.2023')
@@ -48,12 +49,10 @@ test.describe('Vapaa sivistystyö', () => {
           page.getByTestId('suoritukset.0.toimipiste.value')
         ).toHaveText('Varsinais-Suomen kansanopisto')
         await expect(
-          page.getByTestId('suoritukset.0.koulutusmoduuli.tunniste.value')
+          page.getByTestId('suoritukset.0.tunniste.nimi')
         ).toHaveText('Vapaan sivistystyön koulutus')
         await expect(
-          page.getByTestId(
-            'suoritukset.0.koulutusmoduuli.tunniste.koodiarvo.value'
-          )
+          page.getByTestId('suoritukset.0.tunniste.koodiarvo')
         ).toHaveText('099999')
         await expect(
           page.getByTestId('suoritukset.0.osasuoritukset.0.nimi.value')
@@ -85,39 +84,39 @@ test.describe('Vapaa sivistystyö', () => {
         })
         await expect(
           page.getByTestId(
-            'suoritukset.0.osasuoritukset.0.properties.arviointi.0.value.arvosana'
+            'suoritukset.0.osasuoritukset.0.properties.arviointi.0.arvosana.value'
           )
         ).toHaveText('9')
         await expect(
           page.getByTestId(
-            'suoritukset.0.osasuoritukset.0.properties.arviointi.0.value.päivä'
+            'suoritukset.0.osasuoritukset.0.properties.arviointi.0.date.value'
           )
         ).toHaveText('1.2.2023')
         await expect(
           page.getByTestId(
-            'suoritukset.0.osasuoritukset.0.properties.arviointi.1.value.arvosana'
+            'suoritukset.0.osasuoritukset.0.properties.arviointi.1.arvosana.value'
           )
         ).toHaveText('Hylätty')
         await expect(
           page.getByTestId(
-            'suoritukset.0.osasuoritukset.0.properties.arviointi.1.value.päivä'
+            'suoritukset.0.osasuoritukset.0.properties.arviointi.1.date.value'
           )
         ).toHaveText('1.1.2023')
         await page.getByTestId('suoritukset.0.osasuoritukset.1.expand').click()
         await expect(
           page.getByTestId(
-            'suoritukset.0.osasuoritukset.1.properties.arviointi.0.value.arvosana'
+            'suoritukset.0.osasuoritukset.1.properties.arviointi.0.arvosana.value'
           )
         ).toHaveText('Hyväksytty')
         await expect(
           page.getByTestId(
-            'suoritukset.0.osasuoritukset.1.properties.arviointi.0.value.päivä'
+            'suoritukset.0.osasuoritukset.1.properties.arviointi.0.date.value'
           )
         ).toHaveText('1.3.2023')
         await page.getByTestId('suoritukset.0.osasuoritukset.2.expand').click()
-        await expect(
-          page.getByTestId('suoritukset.0.yhteensa.value')
-        ).toHaveText('3 op')
+        await expect(page.getByTestId('suoritukset.0.yhteensa')).toHaveText(
+          '3 op'
+        )
       })
     })
     test.describe('VST lukutaitokoulutus', () => {
@@ -141,12 +140,10 @@ test.describe('Vapaa sivistystyö', () => {
           page.getByTestId('suoritukset.0.toimipiste.value')
         ).toHaveText('Itä-Suomen yliopisto')
         await expect(
-          page.getByTestId('suoritukset.0.koulutusmoduuli.tunniste.value')
+          page.getByTestId('suoritukset.0.tunniste.nimi')
         ).toHaveText('Lukutaitokoulutus oppivelvollisille')
         await expect(
-          page.getByTestId(
-            'suoritukset.0.koulutusmoduuli.tunniste.koodiarvo.value'
-          )
+          page.getByTestId('suoritukset.0.tunniste.koodiarvo')
         ).toHaveText('999911')
         await expect(
           page.getByTestId('suoritukset.0.peruste.value')
@@ -218,19 +215,19 @@ test.describe('Vapaa sivistystyö', () => {
             .click()
           await expect(
             page.getByTestId(
-              `suoritukset.0.osasuoritukset.${i}.properties.arviointi.0.value.arvosana`
+              `suoritukset.0.osasuoritukset.${i}.properties.arviointi.0.arvosana.value`
             )
           ).toHaveText(osasuoritus.expander.arvosana)
           await expect(
             page.getByTestId(
-              `suoritukset.0.osasuoritukset.${i}.properties.arviointi.0.value.päivä`
+              `suoritukset.0.osasuoritukset.${i}.properties.arviointi.0.date.value`
             )
           ).toHaveText(osasuoritus.expander.arvosanaPvm)
           i++
         }
-        await expect(
-          page.getByTestId('suoritukset.0.yhteensa.value')
-        ).toHaveText('80 op')
+        await expect(page.getByTestId('suoritukset.0.yhteensa')).toHaveText(
+          '80 op'
+        )
       })
     })
     test.describe('VST kansanopisto', () => {
@@ -254,14 +251,12 @@ test.describe('Vapaa sivistystyö', () => {
           page.getByTestId('suoritukset.0.toimipiste.value')
         ).toHaveText('Varsinais-Suomen kansanopisto')
         await expect(
-          page.getByTestId('suoritukset.0.koulutusmoduuli.tunniste.value')
+          page.getByTestId('suoritukset.0.tunniste.nimi')
         ).toHaveText(
           'Kansanopistojen vapaan sivistystyön koulutus oppivelvollisille'
         )
         await expect(
-          page.getByTestId(
-            'suoritukset.0.koulutusmoduuli.tunniste.koodiarvo.value'
-          )
+          page.getByTestId('suoritukset.0.tunniste.koodiarvo')
         ).toHaveText('999909')
         await expect(
           page.getByTestId('suoritukset.0.peruste.value')
@@ -302,8 +297,7 @@ test.describe('Vapaa sivistystyö', () => {
                     arviointi: {
                       arvosana: 'Hyväksytty',
                       pvm: '30.10.2021'
-                    },
-                    tunnustettu: '–'
+                    }
                   }
                 },
                 {
@@ -315,8 +309,7 @@ test.describe('Vapaa sivistystyö', () => {
                     arviointi: {
                       arvosana: 'Hyväksytty',
                       pvm: '2.11.2021'
-                    },
-                    tunnustettu: '–'
+                    }
                   }
                 }
               ]
@@ -337,8 +330,7 @@ test.describe('Vapaa sivistystyö', () => {
                       pvm: '30.10.2021'
                     },
                     kuvaus:
-                      'Oman opiskelutyylin analysointi ja tavoitteiden asettaminen',
-                    tunnustettu: '–'
+                      'Oman opiskelutyylin analysointi ja tavoitteiden asettaminen'
                   }
                 }
               ]
@@ -358,8 +350,7 @@ test.describe('Vapaa sivistystyö', () => {
                       arvosana: 'Hyväksytty',
                       pvm: '30.10.2021'
                     },
-                    kuvaus: 'Matematiikan jokapäiväinen käyttö',
-                    tunnustettu: '–'
+                    kuvaus: 'Matematiikan jokapäiväinen käyttö'
                   }
                 },
                 {
@@ -371,8 +362,7 @@ test.describe('Vapaa sivistystyö', () => {
                       arvosana: 'Hyväksytty',
                       pvm: '30.10.2021'
                     },
-                    kuvaus: 'Geometrian perusteet',
-                    tunnustettu: '–'
+                    kuvaus: 'Geometrian perusteet'
                   }
                 },
                 {
@@ -384,8 +374,7 @@ test.describe('Vapaa sivistystyö', () => {
                       arvosana: 'Hyväksytty',
                       pvm: '10.12.2021'
                     },
-                    kuvaus: 'Trigonometrian perusteet',
-                    tunnustettu: '–'
+                    kuvaus: 'Trigonometrian perusteet'
                   }
                 }
               ]
@@ -406,8 +395,7 @@ test.describe('Vapaa sivistystyö', () => {
                       pvm: '30.10.2021'
                     },
                     kuvaus:
-                      'Kansalaisuuden merkitys moniarvoisess yhteiskunnasa',
-                    tunnustettu: '–'
+                      'Kansalaisuuden merkitys moniarvoisess yhteiskunnasa'
                   }
                 }
               ]
@@ -427,8 +415,7 @@ test.describe('Vapaa sivistystyö', () => {
                       arvosana: 'Hyväksytty',
                       pvm: '30.10.2021'
                     },
-                    kuvaus: 'CV:n laadinta ja käyttö työnhaussa',
-                    tunnustettu: '–'
+                    kuvaus: 'CV:n laadinta ja käyttö työnhaussa'
                   }
                 }
               ]
@@ -449,8 +436,7 @@ test.describe('Vapaa sivistystyö', () => {
                       pvm: '12.11.2021'
                     },
                     kuvaus:
-                      'Nykyaikaisen tietokoneen tyypilliset huoltotoimenpiteet',
-                    tunnustettu: '–'
+                      'Nykyaikaisen tietokoneen tyypilliset huoltotoimenpiteet'
                   }
                 },
                 {
@@ -462,8 +448,7 @@ test.describe('Vapaa sivistystyö', () => {
                       arvosana: 'Hyväksytty',
                       pvm: '30.10.2021'
                     },
-                    kuvaus: 'Valaisinlähteet ja niiden toiminta',
-                    tunnustettu: '–'
+                    kuvaus: 'Valaisinlähteet ja niiden toiminta'
                   }
                 },
                 {
@@ -475,8 +460,7 @@ test.describe('Vapaa sivistystyö', () => {
                       arvosana: 'Hyväksytty',
                       pvm: '30.10.2021'
                     },
-                    kuvaus: 'Taiteen käyttö työkaluna',
-                    tunnustettu: '–'
+                    kuvaus: 'Taiteen käyttö työkaluna'
                   }
                 },
                 {
@@ -552,12 +536,12 @@ test.describe('Vapaa sivistystyö', () => {
                   if (alaosasuoritus.extra.arviointi !== undefined) {
                     await expect(
                       page.getByTestId(
-                        `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.properties.arviointi.0.value.arvosana`
+                        `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.properties.arviointi.0.arvosana.value`
                       )
                     ).toHaveText(alaosasuoritus.extra.arviointi.arvosana)
                     await expect(
                       page.getByTestId(
-                        `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.properties.arviointi.0.value.päivä`
+                        `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.properties.arviointi.0.date.value`
                       )
                     ).toHaveText(alaosasuoritus.extra.arviointi.pvm)
                   }
@@ -569,9 +553,9 @@ test.describe('Vapaa sivistystyö', () => {
           i++
         }
 
-        await expect(
-          page.getByTestId('suoritukset.0.yhteensa.value')
-        ).toHaveText('55 op')
+        await expect(page.getByTestId('suoritukset.0.yhteensa')).toHaveText(
+          '55 op'
+        )
       })
     })
     test.describe('VST Oppivelvollisille suunnattu', () => {
@@ -595,14 +579,12 @@ test.describe('Vapaa sivistystyö', () => {
           page.getByTestId('suoritukset.0.toimipiste.value')
         ).toHaveText('Varsinais-Suomen kansanopisto')
         await expect(
-          page.getByTestId('suoritukset.0.koulutusmoduuli.tunniste.value')
+          page.getByTestId('suoritukset.0.tunniste.nimi')
         ).toHaveText(
           'Kansanopistojen vapaan sivistystyön koulutus oppivelvollisille'
         )
         await expect(
-          page.getByTestId(
-            'suoritukset.0.koulutusmoduuli.tunniste.koodiarvo.value'
-          )
+          page.getByTestId('suoritukset.0.tunniste.koodiarvo')
         ).toHaveText('999909')
         await expect(
           page.getByTestId('suoritukset.0.peruste.value')
@@ -643,8 +625,7 @@ test.describe('Vapaa sivistystyö', () => {
                     arviointi: {
                       arvosana: 'Hyväksytty',
                       pvm: '30.10.2021'
-                    },
-                    tunnustettu: '–'
+                    }
                   }
                 },
                 {
@@ -656,8 +637,7 @@ test.describe('Vapaa sivistystyö', () => {
                     arviointi: {
                       arvosana: 'Hyväksytty',
                       pvm: '2.11.2021'
-                    },
-                    tunnustettu: '–'
+                    }
                   }
                 }
               ]
@@ -678,8 +658,7 @@ test.describe('Vapaa sivistystyö', () => {
                       pvm: '30.10.2021'
                     },
                     kuvaus:
-                      'Oman opiskelutyylin analysointi ja tavoitteiden asettaminen',
-                    tunnustettu: '–'
+                      'Oman opiskelutyylin analysointi ja tavoitteiden asettaminen'
                   }
                 }
               ]
@@ -699,8 +678,7 @@ test.describe('Vapaa sivistystyö', () => {
                       arvosana: 'Hyväksytty',
                       pvm: '30.10.2021'
                     },
-                    kuvaus: 'Matematiikan jokapäiväinen käyttö',
-                    tunnustettu: '–'
+                    kuvaus: 'Matematiikan jokapäiväinen käyttö'
                   }
                 },
                 {
@@ -712,8 +690,7 @@ test.describe('Vapaa sivistystyö', () => {
                       arvosana: 'Hyväksytty',
                       pvm: '30.10.2021'
                     },
-                    kuvaus: 'Geometrian perusteet',
-                    tunnustettu: '–'
+                    kuvaus: 'Geometrian perusteet'
                   }
                 },
                 {
@@ -725,8 +702,7 @@ test.describe('Vapaa sivistystyö', () => {
                       arvosana: 'Hyväksytty',
                       pvm: '10.12.2021'
                     },
-                    kuvaus: 'Trigonometrian perusteet',
-                    tunnustettu: '–'
+                    kuvaus: 'Trigonometrian perusteet'
                   }
                 }
               ]
@@ -747,8 +723,7 @@ test.describe('Vapaa sivistystyö', () => {
                       pvm: '30.10.2021'
                     },
                     kuvaus:
-                      'Kansalaisuuden merkitys moniarvoisess yhteiskunnasa',
-                    tunnustettu: '–'
+                      'Kansalaisuuden merkitys moniarvoisess yhteiskunnasa'
                   }
                 }
               ]
@@ -768,8 +743,7 @@ test.describe('Vapaa sivistystyö', () => {
                       arvosana: 'Hyväksytty',
                       pvm: '30.10.2021'
                     },
-                    kuvaus: 'CV:n laadinta ja käyttö työnhaussa',
-                    tunnustettu: '–'
+                    kuvaus: 'CV:n laadinta ja käyttö työnhaussa'
                   }
                 }
               ]
@@ -790,8 +764,7 @@ test.describe('Vapaa sivistystyö', () => {
                       pvm: '12.11.2021'
                     },
                     kuvaus:
-                      'Nykyaikaisen tietokoneen tyypilliset huoltotoimenpiteet',
-                    tunnustettu: '–'
+                      'Nykyaikaisen tietokoneen tyypilliset huoltotoimenpiteet'
                   }
                 },
                 {
@@ -803,8 +776,7 @@ test.describe('Vapaa sivistystyö', () => {
                       arvosana: 'Hyväksytty',
                       pvm: '30.10.2021'
                     },
-                    kuvaus: 'Valaisinlähteet ja niiden toiminta',
-                    tunnustettu: '–'
+                    kuvaus: 'Valaisinlähteet ja niiden toiminta'
                   }
                 },
                 {
@@ -816,8 +788,7 @@ test.describe('Vapaa sivistystyö', () => {
                       arvosana: 'Hyväksytty',
                       pvm: '30.10.2021'
                     },
-                    kuvaus: 'Taiteen käyttö työkaluna',
-                    tunnustettu: '–'
+                    kuvaus: 'Taiteen käyttö työkaluna'
                   }
                 },
                 {
@@ -893,12 +864,12 @@ test.describe('Vapaa sivistystyö', () => {
                   if (alaosasuoritus.extra.arviointi !== undefined) {
                     await expect(
                       page.getByTestId(
-                        `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.properties.arviointi.0.value.arvosana`
+                        `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.properties.arviointi.0.arvosana.value`
                       )
                     ).toHaveText(alaosasuoritus.extra.arviointi.arvosana)
                     await expect(
                       page.getByTestId(
-                        `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.properties.arviointi.0.value.päivä`
+                        `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.properties.arviointi.0.date.value`
                       )
                     ).toHaveText(alaosasuoritus.extra.arviointi.pvm)
                   }
@@ -910,9 +881,9 @@ test.describe('Vapaa sivistystyö', () => {
           i++
         }
 
-        await expect(
-          page.getByTestId('suoritukset.0.yhteensa.value')
-        ).toHaveText('55 op')
+        await expect(page.getByTestId('suoritukset.0.yhteensa')).toHaveText(
+          '55 op'
+        )
       })
     })
     test.describe('VST Kotoutumiskoulutus oppivelvollisille', () => {
@@ -934,12 +905,10 @@ test.describe('Vapaa sivistystyö', () => {
           page.getByTestId('suoritukset.0.toimipiste.value')
         ).toHaveText('Varsinais-Suomen kansanopisto')
         await expect(
-          page.getByTestId('suoritukset.0.koulutusmoduuli.tunniste.value')
+          page.getByTestId('suoritukset.0.tunniste.nimi')
         ).toHaveText('Kotoutumiskoulutus oppivelvollisille')
         await expect(
-          page.getByTestId(
-            'suoritukset.0.koulutusmoduuli.tunniste.koodiarvo.value'
-          )
+          page.getByTestId('suoritukset.0.tunniste.koodiarvo')
         ).toHaveText('999910')
         await expect(
           page.getByTestId('suoritukset.0.peruste.value')
@@ -1099,7 +1068,7 @@ test.describe('Vapaa sivistystyö', () => {
                   if (alaosasuoritus.extra.arviointi !== undefined) {
                     await expect(
                       page.getByTestId(
-                        `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.properties.arviointi.0.value.arvosana`
+                        `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.properties.arviointi.0.arvosana.value`
                       )
                     ).toHaveText(alaosasuoritus.extra.arviointi.arvosana)
                   }
@@ -1111,9 +1080,9 @@ test.describe('Vapaa sivistystyö', () => {
           i++
         }
 
-        await expect(
-          page.getByTestId('suoritukset.0.yhteensa.value')
-        ).toHaveText('39 op')
+        await expect(page.getByTestId('suoritukset.0.yhteensa')).toHaveText(
+          '39 op'
+        )
       })
     })
     test.describe('Vapaatavoitteinen vst-koulutus', () => {
@@ -1135,12 +1104,10 @@ test.describe('Vapaa sivistystyö', () => {
           page.getByTestId('suoritukset.0.toimipiste.value')
         ).toHaveText('Varsinais-Suomen kansanopisto')
         await expect(
-          page.getByTestId('suoritukset.0.koulutusmoduuli.tunniste.value')
+          page.getByTestId('suoritukset.0.tunniste.nimi')
         ).toHaveText('Vapaan sivistystyön koulutus')
         await expect(
-          page.getByTestId(
-            'suoritukset.0.koulutusmoduuli.tunniste.koodiarvo.value'
-          )
+          page.getByTestId('suoritukset.0.tunniste.koodiarvo')
         ).toHaveText('099999')
         await expect(
           page.getByTestId('suoritukset.0.opintokokonaisuus.value')
@@ -1237,12 +1204,12 @@ test.describe('Vapaa sivistystyö', () => {
                   if (alaosasuoritus.extra.arviointi !== undefined) {
                     await expect(
                       page.getByTestId(
-                        `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.properties.arviointi.0.value.arvosana`
+                        `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.properties.arviointi.0.arvosana.value`
                       )
                     ).toHaveText(alaosasuoritus.extra.arviointi.arvosana)
                     await expect(
                       page.getByTestId(
-                        `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.properties.arviointi.0.value.päivä`
+                        `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.properties.arviointi.0.date.value`
                       )
                     ).toHaveText(alaosasuoritus.extra.arviointi.pvm)
                   }
@@ -1254,17 +1221,14 @@ test.describe('Vapaa sivistystyö', () => {
           i++
         }
 
-        await expect(
-          page.getByTestId('suoritukset.0.yhteensa.value')
-        ).toHaveText('5 op')
+        await expect(page.getByTestId('suoritukset.0.yhteensa')).toHaveText(
+          '5 op'
+        )
       })
     })
   })
 
   test.describe('Muokkausnäkymä', () => {
-    const expect = _expect.configure({
-      timeout: 2000
-    })
     test.use({ storageState: virkailija('kalle') })
     test.beforeEach(async ({ fixtures }) => {
       await fixtures.reset()
@@ -1392,7 +1356,7 @@ test.describe('Vapaa sivistystyö', () => {
         await tila.modal.date.set('1.1.2022')
         await tila.modal.tila.set('keskeytynyt')
         await tila.modal.submit.click()
-        expect(await tila.items(0).date.value()).toEqual('1.1.2022')
+        expect(await tila.items(0).date.value(true)).toEqual('1.1.2022')
         expect(await tila.items(0).tila.value()).toEqual('Keskeytynyt')
 
         await vstOppijaPage.tallennaVirheellisenä(
@@ -1520,9 +1484,9 @@ test.describe('Vapaa sivistystyö', () => {
         await tila.modal.date.set('1.1.2023')
         await tila.modal.tila.set('valmistunut')
         await tila.modal.submit.click()
-        expect(await tila.items(0).date.value()).toEqual('1.9.2021')
+        expect(await tila.items(0).date.value(true)).toEqual('1.9.2021')
         expect(await tila.items(0).tila.value()).toEqual('Läsnä')
-        expect(await tila.items(1).date.value()).toEqual('1.1.2023')
+        expect(await tila.items(1).date.value(true)).toEqual('1.1.2023')
         expect(await tila.items(1).tila.value()).toEqual('Valmistunut')
 
         await vstOppijaPage.tallenna()
@@ -1549,7 +1513,7 @@ test.describe('Vapaa sivistystyö', () => {
       })
     })
 
-    test.describe('Oppivelvollisille suunnattu vst-koulutus', () => {
+    test.describe('KOPS', () => {
       test.beforeEach(openOppijaPage(oppivelvollisilleSuunnattu, true))
 
       const osaamiskokonaisuudet = {
@@ -1568,11 +1532,16 @@ test.describe('Vapaa sivistystyö', () => {
 
       test('Osaamiskokonaisuuksien lisäys', async ({ vstOppijaPage }) => {
         await poistaKaikkiOsasuoritukset(vstOppijaPage)
-        expect(await vstOppijaPage.osasuoritusOptions()).toEqual(
-          Object.values(osaamiskokonaisuudet)
-        )
+        expect(await vstOppijaPage.osasuoritusOptions()).toEqual([
+          'VST OSAAMISKOKONAISUUS',
+          ...Object.values(osaamiskokonaisuudet).sort(),
+          'VST MUUT OPINNOT',
+          'Valinnaiset suuntautumisopinnot'
+        ])
         for (const koodi of Object.keys(osaamiskokonaisuudet)) {
-          await vstOppijaPage.addOsasuoritus(koodi)
+          await vstOppijaPage.addOsasuoritus(
+            `VST osaamiskokonaisuus.vstosaamiskokonaisuus_${koodi}`
+          )
         }
         await foreachAsync(Object.values(osaamiskokonaisuudet))(
           async (nimi, i) => {
@@ -1605,16 +1574,17 @@ test.describe('Vapaa sivistystyö', () => {
         }
 
         await poistaKaikkiOsasuoritukset(vstOppijaPage)
-        expect(await vstOppijaPage.suuntautumisopinnotOptions()).toEqual([
-          'Valinnaiset suuntautumisopinnot'
-        ])
 
-        await vstOppijaPage.addSuuntautumisopinto()
+        await vstOppijaPage.addOsasuoritus(
+          'VST muut opinnot.vstmuutopinnot_valinnaisetsuuntautumisopinnot'
+        )
         const suuntautumisopinto = vstOppijaPage.osasuoritus(0)
 
         expect(await suuntautumisopinto.isExpanded()).toBeTruthy()
         await foreachAsync(Object.keys(muuallaSuoritutetutOpinnot))((koodi) =>
-          suuntautumisopinto.addAlaosasuoritus(koodi)
+          suuntautumisopinto.addAlaosasuoritus(
+            `VST muualla suoritetut opinnot.vstmuuallasuoritetutopinnot_${koodi}`
+          )
         )
         await foreachAsync(Object.values(muuallaSuoritutetutOpinnot))(
           async (nimi, i) => {
@@ -1637,16 +1607,16 @@ test.describe('Vapaa sivistystyö', () => {
         vstOppijaPage
       }) => {
         await poistaKaikkiOsasuoritukset(vstOppijaPage)
-        expect(await vstOppijaPage.suuntautumisopinnotOptions()).toEqual([
-          'Valinnaiset suuntautumisopinnot'
-        ])
 
-        await vstOppijaPage.addSuuntautumisopinto()
+        await vstOppijaPage.addOsasuoritus(
+          'VST muut opinnot.vstmuutopinnot_valinnaisetsuuntautumisopinnot'
+        )
         const suuntautumisopinto = vstOppijaPage.osasuoritus(0)
 
         await suuntautumisopinto.expand()
-        suuntautumisopinto.addPaikallinenOpintokokonaisuus(
-          'Työelämäharjoittelu'
+        suuntautumisopinto.addNewAlaosasuoritus(
+          'Työelämäharjoittelu',
+          'paikallinen.__NEW__'
         )
 
         const paikallinen = suuntautumisopinto.alaosasuoritus(0)
@@ -1667,7 +1637,7 @@ test.describe('Vapaa sivistystyö', () => {
       }) => {
         const osaamiskokonaisuus = vstOppijaPage.osasuoritus(0)
         await osaamiskokonaisuus.expand()
-        await osaamiskokonaisuus.addPaikallinenOpintokokonaisuus('Testi')
+        await osaamiskokonaisuus.addNewAlaosasuoritus('Testi')
 
         const opintokokonaisuus = osaamiskokonaisuus.alaosasuoritus(0)
         await opintokokonaisuus.setLaajuus(3)
@@ -1718,9 +1688,9 @@ test.describe('Vapaa sivistystyö', () => {
         await tila.modal.tila.set('valmistunut')
         await tila.modal.submit.click()
 
-        expect(await tila.items(0).date.value()).toEqual('1.9.2021')
+        expect(await tila.items(0).date.value(true)).toEqual('1.9.2021')
         expect(await tila.items(0).tila.value()).toEqual('Läsnä')
-        expect(await tila.items(1).date.value()).toEqual('1.1.2023')
+        expect(await tila.items(1).date.value(true)).toEqual('1.1.2023')
         expect(await tila.items(1).tila.value()).toEqual('Valmistunut')
         expect(await tila.add.isVisible()).toBeFalsy()
 
@@ -1762,7 +1732,7 @@ test.describe('Vapaa sivistystyö', () => {
         vstOppijaPage: KoskiVSTOppijaPage
       ) => repeatAsync(4)(() => vstOppijaPage.removeOsasuoritus(0))
 
-      test('Osasuorituksien lisäys sekä laajuuksien ja arvosanan asettaminen', async ({
+      test('Osasuorituksien lisäys sekä arvosanan asettaminen', async ({
         vstOppijaPage
       }) => {
         await poistaKaikkiOsasuoritukset(vstOppijaPage)
@@ -1775,17 +1745,12 @@ test.describe('Vapaa sivistystyö', () => {
             const osasuoritus = vstOppijaPage.osasuoritus(index)
             expect(await osasuoritus.nimi()).toEqual(nimi)
 
-            await osasuoritus.setLaajuus(1 + index)
-            expect(await osasuoritus.laajuus()).toEqual(`${1 + index}`)
-
             if (koodi !== 'ohjaus') {
               await osasuoritus.setSuoritusarvosana(true)
               expect(await osasuoritus.arvosana()).toEqual('Hyväksytty')
             }
           }
         )
-        expect(await vstOppijaPage.suorituksenLaajuus()).toEqual('10 op')
-
         await vstOppijaPage.tallennaVirheellisenä(
           'Kielten ja viestinnän osasuoritusta ei voi hyväksyä ennen kuin kaikki pakolliset alaosasuoritukset on arvioitu',
           'Oppiaineen laajuus puuttuu',
@@ -1915,9 +1880,9 @@ test.describe('Vapaa sivistystyö', () => {
         await tila.modal.date.set('1.1.2023')
         await tila.modal.tila.set('valmistunut')
         await tila.modal.submit.click()
-        expect(await tila.items(0).date.value()).toEqual('1.8.2022')
+        expect(await tila.items(0).date.value(true)).toEqual('1.8.2022')
         expect(await tila.items(0).tila.value()).toEqual('Läsnä')
-        expect(await tila.items(1).date.value()).toEqual('1.1.2023')
+        expect(await tila.items(1).date.value(true)).toEqual('1.1.2023')
         expect(await tila.items(1).tila.value()).toEqual('Valmistunut')
         expect(await tila.add.isVisible()).toBeFalsy()
 
@@ -2029,12 +1994,12 @@ test.describe('Vapaa sivistystyö', () => {
         await tila.modal.tila.set('hyvaksytystisuoritettu')
         await tila.modal.submit.click()
 
-        expect(await tila.items(0).date.value()).toEqual('1.1.2023')
+        expect(await tila.items(0).date.value(true)).toEqual('1.1.2023')
         expect(await tila.items(0).tila.value()).toEqual('Läsnä')
         expect(await tila.items(0).rahoitus.value()).toEqual(
           '(Jatkuvan oppimisen ja työllisyyden palvelukeskuksen rahoitus)'
         )
-        expect(await tila.items(1).date.value()).toEqual('1.3.2023')
+        expect(await tila.items(1).date.value(true)).toEqual('1.3.2023')
         expect(await tila.items(1).tila.value()).toEqual(
           'Hyväksytysti suoritettu'
         )
@@ -2075,6 +2040,52 @@ test.describe('Vapaa sivistystyö', () => {
         ).toBeTruthy()
 
         await vstOppijaPage.tallenna()
+      })
+    })
+  })
+
+  test.describe('Kansalaisen näkymä', () => {
+    test.beforeEach(async ({ fixtures, page }) => {
+      await fixtures.apiLoginAsUser('kalle', 'kalle')
+      await fixtures.reset()
+      await fixtures.apiLogout()
+      await page.goto('/koski/omattiedot')
+    })
+
+    test.describe('Suostumuksen peruutus', () => {
+      test.describe('Vapaatavoitteinen VST', () => {
+        test.use({ storageState: kansalainen('010917-156A') })
+        test('Suostumuksen voi perua', async ({ kansalainenPage }) => {
+          await kansalainenPage.expectSuostumusPeruttavissa(true)
+          await kansalainenPage.peruSuostumus()
+        })
+
+        test('Suostumusta ei voi perua, jos siitä on tehty suoritusjako', async ({
+          kansalainenPage,
+          page
+        }) => {
+          await kansalainenPage.openJaaSuoritustietoja()
+          await kansalainenPage
+            .suoritustietoLabel(
+              '1.2.246.562.10.31915273374',
+              'vstvapaatavoitteinenkoulutus',
+              '099999'
+            )
+            .click()
+          await kansalainenPage.jaaValitsemasiOpinnotButton().click()
+
+          await page.reload() // TODO: Käli olisi hyvä fiksata niin, ettei tätä tarvita
+          await kansalainenPage.expectSuostumusPeruttavissa(false)
+        })
+      })
+
+      test.describe('Lukutaitokoulutus', () => {
+        test.use({ storageState: kansalainen('231158-467R') })
+        test('Suostumusta ei voi perua, koska se ei ole peruttavaa tyyppiä', async ({
+          kansalainenPage
+        }) => {
+          await kansalainenPage.expectSuostumusPeruttavissa(false)
+        })
       })
     })
   })

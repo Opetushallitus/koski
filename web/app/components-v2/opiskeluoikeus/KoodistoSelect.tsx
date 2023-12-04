@@ -3,8 +3,9 @@ import { useKoodisto } from '../../appstate/koodisto'
 import { t } from '../../i18n/i18n'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
-import { CommonProps, subTestId } from '../CommonProps'
+import { CommonProps } from '../CommonProps'
 import { OptionList, Select, SelectOption } from '../controls/Select'
+import { TestIdLayer, useTestId } from '../../appstate/useTestId'
 
 export type KoodistoSelectProps<T extends string> = CommonProps<{
   koodistoUri: T
@@ -12,6 +13,7 @@ export type KoodistoSelectProps<T extends string> = CommonProps<{
   onSelect: (tunniste: Koodistokoodiviite<T>, isNew: boolean) => void
   onRemove?: (tunniste: Koodistokoodiviite<T>) => void
   filter?: (tunniste: Koodistokoodiviite<T>) => boolean
+  testId: string | number
 }>
 
 export function KoodistoSelect<T extends string>(
@@ -49,14 +51,14 @@ export function KoodistoSelect<T extends string>(
   )
 
   return (
-    <>
+    <TestIdLayer id="addOsasuoritus">
       <Select
         placeholder={props.addNewText}
         options={options}
         hideEmpty
         onChange={onChangeCB}
-        testId={subTestId(props, 'select')}
+        testId="select"
       />
-    </>
+    </TestIdLayer>
   )
 }

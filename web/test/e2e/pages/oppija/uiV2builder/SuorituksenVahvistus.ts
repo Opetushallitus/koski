@@ -23,12 +23,14 @@ export const SuorituksenVahvistus = () => ({
     merkitseKeskeneräiseksi: Button,
     modal: {
       date: FormField(Input, Input),
-      myöntäjät: {
+      organisaatiohenkilöt: {
         edit: {
           add: Select,
-          henkilö: arrayOf({ delete: Button }),
-          newHenkilö: arrayOf({ nimi: Input, titteli: Input }),
-          storedHenkilö: arrayOf(Select)
+          henkilö: arrayOf({
+            delete: Button,
+            newHenkilö: { nimi: Input, titteli: Input },
+            storedHenkilö: Select
+          })
         }
       },
       organisaatio: FormField(Select, Select),
@@ -50,10 +52,10 @@ export const vahvistaSuoritusUudellaHenkilöllä = async (
 
   await vahvistus.modal.date.set(pvm)
 
-  const myöntäjät = vahvistus.modal.myöntäjät.edit
+  const myöntäjät = vahvistus.modal.organisaatiohenkilöt.edit
   await myöntäjät.add.set('__NEW__')
 
-  const henkilö = myöntäjät.newHenkilö(0)
+  const henkilö = myöntäjät.henkilö(0).newHenkilö
   await henkilö.nimi.set(nimi)
   await henkilö.titteli.set(titteli)
 
@@ -69,7 +71,7 @@ export const vahvistaSuoritusTallennetullaHenkilöllä = async (
 
   await vahvistus.merkitseValmiiksi.click()
   await vahvistus.modal.date.set(pvm)
-  await vahvistus.modal.myöntäjät.edit.add.set(nimi)
+  await vahvistus.modal.organisaatiohenkilöt.edit.add.set(nimi)
   await vahvistus.modal.submit.click()
 }
 

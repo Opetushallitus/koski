@@ -15,7 +15,7 @@ export const OpiskeluoikeudenTila = () => ({
   },
   edit: {
     items: arrayOf({
-      date: Input,
+      date: FormField(Input, Input),
       tila: Label,
       rahoitus: Label,
       remove: Button

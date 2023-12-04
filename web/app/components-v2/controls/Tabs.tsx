@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { t } from '../../i18n/i18n'
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
-import { common, CommonProps, cx, testId } from '../CommonProps'
+import { common, CommonProps, cx } from '../CommonProps'
+import { TestIdLayer, useTestId } from '../../appstate/useTestId'
 
 export type TabsProps<T> = CommonProps<{
   tabs: Tab<T>[]
@@ -27,25 +28,34 @@ export const Tabs = <T,>(props: TabsProps<T>) => {
     <nav {...common(props, ['Tabs'])}>
       <ul className="Tabs__list">
         {props.tabs.map((tab, i) => (
-          <li
-            key={i}
-            className={cx(
-              'Tabs__item',
-              tab.key === active && 'Tabs__item-active'
-            )}
-          >
-            <button
-              tabIndex={0}
-              className="Tabs__button"
-              onClick={() => select(tab.key)}
-              {...testId(tab)}
+          <TestIdLayer key={i} id={i}>
+            <li
+              className={cx(
+                'Tabs__item',
+                tab.key === active && 'Tabs__item-active'
+              )}
             >
-              {tab.display || t(tab.label)}
-            </button>
-          </li>
+              <TabButton onClick={() => select(tab.key)}>
+                {tab.display || t(tab.label)}
+              </TabButton>
+            </li>
+          </TestIdLayer>
         ))}
         <div className="Tabs__filler" />
       </ul>
     </nav>
   )
 }
+const TabButton: React.FC<{
+  onClick: () => void
+  children: React.ReactNode
+}> = (props) => (
+  <button
+    tabIndex={0}
+    className="Tabs__button"
+    onClick={props.onClick}
+    data-testid={useTestId('tab')}
+  >
+    {props.children}
+  </button>
+)

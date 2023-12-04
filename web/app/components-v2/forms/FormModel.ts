@@ -12,6 +12,7 @@ import { deepEqual } from '../../util/fp/objects'
 import { assertNever } from '../../util/selfcare'
 import { ValidationRule } from './ValidationRule'
 import { validateData, ValidationError } from './validator'
+import { storeDeferredPreferences } from '../../appstate/preferences'
 
 export enum EditMode {
   View = 0,
@@ -162,7 +163,8 @@ export const useForm = <O extends object>(
         setEditMode(EditMode.Saving)
         pipe(
           await api(data),
-          tap((response) => {
+          tap(async (response) => {
+            await storeDeferredPreferences()
             dispatch({ type: 'endEdit', value: merge(response.data)(data) })
           }),
           tapLeft((errorResponse) => {
@@ -275,6 +277,7 @@ const reducer = <O>(
       const initialData = action.modifyInitialData
         ? action.modify(state.initialData)
         : state.initialData
+
       return state.editMode
         ? {
             ...state,
@@ -324,10 +327,12 @@ const reducer = <O>(
         validateData(state.data, rule)
       )
       const errors = [...schemaErrors, ...ruleErrors]
-      return {
-        ...state,
-        errors: deepEqual(errors, state.errors) ? state.errors : errors
-      }
+      return deepEqual(errors, state.errors)
+        ? state
+        : {
+            ...state,
+            errors
+          }
     }
     default:
       return state
@@ -373,6 +378,9 @@ const modifiesShape = <O extends object, T>(
   data: O
 ): boolean => {
   const value = getValue(optic)(data)
+  if (value === undefined) {
+    return true
+  }
   if (Array.isArray(value)) {
     const result = modify(value)
     if (!Array.isArray(result) || result.length !== value.length) {

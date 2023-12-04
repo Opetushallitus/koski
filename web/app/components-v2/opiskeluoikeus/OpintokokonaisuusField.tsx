@@ -8,6 +8,7 @@ import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokood
 import { CommonProps } from '../CommonProps'
 import { OptionList, Select } from '../controls/Select'
 import { FieldViewerProps, FieldEditorProps } from '../forms/FormField'
+import { useTestId } from '../../appstate/useTestId'
 
 type OpintokokonaisuusViewProps = CommonProps<
   FieldViewerProps<Koodistokoodiviite<'opintokokonaisuudet', string>, {}>
@@ -16,8 +17,9 @@ type OpintokokonaisuusViewProps = CommonProps<
 export const OpintokokonaisuusView: React.FC<OpintokokonaisuusViewProps> = (
   props
 ) => {
+  const testId = useTestId('opintokokonaisuus.value')
   return (
-    <div>
+    <div data-testid={testId}>
       <a
         href={`${window.ePerusteetBaseUrl}${t(
           'eperusteet_opintopolku_url_fragment'
@@ -56,6 +58,7 @@ export const OpintokokonaisuusEdit: React.FC<OpintokokonaisuusEditProps> = (
       initialValue={props.value?.koodiarvo}
       value={props.value?.koodiarvo || ''}
       options={mappedOpintokokonaisuudet}
+      testId="opintokokonaisuus.edit"
     />
   )
 }

@@ -53,7 +53,7 @@ export function useKoodisto<T extends string>(
  *
  * @returns KoodistokoodiviiteKoodistonNimellä[] kun yksikin koodisto on saatu ladattua, muuten null.
  */
-const useKoodistot = <T extends string>(
+export const useKoodistot = <T extends string>(
   ...koodistoUris: Array<string | null | undefined>
 ) => {
   const { koodistot, loadKoodistot } = useContext(KoodistoContext)

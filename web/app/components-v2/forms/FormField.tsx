@@ -1,6 +1,6 @@
 import * as A from 'fp-ts/Array'
-import { constant } from 'fp-ts/lib/function'
 import * as NEA from 'fp-ts/NonEmptyArray'
+import { constant } from 'fp-ts/lib/function'
 import React, { useCallback, useEffect, useMemo } from 'react'
 import { useKoodistoFiller } from '../../appstate/koodisto'
 import { deepEqual } from '../../util/fp/objects'
@@ -10,8 +10,8 @@ import { ValidationError } from './validator'
 
 export type FieldViewerProps<FieldValue, ViewerProps> = ViewerProps & {
   value?: FieldValue | undefined
-  testId?: string
   index?: number
+  testId?: string | number
 }
 
 export type FieldEditorProps<FieldValue, EditorProps> = EditorProps & {
@@ -20,8 +20,8 @@ export type FieldEditorProps<FieldValue, EditorProps> = EditorProps & {
   optional?: boolean
   errors?: NEA.NonEmptyArray<ValidationError>
   value?: FieldValue | undefined
-  testId?: string
   index?: number
+  testId?: string | number
 }
 
 type ComponentType<T> =
@@ -63,9 +63,9 @@ export type FormFieldProps<
   updateAlso?: Array<SideUpdate<FormState, FieldValue, any>>
   // Polku mitä käytetään virheiden hakemiseen, jos eri kuin mikä voidaan muodostaa path-propertysta.
   errorsFromPath?: string
-  testId?: string
   // Komponenteille vietävä indeksi. Käytetään automaattiesti FormListFieldin kanssa.
   index?: number
+  testId?: string | number
 } & ( // Polku (Lens tai Prism) joka osoittaa mitä arvoa lomakkeen datasta ollaan muokkaamassa
   | { path: FormOptic<FormState, FieldValue>; optional?: false }
   | { path: FormOptic<FormState, FieldValue | undefined>; optional: true }
@@ -114,8 +114,7 @@ export const FormField = <
     editProps,
     auto,
     errorsFromPath,
-    optional,
-    testId
+    optional
   } = props
   const fillKoodistot = useKoodistoFiller()
 
@@ -192,8 +191,8 @@ export const FormField = <
           onChange={set}
           errors={A.isNonEmpty(errors) ? errors : undefined}
           path={path}
-          testId={testId && `${testId}.edit`}
           index={props.index}
+          testId={props.testId && `${props.testId}.edit`}
         />
       )
     }
@@ -204,8 +203,8 @@ export const FormField = <
     <View
       {...viewProps}
       value={value}
-      testId={testId && `${testId}.value`}
       index={props.index}
+      testId={props.testId && `${props.testId}.value`}
     />
   )
 }

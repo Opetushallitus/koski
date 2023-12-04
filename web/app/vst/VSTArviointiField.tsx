@@ -1,24 +1,22 @@
 import React from 'react'
-import { CommonProps, subTestId } from '../components-v2/CommonProps'
+import { CommonProps } from '../components-v2/CommonProps'
 import { DateEdit, DateView } from '../components-v2/controls/DateField'
 import {
   FieldEditorProps,
   FieldViewerProps
 } from '../components-v2/forms/FormField'
 import {
-  ParasArvosanaEdit,
-  ArvosanaView,
-  ArvosanaEdit
+  ArvosanaEdit,
+  ArvosanaView
 } from '../components-v2/opiskeluoikeus/ArvosanaField'
 import { OsasuoritusSubproperty } from '../components-v2/opiskeluoikeus/OsasuoritusProperty'
+import { ArvosanaOf } from '../util/schema'
 import {
   VSTArviointi,
   VSTOsasuoritus,
-  VSTOsasuoritusArvioinnilla,
   hasPäiväInArviointi,
   isVSTOsasuoritusArvioinnilla
 } from './typeguards'
-import { createVstArviointi } from './resolvers'
 
 export type VSTArviointiViewProps = CommonProps<
   FieldViewerProps<VSTArviointi, {}>
@@ -29,33 +27,30 @@ export const VSTArviointiView = (props: VSTArviointiViewProps) => {
   return props.value ? (
     <>
       <OsasuoritusSubproperty rowNumber={startRow} label="Arvosana">
-        <ArvosanaView
-          value={props.value}
-          testId={subTestId(props, 'arvosana')}
-        />
+        <ArvosanaView value={props.value} />
       </OsasuoritusSubproperty>
       {hasPäiväInArviointi(props.value) && (
         <OsasuoritusSubproperty rowNumber={startRow + 1} label="Päivämäärä">
-          <DateView
-            value={props.value.päivä}
-            testId={subTestId(props, 'päivä')}
-          />
+          <DateView value={props.value.päivä} />
         </OsasuoritusSubproperty>
       )}
     </>
   ) : null
 }
 
-export type VSTArviointiEditProps = CommonProps<
+export type VSTArviointiEditProps<T extends VSTArviointi> = CommonProps<
   FieldEditorProps<
-    VSTArviointi,
+    T,
     {
+      createArviointi: (arvosana: ArvosanaOf<T>) => T
       osasuoritus: VSTOsasuoritus
     }
   >
 >
 
-export const VSTArviointiEdit = (props: VSTArviointiEditProps) => {
+export const VSTArviointiEdit = <T extends VSTArviointi>(
+  props: VSTArviointiEditProps<T>
+) => {
   if (!isVSTOsasuoritusArvioinnilla(props.osasuoritus)) {
     return <div>{'Ei arviointia'}</div>
   }
@@ -64,20 +59,16 @@ export const VSTArviointiEdit = (props: VSTArviointiEditProps) => {
   return props.value ? (
     <>
       <OsasuoritusSubproperty rowNumber={startRow} label="Arvosana">
-        <ArvosanaEdit
-          {...props}
-          createArviointi={createVstArviointi(props.osasuoritus)}
-          testId={subTestId(props, 'arvosana')}
-        />
+        <ArvosanaEdit {...props} createArviointi={props.createArviointi} />
       </OsasuoritusSubproperty>
       {hasPäiväInArviointi(props.value) && (
         <OsasuoritusSubproperty rowNumber={startRow + 1} label="Päivämäärä">
           <DateEdit
             value={props.value.päivä}
             onChange={(päivä) =>
-              päivä && props.onChange({ ...props.value, päivä } as VSTArviointi)
+              päivä && props.onChange({ ...props.value, päivä } as T)
             }
-            testId={subTestId(props, 'päivä')}
+            errors={props.errors}
           />
         </OsasuoritusSubproperty>
       )}

@@ -22,3 +22,8 @@ export const updateAt =
       A.updateAt(i, t),
       O.getOrElseW(() => [])
     )
+
+export const appendOptional =
+  <T>(t: T) =>
+  (ts: T[] | undefined): T[] =>
+    ts ? [...ts, t] : [t]

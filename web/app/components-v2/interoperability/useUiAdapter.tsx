@@ -33,9 +33,9 @@ export type AdaptedOpiskeluoikeusEditorProps<T extends Opiskeluoikeus> = {
   invalidatable: boolean
 }
 
-export type AdaptedOpiskeluoikeusEditor<T extends Opiskeluoikeus> = (
-  prop: AdaptedOpiskeluoikeusEditorProps<T>
-) => React.ReactElement | null
+export type AdaptedOpiskeluoikeusEditor<T extends Opiskeluoikeus> = React.FC<
+  AdaptedOpiskeluoikeusEditorProps<T>
+>
 
 export type AdaptedOpiskeluoikeusEditorCollection = Partial<{
   [OO in Opiskeluoikeus as OpiskeluoikeudenTyyppiOf<OO>]: AdaptedOpiskeluoikeusEditor<OO>
@@ -131,9 +131,7 @@ export const useKansalainenUiAdapter = (
 
   return useUiAdapterImpl(
     ooTyypit,
-    () => {
-      oppija.call(suoritusjakoId || 'xxx')
-    },
+    () => oppija.call(suoritusjakoId || ''),
     oppija
   )
 }

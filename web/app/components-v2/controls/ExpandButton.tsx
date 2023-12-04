@@ -1,6 +1,7 @@
 import React from 'react'
-import { common, CommonProps, testId } from '../CommonProps'
+import { common, CommonProps } from '../CommonProps'
 import { CHARCODE_CLOSE, CHARCODE_OPEN, Icon } from '../texts/Icon'
+import { useTestId } from '../../appstate/useTestId'
 
 export type ExpandButtonProps = CommonProps<{
   expanded: boolean
@@ -9,17 +10,20 @@ export type ExpandButtonProps = CommonProps<{
   disabled?: boolean
 }>
 
-export const ExpandButton: React.FC<ExpandButtonProps> = (props) => (
-  <button
-    {...common(props, ['ExpandButton'])}
-    {...testId(props)}
-    onClick={() => props.onChange(!props.expanded)}
-    role="button"
-    aria-expanded={false}
-    aria-label={
-      props.expanded ? `Pienennä ${props.label}` : `Laajenna ${props.label}`
-    }
-  >
-    <Icon charCode={props.expanded ? CHARCODE_CLOSE : CHARCODE_OPEN} />
-  </button>
-)
+export const ExpandButton: React.FC<ExpandButtonProps> = (props) => {
+  const testId = useTestId('expand')
+  return (
+    <button
+      {...common(props, ['ExpandButton'])}
+      onClick={() => props.onChange(!props.expanded)}
+      role="button"
+      aria-expanded={false}
+      aria-label={
+        props.expanded ? `Pienennä ${props.label}` : `Laajenna ${props.label}`
+      }
+      data-testid={testId}
+    >
+      <Icon charCode={props.expanded ? CHARCODE_CLOSE : CHARCODE_OPEN} />
+    </button>
+  )
+}

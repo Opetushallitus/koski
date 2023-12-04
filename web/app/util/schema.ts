@@ -19,6 +19,19 @@ import { OpiskeluoikeudenTila } from '../types/fi/oph/koski/schema/Opiskeluoikeu
 import { Opiskeluoikeusjakso } from '../types/fi/oph/koski/schema/Opiskeluoikeusjakso'
 import { Vahvistus } from '../types/fi/oph/koski/schema/Vahvistus'
 import { ItemOf } from './types'
+import { Suoritus } from '../types/fi/oph/koski/schema/Suoritus'
+import { Arviointi } from '../types/fi/oph/koski/schema/Arviointi'
+
+export const isKoodistoviiteOf =
+  <T extends string>(uri: T) =>
+  (viite: Koodistokoodiviite): viite is Koodistokoodiviite<T> =>
+    viite.koodistoUri === uri
+
+export type OsasuoritusOf<T extends Suoritus> = T extends {
+  osasuoritukset?: Array<infer S>
+}
+  ? S
+  : never
 
 export type OpiskeluoikeusjaksotOf<T extends OpiskeluoikeudenTila> =
   T['opiskeluoikeusjaksot']
@@ -58,3 +71,13 @@ export const isHenkilövahvistus = (
   isHenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla(
     vahvistus
   )
+
+export type ArviointiOf<T extends Suoritus> = T extends {
+  arviointi?: Array<infer S>
+}
+  ? S
+  : never
+
+export type ArvosanaOf<T extends Arviointi> = T['arvosana']
+
+export type KoulutusmoduuliOf<T extends Suoritus> = T['koulutusmoduuli']

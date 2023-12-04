@@ -8,8 +8,22 @@ export const Select = createControl((self, child) => {
   return {
     set: async (key: string) => {
       await showOptions()
-      await child(`options.${key}.item`).click()
+      try {
+        await child(`options.${key}.item`).click({ timeout: 5000 })
+      } catch (e) {
+        const x = await child('options')
+          .locator('.Select__optionLabel')
+          .elementHandles()
+        console.error(
+          'Select-laatikon itemin valinta ei onnistunut, mutta tällaisia olisi tarjolla:',
+          await Promise.all(
+            x.map(async (a) => await a.getAttribute('data-testid'))
+          )
+        )
+        throw e
+      }
       await child('options').waitFor({ state: 'hidden' })
+      // await new Promise((resolve) => setTimeout(resolve, 1000)) // Todella rumaa flakyn korjailua
     },
     value: async () => {
       return await child('input').inputValue()

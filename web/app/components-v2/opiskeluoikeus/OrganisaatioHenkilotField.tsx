@@ -12,7 +12,7 @@ import {
   OrganisaatiohenkilöEq
 } from '../../util/henkilo'
 import { ClassOf } from '../../util/types'
-import { common, CommonProps, subTestId, testId } from '../CommonProps'
+import { common, CommonProps } from '../CommonProps'
 import { MultiField } from '../containers/MultiField'
 import { Removable } from '../controls/Removable'
 import { OptionList, Select, SelectOption } from '../controls/Select'
@@ -20,6 +20,7 @@ import { TextEdit } from '../controls/TextField'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
 import { narrowErrorsToLeaf } from '../forms/validator'
 import { CHARCODE_ADD, IconLabel } from '../texts/Icon'
+import { TestIdLayer, TestIdText, useTestId } from '../../appstate/useTestId'
 
 // Organisaatiohenkilö viewer
 
@@ -30,14 +31,18 @@ export const OrganisaatioHenkilötView = <T extends AnyOrganisaatiohenkilö>(
   props: OrganisaatioHenkilötViewProps<T>
 ) => {
   return props.value ? (
-    <ul {...common(props, ['OrganisaatioHenkilotView'])}>
-      {props.value.map((a, i) => (
-        <li key={i} {...testId(props, i.toString())}>
-          {a.nimi}
-          {a.titteli && ` (${t(a.titteli)})`}
-        </li>
-      ))}
-    </ul>
+    <TestIdLayer id="organisaatiohenkilöt.value">
+      <ul {...common(props, ['OrganisaatioHenkilotView'])}>
+        {props.value.map((a, i) => (
+          <li key={i}>
+            <TestIdText id={i}>
+              {a.nimi}
+              {a.titteli && ` (${t(a.titteli)})`}
+            </TestIdText>
+          </li>
+        ))}
+      </ul>
+    </TestIdLayer>
   ) : (
     <div {...common(props, ['OrganisaatioHenkilotView'])}>{'–'}</div>
   )
@@ -62,62 +67,68 @@ export const OrganisaatioHenkilötEdit = <T extends AnyOrganisaatiohenkilö>(
   props: OrganisaatioHenkilötEditProps<T>
 ): React.ReactElement => {
   const state = useOrganisaatioHenkilöState(props)
+  const henkilöTestId = useTestId('organisaatiohenkilöt.edit.henkilö')
 
   return (
-    <ul {...common(props, ['ArvioitsijatEdit'])}>
-      {(props.value || []).map((a, i) => (
-        <li key={i}>
-          <Removable
-            onClick={state.removeAt(i)}
-            testId={subTestId(props, `henkilö.${i}`)}
-          >
-            {!props.storedHenkilöt?.find((h) =>
-              OrganisaatiohenkilöEq.equals(a, h)
-            ) ? (
-              <MultiField key={i}>
-                <TextEdit
-                  placeholder="Nimi"
-                  optional
-                  value={a.nimi}
-                  onChange={state.onChangeNimi(i)}
-                  errors={narrowErrorsToLeaf(`${i}.nimi`)(props.errors)}
-                  autoFocus={
-                    props.value &&
-                    i === props.value.length - 1 &&
-                    state.focusNew
-                  }
-                  testId={subTestId(props, `newHenkilö.${i}.nimi`)}
-                />
-                <TextEdit
-                  placeholder="Titteli"
-                  optional
-                  value={t(a.titteli)}
-                  onChange={state.onChangeTitteli(i)}
-                  errors={narrowErrorsToLeaf(`${i}.titteli`)(props.errors)}
-                  testId={subTestId(props, `newHenkilö.${i}.titteli`)}
-                />
-              </MultiField>
-            ) : (
-              <Select
-                options={state.options}
-                value={a.nimi}
-                onChange={state.updateHenkilö(i)}
-                onRemove={state.onRemoveStored}
-                testId={subTestId(props, `storedHenkilö.${i}`)}
-              />
-            )}
-          </Removable>
+    <TestIdLayer id="organisaatiohenkilöt.edit">
+      <ul {...common(props, ['ArvioitsijatEdit'])}>
+        {(props.value || []).map((hlö, i) => (
+          <TestIdLayer key={i} id={`henkilö.${i}`}>
+            <li>
+              <Removable onClick={state.removeAt(i)}>
+                {!props.storedHenkilöt?.find((h) =>
+                  OrganisaatiohenkilöEq.equals(hlö, h)
+                ) ? (
+                  <TestIdLayer id="newHenkilö">
+                    <MultiField key={i}>
+                      <TextEdit
+                        placeholder="Nimi"
+                        optional
+                        value={hlö.nimi}
+                        onChange={state.onChangeNimi(i)}
+                        errors={narrowErrorsToLeaf(`${i}.nimi`)(props.errors)}
+                        autoFocus={
+                          props.value &&
+                          i === props.value.length - 1 &&
+                          state.focusNew
+                        }
+                        testId="nimi"
+                      />
+                      <TextEdit
+                        placeholder="Titteli"
+                        optional
+                        value={t(hlö.titteli)}
+                        onChange={state.onChangeTitteli(i)}
+                        errors={narrowErrorsToLeaf(`${i}.titteli`)(
+                          props.errors
+                        )}
+                        testId="titteli"
+                      />
+                    </MultiField>
+                  </TestIdLayer>
+                ) : (
+                  <Select
+                    options={state.options}
+                    value={hlö.nimi}
+                    onChange={state.updateHenkilö(i)}
+                    onRemove={state.onRemoveStored}
+                    testId="storedHenkilö"
+                  />
+                )}
+              </Removable>
+            </li>
+          </TestIdLayer>
+        ))}
+        <li>
+          <Select
+            options={state.newOptions}
+            onChange={state.addHenkilö}
+            onRemove={state.onRemoveStored}
+            testId="add"
+          />
         </li>
-      ))}
-      <li>
-        <Select
-          options={state.newOptions}
-          onChange={state.addHenkilö}
-          onRemove={state.onRemoveStored}
-          testId={subTestId(props, 'add')}
-        />
-      </li>
-    </ul>
+      </ul>
+    </TestIdLayer>
   )
 }
 

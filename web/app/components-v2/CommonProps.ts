@@ -5,7 +5,6 @@ import { filterObjByKey } from '../util/fp/objects'
 export type CommonProps<T extends object = object> = T & {
   className?: string
   style?: React.CSSProperties
-  testId?: string
   role?: string
 }
 
@@ -27,31 +26,7 @@ export const common = <T extends object>(
   ...filterObjByKey(startsWith('aria-', 'data-'))(props)
 })
 
-export const subTestId = <T extends object>(
-  props: CommonProps<T>,
-  subId: string
-) => {
-  if (subId === '') {
-    throw new Error('subId must not be empty')
-  }
-  if (props.testId === undefined) {
-    console.warn(`props.testId undefined, trying to add subId ${subId}`)
-  }
-  return props.testId && `${props.testId}.${subId}`
-}
-
-export const testId = <T extends object>(
-  props: CommonProps<T>,
-  subId?: string
-): object | undefined =>
-  props.testId
-    ? {
-        'data-testid': subId ? `${props.testId}.${subId}` : props.testId
-      }
-    : undefined
-
 export const rest = <T extends object>({
-  testId: _,
   style,
   className,
   role,

@@ -2,6 +2,7 @@ import React, { useCallback, useRef, useEffect } from 'react'
 import { useModalState } from '../../appstate/modals'
 import { common, CommonPropsWithChildren } from '../CommonProps'
 import { ButtonGroup } from './ButtonGroup'
+import { TestIdLayer } from '../../appstate/useTestId'
 
 export type ModalProps = CommonPropsWithChildren<{
   onClose?: () => void
@@ -32,19 +33,21 @@ export const Modal: React.FC<ModalProps> = (props) => {
   }, [isActive])
 
   return (
-    <form
-      {...common(props, ['Modal', isActive && 'Modal__active'])}
-      {...modalProps}
-      onSubmit={stopPropagation}
-      onKeyDown={onKeyDown}
-      onClick={props.onClose}
-      role="dialog"
-      ref={ref}
-    >
-      <div className="Modal__content" onClick={stopPropagation}>
-        {props.children}
-      </div>
-    </form>
+    <TestIdLayer id="modal">
+      <form
+        {...common(props, ['Modal', isActive && 'Modal__active'])}
+        {...modalProps}
+        onSubmit={stopPropagation}
+        onKeyDown={onKeyDown}
+        onClick={props.onClose}
+        role="dialog"
+        ref={ref}
+      >
+        <div className="Modal__content" onClick={stopPropagation}>
+          {props.children}
+        </div>
+      </form>
+    </TestIdLayer>
   )
 }
 

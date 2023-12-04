@@ -3,7 +3,7 @@ import { useTree } from '../../appstate/tree'
 import { t } from '../../i18n/i18n'
 import { Opiskeluoikeus } from '../../types/fi/oph/koski/schema/Opiskeluoikeus'
 import { useLayout } from '../../util/useDepth'
-import { CommonProps, subTestId, testId } from '../CommonProps'
+import { CommonProps } from '../CommonProps'
 import {
   COLUMN_COUNT,
   Column,
@@ -18,6 +18,7 @@ import { FormModel, FormOptic } from '../forms/FormModel'
 import { Spacer } from '../layout/Spacer'
 import { CHARCODE_REMOVE } from '../texts/Icon'
 import { useNewItems } from '../../appstate/newItems'
+import { TestIdLayer } from '../../appstate/useTestId'
 
 export const OSASUORITUSTABLE_DEPTH_KEY = 'OsasuoritusTable'
 
@@ -69,25 +70,24 @@ export const OsasuoritusTable = <DATA_KEYS extends string, P>(
   return (
     <>
       {rows[0] && <OsasuoritusHeader row={rows[0]} editMode={editMode} />}
-      {rows.map((row, index) => (
-        <OsasuoritusRow
-          key={index}
-          editMode={editMode}
-          row={row}
-          initiallyOpen={newOsasuoritusIds.includes(getRowId(row))}
-          expandable={row.expandable}
-          completed={completed ? completed(index) : undefined}
-          onRemove={onRemoveCb(index)}
-          testId={subTestId(props, `osasuoritukset.${row.osasuoritusIndex}`)}
-        />
-      ))}
+      <TestIdLayer id="osasuoritukset">
+        {rows.map((row, index) => (
+          <TestIdLayer key={index} id={index}>
+            <OsasuoritusRow
+              editMode={editMode}
+              row={row}
+              initiallyOpen={newOsasuoritusIds.includes(getRowId(row))}
+              expandable={row.expandable}
+              completed={completed ? completed(index) : undefined}
+              onRemove={onRemoveCb(index)}
+            />
+          </TestIdLayer>
+        ))}
+      </TestIdLayer>
       <Spacer />
       {editMode && AddNewOsasuoritusView && (
         // @ts-expect-error React.JSX.IntristicAttributes virhe
-        <AddNewOsasuoritusView
-          testId={subTestId(props, 'addOsasuoritus')}
-          {...(props.addNewOsasuoritusViewProps || {})}
-        />
+        <AddNewOsasuoritusView {...(props.addNewOsasuoritusViewProps || {})} />
       )}
       <Spacer />
     </>
@@ -153,7 +153,6 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
               expanded={tree.isOpen}
               onChange={tree.toggle}
               label={t('Osasuoritus')}
-              {...testId(props, 'expand')}
             />
           )}
         </Column>
@@ -176,25 +175,21 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
         )}
         {props.editMode && props.onRemove && (
           <Column span={spans.rightIcons}>
-            {props.row.content && (
-              <IconButton
-                charCode={CHARCODE_REMOVE}
-                label={t('Poista')}
-                size="input"
-                onClick={props.onRemove}
-                testId={subTestId(props, 'delete')}
-              />
-            )}
+            <IconButton
+              charCode={CHARCODE_REMOVE}
+              label={t('Poista')}
+              size="input"
+              onClick={props.onRemove}
+              testId="delete"
+            />
           </Column>
         )}
       </ColumnRow>
       {expandable && tree.isOpen && props.row.content && (
         <LayoutProvider indent={1}>
-          <Section testId={subTestId(props, 'properties')}>
-            {React.cloneElement(props.row.content, {
-              testId: subTestId(props, 'properties')
-            })}
-          </Section>
+          <TestIdLayer id="properties">
+            <Section>{props.row.content}</Section>
+          </TestIdLayer>
         </LayoutProvider>
       )}
     </TreeNode>

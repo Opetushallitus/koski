@@ -1,13 +1,17 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { CommonProps, cx, common, testId } from '../CommonProps'
+import { CommonProps, cx, common } from '../CommonProps'
+import { useTestId } from '../../appstate/useTestId'
 
 export type NumberFieldProps = CommonProps<{
   value?: number
   onChange: (text: number) => void
   hasErrors?: boolean
+  testId?: string | number
 }>
 
 export const NumberField: React.FC<NumberFieldProps> = (props) => {
+  const testId = useTestId(props.testId, 'input')
+
   const [internalValue, setInternalValue] = useState(props.value?.toString())
   useEffect(() => setInternalValue(props.value?.toString()), [props.value])
 
@@ -39,7 +43,7 @@ export const NumberField: React.FC<NumberFieldProps> = (props) => {
         value={internalValue}
         onChange={onChangeCB}
         onBlur={onBlurCB}
-        {...testId(props, 'input')}
+        data-testid={testId}
       />
     </div>
   )

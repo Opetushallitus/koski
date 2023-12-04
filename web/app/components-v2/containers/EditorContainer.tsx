@@ -1,21 +1,25 @@
+import { NonEmptyArray } from 'fp-ts/lib/NonEmptyArray'
 import React, { useCallback, useMemo, useState } from 'react'
+import { TestIdLayer, TestIdRoot } from '../../appstate/useTestId'
 import { localize, t } from '../../i18n/i18n'
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
 import { Opiskeluoikeus } from '../../types/fi/oph/koski/schema/Opiskeluoikeus'
 import { Suoritus } from '../../types/fi/oph/koski/schema/Suoritus'
 import { saveOpiskeluoikeus } from '../../util/koskiApi'
 import {
-  mergeOpiskeluoikeusVersionumero,
-  PäätasonSuoritusOf
+  PäätasonSuoritusOf,
+  mergeOpiskeluoikeusVersionumero
 } from '../../util/opiskeluoikeus'
 import { päätasonSuoritusPath } from '../../util/optics'
 import { OpiskeluoikeusjaksoOf } from '../../util/schema'
 import { ClassOf, ItemOf } from '../../util/types'
 import { useConfirmUnload } from '../../util/useConfirmUnload'
-import { common, CommonPropsWithChildren } from '../CommonProps'
+import { CommonPropsWithChildren, common } from '../CommonProps'
+import { FlatButton } from '../controls/FlatButton'
 import { Tab, Tabs } from '../controls/Tabs'
 import { FormField } from '../forms/FormField'
 import { FormModel, FormOptic } from '../forms/FormModel'
+import { ValidationError } from '../forms/validator'
 import { Spacer } from '../layout/Spacer'
 import { Snackbar } from '../messages/Snackbar'
 import { EditBar } from '../opiskeluoikeus/EditBar'
@@ -24,13 +28,10 @@ import {
   OpiskeluoikeudenTilaView
 } from '../opiskeluoikeus/OpiskeluoikeudenTila'
 import { OpiskeluoikeusEditToolbar } from '../opiskeluoikeus/OpiskeluoikeusEditToolbar'
+import { OrganisaatiohistoriaView } from '../opiskeluoikeus/OrganisaatiohistoriaView'
+import { UusiOpiskeluoikeusjakso } from '../opiskeluoikeus/UusiOpiskeluoikeudenTilaModal'
 import { CHARCODE_ADD, Icon } from '../texts/Icon'
 import { Trans } from '../texts/Trans'
-import { NonEmptyArray } from 'fp-ts/lib/NonEmptyArray'
-import { ValidationError } from '../forms/validator'
-import { UusiOpiskeluoikeusjakso } from '../opiskeluoikeus/UusiOpiskeluoikeudenTilaModal'
-import { FlatButton } from '../controls/FlatButton'
-import { OrganisaatiohistoriaView } from '../opiskeluoikeus/OrganisaatiohistoriaView'
 
 export type EditorContainerProps<T extends Opiskeluoikeus> =
   CommonPropsWithChildren<{
@@ -52,10 +53,13 @@ export type EditorContainerProps<T extends Opiskeluoikeus> =
     lisätiedotContainer?: React.FC<any>
   }>
 
-export type ActivePäätasonSuoritus<T extends Opiskeluoikeus> = {
+export type ActivePäätasonSuoritus<
+  T extends Opiskeluoikeus,
+  S extends PäätasonSuoritusOf<T> = PäätasonSuoritusOf<T>
+> = {
   index: number
-  path: FormOptic<T, PäätasonSuoritusOf<T>>
-  suoritus: PäätasonSuoritusOf<T>
+  path: FormOptic<T, S>
+  suoritus: S
   testId: string
 }
 
@@ -138,72 +142,77 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
 
   return (
     <article {...common(props, ['EditorContainer'])}>
-      <OpiskeluoikeusEditToolbar
-        opiskeluoikeus={props.form.state}
-        editMode={props.form.editMode}
-        invalidatable={props.invalidatable}
-        onStartEdit={props.form.startEdit}
-      />
+      <TestIdRoot id="opiskeluoikeus">
+        <OpiskeluoikeusEditToolbar
+          opiskeluoikeus={props.form.state}
+          editMode={props.form.editMode}
+          invalidatable={props.invalidatable}
+          onStartEdit={props.form.startEdit}
+        />
 
-      <Spacer />
+        <Spacer />
 
-      <FormField
-        form={props.form}
-        path={opiskeluoikeudenTilaPath}
-        view={OpiskeluoikeudenTilaView}
-        edit={OpiskeluoikeudenTilaEdit}
-        editProps={{
-          enableValmistuminen: suorituksetVahvistettu,
-          createJakso: props.createOpiskeluoikeusjakso,
-          opiskeluoikeusJaksoClassName: props.opiskeluoikeusJaksoClassName
-        }}
-        testId="opiskeluoikeus.tila"
-      />
-      <Spacer />
-      <FormField
-        form={props.form}
-        path={opiskeluoikeudenOrganisaatiohistoriaPath}
-        view={OrganisaatiohistoriaView}
-        testId="opiskeluoikeus.organisaatiohistoria"
-      />
-      <Spacer />
-      <FlatButton
-        onClick={(e) => {
-          e.preventDefault()
-          setLisatiedotOpen((prev) => !prev)
-        }}
-      >
-        {lisatiedotOpen
-          ? 'lisatiedot:sulje_lisatiedot'
-          : 'lisatiedot:nayta_lisatiedot'}
-      </FlatButton>
-      {LisätiedotContainer !== undefined && lisatiedotOpen && (
-        <>
-          <Spacer />
-          <LisätiedotContainer form={props.form} />
-          <Spacer />
-        </>
-      )}
+        <FormField
+          form={props.form}
+          path={opiskeluoikeudenTilaPath}
+          view={OpiskeluoikeudenTilaView}
+          edit={OpiskeluoikeudenTilaEdit}
+          editProps={{
+            enableValmistuminen: suorituksetVahvistettu,
+            createJakso: props.createOpiskeluoikeusjakso,
+            opiskeluoikeusJaksoClassName: props.opiskeluoikeusJaksoClassName
+          }}
+        />
+        <Spacer />
+        <FormField
+          form={props.form}
+          path={opiskeluoikeudenOrganisaatiohistoriaPath}
+          view={OrganisaatiohistoriaView}
+        />
+        <Spacer />
+        <FlatButton
+          onClick={(e) => {
+            e.preventDefault()
+            setLisatiedotOpen((prev) => !prev)
+          }}
+        >
+          {lisatiedotOpen
+            ? 'lisatiedot:sulje_lisatiedot'
+            : 'lisatiedot:nayta_lisatiedot'}
+        </FlatButton>
+        {LisätiedotContainer !== undefined && lisatiedotOpen && (
+          <>
+            <Spacer />
+            <LisätiedotContainer form={props.form} />
+            <Spacer />
+          </>
+        )}
+      </TestIdRoot>
+
       <h2>
         <Trans>{'Suoritukset'}</Trans>
       </h2>
 
-      <Tabs
-        key={`tabs-${props.form.state.suoritukset.length}`}
-        onSelect={changeSuoritusTab}
-        tabs={suoritusTabs}
-      />
+      <TestIdRoot id="suoritusTabs">
+        <Tabs
+          key={`tabs-${props.form.state.suoritukset.length}`}
+          onSelect={changeSuoritusTab}
+          tabs={suoritusTabs}
+        />
+      </TestIdRoot>
 
       <Spacer />
 
       <div key={suoritusIndex}>{props.children}</div>
 
-      <EditBar form={props.form} onSave={onSave} />
-      {props.form.isSaved && (
-        <Snackbar testId="opiskeluoikeus.saveSnackbar">
-          {'Tallennettu'}
-        </Snackbar>
-      )}
+      <TestIdRoot id="opiskeluoikeus">
+        <EditBar form={props.form} onSave={onSave} />
+        {props.form.isSaved && (
+          <TestIdLayer id="saved">
+            <Snackbar>{'Tallennettu'}</Snackbar>
+          </TestIdLayer>
+        )}
+      </TestIdRoot>
     </article>
   )
 }
@@ -226,3 +235,12 @@ export const usePäätasonSuoritus = <T extends Opiskeluoikeus>(
 
 const defaultSuorituksenNimi = (s: Suoritus): LocalizedString =>
   s.tyyppi.lyhytNimi || s.tyyppi.nimi || localize(s.tyyppi.koodiarvo)
+
+export const hasPäätasonsuoritusOf = <
+  T extends Opiskeluoikeus,
+  S extends PäätasonSuoritusOf<T>
+>(
+  guard: (s: any) => s is S,
+  pts: ActivePäätasonSuoritus<T>
+  // @ts-ignore
+): pts is ActivePäätasonSuoritus<T, S> => guard(pts.suoritus)

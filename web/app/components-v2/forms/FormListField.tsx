@@ -1,5 +1,5 @@
 import React from 'react'
-import { CommonProps, subTestId } from '../CommonProps'
+import { TestIdLayer } from '../../appstate/useTestId'
 import {
   FieldEditorProps,
   FieldViewerProps,
@@ -46,21 +46,30 @@ export const FormListField = <
   return (
     <>
       {values.map((_, index) => {
-        const { form, view, viewProps, edit, editProps, errorsFromPath } = props
+        const {
+          form,
+          view,
+          viewProps,
+          edit,
+          editProps,
+          errorsFromPath,
+          testId
+        } = props
         const path = props.path.index(index) as FormOptic<FormState, FieldValue>
-        const testId = props.testId && subTestId(props, index.toString())
         return (
-          <FormField
-            form={form}
-            path={path}
-            view={view}
-            viewProps={viewProps}
-            edit={edit}
-            editProps={editProps}
-            errorsFromPath={errorsFromPath}
-            testId={testId}
-            index={index}
-          />
+          <TestIdLayer key={index} id={index}>
+            <FormField
+              form={form}
+              path={path}
+              view={view}
+              viewProps={viewProps}
+              edit={edit}
+              editProps={editProps}
+              errorsFromPath={errorsFromPath}
+              testId={testId}
+              index={index}
+            />
+          </TestIdLayer>
         )
       })}
     </>

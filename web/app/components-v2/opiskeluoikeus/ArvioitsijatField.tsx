@@ -10,16 +10,21 @@ import { Removable } from '../controls/Removable'
 import { TextEdit } from '../controls/TextField'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
 import { narrowErrorsToLeaf } from '../forms/validator'
+import { TestIdLayer, useTestId } from '../../appstate/useTestId'
+import { t } from '../../i18n/i18n'
 
 export type ArvioitsijatViewProps = CommonProps<
   FieldViewerProps<Arvioitsija[] | undefined, {}>
 >
 
 export const ArvioitsijatView: React.FC<ArvioitsijatViewProps> = (props) => {
+  const testId = useTestId('arvioitsijat.value')
   return props.value && A.isNonEmpty(props.value) ? (
-    <ul {...common(props, ['ArvioitsijatView'])}>
+    <ul {...common(props, ['ArvioitsijatView'])} data-testid={testId}>
       {props.value.map((a, i) => (
-        <li key={i}>{a.nimi}</li>
+        <li key={i} data-testid={`${testId}.${i}`}>
+          {a.nimi}
+        </li>
       ))}
     </ul>
   ) : (
@@ -71,26 +76,32 @@ export const ArvioitsijatEdit: React.FC<ArvioitsijatEditProps> = (props) => {
   }
 
   return (
-    <ul {...common(props, ['ArvioitsijatEdit'])}>
-      {props.value &&
-        props.value.map((a, i) => (
-          <li key={i}>
-            <Removable onClick={removeAt(i)}>
-              <TextEdit
-                optional
-                value={a.nimi}
-                onChange={onChangeCB(i)}
-                errors={narrowErrorsToLeaf(`${i}.nimi`)(props.errors)}
-                autoFocus={
-                  props.value && i === props.value.length - 1 && focusNew
-                }
-              />
-            </Removable>
-          </li>
-        ))}
-      <li>
-        <FlatButton onClick={addNew}>{'lisää uusi'}</FlatButton>
-      </li>
-    </ul>
+    <TestIdLayer id="arvioitsijat.edit">
+      <ul {...common(props, ['ArvioitsijatEdit'])}>
+        {props.value &&
+          props.value.map((a, i) => (
+            <li key={i}>
+              <TestIdLayer id={i}>
+                <Removable onClick={removeAt(i)}>
+                  <TextEdit
+                    optional
+                    value={a.nimi}
+                    onChange={onChangeCB(i)}
+                    errors={narrowErrorsToLeaf(`${i}.nimi`)(props.errors)}
+                    autoFocus={
+                      props.value && i === props.value.length - 1 && focusNew
+                    }
+                  />
+                </Removable>
+              </TestIdLayer>
+            </li>
+          ))}
+        <li>
+          <FlatButton onClick={addNew} testId="addNew">
+            {t('lisää uusi')}
+          </FlatButton>
+        </li>
+      </ul>
+    </TestIdLayer>
   )
 }

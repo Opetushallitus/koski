@@ -1,0 +1,39 @@
+import React from 'react'
+import { CommonProps } from '../../components-v2/CommonProps'
+import { FormModel, FormOptic } from '../../components-v2/forms/FormModel'
+import { Finnish } from '../../types/fi/oph/koski/schema/Finnish'
+import { VapaanSivistystyönOpiskeluoikeus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeus'
+import { VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus'
+import { VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonVapaatavoitteisenKoulutuksenOsasuoritus'
+import { AddPaikallinenOsasuoritus } from '../common/AddPaikallinenOsasuoritus'
+import { laajuusOpintopisteissa } from '../common/constructors'
+import { VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonVapaatavoitteisenKoulutuksenSuoritus'
+
+type AddVapaatavoitteinenOsasuoritusProps = CommonProps<{
+  form: FormModel<VapaanSivistystyönOpiskeluoikeus>
+  osasuoritusPath: FormOptic<
+    VapaanSivistystyönOpiskeluoikeus,
+    VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus
+  >
+}>
+
+export const AddVapaatavoitteinenOsasuoritus: React.FC<
+  AddVapaatavoitteinenOsasuoritusProps
+> = (props) => (
+  <AddPaikallinenOsasuoritus
+    form={props.form}
+    path={props.osasuoritusPath}
+    createOsasuoritus={(tunniste) =>
+      VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus({
+        koulutusmoduuli:
+          VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuoritus({
+            tunniste,
+            kuvaus: Finnish({ fi: tunniste.koodiarvo }),
+            laajuus: laajuusOpintopisteissa(1)
+          })
+      })
+    }
+    preferenceStoreName="vapaansivistystyonvapaatavoitteisenkoulutuksenosasuoritus"
+    level={0}
+  />
+)

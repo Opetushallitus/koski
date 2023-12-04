@@ -8,9 +8,10 @@ import { OrganisaatioHierarkia } from '../../types/fi/oph/koski/organisaatio/Org
 import { isKoulutustoimija } from '../../types/fi/oph/koski/schema/Koulutustoimija'
 import { Organisaatio } from '../../types/fi/oph/koski/schema/Organisaatio'
 import { getOrganisaatioId, toOrganisaatio } from '../../util/organisaatiot'
-import { common, CommonProps, testId } from '../CommonProps'
+import { common, CommonProps } from '../CommonProps'
 import { OptionList, Select, SelectOption } from '../controls/Select'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
+import { TestIdText } from '../../appstate/useTestId'
 
 export type OrganisaatioViewProps<T extends Organisaatio> = CommonProps<
   FieldViewerProps<T, {}>
@@ -19,9 +20,9 @@ export type OrganisaatioViewProps<T extends Organisaatio> = CommonProps<
 export const OrganisaatioView = <T extends Organisaatio>(
   props: OrganisaatioViewProps<T>
 ): React.ReactElement => (
-  <div {...common(props, ['OrganisaatioView'])} {...testId(props)}>
+  <TestIdText {...common(props, ['OrganisaatioView'])} id="organisaatio.value">
     {t(props.value?.nimi) || '–'}
-  </div>
+  </TestIdText>
 )
 
 export type OrganisaatioEditProps<T extends Organisaatio> = CommonProps<
@@ -71,7 +72,7 @@ export const OrganisaatioEdit = <T extends Organisaatio>(
       value={selected}
       onChange={onChangeCB}
       onSearch={setQuery}
-      testId={props.testId}
+      testId="organisaatio.edit"
     />
   )
 }

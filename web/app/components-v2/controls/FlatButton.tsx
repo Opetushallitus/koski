@@ -1,7 +1,8 @@
 import React from 'react'
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
-import { common, CommonProps, testId } from '../CommonProps'
+import { common, CommonProps } from '../CommonProps'
 import { Trans } from '../texts/Trans'
+import { useTestId } from '../../appstate/useTestId'
 
 export type FlatButtonProps = CommonProps<{
   children: LocalizedString | string
@@ -10,6 +11,7 @@ export type FlatButtonProps = CommonProps<{
   disabled?: boolean
   compact?: boolean
   buttonRef?: React.MutableRefObject<HTMLButtonElement | null>
+  testId?: string
 }>
 
 export const FlatButton = (props: FlatButtonProps) => (
@@ -19,10 +21,10 @@ export const FlatButton = (props: FlatButtonProps) => (
       props.fullWidth && 'FlatButton__fullWidth',
       props.compact && 'FlatButton__compact'
     ])}
-    {...testId(props)}
     onClick={props.onClick}
     disabled={props.disabled}
     ref={props.buttonRef}
+    data-testid={useTestId(props.testId)}
   >
     <Trans>{props.children}</Trans>
   </button>

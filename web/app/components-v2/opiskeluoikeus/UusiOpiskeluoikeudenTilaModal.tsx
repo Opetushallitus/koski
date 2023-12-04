@@ -14,7 +14,7 @@ import { VapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso } from '../../ty
 import { KoodiarvotOf } from '../../util/koodisto'
 import { isValmistuvaTerminaalitila } from '../../util/opiskeluoikeus'
 import { ClassOf } from '../../util/types'
-import { common, CommonProps, subTestId } from '../CommonProps'
+import { CommonProps, common } from '../CommonProps'
 import { Label } from '../containers/Label'
 import { Modal, ModalBody, ModalFooter, ModalTitle } from '../containers/Modal'
 import { DateEdit, DateView } from '../controls/DateField'
@@ -24,6 +24,7 @@ import { RaisedButton } from '../controls/RaisedButton'
 import { FormField, Nothing } from '../forms/FormField'
 import { FormModel, useForm } from '../forms/FormModel'
 import { ValidationError } from '../forms/validator'
+import { TestIdLayer } from '../../appstate/useTestId'
 
 export type UusiOpiskeluoikeudenTilaModalProps<T extends Opiskeluoikeusjakso> =
   CommonProps<{
@@ -142,9 +143,10 @@ const OpiskeluoikeudenTilanRahoitusField = <T extends Opiskeluoikeusjakso>(
             }
             throw new Error('getKey(): Unknown value for tila')
           },
-          options: opintojenRahoitusOptions
+          options: opintojenRahoitusOptions,
+          testId: 'opintojenRahoitus'
         }}
-        testId={subTestId(props, 'opintojenRahoitus')}
+        testId="rahoitus"
       />
     </Label>
   )
@@ -210,7 +212,6 @@ export const UusiOpiskeluoikeudenTilaModal = <T extends Opiskeluoikeusjakso>(
             path={päivämääräPath}
             view={DateView}
             edit={DateEdit}
-            testId={subTestId(props, 'date')}
           />
         </Label>
 
@@ -229,7 +230,7 @@ export const UusiOpiskeluoikeudenTilaModal = <T extends Opiskeluoikeusjakso>(
               },
               options: tilaOptions
             }}
-            testId={subTestId(props, 'tila')}
+            testId="tila"
           />
         </Label>
 
@@ -243,10 +244,10 @@ export const UusiOpiskeluoikeudenTilaModal = <T extends Opiskeluoikeusjakso>(
       </ModalBody>
 
       <ModalFooter>
-        <FlatButton onClick={props.onClose} testId={subTestId(props, 'cancel')}>
+        <FlatButton onClick={props.onClose} testId="cancel">
           {'Peruuta'}
         </FlatButton>
-        <RaisedButton onClick={onSubmit} testId={subTestId(props, 'submit')}>
+        <RaisedButton onClick={onSubmit} testId="submit">
           {'Lisää'}
         </RaisedButton>
       </ModalFooter>

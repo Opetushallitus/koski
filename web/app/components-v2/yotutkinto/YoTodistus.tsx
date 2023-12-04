@@ -8,6 +8,7 @@ import {
   useOnApiSuccess,
   useSafeState
 } from '../../api-fetch'
+import { TestIdRoot, TestIdText } from '../../appstate/useTestId'
 import { ISO2FinnishDateTime } from '../../date/date'
 import { t, tTemplate } from '../../i18n/i18n'
 import { isYtrCertificateBlocked } from '../../types/fi/oph/koski/ytr/YtrCertificateBlocked'
@@ -20,7 +21,7 @@ import { isYtrCertificateServiceUnavailable } from '../../types/fi/oph/koski/ytr
 import { isYtrCertificateTimeout } from '../../types/fi/oph/koski/ytr/YtrCertificateTimeout'
 import { fetchYoTodistusState, generateYoTodistus } from '../../util/koskiApi'
 import { useInterval } from '../../util/useInterval'
-import { common, CommonProps, subTestId, testId } from '../CommonProps'
+import { CommonProps, common } from '../CommonProps'
 import { RaisedButton } from '../controls/RaisedButton'
 import { OptionList, Select, SelectOption } from '../controls/Select'
 import { Spinner } from '../texts/Spinner'
@@ -93,7 +94,7 @@ export const YoTodistus: React.FC<YoTodistusProps> = (props) => {
   }, [generate, state, stateFetch])
 
   return (
-    <>
+    <TestIdRoot id="yoTodistus">
       <div
         {...common(props, [
           'YoTodistus',
@@ -102,28 +103,20 @@ export const YoTodistus: React.FC<YoTodistusProps> = (props) => {
       >
         <span className="YoTodistus__title">{'Ylioppilastodistus'}</span>
         {blockingErrorText ? (
-          <TextWithLinks
-            className="YoTodistus__blocked"
-            {...testId(props, 'error')}
-          >
-            {blockingErrorText}
-          </TextWithLinks>
+          <TestIdText id="error">
+            <TextWithLinks className="YoTodistus__blocked">
+              {blockingErrorText}
+            </TextWithLinks>
+          </TestIdText>
         ) : (
           <>
             {!isYtrCertificateInProgress(state) && (
-              <LanguageSelect
-                value={language}
-                onChange={setLanguage}
-                testId={subTestId(props, 'language')}
-              />
+              <LanguageSelect value={language} onChange={setLanguage} />
             )}
             {!isYtrCertificateInProgress(state) &&
               !isYtrCertificateCompleted(state) && (
                 <>
-                  <RaisedButton
-                    onClick={startGenerating}
-                    {...testId(props, 'start')}
-                  >
+                  <RaisedButton onClick={startGenerating} testId="start">
                     {'Lataa todistus'}
                   </RaisedButton>
                 </>
@@ -131,9 +124,9 @@ export const YoTodistus: React.FC<YoTodistusProps> = (props) => {
             {isYtrCertificateInProgress(state) && (
               <>
                 <Spinner inline compact />
-                <span {...testId(props, 'loading')}>
+                <TestIdText id="loading">
                   <Trans>{'Ladataan todistusta...'}</Trans>
-                </span>
+                </TestIdText>
               </>
             )}
             {isYtrCertificateCompleted(state) && (
@@ -141,7 +134,7 @@ export const YoTodistus: React.FC<YoTodistusProps> = (props) => {
                 href={todistusUrl(props.oppijaOid, language)}
                 target="_blank"
                 rel="noreferrer"
-                {...testId(props, 'open')}
+                data-testid="yoTodistus.open"
               >
                 <Trans>{'Näytä todistus'}</Trans>
               </a>
@@ -150,11 +143,11 @@ export const YoTodistus: React.FC<YoTodistusProps> = (props) => {
         )}
       </div>
       {errorText && (
-        <div className="YoTodistus__error" {...testId(props, 'error')}>
+        <TestIdText className="YoTodistus__error" id="error">
           <TextWithLinks>{errorText}</TextWithLinks>
-        </div>
+        </TestIdText>
       )}
-    </>
+    </TestIdRoot>
   )
 }
 
@@ -197,7 +190,7 @@ const LanguageSelect: React.FC<LanguageSelectProps> = (props) => {
         options={yoTodistusLanguages}
         value={props.value}
         onChange={onChange}
-        testId={props.testId}
+        testId="language"
       />
     </div>
   )

@@ -1,51 +1,82 @@
-import React, { useCallback, useState } from 'react'
-import { Finnish, isFinnish } from '../../types/fi/oph/koski/schema/Finnish'
+import React, { useCallback, useContext } from 'react'
+import { OpiskeluoikeusContext } from '../../appstate/opiskeluoikeus'
+import { classPreferenceName, usePreferences } from '../../appstate/preferences'
+import { TestIdLayer, TestIdText, useTestId } from '../../appstate/useTestId'
+import { finnish, t } from '../../i18n/i18n'
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
-import { common, CommonProps, testId } from '../CommonProps'
+import { PaikallinenKoulutusmoduuli } from '../../types/fi/oph/koski/schema/PaikallinenKoulutusmoduuli'
+import { StorablePreference } from '../../types/fi/oph/koski/schema/StorablePreference'
+import { CommonProps, common } from '../CommonProps'
 import { FieldErrors } from '../forms/FieldErrors'
 import { FieldEditorProps } from '../forms/FormField'
 
-export type KuvausViewProps = CommonProps<FieldEditorProps<LocalizedString, {}>>
+export type KuvailtuPaikallinenKoulutusmoduuli = Extract<
+  PaikallinenKoulutusmoduuli,
+  { kuvaus?: LocalizedString }
+>
 
-export const KuvausView: React.FC<KuvausViewProps> = (props) => {
-  return (
-    <span {...common(props)} {...testId(props)}>
-      {isFinnish(props.value) ? props.value?.fi : props.value?.en || '-'}
-    </span>
-  )
-}
+export type KuvausViewProps<T extends KuvailtuPaikallinenKoulutusmoduuli> =
+  CommonProps<FieldEditorProps<T, {}>>
 
-export type KuvausEditProps = CommonProps<FieldEditorProps<LocalizedString, {}>>
+export const KuvausView = <T extends KuvailtuPaikallinenKoulutusmoduuli>(
+  props: KuvausViewProps<T>
+) => (
+  <TestIdText {...common(props)} id="kuvaus.value">
+    {props.value?.kuvaus ? t(props.value.kuvaus) : '-'}
+  </TestIdText>
+)
 
-export const KuvausEdit: React.FC<KuvausEditProps> = ({
+export type KuvausEditProps<T extends KuvailtuPaikallinenKoulutusmoduuli> =
+  CommonProps<FieldEditorProps<T, {}>>
+
+export const KuvausEdit = <T extends KuvailtuPaikallinenKoulutusmoduuli>({
   onChange,
   initialValue,
+  value,
   errors,
   ...rest
-}) => {
-  const [value, setValue] = useState(initialValue)
+}: KuvausEditProps<T>) => {
+  const testId = useTestId('kuvaus.edit.input')
+
+  const { organisaatio } = useContext(OpiskeluoikeusContext)
+  const preferences = usePreferences(
+    organisaatio?.oid,
+    value && classPreferenceName(value)
+  )
 
   const onChangeCB = useCallback<React.ChangeEventHandler<HTMLTextAreaElement>>(
     (e) => {
       e.preventDefault()
-      const fi = e.target.value
-      setValue(Finnish({ fi }))
-      onChange(Finnish({ fi }))
+      const patch = { kuvaus: finnish(e.target.value) }
+      const newValue = { ...value, ...patch } as T
+      onChange(newValue)
+
+      if (value?.tunniste.koodiarvo && initialValue) {
+        preferences.deferredUpdate(
+          value.tunniste.koodiarvo,
+          patch,
+          initialValue as StorablePreference
+        )
+      }
     },
-    [onChange]
+    [initialValue, onChange, preferences, value]
   )
 
   return (
     <div>
       <textarea
         {...common({ ...rest }, ['KuvausEdit'])}
-        {...testId(rest, 'input')}
         rows={5}
         cols={40}
-        value={isFinnish(value) ? value?.fi : value?.en}
+        defaultValue={t(value?.kuvaus)}
         onChange={onChangeCB}
+        data-testid={testId}
       />
-      {errors && <FieldErrors errors={errors} />}
+      {errors && (
+        <TestIdLayer id="kuvaus.edit">
+          <FieldErrors errors={errors} />
+        </TestIdLayer>
+      )}
     </div>
   )
 }

@@ -160,7 +160,7 @@ test.describe('Taiteen perusopetus', () => {
         expect(await page.osasuoritustieto('arvosana')).toBe('Hyväksytty')
 
         expect(await page.osasuoritusProperty('arvosana')).toBe('Hyväksytty')
-        expect(await page.osasuoritusProperty('arvostelunPvm')).toBe('1.1.2021')
+        expect(await page.osasuoritusProperty('date')).toBe('1.1.2021')
         if (osasuoritusIndex === 0) {
           expect(await page.osasuoritusProperty('tunnustettu')).toBe(
             'Tunnustettu paikallinen opintokokonaisuus'

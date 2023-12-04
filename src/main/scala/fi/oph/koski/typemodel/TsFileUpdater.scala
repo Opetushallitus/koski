@@ -71,5 +71,6 @@ case class AdditionalExports(
   koodiviite: KoodiViite,
   selitettyOsaamisenTunnustaminen: SelitettyOsaamisenTunnustaminen,
   suoritetutTutkinnotKoskeenTallennettavaOpiskeluoikeus: SuoritetutTutkinnotKoskeenTallennettavaOpiskeluoikeus,
-  aktiivisetJaPäättyneetOpinnotKoskeenTallennettavaOpiskeluoikeus: AktiivisetJaPäättyneetOpinnotKoskeenTallennettavaOpiskeluoikeus
+  aktiivisetJaPäättyneetOpinnotKoskeenTallennettavaOpiskeluoikeus: AktiivisetJaPäättyneetOpinnotKoskeenTallennettavaOpiskeluoikeus,
+  paikallinenKoulutusmoduuli: PaikallinenKoulutusmoduuli,
 )

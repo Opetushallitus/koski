@@ -1,9 +1,10 @@
 import React, { useMemo } from 'react'
 import { useKoodisto } from '../../appstate/koodisto'
+import { TestIdText } from '../../appstate/useTestId'
 import { t } from '../../i18n/i18n'
 import { VSTKehittyvänKielenTaitotasonArviointi } from '../../types/fi/oph/koski/schema/VSTKehittyvanKielenTaitotasonArviointi'
 import { koodiviiteId, KoodiviiteWithOptionalUri } from '../../util/koodisto'
-import { common, CommonProps, testId } from '../CommonProps'
+import { CommonProps } from '../CommonProps'
 import {
   groupKoodistoToOptions,
   OptionList,
@@ -27,9 +28,9 @@ export const KehittyvänKielenTaitotasoView = <
   props: KehittyvänKielenTaitotasoViewProps<T>
 ) => {
   return props.value !== undefined ? (
-    <span {...common(props)} {...testId(props)}>
+    <TestIdText {...props} id={`${props.testId || 'taitotaso'}.value`}>
       {t(props.value.taso.nimi)}
-    </span>
+    </TestIdText>
   ) : null
 }
 
@@ -75,7 +76,7 @@ export const KehittyvänKielenTaitotasoEdit = <
         value={selectedValue}
         options={groupedKoodisto as OptionList<TaitotasoOf<T>>}
         onChange={onChange}
-        testId={props.testId}
+        testId={`${props.testId || 'taitotaso'}.edit`}
       />
     )
   )

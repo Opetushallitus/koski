@@ -22,3 +22,21 @@ export const useLogPropUpdates = <T extends object>(
     }, [name, prop])
   })
 }
+
+export const debugReducer =
+  <S, A>(reducer: (state: S, action: A) => S) =>
+  (state: S, action: A): S => {
+    const before = JSON.parse(JSON.stringify(state))
+    const after = reducer(state, action)
+    // @ts-ignore
+    //console.log('Reducer:', action?.type, { before, after, action })
+    if (action.type === 'modify') {
+      console.log(
+        'Reducer',
+        // @ts-ignore
+        after?.data?.suoritukset?.[0]?.osasuoritukset[3]?.koulutusmoduuli
+          ?.laajuus?.arvo
+      )
+    }
+    return after
+  }

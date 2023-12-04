@@ -6,10 +6,12 @@ import { Laajuus } from '../../types/fi/oph/koski/schema/Laajuus'
 import { LaajuusOpintopisteissä } from '../../types/fi/oph/koski/schema/LaajuusOpintopisteissa'
 import { formatNumber, removeFloatingPointDrift } from '../../util/numbers'
 import { CollectableOptic } from '../../util/types'
-import { common, CommonProps, testId } from '../CommonProps'
+import { common, CommonProps } from '../CommonProps'
 import { NumberField } from '../controls/NumberField'
 import { FieldErrors } from '../forms/FieldErrors'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
+import { nonNull } from '../../util/fp/arrays'
+import { TestIdLayer, TestIdText, useTestId } from '../../appstate/useTestId'
 
 /* ---------------------------------------------------------------------
  *
@@ -22,13 +24,13 @@ export type LaajuusViewProps = CommonProps<FieldViewerProps<Laajuus, {}>>
 
 export const LaajuusView = (props: LaajuusViewProps) => {
   return (
-    <span {...common(props)} {...testId(props)}>
+    <TestIdText {...common(props)} id="laajuus.value">
       {props.value
         ? formatNumber(props.value.arvo) +
           ' ' +
           t(props.value.yksikkö.lyhytNimi || props.value.yksikkö.nimi)
         : '–'}
-    </span>
+    </TestIdText>
   )
 }
 
@@ -48,7 +50,7 @@ export type LaajuusEditProps<T extends Laajuus> = CommonProps<
  * ---------------------------------------------------------------------
  */
 
-export const LaajuusEdit: React.FC<LaajuusEditProps<Laajuus>> = (props) => {
+export const LaajuusEdit = <T extends Laajuus>(props: LaajuusEditProps<T>) => {
   const { onChange, createLaajuus } = props
   const onChangeCB = useCallback(
     (arvo: number) => onChange(createLaajuus(arvo)),
@@ -63,13 +65,15 @@ export const LaajuusEdit: React.FC<LaajuusEditProps<Laajuus>> = (props) => {
           value={props.value?.arvo}
           onChange={onChangeCB}
           hasErrors={Boolean(props.errors)}
-          testId={props.testId}
+          testId="laajuus.edit"
         />
         <span className="LaajuusField__yksikko">
           {t(props.value?.yksikkö.lyhytNimi || props.value?.yksikkö.nimi)}
         </span>
       </div>
-      <FieldErrors errors={props.errors} testId={props.testId} />
+      <TestIdLayer id="laajuus.edit">
+        <FieldErrors errors={props.errors} />
+      </TestIdLayer>
     </label>
   )
 }
@@ -88,7 +92,6 @@ export type DefaultLaajuusEditProps<T extends Laajuus> = CommonProps<
 export const LaajuusOpintopisteissäEdit: React.FC<
   DefaultLaajuusEditProps<LaajuusOpintopisteissä>
 > = (props) => (
-  // @ts-expect-error TypeScript ei tykkää..
   <LaajuusEdit
     {...props}
     createLaajuus={(arvo: any) => LaajuusOpintopisteissä({ arvo }) as any}
@@ -103,14 +106,17 @@ export const LaajuusOpintopisteissäEdit: React.FC<
  */
 
 export const laajuusSum =
-  <S, A extends Laajuus>(laajuusPath: CollectableOptic<S, A>, data: S) =>
+  <S, A extends Laajuus | undefined>(
+    laajuusPath: CollectableOptic<S, A>,
+    data: S
+  ) =>
   (): A | undefined => {
-    const laajuudet = $.collect(laajuusPath)(data)
+    const laajuudet = $.collect(laajuusPath)(data).filter(nonNull)
     return isNonEmpty(laajuudet)
       ? {
           ...laajuudet[0],
           arvo: removeFloatingPointDrift(
-            laajuudet.reduce((acc, laajuus) => acc + laajuus.arvo, 0)
+            laajuudet.reduce((acc, laajuus) => acc + (laajuus?.arvo ?? 0), 0)
           )
         }
       : undefined

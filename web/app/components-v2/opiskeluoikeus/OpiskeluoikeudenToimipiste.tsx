@@ -1,31 +1,20 @@
-import React, { useEffect, useMemo, useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 // @ts-expect-error
 import { debounce } from 'lodash'
 import { useOrganisaatioHierarkia } from '../../appstate/organisaatioHierarkia'
+import { TestIdLayer, TestIdText, useTestId } from '../../appstate/useTestId'
 import { t } from '../../i18n/i18n'
 import { OrganisaatioHierarkia } from '../../types/fi/oph/koski/organisaatio/OrganisaatioHierarkia'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
-import {
-  isKoulutustoimija,
-  Koulutustoimija
-} from '../../types/fi/oph/koski/schema/Koulutustoimija'
-import {
-  isOidOrganisaatio,
-  OidOrganisaatio
-} from '../../types/fi/oph/koski/schema/OidOrganisaatio'
+import { Koulutustoimija } from '../../types/fi/oph/koski/schema/Koulutustoimija'
+import { OidOrganisaatio } from '../../types/fi/oph/koski/schema/OidOrganisaatio'
 import { Opiskeluoikeus } from '../../types/fi/oph/koski/schema/Opiskeluoikeus'
-import {
-  isOppilaitos,
-  Oppilaitos
-} from '../../types/fi/oph/koski/schema/Oppilaitos'
-import {
-  isToimipiste,
-  Toimipiste
-} from '../../types/fi/oph/koski/schema/Toimipiste'
+import { Oppilaitos } from '../../types/fi/oph/koski/schema/Oppilaitos'
+import { Toimipiste } from '../../types/fi/oph/koski/schema/Toimipiste'
 import { assertNever } from '../../util/selfcare'
-import { common, CommonProps, testId } from '../CommonProps'
-import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
+import { CommonProps } from '../CommonProps'
 import { useDialog } from '../containers/Dialog'
+import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
 
 export type Suorituskielikoodiviite = Koodistokoodiviite<'kieli'>
 
@@ -36,55 +25,11 @@ export type ToimipisteViewProps = CommonProps<
 
 export const ToimipisteView: React.FC<ToimipisteViewProps> = (props) => {
   const { value } = props
-  if (!value) {
-    return (
-      <div>
-        <strong>{'-'}</strong>
-      </div>
-    )
-  }
-  if (isKoulutustoimija(value)) {
-    return (
-      <div
-        {...common(props, ['ToimipisteView'])}
-        {...testId(props, 'koulutustoimija')}
-      >
-        {t(value.nimi)}
-      </div>
-    )
-  }
-  if (isOidOrganisaatio(value)) {
-    return (
-      <div
-        {...common(props, ['ToimipisteView'])}
-        {...testId(props, 'oidOrganisaatio')}
-      >
-        {t(value.nimi)}
-      </div>
-    )
-  }
-  if (isOppilaitos(value)) {
-    return (
-      <div
-        {...common(props, ['ToimipisteView'])}
-        {...testId(props, 'oppilaitos')}
-      >
-        {t(value.nimi)}
-      </div>
-    )
-  }
-  if (isToimipiste(value)) {
-    return (
-      <div
-        {...common(props, ['ToimipisteView'])}
-        {...testId(props, 'toimipiste')}
-      >
-        {t(value.nimi)}
-      </div>
-    )
-  }
-
-  return assertNever(value)
+  return (
+    <TestIdText {...props} id="toimipiste.value">
+      {value ? t(value.nimi) : '–'}
+    </TestIdText>
+  )
 }
 
 export type ToimipisteEditProps = CommonProps<
@@ -201,7 +146,7 @@ export const ToimipisteEdit: React.FC<ToimipisteEditProps> = (props) => {
   }, [debouncedSearchQuery, searchQuery])
 
   return (
-    <>
+    <TestIdLayer id={`${props.testId || 'toimipiste'}.edit`}>
       <button
         className="OpiskeluoikeudenToimipiste-Edit-View"
         onClick={(e) => {
@@ -209,7 +154,7 @@ export const ToimipisteEdit: React.FC<ToimipisteEditProps> = (props) => {
           openDialog()
         }}
       >
-        <ToimipisteView value={props.value} />
+        <ToimipisteView value={props.value} testId="button" />
       </button>
       <Dialog data-testid="toimipiste-dialog">
         <h3>{t('toimipiste:hae_oppilaitosta_tai_toimipistetta')}</h3>
@@ -235,6 +180,6 @@ export const ToimipisteEdit: React.FC<ToimipisteEditProps> = (props) => {
           </ul>
         </div>
       </Dialog>
-    </>
+    </TestIdLayer>
   )
 }

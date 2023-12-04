@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useMemo, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { ISO2FinnishDate } from '../../date/date'
 import { t } from '../../i18n/i18n'
 import { HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla } from '../../types/fi/oph/koski/schema/HenkilovahvistusValinnaisellaTittelillaJaValinnaisellaPaikkakunnalla'
@@ -8,21 +8,15 @@ import { Oppilaitos } from '../../types/fi/oph/koski/schema/Oppilaitos'
 import { Organisaatio } from '../../types/fi/oph/koski/schema/Organisaatio'
 import { Vahvistus } from '../../types/fi/oph/koski/schema/Vahvistus'
 import {
-  isValmistuvaTerminaalitila,
-  PäätasonSuoritusOf
+  PäätasonSuoritusOf,
+  isValmistuvaTerminaalitila
 } from '../../util/opiskeluoikeus'
 import {
   isHenkilövahvistus,
   viimeisinOpiskelujaksonTila
 } from '../../util/schema'
 import { ClassOf } from '../../util/types'
-import {
-  common,
-  CommonProps,
-  CommonPropsWithChildren,
-  subTestId,
-  testId
-} from '../CommonProps'
+import { CommonProps, CommonPropsWithChildren, common } from '../CommonProps'
 import { FlatButton } from '../controls/FlatButton'
 import { RaisedButton } from '../controls/RaisedButton'
 import {
@@ -33,20 +27,25 @@ import {
 import { FormModel, FormOptic } from '../forms/FormModel'
 import { Trans } from '../texts/Trans'
 import { SuorituksenVahvistusModal } from './SuorituksenVahvistusModal'
-import { OpiskeluoikeusContext } from '../../appstate/opiskeluoikeus'
+import { TestIdLayer, TestIdText } from '../../appstate/useTestId'
 
 // Suorituksen vahvitus field
 
-export type SuorituksenVahvistusFieldProps<T extends Opiskeluoikeus> =
-  CommonProps<{
-    form: FormModel<T>
-    suoritusPath: FormOptic<T, PäätasonSuoritusOf<T>>
-    organisaatio?: Oppilaitos | Koulutustoimija
-    disableAdd?: boolean
-  }>
+export type SuorituksenVahvistusFieldProps<
+  T extends Opiskeluoikeus,
+  S extends PäätasonSuoritusOf<T> = PäätasonSuoritusOf<T>
+> = CommonProps<{
+  form: FormModel<T>
+  suoritusPath: FormOptic<T, S>
+  organisaatio?: Oppilaitos | Koulutustoimija
+  disableAdd?: boolean
+}>
 
-export const SuorituksenVahvistusField = <T extends Opiskeluoikeus>(
-  props: SuorituksenVahvistusFieldProps<T>
+export const SuorituksenVahvistusField = <
+  T extends Opiskeluoikeus,
+  S extends PäätasonSuoritusOf<T> = PäätasonSuoritusOf<T>
+>(
+  props: SuorituksenVahvistusFieldProps<T, S>
 ): React.ReactElement => {
   const tila = viimeisinOpiskelujaksonTila(props.form.state.tila)
   const disableRemoval = Boolean(tila && isValmistuvaTerminaalitila(tila))
@@ -65,7 +64,6 @@ export const SuorituksenVahvistusField = <T extends Opiskeluoikeus>(
         disableAdd: props.disableAdd,
         disableRemoval
       }}
-      testId={subTestId(props, 'suorituksenVahvistus')}
     />
   )
 }
@@ -80,7 +78,9 @@ export const SuorituksenVahvistusView = <T extends Vahvistus>({
   value,
   ...rest
 }: SuorituksenVahvistusViewProps<T>) => (
-  <SuorituksenVahvistus vahvistus={value} {...rest} />
+  <TestIdLayer id="suorituksenVahvistus.value">
+    <SuorituksenVahvistus vahvistus={value} {...rest} />
+  </TestIdLayer>
 )
 
 // Suorituksen vahvitus editor
@@ -127,34 +127,35 @@ export const SuorituksenVahvistusEdit = <T extends Vahvistus>({
   )
 
   return organisaatio ? (
-    <SuorituksenVahvistus vahvistus={value} {...rest}>
-      {value ? (
-        <FlatButton
-          onClick={onMerkitseKeskeneräiseksi}
-          disabled={disableRemoval}
-          testId={subTestId(rest, 'merkitseKeskeneräiseksi')}
-        >
-          {'Merkitse keskeneräiseksi'}
-        </FlatButton>
-      ) : (
-        <RaisedButton
-          onClick={onMerkitseValmiiksi}
-          disabled={disableAdd}
-          {...testId(rest, 'merkitseValmiiksi')}
-        >
-          {'Merkitse valmiiksi'}
-        </RaisedButton>
-      )}
-      {modalVisible && (
-        <SuorituksenVahvistusModal
-          organisaatio={organisaatio}
-          vahvistusClass={vahvistusClass}
-          onSubmit={onSubmit}
-          onCancel={onCancel}
-          testId={subTestId(rest, 'modal')}
-        />
-      )}
-    </SuorituksenVahvistus>
+    <TestIdLayer id="suorituksenVahvistus.edit">
+      <SuorituksenVahvistus vahvistus={value} {...rest}>
+        {value ? (
+          <FlatButton
+            onClick={onMerkitseKeskeneräiseksi}
+            disabled={disableRemoval}
+            testId="merkitseKeskeneräiseksi"
+          >
+            {'Merkitse keskeneräiseksi'}
+          </FlatButton>
+        ) : (
+          <RaisedButton
+            onClick={onMerkitseValmiiksi}
+            disabled={disableAdd}
+            testId="merkitseValmiiksi"
+          >
+            {'Merkitse valmiiksi'}
+          </RaisedButton>
+        )}
+        {modalVisible && (
+          <SuorituksenVahvistusModal
+            organisaatio={organisaatio}
+            vahvistusClass={vahvistusClass}
+            onSubmit={onSubmit}
+            onCancel={onCancel}
+          />
+        )}
+      </SuorituksenVahvistus>
+    </TestIdLayer>
   ) : null
 }
 
@@ -181,32 +182,28 @@ const SuorituksenVahvistus: React.FC<SuorituksenVahvistusProps> = (props) => {
         vahvistus && 'SuorituksenVahvistus--valmis'
       ])}
     >
-      <div
-        className="SuorituksenVahvistus__status"
-        {...testId(props, 'status')}
-      >
-        {vahvistus ? t('Suoritus valmis') : t('Suoritus kesken')}
+      <div className="SuorituksenVahvistus__status">
+        <TestIdText id="status">
+          {vahvistus ? t('Suoritus valmis') : t('Suoritus kesken')}
+        </TestIdText>
       </div>
       {vahvistus && (
         <>
-          <div
-            className="SuorituksenVahvistus__vahvistus"
-            {...testId(props, 'details')}
-          >
-            <Trans>{'Vahvistus'}</Trans>
-            {': '}
-            {ISO2FinnishDate(vahvistus.päivä)}{' '}
-            {t(vahvistus.myöntäjäOrganisaatio.nimi)}
+          <div className="SuorituksenVahvistus__vahvistus">
+            <TestIdText id="details">
+              <Trans>{'Vahvistus'}</Trans>
+              {': '}
+              {ISO2FinnishDate(vahvistus.päivä)}{' '}
+              {t(vahvistus.myöntäjäOrganisaatio.nimi)}
+            </TestIdText>
           </div>
-          {myöntäjäHenkilöt.map((myöntäjä, i) => (
-            <div
-              key={i}
-              className="SuorituksenVahvistus__myontaja"
-              {...testId(props, `henkilö.${i}`)}
-            >
-              {myöntäjä}
-            </div>
-          ))}
+          <TestIdLayer id="henkilö">
+            {myöntäjäHenkilöt.map((myöntäjä, i) => (
+              <div key={i} className="SuorituksenVahvistus__myontaja">
+                <TestIdText id={i}>{myöntäjä}</TestIdText>
+              </div>
+            ))}
+          </TestIdLayer>
         </>
       )}
       {props.children}

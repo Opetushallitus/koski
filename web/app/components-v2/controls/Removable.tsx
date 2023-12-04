@@ -1,6 +1,6 @@
 import React from 'react'
 import { t } from '../../i18n/i18n'
-import { common, CommonPropsWithChildren, subTestId } from '../CommonProps'
+import { common, CommonPropsWithChildren } from '../CommonProps'
 import { CHARCODE_REMOVE } from '../texts/Icon'
 import { IconButton } from './IconButton'
 
@@ -22,7 +22,7 @@ export const Removable: React.FC<RemovableProps> = (props) =>
         label={t('Poista')}
         size="input"
         onClick={props.onClick}
-        testId={subTestId(props, 'delete')}
+        testId="delete"
       />
     </div>
   )
