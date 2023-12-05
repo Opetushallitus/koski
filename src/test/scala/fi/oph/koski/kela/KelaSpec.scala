@@ -11,7 +11,7 @@ import fi.oph.koski.log.{AccessLogTester, AuditLogTester}
 import fi.oph.koski.organisaatio.MockOrganisaatiot.{EuropeanSchoolOfHelsinki, MuuKuinSäänneltyKoulutusToimija}
 import fi.oph.koski.schema.LocalizedString.finnish
 import fi.oph.koski.schema._
-import fi.oph.koski.ytr.MockYrtClient
+import fi.oph.koski.ytr.MockYtrClient
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
@@ -29,7 +29,7 @@ class KelaSpec
 
   override def afterEach(): Unit = {
     super.afterEach()
-    MockYrtClient.reset()
+    MockYtrClient.reset()
   }
 
   "Kelan yhden oppijan rajapinta" - {
@@ -148,7 +148,7 @@ class KelaSpec
       val hetu = KoskiSpecificMockOppijat.kelaErityyppisiaOpiskeluoikeuksia.hetu.get
 
       KoskiApplicationForTests.cacheManager.invalidateAllCaches
-      MockYrtClient.setFailureHetu(hetu)
+      MockYtrClient.setFailureHetu(hetu)
 
       postHetu(hetu) {
         verifyResponseStatus(500)
@@ -158,7 +158,7 @@ class KelaSpec
       val hetu = KoskiSpecificMockOppijat.kelaErityyppisiaOpiskeluoikeuksia.hetu.get
 
       KoskiApplicationForTests.cacheManager.invalidateAllCaches
-      MockYrtClient.setTimeoutHetu(hetu)
+      MockYtrClient.setTimeoutHetu(hetu)
 
       postHetu(hetu) {
         verifyResponseStatus(500)

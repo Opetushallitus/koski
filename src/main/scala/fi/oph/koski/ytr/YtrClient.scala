@@ -52,7 +52,7 @@ object YtrClient extends Logging {
       url match {
         case "mock" =>
           logger.info("Using mock YTR integration")
-          MockYrtClient
+          MockYtrClient
         case "" =>
           logger.info("YTR integration disabled")
           EmptyYtrClient
@@ -89,7 +89,7 @@ object EmptyYtrClient extends YtrClient {
   override def generateCertificate(req: YoTodistusHetuRequest): Either[HttpStatus, Unit] = Right(Unit)
 }
 
-object MockYrtClient extends YtrClient {
+object MockYtrClient extends YtrClient {
   lazy val yoTodistusResource: Resource = new ClasspathResource("/mockdata/yotodistus")
   val yoTodistusRequestTimes: collection.mutable.Map[String, ZonedDateTime] = collection.mutable.Map.empty
   val yoTodistusGeneratingTimeSecs = 2

@@ -5,7 +5,7 @@ import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.util.Streams
-import fi.oph.koski.ytr.MockYrtClient.yoTodistusResource
+import fi.oph.koski.ytr.MockYtrClient.yoTodistusResource
 import software.amazon.awssdk.core.sync.ResponseTransformer
 import software.amazon.awssdk.services.s3.model.{GetObjectRequest, GetObjectResponse}
 
@@ -50,7 +50,7 @@ class MockYoTodistusService(application: KoskiApplication) extends YoTodistusSer
   override def download(req: YtrCertificateCompleted, output: OutputStream): Unit =
     yoTodistusResource.resourceSerializer("mock-yotodistus.pdf")(input => Streams.pipeTo(input, output))
 
-  override def reset(): Unit = MockYrtClient.reset()
+  override def reset(): Unit = MockYtrClient.reset()
 }
 
 class RemoteYoTodistusService(application: KoskiApplication, config: YtrS3Config) extends YoTodistusService(application) with Logging {

@@ -12,7 +12,7 @@ import fi.oph.koski.koskiuser.Rooli.OPHKATSELIJA
 import fi.oph.koski.koskiuser.{AuthenticationUser, KoskiSpecificSession, KäyttöoikeusGlobal, MockUsers, Palvelurooli}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.{DatabaseTestMethods, KoskiApplicationForTests, KoskiHttpSpec, schema}
-import fi.oph.koski.ytr.MockYrtClient
+import fi.oph.koski.ytr.MockYtrClient
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.organisaatio.MockOrganisaatiot.omnia
 import fi.oph.koski.schema.AmmatillinenOpiskeluoikeus
@@ -57,7 +57,7 @@ class SuoritetutTutkinnotServiceSpec
   implicit val koskiSession = suoritusjakoKatsominenTestUser
 
   override def afterEach(): Unit = {
-    MockYrtClient.reset()
+    MockYtrClient.reset()
     super.afterEach()
   }
 
@@ -396,7 +396,7 @@ class SuoritetutTutkinnotServiceSpec
     suoritetutTutkinnotService.findSuoritetutTutkinnotOppija(oppija.oid).isRight should be(true)
 
     KoskiApplicationForTests.cacheManager.invalidateAllCaches
-    MockYrtClient.setFailureHetu(oppija.hetu.get)
+    MockYtrClient.setFailureHetu(oppija.hetu.get)
 
     val result = suoritetutTutkinnotService.findSuoritetutTutkinnotOppija(oppija.oid)
 
@@ -419,7 +419,7 @@ class SuoritetutTutkinnotServiceSpec
     suoritetutTutkinnotService.findSuoritetutTutkinnotOppija(oppija.oid).isRight should be(true)
 
     KoskiApplicationForTests.cacheManager.invalidateAllCaches
-    MockYrtClient.setTimeoutHetu(oppija.hetu.get)
+    MockYtrClient.setTimeoutHetu(oppija.hetu.get)
 
     val result = suoritetutTutkinnotService.findSuoritetutTutkinnotOppija(oppija.oid)
 
