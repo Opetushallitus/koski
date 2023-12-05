@@ -69,8 +69,14 @@ object ExamplesLukio {
               kurssisuoritus(valtakunnallinenKurssi("ENA6")).copy(arviointi = numeerinenArviointi(8)),
               kurssisuoritus(valtakunnallinenKurssi("ENA7")).copy(arviointi = numeerinenArviointi(8)),
               kurssisuoritus(valtakunnallinenKurssi("ENA8")).copy(arviointi = numeerinenArviointi(9)),
-              kurssisuoritus(syventäväKurssi("ENA 10", "Abituki", "Aihepiirit liittyvät pakollisten ja valtakunnallisten syventävien kurssien aihekokonaisuuksiin niitä syventäen ja laajentaen. Kurssilla vankennetaan ylioppilaskokeessa tarvittavia tietoja ja taitoja. Pakollisilla ja valtakunnallisilla syventävillä kursseilla hankitun kielioppirakenteiden ja sanaston hallintaa vahvistetaan ja syvennetään. Arvioinnissa (suoritettu/hylätty) otetaan huomioon kaikki kielitaidon osa-alueet ja se perustuu jatkuvaan näyttöön. Kurssin päättyessä opiskelija on saanut lisävalmiuksia osallistua ylioppilaskokeeseen."))
-                .copy(arviointi = sanallinenArviointi("S")) // 0.5
+              kurssisuoritus(syventäväKurssi(
+                "ENA 10",
+                "Abituki",
+                "Aihepiirit liittyvät pakollisten ja valtakunnallisten syventävien kurssien aihekokonaisuuksiin niitä syventäen ja laajentaen. Kurssilla vankennetaan ylioppilaskokeessa tarvittavia tietoja ja taitoja. Pakollisilla ja valtakunnallisilla syventävillä kursseilla hankitun kielioppirakenteiden ja sanaston hallintaa vahvistetaan ja syvennetään. Arvioinnissa (suoritettu/hylätty) otetaan huomioon kaikki kielitaidon osa-alueet ja se perustuu jatkuvaan näyttöön. Kurssin päättyessä opiskelija on saanut lisävalmiuksia osallistua ylioppilaskokeeseen.",
+              )).copy(arviointi = Some(
+                sanallinenArviointi("S", None, date(2016, 6, 4)).get ++
+                sanallinenArviointi("H", None, date(2016, 6, 1)).get),
+              ) // 0.5
             ))),
             suoritus(lukionKieli("B1", "SV")).copy(arviointi = arviointi("7")).copy(osasuoritukset = Some(List(
               kurssisuoritus(valtakunnallinenKurssi("RUB11")).copy(arviointi = numeerinenArviointi(9)),

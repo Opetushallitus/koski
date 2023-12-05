@@ -33,6 +33,6 @@ export const parasArviointi = (suoritus, arviointiField = 'arviointi') => {
   return arviointi
 }
 
-export const ArviointiDateOrd = contramap(
-  (a) => modelData(a, 'päivä') || '0000-00-00'
-)(StringOrd)
+export const ArviointiDateOrd = contramap((a) => {
+  return a.päivä || modelData(a, 'päivä') || '0000-00-00'
+})(StringOrd)
