@@ -19,11 +19,7 @@ import java.time.{LocalDate, ZonedDateTime}
 
 trait YtrClient {
   def oppijaByHetu(ssn: YtrSsnWithPreviousSsns): Option[YtrOppija] = {
-    if (ssn.containsOnlyValidSsns) {
-      oppijaJsonByHetu(ssn).map(JsonSerializer.extract[YtrOppija](_, ignoreExtras = true))
-    } else {
-      None
-    }
+    oppijaJsonByHetu(ssn).map(JsonSerializer.extract[YtrOppija](_, ignoreExtras = true))
   }
   def oppijatByHetut(ssnData: YtrSsnDataWithPreviousSsns): List[YtrLaajaOppija] = oppijatJsonByHetut(ssnData).map(JsonSerializer.extract[List[YtrLaajaOppija]](_, ignoreExtras = true)).getOrElse(List.empty)
 
@@ -260,8 +256,8 @@ case class YtrSsnWithPreviousSsns(
   ssn: String,
   previousSsns: List[String] = List.empty
 ) {
-  def containsOnlyValidSsns: Boolean = {
+  def containsOnlyValidSsns(hetu: Hetu): Boolean = {
     val allSsns = List(ssn) ++ previousSsns
-    !allSsns.exists(ssn => Hetu.validate(ssn, acceptSynthetic = true).isLeft)
+    !allSsns.exists(ssn => hetu.validate(ssn).isLeft)
   }
 }

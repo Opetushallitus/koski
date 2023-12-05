@@ -2,7 +2,7 @@ import { test, expect } from './base'
 import { kansalainen } from './setup/auth'
 
 const hetut = {
-  ylioppilas: '080698-967F',
+  ylioppilas: '080698-703Y',
   vanhaTutkinto: '190580-678T',
   maksamatonTutkintomaksu: '101000A3582',
   ongelmiaJärjestelmissä: '280100A855E',

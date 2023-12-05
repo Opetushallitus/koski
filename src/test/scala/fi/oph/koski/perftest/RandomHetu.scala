@@ -11,8 +11,10 @@ class RandomHetu(lahtienVuodesta: Int) extends KoskidevHttpSpecification {
     Iterator.continually({
       println("Haetaan hetuja...")
       EasyHttp.getJson[List[String]]("https://telepartikkeli.azurewebsites.net/tunnusgeneraattori/api/generoi/hetu/500").iterator
-    }).flatten.filter(Hetu.validate(_, acceptSynthetic = false).isRight).filter(vuodenJalkeen(_, lahtienVuodesta))
+    }).flatten.filter(hetuValidator.validate(_).isRight).filter(vuodenJalkeen(_, lahtienVuodesta))
   }
+
+  private lazy val hetuValidator = new Hetu(acceptSyntheticHetus = false)
 
   def vuodenJalkeen(hetu: String, year: Int): Boolean = {
     Hetu.toBirthday(hetu).getOrElse(LocalDate.now).isAfter(LocalDate.of(year, 1, 1))

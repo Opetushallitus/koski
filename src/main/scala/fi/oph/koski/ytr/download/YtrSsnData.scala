@@ -17,6 +17,5 @@ case class YtrSsnData(
   }).getOrElse(("-", "-"))
   def minMonth: String = minAndMaxMonth._1
   def maxMonth: String = minAndMaxMonth._2
-  def ssnsWithValidFormat: Option[List[String]] = ssns.map(p => p.filter(ssn => Hetu.validate(ssn, acceptSynthetic = false).isRight))
-  def ssnsSortedByBirthdays: Option[List[String]] = ssnsWithValidFormat.map(_.sortBy(Hetu.toBirthday)(localDateOptionOrdering))
+  def ssnsSortedByBirthdays: Option[List[String]] = ssns.map(_.sortBy(Hetu.toBirthday)(localDateOptionOrdering))
 }

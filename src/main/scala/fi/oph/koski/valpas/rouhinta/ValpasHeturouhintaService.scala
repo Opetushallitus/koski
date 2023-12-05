@@ -28,7 +28,7 @@ class ValpasHeturouhintaService(application: KoskiApplication)
     cleanedHetuList(hetut).flatMap(hetut => {
 
       rouhintaTimed("haeHetulistanPerusteella", hetut.size) {
-        val (validitHetut, virheellisetHetut) = hetut.partition(hetu => Hetu.validate(hetu, acceptSynthetic = false).isRight)
+        val (validitHetut, virheellisetHetut) = hetut.partition(hetu => application.hetu.validate(hetu).isRight)
         val oppijatKoskessa = oppijalistatService.getOppijaOiditHetuillaIlmanOikeustarkastusta(validitHetut)
         val koskestaLöytymättömätHetut = validitHetut.diff(oppijatKoskessa.map(_.hetu))
 

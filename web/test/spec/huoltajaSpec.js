@@ -152,7 +152,7 @@ describe('Huollettavien tiedot', function () {
       etusivu.openPage,
       etusivu.login(),
       wait.until(korhopankki.isReady),
-      korhopankki.login('080698-967F'),
+      korhopankki.login('080698-703Y'),
       wait.until(omattiedot.isVisible)
     )
     before(wait.until(omattiedot.omatTiedotNäkyvissä))

@@ -74,7 +74,7 @@ class YtrYoTodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoike
 
   "Kansalainen" - {
     "näkee oman todistuksensa" in {
-      yoTodistusHappyPath("080698-967F", "1.2.246.562.24.00000000049")
+      yoTodistusHappyPath("080698-703Y", "1.2.246.562.24.00000000049")
     }
 
     "näkee huollettavansa todistuksen" in {
@@ -111,19 +111,19 @@ class YtrYoTodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoike
 
     "ei näe toisen oppijan todistus" - {
       "status-api" in {
-        get("api/yotodistus/status/fi/1.2.246.562.24.00000000050", headers = kansalainenLoginHeaders("080698-967F")) {
+        get("api/yotodistus/status/fi/1.2.246.562.24.00000000050", headers = kansalainenLoginHeaders("080698-703Y")) {
           verifyResponseStatus(401, KoskiErrorCategory.unauthorized())
         }
       }
 
       "generate-api" in {
-        get("api/yotodistus/generate/fi/1.2.246.562.24.00000000050", headers = kansalainenLoginHeaders("080698-967F")) {
+        get("api/yotodistus/generate/fi/1.2.246.562.24.00000000050", headers = kansalainenLoginHeaders("080698-703Y")) {
           verifyResponseStatus(401, KoskiErrorCategory.unauthorized())
         }
       }
 
       "download-api" in {
-        get("api/yotodistus/download/fi/1.2.246.562.24.00000000050/pampam.pdf", headers = kansalainenLoginHeaders("080698-967F")) {
+        get("api/yotodistus/download/fi/1.2.246.562.24.00000000050/pampam.pdf", headers = kansalainenLoginHeaders("080698-703Y")) {
           verifyResponseStatus(503, KoskiErrorCategory.unavailable.yoTodistus.notCompleteOrNoAccess())
         }
       }

@@ -1,12 +1,12 @@
 package fi.oph.koski.ytr
 
 import fi.oph.koski.cache.{CacheManager, ExpiringCache, KeyValueCache}
-import fi.oph.koski.henkilo.HenkilönTunnisteet
+import fi.oph.koski.henkilo.{HenkilönTunnisteet, Hetu}
 import fi.oph.koski.log.NotLoggable
 
 import scala.concurrent.duration.DurationInt
 
-class YtrRepository(client: YtrClient)(implicit cacheInvalidator: CacheManager) {
+class YtrRepository(client: YtrClient, hetu: Hetu)(implicit cacheInvalidator: CacheManager) {
   private val cache: KeyValueCache[YtrCacheKey, Option[YtrOppija]] =
     KeyValueCache(new ExpiringCache("YtrRepository", ExpiringCache.Params(5.minute, maxSize = 1000, storeValuePredicate = {
       case (_, value) => value != None // Don't cache None results
@@ -22,7 +22,10 @@ class YtrRepository(client: YtrClient)(implicit cacheInvalidator: CacheManager) 
     cache(key)
 
   private def uncachedFind(key: YtrCacheKey): Option[YtrOppija] = {
-    key.ssns.flatMap(client.oppijaByHetu).headOption
+    key.ssns
+      .filter(_.containsOnlyValidSsns(hetu))
+      .flatMap(client.oppijaByHetu)
+      .headOption
   }
 
   def buildCacheKey(tunnisteet: HenkilönTunnisteet): YtrCacheKey = {

@@ -2,7 +2,7 @@ package fi.oph.koski.virta
 
 import fi.oph.koski.cache.{CacheManager, GlobalCacheManager}
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.henkilo.HenkilönTunnisteet
+import fi.oph.koski.henkilo.{HenkilönTunnisteet, Hetu}
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koodisto.{KoodistoViitePalvelu, MockKoodistoViitePalvelu}
 import fi.oph.koski.koskiuser.{AccessChecker, AccessType, KoskiSpecificSession, SkipAccessCheck}
@@ -55,7 +55,7 @@ case class VirtaOpiskeluoikeusRepository(
 private[virta] case class VirtaCacheKey(hetut: List[String], oidit: List[String]) extends NotLoggable
 
 object MockVirtaOpiskeluoikeusRepository extends VirtaOpiskeluoikeusRepository(
-  MockVirtaClient(KoskiApplication.defaultConfig),
+  MockVirtaClient(new Hetu(KoskiApplication.defaultConfig.getBoolean("acceptSyntheticHetus")), KoskiApplication.defaultConfig),
   new MockOppilaitosRepository,
   MockKoodistoViitePalvelu,
   MockOrganisaatioRepository,

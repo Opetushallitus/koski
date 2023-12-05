@@ -57,7 +57,7 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
 
   "Kosken testioppijoiden tiedot voi hakea ilman virheitä" in {
     val oppijaOidit = KoskiSpecificMockOppijat.defaultOppijat
-      .filter(o => o.henkilö.hetu.isEmpty || o.henkilö.hetu.exists(!MockVirtaClient.virheenAiheuttavaHetu(_)))
+      .filter(o => o.henkilö.hetu.isEmpty || o.henkilö.hetu.exists(!KoskiApplicationForTests.virtaClient.asInstanceOf[MockVirtaClient].virheenAiheuttavaHetu(_)))
       .map(_.henkilö.oid)
 
     oppijaOidit.length should be > 100

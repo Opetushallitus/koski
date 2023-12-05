@@ -28,10 +28,11 @@ object OpintopolkuHenkilöFacade {
   def apply(
     config: Config,
     db: => DB,
+    hetu: Hetu,
     perustiedotRepository: => OpiskeluoikeudenPerustiedotRepository,
     perustiedotIndexer: => OpiskeluoikeudenPerustiedotIndexer
   ): OpintopolkuHenkilöFacade = config.getString("opintopolku.virkailija.url") match {
-    case "mock" => new MockOpintopolkuHenkilöFacadeWithDBSupport(db)
+    case "mock" => new MockOpintopolkuHenkilöFacadeWithDBSupport(db, hetu)
     case _ => RemoteOpintopolkuHenkilöFacade(config, perustiedotRepository, perustiedotIndexer)
   }
 }
