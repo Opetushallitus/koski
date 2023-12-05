@@ -96,7 +96,12 @@ object MockYtrClient extends YtrClient {
   private var failureHetu: Option[String] = None
   private var timeoutHetu: Option[String] = None
 
+  var latestOppijaJsonByHetu: Option[YtrSsnWithPreviousSsns] = None
+  var latestOppijatJsonByHetut: Option[YtrSsnDataWithPreviousSsns] = None
+  var latestCertificateRequest: Option[YoTodistusHetuRequest] = None
+
   override def oppijaJsonByHetu(ssn: YtrSsnWithPreviousSsns): Option[JValue] = {
+    latestOppijaJsonByHetu = Some(ssn)
     val hetu = ssn.ssn
     if (timeoutHetu.contains(hetu)) {
       Thread.sleep(20000)
@@ -121,14 +126,17 @@ object MockYtrClient extends YtrClient {
   private def hetutResourceName(modifiedSince: String) =
     s"/mockdata/ytr/ssns_${modifiedSince}.json"
 
-  override protected def oppijatJsonByHetut(ssnData: YtrSsnDataWithPreviousSsns): Option[JValue] =
+  override protected def oppijatJsonByHetut(ssnData: YtrSsnDataWithPreviousSsns): Option[JValue] = {
+    latestOppijatJsonByHetut = Some(ssnData)
     JsonResources.readResourceIfExists(
       resourcenameLaaja(ssnData.ssns.getOrElse(List.empty).map(_.ssn).sorted.mkString("_"))
     )
+  }
 
   private def resourcenameLaaja(hetut: String) = "/mockdata/ytr/laaja_" + hetut + ".json"
 
   override def getCertificateStatus(req: YoTodistusHetuRequest): Either[HttpStatus, YtrCertificateResponse] = {
+    latestCertificateRequest = Some(req)
     (req.ssn, yoTodistusRequestTimes.get(s"${req.ssn}_${req.language}")) match {
       case _ if req.ssn == ylioppilasLukiolainenRikki.hetu.get && req.language == "sv" =>
         Right(YtrCertificateServiceUnavailable())
@@ -161,6 +169,7 @@ object MockYtrClient extends YtrClient {
   }
 
   override def generateCertificate(req: YoTodistusHetuRequest): Either[HttpStatus, Unit] = {
+    latestCertificateRequest = Some(req)
     yoTodistusRequestTimes += (s"${req.ssn}_${req.language}" -> ZonedDateTime.now())
     Right(())
   }

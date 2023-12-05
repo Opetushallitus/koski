@@ -5,7 +5,8 @@ import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.schema.AmmatillinenOpiskeluoikeusjakso
-import fi.oph.koski.{DirtiesFixtures, KoskiHttpSpec}
+import fi.oph.koski.ytr.{MockYtrClient, YtrSsnWithPreviousSsns}
+import fi.oph.koski.{DirtiesFixtures, KoskiApplicationForTests, KoskiHttpSpec}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -53,6 +54,21 @@ class OppijaGetByOidSpec
         }
         get("api/oppija/" + KoskiSpecificMockOppijat.eero.oid, headers = authHeaders()) {
           verifyResponseStatus(404, KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia(s"Oppijaa ${KoskiSpecificMockOppijat.eero.oid} ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun."))
+        }
+      }
+      "Hakee oppijan tiedot YTR:stä oppijan kaikilla hetuilla" in {
+        KoskiApplicationForTests.cacheManager.invalidateAllCaches
+        MockYtrClient.latestOppijaJsonByHetu = None
+
+        val oppija = KoskiSpecificMockOppijat.ylioppilas
+        oppija.vanhatHetut.length should be >(0)
+
+        get("api/oppija/" + oppija.oid, headers = authHeaders()) {
+          verifyResponseStatusOk()
+
+          MockYtrClient.latestOppijaJsonByHetu should be(Some(
+            YtrSsnWithPreviousSsns(oppija.hetu.get, oppija.vanhatHetut)
+          ))
         }
       }
     }

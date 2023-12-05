@@ -1,7 +1,8 @@
 package fi.oph.koski.ytr
 
-import fi.oph.koski.KoskiHttpSpec
+import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import fi.oph.koski.api.misc.OpiskeluoikeusTestMethods
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.schema.KoskiSchema
@@ -78,6 +79,34 @@ class YtrYoTodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoike
 
     "näkee huollettavansa todistuksen" in {
       yoTodistusHappyPath("030300-5215", "1.2.246.562.24.00000000049")
+    }
+
+    "jos kansalaisella on monta hetua, välitetään YTR:lle pyynnöissä ne kaikki" in {
+      KoskiApplicationForTests.cacheManager.invalidateAllCaches
+      MockYtrClient.latestCertificateRequest = None
+
+      val oppija = KoskiSpecificMockOppijat.ylioppilas
+      oppija.vanhatHetut.length should be >(0)
+      val hetu = oppija.hetu.get
+      val oppijaOid = oppija.oid
+
+      val headers = kansalainenLoginHeaders(oppija.hetu.get)
+      get(s"api/yotodistus/status/fi/$oppijaOid", headers = headers) {
+        verifyResponseStatusOk()
+
+        MockYtrClient.latestCertificateRequest should be(Some(
+          YoTodistusHetuRequest(hetu, oppija.vanhatHetut, "fi")
+        ))
+        MockYtrClient.latestCertificateRequest = None
+
+        get(s"api/yotodistus/generate/fi/$oppijaOid", headers = headers) {
+          verifyResponseStatus(204)
+
+          MockYtrClient.latestCertificateRequest should be(Some(
+            YoTodistusHetuRequest(hetu, oppija.vanhatHetut, "fi")
+          ))
+        }
+      }
     }
 
     "ei näe toisen oppijan todistus" - {

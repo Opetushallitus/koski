@@ -1,6 +1,6 @@
 package fi.oph.koski.ytr
 
-import fi.oph.koski.KoskiHttpSpec
+import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import fi.oph.koski.api.misc.OpiskeluoikeusTestMethods
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
@@ -27,6 +27,20 @@ class YtrKoesuoritusApiSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskelu
       post("api/ytrkoesuoritukset/" + KoskiSpecificMockOppijat.ylioppilasLukiolainen.oid, headers = kansalainenLoginHeaders(KoskiSpecificMockOppijat.ylioppilasLukiolainen.hetu.get) ++ jsonContent) {
         verifyResponseStatusOk()
         readExams should equal (expected)
+      }
+    }
+
+    "Koesuoritusta haettaessa lähetetään YTR:iin myös oppijan vanhat hetut" in {
+      KoskiApplicationForTests.cacheManager.invalidateAllCaches
+      MockYtrClient.latestOppijaJsonByHetu = None
+
+      val oppija = KoskiSpecificMockOppijat.aikuisOpiskelija
+      oppija.vanhatHetut.length should be >(0)
+
+      post("api/ytrkoesuoritukset/" + oppija.oid, headers = kansalainenLoginHeaders(oppija.hetu.get) ++ jsonContent) {
+        MockYtrClient.latestOppijaJsonByHetu should be(
+          Some(YtrSsnWithPreviousSsns(oppija.hetu.get, oppija.vanhatHetut))
+        )
       }
     }
 
