@@ -54,7 +54,6 @@ export const VSTVapaatavoitteinenEditor: React.FC<
         createOpiskeluoikeusjakso={
           createVstVapaatavoitteinenOpiskeluoikeusjakso
         }
-        lisätiedotContainer={VSTLisatiedot}
         onChangeSuoritus={onChangeSuoritus}
         opiskeluoikeusJaksoClassName="fi.oph.koski.schema.VapaanSivistystyönVapaatavoitteisenKoulutuksenOpiskeluoikeusjakso"
       >
@@ -83,6 +82,7 @@ export const VSTVapaatavoitteinenEditor: React.FC<
           suoritusPath={päätasonSuoritus.path}
           organisaatio={organisaatio}
           disableAdd={suoritusVahvistettu}
+          disableRemoval={false}
         />
         <Spacer />
 

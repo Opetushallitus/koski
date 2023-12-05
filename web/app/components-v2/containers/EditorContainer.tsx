@@ -170,18 +170,18 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
           view={OrganisaatiohistoriaView}
         />
         <Spacer />
-        <FlatButton
-          onClick={(e) => {
-            e.preventDefault()
-            setLisatiedotOpen((prev) => !prev)
-          }}
-        >
-          {lisatiedotOpen
-            ? 'lisatiedot:sulje_lisatiedot'
-            : 'lisatiedot:nayta_lisatiedot'}
-        </FlatButton>
         {LisätiedotContainer !== undefined && lisatiedotOpen && (
           <>
+            <FlatButton
+              onClick={(e) => {
+                e.preventDefault()
+                setLisatiedotOpen((prev) => !prev)
+              }}
+            >
+              {lisatiedotOpen
+                ? 'lisatiedot:sulje_lisatiedot'
+                : 'lisatiedot:nayta_lisatiedot'}
+            </FlatButton>
             <Spacer />
             <LisätiedotContainer form={props.form} />
             <Spacer />
