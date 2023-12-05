@@ -31,7 +31,6 @@ export const LukionOppiaineetEditor = ({
   suoritusFilter,
   additionalOnlyEditableProperties,
   additionalEditableKoulutusmoduuliProperties,
-  showKeskiarvo = true,
   laajuusHeaderText = 'Laajuus',
   useHylkäämättömätLaajuus = true,
   showHyväksytystiArvioitujenLaajuus = false,
@@ -53,7 +52,6 @@ export const LukionOppiaineetEditor = ({
       }
       customOsasuoritusTitle="osasuoritus"
       showArviointiEditor={!oppiaine.value.classes.includes('arvioinniton')}
-      showKeskiarvo={showKeskiarvo}
       useHylkäämättömätLaajuus={useHylkäämättömätLaajuus}
       showHyväksytystiArvioitujenLaajuus={showHyväksytystiArvioitujenLaajuus}
     />
@@ -73,10 +71,6 @@ export const LukionOppiaineetEditor = ({
     modelData(oppiaineet[0], 'koulutusmoduuli.laajuus.yksikkö.nimi.fi') ||
     'kurssia'
 
-  const arvosanaHeaderText = showKeskiarvo ? 'Arvosana (keskiarvo)' : 'Arvosana'
-
-  const arvosanaHeader = <Text name={arvosanaHeaderText} />
-
   return (
     <section>
       <table className="suoritukset oppiaineet">
@@ -84,7 +78,7 @@ export const LukionOppiaineetEditor = ({
           <LukionOppiaineetTableHead
             laajuusyksikkö={laajuusyksikkö}
             laajuusHeaderText={laajuusHeaderText}
-            arvosanaHeader={arvosanaHeader}
+            arvosanaHeader={<Text name="Arvosana" />}
             showHyväksytystiArvioitujenLaajuus={
               showHyväksytystiArvioitujenLaajuus
             }

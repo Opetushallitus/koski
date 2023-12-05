@@ -5,7 +5,7 @@ export const LukionOppiaineetTableHead = ({
   laajuusyksikkö = 'kurssia',
   showArviointi = true,
   laajuusHeaderText = 'Laajuus',
-  arvosanaHeader = <Text name="Arvosana (keskiarvo)" />,
+  arvosanaHeader = <Text name="Arvosana" />,
   showHyväksytystiArvioitujenLaajuus = false,
   showPredictedArviointi = false,
   predictedArvosanaHeader = <Text name="Predicted grade" />

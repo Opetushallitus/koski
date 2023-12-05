@@ -85,7 +85,6 @@ export const LuvaEditor = ({ suorituksetModel }) => {
               ]}
               suoritusFilter={lukio2019moduuliensuorituksetFilter}
               useOppiaineLaajuus={true}
-              showKeskiarvo={false}
               additionalOnlyEditableProperties={[
                 'suorituskieli',
                 'suoritettuErityisenäTutkintona'

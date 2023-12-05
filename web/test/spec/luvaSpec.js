@@ -51,7 +51,7 @@ describe('Lukioon valmistava koulutus', function () {
     it('näyttää oppiaineiden ja kurssien arvosanat', function () {
       expect(extractAsText(S('.osasuoritukset'))).to.equal(
         'Lukioon valmistavat opinnot\n' +
-          'Oppiaine Laajuus (kurssia) Arvosana (keskiarvo)\n' +
+          'Oppiaine Laajuus (kurssia) Arvosana\n' +
           'Äidinkieli ja kirjallisuus, Suomi toisena kielenä ja kirjallisuus\n' +
           'LVS1\n' +
           'S 2 S\n' +
@@ -73,11 +73,10 @@ describe('Lukioon valmistava koulutus', function () {
           'Suoritettujen kurssien määrä yhteensä: 7\n' +
           '* = paikallinen kurssi tai oppiaine\n' +
           'Valinnaisena suoritetut lukiokurssit\n' +
-          'Oppiaine Laajuus (kurssia) Arvosana (keskiarvo)\n' +
+          'Oppiaine Laajuus (kurssia) Arvosana\n' +
           'A1-kieli, englanti\n' +
           'ENA1\n' +
           '8 1 S\n' +
-          '(8,0)\n' +
           'Suoritettujen kurssien määrä yhteensä: 1'
       )
     })
