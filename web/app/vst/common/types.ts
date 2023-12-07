@@ -1,6 +1,6 @@
 import { CommonProps } from '../../components-v2/CommonProps'
 import { ActivePäätasonSuoritus } from '../../components-v2/containers/EditorContainer'
-import { FormModel, FormOptic } from '../../components-v2/forms/FormModel'
+import { FormModel } from '../../components-v2/forms/FormModel'
 import { Koulutustoimija } from '../../types/fi/oph/koski/schema/Koulutustoimija'
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
 import { Oppilaitos } from '../../types/fi/oph/koski/schema/Oppilaitos'
@@ -48,6 +48,8 @@ export type VSTOsasuoritus = OsasuoritusOf<VapaanSivistystyönPäätasonSuoritus
 export type VSTAlaosasuoritus = OsasuoritusOf<VSTOsasuoritus>
 
 export type VSTArviointi = ArviointiOf<VSTSuoritus>
+
+export type VSTArviointiPäivällä = Extract<VSTArviointi, { päivä?: any }>
 
 export type VSTSuoritusArvioinnilla = Extract<
   VSTSuoritus,

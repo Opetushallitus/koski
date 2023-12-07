@@ -21,16 +21,15 @@ import {
 import { OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi } from '../../../types/fi/oph/koski/schema/OppivelvollisilleSuunnatunVapaanSivistystyonOpintokokonaisuudenArviointi'
 import { OppivelvollisilleSuunnatunVapaanSivistystyönValinnaistenSuuntautumisopintojenSuoritus } from '../../../types/fi/oph/koski/schema/OppivelvollisilleSuunnatunVapaanSivistystyonValinnaistenSuuntautumisopintojenSuoritus'
 import { VapaanSivistystyönOpiskeluoikeus } from '../../../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeus'
-import { VapaanSivistystyönPäätasonSuoritus } from '../../../types/fi/oph/koski/schema/VapaanSivistystyonPaatasonSuoritus'
 import { deleteAt } from '../../../util/array'
 import { createArviointi } from '../../common/arviointi'
-import { VSTSuoritus, VSTSuoritusOsasuorituksilla } from '../../common/types'
-import { AddSuuntautumisopinnonOsasuoritus } from './AddSuuntautumisopinnonOsasuoritus'
 import {
   ArviointiProperty,
   KuvausProperty,
   TunnustettuProperty
 } from '../../common/propertyFields'
+import { VSTSuoritusOsasuorituksilla } from '../../common/types'
+import { AddSuuntautumisopinnonOsasuoritus } from './AddSuuntautumisopinnonOsasuoritus'
 
 export type KOPSSuuntautumisopintojenOsasuoritusPropertiesProps = {
   osasuoritusIndex: number

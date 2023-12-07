@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useMemo } from 'react'
 import { useSchema } from '../appstate/constraints'
-import { useKoodistoFiller } from '../appstate/koodisto'
 import { OpiskeluoikeusContext } from '../appstate/opiskeluoikeus'
 import { TestIdRoot } from '../appstate/useTestId'
 import {
@@ -25,8 +24,8 @@ import { KOPSEditor } from './kops/KOPSEditor'
 import { VSTKoto2012Editor } from './koto2012/VSTKoto2012Editor'
 import { VSTKoto2022Editor } from './koto2022/VSTKoto2022Editor'
 import { VSTLukutaitoEditor } from './lukutaito/VSTLukutaitoEditor'
-import { isVSTOsasuoritusArvioinnilla } from './typeguards'
 import { VSTVapaatavoitteinenEditor } from './vapaatavoitteinen/VSTVapaatavoitteinenEditor'
+import { isVSTOsasuoritusArvioinnilla } from './common/arviointi'
 
 type VSTEditorProps =
   AdaptedOpiskeluoikeusEditorProps<VapaanSivistystyönOpiskeluoikeus>
@@ -37,7 +36,6 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
     VapaanSivistystyönOpiskeluoikeus.className
   )
   const form = useForm(props.opiskeluoikeus, false, opiskeluoikeusSchema)
-  const fillKoodistot = useKoodistoFiller()
   const { setOrganisaatio } = useContext(OpiskeluoikeusContext)
 
   // Oppilaitos

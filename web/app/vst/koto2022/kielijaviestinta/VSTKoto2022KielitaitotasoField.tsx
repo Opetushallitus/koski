@@ -20,7 +20,6 @@ import { todayISODate } from '../../../date/date'
 import { VSTKotoutumiskoulutuksenKieliJaViestintäosaamisenArviointi } from '../../../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenKieliJaViestintaosaamisenArviointi'
 import { VSTPropertyFieldProps } from '../../common/propertyFields'
 import { VSTSuoritusArvioinnilla } from '../../common/types'
-import { VSTOsasuoritus } from '../../typeguards'
 
 export const VSTKoto2022KielitaitotasoProperty = <
   T extends VSTSuoritusArvioinnilla
@@ -72,7 +71,7 @@ export type VSTKoto2022KielitaitotasoEditProps = CommonProps<
   FieldEditorProps<
     VSTKotoutumiskoulutuksenKieliJaViestintäosaamisenArviointi,
     {
-      osasuoritus: VSTOsasuoritus
+      osasuoritus: VSTSuoritusArvioinnilla
     }
   >
 >

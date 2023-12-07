@@ -9,21 +9,16 @@ import {
 } from '../../components-v2/forms/FormField'
 import { FormListField } from '../../components-v2/forms/FormListField'
 import { getValue } from '../../components-v2/forms/FormModel'
-import {
-  ArvosanaEdit,
-  ArvosanaView
-} from '../../components-v2/opiskeluoikeus/ArvosanaField'
+import { ArvosanaView } from '../../components-v2/opiskeluoikeus/ArvosanaField'
+import { KoodistoEdit } from '../../components-v2/opiskeluoikeus/KoodistoField'
 import {
   OsasuoritusProperty,
   OsasuoritusSubproperty
 } from '../../components-v2/opiskeluoikeus/OsasuoritusProperty'
-import { todayISODate } from '../../date/date'
 import { LukutaitokoulutuksenArviointi } from '../../types/fi/oph/koski/schema/LukutaitokoulutuksenArviointi'
-import { VSTKotoutumiskoulutuksenKieliJaViestintäosaamisenArviointi } from '../../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenKieliJaViestintaosaamisenArviointi'
 import { VapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonLukutaitokoulutuksenKokonaisuudenSuoritus'
 import { VSTPropertyFieldProps } from '../common/propertyFields'
-import { VSTOsasuoritus } from '../typeguards'
-import { KoodistoEdit } from '../../components-v2/opiskeluoikeus/KoodistoField'
+import { VSTOsasuoritus } from '../common/types'
 
 export const VSTLukutaitoKielitaitotasoProperty = (
   props: VSTPropertyFieldProps<VapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus>
