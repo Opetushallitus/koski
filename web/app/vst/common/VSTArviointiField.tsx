@@ -1,21 +1,21 @@
 import React from 'react'
-import { CommonProps } from '../components-v2/CommonProps'
-import { DateEdit, DateView } from '../components-v2/controls/DateField'
+import { CommonProps } from '../../components-v2/CommonProps'
+import { DateEdit, DateView } from '../../components-v2/controls/DateField'
 import {
   FieldEditorProps,
   FieldViewerProps
-} from '../components-v2/forms/FormField'
+} from '../../components-v2/forms/FormField'
 import {
   ArvosanaEdit,
   ArvosanaView
-} from '../components-v2/opiskeluoikeus/ArvosanaField'
-import { OsasuoritusSubproperty } from '../components-v2/opiskeluoikeus/OsasuoritusProperty'
-import { ArvosanaOf } from '../util/schema'
+} from '../../components-v2/opiskeluoikeus/ArvosanaField'
+import { OsasuoritusSubproperty } from '../../components-v2/opiskeluoikeus/OsasuoritusProperty'
+import { ArvosanaOf } from '../../util/schema'
 import {
   isVSTArviointiPäivällä,
   isVSTOsasuoritusArvioinnilla
-} from './common/arviointi'
-import { VSTArviointi, VSTSuoritusArvioinnilla } from './common/types'
+} from './arviointi'
+import { VSTArviointi, VSTSuoritusArvioinnilla } from './types'
 
 export type VSTArviointiViewProps = CommonProps<
   FieldViewerProps<VSTArviointi, {}>

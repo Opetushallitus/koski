@@ -24,7 +24,7 @@ import { emptyLocalizedString } from '../../i18n/i18n'
 import { VapaanSivistystyönOpintojenSuorituksenOsaamisenTunnustaminen } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpintojenSuorituksenOsaamisenTunnustaminen'
 import { VapaanSivistystyönOpiskeluoikeus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeus'
 import { ArviointiOf, ArvosanaOf } from '../../util/schema'
-import { VSTArviointiEdit, VSTArviointiView } from '../VSTArviointiField'
+import { VSTArviointiEdit, VSTArviointiView } from './VSTArviointiField'
 import { createArviointi } from './arviointi'
 import {
   VSTSuoritus,

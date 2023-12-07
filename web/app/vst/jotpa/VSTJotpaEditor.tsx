@@ -14,7 +14,7 @@ import { VapaanSivistystyönJotpaKoulutuksenSuoritus } from '../../types/fi/oph/
 import { VapaanSivistystyönOpiskeluoikeus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeus'
 import { VapaanSivistystyönOpiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeusjakso'
 import { deleteAt } from '../../util/array'
-import { VSTLisatiedot } from '../VSTLisatiedot'
+import { VSTLisatiedot } from '../common/VSTLisatiedot'
 import { VSTLaajuudetYhteensä } from '../common/VSTLaajuudetYhteensa'
 import { kaikkiOsasuorituksetVahvistettu } from '../common/arviointi'
 import { isCompletedJotpaOsasuoritus } from '../common/osasuoritukset'
