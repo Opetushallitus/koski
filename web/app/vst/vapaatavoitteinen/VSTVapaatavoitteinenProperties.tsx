@@ -15,10 +15,6 @@ import {
   KuvausView
 } from '../../components-v2/opiskeluoikeus/KuvausField'
 import {
-  LaajuusOpintopisteissäEdit,
-  LaajuusView
-} from '../../components-v2/opiskeluoikeus/LaajuusField'
-import {
   OsasuoritusProperty,
   OsasuoritusSubproperty
 } from '../../components-v2/opiskeluoikeus/OsasuoritusProperty'
@@ -26,20 +22,20 @@ import {
   OsasuoritusRowData,
   OsasuoritusTable
 } from '../../components-v2/opiskeluoikeus/OsasuoritusTable'
+import {
+  PaikallisenKoulutusmoduulinLaajuusEdit,
+  PaikallisenKoulutusmoduulinLaajuusView
+} from '../../components-v2/opiskeluoikeus/PaikallisenKoulutusmoduulinLaajuusField'
+import { LaajuusOpintopisteissä } from '../../types/fi/oph/koski/schema/LaajuusOpintopisteissa'
 import { VapaanSivistystyöVapaatavoitteisenKoulutuksenArviointi } from '../../types/fi/oph/koski/schema/VapaanSivistystyoVapaatavoitteisenKoulutuksenArviointi'
 import { VapaanSivistystyönOpiskeluoikeus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeus'
 import { VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus'
+import { VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonVapaatavoitteisenKoulutuksenOsasuoritus'
 import { deleteAt } from '../../util/array'
 import { createArviointi } from '../common/arviointi'
 import { ArviointiProperty } from '../common/propertyFields'
 import { VSTSuoritusPaikallisillaOsasuorituksilla } from '../common/types'
 import { AddVapaatavoitteinenAlaosasuoritus } from './AddVapaatavoitteinenAlaosasuoritus'
-import {
-  PaikallisenKoulutusmoduulinLaajuusEdit,
-  PaikallisenKoulutusmoduulinLaajuusView
-} from '../../components-v2/opiskeluoikeus/PaikallisenKoulutusmoduulinLaajuusField'
-import { VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonVapaatavoitteisenKoulutuksenOsasuoritus'
-import { LaajuusOpintopisteissä } from '../../types/fi/oph/koski/schema/LaajuusOpintopisteissa'
 
 type VSTVapaatavoitteinenPropertiesProps = {
   osasuoritusIndex: number

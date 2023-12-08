@@ -1,22 +1,21 @@
 import React from 'react'
-import { CommonProps } from '../components-v2/CommonProps'
-import { DateEdit, DateView } from '../components-v2/controls/DateField'
+import { CommonProps } from '../../components-v2/CommonProps'
+import { DateEdit, DateView } from '../../components-v2/controls/DateField'
 import {
   FieldEditorProps,
   FieldViewerProps
-} from '../components-v2/forms/FormField'
+} from '../../components-v2/forms/FormField'
 import {
   ArvosanaEdit,
   ArvosanaView
-} from '../components-v2/opiskeluoikeus/ArvosanaField'
-import { OsasuoritusSubproperty } from '../components-v2/opiskeluoikeus/OsasuoritusProperty'
-import { ArvosanaOf } from '../util/schema'
+} from '../../components-v2/opiskeluoikeus/ArvosanaField'
+import { OsasuoritusSubproperty } from '../../components-v2/opiskeluoikeus/OsasuoritusProperty'
+import { ArvosanaOf } from '../../util/schema'
 import {
-  VSTArviointi,
-  VSTOsasuoritus,
-  hasPäiväInArviointi,
+  isVSTArviointiPäivällä,
   isVSTOsasuoritusArvioinnilla
-} from './typeguards'
+} from './arviointi'
+import { VSTArviointi, VSTSuoritusArvioinnilla } from './types'
 
 export type VSTArviointiViewProps = CommonProps<
   FieldViewerProps<VSTArviointi, {}>
@@ -29,7 +28,7 @@ export const VSTArviointiView = (props: VSTArviointiViewProps) => {
       <OsasuoritusSubproperty rowNumber={startRow} label="Arvosana">
         <ArvosanaView value={props.value} />
       </OsasuoritusSubproperty>
-      {hasPäiväInArviointi(props.value) && (
+      {isVSTArviointiPäivällä(props.value) && (
         <OsasuoritusSubproperty rowNumber={startRow + 1} label="Päivämäärä">
           <DateView value={props.value.päivä} />
         </OsasuoritusSubproperty>
@@ -43,7 +42,7 @@ export type VSTArviointiEditProps<T extends VSTArviointi> = CommonProps<
     T,
     {
       createArviointi: (arvosana: ArvosanaOf<T>) => T
-      osasuoritus: VSTOsasuoritus
+      osasuoritus: VSTSuoritusArvioinnilla
     }
   >
 >
@@ -61,7 +60,7 @@ export const VSTArviointiEdit = <T extends VSTArviointi>(
       <OsasuoritusSubproperty rowNumber={startRow} label="Arvosana">
         <ArvosanaEdit {...props} createArviointi={props.createArviointi} />
       </OsasuoritusSubproperty>
-      {hasPäiväInArviointi(props.value) && (
+      {isVSTArviointiPäivällä(props.value) && (
         <OsasuoritusSubproperty rowNumber={startRow + 1} label="Päivämäärä">
           <DateEdit
             value={props.value.päivä}

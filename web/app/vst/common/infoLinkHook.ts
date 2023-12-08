@@ -1,8 +1,8 @@
 import { useMemo } from 'react'
-import { useSchema } from '../appstate/constraints'
-import { Opiskeluoikeus } from '../types/fi/oph/koski/schema/Opiskeluoikeus'
-import { isObjectConstraint } from '../types/fi/oph/koski/typemodel/ObjectConstraint'
-import { isOptionalConstraint } from '../types/fi/oph/koski/typemodel/OptionalConstraint'
+import { useSchema } from '../../appstate/constraints'
+import { Opiskeluoikeus } from '../../types/fi/oph/koski/schema/Opiskeluoikeus'
+import { isObjectConstraint } from '../../types/fi/oph/koski/typemodel/ObjectConstraint'
+import { isOptionalConstraint } from '../../types/fi/oph/koski/typemodel/OptionalConstraint'
 
 // TODO TOR-2086: Tee tästä yleinen toteutus kaikille opiskeluoikeuksille ja siirrä suoraan InfoLink-komponentin alle
 
