@@ -2,6 +2,7 @@
 
 ## 11.12.2023
 - Perusopetukseen valmistavan opetuksen suorituskielen pitää olla suomi tai ruotsi.
+- Ammatillisen tutkinnon suorituksissa voi käyttää vain tutkintonimikkeitä, jotka löytyvät tutkinnon perusteesta
 
 ## 28.11.2023
 

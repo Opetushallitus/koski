@@ -9,6 +9,7 @@ case class TutkintoRakenne(
   koulutustyyppi: Koulutustyyppi,
   suoritustavat: List[SuoritustapaJaRakenne],
   osaamisalat: List[Koodistokoodiviite],
+  tutkintonimikkeet: List[Koodistokoodiviite],
   koulutukset: List[Koodistokoodiviite]
 ) {
   def findSuoritustapaJaRakenne(suoritustapa: Koodistokoodiviite): Option[SuoritustapaJaRakenne] = {
