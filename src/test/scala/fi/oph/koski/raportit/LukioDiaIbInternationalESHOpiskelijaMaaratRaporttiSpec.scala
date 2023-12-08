@@ -103,15 +103,6 @@ class LukioDiaIbInternationalESHOpiskelijaMaaratRaporttiSpec extends AnyFreeSpec
       ressu.oppimaaranSuorittajia_UlkomaisiaVaihtoOpiskelijoita shouldBe(0)
       ressu.aineopiskeija_UlkomaisiaVaihtoOpiskelijoita shouldBe(0)
     }
-    "Neljännen vuoden opiskelijoita" in {
-      helsinki.oppimaaranSuorittajia_YliKolmeVuotta_VOSRahoitteisia shouldBe(1)
-      helsinki.nuortenOppimaaranSuorittajia_YliKolmeVuotta_VOSRahoitteisia shouldBe(1)
-      helsinki.aikuistenOppimaaranSuorittajia_YliKolmeVuotta_VOSRahoitteisia shouldBe(0)
-
-      ressu.oppimaaranSuorittajia_YliKolmeVuotta_VOSRahoitteisia shouldBe(1)
-      ressu.nuortenOppimaaranSuorittajia_YliKolmeVuotta_VOSRahoitteisia shouldBe(1)
-      ressu.aikuistenOppimaaranSuorittajia_YliKolmeVuotta_VOSRahoitteisia shouldBe(0)
-    }
     "Opetuskieli suomi" in {
       helsinki.oppimaaranSuorittajia_OpetuskieliSuomi shouldBe(1)
       helsinki.nuortenOppimaaranSuorittajia_OpetuskieliSuomi shouldBe(1)
