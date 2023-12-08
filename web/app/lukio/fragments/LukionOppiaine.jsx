@@ -94,32 +94,7 @@ const KoulutusmoduuliPropertiesEditor = ({
   )
 }
 
-const kurssienKeskiarvo = (suoritetutKurssit) => {
-  const numeerinenArvosana = (kurssi) =>
-    parseInt(R.last(kurssi.arviointi).arvosana.koodiarvo)
-  const kurssitNumeerisellaArvosanalla = suoritetutKurssit.filter(
-    (kurssi) => !isNaN(numeerinenArvosana(kurssi))
-  )
-  if (kurssitNumeerisellaArvosanalla.length > 0) {
-    const keskiarvo =
-      Math.round(
-        (kurssitNumeerisellaArvosanalla
-          .map(numeerinenArvosana)
-          .reduce((a, b) => a + b) /
-          kurssitNumeerisellaArvosanalla.length) *
-          10
-      ) / 10
-    return keskiarvo.toFixed(1).replace('.', ',')
-  }
-}
-
-const Arviointi = ({
-  oppiaine,
-  suoritetutKurssit,
-  footnote,
-  showKeskiarvo = true,
-  predicted
-}) => {
+const Arviointi = ({ oppiaine, suoritetutKurssit, footnote, predicted }) => {
   const { edit, suoritus } = oppiaine.context
   const ishDiploma =
     edit &&
@@ -147,10 +122,6 @@ const Arviointi = ({
           (a) => !a.arvosana.predicted
         )
 
-  const keskiarvo = showKeskiarvo
-    ? kurssienKeskiarvo(suoritetutKurssit)
-    : undefined
-
   return (
     <div>
       <div className="annettuArvosana">
@@ -172,9 +143,8 @@ const Arviointi = ({
           <FootnoteHint title={footnote.title} hint={footnote.hint} />
         )}
       </div>
-      <div className="keskiarvo">{keskiarvo ? `(${keskiarvo})` : ''}</div>
     </div>
   )
 }
 
-export { Nimi, KoulutusmoduuliPropertiesEditor, Arviointi, kurssienKeskiarvo }
+export { Nimi, KoulutusmoduuliPropertiesEditor, Arviointi }

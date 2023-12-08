@@ -119,7 +119,6 @@ export const resolveOsasuorituksetEditor = (mdl: OsasuoritusEditorModel) => {
           'muidenlukioopintojensuoritus2019'
         ]}
         useOppiaineLaajuus={true}
-        showKeskiarvo={false}
         additionalOnlyEditableProperties={[
           'suorituskieli',
           'suoritettuErityisenäTutkintona'
@@ -158,7 +157,6 @@ export const resolveOsasuorituksetEditor = (mdl: OsasuoritusEditorModel) => {
           'muidenlukioopintojenpreibsuoritus2019'
         ]}
         useOppiaineLaajuus={true}
-        showKeskiarvo={false}
         additionalOnlyEditableProperties={[
           'suorituskieli',
           'suoritettuErityisenäTutkintona'

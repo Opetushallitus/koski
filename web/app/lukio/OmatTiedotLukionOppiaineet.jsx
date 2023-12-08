@@ -8,7 +8,7 @@ import {
   paikallisiaLukionOppiaineitaTaiOsasuorituksia
 } from './LukionOppiaineetEditor'
 import { FootnoteDescriptions, FootnoteHint } from '../components/footnote'
-import { kurssienKeskiarvo, Nimi } from './fragments/LukionOppiaine'
+import { Nimi } from './fragments/LukionOppiaine'
 import { numberToString } from '../util/format'
 import {
   hylkäämättömätOsasuoritukset,
@@ -24,8 +24,7 @@ import { KurssitListMobile } from '../kurssi/OmatTiedotKurssit'
 export default ({
   suorituksetModel,
   suoritusFilter,
-  useOppiaineLaajuus = false,
-  showKeskiarvo = true
+  useOppiaineLaajuus = false
 }) => {
   const oppiaineet = modelItems(suorituksetModel).filter(
     suoritusFilter || R.identity
@@ -45,7 +44,6 @@ export default ({
               oppiaine={oppiaine}
               isMobile={isMobileAtom}
               useOppiaineLaajuus={useOppiaineLaajuus}
-              showKeskiarvo={showKeskiarvo}
             />
           ))}
         </tbody>
@@ -91,7 +89,6 @@ export class OmatTiedotLukionOppiaine extends React.Component {
       oppiaine,
       isMobile,
       footnote,
-      showKeskiarvo = true,
       notFoundText = '-',
       customOsasuoritusTitle,
       useOppiaineLaajuus = false,
@@ -100,7 +97,6 @@ export class OmatTiedotLukionOppiaine extends React.Component {
     } = this.props
     const kurssit = modelItems(oppiaine, 'osasuoritukset')
     const arviointi = modelData(oppiaine, arviointiField)
-    const oppiaineenKeskiarvo = kurssienKeskiarvo(suoritetutKurssit(kurssit))
     const laajuusYhteensä = numberToString(
       useOppiaineLaajuus
         ? modelData(oppiaine, 'koulutusmoduuli.laajuus.arvo')
@@ -158,7 +154,6 @@ export class OmatTiedotLukionOppiaine extends React.Component {
         {(!isMobile || expanded) && (
           <Kurssit
             oppiaine={oppiaine}
-            oppiaineenKeskiarvo={showKeskiarvo && oppiaineenKeskiarvo}
             customTitle={customOsasuoritusTitle}
             customKurssitSortFn={customKurssitSortFn}
           />
@@ -168,22 +163,9 @@ export class OmatTiedotLukionOppiaine extends React.Component {
   }
 }
 
-const KurssitListDesktop = ({
-  oppiaine,
-  oppiaineenKeskiarvo,
-  customKurssitSortFn
-}) => [
+const KurssitListDesktop = ({ oppiaine, customKurssitSortFn }) => [
   <td className="kurssilista" key="kurssit">
     <KurssitEditor model={oppiaine} customKurssitSortFn={customKurssitSortFn} />
   </td>,
-  <td className="arvosana" key="arvosana">
-    {oppiaineenKeskiarvo && (
-      <span>
-        <span className="screenreader-info">{`${t(
-          'Keskiarvo'
-        )} ${oppiaineenKeskiarvo}`}</span>
-        <span aria-hidden={true}>{`(${oppiaineenKeskiarvo})`}</span>
-      </span>
-    )}
-  </td>
+  <td className="arvosana" key="arvosana"></td>
 ]

@@ -68,8 +68,6 @@ export class LukionOppiaineEditor extends React.Component {
       customOsasuoritusTitle,
       customOsasuoritusAlternativesCompletionFn,
       customKurssitSortFn,
-      showKeskiarvo = true,
-      showPredictedKeskiarvo = true,
       useHylkäämättömätLaajuus = true,
       showHyväksytystiArvioitujenLaajuus = false,
       forceLaajuusOpintopisteinä = false
@@ -157,7 +155,6 @@ export class LukionOppiaineEditor extends React.Component {
                 suoritetutKurssit={suoritetutKurssit(kurssit)}
                 footnote={footnote}
                 predicted={true}
-                showKeskiarvo={false}
               />
             )}
           </td>
@@ -169,7 +166,6 @@ export class LukionOppiaineEditor extends React.Component {
                 oppiaine={oppiaine}
                 suoritetutKurssit={suoritetutKurssit(kurssit)}
                 footnote={footnote}
-                showKeskiarvo={showKeskiarvo}
                 predicted={showPredictedArviointi ? false : undefined}
               />
             )}

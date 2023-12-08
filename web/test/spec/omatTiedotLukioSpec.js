@@ -120,8 +120,7 @@ describe('Omat tiedot - lukio', function () {
                 'ÄI5 9 Avaa\n' +
                 'ÄI6 9 Avaa\n' +
                 'ÄI8 9 Avaa\n' +
-                'ÄI9 9 Avaa\n' +
-                '(Keskiarvo 8,5)'
+                'ÄI9 9 Avaa'
             )
           })
         })
@@ -247,8 +246,7 @@ describe('Omat tiedot - lukio', function () {
               '9 ÄI6\n' +
               '9 ÄI8\n' +
               '9 ÄI9\n' +
-              '9 Keskiarvo 8,5\n' +
-              '(8,5)\n' +
+              '9\n' +
               'A1-kieli, englanti\n' +
               '(9 kurssia) 9\n' +
               'ENA1\n' +
@@ -260,8 +258,7 @@ describe('Omat tiedot - lukio', function () {
               '8 ENA7\n' +
               '8 ENA8\n' +
               '9 ENA 10 *\n' +
-              'S Keskiarvo 9,0\n' +
-              '(9,0)\n' +
+              'S\n' +
               'B1-kieli, ruotsi\n' +
               '(5 kurssia) 7\n' +
               'RUB11\n' +
@@ -269,20 +266,17 @@ describe('Omat tiedot - lukio', function () {
               '8 RUB13\n' +
               '7 RUB14\n' +
               '7 RUB15\n' +
-              '6 Keskiarvo 7,4\n' +
-              '(7,4)\n' +
+              '6\n' +
               'B3-kieli, latina\n' +
               '(2 kurssia) 9\n' +
               'LAB31\n' +
               '9 LAB32\n' +
-              '8 Keskiarvo 8,5\n' +
-              '(8,5)\n' +
+              '8\n' +
               'Äidinkielenomainen kieli A-oppimäärä, suomi\n' +
               '(2 kurssia) 8\n' +
               'ÄI1\n' +
               '9 ÄI2\n' +
-              '8 Keskiarvo 8,5\n' +
-              '(8,5)\n' +
+              '8\n' +
               'Matematiikka, pitkä oppimäärä\n' +
               '(14 kurssia) 9\n' +
               'MAA1 *\n' +
@@ -300,8 +294,7 @@ describe('Omat tiedot - lukio', function () {
               '10 MAA13\n' +
               'H MAA14 *\n' +
               '9 MAA16 *\n' +
-              '9 Keskiarvo 8,6\n' +
-              '(8,6)\n' +
+              '9\n' +
               'Biologia\n' +
               '(7,5 kurssia) 9\n' +
               'BI1\n' +
@@ -312,14 +305,12 @@ describe('Omat tiedot - lukio', function () {
               '10 BI6 *\n' +
               'S BI7 *\n' +
               'S BI8 *\n' +
-              'S Keskiarvo 8,8\n' +
-              '(8,8)\n' +
+              'S\n' +
               'Maantieto\n' +
               '(2 kurssia) 8\n' +
               'GE1\n' +
               '9 GE2\n' +
-              '7 Keskiarvo 8,0\n' +
-              '(8,0)\n' +
+              '7\n' +
               'Fysiikka\n' +
               '(13 kurssia) 8\n' +
               'FY1\n' +
@@ -335,8 +326,7 @@ describe('Omat tiedot - lukio', function () {
               'S FY11 *\n' +
               'S FY12 *\n' +
               'S FY13 *\n' +
-              'S Keskiarvo 7,8\n' +
-              '(7,8)\n' +
+              'S\n' +
               'Kemia\n' +
               '(8 kurssia) 8\n' +
               'KE1\n' +
@@ -347,68 +337,57 @@ describe('Omat tiedot - lukio', function () {
               '7 KE6 *\n' +
               '5 KE7 *\n' +
               'S KE8 *\n' +
-              'S Keskiarvo 7,2\n' +
-              '(7,2)\n' +
+              'S\n' +
               'Uskonto/Elämänkatsomustieto\n' +
               '(3 kurssia) 8\n' +
               'UE1\n' +
               '8 UE2\n' +
               '7 UE3\n' +
-              '8 Keskiarvo 7,7\n' +
-              '(7,7)\n' +
+              '8\n' +
               'Filosofia\n' +
               '(1 kurssia) 8\n' +
               'FI1\n' +
-              '8 Keskiarvo 8,0\n' +
-              '(8,0)\n' +
+              '8\n' +
               'Psykologia\n' +
               '(1 kurssia) 9\n' +
               'PS1\n' +
-              '9 Keskiarvo 9,0\n' +
-              '(9,0)\n' +
+              '9\n' +
               'Historia\n' +
               '(4 kurssia) 7\n' +
               'HI1\n' +
               '7 HI2\n' +
               '8 HI3\n' +
               '7 HI4\n' +
-              '6 Keskiarvo 7,0\n' +
-              '(7,0)\n' +
+              '6\n' +
               'Yhteiskuntaoppi\n' +
               '(2 kurssia) 8\n' +
               'YH1\n' +
               '8 YH2\n' +
-              '8 Keskiarvo 8,0\n' +
-              '(8,0)\n' +
+              '8\n' +
               'Liikunta\n' +
               '(3 kurssia) 9\n' +
               'LI1\n' +
               '8 LI2\n' +
               '9 LI12 *\n' +
-              'S Keskiarvo 8,5\n' +
-              '(8,5)\n' +
+              'S\n' +
               'Musiikki\n' +
               '(1 kurssia) 8\n' +
               'MU1\n' +
-              '8 Keskiarvo 8,0\n' +
-              '(8,0)\n' +
+              '8\n' +
               'Kuvataide\n' +
               '(2 kurssia) 9\n' +
               'KU1\n' +
               '8 KU2 *\n' +
-              '9 Keskiarvo 8,5\n' +
-              '(8,5)\n' +
+              '9\n' +
               'Terveystieto\n' +
               '(1 kurssia) 9\n' +
               'TE1\n' +
-              '8 Keskiarvo 8,0\n' +
-              '(8,0)\n' +
+              '8\n' +
               'Tanssi ja liike\n' +
               '*\n' +
               '(1 kurssia) 10\n' +
               'ITT1 *\n' +
-              '10 Keskiarvo 10,0\n' +
-              '(10,0)\n' +
+              '10\n' +
               'Teemaopinnot\n' +
               '(1 kurssia) S\n' +
               'MTA *\n' +
@@ -623,26 +602,22 @@ describe('Omat tiedot - lukio', function () {
                 'ÄI1\n' +
                 '8 ÄI2\n' +
                 '8 ÄI3\n' +
-                '8 Keskiarvo 8,0\n' +
-                '(8,0)\n' +
+                '8\n' +
                 'A1-kieli, englanti\n' +
                 '(3 kurssia) 10\n' +
                 'ENA1\n' +
                 '10 ENA2\n' +
                 '10 ENA5\n' +
-                '10 Keskiarvo 10,0\n' +
-                '(10,0)\n' +
+                '10\n' +
                 'B1-kieli, ruotsi\n' +
                 '(2 kurssia) 7\n' +
                 'RUB11\n' +
                 '8 RUB12\n' +
-                '7 Keskiarvo 7,5\n' +
-                '(7,5)\n' +
+                '7\n' +
                 'B2-kieli, ranska\n' +
                 '(1 kurssia) 9\n' +
                 'RAN3 *\n' +
-                '9 Keskiarvo 9,0\n' +
-                '(9,0)\n' +
+                '9\n' +
                 'B3-kieli, espanja\n' +
                 '(1 kurssia) 6\n' +
                 'ES1 *\n' +
@@ -653,34 +628,28 @@ describe('Omat tiedot - lukio', function () {
                 '7 MAA12\n' +
                 '7 MAA13\n' +
                 '7 MAA2\n' +
-                '7 Keskiarvo 7,0\n' +
-                '(7,0)\n' +
+                '7\n' +
                 'Biologia\n' +
                 '(2 kurssia) 8\n' +
                 'BI1\n' +
                 '8 BI10 *\n' +
-                'S Keskiarvo 8,0\n' +
-                '(8,0)\n' +
+                'S\n' +
                 'Maantieto\n' +
                 '(1 kurssia) 10\n' +
                 'GE2\n' +
-                '10 Keskiarvo 10,0\n' +
-                '(10,0)\n' +
+                '10\n' +
                 'Fysiikka\n' +
                 '(1 kurssia) 7\n' +
                 'FY1\n' +
-                '7 Keskiarvo 7,0\n' +
-                '(7,0)\n' +
+                '7\n' +
                 'Kemia\n' +
                 '(1 kurssia) 8\n' +
                 'KE1\n' +
-                '8 Keskiarvo 8,0\n' +
-                '(8,0)\n' +
+                '8\n' +
                 'Uskonto/Elämänkatsomustieto\n' +
                 '(1 kurssia) 10\n' +
                 'UK4\n' +
-                '10 Keskiarvo 10,0\n' +
-                '(10,0)\n' +
+                '10\n' +
                 'Filosofia\n' +
                 '(1 kurssia) 7\n' +
                 'FI1\n' +
@@ -688,40 +657,33 @@ describe('Omat tiedot - lukio', function () {
                 'Psykologia\n' +
                 '(1 kurssia) 8\n' +
                 'PS1\n' +
-                '8 Keskiarvo 8,0\n' +
-                '(8,0)\n' +
+                '8\n' +
                 'Historia\n' +
                 '(3 kurssia) 8\n' +
                 'HI3\n' +
                 '9 HI4\n' +
                 '8 HI10 *\n' +
-                'S Keskiarvo 8,5\n' +
-                '(8,5)\n' +
+                'S\n' +
                 'Yhteiskuntaoppi\n' +
                 '(1 kurssia) 8\n' +
                 'YH1\n' +
-                '8 Keskiarvo 8,0\n' +
-                '(8,0)\n' +
+                '8\n' +
                 'Liikunta\n' +
                 '(1 kurssia) 8\n' +
                 'LI1\n' +
-                '8 Keskiarvo 8,0\n' +
-                '(8,0)\n' +
+                '8\n' +
                 'Musiikki\n' +
                 '(1 kurssia) 8\n' +
                 'MU1\n' +
-                '8 Keskiarvo 8,0\n' +
-                '(8,0)\n' +
+                '8\n' +
                 'Kuvataide\n' +
                 '(1 kurssia) 9\n' +
                 'KU1\n' +
-                '9 Keskiarvo 9,0\n' +
-                '(9,0)\n' +
+                '9\n' +
                 'Terveystieto\n' +
                 '(1 kurssia) 7\n' +
                 'TE1\n' +
-                '7 Keskiarvo 7,0\n' +
-                '(7,0)\n' +
+                '7\n' +
                 'Opinto-ohjaus\n' +
                 '(1 kurssia) 7\n' +
                 'OP1\n' +
