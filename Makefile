@@ -18,7 +18,7 @@ help:
 	@echo "make docker-dbs	- Start databases with docker-compose"
 	@echo "make watch	- Watch for changes in webapp files"
 	@echo "make clean	- Remove generated build data"
-	@echo "make dist version=<version> - Build and deploy application to artifactory"
+	@echo "make dist version=<version> - Builds and verifies application version"
 
 .PHONY: logdir
 logdir:
