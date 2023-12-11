@@ -217,7 +217,7 @@ case class RemoteYtrClient(rootUrl: String, user: String, password: String) exte
 
   override def getCertificateStatus(req: YoTodistusHetuRequest): Either[HttpStatus, YtrCertificateResponse] = {
     val uri = uri"/api/oph-koski/signed-certificate/status"
-    val json = runIO(http.post(uri, req)(json4sEncoderOf[YoTodistusHetuRequest])(Http.parseJson[JValue]))
+    val json = runIO(postRetryingHttp.post(uri, req)(json4sEncoderOf[YoTodistusHetuRequest])(Http.parseJson[JValue]))
     val response = SchemaValidatingExtractor.extract[YtrCertificateResponse](json)
     response.left.map(e => KoskiErrorCategory.badRequest.validation.jsonSchema(JsonErrorMessage(e)))
   }
