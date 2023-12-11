@@ -1,5 +1,8 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 11.12.2023
+- Perusopetukseen valmistavan opetuksen suorituskielen pitää olla suomi tai ruotsi.
+
 ## 28.11.2023
 
 - IB-tutkinnossa vaaditaan vähintään yksi predicted -arvosanalla arvioitu osasuoritus ennen vahvistusta,
