@@ -1,3 +1,6 @@
+## 11.12.2023
+- IB-opintoihin lisätty uusi oppiaine koodilla DIS
+
 ## 28.11.2023
 
 - Sallitaan oman äidinkielen opinnoissa myös arvosanat S ja H
