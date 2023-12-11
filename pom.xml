@@ -793,6 +793,13 @@
       </build>
     </profile>
   </profiles>
+  <distributionManagement>
+    <repository>
+      <id>github</id>
+      <name>GitHub Opetushallitus KOSKI Apache Maven Packages</name>
+      <url>https://maven.pkg.github.com/Opetushallitus/koski</url>
+    </repository>
+  </distributionManagement>
   <repositories>
     <repository>
       <id>central</id>

@@ -22,7 +22,7 @@ function create_version() {
     (cd $BASE_DIR/target/dist && mvn install -DskipTests=true)
   else
     (cd $BASE_DIR/target/dist && mvn versions:set -DnewVersion=$version)
-    (cd $BASE_DIR/target/dist && make clean && mvn verify -DskipTests=true)
+    (cd $BASE_DIR/target/dist && make clean && mvn deploy --batch-mode -DskipTests=true -Dmaven.skip.install=true -DaltDeploymentRepository=github::default::https://maven.pkg.github.com/Opetushallitus/koski)
   fi
 }
 

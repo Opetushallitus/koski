@@ -23,6 +23,7 @@ jobs:
     permissions:
       id-token: write
       contents: read
+      packages: write
     steps:
       - uses: actions/checkout@v3
         with:
@@ -88,9 +89,11 @@ jobs:
           distribution: "zulu"
           cache: "maven"
 
-      - name: Build and verify application
+      - name: Build application and publish it to Github Packages
         if: steps.check-image.outputs.image-exists != '0'
         run: make dist version=${{ github.event.inputs.commithash }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build, tag, and push image to Amazon ECR
         if: steps.check-image.outputs.image-exists != '0'
