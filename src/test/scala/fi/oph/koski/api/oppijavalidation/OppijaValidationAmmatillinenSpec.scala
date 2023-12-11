@@ -68,6 +68,14 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
 
           "palautetaan HTTP 400" in (setupTutkintoSuoritus(suoritus)(verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, """.*"message":"Koodia osaamisala/0 ei löydy koodistosta","errorType":"tuntematonKoodi".*""".r))))
         }
+        "Tutkintonimikettä ei löydy tutkintorakenteesta" - {
+          val suoritus = autoalanPerustutkinnonSuoritus().copy(
+            suoritustapa = Koodistokoodiviite("ops", "ammatillisentutkinnonsuoritustapa"),
+            tutkintonimike = Some(List(Koodistokoodiviite("20013", "tutkintonimikkeet")))
+          )
+
+          "palautetaan HTTP 400" in (setupTutkintoSuoritus(suoritus)(verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.tuntematonTutkintonimike("Tutkintonimikkeitä Vaatturi (AT)(20013) ei löydy tutkintorakenteesta opiskeluoikeuden voimassaoloaikana voimassaolleelle perusteelle 39/011/2014 (612)"))))
+        }
       }
 
       "Tutkinnon osat ja arvionnit" - {

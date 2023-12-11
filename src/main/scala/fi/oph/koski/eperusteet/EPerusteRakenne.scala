@@ -81,6 +81,7 @@ trait EPerusteTarkkaRakenne extends EPerusteRakenne {
   def muokattu: Option[Long]
   def koulutustyyppi: String
   def osaamisalat: List[EOsaamisala]
+  def tutkintonimikkeet: Option[List[ETutkintonimike]]
 }
 
 trait ESuoritustapa {
@@ -132,6 +133,7 @@ case class EPerusteKokoRakenne(
   suoritustavat: Option[List[EKokoSuoritustapa]],
   tutkinnonOsat: Option[List[ETutkinnonOsa]],
   osaamisalat: List[EOsaamisala],
+  tutkintonimikkeet: Option[List[ETutkintonimike]],
   lukiokoulutus: Option[ELukiokoulutus],
   luotu: Option[Long],
   muokattu: Option[Long],
@@ -165,6 +167,11 @@ case class ETutkinnonOsaViite(
 case class EOsaamisala(
   nimi: Map[String, String],
   arvo: String
+)
+
+case class ETutkintonimike(
+  nimi: Option[Map[String, String]],
+  tutkintonimikeArvo: String
 )
 
 case class EOsaamisalaViite(

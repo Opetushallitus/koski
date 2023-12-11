@@ -22,6 +22,11 @@ object EPerusteetTutkintoRakenneConverter extends Logging {
       LocalizedString.sanitize(o.nimi), None, "osaamisala", None
     ))
 
+    val tutkintonimikkeet = rakenne.tutkintonimikkeet.toList.flatten.map(o => Koodistokoodiviite(
+      o.tutkintonimikeArvo,
+      o.nimi.map(LocalizedString.sanitize).flatten, None, "tutkintonimikkeet", None
+    ))
+
     val koulutukset = rakenne.koulutukset.map(k => Koodistokoodiviite(
       k.koulutuskoodiArvo,
       LocalizedString.sanitize(k.nimi), None, "koulutus", None
@@ -33,6 +38,7 @@ object EPerusteetTutkintoRakenneConverter extends Logging {
       parseKoulutustyyppi(rakenne.koulutustyyppi),
       suoritustavat,
       osaamisalat,
+      tutkintonimikkeet,
       koulutukset
     )
   }
