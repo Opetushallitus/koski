@@ -4790,7 +4790,7 @@ describe('Perusopetus', function () {
     describe('Opiskeluoikeuden lisääminen', function () {
       before(
         prepareForNewOppija('kalle', '230872-7258'),
-        addOppija.enterValidDataPerusopetus({ suorituskieli: 'englanti' }),
+        addOppija.enterValidDataPerusopetus({ suorituskieli: 'suomi' }),
         addOppija.selectOpiskeluoikeudenTyyppi(
           'Perusopetukseen valmistava opetus'
         )
@@ -4823,7 +4823,7 @@ describe('Perusopetus', function () {
             expect(
               editor.propertyBySelector('.diaarinumero').getValue()
             ).to.equal('57/011/2015')
-            expect(opinnot.getSuorituskieli()).to.equal('englanti')
+            expect(opinnot.getSuorituskieli()).to.equal('suomi')
           })
         })
       })
