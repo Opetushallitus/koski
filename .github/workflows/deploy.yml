@@ -23,6 +23,7 @@ jobs:
     permissions:
       id-token: write
       contents: read
+      packages: write
     steps:
       - uses: actions/checkout@v3
         with:
@@ -50,7 +51,7 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
         with:
           registries: ${{ secrets.ECR_ACCOUNT_ID }}
-          mask-password: 'true'
+          mask-password: "true"
 
       - name: Check if container image already exists in ECR
         env:
@@ -60,12 +61,6 @@ jobs:
         id: check-image
         run: |
           echo "image-exists=$(docker manifest inspect $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG > /dev/null 2>&1 ; echo $?)" >> $GITHUB_OUTPUT
-
-      - name: Set up SSH agent
-        if: steps.check-image.outputs.image-exists != '0'
-        run: |
-          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
-          ssh-add - <<< "${{ secrets.ARTIFACTORY_DIST_KEY }}"
 
       - name: Cache Maven packages
         uses: actions/cache@v3
@@ -86,22 +81,25 @@ jobs:
             ${{ runner.os }}-node-
 
       - name: Set up Java 11
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         if: steps.check-image.outputs.image-exists != '0'
         with:
-          java-version: '11'
-          architecture: 'x64'
-          distribution: 'zulu'
-          server-id: oph-sade-artifactory
-          server-username: ARTIFACTORY_USERNAME
-          server-password: ARTIFACTORY_PASSWORD
+          java-version: "11"
+          architecture: "x64"
+          distribution: "zulu"
+          cache: "maven"
 
-      - name: Build and verify image
+      - name: Setup settings.xml
+        uses: s4u/maven-settings-action@v2.8.0
         if: steps.check-image.outputs.image-exists != '0'
-        env:
-          ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }}
-          ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
+        with:
+          servers: '[{"id": "github","configuration": {"httpHeaders": {"property": {"name": "Authorization","value": "Bearer ${{ secrets.GITHUB_TOKEN }}"}}}}]'
+
+      - name: Build application and publish it to Github Packages
+        if: steps.check-image.outputs.image-exists != '0'
         run: make dist version=${{ github.event.inputs.commithash }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build, tag, and push image to Amazon ECR
         if: steps.check-image.outputs.image-exists != '0'
@@ -126,7 +124,7 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
         with:
           registries: ${{ secrets.ECR_ACCOUNT_ID }}
-          mask-password: 'true'
+          mask-password: "true"
 
       - name: Get task definition ARN
         id: get-taskdef-arn

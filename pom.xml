@@ -795,15 +795,10 @@
   </profiles>
   <distributionManagement>
     <repository>
-      <id>oph-sade-artifactory</id>
-      <name>oph-sade-artifactory-releases</name>
-      <url>https://artifactory.opintopolku.fi/artifactory/oph-sade-release-local</url>
+      <id>github</id>
+      <name>GitHub Opetushallitus KOSKI Apache Maven Packages</name>
+      <url>https://maven.pkg.github.com/Opetushallitus/koski</url>
     </repository>
-    <snapshotRepository>
-      <id>oph-sade-artifactory</id>
-      <name>oph-sade-artifactory-snapshots</name>
-      <url>https://artifactory.opintopolku.fi/artifactory/oph-sade-snapshot-local</url>
-    </snapshotRepository>
   </distributionManagement>
   <repositories>
     <repository>
@@ -813,16 +808,6 @@
     <repository>
       <id>jitpack.io</id>
       <url>https://jitpack.io</url>
-    </repository>
-    <repository>
-      <id>oph-sade-snapshot-local</id>
-      <url>https://artifactory.opintopolku.fi/artifactory/oph-sade-snapshot-local</url>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
     </repository>
   </repositories>
 </project>
