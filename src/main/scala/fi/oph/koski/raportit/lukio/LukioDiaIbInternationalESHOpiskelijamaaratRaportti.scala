@@ -284,7 +284,6 @@ with oppija as (select
 
       oppimaaranSuorittajia = rs.getInt("oppimaara_yhteensa"),
       oppimaaranSuorittajia_VOSRahoitteisia = rs.getInt("oppimaara_valtionosuus_rahoitteinen"),
-      oppimaaranSuorittajia_YliKolmeVuotta_VOSRahoitteisia = rs.getInt("oppimaara_yli_kolme_vuotta_valtionosuus_rahoitteinen"),
       oppimaaranSuorittajia_MuutaKauttaRahoitettu = rs.getInt("oppimaara_muuta_kautta_rahoitettu"),
       oppimaaranSuorittajia_UlkomaisiaVaihtoOpiskelijoita = rs.getInt("oppimaara_ulkomainen_vaihto_opiskelija"),
       oppimaaranSuorittajia_OpetuskieliSuomi = rs.getInt("oppimaara_opetuskieli_suomi"),
@@ -294,7 +293,6 @@ with oppija as (select
 
       nuortenOppimaaranSuorittajia = rs.getInt("nuorten_oppimaara_yhteensa"),
       nuortenOppimaaranSuorittajia_VOSRahoitteisia = rs.getInt("nuorten_oppimaara_valtionosuus_rahoitteinen"),
-      nuortenOppimaaranSuorittajia_YliKolmeVuotta_VOSRahoitteisia = rs.getInt("nuorten_oppimaara_yli_kolme_vuotta_valtionosuus_rahoitteinen"),
       nuortenOppimaaranSuorittajia_MuutaKauttaRahoitettu = rs.getInt("nuorten_oppimaara_muuta_kautta_rahoitettu"),
       nuortenOppimaaranSuorittajia_OpetuskieliSuomi = rs.getInt("nuorten_oppimaara_opetuskieli_suomi"),
       nuortenOppimaaranSuorittajia_OpetuskieliRuotsi = rs.getInt("nuorten_oppimaara_opetuskieli_ruotsi"),
@@ -304,7 +302,6 @@ with oppija as (select
 
       aikuistenOppimaaranSuorittajia = rs.getInt("aikuisten_oppimaara_yhteensa"),
       aikuistenOppimaaranSuorittajia_VOSRahoitteisia = rs.getInt("aikuisten_oppimaara_valtionosuus_rahoitteinen"),
-      aikuistenOppimaaranSuorittajia_YliKolmeVuotta_VOSRahoitteisia = rs.getInt("aikuisten_oppimaara_yli_kolme_vuotta_valtionosuus_rahoitteinen"),
       aikuistenOppimaaranSuorittajia_MuutaKauttaRahoitettu = rs.getInt("aikuisten_oppimaara_muuta_kautta_rahoitettu"),
       aikuistenOppimaaranSuorittajia_OpetuskieliSuomi = rs.getInt("aikuisten_oppimaara_opetuskieli_suomi"),
       aikuistenOppimaaranSuorittajia_OpetuskieliRuotsi = rs.getInt("aikuisten_oppimaara_opetuskieli_ruotsi"),
@@ -343,7 +340,6 @@ with oppija as (select
     t.get("raportti-excel-kolumni-lukionSuorittajia") -> GroupColumnsWithTitle(List(
       "oppimaaranSuorittajia" -> CompactColumn(t.get("raportti-excel-kolumni-lukionSuorittajia"), comment = Some(t.get("raportti-excel-kolumni-lukionSuorittajia-comment"))),
       "oppimaaranSuorittajia_VOSRahoitteisia" -> CompactColumn(t.get("raportti-excel-kolumni-oppimaaranSuorittajiaVOSRahoitteisia"), comment = Some(t.get("raportti-excel-kolumni-oppimaaranSuorittajiaVOSRahoitteisia-comment"))),
-      "oppimaaranSuorittajia_YliKolmeVuotta_VOSRahoitteisia" -> CompactColumn(t.get("raportti-excel-kolumni-oppimaaranSuorittajiaYliKolmeVuottaVOSRahoitteisia"), comment = Some(t.get("raportti-excel-kolumni-oppimaaranSuorittajiaYliKolmeVuottaVOSRahoitteisia-comment"))),
       "oppimaaranSuorittajia_MuutaKauttaRahoitettu" -> CompactColumn(t.get("raportti-excel-kolumni-oppimaaranSuorittajiaMuutaKauttaRahoitettu"), comment = Some(t.get("raportti-excel-kolumni-oppimaaranSuorittajiaMuutaKauttaRahoitettu-comment"))),
       "oppimaaranSuorittajia_UlkomaisiaVaihtoOpiskelijoita" -> CompactColumn(t.get("raportti-excel-kolumni-oppimaaranSuorittajiaUlkomaisiaVaihtoOpiskelijoita"), comment = Some(t.get("raportti-excel-kolumni-oppimaaranSuorittajiaUlkomaisiaVaihtoOpiskelijoita-comment"))),
       "oppimaaranSuorittajia_OpetuskieliSuomi" -> CompactColumn(t.get("raportti-excel-kolumni-oppimaaranSuorittajiaOpetuskieliSuomi"), comment = Some(t.get("raportti-excel-kolumni-oppimaaranSuorittajiaOpetuskieliSuomi-comment"))),
@@ -354,7 +350,6 @@ with oppija as (select
     t.get("raportti-excel-kolumni-lukioNuortenOps") -> GroupColumnsWithTitle(List(
       "nuortenOppimaaranSuorittajia" -> CompactColumn(t.get("raportti-excel-kolumni-lukioNuortenOps"), comment = Some(t.get("raportti-excel-kolumni-lukioNuortenOps-comment"))),
       "nuortenOppimaaranSuorittajia_VOSRahoitteisia" -> CompactColumn(t.get("raportti-excel-kolumni-nuortenOppimaaranSuorittajiaVOSRahoitteisia"), comment = Some(t.get("raportti-excel-kolumni-nuortenOppimaaranSuorittajiaVOSRahoitteisia-comment"))),
-      "nuortenOppimaaranSuorittajia_YliKolmeVuotta_VOSRahoitteisia" -> CompactColumn(t.get("raportti-excel-kolumni-nuortenOppimaaranSuorittajiaYliKolmeVuottaVOSRahoitteisia"), comment = Some(t.get("raportti-excel-kolumni-nuortenOppimaaranSuorittajiaYliKolmeVuottaVOSRahoitteisia-comment"))),
       "nuortenOppimaaranSuorittajia_MuutaKauttaRahoitettu" -> CompactColumn(t.get("raportti-excel-kolumni-nuortenOppimaaranSuorittajiaMuutaKauttaRahoitettu"), comment = Some(t.get("raportti-excel-kolumni-nuortenOppimaaranSuorittajiaMuutaKauttaRahoitettu-comment"))),
       "nuortenOppimaaranSuorittajia_OpetuskieliSuomi" -> CompactColumn(t.get("raportti-excel-kolumni-nuortenOppimaaranSuorittajiaOpetuskieliSuomi"), comment = Some(t.get("raportti-excel-kolumni-nuortenOppimaaranSuorittajiaOpetuskieliSuomi-comment"))),
       "nuortenOppimaaranSuorittajia_OpetuskieliRuotsi" -> CompactColumn(t.get("raportti-excel-kolumni-nuortenOppimaaranSuorittajiaOpetuskieliRuotsi"), comment = Some(t.get("raportti-excel-kolumni-nuortenOppimaaranSuorittajiaOpetuskieliRuotsi-comment"))),
@@ -365,7 +360,6 @@ with oppija as (select
     t.get("raportti-excel-kolumni-lukioAikuistenOps") -> GroupColumnsWithTitle(List(
       "aikuistenOppimaaranSuorittajia" -> CompactColumn(t.get("raportti-excel-kolumni-lukioAikuistenOps"), comment = Some(t.get("raportti-excel-kolumni-lukioAikuistenOps-comment"))),
       "aikuistenOppimaaranSuorittajia_VOSRahoitteisia" -> CompactColumn(t.get("raportti-excel-kolumni-aikuistenOppimaaranSuorittajiaVOSRahoitteisia"), comment = Some(t.get("raportti-excel-kolumni-aikuistenOppimaaranSuorittajiaVOSRahoitteisia-comment"))),
-      "aikuistenOppimaaranSuorittajia_YliKolmeVuotta_VOSRahoitteisia" -> CompactColumn(t.get("raportti-excel-kolumni-aikuistenOppimaaranSuorittajiaYliKolmeVuottaVOSRahoitteisia"), comment = Some(t.get("raportti-excel-kolumni-aikuistenOppimaaranSuorittajiaYliKolmeVuottaVOSRahoitteisia-comment"))),
       "aikuistenOppimaaranSuorittajia_MuutaKauttaRahoitettu" -> CompactColumn(t.get("raportti-excel-kolumni-aikuistenOppimaaranSuorittajiaMuutaKauttaRahoitettu"), comment = Some(t.get("raportti-excel-kolumni-aikuistenOppimaaranSuorittajiaMuutaKauttaRahoitettu-comment"))),
       "aikuistenOppimaaranSuorittajia_OpetuskieliSuomi" -> CompactColumn(t.get("raportti-excel-kolumni-aikuistenOppimaaranSuorittajiaOpetuskieliSuomi"), comment = Some(t.get("raportti-excel-kolumni-aikuistenOppimaaranSuorittajiaOpetuskieliSuomi-comment"))),
       "aikuistenOppimaaranSuorittajia_OpetuskieliRuotsi" -> CompactColumn(t.get("raportti-excel-kolumni-aikuistenOppimaaranSuorittajiaOpetuskieliRuotsi"), comment = Some(t.get("raportti-excel-kolumni-aikuistenOppimaaranSuorittajiaOpetuskieliRuotsi-comment"))),
@@ -404,7 +398,6 @@ case class LukioDiaIbInternationalESHOpiskelijaMaaratRaporttiRow(
   opiskelijoidenMaara_UlkomaisiaVaihtoOpiskelijoita: Int,
   oppimaaranSuorittajia: Int,
   oppimaaranSuorittajia_VOSRahoitteisia: Int,
-  oppimaaranSuorittajia_YliKolmeVuotta_VOSRahoitteisia: Int,
   oppimaaranSuorittajia_MuutaKauttaRahoitettu: Int,
   oppimaaranSuorittajia_UlkomaisiaVaihtoOpiskelijoita: Int,
   oppimaaranSuorittajia_OpetuskieliSuomi: Int,
@@ -413,7 +406,6 @@ case class LukioDiaIbInternationalESHOpiskelijaMaaratRaporttiRow(
   oppimaaranSuorittajia_SisaoppilaitosmainenMajoitus_VOSRahoitteisia: Int,
   nuortenOppimaaranSuorittajia: Int,
   nuortenOppimaaranSuorittajia_VOSRahoitteisia: Int,
-  nuortenOppimaaranSuorittajia_YliKolmeVuotta_VOSRahoitteisia: Int,
   nuortenOppimaaranSuorittajia_MuutaKauttaRahoitettu: Int,
   nuortenOppimaaranSuorittajia_OpetuskieliSuomi: Int,
   nuortenOppimaaranSuorittajia_OpetuskieliRuotsi: Int,
@@ -422,7 +414,6 @@ case class LukioDiaIbInternationalESHOpiskelijaMaaratRaporttiRow(
   nuortenOppimaaranSuorittajia_KotikuntaAhvenanmaa: Int,
   aikuistenOppimaaranSuorittajia: Int,
   aikuistenOppimaaranSuorittajia_VOSRahoitteisia: Int,
-  aikuistenOppimaaranSuorittajia_YliKolmeVuotta_VOSRahoitteisia: Int,
   aikuistenOppimaaranSuorittajia_MuutaKauttaRahoitettu: Int,
   aikuistenOppimaaranSuorittajia_OpetuskieliSuomi: Int,
   aikuistenOppimaaranSuorittajia_OpetuskieliRuotsi: Int,
