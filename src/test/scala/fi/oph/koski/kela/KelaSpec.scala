@@ -11,7 +11,7 @@ import fi.oph.koski.log.{AccessLogTester, AuditLogTester}
 import fi.oph.koski.organisaatio.MockOrganisaatiot.{EuropeanSchoolOfHelsinki, MuuKuinSäänneltyKoulutusToimija}
 import fi.oph.koski.schema.LocalizedString.finnish
 import fi.oph.koski.schema._
-import fi.oph.koski.ytr.MockYrtClient
+import fi.oph.koski.ytr.MockYtrClient
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
@@ -29,7 +29,7 @@ class KelaSpec
 
   override def afterEach(): Unit = {
     super.afterEach()
-    MockYrtClient.reset()
+    MockYtrClient.reset()
   }
 
   "Kelan yhden oppijan rajapinta" - {
@@ -38,6 +38,11 @@ class KelaSpec
       postHetu(KoskiSpecificMockOppijat.amis.hetu.get) {
         verifyResponseStatusOk()
         AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN", "target" -> Map("oppijaHenkiloOid" -> KoskiSpecificMockOppijat.amis.oid)))
+      }
+    }
+    "Palautetaan 400 jos pyyntö tehdään epävalidilla hetulla" in {
+      postHetu("230305A015A") {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.henkilötiedot.hetu("Virheellinen tarkistusmerkki hetussa: 230305A015A"))
       }
     }
     "Palautetaan 404 jos opiskelijalla ei ole ollenkaan Kelaa kiinnostavia opiskeluoikeuksia" in {
@@ -143,7 +148,7 @@ class KelaSpec
       val hetu = KoskiSpecificMockOppijat.kelaErityyppisiaOpiskeluoikeuksia.hetu.get
 
       KoskiApplicationForTests.cacheManager.invalidateAllCaches
-      MockYrtClient.setFailureHetu(hetu)
+      MockYtrClient.setFailureHetu(hetu)
 
       postHetu(hetu) {
         verifyResponseStatus(500)
@@ -153,7 +158,7 @@ class KelaSpec
       val hetu = KoskiSpecificMockOppijat.kelaErityyppisiaOpiskeluoikeuksia.hetu.get
 
       KoskiApplicationForTests.cacheManager.invalidateAllCaches
-      MockYrtClient.setTimeoutHetu(hetu)
+      MockYtrClient.setTimeoutHetu(hetu)
 
       postHetu(hetu) {
         verifyResponseStatus(500)
@@ -162,18 +167,19 @@ class KelaSpec
   }
 
   "Usean oppijan rajapinta" - {
-    "Voidaan hakea usea oppija, jos jollain oppijalla ei löydy Kosken kantaan tallennettuja opintoja, se puuttuu vastauksesta" in {
+    "Voidaan hakea usea oppija, jos jollain oppijalla ei löydy Kosken kantaan tallennettuja opintoja tai hetu on epävalidi, se puuttuu vastauksesta" in {
+      val epävalidiHetu = "230305A015A"
       val hetut = List(
         KoskiSpecificMockOppijat.amis,
         KoskiSpecificMockOppijat.ibFinal,
         KoskiSpecificMockOppijat.koululainen,
         KoskiSpecificMockOppijat.ylioppilas
-      ).map(_.hetu.get)
+      ).map(_.hetu.get) ++ List(epävalidiHetu)
 
       postHetut(hetut) {
         verifyResponseStatusOk()
         val response = JsonSerializer.parse[List[KelaOppija]](body)
-        response.map(_.henkilö.hetu.get).sorted should equal(hetut.sorted.filterNot(_ == KoskiSpecificMockOppijat.ylioppilas.hetu.get))
+        response.map(_.henkilö.hetu.get).sorted should equal(hetut.sorted.filterNot(List(KoskiSpecificMockOppijat.ylioppilas.hetu.get, epävalidiHetu).contains))
       }
     }
     "Luo AuditLogin" in {

@@ -6,7 +6,6 @@ import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.{AccessChecker, AccessType, KoskiSpecificSession}
 import fi.oph.koski.localization.LocalizationRepository
-import fi.oph.koski.log.NotLoggable
 import fi.oph.koski.opiskeluoikeus.AuxiliaryOpiskeluoikeusRepositoryImpl
 import fi.oph.koski.oppilaitos.OppilaitosRepository
 import fi.oph.koski.organisaatio.OrganisaatioRepository
@@ -31,7 +30,7 @@ case class YtrOpiskeluoikeusRepository(
   }
 
   override protected def buildCacheKey(tunnisteet: HenkilönTunnisteet): YtrCacheKey =
-    YtrCacheKey(tunnisteet.hetu.toList ++ tunnisteet.vanhatHetut)
+    ytr.buildCacheKey(tunnisteet)
 
   private def validate(opiskeluoikeus: YlioppilastutkinnonOpiskeluoikeus): Unit = {
     val oppija = Oppija(UusiHenkilö("010101-123N", "tuntematon", Some("tuntematon"), "tuntematon"), List(opiskeluoikeus))
@@ -40,5 +39,3 @@ case class YtrOpiskeluoikeusRepository(
     })
   }
 }
-
-case class YtrCacheKey(hetut: List[String]) extends NotLoggable

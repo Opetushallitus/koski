@@ -9,21 +9,24 @@ class HetuSpec extends AnyFreeSpec with TestEnvironment with Matchers {
   private val SYNTHETIC_HETU: Vector[String] = Vector("300169-915F","211135-989B","220285-9391","210871-963C","070526-9862","100812-958W","081094-902K","161126-922M","280537-9487","140840-9360")
   private val INVALID_HETU: Vector[String] = Vector("111111-111A", "121212-1212", "131137-133T", "123456-7890", "EI HETU", "\u0012", "")
 
+  private val hetuValidator = new Hetu(acceptSyntheticHetus = false)
+  private val acceptSyntheticHetuValidator = new Hetu(acceptSyntheticHetus = true)
+
   "Hetu" - {
     "Valideja hetuja" in {
       VALID_HETU foreach {hetu =>
-        Hetu.validate(hetu, acceptSynthetic = false) should equal(Right(hetu))
+        hetuValidator.validate(hetu) should equal(Right(hetu))
       }
     }
     "Synteettisiä hetuja" in {
       SYNTHETIC_HETU foreach {hetu =>
-        Hetu.validate(hetu, acceptSynthetic = false) shouldBe a [Left[_, _]]
-        Hetu.validate(hetu, acceptSynthetic = true) should equal(Right(hetu))
+        hetuValidator.validate(hetu) shouldBe a [Left[_, _]]
+        acceptSyntheticHetuValidator.validate(hetu) should equal(Right(hetu))
       }
     }
     "Virheellisiä hetuja" in {
       INVALID_HETU foreach {hetu =>
-        Hetu.validate(hetu, acceptSynthetic = false) shouldBe a [Left[_, _]]
+        hetuValidator.validate(hetu) shouldBe a [Left[_, _]]
       }
     }
   }

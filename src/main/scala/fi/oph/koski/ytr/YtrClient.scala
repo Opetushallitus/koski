@@ -2,6 +2,7 @@ package fi.oph.koski.ytr
 
 import com.typesafe.config.Config
 import fi.oph.koski.config.{Environment, SecretsManager}
+import fi.oph.koski.henkilo.Hetu
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.{ylioppilasLukiolainenMaksamatonSuoritus, ylioppilasLukiolainenRikki, ylioppilasLukiolainenTimeouttaava, ylioppilasLukiolainenVanhaSuoritus}
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http._
@@ -10,18 +11,20 @@ import fi.oph.koski.json.{JsonResources, JsonSerializer}
 import fi.oph.koski.log.{Logging, NotLoggable, TimedProxy}
 import fi.oph.koski.schema.KoskiSchema.lenientDeserializationWithoutValidation
 import fi.oph.koski.util.{ClasspathResource, Resource}
-import fi.oph.koski.ytr.download.{YtrLaajaOppija, YtrSsnData}
+import fi.oph.koski.ytr.download.{YtrLaajaOppija, YtrSsnData, YtrSsnDataWithPreviousSsns}
 import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}
 import org.json4s.JValue
 
 import java.time.{LocalDate, ZonedDateTime}
 
 trait YtrClient {
-  def oppijaByHetu(ssn: YtrSsnWithPreviousSsns): Option[YtrOppija] = oppijaJsonByHetu(ssn).map(JsonSerializer.extract[YtrOppija](_, ignoreExtras = true))
-  def oppijatByHetut(ssnData: YtrSsnData): List[YtrLaajaOppija] = oppijatJsonByHetut(ssnData).map(JsonSerializer.extract[List[YtrLaajaOppija]](_, ignoreExtras = true)).getOrElse(List.empty)
+  def oppijaByHetu(ssn: YtrSsnWithPreviousSsns): Option[YtrOppija] = {
+    oppijaJsonByHetu(ssn).map(JsonSerializer.extract[YtrOppija](_, ignoreExtras = true))
+  }
+  def oppijatByHetut(ssnData: YtrSsnDataWithPreviousSsns): List[YtrLaajaOppija] = oppijatJsonByHetut(ssnData).map(JsonSerializer.extract[List[YtrLaajaOppija]](_, ignoreExtras = true)).getOrElse(List.empty)
 
   def oppijaJsonByHetu(ssn: YtrSsnWithPreviousSsns): Option[JValue]
-  protected def oppijatJsonByHetut(ssnData: YtrSsnData): Option[JValue]
+  protected def oppijatJsonByHetut(ssnData: YtrSsnDataWithPreviousSsns): Option[JValue]
 
   def getHetutBySyntymäaika(birthmonthStart: String, birthmonthEnd: String): Option[YtrSsnData] = getJsonHetutBySyntymäaika(birthmonthStart, birthmonthEnd).map(JsonSerializer.extract[YtrSsnData](_, ignoreExtras = true))
   protected def getJsonHetutBySyntymäaika(birthmonthStart: String, birthmonthEnd: String): Option[JValue]
@@ -45,7 +48,7 @@ object YtrClient extends Logging {
       url match {
         case "mock" =>
           logger.info("Using mock YTR integration")
-          MockYrtClient
+          MockYtrClient
         case "" =>
           logger.info("YTR integration disabled")
           EmptyYtrClient
@@ -59,6 +62,7 @@ object YtrClient extends Logging {
 
 case class YoTodistusHetuRequest(
   ssn: String,
+  previousSsns: List[String],
   language: String,
 )
 
@@ -74,21 +78,26 @@ object EmptyYtrClient extends YtrClient {
 
   override protected def getJsonHetutByModifiedSince(modifiedSince: LocalDate): Option[JValue] = None
 
-  override protected def oppijatJsonByHetut(ssnData: YtrSsnData): Option[JValue] = None
+  override protected def oppijatJsonByHetut(ssnData: YtrSsnDataWithPreviousSsns): Option[JValue] = None
 
   override def getCertificateStatus(req: YoTodistusHetuRequest): Either[HttpStatus, YtrCertificateResponse] = Right(YtrCertificateServiceUnavailable())
 
   override def generateCertificate(req: YoTodistusHetuRequest): Either[HttpStatus, Unit] = Right(Unit)
 }
 
-object MockYrtClient extends YtrClient {
+object MockYtrClient extends YtrClient {
   lazy val yoTodistusResource: Resource = new ClasspathResource("/mockdata/yotodistus")
   val yoTodistusRequestTimes: collection.mutable.Map[String, ZonedDateTime] = collection.mutable.Map.empty
   val yoTodistusGeneratingTimeSecs = 2
   private var failureHetu: Option[String] = None
   private var timeoutHetu: Option[String] = None
 
+  var latestOppijaJsonByHetu: Option[YtrSsnWithPreviousSsns] = None
+  var latestOppijatJsonByHetut: Option[YtrSsnDataWithPreviousSsns] = None
+  var latestCertificateRequest: Option[YoTodistusHetuRequest] = None
+
   override def oppijaJsonByHetu(ssn: YtrSsnWithPreviousSsns): Option[JValue] = {
+    latestOppijaJsonByHetu = Some(ssn)
     val hetu = ssn.ssn
     if (timeoutHetu.contains(hetu)) {
       Thread.sleep(20000)
@@ -113,14 +122,17 @@ object MockYrtClient extends YtrClient {
   private def hetutResourceName(modifiedSince: String) =
     s"/mockdata/ytr/ssns_${modifiedSince}.json"
 
-  override protected def oppijatJsonByHetut(ssnData: YtrSsnData): Option[JValue] =
+  override protected def oppijatJsonByHetut(ssnData: YtrSsnDataWithPreviousSsns): Option[JValue] = {
+    latestOppijatJsonByHetut = Some(ssnData)
     JsonResources.readResourceIfExists(
-      resourcenameLaaja(ssnData.ssns.getOrElse(List.empty).sorted.mkString("_"))
+      resourcenameLaaja(ssnData.ssns.getOrElse(List.empty).map(_.ssn).sorted.mkString("_"))
     )
+  }
 
   private def resourcenameLaaja(hetut: String) = "/mockdata/ytr/laaja_" + hetut + ".json"
 
   override def getCertificateStatus(req: YoTodistusHetuRequest): Either[HttpStatus, YtrCertificateResponse] = {
+    latestCertificateRequest = Some(req)
     (req.ssn, yoTodistusRequestTimes.get(s"${req.ssn}_${req.language}")) match {
       case _ if req.ssn == ylioppilasLukiolainenRikki.hetu.get && req.language == "sv" =>
         Right(YtrCertificateServiceUnavailable())
@@ -153,6 +165,7 @@ object MockYrtClient extends YtrClient {
   }
 
   override def generateCertificate(req: YoTodistusHetuRequest): Either[HttpStatus, Unit] = {
+    latestCertificateRequest = Some(req)
     yoTodistusRequestTimes += (s"${req.ssn}_${req.language}" -> ZonedDateTime.now())
     Right(())
   }
@@ -198,8 +211,8 @@ case class RemoteYtrClient(rootUrl: String, user: String, password: String) exte
     runIO(http.get(uri"/api/oph-registrydata/ssns?modifiedSince=${modifiedSince.toString}")(Http.parseJsonOptional[JValue]))
   }
 
-  override protected def oppijatJsonByHetut(ssnData: YtrSsnData): Option[JValue] = {
-    runIO(postRetryingHttp.post(uri"/api/oph-registrydata/students", ssnData)(json4sEncoderOf[YtrSsnData])(Http.parseJsonOptional[JValue]))
+  override protected def oppijatJsonByHetut(ssnData: YtrSsnDataWithPreviousSsns): Option[JValue] = {
+    runIO(postRetryingHttp.post(uri"/api/oph-registrydata/students", ssnData)(json4sEncoderOf[YtrSsnDataWithPreviousSsns])(Http.parseJsonOptional[JValue]))
   }
 
   override def getCertificateStatus(req: YoTodistusHetuRequest): Either[HttpStatus, YtrCertificateResponse] = {
@@ -241,5 +254,10 @@ object YtrConfig {
 
 case class YtrSsnWithPreviousSsns(
   ssn: String,
-  previousSsns: Option[List[String]] = None
-)
+  previousSsns: List[String] = List.empty
+) {
+  def containsOnlyValidSsns(hetu: Hetu): Boolean = {
+    val allSsns = List(ssn) ++ previousSsns
+    !allSsns.exists(ssn => hetu.validate(ssn).isLeft)
+  }
+}

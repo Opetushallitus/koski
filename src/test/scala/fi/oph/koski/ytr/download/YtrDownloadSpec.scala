@@ -1,8 +1,10 @@
 package fi.oph.koski.ytr.download
 
 import fi.oph.koski.api.misc.OpiskeluoikeusTestMethods
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import fi.oph.koski.koskiuser.MockUsers
+import fi.oph.koski.ytr.{MockYtrClient, YtrSsnWithPreviousSsns}
 import junit.framework.Assert.{assertEquals, assertNotNull, assertNotSame}
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.freespec.AnyFreeSpec
@@ -151,6 +153,22 @@ class YtrDownloadSpec
     // Tarkistetaan vain onko modifiedSinceParam muuttunut sitten ylemmän assertin.
     // Tarkempi vertailu tämänhetkisellä päivämäärällä on flaky.
     assertNotSame(modifiedSince.toString, (row \ "modifiedSinceParam").extract[String])
+  }
+
+  "Oppijalta lähetetään YTR:iin myös vanhat hetut" in {
+    KoskiApplicationForTests.cacheManager.invalidateAllCaches
+    MockYtrClient.latestOppijatJsonByHetut = None
+
+    val oppija = KoskiSpecificMockOppijat.aikuisOpiskelija
+
+    val expectedAiemmatHetut = oppija.vanhatHetut
+    expectedAiemmatHetut.length should be >(0)
+
+    getYtrCurrentOriginal(oppija.oid, MockUsers.ophkatselija)
+
+    MockYtrClient.latestOppijatJsonByHetut should be(
+      Some(YtrSsnDataWithPreviousSsns(ssns = Some(List(YtrSsnWithPreviousSsns(oppija.hetu.get, expectedAiemmatHetut)))))
+    )
   }
 
   private def expectedOppijat(

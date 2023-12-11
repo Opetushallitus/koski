@@ -11,7 +11,7 @@ import fi.oph.koski.koskiuser._
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.MYPVuosiluokanSuoritus
 import fi.oph.koski.virta.MockVirtaClient
-import fi.oph.koski.ytr.MockYrtClient
+import fi.oph.koski.ytr.MockYtrClient
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec, schema}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
@@ -51,13 +51,13 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
   implicit val koskiSession = suoritusjakoKatsominenTestUser
 
   override def afterEach(): Unit = {
-    MockYrtClient.reset()
+    MockYtrClient.reset()
     super.afterEach()
   }
 
   "Kosken testioppijoiden tiedot voi hakea ilman virheitä" in {
     val oppijaOidit = KoskiSpecificMockOppijat.defaultOppijat
-      .filter(o => o.henkilö.hetu.isEmpty || o.henkilö.hetu.exists(!MockVirtaClient.virheenAiheuttavaHetu(_)))
+      .filter(o => o.henkilö.hetu.isEmpty || o.henkilö.hetu.exists(!KoskiApplicationForTests.virtaClient.asInstanceOf[MockVirtaClient].virheenAiheuttavaHetu(_)))
       .map(_.henkilö.oid)
 
     oppijaOidit.length should be > 100

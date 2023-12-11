@@ -12,7 +12,7 @@ import fi.oph.koski.util.Files
 import scala.xml.{Elem, Node}
 
 object VirtaClient extends Logging {
-  def apply(config: Config, healthMonitoring: Option[HealthMonitoring] = None) = {
+  def apply(hetu: Hetu, config: Config, healthMonitoring: Option[HealthMonitoring] = None) = {
     val serviceUrl = {
       if (Environment.usesAwsSecretsManager) {
         VirtaConfig.fromSecretsManager.serviceUrl
@@ -23,7 +23,7 @@ object VirtaClient extends Logging {
     serviceUrl match {
       case "mock" =>
         logger.info("Using mock Virta integration")
-        MockVirtaClient(config)
+        MockVirtaClient(hetu, config)
       case "" =>
         logger.info("Virta integration disabled")
         EmptyVirtaClient
@@ -47,16 +47,14 @@ object EmptyVirtaClient extends VirtaClient {
   override def opintotiedotMassahaku(hakuehdot: List[VirtaHakuehto]): Option[Elem] = None
 }
 
-object MockVirtaClient {
-  def virheenAiheuttavaHetu(hetu: String) = {
-    hetu == "250390-680P" ||
-      Hetu.validate(hetu, false).isLeft
-  }
-}
-
-case class MockVirtaClient(config: Config) extends VirtaClient {
+case class MockVirtaClient(hetu: Hetu, config: Config) extends VirtaClient {
   private lazy val mockDataDir = config.getString("virta.mockDataDir")
   override def opintotiedot(hakuehto: VirtaHakuehto) = haeOpintotiedot(hakuehto)
+
+  def virheenAiheuttavaHetu(hetu: String) = {
+    hetu == "250390-680P" ||
+      this.hetu.validate(hetu).isLeft
+  }
 
   override def opintotiedotMassahaku(hakuehdot: List[VirtaHakuehto]): Option[Elem] = if (containsMixedEhdot(hakuehdot)) {
     // Tällä hetkellä Virrasta ei voi hakea sekä hetulla että oppijanumerolla
@@ -82,7 +80,7 @@ case class MockVirtaClient(config: Config) extends VirtaClient {
     hakuehto match {
       case VirtaHakuehtoHetu("250390-680P") =>
         throw new HttpConnectionException("MockVirtaClient testing henkilötiedot failure", "POST", "http://localhost:666/")
-      case VirtaHakuehtoHetu(hetu) => Hetu.validate(hetu, false) match {
+      case VirtaHakuehtoHetu(hetu) => this.hetu.validate(hetu) match {
         case Left(_) => throw new HttpConnectionException("MockVirtaClient testing henkilötiedot failure", "POST", "http://localhost:666/")
         case Right(hetu) => loadXml(s"$mockDataDir/henkilotiedot/$hetu.xml")
       }
@@ -93,7 +91,7 @@ case class MockVirtaClient(config: Config) extends VirtaClient {
 
   private def haeOpintotiedot(virtaHakuehto: VirtaHakuehto) = {
     val tunnus = virtaHakuehto match {
-      case VirtaHakuehtoHetu(hetu) if MockVirtaClient.virheenAiheuttavaHetu(hetu) =>
+      case VirtaHakuehtoHetu(hetu) if virheenAiheuttavaHetu(hetu) =>
         throw new HttpConnectionException("MockVirtaClient testing opintotiedot failure", "POST", "http://localhost:666/")
       case VirtaHakuehtoHetu(hetu) => hetu
       case VirtaHakuehtoKansallinenOppijanumero(oid) => oid

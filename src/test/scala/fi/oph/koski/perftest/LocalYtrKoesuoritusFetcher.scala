@@ -6,7 +6,7 @@ import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.koskiuser.UserWithPassword
 
 object LocalYtrKoesuoritusFetcher extends App {
-  // 1) Check values of "copyOfExamPaper"-fields in src/main/resources/mockdata/ytr/080698-967F.json
+  // 1) Check values of "copyOfExamPaper"-fields in src/main/resources/mockdata/ytr/080698-703Y.json
   // 2) Add files to a directory that match those values
   // 3) Run Koski with -DPDF_DIR=/path/to/pdf-files
   // 4) Run this scenario with -DPDF_DIR=/path/to/pdf-files -DKOSKI_BASE_URL=http://localhost:7021/koski

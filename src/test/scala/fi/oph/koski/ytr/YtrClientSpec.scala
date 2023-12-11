@@ -7,6 +7,7 @@ import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration._
 import com.typesafe.config.ConfigFactory
 import fi.oph.koski.TestEnvironment
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import org.json4s.DefaultFormats
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.freespec.AnyFreeSpec

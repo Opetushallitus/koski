@@ -4,6 +4,7 @@ import fi.oph.koski.api.misc.OpiskeluoikeusTestMethods
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, VerifiedHenkilöOid}
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
+import fi.oph.koski.ytr.YtrSsnWithPreviousSsns
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
@@ -91,7 +92,7 @@ class YtrDownloadVirhetilanteetSpec
     )
 
     val laajaOppija =
-      KoskiApplicationForTests.ytrClient.oppijatByHetut(YtrSsnData(Some(List("080380-2432"))))
+      KoskiApplicationForTests.ytrClient.oppijatByHetut(YtrSsnDataWithPreviousSsns(Some(List("080380-2432").map(ssn => YtrSsnWithPreviousSsns(ssn)))))
         .head
     val opiskeluoikeus =
       oppijaConverter.convertOppijastaOpiskeluoikeus(laajaOppija).head

@@ -13,7 +13,7 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.Koodistokoodiviite
 
-class MockOpintopolkuHenkilöFacade extends OpintopolkuHenkilöFacade with Logging {
+class MockOpintopolkuHenkilöFacade(val hetu: Hetu) extends OpintopolkuHenkilöFacade with Logging {
   private var alkuperäisetOppijat = KoskiSpecificMockOppijat.defaultOppijat
   private var oppijat = new MockOppijat(alkuperäisetOppijat)
 
@@ -65,7 +65,7 @@ class MockOpintopolkuHenkilöFacade extends OpintopolkuHenkilöFacade with Loggi
       }
     }
     val UusiOppijaHenkilö(Some(hetu), sukunimi, etunimet, kutsumanimi, _) = createUserInfo
-    val oid = Hetu.validate(hetu, acceptSynthetic = true).right.flatMap { hetu =>
+    val oid = this.hetu.validate(hetu).right.flatMap { hetu =>
       create(createUserInfo).left.flatMap {
         case HttpStatus(409, _) => oidFrom(findOppijaByHetu(hetu))
         case HttpStatus(_, _) => throw new RuntimeException("Unreachable match arm: HTTP status code must be 409")
@@ -161,7 +161,7 @@ class MockOpintopolkuHenkilöFacade extends OpintopolkuHenkilöFacade with Loggi
   )
 }
 
-class MockOpintopolkuHenkilöFacadeWithDBSupport(val db: DB) extends MockOpintopolkuHenkilöFacade with QueryMethods {
+class MockOpintopolkuHenkilöFacadeWithDBSupport(val db: DB, hetu: Hetu) extends MockOpintopolkuHenkilöFacade(hetu) with QueryMethods {
   def findFromDb(oid: String): Option[LaajatOppijaHenkilöTiedot] = {
     runQuery(KoskiOpiskeluOikeudetWithAccessCheck(systemUser).filter(_.oppijaOid === oid)).headOption.map { oppijaRow =>
       LaajatOppijaHenkilöTiedot(oid, oid, oid, oid, Some(oid), None, None, None)
