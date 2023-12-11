@@ -127,6 +127,7 @@ object KoskiErrorCategory {
         val erityisenäTutkintonaSuoritettuSisältääOsasuorituksia = subcategory("erityisenäTutkintoaSuoritettuSisältääOsasuorituksia", "Osasuorituksella on osasuorituksia, vaikka se on suoritettu erityisenä tutkintona")
         val epäsopiviaOsasuorituksia = subcategory("epäsopiviaOsasuorituksia", "Suorituksella tai sen osasuorituksella on epäsopiva lista osasuorituksia")
         val deprekoituKielikoodi = subcategory("deprekoituKielikoodi", "Suorituksessa on käytetty deprekoitua kielikoodia")
+        val virheellinenSuorituskieli = subcategory("virheellinenSuorituskieli", "Suorituskieli virheellinen")
         val deprekoituOppimäärä = subcategory("deprekoituOppimäärä", "Suorituksessa on käytetty deprekoitua oppimäärää")
         val puuttuvaSuullisenKielitaidonKoe = subcategory("puuttuvaSuullisenKielitaidonKoe", "Suorituksesta puuttuu vaadittava merkintä suullisen kielitaidon kokeesta")
         val lukioonValmistavassaVanhanOpsinKurssiSuorituksia = subcategory("lukioonValmistavassaVanhanOpsinKurssiSuorituksia", "Lukion valmistavan koulutuksen suorituksella ei voi 1.8.2021 jälkeen olla luva2015-opetussuunnitelman mukaisia suorituksia")

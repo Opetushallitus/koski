@@ -937,6 +937,7 @@ class KoskiValidator(
         :: validateOsaamisenHankkimistavat(suoritus)
         :: validateYhteisetTutkinnonOsat(suoritus, opiskeluoikeus)
         :: validateÄidinkielenOmainenKieli(suoritus)
+        :: validateSuorituskieli(suoritus)
         :: Lukio2019OsasuoritusValidation.validate(suoritus, parent)
         :: Lukio2019VieraatKieletValidation.validate(suoritus, parent)
         :: Lukio2019ArvosanaValidation.validateOsasuoritus(suoritus)
@@ -1564,6 +1565,16 @@ class KoskiValidator(
       case k: NuortenPerusopetuksenVierasTaiToinenKotimainenKieli if k.tunniste.koodiarvo == "AOM" => validateSuomiTaiRuotsi(k.kieli.koodiarvo)
       case k: VierasTaiToinenKotimainenKieli2019 if k.tunniste.koodiarvo == "AOM" => validateSuomiTaiRuotsi(k.kieli.koodiarvo)
       case k: VierasTaiToinenKotimainenKieli2015 if k.tunniste.koodiarvo == "AOM" => validateSuomiTaiRuotsi(k.kieli.koodiarvo)
+      case _ => HttpStatus.ok
+    }
+  }
+
+  private def validateSuorituskieli(suoritus: Suoritus) = {
+    def validateSuomiTaiRuotsi(koodiarvo: String) = HttpStatus.validate(List("SV", "FI").contains(koodiarvo)) {
+      KoskiErrorCategory.badRequest.validation.rakenne.virheellinenSuorituskieli("Suorituskielen tulee olla suomi tai ruotsi")
+    }
+    suoritus match {
+      case k: PerusopetukseenValmistavanOpetuksenSuoritus => validateSuomiTaiRuotsi(k.suorituskieli.koodiarvo)
       case _ => HttpStatus.ok
     }
   }
