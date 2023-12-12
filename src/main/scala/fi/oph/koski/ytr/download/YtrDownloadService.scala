@@ -216,7 +216,7 @@ class YtrDownloadService(
         val validSsnCount = validSsnData.ssns.map(_.length).getOrElse(0)
         logger.info(s"Downloaded ${fullCount} ssn prospects from YTR")
         if (validSsnCount < fullCount) {
-          logger.info(s"There was ${fullCount - validSsnCount} / ${fullCount} ssns of invalid format between ${o.minMonth} and ${o.maxMonth}")
+          logger.info(s"There was ${fullCount - validSsnCount} / ${fullCount} ssns of invalid format between ${validSsnData.minMonth} and ${validSsnData.maxMonth} [min and max months are only from valid ssns in the batch]")
         }
         validSsnData
       })
