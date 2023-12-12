@@ -539,6 +539,7 @@ describe('International school', function () {
             'Biology',
             'Chemistry',
             'Design technology',
+            'Digital society',
             'Economics',
             'Environmental systems and societies',
             'History',

@@ -332,6 +332,34 @@
   {
     "metadata": [
       {
+        "nimi": "Digital society",
+        "kuvaus": null,
+        "lyhytNimi": "Digital society",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Digital society",
+        "kuvaus": null,
+        "lyhytNimi": "Digital society",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Digital society",
+        "kuvaus": null,
+        "lyhytNimi": "Digital society",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiaineetib_dis",
+    "versio": 1,
+    "koodiArvo": "DIS"
+  },
+  {
+    "metadata": [
+      {
         "nimi": "Economics",
         "kuvaus": "",
         "lyhytNimi": "",

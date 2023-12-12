@@ -2,7 +2,7 @@ package fi.oph.koski.api.oppijavalidation
 
 import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.api.misc.PutOpiskeluoikeusTestMethods
-import fi.oph.koski.documentation.InternationalSchoolExampleData.{diplomaArviointi, diplomaKieliOppiaine, diplomaOppiaineenSuoritus, internationalSchoolOfHelsinki}
+import fi.oph.koski.documentation.InternationalSchoolExampleData.{diplomaArviointi, diplomaIBOppiaine, diplomaKieliOppiaine, diplomaOppiaineenSuoritus, internationalSchoolOfHelsinki}
 import fi.oph.koski.documentation.{ExampleData, InternationalSchoolExampleData, LukioExampleData}
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.schema._
@@ -30,6 +30,18 @@ class OppijaValidationInternationalSchoolSpec extends AnyFreeSpec with KoskiHttp
         osasuoritukset = Some(List(
           diplomaOppiaineenSuoritus(diplomaKieliOppiaine("A", "FI"), diplomaArviointi(6)),
           diplomaOppiaineenSuoritus(diplomaKieliOppiaine("A", "EN"), diplomaArviointi(6))
+        ))
+      )))
+
+      setupOppijaWithOpiskeluoikeus(oo) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "Uudella oppiaineella DIS -> HTTP 200" in {
+      val oo = defaultOpiskeluoikeus.copy(suoritukset = List(tutkintoSuoritus.copy(
+        osasuoritukset = Some(List(
+          diplomaOppiaineenSuoritus(diplomaIBOppiaine("DIS"), diplomaArviointi(6))
         ))
       )))
 

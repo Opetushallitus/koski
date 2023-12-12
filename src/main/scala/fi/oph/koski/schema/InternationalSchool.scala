@@ -407,6 +407,7 @@ case class MuuDiplomaOppiaine(
   @KoodistoKoodiarvo("SPO")
   @KoodistoKoodiarvo("MATAA")
   @KoodistoKoodiarvo("MATAI")
+  @KoodistoKoodiarvo("DIS")
   tunniste: Koodistokoodiviite,
   taso: Option[Koodistokoodiviite]
 ) extends InternationalSchoolIBOppiaine with IBOppiaine with IBTaso
