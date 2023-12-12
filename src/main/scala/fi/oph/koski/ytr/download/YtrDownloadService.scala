@@ -231,16 +231,11 @@ class YtrDownloadService(
       .map(data => {
         val ssnsWithPreviousSsns = data.ssns.toList.flatten
           .map(ssn => {
-            // TODO: TOR-2001: Kun todettu tuotannossa, että toimii, poista turhat info-tason debug-printit.
             application.opintopolkuHenkilöFacade.findOppijaByHetu(ssn) match {
               case Some(oppija) if oppija.hetu.exists(_ == ssn) =>
                 // Tavallinen tapaus: opintopolusta löytyi oppija samalla hetulla kuin YTR:stä saatiin
-                if (!oppija.vanhatHetut.isEmpty) {
-                  logger.info(s"Lähetetään YTR:lle monihetullisen oppijan ${oppija.oid} voimassaoleva ja vanhat hetut")
-                }
                 YtrSsnWithPreviousSsns(ssn, oppija.vanhatHetut)
               case Some(oppija) if oppija.hetu.isDefined && oppija.vanhatHetut.contains(ssn) =>
-                logger.info(s"YTR:ssä on oppijan ${oppija.oid} tiedot vanhalla hetulla. Pyydetään tiedot opintopolun tiedoilla.")
                 YtrSsnWithPreviousSsns(oppija.hetu.get, oppija.vanhatHetut)
               case Some(oppija) if oppija.hetu.isDefined =>
                 logger.error(s"Opintopolusta löytyi oppija ${oppija.oid} YTR:n hetulla, mutta hänen opintopolun tiedoissaan ei ole YTR:n hetua lainkaan. Pyydetään tiedot vain YTR:n antamalla hetulla.")
