@@ -16,7 +16,7 @@ import org.scalatest.matchers.should.Matchers
 
 class MigriSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsAmmatillinen with Matchers with DirtiesFixtures {
 
-  val user = MockUsers.luovutuspalveluKäyttäjä
+  val user = MockUsers.migriKäyttäjä
 
   "Oppijaa ei löydy, palautetaan 404" in {
     postOid(eiKoskessa.oid, user) {

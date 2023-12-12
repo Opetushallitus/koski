@@ -60,7 +60,7 @@ object DirectoryClient {
   private def hasViranomaisRooli(roolit: List[Palvelurooli]) =
     roolit.exists(r => Rooli.globaalitKoulutusmuotoRoolit.contains(r.rooli)) ||
       roolit.exists {
-        case Palvelurooli("KOSKI", Rooli.TIEDONSIIRTO_LUOVUTUSPALVELU) => true
+        case Palvelurooli("KOSKI", Rooli.MIGRI) => true
         case Palvelurooli("VALPAS", ValpasRooli.YTL) => true
         case Palvelurooli("VALPAS", ValpasRooli.KELA) => true
         case _ => false

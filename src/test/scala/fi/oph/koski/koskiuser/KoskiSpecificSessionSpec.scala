@@ -140,13 +140,12 @@ class KoskiSpecificSessionSpec
         val session = createAndVerifySession("Kaisa", MockUsers.korkeakouluViranomainen.ldapUser)
         session.allowedOpiskeluoikeusTyypit should equal(Set(OpiskeluoikeudenTyyppi.korkeakoulutus.koodiarvo))
       }
-      "luovutuspalvelu arkaluontoisten tietojen oikeus" in {
-        val session = createAndVerifySession("Antti", MockUsers.luovutuspalveluKäyttäjäArkaluontoinen.ldapUser)
-        session.hasLuovutuspalveluAccess should be(true)
+      "tilastokeskus saa arkaluontoisenkin datan" in {
+        val session = createAndVerifySession("Teppo", MockUsers.tilastokeskusKäyttäjä.ldapUser)
         session.sensitiveDataAllowed(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT)) should be(true)
       }
-      "luovutuspalvelu ei arkaluontoisten tietojen oikeuksia" in {
-        val session = createAndVerifySession("Lasse", MockUsers.luovutuspalveluKäyttäjä.ldapUser)
+      "migrillä ei arkaluontoisten tietojen oikeuksia" in {
+        val session = createAndVerifySession("Migri", MockUsers.migriKäyttäjä.ldapUser)
         session.hasLuovutuspalveluAccess should be(true)
         session.sensitiveDataAllowed(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT)) should be(false)
       }
@@ -207,7 +206,7 @@ class KoskiSpecificSessionSpec
   private def mockEndpoints = {
     val käyttöoikeusUrl = "/kayttooikeus-service/kayttooikeus/kayttaja"
     def henkilöUrl(username: String) = {
-      val oid = MockUsers.users.find(_.username == username).map(_.oid).get
+      val oid = MockUsers.users.find(_.username == username).map(_.oid).getOrElse(throw new Exception("No oid found for user " + username))
       s"/oppijanumerorekisteri-service/henkilo/$oid"
     }
 
@@ -393,6 +392,20 @@ object Responses {
         "kayttooikeudet" -> List(Map("palvelu" -> "OPPIJANUMEROREKISTERI", "oikeus" -> "REKISTERINPITAJA"))
       ))
     )),
+    "Teppo" -> List(Map(
+      "oidHenkilo" -> MockUsers.tilastokeskusKäyttäjä.oid,
+      "organisaatiot" -> List(Map(
+        "organisaatioOid" -> MockOrganisaatiot.evira,
+        "kayttooikeudet" -> List(
+          Map("palvelu" -> "KOSKI", "oikeus" -> "TILASTOKESKUS"),
+          Map("palvelu" -> "KOSKI", "oikeus" -> "LUOTTAMUKSELLINEN_KAIKKI_TIEDOT"),
+          Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_PERUSOPETUS"),
+          Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_TOINEN_ASTE"),
+          Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_KORKEAKOULU"),
+          Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_MUU_KUIN_SAANNELTY"),
+          Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_TAITEENPERUSOPETUS"))
+      ))
+    )),
     "Kaisa" -> List(Map(
       "oidHenkilo" -> MockUsers.korkeakouluViranomainen.oid,
       "organisaatiot" -> List(Map(
@@ -404,31 +417,17 @@ object Responses {
         "kayttooikeudet" -> List()
       ))
     )),
-    "Antti" -> List(Map(
-      "oidHenkilo" -> MockUsers.luovutuspalveluKäyttäjäArkaluontoinen.oid,
+    "Migri" -> List(Map(
+      "oidHenkilo" -> MockUsers.migriKäyttäjä.oid,
       "organisaatiot" -> List(Map(
-        "organisaatioOid" -> MockOrganisaatiot.evira,
+        "organisaatioOid" -> MockOrganisaatiot.migri,
         "kayttooikeudet" -> List(
-          Map("palvelu" -> "KOSKI", "oikeus" -> "TIEDONSIIRTO_LUOVUTUSPALVELU"),
-          Map("palvelu" -> "KOSKI", "oikeus" -> "LUOTTAMUKSELLINEN_KAIKKI_TIEDOT"),
+          Map("palvelu" -> "KOSKI", "oikeus" -> "MIGRI_RAJAPINTA_LUKUOIKEUS"),
           Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_PERUSOPETUS"),
           Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_TOINEN_ASTE"),
           Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_KORKEAKOULU"),
           Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_MUU_KUIN_SAANNELTY"),
           Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_TAITEENPERUSOPETUS"))
-      ))
-    )),
-    "Lasse" -> List(Map(
-      "oidHenkilo" -> MockUsers.luovutuspalveluKäyttäjä.oid,
-      "organisaatiot" -> List(Map(
-        "organisaatioOid" -> MockOrganisaatiot.evira,
-        "kayttooikeudet" -> List(
-          Map("palvelu" -> "KOSKI", "oikeus" -> "TIEDONSIIRTO_LUOVUTUSPALVELU"),
-          Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_PERUSOPETUS"),
-          Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_TOINEN_ASTE"),
-          Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_KORKEAKOULU"),
-          Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_MUU_KUIN_SAANNELTY"),
-          Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_TAITEENPERUSOPETUS")),
       ))
     )),
     "esiopetus" -> List(Map(

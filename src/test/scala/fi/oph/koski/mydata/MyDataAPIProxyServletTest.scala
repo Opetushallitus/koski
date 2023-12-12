@@ -72,17 +72,28 @@ class MyDataAPIProxyServletTest extends AnyFreeSpec with KoskiHttpSpec with Matc
     "Palauttaa 401 mikäli luovutuspalvelukäyttäjän tunnukset ovat väärät" in {
       KoskiApplicationForTests.mydataRepository.create(opiskelija.oid, memberId)
 
-      val wrongPasswordHeader = Map(basicAuthHeader(MockUsers.luovutuspalveluKäyttäjä.username, "wrong password"))
-      requestOpintoOikeudetWithoutAuthHeaders(opiskelija.hetu.get, wrongPasswordHeader ++ memberHeaders(memberCode)) {
-        status should equal(401)
-      }
+      val luovutuspalveluKäyttäjät = List(
+        MockUsers.ytlKäyttäjä,
+        MockUsers.valviraKäyttäjä,
+        MockUsers.kelaLaajatOikeudet,
+        MockUsers.kelaSuppeatOikeudet,
+        MockUsers.migriKäyttäjä,
+        MockUsers.tilastokeskusKäyttäjä
+      )
+
+      luovutuspalveluKäyttäjät.map(user => {
+        val wrongPasswordHeader = Map(basicAuthHeader(user.username, "wrong password"))
+        requestOpintoOikeudetWithoutAuthHeaders(opiskelija.hetu.get, wrongPasswordHeader ++ memberHeaders(memberCode)) {
+          status should equal(401)
+        }
+      })
     }
   }
 
   def memberHeaders(memberCode: String) = Map("X-ROAD-MEMBER" -> memberCode)
 
   def requestOpintoOikeudet[A](hetu: String, headers: Map[String, String])(f: => A) = {
-    requestOpintoOikeudetWithoutAuthHeaders(hetu, headers ++ authHeaders(MockUsers.luovutuspalveluKäyttäjä))(f)
+    requestOpintoOikeudetWithoutAuthHeaders(hetu, headers ++ authHeaders(MockUsers.migriKäyttäjä))(f)
   }
 
   def requestOpintoOikeudetWithoutAuthHeaders[A](hetu: String, headers: Map[String, String])(f: => A) = {

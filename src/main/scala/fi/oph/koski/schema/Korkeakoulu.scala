@@ -207,7 +207,7 @@ case class Lukukausi_Ilmoittautumisjakso(
   @KoodistoUri("virtalukukausiilmtila")
   tila: Koodistokoodiviite,
   ylioppilaskunnanJäsen: Option[Boolean] = None,
-  @SensitiveData(Set(Rooli.TIEDONSIIRTO_LUOVUTUSPALVELU))
+  @SensitiveData(Set(Rooli.MIGRI))
   @Deprecated("Ei käytössä 1.1.2021 eteenpäin")
   ythsMaksettu: Option[Boolean] = None,
   @Title("Lukuvuosimaksu")

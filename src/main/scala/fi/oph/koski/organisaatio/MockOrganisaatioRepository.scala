@@ -58,6 +58,7 @@ object MockOrganisaatiot {
   val kiipulanAmmattiopistoNokianToimipaikka = "1.2.246.562.10.28100171934"
   val länsirannikonKoulutusOy = "1.2.246.562.10.82246911869"
   val tilastokeskus = "1.2.246.562.10.35939310928"
+  val migri = "1.2.246.562.10.31453145314"
   val valvira = "1.2.246.562.10.52577249361"
   val kuopionAikuislukio = "1.2.246.562.10.42923230215"
   val kallavedenLukio = "1.2.246.562.10.63813695861"

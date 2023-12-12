@@ -30,7 +30,7 @@ class ValviraSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTest
       }
     }
     "Kutsuminen vaatii VALVIRA-käyttöoikeuden" in {
-      getHetu(KoskiSpecificMockOppijat.amis.hetu.get, user = MockUsers.luovutuspalveluKäyttäjä) {
+      getHetu(KoskiSpecificMockOppijat.amis.hetu.get, user = MockUsers.migriKäyttäjä) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden())
       }
     }
