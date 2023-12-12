@@ -51,17 +51,18 @@ jobs:
         uses: nick-fields/retry@v2
         with:
           max_attempts: 5
+          # max_attempts: 5
           timeout_minutes: 10
           retry_wait_seconds: 1800
           retry_on_exit_code: 99
           command: |
-            make owasp | tee owasp-output.log
+            mvn dependency-check:check -P owasp --batch-mode | tee owasp-output.log
             STATUS="${PIPESTATUS[0]}"
 
             if [ "$STATUS" != "0" ]; then
               EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
               echo "errors<<$EOF" >> $GITHUB_OUTPUT
-              grep -i error owasp-output.log >> $GITHUB_OUTPUT
+              grep "\[ERROR\]" owasp-output.log >> $GITHUB_OUTPUT
               echo "$EOF" >> $GITHUB_OUTPUT
 
               if grep -q "One or more dependencies were identified with vulnerabilities" owasp-output.log; then
