@@ -85,6 +85,23 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
           }}
         }
       }
+
+      "Uusi oppiaine DIS sallittu IBOppiaineMuu" in {
+        val oo = defaultOpiskeluoikeus.copy(suoritukset = List(ibTutkinnonSuoritus(predicted = false).copy(
+          osasuoritukset = Some(List(
+            IBOppiaineenSuoritus(
+              koulutusmoduuli = ibOppiaine("DIS", higherLevel, 3),
+              osasuoritukset = None,
+              arviointi = ibArviointi("S"),
+              predictedArviointi = None,
+            )
+          ))
+        )))
+
+        setupOppijaWithOpiskeluoikeus(oo) {
+          verifyResponseStatusOk()
+        }
+      }
     }
 
     "Opintojen rahoitus" - {
