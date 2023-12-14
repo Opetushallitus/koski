@@ -1,5 +1,8 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 15.12.2023
+- Perusopetuksen vuosiluokkien ja päättötodistuksen suorituksissa ei enää hyväksytä sekä ET- että KT-oppiaineita
+
 ## 11.12.2023
 - Perusopetukseen valmistavan opetuksen suorituskielen pitää olla suomi tai ruotsi.
 - Ammatillisen tutkinnon suorituksissa voi käyttää vain tutkintonimikkeitä, jotka löytyvät tutkinnon perusteesta

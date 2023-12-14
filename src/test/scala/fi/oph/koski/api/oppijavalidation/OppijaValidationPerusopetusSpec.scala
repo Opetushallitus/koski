@@ -90,6 +90,69 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
       }
     }
 
+    "Kaksi samaksi katsottua ET ja KT oppiainetta" - {
+      def testisuoritus(oppiaineenKoodiarvo: String, pakollinen: Boolean) =
+        suoritus(uskonto(
+          uskonto = None,
+          pakollinen = pakollinen,
+          laajuus = vuosiviikkotuntia(3),
+          oppiaineenKoodiarvo = oppiaineenKoodiarvo
+        )).copy(
+          arviointi = arviointi(9),
+        )
+
+      "ET ja KT pakollisina -> HTTP 400" in {
+        setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusSuoritus.copy(osasuoritukset = Some(List(
+          testisuoritus("KT", true),
+          testisuoritus("ET", true)
+        )))))) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.duplikaattiOsasuoritus("Samassa perusopetuksen suorituksessa ei voi esiintyä oppiaineita KT- ja ET-koodiarvoilla"))
+        }
+      }
+      "ET ja KT joista toinen pakollinen ja toinen valinnainen -> HTTP 400" in {
+        setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusSuoritus.copy(osasuoritukset = Some(List(
+          testisuoritus("KT", true),
+          testisuoritus("ET", false)
+        )))))) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.duplikaattiOsasuoritus("Samassa perusopetuksen suorituksessa ei voi esiintyä oppiaineita KT- ja ET-koodiarvoilla"))
+        }
+      }
+      "ET ja KT valinnaisina 8. luokan suorituksessa -> HTTP 400" in {
+        setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(
+          yhdeksännenLuokanSuoritus,
+          kahdeksannenLuokanSuoritus.copy(osasuoritukset = Some(List(
+            testisuoritus("KT", false),
+            testisuoritus("ET", false)
+          ))),
+          päättötodistusSuoritus
+        ))) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.duplikaattiOsasuoritus("Samassa perusopetuksen suorituksessa ei voi esiintyä oppiaineita KT- ja ET-koodiarvoilla"))
+        }
+      }
+      "ET pakollisena ja monta ET:ta valinnaisina -> HTTP 200" in {
+        setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusSuoritus.copy(osasuoritukset = Some(List(
+          testisuoritus("ET", true),
+          testisuoritus("ET", false),
+          testisuoritus("ET", false)
+        )))))) {
+          verifyResponseStatusOk()
+        }
+      }
+      "ET ja KT eri päätason suorituksissa -> HTTP 200" in {
+        setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(
+          kahdeksannenLuokanSuoritus.copy(osasuoritukset = Some(List(
+            testisuoritus("ET", true)
+          ))),
+          yhdeksännenLuokanSuoritus,
+          päättötodistusSuoritus.copy(osasuoritukset = Some(List(
+            testisuoritus("KT", true)
+          )))
+        ))) {
+          verifyResponseStatusOk()
+        }
+      }
+    }
+
     "Opiskeluoikeudelta puuttuu päättötodistus opiskeluoikeuden tilan ollessa 'valmistunut' -> HTTP 400" in {
       setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(
         suoritukset = List(
