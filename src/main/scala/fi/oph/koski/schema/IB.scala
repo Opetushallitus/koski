@@ -286,6 +286,7 @@ trait MuuOppiaineIB extends IBOppiaine {
   @KoodistoKoodiarvo("BU")
   @KoodistoKoodiarvo("CHE")
   @KoodistoKoodiarvo("DAN")
+  @KoodistoKoodiarvo("DIS")
   @KoodistoKoodiarvo("ECO")
   @KoodistoKoodiarvo("FIL")
   @KoodistoKoodiarvo("GEO")
