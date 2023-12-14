@@ -1,5 +1,5 @@
-## 11.12.2023
-- IB-opintoihin lisätty uusi oppiaine koodilla DIS
+## 14.12.2023
+- IB-opintoihin lisätty uusi oppiaine koodilla DIS sekä IB-tutkintoon että International Schoolille
 
 ## 28.11.2023
 
