@@ -2,7 +2,7 @@ package fi.oph.koski.validation
 
 import fi.oph.koski.documentation.PerusopetusExampleData.suoritustapaErityinenTutkinto
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.schema.{AikuistenPerusopetuksenOpiskeluoikeus, KoskeenTallennettavaOpiskeluoikeus, NuortenPerusopetuksenOppiaineenOppimääränSuoritus, NuortenPerusopetuksenOppimääränSuoritus, Opiskeluoikeus, PerusopetuksenLisäopetuksenOpiskeluoikeus, PerusopetuksenLisäopetuksenSuoritus, PerusopetuksenLisäopetus, PerusopetuksenOpiskeluoikeus, PerusopetuksenVuosiluokanSuoritus}
+import fi.oph.koski.schema.{AikuistenPerusopetuksenOpiskeluoikeus, KoskeenTallennettavaOpiskeluoikeus, NuortenPerusopetuksenOppiaineenOppimääränSuoritus, NuortenPerusopetuksenOppimääränSuoritus, Opiskeluoikeus, PerusopetuksenLisäopetuksenOpiskeluoikeus, PerusopetuksenLisäopetuksenSuoritus, PerusopetuksenLisäopetus, PerusopetuksenOpiskeluoikeus, PerusopetuksenPäätasonSuoritus, PerusopetuksenVuosiluokanSuoritus}
 
 object PerusopetuksenOpiskeluoikeusValidation {
   def validatePerusopetuksenOpiskeluoikeus(oo: Opiskeluoikeus) = {
@@ -55,7 +55,8 @@ object PerusopetuksenOpiskeluoikeusValidation {
         case suoritus: NuortenPerusopetuksenOppimääränSuoritus if suoritus.vahvistettu =>
           validateValmistuneellaOpiskeluoikeudellaYhdeksäsLuokkaTaiSitäEiTarvita(oo)
         case _ => HttpStatus.ok
-      }
+      } ++
+      oo.suoritukset.map(validateEtJaKt)
     )
   }
 
@@ -104,7 +105,7 @@ object PerusopetuksenOpiskeluoikeusValidation {
     }
   }
 
-  def filterNuortenOpiskeluoikeudenKentät(perus: PerusopetuksenOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus = {
+  private def filterNuortenOpiskeluoikeudenKentät(perus: PerusopetuksenOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus = {
     val filtteröityLisätieto = perus.lisätiedot.map(lisätieto => {
       lisätieto.copy(
         perusopetuksenAloittamistaLykätty = None,
@@ -123,7 +124,7 @@ object PerusopetuksenOpiskeluoikeusValidation {
     perus.withLisätiedot(filtteröityLisätieto).withSuoritukset(filtteröidytSuoritukset)
   }
 
-  def filterLisäopetukseenOpiskeluoikeudenKentät(lisä: PerusopetuksenLisäopetuksenOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus = {
+  private def filterLisäopetukseenOpiskeluoikeudenKentät(lisä: PerusopetuksenLisäopetuksenOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus = {
     val filtteröityLisätieto = lisä.lisätiedot.map(lisätieto => {
       lisätieto.copy(
         perusopetuksenAloittamistaLykätty = None,
@@ -139,7 +140,7 @@ object PerusopetuksenOpiskeluoikeusValidation {
     lisä.withLisätiedot(filtteröityLisätieto).withSuoritukset(filtteröidytSuoritukset)
   }
 
-  def filterAikuistenOpiskeluoikeudenKentät(aikuinen: AikuistenPerusopetuksenOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus = {
+  private def filterAikuistenOpiskeluoikeudenKentät(aikuinen: AikuistenPerusopetuksenOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus = {
     val filtteröityLisätieto = aikuinen.lisätiedot.map(lisätieto => {
       lisätieto.copy(
         tehostetunTuenPäätökset = None
@@ -147,6 +148,16 @@ object PerusopetuksenOpiskeluoikeusValidation {
     })
 
     aikuinen.withLisätiedot(filtteröityLisätieto)
+  }
+
+  private def validateEtJaKt(suoritus: PerusopetuksenPäätasonSuoritus): HttpStatus = {
+    val ktJaEt = suoritus.osasuoritukset.toList.flatten
+      .map(_.koulutusmoduuli.tunniste.koodiarvo)
+      .filter(List("KT", "ET").contains)
+
+    HttpStatus.validate(ktJaEt.toSet.size <= 1) {
+      KoskiErrorCategory.badRequest.validation.rakenne.duplikaattiOsasuoritus("Samassa perusopetuksen suorituksessa ei voi esiintyä oppiaineita KT- ja ET-koodiarvoilla")
+    }
   }
 }
 

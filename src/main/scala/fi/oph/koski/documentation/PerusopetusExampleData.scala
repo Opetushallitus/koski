@@ -45,9 +45,10 @@ object PerusopetusExampleData {
     NuortenPerusopetuksenPaikallinenOppiaine(tunniste = PaikallinenKoodi(koodiarvo = aine, nimi = nimi), laajuus = laajuus, kuvaus = kuvaus)
   def oppiaine(aine: String, laajuus: Option[LaajuusVuosiviikkotunneissa] = None) = MuuNuortenPerusopetuksenOppiaine(tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = aine), laajuus = laajuus)
 
-  def uskonto(uskonto: Option[String] = None, laajuus: Option[LaajuusVuosiviikkotunneissa] = None, oppiaineenKoodiarvo: String = "KT") =
+  def uskonto(uskonto: Option[String] = None, laajuus: Option[LaajuusVuosiviikkotunneissa] = None, oppiaineenKoodiarvo: String = "KT", pakollinen: Boolean = true) =
     NuortenPerusopetuksenUskonto(tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava",
       koodiarvo = oppiaineenKoodiarvo),
+      pakollinen = pakollinen,
       laajuus = laajuus,
       uskonnonOppimäärä = uskonto.map(u => Koodistokoodiviite(koodistoUri = "uskonnonoppimaara", koodiarvo = u)))
 
