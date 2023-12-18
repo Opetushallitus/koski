@@ -224,7 +224,7 @@ case class RemoteYtrClient(rootUrl: String, user: String, password: String) exte
 
   override def generateCertificate(req: YoTodistusHetuRequest): Either[HttpStatus, Unit] = {
     val uri = uri"/api/oph-koski/signed-certificate"
-    runIO(http.post(uri, req)(json4sEncoderOf[YoTodistusHetuRequest]) {
+    runIO(postRetryingHttp.post(uri, req)(json4sEncoderOf[YoTodistusHetuRequest]) {
       case (status, _, _) if status < 300 => Right(())
       case (404, _, _) => Left(KoskiErrorCategory.notFound.oppijaaEiLöydy())
       case (400, _, _) =>Left(KoskiErrorCategory.badRequest())
