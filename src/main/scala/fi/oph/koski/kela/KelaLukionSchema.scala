@@ -1,8 +1,7 @@
 package fi.oph.koski.kela
 
 import fi.oph.koski.schema
-import fi.oph.koski.schema.OpiskeluoikeudenTyyppi
-import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
+import fi.oph.koski.schema.annotation.{ComplexObject, Hidden, KoodistoKoodiarvo}
 import fi.oph.scalaschema.annotation.{Description, Title}
 
 import java.time.{LocalDate, LocalDateTime}
@@ -17,18 +16,18 @@ case class KelaLukionOpiskeluoikeus(
   koulutustoimija: Option[Koulutustoimija],
   sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus],
   arvioituPäättymispäivä: Option[LocalDate],
-  tila: KelaOpiskeluoikeudenTila,
+  tila: KelaOpiskeluoikeudenTilaRahoitustiedoilla,
   suoritukset: List[KelaLukionPäätasonSuoritus],
   lisätiedot: Option[KelaLukionOpiskeluoikeudenLisätiedot],
-  @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.lukiokoulutus.koodiarvo)
+  @KoodistoKoodiarvo(schema.OpiskeluoikeudenTyyppi.lukiokoulutus.koodiarvo)
   tyyppi: schema.Koodistokoodiviite,
   organisaatioHistoria: Option[List[OrganisaatioHistoria]],
   organisaatiohistoria: Option[List[OrganisaatioHistoria]]
 ) extends KelaOpiskeluoikeus {
   override def alkamispäivä: Option[LocalDate] = super.alkamispäivä
   override def päättymispäivä: Option[LocalDate] = super.päättymispäivä
-  def withEmptyArvosana: KelaLukionOpiskeluoikeus = copy(
-    suoritukset = suoritukset.map(_.withEmptyArvosana)
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaLukionOpiskeluoikeus = copy(
+    suoritukset = suoritukset.map(_.withHyväksyntämerkinnälläKorvattuArvosana)
   )
   override def withOrganisaatiohistoria: KelaOpiskeluoikeus = copy(
     organisaatioHistoria = organisaatiohistoria,
@@ -51,39 +50,89 @@ case class KelaLukionPäätasonSuoritus(
   oppimäärä: Option[KelaKoodistokoodiviite],
   vahvistus: Option[Vahvistus],
   osasuoritukset: Option[List[KelaLukionOsasuoritus]],
+  omanÄidinkielenOpinnot: Option[KelaLukionOmanÄidinkielenOpinnot],
+  puhviKoe: Option[KelaPuhviKoe2019],
+  suullisenKielitaidonKokeet: Option[List[KelaSuullisenKielitaidonKoe2019]],
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[KelaKoodistokoodiviite]
 ) extends Suoritus {
-  def withEmptyArvosana = copy(
-    osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana))
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaLukionPäätasonSuoritus = copy(
+    osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
+    omanÄidinkielenOpinnot = omanÄidinkielenOpinnot.map(_.withHyväksyntämerkinnälläKorvattuArvosana),
+    puhviKoe = puhviKoe.map(_.withHyväksyntämerkinnälläKorvattuArvosana),
+    suullisenKielitaidonKokeet = suullisenKielitaidonKokeet.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
   )
 }
+
+case class KelaPuhviKoe2019(
+  arvosana: Option[schema.Koodistokoodiviite],
+  päivä: LocalDate,
+  hyväksytty: Option[Boolean]
+) extends SisältääHyväksyntämerkinnälläKorvatunArvosanan {
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaPuhviKoe2019 = copy(
+    arvosana = None,
+    hyväksytty = arvosana.map(schema.YleissivistävänKoulutuksenArviointi.hyväksytty)
+  )
+}
+
+case class KelaSuullisenKielitaidonKoe2019(
+  kieli: KelaKoodistokoodiviite,
+  arvosana: Option[schema.Koodistokoodiviite],
+  päivä: LocalDate,
+  hyväksytty: Option[Boolean]
+) extends SisältääHyväksyntämerkinnälläKorvatunArvosanan {
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaSuullisenKielitaidonKoe2019 = copy(
+    arvosana = None,
+    hyväksytty = arvosana.map(schema.YleissivistävänKoulutuksenArviointi.hyväksytty)
+  )
+}
+
+case class KelaLukionOmanÄidinkielenOpinnot(
+  arvosana: Option[schema.Koodistokoodiviite],
+  arviointipäivä: Option[LocalDate],
+  laajuus: Option[schema.LaajuusOpintopisteissäTaiKursseissa],
+  osasuoritukset: Option[List[KelaLukionOmanÄidinkielenOpintojenOsasuoritus]],
+  hyväksytty: Option[Boolean],
+) extends SisältääHyväksyntämerkinnälläKorvatunArvosanan {
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaLukionOmanÄidinkielenOpinnot = copy(
+    arvosana = None,
+    hyväksytty = arvosana.map(schema.YleissivistävänKoulutuksenArviointi.hyväksytty),
+    osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
+  )
+}
+
+case class KelaLukionOmanÄidinkielenOpintojenOsasuoritus(
+  @Hidden
+  tyyppi: schema.Koodistokoodiviite,
+  @Title("Kurssi")
+  koulutusmoduuli: KelaLukionOmanÄidinkielenOpinto,
+  arviointi: Option[List[KelaYleissivistävänKoulutuksenArviointi]],
+  @ComplexObject
+  @Hidden
+  tunnustettu: Option[OsaamisenTunnustaminen],
+) extends Osasuoritus {
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaLukionOmanÄidinkielenOpintojenOsasuoritus = copy(
+    arviointi = arviointi.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
+  )
+}
+
+case class KelaLukionOmanÄidinkielenOpinto(
+  tunniste: KelaKoodistokoodiviite,
+  laajuus: schema.LaajuusOpintopisteissä,
+)
 
 @Title("Lukion osasuoritus")
 case class KelaLukionOsasuoritus(
   koulutusmoduuli: KelaLukionOsasuorituksenKoulutusmoduuli,
-  arviointi: Option[List[KelaLukionOsasuorituksenArvionti]],
+  arviointi: Option[List[KelaYleissivistävänKoulutuksenArviointi]],
   osasuoritukset: Option[List[KelaLukionOsasuoritus]],
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[KelaKoodistokoodiviite],
   tunnustettu: Option[OsaamisenTunnustaminen],
   suoritettuLukiodiplomina: Option[Boolean],
   suoritettuSuullisenaKielikokeena: Option[Boolean]
 ) extends Osasuoritus {
-  def withEmptyArvosana: KelaLukionOsasuoritus = copy(
-    arviointi = arviointi.map(_.map(_.withEmptyArvosana)),
-    osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana))
-  )
-}
-
-case class KelaLukionOsasuorituksenArvionti(
-  arvosana: Option[schema.Koodistokoodiviite],
-  hyväksytty: Option[Boolean],
-  päivä: Option[LocalDate]
-) extends OsasuorituksenArvionti {
-  def withEmptyArvosana: KelaLukionOsasuorituksenArvionti = copy(
-    arvosana = None,
-    hyväksytty = arvosana.map(schema.YleissivistävänKoulutuksenArviointi.hyväksytty)
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaLukionOsasuoritus = copy(
+    arviointi = arviointi.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
+    osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
   )
 }
 

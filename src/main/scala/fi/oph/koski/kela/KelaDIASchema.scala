@@ -28,11 +28,16 @@ case class KelaDIAOpiskeluoikeus(
 ) extends KelaOpiskeluoikeus {
   override def alkamispäivä: Option[LocalDate] = super.alkamispäivä
   override def päättymispäivä: Option[LocalDate] = super.päättymispäivä
-  def withSuorituksetVastaavuusKopioitu: KelaDIAOpiskeluoikeus = copy(
+
+  override def withCleanedData: KelaDIAOpiskeluoikeus = {
+    super.withCleanedData.asInstanceOf[KelaDIAOpiskeluoikeus].withSuorituksetVastaavuusKopioitu
+  }
+
+  private def withSuorituksetVastaavuusKopioitu: KelaDIAOpiskeluoikeus = copy(
     suoritukset = suoritukset.map(_.withOsasuorituksetVastaavuusKopioitu)
   )
-  def withEmptyArvosana: KelaDIAOpiskeluoikeus = copy(
-    suoritukset = suoritukset.map(_.withEmptyArvosana)
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaDIAOpiskeluoikeus = copy(
+    suoritukset = suoritukset.map(_.withHyväksyntämerkinnälläKorvattuArvosana)
   )
   override def withOrganisaatiohistoria: KelaOpiskeluoikeus = copy(
     organisaatioHistoria = organisaatiohistoria,
@@ -54,13 +59,12 @@ case class KelaDIAPäätasonSuoritus(
   vahvistus: Option[Vahvistus],
   osasuoritukset: Option[List[KelaDIAOsasuoritus]],
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[KelaKoodistokoodiviite]
 ) extends Suoritus {
   def withOsasuorituksetVastaavuusKopioitu: KelaDIAPäätasonSuoritus = copy(
     osasuoritukset = osasuoritukset.map(os => os.map(_.withVastaavuusKopioitu))
   )
-  def withEmptyArvosana = copy(
-    osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana))
+  def withHyväksyntämerkinnälläKorvattuArvosana = copy(
+    osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
   )
 }
 
@@ -70,7 +74,6 @@ case class KelaDIAOsasuoritus(
   arviointi: Option[List[KelaDIAOsasuorituksenArvionti]],
   osasuoritukset: Option[List[KelaDIAOsasuoritus]],
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[KelaKoodistokoodiviite],
   vastaavuusTodistuksenTiedot: Option[VastaavuusTodistuksenTiedot],
   @Deprecated("Ei palauteta Kela-API:ssa. Kenttä on näkyvissä skeemassa vain teknisistä syistä.")
   vastaavuustodistuksenTiedot: Option[VastaavuusTodistuksenTiedot]
@@ -79,9 +82,9 @@ case class KelaDIAOsasuoritus(
     vastaavuusTodistuksenTiedot = vastaavuustodistuksenTiedot,
     vastaavuustodistuksenTiedot = None
   )
-  def withEmptyArvosana: KelaDIAOsasuoritus = copy(
-    arviointi = arviointi.map(_.map(_.withEmptyArvosana)),
-    osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana))
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaDIAOsasuoritus = copy(
+    arviointi = arviointi.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
+    osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
   )
 }
 
@@ -89,8 +92,8 @@ case class KelaDIAOsasuorituksenArvionti(
   arvosana: Option[schema.Koodistokoodiviite],
   hyväksytty: Option[Boolean],
   päivä: Option[LocalDate]
-) extends OsasuorituksenArvionti {
-  def withEmptyArvosana: KelaDIAOsasuorituksenArvionti = copy(
+) extends OsasuorituksenArviointi {
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaDIAOsasuorituksenArvionti = copy(
     arvosana = None,
     hyväksytty = Some(true)
   )

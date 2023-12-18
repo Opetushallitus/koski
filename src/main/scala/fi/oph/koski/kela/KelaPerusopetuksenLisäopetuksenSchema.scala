@@ -28,8 +28,8 @@ case class KelaPerusopetuksenLisäopetuksenOpiskeluoikeus(
   override def alkamispäivä: Option[LocalDate] = super.alkamispäivä
   override def päättymispäivä: Option[LocalDate] = super.päättymispäivä
   override def arvioituPäättymispäivä = None
-  def withEmptyArvosana: KelaPerusopetuksenLisäopetuksenOpiskeluoikeus = copy(
-    suoritukset = suoritukset.map(_.withEmptyArvosana)
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaPerusopetuksenLisäopetuksenOpiskeluoikeus = copy(
+    suoritukset = suoritukset.map(_.withHyväksyntämerkinnälläKorvattuArvosana)
   )
   override def withOrganisaatiohistoria: KelaOpiskeluoikeus = copy(
     organisaatioHistoria = organisaatiohistoria,
@@ -39,7 +39,7 @@ case class KelaPerusopetuksenLisäopetuksenOpiskeluoikeus(
 
 case class KelaPerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot(
   sisäoppilaitosmainenMajoitus: Option[List[KelaAikajakso]],
-  ulkomaanjaksot: Option[List[Ulkomaanjakso]],
+  ulkomaanjaksot: Option[List[KelaAikajakso]],
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   koulukoti: Option[List[KelaAikajakso]],
   majoitusetu: Option[KelaAikajakso],
@@ -61,10 +61,9 @@ case class KelaPerusopetuksenLisäopetuksenPäätasonSuoritus(
   vahvistus: Option[Vahvistus],
   osasuoritukset: Option[List[KelaPerusopetuksenLisäopetuksenOsasuoritus]],
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[KelaKoodistokoodiviite],
 ) extends Suoritus {
-  def withEmptyArvosana: KelaPerusopetuksenLisäopetuksenPäätasonSuoritus = copy(
-    osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana))
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaPerusopetuksenLisäopetuksenPäätasonSuoritus = copy(
+    osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
   )
 }
 
@@ -73,12 +72,11 @@ case class KelaPerusopetuksenLisäopetuksenOsasuoritus(
   koulutusmoduuli: KelaPerusopetuksenLisäopetuksenOsasuorituksenKoulutusmoduuli,
   arviointi: Option[List[KelaPerusopetuksenOsasuorituksenArviointi]],
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[KelaKoodistokoodiviite],
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   yksilöllistettyOppimäärä: Option[Boolean]
 ) extends Osasuoritus with YksilöllistettyOppimäärä {
-  def withEmptyArvosana: KelaPerusopetuksenLisäopetuksenOsasuoritus = copy(
-    arviointi = arviointi.map(_.map(_.withEmptyArvosana))
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaPerusopetuksenLisäopetuksenOsasuoritus = copy(
+    arviointi = arviointi.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
   )
 }
 

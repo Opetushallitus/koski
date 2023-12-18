@@ -66,6 +66,13 @@ class PostgresKoskiOpiskeluoikeusRepository(
       .result)).map(henkilö => henkilö.oid :: henkilö.masterOid.toList)
   }
 
+  override def getMasterOppijaOidForOpiskeluoikeus(opiskeluoikeusOid: String)(implicit user: KoskiSpecificSession): Either[HttpStatus, Oid] = withOidCheck(opiskeluoikeusOid) {
+    withExistenceCheck(runDbSync(KoskiOpiskeluOikeudetWithAccessCheck
+      .filter(_.oid === opiskeluoikeusOid)
+      .flatMap(row => Henkilöt.filter(_.oid === row.oppijaOid))
+      .result)).map(henkilö => henkilö.masterOid.getOrElse(henkilö.oid))
+  }
+
   private def withExistenceCheck[T](things: Iterable[T]): Either[HttpStatus, T] = things.headOption.toRight(KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia())
 
   private def withOidCheck[T](oid: String)(f: => Either[HttpStatus, T]) = {

@@ -17,7 +17,7 @@ case class KelaAikuistenPerusopetuksenOpiskeluoikeus(
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija],
   sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus],
-  tila: KelaOpiskeluoikeudenTila,
+  tila: KelaOpiskeluoikeudenTilaRahoitustiedoilla,
   suoritukset: List[KelaAikuistenPerusopetuksenSuoritus],
   lisätiedot: Option[KelaAikuistenPerusopetuksenOpiskeluoikeudenLisätiedot],
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.aikuistenperusopetus.koodiarvo)
@@ -28,8 +28,8 @@ case class KelaAikuistenPerusopetuksenOpiskeluoikeus(
   override def alkamispäivä: Option[LocalDate] = super.alkamispäivä
   override def päättymispäivä: Option[LocalDate] = super.päättymispäivä
   override def arvioituPäättymispäivä = None
-  def withEmptyArvosana: KelaAikuistenPerusopetuksenOpiskeluoikeus = copy(
-    suoritukset = suoritukset.map(_.withEmptyArvosana)
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaAikuistenPerusopetuksenOpiskeluoikeus = copy(
+    suoritukset = suoritukset.map(_.withHyväksyntämerkinnälläKorvattuArvosana)
   )
   override def withOrganisaatiohistoria: KelaOpiskeluoikeus = copy(
     organisaatioHistoria = organisaatiohistoria,
@@ -39,7 +39,7 @@ case class KelaAikuistenPerusopetuksenOpiskeluoikeus(
 
 case class KelaAikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(
   sisäoppilaitosmainenMajoitus: Option[List[KelaAikajakso]],
-  ulkomaanjaksot: Option[List[Ulkomaanjakso]],
+  ulkomaanjaksot: Option[List[KelaAikajakso]],
   majoitusetu: Option[KelaAikajakso],
   ulkomailla: Option[KelaAikajakso],
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
@@ -57,10 +57,13 @@ case class KelaAikuistenPerusopetuksenSuoritus(
   vahvistus: Option[Vahvistus],
   osasuoritukset: Option[List[KelaAikuistenPerusopetuksenOsasuoritus]],
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[KelaKoodistokoodiviite],
+  arviointi: Option[List[KelaYleissivistävänKoulutuksenArviointi]],
+  omanÄidinkielenOpinnot: Option[KelaOmanÄidinkielenOpinnot]
 ) extends Suoritus {
-  def withEmptyArvosana: KelaAikuistenPerusopetuksenSuoritus = copy(
-    osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana))
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaAikuistenPerusopetuksenSuoritus = copy(
+    osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
+    arviointi = arviointi.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
+    omanÄidinkielenOpinnot = omanÄidinkielenOpinnot.map(_.withHyväksyntämerkinnälläKorvattuArvosana)
   )
 }
 
@@ -70,12 +73,11 @@ case class KelaAikuistenPerusopetuksenOsasuoritus(
   arviointi: Option[List[KelaPerusopetuksenOsasuorituksenArviointi]],
   osasuoritukset: Option[List[KelaAikuistenPerusopetuksenOsasuoritus]],
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[KelaKoodistokoodiviite],
   tunnustettu: Option[OsaamisenTunnustaminen],
 ) extends Osasuoritus {
-  def withEmptyArvosana: KelaAikuistenPerusopetuksenOsasuoritus = copy(
-    arviointi = arviointi.map(_.map(_.withEmptyArvosana)),
-    osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana))
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaAikuistenPerusopetuksenOsasuoritus = copy(
+    arviointi = arviointi.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
+    osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
   )
 }
 

@@ -27,8 +27,8 @@ case class KelaPerusopetukseenValmistavanOpiskeluoikeus(
   override def päättymispäivä: Option[LocalDate] = super.päättymispäivä
   override def arvioituPäättymispäivä = None
   override def lisätiedot: Option[OpiskeluoikeudenLisätiedot] = None
-  def withEmptyArvosana: KelaPerusopetukseenValmistavanOpiskeluoikeus = copy(
-    suoritukset = suoritukset.map(_.withEmptyArvosana)
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaPerusopetukseenValmistavanOpiskeluoikeus = copy(
+    suoritukset = suoritukset.map(_.withHyväksyntämerkinnälläKorvattuArvosana)
   )
   override def withOrganisaatiohistoria: KelaOpiskeluoikeus = copy(
     organisaatioHistoria = organisaatiohistoria,
@@ -43,11 +43,10 @@ case class KelaPerusopetukseenValmistavanPäätasonSuoritus(
   vahvistus: Option[Vahvistus],
   osasuoritukset: Option[List[KelaPerusopetukseenValmistavanOsasuoritus]],
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[KelaKoodistokoodiviite],
   kokonaislaajuus: Option[KelaLaajuus]
 ) extends Suoritus {
-  def withEmptyArvosana: KelaPerusopetukseenValmistavanPäätasonSuoritus = copy(
-    osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana))
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaPerusopetukseenValmistavanPäätasonSuoritus = copy(
+    osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
   )
 }
 
@@ -56,11 +55,10 @@ case class KelaPerusopetukseenValmistavanOsasuoritus(
   koulutusmoduuli: KelaPerusopetukseenValmistavanOsasuorituksenKoulutusmoduuli,
   arviointi: Option[List[KelaPerusopetuksenOsasuorituksenArviointi]],
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[KelaKoodistokoodiviite],
   luokkaAste: Option[KelaKoodistokoodiviite],
 ) extends Osasuoritus {
-  def withEmptyArvosana: KelaPerusopetukseenValmistavanOsasuoritus = copy(
-    arviointi = arviointi.map(_.map(_.withEmptyArvosana))
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaPerusopetukseenValmistavanOsasuoritus = copy(
+    arviointi = arviointi.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
   )
 }
 

@@ -1,6 +1,5 @@
 package fi.oph.koski.kela
 
-import com.typesafe.config.{Config, ConfigList}
 import fi.oph.koski.henkilo.OppijaHenkilö
 import fi.oph.koski.schema
 import fi.oph.koski.schema.annotation.{Deprecated, KoodistoUri, UnitOfMeasure}
@@ -9,39 +8,10 @@ import fi.oph.scalaschema.{ClassSchema, SchemaToJson}
 import org.json4s.JValue
 
 import java.time.{LocalDate, LocalDateTime}
-import scala.collection.JavaConverters._
 
 object KelaSchema {
   lazy val schemaJson: JValue =
     SchemaToJson.toJsonSchema(schema.KoskiSchema.createSchema(classOf[KelaOppija]).asInstanceOf[ClassSchema])
-
-  val schemassaTuetutOpiskeluoikeustyypit: List[String] = List(
-    "aikuistenperusopetus",
-    "ammatillinenkoulutus",
-    "ibtutkinto",
-    "diatutkinto",
-    "internationalschool",
-    "lukiokoulutus",
-    "luva",
-    "perusopetukseenvalmistavaopetus",
-    "perusopetuksenlisaopetus",
-    "perusopetus",
-    "ylioppilastutkinto",
-    "vapaansivistystyonkoulutus",
-    "tuva",
-    "muukuinsaanneltykoulutus",
-    "europeanschoolofhelsinki",
-  ).filter(_.nonEmpty)
-
-  def kelallePalautettavatOpiskeluoikeustyypit(config: Config): List[String] = {
-    val configKey = "kela.palautettavatOpiskeluoikeustyypit"
-    if (config.hasPath(configKey)) {
-      val allowList = config.getList(configKey)
-      schemassaTuetutOpiskeluoikeustyypit.intersect(allowList.unwrapped().asScala.toList)
-    } else {
-      schemassaTuetutOpiskeluoikeustyypit
-    }
-  }
 }
 
 case class KelaOppija(
@@ -90,8 +60,10 @@ trait KelaOpiskeluoikeus {
   @Deprecated("Ei palauteta Kela-API:ssa. Kenttä on näkyvissä skeemassa vain teknisistä syistä.")
   def organisaatiohistoria: Option[List[OrganisaatioHistoria]]
 
-  def withOrganisaatiohistoria: KelaOpiskeluoikeus
-  def withEmptyArvosana: KelaOpiskeluoikeus
+  def withCleanedData: KelaOpiskeluoikeus = this.withOrganisaatiohistoria.withHyväksyntämerkinnälläKorvattuArvosana
+
+  protected def withOrganisaatiohistoria: KelaOpiskeluoikeus
+  protected def withHyväksyntämerkinnälläKorvattuArvosana: KelaOpiskeluoikeus
 }
 
 case class SisältäväOpiskeluoikeus(
@@ -103,6 +75,10 @@ case class KelaOpiskeluoikeudenTila(
   opiskeluoikeusjaksot: List[KelaOpiskeluoikeusjakso]
 ) extends OpiskeluoikeudenTila
 
+case class KelaOpiskeluoikeudenTilaRahoitustiedoilla(
+  opiskeluoikeusjaksot: List[KelaOpiskeluoikeusjaksoRahoituksella]
+) extends OpiskeluoikeudenTila
+
 trait OpiskeluoikeudenTila {
   def opiskeluoikeusjaksot: List[Opiskeluoikeusjakso]
 }
@@ -110,6 +86,12 @@ trait OpiskeluoikeudenTila {
 case class KelaOpiskeluoikeusjakso(
   alku: LocalDate,
   tila: KelaKoodistokoodiviite,
+) extends Opiskeluoikeusjakso
+
+case class KelaOpiskeluoikeusjaksoRahoituksella(
+  alku: LocalDate,
+  tila: KelaKoodistokoodiviite,
+  opintojenRahoitus: Option[KelaKoodistokoodiviite]
 ) extends Opiskeluoikeusjakso
 
 trait Opiskeluoikeusjakso {
@@ -131,13 +113,13 @@ trait Suoritus{
   def koulutusmoduuli: SuorituksenKoulutusmoduuli
   @Discriminator
   def tyyppi: schema.Koodistokoodiviite
-  def withEmptyArvosana: Suoritus
+  def withHyväksyntämerkinnälläKorvattuArvosana: Suoritus
 }
 
 trait Osasuoritus{
   @Discriminator
   def tyyppi: schema.Koodistokoodiviite
-  def withEmptyArvosana: Osasuoritus
+  def withHyväksyntämerkinnälläKorvattuArvosana: Osasuoritus
 }
 
 trait YksilöllistettyOppimäärä {
@@ -183,13 +165,39 @@ case class OsaamisenTunnustaminen(selite: schema.LocalizedString, rahoituksenPii
 
 case class Vahvistus(päivä: LocalDate)
 
-@Title("Osasuorituksen arviointi")
-trait OsasuorituksenArvionti{
+trait SisältääHyväksyntämerkinnälläKorvatunArvosanan {
   @Deprecated("Ei palauteta Kela-API:ssa. Kenttä on näkyvissä skeemassa vain teknisistä syistä.")
   def arvosana: Option[schema.Koodistokoodiviite]
   def hyväksytty: Option[Boolean]
-  def päivä: Option[LocalDate]
-  def withEmptyArvosana: OsasuorituksenArvionti
+  def withHyväksyntämerkinnälläKorvattuArvosana: SisältääHyväksyntämerkinnälläKorvatunArvosanan
+}
+
+@Title("Osasuorituksen arviointi")
+trait OsasuorituksenArviointi extends SisältääHyväksyntämerkinnälläKorvatunArvosanan {
+  def withHyväksyntämerkinnälläKorvattuArvosana: OsasuorituksenArviointi
+}
+
+case class KelaYleissivistävänKoulutuksenArviointi(
+  arvosana: Option[schema.Koodistokoodiviite],
+  hyväksytty: Option[Boolean],
+  päivä: Option[LocalDate]
+) extends OsasuorituksenArviointi {
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaYleissivistävänKoulutuksenArviointi = copy(
+    arvosana = None,
+    hyväksytty = arvosana.map(schema.YleissivistävänKoulutuksenArviointi.hyväksytty)
+  )
+}
+
+case class KelaOmanÄidinkielenOpinnot(
+  arvosana: Option[schema.Koodistokoodiviite],
+  arviointipäivä: Option[LocalDate],
+  laajuus: Option[KelaLaajuus],
+  hyväksytty: Option[Boolean],
+) extends SisältääHyväksyntämerkinnälläKorvatunArvosanan {
+  override def withHyväksyntämerkinnälläKorvattuArvosana: KelaOmanÄidinkielenOpinnot = copy(
+    arvosana = None,
+    hyväksytty = arvosana.map(schema.YleissivistävänKoulutuksenArviointi.hyväksytty)
+  )
 }
 
 case class Oppilaitos(
@@ -208,8 +216,8 @@ case class Koulutustoimija(
 
 case class Toimipiste(
   oid: String,
-  nimi: Option[schema.LocalizedString] = None,
-  kotipaikka: Option[KelaKoodistokoodiviite] = None
+  nimi: Option[schema.LocalizedString],
+  kotipaikka: Option[KelaKoodistokoodiviite]
 )
 
 case class KelaLaajuus(arvo: Double, yksikkö: KelaKoodistokoodiviite)
@@ -219,6 +227,13 @@ case class KelaAikajakso (
   loppu: Option[LocalDate]
 ) {
   override def toString: String = s"$alku – ${loppu.getOrElse("")}"
+}
+
+case class KelaMahdollisestiAlkupäivätönAikajakso (
+  alku: Option[LocalDate],
+  loppu: Option[LocalDate]
+) {
+  override def toString: String = s"${alku.getOrElse("")} – ${loppu.getOrElse("")}"
 }
 
 case class KelaOsaAikaisuusJakso(
@@ -237,7 +252,7 @@ case class KelaMaksuttomuus(
 case class KelaTehostetunTuenPäätös(
   alku: LocalDate,
   loppu: Option[LocalDate],
-  tukimuodot: Option[List[KelaKoodistokoodiviite]] = None
+  tukimuodot: Option[List[KelaKoodistokoodiviite]]
 ) extends KelaJakso
 
 trait KelaJakso {
@@ -256,8 +271,8 @@ case class KelaOikeuttaMaksuttomuuteenPidennetty(
 @ReadFlattened
 case class KelaOsaamisalajakso(
   osaamisala: KelaKoodistokoodiviite,
-  alku: Option[LocalDate] = None,
-  loppu: Option[LocalDate] = None
+  alku: Option[LocalDate],
+  loppu: Option[LocalDate]
 )
 
 case class KelaOpiskeluvalmiuksiaTukevienOpintojenJakso(

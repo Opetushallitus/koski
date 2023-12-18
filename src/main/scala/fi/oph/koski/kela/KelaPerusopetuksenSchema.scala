@@ -2,9 +2,8 @@ package fi.oph.koski.kela
 
 import fi.oph.koski.koskiuser.Rooli
 import fi.oph.koski.schema
-import fi.oph.koski.schema.OpiskeluoikeudenTyyppi
 import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, SensitiveData}
-import fi.oph.scalaschema.annotation.{Description, Discriminator, OnlyWhen, Title}
+import fi.oph.scalaschema.annotation.{Description, Title}
 
 import java.time.{LocalDate, LocalDateTime}
 
@@ -20,7 +19,7 @@ case class KelaPerusopetuksenOpiskeluoikeus(
   tila: KelaOpiskeluoikeudenTila,
   suoritukset: List[KelaPerusopetuksenSuoritus],
   lisätiedot: Option[KelaPerusopetuksenOpiskeluoikeudenLisätiedot],
-  @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.perusopetus.koodiarvo)
+  @KoodistoKoodiarvo(schema.OpiskeluoikeudenTyyppi.perusopetus.koodiarvo)
   tyyppi: schema.Koodistokoodiviite,
   organisaatioHistoria: Option[List[OrganisaatioHistoria]],
   organisaatiohistoria: Option[List[OrganisaatioHistoria]]
@@ -28,8 +27,8 @@ case class KelaPerusopetuksenOpiskeluoikeus(
   override def alkamispäivä: Option[LocalDate] = super.alkamispäivä
   override def päättymispäivä: Option[LocalDate] = super.päättymispäivä
   override def arvioituPäättymispäivä = None
-  def withEmptyArvosana: KelaPerusopetuksenOpiskeluoikeus = copy(
-    suoritukset = suoritukset.map(_.withEmptyArvosana)
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaPerusopetuksenOpiskeluoikeus = copy(
+    suoritukset = suoritukset.map(_.withHyväksyntämerkinnälläKorvattuArvosana)
   )
   override def withOrganisaatiohistoria: KelaOpiskeluoikeus = copy(
     organisaatioHistoria = organisaatiohistoria,
@@ -39,7 +38,7 @@ case class KelaPerusopetuksenOpiskeluoikeus(
 
 case class KelaPerusopetuksenOpiskeluoikeudenLisätiedot(
   sisäoppilaitosmainenMajoitus: Option[List[KelaAikajakso]],
-  ulkomaanjaksot: Option[List[Ulkomaanjakso]],
+  ulkomaanjaksot: Option[List[KelaAikajakso]],
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   koulukoti: Option[List[KelaAikajakso]],
   majoitusetu: Option[KelaAikajakso],
@@ -59,12 +58,15 @@ case class KelaPerusopetuksenSuoritus(
   vahvistus: Option[Vahvistus],
   osasuoritukset: Option[List[KelaPerusopetuksenOsasuoritus]],
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[KelaKoodistokoodiviite],
   alkamispäivä: Option[LocalDate],
-  jääLuokalle: Option[Boolean]
+  jääLuokalle: Option[Boolean],
+  arviointi: Option[List[KelaYleissivistävänKoulutuksenArviointi]],
+  omanÄidinkielenOpinnot: Option[KelaOmanÄidinkielenOpinnot]
 ) extends Suoritus {
-  def withEmptyArvosana: KelaPerusopetuksenSuoritus = copy(
-    osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana))
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaPerusopetuksenSuoritus = copy(
+    osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
+    arviointi = arviointi.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
+    omanÄidinkielenOpinnot = omanÄidinkielenOpinnot.map(_.withHyväksyntämerkinnälläKorvattuArvosana)
   )
 }
 
@@ -73,12 +75,11 @@ case class KelaPerusopetuksenOsasuoritus(
   koulutusmoduuli: KelaPerusopetuksenOsasuorituksenKoulutusmoduuli,
   arviointi: Option[List[KelaPerusopetuksenOsasuorituksenArviointi]],
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[KelaKoodistokoodiviite],
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   yksilöllistettyOppimäärä: Option[Boolean]
 ) extends Osasuoritus with YksilöllistettyOppimäärä {
-  def withEmptyArvosana: KelaPerusopetuksenOsasuoritus = copy(
-    arviointi = arviointi.map(_.map(_.withEmptyArvosana))
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaPerusopetuksenOsasuoritus = copy(
+    arviointi = arviointi.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
   )
 }
 
@@ -86,8 +87,8 @@ case class KelaPerusopetuksenOsasuorituksenArviointi(
   arvosana: Option[schema.Koodistokoodiviite],
   hyväksytty: Option[Boolean],
   päivä: Option[LocalDate]
-) extends OsasuorituksenArvionti {
-  def withEmptyArvosana: KelaPerusopetuksenOsasuorituksenArviointi = copy(
+) extends OsasuorituksenArviointi {
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaPerusopetuksenOsasuorituksenArviointi = copy(
     arvosana = None,
     hyväksytty = arvosana.map(schema.YleissivistävänKoulutuksenArviointi.hyväksytty)
   )

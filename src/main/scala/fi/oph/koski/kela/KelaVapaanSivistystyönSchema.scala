@@ -1,8 +1,7 @@
 package fi.oph.koski.kela
 
 import fi.oph.koski.schema
-import fi.oph.koski.schema.annotation.{Deprecated, KoodistoKoodiarvo}
-import fi.oph.koski.schema.{OpiskeluoikeudenTyyppi, VSTKoto2022Peruste}
+import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
 import fi.oph.scalaschema.annotation.{Description, OnlyWhen, Title}
 
 import java.time.{LocalDate, LocalDateTime}
@@ -16,10 +15,10 @@ case class KelaVapaanSivistystyönOpiskeluoikeus(
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija],
   arvioituPäättymispäivä: Option[LocalDate],
-  tila: KelaVapaansivistystyönOpiskeluoikeudenTila,
+  tila: KelaOpiskeluoikeudenTilaRahoitustiedoilla,
   suoritukset: List[VstSuoritus],
   lisätiedot: Option[KelaVapaanSivistystyönOpiskeluoikeudenLisätiedot],
-  @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.vapaansivistystyonkoulutus.koodiarvo)
+  @KoodistoKoodiarvo(schema.OpiskeluoikeudenTyyppi.vapaansivistystyonkoulutus.koodiarvo)
   tyyppi: schema.Koodistokoodiviite,
   organisaatioHistoria: Option[List[OrganisaatioHistoria]],
   organisaatiohistoria: Option[List[OrganisaatioHistoria]]
@@ -27,26 +26,14 @@ case class KelaVapaanSivistystyönOpiskeluoikeus(
   override def alkamispäivä: Option[LocalDate] = super.alkamispäivä
   override def päättymispäivä: Option[LocalDate] = super.päättymispäivä
   override def sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus] = None
-  def withEmptyArvosana: KelaVapaanSivistystyönOpiskeluoikeus = copy(
-    suoritukset = suoritukset.map(_.withEmptyArvosana)
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaVapaanSivistystyönOpiskeluoikeus = copy(
+    suoritukset = suoritukset.map(_.withHyväksyntämerkinnälläKorvattuArvosana)
   )
   override def withOrganisaatiohistoria: KelaOpiskeluoikeus = copy(
     organisaatioHistoria = organisaatiohistoria,
     organisaatiohistoria = None
   )
 }
-
-case class KelaVapaansivistystyönOpiskeluoikeudenTila(
-  opiskeluoikeusjaksot: List[KelaVapaanSivistystyönOpiskeluoikeusjakso]
-) extends OpiskeluoikeudenTila
-
-case class KelaVapaanSivistystyönOpiskeluoikeusjakso(
-  alku: LocalDate,
-  tila: KelaKoodistokoodiviite,
-  @KoodistoKoodiarvo("14")
-  @KoodistoKoodiarvo("15")
-  opintojenRahoitus: Option[KelaKoodistokoodiviite],
-) extends Opiskeluoikeusjakso
 
 case class KelaVapaanSivistystyönOpiskeluoikeudenLisätiedot(
   maksuttomuus: Option[List[KelaMaksuttomuus]],
@@ -59,11 +46,12 @@ case class KelaVapaanSivistystyönPäätasonSuoritus(
   toimipiste: Option[Toimipiste],
   vahvistus: Option[Vahvistus],
   osasuoritukset: Option[List[KelaVapaanSivistystyönOsasuoritus]],
+  @KoodistoKoodiarvo("vstoppivelvollisillesuunnattukoulutus")
+  @KoodistoKoodiarvo("vstlukutaitokoulutus")
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[KelaKoodistokoodiviite],
 ) extends VstSuoritus {
-  def withEmptyArvosana: KelaVapaanSivistystyönPäätasonSuoritus = copy(
-    osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana))
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaVapaanSivistystyönPäätasonSuoritus = copy(
+    osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
   )
 }
 
@@ -75,15 +63,49 @@ case class KelaVapaanSivistystyönMaahanmuuttajienKotoutumisenSuoritus(
   osasuoritukset: Option[List[KelaVapaanSivistystyönMaahanmuuttajienKototutumisenOsasuoritus]],
   @KoodistoKoodiarvo("vstmaahanmuuttajienkotoutumiskoulutus")
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[KelaKoodistokoodiviite],
 ) extends VstSuoritus {
-  def withEmptyArvosana: KelaVapaanSivistystyönMaahanmuuttajienKotoutumisenSuoritus = copy(
-    osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana))
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaVapaanSivistystyönMaahanmuuttajienKotoutumisenSuoritus = copy(
+    osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
+  )
+}
+
+@Title("Jatkuvaan oppimiseen suunnattu vapaan sivistystyön koulutuksen suoritus")
+case class KelaVapaanSivistystyönJotpaSuoritus(
+  koulutusmoduuli: KelaVapaanSivistystyönJotpaKoulutus,
+  toimipiste: Option[Toimipiste],
+  vahvistus: Option[Vahvistus],
+  osasuoritukset: Option[List[KelaVapaanSivistystyönJotpaOsasuoritus]],
+  @KoodistoKoodiarvo("vstjotpakoulutus")
+  tyyppi: schema.Koodistokoodiviite,
+) extends VstSuoritus {
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaVapaanSivistystyönJotpaSuoritus = copy(
+    osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
+  )
+}
+
+case class KelaVapaanSivistystyönJotpaKoulutus(
+  tunniste: KelaKoodistokoodiviite,
+  laajuus: Option[KelaLaajuus],
+  koulutustyyppi: Option[KelaKoodistokoodiviite],
+  opintokokonaisuus: KelaKoodistokoodiviite
+) extends SuorituksenKoulutusmoduuli
+
+@Title("Jatkuvaan oppimiseen suunnattu vapaan sivistystyön koulutuksen osasuoritus")
+case class KelaVapaanSivistystyönJotpaOsasuoritus(
+  koulutusmoduuli: KelaVapaanSivistystyönOsasuorituksenKoulutusmoduuli,
+  arviointi: Option[List[KelaVSTOsasuorituksenArviointi]],
+  osasuoritukset: Option[List[KelaVapaanSivistystyönJotpaOsasuoritus]],
+  @KoodistoKoodiarvo("vstjotpakoulutuksenosasuoritus")
+  tyyppi: schema.Koodistokoodiviite,
+) extends Osasuoritus {
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaVapaanSivistystyönJotpaOsasuoritus = copy(
+    arviointi = arviointi.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
+    osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
   )
 }
 
 trait VstSuoritus extends Suoritus {
-  def withEmptyArvosana: VstSuoritus
+  def withHyväksyntämerkinnälläKorvattuArvosana: VstSuoritus
 }
 
 @Title("Vapaan sivistystyön osasuoritus")
@@ -92,11 +114,10 @@ case class KelaVapaanSivistystyönOsasuoritus(
   arviointi: Option[List[KelaVSTOsasuorituksenArviointi]],
   osasuoritukset: Option[List[KelaVapaanSivistystyönOsasuoritus]],
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[KelaKoodistokoodiviite],
 ) extends Osasuoritus {
-  def withEmptyArvosana: KelaVapaanSivistystyönOsasuoritus = copy(
-    arviointi = arviointi.map(_.map(_.withEmptyArvosana)),
-    osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana))
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaVapaanSivistystyönOsasuoritus = copy(
+    arviointi = arviointi.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
+    osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
   )
 }
 
@@ -106,11 +127,10 @@ case class KelaVapaanSivistystyönMaahanmuuttajienKototutumisenOsasuoritus(
   arviointi: Option[List[VSTMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenArviointi]],
   osasuoritukset: Option[List[KelaVapaanSivistystyönMaahanmuuttajienKototutumisenOsasuoritus]],
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[KelaKoodistokoodiviite],
 ) extends Osasuoritus {
-  def withEmptyArvosana: KelaVapaanSivistystyönMaahanmuuttajienKototutumisenOsasuoritus = copy(
-    arviointi = arviointi.map(_.map(_.withEmptyArvosana)),
-    osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana))
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaVapaanSivistystyönMaahanmuuttajienKototutumisenOsasuoritus = copy(
+    arviointi = arviointi.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
+    osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
   )
 }
 
@@ -131,8 +151,8 @@ case class KelaVSTOsasuorituksenArviointi (
   arvosana: Option[schema.Koodistokoodiviite],
   hyväksytty: Option[Boolean],
   päivä: Option[LocalDate]
-) extends OsasuorituksenArvionti {
-  def withEmptyArvosana: KelaVSTOsasuorituksenArviointi = copy(
+) extends OsasuorituksenArviointi {
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaVSTOsasuorituksenArviointi = copy(
     arvosana = None,
     hyväksytty = arvosana.map(schema.VapaanSivistystyönKoulutuksenArviointi.hyväksytty)
   )
@@ -142,22 +162,10 @@ case class VSTMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenArviointi (
   arvosana: Option[schema.Koodistokoodiviite],
   hyväksytty: Option[Boolean],
   päivä: Option[LocalDate],
-  @Deprecated("Poistettu palautettavien tietojen joukosta")
-  kuullunYmmärtämisenTaitotaso: Option[VSTKielenTaitotasonArviointi],
-  @Deprecated("Poistettu palautettavien tietojen joukosta")
-  puhumisenTaitotaso: Option[VSTKielenTaitotasonArviointi],
-  @Deprecated("Poistettu palautettavien tietojen joukosta")
-  luetunYmmärtämisenTaitotaso: Option[VSTKielenTaitotasonArviointi],
-  @Deprecated("Poistettu palautettavien tietojen joukosta")
-  kirjoittamisenTaitotaso: Option[VSTKielenTaitotasonArviointi]
-) extends OsasuorituksenArvionti {
-  def withEmptyArvosana: VSTMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenArviointi = copy(
+) extends OsasuorituksenArviointi {
+  def withHyväksyntämerkinnälläKorvattuArvosana: VSTMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenArviointi = copy(
     arvosana = None,
     hyväksytty = arvosana.map(schema.VapaanSivistystyönKoulutuksenArviointi.hyväksytty),
-    kuullunYmmärtämisenTaitotaso = None,
-    puhumisenTaitotaso = None,
-    luetunYmmärtämisenTaitotaso = None,
-    kirjoittamisenTaitotaso = None,
   )
 }
 
@@ -165,17 +173,17 @@ case class VSTKielenTaitotasonArviointi(
   taso: KelaKoodistokoodiviite
 )
 
-@OnlyWhen("koulutusmoduuli/perusteenDiaarinumero", VSTKoto2022Peruste.diaarinumero)
+@Title("Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen suoritus 2022")
+@OnlyWhen("koulutusmoduuli/perusteenDiaarinumero", schema.VSTKoto2022Peruste.diaarinumero)
 case class KelaVSTKOTO2022Suoritus(
-  koulutusmoduuli: KelaVapaanSivistystyönSuorituksenKoulutusmoduuli, // TODO:
+  koulutusmoduuli: KelaVapaanSivistystyönSuorituksenKoulutusmoduuli,
   toimipiste: Option[Toimipiste],
   vahvistus: Option[Vahvistus],
   osasuoritukset: Option[List[KelaVapaanSivistystyönMaahanmuuttajienKototutumisenOsasuoritus]],
   @KoodistoKoodiarvo("vstmaahanmuuttajienkotoutumiskoulutus")
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[KelaKoodistokoodiviite],
 ) extends VstSuoritus {
-  override def withEmptyArvosana: VstSuoritus = this.copy(
-    osasuoritukset = this.osasuoritukset.map(_.map(_.withEmptyArvosana)),
+  override def withHyväksyntämerkinnälläKorvattuArvosana: VstSuoritus = this.copy(
+    osasuoritukset = this.osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
   )
 }

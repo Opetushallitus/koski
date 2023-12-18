@@ -46,6 +46,16 @@ trait OpiskeluoikeusHistoryRepository[HISTORYTABLE <: OpiskeluoikeusHistoryTable
   }
 
   def findVersion(oid: String, version: Int)(implicit user: KoskiSpecificSession): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = {
+    for {
+      raw <- findVersionRaw(oid, version)
+      opiskeluoikeus <- readAsOpiskeluoikeus(raw.data, raw.oid, raw.versionumero, raw.aikaleima).left.map { errors =>
+        logger.error(s"Opiskeluoikeuden $oid version $raw.versionumero deserialisointi epäonnistui: $errors")
+        KoskiErrorCategory.internalError("Historiaversion deserialisointi epäonnistui")
+      }
+    } yield opiskeluoikeus
+  }
+
+  def findVersionRaw(oid: String, version: Int)(implicit user: KoskiSpecificSession): Either[HttpStatus, RawOpiskeluoikeusData] = {
     runDbSync(findVersionAction(oid, version))
   }
 
@@ -55,10 +65,12 @@ trait OpiskeluoikeusHistoryRepository[HISTORYTABLE <: OpiskeluoikeusHistoryTable
     } += (opiskeluoikeusId, kayttäjäOid, muutos, versionumero)
   }
 
-  private def findVersionAction(oid: String, version: Int)(implicit user: KoskiSpecificSession): DBIOAction[Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus], NoStream, Nothing] = {
+  private def findVersionAction
+    (oid: String, version: Int)
+      (implicit user: KoskiSpecificSession): DBIOAction[Either[HttpStatus, RawOpiskeluoikeusData], NoStream, Nothing] = {
     findByOpiskeluoikeusOidAction(oid, version).map(_
       .toRight(KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia("Opiskeluoikeutta " + oid + " ei löydy tai käyttäjällä ei ole oikeutta sen katseluun"))
-      .flatMap(_.toOpiskeluoikeus)
+      .flatMap(_.toRawOpiskeluoikeusData)
     )
   }
 
@@ -86,14 +98,11 @@ case class YtrOpiskeluoikeusHistoryRepository(db: DB)
 case class OpiskeluoikeusHistoryPatch(opiskeluoikeusOid: String, versionumero: Int, aikaleima: Timestamp, kayttajaOid: String, @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT)) muutos: JValue)
 
 case class OpiskeluoikeusHistory(oid: String, version: Int, patches: List[OpiskeluoikeusHistoryPatch]) extends Logging {
-  def toOpiskeluoikeus: Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] =
+  def toRawOpiskeluoikeusData: Either[HttpStatus, RawOpiskeluoikeusData] =
     if (patches.length < version) {
       Left(KoskiErrorCategory.notFound.versiotaEiLöydy("Versiota " + version + " ei löydy opiskeluoikeuden " + oid + " historiasta."))
     } else {
-      readAsOpiskeluoikeus(asOpiskeluoikeusJson, oid, version, patches.last.aikaleima).left.map { errors =>
-        logger.error(s"Opiskeluoikeuden $oid version $version deserialisointi epäonnistui: $errors")
-        KoskiErrorCategory.internalError("Historiaversion deserialisointi epäonnistui")
-      }
+      Right(RawOpiskeluoikeusData(asOpiskeluoikeusJson, oid, version, patches.last.aikaleima))
     }
 
   lazy val asOpiskeluoikeusJson: JValue = {
@@ -111,3 +120,13 @@ case class OpiskeluoikeusHistory(oid: String, version: Int, patches: List[Opiske
 }
 
 class JsonPatchException(msg: String, cause: Throwable) extends Exception(msg, cause)
+
+case class RawOpiskeluoikeusData(
+  data: JValue,
+  oid: String,
+  versionumero: Int,
+  aikaleima: Timestamp
+) {
+  def readAsJValue: JValue =
+    KoskiTables.KoskiOpiskeluoikeusTable.readAsJValue(data, oid, versionumero, aikaleima)
+}

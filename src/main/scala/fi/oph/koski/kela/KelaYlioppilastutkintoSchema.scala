@@ -46,7 +46,6 @@ object KelaYlioppilastutkinnonOpiskeluoikeus {
         ),
         os.arviointi.map(opt => opt.map(a => KelaYlioppilastutkinnonOsasuorituksenArvionti(None, Some(a.hyväksytty), a.arviointipäivä))),
         os.tyyppi,
-        os.tila.map(KelaKoodistokoodiviite.fromKoskiSchema),
         Some(KelaYlioppilastutkinnonTutkintokerta(
           os.tutkintokerta.koodiarvo,
           os.tutkintokerta.vuosi,
@@ -54,7 +53,6 @@ object KelaYlioppilastutkinnonOpiskeluoikeus {
         ))
       ))),
       tyyppi = s.tyyppi,
-      tila = s.tila.map(KelaKoodistokoodiviite.fromKoskiSchema),
       alkamispäivä = s.alkamispäivä,
       pakollisetKokeetSuoritettu = Some(s.pakollisetKokeetSuoritettu)
     )),
@@ -83,7 +81,7 @@ case class KelaYlioppilastutkinnonOpiskeluoikeus(
   override def organisaatiohistoria = None
   override def aikaleima = None
 
-  override def withEmptyArvosana: KelaOpiskeluoikeus = this
+  override def withHyväksyntämerkinnälläKorvattuArvosana: KelaOpiskeluoikeus = this
   override def withOrganisaatiohistoria: KelaOpiskeluoikeus = this
 }
 
@@ -94,11 +92,10 @@ case class KelaYlioppilastutkinnonPäätasonSuoritus(
   vahvistus: Option[Vahvistus],
   osasuoritukset: Option[List[KelaYlioppilastutkinnonOsasuoritus]],
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[KelaKoodistokoodiviite],
   alkamispäivä: Option[LocalDate],
   pakollisetKokeetSuoritettu: Option[Boolean],
 ) extends Suoritus {
-  override def withEmptyArvosana: Suoritus = this
+  override def withHyväksyntämerkinnälläKorvattuArvosana: Suoritus = this
 }
 
 @Title("Ylioppilastutkinnon osasuoritus")
@@ -106,10 +103,9 @@ case class KelaYlioppilastutkinnonOsasuoritus(
   koulutusmoduuli: KelaYlioppilastutkinnonOsasuorituksenKoulutusmoduuli,
   arviointi: Option[List[KelaYlioppilastutkinnonOsasuorituksenArvionti]],
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[KelaKoodistokoodiviite],
   tutkintokerta: Option[KelaYlioppilastutkinnonTutkintokerta],
 ) extends Osasuoritus {
-  override def withEmptyArvosana: Osasuoritus = this
+  override def withHyväksyntämerkinnälläKorvattuArvosana: Osasuoritus = this
 }
 
 case class KelaYlioppilastutkinnonSuorituksenKoulutusmoduuli(
@@ -131,6 +127,6 @@ case class KelaYlioppilastutkinnonOsasuorituksenArvionti(
   arvosana: Option[schema.Koodistokoodiviite],
   hyväksytty: Option[Boolean],
   päivä: Option[LocalDate]
-) extends OsasuorituksenArvionti {
-  override def withEmptyArvosana: KelaYlioppilastutkinnonOsasuorituksenArvionti = copy(arvosana = None)
+) extends OsasuorituksenArviointi {
+  override def withHyväksyntämerkinnälläKorvattuArvosana: KelaYlioppilastutkinnonOsasuorituksenArvionti = copy(arvosana = None)
 }

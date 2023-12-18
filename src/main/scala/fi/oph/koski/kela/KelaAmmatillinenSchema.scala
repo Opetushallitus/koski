@@ -2,8 +2,7 @@ package fi.oph.koski.kela
 
 import fi.oph.koski.koskiuser.Rooli
 import fi.oph.koski.schema
-import fi.oph.koski.schema.OppisopimuksenPurkaminen
-import fi.oph.koski.schema.annotation.{Deprecated, KoodistoKoodiarvo, SensitiveData}
+import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, SensitiveData}
 import fi.oph.scalaschema.annotation.{DefaultValue, Description, Title}
 
 import java.time.{LocalDate, LocalDateTime}
@@ -20,7 +19,7 @@ case class KelaAmmatillinenOpiskeluoikeus(
   arvioituPäättymispäivä: Option[LocalDate],
   @DefaultValue(false)
   ostettu: Boolean = false,
-  tila: KelaAmmatillisenOpiskeluoikeudenTila,
+  tila: KelaOpiskeluoikeudenTilaRahoitustiedoilla,
   suoritukset: List[KelaAmmatillinenPäätasonSuoritus],
   lisätiedot: Option[KelaAmmatillisenOpiskeluoikeudenLisätiedot],
   @KoodistoKoodiarvo("ammatillinenkoulutus")
@@ -30,8 +29,8 @@ case class KelaAmmatillinenOpiskeluoikeus(
 ) extends KelaOpiskeluoikeus {
   override def alkamispäivä: Option[LocalDate] = super.alkamispäivä
   override def päättymispäivä: Option[LocalDate] = super.päättymispäivä
-  def withEmptyArvosana: KelaAmmatillinenOpiskeluoikeus = copy(
-    suoritukset = suoritukset.map(_.withEmptyArvosana)
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaAmmatillinenOpiskeluoikeus = copy(
+    suoritukset = suoritukset.map(_.withHyväksyntämerkinnälläKorvattuArvosana)
   )
   override def withOrganisaatiohistoria: KelaOpiskeluoikeus = copy(
     organisaatioHistoria = organisaatiohistoria,
@@ -39,20 +38,10 @@ case class KelaAmmatillinenOpiskeluoikeus(
   )
 }
 
-case class KelaAmmatillisenOpiskeluoikeudenTila(
-  opiskeluoikeusjaksot: List[KelaAmmatillisenOpiskeluoikeusjakso]
-) extends OpiskeluoikeudenTila
-
-case class KelaAmmatillisenOpiskeluoikeusjakso(
-  alku: LocalDate,
-  tila: KelaKoodistokoodiviite,
-  opintojenRahoitus: Option[KelaKoodistokoodiviite]
-) extends Opiskeluoikeusjakso
-
 case class KelaAmmatillisenOpiskeluoikeudenLisätiedot(
   majoitus: Option[List[KelaAikajakso]],
   sisäoppilaitosmainenMajoitus: Option[List[KelaAikajakso]],
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_SUPPEA))
   vaativanErityisenTuenYhteydessäJärjestettäväMajoitus: Option[List[KelaAikajakso]],
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   erityinenTuki: Option[List[KelaAikajakso]],
@@ -65,7 +54,8 @@ case class KelaAmmatillisenOpiskeluoikeudenLisätiedot(
   opiskeluvalmiuksiaTukevatOpinnot: Option[List[KelaOpiskeluvalmiuksiaTukevienOpintojenJakso]],
   vankilaopetuksessa: Option[List[KelaAikajakso]],
   maksuttomuus: Option[List[KelaMaksuttomuus]],
-  oikeuttaMaksuttomuuteenPidennetty: Option[List[KelaOikeuttaMaksuttomuuteenPidennetty]]
+  oikeuttaMaksuttomuuteenPidennetty: Option[List[KelaOikeuttaMaksuttomuuteenPidennetty]],
+  koulutusvienti: Option[Boolean],
 ) extends OpiskeluoikeudenLisätiedot
 
 @Title("Ammatillisen koulutuksen suoritus")
@@ -76,7 +66,6 @@ case class KelaAmmatillinenPäätasonSuoritus(
   vahvistus: Option[Vahvistus],
   osasuoritukset: Option[List[KelaAmmatillinenOsasuoritus]],
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[KelaKoodistokoodiviite],
   osaamisala: Option[List[KelaOsaamisalajakso]],
   toinenOsaamisala: Option[Boolean],
   alkamispäivä: Option[LocalDate],
@@ -90,8 +79,8 @@ case class KelaAmmatillinenPäätasonSuoritus(
   tutkinto: Option[Tutkinto],               // Näyttötutkintoon valmistava
   päättymispäivä: Option[LocalDate]         // Näyttötutkintoon valmistava
 ) extends Suoritus {
-  def withEmptyArvosana = copy(
-    osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana))
+  def withHyväksyntämerkinnälläKorvattuArvosana = copy(
+    osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
   )
 }
 
@@ -104,7 +93,6 @@ case class KelaAmmatillinenOsasuoritus(
   vahvistus: Option[Vahvistus],
   osasuoritukset: Option[List[KelaAmmatillinenOsasuoritus]],
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[KelaKoodistokoodiviite],
   tutkinto: Option[Tutkinto],
   tutkinnonOsanRyhmä: Option[KelaKoodistokoodiviite],
   osaamisala: Option[List[KelaOsaamisalajakso]],
@@ -114,12 +102,13 @@ case class KelaAmmatillinenOsasuoritus(
   toinenTutkintonimike: Option[Boolean],
   näyttö: Option[Näyttö],
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
-  lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]]
+  lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]],
+  korotettu: Option[KelaKoodistokoodiviite],
 ) extends Osasuoritus {
-  def withEmptyArvosana: KelaAmmatillinenOsasuoritus = copy(
-    arviointi = arviointi.map(_.map(_.withEmptyArvosana)),
-    osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana)),
-    näyttö = näyttö.map(_.withEmptyArvosana)
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaAmmatillinenOsasuoritus = copy(
+    arviointi = arviointi.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
+    osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
+    näyttö = näyttö.map(_.withHyväksyntämerkinnälläKorvattuArvosana)
   )
 }
 
@@ -127,8 +116,8 @@ case class KelaAmmatillisenOsasuorituksenArviointi(
   arvosana: Option[schema.Koodistokoodiviite],
   hyväksytty: Option[Boolean],
   päivä: Option[LocalDate]
-) extends OsasuorituksenArvionti {
-  def withEmptyArvosana: KelaAmmatillisenOsasuorituksenArviointi = copy(
+) extends OsasuorituksenArviointi {
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaAmmatillisenOsasuorituksenArviointi = copy(
     arvosana = None,
     hyväksytty = arvosana.map(schema.AmmatillinenKoodistostaLöytyväArviointi.hyväksytty)
   )
@@ -165,7 +154,7 @@ case class Näyttö(
   työssäoppimisenYhteydessä: Boolean,
   arviointi: Option[NäytönArviointi],
 ) {
-  def withEmptyArvosana: Näyttö = copy(arviointi = arviointi.map(_.withEmptyArvosana))
+  def withHyväksyntämerkinnälläKorvattuArvosana: Näyttö = copy(arviointi = arviointi.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
 }
 
 case class NäytönSuorituspaikka(
@@ -179,11 +168,11 @@ case class NäytönSuoritusaika(
 )
 
 case class NäytönArviointi(
-  @Deprecated("Ei palauteta Kela-API:ssa. Kenttä on näkyvissä skeemassa vain teknisistä syistä.")
   arvosana: Option[schema.Koodistokoodiviite],
-  hyväksytty: Option[Boolean]
-) {
-  def withEmptyArvosana: NäytönArviointi = copy(
+  hyväksytty: Option[Boolean],
+  päivä: LocalDate,
+) extends SisältääHyväksyntämerkinnälläKorvatunArvosanan {
+  def withHyväksyntämerkinnälläKorvattuArvosana: NäytönArviointi = copy(
     arvosana = None,
     hyväksytty = arvosana.map(schema.AmmatillinenKoodistostaLöytyväArviointi.hyväksytty)
   )
@@ -235,7 +224,9 @@ case class Koulutussopimusjakso(
   loppu: Option[LocalDate],
   työssäoppimispaikka: Option[schema.LocalizedString],
   paikkakunta: KelaKoodistokoodiviite,
-  maa: KelaKoodistokoodiviite
+  maa: KelaKoodistokoodiviite,
+  @Title("Työssäoppimispaikan Y-tunnus")
+  työssäoppimispaikanYTunnus: Option[String],
 )
 
 case class Järjestämismuoto (
@@ -251,6 +242,11 @@ case class Järjestämismuotojakso(
 case class Oppisopimus(
   työnantaja: Yritys,
   oppisopimuksenPurkaminen: Option[OppisopimuksenPurkaminen]
+)
+
+case class OppisopimuksenPurkaminen(
+  päivä: LocalDate,
+  purettuKoeajalla: Boolean
 )
 
 case class Yritys(
