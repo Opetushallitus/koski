@@ -1,6 +1,8 @@
 ## Tietomalli
 
-Käytettävällä JSON-formaatilla voidaan siirtää tietoja perusopetusta, lukiokoulutusta ja ammatillista koulutusta tarjoavien koulutustoimijoiden tietojärjestelmistä Koskeen ja eteenpäin tietoja tarvitsevien viranomaisten järjestelmiin ja loppukäyttäjiä, kuten oppilaitosten virkailijoita palveleviin käyttöliittymiin.
+Käytettävällä JSON-formaatilla voidaan siirtää tietoja koskien esi- ja perusopetusta, nivelvaiheen koulutuksia, lukiokoulutusta, ammatillista koulutusta, vapaan sivistystyön koulutusta, muuta kuin säänneltyä koulutusta ja taiteen perusopetusta tarjoavien koulutustoimijoiden tietojärjestelmistä ja muista lähdejärjestelmistä KOSKI-palveluun.
+
+Tietomallia käytetään myös sellaisten tietojen näyttämiseen, joita ei tallenneta opetuksen ja koulutuksen valtakunnalliseen tietovarantoon tai jatkuvan oppimisen muun kuin säännellyn koulutuksen rekisteriin. Tällaisia tietoja ovat ylioppilastutkintorekisteriin ja korkeakoulujen valtakunnalliseen tietovarantoon (VIRTA) tallennetut opiskeluoikeus- ja suoritustiedot.
 
 #### JSON Schema
 
