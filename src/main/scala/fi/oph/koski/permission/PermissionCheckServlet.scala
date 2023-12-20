@@ -7,6 +7,8 @@ import fi.oph.koski.koskiuser.{KoskiSpecificSession, Unauthenticated}
 import fi.oph.koski.schema.{Henkilö, Opiskeluoikeus, Organisaatio}
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 
+import java.time.LocalDate
+
 case class PermissionCheckRequest(personOidsForSamePerson: List[Henkilö.Oid], organisationOids: List[Organisaatio.Oid], loggedInUserRoles: List[String])
 
 case class PermissionCheckResponse(accessAllowed: Boolean, errorMessage: Option[String] = None)
@@ -34,7 +36,11 @@ class PermissionCheckServlet(implicit val application: KoskiApplication) extends
   }
 
   private def isRelevantForAccessCheck(opiskeluoikeus: Opiskeluoikeus): Boolean = {
-    opiskeluoikeus.tila.opiskeluoikeusjaksot.lastOption.forall(!_.opiskeluoikeusPäättynyt)
+    opiskeluoikeus.tila
+      .opiskeluoikeusjaksot
+      .filterNot(_.alku.isAfter(LocalDate.now()))
+      .lastOption
+      .forall(!_.opiskeluoikeusPäättynyt)
   }
 
   // Note 1: keep in sync with KoskiSession's hasHenkiloUiWriteAccess function
