@@ -11,7 +11,11 @@ export type TaiteenPerusopetuksenOpiskeluoikeusjakso = {
   alku: string
   tila: Koodistokoodiviite<
     'koskiopiskeluoikeudentila',
-    'lasna' | 'mitatoity' | 'paattynyt' | 'hyvaksytystisuoritettu'
+    | 'lasna'
+    | 'mitatoity'
+    | 'paattynyt'
+    | 'hyvaksytystisuoritettu'
+    | 'valiaikaisestikeskeytynyt'
   >
 }
 
@@ -19,7 +23,11 @@ export const TaiteenPerusopetuksenOpiskeluoikeusjakso = (o: {
   alku: string
   tila: Koodistokoodiviite<
     'koskiopiskeluoikeudentila',
-    'lasna' | 'mitatoity' | 'paattynyt' | 'hyvaksytystisuoritettu'
+    | 'lasna'
+    | 'mitatoity'
+    | 'paattynyt'
+    | 'hyvaksytystisuoritettu'
+    | 'valiaikaisestikeskeytynyt'
   >
 }): TaiteenPerusopetuksenOpiskeluoikeusjakso => ({
   $class: 'fi.oph.koski.schema.TaiteenPerusopetuksenOpiskeluoikeusjakso',

@@ -255,13 +255,27 @@ test.describe('Taiteen perusopetus', () => {
         expect(await page.opiskeluoikeudenTila(0)).toEqual('1.1.2021 Läsnä')
       })
 
-      test('Opiskeluoikeuden tilan lisääminen', async ({
+      test('Opiskeluoikeuden tilan lisääminen: läsnä', async ({
         taiteenPerusopetusPage: page
       }) => {
         await page.edit()
         await page.addOpiskeluoikeudenTila('2.1.2021', 'lasna')
         expect(await page.opiskeluoikeudenTila(0)).toEqual('1.1.2021 Läsnä')
         expect(await page.opiskeluoikeudenTila(1)).toEqual('2.1.2021 Läsnä')
+      })
+
+      test('Opiskeluoikeuden tilan lisääminen: väliaikaisesti keskeytynyt', async ({
+        taiteenPerusopetusPage: page
+      }) => {
+        await page.edit()
+        await page.addOpiskeluoikeudenTila(
+          '2.1.2021',
+          'valiaikaisestikeskeytynyt'
+        )
+        expect(await page.opiskeluoikeudenTila(0)).toEqual('1.1.2021 Läsnä')
+        expect(await page.opiskeluoikeudenTila(1)).toEqual(
+          '2.1.2021 Väliaikaisesti keskeytynyt'
+        )
       })
 
       test('Opiskeluoikeuden tilan poistaminen', async ({
