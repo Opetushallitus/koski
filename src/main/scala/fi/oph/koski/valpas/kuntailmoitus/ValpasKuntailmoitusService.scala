@@ -5,11 +5,10 @@ import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.log.Logging
 import fi.oph.koski.organisaatio.Organisaatiotyyppi
-import fi.oph.koski.raportit.AhvenanmaanKunnat
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Timing
 import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasOppijaLaajatTiedot, ValpasOppilaitos, ValpasOppivelvollinenOppijaLaajatTiedot}
-import fi.oph.koski.valpas.oppija.{OppijaHakutilanteillaLaajatTiedot, ValpasAccessResolver, ValpasErrorCategory}
+import fi.oph.koski.valpas.oppija.{OppijaHakutilanteillaLaajatTiedot, ValpasAccessResolver, ValpasErrorCategory, ValpasOppijaLaajatTiedotService}
 import fi.oph.koski.valpas.valpasrepository._
 import fi.oph.koski.valpas.valpasuser.{ValpasRooli, ValpasSession}
 import fi.oph.koski.valpas.yhteystiedot.{ValpasYhteystiedot, ValpasYhteystietoHakemukselta, ValpasYhteystietoOppijanumerorekisteristä}
@@ -100,6 +99,11 @@ class ValpasKuntailmoitusService(
   )(
     implicit session: ValpasSession
   ) : Either[HttpStatus, Seq[OppijaHakutilanteillaLaajatTiedot]] = {
+    val laajennettuRooli = ValpasOppijaLaajatTiedotService
+      .roolitJoilleHaetaanKaikistaOVLPiirinOppijoista
+      .find(accessResolver.accessToAnyOrg)
+      .getOrElse(rooli)
+
     repository.queryByTekijäOrganisaatio(oppilaitosOid)
       .map(ilmoitukset => {
         // Tietokannassa ei voi olla kuntailmoituksia ilman oppijaOid:ia, joten oppijaOid:n olemassaoloa ei tässä
@@ -108,21 +112,31 @@ class ValpasKuntailmoitusService(
         val oppijat = opiskeluoikeusDbService
           .getOppijat(oppijaOids, rajaaOVKelpoisiinOpiskeluoikeuksiin = true, haeMyösOppivelvollisuudestaVapautetut = false)
           .flatMap(oppijaLaajatTiedotService.asValpasOppijaLaajatTiedot()(_).toOption)
-        val oppijatJoihinKatseluoikeus = accessResolver
-          .filterByOppijaAccess(rooli, Some(oppilaitosOid))(oppijat)
-          .map(OppijaHakutilanteillaLaajatTiedot.apply)
-        val oppijatLisätiedoilla = lisätiedotRepository.readForOppijat(oppijatJoihinKatseluoikeus)
+          .filter(_.onOikeusValvoaKunnalla)
+
+        val (oppijatJoihinKatseluoikeus, oppijatJoihinEiKatseluoikeutta) = accessResolver
+          .separateByOppijaAccess(laajennettuRooli, Some(oppilaitosOid))(oppijat)
+        val oppijatLisätiedoilla = lisätiedotRepository.readForOppijat(oppijatJoihinKatseluoikeus.map(OppijaHakutilanteillaLaajatTiedot.apply))
         val oppijatLaajatTiedot = oppijatLisätiedoilla.map(oppijaLisätiedotTuple =>
           oppijaLisätiedotTuple._1.withLisätiedot(oppijaLisätiedotTuple._2)
         )
 
         // Lisää kuntailmoitukset oppijan tietoihin
-        oppijatLaajatTiedot.map(oppija => oppija.copy(
+        val oppijatKuntailmoituksilla = oppijatLaajatTiedot.map(oppija => oppija.copy(
           kuntailmoitukset = ilmoitukset
             // Tietokannassa ei voi olla kuntailmoituksia ilman oppijaOid:ia, joten oppijaOid:n olemassaoloa ei tässä
             // erikseen tarkisteta, vaan keskeytys ja sen seurauksena tuleva 500-virhe on ok, jos oppijaOid on None.
             .filter(ilmoitus => oppija.oppija.henkilö.kaikkiOidit.contains(ilmoitus.oppijaOid.get))
         ))
+
+        // Lisää oppijoille, joita ei voi muuten katsella, kuntailmoitukset ja poista ylimääräiset detaljit
+        val eiKatseltavatOppijatKuntailmoituksilla = oppijatJoihinEiKatseluoikeutta
+          .map(OppijaHakutilanteillaLaajatTiedot.apply)
+          .map(oppija => oppija.withEiKatseltavanMinimitiedot.copy(
+            kuntailmoitukset = ilmoitukset.filter(ilmoitus => oppija.oppija.henkilö.kaikkiOidit.contains(ilmoitus.oppijaOid.get))
+          ))
+
+        oppijatKuntailmoituksilla ++ eiKatseltavatOppijatKuntailmoituksilla
       })
   }
 
@@ -537,3 +551,9 @@ object ValpasKuntailmoitusService {
       "tuntematon"
     ).contains(opiskeluoikeudenTila.koodiarvo)
 }
+
+case class IlmoitettuOppijaJohonEiEnääKatseluoikeuksia(
+  etunimet: String,
+  sukunimi: String,
+  kuntailmoitukset: Seq[ValpasKuntailmoitusLaajatTiedot],
+)

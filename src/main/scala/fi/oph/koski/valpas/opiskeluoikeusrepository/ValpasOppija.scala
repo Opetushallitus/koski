@@ -59,6 +59,8 @@ trait ValpasOppijaLaajatTiedot extends ValpasOppija {
   // Importtaa sopiva monoidi kirjastosta fi.oph.koski.util.Monoid käyttääksesi tätä versiota
   def mapOppivelvollinen[A](fn: ValpasOppivelvollinenOppijaLaajatTiedot => A)(implicit monoid: Monoid[A]): A =
     ifOppivelvollinenOtherwise(monoid.empty)(fn)
+
+  def withEiKatseltavanMinimitiedot: ValpasOppijaLaajatTiedot
 }
 
 object ValpasOppivelvollinenOppijaLaajatTiedot {
@@ -92,7 +94,14 @@ case class ValpasOppivelvollinenOppijaLaajatTiedot(
   onOikeusValvoaMaksuttomuutta: Boolean,
   onOikeusValvoaKunnalla: Boolean,
   override val oppivelvollisuudestaVapautus: Option[OppivelvollisuudestaVapautus] = None,
-) extends ValpasOppijaLaajatTiedot
+) extends ValpasOppijaLaajatTiedot {
+  override def withEiKatseltavanMinimitiedot: ValpasOppivelvollinenOppijaLaajatTiedot = copy(
+    henkilö = henkilö.withEiKatseltavanMinimitiedot,
+    hakeutumisvalvovatOppilaitokset = Set.empty,
+    suorittamisvalvovatOppilaitokset = Set.empty,
+    opiskeluoikeudet = Seq.empty,
+  )
+}
 
 object ValpasOppivelvollisuudestaVapautettuLaajatTiedot {
   def apply(tiedot: ValpasOppivelvollinenOppijaLaajatTiedot, vapautus: OppivelvollisuudestaVapautus): ValpasOppivelvollisuudestaVapautettuLaajatTiedot =
@@ -117,6 +126,9 @@ case class ValpasOppivelvollisuudestaVapautettuLaajatTiedot(
   def opiskeluoikeudet: Seq[ValpasOpiskeluoikeusLaajatTiedot] = List.empty
   def hakeutumisvalvovatOppilaitokset: Set[Oid] = Set.empty
   def suorittamisvalvovatOppilaitokset: Set[ValpasOppilaitos.Oid] = Set.empty
+
+  override def withEiKatseltavanMinimitiedot: ValpasOppivelvollisuudestaVapautettuLaajatTiedot =
+    copy(henkilö = henkilö.withEiKatseltavanMinimitiedot)
 }
 
 object ValpasHenkilö {
@@ -161,7 +173,16 @@ case class ValpasHenkilöLaajatTiedot(
   turvakielto: Boolean,
   äidinkieli: Option[String],
   onTallennettuKoskeen: Boolean = true
-) extends ValpasHenkilö
+) extends ValpasHenkilö {
+  def withEiKatseltavanMinimitiedot: ValpasHenkilöLaajatTiedot = copy(
+    oid = "",
+    kaikkiOidit = Set.empty,
+    hetu = None,
+    syntymäaika = None,
+    kotikunta = None,
+    äidinkieli = None,
+  )
+}
 
 object ValpasOpiskeluoikeus {
   type Oid = String
