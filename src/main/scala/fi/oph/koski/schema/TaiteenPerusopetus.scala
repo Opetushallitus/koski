@@ -53,6 +53,7 @@ case class TaiteenPerusopetuksenOpiskeluoikeusjakso(
   @KoodistoKoodiarvo("mitatoity")
   @KoodistoKoodiarvo("paattynyt")
   @KoodistoKoodiarvo("hyvaksytystisuoritettu")
+  @KoodistoKoodiarvo("valiaikaisestikeskeytynyt")
   tila: Koodistokoodiviite,
 ) extends KoskiOpiskeluoikeusjakso {
   def hyväksytystiSuoritettu = tila.koodiarvo == "hyvaksytystisuoritettu"

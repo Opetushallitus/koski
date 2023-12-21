@@ -1,4 +1,9 @@
+## 21.12.2023
+
+- Sallitaan taiteen perusopetuksen opiskeluoikeuden tilaksi väliaikaisesti keskeytynyt.
+
 ## 14.12.2023
+
 - IB-opintoihin lisätty uusi oppiaine koodilla DIS sekä IB-tutkintoon että International Schoolille
 
 ## 28.11.2023
