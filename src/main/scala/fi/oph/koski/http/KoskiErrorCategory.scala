@@ -292,6 +292,7 @@ object KoskiErrorCategory {
     val vainVirkailija = subcategory("vainVirkailija", "Sallittu vain virkailija-käyttäjille")
     val vainKansalainen = subcategory("vainKansalainen", "Sallittu vain kansalainen-käyttäjille")
     val vainViranomainen = subcategory("vainViranomainen", "Sallittu vain viranomaisille")
+    val vainPalveluvayla = subcategory("vainPalveluvayla", "Sallittu vain palveluväyläkäyttäjälle")
     val vainTilastokeskus = subcategory("vainTilastokeskus", "Sallittu vain tilastokeskuskäyttäjälle")
     val kiellettyKäyttöoikeus = subcategory("kiellettyKäyttöoikeus", "Ei sallittu näillä käyttöoikeuksilla")
     val liianMontaSuoritusjakoa = subcategory("liianMontaSuoritusjakoa", "Käyttäjällä on jo maksimimäärä suoritusjakoja")

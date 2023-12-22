@@ -146,7 +146,6 @@ class KoskiSpecificSessionSpec
       }
       "migrillä ei arkaluontoisten tietojen oikeuksia" in {
         val session = createAndVerifySession("Migri", MockUsers.migriKäyttäjä.ldapUser)
-        session.hasLuovutuspalveluAccess should be(true)
         session.sensitiveDataAllowed(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT)) should be(false)
       }
     }

@@ -77,8 +77,7 @@ class KoskiSpecificSession(
   // HUOM!
   // Kun lisäät uuden luovutuspalvelukäyttöoikeuden alle, muista lisätä se myös
   // KoskiSpecificAuthenticationSupport.requireVirkailijaOrPalvelukäyttäjä -metodiin
-  // vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-  def hasLuovutuspalveluAccess: Boolean = globalViranomaisKäyttöoikeudet.exists(_.isLuovutusPalveluAllowed)
+  def hasPalveluvaylaAccess: Boolean = globalViranomaisKäyttöoikeudet.exists(_.isPalveluvaylaAllowed)
   def hasTilastokeskusAccess: Boolean = globalViranomaisKäyttöoikeudet.flatMap(_.globalPalveluroolit).contains(Palvelurooli("KOSKI", TILASTOKESKUS))
   def hasMitätöidytOpiskeluoikeudetAccess: Boolean = hasTilastokeskusAccess || hasYtlAccess || globalKäyttöoikeudet.exists(_.globalPalveluroolit.exists(_.rooli == MITATOIDYT_OPISKELUOIKEUDET))
   def hasPoistetutOpiskeluoikeudetAccess: Boolean = globalKäyttöoikeudet.exists(_.globalPalveluroolit.exists(_.rooli == POISTETUT_OPISKELUOIKEUDET))

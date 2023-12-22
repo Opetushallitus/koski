@@ -26,6 +26,8 @@ object Rooli {
   val VALVIRA = "VALVIRA"
   val MIGRI = "MIGRI"
   val YTL = "YTL"
+  val HSL = "HSL"
+  val SUOMIFI = "SUOMIFI"
   val OPPIVELVOLLISUUSTIETO_RAJAPINTA = "OPPIVELVOLLISUUSTIETO_RAJAPINTA"
   val MITATOIDYT_OPISKELUOIKEUDET = "MITATOIDYT_OPISKELUOIKEUDET" // Ei käyttöoikeus-palvelussa
   val POISTETUT_OPISKELUOIKEUDET = "POISTETUT_OPISKELUOIKEUDET" // Ei käyttöoikeus-palvelussa
@@ -198,11 +200,12 @@ case class KäyttöoikeusViranomainen(globalPalveluroolit: List[Palvelurooli]) e
 
   override lazy val allowedOpiskeluoikeusTyypit: Set[String] = Käyttöoikeus.parseAllowedOpiskeluoikeudenTyypit(globalPalveluroolit, globalAccessType)
 
-  def isLuovutusPalveluAllowed: Boolean = {
-    val luovutuspalveluRoolit = List(
-      Palvelurooli("KOSKI", Rooli.MIGRI)
+  def isPalveluvaylaAllowed: Boolean = {
+    val palveluvaylaRoolit = List(
+      Palvelurooli("KOSKI", Rooli.HSL),
+      Palvelurooli("KOSKI", Rooli.SUOMIFI),
     )
-    luovutuspalveluRoolit.exists(globalPalveluroolit.contains)
+    palveluvaylaRoolit.exists(globalPalveluroolit.contains)
   }
 
 }
