@@ -421,7 +421,7 @@ object Responses {
       "organisaatiot" -> List(Map(
         "organisaatioOid" -> MockOrganisaatiot.migri,
         "kayttooikeudet" -> List(
-          Map("palvelu" -> "KOSKI", "oikeus" -> "MIGRI_RAJAPINTA_LUKUOIKEUS"),
+          Map("palvelu" -> "KOSKI", "oikeus" -> "MIGRI"),
           Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_PERUSOPETUS"),
           Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_TOINEN_ASTE"),
           Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_KORKEAKOULU"),

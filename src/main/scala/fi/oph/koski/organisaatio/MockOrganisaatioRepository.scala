@@ -60,6 +60,8 @@ object MockOrganisaatiot {
   val tilastokeskus = "1.2.246.562.10.35939310928"
   val migri = "1.2.246.562.10.31453145314"
   val valvira = "1.2.246.562.10.52577249361"
+  val hsl = "1.2.246.562.10.31453145314"
+  val suomifi = "1.2.246.562.10.31453145314"
   val kuopionAikuislukio = "1.2.246.562.10.42923230215"
   val kallavedenLukio = "1.2.246.562.10.63813695861"
   object EuropeanSchoolOfHelsinki {

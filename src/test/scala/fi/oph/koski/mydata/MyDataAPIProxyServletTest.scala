@@ -18,6 +18,20 @@ class MyDataAPIProxyServletTest extends AnyFreeSpec with KoskiHttpSpec with Matc
   val memberId = "hsl"
   val memberCode = "2769790-1" // HSL
 
+  val luovutuspalveluKäyttäjät = List(
+    MockUsers.ytlKäyttäjä,
+    MockUsers.valviraKäyttäjä,
+    MockUsers.kelaLaajatOikeudet,
+    MockUsers.kelaSuppeatOikeudet,
+    MockUsers.migriKäyttäjä,
+    MockUsers.tilastokeskusKäyttäjä
+  )
+
+  val palveluväyläKäyttäjät = List(
+    MockUsers.suomiFiKäyttäjä,
+    MockUsers.hslKäyttäjä
+  )
+
   def application = KoskiApplicationForTests
 
   "ApiProxyServlet" - {
@@ -72,19 +86,31 @@ class MyDataAPIProxyServletTest extends AnyFreeSpec with KoskiHttpSpec with Matc
     "Palauttaa 401 mikäli luovutuspalvelukäyttäjän tunnukset ovat väärät" in {
       KoskiApplicationForTests.mydataRepository.create(opiskelija.oid, memberId)
 
-      val luovutuspalveluKäyttäjät = List(
-        MockUsers.ytlKäyttäjä,
-        MockUsers.valviraKäyttäjä,
-        MockUsers.kelaLaajatOikeudet,
-        MockUsers.kelaSuppeatOikeudet,
-        MockUsers.migriKäyttäjä,
-        MockUsers.tilastokeskusKäyttäjä
-      )
-
       luovutuspalveluKäyttäjät.map(user => {
         val wrongPasswordHeader = Map(basicAuthHeader(user.username, "wrong password"))
         requestOpintoOikeudetWithoutAuthHeaders(opiskelija.hetu.get, wrongPasswordHeader ++ memberHeaders(memberCode)) {
           status should equal(401)
+        }
+      })
+    }
+
+    "Palauttaa 200 mikäli HSL tai SUOMIFI" in {
+      KoskiApplicationForTests.mydataRepository.create(opiskelija.oid, memberId)
+
+      palveluväyläKäyttäjät.map(user => {
+        requestOpintoOikeudetWithoutAuthHeaders(opiskelija.hetu.get, memberHeaders(memberCode) ++ authHeaders(user)) {
+          status should equal(200)
+        }
+      })
+    }
+
+    "Palauttaa 403 mikäli ei palveluväyläkäyttäjä" in {
+      KoskiApplicationForTests.mydataRepository.create(opiskelija.oid, memberId)
+
+      luovutuspalveluKäyttäjät.map(user => {
+        requestOpintoOikeudetWithoutAuthHeaders(opiskelija.hetu.get, memberHeaders(memberCode) ++ authHeaders(user)) {
+          status should equal(403)
+          body should include("Sallittu vain palveluväyläkäyttäjälle")
         }
       })
     }
@@ -93,7 +119,7 @@ class MyDataAPIProxyServletTest extends AnyFreeSpec with KoskiHttpSpec with Matc
   def memberHeaders(memberCode: String) = Map("X-ROAD-MEMBER" -> memberCode)
 
   def requestOpintoOikeudet[A](hetu: String, headers: Map[String, String])(f: => A) = {
-    requestOpintoOikeudetWithoutAuthHeaders(hetu, headers ++ authHeaders(MockUsers.migriKäyttäjä))(f)
+    requestOpintoOikeudetWithoutAuthHeaders(hetu, headers ++ authHeaders(MockUsers.suomiFiKäyttäjä))(f)
   }
 
   def requestOpintoOikeudetWithoutAuthHeaders[A](hetu: String, headers: Map[String, String])(f: => A) = {

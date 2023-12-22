@@ -396,10 +396,32 @@ object MockUsers {
     )))
   )
 
-  val suomiFiKäyttäjä = migriKäyttäjä.copy(
-    firstname = "Suomi",
-    lastname = "Fi",
-    oid = "1.2.246.562.24.99999988889"
+  val hslKäyttäjä = KoskiMockUser(
+    "Palveluväylä",
+    "HSL",
+    "1.2.246.562.24.99999988899",
+    Seq(OrganisaatioJaKäyttöoikeudet(MockOrganisaatiot.hsl, List(
+      PalveluJaOikeus("KOSKI", Rooli.HSL),
+      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_PERUSOPETUS),
+      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_TOINEN_ASTE),
+      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_KORKEAKOULU),
+      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_MUU_KUIN_SAANNELTY),
+      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_TAITEENPERUSOPETUS),
+    )))
+  )
+
+  val suomiFiKäyttäjä = KoskiMockUser(
+    "Palveluväylä",
+    "SuomiFi",
+    "1.2.246.562.24.99999988889",
+    Seq(OrganisaatioJaKäyttöoikeudet(MockOrganisaatiot.suomifi, List(
+      PalveluJaOikeus("KOSKI", Rooli.SUOMIFI),
+      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_PERUSOPETUS),
+      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_TOINEN_ASTE),
+      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_KORKEAKOULU),
+      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_MUU_KUIN_SAANNELTY),
+      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_TAITEENPERUSOPETUS),
+    )))
   )
 
   val tilastokeskusKäyttäjä = KoskiMockUser(
@@ -529,6 +551,7 @@ object MockUsers {
     korkeakouluViranomainen,
     migriKäyttäjä,
     suomiFiKäyttäjä,
+    hslKäyttäjä,
     tilastokeskusKäyttäjä,
     valviraKäyttäjä,
     esiopetusTallentaja,
