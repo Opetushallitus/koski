@@ -110,7 +110,7 @@ class RaportointikantaSpec
     "Organisaatiot on ladattu" in {
       organisaatioCount should be > 10
       val organisaatio = mainRaportointiDb.runDbSync(mainRaportointiDb.ROrganisaatiot.filter(_.organisaatioOid === MockOrganisaatiot.aapajoenKoulu).result)
-      organisaatio should equal(Seq(ROrganisaatioRow(MockOrganisaatiot.aapajoenKoulu, "Aapajoen koulu", "Aapajoen koulu", "OPPILAITOS", Some("11"), Some("04044"), Some("851"), None)))
+      organisaatio should equal(Seq(ROrganisaatioRow(MockOrganisaatiot.aapajoenKoulu, "Aapajoen koulu", "Aapajoen koulu", "OPPILAITOS", Some("11"), Some("04044"), Some("851"), None, Some("1.2.246.562.10.25412665926"), None)))
     }
     "Oppilaitosten opetuskielet on ladattu" in {
       val oppilaitoksetJaKielet = List(

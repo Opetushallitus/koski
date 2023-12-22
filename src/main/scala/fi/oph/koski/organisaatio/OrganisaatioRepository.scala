@@ -107,6 +107,7 @@ trait OrganisaatioRepository extends Logging {
     val organisaatiotyypit = org.organisaatiotyypit.map(orgType => Organisaatiotyyppi.convertFromNew(orgType))
     OrganisaatioHierarkia(
       oid = org.oid,
+      parentOidPath = org.parentOids,
       oppilaitosnumero = oppilaitosnumero,
       nimi = LocalizedString.sanitizeRequired(org.nimi, org.oid),
       yTunnus = org.ytunnus,

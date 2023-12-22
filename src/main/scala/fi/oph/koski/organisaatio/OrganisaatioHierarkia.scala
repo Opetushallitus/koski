@@ -6,6 +6,7 @@ import Organisaatiotyyppi._
 
 case class OrganisaatioHierarkia(
   oid: String,
+  parentOidPath: List[String],
   oppilaitosnumero: Option[Koodistokoodiviite],
   nimi: LocalizedString,
   yTunnus: Option[String],
@@ -60,6 +61,10 @@ case class OrganisaatioHierarkia(
     assert(LocalizedString.languages.contains(lang), s"Sallitut kielivaihtoehdot: ${LocalizedString.languages.mkString(",")}")
     this.copy(children = children.map(_.sortBy(lang)).sortBy(_.nimi.get(lang)))
   }
+
+  def parent: Option[String] = parentOidPath.headOption
+  def grandparent: Option[String] = parentOidPath.drop(1).headOption
+  def withParent(parentOid: String): OrganisaatioHierarkia = copy(parentOidPath = List(parentOid))
 }
 
 object OrganisaatioHierarkia {
@@ -70,8 +75,9 @@ object OrganisaatioHierarkia {
     organisaatiotyypit: List[String]
   ): OrganisaatioHierarkia = OrganisaatioHierarkia(
     oid = oid,
+    parentOidPath = List.empty,
     nimi = nimi,
-    children = children,
+    children = children.map(_.withParent(oid)),
     oppilaitosnumero = None,
     yTunnus = None,
     kotipaikka = None,

@@ -11,6 +11,7 @@ export type OrganisaatioHierarkia = {
   children: Array<OrganisaatioHierarkia>
   oppilaitosnumero?: Koodistokoodiviite
   oppilaitostyyppi?: string
+  parentOidPath: Array<string>
   kielikoodit: Array<string>
   kotipaikka?: Koodistokoodiviite
   yTunnus?: string
@@ -24,6 +25,7 @@ export const OrganisaatioHierarkia = (o: {
   children?: Array<OrganisaatioHierarkia>
   oppilaitosnumero?: Koodistokoodiviite
   oppilaitostyyppi?: string
+  parentOidPath?: Array<string>
   kielikoodit?: Array<string>
   kotipaikka?: Koodistokoodiviite
   yTunnus?: string
@@ -33,6 +35,7 @@ export const OrganisaatioHierarkia = (o: {
   organisaatiotyypit?: Array<string>
 }): OrganisaatioHierarkia => ({
   children: [],
+  parentOidPath: [],
   kielikoodit: [],
   organisaatiotyypit: [],
   $class: 'fi.oph.koski.organisaatio.OrganisaatioHierarkia',

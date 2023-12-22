@@ -452,7 +452,9 @@ object RaportointiDatabaseSchema {
     val oppilaitosnumero = column[Option[String]]("oppilaitosnumero", StringIdentifierType)
     val kotipaikka = column[Option[String]]("kotipaikka", StringIdentifierType)
     val yTunnus = column[Option[String]]("y_tunnus", StringIdentifierType)
-    def * = (organisaatioOid, nimi, nimiSv, organisaatiotyypit, oppilaitostyyppi, oppilaitosnumero, kotipaikka, yTunnus) <> (ROrganisaatioRow.tupled, ROrganisaatioRow.unapply)
+    val koulutustoimija = column[Option[String]]("koulutustoimija", StringIdentifierType)
+    val oppilaitos = column[Option[String]]("oppilaitos", StringIdentifierType)
+    def * = (organisaatioOid, nimi, nimiSv, organisaatiotyypit, oppilaitostyyppi, oppilaitosnumero, kotipaikka, yTunnus, koulutustoimija, oppilaitos) <> (ROrganisaatioRow.tupled, ROrganisaatioRow.unapply)
   }
 
   class ROrganisaatioTableTemp(tag: Tag) extends ROrganisaatioTable(tag, Temp)
@@ -901,7 +903,9 @@ case class ROrganisaatioRow(
   oppilaitostyyppi: Option[String],
   oppilaitosnumero: Option[String],
   kotipaikka: Option[String],
-  yTunnus: Option[String]
+  yTunnus: Option[String],
+  koulutustoimija: Option[String],
+  oppilaitos: Option[String],
 )
 
 case class ROrganisaatioKieliRow(
