@@ -1,5 +1,8 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## xx.1.2024
+- Perusopetuksen duplikaattiopiskeluoikeuksien validaatiota kiristetty: oppijalle ei voi viedä kahta opiskeluoikeutta, jotka ovat samassa oppilaitoksessa ja joiden alkamis- ja päättymispäivän muodostamat aikajaksot menevät päällekkäin.
+
 ## 15.12.2023
 - Perusopetuksen vuosiluokkien ja päättötodistuksen suorituksissa ei enää hyväksytä sekä ET- että KT-oppiaineita
 

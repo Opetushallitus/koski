@@ -116,6 +116,8 @@ class PostgresKoskiOpiskeluoikeusRepositoryActions(
     lazy val aiempiOpiskeluoikeusPäättynyt = rows.exists(_.toOpiskeluoikeusUnsafe.tila.opiskeluoikeusjaksot.last.opiskeluoikeusPäättynyt)
 
     opiskeluoikeus match {
+      case oo: PerusopetuksenOpiskeluoikeus =>
+        !päällekkäinenOpiskeluoikeusExists(oo, rows)
       case _: MuunKuinSäännellynKoulutuksenOpiskeluoikeus =>
         true
       case _: TaiteenPerusopetuksenOpiskeluoikeus =>
@@ -126,6 +128,14 @@ class PostgresKoskiOpiskeluoikeusRepositoryActions(
         isMuuAmmatillinenOpiskeluoikeus(oo) || (aiempiOpiskeluoikeusPäättynyt && isAmmatillinenJolleAiemmanOpiskeluoikeudenPäätyttyäRinnakkainenOpiskeluoikeusSallitaan(oo, rows))
       case _ =>
         aiempiOpiskeluoikeusPäättynyt
+    }
+  }
+
+  private def päällekkäinenOpiskeluoikeusExists(opiskeluoikeus: PerusopetuksenOpiskeluoikeus, rows: List[KoskiOpiskeluoikeusRow]): Boolean = {
+    val jakso = Aikajakso(opiskeluoikeus.alkamispäivä, opiskeluoikeus.päättymispäivä)
+    rows.exists { row =>
+      val muuJakso = Aikajakso(row.alkamispäivä.toLocalDate, row.päättymispäivä.map(_.toLocalDate))
+      jakso.overlaps(muuJakso)
     }
   }
 
