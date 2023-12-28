@@ -34,7 +34,8 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matcher
       val createResult = application.opiskeluoikeusRepository.createOrUpdate(
         oppijaOid = VerifiedHenkilöOid(vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa),
         opiskeluoikeus = oo,
-        allowUpdate = false
+        allowUpdate = false,
+        disableDuplicateChecks = true,
       )(session(defaultUser))
       createResult.map(_.created) should be(Right(true))
       createResult.map(_.oid)

@@ -17,7 +17,8 @@ trait KoskiOpiskeluoikeusRepository {
     oppijaOid: PossiblyUnverifiedHenkilöOid,
     opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
     allowUpdate: Boolean,
-    allowDeleteComplete: Boolean = false
+    allowDeleteComplete: Boolean = false,
+    disableDuplicateChecks: Boolean = false,
   )(implicit user: KoskiSpecificSession): Either[HttpStatus, CreateOrUpdateResult]
   def filterOppijat[A <: HenkilönTunnisteet](oppijat: List[A])(implicit user: KoskiSpecificSession): List[A]
   def findByOppijaOids(oids: List[String])(implicit user: KoskiSpecificSession): Seq[Opiskeluoikeus]

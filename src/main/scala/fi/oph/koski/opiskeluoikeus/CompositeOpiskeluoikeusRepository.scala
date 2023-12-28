@@ -40,15 +40,20 @@ class CompositeOpiskeluoikeusRepository(main: KoskiOpiskeluoikeusRepository, vir
   def findByOid(oid: String)(implicit user: KoskiSpecificSession): Either[HttpStatus, KoskiOpiskeluoikeusRow] =
     main.findByOid(oid)
 
+  /**
+   * @param disableDuplicateChecks Kytkee duplikaattitarkastukset pois päältä. Älä käytä tuotannossa!
+   *                               Tämä on tarkoitettu testien alustamiseen, joissa tutkitaan jo kantaan päätyneitä viallisia datoja.
+   */
   def createOrUpdate(
     oppijaOid: PossiblyUnverifiedHenkilöOid,
     opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
     allowUpdate: Boolean,
-    allowDeleteCompleted: Boolean = false
+    allowDeleteCompleted: Boolean = false,
+    disableDuplicateChecks: Boolean = false,
   )(
     implicit user: KoskiSpecificSession
   ): Either[HttpStatus, CreateOrUpdateResult] =
-    withErrorLogging(() => main.createOrUpdate(oppijaOid, opiskeluoikeus, allowUpdate, allowDeleteCompleted))
+    withErrorLogging(() => main.createOrUpdate(oppijaOid, opiskeluoikeus, allowUpdate, allowDeleteCompleted, disableDuplicateChecks))
 
   def mapFailureToVirtaUnavailable(result: Try[Seq[Opiskeluoikeus]], oid: String): Try[WithWarnings[Seq[Opiskeluoikeus]]] = {
     result match {

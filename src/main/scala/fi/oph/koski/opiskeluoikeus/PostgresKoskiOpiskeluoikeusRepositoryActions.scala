@@ -75,12 +75,15 @@ class PostgresKoskiOpiskeluoikeusRepositoryActions(
     oppijaOid: PossiblyUnverifiedHenkilöOid,
     opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
     allowUpdate: Boolean,
-    allowDeleteCompleted: Boolean
+    allowDeleteCompleted: Boolean,
+    disableDuplicateChecks: Boolean = false,
   )(implicit user: KoskiSpecificSession): DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write with Transactional] = {
     val identifier = OpiskeluoikeusIdentifier(oppijaOid.oppijaOid, opiskeluoikeus)
 
     findByIdentifierAction(identifier).flatMap {
       case Right(Nil) =>
+        createAction(oppijaOid, opiskeluoikeus)
+      case Right(_) if disableDuplicateChecks =>
         createAction(oppijaOid, opiskeluoikeus)
       case Right(aiemmatOpiskeluoikeudet) if allowUpdate =>
         updateIfUnambiguousAiempiOpiskeluoikeusAction(oppijaOid, opiskeluoikeus, identifier, aiemmatOpiskeluoikeudet, allowDeleteCompleted)
