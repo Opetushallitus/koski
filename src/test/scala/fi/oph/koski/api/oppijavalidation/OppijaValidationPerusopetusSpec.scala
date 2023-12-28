@@ -721,6 +721,106 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
     }
   }
 
+  "Opiskeluoikeuksien duplikaatit" - {
+    "Samaa opiskeluoikeutta ei voi siirää kahteen kertaan" in {
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus, defaultHenkilö) {
+        verifyResponseStatusOk()
+      }
+      postOppija(makeOppija(defaultHenkilö, List(defaultOpiskeluoikeus))) {
+        verifyResponseStatus(409, KoskiErrorCategory.conflict.exists())
+      }
+    }
+
+    "Samaa opiskeluoikeutta ei voi siirää kahteen kertaan, vaikka se olisikin terminaalitilassa" in {
+      val opiskeluoikeus = defaultOpiskeluoikeus.copy(
+        tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(
+          NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2015, 8, 15), opiskeluoikeusLäsnä),
+          NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2016, 6, 4), opiskeluoikeusValmistunut),
+        ))
+      )
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus, defaultHenkilö) {
+        verifyResponseStatusOk()
+      }
+      postOppija(makeOppija(defaultHenkilö, List(opiskeluoikeus))) {
+        verifyResponseStatus(409, KoskiErrorCategory.conflict.exists())
+      }
+    }
+
+    "Samaa opiskeluoikeutta ei voi siirää kahteen kertaan, vaikka päivämäärät ovat erilaiset (mutta päällekkäiset) ja se olisikin terminaalitilassa" in {
+      val opiskeluoikeus = defaultOpiskeluoikeus.copy(
+        tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(
+          NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2015, 8, 15), opiskeluoikeusLäsnä),
+          NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2016, 6, 4), opiskeluoikeusValmistunut),
+        ))
+      )
+
+      val opiskeluoikeus2 = opiskeluoikeus.copy(
+        suoritukset = List(
+          vuosiluokkasuoritus.copy(alkamispäivä = vuosiluokkasuoritus.alkamispäivä.map(_.plusDays(10))),
+          päättötodistusSuoritus,
+        )
+      )
+
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus, defaultHenkilö) {
+        verifyResponseStatusOk()
+      }
+      postOppija(makeOppija(defaultHenkilö, List(opiskeluoikeus2))) {
+        verifyResponseStatus(409, KoskiErrorCategory.conflict.exists())
+      }
+    }
+
+    "Samaa opiskeluoikeutta ei voi siirää kahteen kertaan, vaikka päivämäärät ovat erilaiset (mutta päällekkäiset) ja se olisikin terminaalitilassa, variantti" in {
+      val opiskeluoikeus = defaultOpiskeluoikeus.copy(
+        tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(
+          NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2015, 8, 15), opiskeluoikeusLäsnä),
+          NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2016, 6, 4), opiskeluoikeusValmistunut),
+        ))
+      )
+
+      val opiskeluoikeus2 = opiskeluoikeus.copy(
+        tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(
+          NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2015, 8, 15), opiskeluoikeusLäsnä),
+        )),
+        suoritukset = List(
+          vuosiluokkasuoritus.copy(alkamispäivä = Some(LocalDate.of(2015, 8, 15))),
+        )
+      )
+
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus, defaultHenkilö) {
+        verifyResponseStatusOk()
+      }
+      postOppija(makeOppija(defaultHenkilö, List(opiskeluoikeus2))) {
+        verifyResponseStatus(409, KoskiErrorCategory.conflict.exists())
+      }
+    }
+
+    "Opiskeluoikeuden voi siirää kahteen kertaan, kunhan aikajaksot eivät ole päällekkäiset ja aiempi on terminaalitilassa" in {
+      val opiskeluoikeus = defaultOpiskeluoikeus.copy(
+        tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(
+          NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2015, 8, 15), opiskeluoikeusLäsnä),
+          NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2016, 6, 4), opiskeluoikeusValmistunut),
+        ))
+      )
+
+      val opiskeluoikeus2 = defaultOpiskeluoikeus.copy(
+        tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(
+          NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2016, 8, 15), opiskeluoikeusLäsnä),
+        )),
+        suoritukset = List(vuosiluokkasuoritus.copy(
+          alkamispäivä = Some(LocalDate.of(2016, 8, 15)),
+          vahvistus = None,
+        ))
+      )
+
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus, defaultHenkilö) {
+        verifyResponseStatusOk()
+      }
+      postOppija(makeOppija(defaultHenkilö, List(opiskeluoikeus2))) {
+        verifyResponseStatusOk()
+      }
+    }
+  }
+
   private def setupOppijaWithAndGetOpiskeluoikeus(oo: KoskeenTallennettavaOpiskeluoikeus): PerusopetuksenOpiskeluoikeus = setupOppijaWithOpiskeluoikeus(oo) {
     verifyResponseStatusOk()
     getOpiskeluoikeus(readPutOppijaResponse.opiskeluoikeudet.head.oid)
