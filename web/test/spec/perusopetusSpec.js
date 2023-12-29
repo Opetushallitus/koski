@@ -3026,18 +3026,13 @@ describe('Perusopetus', function () {
               addOppija.submitAndExpectSuccessModal(
                 'Tyhjä, Tero (230872-7258)',
                 'Päättötodistus'
-              ),
-              wait.until(function () {
-                return opinnot.opiskeluoikeudet.opiskeluoikeuksienMäärä() == 2
-              })
+              )
             )
-            it('Lisääminen onnistuu', function () {
-              expect(opinnot.getOppilaitos(0)).to.equal(
-                'Jyväskylän normaalikoulu'
+            it('Lisääminen ei onnistu', function () {
+              expect(page.getErrorMessage()).to.equal(
+                'Opiskeluoikeutta ei voida lisätä, koska oppijalla on jo vastaava opiskeluoikeus.'
               )
-              expect(opinnot.getOppilaitos(1)).to.equal(
-                'Jyväskylän normaalikoulu'
-              )
+              expect(editor.isEditBarVisible()).to.equal(false)
             })
           })
 
