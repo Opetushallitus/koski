@@ -34,6 +34,18 @@ case class OppijaHakutilanteillaLaajatTiedot(
       ))
     )
   }
+
+  def withEiKatseltavanMinimitiedot: OppijaHakutilanteillaLaajatTiedot = copy(
+    oppija = oppija.withEiKatseltavanMinimitiedot,
+    hakutilanteet = Seq.empty,
+    hakutilanneError = None,
+    yhteystiedot = Seq.empty,
+    kuntailmoitukset = Seq.empty,
+    oppivelvollisuudenKeskeytykset = Seq.empty,
+    onOikeusTehdäKuntailmoitus = Some(false),
+    onOikeusMitätöidäOppivelvollisuudestaVapautus = Some(false),
+    lisätiedot = Seq.empty,
+  )
 }
 
 object OppijaHakutilanteillaLaajatTiedot {

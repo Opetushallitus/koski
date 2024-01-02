@@ -15,6 +15,13 @@ import fi.oph.koski.valpas.valpasrepository._
 import fi.oph.koski.valpas.valpasuser.{ValpasRooli, ValpasSession}
 import fi.oph.koski.valpas.yhteystiedot.ValpasYhteystiedot
 
+object ValpasOppijaLaajatTiedotService {
+  val roolitJoilleHaetaanKaikistaOVLPiirinOppijoista: Seq[ValpasRooli.Role] = Seq(
+    ValpasRooli.OPPILAITOS_MAKSUTTOMUUS,
+    ValpasRooli.KUNTA,
+  )
+}
+
 class ValpasOppijaLaajatTiedotService(
   application: KoskiApplication
 ) extends Logging with Timing {
@@ -33,11 +40,6 @@ class ValpasOppijaLaajatTiedotService(
 
   private val validatingAndResolvingExtractor = application.validatingAndResolvingExtractor
 
-  private val roolitJoilleHaetaanKaikistaOVLPiirinOppijoista: Seq[ValpasRooli.Role] = Seq(
-    ValpasRooli.OPPILAITOS_MAKSUTTOMUUS,
-    ValpasRooli.KUNTA,
-  )
-
   def getOppijaLaajatTiedot
     (
       rooli: ValpasRooli.Role,
@@ -47,7 +49,7 @@ class ValpasOppijaLaajatTiedotService(
     )
     (implicit session: ValpasSession)
   : Either[HttpStatus, ValpasOppijaLaajatTiedot] = {
-    val rajaaOVKelpoisiinOpiskeluoikeuksiin = !roolitJoilleHaetaanKaikistaOVLPiirinOppijoista.contains(rooli)
+    val rajaaOVKelpoisiinOpiskeluoikeuksiin = !ValpasOppijaLaajatTiedotService.roolitJoilleHaetaanKaikistaOVLPiirinOppijoista.contains(rooli)
 
     opiskeluoikeusDbService.getOppija(oppijaOid, rajaaOVKelpoisiinOpiskeluoikeuksiin, haeMyösOppivelvollisuudestaVapautettu = true) match {
       case Some(oppijaRow) =>
@@ -80,7 +82,7 @@ class ValpasOppijaLaajatTiedotService(
     // rajaaOVKelposillaOppivelvollisuuksilla-lippu. Naiivimpi vaihtoehto olisi hakea kaikilla rooleilla ja tarkastaa mitkä kyselyt onnistuivat.
     // Jos granulariteettia jatkossa kasvatetaan, tämä funktio pitää toteuttaa myös eri tavalla.
 
-    val laajimmatRoolit = roolit.intersect(roolitJoilleHaetaanKaikistaOVLPiirinOppijoista)
+    val laajimmatRoolit = roolit.intersect(ValpasOppijaLaajatTiedotService.roolitJoilleHaetaanKaikistaOVLPiirinOppijoista)
     if (roolit.isEmpty) {
       Left(ValpasErrorCategory.forbidden.oppija())
     } else if (laajimmatRoolit.nonEmpty) {
@@ -128,7 +130,7 @@ class ValpasOppijaLaajatTiedotService(
       accessResolver.accessToAnyOrg(ValpasRooli.OPPILAITOS_MAKSUTTOMUUS)
     val palautaLukionAineopinnotJaYOTutkinnotJosMyösAmmatillisiaOpintoja = true
 
-    val rooli = roolitJoilleHaetaanKaikistaOVLPiirinOppijoista.find(accessResolver.accessToAnyOrg)
+    val rooli = ValpasOppijaLaajatTiedotService.roolitJoilleHaetaanKaikistaOVLPiirinOppijoista.find(accessResolver.accessToAnyOrg)
 
     getOppijaLaajatTiedotHakuJaYhteystiedoilla(
       oppijaOid,
@@ -334,6 +336,7 @@ class ValpasOppijaLaajatTiedotService(
         // Tällä säännöllä napataan kiinni tilanteet, joissa Valppaan ja Kosken tiedot opiskeluoikeuden voimassaolosta eivät ole
         // synkassa tai oppijasta on tehty ilmoitus, mutta oppijan eroamisen merkitseminen on jäänyt tekemättä
         // ja sen takia olisi vaara että kuntailmoitus hautautuisi käyttöliittymässä.
+        // TODO TOR-1947: Tähän pitää varmaan lisätä extralogiikkaa pitämään keväällä tehdyt ilmoitukset aktiivisena 1.9. asti?
         else if (!rajapäivätService.tarkastelupäivä.isAfter(ilmoituksentekopäivä.plusMonths(rajapäivätService.kuntailmoitusAktiivisuusKuukausina))) {
           true
         }

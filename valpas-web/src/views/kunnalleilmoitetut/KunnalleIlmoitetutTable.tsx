@@ -102,14 +102,17 @@ const oppijanNimi = (
   backRefName: keyof OppijaViewBackNavProps
 ): Value => {
   const value = `${oppija.oppija.henkilö.sukunimi} ${oppija.oppija.henkilö.etunimet}`
-  const linkTo = oppijaPath.href(basePath, {
-    oppijaOid: oppija.oppija.henkilö.oid,
-    [backRefName]: organisaatioOid,
-  })
+  const linkTo =
+    oppija.oppija.henkilö.oid !== ""
+      ? oppijaPath.href(basePath, {
+          oppijaOid: oppija.oppija.henkilö.oid,
+          [backRefName]: organisaatioOid,
+        })
+      : undefined
 
   return {
     value,
-    display: <Link to={linkTo}>{value}</Link>,
+    display: linkTo && <Link to={linkTo}>{value}</Link>,
   }
 }
 
