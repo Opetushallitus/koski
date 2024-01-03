@@ -1563,7 +1563,7 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Lukion paikallinen opintojakso",
+        "nimi": "Lokal studieavsnitt i gymnasiet",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "SV"
@@ -1591,7 +1591,7 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Lukion valtakunnallinen moduuli",
+        "nimi": "Riksomfattande modul i gymnasiet",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "SV"
@@ -1802,7 +1802,7 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Muu kuin säännelty koulutus",
+        "nimi": "Annan än reglerad utbildning",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "SV"
@@ -1857,7 +1857,7 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Muun kuin säännellyn koulutuksen osasuoritus",
+        "nimi": "Delprestation i annan än reglerad utbildning",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "SV"
@@ -2365,7 +2365,7 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Taiteen perusopetuksen laajan oppimäärän perusopintojen suoritus",
+        "nimi": "Prestation i fördjupade lärokursens grundstudier i grundläggande konstundervisning",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "SV"
@@ -2393,7 +2393,7 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Taiteen perusopetuksen laajan oppimäärän syventävien opintojen suoritus",
+        "nimi": "Prestation i fördjupade studier i fördjupade lärokursen i grundläggande konstundervisning",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "SV"
@@ -2421,7 +2421,7 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Taiteen perusopetuksen paikallisen opintokokonaisuuden suoritus",
+        "nimi": "Prestation i en lokal studiehelhet i grundläggande konstundervisning",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "SV"
@@ -2449,7 +2449,7 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Taiteen perusopetuksen yleisen oppimäärän teemaopintojen suoritus",
+        "nimi": "Prestation i temastudier i allmänna lärokursen i grundläggande konstundervisning",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "SV"
@@ -2477,7 +2477,7 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Taiteen perusopetuksen yleisen oppimäärän yhteisten opintojen suoritus",
+        "nimi": "Prestation i gemensamma studier i allmänna lärokursen i grundläggande konstundervisning",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "SV"
@@ -2609,7 +2609,7 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Tutkintokoulutukseen valmentava suoritus",
+        "nimi": "Prestation som handleder för examensutbildning",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "SV"
@@ -2637,7 +2637,7 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Tutkintokoulutukseen valmentava ammatillisen koulutuksen suoritus",
+        "nimi": "Prestation i yrkesutbildning som handleder för examensutbildning",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "SV"
@@ -2664,7 +2664,7 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Tutkintokoulutukseen valmentava koulutuksen suoritus",
+        "nimi": "Prestation i utbildning som handleder för examensutbildning",
         "kuvaus": null,
         "kieli": "SV"
       },
@@ -2690,7 +2690,7 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Tutkintokoulutukseen valmentava lukion suoritus",
+        "nimi": "Prestation i gymnasiet som handleder för examensutbildning",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "SV"
@@ -2718,7 +2718,7 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Tutkintokoulutukseen valmentava perusopetuksen suoritus",
+        "nimi": "Prestation i grundläggande utbildning som handleder för examensutbildning ",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "SV"
@@ -2796,7 +2796,7 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Jatkuvaan oppimiseen suunnattu vapaan sivistystyön koulutuksen osasuoritus",
+        "nimi": "Delprestation i utbildning inom fritt bildningsarbete som riktar sig till kontinuerligt lärande",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "SV"
@@ -2824,7 +2824,7 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Jatkuvaan oppimiseen suunnattu vapaan sivistystyön koulutuksen suoritus",
+        "nimi": "Utbildning inom fritt bildningsarbete som riktar sig till kontinuerligt lärande",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "SV"
@@ -3183,7 +3183,7 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Oppivelvollisille suunnattu vapaan sivistystyön opintokokonaisuus",
+        "nimi": "Studiehelhet inom fritt bildningsarbete som riktar sig till läropliktiga",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "SV"
@@ -3239,7 +3239,7 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Oppivelvollisille suunnattu vapaan sivistystyön osaamiskokonaisuus",
+        "nimi": "Kompetenshelhet inom fritt bildningsarbete som riktar sig till läropliktiga",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "SV"
@@ -3267,7 +3267,7 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Oppivelvollisille suunnattu vapaan sivistystyön valinnainen suuntautumisopinto",
+        "nimi": "Valbara inriktade studier inom fritt bildningsarbete som riktar sig till läropliktiga",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "SV"
@@ -3322,7 +3322,7 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Vapaan sivistystyön vapaatavoitteisen koulutuksen osasuoritus",
+        "nimi": "Delprestation i fritt inriktad utbildning inom fritt bildningsarbete",
         "kuvaus": null,
         "kieli": "SV"
       },
