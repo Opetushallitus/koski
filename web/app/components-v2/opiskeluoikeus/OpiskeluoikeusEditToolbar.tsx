@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useApiMethod, useOnApiSuccess } from '../../api-fetch'
+import { TestIdLayer, TestIdText } from '../../appstate/useTestId'
 import { formatDateRange } from '../../date/date'
 import { t } from '../../i18n/i18n'
 import { Opiskeluoikeus } from '../../types/fi/oph/koski/schema/Opiskeluoikeus'
@@ -10,7 +11,7 @@ import { Column, ColumnRow } from '../containers/Columns'
 import { FlatButton } from '../controls/FlatButton'
 import { RaisedButton } from '../controls/RaisedButton'
 import { Trans } from '../texts/Trans'
-import { TestIdLayer, TestIdRoot, TestIdText } from '../../appstate/useTestId'
+import { useVirkailijaUser } from '../../appstate/user'
 
 export type OpiskeluoikeusEditToolbarProps = {
   opiskeluoikeus: Opiskeluoikeus
@@ -22,8 +23,9 @@ export type OpiskeluoikeusEditToolbarProps = {
 export const OpiskeluoikeusEditToolbar = (
   props: OpiskeluoikeusEditToolbarProps
 ) => {
-  const spans = props.editMode ? [12, 12] : [21, 3]
+  const spans = props.editMode ? [12, 12] : [16, 8]
   const opiskeluoikeusOid = getOpiskeluoikeusOid(props.opiskeluoikeus)
+  const hasAnyInvalidateAccess = useVirkailijaUser()?.hasAnyInvalidateAccess
 
   return (
     <ColumnRow>
@@ -47,17 +49,17 @@ export const OpiskeluoikeusEditToolbar = (
         span={{ default: spans[1], phone: 24 }}
         align={{ default: 'right', phone: 'left' }}
       >
+        {hasAnyInvalidateAccess && props.invalidatable && opiskeluoikeusOid && (
+          <MitätöintiButton opiskeluoikeusOid={opiskeluoikeusOid} />
+        )}
         <RequiresWriteAccess opiskeluoikeus={props.opiskeluoikeus}>
-          {props.editMode ? (
-            props.invalidatable &&
-            opiskeluoikeusOid && (
-              <MitätöintiButton opiskeluoikeusOid={opiskeluoikeusOid} />
-            )
-          ) : (
+          {!props.editMode ? (
             <RaisedButton fullWidth onClick={props.onStartEdit} testId="edit">
               {'Muokkaa'}
             </RaisedButton>
-          )}
+          ) : opiskeluoikeusOid && !hasAnyInvalidateAccess ? (
+            <MitätöintiButton opiskeluoikeusOid={opiskeluoikeusOid} />
+          ) : null}
         </RequiresWriteAccess>
       </Column>
     </ColumnRow>
