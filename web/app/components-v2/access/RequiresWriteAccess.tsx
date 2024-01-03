@@ -1,5 +1,15 @@
 import React from 'react'
 import { useVirkailijaUser } from '../../appstate/user'
+import { Opiskeluoikeus } from '../../types/fi/oph/koski/schema/Opiskeluoikeus'
 
-export const RequiresWriteAccess: React.FC<React.PropsWithChildren> = (props) =>
-  useVirkailijaUser()?.hasWriteAccess ? <>{props.children}</> : null
+export type RequiresWriteAccessProps = React.PropsWithChildren<{
+  opiskeluoikeus: Opiskeluoikeus
+}>
+
+export const RequiresWriteAccess: React.FC<RequiresWriteAccessProps> = (
+  props
+) =>
+  useVirkailijaUser()?.hasWriteAccess &&
+  props.opiskeluoikeus.lähdejärjestelmänId === undefined ? (
+    <>{props.children}</>
+  ) : null

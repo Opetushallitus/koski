@@ -47,7 +47,7 @@ export const OpiskeluoikeusEditToolbar = (
         span={{ default: spans[1], phone: 24 }}
         align={{ default: 'right', phone: 'left' }}
       >
-        <RequiresWriteAccess>
+        <RequiresWriteAccess opiskeluoikeus={props.opiskeluoikeus}>
           {props.editMode ? (
             props.invalidatable &&
             opiskeluoikeusOid && (
