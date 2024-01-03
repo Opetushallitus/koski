@@ -45,6 +45,11 @@ object ExamplesVapaaSivistystyöJotpa {
         )),
         suoritukset = List(PäätasonSuoritus.suoritettu),
       )
+
+    lazy val keskeneräinenLähdejärjestelmästä: VapaanSivistystyönOpiskeluoikeus =
+      keskeneräinen.copy(
+        lähdejärjestelmänId = Some(LähdejärjestelmäId(Some("12385493"), Koodistokoodiviite("primus", "lahdejarjestelma")))
+      )
   }
 
   object PäätasonSuoritus {
