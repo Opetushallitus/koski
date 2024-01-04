@@ -2176,12 +2176,12 @@
     "category": "valpas",
     "created": 1687943971473,
     "createdBy": "anonymousUser",
-    "modified": 1687943971166,
+    "modified": 1697528182232,
     "modifiedBy": "anonymousUser",
     "id": 44996,
     "key": "oppija__european_school_perusopetuksen_vahvistuspäivä",
     "locale": "en",
-    "value": ""
+    "value": "Basic education completed"
   },
   {
     "accesscount": 0,
@@ -11038,12 +11038,12 @@
     "category": "valpas",
     "created": 1612523146920,
     "createdBy": "anonymousUser",
-    "modified": 1617280951037,
+    "modified": 1698669110689,
     "modifiedBy": "anonymousUser",
     "id": 29465,
     "key": "hakutilanne__taulu_hakemuksen_tila",
     "locale": "sv",
-    "value": "Ansökningens status"
+    "value": "Ansökans status"
   },
   {
     "accesscount": 0,
@@ -11920,12 +11920,12 @@
     "category": "valpas",
     "created": 1687943971184,
     "createdBy": "anonymousUser",
-    "modified": 1687943971166,
+    "modified": 1697528105613,
     "modifiedBy": "anonymousUser",
     "id": 44992,
     "key": "koulutustyyppi_europeanschool",
     "locale": "sv",
-    "value": ""
+    "value": "European School of Helsinki"
   },
   {
     "accesscount": 0,
@@ -12844,12 +12844,12 @@
     "category": "valpas",
     "created": 1687943971469,
     "createdBy": "anonymousUser",
-    "modified": 1687943971166,
+    "modified": 1697528182232,
     "modifiedBy": "anonymousUser",
     "id": 44995,
     "key": "oppija__european_school_perusopetuksen_vahvistuspäivä",
     "locale": "sv",
-    "value": ""
+    "value": "Grundläggande utbildning avlagt"
   },
   {
     "accesscount": 0,
@@ -12872,12 +12872,12 @@
     "category": "valpas",
     "created": 1622647300494,
     "createdBy": "anonymousUser",
-    "modified": 1622721822532,
+    "modified": 1698669384046,
     "modifiedBy": "anonymousUser",
     "id": 32873,
     "key": "oppija__hakenut_muualle",
     "locale": "sv",
-    "value": "Sökt utomlands eller på Åland"
+    "value": "Sökt utomlands eller till Åland"
   },
   {
     "accesscount": 0,

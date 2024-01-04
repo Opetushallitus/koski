@@ -12620,12 +12620,12 @@
     "category": "koski",
     "created": 1525863031004,
     "createdBy": "anonymousUser",
-    "modified": 1677167596550,
+    "modified": 1699352140240,
     "modifiedBy": "anonymousUser",
     "id": 21055,
     "key": "Korkeakoulutusuoritukset ja opiskeluoikeudet ovat näkyvissä pääsääntöisesti vuodesta 1995 eteenpäin, mutta tässä voi olla korkeakoulukohtaisia poikkeuksia.",
     "locale": "en",
-    "value": "Higher education credits and study rights are generally available from 1995 onwards but there may be exceptions that are specific to higher education institutions."
+    "value": "As a guardian of a minor child, you can also view information about your child's studies."
   },
   {
     "accesscount": 0,
@@ -12830,12 +12830,12 @@
     "category": "koski",
     "created": 1525863030995,
     "createdBy": "anonymousUser",
-    "modified": 1525863030991,
+    "modified": 1699351662570,
     "modifiedBy": "anonymousUser",
     "id": 21046,
     "key": "Koski-palvelussa pystytään näyttämään seuraavat tiedot:",
     "locale": "en",
-    "value": ""
+    "value": "Please notice:"
   },
   {
     "accesscount": 0,
@@ -14114,6 +14114,20 @@
   {
     "accesscount": 0,
     "force": false,
+    "accessed": 1698738008421,
+    "category": "koski",
+    "created": 1698738008421,
+    "createdBy": "anonymousUser",
+    "modified": 1698738008401,
+    "modifiedBy": "anonymousUser",
+    "id": 46159,
+    "key": "Lisää kotoutumiskoulutuksen ohjauksen osa-alue",
+    "locale": "en",
+    "value": ""
+  },
+  {
+    "accesscount": 0,
+    "force": false,
     "accessed": 1510233799083,
     "category": "koski",
     "created": 1510233799083,
@@ -14534,6 +14548,20 @@
   {
     "accesscount": 0,
     "force": false,
+    "accessed": 1698738008415,
+    "category": "koski",
+    "created": 1698738008415,
+    "createdBy": "anonymousUser",
+    "modified": 1698738008401,
+    "modifiedBy": "anonymousUser",
+    "id": 46156,
+    "key": "Lisää suomen/ruotsin kielen ja viestintätaitojen osa-alue",
+    "locale": "en",
+    "value": ""
+  },
+  {
+    "accesscount": 0,
+    "force": false,
     "accessed": 1669971697838,
     "category": "koski",
     "created": 1669971697838,
@@ -14674,6 +14702,20 @@
   {
     "accesscount": 0,
     "force": false,
+    "accessed": 1698738008501,
+    "category": "koski",
+    "created": 1698738008501,
+    "createdBy": "anonymousUser",
+    "modified": 1698738008401,
+    "modifiedBy": "anonymousUser",
+    "id": 46165,
+    "key": "Lisää työelämän ja yhteiskuntataitojen opintojen osa-alue",
+    "locale": "en",
+    "value": ""
+  },
+  {
+    "accesscount": 0,
+    "force": false,
     "accessed": 1647003010777,
     "category": "koski",
     "created": 1647003010777,
@@ -14794,6 +14836,20 @@
     "modifiedBy": "anonymousUser",
     "id": 37733,
     "key": "Lisää valinnaisten opintojen koulutuksen osa/osasuoritus",
+    "locale": "en",
+    "value": ""
+  },
+  {
+    "accesscount": 0,
+    "force": false,
+    "accessed": 1698738008427,
+    "category": "koski",
+    "created": 1698738008427,
+    "createdBy": "anonymousUser",
+    "modified": 1698738008401,
+    "modifiedBy": "anonymousUser",
+    "id": 46162,
+    "key": "Lisää valinnaisten opintojen osa-alue",
     "locale": "en",
     "value": ""
   },
@@ -15546,12 +15602,12 @@
     "category": "koski",
     "created": 1694776730826,
     "createdBy": "anonymousUser",
-    "modified": 1694776730820,
+    "modified": 1697008146834,
     "modifiedBy": "anonymousUser",
     "id": 45363,
     "key": "Lukutaitokoulutus oppivelvollisille",
     "locale": "en",
-    "value": ""
+    "value": "Literacy training for pupils in compulsory education"
   },
   {
     "accesscount": 0,
@@ -15994,12 +16050,12 @@
     "category": "koski",
     "created": 1572434556406,
     "createdBy": "anonymousUser",
-    "modified": 1677496394899,
+    "modified": 1697034232868,
     "modifiedBy": "anonymousUser",
     "id": 23801,
     "key": "Mikäli huollettavasi tiedoista puuttuu opintosuorituksia tai opiskeluoikeuksia, joiden kuuluisi ylläolevien tietojen perusteella näkyä Koski-palvelussa, voit ilmoittaa asiasta oppilaitoksellesi.",
     "locale": "en",
-    "value": "If your dependent's information lacks credits or study rights which, based on the above information, should appear in KOSKI service you can inform the educational institution."
+    "value": "If study achievements or study rights that, according to the information above, should be visible in the My Studyinfo service are missing from your or your dependant's data, you can notify the educational institution about this."
   },
   {
     "accesscount": 0,
@@ -16008,12 +16064,12 @@
     "category": "koski",
     "created": 1525863031026,
     "createdBy": "anonymousUser",
-    "modified": 1525863030991,
+    "modified": 1697034096512,
     "modifiedBy": "anonymousUser",
     "id": 21082,
     "key": "Mikäli tiedoistasi puuttuu opintosuorituksia tai opiskeluoikeuksia, joiden kuuluisi ylläolevien tietojen perusteella näkyä Koski-palvelussa, voit ilmoittaa asiasta oppilaitoksellesi.",
     "locale": "en",
-    "value": ""
+    "value": "If study achievements or study rights that, according to the information above, should be visible in the My Studyinfo service are missing from your or your dependant's data, you can notify the educational institution about this."
   },
   {
     "accesscount": 0,
@@ -16292,6 +16348,20 @@
     "modifiedBy": "anonymousUser",
     "id": 21496,
     "key": "Näkee oppilaitoksen tiedot",
+    "locale": "en",
+    "value": ""
+  },
+  {
+    "accesscount": 0,
+    "force": false,
+    "accessed": 1698738008510,
+    "category": "koski",
+    "created": 1698738008510,
+    "createdBy": "anonymousUser",
+    "modified": 1698738008401,
+    "modifiedBy": "anonymousUser",
+    "id": 46168,
+    "key": "Näkymää ei saada ladattua. Yritä hetken päästä uudelleen.",
     "locale": "en",
     "value": ""
   },
@@ -18328,6 +18398,20 @@
   {
     "accesscount": 0,
     "force": false,
+    "accessed": 1701687074861,
+    "category": "koski",
+    "created": 1701687074861,
+    "createdBy": "anonymousUser",
+    "modified": 1701687074851,
+    "modifiedBy": "anonymousUser",
+    "id": 46589,
+    "key": "Paikalliset opintokokonaisuudet",
+    "locale": "en",
+    "value": ""
+  },
+  {
+    "accesscount": 0,
+    "force": false,
     "accessed": 1507555669086,
     "category": "koski",
     "created": 1507555669086,
@@ -19228,12 +19312,12 @@
     "category": "koski",
     "created": 1548066665043,
     "createdBy": "anonymousUser",
-    "modified": 1548066665031,
+    "modified": 1698748172179,
     "modifiedBy": "anonymousUser",
     "id": 21813,
     "key": "Pilotti",
     "locale": "en",
-    "value": ""
+    "value": "Pilot"
   },
   {
     "accesscount": 0,
@@ -35744,6 +35828,20 @@
   {
     "accesscount": 0,
     "force": false,
+    "accessed": 1698738008408,
+    "category": "koski",
+    "created": 1698738008408,
+    "createdBy": "anonymousUser",
+    "modified": 1698738008401,
+    "modifiedBy": "anonymousUser",
+    "id": 46153,
+    "key": "validation:noMatchingValue",
+    "locale": "en",
+    "value": ""
+  },
+  {
+    "accesscount": 0,
+    "force": false,
     "accessed": 1675326097142,
     "category": "koski",
     "created": 1675326097142,
@@ -36070,12 +36168,12 @@
     "category": "koski",
     "created": 1694776730832,
     "createdBy": "anonymousUser",
-    "modified": 1694776730820,
+    "modified": 1697008325757,
     "modifiedBy": "anonymousUser",
     "id": 45369,
     "key": "Vapaan sivistystyön koulutus",
     "locale": "en",
-    "value": ""
+    "value": "Liberal adult education"
   },
   {
     "accesscount": 0,
@@ -36546,12 +36644,12 @@
     "category": "koski",
     "created": 1525863031014,
     "createdBy": "anonymousUser",
-    "modified": 1677504079816,
+    "modified": 1699352000841,
     "modifiedBy": "anonymousUser",
     "id": 21067,
     "key": "Vuoden 1990 jälkeen suoritetut ylioppilastutkinnot.",
     "locale": "en",
-    "value": "Matriculation examinations that have been completed after 1990."
+    "value": "Learn more about which studies and degrees can be found in this section: https://opintopolku.fi/konfo/en/sivu/my-studyinfo#my-completed-studies"
   },
   {
     "accesscount": 0,
@@ -36560,12 +36658,12 @@
     "category": "koski",
     "created": 1525863031012,
     "createdBy": "anonymousUser",
-    "modified": 1677504111422,
+    "modified": 1699351793504,
     "modifiedBy": "anonymousUser",
     "id": 21064,
     "key": "Vuoden 2018 tammikuun jälkeen suoritetut peruskoulun, lukion ja ammattikoulun opinnot ja voimassa olevat opiskeluoikeudet.",
     "locale": "en",
-    "value": "Studies in primary and secondary school, general upper secondary education and vocational institutions that have been completed after January 2018 and active study rights."
+    "value": "You can view your studies and completed degrees, which have been stored in the National Registry and Data Transfer Service for Study Rights and Completed Studies, the National Registry of Matriculation Examination, the Higher Education Achievement Register and the Register of Other than regulated education obtained by the Service Center for Continuous Learning and Employment."
   },
   {
     "accesscount": 0,
@@ -49678,12 +49776,12 @@
     "category": "koski",
     "created": 1525863031002,
     "createdBy": "anonymousUser",
-    "modified": 1525863030991,
+    "modified": 1699352089859,
     "modifiedBy": "anonymousUser",
     "id": 21053,
     "key": "Korkeakoulutusuoritukset ja opiskeluoikeudet ovat näkyvissä pääsääntöisesti vuodesta 1995 eteenpäin, mutta tässä voi olla korkeakoulukohtaisia poikkeuksia.",
     "locale": "fi",
-    "value": "Korkeakoulutusuoritukset ja opiskeluoikeudet ovat näkyvissä pääsääntöisesti vuodesta 1995 eteenpäin, mutta tässä voi olla korkeakoulukohtaisia poikkeuksia."
+    "value": "Jos sinulla on huollettavia, voit tarkastella myös heidän tietojaan"
   },
   {
     "accesscount": 0,
@@ -49888,12 +49986,12 @@
     "category": "koski",
     "created": 1525863030992,
     "createdBy": "anonymousUser",
-    "modified": 1525863030991,
+    "modified": 1699351617010,
     "modifiedBy": "anonymousUser",
     "id": 21044,
     "key": "Koski-palvelussa pystytään näyttämään seuraavat tiedot:",
     "locale": "fi",
-    "value": "Koski-palvelussa pystytään näyttämään seuraavat tiedot:"
+    "value": "Huomioitavaa:"
   },
   {
     "accesscount": 0,
@@ -51172,6 +51270,20 @@
   {
     "accesscount": 0,
     "force": false,
+    "accessed": 1698738008417,
+    "category": "koski",
+    "created": 1698738008417,
+    "createdBy": "anonymousUser",
+    "modified": 1698738008401,
+    "modifiedBy": "anonymousUser",
+    "id": 46157,
+    "key": "Lisää kotoutumiskoulutuksen ohjauksen osa-alue",
+    "locale": "fi",
+    "value": "Lisää kotoutumiskoulutuksen ohjauksen osa-alue"
+  },
+  {
+    "accesscount": 0,
+    "force": false,
     "accessed": 1510233799082,
     "category": "koski",
     "created": 1510233799082,
@@ -51592,6 +51704,20 @@
   {
     "accesscount": 0,
     "force": false,
+    "accessed": 1698738008411,
+    "category": "koski",
+    "created": 1698738008411,
+    "createdBy": "anonymousUser",
+    "modified": 1698738008401,
+    "modifiedBy": "anonymousUser",
+    "id": 46154,
+    "key": "Lisää suomen/ruotsin kielen ja viestintätaitojen osa-alue",
+    "locale": "fi",
+    "value": "Lisää suomen/ruotsin kielen ja viestintätaitojen osa-alue"
+  },
+  {
+    "accesscount": 0,
+    "force": false,
     "accessed": 1669971697831,
     "category": "koski",
     "created": 1669971697831,
@@ -51732,6 +51858,20 @@
   {
     "accesscount": 0,
     "force": false,
+    "accessed": 1698738008429,
+    "category": "koski",
+    "created": 1698738008429,
+    "createdBy": "anonymousUser",
+    "modified": 1698738008401,
+    "modifiedBy": "anonymousUser",
+    "id": 46163,
+    "key": "Lisää työelämän ja yhteiskuntataitojen opintojen osa-alue",
+    "locale": "fi",
+    "value": "Lisää työelämän ja yhteiskuntataitojen opintojen osa-alue"
+  },
+  {
+    "accesscount": 0,
+    "force": false,
     "accessed": 1647003010773,
     "category": "koski",
     "created": 1647003010773,
@@ -51854,6 +51994,20 @@
     "key": "Lisää valinnaisten opintojen koulutuksen osa/osasuoritus",
     "locale": "fi",
     "value": "Lisää valinnaisten opintojen koulutuksen osa/osasuoritus"
+  },
+  {
+    "accesscount": 0,
+    "force": false,
+    "accessed": 1698738008423,
+    "category": "koski",
+    "created": 1698738008423,
+    "createdBy": "anonymousUser",
+    "modified": 1698738008401,
+    "modifiedBy": "anonymousUser",
+    "id": 46160,
+    "key": "Lisää valinnaisten opintojen osa-alue",
+    "locale": "fi",
+    "value": "Lisää valinnaisten opintojen osa-alue"
   },
   {
     "accesscount": 0,
@@ -53052,12 +53206,12 @@
     "category": "koski",
     "created": 1572434556403,
     "createdBy": "anonymousUser",
-    "modified": 1572434556339,
+    "modified": 1697034232867,
     "modifiedBy": "anonymousUser",
     "id": 23799,
     "key": "Mikäli huollettavasi tiedoista puuttuu opintosuorituksia tai opiskeluoikeuksia, joiden kuuluisi ylläolevien tietojen perusteella näkyä Koski-palvelussa, voit ilmoittaa asiasta oppilaitoksellesi.",
     "locale": "fi",
-    "value": "Mikäli huollettavasi tiedoista puuttuu opintosuorituksia tai opiskeluoikeuksia, joiden kuuluisi ylläolevien tietojen perusteella näkyä Koski-palvelussa, voit ilmoittaa asiasta oppilaitoksellesi."
+    "value": "Mikäli tiedoistasi tai huollettavasti tiedoista puuttuu opintosuorituksia tai opiskeluoikeuksia, joiden kuuluisi ylläolevien tietojen perusteella näkyä Oma Opintopolku -palvelussa, voit ilmoittaa asiasta oppilaitokselle."
   },
   {
     "accesscount": 0,
@@ -53066,12 +53220,12 @@
     "category": "koski",
     "created": 1525863031024,
     "createdBy": "anonymousUser",
-    "modified": 1554717742235,
+    "modified": 1697034176642,
     "modifiedBy": "anonymousUser",
     "id": 21080,
     "key": "Mikäli tiedoistasi puuttuu opintosuorituksia tai opiskeluoikeuksia, joiden kuuluisi ylläolevien tietojen perusteella näkyä Koski-palvelussa, voit ilmoittaa asiasta oppilaitoksellesi.",
     "locale": "fi",
-    "value": "Mikäli tiedoistasi puuttuu opintosuorituksia tai opiskeluoikeuksia, joiden kuuluisi ylläolevien tietojen perusteella näkyä Oma Opintopolku-palvelussa, voit ilmoittaa asiasta oppilaitoksellesi."
+    "value": "Mikäli tiedoistasi tai huollettavasti tiedoista puuttuu opintosuorituksia tai opiskeluoikeuksia, joiden kuuluisi ylläolevien tietojen perusteella näkyä Oma Opintopolku -palvelussa, voit ilmoittaa asiasta oppilaitokselle."
   },
   {
     "accesscount": 0,
@@ -53352,6 +53506,20 @@
     "key": "Näkee oppilaitoksen tiedot",
     "locale": "fi",
     "value": "oppilaitoksen tiedot"
+  },
+  {
+    "accesscount": 0,
+    "force": false,
+    "accessed": 1698738008505,
+    "category": "koski",
+    "created": 1698738008505,
+    "createdBy": "anonymousUser",
+    "modified": 1698738008401,
+    "modifiedBy": "anonymousUser",
+    "id": 46166,
+    "key": "Näkymää ei saada ladattua. Yritä hetken päästä uudelleen.",
+    "locale": "fi",
+    "value": "Näkymää ei saada ladattua. Yritä hetken päästä uudelleen."
   },
   {
     "accesscount": 0,
@@ -55386,6 +55554,20 @@
   {
     "accesscount": 0,
     "force": false,
+    "accessed": 1701687074853,
+    "category": "koski",
+    "created": 1701687074853,
+    "createdBy": "anonymousUser",
+    "modified": 1701687074851,
+    "modifiedBy": "anonymousUser",
+    "id": 46587,
+    "key": "Paikalliset opintokokonaisuudet",
+    "locale": "fi",
+    "value": "Paikalliset opintokokonaisuudet"
+  },
+  {
+    "accesscount": 0,
+    "force": false,
     "accessed": 1507555669084,
     "category": "koski",
     "created": 1507555669084,
@@ -56594,12 +56776,12 @@
     "category": "koski",
     "created": 1607942303579,
     "createdBy": "anonymousUser",
-    "modified": 1607942303547,
+    "modified": 1697116749643,
     "modifiedBy": "anonymousUser",
     "id": 28516,
     "key": "Raportille valitaan kaikki kurssisuoritukset riippumatta niiden suoritusajankohdasta",
     "locale": "fi",
-    "value": "Raportille valitaan kaikki kurssisuoritukset riippumatta niiden suoritusajankohdasta"
+    "value": "Raportille valitaan kaikki osasuoritukset riippumatta niiden suoritusajankohdasta"
   },
   {
     "accesscount": 0,
@@ -56636,12 +56818,12 @@
     "category": "koski",
     "created": 1607942303552,
     "createdBy": "anonymousUser",
-    "modified": 1607942303547,
+    "modified": 1697116930849,
     "modifiedBy": "anonymousUser",
     "id": 28483,
     "key": "Raportille valitaan vain sellaiset kurssisuoritukset, joiden arviointipäivä osuu yllä määritellylle aikajaksolle",
     "locale": "fi",
-    "value": "Raportille valitaan vain sellaiset kurssisuoritukset, joiden arviointipäivä osuu yllä määritellylle aikajaksolle"
+    "value": "Raportille valitaan vain sellaiset osasuoritukset, joiden arviointipäivä osuu yllä määritellylle aikajaksolle"
   },
   {
     "accesscount": 0,
@@ -56650,12 +56832,12 @@
     "category": "koski",
     "created": 1607942303658,
     "createdBy": "anonymousUser",
-    "modified": 1607942303548,
+    "modified": 1697117016343,
     "modifiedBy": "anonymousUser",
     "id": 28609,
     "key": "Raportille valitaan vain sellaiset kurssit, joiden arviointipäivä osuu yllä määritellylle aikajaksolle",
     "locale": "fi",
-    "value": "Raportille valitaan vain sellaiset kurssit, joiden arviointipäivä osuu yllä määritellylle aikajaksolle"
+    "value": "Raportille valitaan vain sellaiset osasuoritukset, joiden arviointipäivä osuu yllä määritellylle aikajaksolle"
   },
   {
     "accesscount": 0,
@@ -72802,6 +72984,20 @@
   {
     "accesscount": 0,
     "force": false,
+    "accessed": 1698738008403,
+    "category": "koski",
+    "created": 1698738008403,
+    "createdBy": "anonymousUser",
+    "modified": 1698738008401,
+    "modifiedBy": "anonymousUser",
+    "id": 46151,
+    "key": "validation:noMatchingValue",
+    "locale": "fi",
+    "value": "Arvo '{{actual}}' ei ole sallittu. Sallitut arvot: {{expected}}"
+  },
+  {
+    "accesscount": 0,
+    "force": false,
     "accessed": 1675326097140,
     "category": "koski",
     "created": 1675326097140,
@@ -73604,12 +73800,12 @@
     "category": "koski",
     "created": 1525863031012,
     "createdBy": "anonymousUser",
-    "modified": 1554717536167,
+    "modified": 1699351920799,
     "modifiedBy": "anonymousUser",
     "id": 21065,
     "key": "Vuoden 1990 jälkeen suoritetut ylioppilastutkinnot.",
     "locale": "fi",
-    "value": "Vuoden 1990 jälkeen suoritetut suomalaiset ylioppilastutkinnot."
+    "value": "Lue lisää siitä, mitä tietoja pystytään näyttämään tässä osiossa: https://opintopolku.fi/konfo/fi/sivu/oma-opintopolku#omat-opintosuoritukseni"
   },
   {
     "accesscount": 0,
@@ -73618,12 +73814,12 @@
     "category": "koski",
     "created": 1525863031010,
     "createdBy": "anonymousUser",
-    "modified": 1525863030991,
+    "modified": 1699432685175,
     "modifiedBy": "anonymousUser",
     "id": 21062,
     "key": "Vuoden 2018 tammikuun jälkeen suoritetut peruskoulun, lukion ja ammattikoulun opinnot ja voimassa olevat opiskeluoikeudet.",
     "locale": "fi",
-    "value": "Vuoden 2018 tammikuun jälkeen suoritetut peruskoulun, lukion ja ammattikoulun opinnot ja voimassa olevat opiskeluoikeudet."
+    "value": "Voit tarkastella suorittamiasi opintoja ja tutkintoja, jotka on tallennettu opetuksen ja koulutuksen valtakunnalliseen tietovarantoon, ylioppilastutkintorekisteriin, jatkuvan oppimisen ja työllisyyden palvelukeskuksen hankkiman muun kuin säännellyn koulutuksen rekisteriin sekä korkeakoulujen valtakunnalliseen tietovarantoon"
   },
   {
     "accesscount": 0,
@@ -86134,12 +86330,12 @@
     "category": "koski",
     "created": 1694776730835,
     "createdBy": "anonymousUser",
-    "modified": 1694776730820,
+    "modified": 1697008444378,
     "modifiedBy": "anonymousUser",
     "id": 45371,
     "key": "Kansanopistojen vapaan sivistystyön koulutus oppivelvollisille",
     "locale": "sv",
-    "value": ""
+    "value": "Folkhögskolornas utbildning inom fritt bildningsarbete som riktar sig till läropliktiga"
   },
   {
     "accesscount": 0,
@@ -86722,12 +86918,12 @@
     "category": "koski",
     "created": 1525863031003,
     "createdBy": "anonymousUser",
-    "modified": 1643801224235,
+    "modified": 1699352110720,
     "modifiedBy": "anonymousUser",
     "id": 21054,
     "key": "Korkeakoulutusuoritukset ja opiskeluoikeudet ovat näkyvissä pääsääntöisesti vuodesta 1995 eteenpäin, mutta tässä voi olla korkeakoulukohtaisia poikkeuksia.",
     "locale": "sv",
-    "value": "högskoleprestationer och studierätter visas i regel från 1995, men här kan det förekomma skillnader mellan högskolor."
+    "value": "Du kan även i egenskap av vårdnadshavare granska uppgifter om dina barns studier."
   },
   {
     "accesscount": 0,
@@ -86932,12 +87128,12 @@
     "category": "koski",
     "created": 1525863030994,
     "createdBy": "anonymousUser",
-    "modified": 1526456509613,
+    "modified": 1699351617010,
     "modifiedBy": "anonymousUser",
     "id": 21045,
     "key": "Koski-palvelussa pystytään näyttämään seuraavat tiedot:",
     "locale": "sv",
-    "value": "Följande uppgifter kan visas i Koski-tjänsten:"
+    "value": "Observera:"
   },
   {
     "accesscount": 0,
@@ -88216,6 +88412,20 @@
   {
     "accesscount": 0,
     "force": false,
+    "accessed": 1698738008419,
+    "category": "koski",
+    "created": 1698738008419,
+    "createdBy": "anonymousUser",
+    "modified": 1700057585246,
+    "modifiedBy": "anonymousUser",
+    "id": 46158,
+    "key": "Lisää kotoutumiskoulutuksen ohjauksen osa-alue",
+    "locale": "sv",
+    "value": "Lägg till ett delområde i handledning i integrationsutbildning"
+  },
+  {
+    "accesscount": 0,
+    "force": false,
     "accessed": 1510233799082,
     "category": "koski",
     "created": 1510233799082,
@@ -88636,6 +88846,20 @@
   {
     "accesscount": 0,
     "force": false,
+    "accessed": 1698738008413,
+    "category": "koski",
+    "created": 1698738008413,
+    "createdBy": "anonymousUser",
+    "modified": 1700057725262,
+    "modifiedBy": "anonymousUser",
+    "id": 46155,
+    "key": "Lisää suomen/ruotsin kielen ja viestintätaitojen osa-alue",
+    "locale": "sv",
+    "value": "Lägg till ett delområde i finska/svenska språket och kommunikationsfärdigheter"
+  },
+  {
+    "accesscount": 0,
+    "force": false,
     "accessed": 1669971697835,
     "category": "koski",
     "created": 1669971697835,
@@ -88776,6 +89000,20 @@
   {
     "accesscount": 0,
     "force": false,
+    "accessed": 1698738008431,
+    "category": "koski",
+    "created": 1698738008431,
+    "createdBy": "anonymousUser",
+    "modified": 1700054804789,
+    "modifiedBy": "anonymousUser",
+    "id": 46164,
+    "key": "Lisää työelämän ja yhteiskuntataitojen opintojen osa-alue",
+    "locale": "sv",
+    "value": "Lägg till ett delområde för studier i samhälls- och arbetslivsfärdigheter"
+  },
+  {
+    "accesscount": 0,
+    "force": false,
     "accessed": 1647003010775,
     "category": "koski",
     "created": 1647003010775,
@@ -88822,12 +89060,12 @@
     "category": "koski",
     "created": 1694776730822,
     "createdBy": "anonymousUser",
-    "modified": 1694776730820,
+    "modified": 1697008158731,
     "modifiedBy": "anonymousUser",
     "id": 45359,
     "key": "Lisää uusi",
     "locale": "sv",
-    "value": ""
+    "value": "Lägg till ny"
   },
   {
     "accesscount": 0,
@@ -88878,12 +89116,12 @@
     "category": "koski",
     "created": 1694776730838,
     "createdBy": "anonymousUser",
-    "modified": 1694776730820,
+    "modified": 1697008473893,
     "modifiedBy": "anonymousUser",
     "id": 45374,
     "key": "Lisää valinnaiset",
     "locale": "sv",
-    "value": ""
+    "value": "Lägg till valfria"
   },
   {
     "accesscount": 0,
@@ -88898,6 +89136,20 @@
     "key": "Lisää valinnaisten opintojen koulutuksen osa/osasuoritus",
     "locale": "sv",
     "value": "Lägg till en utbildningsdel/delprestation i valbara studier"
+  },
+  {
+    "accesscount": 0,
+    "force": false,
+    "accessed": 1698738008425,
+    "category": "koski",
+    "created": 1698738008425,
+    "createdBy": "anonymousUser",
+    "modified": 1700054838656,
+    "modifiedBy": "anonymousUser",
+    "id": 46161,
+    "key": "Lisää valinnaisten opintojen osa-alue",
+    "locale": "sv",
+    "value": "Lägg till ett delområde i valbara studier"
   },
   {
     "accesscount": 0,
@@ -89648,12 +89900,12 @@
     "category": "koski",
     "created": 1694776730825,
     "createdBy": "anonymousUser",
-    "modified": 1694776730820,
+    "modified": 1697008146833,
     "modifiedBy": "anonymousUser",
     "id": 45362,
     "key": "Lukutaitokoulutus oppivelvollisille",
     "locale": "sv",
-    "value": ""
+    "value": "Litteracitetsutbildning för läropliktiga"
   },
   {
     "accesscount": 0,
@@ -90096,12 +90348,12 @@
     "category": "koski",
     "created": 1572434556405,
     "createdBy": "anonymousUser",
-    "modified": 1572510916703,
+    "modified": 1697034232867,
     "modifiedBy": "anonymousUser",
     "id": 23800,
     "key": "Mikäli huollettavasi tiedoista puuttuu opintosuorituksia tai opiskeluoikeuksia, joiden kuuluisi ylläolevien tietojen perusteella näkyä Koski-palvelussa, voit ilmoittaa asiasta oppilaitoksellesi.",
     "locale": "sv",
-    "value": "Om det för barnets del saknas sådana studieprestationer eller studierätter som, på basis av uppgifterna ovan, borde synas i KOSKI-tjänsten kan du meddela om detta till läroanstalten."
+    "value": "Om studieprestationer eller studierätter som enligt uppgifterna ovan borde synas i tjänsten Min Studieinfo saknas i dina eller ditt barns uppgifter, kan du meddela läroanstalten om detta."
   },
   {
     "accesscount": 0,
@@ -90110,12 +90362,12 @@
     "category": "koski",
     "created": 1525863031025,
     "createdBy": "anonymousUser",
-    "modified": 1554718843261,
+    "modified": 1697034176642,
     "modifiedBy": "anonymousUser",
     "id": 21081,
     "key": "Mikäli tiedoistasi puuttuu opintosuorituksia tai opiskeluoikeuksia, joiden kuuluisi ylläolevien tietojen perusteella näkyä Koski-palvelussa, voit ilmoittaa asiasta oppilaitoksellesi.",
     "locale": "sv",
-    "value": "Om studieprestationer eller studierätter som enligt uppgifterna ovan borde synas i Min Studieinfo-tjänsten saknas i dina uppgifter, kan du meddela din läroanstalt om detta."
+    "value": "Om studieprestationer eller studierätter som enligt uppgifterna ovan borde synas i tjänsten Min Studieinfo saknas i dina eller ditt barns uppgifter, kan du meddela läroanstalten om detta."
   },
   {
     "accesscount": 0,
@@ -90396,6 +90648,20 @@
     "key": "Näkee oppilaitoksen tiedot",
     "locale": "sv",
     "value": "Åtkomst till läroanstaltens uppgifter"
+  },
+  {
+    "accesscount": 0,
+    "force": false,
+    "accessed": 1698738008507,
+    "category": "koski",
+    "created": 1698738008507,
+    "createdBy": "anonymousUser",
+    "modified": 1700054863002,
+    "modifiedBy": "anonymousUser",
+    "id": 46167,
+    "key": "Näkymää ei saada ladattua. Yritä hetken päästä uudelleen.",
+    "locale": "sv",
+    "value": "Vyn kan inte laddas. Pröva på nytt om en stund."
   },
   {
     "accesscount": 0,
@@ -92430,6 +92696,20 @@
   {
     "accesscount": 0,
     "force": false,
+    "accessed": 1701687074857,
+    "category": "koski",
+    "created": 1701687074857,
+    "createdBy": "anonymousUser",
+    "modified": 1703750313672,
+    "modifiedBy": "anonymousUser",
+    "id": 46588,
+    "key": "Paikalliset opintokokonaisuudet",
+    "locale": "sv",
+    "value": "Lokala studiehelheter"
+  },
+  {
+    "accesscount": 0,
+    "force": false,
     "accessed": 1507555669085,
     "category": "koski",
     "created": 1507555669085,
@@ -93638,12 +93918,12 @@
     "category": "koski",
     "created": 1607942303580,
     "createdBy": "anonymousUser",
-    "modified": 1614609242635,
+    "modified": 1697116749643,
     "modifiedBy": "anonymousUser",
     "id": 28517,
     "key": "Raportille valitaan kaikki kurssisuoritukset riippumatta niiden suoritusajankohdasta",
     "locale": "sv",
-    "value": "På rapporten väljs alla kursprestationer oavsett prestationernas tidpunkt"
+    "value": "På rapporten väljs alla delprestationer oavsett prestationernas tidpunkt"
   },
   {
     "accesscount": 0,
@@ -93680,12 +93960,12 @@
     "category": "koski",
     "created": 1607942303552,
     "createdBy": "anonymousUser",
-    "modified": 1614609242635,
+    "modified": 1697116930849,
     "modifiedBy": "anonymousUser",
     "id": 28484,
     "key": "Raportille valitaan vain sellaiset kurssisuoritukset, joiden arviointipäivä osuu yllä määritellylle aikajaksolle",
     "locale": "sv",
-    "value": "På rapporten väljs endast sådana kursprestationer vars bedömningsdatum infaller under tidsperioden i fråga"
+    "value": "På rapporten väljs endast sådana delprestationer vars bedömningsdatum infaller under tidsperioden i fråga"
   },
   {
     "accesscount": 0,
@@ -93694,12 +93974,12 @@
     "category": "koski",
     "created": 1607942303659,
     "createdBy": "anonymousUser",
-    "modified": 1614609242635,
+    "modified": 1697117016343,
     "modifiedBy": "anonymousUser",
     "id": 28610,
     "key": "Raportille valitaan vain sellaiset kurssit, joiden arviointipäivä osuu yllä määritellylle aikajaksolle",
     "locale": "sv",
-    "value": "På rapporten väljs endast sådana kurser vars bedömningsdatum infaller under tidsperioden i fråga"
+    "value": "På rapporten väljs endast sådana delprestationer vars bedömningsdatum infaller under tidsperioden i fråga"
   },
   {
     "accesscount": 0,
@@ -94674,12 +94954,12 @@
     "category": "koski",
     "created": 1695105145663,
     "createdBy": "anonymousUser",
-    "modified": 1695105145373,
+    "modified": 1697008473894,
     "modifiedBy": "anonymousUser",
     "id": 45377,
     "key": "raportti-excel-default-value-muks",
     "locale": "sv",
-    "value": ""
+    "value": "Annan än reglerad utbildning"
   },
   {
     "accesscount": 0,
@@ -94954,12 +95234,12 @@
     "category": "koski",
     "created": 1695105145677,
     "createdBy": "anonymousUser",
-    "modified": 1695105145373,
+    "modified": 1697008581426,
     "modifiedBy": "anonymousUser",
     "id": 45380,
     "key": "raportti-excel-default-value-vst-jotpa",
     "locale": "sv",
-    "value": ""
+    "value": "Servicecentret för kontinuerligt lärande och sysselsättningens utbildning"
   },
   {
     "accesscount": 0,
@@ -94968,12 +95248,12 @@
     "category": "koski",
     "created": 1695105145771,
     "createdBy": "anonymousUser",
-    "modified": 1695105145373,
+    "modified": 1697008617181,
     "modifiedBy": "anonymousUser",
     "id": 45383,
     "key": "raportti-excel-default-value-vst-maahanmuuttajienkotoutumiskoulutus",
     "locale": "sv",
-    "value": ""
+    "value": "Integrationsutbildning för invandrare"
   },
   {
     "accesscount": 0,
@@ -109416,12 +109696,12 @@
     "category": "koski",
     "created": 1694776730827,
     "createdBy": "anonymousUser",
-    "modified": 1694776730820,
+    "modified": 1697008243767,
     "modifiedBy": "anonymousUser",
     "id": 45365,
     "key": "Työelämäjakson nimi",
     "locale": "sv",
-    "value": ""
+    "value": "Arbetslivsavsnittets namn"
   },
   {
     "accesscount": 0,
@@ -109846,6 +110126,20 @@
   {
     "accesscount": 0,
     "force": false,
+    "accessed": 1698738008406,
+    "category": "koski",
+    "created": 1698738008406,
+    "createdBy": "anonymousUser",
+    "modified": 1700057778668,
+    "modifiedBy": "anonymousUser",
+    "id": 46152,
+    "key": "validation:noMatchingValue",
+    "locale": "sv",
+    "value": "Värdet '{{actual}}' är inte tillåtet. Tillåtna värden: {{expected}}"
+  },
+  {
+    "accesscount": 0,
+    "force": false,
     "accessed": 1675326097141,
     "category": "koski",
     "created": 1675326097141,
@@ -110172,12 +110466,12 @@
     "category": "koski",
     "created": 1694776730830,
     "createdBy": "anonymousUser",
-    "modified": 1694776730820,
+    "modified": 1697008270021,
     "modifiedBy": "anonymousUser",
     "id": 45368,
     "key": "Vapaan sivistystyön koulutus",
     "locale": "sv",
-    "value": ""
+    "value": "Utbildning inom fritt bildningsarbete"
   },
   {
     "accesscount": 0,
@@ -110648,12 +110942,12 @@
     "category": "koski",
     "created": 1525863031013,
     "createdBy": "anonymousUser",
-    "modified": 1554719040410,
+    "modified": 1699352686705,
     "modifiedBy": "anonymousUser",
     "id": 21066,
     "key": "Vuoden 1990 jälkeen suoritetut ylioppilastutkinnot.",
     "locale": "sv",
-    "value": "Finska studentexamina som avlagts efter år 1990"
+    "value": "Läs mer om uppgifter som kan visas i Mina studieprestationer: https://opintopolku.fi/konfo/sv/sivu/min-studieinfo#mina-studieprestationer"
   },
   {
     "accesscount": 0,
@@ -110662,12 +110956,12 @@
     "category": "koski",
     "created": 1525863031011,
     "createdBy": "anonymousUser",
-    "modified": 1526978981417,
+    "modified": 1699351793504,
     "modifiedBy": "anonymousUser",
     "id": 21063,
     "key": "Vuoden 2018 tammikuun jälkeen suoritetut peruskoulun, lukion ja ammattikoulun opinnot ja voimassa olevat opiskeluoikeudet.",
     "locale": "sv",
-    "value": "Prestationer och studierätter i grundskola, gymnasium och yrkesskola som registrerats efter januari 2018"
+    "value": "Du kan se de studier och examina du har avlagt som har sparats i den nationella informationsresursen för undervisning och utbildning, studentexamensregistret, registret över annan än reglerad utbildning som Servicecentret för kontinuerligt lärande och sysselsättning anskaffat och högskolornas riksomfattande datalager"
   },
   {
     "accesscount": 0,
