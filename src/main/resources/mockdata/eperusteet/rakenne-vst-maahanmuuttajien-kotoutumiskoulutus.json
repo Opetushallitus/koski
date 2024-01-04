@@ -47,7 +47,8 @@
         "koulutustyyppi": "koulutustyyppi_30",
         "esikatseltavissa": false,
         "voimassaoloAlkaa": 1328047200000,
-        "voimassaoloLoppuu": null
+        "voimassaoloLoppuu": null,
+        "_perusteprojekti": null
       },
       "tavoite": {
         "_id": "7679026",

@@ -84,6 +84,33 @@
   "suorittaneenOsaaminen": null,
   "perusteenAikataulut": [
     {
+      "id": 7534990,
+      "peruste": {
+        "id": 7534950,
+        "nimi": {
+          "_id": "7788280",
+          "_tunniste": "65bbd2eb-4e10-4ed8-b258-11d0b3003c8f",
+          "fi": "Tutkintokoulutukseen valmentava koulutus",
+          "sv": "Utbildning som handleder för examensutbildning"
+        },
+        "tila": "valmis",
+        "tyyppi": "normaali",
+        "koulutustyyppi": "koulutustyyppi_40",
+        "esikatseltavissa": false,
+        "voimassaoloAlkaa": 1659301200000,
+        "voimassaoloLoppuu": null,
+        "_perusteprojekti": null
+      },
+      "tavoite": {
+        "_id": "7534934",
+        "_tunniste": "bc81169b-f996-4b50-bde8-2e6985502978",
+        "fi": "Peruste luotu"
+      },
+      "tapahtuma": "luominen",
+      "tapahtumapaiva": 1610688369525,
+      "julkinen": false
+    },
+    {
       "id": 7534991,
       "peruste": {
         "id": 7534950,
@@ -98,7 +125,8 @@
         "koulutustyyppi": "koulutustyyppi_40",
         "esikatseltavissa": false,
         "voimassaoloAlkaa": 1659301200000,
-        "voimassaoloLoppuu": null
+        "voimassaoloLoppuu": null,
+        "_perusteprojekti": null
       },
       "tavoite": {
         "_id": "7534935",
@@ -124,7 +152,8 @@
         "koulutustyyppi": "koulutustyyppi_40",
         "esikatseltavissa": false,
         "voimassaoloAlkaa": 1659301200000,
-        "voimassaoloLoppuu": null
+        "voimassaoloLoppuu": null,
+        "_perusteprojekti": null
       },
       "tavoite": {
         "_id": "7792500",
@@ -133,32 +162,6 @@
       },
       "tapahtuma": "julkaisu",
       "tapahtumapaiva": 1627765200000,
-      "julkinen": false
-    },
-    {
-      "id": 7534990,
-      "peruste": {
-        "id": 7534950,
-        "nimi": {
-          "_id": "7788280",
-          "_tunniste": "65bbd2eb-4e10-4ed8-b258-11d0b3003c8f",
-          "fi": "Tutkintokoulutukseen valmentava koulutus",
-          "sv": "Utbildning som handleder för examensutbildning"
-        },
-        "tila": "valmis",
-        "tyyppi": "normaali",
-        "koulutustyyppi": "koulutustyyppi_40",
-        "esikatseltavissa": false,
-        "voimassaoloAlkaa": 1659301200000,
-        "voimassaoloLoppuu": null
-      },
-      "tavoite": {
-        "_id": "7534934",
-        "_tunniste": "bc81169b-f996-4b50-bde8-2e6985502978",
-        "fi": "Peruste luotu"
-      },
-      "tapahtuma": "luominen",
-      "tapahtumapaiva": 1610688369525,
       "julkinen": false
     }
   ],
