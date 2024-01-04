@@ -83,6 +83,32 @@
   {
     "metadata": [
       {
+        "nimi": "EB-tutkinto",
+        "kuvaus": "",
+        "lyhytNimi": "EB-tutkinto",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "EB-examen",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "EB diploma",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "opiskeluoikeudentyyppi_ebtutkinto",
+    "versio": 1,
+    "koodiArvo": "ebtutkinto"
+  },
+  {
+    "metadata": [
+      {
         "nimi": "Esiopetus",
         "kuvaus": "",
         "lyhytNimi": "Esiopetus",
@@ -133,29 +159,6 @@
     "koodiUri": "opiskeluoikeudentyyppi_europeanschoolofhelsinki",
     "versio": 1,
     "koodiArvo": "europeanschoolofhelsinki"
-  },
-  {
-    "koodiUri": "opiskeluoikeudentyyppi_ebtutkinto",
-    "koodiArvo": "ebtutkinto",
-    "metadata": [
-      {
-        "nimi": "EB-tutkinto",
-        "lyhytNimi": "EB-tutkinto",
-        "kuvaus": "",
-        "kieli": "FI"
-      },
-      {
-        "nimi": "EB-examen",
-        "kuvaus": "",
-        "kieli": "SV"
-      },
-      {
-        "nimi": "EB diploma",
-        "kieli": "EN"
-      }
-    ],
-    "versio": 1,
-    "withinCodeElements": []
   },
   {
     "metadata": [

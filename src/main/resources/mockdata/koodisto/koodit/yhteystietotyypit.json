@@ -129,6 +129,32 @@
   {
     "metadata": [
       {
+        "nimi": "Auktorisoitujen kääntäjien rekisterin yhteystiedot",
+        "kuvaus": "Ylläpitäjät: Terhi Seinä, Saara Kalajoki",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Auktorisoitujen kääntäjien rekisterin yhteystiedot",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Auktorisoitujen kääntäjien rekisterin yhteystiedot",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "yhteystietotyypit_yhteystietotyyppi14",
+    "versio": 1,
+    "koodiArvo": "yhteystietotyyppi14"
+  },
+  {
+    "metadata": [
+      {
         "nimi": "Työosoite",
         "kuvaus": "Työosoite",
         "lyhytNimi": "Työosoite",

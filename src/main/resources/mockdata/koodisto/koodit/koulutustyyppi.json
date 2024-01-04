@@ -37091,6 +37091,11 @@
         "passive": true
       },
       {
+        "codeElementUri": "koulutus_771302",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
         "codeElementUri": "koulutus_652901",
         "codeElementVersion": 1,
         "passive": false

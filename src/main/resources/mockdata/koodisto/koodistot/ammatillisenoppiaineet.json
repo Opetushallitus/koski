@@ -1,7 +1,7 @@
 {
   "koodistoUri": "ammatillisenoppiaineet",
   "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/ammatillisenoppiaineet",
-  "omistaja": null,
+  "omistaja": "Ammatillinen, ePerusteet",
   "organisaatioOid": "1.2.246.562.10.00000000001",
   "lukittu": null,
   "withinCodes": [
@@ -36,19 +36,59 @@
       }
     }
   ],
-  "includesCodes": [],
+  "includesCodes": [
+    {
+      "codesUri": "osaamistavoitteet",
+      "codesVersion": 1,
+      "passive": false,
+      "nimi": {
+        "FI": "osaamistavoitteet"
+      },
+      "kuvaus": {
+        "FI": "ePerusteet yhteisten tutkinnon osien osa-alueet"
+      }
+    }
+  ],
   "levelsWithCodes": [],
   "codesGroupUri": "koulutuskoodistot",
-  "version": 5,
+  "version": 6,
   "versio": 1,
-  "paivitysPvm": "2018-05-14",
-  "paivittajaOid": null,
+  "paivitysPvm": "2023-09-27",
+  "paivittajaOid": "1.2.246.562.24.78186833301",
   "voimassaAlkuPvm": "2015-01-01",
   "voimassaLoppuPvm": null,
   "tila": "LUONNOS",
   "metadata": [
     {
+      "kieli": "SV",
+      "nimi": "Delområden för gemensamma examensdelar",
+      "kuvaus": "Delområden för gemensamma examensdelar",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    },
+    {
       "kieli": "FI",
+      "nimi": "Yhteisten tutkinnon osien osa-alueet",
+      "kuvaus": "Yhteisten tutkinnon osien osa-alueet",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    },
+    {
+      "kieli": "EN",
       "nimi": "Yhteisten tutkinnon osien osa-alueet",
       "kuvaus": "Yhteisten tutkinnon osien osa-alueet",
       "kayttoohje": null,

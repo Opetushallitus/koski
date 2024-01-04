@@ -173,5 +173,33 @@
     "koodiUri": "yhteystietojenalkupera_alkupera7",
     "versio": 1,
     "koodiArvo": "alkupera7"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Auktorisoitujenkaantajienrekisteri",
+        "kuvaus": "Ylläpitäjät: Terhi Seinä, Saara Kalajoki",
+        "lyhytNimi": "AKR",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Auktorisoitujenkaantajienrekisteri",
+        "kuvaus": null,
+        "lyhytNimi": "AKR",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Auktorisoitujenkaantajienrekisteri",
+        "kuvaus": null,
+        "lyhytNimi": "AKR",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "yhteystietojenalkupera_alkupera8",
+    "versio": 1,
+    "koodiArvo": "alkupera8"
   }
 ]

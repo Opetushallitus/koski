@@ -1847,6 +1847,7 @@ describe('Perusopetus', function () {
               'serbia',
               'slovakki',
               'sloveeni',
+              'somali',
               'suahili',
               'suomi toisena kielenä',
               'suomi viittomakielisille',

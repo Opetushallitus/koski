@@ -40,32 +40,6 @@
   "suorittaneenOsaaminen": null,
   "perusteenAikataulut": [
     {
-      "id": 7512422,
-      "peruste": {
-        "id": 7512390,
-        "nimi": {
-          "_id": "7526380",
-          "_tunniste": "1406f8a1-6ec8-4de3-82c6-fe37b1871e37",
-          "fi": "Kansanopistojen oppivelvollisille suunnatun vapaan sivistystyön koulutuksen opetussuunnitelman perusteet 2021",
-          "sv": "Grunderna för läroplanen för folkhögskolornas utbildning inom det fria bildningsarbetet som riktar sig till läropliktiga 2021"
-        },
-        "tila": "valmis",
-        "tyyppi": "normaali",
-        "koulutustyyppi": "koulutustyyppi_10",
-        "esikatseltavissa": false,
-        "voimassaoloAlkaa": 1627765200000,
-        "voimassaoloLoppuu": null
-      },
-      "tavoite": {
-        "_id": "7512432",
-        "_tunniste": "cac0a084-56bc-48b7-b8a2-bb0bf9621a68",
-        "fi": "Perusteen arvioitu julkaisupäivä"
-      },
-      "tapahtuma": "julkaisu",
-      "tapahtumapaiva": 1609452000000,
-      "julkinen": false
-    },
-    {
       "id": 7512421,
       "peruste": {
         "id": 7512390,
@@ -80,7 +54,8 @@
         "koulutustyyppi": "koulutustyyppi_10",
         "esikatseltavissa": false,
         "voimassaoloAlkaa": 1627765200000,
-        "voimassaoloLoppuu": null
+        "voimassaoloLoppuu": null,
+        "_perusteprojekti": null
       },
       "tavoite": {
         "_id": "7512431",
@@ -89,6 +64,33 @@
       },
       "tapahtuma": "luominen",
       "tapahtumapaiva": 1608530157682,
+      "julkinen": false
+    },
+    {
+      "id": 7512422,
+      "peruste": {
+        "id": 7512390,
+        "nimi": {
+          "_id": "7526380",
+          "_tunniste": "1406f8a1-6ec8-4de3-82c6-fe37b1871e37",
+          "fi": "Kansanopistojen oppivelvollisille suunnatun vapaan sivistystyön koulutuksen opetussuunnitelman perusteet 2021",
+          "sv": "Grunderna för läroplanen för folkhögskolornas utbildning inom det fria bildningsarbetet som riktar sig till läropliktiga 2021"
+        },
+        "tila": "valmis",
+        "tyyppi": "normaali",
+        "koulutustyyppi": "koulutustyyppi_10",
+        "esikatseltavissa": false,
+        "voimassaoloAlkaa": 1627765200000,
+        "voimassaoloLoppuu": null,
+        "_perusteprojekti": null
+      },
+      "tavoite": {
+        "_id": "7512432",
+        "_tunniste": "cac0a084-56bc-48b7-b8a2-bb0bf9621a68",
+        "fi": "Perusteen arvioitu julkaisupäivä"
+      },
+      "tapahtuma": "julkaisu",
+      "tapahtumapaiva": 1609452000000,
       "julkinen": false
     },
     {
@@ -106,7 +108,8 @@
         "koulutustyyppi": "koulutustyyppi_10",
         "esikatseltavissa": false,
         "voimassaoloAlkaa": 1627765200000,
-        "voimassaoloLoppuu": null
+        "voimassaoloLoppuu": null,
+        "_perusteprojekti": null
       },
       "tavoite": {
         "_id": "7512430",

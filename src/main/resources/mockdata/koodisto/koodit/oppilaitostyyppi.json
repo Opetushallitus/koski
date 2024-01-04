@@ -286,7 +286,7 @@
     "levelsWithCodeElements": [],
     "koodiUri": "oppilaitostyyppi_01",
     "versio": 1,
-    "koodiArvo": "67"
+    "koodiArvo": "01"
   },
   {
     "metadata": [
@@ -14966,6 +14966,16 @@
         "passive": false
       },
       {
+        "codeElementUri": "oppilaitosnumero_03900",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitosnumero_03901",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
         "codeElementUri": "oppilaitosnumero_08433",
         "codeElementVersion": 1,
         "passive": false
@@ -28725,6 +28735,16 @@
         "passive": false
       },
       {
+        "codeElementUri": "oppilaitosnumero_30062",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitosnumero_30029",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
         "codeElementUri": "oppilaitosnumero_02587",
         "codeElementVersion": 1,
         "passive": false
@@ -34096,6 +34116,11 @@
         "passive": false
       },
       {
+        "codeElementUri": "oppilaitosnumero_09173",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
         "codeElementUri": "oppilaitosnumero_01928",
         "codeElementVersion": 1,
         "passive": false
@@ -37692,11 +37717,6 @@
         "passive": false
       },
       {
-        "codeElementUri": "oppilaitosnumero_30029",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
         "codeElementUri": "oppilaitosnumero_30050",
         "codeElementVersion": 1,
         "passive": false
@@ -37758,11 +37778,6 @@
       },
       {
         "codeElementUri": "oppilaitosnumero_30039",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
-        "codeElementUri": "oppilaitosnumero_30062",
         "codeElementVersion": 1,
         "passive": false
       },

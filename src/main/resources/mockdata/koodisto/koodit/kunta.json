@@ -6008,11 +6008,6 @@
         "passive": false
       },
       {
-        "codeElementUri": "oppilaitosnumero_00088",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
         "codeElementUri": "oppilaitosnumero_00041",
         "codeElementVersion": 1,
         "passive": false
@@ -7233,11 +7228,6 @@
       },
       {
         "codeElementUri": "oppilaitosnumero_00399",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
-        "codeElementUri": "oppilaitosnumero_00059",
         "codeElementVersion": 1,
         "passive": false
       },
@@ -11336,11 +11326,6 @@
         "passive": false
       },
       {
-        "codeElementUri": "oppilaitosnumero_00010",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
         "codeElementUri": "oppilaitosnumero_00045",
         "codeElementVersion": 1,
         "passive": false
@@ -13832,7 +13817,7 @@
     ],
     "withinCodeElements": [
       {
-        "codeElementUri": "aluehallintovirasto_1",
+        "codeElementUri": "aluehallintovirasto_9",
         "codeElementVersion": 2,
         "passive": false
       },
@@ -13845,42 +13830,27 @@
         "codeElementUri": "oppilaitosnumero_08991",
         "codeElementVersion": 1,
         "passive": false
-      },
-      {
-        "codeElementUri": "aluehallintovirasto_1",
-        "codeElementVersion": 1,
-        "passive": true
       }
     ],
     "includesCodeElements": [
       {
-        "codeElementUri": "kielisuhde_0",
+        "codeElementUri": "maakunta_99",
         "codeElementVersion": 2,
         "passive": false
       },
       {
-        "codeElementUri": "maakunta_01",
+        "codeElementUri": "seutukunta_999",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "laani_9",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "kielisuhde_9",
         "codeElementVersion": 2,
-        "passive": false
-      },
-      {
-        "codeElementUri": "maakunta_01",
-        "codeElementVersion": 1,
-        "passive": true
-      },
-      {
-        "codeElementUri": "seutukunta_011",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
-        "codeElementUri": "kielisuhde_0",
-        "codeElementVersion": 1,
-        "passive": true
-      },
-      {
-        "codeElementUri": "laani_1",
-        "codeElementVersion": 1,
         "passive": false
       }
     ],
@@ -19454,11 +19424,6 @@
         "codeElementUri": "koulutustoimija_01914066",
         "codeElementVersion": 1,
         "passive": false
-      },
-      {
-        "codeElementUri": "oppilaitosnumero_00280",
-        "codeElementVersion": 1,
-        "passive": false
       }
     ],
     "includesCodeElements": [
@@ -23469,6 +23434,11 @@
         "passive": false
       },
       {
+        "codeElementUri": "oppilaitosnumero_09173",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
         "codeElementUri": "oppilaitosnumero_06993",
         "codeElementVersion": 1,
         "passive": false
@@ -25128,11 +25098,6 @@
       },
       {
         "codeElementUri": "koulutustoimija_01917179",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
-        "codeElementUri": "oppilaitosnumero_00271",
         "codeElementVersion": 1,
         "passive": false
       }
@@ -31933,6 +31898,11 @@
         "passive": false
       },
       {
+        "codeElementUri": "oppilaitosnumero_03901",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
         "codeElementUri": "oppilaitosnumero_06664",
         "codeElementVersion": 1,
         "passive": false
@@ -36138,6 +36108,11 @@
       {
         "codeElementUri": "aluehallintovirasto_5",
         "codeElementVersion": 2,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitosnumero_03900",
+        "codeElementVersion": 1,
         "passive": false
       },
       {

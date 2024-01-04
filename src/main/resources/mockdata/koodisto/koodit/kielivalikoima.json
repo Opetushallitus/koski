@@ -2320,6 +2320,34 @@
   {
     "metadata": [
       {
+        "nimi": "somali",
+        "kuvaus": "somali",
+        "lyhytNimi": "somali",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "somaliska",
+        "kuvaus": "somaliska",
+        "lyhytNimi": "somaliska",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Somali",
+        "kuvaus": "Somali",
+        "lyhytNimi": "Somali",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_so",
+    "versio": 1,
+    "koodiArvo": "SO"
+  },
+  {
+    "metadata": [
+      {
         "nimi": "albania",
         "kuvaus": "albania",
         "lyhytNimi": "albania",

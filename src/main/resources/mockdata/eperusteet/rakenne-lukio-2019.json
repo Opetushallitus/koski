@@ -1,7 +1,7 @@
 {
   "id": 6828810,
   "globalVersion": {
-    "aikaleima": 1685688272866
+    "aikaleima": 1696405935326
   },
   "nimi": {
     "_id": "6858073",
@@ -51,7 +51,7 @@
   "siirtymaPaattyy": null,
   "voimassaoloLoppuu": null,
   "paatospvm": 1573077600000,
-  "viimeisinJulkaisuAika": 1684923611213,
+  "viimeisinJulkaisuAika": 1695815076193,
   "luotu": 1572509694541,
   "muokattu": 1675942773678,
   "tila": "valmis",
@@ -82,6 +82,7 @@
         "esikatseltavissa": false,
         "voimassaoloAlkaa": 1627765200000,
         "voimassaoloLoppuu": null,
+        "_perusteprojekti": null,
         "suoritustavat": [
           {
             "suoritustapakoodi": "lukiokoulutus2019",
@@ -22115,8 +22116,8 @@
               {
                 "id": 6832308,
                 "nimi": {
-                  "_id": "6832437",
-                  "_tunniste": "0782f3dc-e3fd-4e5f-a0c7-4c152df1a098",
+                  "_id": "9026036",
+                  "_tunniste": "42d61115-db9c-47c9-9a2c-356d9413df36",
                   "fi": "Lausekkeet ja yhtälöt",
                   "sv": "Uttryck och ekvationer"
                 },
@@ -22170,11 +22171,7 @@
                 },
                 "sisallot": [
                   {
-                    "kohde": {
-                      "_id": "6832443",
-                      "_tunniste": "aa41aafc-b33e-4e3b-92e6-de41b831b91d",
-                      "fi": "Keskeiset sisällöt"
-                    },
+                    "kohde": null,
                     "sisallot": [
                       {
                         "_id": "6832444",
@@ -22220,8 +22217,8 @@
               {
                 "id": 6832309,
                 "nimi": {
-                  "_id": "6832450",
-                  "_tunniste": "7649f566-aedb-45b0-977e-d26e2dc48e3d",
+                  "_id": "9026037",
+                  "_tunniste": "6bbc4749-ac25-491e-b023-32a9b730ce1d",
                   "fi": "Geometria",
                   "sv": "Geometri"
                 },
@@ -22275,11 +22272,7 @@
                 },
                 "sisallot": [
                   {
-                    "kohde": {
-                      "_id": "6832456",
-                      "_tunniste": "2998a850-2876-4812-856f-13c54bdf5214",
-                      "fi": "Keskeiset sisällöt"
-                    },
+                    "kohde": null,
                     "sisallot": [
                       {
                         "_id": "6832457",
@@ -22319,8 +22312,8 @@
               {
                 "id": 6832470,
                 "nimi": {
-                  "_id": "6832462",
-                  "_tunniste": "ea369d03-3e04-48f6-ae73-26878e3d7246",
+                  "_id": "9026038",
+                  "_tunniste": "18238a74-41f6-46f4-b26c-2fa8dd18301b",
                   "fi": "Matemaattisia malleja",
                   "sv": "Matematiska modeller"
                 },
@@ -22374,11 +22367,7 @@
                 },
                 "sisallot": [
                   {
-                    "kohde": {
-                      "_id": "6832468",
-                      "_tunniste": "1ace5182-bbc4-4a8c-94f0-adb052ed250a",
-                      "fi": "Keskeiset sisällöt"
-                    },
+                    "kohde": null,
                     "sisallot": [
                       {
                         "_id": "6832469",
@@ -22406,8 +22395,8 @@
               {
                 "id": 6832471,
                 "nimi": {
-                  "_id": "6832502",
-                  "_tunniste": "f1956430-eee1-455b-b3d4-bf3b268af0eb",
+                  "_id": "9026039",
+                  "_tunniste": "e6e60d15-06ce-4634-99c9-221122deda9c",
                   "fi": "Tilastot ja todennäköisyys",
                   "sv": "Statistik och sannolikhet"
                 },
@@ -22455,11 +22444,7 @@
                 },
                 "sisallot": [
                   {
-                    "kohde": {
-                      "_id": "6832507",
-                      "_tunniste": "db92905c-037f-4e72-bc21-5579637831d7",
-                      "fi": "Keskeiset sisällöt"
-                    },
+                    "kohde": null,
                     "sisallot": [
                       {
                         "_id": "6832508",
@@ -22517,8 +22502,8 @@
               {
                 "id": 6832472,
                 "nimi": {
-                  "_id": "6832516",
-                  "_tunniste": "e26d4bce-eb6b-47af-b2b1-4c67634a0177",
+                  "_id": "9026140",
+                  "_tunniste": "e4a1e524-4e6b-46eb-8253-66f89363a485",
                   "fi": "Talousmatematiikan alkeet",
                   "sv": "Grunder i ekonomisk matematik"
                 },
@@ -22572,11 +22557,7 @@
                 },
                 "sisallot": [
                   {
-                    "kohde": {
-                      "_id": "6832522",
-                      "_tunniste": "236bd690-ccfe-4185-af53-9c2bb73a17a2",
-                      "fi": "Keskeiset sisällöt"
-                    },
+                    "kohde": null,
                     "sisallot": [
                       {
                         "_id": "6832523",
@@ -22616,8 +22597,8 @@
               {
                 "id": 6832473,
                 "nimi": {
-                  "_id": "6832528",
-                  "_tunniste": "7e3a8fe0-a5e1-4eb0-ac9e-ce90883c8905",
+                  "_id": "9026141",
+                  "_tunniste": "7518b944-846d-4d02-b197-3e4d948fccf5",
                   "fi": "Talousmatematiikka",
                   "sv": "Ekonomisk matematik"
                 },
@@ -22671,11 +22652,7 @@
                 },
                 "sisallot": [
                   {
-                    "kohde": {
-                      "_id": "6832534",
-                      "_tunniste": "ea09836d-e805-4fe8-9756-c59c48cc79a5",
-                      "fi": "Keskeiset sisällöt"
-                    },
+                    "kohde": null,
                     "sisallot": [
                       {
                         "_id": "6832535",
@@ -22709,8 +22686,8 @@
               {
                 "id": 6832474,
                 "nimi": {
-                  "_id": "6832539",
-                  "_tunniste": "1e73f5f9-2acc-4da6-9278-51eff81de9e5",
+                  "_id": "9026142",
+                  "_tunniste": "c52c58fb-1a79-4bd6-ae01-3fa29c7a8c8e",
                   "fi": "Matemaattinen analyysi",
                   "sv": "Matematisk analys"
                 },
@@ -22770,11 +22747,7 @@
                 },
                 "sisallot": [
                   {
-                    "kohde": {
-                      "_id": "6832546",
-                      "_tunniste": "98ee1fc7-a7b9-4b1a-acd2-15132015b3af",
-                      "fi": "Keskeiset sisällöt"
-                    },
+                    "kohde": null,
                     "sisallot": [
                       {
                         "_id": "6832547",
@@ -22814,8 +22787,8 @@
               {
                 "id": 6832475,
                 "nimi": {
-                  "_id": "6832552",
-                  "_tunniste": "800482a7-a3b3-4131-a15b-7543c7efee86",
+                  "_id": "9026143",
+                  "_tunniste": "4f144bb0-cf31-4625-83bb-77c1e961e95b",
                   "fi": "Tilastolliset ja todennäköisyysjakaumat",
                   "sv": "Statistik- och sannolikhetsfördelningar"
                 },
@@ -22875,11 +22848,7 @@
                 },
                 "sisallot": [
                   {
-                    "kohde": {
-                      "_id": "6832559",
-                      "_tunniste": "da4e0030-e6f0-4993-b25d-d83ccfcd6866",
-                      "fi": "Keskeiset sisällöt"
-                    },
+                    "kohde": null,
                     "sisallot": [
                       {
                         "_id": "6832560",
@@ -24548,8 +24517,8 @@
           {
             "id": 6832648,
             "nimi": {
-              "_id": "6832834",
-              "_tunniste": "28688268-9a8c-49a0-b79b-afd26aae1380",
+              "_id": "9025207",
+              "_tunniste": "e1b5cf15-bcf8-4523-b44b-2d089bb879f1",
               "fi": "Elämä ja evoluutio",
               "sv": "Livet och evolutionen"
             },
@@ -24701,9 +24670,10 @@
               },
               {
                 "kohde": {
-                  "_id": "6832854",
+                  "_id": "9025208",
                   "_tunniste": "c4858482-27ca-47a0-9b33-7dcf8b60679c",
-                  "fi": "Eliökunta"
+                  "fi": "Eliökunta",
+                  "sv": "Organismvärlden"
                 },
                 "sisallot": [
                   {
@@ -26747,8 +26717,8 @@
           {
             "id": 6832898,
             "nimi": {
-              "_id": "6833205",
-              "_tunniste": "8038f1cf-0a81-4a48-a169-b33b7d15eb59",
+              "_id": "9025209",
+              "_tunniste": "b520e784-6039-48b4-8838-4c45b6c2f48c",
               "fi": "Fysiikka luonnontieteenä",
               "sv": "Fysiken som naturvetenskap"
             },
@@ -26813,11 +26783,7 @@
             },
             "sisallot": [
               {
-                "kohde": {
-                  "_id": "6833212",
-                  "_tunniste": "8010291b-c9aa-4987-92fa-b223b82bdbb3",
-                  "fi": "Keskeiset sisällöt"
-                },
+                "kohde": null,
                 "sisallot": [
                   {
                     "_id": "6833213",
@@ -26860,8 +26826,8 @@
           {
             "id": 6832899,
             "nimi": {
-              "_id": "6833219",
-              "_tunniste": "c9e57247-8881-451f-a379-770a739dcb24",
+              "_id": "9025640",
+              "_tunniste": "2211b0a9-7de9-4e9c-9687-52914f5dbd60",
               "fi": "Fysiikka, ympäristö ja yhteiskunta",
               "sv": "Fysik, miljö och samhälle"
             },
@@ -26920,11 +26886,7 @@
             },
             "sisallot": [
               {
-                "kohde": {
-                  "_id": "6833225",
-                  "_tunniste": "907e49c4-b106-4fe3-a4e1-1f7940777133",
-                  "fi": "Keskeiset sisällöt"
-                },
+                "kohde": null,
                 "sisallot": [
                   {
                     "_id": "6833226",
@@ -26961,8 +26923,8 @@
           {
             "id": 6833230,
             "nimi": {
-              "_id": "6833241",
-              "_tunniste": "0b09c52a-d456-43c9-b978-3a73fc45a450",
+              "_id": "9025641",
+              "_tunniste": "46e2cf90-7aad-4ec1-a893-dfd51d73e7f4",
               "fi": "Energia ja lämpö",
               "sv": "Energi och värme"
             },
@@ -27021,11 +26983,7 @@
             },
             "sisallot": [
               {
-                "kohde": {
-                  "_id": "6833247",
-                  "_tunniste": "f0b3c0d7-744e-4e03-a8f0-0130c291d75c",
-                  "fi": "Keskeiset sisällöt"
-                },
+                "kohde": null,
                 "sisallot": [
                   {
                     "_id": "6833248",
@@ -27101,8 +27059,8 @@
           {
             "id": 6833231,
             "nimi": {
-              "_id": "6839756",
-              "_tunniste": "ee0700b6-aae5-4663-aa43-08c6381916f9",
+              "_id": "9025642",
+              "_tunniste": "a1efe777-c931-43dc-873e-67b01d563806",
               "fi": "Voima ja liike",
               "sv": "Kraft och rörelse"
             },
@@ -27161,11 +27119,7 @@
             },
             "sisallot": [
               {
-                "kohde": {
-                  "_id": "6833285",
-                  "_tunniste": "b0533f77-6665-4180-9890-1361927d4bbc",
-                  "fi": "Keskeiset sisällöt"
-                },
+                "kohde": null,
                 "sisallot": [
                   {
                     "_id": "6833286",
@@ -27235,8 +27189,8 @@
           {
             "id": 6833232,
             "nimi": {
-              "_id": "6839757",
-              "_tunniste": "1bb3b06a-8864-4c5f-8ead-a963c41bf643",
+              "_id": "9025643",
+              "_tunniste": "b94590ad-c48d-4c4c-b211-94e87ae37ef7",
               "fi": "Jaksollinen liike ja aallot",
               "sv": "Periodisk rörelse och vågor"
             },
@@ -27295,11 +27249,7 @@
             },
             "sisallot": [
               {
-                "kohde": {
-                  "_id": "6833312",
-                  "_tunniste": "52c15778-eb59-4c05-9259-267344864a00",
-                  "fi": "Keskeiset sisällöt"
-                },
+                "kohde": null,
                 "sisallot": [
                   {
                     "_id": "6833313",
@@ -27381,8 +27331,8 @@
           {
             "id": 6833233,
             "nimi": {
-              "_id": "6839758",
-              "_tunniste": "8db46c01-96ca-48df-944e-055ab5d26a09",
+              "_id": "9025644",
+              "_tunniste": "d633abc3-fbc0-4501-8d18-fc58a4414e35",
               "fi": "Sähkö",
               "sv": "Elektricitet"
             },
@@ -27435,11 +27385,7 @@
             },
             "sisallot": [
               {
-                "kohde": {
-                  "_id": "6833330",
-                  "_tunniste": "0e500cc8-6794-4700-bb80-c3100e4f2c21",
-                  "fi": "Keskeiset sisällöt"
-                },
+                "kohde": null,
                 "sisallot": [
                   {
                     "_id": "6833331",
@@ -27527,10 +27473,10 @@
           {
             "id": 6833234,
             "nimi": {
-              "_id": "6839759",
-              "_tunniste": "43241020-f13d-48e4-8eab-729b903c6fd1",
+              "_id": "9025648",
+              "_tunniste": "d79b68a0-88d4-4eb0-9007-5158b0ba041b",
               "fi": "Sähkömagnetismi ja valo",
-              "sv": "Elektromagnetism  och ljus"
+              "sv": "Elektromagnetism och ljus"
             },
             "pakollinen": false,
             "koodi": {
@@ -27553,9 +27499,10 @@
             },
             "tavoitteet": {
               "kohde": {
-                "_id": "6833345",
+                "_id": "9025649",
                 "_tunniste": "a7421970-f5ab-4594-88fe-a61f4a8129df",
-                "fi": "Moduulin tavoitteena on, että opiskelija"
+                "fi": "Moduulin tavoitteena on, että opiskelija",
+                "sv": "Målen för modulen är att den studerande ska"
               },
               "tavoitteet": [
                 {
@@ -27586,11 +27533,7 @@
             },
             "sisallot": [
               {
-                "kohde": {
-                  "_id": "6833350",
-                  "_tunniste": "f5c50672-47e4-4324-8738-a4f06db50a56",
-                  "fi": "Keskeiset sisällöt"
-                },
+                "kohde": null,
                 "sisallot": [
                   {
                     "_id": "6833351",
@@ -27678,8 +27621,8 @@
           {
             "id": 6833235,
             "nimi": {
-              "_id": "6839890",
-              "_tunniste": "0bd2ab7a-7957-4ef2-a1a8-48466a91a432",
+              "_id": "9025646",
+              "_tunniste": "fe624f49-c613-414f-8c0d-eda28e374965",
               "fi": "Aine, säteily ja kvantittuminen",
               "sv": "Materia, strålning och kvantisering"
             },
@@ -27732,11 +27675,7 @@
             },
             "sisallot": [
               {
-                "kohde": {
-                  "_id": "6833369",
-                  "_tunniste": "ebb1c8db-7848-448b-807a-dcbe398656b5",
-                  "fi": "Keskeiset sisällöt"
-                },
+                "kohde": null,
                 "sisallot": [
                   {
                     "_id": "6833380",
@@ -28017,8 +27956,8 @@
           {
             "id": 6833236,
             "nimi": {
-              "_id": "6833418",
-              "_tunniste": "56e0e77b-4f6c-42d3-9439-28dfbe289b2a",
+              "_id": "9025810",
+              "_tunniste": "18f9726f-040c-4921-9d9a-873d147c0096",
               "fi": "Kemia ja minä",
               "sv": "Kemi och jag"
             },
@@ -28088,11 +28027,7 @@
             },
             "sisallot": [
               {
-                "kohde": {
-                  "_id": "6833426",
-                  "_tunniste": "687e2453-1dc0-4a3f-92e8-31c0c38a84b9",
-                  "fi": "Keskeiset sisällöt"
-                },
+                "kohde": null,
                 "sisallot": [
                   {
                     "_id": "6833427",
@@ -28150,8 +28085,8 @@
           {
             "id": 6833237,
             "nimi": {
-              "_id": "6833435",
-              "_tunniste": "46291e37-7cd8-4545-ac08-f25f0abe74ae",
+              "_id": "9025811",
+              "_tunniste": "85cbfdee-e485-45c0-978c-c12a625ce0eb",
               "fi": "Kemia ja kestävä tulevaisuus",
               "sv": "Kemi och hållbar framtid"
             },
@@ -28216,11 +28151,7 @@
             },
             "sisallot": [
               {
-                "kohde": {
-                  "_id": "6833442",
-                  "_tunniste": "38699805-e49a-4fb0-b8eb-37a5b1f6f00b",
-                  "fi": "Keskeiset sisällöt"
-                },
+                "kohde": null,
                 "sisallot": [
                   {
                     "_id": "6833443",
@@ -28272,8 +28203,8 @@
           {
             "id": 6833238,
             "nimi": {
-              "_id": "6839512",
-              "_tunniste": "95c70c40-0137-482e-b312-a5ae6769ca14",
+              "_id": "9025812",
+              "_tunniste": "e0c8149a-4062-4000-bb7b-778ae3e60b3c",
               "fi": "Molekyylit ja mallit",
               "sv": "Molekyler och modeller"
             },
@@ -28338,11 +28269,7 @@
             },
             "sisallot": [
               {
-                "kohde": {
-                  "_id": "6833467",
-                  "_tunniste": "96a44fc5-9930-4372-879c-734f57bb4385",
-                  "fi": "Keskeiset sisällöt"
-                },
+                "kohde": null,
                 "sisallot": [
                   {
                     "_id": "6833468",
@@ -28412,8 +28339,8 @@
           {
             "id": 6833239,
             "nimi": {
-              "_id": "6839753",
-              "_tunniste": "eda359f9-bd5c-40e6-99ab-a95560560a58",
+              "_id": "9025813",
+              "_tunniste": "8d30501f-2e7c-4456-879c-f045178acc78",
               "fi": "Kemiallinen reaktio",
               "sv": "Kemisk reaktion"
             },
@@ -28472,11 +28399,7 @@
             },
             "sisallot": [
               {
-                "kohde": {
-                  "_id": "6833484",
-                  "_tunniste": "a4d998ec-01f5-4dff-9cfa-6d12e5251d4a",
-                  "fi": "Keskeiset sisällöt"
-                },
+                "kohde": null,
                 "sisallot": [
                   {
                     "_id": "6833485",
@@ -28552,8 +28475,8 @@
           {
             "id": 6833500,
             "nimi": {
-              "_id": "6839754",
-              "_tunniste": "b88ee789-833a-4c30-990e-95c11b3a7d36",
+              "_id": "9025814",
+              "_tunniste": "539c9287-e042-460d-a4a5-031b5998bfd4",
               "fi": "Kemiallinen energia ja kiertotalous",
               "sv": "Kemisk energi och cirkulär ekonomi"
             },
@@ -28618,11 +28541,7 @@
             },
             "sisallot": [
               {
-                "kohde": {
-                  "_id": "6833533",
-                  "_tunniste": "c9a9ecf7-1be5-4011-a71a-8820fa875d85",
-                  "fi": "Keskeiset sisällöt"
-                },
+                "kohde": null,
                 "sisallot": [
                   {
                     "_id": "6833534",
@@ -28686,8 +28605,8 @@
           {
             "id": 6833501,
             "nimi": {
-              "_id": "6839755",
-              "_tunniste": "da64cf0b-0f47-4953-93d2-06f297894003",
+              "_id": "9025815",
+              "_tunniste": "f7443d66-196b-4492-a6b6-2a78a2804b7d",
               "fi": "Kemiallinen tasapaino",
               "sv": "Kemisk jämvikt"
             },
@@ -28752,11 +28671,7 @@
             },
             "sisallot": [
               {
-                "kohde": {
-                  "_id": "6833560",
-                  "_tunniste": "81436820-550b-49a2-835f-80a220831aaa",
-                  "fi": "Keskeiset sisällöt"
-                },
+                "kohde": null,
                 "sisallot": [
                   {
                     "_id": "6833561",
@@ -28865,10 +28780,10 @@
         "opiskeluymparistoTyotavat": null,
         "laajaAlaisetOsaamiset": {
           "kuvaus": {
-            "_id": "6833571",
+            "_id": "9041133",
             "_tunniste": "15afc9df-a832-4cf3-a263-08dd2828fbc6",
             "fi": "<p>Filosofian opiskelu tukee monipuolisesti opiskelijan <strong>vuorovaikutusosaamista sekä</strong> kasvua sivistyneeksi, vastuulliseksi ja yhdenvertaisuutta kunnioittavaksi kansalaiseksi. Oppiaine korostaa dialogisuutta ja hyvää argumentaatiota, mikä edistää opiskelijan sitoutumista kestäviin ajattelu- ja elämäntapoihin sekä oikeudenmukaisiin yhteiskunnallisiin käytäntöihin. Filosofia yhdistelee tiedonaloja sekä tukee eri tieteiden omaksumista ja elinikäistä oppimista. Sen opiskelu kehittää kielellistä ilmaisua, analyyttista ajattelua ja loogista päättelykykyä.</p>\n\n<p> </p>\n\n<p>Filosofiassa ongelmia jäsennetään käsitteellisesti ja dialogisesti. Siksi siinä korostuvat täsmällinen ja käsitteiden merkityksiä avaava kielenkäyttö sekä kielitietoisuus. Vaikka filosofia hyödyntää oman traditionsa ja muiden tieteenalojen termistöä, sen tavoitteena on selkeä ja ymmärrettävä kieli. Filosofian argumentatiivinen luonne kehittää ilmaisua, jossa painottuvat johdonmukaiset perustelut ja eri näkökulmien huomioiminen.</p>\n\n<p> </p>\n\n<p>Hyvää elämää ja yhteiskuntaa koskevat pohdinnat kuuluvat perinteisesti filosofian ytimeen. Filosofian opiskelu tukee hyvinvointiosaamista kehittämällä opiskelijan ymmärrystä itsestään, ajattelustaan ja suhteestaan muihin. Ymmärryksen kasvu liittyy ihmisen kasvuun kokonaisuutena ja ohjaa hyveisiin ja hyvinvointiin. Filosofian keskusteleva ja hyvää argumentaatiota korostava opiskelutapa tukee opiskelijoiden yhteisöllisyyttä ja vuorovaikutustaitoja sekä opettaa erilaisten näkemysten arvostamista. Samalla kannustetaan opiskelijaa sitoutumaan kestäviin ajattelu- ja elämäntapoihin sekä oikeudenmukaisiin yhteiskunnallisiin käytäntöihin. Filosofia kehittää epävarmuuden sietokykyä ja valmiutta toimia myös tilanteissa, joissa käytettävissä oleva informaatio on rajallista.</p>\n\n<p> </p>\n\n<p>Filosofiaan kuuluu perinteisesti <strong>monitieteistä ja luovaa osaamista</strong> vahvistava, eri tiedonaloja integroiva lähestymistapa. Sen opiskelu rakentaa luontevasti siltoja eri tieteenalojen välille. Filosofia auttaa omaksumaan erilaisia tiedonhankintatapoja sekä yhdistämään eri tieteiden tuloksia, mikä helpottaa laajojen kokonaisuuksien hahmottamista. Filosofisen ajattelun vahva johdonmukaisuuden vaatimus kehittää kykyä ymmärtää erilaisten argumenttien perusteita ja erottaa tosiasiaväitteet mielipiteistä. Kyseenalaistavana ja perusteita etsivänä oppiaineena filosofia rohkaisee luovaan ja itsenäiseen ajatteluun.</p>\n\n<p> </p>\n\n<p><strong>Yhteiskunnallisen osaamisen</strong> osalta filosofian opetuksessa sitoudutaan järkiperäiseen eettiseen ajatteluun, joka perustuu demokratian, ihmisoikeuksien ja kestävän tulevaisuuden kunnioittamiseen. Oikeudenmukaisen yhteiskunnan ja aktiivisen kansalaisuuden ihanteet ovat paitsi tarkastelun kohteita myös tavoitteita, joihin opetus pyrkii kasvattamaan. Filosofia kehittää luovan, kriittisen ja itsenäisen ajattelun kykyä, joka vahvistaa valmiuksia jatko-opintoihin, mielekkääseen urasuunnitteluun ja tulevaisuuden työelämän muutoksiin.</p>\n\n<p> </p>\n\n<p>Etiikka on filosofian perinteinen osa-alue ja siksi keskeinen osa filosofian opiskelua. Filosofia opettaa arvojen, normien ja merkitysten käsitteellistä jäsentämistä. <strong>Eettinen</strong> pohdinta kattaa niin yksilöä, yhteiskuntaa kuin ympäristöä koskevat kysymykset. Oppiaineen kriittinen perinne ohjaa opiskelijaa itsenäiseen ajatteluun ja kannustaa sitoutumaan moraalisesti kestävään toimintaan. Filosofian opiskelu auttaa hahmottamaan moniulotteisia ongelmia ja luomaan niistä kokonaisjäsennystä. Ymmärrys sosiaalisten ja ekologisten globaalien ongelmien luonteesta rohkaisee toimimaan niiden korjaamiseksi ja toteuttaa <strong>ympäristöosaamisen</strong> tavoitteita.</p>\n\n<p> </p>\n\n<p><strong>Gloabaali- ja kulttuuriosaamisen</strong> näkökulmasta filosofian opiskelu avartaa ajattelua ja auttaa ymmärtämään, että on olemassa erilaisia tapoja hahmottaa todellisuutta. Se kehittää herkkyyttä havaita yhtäläisyyksiä ja eroja maailman ilmiöissä. Filosofian osa-alueista erityisesti etiikka ja yhteiskuntafilosofia tarkastelevat ihmisten ja kulttuurien monimuotoisuutta sekä kannustavat ennakkoluulottomaan suhtautumiseen erilaisiin elämänilmiöihin. Filosofiset ajatuskokeet johdattavat hahmottelemaan mahdollisia tulevaisuuden kehityskulkuja.</p>",
-            "sv": "<p>Studierna i filosofi stödjer den studerandes <strong>kommunikativa kompetens </strong>på ett mångsidigt sätt, liksom även utvecklingen till en bildad och ansvarstagande medborgare med respekt för jämlikhet. Läroämnet betonar dialog och god argumentation, vilket gör att den studerande enklare kan ta till sig ett hållbart tänkande och en hållbar livsstil och rättvisa samhälleliga principer. Filosofin kombinerar olika vetenskapsområden och stödjer tillägnandet av olika vetenskaper och kontinuerligt lärande. Studier i filosofi utvecklar språklig uttrycksförmåga, analytiskt tänkande och logisk slutledning.</p>\n\n<p> </p>\n\n<p>I filosofin tolkas problem begreppsligt och dialogiskt. Därför betonas språklig medvetenhet samt ett exakt språkbruk som lyfter fram betydelsen av ändamålsenliga begrepp. Även om filosofin använder termer inom sin egen tradition och inom andra vetenskapliga discipliner är målet ett klart och begripligt språk. Filosofins argumenterande karaktär utvecklar ett uttrycksätt som fokuserar på logiska motiveringar och tar hänsyn till olika perspektiv.</p>\n\n<p> </p>\n\n<p>Reflektion över det goda livet och samhället är traditionellt kärnan i filosofin. Studier i filosofi stödjer <strong>kompetensen för välbefinnande</strong> genom att utveckla den studerandes förståelse av sig själv, sitt tänkande och sitt förhållande till andra människor. Utvecklingen av förståelsen sammanhänger med människans utveckling som helhet och leder till goda dygder och välbefinnande. Det diskuterande och argumenterande förhållningssättet främjar den sociala gemenskapen bland de studerande och deras kommunikationsfärdigheter och lär dem att respektera olika synpunkter. Samtidigt uppmuntras den studerande att tillägna sig hållbara sätt att tänka och leva och rättvisa samhälleliga principer. Filosofin utvecklar även tolerans för osäkerhet och förmåga att agera även i situationer där tillgången till information är begränsad.</p>\n\n<p> </p>\n\n<p>Filosofin har traditionellt omfattat ett synsätt som integrerar olika vetenskapliga discipliner och därigenom stimulerar <strong>tvärvetenskaplig och kreativ kompetens</strong>. Studier i filosofi bygger på ett naturligt sätt broar mellan olika discipliner. Filosofin hjälper den studerande att tillägna sig olika sätt att hämta information och att kombinera resultaten från olika vetenskaper, vilket gör det lättare att uppfatta stora helheter. Det starka kravet på logik i filosofiskt tänkande utvecklar förmågan att förstå motiveringarna för olika argument och att särskilja faktiska argument från åsikter. I egenskap av ett ämne som ifrågasätter och söker motiveringar uppmuntrar filosofin till kreativt och självständigt tänkande.</p>\n\n<p> </p>\n\n<p>När<strong> </strong>det gäller <strong>samhällelig kompetens </strong>ska undervisningen i filosofi engagera den studerande till ett rationellt etiskt tänkande baserat på respekt för demokrati, mänskliga rättigheter och hållbar utveckling. Idealen för ett rättvist samhälle och ett aktivt medborgarskap är inte endast föremål för analys och undervisning, utan också mål som undervisningen försöker främja. Filosofi utvecklar förmågan att tänka kreativt, kritiskt och självständigt, vilket utvecklar färdigheter för fortsatta studier, meningsfull karriärplanering och framtida förändringar i arbetslivet.</p>\n\n<p> </p>\n\n<p>Etik är ett traditionellt delområde av filosofin och därför också en central del av studierna i filosofi. Filosofi lär den studerande att strukturera värderingar, normer och betydelser begreppsligt. <strong>Etisk</strong> reflektion omfattar såväl individ- och samhällsfrågor som miljöfrågor. Den kritiska traditionen inom läroämnet utvecklar den studerandes förmåga till självständigt tänkande och uppmuntrar hen att agera moraliskt hållbart. Studier i filosofi bidrar till att uppfatta mångfasetterade problem och skapa en övergripande bild av dem. Förståelse av sociala och ekologiska globala problem uppmuntrar den studerande att agera för att korrigera dessa och uppfylla målen för <strong>miljökompetens</strong>.</p>\n\n<p> </p>\n\n<p>Med tanke <strong>på global och kulturell kompetens</strong> breddar studierna i filosofi tänkandet och hjälper till att förstå att det finns olika sätt att uppfatta verkligheten. Den studerande utvecklar en känslighet för att upptäcka likheter och skillnader i olika fenomen i världen. Av filosofins delområden fokuserar särskilt etik och social filosofi på mångfalden hos människor och kulturer och uppmuntrar till en fördomsfri attityd till olika livsfenomen. Genom filosofiska tankeexperiment ska den studerande ges tillfälle att föreställa sig möjliga framtida utvecklingstrender.</p>"
+            "sv": "<p>Studierna i filosofi stödjer den studerandes <strong>kommunikativa kompetens </strong>på ett mångsidigt sätt, liksom även utvecklingen till en bildad och ansvarstagande medborgare med respekt för jämlikhet. Läroämnet betonar dialog och god argumentation, vilket gör att den studerande enklare kan ta till sig ett hållbart tänkande och en hållbar livsstil och rättvisa samhälleliga principer. Filosofin kombinerar olika vetenskapsområden och stödjer tillägnandet av olika vetenskaper och kontinuerligt lärande. Studier i filosofi utvecklar språklig uttrycksförmåga, analytiskt tänkande och logisk slutledning.</p><p></p><p>I filosofin tolkas problem begreppsligt och dialogiskt. Därför betonas språklig medvetenhet samt ett exakt språkbruk som lyfter fram betydelsen av ändamålsenliga begrepp. Även om filosofin använder termer inom sin egen tradition och inom andra vetenskapliga discipliner är målet ett klart och begripligt språk. Filosofins argumenterande karaktär utvecklar ett uttrycksätt som fokuserar på logiska motiveringar och tar hänsyn till olika perspektiv.</p><p></p><p>Reflektion över det goda livet och samhället är traditionellt kärnan i filosofin. Studier i filosofi stödjer <strong>kompetensen för välbefinnande</strong> genom att utveckla den studerandes förståelse av sig själv, sitt tänkande och sitt förhållande till andra människor. Utvecklingen av förståelsen sammanhänger med människans utveckling som helhet och leder till dygder och välbefinnande. Det diskuterande och argumenterande förhållningssättet främjar den sociala gemenskapen bland de studerande och deras kommunikationsfärdigheter och lär dem att respektera olika synpunkter. Samtidigt uppmuntras den studerande att tillägna sig hållbara sätt att tänka och leva och rättvisa samhälleliga principer. Filosofin utvecklar även tolerans för osäkerhet och förmåga att agera även i situationer där tillgången till information är begränsad.</p><p></p><p>Filosofin har traditionellt omfattat ett synsätt som integrerar olika vetenskapliga discipliner och därigenom stimulerar <strong>tvärvetenskaplig och kreativ kompetens</strong>. Studier i filosofi bygger på ett naturligt sätt broar mellan olika discipliner. Filosofin hjälper den studerande att tillägna sig olika sätt att hämta information och att kombinera resultaten från olika vetenskaper, vilket gör det lättare att uppfatta stora helheter. Det starka kravet på logik i filosofiskt tänkande utvecklar förmågan att förstå motiveringarna för olika argument och att särskilja faktiska argument från åsikter. I egenskap av ett ämne som ifrågasätter och söker motiveringar uppmuntrar filosofin till kreativt och självständigt tänkande.</p><p></p><p>När<strong> </strong>det gäller <strong>samhällelig kompetens </strong>ska undervisningen i filosofi engagera den studerande till ett rationellt etiskt tänkande baserat på respekt för demokrati, mänskliga rättigheter och hållbar utveckling. Idealen för ett rättvist samhälle och ett aktivt medborgarskap är inte endast föremål för analys och undervisning, utan också mål som undervisningen försöker främja. Filosofi utvecklar förmågan att tänka kreativt, kritiskt och självständigt, vilket utvecklar färdigheter för fortsatta studier, meningsfull karriärplanering och framtida förändringar i arbetslivet.</p><p></p><p>Etik är ett traditionellt delområde av filosofin och därför också en central del av studierna i filosofi. Filosofi lär den studerande att strukturera värderingar, normer och betydelser begreppsligt. <strong>Etisk</strong> reflektion omfattar såväl individ- och samhällsfrågor som miljöfrågor. Den kritiska traditionen inom läroämnet utvecklar den studerandes förmåga till självständigt tänkande och uppmuntrar hen att agera moraliskt hållbart. Studier i filosofi bidrar till att uppfatta mångfasetterade problem och skapa en övergripande bild av dem. Förståelse av sociala och ekologiska globala problem uppmuntrar den studerande att agera för att korrigera dessa och uppfylla målen för <strong>miljökompetens</strong>.</p><p></p><p>Med tanke <strong>på global och kulturell kompetens</strong> breddar studierna i filosofi tänkandet och hjälper till att förstå att det finns olika sätt att uppfatta verkligheten. Den studerande utvecklar en känslighet för att upptäcka likheter och skillnader i olika fenomen i världen. Av filosofins delområden fokuserar särskilt etik och samhällsfilosofi på mångfalden hos människor och kulturer och uppmuntrar till en fördomsfri attityd till olika livsfenomen. Genom filosofiska tankeexperiment ska den studerande ges tillfälle att föreställa sig möjliga framtida utvecklingstrender.</p>"
           }
         },
         "tavoitteet": {
@@ -29035,8 +28950,8 @@
           {
             "id": 6833503,
             "nimi": {
-              "_id": "6833604",
-              "_tunniste": "d4ad5949-0877-4d05-b261-944bff4ae04c",
+              "_id": "9040997",
+              "_tunniste": "3a62356d-1236-48a3-8bf8-2c4cb1f49886",
               "fi": "Etiikka",
               "sv": "Etik"
             },
@@ -29075,10 +28990,10 @@
                   "sv": "kunna motivera uppfattningar om det goda och det rätta samt förstå skillnaden mellan normativa och deskriptiva påståenden"
                 },
                 {
-                  "_id": "6833608",
+                  "_id": "9040996",
                   "_tunniste": "f3536987-66f2-4733-8329-80419595e0d5",
                   "fi": "osaa esittää suullisesti ja kirjallisesti johdonmukaisia eettisiä argumentteja sekä perustella moraalin velvoittavuutta",
-                  "sv": "kunna presentera logiska och etiska argument muntligt och skriftligt samt motivera moralens förpliktande karaktär"
+                  "sv": "kunna presentera konsekventa etiska argument muntligt och skriftligt samt motivera moralens förpliktande karaktär"
                 },
                 {
                   "_id": "6833609",
@@ -29129,10 +29044,10 @@
                     "sv": "etik och individens moraliska beslut: mänskliga relationer och livsval"
                   },
                   {
-                    "_id": "6833616",
+                    "_id": "9040998",
                     "_tunniste": "3b2d1786-05ee-496b-926d-a8fe8da6a38b",
                     "fi": "ympäristöä ja luontoa koskevia eettisiä kysymyksiä, kuten ilmastonmuutos ja eläinten oikeudet",
-                    "sv": "etiska frågor kring miljön och naturen, såsom miljöförändringen och djurens rättigheter"
+                    "sv": "etiska frågor kring miljön och naturen, såsom klimatförändringen och djurens rättigheter"
                   },
                   {
                     "_id": "6833617",
@@ -30470,8 +30385,8 @@
           {
             "id": 6833830,
             "nimi": {
-              "_id": "6833823",
-              "_tunniste": "d1fc0591-5df0-4e43-a560-e04d9acdb4a0",
+              "_id": "9040999",
+              "_tunniste": "0c04ee39-6499-4f07-873b-c5eecf0fe8ac",
               "fi": "Yksilöllinen ja yhteisöllinen ihminen",
               "sv": "Människan som individ och social varelse"
             },
@@ -30653,10 +30568,10 @@
                     "sv": "informationsbearbetning i sociala situationer: uppkomsten av stereotyper, attributioner, attityder och fördomar"
                   },
                   {
-                    "_id": "6833868",
+                    "_id": "9041130",
                     "_tunniste": "157dc6c4-e251-4809-a6bd-322a08102ecc",
                     "fi": "esimerkkejä sosiaalisuuden hermostollisesta perustasta",
-                    "sv": "exempel på den neurala grunden för socialisation"
+                    "sv": "exempel på den neurala grunden för socialitet"
                   },
                   {
                     "_id": "6833869",
@@ -32142,8 +32057,8 @@
           {
             "id": 6833837,
             "nimi": {
-              "_id": "6834124",
-              "_tunniste": "86c6b907-7697-44b7-9575-782c10c8c1a0",
+              "_id": "9026144",
+              "_tunniste": "dd3d2c51-6d1b-4f1e-96a0-1ab4258eb12f",
               "fi": "Suomalainen yhteiskunta",
               "sv": "Det finländska samhället"
             },
@@ -32168,9 +32083,10 @@
             },
             "tavoitteet": {
               "kohde": {
-                "_id": "6834125",
+                "_id": "9026145",
                 "_tunniste": "17639119-0054-4a0a-b61e-36c255f7cb85",
-                "fi": "Moduulin tavoitteena on, että opiskelija"
+                "fi": "Moduulin tavoitteena on, että opiskelija",
+                "sv": "Målen för modulen är att den studerande ska"
               },
               "tavoitteet": [
                 {
@@ -34547,7 +34463,9 @@
                 "koodi": {
                   "id": 6834539,
                   "nimi": {
-                    "fi": "Uskonto ilmiönä – juutalaisuuden, kristinuskon ja islamin jäljillä "
+                    "en": "Uskonto ilmiönä – juutalaisuuden, kristinuskon ja islamin jäljillä",
+                    "fi": "Uskonto ilmiönä – juutalaisuuden, kristinuskon ja islamin jäljillä",
+                    "sv": "Religionen som fenomen – i judendomens, kristendomens och islams fotspår"
                   },
                   "arvo": "UK1",
                   "uri": "moduulikoodistolops2021_uk1",
@@ -34659,7 +34577,9 @@
                 "koodi": {
                   "id": 6834660,
                   "nimi": {
-                    "fi": "Maailmanlaajuinen kristinusko"
+                    "en": "Maailmanlaajuinen kristinusko",
+                    "fi": "Maailmanlaajuinen kristinusko",
+                    "sv": "Kristendomen i världen"
                   },
                   "arvo": "UK2",
                   "uri": "moduulikoodistolops2021_uk2",
@@ -34765,7 +34685,9 @@
                 "koodi": {
                   "id": 6865660,
                   "nimi": {
-                    "fi": "Maailman uskontoja ja uskonnollisia liikkeitä "
+                    "en": "Maailman uskontoja ja uskonnollisia liikkeitä",
+                    "fi": "Maailman uskontoja ja uskonnollisia liikkeitä",
+                    "sv": "Religioner och religiösa rörelser i världen"
                   },
                   "arvo": "UK3",
                   "uri": "moduulikoodistolops2021_uk3",
@@ -34877,7 +34799,9 @@
                 "koodi": {
                   "id": 6834662,
                   "nimi": {
-                    "fi": "Uskonto, kulttuuri ja yhteiskunta Suomessa "
+                    "en": "Uskonto, kulttuuri ja yhteiskunta Suomessa",
+                    "fi": "Uskonto, kulttuuri ja yhteiskunta Suomessa",
+                    "sv": "Religion, kultur och samhälle i Finland"
                   },
                   "arvo": "UK4",
                   "uri": "moduulikoodistolops2021_uk4",
@@ -35022,7 +34946,9 @@
                 "koodi": {
                   "id": 6834663,
                   "nimi": {
-                    "fi": "Uskonto taiteissa ja kulttuurissa "
+                    "en": "Uskonto taiteissa ja kulttuurissa",
+                    "fi": "Uskonto taiteissa ja kulttuurissa",
+                    "sv": "Religion inom konst och kultur"
                   },
                   "arvo": "UK5",
                   "uri": "moduulikoodistolops2021_uk5",
@@ -35125,7 +35051,9 @@
                 "koodi": {
                   "id": 6834664,
                   "nimi": {
-                    "fi": "Uskonto, tiede ja media"
+                    "en": "Uskonto, tiede ja media",
+                    "fi": "Uskonto, tiede ja media",
+                    "sv": "Religion, vetenskap och medier"
                   },
                   "arvo": "UK6",
                   "uri": "moduulikoodistolops2021_uk6",
@@ -35274,7 +35202,9 @@
                 "koodi": {
                   "id": 6865664,
                   "nimi": {
-                    "fi": "Uskonto ilmiönä – juutalaisuuden, kristinuskon ja islamin jäljillä"
+                    "en": "Uskonto ilmiönä – juutalaisuuden, kristinuskon ja islamin jäljillä",
+                    "fi": "Uskonto ilmiönä – juutalaisuuden, kristinuskon ja islamin jäljillä",
+                    "sv": "Religionen som fenomen – i judendomens, kristendomens och islams fotspår"
                   },
                   "arvo": "UJ1",
                   "uri": "moduulikoodistolops2021_uj1",
@@ -35374,7 +35304,9 @@
                 "koodi": {
                   "id": 6834667,
                   "nimi": {
-                    "fi": "Maailmanlaajuinen juutalaisuus "
+                    "en": "Maailmanlaajuinen juutalaisuus",
+                    "fi": "Maailmanlaajuinen juutalaisuus",
+                    "sv": "Judendomen i världen"
                   },
                   "arvo": "UJ2",
                   "uri": "moduulikoodistolops2021_uj2",
@@ -35486,7 +35418,9 @@
                 "koodi": {
                   "id": 6865665,
                   "nimi": {
-                    "fi": "Maailman uskontoja ja uskonnollisia liikkeitä "
+                    "en": "Maailman uskontoja ja uskonnollisia liikkeitä",
+                    "fi": "Maailman uskontoja ja uskonnollisia liikkeitä",
+                    "sv": "Religioner och religiösa rörelser i världen"
                   },
                   "arvo": "UJ3",
                   "uri": "moduulikoodistolops2021_uj3",
@@ -35604,7 +35538,9 @@
                 "koodi": {
                   "id": 6865666,
                   "nimi": {
-                    "fi": "Uskonto, kulttuuri ja yhteiskunta Suomessa "
+                    "en": "Uskonto, kulttuuri ja yhteiskunta Suomessa",
+                    "fi": "Uskonto, kulttuuri ja yhteiskunta Suomessa",
+                    "sv": "Religion, kultur och samhälle i Finland"
                   },
                   "arvo": "UJ4",
                   "uri": "moduulikoodistolops2021_uj4",
@@ -35719,7 +35655,9 @@
                 "koodi": {
                   "id": 6834820,
                   "nimi": {
-                    "fi": "Uskonto taiteissa ja populaarikulttuurissa "
+                    "en": "Uskonto taiteissa ja populaarikulttuurissa",
+                    "fi": "Uskonto taiteissa ja populaarikulttuurissa",
+                    "sv": "Religion inom konsten och populärkulturen"
                   },
                   "arvo": "UJ5",
                   "uri": "moduulikoodistolops2021_uj5",
@@ -35813,7 +35751,9 @@
                 "koodi": {
                   "id": 6834821,
                   "nimi": {
-                    "fi": "Uskonto, tiede ja media "
+                    "en": "Uskonto, tiede ja media",
+                    "fi": "Uskonto, tiede ja media",
+                    "sv": "Religion, vetenskap och medier"
                   },
                   "arvo": "UJ6",
                   "uri": "moduulikoodistolops2021_uj6",
@@ -35950,7 +35890,9 @@
                 "koodi": {
                   "id": 6865662,
                   "nimi": {
-                    "fi": "Uskonto ilmiönä – juutalaisuuden, kristinuskon ja islamin jäljillä "
+                    "en": "Uskonto ilmiönä – juutalaisuuden, kristinuskon ja islamin jäljillä",
+                    "fi": "Uskonto ilmiönä – juutalaisuuden, kristinuskon ja islamin jäljillä",
+                    "sv": "Religionen som fenomen – i judendomens, kristendomens och islams fotspår"
                   },
                   "arvo": "UI1",
                   "uri": "moduulikoodistolops2021_ui1",
@@ -36050,7 +35992,9 @@
                 "koodi": {
                   "id": 6834532,
                   "nimi": {
-                    "fi": "Maailmanlaajuinen islam "
+                    "en": "Maailmanlaajuinen islam",
+                    "fi": "Maailmanlaajuinen islam",
+                    "sv": "Islam i världen"
                   },
                   "arvo": "UI2",
                   "uri": "moduulikoodistolops2021_ui2",
@@ -36168,7 +36112,9 @@
                 "koodi": {
                   "id": 6865663,
                   "nimi": {
-                    "fi": "Maailman uskontoja ja uskonnollisia liikkeitä"
+                    "en": "Maailman uskontoja ja uskonnollisia liikkeitä",
+                    "fi": "Maailman uskontoja ja uskonnollisia liikkeitä",
+                    "sv": "Religioner och religiösa rörelser i världen"
                   },
                   "arvo": "UI3",
                   "uri": "moduulikoodistolops2021_ui3",
@@ -36298,7 +36244,9 @@
                 "koodi": {
                   "id": 6834534,
                   "nimi": {
-                    "fi": "Uskonto, kulttuuri ja yhteiskunta Suomessa "
+                    "en": "Uskonto, kulttuuri ja yhteiskunta Suomessa",
+                    "fi": "Uskonto, kulttuuri ja yhteiskunta Suomessa",
+                    "sv": "Religion, kultur och samhälle i Finland"
                   },
                   "arvo": "UI4",
                   "uri": "moduulikoodistolops2021_ui4",
@@ -36425,7 +36373,9 @@
                 "koodi": {
                   "id": 6834535,
                   "nimi": {
-                    "fi": "Uskonto taiteissa ja populaarikulttuurissa "
+                    "en": "Uskonto taiteissa ja populaarikulttuurissa",
+                    "fi": "Uskonto taiteissa ja populaarikulttuurissa",
+                    "sv": "Religion inom konsten och populärkulturen"
                   },
                   "arvo": "UI5",
                   "uri": "moduulikoodistolops2021_ui5",
@@ -36525,7 +36475,9 @@
                 "koodi": {
                   "id": 6834536,
                   "nimi": {
-                    "fi": "Uskonto, tiede ja media"
+                    "en": "Uskonto, tiede ja media",
+                    "fi": "Uskonto, tiede ja media",
+                    "sv": "Religion, vetenskap och medier"
                   },
                   "arvo": "UI6",
                   "uri": "moduulikoodistolops2021_ui6",
@@ -36662,7 +36614,9 @@
                 "koodi": {
                   "id": 8274826,
                   "nimi": {
-                    "fi": "Uskonto ilmiönä ja sivistyksen evoluutio"
+                    "en": "Uskonto ilmiönä ja sivistyksen evoluutio",
+                    "fi": "Uskonto ilmiönä ja sivistyksen evoluutio",
+                    "sv": "Religionen som fenomen och civilisationens utveckling"
                   },
                   "arvo": "UBA1",
                   "uri": "moduulikoodistolops2021_uba1",
@@ -36768,7 +36722,9 @@
                 "koodi": {
                   "id": 8274827,
                   "nimi": {
-                    "fi": "Maailmanlaajuinen bahá’í-yhteisö"
+                    "en": "Maailmanlaajuinen bahá’í-yhteisö",
+                    "fi": "Maailmanlaajuinen bahá’í-yhteisö",
+                    "sv": "Bahá’í­samfundet i världen"
                   },
                   "arvo": "UBA2",
                   "uri": "moduulikoodistolops2021_uba2",
@@ -36886,7 +36842,9 @@
                 "koodi": {
                   "id": 8274828,
                   "nimi": {
-                    "fi": "Maailmanuskontoja ja uskonnollisia liikkeitä"
+                    "en": "Maailmanuskontoja ja uskonnollisia liikkeitä",
+                    "fi": "Maailmanuskontoja ja uskonnollisia liikkeitä",
+                    "sv": "Religioner och religiösa rörelser i världen"
                   },
                   "arvo": "UBA3",
                   "uri": "moduulikoodistolops2021_uba3",
@@ -36998,7 +36956,9 @@
                 "koodi": {
                   "id": 8274829,
                   "nimi": {
-                    "fi": "Uskonto, kulttuuri ja yhteiskunta Suomessa"
+                    "en": "Uskonto, kulttuuri ja yhteiskunta Suomessa",
+                    "fi": "Uskonto, kulttuuri ja yhteiskunta Suomessa",
+                    "sv": "Religion, kultur och samhälle i Finland"
                   },
                   "arvo": "UBA4",
                   "uri": "moduulikoodistolops2021_uba4",
@@ -37125,7 +37085,9 @@
                 "koodi": {
                   "id": 8286890,
                   "nimi": {
-                    "fi": "Bahá’í-uskonnon suhde taiteisiin ja kulttuuriin"
+                    "en": "Bahá’í-uskonnon suhde taiteisiin ja kulttuuriin",
+                    "fi": "Bahá’í-uskonnon suhde taiteisiin ja kulttuuriin",
+                    "sv": "Bahá’í­trons förhållande till konst och kultur"
                   },
                   "arvo": "UBA5",
                   "uri": "moduulikoodistolops2021_uba5",
@@ -37237,7 +37199,9 @@
                 "koodi": {
                   "id": 8286891,
                   "nimi": {
-                    "fi": "Bahá’í-usko, tiede ja media"
+                    "en": "Bahá’í-usko, tiede ja media",
+                    "fi": "Bahá’í-usko, tiede ja media",
+                    "sv": "Bahá’í­tron, vetenskap och medier"
                   },
                   "arvo": "UBA6",
                   "uri": "moduulikoodistolops2021_uba6",
@@ -37386,7 +37350,9 @@
                 "koodi": {
                   "id": 8286892,
                   "nimi": {
-                    "fi": "Uskonto ilmiönä"
+                    "en": "Uskonto ilmiönä",
+                    "fi": "Uskonto ilmiönä",
+                    "sv": "Religionen som fenomen"
                   },
                   "arvo": "UBU1",
                   "uri": "moduulikoodistolops2021_ubu1",
@@ -37498,7 +37464,9 @@
                 "koodi": {
                   "id": 8286893,
                   "nimi": {
-                    "fi": "Maailmanlaajuinen buddhalaisuus"
+                    "en": "Maailmanlaajuinen buddhalaisuus",
+                    "fi": "Maailmanlaajuinen buddhalaisuus",
+                    "sv": "Buddhismen i världen"
                   },
                   "arvo": "UBU2",
                   "uri": "moduulikoodistolops2021_ubu2",
@@ -37622,7 +37590,9 @@
                 "koodi": {
                   "id": 8286894,
                   "nimi": {
-                    "fi": "Maailman uskontoja ja uskonnollisia liikkeitä"
+                    "en": "Maailman uskontoja ja uskonnollisia liikkeitä",
+                    "fi": "Maailman uskontoja ja uskonnollisia liikkeitä",
+                    "sv": "Religioner och religiösa rörelser i världen"
                   },
                   "arvo": "UBU3",
                   "uri": "moduulikoodistolops2021_ubu3",
@@ -37758,7 +37728,9 @@
                 "koodi": {
                   "id": 8286895,
                   "nimi": {
-                    "fi": "Uskonto, kulttuuri ja yhteiskunta Suomessa"
+                    "en": "Uskonto, kulttuuri ja yhteiskunta Suomessa",
+                    "fi": "Uskonto, kulttuuri ja yhteiskunta Suomessa",
+                    "sv": "Religion, kultur och samhälle i Finland"
                   },
                   "arvo": "UBU4",
                   "uri": "moduulikoodistolops2021_ubu4",
@@ -37891,7 +37863,9 @@
                 "koodi": {
                   "id": 8286896,
                   "nimi": {
-                    "fi": "Uskonto taiteissa ja populaarikulttuurissa"
+                    "en": "Uskonto taiteissa ja populaarikulttuurissa",
+                    "fi": "Uskonto taiteissa ja populaarikulttuurissa",
+                    "sv": "Religion inom konsten och populärkulturen"
                   },
                   "arvo": "UBU5",
                   "uri": "moduulikoodistolops2021_ubu5",
@@ -38012,7 +37986,9 @@
                 "koodi": {
                   "id": 8286897,
                   "nimi": {
-                    "fi": "Uskonto, tiede ja media"
+                    "en": "Uskonto, tiede ja media",
+                    "fi": "Uskonto, tiede ja media",
+                    "sv": "Religion, vetenskap och medier"
                   },
                   "arvo": "UBU6",
                   "uri": "moduulikoodistolops2021_ubu6",
@@ -38161,7 +38137,9 @@
                 "koodi": {
                   "id": 8286898,
                   "nimi": {
-                    "fi": "Uskonto ilmiönä"
+                    "en": "Uskonto ilmiönä",
+                    "fi": "Uskonto ilmiönä",
+                    "sv": "Religionen som fenomen"
                   },
                   "arvo": "UKR1",
                   "uri": "moduulikoodistolops2021_ukr1",
@@ -38289,7 +38267,9 @@
                 "koodi": {
                   "id": 8286899,
                   "nimi": {
-                    "fi": "Krishna-tietoisuus ja hindulaisuus eri puolilla maailmaa"
+                    "en": "Krishna-tietoisuus ja hindulaisuus eri puolilla maailmaa",
+                    "fi": "Krishna-tietoisuus ja hindulaisuus eri puolilla maailmaa",
+                    "sv": "Krishna­medvetandet och hinduismen i världen"
                   },
                   "arvo": "UKR2",
                   "uri": "moduulikoodistolops2021_ukr2",
@@ -38401,7 +38381,9 @@
                 "koodi": {
                   "id": 8287050,
                   "nimi": {
-                    "fi": "Maailman uskontoja ja uskonnollisia liikkeitä"
+                    "en": "Maailman uskontoja ja uskonnollisia liikkeitä",
+                    "fi": "Maailman uskontoja ja uskonnollisia liikkeitä",
+                    "sv": "Religioner och religiösa rörelser i världen"
                   },
                   "arvo": "UKR3",
                   "uri": "moduulikoodistolops2021_ukr3",
@@ -38531,7 +38513,9 @@
                 "koodi": {
                   "id": 8287051,
                   "nimi": {
-                    "fi": "Uskonto, kulttuuri ja yhteiskunta Suomessa"
+                    "en": "Uskonto, kulttuuri ja yhteiskunta Suomessa",
+                    "fi": "Uskonto, kulttuuri ja yhteiskunta Suomessa",
+                    "sv": "Religion, kultur och samhälle i Finland"
                   },
                   "arvo": "UKR4",
                   "uri": "moduulikoodistolops2021_ukr4",
@@ -38658,7 +38642,9 @@
                 "koodi": {
                   "id": 8287052,
                   "nimi": {
-                    "fi": "Hindulaisuus ja Krishna-tietoisuus taiteissa ja populaarikulttuurissa"
+                    "en": "Hindulaisuus ja Krishna-tietoisuus taiteissa ja populaarikulttuurissa",
+                    "fi": "Hindulaisuus ja Krishna-tietoisuus taiteissa ja populaarikulttuurissa",
+                    "sv": "Hinduism och Krishna­medvetande inom konst och populärkultur"
                   },
                   "arvo": "UKR5",
                   "uri": "moduulikoodistolops2021_ukr5",
@@ -38791,7 +38777,9 @@
                 "koodi": {
                   "id": 8287053,
                   "nimi": {
-                    "fi": "Krishna-tietoisuus, tiede ja media"
+                    "en": "Krishna-tietoisuus, tiede ja media",
+                    "fi": "Krishna-tietoisuus, tiede ja media",
+                    "sv": "Krishna­medvetande, vetenskap och medier"
                   },
                   "arvo": "UKR6",
                   "uri": "moduulikoodistolops2021_ukr6",
@@ -42685,27 +42673,24 @@
           }
         },
         "opiskeluymparistoTyotavat": null,
-        "laajaAlaisetOsaamiset": null,
+        "laajaAlaisetOsaamiset": {
+          "kuvaus": null
+        },
         "tavoitteet": {
-          "kuvaus": {
-            "_id": "6835469",
-            "_tunniste": "e02ea217-a399-4fcf-88a2-31994503f09e",
-            "fi": "<p>Lukiodiplomien opetuksen yleiset tavoitteet</p>",
-            "sv": "<p>.</p>"
-          },
+          "kuvaus": null,
           "tavoitealueet": [
             {
               "nimi": {
-                "_id": "6835471",
+                "_id": "9026033",
                 "_tunniste": "ccd790fd-74ef-423b-ab13-3e2e6055937e",
                 "fi": "Lukiodiplomien opetuksen yleiset tavoitteet",
-                "sv": "Gemensamma mål för alla gymnasiediplom är att den studerande"
+                "sv": "Allmänna mål för gymnasiediplomen"
               },
               "kohde": {
-                "_id": "6835470",
+                "_id": "9026030",
                 "_tunniste": "7dc4f239-f6ed-4682-ab8f-8d5b25541275",
                 "fi": "Kaikkia lukiodiplomeja yhdistävinä tavoitteina on, että opiskelija",
-                "sv": "ska"
+                "sv": "Gemensamma mål för alla gymnasiediplom är att den studerande ska"
               },
               "tavoitteet": [
                 {
@@ -43080,8 +43065,8 @@
           {
             "id": 6835299,
             "nimi": {
-              "_id": "6839651",
-              "_tunniste": "e2e30a88-a453-43b2-992a-e06ac9583ab9",
+              "_id": "9026034",
+              "_tunniste": "fffeff77-2120-4c7b-8d85-c3c22e275e81",
               "fi": "Median lukiodiplomi",
               "sv": "Gymnasiediplom i mediekunskap"
             },
@@ -43101,9 +43086,10 @@
             "kuvaus": null,
             "tavoitteet": {
               "kohde": {
-                "_id": "6835525",
+                "_id": "9026035",
                 "_tunniste": "d7e4a9a5-ea75-46b4-91e4-8efa8417856c",
-                "fi": "Moduulin tavoitteena on, että opiskelija"
+                "fi": "Moduulin tavoitteena on, että opiskelija",
+                "sv": "Målen för modulen är att den studerande ska"
               },
               "tavoitteet": [
                 {
@@ -43451,8 +43437,8 @@
               "perusteenOsa": {
                 "id": 6828784,
                 "luotu": 1572509694540,
-                "muokattu": 1671004883900,
-                "muokkaaja": "1.2.246.562.24.23446071094",
+                "muokattu": 1695815016806,
+                "muokkaaja": "1.2.246.562.24.90339285276",
                 "nimi": {
                   "_id": "6828791",
                   "_tunniste": "9702bc10-c0de-4f8e-8f10-c13bd80c5806",
@@ -43462,9 +43448,9 @@
                 "tila": "valmis",
                 "valmis": true,
                 "teksti": {
-                  "_id": "8563564",
+                  "_id": "9027821",
                   "_tunniste": "981c7494-daea-41d6-bfa3-7df538aa4a29",
-                  "fi": "<p>Paikallinen opetussuunnitelma sisältää seuraavat osat:</p><ul><li><p>lukion toiminta-ajatus ja arvopainotukset</p></li><li><p>oppimiskäsitys, opiskeluympäristöt ja ‑menetelmät</p></li><li><p>lukion toimintakulttuurin pääpiirteet</p></li><li><p>koulutuksen järjestäjän hyväksymä lukion tuntijako</p></li><li><p>lukion kieliohjelma</p></li><li><p>itsenäisen opiskelun periaatteet</p></li><li><p>laaja-alaisen osaamisen osa-alueet</p></li><li><p>oppiaineen tehtävä, oppiaineen opetuksen yleiset tavoitteet ja arviointi</p></li><li><p>opintojaksojen tavoitteet ja keskeiset sisällöt sekä laaja-alaisen osaamisen tavoitteiden toteutuminen ja arviointi opintojaksoittain</p></li><li><p>kodin ja oppilaitoksen yhteistyön toteuttaminen</p></li><li><p>ohjaussuunnitelma</p></li><li><p>oppimisen ja opiskelun tukea tarvitsevien opiskelijoiden opetus</p></li><li><p>kieli- ja kulttuuriryhmien opetus</p></li><li><p>yhteistyö muiden lukioiden ja ammatillisten oppilaitosten kanssa</p></li><li><p>yhteistyö yliopistojen, ammattikorkeakoulujen ja muiden oppilaitosten sekä muiden tahojen kanssa</p></li><li><p>kansainvälinen yhteistyö</p></li><li><p>työelämäyhteistyö</p></li><li><p>opiskeluhuolto</p></li><li><p>opiskelijan oppimisen ja osaamisen arviointi</p></li><li><p>toiminnan jatkuva kehittäminen ja arviointi.</p></li></ul><p></p><p>Mikäli lukio järjestää vieraskielistä opetusta tai mahdollisuuden suorittaa lukiodiplomeita, se tulee määritellä opetussuunnitelmassa.</p><p>Lukiolain (714/2018) 33 §:ssä säädetään opiskelijoiden vaikutusmahdollisuuksien turvaamisesta ja opiskelijakunnasta. Pykälässä tarkoitettu toiminta tulee suunnitella paikallisen opetussuunnitelman ja muiden siihen perustuvien suunnitelmien osana tai yhteydessä.</p><p>Koulutuksen järjestäjä vastaa siitä, että opiskeluhuollon toteuttamista, arviointia ja kehittämistä varten laaditaan koulutuksen järjestäjän opiskeluhuoltosuunnitelma (oppilas- ja opiskelijahuoltolaki 1287/2013, 13 § [muutettu lailla 377/2022]).</p><p>Oppilas- ja opiskelijahuoltolain 13 §:n mukaan suunnitelma opiskelijoiden suojaamiseksi väkivallalta, kiusaamiselta ja häirinnältä on kirjattava koulutuksen järjestäjän opiskeluhuoltosuunnitelmaan.</p><p>Lukiolain (714/2018) 40 §:n 3 momentin mukaan koulutuksen järjestäjän tulee laatia ja ohjeistaa paikallisen opetussuunnitelman yhteydessä suunnitelma kurinpitokeinojen käyttämisestä ja niihin liittyvistä menettelytavoista.</p><p>Sukupuolten välisestä tasa-arvosta annetun lain (609/1986, muutettu lailla 1329/2014) 5 a §:n mukaan koulutuksen järjestäjä vastaa siitä, että vuosittain laaditaan oppilaitoskohtaisesti tasa-arvosuunnitelma yhteistyössä henkilöstön ja opiskelijoiden kanssa. Vuosittaisen tarkastelun sijasta suunnitelma voidaan laatia enintään kolmeksi vuodeksi kerrallaan. Tasa-arvosuunnitelma voidaan sisällyttää osaksi paikallista opetussuunnitelmaa tai muuta lukion suunnitelmaa.</p><p>Yhdenvertaisuuslain (1325/2014) 6 §:n 2 momentin mukaan koulutuksen järjestäjän on huolehdittava siitä, että oppilaitoksella on suunnitelma tarvittavista toimenpiteistä yhdenvertaisuuden edistämiseksi. Yhdenvertaisuussuunnitelma voi sisältyä paikalliseen opetussuunnitelmaan.</p>",
+                  "fi": "<p>Paikallinen opetussuunnitelma sisältää seuraavat osat:</p><ul><li><p>lukion toiminta-ajatus ja arvopainotukset</p></li><li><p>oppimiskäsitys, opiskeluympäristöt ja -menetelmät</p></li><li><p>lukion toimintakulttuurin pääpiirteet</p></li><li><p>koulutuksen järjestäjän hyväksymä lukion tuntijako</p></li><li><p>lukion kieliohjelma</p></li><li><p>itsenäisen opiskelun periaatteet</p></li><li><p>laaja-alaisen osaamisen osa-alueet</p></li><li><p>oppiaineen tehtävä, oppiaineen opetuksen yleiset tavoitteet ja arviointi</p></li><li><p>opintojaksojen tavoitteet ja keskeiset sisällöt sekä laaja-alaisen osaamisen tavoitteiden toteutuminen ja arviointi opintojaksoittain</p></li><li><p>kodin ja oppilaitoksen yhteistyön toteuttaminen</p></li><li><p>ohjaussuunnitelma</p></li><li><p>oppimisen ja opiskelun tukea tarvitsevien opiskelijoiden opetus</p></li><li><p>kieli- ja kulttuuriryhmien opetus</p></li><li><p>yhteistyö muiden lukioiden ja ammatillisten oppilaitosten kanssa</p></li><li><p>yhteistyö yliopistojen, ammattikorkeakoulujen ja muiden oppilaitosten sekä muiden tahojen kanssa</p></li><li><p>kansainvälinen yhteistyö</p></li><li><p>työelämäyhteistyö</p></li><li><p>opiskeluhuolto</p></li><li><p>opiskelijan oppimisen ja osaamisen arviointi</p></li><li><p>toiminnan jatkuva kehittäminen ja arviointi.</p></li></ul><p></p><p>Mikäli lukio järjestää vieraskielistä opetusta tai mahdollisuuden suorittaa lukiodiplomeita, se tulee määritellä opetussuunnitelmassa.</p><p>Lukiolain (714/2018) 33 §:ssä säädetään opiskelijoiden vaikutusmahdollisuuksien turvaamisesta ja opiskelijakunnasta. Pykälässä tarkoitettu toiminta tulee suunnitella paikallisen opetussuunnitelman ja muiden siihen perustuvien suunnitelmien osana tai yhteydessä.</p><p>Koulutuksen järjestäjä vastaa siitä, että opiskeluhuollon toteuttamista, arviointia ja kehittämistä varten laaditaan koulutuksen järjestäjän opiskeluhuoltosuunnitelma (oppilas- ja opiskelijahuoltolaki 1287/2013, 13 § [muutettu lailla 377/2022]).</p><p>Oppilas- ja opiskelijahuoltolain 13 §:n mukaan suunnitelma opiskelijoiden suojaamiseksi väkivallalta, kiusaamiselta ja häirinnältä on kirjattava koulutuksen järjestäjän opiskeluhuoltosuunnitelmaan.</p><p>Lukiolain (714/2018) 40 §:n 3 momentin mukaan koulutuksen järjestäjän tulee laatia ja ohjeistaa paikallisen opetussuunnitelman yhteydessä suunnitelma kurinpitokeinojen käyttämisestä ja niihin liittyvistä menettelytavoista.</p><p>Sukupuolten välisestä tasa-arvosta annetun lain (609/1986, muutettu lailla 1329/2014) 5 a §:n mukaan koulutuksen järjestäjä vastaa siitä, että vuosittain laaditaan oppilaitoskohtaisesti tasa-arvosuunnitelma yhteistyössä henkilöstön ja opiskelijoiden kanssa. Vuosittaisen tarkastelun sijasta suunnitelma voidaan laatia enintään kolmeksi vuodeksi kerrallaan. Tasa-arvosuunnitelma voidaan sisällyttää osaksi paikallista opetussuunnitelmaa tai muuta lukion suunnitelmaa.</p><p>Yhdenvertaisuuslain (1325/2014) 6 §:n 2 momentin mukaan koulutuksen järjestäjän on huolehdittava siitä, että oppilaitoksella on suunnitelma tarvittavista toimenpiteistä yhdenvertaisuuden edistämiseksi. Yhdenvertaisuussuunnitelma voi sisältyä paikalliseen opetussuunnitelmaan.</p>",
                   "sv": "<p>Den lokala läroplanen ska innehålla följande delar:</p><ul><li><p>gymnasiets verksamhetsidé och värdeprioriteringar</p></li><li><p>synen på lärande, studiemiljöer och studiemetoder</p></li><li><p>gymnasiets verksamhetskultur i huvuddrag</p></li><li><p>en av utbildningsanordnaren godkänd timfördelning för gymnasiet</p></li><li><p>gymnasiets språkprogram</p></li><li><p>principer för självständiga studier</p></li><li><p>delområdena inom mångsidig kompetens</p></li><li><p>läroämnets uppdrag samt allmänna mål för undervisningen och bedömningen</p></li><li><p>mål och centralt innehåll för studieavsnitten, hur målen för mångsidig kompetens uppfylls samt bedömningen per studieavsnitt</p></li><li><p>hur samarbetet mellan hem och läroanstalt genomförs</p></li><li><p>handledningsplan</p></li><li><p>undervisningen för studerande som behöver stöd för lärande och studier</p></li><li><p>undervisningen för olika språk- och kulturgrupper</p></li><li><p>samarbetet med andra gymnasier och samarbetet med yrkesläroanstalter</p></li><li><p>samarbetet med universitet, yrkeshögskolor och övriga läroanstalter och instanser</p></li><li><p>internationellt samarbete</p></li><li><p>samarbete med arbetslivet</p></li><li><p>studerandevården</p></li><li><p>bedömningen av den studerandes lärande och kunnande</p></li><li><p>den kontinuerliga utvecklingen och utvärderingen av verksamheten.</p></li></ul><p></p><p>Om gymnasiet ordnar undervisning på främmande språk eller ger möjlighet att avlägga gymnasiediplom, ska detta beskrivas i läroplanen.</p><p></p><p>I 33 § i gymnasielagen (714/2018) föreskrivs om säkerställande av de studerandes möjligheter att påverka och om studerandekårsverksamhet. Sådan verksamhet som avses i paragrafen ska planeras som en del av eller i samband med den lokala läroplanen och andra planer som grundar sig på läroplanen.</p><p></p><p>Utbildningsanordnaren svarar för att det utarbetas utbildningsanordnarens studerandevårdsplan för hur studerandevården ska genomföras, utvärderas och utvecklas (lag om elev- och studerandevård (1287/2013, 13 § [ändrad genom lag 377/2022]).</p><p></p><p>I enlighet med 13 § i lagen om elev- och studerandevård ska det i utbildningsanordnarens studerandevårdsplan ingå en plan för hur de studerande ska skyddas mot våld, mobbning och trakasserier.</p><p></p><p>Enligt 40 § 3 mom. i gymnasielagen (714/2018) ska utbildningsanordnaren i samband med den lokala läroplanen utarbeta en plan för användning av disciplinära åtgärder och tillhörande förfaringssätt och ge anvisningar för hur planen ska användas.</p><p></p><p>I enlighet med 5a § i lagen om jämställdhet mellan könen (609/1986, ändrad genom lag 1329/2014) ansvarar utbildningsanordnaren för att det i samarbete med personalen och de studerande årligen utarbetas en jämställdhetsplan för läroanstalten i fråga. I stället för en årlig genomgång kan en plan utarbetas för högst tre år i sänder. Planen kan ingå i den lokala läroplanen eller i någon annan av gymnasiets planer.</p><p></p><p>Enligt 6 § 2 mom. i diskrimineringslagen (1325/2014) ska utbildningsanordnaren se till att läroanstalten har en plan för de åtgärder som behövs för att främja likabehandling. Planen för att främja likabehandling kan ingå i den lokala läroplanen.</p>"
                 },
                 "koodit": [],
@@ -44462,8 +44448,8 @@
               "perusteenOsa": {
                 "id": 6828635,
                 "luotu": 1572509694516,
-                "muokattu": 1573113950393,
-                "muokkaaja": "1.2.246.562.24.77925329174",
+                "muokattu": 1695802667016,
+                "muokkaaja": "1.2.246.562.24.47046981340",
                 "nimi": {
                   "_id": "6828649",
                   "_tunniste": "90f3f5cd-4ea5-4350-87ec-b46d4bcf998a",
@@ -44478,7 +44464,7 @@
                   "sv": "<p><a href=\"http://www.finlex.fi/sv/laki/ajantasa/2018/20180810\">Statsrådets förordning om gymnasieutbildning 810/2018</a></p>"
                 },
                 "koodit": [],
-                "liite": true,
+                "liite": false,
                 "osanTyyppi": "tekstikappale"
               },
               "lapset": [],
@@ -44489,8 +44475,8 @@
               "perusteenOsa": {
                 "id": 6828634,
                 "luotu": 1572509694516,
-                "muokattu": 1573113950394,
-                "muokkaaja": "1.2.246.562.24.77925329174",
+                "muokattu": 1695802679378,
+                "muokkaaja": "1.2.246.562.24.47046981340",
                 "nimi": {
                   "_id": "6828647",
                   "_tunniste": "c3adbe14-6b50-4d0f-9e5d-15cb1a30b396",
@@ -44505,7 +44491,7 @@
                   "sv": "<p>Denna nivåskala är en i Finland utarbetad tillämpning av de skalor som ingår i den gemensamma europeiska referensramen för språk: lärande, undervisning och bedömning som utvecklats av Europarådet.</p>\n\n<p> </p>\n\n<table border=\"1\" cellspacing=\"0\" style=\"width:962px\">\n\t<thead>\n\t\t<tr>\n\t\t\t<td colspan=\"6\">\n\t\t\t<p><strong>NIVÅSKALA FÖR SPRÅKKUNSKAP OCH SPRÅKUTVECKLING</strong></p>\n\t\t\t</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td rowspan=\"2\">\n\t\t\t<p><strong><em>Kun-skaps-nivå</em></strong><strong> </strong></p>\n\t\t\t</td>\n\t\t\t<td colspan=\"3\">\n\t\t\t<p><strong>Förmåga att kommunicera</strong></p>\n\t\t\t</td>\n\t\t\t<td>\n\t\t\t<p><strong>Förmåga att tolka texter </strong></p>\n\t\t\t</td>\n\t\t\t<td>\n\t\t\t<p><strong>Förmåga att producera texter</strong></p>\n\t\t\t</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t<p><strong><em>Kommunikationsförmåga i olika situationer</em></strong></p>\n\t\t\t</td>\n\t\t\t<td>\n\t\t\t<p><strong><em>Användning av kommunikationsstrategier</em></strong></p>\n\t\t\t</td>\n\t\t\t<td>\n\t\t\t<p><strong><em>Kulturellt lämpligt språkbruk</em></strong></p>\n\t\t\t</td>\n\t\t\t<td>\n\t\t\t<p><strong><em>Förmåga att tolka texter </em></strong><strong><em> </em></strong></p>\n\t\t\t</td>\n\t\t\t<td>\n\t\t\t<p><strong><em>Förmåga att producera texter</em></strong><strong><em> </em></strong></p>\n\t\t\t</td>\n\t\t</tr>\n\t</thead>\n\t<tbody>\n\t\t<tr>\n\t\t\t<td style=\"vertical-align:top\">\n\t\t\t<p><strong>A1.1</strong></p>\n\t\t\t</td>\n\t\t\t<td rowspan=\"2\" style=\"vertical-align:top\">\n\t\t\t<p>Den studerande klarar sporadiskt av, med stöd av sin samtalspartner, några ofta återkommande och rutinmässiga kommunikationssituationer.</p>\n\t\t\t</td>\n\t\t\t<td rowspan=\"2\" style=\"vertical-align:top\">\n\t\t\t<p>Den studerande behöver mycket hjälpmedel (till exempel gester, teckningar, lexikon, internet). Kan ibland gissa eller härleda enskilda ords betydelse utgående från kontexten, allmän kunskap eller sina andra språkkunskaper. Kan uttrycka om hen har förstått.</p>\n\n\t\t\t<p> </p>\n\t\t\t</td>\n\t\t\t<td rowspan=\"2\" style=\"vertical-align:top\">\n\t\t\t<p>Den studerande kan använda några för språket eller kulturen typiska artighetsfraser (hälsa, säga adjö, tacka) i några mycket rutinmässiga sociala sammanhang.</p>\n\t\t\t</td>\n\t\t\t<td rowspan=\"2\" style=\"vertical-align:top\">\n\t\t\t<p>Den studerande förstår en begränsad mängd talade och skrivna ord och uttryck. Känner till teckensystemet eller ett mycket begränsat antal skrivtecken.</p>\n\n\t\t\t<p> </p>\n\n\t\t\t<p> </p>\n\t\t\t</td>\n\t\t\t<td rowspan=\"2\" style=\"vertical-align:top\">\n\t\t\t<p>Den studerande kan uttrycka sig mycket begränsat i tal med hjälp av inövade ord och inlärda standarduttryck. Uttalar några inövade uttryck begripligt. Kan skriva några enskilda ord och uttryck.</p>\n\t\t\t</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td style=\"vertical-align:top\">\n\t\t\t<p><strong>De första grunderna i språket</strong></p>\n\n\t\t\t<p> </p>\n\n\t\t\t<p> </p>\n\n\t\t\t<p> </p>\n\n\t\t\t<p><strong>De första grunderna i språket</strong></p>\n\n\t\t\t<p><strong>De första grunderna i språket</strong></p>\n\t\t\t</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td style=\"vertical-align:top\">\n\t\t\t<p><strong>A1.2</strong></p>\n\n\t\t\t<p> </p>\n\t\t\t</td>\n\t\t\t<td rowspan=\"2\" style=\"vertical-align:top\">\n\t\t\t<p>Den studerande klarar sporadiskt av ofta återkommande rutinmässiga kommunikationssituationer, men tar för det mesta ännu stöd av sin samtalspartner.</p>\n\t\t\t</td>\n\t\t\t<td rowspan=\"2\" style=\"vertical-align:top\">\n\t\t\t<p>Den studerande använder sig av det mest centrala ord- och uttrycksförrådet i sin kommunikation. Behöver mycket hjälpmedel. Kan be samtalspartnern att upprepa eller tala långsammare.</p>\n\t\t\t</td>\n\t\t\t<td rowspan=\"2\" style=\"vertical-align:top\">\n\t\t\t<p>Den studerande kan använda några av de allra vanligaste artighetsfraserna typiska för språket i rutinmässiga sociala sammanhang.</p>\n\t\t\t</td>\n\t\t\t<td rowspan=\"2\" style=\"vertical-align:top\">\n\t\t\t<p>Den studerande förstår skriven text bestående av några ord och långsamt tal som innehåller inövade, bekanta ord och uttryck. Kan urskilja enskilda fakta i en text.</p>\n\t\t\t</td>\n\t\t\t<td rowspan=\"2\" style=\"vertical-align:top\">\n\t\t\t<p>Den studerande kan med hjälp av ett begränsat uttrycksförråd berätta om några bekanta och för hen viktiga saker samt skriva några korta meningar om inövade ämnen. Uttalar de flesta inövade uttrycken begripligt. Behärskar ett mycket begränsat ordförråd, några situationsbundna uttryck och en del av den elementära grammatiken.</p>\n\t\t\t</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t<p><strong>Elementär språkfärdighet</strong></p>\n\n\t\t\t<p><strong>stadd i utveckling</strong></p>\n\t\t\t</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td style=\"vertical-align:top\">\n\t\t\t<p><strong>A1.3</strong></p>\n\t\t\t</td>\n\t\t\t<td rowspan=\"2\" style=\"vertical-align:top\">\n\t\t\t<p>Den studerande reder sig i många rutinmässiga kommunikationssituationer men tar ibland stöd av sin samtalspartner.</p>\n\n\t\t\t<p> </p>\n\t\t\t</td>\n\t\t\t<td rowspan=\"2\" style=\"vertical-align:top\">\n\t\t\t<p>Den studerande deltar i kommunikation men behöver fortfarande ofta hjälpmedel. Kan reagera med korta verbala uttryck, små gester (till exempel genom att nicka), ljud eller liknande minimal respons. Måste ofta be samtalspartnern att förtydliga eller upprepa.</p>\n\t\t\t</td>\n\t\t\t<td rowspan=\"2\" style=\"vertical-align:top\">\n\t\t\t<p>Den studerande kan använda vanliga uttryck som kännetecknar artigt språkbruk i många rutinmässiga sociala sammanhang.</p>\n\t\t\t</td>\n\t\t\t<td rowspan=\"2\" style=\"vertical-align:top\">\n\t\t\t<p>Den studerande förstår med hjälp av kontexten skriven text och långsamt tal som innehåller enkla, bekanta ord och uttryck. Kan plocka ut enkel information enligt behov ur en kort text.</p>\n\t\t\t</td>\n\t\t\t<td rowspan=\"2\" style=\"vertical-align:top\">\n\t\t\t<p>Den studerande behärskar en begränsad mängd korta, inövade uttryck, det mest centrala ordförrådet och grundläggande satsstrukturer. Kan med hjälp av ett begränsat uttrycksförråd berätta om vardagliga och för hen viktiga saker samt skriva enkla meddelanden. Uttalar inövade uttryck begripligt.</p>\n\t\t\t</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t<p><strong>Fungerande </strong></p>\n\n\t\t\t<p><strong>elementär språkfärdighet</strong></p>\n\t\t\t</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td style=\"vertical-align:top\">\n\t\t\t<p><strong>A2.1</strong></p>\n\t\t\t</td>\n\t\t\t<td rowspan=\"2\" style=\"vertical-align:top\">\n\t\t\t<p>Den studerande kan utbyta tankar eller information i bekanta och vardagliga situationer och stundtals hålla igång en konversation.</p>\n\n\t\t\t<p> </p>\n\t\t\t</td>\n\t\t\t<td rowspan=\"2\" style=\"vertical-align:top\">\n\t\t\t<p>Den studerande deltar i allt högre grad i kommunikation. Använder mer sällan nonverbala uttryck. Måste relativt ofta be samtalspartnern upprepa eller förtydliga. Kan i någon mån utnyttja samtalspartnerns uttryck i sin egen kommunikation.</p>\n\t\t\t</td>\n\t\t\t<td rowspan=\"2\" style=\"vertical-align:top\">\n\t\t\t<p>Den studerande klarar av korta sociala situationer. Kan använda de vanligaste artiga hälsnings- och tilltalsfraserna samt artigt framföra till exempel önskemål, invitationer, förslag och ursäkter och besvara sådana.</p>\n\t\t\t</td>\n\t\t\t<td rowspan=\"2\" style=\"vertical-align:top\">\n\t\t\t<p>Den studerande förstår texter som innehåller enkla, bekanta ord och uttryck samt tydligt tal. Förstår det centrala innehållet i korta, enkla budskap som intresserar hen och grundtankarna i en förutsägbar text som innehåller ett bekant ordförråd. Klarar mycket enkel slutledning med hjälp av kontexten.</p>\n\t\t\t</td>\n\t\t\t<td rowspan=\"2\" style=\"vertical-align:top\">\n\t\t\t<p>Den studerande kan med enkla meningar och ett konkret ordförråd berätta om vardagliga och konkreta saker som är viktiga för hen. Behärskar ett lätt förutsägbart ordförråd och många centrala strukturer.</p>\n\n\t\t\t<p>Kan tillämpa några grundläggande uttalsregler också i andra än inövade uttryck.</p>\n\t\t\t</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t<p><strong>Den grundläggande språkfärdighetens begynnelseskede</strong></p>\n\t\t\t</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td style=\"vertical-align:top\">\n\t\t\t<p><strong>A2.2</strong></p>\n\n\t\t\t<p> </p>\n\t\t\t</td>\n\t\t\t<td rowspan=\"2\" style=\"vertical-align:top\">\n\t\t\t<p>Den studerande reder sig relativt bra i olika vardagliga kommunikationssituationer. Kan i allt högre grad ta initiativ i en kommunikationssituation.</p>\n\n\t\t\t<p> </p>\n\n\t\t\t<p> </p>\n\n\t\t\t<p> </p>\n\t\t\t</td>\n\t\t\t<td rowspan=\"2\" style=\"vertical-align:top\">\n\t\t\t<p>Den studerande deltar i allt högre grad i kommunikation. Använder vid behov standarduttryck för att be om precisering av nyckelord. Måste då och då be samtalspartnern upprepa eller förtydliga. Använder till exempel ett närliggande eller allmännare begrepp när hen inte vet det exakta begreppet (hund/djur eller hus/stuga).</p>\n\n\t\t\t<p> </p>\n\t\t\t</td>\n\t\t\t<td rowspan=\"2\" style=\"vertical-align:top\">\n\t\t\t<p>Den studerande kan använda språket på ett enkelt sätt för centrala ändamål, till exempel för att utbyta information eller uttrycka sin åsikt eller ståndpunkt på ett lämpligt sätt. Kan diskutera artigt med hjälp av vanliga uttryck och grundläggande kommunikationsrutiner.</p>\n\n\t\t\t<p> </p>\n\t\t\t</td>\n\t\t\t<td rowspan=\"2\" style=\"vertical-align:top\">\n\t\t\t<p>Den studerande kan i mycket stora drag följa med ett tydligt anförande, känner ofta igen ämnet i en pågående diskussion och förstår det väsentliga i en allmänspråklig text eller långsamt tal som innehåller bekanta ord. Kan härleda betydelsen av obekanta ord utgående från kontexten.</p>\n\t\t\t</td>\n\t\t\t<td rowspan=\"2\" style=\"vertical-align:top\">\n\t\t\t<p>Den studerande kan räkna upp och beskriva (för sin ålder typiska) saker som anknyter till vardagen med hjälp av vanliga ord, några idiomatiska uttryck samt grundläggande och ibland också lite svårare strukturer. Kan tillämpa några grundläggande uttalsregler också i andra än inövade uttryck.</p>\n\t\t\t</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t<p><strong>Grundläggande språkfärdighet</strong></p>\n\n\t\t\t<p><strong>stadd i utveckling</strong></p>\n\t\t\t</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td style=\"vertical-align:top\">\n\t\t\t<p><strong>B1.1</strong></p>\n\t\t\t</td>\n\t\t\t<td rowspan=\"2\" style=\"vertical-align:top\">\n\t\t\t<p>Den studerande kan relativt obehindrat kommunicera, delta i diskussioner och uttrycka sina åsikter i vardagliga kommunikationssituationer.</p>\n\n\t\t\t<p> </p>\n\n\t\t\t<p> </p>\n\t\t\t</td>\n\t\t\t<td rowspan=\"2\" style=\"vertical-align:top\">\n\t\t\t<p>Den studerande kan i någon mån ta initiativ i olika skeden av en kommunikationssituation och försäkra sig om att samtalspartnern har förstått budskapet. Kan omskriva eller byta ut obekanta ord eller omformulera sitt budskap. Kan diskutera betydelsen av obekanta uttryck.</p>\n\t\t\t</td>\n\t\t\t<td rowspan=\"2\" style=\"vertical-align:top\">\n\t\t\t<p>Den studerande visar att hen behärskar de viktigaste artighetskutymerna. Den studerande kan i sin kommunikation ta hänsyn till några viktiga kulturellt betingade aspekter.</p>\n\n\t\t\t<p> </p>\n\n\t\t\t<p> </p>\n\t\t\t</td>\n\t\t\t<td rowspan=\"2\" style=\"vertical-align:top\">\n\t\t\t<p>Den studerande förstår det väsentliga och vissa detaljer i tydligt och relativt långsamt allmänspråkligt tal eller i lättfattlig skriven text. Förstår tal eller skriven text som bygger på gemensam erfarenhet eller allmän kunskap. Urskiljer även utan förberedelse det centrala innehållet, nyckelord och viktiga detaljer.</p>\n\t\t\t</td>\n\t\t\t<td rowspan=\"2\" style=\"vertical-align:top\">\n\t\t\t<p>Den studerande kan redogöra för det väsentliga och även för vissa detaljer angående vardagliga ämnen, verkliga eller fiktiva, som intresserar hen. Använder sig av ett relativt omfattande ordförråd och olika strukturer samt en del allmänna fraser och idiom. Kan tillämpa flera grundläggande uttalsregler också på andra än inövade uttryck.</p>\n\n\t\t\t<p> </p>\n\t\t\t</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t<p><strong>Fungerande grundläggande språkfärdighet</strong></p>\n\t\t\t</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td style=\"vertical-align:top\">\n\t\t\t<p><strong>B1.2</strong></p>\n\t\t\t</td>\n\t\t\t<td rowspan=\"2\" style=\"vertical-align:top\">\n\t\t\t<p>Den studerande kan relativt obehindrat delta i kommunikation också i vissa mer krävande situationer som till exempel då man informerar om en aktuell händelse.</p>\n\n\t\t\t<p> </p>\n\n\t\t\t<p> </p>\n\n\t\t\t<p> </p>\n\n\t\t\t<p> </p>\n\t\t\t</td>\n\t\t\t<td rowspan=\"2\" style=\"vertical-align:top\">\n\t\t\t<p>Den studerande kan ta initiativ och använda lämpliga uttryck i en kommunikationssituation där ett bekant ämne behandlas. Kan relativt naturligt rätta till missförstånd. Kan diskutera betydelsen också av mer komplicerade uttryck.</p>\n\t\t\t</td>\n\t\t\t<td rowspan=\"2\" style=\"vertical-align:top\">\n\t\t\t<p>Den studerande kan för olika ändamål använda ett språk som inte är för<s> </s>familjärt men inte heller alltför formellt. Den studerande känner till de viktigaste artighetskutymerna och följer dem. Den studerande kan i sin kommunikation ta hänsyn till viktiga kulturellt betingade aspekter.</p>\n\n\t\t\t<p> </p>\n\n\t\t\t<p> </p>\n\t\t\t</td>\n\t\t\t<td rowspan=\"2\" style=\"vertical-align:top\">\n\t\t\t<p>Den studerande förstår tydligt tal som innehåller fakta om bekanta eller relativt allmänna ämnen och klarar också i någon mån av texter som förutsätter slutledning. Den studerande förstår det väsentliga och de viktigaste detaljerna i en mer omfattande formell eller informell diskussion i omgivningen.</p>\n\t\t\t</td>\n\t\t\t<td rowspan=\"2\" style=\"vertical-align:top\">\n\t\t\t<p>Den studerande kan berätta om vanliga konkreta ämnen genom att beskriva, specificera och jämföra. Uttrycker sig relativt obehindrat. Kan skriva personliga och mer officiella meddelanden och uttrycka sina tankar också om en del fiktiva ämnen. Använder sig av ett relativt omfattande ordförråd, vanliga idiom, olika strukturer och även komplicerade meningar. Behärskar de grundläggande uttalsreglerna också för andra än inövade uttryck.</p>\n\t\t\t</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t<p><strong>Flytande grundläggande språkfärdighet</strong></p>\n\t\t\t</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td style=\"vertical-align:top\">\n\t\t\t<p><strong>B2.1</strong></p>\n\t\t\t</td>\n\t\t\t<td rowspan=\"2\" style=\"vertical-align:top\">\n\t\t\t<p>Den studerande kan kommunicera obehindrat också i nya kommunikationssituationer som ibland inbegriper abstrakt, men ändå tydligt språk.</p>\n\n\t\t\t<p> </p>\n\t\t\t</td>\n\t\t\t<td rowspan=\"2\" style=\"vertical-align:top\">\n\t\t\t<p>Den studerande kan uttrycka sin åsikt och ibland för att vinna tid använda standarduttryck, såsom \"Det är en svår fråga\". Kan diskutera betydelsen också av komplicerade uttryck och begrepp. Kan ge akt på sin egen förståelse och kommunikation och korrigera sitt språk.</p>\n\t\t\t</td>\n\t\t\t<td rowspan=\"2\" style=\"vertical-align:top\">\n\t\t\t<p>Den studerande strävar efter att uttrycka sina tankar sakligt och med respekt för sin samtalspartner samt ta hänsyn till de krav som olika situationer ställer.</p>\n\t\t\t</td>\n\t\t\t<td rowspan=\"2\" style=\"vertical-align:top\">\n\t\t\t<p>Den studerande förstår muntlig eller skriven text som är invecklad till språk och innehåll. Kan följa med omfattande tal och komplicerad argumentation samt redogöra för det centrala innehållet i det hörda. Förstår en stor del av en pågående diskussion. Förstår olika typer av skrivna texter, som också kan handla om abstrakta ämnen, fakta, attityder och åsikter.</p>\n\t\t\t</td>\n\t\t\t<td rowspan=\"2\" style=\"vertical-align:top\">\n\t\t\t<p>Den studerande kan med mångsidiga strukturer och ett relativt omfattande ordförråd, som också inbegriper idiomatiska och abstrakta uttryck, uttala sig relativt klart och exakt om olika saker som hör till det egna erfarenhetsområdet. Kan delta också i relativt formella diskussioner. Behärskar ett relativt omfattande ordförråd och även krävande satsstrukturer. Uttalet är tydligt, betoningen ligger på rätt stavelse i ordet och talet innehåller några för målspråket typiska intonationsmönster.</p>\n\n\t\t\t<p> </p>\n\t\t\t</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t<p><strong>Självständig språkfärdighet, grundnivå</strong></p>\n\t\t\t</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td style=\"vertical-align:top\">\n\t\t\t<p><strong>B2.2</strong></p>\n\t\t\t</td>\n\t\t\t<td rowspan=\"2\" style=\"vertical-align:top\">\n\t\t\t<p>Den studerande kan använda språket i olika typer av kommunikationssituationer, också nya, som förutsätter ett mångsidigt språk.</p>\n\t\t\t</td>\n\t\t\t<td rowspan=\"2\" style=\"vertical-align:top\">\n\t\t\t<p>Den studerande strävar efter att ge respons, komma med kompletterande synpunkter eller slutsatser. Kan bidra till att kommunikationen fortlöper och vid behov använda omskrivningar. Kan diskutera betydelsen också av komplicerade uttryck och begrepp.</p>\n\n\t\t\t<p>Kan använda strategier som stödjer förståelsen, såsom att plocka ut det centrala innehållet och till exempel göra anteckningar om det hörda.</p>\n\n\t\t\t<p> </p>\n\t\t\t</td>\n\t\t\t<td rowspan=\"2\" style=\"vertical-align:top\">\n\t\t\t<p>Den studerande kan uttrycka sina tankar naturligt, tydligt och artigt både i en formell och en informell situation samt välja språkbruk efter situation och samtalspartner.</p>\n\t\t\t</td>\n\t\t\t<td rowspan=\"2\" style=\"vertical-align:top\">\n\t\t\t<p>Den studerande förstår pågående eller inspelat, klart strukturerat talat standardspråk i alla situationer. Förstår i viss mån också främmande språkformer. Kan läsa invecklade texter skrivna för olika ändamål och sammanfatta det centrala innehållet i dem. Den studerande kan känna igen attityder och kritiskt bedöma det hörda och/eller lästa.</p>\n\t\t\t</td>\n\t\t\t<td rowspan=\"2\" style=\"vertical-align:top\">\n\t\t\t<p>Den studerande kan uttrycka sig på ett säkert, tydligt och artigt sätt. Behärskar i stor utsträckning språkliga medel för att uttrycka konkreta och abstrakta, bekanta och obekanta ämnen. Kan kommunicera spontant och skriva en tydlig och strukturerad text. Uttalet är mycket tydligt, betoningen ligger på rätt stavelse i ordet och talet innehåller några för målspråket typiska intonationsmönster.</p>\n\n\t\t\t<p> </p>\n\t\t\t</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t<p><strong>Fungerande självständig språkfärdighet</strong></p>\n\t\t\t</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td style=\"vertical-align:top\">\n\t\t\t<p><strong>C1.1</strong></p>\n\t\t\t</td>\n\t\t\t<td rowspan=\"2\" style=\"vertical-align:top\">\n\t\t\t<p>Den studerande kan kommunicera mångsidigt, obehindrat och exakt i alla kommunikationssituationer.</p>\n\t\t\t</td>\n\t\t\t<td rowspan=\"2\" style=\"vertical-align:top\">\n\t\t\t<p>Den studerande tar på ett naturligt sätt ansvar för att kommunikationen flyter. Kan omformulera sitt budskap och klara sig ur svåra situationer. Använder skickligt språk- eller kontextrelaterade antydningar för att dra slutsatser eller förutspå det som kommer.</p>\n\t\t\t</td>\n\t\t\t<td rowspan=\"2\" style=\"vertical-align:top\">\n\t\t\t<p>Den studerande kan använda språket flexibelt och effektivt för sociala ändamål, även uttrycka känslotillstånd, indirekta antydningar (till exempel ironi) och humor.</p>\n\t\t\t</td>\n\t\t\t<td rowspan=\"2\" style=\"vertical-align:top\">\n\t\t\t<p>Den studerande förstår i detalj också längre anföranden om bekanta och allmänna ämnen, även om talet inte skulle vara tydligt strukturerat eller om det skulle innehålla idiomatiska uttryck eller registerbyten. Den studerande förstår i detalj invecklade abstrakta skrivna texter och kan kombinera information från komplicerade texter.</p>\n\t\t\t</td>\n\t\t\t<td rowspan=\"2\" style=\"vertical-align:top\">\n\t\t\t<p>Den studerande kan uttrycka sig obehindrat, exakt och strukturerat om många olika ämnen eller hålla ett relativt långt, förberett anförande. Kan med säker och personlig stil skriva välstrukturerade texter om invecklade ämnen. Det språkliga uttrycksförrådet är mycket omfattande. Uttalet är naturligt och behagligt att lyssna på. Talrytmen och intonationen är typiska för målspråket.</p>\n\n\t\t\t<p> </p>\n\t\t\t</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t<p><strong>Avancerad språkfärdighet, grundnivå</strong></p>\n\t\t\t</td>\n\t\t</tr>\n\t</tbody>\n</table>\n\n<p> </p>"
                 },
                 "koodit": [],
-                "liite": true,
+                "liite": false,
                 "osanTyyppi": "tekstikappale"
               },
               "lapset": [],
@@ -44516,8 +44502,8 @@
               "perusteenOsa": {
                 "id": 6828787,
                 "luotu": 1572529287636,
-                "muokattu": 1573722198724,
-                "muokkaaja": "1.2.246.562.24.99793111246",
+                "muokattu": 1695802687753,
+                "muokkaaja": "1.2.246.562.24.47046981340",
                 "nimi": {
                   "_id": "6879375",
                   "_tunniste": "cb55f992-ec57-4310-aec8-0038ebc63034",
@@ -44533,7 +44519,7 @@
                   "sv": "<p>Anvisning 7.11.2019 OPH-2264-2019</p>\n\n<p> </p>\n\n<p>Utbildningsstyrelsen ger bifogade anvisning om målen, det centrala innehållet och bedömningen av den studerandes lärande i undervisning i samiska som kompletterar gymnasieutbildningen. Anvisningen gäller undervisning i samiska som kompletterar gymnasieutbildningen och som ordnas med separat finansiering (Undervisningsministeriets förordning om grunderna för statsunderstöd som beviljas för kompletterande undervisning i den grundläggande utbildningen och gymnasieutbildningen för elever med främmande språk, samiska och romani som modersmål 1777/2009).</p>\n\n<p>Denna anvisning ersätter Utbildningsstyrelsens anvisning som utgör bilaga 3 till Grunderna för gymnasiets läroplan 2015 (Utbildningsstyrelsens föreskrift 60/011/2015).</p>\n\n<p>Undervisningen ska ordnas i enlighet med denna anvisning från och med 1.8.2021.</p>\n\n<p> </p>\n\n<table cellspacing=\"0\" style=\"width:677px\">\n\t<tbody>\n\t\t<tr>\n\t\t\t<td style=\"vertical-align:top\">\n\t\t\t<p>Generaldirektör</p>\n\t\t\t</td>\n\t\t\t<td style=\"vertical-align:top\">\n\t\t\t<p>Olli-Pekka Heinonen</p>\n\t\t\t</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td style=\"vertical-align:top\">\n\t\t\t<p>Undervisningsråd</p>\n\t\t\t</td>\n\t\t\t<td style=\"vertical-align:top\">\n\t\t\t<p>Petri Lehikoinen</p>\n\t\t\t</td>\n\t\t</tr>\n\t</tbody>\n</table>"
                 },
                 "koodit": [],
-                "liite": true,
+                "liite": false,
                 "osanTyyppi": "tekstikappale"
               },
               "lapset": [
@@ -44542,8 +44528,8 @@
                   "perusteenOsa": {
                     "id": 6828633,
                     "luotu": 1572509694515,
-                    "muokattu": 1573474050153,
-                    "muokkaaja": "1.2.246.562.24.90339285276",
+                    "muokattu": 1695802699104,
+                    "muokkaaja": "1.2.246.562.24.47046981340",
                     "nimi": {
                       "_id": "6828645",
                       "_tunniste": "c6b38c1c-11eb-4a82-8eaf-7f420e14c354",
@@ -44559,7 +44545,7 @@
                       "sv": "<p>Utbildningsstyrelsens anvisning nr 2264-2019.</p>\n\n<p> </p>\n\n<p>Enligt Finlands grundlag har alla som bor i Finland rätt att upprätthålla och utveckla sitt språk och sin kultur. Syftet med undervisningen i samiska är att stödja den studerande att utveckla en aktiv flerspråkighet och ett intresse för kontinuerligt språklärande. Undervisningen i samiska ska stödja den studerandes delaktighet som en aktiv och balanserad medlem i såväl sin egen språk- och kulturgemenskap som i den finländska språk- och kulturgemenskapen samt som global aktör. Undervisningen i samiska ska samarbeta med undervisningen i lärokursen svenska och litteratur och undervisningen i övriga läroämnen.</p>\n\n<p> </p>\n\n<p>Språkpedagogiken stärker den studerandes språkliga medvetenhet och förmåga att använda flera språk parallellt samt fördjupar hens multilitteracitet och förmåga att anpassa sig till språkgemenskapen. Språkpedagogiken hjälper även den studerande att bygga upp sin språkliga och kulturella identitet. Målet är att den studerande ska lära sig uppfatta och värdesätta den språkliga och kulturella mångfalden samt de språkliga rättigheterna i den egna vardagen och i samhället i övrigt. Den studerandes utgångsläge och språkkunskaper ska tas i beaktande i studierna. I studierna ska man utnyttja olika studiemiljöer såsom bibliotek, teatrar och museer samt övriga kulturella institutioner. I studierna ska den studerande även utnyttja sin egen språkgemenskap, sina språk- och textmiljöer samt den språkliga och kulturella mångfalden i skolgemenskapen och andra gemenskaper. I studierna ska man använda tillräckligt krävande material och arbetssätt som är meningsfulla för den studerande, ger upplevelser och utvecklar kreativiteten.</p>\n\n<p> </p>\n\n<p>Målen och innehållet har fastställts för undervisning i samiska som omfattar två undervisningstimmar per vecka under hela gymnasieutbildningen. Utbildningsanordnaren ska göra upp en lokal läroplan, där målen för undervisningen och det centrala innehållet väljs med hänsyn till det samiska språkets särdrag. Läroplanen i samiska kan också utarbetas gemensamt av flera utbildningsanordnare.</p>\n\n<p> </p>\n\n<p><strong>Undervisningens uppdrag</strong></p>\n\n<p> </p>\n\n<p>Undervisningen i samiska ska handleda den studerande till att uttrycka sig själv mångsidigt, utveckla sina kommunikativa färdigheter, aktivt söka och kritiskt granska information och tolka texter samt till etiska reflektioner. Undervisningens uppdrag är att stödja och utveckla den studerandes språkliga medvetenhet vilket bidrar till att hens uppskattning för det samiska språket ökar och hen blir motiverad att fördjupa sina kunskaper i samiska.</p>\n\n<p> </p>\n\n<p>I undervisningen kombineras företeelser inom språk-, litteratur- och kulturforskning. Den studerandes kännedom om och mångsidiga användning av det samiska språket breddas och hen lär sig känna de språkliga rötterna samt utvecklar sin förmåga att jämföra språkets olika drag med andra språk som hen kan. Den studerande utvecklar samtidigt sitt ord- och begreppsförråd och sin multilitteracitet. Hen utvecklar sin kunskap om den egna kulturens litteratur, berättartradition, visuella kultur, musik och drama.</p>\n\n<p> </p>\n\n<p><strong>Undervisningens mål</strong></p>\n\n<p> </p>\n\n<p>Målen för undervisningen i samiska som kompletterar gymnasieutbildningen berör den studerandes kommunikationsfärdigheter, förmåga att tolka och producera text samt utvecklingen av den studerandes språkliga och kulturella kännedom. Målen för undervisningen är följande:</p>\n\n<p> </p>\n\n<p><em>Kommunikationsfärdigheter</em></p>\n\n<p>Målet är att den studerande ska</p>\n\n<ul>\n\t<li>kunna kommunicera målinriktat, ändamålsenligt och etiskt såväl enskilt som i grupp samt kunna analysera, bedöma och utveckla sina egna kommunikationsfärdigheter</li>\n\t<li>kunna analysera och bedöma olika kommunikationssituationer och -relationer samt kommunikationsfenomen och -färdigheter och kommunikationsetik som ingår i kontexten.</li>\n</ul>\n\n<p> </p>\n\n<p><em>Att tolka texter</em></p>\n\n<p>Målet är att den studerande ska</p>\n\n<ul>\n\t<li>utveckla sin kritiska och kulturella läskunnighet så att hen kan analysera och utvärdera multimodala texter och vara medveten om deras syften och kontexter, till exempel fakta- och medietext, litteratur och muntlig text, samt kan använda sig av relevanta begrepp för att analysera text</li>\n\t<li>utveckla sin förmåga att tolka skön- och facklitteratur i estetiskt och funktionellt syfte, fördjupa sin förståelse för litterära medel och behärska relevanta begrepp för att analysera litteratur</li>\n\t<li>kritiskt kunna granska olika informationskällor samt informationens syfte, tillförlitlighet och användbarhet.</li>\n</ul>\n\n<p> </p>\n\n<p><em>Att producera texter</em></p>\n\n<p>Målet är att den studerande ska</p>\n\n<ul>\n\t<li>utveckla sin kritiska och kulturella läskunnighet så att hen kan producera och dra nytta av multimodala texter och vara medveten om deras syften och kontexter, kan uttrycka sig och motivera sina tankar samt använda ett för situationen lämpligt språk och uttryckssätt</li>\n\t<li>kunna behärska de olika faserna i en skrivprocess och reflektera över sina egna skrivprocesser, kunna ge och ta emot respons samt tillämpa respons i sitt skrivande</li>\n\t<li>stärka sina färdigheter att behärska standardspråket och dess normer i tal och skrift samt kunna använda olika källor på ett ändamålsenligt sätt och förstå och följa regler om upphovsrätt.</li>\n</ul>\n\n<p> </p>\n\n<p><em>Att utveckla språklig och kulturell medvetenhet</em></p>\n\n<p>Målet är att den studerande ska</p>\n\n<ul>\n\t<li>bli medveten om vilken betydelse språket och olika kunskapsområden har för lärandet och tänkandet samt hur den språkliga och kulturella mångfalden inverkar på identiteten</li>\n\t<li>fördjupa sina kunskaper om samiskans struktur, ordförråd, olika register, uttrycksformer och tonlägen och deras meningsskapande funktion samt om litteraturen och andra kulturprodukter</li>\n\t<li>bekanta sig med de samiska språken som helhet samt förstå sin egen roll som upprätthållare av samiskan.</li>\n</ul>\n\n<p> </p>\n\n<p><strong>Bedömning</strong></p>\n\n<p> </p>\n\n<p>Syftet med bedömningen är att främja och stödja lärandet och synliggöra olika aspekter av den studerandes kunnande och utveckling. Responsen och bedömningen är kopplade till de modulspecifika mål som grundar sig på lärokursens allmänna mål. Modulernas mål bildar målen för de lokala studieavsnitten eller sammanfogas till sådana. Bedömningen ska vara mångsidig, öppen och rättvis samt basera sig på delaktighet och uppmuntran och vägleda den studerande till självvärdering. Den studerandes lärande och kunnande ska bedömas på olika sätt, till exempel med hjälp av iakttagelser av den studerandes lärande och olika prestationer.</p>\n\n<p> </p>\n\n<p>Bedömningen under ett studieavsnitt kan bestå av till exempel respons samt självvärdering och kamratrespons som stödjer den studerande att utveckla sina färdigheter under lärprocessens gång. Med hjälp av bedömningsdialog och respons samt självvärderingsfärdigheter utvecklar den studerande en uppfattning om sig själv och hur hen talar och lyssnar samt producerar och tolkar text.</p>\n\n<p> </p>\n\n<p>Bedömningen i slutet av ett studieavsnitt ska grunda sig på målen för modulerna som ingår i studieavsnittet. Utöver målen för modulerna kan studieavsnittet också innehålla lokala mål för mångsidig kompetens. Då ett studieavsnitt inleds ska den studerande informeras om målen för studierna så att både läraren och den studerande kan följa upp framsteg i studierna. Bedömningen av ett studieavsnitt ska grunda sig på olika slags prestationer, till exempel skriftliga och muntliga prestationer och eventuella andra delprestationer samt på den studerandes aktivitet under studieavsnittets gång. Om studieavsnittet består av flera moduler från samma läroämne ges endast ett vitsord.</p>\n\n<p> </p>\n\n<p><strong>Studier</strong></p>\n\n<p> </p>\n\n<p><strong>SMO1 Att tolka och skriva text (2 sp)</strong></p>\n\n<p> </p>\n\n<p><em>Mål</em></p>\n\n<p>Målen för modulen är att den studerande ska</p>\n\n<ul>\n\t<li>kunna producera, tolka och analysera olika multimodala samiska texter samt deras språkliga strukturer och uttryck</li>\n\t<li>uppmuntras som skribent och behärska de olika skedena av en skrivprocess</li>\n\t<li>lära sig använda olika typer av texter som utgångspunkt för sitt eget skrivande</li>\n\t<li>stärka sin uppfattning om sig själv i fråga om att tolka och producera text samt ge och ta emot respons.</li>\n</ul>\n\n<p> </p>\n\n<p><em>Centralt innehåll</em></p>\n\n<ul>\n\t<li>centrala textgenrer: berättande, beskrivande, instruerande, ställningstagande och reflekterande texter och kombinationer av dessa</li>\n\t<li>texters målgrupper, sammanställning av texthelheter; analys av textens syfte, kontext, innehåll, uppbyggnad, uttrycksformer och synvinklar</li>\n\t<li>skriva olika typer av texter i process, kollaborativt och individuellt samt materialbaserat skrivande, referat av texter och kommentarer till texter</li>\n\t<li>texters flerstämmighet och intertextualitet</li>\n\t<li>språk- och textvård</li>\n</ul>\n\n<p> </p>\n\n<p><strong>SMO2 Text och språklig medvetenhet (1 sp)</strong></p>\n\n<p> </p>\n\n<p><em>Mål</em></p>\n\n<p>Målen för modulen är att den studerande ska</p>\n\n<ul>\n\t<li>utveckla sin språkliga och textuella medvetenhet</li>\n\t<li>fördjupa sin förståelse av språk och text som meningsskapande helheter</li>\n\t<li>förstå de samiska språken som helhet bland språken i världen samt vilken inverkan kulturella kontakter har.</li>\n</ul>\n\n<p> </p>\n\n<p><em>Centralt innehåll</em></p>\n\n<ul>\n\t<li>samiska och identitet, språklig variation, jämförelse mellan språk, språkens ställning, livskraftiga och utrotningshotade språk</li>\n\t<li>språkpolitik, en- och flerspråkighet, språkideologier, språkvård</li>\n\t<li>multilitteracitet och textgenre som begrepp, det vidgade textbegreppet</li>\n</ul>\n\n<p> </p>\n\n<p><strong>SMO3 Kommunikation 1 (1 sp)</strong></p>\n\n<p> </p>\n\n<p><em>Mål</em></p>\n\n<p>Målen för modulen är att den studerande ska</p>\n\n<ul>\n\t<li>uppmuntras att kommunicera aktivt, fördjupa sin kommunikationsprofil och sin medvetenhet om språk och identitet</li>\n\t<li>fördjupa sina färdigheter i gruppkommunikation samt lära sig analysera och bedöma fenomen i anslutning till gruppkommunikation</li>\n\t<li>lära sig analysera betydelsen av olika språkliga och icke-verbala medel och iaktta kontextbundna variationer i olika kommunikationssituationer.</li>\n</ul>\n\n<p> </p>\n\n<p><em>Centralt innehåll</em></p>\n\n<ul>\n\t<li>reflektioner över de egna kommunikationsfärdigheterna, ge och ta emot respons, förmåga att lyssna samt att målinriktat och konstruktivt delta i gruppkommunikation</li>\n\t<li>analys av olika kommunikationssituationer, konstruktion av samtal, betydelseförhandling, språket och icke-verbal kommunikation</li>\n\t<li>språk och identitet samt kontextbundna variationer i språkbruket</li>\n</ul>\n\n<p> </p>\n\n<p><strong>SMO4 Litteratur 1 (2 sp)</strong></p>\n\n<p> </p>\n\n<p><em>Mål</em></p>\n\n<p>Målen för modulen är att den studerande ska</p>\n\n<ul>\n\t<li>fördjupa och utveckla mångsidigare läsvanor</li>\n\t<li>känna till genrerna och uttrycksmedlen inom samisk skön- och facklitteratur samt film</li>\n\t<li>bredda sina läsfärdigheter, analysera och tolka litteratur av och om samer med hjälp av lämpliga begrepp och metoder</li>\n\t<li>lära känna samernas historia och det materiella och immateriella samiska kulturarvet.</li>\n</ul>\n\n<p> </p>\n\n<p><em>Centralt innehåll </em></p>\n\n<ul>\n\t<li>litteraturens roll och olika sätt att läsa litteratur, i synnerhet läsning och skrivning i funktionellt och estetiskt syfte</li>\n\t<li>centrala genrer, uttrycksformer och analysbegrepp</li>\n\t<li>berättelser och narrativitet i skön- och facklitteratur, mytiska berättelser, jojkning och sångtradition</li>\n\t<li>narrativitet i multimodala texter, till exempel teater, film och musik</li>\n</ul>\n\n<p> </p>\n\n<p><strong>SMO5 Att tolka text 1 (2 sp)</strong></p>\n\n<p> </p>\n\n<p><em>Mål</em></p>\n\n<p>Målen för modulen är att den studerande ska</p>\n\n<ul>\n\t<li>vidareutveckla sin kritiska läskunnighet, i synnerhet sin mediekunskap</li>\n\t<li>lära sig tolka multimodala samiska texter, samt lära sig analysera deras uttrycksformer och växelverkan, även ur samiskt perspektiv</li>\n\t<li>förstå hur medierna fungerar, deras betydelse för identiteten och deras roll som opinionsbildare i samhället</li>\n\t<li>mångsidigt kunna motivera sina åsikter, förstå och analysera andras motiveringar samt kunna förhålla sig konstruktivt till avvikande åsikter.</li>\n</ul>\n\n<p> </p>\n\n<p><em>Centralt innehåll</em></p>\n\n<ul>\n\t<li>yttrandefrihet, mediekritik, medieetik</li>\n\t<li>språkliga och audiovisuella medel som används för att påverka mottagaren samt argumentationsteknik och retoriska stilmedel</li>\n\t<li>ideologiskt färgade texter och skillnaden mellan åsikter och vetenskaplig kunskap, minoriteters och minoritetsspråks synlighet i medierna</li>\n\t<li>källkritik, informationssökning och -hantering, upphovsrätt</li>\n\t<li>att analysera och producera skriftliga och muntliga texter som tar ställning och påverkar</li>\n</ul>\n\n<p> </p>\n\n<p><strong>SMO6 Att producera text 1 (1 sp)</strong></p>\n\n<p> </p>\n\n<p><em>Mål</em></p>\n\n<p>Målen för modulen är att den studerande ska</p>\n\n<ul>\n\t<li>uppmuntras som skribent och utveckla sina färdigheter i att behärska skrivprocessen i samiska</li>\n\t<li>lära sig använda andra samiska texter som underlag för den egna skrivprocessen och kunna bedöma texternas tillförlitlighet</li>\n\t<li>stärka sin uppfattning om vilken inverkan textens disposition, språk och uttrycksform har för dess betydelse.</li>\n</ul>\n\n<p> </p>\n\n<p><em>Centralt innehåll</em></p>\n\n<ul>\n\t<li>skrivprocessen: idéfas, avgränsning av ämnet, val av perspektiv, disposition, bearbetning och finslipning; ge och ta emot respons</li>\n\t<li>materialbaserat skrivande, språk- och textvård</li>\n\t<li>ordkonstövningar som stärker skribentens egen röst</li>\n</ul>\n\n<p> </p>\n\n<p><strong>SMO7 Kommunikation 2 (1 sp)</strong></p>\n\n<p> </p>\n\n<p><em>Mål</em></p>\n\n<p>Målen för modulen är att den studerande ska</p>\n\n<ul>\n\t<li>öka tilltron till sin förmåga att framträda och sin förståelse för anspänning</li>\n\t<li>utveckla sin färdighet att framträda samt sin förmåga att producera olika muntliga texter, även i digitala miljöer</li>\n\t<li>fördjupa sin förmåga att analysera och bedöma talad text och audiovisuell kommunikation.</li>\n</ul>\n\n<p> </p>\n\n<p><em>Centralt innehåll</em></p>\n\n<ul>\n\t<li>anspänning och koncentrationsnivå, publikkontakt och åhörarnas ansvar</li>\n\t<li>särdrag för kommunikation på samiska</li>\n</ul>\n\n<ul>\n\t<li>sammanställning och framförande av ett inlägg individuellt, i grupp eller som en audiovisuell text; färdigheter i att fokusera, ta kontakt, åskådliggöra och uttrycka sig</li>\n\t<li>kommunikationsfärdigheter och -etik i olika kommunikationskanaler, till exempel sociala medier</li>\n\t<li>analys och bedömning av talade och audiovisuella texter</li>\n</ul>\n\n<p> </p>\n\n<p><strong>SMO8 Litteratur 2 (2 sp)</strong></p>\n\n<p> </p>\n\n<p><em>Mål</em></p>\n\n<p>Målen för modulen är att den studerande ska</p>\n\n<ul>\n\t<li>öka sin kunskap om samisk litteratur och kunna granska skönlitteratur också som en del av ett samhälle i förändring</li>\n\t<li>förstå betydelsen av olika kontexter för tolkningen av litteratur</li>\n\t<li>kunna analysera inhemsk och utländsk litteratur som skrivits av eller handlar om samer samt annan konst som en del av den kulturella kontexten.</li>\n</ul>\n\n<p> </p>\n\n<p><em>Centralt innehåll</em></p>\n\n<ul>\n\t<li>granska samisk litteratur i olika kontexter: författarens och genrens kontext, historisk och kulturell kontext, politisk och samhällelig kontext</li>\n\t<li>granska texter ur olika synvinklar, till exempel med beaktande av olika människosyner, identiteter, världsbilder, värdegrunder och idévärldar</li>\n\t<li>den samiska litteraturen och litteratur om och av samer som ett mångfacetterat, flerstämmigt och flerspråkigt fenomen</li>\n</ul>\n\n<p> </p>\n\n<p><strong>Betyg</strong></p>\n\n<p> </p>\n\n<p>Den studerande ska ges ett intyg över deltagande i undervisning i samiska som kompletterar gymnasieutbildningen. I intyget antecknas vilket språk som studerats, omfattningen av undervisningen och en verbal bedömning eller ett siffervitsord i enlighet med utbildningsanordnarens beslut. I övrigt följs bestämmelserna om betygsanteckningar i grunderna för gymnasiets läroplan.</p>\n\n<p> </p>"
                     },
                     "koodit": [],
-                    "liite": true,
+                    "liite": false,
                     "osanTyyppi": "tekstikappale"
                   },
                   "lapset": [],
@@ -44573,8 +44559,8 @@
               "perusteenOsa": {
                 "id": 6828788,
                 "luotu": 1572530396589,
-                "muokattu": 1573720243685,
-                "muokkaaja": "1.2.246.562.24.99793111246",
+                "muokattu": 1695802735253,
+                "muokkaaja": "1.2.246.562.24.47046981340",
                 "nimi": {
                   "_id": "6866459",
                   "_tunniste": "a933c855-c160-4f0a-80da-18aae29d0818",
@@ -44590,7 +44576,7 @@
                   "sv": "<p>Anvisning 7.11.2019 OPH-2265-2019</p>\n\n<p> </p>\n\n<p>Utbildningsstyrelsen ger bifogade anvisning om målen, det centrala innehållet och bedömningen av den studerandes lärande i undervisning i romani som kompletterar gymnasieutbildningen. Anvisningen gäller undervisning i romani som kompletterar gymnasieutbildningen och som ordnas med separat finansiering (Undervisningsministeriets förordning om grunderna för statsunderstöd som beviljas för kompletterande undervisning i den grundläggande utbildningen och gymnasieutbildningen för elever med främmande språk, samiska och romani som modersmål 1777/2009).</p>\n\n<p>Denna anvisning ersätter Utbildningsstyrelsens anvisning som utgör bilaga 4 till Grunderna för gymnasiets läroplan 2015 (Utbildningsstyrelsens föreskrift 60/011/2015).</p>\n\n<p>Undervisningen ska ordnas i enlighet med denna anvisning från och med 1.8.2021.</p>\n\n<p> </p>\n\n<p> </p>\n\n<p> </p>\n\n<table cellspacing=\"0\" style=\"width:677px\">\n\t<tbody>\n\t\t<tr>\n\t\t\t<td style=\"vertical-align:top\">\n\t\t\t<p>Generaldirektör</p>\n\t\t\t</td>\n\t\t\t<td style=\"vertical-align:top\">\n\t\t\t<p>Olli-Pekka Heinonen</p>\n\t\t\t</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td style=\"vertical-align:top\">\n\t\t\t<p>Undervisningsråd</p>\n\t\t\t</td>\n\t\t\t<td style=\"vertical-align:top\">\n\t\t\t<p>Petri Lehikoinen</p>\n\t\t\t</td>\n\t\t</tr>\n\t</tbody>\n</table>"
                 },
                 "koodit": [],
-                "liite": true,
+                "liite": false,
                 "osanTyyppi": "tekstikappale"
               },
               "lapset": [
@@ -44599,8 +44585,8 @@
                   "perusteenOsa": {
                     "id": 6828632,
                     "luotu": 1572509694515,
-                    "muokattu": 1573474089752,
-                    "muokkaaja": "1.2.246.562.24.90339285276",
+                    "muokattu": 1695802741622,
+                    "muokkaaja": "1.2.246.562.24.47046981340",
                     "nimi": {
                       "_id": "6828643",
                       "_tunniste": "446facb1-85ea-4669-bb32-22c1bc5bd8f4",
@@ -44616,7 +44602,7 @@
                       "sv": "<p>Utbildningsstyrelsens anvisning nr 2265-2019.</p>\n\n<p> </p>\n\n<p>Enligt Finlands grundlag har alla som bor i Finland rätt att upprätthålla och utveckla sitt språk och sin kultur. Syftet med undervisningen i romani är att stödja den studerande att utveckla en aktiv flerspråkighet och ett intresse för kontinuerligt språklärande. Undervisningen i romani ska stödja den studerandes delaktighet som en aktiv och balanserad medlem i såväl sin egen språk- och kulturgemenskap som i den finländska språk- och kulturgemenskapen samt som global aktör. Undervisningen i romani ska samarbeta med undervisningen i lärokursen svenska och litteratur och undervisningen i övriga läroämnen.</p>\n\n<p> </p>\n\n<p>Språkpedagogiken stärker den studerandes språkliga medvetenhet och förmåga att använda flera språk parallellt samt fördjupar hens multilitteracitet och förmåga att anpassa sig till språkgemenskapen. Språkpedagogiken hjälper även den studerande att bygga upp sin språkliga och kulturella identitet. Målet är att den studerande ska lära sig uppfatta och värdesätta den språkliga och kulturella mångfalden samt de språkliga rättigheterna i den egna vardagen och i samhället i övrigt. Den studerandes utgångsläge och språkkunskaper ska tas i beaktande i studierna. I studierna ska man utnyttja olika studiemiljöer såsom bibliotek, teatrar och museer samt övriga kulturella institutioner. I studierna ska den studerande även dra nytta av sin egen språkgemenskap, sina språk- och textmiljöer samt den språkliga och kulturella mångfalden i skolgemenskapen och andra gemenskaper. I studierna ska man använda tillräckligt krävande material och arbetssätt som är meningsfulla för den studerande, ger upplevelser och utvecklar kreativiteten.</p>\n\n<p> </p>\n\n<p>Målen och innehållet har fastställts för undervisning i romani som omfattar två undervisningstimmar per vecka under hela gymnasieutbildningen. Utbildningsanordnaren ska göra upp en lokal läroplan, där målen för undervisningen och det centrala innehållet väljs med hänsyn till det romska språkets särdrag. Läroplanen i romani kan också utarbetas gemensamt av flera utbildningsanordnare.</p>\n\n<p> </p>\n\n<p><strong>Undervisningens uppdrag</strong></p>\n\n<p> </p>\n\n<p>Undervisningen i romani ska handleda den studerande till att uttrycka sig själv mångsidigt, utveckla sina kommunikativa färdigheter, aktivt söka och kritiskt granska information och tolka texter samt till etiska reflektioner. Undervisningens uppdrag är att stödja och utveckla den studerandes språkliga medvetenhet. Den studerandes uppskattning för det romska språket ökar och hen blir motiverad att fördjupa sina kunskaper i romani.</p>\n\n<p> </p>\n\n<p>I undervisningen kombineras företeelser inom språk-, litteratur- och kulturforskning. Den studerandes kännedom om och mångsidiga användning av det romska språket breddas och hen lär sig känna de språkliga rötterna samt utvecklar sin förmåga att jämföra språkets olika drag med andra språk som hen kan. Den studerande utvecklar samtidigt sitt ord- och begreppsförråd och sin multilitteracitet. Hen utvecklar sin kunskap om den egna kulturens litteratur, berättartradition, visuella kultur, musik och drama.</p>\n\n<p> </p>\n\n<p><strong>Undervisningens mål</strong></p>\n\n<p> </p>\n\n<p>Målen för undervisningen i romani som kompletterar gymnasieutbildningen berör den studerandes kommunikationsfärdigheter, förmåga att tolka och producera text samt utvecklingen av den studerandes språkliga och kulturella kännedom. Målen för undervisningen är följande:</p>\n\n<p> </p>\n\n<p><em>Kommunikationsfärdigheter</em></p>\n\n<p>Målet är att den studerande ska</p>\n\n<ul>\n\t<li>kunna kommunicera målinriktat, ändamålsenligt och etiskt såväl enskilt som i grupp samt kunna analysera, bedöma och utveckla sina egna kommunikationsfärdigheter</li>\n\t<li>kunna analysera och bedöma olika kommunikationssituationer och -relationer samt kommunikationsfenomen och -färdigheter och kommunikationsetik som ingår i kontexten</li>\n</ul>\n\n<p> </p>\n\n<p><em>Att tolka texter</em></p>\n\n<p>Målet är att den studerande ska</p>\n\n<ul>\n\t<li>utveckla sin kritiska och kulturella läskunnighet så att hen kan analysera och utvärdera multimodala texter och vara medveten om deras syften och kontexter, till exempel fakta- och medietext, litteratur och muntlig text, samt kan använda sig av relevanta begrepp för att analysera text</li>\n\t<li>utveckla sin förmåga att tolka skön- och facklitteratur i estetiskt och funktionellt syfte, fördjupa sin förståelse för litterära medel och behärska relevanta begrepp för att analysera litteratur</li>\n\t<li>kritiskt kunna granska olika informationskällor samt informationens syfte, tillförlitlighet och användbarhet.</li>\n</ul>\n\n<p> </p>\n\n<p><em>Att producera texter</em></p>\n\n<p>Målet är att den studerande ska</p>\n\n<ul>\n\t<li>utveckla sin kritiska och kulturella läskunnighet så att hen kan producera och dra nytta av multimodala texter och vara medveten om deras syften och kontexter, kan uttrycka sig och motivera sina tankar samt använda ett för situationen lämpligt språk och uttryckssätt</li>\n\t<li>kunna behärska de olika faserna i en skrivprocess och reflektera över sina egna skrivprocesser, kunna ge och ta emot respons samt tillämpa respons i sitt skrivande</li>\n\t<li>stärka sina färdigheter att behärska standardspråket och dess normer i tal och skrift samt kunna använda olika källor på ett ändamålsenligt sätt och förstå och följa regler om upphovsrätt.</li>\n</ul>\n\n<p> </p>\n\n<p><em>Att utveckla språklig och kulturell medvetenhet</em></p>\n\n<p>Målet är att den studerande ska</p>\n\n<ul>\n\t<li>bli medveten om vilken betydelse språket och olika kunskapsområden har för lärandet och tänkandet samt hur den språkliga och kulturella mångfalden inverkar på identiteten</li>\n\t<li>fördjupa sina kunskaper om den finländska romanins struktur, ordförråd, olika register, uttrycksformer och tonlägen och deras meningsskapande funktion samt om litteraturen och andra kulturprodukter</li>\n\t<li>bekanta sig med de romska dialekter som talas på olika håll i världen samt förstå sin egen roll som upprätthållare av det romska språket i Finland.</li>\n</ul>\n\n<p> </p>\n\n<p><strong>Bedömning</strong></p>\n\n<p> </p>\n\n<p>Syftet med bedömningen är att främja och stödja lärandet och synliggöra olika aspekter av den studerandes kunnande och utveckling. Responsen och bedömningen är kopplade till de modulspecifika mål som grundar sig på lärokursens allmänna mål. Modulernas mål bildar målen för de lokala studieavsnitten eller sammanfogas till sådana. Bedömningen ska vara mångsidig, öppen och rättvis samt basera sig på delaktighet och uppmuntran och vägleda den studerande till självvärdering. Den studerandes lärande och kunnande ska bedömas på olika sätt, till exempel med hjälp av iakttagelser av hens lärande och olika prestationer.</p>\n\n<p> </p>\n\n<p>Bedömningen under ett studieavsnitt kan bestå av till exempel respons samt självvärdering och kamratrespons som stödjer den studerande att utveckla sina färdigheter under lärprocessens gång. Med hjälp av bedömningsdialog och respons samt självvärderingsfärdigheter utvecklar den studerande en uppfattning om sig själv och hur hen talar och lyssnar samt producerar och tolkar text.</p>\n\n<p> </p>\n\n<p>Bedömningen i slutet av ett studieavsnitt ska grunda sig på målen för modulerna som ingår i studieavsnittet. Utöver målen för modulerna kan studieavsnittet också innehålla lokala mål för mångsidig kompetens. Då ett studieavsnitt inleds ska den studerande informeras om målen för studierna så att både läraren och den studerande kan följa upp framsteg i studierna. Bedömningen av ett studieavsnitt ska grunda sig på olika slags prestationer, till exempel skriftliga och muntliga prestationer och eventuella andra delprestationer samt på den studerandes aktivitet under studieavsnittets gång. Om studieavsnittet består av flera moduler från samma läroämne ges endast ett vitsord.</p>\n\n<p> </p>\n\n<p><strong>Studier</strong></p>\n\n<p> </p>\n\n<p><strong>RMO1 Att tolka och skriva text (2 sp)</strong></p>\n\n<p> </p>\n\n<p><em>Mål</em></p>\n\n<p>Målen för modulen är att den studerande ska</p>\n\n<ul>\n\t<li>kunna producera, tolka och analysera olika multimodala romska texter samt deras språkliga strukturer och uttryck</li>\n\t<li>uppmuntras som skribent och behärska de olika skedena av en skrivprocess</li>\n\t<li>lära sig använda olika typer av texter som utgångspunkt för sitt eget skrivande</li>\n\t<li>stärka sin uppfattning om sig själv i fråga om att tolka och producera text samt ge och ta emot respons.<em> </em></li>\n</ul>\n\n<p> </p>\n\n<p><em>Centralt innehåll</em></p>\n\n<ul>\n\t<li>centrala textgenrer: berättande, beskrivande, instruerande, ställningstagande och reflekterande texter och kombinationer av dessa</li>\n\t<li>texters målgrupper, sammanställning av texthelheter; analys av textens syfte, kontexter, innehåll, uppbyggnad, uttrycksformer och synvinklar</li>\n\t<li>skriva olika typer av texter i process, kollaborativt och individuellt samt materialbaserat skrivande, referat av texter och kommentarer till texter</li>\n\t<li>texters flerstämmighet och intertextualitet</li>\n\t<li>språk- och textvård</li>\n</ul>\n\n<p> </p>\n\n<p><strong>RMO2 Text och språklig medvetenhet (1 sp)</strong></p>\n\n<p> </p>\n\n<p><em>Mål</em></p>\n\n<p>Målen för modulen är att den studerande ska</p>\n\n<ul>\n\t<li>utveckla sin språkliga och textuella medvetenhet</li>\n\t<li>fördjupa sin förståelse av språk och text som meningsskapande helheter</li>\n\t<li><em>förstå romanins ställning bland språken i världen samt vilken inverkan kulturella kontakter har.</em></li>\n</ul>\n\n<p> </p>\n\n<p><em>Centralt innehåll</em></p>\n\n<ul>\n\t<li>romani och identitet, språklig variation, jämförelse mellan språk, språkens ställning, livskraftiga och utrotningshotade språk</li>\n\t<li>språkpolitik, en- och flerspråkighet, språkideologier, språkvård</li>\n\t<li>multilitteracitet och textgenre som begrepp, det vidgade textbegreppet</li>\n</ul>\n\n<p> </p>\n\n<p><strong>RMO3 Kommunikation 1 (1 sp)</strong></p>\n\n<p> </p>\n\n<p><em>Mål</em></p>\n\n<p>Målen för modulen är att den studerande ska</p>\n\n<ul>\n\t<li>uppmuntras att kommunicera aktivt, fördjupa sin kommunikationsprofil och sin medvetenhet om språk och identitet</li>\n\t<li>fördjupa sina färdigheter i gruppkommunikation samt lära sig analysera och bedöma fenomen i anslutning till gruppkommunikation</li>\n\t<li>lära sig analysera betydelsen av olika språkliga och icke-verbala medel och iaktta kontextbundna variationer i olika kommunikationssituationer.</li>\n</ul>\n\n<p> </p>\n\n<p><em>Centralt innehåll</em></p>\n\n<ul>\n\t<li>reflektioner över de egna kommunikationsfärdigheterna, ge och ta emot respons, förmåga att lyssna samt målinriktat och konstruktivt delta i gruppkommunikation</li>\n\t<li>analys av olika kommunikationssituationer, konstruktion av samtal, betydelseförhandling, språket och icke-verbal kommunikation</li>\n\t<li>språk och identitet samt kontextbundna variationer i språkbruket</li>\n</ul>\n\n<p> </p>\n\n<p><strong>RMO4 Litteratur 1 (2 sp)</strong></p>\n\n<p> </p>\n\n<p><em>Mål</em></p>\n\n<p>Målen för modulen är att den studerande ska</p>\n\n<ul>\n\t<li>fördjupa och utveckla mångsidigare läsvanor</li>\n\t<li>känna till genrer inom romsk skön- och facklitteratur samt film och deras uttrycksmedel</li>\n\t<li>bredda sin förmåga att läsa, analysera och tolka litteratur på romani och litteratur av och om romer med hjälp av lämpliga begrepp och metoder</li>\n\t<li>lära känna romernas historia och det materiella och immateriella romska kulturarvet.</li>\n</ul>\n\n<p> </p>\n\n<p><em>Centralt innehåll</em></p>\n\n<ul>\n\t<li>litteraturens roll och olika sätt att läsa litteratur, i synnerhet läsning och skrivning i funktionellt och estetiskt syfte</li>\n\t<li>centrala genrer, uttrycksformer och analysbegrepp i litteraturen</li>\n\t<li>berättelser och narrativitet i skön- och facklitteratur, romernas sångtradition och mytiska berättelser</li>\n\t<li>multimodala texters narrativitet, till exempel teater, film och musik</li>\n</ul>\n\n<p> </p>\n\n<p><strong>RMO5 Att tolka text 1 (2 sp)</strong></p>\n\n<p> </p>\n\n<p><em>Mål</em></p>\n\n<p>Målen för modulen är att den studerande ska</p>\n\n<ul>\n\t<li>vidareutveckla sin kritiska läskunnighet, i synnerhet sin mediekunskap</li>\n\t<li>lära sig tolka multimodala romska texter samt lära sig analysera deras uttrycksformer och växelverkan, även ur den romska kulturens perspektiv</li>\n\t<li>förstå hur medierna fungerar, deras betydelse för identiteten och deras roll som opinionsbildare i samhället</li>\n\t<li>mångsidigt kunna motivera sina åsikter, förstå och analysera andras motiveringar samt kunna förhålla sig konstruktivt till avvikande åsikter.</li>\n</ul>\n\n<p> </p>\n\n<p><em>Centralt innehåll</em></p>\n\n<ul>\n\t<li>yttrandefrihet, mediekritik, medieetik</li>\n\t<li>språkliga och audiovisuella medel som används för att påverka mottagaren samt argumentationsteknik och retoriska stilmedel</li>\n\t<li>ideologiskt färgade texter och skillnaden mellan åsikter och vetenskaplig kunskap, minoriteters och minoritetsspråks synlighet i medierna</li>\n\t<li>källkritik, informationssökning och -hantering, upphovsrätt</li>\n\t<li>att analysera och producera skriftliga och muntliga texter som tar ställning och påverkar</li>\n</ul>\n\n<p> </p>\n\n<p><strong>RMO6 Att producera text 1 (1 sp)</strong></p>\n\n<p> </p>\n\n<p><em>Mål</em></p>\n\n<p>Målen för modulen är att den studerande ska</p>\n\n<ul>\n\t<li>uppmuntras som skribent och utveckla sina färdigheter i att behärska skrivprocessen</li>\n\t<li>lära sig använda andra romska texter som underlag för den egna skrivprocessen och kunna bedöma texternas tillförlitlighet</li>\n\t<li>stärka sin uppfattning om vilken inverkan textens disposition, språk och uttrycksform har för dess betydelse.</li>\n</ul>\n\n<p> </p>\n\n<p><em>Centralt innehåll</em></p>\n\n<ul>\n\t<li>skrivprocessen: idéfas, avgränsning av ämnet, val av perspektiv, disposition, redigering och finslipning; ge och ta emot respons</li>\n\t<li>materialbaserat skrivande, språk- och textvård</li>\n\t<li>ordkonstövningar som stärker skribentens egen röst</li>\n</ul>\n\n<p> </p>\n\n<p><strong>RMO7 Kommunikation 2 (1 sp)</strong></p>\n\n<p> </p>\n\n<p><em>Mål</em></p>\n\n<p>Målen för modulen är att den studerande ska</p>\n\n<ul>\n\t<li>öka tilltron till sin förmåga att framträda och sin förståelse för anspänning</li>\n\t<li>utveckla sin färdighet att framträda samt sin förmåga att producera olika muntliga texter, även i digitala miljöer</li>\n\t<li>fördjupa sin förmåga att analysera och bedöma talad text och audiovisuell kommunikation.</li>\n</ul>\n\n<p> </p>\n\n<p><em>Centralt innehåll</em></p>\n\n<ul>\n\t<li>anspänning och koncentrationsnivå, publikkontakt och åhörarnas ansvar</li>\n</ul>\n\n<ul>\n\t<li>särdrag för kommunikation på romani</li>\n\t<li>sammanställning och framförande av ett inlägg individuellt, i grupp eller som en audiovisuell text; färdigheter i att fokusera, ta kontakt, åskådliggöra och uttrycka sig</li>\n\t<li>kommunikationsfärdigheter och -etik i olika kommunikationskanaler, till exempel sociala medier</li>\n\t<li>analys och bedömning av talade och audiovisuella texter</li>\n</ul>\n\n<p> </p>\n\n<p><strong>RMO8 Litteratur 2 (2 sp)</strong></p>\n\n<p> </p>\n\n<p><em>Mål</em></p>\n\n<p>Målen för modulen är att den studerande ska</p>\n\n<ul>\n\t<li>öka sin kunskap om romsk litteratur och kunna granska skönlitteratur också som en del av ett samhälle i förändring</li>\n\t<li>förstå betydelsen av olika kontexter för tolkningen av litteratur</li>\n\t<li>kunna analysera inhemsk och utländsk litteratur som skrivits av eller handlar om romer samt annan konst som en del av den kulturella kontexten.</li>\n</ul>\n\n<p> </p>\n\n<p><em>Centralt innehåll</em></p>\n\n<ul>\n\t<li>granska romsk litteratur i olika kontexter: författarens och genrens kontext, historisk och kulturell kontext, politisk och samhällelig kontext</li>\n\t<li>granska texter ur olika synvinklar, till exempel med beaktande av olika människosyner, identiteter, världsbilder samt hur värdegrunder och idévärldar förändrats</li>\n\t<li>den romska litteraturen och litteratur av och om romer som ett mångfacetterat, flerstämmigt och flerspråkigt fenomen</li>\n</ul>\n\n<p> </p>\n\n<p><strong>Betyg</strong></p>\n\n<p> </p>\n\n<p>Den studerande ska ges ett intyg över deltagande i undervisning i romani som kompletterar gymnasieutbildningen. I intyget antecknas vilket språk som studerats, omfattningen av undervisningen och en verbal bedömning eller ett siffervitsord i enlighet med utbildningsanordnarens beslut. I övrigt följs bestämmelserna om betygsanteckningar i grunderna för gymnasiets läroplan.</p>\n\n<p> </p>"
                     },
                     "koodit": [],
-                    "liite": true,
+                    "liite": false,
                     "osanTyyppi": "tekstikappale"
                   },
                   "lapset": [],
@@ -44630,8 +44616,8 @@
               "perusteenOsa": {
                 "id": 6828789,
                 "luotu": 1572530798735,
-                "muokattu": 1573722177944,
-                "muokkaaja": "1.2.246.562.24.99793111246",
+                "muokattu": 1695802752929,
+                "muokkaaja": "1.2.246.562.24.47046981340",
                 "nimi": {
                   "_id": "6866582",
                   "_tunniste": "1f5569ec-5968-4485-bc94-cfd03edaf36c",
@@ -44647,7 +44633,7 @@
                   "sv": "<p>Anvisning 7.11.2019 OPH-2266-2019</p>\n\n<p>Utbildningsstyrelsen ger bifogade anvisning om målen, det centrala innehållet och bedömningen av den studerandes lärande i undervisning i den studerandes eget modersmål som kompletterar gymnasieutbildningen. Anvisningen gäller undervisning i den studerandes eget modersmål som kompletterar gymnasieutbildningen och som ordnas med separat finansiering (Undervisningsministeriets förordning om grunderna för statsunderstöd som beviljas för kompletterande undervisning i den grundläggande utbildningen och gymnasieutbildningen för elever med främmande språk, samiska och romani som modersmål 1777/2009).</p>\n\n<p> </p>\n\n<p>Denna anvisning ersätter Utbildningsstyrelsens anvisning som utgör bilaga 5 till Grunderna för gymnasiets läroplan 2015 (Utbildningsstyrelsens föreskrift 60/011/2015).</p>\n\n<p> </p>\n\n<p>Undervisningen ska ordnas i enlighet med denna anvisning från och med 1.8.2021.</p>\n\n<p> </p>\n\n<table cellspacing=\"0\" style=\"width:677px\">\n\t<tbody>\n\t\t<tr>\n\t\t\t<td style=\"vertical-align:top\">\n\t\t\t<p> </p>\n\t\t\t</td>\n\t\t\t<td style=\"vertical-align:top\">\n\t\t\t<p>Generaldirektör</p>\n\t\t\t</td>\n\t\t\t<td style=\"vertical-align:top\">\n\t\t\t<p>Olli-Pekka Heinonen</p>\n\t\t\t</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td style=\"vertical-align:top\">\n\t\t\t<p> </p>\n\t\t\t</td>\n\t\t\t<td style=\"vertical-align:top\">\n\t\t\t<p>Undervisningsråd</p>\n\t\t\t</td>\n\t\t\t<td style=\"vertical-align:top\">\n\t\t\t<p>Petri Lehikoinen</p>\n\t\t\t</td>\n\t\t</tr>\n\t</tbody>\n</table>"
                 },
                 "koodit": [],
-                "liite": true,
+                "liite": false,
                 "osanTyyppi": "tekstikappale"
               },
               "lapset": [
@@ -44656,8 +44642,8 @@
                   "perusteenOsa": {
                     "id": 6828631,
                     "luotu": 1572509694515,
-                    "muokattu": 1573475466997,
-                    "muokkaaja": "1.2.246.562.24.99793111246",
+                    "muokattu": 1695802759252,
+                    "muokkaaja": "1.2.246.562.24.47046981340",
                     "nimi": {
                       "_id": "6828641",
                       "_tunniste": "493a3f73-ebe4-404b-a0b0-de8fdd7ef6bc",
@@ -44673,7 +44659,7 @@
                       "sv": "<p>Utbildningsstyrelsens anvisning nr 2266-2019.</p>\n\n<p> </p>\n\n<p>Enligt Finlands grundlag har alla som bor i Finland rätt att upprätthålla och utveckla sitt språk och sin kultur. Syftet med undervisningen i eget modersmål är att stödja den studerande att utveckla en aktiv flerspråkighet och ett intresse för kontinuerligt språklärande. Undervisningen i eget modersmål ska stödja den studerandes delaktighet som en aktiv och balanserad medlem i såväl sin egen språk- och kulturgemenskap som i den finländska språk- och kulturgemenskapen samt som global aktör. Undervisningen i eget modersmål ska samarbeta med undervisningen i lärokursen svenska och litteratur och undervisningen i övriga läroämnen.</p>\n\n<p> </p>\n\n<p>Språkpedagogiken stärker den studerandes språkliga medvetenhet och färdigheter att använda flera språk parallellt samt fördjupar hens multilitteracitet och förmåga att anpassa sig till språkgemenskapen. Språkpedagogiken hjälper även den studerande att bygga upp sin språkliga och kulturella identitet. Målet är att den studerande ska lära sig uppfatta och värdesätta den språkliga och kulturella mångfalden samt de språkliga rättigheterna i den egna vardagen och i samhället i övrigt.</p>\n\n<p> </p>\n\n<p>Den studerandes utgångsläge och språkkunskaper ska tas i beaktande i studierna. I studierna ska man utnyttja olika studiemiljöer såsom bibliotek, teatrar och museer samt övriga kulturella institutioner. I studierna ska den studerande även utnyttja sin egen språkgemenskap, sina språk- och textmiljöer samt den språkliga och kulturella mångfalden i skolgemenskapen och andra gemenskaper. I studierna ska man använda tillräckligt krävande material och arbetssätt som är meningsfulla för den studerande, ger upplevelser och utvecklar kreativiteten.</p>\n\n<p> </p>\n\n<p>Denna anvisning har utarbetats för alla språk som undervisas som eget modersmål. Målen och det centrala innehållet har fastställts för undervisning i eget modersmål som omfattar två undervisningstimmar per vecka under hela gymnasieutbildningen. Utbildningsanordnaren ska göra upp en lokal läroplan där målen för undervisningen fastställs och innehållet väljs med beaktande av det aktuella språkets särdrag, bland annat skriftsystemet. Läroplanen kan också utarbetas gemensamt av flera utbildningsanordnare.</p>\n\n<p> </p>\n\n<p><strong>Undervisningens uppdrag</strong></p>\n\n<p> </p>\n\n<p>Undervisningen i det egna modersmålet ska handleda den studerande till att uttrycka sig själv mångsidigt, utveckla sina kommunikativa färdigheter, aktivt söka och kritiskt granska information och tolka texter samt till etiska reflektioner. Undervisningens uppdrag är att stödja och utveckla den studerandes språkliga medvetenhet. Den studerandes uppskattning för det egna modersmålet ökar och hen blir motiverad att fördjupa sina kunskaper i det egna språket.</p>\n\n<p> </p>\n\n<p>I undervisningen kombineras företeelser inom språk-, litteratur- och kulturforskning. Den studerandes kännedom om och mångsidiga användning av det egna modersmålet breddas och hen lär sig känna de språkliga rötterna samt utvecklar sin förmåga att jämföra språkets olika drag med andra språk som hen kan. Den studerande utvecklar samtidigt sitt ord- och begreppsförråd och sin multilitteracitet. Hen utvecklar sin kunskap om den egna kulturens litteratur, berättartradition, visuella kultur, musik och drama.</p>\n\n<p> </p>\n\n<p><strong>Undervisningens mål</strong></p>\n\n<p> </p>\n\n<p>Målen för undervisningen i den studerandes eget modersmål som kompletterar gymnasieutbildningen berör den studerandes kommunikationsfärdigheter, förmåga att tolka och producera text samt utvecklingen av den studerandes språkliga och kulturella kännedom. Målen för undervisningen är följande:</p>\n\n<p> </p>\n\n<p><em>Kommunikationsfärdigheter</em></p>\n\n<p>Målet är att den studerande ska</p>\n\n<ul>\n\t<li>kunna kommunicera målinriktat, ändamålsenligt och etiskt såväl enskilt som i grupp samt kunna analysera, bedöma och utveckla sina egna kommunikationsfärdigheter</li>\n\t<li>kunna analysera och bedöma olika kommunikationssituationer och -relationer samt kommunikationsfenomen och -färdigheter och kommunikationsetik som ingår i kontexten</li>\n</ul>\n\n<p> </p>\n\n<p><em>Att tolka texter</em></p>\n\n<p>Målet är att den studerande ska</p>\n\n<ul>\n\t<li>utveckla sin kritiska och kulturella läskunnighet så att hen kan analysera och utvärdera multimodala texter och vara medveten om deras syften och kontexter, till exempel fakta- och medietext, litteratur och muntlig text, samt kan använda sig av relevanta begrepp för att analysera text</li>\n\t<li>utveckla sin förmåga att tolka skön- och facklitteratur i estetiskt och funktionellt syfte, fördjupa sin förståelse för litterära medel och behärska relevanta begrepp för att analysera litteratur</li>\n\t<li>kritiskt kunna granska olika informationskällor samt informationens syfte, tillförlitlighet och användbarhet.</li>\n</ul>\n\n<p> </p>\n\n<p><em>Att producera texter</em></p>\n\n<p>Målet är att den studerande ska</p>\n\n<ul>\n\t<li>utveckla sin kritiska och kulturella läskunnighet så att hen kan producera och dra nytta av multimodala texter och vara medveten om deras syften och kontexter, kan uttrycka sig och motivera sina tankar samt använda ett för situationen lämpligt språk och uttryckssätt</li>\n\t<li>kunna behärska de olika faserna i en skrivprocess och reflektera över sina egna skrivprocesser, kunna ge och ta emot respons samt tillämpa respons i sitt skrivande</li>\n\t<li>stärka sina färdigheter att behärska standardspråket och dess normer i tal och skrift samt kunna använda olika källor på ett ändamålsenligt sätt och förstå och följa regler om upphovsrätt.</li>\n</ul>\n\n<p><em>Att utveckla språklig och kulturell medvetenhet</em></p>\n\n<p>Målet är att den studerande ska</p>\n\n<ul>\n\t<li>bli medveten om vilken betydelse språket och olika kunskapsområden har för lärandet och tänkandet samt hur den språkliga och kulturella mångfalden inverkar på identiteten</li>\n\t<li>fördjupa sina kunskaper om det egna modersmålets struktur, ordförråd, olika register, uttrycksformer och tonlägen och deras meningsskapande funktion samt om litteraturen och andra kulturprodukter.</li>\n</ul>\n\n<p> </p>\n\n<p><strong>Bedömning</strong></p>\n\n<p> </p>\n\n<p>Syftet med bedömningen är att främja och stödja lärandet och synliggöra olika aspekter av den studerandes kunnande och utveckling. Responsen och bedömningen är kopplade till de modulspecifika mål som grundar sig på lärokursens allmänna mål. Modulernas mål bildar målen för de lokala studieavsnitten eller sammanfogas till sådana. Bedömningen ska vara mångsidig, öppen och rättvis samt basera sig på delaktighet och uppmuntran och vägleda den studerande till självvärdering. Den studerandes lärande och kunnande ska bedömas på olika sätt, till exempel med hjälp av iakttagelser av den studerandes lärande och olika prestationer.</p>\n\n<p> </p>\n\n<p>Bedömningen under ett studieavsnitt kan bestå av till exempel respons samt självvärdering och kamratrespons som stödjer den studerande att utveckla sina färdigheter under lärprocessens gång. Med hjälp av bedömningsdialog och respons samt självvärderingsfärdigheter utvecklar den studerande en uppfattning om sig själv och hur hen talar och lyssnar samt producerar och tolkar text.</p>\n\n<p> </p>\n\n<p>Bedömningen i slutet av ett studieavsnitt ska grunda sig på målen för modulerna som ingår i studieavsnittet. Utöver målen för modulerna kan studieavsnittet också innehålla lokala mål för mångsidig kompetens. Då ett studieavsnitt inleds ska den studerande informeras om målen för studierna så att både läraren och den studerande kan följa upp framsteg i studierna. Bedömningen av ett studieavsnitt ska grunda sig på olika slags prestationer, till exempel skriftliga och muntliga prestationer och eventuella andra delprestationer samt på den studerandes aktivitet under studieavsnittets gång. Om studieavsnittet består av flera moduler från samma läroämne ges endast ett vitsord.</p>\n\n<p> </p>\n\n<p><strong>Studier</strong></p>\n\n<p> </p>\n\n<p><strong>EMO1 Att tolka och skriva text (2 sp)</strong></p>\n\n<p> </p>\n\n<p><em>Mål</em></p>\n\n<p>Målen för modulen är att den studerande ska</p>\n\n<ul>\n\t<li>kunna producera, tolka och analysera olika multimodala texter samt deras språkliga strukturer och uttryck</li>\n\t<li>uppmuntras som skribent och behärska de olika skedena av en skrivprocess</li>\n\t<li>lära sig använda olika typer av texter som utgångspunkt för sitt eget skrivande</li>\n\t<li>stärka sin uppfattning om sig själv i fråga om att tolka och producera text samt ge och ta emot respons.<em> </em></li>\n</ul>\n\n<p> </p>\n\n<p><em>Centralt innehåll</em></p>\n\n<ul>\n\t<li>centrala textgenrer: berättande, beskrivande, instruerande, ställningstagande och reflekterande texter och kombinationer av dessa</li>\n\t<li>texters målgrupper, sammanställning av texthelheter; analys av textens syfte, kontexter, innehåll, uppbyggnad, uttrycksformer och synvinklar</li>\n\t<li>skriva olika typer av texter i process, kollaborativt och individuellt samt materialbaserat skrivande, referat av texter och kommentarer till texter</li>\n\t<li>texters flerstämmighet och intertextualitet</li>\n\t<li>språk- och textvård</li>\n</ul>\n\n<p> </p>\n\n<p><strong>EMO2 Text och språklig medvetenhet (1 sp)</strong></p>\n\n<p> </p>\n\n<p><em>Mål</em></p>\n\n<p>Målen för modulen är att den studerande ska</p>\n\n<ul>\n\t<li>utveckla sin språkliga och textuella medvetenhet</li>\n\t<li>fördjupa sin förståelse av det egna modersmålet och text som meningsskapande helheter.</li>\n</ul>\n\n<p> </p>\n\n<p><em>Centralt innehåll</em></p>\n\n<ul>\n\t<li>modersmål och identitet, språklig variation, jämförelse mellan språk, språkens ställning, livskraftiga och utrotningshotade språk</li>\n\t<li>språkpolitik, en- och flerspråkighet, språkideologier, språkvård</li>\n\t<li>multilitteracitet och textgenre som begrepp, det vidgade textbegreppet</li>\n</ul>\n\n<p> </p>\n\n<p><strong>EMO3 Kommunikation 1 (1 sp)</strong></p>\n\n<p> </p>\n\n<p><em>Mål</em></p>\n\n<p>Målen för modulen är att den studerande ska</p>\n\n<ul>\n\t<li>uppmuntras att kommunicera aktivt, fördjupa sin kommunikationsprofil och sin medvetenhet om språk och identitet</li>\n\t<li>fördjupa sina färdigheter i gruppkommunikation samt lära sig analysera och bedöma fenomen i anslutning till gruppkommunikation</li>\n\t<li>lära sig analysera betydelsen av olika språkliga och icke-verbala medel och iaktta kontextbundna variationer i olika kommunikationssituationer.</li>\n</ul>\n\n<p> </p>\n\n<p><em>Centralt innehåll</em></p>\n\n<ul>\n\t<li>reflektioner över de egna kommunikationsfärdigheterna, ge och ta emot respons, förmåga att lyssna samt målinriktat och konstruktivt delta i gruppkommunikation</li>\n\t<li>analys av olika kommunikationssituationer, konstruktion av samtal, betydelseförhandling, språket och icke-verbal kommunikation</li>\n\t<li>språk och identitet samt kontextbundna variationer i språkbruket</li>\n</ul>\n\n<p> </p>\n\n<p><strong>EMO4 Litteratur 1 (2 sp)</strong></p>\n\n<p> </p>\n\n<p><em>Mål</em></p>\n\n<p>Målen för modulen är att den studerande ska</p>\n\n<ul>\n\t<li>fördjupa och utveckla mångsidigare läsvanor</li>\n\t<li>känna till genrer inom skön- och facklitteratur samt film på det egna modersmålet och deras uttrycksmedel</li>\n\t<li>bredda sin förmåga att läsa, analysera och tolka litteratur med hjälp av lämpliga begrepp och metoder</li>\n\t<li>lära känna det egna modersmålets materiella och immateriella kulturarv.</li>\n</ul>\n\n<p> </p>\n\n<p><em>Centralt innehåll</em></p>\n\n<ul>\n\t<li>litteraturens roll och olika sätt att läsa litteratur, i synnerhet läsning och skrivning i funktionellt och estetiskt syfte</li>\n\t<li>centrala genrer, uttrycksformer och analysbegrepp i litteraturen</li>\n\t<li>berättelser och narrativitet i skön- och facklitteratur</li>\n\t<li>multimodala texters narrativitet, till exempel teater, film och musik</li>\n</ul>\n\n<p> </p>\n\n<p><strong>EMO5 Att tolka text 1 (2 sp)</strong></p>\n\n<p> </p>\n\n<p><em>Mål</em></p>\n\n<p>Målen för modulen är att den studerande ska</p>\n\n<ul>\n\t<li>vidareutveckla sin kritiska läskunnighet, i synnerhet sin mediekunskap</li>\n\t<li>lära sig tolka multimodala texter samt lära sig analysera deras uttrycksformer och växelverkan</li>\n\t<li>förstå hur medierna fungerar, deras betydelse för identiteten och deras roll som opinionsbildare i samhället</li>\n\t<li>mångsidigt kunna motivera sina åsikter, förstå och analysera andras motiveringar samt kunna förhålla sig konstruktivt till avvikande åsikter.</li>\n</ul>\n\n<p> </p>\n\n<p><em>Centralt innehåll</em></p>\n\n<ul>\n\t<li>yttrandefrihet, mediekritik, medieetik</li>\n\t<li>språkliga och audiovisuella medel som används för att påverka mottagaren samt argumentationsteknik och retoriska stilmedel</li>\n\t<li>ideologiskt färgade texter och skillnaden mellan åsikter och vetenskaplig kunskap, minoriteters och minoritetsspråks synlighet i medierna</li>\n\t<li>källkritik, informationssökning och -hantering, upphovsrätt</li>\n\t<li>att analysera och producera skriftliga och muntliga texter som tar ställning och påverkar</li>\n</ul>\n\n<p> </p>\n\n<p><strong>EMO6 Att producera text 1 (1 sp)</strong></p>\n\n<p> </p>\n\n<p><em>Mål</em></p>\n\n<p>Målen för modulen är att den studerande ska</p>\n\n<ul>\n\t<li>uppmuntras som skribent och utveckla sina färdigheter i att behärska skrivprocessen</li>\n\t<li>lära sig använda andra texter på det egna modersmålet som underlag för den egna skrivprocessen och kunna bedöma texternas tillförlitlighet</li>\n\t<li>stärka sin uppfattning om vilken inverkan textens disposition, språk och uttrycksform har för dess betydelse.</li>\n</ul>\n\n<p> </p>\n\n<p><em>Centralt innehåll</em></p>\n\n<ul>\n\t<li>skrivprocessen: idéfas, avgränsning av ämnet, val av perspektiv, disposition, redigering och finslipning; ge och ta emot respons</li>\n\t<li>materialbaserat skrivande, språk- och textvård</li>\n\t<li>ordkonstövningar som stödjer skribentens egen röst</li>\n</ul>\n\n<p> </p>\n\n<p><strong>EMO7 Kommunikation 2 (1 sp)</strong></p>\n\n<p> </p>\n\n<p><em>Mål</em></p>\n\n<p>Målen för modulen är att den studerande ska</p>\n\n<ul>\n\t<li>öka tilltron till sin förmåga att framträda och sin förståelse för anspänning</li>\n\t<li>utveckla sin färdighet att framträda samt sin förmåga att producera olika muntliga texter, även i digitala miljöer</li>\n\t<li>fördjupa sin förmåga att analysera och bedöma talad text och audiovisuell kommunikation.</li>\n</ul>\n\n<p> </p>\n\n<p><em>Centralt innehåll</em></p>\n\n<ul>\n\t<li>anspänning och koncentrationsnivå, publikkontakt och åhörarnas ansvar</li>\n\t<li>sammanställning och framförande av ett inlägg individuellt, i grupp eller som en audiovisuell text; färdigheter i att fokusera, ta kontakt, åskådliggöra och uttrycka sig</li>\n\t<li>kommunikationsfärdigheter och -etik i olika kommunikationskanaler, till exempel sociala medier</li>\n\t<li>analys och bedömning av talade och audiovisuella texter</li>\n</ul>\n\n<p> </p>\n\n<p><strong>EMO8 Litteratur 2 (2 sp)</strong></p>\n\n<p> </p>\n\n<p><em>Mål</em></p>\n\n<p>Målen för modulen är att den studerande ska</p>\n\n<ul>\n\t<li>öka sin kunskap om litteratur på det egna modersmålet och kunna granska skönlitteratur också som en del av ett samhälle i förändring</li>\n\t<li>förstå betydelsen av olika kontexter för tolkningen av litteratur.</li>\n</ul>\n\n<p> </p>\n\n<p><em>Centralt innehåll</em></p>\n\n<ul>\n\t<li>granska litteratur på det egna modersmålet i olika kontexter: författarens och genrens kontext, historisk och kulturell kontext, politisk och samhällelig kontext</li>\n\t<li>granska texter ur olika synvinklar, till exempel med beaktande av olika människosyner, identiteter, världsbilder samt hur värdegrunder och idévärldar förändrats</li>\n\t<li>litteratur som ett mångfacetterat, flerstämmigt och flerspråkigt fenomen</li>\n</ul>\n\n<p> </p>\n\n<p><strong>Betyg</strong></p>\n\n<p> </p>\n\n<p>Den studerande ska ges ett intyg över deltagande i undervisning i eget modersmål som kompletterar den grundläggande utbildningen. I intyget antecknas vilket språk som studerats, omfattningen av undervisningen och en verbal bedömning eller ett siffervitsord i enlighet med utbildningsanordnarens beslut. I övrigt följs bestämmelserna om betygsanteckningar i grunderna för gymnasiets läroplan.</p>"
                     },
                     "koodit": [],
-                    "liite": true,
+                    "liite": false,
                     "osanTyyppi": "tekstikappale"
                   },
                   "lapset": [],
