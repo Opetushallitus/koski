@@ -29,17 +29,16 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matcher
   override protected def alterFixture(): Unit = {
     // Lisää validointien osalta rikkinäisiä opiskeluoikeuksia suoraan tietokantaan, koska raportti kertoo
     // rikkinäisyyksistä.
-
-    def create(oo: PerusopetuksenOpiskeluoikeus): Either[HttpStatus, Opiskeluoikeus.Oid] = {
-      val createResult = application.opiskeluoikeusRepository.createOrUpdate(
-        oppijaOid = VerifiedHenkilöOid(vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa),
-        opiskeluoikeus = oo,
-        allowUpdate = false,
-        disableDuplicateChecks = true,
-      )(session(defaultUser))
-      createResult.map(_.created) should be(Right(true))
-      createResult.map(_.oid)
-    }
+    def create(oo: PerusopetuksenOpiskeluoikeus): Either[HttpStatus, Opiskeluoikeus.Oid] =
+      KoskiApplicationForTests.validationContext.runWithoutOpiskeluoikeuksienDuplikaattitarkistus {
+        val createResult = application.opiskeluoikeusRepository.createOrUpdate(
+          oppijaOid = VerifiedHenkilöOid(vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa),
+          opiskeluoikeus = oo,
+          allowUpdate = false,
+        )(session(defaultUser))
+        createResult.map(_.created) should be(Right(true))
+        createResult.map(_.oid)
+      }
 
     eiRikkinäinäRaportoitavatTestiopiskeluoikeudet.map(create)
     rikkinäisetOpiskeluoikeusOidit = rikkinäisetTestiopiskeluoikeudet.map(create).map(_.getOrElse(throw new Error))

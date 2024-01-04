@@ -59,6 +59,10 @@ class PostgresKoskiOpiskeluoikeusRepository(
     withExistenceCheck(runDbSync(KoskiOpiskeluOikeudetWithAccessCheck.filter(_.oid === oid).result))
   }
 
+  override def findByOidIlmanKäyttöoikeustarkistusta(oid: String): Either[HttpStatus, KoskiOpiskeluoikeusRow] = withOidCheck(oid) {
+    withExistenceCheck(runDbSync(KoskiOpiskeluOikeudet.filter(_.oid === oid).result))
+  }
+
   override def getOppijaOidsForOpiskeluoikeus(opiskeluoikeusOid: String)(implicit user: KoskiSpecificSession): Either[HttpStatus, List[Oid]] = withOidCheck(opiskeluoikeusOid) {
     withExistenceCheck(runDbSync(KoskiOpiskeluOikeudetWithAccessCheck
       .filter(_.oid === opiskeluoikeusOid)
@@ -84,9 +88,8 @@ class PostgresKoskiOpiskeluoikeusRepository(
     opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
     allowUpdate: Boolean,
     allowDeleteCompleted: Boolean = false,
-    disableDuplicateChecks: Boolean = false,
   )(implicit user: KoskiSpecificSession): Either[HttpStatus, CreateOrUpdateResult] = {
-    actions.createOrUpdate(oppijaOid, opiskeluoikeus, allowUpdate, allowDeleteCompleted, disableDuplicateChecks)
+    actions.createOrUpdate(oppijaOid, opiskeluoikeus, allowUpdate, allowDeleteCompleted)
   }
 
   def merkitseSuoritusjakoTehdyksiIlmanKäyttöoikeudenTarkastusta(oid: String): HttpStatus = {

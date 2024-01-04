@@ -1,5 +1,6 @@
 package fi.oph.koski.validation
 
+import fi.oph.koski.config.ValidationContext
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 
 import java.time.LocalDate
@@ -23,7 +24,7 @@ import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
 class KoskiGlobaaliValidator(
   opiskeluoikeusRepository: CompositeOpiskeluoikeusRepository,
   rajapäivät: ValpasRajapäivätService,
-  raportointikanta: RaportointiDatabase,
+  validationConfig: ValidationContext,
 ) extends Timing
 {
   def validateOpiskeluoikeus(
@@ -33,7 +34,7 @@ class KoskiGlobaaliValidator(
   {
     val oppijanSyntymäpäivä = oppijanHenkilötiedot.flatMap(_.syntymäaika)
 
-    if (opiskeluoikeus.mitätöity) {
+    if (opiskeluoikeus.mitätöity || !validationConfig.validoiOpiskeluoikeudet) {
       HttpStatus.ok
     } else {
       timed("validateOpiskeluoikeus")(

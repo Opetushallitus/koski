@@ -115,7 +115,8 @@ class KoskiApplication(
       organisaatioRepository,
       ePerusteetChangeValidator,
       perustiedotSyncRepository,
-      config
+      config,
+      validationContext,
     )
   ))
   lazy val ytrPossu = TimedProxy[YtrSavedOpiskeluoikeusRepository](new PostgresYtrOpiskeluoikeusRepository(
@@ -145,7 +146,8 @@ class KoskiApplication(
     validatingAndResolvingExtractor,
     suostumuksenPeruutusService,
     koodistoViitePalvelu,
-    config
+    config,
+    validationContext,
   )
   lazy val openSearch = OpenSearch(config)
   lazy val perustiedotIndexer = new OpiskeluoikeudenPerustiedotIndexer(openSearch, opiskeluoikeusQueryRepository, perustiedotSyncRepository, perustiedotManualSyncRepository)
@@ -201,10 +203,11 @@ class KoskiApplication(
   lazy val globaaliValidator: KoskiGlobaaliValidator = new KoskiGlobaaliValidator(
     opiskeluoikeusRepository,
     valpasRajapäivätService,
-    raportointiDatabase,
+    validationContext,
   )
   lazy val healthMonitoring: HealthMonitoring = new HealthMonitoring()
   lazy val yoTodistusService: YoTodistusService = YoTodistusService(this)
+  lazy val validationContext: ValidationContext = new ValidationContext()
 
   def init(): Future[Any] = {
     AuditLog.startHeartbeat()

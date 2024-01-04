@@ -40,10 +40,10 @@ class OppijaServlet(implicit val application: KoskiApplication)
   private def putSingle(allowUpdate: Boolean) = {
     withTracking { withJsonBody { (oppijaJson: JValue) =>
       val cleanedJson = cleanForTesting(oppijaJson)
-      val validationResult: Either[HttpStatus, Oppija] = if (skipValidation(cleanedJson)) {
-        application.validator.extractOppija(cleanedJson, lenientDeserializationWithoutValidation)
-      } else {
+      val validationResult: Either[HttpStatus, Oppija] = if (application.validationContext.validoiOpiskeluoikeudet) {
         application.validator.extractUpdateFieldsAndValidateOppija(cleanedJson)(session, AccessType.write)
+      } else {
+        application.validator.extractOppija(cleanedJson, lenientDeserializationWithoutValidation)
       }
       val result: Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = UpdateContext(session, application, request).putSingle(validationResult, cleanedJson, allowUpdate)
       renderEither[HenkilönOpiskeluoikeusVersiot](result)
@@ -249,15 +249,6 @@ class OppijaServlet(implicit val application: KoskiApplication)
         logger.error(e)("virhe aiheutti unparseableJson merkinnän tiedonsiirtoihin")
         throw e
     }
-  }
-
-  private def skipValidation(oppijaJson: JValue) = {
-    val ignoreFlagInJson = extract[Boolean]((oppijaJson \ "ignoreKoskiValidator").map {
-      case pass: JBool => pass
-      case _ => JBool(false)
-    })
-
-    loginEnvIsMock && ignoreFlagInJson
   }
 
   private def cleanForTesting(oppijaJson: JValue) = {

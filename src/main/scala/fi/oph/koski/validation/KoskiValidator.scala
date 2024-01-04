@@ -3,7 +3,7 @@ package fi.oph.koski.validation
 import java.lang.Character.isDigit
 import java.time.LocalDate
 import com.typesafe.config.Config
-import fi.oph.koski.config.Environment
+import fi.oph.koski.config.{Environment, ValidationContext}
 import fi.oph.koski.documentation.ExamplesEsiopetus.{peruskoulunEsiopetuksenTunniste, päiväkodinEsiopetuksenTunniste}
 import fi.oph.koski.eperusteetvalidation.{EPerusteetFiller, EPerusteetLops2019Validator, EPerusteisiinPerustuvaValidator}
 import fi.oph.koski.henkilo.HenkilöRepository
@@ -17,7 +17,7 @@ import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema.Opiskeluoikeus.{koulutustoimijaTraversal, oppilaitosTraversal, päättymispäivä, toimipisteetTraversal}
-import fi.oph.koski.schema.{MahdollisestiAlkupäivällinenJakso, VapaanSivistystyönPäätasonSuoritus, _}
+import fi.oph.koski.schema._
 import fi.oph.koski.suostumus.SuostumuksenPeruutusService
 import fi.oph.koski.tutkinto.Koulutustyyppi._
 import fi.oph.koski.util.Timing
@@ -40,7 +40,8 @@ class KoskiValidator(
   validatingAndResolvingExtractor: ValidatingAndResolvingExtractor,
   suostumuksenPeruutusService: SuostumuksenPeruutusService,
   koodistoPalvelu: KoodistoViitePalvelu,
-  config: Config
+  config: Config,
+  validationConfig: ValidationContext,
 ) extends Timing {
   def updateFieldsAndValidateAsJson(oppija: Oppija)(implicit user: KoskiSpecificSession, accessType: AccessType.Value): Either[HttpStatus, Oppija] = {
     val serialized = timed("Oppija serialization", 500) {
@@ -95,7 +96,7 @@ class KoskiValidator(
     updateFieldsAndValidateOpiskeluoikeus(ytrOpiskeluoikeus.asInstanceOf[Opiskeluoikeus], henkilö)
   }
 
-  private def updateFieldsAndValidateOpiskeluoikeus(opiskeluoikeus: Opiskeluoikeus, henkilö: Option[Henkilö])(implicit user: KoskiSpecificSession, accessType: AccessType.Value): Either[HttpStatus, Opiskeluoikeus] = {
+  def updateFieldsAndValidateOpiskeluoikeus(opiskeluoikeus: Opiskeluoikeus, henkilö: Option[Henkilö])(implicit user: KoskiSpecificSession, accessType: AccessType.Value): Either[HttpStatus, Opiskeluoikeus] = {
     opiskeluoikeus match {
       case opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus if opiskeluoikeus.mitätöity &&
         (!opiskeluoikeus.isInstanceOf[YlioppilastutkinnonOpiskeluoikeus] ||
@@ -105,59 +106,64 @@ class KoskiValidator(
         (!opiskeluoikeus.isInstanceOf[YlioppilastutkinnonOpiskeluoikeus] ||
          user.hasTallennetutYlioppilastutkinnonOpiskeluoikeudetAccess) =>
         updateFields(opiskeluoikeus).right.flatMap { opiskeluoikeus =>
-          (validateAccess(opiskeluoikeus)
-            .onSuccess {
-              validateLähdejärjestelmä(opiskeluoikeus)
-            }
-            .onSuccess {
-              validatePäätasonSuoritukset(opiskeluoikeus)
-            }
-            .onSuccess {
-              ePerusteetValidator.validatePerusteVoimassa(opiskeluoikeus)
-            }
-            .onSuccess {
-              ePerusteetValidator.validateTutkintorakenne(opiskeluoikeus)
-            })
-            .onSuccess {
-              HttpStatus.fold(
-                päätasonSuoritusTyypitEnabled(opiskeluoikeus),
-                päätasonSuoritusLuokatEnabled(opiskeluoikeus),
-                osasuoritusTyypitEnabled(opiskeluoikeus),
-                validateOpintojenrahoitus(opiskeluoikeus),
-                validateSisältyvyys(henkilö, opiskeluoikeus),
-                validateOpiskeluoikeudenPäivämäärät(opiskeluoikeus),
-                validatePäätasonSuoritustenStatus(opiskeluoikeus),
-                validateOpiskeluoikeudenLisätiedot(opiskeluoikeus),
-                PerusopetuksenOpiskeluoikeusValidation.validatePerusopetuksenOpiskeluoikeus(opiskeluoikeus),
-                TiedonSiirrostaPuuttuvatSuorituksetValidation.validateEiSamaaAlkamispaivaa(opiskeluoikeus, koskiOpiskeluoikeudet),
-                HttpStatus.fold(opiskeluoikeus.suoritukset.map(validateSuoritus(_, opiskeluoikeus, Nil))),
-                TilanAsettaminenKunVahvistettuSuoritusValidation.validateOpiskeluoikeus(opiskeluoikeus),
-                SuostumuksenPeruutusValidaatiot.validateSuostumuksenPeruutus(opiskeluoikeus, suostumuksenPeruutusService),
-                Lukio2015Validation.validateOppimääräSuoritettu(opiskeluoikeus),
-                AmmatillinenValidation.validateAmmatillinenOpiskeluoikeus(opiskeluoikeus, henkilö, koskiOpiskeluoikeudet),
-                ePerusteetValidator.validateAmmatillinenOpiskeluoikeus(opiskeluoikeus),
-                ePerusteetLops2019Validator.validate(opiskeluoikeus),
-                VSTKotoutumiskoulutus2022Validation.validate(opiskeluoikeus),
-                VapaaSivistystyöValidation.validateVapaanSivistystyönPäätasonOpintokokonaisuus(opiskeluoikeus),
-                JotpaValidation.validateOpiskeluoikeus(opiskeluoikeus, JotpaValidation.jotpaRahoitusVoimassaAlkaen(config)),
-                TutkintokoulutukseenValmentavaKoulutusValidation.validateOpiskeluoikeus(opiskeluoikeus),
-                EuropeanSchoolOfHelsinkiValidation.validateOpiskeluoikeus(config)(henkilöRepository, koskiOpiskeluoikeudet, henkilö, opiskeluoikeus),
-                TaiteenPerusopetusValidation.validateOpiskeluoikeus(config)(opiskeluoikeus, suostumuksenPeruutusService),
-                IBValidation.validateIbOpiskeluoikeus(config)(opiskeluoikeus),
-              )
-            } match {
-            case HttpStatus.ok => Right(opiskeluoikeus)
-            case status =>
-              Left(status)
+          if (validationConfig.validoiOpiskeluoikeudet) {
+            validateOpiskeluoikeus(opiskeluoikeus, henkilö)
+          } else {
+            Right(opiskeluoikeus)
           }
         }
-
       case _ if accessType == AccessType.write => Left(KoskiErrorCategory.notImplemented.readOnly("Korkeakoulutuksen opiskeluoikeuksia ja ylioppilastutkintojen tietoja ei voi päivittää Koski-järjestelmässä"))
       case _ => Right(opiskeluoikeus)
     }
   }
 
-  private def updateFields(oo: KoskeenTallennettavaOpiskeluoikeus, lipsuTarvittaessaVirheistäMitätöinnissä: Boolean = false)(implicit user: KoskiSpecificSession): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = {
+  private def validateOpiskeluoikeus(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, henkilö: Option[Henkilö])(implicit user: KoskiSpecificSession, accessType: AccessType.Value): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] =
+    validateAccess(opiskeluoikeus)
+      .onSuccess {
+        validateLähdejärjestelmä(opiskeluoikeus)
+      }
+      .onSuccess {
+        validatePäätasonSuoritukset(opiskeluoikeus)
+      }
+      .onSuccess {
+        ePerusteetValidator.validatePerusteVoimassa(opiskeluoikeus)
+      }
+      .onSuccess {
+        ePerusteetValidator.validateTutkintorakenne(opiskeluoikeus)
+      }
+      .onSuccess {
+        HttpStatus.fold(
+          päätasonSuoritusTyypitEnabled(opiskeluoikeus),
+          päätasonSuoritusLuokatEnabled(opiskeluoikeus),
+          osasuoritusTyypitEnabled(opiskeluoikeus),
+          validateOpintojenrahoitus(opiskeluoikeus),
+          validateSisältyvyys(henkilö, opiskeluoikeus),
+          validateOpiskeluoikeudenPäivämäärät(opiskeluoikeus),
+          validatePäätasonSuoritustenStatus(opiskeluoikeus),
+          validateOpiskeluoikeudenLisätiedot(opiskeluoikeus),
+          PerusopetuksenOpiskeluoikeusValidation.validatePerusopetuksenOpiskeluoikeus(opiskeluoikeus),
+          TiedonSiirrostaPuuttuvatSuorituksetValidation.validateEiSamaaAlkamispaivaa(opiskeluoikeus, koskiOpiskeluoikeudet),
+          HttpStatus.fold(opiskeluoikeus.suoritukset.map(validateSuoritus(_, opiskeluoikeus, Nil))),
+          TilanAsettaminenKunVahvistettuSuoritusValidation.validateOpiskeluoikeus(opiskeluoikeus),
+          SuostumuksenPeruutusValidaatiot.validateSuostumuksenPeruutus(opiskeluoikeus, suostumuksenPeruutusService),
+          Lukio2015Validation.validateOppimääräSuoritettu(opiskeluoikeus),
+          AmmatillinenValidation.validateAmmatillinenOpiskeluoikeus(opiskeluoikeus, henkilö, koskiOpiskeluoikeudet),
+          ePerusteetValidator.validateAmmatillinenOpiskeluoikeus(opiskeluoikeus),
+          ePerusteetLops2019Validator.validate(opiskeluoikeus),
+          VSTKotoutumiskoulutus2022Validation.validate(opiskeluoikeus),
+          VapaaSivistystyöValidation.validateVapaanSivistystyönPäätasonOpintokokonaisuus(opiskeluoikeus),
+          JotpaValidation.validateOpiskeluoikeus(opiskeluoikeus, JotpaValidation.jotpaRahoitusVoimassaAlkaen(config)),
+          TutkintokoulutukseenValmentavaKoulutusValidation.validateOpiskeluoikeus(opiskeluoikeus),
+          EuropeanSchoolOfHelsinkiValidation.validateOpiskeluoikeus(config)(henkilöRepository, koskiOpiskeluoikeudet, henkilö, opiskeluoikeus),
+          TaiteenPerusopetusValidation.validateOpiskeluoikeus(config)(opiskeluoikeus, suostumuksenPeruutusService),
+          IBValidation.validateIbOpiskeluoikeus(config)(opiskeluoikeus),
+        )
+      } match {
+        case HttpStatus.ok => Right(opiskeluoikeus)
+        case status: Any => Left(status)
+      }
+
+    private def updateFields(oo: KoskeenTallennettavaOpiskeluoikeus, lipsuTarvittaessaVirheistäMitätöinnissä: Boolean = false)(implicit user: KoskiSpecificSession): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = {
 
     def lipsuTarvittaessa
       (f: KoskeenTallennettavaOpiskeluoikeus => Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus])

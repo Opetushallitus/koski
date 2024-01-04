@@ -7,6 +7,7 @@ import fi.oph.koski.huoltaja.{Huollettava, HuollettavienHakuOnnistui}
 import fi.oph.koski.json.SensitiveDataAllowed
 import fi.oph.koski.koskiuser.Rooli._
 import fi.oph.koski.log.{LogUserContext, Loggable, Logging}
+import fi.oph.koski.organisaatio.Opetushallitus
 import fi.oph.koski.schema.Organisaatio.Oid
 import fi.oph.koski.schema.{OpiskeluoikeudenTyyppi, Organisaatio, OrganisaatioWithOid}
 import org.scalatra.servlet.RichRequest
@@ -191,7 +192,7 @@ object KoskiSpecificSession {
   // Internal user with root access
   val systemUser = new KoskiSpecificSession(
     AuthenticationUser(
-      KOSKI_SYSTEM_USER,
+      Opetushallitus.organisaatioOid,
       KOSKI_SYSTEM_USER,
       KOSKI_SYSTEM_USER, None
     ),

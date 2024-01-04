@@ -1,6 +1,7 @@
 package fi.oph.koski.opiskeluoikeus
 
 import com.typesafe.config.Config
+import fi.oph.koski.config.ValidationContext
 import fi.oph.koski.db.KoskiTables._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db._
@@ -29,7 +30,8 @@ class PostgresKoskiOpiskeluoikeusRepositoryActions(
   val organisaatioRepository: OrganisaatioRepository,
   val ePerusteetChangeValidator: EPerusteetOpiskeluoikeusChangeValidator,
   val perustiedotSyncRepository: PerustiedotSyncRepository,
-  val config: Config
+  val config: Config,
+  val validationConfig: ValidationContext,
 ) extends PostgresOpiskeluoikeusRepositoryActions[KoskiOpiskeluoikeusRow, KoskiOpiskeluoikeusTable, KoskiOpiskeluoikeusHistoryTable] {
   lazy val validator = new OpiskeluoikeusChangeValidator(organisaatioRepository, ePerusteetChangeValidator, config)
 
@@ -76,14 +78,13 @@ class PostgresKoskiOpiskeluoikeusRepositoryActions(
     opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
     allowUpdate: Boolean,
     allowDeleteCompleted: Boolean,
-    disableDuplicateChecks: Boolean = false,
   )(implicit user: KoskiSpecificSession): DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write with Transactional] = {
     val identifier = OpiskeluoikeusIdentifier(oppijaOid.oppijaOid, opiskeluoikeus)
 
     findByIdentifierAction(identifier).flatMap {
       case Right(Nil) =>
         createAction(oppijaOid, opiskeluoikeus)
-      case Right(_) if disableDuplicateChecks =>
+      case Right(_) if !validationConfig.tarkastaOpiskeluoikeuksienDuplikaatit =>
         createAction(oppijaOid, opiskeluoikeus)
       case Right(aiemmatOpiskeluoikeudet) if allowUpdate =>
         updateIfUnambiguousAiempiOpiskeluoikeusAction(oppijaOid, opiskeluoikeus, identifier, aiemmatOpiskeluoikeudet, allowDeleteCompleted)

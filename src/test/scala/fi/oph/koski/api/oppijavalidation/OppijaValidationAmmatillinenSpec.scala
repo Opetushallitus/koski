@@ -1360,7 +1360,8 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
       KoskiApplicationForTests.validatingAndResolvingExtractor,
       KoskiApplicationForTests.suostumuksenPeruutusService,
       KoskiApplicationForTests.koodistoViitePalvelu,
-      config
+      config,
+      KoskiApplicationForTests.validationContext,
     )
   }
 
