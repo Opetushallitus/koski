@@ -30,7 +30,7 @@
   <dependencies>
     <!-- OPH internal deps -->
     <dependency>
-      <groupId>com.github.Opetushallitus.scala-utils</groupId>
+      <groupId>com.github.Opetushallitus</groupId>
       <artifactId>scala-cas_2.12</artifactId>
       <version>849eac78e2d5ddc2366614777a58bcafd30e6d68</version>
       <exclusions>
