@@ -811,6 +811,16 @@
       <url>https://repo1.maven.org/maven2</url>
     </repository>
     <repository>
+      <id>oph-sade-snapshot-local</id>
+      <url>https://artifactory.opintopolku.fi/artifactory/oph-sade-snapshot-local</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+    </repository>
+    <repository>
       <id>jitpack.io</id>
       <url>https://jitpack.io</url>
     </repository>
