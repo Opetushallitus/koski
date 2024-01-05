@@ -195,7 +195,7 @@ class EsiopetuksenOppijamäärätRaporttiSpec
       lazy val r = findSingle(esiopetuksenOppijamäärätRaportti)
 
       r.oppilaitosNimi should equal("Jyväskylän normaalikoulu")
-      r.opetuskieli should equal("suomi")
+      r.opetuskieli should equal("ruotsi,suomi")
       r.esiopetusoppilaidenMäärä should equal(3 + ylimääräisetLkm)
       r.vieraskielisiä should equal(0)
       r.koulunesiopetuksessa should equal(3 + ylimääräisetLkm)
@@ -242,6 +242,12 @@ class EsiopetuksenOppijamäärätRaporttiSpec
         val raportti = buildEsiopetuksenOppijamäärätRaportti(MockUsers.paakayttaja, helsinginKaupunki)
         getOppilaitokset(raportti) should equal(List("Kulosaaren ala-aste", "Päiväkoti Majakka", "Päiväkoti Touhula"))
       }
+    }
+
+    "Raportilla ei useita rivejä vaikka kieliä olisi useampi" in {
+      val raportti = buildEsiopetuksenOppijamäärätRaportti(MockUsers.paakayttaja, helsinginKaupunki)
+      getRows(raportti).groupBy(it => it.oppilaitosNimi).values
+        .foreach(rowsForOrg => rowsForOrg.map(_.opetuskieli).distinct should have length 1)
     }
   }
 
