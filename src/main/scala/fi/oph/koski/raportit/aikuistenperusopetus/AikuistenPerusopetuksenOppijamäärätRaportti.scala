@@ -18,7 +18,7 @@ case class AikuistenPerusopetuksenOppijamäärätRaportti(db: DB, organisaatioSe
     AikuistenPerusopetuksenOppijamäärätRaporttiRow(
       oppilaitosOid = r.rs.getString("oppilaitos_oid"),
       oppilaitosNimi = r.rs.getString("oppilaitos_nimi"),
-      opetuskieli = r.rs.getString("nimi"),
+      opetuskieli = r.rs.getString("opetuskieli"),
       oppilaidenMääräYhteensä = r.rs.getInt("oppilaidenMääräYhteensä"),
       oppilaidenMääräVOS = r.rs.getInt("oppilaidenMääräVOS"),
       oppilaidenMääräMuuKuinVOS = r.rs.getInt("oppilaidenMääräMuuKuinVOS"),
@@ -51,7 +51,7 @@ case class AikuistenPerusopetuksenOppijamäärätRaportti(db: DB, organisaatioSe
     select
       r_opiskeluoikeus.oppilaitos_oid,
       r_opiskeluoikeus.#$oppilaitosNimiSarake as oppilaitos_nimi,
-      r_koodisto_koodi.#$koodistoNimiSarake as nimi,
+      string_agg(distinct r_koodisto_koodi.#$koodistoNimiSarake, ',') as opetuskieli,
       count(distinct r_opiskeluoikeus.opiskeluoikeus_oid) as oppilaidenMääräYhteensä,
       count(distinct (case when opintojen_rahoitus = '1' then r_opiskeluoikeus.opiskeluoikeus_oid end)) as oppilaidenMääräVOS,
       count(distinct (case when opintojen_rahoitus = '6' then r_opiskeluoikeus.opiskeluoikeus_oid end)) as oppilaidenMääräMuuKuinVOS,
@@ -69,8 +69,7 @@ case class AikuistenPerusopetuksenOppijamäärätRaportti(db: DB, organisaatioSe
     join r_opiskeluoikeus_aikajakso aikajakso on aikajakso.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
     join r_organisaatio_kieli on r_organisaatio_kieli.organisaatio_oid = oppilaitos_oid
     join r_paatason_suoritus on r_paatason_suoritus.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
-    join r_koodisto_koodi
-      on r_koodisto_koodi.koodisto_uri = split_part(r_organisaatio_kieli.kielikoodi, '_', 1)
+    join r_koodisto_koodi on r_koodisto_koodi.koodisto_uri = split_part(r_organisaatio_kieli.kielikoodi, '_', 1)
       and r_koodisto_koodi.koodiarvo = split_part(split_part(r_organisaatio_kieli.kielikoodi, '_', 2), '#', 1)
     join r_organisaatio on r_organisaatio.organisaatio_oid = oppilaitos_oid
     where r_opiskeluoikeus.oppilaitos_oid = any($oppilaitosOidit)
@@ -87,7 +86,7 @@ case class AikuistenPerusopetuksenOppijamäärätRaportti(db: DB, organisaatioSe
         or
         r_opiskeluoikeus.koulutustoimija_oid = any($käyttäjänKoulutustoimijaOidit)
       )
-    group by r_opiskeluoikeus.oppilaitos_oid, r_opiskeluoikeus.#$oppilaitosNimiSarake, r_koodisto_koodi.#$koodistoNimiSarake
+    group by r_opiskeluoikeus.oppilaitos_oid, r_opiskeluoikeus.#$oppilaitosNimiSarake
   """
   }
 

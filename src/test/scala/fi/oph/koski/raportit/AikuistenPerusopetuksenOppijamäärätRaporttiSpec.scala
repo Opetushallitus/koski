@@ -49,7 +49,7 @@ class AikuistenPerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec wit
 
       r.oppilaitosOid should equal(jyväskylänNormaalikoulu)
       r.oppilaitosNimi should equal("Jyväskylän normaalikoulu")
-      r.opetuskieli should equal("suomi")
+      r.opetuskieli should equal("ruotsi,suomi")
       r.oppilaidenMääräYhteensä should equal(8)
       r.oppilaidenMääräVOS should equal(4)
       r.oppilaidenMääräMuuKuinVOS should equal(4)
