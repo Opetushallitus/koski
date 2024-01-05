@@ -193,7 +193,7 @@ class PerusopetuksenLisäopetusOppijamäärätRaporttiSpec extends AnyFreeSpec w
         PerusopetuksenLisäopetusOppijamäärätRaporttiRow(
           oppilaitosNimi = "Jyväskylän normaalikoulu",
           organisaatioOid = "1.2.246.562.10.14613773812",
-          opetuskieli = "suomi",
+          opetuskieli = "ruotsi,suomi",
           oppilaita = 6 + ylimääräisetLkm,
           vieraskielisiä = 1,
           pidOppivelvollisuusEritTukiJaVaikeastiVammainen = 2 + ylimääräisetVaikeastiVammaisetLkm,
@@ -206,6 +206,12 @@ class PerusopetuksenLisäopetusOppijamäärätRaporttiSpec extends AnyFreeSpec w
           koulukoti = 2
         )
       ))
+    }
+
+    "Raportilla ei useita rivejä vaikka kieliä olisi useampi" in {
+      val rows = raportti.filter(_.oppilaitosNimi.equals("Jyväskylän normaalikoulu"))
+      rows.groupBy(it => it.organisaatioOid).values
+        .foreach(rowsForOrg => rowsForOrg.map(_.opetuskieli).distinct should have length 1)
     }
   }
 }
