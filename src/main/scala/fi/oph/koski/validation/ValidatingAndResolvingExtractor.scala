@@ -22,16 +22,15 @@ class ValidatingAndResolvingExtractor(
   def extract[T](deserializationContext: ExtractionContext)(json: JValue)(implicit tag: TypeTag[T])
   : Either[HttpStatus, T] = {
     val customDeserializers = if (deserializationContext.validate) {
-      List(
+      val cd = List(
         OrganisaatioResolvingCustomDeserializer(organisaatioRepository),
         KoodistoResolvingCustomDeserializer(koodistoPalvelu),
       )
+      JaksoCustomDeserializer(cd) :: cd
     } else {
       List()
     }
-    extract(json, deserializationContext.copy(
-      customDeserializers = JaksoCustomDeserializer(customDeserializers) :: customDeserializers
-    ))
+    extract(json, deserializationContext.copy(customDeserializers = customDeserializers))
   }
 
   def extract[T](json: JValue, deserializationContext: ExtractionContext)(implicit tag: TypeTag[T]): Either[HttpStatus, T] = {

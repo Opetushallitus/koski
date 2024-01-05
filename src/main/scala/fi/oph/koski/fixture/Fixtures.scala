@@ -105,8 +105,8 @@ class NotInitializedFixtureState extends FixtureState {
 
 abstract class DatabaseFixtureState(application: KoskiApplication) extends FixtureState {
   def resetFixtures = {
-    timed("Resetting database fixtures") (databaseFixtureCreator.resetFixtures)
     application.henkilöRepository.opintopolku.henkilöt.asInstanceOf[MockOpintopolkuHenkilöFacade].resetFixtures(defaultOppijat)
+    timed("Resetting database fixtures") (databaseFixtureCreator.resetFixtures)
   }
 
   def oppijaOids: List[String] = (

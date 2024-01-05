@@ -1,7 +1,5 @@
 package fi.oph.koski.validation
 
-import java.lang.Character.isDigit
-import java.time.LocalDate
 import com.typesafe.config.Config
 import fi.oph.koski.config.{Environment, ValidationContext}
 import fi.oph.koski.documentation.ExamplesEsiopetus.{peruskoulunEsiopetuksenTunniste, päiväkodinEsiopetuksenTunniste}
@@ -12,20 +10,22 @@ import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
 import fi.oph.koski.opiskeluoikeus.KoskiOpiskeluoikeusRepository
-import fi.oph.koski.oppija.KoskiOppijaFacade
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
-import fi.oph.koski.schema.Opiskeluoikeus.{koulutustoimijaTraversal, oppilaitosTraversal, päättymispäivä, toimipisteetTraversal}
+import fi.oph.koski.schema.Opiskeluoikeus.{koulutustoimijaTraversal, oppilaitosTraversal, toimipisteetTraversal}
 import fi.oph.koski.schema._
 import fi.oph.koski.suostumus.SuostumuksenPeruutusService
 import fi.oph.koski.tutkinto.Koulutustyyppi._
-import fi.oph.koski.util.Timing
 import fi.oph.koski.util.DateOrdering.{localDateOptionOrdering, localDateOrdering}
+import fi.oph.koski.util.Timing
 import fi.oph.koski.validation.DateValidation._
 import fi.oph.scalaschema.ExtractionContext
 import mojave._
 import org.json4s.{JArray, JValue}
+
+import java.lang.Character.isDigit
+import java.time.LocalDate
 
 // scalastyle:off line.size.limit
 // scalastyle:off number.of.methods
@@ -84,7 +84,7 @@ class KoskiValidator(
     )
   }
 
-  private def updateFieldsAndValidateOpiskeluoikeudet(oppija: Oppija)(implicit user: KoskiSpecificSession, accessType: AccessType.Value): Either[HttpStatus, Oppija] = {
+  def updateFieldsAndValidateOpiskeluoikeudet(oppija: Oppija)(implicit user: KoskiSpecificSession, accessType: AccessType.Value): Either[HttpStatus, Oppija] = {
     val results: Seq[Either[HttpStatus, Opiskeluoikeus]] = oppija.opiskeluoikeudet.map(updateFieldsAndValidateOpiskeluoikeus(_, Some(oppija.henkilö)))
     HttpStatus.foldEithers(results).right.flatMap {
       case Nil => Left(KoskiErrorCategory.badRequest.validation.tyhjäOpiskeluoikeusLista())
@@ -105,11 +105,11 @@ class KoskiValidator(
       case opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus if
         (!opiskeluoikeus.isInstanceOf[YlioppilastutkinnonOpiskeluoikeus] ||
          user.hasTallennetutYlioppilastutkinnonOpiskeluoikeudetAccess) =>
-        updateFields(opiskeluoikeus).right.flatMap { opiskeluoikeus =>
+        updateFields(opiskeluoikeus).flatMap { oo =>
           if (validationConfig.validoiOpiskeluoikeudet) {
-            validateOpiskeluoikeus(opiskeluoikeus, henkilö)
+            validateOpiskeluoikeus(oo, henkilö)
           } else {
-            Right(opiskeluoikeus)
+            Right(oo)
           }
         }
       case _ if accessType == AccessType.write => Left(KoskiErrorCategory.notImplemented.readOnly("Korkeakoulutuksen opiskeluoikeuksia ja ylioppilastutkintojen tietoja ei voi päivittää Koski-järjestelmässä"))

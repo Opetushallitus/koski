@@ -1,12 +1,14 @@
 package fi.oph.koski.fixture
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.KoskiTables._
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db._
-import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, OppijaHenkilö, OppijaHenkilöWithMasterInfo, VerifiedHenkilöOid}
+import fi.oph.koski.henkilo.{OppijaHenkilö, OppijaHenkilöWithMasterInfo}
 import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.json.JsonSerializer.serializeWithRoot
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
+import fi.oph.koski.oppija.OppijaServletOppijaAdder
 import fi.oph.koski.perustiedot.{OpiskeluoikeudenOsittaisetTiedot, OpiskeluoikeudenPerustiedot}
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Timing
@@ -52,9 +54,9 @@ abstract class DatabaseFixtureCreator(application: KoskiApplication, opiskeluoik
 
     if (!fixtureCacheCreated) {
       cachedPerustiedot = Some(
-        luoOpiskeluoikeudetJaPerustiedot(defaultOpiskeluOikeudet) ++
-        validationConfig.runWithoutValidations { luoOpiskeluoikeudetJaPerustiedot(invalidOpiskeluoikeudet) } ++
-        luoOpiskeluoikeudetJaPerustiedot(secondBatchOpiskeluOikeudet)
+        luoOpiskeluoikeudetJaPerustiedot("default opiskeluoikeudet", defaultOpiskeluOikeudet) ++
+        validationConfig.runWithoutValidations { luoOpiskeluoikeudetJaPerustiedot("invalid opiskeluoikeudet", invalidOpiskeluoikeudet) } ++
+        luoOpiskeluoikeudetJaPerustiedot("second batch opiskeluoikeudet", secondBatchOpiskeluOikeudet)
       )
 
       application.perustiedotIndexer.sync(refresh = true)
@@ -77,22 +79,25 @@ abstract class DatabaseFixtureCreator(application: KoskiApplication, opiskeluoik
     }
   }
 
-  private def luoOpiskeluoikeudetJaPerustiedot(opiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)]): Seq[OpiskeluoikeudenOsittaisetTiedot] = {
-    opiskeluoikeudet.zipWithIndex.map { case ((henkilö, opiskeluoikeus), index) =>
-      val oppija = Oppija(
+  private def luoOpiskeluoikeudetJaPerustiedot(fixtureSetName: String, opiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)]): Seq[OpiskeluoikeudenOsittaisetTiedot] = {
+    val adder = new OppijaServletOppijaAdder(application)
+
+    opiskeluoikeudet.zipWithIndex.map { case ((henkilö, inputOo), index) =>
+      val oppijaJson = serializeWithRoot(Oppija(
         henkilö = henkilö.toHenkilötiedotJaOid,
-        opiskeluoikeudet = List(opiskeluoikeus),
-      )
+        opiskeluoikeudet = List(inputOo),
+      ))
 
       val perustiedot = for {
-        versiot       <- application.oppijaFacade.createOrUpdate(oppija, allowUpdate = false)
+        versiot       <- adder.add(user, oppijaJson, allowUpdate = false, requestDescription = "")
         oid           <- versiot.opiskeluoikeudet.headOption.map(_.oid).toRight(new Exception("Opiskeluoikeutta ei löydy, vaikka se äsken tallennettiin"))
         ooRow         <- application.possu.findByOidIlmanKäyttöoikeustarkistusta(oid)
-        perustiedot   <- Right(OpiskeluoikeudenPerustiedot.makePerustiedot(ooRow.id, opiskeluoikeus, application.henkilöRepository.opintopolku.withMasterInfo(henkilö)))
+        oo            <- ooRow.toOpiskeluoikeus
+        perustiedot   <- Right(OpiskeluoikeudenPerustiedot.makePerustiedot(ooRow.id, oo, application.henkilöRepository.opintopolku.withMasterInfo(henkilö)))
       } yield perustiedot
 
       perustiedot.fold(
-        error => throw new Exception(s"Fikstuurin opiskeluoikeuden ${index + 1}/${opiskeluoikeudet.length} luonti ei onnistu: $error"),
+        error => throw new Exception(s"Fikstuurin opiskeluoikeuden ${index + 1}/${opiskeluoikeudet.length} ($fixtureSetName) luonti ei onnistu: $error"),
         identity
       )
     }

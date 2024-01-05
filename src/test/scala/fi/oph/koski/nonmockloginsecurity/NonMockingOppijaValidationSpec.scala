@@ -11,7 +11,7 @@ import org.scalatest.freespec.AnyFreeSpec
 
 import scala.io.Source
 
-class OppijaValidationSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsAmmatillinen {
+class NonMockingOppijaValidationSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsAmmatillinen {
   override def defaultKoskiApplication = KoskiApplication(defaultConfig.withValue(
     "login.security", fromAnyRef("not-mock")
   ))
