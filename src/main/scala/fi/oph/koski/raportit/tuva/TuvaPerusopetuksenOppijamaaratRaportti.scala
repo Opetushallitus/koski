@@ -47,7 +47,7 @@ case class TuvaPerusopetuksenOppijamäärätRaportti(db: DB, organisaatioService
       select
         oppilaitos.#$nimiSarake as oppilaitos_nimi,
         oh.oppilaitos_oid,
-        opetuskieli_koodisto.#$nimiSarake as opetuskieli,
+        string_agg(distinct opetuskieli_koodisto.#$nimiSarake, ',') as opetuskieli,
         count(distinct oo.opiskeluoikeus_oid) as oppilaita,
         count(distinct (case when erityinen_tuki and not vammainen and vaikeasti_vammainen then oo.opiskeluoikeus_oid end)) as eritTukiJaVaikeastiVammainen,
         count(distinct (case when erityinen_tuki and vammainen and not vaikeasti_vammainen then oo.opiskeluoikeus_oid end)) as erityinenTukiJaMuuKuinVaikeimminVammainen,
@@ -64,8 +64,8 @@ case class TuvaPerusopetuksenOppijamäärätRaportti(db: DB, organisaatioService
 """),
       fromJoinWhereSqlPart(oppilaitosOids, date),
       Some(sql"""
-      group by oppilaitos.#$nimiSarake, oh.oppilaitos_oid, opetuskieli_koodisto.#$nimiSarake
-      order by oppilaitos.#$nimiSarake, oh.oppilaitos_oid, opetuskieli_koodisto.#$nimiSarake
+      group by oppilaitos.#$nimiSarake, oh.oppilaitos_oid
+      order by oppilaitos.#$nimiSarake, oh.oppilaitos_oid
   """))
   }
 
