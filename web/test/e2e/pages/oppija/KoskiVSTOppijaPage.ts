@@ -98,6 +98,11 @@ export class KoskiVSTOppijaPage extends KoskiOppijaPageV2<
       this.$.suoritukset(this.suoritusIndex).suorituksenVahvistus
     )
   }
+
+  async mitätöi() {
+    await this.$.opiskeluoikeus.invalidate.button.click()
+    await this.$.opiskeluoikeus.invalidate.confirm.click()
+  }
 }
 
 type VSTOsasuoritusSchema = BuiltIdNode<

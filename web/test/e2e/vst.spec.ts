@@ -1,9 +1,7 @@
-import { sort } from 'fp-ts/lib/Array'
 import { foreachAsync, repeatAsync } from '../util/iterating'
 import { expect as _expect, test } from './base'
 import { KoskiVSTOppijaPage } from './pages/oppija/KoskiVSTOppijaPage'
 import { kansalainen, virkailija } from './setup/auth'
-import { KoskiKansalainenPage } from './pages/kansalainen/KoskiKansalainenPage'
 
 const kotoutumiskoulutus2022 = '1.2.246.562.24.00000000135'
 const oppivelvollisilleSuunnattu = '1.2.246.562.24.00000000143'
@@ -11,6 +9,7 @@ const jotpaKoulutus = '1.2.246.562.24.00000000140'
 const lukutaitokoulutus = '1.2.246.562.24.00000000107'
 const kansanopisto = '1.2.246.562.24.00000000105'
 const vstKoulutus = '1.2.246.562.24.00000000108'
+const jotpaKoulutusTiedonsiirto = '1.2.246.562.24.00000000058'
 
 const openOppijaPage =
   (oppijaOid: string, edit: boolean) =>
@@ -2040,6 +2039,36 @@ test.describe('Vapaa sivistystyö', () => {
         ).toBeTruthy()
 
         await vstOppijaPage.tallenna()
+      })
+    })
+  })
+
+  test.describe('Lähdejärjestelmästä siirretty opiskeluoikeus', () => {
+    test.describe('Käyttäjä jolla ei ole yleistä mitätöintioikeutta', () => {
+      test.use({ storageState: virkailija('kalle') })
+      test.beforeEach(openOppijaPage(jotpaKoulutusTiedonsiirto, false))
+
+      test('Muokkaus ja mitätöinti on estetty', async ({ vstOppijaPage }) => {
+        expect(
+          await vstOppijaPage.$.opiskeluoikeus.edit.isVisible()
+        ).toBeFalsy()
+        expect(
+          await vstOppijaPage.$.opiskeluoikeus.invalidate.button.isVisible()
+        ).toBeFalsy()
+      })
+    })
+
+    test.describe('Käyttäjä jolla on yleinen mitätöintioikeus', () => {
+      test.use({ storageState: virkailija('pää') })
+      test.beforeEach(openOppijaPage(jotpaKoulutusTiedonsiirto, false))
+
+      test('Muokkaus on estetty, mutta mitätöinti on onnistuu', async ({
+        vstOppijaPage
+      }) => {
+        expect(
+          await vstOppijaPage.$.opiskeluoikeus.edit.isVisible()
+        ).toBeFalsy()
+        await vstOppijaPage.mitätöi()
       })
     })
   })
