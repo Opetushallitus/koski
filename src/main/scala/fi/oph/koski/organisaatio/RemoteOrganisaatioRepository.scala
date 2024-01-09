@@ -97,7 +97,27 @@ class RemoteOrganisaatioRepository(http: Http, val koodisto: KoodistoViitePalvel
 }
 
 case class OrganisaatioHakuTulos(organisaatiot: List[OrganisaatioPalveluOrganisaatio])
-case class OrganisaatioPalveluOrganisaatio(oid: String, ytunnus: Option[String], nimi: Map[String, String], oppilaitosKoodi: Option[String], organisaatiotyypit: List[String], oppilaitostyyppi: Option[String], kotipaikkaUri: Option[String], kieletUris: List[String], lakkautusPvm: Option[Long], children: List[OrganisaatioPalveluOrganisaatio])
+case class OrganisaatioPalveluOrganisaatio(
+  oid: String,
+  parentOid: Option[String],
+  parentOidPath: Option[String],
+  ytunnus: Option[String],
+  nimi: Map[String, String],
+  oppilaitosKoodi: Option[String],
+  organisaatiotyypit: List[String],
+  oppilaitostyyppi: Option[String],
+  kotipaikkaUri: Option[String],
+  kieletUris: List[String],
+  lakkautusPvm: Option[Long],
+  children: List[OrganisaatioPalveluOrganisaatio],
+) {
+  def parentOids: List[String] =
+    parentOidPath match {
+      case Some(path) => path.split('/').toList.reverse
+      case None => parentOid.toList
+    }
+}
+
 case class OrganisaatioTyyppiHakuTulos(organisaatiot: List[OrganisaatioPalveluOrganisaatioTyyppi])
 case class OrganisaatioPalveluOrganisaatioTyyppi(oid: String, nimi: Map[String, String], organisaatiotyypit: List[String], oppilaitostyyppi: Option[String], children: List[OrganisaatioPalveluOrganisaatio])
 case class OrganisaationNimihakuTulos(nimi: Map[String, String], alkuPvm: LocalDate)

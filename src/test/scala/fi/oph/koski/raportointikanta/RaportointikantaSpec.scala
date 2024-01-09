@@ -8,7 +8,7 @@ import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedo
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.{master, masterEiKoskessa}
 import fi.oph.koski.json.{JsonFiles, JsonSerializer}
 import fi.oph.koski.koskiuser.MockUsers
-import fi.oph.koski.organisaatio.MockOrganisaatiot
+import fi.oph.koski.organisaatio.{MockOrganisaatiot, Organisaatiotyyppi}
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Wait
@@ -110,7 +110,7 @@ class RaportointikantaSpec
     "Organisaatiot on ladattu" in {
       organisaatioCount should be > 10
       val organisaatio = mainRaportointiDb.runDbSync(mainRaportointiDb.ROrganisaatiot.filter(_.organisaatioOid === MockOrganisaatiot.aapajoenKoulu).result)
-      organisaatio should equal(Seq(ROrganisaatioRow(MockOrganisaatiot.aapajoenKoulu, "Aapajoen koulu", "Aapajoen koulu", "OPPILAITOS", Some("11"), Some("04044"), Some("851"), None)))
+      organisaatio should equal(Seq(ROrganisaatioRow(MockOrganisaatiot.aapajoenKoulu, "Aapajoen koulu", "Aapajoen koulu", "OPPILAITOS", Some("11"), Some("04044"), Some("851"), None, Some("1.2.246.562.10.25412665926"), None)))
     }
     "Oppilaitosten opetuskielet on ladattu" in {
       val oppilaitoksetJaKielet = List(
@@ -186,6 +186,39 @@ class RaportointikantaSpec
       päivitäRaportointikantaInkrementaalisesti()
 
       verifioiYtrOpiskeluoikeudet()
+    }
+    "Organisaatiot ovat linkitetty oikein" in {
+      def verifyOrg(parentOid: Option[String], childOid: Option[String]) = {
+        (parentOid, childOid) match {
+          case (Some(parent), Some(child)) =>
+            KoskiApplicationForTests.organisaatioRepository
+              .getChildOids(parent)
+              .getOrElse(Set.empty) should contain(child)
+          case (_, None) =>
+            throw new AssertionError("childOid ei voi olla None")
+          case (None, _) =>
+            throw new AssertionError("parentOid ei voi olla None")
+        }
+      }
+
+      mainRaportointiDb.runDbSync(mainRaportointiDb.ROrganisaatiot.result)
+        .foreach { row: ROrganisaatioRow =>
+          val tyypit = row.organisaatiotyypit.split(',')
+          if (tyypit.contains(Organisaatiotyyppi.TOIMIPISTE)) {
+            verifyOrg(row.oppilaitos, Some(row.organisaatioOid))
+            verifyOrg(row.koulutustoimija, row.oppilaitos)
+          } else if (
+            tyypit.contains(Organisaatiotyyppi.OPPILAITOS) ||
+            tyypit.contains(Organisaatiotyyppi.VARHAISKASVATUKSEN_TOIMIPAIKKA) ||
+            tyypit.contains(Organisaatiotyyppi.OPPISOPIMUSTOIMIPISTE)
+          ) {
+            row.oppilaitos should equal(None)
+            verifyOrg(row.koulutustoimija, Some(row.organisaatioOid))
+          } else {
+            row.oppilaitos should equal(None)
+            row.koulutustoimija should equal(None)
+          }
+        }
     }
 
     def verifioiYtrOpiskeluoikeudet() = {

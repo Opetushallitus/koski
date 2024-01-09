@@ -39,7 +39,7 @@ digraph "orphans" {
       <TR><TD PORT="koulutusmoduuli_nimi" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="249" HEIGHT="16">koulutusmoduuli_nimi</TD></TR></TABLE></TD><TD PORT="koulutusmoduuli_nimi.type" ALIGN="LEFT">varchar[2147483647]</TD></TR>
       <TR><TD PORT="arviointi_paiva" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="249" HEIGHT="16">arviointi_paiva</TD></TR></TABLE></TD><TD PORT="arviointi_paiva.type" ALIGN="LEFT">date[13]</TD></TR>
       <TR><TD PORT="korotettu_eri_vuonna" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="249" HEIGHT="16">korotettu_eri_vuonna</TD></TR></TABLE></TD><TD PORT="korotettu_eri_vuonna.type" ALIGN="LEFT">bool[1]</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 0</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 &gt;</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 0</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">3 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 &gt;</TD></TR>
     </TABLE>>
     URL="../../tables/lukion_aineopintojen_eri_vuonna_f8cfe17b.html"
     target="_top"
@@ -57,7 +57,7 @@ digraph "orphans" {
       <TR><TD PORT="arviointi_paiva" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="285" HEIGHT="16">arviointi_paiva</TD></TR></TABLE></TD><TD PORT="arviointi_paiva.type" ALIGN="LEFT">date[13]</TD></TR>
       <TR><TD PORT="opintojen_rahoitus" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="285" HEIGHT="16">opintojen_rahoitus</TD></TR></TABLE></TD><TD PORT="opintojen_rahoitus.type" ALIGN="LEFT">varchar[2147483647]</TD></TR>
       <TR><TD PORT="koulutusmoduuli_laajuus_arvo" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="285" HEIGHT="16">koulutusmoduuli_laajuus_arvo</TD></TR></TABLE></TD><TD PORT="koulutusmoduuli_laajuus_arvo.type" ALIGN="LEFT">numeric[0]</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 0</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 &gt;</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 0</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">3 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 &gt;</TD></TR>
     </TABLE>>
     URL="../../tables/lukion_aineopintojen_moduulien__90dfe69d.html"
     target="_top"
@@ -87,7 +87,7 @@ digraph "orphans" {
       <TR><TD PORT="pakollisia_tunnustettuja_rahoituksen_piirissa" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="295" HEIGHT="16">pakollisia_tunnustettuja_rahoituksen_piirissa</TD></TR></TABLE></TD><TD PORT="pakollisia_tunnustettuja_rahoituksen_piirissa.type" ALIGN="LEFT">numeric[0]</TD></TR>
       <TR><TD PORT="valtakunnallisia_tunnustettuja_rahoituksen_piirissa" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="295" HEIGHT="16">valtakunnallisia_tunnustettuja_rahoituksen_piirissa</TD></TR></TABLE></TD><TD PORT="valtakunnallisia_tunnustettuja_rahoituksen_piirissa.type" ALIGN="LEFT">numeric[0]</TD></TR>
       <TR><TD PORT="eri_vuonna_korotettuja" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="295" HEIGHT="16">eri_vuonna_korotettuja</TD></TR></TABLE></TD><TD PORT="eri_vuonna_korotettuja.type" ALIGN="LEFT">numeric[0]</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 0</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">1 row</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 &gt;</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 0</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">2 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 &gt;</TD></TR>
     </TABLE>>
     URL="../../tables/lukion_aineopintojen_opintopistekertyma.html"
     target="_top"
@@ -231,7 +231,7 @@ digraph "orphans" {
       <TR><TD PORT="osasuorituksen_arviointi_paiva" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="302" HEIGHT="16">osasuorituksen_arviointi_paiva</TD></TR></TABLE></TD><TD PORT="osasuorituksen_arviointi_paiva.type" ALIGN="LEFT">date[13]</TD></TR>
       <TR><TD PORT="osasuorituksen_tyyppi" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="302" HEIGHT="16">osasuorituksen_tyyppi</TD></TR></TABLE></TD><TD PORT="osasuorituksen_tyyppi.type" ALIGN="LEFT">varchar[2147483647]</TD></TR>
       <TR><TD PORT="paatason_suorituksen_tyyppi" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="302" HEIGHT="16">paatason_suorituksen_tyyppi</TD></TR></TABLE></TD><TD PORT="paatason_suorituksen_tyyppi.type" ALIGN="LEFT">varchar[2147483647]</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 0</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">389 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 &gt;</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 0</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">391 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 &gt;</TD></TR>
     </TABLE>>
     URL="../../tables/osasuoritus_arvioitu_opiskeluoi_6ab95832.html"
     target="_top"
@@ -262,7 +262,7 @@ digraph "orphans" {
       <TR><TD PORT="paallekkainen_viimeisin_tila" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="225" HEIGHT="16">paallekkainen_viimeisin_tila</TD></TR></TABLE></TD><TD PORT="paallekkainen_viimeisin_tila.type" ALIGN="LEFT">varchar[2147483647]</TD></TR>
       <TR><TD PORT="paallekkainen_alkamispaiva" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="225" HEIGHT="16">paallekkainen_alkamispaiva</TD></TR></TABLE></TD><TD PORT="paallekkainen_alkamispaiva.type" ALIGN="LEFT">date[13]</TD></TR>
       <TR><TD PORT="paallekkainen_paattymispaiva" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="225" HEIGHT="16">paallekkainen_paattymispaiva</TD></TR></TABLE></TD><TD PORT="paallekkainen_paattymispaiva.type" ALIGN="LEFT">date[13]</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 0</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">38 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 &gt;</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 0</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">40 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 &gt;</TD></TR>
     </TABLE>>
     URL="../../tables/paallekkaiset_opiskeluoikeudet.html"
     target="_top"
@@ -287,7 +287,7 @@ digraph "orphans" {
       <TR><TD PORT="kotikunta_nimi_fi" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="104" HEIGHT="16">kotikunta_nimi_fi</TD></TR></TABLE></TD><TD PORT="kotikunta_nimi_fi.type" ALIGN="LEFT">varchar[2147483647]</TD></TR>
       <TR><TD PORT="kotikunta_nimi_sv" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="104" HEIGHT="16">kotikunta_nimi_sv</TD></TR></TABLE></TD><TD PORT="kotikunta_nimi_sv.type" ALIGN="LEFT">varchar[2147483647]</TD></TR>
       <TR><TD PORT="yksiloity" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="104" HEIGHT="16">yksiloity</TD></TR></TABLE></TD><TD PORT="yksiloity.type" ALIGN="LEFT">bool[1]</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 0</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">133 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 &gt;</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 0</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">136 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 &gt;</TD></TR>
     </TABLE>>
     URL="../../tables/r_henkilo.html"
     target="_top"
@@ -309,7 +309,7 @@ digraph "orphans" {
       <TR><TD PORT="kotikunta_nimi_fi" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="106" HEIGHT="16">kotikunta_nimi_fi</TD></TR></TABLE></TD><TD PORT="kotikunta_nimi_fi.type" ALIGN="LEFT">varchar[2147483647]</TD></TR>
       <TR><TD PORT="kotikunta_nimi_sv" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="106" HEIGHT="16">kotikunta_nimi_sv</TD></TR></TABLE></TD><TD PORT="kotikunta_nimi_sv.type" ALIGN="LEFT">varchar[2147483647]</TD></TR>
       <TR><TD PORT="yksiloity" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="106" HEIGHT="16">yksiloity</TD></TR></TABLE></TD><TD PORT="yksiloity.type" ALIGN="LEFT">bool[1]</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 0</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">133 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 &gt;</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 0</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">136 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 &gt;</TD></TR>
     </TABLE>>
     URL="../../tables/r_henkilo_vipunen.html"
     target="_top"
@@ -323,7 +323,7 @@ digraph "orphans" {
       <TR><TD PORT="koodiarvo" COLSPAN="2" BGCOLOR="#ffffff" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="100" HEIGHT="16">koodiarvo</TD></TR></TABLE></TD><TD PORT="koodiarvo.type" ALIGN="LEFT">varchar[2147483647]</TD></TR>
       <TR><TD PORT="nimi" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="100" HEIGHT="16">nimi</TD></TR></TABLE></TD><TD PORT="nimi.type" ALIGN="LEFT">varchar[2147483647]</TD></TR>
       <TR><TD PORT="nimi_sv" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="100" HEIGHT="16">nimi_sv</TD></TR></TABLE></TD><TD PORT="nimi_sv.type" ALIGN="LEFT">varchar[2147483647]</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 0</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">1 043 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 &gt;</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 0</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">1 045 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 &gt;</TD></TR>
     </TABLE>>
     URL="../../tables/r_koodisto_koodi.html"
     target="_top"
@@ -376,7 +376,7 @@ digraph "orphans" {
       <TR><TD PORT="luokka" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="258" HEIGHT="16">luokka</TD></TR></TABLE></TD><TD PORT="luokka.type" ALIGN="LEFT">varchar[2147483647]</TD></TR>
       <TR><TD PORT="oppivelvollisuuden_suorittamiseen_kelpaava" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="258" HEIGHT="16">oppivelvollisuuden_suorittamiseen_kelpaava</TD></TR></TABLE></TD><TD PORT="oppivelvollisuuden_suorittamiseen_kelpaava.type" ALIGN="LEFT">bool[1]</TD></TR>
       <TR><TD PORT="data" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="258" HEIGHT="16">data</TD></TR></TABLE></TD><TD PORT="data.type" ALIGN="LEFT">jsonb[2147483647]</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 0</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">152 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 &gt;</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 0</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">156 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 &gt;</TD></TR>
     </TABLE>>
     URL="../../tables/r_opiskeluoikeus.html"
     target="_top"
@@ -420,7 +420,7 @@ digraph "orphans" {
       <TR><TD PORT="kotiopetus" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="340" HEIGHT="16">kotiopetus</TD></TR></TABLE></TD><TD PORT="kotiopetus.type" ALIGN="LEFT">bool[1]</TD></TR>
       <TR><TD PORT="ulkomaanjakso" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="340" HEIGHT="16">ulkomaanjakso</TD></TR></TABLE></TD><TD PORT="ulkomaanjakso.type" ALIGN="LEFT">bool[1]</TD></TR>
       <TR><TD PORT="id" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/primaryKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="340" HEIGHT="16">id</TD></TR></TABLE></TD><TD PORT="id.type" ALIGN="LEFT">bigserial[19]</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 0</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">291 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 &gt;</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 0</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">298 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 &gt;</TD></TR>
     </TABLE>>
     URL="../../tables/r_opiskeluoikeus_aikajakso.html"
     target="_top"
@@ -432,7 +432,7 @@ digraph "orphans" {
       <TR><TD COLSPAN="4"  BGCOLOR="#f5f5f5"><TABLE BORDER="0" CELLSPACING="0"><TR><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="189" HEIGHT="16"><B>r_oppivelvollisuudesta_vapautus</B></TD><TD ALIGN="RIGHT">[table]</TD></TR></TABLE></TD></TR>
       <TR><TD PORT="oppija_oid" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/primaryKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="189" HEIGHT="16">oppija_oid</TD></TR></TABLE></TD><TD PORT="oppija_oid.type" ALIGN="LEFT">varchar[2147483647]</TD></TR>
       <TR><TD PORT="vapautettu" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="189" HEIGHT="16">vapautettu</TD></TR></TABLE></TD><TD PORT="vapautettu.type" ALIGN="LEFT">timestamp[29,6]</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 0</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 &gt;</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 0</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">1 row</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 &gt;</TD></TR>
     </TABLE>>
     URL="../../tables/r_oppivelvollisuudesta_vapautus.html"
     target="_top"
@@ -442,14 +442,16 @@ digraph "orphans" {
    label=<
     <TABLE BORDER="2" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
       <TR><TD COLSPAN="4"  BGCOLOR="#f5f5f5"><TABLE BORDER="0" CELLSPACING="0"><TR><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="82" HEIGHT="16"><B>r_organisaatio</B></TD><TD ALIGN="RIGHT">[table]</TD></TR></TABLE></TD></TR>
-      <TR><TD PORT="organisaatio_oid" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/primaryKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="103" HEIGHT="16">organisaatio_oid</TD></TR></TABLE></TD><TD PORT="organisaatio_oid.type" ALIGN="LEFT">varchar[2147483647]</TD></TR>
-      <TR><TD PORT="nimi" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="103" HEIGHT="16">nimi</TD></TR></TABLE></TD><TD PORT="nimi.type" ALIGN="LEFT">varchar[2147483647]</TD></TR>
-      <TR><TD PORT="nimi_sv" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="103" HEIGHT="16">nimi_sv</TD></TR></TABLE></TD><TD PORT="nimi_sv.type" ALIGN="LEFT">varchar[2147483647]</TD></TR>
-      <TR><TD PORT="organisaatiotyypit" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="103" HEIGHT="16">organisaatiotyypit</TD></TR></TABLE></TD><TD PORT="organisaatiotyypit.type" ALIGN="LEFT">varchar[2147483647]</TD></TR>
-      <TR><TD PORT="oppilaitostyyppi" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="103" HEIGHT="16">oppilaitostyyppi</TD></TR></TABLE></TD><TD PORT="oppilaitostyyppi.type" ALIGN="LEFT">varchar[2147483647]</TD></TR>
-      <TR><TD PORT="oppilaitosnumero" COLSPAN="2" BGCOLOR="#ffffff" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="103" HEIGHT="16">oppilaitosnumero</TD></TR></TABLE></TD><TD PORT="oppilaitosnumero.type" ALIGN="LEFT">varchar[2147483647]</TD></TR>
-      <TR><TD PORT="kotipaikka" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="103" HEIGHT="16">kotipaikka</TD></TR></TABLE></TD><TD PORT="kotipaikka.type" ALIGN="LEFT">varchar[2147483647]</TD></TR>
-      <TR><TD PORT="y_tunnus" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="103" HEIGHT="16">y_tunnus</TD></TR></TABLE></TD><TD PORT="y_tunnus.type" ALIGN="LEFT">varchar[2147483647]</TD></TR>
+      <TR><TD PORT="organisaatio_oid" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/primaryKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="172" HEIGHT="16">organisaatio_oid</TD></TR></TABLE></TD><TD PORT="organisaatio_oid.type" ALIGN="LEFT">varchar[2147483647]</TD></TR>
+      <TR><TD PORT="nimi" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="172" HEIGHT="16">nimi</TD></TR></TABLE></TD><TD PORT="nimi.type" ALIGN="LEFT">varchar[2147483647]</TD></TR>
+      <TR><TD PORT="nimi_sv" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="172" HEIGHT="16">nimi_sv</TD></TR></TABLE></TD><TD PORT="nimi_sv.type" ALIGN="LEFT">varchar[2147483647]</TD></TR>
+      <TR><TD PORT="organisaatiotyypit" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="172" HEIGHT="16">organisaatiotyypit</TD></TR></TABLE></TD><TD PORT="organisaatiotyypit.type" ALIGN="LEFT">varchar[2147483647]</TD></TR>
+      <TR><TD PORT="oppilaitostyyppi" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="172" HEIGHT="16">oppilaitostyyppi</TD></TR></TABLE></TD><TD PORT="oppilaitostyyppi.type" ALIGN="LEFT">varchar[2147483647]</TD></TR>
+      <TR><TD PORT="oppilaitosnumero" COLSPAN="2" BGCOLOR="#ffffff" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="172" HEIGHT="16">oppilaitosnumero</TD></TR></TABLE></TD><TD PORT="oppilaitosnumero.type" ALIGN="LEFT">varchar[2147483647]</TD></TR>
+      <TR><TD PORT="kotipaikka" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="172" HEIGHT="16">kotipaikka</TD></TR></TABLE></TD><TD PORT="kotipaikka.type" ALIGN="LEFT">varchar[2147483647]</TD></TR>
+      <TR><TD PORT="y_tunnus" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="172" HEIGHT="16">y_tunnus</TD></TR></TABLE></TD><TD PORT="y_tunnus.type" ALIGN="LEFT">varchar[2147483647]</TD></TR>
+      <TR><TD PORT="oppilaitoksen_koulutustoimija" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="172" HEIGHT="16">oppilaitoksen_koulutustoimija</TD></TR></TABLE></TD><TD PORT="oppilaitoksen_koulutustoimija.type" ALIGN="LEFT">varchar[2147483647]</TD></TR>
+      <TR><TD PORT="toimipisteen_oppilaitos" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="172" HEIGHT="16">toimipisteen_oppilaitos</TD></TR></TABLE></TD><TD PORT="toimipisteen_oppilaitos.type" ALIGN="LEFT">varchar[2147483647]</TD></TR>
       <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 0</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">988 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 &gt;</TD></TR>
     </TABLE>>
     URL="../../tables/r_organisaatio.html"
@@ -477,7 +479,7 @@ digraph "orphans" {
       <TR><TD PORT="koulutustoimija_oid" COLSPAN="2" BGCOLOR="#ffffff" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="126" HEIGHT="16">koulutustoimija_oid</TD></TR></TABLE></TD><TD PORT="koulutustoimija_oid.type" ALIGN="LEFT">varchar[2147483647]</TD></TR>
       <TR><TD PORT="alku" COLSPAN="2" BGCOLOR="#ffffff" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="126" HEIGHT="16">alku</TD></TR></TABLE></TD><TD PORT="alku.type" ALIGN="LEFT">date[13]</TD></TR>
       <TR><TD PORT="loppu" COLSPAN="2" BGCOLOR="#ffffff" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="126" HEIGHT="16">loppu</TD></TR></TABLE></TD><TD PORT="loppu.type" ALIGN="LEFT">date[13]</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 0</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">152 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 &gt;</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 0</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">155 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 &gt;</TD></TR>
     </TABLE>>
     URL="../../tables/r_organisaatiohistoria.html"
     target="_top"
@@ -514,7 +516,7 @@ digraph "orphans" {
       <TR><TD PORT="tunnustettu_rahoituksen_piirissa" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="195" HEIGHT="16">tunnustettu_rahoituksen_piirissa</TD></TR></TABLE></TD><TD PORT="tunnustettu_rahoituksen_piirissa.type" ALIGN="LEFT">bool[1]</TD></TR>
       <TR><TD PORT="data" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="195" HEIGHT="16">data</TD></TR></TABLE></TD><TD PORT="data.type" ALIGN="LEFT">jsonb[2147483647]</TD></TR>
       <TR><TD PORT="sisaltyy_opiskeluoikeuteen_oid" COLSPAN="2" BGCOLOR="#ffffff" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="195" HEIGHT="16">sisaltyy_opiskeluoikeuteen_oid</TD></TR></TABLE></TD><TD PORT="sisaltyy_opiskeluoikeuteen_oid.type" ALIGN="LEFT">varchar[2147483647]</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 0</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">4 043 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 &gt;</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 0</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">4 619 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 &gt;</TD></TR>
     </TABLE>>
     URL="../../tables/r_osasuoritus.html"
     target="_top"
@@ -547,7 +549,7 @@ digraph "orphans" {
       <TR><TD PORT="toimipiste_nimi_sv" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="195" HEIGHT="16">toimipiste_nimi_sv</TD></TR></TABLE></TD><TD PORT="toimipiste_nimi_sv.type" ALIGN="LEFT">varchar[2147483647]</TD></TR>
       <TR><TD PORT="data" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="195" HEIGHT="16">data</TD></TR></TABLE></TD><TD PORT="data.type" ALIGN="LEFT">jsonb[2147483647]</TD></TR>
       <TR><TD PORT="sisaltyy_opiskeluoikeuteen_oid" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="195" HEIGHT="16">sisaltyy_opiskeluoikeuteen_oid</TD></TR></TABLE></TD><TD PORT="sisaltyy_opiskeluoikeuteen_oid.type" ALIGN="LEFT">varchar[2147483647]</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 0</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">240 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 &gt;</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 0</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">257 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 &gt;</TD></TR>
     </TABLE>>
     URL="../../tables/r_paatason_suoritus.html"
     target="_top"
@@ -573,7 +575,7 @@ digraph "orphans" {
       <TR><TD PORT="keskeytynyt" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="225" HEIGHT="16">keskeytynyt</TD></TR></TABLE></TD><TD PORT="keskeytynyt.type" ALIGN="LEFT">bool[1]</TD></TR>
       <TR><TD PORT="maksuton" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="225" HEIGHT="16">maksuton</TD></TR></TABLE></TD><TD PORT="maksuton.type" ALIGN="LEFT">bool[1]</TD></TR>
       <TR><TD PORT="data" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="225" HEIGHT="16">data</TD></TR></TABLE></TD><TD PORT="data.type" ALIGN="LEFT">jsonb[2147483647]</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 0</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">66 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 &gt;</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 0</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">78 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 &gt;</TD></TR>
     </TABLE>>
     URL="../../tables/r_ytr_kokeen_suoritus.html"
     target="_top"
@@ -597,7 +599,7 @@ digraph "orphans" {
       <TR><TD PORT="oppilaitos_kotipaikka" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="225" HEIGHT="16">oppilaitos_kotipaikka</TD></TR></TABLE></TD><TD PORT="oppilaitos_kotipaikka.type" ALIGN="LEFT">varchar[2147483647]</TD></TR>
       <TR><TD PORT="oppilaitosnumero" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="225" HEIGHT="16">oppilaitosnumero</TD></TR></TABLE></TD><TD PORT="oppilaitosnumero.type" ALIGN="LEFT">varchar[2147483647]</TD></TR>
       <TR><TD PORT="data" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="225" HEIGHT="16">data</TD></TR></TABLE></TD><TD PORT="data.type" ALIGN="LEFT">jsonb[2147483647]</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 0</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">14 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 &gt;</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 0</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">16 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 &gt;</TD></TR>
     </TABLE>>
     URL="../../tables/r_ytr_tutkintokerran_suoritus.html"
     target="_top"
@@ -611,7 +613,7 @@ digraph "orphans" {
       <TR><TD PORT="ytr_kokeen_suoritus_id" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/primaryKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="267" HEIGHT="16">ytr_kokeen_suoritus_id</TD></TR></TABLE></TD><TD PORT="ytr_kokeen_suoritus_id.type" ALIGN="LEFT">int8[19]</TD></TR>
       <TR><TD PORT="ytr_tutkintokerran_suoritus_id" COLSPAN="2" BGCOLOR="#ffffff" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="267" HEIGHT="16">ytr_tutkintokerran_suoritus_id</TD></TR></TABLE></TD><TD PORT="ytr_tutkintokerran_suoritus_id.type" ALIGN="LEFT">int8[19]</TD></TR>
       <TR><TD PORT="sisallytetty" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="267" HEIGHT="16">sisallytetty</TD></TR></TABLE></TD><TD PORT="sisallytetty.type" ALIGN="LEFT">bool[1]</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 0</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">68 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 &gt;</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 0</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">80 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 &gt;</TD></TR>
     </TABLE>>
     URL="../../tables/r_ytr_tutkintokokonaisuuden_kok_833819e2.html"
     target="_top"
@@ -629,7 +631,7 @@ digraph "orphans" {
       <TR><TD PORT="suorituskieli_koodiarvo" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="225" HEIGHT="16">suorituskieli_koodiarvo</TD></TR></TABLE></TD><TD PORT="suorituskieli_koodiarvo.type" ALIGN="LEFT">varchar[2147483647]</TD></TR>
       <TR><TD PORT="hyvaksytysti_valmistunut_tutkinto" COLSPAN="2" BGCOLOR="#ffffff" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="225" HEIGHT="16">hyvaksytysti_valmistunut_tutkinto</TD></TR></TABLE></TD><TD PORT="hyvaksytysti_valmistunut_tutkinto.type" ALIGN="LEFT">bool[1]</TD></TR>
       <TR><TD PORT="data" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="225" HEIGHT="16">data</TD></TR></TABLE></TD><TD PORT="data.type" ALIGN="LEFT">jsonb[2147483647]</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 0</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">7 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 &gt;</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 0</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">8 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 &gt;</TD></TR>
     </TABLE>>
     URL="../../tables/r_ytr_tutkintokokonaisuuden_suoritus.html"
     target="_top"
