@@ -1,6 +1,6 @@
 package fi.oph.koski.config
 
-import com.typesafe.config.Config
+import com.typesafe.config.{Config, ConfigException}
 
 import java.time.{DateTimeException, LocalDate, ZonedDateTime}
 import java.time.format.DateTimeParseException
@@ -16,8 +16,13 @@ object Environment {
   def isUsingLocalDevelopmentServices(app: KoskiApplication): Boolean =
     app.masterDatabase.isLocal && isMockEnvironment(app.config)
 
-  def isMockEnvironment(config: Config): Boolean =
-    config.getString("opintopolku.virkailija.url") == "mock"
+  def isMockEnvironment(config: Config): Boolean = {
+    try {
+      config.getString("opintopolku.virkailija.url") == "mock" && config.getString("login.security") == "mock"
+    } catch {
+      case _: ConfigException => true
+    }
+  }
 
   def isProdEnvironment(config: Config): Boolean =
     config.getString("opintopolku.virkailija.url") == "https://virkailija.opintopolku.fi"

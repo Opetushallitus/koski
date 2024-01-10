@@ -856,7 +856,8 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
           KoskiApplicationForTests.validatingAndResolvingExtractor,
           KoskiApplicationForTests.suostumuksenPeruutusService,
           KoskiApplicationForTests.koodistoViitePalvelu,
-          config
+          config,
+          KoskiApplicationForTests.validationContext,
         )
       }
 
@@ -898,7 +899,8 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
       KoskiApplicationForTests.validatingAndResolvingExtractor,
       KoskiApplicationForTests.suostumuksenPeruutusService,
       KoskiApplicationForTests.koodistoViitePalvelu,
-      config
+      config,
+      KoskiApplicationForTests.validationContext,
     )
   }
 }

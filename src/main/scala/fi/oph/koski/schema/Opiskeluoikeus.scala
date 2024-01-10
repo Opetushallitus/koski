@@ -305,6 +305,13 @@ case class Aikajakso (
   loppu: Option[LocalDate]
 ) extends Jakso
 
+object Aikajakso {
+  def apply(alku: Option[LocalDate], loppu: Option[LocalDate]): Aikajakso = Aikajakso(
+    alku = alku.getOrElse(LocalDate.MIN),
+    loppu = loppu,
+  )
+}
+
 trait Läsnäolojakso extends Alkupäivällinen {
   @Description("Läsnäolotila (läsnä, poissa...)")
   def tila: Koodistokoodiviite

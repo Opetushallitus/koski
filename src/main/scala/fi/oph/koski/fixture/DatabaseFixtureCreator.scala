@@ -1,12 +1,14 @@
 package fi.oph.koski.fixture
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.KoskiTables._
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db._
-import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, OppijaHenkilö, OppijaHenkilöWithMasterInfo, VerifiedHenkilöOid}
+import fi.oph.koski.henkilo.{OppijaHenkilö, OppijaHenkilöWithMasterInfo}
 import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.json.JsonSerializer.serializeWithRoot
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
+import fi.oph.koski.oppija.OppijaServletOppijaAdder
 import fi.oph.koski.perustiedot.{OpiskeluoikeudenOsittaisetTiedot, OpiskeluoikeudenPerustiedot}
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Timing
@@ -20,15 +22,13 @@ abstract class DatabaseFixtureCreator(application: KoskiApplication, opiskeluoik
   val db = application.masterDatabase.db
   implicit val accessType = AccessType.write
   val raportointiDatabase = application.raportointiDatabase
+  val validationConfig = application.validationContext
 
   protected def updateFieldsAndValidateOpiskeluoikeus[T: TypeTag](oo: T, session: KoskiSpecificSession = user): T =
     validator.extractUpdateFieldsAndValidateOpiskeluoikeus(JsonSerializer.serialize(oo))(session, AccessType.write) match {
       case Right(opiskeluoikeus) => opiskeluoikeus.asInstanceOf[T]
       case Left(status) => throw new RuntimeException("Fixture insert failed for " + JsonSerializer.write(oo) + ": " + status)
     }
-
-  private lazy val opiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = validateFixture(defaultOpiskeluOikeudet) ++ invalidOpiskeluoikeudet
-  private lazy val secondBatchOpiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = validateFixture(secondBatchOpiskeluOikeudet)
 
   private var fixtureCacheCreated = false
   private var cachedPerustiedot: Option[Seq[OpiskeluoikeudenOsittaisetTiedot]] = None
@@ -54,8 +54,9 @@ abstract class DatabaseFixtureCreator(application: KoskiApplication, opiskeluoik
 
     if (!fixtureCacheCreated) {
       cachedPerustiedot = Some(
-        luoOpiskeluoikeudetJaPerustiedot(opiskeluoikeudet) ++
-        luoOpiskeluoikeudetJaPerustiedot(secondBatchOpiskeluoikeudet)
+        luoOpiskeluoikeudetJaPerustiedot("default opiskeluoikeudet", defaultOpiskeluOikeudet) ++
+        validationConfig.runWithoutValidations { luoOpiskeluoikeudetJaPerustiedot("invalid opiskeluoikeudet", invalidOpiskeluoikeudet) } ++
+        luoOpiskeluoikeudetJaPerustiedot("second batch opiskeluoikeudet", secondBatchOpiskeluOikeudet)
       )
 
       application.perustiedotIndexer.sync(refresh = true)
@@ -78,43 +79,27 @@ abstract class DatabaseFixtureCreator(application: KoskiApplication, opiskeluoik
     }
   }
 
-  private def luoOpiskeluoikeudetJaPerustiedot(opiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)]): Seq[OpiskeluoikeudenOsittaisetTiedot] = {
-    opiskeluoikeudet.zipWithIndex.map { case ((henkilö, opiskeluoikeus), index) =>
-      val id = application.opiskeluoikeusRepository
-        .createOrUpdate(VerifiedHenkilöOid(henkilö), opiskeluoikeus, allowUpdate = false)
-        .fold(
-          error => throw new Exception(s"Fikstuurin opiskeluoikeutta ${index + 1}/${opiskeluoikeudet.length} ei saatu luotua: $error"),
-          result => result.id
-        )
-      OpiskeluoikeudenPerustiedot.makePerustiedot(id, opiskeluoikeus, application.henkilöRepository.opintopolku.withMasterInfo(henkilö))
-    }
-  }
+  private def luoOpiskeluoikeudetJaPerustiedot(fixtureSetName: String, opiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)]): Seq[OpiskeluoikeudenOsittaisetTiedot] = {
+    val adder = new OppijaServletOppijaAdder(application)
 
-  private def validateFixture(fixture: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)]): List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = {
-    fixture.zipWithIndex.map { case ((henkilö, oikeus), index) =>
-      timed(s"Validating fixture ${index}", 500) {
+    opiskeluoikeudet.zipWithIndex.map { case ((henkilö, inputOo), index) =>
+      val oppijaJson = serializeWithRoot(Oppija(
+        henkilö = henkilö.toHenkilötiedotJaOid,
+        opiskeluoikeudet = List(inputOo),
+      ))
 
-        val globaaliValidointiStatus = application.globaaliValidator.validateOpiskeluoikeus(
-          oikeus,
-          henkilö match {
-            case h: LaajatOppijaHenkilöTiedot => Some(h)
-            case _ => None
-          },
-          henkilö.oid
-        )
-        if (!globaaliValidointiStatus.isOk) {
-          throw new RuntimeException(
-            s"Fixture insert failed for ${henkilö.etunimet} ${henkilö.sukunimi} with data ${JsonSerializer.write(oikeus)}: ${globaaliValidointiStatus}"
-          )
-        }
+      val perustiedot = for {
+        versiot       <- adder.add(user, oppijaJson, allowUpdate = false, requestDescription = "")
+        oid           <- versiot.opiskeluoikeudet.headOption.map(_.oid).toRight(new Exception("Opiskeluoikeutta ei löydy, vaikka se äsken tallennettiin"))
+        ooRow         <- application.possu.findByOidIlmanKäyttöoikeustarkistusta(oid)
+        oo            <- ooRow.toOpiskeluoikeus
+        perustiedot   <- Right(OpiskeluoikeudenPerustiedot.makePerustiedot(ooRow.id, oo, application.henkilöRepository.opintopolku.withMasterInfo(henkilö)))
+      } yield perustiedot
 
-        validator.updateFieldsAndValidateAsJson(Oppija(henkilö.toHenkilötiedotJaOid, List(oikeus))) match {
-          case Right(oppija) => (henkilö, oppija.tallennettavatOpiskeluoikeudet.head)
-          case Left(status) => throw new RuntimeException(
-            s"Fixture insert failed for ${henkilö.etunimet} ${henkilö.sukunimi} with data ${JsonSerializer.write(oikeus)}: ${status}"
-          )
-        }
-      }
+      perustiedot.fold(
+        error => throw new Exception(s"Fikstuurin opiskeluoikeuden ${index + 1}/${opiskeluoikeudet.length} ($fixtureSetName: ${henkilö.sukunimi} ${henkilö.etunimet}, ${inputOo.tyyppi.koodiarvo}) luonti ei onnistu: $error"),
+        identity
+      )
     }
   }
 

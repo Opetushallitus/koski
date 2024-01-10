@@ -5,6 +5,7 @@ import fi.oph.koski.db.KoskiTables._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db._
 import fi.oph.koski.eperusteetvalidation.EPerusteetOpiskeluoikeusChangeValidator
+import fi.oph.koski.fixture.ValidationTestContext
 import fi.oph.koski.henkilo._
 import fi.oph.koski.history.{KoskiOpiskeluoikeusHistoryRepository, OpiskeluoikeusHistory}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
@@ -29,7 +30,8 @@ class PostgresKoskiOpiskeluoikeusRepositoryActions(
   val organisaatioRepository: OrganisaatioRepository,
   val ePerusteetChangeValidator: EPerusteetOpiskeluoikeusChangeValidator,
   val perustiedotSyncRepository: PerustiedotSyncRepository,
-  val config: Config
+  val config: Config,
+  val validationConfig: ValidationTestContext,
 ) extends PostgresOpiskeluoikeusRepositoryActions[KoskiOpiskeluoikeusRow, KoskiOpiskeluoikeusTable, KoskiOpiskeluoikeusHistoryTable] {
   lazy val validator = new OpiskeluoikeusChangeValidator(organisaatioRepository, ePerusteetChangeValidator, config)
 
@@ -75,12 +77,14 @@ class PostgresKoskiOpiskeluoikeusRepositoryActions(
     oppijaOid: PossiblyUnverifiedHenkilöOid,
     opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
     allowUpdate: Boolean,
-    allowDeleteCompleted: Boolean
+    allowDeleteCompleted: Boolean,
   )(implicit user: KoskiSpecificSession): DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write with Transactional] = {
     val identifier = OpiskeluoikeusIdentifier(oppijaOid.oppijaOid, opiskeluoikeus)
 
     findByIdentifierAction(identifier).flatMap {
       case Right(Nil) =>
+        createAction(oppijaOid, opiskeluoikeus)
+      case Right(_) if !validationConfig.tarkastaOpiskeluoikeuksienDuplikaatit =>
         createAction(oppijaOid, opiskeluoikeus)
       case Right(aiemmatOpiskeluoikeudet) if allowUpdate =>
         updateIfUnambiguousAiempiOpiskeluoikeusAction(oppijaOid, opiskeluoikeus, identifier, aiemmatOpiskeluoikeudet, allowDeleteCompleted)
@@ -116,6 +120,8 @@ class PostgresKoskiOpiskeluoikeusRepositoryActions(
     lazy val aiempiOpiskeluoikeusPäättynyt = rows.exists(_.toOpiskeluoikeusUnsafe.tila.opiskeluoikeusjaksot.last.opiskeluoikeusPäättynyt)
 
     opiskeluoikeus match {
+      case oo: PerusopetuksenOpiskeluoikeus =>
+        !päällekkäinenOpiskeluoikeusExists(oo, rows)
       case _: MuunKuinSäännellynKoulutuksenOpiskeluoikeus =>
         true
       case _: TaiteenPerusopetuksenOpiskeluoikeus =>
@@ -126,6 +132,14 @@ class PostgresKoskiOpiskeluoikeusRepositoryActions(
         isMuuAmmatillinenOpiskeluoikeus(oo) || (aiempiOpiskeluoikeusPäättynyt && isAmmatillinenJolleAiemmanOpiskeluoikeudenPäätyttyäRinnakkainenOpiskeluoikeusSallitaan(oo, rows))
       case _ =>
         aiempiOpiskeluoikeusPäättynyt
+    }
+  }
+
+  private def päällekkäinenOpiskeluoikeusExists(opiskeluoikeus: PerusopetuksenOpiskeluoikeus, rows: List[KoskiOpiskeluoikeusRow]): Boolean = {
+    val jakso = Aikajakso(opiskeluoikeus.alkamispäivä, opiskeluoikeus.päättymispäivä)
+    rows.exists { row =>
+      val muuJakso = Aikajakso(row.alkamispäivä.toLocalDate, row.päättymispäivä.map(_.toLocalDate))
+      jakso.overlaps(muuJakso)
     }
   }
 

@@ -44,7 +44,7 @@ class CompositeOpiskeluoikeusRepository(main: KoskiOpiskeluoikeusRepository, vir
     oppijaOid: PossiblyUnverifiedHenkilöOid,
     opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
     allowUpdate: Boolean,
-    allowDeleteCompleted: Boolean = false
+    allowDeleteCompleted: Boolean = false,
   )(
     implicit user: KoskiSpecificSession
   ): Either[HttpStatus, CreateOrUpdateResult] =

@@ -7,7 +7,7 @@ import fi.oph.koski.opensearch.{IndexManager, OpenSearch}
 import fi.oph.koski.eperusteet.EPerusteetRepository
 import fi.oph.koski.eperusteetvalidation.{EPerusteetFiller, EPerusteetLops2019Validator, EPerusteetOpiskeluoikeusChangeValidator, EPerusteisiinPerustuvaValidator}
 import fi.oph.koski.executors.GlobalExecutionContext
-import fi.oph.koski.fixture.FixtureCreator
+import fi.oph.koski.fixture.{FixtureCreator, ValidationTestContext}
 import fi.oph.koski.healthcheck.{HealthCheck, HealthMonitoring}
 import fi.oph.koski.henkilo.{HenkilöRepository, Hetu, KoskiHenkilöCache, OpintopolkuHenkilöFacade}
 import fi.oph.koski.history.{KoskiOpiskeluoikeusHistoryRepository, YtrOpiskeluoikeusHistoryRepository}
@@ -115,7 +115,8 @@ class KoskiApplication(
       organisaatioRepository,
       ePerusteetChangeValidator,
       perustiedotSyncRepository,
-      config
+      config,
+      validationContext,
     )
   ))
   lazy val ytrPossu = TimedProxy[YtrSavedOpiskeluoikeusRepository](new PostgresYtrOpiskeluoikeusRepository(
@@ -145,7 +146,8 @@ class KoskiApplication(
     validatingAndResolvingExtractor,
     suostumuksenPeruutusService,
     koodistoViitePalvelu,
-    config
+    config,
+    validationContext,
   )
   lazy val openSearch = OpenSearch(config)
   lazy val perustiedotIndexer = new OpiskeluoikeudenPerustiedotIndexer(openSearch, opiskeluoikeusQueryRepository, perustiedotSyncRepository, perustiedotManualSyncRepository)
@@ -201,10 +203,11 @@ class KoskiApplication(
   lazy val globaaliValidator: KoskiGlobaaliValidator = new KoskiGlobaaliValidator(
     opiskeluoikeusRepository,
     valpasRajapäivätService,
-    raportointiDatabase,
+    validationContext,
   )
   lazy val healthMonitoring: HealthMonitoring = new HealthMonitoring()
   lazy val yoTodistusService: YoTodistusService = YoTodistusService(this)
+  lazy val validationContext: ValidationTestContext = new ValidationTestContext(config)
 
   def init(): Future[Any] = {
     AuditLog.startHeartbeat()
