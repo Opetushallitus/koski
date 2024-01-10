@@ -97,7 +97,7 @@ abstract class DatabaseFixtureCreator(application: KoskiApplication, opiskeluoik
       } yield perustiedot
 
       perustiedot.fold(
-        error => throw new Exception(s"Fikstuurin opiskeluoikeuden ${index + 1}/${opiskeluoikeudet.length} ($fixtureSetName) luonti ei onnistu: $error"),
+        error => throw new Exception(s"Fikstuurin opiskeluoikeuden ${index + 1}/${opiskeluoikeudet.length} ($fixtureSetName: ${henkilö.sukunimi} ${henkilö.etunimet}, ${inputOo.tyyppi.koodiarvo}) luonti ei onnistu: $error"),
         identity
       )
     }
