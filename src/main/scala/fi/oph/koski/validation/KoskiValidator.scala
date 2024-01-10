@@ -1,9 +1,10 @@
 package fi.oph.koski.validation
 
 import com.typesafe.config.Config
-import fi.oph.koski.config.{Environment, ValidationContext}
+import fi.oph.koski.config.Environment
 import fi.oph.koski.documentation.ExamplesEsiopetus.{peruskoulunEsiopetuksenTunniste, päiväkodinEsiopetuksenTunniste}
 import fi.oph.koski.eperusteetvalidation.{EPerusteetFiller, EPerusteetLops2019Validator, EPerusteisiinPerustuvaValidator}
+import fi.oph.koski.fixture.ValidationTestContext
 import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
@@ -41,7 +42,7 @@ class KoskiValidator(
   suostumuksenPeruutusService: SuostumuksenPeruutusService,
   koodistoPalvelu: KoodistoViitePalvelu,
   config: Config,
-  validationConfig: ValidationContext,
+  validationConfig: ValidationTestContext,
 ) extends Timing {
   def updateFieldsAndValidateAsJson(oppija: Oppija)(implicit user: KoskiSpecificSession, accessType: AccessType.Value): Either[HttpStatus, Oppija] = {
     val serialized = timed("Oppija serialization", 500) {

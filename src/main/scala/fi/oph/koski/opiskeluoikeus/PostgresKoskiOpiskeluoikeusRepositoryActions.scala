@@ -1,11 +1,11 @@
 package fi.oph.koski.opiskeluoikeus
 
 import com.typesafe.config.Config
-import fi.oph.koski.config.ValidationContext
 import fi.oph.koski.db.KoskiTables._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db._
 import fi.oph.koski.eperusteetvalidation.EPerusteetOpiskeluoikeusChangeValidator
+import fi.oph.koski.fixture.ValidationTestContext
 import fi.oph.koski.henkilo._
 import fi.oph.koski.history.{KoskiOpiskeluoikeusHistoryRepository, OpiskeluoikeusHistory}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
@@ -31,7 +31,7 @@ class PostgresKoskiOpiskeluoikeusRepositoryActions(
   val ePerusteetChangeValidator: EPerusteetOpiskeluoikeusChangeValidator,
   val perustiedotSyncRepository: PerustiedotSyncRepository,
   val config: Config,
-  val validationConfig: ValidationContext,
+  val validationConfig: ValidationTestContext,
 ) extends PostgresOpiskeluoikeusRepositoryActions[KoskiOpiskeluoikeusRow, KoskiOpiskeluoikeusTable, KoskiOpiskeluoikeusHistoryTable] {
   lazy val validator = new OpiskeluoikeusChangeValidator(organisaatioRepository, ePerusteetChangeValidator, config)
 

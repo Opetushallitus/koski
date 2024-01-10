@@ -7,7 +7,7 @@ import fi.oph.koski.opensearch.{IndexManager, OpenSearch}
 import fi.oph.koski.eperusteet.EPerusteetRepository
 import fi.oph.koski.eperusteetvalidation.{EPerusteetFiller, EPerusteetLops2019Validator, EPerusteetOpiskeluoikeusChangeValidator, EPerusteisiinPerustuvaValidator}
 import fi.oph.koski.executors.GlobalExecutionContext
-import fi.oph.koski.fixture.FixtureCreator
+import fi.oph.koski.fixture.{FixtureCreator, ValidationTestContext}
 import fi.oph.koski.healthcheck.{HealthCheck, HealthMonitoring}
 import fi.oph.koski.henkilo.{HenkilöRepository, Hetu, KoskiHenkilöCache, OpintopolkuHenkilöFacade}
 import fi.oph.koski.history.{KoskiOpiskeluoikeusHistoryRepository, YtrOpiskeluoikeusHistoryRepository}
@@ -207,7 +207,7 @@ class KoskiApplication(
   )
   lazy val healthMonitoring: HealthMonitoring = new HealthMonitoring()
   lazy val yoTodistusService: YoTodistusService = YoTodistusService(this)
-  lazy val validationContext: ValidationContext = new ValidationContext()
+  lazy val validationContext: ValidationTestContext = new ValidationTestContext(config)
 
   def init(): Future[Any] = {
     AuditLog.startHeartbeat()
