@@ -48,3 +48,8 @@ export type OrganisaatioJaKayttooikeusrooli = {
   organisaatioHierarkia: OrganisaatioHierarkia
   kayttooikeusrooli: Kayttooikeusrooli
 }
+
+export const oppilaitosroolit: Kayttooikeusrooli[] = [
+  "OPPILAITOS_HAKEUTUMINEN",
+  "OPPILAITOS_SUORITTAMINEN",
+]

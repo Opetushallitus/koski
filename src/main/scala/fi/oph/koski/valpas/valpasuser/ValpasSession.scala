@@ -5,6 +5,7 @@ import fi.oph.koski.json.SensitiveDataAllowed
 import fi.oph.koski.koskiuser.Rooli.Role
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.log.LogUserContext
+import fi.oph.koski.schema.Organisaatio
 import fi.oph.koski.schema.Organisaatio.Oid
 import org.scalatra.servlet.RichRequest
 
@@ -33,6 +34,12 @@ class ValpasSession(
   def hasKelaAccess: Boolean = globalViranomaisKäyttöoikeudet.flatMap(_.globalPalveluroolit).intersect(Set(Palvelurooli("VALPAS", ValpasRooli.KELA))).nonEmpty
 
   def hasYtlAccess: Boolean = globalViranomaisKäyttöoikeudet.flatMap(_.globalPalveluroolit).intersect(Set(Palvelurooli("VALPAS", ValpasRooli.YTL))).nonEmpty
+
+  def organisaationRoolit(organisaatioOid: Organisaatio.Oid): Set[ValpasRooli.Role] =
+    käyttöoikeudet.flatMap {
+      case k: KäyttöoikeusOrg if k.organisaatio.oid == organisaatioOid => k.organisaatiokohtaisetPalveluroolit.map(_.rooli)
+      case _ => Set.empty
+    }
 
   protected def kaikkiKäyttöoikeudet: Set[Käyttöoikeus] = käyttöoikeudet
 

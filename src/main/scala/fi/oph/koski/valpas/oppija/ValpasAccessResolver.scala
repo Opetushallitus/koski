@@ -109,15 +109,15 @@ class ValpasAccessResolver {
   }
 
   def separateByOppijaAccess[T <: ValpasOppijaLaajatTiedot](
-    rooli: ValpasRooli.Role,
-    oppilaitosOid: Option[ValpasOppilaitos.Oid] = None
+    roolit: Set[ValpasRooli.Role],
+    oppilaitosOid: ValpasOppilaitos.Oid,
   )(
     oppijat: Seq[T]
   )(
     implicit session: ValpasSession
   ): (Seq[T], Seq[T]) = {
-    val oppijatWithAccess = filterByOppijaAccess(rooli, oppilaitosOid)(oppijat)
-    (oppijatWithAccess, oppijat.diff(oppijatWithAccess))
+    val roolitSeq = roolit.toSeq
+    oppijat.partition { oppija => withOppijaAccessAsOrganisaatio(roolitSeq, oppilaitosOid)(oppija).isRight }
   }
 
   def withOppijaAccessAsOrganisaatio[T <: ValpasOppijaLaajatTiedot]

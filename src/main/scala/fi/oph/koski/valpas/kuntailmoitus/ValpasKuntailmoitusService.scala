@@ -94,15 +94,14 @@ class ValpasKuntailmoitusService(
   }
 
   def getOppilaitoksenKunnalleTekemätIlmoituksetLaajatTiedot(
-    rooli: ValpasRooli.Role,
     oppilaitosOid: ValpasOppilaitos.Oid
   )(
     implicit session: ValpasSession
   ) : Either[HttpStatus, Seq[OppijaHakutilanteillaLaajatTiedot]] = {
-    val laajennettuRooli = ValpasOppijaLaajatTiedotService
+    val roolit = ValpasOppijaLaajatTiedotService
       .roolitJoilleHaetaanKaikistaOVLPiirinOppijoista
       .find(accessResolver.accessToAnyOrg)
-      .getOrElse(rooli)
+      .fold(session.organisaationRoolit(oppilaitosOid))(Set(_))
 
     repository.queryByTekijäOrganisaatio(oppilaitosOid)
       .map(ilmoitukset => {
@@ -115,7 +114,7 @@ class ValpasKuntailmoitusService(
           .filter(_.onOikeusValvoaKunnalla)
 
         val (oppijatJoihinKatseluoikeus, oppijatJoihinEiKatseluoikeutta) = accessResolver
-          .separateByOppijaAccess(laajennettuRooli, Some(oppilaitosOid))(oppijat)
+          .separateByOppijaAccess(roolit, oppilaitosOid)(oppijat)
         val oppijatLisätiedoilla = lisätiedotRepository.readForOppijat(oppijatJoihinKatseluoikeus.map(OppijaHakutilanteillaLaajatTiedot.apply))
         val oppijatLaajatTiedot = oppijatLisätiedoilla.map(oppijaLisätiedotTuple =>
           oppijaLisätiedotTuple._1.withLisätiedot(oppijaLisätiedotTuple._2)

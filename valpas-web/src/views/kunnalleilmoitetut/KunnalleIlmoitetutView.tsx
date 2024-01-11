@@ -1,3 +1,5 @@
+import * as A from "fp-ts/Array"
+import { pipe } from "fp-ts/lib/function"
 import React, { useMemo, useState } from "react"
 import { useHistory } from "react-router-dom"
 import {
@@ -17,46 +19,56 @@ import { ApiErrors } from "../../components/typography/error"
 import { T, t } from "../../i18n/i18n"
 import { useOrganisaatiotJaKäyttöoikeusroolit } from "../../state/accessRights"
 import { useBasePath } from "../../state/basePath"
-import { Kayttooikeusrooli, Oid } from "../../state/common"
-import { UseOppijatDataApi } from "../hakutilanne/useOppijatData"
+import { käyttöoikeusrooliEq, Oid, oppilaitosroolit } from "../../state/common"
+import { kunnalleIlmoitetutPathWithOrg } from "../../state/paths"
+import { containedIn } from "../../utils/arrays"
+import { pluck } from "../../utils/objects"
+import { useKunnalleTehdytIlmoitukset } from "../hakutilanne/useOppijatData"
 import { KunnalleIlmoitetutTable } from "./KunnalleIlmoitetutTable"
 
 export type KunnalleIlmoitetutViewProps = {
   organisaatioOid: Oid
   organisaatioTyyppi: string
-  organisaatioHakuRooli: Kayttooikeusrooli
-  dataFetcher: (organisaatioOid?: Oid) => UseOppijatDataApi
-  navigation?: React.ReactNode
-  linkCreator: (basePath: string, props: { organisaatioOid: Oid }) => string
 }
 
 export const KunnalleIlmoitetutView = (props: KunnalleIlmoitetutViewProps) => {
   const basePath = useBasePath()
   const organisaatiotJaKäyttöoikeusroolit =
     useOrganisaatiotJaKäyttöoikeusroolit()
+
+  const roolit = useMemo(
+    () =>
+      pipe(
+        organisaatiotJaKäyttöoikeusroolit,
+        A.map(pluck("kayttooikeusrooli")),
+        A.filter(containedIn(oppilaitosroolit)),
+        A.uniq(käyttöoikeusrooliEq),
+      ),
+    [organisaatiotJaKäyttöoikeusroolit],
+  )
+
   const organisaatiot = useMemo(
     () =>
       getOrganisaatiot(
         organisaatiotJaKäyttöoikeusroolit,
-        props.organisaatioHakuRooli,
+        roolit,
         props.organisaatioTyyppi,
       ),
-    [
-      organisaatiotJaKäyttöoikeusroolit,
-      props.organisaatioHakuRooli,
-      props.organisaatioTyyppi,
-    ],
+    [organisaatiotJaKäyttöoikeusroolit, roolit, props.organisaatioTyyppi],
   )
 
   const history = useHistory()
   const changeOrganisaatio = (oid?: Oid) => {
     if (oid) {
-      history.push(props.linkCreator(basePath, { organisaatioOid: oid }))
+      history.push(
+        kunnalleIlmoitetutPathWithOrg.href(basePath, { organisaatioOid: oid }),
+      )
     }
   }
 
   const organisaatioOid = props.organisaatioOid
-  const { data, isLoading, errors } = props.dataFetcher(organisaatioOid)
+  const { data, isLoading, errors } =
+    useKunnalleTehdytIlmoitukset(organisaatioOid)
 
   const [counters, setCounters] = useState<DataTableCountChangeEvent>({
     filteredRowCount: 0,
@@ -72,7 +84,6 @@ export const KunnalleIlmoitetutView = (props: KunnalleIlmoitetutViewProps) => {
         label={t("Oppilaitos")}
         onChange={changeOrganisaatio}
       />
-      {props.navigation}
       <Card>
         <CardHeader>
           <T id="kunnalleilmoitetut_otsikko" />{" "}
