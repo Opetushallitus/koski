@@ -38,8 +38,6 @@ export const SuorittamisenKunnalleIlmoitetutView =
         organisaatioHakuRooli={organisaatioHakuRooli}
         organisaatioTyyppi={organisaatioTyyppi}
         dataFetcher={useSuorittamisvalvonnanKunnalleTehdytIlmoitukset}
-        backRefName="suorittaminenIlmoitetutRef"
-        storageName="suorittaminenIlmoitetut"
         navigation={
           <SuorittaminenNavigation
             selectedOrganisaatio={props.match.params.organisaatioOid!}

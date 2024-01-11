@@ -20,7 +20,6 @@ import { OppijaViewBackNavProps } from "../oppija/OppijaView"
 export type KunnalleIlmoitetutTableProps = {
   data: OppijaHakutilanteillaSuppeatTiedot[]
   organisaatioOid: Oid
-  backRefName: keyof OppijaViewBackNavProps
   storageName: string
 } & Pick<DataTableProps, "onCountChange">
 
@@ -51,12 +50,7 @@ export const KunnalleIlmoitetutTable = (
   )
 
   const basePath = useBasePath()
-  const data = toTableData(
-    props.data,
-    props.organisaatioOid,
-    basePath,
-    props.backRefName,
-  )
+  const data = toTableData(props.data, props.organisaatioOid, basePath)
 
   return (
     <DataTable
@@ -73,21 +67,15 @@ const toTableData = (
   data: OppijaHakutilanteillaSuppeatTiedot[],
   organisaatioOid: Oid,
   basePath: string,
-  backRefName: keyof OppijaViewBackNavProps,
-): Datum[] =>
-  A.chain(oppijaToTableData(organisaatioOid, basePath, backRefName))(data)
+): Datum[] => A.chain(oppijaToTableData(organisaatioOid, basePath))(data)
 
 const oppijaToTableData =
-  (
-    organisaatioOid: Oid,
-    basePath: string,
-    backRefName: keyof OppijaViewBackNavProps,
-  ) =>
+  (organisaatioOid: Oid, basePath: string) =>
   (oppija: OppijaHakutilanteillaSuppeatTiedot): Datum[] =>
     oppija.kuntailmoitukset.map((kuntailmoitus) => ({
       key: [oppija.oppija.henkilö.oid, kuntailmoitus.id || ""],
       values: [
-        oppijanNimi(oppija, organisaatioOid, basePath, backRefName),
+        oppijanNimi(oppija, organisaatioOid, basePath),
         syntymäaika(oppija),
         ilmoitettuKunnalle(kuntailmoitus),
         ilmoituksenTekopäivä(kuntailmoitus),
@@ -99,14 +87,13 @@ const oppijanNimi = (
   oppija: OppijaHakutilanteillaSuppeatTiedot,
   organisaatioOid: Oid,
   basePath: string,
-  backRefName: keyof OppijaViewBackNavProps,
 ): Value => {
   const value = `${oppija.oppija.henkilö.sukunimi} ${oppija.oppija.henkilö.etunimet}`
   const linkTo =
     oppija.oppija.henkilö.oid !== ""
       ? oppijaPath.href(basePath, {
           oppijaOid: oppija.oppija.henkilö.oid,
-          [backRefName]: organisaatioOid,
+          kunnalleIlmoitetutRef: organisaatioOid,
         })
       : undefined
 

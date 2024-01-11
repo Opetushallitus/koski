@@ -14,12 +14,11 @@ import {
 import { DataTableCountChangeEvent } from "../../components/tables/DataTable"
 import { NumberCounter } from "../../components/typography/Counter"
 import { ApiErrors } from "../../components/typography/error"
-import { t, T } from "../../i18n/i18n"
+import { T, t } from "../../i18n/i18n"
 import { useOrganisaatiotJaKäyttöoikeusroolit } from "../../state/accessRights"
 import { useBasePath } from "../../state/basePath"
 import { Kayttooikeusrooli, Oid } from "../../state/common"
 import { UseOppijatDataApi } from "../hakutilanne/useOppijatData"
-import { OppijaViewBackNavProps } from "../oppija/OppijaView"
 import { KunnalleIlmoitetutTable } from "./KunnalleIlmoitetutTable"
 
 export type KunnalleIlmoitetutViewProps = {
@@ -27,8 +26,6 @@ export type KunnalleIlmoitetutViewProps = {
   organisaatioTyyppi: string
   organisaatioHakuRooli: Kayttooikeusrooli
   dataFetcher: (organisaatioOid?: Oid) => UseOppijatDataApi
-  backRefName: keyof OppijaViewBackNavProps
-  storageName: string
   navigation?: React.ReactNode
   linkCreator: (basePath: string, props: { organisaatioOid: Oid }) => string
 }
@@ -92,9 +89,8 @@ export const KunnalleIlmoitetutView = (props: KunnalleIlmoitetutViewProps) => {
             <KunnalleIlmoitetutTable
               data={data}
               organisaatioOid={organisaatioOid}
-              backRefName={props.backRefName}
               onCountChange={setCounters}
-              storageName={`${props.storageName}-${organisaatioOid}`}
+              storageName={`kunnalleIlmoitetut-${organisaatioOid}`}
             />
           )}
           {errors !== undefined && <ApiErrors errors={errors} />}

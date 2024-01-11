@@ -20,6 +20,8 @@ import {
   hakeutumisvalvonnanKunnalleIlmoitetutPathWithoutOrg,
   hakutilannePathWithOrg,
   hakutilannePathWithoutOrg,
+  kunnalleIlmoitetutPathWithOrg,
+  kunnalleIlmoitetutPathWithoutOrg,
   kunnanHetuhakuPath,
   kuntailmoitusPath,
   kuntailmoitusPathWithOrg,
@@ -61,6 +63,10 @@ import {
   SuorittamisenKunnalleIlmoitetutView,
   SuorittamisenKunnalleIlmoitetutViewWithoutOrgOid,
 } from "./kunnalleilmoitetut/SuorittamisenKunnalleilmoitetutView"
+import {
+  YhdistettyKunnalleIlmoitetutView,
+  YhdistettyKunnalleIlmoitetutViewWithoutOrgOid,
+} from "./kunnalleilmoitetut/YhdistettyKunnalleIlmoitetutView"
 import { KuntaHetuhaku } from "./kunta/hetuhaku/KuntaHetuhaku"
 import {
   KuntailmoitusView,
@@ -111,6 +117,27 @@ const VirkailijaRoutes = () => {
             />
           )}
         />
+        <Route
+          exact
+          path={kunnalleIlmoitetutPathWithoutOrg.route(basePath)}
+          render={(routeProps) => (
+            <YhdistettyKunnalleIlmoitetutViewWithoutOrgOid
+              redirectUserWithoutAccessTo={rootPath.href(basePath)}
+              {...routeProps}
+            />
+          )}
+        />
+        <Route
+          exact
+          path={kunnalleIlmoitetutPathWithOrg.route(basePath)}
+          render={(routeProps) => (
+            <YhdistettyKunnalleIlmoitetutView
+              redirectUserWithoutAccessTo={rootPath.href(basePath)}
+              {...routeProps}
+            />
+          )}
+        />
+
         <Route
           exact
           path={hakeutumisvalvonnanKunnalleIlmoitetutPathWithoutOrg.route(

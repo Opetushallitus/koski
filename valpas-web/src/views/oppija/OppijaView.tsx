@@ -25,6 +25,7 @@ import {
   hakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg,
   hakutilannePathWithOrg,
   hakutilannePathWithoutOrg,
+  kunnalleIlmoitetutPathWithOrg,
   kuntailmoitusPathWithOrg,
   kuntarouhintaPathWithOid,
   nivelvaiheenHakutilannePathWithOrg,
@@ -107,6 +108,10 @@ const BackNav = (props: OppijaViewBackNavProps) => {
     } else if (props.kuntaRef) {
       return kuntarouhintaPathWithOid.href(null, {
         organisaatioOid: props.kuntaRef,
+      })
+    } else if (props.kunnalleIlmoitetutRef) {
+      return kunnalleIlmoitetutPathWithOrg.href(null, {
+        organisaatioOid: props.kunnalleIlmoitetutRef,
       })
     } else if (fallback) {
       return hakutilannePathWithOrg.href(null, { organisaatioOid: fallback })

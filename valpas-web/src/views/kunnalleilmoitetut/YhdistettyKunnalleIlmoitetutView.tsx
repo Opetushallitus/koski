@@ -1,12 +1,11 @@
 import React from "react"
 import { t } from "../../i18n/i18n"
-import { withRequiresHakeutumisenValvonta } from "../../state/accessRights"
+import { withRequiresHakeutumisenTaiSuorittamisenValvonta } from "../../state/accessRights"
 import {
-  hakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg,
+  kunnalleIlmoitetutPathWithOrg,
   OrganisaatioOidRouteProps,
 } from "../../state/paths"
 import { ErrorView } from "../ErrorView"
-import { HakutilanneNavigation } from "../hakutilanne/HakutilanneNavigation"
 import { useHakeutumisvalvonnanKunnalleTehdytIlmoitukset } from "../hakutilanne/useOppijatData"
 import { OrganisaatioAutoRedirect } from "../OrganisaatioAutoRedirect"
 import { KunnalleIlmoitetutView } from "./KunnalleIlmoitetutView"
@@ -14,13 +13,13 @@ import { KunnalleIlmoitetutView } from "./KunnalleIlmoitetutView"
 const organisaatioTyyppi = "OPPILAITOS"
 const organisaatioHakuRooli = "OPPILAITOS_HAKEUTUMINEN"
 
-export const HakeutumisenKunnalleIlmoitetutViewWithoutOrgOid =
-  withRequiresHakeutumisenValvonta(() => (
+export const YhdistettyKunnalleIlmoitetutViewWithoutOrgOid =
+  withRequiresHakeutumisenTaiSuorittamisenValvonta(() => (
     <OrganisaatioAutoRedirect
       organisaatioHakuRooli={organisaatioHakuRooli}
       organisaatioTyyppi={organisaatioTyyppi}
       redirectTo={(basePath, organisaatioOid) =>
-        hakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg.href(basePath, {
+        kunnalleIlmoitetutPathWithOrg.href(basePath, {
           organisaatioOid,
         })
       }
@@ -28,24 +27,19 @@ export const HakeutumisenKunnalleIlmoitetutViewWithoutOrgOid =
     />
   ))
 
-export type HakeutumisenKunnalleIlmoitetutViewProps = OrganisaatioOidRouteProps
+export type YhdistettyKunnalleIlmoitetutViewProps = OrganisaatioOidRouteProps
 
-export const HakeutumisenKunnalleIlmoitetutView =
-  withRequiresHakeutumisenValvonta(
-    (props: HakeutumisenKunnalleIlmoitetutViewProps) => (
+export const YhdistettyKunnalleIlmoitetutView =
+  withRequiresHakeutumisenTaiSuorittamisenValvonta(
+    (props: YhdistettyKunnalleIlmoitetutViewProps) => (
       <KunnalleIlmoitetutView
         organisaatioOid={props.match.params.organisaatioOid!}
         organisaatioHakuRooli={organisaatioHakuRooli}
         organisaatioTyyppi={organisaatioTyyppi}
         dataFetcher={useHakeutumisvalvonnanKunnalleTehdytIlmoitukset}
-        navigation={
-          <HakutilanneNavigation
-            selectedOrganisaatio={props.match.params.organisaatioOid!}
-          />
-        }
-        linkCreator={hakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg.href}
+        linkCreator={kunnalleIlmoitetutPathWithOrg.href}
       />
-    ),
+    )
   )
 
 const OrganisaatioMissingView = () => (

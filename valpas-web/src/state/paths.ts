@@ -100,6 +100,7 @@ export type OppijaPathBackRefs = {
   suorittaminenRef?: string
   suorittaminenIlmoitetutRef?: string
   kuntaRef?: string
+  kunnalleIlmoitetutRef?: string
   prev?: string
 }
 
@@ -155,7 +156,18 @@ export const kuntarouhintaPathWithOid = declarePath(
 
 export const kunnanHetuhakuPath = declarePath("kuntailmoitukset/haku")
 
-// Hakeutumisvalvonnan 'kunnalle tehdyt ilmoitukset' -näkymä
+// Hakeutumis- ja suorittamisvalvonnan 'kunnalle tehdyt ilmoitukset' -näkymä
+
+export const kunnalleIlmoitetutPathWithoutOrg = declarePath(
+  "kunnalle-ilmoitetut",
+)
+
+export const kunnalleIlmoitetutPathWithOrg = declarePath(
+  "kunnalle-ilmoitetut/:organisaatioOid/ilmoitetut",
+  passParamsThru<OrganisaatioOidProps>(),
+)
+
+// Hakeutumisvalvonnan 'kunnalle tehdyt ilmoitukset' -näkymä (deprecated: käytä kunnalleIlmoitetutPathWithoutOrg)
 
 export const hakeutumisvalvonnanKunnalleIlmoitetutPathWithoutOrg = declarePath(
   "hakutilanne/ilmoitetut",
@@ -166,7 +178,7 @@ export const hakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg = declarePath(
   passParamsThru<OrganisaatioOidProps>(),
 )
 
-// Suorittamisvalvonnan 'kunnalle tehdyt ilmoitukset' -näkymä
+// Suorittamisvalvonnan 'kunnalle tehdyt ilmoitukset' -näkymä (deprecated: käytä kunnalleIlmoitetutPathWithoutOrg)
 
 export const suorittamisvalvonnanKunnalleIlmoitetutPathWithoutOrg = declarePath(
   "suorittaminen/ilmoitukset",
