@@ -32,6 +32,7 @@ import {
   nivelvaiheenHakutilannePathWithOrg,
   nivelvaiheenHakutilannePathWithoutOrg,
   oppijaPath,
+  PathDeclaration,
   rootPath,
   suorittaminenHetuhakuPath,
   suorittaminenPath,
@@ -56,14 +57,6 @@ import {
 } from "./hakutilanne/NivelvaiheenHakutilanneView"
 import { HomeView } from "./HomeView"
 import {
-  HakeutumisenKunnalleIlmoitetutView,
-  HakeutumisenKunnalleIlmoitetutViewWithoutOrgOid,
-} from "./kunnalleilmoitetut/HakeutumisenKunnalleIlmoitetutView"
-import {
-  SuorittamisenKunnalleIlmoitetutView,
-  SuorittamisenKunnalleIlmoitetutViewWithoutOrgOid,
-} from "./kunnalleilmoitetut/SuorittamisenKunnalleilmoitetutView"
-import {
   YhdistettyKunnalleIlmoitetutView,
   YhdistettyKunnalleIlmoitetutViewWithoutOrgOid,
 } from "./kunnalleilmoitetut/YhdistettyKunnalleIlmoitetutView"
@@ -80,6 +73,25 @@ import { MaksuttomuusView } from "./maksuttomuus/MaksuttomuusView"
 import { OppijaView } from "./oppija/OppijaView"
 import { Raamit } from "./Raamit"
 
+const redirects: Array<[PathDeclaration<any>, PathDeclaration<any>]> = [
+  [
+    hakeutumisvalvonnanKunnalleIlmoitetutPathWithoutOrg,
+    kunnalleIlmoitetutPathWithoutOrg,
+  ],
+  [
+    hakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg,
+    kunnalleIlmoitetutPathWithoutOrg,
+  ],
+  [
+    suorittamisvalvonnanKunnalleIlmoitetutPathWithoutOrg,
+    kunnalleIlmoitetutPathWithoutOrg,
+  ],
+  [
+    suorittamisvalvonnanKunnalleIlmoitetutPathWithOrg,
+    kunnalleIlmoitetutPathWithoutOrg,
+  ],
+]
+
 const VirkailijaRoutes = () => {
   const basePath = useBasePath()
 
@@ -94,9 +106,11 @@ const VirkailijaRoutes = () => {
   return (
     <KäyttöoikeusroolitProvider value={organisaatiotJaKayttooikeusroolit.data}>
       <Switch>
-        <Route exact path={`${basePath}/pilotti2021`}>
-          <Redirect to={hakutilannePathWithoutOrg.href(basePath)} />
-        </Route>
+        {redirects.map(([from, to], index) => (
+          <Route key={index} exact path={from.route(basePath)}>
+            <Redirect to={to.href(basePath)} />
+          </Route>
+        ))}
         <Route
           exact
           path={hakutilannePathWithoutOrg.route(basePath)}
@@ -140,18 +154,6 @@ const VirkailijaRoutes = () => {
 
         <Route
           exact
-          path={hakeutumisvalvonnanKunnalleIlmoitetutPathWithoutOrg.route(
-            basePath,
-          )}
-          render={(routeProps) => (
-            <HakeutumisenKunnalleIlmoitetutViewWithoutOrgOid
-              redirectUserWithoutAccessTo={rootPath.href(basePath)}
-              {...routeProps}
-            />
-          )}
-        />
-        <Route
-          exact
           path={hakutilannePathWithOrg.route(basePath)}
           render={(routeProps) => (
             <HakutilanneView
@@ -172,18 +174,6 @@ const VirkailijaRoutes = () => {
         />
         <Route
           exact
-          path={hakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg.route(
-            basePath,
-          )}
-          render={(routeProps) => (
-            <HakeutumisenKunnalleIlmoitetutView
-              redirectUserWithoutAccessTo={rootPath.href(basePath)}
-              {...routeProps}
-            />
-          )}
-        />
-        <Route
-          exact
           path={oppijaPath.route(basePath)}
           render={(routeProps) => (
             <OppijaView
@@ -194,33 +184,9 @@ const VirkailijaRoutes = () => {
         />
         <Route
           exact
-          path={suorittamisvalvonnanKunnalleIlmoitetutPathWithoutOrg.route(
-            basePath,
-          )}
-          render={(routeProps) => (
-            <SuorittamisenKunnalleIlmoitetutViewWithoutOrgOid
-              redirectUserWithoutAccessTo={rootPath.href(basePath)}
-              {...routeProps}
-            />
-          )}
-        />
-        <Route
-          exact
           path={suorittaminenPath.route(basePath)}
           render={(routeProps) => (
             <SuorittaminenOppivelvollisetViewWithoutOrgOid
-              redirectUserWithoutAccessTo={rootPath.href(basePath)}
-              {...routeProps}
-            />
-          )}
-        />
-        <Route
-          exact
-          path={suorittamisvalvonnanKunnalleIlmoitetutPathWithOrg.route(
-            basePath,
-          )}
-          render={(routeProps) => (
-            <SuorittamisenKunnalleIlmoitetutView
               redirectUserWithoutAccessTo={rootPath.href(basePath)}
               {...routeProps}
             />
