@@ -53,7 +53,7 @@ Some(sql"""
       select
         oppilaitos.#$nimiSarake as oppilaitos_nimi,
         oh.oppilaitos_oid,
-        opetuskieli_koodisto.#$nimiSarake as opetuskieli,
+        string_agg(distinct opetuskieli_koodisto.#$nimiSarake, ',') as opetuskieli,
         pts.koulutusmoduuli_koodiarvo as vuosiluokka,
         count(distinct (case when not kotiopetus then oo.opiskeluoikeus_oid end)) as oppilaita,
         count(distinct (case when not kotiopetus and r_henkilo.aidinkieli not in ('fi', 'sv', 'se', 'ri', 'vk') then oo.opiskeluoikeus_oid end)) as vieraskielisiä,
@@ -74,14 +74,14 @@ Some(sql"""
 """),
 fromJoinWhereSqlPart(oppilaitosOids, date),
 Some(sql"""
-      group by oppilaitos.#$nimiSarake, oh.oppilaitos_oid, opetuskieli_koodisto.#$nimiSarake, pts.koulutusmoduuli_koodiarvo
+      group by oppilaitos.#$nimiSarake, oh.oppilaitos_oid, pts.koulutusmoduuli_koodiarvo
     ), totals as (
       select * from q
       union all
       select
         oppilaitos_nimi,
         oppilaitos_oid,
-        opetuskieli,
+        string_agg(distinct opetuskieli, ', ') as opetuskieli,
         $kaikkiVuosiluokatLokalisoituTeksti as vuosiluokka,
         sum(oppilaita),
         sum(vieraskielisiä),
@@ -96,7 +96,7 @@ Some(sql"""
         sum(joustava_perusopetus),
         sum(kotiopetus)
       from q
-      group by oppilaitos_nimi, oppilaitos_oid, opetuskieli
+      group by oppilaitos_nimi, oppilaitos_oid
     ) select *
     from totals
     order by oppilaitos_nimi, oppilaitos_oid, vuosiluokka

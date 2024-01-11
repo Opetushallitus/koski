@@ -51,28 +51,28 @@ case class EsiopetuksenOppijamäärätRaportti(db: DB, organisaatioService: Orga
 Some(sql"""
     select
       r_opiskeluoikeus.#$oppilaitosNimiSarake,
-      r_koodisto_koodi.#$koodistoNimiSarake,
-      count(*) as esiopetusoppilaidenMäärä,
-      count(case when aidinkieli != 'fi' and aidinkieli != 'sv' and aidinkieli != 'se' and aidinkieli != 'ri' and aidinkieli != 'vk' then 1 end) as vieraskielisiä,
-      count(case when koulutusmoduuli_koodiarvo = '001101' then 1 end) as koulunesiopetuksessa,
-      count(case when koulutusmoduuli_koodiarvo = '001102' then 1 end) as päiväkodinesiopetuksessa,
-      count(case when $year - extract(year from syntymaaika) = 5 then 1 end) as viisivuotiaita,
-      count(case when $year - extract(year from syntymaaika) = 5 and pidennetty_oppivelvollisuus = false then 1 end) as viisivuotiaitaEiPidennettyäOppivelvollisuutta,
-      count(case when erityisen_tuen_paatos and not vammainen and vaikeasti_vammainen and pidennetty_oppivelvollisuus then 1 end) as pidOppivelvollisuusEritTukiJaVaikeastiVammainen,
-      count(case when erityisen_tuen_paatos and vammainen and not vaikeasti_vammainen and pidennetty_oppivelvollisuus then 1 end) as pidOppivelvollisuusEritTukiJaMuuKuinVaikeimminVammainen,
-      count(case when
+      string_agg(distinct r_koodisto_koodi.#$koodistoNimiSarake, ',') opetuskieli,
+      count(distinct r_opiskeluoikeus.opiskeluoikeus_oid) as esiopetusoppilaidenMäärä,
+      count(distinct case when aidinkieli != 'fi' and aidinkieli != 'sv' and aidinkieli != 'se' and aidinkieli != 'ri' and aidinkieli != 'vk' then r_opiskeluoikeus.opiskeluoikeus_oid end) as vieraskielisiä,
+      count(distinct case when koulutusmoduuli_koodiarvo = '001101' then r_opiskeluoikeus.opiskeluoikeus_oid end) as koulunesiopetuksessa,
+      count(distinct case when koulutusmoduuli_koodiarvo = '001102' then r_opiskeluoikeus.opiskeluoikeus_oid end) as päiväkodinesiopetuksessa,
+      count(distinct case when $year - extract(year from syntymaaika) = 5 then r_opiskeluoikeus.opiskeluoikeus_oid end) as viisivuotiaita,
+      count(distinct case when $year - extract(year from syntymaaika) = 5 and pidennetty_oppivelvollisuus = false then r_opiskeluoikeus.opiskeluoikeus_oid end) as viisivuotiaitaEiPidennettyäOppivelvollisuutta,
+      count(distinct case when erityisen_tuen_paatos and not vammainen and vaikeasti_vammainen and pidennetty_oppivelvollisuus then r_opiskeluoikeus.opiskeluoikeus_oid end) as pidOppivelvollisuusEritTukiJaVaikeastiVammainen,
+      count(distinct case when erityisen_tuen_paatos and vammainen and not vaikeasti_vammainen and pidennetty_oppivelvollisuus then r_opiskeluoikeus.opiskeluoikeus_oid end) as pidOppivelvollisuusEritTukiJaMuuKuinVaikeimminVammainen,
+      count(distinct case when
 """),
 virheellisestiSiirrettyjäTukitietojaEhtoSqlPart,
 Some(sql"""
-        then 1 end) as virheellisestiSiirrettyjaTukitietoja,
-      count(case when erityisen_tuen_paatos = true then 1 end) as erityiselläTuella,
-      count(case when majoitusetu = true then 1 end) as majoitusetu,
-      count(case when kuljetusetu = true then 1 end) as kuljetusetu,
-      count(case when sisaoppilaitosmainen_majoitus = true then 1 end) as sisäoppilaitosmainenMajoitus
+        then r_opiskeluoikeus.opiskeluoikeus_oid end) as virheellisestiSiirrettyjaTukitietoja,
+      count(distinct case when erityisen_tuen_paatos = true then r_opiskeluoikeus.opiskeluoikeus_oid end) as erityiselläTuella,
+      count(distinct case when majoitusetu = true then r_opiskeluoikeus.opiskeluoikeus_oid end) as majoitusetu,
+      count(distinct case when kuljetusetu = true then r_opiskeluoikeus.opiskeluoikeus_oid end) as kuljetusetu,
+      count(distinct case when sisaoppilaitosmainen_majoitus = true then r_opiskeluoikeus.opiskeluoikeus_oid end) as sisäoppilaitosmainenMajoitus
 """),
 fromJoinWhereSqlPart(oppilaitosOidit, päivä),
 Some(sql"""
-    group by r_opiskeluoikeus.#$oppilaitosNimiSarake, r_koodisto_koodi.#$koodistoNimiSarake
+    group by r_opiskeluoikeus.#$oppilaitosNimiSarake
 """))
   }
 

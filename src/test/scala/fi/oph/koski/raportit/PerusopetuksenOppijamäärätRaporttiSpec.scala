@@ -231,7 +231,7 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matcher
       PerusopetuksenOppijamäärätRaporttiRow(
         oppilaitosNimi = "Jyväskylän normaalikoulu",
         organisaatioOid = "1.2.246.562.10.14613773812",
-        opetuskieli = "suomi",
+        opetuskieli = "ruotsi,suomi",
         vuosiluokka = "6",
         oppilaita = 2,
         vieraskielisiä = 0,
@@ -249,7 +249,7 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matcher
       PerusopetuksenOppijamäärätRaporttiRow(
         oppilaitosNimi = "Jyväskylän normaalikoulu",
         organisaatioOid = "1.2.246.562.10.14613773812",
-        opetuskieli = "suomi",
+        opetuskieli = "ruotsi,suomi",
         vuosiluokka = "7",
         oppilaita = 2,
         vieraskielisiä = 1,
@@ -267,7 +267,7 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matcher
       PerusopetuksenOppijamäärätRaporttiRow(
         oppilaitosNimi = "Jyväskylän normaalikoulu",
         organisaatioOid = "1.2.246.562.10.14613773812",
-        opetuskieli = "suomi",
+        opetuskieli = "ruotsi,suomi",
         vuosiluokka = "8",
         oppilaita = 1 + ylimääräisetLkm,
         vieraskielisiä = 0,
@@ -285,7 +285,7 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matcher
       PerusopetuksenOppijamäärätRaporttiRow(
         oppilaitosNimi = "Jyväskylän normaalikoulu",
         organisaatioOid = "1.2.246.562.10.14613773812",
-        opetuskieli = "suomi",
+        opetuskieli = "ruotsi,suomi",
         vuosiluokka = "Kaikki vuosiluokat yhteensä",
         oppilaita = 5 + ylimääräisetLkm,
         vieraskielisiä = 1,
@@ -301,6 +301,12 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matcher
         kotiopetus = 1 + ylimääräisetKotiopetusLkm
       )
     ))
+  }
+
+  "Perusopetuksen oppijamäärien raportti - ei useita rivejä vaikka kieliä olisi useampi" in {
+    val rows = perusopetuksenOppijamäärätRaportti
+    rows.groupBy(it => it.organisaatioOid).values
+      .foreach(rowsForOrg => rowsForOrg.map(_.opetuskieli).distinct should have length 1)
   }
 
   private val perusopetuksenOppijamäärätRaporttiBuilder = PerusopetuksenOppijamäärätRaportti(application.raportointiDatabase.db, application.organisaatioService)

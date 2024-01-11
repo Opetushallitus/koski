@@ -46,7 +46,7 @@ case class PerusopetuksenLisäopetusOppijamäärätRaportti(db: DB, organisaatio
     select
       oppilaitos.#$nimiSarake as oppilaitos_nimi,
       oh.oppilaitos_oid,
-      opetuskieli_koodisto.#$nimiSarake as opetuskieli,
+      string_agg(distinct opetuskieli_koodisto.#$nimiSarake, ',') as opetuskieli,
       count(distinct oo.opiskeluoikeus_oid) as oppilaita,
       count(distinct (case when r_henkilo.aidinkieli not in ('fi', 'sv', 'se', 'ri', 'vk') then oo.opiskeluoikeus_oid end)) as vieraskielisiä,
       count(distinct (case when erityinen_tuki and not vammainen and vaikeasti_vammainen and pidennetty_oppivelvollisuus then oo.opiskeluoikeus_oid end)) as pidOppivelvollisuusEritTukiJaVaikeastiVammainen,
@@ -75,7 +75,7 @@ case class PerusopetuksenLisäopetusOppijamäärätRaportti(db: DB, organisaatio
       and aikajakso.loppu >= $date
       and aikajakso.tila = 'lasna'
       and oo.sisaltyy_opiskeluoikeuteen_oid is null
-    group by oppilaitos.#$nimiSarake, oh.oppilaitos_oid, opetuskieli_koodisto.#$nimiSarake, r_paatason_suoritus.koulutusmoduuli_koodiarvo
+    group by oppilaitos.#$nimiSarake, oh.oppilaitos_oid, r_paatason_suoritus.koulutusmoduuli_koodiarvo
   """
   }
 

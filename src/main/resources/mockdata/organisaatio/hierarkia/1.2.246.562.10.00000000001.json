@@ -3726,7 +3726,7 @@
             "fi": "Jyväskylän normaalikoulu",
             "en": "Jyväskylän normaalikoulu"
           },
-          "kieletUris": ["oppilaitoksenopetuskieli_1#1"],
+          "kieletUris": ["oppilaitoksenopetuskieli_1#1","oppilaitoksenopetuskieli_2#1"],
           "kotipaikkaUri": "kunta_179",
           "children": [
             {
@@ -4999,7 +4999,7 @@
             "fi": "Päiväkoti Majakka",
             "en": "Päiväkoti Majakka"
           },
-          "kieletUris": ["oppilaitoksenopetuskieli_1#1"],
+          "kieletUris": ["oppilaitoksenopetuskieli_1#1", "oppilaitoksenopetuskieli_2#1", "oppilaitoksenopetuskieli_3#1"],
           "kotipaikkaUri": "kunta_624",
           "children": [],
           "aliOrganisaatioMaara": 0,

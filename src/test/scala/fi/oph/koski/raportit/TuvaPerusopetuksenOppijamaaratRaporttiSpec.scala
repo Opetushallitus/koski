@@ -193,7 +193,7 @@ class TuvaPerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Mat
       TuvaPerusopetuksenOppijamäärätRaporttiRow(
         oppilaitosNimi = "Jyväskylän normaalikoulu",
         organisaatioOid = "1.2.246.562.10.14613773812",
-        opetuskieli = "suomi",
+        opetuskieli = "ruotsi,suomi",
         oppilaita = ylimääräisetLkm,
         eritTukiJaVaikeastiVammainen = ylimääräisetVaikeastiVammaisetLkm,
         erityinenTukiJaMuuKuinVaikeimminVammainen = ylimääräisetMuuKuinVaikeastiVammaisetLkm,
