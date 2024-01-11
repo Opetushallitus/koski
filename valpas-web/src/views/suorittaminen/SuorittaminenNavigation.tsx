@@ -12,8 +12,6 @@ import {
   suorittaminenHetuhakuPath,
   suorittaminenPath,
   suorittaminenPathWithOrg,
-  suorittamisvalvonnanKunnalleIlmoitetutPathWithOrg,
-  suorittamisvalvonnanKunnalleIlmoitetutPathWithoutOrg,
 } from "../../state/paths"
 
 export type SuorittaminenNavigationProps = {
@@ -29,14 +27,6 @@ export const SuorittaminenNavigation = (
       linkTo: props.selectedOrganisaatio
         ? suorittaminenPathWithOrg.href(null, props.selectedOrganisaatio)
         : suorittaminenPath.href(),
-    },
-    {
-      display: t("suorittaminen_nav__kunnalle_tehdyt_ilmoitukset"),
-      linkTo: props.selectedOrganisaatio
-        ? suorittamisvalvonnanKunnalleIlmoitetutPathWithOrg.href(null, {
-            organisaatioOid: props.selectedOrganisaatio,
-          })
-        : suorittamisvalvonnanKunnalleIlmoitetutPathWithoutOrg.href(),
     },
     {
       display: t("suorittaminen_nav__hae_hetulla"),
