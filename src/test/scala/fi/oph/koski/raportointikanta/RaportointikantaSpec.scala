@@ -293,7 +293,6 @@ class RaportointikantaSpec
       actualOo.koulutustoimijaNimiSv should equal(expectedOo.koulutustoimija.get.nimi.get.get("sv"))
       actualOo.lisätiedotHenkilöstökoulutus should equal(false)
       actualOo.lisätiedotKoulutusvienti should equal(false)
-      actualOo.luokka should equal(None)
       actualOo.lähdejärjestelmäId should equal(expectedOo.lähdejärjestelmänId.flatMap(_.id))
       actualOo.lähdejärjestelmäKoodiarvo should equal(expectedOo.lähdejärjestelmänId.map(_.lähdejärjestelmä.koodiarvo))
       actualOo.oppilaitosOid should equal(expectedOo.oppilaitos.get.oid)
