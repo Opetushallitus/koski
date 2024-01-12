@@ -2,7 +2,7 @@ import { NonEmptyArray } from "fp-ts/lib/NonEmptyArray"
 import { By, WebElement } from "selenium-webdriver"
 import { Oid } from "../../src/state/common"
 import {
-  hakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg,
+  kunnalleIlmoitetutPathWithOrg,
   oppijaPath,
 } from "../../src/state/paths"
 import { fromEntries, objectEntry } from "../../src/utils/objects"
@@ -360,15 +360,19 @@ export const teeKuntailmoitusHakutilannenäkymästä = async (
     await expectElementEventuallyNotVisible(oppijaRowSelector(oppija.oid))
   }
 
-  // Tarkista että oppijat ovat ilmestyneet "kunnalle tehdyt ilmoitukset" -tauluun
+  // Tarkista että oppijat ovat ilmestyneet "kunnalle tehdyt ilmoitukset" -tauluun ja niitä klikkaamalla näkee ilmoitukset tiedot
   for (const oppija of oppijat) {
-    const ilmotuksetPath =
-      hakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg.href("/virkailija", {
-        organisaatioOid: tekijä.organisaatioOid,
-      })
+    const ilmotuksetPath = kunnalleIlmoitetutPathWithOrg.href("/virkailija", {
+      organisaatioOid: tekijä.organisaatioOid,
+    })
     await goToLocation(ilmotuksetPath)
     await urlIsEventually(pathToUrl(ilmotuksetPath))
-    await expectElementEventuallyVisible(kuntailmoitusRowSelector(oppija.oid))
+    const ilmoitusSelector = kuntailmoitusRowSelector(oppija.oid)
+    await expectElementEventuallyVisible(ilmoitusSelector)
+
+    await (await $(ilmoitusSelector)).click()
+    expect(await getIlmoitusData()).toEqual(oppija.expected)
+    await (await $(".modal__closebutton")).click()
   }
 
   // Tarkista oppijakohtaisista näkymistä, että ilmoituksen tiedot ovat siellä

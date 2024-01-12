@@ -100,4 +100,4 @@ export const openAnyOppijaView = () =>
   clickElement(`.hakutilanne .table__row:first-child td:first-child a`)
 
 export const kuntailmoitusRowSelector = (oppijaOid: Oid) =>
-  `.kuntailmoitukset .table__row[data-row*="${oppijaOid}"] td:first-child a`
+  `.kuntailmoitukset .table__row[data-row*="${oppijaOid}"] td:first-child button`

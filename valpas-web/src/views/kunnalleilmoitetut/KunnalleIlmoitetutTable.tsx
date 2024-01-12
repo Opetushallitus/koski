@@ -104,7 +104,11 @@ const oppijaToTableData =
   ) =>
   (oppija: OppijaHakutilanteillaSuppeatTiedot): Datum[] =>
     oppija.kuntailmoitukset.map((kuntailmoitus) => ({
-      key: [oppija.oppija.henkilö.oid, kuntailmoitus.id || ""],
+      key: [
+        oppija.oppija.henkilö.oid ||
+          `nimi: ${oppija.oppija.henkilö.sukunimi} ${oppija.oppija.henkilö.etunimet}`,
+        kuntailmoitus.id || "",
+      ],
       values: [
         oppijanNimi(oppija, () => onShowIlmoitus(oppija, kuntailmoitus)),
         syntymäaika(oppija),

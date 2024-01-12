@@ -1,6 +1,6 @@
 import { NonEmptyArray } from "fp-ts/lib/NonEmptyArray"
 import {
-  hakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg,
+  kunnalleIlmoitetutPathWithOrg,
   nivelvaiheenHakutilannePathWithOrg,
   oppijaPath,
 } from "../../src/state/paths"
@@ -10,6 +10,7 @@ import {
   expectElementEventuallyVisible,
 } from "../integrationtests-env/browser/content"
 import {
+  $,
   goToLocation,
   pathToUrl,
   urlIsEventually,
@@ -143,13 +144,18 @@ const teeKuntailmoitusHakutilannenäkymästä = async (
 
   // Tarkista että oppijat ovat ilmestyneet "kunnalle tehdyt ilmoitukset" -tauluun
   for (const oppija of oppijat) {
-    const ilmotuksetPath =
-      hakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg.href("/virkailija", {
-        organisaatioOid: tekijä.organisaatioOid,
-      })
+    const ilmotuksetPath = kunnalleIlmoitetutPathWithOrg.href("/virkailija", {
+      organisaatioOid: tekijä.organisaatioOid,
+    })
     await goToLocation(ilmotuksetPath)
     await urlIsEventually(pathToUrl(ilmotuksetPath))
-    await expectElementEventuallyVisible(kuntailmoitusRowSelector(oppija.oid))
+
+    const ilmoitusSelector = kuntailmoitusRowSelector(oppija.oid)
+    await expectElementEventuallyVisible(ilmoitusSelector)
+
+    await (await $(ilmoitusSelector)).click()
+    expect(await getIlmoitusData()).toEqual(oppija.expected)
+    await (await $(".modal__closebutton")).click()
   }
 
   // Tarkista oppijakohtaisista näkymistä, että ilmoituksen tiedot ovat siellä
