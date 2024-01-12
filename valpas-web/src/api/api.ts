@@ -309,6 +309,20 @@ export const fetchKuntailmoituksetCache = createPreferLocalCache(
 )
 
 /**
+ * Yksittäisen kuntailmoituksen laajojen tietojen hakeminen
+ */
+export const fetchKuntailmoitusLaajatTiedot = (kuntailmoitusId: string) =>
+  handleExpiredSession(
+    apiGet<KuntailmoitusLaajatTiedotOppijaOidilla>(
+      `valpas/api/kuntailmoitus/${kuntailmoitusId}`,
+    ),
+  )
+
+export const fetchKuntailmoitusLaajatTiedotCache = createPreferLocalCache(
+  fetchKuntailmoitusLaajatTiedot,
+)
+
+/**
  * Tallenna muu haku -valitsimen tila
  * @param oppijaOid
  * @param opiskeluoikeusOid

@@ -75,7 +75,7 @@ export type KuntailmoituksenOppijanYhteystiedot = {
 
 export const isAktiivinenKuntailmoitus = (
   kuntailmoitus: MinimiOppijaKuntailmoitus,
-): boolean => kuntailmoitus.aktiivinen
+): boolean => !!kuntailmoitus.aktiivinen
 
 export const getNäytettävätIlmoitukset = (
   tiedot: OppijaKuntailmoituksillaSuppeatTiedot,

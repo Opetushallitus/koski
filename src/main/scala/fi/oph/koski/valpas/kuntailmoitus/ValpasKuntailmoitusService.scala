@@ -13,6 +13,8 @@ import fi.oph.koski.valpas.valpasrepository._
 import fi.oph.koski.valpas.valpasuser.{ValpasRooli, ValpasSession}
 import fi.oph.koski.valpas.yhteystiedot.{ValpasYhteystiedot, ValpasYhteystietoHakemukselta, ValpasYhteystietoOppijanumerorekisteristä}
 
+import java.util.UUID
+
 class ValpasKuntailmoitusService(
   application: KoskiApplication
 ) extends Logging with Timing {
@@ -65,6 +67,18 @@ class ValpasKuntailmoitusService(
       result <- repository.create(kuntailmoitusInput, kontekstiOpiskeluoikeudet)
     } yield result
   }
+
+  def getOmaKuntailmoitus(id: UUID)(implicit session: ValpasSession): Either[HttpStatus, ValpasKuntailmoitusLaajatTiedot] =
+    repository.get(id)
+      .flatMap(accessResolver.withOmaKuntailmoitusAccess)
+      .map { ilmoitus =>
+        ilmoitus.oppijaOid
+          .flatMap(oppijaLaajatTiedotService.getOppijaLaajatTiedot(_, haeMyösVainOppijanumerorekisterissäOleva = false, palautaLukionAineopinnotJaYOTutkinnotJosMyösAmmatillisiaOpintoja = false).toOption)
+          .collect { case o: ValpasOppivelvollinenOppijaLaajatTiedot => o }
+          .map(oppija => oppijaLaajatTiedotService.lisääAktiivisuustiedot(oppija)(List(ilmoitus)).head)
+          .getOrElse(ilmoitus)
+      }
+
 
   def getKuntailmoitukset(
     oppija: ValpasOppijaLaajatTiedot

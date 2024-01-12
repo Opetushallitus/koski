@@ -26,6 +26,7 @@ class ValpasRootApiServlet(implicit val application: KoskiApplication) extends V
   private lazy val oppijaSearchService = application.valpasOppijaSearchService
   private lazy val oppivelvollisuudenKeskeytysService = application.valpasOppivelvollisuudenKeskeytysService
   private lazy val raportitService = new RaportitService(application)
+  private lazy val kuntailmoitusService = application.valpasKuntailmoitusService
 
   private val hakeutumisvalvontaService = new ValpasHakeutumisvalvontaService(application)
   private val suorittamisenValvontaService = new ValpasSuorittamisenValvontaService(application)
