@@ -341,10 +341,6 @@ class KäyttöoikeusryhmätSpec
     }
   }
 
-  "viranomainen jolla luovutuspalveluoikeudet ei voi kutsua muita apeja" - {
-    verifyMuidenApienKutsuminenEstetty(MockUsers.luovutuspalveluKäyttäjä)
-  }
-
   "Kela ei voi kutsua muita apeja" in {
     verifyMuidenApienKutsuminenEstetty(MockUsers.kelaLaajatOikeudet)
     verifyMuidenApienKutsuminenEstetty(MockUsers.kelaSuppeatOikeudet)
@@ -358,11 +354,8 @@ class KäyttöoikeusryhmätSpec
     verifyMuidenApienKutsuminenEstetty(MockUsers.valviraKäyttäjä)
   }
 
-  "viranomainen jolla ei ole luovutuspalveluoikeuksia ei voi kutsua migrin apia" - {
-    val requestBody = MigriHetuRequest(KoskiSpecificMockOppijat.eero.hetu.get)
-    post("api/luovutuspalvelu/migri/hetu", JsonSerializer.writeWithRoot(requestBody), headers = authHeaders(MockUsers.perusopetusViranomainen) ++ jsonContent) {
-      verifyResponseStatus(403, KoskiErrorCategory.forbidden.vainViranomainen())
-    }
+  "Migri ei voi kutsua muita apeja" in {
+    verifyMuidenApienKutsuminenEstetty(MockUsers.migriKäyttäjä)
   }
 
   private def verifyMuidenApienKutsuminenEstetty(user: MockUser) = {

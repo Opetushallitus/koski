@@ -22,10 +22,12 @@ object Rooli {
   val GLOBAALI_LUKU_KORKEAKOULU = "GLOBAALI_LUKU_KORKEAKOULU"
   val GLOBAALI_LUKU_MUU_KUIN_SAANNELTY = "GLOBAALI_LUKU_MUU_KUIN_SAANNELTY"
   val GLOBAALI_LUKU_TAITEENPERUSOPETUS = "GLOBAALI_LUKU_TAITEENPERUSOPETUS"
-  val TIEDONSIIRTO_LUOVUTUSPALVELU = "TIEDONSIIRTO_LUOVUTUSPALVELU"
   val TILASTOKESKUS = "TILASTOKESKUS"
   val VALVIRA = "VALVIRA"
+  val MIGRI = "MIGRI"
   val YTL = "YTL"
+  val HSL = "HSL"
+  val SUOMIFI = "SUOMIFI"
   val OPPIVELVOLLISUUSTIETO_RAJAPINTA = "OPPIVELVOLLISUUSTIETO_RAJAPINTA"
   val MITATOIDYT_OPISKELUOIKEUDET = "MITATOIDYT_OPISKELUOIKEUDET" // Ei käyttöoikeus-palvelussa
   val POISTETUT_OPISKELUOIKEUDET = "POISTETUT_OPISKELUOIKEUDET" // Ei käyttöoikeus-palvelussa
@@ -198,5 +200,12 @@ case class KäyttöoikeusViranomainen(globalPalveluroolit: List[Palvelurooli]) e
 
   override lazy val allowedOpiskeluoikeusTyypit: Set[String] = Käyttöoikeus.parseAllowedOpiskeluoikeudenTyypit(globalPalveluroolit, globalAccessType)
 
-  def isLuovutusPalveluAllowed: Boolean = globalPalveluroolit.contains(Palvelurooli("KOSKI", TIEDONSIIRTO_LUOVUTUSPALVELU))
+  def isPalveluvaylaAllowed: Boolean = {
+    val palveluvaylaRoolit = List(
+      Palvelurooli("KOSKI", Rooli.HSL),
+      Palvelurooli("KOSKI", Rooli.SUOMIFI),
+    )
+    palveluvaylaRoolit.exists(globalPalveluroolit.contains)
+  }
+
 }

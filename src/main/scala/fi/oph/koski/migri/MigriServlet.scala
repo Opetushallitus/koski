@@ -10,7 +10,7 @@ import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache, RawJsonResponse}
 import org.json4s.JValue
 import org.scalatra.auth.strategy.BasicAuthStrategy.BasicAuthRequest
 
-class MigriServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with RequiresLuovutuspalvelu with NoCache {
+class MigriServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with RequiresMigri with NoCache {
   lazy val migriService =
     if (Environment.isMockEnvironment(application.config)) new MockMigriService else new RemoteMigriService
 

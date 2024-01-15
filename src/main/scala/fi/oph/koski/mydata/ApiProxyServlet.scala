@@ -4,16 +4,16 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.Hetu
 import fi.oph.koski.http.{HttpStatus, JsonErrorMessage, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.RequiresLuovutuspalvelu
+import fi.oph.koski.koskiuser.RequiresPalveluvayla
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.TäydellisetHenkilötiedot
 import fi.oph.koski.schema.filter.MyDataOppija
-import fi.oph.koski.servlet.{KoskiSpecificApiServlet, InvalidRequestException, NoCache}
+import fi.oph.koski.servlet.{InvalidRequestException, KoskiSpecificApiServlet, NoCache}
 import org.scalatra.ContentEncodingSupport
 
 
 class ApiProxyServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet
-  with Logging with ContentEncodingSupport with NoCache with MyDataSupport with RequiresLuovutuspalvelu {
+  with Logging with ContentEncodingSupport with NoCache with MyDataSupport with RequiresPalveluvayla {
 
   post("/") {
     val memberId = getMemberId

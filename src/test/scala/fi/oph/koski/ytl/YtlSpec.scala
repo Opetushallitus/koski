@@ -322,7 +322,7 @@ class YtlSpec
         KoskiSpecificMockOppijat.amis
       ).map(_.hetu.get)
 
-      postHetut(hetut, None, MockUsers.luovutuspalveluKäyttäjäArkaluontoinen) {
+      postHetut(hetut, None, MockUsers.tilastokeskusKäyttäjä) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus("Ei sallittu näillä käyttöoikeuksilla"))
       }
     }

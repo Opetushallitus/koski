@@ -2,13 +2,13 @@ package fi.oph.koski.luovutuspalvelu
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.koskiuser.RequiresLuovutuspalvelu
+import fi.oph.koski.koskiuser.RequiresPalveluvayla
 import fi.oph.koski.schema.LocalizedString
 import fi.oph.koski.servlet.NoCache
 
 import scala.xml.{Elem, Node, NodeSeq}
 
-class PalveluvaylaServlet(implicit val application: KoskiApplication) extends SoapServlet with RequiresLuovutuspalvelu with NoCache {
+class PalveluvaylaServlet(implicit val application: KoskiApplication) extends SoapServlet with RequiresPalveluvayla with NoCache {
   private val suomiFiService = new SuomiFiService(application)
 
   post("/suomi-fi-rekisteritiedot") {

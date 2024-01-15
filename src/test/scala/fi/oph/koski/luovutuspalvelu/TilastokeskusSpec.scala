@@ -67,7 +67,7 @@ class TilastokeskusSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoike
 
     "TILASTOKESKUS-käyttöoikeus ei toimi muualla" in {
       post("api/luovutuspalvelu/migri/hetu", JsonSerializer.writeWithRoot(MigriHetuRequest(KoskiSpecificMockOppijat.eero.hetu.get)), headers = authHeaders(MockUsers.tilastokeskusKäyttäjä) ++ jsonContent) {
-        verifyResponseStatus(403, KoskiErrorCategory.forbidden.vainViranomainen())
+        verifyResponseStatus(403, KoskiErrorCategory.forbidden("Käyttäjällä ei ole oikeuksia annetun organisaation tietoihin."))
       }
       authGet ("api/oppija", MockUsers.tilastokeskusKäyttäjä) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus("Ei sallittu luovutuspalvelukäyttöoikeuksilla"))

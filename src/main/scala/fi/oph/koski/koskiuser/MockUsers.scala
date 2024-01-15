@@ -382,12 +382,12 @@ object MockUsers {
     List("Vastuukayttajat")
   )
 
-  val luovutuspalveluKäyttäjä = KoskiMockUser(
+  val migriKäyttäjä = KoskiMockUser(
     "Luovutus",
-    "Lasse",
-    "1.2.246.562.24.99999988888",
-    Seq(OrganisaatioJaKäyttöoikeudet(MockOrganisaatiot.tilastokeskus, List(
-      PalveluJaOikeus("KOSKI", Rooli.TIEDONSIIRTO_LUOVUTUSPALVELU),
+    "Migri",
+    "1.2.246.562.24.99999988877",
+    Seq(OrganisaatioJaKäyttöoikeudet(MockOrganisaatiot.migri, List(
+      PalveluJaOikeus("KOSKI", Rooli.MIGRI),
       PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_PERUSOPETUS),
       PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_TOINEN_ASTE),
       PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_KORKEAKOULU),
@@ -396,13 +396,12 @@ object MockUsers {
     )))
   )
 
-  val luovutuspalveluKäyttäjäArkaluontoinen = KoskiMockUser(
-    "Arkaluontoinen",
-    "Antti",
-    "1.2.246.562.24.88888877777",
-    Seq(OrganisaatioJaKäyttöoikeudet(MockOrganisaatiot.tilastokeskus, List(
-      PalveluJaOikeus("KOSKI", Rooli.TIEDONSIIRTO_LUOVUTUSPALVELU),
-      PalveluJaOikeus("KOSKI", Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT),
+  val hslKäyttäjä = KoskiMockUser(
+    "Palveluväylä",
+    "HSL",
+    "1.2.246.562.24.99999988899",
+    Seq(OrganisaatioJaKäyttöoikeudet(MockOrganisaatiot.hsl, List(
+      PalveluJaOikeus("KOSKI", Rooli.HSL),
       PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_PERUSOPETUS),
       PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_TOINEN_ASTE),
       PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_KORKEAKOULU),
@@ -411,10 +410,18 @@ object MockUsers {
     )))
   )
 
-  val suomiFiKäyttäjä = luovutuspalveluKäyttäjä.copy(
-    firstname = "Suomi",
-    lastname = "Fi",
-    oid = "1.2.246.562.24.99999988889"
+  val suomiFiKäyttäjä = KoskiMockUser(
+    "Palveluväylä",
+    "SuomiFi",
+    "1.2.246.562.24.99999988889",
+    Seq(OrganisaatioJaKäyttöoikeudet(MockOrganisaatiot.suomifi, List(
+      PalveluJaOikeus("KOSKI", Rooli.SUOMIFI),
+      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_PERUSOPETUS),
+      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_TOINEN_ASTE),
+      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_KORKEAKOULU),
+      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_MUU_KUIN_SAANNELTY),
+      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_TAITEENPERUSOPETUS),
+    )))
   )
 
   val tilastokeskusKäyttäjä = KoskiMockUser(
@@ -542,9 +549,9 @@ object MockUsers {
     perusopetusViranomainen,
     toinenAsteViranomainen,
     korkeakouluViranomainen,
-    luovutuspalveluKäyttäjä,
-    luovutuspalveluKäyttäjäArkaluontoinen,
+    migriKäyttäjä,
     suomiFiKäyttäjä,
+    hslKäyttäjä,
     tilastokeskusKäyttäjä,
     valviraKäyttäjä,
     esiopetusTallentaja,

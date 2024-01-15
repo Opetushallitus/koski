@@ -2,7 +2,7 @@ package fi.oph.koski.koskiuser
 
 import fi.oph.koski.http.KoskiErrorCategory
 
-trait RequiresLuovutuspalvelu extends KoskiSpecificAuthenticationSupport {
+trait RequiresPalveluvayla extends KoskiSpecificAuthenticationSupport {
   implicit def koskiSession: KoskiSpecificSession = koskiSessionOption.get
 
   before() {
@@ -10,8 +10,8 @@ trait RequiresLuovutuspalvelu extends KoskiSpecificAuthenticationSupport {
       case Left(status) if status.statusCode == 401 =>
         haltWithStatus(status)
       case _ =>
-        if (!koskiSessionOption.exists(_.hasLuovutuspalveluAccess)) {
-          haltWithStatus(KoskiErrorCategory.forbidden.vainViranomainen())
+        if (!koskiSessionOption.exists(_.hasPalveluvaylaAccess)) {
+          haltWithStatus(KoskiErrorCategory.forbidden.vainPalveluvayla())
         }
     }
   }
