@@ -39,6 +39,20 @@ trait PutOpiskeluoikeusTestMethods[Oikeus <: Opiskeluoikeus] extends Opiskeluoik
     }.asInstanceOf[T]
   }
 
+  def postAndGetOpiskeluoikeus[T <: Opiskeluoikeus](oo: T, henkilö: Henkilö = defaultHenkilö, headers: Headers = authHeaders() ++ jsonContent): T = {
+    postOpiskeluoikeus(
+      opiskeluoikeus = oo,
+      henkilö = henkilö,
+      headers = headers
+    ) {
+      verifyResponseStatusOk()
+      get("api/opiskeluoikeus/" + readPutOppijaResponse.opiskeluoikeudet.head.oid, headers = headers) {
+        verifyResponseStatusOk()
+        readOpiskeluoikeus
+      }
+    }.asInstanceOf[T]
+  }
+
   def putOpiskeluoikeus[A](opiskeluoikeus: Opiskeluoikeus, henkilö: Henkilö = defaultHenkilö, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
     putOppija(makeOppija(henkilö, List(opiskeluoikeus)), headers)(f)
   }

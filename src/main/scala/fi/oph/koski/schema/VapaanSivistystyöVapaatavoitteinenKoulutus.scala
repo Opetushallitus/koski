@@ -13,7 +13,10 @@ case class VapaanSivistystyönVapaatavoitteisenKoulutuksenOpiskeluoikeusjakso(
   @KoodistoKoodiarvo("keskeytynyt")
   @KoodistoKoodiarvo("mitatoity")
   tila: Koodistokoodiviite,
-) extends VapaanSivistystyönOpiskeluoikeusjakso
+) extends VapaanSivistystyönOpiskeluoikeusjakso {
+    override def withAlku(alku: LocalDate): VapaanSivistystyönVapaatavoitteisenKoulutuksenOpiskeluoikeusjakso =
+      this.copy(alku = alku)
+  }
 
 @Title("Vapaatavoitteisen vapaan sivistystyön koulutuksen suoritus")
 case class VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus(

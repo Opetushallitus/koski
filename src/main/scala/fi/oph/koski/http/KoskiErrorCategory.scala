@@ -243,6 +243,10 @@ object KoskiErrorCategory {
         val puuttuvaOpintokokonaisuus = subcategory("puuttuvaOpintokokonaisuus", "Vapaan sivistystyön vapaatavoitteisen koulutuksen opiskeluoikeuden opintokokonaisuus ei saa olla tyhjä.")
         val puuttuvaOpintokokonaisuusDeadline = subcategory("puuttuvaOpintokokonaisuusDeadline", "Vapaan sivistystyön vapaatavoitteisen koulutuksen opiskeluoikeuden opintokokonaisuus on pakollinen tieto 1.8.2022 jälkeen.")
         val opintokokonaisuusVainVapaaTavoitteisessaKoulutuksessa = subcategory("opintokokonaisuusVainVapaaTavoitteisessaKoulutuksessa", "Opiskeluoikeuden opintokokonaisuus saa olla määritelty vain vapaan sivistystyön vapaatavoitteisissa koulutuksissa")
+        val tallennuspäivä = subcategory("tallennuspäivä", "Opiskeluoikeutta ei saa vielä tallentaa")
+        val päättymispäivä = subcategory("päättymispäivä", "Opiskeluoikeus ei voi päättyä ennen lain voimaantuloa")
+        val osaamismerkkiPäivät = subcategory("osaamismerkkiPäivät", "Osaamismerkin päivämäärissä ongelma")
+        val duplikaattiOsaamismerkki = subcategory("duplikaattiOsaamismerkki", "Oppijalla on jo samalle päivälle saman osaamismerkin suoritus")
       }
       val vapaaSivistystyö = new VapaaSivistystyö
 

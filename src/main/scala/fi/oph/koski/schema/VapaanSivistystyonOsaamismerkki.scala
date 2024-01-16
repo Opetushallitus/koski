@@ -12,7 +12,10 @@ case class VapaanSivistystyönOsaamismerkinOpiskeluoikeusjakso(
   @KoodistoKoodiarvo("hyvaksytystisuoritettu")
   @KoodistoKoodiarvo("mitatoity")
   tila: Koodistokoodiviite,
-) extends VapaanSivistystyönOpiskeluoikeusjakso
+) extends VapaanSivistystyönOpiskeluoikeusjakso {
+  override def withAlku(alku: LocalDate): VapaanSivistystyönOsaamismerkinOpiskeluoikeusjakso =
+    this.copy(alku = alku)
+}
 
 @Title("Vapaan sivistystyön osaamismerkin suoritus")
 case class VapaanSivistystyönOsaamismerkinSuoritus(

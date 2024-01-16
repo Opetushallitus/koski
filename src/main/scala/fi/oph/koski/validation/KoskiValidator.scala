@@ -144,7 +144,7 @@ class KoskiValidator(
           validateOpiskeluoikeudenLisätiedot(opiskeluoikeus),
           PerusopetuksenOpiskeluoikeusValidation.validatePerusopetuksenOpiskeluoikeus(opiskeluoikeus),
           TiedonSiirrostaPuuttuvatSuorituksetValidation.validateEiSamaaAlkamispaivaa(opiskeluoikeus, koskiOpiskeluoikeudet),
-          HttpStatus.fold(opiskeluoikeus.suoritukset.map(validateSuoritus(_, opiskeluoikeus, Nil))),
+          HttpStatus.fold(opiskeluoikeus.suoritukset.map(validateSuoritus(_, opiskeluoikeus, henkilö, Nil))),
           TilanAsettaminenKunVahvistettuSuoritusValidation.validateOpiskeluoikeus(opiskeluoikeus),
           SuostumuksenPeruutusValidaatiot.validateSuostumuksenPeruutus(opiskeluoikeus, suostumuksenPeruutusService),
           Lukio2015Validation.validateOppimääräSuoritettu(opiskeluoikeus),
@@ -919,7 +919,7 @@ class KoskiValidator(
     }
   }
 
-  private def validateSuoritus(suoritus: Suoritus, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, parent: List[Suoritus])(implicit user: KoskiSpecificSession, accessType: AccessType.Value): HttpStatus = {
+  private def validateSuoritus(suoritus: Suoritus, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, henkilö: Option[Henkilö], parent: List[Suoritus])(implicit user: KoskiSpecificSession, accessType: AccessType.Value): HttpStatus = {
     val arviointipäivät: List[LocalDate] = suoritus.sortedArviointi.flatMap(_.arviointipäivä)
     val alkamispäivä: (String, Iterable[LocalDate]) = ("suoritus.alkamispäivä", suoritus.alkamispäivä)
     val vahvistuspäivät: Option[LocalDate] = suoritus.vahvistus.map(_.päivä)
@@ -950,11 +950,11 @@ class KoskiValidator(
         :: Lukio2019ArvosanaValidation.validateOsasuoritus(suoritus)
         :: LukionYhteisetValidaatiot.validateLukionPäätasonSuoritus(suoritus)
         :: LukioonValmistavanKoulutuksenValidaatiot.validateLukioonValmistava2019(suoritus)
-        :: VapaaSivistystyöValidation.validateVapaanSivistystyönPäätasonSuoritus(suoritus, opiskeluoikeus, VapaaSivistystyöValidation.vstJotpaAikaisinSallittuAlkamispäivä(config))
+        :: VapaaSivistystyöValidation.validateVapaanSivistystyönPäätasonSuoritus(config, henkilö, suoritus, opiskeluoikeus, VapaaSivistystyöValidation.vstJotpaAikaisinSallittuAlkamispäivä(config), henkilöRepository, koskiOpiskeluoikeudet)
         :: VSTKotoutumiskoulutus2022Validation.validate(suoritus)
         :: TutkintokoulutukseenValmentavaKoulutusValidation.validateTuvaSuoritus(config, suoritus, opiskeluoikeus)
         :: HttpStatus.validate(!suoritus.isInstanceOf[PäätasonSuoritus])(validateDuplicates(suoritus.osasuoritukset.toList.flatten))
-        :: suoritus.osasuoritusLista.map(validateSuoritus(_, opiskeluoikeus, suoritus :: parent))
+        :: suoritus.osasuoritusLista.map(validateSuoritus(_, opiskeluoikeus, henkilö, suoritus :: parent))
     )
   }
 

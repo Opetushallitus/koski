@@ -42,6 +42,8 @@ trait VapaanSivistystyönOpiskeluoikeusjakso extends Opiskeluoikeusjakso {
   def opiskeluoikeusPäättynyt: Boolean = {
     OpiskeluoikeudenPäättymistila.koski(tila.koodiarvo)
   }
+
+  def withAlku(alku: LocalDate): VapaanSivistystyönOpiskeluoikeusjakso
 }
 
 case class VapaanSivistystyönOpiskeluoikeudenLisätiedot(
@@ -70,7 +72,10 @@ case class OppivelvollisilleSuunnattuVapaanSivistystyönOpiskeluoikeusjakso(
   @KoodistoKoodiarvo("valmistunut")
   @KoodistoKoodiarvo("mitatoity")
   tila: Koodistokoodiviite,
-) extends VapaanSivistystyönOpiskeluoikeusjakso
+) extends VapaanSivistystyönOpiskeluoikeusjakso {
+  override def withAlku(alku: LocalDate): OppivelvollisilleSuunnattuVapaanSivistystyönOpiskeluoikeusjakso =
+    this.copy(alku = alku)
+}
 
 case class OppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus(
   toimipiste: OrganisaatioWithOid,
