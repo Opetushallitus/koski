@@ -7,9 +7,7 @@ preferences
 poistettu_opiskeluoikeus
 paivitetty_opiskeluoikeus
 opiskeluoikeushistoria_virheet
-opiskeluoikeushistoria_valpas_fixture
 opiskeluoikeushistoria_fixture
-opiskeluoikeus_valpas_fixture
 opiskeluoikeus_fixture
 mydata_jako
 casserviceticket
