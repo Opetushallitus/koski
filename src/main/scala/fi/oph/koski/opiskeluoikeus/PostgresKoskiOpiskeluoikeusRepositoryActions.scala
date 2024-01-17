@@ -86,9 +86,9 @@ class PostgresKoskiOpiskeluoikeusRepositoryActions(
         createAction(oppijaOid, opiskeluoikeus)
       case Right(_) if !validationConfig.tarkastaOpiskeluoikeuksienDuplikaatit =>
         createAction(oppijaOid, opiskeluoikeus)
-      case Right(aiemmatOpiskeluoikeudet) if allowUpdate =>
-        updateIfUnambiguousAiempiOpiskeluoikeusAction(oppijaOid, opiskeluoikeus, identifier, aiemmatOpiskeluoikeudet, allowDeleteCompleted)
-      case Right(aiemmatOpiskeluoikeudet) if vastaavanRinnakkaisenOpiskeluoikeudenLisääminenSallittu(opiskeluoikeus, aiemmatOpiskeluoikeudet) =>
+      case Right(aiemmatSamaksiJonkinIdnPerusteellaTunnistetutOpiskeluoikeudet) if allowUpdate =>
+        updateIfUnambiguousAiempiOpiskeluoikeusAction(oppijaOid, opiskeluoikeus, identifier, aiemmatSamaksiJonkinIdnPerusteellaTunnistetutOpiskeluoikeudet, allowDeleteCompleted)
+      case Right(aiemmatSamaksiJonkinIdnPerusteellaTunnistetutOpiskeluoikeudet) if vastaavanRinnakkaisenOpiskeluoikeudenLisääminenSallittu(opiskeluoikeus, aiemmatSamaksiJonkinIdnPerusteellaTunnistetutOpiskeluoikeudet) =>
         createAction(oppijaOid, opiskeluoikeus)
       case Right(_) =>
         DBIO.successful(Left(KoskiErrorCategory.conflict.exists("Vastaava opiskeluoikeus on jo olemassa.")))
@@ -101,27 +101,30 @@ class PostgresKoskiOpiskeluoikeusRepositoryActions(
     oppijaOid: PossiblyUnverifiedHenkilöOid,
     opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
     identifier: OpiskeluoikeusIdentifier,
-    aiemmatOpiskeluoikeudet: List[KoskiOpiskeluoikeusRow],
+    aiemmatSamaksiJonkinIdnPerusteellaTunnistetutOpiskeluoikeudet: List[KoskiOpiskeluoikeusRow],
     allowDeleteCompleted: Boolean
   )(implicit user: KoskiSpecificSession): DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write with Transactional] = {
-    (identifier, aiemmatOpiskeluoikeudet) match {
+    (identifier, aiemmatSamaksiJonkinIdnPerusteellaTunnistetutOpiskeluoikeudet) match {
       case (id: OppijaOidOrganisaatioJaTyyppi, _) =>
         DBIOAction.successful(Left(KoskiErrorCategory.conflict.exists("" +
-          s"Olemassaolevan opiskeluoikeuden päivitystä ilman tunnistetta ei tueta. Päivitettävä opiskeluoikeus-oid: ${aiemmatOpiskeluoikeudet.map(_.oid).mkString(", ")}. Päivittävä tunniste: ${id.copy(oppijaOid = "****")}"
+          s"Olemassaolevan opiskeluoikeuden päivitystä ilman tunnistetta ei tueta. Päivitettävä opiskeluoikeus-oid: ${aiemmatSamaksiJonkinIdnPerusteellaTunnistetutOpiskeluoikeudet.map(_.oid).mkString(", ")}. Päivittävä tunniste: ${id.copy(oppijaOid = "****")}"
         )))
-      case (_, List(vanhaOpiskeluoikeus)) =>
-        updateIfSameOppijaAction(oppijaOid, vanhaOpiskeluoikeus, opiskeluoikeus, allowDeleteCompleted)
+      case (_, List(aiempiSamaksiJonkinIdnPerusteellaTunnistettuOpiskeluoikeus)) =>
+        updateIfSameOppijaAction(oppijaOid, aiempiSamaksiJonkinIdnPerusteellaTunnistettuOpiskeluoikeus, opiskeluoikeus, allowDeleteCompleted)
       case _ =>
-        DBIO.successful(Left(KoskiErrorCategory.conflict.löytyiEnemmänKuinYksiRivi(s"Löytyi enemmän kuin yksi rivi päivitettäväksi (${aiemmatOpiskeluoikeudet.map(_.oid)})")))
+        DBIO.successful(Left(KoskiErrorCategory.conflict.löytyiEnemmänKuinYksiRivi(s"Löytyi enemmän kuin yksi rivi päivitettäväksi (${aiemmatSamaksiJonkinIdnPerusteellaTunnistetutOpiskeluoikeudet.map(_.oid)})")))
     }
   }
 
-  private def vastaavanRinnakkaisenOpiskeluoikeudenLisääminenSallittu(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, rows: List[KoskiOpiskeluoikeusRow])(implicit user: KoskiSpecificSession): Boolean = {
-    lazy val aiempiOpiskeluoikeusPäättynyt = rows.exists(_.toOpiskeluoikeusUnsafe.tila.opiskeluoikeusjaksot.last.opiskeluoikeusPäättynyt)
+  private def vastaavanRinnakkaisenOpiskeluoikeudenLisääminenSallittu(
+    opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
+    aiemmatSamaksiJonkinIdnPerusteellaTunnistetutOpiskeluoikeudet: List[KoskiOpiskeluoikeusRow]
+  )(implicit user: KoskiSpecificSession): Boolean = {
+    lazy val aiempiOpiskeluoikeusPäättynyt = aiemmatSamaksiJonkinIdnPerusteellaTunnistetutOpiskeluoikeudet.exists(_.toOpiskeluoikeusUnsafe.tila.opiskeluoikeusjaksot.last.opiskeluoikeusPäättynyt)
 
     opiskeluoikeus match {
       case oo: PerusopetuksenOpiskeluoikeus =>
-        !päällekkäinenOpiskeluoikeusExists(oo, rows)
+        !päällekkäinenOpiskeluoikeusExists(oo, aiemmatSamaksiJonkinIdnPerusteellaTunnistetutOpiskeluoikeudet)
       case _: MuunKuinSäännellynKoulutuksenOpiskeluoikeus =>
         true
       case _: TaiteenPerusopetuksenOpiskeluoikeus =>
@@ -129,15 +132,15 @@ class PostgresKoskiOpiskeluoikeusRepositoryActions(
       case oo: VapaanSivistystyönOpiskeluoikeus =>
         isJotpa(oo) || aiempiOpiskeluoikeusPäättynyt
       case oo: AmmatillinenOpiskeluoikeus =>
-        isMuuAmmatillinenOpiskeluoikeus(oo) || (aiempiOpiskeluoikeusPäättynyt && isAmmatillinenJolleAiemmanOpiskeluoikeudenPäätyttyäRinnakkainenOpiskeluoikeusSallitaan(oo, rows))
+        isMuuAmmatillinenOpiskeluoikeus(oo) || (aiempiOpiskeluoikeusPäättynyt && isAmmatillinenJolleAiemmanOpiskeluoikeudenPäätyttyäRinnakkainenOpiskeluoikeusSallitaan(oo, aiemmatSamaksiJonkinIdnPerusteellaTunnistetutOpiskeluoikeudet))
       case _ =>
         aiempiOpiskeluoikeusPäättynyt
     }
   }
 
-  private def päällekkäinenOpiskeluoikeusExists(opiskeluoikeus: PerusopetuksenOpiskeluoikeus, rows: List[KoskiOpiskeluoikeusRow]): Boolean = {
+  private def päällekkäinenOpiskeluoikeusExists(opiskeluoikeus: PerusopetuksenOpiskeluoikeus, aiemmatSamaksiJonkinIdnPerusteellaTunnistetutOpiskeluoikeudet: List[KoskiOpiskeluoikeusRow]): Boolean = {
     val jakso = Aikajakso(opiskeluoikeus.alkamispäivä, opiskeluoikeus.päättymispäivä)
-    rows.exists { row =>
+    aiemmatSamaksiJonkinIdnPerusteellaTunnistetutOpiskeluoikeudet.exists { row =>
       val muuJakso = Aikajakso(row.alkamispäivä.toLocalDate, row.päättymispäivä.map(_.toLocalDate))
       jakso.overlaps(muuJakso)
     }
@@ -155,8 +158,8 @@ class PostgresKoskiOpiskeluoikeusRepositoryActions(
       case _ => false
     }
 
-  private def isAmmatillinenJolleAiemmanOpiskeluoikeudenPäätyttyäRinnakkainenOpiskeluoikeusSallitaan(opiskeluoikeus: AmmatillinenOpiskeluoikeus, rows: List[KoskiOpiskeluoikeusRow]): Boolean = {
-    rows.exists(row => allowOpiskeluoikeusCreationOnConflict(opiskeluoikeus, row))
+  private def isAmmatillinenJolleAiemmanOpiskeluoikeudenPäätyttyäRinnakkainenOpiskeluoikeusSallitaan(opiskeluoikeus: AmmatillinenOpiskeluoikeus, aiemmatSamaksiJonkinIdnPerusteellaTunnistetutOpiskeluoikeudet: List[KoskiOpiskeluoikeusRow]): Boolean = {
+    aiemmatSamaksiJonkinIdnPerusteellaTunnistetutOpiskeluoikeudet.exists(row => allowOpiskeluoikeusCreationOnConflict(opiskeluoikeus, row))
   }
 
   private def allowOpiskeluoikeusCreationOnConflict(oo: AmmatillinenOpiskeluoikeus, row: KoskiOpiskeluoikeusRow): Boolean = {
