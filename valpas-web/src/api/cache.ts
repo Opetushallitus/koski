@@ -17,7 +17,7 @@ export type ApiCache<T, S> = {
 export type ApiCacheChangeListener = () => void
 
 export const createPreferLocalCache = <T, S extends any[]>(
-  _fn: (...args: S) => Promise<E.Either<ApiFailure, ApiSuccess<T>>>
+  _fn: (...args: S) => Promise<E.Either<ApiFailure, ApiSuccess<T>>>,
 ): ApiCache<T, S> => {
   const cachedValues: Record<string, ApiSuccess<T>> = {}
   const keyToString = (key: S) => JSON.stringify(key)
@@ -60,7 +60,7 @@ export const createPreferLocalCache = <T, S extends any[]>(
 }
 
 export const createLocalThenApiCache = <T, S extends any[]>(
-  fn: (...args: S) => Promise<E.Either<ApiFailure, ApiSuccess<T>>>
+  fn: (...args: S) => Promise<E.Either<ApiFailure, ApiSuccess<T>>>,
 ): ApiCache<T, S> => ({
   ...createPreferLocalCache(fn),
   getOnlyFresh: (_key) => O.none, // Pakottaa kutsun backendille, vaikka data löytyisikin muistista

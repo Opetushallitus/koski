@@ -35,7 +35,7 @@ export type WithRequiresAccessRightsProps = {
 const accessRightGuardHoc =
   (hasAccess: AccessGuard) =>
   <P extends object>(
-    Component: React.ComponentType<P>
+    Component: React.ComponentType<P>,
   ): React.FC<P & WithRequiresAccessRightsProps> =>
   (props: WithRequiresAccessRightsProps) => {
     const roles = useKäyttöoikeusroolit()
@@ -47,15 +47,15 @@ const accessRightGuardHoc =
   }
 
 export const withRequiresHakeutumisenValvonta = accessRightGuardHoc(
-  hakeutumisenValvontaAllowed
+  hakeutumisenValvontaAllowed,
 )
 
 export const withRequiresSuorittamisenValvonta = accessRightGuardHoc(
-  suorittamisenValvontaAllowed
+  suorittamisenValvontaAllowed,
 )
 
 export const withRequiresMaksuttomuudenValvonta = accessRightGuardHoc(
-  maksuttomuudenValvontaAllowed
+  maksuttomuudenValvontaAllowed,
 )
 
 export const withRequiresJokinOikeus = accessRightGuardHoc(
@@ -63,8 +63,8 @@ export const withRequiresJokinOikeus = accessRightGuardHoc(
     hakeutumisenValvontaAllowed,
     maksuttomuudenValvontaAllowed,
     kuntavalvontaAllowed,
-    suorittamisenValvontaAllowed
-  )
+    suorittamisenValvontaAllowed,
+  ),
 )
 
 export const withRequiresKuntavalvonta =
@@ -86,9 +86,9 @@ export const useKäyttöoikeusroolit = (): Kayttooikeusrooli[] => {
       pipe(
         data,
         A.map((käyttöoikeus) => käyttöoikeus.kayttooikeusrooli),
-        A.uniq(käyttöoikeusrooliEq)
+        A.uniq(käyttöoikeusrooliEq),
       ),
-    [data]
+    [data],
   )
 }
 
@@ -97,7 +97,7 @@ export const useOrganisaatiot = () => {
     useOrganisaatiotJaKäyttöoikeusroolit()
   return useMemo(
     () => getOrganisaatiot(organisaatiotJaKäyttöoikeusroolit),
-    [organisaatiotJaKäyttöoikeusroolit]
+    [organisaatiotJaKäyttöoikeusroolit],
   )
 }
 
@@ -106,13 +106,13 @@ export const useOrganisaatiotOfRole = (accessGuard: AccessGuard) => {
     useOrganisaatiotJaKäyttöoikeusroolit()
   return useMemo(
     () => getOrganisaatiot(organisaatiotJaKäyttöoikeusroolit, accessGuard),
-    [accessGuard, organisaatiotJaKäyttöoikeusroolit]
+    [accessGuard, organisaatiotJaKäyttöoikeusroolit],
   )
 }
 
 const getOrganisaatiot = (
   orgs: OrganisaatioJaKayttooikeusrooli[],
-  accessGuard?: AccessGuard
+  accessGuard?: AccessGuard,
 ): Organisaatio[] =>
   orgs
     .filter((org) => !accessGuard || accessGuard([org.kayttooikeusrooli]))

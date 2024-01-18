@@ -7,7 +7,7 @@ import { isVastaanotettu } from "../../state/apitypes/hakutoive"
 import { nullableValue } from "./commonFormatters"
 
 export const opiskelupaikanVastaanottotietoValue = (
-  hakutilanteet: HakuSuppeatTiedot[]
+  hakutilanteet: HakuSuppeatTiedot[],
 ): Value => {
   const vastaanotetut = selectByHakutoive(hakutilanteet, isVastaanotettu)
   switch (vastaanotetut.length) {

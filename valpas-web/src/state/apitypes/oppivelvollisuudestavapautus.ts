@@ -26,6 +26,6 @@ export type OppivelvollisuudestaVapautuksenMitätöinti = {
 }
 
 export const onOppivelvollisuudestaVapautettu = (
-  vapautus?: OppivelvollisuudestaVapautus
+  vapautus?: OppivelvollisuudestaVapautus,
 ): vapautus is OppivelvollisuudestaVapautus =>
   vapautus?.tulevaisuudessa === false && !vapautus.mitätöitymässä

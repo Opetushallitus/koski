@@ -44,7 +44,7 @@ export async function expectCleanConsoleLogs(driver: WebDriver) {
   const errors = logs
     .filter(
       (entry) =>
-        errorLogLevels.includes(entry.level) && !isAllowedError(entry.message)
+        errorLogLevels.includes(entry.level) && !isAllowedError(entry.message),
     )
     .map((entry) => entry.message)
 
@@ -57,7 +57,7 @@ function isAllowedError(message: string) {
     ...testCaseSpecificAllowedNetworkErrors,
   ].some(
     ([pathSlice, messageSlice]) =>
-      matches(message, pathSlice) && message.includes(messageSlice)
+      matches(message, pathSlice) && message.includes(messageSlice),
   )
 }
 

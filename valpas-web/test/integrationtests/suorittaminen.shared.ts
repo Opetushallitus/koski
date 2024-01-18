@@ -102,12 +102,12 @@ export const suorittaminenListaPath = suorittaminenPath.href("/virkailija")
 
 export const suorittaminenListaJklPath = suorittaminenPathWithOrg.href(
   "/virkailija",
-  jyväskylänNormaalikouluOid
+  jyväskylänNormaalikouluOid,
 )
 
 export const suorittaminenListaHkiPath = suorittaminenPathWithOrg.href(
   "/virkailija",
-  helsinginMedialukioOid
+  helsinginMedialukioOid,
 )
 
 export const suorittaminenKuntailmoitusListaJklPath =

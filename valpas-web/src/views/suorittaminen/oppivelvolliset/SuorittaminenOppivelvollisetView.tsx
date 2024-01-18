@@ -48,13 +48,13 @@ export const SuorittaminenOppivelvollisetViewWithoutOrgOid =
         getOrganisaatiot(
           organisaatiotJaKäyttöoikeusroolit,
           organisaatioHakuRooli,
-          organisaatioTyyppi
+          organisaatioTyyppi,
         ),
-      [organisaatiotJaKäyttöoikeusroolit]
+      [organisaatiotJaKäyttöoikeusroolit],
     )
     const [storedOrFallbackOrg] = useStoredOrgState(
       organisaatioTyyppi,
-      organisaatiot
+      organisaatiot,
     )
     return storedOrFallbackOrg ? (
       <Redirect
@@ -86,9 +86,9 @@ export const SuorittaminenOppivelvollisetView =
           getOrganisaatiot(
             organisaatiotJaKäyttöoikeusroolit,
             organisaatioHakuRooli,
-            organisaatioTyyppi
+            organisaatioTyyppi,
           ),
-        [organisaatiotJaKäyttöoikeusroolit]
+        [organisaatiotJaKäyttöoikeusroolit],
       )
 
       const changeOrganisaatio = (oid?: Oid) => {
@@ -102,7 +102,7 @@ export const SuorittaminenOppivelvollisetView =
       const fetch = useApiWithParams(
         fetchOppijatSuorittaminen,
         [organisaatioOid],
-        fetchOppijatSuorittaminenCache
+        fetchOppijatSuorittaminenCache,
       )
 
       return (
@@ -145,7 +145,7 @@ export const SuorittaminenOppivelvollisetView =
           </Card>
         </Page>
       )
-    }
+    },
   )
 
 const OrganisaatioMissingView = () => (

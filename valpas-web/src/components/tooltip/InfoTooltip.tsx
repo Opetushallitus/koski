@@ -57,7 +57,7 @@ export const InfoTooltip = (props: InfoTooltipProps) => {
       event.stopPropagation()
       toggle()
     },
-    [toggle]
+    [toggle],
   )
 
   const hide = useCallback(() => setOpen(false), [])
@@ -87,7 +87,7 @@ export const InfoTooltip = (props: InfoTooltipProps) => {
               <p key={index}>{text}</p>
             ))}
           </InfoTooltipPopup>,
-          document.getElementById("app")!!
+          document.getElementById("app")!!,
         )}
     </span>
   )
@@ -114,6 +114,6 @@ const InfoTooltipPopup = (props: InfoTooltipPopupProps) => (
 
 const getParents = (
   element: HTMLElement | null,
-  acc: HTMLElement[] = []
+  acc: HTMLElement[] = [],
 ): HTMLElement[] =>
   element ? getParents(element.parentElement, [...acc, element]) : acc

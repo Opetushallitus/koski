@@ -26,15 +26,15 @@ export type EiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult = {
 }
 
 export const isLöytyiHenkilöhakuResult = (
-  hakutieto: HenkilöhakuResult
+  hakutieto: HenkilöhakuResult,
 ): hakutieto is LöytyiHenkilöhakuResult => hakutieto.ok === true
 
 export const isEiLöytynytHenkilöhakuResult = (
-  hakutieto: HenkilöhakuResult
+  hakutieto: HenkilöhakuResult,
 ): hakutieto is EiLöytynytHenkilöhakuResult =>
   hakutieto.ok === false && !hakutieto.eiLainTaiMaksuttomuudenPiirissä
 
 export const isEiLöytynytEiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult = (
-  hakutieto: HenkilöhakuResult
+  hakutieto: HenkilöhakuResult,
 ): hakutieto is EiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult =>
   hakutieto.ok === false && !!hakutieto.eiLainTaiMaksuttomuudenPiirissä

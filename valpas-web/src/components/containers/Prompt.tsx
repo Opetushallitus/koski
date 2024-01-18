@@ -51,6 +51,6 @@ export const usePrompt = (): UsePrompt => {
         setPrompt(null)
       },
     }),
-    [prompt]
+    [prompt],
   )
 }

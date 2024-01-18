@@ -47,22 +47,22 @@ export type OppivelvollisuudestaVapautusModalProps = {
 }
 
 export const OppivelvollisuudestaVapautusModal = (
-  props: OppivelvollisuudestaVapautusModalProps
+  props: OppivelvollisuudestaVapautusModalProps,
 ) => {
   const pohjatiedot = useApiOnce(fetchOvVapautuksenPohjatiedot)
   const [date, setDate] = useState<ISODate | null>(
-    props.mitätöinti?.vapautettu || toISODate(dateToday())
+    props.mitätöinti?.vapautettu || toISODate(dateToday()),
   )
   const setBoundedDate = useCallback(
     (newDate: ISODate | null) => {
       setDate(
         maxNullableDate(
           isSuccess(pohjatiedot) ? pohjatiedot.data.aikaisinPvm : null,
-          newDate
-        )
+          newDate,
+        ),
       )
     },
-    [pohjatiedot]
+    [pohjatiedot],
   )
 
   const [confirmed, setConfirmed] = useState(false)
@@ -74,7 +74,7 @@ export const OppivelvollisuudestaVapautusModal = (
 
   useOnApiSuccess(pohjatiedot, (response) => {
     const kunnat = koodistoToOptions(
-      response.data.kunnat.map((k) => k.kotipaikka).filter(nonNull)
+      response.data.kunnat.map((k) => k.kotipaikka).filter(nonNull),
     )
     setKuntaOptions(kunnat)
     setKunta(props.mitätöinti?.kunta?.kotipaikka?.koodiarvo || kunnat[0]?.value)
@@ -91,7 +91,7 @@ export const OppivelvollisuudestaVapautusModal = (
           vapautettu: date,
           kuntakoodi: kunta,
         }),
-        E.map(props.onSubmit)
+        E.map(props.onSubmit),
       )
     }
   }, [date, kunta, props, uusiVapautus])
@@ -104,7 +104,7 @@ export const OppivelvollisuudestaVapautusModal = (
           oppijaOid: props.henkilö.oid,
           kuntakoodi: kunta,
         }),
-        E.map(props.onSubmit)
+        E.map(props.onSubmit),
       )
     }
   }, [kunta, mitätöinti, props])
@@ -151,7 +151,7 @@ export const OppivelvollisuudestaVapautusModal = (
                 label={t(
                   props.mitätöinti
                     ? "ovvapautus__mitätöinti_confirm_checkbox"
-                    : "ovvapautus__confirm_checkbox"
+                    : "ovvapautus__confirm_checkbox",
                 )}
                 value={confirmed}
                 onChange={setConfirmed}
@@ -172,12 +172,12 @@ export const OppivelvollisuudestaVapautusModal = (
                     ? () =>
                         prompt.show(
                           t("ovvapautus__mitätöinnin_varmistus"),
-                          submitMitätöinti
+                          submitMitätöinti,
                         )
                     : () =>
                         prompt.show(
                           t("ovvapautus__vapautuksen_varmistus"),
-                          submitUusiVapautus
+                          submitUusiVapautus,
                         )
                 }
                 disabled={!isValid && !props.mitätöinti}
@@ -187,7 +187,7 @@ export const OppivelvollisuudestaVapautusModal = (
                 {t(
                   props.mitätöinti
                     ? "ovvapautus__mitätöinti_submit_btn"
-                    : "ovvapautus__vapautus_submit_btn"
+                    : "ovvapautus__vapautus_submit_btn",
                 )}
               </RaisedButton>
             </ButtonGroup>

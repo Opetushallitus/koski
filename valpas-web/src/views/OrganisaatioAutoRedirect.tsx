@@ -16,7 +16,7 @@ export type OrganisatioAutoRedirectProps = {
 }
 
 export const OrganisaatioAutoRedirect = (
-  props: OrganisatioAutoRedirectProps
+  props: OrganisatioAutoRedirectProps,
 ) => {
   const basePath = useBasePath()
   const organisaatiotJaKäyttöoikeusroolit =
@@ -26,17 +26,17 @@ export const OrganisaatioAutoRedirect = (
       getOrganisaatiot(
         organisaatiotJaKäyttöoikeusroolit,
         props.organisaatioHakuRooli,
-        props.organisaatioTyyppi
+        props.organisaatioTyyppi,
       ),
     [
       organisaatiotJaKäyttöoikeusroolit,
       props.organisaatioHakuRooli,
       props.organisaatioTyyppi,
-    ]
+    ],
   )
   const [storedOrFallbackOrg] = useStoredOrgState(
     props.organisaatioTyyppi,
-    organisaatiot
+    organisaatiot,
   )
   return storedOrFallbackOrg ? (
     <Redirect to={props.redirectTo(basePath, storedOrFallbackOrg)} />

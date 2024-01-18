@@ -30,7 +30,7 @@ describe("Oppijahaku", () => {
         oppijaOid: "1.2.246.562.24.00000000001",
         prev: maksuttomuusPath.href(),
       }),
-      "maksuttomuusoppijasearch"
+      "maksuttomuusoppijasearch",
     )
   })
 
@@ -38,7 +38,7 @@ describe("Oppijahaku", () => {
     await hakuLogin()
     await fillQueryField(
       "1.2.246.562.24.00000000001",
-      "maksuttomuusoppijasearch"
+      "maksuttomuusoppijasearch",
     )
     await submit("maksuttomuusoppijasearch")
     await expectResultToBe(
@@ -47,7 +47,7 @@ describe("Oppijahaku", () => {
         oppijaOid: "1.2.246.562.24.00000000001",
         prev: maksuttomuusPath.href(),
       }),
-      "maksuttomuusoppijasearch"
+      "maksuttomuusoppijasearch",
     )
   })
 
@@ -61,7 +61,7 @@ describe("Oppijahaku", () => {
         oppijaOid: "1.2.246.562.24.00000000004",
         prev: maksuttomuusPath.href(),
       }),
-      "maksuttomuusoppijasearch"
+      "maksuttomuusoppijasearch",
     )
   })
 
@@ -69,7 +69,7 @@ describe("Oppijahaku", () => {
     await hakuLogin(
       "valpas-pelkkä-suorittaminen",
       suorittaminenHetuhakuPath.href("/virkailija"),
-      "article#suorittaminenhetuhaku"
+      "article#suorittaminenhetuhaku",
     )
     await fillQueryField("070504A717P")
     await submit()
@@ -78,7 +78,7 @@ describe("Oppijahaku", () => {
       oppijaPath.href("/virkailija", {
         oppijaOid: "1.2.246.562.24.00000000004",
         prev: suorittaminenHetuhakuPath.href(),
-      })
+      }),
     )
   })
 
@@ -86,7 +86,7 @@ describe("Oppijahaku", () => {
     await hakuLogin(
       "valpas-helsinki",
       kunnanHetuhakuPath.href("/virkailija"),
-      "article#kuntahetuhaku"
+      "article#kuntahetuhaku",
     )
     await fillQueryField("070504A717P")
     await submit()
@@ -95,7 +95,7 @@ describe("Oppijahaku", () => {
       oppijaPath.href("/virkailija", {
         oppijaOid: "1.2.246.562.24.00000000004",
         prev: kunnanHetuhakuPath.href(),
-      })
+      }),
     )
   })
 
@@ -103,7 +103,7 @@ describe("Oppijahaku", () => {
     await hakuLogin("valpas-pelkkä-maksuttomuus")
     await fillQueryField(
       "1.2.246.562.24.00000000004",
-      "maksuttomuusoppijasearch"
+      "maksuttomuusoppijasearch",
     )
     await submit("maksuttomuusoppijasearch")
     await expectResultToBe(
@@ -112,7 +112,7 @@ describe("Oppijahaku", () => {
         oppijaOid: "1.2.246.562.24.00000000004",
         prev: maksuttomuusPath.href(),
       }),
-      "maksuttomuusoppijasearch"
+      "maksuttomuusoppijasearch",
     )
   })
 
@@ -120,7 +120,7 @@ describe("Oppijahaku", () => {
     await hakuLogin(
       "valpas-pelkkä-suorittaminen",
       suorittaminenHetuhakuPath.href("/virkailija"),
-      "article#suorittaminenhetuhaku"
+      "article#suorittaminenhetuhaku",
     )
     await fillQueryField("1.2.246.562.24.00000000004")
     await submit()
@@ -129,7 +129,7 @@ describe("Oppijahaku", () => {
       oppijaPath.href("/virkailija", {
         oppijaOid: "1.2.246.562.24.00000000004",
         prev: suorittaminenHetuhakuPath.href(),
-      })
+      }),
     )
   })
 
@@ -137,7 +137,7 @@ describe("Oppijahaku", () => {
     await hakuLogin(
       "valpas-helsinki",
       kunnanHetuhakuPath.href("/virkailija"),
-      "article#kuntahetuhaku"
+      "article#kuntahetuhaku",
     )
     await fillQueryField("1.2.246.562.24.00000000004")
     await submit()
@@ -146,7 +146,7 @@ describe("Oppijahaku", () => {
       oppijaPath.href("/virkailija", {
         oppijaOid: "1.2.246.562.24.00000000004",
         prev: kunnanHetuhakuPath.href(),
-      })
+      }),
     )
   })
 
@@ -157,7 +157,7 @@ describe("Oppijahaku", () => {
     await expectResultToBe(
       "Maksuttomuutta ei pystytä päättelemään",
       undefined,
-      "maksuttomuusoppijasearch"
+      "maksuttomuusoppijasearch",
     )
   })
 
@@ -165,7 +165,7 @@ describe("Oppijahaku", () => {
     await hakuLogin("valpas-pelkkä-maksuttomuus")
     await fillQueryField(
       "1.2.246.562.24.00000000079",
-      "maksuttomuusoppijasearch"
+      "maksuttomuusoppijasearch",
     )
     await submit("maksuttomuusoppijasearch")
     await expectResultToBe(
@@ -174,7 +174,7 @@ describe("Oppijahaku", () => {
         oppijaOid: "1.2.246.562.24.00000000079",
         prev: maksuttomuusPath.href(),
       }),
-      "maksuttomuusoppijasearch"
+      "maksuttomuusoppijasearch",
     )
   })
 
@@ -185,7 +185,7 @@ describe("Oppijahaku", () => {
     await expectResultToBe(
       "Henkilö ei ole laajennetun oppivelvollisuuden piirissä, tai hän on suorittanut oppivelvollisuutensa eikä hänellä ole oikeutta maksuttomaan koulutukseen.",
       undefined,
-      "maksuttomuusoppijasearch"
+      "maksuttomuusoppijasearch",
     )
   })
 
@@ -193,12 +193,12 @@ describe("Oppijahaku", () => {
     await hakuLogin(
       "valpas-pelkkä-suorittaminen",
       suorittaminenHetuhakuPath.href("/virkailija"),
-      "article#suorittaminenhetuhaku"
+      "article#suorittaminenhetuhaku",
     )
     await fillQueryField("040392-530U")
     await submit()
     await expectResultToBe(
-      "Hakuehdolla ei löytynyt oppijaa tai sinulla ei ole oikeuksia nähdä kyseisen oppijan tietoja"
+      "Hakuehdolla ei löytynyt oppijaa tai sinulla ei ole oikeuksia nähdä kyseisen oppijan tietoja",
     )
   })
 
@@ -206,19 +206,19 @@ describe("Oppijahaku", () => {
     await hakuLogin(
       "valpas-helsinki",
       kunnanHetuhakuPath.href("/virkailija"),
-      "article#kuntahetuhaku"
+      "article#kuntahetuhaku",
     )
     await fillQueryField("040392-530U")
     await submit()
     await expectResultToBe(
-      "Hakuehdolla ei löytynyt oppijaa tai sinulla ei ole oikeuksia nähdä kyseisen oppijan tietoja"
+      "Hakuehdolla ei löytynyt oppijaa tai sinulla ei ole oikeuksia nähdä kyseisen oppijan tietoja",
     )
   })
 
   it("Maksuttomuus: Haku näyttää ilmoituksen maksuttomuusoikeudettomuudesta, jos oppija ei ole enää oppivelvollinen, koska on jo valmistunut ammattikoulusta", async () => {
     allowNetworkError(
       "api/henkilohaku/maksuttomuus/180304A082P",
-      "403 (Forbidden)"
+      "403 (Forbidden)",
     )
     await hakuLogin("valpas-maksuttomuus-hki")
     await fillQueryField("180304A082P", "maksuttomuusoppijasearch")
@@ -226,24 +226,24 @@ describe("Oppijahaku", () => {
     await expectResultToBe(
       "Henkilö ei ole laajennetun oppivelvollisuuden piirissä, tai hän on suorittanut oppivelvollisuutensa eikä hänellä ole oikeutta maksuttomaan koulutukseen.",
       undefined,
-      "maksuttomuusoppijasearch"
+      "maksuttomuusoppijasearch",
     )
   })
 
   it("Suorittaminen: Haku näyttää virheilmoituksen, jos oppija ei ole enää oppivelvollinen, koska on jo valmistunut ammattikoulusta", async () => {
     allowNetworkError(
       "api/henkilohaku/suorittaminen/180304A082P",
-      "403 (Forbidden)"
+      "403 (Forbidden)",
     )
     await hakuLogin(
       "valpas-pelkkä-suorittaminen",
       suorittaminenHetuhakuPath.href("/virkailija"),
-      "article#suorittaminenhetuhaku"
+      "article#suorittaminenhetuhaku",
     )
     await fillQueryField("180304A082P")
     await submit()
     await expectResultToBe(
-      "Hakuehdolla ei löytynyt oppijaa tai sinulla ei ole oikeuksia nähdä kyseisen oppijan tietoja"
+      "Hakuehdolla ei löytynyt oppijaa tai sinulla ei ole oikeuksia nähdä kyseisen oppijan tietoja",
     )
   })
 
@@ -252,19 +252,19 @@ describe("Oppijahaku", () => {
     await hakuLogin(
       "valpas-helsinki",
       kunnanHetuhakuPath.href("/virkailija"),
-      "article#kuntahetuhaku"
+      "article#kuntahetuhaku",
     )
     await fillQueryField("180304A082P")
     await submit()
     await expectResultToBe(
-      "Hakuehdolla ei löytynyt oppijaa tai sinulla ei ole oikeuksia nähdä kyseisen oppijan tietoja"
+      "Hakuehdolla ei löytynyt oppijaa tai sinulla ei ole oikeuksia nähdä kyseisen oppijan tietoja",
     )
   })
 
   it("Maksuttomuus: Haku näyttää ilmoituksen maksuttomuusoikeudettomuudesta, jos oppija ei ole oppivelvollinen, koska on valmistunut perukoulusta ennen lain voimaantuloa", async () => {
     allowNetworkError(
       "api/henkilohaku/maksuttomuus/080905A0798",
-      "403 (Forbidden)"
+      "403 (Forbidden)",
     )
     await hakuLogin("valpas-jkl-normaali")
     await fillQueryField("080905A0798", "maksuttomuusoppijasearch")
@@ -272,14 +272,14 @@ describe("Oppijahaku", () => {
     await expectResultToBe(
       "Henkilö ei ole laajennetun oppivelvollisuuden piirissä, tai hän on suorittanut oppivelvollisuutensa eikä hänellä ole oikeutta maksuttomaan koulutukseen.",
       undefined,
-      "maksuttomuusoppijasearch"
+      "maksuttomuusoppijasearch",
     )
   })
 
   it("Maksuttomuus: Haku näyttää ilmoituksen maksuttomuusoikeudettomuudesta, jos oppija ei ole oppivelvollinen, koska on vahvistettu international schoolin 9. luokan suoritus ennen lain voimaantuloa", async () => {
     allowNetworkError(
       "api/henkilohaku/maksuttomuus/090605A517L",
-      "403 (Forbidden)"
+      "403 (Forbidden)",
     )
     await hakuLogin("valpas-jkl-normaali")
     await fillQueryField("090605A517L", "maksuttomuusoppijasearch")
@@ -287,7 +287,7 @@ describe("Oppijahaku", () => {
     await expectResultToBe(
       "Henkilö ei ole laajennetun oppivelvollisuuden piirissä, tai hän on suorittanut oppivelvollisuutensa eikä hänellä ole oikeutta maksuttomaan koulutukseen.",
       undefined,
-      "maksuttomuusoppijasearch"
+      "maksuttomuusoppijasearch",
     )
   })
 
@@ -298,7 +298,7 @@ describe("Oppijahaku", () => {
     for (const invalidInput of invalidInputs) {
       await fillQueryField(invalidInput, "maksuttomuusoppijasearch")
       await expectFieldErrorToBe(
-        "Syötetty arvo ei ole validi henkilötunnus tai oppijatunnus"
+        "Syötetty arvo ei ole validi henkilötunnus tai oppijatunnus",
       )
     }
 
@@ -319,7 +319,7 @@ describe("Oppijahaku", () => {
         oppijaOid: "1.2.246.562.24.00000000058",
         prev: maksuttomuusPath.href(),
       }),
-      "maksuttomuusoppijasearch"
+      "maksuttomuusoppijasearch",
     )
   })
 
@@ -333,7 +333,7 @@ describe("Oppijahaku", () => {
         oppijaOid: "1.2.246.562.24.00000000084",
         prev: maksuttomuusPath.href(),
       }),
-      "maksuttomuusoppijasearch"
+      "maksuttomuusoppijasearch",
     )
   })
 
@@ -347,7 +347,7 @@ describe("Oppijahaku", () => {
         oppijaOid: "1.2.246.562.24.00000000171",
         prev: maksuttomuusPath.href(),
       }),
-      "maksuttomuusoppijasearch"
+      "maksuttomuusoppijasearch",
     )
   })
 
@@ -362,7 +362,7 @@ describe("Oppijahaku", () => {
         oppijaOid: "1.2.246.562.24.00000000059",
         prev: maksuttomuusPath.href(),
       }),
-      "maksuttomuusoppijasearch"
+      "maksuttomuusoppijasearch",
     )
   })
 
@@ -378,7 +378,7 @@ describe("Oppijahaku", () => {
         oppijaOid: oppijaMasterOid,
         prev: maksuttomuusPath.href(),
       }),
-      "maksuttomuusoppijasearch"
+      "maksuttomuusoppijasearch",
     )
   })
 
@@ -386,7 +386,7 @@ describe("Oppijahaku", () => {
     await hakuLogin(
       "valpas-helsinki",
       kunnanHetuhakuPath.href("/virkailija"),
-      "article#kuntahetuhaku"
+      "article#kuntahetuhaku",
     )
     await fillQueryField("061005A671V") // Ei-oppivelvollisuuden-suorittamiseen-kelpaavia-opiskeluoikeuksia Valpas
     await submit()
@@ -395,7 +395,7 @@ describe("Oppijahaku", () => {
       oppijaPath.href("/virkailija", {
         oppijaOid: "1.2.246.562.24.00000000058",
         prev: kunnanHetuhakuPath.href(),
-      })
+      }),
     )
   })
 
@@ -406,7 +406,7 @@ describe("Oppijahaku", () => {
     await expectResultToBe(
       "Henkilö ei ole laajennetun oppivelvollisuuden piirissä, tai hän on suorittanut oppivelvollisuutensa eikä hänellä ole oikeutta maksuttomaan koulutukseen.",
       undefined,
-      "maksuttomuusoppijasearch"
+      "maksuttomuusoppijasearch",
     )
   })
 
@@ -417,7 +417,7 @@ describe("Oppijahaku", () => {
       await hakuLogin(
         "valpas-helsinki",
         kunnanHetuhakuPath.href("/virkailija"),
-        "article#kuntahetuhaku"
+        "article#kuntahetuhaku",
       )
       await fillQueryField(hetu)
       await submit()
@@ -426,24 +426,24 @@ describe("Oppijahaku", () => {
         oppijaPath.href("/virkailija", {
           oppijaOid: "1.2.246.562.24.00000000161",
           prev: kunnanHetuhakuPath.href(),
-        })
+        }),
       )
     })
 
     it("Suorittamisvalvonnan hetuhaku", async () => {
       allowNetworkError(
         `api/henkilohaku/suorittaminen/${hetu}`,
-        "403 (Forbidden)"
+        "403 (Forbidden)",
       )
       await hakuLogin(
         "valpas-pelkkä-suorittaminen",
         suorittaminenHetuhakuPath.href("/virkailija"),
-        "article#suorittaminenhetuhaku"
+        "article#suorittaminenhetuhaku",
       )
       await fillQueryField(hetu)
       await submit()
       await expectResultToBe(
-        "Hakuehdolla ei löytynyt oppijaa tai sinulla ei ole oikeuksia nähdä kyseisen oppijan tietoja"
+        "Hakuehdolla ei löytynyt oppijaa tai sinulla ei ole oikeuksia nähdä kyseisen oppijan tietoja",
       )
     })
 
@@ -454,7 +454,7 @@ describe("Oppijahaku", () => {
       await expectResultToBe(
         "Henkilö ei ole laajennetun oppivelvollisuuden piirissä, tai hän on suorittanut oppivelvollisuutensa eikä hänellä ole oikeutta maksuttomaan koulutukseen.",
         undefined,
-        "maksuttomuusoppijasearch"
+        "maksuttomuusoppijasearch",
       )
     })
   })
@@ -463,7 +463,7 @@ describe("Oppijahaku", () => {
 const hakuLogin = async (
   user: string = "valpas-jkl-normaali",
   path: string = maksuttomuusPath.href("/virkailija"),
-  selector: string = "article#maksuttomuus"
+  selector: string = "article#maksuttomuus",
 ) => {
   await loginAs(path, user)
   await expectElementEventuallyVisible(selector)
@@ -471,7 +471,7 @@ const hakuLogin = async (
 
 const fillQueryField = async (
   query: string,
-  className: string = "oppijasearch"
+  className: string = "oppijasearch",
 ) => {
   const inputSelector = `.${className} .textfield__input`
   await clearTextInput(inputSelector)
@@ -482,7 +482,7 @@ const submit = async (className: string = "oppijasearch") => {
   const buttonSelector = `.${className}__submit`
   expect(
     await inputIsEnabled(buttonSelector),
-    "Expect submit button to be enabled"
+    "Expect submit button to be enabled",
   ).toBeTruthy()
   await clickElement(buttonSelector)
   await expectElementEventuallyVisible(`.${className}__resultvalue`)
@@ -491,15 +491,15 @@ const submit = async (className: string = "oppijasearch") => {
 const expectResultToBe = async (
   text: string,
   linkTo?: string,
-  className: string = "oppijasearch"
+  className: string = "oppijasearch",
 ) => {
   const result = await $(`.${className}__resultvalue`, defaultTimeout).then(
-    (e) => e.getText()
+    (e) => e.getText(),
   )
   expect(result).toBe(text)
   if (linkTo) {
     const href = await $(`.${className}__resultlink`).then((e) =>
-      e.getAttribute("href")
+      e.getAttribute("href"),
     )
     expect(href).toBe(pathToUrl(linkTo))
   }

@@ -6,7 +6,7 @@ import { OrganisaatioOidProps, PathDeclaration } from "./paths"
 
 export const useImperativeRedirect = <T, A extends any[]>(
   pathDeclaration: PathDeclaration<A>,
-  getArgs: (id: T) => A
+  getArgs: (id: T) => A,
 ) => {
   const history = useHistory()
   const basePath = useBasePath()
@@ -16,12 +16,12 @@ export const useImperativeRedirect = <T, A extends any[]>(
         history.push(pathDeclaration.href(basePath, ...getArgs(id)))
       }
     },
-    [basePath, getArgs, history, pathDeclaration]
+    [basePath, getArgs, history, pathDeclaration],
   )
 }
 
 export const useRedirectToOrganisaatio = (
-  pathDeclaration: PathDeclaration<[OrganisaatioOidProps]>
+  pathDeclaration: PathDeclaration<[OrganisaatioOidProps]>,
 ): ((organisaatioOid?: Oid) => void) =>
   useImperativeRedirect(pathDeclaration, (organisaatioOid: Oid) => [
     { organisaatioOid },

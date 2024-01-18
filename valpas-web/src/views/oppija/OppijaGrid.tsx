@@ -83,7 +83,7 @@ const Grid = (props: GridProps) => (
     {!onOppivelvollisuudestaVapautettu(props.oppivelvollisuudestaVapautus) && (
       <Kuntailmoitus
         aktiivisetKuntailmoitukset={props.kuntailmoitukset.filter(
-          isAktiivinenKuntailmoitus
+          isAktiivinenKuntailmoitus,
         )}
       />
     )}
@@ -114,7 +114,7 @@ const Grid = (props: GridProps) => (
         </BorderlessCard>
       </Column>
       {!onOppivelvollisuudestaVapautettu(
-        props.oppivelvollisuudestaVapautus
+        props.oppivelvollisuudestaVapautus,
       ) && (
         <Column size={8}>
           <BorderlessCard id="yhteystiedot">

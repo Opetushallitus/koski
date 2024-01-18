@@ -104,9 +104,9 @@ const cellClassNames = (
     size?: TableCellSize
     indicatorSpace?: boolean
     className?: string
-  }
+  },
 ) =>
   joinClassNames(
     b(element, [props.size, props.indicatorSpace ? "indicator" : undefined]),
-    props.className
+    props.className,
   )

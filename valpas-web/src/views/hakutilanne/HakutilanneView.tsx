@@ -54,7 +54,7 @@ export const HakutilanneViewWithoutOrgOid = withRequiresHakeutumisenValvonta(
       }
       renderError={() => <OrganisaatioMissingView />}
     />
-  )
+  ),
 )
 
 export const HakutilanneView = withRequiresHakeutumisenValvonta(
@@ -67,9 +67,9 @@ export const HakutilanneView = withRequiresHakeutumisenValvonta(
         getOrganisaatiot(
           organisaatiotJaKäyttöoikeusroolit,
           organisaatioHakuRooli,
-          organisaatioTyyppi
+          organisaatioTyyppi,
         ),
-      [organisaatiotJaKäyttöoikeusroolit]
+      [organisaatiotJaKäyttöoikeusroolit],
     )
 
     const organisaatioOid = props.match.params.organisaatioOid!
@@ -92,7 +92,7 @@ export const HakutilanneView = withRequiresHakeutumisenValvonta(
           history.push(oid)
         }
       },
-      [history]
+      [history],
     )
 
     const { setSelectedOppijaOids, selectedOppijat } = useOppijaSelect(data)
@@ -143,7 +143,7 @@ export const HakutilanneView = withRequiresHakeutumisenValvonta(
     ) : (
       <OrganisaatioMissingView />
     )
-  }
+  },
 )
 
 const OrganisaatioMissingView = () => (

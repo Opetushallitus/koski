@@ -50,7 +50,7 @@ export type MaksuttomuusOppijaSearchProps = {
 }
 
 export const MaksuttomuusOppijaSearch = (
-  props: MaksuttomuusOppijaSearchProps
+  props: MaksuttomuusOppijaSearchProps,
 ) => {
   const form = useFormState({ initialValues, validators })
 
@@ -95,7 +95,7 @@ type MaksuttomuusOppijaSearchResultsProps = {
 }
 
 const MaksuttomuusOppijaSearchResults = (
-  props: MaksuttomuusOppijaSearchResultsProps
+  props: MaksuttomuusOppijaSearchResultsProps,
 ) => {
   if (isLöytyiHenkilöhakuResult(props.hakutulos)) {
     return (
@@ -106,7 +106,7 @@ const MaksuttomuusOppijaSearchResults = (
     )
   } else if (
     isEiLöytynytEiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult(
-      props.hakutulos
+      props.hakutulos,
     )
   ) {
     return (
@@ -127,7 +127,7 @@ type MaksuttomuusOppijaSearchUndefinedResultProps = {
 }
 
 const MaksuttomuusOppijaSearchUndefinedResult = (
-  props: MaksuttomuusOppijaSearchUndefinedResultProps
+  props: MaksuttomuusOppijaSearchUndefinedResultProps,
 ) => (
   <div className={b("resultvalue")}>
     <T id={props.eiLöytynytIlmoitusId} />
@@ -140,7 +140,7 @@ type MaksuttomuusOppijaSearchMatchResultProps = {
 }
 
 const MaksuttomuusOppijaSearchMatchResult = (
-  props: MaksuttomuusOppijaSearchMatchResultProps
+  props: MaksuttomuusOppijaSearchMatchResultProps,
 ) => {
   const basePath = useBasePath()
   const result = props.henkilö
@@ -167,7 +167,7 @@ type MaksuttomuusOppijaSearchErrorProps = {
 }
 
 const MaksuttomuusOppijaSearchError = (
-  props: MaksuttomuusOppijaSearchErrorProps
+  props: MaksuttomuusOppijaSearchErrorProps,
 ) => {
   const [message, showAsError] = getMaksuttomuusErrorText(props.statusCode)
   return (

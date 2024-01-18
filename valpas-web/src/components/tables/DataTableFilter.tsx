@@ -33,7 +33,7 @@ export const DataTableFilter = ({ type, ...props }: DataTableFilterProps) => {
 
 export const createFilter = (
   type?: DataFilter,
-  needle?: string | null
+  needle?: string | null,
 ): FilterFn | null => {
   if (!needle || !type) {
     return null
@@ -64,7 +64,7 @@ const createFreeTextFilter: (needle: string) => FilterFn = (needle) => {
 
 const SelectFilter = (props: FilterProps) => {
   const [value, setValue] = useState<string | undefined>(
-    props.initialValue || undefined
+    props.initialValue || undefined,
   )
   const emit = (value: string | undefined) => {
     setValue(value)

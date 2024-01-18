@@ -16,14 +16,14 @@ describe("Etusivun väliaikainen näkymä", () => {
       `
       Helsingin kaupunki
       Jyväskylän normaalikoulu
-      `
+      `,
     )
     await dataTableEventuallyEquals(
       ".kayttooikeudet",
       `
       Kunnan oppivelvollisuuden suorittamisen valvonta
       Oppilaitoksen opiskelun maksuttomuustietojen määrittely
-      `
+      `,
     )
   })
 
@@ -33,7 +33,7 @@ describe("Etusivun väliaikainen näkymä", () => {
     await textEventuallyEquals(
       ".card__header",
       jklNormaalikouluTableHead,
-      defaultTimeout
+      defaultTimeout,
     )
   })
 
@@ -43,7 +43,7 @@ describe("Etusivun väliaikainen näkymä", () => {
     await textEventuallyEquals(
       ".card__header",
       "Hakeutumisvelvollisia (0)",
-      defaultTimeout
+      defaultTimeout,
     )
   })
 
@@ -59,7 +59,7 @@ describe("Etusivun väliaikainen näkymä", () => {
     await textEventuallyEquals(
       ".error-message",
       "Sinulla ei ole oikeuksia nähdä yhdenkään oppilaitoksen tietoja",
-      defaultTimeout
+      defaultTimeout,
     )
 
     // await textEventuallyEquals(
@@ -76,13 +76,13 @@ describe("Etusivun väliaikainen näkymä", () => {
       ".kayttooikeudet",
       `
       Jyväskylän normaalikoulu
-      `
+      `,
     )
     await dataTableEventuallyEquals(
       ".kayttooikeudet",
       `
       Oppilaitoksen opiskelun maksuttomuustietojen määrittely
-      `
+      `,
     )
   })
 })

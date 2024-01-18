@@ -101,7 +101,7 @@ const toKuntailmoitusLaajatTiedot = (
   form: IlmoitusFormValues,
   oppijaOid: Oid,
   tekijä: KuntailmoituksenTekijäLaajatTiedot,
-  kunnat: KuntailmoitusKunta[]
+  kunnat: KuntailmoitusKunta[],
 ): KuntailmoitusLaajatTiedotOppijaOidilla | null => {
   const kunta = kunnat.find((k) => k.oid === form.asuinkunta)
 
@@ -160,7 +160,7 @@ export const IlmoitusForm = withScroll((props: IlmoitusFormProps) => {
         props.oppijaTiedot.oid,
         props.tekijä.organisaatio.oid,
         props.lisätiedot,
-        props.opiskeluoikeudet
+        props.opiskeluoikeudet,
       ),
     },
     validators,
@@ -174,7 +174,7 @@ export const IlmoitusForm = withScroll((props: IlmoitusFormProps) => {
       formData,
       props.oppijaTiedot.oid,
       props.tekijä,
-      props.kunnat
+      props.kunnat,
     )
 
     if (kuntailmoitus) {
@@ -267,7 +267,7 @@ export const IlmoitusForm = withScroll((props: IlmoitusFormProps) => {
         />
         <LabeledCheckbox
           label={t(
-            "ilmoituslomake__hakenut_opiskelemaan_yhteishakujen_ulkopuolella"
+            "ilmoituslomake__hakenut_opiskelemaan_yhteishakujen_ulkopuolella",
           )}
           {...form.fieldProps("hakenutOpiskelemaanYhteyshakujenUlkopuolella")}
         />
@@ -300,7 +300,7 @@ const defaultMuuHakuValue = (
   oppijaOid: Oid,
   organisaatioOid: Oid,
   lisätiedot?: OpiskeluoikeusLisätiedot[],
-  opiskeluoikeudet?: OpiskeluoikeusSuppeatTiedot[]
+  opiskeluoikeudet?: OpiskeluoikeusSuppeatTiedot[],
 ): boolean => {
   const definedLisätiedot = lisätiedot || []
   const definedOpiskeluoikeudet = opiskeluoikeudet || []
@@ -308,14 +308,14 @@ const defaultMuuHakuValue = (
     lisätietoMatches(
       oppijaOid,
       opiskeluoikeus.oid,
-      opiskeluoikeus.oppilaitos.oid
+      opiskeluoikeus.oppilaitos.oid,
     )
   return nonEmptyEvery(
     hakeutumisvalvottavatOpiskeluoikeudet(
       organisaatioOid,
-      definedOpiskeluoikeudet
+      definedOpiskeluoikeudet,
     ),
-    (oo) => definedLisätiedot.find(matchesOpiskeluoikeus(oo))?.muuHaku === true
+    (oo) => definedLisätiedot.find(matchesOpiskeluoikeus(oo))?.muuHaku === true,
   )
 }
 

@@ -4,7 +4,7 @@ import { KoodistoKoodiviite } from "./koodistot"
 export type Suorituksentyyppi = KoodistoKoodiviite<"suorituksentyyppi", string>
 
 export const suorituksenTyyppiToKoulutustyyppi = (
-  tyyppi: Suorituksentyyppi
+  tyyppi: Suorituksentyyppi,
 ): string => {
   if (tyyppi.koodiarvo === "valma") {
     return t("koulutustyyppi_valma")

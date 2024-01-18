@@ -27,7 +27,7 @@ export const useApiState = <T>() => useState<ApiResponseState<T>>(null)
  */
 export const useApiOnce = <T>(
   fetchFn: () => Promise<ApiResponse<T>>,
-  cache?: ApiCache<T, []>
+  cache?: ApiCache<T, []>,
 ) => useApiWithParams(fetchFn, [], cache)
 
 /**
@@ -43,7 +43,7 @@ export const useApiOnce = <T>(
 export const useApiWithParams = <T, P extends any[]>(
   fetchFn: (...fetchFnParams: P) => Promise<ApiResponse<T>>,
   params?: P,
-  cache?: ApiCache<T, P>
+  cache?: ApiCache<T, P>,
 ) => {
   const api = useApiMethod(fetchFn, cache)
   useEffect(() => {
@@ -95,7 +95,7 @@ export const useApiSequence = <T, P extends any[], S>(
   fetchFn: (...params: P) => Promise<ApiResponse<T>>,
   initialState: S,
   getNext: (state: S) => [P, S] | null,
-  cache?: ApiCache<T, P>
+  cache?: ApiCache<T, P>,
 ): ApiMethodState<T>[] => {
   const api = useApiMethod(fetchFn, cache)
   const doFetch = api.call
@@ -143,7 +143,7 @@ export const useApiSequence = <T, P extends any[], S>(
  */
 export const useCacheWithParams = <T, P extends any[]>(
   cache: ApiCache<T, P>,
-  params?: P
+  params?: P,
 ) => {
   const [cacheChangeTrigger, setChangeTrigger] = useState(Symbol())
 
@@ -159,9 +159,9 @@ export const useCacheWithParams = <T, P extends any[]>(
         O.fromNullable(params),
         O.chain(cache.get),
         O.map(pluck("data")),
-        O.getOrElseW(() => null)
+        O.getOrElseW(() => null),
       ),
-    [cache.get, params, cacheChangeTrigger] // eslint-disable-line react-hooks/exhaustive-deps
+    [cache.get, params, cacheChangeTrigger], // eslint-disable-line react-hooks/exhaustive-deps
   )
 }
 
@@ -188,7 +188,7 @@ export type ApiMethodHook<T, P extends any[]> = {
 
 export const useApiMethod = <T, P extends any[]>(
   fetchFn: (...args: P) => Promise<ApiResponse<T>>,
-  cache?: ApiCache<T, P>
+  cache?: ApiCache<T, P>,
 ): ApiMethodHook<T, P> => {
   const [state, setState] = useSafeState<ApiMethodState<T>>({
     state: "initial",
@@ -204,7 +204,7 @@ export const useApiMethod = <T, P extends any[]>(
 
       setState({ state: "loading" })
       cache?.map(args, (previous) =>
-        setState({ state: "reloading", ...previous })
+        setState({ state: "reloading", ...previous }),
       )
       return pipe(
         await fetchFn(...args),
@@ -222,10 +222,10 @@ export const useApiMethod = <T, P extends any[]>(
             ...error,
           })
           return error
-        })
+        }),
       )
     },
-    [cache, fetchFn, setState]
+    [cache, fetchFn, setState],
   )
 
   const clear = useCallback(() => setState({ state: "initial" }), [setState])
@@ -236,13 +236,13 @@ export const useApiMethod = <T, P extends any[]>(
       call,
       clear,
     }),
-    [state, call, clear]
+    [state, call, clear],
   )
 }
 
 export const useOnApiSuccess = <T, P extends any[]>(
   hook: ApiMethodHook<T, P>,
-  handler: (hook: ApiMethodStateSuccess<T>) => void
+  handler: (hook: ApiMethodStateSuccess<T>) => void,
 ) => {
   const dataRef = useRef(isSuccess(hook) ? hook.data : null)
 
@@ -260,7 +260,7 @@ export const useOnApiSuccess = <T, P extends any[]>(
 
 export const useOnApiError = <T, P extends any[]>(
   hook: ApiMethodHook<T, P>,
-  handler: (hook: ApiMethodStateError) => void
+  handler: (hook: ApiMethodStateError) => void,
 ) => {
   const errorsRef = useRef(isError(hook) ? hook.errors : null)
 
@@ -277,7 +277,7 @@ export const useOnApiError = <T, P extends any[]>(
 }
 
 export const useLocalDataCopy = <T, P extends any[]>(
-  hook: ApiMethodHook<T, P>
+  hook: ApiMethodHook<T, P>,
 ): [T | null, Dispatch<SetStateAction<T | null>>] => {
   const [localData, setLocalData] = useSafeState<T | null>(null)
   useOnApiSuccess(hook, (o) => {

@@ -30,7 +30,7 @@ export type YhteystiedotValues = {
 }
 
 const initialValues = (
-  tekijä: KuntailmoituksenTekijäLaajatTiedot
+  tekijä: KuntailmoituksenTekijäLaajatTiedot,
 ): YhteystiedotValues => ({
   organisaatio: tekijä.organisaatio.oid,
   email: tekijä.henkilö?.email || "",

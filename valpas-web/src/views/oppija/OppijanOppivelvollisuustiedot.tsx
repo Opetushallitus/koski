@@ -45,7 +45,7 @@ export type OppijanOppivelvollisuustiedotProps = {
 }
 
 export const OppijanOppivelvollisuustiedot = (
-  props: OppijanOppivelvollisuustiedotProps
+  props: OppijanOppivelvollisuustiedotProps,
 ) => {
   const [keskeytysModalVisible, setKeskeytysModalVisible] = useState(false)
   const [muokattavaKeskeytys, setMuokattavaKeskeytys] = useState<
@@ -61,7 +61,7 @@ export const OppijanOppivelvollisuustiedot = (
       setMuokattavaKeskeytys(keskeytys)
       setKeskeytysModalVisible(true)
     },
-    []
+    [],
   )
 
   const oppijaOids = [props.henkilö.oid]
@@ -77,7 +77,7 @@ export const OppijanOppivelvollisuustiedot = (
             value={t(
               props.opiskelee
                 ? "oppija__opiskelutilanne__opiskelemassa"
-                : "oppija__opiskelutilanne__ei_opiskelupaikkaa"
+                : "oppija__opiskelutilanne__ei_opiskelupaikkaa",
             )}
           />
         )}
@@ -90,7 +90,7 @@ export const OppijanOppivelvollisuustiedot = (
             openKeskeytysModal,
             props.onOikeusMitätöidäOppivelvollisuudestaVapautus
               ? () => setVapautusMitätöintiModalVisible(true)
-              : undefined
+              : undefined,
           )}
         />
         {vapautusMitätöintiModalVisible && (
@@ -106,13 +106,13 @@ export const OppijanOppivelvollisuustiedot = (
             label={t("oppija__maksuttomuus_voimassa")}
             value={t("oppija__maksuttomuus_voimassa_value", {
               date: formatNullableDate(
-                props.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti
+                props.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti,
               ),
             })}
           />
         )}
         {!onOppivelvollisuudestaVapautettu(
-          props.oppivelvollisuudestaVapautus
+          props.oppivelvollisuudestaVapautus,
         ) && (
           <InfoTableRow
             value={
@@ -160,7 +160,7 @@ export const OppijanOppivelvollisuustiedot = (
                   </RaisedButton>
                   <InfoTooltip
                     content={t(
-                      "oppija__tee_ilmoitus_valvontavastuusta_tooltip"
+                      "oppija__tee_ilmoitus_valvontavastuusta_tooltip",
                     )}
                   />
                 </div>
@@ -230,7 +230,7 @@ const oppivelvollisuusValue = (
   oppivelvollisuusVoimassaAsti: ISODate,
   oppivelvollisuudestaVapautettu: OppivelvollisuudestaVapautus | undefined,
   openKeskeytysModal: (keskeytys: OppivelvollisuudenKeskeytys) => void,
-  openMitätöiOppivelvollisuudestaVapautusModal?: () => void
+  openMitätöiOppivelvollisuudestaVapautusModal?: () => void,
 ): React.ReactNode => {
   if (oppivelvollisuudestaVapautettu) {
     return (
@@ -288,7 +288,7 @@ const oppivelvollisuusValue = (
   ))
 
   const keskeytysToistaiseksi = oppivelvollisuudenKeskeytykset.some(
-    isKeskeytysToistaiseksi
+    isKeskeytysToistaiseksi,
   )
 
   const rows = !keskeytysToistaiseksi

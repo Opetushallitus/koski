@@ -79,7 +79,7 @@ const BackNav = (props: OppijaViewBackNavProps) => {
       O.fromNullable(props.oppija?.oppija.hakeutumisvalvovatOppilaitokset),
       O.map(A.sort(string.Ord)),
       O.chain(A.head),
-      O.toNullable
+      O.toNullable,
     )
 
     if (props.prev) {
@@ -135,13 +135,13 @@ const OppijaHeadings = (props: {
     <Heading>
       {mapLoading(props.oppija, () => t("oppija__oletusotsikko"))}
       {mapSuccess(props.oppija, (oppija) =>
-        nimiWithOptionalHetu(oppija.oppija.henkilö)
+        nimiWithOptionalHetu(oppija.oppija.henkilö),
       )}
       {mapError(props.oppija, () => t("oppija__oletusotsikko"))}
     </Heading>
     <SecondaryOppijaHeading>
       {mapSuccess(props.oppija, (oppija) =>
-        t("oppija__oppija_oid", { oid: oppija.oppija.henkilö.oid })
+        t("oppija__oppija_oid", { oid: oppija.oppija.henkilö.oid }),
       )}
       {mapError(props.oppija, () => t("oppija__ei_löydy", { oid: props.oid }))}
     </SecondaryOppijaHeading>

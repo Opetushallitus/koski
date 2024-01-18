@@ -23,5 +23,5 @@ export type OppivelvollisuudenKeskeytys = {
 }
 
 export const isKeskeytysToistaiseksi = (
-  keskeytys: OppivelvollisuudenKeskeytys
+  keskeytys: OppivelvollisuudenKeskeytys,
 ): boolean => keskeytys.loppu === undefined

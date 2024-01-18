@@ -65,7 +65,7 @@ describe("Login / Logout / kirjautuminen", () => {
     const organisaatioOid = "1.2.246.562.10.14613773812"
     await loginAs(
       hakutilannePathWithOrg.href("/virkailija", { organisaatioOid }),
-      "valpas-jkl-normaali"
+      "valpas-jkl-normaali",
     )
 
     await waitTableLoadingHasFinished(".hakutilanne")

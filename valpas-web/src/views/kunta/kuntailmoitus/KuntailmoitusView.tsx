@@ -55,13 +55,13 @@ export const KuntailmoitusViewWithoutOrgOid = withRequiresKuntavalvonta(() => {
         organisaatiotJaKäyttöoikeusroolit,
         organisaatioHakuRooli,
         organisaatioTyyppi,
-        false
+        false,
       ),
-    [organisaatiotJaKäyttöoikeusroolit]
+    [organisaatiotJaKäyttöoikeusroolit],
   )
   const [storedOrFallbackOrg] = useStoredOrgState(
     organisaatioTyyppi,
-    organisaatiot
+    organisaatiot,
   )
   return storedOrFallbackOrg ? (
     <Redirect
@@ -93,9 +93,9 @@ export const KuntailmoitusView = withRequiresKuntavalvonta(
           organisaatiotJaKäyttöoikeusroolit,
           organisaatioHakuRooli,
           organisaatioTyyppi,
-          false
+          false,
         ),
-      [organisaatiotJaKäyttöoikeusroolit]
+      [organisaatiotJaKäyttöoikeusroolit],
     )
 
     const changeOrganisaatio = (oid?: Oid) => {
@@ -109,7 +109,7 @@ export const KuntailmoitusView = withRequiresKuntavalvonta(
     const fetch = useApiWithParams(
       fetchKuntailmoitukset,
       [organisaatioOid],
-      fetchKuntailmoituksetCache
+      fetchKuntailmoituksetCache,
     )
 
     const [näytäAiemminTehdytIlmoitukset, setNäytäAiemminTehdytIlmoitukset] =
@@ -173,7 +173,7 @@ export const KuntailmoitusView = withRequiresKuntavalvonta(
         </Card>
       </Page>
     )
-  }
+  },
 )
 
 const OrganisaatioMissingView = () => (
@@ -185,25 +185,25 @@ const OrganisaatioMissingView = () => (
 )
 
 const poistaAiemminTehdytIlmoitukset = (
-  tiedot: OppijaKuntailmoituksillaSuppeatTiedot
+  tiedot: OppijaKuntailmoituksillaSuppeatTiedot,
 ) => {
   const näytettävätIlmoitukset = getNäytettävätIlmoitukset(tiedot).map(
-    (i) => i.id
+    (i) => i.id,
   )
 
   return {
     ...tiedot,
     kuntailmoitukset: tiedot.kuntailmoitukset.filter((i) =>
-      näytettävätIlmoitukset.includes(i.id)
+      näytettävätIlmoitukset.includes(i.id),
     ),
   }
 }
 
 const kuntailmoitustenMäärä = (
-  tiedot: OppijaKuntailmoituksillaSuppeatTiedot[]
+  tiedot: OppijaKuntailmoituksillaSuppeatTiedot[],
 ): number =>
   pipe(
     tiedot,
     A.map((t) => t.kuntailmoitukset.length),
-    A.reduce(0, (a, b) => a + b)
+    A.reduce(0, (a, b) => a + b),
   )

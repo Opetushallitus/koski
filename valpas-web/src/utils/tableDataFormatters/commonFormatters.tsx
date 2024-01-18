@@ -14,7 +14,7 @@ import { FilterableNonNullValue, FilterableValue } from "../conversions"
 import { formatDate, formatNullableDate } from "../date"
 
 export const nonNullableValue = <T extends FilterableNonNullValue>(
-  value: T
+  value: T,
 ): Value => ({
   value,
 })
@@ -35,7 +35,7 @@ export const nullableDateValue = (date: ISODate | undefined): Value => ({
 })
 
 export const nullableKoulutustyyppiValue = (
-  tyyppi: Suorituksentyyppi | undefined
+  tyyppi: Suorituksentyyppi | undefined,
 ): Value => nullableValue(tyyppi && suorituksenTyyppiToKoulutustyyppi(tyyppi))
 
 export const oppijanNimiValue =

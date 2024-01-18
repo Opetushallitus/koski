@@ -17,13 +17,13 @@ export type DatePickerProps = {
 export const DatePicker = (props: DatePickerProps) => {
   const selected = useMemo(
     () => (props.value !== null ? parseISO(props.value) : null),
-    [props.value]
+    [props.value],
   )
 
   const emitChange = props.onChange
   const onChange = useCallback(
     (date: Date) => emitChange(formatISO(date, { representation: "date" })),
-    [emitChange]
+    [emitChange],
   )
 
   return (

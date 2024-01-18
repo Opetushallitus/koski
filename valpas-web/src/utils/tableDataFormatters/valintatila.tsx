@@ -43,19 +43,19 @@ export const valintatilaValue = (haut: HakuSuppeatTiedot[]): Value => {
 }
 
 const hyväksyttyValintatila = (
-  hyväksytytHakutoiveet: NonEmptyArray<SuppeaHakutoive>
+  hyväksytytHakutoiveet: NonEmptyArray<SuppeaHakutoive>,
 ): Value => {
   const buildHyväksyttyValue = (hakutoive: SuppeaHakutoive) => {
     return {
       value: t("valintatieto__hyväksytty", {
         hakukohde: orderedHakukohde(
           hakutoive.hakutoivenumero,
-          t("valintatieto__hakukohde_lc")
+          t("valintatieto__hakukohde_lc"),
         ),
       }),
       display: orderedHakukohde(
         hakutoive.hakutoivenumero,
-        getLocalizedMaybe(hakutoive.organisaatioNimi) || "?"
+        getLocalizedMaybe(hakutoive.organisaatioNimi) || "?",
       ),
     }
   }
@@ -69,7 +69,7 @@ const hyväksyttyValintatila = (
       lukumäärä: hyväksytytHakutoiveet.length,
     }),
     filterValues: hyväksytytHakutoiveet.map(
-      (hakutoive) => buildHyväksyttyValue(hakutoive).value
+      (hakutoive) => buildHyväksyttyValue(hakutoive).value,
     ),
     tooltip: hyväksytytHakutoiveet
       .map((ht) => buildHyväksyttyValue(ht).display)
@@ -79,5 +79,5 @@ const hyväksyttyValintatila = (
 
 const orderedHakukohde = (
   hakutoivenumero: number | undefined,
-  hakukohde: string
+  hakukohde: string,
 ) => (hakutoivenumero ? `${hakutoivenumero}. ${hakukohde}` : hakukohde)

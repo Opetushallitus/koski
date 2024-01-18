@@ -8,7 +8,7 @@ import {
 } from "./auth"
 
 export const useUserLogin = (
-  getUser: () => Promise<CurrentUser>
+  getUser: () => Promise<CurrentUser>,
 ): CurrentUser | null => {
   const [user, setUser] = useState<CurrentUser | null>(null)
 
@@ -36,7 +36,7 @@ export const Login = (props: LoginProps) => {
     storeLoginReturnUrl(
       props.redirectAfterLogin
         ? `${location.origin}${props.redirectAfterLogin}`
-        : location.href
+        : location.href,
     )
   }, [props.redirectAfterLogin])
 

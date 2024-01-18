@@ -64,7 +64,7 @@ const Container = (props: Props) => {
 
 const ApiMockComponent = (props: Props) => {
   const mock = useApiOnce(() =>
-    props.promise.then(() => E.right({ status: 200, data: "ok" }))
+    props.promise.then(() => E.right({ status: 200, data: "ok" })),
   )
   return (
     <div>

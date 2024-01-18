@@ -84,7 +84,7 @@ const createTable = () => {
 const expectOrderOfValuesToBe = (
   table: RenderResult,
   columnIndex: number,
-  expectedValues: string[]
+  expectedValues: string[],
 ) => {
   const values: string[] = []
   table.container
@@ -101,10 +101,10 @@ const clickColumnLabel = (table: RenderResult, columnLabel: string) =>
 const fillTextFilter = async (
   table: RenderResult,
   columnIndex: number,
-  text: string
+  text: string,
 ) => {
   const input = table.container.querySelector(
-    `thead tr:nth-child(2) th:nth-child(${columnIndex}) input`
+    `thead tr:nth-child(2) th:nth-child(${columnIndex}) input`,
   )
   expect(input).not.toBeNull()
   await userEvent.type(input!!, text)
@@ -113,10 +113,10 @@ const fillTextFilter = async (
 const selectDropdownOption = async (
   table: RenderResult,
   columnIndex: number,
-  optionIndex: number
+  optionIndex: number,
 ) => {
   const select = table.container.querySelector(
-    `thead tr:nth-child(2) th:nth-child(${columnIndex}) select`
+    `thead tr:nth-child(2) th:nth-child(${columnIndex}) select`,
   )
   expect(select).not.toBeNull()
   await userEvent.selectOptions(select!!, optionIndex.toString())

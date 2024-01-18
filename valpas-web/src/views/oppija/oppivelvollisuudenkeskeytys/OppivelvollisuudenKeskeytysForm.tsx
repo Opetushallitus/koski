@@ -42,7 +42,7 @@ export type OppivelvollisuudenKeskeytysFormValues = {
 export type Aikavalinta = "määräaikainen" | "toistaiseksi"
 
 export const OppivelvollisuudenKeskeytysForm = (
-  props: OppivelvollisuudenKeskeytysFormProps
+  props: OppivelvollisuudenKeskeytysFormProps,
 ) => {
   const {
     organisaatiot,
@@ -56,7 +56,7 @@ export const OppivelvollisuudenKeskeytysForm = (
   const [aikavalinta, setAikavalinta] = useState<Aikavalinta>(
     muokattavaKeskeytys && muokattavaKeskeytys.loppu === undefined
       ? "toistaiseksi"
-      : "määräaikainen"
+      : "määräaikainen",
   )
 
   const [toistaiseksiVahvistettu, setToistaiseksiVahvistettu] = useState(false)
@@ -65,7 +65,7 @@ export const OppivelvollisuudenKeskeytysForm = (
     muokattavaKeskeytys?.loppu || null,
   ])
   const [organisaatio, setOrganisaatio] = useState<Oid | undefined>(
-    muokattavaKeskeytys?.tekijäOrganisaatioOid || organisaatiot[0]?.oid
+    muokattavaKeskeytys?.tekijäOrganisaatioOid || organisaatiot[0]?.oid,
   )
 
   const määräaikainenSelected = aikavalinta === "määräaikainen"

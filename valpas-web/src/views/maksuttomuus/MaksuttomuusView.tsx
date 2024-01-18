@@ -13,7 +13,7 @@ import { MaksuttomuusOppijaSearch } from "./MaksuttomuusOppijaSearch"
 export const MaksuttomuusView = withRequiresMaksuttomuudenValvonta(() => {
   const search = useApiMethod(
     fetchHenkilöhakuMaksuttomuus,
-    fetchHenkilöhakuMaksuttomuusCache
+    fetchHenkilöhakuMaksuttomuusCache,
   )
 
   return (

@@ -21,7 +21,7 @@ export type SuorittaminenNavigationProps = {
 }
 
 export const SuorittaminenNavigation = (
-  props: SuorittaminenNavigationProps
+  props: SuorittaminenNavigationProps,
 ) => {
   const navOptions: TabNavigationItem[] = [
     {

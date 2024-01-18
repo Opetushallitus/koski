@@ -44,14 +44,14 @@ const ressunLukioHakutilannePath = nivelvaiheenHakutilannePathWithOrg.href(
   "/virkailija",
   {
     organisaatioOid: ressunLukioOid,
-  }
+  },
 )
 
 const aapajoenKouluHakutilannePath = nivelvaiheenHakutilannePathWithOrg.href(
   "/virkailija",
   {
     organisaatioOid: aapajoenKouluOid,
-  }
+  },
 )
 
 const internationalSchoolHakutilannePath =
@@ -61,7 +61,7 @@ const internationalSchoolHakutilannePath =
 
 const saksalainenKouluHakutilannePath = nivelvaiheenHakutilannePathWithOrg.href(
   "/virkailija",
-  { organisaatioOid: saksalainenKouluOid }
+  { organisaatioOid: saksalainenKouluOid },
 )
 
 describe("Nivelvaiheen hakutilannenäkymä", () => {
@@ -71,13 +71,13 @@ describe("Nivelvaiheen hakutilannenäkymä", () => {
 
     await textEventuallyEquals(
       ".card__header",
-      ressunLukioTableHead_syyskuu2021
+      ressunLukioTableHead_syyskuu2021,
     )
 
     await dataTableEventuallyEquals(
       ".hakutilanne",
       ressunLukioTableContent_syyskuu2021,
-      "|"
+      "|",
     )
   })
 
@@ -86,19 +86,19 @@ describe("Nivelvaiheen hakutilannenäkymä", () => {
       ressunLukioHakutilannePath,
       "valpas-monta",
       false,
-      "2021-10-01"
+      "2021-10-01",
     )
     await urlIsEventually(pathToUrl(ressunLukioHakutilannePath))
 
     await textEventuallyEquals(
       ".card__header",
-      ressunLukioTableHead_lokakuu2021
+      ressunLukioTableHead_lokakuu2021,
     )
 
     await dataTableEventuallyEquals(
       ".hakutilanne",
       ressunLukioTableContent_lokakuu2021,
-      "|"
+      "|",
     )
   })
 
@@ -117,12 +117,12 @@ describe("Nivelvaiheen hakutilannenäkymä", () => {
     await urlIsEventually(pathToUrl(ressunLukioHakutilannePath))
     await textEventuallyEquals(
       ".card__header",
-      ressunLukioTableHead_syyskuu2021
+      ressunLukioTableHead_syyskuu2021,
     )
     await dataTableEventuallyEquals(
       ".hakutilanne",
       ressunLukioTableContent_syyskuu2021,
-      "|"
+      "|",
     )
 
     await selectOrganisaatioByNimi(internationalSchoolOid)
@@ -141,7 +141,7 @@ describe("Nivelvaiheen hakutilannenäkymä", () => {
     await dataTableEventuallyEquals(
       ".hakutilanne",
       ressunLukioTableContent_syyskuu2021,
-      "|"
+      "|",
     )
   })
 
@@ -168,8 +168,8 @@ describe("Nivelvaiheen hakutilannenäkymä", () => {
         oppijaPath.href("/virkailija", {
           oppijaOid: oppijaOid,
           hakutilanneNivelvaiheRef: ressunLukioOid,
-        })
-      )
+        }),
+      ),
     )
 
     await clickElement(".oppijaview__backbutton a")
@@ -208,7 +208,7 @@ describe("Nivelvaiheen hakutilannenäkymä", () => {
       await urlIsEventually(pathToUrl(ressunLukioHakutilannePath))
       await textEventuallyEquals(
         ".card__header",
-        ressunLukioTableHead_syyskuu2021
+        ressunLukioTableHead_syyskuu2021,
       )
     }
 
@@ -232,7 +232,7 @@ describe("Nivelvaiheen hakutilannenäkymä", () => {
     await urlIsEventually(pathToUrl(ressunLukioHakutilannePath))
     await textEventuallyEquals(
       ".card__header",
-      ressunLukioTableHead_syyskuu2021
+      ressunLukioTableHead_syyskuu2021,
     )
 
     const getState = () => Promise.all([0, 1, 2, 3].map(isMuuHakuChecked))
@@ -248,7 +248,7 @@ describe("Nivelvaiheen hakutilannenäkymä", () => {
     await selectOrganisaatioByNimi(ressunLukioOid)
     await textEventuallyEquals(
       ".card__header",
-      ressunLukioTableHead_syyskuu2021
+      ressunLukioTableHead_syyskuu2021,
     )
 
     const stateAfterOrgChange = await getState()
@@ -263,13 +263,13 @@ const clickAndVerifyMuuHaku = async (index: number) => {
   await clickElement(
     `.hakutilanne tr:nth-child(${
       index + 1
-    }) td:last-child .toggleswitch__container`
+    }) td:last-child .toggleswitch__container`,
   )
   await eventually(async () =>
-    expect(await isMuuHakuChecked(index)).toBe(!currentState)
+    expect(await isMuuHakuChecked(index)).toBe(!currentState),
   )
 }
 const isMuuHakuChecked = (index: number) =>
   isCheckboxChecked(
-    `.hakutilanne tr:nth-child(${index + 1}) td:last-child input`
+    `.hakutilanne tr:nth-child(${index + 1}) td:last-child input`,
   )

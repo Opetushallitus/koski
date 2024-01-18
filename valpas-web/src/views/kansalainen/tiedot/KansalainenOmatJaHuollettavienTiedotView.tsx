@@ -40,7 +40,7 @@ type OppijaDropdownOption = DropdownOption<SelectedOppija>
 const SecondaryHeading = plainComponent("h2", b("secondaryheading"))
 
 export const KansalainenOmatJaHuollettavienTiedotView = (
-  props: KansalainenOmatTiedotViewProps
+  props: KansalainenOmatTiedotViewProps,
 ) => {
   const [options, setOptions] = useState<OppijaDropdownOption[]>([])
   const [oppija, selectOppija] = useState<SelectedOppija>()
@@ -131,7 +131,7 @@ const OppijaHeader = (props: OppijaHeaderProps) => (
         <p className={b("birthday")}>
           <T id="kansalainen_syntynyt" params={{ pvm }} />
         </p>
-      )
+      ),
     )}
   </header>
 )
@@ -155,18 +155,18 @@ const EiTietoja = (props: EiTietojaProps) => (
 
 const asOppijaOptions = (
   user: User,
-  tiedot: KansalaisnäkymänTiedot
+  tiedot: KansalaisnäkymänTiedot,
 ): OppijaDropdownOption[] => [
   asOmatTiedot(user, tiedot.omatTiedot),
   ...tiedot.huollettavat.map(henkilöOption),
   ...tiedot.huollettavatIlmanTietoja.map((h) =>
-    eiTietojaOption(h.nimi, h.hetu)
+    eiTietojaOption(h.nimi, h.hetu),
   ),
 ] // TODO: sort
 
 const asOmatTiedot = (
   user: User,
-  omatTiedot?: KansalainenOppijatiedot
+  omatTiedot?: KansalainenOppijatiedot,
 ): OppijaDropdownOption =>
   omatTiedot ? henkilöOption(omatTiedot) : eiTietojaOption(user.name)
 
@@ -185,10 +185,10 @@ const optionDisplayText = (nimi: string, hetu?: string) =>
 
 const eiTietojaOption = (
   nimi: string,
-  hetu?: string
+  hetu?: string,
 ): OppijaDropdownOption => ({
   display: `${optionDisplayText(nimi, hetu)} (${t(
-    "kansalainen_henkilövalinta_ei_tietoja"
+    "kansalainen_henkilövalinta_ei_tietoja",
   )})`,
   value: {
     nimi,

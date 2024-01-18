@@ -6,7 +6,7 @@ export const buildParamString = (params?: object) =>
     ? "?" +
       Object.entries(params)
         .map((entry) =>
-          entry.map((token) => encodeURIComponent(token.toString())).join("=")
+          entry.map((token) => encodeURIComponent(token.toString())).join("="),
         )
         .join("&")
     : ""

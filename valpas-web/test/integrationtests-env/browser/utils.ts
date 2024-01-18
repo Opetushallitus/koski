@@ -5,7 +5,7 @@ export const sleep = (time: number) =>
 
 export const eventually = async <T>(
   test: () => Promise<T>,
-  timeout = defaultTimeout
+  timeout = defaultTimeout,
 ): Promise<T> => {
   const expirationTime = new Date().getTime() + timeout
   let error = null

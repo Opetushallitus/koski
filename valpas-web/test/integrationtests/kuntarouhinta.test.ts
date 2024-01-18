@@ -49,11 +49,11 @@ const vainOnrOppija = "1.2.246.562.24.00000000079"
 const tavallinenOppija = "1.2.246.562.24.00000000058"
 
 const pyhtäänKuntarouhintaCardHeader = `Pyhtää: Oppivelvolliset ilman opiskelupaikkaa (${getExpectedRowCount(
-  pyhtäänKuntarouhintaTableContents
+  pyhtäänKuntarouhintaTableContents,
 )})`
 
 const pyhtäänKuntarouhinta2023CardHeader = `Pyhtää: Oppivelvolliset ilman opiskelupaikkaa (${getExpectedRowCount(
-  pyhtäänKuntarouhinta2023TableContents
+  pyhtäänKuntarouhinta2023TableContents,
 )})`
 
 describe("Kuntarouhinta", () => {
@@ -108,7 +108,7 @@ describe("Kuntarouhinta", () => {
       await clickElement("#confirm-rouhinta-download-btn")
 
       await expectElementEventuallyVisible(
-        ".kuntarouhintaview__confirmpassword"
+        ".kuntarouhintaview__confirmpassword",
       )
       await expectElementEventuallyNotVisible(".spinner")
 
@@ -142,13 +142,13 @@ describe("Kuntarouhinta", () => {
 
       textEventuallyEquals(
         ".kuntarouhintaview__cardheaderlabel",
-        pyhtäänKuntarouhinta2023CardHeader
+        pyhtäänKuntarouhinta2023CardHeader,
       )
 
       dataTableEventuallyEquals(
         ".kuntarouhintatable",
         pyhtäänKuntarouhinta2023TableContents,
-        "|"
+        "|",
       )
     })
   })
@@ -157,14 +157,14 @@ describe("Kuntarouhinta", () => {
 const expectPyhtääCardHeader = () =>
   textEventuallyEquals(
     ".kuntarouhintaview__cardheaderlabel",
-    pyhtäänKuntarouhintaCardHeader
+    pyhtäänKuntarouhintaCardHeader,
   )
 
 const expectPyhtääTableContents = () =>
   dataTableEventuallyEquals(
     ".kuntarouhintatable",
     pyhtäänKuntarouhintaTableContents,
-    "|"
+    "|",
   )
 
 const expectDataFetchConfirmDialogVisible = () =>
@@ -177,7 +177,7 @@ const confirmDataFetch = async () => {
 
 const clickNavTab = (index: number) =>
   clickElement(
-    `.tabnavigation__list .tabnavigation__itemcontainer:nth-child(${index}) a`
+    `.tabnavigation__list .tabnavigation__itemcontainer:nth-child(${index}) a`,
   )
 
 const oppijaRowSelector = (oppijaOid: Oid) =>

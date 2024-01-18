@@ -45,17 +45,17 @@ export type SuorittaminenOppivelvollisetTableProps = {
 
 const useOppijaData = (
   organisaatioOid: Oid,
-  data: OppijaHakutilanteillaSuppeatTiedot[]
+  data: OppijaHakutilanteillaSuppeatTiedot[],
 ) => {
   const basePath = useBasePath()
   return useMemo(
     () => A.flatten(data.map(oppijaToTableData(basePath, organisaatioOid))),
-    [data, basePath, organisaatioOid]
+    [data, basePath, organisaatioOid],
   )
 }
 
 export const SuorittaminenOppivelvollisetTable = (
-  props: SuorittaminenOppivelvollisetTableProps
+  props: SuorittaminenOppivelvollisetTableProps,
 ) => {
   const data = useOppijaData(props.organisaatioOid, props.data)
 
@@ -96,7 +96,7 @@ export const SuorittaminenOppivelvollisetTable = (
       {
         label: t("suorittaminennäkymä__taulu_voimassaolevia_opiskeluoikeuksia"),
         tooltip: t(
-          "suorittaminennäkymä__taulu_voimassaolevia_opiskeluoikeuksia_tooltip"
+          "suorittaminennäkymä__taulu_voimassaolevia_opiskeluoikeuksia_tooltip",
         ),
         filter: "dropdown",
         indicatorSpace: "auto",
@@ -105,7 +105,7 @@ export const SuorittaminenOppivelvollisetTable = (
         label: t("suorittaminennäkymä__taulu_oppivelvollisuus"),
       },
     ],
-    []
+    [],
   )
 
   return (
@@ -125,7 +125,7 @@ type SuorittaminenKey = [Oid, Oid]
 
 const createSuorittaminenKey = (
   oppija: OppijaSuppeatTiedot,
-  opiskeluoikeus: OpiskeluoikeusSuppeatTiedot
+  opiskeluoikeus: OpiskeluoikeusSuppeatTiedot,
 ): SuorittaminenKey => [oppija.henkilö.oid, opiskeluoikeus.oid]
 
 const oppijaToTableData =
@@ -135,7 +135,7 @@ const oppijaToTableData =
 
     return suorittamisvalvottavatOpiskeluoikeudet(
       organisaatioOid,
-      oppija.oppija.opiskeluoikeudet
+      oppija.oppija.opiskeluoikeudet,
     ).map((opiskeluoikeus) => {
       const tiedot = opiskeluoikeus.perusopetuksenJälkeinenTiedot!
 
@@ -164,7 +164,7 @@ const oppijaToTableData =
           },
           {
             value: koulutustyyppi(
-              opiskeluoikeus.tarkasteltavaPäätasonSuoritus?.suorituksenTyyppi
+              opiskeluoikeus.tarkasteltavaPäätasonSuoritus?.suorituksenTyyppi,
             ),
           },
           tila(tiedot.tarkastelupäivänKoskiTila),
@@ -174,8 +174,8 @@ const oppijaToTableData =
           fromNullableValue(
             perusopetuksenJälkeistäPreferoivatOpiskeluoikeustiedot(
               oppija.oppija.opiskeluoikeudet,
-              opiskeluoikeus
-            )
+              opiskeluoikeus,
+            ),
           ),
           fromNullableValue(oppivelvollisuus(oppija)),
         ],
@@ -201,19 +201,19 @@ const toimipiste = (opiskeluoikeus: OpiskeluoikeusSuppeatTiedot): Value => {
   const uniikit: string[] = Array.from(
     new Set(
       opiskeluoikeus.päätasonSuoritukset.map((pts) =>
-        organisaatioNimi(pts.toimipiste)
-      )
-    )
+        organisaatioNimi(pts.toimipiste),
+      ),
+    ),
   )
   return {
     value:
       uniikit.length > 1
         ? t("suorittaminennäkymä__taulu_useita_toimipisteitä")
         : opiskeluoikeus.tarkasteltavaPäätasonSuoritus
-        ? organisaatioNimi(
-            opiskeluoikeus.tarkasteltavaPäätasonSuoritus.toimipiste
-          )
-        : undefined,
+          ? organisaatioNimi(
+              opiskeluoikeus.tarkasteltavaPäätasonSuoritus.toimipiste,
+            )
+          : undefined,
     tooltip: uniikit.join("; "),
     filterValues: uniikit,
   }
@@ -230,7 +230,7 @@ const päivä = (date?: ISODate): Value | null => {
 }
 
 const oppivelvollisuus = (
-  oppija: OppijaHakutilanteillaSuppeatTiedot
+  oppija: OppijaHakutilanteillaSuppeatTiedot,
 ): Value | null => {
   const oppivelvollisuusVoimassaAsti =
     oppija.oppija.oppivelvollisuusVoimassaAsti
@@ -253,11 +253,11 @@ const oppivelvollisuus = (
 }
 
 const keskeytysMerkintä = (
-  oppivelvollisuudenKeskeytykset: OppivelvollisuudenKeskeytys[]
+  oppivelvollisuudenKeskeytykset: OppivelvollisuudenKeskeytys[],
 ): string | null => (oppivelvollisuudenKeskeytykset.length ? "*" : null)
 
 const keskeytysTooltip = (
-  oppivelvollisuudenKeskeytykset: OppivelvollisuudenKeskeytys[]
+  oppivelvollisuudenKeskeytykset: OppivelvollisuudenKeskeytys[],
 ): string | undefined =>
   oppivelvollisuudenKeskeytykset.length
     ? oppivelvollisuudenKeskeytykset
@@ -271,8 +271,8 @@ const keskeytysTooltip = (
                 "suorittaminennäkymä__oppivelvollisuus_keskeytetty_toistaiseksi_value",
                 {
                   alkuPvm: formatDate(keskeytys.alku),
-                }
-              )
+                },
+              ),
         )
         .join("\n")
     : undefined

@@ -42,13 +42,13 @@ export const KunnalleIlmoitetutView = (props: KunnalleIlmoitetutViewProps) => {
       getOrganisaatiot(
         organisaatiotJaKäyttöoikeusroolit,
         props.organisaatioHakuRooli,
-        props.organisaatioTyyppi
+        props.organisaatioTyyppi,
       ),
     [
       organisaatiotJaKäyttöoikeusroolit,
       props.organisaatioHakuRooli,
       props.organisaatioTyyppi,
-    ]
+    ],
   )
 
   const history = useHistory()

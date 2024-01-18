@@ -38,7 +38,7 @@ describe("Oppivelvollisuudesta vapauttaminen", () => {
         oppivelvollisuudestaVapautettuPath,
         "valpas-monta",
         false,
-        tarkastelupäivä
+        tarkastelupäivä,
       )
       await validateOppivelvollisuudestaVapautettu(true)
     })
@@ -48,7 +48,7 @@ describe("Oppivelvollisuudesta vapauttaminen", () => {
         oppivelvollisuudestaVapautettuPath,
         "valpas-tornio",
         false,
-        tarkastelupäivä
+        tarkastelupäivä,
       )
       await validateOppivelvollisuudestaVapautettu(false)
     })
@@ -58,7 +58,7 @@ describe("Oppivelvollisuudesta vapauttaminen", () => {
         oppivelvollisuudestaVapautettuPath,
         "valpas-pelkkä-maksuttomuus",
         false,
-        tarkastelupäivä
+        tarkastelupäivä,
       )
       await validateOppivelvollisuudestaVapautettu(false)
     })
@@ -68,7 +68,7 @@ describe("Oppivelvollisuudesta vapauttaminen", () => {
         oppivelvollisuudestaVapautettuPath,
         "valpas-jkl-normaali-perus",
         false,
-        tarkastelupäivä
+        tarkastelupäivä,
       )
       await validateOppivelvollisuudestaVapautettuEiNäy()
     })
@@ -78,7 +78,7 @@ describe("Oppivelvollisuudesta vapauttaminen", () => {
         oppivelvollisuudestaVapautettuPath,
         "valpas-jkl-yliopisto-suorittaminen",
         false,
-        tarkastelupäivä
+        tarkastelupäivä,
       )
       await validateOppivelvollisuudestaVapautettuEiNäy()
     })
@@ -96,7 +96,7 @@ describe("Oppivelvollisuudesta vapauttaminen", () => {
             "Vapautettu oppivelvollisuudesta 1.10.2021 alkaen, myöntäjä Helsingin kaupunki",
           vapautuksenMitätöintiBtn: true,
           maksuttomuusoikeus: "30.9.2021 asti",
-        })
+        }),
       )
     })
   })
@@ -111,7 +111,7 @@ describe("Oppivelvollisuudesta vapauttaminen", () => {
           oppivelvollisuudenKeskeytysBtn: true,
           kuntailmoitusBtn: true,
           merkitseVapautusBtn: true,
-        })
+        }),
       )
 
     await loginAs(vapautetettavaPath, "valpas-monta", true, tarkastelupäivä)
@@ -134,7 +134,7 @@ describe("Oppivelvollisuudesta vapauttaminen", () => {
           "Vapautettu oppivelvollisuudesta 1.10.2021 alkaen, myöntäjä Helsingin kaupunki",
         vapautuksenMitätöintiBtn: true,
         maksuttomuusoikeus: "30.9.2021 asti",
-      })
+      }),
     )
 
     await resetRaportointikanta()
@@ -147,7 +147,7 @@ describe("Oppivelvollisuudesta vapauttaminen", () => {
         oppivelvollisuudenKeskeytysBtn: true,
         kuntailmoitusBtn: true,
         merkitseVapautusBtn: true,
-      })
+      }),
     )
   })
 })
@@ -175,10 +175,10 @@ const mitätöiOvVapautus = async () => {
 }
 
 const validateOppivelvollisuudestaVapautettu = async (
-  vapautuksenMitätöintiSallittu: boolean
+  vapautuksenMitätöintiSallittu: boolean,
 ) => {
   await mainHeadingEquals(
-    "Oppivelvollisuudesta-vapautettu Valpas (060605A538B)"
+    "Oppivelvollisuudesta-vapautettu Valpas (060605A538B)",
   )
   await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000161")
   await oppivelvollisuustiedotEquals(
@@ -187,7 +187,7 @@ const validateOppivelvollisuudestaVapautettu = async (
         "Vapautettu oppivelvollisuudesta 1.8.2000 alkaen, myöntäjä Helsingin kaupunki",
       vapautuksenMitätöintiBtn: vapautuksenMitätöintiSallittu,
       maksuttomuusoikeus: "31.7.2000 asti",
-    })
+    }),
   )
 }
 
@@ -195,6 +195,6 @@ const validateOppivelvollisuudestaVapautettuEiNäy = async () => {
   allowNetworkError("/api/oppija/1.2.246.562.24.00000000161", FORBIDDEN)
   await mainHeadingEquals("Oppijan tiedot")
   await secondaryHeadingEquals(
-    "Oppijaa ei löydy tunnuksella 1.2.246.562.24.00000000161"
+    "Oppijaa ei löydy tunnuksella 1.2.246.562.24.00000000161",
   )
 }

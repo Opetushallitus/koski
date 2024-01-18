@@ -21,12 +21,12 @@ export const getTextInput = async (selector: string) => {
 
 export const clearTextInput = async (
   selector: string,
-  timeout = shortTimeout
+  timeout = shortTimeout,
 ) => clearTextInputElement(await $(selector), timeout)
 
 export const clearTextInputElement = async (
   element: WebElement,
-  timeout = shortTimeout
+  timeout = shortTimeout,
 ) =>
   // Pitää tehdä silmukassa, koska tämä ei aina toimi, välillä BACK_SPACE poistaa vain viimeisen merkin
   eventually(async () => {
@@ -49,7 +49,7 @@ export const clearTextArea = async (selector: string, timeout = shortTimeout) =>
 
 export const clearTextAreaElement = async (
   element: WebElement,
-  timeout = shortTimeout
+  timeout = shortTimeout,
 ) =>
   // Pitää tehdä silmukassa, koska tämä ei aina toimi, välillä BACK_SPACE poistaa vain viimeisen merkin
   eventually(async () => {
@@ -66,7 +66,7 @@ export const dropdownSelect = async (selector: string, index: number) => {
 
 export const dropdownSelectContains = async (
   selector: string,
-  text: string
+  text: string,
 ) => {
   const allOptionsSelector = `${selector} > option`
   const options = await $$(allOptionsSelector)

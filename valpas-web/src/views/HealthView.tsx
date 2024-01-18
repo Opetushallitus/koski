@@ -14,8 +14,8 @@ export default () => {
         {isInitial(res) || isLoading(res)
           ? "Checking..."
           : isSuccess(res) && res.data === ""
-          ? "OK"
-          : "Backend failure"}
+            ? "OK"
+            : "Backend failure"}
       </p>
     </Page>
   )

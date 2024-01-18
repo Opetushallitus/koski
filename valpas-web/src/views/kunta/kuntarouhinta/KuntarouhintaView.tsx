@@ -78,27 +78,27 @@ export const KuntarouhintaView = withRequiresKuntavalvonta(
         getOrganisaatiot(
           organisaatiotJaKäyttöoikeusroolit,
           organisaatioHakuRooli,
-          organisaatioTyyppi
+          organisaatioTyyppi,
         ),
-      [organisaatiotJaKäyttöoikeusroolit]
+      [organisaatiotJaKäyttöoikeusroolit],
     )
 
     const changeOrganisaatio = useRedirectToOrganisaatio(
-      kuntarouhintaPathWithOid
+      kuntarouhintaPathWithOid,
     )
 
     const rouhintaQuery: [KuntarouhintaInput] = useMemo(
       () => [createQuery(organisaatioOid)],
-      [organisaatioOid]
+      [organisaatioOid],
     )
 
     const rouhintaFetch = useApiMethod(
       fetchKuntarouhinta,
-      fetchKuntarouhintaCache
+      fetchKuntarouhintaCache,
     )
     const rouhintaData = useCacheWithParams(
       fetchKuntarouhintaCache,
-      rouhintaQuery
+      rouhintaQuery,
     )
 
     const fetchTableData = useCallback(() => {
@@ -113,7 +113,7 @@ export const KuntarouhintaView = withRequiresKuntavalvonta(
 
     const kunta = useMemo(
       () => organisaatiot.find((o) => o.oid === organisaatioOid)?.kotipaikka,
-      [organisaatiot, organisaatioOid]
+      [organisaatiot, organisaatioOid],
     )
 
     return (
@@ -186,7 +186,7 @@ export const KuntarouhintaView = withRequiresKuntavalvonta(
         )}
       </Page>
     )
-  }
+  },
 )
 
 type FetchDataButtonProps = {

@@ -6,7 +6,7 @@ export type WithScrollProps = {
 
 export const withScroll =
   <P extends object>(
-    Component: React.ComponentType<P & WithScrollProps>
+    Component: React.ComponentType<P & WithScrollProps>,
   ): React.FC<P> =>
   (props: P) => {
     const head = useRef<HTMLDivElement>(null)

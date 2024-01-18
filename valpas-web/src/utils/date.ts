@@ -48,7 +48,7 @@ const isValidDate = (date: string) => {
 
 export const isValidSortedValues = (
   value1: ISODate | null,
-  value2: ISODate | null
+  value2: ISODate | null,
 ) =>
   (value1 === null || isValidDate(value1)) &&
   (value2 === null || isValidDate(value2))

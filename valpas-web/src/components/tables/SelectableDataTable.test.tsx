@@ -17,7 +17,7 @@ describe("SelectableDataTable", () => {
         "Faarao",
         "Gabriel",
       ]),
-      onSelect
+      onSelect,
     )
 
     await clickRow(table, 1)
@@ -49,7 +49,7 @@ describe("SelectableDataTable", () => {
     const table = createTable(
       stringsToData(["alfa", "alfa", "beta", "gamma"]),
       onSelect,
-      equalNames
+      equalNames,
     )
     await clickRow(table, 1)
     await clickRow(table, 2)
@@ -68,7 +68,7 @@ describe("SelectableDataTable", () => {
 const createTable = (
   data: Datum[],
   onSelect: (selectedKeys: DatumKey[]) => void,
-  peerEquality?: (a: DatumKey) => (b: DatumKey) => boolean
+  peerEquality?: (a: DatumKey) => (b: DatumKey) => boolean,
 ) =>
   render(
     <SelectableDataTable
@@ -76,12 +76,12 @@ const createTable = (
       data={data}
       onSelect={onSelect}
       peerEquality={peerEquality}
-    />
+    />,
   )
 
 const clickRow = async (table: RenderResult, nthRow: number) => {
   const checkbox = table.container.querySelector(
-    `tbody tr:nth-child(${nthRow}) td:first-child input`
+    `tbody tr:nth-child(${nthRow}) td:first-child input`,
   )
   expect(checkbox).not.toBeNull()
   await userEvent.click(checkbox!!)
@@ -100,5 +100,5 @@ const stringsToData = (values: string[]): Datum[] =>
     (value, index): Datum => ({
       key: [(index + 1).toString(), value.toLowerCase()],
       values: [{ value }],
-    })
+    }),
   )

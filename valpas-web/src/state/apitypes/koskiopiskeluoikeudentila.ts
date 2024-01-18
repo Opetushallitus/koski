@@ -15,8 +15,8 @@ export type KoskiOpiskeluoikeudenTila = KoodistoKoodiviite<
 >
 
 export const isSuorittamisenValvonnassaIlmoitettavaTila = (
-  tila: KoskiOpiskeluoikeudenTila
+  tila: KoskiOpiskeluoikeudenTila,
 ) =>
   ["eronnut", "katsotaaneronneeksi", "keskeytynyt", "peruutettu"].includes(
-    tila.koodiarvo
+    tila.koodiarvo,
   )

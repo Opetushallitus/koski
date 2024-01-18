@@ -117,21 +117,21 @@ export const pyhtääTableContent_kaikkiIlmoitukset = `
 
 export const teeKuntailmoitusOppijanäkymistä = async (
   oppijat: NonEmptyArray<Oppija>,
-  tekijä: Tekijä
+  tekijä: Tekijä,
 ) => {
   for (const oppija of oppijat) {
     // Tee ilmoitus oppijakohtaisesta näkymästä käsin, ja tarkista, että uuden ilmoituksen tiedot ilmestyvät näkyviin
     await goToLocation(
       oppijaPath.href("/virkailija", {
         oppijaOid: oppija.oid,
-      })
+      }),
     )
     await urlIsEventually(
       pathToUrl(
         oppijaPath.href("/virkailija", {
           oppijaOid: oppija.oid,
-        })
-      )
+        }),
+      ),
     )
 
     await openKuntailmoitusOppijanäkymässä()
@@ -209,12 +209,12 @@ export const getIlmoitusForm = async (): Promise<Form[]> => {
         .findElement({ className: "ilmoitusform__subtitle" })
         .then(getText),
       prefills: await form.findElements(
-        By.css(".ilmoitusform__prefilllist li")
+        By.css(".ilmoitusform__prefilllist li"),
       ),
       asuinkuntaSelect: await form.findElement(testIdIs("asuinkunta")),
       postinumeroInput: await form.findElement(testIdIs("postinumero")),
       postitoimipaikkaInput: await form.findElement(
-        testIdIs("postitoimipaikka")
+        testIdIs("postitoimipaikka"),
       ),
       katuosoiteInput: await form.findElement(testIdIs("katuosoite")),
       puhelinnumeroInput: await form.findElement(testIdIs("puhelinnumero")),
@@ -222,7 +222,7 @@ export const getIlmoitusForm = async (): Promise<Form[]> => {
       submitButton: await form.findElement({
         className: "ilmoitusform__submit",
       }),
-    }))
+    })),
   )
 }
 
@@ -243,19 +243,19 @@ export const getIlmoitusData = async (): Promise<DisplayedIlmoitusData> => {
   const ilmoitukset = await $$(".kuntailmoitus__frame")
   expect(
     ilmoitukset.length,
-    "Aktiivisia ilmoituksia tulisi näkyä tasan yksi"
+    "Aktiivisia ilmoituksia tulisi näkyä tasan yksi",
   ).toEqual(1)
   const ilmoitus = ilmoitukset[0]!!
 
   return Promise.all([
     ...requiredTestIds.map(async (id) =>
-      objectEntry(id, await ilmoitus.findElement(testIdIs(id)).then(getText))
+      objectEntry(id, await ilmoitus.findElement(testIdIs(id)).then(getText)),
     ),
     ...optionalTestIds.map(async (id) =>
       objectEntry(
         id,
-        await ilmoitus.findElements(testIdIs(id)).then(getOptionalText)
-      )
+        await ilmoitus.findElements(testIdIs(id)).then(getOptionalText),
+      ),
     ),
   ]).then((x) => fromEntries(x) as DisplayedIlmoitusData)
 }
@@ -292,7 +292,7 @@ export const täytäJaLähetäLomake = async (oppija: Oppija, form: Form) => {
     await form.submitButton.click()
     await eventually(async () => {
       const submitted = await form.root.findElement(
-        By.css('[data-testid="submitted"]')
+        By.css('[data-testid="submitted"]'),
       )
       expect(submitted).toBeDefined()
     }, shortTimeout)
@@ -316,7 +316,7 @@ export const getCloseButton = () => $(".modalbuttongroup button")
 
 export const teeKuntailmoitusHakutilannenäkymästä = async (
   username: string,
-  tekijä: Tekijä
+  tekijä: Tekijä,
 ) => {
   const oppijat = teeOppijat(tekijä)
 
@@ -332,7 +332,7 @@ export const teeKuntailmoitusHakutilannenäkymästä = async (
   const forms = await getIlmoitusForm()
   expect(
     forms.length,
-    "Lomakkeita näkyy yhtä monta kuin valittuja oppijoita"
+    "Lomakkeita näkyy yhtä monta kuin valittuja oppijoita",
   ).toBe(oppijat.length)
 
   for (const form of forms) {
@@ -340,7 +340,7 @@ export const teeKuntailmoitusHakutilannenäkymästä = async (
     const oppija = oppijat.find((o) => form.subtitle.includes(o.oid))!!
     expect(
       oppija,
-      `Lomakkeen oppija "${form.title}" "${form.subtitle}" on valittujen oppijoiden joukossa`
+      `Lomakkeen oppija "${form.title}" "${form.subtitle}" on valittujen oppijoiden joukossa`,
     ).toBeDefined()
     expect(form.title).toBe(oppija.title)
 
@@ -388,7 +388,7 @@ export const openHakutilanneView = async (username: string) => {
   await dataTableEventuallyEquals(
     ".hakutilanne",
     jklNormaalikouluTableContent,
-    "|"
+    "|",
   )
 }
 

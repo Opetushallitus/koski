@@ -623,7 +623,7 @@ export const contextualizeModel = <M extends EditorModel, T extends object>(
   return R.mergeRight(protoModel, {
     context,
     path: childPath(protoModel, path)
-  }) as M & Contextualized<T>
+  }) as unknown as M & Contextualized<T>
 }
 
 // TODO: don't call this for arrayPrototype. Add arrayPrototype accessor instead
@@ -641,7 +641,7 @@ export function contextualizeSubModel<M extends EditorModel, T extends object>(
     context: parentModel.context,
     path: subPath,
     parent: parentModel
-  }) as M & Contextualized<T>
+  }) as unknown as M & Contextualized<T>
 }
 
 // Add more context parameters to the current context of the model.
@@ -656,7 +656,7 @@ export const addContext = <
   return contextualizeModel(
     model,
     model.context
-      ? (R.mergeRight(model.context, additionalContext) as T)
+      ? (R.mergeRight(model.context, additionalContext) as unknown as T)
       : additionalContext
   )
 }

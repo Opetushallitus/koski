@@ -6,7 +6,7 @@ export type KansalainenContextProviderProps = {
   children: React.ReactNode
 }
 export const KansalainenContextProvider = (
-  props: KansalainenContextProviderProps
+  props: KansalainenContextProviderProps,
 ) => <KansalainenContext.Provider value={true} {...props} />
 
 export const useIsKansalainenView = () => React.useContext(KansalainenContext)

@@ -12,14 +12,14 @@ export const objectEntry = <T>(key: string, value: T): ObjectEntry<T> => [
 ]
 
 export const fromEntries = <T>(
-  entries: Array<ObjectEntry<T>>
+  entries: Array<ObjectEntry<T>>,
 ): Record<string, T> =>
   entries.reduce(
     (obj, entry) => ({
       ...obj,
       [entry[0]]: entry[1],
     }),
-    {}
+    {},
   )
 
 export const isEmptyObject = <T extends object>(obj: T): boolean =>

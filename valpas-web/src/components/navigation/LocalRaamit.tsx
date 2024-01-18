@@ -187,7 +187,7 @@ const LanguageButtons = ({ currentLanguage }: LanguageButtonsProps) => (
       <button
         className={joinClassNames(
           b("languagebutton"),
-          language === currentLanguage ? b("currentlanguage") : ""
+          language === currentLanguage ? b("currentlanguage") : "",
         )}
         id={language}
         key={language}

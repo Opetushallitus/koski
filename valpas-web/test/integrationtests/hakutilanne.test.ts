@@ -51,15 +51,15 @@ const clickAndVerifyMuuHaku = async (index: number) => {
   await clickElement(
     `.hakutilanne tr:nth-child(${
       index + 1
-    }) td:last-child .toggleswitch__container`
+    }) td:last-child .toggleswitch__container`,
   )
   await eventually(async () =>
-    expect(await isMuuHakuChecked(index)).toBe(!currentState)
+    expect(await isMuuHakuChecked(index)).toBe(!currentState),
   )
 }
 const isMuuHakuChecked = (index: number) =>
   isCheckboxChecked(
-    `.hakutilanne tr:nth-child(${index + 1}) td:last-child input`
+    `.hakutilanne tr:nth-child(${index + 1}) td:last-child input`,
   )
 
 const kulosaarenAlaAsteTableContent = `
@@ -88,28 +88,28 @@ const aapajoenKouluHakutilannePath = hakutilannePathWithOrg.href(
   "/virkailija",
   {
     organisaatioOid: aapajoenKouluOid,
-  }
+  },
 )
 
 const internationalSchoolHakutilannePath = hakutilannePathWithOrg.href(
   "/virkailija",
   {
     organisaatioOid: internationalSchoolOid,
-  }
+  },
 )
 
 const europeanSchoolOfHelsinkiHakutilannePath = hakutilannePathWithOrg.href(
   "/virkailija",
   {
     organisaatioOid: europeanSchoolOfHelsinkiOid,
-  }
+  },
 )
 
 const saksalainenKouluHakutilannePath = hakutilannePathWithOrg.href(
   "/virkailija",
   {
     organisaatioOid: saksalainenKouluOid,
-  }
+  },
 )
 
 const kulosaarenOppijaOid = "1.2.246.562.24.00000000029"
@@ -119,7 +119,7 @@ const viikinNormaalikouluHakutilannePath = hakutilannePathWithOrg.href(
   "/virkailija",
   {
     organisaatioOid: viikinNormaalikouluOid,
-  }
+  },
 )
 
 describe("Hakutilannenäkymä", () => {
@@ -130,7 +130,7 @@ describe("Hakutilannenäkymä", () => {
     await dataTableEventuallyEquals(
       ".hakutilanne",
       jklNormaalikouluTableContent,
-      "|"
+      "|",
     )
   })
 
@@ -151,7 +151,7 @@ describe("Hakutilannenäkymä", () => {
     await dataTableEventuallyEquals(
       ".hakutilanne",
       jklNormaalikouluTableContent,
-      "|"
+      "|",
     )
 
     await selectOrganisaatio(1)
@@ -171,7 +171,7 @@ describe("Hakutilannenäkymä", () => {
     await dataTableEventuallyEquals(
       ".hakutilanne",
       kulosaarenAlaAsteTableContent,
-      "|"
+      "|",
     )
   })
 
@@ -200,7 +200,7 @@ describe("Hakutilannenäkymä", () => {
     await dataTableEventuallyEquals(
       ".hakutilanne",
       aapajaoenKouluTableContent,
-      "|"
+      "|",
     )
   })
 
@@ -216,8 +216,8 @@ describe("Hakutilannenäkymä", () => {
         oppijaPath.href("/virkailija", {
           oppijaOid: kulosaarenOppijaOid,
           hakutilanneRef: kulosaarenAlaAsteOid,
-        })
-      )
+        }),
+      ),
     )
 
     await clickElement(".oppijaview__backbutton a")
@@ -256,12 +256,12 @@ describe("Hakutilannenäkymä", () => {
       oppijaPath.href("/virkailija", {
         oppijaOid: kulosaarenOppijaOid,
       }),
-      "valpas-useampi-peruskoulu"
+      "valpas-useampi-peruskoulu",
     )
 
     await expectLinkToEqual(
       ".oppijaview__backbutton a",
-      pathToUrl(kulosaariHakutilannePath)
+      pathToUrl(kulosaariHakutilannePath),
     )
 
     await waitTableLoadingHasFinished(".hakutilanne")
@@ -322,7 +322,7 @@ describe("Hakutilannenäkymä", () => {
     await dataTableEventuallyEquals(
       ".hakutilanne",
       internationalSchoolTableContent,
-      "|"
+      "|",
     )
   })
 
@@ -331,12 +331,12 @@ describe("Hakutilannenäkymä", () => {
     await urlIsEventually(pathToUrl(europeanSchoolOfHelsinkiHakutilannePath))
     await textEventuallyEquals(
       ".card__header",
-      europeanSchoolOfHelsinkiTableHead
+      europeanSchoolOfHelsinkiTableHead,
     )
     await dataTableEventuallyEquals(
       ".hakutilanne",
       europeanSchoolOfHelsinkiTableContent,
-      "|"
+      "|",
     )
   })
 
@@ -345,12 +345,12 @@ describe("Hakutilannenäkymä", () => {
     await urlIsEventually(pathToUrl(europeanSchoolOfHelsinkiHakutilannePath))
     await textEventuallyEquals(
       ".card__header",
-      europeanSchoolOfHelsinkiTableHeadLater
+      europeanSchoolOfHelsinkiTableHeadLater,
     )
     await dataTableEventuallyEquals(
       ".hakutilanne",
       europeanSchoolOfHelsinkiTableContentLater,
-      "|"
+      "|",
     )
   })
 
@@ -359,12 +359,12 @@ describe("Hakutilannenäkymä", () => {
     await urlIsEventually(pathToUrl(europeanSchoolOfHelsinkiHakutilannePath))
     await textEventuallyEquals(
       ".card__header",
-      europeanSchoolOfHelsinkiTableHeadLater
+      europeanSchoolOfHelsinkiTableHeadLater,
     )
     await dataTableEventuallyEquals(
       ".hakutilanne",
       europeanSchoolOfHelsinkiTableContentLater,
-      "|"
+      "|",
     )
   })
 
@@ -375,7 +375,7 @@ describe("Hakutilannenäkymä", () => {
     await dataTableEventuallyEquals(
       ".hakutilanne",
       "Sure-haut-aina-epäonnistuvat Valpas  | 18.7.2004 | 9C  | – | Virhe oppijan hakuhistorian hakemisessa | – | – | – |",
-      "|"
+      "|",
     )
   })
 })

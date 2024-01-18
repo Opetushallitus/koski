@@ -47,7 +47,7 @@ export const SuorittamisenKunnalleIlmoitetutView =
         }
         linkCreator={suorittamisvalvonnanKunnalleIlmoitetutPathWithOrg.href}
       />
-    )
+    ),
   )
 
 const OrganisaatioMissingView = () => (

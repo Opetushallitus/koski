@@ -4,7 +4,7 @@ import { Oid } from "../../state/common"
 import { nonNull } from "../../utils/arrays"
 
 export const useOppijaSelect = (
-  data: OppijaHakutilanteillaSuppeatTiedot[] | null
+  data: OppijaHakutilanteillaSuppeatTiedot[] | null,
 ) => {
   const [selectedOppijaOids, setSelectedOppijaOids] = useState<Oid[]>([])
   const selectedOppijat = useMemo(
@@ -14,12 +14,12 @@ export const useOppijaSelect = (
             .map((oid) => data.find((o) => o.oppija.henkilö.oid === oid))
             .filter(nonNull)
         : [],
-    [data, selectedOppijaOids]
+    [data, selectedOppijaOids],
   )
 
   const result = useMemo(
     () => ({ setSelectedOppijaOids, selectedOppijat }),
-    [selectedOppijat]
+    [selectedOppijat],
   )
 
   return result

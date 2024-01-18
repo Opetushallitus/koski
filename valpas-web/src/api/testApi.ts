@@ -17,8 +17,8 @@ export const resetMockDataToDate =
         "valpas/test/reset-mock-data/" + (tarkastelupäivä || "2021-09-01"),
         {
           force: force ? "true" : null,
-        }
-      )
+        },
+      ),
     )
 
 export const clearMockData = () =>

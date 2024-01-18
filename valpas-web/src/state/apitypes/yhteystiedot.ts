@@ -30,12 +30,12 @@ export type AlkuperäRekisteristä = {
 }
 
 export const isHakemukselta = (
-  yhteystiedot: Yhteystiedot<YhteystietojenAlkuperä>
+  yhteystiedot: Yhteystiedot<YhteystietojenAlkuperä>,
 ): yhteystiedot is Yhteystiedot<AlkuperäHakemukselta> =>
   isAlkuperäHakemukselta(yhteystiedot.alkuperä)
 
 export const isAlkuperäHakemukselta = (
-  alkuperä: YhteystietojenAlkuperä
+  alkuperä: YhteystietojenAlkuperä,
 ): alkuperä is AlkuperäHakemukselta => {
   const a = alkuperä as AlkuperäHakemukselta
   return (
@@ -47,12 +47,12 @@ export const isAlkuperäHakemukselta = (
 }
 
 export const isRekisteristä = (
-  yhteystiedot: Yhteystiedot<YhteystietojenAlkuperä>
+  yhteystiedot: Yhteystiedot<YhteystietojenAlkuperä>,
 ): yhteystiedot is Yhteystiedot<AlkuperäRekisteristä> =>
   isAlkuperäRekisteristä(yhteystiedot.alkuperä)
 
 export const isAlkuperäRekisteristä = (
-  alkuperä: YhteystietojenAlkuperä
+  alkuperä: YhteystietojenAlkuperä,
 ): alkuperä is AlkuperäRekisteristä => {
   const a = alkuperä as AlkuperäRekisteristä
   return a.alkuperä !== undefined && a.tyyppi !== undefined

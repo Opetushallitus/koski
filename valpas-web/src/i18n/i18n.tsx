@@ -19,7 +19,7 @@ let logMissingTranslationWarnings = true
 export const getLanguage = (): Language => {
   const maybeLanguage: unknown = Cookie.get("lang")
   const language = supportedLanguages.find(
-    (validLanguage) => validLanguage === maybeLanguage
+    (validLanguage) => validLanguage === maybeLanguage,
   )
 
   return language || "fi"
@@ -38,7 +38,7 @@ export const t = (id: TranslationId, params?: ParamsMap): Translation => {
   const tRecursive = (
     usedLanguage: Language,
     id: TranslationId,
-    params?: ParamsMap
+    params?: ParamsMap,
   ): Translation => {
     const localizedString = getString(id)
 
@@ -60,7 +60,7 @@ export const t = (id: TranslationId, params?: ParamsMap): Translation => {
 
 export const tParagraphs = (
   id: TranslationId,
-  params?: ParamsMap
+  params?: ParamsMap,
 ): Translation[] =>
   t(id, params)
     .split("\n")
@@ -70,7 +70,7 @@ export const tParagraphs = (
 const replaceParams = (source: string, params: ParamsMap): string =>
   Object.entries(params).reduce(
     (str, [key, value]) => str.replace(`{{${key}}}`, value.toString()),
-    source
+    source,
   )
 
 export type LocalizedTextProps = {
@@ -96,13 +96,13 @@ export const getLocalized = (localizedString: LocalizedString): string =>
   "KÄÄNNÖS PUUTTUU"
 
 export const getLocalizedMaybe = (
-  localizedString?: LocalizedString
+  localizedString?: LocalizedString,
 ): string | undefined =>
   localizedString === undefined ? undefined : getLocalized(localizedString)
 
 export const formatFixedNumber = (
   n: number | undefined,
-  fractionDigits: number
+  fractionDigits: number,
 ): string | undefined => n?.toFixed(fractionDigits).replace(".", ",")
 
 export const useLanguage = () => useMemo(() => getLanguage(), [])
@@ -120,7 +120,7 @@ export const makeAutoWrappable = (s: string): string =>
  * Palauttaa koodiviitteestä aina edes jonkilaisen esitettävän merkkijonon
  */
 export const koodiviiteToShortString = (
-  koodiviite: KoodistoKoodiviite
+  koodiviite: KoodistoKoodiviite,
 ): string =>
   getLocalizedMaybe(koodiviite.lyhytNimi) ||
   getLocalizedMaybe(koodiviite.nimi) ||

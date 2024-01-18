@@ -16,7 +16,7 @@ export const sessionStateStorage = <S, T>(
   name: string,
   initialState: S,
   mapSave: (a: S) => T = (a: unknown) => a as T,
-  mapRestore: (a: T) => S = (a: unknown) => a as S
+  mapRestore: (a: T) => S = (a: unknown) => a as S,
 ): StateStorage<S> => {
   return {
     get() {
@@ -30,7 +30,7 @@ export const sessionStateStorage = <S, T>(
 }
 
 export const useStoredState = <S>(
-  storage: StateStorage<S>
+  storage: StateStorage<S>,
 ): [S, Dispatch<SetStateAction<S>>] => {
   const initialState = useMemo(() => storage.get(), [storage])
 

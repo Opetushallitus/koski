@@ -37,7 +37,7 @@ export type MinimiOppijaKuntailmoitus = {
 }
 
 export const isTurvakiellollinenKuntailmoitus = (
-  kuntailmoitus: MinimiOppijaKuntailmoitus
+  kuntailmoitus: MinimiOppijaKuntailmoitus,
 ): boolean =>
   kuntailmoitus.kunta === undefined &&
   kuntailmoitus.tekijä === undefined &&

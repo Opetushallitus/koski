@@ -12,7 +12,7 @@ describe("Accordion", () => {
     const accordion = createAccordion(testContent)
 
     testLabels.map((labelText) =>
-      fireEvent.click(accordion.getByText(labelText))
+      fireEvent.click(accordion.getByText(labelText)),
     )
 
     expectToMatchSnapshot(accordion)
@@ -37,5 +37,5 @@ const createAccordion = (items: Record<string, string>) =>
         label,
         render: () => content,
       }))}
-    />
+    />,
   )

@@ -70,6 +70,6 @@ const useHetulist = () => {
       set: setState,
       list: parseHetulikes(state),
     }),
-    [state]
+    [state],
   )
 }

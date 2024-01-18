@@ -7,7 +7,7 @@ export type VisibleForKäyttöoikeusrooliProps = {
 }
 
 export const VisibleForKäyttöoikeusrooli = (
-  props: VisibleForKäyttöoikeusrooliProps
+  props: VisibleForKäyttöoikeusrooliProps,
 ) => {
   const roolit = useKäyttöoikeusroolit()
   const checkRooli = props.rooli

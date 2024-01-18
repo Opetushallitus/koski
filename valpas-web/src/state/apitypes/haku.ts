@@ -32,7 +32,7 @@ export type HakuSuppeatTiedot = Pick<
 }
 
 export const hakuMuokattuOrd = Ord.contramap(
-  (h: HakuSuppeatTiedot) => (h["muokattu"] as ISODate) || "0000-00-00"
+  (h: HakuSuppeatTiedot) => (h["muokattu"] as ISODate) || "0000-00-00",
 )(Ord.reverse(string.Ord))
 
 export const latestHaku = (haut: HakuSuppeatTiedot[]) =>
@@ -44,6 +44,6 @@ export const sortHakuLaajatTiedot = A.sortBy<HakuLaajatTiedot>([
 
 export const selectByHakutoive = (
   haut: HakuSuppeatTiedot[],
-  predicate: (hakutoive: SuppeaHakutoive) => boolean
+  predicate: (hakutoive: SuppeaHakutoive) => boolean,
 ) =>
   A.chain((haku: HakuSuppeatTiedot) => haku.hakutoiveet.filter(predicate))(haut)

@@ -11,14 +11,14 @@ const ignoreCalmmBaretErrors = () => {
   allowNetworkError("webpack-internal", "componentWillMount has been renamed")
   allowNetworkError(
     "webpack-internal",
-    "componentWillReceiveProps has been renamed"
+    "componentWillReceiveProps has been renamed",
   )
 }
 
 export const resetKansalainen = async (
   initialPath: string,
   force: boolean = false,
-  tarkastelupäivä?: string
+  tarkastelupäivä?: string,
 ) => {
   ignoreCalmmBaretErrors()
   await deleteCookies()
@@ -32,7 +32,7 @@ export const loginKansalainenAs = async (
   initialPath: string,
   hetu: string,
   forceReset: boolean = false,
-  tarkastelupäivä?: string
+  tarkastelupäivä?: string,
 ) => {
   await eventually(async () => {
     await resetKansalainen(initialPath, forceReset, tarkastelupäivä)
@@ -41,6 +41,6 @@ export const loginKansalainenAs = async (
   ;(await $("#hetu")).sendKeys(hetu, Key.ENTER)
   await driver.wait(
     until.elementLocated(By.css("article.kansalainenpage")),
-    defaultTimeout
+    defaultTimeout,
   )
 }
