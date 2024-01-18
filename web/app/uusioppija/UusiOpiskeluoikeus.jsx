@@ -88,6 +88,7 @@ export default ({ opiskeluoikeusAtom }) => {
     )
   })
   const opintokokonaisuusAtom = Atom()
+  const osaamismerkkiAtom = Atom()
   const suoritustyyppiAtom = Atom()
 
   taiteenPerusopetusOrganisaationUlkopuoleltaAtom
@@ -131,6 +132,21 @@ export default ({ opiskeluoikeusAtom }) => {
   const maksuttomuusTiedonVoiValitaP = Bacon.combineWith(
     dateAtom.map(checkAlkamispäivä),
     suoritusAtom.flatMap(checkSuoritus),
+    R.and
+  )
+
+  const suorituskielenVoiValitaP = Bacon.combineWith(
+    tyyppiAtom.map(
+      (tyyppi) =>
+        tyyppi &&
+        tyyppi.koodiarvo !== 'internationalschool' &&
+        tyyppi.koodiarvo !== 'europeanschoolofhelsinki' &&
+        tyyppi.koodiarvo !== 'taiteenperusopetus' &&
+        tyyppi.koodiarvo !== 'ebtutkinto'
+    ),
+    suoritustyyppiAtom.map(
+      (tyyppi) => !tyyppi || tyyppi.koodiarvo !== 'vstosaamismerkki'
+    ),
     R.and
   )
 
@@ -194,6 +210,7 @@ export default ({ opiskeluoikeusAtom }) => {
     tuvaJärjestämislupaAtom,
     suoritustyyppiAtom,
     opintokokonaisuusAtom,
+    osaamismerkkiAtom,
     onTaiteenPerusopetusOpiskeluoikeusAtom,
     tpoOppimääräAtom,
     tpoToteutustapaAtom,
@@ -228,14 +245,7 @@ export default ({ opiskeluoikeusAtom }) => {
         />
       )}
       {ift(
-        tyyppiAtom.map(
-          (tyyppi) =>
-            tyyppi &&
-            tyyppi.koodiarvo !== 'internationalschool' &&
-            tyyppi.koodiarvo !== 'europeanschoolofhelsinki' &&
-            tyyppi.koodiarvo !== 'taiteenperusopetus' &&
-            tyyppi.koodiarvo !== 'ebtutkinto'
-        ),
+        suorituskielenVoiValitaP,
         <Suorituskieli
           suorituskieliAtom={suorituskieliAtom}
           suorituskieletP={suorituskieletP}
@@ -372,6 +382,7 @@ export default ({ opiskeluoikeusAtom }) => {
               suoritustyyppiAtom={suoritustyyppiAtom}
               oppilaitosAtom={oppilaitosAtom}
               suorituskieliAtom={suorituskieliAtom}
+              osaamismerkkiAtom={osaamismerkkiAtom}
             />
           )
         if (tyyppi === 'luva')
@@ -802,6 +813,7 @@ const makeOpiskeluoikeus = (
   tuvaJärjestämislupa,
   suoritustyyppi,
   opintokokonaisuus,
+  osaamismerkki,
   onTaiteenPerusopetusOpiskeluoikeus,
   tpoOppimäärä,
   tpoToteutustapa,
@@ -826,6 +838,11 @@ const makeOpiskeluoikeus = (
     ) ||
     opintokokonaisuus
 
+  const vstOsaamismerkkiOk =
+    !suoritustyyppi ||
+    !['vstosaamismerkki'].includes(suoritustyyppi.koodiarvo) ||
+    osaamismerkki
+
   const muksOpintokokonaisuusOk =
     tyyppi &&
     (tyyppi.koodiarvo === 'muukuinsaanneltykoulutus'
@@ -843,6 +860,7 @@ const makeOpiskeluoikeus = (
     (!maksuttomuusTiedonVoiValita || maksuttomuus !== undefined) &&
     (!onTuvaOpiskeluoikeus || tuvaJärjestämislupa) &&
     vstOpintokokonaisuusOk &&
+    vstOsaamismerkkiOk &&
     muksOpintokokonaisuusOk &&
     (!onTaiteenPerusopetusOpiskeluoikeus ||
       (tpoOppimäärä && tpoToteutustapa && tpoTaiteenala))
@@ -882,6 +900,14 @@ const makeOpiskeluoikeus = (
       suoritustyyppi.koodiarvo === 'vstvapaatavoitteinenkoulutus'
     ) {
       suoritus.koulutusmoduuli.opintokokonaisuus = opintokokonaisuus
+    }
+
+    if (
+      osaamismerkki &&
+      tyyppi.koodiarvo === 'vapaansivistystyonkoulutus' &&
+      suoritustyyppi.koodiarvo === 'vstosaamismerkki'
+    ) {
+      suoritus.koulutusmoduuli.tunniste = osaamismerkki
     }
 
     const opiskeluoikeus = {

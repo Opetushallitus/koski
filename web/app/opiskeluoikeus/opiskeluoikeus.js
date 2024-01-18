@@ -28,6 +28,7 @@ const jatkuvanOppimisenVapaanSivistystyönKoulutuksenTilat = [
   'keskeytynyt',
   'lasna'
 ]
+const osaamismerkinVapaanSivistystyönTilat = ['hyvaksytystisuoritettu']
 const tuvaTilat = [
   'katsotaaneronneeksi',
   'lasna',
@@ -142,7 +143,8 @@ const filterBySuorituksenTyyppi = (
         oppivelvollisilleSuunnatunVapaanSivistystyönKoulutuksenTilat,
       vstvapaatavoitteinenkoulutus:
         vapaatavoitteisenVapaanSivistystyönKoulutuksenTilat,
-      vstjotpakoulutus: jatkuvanOppimisenVapaanSivistystyönKoulutuksenTilat
+      vstjotpakoulutus: jatkuvanOppimisenVapaanSivistystyönKoulutuksenTilat,
+      vstosaamismerkki: osaamismerkinVapaanSivistystyönTilat
     }
 
     const sallitutTilat =
