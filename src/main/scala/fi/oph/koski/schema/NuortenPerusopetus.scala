@@ -221,6 +221,7 @@ Huom: toiminta-alue arviointeineen on kuvattu oppiaineen suorituksessa.""")
   @Tooltip("Opiskeleeko oppilas toiminta-alueittain? Toiminta-alueittain opiskelussa oppilaalla on yksilöllistetty oppimäärä ja opetus järjestetty toiminta-alueittain. Tuolloin oppilaalla on aina erityisen tuen päätös. Oppilaan opetussuunnitelmaan kuuluvat toiminta-alueet ovat motoriset taidot, kieli ja kommunikaatio, sosiaaliset taidot, päivittäisten toimintojen taidot ja kognitiiviset taidot.")
   @Title("Opiskelee toiminta-alueittain")
   opiskeleeToimintaAlueittain: Boolean = false,
+  @Deprecated("Ei käytössä 19.1.2024 eteenpäin")
   @Description("Tätä tietoa ei tarvitse jatkossa välittää. Tieto erityisryhmän toteutuspaikasta välitetään toteutuspaikka-rakenteessa.")
   @Tooltip("Suorittaako erityisoppilas koulutusta omassa erityisryhmässään vai inklusiivisesti opetuksen mukana.")
   @OksaUri("tmpOKSAID444", "opetusryhmä")

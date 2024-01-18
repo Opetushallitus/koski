@@ -1,3 +1,7 @@
+## 19.1.2024
+
+- Deprekoitu tieto "erityisryhmässä" rakenteesta "erityisenTuenPäätökset"
+
 ## 21.12.2023
 
 - Sallitaan taiteen perusopetuksen opiskeluoikeuden tilaksi väliaikaisesti keskeytynyt.
