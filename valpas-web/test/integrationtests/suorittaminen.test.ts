@@ -61,33 +61,33 @@ import {
 
 const jklSuorittaminenPath = suorittaminenPathWithOrg.href(
   "/virkailija",
-  jyväskylänNormaalikouluOid
+  jyväskylänNormaalikouluOid,
 )
 
 const aapajokiSuorittaminenPath = suorittaminenPathWithOrg.href(
   "/virkailija",
-  aapajoenKouluOid
+  aapajoenKouluOid,
 )
 
 const stadinAmmattiopistoSuorittaminenPath = suorittaminenPathWithOrg.href(
   "/virkailija",
-  stadinAmmattiopistoOid
+  stadinAmmattiopistoOid,
 )
 
 const internationalSchoolSuorittaminenPath = suorittaminenPathWithOrg.href(
   "/virkailija",
-  internationalSchoolOid
+  internationalSchoolOid,
 )
 
 const europeanSchoolOfHelsinkiSuorittaminenPath = suorittaminenPathWithOrg.href(
   "/virkailija",
-  europeanSchoolOfHelsinkiOid
+  europeanSchoolOfHelsinkiOid,
 )
 
 const viikinNormaalikouluId = "1.2.246.562.10.81927839589"
 const viikinNormaalikouluSuorittaminenPath = suorittaminenPathWithOrg.href(
   "/virkailija",
-  viikinNormaalikouluId
+  viikinNormaalikouluId,
 )
 
 describe("Suorittamisen valvonta -näkymä", () => {
@@ -96,18 +96,18 @@ describe("Suorittamisen valvonta -näkymä", () => {
       suorittaminenListaPath,
       "valpas-pelkkä-suorittaminen-amis",
       true,
-      "2021-09-02"
+      "2021-09-02",
     )
     await urlIsEventually(pathToUrl(stadinAmmattiopistoSuorittaminenPath))
 
     await textEventuallyEquals(
       ".card__header",
-      stadinAmmattiopistoSuorittaminenTableHead
+      stadinAmmattiopistoSuorittaminenTableHead,
     )
     await dataTableEventuallyEquals(
       ".suorittaminen",
       stadinAmmattiopistoSuorittaminenTableContent,
-      "|"
+      "|",
     )
   })
 
@@ -119,12 +119,12 @@ describe("Suorittamisen valvonta -näkymä", () => {
 
     await textEventuallyEquals(
       ".card__header",
-      internationalSchoolSuorittaminenTableHead
+      internationalSchoolSuorittaminenTableHead,
     )
     await dataTableEventuallyEquals(
       ".suorittaminen",
       internationalSchoolSuorittaminenTableContent,
-      "|"
+      "|",
     )
   })
 
@@ -136,12 +136,12 @@ describe("Suorittamisen valvonta -näkymä", () => {
 
     await textEventuallyEquals(
       ".card__header",
-      europeanSchoolOfHelsinkiSuorittaminenTableHead
+      europeanSchoolOfHelsinkiSuorittaminenTableHead,
     )
     await dataTableEventuallyEquals(
       ".suorittaminen",
       europeanSchoolOfHelsinkiSuorittaminenTableContent,
-      "|"
+      "|",
     )
   })
 
@@ -170,19 +170,19 @@ describe("Suorittamisen valvonta -näkymä", () => {
       hakutilannePath,
       "valpas-hki-suorittaminen",
       true,
-      "2021-09-02"
+      "2021-09-02",
     )
     await selectOrganisaatioByNimi("Stadin ammatti- ja aikuisopisto")
 
     await urlIsEventually(pathToUrl(stadinAmmattiopistoSuorittaminenPath))
     await textEventuallyEquals(
       ".card__header",
-      stadinAmmattiopistoSuorittaminenTableHead
+      stadinAmmattiopistoSuorittaminenTableHead,
     )
     await dataTableEventuallyEquals(
       ".suorittaminen",
       stadinAmmattiopistoSuorittaminenTableContent,
-      "|"
+      "|",
     )
   })
 
@@ -227,7 +227,7 @@ describe("Suorittamisen valvonta -näkymä", () => {
 
     // Käy jossakin oppijanäkymässä
     await clickElement(
-      `.suorittaminen .table__row:first-child td:first-child a`
+      `.suorittaminen .table__row:first-child td:first-child a`,
     )
     await expectElementEventuallyVisible(".oppijaview__backbutton a")
     await clickElement(".oppijaview__backbutton a")
@@ -250,7 +250,7 @@ describe("Suorittamisen valvonta -näkymä", () => {
     await teeKuntailmoitus(
       oppijaOid,
       "Jkl-Lukio-Kulosaarelainen Valpas",
-      "010104A187H"
+      "010104A187H",
     )
 
     await goToLocation(suorittaminenListaJklPath)
@@ -272,7 +272,7 @@ describe("Suorittamisen valvonta -näkymä", () => {
     await teeKuntailmoitus(
       oppijaOid,
       "Lukio-opiskelija-valmistunut Valpas",
-      "271105A835H"
+      "271105A835H",
     )
 
     await goToLocation(suorittaminenListaJklPath)
@@ -293,7 +293,7 @@ describe("Suorittamisen valvonta -näkymä", () => {
       suorittaminenListaPath,
       "valpas-pelkkä-suorittaminen-amis",
       false,
-      "2021-09-02"
+      "2021-09-02",
     )
     await expectElementEventuallyNotVisible(oppijaRowSelector)
 
@@ -301,7 +301,7 @@ describe("Suorittamisen valvonta -näkymä", () => {
       suorittaminenListaPath,
       "valpas-pelkkä-suorittaminen-amis-omnia",
       false,
-      "2021-09-02"
+      "2021-09-02",
     )
     await expectElementEventuallyVisible(oppijaRowSelector)
   })
@@ -316,7 +316,7 @@ describe("Suorittamisen valvonta -näkymä", () => {
       suorittaminenListaPath,
       "valpas-pelkkä-suorittaminen-amis",
       false,
-      "2022-03-02"
+      "2022-03-02",
     )
     await expectElementEventuallyNotVisible(oppijaRowSelector)
 
@@ -324,7 +324,7 @@ describe("Suorittamisen valvonta -näkymä", () => {
       suorittaminenListaPath,
       "valpas-pelkkä-suorittaminen-amis-omnia",
       false,
-      "2022-03-02"
+      "2022-03-02",
     )
     await expectElementEventuallyVisible(oppijaRowSelector)
   })
@@ -339,7 +339,7 @@ describe("Suorittamisen valvonta -näkymä", () => {
       suorittaminenListaPath,
       "valpas-pelkkä-suorittaminen-amis",
       false,
-      "2022-03-02"
+      "2022-03-02",
     )
     await expectElementEventuallyNotVisible(oppijaRowSelector)
 
@@ -347,7 +347,7 @@ describe("Suorittamisen valvonta -näkymä", () => {
       suorittaminenListaPath,
       "valpas-pelkkä-suorittaminen-ressu",
       false,
-      "2022-03-02"
+      "2022-03-02",
     )
     await expectElementEventuallyVisible(oppijaRowSelector)
   })
@@ -362,7 +362,7 @@ describe("Suorittamisen valvonta -näkymä", () => {
       suorittaminenListaPath,
       "valpas-pelkkä-suorittaminen-amis",
       false,
-      "2022-03-02"
+      "2022-03-02",
     )
     await expectElementEventuallyVisible(oppijaRowSelector)
 
@@ -370,7 +370,7 @@ describe("Suorittamisen valvonta -näkymä", () => {
       suorittaminenListaPath,
       "valpas-pelkkä-suorittaminen-amis-omnia",
       false,
-      "2022-03-02"
+      "2022-03-02",
     )
     await expectElementEventuallyNotVisible(oppijaRowSelector)
   })
@@ -381,7 +381,7 @@ describe("Suorittamisen valvonta -näkymä", () => {
       suorittaminenListaPath,
       "valpas-pelkkä-suorittaminen-amis",
       true,
-      "2023-05-31"
+      "2023-05-31",
     )
     await urlIsEventually(pathToUrl(stadinAmmattiopistoSuorittaminenPath))
 
@@ -389,7 +389,7 @@ describe("Suorittamisen valvonta -näkymä", () => {
     await dataTableEventuallyEquals(
       ".suorittaminen",
       stadinAmmattiopistoSuorittaminen20230531TableContent,
-      "|"
+      "|",
     )
   })
 
@@ -399,7 +399,7 @@ describe("Suorittamisen valvonta -näkymä", () => {
       suorittaminenListaPath,
       "valpas-pelkkä-suorittaminen-amis",
       true,
-      "2023-06-18"
+      "2023-06-18",
     )
     await urlIsEventually(pathToUrl(stadinAmmattiopistoSuorittaminenPath))
 
@@ -407,7 +407,7 @@ describe("Suorittamisen valvonta -näkymä", () => {
     await dataTableEventuallyEquals(
       ".suorittaminen",
       stadinAmmattiopistoSuorittaminen20230531TableContent,
-      "|"
+      "|",
     )
   })
 
@@ -422,12 +422,12 @@ describe("Suorittamisen valvonta -näkymä", () => {
 
       await textEventuallyEquals(
         ".card__header",
-        jklNormaalikouluSuorittaminenTableHead
+        jklNormaalikouluSuorittaminenTableHead,
       )
       await dataTableEventuallyEquals(
         ".suorittaminen",
         jklNormaalikouluSuorittaminenTableContent,
-        "|"
+        "|",
       )
     })
   })
@@ -442,12 +442,12 @@ describe("Suorittamisen valvonta -näkymä", () => {
 
     await textEventuallyEquals(
       ".card__header",
-      europeanSchoolOfHelsinki2023SuorittaminenTableHead
+      europeanSchoolOfHelsinki2023SuorittaminenTableHead,
     )
     await dataTableEventuallyEquals(
       ".suorittaminen",
       europeanSchoolOfHelsinki2023SuorittaminenTableContent,
-      "|"
+      "|",
     )
   })
 })

@@ -17,7 +17,7 @@ export const goToLocation = async (path: string) => {
     // TODO: Tutki miksi PUBLIC_URL ei asetu enää tänne
     `${process.env.BACKEND_HOST || "http://localhost:7021"}${
       process.env.PUBLIC_URL || "/valpas"
-    }${path}?date=${browserDate}` + featureQuery()
+    }${path}?date=${browserDate}` + featureQuery(),
   )
 }
 
@@ -33,7 +33,7 @@ export const getCurrentUrl = () => driver.getCurrentUrl()
 
 export const urlIsEventually = async (
   expectedUrl: string,
-  timeout: number = defaultTimeout
+  timeout: number = defaultTimeout,
 ) => {
   try {
     await eventually(async () => {
@@ -41,7 +41,7 @@ export const urlIsEventually = async (
     }, timeout)
   } catch (error) {
     throw new Error(
-      `Expected URL eventually to be ${expectedUrl}. It is currently ${await getCurrentUrl()}`
+      `Expected URL eventually to be ${expectedUrl}. It is currently ${await getCurrentUrl()}`,
     )
   }
 }
@@ -56,7 +56,7 @@ export const $ = async (selector: string, timeout = shortTimeout) => {
   try {
     const el = await driver.wait(
       until.elementLocated(By.css(selector)),
-      timeout
+      timeout,
     )
     return await driver.wait(until.elementIsVisible(el), timeout)
   } catch (_err) {

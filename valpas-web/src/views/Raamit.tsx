@@ -41,7 +41,7 @@ const OppijaRaamitLoader = () => {
 }
 
 const LocalRaamit = React.lazy(
-  () => import("../components/navigation/LocalRaamit")
+  () => import("../components/navigation/LocalRaamit"),
 )
 
 let externalRaamitLoadInitiated = false
@@ -57,8 +57,8 @@ const loadExternalRaamitScript = (source: string) => () => {
 }
 
 const loadExternalVirkailijaRaamitScript = loadExternalRaamitScript(
-  "/virkailija-raamit/apply-raamit.js"
+  "/virkailija-raamit/apply-raamit.js",
 )
 const loadExternalOppijaRaamitScript = loadExternalRaamitScript(
-  "/oppija-raamit/js/apply-raamit.js"
+  "/oppija-raamit/js/apply-raamit.js",
 )

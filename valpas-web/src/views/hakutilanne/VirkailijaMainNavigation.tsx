@@ -48,7 +48,7 @@ export const VirkailijaMainNavigation = () => {
         visibleToRoles: maksuttomuudenValvontaAllowed,
       },
     ],
-    []
+    [],
   )
 
   const navOptions: MainNavigationItem[] = useMemo(() => {

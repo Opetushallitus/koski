@@ -6,7 +6,7 @@ type NonFalsy<T> = T extends false | "" ? never : T
  * @returns True, if x is not falsy, null or undefined
  */
 export function filterFalsy<T>(
-  x: T | "" | false | undefined | null
+  x: T | "" | false | undefined | null,
 ): x is NonNullable<T> & NonFalsy<T> {
   if (typeof x === "string" && x === "") {
     return false

@@ -39,7 +39,7 @@ const ressunLukioHakutilannePath = nivelvaiheenHakutilannePathWithOrg.href(
   "/virkailija",
   {
     organisaatioOid: ressunLukioOid,
-  }
+  },
 )
 
 const jyväskylänNormaalikouluHakutilannePath =
@@ -90,14 +90,14 @@ describe("Nivelvaiheen näkymästä kuntailmoituksen tekeminen", () => {
     await dataTableEventuallyEquals(
       ".hakutilanne",
       jyväskylänNormaalikouluNivelvaiheTableContent,
-      "|"
+      "|",
     )
   })
 })
 
 const teeKuntailmoitusHakutilannenäkymästä = async (
   username: string,
-  tekijä: Tekijä
+  tekijä: Tekijä,
 ) => {
   const oppijat = teeOppijat(tekijä)
 
@@ -113,7 +113,7 @@ const teeKuntailmoitusHakutilannenäkymästä = async (
   const forms = await getIlmoitusForm()
   expect(
     forms.length,
-    "Lomakkeita näkyy yhtä monta kuin valittuja oppijoita"
+    "Lomakkeita näkyy yhtä monta kuin valittuja oppijoita",
   ).toBe(oppijat.length)
 
   for (const form of forms) {
@@ -121,7 +121,7 @@ const teeKuntailmoitusHakutilannenäkymästä = async (
     const oppija = oppijat.find((o) => form.subtitle.includes(o.oid))!!
     expect(
       oppija,
-      `Lomakkeen oppija "${form.title}" "${form.subtitle}" on valittujen oppijoiden joukossa`
+      `Lomakkeen oppija "${form.title}" "${form.subtitle}" on valittujen oppijoiden joukossa`,
     ).toBeDefined()
     expect(form.title).toBe(oppija.title)
 
@@ -169,7 +169,7 @@ const openHakutilanneView = async (username: string) => {
   await dataTableEventuallyEquals(
     ".hakutilanne",
     ressunLukioTableContent_syyskuu2021,
-    "|"
+    "|",
   )
 }
 

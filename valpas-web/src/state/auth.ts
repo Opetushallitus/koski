@@ -33,15 +33,15 @@ const getCurrentUser =
       E.map((response) => response.data as CurrentUser),
       E.getOrElse(
         (fail) =>
-          (fail.status === 403 ? "forbidden" : "unauthorized") as CurrentUser
-      )
+          (fail.status === 403 ? "forbidden" : "unauthorized") as CurrentUser,
+      ),
     )
 
 export const getCurrentVirkailijaUser = getCurrentUser(
-  fetchCurrentVirkailijaUser
+  fetchCurrentVirkailijaUser,
 )
 export const getCurrentKansalainenUser = getCurrentUser(
-  fetchCurrentKansalainenUser
+  fetchCurrentKansalainenUser,
 )
 
 export const isLoggedIn = (user: CurrentUser) => user !== "unauthorized"

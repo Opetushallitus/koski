@@ -19,7 +19,7 @@ describe("Kuntailmoituksen tekeminen 1/7", () => {
       ilmoitusPath,
       "valpas-jkl-normaali-perus",
       false,
-      "2021-12-05"
+      "2021-12-05",
     )
 
     await dataTableEventuallyEquals(
@@ -41,7 +41,7 @@ describe("Kuntailmoituksen tekeminen 1/7", () => {
         Ysiluokka-valmis-ja-ilmoitettu-ja-uusi-nivelvaihe Valpas	| –	         | Pyhtään kunta	              | 27.6.2021	  | Ei
         Ysiluokka-valmis-keväällä-2021-ilmo Valpas	              | –	         | Pyhtään kunta	              | 5.12.2021	  | Ei
       `,
-      "|"
+      "|",
     )
   })
 })

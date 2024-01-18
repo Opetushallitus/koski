@@ -39,7 +39,7 @@ export type DropdownOption<T> = {
 
 export const Dropdown = <T,>(props: DropdownProps<T>) => {
   const showEmptyValue = !props.options.some(
-    (option) => option.value === props.value
+    (option) => option.value === props.value,
   )
   const sortedOptions = props.sort
     ? A.sort(props.sort)(props.options)
@@ -76,7 +76,7 @@ export const Dropdown = <T,>(props: DropdownProps<T>) => {
 }
 
 export const listToOptions = <T extends FilterableValue>(
-  list: T[]
+  list: T[],
 ): Array<DropdownOption<T>> =>
   list.map((item) => ({
     value: item,
@@ -84,7 +84,7 @@ export const listToOptions = <T extends FilterableValue>(
   }))
 
 export const koodistoToOptions = (
-  koodiviitteet: KoodistoKoodiviite[]
+  koodiviitteet: KoodistoKoodiviite[],
 ): Array<DropdownOption<string>> =>
   koodiviitteet.map((koodiviite) => ({
     value: koodiviite.koodiarvo,
@@ -92,7 +92,7 @@ export const koodistoToOptions = (
   }))
 
 export const organisaatiotToOptions = (
-  organisaatiot: Organisaatio[]
+  organisaatiot: Organisaatio[],
 ): Array<DropdownOption<string>> =>
   organisaatiot.map((org) => ({
     value: org.oid,
@@ -100,5 +100,5 @@ export const organisaatiotToOptions = (
   }))
 
 export const displayOrd = Ord.contramap((a: DropdownOption<any>) => a.display)(
-  string.Ord
+  string.Ord,
 )

@@ -25,7 +25,7 @@ export type KunnalleIlmoitetutTableProps = {
 } & Pick<DataTableProps, "onCountChange">
 
 export const KunnalleIlmoitetutTable = (
-  props: KunnalleIlmoitetutTableProps
+  props: KunnalleIlmoitetutTableProps,
 ) => {
   const columns: Column[] = useMemo(
     () => [
@@ -47,7 +47,7 @@ export const KunnalleIlmoitetutTable = (
         tooltip: t("kunnalleilmoitetut_muu_haku_tooltip"),
       },
     ],
-    []
+    [],
   )
 
   const basePath = useBasePath()
@@ -55,7 +55,7 @@ export const KunnalleIlmoitetutTable = (
     props.data,
     props.organisaatioOid,
     basePath,
-    props.backRefName
+    props.backRefName,
   )
 
   return (
@@ -73,7 +73,7 @@ const toTableData = (
   data: OppijaHakutilanteillaSuppeatTiedot[],
   organisaatioOid: Oid,
   basePath: string,
-  backRefName: keyof OppijaViewBackNavProps
+  backRefName: keyof OppijaViewBackNavProps,
 ): Datum[] =>
   A.chain(oppijaToTableData(organisaatioOid, basePath, backRefName))(data)
 
@@ -81,7 +81,7 @@ const oppijaToTableData =
   (
     organisaatioOid: Oid,
     basePath: string,
-    backRefName: keyof OppijaViewBackNavProps
+    backRefName: keyof OppijaViewBackNavProps,
   ) =>
   (oppija: OppijaHakutilanteillaSuppeatTiedot): Datum[] =>
     oppija.kuntailmoitukset.map((kuntailmoitus) => ({
@@ -99,7 +99,7 @@ const oppijanNimi = (
   oppija: OppijaHakutilanteillaSuppeatTiedot,
   organisaatioOid: Oid,
   basePath: string,
-  backRefName: keyof OppijaViewBackNavProps
+  backRefName: keyof OppijaViewBackNavProps,
 ): Value => {
   const value = `${oppija.oppija.henkilö.sukunimi} ${oppija.oppija.henkilö.etunimet}`
   const linkTo =
@@ -135,6 +135,6 @@ const muuHaku = (ilmoitus: KuntailmoitusSuppeatTiedot): Value => ({
     ilmoitus.hakenutMuualle === undefined
       ? "–"
       : ilmoitus.hakenutMuualle
-      ? t("Kyllä")
-      : t("Ei"),
+        ? t("Kyllä")
+        : t("Ei"),
 })

@@ -29,7 +29,7 @@ export type OrganisaatioValitsinProps = {
 
 export const useStoredOrgState = (
   organisaatioTyyppiKey: string,
-  allowedOrgs: OrganisaatioHierarkia[]
+  allowedOrgs: OrganisaatioHierarkia[],
 ) => {
   const organisaatioOids = allowedOrgs.map((o) => o.oid)
   const fallback = organisaatioOids[0] || null
@@ -41,15 +41,15 @@ export const useStoredOrgState = (
       (serialized) =>
         serialized && organisaatioOids.includes(serialized)
           ? serialized
-          : fallback
-    )
+          : fallback,
+    ),
   )
 }
 
 export const OrganisaatioValitsin = (props: OrganisaatioValitsinProps) => {
   const [, setStoredOrgOid] = useStoredOrgState(
     props.organisaatioTyyppi,
-    props.organisaatioHierarkia
+    props.organisaatioHierarkia,
   )
 
   const onChange = (oid?: Oid) => {
@@ -77,7 +77,7 @@ export type DummyOrganisaatioValitsinProps = {
 }
 
 export const DummyOrganisaatioValitsin = (
-  props: DummyOrganisaatioValitsinProps
+  props: DummyOrganisaatioValitsinProps,
 ) => (
   <Dropdown
     disabled
@@ -94,18 +94,18 @@ export const getOrganisaatiot = (
   käyttöoikeusroolit: OrganisaatioJaKayttooikeusrooli[],
   käytettäväKäyttöoikeus: Kayttooikeusrooli,
   organisaatioTyyppi: string,
-  haeLakkautetut: boolean = true
+  haeLakkautetut: boolean = true,
 ): OrganisaatioHierarkia[] => {
   const sallitutKäyttöoikeusroolit = käyttöoikeusroolit.filter(
     (kayttooikeusrooli) =>
-      kayttooikeusrooli.kayttooikeusrooli === käytettäväKäyttöoikeus
+      kayttooikeusrooli.kayttooikeusrooli === käytettäväKäyttöoikeus,
   )
   const kaikki = pipe(
     sallitutKäyttöoikeusroolit,
     A.map((kayttooikeus) =>
-      getOrganisaatiotHierarkiastaRecur([kayttooikeus.organisaatioHierarkia])
+      getOrganisaatiotHierarkiastaRecur([kayttooikeus.organisaatioHierarkia]),
     ),
-    A.flatten
+    A.flatten,
   )
 
   return pipe(
@@ -113,9 +113,9 @@ export const getOrganisaatiot = (
     A.filter(
       (organisaatioHierarkia) =>
         organisaatioHierarkia.organisaatiotyypit.includes(organisaatioTyyppi) &&
-        (haeLakkautetut || organisaatioHierarkia.aktiivinen)
+        (haeLakkautetut || organisaatioHierarkia.aktiivinen),
     ),
-    A.sortBy([Ord.reverse(byAktiivinen), byLocalizedNimi])
+    A.sortBy([Ord.reverse(byAktiivinen), byLocalizedNimi]),
   )
 }
 
@@ -123,20 +123,20 @@ const byAktiivinen = pipe(
   boolean.Ord,
   Ord.contramap(
     (organisaatioHierarkia: OrganisaatioHierarkia) =>
-      organisaatioHierarkia.aktiivinen
-  )
+      organisaatioHierarkia.aktiivinen,
+  ),
 )
 
 const byLocalizedNimi = pipe(
   string.Ord,
   Ord.contramap(
     (organisaatioHierarkia: OrganisaatioHierarkia) =>
-      `${getLocalized(organisaatioHierarkia.nimi)}`
-  )
+      `${getLocalized(organisaatioHierarkia.nimi)}`,
+  ),
 )
 
 const getOrganisaatiotHierarkiastaRecur = (
-  organisaatioHierarkiat: OrganisaatioHierarkia[]
+  organisaatioHierarkiat: OrganisaatioHierarkia[],
 ): OrganisaatioHierarkia[] => {
   if (!organisaatioHierarkiat.length) {
     return []
@@ -144,10 +144,10 @@ const getOrganisaatiotHierarkiastaRecur = (
     const lapset = pipe(
       organisaatioHierarkiat,
       A.map((organisaatioHierarkia) =>
-        getOrganisaatiotHierarkiastaRecur(organisaatioHierarkia.children)
+        getOrganisaatiotHierarkiastaRecur(organisaatioHierarkia.children),
       ),
       A.flatten,
-      A.map(removeChildren)
+      A.map(removeChildren),
     )
 
     return organisaatioHierarkiat.map(removeChildren).concat(lapset)
@@ -155,14 +155,14 @@ const getOrganisaatiotHierarkiastaRecur = (
 }
 
 const removeChildren = (
-  organisaatioHierarkia: OrganisaatioHierarkia
+  organisaatioHierarkia: OrganisaatioHierarkia,
 ): OrganisaatioHierarkia => ({
   ...organisaatioHierarkia,
   children: [],
 })
 
 const eqOrgs = Eq.fromEquals(
-  (a: OrganisaatioHierarkia, b: OrganisaatioHierarkia) => a.oid === b.oid
+  (a: OrganisaatioHierarkia, b: OrganisaatioHierarkia) => a.oid === b.oid,
 )
 
 const getOrgOptions = (orgs: OrganisaatioHierarkia[]) =>
@@ -176,5 +176,5 @@ const getOrgOptions = (orgs: OrganisaatioHierarkia[]) =>
           ? t("organisaatiovalitsin__lakkautettu_prefix") + ": "
           : ""
       }${getLocalized(org.nimi)} (${org.oid})`,
-    }))
+    })),
   )

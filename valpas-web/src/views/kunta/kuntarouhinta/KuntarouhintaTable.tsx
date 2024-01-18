@@ -88,7 +88,7 @@ export const KuntarouhintaTable = (props: KuntarouhintaTableProps) => {
         tooltip: t("rouhinta_kuntailmoitus_pvm_comment"),
       },
     ],
-    []
+    [],
   )
 
   const basePath = useBasePath()
@@ -97,9 +97,9 @@ export const KuntarouhintaTable = (props: KuntarouhintaTableProps) => {
       kuntarouhinnanTulosToTableData(
         props.data,
         props.organisaatioOid,
-        basePath
+        basePath,
       ),
-    [basePath, props.data, props.organisaatioOid]
+    [basePath, props.data, props.organisaatioOid],
   )
 
   return (
@@ -115,10 +115,10 @@ export const KuntarouhintaTable = (props: KuntarouhintaTableProps) => {
 const kuntarouhinnanTulosToTableData = (
   data: KuntarouhinnanTulos,
   organisaatioOid: Oid,
-  basePath: string
+  basePath: string,
 ): Datum[] =>
   data.eiOppivelvollisuuttaSuorittavat.map(
-    oppijaToTableData(organisaatioOid, basePath)
+    oppijaToTableData(organisaatioOid, basePath),
   )
 
 const oppijaToTableData =
@@ -151,12 +151,12 @@ const oppijaToTableData =
 const nimiValue = (
   oppija: RouhintaOppivelvollinen,
   organisaatioOid: Oid,
-  basePath: string
+  basePath: string,
 ): Value =>
   oppijanNimiValue("kuntaRef")(
     { ...oppija, oid: oppija.oppijanumero },
     organisaatioOid,
-    basePath
+    basePath,
   )
 
 const päättymispäiväValue = (opiskeluoikeus?: RouhintaOpiskeluoikeus): Value =>
@@ -167,35 +167,35 @@ const päättymispäiväValue = (opiskeluoikeus?: RouhintaOpiskeluoikeus): Value
         pluck("päättymispäivä"),
         O.fromNullable,
         O.map(dateValue),
-        O.getOrElse(tValue("rouhinta_ei_päättynyt"))
-      )
+        O.getOrElse(tValue("rouhinta_ei_päättynyt")),
+      ),
     ),
-    O.getOrElse(tValue("rouhinta_ei_opiskeluoikeutta"))
+    O.getOrElse(tValue("rouhinta_ei_opiskeluoikeutta")),
   )
 
 const viimeisinTilaValue = (opiskeluoikeus?: RouhintaOpiskeluoikeus): Value =>
   pipe(
     O.fromNullable(opiskeluoikeus),
     O.map(
-      flow(pluck("viimeisinTila"), koodiviiteToShortString, nonNullableValue)
+      flow(pluck("viimeisinTila"), koodiviiteToShortString, nonNullableValue),
     ),
-    O.getOrElse(() => nullableValue(null))
+    O.getOrElse(() => nullableValue(null)),
   )
 
 const tValue = (key: string) => () => nonNullableValue(t(key))
 
 const oppivelvollisuudenKeskeytysValue = (
-  keskeytykset: OppivelvollisuudenKeskeytys[]
+  keskeytykset: OppivelvollisuudenKeskeytys[],
 ) =>
   pipe(
     keskeytykset,
     A.map((k) => formatDateRange(k.alku, k.loppu)),
     nullableJoinToString(", "),
-    nullableValue
+    nullableValue,
   )
 
 const ilmoitettuKunnalleKotipaikka = (
-  ilmoitus?: KuntailmoitusSuppeatTiedot
+  ilmoitus?: KuntailmoitusSuppeatTiedot,
 ): Value => ({
   value: ilmoitus
     ? getLocalizedMaybe(ilmoitus.kunta.kotipaikka?.nimi) || ilmoitus.kunta.oid
@@ -203,7 +203,7 @@ const ilmoitettuKunnalleKotipaikka = (
 })
 
 const ilmoituksenTekopäivä = (
-  ilmoitus?: KuntailmoitusSuppeatTiedot
+  ilmoitus?: KuntailmoitusSuppeatTiedot,
 ): Value => ({
   value: ilmoitus ? ilmoitus.aikaleima : "–",
   display: ilmoitus ? formatNullableDate(ilmoitus.aikaleima) : undefined,

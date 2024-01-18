@@ -16,7 +16,7 @@ export const loginAs = async (
   initialPath: string,
   username: string,
   forceReset: boolean = false,
-  tarkastelupäivä?: string
+  tarkastelupäivä?: string,
 ) => {
   await eventually(async () => {
     await reset(initialPath, forceReset, tarkastelupäivä)
@@ -26,11 +26,11 @@ export const loginAs = async (
   await (await $("#password")).sendKeys(username, Key.ENTER)
   await driver.wait(
     until.elementLocated(By.css("article.page:not(#login-app)")),
-    defaultTimeout
+    defaultTimeout,
   )
   await driver.wait(
     until.elementLocated(By.css("article.page")),
-    defaultTimeout
+    defaultTimeout,
   )
 }
 
@@ -40,7 +40,7 @@ export const defaultLogin = async (initialPath: string) =>
 export const reset = async (
   initialPath: string,
   force: boolean = false,
-  tarkastelupäivä?: string
+  tarkastelupäivä?: string,
 ) => {
   await setBrowserDate(tarkastelupäivä || defaultDate)
   await deleteCookies()
@@ -51,7 +51,7 @@ export const reset = async (
 
 export const resetMockData = async (
   tarkastelupäivä: string = defaultDate,
-  force: boolean = false
+  force: boolean = false,
 ) => {
   await setBrowserDate(tarkastelupäivä)
   const inputSelector = "#tarkastelupäivä"
@@ -89,6 +89,6 @@ export const resetRaportointikanta = async () => {
   await textEventuallyEquals(
     "#loadRaportointikantaState",
     "SUCCESS",
-    longTimeout
+    longTimeout,
   )
 }

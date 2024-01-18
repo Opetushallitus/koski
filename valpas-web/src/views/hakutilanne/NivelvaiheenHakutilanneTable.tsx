@@ -40,7 +40,7 @@ export type NivelvaiheenHakutilanneTableProps = {
 } & Pick<SelectableDataTableProps, "onCountChange">
 
 export const NivelvaiheenHakutilanneTable = (
-  props: NivelvaiheenHakutilanneTableProps
+  props: NivelvaiheenHakutilanneTableProps,
 ) => {
   const columns: Column[] = useMemo(
     () => [
@@ -81,7 +81,7 @@ export const NivelvaiheenHakutilanneTable = (
       {
         label: t("nivelvaihehakutilanne__taulu_toisen_asteen_opiskeluoikeus"),
         tooltip: t(
-          "nivelvaihehakutilanne__taulu_toisen_asteen_opiskeluoikeus_tooltip"
+          "nivelvaihehakutilanne__taulu_toisen_asteen_opiskeluoikeus_tooltip",
         ),
         filter: "dropdown",
         indicatorSpace: "auto",
@@ -92,7 +92,7 @@ export const NivelvaiheenHakutilanneTable = (
         filter: "dropdown",
       },
     ],
-    []
+    [],
   )
 
   const basePath = useBasePath()
@@ -102,15 +102,15 @@ export const NivelvaiheenHakutilanneTable = (
         props.data,
         props.organisaatioOid,
         basePath,
-        props.onSetMuuHaku
+        props.onSetMuuHaku,
       ),
-    [basePath, props.data, props.onSetMuuHaku, props.organisaatioOid]
+    [basePath, props.data, props.onSetMuuHaku, props.organisaatioOid],
   )
 
   const onSelect = useCallback(
     (keys: HakutilanneRowKey[]) =>
       pipe(keys, A.map(NEA.head), A.uniq(string.Eq), props.onSelect),
-    [props.onSelect]
+    [props.onSelect],
   )
 
   return (
@@ -130,7 +130,7 @@ const dataToRows = (
   data: OppijaHakutilanteillaSuppeatTiedot[],
   organisaatioOid: Oid,
   basePath: string,
-  onSetMuuHaku: SetMuuHakuCallback
+  onSetMuuHaku: SetMuuHakuCallback,
 ): Datum[] =>
   A.chain(oppijatiedotToTableRow(organisaatioOid, basePath, onSetMuuHaku))(data)
 
@@ -146,7 +146,7 @@ const oppijatiedotToTableRow =
           oppijanNimi(tiedot.oppija.henkilö, organisaatioOid, basePath),
           nullableDateValue(tiedot.oppija.henkilö.syntymäaika),
           nullableKoulutustyyppiValue(
-            oo.tarkasteltavaPäätasonSuoritus?.suorituksenTyyppi
+            oo.tarkasteltavaPäätasonSuoritus?.suorituksenTyyppi,
           ),
           nullableDateValue(oo.perusopetuksenJälkeinenTiedot?.alkamispäivä),
           nullableDateValue(oo.perusopetuksenJälkeinenTiedot?.päättymispäivä),
@@ -162,28 +162,28 @@ const oppijatiedotToTableRow =
           toisenAsteenOpiskeluoikeudetValue(tiedot, oo),
           muuHakuSwitchValue(tiedot, oo, onSetMuuHaku),
         ],
-      }))
+      })),
     )
 
 const oppijanNimi = oppijanNimiValue("hakutilanneNivelvaiheRef")
 
 const toisenAsteenOpiskeluoikeudetValue = (
   tiedot: OppijaHakutilanteillaSuppeatTiedot,
-  exclude: OpiskeluoikeusSuppeatTiedot
+  exclude: OpiskeluoikeusSuppeatTiedot,
 ): Value => {
   const opiskeluoikeudet = pipe(
     tiedot.oppija.opiskeluoikeudet,
     A.filter(
-      voimassaolevaTaiTulevaPeruskoulunJälkeinenMuunaOpintonaNäytettäväOpiskeluoikeus
+      voimassaolevaTaiTulevaPeruskoulunJälkeinenMuunaOpintonaNäytettäväOpiskeluoikeus,
     ),
-    A.filter((oo) => oo.oid !== exclude.oid)
+    A.filter((oo) => oo.oid !== exclude.oid),
   )
 
   const oppilaitosNimet: string[] = pipe(
     opiskeluoikeudet,
     A.map((oo) => oo.oppilaitos.nimi),
     A.filter(nonNull),
-    A.map(getLocalized)
+    A.map(getLocalized),
   )
 
   switch (opiskeluoikeudet.length) {
@@ -208,7 +208,7 @@ type HakutilanneRowKey = DatumKey
 
 const hakutilanneRowKey = (
   tiedot: OppijaHakutilanteillaSuppeatTiedot,
-  opiskeluoikeus: OpiskeluoikeusSuppeatTiedot
+  opiskeluoikeus: OpiskeluoikeusSuppeatTiedot,
 ): HakutilanneRowKey => [tiedot.oppija.henkilö.oid, opiskeluoikeus.oid]
 
 const oppijaOidsEqual = (a: HakutilanneRowKey) => (b: HakutilanneRowKey) =>

@@ -50,21 +50,21 @@ export type HakutilanneTableProps = {
 export type SetMuuHakuCallback = (
   oppijaOid: Oid,
   opiskeluoikeus: OpiskeluoikeusSuppeatTiedot,
-  state: boolean
+  state: boolean,
 ) => void
 
 const useOppijaData = (
   organisaatioOid: Oid,
   data: OppijaHakutilanteillaSuppeatTiedot[],
-  onSetMuuHaku: SetMuuHakuCallback
+  onSetMuuHaku: SetMuuHakuCallback,
 ) => {
   const basePath = useBasePath()
   return useMemo(
     () =>
       A.flatten(
-        data.map(oppijaToTableData(basePath, organisaatioOid, onSetMuuHaku))
+        data.map(oppijaToTableData(basePath, organisaatioOid, onSetMuuHaku)),
       ),
-    [data, basePath, organisaatioOid, onSetMuuHaku]
+    [data, basePath, organisaatioOid, onSetMuuHaku],
   )
 }
 
@@ -72,7 +72,7 @@ export const HakutilanneTable = (props: HakutilanneTableProps) => {
   const data = useOppijaData(
     props.organisaatioOid,
     props.data,
-    props.onSetMuuHaku
+    props.onSetMuuHaku,
   )
 
   const columns: Column[] = useMemo(
@@ -112,7 +112,7 @@ export const HakutilanneTable = (props: HakutilanneTableProps) => {
       {
         label: t("hakutilanne__taulu_voimassaolevia_opiskeluoikeuksia"),
         tooltip: t(
-          "hakutilanne__taulu_voimassaolevia_opiskeluoikeuksia_tooltip"
+          "hakutilanne__taulu_voimassaolevia_opiskeluoikeuksia_tooltip",
         ),
         filter: "dropdown",
         indicatorSpace: "auto",
@@ -123,7 +123,7 @@ export const HakutilanneTable = (props: HakutilanneTableProps) => {
         filter: "dropdown",
       },
     ],
-    []
+    [],
   )
 
   return (
@@ -147,12 +147,12 @@ type HakutilanneKey = [Oid, Oid]
 
 const createHakutilanneKey = (
   oppija: OppijaSuppeatTiedot,
-  opiskeluoikeus: OpiskeluoikeusSuppeatTiedot
+  opiskeluoikeus: OpiskeluoikeusSuppeatTiedot,
 ): HakutilanneKey => [oppija.henkilö.oid, opiskeluoikeus.oid]
 
 const hakutilanneKeysToOppijaOids = flow(
   A.map((key: HakutilanneKey) => key[0]),
-  A.uniq(string.Eq)
+  A.uniq(string.Eq),
 )
 
 const oppijaOidsEqual = (a: DatumKey) => (b: DatumKey) => a[0] === b[0]
@@ -161,14 +161,14 @@ const oppijaToTableData =
   (
     basePath: string,
     organisaatioOid: string,
-    onSetMuuHaku: SetMuuHakuCallback
+    onSetMuuHaku: SetMuuHakuCallback,
   ) =>
   (oppija: OppijaHakutilanteillaSuppeatTiedot): Array<Datum> => {
     const henkilö = oppija.oppija.henkilö
 
     return hakeutumisvalvottavatOpiskeluoikeudet(
       organisaatioOid,
-      oppija.oppija.opiskeluoikeudet
+      oppija.oppija.opiskeluoikeudet,
     ).map((opiskeluoikeus) => {
       return {
         key: createHakutilanneKey(oppija.oppija, opiskeluoikeus),
@@ -188,8 +188,8 @@ const oppijaToTableData =
             : opiskelupaikanVastaanottotietoValue(oppija.hakutilanteet),
           fromNullableValue(
             perusopetuksenJälkeisetOpiskeluoikeustiedot(
-              oppija.oppija.opiskeluoikeudet
-            )
+              oppija.oppija.opiskeluoikeudet,
+            ),
           ),
           muuHakuSwitchValue(oppija, opiskeluoikeus, onSetMuuHaku),
         ],
@@ -263,7 +263,7 @@ const perusopetusSuoritettu = (oo: OpiskeluoikeusSuppeatTiedot): Value => {
               "perusopetus_suoritettu__valmistuu_tulevaisuudessa_pvm",
               {
                 päivämäärä: formatDate(date),
-              }
+              },
             ),
             filterValues: [
               t("perusopetus_suoritettu__valmistuu_tulevaisuudessa"),

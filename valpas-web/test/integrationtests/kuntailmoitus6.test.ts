@@ -11,11 +11,11 @@ describe("Kuntailmoituksen tekeminen 6/7", () => {
     await loginAs(
       suorittaminenHetuhakuPath.href("/virkailija"),
       "valpas-pelkkä-suorittaminen",
-      true
+      true,
     )
     await teeKuntailmoitusOppijanäkymistä(
       suorittamisenValvojanOppijat,
-      suorittamisenValvoja
+      suorittamisenValvoja,
     )
   })
 })

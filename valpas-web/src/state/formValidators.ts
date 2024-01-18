@@ -40,7 +40,7 @@ export const expectValidOid = stringValidator((input) => {
 export const expectAtLeastOne =
   <T extends object, S>(
     errorStringId: string = "",
-    validators: FieldValidator<S, T>[]
+    validators: FieldValidator<S, T>[],
   ): FieldValidator<S, T> =>
   (input, form) => {
     const results = validators.map((validator) => validator(input, form))

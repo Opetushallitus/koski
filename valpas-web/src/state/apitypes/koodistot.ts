@@ -2,7 +2,7 @@ import { LocalizedString } from "../common"
 
 export type KoodistoKoodiviite<
   T extends string = string,
-  S extends string = string
+  S extends string = string,
 > = {
   koodistoUri: T
   koodiarvo: S
@@ -15,7 +15,7 @@ export type KoodistoKoodiviite<
 const koodiarvoCondition =
   <K extends KoodistoKoodiviite, S extends string>(
     uri: string,
-    truthyValues: S[]
+    truthyValues: S[],
   ) =>
   (koodiviite: K) =>
     uri === koodiviite.koodistoUri &&

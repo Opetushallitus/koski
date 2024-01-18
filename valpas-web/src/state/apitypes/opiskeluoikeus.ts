@@ -99,29 +99,29 @@ export const isSuorittamisvalvottavaOpiskeluoikeus =
 
 export const hakeutumisvalvottavatOpiskeluoikeudet = (
   organisaatioOid: Oid | undefined,
-  opiskeluoikeudet: OpiskeluoikeusSuppeatTiedot[]
+  opiskeluoikeudet: OpiskeluoikeusSuppeatTiedot[],
 ) =>
   opiskeluoikeudet.filter(isHakeutumisvalvottavaOpiskeluoikeus(organisaatioOid))
 
 export const suorittamisvalvottaviaOpiskeluoikeuksiaCount = (
   organisaatioOid: Oid | undefined,
-  oppijat: OppijaHakutilanteillaSuppeatTiedot[]
+  oppijat: OppijaHakutilanteillaSuppeatTiedot[],
 ): number =>
   A.flatten(
     oppijat.map((oppija: OppijaHakutilanteillaSuppeatTiedot) =>
       suorittamisvalvottavatOpiskeluoikeudet(
         organisaatioOid,
-        oppija.oppija.opiskeluoikeudet
-      )
-    )
+        oppija.oppija.opiskeluoikeudet,
+      ),
+    ),
   ).length
 
 export const suorittamisvalvottavatOpiskeluoikeudet = (
   organisaatioOid: Oid | undefined,
-  opiskeluoikeudet: OpiskeluoikeusSuppeatTiedot[]
+  opiskeluoikeudet: OpiskeluoikeusSuppeatTiedot[],
 ) =>
   opiskeluoikeudet.filter(
-    isSuorittamisvalvottavaOpiskeluoikeus(organisaatioOid)
+    isSuorittamisvalvottavaOpiskeluoikeus(organisaatioOid),
   )
 
 export const voimassaolevaTaiTulevaPeruskoulunJälkeinenMuunaOpintonaNäytettäväOpiskeluoikeus =

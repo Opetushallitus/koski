@@ -27,12 +27,12 @@ export type KuntailmoitusTableProps = {
 
 const useIlmoitusData = (
   organisaatioOid: Oid,
-  data: OppijaKuntailmoituksillaSuppeatTiedot[]
+  data: OppijaKuntailmoituksillaSuppeatTiedot[],
 ) => {
   const basePath = useBasePath()
   return useMemo(
     () => A.flatten(data.map(ilmoitusToTableData(basePath, organisaatioOid))),
-    [data, basePath, organisaatioOid]
+    [data, basePath, organisaatioOid],
   )
 }
 
@@ -66,7 +66,7 @@ export const KuntailmoitusTable = (props: KuntailmoitusTableProps) => {
         indicatorSpace: "auto",
       },
     ],
-    []
+    [],
   )
 
   return (
@@ -86,7 +86,7 @@ const ilmoitusToTableData =
   (tiedot: OppijaKuntailmoituksillaSuppeatTiedot): Array<Datum> => {
     const henkilö = tiedot.oppija.henkilö
     const ainaNäytetävätIlmoitukset = getNäytettävätIlmoitukset(tiedot).map(
-      (i) => i.id
+      (i) => i.id,
     )
 
     return tiedot.kuntailmoitukset.map((ilmoitus) => ({
@@ -121,8 +121,8 @@ const ilmoitusToTableData =
         },
         fromNullableValue(
           perusopetuksenJälkeisetOpiskeluoikeustiedot(
-            tiedot.oppija.opiskeluoikeudet
-          )
+            tiedot.oppija.opiskeluoikeudet,
+          ),
         ),
       ],
     }))

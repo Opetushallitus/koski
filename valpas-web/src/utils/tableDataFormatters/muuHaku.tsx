@@ -12,14 +12,14 @@ import { SetMuuHakuCallback } from "../../views/hakutilanne/HakutilanneTable"
 export const muuHakuSwitchValue = (
   oppija: OppijaHakutilanteillaSuppeatTiedot,
   opiskeluoikeus: OpiskeluoikeusSuppeatTiedot,
-  onSetMuuHaku: SetMuuHakuCallback
+  onSetMuuHaku: SetMuuHakuCallback,
 ): Value => {
   const lisätiedot = oppija.lisätiedot.find(
     lisätietoMatches(
       oppija.oppija.henkilö.oid,
       opiskeluoikeus.oid,
-      opiskeluoikeus.oppilaitos.oid
-    )
+      opiskeluoikeus.oppilaitos.oid,
+    ),
   )
   const muuHaku = lisätiedot?.muuHaku || false
 

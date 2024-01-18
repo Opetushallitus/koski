@@ -15,7 +15,7 @@ import { SuorittaminenNavigation } from "../SuorittaminenNavigation"
 export const SuorittaminenHetuhaku = withRequiresSuorittamisenValvonta(() => {
   const search = useApiMethod(
     fetchHenkilöhakuSuorittaminen,
-    fetchHenkilöhakuSuorittaminenCache
+    fetchHenkilöhakuSuorittaminenCache,
   )
 
   return (

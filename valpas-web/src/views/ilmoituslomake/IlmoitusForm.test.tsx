@@ -45,7 +45,7 @@ describe("IlmoitusForm", () => {
     expectFieldError(
       form,
       "ilmoituslomake__asuinkunta *",
-      "ilmoituslomake__pakollinen_tieto"
+      "ilmoituslomake__pakollinen_tieto",
     )
   })
 
@@ -65,7 +65,7 @@ describe("IlmoitusForm", () => {
     await fillTextField(form, "ilmoituslomake__sähköposti", "testi@gmail.com")
     await toggleCheckbox(
       form,
-      "ilmoituslomake__hakenut_opiskelemaan_yhteishakujen_ulkopuolella"
+      "ilmoituslomake__hakenut_opiskelemaan_yhteishakujen_ulkopuolella",
     )
 
     await submit(form, callback)
@@ -107,12 +107,12 @@ describe("IlmoitusForm", () => {
   test("Näytä varoitus, jos oppijalla on turvakielto", () => {
     const formEiTurvakieltoa = createForm(undefined, { turvakielto: false })
     expect(
-      formEiTurvakieltoa.queryByText("ilmoituslomake__turvakielto_ohje")
+      formEiTurvakieltoa.queryByText("ilmoituslomake__turvakielto_ohje"),
     ).toBeNull()
 
     const formTurvakielto = createForm(undefined, { turvakielto: true })
     expect(
-      formTurvakielto.queryByText("ilmoituslomake__turvakielto_ohje")
+      formTurvakielto.queryByText("ilmoituslomake__turvakielto_ohje"),
     ).not.toBeNull()
   })
 })
@@ -121,7 +121,7 @@ function ignoreOnSubmit(_values: IlmoitusFormValues) {}
 
 const createForm = (
   onSubmit?: (values: IlmoitusFormValues) => void,
-  oppijanPohjatiedotPatch?: Partial<OppijanPohjatiedot>
+  oppijanPohjatiedotPatch?: Partial<OppijanPohjatiedot>,
 ) => {
   disableMissingTranslationWarnings()
   return render(
@@ -137,14 +137,14 @@ const createForm = (
       kielet={mockYhteydenottokielet}
       tekijä={{ organisaatio: organisaatioWithOid("tekijäorganisaatio.oid") }}
       onSubmit={onSubmit || ignoreOnSubmit}
-    />
+    />,
   )
 }
 
 const selectOption = async (
   form: RenderResult,
   labelText: string,
-  index: number
+  index: number,
 ) => {
   const s = getInputContainer(form, labelText)
     ?.getElementsByTagName("select")
@@ -155,7 +155,7 @@ const selectOption = async (
 const fillTextField = async (
   form: RenderResult,
   labelText: string,
-  text: string
+  text: string,
 ) => {
   const f = getInputContainer(form, labelText)
     ?.getElementsByTagName("input")
@@ -198,7 +198,7 @@ const getSubmitButton = (form: RenderResult) => {
 const expectFieldError = (
   form: RenderResult,
   labelText: string,
-  errorText: string | null
+  errorText: string | null,
 ) => {
   const errorElement = getInputContainer(form, labelText)
     .getElementsByClassName("dropdown__error")
@@ -213,7 +213,7 @@ const expectFieldError = (
 
 const getInputContainer = (
   form: RenderResult,
-  labelText: string
+  labelText: string,
 ): HTMLElement => {
   const container = form.getByText(labelText).parentElement
   expect(container).not.toBeNull()
@@ -238,7 +238,7 @@ const mockOppija: OppijaHakutilanteillaSuppeatTiedot = {
 
 const mockKoodisto = (
   uri: string,
-  arvot: Record<string, string>
+  arvot: Record<string, string>,
 ): Array<KoodistoKoodiviite> =>
   Object.entries(arvot).map(([arvo, nimi]) => ({
     koodistoUri: uri,

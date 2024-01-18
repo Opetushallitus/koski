@@ -7,7 +7,7 @@ import { eventually } from "./utils"
 export const textEventuallyEquals = (
   selector: string,
   expected: string,
-  timeout = defaultTimeout
+  timeout = defaultTimeout,
 ) =>
   eventually(async () => {
     const element = await $(selector)
@@ -15,13 +15,13 @@ export const textEventuallyEquals = (
   }, timeout)
 
 export const testId = <Value extends string>(
-  value: Value
+  value: Value,
 ): `[data-testid="${Value}"]` => `[data-testid="${value}"]`
 
 export const contentEventuallyEquals = (
   selector: string,
   expected: string,
-  timeout = defaultTimeout
+  timeout = defaultTimeout,
 ) =>
   textEventuallyEquals(
     selector,
@@ -30,14 +30,14 @@ export const contentEventuallyEquals = (
       .split("\n")
       .map((a) => a.trim().replace(/\s+/g, " "))
       .join("\n"),
-    timeout
+    timeout,
   )
 
 export const attributeEventuallyEquals = (
   selector: string,
   attributeName: string,
   expected: string,
-  timeout = defaultTimeout
+  timeout = defaultTimeout,
 ) =>
   eventually(async () => {
     const element = await $(selector)
@@ -46,13 +46,13 @@ export const attributeEventuallyEquals = (
 
 export const expectElementEventuallyVisible = async (
   selector: string,
-  timeout = defaultTimeout
+  timeout = defaultTimeout,
 ) => {
   await eventually(async () => {
     const elements = await driver.findElements(By.css(selector))
     expect(
       elements.length > 0,
-      `Element ${selector} expected to exist`
+      `Element ${selector} expected to exist`,
     ).toBeTruthy()
   }, timeout)
 }
@@ -61,7 +61,7 @@ export const expectElementVisible = async (selector: string) => {
   const elements = await driver.findElements(By.css(selector))
   expect(
     elements.length > 0,
-    `Element ${selector} expected to exist`
+    `Element ${selector} expected to exist`,
   ).toBeTruthy()
 }
 
@@ -70,7 +70,7 @@ export const expectElementEventuallyNotVisible = async (selector: string) => {
     const elements = await driver.findElements(By.css(selector))
     expect(
       elements.length === 0,
-      `Element ${selector} expected NOT to exist`
+      `Element ${selector} expected NOT to exist`,
     ).toBeTruthy()
   })
 }
@@ -79,7 +79,7 @@ export const expectElementNotVisible = async (selector: string) => {
   const elements = await driver.findElements(By.css(selector))
   expect(
     elements.length === 0,
-    `Element ${selector} expected NOT to exist`
+    `Element ${selector} expected NOT to exist`,
   ).toBeTruthy()
 }
 
@@ -88,7 +88,7 @@ export const clickElement = async (selector: string) => {
 
   expect(
     await element.isEnabled(),
-    `Element ${selector} expected to be enabled`
+    `Element ${selector} expected to be enabled`,
   )
 
   await element.click()

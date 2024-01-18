@@ -22,7 +22,7 @@ export type OppivelvollisuudenKeskeytysModalProps = {
 }
 
 export const OppivelvollisuudenKeskeytyksenLisäysModal = (
-  props: OppivelvollisuudenKeskeytysModalProps
+  props: OppivelvollisuudenKeskeytysModalProps,
 ) => {
   const organisaatiot = useOrganisaatiotOfRole(kuntavalvontaAllowed)
   const create = useApiMethod(createOppivelvollisuudenKeskeytys)
@@ -33,7 +33,7 @@ export const OppivelvollisuudenKeskeytyksenLisäysModal = (
         oppijaOid: props.henkilö.oid,
       })
     },
-    [create, props.henkilö.oid]
+    [create, props.henkilö.oid],
   )
 
   useOnApiSuccess(create, props.onSubmit)

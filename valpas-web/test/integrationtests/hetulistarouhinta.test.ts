@@ -55,7 +55,7 @@ const fillForm = async (text: string) => {
 const expectSubmitButtonTextToEqual = async (expected: string) => {
   await textEventuallyEquals(
     ".kuntahetulista .button--primary .button__content",
-    expected
+    expected,
   )
 }
 

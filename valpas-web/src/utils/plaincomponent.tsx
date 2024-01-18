@@ -16,7 +16,7 @@ export const forwardRefComponent = (tag: string, baseClassName: string) => {
   return React.forwardRef(
     (
       { className, ...rest }: PlainComponentProps,
-      ref: React.ForwardedRef<HTMLElement>
+      ref: React.ForwardedRef<HTMLElement>,
     ) => (
       <Plain
         className={joinClassNames(baseClassName, className)}
@@ -24,6 +24,6 @@ export const forwardRefComponent = (tag: string, baseClassName: string) => {
         // @ts-ignore
         ref={ref}
       />
-    )
+    ),
   )
 }

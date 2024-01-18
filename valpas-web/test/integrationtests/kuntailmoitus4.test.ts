@@ -13,7 +13,7 @@ describe("Kuntailmoituksen tekeminen 4/7", () => {
 
     await teeKuntailmoitusOppijanäkymistä(
       oppijat,
-      koulutustoimijaHakeutumisenValvoja
+      koulutustoimijaHakeutumisenValvoja,
     )
   })
 })

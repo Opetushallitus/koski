@@ -15,11 +15,11 @@ const cardBodyEquals =
   (id: string, innerSelector?: string) => (expected: string) =>
     contentEventuallyEquals(
       `#${id} .card__body ${innerSelector || ""}`.trim(),
-      expected
+      expected,
     )
 export const oppivelvollisuustiedotEquals = cardBodyEquals(
   "oppivelvollisuustiedot",
-  ".infotable"
+  ".infotable",
 )
 export const opiskeluhistoriaEquals = cardBodyEquals("opiskeluhistoria")
 export const hautEquals = cardBodyEquals("haut")
@@ -58,11 +58,11 @@ export const oppivelvollisuustiedot = (p: {
           (p.oppivelvollisuudenKeskeytykset || []).map((d) => [
             `Keskeytetty ${d}`,
             p.oppivelvollisuudenKeskeytysBtn ? "mode_edit" : null,
-          ])
+          ]),
         ),
       ]
         .filter(nonNull)
-        .join("\n")
+        .join("\n"),
     ),
     ...rivi("Oikeus opintojen maksuttomuuteen", p.maksuttomuusoikeus),
     ...(p.oppivelvollisuudenKeskeytysBtn ? ["Keskeytä oppivelvollisuus"] : []),
@@ -104,7 +104,7 @@ export const historiaOpintoOikeus = (p: {
       "Muuta",
       p.vuosiluokkiinSitomatonOpetus
         ? "Vuosiluokkiin sitomaton opetus"
-        : undefined
+        : undefined,
     ),
     ...rivi("Opiskeluoikeuden alkamispäivä", p.alkamispäivä),
     ...rivi("Opiskeluoikeuden päättymispäivä", p.päättymispäivä),
@@ -115,7 +115,7 @@ export const historiaOppivelvollisuudenKeskeytys = (range: string) =>
   ["schedule", "Oppivelvollisuus", `Keskeytetty ${range}`].join("\n")
 
 export const historiaOppivelvollisuudenKeskeytysToistaiseksi = (
-  alkamispäivä: string
+  alkamispäivä: string,
 ) =>
   [
     "schedule",

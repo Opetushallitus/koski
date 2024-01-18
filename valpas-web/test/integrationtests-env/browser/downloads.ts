@@ -3,7 +3,7 @@ import * as path from "path"
 import { eventually } from "./utils"
 
 export const downloadDir = path.resolve(
-  path.join(__dirname, "..", "..", "download")
+  path.join(__dirname, "..", "..", "download"),
 )
 
 export const filePath = (filename: string) => path.join(downloadDir, filename)

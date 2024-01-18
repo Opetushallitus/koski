@@ -24,7 +24,7 @@ export const DateRangePicker = (props: DateRangePickerProps) => {
         props.onChange(sortDateRange([value1, value2]))
       }
     },
-    [props]
+    [props],
   )
 
   return (

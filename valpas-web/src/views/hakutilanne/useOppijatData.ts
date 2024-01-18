@@ -44,7 +44,7 @@ export type UseOppijatDataApi = {
   setMuuHaku: (
     oppijaOid: Oid,
     opiskeluoikeus: OpiskeluoikeusSuppeatTiedot,
-    value: boolean
+    value: boolean,
   ) => void
   isLoading: boolean
   errors?: ApiError[]
@@ -57,7 +57,7 @@ export type UseOppijatDataApiReload = {
 const oppijatFetchHook =
   (
     fetchOppijatFn: (
-      organisaatioOid: Oid
+      organisaatioOid: Oid,
     ) => Promise<ApiResponse<OppijaHakutilanteillaSuppeatTiedot[]>>,
     oppijatCache: ApiCache<
       OppijaHakutilanteillaSuppeatTiedot[],
@@ -65,12 +65,12 @@ const oppijatFetchHook =
     >,
     fetchHakutiedotFn: (
       organisaatioOid: Oid,
-      oppijaOids: Oid[]
+      oppijaOids: Oid[],
     ) => Promise<ApiResponse<OppijaHakutilanteillaSuppeatTiedot[]>>,
     hakutiedotCache: ApiCache<
       OppijaHakutilanteillaSuppeatTiedot[],
       [organisaatioOid: Oid, oppijaOids: Oid[]]
-    >
+    >,
   ) =>
   (organisaatioOid?: Oid): UseOppijatDataApi & UseOppijatDataApiReload => {
     const [oppijaOids, setOppijaOids] = useSafeState<Oid[]>([])
@@ -79,7 +79,7 @@ const oppijatFetchHook =
       fetchOppijatFn,
       organisaatioOid ? [organisaatioOid] : undefined,
       // @ts-ignore
-      oppijatCache
+      oppijatCache,
     )
 
     const hakutiedotFetches = useApiSequence(
@@ -88,7 +88,7 @@ const oppijatFetchHook =
       useCallback(
         (oids) => {
           const [oppijaOids, pendingOppijaOids] = A.splitAt(
-            HAKUTIEDOT_FETCH_LIST_SIZE
+            HAKUTIEDOT_FETCH_LIST_SIZE,
           )(oids)
           if (A.isNonEmpty(oppijaOids) && organisaatioOid) {
             const fetchParams: Parameters<typeof fetchOppijatHakutiedoilla> = [
@@ -99,14 +99,14 @@ const oppijatFetchHook =
           }
           return null
         },
-        [organisaatioOid]
+        [organisaatioOid],
       ),
-      hakutiedotCache
+      hakutiedotCache,
     )
 
     const hakutiedotFlattened = useMemo(
       () => A.flatten(hakutiedotFetches.filter(isSuccess).map((h) => h.data)),
-      [hakutiedotFetches]
+      [hakutiedotFetches],
     )
 
     useOnApiSuccess(oppijatFetch, (suppeatTiedot) => {
@@ -125,7 +125,7 @@ const oppijatFetchHook =
         organisaatioOid,
         oppijatFetch,
         oppijatCache,
-        hakutiedotFlattened
+        hakutiedotFlattened,
       ),
       reload,
     }
@@ -135,35 +135,35 @@ export const useOppijatData = oppijatFetchHook(
   fetchOppijat,
   fetchOppijatCache,
   fetchOppijatHakutiedoilla,
-  fetchOppijatHakutiedoillaCache
+  fetchOppijatHakutiedoillaCache,
 )
 
 export const useNivelvaiheenOppijatData = oppijatFetchHook(
   fetchNivelvaiheenOppijat,
   fetchNivelvaiheenOppijatCache,
   fetchNivelvaiheenOppijatHakutiedoilla,
-  fetchNivelvaiheenOppijatHakutiedoillaCache
+  fetchNivelvaiheenOppijatHakutiedoillaCache,
 )
 
 export const useHakeutumisvalvonnanKunnalleTehdytIlmoitukset = (
-  organisaatioOid?: Oid
+  organisaatioOid?: Oid,
 ): UseOppijatDataApi => {
   const oppijatFetch = useApiWithParams(
     fetchHakeutumisvalvonnanKunnalleTehdytIlmoitukset,
     organisaatioOid ? [organisaatioOid] : undefined,
-    fetchHakeutumisvalvonnanKunnalleTehdytIlmoituksetCache
+    fetchHakeutumisvalvonnanKunnalleTehdytIlmoituksetCache,
   )
 
   return useOppijatDataAPI(organisaatioOid, oppijatFetch, fetchOppijatCache)
 }
 
 export const useSuorittamisvalvonnanKunnalleTehdytIlmoitukset = (
-  organisaatioOid?: Oid
+  organisaatioOid?: Oid,
 ): UseOppijatDataApi => {
   const oppijatFetch = useApiWithParams(
     fetchSuorittamisvalvonnanKunnalleTehdytIlmoitukset,
     organisaatioOid ? [organisaatioOid] : undefined,
-    fetchSuorittamisvalvonnanKunnalleTehdytIlmoituksetCache
+    fetchSuorittamisvalvonnanKunnalleTehdytIlmoituksetCache,
   )
 
   return useOppijatDataAPI(organisaatioOid, oppijatFetch, fetchOppijatCache)
@@ -179,7 +179,7 @@ const useOppijatDataAPI = (
     OppijaHakutilanteillaSuppeatTiedot[],
     [organisaatioOid: string]
   >,
-  hakutiedotResults?: OppijaHakutilanteillaSuppeatTiedot[]
+  hakutiedotResults?: OppijaHakutilanteillaSuppeatTiedot[],
 ): UseOppijatDataApi => {
   const [localData, setLocalData] = useLocalDataCopy(oppijatFetch)
 
@@ -188,7 +188,7 @@ const useOppijatDataAPI = (
     () =>
       localData?.map((d) => {
         const hakutilanne = hakutiedotResults?.find(
-          oppijaOidEqualsTo(d.oppija.henkilö.oid)
+          oppijaOidEqualsTo(d.oppija.henkilö.oid),
         )
         return {
           ...d,
@@ -197,7 +197,7 @@ const useOppijatDataAPI = (
           isLoadingHakutilanteet: !hakutilanne,
         }
       }) || null,
-    [hakutiedotResults, localData]
+    [hakutiedotResults, localData],
   )
 
   const saveMuuHakuState = useApiMethod(setMuuHaku)
@@ -205,14 +205,14 @@ const useOppijatDataAPI = (
     async (
       oppijaOid: Oid,
       opiskeluoikeus: OpiskeluoikeusSuppeatTiedot,
-      value: boolean
+      value: boolean,
     ) => {
       cache.clear([organisaatioOid!!])
 
       const response = await saveMuuHakuState.call(
         oppijaOid,
         opiskeluoikeus,
-        value
+        value,
       )
 
       if (E.isRight(response) && mergedData) {
@@ -224,26 +224,26 @@ const useOppijatDataAPI = (
             lisätietoMatches(
               oppijaOid,
               opiskeluoikeus.oid,
-              opiskeluoikeus.oppilaitos.oid
+              opiskeluoikeus.oppilaitos.oid,
             ),
             {
               oppijaOid,
               opiskeluoikeusOid: opiskeluoikeus.oid,
               oppilaitosOid: opiskeluoikeus.oppilaitos.oid,
               muuHaku: value,
-            }
+            },
           )
 
           setLocalData(
             upsert(mergedData, oppijaOidEqualsTo(oppijaOid), {
               ...oppija,
               lisätiedot,
-            })
+            }),
           )
         }
       }
     },
-    [cache, mergedData, organisaatioOid, saveMuuHakuState, setLocalData]
+    [cache, mergedData, organisaatioOid, saveMuuHakuState, setLocalData],
   )
 
   return {

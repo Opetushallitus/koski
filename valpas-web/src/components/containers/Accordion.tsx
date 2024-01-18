@@ -23,7 +23,7 @@ export const Accordion = (props: AccordionProps) => {
     (index: number) => () => {
       setOpenItems(toggleItemExistence(openItems, index))
     },
-    [openItems]
+    [openItems],
   )
 
   return (

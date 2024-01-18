@@ -73,8 +73,8 @@ export const fetchCurrentKansalainenUser = async () =>
 export const fetchYlatasonOrganisaatiotJaKayttooikeusroolit = async () =>
   handleExpiredSession(
     apiGet<OrganisaatioJaKayttooikeusrooli[]>(
-      "valpas/api/organisaatiot-ja-kayttooikeusroolit"
-    )
+      "valpas/api/organisaatiot-ja-kayttooikeusroolit",
+    ),
   )
 
 export const fetchYlatasonOrganisaatiotJaKayttooikeusroolitCache =
@@ -86,8 +86,8 @@ export const fetchYlatasonOrganisaatiotJaKayttooikeusroolitCache =
 export const fetchOppijat = (organisaatioOid: Oid) =>
   handleExpiredSession(
     apiGet<OppijaHakutilanteillaSuppeatTiedot[]>(
-      `valpas/api/oppijat/${organisaatioOid}`
-    )
+      `valpas/api/oppijat/${organisaatioOid}`,
+    ),
   )
 
 export const fetchOppijatCache = createPreferLocalCache(fetchOppijat)
@@ -97,7 +97,7 @@ export const fetchOppijatCache = createPreferLocalCache(fetchOppijat)
  */
 export const fetchOppijatHakutiedoilla = (
   organisaatioOid: Oid,
-  oppijaOids: Oid[]
+  oppijaOids: Oid[],
 ) =>
   handleExpiredSession(
     apiPost<OppijaHakutilanteillaSuppeatTiedot[]>(
@@ -106,12 +106,12 @@ export const fetchOppijatHakutiedoilla = (
         body: {
           oppijaOids,
         },
-      }
-    )
+      },
+    ),
   )
 
 export const fetchOppijatHakutiedoillaCache = createPreferLocalCache(
-  fetchOppijatHakutiedoilla
+  fetchOppijatHakutiedoilla,
 )
 
 /**
@@ -120,12 +120,12 @@ export const fetchOppijatHakutiedoillaCache = createPreferLocalCache(
 export const fetchNivelvaiheenOppijat = (organisaatioOid: Oid) =>
   handleExpiredSession(
     apiGet<OppijaHakutilanteillaSuppeatTiedot[]>(
-      `valpas/api/oppijat-nivelvaihe/${organisaatioOid}`
-    )
+      `valpas/api/oppijat-nivelvaihe/${organisaatioOid}`,
+    ),
   )
 
 export const fetchNivelvaiheenOppijatCache = createPreferLocalCache(
-  fetchNivelvaiheenOppijat
+  fetchNivelvaiheenOppijat,
 )
 
 /**
@@ -133,7 +133,7 @@ export const fetchNivelvaiheenOppijatCache = createPreferLocalCache(
  */
 export const fetchNivelvaiheenOppijatHakutiedoilla = (
   organisaatioOid: Oid,
-  oppijaOids: Oid[]
+  oppijaOids: Oid[],
 ) =>
   handleExpiredSession(
     apiPost<OppijaHakutilanteillaSuppeatTiedot[]>(
@@ -142,8 +142,8 @@ export const fetchNivelvaiheenOppijatHakutiedoilla = (
         body: {
           oppijaOids,
         },
-      }
-    )
+      },
+    ),
   )
 
 export const fetchNivelvaiheenOppijatHakutiedoillaCache =
@@ -153,12 +153,12 @@ export const fetchNivelvaiheenOppijatHakutiedoillaCache =
  * Hae hakeutumisvalvonnan kunnalle tekemät ilmoitukset
  */
 export const fetchHakeutumisvalvonnanKunnalleTehdytIlmoitukset = (
-  organisaatioOid: Oid
+  organisaatioOid: Oid,
 ) =>
   handleExpiredSession(
     apiGet<OppijaHakutilanteillaSuppeatTiedot[]>(
-      `valpas/api/oppijat/${organisaatioOid}/ilmoitukset`
-    )
+      `valpas/api/oppijat/${organisaatioOid}/ilmoitukset`,
+    ),
   )
 
 export const fetchHakeutumisvalvonnanKunnalleTehdytIlmoituksetCache =
@@ -170,24 +170,24 @@ export const fetchHakeutumisvalvonnanKunnalleTehdytIlmoituksetCache =
 export const fetchOppijatSuorittaminen = (organisaatioOid: Oid) =>
   handleExpiredSession(
     apiGet<OppijaHakutilanteillaSuppeatTiedot[]>(
-      `valpas/api/oppijat-suorittaminen/${organisaatioOid}`
-    )
+      `valpas/api/oppijat-suorittaminen/${organisaatioOid}`,
+    ),
   )
 
 export const fetchOppijatSuorittaminenCache = createPreferLocalCache(
-  fetchOppijatSuorittaminen
+  fetchOppijatSuorittaminen,
 )
 
 /**
  * Hae suorittammisvalvonnan kunnalle tekemät ilmoitukset
  */
 export const fetchSuorittamisvalvonnanKunnalleTehdytIlmoitukset = (
-  organisaatioOid: Oid
+  organisaatioOid: Oid,
 ) =>
   handleExpiredSession(
     apiGet<OppijaHakutilanteillaSuppeatTiedot[]>(
-      `valpas/api/oppijat-suorittaminen/${organisaatioOid}/ilmoitukset`
-    )
+      `valpas/api/oppijat-suorittaminen/${organisaatioOid}/ilmoitukset`,
+    ),
   )
 
 export const fetchSuorittamisvalvonnanKunnalleTehdytIlmoituksetCache =
@@ -198,7 +198,7 @@ export const fetchSuorittamisvalvonnanKunnalleTehdytIlmoituksetCache =
  */
 export const fetchOppija = (oppijaOid: Oid) =>
   handleExpiredSession(
-    apiGet<OppijaHakutilanteillaLaajatTiedot>(`valpas/api/oppija/${oppijaOid}`)
+    apiGet<OppijaHakutilanteillaLaajatTiedot>(`valpas/api/oppija/${oppijaOid}`),
   )
 
 export const fetchOppijaCache = createLocalThenApiCache(fetchOppija)
@@ -208,11 +208,11 @@ export const fetchOppijaCache = createLocalThenApiCache(fetchOppija)
  */
 export const fetchHenkilöhakuMaksuttomuus = (query: Oid | Hetu) =>
   handleExpiredSession(
-    apiGet<HenkilöhakuResult>(`valpas/api/henkilohaku/maksuttomuus/${query}`)
+    apiGet<HenkilöhakuResult>(`valpas/api/henkilohaku/maksuttomuus/${query}`),
   )
 
 export const fetchHenkilöhakuMaksuttomuusCache = createLocalThenApiCache(
-  fetchHenkilöhakuMaksuttomuus
+  fetchHenkilöhakuMaksuttomuus,
 )
 
 /**
@@ -220,11 +220,11 @@ export const fetchHenkilöhakuMaksuttomuusCache = createLocalThenApiCache(
  */
 export const fetchHenkilöhakuSuorittaminen = (query: Oid | Hetu) =>
   handleExpiredSession(
-    apiGet<HenkilöhakuResult>(`valpas/api/henkilohaku/suorittaminen/${query}`)
+    apiGet<HenkilöhakuResult>(`valpas/api/henkilohaku/suorittaminen/${query}`),
   )
 
 export const fetchHenkilöhakuSuorittaminenCache = createLocalThenApiCache(
-  fetchHenkilöhakuSuorittaminen
+  fetchHenkilöhakuSuorittaminen,
 )
 
 /**
@@ -232,11 +232,11 @@ export const fetchHenkilöhakuSuorittaminenCache = createLocalThenApiCache(
  */
 export const fetchHenkilöhakuKunta = (query: Oid | Hetu) =>
   handleExpiredSession(
-    apiGet<HenkilöhakuResult>(`valpas/api/henkilohaku/kunta/${query}`)
+    apiGet<HenkilöhakuResult>(`valpas/api/henkilohaku/kunta/${query}`),
   )
 
 export const fetchHenkilöhakuKuntaCache = createLocalThenApiCache(
-  fetchHenkilöhakuKunta
+  fetchHenkilöhakuKunta,
 )
 
 /**
@@ -249,7 +249,7 @@ export const downloadRouhintaHetuilla = (query: HetuhakuInput) =>
       headers: {
         accept: SPREADSHEET_CONTENT_TYPE,
       },
-    })
+    }),
   )
 
 /**
@@ -259,7 +259,7 @@ export const fetchKuntarouhinta = (query: KuntarouhintaInput) =>
   handleExpiredSession(
     apiPost<KuntarouhinnanTulos>("valpas/api/rouhinta/kunta", {
       body: query,
-    })
+    }),
   )
 
 export const fetchKuntarouhintaCache =
@@ -275,7 +275,7 @@ export const downloadKuntarouhinta = (query: KuntarouhintaInput) =>
       headers: {
         accept: SPREADSHEET_CONTENT_TYPE,
       },
-    })
+    }),
   )
 
 /**
@@ -283,7 +283,7 @@ export const downloadKuntarouhinta = (query: KuntarouhintaInput) =>
  */
 export const fetchKuntailmoituksenPohjatiedot = (
   oppijaOids: Oid[],
-  tekijäOrganisaatioOid?: Oid
+  tekijäOrganisaatioOid?: Oid,
 ) =>
   handleExpiredSession(
     apiPost<KuntailmoitusPohjatiedot>("valpas/api/kuntailmoitus/pohjatiedot", {
@@ -295,19 +295,19 @@ export const fetchKuntailmoituksenPohjatiedot = (
           : undefined,
         oppijaOidit: oppijaOids,
       },
-    })
+    }),
   )
 
 /**
  * Kuntailmoituksen tallennus
  */
 export const createKuntailmoitus = (
-  kuntailmoitus: KuntailmoitusLaajatTiedotOppijaOidilla
+  kuntailmoitus: KuntailmoitusLaajatTiedotOppijaOidilla,
 ) =>
   handleExpiredSession(
     apiPost<void>("valpas/api/kuntailmoitus", {
       body: kuntailmoitus,
-    })
+    }),
   )
 
 /**
@@ -316,12 +316,12 @@ export const createKuntailmoitus = (
 export const fetchKuntailmoitukset = (kuntaOid: Oid) =>
   handleExpiredSession(
     apiGet<OppijaKuntailmoituksillaSuppeatTiedot[]>(
-      `valpas/api/kuntailmoitus/oppijat/${kuntaOid}`
-    )
+      `valpas/api/kuntailmoitus/oppijat/${kuntaOid}`,
+    ),
   )
 
 export const fetchKuntailmoituksetCache = createPreferLocalCache(
-  fetchKuntailmoitukset
+  fetchKuntailmoitukset,
 )
 
 /**
@@ -335,7 +335,7 @@ export const fetchKuntailmoituksetCache = createPreferLocalCache(
 export const setMuuHaku = async (
   oppijaOid: Oid,
   opiskeluoikeus: OpiskeluoikeusSuppeatTiedot,
-  value: boolean
+  value: boolean,
 ) =>
   handleExpiredSession(
     apiPut(
@@ -343,28 +343,28 @@ export const setMuuHaku = async (
         opiskeluoikeusOid: opiskeluoikeus.oid,
         oppilaitosOid: opiskeluoikeus.oppilaitos.oid,
         value,
-      })
-    )
+      }),
+    ),
   )
 
 /**
  * Oppivelvollisuuden keskeytyksen lisäys
  */
 export const createOppivelvollisuudenKeskeytys = (
-  keskeytys: UusiOppivelvollisuudenKeskeytys
+  keskeytys: UusiOppivelvollisuudenKeskeytys,
 ) =>
   handleExpiredSession(
-    apiPost<void>("valpas/api/oppija/ovkeskeytys", { body: keskeytys })
+    apiPost<void>("valpas/api/oppija/ovkeskeytys", { body: keskeytys }),
   )
 
 /**
  * Oppivelvollisuuden keskeytyksen päivitys
  */
 export const updateOppivelvollisuudenKeskeytys = (
-  keskeytys: OppivelvollisuudenKeskeytyksenMuutos
+  keskeytys: OppivelvollisuudenKeskeytyksenMuutos,
 ) =>
   handleExpiredSession(
-    apiPut<void>("valpas/api/oppija/ovkeskeytys", { body: keskeytys })
+    apiPut<void>("valpas/api/oppija/ovkeskeytys", { body: keskeytys }),
   )
 
 /**
@@ -373,18 +373,18 @@ export const updateOppivelvollisuudenKeskeytys = (
 export const fetchOvVapautuksenPohjatiedot = () =>
   handleExpiredSession(
     apiGet<OppivelvollisuudestaVapautuksenPohjatiedot>(
-      "valpas/api/vapautus/pohjatiedot"
-    )
+      "valpas/api/vapautus/pohjatiedot",
+    ),
   )
 
 export const createOvVapautus = (vapautus: UusiOppivelvollisuudestaVapautus) =>
   handleExpiredSession(apiPost<null>("valpas/api/vapautus", { body: vapautus }))
 
 export const deleteOvVapautus = (
-  vapautus: OppivelvollisuudestaVapautuksenMitätöinti
+  vapautus: OppivelvollisuudestaVapautuksenMitätöinti,
 ) =>
   handleExpiredSession(
-    apiDelete<null>("valpas/api/vapautus", { body: vapautus })
+    apiDelete<null>("valpas/api/vapautus", { body: vapautus }),
   )
 
 /**
@@ -398,7 +398,7 @@ export const deleteOppivelvollisuudenKeskeytys = (id: string) =>
  */
 export const fetchOmatJaHuollettavienTiedot = () =>
   handleExpiredSession(
-    apiGet<KansalaisnäkymänTiedot>("valpas/api/kansalainen/tiedot")
+    apiGet<KansalaisnäkymänTiedot>("valpas/api/kansalainen/tiedot"),
   )
 
 // Virhetilanteiden hallinta

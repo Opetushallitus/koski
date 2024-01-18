@@ -9,9 +9,9 @@ const generatePassword = (length: number): string =>
   pipe(
     A.makeBy(
       length,
-      randomChar("2345679ABCDEFHJKLMNPRSTUVWXYabcdefghjkmnpqrtuvwxy")
+      randomChar("2345679ABCDEFHJKLMNPRSTUVWXYabcdefghjkmnpqrtuvwxy"),
     ),
-    (a) => a.join("")
+    (a) => a.join(""),
   )
 
 export const usePassword = () => {

@@ -79,5 +79,5 @@ export type KansalainenIlmanTietoja = {
 }
 
 export const isAktiivinenKansalainenKuntailmoitus = (
-  kuntailmoitus: KansalainenKuntailmoitus
+  kuntailmoitus: KansalainenKuntailmoitus,
 ): boolean => kuntailmoitus.aktiivinen

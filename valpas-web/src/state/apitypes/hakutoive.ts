@@ -46,7 +46,7 @@ export const isEiPaikkaa = (toive: SuppeaHakutoive) =>
   toive.valintatila?.koodiarvo === undefined
     ? false
     : !["hyvaksytty", "varasijalla", "kesken"].includes(
-        toive.valintatila.koodiarvo
+        toive.valintatila.koodiarvo,
       )
 
 export const isVastaanotettu = (toive: SuppeaHakutoive) =>

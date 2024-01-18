@@ -15,7 +15,7 @@ import { formatNullableDate } from "../date"
 
 export const hakemuksenTilaValue = (
   oppija: OppijaHakutilanteillaSuppeatTiedot,
-  basePath: string
+  basePath: string,
 ): Value => {
   const { hakutilanteet, hakutilanneError, isLoadingHakutilanteet } = oppija
   const oppijaOid = oppija.oppija.henkilö.oid
@@ -23,7 +23,7 @@ export const hakemuksenTilaValue = (
   const hakemuksenTilaValue = hakemuksenTilaT(
     hakutilanteet.length,
     hakutilanneError,
-    isLoadingHakutilanteet
+    isLoadingHakutilanteet,
   )
 
   return {
@@ -32,7 +32,7 @@ export const hakemuksenTilaValue = (
       hakutilanteet,
       hakemuksenTilaValue,
       oppijaOid,
-      basePath
+      basePath,
     ),
     tooltip: hakutilanteet.map(hakuTooltip).join("\n"),
   }
@@ -41,7 +41,7 @@ export const hakemuksenTilaValue = (
 const hakemuksenTilaT = (
   hakemusCount: number,
   hakutilanneError?: string,
-  isLoadingHakutilanteet?: boolean
+  isLoadingHakutilanteet?: boolean,
 ): Translation => {
   if (isLoadingHakutilanteet) return t("Ladataan")
   else if (hakutilanneError) return t("oppija__hakuhistoria_virhe")
@@ -54,7 +54,7 @@ const hakemuksenTilaDisplay = (
   hakutilanteet: HakuSuppeatTiedot[],
   hakemuksenTilaValue: Translation,
   oppijaOid: Oid,
-  basePath: string
+  basePath: string,
 ) =>
   pipe(
     A.head(hakutilanteet),
@@ -67,9 +67,9 @@ const hakemuksenTilaDisplay = (
         <Link to={oppijaPath.href(basePath, { oppijaOid })}>
           {hakemuksenTilaValue}
         </Link>
-      )
+      ),
     ),
-    O.toNullable
+    O.toNullable,
   )
 
 const hakuTooltip = (haku: HakuSuppeatTiedot): string =>

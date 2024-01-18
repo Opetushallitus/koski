@@ -18,10 +18,10 @@ import {
 } from "./apitypes/valpasopiskeluoikeudentila"
 
 export const perusopetuksenJälkeisetOpiskeluoikeustiedot = (
-  opiskeluoikeudet: OpiskeluoikeusSuppeatTiedot[]
+  opiskeluoikeudet: OpiskeluoikeusSuppeatTiedot[],
 ): Value | null => {
   const oos = opiskeluoikeudet.filter(
-    voimassaolevaTaiTulevaPeruskoulunJälkeinenMuunaOpintonaNäytettäväOpiskeluoikeus
+    voimassaolevaTaiTulevaPeruskoulunJälkeinenMuunaOpintonaNäytettäväOpiskeluoikeus,
   )
 
   const toValue = (oo: OpiskeluoikeusSuppeatTiedot) => {
@@ -37,7 +37,7 @@ export const perusopetuksenJälkeisetOpiskeluoikeustiedot = (
       ? kohde
       : t("opiskeluoikeudet__pvm_alkaen_kohde", {
           päivämäärä: formatNullableDate(
-            oo.perusopetuksenJälkeinenTiedot!.alkamispäivä
+            oo.perusopetuksenJälkeinenTiedot!.alkamispäivä,
           ),
           kohde,
         })
@@ -46,14 +46,14 @@ export const perusopetuksenJälkeisetOpiskeluoikeustiedot = (
   const icon = oos.some(
     (oo) =>
       isVoimassa(oo.perusopetuksenJälkeinenTiedot!.tarkastelupäivänTila) &&
-      oo.perusopetuksenJälkeinenTiedot!.alkamispäivä !== undefined
+      oo.perusopetuksenJälkeinenTiedot!.alkamispäivä !== undefined,
   ) ? (
     <SuccessIcon />
   ) : oos.some(
       (oo) =>
         isVoimassaTulevaisuudessa(
-          oo.perusopetuksenJälkeinenTiedot!.tarkastelupäivänTila
-        ) && oo.perusopetuksenJälkeinenTiedot!.alkamispäivä !== undefined
+          oo.perusopetuksenJälkeinenTiedot!.tarkastelupäivänTila,
+        ) && oo.perusopetuksenJälkeinenTiedot!.alkamispäivä !== undefined,
     ) ? (
     <FutureSuccessIcon />
   ) : undefined
@@ -78,17 +78,17 @@ export const perusopetuksenJälkeisetOpiskeluoikeustiedot = (
 
 export const perusopetuksenJälkeistäPreferoivatOpiskeluoikeustiedot = (
   opiskeluoikeudet: OpiskeluoikeusSuppeatTiedot[],
-  käsiteltäväOpiskeluoikeus: OpiskeluoikeusSuppeatTiedot
+  käsiteltäväOpiskeluoikeus: OpiskeluoikeusSuppeatTiedot,
 ): Value | null => {
   const ooTiedots: Array<[OpiskeluoikeusSuppeatTiedot, OpintotasonTiedot]> =
     pipe(
       opiskeluoikeudet,
       A.filter((oo) => oo.oid !== käsiteltäväOpiskeluoikeus.oid),
-      A.chain(perusopetuksenJälkeistäPreferoivaNäytettäväOpiskeluoikeusTieto)
+      A.chain(perusopetuksenJälkeistäPreferoivaNäytettäväOpiskeluoikeusTieto),
     )
 
   const toValue = (
-    ooTiedot: [OpiskeluoikeusSuppeatTiedot, OpintotasonTiedot]
+    ooTiedot: [OpiskeluoikeusSuppeatTiedot, OpintotasonTiedot],
   ) => {
     const kohde = [
       organisaatioNimi(ooTiedot[0].oppilaitos),
@@ -107,7 +107,7 @@ export const perusopetuksenJälkeistäPreferoivatOpiskeluoikeustiedot = (
   }
 
   const icon = ooTiedots.some((ooTiedot) =>
-    isVoimassaTulevaisuudessa(ooTiedot[1].tarkastelupäivänTila)
+    isVoimassaTulevaisuudessa(ooTiedot[1].tarkastelupäivänTila),
   ) ? (
     <FutureSuccessIcon />
   ) : undefined
@@ -131,10 +131,10 @@ export const perusopetuksenJälkeistäPreferoivatOpiskeluoikeustiedot = (
 }
 
 const perusopetuksenJälkeistäPreferoivaNäytettäväOpiskeluoikeusTieto = (
-  opiskeluoikeus: OpiskeluoikeusSuppeatTiedot
+  opiskeluoikeus: OpiskeluoikeusSuppeatTiedot,
 ): Array<[OpiskeluoikeusSuppeatTiedot, OpintotasonTiedot]> => {
   const näytettävä = (
-    tiedot: OpintotasonTiedot | undefined
+    tiedot: OpintotasonTiedot | undefined,
   ): Array<[OpiskeluoikeusSuppeatTiedot, OpintotasonTiedot]> => {
     const tila = tiedot?.tarkastelupäivänTila
 
@@ -151,7 +151,7 @@ const perusopetuksenJälkeistäPreferoivaNäytettäväOpiskeluoikeusTieto = (
   // Näytetään oletuksena perusopetuksen jälkeiset opinnot, mutta jos niitä ei ole tai ne eivät ole voimassa, niin
   // näytetään perusopetuksen tiedot
   const perusopetuksenJälkeinenResult = näytettävä(
-    opiskeluoikeus.perusopetuksenJälkeinenTiedot
+    opiskeluoikeus.perusopetuksenJälkeinenTiedot,
   )
 
   if (perusopetuksenJälkeinenResult.length) {

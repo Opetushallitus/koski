@@ -74,14 +74,14 @@ export type KuntailmoituksenOppijanYhteystiedot = {
 }
 
 export const isAktiivinenKuntailmoitus = (
-  kuntailmoitus: MinimiOppijaKuntailmoitus
+  kuntailmoitus: MinimiOppijaKuntailmoitus,
 ): boolean => kuntailmoitus.aktiivinen
 
 export const getNäytettävätIlmoitukset = (
-  tiedot: OppijaKuntailmoituksillaSuppeatTiedot
+  tiedot: OppijaKuntailmoituksillaSuppeatTiedot,
 ): LuotuKuntailmoitusSuppeatTiedot[] =>
   tiedot.kuntailmoitukset.filter(
-    (i) => i.aktiivinen && !i.onUudempiaIlmoituksiaMuihinKuntiin
+    (i) => i.aktiivinen && !i.onUudempiaIlmoituksiaMuihinKuntiin,
   )
 
 export const kuntaKotipaikka = (kunta: KuntailmoitusKunta): string =>

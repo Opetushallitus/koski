@@ -24,7 +24,7 @@ describe("accessRights hocit", () => {
   it("Hakeutumisen valvonta: oikeat käyttöoikeudet", async () => {
     const app = renderApp(
       [rooli("OPPILAITOS_HAKEUTUMINEN")],
-      HakeutumisenValvonta
+      HakeutumisenValvonta,
     )
     await expectResult(app, "Hakeutumisen valvonta")
   })
@@ -32,7 +32,7 @@ describe("accessRights hocit", () => {
   it("Hakeutumisen valvonta: väärät käyttöoikeudet", async () => {
     const app = renderApp(
       [rooli("OPPILAITOS_MAKSUTTOMUUS"), rooli("OPPILAITOS_SUORITTAMINEN")],
-      HakeutumisenValvonta
+      HakeutumisenValvonta,
     )
     await expectResult(app, "Ei oikeuksia")
   })
@@ -80,16 +80,16 @@ const TestApp = (props: TestAppProps) => (
 
 const renderApp = (
   roolit: OrganisaatioJaKayttooikeusrooli[],
-  Component: React.ComponentType<WithRequiresAccessRightsProps>
+  Component: React.ComponentType<WithRequiresAccessRightsProps>,
 ) =>
   render(
     <TestApp roolit={roolit}>
       <Component redirectUserWithoutAccessTo="/noaccess" />
-    </TestApp>
+    </TestApp>,
   )
 
 const rooli = (
-  kayttooikeusrooli: Kayttooikeusrooli
+  kayttooikeusrooli: Kayttooikeusrooli,
 ): OrganisaatioJaKayttooikeusrooli => ({
   organisaatioHierarkia: {
     oid: "1.2.3.4.5.6.7",

@@ -34,7 +34,7 @@ export const useComponentAppearDisappear = ({
             hidden,
             hide,
           },
-    [hidden, hide, onHidden]
+    [hidden, hide, onHidden],
   )
 
   return result

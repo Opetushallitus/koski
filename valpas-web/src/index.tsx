@@ -27,10 +27,10 @@ const loadWindowProperties = async (): Promise<void> =>
       (error) =>
         console.error(
           "Konfiguraation haku epäonnistui:",
-          JSON.stringify(error)
+          JSON.stringify(error),
         ),
-      (props) => Object.assign(window, props.data)
-    )
+      (props) => Object.assign(window, props.data),
+    ),
   )
 
 async function main() {

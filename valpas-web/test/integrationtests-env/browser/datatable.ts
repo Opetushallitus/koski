@@ -10,14 +10,14 @@ export const dataTableEventuallyEquals = async (
   selector: string,
   displayValues: string,
   columnSeparator = "\t",
-  timeout = mediumTimeout
+  timeout = mediumTimeout,
 ) => {
   await waitTableLoadingHasFinished(selector)
   await dataTableCellsEventuallyEquals(
     `${selector} .table__body .table__td`,
     displayValues,
     columnSeparator,
-    timeout
+    timeout,
   )
 }
 
@@ -25,14 +25,14 @@ export const dataTableHeadersEventuallyEquals = async (
   selector: string,
   displayValues: string,
   columnSeparator = "\t",
-  timeout = shortTimeout
+  timeout = shortTimeout,
 ) => {
   await waitTableLoadingHasFinished(selector)
   await dataTableCellsEventuallyEquals(
     `${selector} .table__body .table__th`,
     displayValues,
     columnSeparator,
-    timeout
+    timeout,
   )
 }
 
@@ -40,14 +40,14 @@ const dataTableCellsEventuallyEquals = async (
   selector: string,
   displayValues: string,
   columnSeparator = "\t",
-  timeout = shortTimeout
+  timeout = shortTimeout,
 ) => {
   const expectedData = A.flatten(
     displayValues
       .split("\n")
       .map((row) => row.trim())
       .filter((row) => row.length > 0)
-      .map((row) => row.split(columnSeparator).map((c) => c.trim()))
+      .map((row) => row.split(columnSeparator).map((c) => c.trim())),
   )
 
   await eventually(async () => {
@@ -59,14 +59,14 @@ const dataTableCellsEventuallyEquals = async (
 export const getTableContents = async (selector: string) => {
   const cells = await $$(`${selector}`)
   return (await Promise.all(cells.map((cell) => cell.getText()))).map((value) =>
-    value.replace(/\n/g, "")
+    value.replace(/\n/g, ""),
   )
 }
 
 export const setTableTextFilter = async (
   selector: string,
   nthColumn: number,
-  filterValue: string
+  filterValue: string,
 ) => {
   const inputSelector = `${selector} .table__head .table__row:nth-child(2) .table__filter:nth-child(${nthColumn}) input`
   await clearTextInput(inputSelector)

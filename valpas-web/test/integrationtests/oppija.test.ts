@@ -72,14 +72,14 @@ const opiskeluoikeusEuropeanSchoolPerusopetusPath = oppijaPath.href(
   "/virkailija",
   {
     oppijaOid: "1.2.246.562.24.00000000171",
-  }
+  },
 )
 
 describe("Oppijakohtainen näkymä 1/2", () => {
   it("Näyttää oppijan tiedot, johon käyttäjällä on lukuoikeus", async () => {
     await loginAs(ysiluokkaKeskenKeväälläPath, "valpas-jkl-normaali", true)
     await mainHeadingEquals(
-      "Oppivelvollinen-ysiluokka-kesken-keväällä-2021 Valpas (221105A3023)"
+      "Oppivelvollinen-ysiluokka-kesken-keväällä-2021 Valpas (221105A3023)",
     )
     await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000001")
     await oppivelvollisuustiedotEquals(
@@ -88,7 +88,7 @@ describe("Oppijakohtainen näkymä 1/2", () => {
         oppivelvollisuus: "21.11.2023 asti",
         maksuttomuusoikeus: "31.12.2025 asti",
         kuntailmoitusBtn: true,
-      })
+      }),
     )
     await opiskeluhistoriaEquals(
       merge(
@@ -105,8 +105,8 @@ describe("Oppijakohtainen näkymä 1/2", () => {
           toimipiste: "Jyväskylän normaalikoulu",
           alkamispäivä: "13.8.2010",
           päättymispäivä: "1.1.2015",
-        })
-      )
+        }),
+      ),
     )
     await hautEquals(`
       list_alt
@@ -128,10 +128,10 @@ describe("Oppijakohtainen näkymä 1/2", () => {
   it("Näyttää oppijan, jolla monta hakua, kaikki haut, myös päättyneet", async () => {
     await loginAs(
       montaHakuaJoistaYksiPäättynytOppijaPath,
-      "valpas-jkl-normaali"
+      "valpas-jkl-normaali",
     )
     await mainHeadingEquals(
-      "LuokallejäänytYsiluokkalainen Valpas (020805A5625)"
+      "LuokallejäänytYsiluokkalainen Valpas (020805A5625)",
     )
     await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000009")
     await hautEquals(`
@@ -162,7 +162,7 @@ describe("Oppijakohtainen näkymä 1/2", () => {
   it("Näyttää oppijan tiedot valmistuneelle ysiluokkalaiselle", async () => {
     await loginAs(ysiluokkaValmisKeväälläPath, "valpas-jkl-normaali")
     await mainHeadingEquals(
-      "Ysiluokka-valmis-keväällä-2021 Valpas (190605A006K)"
+      "Ysiluokka-valmis-keväällä-2021 Valpas (190605A006K)",
     )
     await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000011")
     await oppivelvollisuustiedotEquals(
@@ -171,7 +171,7 @@ describe("Oppijakohtainen näkymä 1/2", () => {
         oppivelvollisuus: "18.6.2023 asti",
         maksuttomuusoikeus: "31.12.2025 asti",
         kuntailmoitusBtn: true,
-      })
+      }),
     )
     await opiskeluhistoriaEquals(
       merge(
@@ -182,15 +182,15 @@ describe("Oppijakohtainen näkymä 1/2", () => {
           ryhmä: "9C",
           alkamispäivä: "15.8.2012",
           päättymispäivä: "30.5.2021",
-        })
-      )
+        }),
+      ),
     )
   })
 
   it("Näyttää oppijan tiedot int schoolissa olevalle ysiluokkalaiselle", async () => {
     await loginAs(opiskeluoikeusIntSchoolPerusopetusPath, "valpas-jkl-normaali")
     await mainHeadingEquals(
-      "Int-school-9-luokan-jälkeen-lukion-aloittanut Valpas (120505A3434)"
+      "Int-school-9-luokan-jälkeen-lukion-aloittanut Valpas (120505A3434)",
     )
     await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000098")
     await oppivelvollisuustiedotEquals(
@@ -199,7 +199,7 @@ describe("Oppijakohtainen näkymä 1/2", () => {
         oppivelvollisuus: "11.5.2023 asti",
         maksuttomuusoikeus: "31.12.2025 asti",
         kuntailmoitusBtn: true,
-      })
+      }),
     )
     await opiskeluhistoriaEquals(
       merge(
@@ -223,15 +223,15 @@ describe("Oppijakohtainen näkymä 1/2", () => {
           ryhmä: "9B",
           alkamispäivä: "15.8.2004",
           perusopetusSuoritettu: "30.5.2021",
-        })
-      )
+        }),
+      ),
     )
   })
 
   it("Näyttää oppijan tiedot European schoolissa olevalle S4-luokkalaiselle", async () => {
     await loginAs(
       opiskeluoikeusEuropeanSchoolPerusopetusPath,
-      "valpas-jkl-normaali"
+      "valpas-jkl-normaali",
     )
     await mainHeadingEquals("ESH-s4-jälkeen-s5-aloittanut Valpas (200305A594S)")
     await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000171")
@@ -240,7 +240,7 @@ describe("Oppijakohtainen näkymä 1/2", () => {
         opiskelutilanne: "Kyllä",
         oppivelvollisuus: "19.3.2023 asti",
         maksuttomuusoikeus: "31.12.2025 asti",
-      })
+      }),
     )
     await opiskeluhistoriaEquals(
       merge(
@@ -252,15 +252,15 @@ describe("Oppijakohtainen näkymä 1/2", () => {
           ryhmä: "S5A",
           alkamispäivä: "15.8.2003",
           perusopetusSuoritettu: "31.5.2021",
-        })
-      )
+        }),
+      ),
     )
   })
 
   it("Näyttää oppijan vsop-tiedon", async () => {
     await loginAs(vsopPath, "valpas-jkl-normaali", true)
     await mainHeadingEquals(
-      "Ysiluokka-valmis-keväällä-2021-vsop Valpas (190705A575R)"
+      "Ysiluokka-valmis-keväällä-2021-vsop Valpas (190705A575R)",
     )
     await opiskeluhistoriaEquals(
       historiaOpintoOikeus({
@@ -271,7 +271,7 @@ describe("Oppijakohtainen näkymä 1/2", () => {
         vuosiluokkiinSitomatonOpetus: true,
         alkamispäivä: "15.8.2012",
         päättymispäivä: "30.5.2021",
-      })
+      }),
     )
   })
 
@@ -287,7 +287,7 @@ describe("Oppijakohtainen näkymä 1/2", () => {
 
     await mainHeadingEquals("Oppijan tiedot")
     await secondaryHeadingEquals(
-      "Oppijaa ei löydy tunnuksella 1.2.246.562.24.00000000001"
+      "Oppijaa ei löydy tunnuksella 1.2.246.562.24.00000000001",
     )
     await expectEiKuntailmoituksiaNotVisible()
   })
@@ -302,7 +302,7 @@ describe("Oppijakohtainen näkymä 1/2", () => {
         oppivelvollisuus: "5.6.2023 asti",
         maksuttomuusoikeus: "31.12.2025 asti",
         kuntailmoitusBtn: true,
-      })
+      }),
     )
     await opiskeluhistoriaEquals(
       merge(
@@ -319,8 +319,8 @@ describe("Oppijakohtainen näkymä 1/2", () => {
           toimipiste: "Kulosaaren ala-aste",
           ryhmä: "8A",
           alkamispäivä: "15.8.2012",
-        })
-      )
+        }),
+      ),
     )
   })
 
@@ -334,7 +334,7 @@ describe("Oppijakohtainen näkymä 1/2", () => {
         oppivelvollisuus: "28.4.2023 asti",
         maksuttomuusoikeus: "31.12.2025 asti",
         kuntailmoitusBtn: true,
-      })
+      }),
     )
     await opiskeluhistoriaEquals(
       merge(
@@ -357,8 +357,8 @@ describe("Oppijakohtainen näkymä 1/2", () => {
           ryhmä: "9C",
           alkamispäivä: "15.8.2012",
           päättymispäivä: "30.5.2021",
-        })
-      )
+        }),
+      ),
     )
   })
 
@@ -372,7 +372,7 @@ describe("Oppijakohtainen näkymä 1/2", () => {
         oppivelvollisuus: "17.4.2023 asti",
         maksuttomuusoikeus: "31.12.2025 asti",
         kuntailmoitusBtn: true,
-      })
+      }),
     )
     await opiskeluhistoriaEquals(
       merge(
@@ -391,8 +391,8 @@ describe("Oppijakohtainen näkymä 1/2", () => {
           ryhmä: "9C",
           alkamispäivä: "15.8.2012",
           päättymispäivä: "30.5.2021",
-        })
-      )
+        }),
+      ),
     )
   })
 
@@ -412,7 +412,7 @@ describe("Oppijakohtainen näkymä 1/2", () => {
         sähköposti:
           "Valpas.Oppivelvollinen-ysiluokka-kesken-keväällä-2021@gmail.com",
         lähde: "Hakulomake – Yhteishaku 2021",
-      })
+      }),
     )
 
     await virallisetYhteystiedotEquals(
@@ -422,7 +422,7 @@ describe("Oppijakohtainen näkymä 1/2", () => {
         maa: "Costa rica",
         puhelin: "0401122334",
         sähköposti: "valpas@gmail.com",
-      })
+      }),
     )
 
     // Klikkaukset kääntävät näkyvät ja piilotetut arvot päinvastaiseen tilaan
@@ -437,7 +437,7 @@ describe("Oppijakohtainen näkymä 1/2", () => {
   it("Näyttää oppijalta uusimman muokatun hakemuksen yhteystiedot", async () => {
     await loginAs(
       montaHakuaJoistaYksiPäättynytOppijaPath,
-      "valpas-jkl-normaali"
+      "valpas-jkl-normaali",
     )
 
     await ilmoitetutYhteystiedotEquals(
@@ -448,7 +448,7 @@ describe("Oppijakohtainen näkymä 1/2", () => {
         matkapuhelin: "0401234567",
         sähköposti: "Valpas.LuokallejäänytYsiluokkalainen@gmail.com",
         lähde: "Hakulomake – Yhteishaku 2021",
-      })
+      }),
     )
   })
 
@@ -464,7 +464,7 @@ describe("Oppijakohtainen näkymä 1/2", () => {
         matkapuhelin: "0401234567",
         sähköposti: "Oppivelvollisuuksia.Päällekkäisiä@gmail.com",
         lähde: "Hakulomake – Yhteishaku 2021",
-      })
+      }),
     )
   })
 
@@ -478,7 +478,7 @@ describe("Oppijakohtainen näkymä 1/2", () => {
 
     await contentEventuallyEquals(
       testId("kotikunta-yhteystiedot"),
-      "Henkilöllä on turvakielto"
+      "Henkilöllä on turvakielto",
     )
 
     await virallisetYhteystiedotEquals(`
@@ -532,7 +532,7 @@ describe("Oppijakohtainen näkymä 1/2", () => {
         ryhmä: "9C",
         alkamispäivä: "15.8.2012",
         päättymispäivä: "30.5.2021",
-      })
+      }),
     )
   })
 
@@ -546,7 +546,7 @@ describe("Oppijakohtainen näkymä 1/2", () => {
         opiskelutilanne: "Kyllä",
         oppivelvollisuus: "6.5.2022 asti",
         maksuttomuusoikeus: "31.12.2024 asti",
-      })
+      }),
     )
     await opiskeluhistoriaEquals(
       historiaOpintoOikeus({
@@ -556,7 +556,7 @@ describe("Oppijakohtainen näkymä 1/2", () => {
         toimipiste: "Jyväskylän normaalikoulu",
         ryhmä: "AH",
         alkamispäivä: "1.8.2019",
-      })
+      }),
     )
   })
 
@@ -573,7 +573,7 @@ describe("Oppijakohtainen näkymä 1/2", () => {
         kuntailmoitusBtn: true,
         oppivelvollisuudenKeskeytysBtn: true,
         merkitseVapautusBtn: true,
-      })
+      }),
     )
     await opiskeluhistoriaEquals(
       historiaOpintoOikeus({
@@ -583,7 +583,7 @@ describe("Oppijakohtainen näkymä 1/2", () => {
         toimipiste: "Jyväskylän normaalikoulu",
         ryhmä: "AH",
         alkamispäivä: "1.8.2019",
-      })
+      }),
     )
   })
 
@@ -592,14 +592,14 @@ describe("Oppijakohtainen näkymä 1/2", () => {
       allowNetworkError("/valpas/api/oppija/", FORBIDDEN)
       await loginAs(ysiluokkaValmisKeväälläPath, "valpas-jkl-normaali-perus")
       await mainHeadingEquals(
-        "Ysiluokka-valmis-keväällä-2021 Valpas (190605A006K)"
+        "Ysiluokka-valmis-keväällä-2021 Valpas (190605A006K)",
       )
       await resetMockData("2021-10-05")
       await goToLocation(ysiluokkaValmisKeväälläPath)
 
       await mainHeadingEquals("Oppijan tiedot")
       await secondaryHeadingEquals(
-        "Oppijaa ei löydy tunnuksella 1.2.246.562.24.00000000011"
+        "Oppijaa ei löydy tunnuksella 1.2.246.562.24.00000000011",
       )
       await expectEiKuntailmoituksiaNotVisible()
     })
@@ -616,7 +616,7 @@ describe("Oppijakohtainen näkymä 1/2", () => {
           opiskelutilanne: "Kyllä",
           oppivelvollisuus: "6.5.2022 asti",
           maksuttomuusoikeus: "31.12.2024 asti",
-        })
+        }),
       )
       await opiskeluhistoriaEquals(
         historiaOpintoOikeus({
@@ -626,7 +626,7 @@ describe("Oppijakohtainen näkymä 1/2", () => {
           toimipiste: "Jyväskylän normaalikoulu",
           ryhmä: "AH",
           alkamispäivä: "1.8.2019",
-        })
+        }),
       )
     })
 
@@ -639,7 +639,7 @@ describe("Oppijakohtainen näkymä 1/2", () => {
 
       await mainHeadingEquals("Oppijan tiedot")
       await secondaryHeadingEquals(
-        "Oppijaa ei löydy tunnuksella 1.2.246.562.24.00000000004"
+        "Oppijaa ei löydy tunnuksella 1.2.246.562.24.00000000004",
       )
       await expectEiKuntailmoituksiaNotVisible()
     })

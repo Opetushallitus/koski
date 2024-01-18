@@ -55,24 +55,24 @@ type OpiskeluhistoriaItem = {
 }
 
 const opiskeluhistoriaItemOrd = Ord.reverse(
-  Ord.contramap((item: OpiskeluhistoriaItem) => item.order)(string.Ord)
+  Ord.contramap((item: OpiskeluhistoriaItem) => item.order)(string.Ord),
 )
 
 const orderString = (
   priority: string,
   time: string | undefined,
-  index: number
+  index: number,
 ) => `${time || "0000-00-00"}-${priority}-${(9999999 - index).toString()}`
 
 export const OppijanOpiskeluhistoria = (
-  props: OppijanOpiskeluhistoriaProps
+  props: OppijanOpiskeluhistoriaProps,
 ) => {
   const language = useLanguage()
 
   const items = useMemo(() => {
     // Järjestele listat ensin niiden omien kriteerien mukaan
     const opiskeluoikeudet = sortOpiskeluoikeudet(language)(
-      props.opiskeluoikeudet
+      props.opiskeluoikeudet,
     )
 
     const ilmoitukset = sortKuntailmoitukset(props.kuntailmoitukset)
@@ -112,7 +112,7 @@ export const OppijanOpiskeluhistoria = (
         })),
       ].filter(filterFalsy),
       A.sort(opiskeluhistoriaItemOrd),
-      pick("child")
+      pick("child"),
     )
   }, [
     language,
@@ -147,7 +147,7 @@ const OpiskeluhistoriaOpinto = ({
 }: OpiskeluhistoriaOpintoProps) => {
   const nimi = opiskeluoikeus.tarkasteltavaPäätasonSuoritus
     ? suorituksenTyyppiToKoulutustyyppi(
-        opiskeluoikeus.tarkasteltavaPäätasonSuoritus.suorituksenTyyppi
+        opiskeluoikeus.tarkasteltavaPäätasonSuoritus.suorituksenTyyppi,
       )
     : t("Opiskeluoikeus")
 
@@ -184,7 +184,7 @@ const OpiskeluhistoriaOpinto = ({
           <InfoTableRow
             label={t("oppija__toimipiste")}
             value={organisaatioNimi(
-              opiskeluoikeus.tarkasteltavaPäätasonSuoritus.toimipiste
+              opiskeluoikeus.tarkasteltavaPäätasonSuoritus.toimipiste,
             )}
           />
         )}
@@ -207,24 +207,24 @@ const OpiskeluhistoriaOpinto = ({
           />
         )}
         {isValmistunutEuropeanSchoolinPerusopetuksestaAiemminTaiLähitulevaisuudessa(
-          opiskeluoikeus
+          opiskeluoikeus,
         ) && (
           <InfoTableRow
             label={t("oppija__european_school_perusopetuksen_vahvistuspäivä")}
             value={formatDate(
-              opiskeluoikeus.perusopetusTiedot!.päättymispäivä!
+              opiskeluoikeus.perusopetusTiedot!.päättymispäivä!,
             )}
           />
         )}
         {isValmistunutInternationalSchoolinPerusopetuksestaAiemminTaiLähitulevaisuudessa(
-          opiskeluoikeus
+          opiskeluoikeus,
         ) && (
           <InfoTableRow
             label={t(
-              "oppija__international_school_perusopetuksen_vahvistuspäivä"
+              "oppija__international_school_perusopetuksen_vahvistuspäivä",
             )}
             value={formatDate(
-              opiskeluoikeus.perusopetusTiedot!.päättymispäivä!
+              opiskeluoikeus.perusopetusTiedot!.päättymispäivä!,
             )}
           />
         )}
@@ -279,7 +279,7 @@ type OpiskeluhistoriaOppivelvollisuudenKeskeytysProps = {
 }
 
 const OpiskeluhistoriaOppivelvollisuudenKeskeytys = (
-  props: OpiskeluhistoriaOppivelvollisuudenKeskeytysProps
+  props: OpiskeluhistoriaOppivelvollisuudenKeskeytysProps,
 ) => (
   <IconSection icon={<OpiskeluhistoriaTapahtumaIcon color="gray" />}>
     <IconSectionHeading>
@@ -334,7 +334,7 @@ const tilaString = (opiskeluoikeus: MinimiOpiskeluoikeus): string => {
 
   if (valpasTila.koodiarvo === "voimassatulevaisuudessa") {
     const alkamispäivä = formatDate(
-      aiempienOpintojenAlkamispäivä(opiskeluoikeus)
+      aiempienOpintojenAlkamispäivä(opiskeluoikeus),
     )
     return t("oppija__tila_voimassatulevaisuudessa", {
       päivämäärä: alkamispäivä,
@@ -344,7 +344,7 @@ const tilaString = (opiskeluoikeus: MinimiOpiskeluoikeus): string => {
   switch (koskiTila.koodiarvo) {
     case "valiaikaisestikeskeytynyt":
       const tarkastelujaksonAlku = formatDate(
-        myöhempienOpintojenKoskiTilanAlkamispäivä(opiskeluoikeus)
+        myöhempienOpintojenKoskiTilanAlkamispäivä(opiskeluoikeus),
       )
       return t("oppija__tila_valiaikaisesti_keskeytynyt", {
         päivämäärä: tarkastelujaksonAlku,
@@ -363,8 +363,8 @@ const maksuttomuusValue = (opiskeluoikeus: MinimiOpiskeluoikeus) => {
           : "oppija__maksuttomuus_maksuttomuusjakso_ei_maksuton",
         {
           aikaväli: formatDateRange(alku, loppu),
-        }
-      )
+        },
+      ),
   )
 
   const maksuttomuudenPidennysRivit = (
@@ -372,7 +372,7 @@ const maksuttomuusValue = (opiskeluoikeus: MinimiOpiskeluoikeus) => {
   ).map(({ alku, loppu }) =>
     t("oppija__oikeutta_maksuttomuuteen_pidennetty", {
       aikaväli: formatDateRange(alku, loppu),
-    })
+    }),
   )
 
   const rivit = [...maksuttomuudenPidennysRivit, ...maksuttomuusRivit]
@@ -394,23 +394,23 @@ const opiskeluoikeusAiempienOpintojenDateOrd = (key: keyof OpintotasonTiedot) =>
       (o.muuOpetusTiedot?.[key] ||
         o.perusopetusTiedot?.[key] ||
         o.perusopetuksenJälkeinenTiedot?.[key] ||
-        "0000-0-00") as ISODate
+        "0000-0-00") as ISODate,
   )(string.Ord)
 
 const opiskeluoikeusMyöhempienOpintojenDateOrd = (
-  key: keyof OpintotasonTiedot
+  key: keyof OpintotasonTiedot,
 ) =>
   Ord.contramap(
     (o: MinimiOpiskeluoikeus) =>
       (o.perusopetuksenJälkeinenTiedot?.[key] ||
         o.perusopetusTiedot?.[key] ||
         o.muuOpetusTiedot?.[key] ||
-        "0000-00-00") as ISODate
+        "0000-00-00") as ISODate,
   )(string.Ord)
 
 const tyyppiNimiOrd = (lang: Language) =>
   Ord.contramap((o: MinimiOpiskeluoikeus) => o.tyyppi?.nimi?.[lang] || "")(
-    string.Ord
+    string.Ord,
   )
 
 const alkamispäiväOrd = opiskeluoikeusAiempienOpintojenDateOrd("alkamispäivä")
@@ -425,39 +425,39 @@ const sortOpiskeluoikeudet = (lang: Language) =>
   ])
 
 const aiempiOpinto = (
-  opiskeluoikeus: MinimiOpiskeluoikeus
+  opiskeluoikeus: MinimiOpiskeluoikeus,
 ): LaajatOpintotasonTiedot =>
   opiskeluoikeus.muuOpetusTiedot ||
   opiskeluoikeus.perusopetusTiedot ||
   opiskeluoikeus.perusopetuksenJälkeinenTiedot!
 
 const myöhempiOpinto = (
-  opiskeluoikeus: MinimiOpiskeluoikeus
+  opiskeluoikeus: MinimiOpiskeluoikeus,
 ): LaajatOpintotasonTiedot =>
   opiskeluoikeus.perusopetuksenJälkeinenTiedot ||
   opiskeluoikeus.perusopetusTiedot ||
   opiskeluoikeus.muuOpetusTiedot!
 
 const aiempienOpintojenAlkamispäivä = (
-  opiskeluoikeus: MinimiOpiskeluoikeus
+  opiskeluoikeus: MinimiOpiskeluoikeus,
 ): ISODate => aiempiOpinto(opiskeluoikeus).alkamispäivä!
 
 const myöhempienOpintojenPäättymispäivä = (
-  opiskeluoikeus: MinimiOpiskeluoikeus
+  opiskeluoikeus: MinimiOpiskeluoikeus,
 ): ISODate | undefined => myöhempiOpinto(opiskeluoikeus).päättymispäivä
 
 const myöhempienOpintojenTarkastelupäivänTila = (
-  opiskeluoikeus: MinimiOpiskeluoikeus
+  opiskeluoikeus: MinimiOpiskeluoikeus,
 ): ValpasOpiskeluoikeudenTila =>
   myöhempiOpinto(opiskeluoikeus).tarkastelupäivänTila
 
 const myöhempienOpintojenTarkastelupäivänKoskiTila = (
-  opiskeluoikeus: MinimiOpiskeluoikeus
+  opiskeluoikeus: MinimiOpiskeluoikeus,
 ): KoskiOpiskeluoikeudenTila =>
   myöhempiOpinto(opiskeluoikeus).tarkastelupäivänKoskiTila
 
 const myöhempienOpintojenKoskiTilanAlkamispäivä = (
-  opiskeluoikeus: MinimiOpiskeluoikeus
+  opiskeluoikeus: MinimiOpiskeluoikeus,
 ): ISODate =>
   myöhempiOpinto(opiskeluoikeus).tarkastelupäivänKoskiTilanAlkamispäivä
 
@@ -476,7 +476,7 @@ const isValmistunutEuropeanSchoolinPerusopetuksestaAiemminTaiLähitulevaisuudess
     oo.perusopetusTiedot.päättymispäivä !== undefined
 
 const isPerusopetuksenJälkeinenOpiskeluoikeus = (
-  opiskeluoikeus: MinimiOpiskeluoikeus
+  opiskeluoikeus: MinimiOpiskeluoikeus,
 ): boolean => opiskeluoikeus.perusopetuksenJälkeinenTiedot !== undefined
 
 const isYlioppilastutkinnonOpiskeluoikeus = (oo: MinimiOpiskeluoikeus) =>
@@ -487,7 +487,7 @@ const isEBTutkinnonOpiskeluoikeus = (oo: MinimiOpiskeluoikeus) =>
 
 const kuntailmoitusAikaleimaOrd = Ord.contramap(
   (kuntailmoitus: MinimiOppijaKuntailmoitus) =>
-    kuntailmoitus.aikaleima || "0000-00-00"
+    kuntailmoitus.aikaleima || "0000-00-00",
 )(string.Ord)
 
 const sortKuntailmoitukset = A.sort(Ord.reverse(kuntailmoitusAikaleimaOrd))

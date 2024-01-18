@@ -36,7 +36,7 @@ const rootPath = kuntailmoitusPath.href("/virkailija")
 
 const ilmoitustitle = (
   näkyviäIlmoituksia: number,
-  arkistoitujaIlmoituksia: number
+  arkistoitujaIlmoituksia: number,
 ) =>
   `Ilmoitetut oppivelvolliset ilman opiskelupaikkaa (${näkyviäIlmoituksia})Näytä aiemmin tehdyt ilmoitukset (${arkistoitujaIlmoituksia})`
 
@@ -55,14 +55,14 @@ describe("Kunnan listanäkymä", () => {
     await loginAs(rootPath, "valpas-useita-kuntia", false, "2021-12-01")
     await urlIsEventually(
       pathToUrl(
-        kuntailmoitusPathWithOrg.href("/virkailija", helsinginKaupunkiOid)
-      )
+        kuntailmoitusPathWithOrg.href("/virkailija", helsinginKaupunkiOid),
+      ),
     )
     await textEventuallyEquals(".card__header", ilmoitustitle(1, 2))
     await dataTableEventuallyEquals(
       ".kuntailmoitus",
       hkiTableContent_20211201,
-      "|"
+      "|",
     )
   })
 
@@ -72,14 +72,14 @@ describe("Kunnan listanäkymä", () => {
     await selectOrganisaatio(0)
     await urlIsEventually(
       pathToUrl(
-        kuntailmoitusPathWithOrg.href("/virkailija", helsinginKaupunkiOid)
-      )
+        kuntailmoitusPathWithOrg.href("/virkailija", helsinginKaupunkiOid),
+      ),
     )
     await textEventuallyEquals(".card__header", ilmoitustitle(1, 2))
 
     await selectOrganisaatio(1)
     await urlIsEventually(
-      pathToUrl(kuntailmoitusPathWithOrg.href("/virkailija", pyhtäänKuntaOid))
+      pathToUrl(kuntailmoitusPathWithOrg.href("/virkailija", pyhtäänKuntaOid)),
     )
     await textEventuallyEquals(".card__header", ilmoitustitle(8, 5))
   })
@@ -91,7 +91,7 @@ describe("Kunnan listanäkymä", () => {
 
     await selectOrganisaatio(1)
     await urlIsEventually(
-      pathToUrl(kuntailmoitusPathWithOrg.href("/virkailija", pyhtäänKuntaOid))
+      pathToUrl(kuntailmoitusPathWithOrg.href("/virkailija", pyhtäänKuntaOid)),
     )
 
     await openOppijaView(pyhtäänOppijaOid)
@@ -100,13 +100,13 @@ describe("Kunnan listanäkymä", () => {
         oppijaPath.href("/virkailija", {
           oppijaOid: pyhtäänOppijaOid,
           kuntailmoitusRef: pyhtäänKuntaOid,
-        })
-      )
+        }),
+      ),
     )
 
     await clickElement(".oppijaview__backbutton a")
     await urlIsEventually(
-      kuntailmoitusPathWithOrg.href("/virkailija", pyhtäänKuntaOid)
+      kuntailmoitusPathWithOrg.href("/virkailija", pyhtäänKuntaOid),
     )
   })
 
@@ -128,7 +128,7 @@ describe("Kunnan listanäkymä", () => {
 
     await selectOrganisaatio(1)
     await urlIsEventually(
-      pathToUrl(kuntailmoitusPathWithOrg.href("/virkailija", pyhtäänKuntaOid))
+      pathToUrl(kuntailmoitusPathWithOrg.href("/virkailija", pyhtäänKuntaOid)),
     )
 
     await textEventuallyEquals(".card__header", ilmoitustitle(8, 5))
@@ -139,7 +139,7 @@ describe("Kunnan listanäkymä", () => {
     await dataTableEventuallyEquals(
       ".kuntailmoitus",
       pyhtääTableContent_kaikkiIlmoitukset,
-      "|"
+      "|",
     )
   })
 })

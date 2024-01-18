@@ -16,12 +16,12 @@ import {
 export const apiPostDownload = async (
   defaultFilename: string,
   input: RequestInfo,
-  init?: JsonRequestInit
+  init?: JsonRequestInit,
 ): Promise<ApiResponse<Blob>> => {
   try {
     const response = await fetch(
       prependUrl("/koski", input),
-      enrichJsonRequest("POST", "*/*", init)
+      enrichJsonRequest("POST", "*/*", init),
     )
     const data = await response.blob()
 
@@ -30,7 +30,7 @@ export const apiPostDownload = async (
         data,
         parseFilename(response.headers.get("content-disposition")) ||
           defaultFilename,
-        response.headers.get("content-type") || "application/octet-stream"
+        response.headers.get("content-type") || "application/octet-stream",
       )
       return E.right({
         status: response.status,
@@ -54,7 +54,7 @@ const parseDownloadError = async (blob: Blob): Promise<ApiError[]> =>
     await blob.text(),
     parseJson,
     O.map(parseErrors),
-    O.getOrElse(() => [{ message: t("tiedoston_lataus_epäonnistui") }])
+    O.getOrElse(() => [{ message: t("tiedoston_lataus_epäonnistui") }]),
   )
 
 const parseFilename = (header: string | null): string | null =>

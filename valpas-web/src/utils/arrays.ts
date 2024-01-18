@@ -7,13 +7,13 @@ import * as O from "fp-ts/Option"
 export const update = <T>(arr: T[], index: number, value: T): T[] =>
   pipe(
     A.updateAt(index, value)(arr),
-    O.getOrElse(() => arr)
+    O.getOrElse(() => arr),
   )
 
 export const upsert = <T>(
   arr: T[],
   predicate: Predicate<T>,
-  value: T
+  value: T,
 ): NonEmptyArray<T> => {
   const index = arr.findIndex(predicate)
   return index >= 0
@@ -29,7 +29,7 @@ export const toggleItemExistence = <T>(arr: T[], item: T): T[] =>
 
 export const nonEmptyEvery = <T>(
   arr: T[],
-  cond: (t: T) => boolean
+  cond: (t: T) => boolean,
 ): arr is NonEmptyArray<T> => A.isNonEmpty(arr) && arr.every(cond)
 
 export const asArray = <T>(arrayOrSingular: T | T[]): T[] =>

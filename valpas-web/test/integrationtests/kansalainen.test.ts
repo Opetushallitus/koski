@@ -38,7 +38,7 @@ describe("Kansalaisen näkymä", () => {
     await loginKansalainenAs(
       omatTiedotPath,
       hetut.huollettavaOppivelvollinen,
-      true
+      true,
     )
     await expectHuollettavaOppivelvollinenKaikkiTiedot()
   })
@@ -46,7 +46,7 @@ describe("Kansalaisen näkymä", () => {
   it("Näyttää vain oppijanumerorekisterissä olevan kansalaisen omat Valpas-tiedot, jos niitä on tallennettu", async () => {
     await loginKansalainenAs(
       omatTiedotPath,
-      hetut.eiKoskessaOppivelvollinenJollaKeskeytyksiäJaIlmoituksia
+      hetut.eiKoskessaOppivelvollinenJollaKeskeytyksiäJaIlmoituksia,
     )
     await expectEiKoskessaOppivelvollinenKeskeytyksiäJaIlmoituksiaKaikkiTiedot()
   })
@@ -56,7 +56,7 @@ describe("Kansalaisen näkymä", () => {
       omatTiedotPath,
       hetut.eiKoskessaOppivelvollinenJollaKeskeytyksiäJaIlmoituksia,
       false,
-      "2031-01-01"
+      "2031-01-01",
     )
     await expectEiKoskessaOppivelvollinenKeskeytyksiäJaIlmoituksiaKaikkiTiedot()
   })
@@ -71,7 +71,7 @@ describe("Kansalaisen näkymä", () => {
       omatTiedotPath,
       hetut.eiKoskessaOppivelvollinen,
       false,
-      "2024-01-01"
+      "2024-01-01",
     )
     await expectEiKoskessaOppivelvollinenKaikkiTiedot()
   })
@@ -81,7 +81,7 @@ describe("Kansalaisen näkymä", () => {
       omatTiedotPath,
       hetut.eiKoskessaOppivelvollinen,
       false,
-      "2031-01-01"
+      "2031-01-01",
     )
     await expectNotValpasOppija()
   })
@@ -124,13 +124,13 @@ describe("Kansalaisen näkymä", () => {
 const oppijaHeaderEquals = (nimi: string, syntymäpäivä: string) =>
   contentEventuallyEquals(
     ".omattiedot__header",
-    [nimi, `s. ${syntymäpäivä}`].join("\n")
+    [nimi, `s. ${syntymäpäivä}`].join("\n"),
   )
 
 const expectNotValpasOppija = () =>
   contentEventuallyEquals(
     ".card__header",
-    "Henkilöstä ei ole tietoja Valpas-palvelussa. Valpas-palvelussa ovat nähtävissä tiedot vain henkilöistä, jotka ovat olleet oppivelvollisia 1.1.2021 tai sen jälkeen. Tietoja ei ole enää saatavilla, kun henkilön oikeus maksuttomaan koulutukseen on päättynyt yli viisi vuotta sitten."
+    "Henkilöstä ei ole tietoja Valpas-palvelussa. Valpas-palvelussa ovat nähtävissä tiedot vain henkilöistä, jotka ovat olleet oppivelvollisia 1.1.2021 tai sen jälkeen. Tietoja ei ole enää saatavilla, kun henkilön oikeus maksuttomaan koulutukseen on päättynyt yli viisi vuotta sitten.",
   )
 
 const selectOppija = (hetu: string) =>
@@ -139,7 +139,7 @@ const selectOppija = (hetu: string) =>
 const expectHuollettavaOppivelvollinenKaikkiTiedot = async () => {
   await oppijaHeaderEquals(
     "Oppivelvollinen-ysiluokka-kesken-keväällä-2021 Valpas",
-    "22.11.2005"
+    "22.11.2005",
   )
 
   await oppivelvollisuustiedotEquals(
@@ -147,7 +147,7 @@ const expectHuollettavaOppivelvollinenKaikkiTiedot = async () => {
       opiskelutilanne: "Kyllä",
       oppivelvollisuus: "21.11.2023 asti",
       maksuttomuusoikeus: "31.12.2025 asti",
-    })
+    }),
   )
 
   await ilmoitetutYhteystiedotEquals(
@@ -159,7 +159,7 @@ const expectHuollettavaOppivelvollinenKaikkiTiedot = async () => {
       sähköposti:
         "Valpas.Oppivelvollinen-ysiluokka-kesken-keväällä-2021@gmail.com",
       lähde: "Hakulomake – Yhteishaku 2021",
-    })
+    }),
   )
 
   await virallisetYhteystiedotEquals(
@@ -169,7 +169,7 @@ const expectHuollettavaOppivelvollinenKaikkiTiedot = async () => {
       maa: "Costa rica",
       puhelin: "0401122334",
       sähköposti: "valpas@gmail.com",
-    })
+    }),
   )
 
   await opiskeluhistoriaEquals(
@@ -187,8 +187,8 @@ const expectHuollettavaOppivelvollinenKaikkiTiedot = async () => {
         toimipiste: "Jyväskylän normaalikoulu",
         alkamispäivä: "13.8.2010",
         päättymispäivä: "1.1.2015",
-      })
-    )
+      }),
+    ),
   )
 
   await hautEquals(`
@@ -216,7 +216,7 @@ const expectEiKoskessaOppivelvollinenKaikkiTiedot = async () => {
       opiskelutilanne: "Ei",
       oppivelvollisuus: "23.1.2023 asti",
       maksuttomuusoikeus: "31.12.2025 asti",
-    })
+    }),
   )
 
   await virallisetYhteystiedotEquals(
@@ -226,7 +226,7 @@ const expectEiKoskessaOppivelvollinenKaikkiTiedot = async () => {
       maa: "Costa rica",
       puhelin: "0401122334",
       sähköposti: "valpas@gmail.com",
-    })
+    }),
   )
 
   await opiskeluhistoriaEquals(merge(historiaEiOpiskeluhistoriaa()))
@@ -246,7 +246,7 @@ const expectEiKoskessaOppivelvollinenKeskeytyksiäJaIlmoituksiaKaikkiTiedot =
   async () => {
     await oppijaHeaderEquals(
       "Kosketon-keskeytyksiä-ilmoituksia Valpas",
-      "26.7.2005"
+      "26.7.2005",
     )
 
     await oppivelvollisuustiedotEquals(
@@ -255,7 +255,7 @@ const expectEiKoskessaOppivelvollinenKeskeytyksiäJaIlmoituksiaKaikkiTiedot =
         oppivelvollisuus: "Keskeytetty toistaiseksi 1.9.2021 alkaen",
         oppivelvollisuudenKeskeytykset: ["1.1.2019 – 1.12.2019"],
         maksuttomuusoikeus: "31.12.2025 asti",
-      })
+      }),
     )
 
     await ilmoitetutYhteystiedotEquals(
@@ -266,7 +266,7 @@ const expectEiKoskessaOppivelvollinenKeskeytyksiäJaIlmoituksiaKaikkiTiedot =
         matkapuhelin: "0401234567",
         sähköposti: "Valpas.Kosketon-keskeytyksiä-ilmoituksia@gmail.com",
         lähde: "Hakulomake – Yhteishaku 2021",
-      })
+      }),
     )
 
     await virallisetYhteystiedotEquals(
@@ -276,7 +276,7 @@ const expectEiKoskessaOppivelvollinenKeskeytyksiäJaIlmoituksiaKaikkiTiedot =
         maa: "Costa rica",
         puhelin: "0401122334",
         sähköposti: "valpas@gmail.com",
-      })
+      }),
     )
     await opiskeluhistoriaEquals(
       merge(
@@ -292,8 +292,8 @@ const expectEiKoskessaOppivelvollinenKeskeytyksiäJaIlmoituksiaKaikkiTiedot =
           ilmoittaja: "Jyväskylän normaalikoulu",
           tahoJolleIlmoitettu: "Helsinki",
         }),
-        historiaOppivelvollisuudenKeskeytys("1.1.2019 – 1.12.2019")
-      )
+        historiaOppivelvollisuudenKeskeytys("1.1.2019 – 1.12.2019"),
+      ),
     )
 
     await hautEquals(`
@@ -315,7 +315,7 @@ const expectHuollettavaTurvakieltoPerustiedot = async () => {
       opiskelutilanne: "Kyllä",
       oppivelvollisuus: "28.9.2022 asti",
       maksuttomuusoikeus: "31.12.2024 asti",
-    })
+    }),
   )
 
   await turvakieltoVaroitusEquals(`
@@ -341,8 +341,8 @@ const expectHuollettavaTurvakieltoRajattuOpiskeluhistoria = async () => {
         otsikko: "Opiskeluoikeus 2012 –",
         tila: "Läsnä",
         alkamispäivä: "15.8.2012",
-      })
-    )
+      }),
+    ),
   )
 }
 
@@ -370,8 +370,8 @@ const expectHuollettavaTurvakieltoTäysiOpiskeluhistoria = async () => {
         toimipiste: "Jyväskylän normaalikoulu",
         ryhmä: "9C",
         alkamispäivä: "15.8.2012",
-      })
-    )
+      }),
+    ),
   )
 }
 
@@ -392,11 +392,11 @@ const expectHuollettavanTurvakiellollinenKuntailmoitus = async () => {
   const ilmoitukset = await $$(".kuntailmoitus__body")
   expect(
     ilmoitukset.length,
-    "Aktiivisia ilmoituksia tulisi näkyä tasan yksi"
+    "Aktiivisia ilmoituksia tulisi näkyä tasan yksi",
   ).toEqual(1)
   const ilmoitus = ilmoitukset[0]!!
 
   expect(await ilmoitus.getText()).toEqual(
-    "Tarkemmat tiedot näkyvät ainoastaan ilmoituksen vastaanottajalle ja tekijälle"
+    "Tarkemmat tiedot näkyvät ainoastaan ilmoituksen vastaanottajalle ja tekijälle",
   )
 }

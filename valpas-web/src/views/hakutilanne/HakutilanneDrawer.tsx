@@ -30,11 +30,11 @@ export const HakutilanneDrawer = React.forwardRef(
     const [modalVisible, setModalVisible] = useState(false)
     const oppijaOids = useMemo(
       () => oppijat.map((o) => o.oppija.henkilö.oid),
-      [oppijat]
+      [oppijat],
     )
     const pohjatiedot = useApiWithParams(
       fetchKuntailmoituksenPohjatiedot,
-      modalVisible ? [oppijaOids, props.tekijäorganisaatio.oid] : undefined
+      modalVisible ? [oppijaOids, props.tekijäorganisaatio.oid] : undefined,
     )
 
     const onKuntailmoituksetCreated = props.onKuntailmoituksetCreated
@@ -45,7 +45,7 @@ export const HakutilanneDrawer = React.forwardRef(
           onKuntailmoituksetCreated()
         }
       },
-      [onKuntailmoituksetCreated]
+      [onKuntailmoituksetCreated],
     )
 
     return (
@@ -94,5 +94,5 @@ export const HakutilanneDrawer = React.forwardRef(
         ) : null}
       </>
     )
-  }
+  },
 )

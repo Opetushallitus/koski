@@ -74,6 +74,6 @@ export type OppijaKuntailmoituksillaSuppeatTiedot = {
 }
 
 export const oppijaOnOppivelvollisuudestaVapautettu = (
-  oppija: OppijaLaajatTiedot
+  oppija: OppijaLaajatTiedot,
 ): boolean =>
   onOppivelvollisuudestaVapautettu(oppija.oppivelvollisuudestaVapautus)

@@ -29,7 +29,7 @@ export type OppivelvollisuudenKeskeytysMuokkausModalProps = {
 }
 
 export const OppivelvollisuudenKeskeytyksenMuokkausModal = (
-  props: OppivelvollisuudenKeskeytysMuokkausModalProps
+  props: OppivelvollisuudenKeskeytysMuokkausModalProps,
 ) => {
   const organisaatiot = useOrganisaatiotOfRole(kuntavalvontaAllowed)
   const create = useApiMethod(updateOppivelvollisuudenKeskeytys)
@@ -41,7 +41,7 @@ export const OppivelvollisuudenKeskeytyksenMuokkausModal = (
         loppu: form.loppu,
       })
     },
-    [create, props.keskeytys.id]
+    [create, props.keskeytys.id],
   )
 
   useOnApiSuccess(create, props.onSubmit)
@@ -56,9 +56,9 @@ export const OppivelvollisuudenKeskeytyksenMuokkausModal = (
           oppija: `${props.henkilö.sukunimi} ${props.henkilö.etunimet} (${props.henkilö.hetu})`,
           aikaväli: formatDateRange(
             props.keskeytys.alku,
-            props.keskeytys.loppu
+            props.keskeytys.loppu,
           ),
-        })
+        }),
       )
     ) {
       remove.call(props.keskeytys.id)

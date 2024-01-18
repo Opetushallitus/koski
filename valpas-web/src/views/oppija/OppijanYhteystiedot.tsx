@@ -113,7 +113,7 @@ export const OppijanYhteystiedot = (props: OppijanYhteystiedotProps) => {
             noDataMessage={t(
               props.henkilö.turvakielto
                 ? "oppija__henkilöllä_turvakielto"
-                : "oppija__yhteystietoja_ei_löytynyt"
+                : "oppija__yhteystietoja_ei_löytynyt",
             )}
           />
         </Column>
@@ -129,7 +129,7 @@ type YhteystietoAccordionProps<T extends YhteystietojenAlkuperä> = {
 }
 
 const YhteystietoAccordion = <T extends YhteystietojenAlkuperä>(
-  props: YhteystietoAccordionProps<T>
+  props: YhteystietoAccordionProps<T>,
 ) =>
   isNonEmpty(props.yhteystiedot) ? (
     <Accordion

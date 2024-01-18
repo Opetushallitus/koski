@@ -49,17 +49,17 @@ const createStorage = (storageName: string, columns: Column[]) =>
         value,
         fn: createFilter(columns[index]?.filter, value),
       })),
-    })
+    }),
   )
 
 export const useDataTableState = (
   storageName: string | undefined,
-  columns: Column[]
+  columns: Column[],
 ) =>
   useStoredState<DataTableState>(
     storageName
       ? createStorage(storageName, columns)
-      : nonStoredState(initialState(columns.length))
+      : nonStoredState(initialState(columns.length)),
   )
 
 // Filtterit

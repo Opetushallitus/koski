@@ -37,5 +37,5 @@ export const raisedButtonClassName = ({
 }: Pick<RaisedButtonProps, "hierarchy" | "disabled" | "className">) =>
   joinClassNames(
     b(["raised", hierarchy || "primary", disabled ? "disabled" : undefined]),
-    className
+    className,
   )

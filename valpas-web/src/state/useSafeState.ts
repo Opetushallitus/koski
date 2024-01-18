@@ -14,7 +14,7 @@ export const useMounted = () => {
 
 export const useSafeStateWith = <S>(
   mounted: boolean,
-  initialState: S | (() => S)
+  initialState: S | (() => S),
 ): [S, Dispatch<SetStateAction<S>>] => {
   const [state, setState] = useState(initialState)
   const safeSetState = useCallback(
@@ -23,14 +23,14 @@ export const useSafeStateWith = <S>(
         setState(newState)
       }
     },
-    [mounted]
+    [mounted],
   )
 
   return [state, safeSetState]
 }
 
 export const useSafeState = <S>(
-  initialState: S | (() => S)
+  initialState: S | (() => S),
 ): [S, Dispatch<SetStateAction<S>>] => {
   const mounted = useMounted()
   return useSafeStateWith(mounted, initialState)

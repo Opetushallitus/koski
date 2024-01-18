@@ -10,7 +10,7 @@ const disabledFeatures: string[] = getSearchQueryEntries().reduce(
     const match = entry[0].match(/disable-(\w+)/)
     return match && match[1] ? [...acc, match[1]] : acc
   },
-  []
+  [],
 )
 
 export const featureFlags: Record<Feature, string> = {

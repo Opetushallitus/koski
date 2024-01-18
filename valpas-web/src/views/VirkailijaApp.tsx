@@ -78,7 +78,7 @@ const VirkailijaRoutes = () => {
   const basePath = useBasePath()
 
   const organisaatiotJaKayttooikeusroolit = useApiOnce(
-    fetchYlatasonOrganisaatiotJaKayttooikeusroolit
+    fetchYlatasonOrganisaatiotJaKayttooikeusroolit,
   )
 
   if (!isSuccess(organisaatiotJaKayttooikeusroolit)) {
@@ -114,7 +114,7 @@ const VirkailijaRoutes = () => {
         <Route
           exact
           path={hakeutumisvalvonnanKunnalleIlmoitetutPathWithoutOrg.route(
-            basePath
+            basePath,
           )}
           render={(routeProps) => (
             <HakeutumisenKunnalleIlmoitetutViewWithoutOrgOid
@@ -146,7 +146,7 @@ const VirkailijaRoutes = () => {
         <Route
           exact
           path={hakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg.route(
-            basePath
+            basePath,
           )}
           render={(routeProps) => (
             <HakeutumisenKunnalleIlmoitetutView
@@ -168,7 +168,7 @@ const VirkailijaRoutes = () => {
         <Route
           exact
           path={suorittamisvalvonnanKunnalleIlmoitetutPathWithoutOrg.route(
-            basePath
+            basePath,
           )}
           render={(routeProps) => (
             <SuorittamisenKunnalleIlmoitetutViewWithoutOrgOid
@@ -190,7 +190,7 @@ const VirkailijaRoutes = () => {
         <Route
           exact
           path={suorittamisvalvonnanKunnalleIlmoitetutPathWithOrg.route(
-            basePath
+            basePath,
           )}
           render={(routeProps) => (
             <SuorittamisenKunnalleIlmoitetutView

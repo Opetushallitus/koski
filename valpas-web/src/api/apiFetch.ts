@@ -31,7 +31,7 @@ export type JsonRequestInit = Omit<RequestInit, "body"> & { body: any }
 
 const apiFetch = async <T>(
   input: RequestInfo,
-  init?: RequestInit
+  init?: RequestInit,
 ): Promise<ApiResponse<T>> => {
   try {
     const response = await fetch(prependUrl("/koski", input), init)
@@ -68,7 +68,7 @@ const apiFetch = async <T>(
 export const enrichJsonRequest = (
   method: string,
   accept: string,
-  init?: JsonRequestInit
+  init?: JsonRequestInit,
 ): JsonRequestInit => ({
   credentials: "include",
   method,
@@ -85,31 +85,31 @@ export const enrichJsonRequest = (
 
 export const apiGet = async <T>(
   input: RequestInfo,
-  init?: JsonRequestInit
+  init?: JsonRequestInit,
 ): Promise<ApiResponse<T>> =>
   apiFetch<T>(input, enrichJsonRequest("GET", "application/json", init))
 
 export const apiPost = async <T>(
   input: RequestInfo,
-  init?: JsonRequestInit
+  init?: JsonRequestInit,
 ): Promise<ApiResponse<T>> =>
   apiFetch<T>(input, enrichJsonRequest("POST", "application/json", init))
 
 export const apiPut = async <T>(
   input: RequestInfo,
-  init?: JsonRequestInit
+  init?: JsonRequestInit,
 ): Promise<ApiResponse<T>> =>
   apiFetch<T>(input, enrichJsonRequest("PUT", "application/json", init))
 
 export const apiDelete = async <T>(
   input: RequestInfo,
-  init?: JsonRequestInit
+  init?: JsonRequestInit,
 ): Promise<ApiResponse<T>> =>
   apiFetch<T>(input, enrichJsonRequest("DELETE", "application/json", init))
 
 export const prependUrl = (
   baseUrl: string,
-  request: RequestInfo
+  request: RequestInfo,
 ): RequestInfo =>
   typeof request === "string"
     ? baseUrl + "/" + request
@@ -122,12 +122,12 @@ export const mockApi =
   <T, P extends any[]>(getResult: (...params: P) => E.Either<ApiError, T>) =>
   async (...params: P): Promise<ApiResponse<T>> => {
     await new Promise((resolve) =>
-      setTimeout(resolve, 300 + Math.random() * 200)
+      setTimeout(resolve, 300 + Math.random() * 200),
     )
     return pipe(
       getResult(...params),
       E.map((data) => ({ status: 200, data })),
-      E.mapLeft((error) => ({ errors: [error] }))
+      E.mapLeft((error) => ({ errors: [error] })),
     )
   }
 

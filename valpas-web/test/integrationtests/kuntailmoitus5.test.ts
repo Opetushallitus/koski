@@ -14,7 +14,7 @@ describe("Kuntailmoituksen tekeminen 5/7", () => {
     await dataTableEventuallyEquals(
       ".kuntailmoitus",
       hkiTableContent_20211201,
-      "|"
+      "|",
     )
 
     await teeKuntailmoitusOppijanäkymistä(kunnanOppijat, kuntakäyttäjä)

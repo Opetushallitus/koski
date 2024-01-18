@@ -20,7 +20,7 @@ export const organisaatioWithOid = (oid: Oid): OrganisaatioWithOid => ({
 })
 
 export const trimOrganisaatio = <T extends Organisaatio>(
-  org: T
+  org: T,
 ): Organisaatio => ({
   oid: org.oid,
   nimi: org.nimi,

@@ -74,7 +74,7 @@ export type Value = {
 
 export const fromNullableValue = (
   value: Value | null | undefined,
-  nullFilterValues?: Array<string | number>
+  nullFilterValues?: Array<string | number>,
 ): Value =>
   value || {
     value: "–",
@@ -82,7 +82,7 @@ export const fromNullableValue = (
   }
 
 export const fromNullable = (
-  value: FilterableValue | null | undefined
+  value: FilterableValue | null | undefined,
 ): Value =>
   fromNullableValue({
     value: value ? value : "-",
@@ -117,16 +117,16 @@ export const PaginatedDataTable = (props: PaginatedDataTableProps) => {
   const [visibleCount, setVisibleCount] = useState(props.paginationSize)
   const showMore = useCallback(
     () => setVisibleCount(visibleCount + props.paginationSize),
-    [visibleCount, props.paginationSize]
+    [visibleCount, props.paginationSize],
   )
   useEffect(
     () => setVisibleCount(props.paginationSize),
-    [sortedData, props.paginationSize]
+    [sortedData, props.paginationSize],
   )
 
   const shownData = useMemo(
     () => sortedData.slice(0, visibleCount),
-    [sortedData, visibleCount]
+    [sortedData, visibleCount],
   )
 
   return (
@@ -206,7 +206,9 @@ const DataTableHeader = (props: DataTableHeaderProps) => (
                   pipe(
                     props.tableState.filters,
                     A.updateAt(index, { fn: filter, value }),
-                    O.map((filters) => props.setTableState(setFilters(filters)))
+                    O.map((filters) =>
+                      props.setTableState(setFilters(filters)),
+                    ),
                   )
                 }
               />
@@ -247,7 +249,7 @@ const DataRow = ({ datum, columns, style }: DataRowProps) =>
 const useTableData = (props: DataTableProps) => {
   const [tableState, setTableState] = useDataTableState(
     props.storageName,
-    props.columns
+    props.columns,
   )
 
   const filteredData = useMemo(
@@ -258,18 +260,18 @@ const useTableData = (props: DataTableProps) => {
             !filter?.fn ||
             (datum.values[index]?.filterValues
               ? datum.values[index]?.filterValues?.some((fv) =>
-                  filter.fn?.(toFilterableString(fv))
+                  filter.fn?.(toFilterableString(fv)),
                 )
-              : filter.fn?.(toFilterableString(datum.values[index]?.value)))
-        )
+              : filter.fn?.(toFilterableString(datum.values[index]?.value))),
+        ),
       ),
-    [tableState.filters, props.data]
+    [tableState.filters, props.data],
   )
 
   const sortedData = useMemo(() => {
     const compare = compareDatum(tableState.sort.columnIndex)
     const ordDatum = Ord.fromCompare(
-      tableState.sort.ascending ? compare : flip(compare)
+      tableState.sort.ascending ? compare : flip(compare),
     )
     return A.sortBy([ordDatum])(filteredData)
   }, [tableState.sort.columnIndex, tableState.sort.ascending, filteredData])
@@ -285,10 +287,10 @@ const useTableData = (props: DataTableProps) => {
       ? {
           ...column,
           indicatorSpace: filteredData.some(
-            (row) => row.values[colIndex]?.icon
+            (row) => row.values[colIndex]?.icon,
           ),
         }
-      : column
+      : column,
   )
 
   return useMemo(
@@ -307,7 +309,7 @@ const useTableData = (props: DataTableProps) => {
       setTableState,
       sortedData,
       tableState,
-    ]
+    ],
   )
 }
 
@@ -321,18 +323,18 @@ const useOptionsForFilters = (columns: Column[], data: Datum[]) => {
               A.chain(selectFilterValues(index)),
               A.map(toFilterableString),
               A.uniq(string.Eq),
-              A.sortBy([string.Ord])
+              A.sortBy([string.Ord]),
             )
-          : []
+          : [],
       ),
-    [columns, data]
+    [columns, data],
   )
 }
 
 const useEmitCountChanges = (
   data: Datum[],
   sortedData: Datum[],
-  onChange?: (event: DataTableCountChangeEvent) => void
+  onChange?: (event: DataTableCountChangeEvent) => void,
 ) => {
   const filteredRowCount = sortedData.length
   const unfilteredRowCount = data.length

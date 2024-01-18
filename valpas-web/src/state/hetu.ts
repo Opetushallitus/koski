@@ -20,7 +20,7 @@ export const hetuToBirthday = (input: string = "") =>
       const [d, m, y] = tokens.slice(1, 4).map((n) => parseInt(n, 10))
       const c = delimiterToCentury(tokens[4]!)
       return format(new Date(y! + c!, m! - 1, d), DATE_FORMAT)
-    })
+    }),
   )
 
 const delimiterToCentury = (d: string): number | undefined =>
@@ -40,5 +40,5 @@ const delimiterToCentury = (d: string): number | undefined =>
       E: 2000,
       F: 2000,
     } as Record<string, number>,
-    pluck(d)
+    pluck(d),
   )

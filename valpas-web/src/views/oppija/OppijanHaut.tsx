@@ -61,7 +61,7 @@ type HakuTableProps = {
 
 const HakuTable = (props: HakuTableProps) => {
   const hasHarkinnanvaraisuus = props.haku.hakutoiveet.some(
-    (toive) => toive.harkinnanvarainen
+    (toive) => toive.harkinnanvarainen,
   )
 
   return (

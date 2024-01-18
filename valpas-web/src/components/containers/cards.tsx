@@ -61,7 +61,7 @@ export const ConstrainedCardBody = ({
 
 const calculateConstrainedBodyMaxHeight = (
   containerRef: React.RefObject<HTMLDivElement>,
-  extraMargin: number = 0
+  extraMargin: number = 0,
 ) => {
   const defaultBaseMargin = 50
   const cardMargin = 30
@@ -81,6 +81,6 @@ const calculateConstrainedBodyMaxHeight = (
 
   return Math.max(
     minHeight,
-    Math.min(stretchToBottomHeight, fillVerticallyHeight)
+    Math.min(stretchToBottomHeight, fillVerticallyHeight),
   )
 }

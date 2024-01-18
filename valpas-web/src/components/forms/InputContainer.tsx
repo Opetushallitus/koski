@@ -18,7 +18,7 @@ export const InputContainer = (props: InputContainerProps) => {
     <label
       className={joinClassNames(
         b({ withicon: Boolean(props.icon) }),
-        props.className
+        props.className,
       )}
     >
       {props.label && (

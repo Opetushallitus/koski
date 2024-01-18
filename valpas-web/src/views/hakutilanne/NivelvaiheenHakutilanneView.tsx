@@ -67,15 +67,15 @@ export const NivelvaiheenHakutilanneView = withRequiresHakeutumisenValvonta(
         getOrganisaatiot(
           organisaatiotJaKäyttöoikeusroolit,
           organisaatioHakuRooli,
-          organisaatioTyyppi
+          organisaatioTyyppi,
         ),
-      [organisaatiotJaKäyttöoikeusroolit]
+      [organisaatiotJaKäyttöoikeusroolit],
     )
 
     const organisaatioOid = props.match.params.organisaatioOid!
     const organisaatio = useMemo(
       () => organisaatiot.find((o) => o.oid === organisaatioOid),
-      [organisaatioOid, organisaatiot]
+      [organisaatioOid, organisaatiot],
     )
 
     const changeOrganisaatio = useCallback(
@@ -84,11 +84,11 @@ export const NivelvaiheenHakutilanneView = withRequiresHakeutumisenValvonta(
           history.push(
             nivelvaiheenHakutilannePathWithOrg.href(basePath, {
               organisaatioOid: oid,
-            })
+            }),
           )
         }
       },
-      [basePath, history]
+      [basePath, history],
     )
 
     const { data, isLoading, errors, setMuuHaku, reload } =
@@ -146,7 +146,7 @@ export const NivelvaiheenHakutilanneView = withRequiresHakeutumisenValvonta(
         )}
       </Page>
     )
-  }
+  },
 )
 
 const OrganisaatioMissingView = () => (

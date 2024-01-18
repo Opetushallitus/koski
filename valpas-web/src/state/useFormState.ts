@@ -29,14 +29,14 @@ export type UseFormStateHook<T extends object> = {
 export type FormTouchFunction<T extends object> = (key: keyof T) => void
 export type FormSetFunction<T extends object> = (
   key: keyof T,
-  value: T[typeof key]
+  value: T[typeof key],
 ) => void
 export type FormPatchFunction<T extends object> = (patch: Partial<T>) => void
 export type FormFieldPropsFunction<T extends object> = <K extends keyof T>(
-  key: K
+  key: K,
 ) => FormFieldProps<T[K]>
 export type FormSubmitCallback<T extends object> = (
-  callback: (t: T) => void
+  callback: (t: T) => void,
 ) => () => void
 export type FormValidateFunction = () => void
 
@@ -63,7 +63,7 @@ export type FieldState<T> = {
 
 export type FieldValidator<T, F extends object> = (
   value: T | undefined,
-  formState: FormState<F>
+  formState: FormState<F>,
 ) => E.Either<FieldError[], T | undefined>
 
 export type FieldError = string
@@ -74,7 +74,7 @@ export const useFormState = <T extends object>({
 }: UseFormStateOptions<T>): UseFormStateHook<T> => {
   const initialState = useMemo(
     () => createInitialState(initialValues),
-    [initialValues]
+    [initialValues],
   )
   const [currentState, setState] = useState(initialState)
 
@@ -83,7 +83,7 @@ export const useFormState = <T extends object>({
       const newState = updatedField(key, value, validators, currentState)
       return setState(validateTouchedFields(validators, newState))
     },
-    [currentState, validators]
+    [currentState, validators],
   )
 
   const patch: FormPatchFunction<T> = useCallback(
@@ -95,12 +95,12 @@ export const useFormState = <T extends object>({
       }
       setState(validateAllFields(validators, newState))
     },
-    [currentState, validators]
+    [currentState, validators],
   )
 
   const touch: FormTouchFunction<T> = useCallback(
     (key) => setState(touched(key, validators, currentState)),
-    [currentState, validators]
+    [currentState, validators],
   )
 
   const fieldProps: FormFieldPropsFunction<T> = useCallback(
@@ -110,7 +110,7 @@ export const useFormState = <T extends object>({
       onBlur: () => touch(key),
       error: currentState[key].errors.join(", "),
     }),
-    [currentState, set, touch]
+    [currentState, set, touch],
   )
 
   const [isValid, allFieldsValidated] = useMemo(
@@ -121,9 +121,9 @@ export const useFormState = <T extends object>({
           accAllFieldsValidated && currentState[key].validated,
         ],
         [true, true],
-        currentState
+        currentState,
       ),
-    [currentState, validators]
+    [currentState, validators],
   )
 
   const submitCallback: FormSubmitCallback<T> = useCallback(
@@ -132,17 +132,17 @@ export const useFormState = <T extends object>({
         const values = foldFields(
           (acc, key, field) => ({ ...acc, [key]: field.currentValue }),
           {},
-          currentState
+          currentState,
         ) as T
         callback(values)
       }
     },
-    [currentState, isValid]
+    [currentState, isValid],
   )
 
   const validateAll: FormValidateFunction = useCallback(
     () => setState(validateAllFields(validators, currentState)),
-    [currentState, validators]
+    [currentState, validators],
   )
 
   return useMemo(
@@ -167,7 +167,7 @@ export const useFormState = <T extends object>({
       submitCallback,
       touch,
       validateAll,
-    ]
+    ],
   )
 }
 
@@ -184,13 +184,13 @@ const createInitialState = <T extends object>(values: T): FormState<T> =>
         errors: [],
       },
     ]),
-    (entries) => fromEntries(entries) as FormState<T>
+    (entries) => fromEntries(entries) as FormState<T>,
   )
 
 const touched = <T extends object>(
   key: keyof T,
   validators: FormValidators<T>,
-  state: FormState<T>
+  state: FormState<T>,
 ): FormState<T> =>
   validateField(key, validators, {
     ...state,
@@ -204,7 +204,7 @@ const updatedField = <K extends keyof T, T extends object>(
   key: K,
   value: T[K],
   validators: FormValidators<T>,
-  state: FormState<T>
+  state: FormState<T>,
 ): FormState<T> =>
   validateField(key, validators, {
     ...state,
@@ -218,7 +218,7 @@ const updatedField = <K extends keyof T, T extends object>(
 const getErrors = <K extends keyof T, T extends object>(
   key: K,
   validators: FormValidators<T>,
-  state: FormState<T>
+  state: FormState<T>,
 ) => {
   const value = state[key].currentValue
   return pipe(
@@ -226,14 +226,14 @@ const getErrors = <K extends keyof T, T extends object>(
     A.map((validate) => validate(value, state)),
     A.separate,
     Separated.left,
-    A.flatten
+    A.flatten,
   )
 }
 
 const validateField = <K extends keyof T, T extends object>(
   key: K,
   validators: FormValidators<T>,
-  state: FormState<T>
+  state: FormState<T>,
 ): FormState<T> => ({
   ...state,
   [key]: {
@@ -245,29 +245,29 @@ const validateField = <K extends keyof T, T extends object>(
 
 const validateTouchedFields = <T extends object>(
   validators: FormValidators<T>,
-  state: FormState<T>
+  state: FormState<T>,
 ): FormState<T> =>
   foldFields(
     (accState, key, field) =>
       field.touched ? validateField(key, validators, accState) : accState,
     state,
-    state
+    state,
   )
 
 const validateAllFields = <T extends object>(
   validators: FormValidators<T>,
-  state: FormState<T>
+  state: FormState<T>,
 ): FormState<T> =>
   foldFields(
     (accState, key) => validateField(key, validators, accState),
     state,
-    state
+    state,
   )
 
 const foldFields = <T extends object, S>(
   fn: <K extends keyof T>(acc: S, key: K, field: FieldState<T[K]>) => S,
   initial: S,
-  state: FormState<T>
+  state: FormState<T>,
 ) => {
   let acc = initial
   for (const key in state) {
