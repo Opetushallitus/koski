@@ -40,6 +40,7 @@ import {
   VSTPäätasonSuoritusOpintokokonaisuudella,
   VSTPäätasonSuoritusPerusteella
 } from './types'
+import { VapaanSivistystyönKoulutuksenPäätasonSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonKoulutuksenPaatasonSuoritus'
 
 export const PäätasosuorituksenTiedot: React.FC<{
   children: React.ReactNode
@@ -150,7 +151,9 @@ export const Laajuus = <T extends VSTPäätasonSuoritusLaajuudella>({
   )
 }
 
-export const Opetuskieli = <T extends VapaanSivistystyönPäätasonSuoritus>({
+export const Opetuskieli = <
+  T extends VapaanSivistystyönKoulutuksenPäätasonSuoritus
+>({
   form,
   suoritus: päätasonSuoritus
 }: SuoritusFieldProps<T>) => (
@@ -165,7 +168,7 @@ export const Opetuskieli = <T extends VapaanSivistystyönPäätasonSuoritus>({
 )
 
 export const TodistuksenLisätiedot = <
-  T extends VapaanSivistystyönPäätasonSuoritus
+  T extends VapaanSivistystyönKoulutuksenPäätasonSuoritus
 >({
   form,
   suoritus: päätasonSuoritus

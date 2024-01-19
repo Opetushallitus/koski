@@ -26,6 +26,8 @@ import { VSTKoto2022Editor } from './koto2022/VSTKoto2022Editor'
 import { VSTLukutaitoEditor } from './lukutaito/VSTLukutaitoEditor'
 import { VSTVapaatavoitteinenEditor } from './vapaatavoitteinen/VSTVapaatavoitteinenEditor'
 import { isVSTOsasuoritusArvioinnilla } from './common/arviointi'
+import { isVapaanSivistystyönKoulutuksenPäätasonSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonKoulutuksenPaatasonSuoritus'
+import { isVapaanSivistystyönOsaamismerkinSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonOsaamismerkinSuoritus'
 
 type VSTEditorProps =
   AdaptedOpiskeluoikeusEditorProps<VapaanSivistystyönOpiskeluoikeus>
@@ -50,24 +52,37 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
   const [päätasonSuoritus, setPäätasonSuoritus] = usePäätasonSuoritus(form)
 
   const suoritusVahvistettu = useMemo(() => {
-    if (päätasonSuoritus.suoritus.osasuoritukset === undefined) {
+    if (
+      isVapaanSivistystyönKoulutuksenPäätasonSuoritus(päätasonSuoritus.suoritus)
+    ) {
+      if (päätasonSuoritus.suoritus.osasuoritukset === undefined) {
+        return false
+      }
+      const kaikkiArvioinnit = päätasonSuoritus.suoritus.osasuoritukset.flatMap(
+        (osasuoritus) => {
+          if (isVSTOsasuoritusArvioinnilla(osasuoritus)) {
+            if ('arviointi' in osasuoritus) {
+              return parasArviointi<Arviointi>(osasuoritus.arviointi || [])
+            } else {
+              return undefined
+            }
+          } else {
+            return []
+          }
+        }
+      )
+      return !kaikkiArvioinnit.every((a) => a !== undefined)
+    } else if (
+      isVapaanSivistystyönOsaamismerkinSuoritus(päätasonSuoritus.suoritus)
+    ) {
+      return (
+        parasArviointi<Arviointi>(päätasonSuoritus.suoritus.arviointi || []) !==
+        undefined
+      )
+    } else {
       return false
     }
-    const kaikkiArvioinnit = päätasonSuoritus.suoritus.osasuoritukset.flatMap(
-      (osasuoritus) => {
-        if (isVSTOsasuoritusArvioinnilla(osasuoritus)) {
-          if ('arviointi' in osasuoritus) {
-            return parasArviointi<Arviointi>(osasuoritus.arviointi || [])
-          } else {
-            return undefined
-          }
-        } else {
-          return []
-        }
-      }
-    )
-    return !kaikkiArvioinnit.every((a) => a !== undefined)
-  }, [päätasonSuoritus.suoritus.osasuoritukset])
+  }, [päätasonSuoritus.suoritus])
 
   // Render
   const editorProps = {
@@ -131,6 +146,7 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
           päätasonSuoritus={päätasonSuoritus}
         />
       )}
+      {/*TODO: TOR-2049: Osaamismerkin suoritukselle editori*/}
     </TestIdRoot>
   )
 }

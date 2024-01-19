@@ -20,14 +20,16 @@ import { VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYh
 import { VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenTyöelämäJakso } from '../../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenTyoelamaJaYhteiskuntataitojenTyoelamaJakso'
 import { VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus'
 import { VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenSuoritus'
-import { VapaanSivistystyönOpiskeluoikeus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeus'
 import { VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus'
 import {
+  isVSTKoulutuksenSuoritus,
   VSTArviointi,
   VSTArviointiPäivällä,
   VSTSuoritus,
   VSTSuoritusArvioinnilla
 } from './types'
+import { isVapaanSivistystyönOsaamismerkinArviointi } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOsaamismerkinArviointi'
+import { VapaanSivistystyönOpiskeluoikeus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeus'
 
 export const createArviointi =
   <T extends Arviointi>(
@@ -43,7 +45,8 @@ export const kaikkiOsasuorituksetVahvistettu = (
   oo: VapaanSivistystyönOpiskeluoikeus
 ): boolean =>
   oo.suoritukset
-    .flatMap<any>((s) => s.osasuoritukset || [])
+    .filter(isVSTKoulutuksenSuoritus)
+    .flatMap((s: any) => s.osasuoritukset || [])
     .filter(isVSTOsasuoritusArvioinnilla)
     .filter((os) => os.arviointi === undefined).length === 0
 
@@ -85,6 +88,7 @@ export function isVSTArviointiPäivällä(
     isVSTKotoutumiskoulutuksenOsasuorituksenArviointi2022(x) ||
     isVapaanSivistystyöJotpaKoulutuksenArviointi(x) ||
     isLukutaitokoulutuksenArviointi(x) ||
-    isVapaanSivistystyöVapaatavoitteisenKoulutuksenArviointi(x)
+    isVapaanSivistystyöVapaatavoitteisenKoulutuksenArviointi(x) ||
+    isVapaanSivistystyönOsaamismerkinArviointi(x)
   )
 }

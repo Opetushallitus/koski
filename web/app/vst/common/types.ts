@@ -7,14 +7,19 @@ import { Oppilaitos } from '../../types/fi/oph/koski/schema/Oppilaitos'
 import { PaikallinenKoulutusmoduuli } from '../../types/fi/oph/koski/schema/PaikallinenKoulutusmoduuli'
 import { VapaanSivistystyönJotpaKoulutuksenSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonJotpaKoulutuksenSuoritus'
 import { VapaanSivistystyönOpintojenSuorituksenOsaamisenTunnustaminen } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpintojenSuorituksenOsaamisenTunnustaminen'
-import { VapaanSivistystyönOpiskeluoikeus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeus'
-import { VapaanSivistystyönPäätasonSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonPaatasonSuoritus'
 import { PäätasonSuoritusOf } from '../../util/opiskeluoikeus'
 import {
   ArviointiOf,
   KoulutusmoduuliOf,
   OsasuoritusOf
 } from '../../util/schema'
+import { VapaanSivistystyönKoulutuksenPäätasonSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonKoulutuksenPaatasonSuoritus'
+import {
+  isVapaanSivistystyönOsaamismerkinSuoritus,
+  VapaanSivistystyönOsaamismerkinSuoritus
+} from '../../types/fi/oph/koski/schema/VapaanSivistystyonOsaamismerkinSuoritus'
+import { VapaanSivistystyönOpiskeluoikeus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeus'
+import { VapaanSivistystyönPäätasonSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonPaatasonSuoritus'
 
 export type VSTPäätasonSuoritusEditorProps<
   T extends PäätasonSuoritusOf<VapaanSivistystyönOpiskeluoikeus>
@@ -29,9 +34,19 @@ export type VSTPäätasonSuoritusEditorProps<
 }>
 
 export type VSTSuoritus =
-  | VapaanSivistystyönPäätasonSuoritus
+  | VSTKoulutuksenSuoritus
+  | VapaanSivistystyönOsaamismerkinSuoritus
+
+export type VSTKoulutuksenSuoritus =
+  | VapaanSivistystyönKoulutuksenPäätasonSuoritus
   | VSTOsasuoritus
   | VSTAlaosasuoritus
+
+export function isVSTKoulutuksenSuoritus(
+  x: VSTSuoritus
+): x is VSTKoulutuksenSuoritus {
+  return !isVapaanSivistystyönOsaamismerkinSuoritus(x)
+}
 
 export type VSTKoulutusmoduuli = KoulutusmoduuliOf<VSTSuoritus>
 export type VSTKoulutusmoduuliKuvauksella = Extract<
@@ -43,7 +58,8 @@ export type VSTKoulutusmoduuliLaajuudella = Extract<
   { laajuus?: object }
 >
 
-export type VSTOsasuoritus = OsasuoritusOf<VapaanSivistystyönPäätasonSuoritus>
+export type VSTOsasuoritus =
+  OsasuoritusOf<VapaanSivistystyönKoulutuksenPäätasonSuoritus>
 
 export type VSTAlaosasuoritus = OsasuoritusOf<VSTOsasuoritus>
 
@@ -57,37 +73,37 @@ export type VSTSuoritusArvioinnilla = Extract<
 >
 
 export type VSTSuoritusOsasuorituksilla = Extract<
-  VSTSuoritus,
-  { osasuoritukset?: VSTSuoritus[] }
+  VSTKoulutuksenSuoritus,
+  { osasuoritukset?: VSTKoulutuksenSuoritus[] }
 >
 
 export type VSTPaikallinenOsasuoritus = Extract<
-  VSTSuoritus,
+  VSTKoulutuksenSuoritus,
   { koulutusmoduuli: PaikallinenKoulutusmoduuli }
 >
 
 export type VSTSuoritusPaikallisillaOsasuorituksilla = Extract<
-  VSTSuoritus,
+  VSTKoulutuksenSuoritus,
   { osasuoritukset?: VSTPaikallinenOsasuoritus[] }
 >
 
 export type VSTSuoritusKuvauksella = Extract<
-  VSTSuoritus,
+  VSTKoulutuksenSuoritus,
   { koulutusmoduuli: VSTKoulutusmoduuliKuvauksella }
 >
 
 export type VSTSuoritusTunnustuksella = Extract<
-  VSTSuoritus,
+  VSTKoulutuksenSuoritus,
   { tunnustettu?: VapaanSivistystyönOpintojenSuorituksenOsaamisenTunnustaminen }
 >
 
 export type VSTPäätasonSuoritusLaajuudella = Extract<
-  VapaanSivistystyönPäätasonSuoritus,
+  VapaanSivistystyönKoulutuksenPäätasonSuoritus,
   { koulutusmoduuli: VSTKoulutusmoduuliLaajuudella }
 >
 
 export type VSTPäätasonSuoritusOpintokokonaisuudella = Extract<
-  VapaanSivistystyönPäätasonSuoritus,
+  VapaanSivistystyönKoulutuksenPäätasonSuoritus,
   {
     koulutusmoduuli: {
       opintokokonaisuus?: object
@@ -96,7 +112,7 @@ export type VSTPäätasonSuoritusOpintokokonaisuudella = Extract<
 >
 
 export type VSTPäätasonSuoritusPerusteella = Extract<
-  VapaanSivistystyönPäätasonSuoritus,
+  VapaanSivistystyönKoulutuksenPäätasonSuoritus,
   {
     koulutusmoduuli: {
       perusteenDiaarinumero?: string
