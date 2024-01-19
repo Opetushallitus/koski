@@ -73,4 +73,5 @@ case class AdditionalExports(
   suoritetutTutkinnotKoskeenTallennettavaOpiskeluoikeus: SuoritetutTutkinnotKoskeenTallennettavaOpiskeluoikeus,
   aktiivisetJaPäättyneetOpinnotKoskeenTallennettavaOpiskeluoikeus: AktiivisetJaPäättyneetOpinnotKoskeenTallennettavaOpiskeluoikeus,
   paikallinenKoulutusmoduuli: PaikallinenKoulutusmoduuli,
+  vapaanSivistystyönKoulutuksenPäätasonSuoritus: VapaanSivistystyönKoulutuksenPäätasonSuoritus
 )

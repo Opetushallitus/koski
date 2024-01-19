@@ -219,13 +219,13 @@ class TilastokeskusSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoike
       }
     }
 
-    "Ei palauta sellaisia vapaan sivistystyön opiskeluoikeuksia, joissa suorituksen tyyppinä vapaatavoitteinen koulutus" in {
+    "Ei palauta sellaisia vapaan sivistystyön opiskeluoikeuksia, joissa suorituksen tyyppinä vapaatavoitteinen tai osaamismerkki koulutus" in {
       val kaikkiOppijat = performQuery()
 
       val vapaatavoitteinen = kaikkiOppijat.find(
         _.opiskeluoikeudet.exists(
           _.suoritukset.exists(
-            _.tyyppi.koodiarvo == "vstvapaatavoitteinenkoulutus"
+            s => s.tyyppi.koodiarvo == "vstvapaatavoitteinenkoulutus" || s.tyyppi.koodiarvo == "vstosaamismerkki"
           )
         )
       )
@@ -240,7 +240,10 @@ class TilastokeskusSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoike
     }
     case _ => Nil
   }
-    .filter(_._1 != KoskiSpecificMockOppijat.vapaaSivistystyöVapaatavoitteinenKoulutus.oid)
+    .filterNot(d => Set(
+      KoskiSpecificMockOppijat.vapaaSivistystyöVapaatavoitteinenKoulutus.oid,
+      KoskiSpecificMockOppijat.vapaaSivistystyöOsaamismerkki.oid
+    ).contains(d._1))
   // Filtteröidään vapaan sivistystyön vapaatavoitteista koulutusta käyvä kaveri pois,
   // katso TilastokeskusServlet / exclusionFilters
 

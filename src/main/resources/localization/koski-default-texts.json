@@ -1499,6 +1499,7 @@
   "raportti-excel-default-value-vst-jotpa": "Jatkuvan oppimisen ja työllisyyden palvelukeskuksen koulutus",
   "raportti-excel-default-value-vst-maahanmuuttajienkotoutumiskoulutus": "Maahanmuuttajien kotoutumiskoulutus",
   "raportti-excel-default-value-vst-vapaatavoitteinen": "Vapaan sivistystyön vapaatavoitteinen koulutus",
+  "raportti-excel-default-value-vst-osaamismerkki": "Vapaan sivistystyön osaamismerkki",
   "raportti-excel-eirahoitusmuotoa-sheet-name": "Ei rahoitusmuotoa",
   "raportti-excel-eirahoitustietoa-sheet-name": "Ei rahoitustietoa",
   "raportti-excel-erivuonnakorotetutkurssit-sheet-name": "Eri vuonna korotetut kurssit",
@@ -2653,5 +2654,7 @@
   "Yritä uudestaan": "Yritä uudestaan",
   "Yritys": "Yritys",
   "Yths maksettu": "Yths maksettu",
-  "Y-tunnus": "Y-tunnus"
+  "Y-tunnus": "Y-tunnus",
+  "description:Vapaan sivistystyön osaamismerkin tunnistetiedot" : "Vapaan sivistystyön osaamismerkin tunnistetiedot",
+  "Osaamismerkki" : "Osaamismerkki"
 }

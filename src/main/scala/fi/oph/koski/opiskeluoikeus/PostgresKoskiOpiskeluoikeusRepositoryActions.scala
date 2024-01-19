@@ -57,7 +57,8 @@ class PostgresKoskiOpiskeluoikeusRepositoryActions(
 
   private def syncHenkilötiedotAction(id: Int, oppijaOid: String, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, henkilötiedot: Option[OppijaHenkilöWithMasterInfo]) = {
     henkilötiedot match {
-      case _ if opiskeluoikeus.mitätöity && opiskeluoikeus.suoritukset.exists(_.tyyppi.koodiarvo == "vstvapaatavoitteinenkoulutus") =>
+      case _ if opiskeluoikeus.mitätöity &&
+        opiskeluoikeus.suoritukset.map(_.tyyppi.koodiarvo).exists(Set("vstvapaatavoitteinenkoulutus", "vstosaamismerkki").contains) =>
         perustiedotSyncRepository.addDeleteToSyncQueue(id)
       case Some(henkilö) =>
         val perustiedot = OpiskeluoikeudenPerustiedot.makePerustiedot(id, opiskeluoikeus, henkilö)

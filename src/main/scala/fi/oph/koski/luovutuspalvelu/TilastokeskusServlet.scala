@@ -13,7 +13,7 @@ import fi.oph.koski.log._
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter.{NotSuorituksenTyyppi, Poistettu}
 import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusQueryContext, OpiskeluoikeusQueryFilter, QueryOppijaHenkilö}
 import fi.oph.koski.schema.Henkilö.Oid
-import fi.oph.koski.schema.SuorituksenTyyppi.vstvapaatavoitteinenkoulutus
+import fi.oph.koski.schema.SuorituksenTyyppi.{vstosaamismerkki, vstvapaatavoitteinenkoulutus}
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache, ObservableSupport}
 import fi.oph.koski.util.SortOrder.Ascending
@@ -42,7 +42,11 @@ class TilastokeskusServlet(implicit val application: KoskiApplication) extends K
 }
 
 case class TilastokeskusQueryContext(request: HttpServletRequest)(implicit koskiSession: KoskiSpecificSession, application: KoskiApplication) extends Logging {
-  val extraFilters = List(NotSuorituksenTyyppi(vstvapaatavoitteinenkoulutus), Poistettu(false))
+  val extraFilters = List(
+    NotSuorituksenTyyppi(vstvapaatavoitteinenkoulutus),
+    NotSuorituksenTyyppi(vstosaamismerkki),
+    Poistettu(false)
+  )
 
   def queryLaajoillaHenkilöTiedoilla(params: MultiParams, paginationSettings: Option[PaginationSettings]): Either[HttpStatus, Observable[JValue]] = {
     logger(koskiSession).info("Haetaan opiskeluoikeuksia: " + Option(request.getQueryString).getOrElse("ei hakuehtoja"))

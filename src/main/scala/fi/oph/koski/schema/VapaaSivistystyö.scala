@@ -18,7 +18,7 @@ case class VapaanSivistystyönOpiskeluoikeus(
   tila: VapaanSivistystyönOpiskeluoikeudenTila,
   lisätiedot: Option[VapaanSivistystyönOpiskeluoikeudenLisätiedot] = None,
   @MaxItems(1)
-  suoritukset: List[VapaanSivistystyönKoulutuksenPäätasonSuoritus],
+  suoritukset: List[VapaanSivistystyönPäätasonSuoritus],
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.vapaansivistystyonkoulutus.koodiarvo)
   tyyppi: Koodistokoodiviite = OpiskeluoikeudenTyyppi.vapaansivistystyonkoulutus,
   organisaatiohistoria: Option[List[OpiskeluoikeudenOrganisaatiohistoria]] = None,
@@ -49,7 +49,11 @@ case class VapaanSivistystyönOpiskeluoikeudenLisätiedot(
   oikeuttaMaksuttomuuteenPidennetty: Option[List[OikeuttaMaksuttomuuteenPidennetty]] = None
 ) extends OpiskeluoikeudenLisätiedot with MaksuttomuusTieto
 
-trait VapaanSivistystyönKoulutuksenPäätasonSuoritus extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen with Suorituskielellinen with Todistus with Arvioinniton {
+trait VapaanSivistystyönPäätasonSuoritus extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen {
+  def koulutusmoduuli: Koulutusmoduuli
+}
+
+trait VapaanSivistystyönKoulutuksenPäätasonSuoritus extends VapaanSivistystyönPäätasonSuoritus with Suorituskielellinen with Todistus with Arvioinniton {
   @Title("Koulutus")
   def koulutusmoduuli: Koulutusmoduuli
 }

@@ -132,7 +132,7 @@ class ValpasSuorittamisenValvontaService(
           ).contains(pts.suorituksenTyyppi.koodiarvo)) => true
       // VST: on nivelvaihetta, jos ei ole vapaatavoitteista
       case "vapaansivistystyonkoulutus"
-        if oo.päätasonSuoritukset.exists(pts => pts.suorituksenTyyppi.koodiarvo != "vstvapaatavoitteinenkoulutus") => true
+        if oo.päätasonSuoritukset.map(_.suorituksenTyyppi.koodiarvo).exists(k => !Set("vstvapaatavoitteinenkoulutus", "vstosaamismerkki").contains(k)) => true
       // Luva: aina nivelvaihetta
       case "luva" => true
       // Perusopetuksen lisäopetus: aina nivelvaihetta

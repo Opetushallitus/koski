@@ -15,7 +15,8 @@ object ExamplesVapaaSivistystyö {
     Example("vapaa sivistystyö - oppivelvollisille suunnattu koulutus", "Oppija suorittaa oppivelvollisille suunnattua koulutusta kansanopistossa", VapaaSivistystyöExample.oppivelvollisuuskoulutusExample),
     Example("vapaa sivistystyö - maahanmuuttajien kotoutuskoulutus", "Oppija suorittaa maahannmuuttajien kotoutumiskoulutusta kansanopistossa", VapaaSivistystyöExample.maahanmuuttajienkotoutusExample),
     Example("vapaa sivistystyö - lukutaitokoulutus", "Oppija suorittaa lukutaitokoulutusta kansanopistossa", VapaaSivistystyöExample.lukutaitokoulutusExample),
-    Example("vapaa sivistystyö - vapaatavoitteinen koulutus", "Oppija suorittaa vapaatavoitteisia koulutuksia kansanopistossa", VapaaSivistystyöExample.vapaatavoitteinenKoulutusExample)
+    Example("vapaa sivistystyö - vapaatavoitteinen koulutus", "Oppija suorittaa vapaatavoitteisia koulutuksia kansanopistossa", VapaaSivistystyöExample.vapaatavoitteinenKoulutusExample),
+    Example("vapaa sivistystyö - osaamismerkki", "Oppija on suorittanut vapaan sivistystyön osaamismerkin", VapaaSivistystyöExample.osaamismerkkiExample)
   )
 }
 
@@ -62,6 +63,16 @@ object VapaaSivistystyöExample {
     lisätiedot = None,
     oppilaitos = Some(varsinaisSuomenKansanopisto),
     suoritukset = List(suoritusVapaatavoitteinenKoulutus)
+  )
+
+  lazy val opiskeluoikeusOsaamismerkki: VapaanSivistystyönOpiskeluoikeus = VapaanSivistystyönOpiskeluoikeus(
+    arvioituPäättymispäivä = None,
+    tila = VapaanSivistystyönOpiskeluoikeudenTila(List(
+      VapaanSivistystyönOsaamismerkinOpiskeluoikeusjakso(date(2024, 1, 1), opiskeluoikeusHyväksytystiSuoritettu)
+    )),
+    lisätiedot = None,
+    oppilaitos = Some(varsinaisSuomenKansanopisto),
+    suoritukset = List(suoritusOsaamismerkki)
   )
 
   lazy val opiskeluoikeusVapaatavoitteinenIlmanOpintokokonaisuutta = VapaanSivistystyönOpiskeluoikeus(
@@ -179,6 +190,14 @@ object VapaaSivistystyöExample {
     ))
   )
 
+  lazy val suoritusOsaamismerkki: VapaanSivistystyönOsaamismerkinSuoritus = VapaanSivistystyönOsaamismerkinSuoritus(
+    toimipiste = OidOrganisaatio(MockOrganisaatiot.varsinaisSuomenKansanopisto),
+    tyyppi = Koodistokoodiviite(koodiarvo = "vstosaamismerkki", koodistoUri = "suorituksentyyppi"),
+    koulutusmoduuli = VapaanSivistystyönOsaamismerkki(tunniste = Koodistokoodiviite("1001", "osaamismerkit")),
+    vahvistus = vahvistus(päivä = date(2024, 1, 1)),
+    arviointi = Some(List(VapaanSivistystyönOsaamismerkinArviointi(päivä = date(2024, 1, 1))))
+  )
+
   lazy val suoritusVapaatavoitteinenKoulutusIlmanOpintokokonaisuutta = VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus(
     toimipiste = OidOrganisaatio(MockOrganisaatiot.varsinaisSuomenKansanopisto),
     tyyppi = Koodistokoodiviite(koodiarvo = "vstvapaatavoitteinenkoulutus", koodistoUri = "suorituksentyyppi"),
@@ -210,6 +229,11 @@ object VapaaSivistystyöExample {
     VapaaSivistystyöExampleData.exampleHenkilöVapaatavoitteinenKoulutus,
     List(opiskeluoikeusVapaatavoitteinen)
   )
+
+  lazy val osaamismerkkiExample = Oppija(
+    VapaaSivistystyöExampleData.exampleHenkilöOsaamismerkki,
+    List(opiskeluoikeusOsaamismerkki)
+  )
 }
 
 object VapaaSivistystyöExampleData {
@@ -217,6 +241,7 @@ object VapaaSivistystyöExampleData {
   val exampleHenkilöKOTO = asUusiOppija(KoskiSpecificMockOppijat.vapaaSivistystyöMaahanmuuttajienKotoutus)
   val exampleHenkilöLukutaito = asUusiOppija(KoskiSpecificMockOppijat.vapaaSivistystyöLukutaitoKotoutus)
   val exampleHenkilöVapaatavoitteinenKoulutus = asUusiOppija(KoskiSpecificMockOppijat.vapaaSivistystyöLukutaitoKotoutus)
+  val exampleHenkilöOsaamismerkki = asUusiOppija(KoskiSpecificMockOppijat.vapaaSivistystyöLukutaitoKotoutus)
 
   lazy val varsinaisSuomenAikuiskoulutussäätiö: Koulutustoimija = Koulutustoimija(MockOrganisaatiot.varsinaisSuomenAikuiskoulutussäätiö, Some("Varsinais-Suomen Aikuiskoulutussäätiö sr"), Some("0136193-2"), Some(Koodistokoodiviite("577", None, "kunta", None)))
 

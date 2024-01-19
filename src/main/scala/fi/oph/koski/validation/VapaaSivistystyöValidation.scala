@@ -34,6 +34,7 @@ object VapaaSivistystyöValidation {
                 validateVapaanSivistystyönJotpaKoulutuksenVahvistus(jotpa, opiskeluoikeus),
                 validateVapaanSivistystyönJotpaKoulutuksenAlkamispäivä(opiskeluoikeus, vstJotpaAikaisinSallittuAlkamispäivä)
               ))
+              // TODO: TOR-2049: lisää osaamismerkin validaatiot
             case _ =>
               HttpStatus.ok
           }

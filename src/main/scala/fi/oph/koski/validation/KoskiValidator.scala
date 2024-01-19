@@ -1118,6 +1118,7 @@ class KoskiValidator(
       case s: EBTutkinnonSuoritus
         => EuropeanSchoolOfHelsinkiValidation.osasuorituksetKunnossa(s)
       case s: TaiteenPerusopetuksenPäätasonSuoritus => true
+      case s: VapaanSivistystyönOsaamismerkinSuoritus => true
       case s => s.osasuoritusLista.nonEmpty
     }
 

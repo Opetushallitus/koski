@@ -1,0 +1,77 @@
+[
+  {
+    "metadata": [
+      {
+        "nimi": "Digitaaliset toimintaympäristöt",
+        "kuvaus": "Digitaaliset toimintaympäristöt",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "-",
+        "kuvaus": "-",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "osaamismerkit_1000",
+    "versio": 1,
+    "koodiArvo": "1000"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Digitaalinen tiedonhaku",
+        "kuvaus": "Digitaalinen tiedonhaku",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "-",
+        "kuvaus": "-",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "osaamismerkit_1001",
+    "versio": 1,
+    "koodiArvo": "1001"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Vuorovaikutusmerkki 1",
+        "kuvaus": "Vuorovaikutusmerkki 1",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "-",
+        "kuvaus": "-",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "osaamismerkit_1002",
+    "versio": 1,
+    "koodiArvo": "1002"
+  }
+]

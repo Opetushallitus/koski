@@ -158,6 +158,7 @@ object Koodistot {
     KoodistoAsetus("yhteystietotyypit"),
     KoodistoAsetus("opintokokonaisuudet"),
     KoodistoAsetus("koulutuksenosattuva"),
+    KoodistoAsetus("osaamismerkit"),
   )
   val muutKoodistot = muutKoodistoAsetukset.map(_.toString)
 

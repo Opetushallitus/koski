@@ -1,0 +1,63 @@
+{
+  "koodistoUri": "osaamismerkit",
+  "resourceUri": "https://virkailija.testiopintopolku.fi/koodisto-service/rest/codes/osaamismerkit",
+  "omistaja": "Timo Paasila",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "lukittu": null,
+  "withinCodes": [],
+  "includesCodes": [],
+  "levelsWithCodes": [],
+  "codesGroupUri": "koulutuskoodistot",
+  "version": 0,
+  "versio": 1,
+  "paivitysPvm": "2023-12-08",
+  "paivittajaOid": "1.2.246.562.24.23669480491",
+  "voimassaAlkuPvm": "2023-12-01",
+  "voimassaLoppuPvm": null,
+  "tila": "LUONNOS",
+  "metadata": [
+    {
+      "kieli": "SV",
+      "nimi": "Osaamismerkit",
+      "kuvaus": "Osaamismerkit",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    },
+    {
+      "kieli": "FI",
+      "nimi": "Osaamismerkit",
+      "kuvaus": "Osaamismerkit",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    },
+    {
+      "kieli": "EN",
+      "nimi": "Osaamismerkit",
+      "kuvaus": "Osaamismerkit",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    }
+  ],
+  "codesVersions": []
+}

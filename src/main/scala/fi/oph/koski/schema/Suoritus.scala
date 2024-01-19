@@ -117,6 +117,7 @@ object SuorituksenTyyppi {
   val vstmaahanmuuttajienkotoutumiskoulutus = apply("vstmaahanmuuttajienkotoutumiskoulutus")
   val vstlukutaitokoulutus = apply("vstlukutaitokoulutus")
   val vstvapaatavoitteinenkoulutus = apply("vstvapaatavoitteinenkoulutus")
+  val vstosaamismerkki = apply("vstosaamismerkki")
   val luva = apply("luva")
   val tuva = apply("tuvakoulutuksensuoritus")
   val tpoYleisenOppimääränYhteiset = apply("taiteenperusopetuksenyleisenoppimaaranyhteisetopinnot")

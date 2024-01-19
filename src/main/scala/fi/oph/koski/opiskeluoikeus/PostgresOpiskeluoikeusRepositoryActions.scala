@@ -232,13 +232,14 @@ trait PostgresOpiskeluoikeusRepositoryActions[OOROW <: OpiskeluoikeusRow, OOTABL
 
         val onTaiteenPerusopetusOpiskeluoikeus = tallennettavaOpiskeluoikeus.tyyppi.koodiarvo == "taiteenperusopetus"
         val onVstVapaatavoitteinenSuoritus = tallennettavaOpiskeluoikeus.suoritukset.exists(_.tyyppi.koodiarvo == "vstvapaatavoitteinenkoulutus")
+        val onVstOsaamismerkinSuoritus = tallennettavaOpiskeluoikeus.suoritukset.exists(_.tyyppi.koodiarvo == "vstosaamismerkki")
         val onMitätöitävissä = OpiskeluoikeusAccessChecker.isInvalidatable(tallennettavaOpiskeluoikeus, user)
 
         validator.validateOpiskeluoikeusChange(vanhaOpiskeluoikeus, tallennettavaOpiskeluoikeus) match {
           case HttpStatus.ok if tallennettavaOpiskeluoikeus.mitätöity && onTaiteenPerusopetusOpiskeluoikeus && !onMitätöitävissä =>
             DBIO.successful(Left(KoskiErrorCategory.forbidden("Mitätöinti ei sallittu")))
           case HttpStatus.ok =>
-            if (tallennettavaOpiskeluoikeus.mitätöity && (onVstVapaatavoitteinenSuoritus || onTaiteenPerusopetusOpiskeluoikeus)) {
+            if (tallennettavaOpiskeluoikeus.mitätöity && (onVstVapaatavoitteinenSuoritus || onVstOsaamismerkinSuoritus || onTaiteenPerusopetusOpiskeluoikeus)) {
               OpiskeluoikeusPoistoUtils
                 .poistaOpiskeluOikeus(id, oid, tallennettavaOpiskeluoikeus, nextVersionumero, oldRow.oppijaOid, true, None)
                 .map(_ => Right(Updated(
