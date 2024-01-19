@@ -555,6 +555,10 @@ import {
   isVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenSuoritus
 } from './VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenSuoritus'
 import {
+  VapaanSivistystyönOsaamismerkinSuoritus,
+  isVapaanSivistystyönOsaamismerkinSuoritus
+} from './VapaanSivistystyonOsaamismerkinSuoritus'
+import {
   VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus,
   isVapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus
 } from './VapaanSivistystyonVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus'
@@ -731,6 +735,7 @@ export type Suoritus =
   | VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenTyöelämäJakso
   | VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus
   | VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenSuoritus
+  | VapaanSivistystyönOsaamismerkinSuoritus
   | VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus
   | VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus
   | YhteisenAmmatillisenTutkinnonOsanSuoritus
@@ -914,6 +919,7 @@ export const isSuoritus = (a: any): a is Suoritus =>
   isVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenSuoritus(
     a
   ) ||
+  isVapaanSivistystyönOsaamismerkinSuoritus(a) ||
   isVapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus(a) ||
   isVapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus(a) ||
   isYhteisenAmmatillisenTutkinnonOsanSuoritus(a) ||
