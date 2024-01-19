@@ -817,7 +817,7 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
             actualOo: AktiivisetJaPäättyneetOpinnotVapaanSivistystyönOpiskeluoikeus,
             actualSuoritus: AktiivisetJaPäättyneetOpinnotVapaanSivistystyönPäätasonSuoritus,
             expectedOoData: schema.VapaanSivistystyönOpiskeluoikeus,
-            expectedSuoritusData: schema.VapaanSivistystyönPäätasonSuoritus
+            expectedSuoritusData: schema.VapaanSivistystyönKoulutuksenPäätasonSuoritus
             ) => verifyVST(actualOo, actualSuoritus, expectedOoData, expectedSuoritusData)
           case (
             actualOo: AktiivisetJaPäättyneetOpinnotYlioppilastutkinnonOpiskeluoikeus,
@@ -918,7 +918,7 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
     actualOo: AktiivisetJaPäättyneetOpinnotVapaanSivistystyönOpiskeluoikeus,
     actualSuoritus: AktiivisetJaPäättyneetOpinnotVapaanSivistystyönPäätasonSuoritus,
     expectedOoData: schema.VapaanSivistystyönOpiskeluoikeus,
-    expectedSuoritusData: schema.VapaanSivistystyönPäätasonSuoritus
+    expectedSuoritusData: schema.VapaanSivistystyönKoulutuksenPäätasonSuoritus
   ): Unit = {
     verifyKoskiOpiskeluoikeudenKentät(actualOo, expectedOoData)
 

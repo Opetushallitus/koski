@@ -16,7 +16,7 @@ object VapaaSivistystyöValidation {
     vstJotpaAikaisinSallittuAlkamispäivä: LocalDate,
   ): HttpStatus = {
     suoritus match {
-      case suoritus:VapaanSivistystyönPäätasonSuoritus => {
+      case suoritus:VapaanSivistystyönKoulutuksenPäätasonSuoritus => {
         HttpStatus.fold(List(
           suoritus match {
             case kops: OppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus if suoritus.vahvistettu =>
@@ -122,7 +122,7 @@ object VapaaSivistystyöValidation {
     opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
     vstJotpaAikaisinSallittuAlkamispäivä: LocalDate,
   ): HttpStatus = {
-    if (opiskeluoikeus.alkamispäivä.exists(_.isBefore(vstJotpaAikaisinSallittuAlkamispäivä))) {      
+    if (opiskeluoikeus.alkamispäivä.exists(_.isBefore(vstJotpaAikaisinSallittuAlkamispäivä))) {
       KoskiErrorCategory.badRequest.validation.date.alkamispäivä(s"Jatkuvaan oppimiseen suunnattu vapaan sivistystyön koulutuksen opiskeluoikeus ei voi alkaa ennen ${finnishDateFormat.format(vstJotpaAikaisinSallittuAlkamispäivä)}")
     } else {
       HttpStatus.ok

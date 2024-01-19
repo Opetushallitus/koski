@@ -19,7 +19,7 @@ case class VapaanSivistystyönJotpaKoulutuksenSuoritus(
   override val osasuoritukset: Option[List[VapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus]] = None,
   @Description("Todistuksella näytettävä lisätieto, vapaamuotoinen tekstikenttä")
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
-) extends VapaanSivistystyönPäätasonSuoritus
+) extends VapaanSivistystyönKoulutuksenPäätasonSuoritus
 
 @Title("Jatkuvaan oppimiseen suunnattu vapaan sivistystyön koulutuksen tunnistetiedot")
 case class VapaanSivistystyönJotpaKoulutus(

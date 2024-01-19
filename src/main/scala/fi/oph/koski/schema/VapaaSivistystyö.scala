@@ -18,7 +18,7 @@ case class VapaanSivistystyönOpiskeluoikeus(
   tila: VapaanSivistystyönOpiskeluoikeudenTila,
   lisätiedot: Option[VapaanSivistystyönOpiskeluoikeudenLisätiedot] = None,
   @MaxItems(1)
-  suoritukset: List[VapaanSivistystyönPäätasonSuoritus],
+  suoritukset: List[VapaanSivistystyönKoulutuksenPäätasonSuoritus],
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.vapaansivistystyonkoulutus.koodiarvo)
   tyyppi: Koodistokoodiviite = OpiskeluoikeudenTyyppi.vapaansivistystyonkoulutus,
   organisaatiohistoria: Option[List[OpiskeluoikeudenOrganisaatiohistoria]] = None,
@@ -49,7 +49,7 @@ case class VapaanSivistystyönOpiskeluoikeudenLisätiedot(
   oikeuttaMaksuttomuuteenPidennetty: Option[List[OikeuttaMaksuttomuuteenPidennetty]] = None
 ) extends OpiskeluoikeudenLisätiedot with MaksuttomuusTieto
 
-trait VapaanSivistystyönPäätasonSuoritus extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen with Suorituskielellinen with Todistus with Arvioinniton {
+trait VapaanSivistystyönKoulutuksenPäätasonSuoritus extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen with Suorituskielellinen with Todistus with Arvioinniton {
   @Title("Koulutus")
   def koulutusmoduuli: Koulutusmoduuli
 }
@@ -81,7 +81,7 @@ case class OppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus(
   override val osasuoritukset: Option[List[OppivelvollisilleSuunnatunVapaanSivistystyönOsasuoritus]],
   @Description("Todistuksella näytettävä lisätieto, vapaamuotoinen tekstikenttä")
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None
-) extends VapaanSivistystyönPäätasonSuoritus
+) extends VapaanSivistystyönKoulutuksenPäätasonSuoritus
     with OpintopistelaajuuksienYhteislaskennallinenPäätasonSuoritus[LaajuusOpintopisteissä]
     with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta
 
@@ -231,7 +231,7 @@ case class OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuorit
   override val osasuoritukset: Option[List[VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKokonaisuudenSuoritus]],
   @Description("Todistuksella näytettävä lisätieto, vapaamuotoinen tekstikenttä")
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None
-) extends VapaanSivistystyönPäätasonSuoritus
+) extends VapaanSivistystyönKoulutuksenPäätasonSuoritus
   with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta
   with OpintopistelaajuuksienYhteislaskennallinenSuoritus[LaajuusOpintopisteissä]
 
