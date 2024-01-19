@@ -1,3 +1,7 @@
+## 23.1.2024
+
+- Lisätty VST-osaamismerkkien tietomalli. Osaamismerkkejä voi kuitenkin tallentaa vasta 1.8.2024 alkaen.
+
 ## 19.1.2024
 
 - Deprekoitu tieto "erityisryhmässä" rakenteesta "erityisenTuenPäätökset"

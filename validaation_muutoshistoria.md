@@ -1,6 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
-## xx.1.2024
+## 23.1.2024
+- Lisätty validaatiot VST osaamismerkeille
+
+## 17.1.2024
 - Perusopetuksen duplikaattiopiskeluoikeuksien validaatiota kiristetty: oppijalle ei voi viedä kahta opiskeluoikeutta, jotka ovat samassa oppilaitoksessa ja joiden alkamis- ja päättymispäivän muodostamat aikajaksot menevät päällekkäin.
 
 ## 15.12.2023
