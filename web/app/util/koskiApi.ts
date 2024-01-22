@@ -16,6 +16,7 @@ import { queryString } from './url'
 import { SuoritetutTutkinnotOppija } from '../types/fi/oph/koski/suoritusjako/suoritetuttutkinnot/SuoritetutTutkinnotOppija'
 import { AktiivisetJaPäättyneetOpinnotOppija } from '../types/fi/oph/koski/suoritusjako/aktiivisetjapaattyneetopinnot/AktiivisetJaPaattyneetOpinnotOppija'
 import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
+import { Osaamismerkkikuva } from '../types/fi/oph/koski/servlet/Osaamismerkkikuva'
 
 const apiUrl = (path: string, query?: object): string =>
   `/koski/api/${path}${queryString({ class_refs: 'true', ...query })}`
@@ -199,6 +200,13 @@ export const fetchYoTodistusState = (oppijaOid: string, language: string) =>
 export const generateYoTodistus = (oppijaOid: string, language: string) =>
   handleExpiredSession(
     apiGet<void>(apiUrl(`yotodistus/generate/${language}/${oppijaOid}`))
+  )
+
+export const fetchOsaamismerkkikuva = (koodiarvo: string) =>
+  handleExpiredSession(
+    apiGet<Osaamismerkkikuva>(
+      apiUrl(`osaamismerkkiperusteet/kuva/${koodiarvo}`)
+    )
   )
 
 // Virhetilanteiden hallinta

@@ -53,6 +53,8 @@ trait EPerusteetRepository {
   protected val webLanguages = List("fi", "sv")
 
   protected def webBaseUrl: String
+
+  def findOsaamismerkkiRakenteet(): List[EPerusteOsaamismerkkiRakenne]
 }
 
 object EPerusteetRepository {

@@ -15,6 +15,37 @@ case class EPerusteTunniste(
   luotu: Option[Long]
 ) extends EPerusteVoimassaololla
 
+case class EPerusteOsaamismerkkiLiite(
+  id: String,
+  mime: String,
+  binarydata: String
+)
+
+case class EPerusteOsaamismerkkiKategoria(
+  id: Long,
+  nimi: Map[String, String],
+  liite: Option[EPerusteOsaamismerkkiLiite]
+)
+
+case class EPerusteOsaamismerkkiRakenne(
+  id: Long,
+  nimi: Map[String, String],
+  kategoria: EPerusteOsaamismerkkiKategoria,
+  koodiUri: String,
+  voimassaoloAlkaa: Option[String],
+  voimassaoloLoppuu: Option[String],
+  siirtymaPaattyy: Option[String]
+) extends EPerusteVoimassaololla {
+  def voimassaoloAlkaaLocalDate: Option[LocalDate] = voimassaoloAlkaa.map(ms =>
+    ZonedDateTime.ofInstant(Instant.ofEpochMilli(ms.toLong), ZoneId.systemDefault()).toLocalDate())
+
+  def voimassaoloLoppuuLocalDate: Option[LocalDate] = voimassaoloLoppuu.map(ms =>
+    ZonedDateTime.ofInstant(Instant.ofEpochMilli(ms.toLong), ZoneId.systemDefault()).toLocalDate())
+
+  def siirtymäPäättyyLocalDate: Option[LocalDate] = siirtymaPaattyy.map(ms =>
+    ZonedDateTime.ofInstant(Instant.ofEpochMilli(ms.toLong), ZoneId.systemDefault()).toLocalDate())
+}
+
 trait EPerusteRakenne extends EPerusteVoimassaololla {
   def id: Long
   def nimi: Map[String, String]

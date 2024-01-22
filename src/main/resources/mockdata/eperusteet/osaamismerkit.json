@@ -1,0 +1,269 @@
+[
+  {
+    "id": 9188020,
+    "nimi": {
+      "_id": "9188003",
+      "_tunniste": "0c2172eb-2231-4f8f-a92d-eaaac538cc7f",
+      "fi": "Digitaaliset toimintaympäristöt",
+      "sv": "-"
+    },
+    "kuvaus": {
+      "_id": "9188002",
+      "_tunniste": "f3bb2883-0fda-46fa-a1f6-bd92d8fcf888",
+      "fi": "Kuvausta",
+      "sv": "-"
+    },
+    "tila": "JULKAISTU",
+    "kategoria": {
+      "id": 9187990,
+      "nimi": {
+        "_id": "9188001",
+        "_tunniste": "a00fe27d-6fcd-40d2-9e26-d0113726b2b7",
+        "fi": "Digitaaliset taidot",
+        "sv": "-"
+      },
+      "kuvaus": {
+        "_id": "9188000",
+        "_tunniste": "84c1ebed-95bb-474a-8df8-5cbfa26a0cb5",
+        "fi": "Digitaaliset taidot kokonaisuus koostuu...",
+        "sv": "-"
+      },
+      "liite": {
+        "id": "ac5e1f5b-09b7-42aa-8e19-012c7905dc31",
+        "nimi": "ePerusteet logo.png",
+        "mime": "image/png",
+        "binarydata": "iVBORw0KGgoAAAANSUhEUgAAAE4AAABACAYAAAC0oEFtAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAFiUAABYlAUlSJPAAAAOUSURBVHhe7Zo9TFNRFMcvjhD5SGQS066AiTVhwUHK4geLkFQTlyoCg5MlXVxUxMWlocbFxI9UN78iTn4stg6i0URIBNcS3VxEI6v2/7hP2ttb2nffu+e+NveXvHBv00Ler+eec+59tP0twSye2cV/WjxixSlixSlixSlixSlixSlixSlixSlixSlixSlixSlixSkS+k3+z1+bbGV1nS2vFp0xiO7rZQcGIiw2GHHmJgituPuP37LFlx9L1yf+SjUQePbUCLswfZx1d7bzV2kInbj80hqbnL3Fit9+8FfqA2lz6YQjkIpQiYOw3KMCn3kH0bdwNUkSfaER51eay/ixIfbsbprP9BGKqtqItK7d7c5VD+TE1JUHfKYP4xGHG52YyvBZJchZWH5i9cRnIPr5q9qF482TSyw+PMBnwWNUHArAwSMX/7cZLmg1Fu+lnaq5Eygk45MZtvG78vMAsj+/vs5nwWN0qWKJyqTln16uKw0govBe2RJeLvV+EKsLY+JwU+KNQQAizUtVRGRl55N8Vknuof9iUwtj4rK3X/DRNhDQSKSJIA8iUkUK77/yUfAYEYfcJib2E0eHHAGqoA0Rwd/x0kh7wYi47B1JtJUaVz/ED8kraPF7C4kTo21kuF9piZqEXJxs+aSmx/goeLo7O/goWMjFiacdqKSy/OSV/Dt566Hr6IlcnNiC1MpNXpHtImSVNijIxa2srfPRFkFsi/BloOEVCepLkUEqDrsEMb/F9vuLCvzO2Rqb+pTG8zlScTj+FvETcZA2cS4jjTb0hTorNa24L5U3GOnbw0fewfIcTcxX5UyAguO3L6wH8VL9w0db9HR1VG3ydwLvRREYTVxzLlmkARyj6+4LSY+VcMB4Q7JrwE1G+3prJnPnCdfGpjS6RM6cPMxy2fN8pg9ScfHS0ios6dt4U0kD5O2IDpDTFuaSZNIAacT19E95ymmNgCijyGkipOLa9p7mI39gR4BtWmpmjPxBtItRcXig4u4xEYmyPg+4vR6KR2wwakxWOWTi0DrgwYwLerjih5t81nyQFQexh6POSUFDJ67Uh5WDJdfMkIkT81cY8pQfjPVxOo98KCCMuMp9pa4jbSqMFQeT/00ZBEaWqp/jpLBAt1TLzuKavaICMnGpme1j7PJxs0K65XI3+M3eigBSca2EkeLQClhxilhxilhxilhxilhxilhxilhxilhxilhxilhxSjD2D/3ZYnkFsammAAAAAElFTkSuQmCC"
+      },
+      "muokattu": 1704796254503
+    },
+    "osaamistavoitteet": [
+      {
+        "id": 9188040,
+        "osaamistavoite": {
+          "_id": "9188008",
+          "_tunniste": "0328aaa3-38fb-4d3a-bb3e-5706e28334ec",
+          "fi": "osaa tunnistaa digitaalisia toimintaympäristöjä ja niiden keskeisiä käyttötarkoituksia",
+          "sv": "-"
+        }
+      },
+      {
+        "id": 9188041,
+        "osaamistavoite": {
+          "_id": "9188009",
+          "_tunniste": "5a26a2a3-98a1-42fb-acbb-60ea0a5a7a1c",
+          "fi": "osaa soveltaa digitaitoja eri toimintaympäristöissa",
+          "sv": "-"
+        }
+      }
+    ],
+    "arviointikriteerit": [
+      {
+        "id": 9188030,
+        "arviointikriteeri": {
+          "_id": "9188004",
+          "_tunniste": "e0fdb473-e14c-4b36-b85c-b2a5e178aa4b",
+          "fi": "noudattaa monivaihteisia ohjeita toimiessaan digitaalisissa ympäristöissä",
+          "sv": "-"
+        }
+      },
+      {
+        "id": 9188031,
+        "arviointikriteeri": {
+          "_id": "9188005",
+          "_tunniste": "26e50e23-7255-4d47-a0d5-b4be4aee3dee",
+          "fi": "käyttää laitteiden perustoimintoja itsenäisesti",
+          "sv": "-"
+        }
+      },
+      {
+        "id": 9188032,
+        "arviointikriteeri": {
+          "_id": "9188006",
+          "_tunniste": "cbec280e-1455-4c1f-ad3a-79c958447c4f",
+          "fi": "tunnistaa digiympäristöissä käytettyjä termejä ja kuvakkeita",
+          "sv": "-"
+        }
+      },
+      {
+        "id": 9188033,
+        "arviointikriteeri": {
+          "_id": "9188007",
+          "_tunniste": "f3105878-7837-436c-bb79-eecde62fecfc",
+          "fi": "tunnistaa tapoja tallentaa ja järjestää sisältöjä digitaalisissa ympäristöissä",
+          "sv": "-"
+        }
+      }
+    ],
+    "voimassaoloAlkaa": 1704751200000,
+    "voimassaoloLoppuu": null,
+    "muokattu": 1704794362422,
+    "muokkaaja": "Monika Tuuliainen",
+    "koodiUri": "osaamismerkit_1000"
+  },
+  {
+    "id": 9188021,
+    "nimi": {
+      "_id": "9188071",
+      "_tunniste": "bf6945a7-cd53-49d4-b62a-bfc50a39c069",
+      "fi": "Digitaalinen tiedonhaku",
+      "sv": "-"
+    },
+    "kuvaus": {
+      "_id": "9188070",
+      "_tunniste": "11c4de48-10de-4608-93b8-d74985953211",
+      "fi": "Kuvausta..",
+      "sv": "-"
+    },
+    "tila": "JULKAISTU",
+    "kategoria": {
+      "id": 9187990,
+      "nimi": {
+        "_id": "9188001",
+        "_tunniste": "a00fe27d-6fcd-40d2-9e26-d0113726b2b7",
+        "fi": "Digitaaliset taidot",
+        "sv": "-"
+      },
+      "kuvaus": {
+        "_id": "9188000",
+        "_tunniste": "84c1ebed-95bb-474a-8df8-5cbfa26a0cb5",
+        "fi": "Digitaaliset taidot kokonaisuus koostuu...",
+        "sv": "-"
+      },
+      "liite": {
+        "id": "ac5e1f5b-09b7-42aa-8e19-012c7905dc31",
+        "nimi": "ePerusteet logo.png",
+        "mime": "image/png",
+        "binarydata": "iVBORw0KGgoAAAANSUhEUgAAAE4AAABACAYAAAC0oEFtAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAFiUAABYlAUlSJPAAAAOUSURBVHhe7Zo9TFNRFMcvjhD5SGQS066AiTVhwUHK4geLkFQTlyoCg5MlXVxUxMWlocbFxI9UN78iTn4stg6i0URIBNcS3VxEI6v2/7hP2ttb2nffu+e+NveXvHBv00Ler+eec+59tP0twSye2cV/WjxixSlixSlixSlixSlixSlixSlixSlixSlixSlixSlixSkS+k3+z1+bbGV1nS2vFp0xiO7rZQcGIiw2GHHmJgituPuP37LFlx9L1yf+SjUQePbUCLswfZx1d7bzV2kInbj80hqbnL3Fit9+8FfqA2lz6YQjkIpQiYOw3KMCn3kH0bdwNUkSfaER51eay/ixIfbsbprP9BGKqtqItK7d7c5VD+TE1JUHfKYP4xGHG52YyvBZJchZWH5i9cRnIPr5q9qF482TSyw+PMBnwWNUHArAwSMX/7cZLmg1Fu+lnaq5Eygk45MZtvG78vMAsj+/vs5nwWN0qWKJyqTln16uKw0govBe2RJeLvV+EKsLY+JwU+KNQQAizUtVRGRl55N8Vknuof9iUwtj4rK3X/DRNhDQSKSJIA8iUkUK77/yUfAYEYfcJib2E0eHHAGqoA0Rwd/x0kh7wYi47B1JtJUaVz/ED8kraPF7C4kTo21kuF9piZqEXJxs+aSmx/goeLo7O/goWMjFiacdqKSy/OSV/Dt566Hr6IlcnNiC1MpNXpHtImSVNijIxa2srfPRFkFsi/BloOEVCepLkUEqDrsEMb/F9vuLCvzO2Rqb+pTG8zlScTj+FvETcZA2cS4jjTb0hTorNa24L5U3GOnbw0fewfIcTcxX5UyAguO3L6wH8VL9w0db9HR1VG3ydwLvRREYTVxzLlmkARyj6+4LSY+VcMB4Q7JrwE1G+3prJnPnCdfGpjS6RM6cPMxy2fN8pg9ScfHS0ios6dt4U0kD5O2IDpDTFuaSZNIAacT19E95ymmNgCijyGkipOLa9p7mI39gR4BtWmpmjPxBtItRcXig4u4xEYmyPg+4vR6KR2wwakxWOWTi0DrgwYwLerjih5t81nyQFQexh6POSUFDJ67Uh5WDJdfMkIkT81cY8pQfjPVxOo98KCCMuMp9pa4jbSqMFQeT/00ZBEaWqp/jpLBAt1TLzuKavaICMnGpme1j7PJxs0K65XI3+M3eigBSca2EkeLQClhxilhxilhxilhxilhxilhxilhxilhxilhxilhxSjD2D/3ZYnkFsammAAAAAElFTkSuQmCC"
+      },
+      "muokattu": 1704796254503
+    },
+    "osaamistavoitteet": [
+      {
+        "id": 9188042,
+        "osaamistavoite": {
+          "_id": "9188074",
+          "_tunniste": "1181e670-f763-42b6-93bf-3092ff9c3235",
+          "fi": "osaa...",
+          "sv": "-"
+        }
+      },
+      {
+        "id": 9188043,
+        "osaamistavoite": {
+          "_id": "9188075",
+          "_tunniste": "8842e40f-031a-4b6b-b2f5-35897afe5da3",
+          "fi": "osaa 2",
+          "sv": "-"
+        }
+      }
+    ],
+    "arviointikriteerit": [
+      {
+        "id": 9188034,
+        "arviointikriteeri": {
+          "_id": "9188072",
+          "_tunniste": "e360c25d-ccf6-465d-a3bc-798e31c15a74",
+          "fi": "kriteeri 1",
+          "sv": "-"
+        }
+      },
+      {
+        "id": 9188035,
+        "arviointikriteeri": {
+          "_id": "9188073",
+          "_tunniste": "591665ce-b0b7-4c31-88c2-9eed772456fd",
+          "fi": "kriteeri 2",
+          "sv": "-"
+        }
+      }
+    ],
+    "voimassaoloAlkaa": 1704751200000,
+    "voimassaoloLoppuu": null,
+    "muokattu": 1704796254503,
+    "muokkaaja": "Monika Tuuliainen",
+    "koodiUri": "osaamismerkit_1001"
+  },
+  {
+    "id": 9188022,
+    "nimi": {
+      "_id": "9188079",
+      "_tunniste": "b2dcbece-0c27-4fe5-9bc2-81575998d22b",
+      "fi": "Vuorovaikutusmerkki 1",
+      "sv": "-"
+    },
+    "kuvaus": {
+      "_id": "9188078",
+      "_tunniste": "863ba73b-01f3-4850-880a-fbda2c3ee565",
+      "fi": "Kuvausta...",
+      "sv": "-"
+    },
+    "tila": "JULKAISTU",
+    "kategoria": {
+      "id": 9187991,
+      "nimi": {
+        "_id": "9188077",
+        "_tunniste": "8f46fee0-566f-4635-9d3e-c4f47a10c110",
+        "fi": "Vuorovaikutustaidot",
+        "sv": "-"
+      },
+      "kuvaus": {
+        "_id": "9188076",
+        "_tunniste": "bc7e9dfc-fa27-4ef8-b197-578ff8a9d844",
+        "fi": "Vuorovaikutustaidort kokonaisuus muodostuu..",
+        "sv": "-"
+      },
+      "liite": {
+        "id": "bf9ce3e2-66e0-4152-bdbb-293aa1ef0b06",
+        "nimi": "genericfile.svg",
+        "mime": "image/svg+xml",
+        "binarydata": "PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTE2IDdoLTIuNWMtLjgyNyAwLTEuNS0uNjczLTEuNS0xLjVWMkg0djE2aDEyVjd6IiBmaWxsPSIjZmZmIi8+PHBhdGggZD0iTTE2IDZ2LS4yOTNsLTMtM1Y1LjVjMCAuMjc1LjIyNS41LjUuNUgxNnoiIGZpbGw9IiNmZmYiLz48cGF0aCBvcGFjaXR5PSIuNjciIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNMTYuNzA3IDUgMTMgMS4yOTNBMSAxIDAgMCAwIDEyLjI5MyAxSDRhMSAxIDAgMCAwLTEgMXYxNmExIDEgMCAwIDAgMSAxaDEyYTEgMSAwIDAgMCAxLTFWNS43MDdBMSAxIDAgMCAwIDE2LjcwNyA1ek0xNiA1LjcwN1Y2aC0yLjVhLjUwMS41MDEgMCAwIDEtLjUtLjVWMi43MDdsMyAzek00IDIuMnYxNS42YzAgLjExLjA5LjIuMi4yaDExLjZhLjIuMiAwIDAgMCAuMi0uMlY3aC0yLjVBMS41IDEuNSAwIDAgMSAxMiA1LjVWMkg0LjJhLjIuMiAwIDAgMC0uMi4yeiIgZmlsbD0iIzYwNUU1QyIvPjwvc3ZnPg=="
+      },
+      "muokattu": 1704796414873
+    },
+    "osaamistavoitteet": [
+      {
+        "id": 9188044,
+        "osaamistavoite": {
+          "_id": "9188112",
+          "_tunniste": "6c4662fc-4a3a-4915-a89f-1aaa20e310cc",
+          "fi": "Tavoite 1",
+          "sv": "-"
+        }
+      },
+      {
+        "id": 9188045,
+        "osaamistavoite": {
+          "_id": "9188113",
+          "_tunniste": "987a3fbd-6b66-4e51-b300-29678ecdb9ea",
+          "fi": "Tavoite 2",
+          "sv": "-"
+        }
+      }
+    ],
+    "arviointikriteerit": [
+      {
+        "id": 9188036,
+        "arviointikriteeri": {
+          "_id": "9188110",
+          "_tunniste": "a89ba48f-7eab-4c2e-affb-f872c7efbcf0",
+          "fi": "Kriteeri 1",
+          "sv": "-"
+        }
+      },
+      {
+        "id": 9188037,
+        "arviointikriteeri": {
+          "_id": "9188111",
+          "_tunniste": "62f3c417-4a6b-4c7d-9d49-83ac3d955f28",
+          "fi": "Kriteeri 2",
+          "sv": "-"
+        }
+      }
+    ],
+    "voimassaoloAlkaa": 1704751200000,
+    "voimassaoloLoppuu": null,
+    "muokattu": 1704796414874,
+    "muokkaaja": "Monika Tuuliainen",
+    "koodiUri": "osaamismerkit_1002"
+  }
+]

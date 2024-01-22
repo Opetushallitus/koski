@@ -66,6 +66,17 @@ object MockEPerusteetRepository extends EPerusteetRepository {
     "rakenne-tpo-laaja"
   )
 
+  private val osaamismerkkiRakenteetNimi = "osaamismerkit"
+
+  private lazy val osaamismerkkiRakenteetTiedostosta: List[EPerusteOsaamismerkkiRakenne] = {
+    val id = osaamismerkkiRakenteetNimi
+    try {
+      JsonSerializer.extract[List[EPerusteOsaamismerkkiRakenne]](JsonResources.readResourceIfExists("/mockdata/eperusteet/" + id + ".json").get, ignoreExtras = true)
+    } catch {
+      case e: Exception => throw new RuntimeException(s"Rakenteen $id haku epäonnistui: ${e.getMessage}")
+    }
+  }
+
   def findPerusteet(nimi: String): List[EPerusteRakenne] = {
     // Hakee aina samoilla kriteereillä "auto"
     JsonSerializer.extract[EPerusteOsaRakenteet](JsonFiles.readFile("src/main/resources/mockdata/eperusteet/hakutulokset-auto.json"), ignoreExtras = true)
@@ -94,4 +105,7 @@ object MockEPerusteetRepository extends EPerusteetRepository {
   }
 
   override protected def webBaseUrl = "https://eperusteet.opintopolku.fi"
+
+  override def findOsaamismerkkiRakenteet(): List[EPerusteOsaamismerkkiRakenne] =
+    osaamismerkkiRakenteetTiedostosta
 }

@@ -28,6 +28,7 @@ import { VSTVapaatavoitteinenEditor } from './vapaatavoitteinen/VSTVapaatavoitte
 import { isVSTOsasuoritusArvioinnilla } from './common/arviointi'
 import { isVapaanSivistystyönKoulutuksenPäätasonSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonKoulutuksenPaatasonSuoritus'
 import { isVapaanSivistystyönOsaamismerkinSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonOsaamismerkinSuoritus'
+import { VSTOsaamismerkkiEditor } from './osaamismerkki/VSTOsaamismerkkiEditor'
 
 type VSTEditorProps =
   AdaptedOpiskeluoikeusEditorProps<VapaanSivistystyönOpiskeluoikeus>
@@ -142,6 +143,15 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
         päätasonSuoritus
       ) && (
         <VSTKoto2022Editor
+          {...editorProps}
+          päätasonSuoritus={päätasonSuoritus}
+        />
+      )}
+      {hasPäätasonsuoritusOf(
+        isVapaanSivistystyönOsaamismerkinSuoritus,
+        päätasonSuoritus
+      ) && (
+        <VSTOsaamismerkkiEditor
           {...editorProps}
           päätasonSuoritus={päätasonSuoritus}
         />
