@@ -722,31 +722,71 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
   }
 
   "Opiskeluoikeuksien duplikaatit" - {
-    "Samaa opiskeluoikeutta ei voi siirää kahteen kertaan" in {
-      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus, defaultHenkilö) {
+    def duplikaattiaEiSallittu(oo1: PerusopetuksenOpiskeluoikeus, oo2: PerusopetuksenOpiskeluoikeus): Unit = {
+      setupOppijaWithOpiskeluoikeus(oo1, defaultHenkilö) {
         verifyResponseStatusOk()
       }
-      postOppija(makeOppija(defaultHenkilö, List(defaultOpiskeluoikeus))) {
+      postOppija(makeOppija(defaultHenkilö, List(oo2))) {
         verifyResponseStatus(409, KoskiErrorCategory.conflict.exists())
       }
     }
 
-    "Samaa opiskeluoikeutta ei voi siirää kahteen kertaan, vaikka se olisikin terminaalitilassa" in {
+    def duplikaattiSallittu(oo1: PerusopetuksenOpiskeluoikeus, oo2: PerusopetuksenOpiskeluoikeus): Unit = {
+      setupOppijaWithOpiskeluoikeus(oo1, defaultHenkilö) {
+        verifyResponseStatusOk()
+      }
+      postOppija(makeOppija(defaultHenkilö, List(oo2))) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    val lähdejärjestelmänId1 = Some(primusLähdejärjestelmäId("primus-yksi"))
+    val lähdejärjestelmänId2 = Some(primusLähdejärjestelmäId("primus-kaksi"))
+
+    def duplikaattiaEiSallittuLähdejärjestelmäIdllä(oo1: PerusopetuksenOpiskeluoikeus, oo2: PerusopetuksenOpiskeluoikeus): Unit = {
+      setupOppijaWithOpiskeluoikeus(oo1.copy(lähdejärjestelmänId = lähdejärjestelmänId1), defaultHenkilö, headers = authHeaders(jyväskylänNormaalikoulunPalvelukäyttäjä) ++ jsonContent) {
+        verifyResponseStatusOk()
+      }
+      postOppija(makeOppija(defaultHenkilö, List(oo2.copy(lähdejärjestelmänId = lähdejärjestelmänId2))), headers = authHeaders(jyväskylänNormaalikoulunPalvelukäyttäjä) ++ jsonContent) {
+        verifyResponseStatus(409, KoskiErrorCategory.conflict.exists())
+      }
+    }
+
+    def duplikaattiSallittuLähdejärjestelmäIdllä(oo1: PerusopetuksenOpiskeluoikeus, oo2: PerusopetuksenOpiskeluoikeus): Unit = {
+      setupOppijaWithOpiskeluoikeus(oo1.copy(lähdejärjestelmänId = lähdejärjestelmänId1), defaultHenkilö, headers = authHeaders(jyväskylänNormaalikoulunPalvelukäyttäjä) ++ jsonContent) {
+        verifyResponseStatusOk()
+      }
+      postOppija(makeOppija(defaultHenkilö, List(oo2.copy(lähdejärjestelmänId = lähdejärjestelmänId2))), headers = authHeaders(jyväskylänNormaalikoulunPalvelukäyttäjä) ++ jsonContent) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "Samaa opiskeluoikeutta ei voi siirää kahteen kertaan" - {
+      "ilman tunnistetta" in {
+        duplikaattiaEiSallittu(defaultOpiskeluoikeus, defaultOpiskeluoikeus)
+      }
+      "lähdejärjestelmän id:llä" in {
+        duplikaattiaEiSallittuLähdejärjestelmäIdllä(defaultOpiskeluoikeus, defaultOpiskeluoikeus)
+      }
+    }
+
+    "Samaa opiskeluoikeutta ei voi siirää kahteen kertaan, vaikka se olisikin terminaalitilassa" - {
       val opiskeluoikeus = defaultOpiskeluoikeus.copy(
         tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(
           NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2015, 8, 15), opiskeluoikeusLäsnä),
           NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2016, 6, 4), opiskeluoikeusValmistunut),
         ))
       )
-      setupOppijaWithOpiskeluoikeus(opiskeluoikeus, defaultHenkilö) {
-        verifyResponseStatusOk()
+
+      "ilman tunnistetta" in {
+        duplikaattiaEiSallittu(opiskeluoikeus, opiskeluoikeus)
       }
-      postOppija(makeOppija(defaultHenkilö, List(opiskeluoikeus))) {
-        verifyResponseStatus(409, KoskiErrorCategory.conflict.exists())
+      "lähdejärjestelmän id:llä" in {
+        duplikaattiaEiSallittuLähdejärjestelmäIdllä(opiskeluoikeus, opiskeluoikeus)
       }
     }
 
-    "Samaa opiskeluoikeutta ei voi siirää kahteen kertaan, vaikka päivämäärät ovat erilaiset (mutta päällekkäiset) ja se olisikin terminaalitilassa" in {
+    "Samaa opiskeluoikeutta ei voi siirää kahteen kertaan, vaikka päivämäärät ovat erilaiset (mutta päällekkäiset) ja se olisikin terminaalitilassa" - {
       val opiskeluoikeus = defaultOpiskeluoikeus.copy(
         tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(
           NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2015, 8, 15), opiskeluoikeusLäsnä),
@@ -761,15 +801,15 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
         )
       )
 
-      setupOppijaWithOpiskeluoikeus(opiskeluoikeus, defaultHenkilö) {
-        verifyResponseStatusOk()
+      "ilman tunnistetta" in {
+        duplikaattiaEiSallittu(opiskeluoikeus, opiskeluoikeus2)
       }
-      postOppija(makeOppija(defaultHenkilö, List(opiskeluoikeus2))) {
-        verifyResponseStatus(409, KoskiErrorCategory.conflict.exists())
+      "lähdejärjestelmän id:llä" in {
+        duplikaattiaEiSallittuLähdejärjestelmäIdllä(opiskeluoikeus, opiskeluoikeus2)
       }
     }
 
-    "Samaa opiskeluoikeutta ei voi siirää kahteen kertaan, vaikka päivämäärät ovat erilaiset (mutta päällekkäiset) ja se olisikin terminaalitilassa, variantti" in {
+    "Samaa opiskeluoikeutta ei voi siirtää kahteen kertaan, vaikka päivämäärät ovat erilaiset (mutta päällekkäiset) ja se olisikin terminaalitilassa, variantti" - {
       val opiskeluoikeus = defaultOpiskeluoikeus.copy(
         tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(
           NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2015, 8, 15), opiskeluoikeusLäsnä),
@@ -786,37 +826,131 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
         )
       )
 
-      setupOppijaWithOpiskeluoikeus(opiskeluoikeus, defaultHenkilö) {
-        verifyResponseStatusOk()
+      "ilman tunnistetta" in {
+        duplikaattiaEiSallittu(opiskeluoikeus, opiskeluoikeus2)
       }
-      postOppija(makeOppija(defaultHenkilö, List(opiskeluoikeus2))) {
-        verifyResponseStatus(409, KoskiErrorCategory.conflict.exists())
+      "lähdejärjestelmän id:llä" in {
+        duplikaattiaEiSallittuLähdejärjestelmäIdllä(opiskeluoikeus, opiskeluoikeus2)
       }
     }
 
-    "Opiskeluoikeuden voi siirää kahteen kertaan, kunhan aikajaksot eivät ole päällekkäiset ja aiempi on terminaalitilassa" in {
-      val opiskeluoikeus = defaultOpiskeluoikeus.copy(
+    "Opiskeluioikeuden voi siirtää kahteen kertaan, kun toinen on oppimäärän ja toinen aineopintojen" - {
+      val oppimääränOpiskeluoikeus = defaultOpiskeluoikeus.copy(
         tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(
           NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2015, 8, 15), opiskeluoikeusLäsnä),
           NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2016, 6, 4), opiskeluoikeusValmistunut),
         ))
       )
-
-      val opiskeluoikeus2 = defaultOpiskeluoikeus.copy(
-        tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(
-          NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2016, 8, 15), opiskeluoikeusLäsnä),
-        )),
-        suoritukset = List(vuosiluokkasuoritus.copy(
-          alkamispäivä = Some(LocalDate.of(2016, 8, 15)),
-          vahvistus = None,
-        ))
+      val aineopintojenOpiskeluoikeus = oppimääränOpiskeluoikeus.copy(
+        suoritukset = List(
+          nuortenPerusOpetuksenOppiaineenOppimääränSuoritus("LI").copy(
+            vahvistus = vahvistusPaikkakunnalla(LocalDate.of(2016, 6, 4))
+          )
+        )
       )
 
-      setupOppijaWithOpiskeluoikeus(opiskeluoikeus, defaultHenkilö) {
-        verifyResponseStatusOk()
+      "ilman tunnistetta" in {
+        duplikaattiSallittu(oppimääränOpiskeluoikeus, aineopintojenOpiskeluoikeus)
       }
-      postOppija(makeOppija(defaultHenkilö, List(opiskeluoikeus2))) {
-        verifyResponseStatusOk()
+      "lähdejärjestelmän id:llä" in {
+        duplikaattiSallittuLähdejärjestelmäIdllä(oppimääränOpiskeluoikeus, aineopintojenOpiskeluoikeus)
+      }
+    }
+
+    "Valmistuneista aineopinnoista voi siirtää duplikaatin" - {
+      val aineopintojenOpiskeluoikeus = defaultOpiskeluoikeus.copy(
+        tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(
+          NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2015, 8, 15), opiskeluoikeusLäsnä),
+          NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2016, 6, 4), opiskeluoikeusValmistunut),
+        )),
+        suoritukset = List(
+          nuortenPerusOpetuksenOppiaineenOppimääränSuoritus("LI").copy(
+            vahvistus = vahvistusPaikkakunnalla(LocalDate.of(2016, 6, 4))
+          )
+        )
+      )
+      "ilman tunnistetta" in {
+        duplikaattiSallittu(aineopintojenOpiskeluoikeus, aineopintojenOpiskeluoikeus)
+      }
+      "lähdejärjestelmän id:llä" in {
+        duplikaattiSallittuLähdejärjestelmäIdllä(aineopintojenOpiskeluoikeus, aineopintojenOpiskeluoikeus)
+      }
+    }
+
+    "Keskeneräisistä aineopinnoista ei voi siirtää duplikaattia" - {
+      val aineopintojenOpiskeluoikeus = defaultOpiskeluoikeus.copy(
+        tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(
+          NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2015, 8, 15), opiskeluoikeusLäsnä),
+        )),
+        suoritukset = List(
+          nuortenPerusOpetuksenOppiaineenOppimääränSuoritus("LI").copy(
+            vahvistus = vahvistusPaikkakunnalla(LocalDate.of(2016, 6, 4))
+          )
+        )
+      )
+      "ilman tunnistetta" in {
+        duplikaattiaEiSallittu(aineopintojenOpiskeluoikeus, aineopintojenOpiskeluoikeus)
+      }
+      "lähdejärjestelmän id:llä" in {
+        duplikaattiaEiSallittuLähdejärjestelmäIdllä(aineopintojenOpiskeluoikeus, aineopintojenOpiskeluoikeus)
+      }
+    }
+
+    "Opiskeluoikeuden voi siirää kahteen kertaan, kunhan aikajaksot eivät ole päällekkäiset ja aiempi on terminaalitilassa" - {
+      "ilman tunnistetta" in {
+        val opiskeluoikeus = defaultOpiskeluoikeus.copy(
+          tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(
+            NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2015, 8, 15), opiskeluoikeusLäsnä),
+            NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2016, 6, 4), opiskeluoikeusValmistunut),
+          ))
+        )
+
+        val opiskeluoikeus2 = defaultOpiskeluoikeus.copy(
+          tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(
+            NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2016, 8, 15), opiskeluoikeusLäsnä),
+          )),
+          suoritukset = List(vuosiluokkasuoritus.copy(
+            alkamispäivä = Some(LocalDate.of(2016, 8, 15)),
+            vahvistus = None,
+          ))
+        )
+
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus, defaultHenkilö) {
+          verifyResponseStatusOk()
+        }
+        postOppija(makeOppija(defaultHenkilö, List(opiskeluoikeus2))) {
+          verifyResponseStatusOk()
+        }
+      }
+      "lähdejärjestelmän id:llä" in {
+        val lähdejärjestelmänId1 = Some(primusLähdejärjestelmäId("primus-yksi"))
+        val lähdejärjestelmänId2 = Some(primusLähdejärjestelmäId("primus-kaksi"))
+
+        val opiskeluoikeus = defaultOpiskeluoikeus.copy(
+          lähdejärjestelmänId = lähdejärjestelmänId1,
+          tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(
+            NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2015, 8, 15), opiskeluoikeusLäsnä),
+            NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2016, 6, 4), opiskeluoikeusValmistunut),
+          ))
+        )
+
+        val opiskeluoikeus2 = defaultOpiskeluoikeus.copy(
+          lähdejärjestelmänId = lähdejärjestelmänId2,
+          tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(
+            NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2016, 8, 15), opiskeluoikeusLäsnä),
+          )),
+          suoritukset = List(vuosiluokkasuoritus.copy(
+            alkamispäivä = Some(LocalDate.of(2016, 8, 15)),
+            vahvistus = None,
+          ))
+        )
+
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus, defaultHenkilö, headers = authHeaders(jyväskylänNormaalikoulunPalvelukäyttäjä) ++ jsonContent) {
+          verifyResponseStatusOk()
+        }
+        postOppija(makeOppija(defaultHenkilö, List(opiskeluoikeus2)), headers = authHeaders(jyväskylänNormaalikoulunPalvelukäyttäjä) ++ jsonContent) {
+          verifyResponseStatusOk()
+        }
       }
     }
   }

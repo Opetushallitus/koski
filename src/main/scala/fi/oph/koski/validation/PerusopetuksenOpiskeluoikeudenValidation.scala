@@ -1,16 +1,25 @@
 package fi.oph.koski.validation
 
 import fi.oph.koski.documentation.PerusopetusExampleData.suoritustapaErityinenTutkinto
+import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.schema.{AikuistenPerusopetuksenOpiskeluoikeus, KoskeenTallennettavaOpiskeluoikeus, NuortenPerusopetuksenOppiaineenOppimääränSuoritus, NuortenPerusopetuksenOppimääränSuoritus, Opiskeluoikeus, PerusopetuksenLisäopetuksenOpiskeluoikeus, PerusopetuksenLisäopetuksenSuoritus, PerusopetuksenLisäopetus, PerusopetuksenOpiskeluoikeus, PerusopetuksenPäätasonSuoritus, PerusopetuksenVuosiluokanSuoritus}
+import fi.oph.koski.koskiuser.KoskiSpecificSession
+import fi.oph.koski.opiskeluoikeus.KoskiOpiskeluoikeusRepository
+import fi.oph.koski.schema.{Aikajakso, AikuistenPerusopetuksenOpiskeluoikeus, Henkilö, HenkilöWithOid, KoskeenTallennettavaOpiskeluoikeus, NuortenPerusopetuksenOppiaineenOppimääränSuoritus, NuortenPerusopetuksenOppimääränSuoritus, Opiskeluoikeus, PerusopetuksenLisäopetuksenOpiskeluoikeus, PerusopetuksenLisäopetuksenSuoritus, PerusopetuksenLisäopetus, PerusopetuksenOpiskeluoikeus, PerusopetuksenPäätasonSuoritus, PerusopetuksenVuosiluokanSuoritus, UusiHenkilö}
 
 object PerusopetuksenOpiskeluoikeusValidation {
-  def validatePerusopetuksenOpiskeluoikeus(oo: Opiskeluoikeus) = {
+  def validatePerusopetuksenOpiskeluoikeus(
+    henkilöRepository: HenkilöRepository,
+    koskiOpiskeluoikeudet: KoskiOpiskeluoikeusRepository,
+    henkilö: Option[Henkilö],
+    oo: Opiskeluoikeus
+  ): HttpStatus = {
     oo match {
       case s: PerusopetuksenOpiskeluoikeus => HttpStatus.fold(
         List(validateNuortenPerusopetuksenOpiskeluoikeudenTila(s),
           validateVuosiluokanAlkamispäivät(s),
-          validatePäätasonSuoritus(s)
+          validatePäätasonSuoritus(s),
+          validateDuplikaatit(henkilöRepository, koskiOpiskeluoikeudet, henkilö, oo)
         ))
       case _ => HttpStatus.ok
     }
@@ -157,6 +166,68 @@ object PerusopetuksenOpiskeluoikeusValidation {
 
     HttpStatus.validate(ktJaEt.toSet.size <= 1) {
       KoskiErrorCategory.badRequest.validation.rakenne.duplikaattiOsasuoritus("Samassa perusopetuksen suorituksessa ei voi esiintyä oppiaineita KT- ja ET-koodiarvoilla")
+    }
+  }
+
+  private def validateDuplikaatit(
+    henkilöRepository: HenkilöRepository,
+    koskiOpiskeluoikeudet: KoskiOpiskeluoikeusRepository,
+    henkilö: Option[Henkilö],
+    oo: Opiskeluoikeus
+  ): HttpStatus = {
+    def samaOo(toinenOo: Opiskeluoikeus) = {
+      val samaOid = toinenOo.oid.isDefined && toinenOo.oid == oo.oid
+      val samaLähdejärjestelmänId = toinenOo.lähdejärjestelmänId.isDefined && toinenOo.lähdejärjestelmänId == oo.lähdejärjestelmänId
+
+      samaOid || samaLähdejärjestelmänId
+    }
+
+    def oppijallaOnDuplikaatti(oppijaOidit: List[Henkilö.Oid]): Boolean = {
+      val vertailtavatOot = koskiOpiskeluoikeudet.findByOppijaOids(oppijaOidit)(KoskiSpecificSession.systemUser)
+        .filterNot(samaOo)
+        .filter(_.oppilaitos.map(_.oid) == oo.oppilaitos.map(_.oid))
+        .filter(_.tyyppi == oo.tyyppi)
+        .filter(sisältääNuortenPerusopetuksenOppimääränTaiVuosiluokanSuorituksen(_) == sisältääNuortenPerusopetuksenOppimääränTaiVuosiluokanSuorituksen(oo))
+
+
+      if (sisältääNuortenPerusopetuksenOppimääränTaiVuosiluokanSuorituksen(oo)) {
+        // Oppimäärän opinnot, vain aikajaksoltaan kokonaan erillisiä saa duplikoida
+        val jakso = Aikajakso(oo.alkamispäivä, oo.päättymispäivä)
+        vertailtavatOot.exists { vertailtavaOo =>
+          val muuJakso = Aikajakso(vertailtavaOo.alkamispäivä, vertailtavaOo.päättymispäivä)
+          val result = jakso.overlaps(muuJakso)
+          result
+        }
+      } else {
+        // aineopinnot, vain päättyneitä saa duplikoida
+        vertailtavatOot.exists(_.päättymispäivä.isEmpty)
+      }
+    }
+
+    val henkilöOid = henkilö match {
+      case Some(h: HenkilöWithOid) => Some(h.oid)
+      case Some(h: UusiHenkilö) => henkilöRepository.opintopolku.findByHetu(h.hetu) match {
+        case Some(henkilö) => Some(henkilö.oid)
+        case _ => None
+      }
+      case _ => None
+    }
+
+    henkilöOid
+      .flatMap(henkilöOid => henkilöRepository.findByOid(henkilöOid, findMasterIfSlaveOid = true))
+      .map(hlö => oppijallaOnDuplikaatti(hlö.kaikkiOidit))
+    match {
+      case Some(true) => KoskiErrorCategory.conflict.exists()
+      case _ => HttpStatus.ok
+    }
+  }
+
+  def sisältääNuortenPerusopetuksenOppimääränTaiVuosiluokanSuorituksen(oo: Opiskeluoikeus): Boolean = {
+    oo match {
+      case poo: PerusopetuksenOpiskeluoikeus
+      => poo.suoritukset.map(_.tyyppi.koodiarvo).exists(Set("perusopetuksenoppimaara", "perusopetuksenvuosiluokka").contains)
+      case _
+      => false
     }
   }
 }
