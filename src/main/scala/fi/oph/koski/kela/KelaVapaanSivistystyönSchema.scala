@@ -1,6 +1,7 @@
 package fi.oph.koski.kela
 
 import fi.oph.koski.schema
+import fi.oph.koski.schema.{Koodistokoodiviite, LukutaitokoulutuksenArviointi, VapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus}
 import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
 import fi.oph.scalaschema.annotation.{Description, OnlyWhen, Title}
 
@@ -47,7 +48,6 @@ case class KelaVapaanSivistystyönPäätasonSuoritus(
   vahvistus: Option[Vahvistus],
   osasuoritukset: Option[List[KelaVapaanSivistystyönOsasuoritus]],
   @KoodistoKoodiarvo("vstoppivelvollisillesuunnattukoulutus")
-  @KoodistoKoodiarvo("vstlukutaitokoulutus")
   tyyppi: schema.Koodistokoodiviite,
 ) extends VstSuoritus {
   def withHyväksyntämerkinnälläKorvattuArvosana: KelaVapaanSivistystyönPäätasonSuoritus = copy(
@@ -82,6 +82,42 @@ case class KelaVapaanSivistystyönJotpaSuoritus(
     osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
   )
 }
+
+@Title("Vapaan sivistystyön lukutaitokoulutuksen suoritus")
+case class KelaVapaanSivistystyönLukutaitokoulutuksenSuoritus(
+  koulutusmoduuli: KelaVapaanSivistystyönLukutaitoKoulutus,
+  toimipiste: Option[Toimipiste],
+  vahvistus: Option[Vahvistus],
+  @KoodistoKoodiarvo("vstlukutaitokoulutus")
+  tyyppi: schema.Koodistokoodiviite,
+  @Title("Suorituskokonaisuudet")
+  osasuoritukset: Option[List[KelaVapaanSivistystyönLukutaitokoulutuksenOsasuoritus]],
+) extends VstSuoritus {
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaVapaanSivistystyönLukutaitokoulutuksenSuoritus = copy(
+    osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
+  )
+}
+
+@Title("Vapaan sivistystyön lukutaitokoulutuksen kokonaisuuden suoritus")
+case class KelaVapaanSivistystyönLukutaitokoulutuksenOsasuoritus(
+  koulutusmoduuli: KelaVapaanSivistystyönOsasuorituksenKoulutusmoduuli,
+  toimipiste: Option[Toimipiste],
+  @KoodistoKoodiarvo("vstlukutaitokoulutuksenkokonaisuudensuoritus")
+  tyyppi: Koodistokoodiviite,
+  arviointi: Option[List[KelaVSTOsasuorituksenArviointi]] = None,
+  osasuoritukset: Option[List[KelaVapaanSivistystyönLukutaitokoulutuksenOsasuoritus]]
+) extends Osasuoritus {
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaVapaanSivistystyönLukutaitokoulutuksenOsasuoritus = copy(
+    arviointi = arviointi.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
+    osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
+  )
+}
+
+case class KelaVapaanSivistystyönLukutaitoKoulutus(
+  tunniste: KelaKoodistokoodiviite,
+  laajuus: Option[KelaLaajuus],
+  koulutustyyppi: Option[KelaKoodistokoodiviite],
+) extends SuorituksenKoulutusmoduuli
 
 case class KelaVapaanSivistystyönJotpaKoulutus(
   tunniste: KelaKoodistokoodiviite,

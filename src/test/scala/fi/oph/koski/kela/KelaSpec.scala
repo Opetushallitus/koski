@@ -82,6 +82,19 @@ class KelaSpec
       }
     }
 
+    "Palauttaa VST lukutaitokoulutuksen tiedot" in {
+      postHetu(KoskiSpecificMockOppijat.vapaaSivistystyöLukutaitoKoulutus.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+        verifyResponseStatusOk()
+        val oppija = JsonSerializer.parse[KelaOppija](body)
+
+        val vstOpiskeluoikeus = oppija.opiskeluoikeudet.collectFirst {
+          case x: KelaVapaanSivistystyönOpiskeluoikeus => x
+        }
+
+        vstOpiskeluoikeus.get.oppilaitos.get.oid shouldBe "1.2.246.562.10.31915273374"
+      }
+    }
+
     "Palauttaa oppijan, jolla pelkkä YO-opiskeluoikeus, tiedot" in {
       val pelkkäYo = KoskiSpecificMockOppijat.ylioppilas
       postHetu(pelkkäYo.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
