@@ -86,7 +86,12 @@ class KoskiValidator(
   }
 
   def updateFieldsAndValidateOpiskeluoikeudet(oppija: Oppija)(implicit user: KoskiSpecificSession, accessType: AccessType.Value): Either[HttpStatus, Oppija] = {
-    val results: Seq[Either[HttpStatus, Opiskeluoikeus]] = oppija.opiskeluoikeudet.map(updateFieldsAndValidateOpiskeluoikeus(_, Some(oppija.henkilö)))
+    val results: Seq[Either[HttpStatus, Opiskeluoikeus]] = oppija.opiskeluoikeudet.map( oo => {
+      val timedBlockname = s"updateFieldsAndValidateOpiskeluoikeus ${oo.tyyppi.koodiarvo}"
+      timed(timedBlockname) {
+        updateFieldsAndValidateOpiskeluoikeus(oo, Some(oppija.henkilö))
+      }
+    })
     HttpStatus.foldEithers(results).right.flatMap {
       case Nil => Left(KoskiErrorCategory.badRequest.validation.tyhjäOpiskeluoikeusLista())
       case opiskeluoikeudet => Right(oppija.copy(opiskeluoikeudet = opiskeluoikeudet))
