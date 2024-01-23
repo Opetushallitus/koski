@@ -95,6 +95,7 @@
   "deprecated:Kenttä ei ole käytössä": "Kenttä ei ole käytössä",
   "deprecated:Tätä kenttää ei toistaiseksi käytetä.": "Tätä kenttää ei toistaiseksi käytetä.",
   "deprecated:Tietoa ei tule siirtää Koskeen.": "Tietoa ei tule siirtää Koskeen.",
+  "deprecated:Tätä tietoa ei tarvitse jatkossa..." : "Tätä tietoa ei tarvitse jatkossa välittää. Tieto erityisryhmän toteutuspaikasta välitetään toteutuspaikka-rakenteessa.",
   "description:5-numeroinen oppilaitosnumero, esimerkiksi 00001": "5-numeroinen oppilaitosnumero, esimerkiksi 00001",
   "description:Aiemman, korvaavan suorituksen tiedot": "Aiemman, korvaavan suorituksen tiedot",
   "description:Aikajakson pituus (alku- ja loppupäivämäärä)": "Aikajakson pituus (alku- ja loppupäivämäärä)",
