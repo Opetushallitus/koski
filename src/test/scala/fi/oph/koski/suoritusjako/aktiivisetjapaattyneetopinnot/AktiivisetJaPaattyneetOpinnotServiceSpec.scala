@@ -648,7 +648,7 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
       KoskiSpecificMockOppijat.vstJotpaKeskenOppija,
       KoskiSpecificMockOppijat.vapaaSivistystyöOppivelvollinen,
       KoskiSpecificMockOppijat.vapaaSivistystyöMaahanmuuttajienKotoutus,
-      KoskiSpecificMockOppijat.vapaaSivistystyöLukutaitoKotoutus,
+      KoskiSpecificMockOppijat.vapaaSivistystyöLukutaitoKoulutus,
     )
 
     oppijat.foreach(oppija => {

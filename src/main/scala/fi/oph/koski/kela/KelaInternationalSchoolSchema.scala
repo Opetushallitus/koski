@@ -15,7 +15,7 @@ case class KelaInternationalSchoolOpiskeluoikeus(
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija],
   arvioituPäättymispäivä: Option[LocalDate],
-  tila: KelaOpiskeluoikeudenTila,
+  tila: KelaOpiskeluoikeudenTilaRahoitustiedoilla,
   suoritukset: List[KelaInternationalSchoolPäätasonSuoritus],
   lisätiedot: Option[KelaInternationalSchoolOpiskeluoikeudenLisätiedot],
   @KoodistoKoodiarvo(schema.OpiskeluoikeudenTyyppi.internationalschool.koodiarvo)

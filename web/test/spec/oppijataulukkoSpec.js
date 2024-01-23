@@ -275,6 +275,7 @@ describe('Oppijataulukko', function () {
           'k, kotiopetus',
           'Kelalle, Useita',
           'Kelalle, Useita',
+          'Kelalle, Useita',
           'Kokonaisuuksilla, Keijo',
           'Koodari, Monthy',
           'Korhonen, Korottaja',
@@ -336,10 +337,9 @@ describe('Oppijataulukko', function () {
           'v, virheellisestiSiirretty',
           'v, virheellisestiSiirretty',
           'v, virheellisestiSiirrettyVieraskielinen',
-          'v, virheellisestiSiirrettyVieraskielinen',
-          'Valviralle, Veera'
+          'v, virheellisestiSiirrettyVieraskielinen'
         ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('111')
+        expect(page.opiskeluoikeudeTotal()).to.equal('112')
       })
     })
 
@@ -389,6 +389,7 @@ describe('Oppijataulukko', function () {
           'ErityinenTutkinto, NuortenPerusopetus',
           'Hetuton, Heikki',
           'k, kotiopetus',
+          'Kelalle, Useita',
           'Kelalle, Useita',
           'Koululainen, Kaisa',
           'Lukiolainen, Liisa',
@@ -441,6 +442,7 @@ describe('Oppijataulukko', function () {
               'Luokallejäänyt, Lasse',
               'Lukiolainen, Liisa',
               'Koululainen, Kaisa',
+              'Kelalle, Useita',
               'Kelalle, Useita',
               'k, kotiopetus',
               'Hetuton, Heikki',

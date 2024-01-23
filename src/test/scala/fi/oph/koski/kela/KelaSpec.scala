@@ -58,7 +58,7 @@ class KelaSpec
         val response = JsonSerializer.parse[KelaOppija](body)
 
         response.henkilö.hetu should equal(KoskiSpecificMockOppijat.kelaErityyppisiaOpiskeluoikeuksia.hetu)
-        response.opiskeluoikeudet.map(_.tyyppi.koodiarvo) should equal(List(schema.OpiskeluoikeudenTyyppi.perusopetus.koodiarvo, schema.OpiskeluoikeudenTyyppi.ylioppilastutkinto.koodiarvo))
+        response.opiskeluoikeudet.map(_.tyyppi.koodiarvo) should equal(List(schema.OpiskeluoikeudenTyyppi.perusopetus.koodiarvo, schema.OpiskeluoikeudenTyyppi.perusopetus.koodiarvo, schema.OpiskeluoikeudenTyyppi.ylioppilastutkinto.koodiarvo))
       }
     }
     "Palauttaa TUVA opiskeluoikeuden tiedot" in {
@@ -79,6 +79,19 @@ class KelaSpec
         tuvaOpiskeluoikeus.suoritukset.head.koulutusmoduuli.perusteenDiaarinumero.get shouldBe "OPH-1488-2021"
         tuvaOpiskeluoikeus.suoritukset.head.koulutusmoduuli.laajuus.get.arvo shouldBe 12.0
         tuvaOpiskeluoikeus.suoritukset.head.osasuoritukset.get.length shouldBe 7
+      }
+    }
+
+    "Palauttaa VST lukutaitokoulutuksen tiedot" in {
+      postHetu(KoskiSpecificMockOppijat.vapaaSivistystyöLukutaitoKoulutus.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+        verifyResponseStatusOk()
+        val oppija = JsonSerializer.parse[KelaOppija](body)
+
+        val vstOpiskeluoikeus = oppija.opiskeluoikeudet.collectFirst {
+          case x: KelaVapaanSivistystyönOpiskeluoikeus => x
+        }
+
+        vstOpiskeluoikeus.get.oppilaitos.get.oid shouldBe "1.2.246.562.10.31915273374"
       }
     }
 
@@ -107,6 +120,19 @@ class KelaSpec
         }
         tuvaOpiskeluoikeus.järjestämislupa.koodiarvo shouldBe "perusopetus"
         tuvaOpiskeluoikeus.lisätiedot.get.erityisenTuenPäätökset.get should have length (1)
+      }
+    }
+
+    "Palauttaa perusopetuksen erityisen tuen jaksot" in {
+      postHetu(KoskiSpecificMockOppijat.kelaErityyppisiaOpiskeluoikeuksia.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+        verifyResponseStatusOk()
+        val oppija = JsonSerializer.parse[KelaOppija](body)
+
+        val perusopetus = oppija.opiskeluoikeudet collectFirst  {
+          case x: KelaPerusopetuksenOpiskeluoikeus if x.lisätiedot.isDefined => x
+        }
+
+        perusopetus.get.lisätiedot.get.erityisenTuenPäätökset.get should have length (1)
       }
     }
 
@@ -852,6 +878,42 @@ class KelaSpec
         koe.hyväksytty.isDefined should be (true)
       }
 
+    }
+  }
+
+  "Palauttaa rahoitustiedon international schoolin -tutkinnolle" in {
+    postHetu(KoskiSpecificMockOppijat.internationalschool.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+      verifyResponseStatusOk()
+
+      val oppija = JsonSerializer.parse[KelaOppija](body)
+      oppija.opiskeluoikeudet.length should be(1)
+
+      val internationalSchool = oppija.opiskeluoikeudet.collectFirst {
+        case x: KelaInternationalSchoolOpiskeluoikeus => x
+      }.get
+
+      internationalSchool.tila.opiskeluoikeusjaksot.length should be > (0)
+      internationalSchool.tila.opiskeluoikeusjaksot.exists(jakso => {
+        jakso.opintojenRahoitus.isDefined
+      }) should be (true)
+    }
+  }
+
+  "Palauttaa rahoitustiedon IB -tutkinnolle" in {
+    postHetu(KoskiSpecificMockOppijat.ibFinal.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+      verifyResponseStatusOk()
+
+      val oppija = JsonSerializer.parse[KelaOppija](body)
+      oppija.opiskeluoikeudet.length should be(1)
+
+      val ibtutkinto = oppija.opiskeluoikeudet.collectFirst {
+        case x: KelaIBOpiskeluoikeus => x
+      }.get
+
+      ibtutkinto.tila.opiskeluoikeusjaksot.length should be > (0)
+      ibtutkinto.tila.opiskeluoikeusjaksot.exists(jakso => {
+        jakso.opintojenRahoitus.isDefined
+      }) should be(true)
     }
   }
 

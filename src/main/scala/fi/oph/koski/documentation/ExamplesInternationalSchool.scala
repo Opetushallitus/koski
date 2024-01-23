@@ -185,7 +185,7 @@ object ExamplesInternationalSchool {
     lisätiedot = Some(lisätiedot),
     tila = InternationalSchoolOpiskeluoikeudenTila(
       List(
-        InternationalSchoolOpiskeluoikeusjakso(date(2004, 8, 15), LukioExampleData.opiskeluoikeusAktiivinen),
+        InternationalSchoolOpiskeluoikeusjakso(date(2004, 8, 15), LukioExampleData.opiskeluoikeusAktiivinen, Some(ExampleData.valtionosuusRahoitteinen)),
         InternationalSchoolOpiskeluoikeusjakso(date(2018, 6, 30), LukioExampleData.opiskeluoikeusPäättynyt)
       )
     ),
