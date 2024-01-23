@@ -1,5 +1,8 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 24.1.2024
+- Perusopetuksen duplikaattiopiskeluoikeuksien validaatio korjattu toimimaan myös opiskeluoikeuksia uusilla lähdejärjestelmä-id:eillä luotaessa.
+
 ## 23.1.2024
 - Lisätty validaatiot VST osaamismerkeille
 
