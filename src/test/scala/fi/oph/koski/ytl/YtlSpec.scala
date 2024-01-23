@@ -636,7 +636,7 @@ class YtlSpec
         KoskiSpecificMockOppijat.paallekkaisiOpiskeluoikeuksia,
         KoskiSpecificMockOppijat.vapaaSivistystyöOppivelvollinen,
         KoskiSpecificMockOppijat.vapaaSivistystyöMaahanmuuttajienKotoutus,
-        KoskiSpecificMockOppijat.vapaaSivistystyöLukutaitoKotoutus,
+        KoskiSpecificMockOppijat.vapaaSivistystyöLukutaitoKoulutus,
         KoskiSpecificMockOppijat.vapaaSivistystyöVapaatavoitteinenKoulutus,
         KoskiSpecificMockOppijat.oikeusOpiskelunMaksuttomuuteen,
         KoskiSpecificMockOppijat.eiOikeuttaMaksuttomuuteen,
