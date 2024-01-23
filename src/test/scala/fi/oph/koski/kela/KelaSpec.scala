@@ -58,7 +58,7 @@ class KelaSpec
         val response = JsonSerializer.parse[KelaOppija](body)
 
         response.henkilö.hetu should equal(KoskiSpecificMockOppijat.kelaErityyppisiaOpiskeluoikeuksia.hetu)
-        response.opiskeluoikeudet.map(_.tyyppi.koodiarvo) should equal(List(schema.OpiskeluoikeudenTyyppi.perusopetus.koodiarvo, schema.OpiskeluoikeudenTyyppi.ylioppilastutkinto.koodiarvo))
+        response.opiskeluoikeudet.map(_.tyyppi.koodiarvo) should equal(List(schema.OpiskeluoikeudenTyyppi.perusopetus.koodiarvo, schema.OpiskeluoikeudenTyyppi.perusopetus.koodiarvo, schema.OpiskeluoikeudenTyyppi.ylioppilastutkinto.koodiarvo))
       }
     }
     "Palauttaa TUVA opiskeluoikeuden tiedot" in {
@@ -107,6 +107,19 @@ class KelaSpec
         }
         tuvaOpiskeluoikeus.järjestämislupa.koodiarvo shouldBe "perusopetus"
         tuvaOpiskeluoikeus.lisätiedot.get.erityisenTuenPäätökset.get should have length (1)
+      }
+    }
+
+    "Palauttaa perusopetuksen erityisen tuen jaksot" in {
+      postHetu(KoskiSpecificMockOppijat.kelaErityyppisiaOpiskeluoikeuksia.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+        verifyResponseStatusOk()
+        val oppija = JsonSerializer.parse[KelaOppija](body)
+
+        val perusopetus = oppija.opiskeluoikeudet collectFirst  {
+          case x: KelaPerusopetuksenOpiskeluoikeus if x.lisätiedot.isDefined => x
+        }
+
+        perusopetus.get.lisätiedot.get.erityisenTuenPäätökset.get should have length (1)
       }
     }
 

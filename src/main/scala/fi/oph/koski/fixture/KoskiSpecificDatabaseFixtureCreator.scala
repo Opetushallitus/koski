@@ -210,6 +210,7 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
       (KoskiSpecificMockOppijat.valviraaKiinnostavaTutkintoKesken, AmmatillinenExampleData.sosiaaliJaTerveysalaOpiskeluoikeusKesken()),
       (KoskiSpecificMockOppijat.kelaErityyppisiaOpiskeluoikeuksia, ExamplesEsiopetus.esioppilas.tallennettavatOpiskeluoikeudet.head),
       (KoskiSpecificMockOppijat.kelaErityyppisiaOpiskeluoikeuksia, PerusopetusExampleData.päättötodistusOpiskeluoikeus()),
+      (KoskiSpecificMockOppijat.kelaErityyppisiaOpiskeluoikeuksia, ExamplesPerusopetus.aineopiskelija.tallennettavatOpiskeluoikeudet.head),
       (KoskiSpecificMockOppijat.lukioDiaIbInternationalESHOpiskelijamaaratRaportti_nuortenOppimaara, LukioDiaIbInternationalESHOpiskelijaMaaratRaporttiFixtures.lukionOppimaaraNuorten),
       (KoskiSpecificMockOppijat.lukioDiaIbInternationalESHOpiskelijamaaratRaportti_aikuistenOppimaara, LukioDiaIbInternationalESHOpiskelijaMaaratRaporttiFixtures.lukionOppimaaraAikuisten),
       (KoskiSpecificMockOppijat.lukioDiaIbInternationalESHOpiskelijamaaratRaportti_aineopiskelija, LukioDiaIbInternationalESHOpiskelijaMaaratRaporttiFixtures.lukionAineopiskelija),
