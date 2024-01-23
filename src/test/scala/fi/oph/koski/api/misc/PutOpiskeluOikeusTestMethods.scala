@@ -86,23 +86,8 @@ trait PutOpiskeluoikeusTestMethods[Oikeus <: Opiskeluoikeus] extends Opiskeluoik
     putOppija(makeOppija(henkilö, List(opiskeluoikeus)), headers)(f)
   }
 
-  def mitätöiOppijanKaikkiOpiskeluoikeudet(henkilö: Henkilö = defaultHenkilö) = {
-    val user = MockUsers.paakayttaja
-
-    val henkilöOidit: Seq[Henkilö.Oid] = henkilö match {
-      case h: HenkilöWithOid => List(h.oid)
-      case uh: UusiHenkilö =>
-        searchForHenkilötiedot(uh.hetu, user).map(_.oid)
-    }
-
-    if (!henkilöOidit.isEmpty) {
-      getOpiskeluoikeudet(henkilöOidit.head, user).map(oo =>
-        delete(s"api/opiskeluoikeus/${oo.oid.get}", headers = authHeaders(user)) {
-          verifyResponseStatusOk()
-        }
-      )
-    }
-  }
+  def mitätöiOppijanKaikkiOpiskeluoikeudet(): Unit =
+    mitätöiOppijanKaikkiOpiskeluoikeudet(defaultHenkilö)
 
   def postOpiskeluoikeus[A](opiskeluoikeus: Opiskeluoikeus, henkilö: Henkilö = defaultHenkilö, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
     postOppija(makeOppija(henkilö, List(opiskeluoikeus)), headers)(f)

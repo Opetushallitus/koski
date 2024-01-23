@@ -28,26 +28,4 @@ class OppijaExamplesTest extends AnyFreeSpec with Matchers with KoskiHttpSpec wi
       }
     }
   }
-
-  def mitätöiOppijanKaikkiOpiskeluoikeudet(henkilö: Henkilö) = {
-    val user = MockUsers.paakayttaja
-
-    val henkilöOidit: Seq[Henkilö.Oid] = henkilö match {
-      case h: HenkilöWithOid => List(h.oid)
-      case uh: UusiHenkilö =>
-        searchForHenkilötiedot(uh.hetu, user).map(_.oid)
-    }
-
-    if (!henkilöOidit.isEmpty) {
-      getOpiskeluoikeudet(henkilöOidit.head, user).map(oo => {
-        oo.oid match {
-          case Some(oid) =>
-            delete(s"api/opiskeluoikeus/${oid}", headers = authHeaders(user)) {
-              verifyResponseStatusOk()
-            }
-          case _ =>
-        }
-      })
-    }
-  }
 }

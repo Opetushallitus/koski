@@ -4,7 +4,7 @@ import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.http.{HttpSpecification, HttpStatus}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.MockUsers.paakayttajaMitatoidytOpiskeluoikeudet
-import fi.oph.koski.koskiuser.UserWithPassword
+import fi.oph.koski.koskiuser.{MockUsers, UserWithPassword}
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema._
@@ -12,7 +12,7 @@ import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}
 import org.json4s.jackson.JsonMethods
 import org.scalatest.matchers.should.Matchers
 
-trait OpiskeluoikeusTestMethods extends HttpSpecification with Matchers {
+trait OpiskeluoikeusTestMethods extends HttpSpecification with SearchTestMethods with Matchers {
   private implicit val context: ExtractionContext = strictDeserialization
 
   def lastOpiskeluoikeusByHetu(oppija: Henkilö, user: UserWithPassword = defaultUser): KoskeenTallennettavaOpiskeluoikeus = {
@@ -79,6 +79,26 @@ trait OpiskeluoikeusTestMethods extends HttpSpecification with Matchers {
 
   def readOpiskeluoikeus = {
     SchemaValidatingExtractor.extract[Opiskeluoikeus](JsonMethods.parse(body)).right.get
+  }
+
+  def mitätöiOppijanKaikkiOpiskeluoikeudet(henkilö: Henkilö): Unit = {
+    val user = MockUsers.paakayttaja
+
+    val henkilöOidit: Seq[Henkilö.Oid] = henkilö match {
+      case h: HenkilöWithOid => List(h.oid)
+      case uh: UusiHenkilö =>
+        searchForHenkilötiedot(uh.hetu, user).map(_.oid)
+    }
+
+    if (!henkilöOidit.isEmpty) {
+      getOpiskeluoikeudet(henkilöOidit.head, user)
+        .flatMap(_.oid.toList)
+        .map(oid =>
+          delete(s"api/opiskeluoikeus/${oid}", headers = authHeaders(user)) {
+            verifyResponseStatusOk()
+          }
+        )
+    }
   }
 
   lazy val linkitettyOid: Map[Oid, Oid] = (for {
