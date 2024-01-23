@@ -50,6 +50,8 @@ class RemoteEPerusteetRepository(ePerusteetRoot: String, ePerusteetWebBaseUrl: S
   def findKaikkiPerusteenYksilöintitiedot(diaariNumero: String): List[EPerusteTunniste] =
     osaRakenneCache(diaariNumero).map(_.toEPerusteTunniste)
 
+  def findOsaamismerkkiRakenteet(): List[EPerusteOsaamismerkkiRakenne] = osaamismerkkiRakenneCache("osaamismerkit")
+
   private val osaRakenneCache = KeyValueCache[String, List[EPerusteOsaRakenne]](
     ExpiringCache("EPerusteetRepository.osarakenne", 15.minutes, 250),
     diaariNumero => fetchKaikkiRakenteet(diaariNumero)
@@ -63,4 +65,18 @@ class RemoteEPerusteetRepository(ePerusteetRoot: String, ePerusteetWebBaseUrl: S
 
     runIO(program)
   }
+
+  private val osaamismerkkiRakenneCache = KeyValueCache[String, List[EPerusteOsaamismerkkiRakenne]](
+    ExpiringCache("EPerusteetRepository.osaamismerkkirakenne", 60.minutes, 2),
+    (_) => fetchOsaamismerkkiRakenteet()
+  )
+
+  private def fetchOsaamismerkkiRakenteet(): List[EPerusteOsaamismerkkiRakenne] = {
+    val program: IO[List[EPerusteOsaamismerkkiRakenne]] = for {
+      perusteet <- http.get(uri"/api/external/osaamismerkit")(Http.parseJson[List[EPerusteOsaamismerkkiRakenne]])
+    } yield(perusteet)
+
+    runIO(program)
+  }
+
 }

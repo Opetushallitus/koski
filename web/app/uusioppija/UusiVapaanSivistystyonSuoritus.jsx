@@ -20,6 +20,7 @@ const Opintokokonaisuus = ({ opintokokonaisuusAtom, opintokokonaisuudetP }) => {
   const editorPrototypeValue = useBaconProperty(
     editorPrototypeP('VapaanSivistystyönVapaatavoitteinenKoulutus')
   )
+
   if (!editorPrototypeValue) {
     return null
   }
@@ -44,30 +45,58 @@ const Opintokokonaisuus = ({ opintokokonaisuusAtom, opintokokonaisuudetP }) => {
   )
 }
 
+const Osaamismerkki = ({ osaamismerkkiAtom }) => {
+  const osaamismerkitP = koodistoValues('osaamismerkit').map((osaamismerkit) =>
+    osaamismerkit.sort(byKoodiarvo)
+  )
+
+  osaamismerkitP.onValue((osaamismerkit) =>
+    osaamismerkkiAtom.set(osaamismerkit[0])
+  )
+
+  return (
+    <div>
+      <KoodistoDropdown
+        className="property osaamismerkki"
+        title="Osaamismerkki"
+        options={osaamismerkitP}
+        selected={osaamismerkkiAtom}
+        enableFilter={true}
+        showKoodiarvo={true}
+      />
+    </div>
+  )
+}
+
+const byKoodiarvo = (a, b) => a.koodiarvo.localeCompare(b.koodiarvo)
+
 export const opintokokonaisuudellisetVstSuoritustyypit = [
   'vstvapaatavoitteinenkoulutus',
   'vstjotpakoulutus'
 ]
+
+export const perusteettomatVstSuoritustyypit =
+  opintokokonaisuudellisetVstSuoritustyypit.concat(['vstosaamismerkki'])
 
 export default ({
   suoritusAtom,
   suoritustyyppiAtom,
   oppilaitosAtom,
   suorituskieliAtom,
-  opintokokonaisuusAtom
+  opintokokonaisuusAtom,
+  osaamismerkkiAtom
 }) => {
   const perusteAtom = Atom()
   const näytäPerustekenttä = Atom(false)
 
   const suoritustyypitP = koodistoValues(
-    'suorituksentyyppi/vstoppivelvollisillesuunnattukoulutus,vstmaahanmuuttajienkotoutumiskoulutus,vstlukutaitokoulutus,vstvapaatavoitteinenkoulutus,vstjotpakoulutus'
+    'suorituksentyyppi/vstoppivelvollisillesuunnattukoulutus,vstmaahanmuuttajienkotoutumiskoulutus,vstlukutaitokoulutus,vstvapaatavoitteinenkoulutus,vstjotpakoulutus,vstosaamismerkki'
   )
   const opintokokonaisuudetP = koodistoValues('opintokokonaisuudet')
 
   suoritustyyppiAtom.onValue((tyyppi) => {
     näytäPerustekenttä.set(
-      tyyppi &&
-        !opintokokonaisuudellisetVstSuoritustyypit.includes(tyyppi.koodiarvo)
+      tyyppi && !perusteettomatVstSuoritustyypit.includes(tyyppi.koodiarvo)
     )
   })
 
@@ -77,6 +106,7 @@ export default ({
     perusteAtom,
     suorituskieliAtom,
     opintokokonaisuusAtom,
+    osaamismerkkiAtom,
     makeSuoritus
   ).onValue((suoritus) => suoritusAtom.set(suoritus))
 
@@ -101,6 +131,11 @@ export default ({
         näytäPerustekenttä,
         <Peruste {...{ suoritusTyyppiP: suoritustyyppiAtom, perusteAtom }} />
       )}
+      {suoritustyyppiAtom.map('.koodiarvo').map((tyyppi) => {
+        if (['vstosaamismerkki'].includes(tyyppi))
+          return <Osaamismerkki osaamismerkkiAtom={osaamismerkkiAtom} />
+        return null
+      })}
     </div>
   )
 }
@@ -110,7 +145,8 @@ const makeSuoritus = (
   suoritustyyppi,
   peruste,
   suorituskieli,
-  opintokokonaisuus
+  opintokokonaisuus,
+  osaamismerkki
 ) => {
   switch (suoritustyyppi?.koodiarvo) {
     case 'vstoppivelvollisillesuunnattukoulutus':
@@ -162,6 +198,14 @@ const makeSuoritus = (
             koodistoUri: 'koulutus'
           },
           opintokokonaisuus
+        },
+        toimipiste: oppilaitos,
+        tyyppi: suoritustyyppi
+      }
+    case 'vstosaamismerkki':
+      return {
+        koulutusmoduuli: {
+          tunniste: osaamismerkki
         },
         toimipiste: oppilaitos,
         tyyppi: suoritustyyppi

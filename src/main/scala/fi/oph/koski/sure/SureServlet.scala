@@ -11,7 +11,7 @@ import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
 import fi.oph.koski.log._
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter.{NotSuorituksenTyyppi, OppijaOidHaku}
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryContext
-import fi.oph.koski.schema.SuorituksenTyyppi.vstvapaatavoitteinenkoulutus
+import fi.oph.koski.schema.SuorituksenTyyppi.{vstosaamismerkki, vstvapaatavoitteinenkoulutus}
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.{InvalidRequestException, KoskiSpecificApiServlet, NoCache, ObservableSupport}
 import fi.oph.koski.util.Timing
@@ -42,7 +42,8 @@ class SureServlet(implicit val application: KoskiApplication)
           val observable = OpiskeluoikeusQueryContext(request)(session, application).queryWithoutHenkilötiedotRaw(
             filters = List(
               OppijaOidHaku(oids),
-              NotSuorituksenTyyppi(vstvapaatavoitteinenkoulutus)
+              NotSuorituksenTyyppi(vstvapaatavoitteinenkoulutus),
+              NotSuorituksenTyyppi(vstosaamismerkki)
             ),
             paginationSettings = None,
             queryForAuditLog = "oids=" + oids.take(2).mkString(",") + ",...(" + oids.size + ")"

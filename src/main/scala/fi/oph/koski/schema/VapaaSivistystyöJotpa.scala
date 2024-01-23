@@ -19,7 +19,7 @@ case class VapaanSivistystyönJotpaKoulutuksenSuoritus(
   override val osasuoritukset: Option[List[VapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus]] = None,
   @Description("Todistuksella näytettävä lisätieto, vapaamuotoinen tekstikenttä")
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
-) extends VapaanSivistystyönPäätasonSuoritus
+) extends VapaanSivistystyönKoulutuksenPäätasonSuoritus
 
 @Title("Jatkuvaan oppimiseen suunnattu vapaan sivistystyön koulutuksen tunnistetiedot")
 case class VapaanSivistystyönJotpaKoulutus(
@@ -71,4 +71,7 @@ case class VapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso(
   @KoodistoKoodiarvo("14")
   @KoodistoKoodiarvo("15")
   override val opintojenRahoitus: Option[Koodistokoodiviite],
-) extends VapaanSivistystyönOpiskeluoikeusjakso with KoskiOpiskeluoikeusjakso
+) extends VapaanSivistystyönOpiskeluoikeusjakso with KoskiOpiskeluoikeusjakso {
+  override def withAlku(alku: LocalDate): VapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso =
+    this.copy(alku = alku)
+}

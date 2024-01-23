@@ -49,7 +49,7 @@ object VSTKotoutumiskoulutus2022Validation {
     }))
   }
 
-  def validatePakollisetOsasuoritukset(päätasonSuoritus: VapaanSivistystyönPäätasonSuoritus): HttpStatus =
+  def validatePakollisetOsasuoritukset(päätasonSuoritus: VapaanSivistystyönKoulutuksenPäätasonSuoritus): HttpStatus =
     josVahvistettu(päätasonSuoritus) {
       val pakollisetOsasuoritukset = Set(
         "yhteiskuntajatyoelamaosaaminen",
@@ -63,7 +63,7 @@ object VSTKotoutumiskoulutus2022Validation {
       }
     }
 
-  def validateOsasuoritus(päätasonSuoritus: VapaanSivistystyönPäätasonSuoritus)(osasuoritus: VSTKotoutumiskoulutuksenKokonaisuudenOsasuoritus2022): HttpStatus =
+  def validateOsasuoritus(päätasonSuoritus: VapaanSivistystyönKoulutuksenPäätasonSuoritus)(osasuoritus: VSTKotoutumiskoulutuksenKokonaisuudenOsasuoritus2022): HttpStatus =
     osasuoritus match {
       case s: VSTKotoutumiskoulutuksenKieliJaViestintäosaamisenSuoritus2022 => validateKieliJaViestintä(s)
       case s: VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenSuoritus2022 => validateYhteiskuntaJaTyöosaaminen(s)
@@ -111,7 +111,7 @@ object VSTKotoutumiskoulutus2022Validation {
       validateLaajuus("Työssäoppiminen", työssäoppimisjaksojenYhteislaajuus, 8.0)
     }
 
-  def validateOhjausLaajuus(suoritus: VSTKotoutumiskoulutuksenOhjauksenSuoritus2022, päätasonSuoritus: VapaanSivistystyönPäätasonSuoritus): HttpStatus =
+  def validateOhjausLaajuus(suoritus: VSTKotoutumiskoulutuksenOhjauksenSuoritus2022, päätasonSuoritus: VapaanSivistystyönKoulutuksenPäätasonSuoritus): HttpStatus =
     josVahvistettu(päätasonSuoritus) {
       validateLaajuus(suoritus, 7)
     }

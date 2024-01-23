@@ -3,14 +3,14 @@ import {
   KeyValueRow,
   KeyValueTable
 } from '../../components-v2/containers/KeyValueTable'
-import { VapaanSivistystyönPäätasonSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonPaatasonSuoritus'
 import { formatNumber, sum } from '../../util/numbers'
 import { t } from '../../i18n/i18n'
 import { TestIdText } from '../../appstate/useTestId'
+import { VapaanSivistystyönKoulutuksenPäätasonSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonKoulutuksenPaatasonSuoritus'
 
 export type VSTLaajuudetYhteensäProps = {
   testId: string
-  suoritus: VapaanSivistystyönPäätasonSuoritus
+  suoritus: VapaanSivistystyönKoulutuksenPäätasonSuoritus
 }
 
 export const VSTLaajuudetYhteensä: React.FC<VSTLaajuudetYhteensäProps> = ({
@@ -24,7 +24,9 @@ export const VSTLaajuudetYhteensä: React.FC<VSTLaajuudetYhteensäProps> = ({
   </KeyValueTable>
 )
 
-const laajuudetYhteensä = (pts: VapaanSivistystyönPäätasonSuoritus): string => {
+const laajuudetYhteensä = (
+  pts: VapaanSivistystyönKoulutuksenPäätasonSuoritus
+): string => {
   const n = formatNumber(
     sum(
       (pts.osasuoritukset || []).map(

@@ -188,6 +188,7 @@ object KoskiSpecificMockOppijat {
   val lukioVajaaSuoritus = koskiSpecificOppijat.oppija("Vajaa-Suoritus", "Lukiolainen", "010105A1995")
   val deprecatedEuropeanSchoolOfHelsinki = koskiSpecificOppijat.oppija("Deprecated-Eurooppalainen", "Emma", "171005A010M")
   val pelkkäESH = koskiSpecificOppijat.oppija("Eurooppalainen", "Eeva", "100906A5544")
+  val vapaaSivistystyöOsaamismerkki = koskiSpecificOppijat.oppija("Vapaa-Sivistys", "Osaamismerkki", "050705A564B")
 
   //Jos luot uuden oppijan voi hetun generoida täältä: http://www.lintukoto.net/muut/henkilotunnus/index.php
   //Huomaa, että hetun pitää olla oikean kaltainen

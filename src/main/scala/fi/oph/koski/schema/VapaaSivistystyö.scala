@@ -42,6 +42,8 @@ trait VapaanSivistystyönOpiskeluoikeusjakso extends Opiskeluoikeusjakso {
   def opiskeluoikeusPäättynyt: Boolean = {
     OpiskeluoikeudenPäättymistila.koski(tila.koodiarvo)
   }
+
+  def withAlku(alku: LocalDate): VapaanSivistystyönOpiskeluoikeusjakso
 }
 
 case class VapaanSivistystyönOpiskeluoikeudenLisätiedot(
@@ -49,7 +51,11 @@ case class VapaanSivistystyönOpiskeluoikeudenLisätiedot(
   oikeuttaMaksuttomuuteenPidennetty: Option[List[OikeuttaMaksuttomuuteenPidennetty]] = None
 ) extends OpiskeluoikeudenLisätiedot with MaksuttomuusTieto
 
-trait VapaanSivistystyönPäätasonSuoritus extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen with Suorituskielellinen with Todistus with Arvioinniton {
+trait VapaanSivistystyönPäätasonSuoritus extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen {
+  def koulutusmoduuli: Koulutusmoduuli
+}
+
+trait VapaanSivistystyönKoulutuksenPäätasonSuoritus extends VapaanSivistystyönPäätasonSuoritus with Suorituskielellinen with Todistus with Arvioinniton {
   @Title("Koulutus")
   def koulutusmoduuli: Koulutusmoduuli
 }
@@ -66,7 +72,10 @@ case class OppivelvollisilleSuunnattuVapaanSivistystyönOpiskeluoikeusjakso(
   @KoodistoKoodiarvo("valmistunut")
   @KoodistoKoodiarvo("mitatoity")
   tila: Koodistokoodiviite,
-) extends VapaanSivistystyönOpiskeluoikeusjakso
+) extends VapaanSivistystyönOpiskeluoikeusjakso {
+  override def withAlku(alku: LocalDate): OppivelvollisilleSuunnattuVapaanSivistystyönOpiskeluoikeusjakso =
+    this.copy(alku = alku)
+}
 
 case class OppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus(
   toimipiste: OrganisaatioWithOid,
@@ -81,7 +90,7 @@ case class OppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus(
   override val osasuoritukset: Option[List[OppivelvollisilleSuunnatunVapaanSivistystyönOsasuoritus]],
   @Description("Todistuksella näytettävä lisätieto, vapaamuotoinen tekstikenttä")
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None
-) extends VapaanSivistystyönPäätasonSuoritus
+) extends VapaanSivistystyönKoulutuksenPäätasonSuoritus
     with OpintopistelaajuuksienYhteislaskennallinenPäätasonSuoritus[LaajuusOpintopisteissä]
     with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta
 
@@ -231,7 +240,7 @@ case class OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuorit
   override val osasuoritukset: Option[List[VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKokonaisuudenSuoritus]],
   @Description("Todistuksella näytettävä lisätieto, vapaamuotoinen tekstikenttä")
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None
-) extends VapaanSivistystyönPäätasonSuoritus
+) extends VapaanSivistystyönKoulutuksenPäätasonSuoritus
   with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta
   with OpintopistelaajuuksienYhteislaskennallinenSuoritus[LaajuusOpintopisteissä]
 

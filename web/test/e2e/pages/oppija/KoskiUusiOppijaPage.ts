@@ -12,6 +12,7 @@ interface BaseOppija {
   suorituskieli: string
   opiskeluoikeudenTila: string
   opintokokonaisuus?: string
+  osaamismerkki?: string
   oppimäärä?: string
   opintojenMaksuttomuus?: string
   peruste?: string
@@ -36,6 +37,7 @@ export class KoskiUusiOppijaPage {
   readonly sukunimi: Locator
   readonly lisaaOppijaButton: Locator
   readonly opintokokonaisuus: Dropdown
+  readonly osaamismerkki: Dropdown
   readonly opiskeluoikeudenTila: Dropdown
   readonly opintojenRahoitus: Dropdown
   readonly opiskeluoikeus: Dropdown
@@ -56,6 +58,10 @@ export class KoskiUusiOppijaPage {
     this.opintokokonaisuus = Dropdown.fromTestId(
       page,
       'Opintokokonaisuus-koodisto-dropdown'
+    )
+    this.osaamismerkki = Dropdown.fromTestId(
+      page,
+      'Osaamismerkki-koodisto-dropdown'
     )
     this.opiskeluoikeudenTila = Dropdown.fromTestId(
       page,
@@ -78,7 +84,10 @@ export class KoskiUusiOppijaPage {
     this.submitBtn = page.getByRole('button', { name: 'Lisää opiskelija' })
     this.etunimet = page.getByRole('textbox', { name: 'Etunimet' })
     this.sukunimi = page.getByRole('textbox', { name: 'Sukunimi' })
-    this.suoritustyyppi = Dropdown.fromTestId(page, 'Suoritustyyppi-koodisto-dropdown')
+    this.suoritustyyppi = Dropdown.fromTestId(
+      page,
+      'Suoritustyyppi-koodisto-dropdown'
+    )
     this.taiteenala = Dropdown.fromTestId(page, 'Taiteenala-koodisto-dropdown')
   }
 
@@ -147,6 +156,14 @@ export class KoskiUusiOppijaPage {
     }
     if (oppija.taiteenala) {
       await this.taiteenala.selectOptionByClick(oppija.taiteenala)
+    }
+    if (oppija.osaamismerkki) {
+      await this.osaamismerkki.search(oppija.osaamismerkki)
+    }
+    if (oppija.opiskeluoikeudenTila) {
+      await this.opiskeluoikeudenTila.selectOptionByClick(
+        oppija.opiskeluoikeudenTila
+      )
     }
   }
 

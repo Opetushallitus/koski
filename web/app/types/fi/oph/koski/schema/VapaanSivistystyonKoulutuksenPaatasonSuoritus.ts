@@ -19,31 +19,26 @@ import {
   isVapaanSivistystyönLukutaitokoulutuksenSuoritus
 } from './VapaanSivistystyonLukutaitokoulutuksenSuoritus'
 import {
-  VapaanSivistystyönOsaamismerkinSuoritus,
-  isVapaanSivistystyönOsaamismerkinSuoritus
-} from './VapaanSivistystyonOsaamismerkinSuoritus'
-import {
   VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus,
   isVapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus
 } from './VapaanSivistystyonVapaatavoitteisenKoulutuksenSuoritus'
 
 /**
- * VapaanSivistystyönPäätasonSuoritus
+ * VapaanSivistystyönKoulutuksenPäätasonSuoritus
  *
- * @see `fi.oph.koski.schema.VapaanSivistystyönPäätasonSuoritus`
+ * @see `fi.oph.koski.schema.VapaanSivistystyönKoulutuksenPäätasonSuoritus`
  */
-export type VapaanSivistystyönPäätasonSuoritus =
+export type VapaanSivistystyönKoulutuksenPäätasonSuoritus =
   | OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus
   | OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus2022
   | OppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus
   | VapaanSivistystyönJotpaKoulutuksenSuoritus
   | VapaanSivistystyönLukutaitokoulutuksenSuoritus
-  | VapaanSivistystyönOsaamismerkinSuoritus
   | VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus
 
-export const isVapaanSivistystyönPäätasonSuoritus = (
+export const isVapaanSivistystyönKoulutuksenPäätasonSuoritus = (
   a: any
-): a is VapaanSivistystyönPäätasonSuoritus =>
+): a is VapaanSivistystyönKoulutuksenPäätasonSuoritus =>
   isOppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus(
     a
   ) ||
@@ -53,5 +48,4 @@ export const isVapaanSivistystyönPäätasonSuoritus = (
   isOppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus(a) ||
   isVapaanSivistystyönJotpaKoulutuksenSuoritus(a) ||
   isVapaanSivistystyönLukutaitokoulutuksenSuoritus(a) ||
-  isVapaanSivistystyönOsaamismerkinSuoritus(a) ||
   isVapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus(a)

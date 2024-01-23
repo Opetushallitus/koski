@@ -667,5 +667,4 @@ class SuostumuksenPeruutusSpec extends AnyFreeSpec with Matchers with Opiskeluoi
   private def mitätöiOpiskeluoikeus(oid: String) = {
     delete(s"api/opiskeluoikeus/${oid}", headers = authHeaders(MockUsers.paakayttaja))(verifyResponseStatusOk())
   }
-
 }

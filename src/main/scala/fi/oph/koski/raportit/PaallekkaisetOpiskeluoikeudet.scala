@@ -101,6 +101,8 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
         where opiskeluoikeus.sisaltyy_opiskeluoikeuteen_oid is null
           and not suoritus.suorituksen_tyyppi = 'vstvapaatavoitteinenkoulutus'
           and not paallekkainensuoritus.suorituksen_tyyppi = 'vstvapaatavoitteinenkoulutus'
+          and not suoritus.suorituksen_tyyppi = 'vstosaamismerkki'
+          and not paallekkainensuoritus.suorituksen_tyyppi = 'vstosaamismerkki'
           and not opiskeluoikeus.koulutusmuoto = 'taiteenperusopetus'
           and not paallekkainen.koulutusmuoto = 'taiteenperusopetus'
     """
@@ -327,6 +329,7 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
       case (_, ("perusopetuksenvuosiluokka", _)) => t.get("raportti-excel-default-value-perusopetuksenoppimäärä")
       case (_, ("vstoppivelvollisillesuunnattukoulutus", _)) => t.get("raportti-excel-default-value-vst")
       case (_, ("vstvapaatavoitteinenkoulutus", _)) => t.get("raportti-excel-default-value-vst-vapaatavoitteinen")
+      case (_, ("vstosaamismerkki", _)) => t.get("raportti-excel-default-value-vst-osaamismerkki")
       case (_, ("vstjotpakoulutus", _)) => t.get("raportti-excel-default-value-vst-jotpa")
       case (_, ("vstmaahanmuuttajienkotoutumiskoulutus", _)) => t.get("raportti-excel-default-value-vst-maahanmuuttajienkotoutumiskoulutus")
       case (_, ("tuvakoulutuksensuoritus", _)) => t.get("raportti-excel-default-value-tuva")
