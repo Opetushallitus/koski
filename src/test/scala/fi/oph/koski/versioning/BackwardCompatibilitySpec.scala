@@ -1,10 +1,13 @@
 package fi.oph.koski.versioning
 
+import fi.oph.koski.api.misc.OpiskeluoikeusTestMethods
+
 import java.io.File
 import java.time.LocalDate
-import fi.oph.koski.{KoskiApplicationForTests, TestEnvironment}
+import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec, TestEnvironment}
 import fi.oph.koski.documentation.Example
-import fi.oph.koski.documentation.Examples.{oppijaExamples}
+import fi.oph.koski.documentation.Examples.oppijaExamples
+import fi.oph.koski.http.DefaultHttpTester
 import fi.oph.koski.json.{JsonFiles, JsonSerializer}
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
 import fi.oph.koski.log.Logging
@@ -21,7 +24,7 @@ import org.scalatest.matchers.should.Matchers
 /**
  * Tests that examples match saved JSON files.
  */
-class BackwardCompatibilitySpec extends AnyFreeSpec with TestEnvironment with Matchers with Logging with EnvVariables {
+class BackwardCompatibilitySpec extends AnyFreeSpec with KoskiHttpSpec with TestEnvironment with Matchers with Logging with EnvVariables with OpiskeluoikeusTestMethods {
   private lazy val koskiValidator = KoskiApplicationForTests.validator
   private lazy val runningOnCI = optEnv("CI").isDefined
   private implicit val user: KoskiSpecificSession = KoskiSpecificSession.systemUser
@@ -92,7 +95,9 @@ class BackwardCompatibilitySpec extends AnyFreeSpec with TestEnvironment with Ma
       } else {
         existingFiles.foreach(makeTestForExistingFile)
         val latest = existingFiles.last
-        if (JsonSerializer.serializeWithRoot(example.data) != JsonFiles.readFile(fullPath(latest))) {
+        val (lastFileJson, _, _) = readFile(latest)
+
+        if (JsonSerializer.serializeWithRoot(example.data) != lastFileJson) {
           logger.info(s"Example data differs for ${example.name} at ${latest}. Creating new version.")
           writeNewVersion(example)
         }
@@ -108,6 +113,9 @@ class BackwardCompatibilitySpec extends AnyFreeSpec with TestEnvironment with Ma
         case Left(errors) => fail("Backwards compatibility problem: " + errors)
         case Right(oppija) =>
           if (!skipKoskiValidator) {
+            // Poista oppijan muut opiskeluoikeudet, jotta duplikaattivalidaatiot eivät epäonnistu
+            mitätöiOppijanKaikkiOpiskeluoikeudet(oppija.henkilö)
+
             koskiValidator.updateFieldsAndValidateAsJson(oppija) match {
               case Right(_) => //ok
               case Left(err) => fail("Validation error: " + err.toString)
