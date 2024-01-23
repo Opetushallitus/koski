@@ -855,6 +855,42 @@ class KelaSpec
     }
   }
 
+  "Palauttaa rahoitustiedon international schoolin -tutkinnolle" in {
+    postHetu(KoskiSpecificMockOppijat.internationalschool.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+      verifyResponseStatusOk()
+
+      val oppija = JsonSerializer.parse[KelaOppija](body)
+      oppija.opiskeluoikeudet.length should be(1)
+
+      val internationalSchool = oppija.opiskeluoikeudet.collectFirst {
+        case x: KelaInternationalSchoolOpiskeluoikeus => x
+      }.get
+
+      internationalSchool.tila.opiskeluoikeusjaksot.length should be > (0)
+      internationalSchool.tila.opiskeluoikeusjaksot.exists(jakso => {
+        jakso.opintojenRahoitus.isDefined
+      }) should be (true)
+    }
+  }
+
+  "Palauttaa rahoitustiedon IB -tutkinnolle" in {
+    postHetu(KoskiSpecificMockOppijat.ibFinal.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+      verifyResponseStatusOk()
+
+      val oppija = JsonSerializer.parse[KelaOppija](body)
+      oppija.opiskeluoikeudet.length should be(1)
+
+      val ibtutkinto = oppija.opiskeluoikeudet.collectFirst {
+        case x: KelaIBOpiskeluoikeus => x
+      }.get
+
+      ibtutkinto.tila.opiskeluoikeusjaksot.length should be > (0)
+      ibtutkinto.tila.opiskeluoikeusjaksot.exists(jakso => {
+        jakso.opintojenRahoitus.isDefined
+      }) should be(true)
+    }
+  }
+
   "Palauttaa perusopetuksen kentän omanÄidinkielenOpinnot" in {
     postHetu(KoskiSpecificMockOppijat.ysiluokkalainen.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
       verifyResponseStatusOk()
