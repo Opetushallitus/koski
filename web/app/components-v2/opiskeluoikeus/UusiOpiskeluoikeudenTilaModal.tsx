@@ -203,7 +203,7 @@ export const UusiOpiskeluoikeudenTilaModal = <T extends Opiskeluoikeusjakso>(
       {...common(props, ['UusiOpiskeluoikeudenTilaModal'])}
       onClose={props.onClose}
     >
-      <ModalTitle>{'Uusi opiskeluoikeuden tila'}</ModalTitle>
+      <ModalTitle>{t('Uusi opiskeluoikeuden tila')}</ModalTitle>
 
       <ModalBody>
         <Label label="Päivämäärä">
@@ -245,10 +245,10 @@ export const UusiOpiskeluoikeudenTilaModal = <T extends Opiskeluoikeusjakso>(
 
       <ModalFooter>
         <FlatButton onClick={props.onClose} testId="cancel">
-          {'Peruuta'}
+          {t('Peruuta')}
         </FlatButton>
         <RaisedButton onClick={onSubmit} testId="submit">
-          {'Lisää'}
+          {t('Lisää')}
         </RaisedButton>
       </ModalFooter>
     </Modal>
