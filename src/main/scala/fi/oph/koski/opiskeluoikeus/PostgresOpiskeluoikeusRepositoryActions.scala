@@ -235,10 +235,15 @@ trait PostgresOpiskeluoikeusRepositoryActions[OOROW <: OpiskeluoikeusRow, OOTABL
         val onVstOsaamismerkinSuoritus = tallennettavaOpiskeluoikeus.suoritukset.exists(_.tyyppi.koodiarvo == "vstosaamismerkki")
         val onMitätöitävissä = OpiskeluoikeusAccessChecker.isInvalidatable(tallennettavaOpiskeluoikeus, user)
 
+        val ohitaValidaatiovirheeet = config.getStringList("validaatiot.ohitaValidaatiovirheetKäyttäjällä").contains(user.user.username)
+
         validator.validateOpiskeluoikeusChange(vanhaOpiskeluoikeus, tallennettavaOpiskeluoikeus) match {
           case HttpStatus.ok if tallennettavaOpiskeluoikeus.mitätöity && onTaiteenPerusopetusOpiskeluoikeus && !onMitätöitävissä =>
             DBIO.successful(Left(KoskiErrorCategory.forbidden("Mitätöinti ei sallittu")))
-          case HttpStatus.ok =>
+          case status if status.isOk || ohitaValidaatiovirheeet =>
+            if (status.isError) {
+              logger.info(s"Ohitetaan käyttäjätunnuksen perusteella validaatiovirheitä")
+            }
             if (tallennettavaOpiskeluoikeus.mitätöity && (onVstVapaatavoitteinenSuoritus || onVstOsaamismerkinSuoritus || onTaiteenPerusopetusOpiskeluoikeus)) {
               OpiskeluoikeusPoistoUtils
                 .poistaOpiskeluOikeus(id, oid, tallennettavaOpiskeluoikeus, nextVersionumero, oldRow.oppijaOid, true, None)

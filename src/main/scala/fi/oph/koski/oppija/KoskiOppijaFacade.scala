@@ -198,7 +198,13 @@ class KoskiOppijaFacade(
             henkilö.oid
           )
         }))
-        if (validation.isOk) Right(Unit) else Left(validation)
+        validation match {
+          case status if status.isOk => Right(Unit)
+          case _ if (config.getStringList("validaatiot.ohitaValidaatiovirheetKäyttäjällä").contains(user.user.username)) =>
+            logger.info(s"Ohitetaan käyttäjätunnuksen perusteella validaatiovirheitä")
+            Right(Unit)
+          case _ => Left(validation)
+        }
       case None => Left(KoskiErrorCategory.notFound.oppijaaEiLöydy("Oppijaa " + oppijaOid.right.get.oppijaOid + " ei löydy."))
     }
 
