@@ -4,7 +4,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.Hetu
 import fi.oph.koski.http.{HttpStatus, JsonErrorMessage, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.RequiresPalveluvayla
+import fi.oph.koski.koskiuser.RequiresHSL
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.TäydellisetHenkilötiedot
 import fi.oph.koski.schema.filter.MyDataOppija
@@ -13,7 +13,7 @@ import org.scalatra.ContentEncodingSupport
 
 
 class ApiProxyServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet
-  with Logging with ContentEncodingSupport with NoCache with MyDataSupport with RequiresPalveluvayla {
+                                                                          with Logging with ContentEncodingSupport with NoCache with MyDataSupport with RequiresHSL {
 
   post("/") {
     val memberId = getMemberId
