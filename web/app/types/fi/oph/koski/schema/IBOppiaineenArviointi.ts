@@ -11,7 +11,7 @@ export type IBOppiaineenArviointi = {
   päivä?: string
   effort?: Koodistokoodiviite<'effortasteikkoib', string>
   arvosana: Koodistokoodiviite<'arviointiasteikkoib', string>
-  predicted: boolean
+  predicted?: boolean
   hyväksytty?: boolean
 }
 
@@ -19,7 +19,7 @@ export const IBOppiaineenArviointi = (o: {
   päivä?: string
   effort?: Koodistokoodiviite<'effortasteikkoib', string>
   arvosana: Koodistokoodiviite<'arviointiasteikkoib', string>
-  predicted: boolean
+  predicted?: boolean
   hyväksytty?: boolean
 }): IBOppiaineenArviointi => ({
   $class: 'fi.oph.koski.schema.IBOppiaineenArviointi',
