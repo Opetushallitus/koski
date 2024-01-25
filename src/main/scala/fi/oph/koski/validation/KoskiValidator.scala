@@ -161,6 +161,9 @@ class KoskiValidator(
         )
       } match {
         case HttpStatus.ok => Right(opiskeluoikeus)
+        case _ if (config.getStringList("validaatiot.ohitaValidaatiovirheetKäyttäjällä").contains(user.user.username)) =>
+          logger.info(s"Ohitetaan käyttäjätunnuksen perusteella validaatiovirheitä")
+          Right(opiskeluoikeus)
         case status: Any => Left(status)
       }
 
