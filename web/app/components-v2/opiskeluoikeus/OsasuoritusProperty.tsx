@@ -3,6 +3,7 @@ import { useLayout } from '../../util/useDepth'
 import { common, CommonPropsWithChildren } from '../CommonProps'
 import { Column, ColumnRow, COLUMN_COUNT } from '../containers/Columns'
 import { OSASUORITUSTABLE_DEPTH_KEY } from './OsasuoritusTable'
+import { t } from '../../i18n/i18n'
 
 const LABEL_WIDTH_COLUMNS = 4
 
@@ -20,7 +21,7 @@ export const OsasuoritusProperty: React.FC<OsasuoritusPropertyProps> = (
       valign="top"
       indent={indentation}
     >
-      <OsasuoritusPropertyLabel>{props.label}</OsasuoritusPropertyLabel>
+      <OsasuoritusPropertyLabel>{t(props.label)}</OsasuoritusPropertyLabel>
       <LayoutProvider indent={LABEL_WIDTH_COLUMNS}>
         {props.children}
       </LayoutProvider>
@@ -39,7 +40,7 @@ export const OsasuoritusSubproperty: React.FC<OsasuoritusSubpropertyProps> = (
   return (
     <>
       <OsasuoritusPropertyLabel row={props.rowNumber}>
-        {props.label}
+        {t(props.label)}
       </OsasuoritusPropertyLabel>
       <OsasuoritusPropertyValue row={props.rowNumber}>
         {props.children}
