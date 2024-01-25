@@ -76,7 +76,7 @@ export const Select = <T,>(props: SelectProps<T>) => {
           value={select.filter === null ? select.displayValue : select.filter}
           type="search"
           autoComplete="off"
-          disabled={props.disabled || select.options.length === 0}
+          disabled={props.disabled || props.options.length === 0}
           {...select.inputEventListeners}
           data-testid={inputTestId}
           ref={input}
