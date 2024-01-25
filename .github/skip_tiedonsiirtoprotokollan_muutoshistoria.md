@@ -3,3 +3,4 @@ Tee tähän tiedostoon jokin muutos, kun tiedonsiirtoprotokollan_muutoshistoria.
 TOR-2061 - ei oikeaa muutosta
 TOR-1732
 TOR-2040 - validaation refaktorointi, ei toiminnallisia muutoksia
+TOR-XXX - korjattu väärin deserialisoituva deprekoituva kenttä

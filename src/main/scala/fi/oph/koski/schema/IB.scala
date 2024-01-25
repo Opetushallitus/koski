@@ -128,7 +128,7 @@ case class IBOppiaineenArviointi(
   @Description("Onko arvoitu arvosana vai ei, jos ei niin tarkoittaa IBOn vahvistamaa arvosanaa")
   @Deprecated("Käytä IB-oppiaineen suorituksen predictedArviointi-kenttää")
   @Hidden
-  predicted: Boolean = false,
+  predicted: Option[Boolean] = None,
   @KoodistoUri("arviointiasteikkoib")
   arvosana: Koodistokoodiviite,
   @Description("Effort-arvosana, kuvaa opiskelijan tunnollisuutta, aktiivisuutta ja yritteliäisyyttä. Arvosteluasteikko: A = very good, B = good, C = needs improvement")
@@ -143,7 +143,7 @@ case class IBOppiaineenArviointi(
 
 object IBOppiaineenArviointi {
   def apply(predicted: IBOppiaineenPredictedArviointi): IBOppiaineenArviointi = IBOppiaineenArviointi(
-    predicted = true,
+    predicted = Some(true),
     arvosana = predicted.arvosana,
     päivä = predicted.päivä,
   )
