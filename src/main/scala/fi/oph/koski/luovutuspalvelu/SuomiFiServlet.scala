@@ -8,7 +8,7 @@ import fi.oph.koski.servlet.NoCache
 
 import scala.xml.{Elem, Node, NodeSeq}
 
-class PalveluvaylaServlet(implicit val application: KoskiApplication) extends SoapServlet with RequiresSuomiFi with NoCache {
+class SuomiFiServlet(implicit val application: KoskiApplication) extends SoapServlet with RequiresSuomiFi with NoCache {
   private val suomiFiService = new SuomiFiService(application)
 
   post("/suomi-fi-rekisteritiedot") {
