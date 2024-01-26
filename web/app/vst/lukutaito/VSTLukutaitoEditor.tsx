@@ -16,7 +16,7 @@ import { VapaanSivistystyönOpiskeluoikeusjakso } from '../../types/fi/oph/koski
 import { deleteAt } from '../../util/array'
 import { VSTLisatiedot } from '../common/VSTLisatiedot'
 import { VSTLaajuudetYhteensä } from '../common/VSTLaajuudetYhteensa'
-import { kaikkiOsasuorituksetVahvistettu } from '../common/arviointi'
+import { arviointienPuolestaVahvistettavissa } from '../common/arviointi'
 import { isCompletedLukutaitokoulutuksenOsasuoritus } from '../common/osasuoritukset'
 import * as Suoritus from '../common/suoritusFields'
 import {
@@ -47,7 +47,7 @@ export const VSTLukutaitoEditor: React.FC<VSTLukutaitoEditorProps> = ({
         invalidatable={invalidatable}
         oppijaOid={oppijaOid}
         suorituksenNimi={() => finnish('Lukutaitokoulutus oppivelvollisille')}
-        suorituksetVahvistettu={kaikkiOsasuorituksetVahvistettu(form.state)}
+        suorituksetVahvistettu={arviointienPuolestaVahvistettavissa(form.state)}
         createOpiskeluoikeusjakso={createVstLukutaitoOpiskeluoikeusjakso}
         lisätiedotContainer={VSTLisatiedot}
         onChangeSuoritus={onChangeSuoritus}
@@ -61,7 +61,7 @@ export const VSTLukutaitoEditor: React.FC<VSTLukutaitoEditorProps> = ({
         </KansalainenOnly>
         <Spacer />
         <Suoritus.PäätasosuorituksenTiedot>
-          <Suoritus.Oppilaitos form={form} suoritus={päätasonSuoritus} />
+          <Suoritus.Toimipiste form={form} suoritus={päätasonSuoritus} />
           <Suoritus.Koulutus form={form} suoritus={päätasonSuoritus} />
           <Suoritus.Koulutusmoduuli form={form} suoritus={päätasonSuoritus} />
           <Suoritus.Peruste form={form} suoritus={päätasonSuoritus} />

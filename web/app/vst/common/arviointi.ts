@@ -41,7 +41,7 @@ export const createArviointi =
       päivä: todayISODate()
     })
 
-export const kaikkiOsasuorituksetVahvistettu = (
+export const arviointienPuolestaVahvistettavissa = (
   oo: VapaanSivistystyönOpiskeluoikeus
 ): boolean =>
   oo.suoritukset

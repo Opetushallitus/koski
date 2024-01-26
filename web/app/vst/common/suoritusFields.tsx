@@ -51,7 +51,7 @@ export type SuoritusFieldProps<T extends VapaanSivistystyönPäätasonSuoritus> 
   suoritus: ActivePäätasonSuoritus<VapaanSivistystyönOpiskeluoikeus, T>
 }
 
-export const Oppilaitos = <T extends VapaanSivistystyönPäätasonSuoritus>({
+export const Toimipiste = <T extends VapaanSivistystyönPäätasonSuoritus>({
   form,
   suoritus: päätasonSuoritus
 }: SuoritusFieldProps<T>) => (

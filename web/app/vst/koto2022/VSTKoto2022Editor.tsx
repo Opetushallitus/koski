@@ -41,7 +41,7 @@ import { VSTLisatiedot } from '../common/VSTLisatiedot'
 import { VSTLaajuudetYhteensä } from '../common/VSTLaajuudetYhteensa'
 import {
   createArviointi,
-  kaikkiOsasuorituksetVahvistettu
+  arviointienPuolestaVahvistettavissa
 } from '../common/arviointi'
 import { isCompletedKoto2022Osasuoritus } from '../common/osasuoritukset'
 import * as Suoritus from '../common/suoritusFields'
@@ -73,7 +73,7 @@ export const VSTKoto2022Editor: React.FC<VSTKoto2022EditorProps> = ({
         invalidatable={invalidatable}
         oppijaOid={oppijaOid}
         suorituksenNimi={() => finnish('Kotoutumiskoulutus oppivelvollisille')}
-        suorituksetVahvistettu={kaikkiOsasuorituksetVahvistettu(form.state)}
+        suorituksetVahvistettu={arviointienPuolestaVahvistettavissa(form.state)}
         createOpiskeluoikeusjakso={createKoto2022Opiskeluoikeusjakso}
         lisätiedotContainer={VSTLisatiedot}
         onChangeSuoritus={onChangeSuoritus}
@@ -87,7 +87,7 @@ export const VSTKoto2022Editor: React.FC<VSTKoto2022EditorProps> = ({
         </KansalainenOnly>
         <Spacer />
         <PäätasosuorituksenTiedot>
-          <Suoritus.Oppilaitos form={form} suoritus={päätasonSuoritus} />
+          <Suoritus.Toimipiste form={form} suoritus={päätasonSuoritus} />
           <Suoritus.Koulutus form={form} suoritus={päätasonSuoritus} />
           <Suoritus.Koulutusmoduuli form={form} suoritus={päätasonSuoritus} />
           <Suoritus.Peruste form={form} suoritus={päätasonSuoritus} />

@@ -15,7 +15,7 @@ import { VapaanSivistystyönVapaatavoitteisenKoulutuksenOpiskeluoikeusjakso } fr
 import { VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonVapaatavoitteisenKoulutuksenSuoritus'
 import { deleteAt } from '../../util/array'
 import { VSTLaajuudetYhteensä } from '../common/VSTLaajuudetYhteensa'
-import { kaikkiOsasuorituksetVahvistettu } from '../common/arviointi'
+import { arviointienPuolestaVahvistettavissa } from '../common/arviointi'
 import { isCompletedVapaatavoitteinenOsasuoritus } from '../common/osasuoritukset'
 import * as Suoritus from '../common/suoritusFields'
 import { PäätasosuorituksenTiedot } from '../common/suoritusFields'
@@ -49,7 +49,7 @@ export const VSTVapaatavoitteinenEditor: React.FC<
         invalidatable={invalidatable}
         oppijaOid={oppijaOid}
         suorituksenNimi={() => finnish('Vapaan sivistystyön koulutus')}
-        suorituksetVahvistettu={kaikkiOsasuorituksetVahvistettu(form.state)}
+        suorituksetVahvistettu={arviointienPuolestaVahvistettavissa(form.state)}
         createOpiskeluoikeusjakso={
           createVstVapaatavoitteinenOpiskeluoikeusjakso
         }
@@ -64,7 +64,7 @@ export const VSTVapaatavoitteinenEditor: React.FC<
         </KansalainenOnly>
         <Spacer />
         <PäätasosuorituksenTiedot>
-          <Suoritus.Oppilaitos form={form} suoritus={päätasonSuoritus} />
+          <Suoritus.Toimipiste form={form} suoritus={päätasonSuoritus} />
           <Suoritus.Koulutus form={form} suoritus={päätasonSuoritus} />
           <Suoritus.Koulutusmoduuli form={form} suoritus={päätasonSuoritus} />
           <Suoritus.Opintokokonaisuus form={form} suoritus={päätasonSuoritus} />
