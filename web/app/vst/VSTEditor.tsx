@@ -25,7 +25,7 @@ import { VSTKoto2012Editor } from './koto2012/VSTKoto2012Editor'
 import { VSTKoto2022Editor } from './koto2022/VSTKoto2022Editor'
 import { VSTLukutaitoEditor } from './lukutaito/VSTLukutaitoEditor'
 import { VSTVapaatavoitteinenEditor } from './vapaatavoitteinen/VSTVapaatavoitteinenEditor'
-import { isVSTOsasuoritusArvioinnilla } from './common/arviointi'
+import { isVSTSuoritusArvioinnilla } from './common/arviointi'
 import { isVapaanSivistystyönKoulutuksenPäätasonSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonKoulutuksenPaatasonSuoritus'
 import { isVapaanSivistystyönOsaamismerkinSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonOsaamismerkinSuoritus'
 import { VSTOsaamismerkkiEditor } from './osaamismerkki/VSTOsaamismerkkiEditor'
@@ -61,7 +61,7 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
       }
       const kaikkiArvioinnit = päätasonSuoritus.suoritus.osasuoritukset.flatMap(
         (osasuoritus) => {
-          if (isVSTOsasuoritusArvioinnilla(osasuoritus)) {
+          if (isVSTSuoritusArvioinnilla(osasuoritus)) {
             if ('arviointi' in osasuoritus) {
               return parasArviointi<Arviointi>(osasuoritus.arviointi || [])
             } else {

@@ -11,10 +11,7 @@ import {
 } from '../../components-v2/opiskeluoikeus/ArvosanaField'
 import { OsasuoritusSubproperty } from '../../components-v2/opiskeluoikeus/OsasuoritusProperty'
 import { ArvosanaOf } from '../../util/schema'
-import {
-  isVSTArviointiPäivällä,
-  isVSTOsasuoritusArvioinnilla
-} from './arviointi'
+import { isVSTArviointiPäivällä, isVSTSuoritusArvioinnilla } from './arviointi'
 import { VSTArviointi, VSTSuoritusArvioinnilla } from './types'
 
 export type VSTArviointiViewProps = CommonProps<
@@ -50,7 +47,7 @@ export type VSTArviointiEditProps<T extends VSTArviointi> = CommonProps<
 export const VSTArviointiEdit = <T extends VSTArviointi>(
   props: VSTArviointiEditProps<T>
 ) => {
-  if (!isVSTOsasuoritusArvioinnilla(props.osasuoritus)) {
+  if (!isVSTSuoritusArvioinnilla(props.osasuoritus)) {
     return <div>{'Ei arviointia'}</div>
   }
 

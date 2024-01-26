@@ -50,7 +50,7 @@ export const arviointienPuolestaVahvistettavissa = (
     .filter(isVSTOsasuoritusArvioinnilla)
     .filter((os) => os.arviointi === undefined).length === 0
 
-export function isVSTOsasuoritusArvioinnilla(
+export function isVSTSuoritusArvioinnilla(
   s: VSTSuoritus
 ): s is VSTSuoritusArvioinnilla {
   switch (s.$class) {
