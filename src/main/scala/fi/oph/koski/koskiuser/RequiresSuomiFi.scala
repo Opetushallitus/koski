@@ -11,7 +11,7 @@ trait RequiresSuomiFi extends KoskiSpecificAuthenticationSupport {
         haltWithStatus(status)
       case _ =>
         if (!koskiSessionOption.exists(_.hasSuomiFiAccess)) {
-          haltWithStatus(KoskiErrorCategory.forbidden.vainPalveluvayla())
+          haltWithStatus(KoskiErrorCategory.forbidden.vainDVV())
         }
     }
   }

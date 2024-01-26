@@ -104,7 +104,7 @@ class MyDataAPIProxyServletTest extends AnyFreeSpec with KoskiHttpSpec with Matc
       muutLuovutuspalveluKäyttäjät.map(user => {
         requestOpintoOikeudetWithoutAuthHeaders(opiskelija.hetu.get, memberHeaders(memberCode) ++ authHeaders(user)) {
           status should equal(403)
-          body should include("Sallittu vain palveluväyläkäyttäjälle")
+          body should include("Sallittu vain HSL:lle")
         }
       })
     }

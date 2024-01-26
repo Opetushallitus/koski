@@ -19,10 +19,10 @@ class PalveluvaylaSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
 
     "vaatii suomi.fi käyttäjän" in {
       MockUsers.users
-        .diff(List(MockUsers.suomiFiKäyttäjä, MockUsers.hslKäyttäjä))
+        .diff(List(MockUsers.suomiFiKäyttäjä))
         .foreach { user =>
           postSuomiFiRekisteritiedot(user, KoskiSpecificMockOppijat.ylioppilas.hetu.get) {
-            verifySOAPError("forbidden.vainPalveluvayla", "Sallittu vain palveluväyläkäyttäjälle")
+            verifySOAPError("forbidden.vainDVV", "Sallittu vain DVV:lle")
           }
         }
       postSuomiFiRekisteritiedot(MockUsers.suomiFiKäyttäjä, KoskiSpecificMockOppijat.ylioppilas.hetu.get) {

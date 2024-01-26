@@ -11,7 +11,7 @@ trait RequiresHSL extends KoskiSpecificAuthenticationSupport {
         haltWithStatus(status)
       case _ =>
         if (!koskiSessionOption.exists(_.hasHSLAccess)) {
-          haltWithStatus(KoskiErrorCategory.forbidden.vainPalveluvayla())
+          haltWithStatus(KoskiErrorCategory.forbidden.vainHSL())
         }
     }
   }
