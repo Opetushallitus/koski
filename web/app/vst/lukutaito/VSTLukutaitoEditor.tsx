@@ -36,7 +36,7 @@ export const VSTLukutaitoEditor: React.FC<VSTLukutaitoEditorProps> = ({
   invalidatable,
   onChangeSuoritus,
   organisaatio,
-  suoritusVahvistettu
+  suorituksenVahvistaminenEiMahdollista
 }) => {
   const { TreeNode, ...tree } = useTree()
 
@@ -77,7 +77,7 @@ export const VSTLukutaitoEditor: React.FC<VSTLukutaitoEditorProps> = ({
           form={form}
           suoritusPath={päätasonSuoritus.path}
           organisaatio={organisaatio}
-          disableAdd={suoritusVahvistettu}
+          disableAdd={suorituksenVahvistaminenEiMahdollista}
         />
         <Spacer />
 

@@ -38,7 +38,7 @@ export const VSTVapaatavoitteinenEditor: React.FC<
   invalidatable,
   onChangeSuoritus,
   organisaatio,
-  suoritusVahvistettu
+  suorituksenVahvistaminenEiMahdollista
 }) => {
   const { TreeNode, ...tree } = useTree()
 
@@ -80,7 +80,7 @@ export const VSTVapaatavoitteinenEditor: React.FC<
           form={form}
           suoritusPath={päätasonSuoritus.path}
           organisaatio={organisaatio}
-          disableAdd={suoritusVahvistettu}
+          disableAdd={suorituksenVahvistaminenEiMahdollista}
           disableRemoval={false}
         />
         <Spacer />

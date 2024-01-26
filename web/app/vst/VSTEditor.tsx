@@ -52,7 +52,7 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
   // Päätason suoritus
   const [päätasonSuoritus, setPäätasonSuoritus] = usePäätasonSuoritus(form)
 
-  const suoritusVahvistettu = useMemo(() => {
+  const suorituksenVahvistaminenEiMahdollista = useMemo(() => {
     if (
       isVapaanSivistystyönKoulutuksenPäätasonSuoritus(päätasonSuoritus.suoritus)
     ) {
@@ -90,7 +90,7 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
     form,
     oppijaOid: props.oppijaOid,
     organisaatio,
-    suoritusVahvistettu,
+    suorituksenVahvistaminenEiMahdollista,
     invalidatable: props.invalidatable,
     onChangeSuoritus: setPäätasonSuoritus
   }
