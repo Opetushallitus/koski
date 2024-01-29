@@ -37,22 +37,39 @@ class KoskiGlobaaliValidator(
     if (opiskeluoikeus.mitätöity || !validationConfig.validoiOpiskeluoikeudet) {
       HttpStatus.ok
     } else {
-      timed("validateOpiskeluoikeus")(
+      val timedBlockname = s"validateOpiskeluoikeus tyyppi=${opiskeluoikeus.tyyppi.koodiarvo}"
+
+      timed(timedBlockname)(
         HttpStatus.fold(Seq(
-          MaksuttomuusValidation.checkOpiskeluoikeudenMaksuttomuus(
-            opiskeluoikeus,
-            oppijanHenkilötiedot,
-            oppijanOid,
-            opiskeluoikeusRepository,
-            rajapäivät,
-          ),
-          Lukio2015Validation.validateAlkamispäivä(
-            opiskeluoikeus,
-            oppijanSyntymäpäivä,
-            oppijanOid,
-            opiskeluoikeusRepository,
-            rajapäivät
-          )
+          timed(s"${timedBlockname} MaksuttomuusValidation.checkOpiskeluoikeudenMaksuttomuus") {
+            MaksuttomuusValidation.checkOpiskeluoikeudenMaksuttomuus(
+              opiskeluoikeus,
+              oppijanHenkilötiedot,
+              oppijanOid,
+              opiskeluoikeusRepository,
+              rajapäivät,
+            )
+          },
+          timed(s"${timedBlockname} Lukio2015Validation.validateAlkamispäivä") {
+            Lukio2015Validation.validateAlkamispäivä(
+              opiskeluoikeus,
+              oppijanSyntymäpäivä,
+              oppijanOid,
+              opiskeluoikeusRepository,
+              rajapäivät
+            )
+          },
+          timed(s"${timedBlockname} PerusopetuksenOpiskeluoikeusValidation.validateDuplikaatit") {
+            PerusopetuksenOpiskeluoikeusValidation.validateDuplikaatit(
+              opiskeluoikeus,
+              oppijanHenkilötiedot,
+              opiskeluoikeusRepository
+            )
+          }
+          // TODO: Siirrä EB-ESH olemassaolovalidaatio tänne
+          // TODO: Siirrä osaamismerkkien duplikaattivalidaatio tänne
+          // TODO: Siirrä "vastaavanRinnakkaisenOpiskeluoikeudenLisääminenSallittu"-metodista duplikaattivalidaatiot tänne, jotta toimivat myös lähdejärjestelmän id:llä
+          // TODO: Jos validaatiot osoittautuvat hitaiksi, koodaa ne SQL:llä (ainakin voimassaoloaikojen päällekkäisyyttä tutkivat validaatiot voinee tehdä SQL:llä kokonaan pienehköllä vaivalla)
         ))
       )
     }

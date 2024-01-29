@@ -124,8 +124,8 @@ class PostgresKoskiOpiskeluoikeusRepositoryActions(
     lazy val aiempiOpiskeluoikeusPäättynyt = aiemmatSamaksiJonkinIdnPerusteellaTunnistetutOpiskeluoikeudet.exists(_.toOpiskeluoikeusUnsafe.tila.opiskeluoikeusjaksot.last.opiskeluoikeusPäättynyt)
 
     opiskeluoikeus match {
-      case oo: PerusopetuksenOpiskeluoikeus =>
-        !päällekkäinenOpiskeluoikeusExists(oo, aiemmatSamaksiJonkinIdnPerusteellaTunnistetutOpiskeluoikeudet)
+      case _: PerusopetuksenOpiskeluoikeus =>
+        true // Tarkistus tehdään jo validaatioiden yhteydessä
       case _: MuunKuinSäännellynKoulutuksenOpiskeluoikeus =>
         true
       case _: TaiteenPerusopetuksenOpiskeluoikeus =>

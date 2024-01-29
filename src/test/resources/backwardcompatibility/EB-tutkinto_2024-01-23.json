@@ -410,5 +410,6 @@
     },
     "alkamispäivä" : "2023-06-14",
     "päättymispäivä" : "2023-06-15"
-  } ]
+  } ],
+  "ignoreKoskiValidator" : true
 }
