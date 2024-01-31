@@ -302,6 +302,11 @@ describe('Oppijataulukko', function () {
           'Markkanen-Fagerström, Eéro Jorma-Petteri',
           'Mastinen, Maarni',
           'Mervi, Monioppiaineinen',
+          'Monia, Useita',
+          'Monia, Useita',
+          'Monia, Useita',
+          'Monia, Useita',
+          'Monia, Useita',
           'Monikoululainen, Miia',
           'Monikoululainen, Miia',
           'Muu-Ammatillinen, Marjo',
@@ -332,14 +337,9 @@ describe('Oppijataulukko', function () {
           'Toiminta, Tommi',
           'Tuleva-ammattilainen, Tuure',
           'Tunnustettu, Teuvo',
-          'Tupla, Toivo',
-          'Turvakielto, Tero',
-          'v, virheellisestiSiirretty',
-          'v, virheellisestiSiirretty',
-          'v, virheellisestiSiirrettyVieraskielinen',
-          'v, virheellisestiSiirrettyVieraskielinen'
+          'Tupla, Toivo'
         ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('112')
+        expect(page.opiskeluoikeudeTotal()).to.equal('117')
       })
     })
 
@@ -364,10 +364,11 @@ describe('Oppijataulukko', function () {
           'Koululainen, Kaisa',
           'Lisä-Eskari, Essiina',
           'Mastinen, Maarni',
+          'Monia, Useita',
           'Monikoululainen, Miia',
           'Rikkinäinen, Kela'
         ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('12')
+        expect(page.opiskeluoikeudeTotal()).to.equal('13')
       })
     })
   })
@@ -394,6 +395,9 @@ describe('Oppijataulukko', function () {
           'Koululainen, Kaisa',
           'Lukiolainen, Liisa',
           'Luokallejäänyt, Lasse',
+          'Monia, Useita',
+          'Monia, Useita',
+          'Monia, Useita',
           'Monikoululainen, Miia',
           'Monikoululainen, Miia',
           'o, organisaatioHistoriallinen',
@@ -439,6 +443,9 @@ describe('Oppijataulukko', function () {
               'o, organisaatioHistoriallinen',
               'Monikoululainen, Miia',
               'Monikoululainen, Miia',
+              'Monia, Useita',
+              'Monia, Useita',
+              'Monia, Useita',
               'Luokallejäänyt, Lasse',
               'Lukiolainen, Liisa',
               'Koululainen, Kaisa',
@@ -538,6 +545,8 @@ describe('Oppijataulukko', function () {
               '9C',
               '9C',
               '9C',
+              '9C',
+              '9C',
               '9D'
             ])
           })
@@ -552,6 +561,8 @@ describe('Oppijataulukko', function () {
               })
             ).to.deep.equal([
               '9D',
+              '9C',
+              '9C',
               '9C',
               '9C',
               '9C',
@@ -642,9 +653,10 @@ describe('Oppijataulukko', function () {
         'Eskari, Essi',
         'Eskari, Essi',
         'Kelalle, Useita',
-        'Lisä-Eskari, Essiina'
+        'Lisä-Eskari, Essiina',
+        'Monia, Useita'
       ])
-      expect(page.opiskeluoikeudeTotal()).to.equal('4')
+      expect(page.opiskeluoikeudeTotal()).to.equal('5')
     })
   })
 

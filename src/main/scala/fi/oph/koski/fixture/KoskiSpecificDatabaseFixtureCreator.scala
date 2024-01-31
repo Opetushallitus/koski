@@ -1,10 +1,11 @@
 package fi.oph.koski.fixture
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.documentation.AmmatillinenExampleData.{ammatillinenTutkintoSuoritus, ammatillisetTutkinnonOsat, k3, puuteollisuudenPerustutkinnonSuoritus, puuteollisuudenPerustutkinto, stadinAmmattiopisto, stadinToimipiste, tietoJaViestintäTekniikanPerustutkinnonSuoritus, pakollinenTutkinnonOsanSuoritus}
+import fi.oph.koski.documentation.AmmatillinenExampleData.{ammatillinenTutkintoSuoritus, ammatillisetTutkinnonOsat, k3, pakollinenTutkinnonOsanSuoritus, puuteollisuudenPerustutkinnonSuoritus, puuteollisuudenPerustutkinto, stadinAmmattiopisto, stadinToimipiste, tietoJaViestintäTekniikanPerustutkinnonSuoritus}
 import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusMitätöity, suomenKieli}
 import fi.oph.koski.documentation.ExamplesEsiopetus.{ostopalveluOpiskeluoikeus, peruskoulusuoritus, päiväkotisuoritus}
 import fi.oph.koski.documentation.ExamplesPerusopetus.ysinOpiskeluoikeusKesken
+import fi.oph.koski.documentation.VapaaSivistystyöExampleData.varsinaisSuomenKansanopisto
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.{helsinki, oppilaitos}
 import fi.oph.koski.documentation.{ExamplesEsiopetus, _}
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, OppijaHenkilö}
@@ -306,6 +307,15 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
       (KoskiSpecificMockOppijat.lukioVajaaSuoritus, ExamplesLukio2019.aktiivinenVähänOpiskeltuOppiaineenOppimääräOpiskeluoikeus),
       (KoskiSpecificMockOppijat.pelkkäESH, ExamplesEuropeanSchoolOfHelsinki.opiskeluoikeus),
       (KoskiSpecificMockOppijat.tiedonsiirto, ExamplesVapaaSivistystyöJotpa.Opiskeluoikeus.keskeneräinenLähdejärjestelmästä),
+      (KoskiSpecificMockOppijat.moniaEriOpiskeluoikeuksia, ExamplesEsiopetus.esioppilas.tallennettavatOpiskeluoikeudet.head),
+      (KoskiSpecificMockOppijat.moniaEriOpiskeluoikeuksia, PerusopetusExampleData.päättötodistusOpiskeluoikeus()),
+      (KoskiSpecificMockOppijat.moniaEriOpiskeluoikeuksia, ExamplesPerusopetus.aineopiskelija.tallennettavatOpiskeluoikeudet.head),
+      (KoskiSpecificMockOppijat.moniaEriOpiskeluoikeuksia, VapaaSivistystyöExample.opiskeluoikeusOsaamismerkki()),
+      (KoskiSpecificMockOppijat.moniaEriOpiskeluoikeuksia, VapaaSivistystyöExample.opiskeluoikeusOsaamismerkki(koodiarvo = "1002")),
+      (KoskiSpecificMockOppijat.moniaEriOpiskeluoikeuksia, VapaaSivistystyöExample.opiskeluoikeusLukutaito),
+      (KoskiSpecificMockOppijat.moniaEriOpiskeluoikeuksia, PerusopetusExampleData.päättötodistusOpiskeluoikeus(oppilaitos = VapaaSivistystyöExampleData.varsinaisSuomenKansanopisto, toimipiste = VapaaSivistystyöExampleData.varsinaisSuomenKansanopisto)),
+      (KoskiSpecificMockOppijat.moniaEriOpiskeluoikeuksia, ExamplesTaiteenPerusopetus.Opiskeluoikeus.aloitettuYleinenOppimäärä),
+      (KoskiSpecificMockOppijat.moniaEriOpiskeluoikeuksia, AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.varsinaisSuomenKansanopisto)),
     )
   }
 
