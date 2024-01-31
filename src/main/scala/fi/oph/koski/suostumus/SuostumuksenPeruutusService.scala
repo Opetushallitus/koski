@@ -211,6 +211,12 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
     oo: Opiskeluoikeus,
     suorituksenTyyppi: String
   ): Boolean = {
+    // HUOM! On tunnettu rajoite, että tässä ei oteta huomioon tapauksia, joissa aiemmin tehty suoritusjako on edelleen voimassa,
+    // vaikka opiskeluoikeus onkin esim. mitätöity ja luotu uudestaan. Tällaisessa tapauksessa suostumuksen pystyy
+    // perumaan uudelleenluodulta opiskeluoikeudelta. Tämä on oppijan etu. Laki on myös kirjoitettu siten, että oppijan
+    // aktiivinen toiminta johtaa suostumuksen peruutuksen estymiseen, ja mitätöinti+uudelleenluonti ei ole oppijan toimintaa ja
+    // saattaisi ainakin teoriassa johtaa tilanteeseen, jossa oppija ei pysty perumaan suostumusta opiskeluoikeudelta, vaikka
+    // hänen pitäisikin pystyä se lain mukaan tekemään.
     val lähdejärjestelmäMatch = suoritusId.lähdejärjestelmänId == oo.lähdejärjestelmänId.flatMap(_.id)
     val opiskeluOidMatch = suoritusId.opiskeluoikeusOid.isEmpty || suoritusId.opiskeluoikeusOid == oo.oid
     val oppilaitosMatch = suoritusId.oppilaitosOid == oo.oppilaitos.map(_.oid)
