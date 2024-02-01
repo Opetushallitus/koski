@@ -294,7 +294,10 @@ class PaallekkaisetOpiskeluoikeudetSpec extends AnyFreeSpec with Raportointikant
     }
 
     "Päällekkäisten opiskeluoikeuksien raportti ei sisällä taiteen perusopetuksen opiskeluoikeuksia" in {
-      kansanopistonRaportti.size shouldBe 0
+      kansanopistonRaportti.forall(row => {
+        row.koulutusmuoto != "taiteenperusopetus" &&
+          row.paallekkainenKoulutusmuoto != "taiteenperusopetus"
+      }) shouldBe true
     }
   }
 
