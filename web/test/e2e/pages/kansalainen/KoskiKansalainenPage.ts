@@ -104,9 +104,17 @@ export class KoskiKansalainenPage {
     return new SuoritusotePage(await suoritusotePagePromise)
   }
 
-  async expectSuostumusPeruttavissa(attached: boolean) {
+  async expectSuostumusPeruttavissa() {
     await expect(this.peruSuostumusLinkki).toBeAttached({
-      attached,
+      timeout: 15000
+    })
+  }
+
+  async expectSuostumusEiPeruttavissa() {
+    // Odota, että sivu on (todennäköisesti) latautunut, ennenkuin tarkistetaan, että elementtiä _ei_ näy
+    await this.page.waitForTimeout(3000)
+
+    await expect(this.peruSuostumusLinkki).toBeHidden({
       timeout: 15000
     })
   }

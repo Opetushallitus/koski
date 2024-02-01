@@ -1,10 +1,8 @@
 import React from 'react'
 import { OpenAllButton, useTree } from '../../appstate/tree'
-import { KansalainenOnly } from '../../components-v2/access/KansalainenOnly'
 import { EditorContainer } from '../../components-v2/containers/EditorContainer'
 import { FormOptic } from '../../components-v2/forms/FormModel'
 import { Spacer } from '../../components-v2/layout/Spacer'
-import { PäätasonSuorituksenSuostumuksenPeruminen } from '../../components-v2/opiskeluoikeus/OpiskeluoikeudenSuostumuksenPeruminen'
 import { OsasuoritusTable } from '../../components-v2/opiskeluoikeus/OsasuoritusTable'
 import { SuorituksenVahvistusField } from '../../components-v2/opiskeluoikeus/SuorituksenVahvistus'
 import { UusiOpiskeluoikeusjakso } from '../../components-v2/opiskeluoikeus/UusiOpiskeluoikeudenTilaModal'
@@ -54,13 +52,6 @@ export const VSTJotpaEditor: React.FC<VSTJotpaEditorProps> = ({
         onChangeSuoritus={onChangeSuoritus}
         opiskeluoikeusJaksoClassName="fi.oph.koski.schema.VapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso"
       >
-        <KansalainenOnly>
-          <PäätasonSuorituksenSuostumuksenPeruminen
-            opiskeluoikeus={form.state}
-            suoritus={päätasonSuoritus.suoritus}
-          />
-        </KansalainenOnly>
-        <Spacer />
         <PäätasosuorituksenTiedot>
           <Suoritus.Toimipiste form={form} suoritus={päätasonSuoritus} />
           <Suoritus.Koulutus form={form} suoritus={päätasonSuoritus} />

@@ -2084,8 +2084,8 @@ test.describe('Vapaa sivistystyö', () => {
     test.describe('Suostumuksen peruutus', () => {
       test.describe('Vapaatavoitteinen VST', () => {
         test.use({ storageState: kansalainen('010917-156A') })
-        test('Suostumuksen voi perua', async ({ kansalainenPage }) => {
-          await kansalainenPage.expectSuostumusPeruttavissa(true)
+        test('Suostumuksen voi perua', async ({ kansalainenPage, page }) => {
+          await kansalainenPage.expectSuostumusPeruttavissa()
           await kansalainenPage.peruSuostumus()
         })
 
@@ -2104,7 +2104,7 @@ test.describe('Vapaa sivistystyö', () => {
           await kansalainenPage.jaaValitsemasiOpinnotButton().click()
 
           await page.reload() // TODO: Käli olisi hyvä fiksata niin, ettei tätä tarvita
-          await kansalainenPage.expectSuostumusPeruttavissa(false)
+          await kansalainenPage.expectSuostumusEiPeruttavissa()
         })
       })
 
@@ -2113,7 +2113,7 @@ test.describe('Vapaa sivistystyö', () => {
         test('Suostumusta ei voi perua, koska se ei ole peruttavaa tyyppiä', async ({
           kansalainenPage
         }) => {
-          await kansalainenPage.expectSuostumusPeruttavissa(false)
+          await kansalainenPage.expectSuostumusEiPeruttavissa()
         })
       })
     })

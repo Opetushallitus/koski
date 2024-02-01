@@ -1,6 +1,5 @@
 import React from 'react'
 import { OpenAllButton, useTree } from '../../appstate/tree'
-import { KansalainenOnly } from '../../components-v2/access/KansalainenOnly'
 import { EditorContainer } from '../../components-v2/containers/EditorContainer'
 import { LocalizedTextView } from '../../components-v2/controls/LocalizedTestField'
 import { FormField } from '../../components-v2/forms/FormField'
@@ -18,7 +17,6 @@ import {
   LaajuusOpintopisteissäEdit,
   LaajuusView
 } from '../../components-v2/opiskeluoikeus/LaajuusField'
-import { PäätasonSuorituksenSuostumuksenPeruminen } from '../../components-v2/opiskeluoikeus/OpiskeluoikeudenSuostumuksenPeruminen'
 import {
   OsasuoritusRowData,
   OsasuoritusTable
@@ -79,13 +77,6 @@ export const VSTKoto2012Editor: React.FC<VSTKoto2012EditorProps> = ({
         onChangeSuoritus={onChangeSuoritus}
         opiskeluoikeusJaksoClassName="fi.oph.koski.schema.OppivelvollisilleSuunnattuVapaanSivistystyönOpiskeluoikeusjakso"
       >
-        <KansalainenOnly>
-          <PäätasonSuorituksenSuostumuksenPeruminen
-            opiskeluoikeus={form.state}
-            suoritus={päätasonSuoritus.suoritus}
-          />
-        </KansalainenOnly>
-        <Spacer />
         <PäätasosuorituksenTiedot>
           <Suoritus.Toimipiste form={form} suoritus={päätasonSuoritus} />
           <Suoritus.Koulutus form={form} suoritus={päätasonSuoritus} />
