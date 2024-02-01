@@ -229,10 +229,20 @@ case class KelaAikajakso (
   override def toString: String = s"$alku – ${loppu.getOrElse("")}"
 }
 
-case class KelaMahdollisestiAlkupäivätönAikajakso (
+case class KelaErityisenTuenPäätösPerusopetus(
+  alku: Option[LocalDate],
+  loppu: Option[LocalDate],
+  opiskeleeToimintaAlueittain: Boolean = false
+) extends KelaMahdollisestiAlkupäivällinenJakso
+
+case class KelaErityisenTuenPäätösTuva (
   alku: Option[LocalDate],
   loppu: Option[LocalDate]
-) {
+) extends KelaMahdollisestiAlkupäivällinenJakso
+
+trait KelaMahdollisestiAlkupäivällinenJakso {
+  def alku: Option[LocalDate]
+  def loppu: Option[LocalDate]
   override def toString: String = s"${alku.getOrElse("")} – ${loppu.getOrElse("")}"
 }
 

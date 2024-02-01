@@ -133,6 +133,7 @@ class KelaSpec
         }
 
         perusopetus.get.lisätiedot.get.erityisenTuenPäätökset.get should have length (1)
+        perusopetus.get.lisätiedot.get.erityisenTuenPäätökset.get.head.opiskeleeToimintaAlueittain should be (true)
       }
     }
 
