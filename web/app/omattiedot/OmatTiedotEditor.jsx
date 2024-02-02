@@ -14,52 +14,102 @@ import ChevronUpIcon from '../icons/ChevronUpIcon'
 import ChevronDownIcon from '../icons/ChevronDownIcon'
 import { OmatTiedotOpiskeluoikeus } from './OmatTiedotOpiskeluoikeus'
 import { useKansalainenUiAdapter } from '../components-v2/interoperability/useUiAdapter'
+import { t } from '../i18n/i18n'
 
 export const OmatTiedotEditor = ({ model }) => {
   const oppijaOid = modelData(model, 'henkilö.oid')
   const oppilaitokset = modelItems(model, 'opiskeluoikeudet')
   const uiAdapter = useKansalainenUiAdapter(model)
 
+  const osaamismerkit = oppilaitokset.flatMap((oppilaitos) =>
+    modelItems(oppilaitos, 'opiskeluoikeudet').filter(
+      onOsaamismerkinOpiskeluoikeus
+    )
+  )
+
   return (
     <div className="oppilaitos-list">
-      {!uiAdapter.isLoadingV2 &&
-        oppilaitokset.map((oppilaitos, oppilaitosIndex) => (
-          <Oppilaitokset
-            key={oppilaitosIndex}
-            oppilaitos={oppilaitos}
-            oppijaOid={oppijaOid}
-            uiAdapter={uiAdapter}
-          />
-        ))}
+      {!uiAdapter.isLoadingV2 && (
+        <>
+          {oppilaitokset.map((oppilaitos, oppilaitosIndex) => (
+            <Oppilaitokset
+              key={oppilaitosIndex}
+              oppilaitos={oppilaitos}
+              oppijaOid={oppijaOid}
+              uiAdapter={uiAdapter}
+            />
+          ))}
+          {osaamismerkit.length > 0 ? (
+            <div className="oppilaitos-container">
+              <h2 className="oppilaitos-title">{t('Osaamismerkit')}</h2>
+              <ul className="opiskeluoikeudet-list">
+                {osaamismerkit.map((opiskeluoikeus, opiskeluoikeusIndex) => (
+                  <li key={opiskeluoikeusIndex}>
+                    <div className="opiskeluoikeus-container">
+                      <Osaamismerkki
+                        key={opiskeluoikeusIndex}
+                        opiskeluoikeus={opiskeluoikeus}
+                        opiskeluoikeusIndex={opiskeluoikeusIndex}
+                        oppijaOid={oppijaOid}
+                        uiAdapter={uiAdapter}
+                      />
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
+        </>
+      )}
     </div>
   )
 }
 
+const onOsaamismerkinOpiskeluoikeus = (opiskeluoikeus) => {
+  const suoritukset = modelItems(opiskeluoikeus, 'suoritukset')
+  const suoritus = suoritukset[0]
+  const suoritustyyppi = suoritus && modelData(suoritus, 'tyyppi.koodiarvo')
+
+  return suoritustyyppi === 'vstosaamismerkki'
+}
+
 const Oppilaitokset = ({ oppilaitos, oppijaOid, uiAdapter }) => {
   return (
-    <div className="oppilaitos-container">
-      <h2 className="oppilaitos-title">
-        {modelTitle(oppilaitos, 'oppilaitos')}
-      </h2>
-      <ul className="opiskeluoikeudet-list">
-        {modelItems(oppilaitos, 'opiskeluoikeudet').map(
-          (opiskeluoikeus, opiskeluoikeusIndex) => {
-            const Editor = uiAdapter.getOpiskeluoikeusEditor(opiskeluoikeus)
-            return Editor ? (
-              <Editor key={opiskeluoikeusIndex} />
-            ) : (
-              <li key={opiskeluoikeusIndex}>
-                <Opiskeluoikeus
-                  opiskeluoikeus={opiskeluoikeus}
-                  oppijaOid={oppijaOid}
-                />
-              </li>
-            )
-          }
-        )}
-      </ul>
-    </div>
+    <>
+      <div className="oppilaitos-container">
+        <h2 className="oppilaitos-title">
+          {modelTitle(oppilaitos, 'oppilaitos')}
+        </h2>
+        <ul className="opiskeluoikeudet-list">
+          {modelItems(oppilaitos, 'opiskeluoikeudet')
+            .filter((oo) => !onOsaamismerkinOpiskeluoikeus(oo))
+            .map((opiskeluoikeus, opiskeluoikeusIndex) => {
+              const Editor = uiAdapter.getOpiskeluoikeusEditor(opiskeluoikeus)
+              return Editor ? (
+                <li key={opiskeluoikeusIndex}>
+                  <div className="opiskeluoikeus-container">
+                    <Editor key={opiskeluoikeusIndex} />
+                  </div>
+                </li>
+              ) : (
+                <li key={opiskeluoikeusIndex}>
+                  <Opiskeluoikeus
+                    opiskeluoikeus={opiskeluoikeus}
+                    oppijaOid={oppijaOid}
+                  />
+                </li>
+              )
+            })}
+        </ul>
+      </div>
+    </>
   )
+}
+
+const Osaamismerkki = ({ opiskeluoikeus, opiskeluoikeusIndex, uiAdapter }) => {
+  const Editor = uiAdapter.getOpiskeluoikeusEditor(opiskeluoikeus)
+
+  return Editor ? <Editor key={opiskeluoikeusIndex} /> : null
 }
 
 class Opiskeluoikeus extends React.Component {
