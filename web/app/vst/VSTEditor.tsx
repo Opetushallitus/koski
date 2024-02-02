@@ -3,10 +3,11 @@ import { useSchema } from '../appstate/constraints'
 import { OpiskeluoikeusContext } from '../appstate/opiskeluoikeus'
 import { TestIdRoot } from '../appstate/useTestId'
 import {
+  ActivePäätasonSuoritus,
   hasPäätasonsuoritusOf,
   usePäätasonSuoritus
 } from '../components-v2/containers/EditorContainer'
-import { useForm } from '../components-v2/forms/FormModel'
+import { FormModel, useForm } from '../components-v2/forms/FormModel'
 import { AdaptedOpiskeluoikeusEditorProps } from '../components-v2/interoperability/useUiAdapter'
 import { OpiskeluoikeusTitle } from '../components-v2/opiskeluoikeus/OpiskeluoikeusTitle'
 import { t } from '../i18n/i18n'
@@ -29,6 +30,12 @@ import { isVSTSuoritusArvioinnilla } from './common/arviointi'
 import { isVapaanSivistystyönKoulutuksenPäätasonSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonKoulutuksenPaatasonSuoritus'
 import { isVapaanSivistystyönOsaamismerkinSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonOsaamismerkinSuoritus'
 import { VSTOsaamismerkkiEditor } from './osaamismerkki/VSTOsaamismerkkiEditor'
+import { OsaamismerkkiKuva } from './osaamismerkki/OsaamismerkkiKuva'
+import { useTree } from '../appstate/tree'
+import { useKansalainenTaiSuoritusjako } from '../appstate/user'
+import { Koulutustoimija } from '../types/fi/oph/koski/schema/Koulutustoimija'
+import { Oppilaitos } from '../types/fi/oph/koski/schema/Oppilaitos'
+import { VapaanSivistystyönPäätasonSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonPaatasonSuoritus'
 
 type VSTEditorProps =
   AdaptedOpiskeluoikeusEditorProps<VapaanSivistystyönOpiskeluoikeus>
@@ -76,7 +83,7 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
     } else if (
       isVapaanSivistystyönOsaamismerkinSuoritus(päätasonSuoritus.suoritus)
     ) {
-      return (
+      return !(
         parasArviointi<Arviointi>(päätasonSuoritus.suoritus.arviointi || []) !==
         undefined
       )
@@ -95,12 +102,66 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
     onChangeSuoritus: setPäätasonSuoritus
   }
 
+  const kuva = hasPäätasonsuoritusOf(
+    isVapaanSivistystyönOsaamismerkinSuoritus,
+    päätasonSuoritus
+  ) && <OsaamismerkkiKuva päätasonSuoritus={päätasonSuoritus} />
+
+  const { TreeNode, ...tree } = useTree()
+  const kansalainenTaiSuoritusjako = useKansalainenTaiSuoritusjako()
+
+  return (
+    <>
+      {kansalainenTaiSuoritusjako ? (
+        <TreeNode>
+          <OpiskeluoikeusTitle
+            opiskeluoikeus={form.state}
+            opiskeluoikeudenNimi={vstNimi(form.state)}
+            kuva={kuva}
+            tree={tree}
+          />
+          {tree.isOpen && (
+            <PäätasonSuoritusEditor
+              editorProps={editorProps}
+              päätasonSuoritus={päätasonSuoritus}
+            />
+          )}
+        </TreeNode>
+      ) : (
+        <>
+          <OpiskeluoikeusTitle
+            opiskeluoikeus={form.state}
+            opiskeluoikeudenNimi={vstNimi(form.state)}
+            kuva={kuva}
+          />
+          <PäätasonSuoritusEditor
+            editorProps={editorProps}
+            päätasonSuoritus={päätasonSuoritus}
+          />
+        </>
+      )}
+    </>
+  )
+}
+
+const PäätasonSuoritusEditor: React.FC<{
+  editorProps: {
+    form: FormModel<VapaanSivistystyönOpiskeluoikeus>
+    oppijaOid: string
+    organisaatio: Koulutustoimija | Oppilaitos | undefined
+    suorituksenVahvistaminenEiMahdollista: boolean
+    invalidatable: boolean
+    onChangeSuoritus: (suoritusIndex: number) => void
+  }
+  päätasonSuoritus: ActivePäätasonSuoritus<
+    VapaanSivistystyönOpiskeluoikeus,
+    VapaanSivistystyönPäätasonSuoritus
+  >
+}> = (props) => {
+  const { editorProps, päätasonSuoritus } = props
+
   return (
     <TestIdRoot id={päätasonSuoritus.testId}>
-      <OpiskeluoikeusTitle
-        opiskeluoikeus={form.state}
-        opiskeluoikeudenNimi={vstNimi(form.state)}
-      />
       {hasPäätasonsuoritusOf(
         isVapaanSivistystyönJotpaKoulutuksenSuoritus,
         päätasonSuoritus
@@ -156,12 +217,9 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
           päätasonSuoritus={päätasonSuoritus}
         />
       )}
-      {/*TODO: TOR-2049: Osaamismerkin suoritukselle editori*/}
     </TestIdRoot>
   )
 }
 
 export const vstNimi = (opiskeluoikeus: VapaanSivistystyönOpiskeluoikeus) =>
-  `${t(
-    opiskeluoikeus.suoritukset[0]?.koulutusmoduuli.tunniste.nimi
-  )}`.toLowerCase()
+  `${t(opiskeluoikeus.suoritukset[0]?.koulutusmoduuli.tunniste.nimi)}`

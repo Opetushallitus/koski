@@ -41,6 +41,8 @@ import {
   VSTPäätasonSuoritusPerusteella
 } from './types'
 import { VapaanSivistystyönKoulutuksenPäätasonSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonKoulutuksenPaatasonSuoritus'
+import { VapaanSivistystyönOsaamismerkinSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOsaamismerkinSuoritus'
+import { t } from '../../i18n/i18n'
 
 export const PäätasosuorituksenTiedot: React.FC<{
   children: React.ReactNode
@@ -86,6 +88,27 @@ export const Koulutusmoduuli = <T extends VapaanSivistystyönPäätasonSuoritus>
   <KeyValueRow label="Koulutusmoduuli">
     <TestIdText id="tunniste.koodiarvo">
       {päätasonSuoritus.suoritus.koulutusmoduuli.tunniste.koodiarvo}
+    </TestIdText>
+  </KeyValueRow>
+)
+
+export const Osaamismerkki = <
+  T extends VapaanSivistystyönOsaamismerkinSuoritus
+>({
+  suoritus: päätasonSuoritus
+}: SuoritusFieldProps<T>) => (
+  <KeyValueRow label="Osaamismerkki">
+    <TestIdText id="tunniste.koodiarvo-ja-nimi">
+      <a
+        href={`${window.ePerusteetBaseUrl}${t(
+          'eperusteet_osaamismerkki_url_fragment'
+        )}${päätasonSuoritus.suoritus.koulutusmoduuli.tunniste.koodiarvo}`}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {päätasonSuoritus.suoritus.koulutusmoduuli.tunniste.koodiarvo}{' '}
+        <Trans>{päätasonSuoritus.suoritus.koulutusmoduuli.tunniste.nimi}</Trans>
+      </a>
     </TestIdText>
   </KeyValueRow>
 )
