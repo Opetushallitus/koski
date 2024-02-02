@@ -4,7 +4,11 @@ import {
   isSuccess,
   useApiWithParams
 } from '../../api-fetch'
-import { formatYearRange, ISO2FinnishDateTime } from '../../date/date'
+import {
+  formatYearRange,
+  ISO2FinnishDateTime,
+  yearFromIsoDateString
+} from '../../date/date'
 import { t } from '../../i18n/i18n'
 import { Opiskeluoikeus } from '../../types/fi/oph/koski/schema/Opiskeluoikeus'
 import { last, nonNull } from '../../util/fp/arrays'
@@ -51,11 +55,20 @@ export const OpiskeluoikeusTitle = (props: OpiskeluoikeusTitleProps) => {
         uncapitalize(koulutuksenNimi)
       )
 
-  const aikaväliJaTila = join(
+  const vainYhdenPäättävänTilanVuosi =
+    props.opiskeluoikeus.päättymispäivä &&
+    props.opiskeluoikeus.tila.opiskeluoikeusjaksot.length <= 1 &&
+    yearFromIsoDateString(props.opiskeluoikeus.päättymispäivä)
+
+  const vuodet =
+    vainYhdenPäättävänTilanVuosi ||
     formatYearRange(
       props.opiskeluoikeus.alkamispäivä,
       props.opiskeluoikeus.päättymispäivä
-    ),
+    )
+
+  const aikaväliJaTila = join(
+    vuodet,
     t(viimeisinOpiskelujaksonTila(props.opiskeluoikeus.tila)?.nimi)
   )
 
