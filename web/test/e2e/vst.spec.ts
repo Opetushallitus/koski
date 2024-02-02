@@ -1,15 +1,18 @@
 import { foreachAsync, repeatAsync } from '../util/iterating'
 import { expect as _expect, test } from './base'
+import { KoskiKansalainenPage } from './pages/kansalainen/KoskiKansalainenPage'
 import { KoskiVSTOppijaPage } from './pages/oppija/KoskiVSTOppijaPage'
 import { kansalainen, virkailija } from './setup/auth'
+import { Page } from '@playwright/test'
 
 const kotoutumiskoulutus2022 = '1.2.246.562.24.00000000135'
 const oppivelvollisilleSuunnattu = '1.2.246.562.24.00000000143'
 const jotpaKoulutus = '1.2.246.562.24.00000000140'
 const lukutaitokoulutus = '1.2.246.562.24.00000000107'
 const kansanopisto = '1.2.246.562.24.00000000105'
-const vstKoulutus = '1.2.246.562.24.00000000108'
+const vapaatavoitteinenKoulutus = '1.2.246.562.24.00000000108'
 const jotpaKoulutusTiedonsiirto = '1.2.246.562.24.00000000058'
+const osaamismerkki = '1.2.246.562.24.00000000164'
 
 const openOppijaPage =
   (oppijaOid: string, edit: boolean) =>
@@ -1085,7 +1088,7 @@ test.describe('Vapaa sivistystyö', () => {
       })
     })
     test.describe('Vapaatavoitteinen vst-koulutus', () => {
-      test.beforeEach(openOppijaPage(vstKoulutus, false))
+      test.beforeEach(openOppijaPage(vapaatavoitteinenKoulutus, false))
       test('Näyttää tiedot oikein', async ({ page }) => {
         const expect = _expect.configure({
           timeout: 2000
@@ -1225,6 +1228,51 @@ test.describe('Vapaa sivistystyö', () => {
         )
       })
     })
+    test.describe('VST osaamismerkki', () => {
+      test.beforeEach(openOppijaPage(osaamismerkki, false))
+      test('Näyttää tiedot oikein', async ({ page }) => {
+        const expect = _expect.configure({
+          timeout: 2000
+        })
+        await expect(page.getByTestId('opiskeluoikeus.kuva')).toBeVisible()
+        await expect(page.getByTestId('opiskeluoikeus.nimi')).toHaveText(
+          'Varsinais-Suomen kansanopisto, digitaalinen tiedonhaku (2024, hyväksytysti suoritettu)'
+        )
+        await expect(
+          page.getByTestId('opiskeluoikeus.tila.value.items.0.date')
+        ).toHaveText('1.1.2024')
+        await expect(
+          page.getByTestId('opiskeluoikeus.tila.value.items.0.tila')
+        ).toHaveText('Hyväksytysti suoritettu')
+        await expect(
+          page.getByTestId('opiskeluoikeus.voimassaoloaika')
+        ).toHaveText('Opiskeluoikeuden voimassaoloaika: 1.1.2024 – 1.1.2024')
+        await expect(page.getByTestId('suoritusTabs.0.tab')).toHaveText(
+          'Vapaan sivistystyön osaamismerkki'
+        )
+        await expect(
+          page.getByTestId('suoritukset.0.toimipiste.value')
+        ).toHaveText('Varsinais-Suomen kansanopisto')
+        await expect(
+          page.getByTestId('suoritukset.0.tunniste.koodiarvo-ja-nimi')
+        ).toHaveText('1001 Digitaalinen tiedonhaku')
+        await expect(
+          page.getByTestId('suoritukset.0.arviointi.0.arvosana.value')
+        ).toHaveText('Hyväksytty')
+        await expect(
+          page.getByTestId('suoritukset.0.arviointi.0.date.value')
+        ).toHaveText('1.1.2024')
+        await expect(
+          page.getByTestId('suoritukset.0.suorituksenVahvistus.value.status')
+        ).toHaveText('Suoritus valmis')
+        await expect(
+          page.getByTestId('suoritukset.0.suorituksenVahvistus.value.details')
+        ).toHaveText('Vahvistus: 1.1.2024 Jyväskylän normaalikoulu')
+        await expect(
+          page.getByTestId('suoritukset.0.suorituksenVahvistus.value.henkilö.0')
+        ).toHaveText('Reijo Reksi (rehtori)')
+      })
+    })
   })
 
   test.describe('Muokkausnäkymä', () => {
@@ -1234,7 +1282,7 @@ test.describe('Vapaa sivistystyö', () => {
     })
 
     test.describe('Vapaatavoitteinen', () => {
-      test.beforeEach(openOppijaPage(vstKoulutus, true))
+      test.beforeEach(openOppijaPage(vapaatavoitteinenKoulutus, true))
 
       test('Uuden osasuorituksen lisäys', async ({ vstOppijaPage }) => {
         const nimi = 'Lopeta turha kiihkoilu'
@@ -2041,6 +2089,54 @@ test.describe('Vapaa sivistystyö', () => {
         await vstOppijaPage.tallenna()
       })
     })
+
+    test.describe('Osaamismerkki', () => {
+      test.beforeEach(openOppijaPage(osaamismerkki, true))
+
+      test('Tilan muokkaaminen', async ({ vstOppijaPage }) => {
+        const tila = vstOppijaPage.$.opiskeluoikeus.tila.edit
+        expect(await tila.add.isVisible()).toBeFalsy()
+        await tila.items(0).remove.click()
+        expect(await tila.add.isVisible()).toBeTruthy()
+        await tila.add.click()
+        await tila.modal.date.set('1.1.2022')
+        await tila.modal.tila.set('hyvaksytystisuoritettu')
+        await tila.modal.submit.click()
+        expect(await tila.items(0).date.value(true)).toEqual('1.1.2022')
+        expect(await tila.items(0).tila.value()).toEqual(
+          'Hyväksytysti suoritettu'
+        )
+
+        await vstOppijaPage.tallennaVirheellisenä(
+          'suoritus.vahvistus.päivä (2024-01-01) oltava sama tai aiempi kuin päättymispäivä (2022-01-01)',
+          'Osaamismerkin pitää olla arvioitu, vahvistettu ja päättynyt samana päivänä',
+          'Osaamismerkin sisältävä opiskeluoikeus ei voi olla päättynyt ennen lain voimaantuloa 1.1.2024'
+        )
+      })
+
+      test('Suorituksen vahvistus', async ({ vstOppijaPage }) => {
+        const vahvistaminen =
+          vstOppijaPage.$.suoritukset(0).suorituksenVahvistus
+
+        // Palauta keskeneräiseksi
+        expect(
+          await vahvistaminen.edit.merkitseKeskeneräiseksi.isDisabled()
+        ).toBeFalsy()
+        await vstOppijaPage.$.opiskeluoikeus.tila.edit.items(0).remove.click()
+        await vahvistaminen.edit.merkitseKeskeneräiseksi.click()
+
+        // Merkitse takaisin valmiiksi
+        await vstOppijaPage.vahvistaSuoritusUudellaHenkilöllä(
+          'Reijo',
+          'Rehtori',
+          '1.1.2023'
+        )
+
+        await vstOppijaPage.tallennaVirheellisenä(
+          'lessThanMinimumNumberOfItems: opiskeluoikeudet.0.tila.opiskeluoikeusjaksot'
+        )
+      })
+    })
   })
 
   test.describe('Lähdejärjestelmästä siirretty opiskeluoikeus', () => {
@@ -2081,10 +2177,87 @@ test.describe('Vapaa sivistystyö', () => {
       await page.goto('/koski/omattiedot')
     })
 
+    test.describe('Osaamismerkki VST', () => {
+      test.use({ storageState: kansalainen('050705A564B') })
+      test('Kansalaisen tietoja voi katsella ja suoritusjakaa', async ({
+        kansalainenPage,
+        page
+      }) => {
+        await expect(page.getByTestId('opiskeluoikeus.kuva')).toBeAttached()
+        await kansalainenPage.expandOpiskeluoikeus()
+        await kansalainenPage.collapseOpiskeluoikeus()
+        await expect(page.getByTestId('opiskeluoikeus.kuva')).toBeAttached()
+        await kansalainenPage.expandOpiskeluoikeus()
+
+        await tarkistaTiedot(page, kansalainenPage)
+
+        // Tee suoritusjako, ja tarkista, että sen sisällössä on sama sisältö
+        await kansalainenPage.openJaaSuoritustietoja()
+        await kansalainenPage
+          .suoritustietoLabel(
+            '1.2.246.562.10.31915273374',
+            'vstosaamismerkki',
+            '1001'
+          )
+          .click()
+        await kansalainenPage.jaaValitsemasiOpinnotButton().click()
+
+        const page2Promise = page.waitForEvent('popup')
+        await page
+          .getByRole('link', { name: 'Katso, miltä suoritusote nä' })
+          .click()
+        const page2 = await page2Promise
+
+        const kansalainenPage2 = KoskiKansalainenPage.create(page2)
+        await kansalainenPage2.expandOpiskeluoikeus()
+
+        await tarkistaTiedot(page2, kansalainenPage2)
+      })
+
+      const tarkistaTiedot = async (
+        page: Page,
+        kansalainenPage: KoskiKansalainenPage
+      ) => {
+        await expect(kansalainenPage.opiskeluoikeusTitle).toContainText(
+          'Digitaalinen tiedonhaku (2024, hyväksytysti suoritettu)Opiskeluoikeuden oid: 1.2.246.562.15'
+        )
+        await expect(
+          page.getByTestId('opiskeluoikeus.voimassaoloaika')
+        ).toHaveText('Opiskeluoikeuden voimassaoloaika: 1.1.2024 – 1.1.2024')
+        await expect(
+          page.getByTestId('suoritukset.0.toimipiste.value')
+        ).toHaveText('Varsinais-Suomen kansanopisto')
+        await expect(
+          page.getByTestId('suoritukset.0.arviointi.0.arvosana.value')
+        ).toHaveText('Hyväksytty')
+        await expect(
+          page.getByTestId('suoritukset.0.arviointi.0.date.value')
+        ).toHaveText('1.1.2024')
+        await expect(
+          page.getByTestId('suoritukset.0.tunniste.koodiarvo-ja-nimi')
+        ).toHaveText('1001 Digitaalinen tiedonhaku')
+        await expect(
+          page
+            .getByTestId('suoritukset.0.tunniste.koodiarvo-ja-nimi')
+            .locator('a')
+        ).toBeAttached()
+        await expect(
+          page.getByTestId('suoritukset.0.suorituksenVahvistus.value.status')
+        ).toHaveText('Suoritus valmis')
+        await expect(
+          page.getByTestId('suoritukset.0.suorituksenVahvistus.value.details')
+        ).toHaveText('Vahvistus: 1.1.2024 Jyväskylän normaalikoulu')
+        await expect(
+          page.getByTestId('suoritukset.0.suorituksenVahvistus.value.henkilö.0')
+        ).toHaveText('Reijo Reksi (rehtori)')
+      }
+    })
+
     test.describe('Suostumuksen peruutus', () => {
       test.describe('Vapaatavoitteinen VST', () => {
         test.use({ storageState: kansalainen('010917-156A') })
         test('Suostumuksen voi perua', async ({ kansalainenPage, page }) => {
+          await page.getByTestId('opiskeluoikeus.expand').click()
           await kansalainenPage.expectSuostumusPeruttavissa()
           await kansalainenPage.peruSuostumus()
         })
@@ -2104,6 +2277,7 @@ test.describe('Vapaa sivistystyö', () => {
           await kansalainenPage.jaaValitsemasiOpinnotButton().click()
 
           await page.reload() // TODO: Käli olisi hyvä fiksata niin, ettei tätä tarvita
+          await page.getByTestId('opiskeluoikeus.expand').click()
           await kansalainenPage.expectSuostumusEiPeruttavissa()
         })
       })
@@ -2111,9 +2285,20 @@ test.describe('Vapaa sivistystyö', () => {
       test.describe('Lukutaitokoulutus', () => {
         test.use({ storageState: kansalainen('231158-467R') })
         test('Suostumusta ei voi perua, koska se ei ole peruttavaa tyyppiä', async ({
-          kansalainenPage
+          kansalainenPage,
+          page
         }) => {
+          await page.getByTestId('opiskeluoikeus.expand').click()
           await kansalainenPage.expectSuostumusEiPeruttavissa()
+        })
+      })
+
+      test.describe('Osaamismerkki VST', () => {
+        test.use({ storageState: kansalainen('050705A564B') })
+        test('Suostumuksen voi perua', async ({ kansalainenPage, page }) => {
+          await page.getByTestId('opiskeluoikeus.expand').click()
+          await kansalainenPage.expectSuostumusPeruttavissa()
+          await kansalainenPage.peruSuostumus()
         })
       })
     })
