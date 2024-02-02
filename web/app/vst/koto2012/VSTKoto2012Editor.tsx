@@ -1,6 +1,5 @@
 import React from 'react'
 import { OpenAllButton, useTree } from '../../appstate/tree'
-import { KansalainenOnly } from '../../components-v2/access/KansalainenOnly'
 import { EditorContainer } from '../../components-v2/containers/EditorContainer'
 import { LocalizedTextView } from '../../components-v2/controls/LocalizedTestField'
 import { FormField } from '../../components-v2/forms/FormField'
@@ -18,7 +17,6 @@ import {
   LaajuusOpintopisteissäEdit,
   LaajuusView
 } from '../../components-v2/opiskeluoikeus/LaajuusField'
-import { PäätasonSuorituksenSuostumuksenPeruminen } from '../../components-v2/opiskeluoikeus/OpiskeluoikeudenSuostumuksenPeruminen'
 import {
   OsasuoritusRowData,
   OsasuoritusTable
@@ -40,7 +38,7 @@ import { VSTLisatiedot } from '../common/VSTLisatiedot'
 import { VSTLaajuudetYhteensä } from '../common/VSTLaajuudetYhteensa'
 import {
   createArviointi,
-  kaikkiOsasuorituksetVahvistettu
+  arviointienPuolestaVahvistettavissa
 } from '../common/arviointi'
 import { isCompletedKoto2012Osasuoritus } from '../common/osasuoritukset'
 import { ArviointiProperty } from '../common/propertyFields'
@@ -62,7 +60,7 @@ export const VSTKoto2012Editor: React.FC<VSTKoto2012EditorProps> = ({
   invalidatable,
   onChangeSuoritus,
   organisaatio,
-  suoritusVahvistettu
+  suorituksenVahvistaminenEiMahdollista
 }) => {
   const { TreeNode, ...tree } = useTree()
 
@@ -73,21 +71,14 @@ export const VSTKoto2012Editor: React.FC<VSTKoto2012EditorProps> = ({
         invalidatable={invalidatable}
         oppijaOid={oppijaOid}
         suorituksenNimi={() => finnish('Kotoutumiskoulutus oppivelvollisille')}
-        suorituksetVahvistettu={kaikkiOsasuorituksetVahvistettu(form.state)}
+        suorituksetVahvistettu={arviointienPuolestaVahvistettavissa(form.state)}
         createOpiskeluoikeusjakso={createKotoOpiskeluoikeusjakso}
         lisätiedotContainer={VSTLisatiedot}
         onChangeSuoritus={onChangeSuoritus}
         opiskeluoikeusJaksoClassName="fi.oph.koski.schema.OppivelvollisilleSuunnattuVapaanSivistystyönOpiskeluoikeusjakso"
       >
-        <KansalainenOnly>
-          <PäätasonSuorituksenSuostumuksenPeruminen
-            opiskeluoikeus={form.state}
-            suoritus={päätasonSuoritus.suoritus}
-          />
-        </KansalainenOnly>
-        <Spacer />
         <PäätasosuorituksenTiedot>
-          <Suoritus.Oppilaitos form={form} suoritus={päätasonSuoritus} />
+          <Suoritus.Toimipiste form={form} suoritus={päätasonSuoritus} />
           <Suoritus.Koulutus form={form} suoritus={päätasonSuoritus} />
           <Suoritus.Koulutusmoduuli form={form} suoritus={päätasonSuoritus} />
           <Suoritus.Peruste form={form} suoritus={päätasonSuoritus} />
@@ -103,7 +94,7 @@ export const VSTKoto2012Editor: React.FC<VSTKoto2012EditorProps> = ({
           form={form}
           suoritusPath={päätasonSuoritus.path}
           organisaatio={organisaatio}
-          disableAdd={suoritusVahvistettu}
+          disableAdd={suorituksenVahvistaminenEiMahdollista}
         />
         <Spacer />
 

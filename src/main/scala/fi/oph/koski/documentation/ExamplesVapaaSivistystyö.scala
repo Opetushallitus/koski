@@ -65,14 +65,14 @@ object VapaaSivistystyöExample {
     suoritukset = List(suoritusVapaatavoitteinenKoulutus)
   )
 
-  def opiskeluoikeusOsaamismerkki(päivä: LocalDate = date(2024, 1, 1)): VapaanSivistystyönOpiskeluoikeus = VapaanSivistystyönOpiskeluoikeus(
+  def opiskeluoikeusOsaamismerkki(päivä: LocalDate = date(2024, 1, 1), koodiarvo: String = "1001"): VapaanSivistystyönOpiskeluoikeus = VapaanSivistystyönOpiskeluoikeus(
     arvioituPäättymispäivä = None,
     tila = VapaanSivistystyönOpiskeluoikeudenTila(List(
       VapaanSivistystyönOsaamismerkinOpiskeluoikeusjakso(päivä, opiskeluoikeusHyväksytystiSuoritettu)
     )),
     lisätiedot = None,
     oppilaitos = Some(varsinaisSuomenKansanopisto),
-    suoritukset = List(suoritusOsaamismerkki(päivä))
+    suoritukset = List(suoritusOsaamismerkki(päivä = päivä, koodiarvo = koodiarvo))
   )
 
   lazy val opiskeluoikeusVapaatavoitteinenIlmanOpintokokonaisuutta = VapaanSivistystyönOpiskeluoikeus(

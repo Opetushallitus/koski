@@ -4,7 +4,11 @@ import {
   isSuccess,
   useApiWithParams
 } from '../../api-fetch'
-import { formatYearRange, ISO2FinnishDateTime } from '../../date/date'
+import {
+  formatYearRange,
+  ISO2FinnishDateTime,
+  yearFromIsoDateString
+} from '../../date/date'
 import { t } from '../../i18n/i18n'
 import { Opiskeluoikeus } from '../../types/fi/oph/koski/schema/Opiskeluoikeus'
 import { last, nonNull } from '../../util/fp/arrays'
@@ -21,9 +25,16 @@ import { LinkButton } from '../controls/LinkButton'
 import { Lowercase } from '../texts/Lowercase'
 import { Trans } from '../texts/Trans'
 import { TestIdLayer, TestIdRoot, TestIdText } from '../../appstate/useTestId'
+import { TreeHook } from '../../appstate/tree'
+import { ExpandButtonIcon, ExpandButton } from '../controls/ExpandButton'
+import { useKansalainenTaiSuoritusjako } from '../../appstate/user'
+import ChevronUpIcon from '../../icons/ChevronUpIcon'
+import ChevronDownIcon from '../../icons/ChevronDownIcon'
 
 export type OpiskeluoikeusTitleProps = CommonProps<{
   opiskeluoikeus: Opiskeluoikeus
+  kuva?: React.ReactNode
+  tree?: Pick<TreeHook, 'isOpen' | 'toggle'>
   // Nämä propertyt ylikirjoittavat opiskeluoikeudesta oletuksena tulkittavat arvot:
   oppilaitos?: string
   opiskeluoikeudenNimi?: string
@@ -32,56 +43,108 @@ export type OpiskeluoikeusTitleProps = CommonProps<{
 const join = (...as: Array<string | undefined>) => as.filter(nonNull).join(', ')
 
 export const OpiskeluoikeusTitle = (props: OpiskeluoikeusTitleProps) => {
-  const oppilaitosJaKoulutus = join(
-    props.oppilaitos || t(props.opiskeluoikeus.oppilaitos?.nimi),
-    uncapitalize(
-      props.opiskeluoikeudenNimi ||
-        t(props.opiskeluoikeus.suoritukset[0]?.tyyppi.nimi)
-    )
-  )
-  const aikaväliJaTila = join(
+  const koulutuksenNimi =
+    props.opiskeluoikeudenNimi ||
+    t(props.opiskeluoikeus.suoritukset[0]?.tyyppi.nimi)
+
+  const kansalainenTaiSuoritusjako = useKansalainenTaiSuoritusjako()
+  const otsikkoteksti = kansalainenTaiSuoritusjako
+    ? koulutuksenNimi
+    : join(
+        props.oppilaitos || t(props.opiskeluoikeus.oppilaitos?.nimi),
+        uncapitalize(koulutuksenNimi)
+      )
+
+  const vainYhdenPäättävänTilanVuosi =
+    props.opiskeluoikeus.päättymispäivä &&
+    props.opiskeluoikeus.tila.opiskeluoikeusjaksot.length <= 1 &&
+    yearFromIsoDateString(props.opiskeluoikeus.päättymispäivä)
+
+  const vuodet =
+    vainYhdenPäättävänTilanVuosi ||
     formatYearRange(
       props.opiskeluoikeus.alkamispäivä,
       props.opiskeluoikeus.päättymispäivä
-    ),
+    )
+
+  const aikaväliJaTila = join(
+    vuodet,
     t(viimeisinOpiskelujaksonTila(props.opiskeluoikeus.tila)?.nimi)
   )
 
   const oid: string | undefined = (props.opiskeluoikeus as any).oid
 
+  const kuvaSpan = props.kuva ? 2 : 0
+  const expandSpan = props.tree ? 1 : 0
+  const titleSpan = 12 - kuvaSpan
+  const oidSpan = 12 - expandSpan
+
+  const children: React.JSX.Element = (
+    <h3 {...common(props, ['OpiskeluoikeusTitle', 'darkBackground'])}>
+      <ColumnRow>
+        {props.kuva && (
+          <Column
+            className="OpiskeluoikeusTitle__kuva"
+            span={{ default: kuvaSpan, small: 2 * kuvaSpan }}
+          >
+            <TestIdText id="kuva">{props.kuva}</TestIdText>
+          </Column>
+        )}
+        <Column
+          className="OpiskeluoikeusTitle__title"
+          span={{ default: titleSpan, small: 2 * titleSpan }}
+          align={{ default: 'left', small: 'left' }}
+        >
+          <TestIdText id="nimi">
+            {otsikkoteksti} {'('}
+            <Lowercase>{aikaväliJaTila}</Lowercase>
+            {')'}
+          </TestIdText>
+        </Column>
+
+        {oid && (
+          <Column
+            className="OpiskeluoikeusTitle__oid"
+            span={{ default: oidSpan, small: 2 * oidSpan }}
+            align={{ default: 'right', small: 'left' }}
+          >
+            <TestIdText id="oid">
+              <Trans>{'Opiskeluoikeuden oid'}</Trans>
+              {': '}
+              {oid}
+            </TestIdText>
+            <VirkailijaOnly>
+              <VersiohistoriaButton opiskeluoikeusOid={oid} />
+            </VirkailijaOnly>
+          </Column>
+        )}
+
+        {props.tree && (
+          <Column
+            className="OpiskeluoikeusTitle__expand"
+            span={{ default: expandSpan, small: 2 * expandSpan }}
+          >
+            {props.tree.isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}
+            {/* <ExpandButtonIcon expanded={props.tree.isOpen} /> */}
+          </Column>
+        )}
+      </ColumnRow>
+    </h3>
+  )
+
   return (
     <TestIdRoot id="opiskeluoikeus">
-      <h3 {...common(props, ['OpiskeluoikeusTitle', 'darkBackground'])}>
-        <ColumnRow>
-          <Column
-            className="OpiskeluoikeusTitle__title"
-            span={{ default: 12, small: 24 }}
-          >
-            <TestIdText id="nimi">
-              {oppilaitosJaKoulutus} {'('}
-              <Lowercase>{aikaväliJaTila}</Lowercase>
-              {')'}
-            </TestIdText>
-          </Column>
-
-          {oid && (
-            <Column
-              className="OpiskeluoikeusTitle__oid"
-              span={{ default: 12, small: 24 }}
-              align={{ default: 'right', small: 'left' }}
-            >
-              <TestIdText id="oid">
-                <Trans>{'Opiskeluoikeuden oid'}</Trans>
-                {': '}
-                {oid}
-              </TestIdText>
-              <VirkailijaOnly>
-                <VersiohistoriaButton opiskeluoikeusOid={oid} />
-              </VirkailijaOnly>
-            </Column>
-          )}
-        </ColumnRow>
-      </h3>
+      {props.tree ? (
+        <ExpandButton
+          expanded={props.tree.isOpen}
+          onChange={props.tree.toggle}
+          label={t('Avaa opiskeluoikeus')}
+        >
+          {children}
+        </ExpandButton>
+      ) : (
+        <>{children}</>
+      )}
     </TestIdRoot>
   )
 }

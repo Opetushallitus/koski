@@ -30,6 +30,10 @@ import {
 } from './types'
 import { isVapaanSivistystyönOsaamismerkinArviointi } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOsaamismerkinArviointi'
 import { VapaanSivistystyönOpiskeluoikeus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeus'
+import {
+  isVapaanSivistystyönOsaamismerkinSuoritus,
+  VapaanSivistystyönOsaamismerkinSuoritus
+} from '../../types/fi/oph/koski/schema/VapaanSivistystyonOsaamismerkinSuoritus'
 
 export const createArviointi =
   <T extends Arviointi>(
@@ -41,16 +45,25 @@ export const createArviointi =
       päivä: todayISODate()
     })
 
-export const kaikkiOsasuorituksetVahvistettu = (
+export const arviointienPuolestaVahvistettavissa = (
   oo: VapaanSivistystyönOpiskeluoikeus
-): boolean =>
-  oo.suoritukset
-    .filter(isVSTKoulutuksenSuoritus)
-    .flatMap((s: any) => s.osasuoritukset || [])
-    .filter(isVSTOsasuoritusArvioinnilla)
-    .filter((os) => os.arviointi === undefined).length === 0
+): boolean => {
+  const koulutuksetOk =
+    oo.suoritukset
+      .filter(isVSTKoulutuksenSuoritus)
+      .flatMap((s: any) => s.osasuoritukset || [])
+      .filter(isVSTSuoritusArvioinnilla)
+      .filter((os) => os.arviointi === undefined).length === 0
 
-export function isVSTOsasuoritusArvioinnilla(
+  const osaamismerkitOk =
+    oo.suoritukset
+      .filter(isVapaanSivistystyönOsaamismerkinSuoritus)
+      .filter((s) => s.arviointi === undefined).length === 0
+
+  return koulutuksetOk && osaamismerkitOk
+}
+
+export function isVSTSuoritusArvioinnilla(
   s: VSTSuoritus
 ): s is VSTSuoritusArvioinnilla {
   switch (s.$class) {
@@ -69,6 +82,7 @@ export function isVSTOsasuoritusArvioinnilla(
     case VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenSuoritus.className:
     case VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenTyöelämäJakso.className:
     case VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus.className:
+    case VapaanSivistystyönOsaamismerkinSuoritus.className:
       return true
     default:
       return false

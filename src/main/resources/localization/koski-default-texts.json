@@ -2656,5 +2656,10 @@
   "Yths maksettu": "Yths maksettu",
   "Y-tunnus": "Y-tunnus",
   "description:Vapaan sivistystyön osaamismerkin tunnistetiedot" : "Vapaan sivistystyön osaamismerkin tunnistetiedot",
-  "Osaamismerkki" : "Osaamismerkki"
+  "Osaamismerkki" : "Osaamismerkki",
+  "Vapaan sivistystyön osaamismerkki": "Vapaan sivistystyön osaamismerkki",
+  "Haetaan kuvaa": "Haetaan kuvaa",
+  "Kuvan hakeminen epäonnistui": "Kuvan hakeminen epäonnistui",
+  "eperusteet_osaamismerkki_url_fragment": "/#/fi/osaamismerkki/",
+  "Osaamismerkit": "Osaamismerkit"
 }

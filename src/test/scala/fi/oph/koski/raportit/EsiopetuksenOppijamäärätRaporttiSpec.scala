@@ -196,19 +196,19 @@ class EsiopetuksenOppijamäärätRaporttiSpec
 
       r.oppilaitosNimi should equal("Jyväskylän normaalikoulu")
       r.opetuskieli should equal("ruotsi,suomi")
-      r.esiopetusoppilaidenMäärä should equal(3 + ylimääräisetLkm)
+      r.esiopetusoppilaidenMäärä should equal(4 + ylimääräisetLkm)
       r.vieraskielisiä should equal(0)
-      r.koulunesiopetuksessa should equal(3 + ylimääräisetLkm)
+      r.koulunesiopetuksessa should equal(4 + ylimääräisetLkm)
       r.päiväkodinesiopetuksessa should equal(0)
       r.viisivuotiaita should equal(0)
       r.viisivuotiaitaEiPidennettyäOppivelvollisuutta should equal(0)
       r.pidOppivelvollisuusEritTukiJaVaikeastiVammainen should equal(0 + ylimääräisetVaikeastiVammaisetLkm)
-      r.pidOppivelvollisuusEritTukiJaMuuKuinVaikeimminVammainen should equal(1 + ylimääräisetMuuKuinVaikeastiVammaisetLkm)
+      r.pidOppivelvollisuusEritTukiJaMuuKuinVaikeimminVammainen should equal(2 + ylimääräisetMuuKuinVaikeastiVammaisetLkm)
       r.virheellisestiSiirrettyjaTukitietoja should equal(0 + rikkinäisetYlimääräisetLkm)
-      r.erityiselläTuella should equal(1 + ylimääräisetErityiselläTuellaOpiskeluoikeudet)
-      r.majoitusetu should equal(2)
-      r.kuljetusetu should equal(2)
-      r.sisäoppilaitosmainenMajoitus should equal(2)
+      r.erityiselläTuella should equal(2 + ylimääräisetErityiselläTuellaOpiskeluoikeudet)
+      r.majoitusetu should equal(3)
+      r.kuljetusetu should equal(3)
+      r.sisäoppilaitosmainenMajoitus should equal(3)
     }
 
     "Haettu vuodelle, jona ei oppilaita" in {

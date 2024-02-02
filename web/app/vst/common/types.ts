@@ -30,7 +30,7 @@ export type VSTPäätasonSuoritusEditorProps<
   organisaatio?: Koulutustoimija | Oppilaitos
   invalidatable: boolean
   onChangeSuoritus: (suoritusIndex: number) => void
-  suoritusVahvistettu: boolean
+  suorituksenVahvistaminenEiMahdollista: boolean
 }>
 
 export type VSTSuoritus =

@@ -58,9 +58,7 @@ export type SuostumuksenPeruminenProps = CommonProps<{
 
 const suoritusjakoTehtyCache = createPreferLocalCache(fetchSuoritusjakoTehty)
 
-export const SuostumuksenPeruminen: React.FC<SuostumuksenPeruminenProps> = (
-  props
-) => {
+const SuostumuksenPeruminen: React.FC<SuostumuksenPeruminenProps> = (props) => {
   const peruutaSuostumusBtn = useRef<HTMLButtonElement>(null)
   const [peruuttamassaSuostumusta, setPeruuttamassaSuostumusta] =
     useState(false)

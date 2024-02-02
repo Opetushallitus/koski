@@ -1,10 +1,8 @@
 import React from 'react'
 import { OpenAllButton, useTree } from '../../appstate/tree'
-import { KansalainenOnly } from '../../components-v2/access/KansalainenOnly'
 import { EditorContainer } from '../../components-v2/containers/EditorContainer'
 import { FormOptic } from '../../components-v2/forms/FormModel'
 import { Spacer } from '../../components-v2/layout/Spacer'
-import { PäätasonSuorituksenSuostumuksenPeruminen } from '../../components-v2/opiskeluoikeus/OpiskeluoikeudenSuostumuksenPeruminen'
 import { OsasuoritusTable } from '../../components-v2/opiskeluoikeus/OsasuoritusTable'
 import { SuorituksenVahvistusField } from '../../components-v2/opiskeluoikeus/SuorituksenVahvistus'
 import { UusiOpiskeluoikeusjakso } from '../../components-v2/opiskeluoikeus/UusiOpiskeluoikeudenTilaModal'
@@ -16,7 +14,7 @@ import { VapaanSivistystyönOpiskeluoikeusjakso } from '../../types/fi/oph/koski
 import { deleteAt } from '../../util/array'
 import { VSTLisatiedot } from '../common/VSTLisatiedot'
 import { VSTLaajuudetYhteensä } from '../common/VSTLaajuudetYhteensa'
-import { kaikkiOsasuorituksetVahvistettu } from '../common/arviointi'
+import { arviointienPuolestaVahvistettavissa } from '../common/arviointi'
 import * as Suoritus from '../common/suoritusFields'
 import { PäätasosuorituksenTiedot } from '../common/suoritusFields'
 import {
@@ -36,7 +34,7 @@ export const KOPSEditor: React.FC<KOPSEditorProps> = ({
   invalidatable,
   onChangeSuoritus,
   organisaatio,
-  suoritusVahvistettu
+  suorituksenVahvistaminenEiMahdollista
 }) => {
   const { TreeNode, ...tree } = useTree()
 
@@ -51,7 +49,7 @@ export const KOPSEditor: React.FC<KOPSEditorProps> = ({
             'Kansanopistojen vapaan sivistystyön koulutus oppivelvollisille'
           )
         }
-        suorituksetVahvistettu={kaikkiOsasuorituksetVahvistettu(form.state)}
+        suorituksetVahvistettu={arviointienPuolestaVahvistettavissa(form.state)}
         createOpiskeluoikeusjakso={
           createVstOppivelvollisilleSuunnattuOpiskeluoikeusjakso
         }
@@ -59,15 +57,8 @@ export const KOPSEditor: React.FC<KOPSEditorProps> = ({
         onChangeSuoritus={onChangeSuoritus}
         opiskeluoikeusJaksoClassName="fi.oph.koski.schema.OppivelvollisilleSuunnattuVapaanSivistystyönOpiskeluoikeusjakso"
       >
-        <KansalainenOnly>
-          <PäätasonSuorituksenSuostumuksenPeruminen
-            opiskeluoikeus={form.state}
-            suoritus={päätasonSuoritus.suoritus}
-          />
-        </KansalainenOnly>
-        <Spacer />
         <PäätasosuorituksenTiedot>
-          <Suoritus.Oppilaitos form={form} suoritus={päätasonSuoritus} />
+          <Suoritus.Toimipiste form={form} suoritus={päätasonSuoritus} />
           <Suoritus.Koulutus form={form} suoritus={päätasonSuoritus} />
           <Suoritus.Koulutusmoduuli form={form} suoritus={päätasonSuoritus} />
           <Suoritus.Peruste form={form} suoritus={päätasonSuoritus} />
@@ -82,7 +73,7 @@ export const KOPSEditor: React.FC<KOPSEditorProps> = ({
           form={form}
           suoritusPath={päätasonSuoritus.path}
           organisaatio={organisaatio}
-          disableAdd={suoritusVahvistettu}
+          disableAdd={suorituksenVahvistaminenEiMahdollista}
         />
         <Spacer />
 

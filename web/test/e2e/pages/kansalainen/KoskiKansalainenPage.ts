@@ -11,10 +11,16 @@ import { SuoritusotePage } from './SuoritusotePage'
 export class KoskiKansalainenPage {
   $: BuiltIdNode<KansalainenUIV2TestIds>
   peruSuostumusLinkki: Locator
+  expandButton: Locator
+  suoritusTab: Locator
+  opiskeluoikeusTitle: Locator
 
   constructor(private readonly page: Page) {
     this.$ = build(page, KansalainenUIV2TestIds)
     this.peruSuostumusLinkki = page.locator('.peru-suostumus-linkki')
+    this.expandButton = page.getByTestId('opiskeluoikeus.expand')
+    this.suoritusTab = page.getByTestId('suoritusTabs.0.tab')
+    this.opiskeluoikeusTitle = page.locator('.OpiskeluoikeusTitle')
   }
 
   static create(page: Page) {
@@ -32,6 +38,18 @@ export class KoskiKansalainenPage {
 
   async openOpiskeluoikeus(name: string) {
     await this.page.getByRole('button', { name }).click()
+  }
+
+  async expandOpiskeluoikeus() {
+    await expect(this.suoritusTab).not.toBeAttached()
+    await this.expandButton.click()
+    await expect(this.suoritusTab).toBeAttached()
+  }
+
+  async collapseOpiskeluoikeus() {
+    await expect(this.suoritusTab).toBeAttached()
+    await this.expandButton.click()
+    await expect(this.suoritusTab).not.toBeAttached()
   }
 
   async setYoTodistusLanguage(lang: YoTodistusLanguage) {
@@ -104,9 +122,17 @@ export class KoskiKansalainenPage {
     return new SuoritusotePage(await suoritusotePagePromise)
   }
 
-  async expectSuostumusPeruttavissa(attached: boolean) {
+  async expectSuostumusPeruttavissa() {
     await expect(this.peruSuostumusLinkki).toBeAttached({
-      attached,
+      timeout: 15000
+    })
+  }
+
+  async expectSuostumusEiPeruttavissa() {
+    // Odota, että sivu on (todennäköisesti) latautunut, ennenkuin tarkistetaan, että elementtiä _ei_ näy
+    await this.page.waitForTimeout(3000)
+
+    await expect(this.peruSuostumusLinkki).toBeHidden({
       timeout: 15000
     })
   }

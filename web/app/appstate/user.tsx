@@ -22,6 +22,17 @@ export const UserProvider: React.FC<UserProviderProps> = (props) => {
   )
 }
 
+export const useKansalainenTaiSuoritusjako = (): boolean => {
+  const user = useUser()
+  const kansalainenUser = useKansalainenUser()
+
+  if (!user) {
+    return true
+  } else {
+    return !!kansalainenUser
+  }
+}
+
 /**
  * Palauttaa kirjautuneen käyttäjän tiedot.
  * @returns kirjautunut käyttäjä

@@ -235,17 +235,21 @@ class TilastokeskusSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoike
   }
 
   private lazy val kaikkiOppijat = koskeenTallennetutOppijat.flatMap {
-    case Oppija(h: TäydellisetHenkilötiedot, opiskeluoikeudet) => opiskeluoikeudet.flatMap(_.oid).map { opiskeluoikeusOid =>
-      (h.oid, h.sukunimi, h.etunimet, linkitettyOid.get(h.oid).toList, List(opiskeluoikeusOid))
+    case Oppija(h: TäydellisetHenkilötiedot, opiskeluoikeudet) => {
+      // Filtteröi pois oppijat, joilla vain VST vapaatavoitteisia tai osaamismerkkejä. Ks. TilastokeskusServlet / extraFilters
+      val opiskeluoikeudetIlmanVst =
+        opiskeluoikeudet.filterNot(_.suoritukset.exists(s => Set(SuorituksenTyyppi.vstosaamismerkki, SuorituksenTyyppi.vstvapaatavoitteinenkoulutus).contains(s.tyyppi)))
+
+      if (opiskeluoikeudetIlmanVst.isEmpty) {
+        Nil
+      } else {
+        opiskeluoikeudetIlmanVst.flatMap(_.oid).map { opiskeluoikeusOid =>
+          (h.oid, h.sukunimi, h.etunimet, linkitettyOid.get(h.oid).toList, List(opiskeluoikeusOid))
+        }
+      }
     }
     case _ => Nil
   }
-    .filterNot(d => Set(
-      KoskiSpecificMockOppijat.vapaaSivistystyöVapaatavoitteinenKoulutus.oid,
-      KoskiSpecificMockOppijat.vapaaSivistystyöOsaamismerkki.oid
-    ).contains(d._1))
-  // Filtteröidään vapaan sivistystyön vapaatavoitteista koulutusta käyvä kaveri pois,
-  // katso TilastokeskusServlet / exclusionFilters
 
   private def expectedPage(pageSize: Int, pageNumber: Int) = {
     kaikkiOppijat.slice(pageNumber * pageSize, pageNumber * pageSize + pageSize)
