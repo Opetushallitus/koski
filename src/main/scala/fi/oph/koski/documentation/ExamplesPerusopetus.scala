@@ -42,7 +42,8 @@ object ExamplesPerusopetus {
           alku = Some(date(2014, 6, 6)),
           loppu = None,
           erityisryhmässä = Some(false),
-          tukimuodot = None
+          tukimuodot = None,
+          opiskeleeToimintaAlueittain = true
         )))
       ))
     ))
