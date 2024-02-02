@@ -56,6 +56,7 @@ import {
   taiteenPerusopetuksenSuorituksenNimi
 } from './tpoCommon'
 import { TestIdRoot } from '../appstate/useTestId'
+import { useKansalainenTaiSuoritusjako } from '../appstate/user'
 
 export type TaiteenPerusopetusEditorProps =
   AdaptedOpiskeluoikeusEditorProps<TaiteenPerusopetuksenOpiskeluoikeus>
@@ -63,19 +64,52 @@ export type TaiteenPerusopetusEditorProps =
 export const TaiteenPerusopetusEditor: React.FC<
   TaiteenPerusopetusEditorProps
 > = (props) => {
-  const fillKoodistot = useKoodistoFiller()
-
-  // Opiskeluoikeus
-
   const opiskeluoikeusSchema = useSchema('TaiteenPerusopetuksenOpiskeluoikeus')
   const form = useForm(props.opiskeluoikeus, false, opiskeluoikeusSchema)
 
-  // Oppilaitos
+  const { TreeNode: OpiskeluoikeusTreeNode, ...opiskeluoikeusTree } = useTree()
+  const kansalainenTaiSuoritusjako = useKansalainenTaiSuoritusjako()
 
+  // Render
+  return (
+    <>
+      {kansalainenTaiSuoritusjako ? (
+        <OpiskeluoikeusTreeNode>
+          <OpiskeluoikeusTitle
+            opiskeluoikeus={form.state}
+            opiskeluoikeudenNimi={tpoKoulutuksenNimi(form.state)}
+            tree={opiskeluoikeusTree}
+          />
+          {opiskeluoikeusTree.isOpen && (
+            <PäätasonSuoritusEditor {...props} form={form} />
+          )}
+        </OpiskeluoikeusTreeNode>
+      ) : (
+        <>
+          <OpiskeluoikeusTitle
+            opiskeluoikeus={form.state}
+            opiskeluoikeudenNimi={tpoKoulutuksenNimi(form.state)}
+          />
+          <PäätasonSuoritusEditor {...props} form={form} />
+        </>
+      )}
+    </>
+  )
+}
+
+const PäätasonSuoritusEditor: React.FC<
+  TaiteenPerusopetusEditorProps & {
+    form: FormModel<TaiteenPerusopetuksenOpiskeluoikeus>
+  }
+> = (props) => {
+  const fillKoodistot = useKoodistoFiller()
+
+  // Oppilaitos
   const organisaatio =
     props.opiskeluoikeus.oppilaitos || props.opiskeluoikeus.koulutustoimija
 
   // Päätason suoritus
+  const form = props.form
 
   const [päätasonSuoritus, setPäätasonSuoritus] = usePäätasonSuoritus(form)
   const companionPäätasonSuoritus = useMemo(() => {
@@ -171,16 +205,9 @@ export const TaiteenPerusopetusEditor: React.FC<
 
   const { TreeNode, ...tree } = useTree()
 
-  // Render
-
   return (
-    <TreeNode>
-      <TestIdRoot id={päätasonSuoritus.testId}>
-        <OpiskeluoikeusTitle
-          opiskeluoikeus={form.state}
-          opiskeluoikeudenNimi={tpoKoulutuksenNimi(form.state)}
-        />
-
+    <TestIdRoot id={päätasonSuoritus.testId}>
+      <TreeNode>
         <EditorContainer
           form={form}
           oppijaOid={props.oppijaOid}
@@ -289,8 +316,8 @@ export const TaiteenPerusopetusEditor: React.FC<
             </ColumnRow>
           )}
         </EditorContainer>
-      </TestIdRoot>
-    </TreeNode>
+      </TreeNode>
+    </TestIdRoot>
   )
 }
 
@@ -364,5 +391,5 @@ const tpoKoulutuksenNimi = (
 ): string => {
   return `${t(opiskeluoikeus.oppimäärä.nimi)}, ${t(
     opiskeluoikeus.suoritukset[0]?.koulutusmoduuli.taiteenala.nimi
-  )}`.toLowerCase()
+  )}`
 }
