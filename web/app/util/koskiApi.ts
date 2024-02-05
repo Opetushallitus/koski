@@ -92,6 +92,17 @@ export const fetchPeruste = (diaarinumero: string) =>
     )
   )
 
+export interface Perustelinkki {
+  url: string
+}
+
+export const fetchPerustelinkki = (diaarinumero: string) =>
+  handleExpiredSession(
+    apiGet<Perustelinkki>(
+      apiUrl(`tutkinnonperusteet/peruste/${diaarinumero}/linkki`)
+    )
+  )
+
 export const fetchConstraint = (schemaClass: string) =>
   handleExpiredSession(
     apiGet<Constraint>(apiUrl(`types/constraints/${schemaClass}`))
