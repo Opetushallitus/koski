@@ -52,6 +52,11 @@ export class KoskiOppijaPageV2<T extends IdNodeObject<string>> {
     return this.$.opiskeluoikeus.edit.click()
   }
 
+  async cancelEdit() {
+    this.editMode = false
+    return this.$.opiskeluoikeus.cancelEdit.click()
+  }
+
   async selectSuoritus(index: number) {
     await this.$.suoritusTabs(index).tab.click()
     this.suoritusIndex = index
