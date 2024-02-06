@@ -45,7 +45,7 @@ const buildChromeDriver = async (): Promise<WebDriver> => {
       "download.default_directory": downloadDir,
     })
   if (!process.env.SHOW_BROWSER) {
-    options.headless()
+    options.addArguments("--headless=new")
   }
 
   const builder = new Builder().forBrowser("chrome")
