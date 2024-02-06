@@ -30,7 +30,7 @@ const GlobalErrorContext = React.createContext<GlobalErrorContext>({
   clearAll: () => {}
 })
 
-export const GlobalErrorProvider: React.FC<React.PropsWithChildren> = (
+export const GlobalErrorProvider: React.FC<React.PropsWithChildren<{}>> = (
   props
 ) => {
   const [errors, setErrors] = useState<GlobalError[]>([])

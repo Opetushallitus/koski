@@ -311,7 +311,7 @@ const initialContextValue: PreferencesContext = {
 
 const PreferencesContext = React.createContext(initialContextValue)
 
-export const PreferencesProvider: React.FC<React.PropsWithChildren> = (
+export const PreferencesProvider: React.FC<React.PropsWithChildren<{}>> = (
   props
 ) => {
   const [preferences, setPreferences] = useState<

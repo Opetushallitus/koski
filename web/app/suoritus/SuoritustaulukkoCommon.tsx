@@ -327,7 +327,6 @@ export const ExpandAllRows = ({
     <tr>
       <th className="suoritus">
         <div>
-          {/* @ts-expect-error */}
           {allExpandedP.map((allExpanded) => (
             <button
               className={classNames('expand-all', 'koski-button', {

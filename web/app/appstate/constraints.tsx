@@ -152,7 +152,7 @@ const ConstraintsContext = React.createContext<ConstraintsContextValue>({
   loadConstraint: () => {}
 })
 
-export type ConstraintsProviderProps = React.PropsWithChildren
+export type ConstraintsProviderProps = React.PropsWithChildren<{}>
 
 class ConstraintsLoader {
   constraints: ConstraintsRecord = {}

@@ -92,7 +92,7 @@ const OrganisaatioHierarkiaContext =
   })
 
 export const OrganisaatioHierarkiaProvider: React.FC<
-  React.PropsWithChildren
+  React.PropsWithChildren<{}>
 > = (props) => {
   const [queries, setQueries] = useState<
     Record<string, OrganisaatioHierarkia[]>
