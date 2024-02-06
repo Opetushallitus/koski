@@ -56,7 +56,8 @@ export const DateEdit: React.FC<DateEditProps> = (props) => {
     selectedDays,
     toggleDayPicker,
     onDayClick,
-    onChange
+    onChange,
+    inputKey
   } = useDateEditState(props)
   const inputId = useTestId('date.edit.input')
   const buttonId = useTestId('date.edit.calendarButton')
@@ -73,6 +74,7 @@ export const DateEdit: React.FC<DateEditProps> = (props) => {
             hasError && 'DateEdit__input--error'
           )}
           data-testid={inputId}
+          key={inputKey}
         />
         <PositionalPopupHolder>
           <IconButton
@@ -102,6 +104,8 @@ export const DateEdit: React.FC<DateEditProps> = (props) => {
 // Utils
 
 const useDateEditState = (props: DateEditProps) => {
+  const [inputKey, setInputKey] = useState('init')
+
   const [datePickerVisible, setDatePickerVisible] = useState(false)
   const toggleDayPicker = useCallback(
     () => setDatePickerVisible(!datePickerVisible),
@@ -139,6 +143,7 @@ const useDateEditState = (props: DateEditProps) => {
       setDatePickerVisible(false)
       const isoDate = formatISODate(date)
       if (isoDate && isoDate !== value) {
+        setInputKey(`update-${new Date().getTime()}`)
         onChange(isoDate)
       }
     },
@@ -159,7 +164,8 @@ const useDateEditState = (props: DateEditProps) => {
     selectedDays,
     toggleDayPicker,
     onDayClick,
-    onChange: onChangeCB
+    onChange: onChangeCB,
+    inputKey
   }
 }
 
