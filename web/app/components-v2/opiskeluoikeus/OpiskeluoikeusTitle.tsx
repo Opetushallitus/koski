@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react'
 import {
+  createLocalThenApiCache,
   createPreferLocalCache,
   isSuccess,
   useApiWithParams
@@ -194,7 +195,7 @@ type VersiohistoriaListProps = CommonProps<{
   open: boolean
 }>
 
-const versiolistaCache = createPreferLocalCache(fetchVersiohistoria)
+const versiolistaCache = createLocalThenApiCache(fetchVersiohistoria)
 
 const VersiohistoriaList: React.FC<VersiohistoriaListProps> = (props) => {
   const historia = useApiWithParams(
