@@ -16,7 +16,7 @@ function KoskiPage() {
         expectedResults = function () {
           var results = OppijaHaku.getSearchResults()
           return (
-            results.length == 1 &&
+            results.length === 1 &&
             results[0].toLowerCase().indexOf(expectedString.toLowerCase()) >= 0
           )
         }
@@ -114,19 +114,19 @@ function KoskiPage() {
     filterBy: function (className, value) {
       return function () {
         if (
-          className == 'nimi' ||
-          className == 'tutkinto' ||
-          className == 'luokka'
+          className === 'nimi' ||
+          className === 'tutkinto' ||
+          className === 'luokka'
         ) {
           return Page(Oppijataulukko.tableElem)
             .setInputValue('th.' + className + ' input', value || '')()
             .then(wait.forMilliseconds(500))
             .then(wait.forAjax) // <- TODO 500ms throttle in input is slowing tests down
-        } else if (className == 'oppilaitos') {
+        } else if (className === 'oppilaitos') {
           return OrganisaatioHaku(Oppijataulukko.tableElem).select(value)()
         } else if (
-          className == 'alkamispäivä' ||
-          className == 'päättymispäivä'
+          className === 'alkamispäivä' ||
+          className === 'päättymispäivä'
         ) {
           return seq(
             click(S('.' + className + ' .date-range-selection')),
@@ -240,14 +240,14 @@ function KoskiPage() {
       return (
         isElementVisible(S('.invalidation-notification')) &&
         !isElementVisible(S('.invalidation-notification.hide')) &&
-        S('.invalidation-notification').text() == 'Opiskeluoikeus mitätöity'
+        S('.invalidation-notification').text() === 'Opiskeluoikeus mitätöity'
       )
     },
     isPäätasonSuoritusDeletedMessageShown: function () {
       return (
         isElementVisible(S('.invalidation-notification')) &&
         !isElementVisible(S('.invalidation-notification.hide')) &&
-        S('.invalidation-notification').text() == 'Suoritus poistettu'
+        S('.invalidation-notification').text() === 'Suoritus poistettu'
       )
     }
   }

@@ -58,13 +58,13 @@ export const toOrganisaatio = (org: OrganisaatioHierarkia): Organisaatio => {
           : undefined
       })
     : isKoulutustoimija(org)
-    ? Koulutustoimija({
-        ...seed,
-        yTunnus: org.yTunnus
-      })
-    : isToimipiste(org)
-    ? Toimipiste(seed)
-    : OidOrganisaatio(seed)
+      ? Koulutustoimija({
+          ...seed,
+          yTunnus: org.yTunnus
+        })
+      : isToimipiste(org)
+        ? Toimipiste(seed)
+        : OidOrganisaatio(seed)
 }
 
 export const getOrganisaatioOid = (org: Organisaatio): string | undefined =>
@@ -74,8 +74,8 @@ export const getOrganisaatioId = (org: Organisaatio): string =>
   isYritys(org)
     ? org.yTunnus
     : isTutkintotoimikunta(org)
-    ? org.tutkintotoimikunnanNumero
-    : org.oid
+      ? org.tutkintotoimikunnanNumero
+      : org.oid
 
 export const getOrganisaationKotipaikka = (
   org: Organisaatio

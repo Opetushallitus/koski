@@ -973,7 +973,7 @@ describe('Perusopetus', function () {
     )
 
     describe('Opiskeluoikeuden tiedot', function () {
-      var tilaJaVahvistus = opinnot.tilaJaVahvistus
+      var opintojenTilaJaVahvistus = opinnot.tilaJaVahvistus
 
       it('Alkutila', function () {
         expect(opinnot.opiskeluoikeusEditor().päättymispäivä()).to.equal(
@@ -1020,7 +1020,7 @@ describe('Perusopetus', function () {
               editor.edit,
               opinnot.avaaLisaysDialogi,
               opiskeluoikeus.tila().aseta('eronnut'),
-              tilaJaVahvistus.merkitseKeskeneräiseksi,
+              opintojenTilaJaVahvistus.merkitseKeskeneräiseksi,
               opiskeluoikeus.tallenna,
               editor.saveChanges
             )
@@ -1071,8 +1071,8 @@ describe('Perusopetus', function () {
           describe('Kun lisätään', function () {
             before(
               editor.edit,
-              tilaJaVahvistus.merkitseValmiiksi,
-              tilaJaVahvistus.lisääVahvistus('1.1.2021'),
+              opintojenTilaJaVahvistus.merkitseValmiiksi,
+              opintojenTilaJaVahvistus.lisääVahvistus('1.1.2021'),
               opinnot.avaaLisaysDialogi,
               opiskeluoikeus.tila().aseta('valmistunut'),
               opiskeluoikeus.tallenna,
@@ -1136,12 +1136,12 @@ describe('Perusopetus', function () {
             })
 
             describe('Kun suorituksella on vahvistus tulevaisuudessa', function () {
-              var tilaJaVahvistus = opinnot.tilaJaVahvistus
+              var opintojenTilaJaVahvistus2 = opinnot.tilaJaVahvistus
               before(
                 opiskeluoikeus.peruuta,
                 opinnot.oppiaineet.merkitseOppiaineetValmiiksi(),
-                tilaJaVahvistus.merkitseValmiiksi,
-                tilaJaVahvistus.lisääVahvistus('11.4.2117'),
+                opintojenTilaJaVahvistus2.merkitseValmiiksi,
+                opintojenTilaJaVahvistus2.lisääVahvistus('11.4.2117'),
                 opinnot.avaaLisaysDialogi
               )
 
@@ -3798,14 +3798,16 @@ describe('Perusopetus', function () {
                           })
 
                           describe('Kun merkitään valmiiksi, jää luokalle', function () {
-                            var tilaJaVahvistus = opinnot.tilaJaVahvistus
-                            var dialog = tilaJaVahvistus.merkitseValmiiksiDialog
-                            var dialogEditor = dialog.editor
+                            var opintojenTilaJaVahvistus =
+                              opinnot.tilaJaVahvistus
+                            var merkitseValmiiksiDialog =
+                              opintojenTilaJaVahvistus.merkitseValmiiksiDialog
+                            var dialogEditor = merkitseValmiiksiDialog.editor
                             var myöntäjät =
                               dialogEditor.property('myöntäjäHenkilöt')
                             before(
                               opinnot.oppiaineet.merkitseOppiaineetValmiiksi(),
-                              tilaJaVahvistus.merkitseValmiiksi,
+                              opintojenTilaJaVahvistus.merkitseValmiiksi,
                               dialogEditor
                                 .propertyBySelector('.jaa-tai-siirretaan')
                                 .setValue(false),
@@ -3829,11 +3831,13 @@ describe('Perusopetus', function () {
                             describe('Kun jatketaan valmiiksi merkintää käyttäen edellistä myöntäjä-henkilöä', function () {
                               before(
                                 myöntäjät.itemEditor(0).setValue('Reijo Reksi'),
-                                dialog.merkitseValmiiksi
+                                merkitseValmiiksiDialog.merkitseValmiiksi
                               )
 
                               it('Tila on "valmis" ja vahvistus näytetään', function () {
-                                expect(tilaJaVahvistus.text()).to.equal(
+                                expect(
+                                  opintojenTilaJaVahvistus.text()
+                                ).to.equal(
                                   'Suoritus valmis Vahvistus : ' +
                                     date2018Str +
                                     ' Jyväskylä mlk Reijo Reksi , rehtori\nEi siirretä seuraavalle luokalle'
@@ -3941,12 +3945,12 @@ describe('Perusopetus', function () {
                                           ),
                                           editor.edit,
                                           opinnot.oppiaineet.merkitseOppiaineetValmiiksi(),
-                                          tilaJaVahvistus.merkitseValmiiksi,
+                                          opintojenTilaJaVahvistus.merkitseValmiiksi,
                                           myöntäjät.removeFromDropdown(
                                             'Reijo Reksi'
                                           ),
-                                          dialog.peruuta,
-                                          tilaJaVahvistus.merkitseValmiiksi
+                                          merkitseValmiiksiDialog.peruuta,
+                                          opintojenTilaJaVahvistus.merkitseValmiiksi
                                         )
                                         it('Uudelleen avattaessa myöntäjää ei enää ole listalla', function () {
                                           expect(

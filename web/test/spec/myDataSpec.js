@@ -18,6 +18,7 @@ describe('MyData', function () {
     ]
   }
 
+  // eslint-disable-next-line prefer-spread
   before.apply(null, login('fi', '100869-192W', 'Dippainssi', 'Dilbert'))
 
   describe('Kun käyttäjä on kirjautunut sisään', function () {
@@ -60,6 +61,7 @@ describe('MyData', function () {
   })
 
   describe('Kun ollaan hyväksytty tietojen jakaminen', function () {
+    // eslint-disable-next-line prefer-spread
     before.apply(null, login('fi', '100869-192W', 'Dippainssi', 'Dilbert'))
     before(
       tietojenkaytto.go,
@@ -99,6 +101,7 @@ describe('MyData', function () {
   })
 
   describe('Kun klikataan peruuta-nappia', function () {
+    // eslint-disable-next-line prefer-spread
     before.apply(null, login('fi', '100869-192W', 'Dippainssi', 'Dilbert'))
     before(mydata.clickCancel)
     before(
@@ -115,6 +118,7 @@ describe('MyData', function () {
   })
 
   describe('Kun käyttäjällä ei ole opintoja Koskessa', function () {
+    // eslint-disable-next-line prefer-spread
     before.apply(null, login('fi', '270181-5263', 'Eikoskessa', 'Eino'))
     before(
       tietojenkaytto.go,
@@ -136,6 +140,7 @@ describe('MyData', function () {
   })
 
   describe('Käyttäjä voi vaihtaa kielen ruotsiksi', function () {
+    // eslint-disable-next-line prefer-spread
     before.apply(null, login('fi', '100869-192W', 'Dippainssi', 'Dilbert'))
     before(mydata.clickChangeLangSwedish, wait.until(mydata.isInSwedish))
 
@@ -149,6 +154,7 @@ describe('MyData', function () {
   })
 
   describe('Käyttäjä voi vaihtaa kielen englanniksi', function () {
+    // eslint-disable-next-line prefer-spread
     before.apply(null, login('fi', '100869-192W', 'Dippainssi', 'Dilbert'))
     before(mydata.clickChangeLangEnglish, wait.until(mydata.isInEnglish))
 
@@ -160,5 +166,4 @@ describe('MyData', function () {
       expect(mydata.getMemberName()).equal('HSL Helsinki Region Transport')
     })
   })
-
 })

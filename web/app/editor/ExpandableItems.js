@@ -77,8 +77,8 @@ export const expandStateCalc = (currentState, suoritukset, keyF, filter) => {
           suoritukset.filter(filter).length === newExpanded.length
             ? true
             : newExpanded.length === 0
-            ? false
-            : allExpandedToggle
+              ? false
+              : allExpandedToggle
       }
     }
   }

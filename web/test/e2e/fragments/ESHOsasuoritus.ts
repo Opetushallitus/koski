@@ -151,7 +151,7 @@ export class ESHOsasuoritus {
     )
   }
 
-  async syötäLaajuus(laajuus: string, validaatioVirhePoistuu: boolean = true) {
+  async syötäLaajuus(laajuus: string, validaatioVirhePoistuu = true) {
     if (validaatioVirhePoistuu) {
       await expect(this.laajuusInput).toHaveClass(/error/)
     }

@@ -30,12 +30,10 @@ type ComponentType<T> =
 
 type ExtractComponentProps<T> = T extends ComponentType<infer P> ? P : never
 
-type ExtractViewerProps<T> = T extends FieldViewerProps<any, infer K>
-  ? K
-  : never
-type ExtractEditorProps<T> = T extends FieldEditorProps<any, infer K>
-  ? K
-  : never
+type ExtractViewerProps<T> =
+  T extends FieldViewerProps<any, infer K> ? K : never
+type ExtractEditorProps<T> =
+  T extends FieldEditorProps<any, infer K> ? K : never
 
 export type FormFieldProps<
   FormState extends object,

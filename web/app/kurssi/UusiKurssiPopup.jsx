@@ -28,8 +28,8 @@ const propertyFilterForModel = (model) =>
   isPaikallinen(model) || isIBKurssi(model)
     ? propertyFilterForPaikallinen
     : isLukionKurssi(model) || isLukio2019ModuuliTaiOpintojakso(model)
-    ? propertyFilterForLukio
-    : undefined
+      ? propertyFilterForLukio
+      : undefined
 
 export default ({
   oppiaineenSuoritus,

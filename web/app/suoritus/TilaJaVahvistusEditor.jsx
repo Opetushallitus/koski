@@ -142,14 +142,16 @@ const MerkitseValmiiksiButton = ({ model }) => {
   const title = eiTiedossaOppiaine(model)
     ? t('"Ei tiedossa"-oppiainetta ei voi merkitä valmiiksi')
     : keskeneräisiäSuorituksia
-    ? t(
-        'Ei voi merkitä valmiiksi, koska suorituksessa on keskeneräisiä tai arvioimattomia osasuorituksia.'
-      )
-    : ammattillinenOsittainenTutkintoJaMuuAmmatillisenTutkinnonOsaPuuttuu(model)
-    ? t(
-        'Ei voi merkitä valmiiksi, koska suoritukselta puuttuu ammatillisen tutkinnon osan suoritus...'
-      )
-    : ''
+      ? t(
+          'Ei voi merkitä valmiiksi, koska suorituksessa on keskeneräisiä tai arvioimattomia osasuorituksia.'
+        )
+      : ammattillinenOsittainenTutkintoJaMuuAmmatillisenTutkinnonOsaPuuttuu(
+            model
+          )
+        ? t(
+            'Ei voi merkitä valmiiksi, koska suoritukselta puuttuu ammatillisen tutkinnon osan suoritus...'
+          )
+        : ''
 
   return (
     <span>

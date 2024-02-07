@@ -87,9 +87,10 @@ export const kansalainenPath = (hetu: string) =>
   resolve(PW_STATE_PATH, `${hetu}-kansalainen.json`)
 
 export const virkailija =
-  (virkailija: Virkailija): TestFixture<string, any> =>
+  (virk: Virkailija): TestFixture<string, any> =>
+  // eslint-disable-next-line no-empty-pattern
   async ({}, use, testInfo) => {
-    const v = virkailijaPath(virkailija)
+    const v = virkailijaPath(virk)
     const exists = await checkFileExists(v)
 
     // Olemassaolevalta istuntotiedostolta tarkistetaan keksin voimassaolo.
@@ -102,9 +103,7 @@ export const virkailija =
       const parsed = JSON.parse(data) as {
         cookies: Cookie[]
       }
-      const cookie = parsed.cookies.find(
-        (cookie: any) => cookie.name === 'koskiUser'
-      )
+      const cookie = parsed.cookies.find((c: any) => c.name === 'koskiUser')
       if (cookie === undefined) {
         throw new Error('No koskiUser cookie found')
       }
@@ -114,16 +113,16 @@ export const virkailija =
       } else {
         const virkailijaSessionPath = await getVirkailijaSession(
           testInfo,
-          virkailija,
-          virkailija
+          virk,
+          virk
         )
         await use(virkailijaSessionPath)
       }
     } else {
       const virkailijaSessionPath = await getVirkailijaSession(
         testInfo,
-        virkailija,
-        virkailija
+        virk,
+        virk
       )
       await use(virkailijaSessionPath)
     }
@@ -131,6 +130,7 @@ export const virkailija =
 
 export const kansalainen =
   (hetu: Kansalainen): TestFixture<string, any> =>
+  // eslint-disable-next-line no-empty-pattern
   async ({}, use, testInfo) => {
     const v = kansalainenPath(hetu)
     const exists = await checkFileExists(v)
@@ -142,9 +142,7 @@ export const kansalainen =
       const parsed = JSON.parse(data) as {
         cookies: Cookie[]
       }
-      const cookie = parsed.cookies.find(
-        (cookie: any) => cookie.name === 'koskiOppija'
-      )
+      const cookie = parsed.cookies.find((c: any) => c.name === 'koskiOppija')
       if (cookie === undefined) {
         throw new Error('No koskiOppija cookie found')
       }

@@ -110,11 +110,11 @@ function VirheraportointiForm() {
       return click(option)
     },
     oppilaitosNames: function () {
-      return toArray(elem().find('.oppilaitos-options label')).map(function (
-        i
-      ) {
-        return i.innerHTML
-      })
+      return toArray(elem().find('.oppilaitos-options label')).map(
+        function (i) {
+          return i.innerHTML
+        }
+      )
     },
     oppilaitosOids: function () {
       return toArray(

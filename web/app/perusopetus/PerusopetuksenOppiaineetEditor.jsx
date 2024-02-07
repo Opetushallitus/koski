@@ -158,8 +158,8 @@ const fetchOsasuorituksetTemplate = (model, toimintaAlueittain) =>
   isPäättötodistus(model)
     ? oppimääränOsasuoritukset(modelData(model, 'tyyppi'), toimintaAlueittain)
     : luokkaAste(model)
-    ? luokkaAsteenOsasuoritukset(luokkaAste(model), toimintaAlueittain)
-    : Bacon.constant({ value: [] })
+      ? luokkaAsteenOsasuoritukset(luokkaAste(model), toimintaAlueittain)
+      : Bacon.constant({ value: [] })
 
 const modelDataIlmanTyyppiä = (suoritus) =>
   R.dissoc('tyyppi', modelData(suoritus))
@@ -318,8 +318,9 @@ class Oppiainetaulukko extends React.Component {
     const showLaajuus = edit
       ? uudellaSuorituksellaLaajuus()
       : pakolliset || isToimintaAlueittain(model)
-      ? vahvistusSalliiLaajuudenNäyttämisen && sisältääLajuudellisiaSuorituksia
-      : sisältääLajuudellisiaSuorituksia
+        ? vahvistusSalliiLaajuudenNäyttämisen &&
+          sisältääLajuudellisiaSuorituksia
+        : sisältääLajuudellisiaSuorituksia
 
     const showFootnotes = !edit && !R.isEmpty(footnoteDescriptions(suoritukset))
 
@@ -345,10 +346,10 @@ class Oppiainetaulukko extends React.Component {
       isToimintaAlueittain(model)
         ? 'Lisää toiminta-alue'
         : pakolliset === undefined
-        ? 'Lisää oppiaine'
-        : pakolliset
-        ? 'Lisää pakollinen oppiaine'
-        : 'Lisää valinnainen oppiaine'
+          ? 'Lisää oppiaine'
+          : pakolliset
+            ? 'Lisää pakollinen oppiaine'
+            : 'Lisää valinnainen oppiaine'
     )
 
     const suoritusListaus = (listattavatSuoritukset, listausTitle) => (

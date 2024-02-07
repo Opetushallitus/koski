@@ -113,10 +113,10 @@ describe('Lukiokoulutus', function () {
       })
       describe('Kaikkien kurssien tiedot', function () {
         it('voidaan avata yksitellen virheettömästi', function () {
-          Kurssi.findAll().forEach(function (kurssi) {
-            expect(kurssi.detailsText()).to.equal('')
-            kurssi.toggleDetails()
-            expect(kurssi.detailsText().length > 10).to.equal(true)
+          Kurssi.findAll().forEach(function (k) {
+            expect(k.detailsText()).to.equal('')
+            k.toggleDetails()
+            expect(k.detailsText().length > 10).to.equal(true)
           })
         })
       })

@@ -209,8 +209,8 @@ const VersiohistoriaList: React.FC<VersiohistoriaListProps> = (props) => {
     return v
       ? parseInt(v)
       : isSuccess(historia)
-      ? last(historia.data)?.versionumero
-      : undefined
+        ? last(historia.data)?.versionumero
+        : undefined
   }, [historia])
 
   return isSuccess(historia) ? (

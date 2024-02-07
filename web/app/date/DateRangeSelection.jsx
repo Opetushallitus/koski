@@ -64,8 +64,8 @@ export default class DateRangeSelection extends React.Component {
                   invalidStartDate
                     ? invalidStartDate.value
                     : from
-                    ? formatFinnishDate(from)
-                    : ''
+                      ? formatFinnishDate(from)
+                      : ''
                 }
                 onChange={this.handleStartDate.bind(this)}
                 ref={(input) => (this.startDateInput = input)}
@@ -78,8 +78,8 @@ export default class DateRangeSelection extends React.Component {
                   invalidEndDate
                     ? invalidEndDate.value
                     : to
-                    ? formatFinnishDate(to)
-                    : ''
+                      ? formatFinnishDate(to)
+                      : ''
                 }
                 onChange={this.handleEndDate.bind(this)}
               />

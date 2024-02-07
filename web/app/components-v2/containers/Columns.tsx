@@ -87,10 +87,10 @@ const responsiveClassNames = <T extends string | number>(
   value === undefined
     ? []
     : typeof value === 'object'
-    ? Object.entries(value)
-        .map(([name, t]) => (t ? build(name, t) : null))
-        .filter(nonNull)
-    : [build('default', value)]
+      ? Object.entries(value)
+          .map(([name, t]) => (t ? build(name, t) : null))
+          .filter(nonNull)
+      : [build('default', value)]
 
 export const isResponsiveValueObj = <T,>(
   a: ResponsiveValue<T>

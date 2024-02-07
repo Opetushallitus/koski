@@ -142,10 +142,10 @@ describe('Lukiokoulutus2019', function () {
       })
       describe('Kaikkien moduulien tiedot', function () {
         it('voidaan avata yksitellen virheettömästi', function () {
-          Kurssi.findAll().forEach(function (moduuli) {
-            expect(moduuli.detailsText()).to.equal('')
-            moduuli.toggleDetails()
-            expect(moduuli.detailsText().length > 10).to.equal(true)
+          Kurssi.findAll().forEach(function (mod) {
+            expect(mod.detailsText()).to.equal('')
+            mod.toggleDetails()
+            expect(mod.detailsText().length > 10).to.equal(true)
           })
         })
       })

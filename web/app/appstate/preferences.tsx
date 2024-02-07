@@ -390,10 +390,10 @@ export const classPreferenceName = (clss: any): string => {
     typeof clss === 'string'
       ? clss
       : '$class' in clss
-      ? clss.$class
-      : 'className' in clss
-      ? clss.className
-      : `${clss}`
+        ? clss.$class
+        : 'className' in clss
+          ? clss.className
+          : `${clss}`
   return pipe(
     name.split('.'),
     A.last,

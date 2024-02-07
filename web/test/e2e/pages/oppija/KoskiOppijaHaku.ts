@@ -39,7 +39,7 @@ export class KoskiOppijaHaku {
       clickOnFirst: async () => {
         await expect(this.hakutulokset).toBeVisible()
         await expect(this.hakutulokset).not.toBeEmpty()
-        await this.hakutulokset.first().getByRole("link").click()
+        await this.hakutulokset.first().getByRole('link').click()
         await expect(this.page).toHaveURL(/\/koski\/oppija\//)
       }
     }

@@ -53,7 +53,7 @@ function findFirst(selector, base) {
   return function () {
     var baseElem = toElement(base)
     var result = baseElem ? baseElem.find(selector) : S(selector)
-    if (result.length == 0) {
+    if (result.length === 0) {
       var context = baseElem ? htmlOf(baseElem) : 'document'
       throw new Error('Element ' + selector + ' not found in ' + context)
     }
@@ -71,7 +71,7 @@ wait = {
   waitIntervalMs: 10,
   until: function (condition, maxWaitMs) {
     return function () {
-      if (maxWaitMs == undefined) maxWaitMs = testTimeoutDefault
+      if (maxWaitMs === undefined) maxWaitMs = testTimeoutDefault
       var deferred = Q.defer()
       var count = Math.floor(maxWaitMs / wait.waitIntervalMs)
 
@@ -197,20 +197,20 @@ function goForward() {
 
 function insertExample(name) {
   return function () {
-    return getJson('/koski/api/documentation/examples/' + name).then(function (
-      data
-    ) {
-      return putJson('/koski/api/oppija', data).catch(function () {})
-    })
+    return getJson('/koski/api/documentation/examples/' + name).then(
+      function (data) {
+        return putJson('/koski/api/oppija', data).catch(function () {})
+      }
+    )
   }
 }
 
 var isIE =
-  navigator.appName == 'Microsoft Internet Explorer' ||
+  navigator.appName === 'Microsoft Internet Explorer' ||
   !!(
     navigator.userAgent.match(/Trident/) || navigator.userAgent.match(/rv:11/)
   ) ||
-  (typeof $.browser !== 'undefined' && $.browser.msie == 1)
+  (typeof $.browser !== 'undefined' && $.browser.msie === 1)
 
 function triggerEvent(selector, eventName) {
   return function () {
@@ -332,13 +332,13 @@ function sanitizeText(text) {
     .replace(/||||||\u00ad/g, '')
 }
 
-function extractAsText(el, subElement) {
+function extractAsText(el, subElem) {
   el = evalFunc(el)
   if (isJQuery(el) && el.length > 1) {
     return extractMultiple(el)
   }
   if (el.nodeType === 3) return el.textContent.trim()
-  if (el.nodeType && el.nodeType != 1) return ''
+  if (el.nodeType && el.nodeType !== 1) return ''
 
   el = $(el)
   var element = el[0]
@@ -346,7 +346,7 @@ function extractAsText(el, subElement) {
   if (el.hasClass('toggle-edit') || el.hasClass('opintosuoritusote')) return ''
 
   var isBlockElement =
-    element.tagName == 'SECTION' ||
+    element.tagName === 'SECTION' ||
     ['block', 'table', 'table-row', 'table-row-group', 'list-item'].indexOf(
       (element.currentStyle || window.getComputedStyle(element, '')).display
     ) >= 0
@@ -355,7 +355,7 @@ function extractAsText(el, subElement) {
   var text = sanitizeText(
     separator + extractMultiple(element.childNodes) + separator
   )
-  return subElement && isBlockElement ? text : text.trim()
+  return subElem && isBlockElement ? text : text.trim()
 
   function nonEmpty(x) {
     return x.trim().length > 0
@@ -365,8 +365,8 @@ function extractAsText(el, subElement) {
       toArray(elements).map(extractSubElement).filter(nonEmpty).join(' ')
     ).trim()
   }
-  function extractSubElement(el) {
-    return extractAsText(el, true)
+  function extractSubElement(e) {
+    return extractAsText(e, true)
   }
 }
 

@@ -163,7 +163,10 @@ describe('TUVA', function () {
               function () {
                 return tuva
                   .selectOsasuoritus('Valinnaiset opinnot')()
-                  .lisääLaajuus(2, '.tuva-osasuoritusrivi-1 .property.laajuus.arvo')()
+                  .lisääLaajuus(
+                    2,
+                    '.tuva-osasuoritusrivi-1 .property.laajuus.arvo'
+                  )()
               },
               editor.saveChanges,
               opinnot.avaaKaikki

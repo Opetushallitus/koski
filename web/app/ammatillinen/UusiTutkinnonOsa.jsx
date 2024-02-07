@@ -47,8 +47,8 @@ export default ({
   )
     ? 'yhteisenosittaisenammatillisentutkinnontutkinnonosansuoritus'
     : isOsittaisenMuunOsanSuoritus(suoritus, groupId)
-    ? 'muunosittaisenammatillisentutkinnontutkinnonosansuoritus'
-    : undefined
+      ? 'muunosittaisenammatillisentutkinnontutkinnonosansuoritus'
+      : undefined
 
   const suoritusPrototype = selectTutkinnonOsanSuoritusPrototype(
     suoritusPrototypes,
@@ -76,10 +76,13 @@ export default ({
   const osatP = diaarinumero
     ? fetchLisättävätTutkinnonOsat(diaarinumero, suoritustapa, groupId)
     : isYhteinenTutkinnonOsa(suoritus)
-    ? koodistoValues('ammatillisenoppiaineet').map((oppiaineet) => {
-        return { osat: oppiaineet, paikallinenOsa: true, osanOsa: true }
-      })
-    : Bacon.constant({ osat: [], paikallinenOsa: canAddPaikallinen(suoritus) })
+      ? koodistoValues('ammatillisenoppiaineet').map((oppiaineet) => {
+          return { osat: oppiaineet, paikallinenOsa: true, osanOsa: true }
+        })
+      : Bacon.constant({
+          osat: [],
+          paikallinenOsa: canAddPaikallinen(suoritus)
+        })
 
   const addTutkinnonOsa = (
     koulutusmoduuli,
