@@ -194,9 +194,9 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
 
       <TestIdRoot id="suoritusTabs">
         <Tabs
-          key={`tabs-${props.form.state.suoritukset.length}`}
-          onSelect={changeSuoritusTab}
           tabs={suoritusTabs}
+          active={suoritusIndex}
+          onSelect={changeSuoritusTab}
         />
       </TestIdRoot>
 
