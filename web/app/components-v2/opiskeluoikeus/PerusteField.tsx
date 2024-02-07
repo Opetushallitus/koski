@@ -5,15 +5,57 @@ import { CommonProps } from '../CommonProps'
 import { OptionList, Select } from '../controls/Select'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
 import { TestIdText } from '../../appstate/useTestId'
+import {
+  mapError,
+  mapInitial,
+  mapLoading,
+  mapSuccess,
+  useApiWithParams
+} from '../../api-fetch'
+import { fetchPerustelinkki, Perustelinkki } from '../../util/koskiApi'
+import { Trans } from '../texts/Trans'
+import { useTree } from '../../appstate/tree'
 
 type PerusteViewProps = CommonProps<FieldViewerProps<string | undefined, {}>>
 
-// TODO: Perusteen linkitys
 export const PerusteView: React.FC<PerusteViewProps> = (props) => {
+  const { TreeNode, ...tree } = useTree()
+
+  return props.value ? (
+    <PerusteViewLink diaarinumero={props.value} />
+  ) : (
+    <TestIdText id="peruste.value">{'-'}</TestIdText>
+  )
+}
+
+export const PerusteViewLink: React.FC<{ diaarinumero: string }> = ({
+  diaarinumero
+}) => {
+  const { TreeNode, ...tree } = useTree()
+
+  const perustelinkkiResponse = useApiWithParams(fetchPerustelinkki, [
+    diaarinumero
+  ])
+
   return (
-    <div>
-      <TestIdText id="peruste.value">{props.value || '-'}</TestIdText>
-    </div>
+    <TreeNode>
+      {mapInitial(perustelinkkiResponse, () => (
+        <span>{diaarinumero}</span>
+      ))}
+      {mapLoading(perustelinkkiResponse, () => (
+        <Trans>{'Haetaan'}</Trans>
+      ))}
+      {mapError(perustelinkkiResponse, () => (
+        <span>{diaarinumero}</span>
+      ))}
+      {mapSuccess(perustelinkkiResponse, (responseData: Perustelinkki) => (
+        <>
+          <a href={responseData.url}>
+            <TestIdText id="peruste.value">{diaarinumero}</TestIdText>
+          </a>
+        </>
+      ))}
+    </TreeNode>
   )
 }
 
