@@ -1,7 +1,8 @@
 .tutkinto-rakenne {
   margin-top: 25px;
 
-  .suoritustapa, .osaamisala {
+  .suoritustapa,
+  .osaamisala {
     width: 350px;
   }
 
@@ -21,7 +22,9 @@
       color: @color-darkgray-text;
 
       &.suoritettu {
-        transition: background-color 1500ms ease-in,color 1500ms ease-in;
+        transition:
+          background-color 1500ms ease-in,
+          color 1500ms ease-in;
         background: @color-neutral-gray;
         color: black;
       }
@@ -67,7 +70,7 @@
           line-height: 38px;
           text-align: center;
           display: inline-block;
-          border: 1px solid #E6DBD8;
+          border: 1px solid #e6dbd8;
           border-right-width: 0;
           position: relative;
 
@@ -75,14 +78,15 @@
             border-right-width: 1px;
           }
 
-          &:hover, &.selected {
+          &:hover,
+          &.selected {
             &:before {
               display: block;
               position: absolute;
               width: 100%;
               height: 100%;
               border: 3px solid #4194bf;
-              content: "";
+              content: '';
               top: -3px;
               z-index: (@z-index-base + 1);
               left: -3px;

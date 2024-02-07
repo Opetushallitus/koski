@@ -23,7 +23,7 @@
       position: relative;
       &:not(.selected) {
         background: white;
-        border: 1px solid #D5D5D5;
+        border: 1px solid #d5d5d5;
         cursor: pointer;
         .opiskeluoikeustyyppi {
           color: @color-link-blue;
@@ -34,11 +34,11 @@
         background: @color-dark-blue;
         border: 1px solid @color-dark-blue;
         &:after {
-          content: "";
+          content: '';
           .Triangle(10px, @color-dark-blue, top);
           position: absolute;
           bottom: -20px;
-          left: ~"calc(50% - 10px)";
+          left: ~'calc(50% - 10px)';
         }
       }
     }
@@ -46,9 +46,10 @@
       display: flex;
       align-items: center;
       font-size: 14px;
-      border: 1px dashed #D5D5D5;
+      border: 1px dashed #d5d5d5;
       padding: 15px;
-      > .plus, > a {
+      > .plus,
+      > a {
         color: @color-link-blue;
       }
     }
@@ -71,7 +72,7 @@
       pointer-events: none;
     }
     .modal {
-      left: ~"calc(50% - 315px)";
+      left: ~'calc(50% - 315px)';
       .modal-content {
       }
     }
@@ -90,14 +91,15 @@
       opacity: 0.2;
       pointer-events: none;
     }
-    &.edit, &.dirty {
+    &.edit,
+    &.dirty {
       padding-bottom: 40px;
     }
     .turvakielto {
       cursor: pointer;
       &:after {
         .FontAwesomeSymbol;
-        content: "";
+        content: '';
         font-size: 25px;
         margin-left: 8px;
         color: @color-red;
@@ -116,11 +118,11 @@
         padding: 5px;
         z-index: 100;
         &:after {
-          content: "";
+          content: '';
           .Triangle(10px, @color-darkgray, bottom);
           position: absolute;
           top: -20px;
-          left: ~"calc(50% - 10px)";
+          left: ~'calc(50% - 10px)';
         }
       }
     }
@@ -137,7 +139,7 @@
     transform: translate(-50%);
     background-color: white;
     padding: 10px 30px 30px;
-    border: 1px solid #D5D5D5;
+    border: 1px solid #d5d5d5;
     h1 {
       font-size: 30px;
       font-weight: lighter;
@@ -148,8 +150,8 @@
     list-style: none;
     padding: 0;
     > li {
-      background: #FFFFFF;
-      border: 1px solid #D5D5D5;
+      background: #ffffff;
+      border: 1px solid #d5d5d5;
       border-radius: 2px;
       padding: 0;
       margin-bottom: 10px;
@@ -159,7 +161,7 @@
   h2.oppija-heading {
     font-weight: 600;
     font-size: 1.714rem;
-    color: #2A2A2A;
+    color: #2a2a2a;
     letter-spacing: 0;
     margin-bottom: 5px;
     margin-top: 12px;
@@ -195,7 +197,9 @@
     bottom: -60px;
     opacity: 0;
     z-index: @z-index-edit-bar;
-    transition: bottom 1s, opacity 1s;
+    transition:
+      bottom 1s,
+      opacity 1s;
     &.visible {
       bottom: 0;
       opacity: 1;

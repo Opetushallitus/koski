@@ -1,16 +1,15 @@
-@import "colors.less";
-@import "mixins.less";
+@import 'colors.less';
+@import 'mixins.less';
 
 @element-header-height: 80px;
 @margin-mobile-left: 5%;
 
 .omadata-page {
+  background-color: @color-white;
 
-   background-color: @color-white;
-
-    a {
-      text-decoration: underline;
-    }
+  a {
+    text-decoration: underline;
+  }
 
   .header {
     display: flex;
@@ -88,7 +87,6 @@
       width: 18px;
       margin-right: 20px;
     }
-
   }
   .acceptance-container {
     color: @color-black;
@@ -123,13 +121,13 @@
       }
 
       .dateofbirth {
-          font-size: 16px;
-          font-weight: 300;
-          letter-spacing: 0.2px;
+        font-size: 16px;
+        font-weight: 300;
+        letter-spacing: 0.2px;
 
-          @media @media-full {
-            margin-left: 1ch;
-          }
+        @media @media-full {
+          margin-left: 1ch;
+        }
       }
     }
 
@@ -198,125 +196,124 @@
       }
     }
 
-      .acceptance-title {
-        font-size: 14px;
-        letter-spacing: 0.3px;
-        text-align: left;
+    .acceptance-title {
+      font-size: 14px;
+      letter-spacing: 0.3px;
+      text-align: left;
 
-        @media @media-phone {
-          font-size: 12px;
-        }
+      @media @media-phone {
+        font-size: 12px;
       }
+    }
 
-      .acceptance-control-mydata {
-        font-size: 20px;
-        letter-spacing: 0.3px;
-        color: @color-black;
-        margin-top: 15px;
-      }
+    .acceptance-control-mydata {
+      font-size: 20px;
+      letter-spacing: 0.3px;
+      color: @color-black;
+      margin-top: 15px;
+    }
 
-      .acceptance-member-name {
-        font-size: 24px;
-        font-weight: 600;
-        text-align: left;
-        color: @color-link-blue;
-        margin: 24px 0;
+    .acceptance-member-name {
+      font-size: 24px;
+      font-weight: 600;
+      text-align: left;
+      color: @color-link-blue;
+      margin: 24px 0;
 
-        @media @media-phone {
-          font-size: 15px;
-        }
-      }
-
-      .acceptance-share-info {
+      @media @media-phone {
         font-size: 15px;
-        line-height: 1.38;
-        text-align: left;
+      }
+    }
 
-        ul {
-          -webkit-padding-start: 24px;
-          -webkit-margin-before: 0;
+    .acceptance-share-info {
+      font-size: 15px;
+      line-height: 1.38;
+      text-align: left;
 
-          li {
-            list-style-type: disc;
-            margin: 8px;
+      ul {
+        -webkit-padding-start: 24px;
+        -webkit-margin-before: 0;
 
-             > li {
-              font-size: 12px;
-            }
+        li {
+          list-style-type: disc;
+          margin: 8px;
+
+          > li {
+            font-size: 12px;
           }
+        }
+      }
+    }
 
+    .acceptance-paragraphs {
+      margin-top: 28px;
+    }
+
+    .acceptance-return-container {
+      .acceptance-return-automatically {
+        font-size: 14px;
+        font-weight: bold;
+        color: @color-link-blue;
+        margin: 16px 0;
+      }
+    }
+
+    .acceptance-button-container {
+      position: fixed;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      background-color: @color-link-blue;
+      text-align: center;
+
+      @media @media-phone {
+        font-size: 16px;
+        align-items: center;
+      }
+
+      .koski-button {
+        border: 2px solid @color-white;
+      }
+
+      .koski-button:focus {
+        background-color: @color-dark-blue;
+      }
+
+      .acceptance-button {
+        margin-top: 16px;
+        width: 209px;
+        font-size: 18px;
+        font-weight: 600;
+
+        @media @media-phone {
+          width: 72.6%;
+          margin-bottom: 16px;
         }
       }
 
-      .acceptance-paragraphs {
-        margin-top: 28px;
-      }
+      .decline-link {
+        font-size: 18px;
+        margin-bottom: 16px;
 
-      .acceptance-return-container {
-        .acceptance-return-automatically {
+        @media @media-phone {
           font-size: 14px;
-          font-weight: bold;
-          color: @color-link-blue;
+        }
+
+        @media @media-full {
           margin: 16px 0;
         }
-      }
 
-      .acceptance-button-container {
-        position: fixed;
-        left: 0;
-        bottom: 0;
-        width: 100%;
-        background-color: @color-link-blue;
-        text-align: center;
-
-        @media @media-phone {
-          font-size: 16px;
-          align-items: center;
+        a {
+          color: @color-white;
+          line-height: 18px;
+          font-weight: bold;
         }
-
-        .koski-button {
-          border: 2px solid @color-white;
-        }
-
-        .koski-button:focus {
-          background-color: @color-dark-blue;
-        }
-
-        .acceptance-button {
-          margin-top: 16px;
-          width: 209px;
-          font-size: 18px;
-          font-weight: 600;
-
-          @media @media-phone {
-            width: 72.6%;
-            margin-bottom: 16px;
-          }
-        }
-
-        .decline-link {
-          font-size: 18px;
-          margin-bottom: 16px;
-
-          @media @media-phone {
-            font-size: 14px;
-          }
-
-          @media @media-full {
-            margin: 16px 0;
-          }
-
-          a {
-            color: @color-white;
-            line-height: 18px;
-            font-weight: bold;
-          }
-          a:focus {
-            border-radius: 2px;
-            border: 2px @color-dark-blue solid;
-          }
+        a:focus {
+          border-radius: 2px;
+          border: 2px @color-dark-blue solid;
         }
       }
+    }
   }
 
   .footer {

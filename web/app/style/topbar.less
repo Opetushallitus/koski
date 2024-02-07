@@ -1,13 +1,13 @@
-@import "mixins";
-@import "z-indices";
-@import "constants";
-@import "colors";
+@import 'mixins';
+@import 'z-indices';
+@import 'constants';
+@import 'colors';
 
 @sidebar-width: 200px;
 @topbar-height: 93px;
 
 #content[data-inraamit='oppija'] #topbar {
- display: none;
+  display: none;
 }
 
 #topbar {
@@ -18,7 +18,8 @@
   z-index: @z-index-topbar;
   height: 48px;
 
-  &.topbar-omattiedot, &.suoritusjako {
+  &.topbar-omattiedot,
+  &.suoritusjako {
     padding: 0;
 
     & > .topbar-content-wrapper {
@@ -29,7 +30,7 @@
 }
 
 #topbar.inraamit {
-  background: #1E516D;
+  background: #1e516d;
   position: relative;
   color: white;
   text-align: center;
@@ -38,7 +39,7 @@
 }
 
 .topbarnav {
-  background: #1E516D;
+  background: #1e516d;
   position: absolute;
   left: 0;
   right: 0;
@@ -97,7 +98,8 @@
       .RemoveSymbol;
     }
     &.hide {
-      a, span {
+      a,
+      span {
         display: none;
       }
       height: 0;
@@ -107,7 +109,7 @@
 
 #topbar.local {
   background: rgb(21, 158, 203);
-  box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.10);
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.1);
   color: white;
 
   #logo {
@@ -126,7 +128,7 @@
     }
 
     &:after {
-      content: "";
+      content: '';
       .Triangle(12px, #ffffff, left);
       margin-left: 155px;
       margin-top: -24px;
@@ -175,7 +177,6 @@
         line-height: 27px;
       }
     }
-
   }
 
   .edit-localizations {

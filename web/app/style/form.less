@@ -1,27 +1,31 @@
 .ErrorMixin {
-  background: #FFE9E9;
-  border: 1px solid #E09191;
+  background: #ffe9e9;
+  border: 1px solid #e09191;
   border-radius: 2px;
   box-shadow: none;
   &:focus {
     border-color: @color-red;
     background: @color-lightred-background;
-    border: 1px solid #E09191;
+    border: 1px solid #e09191;
   }
 }
 
 .error {
-  input, input[type=text] {
+  input,
+  input[type='text'] {
     &:not(:focus) {
-      .ErrorMixin
+      .ErrorMixin;
     }
   }
 }
 
-input[type=text], input[type=password], .text-like-input, textarea {
-  background: #FFFFFF;
-  border: 1px solid #C1C1C1;
-  box-shadow: inset 0 1px 4px 0 #DADADA;
+input[type='text'],
+input[type='password'],
+.text-like-input,
+textarea {
+  background: #ffffff;
+  border: 1px solid #c1c1c1;
+  box-shadow: inset 0 1px 4px 0 #dadada;
   border-radius: 2px;
   &:not(textarea) {
     height: 35px;
@@ -34,14 +38,15 @@ input[type=text], input[type=password], .text-like-input, textarea {
     box-shadow: none;
   }
 
-  &:disabled, &.disabled {
-    background: #F4F4F4;
+  &:disabled,
+  &.disabled {
+    background: #f4f4f4;
     border: 1px solid @color-disabled;
     box-shadow: none;
   }
 
   &.error:not(:focus) {
-    .ErrorMixin
+    .ErrorMixin;
   }
 }
 
@@ -58,10 +63,17 @@ textarea {
 
 form {
   label {
-    color: #2B2B2B;
+    color: #2b2b2b;
     letter-spacing: 0;
     position: relative;
-    > input, > span > input, select , > .text-like-input, > .calendar-input, > .organisaatio, .dropdown, > .autocomplete {
+    > input,
+    > span > input,
+    select,
+    > .text-like-input,
+    > .calendar-input,
+    > .organisaatio,
+    .dropdown,
+    > .autocomplete {
       display: block;
       margin-top: 5px;
       margin-bottom: 18px;

@@ -14,7 +14,7 @@
     box-shadow: none;
   }
 
-  & > input[type=text] {
+  & > input[type='text'] {
     width: 100%;
     height: @copyable-text-height-singleline;
     box-shadow: none;
@@ -23,14 +23,15 @@
   @media @media-full {
     display: inline-block;
 
-    & > textarea, & > input {
+    & > textarea,
+    & > input {
       width: @copyable-text-width;
       border-right: none;
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
     }
 
-    & > input[type=text] {
+    & > input[type='text'] {
       width: 80%;
 
       &:focus {

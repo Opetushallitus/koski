@@ -410,8 +410,8 @@ const getUsedModelForOptionalModel = (
     prototypeModel && isEditableModel(prototypeModel)
       ? getEditor(prototypeModel)
       : model && isEditableModel(model)
-      ? getEditor(model)
-      : undefined
+        ? getEditor(model)
+        : undefined
   const createEmpty = (editor && editor.createEmpty) || R.identity
   const emptyModel = createEmpty(prototypeModel || model!)
 
@@ -1060,8 +1060,8 @@ export const resolveActualModel = <T extends object>(
     actualModelsWithAnnotations.length === 1
       ? actualModelsWithAnnotations[0]
       : actualModels.length > 0
-      ? actualModels[0]
-      : null
+        ? actualModels[0]
+        : null
   return actualModel
     ? contextualizeModel(actualModel, parentModel.context)
     : oneOfModel

@@ -1,6 +1,10 @@
-.suoritusjako .oppija .opiskeluoikeus .omattiedot-suoritus-taulukko .suoritus-group {
+.suoritusjako
+  .oppija
+  .opiskeluoikeus
+  .omattiedot-suoritus-taulukko
+  .suoritus-group {
   > table > tbody > tr > .koesuoritus {
-    display: none
+    display: none;
   }
 }
 
@@ -9,7 +13,7 @@
     > table {
       width: 100%;
       tbody.tutkinnon-osa {
-        &+ tbody.tutkinnon-osa {
+        & + tbody.tutkinnon-osa {
           border-top: 1px solid #eee;
         }
         .suoritus-taulukko {
@@ -22,7 +26,7 @@
         }
       }
       tbody.vst-osasuoritus {
-        &+ tbody.vst-osasuoritus {
+        & + tbody.vst-osasuoritus {
           border-top: 1px solid #eee;
         }
         .suoritus-taulukko {
@@ -35,7 +39,7 @@
         }
       }
       tbody.tuva-osasuoritus {
-        &+ tbody.tuva-osasuoritus {
+        & + tbody.tuva-osasuoritus {
           border-top: 1px solid #eee;
         }
         .suoritus-taulukko {
@@ -47,7 +51,8 @@
           }
         }
       }
-      > tbody.group-header, tbody.taulukko-headers {
+      > tbody.group-header,
+      tbody.taulukko-headers {
         background: @color-neutral-gray;
         th {
           padding-left: 13px;
@@ -70,8 +75,10 @@
         }
       }
 
-      > tbody > tr, > thead > tr {
-        > td, > th {
+      > tbody > tr,
+      > thead > tr {
+        > td,
+        > th {
           padding: 5px 13px 5px 0;
           .omattiedot-phone({
             padding: 3px 5px 3px 0;
@@ -98,7 +105,8 @@
             font-size: 12px;
           }
         });
-        > td.laajuus, > td.arvosana {
+        > td.laajuus,
+        > td.arvosana {
           text-align: right;
           vertical-align: middle;
         }
@@ -112,7 +120,7 @@
           position: relative;
           a.remove-value {
             position: absolute;
-            top: ~"calc(50% - 9px)";
+            top: ~'calc(50% - 9px)';
             left: -11px;
           }
         }
@@ -124,7 +132,8 @@
         }
       }
 
-      tr.details, tr.osasuoritukset {
+      tr.details,
+      tr.osasuoritukset {
         background: white;
         > td {
           padding-left: 45px;
@@ -161,7 +170,8 @@
         }
       }
     }
-    .suoritus-taulukko { // Nested table
+    .suoritus-taulukko {
+      // Nested table
       margin-top: 12px;
     }
     .expand-all {
@@ -210,7 +220,8 @@
           }
         }
 
-        > tbody, > thead {
+        > tbody,
+        > thead {
           > tr {
             > td {
               padding: 4px;
@@ -255,13 +266,17 @@
               }
             }
 
-            > td.arvosana, > th.arvosana,
-            > td.laajuus, > th.laajuus,
-            > td.koepisteet, > th.koepisteet {
+            > td.arvosana,
+            > th.arvosana,
+            > td.laajuus,
+            > th.laajuus,
+            > td.koepisteet,
+            > th.koepisteet {
               text-align: center;
             }
 
-            > th.suoritus, > td.suoritus {
+            > th.suoritus,
+            > td.suoritus {
               width: 100%;
               text-align: left;
             }
@@ -316,7 +331,8 @@
                 color: @color-link-blue;
               }
 
-              &--expanded, &--expanded button {
+              &--expanded,
+              &--expanded button {
                 color: @color-black;
                 font-weight: 600;
               }
@@ -332,7 +348,8 @@
           }
         }
 
-        tr.details, tr.osasuoritukset {
+        tr.details,
+        tr.osasuoritukset {
           > td {
             padding-left: 1.6rem;
 
