@@ -16,7 +16,7 @@ export const OpiskeluoikeusContext =
     setOrganisaatio: () => {}
   })
 
-export type OpiskeluoikeusProviderProps = React.PropsWithChildren
+export type OpiskeluoikeusProviderProps = React.PropsWithChildren<{}>
 
 export const OpiskeluoikeusProvider = (props: OpiskeluoikeusProviderProps) => {
   const [organisaatio, setOrganisaatio] = useState<

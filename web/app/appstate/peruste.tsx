@@ -65,7 +65,7 @@ const PerusteContext = React.createContext<PerusteContextValue>({
   loadPerusteet: () => {}
 })
 
-export type PerusteProviderProps = React.PropsWithChildren
+export type PerusteProviderProps = React.PropsWithChildren<{}>
 
 export type PerusteRecord = Record<string, Peruste[] | typeof Loading>
 

@@ -4,7 +4,7 @@ import { userP } from '../util/user'
 import { GlobalErrorProvider } from './globalErrors'
 import { UserProvider } from './user'
 
-export type OmatTiedotAppStateProviderProps = React.PropsWithChildren
+export type OmatTiedotAppStateProviderProps = React.PropsWithChildren<{}>
 
 export const OmatTiedotAppStateProvider: React.FC<
   OmatTiedotAppStateProviderProps
