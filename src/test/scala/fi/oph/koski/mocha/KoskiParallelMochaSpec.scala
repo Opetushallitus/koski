@@ -43,5 +43,5 @@ object SplitMochaSpecs {
     .mapValues(_.map(_._2))
 
   private def javascriptSpecFilename(str: String) = str.contains("spec/") && str.contains(".js")
-  private def cleanFilename(str: String) = str.trim.replace(",", "").replace("\"","")
+  private def cleanFilename(str: String) = str.trim.replace(",", "").replace("\"","").replace("'","")
 }
