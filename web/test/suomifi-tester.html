@@ -1,258 +1,296 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.0/css/bootstrap.css" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.12/handlebars.js"
-        integrity="sha384-OJP8vATU0kIzgMEX04iqZOczF02qsAhukULSIHo+geJ3sG2AlrJ/8iH61/QJm75m"
-        crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/x2js/1.2.0/xml2json.js"
-        integrity="sha384-90KXfh3z7tnHzayhJLeMCwWOOwPk5MoAx/70SgsyWEFUbeLNlMR1CgST/1uUIHiq"
-        crossorigin="anonymous"></script>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.0/css/bootstrap.css"
+    />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.12/handlebars.js"
+      integrity="sha384-OJP8vATU0kIzgMEX04iqZOczF02qsAhukULSIHo+geJ3sG2AlrJ/8iH61/QJm75m"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/x2js/1.2.0/xml2json.js"
+      integrity="sha384-90KXfh3z7tnHzayhJLeMCwWOOwPk5MoAx/70SgsyWEFUbeLNlMR1CgST/1uUIHiq"
+      crossorigin="anonymous"
+    ></script>
 
-<script id="handlebars-template-fi" type="text/x-handlebars-template">
-{{#*inline "lang-fi"}}
-    {{#if fi}}
-        {{fi}}
-    {{else}}
-        {{#if sv}}
-            {{sv}}
-        {{else}}
-            {{en}}
-        {{/if}}
-    {{/if}}
-{{/inline}}
+    <script id="handlebars-template-fi" type="text/x-handlebars-template">
+      {{#*inline "lang-fi"}}
+          {{#if fi}}
+              {{fi}}
+          {{else}}
+              {{#if sv}}
+                  {{sv}}
+              {{else}}
+                  {{en}}
+              {{/if}}
+          {{/if}}
+      {{/inline}}
 
-<div class="row" >
-  <div class="col-xs-12  col-md-7">
-  <h3>Opiskeluoikeustietoni:</h3>
-{{#.}}
-{{^oppilaitokset.oppilaitos}}
-  Sinulla ei ole opiskeluoikeustietoja rekisterissä.
-{{/oppilaitokset.oppilaitos}}
-{{#objectToArray oppilaitokset.oppilaitos "oppilaitokset.oppilaitos"}}
-{{#oppilaitokset.oppilaitos}}
-<h3>Oppilaitos: {{>lang-fi nimi}}</h3>
-<hr>
-    <ul>
-      {{#objectToArray opiskeluoikeudet.opiskeluoikeus "opiskeluoikeudet.opiskeluoikeus"}}
-      {{#opiskeluoikeudet.opiskeluoikeus}}
-        <li><strong>Koulutuksen nimi: </strong>{{>lang-fi nimi}}</li>
-        {{#if tila}}<li><strong>Opintojen tila: </strong>{{>lang-fi tila}}</li>{{/if}}
-        {{#if alku}}<li><strong>Alkamispäivä: </strong>{{alku}}</li>{{/if}}
-        {{#if loppu}}<li><strong>Päättymispäivä: </strong>{{loppu}}</li>{{/if}}
-        <br>
-      {{/opiskeluoikeudet.opiskeluoikeus}}
+      <div class="row" >
+        <div class="col-xs-12  col-md-7">
+        <h3>Opiskeluoikeustietoni:</h3>
+      {{#.}}
+      {{^oppilaitokset.oppilaitos}}
+        Sinulla ei ole opiskeluoikeustietoja rekisterissä.
+      {{/oppilaitokset.oppilaitos}}
+      {{#objectToArray oppilaitokset.oppilaitos "oppilaitokset.oppilaitos"}}
+      {{#oppilaitokset.oppilaitos}}
+      <h3>Oppilaitos: {{>lang-fi nimi}}</h3>
+      <hr>
+          <ul>
+            {{#objectToArray opiskeluoikeudet.opiskeluoikeus "opiskeluoikeudet.opiskeluoikeus"}}
+            {{#opiskeluoikeudet.opiskeluoikeus}}
+              <li><strong>Koulutuksen nimi: </strong>{{>lang-fi nimi}}</li>
+              {{#if tila}}<li><strong>Opintojen tila: </strong>{{>lang-fi tila}}</li>{{/if}}
+              {{#if alku}}<li><strong>Alkamispäivä: </strong>{{alku}}</li>{{/if}}
+              {{#if loppu}}<li><strong>Päättymispäivä: </strong>{{loppu}}</li>{{/if}}
+              <br>
+            {{/opiskeluoikeudet.opiskeluoikeus}}
+            {{/objectToArray}}
+          </ul>
+      {{/oppilaitokset.oppilaitos}}
       {{/objectToArray}}
-    </ul>
-{{/oppilaitokset.oppilaitos}}
-{{/objectToArray}}
-{{/.}}
-</div>
-  <div class="col-xs-12  col-md-5">
-  <h3>Lisätietoja:</h3>
-  <br>
-  <ul>
-   <li><a><u>Tietosuojaseloste</u></a></li>
-   <li><a><u>Kirjautumalla Oma opintopolku -palveluun voit tarkastella opiskeluoikeus- ja opintosuoritustietojasi.</u></a></li>
-   <br>
-   <b>Huomioithan, että palvelussa ei pääsääntöisesti  näytetä seuraavia tietoja:</b>
-   <dd>- Korkeakoulututkintoja ennen vuotta 1995. Tässä voi olla korkeakoulukohtaisia poikkeuksia.</dd>
-   <dd>- Ennen vuotta 1990 suoritettuja ylioppilastutkintoja.</dd>
-   <dd>- Ennen vuoden 2018 tammikuuta suoritettuja peruskoulun, lukion tai ammattikoulun suorituksia ja opiskeluoikeuksia.</dd>
-   <br>
-   <li><p>Mikäli havaitset tiedoissasi virheitä, korjaukset tekee <u>oppilaitos.</u> Voit lähettää korjauspyynnön sähköisesti kirjautumalla <a><u>Oma opintopolku -palveluun</u></a> tai ottamalla yhteyttä suoraan oppilaitokseesi. </p></li>
-  </ul>
-    </div>
-  </div>
-
-</script>
-
-<script id="handlebars-template-sv" type="text/x-handlebars-template">
-{{#*inline "lang-sv"}}
-    {{#if sv}}
-        {{sv}}
-    {{else}}
-        {{#if fi}}
-            {{fi}}
-        {{else}}
-            {{en}}
-        {{/if}}
-    {{/if}}
-{{/inline}}
-
-<div class="row" >
-  <div class="col-xs-12  col-md-7">
-  <h3>Mina uppgifter om studierätt:</h3>
-{{#.}}
-{{#objectToArray oppilaitokset.oppilaitos "oppilaitokset.oppilaitos"}}
-{{#oppilaitokset.oppilaitos}}
-<h3>Läroanstalt: {{>lang-sv nimi}} </h3>
-<hr>
-    <ul>
-      {{#objectToArray opiskeluoikeudet.opiskeluoikeus "opiskeluoikeudet.opiskeluoikeus"}}
-      {{#opiskeluoikeudet.opiskeluoikeus}}
-        <li><strong>Utbildning: </strong>{{>lang-sv nimi}}</li>
-        {{#if tila}}<li><strong>Status för studier: </strong>{{>lang-sv tila}}</li>{{/if}}
-        {{#if alku}}<li><strong>Inledningsdatum: </strong>{{alku}}</li>{{/if}}
-        {{#if loppu}}<li><strong>Avslutningsdatum: </strong>{{loppu}}</li>{{/if}}
+      {{/.}}
+      </div>
+        <div class="col-xs-12  col-md-5">
+        <h3>Lisätietoja:</h3>
         <br>
-      {{/opiskeluoikeudet.opiskeluoikeus}}
+        <ul>
+         <li><a><u>Tietosuojaseloste</u></a></li>
+         <li><a><u>Kirjautumalla Oma opintopolku -palveluun voit tarkastella opiskeluoikeus- ja opintosuoritustietojasi.</u></a></li>
+         <br>
+         <b>Huomioithan, että palvelussa ei pääsääntöisesti  näytetä seuraavia tietoja:</b>
+         <dd>- Korkeakoulututkintoja ennen vuotta 1995. Tässä voi olla korkeakoulukohtaisia poikkeuksia.</dd>
+         <dd>- Ennen vuotta 1990 suoritettuja ylioppilastutkintoja.</dd>
+         <dd>- Ennen vuoden 2018 tammikuuta suoritettuja peruskoulun, lukion tai ammattikoulun suorituksia ja opiskeluoikeuksia.</dd>
+         <br>
+         <li><p>Mikäli havaitset tiedoissasi virheitä, korjaukset tekee <u>oppilaitos.</u> Voit lähettää korjauspyynnön sähköisesti kirjautumalla <a><u>Oma opintopolku -palveluun</u></a> tai ottamalla yhteyttä suoraan oppilaitokseesi. </p></li>
+        </ul>
+          </div>
+        </div>
+    </script>
+
+    <script id="handlebars-template-sv" type="text/x-handlebars-template">
+      {{#*inline "lang-sv"}}
+          {{#if sv}}
+              {{sv}}
+          {{else}}
+              {{#if fi}}
+                  {{fi}}
+              {{else}}
+                  {{en}}
+              {{/if}}
+          {{/if}}
+      {{/inline}}
+
+      <div class="row" >
+        <div class="col-xs-12  col-md-7">
+        <h3>Mina uppgifter om studierätt:</h3>
+      {{#.}}
+      {{#objectToArray oppilaitokset.oppilaitos "oppilaitokset.oppilaitos"}}
+      {{#oppilaitokset.oppilaitos}}
+      <h3>Läroanstalt: {{>lang-sv nimi}} </h3>
+      <hr>
+          <ul>
+            {{#objectToArray opiskeluoikeudet.opiskeluoikeus "opiskeluoikeudet.opiskeluoikeus"}}
+            {{#opiskeluoikeudet.opiskeluoikeus}}
+              <li><strong>Utbildning: </strong>{{>lang-sv nimi}}</li>
+              {{#if tila}}<li><strong>Status för studier: </strong>{{>lang-sv tila}}</li>{{/if}}
+              {{#if alku}}<li><strong>Inledningsdatum: </strong>{{alku}}</li>{{/if}}
+              {{#if loppu}}<li><strong>Avslutningsdatum: </strong>{{loppu}}</li>{{/if}}
+              <br>
+            {{/opiskeluoikeudet.opiskeluoikeus}}
+            {{/objectToArray}}
+            </ul>
+      {{/oppilaitokset.oppilaitos}}
       {{/objectToArray}}
+      {{/.}}
+      </div>
+        <div class="col-xs-12  col-md-5">
+        <h3>Ytterligare information:</h3>
+        <br>
+        <ul>
+         <li><a><u>Dataskyddsbeskrivning</u></a></li>
+         <li><a><u>Genom att logga in i tjänsten Min studieinfo ser du dina egna uppgifter om studierätt och -prestationer.</u></a></li>
+         <br>
+         <b>Observera att följande uppgifter i regel inte finns i tjänsten:</b>
+         <dd>- Högskoleexamina som avlagts före 1995. Det kan förekomma undantag beroende på högskolan.</dd>
+         <dd>- Studentexamina som avlagts före 1990.</dd>
+         <dd>- Studierätt och -prestationer inom grundläggande utbildningen, gymnasiet och yrkesutbildningen som registrerats före januari 2018.</dd>
+         <br>
+         <li><p>Om du upptäcker fel i dina uppgifter är det <u>läroanstalten</u> som gör korrigeringarna. Du kan begära att korrigeringen görs antingen elektroniskt genom att logga in på <a><u>Min studieinfo</u></a> eller genom att kontakta läroanstalten.</p></li>
+         </ul>
+          </div>
+        </div>
+    </script>
+
+    <script id="handlebars-template-en" type="text/x-handlebars-template">
+      {{#*inline "lang-en"}}
+          {{#if en}}
+              {{en}}
+          {{else}}
+              {{#if fi}}
+                  {{fi}}
+              {{else}}
+                  {{sv}}
+              {{/if}}
+          {{/if}}
+      {{/inline}}
+
+      <div class="row" >
+        <div class="col-xs-12  col-md-7">
+        <h3>My rights to study:</h3>
+      {{#.}}
+      {{#objectToArray oppilaitokset.oppilaitos "oppilaitokset.oppilaitos"}}
+      {{#oppilaitokset.oppilaitos}}
+      <h3>Educational institution: {{>lang-en nimi}} </h3>
+      <hr>
+        <ul>
+            {{#objectToArray opiskeluoikeudet.opiskeluoikeus "opiskeluoikeudet.opiskeluoikeus"}}
+            {{#opiskeluoikeudet.opiskeluoikeus}}
+              <li><strong>Education: </strong>{{>lang-en nimi}} </li>
+              {{#if tila}}<li><strong>Status of studies: </strong>{{>lang-en tila}}</li>{{/if}}
+              {{#if alku}}<li><strong>Start day: </strong>{{alku}}</li>{{/if}}
+              {{#if loppu}}<li><strong>End day: </strong>{{loppu}}</li>{{/if}}
+              <br>
+            {{/opiskeluoikeudet.opiskeluoikeus}}
+            {{/objectToArray}}
+       </ul>
+      {{/oppilaitokset.oppilaitos}}
+      {{/objectToArray}}
+      {{/.}}
+      </div>
+        <div class="col-xs-12  col-md-5">
+        <h3>Further information</h3>
+        <br>
+        <ul>
+         <li><a><u>Log in to My Studyinfo to view and check information about your rights to study and completed studies.
+      </u></a></li>
+         <li>Currently My Studyinfo service supports only Finnish and Swedish languages, but will be available in English during 2019.
+      </li>
+         <br>
+         <b>Please note that in general My Studyinfo is not able show the following information:</b>
+         <dd>- Higher education before the year 1995.</dd>
+         <dd>- Matriculation examinations before the year 1990.</dd>
+         <dd>- Basic education and secondary education before the year 2018.</dd>
+         <br>
+         <li><p>If you detect erroneous information, the educational institution is responsible for correcting the information. You can send an electronic correction request by logging in to <a><u>My studyinfo-service </u></a>or directly contact your educational institution.</p></li>
+         </ul>
+          </div>
+        </div>
+    </script>
+  </head>
+
+  <body>
+    <div class="container">
+      <h2></h2>
+
+      <p>Näin käytät tätä testeriä:</p>
+      <ul>
+        <li>Käynnistä Koski lokaalisti (omalla läppärillä)</li>
+        <li>
+          Kirjaudu sisään Suomi/Suomi virkailijatunnuksella
+          <a href="http://localhost:7021/koski/virkailija"
+            >http://localhost:7021/koski/virkailija</a
+          >
+        </li>
+        <li>
+          Avaa tämä testeri:
+          <a href="http://localhost:7021/koski/test/suomifi-tester.html"
+            >http://localhost:7021/koski/test/suomifi-tester.html</a
+          >
+        </li>
+        <li>Syötä mock-oppijan hetu</li>
       </ul>
-{{/oppilaitokset.oppilaitos}}
-{{/objectToArray}}
-{{/.}}
-</div>
-  <div class="col-xs-12  col-md-5">
-  <h3>Ytterligare information:</h3>
-  <br>
-  <ul>
-   <li><a><u>Dataskyddsbeskrivning</u></a></li>
-   <li><a><u>Genom att logga in i tjänsten Min studieinfo ser du dina egna uppgifter om studierätt och -prestationer.</u></a></li>
-   <br>
-   <b>Observera att följande uppgifter i regel inte finns i tjänsten:</b>
-   <dd>- Högskoleexamina som avlagts före 1995. Det kan förekomma undantag beroende på högskolan.</dd>
-   <dd>- Studentexamina som avlagts före 1990.</dd>
-   <dd>- Studierätt och -prestationer inom grundläggande utbildningen, gymnasiet och yrkesutbildningen som registrerats före januari 2018.</dd>
-   <br>
-   <li><p>Om du upptäcker fel i dina uppgifter är det <u>läroanstalten</u> som gör korrigeringarna. Du kan begära att korrigeringen görs antingen elektroniskt genom att logga in på <a><u>Min studieinfo</u></a> eller genom att kontakta läroanstalten.</p></li>
-   </ul>
+
+      <form
+        onsubmit="doSoapRequest()"
+        style="margin-top: 10px"
+        class="form-hxorizontal"
+        name="myform"
+      >
+        <div class="form-group">
+          <label class="control-label">Hetu</label>
+          <input
+            type="text"
+            name="hetu"
+            class="form-control"
+            style="width: 10em"
+          />
+        </div>
+        <div class="form-group">
+          <label class="control-label">Kieli</label>
+          <label class="radio-inline">
+            <input type="radio" name="kieli" value="fi" checked /> fi
+          </label>
+          <label class="radio-inline">
+            <input type="radio" name="kieli" value="sv" /> sv
+          </label>
+          <label class="radio-inline">
+            <input type="radio" name="kieli" value="en" /> en
+          </label>
+        </div>
+        <button type="submit" class="btn btn-default">Hae</button>
+      </form>
+
+      <h2>HTML</h2>
+      <div
+        id="vastausHtml"
+        style="border: 1px solid #cccccc; padding: 9.5px; border-radius: 4px"
+      ></div>
+
+      <h2>SOAP-vastaus</h2>
+      <pre id="vastausXml"></pre>
+
+      <h2>SOAP-vastauksesta konvertoitu JSON</h2>
+      <pre id="vastausJson"></pre>
     </div>
-  </div>
 
-</script>
+    <script type="text/javascript">
+      function doSoapRequest() {
+        event.preventDefault()
+        const soapRequest = buildSoapRequest(document.forms.myform.hetu.value)
+        const httpRequest = new XMLHttpRequest()
 
-
-<script id="handlebars-template-en" type="text/x-handlebars-template">
-{{#*inline "lang-en"}}
-    {{#if en}}
-        {{en}}
-    {{else}}
-        {{#if fi}}
-            {{fi}}
-        {{else}}
-            {{sv}}
-        {{/if}}
-    {{/if}}
-{{/inline}}
-
-<div class="row" >
-  <div class="col-xs-12  col-md-7">
-  <h3>My rights to study:</h3>
-{{#.}}
-{{#objectToArray oppilaitokset.oppilaitos "oppilaitokset.oppilaitos"}}
-{{#oppilaitokset.oppilaitos}}
-<h3>Educational institution: {{>lang-en nimi}} </h3>
-<hr>
-  <ul>
-      {{#objectToArray opiskeluoikeudet.opiskeluoikeus "opiskeluoikeudet.opiskeluoikeus"}}
-      {{#opiskeluoikeudet.opiskeluoikeus}}
-        <li><strong>Education: </strong>{{>lang-en nimi}} </li>
-        {{#if tila}}<li><strong>Status of studies: </strong>{{>lang-en tila}}</li>{{/if}}
-        {{#if alku}}<li><strong>Start day: </strong>{{alku}}</li>{{/if}}
-        {{#if loppu}}<li><strong>End day: </strong>{{loppu}}</li>{{/if}}
-        <br>
-      {{/opiskeluoikeudet.opiskeluoikeus}}
-      {{/objectToArray}}
- </ul>
-{{/oppilaitokset.oppilaitos}}
-{{/objectToArray}}
-{{/.}}
-</div>
-  <div class="col-xs-12  col-md-5">
-  <h3>Further information</h3>
-  <br>
-  <ul>
-   <li><a><u>Log in to My Studyinfo to view and check information about your rights to study and completed studies.
-</u></a></li>
-   <li>Currently My Studyinfo service supports only Finnish and Swedish languages, but will be available in English during 2019.
-</li>
-   <br>
-   <b>Please note that in general My Studyinfo is not able show the following information:</b>
-   <dd>- Higher education before the year 1995.</dd>
-   <dd>- Matriculation examinations before the year 1990.</dd>
-   <dd>- Basic education and secondary education before the year 2018.</dd>
-   <br>
-   <li><p>If you detect erroneous information, the educational institution is responsible for correcting the information. You can send an electronic correction request by logging in to <a><u>My studyinfo-service </u></a>or directly contact your educational institution.</p></li>
-   </ul>
-    </div>
-  </div>
-
-</script>
-
-</head>
-
-<body>
-
-<div class="container">
-
-<h2></h2>
-
-<p>Näin käytät tätä testeriä:</p>
-<ul>
-  <li>Käynnistä Koski lokaalisti (omalla läppärillä)</li>
-  <li>Kirjaudu sisään Suomi/Suomi virkailijatunnuksella <a href="http://localhost:7021/koski/virkailija">http://localhost:7021/koski/virkailija</a></li>
-  <li>Avaa tämä testeri: <a href="http://localhost:7021/koski/test/suomifi-tester.html">http://localhost:7021/koski/test/suomifi-tester.html</a></li>
-  <li>Syötä mock-oppijan hetu</li>
-</ul>
-
-<form onsubmit="doSoapRequest()" style="margin-top: 10px;" class="form-hxorizontal" name="myform">
-  <div class="form-group">
-    <label class="control-label">Hetu</label>
-    <input type="text" name="hetu" class="form-control" style="width: 10em;">
-  </div>
-  <div class="form-group">
-    <label class="control-label">Kieli</label>
-    <label class="radio-inline">
-      <input type="radio" name="kieli" value="fi" checked> fi
-    </label>
-    <label class="radio-inline">
-      <input type="radio" name="kieli" value="sv"> sv
-    </label>
-    <label class="radio-inline">
-      <input type="radio" name="kieli" value="en"> en
-    </label>
-  </div>
-  <button type="submit" class="btn btn-default">Hae</button>
-</form>
-
-<h2>HTML</h2>
-<div id="vastausHtml" style="border: 1px solid #cccccc; padding: 9.5px; border-radius: 4px;"></div>
-
-<h2>SOAP-vastaus</h2>
-<pre id="vastausXml"></pre>
-
-<h2>SOAP-vastauksesta konvertoitu JSON</h2>
-<pre id="vastausJson"></pre>
-
-</div>
-
-<script type="text/javascript">
-  function doSoapRequest() {
-    event.preventDefault()
-    const soapRequest = buildSoapRequest(document.forms.myform.hetu.value)
-    const httpRequest = new XMLHttpRequest()
-
-    httpRequest.onreadystatechange = function () {
-      if (httpRequest.readyState == 4) {
-        if (httpRequest.status == 200) {
-          document.getElementById("vastausXml").innerText = httpRequest.responseText
-          const responseXml = httpRequest.responseXML
-          const responseJson = new X2JS().xml2json(responseXml.getElementsByTagName("suomiFiRekisteritiedotResponse").item(0))
-          document.getElementById("vastausJson").innerText = JSON.stringify(responseJson, null, 2)
-          renderHandlebarsTemplate(responseJson, document.forms.myform.kieli.value)
+        httpRequest.onreadystatechange = function () {
+          if (httpRequest.readyState == 4) {
+            if (httpRequest.status == 200) {
+              document.getElementById('vastausXml').innerText =
+                httpRequest.responseText
+              const responseXml = httpRequest.responseXML
+              const responseJson = new X2JS().xml2json(
+                responseXml
+                  .getElementsByTagName('suomiFiRekisteritiedotResponse')
+                  .item(0)
+              )
+              document.getElementById('vastausJson').innerText = JSON.stringify(
+                responseJson,
+                null,
+                2
+              )
+              renderHandlebarsTemplate(
+                responseJson,
+                document.forms.myform.kieli.value
+              )
+            }
+          }
         }
+
+        httpRequest.open(
+          'POST',
+          'http://localhost:7021/koski/api/palveluvayla/suomi-fi-rekisteritiedot',
+          true
+        )
+        httpRequest.setRequestHeader('Content-Type', 'text/xml')
+        httpRequest.send(soapRequest)
       }
-    }
 
-    httpRequest.open('POST', 'http://localhost:7021/koski/api/palveluvayla/suomi-fi-rekisteritiedot', true)
-    httpRequest.setRequestHeader('Content-Type', 'text/xml')
-    httpRequest.send(soapRequest)
-  }
-
-  function buildSoapRequest(hetu) {
-    return `
+      function buildSoapRequest(hetu) {
+        return `
 <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xrd="http://x-road.eu/xsd/xroad.xsd" xmlns:id="http://x-road.eu/xsd/identifiers">
   <SOAP-ENV:Header>
     <xrd:client id:objectType="SUBSYSTEM">
@@ -278,17 +316,24 @@
     </ns1:suomiFiRekisteritiedot>
   </SOAP-ENV:Body>
 </SOAP-ENV:Envelope>`.trim()
-  }
+      }
 
-  function renderHandlebarsTemplate(jsonData, language) {
-    Handlebars.registerHelper('objectToArray', function(value, name, options) {
-      return options.fn({...this, [name]: Array.isArray(value) ? value : [value]})
-    })
-    const template = Handlebars.compile(document.getElementById("handlebars-template-" + language).textContent)
-    const result = template(jsonData)
-    document.getElementById("vastausHtml").innerHTML = result
-  }
-</script>
-
-</body>
+      function renderHandlebarsTemplate(jsonData, language) {
+        Handlebars.registerHelper(
+          'objectToArray',
+          function (value, name, options) {
+            return options.fn({
+              ...this,
+              [name]: Array.isArray(value) ? value : [value]
+            })
+          }
+        )
+        const template = Handlebars.compile(
+          document.getElementById('handlebars-template-' + language).textContent
+        )
+        const result = template(jsonData)
+        document.getElementById('vastausHtml').innerHTML = result
+      }
+    </script>
+  </body>
 </html>
