@@ -48,7 +48,7 @@ export const TestIdRoot: React.FC<{
   children: React.ReactNode
   id: string
 }> = (props) => (
-  <TestIdContext.Provider value={props.id} key={props.id}>
+  <TestIdContext.Provider value={props.id}>
     {props.children}
   </TestIdContext.Provider>
 )

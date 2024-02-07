@@ -7,6 +7,7 @@ export const OpiskeluoikeusHeader = () => ({
   oid: Label,
   voimassaoloaika: Label,
   edit: Button,
+  cancelEdit: Button,
   invalidate: {
     button: Button,
     confirm: Button,

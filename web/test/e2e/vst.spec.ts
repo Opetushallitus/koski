@@ -1357,21 +1357,26 @@ test.describe('Vapaa sivistystyö', () => {
       })
 
       test('Osasuorituksen poisto', async ({ vstOppijaPage }) => {
+        const ylinOsasuoritus = vstOppijaPage.osasuoritus(0)
+        const alkuperäinenNimi = await ylinOsasuoritus.nimi()
+
         // Lisää suoritukseen toinen osasuoritus
         const nimi = 'Testikurssi'
         await vstOppijaPage.addNewOsasuoritus(nimi)
 
         // Poista ensimmäinen osasuoritus
-        const osasuoritus = vstOppijaPage.osasuoritus(0)
-        await osasuoritus.delete()
+        await ylinOsasuoritus.delete()
 
         // Kärkeen noussut osasuoritus pitäisi olla sama mikä luotiin hetki sitten
-        const osasuoritus2 = vstOppijaPage.osasuoritus(0)
-        expect(await osasuoritus.nimi()).toEqual(nimi)
+        expect(await ylinOsasuoritus.nimi()).toEqual(nimi)
 
         await vstOppijaPage.tallennaVirheellisenä(
           'Vapaatavoitteisella vapaan sivistystyön koulutuksella tulee olla vähintään yksi arvioitu osasuoritus'
         )
+
+        // Poistu muokkaustilasta -> kärjessä pitäisi olla taas alkuperäinen osasuoritus
+        await vstOppijaPage.cancelEdit()
+        expect(await ylinOsasuoritus.nimi()).toEqual(alkuperäinenNimi)
       })
 
       test('Alaosasuorituksen poisto', async ({ vstOppijaPage }) => {

@@ -23,8 +23,12 @@ export enum EditMode {
 export type FormModel<O extends object> = {
   // Lomakkeen tietojen viimeisin tila
   readonly state: O
-  // Lomakkeen tiedot ennen muokkausta ja tallennuksen jälkeen
+  // Lomakkeen tiedot ennen muokkausta ja tallennuksen jälkeen, tähän tilaan voi kuitenkin tulla muutoksia kesken
+  // muokkaamisen, kun sen muoto muuttuu (esim. taulukon alkioita lisätään tai poistetaan).
   readonly initialState: O
+  // Aidosti alkuperäinen tila ennen muokkauksen alkua. Käytetään palautumiseen muokkaamisesta, jossa tilan
+  // muoto on voinut muuttua.
+  readonly originalState: O
   // Muokkaustila päällä/pois
   readonly editMode: boolean
   // Onko muokkausten tallennus kesken
@@ -106,7 +110,16 @@ export const useForm = <O extends object>(
   )
 
   const [
-    { data, initialData, editMode, hasChanged, isSaved, errors, pending },
+    {
+      data,
+      initialData,
+      originalData,
+      editMode,
+      hasChanged,
+      isSaved,
+      errors,
+      pending
+    },
     dispatch
   ] = useReducer<Reducer<InternalFormState<O>, Action<O>>>(reducer, init)
 
@@ -184,6 +197,7 @@ export const useForm = <O extends object>(
   return useMemo(
     () => ({
       state: data,
+      originalState: originalData,
       initialState: initialData,
       editMode: editMode !== EditMode.View,
       isSaving: editMode === EditMode.Saving,
@@ -201,6 +215,7 @@ export const useForm = <O extends object>(
     }),
     [
       data,
+      originalData,
       initialData,
       editMode,
       hasChanged,
@@ -218,6 +233,7 @@ export const useForm = <O extends object>(
 }
 
 type InternalFormState<O> = {
+  originalData: O
   initialData: O
   data: O
   editMode: EditMode
@@ -232,6 +248,7 @@ const internalInitialState = <O>(
   startWithEditMode: boolean,
   constraint?: Constraint | null
 ): InternalFormState<O> => ({
+  originalData: initialState,
   initialData: initialState,
   data: initialState,
   editMode: startWithEditMode ? EditMode.Edit : EditMode.View,
@@ -301,7 +318,7 @@ const reducer = <O>(
       return {
         ...state,
         editMode: EditMode.View,
-        data: state.initialData,
+        data: state.originalData,
         isSaved: false,
         errors: []
       }

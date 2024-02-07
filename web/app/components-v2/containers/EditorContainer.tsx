@@ -170,7 +170,7 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
           view={OrganisaatiohistoriaView}
         />
         <Spacer />
-        {LisätiedotContainer !== undefined && lisatiedotOpen && (
+        {LisätiedotContainer !== undefined && (
           <>
             <FlatButton
               onClick={(e) => {
@@ -182,8 +182,7 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
                 ? 'lisatiedot:sulje_lisatiedot'
                 : 'lisatiedot:nayta_lisatiedot'}
             </FlatButton>
-            <Spacer />
-            <LisätiedotContainer form={props.form} />
+            {lisatiedotOpen && <LisätiedotContainer form={props.form} />}
             <Spacer />
           </>
         )}
@@ -195,9 +194,9 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
 
       <TestIdRoot id="suoritusTabs">
         <Tabs
-          key={`tabs-${props.form.state.suoritukset.length}`}
-          onSelect={changeSuoritusTab}
           tabs={suoritusTabs}
+          active={suoritusIndex}
+          onSelect={changeSuoritusTab}
         />
       </TestIdRoot>
 
