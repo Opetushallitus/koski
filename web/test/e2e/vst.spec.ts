@@ -1218,7 +1218,7 @@ test.describe('Vapaa sivistystyö', () => {
       test('Näyttää tiedot oikein', async ({ page }) => {
         await expect(page.getByTestId('opiskeluoikeus.kuva')).toBeVisible()
         await expect(page.getByTestId('opiskeluoikeus.nimi')).toHaveText(
-          'Varsinais-Suomen kansanopisto, digitaalinen tiedonhaku (2024, hyväksytysti suoritettu)'
+          'Varsinais-Suomen kansanopisto, digitaalinen tiedonhaku(2024, hyväksytysti suoritettu)'
         )
         await expect(
           page.getByTestId('opiskeluoikeus.tila.value.items.0.date')
@@ -2206,7 +2206,7 @@ test.describe('Vapaa sivistystyö', () => {
         kansalainenPage: KoskiKansalainenPage
       ) => {
         await expect(kansalainenPage.opiskeluoikeusTitle).toContainText(
-          'Digitaalinen tiedonhaku (2024, hyväksytysti suoritettu)Opiskeluoikeuden oid: 1.2.246.562.15'
+          'Digitaalinen tiedonhaku(2024, hyväksytysti suoritettu)Opiskeluoikeuden oid: 1.2.246.562.15'
         )
         await expect(
           page.getByTestId('opiskeluoikeus.voimassaoloaika')

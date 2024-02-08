@@ -73,12 +73,16 @@ export const OpiskeluoikeusTitle = (props: OpiskeluoikeusTitleProps) => {
 
   const oid: string | undefined = (props.opiskeluoikeus as any).oid
 
-  const expandSpan = props.tree ? 1 : 0
   const titleSpan = 12
-  const oidSpan = 12 - expandSpan
+  const oidSpan = 12
 
   const children: React.JSX.Element = (
-    <h3 {...common(props, ['OpiskeluoikeusTitle', 'darkBackground'])}>
+    <h3
+      {...common(props, [
+        'OpiskeluoikeusTitle',
+        kansalainenTaiSuoritusjako && 'OpiskeluoikeusTitle__kansalainen'
+      ])}
+    >
       <ColumnRow>
         <Column
           className="OpiskeluoikeusTitle__title"
@@ -106,16 +110,11 @@ export const OpiskeluoikeusTitle = (props: OpiskeluoikeusTitleProps) => {
             <VirkailijaOnly>
               <VersiohistoriaButton opiskeluoikeusOid={oid} />
             </VirkailijaOnly>
-          </Column>
-        )}
-
-        {props.tree && (
-          <Column
-            className="OpiskeluoikeusTitle__expand"
-            span={{ default: expandSpan, small: 2 * expandSpan }}
-          >
-            {props.tree.isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}
-            {/* <ExpandButtonIcon expanded={props.tree.isOpen} /> */}
+            {props.tree && (
+              <div className="OpiskeluoikeusTitle__expand">
+                {props.tree.isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}
+              </div>
+            )}
           </Column>
         )}
       </ColumnRow>

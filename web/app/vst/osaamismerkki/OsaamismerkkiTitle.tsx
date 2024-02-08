@@ -89,7 +89,12 @@ export const OsaamismerkkiTitle = (props: OsaamismerkkiTitleProps) => {
   const oidSpan = subtractSpan(span(12, 24), expandSpan)
 
   const children: React.JSX.Element = (
-    <h3 {...common(props, ['OsaamismerkkiTitle'])}>
+    <h3
+      {...common(props, [
+        'OsaamismerkkiTitle',
+        kansalainenTaiSuoritusjako && 'OsaamismerkkiTitle__kansalainen'
+      ])}
+    >
       <ColumnRow>
         {props.kuva && (
           <Column className="OsaamismerkkiTitle__kuva" span={kuvaSpan}>
@@ -125,13 +130,11 @@ export const OsaamismerkkiTitle = (props: OsaamismerkkiTitleProps) => {
             <VirkailijaOnly>
               <VersiohistoriaButton opiskeluoikeusOid={oid} />
             </VirkailijaOnly>
-          </Column>
-        )}
-
-        {props.tree && (
-          <Column className="OsaamismerkkiTitle__expand" span={expandSpan}>
-            {props.tree.isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}
-            {/* <ExpandButtonIcon expanded={props.tree.isOpen} /> */}
+            {props.tree && (
+              <div className="OsaamismerkkiTitle__expand">
+                {props.tree.isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}
+              </div>
+            )}
           </Column>
         )}
       </ColumnRow>
