@@ -1,7 +1,9 @@
-.OpiskeluoikeusTitle {
-  background: @color-dark-blue;
-  color: white;
+.OsaamismerkkiTitle {
+  background: #fafafa;
+  color: #333;
   user-select: text;
+
+  border-bottom: 1px solid #ccc;
 
   min-height: 5 * @baseline;
   margin: 0;
@@ -10,7 +12,13 @@
   font-size: 1.286rem;
   font-weight: 400;
 
-  .OpiskeluoikeusTitle__oid {
+  .OsaamismerkkiTitle__kuva {
+    img {
+      max-height: 80px;
+    }
+  }
+
+  .OsaamismerkkiTitle__oid {
     font-size: 80%;
 
     .VersiohistoriaButton {
@@ -43,15 +51,16 @@
     }
   }
 
-  &.OpiskeluoikeusTitle__kansalainen {
+  &.OsaamismerkkiTitle__kansalainen {
     background: white;
     color: black;
-    padding: 24px 7rem 24px 24px;
+    padding: 12px 7rem 12px 24px;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.4);
+    text-align: left;
 
     position: relative;
 
-    .OpiskeluoikeusTitle__expand {
+    .OsaamismerkkiTitle__expand {
       position: absolute;
       right: 0;
       top: 0;

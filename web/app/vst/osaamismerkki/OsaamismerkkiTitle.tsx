@@ -7,6 +7,15 @@ import {
 import { TreeHook } from '../../appstate/tree'
 import { TestIdLayer, TestIdRoot, TestIdText } from '../../appstate/useTestId'
 import { useKansalainenTaiSuoritusjako } from '../../appstate/user'
+import { CommonProps, common, cx } from '../../components-v2/CommonProps'
+import { VirkailijaOnly } from '../../components-v2/access/VirkailijaOnly'
+import { Column, ColumnRow } from '../../components-v2/containers/Columns'
+import { PositionalPopup } from '../../components-v2/containers/PositionalPopup'
+import { ExpandButton } from '../../components-v2/controls/ExpandButton'
+import { FlatButton } from '../../components-v2/controls/FlatButton'
+import { LinkButton } from '../../components-v2/controls/LinkButton'
+import { Lowercase } from '../../components-v2/texts/Lowercase'
+import { Trans } from '../../components-v2/texts/Trans'
 import {
   ISO2FinnishDateTime,
   formatYearRange,
@@ -21,18 +30,10 @@ import { fetchVersiohistoria } from '../../util/koskiApi'
 import { viimeisinOpiskelujaksonTila } from '../../util/schema'
 import { uncapitalize } from '../../util/strings'
 import { currentQueryWith, parseQuery } from '../../util/url'
-import { CommonProps, common, cx } from '../CommonProps'
-import { VirkailijaOnly } from '../access/VirkailijaOnly'
-import { Column, ColumnRow } from '../containers/Columns'
-import { PositionalPopup } from '../containers/PositionalPopup'
-import { ExpandButton } from '../controls/ExpandButton'
-import { FlatButton } from '../controls/FlatButton'
-import { LinkButton } from '../controls/LinkButton'
-import { Lowercase } from '../texts/Lowercase'
-import { Trans } from '../texts/Trans'
 
-export type OpiskeluoikeusTitleProps = CommonProps<{
+export type OsaamismerkkiTitleProps = CommonProps<{
   opiskeluoikeus: Opiskeluoikeus
+  kuva?: React.ReactNode
   tree?: Pick<TreeHook, 'isOpen' | 'toggle'>
   // Nämä propertyt ylikirjoittavat opiskeluoikeudesta oletuksena tulkittavat arvot:
   oppilaitos?: string
@@ -41,7 +42,16 @@ export type OpiskeluoikeusTitleProps = CommonProps<{
 
 const join = (...as: Array<string | undefined>) => as.filter(nonNull).join(', ')
 
-export const OpiskeluoikeusTitle = (props: OpiskeluoikeusTitleProps) => {
+const span = (defaultSize: number, small?: number) => ({
+  default: defaultSize,
+  small: small || defaultSize
+})
+const subtractSpan = (
+  a: ReturnType<typeof span>,
+  b: ReturnType<typeof span>
+) => ({ default: a.default - b.default, small: a.small - b.small })
+
+export const OsaamismerkkiTitle = (props: OsaamismerkkiTitleProps) => {
   const koulutuksenNimi =
     props.opiskeluoikeudenNimi ||
     t(props.opiskeluoikeus.suoritukset[0]?.tyyppi.nimi)
@@ -73,24 +83,33 @@ export const OpiskeluoikeusTitle = (props: OpiskeluoikeusTitleProps) => {
 
   const oid: string | undefined = (props.opiskeluoikeus as any).oid
 
-  const titleSpan = 12
-  const oidSpan = 12
+  const kuvaSpan = props.kuva ? span(2, 4) : span(0)
+  const expandSpan = props.tree ? span(1) : span(0)
+  const titleSpan = subtractSpan(span(12, 24), kuvaSpan)
+  const oidSpan = subtractSpan(span(12, 24), expandSpan)
 
   const children: React.JSX.Element = (
     <h3
       {...common(props, [
-        'OpiskeluoikeusTitle',
-        kansalainenTaiSuoritusjako && 'OpiskeluoikeusTitle__kansalainen'
+        'OsaamismerkkiTitle',
+        kansalainenTaiSuoritusjako && 'OsaamismerkkiTitle__kansalainen'
       ])}
     >
       <ColumnRow>
+        {props.kuva && (
+          <Column className="OsaamismerkkiTitle__kuva" span={kuvaSpan}>
+            <TestIdText id="kuva">{props.kuva}</TestIdText>
+          </Column>
+        )}
         <Column
-          className="OpiskeluoikeusTitle__title"
-          span={{ default: titleSpan, small: 2 * titleSpan }}
+          className="OsaamismerkkiTitle__title"
+          span={titleSpan}
           align={{ default: 'left', small: 'left' }}
         >
           <TestIdText id="nimi">
-            {otsikkoteksti} {'('}
+            {otsikkoteksti}
+            <br />
+            {'('}
             <Lowercase>{aikaväliJaTila}</Lowercase>
             {')'}
           </TestIdText>
@@ -98,9 +117,10 @@ export const OpiskeluoikeusTitle = (props: OpiskeluoikeusTitleProps) => {
 
         {oid && (
           <Column
-            className="OpiskeluoikeusTitle__oid"
-            span={{ default: oidSpan, small: 2 * oidSpan }}
+            className="OsaamismerkkiTitle__oid"
+            span={oidSpan}
             align={{ default: 'right', small: 'left' }}
+            start={{ default: 0, small: kuvaSpan.small }}
           >
             <TestIdText id="oid">
               <Trans>{'Opiskeluoikeuden oid'}</Trans>
@@ -111,7 +131,7 @@ export const OpiskeluoikeusTitle = (props: OpiskeluoikeusTitleProps) => {
               <VersiohistoriaButton opiskeluoikeusOid={oid} />
             </VirkailijaOnly>
             {props.tree && (
-              <div className="OpiskeluoikeusTitle__expand">
+              <div className="OsaamismerkkiTitle__expand">
                 {props.tree.isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}
               </div>
             )}

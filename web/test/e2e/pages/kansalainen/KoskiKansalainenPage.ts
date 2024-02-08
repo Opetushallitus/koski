@@ -20,7 +20,9 @@ export class KoskiKansalainenPage {
     this.peruSuostumusLinkki = page.locator('.peru-suostumus-linkki')
     this.expandButton = page.getByTestId('opiskeluoikeus.expand')
     this.suoritusTab = page.getByTestId('suoritusTabs.0.tab')
-    this.opiskeluoikeusTitle = page.locator('.OpiskeluoikeusTitle')
+    this.opiskeluoikeusTitle = page
+      .locator('.OpiskeluoikeusTitle')
+      .or(page.locator('.OsaamismerkkiTitle'))
   }
 
   static create(page: Page) {
