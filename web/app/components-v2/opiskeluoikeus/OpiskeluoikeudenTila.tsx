@@ -210,7 +210,7 @@ export const OpiskeluoikeudenTilaEdit = <T extends OpiskeluoikeudenTila>(
                 onClick={oo.openModal}
                 testId="add"
               >
-                {t('Lisää uusi')}
+                {'Lisää uusi'}
               </RaisedButton>
             ]}
           </KeyColumnedValuesRow>

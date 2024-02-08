@@ -17,6 +17,7 @@ import { SuoritetutTutkinnotOppija } from '../types/fi/oph/koski/suoritusjako/su
 import { AktiivisetJaPäättyneetOpinnotOppija } from '../types/fi/oph/koski/suoritusjako/aktiivisetjapaattyneetopinnot/AktiivisetJaPaattyneetOpinnotOppija'
 import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { Osaamismerkkikuva } from '../types/fi/oph/koski/servlet/Osaamismerkkikuva'
+import { lang } from '../i18n/i18n'
 
 const apiUrl = (path: string, query?: object): string =>
   `/koski/api/${path}${queryString({ class_refs: 'true', ...query })}`
@@ -99,7 +100,11 @@ export interface Perustelinkki {
 export const fetchPerustelinkki = (diaarinumero: string) =>
   handleExpiredSession(
     apiGet<Perustelinkki>(
-      apiUrl(`tutkinnonperusteet/peruste/${diaarinumero}/linkki`)
+      apiUrl(
+        `tutkinnonperusteet/peruste/${diaarinumero}/linkki?lang=${encodeURIComponent(
+          lang
+        )}`
+      )
     )
   )
 
