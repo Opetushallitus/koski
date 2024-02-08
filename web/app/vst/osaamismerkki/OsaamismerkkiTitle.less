@@ -1,0 +1,53 @@
+.OsaamismerkkiTitle {
+  background: #fafafa;
+  color: #333;
+  user-select: text;
+
+  border-bottom: 1px solid #ccc;
+
+  min-height: 5 * @baseline;
+  margin: 0;
+  padding: @baseline @h-padding;
+
+  font-size: 1.286rem;
+  font-weight: 400;
+
+  .OsaamismerkkiTitle__kuva {
+    img {
+      max-height: 80px;
+    }
+  }
+
+  .OsaamismerkkiTitle__oid {
+    font-size: 80%;
+
+    .VersiohistoriaButton {
+      position: relative;
+    }
+
+    .VersiohistoriaList {
+      padding: @baseline;
+      margin: 0;
+      width: 100%;
+      text-align: left;
+      list-style-type: none;
+      color: @color-black;
+
+      .VersiohistoriaList__item {
+        width: 100%;
+        padding: @baseline;
+        white-space: nowrap;
+        display: flex;
+        justify-items: center;
+        min-height: 2 * @baseline;
+
+        &.VersiohistoriaList__item--current {
+          background: @color-blue;
+          .LinkButton {
+            color: white;
+          }
+        }
+      }
+    }
+  }
+}
