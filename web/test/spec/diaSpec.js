@@ -761,10 +761,10 @@ describe('DIA', function () {
           })
 
           describe('Vastaavuustodistuksen tiedot', function () {
-            var aine = opinnot.oppiaineet.oppiaine('oppiaine.AI:first')
+            var oppiaine = opinnot.oppiaineet.oppiaine('oppiaine.AI:first')
             before(
               editor.edit,
-              aine
+              oppiaine
                 .property('lukioOpintojenLaajuus')
                 .property('yksikko')
                 .setValue('opintopistettä'),
@@ -774,15 +774,16 @@ describe('DIA', function () {
 
             it('laajuuden yksikön vaihtaminen opintopisteiksi onnistuu', function () {
               expect(
-                aine.property('lukioOpintojenLaajuus').getText()
+                oppiaine.property('lukioOpintojenLaajuus').getText()
               ).to.deep.equal('Lukio-opintojen laajuus 2,5 op')
             })
 
             describe('laajuden yksikön vaihtaminen kursseiksi', function () {
-              var aine = opinnot.oppiaineet.oppiaine('oppiaine.AI:first')
+              var opintojenOppiaine =
+                opinnot.oppiaineet.oppiaine('oppiaine.AI:first')
               before(
                 editor.edit,
-                aine
+                opintojenOppiaine
                   .property('lukioOpintojenLaajuus')
                   .property('yksikko')
                   .setValue('kurssia'),
@@ -792,7 +793,7 @@ describe('DIA', function () {
 
               it('onnistuu', function () {
                 expect(
-                  aine.property('lukioOpintojenLaajuus').getText()
+                  opintojenOppiaine.property('lukioOpintojenLaajuus').getText()
                 ).to.deep.equal('Lukio-opintojen laajuus 2,5 kurssia')
               })
             })
@@ -1091,7 +1092,7 @@ describe('DIA', function () {
             })
 
             describe('Päättökokeet', function () {
-              function testaaPäättökokeenLisäysJaPoisto(nimi, arvosana) {
+              function testaaPäättökokeenLisäysJaPoisto(nimi, arvosana2) {
                 describe(nimi, function () {
                   var dialog = aine.lisääKurssiDialog
 
@@ -1101,7 +1102,7 @@ describe('DIA', function () {
                       aine.avaaLisääKurssiDialog,
                       dialog.valitseKurssi(nimi),
                       dialog.lisääKurssi,
-                      aine.kurssi(nimi).arvosana.selectValue(arvosana),
+                      aine.kurssi(nimi).arvosana.selectValue(arvosana2),
                       aine.kurssi(nimi).toggleDetails,
                       aine
                         .kurssi(nimi)
@@ -1114,7 +1115,7 @@ describe('DIA', function () {
                     )
 
                     it('lisää päättökokeen ja näyttää sen osasuorituslistauksessa', function () {
-                      expect(aine.text()).to.contain(nimi + '\n' + arvosana)
+                      expect(aine.text()).to.contain(nimi + '\n' + arvosana2)
                     })
                   })
 

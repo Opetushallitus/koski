@@ -465,7 +465,7 @@ describe('Omat tiedot', function () {
                 var date = new Date()
                 var targetMonth = date.getMonth() + 6
                 date.setMonth(targetMonth)
-                if (date.getMonth() != targetMonth % 12) {
+                if (date.getMonth() !== targetMonth % 12) {
                   // match java.time.LocalDate.plusMonths behavior, in case e.g. today is May 31st, and
                   // November 31st doesn't exist
                   date.setDate(0)

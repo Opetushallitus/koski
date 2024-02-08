@@ -34,5 +34,5 @@ export const tutkinnonNimi = (m, tryVirtaNimi) =>
   tryVirtaNimi && modelData(m, 'virtaNimi')
     ? modelLookup(m, 'virtaNimi')
     : modelData(m, 'perusteenNimi')
-    ? modelLookup(m, 'perusteenNimi')
-    : modelLookup(m, 'tunniste')
+      ? modelLookup(m, 'perusteenNimi')
+      : modelLookup(m, 'tunniste')

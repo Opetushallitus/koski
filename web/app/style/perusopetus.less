@@ -25,7 +25,8 @@
           }
         }
       }
-      &.pakolliset, &.valinnaiset {
+      &.pakolliset,
+      &.valinnaiset {
         width: 578px;
         .omattiedot-phone({
           width: 100%;
@@ -42,9 +43,12 @@
         > thead {
           border-bottom: 1px solid @color-disabled;
         }
-        > thead > tr, > tbody > tr, > th > thead > tr,
-         > th > tbody > tr {
-          > td, > th {
+        > thead > tr,
+        > tbody > tr,
+        > th > thead > tr,
+        > th > tbody > tr {
+          > td,
+          > th {
             padding-bottom: 7px;
           }
           > .oppiaine {
@@ -72,7 +76,8 @@
               }
             }
 
-            .value.kieli, .value.kieli input {
+            .value.kieli,
+            .value.kieli input {
               text-transform: lowercase;
             }
 
@@ -85,7 +90,7 @@
           }
           .laajuus {
             text-align: center;
-           }
+          }
           .arvosana {
             text-align: right;
             padding-right: 50px;
@@ -141,7 +146,7 @@
           }
           sup {
             line-height: initial;
-            top: -0.3em
+            top: -0.3em;
           }
         }
         .inline {
@@ -192,7 +197,8 @@
 
   .suoritus.perusopetukseenvalmistavanopetuksensuoritus .oppiaineet section {
     width: 740px;
-    table td.laajuus, th.laajuus {
+    table td.laajuus,
+    th.laajuus {
       width: 225px;
       text-align: left;
       .yksikko {
@@ -204,7 +210,9 @@
   }
 
   .omattiedot-perusopetuksen-suoritukset {
-    > .arvostelu, > .kayttaytymisen-arvio, > .suoritus-group  {
+    > .arvostelu,
+    > .kayttaytymisen-arvio,
+    > .suoritus-group {
       margin-bottom: 3rem;
 
       > h4 {
@@ -250,7 +258,8 @@
               padding-left: 1.6rem;
               display: flex;
 
-              &.paikallinen, &.paikallinen > button {
+              &.paikallinen,
+              &.paikallinen > button {
                 font-style: italic;
               }
 
@@ -276,7 +285,8 @@
           }
         }
 
-        > tr.kurssit-row, > tr.properties-row {
+        > tr.kurssit-row,
+        > tr.properties-row {
           > td {
             padding: 8px 1.6rem;
           }
@@ -297,10 +307,7 @@
   }
 }
 
-
-
 .oppija .opiskeluoikeus .editing {
-
   .suoritukset {
     .perusteenDiaarinumero {
       input {
@@ -316,7 +323,8 @@
         width: 65px;
       }
 
-      .oppiaine, .details {
+      .oppiaine,
+      .details {
         .kieli .dropdown {
           margin-right: 15px;
         }
@@ -336,7 +344,6 @@
       }
       .oppiaine .oppiaine {
         .value.kieli > .dropdown-wrapper {
-
         }
         .dropdown {
           width: 250px;

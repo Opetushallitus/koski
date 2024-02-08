@@ -7,20 +7,22 @@ Kosken Playwright-toteutukseen on rakennettu autentikaatiotoiminnallisuus, joka 
 Käytössä olevat virkailijakäyttäjät ovat nähtävissä tiedostossa `test/e2e/setup/users.json` tai TypeScript:n Intellisensen automaattisesti ehdottamissa `virkailija()`-funktion ensimmäisessä parametrissa.
 
 ### Virkailija
+
 ```typescript
-test.use({ storageState: virkailija("kalle")})
-test("Hello world", async ({page}) => {
-    await page.goto("/")
-    await expect(page).toHaveURL(/\//)
+test.use({ storageState: virkailija('kalle') })
+test('Hello world', async ({ page }) => {
+  await page.goto('/')
+  await expect(page).toHaveURL(/\//)
 })
 ```
+
 ### Kansalainen
 
 ```typescript
-test.use({ storageState: kansalainen("HETI")})
-test("Hello world", async () => {
-    await page.goto("/")
-    await expect(page).toHaveURL(/\//)
+test.use({ storageState: kansalainen('HETI') })
+test('Hello world', async () => {
+  await page.goto('/')
+  await expect(page).toHaveURL(/\//)
 })
 ```
 
@@ -42,7 +44,9 @@ test.beforeAll(async ({ browser }, testInfo) => {
   await new KoskiFixtures(page).reset()
 })
 ```
+
 ### Jokaisen testin aikana
+
 ```typescript
 // HUOM. Virkailija-istunnon tulee olla voimassa ennen tätä
 test.beforeEach(async ({ fixtures }, testInfo) => {

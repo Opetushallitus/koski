@@ -7,14 +7,17 @@
       color: @color-label;
     }
 
-    .opiskeluoikeuden-tiedot, .suoritus {
-      .text-like-input, .dropdown, .property.oid input {
+    .opiskeluoikeuden-tiedot,
+    .suoritus {
+      .text-like-input,
+      .dropdown,
+      .property.oid input {
         max-width: 300px;
       }
     }
 
     .suoritus {
-      &  > .properties .dropdown {
+      & > .properties .dropdown {
         width: 300px;
       }
 
@@ -33,7 +36,8 @@
       }
     }
 
-    .text-like-input, .dropdown {
+    .text-like-input,
+    .dropdown {
       line-height: 32px;
     }
 
@@ -75,7 +79,7 @@
         overflow: hidden;
 
         &.open:after {
-          content: "";
+          content: '';
           .Triangle(10px, @color-white, bottom);
           position: relative;
           margin: 0 auto;
@@ -91,7 +95,7 @@
           min-width: 250px;
           box-sizing: border-box;
           border-radius: 2px;
-          box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
           background: @color-white;
           z-index: @z-index-base + 4;
 
@@ -206,10 +210,13 @@
             .error {
               color: @color-red;
             }
-            .ulkomaanjakso, .poissaolojakso {
+            .ulkomaanjakso,
+            .poissaolojakso {
               display: inline-block;
 
-              .label, .dropdown-wrapper, .value {
+              .label,
+              .dropdown-wrapper,
+              .value {
                 display: inline-block;
               }
               .label {
@@ -284,14 +291,13 @@
                 font-family: FontAwesome, serif;
                 color: @color-link-blue;
                 font-weight: lighter;
-                content: "\F061";
+                content: '\F061';
                 font-size: 12px;
                 position: absolute;
                 left: -16px;
                 top: 4px;
               }
             }
-
           }
         }
 
@@ -334,7 +340,6 @@
           line-height: 35px;
         }
         .modal-content {
-
         }
       }
 
@@ -401,7 +406,7 @@
               margin-bottom: 10px;
             }
 
-            input[type="radio"] {
+            input[type='radio'] {
               width: auto;
               visibility: hidden;
               position: relative;
@@ -483,7 +488,7 @@
             bottom: 0;
             height: 1px;
             width: 100%;
-            border-bottom: 1px solid #AEAEAF;
+            border-bottom: 1px solid #aeaeaf;
             content: '';
             z-index: 0;
           }
@@ -498,8 +503,8 @@
             padding: 5px 40px;
             &.selected {
               background: white;
-              border-left: 1px solid #AEAEAE;
-              border-right: 1px solid #AEAEAE;
+              border-left: 1px solid #aeaeae;
+              border-right: 1px solid #aeaeae;
               border-top: 2px solid @color-link-blue;
               position: relative;
               z-index: 1;
@@ -683,13 +688,14 @@
               > thead > tr > th {
                 color: @color-label;
               }
-              > thead > tr > th, > tbody > tr > td {
+              > thead > tr > th,
+              > tbody > tr > td {
                 padding: 2px 10px;
                 border-right: 1px solid @color-neutral-gray;
               }
 
               > thead {
-                background: @color-neutral-gray
+                background: @color-neutral-gray;
               }
             }
           }
@@ -725,12 +731,15 @@
         // The properties style is scoped pretty problematically and would require major refactoring in order
         // to style properties differently for kansalainen.
         &.kansalainen {
-          .label, td.label, .tabular-array th {
+          .label,
+          td.label,
+          .tabular-array th {
             color: black !important;
             font-weight: normal;
           }
 
-          td.value, span.rahoitus {
+          td.value,
+          span.rahoitus {
             color: black !important;
           }
 
@@ -760,12 +769,13 @@
             display: inline-block;
           }
           > li:not(:last-child):after {
-            content: ", ";
+            content: ', ';
             margin-right: 5px;
           }
         }
 
-        > li > .object, > li > .dropdown-wrapper {
+        > li > .object,
+        > li > .dropdown-wrapper {
           display: inline-block;
         }
 
@@ -782,7 +792,9 @@
         }
       }
 
-      input, select, textarea {
+      input,
+      select,
+      textarea {
         width: 100%;
         &.date-editor {
           width: 100px;
@@ -795,8 +807,8 @@
 
       .date-range.error {
         .date-editor {
-          background: #FFE9E9;
-          border: 1px solid #E09191
+          background: #ffe9e9;
+          border: 1px solid #e09191;
         }
       }
 
@@ -826,7 +838,8 @@
       .oppiaineensuoritus .korotus {
         margin-left: 8px;
       }
-      .oppiaineensuoritus label, .lukionkurssinsuoritus2015 label {
+      .oppiaineensuoritus label,
+      .lukionkurssinsuoritus2015 label {
         display: inline-block;
         min-width: 300px;
       }
@@ -844,7 +857,8 @@
         display: block;
       }
 
-      .inline .foldable-wrapper, .foldable-wrapper.inline {
+      .inline .foldable-wrapper,
+      .foldable-wrapper.inline {
         display: inline-block;
       }
 
@@ -870,13 +884,14 @@
         }
       }
 
-      input[type=checkbox] {
+      input[type='checkbox'] {
         height: 1.5em;
         width: auto;
       }
     }
 
-    .toggle-edit, .invalidate {
+    .toggle-edit,
+    .invalidate {
       .OverlayElem;
     }
 
@@ -901,7 +916,9 @@
 }
 
 .edit .oppija .opiskeluoikeus .opiskeluoikeus-content {
-  input, select, textarea {
+  input,
+  select,
+  textarea {
     width: 100%;
     &.date-editor {
       width: 100px;
@@ -910,9 +927,9 @@
 }
 
 .suostumuksen-perumisen-info {
-  min-width: 500px
+  min-width: 500px;
 }
 
 .peru-suostumus-popup-modal {
-  min-width: 650px
+  min-width: 650px;
 }

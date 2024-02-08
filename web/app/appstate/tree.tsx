@@ -86,12 +86,11 @@ export const useTree = (initiallyOpen = false): TreeHook => {
   )
 
   const TreeNode: TreeNodeComponent = useMemo(
-    () => (props) =>
-      (
-        <TreeContext.Provider value={contextValue}>
-          {props.children}
-        </TreeContext.Provider>
-      ),
+    () => (props) => (
+      <TreeContext.Provider value={contextValue}>
+        {props.children}
+      </TreeContext.Provider>
+    ),
     [contextValue]
   )
 

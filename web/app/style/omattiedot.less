@@ -1,17 +1,17 @@
 @header-padding: 0 16px;
 
-.header__oppijanvalitsin_mixin(){
-    color: white;
-    background: @color-link-blue;
-    font-family: Source Sans Pro;
-    font-size: 18px;
-    font-style: normal;
-    font-weight: bold;
-    background-image: url('/koski/images/opiskelija_ikoni.svg');
-    background-repeat: no-repeat;
-    background-position: 6px center;
-    padding-left: 30px;
-    stroke: black;
+.header__oppijanvalitsin_mixin() {
+  color: white;
+  background: @color-link-blue;
+  font-family: Source Sans Pro;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: bold;
+  background-image: url('/koski/images/opiskelija_ikoni.svg');
+  background-repeat: no-repeat;
+  background-position: 6px center;
+  padding-left: 30px;
+  stroke: black;
 }
 
 .header__oppijanvalitsin {
@@ -26,14 +26,14 @@
       display: inline-block;
       padding-right: 30px;
     }
-    .input-container::after{
+    .input-container::after {
       border-color: @color-white;
       border-width: 2px;
     }
     .options {
-       background: @color-white;
-       color: @color-black;
-       padding: 0px;
+      background: @color-white;
+      color: @color-black;
+      padding: 0px;
     }
     .options li.option {
       .header__oppijanvalitsin_mixin();
@@ -187,7 +187,8 @@
       }
     }
 
-    .suoritusjako, .huollettavan-tiedot {
+    .suoritusjako,
+    .huollettavan-tiedot {
       flex-basis: 100%;
 
       &[data-show='false'] {
@@ -206,7 +207,7 @@
   }
 
   .sidebar.omattiedot-navi {
-    width: ~"calc(50px + (100vw - 1200px) / 2)";
+    width: ~'calc(50px + (100vw - 1200px) / 2)';
   }
 }
 
@@ -231,12 +232,12 @@
     }
 
     .opiskeluoikeus-container {
-      border: 1px solid #F5F5F5;
+      border: 1px solid #f5f5f5;
       margin: 0 0 8px;
 
       .opiskeluoikeus-button {
         .DropShadow;
-        background: #FFFFFF;
+        background: #ffffff;
         width: 100%;
         padding: 0;
         margin: 0;
@@ -297,7 +298,7 @@
 
       .opiskeluoikeus {
         margin-top: 4px;
-        background: #FFFFFF;
+        background: #ffffff;
 
         .opiskeluoikeus-content {
           outline: none;

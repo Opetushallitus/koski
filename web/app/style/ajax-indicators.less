@@ -22,7 +22,7 @@
 .ajax-indicator-after(@margin-left, @margin-top) {
   position: relative;
   &:after {
-    content: "";
+    content: '';
     position: absolute;
     background: url('/koski/images/loader.svg') no-repeat;
     width: 16px;
@@ -32,8 +32,12 @@
   }
 }
 @keyframes fadein {
-  0% { opacity: 0; }
-  100% { opacity: 0.5;}
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0.5;
+  }
 }
 #pagination-marker {
   &.loading {

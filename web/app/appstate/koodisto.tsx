@@ -41,8 +41,8 @@ export function useKoodisto<T extends string>(
         koodiarvot === undefined
           ? true
           : koodiarvot === null
-          ? false
-          : koodiarvot.includes(koodi.koodiviite.koodiarvo)
+            ? false
+            : koodiarvot.includes(koodi.koodiviite.koodiarvo)
       ),
     [koodit, koodiarvot]
   )
@@ -116,12 +116,12 @@ export const useKoodistoFiller = (): (<T>(a: T) => Promise<T>) =>
       Array.isArray(a)
         ? distinct(a.flatMap(collectKoodistoUris))
         : typeof a === 'object'
-        ? isKoodistokoodiviite(a)
-          ? a.nimi === undefined
-            ? [a.koodistoUri]
-            : []
-          : distinct(Object.values(a).flatMap(collectKoodistoUris))
-        : []
+          ? isKoodistokoodiviite(a)
+            ? a.nimi === undefined
+              ? [a.koodistoUri]
+              : []
+            : distinct(Object.values(a).flatMap(collectKoodistoUris))
+          : []
 
     const uris = collectKoodistoUris(obj)
     await koodistoLoaderSingleton.loadKoodistot(uris)
@@ -130,15 +130,15 @@ export const useKoodistoFiller = (): (<T>(a: T) => Promise<T>) =>
       Array.isArray(a)
         ? (a.map(populate) as A)
         : typeof a === 'object'
-        ? isKoodistokoodiviite(a)
-          ? a.nimi === undefined
-            ? (koodistoLoaderSingleton.findKoodi(
-                a.koodistoUri,
-                a.koodiarvo
-              ) as A)
-            : a
-          : mapObjectValues(populate)(a)
-        : a
+          ? isKoodistokoodiviite(a)
+            ? a.nimi === undefined
+              ? (koodistoLoaderSingleton.findKoodi(
+                  a.koodistoUri,
+                  a.koodiarvo
+                ) as A)
+              : a
+            : mapObjectValues(populate)(a)
+          : a
 
     return populate(obj)
   }, [])

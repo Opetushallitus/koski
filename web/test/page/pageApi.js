@@ -38,8 +38,8 @@ function Page(mainElement) {
     getInputOptions: function (selector) {
       return api.getInput(selector).getOptions()
     },
-    button: function (el) {
-      return Clickable(el)
+    button: function (e) {
+      return Clickable(e)
     },
     elementText: function (id) {
       return api.elementTextBySelector('#' + escapeSelector(id))
@@ -64,13 +64,13 @@ function Page(mainElement) {
   }
   return api
 
-  function Input(el) {
+  function Input(inputElem) {
     return {
       element: function () {
-        return el()
+        return inputElem()
       },
       value: function () {
-        var e = el()
+        var e = inputElem()
         var ic = e.find('.input-container input')
         if (ic.length !== 0) {
           e = ic
@@ -81,16 +81,16 @@ function Page(mainElement) {
         return e.val()
       },
       attr: function (name) {
-        return el().attr(name)
+        return inputElem().attr(name)
       },
       isVisible: function () {
-        return isElementVisible(el)
+        return isElementVisible(inputElem)
       },
       isEnabled: function () {
-        return el().is(':enabled')
+        return inputElem().is(':enabled')
       },
       setValue: function (value, i) {
-        var input = el()
+        var input = inputElem()
         var index = i || 0
         switch (inputType(input)) {
           case 'EMAIL':
@@ -101,7 +101,7 @@ function Page(mainElement) {
             if (window.callPhantom) {
               input.val(value)
             } else {
-              var domElem = el()[0]
+              var domElem = inputElem()[0]
               // Workaround for react-dom > 15.6
               // React tracks input.value = 'foo' changes too, so when the event is dispatched, it doesn't see any changes in the value and thus the event is ignored
               Object.getOwnPropertyDescriptor(
@@ -111,7 +111,7 @@ function Page(mainElement) {
             }
             return triggerEvent(input, 'input')()
           case 'CHECKBOX':
-            if (value != input.is(':checked')) {
+            if (value !== input.is(':checked')) {
               if (window.callPhantom) {
                 input.prop('checked', value)
               }
@@ -120,7 +120,7 @@ function Page(mainElement) {
             break
           case 'RADIO':
             var radioOption = _(input).find(function (item) {
-              return $(item).prop('value') == value
+              return $(item).prop('value') === value
             })
             // eslint-disable-next-line no-use-before-define
             if (!option) throw new Error('Option ' + value + ' not found')
@@ -128,7 +128,7 @@ function Page(mainElement) {
             return click(S(radioOption))()
           case 'SELECT':
             var option = _(input.children()).find(function (item) {
-              return $(item).prop('value') == value
+              return $(item).prop('value') === value
             })
             if (!option)
               throw new Error(
@@ -143,7 +143,7 @@ function Page(mainElement) {
 
             var result = S(input)
               .find('.options li.option')
-              .filter(function (i, v) {
+              .filter(function (i_, v) {
                 return $(v).text().includes(value)
               })[index]
 
@@ -171,7 +171,7 @@ function Page(mainElement) {
         }
       },
       getOptions: function () {
-        var input = el()
+        var input = inputElem()
         switch (inputType(input)) {
           case 'DROPDOWN': // Dropdown.jsx
             return textsOf(input.find('.option')).map(sanitizeText)
@@ -181,38 +181,41 @@ function Page(mainElement) {
       }
     }
 
-    function inputType(el) {
-      if (el.prop('tagName') == 'SELECT' || el.prop('tagName') == 'TEXTAREA')
-        return el.prop('tagName')
-      else if ($(el).hasClass('dropdown'))
+    function inputType(elem) {
+      if (
+        elem.prop('tagName') === 'SELECT' ||
+        elem.prop('tagName') === 'TEXTAREA'
+      )
+        return elem.prop('tagName')
+      else if ($(elem).hasClass('dropdown'))
         // Dropdown.jsx
         return 'DROPDOWN'
-      else if ($(el).hasClass('autocomplete'))
+      else if ($(elem).hasClass('autocomplete'))
         // Autocomplete.jsx
         return 'AUTOCOMPLETE'
-      else return el.prop('type').toUpperCase()
+      else return elem.prop('type').toUpperCase()
     }
   }
 
-  function Clickable(el) {
+  function Clickable(elem) {
     return {
       element: function () {
-        return el()
+        return elem()
       },
       isDisabled: function () {
-        return !el().is(':enabled')
+        return !elem().is(':enabled')
       },
       isEnabled: function () {
-        return el().is(':enabled')
+        return elem().is(':enabled')
       },
       isVisible: function () {
-        return isElementVisible(el())
+        return isElementVisible(elem())
       },
       text: function () {
-        return el().text()
+        return elem().text()
       },
       click: function () {
-        click(el().first())()
+        click(elem().first())()
       }
     }
   }

@@ -33,7 +33,7 @@
     .FontAwesomeSymbol;
     font-size: 15px;
     color: #888;
-    content: "\f105\f104";
+    content: '\f105\f104';
     letter-spacing: -0.15em;
   }
   &:hover:before {
@@ -45,7 +45,7 @@
   &:before {
     .FontAwesomeSymbol;
     font-size: 15px;
-    content: " ";
+    content: ' ';
     letter-spacing: -0.15em;
   }
 }
@@ -53,7 +53,7 @@
 .EditSymbol {
   &:before {
     .FontAwesomeSymbol;
-    content: "\f044";
+    content: '\f044';
   }
 }
 
@@ -61,7 +61,7 @@
   &:before {
     color: @color-darkgray;
     font-size: 18px;
-    content: "✕";
+    content: '✕';
   }
 }
 
@@ -77,18 +77,25 @@
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.4);
 }
 
-@media-phone: ~"screen and (max-width: 899px)";
-@media-full: ~"screen and (min-width: 900px)";
+@media-phone: ~'screen and (max-width: 899px)';
+@media-full: ~'screen and (min-width: 900px)';
 
 // Apply style to opiskeluoikeus stuff (shared between virkailija and omattiedot pages)
 // only when on omattiedot page, and media is phone. Used to accidentally avoid applying mobile
 // layouts to virkailija pages.
 .omattiedot-phone(@rules) {
   @media @media-phone {
-    body.omattiedot-page &, body.suoritusjako-page & { @rules(); }
+    body.omattiedot-page &,
+    body.suoritusjako-page & {
+      @rules();
+    }
   }
 }
 
 .omattiedot-only(@rules) {
-  body.omattiedot-page &, body.suoritusjako-page &, body.lander-page & { @rules(); }
+  body.omattiedot-page &,
+  body.suoritusjako-page &,
+  body.lander-page & {
+    @rules();
+  }
 }

@@ -34,8 +34,8 @@ export const createOrganisaatiohenkilö = (
           titteli === undefined
             ? undefined
             : isLocalizedString(titteli)
-            ? titteli
-            : localize(titteli),
+              ? titteli
+              : localize(titteli),
         organisaatio
       })
 

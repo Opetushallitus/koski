@@ -92,13 +92,17 @@ function OpinnotPage() {
     getTutkintoKoodi: function (indexOrName) {
       var opiskeluoikeus = resolveOpiskeluoikeus(indexOrName)
       return opiskeluoikeus
-        .find('.suoritus .property.koulutusmoduuli .koulutusmoduuli .tunniste-koodiarvo')
+        .find(
+          '.suoritus .property.koulutusmoduuli .koulutusmoduuli .tunniste-koodiarvo'
+        )
         .text()
     },
     getVirtaNimi: function (indexOrName) {
       var opiskeluoikeus = resolveOpiskeluoikeus(indexOrName)
       return opiskeluoikeus
-        .find('.suoritus .property.koulutusmoduuli .koulutusmoduuli .property.virtaNimi .value')
+        .find(
+          '.suoritus .property.koulutusmoduuli .koulutusmoduuli .property.virtaNimi .value'
+        )
         .text()
     },
     getSuoritustapa: function (indexOrName) {
@@ -558,7 +562,7 @@ function Kurssi(elem) {
     arvosana: Editor(elem).propertyBySelector('.arvosana'),
     toggleDetails: click(subElement(elem, '.tunniste')),
     showDetails: function () {
-      if (api.detailsText() == '') return api.toggleDetails()
+      if (api.detailsText() === '') return api.toggleDetails()
       return wait.forAjax()
     },
     details: function () {
@@ -786,18 +790,17 @@ function TutkinnonOsat(groupId, base) {
                       )
                       .setValue(v)
                   })
-                  tiedot.arviointikeskusteluunOsallistuneet.map(function (
-                    v,
-                    i
-                  ) {
-                    Page(tutkinnonOsaElement)
-                      .getInput(
-                        '.näyttö .modal-content .arviointikeskusteluunOsallistuneet .value li:' +
-                          (i === 0 ? 'first' : 'last') +
-                          '-child .dropdown'
-                      )
-                      .setValue(v)
-                  })
+                  tiedot.arviointikeskusteluunOsallistuneet.map(
+                    function (v, i) {
+                      Page(tutkinnonOsaElement)
+                        .getInput(
+                          '.näyttö .modal-content .arviointikeskusteluunOsallistuneet .value li:' +
+                            (i === 0 ? 'first' : 'last') +
+                            '-child .dropdown'
+                        )
+                        .setValue(v)
+                    }
+                  )
                   Page(tutkinnonOsaElement)
                     .getInput(
                       '.näyttö .modal-content .suorituspaikka .value .dropdown'
@@ -1010,9 +1013,7 @@ function VSTSuoritukset(prev) {
     lisääSuorituksenLaajuus: function (laajuus) {
       return function () {
         return Page(
-          findFirst(
-            '.koulutusmoduuli [data-testid="laajuus-editor"]'
-          )
+          findFirst('.koulutusmoduuli [data-testid="laajuus-editor"]')
         )
           .setInputValue('input', laajuus)()
           .then(wait.forAjax)
@@ -1065,8 +1066,13 @@ function VSTSuoritukset(prev) {
     },
     lisääTallennettuPaikallinenJotpa: function () {
       return function () {
-        return click('.vapaansivistystyonjotpakoulutuksensuoritus > .osasuoritukset > .suoritus-taulukko > table > .vst-uusi-osasuoritus .lisaa-paikallinen-suoritus .dropdown .select')()
-          .then(click('.vapaansivistystyonjotpakoulutuksensuoritus > .osasuoritukset > .suoritus-taulukko > table > .vst-uusi-osasuoritus .lisaa-paikallinen-suoritus .dropdown li:nth-child(1)'))
+        return click(
+          '.vapaansivistystyonjotpakoulutuksensuoritus > .osasuoritukset > .suoritus-taulukko > table > .vst-uusi-osasuoritus .lisaa-paikallinen-suoritus .dropdown .select'
+        )().then(
+          click(
+            '.vapaansivistystyonjotpakoulutuksensuoritus > .osasuoritukset > .suoritus-taulukko > table > .vst-uusi-osasuoritus .lisaa-paikallinen-suoritus .dropdown li:nth-child(1)'
+          )
+        )
       }
     },
     lisääLukutaitokoulutuksenKokonaisuus: function (hakusana) {
@@ -1360,7 +1366,7 @@ function Versiohistoria() {
           )().parent()
         )()
         return wait.until(function () {
-          return api.valittuVersio() == versio
+          return api.valittuVersio() === versio
         })()
       }
     }
@@ -1502,7 +1508,7 @@ function LisääSuoritusDialog() {
           .then(click(buttonElem))
           .then(
             wait.until(function () {
-              return count() == prevCount + 1
+              return count() === prevCount + 1
             })
           )
       },
@@ -1601,11 +1607,11 @@ function OpiskeluoikeusDialog() {
       )().is(':disabled')
     },
     tilat: function () {
-      return toArray(elem().find('.tila input[type="radio"]')).map(function (
-        i
-      ) {
-        return i.value
-      })
+      return toArray(elem().find('.tila input[type="radio"]')).map(
+        function (i) {
+          return i.value
+        }
+      )
     },
     opintojenRahoitus: function () {
       var p = Property(function () {
@@ -1766,9 +1772,9 @@ function Property(elem) {
       },
       getItems: function () {
         return toArray(elem().find('.value .array > li:not(.add-item)')).map(
-          function (elem) {
+          function (e) {
             return Property(function () {
-              return S(elem)
+              return S(e)
             })
           }
         )

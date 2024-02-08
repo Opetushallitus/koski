@@ -45,8 +45,8 @@ const OmatTiedotOppiaineryhmä = ({
               arviointi && !arviointi?.predicted
                 ? 'arviointi' // Vanhan tietomallin mukaisesti predicted löytyy arviointi-kentästä
                 : predictedArviointi
-                ? 'predictedArviointi' // Predicted grade löytyy, mutta ei päättöarvosanaa
-                : 'arviointi'
+                  ? 'predictedArviointi' // Predicted grade löytyy, mutta ei päättöarvosanaa
+                  : 'arviointi'
 
             const footnote =
               (predictedArviointiVanhassaHaarassa ||

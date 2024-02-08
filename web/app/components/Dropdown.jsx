@@ -200,8 +200,8 @@ export default ({
                         return q !== undefined
                           ? q
                           : s
-                          ? displayValue(s)
-                          : selectionText
+                            ? displayValue(s)
+                            : selectionText
                       }
                     )}
                     placeholder={selectionText}

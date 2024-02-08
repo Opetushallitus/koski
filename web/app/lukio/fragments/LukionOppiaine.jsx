@@ -114,13 +114,13 @@ const Arviointi = ({ oppiaine, suoritetutKurssit, footnote, predicted }) => {
     predicted === undefined
       ? modelData(oppiaine, arviointiField)
       : predicted
-      ? modelData(oppiaine, 'predictedArviointi') ||
-        (modelData(oppiaine, 'arviointi') || []).filter(
-          (a) => a.arvosana.predicted
-        )
-      : (modelData(oppiaine, 'arviointi') || []).filter(
-          (a) => !a.arvosana.predicted
-        )
+        ? modelData(oppiaine, 'predictedArviointi') ||
+          (modelData(oppiaine, 'arviointi') || []).filter(
+            (a) => a.arvosana.predicted
+          )
+        : (modelData(oppiaine, 'arviointi') || []).filter(
+            (a) => !a.arvosana.predicted
+          )
 
   return (
     <div>

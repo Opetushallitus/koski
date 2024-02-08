@@ -48,8 +48,8 @@ export const flatMap =
     return !cs
       ? null
       : cs.every((c) => c === null)
-      ? null
-      : pipe(cs, A.filter(nonNull), A.uniq(Eq.eqStrict as Eq.Eq<T>))
+        ? null
+        : pipe(cs, A.filter(nonNull), A.uniq(Eq.eqStrict as Eq.Eq<T>))
   }
 
 /**

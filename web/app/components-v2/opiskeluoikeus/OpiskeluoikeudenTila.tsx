@@ -336,8 +336,8 @@ const useOpiskeluoikeudenTilaState = <T extends OpiskeluoikeudenTila>(
       ? opiskeluoikeusjaksoClassNames.length === 1
         ? opiskeluoikeusjaksoClassNames[0]
         : props.opiskeluoikeusJaksoClassName !== undefined
-        ? props.opiskeluoikeusJaksoClassName
-        : null
+          ? props.opiskeluoikeusJaksoClassName
+          : null
       : null
 
   const isTerminated = useMemo(

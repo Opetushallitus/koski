@@ -124,9 +124,6 @@ test.describe('Vapaa sivistystyö', () => {
     test.describe('VST lukutaitokoulutus', () => {
       test.beforeEach(openOppijaPage(lukutaitokoulutus, false))
       test('Näyttää tiedot oikein', async ({ page }) => {
-        const expect = _expect.configure({
-          timeout: 1000
-        })
         await expect(
           page.getByTestId('opiskeluoikeus.tila.value.items.0.date')
         ).toHaveText('1.9.2021')
@@ -235,9 +232,6 @@ test.describe('Vapaa sivistystyö', () => {
     test.describe('VST kansanopisto', () => {
       test.beforeEach(openOppijaPage(kansanopisto, false))
       test('Näyttää tiedot oikein', async ({ page }) => {
-        const expect = _expect.configure({
-          timeout: 2000
-        })
         await expect(
           page.getByTestId('opiskeluoikeus.tila.value.items.0.date')
         ).toHaveText('1.9.2021')
@@ -563,9 +557,6 @@ test.describe('Vapaa sivistystyö', () => {
     test.describe('VST Oppivelvollisille suunnattu', () => {
       test.beforeEach(openOppijaPage(oppivelvollisilleSuunnattu, false))
       test('Näyttää tiedot oikein', async ({ page }) => {
-        const expect = _expect.configure({
-          timeout: 2000
-        })
         await expect(
           page.getByTestId('opiskeluoikeus.tila.value.items.0.date')
         ).toHaveText('1.9.2021')
@@ -891,9 +882,6 @@ test.describe('Vapaa sivistystyö', () => {
     test.describe('VST Kotoutumiskoulutus oppivelvollisille', () => {
       test.beforeEach(openOppijaPage(kotoutumiskoulutus2022, false))
       test('Näyttää tiedot oikein', async ({ page }) => {
-        const expect = _expect.configure({
-          timeout: 2000
-        })
         await expect(
           page.getByTestId('opiskeluoikeus.tila.value.items.0.date')
         ).toHaveText('1.8.2022')
@@ -1090,9 +1078,6 @@ test.describe('Vapaa sivistystyö', () => {
     test.describe('Vapaatavoitteinen vst-koulutus', () => {
       test.beforeEach(openOppijaPage(vapaatavoitteinenKoulutus, false))
       test('Näyttää tiedot oikein', async ({ page }) => {
-        const expect = _expect.configure({
-          timeout: 2000
-        })
         await expect(
           page.getByTestId('opiskeluoikeus.tila.value.items.0.date')
         ).toHaveText('31.5.2022')
@@ -1231,9 +1216,6 @@ test.describe('Vapaa sivistystyö', () => {
     test.describe('VST osaamismerkki', () => {
       test.beforeEach(openOppijaPage(osaamismerkki, false))
       test('Näyttää tiedot oikein', async ({ page }) => {
-        const expect = _expect.configure({
-          timeout: 2000
-        })
         await expect(page.getByTestId('opiskeluoikeus.kuva')).toBeVisible()
         await expect(page.getByTestId('opiskeluoikeus.nimi')).toHaveText(
           'Varsinais-Suomen kansanopisto, digitaalinen tiedonhaku (2024, hyväksytysti suoritettu)'

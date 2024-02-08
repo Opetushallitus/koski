@@ -31,7 +31,7 @@ export const taskifyApiCall =
         (error) =>
           ({
             errors: [{ messageKey: 'reject', messageData: error }]
-          } as ApiFailure)
+          }) as ApiFailure
       )(...args),
       TE.chain(TE.fromEither)
     )

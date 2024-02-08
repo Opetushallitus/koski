@@ -53,5 +53,5 @@ const byGrade = (a, b) =>
   a.koodiarvo === 'explorer'
     ? -1
     : b.koodiarvo === 'explorer'
-    ? 1
-    : a.koodiarvo - b.koodiarvo
+      ? 1
+      : a.koodiarvo - b.koodiarvo

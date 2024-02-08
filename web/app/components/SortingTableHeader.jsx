@@ -9,8 +9,8 @@ export default class extends React.Component {
     const [sortBy, sortOrder] = params.sort
       ? params.sort.split(':')
       : defaultSort
-      ? [field, defaultSort]
-      : []
+        ? [field, defaultSort]
+        : []
 
     const selected = sortBy === field
 

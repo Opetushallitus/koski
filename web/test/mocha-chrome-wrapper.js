@@ -1,9 +1,11 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 process.env.CHROME_PATH = require('puppeteer').executablePath()
 process.on('unhandledRejection', (reason, promise) => {
   console.error(reason)
   process.exit(1)
 })
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const { exec } = require('child_process')
 
 setInterval(function () {

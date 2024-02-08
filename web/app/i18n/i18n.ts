@@ -80,8 +80,8 @@ export const localize = (str: string): LocalizedString =>
   lang === 'fi'
     ? Finnish({ fi: str })
     : lang === 'sv'
-    ? Swedish({ sv: str })
-    : English({ en: str })
+      ? Swedish({ sv: str })
+      : English({ en: str })
 
 export const finnish = (fi: string): LocalizedString => Finnish({ fi })
 

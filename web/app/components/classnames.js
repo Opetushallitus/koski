@@ -4,8 +4,8 @@ const parseClassNames = (classNames) =>
   typeof classNames === 'string'
     ? classNames.split(' ')
     : classNames instanceof Array
-    ? classNames
-    : []
+      ? classNames
+      : []
 
 export const buildClassNames = (classNames) =>
   typeof classNames === 'string'

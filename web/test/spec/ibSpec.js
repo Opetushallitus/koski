@@ -496,8 +496,8 @@ describe('IB', function () {
                 opinnot.tilaJaVahvistus.merkitseKeskeneräiseksi
               )
 
-              var aine = opinnot.oppiaineet.oppiaine('oppiaine.B')
-              var kieli = aine.propertyBySelector(
+              var oppiaine = opinnot.oppiaineet.oppiaine('oppiaine.B')
+              var kieli = oppiaine.propertyBySelector(
                 '.title .properties:eq(0) > .dropdown-wrapper'
               )
 
@@ -505,7 +505,7 @@ describe('IB', function () {
                 before(
                   editor.edit,
                   uusiOppiaine.selectValue('B-language'),
-                  aine.propertyBySelector('.arvosana').selectValue(9)
+                  oppiaine.propertyBySelector('.arvosana').selectValue(9)
                 )
 
                 it('lisää oppiaineen', function () {
@@ -532,7 +532,7 @@ describe('IB', function () {
 
                 describe('Kun aineryhmä on valittu', function () {
                   before(
-                    aine
+                    oppiaine
                       .propertyBySelector('.ryhmä')
                       .setValue('Studies in language and literature'),
                     editor.saveChanges,

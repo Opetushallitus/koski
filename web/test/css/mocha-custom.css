@@ -1,20 +1,20 @@
-@media only screen and (min-width : 2450px) {
-    #mocha {
-	      float: left;
-        height: 100vh;
-        overflow-y: scroll;
-        width: 30%;
-    }
+@media only screen and (min-width: 2450px) {
+  #mocha {
+    float: left;
+    height: 100vh;
+    overflow-y: scroll;
+    width: 30%;
+  }
 
-    #mocha #mocha-stats {
-        top: 0;
-        left: 20px;
-        width: 32%;
-        background-color: white;
-        padding-top: 15px;
-    }
+  #mocha #mocha-stats {
+    top: 0;
+    left: 20px;
+    width: 32%;
+    background-color: white;
+    padding-top: 15px;
+  }
 
-    iframe {
-        border-width: 0 1px 0 1px;
-    }
+  iframe {
+    border-width: 0 1px 0 1px;
+  }
 }

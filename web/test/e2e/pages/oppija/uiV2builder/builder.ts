@@ -14,15 +14,16 @@ export type DynamicNumberIdNode<T extends IdNode> = (index: number) => T
 export type DynamicStringIdNode<T extends IdNode> = (key: string) => T
 export type ComposedFieldNode<T extends IdNode> = (editMode: boolean) => T
 
-export type BuiltIdNode<T extends IdNode> = T extends Control<infer S>
-  ? S
-  : T extends DynamicNumberIdNode<infer S>
-  ? (index: number) => BuiltIdNode<S>
-  : T extends DynamicStringIdNode<infer S>
-  ? (key: string) => BuiltIdNode<S>
-  : T extends IdNodeObject<infer K>
-  ? { [A in K]: BuiltIdNode<T[A]> }
-  : never
+export type BuiltIdNode<T extends IdNode> =
+  T extends Control<infer S>
+    ? S
+    : T extends DynamicNumberIdNode<infer S>
+      ? (index: number) => BuiltIdNode<S>
+      : T extends DynamicStringIdNode<infer S>
+        ? (key: string) => BuiltIdNode<S>
+        : T extends IdNodeObject<infer K>
+          ? { [A in K]: BuiltIdNode<T[A]> }
+          : never
 
 export function build<T extends { [K in string]: IdNode }>(
   page: Page,

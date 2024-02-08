@@ -1,5 +1,6 @@
 // Scope Koski-global styles (separate from raamit)
-.koski-content, .koski-modal {
+.koski-content,
+.koski-modal {
   .koski-button {
     .BaseButton;
 
@@ -8,7 +9,7 @@
     padding: 0 20px;
     height: 40px;
     font-weight: 600;
-    color: #FFFFFF;
+    color: #ffffff;
     letter-spacing: 0;
     cursor: pointer;
     display: inline-block;
@@ -45,12 +46,16 @@
       background: @color-delete;
     }
 
-    &--success, &--success:hover, &--success:disabled {
+    &--success,
+    &--success:hover,
+    &--success:disabled {
       color: @color-white;
       background-color: @color-green;
     }
 
-    &--error, &--error:hover, &--error:disabled {
+    &--error,
+    &--error:hover,
+    &--error:disabled {
       color: @color-white;
       background-color: @color-red;
     }
@@ -62,14 +67,16 @@
 
       &:hover {
         background-color: @color-white;
-        box-shadow: inset 0 0 0 1px @color-link-hover-blue, 0 0 1px 1px lighten(@color-link-hover-blue, 35%);
+        box-shadow:
+          inset 0 0 0 1px @color-link-hover-blue,
+          0 0 1px 1px lighten(@color-link-hover-blue, 35%);
       }
     }
   }
 }
 
 hr {
-  color: #D9D9D9;
+  color: #d9d9d9;
   border-style: solid;
   border-top-width: 0;
 }
@@ -131,7 +138,7 @@ a {
     font-size: 1rem;
     font-weight: 600;
     line-height: 1.3;
-  })
+  });
 }
 
 .inline-text-button {
@@ -143,7 +150,8 @@ a {
   .link();
 }
 
-th, td {
+th,
+td {
   text-align: left;
   vertical-align: top;
 }
@@ -162,7 +170,7 @@ th, td {
 .external-link(@margin-left, @margin-top) {
   position: relative;
   &:after {
-    content: "";
+    content: '';
     position: absolute;
     background: url('/koski/images/external-link-icon.svg') no-repeat;
     margin-left: @margin-left;
