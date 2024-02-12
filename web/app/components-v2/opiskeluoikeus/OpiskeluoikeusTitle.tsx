@@ -196,14 +196,15 @@ const VersiohistoriaList: React.FC<VersiohistoriaListProps> = (props) => {
     versiolistaCache
   )
 
+  const versioParam = useVersionumero()
+
   const currentVersion = useMemo(() => {
-    const v = parseQuery(window.location.search).versionumero
-    return v
-      ? parseInt(v)
+    return versioParam
+      ? parseInt(versioParam)
       : isSuccess(historia)
         ? last(historia.data)?.versionumero
         : undefined
-  }, [historia])
+  }, [historia, versioParam])
 
   return isSuccess(historia) ? (
     <TestIdLayer id="list">
@@ -229,6 +230,18 @@ const VersiohistoriaList: React.FC<VersiohistoriaListProps> = (props) => {
             </LinkButton>
           </li>
         ))}
+        {versioParam && (
+          <li className="VersiohistoriaList__item">
+            <LinkButton
+              href={currentQueryWith({
+                opiskeluoikeus: props.opiskeluoikeusOid,
+                versionumero: null
+              })}
+            >
+              {t('Poistu versiohistoriasta')}
+            </LinkButton>
+          </li>
+        )}
       </ul>
     </TestIdLayer>
   ) : null

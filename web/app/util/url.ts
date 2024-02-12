@@ -1,6 +1,6 @@
 import { fromEntries, isEmptyObject, ObjectEntry } from './fp/objects'
 
-export type LocationQueryIn = Record<string, string | number | boolean>
+export type LocationQueryIn = Record<string, string | number | boolean | null>
 export type LocationQueryOut = Record<string, string>
 
 export const queryString = (query: LocationQueryIn) =>
@@ -8,9 +8,10 @@ export const queryString = (query: LocationQueryIn) =>
     ? ''
     : '?' +
       Object.entries(query)
-        .map(
-          ([key, value]) =>
-            `${encodeURIComponent(key)}=${encodeURIComponent(value)}`
+        .map(([key, value]) =>
+          value !== null
+            ? `${encodeURIComponent(key)}=${encodeURIComponent(value)}`
+            : ''
         )
         .join('&')
 
