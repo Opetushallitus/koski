@@ -1,12 +1,13 @@
 import React from 'react'
-import { PropertiesEditor } from '../editor/PropertiesEditor'
-import IBKurssinArviointiEditor from '../ib/IBKurssinArviointiEditor'
-import { isIBKurssi } from './kurssi'
-import { hasArviointi } from '../suoritus/Suoritus'
 import { isDIAOppiaineenTutkintovaiheenOsasuoritus } from '../dia/DIA'
 import DIATutkintovaiheenLukukaudenArviointiEditor, {
   hasLasketaanKokonaispistemäärään
 } from '../dia/DIATutkintovaiheenLukukaudenArviointiEditor'
+import { PropertiesEditor } from '../editor/PropertiesEditor'
+import IBKurssinArviointiEditor from '../ib/IBKurssinArviointiEditor'
+import AikuistenPerusopetuksenKurssinArviointiEditor from '../perusopetus/AikuistenPerusopetuksenKurssinArviointiEditor'
+import { hasArviointi } from '../suoritus/Suoritus'
+import { isAikuistenPerusopetuksenKurssi, isIBKurssi } from './kurssi'
 
 export const isIBKurssinArviointi = (kurssi) => (property) =>
   isIBKurssi(kurssi) && property.key === 'arviointi' && hasArviointi(kurssi)
@@ -25,6 +26,8 @@ const resolvePropertyEditor = (model, property) => {
     property.key === 'arviointi'
   )
     return DIATutkintovaiheenLukukaudenArviointiEditor
+  if (isAikuistenPerusopetuksenKurssi(model) && property.key === 'arviointi')
+    return AikuistenPerusopetuksenKurssinArviointiEditor
 
   return null
 }

@@ -43,6 +43,9 @@ export const findDefaultKoodisto = (kurssiKoodistot) =>
 export const isIBKurssi = (kurssi) =>
   kurssi.value.classes.includes('ibkurssinsuoritus')
 
+export const isAikuistenPerusopetuksenKurssi = (kurssi) =>
+  kurssi.value.classes.includes('aikuistenperusopetuksenkurssinsuoritus')
+
 export const lisääKurssi = (
   kurssi,
   model,
