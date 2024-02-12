@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "puppeteer": "^20.4.0",
+    "puppeteer": "^21.5.0",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.4"
   }
