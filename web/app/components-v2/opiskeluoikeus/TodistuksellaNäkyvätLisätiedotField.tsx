@@ -32,7 +32,7 @@ export const TodistuksellaNäkyvätLisätiedotEdit: React.FC<
     (e) => {
       e.preventDefault()
       const fi = e.target.value
-      onChange(Finnish({ fi }))
+      onChange(fi ? Finnish({ fi }) : undefined)
     },
     [onChange]
   )

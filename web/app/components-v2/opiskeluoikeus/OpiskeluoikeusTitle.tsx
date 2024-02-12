@@ -5,6 +5,7 @@ import {
   useApiWithParams
 } from '../../api-fetch'
 import { TreeHook } from '../../appstate/tree'
+import { useVersionumero } from '../../appstate/useSearchParam'
 import { TestIdLayer, TestIdRoot, TestIdText } from '../../appstate/useTestId'
 import { useKansalainenTaiSuoritusjako } from '../../appstate/user'
 import {
@@ -150,6 +151,7 @@ const VersiohistoriaButton: React.FC<VersiohistoriaButtonProps> = (props) => {
     [versiohistoriaVisible]
   )
   const hideList = useCallback(() => setVersiohistoriaVisible(false), [])
+  const currentVersion = useVersionumero()
 
   return (
     <TestIdLayer id="versiohistoria">
@@ -160,7 +162,9 @@ const VersiohistoriaButton: React.FC<VersiohistoriaButtonProps> = (props) => {
           aria-expanded={versiohistoriaVisible}
           testId="button"
         >
-          {t('Versiohistoria')}
+          {currentVersion
+            ? `${t('Versionumero')}: v${currentVersion}`
+            : t('Versiohistoria')}
         </FlatButton>
         <PositionalPopup
           align="right"
@@ -192,14 +196,15 @@ const VersiohistoriaList: React.FC<VersiohistoriaListProps> = (props) => {
     versiolistaCache
   )
 
+  const versioParam = useVersionumero()
+
   const currentVersion = useMemo(() => {
-    const v = parseQuery(window.location.search).versionumero
-    return v
-      ? parseInt(v)
+    return versioParam
+      ? parseInt(versioParam)
       : isSuccess(historia)
         ? last(historia.data)?.versionumero
         : undefined
-  }, [historia])
+  }, [historia, versioParam])
 
   return isSuccess(historia) ? (
     <TestIdLayer id="list">
@@ -225,6 +230,18 @@ const VersiohistoriaList: React.FC<VersiohistoriaListProps> = (props) => {
             </LinkButton>
           </li>
         ))}
+        {versioParam && (
+          <li className="VersiohistoriaList__item">
+            <LinkButton
+              href={currentQueryWith({
+                opiskeluoikeus: props.opiskeluoikeusOid,
+                versionumero: null
+              })}
+            >
+              {t('Poistu versiohistoriasta')}
+            </LinkButton>
+          </li>
+        )}
       </ul>
     </TestIdLayer>
   ) : null
