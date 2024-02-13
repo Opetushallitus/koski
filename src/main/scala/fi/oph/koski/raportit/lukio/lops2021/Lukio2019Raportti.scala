@@ -13,18 +13,15 @@ import java.time.LocalDate
 import scala.concurrent.Future
 import scala.concurrent.duration.DurationInt
 
+
+
 case class Lukio2019Raportti(repository: Lukio2019RaportitRepository, t: LocalizationReader) extends GlobalExecutionContext {
 
   private def isOppiaineenOppimäärä(päätasonSuoritus: RPäätasonSuoritusRow) = {
     päätasonSuoritus.suorituksenTyyppi == "lukionoppiaineenoppimaara"
   }
 
-  private def isOppiaine(osasuoritus: ROsasuoritusRow) = {
-    List(
-      "lukionoppiaine",
-      "lukionmuuopinto"
-    ).contains(osasuoritus.suorituksenTyyppi)
-  }
+
 
   def buildRaportti(
     oppilaitosOid: Organisaatio.Oid,
@@ -33,7 +30,7 @@ case class Lukio2019Raportti(repository: Lukio2019RaportitRepository, t: Localiz
     osasuoritustenAikarajaus: Boolean
   ): Seq[DynamicDataSheet] = {
     val rows = repository.suoritustiedot(oppilaitosOid, alku, loppu, osasuoritustenAikarajaus)
-    val oppiaineetJaOsasuoritukset = opetettavatOppiaineetJaNiidenKurssit(isOppiaineenOppimäärä, isOppiaine, rows, t)
+    val oppiaineetJaOsasuoritukset = opetettavatOppiaineetJaNiidenKurssit(isOppiaineenOppimäärä, repository.isOppiaine, rows, t)
 
     val oppiaineJaLisätiedotFuture = oppiaineJaLisätiedotSheet(rows, oppiaineetJaOsasuoritukset, alku, loppu)
     val osasuorituksetFuture = oppiaineKohtaisetSheetit(rows, oppiaineetJaOsasuoritukset)

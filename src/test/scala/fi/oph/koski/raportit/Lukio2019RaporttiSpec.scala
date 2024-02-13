@@ -46,6 +46,50 @@ class Lukio2019RaporttiSpec extends AnyFreeSpec with Matchers with Raportointika
   private lazy val t: LocalizationReader = new LocalizationReader(KoskiApplicationForTests.koskiLocalizationRepository, "fi")
   private lazy val lukioRaportti = Lukio2019Raportti(repository, t)
 
+  private val expectedHeadings = Seq(
+    "Opiskeluoikeuden oid",
+    "Lähdejärjestelmä",
+    "Koulutustoimijan nimi",
+    "Oppilaitoksen nimi",
+    "Toimipisteen nimi",
+    "Opiskeluoikeuden tunniste lähdejärjestelmässä",
+    "Päivitetty",
+    "Yksilöity",
+    "Oppijan oid",
+    "hetu",
+    "Sukunimi",
+    "Etunimet",
+    "Opiskeluoikeuden alkamispäivä",
+    "Viimeisin opiskeluoikeuden tila",
+    "Opiskeluoikeuden tilat aikajakson aikana",
+    "Opetussuunnitelma",
+    "Suorituksen tyyppi",
+    "Suorituksen tila",
+    "Suorituksen vahvistuspäivä",
+    "Oppimäärä suoritettu",
+    "Läsnäolopäiviä aikajakson aikana",
+    "Rahoitukset",
+    "Läsnä/valmistunut-rahoitusmuodot syötetty",
+    "Ryhmä",
+    "Pidennetty päättymispäivä",
+    "Ulkomainen vaihto-opiskelija",
+    "Ulkomaanjaksot",
+    "Erityisen koulutustehtävän tehtävät",
+    "Erityisen koulutustehtävän jaksot",
+    "Sisäoppilaitosmainen majoitus",
+    "Maksuttomuus",
+    "Maksullisuus",
+    "Oikeutta maksuttomuuteen pidennetty",
+    "Yhteislaajuus (kaikki opintopisteet)",
+    "Yhteislaajuus (suoritetut opintopisteet)",
+    "Yhteislaajuus (hylätyllä arvosanalla suoritetut opintopisteet)",
+    "Yhteislaajuus (tunnustetut opintopisteet)",
+    "Yhteislaajuus (eri vuonna korotetut opintopisteet)",
+    "AI Suomen kieli ja kirjallisuus valtakunnallinen",
+    "MS Muut suoritukset valtakunnallinen",
+    "ITT Tanssi ja liike paikallinen"
+  )
+
   "Lukion suoritustietoraportti" - {
 
     "Raportti näyttää oikealta" - {
@@ -54,51 +98,10 @@ class Lukio2019RaporttiSpec extends AnyFreeSpec with Matchers with Raportointika
       "Oppiaineita tai kursseja ei päädy duplikaattina raportille" in {
         verifyNoDuplicates(sheets.map(_.title))
         sheets.map(_.columnSettings.map(_.title)).foreach(verifyNoDuplicates)
+        sheets.head.columnSettings.map(_.title) should equal(expectedHeadings)
       }
       "Sarakkeidein järjestys oppiaine tason välilehdellä" in {
-        sheets.head.columnSettings.map(_.title) should equal(Seq(
-          "Opiskeluoikeuden oid",
-          "Lähdejärjestelmä",
-          "Koulutustoimijan nimi",
-          "Oppilaitoksen nimi",
-          "Toimipisteen nimi",
-          "Opiskeluoikeuden tunniste lähdejärjestelmässä",
-          "Päivitetty",
-          "Yksilöity",
-          "Oppijan oid",
-          "hetu",
-          "Sukunimi",
-          "Etunimet",
-          "Opiskeluoikeuden alkamispäivä",
-          "Viimeisin opiskeluoikeuden tila",
-          "Opiskeluoikeuden tilat aikajakson aikana",
-          "Opetussuunnitelma",
-          "Suorituksen tyyppi",
-          "Suorituksen tila",
-          "Suorituksen vahvistuspäivä",
-          "Oppimäärä suoritettu",
-          "Läsnäolopäiviä aikajakson aikana",
-          "Rahoitukset",
-          "Läsnä/valmistunut-rahoitusmuodot syötetty",
-          "Ryhmä",
-          "Pidennetty päättymispäivä",
-          "Ulkomainen vaihto-opiskelija",
-          "Ulkomaanjaksot",
-          "Erityisen koulutustehtävän tehtävät",
-          "Erityisen koulutustehtävän jaksot",
-          "Sisäoppilaitosmainen majoitus",
-          "Maksuttomuus",
-          "Maksullisuus",
-          "Oikeutta maksuttomuuteen pidennetty",
-          "Yhteislaajuus (kaikki opintopisteet)",
-          "Yhteislaajuus (suoritetut opintopisteet)",
-          "Yhteislaajuus (hylätyllä arvosanalla suoritetut opintopisteet)",
-          "Yhteislaajuus (tunnustetut opintopisteet)",
-          "Yhteislaajuus (eri vuonna korotetut opintopisteet)",
-          "AI Suomen kieli ja kirjallisuus valtakunnallinen",
-          "MS Muut suoritukset valtakunnallinen",
-          "ITT Tanssi ja liike paikallinen"
-        ))
+        sheets.head.columnSettings.map(_.title) should equal(expectedHeadings)
       }
       "Sarakkeiden järjestys oppiaineen kursseja käsittelevällä välilehdellä" in {
         val historia = sheets.find(_.title == "AI v Suomen kieli ja kirjallisuus")
@@ -156,6 +159,10 @@ class Lukio2019RaporttiSpec extends AnyFreeSpec with Matchers with Raportointika
             oppiaineetRowsWithColumnsMS,
             addOpiskeluoikeudenOid = false
           )
+        }
+        "Oppiaineet tulevat mukaan silloinkin kun osasuoritustenAikarajaus on käytössä" in {
+          val sheetsRajauksella = buildLukio2019raportti(jyväskylänNormaalikoulu, date(2000, 1, 1), date(2001, 1, 1), osasuoritustenAikarajaus = true)
+          sheetsRajauksella.head.columnSettings.map(_.title) should equal(expectedHeadings)
         }
       }
     }
