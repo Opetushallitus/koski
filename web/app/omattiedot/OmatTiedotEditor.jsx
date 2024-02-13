@@ -74,36 +74,37 @@ const onOsaamismerkinOpiskeluoikeus = (opiskeluoikeus) => {
 }
 
 const Oppilaitokset = ({ oppilaitos, oppijaOid, uiAdapter }) => {
-  return (
+  const opiskeluoikeudet = modelItems(oppilaitos, 'opiskeluoikeudet').filter(
+    (oo) => !onOsaamismerkinOpiskeluoikeus(oo)
+  )
+  return opiskeluoikeudet.length > 0 ? (
     <>
       <div className="oppilaitos-container">
         <h2 className="oppilaitos-title">
           {modelTitle(oppilaitos, 'oppilaitos')}
         </h2>
         <ul className="opiskeluoikeudet-list">
-          {modelItems(oppilaitos, 'opiskeluoikeudet')
-            .filter((oo) => !onOsaamismerkinOpiskeluoikeus(oo))
-            .map((opiskeluoikeus, opiskeluoikeusIndex) => {
-              const Editor = uiAdapter.getOpiskeluoikeusEditor(opiskeluoikeus)
-              return Editor ? (
-                <li key={opiskeluoikeusIndex}>
-                  <div className="opiskeluoikeus-container">
-                    <Editor key={opiskeluoikeusIndex} />
-                  </div>
-                </li>
-              ) : (
-                <li key={opiskeluoikeusIndex}>
-                  <Opiskeluoikeus
-                    opiskeluoikeus={opiskeluoikeus}
-                    oppijaOid={oppijaOid}
-                  />
-                </li>
-              )
-            })}
+          {opiskeluoikeudet.map((opiskeluoikeus, opiskeluoikeusIndex) => {
+            const Editor = uiAdapter.getOpiskeluoikeusEditor(opiskeluoikeus)
+            return Editor ? (
+              <li key={opiskeluoikeusIndex}>
+                <div className="opiskeluoikeus-container">
+                  <Editor key={opiskeluoikeusIndex} />
+                </div>
+              </li>
+            ) : (
+              <li key={opiskeluoikeusIndex}>
+                <Opiskeluoikeus
+                  opiskeluoikeus={opiskeluoikeus}
+                  oppijaOid={oppijaOid}
+                />
+              </li>
+            )
+          })}
         </ul>
       </div>
     </>
-  )
+  ) : null
 }
 
 const Osaamismerkki = ({ opiskeluoikeus, opiskeluoikeusIndex, uiAdapter }) => {
