@@ -44,7 +44,7 @@ const runTest = async (): Promise<void> => {
     console.log(`Attempt ${i + 1}/${retryCount}`);
 
     const browser = await puppeteer.launch({
-      headless: "new",
+      headless: true
     });
     const page = await browser.newPage();
     const resultOk = await tryToLogin(page);
