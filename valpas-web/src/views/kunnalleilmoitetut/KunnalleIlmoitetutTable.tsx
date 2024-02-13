@@ -1,6 +1,6 @@
 import * as A from "fp-ts/Array"
-import React, { useMemo } from "react"
-import { Link } from "react-router-dom"
+import React, { useCallback, useMemo, useState } from "react"
+import { FlatButton } from "../../components/buttons/FlatButton"
 import {
   Column,
   DataTable,
@@ -11,18 +11,20 @@ import {
 import { getLocalizedMaybe, t } from "../../i18n/i18n"
 import { KuntailmoitusSuppeatTiedot } from "../../state/apitypes/kuntailmoitus"
 import { OppijaHakutilanteillaSuppeatTiedot } from "../../state/apitypes/oppija"
-import { useBasePath } from "../../state/basePath"
 import { Oid } from "../../state/common"
-import { oppijaPath } from "../../state/paths"
 import { formatNullableDate } from "../../utils/date"
-import { OppijaViewBackNavProps } from "../oppija/OppijaView"
+import { KunnalleIlmoitettuModal } from "./KunnalleIlmoitettuModal"
 
 export type KunnalleIlmoitetutTableProps = {
   data: OppijaHakutilanteillaSuppeatTiedot[]
   organisaatioOid: Oid
-  backRefName: keyof OppijaViewBackNavProps
   storageName: string
 } & Pick<DataTableProps, "onCountChange">
+
+type ShownKuntailmoitus = {
+  kuntailmoitusId: string
+  oppijaId: string
+}
 
 export const KunnalleIlmoitetutTable = (
   props: KunnalleIlmoitetutTableProps,
@@ -50,44 +52,65 @@ export const KunnalleIlmoitetutTable = (
     [],
   )
 
-  const basePath = useBasePath()
-  const data = toTableData(
-    props.data,
-    props.organisaatioOid,
-    basePath,
-    props.backRefName,
+  const [kuntailmoitus, openIlmoitus] = useState<ShownKuntailmoitus>()
+  const closeIlmoitus = useCallback(() => openIlmoitus(undefined), [])
+
+  const data = toTableData(props.data, (oppija, ilmoitus) =>
+    openIlmoitus(
+      ilmoitus.id !== undefined
+        ? {
+            oppijaId: oppija.oppija.henkilö.oid,
+            kuntailmoitusId: ilmoitus.id,
+          }
+        : undefined,
+    ),
   )
 
   return (
-    <DataTable
-      columns={columns}
-      data={data}
-      onCountChange={props.onCountChange}
-      storageName={props.storageName}
-      className="kuntailmoitukset"
-    />
+    <>
+      <DataTable
+        columns={columns}
+        data={data}
+        onCountChange={props.onCountChange}
+        storageName={props.storageName}
+        className="kuntailmoitukset"
+      />
+      {kuntailmoitus && (
+        <KunnalleIlmoitettuModal
+          organisaatioOid={props.organisaatioOid}
+          oppijaOid={kuntailmoitus.oppijaId}
+          kuntailmoitusId={kuntailmoitus.kuntailmoitusId}
+          onClose={closeIlmoitus}
+        />
+      )}
+    </>
   )
 }
 
 const toTableData = (
   data: OppijaHakutilanteillaSuppeatTiedot[],
-  organisaatioOid: Oid,
-  basePath: string,
-  backRefName: keyof OppijaViewBackNavProps,
-): Datum[] =>
-  A.chain(oppijaToTableData(organisaatioOid, basePath, backRefName))(data)
+  onShowIlmoitus: (
+    oppija: OppijaHakutilanteillaSuppeatTiedot,
+    ilmoitus: KuntailmoitusSuppeatTiedot,
+  ) => void,
+): Datum[] => A.chain(oppijaToTableData(onShowIlmoitus))(data)
 
 const oppijaToTableData =
   (
-    organisaatioOid: Oid,
-    basePath: string,
-    backRefName: keyof OppijaViewBackNavProps,
+    onShowIlmoitus: (
+      oppija: OppijaHakutilanteillaSuppeatTiedot,
+      ilmoitus: KuntailmoitusSuppeatTiedot,
+    ) => void,
   ) =>
   (oppija: OppijaHakutilanteillaSuppeatTiedot): Datum[] =>
     oppija.kuntailmoitukset.map((kuntailmoitus) => ({
-      key: [oppija.oppija.henkilö.oid, kuntailmoitus.id || ""],
+      key: [
+        oppija.oppija.henkilö.oid ||
+          `nimi: ${oppija.oppija.henkilö.sukunimi} ${oppija.oppija.henkilö.etunimet}`,
+        kuntailmoitus.id || "",
+      ],
       values: [
-        oppijanNimi(oppija, organisaatioOid, basePath, backRefName),
+        oppijanNimi(oppija, () => onShowIlmoitus(oppija, kuntailmoitus)),
         syntymäaika(oppija),
         ilmoitettuKunnalle(kuntailmoitus),
         ilmoituksenTekopäivä(kuntailmoitus),
@@ -97,22 +120,12 @@ const oppijaToTableData =
 
 const oppijanNimi = (
   oppija: OppijaHakutilanteillaSuppeatTiedot,
-  organisaatioOid: Oid,
-  basePath: string,
-  backRefName: keyof OppijaViewBackNavProps,
+  onClick: () => void,
 ): Value => {
   const value = `${oppija.oppija.henkilö.sukunimi} ${oppija.oppija.henkilö.etunimet}`
-  const linkTo =
-    oppija.oppija.henkilö.oid !== ""
-      ? oppijaPath.href(basePath, {
-          oppijaOid: oppija.oppija.henkilö.oid,
-          [backRefName]: organisaatioOid,
-        })
-      : undefined
-
   return {
     value,
-    display: linkTo && <Link to={linkTo}>{value}</Link>,
+    display: <FlatButton onClick={onClick}>{value}</FlatButton>,
   }
 }
 

@@ -152,17 +152,16 @@ export const fetchNivelvaiheenOppijatHakutiedoillaCache =
 /**
  * Hae hakeutumisvalvonnan kunnalle tekemät ilmoitukset
  */
-export const fetchHakeutumisvalvonnanKunnalleTehdytIlmoitukset = (
-  organisaatioOid: Oid,
-) =>
+export const fetchKunnalleTehdytIlmoitukset = (organisaatioOid: Oid) =>
   handleExpiredSession(
     apiGet<OppijaHakutilanteillaSuppeatTiedot[]>(
       `valpas/api/oppijat/${organisaatioOid}/ilmoitukset`,
     ),
   )
 
-export const fetchHakeutumisvalvonnanKunnalleTehdytIlmoituksetCache =
-  createLocalThenApiCache(fetchHakeutumisvalvonnanKunnalleTehdytIlmoitukset)
+export const fetchKunnalleTehdytIlmoituksetCache = createLocalThenApiCache(
+  fetchKunnalleTehdytIlmoitukset,
+)
 
 /**
  * Hae suppeat tiedot oppijoista suorittamisen valvontanäkymään
@@ -177,21 +176,6 @@ export const fetchOppijatSuorittaminen = (organisaatioOid: Oid) =>
 export const fetchOppijatSuorittaminenCache = createPreferLocalCache(
   fetchOppijatSuorittaminen,
 )
-
-/**
- * Hae suorittammisvalvonnan kunnalle tekemät ilmoitukset
- */
-export const fetchSuorittamisvalvonnanKunnalleTehdytIlmoitukset = (
-  organisaatioOid: Oid,
-) =>
-  handleExpiredSession(
-    apiGet<OppijaHakutilanteillaSuppeatTiedot[]>(
-      `valpas/api/oppijat-suorittaminen/${organisaatioOid}/ilmoitukset`,
-    ),
-  )
-
-export const fetchSuorittamisvalvonnanKunnalleTehdytIlmoituksetCache =
-  createLocalThenApiCache(fetchSuorittamisvalvonnanKunnalleTehdytIlmoitukset)
 
 /**
  * Hae yksittäisen oppijan laajat tiedot
@@ -322,6 +306,20 @@ export const fetchKuntailmoitukset = (kuntaOid: Oid) =>
 
 export const fetchKuntailmoituksetCache = createPreferLocalCache(
   fetchKuntailmoitukset,
+)
+
+/**
+ * Yksittäisen kuntailmoituksen laajojen tietojen hakeminen
+ */
+export const fetchKuntailmoitusLaajatTiedot = (kuntailmoitusId: string) =>
+  handleExpiredSession(
+    apiGet<KuntailmoitusLaajatTiedotOppijaOidilla>(
+      `valpas/api/kuntailmoitus/${kuntailmoitusId}`,
+    ),
+  )
+
+export const fetchKuntailmoitusLaajatTiedotCache = createPreferLocalCache(
+  fetchKuntailmoitusLaajatTiedot,
 )
 
 /**

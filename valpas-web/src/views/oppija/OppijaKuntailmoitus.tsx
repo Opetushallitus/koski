@@ -36,7 +36,7 @@ export const OppijaKuntailmoitus = (props: OppijaKuntailmoitusProps) => {
     <Frame>
       <KuntailmoitusHeader
         aikaleima={kuntailmoitus.aikaleima}
-        aktiivinen={kuntailmoitus.aktiivinen}
+        aktiivinen={!!kuntailmoitus.aktiivinen}
       />
       <Body>
         {turvakielto ? (

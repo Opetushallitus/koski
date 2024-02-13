@@ -183,6 +183,12 @@ class ValpasKuntailmoitusRepository(
       }
   }
 
+  def get(id: UUID): Either[HttpStatus, ValpasKuntailmoitusLaajatTiedot] =
+    for {
+      list            <- query(_.uuid === id)
+      kuntailmoitus   <- list.headOption.toRight(ValpasErrorCategory.notFound.kuntailmoitustaEiLöydy())
+    } yield kuntailmoitus
+
   def queryOppijat(oppijaOids: Set[String]): Either[HttpStatus, Seq[ValpasKuntailmoitusLaajatTiedot]] = {
     query(_.oppijaOid inSetBind oppijaOids)
   }

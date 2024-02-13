@@ -33,7 +33,7 @@ export type MinimiOppijaKuntailmoitus = {
   oppijanYhteystiedot?: KuntailmoituksenOppijanYhteystiedot
   hakenutMuualle?: boolean
   tietojaKarsittu?: boolean
-  aktiivinen: boolean
+  aktiivinen?: boolean
 }
 
 export const isTurvakiellollinenKuntailmoitus = (

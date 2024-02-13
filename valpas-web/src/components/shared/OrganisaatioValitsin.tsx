@@ -16,6 +16,7 @@ import {
   sessionStateStorage,
   useStoredState,
 } from "../../state/useSessionStoreState"
+import { ensureArray } from "../../utils/arrays"
 import { Dropdown } from "../forms/Dropdown"
 import "./OrganisaatioValitsin.less"
 
@@ -92,13 +93,17 @@ export const DummyOrganisaatioValitsin = (
 
 export const getOrganisaatiot = (
   käyttöoikeusroolit: OrganisaatioJaKayttooikeusrooli[],
-  käytettäväKäyttöoikeus: Kayttooikeusrooli,
+  käytettäväKäyttöoikeus: Kayttooikeusrooli | Kayttooikeusrooli[],
   organisaatioTyyppi: string,
   haeLakkautetut: boolean = true,
 ): OrganisaatioHierarkia[] => {
+  const käytettäväKäyttöoikeusArr = ensureArray(käytettäväKäyttöoikeus)
   const sallitutKäyttöoikeusroolit = käyttöoikeusroolit.filter(
-    (kayttooikeusrooli) =>
-      kayttooikeusrooli.kayttooikeusrooli === käytettäväKäyttöoikeus,
+    (kayttooikeusrooli) => {
+      return käytettäväKäyttöoikeusArr.includes(
+        kayttooikeusrooli.kayttooikeusrooli,
+      )
+    },
   )
   const kaikki = pipe(
     sallitutKäyttöoikeusroolit,

@@ -4,6 +4,7 @@ import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koskiuser.{KäyttöoikeusOrg, Palvelurooli}
 import fi.oph.koski.schema.{Opiskeluoikeus, Organisaatio, OrganisaatioWithOid}
 import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasOppijaLaajatTiedot, ValpasOppilaitos}
+import fi.oph.koski.valpas.valpasrepository.ValpasKuntailmoitusLaajatTiedot
 import fi.oph.koski.valpas.valpasuser.{ValpasRooli, ValpasSession}
 
 class ValpasAccessResolver {
@@ -109,15 +110,15 @@ class ValpasAccessResolver {
   }
 
   def separateByOppijaAccess[T <: ValpasOppijaLaajatTiedot](
-    rooli: ValpasRooli.Role,
-    oppilaitosOid: Option[ValpasOppilaitos.Oid] = None
+    roolit: Set[ValpasRooli.Role],
+    oppilaitosOid: ValpasOppilaitos.Oid,
   )(
     oppijat: Seq[T]
   )(
     implicit session: ValpasSession
   ): (Seq[T], Seq[T]) = {
-    val oppijatWithAccess = filterByOppijaAccess(rooli, oppilaitosOid)(oppijat)
-    (oppijatWithAccess, oppijat.diff(oppijatWithAccess))
+    val roolitSeq = roolit.toSeq
+    oppijat.partition { oppija => withOppijaAccessAsOrganisaatio(roolitSeq, oppilaitosOid)(oppija).isRight }
   }
 
   def withOppijaAccessAsOrganisaatio[T <: ValpasOppijaLaajatTiedot]
@@ -234,6 +235,21 @@ class ValpasAccessResolver {
       .flatMap(_.globalPalveluroolit)
       .filter(_.palveluName == "VALPAS")
       .map(_.rooli)
+  }
+
+  def withOmaKuntailmoitusAccess(
+    kuntailmoitus: ValpasKuntailmoitusLaajatTiedot
+  )(
+    implicit session: ValpasSession
+  ): Either[HttpStatus, ValpasKuntailmoitusLaajatTiedot] = {
+    val oikeutetutOrganisaatiot = Set(kuntailmoitus.tekijä.organisaatio.oid, kuntailmoitus.kunta.oid)
+    val mahdollisetRoolit = Set(ValpasRooli.OPPILAITOS_HAKEUTUMINEN, ValpasRooli.OPPILAITOS_SUORITTAMINEN, ValpasRooli.KUNTA)
+
+    if (mahdollisetRoolit.exists(r => accessToSomeOrgs(r, oikeutetutOrganisaatiot))) {
+      Right(kuntailmoitus)
+    } else {
+      Left(ValpasErrorCategory.notFound.kuntailmoitustaEiLöydy())
+    }
   }
 
   private def oppilaitosOrganisaatioOids(

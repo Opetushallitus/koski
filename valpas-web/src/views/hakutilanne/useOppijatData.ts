@@ -2,8 +2,8 @@ import * as A from "fp-ts/Array"
 import * as E from "fp-ts/Either"
 import { useCallback, useMemo } from "react"
 import {
-  fetchHakeutumisvalvonnanKunnalleTehdytIlmoitukset,
-  fetchHakeutumisvalvonnanKunnalleTehdytIlmoituksetCache,
+  fetchKunnalleTehdytIlmoitukset,
+  fetchKunnalleTehdytIlmoituksetCache,
   fetchNivelvaiheenOppijat,
   fetchNivelvaiheenOppijatCache,
   fetchNivelvaiheenOppijatHakutiedoilla,
@@ -12,8 +12,6 @@ import {
   fetchOppijatCache,
   fetchOppijatHakutiedoilla,
   fetchOppijatHakutiedoillaCache,
-  fetchSuorittamisvalvonnanKunnalleTehdytIlmoitukset,
-  fetchSuorittamisvalvonnanKunnalleTehdytIlmoituksetCache,
   setMuuHaku,
 } from "../../api/api"
 import { ApiError, ApiResponse } from "../../api/apiFetch"
@@ -145,25 +143,13 @@ export const useNivelvaiheenOppijatData = oppijatFetchHook(
   fetchNivelvaiheenOppijatHakutiedoillaCache,
 )
 
-export const useHakeutumisvalvonnanKunnalleTehdytIlmoitukset = (
+export const useKunnalleTehdytIlmoitukset = (
   organisaatioOid?: Oid,
 ): UseOppijatDataApi => {
   const oppijatFetch = useApiWithParams(
-    fetchHakeutumisvalvonnanKunnalleTehdytIlmoitukset,
+    fetchKunnalleTehdytIlmoitukset,
     organisaatioOid ? [organisaatioOid] : undefined,
-    fetchHakeutumisvalvonnanKunnalleTehdytIlmoituksetCache,
-  )
-
-  return useOppijatDataAPI(organisaatioOid, oppijatFetch, fetchOppijatCache)
-}
-
-export const useSuorittamisvalvonnanKunnalleTehdytIlmoitukset = (
-  organisaatioOid?: Oid,
-): UseOppijatDataApi => {
-  const oppijatFetch = useApiWithParams(
-    fetchSuorittamisvalvonnanKunnalleTehdytIlmoitukset,
-    organisaatioOid ? [organisaatioOid] : undefined,
-    fetchSuorittamisvalvonnanKunnalleTehdytIlmoituksetCache,
+    fetchKunnalleTehdytIlmoituksetCache,
   )
 
   return useOppijatDataAPI(organisaatioOid, oppijatFetch, fetchOppijatCache)

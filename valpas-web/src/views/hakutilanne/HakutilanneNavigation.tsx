@@ -7,7 +7,6 @@ import { Aikaleima } from "../../components/shared/Aikaleima"
 import { t } from "../../i18n/i18n"
 import { Oid } from "../../state/common"
 import {
-  hakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg,
   hakutilannePathWithOrg,
   nivelvaiheenHakutilannePathWithOrg,
 } from "../../state/paths"
@@ -27,12 +26,6 @@ export const HakutilanneNavigation = (props: HakutilanneNavigationProps) => {
     {
       display: t("hakeutumisvelvollisetnavi__nivelvaihe"),
       linkTo: nivelvaiheenHakutilannePathWithOrg.href(null, {
-        organisaatioOid: props.selectedOrganisaatio,
-      }),
-    },
-    {
-      display: t("hakeutumisvelvollisetnavi__kunnalle_tehdyt_ilmoitukset"),
-      linkTo: hakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg.href(null, {
         organisaatioOid: props.selectedOrganisaatio,
       }),
     },

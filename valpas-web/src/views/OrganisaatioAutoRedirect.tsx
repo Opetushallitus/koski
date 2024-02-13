@@ -9,7 +9,7 @@ import { useBasePath } from "../state/basePath"
 import { Kayttooikeusrooli, Oid } from "../state/common"
 
 export type OrganisatioAutoRedirectProps = {
-  organisaatioHakuRooli: Kayttooikeusrooli
+  organisaatioHakuRooli: Kayttooikeusrooli | Kayttooikeusrooli[]
   organisaatioTyyppi: string
   redirectTo: (basePath: string, org: Oid) => string
   renderError: () => JSX.Element

@@ -152,14 +152,6 @@ class ValpasSuorittamisenValvontaService(
   ): OppijaHakutilanteillaLaajatTiedot =
     oppija.copy(oppivelvollisuudenKeskeytykset = oppija.oppivelvollisuudenKeskeytykset.filter(_.voimassa))
 
-  def getKunnalleTehdytIlmoituksetSuppeatTiedot
-    (oppilaitosOid: ValpasOppilaitos.Oid)
-      (implicit session: ValpasSession)
-  : Either[HttpStatus, Seq[OppijaHakutilanteillaSuppeatTiedot]] = {
-    kuntailmoitusService.getOppilaitoksenKunnalleTekemätIlmoituksetLaajatTiedot(ValpasRooli.OPPILAITOS_SUORITTAMINEN, oppilaitosOid)
-      .map(_.map(OppijaHakutilanteillaSuppeatTiedot.apply))
-  }
-
   def onEronnut(opiskeluoikeus: ValpasOpiskeluoikeusLaajatTiedot): Boolean =
     opiskeluoikeus.onSuorittamisValvottava && onEronnutTila(opiskeluoikeus)
 

@@ -47,3 +47,10 @@ export const intersects =
   (xs: T[]) =>
   (ys: T[]): boolean =>
     pipe(A.intersection(eq)(xs)(ys), A.isNonEmpty)
+
+export const ensureArray = <T>(t: T | T[]): T[] => (Array.isArray(t) ? t : [t])
+
+export const containedIn =
+  <T>(ts: T[]) =>
+  (t: T): boolean =>
+    ts.includes(t)

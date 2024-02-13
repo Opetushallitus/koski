@@ -78,6 +78,18 @@ object ValpasAuditLog {
     ))
   }
 
+  def auditLogKuntailmoituksenKatsominen
+    (ilmoitus: ValpasKuntailmoitusLaajatTiedot)(implicit session: ValpasSession)
+  : Unit =
+    AuditLog.log(ValpasAuditLogMessage(
+      ValpasOperation.VALPAS_OPPIJA_KUNTAILMOITUKSEN_KATSOMINEN,
+      session,
+      Map(
+        ValpasAuditLogMessageField.oppijaHenkilöOid -> ilmoitus.oppijaOid.get,
+        ValpasAuditLogMessageField.ilmoitusUuid -> ilmoitus.id.getOrElse("none"),
+      )
+    ))
+
   def auditLogHenkilöHaku
     (query: String)(henkilö: ValpasHenkilöhakuResult)(implicit session: ValpasSession)
   : Unit = {
@@ -296,7 +308,8 @@ object ValpasAuditLogMessageField extends Enumeration {
       hakulause,
       hakutulosOppijaOid,
       sivu,
-      sivuLukumäärä = Value
+      sivuLukumäärä,
+      ilmoitusUuid = Value
 }
 
 object ValpasOperation extends Enumeration {
@@ -306,6 +319,7 @@ object ValpasOperation extends Enumeration {
       VALPAS_OPPILAITOKSET_OPPIJAT_KATSOMINEN_HAKUTIEDOILLA,
       VALPAS_KUNNAT_OPPIJAT_KATSOMINEN,
       VALPAS_OPPIJA_KUNTAILMOITUS,
+      VALPAS_OPPIJA_KUNTAILMOITUKSEN_KATSOMINEN,
       VALPAS_OPPIJA_HAKU,
       VALPAS_OPPIVELVOLLISUUDEN_KESKEYTYS,
       VALPAS_OPPIVELVOLLISUUDEN_KESKEYTYKSEN_MUOKKAUS,

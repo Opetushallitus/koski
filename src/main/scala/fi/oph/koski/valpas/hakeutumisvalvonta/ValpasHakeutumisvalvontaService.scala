@@ -72,6 +72,6 @@ class ValpasHakeutumisvalvontaService(
     (oppilaitosOid: ValpasOppilaitos.Oid)
       (implicit session: ValpasSession)
   : Either[HttpStatus, Seq[OppijaHakutilanteillaSuppeatTiedot]] =
-    kuntailmoitusService.getOppilaitoksenKunnalleTekemätIlmoituksetLaajatTiedot(ValpasRooli.OPPILAITOS_HAKEUTUMINEN, oppilaitosOid)
+    kuntailmoitusService.getOppilaitoksenKunnalleTekemätIlmoituksetLaajatTiedot(oppilaitosOid)
       .map(_.map(OppijaHakutilanteillaSuppeatTiedot.apply))
 }

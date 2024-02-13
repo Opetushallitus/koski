@@ -10,11 +10,13 @@ import {
   hakeutumisenValvontaAllowed,
   kuntavalvontaAllowed,
   maksuttomuudenValvontaAllowed,
+  someOf,
   suorittamisenValvontaAllowed,
   useKäyttöoikeusroolit,
 } from "../../state/accessRights"
 import {
   hakutilannePathWithoutOrg,
+  kunnalleIlmoitetutPathWithoutOrg,
   kuntailmoitusPath,
   maksuttomuusPath,
   suorittaminenPath,
@@ -46,6 +48,14 @@ export const VirkailijaMainNavigation = () => {
         display: t("ylänavi__maksuttomuusoikeuden_arviointi"),
         linkTo: maksuttomuusPath.href(),
         visibleToRoles: maksuttomuudenValvontaAllowed,
+      },
+      {
+        display: t("ylänavi__kunnalle_tehdyt_ilmoitukset"),
+        linkTo: kunnalleIlmoitetutPathWithoutOrg.href(),
+        visibleToRoles: someOf(
+          hakeutumisenValvontaAllowed,
+          suorittamisenValvontaAllowed,
+        ),
       },
     ],
     [],

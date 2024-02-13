@@ -13,6 +13,8 @@ import fi.oph.koski.valpas.valpasrepository._
 import fi.oph.koski.valpas.valpasuser.{ValpasRooli, ValpasSession}
 import fi.oph.koski.valpas.yhteystiedot.{ValpasYhteystiedot, ValpasYhteystietoHakemukselta, ValpasYhteystietoOppijanumerorekisteristä}
 
+import java.util.UUID
+
 class ValpasKuntailmoitusService(
   application: KoskiApplication
 ) extends Logging with Timing {
@@ -66,6 +68,18 @@ class ValpasKuntailmoitusService(
     } yield result
   }
 
+  def getOmaKuntailmoitus(id: UUID)(implicit session: ValpasSession): Either[HttpStatus, ValpasKuntailmoitusLaajatTiedot] =
+    repository.get(id)
+      .flatMap(accessResolver.withOmaKuntailmoitusAccess)
+      .map { ilmoitus =>
+        ilmoitus.oppijaOid
+          .flatMap(oppijaLaajatTiedotService.getOppijaLaajatTiedot(_, haeMyösVainOppijanumerorekisterissäOleva = false, palautaLukionAineopinnotJaYOTutkinnotJosMyösAmmatillisiaOpintoja = false).toOption)
+          .collect { case o: ValpasOppivelvollinenOppijaLaajatTiedot => o }
+          .map(oppija => oppijaLaajatTiedotService.lisääAktiivisuustiedot(oppija)(List(ilmoitus)).head)
+          .getOrElse(ilmoitus)
+      }
+
+
   def getKuntailmoitukset(
     oppija: ValpasOppijaLaajatTiedot
   )(implicit session: ValpasSession): Either[HttpStatus, Seq[ValpasKuntailmoitusLaajatTiedot]] = {
@@ -94,15 +108,14 @@ class ValpasKuntailmoitusService(
   }
 
   def getOppilaitoksenKunnalleTekemätIlmoituksetLaajatTiedot(
-    rooli: ValpasRooli.Role,
     oppilaitosOid: ValpasOppilaitos.Oid
   )(
     implicit session: ValpasSession
   ) : Either[HttpStatus, Seq[OppijaHakutilanteillaLaajatTiedot]] = {
-    val laajennettuRooli = ValpasOppijaLaajatTiedotService
+    val roolit = ValpasOppijaLaajatTiedotService
       .roolitJoilleHaetaanKaikistaOVLPiirinOppijoista
       .find(accessResolver.accessToAnyOrg)
-      .getOrElse(rooli)
+      .fold(session.organisaationRoolit(oppilaitosOid))(Set(_))
 
     repository.queryByTekijäOrganisaatio(oppilaitosOid)
       .map(ilmoitukset => {
@@ -115,7 +128,7 @@ class ValpasKuntailmoitusService(
           .filter(_.onOikeusValvoaKunnalla)
 
         val (oppijatJoihinKatseluoikeus, oppijatJoihinEiKatseluoikeutta) = accessResolver
-          .separateByOppijaAccess(laajennettuRooli, Some(oppilaitosOid))(oppijat)
+          .separateByOppijaAccess(roolit, oppilaitosOid)(oppijat)
         val oppijatLisätiedoilla = lisätiedotRepository.readForOppijat(oppijatJoihinKatseluoikeus.map(OppijaHakutilanteillaLaajatTiedot.apply))
         val oppijatLaajatTiedot = oppijatLisätiedoilla.map(oppijaLisätiedotTuple =>
           oppijaLisätiedotTuple._1.withLisätiedot(oppijaLisätiedotTuple._2)

@@ -35,6 +35,7 @@ object ValpasErrorCategory {
     val oppijaEiOppivelvollisuuslainPiirissä = subcategory("oppijaaEiLöydy", "Oppijaa ei löydy, koska hän ei ole oppivelvollisuuslain piirissä.")
     val oppijaaEiLöydyOpintopolusta = subcategory("oppijaaEiLöydyOpintopolusta", "Oppijaa ei löydy Opintopolusta.")
     val vapautustaEiLöydy = subcategory("vapautustaEiLöydy", "Annetun kunnan tekemää oppivelvollisuudesta vapautusta oppijalle ei löydy")
+    val kuntailmoitustaEiLöydy = subcategory("kuntailmoitustaEiLöydy", "Kuntailmoitusta ei löydy")
   }
 
   object internalError extends ErrorCategory("internalError", 500, "Palvelinvirhe")
