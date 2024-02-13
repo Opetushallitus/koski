@@ -2178,6 +2178,10 @@ test.describe('Vapaa sivistystyö', () => {
 
         await tarkistaTiedot(page, kansalainenPage)
 
+        // Tarkista ettei oppilaitoksen otsikko näy sivulla
+        const title = await page.locator('.oppilaitos-title')
+        await expect(title).toContainText('Osaamismerkit')
+
         // Tee suoritusjako, ja tarkista, että sen sisällössä on sama sisältö
         await kansalainenPage.openJaaSuoritustietoja()
         await kansalainenPage
