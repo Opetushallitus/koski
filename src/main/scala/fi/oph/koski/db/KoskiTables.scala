@@ -397,6 +397,32 @@ object KoskiTables {
     ) <> (PäivitettyOpiskeluoikeusRow.tupled, PäivitettyOpiskeluoikeusRow.unapply)
   }
 
+  class KyselyTable(tag: Tag) extends Table[KyselyRow] (tag, "kysely") {
+    val id = column[String]("id", O.PrimaryKey)
+    val requestedBy = column[String]("requested_by")
+    val query = column[JValue]("query")
+    val state = column[String]("state")
+    val creationTime = column[Option[Timestamp]]("creation_time")
+    val workStartTime = column[Option[Timestamp]]("work_start_time")
+    val endTime = column[Option[Timestamp]]("end_time")
+    val worker = column[Option[String]]("worker")
+    val resultFiles = column[Option[List[String]]]("result_files")
+    val error = column[Option[String]]("error")
+
+    def * : ProvenShape[KyselyRow] = (
+      id,
+      requestedBy,
+      query,
+      state,
+      creationTime,
+      workStartTime,
+      endTime,
+      worker,
+      resultFiles,
+      error
+    ) <> (KyselyRow.tupled, KyselyRow.unapply)
+  }
+
   val Preferences = TableQuery[PreferencesTable]
 
   val SuoritusJako = TableQuery[SuoritusjakoTable]
@@ -436,6 +462,8 @@ object KoskiTables {
   val PoistetutOpiskeluoikeudet = TableQuery[PoistettuOpiskeluoikeusTable]
 
   val PäivitetytOpiskeluoikeudet = TableQuery[PäivitettyOpiskeluoikeusTable]
+
+  val Kyselyt = TableQuery[KyselyTable]
 
   def KoskiOpiskeluOikeudetWithAccessCheck(implicit user: KoskiSpecificSession): Query[KoskiOpiskeluoikeusTable, KoskiOpiskeluoikeusRow, Seq] = {
     val query = if (user.hasGlobalReadAccess || user.hasGlobalKoulutusmuotoReadAccess) {
@@ -652,4 +680,17 @@ case class PäivitettyOpiskeluoikeusRow(
   opiskeluoikeusOid: Opiskeluoikeus.Oid,
   aikaleima: Timestamp,
   prosessoitu: Boolean = false,
+)
+
+case class KyselyRow(
+  id: String,
+  requestedBy: String,
+  query: JValue,
+  state: String,
+  creationTime: Option[Timestamp] = None,
+  workStartTime: Option[Timestamp] = None,
+  endTime: Option[Timestamp] = None,
+  worker: Option[String] = None,
+  resultFiles: Option[List[String]] = None,
+  error: Option[String] = None,
 )
