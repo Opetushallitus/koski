@@ -1,35 +1,22 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react'
-import {
-  createLocalThenApiCache,
-  isSuccess,
-  useApiWithParams
-} from '../../api-fetch'
+import React from 'react'
 import { TreeHook } from '../../appstate/tree'
-import { TestIdLayer, TestIdRoot, TestIdText } from '../../appstate/useTestId'
+import { TestIdRoot, TestIdText } from '../../appstate/useTestId'
 import { useKansalainenTaiSuoritusjako } from '../../appstate/user'
-import { CommonProps, common, cx } from '../../components-v2/CommonProps'
+import { CommonProps, common } from '../../components-v2/CommonProps'
 import { VirkailijaOnly } from '../../components-v2/access/VirkailijaOnly'
 import { Column, ColumnRow } from '../../components-v2/containers/Columns'
-import { PositionalPopup } from '../../components-v2/containers/PositionalPopup'
 import { ExpandButton } from '../../components-v2/controls/ExpandButton'
-import { FlatButton } from '../../components-v2/controls/FlatButton'
-import { LinkButton } from '../../components-v2/controls/LinkButton'
+import { VersiohistoriaButton } from '../../components-v2/opiskeluoikeus/VersiohistoriaButton'
 import { Lowercase } from '../../components-v2/texts/Lowercase'
 import { Trans } from '../../components-v2/texts/Trans'
-import {
-  ISO2FinnishDateTime,
-  formatYearRange,
-  yearFromIsoDateString
-} from '../../date/date'
+import { formatYearRange, yearFromIsoDateString } from '../../date/date'
 import { t } from '../../i18n/i18n'
 import ChevronDownIcon from '../../icons/ChevronDownIcon'
 import ChevronUpIcon from '../../icons/ChevronUpIcon'
 import { Opiskeluoikeus } from '../../types/fi/oph/koski/schema/Opiskeluoikeus'
-import { last, nonNull } from '../../util/fp/arrays'
-import { fetchVersiohistoria } from '../../util/koskiApi'
+import { nonNull } from '../../util/fp/arrays'
 import { viimeisinOpiskelujaksonTila } from '../../util/schema'
 import { uncapitalize } from '../../util/strings'
-import { currentQueryWith, parseQuery } from '../../util/url'
 
 export type OsaamismerkkiTitleProps = CommonProps<{
   opiskeluoikeus: Opiskeluoikeus
@@ -161,91 +148,3 @@ export const OsaamismerkkiTitle = (props: OsaamismerkkiTitleProps) => {
 type VersiohistoriaButtonProps = CommonProps<{
   opiskeluoikeusOid: string
 }>
-
-const VersiohistoriaButton: React.FC<VersiohistoriaButtonProps> = (props) => {
-  const buttonRef = useRef(null)
-  const [versiohistoriaVisible, setVersiohistoriaVisible] = useState(false)
-  const toggleList = useCallback(
-    () => setVersiohistoriaVisible(!versiohistoriaVisible),
-    [versiohistoriaVisible]
-  )
-  const hideList = useCallback(() => setVersiohistoriaVisible(false), [])
-
-  return (
-    <TestIdLayer id="versiohistoria">
-      <span className="VersiohistoriaButton" ref={buttonRef}>
-        <FlatButton
-          onClick={toggleList}
-          aria-haspopup="menu"
-          aria-expanded={versiohistoriaVisible}
-          testId="button"
-        >
-          {t('Versiohistoria')}
-        </FlatButton>
-        <PositionalPopup
-          align="right"
-          onDismiss={hideList}
-          open={versiohistoriaVisible}
-          parentRef={buttonRef}
-        >
-          <VersiohistoriaList
-            opiskeluoikeusOid={props.opiskeluoikeusOid}
-            open={versiohistoriaVisible}
-          />
-        </PositionalPopup>
-      </span>
-    </TestIdLayer>
-  )
-}
-
-type VersiohistoriaListProps = CommonProps<{
-  opiskeluoikeusOid: string
-  open: boolean
-}>
-
-const versiolistaCache = createLocalThenApiCache(fetchVersiohistoria)
-
-const VersiohistoriaList: React.FC<VersiohistoriaListProps> = (props) => {
-  const historia = useApiWithParams(
-    fetchVersiohistoria,
-    props.open ? [props.opiskeluoikeusOid] : undefined,
-    versiolistaCache
-  )
-
-  const currentVersion = useMemo(() => {
-    const v = parseQuery(window.location.search).versionumero
-    return v
-      ? parseInt(v)
-      : isSuccess(historia)
-        ? last(historia.data)?.versionumero
-        : undefined
-  }, [historia])
-
-  return isSuccess(historia) ? (
-    <TestIdLayer id="list">
-      <ul className="VersiohistoriaList" role="navigation">
-        {historia.data.map((versio) => (
-          <li
-            key={versio.versionumero}
-            className={cx(
-              'VersiohistoriaList__item',
-              currentVersion === versio.versionumero &&
-                'VersiohistoriaList__item--current'
-            )}
-          >
-            <LinkButton
-              href={currentQueryWith({
-                opiskeluoikeus: props.opiskeluoikeusOid,
-                versionumero: versio.versionumero
-              })}
-              testId={versio.versionumero}
-            >
-              {`v${versio.versionumero}`}{' '}
-              {ISO2FinnishDateTime(versio.aikaleima)}
-            </LinkButton>
-          </li>
-        ))}
-      </ul>
-    </TestIdLayer>
-  ) : null
-}
