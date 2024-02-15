@@ -13,6 +13,7 @@ import { RaisedButton } from '../controls/RaisedButton'
 import { Trans } from '../texts/Trans'
 import { useVirkailijaUser } from '../../appstate/user'
 import { useVersionumero } from '../../appstate/useSearchParam'
+import { PoistuVersiohistoriastaButton } from './VersiohistoriaButton'
 
 export type OpiskeluoikeusEditToolbarProps = {
   opiskeluoikeus: Opiskeluoikeus
@@ -27,7 +28,7 @@ export const OpiskeluoikeusEditToolbar = (
   const spans = props.editMode ? [12, 12] : [16, 8]
   const opiskeluoikeusOid = getOpiskeluoikeusOid(props.opiskeluoikeus)
   const hasAnyInvalidateAccess = useVirkailijaUser()?.hasAnyInvalidateAccess
-  const editable = useVersionumero() === null
+  const inVersiohistoria = useVersionumero() !== null
 
   return (
     <ColumnRow>
@@ -55,13 +56,20 @@ export const OpiskeluoikeusEditToolbar = (
           <MitätöintiButton opiskeluoikeusOid={opiskeluoikeusOid} />
         )}
         <RequiresWriteAccess opiskeluoikeus={props.opiskeluoikeus}>
-          {!props.editMode && editable ? (
-            <RaisedButton fullWidth onClick={props.onStartEdit} testId="edit">
+          {inVersiohistoria ? (
+            <PoistuVersiohistoriastaButton
+              opiskeluoikeusOid={opiskeluoikeusOid}
+            />
+          ) : !props.editMode ? (
+            <RaisedButton onClick={props.onStartEdit} testId="edit">
               {t('Muokkaa')}
             </RaisedButton>
-          ) : opiskeluoikeusOid && !hasAnyInvalidateAccess && editable ? (
-            <MitätöintiButton opiskeluoikeusOid={opiskeluoikeusOid} />
-          ) : null}
+          ) : (
+            !hasAnyInvalidateAccess &&
+            opiskeluoikeusOid && (
+              <MitätöintiButton opiskeluoikeusOid={opiskeluoikeusOid} />
+            )
+          )}
         </RequiresWriteAccess>
       </Column>
     </ColumnRow>

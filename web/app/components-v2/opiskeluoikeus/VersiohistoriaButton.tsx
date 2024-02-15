@@ -111,17 +111,29 @@ const VersiohistoriaList: React.FC<VersiohistoriaListProps> = (props) => {
         ))}
         {versioParam && (
           <li className="VersiohistoriaList__item">
-            <LinkButton
-              href={currentQueryWith({
-                opiskeluoikeus: props.opiskeluoikeusOid,
-                versionumero: null
-              })}
-            >
-              {t('Poistu versiohistoriasta')}
-            </LinkButton>
+            <PoistuVersiohistoriastaButton
+              opiskeluoikeusOid={props.opiskeluoikeusOid}
+            />
           </li>
         )}
       </ul>
     </TestIdLayer>
   ) : null
 }
+
+export type PoistuVersiohistoriastaButtonProps = {
+  opiskeluoikeusOid?: string
+}
+
+export const PoistuVersiohistoriastaButton = (
+  props: PoistuVersiohistoriastaButtonProps
+) => (
+  <LinkButton
+    href={currentQueryWith({
+      opiskeluoikeus: props.opiskeluoikeusOid || null,
+      versionumero: null
+    })}
+  >
+    {t('Poistu versiohistoriasta')}
+  </LinkButton>
+)
