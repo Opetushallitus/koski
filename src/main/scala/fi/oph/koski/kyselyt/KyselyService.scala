@@ -19,14 +19,17 @@ class KyselyService(application: KoskiApplication) extends Logging {
   )
 
 
-  def add(query: QueryParameters)(implicit user: KoskiSpecificSession): Either[HttpStatus, Query] =
-    repository.getExisting(query).fold {
-      if (query.queryAllowed(application)) {
-        Right[HttpStatus, Query](repository.add(query))
-      } else {
-        Left(KoskiErrorCategory.unauthorized())
-      }
-    } (Right.apply)
+  def add(query: QueryParameters)(implicit user: KoskiSpecificSession): Either[HttpStatus, Query] = {
+    query.withDefaults.flatMap { query =>
+      repository.getExisting(query).fold {
+        if (query.queryAllowed(application)) {
+          Right[HttpStatus, Query](repository.add(query))
+        } else {
+          Left(KoskiErrorCategory.unauthorized())
+        }
+      }(Right.apply)
+    }
+  }
 
   def get(id: UUID)(implicit user: KoskiSpecificSession): Either[HttpStatus, Query] =
     repository.get(id)
@@ -39,8 +42,6 @@ class KyselyService(application: KoskiApplication) extends Logging {
     repository.takeNext.foreach { query =>
       logger.info(s"Starting new query: ${query.queryId} ${query.query.getClass.getName}")
       query.query match {
-        case QueryHello(name) =>
-          repository.setComplete(query.queryId, List(name))
         case _ =>
           logger.error(s"Unimplemented query: ${query.query}")
           repository.setFailed(query.queryId, "Cancelled: unimplemented query")
