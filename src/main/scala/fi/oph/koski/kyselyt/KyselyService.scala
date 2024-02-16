@@ -32,4 +32,21 @@ class KyselyService(application: KoskiApplication) extends Logging {
     repository.get(id)
       .filter(_.requestedBy == user.oid)
       .toRight(KoskiErrorCategory.notFound())
+
+  def numberOfRunningQueries: Int = repository.numberOfRunningQueries
+
+  def runNext(): Unit = {
+    repository.takeNext.foreach { query =>
+      logger.info(s"Starting new query: ${query.queryId} ${query.query.getClass.getName}")
+      query.query match {
+        case QueryHello(name) =>
+          repository.setComplete(query.queryId, List(name))
+        case _ =>
+          logger.error(s"Unimplemented query: ${query.query}")
+          repository.setFailed(query.queryId, "Cancelled: unimplemented query")
+      }
+    }
+  }
+
+  def cancelAllTasks(reason: String) = repository.setRunningTasksFailed(reason)
 }

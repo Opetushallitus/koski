@@ -13,6 +13,8 @@ class KoskiScheduledTasks(application: KoskiApplication) {
     application.tiedonsiirtoService
   )
   val purgeOldSessions: Option[Scheduler] = new PurgeOldSessionsTask(application).scheduler
+  val runQueries: Option[Scheduler] = application.kyselyScheduler.scheduler
+
   def init {}
 }
 
