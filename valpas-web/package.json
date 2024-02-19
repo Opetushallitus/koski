@@ -53,7 +53,7 @@
     "@typescript-eslint/parser": "^7.0.1",
     "babel-jest": "^29.7.0",
     "cheerio": "^1.0.0-rc.12",
-    "chromedriver": "*",
+    "chromedriver": "^121.0.2",
     "concurrently": "^8.2.2",
     "dotenv": "^16.4.3",
     "eslint": "^8.56.0",
