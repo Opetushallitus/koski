@@ -5,8 +5,6 @@ import fi.oph.koski.log.Logging
 import software.amazon.awssdk.services.appconfigdata.AppConfigDataClient
 import software.amazon.awssdk.services.appconfigdata.model.{GetLatestConfigurationRequest, StartConfigurationSessionRequest}
 
-case class EcsMetadataResponse(DockerId: String)
-
 object AppConfig extends Logging {
   lazy private val envName = sys.env.getOrElse("ENV_NAME", "local")
 

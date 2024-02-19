@@ -211,6 +211,7 @@ class KoskiApplication(
   lazy val validationContext: ValidationTestContext = new ValidationTestContext(config)
   lazy val kyselyService: KyselyService = new KyselyService(this)
   lazy val kyselyScheduler: KyselyScheduler = new KyselyScheduler(this)
+  lazy val ecsMetadata: ECSMetadataClient = new ECSMetadataClient()
 
   def init(): Future[Any] = {
     AuditLog.startHeartbeat()

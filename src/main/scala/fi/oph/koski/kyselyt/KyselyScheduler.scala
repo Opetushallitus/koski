@@ -30,9 +30,11 @@ class KyselyScheduler(application: KoskiApplication) extends Logging {
     }
   }
 
-  lazy val isQueryWorker: Boolean =
-    // TODO: Tunnista tuotannon kaltaisessa ympäristössä ollaanko samalla availability zonella kuin tietokanta
-    Environment.isMockEnvironment(application.config)
+  lazy val isQueryWorker: Boolean = {
+    val az = application.ecsMetadata.availabilityZone
+    logger.info(s"Instance availability zone: $az")
+    az.isEmpty || az.contains("TODO: tietokannan az")
+  }
 
   private def runNextQuery(_ignore: Option[JValue]): Option[JValue] = {
     if (kyselyt.numberOfRunningQueries < concurrency) {
