@@ -4,8 +4,9 @@ import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schedule.{IntervalSchedule, Scheduler}
 import org.json4s.JValue
+import software.amazon.awssdk.services.rds.RdsClient
 
-import java.time.Duration
+import scala.jdk.CollectionConverters._
 
 class KyselyScheduler(application: KoskiApplication) extends Logging {
   val concurrency: Int = application.config.getInt("kyselyt.concurrency")
@@ -31,9 +32,16 @@ class KyselyScheduler(application: KoskiApplication) extends Logging {
   }
 
   lazy val isQueryWorker: Boolean = {
-    val az = application.ecsMetadata.availabilityZone
-    logger.info(s"Instance availability zone: $az")
-    az.isEmpty || az.contains("TODO: tietokannan az")
+    val instanceAz = application.ecsMetadata.availabilityZone
+    logger.info(s"Instance availability zone: $instanceAz")
+    val databaseAz = getDatabaseAz("koski-database-replica")
+    logger.info(s"Database availability zone: $databaseAz")
+
+    (instanceAz, databaseAz) match {
+      case (None, None)                 => true // Lokaali devausinstanssi
+      case (Some(a), Some(b)) if a == b => true // Serveri-instanssi, joka samassa az:ssa tietokannan kanssa
+      case _                            => false
+    }
   }
 
   private def runNextQuery(_ignore: Option[JValue]): Option[JValue] = {
@@ -41,5 +49,19 @@ class KyselyScheduler(application: KoskiApplication) extends Logging {
       kyselyt.runNext()
     }
     None
+  }
+
+  private def getDatabaseAz(databaseId: String): Option[String] = {
+    if (Environment.isMockEnvironment(application.config)) {
+      None
+    } else {
+      RdsClient
+        .create()
+        .describeDBInstances()
+        .dbInstances()
+        .asScala
+        .find(_.dbInstanceIdentifier() == databaseId)
+        .map(_.availabilityZone())
+    }
   }
 }
