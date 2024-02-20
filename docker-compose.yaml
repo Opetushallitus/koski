@@ -28,3 +28,16 @@ services:
     image: "amazon/dynamodb-local@sha256:f02384481c5133136cfd7edc82c6aed431e85a27bf5886fd637b889bdc0af6d5"
     ports:
     - "8000:8000"
+
+  localstack:
+    container_name: koski-localstack
+    image: localstack/localstack:3.1@sha256:a47b435f876a100115d1d9f24e19b6b302cc7acb78b91e9258122116283ba462
+    ports:
+      - "127.0.0.1:4566:4566"            # LocalStack Gateway
+      - "127.0.0.1:4510-4559:4510-4559"  # external services port range
+    environment:
+      # LocalStack configuration: https://docs.localstack.cloud/references/configuration/
+      - DEBUG=${DEBUG:-0}
+    volumes:
+      - "${LOCALSTACK_VOLUME_DIR:-./localstack-volume}:/var/lib/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
