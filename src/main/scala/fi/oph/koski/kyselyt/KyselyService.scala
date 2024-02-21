@@ -55,6 +55,15 @@ class KyselyService(application: KoskiApplication) extends Logging {
     }
   }
 
+  def getDownloadUrl(query: CompleteQuery, name: String): Option[String] = {
+    val id = UUID.fromString(query.queryId)
+    try {
+      Some(results.getPresignedDownloadUrl(id, name))
+    } catch {
+      case t: Throwable => None
+    }
+  }
+
   private def putResults(id: String, queryResults: List[QueryResult]) = {
     try {
       val files = queryResults.par.map { result =>

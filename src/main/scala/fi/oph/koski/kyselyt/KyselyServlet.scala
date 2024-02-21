@@ -32,6 +32,20 @@ class KyselyServlet(implicit val application: KoskiApplication)
     }
   }
 
+  get("/:id/:file") {
+    UuidUtils.optionFromString(getStringParam("id"))
+      .toRight(KoskiErrorCategory.badRequest.queryParam("Epävalidi tunniste"))
+      .flatMap(kyselyt.get)
+      .flatMap {
+        case q: CompleteQuery =>
+          kyselyt.getDownloadUrl(q, getStringParam("file"))
+            .toRight(KoskiErrorCategory.badRequest("Tiedostoa ei löydy tai tapahtui virhe sen jakamisessa"))
+        case _ =>
+          Left(KoskiErrorCategory.badRequest("Tulostiedostot eivät ole vielä ladattavissa"))
+      }
+      .fold(renderStatus, redirect)
+  }
+
   private def jsonErrorHandler(status: HttpStatus) = {
     haltWithStatus(status)
   }
