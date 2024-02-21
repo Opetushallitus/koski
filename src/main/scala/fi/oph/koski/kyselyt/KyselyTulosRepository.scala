@@ -2,11 +2,12 @@ package fi.oph.koski.kyselyt
 
 import com.typesafe.config.Config
 import fi.oph.koski.config.Environment
+import fi.oph.koski.log.Logging
 import software.amazon.awssdk.auth.credentials.{AwsSessionCredentials, StaticCredentialsProvider}
 import software.amazon.awssdk.core.sync.RequestBody
 import software.amazon.awssdk.regions.Region
 import software.amazon.awssdk.services.s3.S3Client
-import software.amazon.awssdk.services.s3.model.{CreateBucketRequest, GetObjectRequest, PutObjectRequest}
+import software.amazon.awssdk.services.s3.model.{CreateBucketRequest, GetObjectRequest, GetUrlRequest, PutObjectRequest}
 import software.amazon.awssdk.services.s3.presigner.S3Presigner
 import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest
 
@@ -16,7 +17,7 @@ import java.time.Duration
 import java.util.UUID
 import scala.jdk.CollectionConverters._
 
-class KyselyTulosRepository(config: Config) {
+class KyselyTulosRepository(config: Config) extends Logging {
   val useAWS = Environment.isServerEnvironment(config)
   lazy val region: Region = Region.of(config.getString("kyselyt.s3.region"))
   lazy val bucketName: String = config.getString("kyselyt.s3.bucket")
@@ -26,6 +27,7 @@ class KyselyTulosRepository(config: Config) {
   val s3: S3Client = {
     val awsS3 = S3Client.builder().region(region)
     val awsOrLocalS3 = if (useAWS) awsS3 else {
+      logger.warn("Using Localstack for S3")
       awsS3
         .endpointOverride(endpointOverride)
         .credentialsProvider(localstackCredentialsProvider)
@@ -34,7 +36,7 @@ class KyselyTulosRepository(config: Config) {
   }
 
   if (!useAWS) {
-    // Bucketin automaattinen luonti ainoastaan Localsackin kanssa
+    // Bucketin automaattinen luonti ainoastaan Localstackin kanssa
     createBucketIfDoesNotExist
   }
 
@@ -46,8 +48,10 @@ class KyselyTulosRepository(config: Config) {
       .metadata(mapAsJavaMap(Map {
         "query" -> queryId.toString
       }))
+      .build()
     val requestBody = RequestBody.fromInputStream(inputStream, contentLength)
-    s3.putObject(request.build(), requestBody)
+    logger.info(s"Put results to S3: ${s3.utilities().getUrl(GetUrlRequest.builder().bucket(bucketName).key(key).build())} $request")
+    s3.putObject(request, requestBody)
 
     key
   }
