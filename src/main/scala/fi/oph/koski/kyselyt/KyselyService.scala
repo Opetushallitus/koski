@@ -42,15 +42,17 @@ class KyselyService(application: KoskiApplication) extends Logging {
   def runNext(): Unit = {
     queries.takeNext.foreach { query =>
       logger.info(s"Starting new query: ${query.queryId} ${query.query.getClass.getName}")
-      query.query match {
-        case _: QueryOrganisaationOpiskeluoikeudet =>
-          putResults(query.queryId, List(
-            QueryResult("result1.txt", s"Kyselyn ${query.queryId} eka tulostiedosto olisi tässä".toStream),
-            QueryResult("result2.txt", s"Kyselyn ${query.queryId} toinen tulostiedosto olisi tässä".toStream),
+      query.query.run(application) match {
+        case Right(streams) =>
+          streams.par.map(result => results.putStream(
+            queryId = UUID.fromString(query.queryId),
+            name = result.name,
+            inputStream = new StringInputStream(result.stream),
+            contentLength = result.length,
           ))
-        case _ =>
-          logger.error(s"Unimplemented query: ${query.query}")
-          queries.setFailed(query.queryId, "Cancelled: unimplemented query")
+          queries.setComplete(query.queryId, streams.map(_.name))
+        case Left(error) =>
+          queries.setFailed(query.queryId, error)
       }
     }
   }

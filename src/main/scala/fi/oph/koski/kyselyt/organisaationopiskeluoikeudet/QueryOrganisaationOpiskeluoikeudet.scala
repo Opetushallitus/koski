@@ -3,7 +3,7 @@ package fi.oph.koski.kyselyt.organisaationopiskeluoikeudet
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
-import fi.oph.koski.kyselyt.QueryParameters
+import fi.oph.koski.kyselyt.{QueryParameters, ResultStream}
 import fi.oph.koski.schema.Organisaatio
 import fi.oph.scalaschema.annotation.EnumValue
 
@@ -19,6 +19,12 @@ case class QueryOrganisaationOpiskeluoikeudet(
   tila: Option[String], // TODO: Lisää sallitut arvot
   tyyppi: Option[String], // TODO: Lisää sallitut arvot
 ) extends QueryParameters {
+
+  def run(application: KoskiApplication): Either[String, List[ResultStream]] = {
+    val orgs = application.organisaatioService.organisaationAlaisetOrganisaatiot(organisaatioOid.get)
+    Right(List(ResultStream("orgs.txt", orgs.mkString("\n"))))
+  }
+
   def queryAllowed(application: KoskiApplication)(implicit user: KoskiSpecificSession): Boolean =
     user.hasGlobalReadAccess || (
       organisaatioOid.exists(user.organisationOids(AccessType.read).contains)
