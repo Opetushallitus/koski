@@ -75,10 +75,15 @@ object EPerusteetTutkintoRakenneConverter extends Logging {
     suoritustapa.tutkinnonOsaViitteet.toList.flatten.find(v => v.id.toString == o._tutkinnonOsaViite) match {
       case None => throw new RuntimeException("Tutkinnonosaviitettä ei löydy: " + o._tutkinnonOsaViite)
       case Some(tutkinnonOsaViite: ETutkinnonOsaViite) =>
-        val eTutkinnonOsa: ETutkinnonOsa = rakenne.tutkinnonOsat
+        val maybeETutkinnonOsa = rakenne.tutkinnonOsat
           .toList.flatten
           .find(o => o.id.toString == tutkinnonOsaViite._tutkinnonOsa)
-          .get
+
+        if (maybeETutkinnonOsa.isEmpty) {
+          logger.error(s"tutkinnonOsaViitteessä ${tutkinnonOsaViite.id} määriteltyä tutkinnonosaa ${tutkinnonOsaViite._tutkinnonOsa} ei löydy. Rakenteen ${rakenne.diaarinumero},${rakenne.id} tutkinnon osat ovat: ${rakenne.tutkinnonOsat.toList.flatMap(_.map(_.id)).mkString(",")}")
+        }
+
+        val eTutkinnonOsa: ETutkinnonOsa = maybeETutkinnonOsa.get
 
         koodistoPalvelu.validate(Koodistokoodiviite(eTutkinnonOsa.koodiArvo, None, "tutkinnonosat", None)) match {
           case None => throw new RuntimeException("Tutkinnon osaa ei löydy koodistosta: " + eTutkinnonOsa.koodiArvo)
