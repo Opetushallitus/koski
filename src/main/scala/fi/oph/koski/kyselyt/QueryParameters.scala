@@ -7,8 +7,11 @@ import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
 import fi.oph.koski.schema.Organisaatio
 import fi.oph.scalaschema.annotation.{Discriminator, EnumValue}
 import org.json4s.JValue
+import software.amazon.awssdk.http.ContentStreamProvider
 
+import java.io.InputStream
 import java.time.LocalDate
+import scala.concurrent.Future
 
 trait QueryParameters {
   @Discriminator
@@ -17,7 +20,7 @@ trait QueryParameters {
   @Discriminator
   def format: String
 
-  def run(application: KoskiApplication): Either[String, List[ResultStream]]
+  def run(application: KoskiApplication, writer: QueryResultWriter)(implicit user: KoskiSpecificSession): Either[String, Unit]
 
   def queryAllowed(application: KoskiApplication)(implicit user: KoskiSpecificSession): Boolean
   def asJson: JValue = JsonSerializer.serializeWithRoot(this)

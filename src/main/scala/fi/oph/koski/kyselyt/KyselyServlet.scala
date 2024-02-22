@@ -79,9 +79,9 @@ case class QueryResponse(
 
 object QueryResponse {
   def apply(rootUrl: String, query: Query): QueryResponse = query match {
-    case q: PendingQuery => QueryResponse(q.queryId, "pending", q.requestedBy, q.query, q.creationTime)
-    case q: RunningQuery => QueryResponse(q.queryId, "running", q.requestedBy, q.query, q.creationTime, Some(q.workStartTime))
-    case q: FailedQuery => QueryResponse(q.queryId, "failed", q.requestedBy, q.query, q.creationTime, Some(q.workStartTime), Some(q.endTime))
-    case q: CompleteQuery => QueryResponse(q.queryId, "complete", q.requestedBy, q.query, q.creationTime, Some(q.workStartTime), Some(q.endTime)).withFiles(rootUrl, q)
+    case q: PendingQuery => QueryResponse(q.queryId, QueryState.pending, q.userOid, q.query, q.createdAt)
+    case q: RunningQuery => QueryResponse(q.queryId, QueryState.running, q.userOid, q.query, q.createdAt, Some(q.startedAt))
+    case q: FailedQuery => QueryResponse(q.queryId, QueryState.failed, q.userOid, q.query, q.createdAt, Some(q.startedAt), Some(q.finishedAt))
+    case q: CompleteQuery => QueryResponse(q.queryId, QueryState.complete, q.userOid, q.query, q.createdAt, Some(q.startedAt), Some(q.finishedAt)).withFiles(rootUrl, q)
   }
 }

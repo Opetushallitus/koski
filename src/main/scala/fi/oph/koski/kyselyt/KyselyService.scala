@@ -3,11 +3,12 @@ package fi.oph.koski.kyselyt
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
-import fi.oph.koski.kyselyt.organisaationopiskeluoikeudet.QueryOrganisaationOpiskeluoikeudet
 import fi.oph.koski.log.Logging
 
 import java.net.InetAddress
 import java.util.UUID
+import scala.concurrent.Await
+import scala.concurrent.duration.DurationInt
 
 class KyselyService(application: KoskiApplication) extends Logging {
   val workerId: String = InetAddress.getLocalHost.getHostName
@@ -34,25 +35,36 @@ class KyselyService(application: KoskiApplication) extends Logging {
 
   def get(id: UUID)(implicit user: KoskiSpecificSession): Either[HttpStatus, Query] =
     queries.get(id)
-      .filter(_.requestedBy == user.oid)
+      .filter(_.userOid == user.oid)
       .toRight(KoskiErrorCategory.notFound())
 
   def numberOfRunningQueries: Int = queries.numberOfRunningQueries
 
   def runNext(): Unit = {
     queries.takeNext.foreach { query =>
-      logger.info(s"Starting new query: ${query.queryId} ${query.query.getClass.getName}")
-      query.query.run(application) match {
-        case Right(streams) =>
-          streams.par.map(result => results.putStream(
-            queryId = UUID.fromString(query.queryId),
-            name = result.name,
-            inputStream = new StringInputStream(result.stream),
-            contentLength = result.length,
-          ))
-          queries.setComplete(query.queryId, streams.map(_.name))
-        case Left(error) =>
-          queries.setFailed(query.queryId, error)
+      query.getSession(application.käyttöoikeusRepository).fold {
+        logger.error(s"Could not start query ${query.queryId} due to invalid session")
+      } { session =>
+        val queryName = s"${query.query.getClass.getSimpleName}(${query.queryId})"
+        logger.info(s"Starting new $queryName as user ${query.userOid}")
+        implicit val user: KoskiSpecificSession = session
+        val writer = QueryResultWriter(UUID.fromString(query.queryId), results)
+        try {
+          query.query.run(application, writer).fold(
+            { error =>
+              logger.error(s"$queryName failed: ${error}")
+              queries.setFailed(query.queryId, error)
+            },
+            { _ =>
+              logger.info(s"$queryName completed with ${writer.files.size} result files")
+              queries.setComplete(query.queryId, writer.files.toList)
+            }
+          )
+        } catch {
+          case t: Throwable =>
+            logger.error(t)(s"$queryName failed ungracefully")
+            queries.setFailed(query.queryId, t.getMessage)
+        }
       }
     }
   }
@@ -63,25 +75,6 @@ class KyselyService(application: KoskiApplication) extends Logging {
       Some(results.getPresignedDownloadUrl(id, name))
     } catch {
       case t: Throwable => None
-    }
-  }
-
-  private def putResults(id: String, queryResults: List[QueryResult]) = {
-    try {
-      val files = queryResults.par.map { result =>
-        results.putStream(
-          queryId = UUID.fromString(id),
-          name = result.name,
-          inputStream = new StringInputStream(result.content),
-          contentLength = result.content.length,
-        )
-        result.name
-      }
-      queries.setComplete(id, files.toList)
-    } catch {
-      case t: Throwable =>
-        logger.error(t)(s"Query failed: ${t.getMessage}")
-        queries.setFailed(id, t.getMessage)
     }
   }
 

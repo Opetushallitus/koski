@@ -399,24 +399,26 @@ object KoskiTables {
 
   class KyselyTable(tag: Tag) extends Table[KyselyRow] (tag, "kysely") {
     val id = column[String]("id", O.PrimaryKey)
-    val requestedBy = column[String]("requested_by")
+    val userOid = column[String]("user_oid")
+    val session = column[JValue]("session")
     val query = column[JValue]("query")
     val state = column[String]("state")
-    val creationTime = column[Option[Timestamp]]("creation_time")
-    val workStartTime = column[Option[Timestamp]]("work_start_time")
-    val endTime = column[Option[Timestamp]]("end_time")
+    val createdAt = column[Option[Timestamp]]("created_at")
+    val startedAt = column[Option[Timestamp]]("started_at")
+    val finishedAt = column[Option[Timestamp]]("finished_at")
     val worker = column[Option[String]]("worker")
     val resultFiles = column[Option[List[String]]]("result_files")
     val error = column[Option[String]]("error")
 
     def * : ProvenShape[KyselyRow] = (
       id,
-      requestedBy,
+      userOid,
+      session,
       query,
       state,
-      creationTime,
-      workStartTime,
-      endTime,
+      createdAt,
+      startedAt,
+      finishedAt,
       worker,
       resultFiles,
       error
@@ -684,12 +686,13 @@ case class PäivitettyOpiskeluoikeusRow(
 
 case class KyselyRow(
   id: String,
-  requestedBy: String,
+  userOid: String,
+  session: JValue,
   query: JValue,
   state: String,
-  creationTime: Option[Timestamp] = None,
-  workStartTime: Option[Timestamp] = None,
-  endTime: Option[Timestamp] = None,
+  createdAt: Option[Timestamp] = None,
+  startedAt: Option[Timestamp] = None,
+  finishedAt: Option[Timestamp] = None,
   worker: Option[String] = None,
   resultFiles: Option[List[String]] = None,
   error: Option[String] = None,

@@ -5,6 +5,7 @@ import fi.oph.koski.config.Environment
 import fi.oph.koski.log.Logging
 import software.amazon.awssdk.auth.credentials.{AwsSessionCredentials, StaticCredentialsProvider}
 import software.amazon.awssdk.core.sync.RequestBody
+import software.amazon.awssdk.http.ContentStreamProvider
 import software.amazon.awssdk.regions.Region
 import software.amazon.awssdk.services.s3.S3Client
 import software.amazon.awssdk.services.s3.model.{CreateBucketRequest, GetObjectRequest, GetUrlRequest, PutObjectRequest}
@@ -40,20 +41,19 @@ class KyselyTulosRepository(config: Config) extends Logging {
     createBucketIfDoesNotExist
   }
 
-  def putStream[T](queryId: UUID, name: String, inputStream: InputStream, contentLength: Long): String = {
+  def put(queryId: UUID, name: String, provider: ContentStreamProvider, contentType: String): Unit = {
     val key = objectKey(queryId, name)
     val request = PutObjectRequest.builder()
       .bucket(bucketName)
       .key(key)
+      .contentType(contentType)
       .metadata(mapAsJavaMap(Map {
         "query" -> queryId.toString
       }))
       .build()
-    val requestBody = RequestBody.fromInputStream(inputStream, contentLength)
-    logger.info(s"Put results to S3: ${s3.utilities().getUrl(GetUrlRequest.builder().bucket(bucketName).key(key).build())} $request")
+    val requestBody = RequestBody.fromContentProvider(provider, contentType)
+    logger.info(s"Put result to S3: ${s3.utilities().getUrl(GetUrlRequest.builder().bucket(bucketName).key(key).build())} ($contentType)")
     s3.putObject(request, requestBody)
-
-    key
   }
 
   def getPresignedDownloadUrl(queryId: UUID, name: String): String = {
@@ -96,37 +96,4 @@ class KyselyTulosRepository(config: Config) extends Logging {
     .secretAccessKey("1234")
     .sessionToken("1234")
     .build()
-}
-
-case class QueryResult(
-  name: String,
-  content: Stream[Char],
-)
-
-class StringInputStream(stream: Stream[Char]) extends InputStream {
-  private val iter = stream.iterator
-  override def read(): Int = if (iter.hasNext) iter.next else -1
-}
-
-object StringInputStream {
-  def apply(string: String) = new StringInputStream(string.toStream)
-}
-
-class StringListInputStream(stream: Stream[String]) extends InputStream {
-  private var stringIterator = stream.iterator
-  private var charIterator: Option[Iterator[Char]] = None
-
-  override def read(): Int = {
-    if (charIterator.isEmpty && stringIterator.hasNext) {
-      charIterator = Some(stringIterator.next.toStream.iterator)
-    }
-    charIterator.map { iter =>
-      if (iter.hasNext) {
-        iter.next
-      } else {
-        charIterator = None
-        read()
-      }
-    }.getOrElse(-1)
-  }
 }

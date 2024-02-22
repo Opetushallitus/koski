@@ -1,17 +1,16 @@
 package fi.oph.koski.kyselyt
 
-import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.db.{DB, QueryMethods}
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.KoskiSpecificSession
+import fi.oph.koski.koskiuser.{AuthenticationUser, KoskiSpecificSession, Käyttöoikeus, KäyttöoikeusRepository}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.validation.ValidatingAndResolvingExtractor
-import org.json4s.JValue
 import org.json4s.jackson.JsonMethods
 import slick.jdbc.GetResult
 
+import java.net.InetAddress
 import java.time.LocalDateTime
 import java.util.UUID
 
@@ -34,18 +33,20 @@ class KyselyRepository(
     runDbSync(sql"""
       SELECT *
       FROM kysely
-      WHERE requested_by = ${user.oid}
+      WHERE user_oid = ${user.oid}
         AND query = ${query.asJson}
         AND state IN (${QueryState.pending}, ${QueryState.running})
      """.as[Query]
     ).headOption
 
-  def add(query: QueryParameters)(implicit user: KoskiSpecificSession): PendingQuery =
+  def add(query: QueryParameters)(implicit user: KoskiSpecificSession): PendingQuery = {
+    val session = JsonSerializer.serialize(StorableSession(user))
     runDbSync(sql"""
-      INSERT INTO kysely(id, requested_by, query, state)
+      INSERT INTO kysely(id, user_oid, session, query, state)
       VALUES (
         ${UUID.randomUUID().toString}::uuid,
         ${user.oid},
+        $session,
         ${query.asJson},
         ${QueryState.pending}
        )
@@ -53,6 +54,7 @@ class KyselyRepository(
        """.as[Query])
       .collectFirst { case q: PendingQuery => q }
       .get
+  }
 
   def numberOfRunningQueries: Int =
     runDbSync(sql"""
@@ -68,12 +70,12 @@ class KyselyRepository(
       SET
         state = ${QueryState.running},
         worker = $workerId,
-        work_start_time = now()
+        started_at = now()
       WHERE id IN (
         SELECT id
         FROM kysely
         WHERE state = ${QueryState.pending}
-        ORDER BY creation_time
+        ORDER BY created_at
         LIMIT 1
       )
       RETURNING *
@@ -86,7 +88,7 @@ class KyselyRepository(
       SET
         state = ${QueryState.complete},
         result_files = ${resultFiles},
-        end_time = now()
+        finished_at = now()
       WHERE id = ${id}::uuid
       """.asUpdate) != 0
 
@@ -97,7 +99,7 @@ class KyselyRepository(
       SET
         state = ${QueryState.failed},
         error = $error,
-        end_time = now()
+        finished_at = now()
       WHERE id = ${id}::uuid
       """.asUpdate) != 0
 
@@ -108,49 +110,54 @@ class KyselyRepository(
       SET
         state = ${QueryState.failed},
         error = $error,
-        end_time = now()
+        finished_at = now()
       WHERE worker = $workerId
         AND state = ${QueryState.running}
       """.asUpdate) != 0
 
   implicit private val getQueryResult: GetResult[Query] = GetResult[Query] { r =>
     val id = r.rs.getString("id")
-    val requestedBy = r.rs.getString("requested_by")
+    val userOid = r.rs.getString("user_oid")
+    val session = r.rs.getString("session")
     val query = parseParameters(r.rs.getString("query"))
-    val creationTime = r.rs.getTimestamp("creation_time").toLocalDateTime
+    val creationTime = r.rs.getTimestamp("created_at").toLocalDateTime
 
     r.rs.getString("state") match {
       case QueryState.pending => PendingQuery(
         queryId = id,
-        requestedBy = requestedBy,
+        userOid = userOid,
+        session = session,
         query = query,
-        creationTime = creationTime,
+        createdAt = creationTime,
       )
       case QueryState.running => RunningQuery(
         queryId = id,
-        requestedBy = requestedBy,
+        userOid = userOid,
+        session = session,
         query = query,
-        creationTime = creationTime,
-        workStartTime = r.rs.getTimestamp("work_start_time").toLocalDateTime,
+        createdAt = creationTime,
+        startedAt = r.rs.getTimestamp("started_at").toLocalDateTime,
         worker = r.rs.getString("worker")
       )
       case QueryState.complete => CompleteQuery(
         queryId = id,
-        requestedBy = requestedBy,
+        userOid = userOid,
+        session = session,
         query = query,
-        creationTime = creationTime,
-        workStartTime = r.rs.getTimestamp("work_start_time").toLocalDateTime,
-        endTime = r.rs.getTimestamp("end_time").toLocalDateTime,
+        createdAt = creationTime,
+        startedAt = r.rs.getTimestamp("started_at").toLocalDateTime,
+        finishedAt = r.rs.getTimestamp("finished_at").toLocalDateTime,
         worker = r.rs.getString("worker"),
         resultFiles = r.getArray("result_files").toList,
       )
       case QueryState.failed => FailedQuery(
         queryId = id,
-        requestedBy = requestedBy,
+        userOid = userOid,
+        session = session,
         query = query,
-        creationTime = creationTime,
-        workStartTime = r.rs.getTimestamp("work_start_time").toLocalDateTime,
-        endTime = r.rs.getTimestamp("end_time").toLocalDateTime,
+        createdAt = creationTime,
+        startedAt = r.rs.getTimestamp("started_at").toLocalDateTime,
+        finishedAt = r.rs.getTimestamp("finished_at").toLocalDateTime,
         worker = r.rs.getString("worker"),
         error = r.rs.getString("error"),
       )
@@ -165,53 +172,64 @@ class KyselyRepository(
 
 trait Query {
   def queryId: String
-  def requestedBy: String
+  def userOid: String
   def query: QueryParameters
   def state: String
-  def creationTime: LocalDateTime
+  def createdAt: LocalDateTime
+  def session: String
+
+  def getSession(käyttöoikeudet: KäyttöoikeusRepository): Option[KoskiSpecificSession] =
+    JsonSerializer
+      .validateAndExtract[StorableSession](JsonMethods.parse(session))
+      .map(_.toSession(käyttöoikeudet))
+      .toOption
 }
 case class PendingQuery(
   queryId: String,
-  requestedBy: String,
+  userOid: String,
   query: QueryParameters,
-  creationTime: LocalDateTime,
+  createdAt: LocalDateTime,
+  session: String,
 ) extends Query {
   def state: String = QueryState.pending
 }
 
 case class RunningQuery(
   queryId: String,
-  requestedBy: String,
+  userOid: String,
   query: QueryParameters,
-  creationTime: LocalDateTime,
-  workStartTime: LocalDateTime,
+  createdAt: LocalDateTime,
+  startedAt: LocalDateTime,
   worker: String,
+  session: String,
 ) extends Query {
   def state: String = QueryState.running
 }
 
 case class CompleteQuery(
   queryId: String,
-  requestedBy: String,
+  userOid: String,
   query: QueryParameters,
-  creationTime: LocalDateTime,
-  workStartTime: LocalDateTime,
-  endTime: LocalDateTime,
+  createdAt: LocalDateTime,
+  startedAt: LocalDateTime,
+  finishedAt: LocalDateTime,
   worker: String,
   resultFiles: List[String],
+  session: String,
 ) extends Query {
     def state: String = QueryState.complete
 }
 
 case class FailedQuery(
   queryId: String,
-  requestedBy: String,
+  userOid: String,
   query: QueryParameters,
-  creationTime: LocalDateTime,
-  workStartTime: LocalDateTime,
-  endTime: LocalDateTime,
+  createdAt: LocalDateTime,
+  startedAt: LocalDateTime,
+  finishedAt: LocalDateTime,
   worker: String,
-  error: String
+  error: String,
+  session: String,
 ) extends Query {
     def state: String = QueryState.failed
 }
@@ -222,4 +240,47 @@ object QueryState {
   val complete = "complete"
   val failed = "failed"
   val * : Set[String] = Set(pending, running, complete, failed)
+}
+
+case class StorableSession(
+  oid: String,
+  username: String,
+  name: String,
+  lang: String,
+  clientIp: String,
+  userAgent: String,
+) {
+  def toSession(käyttöoikeudet: KäyttöoikeusRepository): KoskiSpecificSession = {
+    val user = AuthenticationUser(
+      oid = oid,
+      username = username,
+      name = name,
+      serviceTicket = None,
+    )
+    new KoskiSpecificSession(
+      user = AuthenticationUser(
+        oid = oid,
+        username = username,
+        name = name,
+        serviceTicket = None,
+      ),
+      lang = lang,
+      clientIp = InetAddress.getByName(clientIp),
+      userAgent = userAgent,
+      lähdeKäyttöoikeudet = käyttöoikeudet.käyttäjänKäyttöoikeudet(user),
+    )
+  }
+}
+
+object StorableSession {
+  def apply(session: KoskiSpecificSession): StorableSession = {
+    StorableSession(
+      oid = session.oid,
+      username =  session.username,
+      name = session.user.name,
+      lang = session.lang,
+      clientIp = session.clientIp.getHostAddress,
+      userAgent = session.userAgent,
+    )
+  }
 }
