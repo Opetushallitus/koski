@@ -14,6 +14,7 @@ import { useBasePath } from "../../state/basePath"
 import { oppijaPath } from "../../state/paths"
 import { OppijaKuntailmoitus } from "../oppija/OppijaKuntailmoitus"
 import "./KunnalleIlmoitettuModal.less"
+import { T } from "../../i18n/i18n"
 
 const b = bem("KunnalleIlmoitettuModal")
 
@@ -50,8 +51,14 @@ export const KunnalleIlmoitettuModal = (
         ) : null}
       </div>
       <ModalButtonGroup>
-        <RaisedButton onClick={props.onClose}>Sulje</RaisedButton>
-        {oppijaLink && <Link to={oppijaLink}>Näytä oppijan tiedot</Link>}
+        <RaisedButton onClick={props.onClose}>
+          <T id="ilmoituslomake__sulje" />
+        </RaisedButton>
+        {oppijaLink && (
+          <Link to={oppijaLink}>
+            <T id="kunnalle_ilmoitetut__näytä_oppijan_tiedot" />
+          </Link>
+        )}
       </ModalButtonGroup>
     </Modal>
   )
