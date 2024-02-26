@@ -602,6 +602,18 @@
           </webResources>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.honton.chas</groupId>
+        <artifactId>exists-maven-plugin</artifactId>
+        <version>0.13.0</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>remote</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
   <profiles>
