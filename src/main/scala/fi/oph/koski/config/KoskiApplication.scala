@@ -14,7 +14,7 @@ import fi.oph.koski.history.{KoskiOpiskeluoikeusHistoryRepository, YtrOpiskeluoi
 import fi.oph.koski.huoltaja.HuoltajaServiceVtj
 import fi.oph.koski.koodisto.{KoodistoCreator, KoodistoPalvelu, KoodistoViitePalvelu}
 import fi.oph.koski.koskiuser._
-import fi.oph.koski.kyselyt.{KyselyScheduler, KyselyService}
+import fi.oph.koski.kyselyt.{KyselyCleanupScheduler, KyselyScheduler, KyselyService}
 import fi.oph.koski.localization.{KoskiLocalizationConfig, LocalizationRepository}
 import fi.oph.koski.log.{AuditLog, Logging, TimedProxy}
 import fi.oph.koski.mydata.{MyDataRepository, MyDataService}
@@ -211,6 +211,7 @@ class KoskiApplication(
   lazy val validationContext: ValidationTestContext = new ValidationTestContext(config)
   lazy val kyselyService: KyselyService = new KyselyService(this)
   lazy val kyselyScheduler: KyselyScheduler = new KyselyScheduler(this)
+  lazy val kyselyCleanupScheduler: KyselyCleanupScheduler = new KyselyCleanupScheduler(this)
   lazy val ecsMetadata: ECSMetadataClient = new ECSMetadataClient()
 
   def init(): Future[Any] = {

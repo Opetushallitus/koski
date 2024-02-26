@@ -45,24 +45,23 @@ class KyselyService(application: KoskiApplication) extends Logging {
       query.getSession(application.käyttöoikeusRepository).fold {
         logger.error(s"Could not start query ${query.queryId} due to invalid session")
       } { session =>
-        val queryName = s"${query.query.getClass.getSimpleName}(${query.queryId})"
-        logger.info(s"Starting new $queryName as user ${query.userOid}")
+        logger.info(s"Starting new ${query.name} as user ${query.userOid}")
         implicit val user: KoskiSpecificSession = session
         val writer = QueryResultWriter(UUID.fromString(query.queryId), results)
         try {
           query.query.run(application, writer).fold(
             { error =>
-              logger.error(s"$queryName failed: ${error}")
+              logger.error(s"${query.name} failed: ${error}")
               queries.setFailed(query.queryId, error)
             },
             { _ =>
-              logger.info(s"$queryName completed with ${writer.files.size} result files")
+              logger.info(s"${query.name} completed with ${writer.files.size} result files")
               queries.setComplete(query.queryId, writer.files.toList)
             }
           )
         } catch {
           case t: Throwable =>
-            logger.error(t)(s"$queryName failed ungracefully")
+            logger.error(t)(s"${query.name} failed ungracefully")
             queries.setFailed(query.queryId, t.getMessage)
         }
       }
@@ -76,6 +75,13 @@ class KyselyService(application: KoskiApplication) extends Logging {
     } catch {
       case t: Throwable => None
     }
+  }
+
+  def cleanup(): Unit = {
+    val timeout = application.config.getDuration("kyselyt.timeout")
+    queries
+      .setLongRunningQueriesFailed(timeout, "Timeout")
+      .foreach(query => logger.error(s"${query.name} timeouted after $timeout"))
   }
 
   def cancelAllTasks(reason: String) = queries.setRunningTasksFailed(reason)

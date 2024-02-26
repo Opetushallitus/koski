@@ -1,9 +1,9 @@
 package fi.oph.koski.kyselyt
 
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
-import fi.oph.koski.db.{DB, QueryMethods}
+import fi.oph.koski.db.{DB, DatabaseConverters, QueryMethods}
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.{AuthenticationUser, KoskiSpecificSession, Käyttöoikeus, KäyttöoikeusRepository}
+import fi.oph.koski.koskiuser.{AuthenticationUser, KoskiSpecificSession, KäyttöoikeusRepository}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.validation.ValidatingAndResolvingExtractor
@@ -11,14 +11,15 @@ import org.json4s.jackson.JsonMethods
 import slick.jdbc.GetResult
 
 import java.net.InetAddress
-import java.time.LocalDateTime
+import java.sql.Timestamp
+import java.time.{Duration, LocalDateTime}
 import java.util.UUID
 
 class KyselyRepository(
   val db: DB,
   workerId: String,
   extractor: ValidatingAndResolvingExtractor,
-)  extends QueryMethods with Logging  {
+)  extends QueryMethods with Logging with DatabaseConverters  {
 
   def get(id: UUID)(implicit user: KoskiSpecificSession): Option[Query] =
     runDbSync(sql"""
@@ -115,6 +116,23 @@ class KyselyRepository(
         AND state = ${QueryState.running}
       """.asUpdate) != 0
 
+  def setLongRunningQueriesFailed(timeout: Duration, error: String): Seq[FailedQuery] = {
+    val timeoutTime = Timestamp.valueOf(LocalDateTime.now().minus(timeout))
+    runDbSync(
+      sql"""
+      UPDATE kysely
+      SET
+        state = ${QueryState.failed},
+        error = $error,
+        finished_at = now()
+      WHERE state = ${QueryState.running}
+        AND started_at < $timeoutTime
+      RETURNING *
+      """.as[Query])
+      .collect { case q: FailedQuery => q }
+  }
+
+
   implicit private val getQueryResult: GetResult[Query] = GetResult[Query] { r =>
     val id = r.rs.getString("id")
     val userOid = r.rs.getString("user_oid")
@@ -183,6 +201,8 @@ trait Query {
       .validateAndExtract[StorableSession](JsonMethods.parse(session))
       .map(_.toSession(käyttöoikeudet))
       .toOption
+
+  def name: String = s"${query.getClass.getSimpleName}(${queryId})"
 }
 case class PendingQuery(
   queryId: String,
