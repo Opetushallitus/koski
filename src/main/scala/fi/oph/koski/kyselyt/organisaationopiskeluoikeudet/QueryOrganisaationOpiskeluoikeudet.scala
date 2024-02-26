@@ -7,13 +7,17 @@ import fi.oph.koski.db.{DatabaseConverters, KoskiTables, QueryMethods, SQLHelper
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
 import fi.oph.koski.kyselyt.{QueryParameters, QueryResultWriter}
-import fi.oph.koski.log.Logging
+import fi.oph.koski.log.KoskiAuditLogMessageField.hakuEhto
+import fi.oph.koski.log.KoskiOperation.OPISKELUOIKEUS_HAKU
+import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, Logging}
+import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryContext
 import fi.oph.koski.schema.{KoskiSchema, Opiskeluoikeus, Oppija, Organisaatio}
 import fi.oph.scalaschema.annotation.EnumValue
 import org.json4s.JValue
 
 import java.sql.Timestamp
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 case class QueryOrganisaationOpiskeluoikeudet(
   @EnumValue("organisaationOpiskeluoikeudet")
@@ -35,6 +39,7 @@ case class QueryOrganisaationOpiskeluoikeudet(
         writer = writer,
         oppilaitosOids = oppilaitosOids,
       )
+      auditLog()
       Right(())
     } catch {
       case t: Throwable =>
@@ -107,6 +112,20 @@ case class QueryOrganisaationOpiskeluoikeudet(
     } else {
       Right(user.juuriOrganisaatiot.head.oid)
     }
+  }
+
+  private def auditLog()(implicit user: KoskiSpecificSession): Unit = {
+    AuditLog.log(KoskiAuditLogMessage(
+      OPISKELUOIKEUS_HAKU,
+      user,
+      Map(hakuEhto -> OpiskeluoikeusQueryContext.queryForAuditLog(Map(
+        "organisaatio" -> List(organisaatioOid.get),
+        "opiskeluoikeusAlkanutAikaisintaan" -> List(alkamispaiva.format(DateTimeFormatter.ISO_DATE)),
+        "opiskeluoikeudenTila" -> tila.toList,
+        "suorituksenTyyppi" -> suoritustyyppi.toList,
+        "koulutusmuoto" -> koulutusmuoto.toList,
+      ).filter(_._2.nonEmpty))),
+    ))
   }
 }
 
