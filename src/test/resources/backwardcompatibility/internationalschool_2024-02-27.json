@@ -1,0 +1,2890 @@
+{
+  "henkilö" : {
+    "hetu" : "170186-854H",
+    "etunimet" : "Ida",
+    "kutsumanimi" : "Ida",
+    "sukunimi" : "International"
+  },
+  "opiskeluoikeudet" : [ {
+    "oppilaitos" : {
+      "oid" : "1.2.246.562.10.67636414343",
+      "oppilaitosnumero" : {
+        "koodiarvo" : "03510",
+        "koodistoUri" : "oppilaitosnumero"
+      },
+      "nimi" : {
+        "fi" : "International School of Helsinki"
+      }
+    },
+    "tila" : {
+      "opiskeluoikeusjaksot" : [ {
+        "alku" : "2004-08-15",
+        "tila" : {
+          "koodiarvo" : "lasna",
+          "nimi" : {
+            "fi" : "Läsnä"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        },
+        "opintojenRahoitus" : {
+          "koodiarvo" : "1",
+          "koodistoUri" : "opintojenrahoitus"
+        }
+      }, {
+        "alku" : "2018-06-30",
+        "tila" : {
+          "koodiarvo" : "valmistunut",
+          "nimi" : {
+            "fi" : "Valmistunut"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        }
+      } ]
+    },
+    "suoritukset" : [ {
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "explorer",
+          "koodistoUri" : "internationalschoolluokkaaste"
+        }
+      },
+      "luokka" : "explorerA",
+      "alkamispäivä" : "2005-08-15",
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.67636414343",
+        "oppilaitosnumero" : {
+          "koodiarvo" : "03510",
+          "koodistoUri" : "oppilaitosnumero"
+        },
+        "nimi" : {
+          "fi" : "International School of Helsinki"
+        }
+      },
+      "vahvistus" : {
+        "päivä" : "2006-06-30",
+        "paikkakunta" : {
+          "koodiarvo" : "091",
+          "nimi" : {
+            "fi" : "Helsinki"
+          },
+          "koodistoUri" : "kunta"
+        },
+        "myöntäjäOrganisaatio" : {
+          "oid" : "1.2.246.562.10.67636414343",
+          "oppilaitosnumero" : {
+            "koodiarvo" : "03510",
+            "koodistoUri" : "oppilaitosnumero"
+          },
+          "nimi" : {
+            "fi" : "International School of Helsinki"
+          }
+        },
+        "myöntäjäHenkilöt" : [ {
+          "nimi" : "Reijo Reksi",
+          "titteli" : {
+            "fi" : "rehtori"
+          },
+          "organisaatio" : {
+            "oid" : "1.2.246.562.10.67636414343",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "03510",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "International School of Helsinki"
+            }
+          }
+        } ]
+      },
+      "suorituskieli" : {
+        "koodiarvo" : "EN",
+        "nimi" : {
+          "fi" : "englanti"
+        },
+        "koodistoUri" : "kieli"
+      },
+      "tyyppi" : {
+        "koodiarvo" : "internationalschoolpypvuosiluokka",
+        "koodistoUri" : "suorituksentyyppi"
+      },
+      "osasuoritukset" : [ {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "LA",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "achievedoutcomes",
+            "koodistoUri" : "arviointiasteikkointernationalschool"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolpypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "MA",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "achievedoutcomes",
+            "koodistoUri" : "arviointiasteikkointernationalschool"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolpypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "PE",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "achievedoutcomes",
+            "koodistoUri" : "arviointiasteikkointernationalschool"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolpypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "VA",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "achievedoutcomes",
+            "koodistoUri" : "arviointiasteikkointernationalschool"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolpypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "MU",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "achievedoutcomes",
+            "koodistoUri" : "arviointiasteikkointernationalschool"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolpypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "ICT",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "achievedoutcomes",
+            "koodistoUri" : "arviointiasteikkointernationalschool"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolpypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "LIB",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "achievedoutcomes",
+            "koodistoUri" : "arviointiasteikkointernationalschool"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolpypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      } ]
+    }, {
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "1",
+          "koodistoUri" : "internationalschoolluokkaaste"
+        }
+      },
+      "luokka" : "1A",
+      "alkamispäivä" : "2006-08-15",
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.67636414343",
+        "oppilaitosnumero" : {
+          "koodiarvo" : "03510",
+          "koodistoUri" : "oppilaitosnumero"
+        },
+        "nimi" : {
+          "fi" : "International School of Helsinki"
+        }
+      },
+      "vahvistus" : {
+        "päivä" : "2007-06-30",
+        "paikkakunta" : {
+          "koodiarvo" : "091",
+          "nimi" : {
+            "fi" : "Helsinki"
+          },
+          "koodistoUri" : "kunta"
+        },
+        "myöntäjäOrganisaatio" : {
+          "oid" : "1.2.246.562.10.67636414343",
+          "oppilaitosnumero" : {
+            "koodiarvo" : "03510",
+            "koodistoUri" : "oppilaitosnumero"
+          },
+          "nimi" : {
+            "fi" : "International School of Helsinki"
+          }
+        },
+        "myöntäjäHenkilöt" : [ {
+          "nimi" : "Reijo Reksi",
+          "titteli" : {
+            "fi" : "rehtori"
+          },
+          "organisaatio" : {
+            "oid" : "1.2.246.562.10.67636414343",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "03510",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "International School of Helsinki"
+            }
+          }
+        } ]
+      },
+      "suorituskieli" : {
+        "koodiarvo" : "EN",
+        "nimi" : {
+          "fi" : "englanti"
+        },
+        "koodistoUri" : "kieli"
+      },
+      "tyyppi" : {
+        "koodiarvo" : "internationalschoolpypvuosiluokka",
+        "koodistoUri" : "suorituksentyyppi"
+      },
+      "osasuoritukset" : [ {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "LA",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "achievedoutcomes",
+            "koodistoUri" : "arviointiasteikkointernationalschool"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolpypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "MA",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "achievedoutcomes",
+            "koodistoUri" : "arviointiasteikkointernationalschool"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolpypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "FMT",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "achievedoutcomes",
+            "koodistoUri" : "arviointiasteikkointernationalschool"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolpypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "PE",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "achievedoutcomes",
+            "koodistoUri" : "arviointiasteikkointernationalschool"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolpypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "VA",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "achievedoutcomes",
+            "koodistoUri" : "arviointiasteikkointernationalschool"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolpypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "MU",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "achievedoutcomes",
+            "koodistoUri" : "arviointiasteikkointernationalschool"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolpypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "ICT",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "achievedoutcomes",
+            "koodistoUri" : "arviointiasteikkointernationalschool"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolpypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "LIB",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "achievedoutcomes",
+            "koodistoUri" : "arviointiasteikkointernationalschool"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolpypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      } ]
+    }, {
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "2",
+          "koodistoUri" : "internationalschoolluokkaaste"
+        }
+      },
+      "luokka" : "2A",
+      "alkamispäivä" : "2007-08-15",
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.67636414343",
+        "oppilaitosnumero" : {
+          "koodiarvo" : "03510",
+          "koodistoUri" : "oppilaitosnumero"
+        },
+        "nimi" : {
+          "fi" : "International School of Helsinki"
+        }
+      },
+      "vahvistus" : {
+        "päivä" : "2008-06-30",
+        "paikkakunta" : {
+          "koodiarvo" : "091",
+          "nimi" : {
+            "fi" : "Helsinki"
+          },
+          "koodistoUri" : "kunta"
+        },
+        "myöntäjäOrganisaatio" : {
+          "oid" : "1.2.246.562.10.67636414343",
+          "oppilaitosnumero" : {
+            "koodiarvo" : "03510",
+            "koodistoUri" : "oppilaitosnumero"
+          },
+          "nimi" : {
+            "fi" : "International School of Helsinki"
+          }
+        },
+        "myöntäjäHenkilöt" : [ {
+          "nimi" : "Reijo Reksi",
+          "titteli" : {
+            "fi" : "rehtori"
+          },
+          "organisaatio" : {
+            "oid" : "1.2.246.562.10.67636414343",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "03510",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "International School of Helsinki"
+            }
+          }
+        } ]
+      },
+      "suorituskieli" : {
+        "koodiarvo" : "EN",
+        "nimi" : {
+          "fi" : "englanti"
+        },
+        "koodistoUri" : "kieli"
+      },
+      "tyyppi" : {
+        "koodiarvo" : "internationalschoolpypvuosiluokka",
+        "koodistoUri" : "suorituksentyyppi"
+      },
+      "osasuoritukset" : [ {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "LA",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "achievedoutcomes",
+            "koodistoUri" : "arviointiasteikkointernationalschool"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolpypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "MA",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "achievedoutcomes",
+            "koodistoUri" : "arviointiasteikkointernationalschool"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolpypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "FMT",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "achievedoutcomes",
+            "koodistoUri" : "arviointiasteikkointernationalschool"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolpypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "PE",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "achievedoutcomes",
+            "koodistoUri" : "arviointiasteikkointernationalschool"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolpypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "VA",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "achievedoutcomes",
+            "koodistoUri" : "arviointiasteikkointernationalschool"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolpypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "MU",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "achievedoutcomes",
+            "koodistoUri" : "arviointiasteikkointernationalschool"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolpypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "ICT",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "achievedoutcomes",
+            "koodistoUri" : "arviointiasteikkointernationalschool"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolpypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "LIB",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "achievedoutcomes",
+            "koodistoUri" : "arviointiasteikkointernationalschool"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolpypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      } ]
+    }, {
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "3",
+          "koodistoUri" : "internationalschoolluokkaaste"
+        }
+      },
+      "luokka" : "3A",
+      "alkamispäivä" : "2008-08-15",
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.67636414343",
+        "oppilaitosnumero" : {
+          "koodiarvo" : "03510",
+          "koodistoUri" : "oppilaitosnumero"
+        },
+        "nimi" : {
+          "fi" : "International School of Helsinki"
+        }
+      },
+      "vahvistus" : {
+        "päivä" : "2009-06-30",
+        "paikkakunta" : {
+          "koodiarvo" : "091",
+          "nimi" : {
+            "fi" : "Helsinki"
+          },
+          "koodistoUri" : "kunta"
+        },
+        "myöntäjäOrganisaatio" : {
+          "oid" : "1.2.246.562.10.67636414343",
+          "oppilaitosnumero" : {
+            "koodiarvo" : "03510",
+            "koodistoUri" : "oppilaitosnumero"
+          },
+          "nimi" : {
+            "fi" : "International School of Helsinki"
+          }
+        },
+        "myöntäjäHenkilöt" : [ {
+          "nimi" : "Reijo Reksi",
+          "titteli" : {
+            "fi" : "rehtori"
+          },
+          "organisaatio" : {
+            "oid" : "1.2.246.562.10.67636414343",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "03510",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "International School of Helsinki"
+            }
+          }
+        } ]
+      },
+      "suorituskieli" : {
+        "koodiarvo" : "EN",
+        "nimi" : {
+          "fi" : "englanti"
+        },
+        "koodistoUri" : "kieli"
+      },
+      "tyyppi" : {
+        "koodiarvo" : "internationalschoolpypvuosiluokka",
+        "koodistoUri" : "suorituksentyyppi"
+      },
+      "osasuoritukset" : [ {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "LA",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "achievedoutcomes",
+            "koodistoUri" : "arviointiasteikkointernationalschool"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolpypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "MA",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "learningtoward",
+            "koodistoUri" : "arviointiasteikkointernationalschool"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolpypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "FMT",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "learningtoward",
+            "koodistoUri" : "arviointiasteikkointernationalschool"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolpypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "PE",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "achievedoutcomes",
+            "koodistoUri" : "arviointiasteikkointernationalschool"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolpypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "VA",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "achievedoutcomes",
+            "koodistoUri" : "arviointiasteikkointernationalschool"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolpypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "MU",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "achievedoutcomes",
+            "koodistoUri" : "arviointiasteikkointernationalschool"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolpypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "ICT",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "achievedoutcomes",
+            "koodistoUri" : "arviointiasteikkointernationalschool"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolpypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "LIB",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "achievedoutcomes",
+            "koodistoUri" : "arviointiasteikkointernationalschool"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolpypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      } ]
+    }, {
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "4",
+          "koodistoUri" : "internationalschoolluokkaaste"
+        }
+      },
+      "luokka" : "4A",
+      "alkamispäivä" : "2009-08-15",
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.67636414343",
+        "oppilaitosnumero" : {
+          "koodiarvo" : "03510",
+          "koodistoUri" : "oppilaitosnumero"
+        },
+        "nimi" : {
+          "fi" : "International School of Helsinki"
+        }
+      },
+      "vahvistus" : {
+        "päivä" : "2010-06-30",
+        "paikkakunta" : {
+          "koodiarvo" : "091",
+          "nimi" : {
+            "fi" : "Helsinki"
+          },
+          "koodistoUri" : "kunta"
+        },
+        "myöntäjäOrganisaatio" : {
+          "oid" : "1.2.246.562.10.67636414343",
+          "oppilaitosnumero" : {
+            "koodiarvo" : "03510",
+            "koodistoUri" : "oppilaitosnumero"
+          },
+          "nimi" : {
+            "fi" : "International School of Helsinki"
+          }
+        },
+        "myöntäjäHenkilöt" : [ {
+          "nimi" : "Reijo Reksi",
+          "titteli" : {
+            "fi" : "rehtori"
+          },
+          "organisaatio" : {
+            "oid" : "1.2.246.562.10.67636414343",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "03510",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "International School of Helsinki"
+            }
+          }
+        } ]
+      },
+      "suorituskieli" : {
+        "koodiarvo" : "EN",
+        "nimi" : {
+          "fi" : "englanti"
+        },
+        "koodistoUri" : "kieli"
+      },
+      "tyyppi" : {
+        "koodiarvo" : "internationalschoolpypvuosiluokka",
+        "koodistoUri" : "suorituksentyyppi"
+      },
+      "osasuoritukset" : [ {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "LA",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "achievedoutcomes",
+            "koodistoUri" : "arviointiasteikkointernationalschool"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolpypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "MA",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "achievedoutcomes",
+            "koodistoUri" : "arviointiasteikkointernationalschool"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolpypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "FMT",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "achievedoutcomes",
+            "koodistoUri" : "arviointiasteikkointernationalschool"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolpypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "PE",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "achievedoutcomes",
+            "koodistoUri" : "arviointiasteikkointernationalschool"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolpypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "VA",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "achievedoutcomes",
+            "koodistoUri" : "arviointiasteikkointernationalschool"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolpypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "MU",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "achievedoutcomes",
+            "koodistoUri" : "arviointiasteikkointernationalschool"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolpypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "ICT",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "achievedoutcomes",
+            "koodistoUri" : "arviointiasteikkointernationalschool"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolpypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "LIB",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "achievedoutcomes",
+            "koodistoUri" : "arviointiasteikkointernationalschool"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolpypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      } ]
+    }, {
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "5",
+          "koodistoUri" : "internationalschoolluokkaaste"
+        }
+      },
+      "luokka" : "5A",
+      "alkamispäivä" : "2010-08-15",
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.67636414343",
+        "oppilaitosnumero" : {
+          "koodiarvo" : "03510",
+          "koodistoUri" : "oppilaitosnumero"
+        },
+        "nimi" : {
+          "fi" : "International School of Helsinki"
+        }
+      },
+      "vahvistus" : {
+        "päivä" : "2011-06-30",
+        "paikkakunta" : {
+          "koodiarvo" : "091",
+          "nimi" : {
+            "fi" : "Helsinki"
+          },
+          "koodistoUri" : "kunta"
+        },
+        "myöntäjäOrganisaatio" : {
+          "oid" : "1.2.246.562.10.67636414343",
+          "oppilaitosnumero" : {
+            "koodiarvo" : "03510",
+            "koodistoUri" : "oppilaitosnumero"
+          },
+          "nimi" : {
+            "fi" : "International School of Helsinki"
+          }
+        },
+        "myöntäjäHenkilöt" : [ {
+          "nimi" : "Reijo Reksi",
+          "titteli" : {
+            "fi" : "rehtori"
+          },
+          "organisaatio" : {
+            "oid" : "1.2.246.562.10.67636414343",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "03510",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "International School of Helsinki"
+            }
+          }
+        } ]
+      },
+      "suorituskieli" : {
+        "koodiarvo" : "EN",
+        "nimi" : {
+          "fi" : "englanti"
+        },
+        "koodistoUri" : "kieli"
+      },
+      "tyyppi" : {
+        "koodiarvo" : "internationalschoolpypvuosiluokka",
+        "koodistoUri" : "suorituksentyyppi"
+      },
+      "osasuoritukset" : [ {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "LA",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "learningtoward",
+            "koodistoUri" : "arviointiasteikkointernationalschool"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolpypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "MA",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "achievedoutcomes",
+            "koodistoUri" : "arviointiasteikkointernationalschool"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolpypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "PE",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "achievedoutcomes",
+            "koodistoUri" : "arviointiasteikkointernationalschool"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolpypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "VA",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "achievedoutcomes",
+            "koodistoUri" : "arviointiasteikkointernationalschool"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolpypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "MU",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "achievedoutcomes",
+            "koodistoUri" : "arviointiasteikkointernationalschool"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolpypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "ICT",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "achievedoutcomes",
+            "koodistoUri" : "arviointiasteikkointernationalschool"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolpypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "LIB",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "achievedoutcomes",
+            "koodistoUri" : "arviointiasteikkointernationalschool"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolpypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      } ]
+    }, {
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "6",
+          "koodistoUri" : "internationalschoolluokkaaste"
+        }
+      },
+      "luokka" : "6B",
+      "alkamispäivä" : "2011-08-15",
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.67636414343",
+        "oppilaitosnumero" : {
+          "koodiarvo" : "03510",
+          "koodistoUri" : "oppilaitosnumero"
+        },
+        "nimi" : {
+          "fi" : "International School of Helsinki"
+        }
+      },
+      "vahvistus" : {
+        "päivä" : "2012-06-30",
+        "paikkakunta" : {
+          "koodiarvo" : "091",
+          "nimi" : {
+            "fi" : "Helsinki"
+          },
+          "koodistoUri" : "kunta"
+        },
+        "myöntäjäOrganisaatio" : {
+          "oid" : "1.2.246.562.10.67636414343",
+          "oppilaitosnumero" : {
+            "koodiarvo" : "03510",
+            "koodistoUri" : "oppilaitosnumero"
+          },
+          "nimi" : {
+            "fi" : "International School of Helsinki"
+          }
+        },
+        "myöntäjäHenkilöt" : [ {
+          "nimi" : "Reijo Reksi",
+          "titteli" : {
+            "fi" : "rehtori"
+          },
+          "organisaatio" : {
+            "oid" : "1.2.246.562.10.67636414343",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "03510",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "International School of Helsinki"
+            }
+          }
+        } ]
+      },
+      "suorituskieli" : {
+        "koodiarvo" : "EN",
+        "nimi" : {
+          "fi" : "englanti"
+        },
+        "koodistoUri" : "kieli"
+      },
+      "tyyppi" : {
+        "koodiarvo" : "internationalschoolmypvuosiluokka",
+        "koodistoUri" : "suorituksentyyppi"
+      },
+      "osasuoritukset" : [ {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "LL",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          },
+          "kieli" : {
+            "koodiarvo" : "EN",
+            "koodistoUri" : "kielivalikoima"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "5",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolmypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "LAC",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          },
+          "kieli" : {
+            "koodiarvo" : "FI",
+            "koodistoUri" : "kielivalikoima"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "6",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolmypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "LAC",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          },
+          "kieli" : {
+            "koodiarvo" : "FR",
+            "koodistoUri" : "kielivalikoima"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "6",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolmypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "IS",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "5",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolmypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "SCI",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "7",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolmypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "MA",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "5",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolmypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "DR",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "7",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolmypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "PHE",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "6",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolmypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      } ]
+    }, {
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "7",
+          "koodistoUri" : "internationalschoolluokkaaste"
+        }
+      },
+      "luokka" : "7B",
+      "alkamispäivä" : "2012-08-15",
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.67636414343",
+        "oppilaitosnumero" : {
+          "koodiarvo" : "03510",
+          "koodistoUri" : "oppilaitosnumero"
+        },
+        "nimi" : {
+          "fi" : "International School of Helsinki"
+        }
+      },
+      "vahvistus" : {
+        "päivä" : "2013-06-30",
+        "paikkakunta" : {
+          "koodiarvo" : "091",
+          "nimi" : {
+            "fi" : "Helsinki"
+          },
+          "koodistoUri" : "kunta"
+        },
+        "myöntäjäOrganisaatio" : {
+          "oid" : "1.2.246.562.10.67636414343",
+          "oppilaitosnumero" : {
+            "koodiarvo" : "03510",
+            "koodistoUri" : "oppilaitosnumero"
+          },
+          "nimi" : {
+            "fi" : "International School of Helsinki"
+          }
+        },
+        "myöntäjäHenkilöt" : [ {
+          "nimi" : "Reijo Reksi",
+          "titteli" : {
+            "fi" : "rehtori"
+          },
+          "organisaatio" : {
+            "oid" : "1.2.246.562.10.67636414343",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "03510",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "International School of Helsinki"
+            }
+          }
+        } ]
+      },
+      "suorituskieli" : {
+        "koodiarvo" : "EN",
+        "nimi" : {
+          "fi" : "englanti"
+        },
+        "koodistoUri" : "kieli"
+      },
+      "tyyppi" : {
+        "koodiarvo" : "internationalschoolmypvuosiluokka",
+        "koodistoUri" : "suorituksentyyppi"
+      },
+      "osasuoritukset" : [ {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "LL",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          },
+          "kieli" : {
+            "koodiarvo" : "EN",
+            "koodistoUri" : "kielivalikoima"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "6",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolmypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "LAC",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          },
+          "kieli" : {
+            "koodiarvo" : "ES",
+            "koodistoUri" : "kielivalikoima"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "5",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolmypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "LAC",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          },
+          "kieli" : {
+            "koodiarvo" : "FI",
+            "koodistoUri" : "kielivalikoima"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "6",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolmypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "IS",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "5",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolmypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "SCI",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "6",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolmypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "MA",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "6",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolmypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "MU",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "6",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolmypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "PHE",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "6",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolmypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "DE",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "4",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolmypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      } ]
+    }, {
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "8",
+          "koodistoUri" : "internationalschoolluokkaaste"
+        }
+      },
+      "luokka" : "8B",
+      "alkamispäivä" : "2013-08-15",
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.67636414343",
+        "oppilaitosnumero" : {
+          "koodiarvo" : "03510",
+          "koodistoUri" : "oppilaitosnumero"
+        },
+        "nimi" : {
+          "fi" : "International School of Helsinki"
+        }
+      },
+      "vahvistus" : {
+        "päivä" : "2014-06-30",
+        "paikkakunta" : {
+          "koodiarvo" : "091",
+          "nimi" : {
+            "fi" : "Helsinki"
+          },
+          "koodistoUri" : "kunta"
+        },
+        "myöntäjäOrganisaatio" : {
+          "oid" : "1.2.246.562.10.67636414343",
+          "oppilaitosnumero" : {
+            "koodiarvo" : "03510",
+            "koodistoUri" : "oppilaitosnumero"
+          },
+          "nimi" : {
+            "fi" : "International School of Helsinki"
+          }
+        },
+        "myöntäjäHenkilöt" : [ {
+          "nimi" : "Reijo Reksi",
+          "titteli" : {
+            "fi" : "rehtori"
+          },
+          "organisaatio" : {
+            "oid" : "1.2.246.562.10.67636414343",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "03510",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "International School of Helsinki"
+            }
+          }
+        } ]
+      },
+      "suorituskieli" : {
+        "koodiarvo" : "EN",
+        "nimi" : {
+          "fi" : "englanti"
+        },
+        "koodistoUri" : "kieli"
+      },
+      "tyyppi" : {
+        "koodiarvo" : "internationalschoolmypvuosiluokka",
+        "koodistoUri" : "suorituksentyyppi"
+      },
+      "osasuoritukset" : [ {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "LL",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          },
+          "kieli" : {
+            "koodiarvo" : "FI",
+            "koodistoUri" : "kielivalikoima"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "7",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolmypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "LL",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          },
+          "kieli" : {
+            "koodiarvo" : "EN",
+            "koodistoUri" : "kielivalikoima"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "6",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolmypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "LAC",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          },
+          "kieli" : {
+            "koodiarvo" : "ES",
+            "koodistoUri" : "kielivalikoima"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "6",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolmypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "IS",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "7",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolmypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "SCI",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "6",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolmypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "MA",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "7",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolmypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "MU",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "7",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolmypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "PHE",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "7",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolmypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "DE",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "5",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolmypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      } ]
+    }, {
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "9",
+          "koodistoUri" : "internationalschoolluokkaaste"
+        }
+      },
+      "luokka" : "9B",
+      "alkamispäivä" : "2014-08-15",
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.67636414343",
+        "oppilaitosnumero" : {
+          "koodiarvo" : "03510",
+          "koodistoUri" : "oppilaitosnumero"
+        },
+        "nimi" : {
+          "fi" : "International School of Helsinki"
+        }
+      },
+      "vahvistus" : {
+        "päivä" : "2015-06-30",
+        "paikkakunta" : {
+          "koodiarvo" : "091",
+          "nimi" : {
+            "fi" : "Helsinki"
+          },
+          "koodistoUri" : "kunta"
+        },
+        "myöntäjäOrganisaatio" : {
+          "oid" : "1.2.246.562.10.67636414343",
+          "oppilaitosnumero" : {
+            "koodiarvo" : "03510",
+            "koodistoUri" : "oppilaitosnumero"
+          },
+          "nimi" : {
+            "fi" : "International School of Helsinki"
+          }
+        },
+        "myöntäjäHenkilöt" : [ {
+          "nimi" : "Reijo Reksi",
+          "titteli" : {
+            "fi" : "rehtori"
+          },
+          "organisaatio" : {
+            "oid" : "1.2.246.562.10.67636414343",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "03510",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "International School of Helsinki"
+            }
+          }
+        } ]
+      },
+      "suorituskieli" : {
+        "koodiarvo" : "EN",
+        "nimi" : {
+          "fi" : "englanti"
+        },
+        "koodistoUri" : "kieli"
+      },
+      "tyyppi" : {
+        "koodiarvo" : "internationalschoolmypvuosiluokka",
+        "koodistoUri" : "suorituksentyyppi"
+      },
+      "osasuoritukset" : [ {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "LL",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          },
+          "kieli" : {
+            "koodiarvo" : "EN",
+            "koodistoUri" : "kielivalikoima"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "6",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolmypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "LAC",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          },
+          "kieli" : {
+            "koodiarvo" : "FR",
+            "koodistoUri" : "kielivalikoima"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "7",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolmypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "IS",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "6",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolmypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "SCI",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "5",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolmypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "EMA",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "5",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolmypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "PHE",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "6",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolmypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      } ]
+    }, {
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "10",
+          "koodistoUri" : "internationalschoolluokkaaste"
+        }
+      },
+      "luokka" : "10B",
+      "alkamispäivä" : "2015-08-15",
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.67636414343",
+        "oppilaitosnumero" : {
+          "koodiarvo" : "03510",
+          "koodistoUri" : "oppilaitosnumero"
+        },
+        "nimi" : {
+          "fi" : "International School of Helsinki"
+        }
+      },
+      "vahvistus" : {
+        "päivä" : "2016-06-30",
+        "paikkakunta" : {
+          "koodiarvo" : "091",
+          "nimi" : {
+            "fi" : "Helsinki"
+          },
+          "koodistoUri" : "kunta"
+        },
+        "myöntäjäOrganisaatio" : {
+          "oid" : "1.2.246.562.10.67636414343",
+          "oppilaitosnumero" : {
+            "koodiarvo" : "03510",
+            "koodistoUri" : "oppilaitosnumero"
+          },
+          "nimi" : {
+            "fi" : "International School of Helsinki"
+          }
+        },
+        "myöntäjäHenkilöt" : [ {
+          "nimi" : "Reijo Reksi",
+          "titteli" : {
+            "fi" : "rehtori"
+          },
+          "organisaatio" : {
+            "oid" : "1.2.246.562.10.67636414343",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "03510",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "International School of Helsinki"
+            }
+          }
+        } ]
+      },
+      "suorituskieli" : {
+        "koodiarvo" : "EN",
+        "nimi" : {
+          "fi" : "englanti"
+        },
+        "koodistoUri" : "kieli"
+      },
+      "tyyppi" : {
+        "koodiarvo" : "internationalschoolmypvuosiluokka",
+        "koodistoUri" : "suorituksentyyppi"
+      },
+      "osasuoritukset" : [ {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "LL",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          },
+          "kieli" : {
+            "koodiarvo" : "EN",
+            "koodistoUri" : "kielivalikoima"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "7",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolmypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "LAC",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          },
+          "kieli" : {
+            "koodiarvo" : "FR",
+            "koodistoUri" : "kielivalikoima"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "7",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolmypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "IS",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "7",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolmypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "SCI",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "7",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolmypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "EMA",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "5",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolmypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "MU",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "7",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolmypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "PHE",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "6",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolmypoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      } ]
+    }, {
+      "koulutusmoduuli" : {
+        "diplomaType" : {
+          "koodiarvo" : "ib",
+          "koodistoUri" : "internationalschooldiplomatype"
+        },
+        "tunniste" : {
+          "koodiarvo" : "11",
+          "koodistoUri" : "internationalschoolluokkaaste"
+        }
+      },
+      "luokka" : "11C",
+      "alkamispäivä" : "2016-08-15",
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.67636414343",
+        "oppilaitosnumero" : {
+          "koodiarvo" : "03510",
+          "koodistoUri" : "oppilaitosnumero"
+        },
+        "nimi" : {
+          "fi" : "International School of Helsinki"
+        }
+      },
+      "vahvistus" : {
+        "päivä" : "2017-06-30",
+        "paikkakunta" : {
+          "koodiarvo" : "091",
+          "nimi" : {
+            "fi" : "Helsinki"
+          },
+          "koodistoUri" : "kunta"
+        },
+        "myöntäjäOrganisaatio" : {
+          "oid" : "1.2.246.562.10.67636414343",
+          "oppilaitosnumero" : {
+            "koodiarvo" : "03510",
+            "koodistoUri" : "oppilaitosnumero"
+          },
+          "nimi" : {
+            "fi" : "International School of Helsinki"
+          }
+        },
+        "myöntäjäHenkilöt" : [ {
+          "nimi" : "Reijo Reksi",
+          "titteli" : {
+            "fi" : "rehtori"
+          },
+          "organisaatio" : {
+            "oid" : "1.2.246.562.10.67636414343",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "03510",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "International School of Helsinki"
+            }
+          }
+        } ]
+      },
+      "suorituskieli" : {
+        "koodiarvo" : "EN",
+        "nimi" : {
+          "fi" : "englanti"
+        },
+        "koodistoUri" : "kieli"
+      },
+      "tyyppi" : {
+        "koodiarvo" : "internationalschooldiplomavuosiluokka",
+        "koodistoUri" : "suorituksentyyppi"
+      },
+      "osasuoritukset" : [ {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "A",
+            "koodistoUri" : "oppiaineetib"
+          },
+          "kieli" : {
+            "koodiarvo" : "FI",
+            "koodistoUri" : "kielivalikoima"
+          },
+          "taso" : {
+            "koodiarvo" : "SL",
+            "koodistoUri" : "oppiaineentasoib"
+          }
+        },
+        "arviointi" : [ {
+          "predicted" : false,
+          "arvosana" : {
+            "koodiarvo" : "5",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschooldiplomaoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "A2",
+            "koodistoUri" : "oppiaineetib"
+          },
+          "kieli" : {
+            "koodiarvo" : "EN",
+            "koodistoUri" : "kielivalikoima"
+          }
+        },
+        "arviointi" : [ {
+          "predicted" : false,
+          "arvosana" : {
+            "koodiarvo" : "5",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschooldiplomaoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "HIS",
+            "koodistoUri" : "oppiaineetib"
+          },
+          "taso" : {
+            "koodiarvo" : "HL",
+            "koodistoUri" : "oppiaineentasoib"
+          }
+        },
+        "arviointi" : [ {
+          "predicted" : false,
+          "arvosana" : {
+            "koodiarvo" : "4",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschooldiplomaoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "PSY",
+            "koodistoUri" : "oppiaineetib"
+          }
+        },
+        "arviointi" : [ {
+          "predicted" : false,
+          "arvosana" : {
+            "koodiarvo" : "3",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschooldiplomaoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "ESS",
+            "koodistoUri" : "oppiaineetib"
+          },
+          "taso" : {
+            "koodiarvo" : "SL",
+            "koodistoUri" : "oppiaineentasoib"
+          }
+        },
+        "arviointi" : [ {
+          "predicted" : false,
+          "arvosana" : {
+            "koodiarvo" : "3",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschooldiplomaoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "MATST",
+            "koodistoUri" : "oppiaineetib"
+          }
+        },
+        "arviointi" : [ {
+          "predicted" : false,
+          "arvosana" : {
+            "koodiarvo" : "S",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschooldiplomaoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "HAWB",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "pass",
+            "koodistoUri" : "arviointiasteikkointernationalschool"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschooldiplomaoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "TOK",
+            "koodistoUri" : "oppiaineetib"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "D",
+            "koodistoUri" : "arviointiasteikkocorerequirementsib"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolcorerequirements",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      } ]
+    }, {
+      "koulutusmoduuli" : {
+        "diplomaType" : {
+          "koodiarvo" : "ib",
+          "koodistoUri" : "internationalschooldiplomatype"
+        },
+        "tunniste" : {
+          "koodiarvo" : "12",
+          "koodistoUri" : "internationalschoolluokkaaste"
+        }
+      },
+      "luokka" : "12C",
+      "alkamispäivä" : "2017-08-15",
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.67636414343",
+        "oppilaitosnumero" : {
+          "koodiarvo" : "03510",
+          "koodistoUri" : "oppilaitosnumero"
+        },
+        "nimi" : {
+          "fi" : "International School of Helsinki"
+        }
+      },
+      "vahvistus" : {
+        "päivä" : "2018-06-30",
+        "paikkakunta" : {
+          "koodiarvo" : "091",
+          "nimi" : {
+            "fi" : "Helsinki"
+          },
+          "koodistoUri" : "kunta"
+        },
+        "myöntäjäOrganisaatio" : {
+          "oid" : "1.2.246.562.10.67636414343",
+          "oppilaitosnumero" : {
+            "koodiarvo" : "03510",
+            "koodistoUri" : "oppilaitosnumero"
+          },
+          "nimi" : {
+            "fi" : "International School of Helsinki"
+          }
+        },
+        "myöntäjäHenkilöt" : [ {
+          "nimi" : "Reijo Reksi",
+          "titteli" : {
+            "fi" : "rehtori"
+          },
+          "organisaatio" : {
+            "oid" : "1.2.246.562.10.67636414343",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "03510",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "International School of Helsinki"
+            }
+          }
+        } ]
+      },
+      "suorituskieli" : {
+        "koodiarvo" : "EN",
+        "nimi" : {
+          "fi" : "englanti"
+        },
+        "koodistoUri" : "kieli"
+      },
+      "tyyppi" : {
+        "koodiarvo" : "internationalschooldiplomavuosiluokka",
+        "koodistoUri" : "suorituksentyyppi"
+      },
+      "osasuoritukset" : [ {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "A",
+            "koodistoUri" : "oppiaineetib"
+          },
+          "kieli" : {
+            "koodiarvo" : "FI",
+            "koodistoUri" : "kielivalikoima"
+          },
+          "taso" : {
+            "koodiarvo" : "SL",
+            "koodistoUri" : "oppiaineentasoib"
+          }
+        },
+        "arviointi" : [ {
+          "predicted" : false,
+          "arvosana" : {
+            "koodiarvo" : "6",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschooldiplomaoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "B",
+            "koodistoUri" : "oppiaineetib"
+          },
+          "kieli" : {
+            "koodiarvo" : "FI",
+            "koodistoUri" : "kielivalikoima"
+          }
+        },
+        "arviointi" : [ {
+          "predicted" : false,
+          "arvosana" : {
+            "koodiarvo" : "6",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschooldiplomaoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "PSY",
+            "koodistoUri" : "oppiaineetib"
+          },
+          "taso" : {
+            "koodiarvo" : "HL",
+            "koodistoUri" : "oppiaineentasoib"
+          }
+        },
+        "arviointi" : [ {
+          "predicted" : false,
+          "arvosana" : {
+            "koodiarvo" : "6",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschooldiplomaoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "CHE",
+            "koodistoUri" : "oppiaineetib"
+          },
+          "taso" : {
+            "koodiarvo" : "HL",
+            "koodistoUri" : "oppiaineentasoib"
+          }
+        },
+        "arviointi" : [ {
+          "predicted" : false,
+          "arvosana" : {
+            "koodiarvo" : "4",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschooldiplomaoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "BIO",
+            "koodistoUri" : "oppiaineetib"
+          },
+          "taso" : {
+            "koodiarvo" : "HL",
+            "koodistoUri" : "oppiaineentasoib"
+          }
+        },
+        "arviointi" : [ {
+          "predicted" : false,
+          "arvosana" : {
+            "koodiarvo" : "5",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschooldiplomaoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "MAI",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          },
+          "taso" : {
+            "koodiarvo" : "SL",
+            "koodistoUri" : "oppiaineentasoib"
+          }
+        },
+        "arviointi" : [ {
+          "predicted" : false,
+          "arvosana" : {
+            "koodiarvo" : "4",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschooldiplomaoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "HAWB",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "fail",
+            "koodistoUri" : "arviointiasteikkointernationalschool"
+          },
+          "hyväksytty" : false
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschooldiplomaoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "TOK",
+            "koodistoUri" : "oppiaineetib"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "C",
+            "koodistoUri" : "arviointiasteikkocorerequirementsib"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschoolcorerequirements",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      } ]
+    } ],
+    "tyyppi" : {
+      "koodiarvo" : "internationalschool",
+      "koodistoUri" : "opiskeluoikeudentyyppi"
+    },
+    "lisätiedot" : {
+      "erityisenKoulutustehtävänJaksot" : [ {
+        "alku" : "2012-09-01",
+        "loppu" : "2013-09-01",
+        "tehtävä" : {
+          "koodiarvo" : "103",
+          "nimi" : {
+            "fi" : "Kieliin painottuva koulutus"
+          },
+          "koodistoUri" : "erityinenkoulutustehtava"
+        }
+      } ],
+      "ulkomaanjaksot" : [ {
+        "alku" : "2012-09-01",
+        "loppu" : "2013-09-01",
+        "maa" : {
+          "koodiarvo" : "752",
+          "nimi" : {
+            "fi" : "Ruotsi"
+          },
+          "koodistoUri" : "maatjavaltiot2"
+        },
+        "kuvaus" : {
+          "fi" : "Harjoittelua ulkomailla"
+        }
+      } ]
+    },
+    "alkamispäivä" : "2004-08-15",
+    "päättymispäivä" : "2018-06-30"
+  } ]
+}

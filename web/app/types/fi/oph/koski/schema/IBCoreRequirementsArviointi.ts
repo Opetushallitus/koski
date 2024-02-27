@@ -9,14 +9,14 @@ import { LocalizedString } from './LocalizedString'
 export type IBCoreRequirementsArviointi = {
   $class: 'fi.oph.koski.schema.IBCoreRequirementsArviointi'
   arvosana: Koodistokoodiviite<'arviointiasteikkocorerequirementsib', string>
-  predicted: boolean
+  predicted?: boolean
   päivä?: string
   hyväksytty?: boolean
 }
 
 export const IBCoreRequirementsArviointi = (o: {
   arvosana: Koodistokoodiviite<'arviointiasteikkocorerequirementsib', string>
-  predicted: boolean
+  predicted?: boolean
   päivä?: string
   hyväksytty?: boolean
 }): IBCoreRequirementsArviointi => ({

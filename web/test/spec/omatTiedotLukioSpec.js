@@ -580,8 +580,7 @@ describe('Omat tiedot - lukio', function () {
               '6 MATST_S4\n' +
               '6 MATST_S5\n' +
               '4 MATST_S6\n' +
-              'S\n' +
-              '* = ennustettu arvosana'
+              'S'
           )
         })
 

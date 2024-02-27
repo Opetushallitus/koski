@@ -299,10 +299,11 @@ case class PassFailOppiaineenArviointi(
 ) extends InternationalSchoolArviointi with DiplomaArviointi with MYPArviointi
 
 case class InternationalSchoolCoreRequirementsArviointi(
-  predicted: Boolean = false,
+  @Deprecated("Tietoa ei kirjata Core Requirements -arviointiin")
+  predicted: Option[Boolean] = None,
   arvosana: Koodistokoodiviite,
   päivä: Option[LocalDate] = None
-) extends InternationalSchoolArviointi with CoreRequirementsArvionti with Predicted {
+) extends InternationalSchoolArviointi with CoreRequirementsArvionti {
   override def arvioitsijat: Option[List[Arvioitsija]] = None
 }
 

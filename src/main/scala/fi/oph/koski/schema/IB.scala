@@ -169,8 +169,8 @@ object IBOppiaineenPredictedArviointi {
 @Title("IB CAS -oppiaineen arviointi")
 @OnlyWhen("../tyyppi/koodiarvo","iboppiainecas")
 case class IBCASOppiaineenArviointi(
-  @Description("Onko arvoitu arvosana vai ei, jos ei niin tarkoittaa IBOn vahvistamaa arvosanaa")
-  predicted: Boolean = true,
+  @Deprecated("Tietoa ei kirjata IB CAS -oppiaineen arviointiin")
+  predicted: Option[Boolean] = None,
   @KoodistoUri("arviointiasteikkoib")
   @KoodistoKoodiarvo("S")
   arvosana: Koodistokoodiviite,
@@ -246,8 +246,8 @@ object CoreRequirementsArvionti {
 @Title("IB Core Requirements -arviointi")
 case class IBCoreRequirementsArviointi(
   arvosana: Koodistokoodiviite,
-  @Description("Onko arvoitu arvosana vai ei, jos ei niin tarkoittaa IBOn vahvistamaa arvosanaa")
-  predicted: Boolean = true,
+  @Deprecated("Tietoa ei kirjata IB Core Requirements -arviointiin")
+  predicted: Option[Boolean] = None,
   @Description("Arviointipäivämäärä")
   päivä: Option[LocalDate]
 ) extends CoreRequirementsArvionti

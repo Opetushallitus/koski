@@ -11,17 +11,19 @@ export type IBCASOppiaineenArviointi = {
   päivä?: string
   effort?: Koodistokoodiviite<'effortasteikkoib', string>
   arvosana: Koodistokoodiviite<'arviointiasteikkoib', 'S'>
-  predicted: boolean
+  predicted?: boolean
   hyväksytty?: boolean
 }
 
-export const IBCASOppiaineenArviointi = (o: {
-  päivä?: string
-  effort?: Koodistokoodiviite<'effortasteikkoib', string>
-  arvosana?: Koodistokoodiviite<'arviointiasteikkoib', 'S'>
-  predicted: boolean
-  hyväksytty?: boolean
-}): IBCASOppiaineenArviointi => ({
+export const IBCASOppiaineenArviointi = (
+  o: {
+    päivä?: string
+    effort?: Koodistokoodiviite<'effortasteikkoib', string>
+    arvosana?: Koodistokoodiviite<'arviointiasteikkoib', 'S'>
+    predicted?: boolean
+    hyväksytty?: boolean
+  } = {}
+): IBCASOppiaineenArviointi => ({
   arvosana: Koodistokoodiviite({
     koodiarvo: 'S',
     koodistoUri: 'arviointiasteikkoib'

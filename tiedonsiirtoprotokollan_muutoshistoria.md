@@ -1,3 +1,9 @@
+## 27.2.2024
+
+- Deprekoitu predicted-arvosana -kentät:
+  - IB-opiskeluoikeuden IB-tutkinnon suorituksen theoryOfKnowledge-, extendedEssay- ja creativityActionsService-kenttien arvioinneista
+  - International Schoolin Diploma Core Requirements -oppiaineen suorituksesta
+
 ## 23.1.2024
 
 - Lisätty VST-osaamismerkkien tietomalli. Osaamismerkkejä voi kuitenkin tallentaa vasta 1.8.2024 alkaen.

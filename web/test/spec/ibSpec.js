@@ -764,7 +764,7 @@ describe('IB', function () {
         })
 
         describe('Yhteiset IB-suoritukset (TOK, CAS, EE)', function () {
-          it('arvosanalle näytetään alaviite', function () {
+          it('arvosanalle ei näytetä alaviitteitä', function () {
             expect(extractAsText(S('.theoryOfKnowledge'))).to.not.contain('*')
             expect(extractAsText(S('.creativityActionService'))).to.not.contain(
               '*'
@@ -789,20 +789,6 @@ describe('IB', function () {
           expect(
             S('.oppiaineet tbody tr:eq(1) > .predicted-arvosana').text()
           ).to.equal('4')
-        })
-
-        it('ennakkoarvosana-alaviitteelle näyteään selite', function () {
-          expect(S('.osasuoritukset .selitteet').text()).to.equal(
-            '* = ennustettu arvosana'
-          )
-        })
-
-        describe('Yhteiset IB-suoritukset (TOK, CAS, EE)', function () {
-          it('arvosanalle näytetään alaviite', function () {
-            expect(extractAsText(S('.theoryOfKnowledge'))).to.contain('*')
-            expect(extractAsText(S('.creativityActionService'))).to.contain('*')
-            expect(extractAsText(S('.extendedEssay'))).to.contain('*')
-          })
         })
       })
     })
@@ -853,25 +839,6 @@ describe('IB', function () {
 
               it('onnistuu', function () {
                 expect(tok.arvosana.getText()).to.equal('B')
-              })
-            })
-
-            describe('Arvosanan asettaminen ennakkoarvosanaksi', function () {
-              before(
-                editor.edit,
-                tok.predicted.setValue('on'),
-                editor.saveChanges,
-                wait.until(page.isSavedLabelShown)
-              )
-
-              it('näyttää alaviitteen', function () {
-                expect(tok.arvosana.getText()).to.equal('B *')
-              })
-
-              it('näyttää alaviitteen selitteen', function () {
-                expect(S('.osasuoritukset .selitteet').text()).to.equal(
-                  '* = ennustettu arvosana'
-                )
               })
             })
 
