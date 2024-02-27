@@ -316,7 +316,7 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
     defaultOpiskeluoikeus.copy(
       suoritukset = List(ibTutkinnonSuoritus(predicted = false).copy(
         creativityActionService = Some(IBCASSuoritus(
-          IBOppiaineCAS(laajuus = Some(LaajuusTunneissa(267))), ibCASArviointi(arvosana, predicted = true)
+          IBOppiaineCAS(laajuus = Some(LaajuusTunneissa(267))), ibCASArviointi(arvosana)
         ))
       ))
     )

@@ -8,7 +8,7 @@ import { LocalizedString } from './LocalizedString'
  */
 export type InternationalSchoolCoreRequirementsArviointi = {
   $class: 'fi.oph.koski.schema.InternationalSchoolCoreRequirementsArviointi'
-  predicted: boolean
+  predicted?: boolean
   arvosana: Koodistokoodiviite<'arviointiasteikkocorerequirementsib', string>
   päivä?: string
   hyväksytty?: boolean
@@ -21,7 +21,6 @@ export const InternationalSchoolCoreRequirementsArviointi = (o: {
   hyväksytty?: boolean
 }): InternationalSchoolCoreRequirementsArviointi => ({
   $class: 'fi.oph.koski.schema.InternationalSchoolCoreRequirementsArviointi',
-  predicted: false,
   ...o
 })
 

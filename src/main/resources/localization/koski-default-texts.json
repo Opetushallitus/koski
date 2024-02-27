@@ -2663,5 +2663,8 @@
   "Kuvan hakeminen epäonnistui": "Kuvan hakeminen epäonnistui",
   "eperusteet_osaamismerkki_url_fragment": "/#/fi/osaamismerkki/",
   "Osaamismerkit": "Osaamismerkit",
-  "Poistu versiohistoriasta": "Poistu versiohistoriasta"
+  "Poistu versiohistoriasta": "Poistu versiohistoriasta",
+  "deprecated:Tietoa ei kirjata Core Requirements..." : "Tietoa ei kirjata Core Requirements -arviointiin",
+  "deprecated:Tietoa ei kirjata IB Core..." : "Tietoa ei kirjata IB Core Requirements -arviointiin",
+  "deprecated:Tietoa ei kirjata IB CAS..." : "Tietoa ei kirjata IB CAS -oppiaineen arviointiin"
 }

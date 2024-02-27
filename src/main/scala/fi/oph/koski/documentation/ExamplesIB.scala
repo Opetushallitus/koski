@@ -242,7 +242,7 @@ object ExamplesIB {
     vahvistus = vahvistus,
     osasuoritukset = Some(osasuoritukset(vainPredictedArviointi = predicted)),
     theoryOfKnowledge = Some(IBTheoryOfKnowledgeSuoritus(
-      IBOppiaineTheoryOfKnowledge(), ibCoreArviointi("A", predicted = predicted), osasuoritukset = Some(List(
+      IBOppiaineTheoryOfKnowledge(), ibCoreArviointi("A"), osasuoritukset = Some(List(
         IBKurssinSuoritus(ibKurssi("TOK1", "TOK1"), ibKurssinArviointi("S"), None),
         IBKurssinSuoritus(ibKurssi("TOK2", "TOK2"), ibKurssinArviointi("S"), None)
       ))
@@ -252,10 +252,10 @@ object ExamplesIB {
         aine = ibKieli("A2", "EN", higherLevel, 1),
         aihe = LocalizedString.english("How is the theme of racial injustice treated in Harper Lee's To Kill a Mockingbird and Solomon Northup's 12 Years a Slave")
       ),
-      ibCoreArviointi("B", predicted = predicted)
+      ibCoreArviointi("B")
     )),
     creativityActionService = Some(IBCASSuoritus(
-      IBOppiaineCAS(laajuus = Some(LaajuusTunneissa(267))), ibCASArviointi("S", predicted = predicted)
+      IBOppiaineCAS(laajuus = Some(LaajuusTunneissa(267))), ibCASArviointi("S")
     )),
     lisäpisteet = Some(Koodistokoodiviite(koodiarvo = "3", koodistoUri = "arviointiasteikkolisapisteetib"))
   )
@@ -314,12 +314,12 @@ object ExamplesIB {
     Some(List(IBOppiaineenPredictedArviointi(arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoib"), päivä = Some(päivä))))
   }
 
-  def ibCASArviointi(arvosana: String, päivä: LocalDate = date(2016, 6, 4), predicted: Boolean): Some[List[IBCASOppiaineenArviointi]] = {
-    Some(List(IBCASOppiaineenArviointi(predicted = predicted, arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoib"), päivä = Some(päivä))))
+  def ibCASArviointi(arvosana: String, päivä: LocalDate = date(2016, 6, 4)): Some[List[IBCASOppiaineenArviointi]] = {
+    Some(List(IBCASOppiaineenArviointi(arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoib"), päivä = Some(päivä))))
   }
 
-  def ibCoreArviointi(arvosana: String, päivä: LocalDate = date(2016, 6, 4), predicted: Boolean): Some[List[IBCoreRequirementsArviointi]] = {
-    Some(List(IBCoreRequirementsArviointi(predicted = predicted, arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkocorerequirementsib"), päivä = Some(päivä))))
+  def ibCoreArviointi(arvosana: String, päivä: LocalDate = date(2016, 6, 4)): Some[List[IBCoreRequirementsArviointi]] = {
+    Some(List(IBCoreRequirementsArviointi(arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkocorerequirementsib"), päivä = Some(päivä))))
   }
 
   def ibKurssinArviointi(arvosana: String, effort: Option[String] = None, päivä: LocalDate = date(2016, 6, 4)): Some[List[IBKurssinArviointi]] =
