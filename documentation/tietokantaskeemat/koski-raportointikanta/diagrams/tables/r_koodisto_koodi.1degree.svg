@@ -37,12 +37,12 @@
 <text text-anchor="start" x="30" y="-66.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">nimi_sv</text>
 <polygon fill="none" stroke="#000000" points="131,-59.2 131,-81.2 240,-81.2 240,-59.2 131,-59.2"/>
 <text text-anchor="start" x="133.5344" y="-66.9" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">varchar[2147483647]</text>
-<polygon fill="#ffffff" stroke="transparent" points="10,-40.2 10,-59.2 49,-59.2 49,-40.2 10,-40.2"/>
-<polygon fill="none" stroke="#000000" points="10,-40.2 10,-59.2 49,-59.2 49,-40.2 10,-40.2"/>
+<polygon fill="#ffffff" stroke="transparent" points="10,-40.2 10,-59.2 51,-59.2 51,-40.2 10,-40.2"/>
+<polygon fill="none" stroke="#000000" points="10,-40.2 10,-59.2 51,-59.2 51,-40.2 10,-40.2"/>
 <text text-anchor="start" x="13" y="-46.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">&lt; 0</text>
-<polygon fill="#ffffff" stroke="transparent" points="49,-40.2 49,-59.2 131,-59.2 131,-40.2 49,-40.2"/>
-<polygon fill="none" stroke="#000000" points="49,-40.2 49,-59.2 131,-59.2 131,-40.2 49,-40.2"/>
-<text text-anchor="start" x="70.547" y="-46.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">1 046 rows</text>
+<polygon fill="#ffffff" stroke="transparent" points="51,-40.2 51,-59.2 131,-59.2 131,-40.2 51,-40.2"/>
+<polygon fill="none" stroke="#000000" points="51,-40.2 51,-59.2 131,-59.2 131,-40.2 51,-40.2"/>
+<text text-anchor="start" x="74.2089" y="-46.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">1,046 rows</text>
 <polygon fill="#ffffff" stroke="transparent" points="131,-40.2 131,-59.2 240,-59.2 240,-40.2 131,-40.2"/>
 <polygon fill="none" stroke="#000000" points="131,-40.2 131,-59.2 240,-59.2 240,-40.2 131,-40.2"/>
 <text text-anchor="start" x="221.4053" y="-46.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">0 &gt;</text>

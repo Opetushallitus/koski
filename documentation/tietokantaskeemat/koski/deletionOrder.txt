@@ -10,7 +10,6 @@ opiskeluoikeushistoria_virheet
 opiskeluoikeushistoria_fixture
 opiskeluoikeus_fixture
 mydata_jako
-kysely
 casserviceticket
 ytr_opiskeluoikeushistoria
 suoritusjako

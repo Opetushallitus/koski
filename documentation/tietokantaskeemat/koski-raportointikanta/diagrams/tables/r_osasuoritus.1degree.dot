@@ -31,7 +31,7 @@ digraph "oneDegreeRelationshipsDiagram" {
       <TR><TD PORT="tunnustettu_rahoituksen_piirissa" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="195" HEIGHT="16">tunnustettu_rahoituksen_piirissa</TD></TR></TABLE></TD><TD PORT="tunnustettu_rahoituksen_piirissa.type" ALIGN="LEFT">bool[1]</TD></TR>
       <TR><TD PORT="data" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="195" HEIGHT="16">data</TD></TR></TABLE></TD><TD PORT="data.type" ALIGN="LEFT">jsonb[2147483647]</TD></TR>
       <TR><TD PORT="sisaltyy_opiskeluoikeuteen_oid" COLSPAN="2" BGCOLOR="#ffffff" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="195" HEIGHT="16">sisaltyy_opiskeluoikeuteen_oid</TD></TR></TABLE></TD><TD PORT="sisaltyy_opiskeluoikeuteen_oid.type" ALIGN="LEFT">varchar[2147483647]</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 0</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">4 754 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 &gt;</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 0</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">4,754 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 &gt;</TD></TR>
     </TABLE>>
     URL="../../tables/r_osasuoritus.html"
     target="_top"
