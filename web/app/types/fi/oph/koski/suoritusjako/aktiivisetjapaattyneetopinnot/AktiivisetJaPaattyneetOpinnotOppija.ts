@@ -1,3 +1,4 @@
+import { Jakolinkki } from '../common/Jakolinkki'
 import { Henkilo } from './Henkilo'
 import { AktiivisetJaPäättyneetOpinnotOpiskeluoikeus } from './AktiivisetJaPaattyneetOpinnotOpiskeluoikeus'
 
@@ -8,11 +9,13 @@ import { AktiivisetJaPäättyneetOpinnotOpiskeluoikeus } from './AktiivisetJaPaa
  */
 export type AktiivisetJaPäättyneetOpinnotOppija = {
   $class: 'fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotOppija'
+  jakolinkki?: Jakolinkki
   henkilö: Henkilo
   opiskeluoikeudet: Array<AktiivisetJaPäättyneetOpinnotOpiskeluoikeus>
 }
 
 export const AktiivisetJaPäättyneetOpinnotOppija = (o: {
+  jakolinkki?: Jakolinkki
   henkilö: Henkilo
   opiskeluoikeudet?: Array<AktiivisetJaPäättyneetOpinnotOpiskeluoikeus>
 }): AktiivisetJaPäättyneetOpinnotOppija => ({

@@ -2,6 +2,7 @@ package fi.oph.koski.suoritusjako.suoritetuttutkinnot
 
 import fi.oph.koski.schema
 import fi.oph.koski.schema.annotation.{Deprecated, KoodistoUri}
+import fi.oph.koski.suoritusjako.common.Jakolinkki
 import fi.oph.scalaschema.annotation.Discriminator
 import fi.oph.scalaschema.{ClassSchema, SchemaToJson}
 import org.json4s.JValue
@@ -22,6 +23,7 @@ object SuoritetutTutkinnotSchema {
 }
 
 case class SuoritetutTutkinnotOppija(
+  jakolinkki: Option[Jakolinkki] = None,
   henkilö: Henkilo,
   opiskeluoikeudet: List[SuoritetutTutkinnotOpiskeluoikeus]
 )

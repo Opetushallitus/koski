@@ -24,7 +24,7 @@ class SuoritusjakoServletV3(implicit val application: KoskiApplication)
         .extract[SuoritusjakoRequest](strictDeserialization)(json)
         .flatMap(r => application.suoritusjakoService.get(r.secret)(suoritusjakoUser))
         .map(_.getIgnoringWarnings)
-      renderEither[Oppija](jako)
+      renderEither[OppijaJakolinkillä](jako)
     } } (parseErrorHandler = handleUnparseableJson)
   }
 
