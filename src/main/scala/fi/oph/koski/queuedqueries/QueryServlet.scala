@@ -1,4 +1,4 @@
-package fi.oph.koski.kyselyt
+package fi.oph.koski.queuedqueries
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
@@ -11,10 +11,10 @@ import org.json4s.jackson.JsonMethods
 
 import java.time.LocalDateTime
 
-class KyselyServlet(implicit val application: KoskiApplication)
+class QueryServlet(implicit val application: KoskiApplication)
   extends KoskiSpecificApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with JsonMethods with NoCache
 {
-  val kyselyt: KyselyService = application.kyselyService
+  val kyselyt: QueryService = application.kyselyService
   val rootUrl: String = application.config.getString("koski.root.url")
 
   post("/") {

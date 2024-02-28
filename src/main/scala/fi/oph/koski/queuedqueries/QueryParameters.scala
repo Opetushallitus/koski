@@ -1,4 +1,4 @@
-package fi.oph.koski.kyselyt
+package fi.oph.koski.queuedqueries
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}

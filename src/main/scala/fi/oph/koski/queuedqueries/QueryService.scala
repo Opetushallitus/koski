@@ -1,4 +1,4 @@
-package fi.oph.koski.kyselyt
+package fi.oph.koski.queuedqueries
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
@@ -10,16 +10,16 @@ import java.util.UUID
 import scala.concurrent.Await
 import scala.concurrent.duration.DurationInt
 
-class KyselyService(application: KoskiApplication) extends Logging {
+class QueryService(application: KoskiApplication) extends Logging {
   val workerId: String = InetAddress.getLocalHost.getHostName
   logger.info(s"Query worker id: $workerId")
 
-  private val queries = new KyselyRepository(
+  private val queries = new QueryRepository(
     db = application.masterDatabase.db,
     workerId = workerId,
     extractor = application.validatingAndResolvingExtractor,
   )
-  private val results = new KyselyTulosRepository(application.config)
+  private val results = new QueryResultsRepository(application.config)
 
   def add(query: QueryParameters)(implicit user: KoskiSpecificSession): Either[HttpStatus, Query] = {
     query.withDefaults.flatMap { query =>

@@ -1,4 +1,4 @@
-package fi.oph.koski.kyselyt.organisaationopiskeluoikeudet
+package fi.oph.koski.queuedqueries.organisaationopiskeluoikeudet
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api.actionBasedSQLInterpolation
@@ -6,7 +6,7 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.db.{DatabaseConverters, KoskiTables, QueryMethods, SQLHelpers}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
-import fi.oph.koski.kyselyt.{QueryParameters, QueryResultWriter}
+import fi.oph.koski.queuedqueries.{QueryParameters, QueryResultWriter}
 import fi.oph.koski.log.KoskiAuditLogMessageField.hakuEhto
 import fi.oph.koski.log.KoskiOperation.OPISKELUOIKEUS_HAKU
 import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, Logging}

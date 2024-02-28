@@ -1,4 +1,4 @@
-package fi.oph.koski.kyselyt
+package fi.oph.koski.queuedqueries
 
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.db.{DB, DatabaseConverters, QueryMethods}
@@ -15,7 +15,7 @@ import java.sql.Timestamp
 import java.time.{Duration, LocalDateTime}
 import java.util.UUID
 
-class KyselyRepository(
+class QueryRepository(
   val db: DB,
   workerId: String,
   extractor: ValidatingAndResolvingExtractor,

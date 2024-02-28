@@ -1,4 +1,4 @@
-package fi.oph.koski.kyselyt
+package fi.oph.koski.queuedqueries
 
 import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.log.Logging
@@ -8,10 +8,10 @@ import software.amazon.awssdk.services.rds.RdsClient
 
 import scala.jdk.CollectionConverters._
 
-class KyselyScheduler(application: KoskiApplication) extends Logging {
+class QueryScheduler(application: KoskiApplication) extends Logging {
   val concurrency: Int = application.config.getInt("kyselyt.concurrency")
   val kyselyt = application.kyselyService
-  lazy val isQueryWorker: Boolean = KyselyUtils.isQueryWorker(application)
+  lazy val isQueryWorker: Boolean = QueryUtils.isQueryWorker(application)
 
   sys.addShutdownHook {
     kyselyt.cancelAllTasks("Interrupted: worker shutdown")

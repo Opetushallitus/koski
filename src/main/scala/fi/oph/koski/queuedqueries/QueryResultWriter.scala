@@ -1,4 +1,4 @@
-package fi.oph.koski.kyselyt
+package fi.oph.koski.queuedqueries
 
 import fi.oph.koski.json.JsonSerializer
 import org.json4s.JValue
@@ -11,7 +11,7 @@ import scala.reflect.runtime.universe.TypeTag
 
 case class QueryResultWriter(
   queryId: UUID,
-  results: KyselyTulosRepository,
+  results: QueryResultsRepository,
 ) {
   var files: mutable.Queue[String] = mutable.Queue[String]()
 

@@ -1,13 +1,13 @@
-package fi.oph.koski.kyselyt
+package fi.oph.koski.queuedqueries
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schedule.{IntervalSchedule, Scheduler}
 import org.json4s.JValue
 
-class KyselyCleanupScheduler(application: KoskiApplication) extends Logging {
-  val kyselyt: KyselyService = application.kyselyService
-  lazy val isQueryWorker: Boolean = KyselyUtils.isQueryWorker(application)
+class QueryCleanupScheduler(application: KoskiApplication) extends Logging {
+  val kyselyt: QueryService = application.kyselyService
+  lazy val isQueryWorker: Boolean = QueryUtils.isQueryWorker(application)
 
   def scheduler: Option[Scheduler] = {
     if (isQueryWorker) {

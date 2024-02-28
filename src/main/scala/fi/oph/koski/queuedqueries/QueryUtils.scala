@@ -1,10 +1,10 @@
-package fi.oph.koski.kyselyt
+package fi.oph.koski.queuedqueries
 
 import fi.oph.koski.config.{Environment, KoskiApplication}
 import software.amazon.awssdk.services.rds.RdsClient
 import scala.jdk.CollectionConverters._
 
-object KyselyUtils {
+object QueryUtils {
   def isQueryWorker(application: KoskiApplication): Boolean = {
     val instanceAz = application.ecsMetadata.availabilityZone
     val databaseAz = getDatabaseAz(application, application.config.getString("kyselyt.readDatabase"))

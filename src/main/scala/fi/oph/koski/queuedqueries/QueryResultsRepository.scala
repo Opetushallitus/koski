@@ -1,4 +1,4 @@
-package fi.oph.koski.kyselyt
+package fi.oph.koski.queuedqueries
 
 import com.typesafe.config.Config
 import fi.oph.koski.config.Environment
@@ -18,7 +18,7 @@ import java.time.Duration
 import java.util.UUID
 import scala.jdk.CollectionConverters._
 
-class KyselyTulosRepository(config: Config) extends Logging {
+class QueryResultsRepository(config: Config) extends Logging {
   val useAWS = Environment.isServerEnvironment(config)
   lazy val region: Region = Region.of(config.getString("kyselyt.s3.region"))
   lazy val bucketName: String = config.getString("kyselyt.s3.bucket")
