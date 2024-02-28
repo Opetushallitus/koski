@@ -63,8 +63,10 @@ object Lukio2019OppiaineRahoitusmuodonMukaan extends DatabaseConverters {
         osasuoritus.koulutusmoduuli_koodiarvo,
         osasuoritus.koulutusmoduuli_nimi,
         osasuoritus.arviointi_paiva,
+        osasuoritus.suorituksen_tyyppi osasuorituksen_tyyppi,
         aikajakso.opintojen_rahoitus,
-        osasuoritus.koulutusmoduuli_laajuus_arvo
+        osasuoritus.koulutusmoduuli_laajuus_arvo,
+        paatason_suoritus.oppimaara_koodiarvo
       from #${s.name}.r_paatason_suoritus paatason_suoritus
         join #${s.name}.r_osasuoritus osasuoritus on paatason_suoritus.paatason_suoritus_id = osasuoritus.paatason_suoritus_id
         join #${s.name}.r_opiskeluoikeus opiskeluoikeus on paatason_suoritus.opiskeluoikeus_oid = opiskeluoikeus.opiskeluoikeus_oid
@@ -77,11 +79,6 @@ object Lukio2019OppiaineRahoitusmuodonMukaan extends DatabaseConverters {
             osasuoritus.tunnustettu = false
             or
             tunnustettu_rahoituksen_piirissa
-          )
-          and (
-            osasuoritus.koulutusmoduuli_kurssin_tyyppi = 'pakollinen'
-            or
-            (koulutusmoduuli_kurssin_tyyppi = 'syventava' and koulutusmoduuli_paikallinen = false)
           )
     """
 

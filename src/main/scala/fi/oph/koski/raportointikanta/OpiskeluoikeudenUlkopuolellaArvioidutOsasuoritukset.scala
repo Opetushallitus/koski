@@ -12,7 +12,8 @@ object OpiskeluoikeudenUlkopuolellaArvioidutOsasuoritukset {
         osasuoritus.osasuoritus_id,
         osasuoritus.arviointi_paiva osasuorituksen_arviointi_paiva,
         osasuoritus.suorituksen_tyyppi osasuorituksen_tyyppi,
-        paatason_suoritus.suorituksen_tyyppi paatason_suorituksen_tyyppi
+        paatason_suoritus.suorituksen_tyyppi paatason_suorituksen_tyyppi,
+        paatason_suoritus.oppimaara_koodiarvo
       from #${s.name}.r_opiskeluoikeus opiskeluoikeus
         join #${s.name}.r_osasuoritus osasuoritus on osasuoritus.opiskeluoikeus_oid = opiskeluoikeus.opiskeluoikeus_oid
           and (
