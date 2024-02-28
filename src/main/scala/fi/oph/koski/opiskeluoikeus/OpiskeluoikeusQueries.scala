@@ -103,7 +103,7 @@ object OpiskeluoikeusQueryContext {
   }
 
   private type OpiskeluoikeusQueryRows = (KoskiOpiskeluoikeusRow, HenkilöRow, Option[HenkilöRow])
-  private val groupByPerson: Observable[OpiskeluoikeusQueryRows] => Observable[List[OpiskeluoikeusQueryRows]] = {
+  val groupByPerson: Observable[OpiskeluoikeusQueryRows] => Observable[List[OpiskeluoikeusQueryRows]] = {
     rows => rows.tumblingBuffer(rows.map(masterOid).distinctUntilChanged.drop(1)).map(_.toList)
   }
 }

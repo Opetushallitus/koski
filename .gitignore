@@ -45,3 +45,4 @@ valpas-web/test/download/
 scripts/opiskeluoikeushistoria-debug/hotfix*.json
 scripts/opiskeluoikeushistoria-debug/dump.json
 scripts/db-schema-docs/bin/*.jar
+localstack-volume/

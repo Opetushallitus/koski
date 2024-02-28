@@ -24,12 +24,8 @@ trait QueryMethods extends DatabaseConverters {
 
   def defaultRetryIntervalMs: Long = 1000
 
-  def runDbSync[R](a: DBIOAction[R, NoStream, Nothing], allowNestedTransactions: Boolean = false, timeout: Duration = 60.seconds): R = {
-    if (!allowNestedTransactions && Thread.currentThread().getName.startsWith(Pools.databasePoolName)) {
-      throw new RuntimeException("Nested transaction detected! Don't call runDbSync in a nested manner, as it will cause deadlocks.")
-    }
-    Futures.await(db.run(a), atMost = timeout)
-  }
+  def runDbSync[R](a: DBIOAction[R, NoStream, Nothing], allowNestedTransactions: Boolean = false, timeout: Duration = 60.seconds): R =
+    QueryMethods.runDbSync(db, a, allowNestedTransactions, timeout)
 
   def streamingQuery[E, U, C[_]](query: Query[E, U, C]): Observable[U] = {
     // Note: it won't actually stream unless you use both `transactionally` and `fetchSize`. It'll collect all the data into memory.
@@ -61,4 +57,13 @@ trait QueryMethods extends DatabaseConverters {
         ) t
       ) t2
    """.as[String]).head
+}
+
+object QueryMethods {
+  def runDbSync[R](db: DB, a: DBIOAction[R, NoStream, Nothing], allowNestedTransactions: Boolean = false, timeout: Duration = 60.seconds): R = {
+    if (!allowNestedTransactions && Thread.currentThread().getName.startsWith(Pools.databasePoolName)) {
+      throw new RuntimeException("Nested transaction detected! Don't call runDbSync in a nested manner, as it will cause deadlocks.")
+    }
+    Futures.await(db.run(a), atMost = timeout)
+  }
 }

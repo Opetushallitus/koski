@@ -14,6 +14,7 @@ import fi.oph.koski.history.{KoskiOpiskeluoikeusHistoryRepository, YtrOpiskeluoi
 import fi.oph.koski.huoltaja.HuoltajaServiceVtj
 import fi.oph.koski.koodisto.{KoodistoCreator, KoodistoPalvelu, KoodistoViitePalvelu}
 import fi.oph.koski.koskiuser._
+import fi.oph.koski.queuedqueries.{QueryCleanupScheduler, QueryScheduler, QueryService}
 import fi.oph.koski.localization.{KoskiLocalizationConfig, LocalizationRepository}
 import fi.oph.koski.log.{AuditLog, Logging, TimedProxy}
 import fi.oph.koski.mydata.{MyDataRepository, MyDataService}
@@ -208,6 +209,10 @@ class KoskiApplication(
   lazy val healthMonitoring: HealthMonitoring = new HealthMonitoring()
   lazy val yoTodistusService: YoTodistusService = YoTodistusService(this)
   lazy val validationContext: ValidationTestContext = new ValidationTestContext(config)
+  lazy val kyselyService: QueryService = new QueryService(this)
+  lazy val kyselyScheduler: QueryScheduler = new QueryScheduler(this)
+  lazy val kyselyCleanupScheduler: QueryCleanupScheduler = new QueryCleanupScheduler(this)
+  lazy val ecsMetadata: ECSMetadataClient = new ECSMetadataClient()
 
   def init(): Future[Any] = {
     AuditLog.startHeartbeat()

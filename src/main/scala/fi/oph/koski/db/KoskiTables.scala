@@ -397,6 +397,34 @@ object KoskiTables {
     ) <> (PäivitettyOpiskeluoikeusRow.tupled, PäivitettyOpiskeluoikeusRow.unapply)
   }
 
+  class KyselyTable(tag: Tag) extends Table[KyselyRow] (tag, "kysely") {
+    val id = column[String]("id", O.PrimaryKey)
+    val userOid = column[String]("user_oid")
+    val session = column[JValue]("session")
+    val query = column[JValue]("query")
+    val state = column[String]("state")
+    val createdAt = column[Option[Timestamp]]("created_at")
+    val startedAt = column[Option[Timestamp]]("started_at")
+    val finishedAt = column[Option[Timestamp]]("finished_at")
+    val worker = column[Option[String]]("worker")
+    val resultFiles = column[Option[List[String]]]("result_files")
+    val error = column[Option[String]]("error")
+
+    def * : ProvenShape[KyselyRow] = (
+      id,
+      userOid,
+      session,
+      query,
+      state,
+      createdAt,
+      startedAt,
+      finishedAt,
+      worker,
+      resultFiles,
+      error
+    ) <> (KyselyRow.tupled, KyselyRow.unapply)
+  }
+
   val Preferences = TableQuery[PreferencesTable]
 
   val SuoritusJako = TableQuery[SuoritusjakoTable]
@@ -436,6 +464,8 @@ object KoskiTables {
   val PoistetutOpiskeluoikeudet = TableQuery[PoistettuOpiskeluoikeusTable]
 
   val PäivitetytOpiskeluoikeudet = TableQuery[PäivitettyOpiskeluoikeusTable]
+
+  val Kyselyt = TableQuery[KyselyTable]
 
   def KoskiOpiskeluOikeudetWithAccessCheck(implicit user: KoskiSpecificSession): Query[KoskiOpiskeluoikeusTable, KoskiOpiskeluoikeusRow, Seq] = {
     val query = if (user.hasGlobalReadAccess || user.hasGlobalKoulutusmuotoReadAccess) {
@@ -652,4 +682,18 @@ case class PäivitettyOpiskeluoikeusRow(
   opiskeluoikeusOid: Opiskeluoikeus.Oid,
   aikaleima: Timestamp,
   prosessoitu: Boolean = false,
+)
+
+case class KyselyRow(
+  id: String,
+  userOid: String,
+  session: JValue,
+  query: JValue,
+  state: String,
+  createdAt: Option[Timestamp] = None,
+  startedAt: Option[Timestamp] = None,
+  finishedAt: Option[Timestamp] = None,
+  worker: Option[String] = None,
+  resultFiles: Option[List[String]] = None,
+  error: Option[String] = None,
 )

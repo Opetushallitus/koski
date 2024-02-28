@@ -1,5 +1,5 @@
-date=2024-01-11 12:13:49+0200
-os=Mac OS X 14.2.1
+date=2024-02-28 10:17:49+0200
+os=Mac OS X 14.3.1
 schemaspy-version=6.2.2
 schemaspy-build=6.2.2.41 2023-03-25 21:30:30
 renderer=Viz.js 1.7.1 (Graphviz 2.40.1, Expat 2.1.0, Emscripten 1.37.9)
