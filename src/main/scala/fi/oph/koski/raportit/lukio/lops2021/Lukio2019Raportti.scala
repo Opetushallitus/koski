@@ -13,18 +13,15 @@ import java.time.LocalDate
 import scala.concurrent.Future
 import scala.concurrent.duration.DurationInt
 
+
+
 case class Lukio2019Raportti(repository: Lukio2019RaportitRepository, t: LocalizationReader) extends GlobalExecutionContext {
 
   private def isOppiaineenOppimäärä(päätasonSuoritus: RPäätasonSuoritusRow) = {
     päätasonSuoritus.suorituksenTyyppi == "lukionoppiaineenoppimaara"
   }
 
-  private def isOppiaine(osasuoritus: ROsasuoritusRow) = {
-    List(
-      "lukionoppiaine",
-      "lukionmuuopinto"
-    ).contains(osasuoritus.suorituksenTyyppi)
-  }
+
 
   def buildRaportti(
     oppilaitosOid: Organisaatio.Oid,
@@ -33,7 +30,7 @@ case class Lukio2019Raportti(repository: Lukio2019RaportitRepository, t: Localiz
     osasuoritustenAikarajaus: Boolean
   ): Seq[DynamicDataSheet] = {
     val rows = repository.suoritustiedot(oppilaitosOid, alku, loppu, osasuoritustenAikarajaus)
-    val oppiaineetJaOsasuoritukset = opetettavatOppiaineetJaNiidenKurssit(isOppiaineenOppimäärä, isOppiaine, rows, t)
+    val oppiaineetJaOsasuoritukset = opetettavatOppiaineetJaNiidenKurssit(isOppiaineenOppimäärä, repository.isOppiaine, rows, t)
 
     val oppiaineJaLisätiedotFuture = oppiaineJaLisätiedotSheet(rows, oppiaineetJaOsasuoritukset, alku, loppu)
     val osasuorituksetFuture = oppiaineKohtaisetSheetit(rows, oppiaineetJaOsasuoritukset)
@@ -121,6 +118,7 @@ case class Lukio2019Raportti(repository: Lukio2019RaportitRepository, t: Localiz
        suorituksenTyyppi = row.päätasonSuoritus.suorituksenTyyppi,
        suorituksenTila = row.päätasonSuoritus.vahvistusPäivä.fold(t.get("raportti-excel-default-value-kesken"))(_ => t.get("raportti-excel-default-value-valmis")),
        suorituksenVahvistuspäivä = row.päätasonSuoritus.vahvistusPäivä.map(_.toLocalDate),
+       suorituskieliKoodiarvo = row.päätasonSuoritus.suorituskieliKoodiarvo,
        oppimääräSuoritettu = oppimääräSuoritettu.getOrElse(false),
        läsnäolopäiviä_aikajakson_aikana = row.aikajaksot.filter(_.tila == "lasna").map(j => Aikajakso(j.alku.toLocalDate, Some(j.loppu.toLocalDate))).map(lengthInDaysInDateRange(_, alku, loppu)).sum,
        rahoitukset = row.aikajaksot.flatMap(_.opintojenRahoitus).mkString(","),
@@ -228,6 +226,7 @@ case class Lukio2019Raportti(repository: Lukio2019RaportitRepository, t: Localiz
       CompactColumn(t.get("raportti-excel-kolumni-suorituksenTyyppi"), comment = Some(t.get("raportti-excel-kolumni-suorituksenTyyppi-lukio-comment"))),
       CompactColumn(t.get("raportti-excel-kolumni-suorituksenTila"), comment = Some(t.get("raportti-excel-kolumni-suorituksenTila-lukio-comment"))),
       CompactColumn(t.get("raportti-excel-kolumni-suorituksenVahvistuspaiva"), comment = Some(t.get("raportti-excel-kolumni-suorituksenVahvistuspaiva-lukio-comment"))),
+      CompactColumn(t.get("raportti-excel-kolumni-suorituskieli")),
       CompactColumn(t.get("raportti-excel-kolumni-oppimääräSuoritettu"), comment = Some(t.get("raportti-excel-kolumni-oppimääräSuoritettu-lukio-comment"))),
       CompactColumn(t.get("raportti-excel-kolumni-läsnäolopäiviäAikajaksolla"), comment = Some(t.get("raportti-excel-kolumni-läsnäolopäiviäAikajaksolla-comment"))),
       CompactColumn(t.get("raportti-excel-kolumni-rahoitukset"), comment = Some(t.get("raportti-excel-kolumni-rahoitukset-lukio-comment"))),
@@ -285,6 +284,7 @@ case class Lukio2019RaporttiOppiaineetVälilehtiMuut(
   suorituksenTyyppi: String,
   suorituksenTila: String,
   suorituksenVahvistuspäivä: Option[LocalDate],
+  suorituskieliKoodiarvo: Option[String],
   oppimääräSuoritettu: Boolean,
   läsnäolopäiviä_aikajakson_aikana: Int,
   rahoitukset: String,
