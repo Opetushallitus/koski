@@ -12,13 +12,14 @@ import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, Logging}
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryContext
 import fi.oph.koski.queuedqueries.{QueryParameters, QueryResultWriter}
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, KoskiSchema, Opiskeluoikeus, Organisaatio}
+import fi.oph.koski.util.ChainingSyntax.chainingOps
 import fi.oph.scalaschema.annotation.EnumValue
 import org.json4s.JValue
 
 import java.sql.Timestamp
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import scala.util.Using
+import scala.util.{Try, Using}
 
 case class QueryOrganisaationOpiskeluoikeudetCsv(
   @EnumValue("organisaationOpiskeluoikeudet")
@@ -33,27 +34,21 @@ case class QueryOrganisaationOpiskeluoikeudetCsv(
 ) extends QueryParameters with DatabaseConverters with Logging {
 
   def run(application: KoskiApplication, writer: QueryResultWriter)(implicit user: KoskiSpecificSession): Either[String, Unit] = {
-    try {
-      val oppilaitosOids = application.organisaatioService.organisaationAlaisetOrganisaatiot(organisaatioOid.get)
-      fetchData(
-        application = application,
-        writer = writer,
-        oppilaitosOids = oppilaitosOids,
-      )
-      auditLog()
-      Right(())
-    } catch {
-      case t: Throwable =>
-        logger.error(t)("Kysely epäonnistui")
-        Left(t.getMessage)
-    }
+    val oppilaitosOids = application.organisaatioService.organisaationAlaisetOrganisaatiot(organisaatioOid.get)
+    fetchData(
+      application = application,
+      writer = writer,
+      oppilaitosOids = oppilaitosOids,
+    ).toEither
+      .tap(_ => auditLog())
+      .left.map(_.getMessage)
   }
 
   private def fetchData(
     application: KoskiApplication,
     writer: QueryResultWriter,
     oppilaitosOids: List[Organisaatio.Oid],
-  ): Unit = {
+  ): Try[Unit] = Using.Manager { use =>
     val db = application.replicaDatabase.db
 
     val filters = SQLHelpers.concatMany(
@@ -68,30 +63,27 @@ case class QueryOrganisaationOpiskeluoikeudetCsv(
       SQLHelpers.concat(sql"SELECT DISTINCT oppija_oid FROM opiskeluoikeus ", filters).as[(String)]
     )
 
-    Using.Manager { use =>
-      val opiskeluoikeusCsv = use(writer.createCsv[OpiskeluoikeusEntry]("opiskeluoikeus"))
+    val opiskeluoikeusCsv = use(writer.createCsv[OpiskeluoikeusEntry]("opiskeluoikeus"))
 
-      oppijaOids.foreach { application.henkilöRepository.findByOid(_, findMasterIfSlaveOid = true).map { henkilö =>
-        val henkilöFilter = SQLHelpers.concat(filters, sql"AND oppija_oid = ANY(${henkilö.kaikkiOidit})")
-        QueryMethods.runDbSync(
-          db,
-          SQLHelpers.concat(sql"SELECT data, oid, versionumero, aikaleima FROM opiskeluoikeus ", henkilöFilter).as[(JValue, String, Int, Timestamp)]
-        ).foreach { case (data, oid, versionumero, aikaleima) =>
-          val json = KoskiTables.KoskiOpiskeluoikeusTable.readAsJValue(data, oid, versionumero, aikaleima)
-          val foo = application.validatingAndResolvingExtractor.extract[Opiskeluoikeus](KoskiSchema.strictDeserialization)(json)
-          foo match {
-            case Right(oo: KoskeenTallennettavaOpiskeluoikeus) =>
-              opiskeluoikeusCsv.put(OpiskeluoikeusEntry(henkilö, oo))
-            case Right(oo: Opiskeluoikeus) =>
-              logger.warn(s"${oo.oid} does not deserialize to KoskeenTallennettavaOpiskeluoikeus")
-            case Left(errors) =>
-              logger.warn(s"Error deserializing opiskeluoikeus: ${errors}")
-          }
+    oppijaOids.foreach { application.henkilöRepository.findByOid(_, findMasterIfSlaveOid = true).map { henkilö =>
+      val henkilöFilter = SQLHelpers.concat(filters, sql"AND oppija_oid = ANY(${henkilö.kaikkiOidit})")
+      QueryMethods.runDbSync(
+        db,
+        SQLHelpers.concat(sql"SELECT data, oid, versionumero, aikaleima FROM opiskeluoikeus ", henkilöFilter).as[(JValue, String, Int, Timestamp)]
+      ).foreach { case (data, oid, versionumero, aikaleima) =>
+        val json = KoskiTables.KoskiOpiskeluoikeusTable.readAsJValue(data, oid, versionumero, aikaleima)
+        application.validatingAndResolvingExtractor.extract[Opiskeluoikeus](KoskiSchema.strictDeserialization)(json) match {
+          case Right(oo: KoskeenTallennettavaOpiskeluoikeus) =>
+            opiskeluoikeusCsv.put(OpiskeluoikeusEntry(henkilö, oo))
+          case Right(oo: Opiskeluoikeus) =>
+            logger.warn(s"${oo.oid} does not deserialize to KoskeenTallennettavaOpiskeluoikeus")
+          case Left(errors) =>
+            logger.warn(s"Error deserializing opiskeluoikeus: ${errors}")
         }
-      }}
+      }
+    }}
 
-      opiskeluoikeusCsv.save()
-    }
+    opiskeluoikeusCsv.save()
   }
 
   def queryAllowed(application: KoskiApplication)(implicit user: KoskiSpecificSession): Boolean =

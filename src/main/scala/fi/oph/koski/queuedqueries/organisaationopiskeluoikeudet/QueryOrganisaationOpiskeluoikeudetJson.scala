@@ -6,18 +6,20 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.db.{DatabaseConverters, KoskiTables, QueryMethods, SQLHelpers}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
-import fi.oph.koski.queuedqueries.{QueryParameters, QueryResultWriter}
 import fi.oph.koski.log.KoskiAuditLogMessageField.hakuEhto
 import fi.oph.koski.log.KoskiOperation.OPISKELUOIKEUS_HAKU
 import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, Logging}
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryContext
+import fi.oph.koski.queuedqueries.{QueryParameters, QueryResultWriter}
 import fi.oph.koski.schema.{KoskiSchema, Opiskeluoikeus, Oppija, Organisaatio}
+import fi.oph.koski.util.ChainingSyntax.chainingOps
 import fi.oph.scalaschema.annotation.EnumValue
 import org.json4s.JValue
 
 import java.sql.Timestamp
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import scala.util.Try
 
 case class QueryOrganisaationOpiskeluoikeudetJson(
   @EnumValue("organisaationOpiskeluoikeudet")
@@ -32,27 +34,21 @@ case class QueryOrganisaationOpiskeluoikeudetJson(
 ) extends QueryParameters with DatabaseConverters with Logging {
 
   def run(application: KoskiApplication, writer: QueryResultWriter)(implicit user: KoskiSpecificSession): Either[String, Unit] = {
-    try {
-      val oppilaitosOids = application.organisaatioService.organisaationAlaisetOrganisaatiot(organisaatioOid.get)
-      fetchData(
-        application = application,
-        writer = writer,
-        oppilaitosOids = oppilaitosOids,
-      )
-      auditLog()
-      Right(())
-    } catch {
-      case t: Throwable =>
-        logger.error(t)("Kysely epäonnistui")
-        Left(t.getMessage)
-    }
+    val oppilaitosOids = application.organisaatioService.organisaationAlaisetOrganisaatiot(organisaatioOid.get)
+    fetchData(
+      application = application,
+      writer = writer,
+      oppilaitosOids = oppilaitosOids,
+    ).toEither
+      .tap(_ => auditLog())
+      .left.map(_.getMessage)
   }
 
   private def fetchData(
     application: KoskiApplication,
     writer: QueryResultWriter,
     oppilaitosOids: List[Organisaatio.Oid],
-  )(implicit user: KoskiSpecificSession): Unit = {
+  ): Try[Unit] = Try {
     val db = application.replicaDatabase.db
 
     val filters = SQLHelpers.concatMany(
