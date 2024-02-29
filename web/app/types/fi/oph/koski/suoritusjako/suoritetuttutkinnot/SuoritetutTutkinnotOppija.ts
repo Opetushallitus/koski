@@ -1,3 +1,4 @@
+import { Jakolinkki } from '../common/Jakolinkki'
 import { Henkilo } from './Henkilo'
 import { SuoritetutTutkinnotOpiskeluoikeus } from './SuoritetutTutkinnotOpiskeluoikeus'
 
@@ -8,11 +9,13 @@ import { SuoritetutTutkinnotOpiskeluoikeus } from './SuoritetutTutkinnotOpiskelu
  */
 export type SuoritetutTutkinnotOppija = {
   $class: 'fi.oph.koski.suoritusjako.suoritetuttutkinnot.SuoritetutTutkinnotOppija'
+  jakolinkki?: Jakolinkki
   henkilö: Henkilo
   opiskeluoikeudet: Array<SuoritetutTutkinnotOpiskeluoikeus>
 }
 
 export const SuoritetutTutkinnotOppija = (o: {
+  jakolinkki?: Jakolinkki
   henkilö: Henkilo
   opiskeluoikeudet?: Array<SuoritetutTutkinnotOpiskeluoikeus>
 }): SuoritetutTutkinnotOppija => ({

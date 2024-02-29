@@ -24,6 +24,7 @@ class SuoritusjakoServlet(implicit val application: KoskiApplication) extends Ed
       renderEither[EditorModel](
         SuoritusjakoSecret.validate(request.secret)
           .flatMap(secret => application.suoritusjakoService.get(secret)(koskiSession))
+          .map(_.map(_.toOppija))
           .map(oppija => OmatTiedotEditorModel.toEditorModel(userOppija = oppija, näytettäväOppija = oppija)(application, koskiSession))
       )
     })()

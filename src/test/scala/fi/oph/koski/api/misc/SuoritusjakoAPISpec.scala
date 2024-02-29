@@ -8,13 +8,17 @@ import fi.oph.koski.log.{AccessLogTester, AuditLogTester}
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.SuoritusjakoReadRequest
-import fi.oph.koski.suoritusjako.{Suoritusjako, SuoritusjakoRequest}
+import fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotOppija
+import fi.oph.koski.suoritusjako.common.Jakolinkki
+import fi.oph.koski.suoritusjako.suoritetuttutkinnot.SuoritetutTutkinnotOppija
+import fi.oph.koski.suoritusjako.{OppijaJakolinkillä, Suoritusjako, SuoritusjakoRequest}
 import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
 import java.nio.charset.StandardCharsets
+import java.time.LocalDate
 import scala.collection.mutable
 
 class SuoritusjakoAPISpec extends AnyFreeSpec with SuoritusjakoTestMethods with Matchers with OpiskeluoikeusTestMethodsAmmatillinen with BeforeAndAfterAll {
@@ -117,7 +121,7 @@ class SuoritusjakoAPISpec extends AnyFreeSpec with SuoritusjakoTestMethods with 
           val bodyString = new String(response.bodyBytes, StandardCharsets.UTF_8)
 
           implicit val context: ExtractionContext = strictDeserialization
-          val oppija = SchemaValidatingExtractor.extract[Oppija](bodyString).right.get
+          val oppija = SchemaValidatingExtractor.extract[OppijaJakolinkillä](bodyString).right.get
 
           val henkilö = oppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot]
 
@@ -130,6 +134,10 @@ class SuoritusjakoAPISpec extends AnyFreeSpec with SuoritusjakoTestMethods with 
           oo.suoritukset should have length 1
 
           oo.suoritukset(0).koulutusmoduuli.tunniste.koodiarvo should be(Koulutusmoduuli.musiikkiLaajaOppimääräPerusopinnot.tunniste.koodiarvo)
+
+          val jakolinkki = oppija.jakolinkki
+
+          jakolinkki should be(Some(Jakolinkki(LocalDate.now.plusMonths(6))))
         }
       }
 
@@ -166,16 +174,28 @@ class SuoritusjakoAPISpec extends AnyFreeSpec with SuoritusjakoTestMethods with 
         }
       }
 
-      "onnistuu post-requestilla suoritetut tutkinnot ja tuottaa auditlog-merkinnän" in {
+      "onnistuu post-requestilla suoritetut tutkinnot, sisältää viimeisen voimassaolopäivän ja tuottaa auditlog-merkinnän" in {
         postSuoritetutTutkinnotPublicAPI(secrets("suoritetut tutkinnot")) {
           verifyResponseStatusOk()
+
+          val bodyString = new String(response.bodyBytes, StandardCharsets.UTF_8)
+          implicit val context: ExtractionContext = strictDeserialization
+          val oppija = SchemaValidatingExtractor.extract[SuoritetutTutkinnotOppija](bodyString).right.get
+          oppija.jakolinkki should be(Some(Jakolinkki(LocalDate.now.plusMonths(6))))
+
           AuditLogTester.verifyAuditLogMessage(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN_SUORITETUT_TUTKINNOT"))
         }
       }
 
-      "onnistuu post-requestilla aktiiviset ja päättyneet opinnot ja tuottaa auditlog-merkinnän" in {
+      "onnistuu post-requestilla aktiiviset ja päättyneet opinnot, sisältää viimeisen voimassaolopäivän ja tuottaa auditlog-merkinnän" in {
         postAktiivisetJaPäättyneetOpinnotPublicAPI(secrets("aktiiviset ja päättyneet opinnot")) {
           verifyResponseStatusOk()
+
+          val bodyString = new String(response.bodyBytes, StandardCharsets.UTF_8)
+          implicit val context: ExtractionContext = strictDeserialization
+          val oppija = SchemaValidatingExtractor.extract[AktiivisetJaPäättyneetOpinnotOppija](bodyString).right.get
+          oppija.jakolinkki should be(Some(Jakolinkki(LocalDate.now.plusMonths(6))))
+
           AuditLogTester.verifyAuditLogMessage(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN_AKTIIVISET_JA_PAATTYNEET_OPINNOT"))
         }
       }
