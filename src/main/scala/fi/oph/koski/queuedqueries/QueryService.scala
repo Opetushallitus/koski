@@ -55,8 +55,8 @@ class QueryService(application: KoskiApplication) extends Logging {
               queries.setFailed(query.queryId, error)
             },
             { _ =>
-              logger.info(s"${query.name} completed with ${writer.files.size} result files")
-              queries.setComplete(query.queryId, writer.files.toList)
+              logger.info(s"${query.name} completed with ${writer.objectKeys.size} result files")
+              queries.setComplete(query.queryId, writer.objectKeys.toList)
             }
           )
         } catch {

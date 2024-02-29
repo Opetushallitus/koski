@@ -1,10 +1,12 @@
 package fi.oph.koski.queuedqueries
 
 import fi.oph.koski.json.JsonSerializer
-import org.json4s.JValue
+import fi.oph.koski.util.CsvFormatter
+import software.amazon.awssdk.core.internal.sync.FileContentStreamProvider
 import software.amazon.awssdk.http.ContentStreamProvider
 
-import java.io.InputStream
+import java.io.{BufferedOutputStream, FileOutputStream, InputStream}
+import java.nio.file.{Files, Path}
 import java.util.UUID
 import scala.collection.mutable
 import scala.reflect.runtime.universe.TypeTag
@@ -13,12 +15,12 @@ case class QueryResultWriter(
   queryId: UUID,
   results: QueryResultsRepository,
 ) {
-  var files: mutable.Queue[String] = mutable.Queue[String]()
+  var objectKeys: mutable.Queue[String] = mutable.Queue[String]()
 
   def putJson(name: String, json: String): Unit =
     results.put(
       queryId = queryId,
-      name = newFile(name, "json"),
+      name = newObjectKey(name, "json"),
       provider = StringStreamProvider(json),
       contentType = "application/json",
     )
@@ -26,14 +28,76 @@ case class QueryResultWriter(
   def putJson[T: TypeTag](name: String, obj: T): Unit =
     putJson(name, JsonSerializer.writeWithRoot(obj))
 
-  private def newFile(name: String, ext: String): String = {
-    val filename = s"$name.$ext"
-    if (files.contains(filename)) {
-      throw new RuntimeException(s"$filename already exists")
+  def createCsv[T <: Product](name: String): CsvStream[T] =
+    new CsvStream[T](s"$queryId-$name", provider => results.put(
+      queryId = queryId,
+      name = newObjectKey(name, "csv"),
+      provider = provider,
+      contentType = "text/csv",
+    ))
+
+  private def newObjectKey(name: String, ext: String): String = {
+    val objectKey = s"$name.$ext"
+    if (objectKeys.contains(objectKey)) {
+      throw new RuntimeException(s"$objectKey already exists")
     }
-    files += filename
-    filename
+    objectKeys += objectKey
+    objectKey
   }
+}
+
+class CsvStream[T <: Product](name: String, uploadWith: (ContentStreamProvider) => Unit) extends AutoCloseable {
+  val temporaryFile: Path = Files.createTempFile(s"$name-", ".csv")
+  private val fileStream: FileOutputStream = new FileOutputStream(temporaryFile.toFile)
+  private val outputStream: BufferedOutputStream = new BufferedOutputStream(fileStream)
+  private var headerWritten: Boolean = false
+
+  def put(data: T): Unit = {
+    if (!headerWritten) {
+      headerWritten = true
+      write(headerOf(data))
+    }
+    write(recordOf(data))
+  }
+
+  def put(data: Seq[T]): Unit =
+    data.foreach { put }
+
+  def close(): Unit = {
+    closeIntermediateStreams()
+    deleteTemporaryFile()
+  }
+
+  def save(): Unit = {
+    closeIntermediateStreams()
+    if (headerWritten) {
+      uploadWith(provider)
+    }
+    deleteTemporaryFile()
+  }
+
+  def provider: ContentStreamProvider = new FileContentStreamProvider(temporaryFile)
+
+  private def closeIntermediateStreams(): Unit = {
+    outputStream.close()
+    fileStream.close()
+  }
+
+  private def deleteTemporaryFile(): Unit = {
+    if (Files.exists(temporaryFile)) {
+      Files.delete(temporaryFile)
+    }
+  }
+
+  private def write(data: String): Unit =
+
+    outputStream.write(data.getBytes("UTF-8"))
+
+  private def recordOf(data: T): String =
+    CsvFormatter.formatRecord(data.productIterator.to)
+
+  private def headerOf(data: T): String =
+    CsvFormatter.formatRecord(data.getClass.getDeclaredFields.map(_.getName))
 }
 
 case class StringStreamProvider(content: String) extends ContentStreamProvider {
