@@ -346,10 +346,7 @@ describe('Raporttien luominen', function () {
     )
 
     it('Oletuksena tämä päivä', function () {
-      const today = new Date()
-      const todayStr = `${today.getDate()}.${
-        today.getMonth() + 1
-      }.${today.getFullYear()}`
+      const todayStr = moment().format('D.M.YYYY')
       expect(page.valitutPäivät()).to.deep.equal([todayStr])
     })
 
