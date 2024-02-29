@@ -6,15 +6,9 @@ describe('Perusopetus', function () {
   var addOppija = AddOppijaPage()
   var opiskeluoikeus = OpiskeluoikeusDialog()
   var editor = opinnot.opiskeluoikeusEditor()
-  var currentDate = new Date()
+  var currentMoment = moment()
   function currentDatePlusYears(years) {
-    return (
-      currentDate.getDate() +
-      '.' +
-      (1 + currentDate.getMonth()) +
-      '.' +
-      (currentDate.getFullYear() + years)
-    )
+    return currentMoment.clone().add(years, 'years').format('D.M.YYYY')
   }
   var currentDateStr = currentDatePlusYears(0)
   var date2017Str = '1.1.2017'
@@ -110,12 +104,7 @@ describe('Perusopetus', function () {
           })
 
           describe('Kun vahvistus on tulevaisuudessa', function () {
-            var future =
-              new Date().getDate() +
-              '.' +
-              (1 + new Date().getMonth()) +
-              '.' +
-              (new Date().getFullYear() + 1)
+            var future = moment().add(1, 'years').format('D.M.YYYY')
             before(
               editor.edit,
               tilaJaVahvistus.merkitseValmiiksi,

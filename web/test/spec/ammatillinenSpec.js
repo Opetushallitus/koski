@@ -2526,13 +2526,7 @@ describe('Ammatillinen koulutus', function () {
             before(editor.saveChanges, opinnot.expandAll)
 
             it('näkyy oikein', function () {
-              const date = new Date()
-              const arviointipäivä =
-                date.getDate() +
-                '.' +
-                (date.getMonth() + 1) +
-                '.' +
-                date.getFullYear()
+              const arviointipäivä = moment().format('D.M.YYYY')
               expect(arviointi().getText()).to.equal(
                 'Arviointi Arvosana 3\nArviointipäivä ' +
                   arviointipäivä +

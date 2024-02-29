@@ -34,11 +34,7 @@ describe('EB-tutkinto', function () {
         addOppija.selectOppilaitos('Helsingin eurooppalainen koulu'),
         addOppija.selectOpiskeluoikeudenTyyppi('EB-tutkinto'),
         addOppija.selectAloituspäivä(
-          new Date().getDate() +
-            '.' +
-            (1 + new Date().getMonth()) +
-            '.' +
-            (new Date().getFullYear() - 1)
+          moment().subtract(1, 'years').format('D.M.YYYY')
         )
       )
 

@@ -587,17 +587,7 @@ describe('Lukiokoulutus2019', function () {
       })
 
       describe('valmistumistieto poistettaessa', function () {
-        const currentDate = new Date()
-        function currentDatePlusYears(years) {
-          return (
-            currentDate.getDate() +
-            '.' +
-            (1 + currentDate.getMonth()) +
-            '.' +
-            (currentDate.getFullYear() + years)
-          )
-        }
-        const currentDateStr = currentDatePlusYears(0)
+        const currentDateStr = moment().format('D.M.YYYY')
 
         before(editor.edit, editor.property('tila').removeItem(0))
 
