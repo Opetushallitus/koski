@@ -1,8 +1,9 @@
 package fi.oph.koski.queuedqueries.organisaationopiskeluoikeudet
 
 import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.db.{KoskiOpiskeluoikeusRow, KoskiTables}
 import fi.oph.koski.queuedqueries.QueryResultWriter
-import fi.oph.koski.schema.{Oppija, Organisaatio}
+import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, KoskiSchema, Oppija, Organisaatio}
 import fi.oph.scalaschema.annotation.EnumValue
 
 import java.time.LocalDate
@@ -31,8 +32,18 @@ case class QueryOrganisaationOpiskeluoikeudetJson(
     forEachOpiskeluoikeus(application, filters, oppijaOids) { (henkilö, opiskeluoikeudet) =>
       writer.putJson(henkilö.oid, Oppija(
         henkilö = application.henkilöRepository.oppijaHenkilöToTäydellisetHenkilötiedot(henkilö),
-        opiskeluoikeudet = opiskeluoikeudet,
+        opiskeluoikeudet = opiskeluoikeudet.flatMap(toKoskeenTallennettavaOpiskeluoikeus(application)),
       ))
+    }
+  }
+
+  private def toKoskeenTallennettavaOpiskeluoikeus(application: KoskiApplication)(row: KoskiOpiskeluoikeusRow): Option[KoskeenTallennettavaOpiskeluoikeus] = {
+    val json = KoskiTables.KoskiOpiskeluoikeusTable.readAsJValue(row.data, row.oid, row.versionumero, row.aikaleima)
+    application.validatingAndResolvingExtractor.extract[KoskeenTallennettavaOpiskeluoikeus](KoskiSchema.strictDeserialization)(json) match {
+      case Right(oo: KoskeenTallennettavaOpiskeluoikeus) => Some(oo)
+      case Left(errors) =>
+        logger.warn(s"Error deserializing opiskeluoikeus: ${errors}")
+        None
     }
   }
 }

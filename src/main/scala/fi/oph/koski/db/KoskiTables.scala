@@ -11,6 +11,7 @@ import fi.oph.koski.schema.{FilterNonAnnotationableSensitiveData, _}
 import fi.oph.scalaschema.extraction.ValidationError
 import fi.oph.scalaschema.{Serializer, _}
 import org.json4s._
+import slick.jdbc.GetResult
 import slick.lifted.ProvenShape
 
 object KoskiTables {
@@ -569,6 +570,31 @@ case class KoskiOpiskeluoikeusRow(id: Int,
       case Left(errors) =>
         throw new MappingException(s"Error deserializing opiskeluoikeus ${oid} for oppija ${oppijaOid}: ${errors}")
     }
+  }
+}
+
+object KoskiOpiskeluoikeusRowImplicits {
+  implicit val getKoskiOpiskeluoikeusRow: GetResult[KoskiOpiskeluoikeusRow] = GetResult { r =>
+    KoskiOpiskeluoikeusRow(
+      id = r.rs.getInt("id"),
+      oid = r.rs.getString("oid"),
+      versionumero = r.rs.getInt("versionumero"),
+      aikaleima = r.rs.getTimestamp("aikaleima"),
+      oppijaOid = r.rs.getString("oppija_oid"),
+      oppilaitosOid = r.rs.getString("oppilaitos_oid"),
+      koulutustoimijaOid = Option(r.rs.getString("koulutustoimija_oid")),
+      sisältäväOpiskeluoikeusOid = Option(r.rs.getString("sisaltava_opiskeluoikeus_oid")),
+      sisältäväOpiskeluoikeusOppilaitosOid = Option(r.rs.getString("sisaltava_opiskeluoikeus_oppilaitos_oid")),
+      data = r.getJson("data"),
+      luokka = Option(r.rs.getString("luokka")),
+      mitätöity = r.rs.getBoolean("mitatoity"),
+      koulutusmuoto = r.rs.getString("koulutusmuoto"),
+      alkamispäivä = r.rs.getDate("alkamispaiva"),
+      päättymispäivä = Option(r.rs.getDate("paattymispaiva")),
+      suoritusjakoTehty = r.rs.getBoolean("suoritusjako_tehty_rajapaivan_jalkeen"),
+      suoritustyypit = r.getArray("suoritustyypit").toList,
+      poistettu = r.rs.getBoolean("poistettu"),
+    )
   }
 }
 

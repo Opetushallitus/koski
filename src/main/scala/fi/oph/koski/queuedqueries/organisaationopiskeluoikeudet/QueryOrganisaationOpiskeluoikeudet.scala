@@ -3,6 +3,7 @@ package fi.oph.koski.queuedqueries.organisaationopiskeluoikeudet
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api.actionBasedSQLInterpolation
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
+import fi.oph.koski.db.KoskiOpiskeluoikeusRowImplicits._
 import fi.oph.koski.db._
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
@@ -107,26 +108,15 @@ trait QueryOrganisaationOpiskeluoikeudet extends QueryParameters with DatabaseCo
   protected def forEachOpiskeluoikeus(
     application: KoskiApplication,
     filters: SQLActionBuilder,
-    oppijaOids: Seq[String])(f: (LaajatOppijaHenkilöTiedot, Seq[KoskeenTallennettavaOpiskeluoikeus]) => Unit,
+    oppijaOids: Seq[String])(f: (LaajatOppijaHenkilöTiedot, Seq[KoskiOpiskeluoikeusRow]) => Unit,
   ): Unit =
     oppijaOids.foreach {
       application.henkilöRepository.findByOid(_, findMasterIfSlaveOid = true).map { henkilö =>
         val henkilöFilter = SQLHelpers.concat(filters, sql"AND oppija_oid = ANY(${henkilö.kaikkiOidit})")
         val opiskeluoikeudet = QueryMethods.runDbSync(
           getDb(application),
-          SQLHelpers.concat(sql"SELECT data, oid, versionumero, aikaleima FROM opiskeluoikeus ", henkilöFilter).as[(JValue, String, Int, Timestamp)]
-        ).flatMap { case (data, oid, versionumero, aikaleima) =>
-          val json = KoskiTables.KoskiOpiskeluoikeusTable.readAsJValue(data, oid, versionumero, aikaleima)
-          application.validatingAndResolvingExtractor.extract[Opiskeluoikeus](KoskiSchema.strictDeserialization)(json) match {
-            case Right(oo: KoskeenTallennettavaOpiskeluoikeus) => Some(oo)
-            case Right(oo: Opiskeluoikeus) =>
-              logger.warn(s"${oo.oid} does not deserialize to KoskeenTallennettavaOpiskeluoikeus")
-              None
-            case Left(errors) =>
-              logger.warn(s"Error deserializing opiskeluoikeus: ${errors}")
-              None
-          }
-        }
+          SQLHelpers.concat(sql"SELECT * FROM opiskeluoikeus ", henkilöFilter).as[KoskiOpiskeluoikeusRow]
+        )
         f(henkilö, opiskeluoikeudet)
       }
     }
