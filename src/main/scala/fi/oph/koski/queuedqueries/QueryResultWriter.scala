@@ -97,7 +97,12 @@ class CsvStream[T <: Product](name: String, uploadWith: (ContentStreamProvider) 
     CsvFormatter.formatRecord(data.productIterator.to)
 
   private def headerOf(data: T): String =
-    CsvFormatter.formatRecord(data.getClass.getDeclaredFields.map(_.getName))
+    CsvFormatter.formatRecord(
+      data.getClass
+        .getDeclaredFields
+        .map(_.getName)
+        .map(CsvFormatter.snakecasify)
+    )
 }
 
 case class StringStreamProvider(content: String) extends ContentStreamProvider {

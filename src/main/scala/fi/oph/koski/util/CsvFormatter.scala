@@ -42,4 +42,21 @@ object CsvFormatter {
 
   def requiresQuotes(field: String): Boolean =
     List("\"", "\\", ",", "\n").exists(field.contains)
+
+  def snakecasify(value: String): String = {
+    val replacements = Map(
+      'ä' -> 'a',
+      'ö' -> 'o',
+      'å' -> 'a',
+      ' ' -> '_',
+    )
+    val s = value
+      .foldLeft(("", false)) { case ((out, prevUpper), char) =>
+        val upper = char.isUpper
+        (s"$out${if (upper && !prevUpper) "_" else ""}${char}", upper)
+      }
+      ._1
+      .toLowerCase
+    replacements.foldLeft(s) { case (in, (from, to)) => in.replace(from, to) }
+  }
 }
