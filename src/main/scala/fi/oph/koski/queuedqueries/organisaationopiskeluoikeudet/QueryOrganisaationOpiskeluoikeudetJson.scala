@@ -19,7 +19,7 @@ import java.sql.Timestamp
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-case class QueryOrganisaationOpiskeluoikeudet(
+case class QueryOrganisaationOpiskeluoikeudetJson(
   @EnumValue("organisaationOpiskeluoikeudet")
   `type`: String = "organisaationOpiskeluoikeudet",
   @EnumValue("application/json")
@@ -96,7 +96,7 @@ case class QueryOrganisaationOpiskeluoikeudet(
         && koulutusmuoto.forall(user.allowedOpiskeluoikeusTyypit.contains)
       )
 
-  override def withDefaults(implicit user: KoskiSpecificSession): Either[HttpStatus, QueryOrganisaationOpiskeluoikeudet] =
+  override def withDefaults(implicit user: KoskiSpecificSession): Either[HttpStatus, QueryOrganisaationOpiskeluoikeudetJson] =
     if (organisaatioOid.isEmpty) {
       defaultOrganisaatio.map(oid => copy(organisaatioOid = Some(oid)))
     } else {
