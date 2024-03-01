@@ -214,6 +214,52 @@ trait KoskeenTallennettavaOpiskeluoikeus extends Opiskeluoikeus {
       alkamispäivä.filter(_.isAfter(today)).getOrElse(today)
     )
   }
+
+  def invalidated: KoskeenTallennettavaOpiskeluoikeus =
+    invalidated(LocalDate.now())
+
+  def invalidated(mitätöintipäivä: LocalDate): KoskeenTallennettavaOpiskeluoikeus = {
+    val localDateOrdering: Ordering[LocalDate] = Ordering.by(_.toEpochDay)
+    val viimeisinTila = tila.opiskeluoikeusjaksot.maxBy(f => f.alku)(localDateOrdering).alku
+    val mitatointiPvm = List(viimeisinTila, mitätöintipäivä).max(localDateOrdering)
+
+    val mitätöityKoodistokoodiviite = Koodistokoodiviite("mitatoity", koodistoUri = "koskiopiskeluoikeudentila")
+
+    val uusiTila = tila match {
+      case t: AmmatillinenOpiskeluoikeudenTila =>
+        t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ AmmatillinenOpiskeluoikeusjakso(mitatointiPvm, mitätöityKoodistokoodiviite))
+      case t: NuortenPerusopetuksenOpiskeluoikeudenTila =>
+        t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ NuortenPerusopetuksenOpiskeluoikeusjakso(mitatointiPvm, mitätöityKoodistokoodiviite))
+      case t: PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenTila =>
+        t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ PerusopetukseenValmistavanOpetuksenOpiskeluoikeusJakso(mitatointiPvm, mitätöityKoodistokoodiviite))
+      case t: AikuistenPerusopetuksenOpiskeluoikeudenTila =>
+        t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ AikuistenPerusopetuksenOpiskeluoikeusjakso(mitatointiPvm, mitätöityKoodistokoodiviite))
+      case t: LukionOpiskeluoikeudenTila =>
+        t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ LukionOpiskeluoikeusjakso(mitatointiPvm, mitätöityKoodistokoodiviite))
+      case t: DIAOpiskeluoikeudenTila =>
+        t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ DIAOpiskeluoikeusjakso(mitatointiPvm, mitätöityKoodistokoodiviite))
+      case t: InternationalSchoolOpiskeluoikeudenTila =>
+        t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ InternationalSchoolOpiskeluoikeusjakso(mitatointiPvm, mitätöityKoodistokoodiviite))
+      case t: VapaanSivistystyönOpiskeluoikeudenTila =>
+        t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ OppivelvollisilleSuunnattuVapaanSivistystyönOpiskeluoikeusjakso(mitatointiPvm, mitätöityKoodistokoodiviite))
+      case t: TutkintokoulutukseenValmentavanOpiskeluoikeudenTila =>
+        t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ TutkintokoulutukseenValmentavanOpiskeluoikeusjakso(mitatointiPvm, mitätöityKoodistokoodiviite))
+      case t: KorkeakoulunOpiskeluoikeudenTila =>
+        throw new InternalError("Ylioppilastutkinnon opiskeluoikeuksia ei voi mitätöidä")
+      case t: YlioppilastutkinnonOpiskeluoikeudenTila =>
+        throw new InternalError("Ylioppilastutkinnon opiskeluoikeuksia ei voi mitätöidä")
+      case t: EBOpiskeluoikeudenTila =>
+        t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ EBOpiskeluoikeusjakso(mitatointiPvm, mitätöityKoodistokoodiviite))
+      case t: EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila =>
+        t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(mitatointiPvm, mitätöityKoodistokoodiviite))
+      case t: MuunKuinSäännellynKoulutuksenTila =>
+        t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ MuunKuinSäännellynKoulutuksenOpiskeluoikeudenJakso(mitätöityKoodistokoodiviite, mitatointiPvm, None))
+      case t: TaiteenPerusopetuksenOpiskeluoikeudenTila =>
+        t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ TaiteenPerusopetuksenOpiskeluoikeusjakso(mitatointiPvm, mitätöityKoodistokoodiviite))
+    }
+
+    withTila(uusiTila)
+  }
 }
 
 @Description("Päävastuullisen koulutuksen järjestäjän luoman opiskeluoikeuden tiedot. Nämä tiedot kertovat, että kyseessä on ns. ulkopuolisen sopimuskumppanin suoritustieto, joka liittyy päävastuullisen koulutuksen järjestäjän luomaan opiskeluoikeuteen. Ks. tarkemmin https://wiki.eduuni.fi/display/OPHPALV/4.+Ammatillisten+opiskeluoikeuksien+linkitys")
