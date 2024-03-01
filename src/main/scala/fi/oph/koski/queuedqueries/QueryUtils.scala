@@ -7,6 +7,7 @@ import fi.oph.koski.log.LoggerWithContext
 import fi.oph.koski.schema.Organisaatio.Oid
 import software.amazon.awssdk.services.rds.RdsClient
 
+import java.security.SecureRandom
 import scala.jdk.CollectionConverters._
 import scala.util.{Try, Using}
 
@@ -55,7 +56,14 @@ object QueryUtils {
         error.toString
       }
 
-
+  def generatePassword(length: Int): String = {
+    val alphanumericChars = ('0' to '9') ++ ('A' to 'Z') ++ ('a' to 'z')
+    val random = new SecureRandom()
+    Iterator
+      .continually(alphanumericChars(random.nextInt(alphanumericChars.length)))
+      .take(length)
+      .mkString
+  }
 }
 
 object QueryFormat {

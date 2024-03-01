@@ -16,6 +16,7 @@ import scala.util.Using
 
 case class QueryResultWriter(
   queryId: UUID,
+  queries: QueryRepository,
   results: QueryResultsRepository,
 ) {
   var objectKeys: mutable.Queue[String] = mutable.Queue[String]()
@@ -77,6 +78,8 @@ case class QueryResultWriter(
         throw new Exception(s"$format is not a supported datasheet export format")
     }
   }
+
+  def patchMeta(meta: QueryMeta): QueryMeta = queries.patchMeta(queryId.toString, meta)
 
   private def newObjectKey(objectKey: String): String = {
     if (objectKeys.contains(objectKey)) {

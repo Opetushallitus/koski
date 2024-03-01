@@ -47,7 +47,7 @@ class QueryService(application: KoskiApplication) extends Logging {
       } { session =>
         logger.info(s"Starting new ${query.name} as user ${query.userOid}")
         implicit val user: KoskiSpecificSession = session
-        val writer = QueryResultWriter(UUID.fromString(query.queryId), results)
+        val writer = QueryResultWriter(UUID.fromString(query.queryId), queries, results)
         try {
           query.query.run(application, writer).fold(
             { error =>

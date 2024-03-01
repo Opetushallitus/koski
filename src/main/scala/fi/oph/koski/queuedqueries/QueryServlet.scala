@@ -67,8 +67,8 @@ case class QueryResponse(
   workStartTime: Option[LocalDateTime] = None,
   endTime: Option[LocalDateTime] = None,
   resultsApi: Option[String] = None,
-  files: Option[List[String]] = None,
   password: Option[String] = None,
+  files: Option[List[String]] = None,
 ) {
   def withResponseUrl(rootUrl: String): QueryResponse = copy(
     resultsApi = Some(s"$rootUrl/api/kyselyt/${queryId}")

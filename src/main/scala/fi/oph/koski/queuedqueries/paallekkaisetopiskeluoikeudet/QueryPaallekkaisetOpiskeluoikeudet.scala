@@ -7,8 +7,8 @@ import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.log.KoskiAuditLogMessageField.hakuEhto
 import fi.oph.koski.log.KoskiOperation.OPISKELUOIKEUS_RAPORTTI
 import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, Logging}
-import fi.oph.koski.queuedqueries.QueryUtils.{QueryResourceManager, defaultOrganisaatio}
-import fi.oph.koski.queuedqueries.{QueryFormat, QueryParameters, QueryResultWriter}
+import fi.oph.koski.queuedqueries.QueryUtils.{QueryResourceManager, defaultOrganisaatio, generatePassword}
+import fi.oph.koski.queuedqueries.{QueryFormat, QueryMeta, QueryParameters, QueryResultWriter}
 import fi.oph.koski.raportit.{AikajaksoRaporttiRequest, RaportitAccessResolver, RaportitService}
 import fi.oph.koski.schema.Organisaatio
 import fi.oph.koski.schema.Organisaatio.Oid
@@ -27,6 +27,7 @@ case class QueryPaallekkaisetOpiskeluoikeudet(
   language: Option[String] = None,
   alku: LocalDate,
   loppu: LocalDate,
+  password: Option[String],
 ) extends QueryParameters with Logging {
   override def run(application: KoskiApplication, writer: QueryResultWriter)(implicit user: KoskiSpecificSession): Either[String, Unit] =
     QueryResourceManager(logger) { mgr =>
@@ -37,7 +38,7 @@ case class QueryPaallekkaisetOpiskeluoikeudet(
       val request = AikajaksoRaporttiRequest(
         oppilaitosOid = organisaatioOid.get,
         downloadToken = None,
-        password = "", // TODO: Salasanan arpominen ja palauttaminen responsessa
+        password = password.getOrElse(generatePassword(16)),
         alku = alku,
         loppu = loppu,
         lang = language.get,
@@ -45,6 +46,7 @@ case class QueryPaallekkaisetOpiskeluoikeudet(
 
       val localizationReader = new LocalizationReader(application.koskiLocalizationRepository, language.get)
       writer.putReport(raportitService.paallekkaisetOpiskeluoikeudet(request, localizationReader), format, localizationReader)
+      writer.patchMeta(QueryMeta(password = Some(request.password)))
 
       auditLog
     }

@@ -133,6 +133,15 @@ class QueryRepository(
       .collect { case q: FailedQuery => q }
   }
 
+  def patchMeta(id: String, meta: QueryMeta): QueryMeta = {
+    val json = JsonSerializer.serializeWithRoot(meta)
+    runDbSync(sql"""
+      UPDATE kysely
+      SET meta = COALESCE(meta, '{}'::jsonb) || $json
+      WHERE id = $id::uuid
+      RETURNING meta
+    """.as[QueryMeta]).head
+  }
 
   implicit private val getQueryResult: GetResult[Query] = GetResult[Query] { r =>
     val id = r.rs.getString("id")
@@ -140,7 +149,7 @@ class QueryRepository(
     val session = r.rs.getString("session")
     val query = parseParameters(r.getJson("query"))
     val creationTime = r.rs.getTimestamp("created_at").toLocalDateTime
-    val meta = Option(r.getJson("meta")).map(parseMeta)
+    val meta = r.getNullableJson("meta").map(parseMeta)
 
     r.rs.getString("state") match {
       case QueryState.pending => PendingQuery(
@@ -186,6 +195,10 @@ class QueryRepository(
         meta = meta,
       )
     }
+  }
+
+  implicit private val getQueryMetaResult: GetResult[QueryMeta] = GetResult[QueryMeta] { r =>
+    parseMeta(r.<<[JValue])
   }
 
   private def parseParameters(parameters: JValue): QueryParameters =
