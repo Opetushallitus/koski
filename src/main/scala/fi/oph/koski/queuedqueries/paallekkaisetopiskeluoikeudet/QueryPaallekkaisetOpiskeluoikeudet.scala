@@ -8,7 +8,7 @@ import fi.oph.koski.log.KoskiAuditLogMessageField.hakuEhto
 import fi.oph.koski.log.KoskiOperation.OPISKELUOIKEUS_RAPORTTI
 import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage}
 import fi.oph.koski.queuedqueries.QueryUtils.defaultOrganisaatio
-import fi.oph.koski.queuedqueries.{QueryParameters, QueryResultWriter}
+import fi.oph.koski.queuedqueries.{QueryFormat, QueryParameters, QueryResultWriter}
 import fi.oph.koski.raportit.{AikajaksoRaporttiRequest, DataSheet, ExcelWriter, RaportitAccessResolver, RaportitService}
 import fi.oph.koski.schema.Organisaatio
 import fi.oph.koski.schema.Organisaatio.Oid
@@ -21,9 +21,9 @@ import scala.util.Try
 case class QueryPaallekkaisetOpiskeluoikeudet(
   @EnumValue("paallekkaisetOpiskeluoikeudet")
   `type`: String = "paallekkaisetOpiskeluoikeudet",
-  @EnumValue("text/csv")
-  @EnumValue("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
-  format: String = "text/csv",
+  @EnumValue(QueryFormat.csv)
+  @EnumValue(QueryFormat.xlsx)
+  format: String,
   organisaatioOid: Option[Organisaatio.Oid] = None,
   language: Option[String] = None,
   alku: LocalDate,
@@ -44,28 +44,31 @@ case class QueryPaallekkaisetOpiskeluoikeudet(
     val localizationReader = new LocalizationReader(application.koskiLocalizationRepository, language.get)
     val report = raportitService.paallekkaisetOpiskeluoikeudet(request, localizationReader)
 
-    if (format == "text/csv") {
-      val datasheets = report.sheets.collect { case s: DataSheet => s }
-      datasheets
-        .foreach { sheet =>
-          val name = if (datasheets.length > 1) {
-            CsvFormatter.snakecasify(sheet.title)
-          } else {
-            report.filename.replace(".xlsx", "")
+    format match {
+      case QueryFormat.csv =>
+        val datasheets = report.sheets.collect { case s: DataSheet => s }
+        datasheets
+          .foreach { sheet =>
+            val name = if (datasheets.length > 1) {
+              CsvFormatter.snakecasify(sheet.title)
+            } else {
+              report.filename.replace(".xlsx", "")
+            }
+            val csv = writer.createCsv[Product](name)
+            csv.put(sheet.rows)
+            csv.save()
           }
-          val csv = writer.createCsv[Product](name)
-          csv.put(sheet.rows)
-          csv.save()
-        }
-    } else {
-      val upload = writer.createStream(report.filename, format)
-      ExcelWriter.writeExcel(
-        report.workbookSettings,
-        report.sheets,
-        ExcelWriter.BooleanCellStyleLocalizedValues(localizationReader),
-        upload.output,
-      )
-      upload.save()
+      case QueryFormat.xlsx =>
+        val upload = writer.createStream(report.filename, format)
+        ExcelWriter.writeExcel(
+          report.workbookSettings,
+          report.sheets,
+          ExcelWriter.BooleanCellStyleLocalizedValues(localizationReader),
+          upload.output,
+        )
+        upload.save()
+      case format: Any =>
+        throw new Exception(s"$format is not a supported datasheet export format")
     }
 
     auditLog

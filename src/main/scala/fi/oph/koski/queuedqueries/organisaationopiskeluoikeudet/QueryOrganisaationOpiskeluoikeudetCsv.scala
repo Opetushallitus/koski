@@ -1,7 +1,7 @@
 package fi.oph.koski.queuedqueries.organisaationopiskeluoikeudet
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.queuedqueries.QueryResultWriter
+import fi.oph.koski.queuedqueries.{QueryFormat, QueryResultWriter}
 import fi.oph.koski.raportointikanta.RaportointiDatabaseSchema.ROpiskeluoikeusTable
 import fi.oph.koski.raportointikanta.{EsiopetusOpiskeluoikeusAikajaksoRow, OpiskeluoikeusLoaderRowBuilder, ROpiskeluoikeusAikajaksoRow, ROpiskeluoikeusRow, ROsasuoritusRow, RPäätasonSuoritusRow}
 import fi.oph.koski.schema.Organisaatio
@@ -14,8 +14,8 @@ import scala.util.{Try, Using}
 case class QueryOrganisaationOpiskeluoikeudetCsv(
   @EnumValue("organisaationOpiskeluoikeudet")
   `type`: String = "organisaationOpiskeluoikeudet",
-  @EnumValue("text/csv")
-  format: String = "text/csv",
+  @EnumValue(QueryFormat.csv)
+  format: String = QueryFormat.csv,
   organisaatioOid: Option[Organisaatio.Oid],
   alkamispaiva: LocalDate,
   tila: Option[String],

@@ -45,3 +45,9 @@ object QueryUtils {
     }
   }
 }
+
+object QueryFormat {
+  val json = "application/json"
+  val csv = "text/csv"
+  val xlsx = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+}

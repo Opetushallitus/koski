@@ -22,7 +22,7 @@ case class QueryResultWriter(
       queryId = queryId,
       name = newObjectKey(s"$name.json"),
       provider = StringStreamProvider(json),
-      contentType = "application/json",
+      contentType = QueryFormat.json,
     )
 
   def putJson[T: TypeTag](name: String, obj: T): Unit =
@@ -33,7 +33,7 @@ case class QueryResultWriter(
       queryId = queryId,
       name = newObjectKey(s"$name.csv"),
       provider = provider,
-      contentType = "text/csv",
+      contentType = QueryFormat.csv,
     ))
 
   def createStream(name: String, contentType: String): UploadStream =

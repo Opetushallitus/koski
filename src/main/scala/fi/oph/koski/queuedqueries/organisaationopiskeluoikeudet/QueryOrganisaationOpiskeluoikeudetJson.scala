@@ -2,7 +2,7 @@ package fi.oph.koski.queuedqueries.organisaationopiskeluoikeudet
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.{KoskiOpiskeluoikeusRow, KoskiTables}
-import fi.oph.koski.queuedqueries.QueryResultWriter
+import fi.oph.koski.queuedqueries.{QueryFormat, QueryResultWriter}
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, KoskiSchema, Oppija, Organisaatio}
 import fi.oph.scalaschema.annotation.EnumValue
 
@@ -12,8 +12,8 @@ import scala.util.Try
 case class QueryOrganisaationOpiskeluoikeudetJson(
   @EnumValue("organisaationOpiskeluoikeudet")
   `type`: String = "organisaationOpiskeluoikeudet",
-  @EnumValue("application/json")
-  format: String = "application/json",
+  @EnumValue(QueryFormat.json)
+  format: String = QueryFormat.json,
   organisaatioOid: Option[Organisaatio.Oid],
   alkamispaiva: LocalDate,
   tila: Option[String],
