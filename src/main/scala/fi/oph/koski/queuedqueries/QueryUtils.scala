@@ -3,10 +3,12 @@ package fi.oph.koski.queuedqueries
 import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
+import fi.oph.koski.log.LoggerWithContext
 import fi.oph.koski.schema.Organisaatio.Oid
 import software.amazon.awssdk.services.rds.RdsClient
 
 import scala.jdk.CollectionConverters._
+import scala.util.{Try, Using}
 
 object QueryUtils {
   def isQueryWorker(application: KoskiApplication): Boolean = {
@@ -44,6 +46,16 @@ object QueryUtils {
       Right(user.juuriOrganisaatiot.head.oid)
     }
   }
+
+  def QueryResourceManager(logger: LoggerWithContext)(op: Using.Manager => Unit): Either[Oid, Unit] =
+    Using.Manager(op)
+      .toEither
+      .left.map { error =>
+        logger.error(error)("Query failed")
+        error.toString
+      }
+
+
 }
 
 object QueryFormat {

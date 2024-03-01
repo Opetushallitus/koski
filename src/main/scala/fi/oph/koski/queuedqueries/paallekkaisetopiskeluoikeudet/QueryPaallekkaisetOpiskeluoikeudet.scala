@@ -6,17 +6,16 @@ import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.log.KoskiAuditLogMessageField.hakuEhto
 import fi.oph.koski.log.KoskiOperation.OPISKELUOIKEUS_RAPORTTI
-import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage}
-import fi.oph.koski.queuedqueries.QueryUtils.defaultOrganisaatio
+import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, Logging}
+import fi.oph.koski.queuedqueries.QueryUtils.{QueryResourceManager, defaultOrganisaatio}
 import fi.oph.koski.queuedqueries.{QueryFormat, QueryParameters, QueryResultWriter}
-import fi.oph.koski.raportit.{AikajaksoRaporttiRequest, DataSheet, ExcelWriter, RaportitAccessResolver, RaportitService}
+import fi.oph.koski.raportit.{AikajaksoRaporttiRequest, RaportitAccessResolver, RaportitService}
 import fi.oph.koski.schema.Organisaatio
 import fi.oph.koski.schema.Organisaatio.Oid
-import fi.oph.koski.util.CsvFormatter
-import fi.oph.scalaschema.annotation.{EnumValue, OnlyWhen}
+import fi.oph.scalaschema.annotation.EnumValue
 
 import java.time.LocalDate
-import scala.util.Try
+import scala.util.Using
 
 case class QueryPaallekkaisetOpiskeluoikeudet(
   @EnumValue("paallekkaisetOpiskeluoikeudet")
@@ -28,51 +27,27 @@ case class QueryPaallekkaisetOpiskeluoikeudet(
   language: Option[String] = None,
   alku: LocalDate,
   loppu: LocalDate,
-) extends QueryParameters {
-  override def run(application: KoskiApplication, writer: QueryResultWriter)(implicit user: KoskiSpecificSession): Either[String, Unit] = Try {
-    val raportitService = new RaportitService(application)
+) extends QueryParameters with Logging {
+  override def run(application: KoskiApplication, writer: QueryResultWriter)(implicit user: KoskiSpecificSession): Either[String, Unit] =
+    QueryResourceManager(logger) { mgr =>
+      implicit val manager: Using.Manager = mgr
 
-    val request = AikajaksoRaporttiRequest(
-      oppilaitosOid = organisaatioOid.get,
-      downloadToken = None,
-      password = "",
-      alku = alku,
-      loppu = loppu,
-      lang = language.get,
-    )
+      val raportitService = new RaportitService(application)
 
-    val localizationReader = new LocalizationReader(application.koskiLocalizationRepository, language.get)
-    val report = raportitService.paallekkaisetOpiskeluoikeudet(request, localizationReader)
+      val request = AikajaksoRaporttiRequest(
+        oppilaitosOid = organisaatioOid.get,
+        downloadToken = None,
+        password = "", // TODO: Salasanan arpominen ja palauttaminen responsessa
+        alku = alku,
+        loppu = loppu,
+        lang = language.get,
+      )
 
-    format match {
-      case QueryFormat.csv =>
-        val datasheets = report.sheets.collect { case s: DataSheet => s }
-        datasheets
-          .foreach { sheet =>
-            val name = if (datasheets.length > 1) {
-              CsvFormatter.snakecasify(sheet.title)
-            } else {
-              report.filename.replace(".xlsx", "")
-            }
-            val csv = writer.createCsv[Product](name)
-            csv.put(sheet.rows)
-            csv.save()
-          }
-      case QueryFormat.xlsx =>
-        val upload = writer.createStream(report.filename, format)
-        ExcelWriter.writeExcel(
-          report.workbookSettings,
-          report.sheets,
-          ExcelWriter.BooleanCellStyleLocalizedValues(localizationReader),
-          upload.output,
-        )
-        upload.save()
-      case format: Any =>
-        throw new Exception(s"$format is not a supported datasheet export format")
+      val localizationReader = new LocalizationReader(application.koskiLocalizationRepository, language.get)
+      writer.putReport(raportitService.paallekkaisetOpiskeluoikeudet(request, localizationReader), format, localizationReader)
+
+      auditLog
     }
-
-    auditLog
-  }.toEither.left.map(_.getMessage)
 
   override def queryAllowed(application: KoskiApplication)(implicit user: KoskiSpecificSession): Boolean =
     organisaatioOids(application).nonEmpty

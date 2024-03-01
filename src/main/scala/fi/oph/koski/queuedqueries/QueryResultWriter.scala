@@ -1,6 +1,8 @@
 package fi.oph.koski.queuedqueries
 
 import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.localization.LocalizationReader
+import fi.oph.koski.raportit.{DataSheet, ExcelWriter, OppilaitosRaporttiResponse}
 import fi.oph.koski.util.CsvFormatter
 import software.amazon.awssdk.core.internal.sync.FileContentStreamProvider
 import software.amazon.awssdk.http.ContentStreamProvider
@@ -10,6 +12,7 @@ import java.nio.file.{Files, Path}
 import java.util.UUID
 import scala.collection.mutable
 import scala.reflect.runtime.universe.TypeTag
+import scala.util.Using
 
 case class QueryResultWriter(
   queryId: UUID,
@@ -28,21 +31,52 @@ case class QueryResultWriter(
   def putJson[T: TypeTag](name: String, obj: T): Unit =
     putJson(name, JsonSerializer.writeWithRoot(obj))
 
-  def createCsv[T <: Product](name: String): CsvStream[T] =
-    new CsvStream[T](s"$queryId-$name", provider => results.put(
+  def createCsv[T <: Product](name: String)(implicit manager: Using.Manager): CsvStream[T] =
+    manager(new CsvStream[T](s"$queryId-$name", provider => results.put(
       queryId = queryId,
       name = newObjectKey(s"$name.csv"),
       provider = provider,
       contentType = QueryFormat.csv,
-    ))
+    )))
 
-  def createStream(name: String, contentType: String): UploadStream =
-    new UploadStream(s"$queryId-$name", provider => results.put(
+  def createStream(name: String, contentType: String)(implicit manager: Using.Manager): UploadStream =
+    manager(new UploadStream(s"$queryId-$name", provider => results.put(
       queryId = queryId,
       name = newObjectKey(name),
       provider = provider,
       contentType = contentType,
-    ))
+    )))
+
+  def putReport(report: OppilaitosRaporttiResponse, format: String, localizationReader: LocalizationReader)(implicit manager: Using.Manager): Unit = {
+    format match {
+      case QueryFormat.csv =>
+        val datasheets = report.sheets.collect { case s: DataSheet => s }
+        datasheets
+          .foreach { sheet =>
+            val name = if (datasheets.length > 1) {
+              CsvFormatter.snakecasify(sheet.title)
+            } else {
+              report.filename.replace(".xlsx", "")
+            }
+            val csv = createCsv[Product](name)
+            manager.acquire(csv)
+            csv.put(sheet.rows)
+            csv.save()
+          }
+      case QueryFormat.xlsx =>
+        val upload = createStream(report.filename, format)
+        manager.acquire(upload)
+        ExcelWriter.writeExcel(
+          report.workbookSettings,
+          report.sheets,
+          ExcelWriter.BooleanCellStyleLocalizedValues(localizationReader),
+          upload.output,
+        )
+        upload.save()
+      case format: Any =>
+        throw new Exception(s"$format is not a supported datasheet export format")
+    }
+  }
 
   private def newObjectKey(objectKey: String): String = {
     if (objectKeys.contains(objectKey)) {

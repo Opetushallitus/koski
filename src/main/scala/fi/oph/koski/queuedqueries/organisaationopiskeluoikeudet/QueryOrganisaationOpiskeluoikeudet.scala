@@ -20,7 +20,6 @@ import slick.jdbc.SQLActionBuilder
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import scala.util.Try
 
 trait QueryOrganisaationOpiskeluoikeudet extends QueryParameters with DatabaseConverters with Logging {
   def organisaatioOid: Option[String]
@@ -29,7 +28,7 @@ trait QueryOrganisaationOpiskeluoikeudet extends QueryParameters with DatabaseCo
   def koulutusmuoto: Option[String] // TODO: Lisää sallitut arvot
   def suoritustyyppi: Option[String] // TODO: Lisää sallitut arvot
 
-  def fetchData(application: KoskiApplication, writer: QueryResultWriter, oppilaitosOids: List[Organisaatio.Oid]): Try[Unit]
+  def fetchData(application: KoskiApplication, writer: QueryResultWriter, oppilaitosOids: List[Organisaatio.Oid]): Either[String, Unit]
 
   def run(application: KoskiApplication, writer: QueryResultWriter)(implicit user: KoskiSpecificSession): Either[String, Unit] = {
     val oppilaitosOids = application.organisaatioService.organisaationAlaisetOrganisaatiot(organisaatioOid.get)
@@ -37,12 +36,7 @@ trait QueryOrganisaationOpiskeluoikeudet extends QueryParameters with DatabaseCo
       application = application,
       writer = writer,
       oppilaitosOids = oppilaitosOids,
-    ).toEither
-      .tap(_ => auditLog())
-      .left.map { error =>
-        logger.error(error)("Query failed")
-        error.toString
-      }
+    ).tap(_ => auditLog)
   }
 
   def queryAllowed(application: KoskiApplication)(implicit user: KoskiSpecificSession): Boolean =
@@ -65,7 +59,7 @@ trait QueryOrganisaationOpiskeluoikeudet extends QueryParameters with DatabaseCo
     }
   }
 
-  protected def auditLog()(implicit user: KoskiSpecificSession): Unit = {
+  protected def auditLog(implicit user: KoskiSpecificSession): Unit = {
     AuditLog.log(KoskiAuditLogMessage(
       OPISKELUOIKEUS_HAKU,
       user,

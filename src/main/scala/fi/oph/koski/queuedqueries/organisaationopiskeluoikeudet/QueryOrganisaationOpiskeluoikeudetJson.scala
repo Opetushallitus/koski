@@ -2,12 +2,12 @@ package fi.oph.koski.queuedqueries.organisaationopiskeluoikeudet
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.{KoskiOpiskeluoikeusRow, KoskiTables}
+import fi.oph.koski.queuedqueries.QueryUtils.QueryResourceManager
 import fi.oph.koski.queuedqueries.{QueryFormat, QueryResultWriter}
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, KoskiSchema, Oppija, Organisaatio}
 import fi.oph.scalaschema.annotation.EnumValue
 
 import java.time.LocalDate
-import scala.util.Try
 
 case class QueryOrganisaationOpiskeluoikeudetJson(
   @EnumValue("organisaationOpiskeluoikeudet")
@@ -24,7 +24,7 @@ case class QueryOrganisaationOpiskeluoikeudetJson(
     application: KoskiApplication,
     writer: QueryResultWriter,
     oppilaitosOids: List[Organisaatio.Oid],
-  ): Try[Unit] = Try {
+  ): Either[String, Unit] = QueryResourceManager(logger) { _ =>
     val db = getDb(application)
     val filters = defaultBaseFilter(oppilaitosOids)
     val oppijaOids = getOppijaOids(db, filters)
