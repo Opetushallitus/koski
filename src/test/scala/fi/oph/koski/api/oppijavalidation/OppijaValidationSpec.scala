@@ -323,6 +323,37 @@ class OppijaValidationSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluo
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.arvioituPäättymisPäiväEnnenAlkamispäivää("alkamispäivä (2000-01-01) oltava sama tai aiempi kuin arvioituPäättymispäivä (1999-05-31)"))
           })
 
+          "Opiskeluoikeuden voi mitätöidä, vaikka muutosvalidaatiot epäonnistuisivat" in {
+            val oo = setupOppijaWithAndGetOpiskeluoikeus(defaultOpiskeluoikeus)
+
+            val validoitumatonOo = oo.copy(arvioituPäättymispäivä = Some(date(1999, 5, 31)))
+
+            putOpiskeluoikeus(validoitumatonOo) {
+              verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.arvioituPäättymisPäiväEnnenAlkamispäivää("alkamispäivä (2000-01-01) oltava sama tai aiempi kuin arvioituPäättymispäivä (1999-05-31)"))
+            }
+
+            authGet("api/opiskeluoikeus/" + oo.oid.get, defaultUser) {
+              verifyResponseStatusOk()
+            }
+
+            putOpiskeluoikeus(validoitumatonOo
+              .copy(
+                tila = oo.tila.copy(opiskeluoikeusjaksot = validoitumatonOo.tila.opiskeluoikeusjaksot ++ List(
+                  AmmatillinenOpiskeluoikeusjakso(
+                    alku = LocalDate.now,
+                    tila = ExampleData.opiskeluoikeusMitätöity
+                  )
+                ))
+              )
+            ){
+              verifyResponseStatusOk()
+            }
+
+            authGet("api/opiskeluoikeus/" + oo.oid.get, defaultUser) {
+              verifyResponseStatus(404, KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia("Opiskeluoikeutta ei löydy annetulla oid:llä tai käyttäjällä ei ole siihen oikeuksia"))
+            }
+          }
+
           "suoritus.vahvistus.päivä > päättymispäivä" in {
             val oo = päättymispäivällä(defaultOpiskeluoikeus, date(2017, 5, 31))
             val tutkinto: AmmatillinenPäätasonSuoritus = oo.suoritukset.collect {

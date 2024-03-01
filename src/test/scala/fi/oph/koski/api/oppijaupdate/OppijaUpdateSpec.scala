@@ -663,6 +663,32 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
     }
   }
 
+  "Opiskeluoikeuden mitätöinti muokattaessa" - {
+    "Opiskeluoikeuteen ei tallenneta muita muutoksia kuin mitätöinti, vaikka niitä yritettäisi samalla kertaa tehdä" in {
+      val oo = setupOppijaWithAndGetOpiskeluoikeus(makeOpiskeluoikeus(alkamispäivä = longTimeAgo))
+
+      val muokattuAlkamispäivä = longTimeAgo.plusDays(5)
+
+      val muokattuJaMitätöityOoIn =
+        oo
+          .copy(
+            tila = AmmatillinenOpiskeluoikeudenTila(
+              List(
+                AmmatillinenOpiskeluoikeusjakso(muokattuAlkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
+                AmmatillinenOpiskeluoikeusjakso(alku = LocalDate.now, ExampleData.opiskeluoikeusMitätöity)
+              )
+            )
+          )
+
+      // Muokkaa opiskeluoikeus mitätöidyksi ja varmista, että alkamispäivää ei ole muutettu
+      val mitätöityOoOut =
+        putAndGetOpiskeluoikeus(muokattuJaMitätöityOoIn, headers = authHeaders(MockUsers.paakayttajaMitatoidytJaPoistetutOpiskeluoikeudet) ++ jsonContent)
+
+      mitätöityOoOut.mitätöity should be(true)
+      mitätöityOoOut.alkamispäivä should be(Some(longTimeAgo))
+    }
+  }
+
   def setupOppija[T <: Opiskeluoikeus](oppija: Henkilö, opiskeluoikeus: T, user: UserWithPassword = defaultUser): T =
     setupOppijaWithAndGetOpiskeluoikeus(opiskeluoikeus, oppija, authHeaders(user) ++ jsonContent)
 }

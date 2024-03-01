@@ -10,6 +10,9 @@ object OpiskeluoikeusChangeMigrator {
     uusiOpiskeluoikeus match {
       case _: YlioppilastutkinnonOpiskeluoikeus =>
         uusiOpiskeluoikeus
+      case _ if uusiOpiskeluoikeus.mitätöity =>
+        // Jos uusi opiskeluoikeus ollaan mitätöimässä, jätetään huomiotta kaikki muut muutokset, joita ollaan mahdollisesti tekemässä
+        vanhaOpiskeluoikeus.invalidated(uusiOpiskeluoikeus.mitätöintiPäivä.get)
       case _ =>
         val uusiOpiskeluoikeusSuorituksilla = if (allowDeleteCompleted) uusiOpiskeluoikeus else kopioiValmiitSuorituksetUuteen(vanhaOpiskeluoikeus, uusiOpiskeluoikeus)
         organisaationMuutosHistoria(vanhaOpiskeluoikeus, uusiOpiskeluoikeusSuorituksilla)

@@ -1,3 +1,9 @@
+## 5.3.2024
+
+- Opiskeluoikeutta mitätöitäessä jätetään huomiotta muut opiskeluoikeuteen samalla kertaa tehdyt muutokset. Jos
+  mitätöity-tilan lisäämisen ohessa on siis esim. poistettu tai muutettu jotain suorituksia, jatkossa näitä muita muutoksia
+  ei tallenneta kantaan, vaan opiskeluoikeus ainoastaan mitätöidään.
+
 ## 27.2.2024
 
 - Deprekoitu predicted-arvosana -kentät:
