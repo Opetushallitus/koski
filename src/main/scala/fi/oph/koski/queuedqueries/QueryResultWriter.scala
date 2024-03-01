@@ -5,7 +5,7 @@ import fi.oph.koski.util.CsvFormatter
 import software.amazon.awssdk.core.internal.sync.FileContentStreamProvider
 import software.amazon.awssdk.http.ContentStreamProvider
 
-import java.io.{BufferedOutputStream, FileOutputStream, InputStream}
+import java.io.{BufferedOutputStream, FileOutputStream, InputStream, OutputStream}
 import java.nio.file.{Files, Path}
 import java.util.UUID
 import scala.collection.mutable
@@ -20,7 +20,7 @@ case class QueryResultWriter(
   def putJson(name: String, json: String): Unit =
     results.put(
       queryId = queryId,
-      name = newObjectKey(name, "json"),
+      name = newObjectKey(s"$name.json"),
       provider = StringStreamProvider(json),
       contentType = "application/json",
     )
@@ -31,13 +31,20 @@ case class QueryResultWriter(
   def createCsv[T <: Product](name: String): CsvStream[T] =
     new CsvStream[T](s"$queryId-$name", provider => results.put(
       queryId = queryId,
-      name = newObjectKey(name, "csv"),
+      name = newObjectKey(s"$name.csv"),
       provider = provider,
       contentType = "text/csv",
     ))
 
-  private def newObjectKey(name: String, ext: String): String = {
-    val objectKey = s"$name.$ext"
+  def createStream(name: String, contentType: String): UploadStream =
+    new UploadStream(s"$queryId-$name", provider => results.put(
+      queryId = queryId,
+      name = newObjectKey(name),
+      provider = provider,
+      contentType = contentType,
+    ))
+
+  private def newObjectKey(objectKey: String): String = {
     if (objectKeys.contains(objectKey)) {
       throw new RuntimeException(s"$objectKey already exists")
     }
@@ -90,7 +97,6 @@ class CsvStream[T <: Product](name: String, uploadWith: (ContentStreamProvider) 
   }
 
   private def write(data: String): Unit =
-
     outputStream.write(data.getBytes("UTF-8"))
 
   private def recordOf(data: T): String =
@@ -103,6 +109,38 @@ class CsvStream[T <: Product](name: String, uploadWith: (ContentStreamProvider) 
         .map(_.getName)
         .map(CsvFormatter.snakecasify)
     )
+}
+
+class UploadStream(name: String, uploadWith: (ContentStreamProvider) => Unit) extends AutoCloseable {
+  val temporaryFile: Path = Files.createTempFile(s"$name-", ".tmp")
+  private val fileStream: FileOutputStream = new FileOutputStream(temporaryFile.toFile)
+  private val outputStream: BufferedOutputStream = new BufferedOutputStream(fileStream)
+
+  def output: OutputStream = outputStream
+
+  def provider: ContentStreamProvider = new FileContentStreamProvider(temporaryFile)
+
+  def save(): Unit = {
+    closeIntermediateStreams()
+    uploadWith(provider)
+    deleteTemporaryFile()
+  }
+
+  def close(): Unit = {
+    closeIntermediateStreams()
+    deleteTemporaryFile()
+  }
+
+  private def closeIntermediateStreams(): Unit = {
+    outputStream.close()
+    fileStream.close()
+  }
+
+  private def deleteTemporaryFile(): Unit = {
+    if (Files.exists(temporaryFile)) {
+      Files.delete(temporaryFile)
+    }
+  }
 }
 
 case class StringStreamProvider(content: String) extends ContentStreamProvider {
