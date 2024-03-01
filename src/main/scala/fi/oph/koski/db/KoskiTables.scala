@@ -410,6 +410,7 @@ object KoskiTables {
     val worker = column[Option[String]]("worker")
     val resultFiles = column[Option[List[String]]]("result_files")
     val error = column[Option[String]]("error")
+    val meta = column[Option[JValue]]("meta")
 
     def * : ProvenShape[KyselyRow] = (
       id,
@@ -422,7 +423,8 @@ object KoskiTables {
       finishedAt,
       worker,
       resultFiles,
-      error
+      error,
+      meta,
     ) <> (KyselyRow.tupled, KyselyRow.unapply)
   }
 
@@ -722,4 +724,5 @@ case class KyselyRow(
   worker: Option[String] = None,
   resultFiles: Option[List[String]] = None,
   error: Option[String] = None,
+  meta: Option[JValue] = None,
 )
