@@ -1,7 +1,11 @@
 package fi.oph.koski.queuedqueries
 
 import fi.oph.koski.config.{Environment, KoskiApplication}
+import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.koskiuser.KoskiSpecificSession
+import fi.oph.koski.schema.Organisaatio.Oid
 import software.amazon.awssdk.services.rds.RdsClient
+
 import scala.jdk.CollectionConverters._
 
 object QueryUtils {
@@ -27,6 +31,17 @@ object QueryUtils {
         .asScala
         .find(_.dbInstanceIdentifier() == databaseId)
         .map(_.availabilityZone())
+    }
+  }
+
+  def defaultOrganisaatio(implicit user: KoskiSpecificSession): Either[HttpStatus, Oid] = {
+    val organisaatiot = user.juuriOrganisaatiot
+    if (organisaatiot.isEmpty) {
+      Left(KoskiErrorCategory.unauthorized("Käyttäjäoikeuksissa ei ole määritelty eksplisiittisesti lukuoikeutta yhdenkään tietyn organisaation tietoihin.")) // Mahdollista esim. pääkäyttäjän tunnuksilla
+    } else if (organisaatiot.size > 1) {
+      Left(KoskiErrorCategory.unauthorized("Kenttää `organisaatioOid` ei ole annettu, eikä organisaatiota voi yksiselitteisesti päätellä käyttöoikeuksista."))
+    } else {
+      Right(user.juuriOrganisaatiot.head.oid)
     }
   }
 }

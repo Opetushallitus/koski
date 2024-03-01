@@ -6,19 +6,18 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.db.KoskiOpiskeluoikeusRowImplicits._
 import fi.oph.koski.db._
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
-import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
 import fi.oph.koski.log.KoskiAuditLogMessageField.hakuEhto
 import fi.oph.koski.log.KoskiOperation.OPISKELUOIKEUS_HAKU
 import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, Logging}
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryContext
+import fi.oph.koski.queuedqueries.QueryUtils.defaultOrganisaatio
 import fi.oph.koski.queuedqueries.{QueryParameters, QueryResultWriter}
-import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, KoskiSchema, Opiskeluoikeus, Organisaatio}
+import fi.oph.koski.schema.Organisaatio
 import fi.oph.koski.util.ChainingSyntax.chainingOps
-import org.json4s.JValue
 import slick.jdbc.SQLActionBuilder
 
-import java.sql.Timestamp
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import scala.util.Try
@@ -63,17 +62,6 @@ trait QueryOrganisaationOpiskeluoikeudet extends QueryParameters with DatabaseCo
       }
     } else {
       Right(this)
-    }
-  }
-
-  protected def defaultOrganisaatio(implicit user: KoskiSpecificSession) = {
-    val organisaatiot = user.juuriOrganisaatiot
-    if (organisaatiot.isEmpty) {
-      Left(KoskiErrorCategory.unauthorized("Käyttäjäoikeuksissa ei ole määritelty eksplisiittisesti lukuoikeutta yhdenkään tietyn organisaation tietoihin.")) // Mahdollista esim. pääkäyttäjän tunnuksilla
-    } else if (organisaatiot.size > 1) {
-      Left(KoskiErrorCategory.unauthorized("Kenttää `organisaatioOid` ei ole annettu, eikä organisaatiota voi yksiselitteisesti päätellä käyttöoikeuksista."))
-    } else {
-      Right(user.juuriOrganisaatiot.head.oid)
     }
   }
 
