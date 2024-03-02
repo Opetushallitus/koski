@@ -33,53 +33,61 @@ class Lukio2019OpintopistekertymaRaporttiSpec extends AnyFreeSpec with Raportoin
     val aikuisOpiskelijaMuuRahoitus = KoskiSpecificMockOppijat.aikuisOpiskelijaMuuRahoitus
     val aikuisOpiskelijaVieraskielinen = KoskiSpecificMockOppijat.aikuisOpiskelijaVieraskielinen
 
-    val oppimääränSuoritus = Lukio2019RaaportitTestData.oppimääränSuoritus
-    val oppimääräOo = defaultOpiskeluoikeus.copy(
-      suoritukset = List(oppimääränSuoritus),
+    // Aineopinnot
+
+    val aineopinnotAikuistenOps = defaultOpiskeluoikeus.copy(
+      suoritukset = List(Lukio2019RaaportitTestData.oppiaineidenOppimäärienSuoritus.copy(
+        oppimäärä = aikuistenOpetussuunnitelma,
+        koulutusmoduuli = LukionOppiaineidenOppimäärät2019(perusteenDiaarinumero = lops2019AikuistenPerusteenDiaarinumero)
+      ))
     )
 
-    val oppiaineidenOppimäärienSuoritus = Lukio2019RaaportitTestData.oppiaineidenOppimäärienSuoritus
+    val aineopiskelijaAikuistenOps = Oppija(aikuisOpiskelija, List(aineopinnotAikuistenOps))
 
-    val oppiaineidenOppimäärienSuoritusAikuistenOps = oppiaineidenOppimäärienSuoritus.copy(
-      oppimäärä = aikuistenOpetussuunnitelma,
-      koulutusmoduuli = LukionOppiaineidenOppimäärät2019(perusteenDiaarinumero = lops2019AikuistenPerusteenDiaarinumero)
+    putOppija(aineopiskelijaAikuistenOps) {
+      verifyResponseStatusOk()
+    }
+
+    // Lukion oppimäärä
+
+    val oppimääränSuoritusOo = defaultOpiskeluoikeus.copy(
+      suoritukset = List(Lukio2019RaaportitTestData.oppimääränSuoritus),
     )
 
-    val aineopiskelu = defaultOpiskeluoikeus.copy(
-      suoritukset = List(oppiaineidenOppimäärienSuoritus),
+    val aineopintojenOppimääräOo = defaultOpiskeluoikeus.copy(
+      suoritukset = List(Lukio2019RaaportitTestData.oppiaineidenOppimäärienSuoritus),
     )
 
-    val aineopiskeluAikuistenOps = defaultOpiskeluoikeus.copy(
-      suoritukset = List(oppiaineidenOppimäärienSuoritusAikuistenOps)
-    )
+    val molemmatOppimäärät = Oppija(opiskelijaSuppea, List(oppimääränSuoritusOo, aineopintojenOppimääräOo))
+
+    putOppija(molemmatOppimäärät) {
+      verifyResponseStatusOk()
+    }
+
+    // Muuta kautta rahoitetut
 
     val opiskeluoikeusjaksoMuutaKauttaRahoitettu = LukionOpiskeluoikeusjakso(alku = date(2000, 1, 1), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.muutaKauttaRahoitettu))
 
-    val aineopiskeluMuutaKauttaRahoitettu = aineopiskelu.copy(
+    val aineopiskeluMuutaKauttaRahoitettu = aineopintojenOppimääräOo.copy(
       tila = LukionOpiskeluoikeudenTila(List(opiskeluoikeusjaksoMuutaKauttaRahoitettu))
     )
 
-    val aineopiskeluAikuistenOpsMuutaKauttaRahoitettu = aineopiskeluAikuistenOps.copy(
+    val muutaKauttaRahoitettuAineopiskelija = Oppija(opiskelijaRahoituspuljaus, opiskeluoikeudet = List(aineopiskeluMuutaKauttaRahoitettu))
+    putOppija(muutaKauttaRahoitettuAineopiskelija) {
+      verifyResponseStatusOk()
+    }
+
+    val aineopiskeluAikuistenOpsMuutaKauttaRahoitettu = aineopinnotAikuistenOps.copy(
       tila = LukionOpiskeluoikeudenTila(List(opiskeluoikeusjaksoMuutaKauttaRahoitettu))
     )
 
-    putOppija(Oppija(opiskelijaSuppea, List(oppimääräOo, aineopiskelu))) {
+    val muutaKauttaRahoitettuAineopiskelijaAikuistenOps = Oppija(aikuisOpiskelijaVieraskielinen, List(aineopiskeluAikuistenOpsMuutaKauttaRahoitettu))
+    putOppija(muutaKauttaRahoitettuAineopiskelijaAikuistenOps) {
       verifyResponseStatusOk()
     }
 
-    putOppija(Oppija(opiskelijaRahoituspuljaus, List(aineopiskeluMuutaKauttaRahoitettu))) {
-      verifyResponseStatusOk()
-    }
-
-    putOppija(Oppija(aikuisOpiskelija, List(aineopiskeluAikuistenOps))) {
-      verifyResponseStatusOk()
-    }
-
-    putOppija(Oppija(aikuisOpiskelijaVieraskielinen, List(aineopiskeluAikuistenOpsMuutaKauttaRahoitettu))) {
-      verifyResponseStatusOk()
-    }
-
-    putOppija(Oppija(aikuisOpiskelijaMuuRahoitus, List(aineopiskeluAikuistenOpsMuutaKauttaRahoitettu))) {
+    val muutaKauttaRahoitettuAineopiskelijaAikuistenOps2 = Oppija(aikuisOpiskelijaMuuRahoitus, List(aineopiskeluAikuistenOpsMuutaKauttaRahoitettu))
+    putOppija(muutaKauttaRahoitettuAineopiskelijaAikuistenOps2) {
       verifyResponseStatusOk()
     }
 
