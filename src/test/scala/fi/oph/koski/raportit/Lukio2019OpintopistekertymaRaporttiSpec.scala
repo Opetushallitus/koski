@@ -30,36 +30,67 @@ class Lukio2019OpintopistekertymaRaporttiSpec extends AnyFreeSpec with Raportoin
     val opiskelijaSuppea = KoskiSpecificMockOppijat.teija
     val opiskelijaRahoituspuljaus = KoskiSpecificMockOppijat.eero
     val aikuisOpiskelija = KoskiSpecificMockOppijat.aikuisOpiskelija
+    val aikuisOpiskelijaMuuRahoitus = KoskiSpecificMockOppijat.aikuisOpiskelijaMuuRahoitus
+    val aikuisOpiskelijaVieraskielinen = KoskiSpecificMockOppijat.aikuisOpiskelijaVieraskielinen
 
-    val oppimäärä = defaultOpiskeluoikeus.copy(
-      suoritukset = List(Lukio2019RaaportitTestData.oppimääränSuoritus),
-    )
-    val aine = defaultOpiskeluoikeus.copy(
-      suoritukset = List(Lukio2019RaaportitTestData.oppiaineidenOppimäärienSuoritus),
-    )
-    val aikuistenOpsilla = defaultOpiskeluoikeus.copy(
+    // Aineopinnot
+
+    val aineopinnotAikuistenOps = defaultOpiskeluoikeus.copy(
       suoritukset = List(Lukio2019RaaportitTestData.oppiaineidenOppimäärienSuoritus.copy(
         oppimäärä = aikuistenOpetussuunnitelma,
         koulutusmoduuli = LukionOppiaineidenOppimäärät2019(perusteenDiaarinumero = lops2019AikuistenPerusteenDiaarinumero)
       ))
     )
 
-    val aineMuutakauttaRahoitettu = defaultOpiskeluoikeus.copy(
-      suoritukset = List(Lukio2019RaaportitTestData.oppiaineidenOppimäärienSuoritus),
-      tila = LukionOpiskeluoikeudenTila(List(
-        LukionOpiskeluoikeusjakso(alku = date(2000, 1, 1), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.muutaKauttaRahoitettu)),
-      ))
+    val aineopiskelijaAikuistenOps = Oppija(aikuisOpiskelija, List(aineopinnotAikuistenOps))
+
+    putOppija(aineopiskelijaAikuistenOps) {
+      verifyResponseStatusOk()
+    }
+
+    // Lukion oppimäärä
+
+    val oppimääränSuoritusOo = defaultOpiskeluoikeus.copy(
+      suoritukset = List(Lukio2019RaaportitTestData.oppimääränSuoritus),
     )
 
-    putOppija(Oppija(opiskelijaSuppea, List(oppimäärä, aine))) {
+    val aineopintojenOppimääräOo = defaultOpiskeluoikeus.copy(
+      suoritukset = List(Lukio2019RaaportitTestData.oppiaineidenOppimäärienSuoritus),
+    )
+
+    val molemmatOppimäärät = Oppija(opiskelijaSuppea, List(oppimääränSuoritusOo, aineopintojenOppimääräOo))
+
+    putOppija(molemmatOppimäärät) {
       verifyResponseStatusOk()
     }
-    putOppija(Oppija(opiskelijaRahoituspuljaus, List(aineMuutakauttaRahoitettu))) {
+
+    // Muuta kautta rahoitetut
+
+    val opiskeluoikeusjaksoMuutaKauttaRahoitettu = LukionOpiskeluoikeusjakso(alku = date(2000, 1, 1), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.muutaKauttaRahoitettu))
+
+    val aineopiskeluMuutaKauttaRahoitettu = aineopintojenOppimääräOo.copy(
+      tila = LukionOpiskeluoikeudenTila(List(opiskeluoikeusjaksoMuutaKauttaRahoitettu))
+    )
+
+    val muutaKauttaRahoitettuAineopiskelija = Oppija(opiskelijaRahoituspuljaus, opiskeluoikeudet = List(aineopiskeluMuutaKauttaRahoitettu))
+    putOppija(muutaKauttaRahoitettuAineopiskelija) {
       verifyResponseStatusOk()
     }
-    putOppija(Oppija(aikuisOpiskelija, List(aikuistenOpsilla))) {
+
+    val aineopiskeluAikuistenOpsMuutaKauttaRahoitettu = aineopinnotAikuistenOps.copy(
+      tila = LukionOpiskeluoikeudenTila(List(opiskeluoikeusjaksoMuutaKauttaRahoitettu))
+    )
+
+    val muutaKauttaRahoitettuAineopiskelijaAikuistenOps = Oppija(aikuisOpiskelijaVieraskielinen, List(aineopiskeluAikuistenOpsMuutaKauttaRahoitettu))
+    putOppija(muutaKauttaRahoitettuAineopiskelijaAikuistenOps) {
       verifyResponseStatusOk()
     }
+
+    val muutaKauttaRahoitettuAineopiskelijaAikuistenOps2 = Oppija(aikuisOpiskelijaMuuRahoitus, List(aineopiskeluAikuistenOpsMuutaKauttaRahoitettu))
+    putOppija(muutaKauttaRahoitettuAineopiskelijaAikuistenOps2) {
+      verifyResponseStatusOk()
+    }
+
     reloadRaportointikanta
   }
 
@@ -161,21 +192,24 @@ class Lukio2019OpintopistekertymaRaporttiSpec extends AnyFreeSpec with Raportoin
         jyväskylänAikuisAineopiskelijat.oppilaitosOid shouldBe(MockOrganisaatiot.jyväskylänNormaalikoulu)
       }
       "Yhteensä" in {
-        jyväskylänAikuisAineopiskelijat.opintopisteitaYhteensa shouldBe(8)
+        jyväskylänAikuisAineopiskelijat.opintopisteitaYhteensa shouldBe(24)
       }
       "Suoritettuja" in {
-        jyväskylänAikuisAineopiskelijat.suoritettujaOpintopisteita shouldBe(4)
+        jyväskylänAikuisAineopiskelijat.suoritettujaOpintopisteita shouldBe(12)
       }
       "Tunnustettuja" in {
-        jyväskylänAikuisAineopiskelijat.tunnustettujaOpintopisteita shouldBe(4)
+        jyväskylänAikuisAineopiskelijat.tunnustettujaOpintopisteita shouldBe(12)
       }
       "Tunnustettuja rahoituksen piirissä" in {
-        jyväskylänAineopiskelijat.tunnustettujaOpintopisteita_rahoituksenPiirissa shouldBe(0)
+        jyväskylänAikuisAineopiskelijat.tunnustettujaOpintopisteita_rahoituksenPiirissa shouldBe(0)
+      }
+      "Muuta kautta rahoitettuja" in {
+        jyväskylänAikuisAineopiskelijat.suoritetutTaiRahoitetut_muutaKauttaRahoitetut shouldBe(4)
       }
     }
     "Muuta kautta rahoitetuttujen välilehti" - {
-      "Listan pituus sama kuin aineopiskelijoiden välilehdellä oleva laskuri jaettuna yleisimmällä moduulien laajuudella (2)" in {
-        jyväskylänMuutaKauttaRahoitetut.length shouldBe jyväskylänAineopiskelijat.suoritetutTaiRahoitetut_muutaKauttaRahoitetut/2
+      "Listan pituus" in {
+        jyväskylänMuutaKauttaRahoitetut.length shouldBe 6
       }
     }
     "Rahoitusmuoto ei tiedossa -välilehti" - {
@@ -189,8 +223,8 @@ class Lukio2019OpintopistekertymaRaporttiSpec extends AnyFreeSpec with Raportoin
       }
     }
     "Eri vuonna korotetut kurssit -välilehti" - {
-      "Listan pituus sama kuin aineopiskelijoiden välilehdellä oleva laskuri jaettuna yleisimmällä moduulien laajuudella (2) plus yksi aikuisten opsista" in {
-        jyväskylänOpiskeluoikeudenEriVuonnaArvioidut.length shouldBe jyväskylänAineopiskelijat.eriVuonnaKorotettujaOpintopisteita / 2 + 1
+      "Listan pituus" in {
+        jyväskylänOpiskeluoikeudenEriVuonnaArvioidut.length shouldBe 5
       }
     }
   }

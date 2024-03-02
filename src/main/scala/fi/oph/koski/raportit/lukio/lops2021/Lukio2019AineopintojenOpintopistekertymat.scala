@@ -136,6 +136,7 @@ object Lukio2019AineopintojenOpintopistekertymat extends DatabaseConverters {
               tunnustettu = false
               or tunnustettu_rahoituksen_piirissa
             )
+            and (oppimaara_koodiarvo = ${oppimäärä.arvo} or (${oppimäärä.arvo} = 'nuortenops' and oppimaara_koodiarvo is null))
         group by oppilaitos_oid
       ) opiskeluoikeuden_ulkopuoliset
           on opiskeluoikeuden_ulkopuoliset.oppilaitos_oid = aineopintojen_opintopistekertymat.oppilaitos_oid
@@ -147,6 +148,8 @@ object Lukio2019AineopintojenOpintopistekertymat extends DatabaseConverters {
         where opintojen_rahoitus = '6'
           and oppilaitos_oid = any($oppilaitosOids)
           and (arviointi_paiva between $aikaisintaan and $viimeistaan)
+          and (oppimaara_koodiarvo = ${oppimäärä.arvo} or (${oppimäärä.arvo} = 'nuortenops' and oppimaara_koodiarvo is null))
+          and osasuorituksen_tyyppi = 'lukionvaltakunnallinenmoduuli'
         group by oppilaitos_oid
       ) muuta_kautta_rahoitetut
           on muuta_kautta_rahoitetut.oppilaitos_oid = aineopintojen_opintopistekertymat.oppilaitos_oid
@@ -158,6 +161,7 @@ object Lukio2019AineopintojenOpintopistekertymat extends DatabaseConverters {
         where opintojen_rahoitus is null
           and oppilaitos_oid = any($oppilaitosOids)
           and (arviointi_paiva between $aikaisintaan and $viimeistaan)
+          and (oppimaara_koodiarvo = ${oppimäärä.arvo} or (${oppimäärä.arvo} = 'nuortenops' and oppimaara_koodiarvo is null))
         group by oppilaitos_oid
       ) rahoitusmuoto_ei_tiedossa
           on rahoitusmuoto_ei_tiedossa.oppilaitos_oid = aineopintojen_opintopistekertymat.oppilaitos_oid
