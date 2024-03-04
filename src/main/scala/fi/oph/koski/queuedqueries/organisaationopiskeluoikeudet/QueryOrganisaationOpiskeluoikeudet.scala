@@ -14,12 +14,14 @@ import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, Logging}
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryContext
 import fi.oph.koski.queuedqueries.QueryUtils.defaultOrganisaatio
 import fi.oph.koski.queuedqueries.{QueryParameters, QueryResultWriter}
-import fi.oph.koski.schema.Organisaatio
+import fi.oph.koski.schema.{Henkilö, Organisaatio}
 import fi.oph.koski.util.ChainingSyntax.chainingOps
+import fi.oph.koski.util.Retry.retryWithInterval
 import slick.jdbc.SQLActionBuilder
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import scala.concurrent.duration.DurationInt
 
 trait QueryOrganisaationOpiskeluoikeudet extends QueryParameters with DatabaseConverters with Logging {
   def organisaatioOid: Option[String]
@@ -87,13 +89,15 @@ trait QueryOrganisaationOpiskeluoikeudet extends QueryParameters with DatabaseCo
     SQLHelpers.concat(sql"SELECT DISTINCT oppija_oid FROM opiskeluoikeus ", filters).as[(String)]
   )
 
-  protected def forEachOpiskeluoikeus(
+  protected def forEachOpiskeluoikeusAndHenkilö(
     application: KoskiApplication,
     filters: SQLActionBuilder,
     oppijaOids: Seq[String])(f: (LaajatOppijaHenkilöTiedot, Seq[KoskiOpiskeluoikeusRow]) => Unit,
   ): Unit =
-    oppijaOids.foreach {
-      application.henkilöRepository.findByOid(_, findMasterIfSlaveOid = true).map { henkilö =>
+    oppijaOids.foreach { oid =>
+      retryWithInterval(5, 5.minutes.toMillis) {
+        application.opintopolkuHenkilöFacade.findOppijaByOid(oid)
+      }.map { henkilö =>
         val henkilöFilter = SQLHelpers.concat(filters, sql"AND oppija_oid = ANY(${henkilö.kaikkiOidit})")
         val opiskeluoikeudet = QueryMethods.runDbSync(
           getDb(application),
@@ -102,4 +106,25 @@ trait QueryOrganisaationOpiskeluoikeudet extends QueryParameters with DatabaseCo
         f(henkilö, opiskeluoikeudet)
       }
     }
+
+  protected def forEachOpiskeluoikeus(
+    application: KoskiApplication,
+    filters: SQLActionBuilder,
+    oppijaOids: Seq[String])(f: KoskiOpiskeluoikeusRow => Unit,
+  ): Unit =
+    oppijaOids.foreach { oid =>
+      QueryMethods.runDbSync(application.henkilöCache.db, application.henkilöCache.getCachedAction(oid))
+        .map { henkilö =>
+          val oids = List(henkilö.henkilöRow.oid) ++
+            henkilö.henkilöRow.masterOid.toList ++
+            henkilö.henkilöRow.masterOid.map(application.henkilöCache.resolveLinkedOids).toList.flatten
+          val henkilöFilter = SQLHelpers.concat(filters, sql"AND oppija_oid = ANY(${oids})")
+          val opiskeluoikeudet = QueryMethods.runDbSync(
+            getDb(application),
+            SQLHelpers.concat(sql"SELECT * FROM opiskeluoikeus ", henkilöFilter).as[KoskiOpiskeluoikeusRow]
+          )
+          opiskeluoikeudet.foreach(f)
+        }
+    }
+
 }

@@ -29,7 +29,7 @@ case class QueryOrganisaationOpiskeluoikeudetJson(
     val filters = defaultBaseFilter(oppilaitosOids)
     val oppijaOids = getOppijaOids(db, filters)
 
-    forEachOpiskeluoikeus(application, filters, oppijaOids) { (henkilö, opiskeluoikeudet) =>
+    forEachOpiskeluoikeusAndHenkilö(application, filters, oppijaOids) { (henkilö, opiskeluoikeudet) =>
       writer.putJson(henkilö.oid, Oppija(
         henkilö = application.henkilöRepository.oppijaHenkilöToTäydellisetHenkilötiedot(henkilö),
         opiskeluoikeudet = opiskeluoikeudet.flatMap(toKoskeenTallennettavaOpiskeluoikeus(application)),

@@ -27,6 +27,9 @@ class KoskiHenkilöCache(val db: DB) extends Logging with DatabaseExecutionConte
   def resolveLinkedOids(masterOids: Seq[String]): Seq[String] =
     runDbSync(Henkilöt.filter(_.masterOid inSetBind masterOids).map(_.oid).result)
 
+  def resolveLinkedOids(masterOid: String): Seq[String] =
+    runDbSync(Henkilöt.filter(_.masterOid === masterOid).map(_.oid).result)
+
   private def addMasterIfNecessary(master: Option[OppijaHenkilö]) =
     master.map { m =>
       addHenkilö(m.oid, toHenkilöRow(m, None))
