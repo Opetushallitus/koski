@@ -135,10 +135,13 @@ trait PutOpiskeluoikeusTestMethods[Oikeus <: Opiskeluoikeus] extends Opiskeluoik
   )
 
   def readPutOppijaResponse: PutOppijaResponse = {
-    SchemaValidatingExtractor.extract[PutOppijaResponse](JsonMethods.parse(body)).right.get
+    SchemaValidatingExtractor.extract[PutOppijaResponse](JsonMethods.parse(body)) match {
+      case Right(response) => response
+      case Left(error) => throw new RuntimeException("Put-responsen deserialisointi epäonnistui: "+ error.toString)
+    }
   }
 }
 
 case class PutOppijaResponse(henkilö: ResponseHenkilö, opiskeluoikeudet: List[ResponseOpiskeluoikeus])
 case class ResponseHenkilö(oid: String)
-case class ResponseOpiskeluoikeus(oid: String, versionumero: Int)
+case class ResponseOpiskeluoikeus(oid: String, versionumero: Int, lähdejärjestelmänId: Option[LähdejärjestelmäId])
