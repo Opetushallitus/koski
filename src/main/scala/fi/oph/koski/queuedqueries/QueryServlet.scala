@@ -67,6 +67,7 @@ case class QueryResponse(
   workStartTime: Option[LocalDateTime] = None,
   endTime: Option[LocalDateTime] = None,
   resultsApi: Option[String] = None,
+  password: Option[String] = None,
   files: Option[List[String]] = None,
 ) {
   def withResponseUrl(rootUrl: String): QueryResponse = copy(
@@ -75,6 +76,10 @@ case class QueryResponse(
   def withFiles(rootUrl: String, query: CompleteQuery): QueryResponse = copy(
     files = Some(query.resultFiles.map(name => s"$rootUrl/api/kyselyt/${query.queryId}/$name"))
   )
+
+  def withPassword(meta: Option[QueryMeta]): QueryResponse = copy(
+    password = meta.flatMap(_.password),
+  )
 }
 
 object QueryResponse {
@@ -82,6 +87,8 @@ object QueryResponse {
     case q: PendingQuery => QueryResponse(q.queryId, QueryState.pending, q.userOid, q.query, q.createdAt)
     case q: RunningQuery => QueryResponse(q.queryId, QueryState.running, q.userOid, q.query, q.createdAt, Some(q.startedAt))
     case q: FailedQuery => QueryResponse(q.queryId, QueryState.failed, q.userOid, q.query, q.createdAt, Some(q.startedAt), Some(q.finishedAt))
-    case q: CompleteQuery => QueryResponse(q.queryId, QueryState.complete, q.userOid, q.query, q.createdAt, Some(q.startedAt), Some(q.finishedAt)).withFiles(rootUrl, q)
+    case q: CompleteQuery => QueryResponse(q.queryId, QueryState.complete, q.userOid, q.query, q.createdAt, Some(q.startedAt), Some(q.finishedAt))
+      .withFiles(rootUrl, q)
+      .withPassword(q.meta)
   }
 }

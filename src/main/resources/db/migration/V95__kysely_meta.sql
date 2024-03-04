@@ -1,0 +1,1 @@
+ALTER TABLE kysely ADD COLUMN meta JSONB;

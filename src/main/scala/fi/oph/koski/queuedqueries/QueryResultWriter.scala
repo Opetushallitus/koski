@@ -1,38 +1,182 @@
 package fi.oph.koski.queuedqueries
 
 import fi.oph.koski.json.JsonSerializer
-import org.json4s.JValue
+import fi.oph.koski.localization.LocalizationReader
+import fi.oph.koski.raportit.{DataSheet, ExcelWriter, OppilaitosRaporttiResponse}
+import fi.oph.koski.util.CsvFormatter
+import software.amazon.awssdk.core.internal.sync.FileContentStreamProvider
 import software.amazon.awssdk.http.ContentStreamProvider
 
-import java.io.InputStream
+import java.io.{BufferedOutputStream, FileOutputStream, InputStream, OutputStream}
+import java.nio.file.{Files, Path}
 import java.util.UUID
 import scala.collection.mutable
 import scala.reflect.runtime.universe.TypeTag
+import scala.util.Using
 
 case class QueryResultWriter(
   queryId: UUID,
+  queries: QueryRepository,
   results: QueryResultsRepository,
 ) {
-  var files: mutable.Queue[String] = mutable.Queue[String]()
+  var objectKeys: mutable.Queue[String] = mutable.Queue[String]()
 
   def putJson(name: String, json: String): Unit =
     results.put(
       queryId = queryId,
-      name = newFile(name, "json"),
+      name = newObjectKey(s"$name.json"),
       provider = StringStreamProvider(json),
-      contentType = "application/json",
+      contentType = QueryFormat.json,
     )
 
   def putJson[T: TypeTag](name: String, obj: T): Unit =
     putJson(name, JsonSerializer.writeWithRoot(obj))
 
-  private def newFile(name: String, ext: String): String = {
-    val filename = s"$name.$ext"
-    if (files.contains(filename)) {
-      throw new RuntimeException(s"$filename already exists")
+  def createCsv[T <: Product](name: String)(implicit manager: Using.Manager): CsvStream[T] =
+    manager(new CsvStream[T](s"$queryId-$name", provider => results.put(
+      queryId = queryId,
+      name = newObjectKey(s"$name.csv"),
+      provider = provider,
+      contentType = QueryFormat.csv,
+    )))
+
+  def createStream(name: String, contentType: String)(implicit manager: Using.Manager): UploadStream =
+    manager(new UploadStream(s"$queryId-$name", provider => results.put(
+      queryId = queryId,
+      name = newObjectKey(name),
+      provider = provider,
+      contentType = contentType,
+    )))
+
+  def putReport(report: OppilaitosRaporttiResponse, format: String, localizationReader: LocalizationReader)(implicit manager: Using.Manager): Unit = {
+    format match {
+      case QueryFormat.csv =>
+        val datasheets = report.sheets.collect { case s: DataSheet => s }
+        datasheets
+          .foreach { sheet =>
+            val name = if (datasheets.length > 1) {
+              CsvFormatter.snakecasify(sheet.title)
+            } else {
+              report.filename.replace(".xlsx", "")
+            }
+            val csv = createCsv[Product](name)
+            manager.acquire(csv)
+            csv.put(sheet.rows)
+            csv.save()
+          }
+      case QueryFormat.xlsx =>
+        val upload = createStream(report.filename, format)
+        manager.acquire(upload)
+        ExcelWriter.writeExcel(
+          report.workbookSettings,
+          report.sheets,
+          ExcelWriter.BooleanCellStyleLocalizedValues(localizationReader),
+          upload.output,
+        )
+        upload.save()
+      case format: Any =>
+        throw new Exception(s"$format is not a supported datasheet export format")
     }
-    files += filename
-    filename
+  }
+
+  def patchMeta(meta: QueryMeta): QueryMeta = queries.patchMeta(queryId.toString, meta)
+
+  private def newObjectKey(objectKey: String): String = {
+    if (objectKeys.contains(objectKey)) {
+      throw new RuntimeException(s"$objectKey already exists")
+    }
+    objectKeys += objectKey
+    objectKey
+  }
+}
+
+class CsvStream[T <: Product](name: String, uploadWith: (ContentStreamProvider) => Unit) extends AutoCloseable {
+  val temporaryFile: Path = Files.createTempFile(s"$name-", ".csv")
+  private val fileStream: FileOutputStream = new FileOutputStream(temporaryFile.toFile)
+  private val outputStream: BufferedOutputStream = new BufferedOutputStream(fileStream)
+  private var headerWritten: Boolean = false
+
+  def put(data: T): Unit = {
+    if (!headerWritten) {
+      headerWritten = true
+      write(headerOf(data))
+    }
+    write(recordOf(data))
+  }
+
+  def put(data: Seq[T]): Unit =
+    data.foreach { put }
+
+  def close(): Unit = {
+    closeIntermediateStreams()
+    deleteTemporaryFile()
+  }
+
+  def save(): Unit = {
+    closeIntermediateStreams()
+    if (headerWritten) {
+      uploadWith(provider)
+    }
+    deleteTemporaryFile()
+  }
+
+  def provider: ContentStreamProvider = new FileContentStreamProvider(temporaryFile)
+
+  private def closeIntermediateStreams(): Unit = {
+    outputStream.close()
+    fileStream.close()
+  }
+
+  private def deleteTemporaryFile(): Unit = {
+    if (Files.exists(temporaryFile)) {
+      Files.delete(temporaryFile)
+    }
+  }
+
+  private def write(data: String): Unit =
+    outputStream.write(data.getBytes("UTF-8"))
+
+  private def recordOf(data: T): String =
+    CsvFormatter.formatRecord(data.productIterator.to)
+
+  private def headerOf(data: T): String =
+    CsvFormatter.formatRecord(
+      data.getClass
+        .getDeclaredFields
+        .map(_.getName)
+        .map(CsvFormatter.snakecasify)
+    )
+}
+
+class UploadStream(name: String, uploadWith: (ContentStreamProvider) => Unit) extends AutoCloseable {
+  val temporaryFile: Path = Files.createTempFile(s"$name-", ".tmp")
+  private val fileStream: FileOutputStream = new FileOutputStream(temporaryFile.toFile)
+  private val outputStream: BufferedOutputStream = new BufferedOutputStream(fileStream)
+
+  def output: OutputStream = outputStream
+
+  def provider: ContentStreamProvider = new FileContentStreamProvider(temporaryFile)
+
+  def save(): Unit = {
+    closeIntermediateStreams()
+    uploadWith(provider)
+    deleteTemporaryFile()
+  }
+
+  def close(): Unit = {
+    closeIntermediateStreams()
+    deleteTemporaryFile()
+  }
+
+  private def closeIntermediateStreams(): Unit = {
+    outputStream.close()
+    fileStream.close()
+  }
+
+  private def deleteTemporaryFile(): Unit = {
+    if (Files.exists(temporaryFile)) {
+      Files.delete(temporaryFile)
+    }
   }
 }
 

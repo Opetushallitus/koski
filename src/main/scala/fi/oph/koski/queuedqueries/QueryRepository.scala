@@ -7,6 +7,7 @@ import fi.oph.koski.koskiuser.{AuthenticationUser, KoskiSpecificSession, Käytt�
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.validation.ValidatingAndResolvingExtractor
+import org.json4s.JValue
 import org.json4s.jackson.JsonMethods
 import slick.jdbc.GetResult
 
@@ -132,13 +133,23 @@ class QueryRepository(
       .collect { case q: FailedQuery => q }
   }
 
+  def patchMeta(id: String, meta: QueryMeta): QueryMeta = {
+    val json = JsonSerializer.serializeWithRoot(meta)
+    runDbSync(sql"""
+      UPDATE kysely
+      SET meta = COALESCE(meta, '{}'::jsonb) || $json
+      WHERE id = $id::uuid
+      RETURNING meta
+    """.as[QueryMeta]).head
+  }
 
   implicit private val getQueryResult: GetResult[Query] = GetResult[Query] { r =>
     val id = r.rs.getString("id")
     val userOid = r.rs.getString("user_oid")
     val session = r.rs.getString("session")
-    val query = parseParameters(r.rs.getString("query"))
+    val query = parseParameters(r.getJson("query"))
     val creationTime = r.rs.getTimestamp("created_at").toLocalDateTime
+    val meta = r.getNullableJson("meta").map(parseMeta)
 
     r.rs.getString("state") match {
       case QueryState.pending => PendingQuery(
@@ -147,6 +158,7 @@ class QueryRepository(
         session = session,
         query = query,
         createdAt = creationTime,
+        meta = meta,
       )
       case QueryState.running => RunningQuery(
         queryId = id,
@@ -155,7 +167,8 @@ class QueryRepository(
         query = query,
         createdAt = creationTime,
         startedAt = r.rs.getTimestamp("started_at").toLocalDateTime,
-        worker = r.rs.getString("worker")
+        worker = r.rs.getString("worker"),
+        meta = meta,
       )
       case QueryState.complete => CompleteQuery(
         queryId = id,
@@ -167,6 +180,7 @@ class QueryRepository(
         finishedAt = r.rs.getTimestamp("finished_at").toLocalDateTime,
         worker = r.rs.getString("worker"),
         resultFiles = r.getArray("result_files").toList,
+        meta = meta,
       )
       case QueryState.failed => FailedQuery(
         queryId = id,
@@ -178,14 +192,20 @@ class QueryRepository(
         finishedAt = r.rs.getTimestamp("finished_at").toLocalDateTime,
         worker = r.rs.getString("worker"),
         error = r.rs.getString("error"),
+        meta = meta,
       )
     }
   }
 
-  private def parseParameters(parameters: String): QueryParameters = {
-    val json = JsonMethods.parse(parameters)
-    extractor.extract[QueryParameters](strictDeserialization)(json).right.get // TODO: parempi virheenhallinta siltä varalta että parametrit eivät deserialisoidukaan
+  implicit private val getQueryMetaResult: GetResult[QueryMeta] = GetResult[QueryMeta] { r =>
+    parseMeta(r.<<[JValue])
   }
+
+  private def parseParameters(parameters: JValue): QueryParameters =
+    extractor.extract[QueryParameters](strictDeserialization)(parameters).right.get // TODO: parempi virheenhallinta siltä varalta että parametrit eivät deserialisoidukaan
+
+  private def parseMeta(meta: JValue): QueryMeta =
+    extractor.extract[QueryMeta](strictDeserialization)(meta).right.get // TODO: parempi virheenhallinta siltä varalta että parametrit eivät deserialisoidukaan
 }
 
 trait Query {
@@ -210,6 +230,7 @@ case class PendingQuery(
   query: QueryParameters,
   createdAt: LocalDateTime,
   session: String,
+  meta: Option[QueryMeta],
 ) extends Query {
   def state: String = QueryState.pending
 }
@@ -222,6 +243,7 @@ case class RunningQuery(
   startedAt: LocalDateTime,
   worker: String,
   session: String,
+  meta: Option[QueryMeta],
 ) extends Query {
   def state: String = QueryState.running
 }
@@ -236,6 +258,7 @@ case class CompleteQuery(
   worker: String,
   resultFiles: List[String],
   session: String,
+  meta: Option[QueryMeta],
 ) extends Query {
     def state: String = QueryState.complete
 }
@@ -250,6 +273,7 @@ case class FailedQuery(
   worker: String,
   error: String,
   session: String,
+  meta: Option[QueryMeta],
 ) extends Query {
     def state: String = QueryState.failed
 }
@@ -304,3 +328,7 @@ object StorableSession {
     )
   }
 }
+
+case class QueryMeta(
+  password: Option[String],
+)

@@ -37,7 +37,7 @@ object OpiskeluoikeusLoaderRowBuilder extends Logging {
     sisältyvätKokeet: List[YlioppilastutkinnonSisältyväKoe]
   )
 
-  private[raportointikanta] def buildKoskiRow(inputRow: OpiskeluoikeusRow): Either[LoadErrorResult, KoskiOutputRows] = {
+  def buildKoskiRow(inputRow: OpiskeluoikeusRow): Either[LoadErrorResult, KoskiOutputRows] = {
     Try {
       val toOpiskeluoikeusUnsafeStartTime = System.nanoTime()
       val oo = inputRow.toOpiskeluoikeusUnsafe(KoskiSpecificSession.systemUser)

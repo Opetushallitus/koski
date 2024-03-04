@@ -11,6 +11,7 @@ import fi.oph.koski.schema.{FilterNonAnnotationableSensitiveData, _}
 import fi.oph.scalaschema.extraction.ValidationError
 import fi.oph.scalaschema.{Serializer, _}
 import org.json4s._
+import slick.jdbc.GetResult
 import slick.lifted.ProvenShape
 
 object KoskiTables {
@@ -409,6 +410,7 @@ object KoskiTables {
     val worker = column[Option[String]]("worker")
     val resultFiles = column[Option[List[String]]]("result_files")
     val error = column[Option[String]]("error")
+    val meta = column[Option[JValue]]("meta")
 
     def * : ProvenShape[KyselyRow] = (
       id,
@@ -421,7 +423,8 @@ object KoskiTables {
       finishedAt,
       worker,
       resultFiles,
-      error
+      error,
+      meta,
     ) <> (KyselyRow.tupled, KyselyRow.unapply)
   }
 
@@ -572,6 +575,31 @@ case class KoskiOpiskeluoikeusRow(id: Int,
   }
 }
 
+object KoskiOpiskeluoikeusRowImplicits {
+  implicit val getKoskiOpiskeluoikeusRow: GetResult[KoskiOpiskeluoikeusRow] = GetResult { r =>
+    KoskiOpiskeluoikeusRow(
+      id = r.rs.getInt("id"),
+      oid = r.rs.getString("oid"),
+      versionumero = r.rs.getInt("versionumero"),
+      aikaleima = r.rs.getTimestamp("aikaleima"),
+      oppijaOid = r.rs.getString("oppija_oid"),
+      oppilaitosOid = r.rs.getString("oppilaitos_oid"),
+      koulutustoimijaOid = Option(r.rs.getString("koulutustoimija_oid")),
+      sisältäväOpiskeluoikeusOid = Option(r.rs.getString("sisaltava_opiskeluoikeus_oid")),
+      sisältäväOpiskeluoikeusOppilaitosOid = Option(r.rs.getString("sisaltava_opiskeluoikeus_oppilaitos_oid")),
+      data = r.getJson("data"),
+      luokka = Option(r.rs.getString("luokka")),
+      mitätöity = r.rs.getBoolean("mitatoity"),
+      koulutusmuoto = r.rs.getString("koulutusmuoto"),
+      alkamispäivä = r.rs.getDate("alkamispaiva"),
+      päättymispäivä = Option(r.rs.getDate("paattymispaiva")),
+      suoritusjakoTehty = r.rs.getBoolean("suoritusjako_tehty_rajapaivan_jalkeen"),
+      suoritustyypit = r.getArray("suoritustyypit").toList,
+      poistettu = r.rs.getBoolean("poistettu"),
+    )
+  }
+}
+
 case class YtrOpiskeluoikeusRow(id: Int,
   oid: String,
   versionumero: Int,
@@ -696,4 +724,5 @@ case class KyselyRow(
   worker: Option[String] = None,
   resultFiles: Option[List[String]] = None,
   error: Option[String] = None,
+  meta: Option[JValue] = None,
 )

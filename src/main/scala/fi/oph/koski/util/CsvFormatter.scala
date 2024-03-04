@@ -4,7 +4,7 @@ import fi.oph.koski.json.JsonSerializer
 import org.json4s.JsonAST.JValue
 import org.json4s.jackson.JsonMethods
 
-import java.sql.Timestamp
+import java.sql.{Date, Timestamp}
 import java.time.{LocalDate, LocalDateTime}
 import java.time.format.DateTimeFormatter
 
@@ -22,12 +22,14 @@ object CsvFormatter {
       case Some(a: Any) => formatField(a)
       case None => ""
       case s: String => formatString(s)
-      case t: Timestamp => t.toLocalDateTime.format(DateTimeFormatter.ISO_DATE_TIME)
       case n: Number => n.toString
+      case b: Boolean => b.toString
       case t: LocalDate => t.format(DateTimeFormatter.ISO_DATE)
       case t: LocalDateTime => t.format(DateTimeFormatter.ISO_DATE_TIME)
+      case t: Timestamp => t.toLocalDateTime.format(DateTimeFormatter.ISO_DATE_TIME)
+      case t: Date => t.toLocalDate.format(DateTimeFormatter.ISO_DATE)
       case j: JValue => formatString(JsonMethods.compact(j))
-      case a: AnyRef => formatString(JsonSerializer.writeWithRoot(a))
+      case a: AnyRef => a.toString
     }
 
   def formatString(field: String): String =
@@ -40,4 +42,21 @@ object CsvFormatter {
 
   def requiresQuotes(field: String): Boolean =
     List("\"", "\\", ",", "\n").exists(field.contains)
+
+  def snakecasify(value: String): String = {
+    val replacements = Map(
+      'ä' -> 'a',
+      'ö' -> 'o',
+      'å' -> 'a',
+      ' ' -> '_',
+    )
+    val s = value
+      .foldLeft(("", false)) { case ((out, prevUpper), char) =>
+        val upper = char.isUpper
+        (s"$out${if (upper && !prevUpper) "_" else ""}${char}", upper)
+      }
+      ._1
+      .toLowerCase
+    replacements.foldLeft(s) { case (in, (from, to)) => in.replace(from, to) }
+  }
 }

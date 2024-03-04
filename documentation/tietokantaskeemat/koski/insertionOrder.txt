@@ -10,6 +10,7 @@ perustiedot_sync
 suoritusjako
 ytr_opiskeluoikeushistoria
 casserviceticket
+kysely
 mydata_jako
 opiskeluoikeus_fixture
 opiskeluoikeushistoria_fixture
