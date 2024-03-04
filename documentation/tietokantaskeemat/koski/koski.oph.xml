@@ -8,7 +8,7 @@
       <sequence increment="1" name="ytr_download_status_id_seq" startValue="1"/>
    </sequences>
    <tables>
-      <table name="casserviceticket" remarks="" schema="oph" type="TABLE">
+      <table name="casserviceticket" numRows="6" remarks="" schema="oph" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="serviceticket" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="username" nullable="false" remarks="" size="2147483647" type="text" typeCode="12">
             <parent column="username" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" schema="oph" table="oppilaitos_ip_osoite"/>
@@ -25,7 +25,7 @@
             <column ascending="true" name="serviceticket"/>
          </index>
       </table>
-      <table name="henkilo" numRows="183" remarks="" schema="oph" type="TABLE">
+      <table name="henkilo" numRows="186" remarks="" schema="oph" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="oid" nullable="false" remarks="" size="2147483647" type="text" typeCode="12">
             <child column="master_oid" foreignKey="henkilo_master_oid_fkey" implied="false" onDeleteCascade="false" schema="oph" table="henkilo"/>
             <child column="oppija_oid" foreignKey="opiskeluoikeus_oppija_oid" implied="false" onDeleteCascade="false" schema="oph" table="opiskeluoikeus"/>
@@ -44,6 +44,32 @@
          <index name="henkilo_kokonimi_idx" unique="false"/>
          <index name="henkilo_master_oid_idx" unique="false">
             <column ascending="true" name="master_oid"/>
+         </index>
+      </table>
+      <table name="kysely" numRows="35" remarks="" schema="oph" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="id" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="user_oid" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="session" nullable="false" remarks="" size="2147483647" type="jsonb" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="query" nullable="false" remarks="" size="2147483647" type="jsonb" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="state" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="now()" digits="6" id="5" name="created_at" nullable="false" remarks="" size="35" type="timestamptz" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="6" name="started_at" nullable="true" remarks="" size="35" type="timestamptz" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="7" name="finished_at" nullable="true" remarks="" size="35" type="timestamptz" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="worker" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="result_files" nullable="true" remarks="" size="2147483647" type="_text" typeCode="2003"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="error" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="foobar" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="meta" nullable="true" remarks="" size="2147483647" type="jsonb" typeCode="1111"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="kysely_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="kysely_index_for_get_existing" unique="false">
+            <column ascending="true" name="user_oid"/>
+            <column ascending="true" name="query"/>
+         </index>
+         <index name="kysely_index_for_take_next" unique="false">
+            <column ascending="true" name="state"/>
          </index>
       </table>
       <table name="mydata_jako" remarks="" schema="oph" type="TABLE">
@@ -237,7 +263,7 @@
             <column ascending="true" name="id"/>
          </index>
       </table>
-      <table name="poistettu_opiskeluoikeus" remarks="" schema="oph" type="TABLE">
+      <table name="poistettu_opiskeluoikeus" numRows="1" remarks="" schema="oph" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="oid" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="oppilaitos_nimi" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="oppilaitos_oid" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
@@ -276,7 +302,7 @@
             <column ascending="true" name="koulutustoimija_oid"/>
          </index>
       </table>
-      <table name="scheduler" numRows="5" remarks="" schema="oph" type="TABLE">
+      <table name="scheduler" numRows="7" remarks="" schema="oph" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="name" nullable="false" remarks="" size="2147483647" type="text" typeCode="12">
             <child column="name" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" schema="oph" table="casserviceticket"/>
          </column>
@@ -288,7 +314,7 @@
             <column ascending="true" name="name"/>
          </index>
       </table>
-      <table name="schema_version" numRows="94" remarks="" schema="oph" type="TABLE">
+      <table name="schema_version" numRows="95" remarks="" schema="oph" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="version_rank" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="installed_rank" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="version" nullable="false" remarks="" size="50" type="varchar" typeCode="12"/>
@@ -345,7 +371,7 @@
             <column ascending="true" name="secret"/>
          </index>
       </table>
-      <table name="ytr_alkuperainen_data" remarks="" schema="oph" type="TABLE">
+      <table name="ytr_alkuperainen_data" numRows="6" remarks="" schema="oph" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="oppija_oid" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="now()" digits="6" id="1" name="aikaleima" nullable="false" remarks="" size="21" type="timetz" typeCode="92"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="data" nullable="true" remarks="" size="2147483647" type="jsonb" typeCode="1111"/>
@@ -354,7 +380,7 @@
             <column ascending="true" name="oppija_oid"/>
          </index>
       </table>
-      <table name="ytr_download_status" remarks="" schema="oph" type="TABLE">
+      <table name="ytr_download_status" numRows="55" remarks="" schema="oph" type="TABLE">
          <column autoUpdated="true" defaultValue="nextval('ytr_download_status_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="serial" typeCode="4"/>
          <column autoUpdated="false" defaultValue="now()" digits="6" id="1" name="aikaleima" nullable="false" remarks="" size="35" type="timestamptz" typeCode="93"/>
          <column autoUpdated="false" defaultValue="null" digits="6" id="2" name="initialized" nullable="true" remarks="" size="35" type="timestamptz" typeCode="93"/>
@@ -366,7 +392,7 @@
             <column ascending="true" name="id"/>
          </index>
       </table>
-      <table name="ytr_opiskeluoikeus" remarks="" schema="oph" type="TABLE">
+      <table name="ytr_opiskeluoikeus" numRows="6" remarks="" schema="oph" type="TABLE">
          <column autoUpdated="true" defaultValue="nextval('opintooikeus_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="serial" typeCode="4">
             <child column="opiskeluoikeus_id" foreignKey="ytr_opiskeluoikeushistoria_ytr_opiskeluoikeus_id" implied="false" onDeleteCascade="false" schema="oph" table="ytr_opiskeluoikeushistoria"/>
          </column>
@@ -438,7 +464,7 @@
          <checkConstraint constraint="((NOT (data ? 'versionumero'::text)))" name="no_versionumero_in_json"/>
          <checkConstraint constraint="((koulutusmuoto = 'ylioppilastutkinto'::text))" name="ytr_opiskeluoikeus_only_ytr_koulutusmuoto_check"/>
       </table>
-      <table name="ytr_opiskeluoikeushistoria" remarks="" schema="oph" type="TABLE">
+      <table name="ytr_opiskeluoikeushistoria" numRows="6" remarks="" schema="oph" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="opiskeluoikeus_id" nullable="false" remarks="" size="10" type="int4" typeCode="4">
             <parent column="id" foreignKey="ytr_opiskeluoikeushistoria_ytr_opiskeluoikeus_id" implied="false" onDeleteCascade="false" schema="oph" table="ytr_opiskeluoikeus"/>
          </column>
