@@ -1,7 +1,7 @@
 package fi.oph.koski.kela
 
 import fi.oph.koski.schema
-import fi.oph.koski.schema.{Koodistokoodiviite, LukutaitokoulutuksenArviointi, VapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus}
+import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString}
 import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
 import fi.oph.scalaschema.annotation.{Description, OnlyWhen, Title}
 
@@ -144,12 +144,17 @@ trait VstSuoritus extends Suoritus {
   def withHyväksyntämerkinnälläKorvattuArvosana: VstSuoritus
 }
 
+case class KelaVapaanSivistystyönOpintojenSuorituksenOsaamisenTunnustaminen(
+   selite: LocalizedString
+)
+
 @Title("Vapaan sivistystyön osasuoritus")
 case class KelaVapaanSivistystyönOsasuoritus(
   koulutusmoduuli: KelaVapaanSivistystyönOsasuorituksenKoulutusmoduuli,
   arviointi: Option[List[KelaVSTOsasuorituksenArviointi]],
   osasuoritukset: Option[List[KelaVapaanSivistystyönOsasuoritus]],
   tyyppi: schema.Koodistokoodiviite,
+  tunnustettu: Option[KelaVapaanSivistystyönOpintojenSuorituksenOsaamisenTunnustaminen] = None
 ) extends Osasuoritus {
   def withHyväksyntämerkinnälläKorvattuArvosana: KelaVapaanSivistystyönOsasuoritus = copy(
     arviointi = arviointi.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
