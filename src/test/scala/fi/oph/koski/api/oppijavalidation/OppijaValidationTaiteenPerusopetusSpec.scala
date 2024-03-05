@@ -14,7 +14,7 @@ import fi.oph.koski.schema._
 import fi.oph.koski.suoritusjako.Suoritusjako
 import fi.oph.koski.tutkinto.Perusteet
 import fi.oph.koski.validation.KoskiValidator
-import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
+import fi.oph.koski.{DatabaseTestMethods, KoskiApplicationForTests, KoskiHttpSpec}
 import org.json4s.jackson.JsonMethods
 import org.json4s.{JObject, JString}
 import org.scalatest.freespec.AnyFreeSpec
@@ -27,7 +27,8 @@ class OppijaValidationTaiteenPerusopetusSpec
     with TutkinnonPerusteetTest[TaiteenPerusopetuksenOpiskeluoikeus]
     with OpiskeluoikeudenMitätöintiJaPoistoTestMethods
     with SearchTestMethods
-    with SuoritusjakoTestMethods {
+    with SuoritusjakoTestMethods
+    with DatabaseTestMethods {
   override def tag = implicitly[reflect.runtime.universe.TypeTag[TaiteenPerusopetuksenOpiskeluoikeus]]
 
   override def defaultOpiskeluoikeus = TPO.Opiskeluoikeus.aloitettuYleinenOppimäärä
@@ -902,7 +903,6 @@ class OppijaValidationTaiteenPerusopetusSpec
   }
 
   "Mitätöinti" - {
-
 
     "Opiskeluoikeuden voi mitätöidä PUT-rajapinnalla ja mitätöinti on poisto" in {
       val lähdejärjestelmänId = Some(

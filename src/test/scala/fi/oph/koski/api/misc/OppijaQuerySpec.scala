@@ -84,17 +84,20 @@ class OppijaQuerySpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeus
         queryOppijat("?opiskeluoikeusAlkanutAikaisintaan=2100-01-02&opiskeluoikeudenTila=eronnut").length should equal(0)
       }
       "mitätöityjä ei palauteta" in {
-        resetFixtures
+        val oo = setupOppijaWithAndGetOpiskeluoikeus(makeOpiskeluoikeus(), KoskiSpecificMockOppijat.koululainen)
+
         val ooCount = queryOppijat().flatMap(_.opiskeluoikeudet).length
-        val opiskeluoikeus = makeOpiskeluoikeus()
-        putOpiskeluoikeus(opiskeluoikeus.copy(tila =
-          opiskeluoikeus.tila.copy(opiskeluoikeusjaksot =
-            opiskeluoikeus.tila.opiskeluoikeusjaksot :+ AmmatillinenOpiskeluoikeusjakso(LocalDate.now, ExampleData.opiskeluoikeusMitätöity)
+
+        val mitätöityOo = oo.copy(tila =
+          oo.tila.copy(opiskeluoikeusjaksot =
+            oo.tila.opiskeluoikeusjaksot :+ AmmatillinenOpiskeluoikeusjakso(LocalDate.now, ExampleData.opiskeluoikeusMitätöity)
           )
-        ), KoskiSpecificMockOppijat.koululainen) {
+        )
+        putOpiskeluoikeus(mitätöityOo, KoskiSpecificMockOppijat.koululainen) {
           verifyResponseStatusOk()
         }
-        queryOppijat().flatMap(_.opiskeluoikeudet).length should equal(ooCount)
+
+        queryOppijat().flatMap(_.opiskeluoikeudet).length should equal(ooCount - 1)
       }
       "toimipistehaku" - {
         "toimipisteen OID:lla" in {

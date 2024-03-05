@@ -397,11 +397,13 @@ class OppijaValidationSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluo
             }
           }
           "mitatoity tila sallitaan viimeisenä" in {
-            val opiskeluoikeus = lisääTiloja(makeOpiskeluoikeus(), List(
+            val mitätöitäväOpiskeluoikeus = setupOppijaWithAndGetOpiskeluoikeus(makeOpiskeluoikeus())
+
+            val opiskeluoikeus = lisääTiloja(mitätöitäväOpiskeluoikeus, List(
               (date(2018, 1, 1), Koodistokoodiviite("valmistunut", "koskiopiskeluoikeudentila")),
               (date(2018, 1, 1), Koodistokoodiviite("mitatoity", "koskiopiskeluoikeudentila"))
             ))
-            setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
+            putOppija(makeOppija(defaultHenkilö, List(opiskeluoikeus))) {
               verifyResponseStatusOk()
             }
           }
@@ -409,11 +411,13 @@ class OppijaValidationSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluo
 
         "Päättävän tilan tyyppi" - {
           "kaksi päättävää tilaa kun viimeinen on mitatoity" in {
-            val opiskeluoikeus = lisääTiloja(makeOpiskeluoikeus(), List(
+            val mitätöitäväOpiskeluoikeus = setupOppijaWithAndGetOpiskeluoikeus(makeOpiskeluoikeus())
+
+            val opiskeluoikeus = lisääTiloja(mitätöitäväOpiskeluoikeus, List(
               (date(2018, 1, 1), Koodistokoodiviite("valmistunut", "koskiopiskeluoikeudentila")),
               (date(2018, 2, 2), Koodistokoodiviite("mitatoity", "koskiopiskeluoikeudentila"))
             ))
-            setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
+            putOppija(makeOppija(defaultHenkilö, List(opiskeluoikeus))) {
               verifyResponseStatusOk()
             }
           }

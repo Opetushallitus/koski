@@ -56,7 +56,8 @@ abstract class DatabaseFixtureCreator(application: KoskiApplication, opiskeluoik
       cachedPerustiedot = Some(
         luoOpiskeluoikeudetJaPerustiedot("default opiskeluoikeudet", defaultOpiskeluOikeudet) ++
         validationConfig.runWithoutValidations { luoOpiskeluoikeudetJaPerustiedot("invalid opiskeluoikeudet", invalidOpiskeluoikeudet) } ++
-        luoOpiskeluoikeudetJaPerustiedot("second batch opiskeluoikeudet", secondBatchOpiskeluOikeudet)
+        luoOpiskeluoikeudetJaPerustiedot("second batch opiskeluoikeudet", secondBatchOpiskeluOikeudet) ++
+        luoOpiskeluoikeudetJaPerustiedot("third batch päivitettävät opiskeluoikeudet", thirdBatchPäivitettävätOpiskeluOikeudet, allowUpdate = true)
       )
 
       application.perustiedotIndexer.sync(refresh = true)
@@ -79,7 +80,7 @@ abstract class DatabaseFixtureCreator(application: KoskiApplication, opiskeluoik
     }
   }
 
-  private def luoOpiskeluoikeudetJaPerustiedot(fixtureSetName: String, opiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)]): Seq[OpiskeluoikeudenOsittaisetTiedot] = {
+  private def luoOpiskeluoikeudetJaPerustiedot(fixtureSetName: String, opiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)], allowUpdate: Boolean = false): Seq[OpiskeluoikeudenOsittaisetTiedot] = {
     val adder = new OppijaServletOppijaAdder(application)
 
     opiskeluoikeudet.zipWithIndex.map { case ((henkilö, inputOo), index) =>
@@ -89,7 +90,7 @@ abstract class DatabaseFixtureCreator(application: KoskiApplication, opiskeluoik
       ))
 
       val perustiedot = for {
-        versiot       <- adder.add(user, oppijaJson, allowUpdate = false, requestDescription = "")
+        versiot       <- adder.add(user, oppijaJson, allowUpdate, requestDescription = "")
         oid           <- versiot.opiskeluoikeudet.headOption.map(_.oid).toRight(new Exception("Opiskeluoikeutta ei löydy, vaikka se äsken tallennettiin"))
         ooRow         <- application.possu.findByOidIlmanKäyttöoikeustarkistusta(oid)
         oo            <- ooRow.toOpiskeluoikeus
@@ -110,4 +111,5 @@ abstract class DatabaseFixtureCreator(application: KoskiApplication, opiskeluoik
   protected def defaultOpiskeluOikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)]
 
   protected def secondBatchOpiskeluOikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)]
+  protected def thirdBatchPäivitettävätOpiskeluOikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)]
 }

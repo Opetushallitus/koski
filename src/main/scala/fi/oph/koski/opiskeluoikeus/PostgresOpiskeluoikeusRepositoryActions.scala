@@ -146,13 +146,17 @@ trait PostgresOpiskeluoikeusRepositoryActions[OOROW <: OpiskeluoikeusRow, OOTABL
   }
 
   protected def createAction(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiSpecificSession): dbio.DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write] = {
-    oppijaOid.verified match {
-      case Some(henkilö) =>
-        val withMasterInfo = henkilöRepository.withMasterInfo(henkilö)
-        henkilöCache.addHenkilöAction(withMasterInfo).flatMap { _ =>
-          createAction(withMasterInfo, opiskeluoikeus)
-        }
-      case None => DBIO.successful(Left(KoskiErrorCategory.notFound.oppijaaEiLöydy("Oppijaa " + oppijaOid.oppijaOid + " ei löydy.")))
+    if (opiskeluoikeus.mitätöity) {
+      DBIO.successful(Left(KoskiErrorCategory.badRequest.validation.tila.uudenOpiskeluoikeudenTallennusMitätöitynäEiSallittu()))
+    } else {
+      oppijaOid.verified match {
+        case Some(henkilö) =>
+          val withMasterInfo = henkilöRepository.withMasterInfo(henkilö)
+          henkilöCache.addHenkilöAction(withMasterInfo).flatMap { _ =>
+            createAction(withMasterInfo, opiskeluoikeus)
+          }
+        case None => DBIO.successful(Left(KoskiErrorCategory.notFound.oppijaaEiLöydy("Oppijaa " + oppijaOid.oppijaOid + " ei löydy.")))
+      }
     }
   }
 
