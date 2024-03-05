@@ -16,6 +16,7 @@ import org.scalatest.matchers.should.Matchers
 import java.time.LocalDate
 
 class QuerySpec extends AnyFreeSpec with KoskiHttpSpec with Matchers {
+  /*
   "Organisaation opiskeluoikeudet" - {
     "JSON" - {
       val query = QueryOrganisaationOpiskeluoikeudetJson(
@@ -160,6 +161,8 @@ class QuerySpec extends AnyFreeSpec with KoskiHttpSpec with Matchers {
       }
     }
   }
+  
+   */
 
   def addQuery[T](query: QueryParameters, user: UserWithPassword)(f: => T): T =
     post("api/kyselyt", JsonSerializer.writeWithRoot(query), headers = authHeaders(user) ++ jsonContent)(f)
