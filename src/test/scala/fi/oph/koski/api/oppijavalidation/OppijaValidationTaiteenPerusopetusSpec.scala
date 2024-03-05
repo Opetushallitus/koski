@@ -399,10 +399,12 @@ class OppijaValidationTaiteenPerusopetusSpec
       }
 
       "oppilaitoksen pääkäyttäjä voi mitätöidä lähdejärjestelmällisen hankintakoulutuksena järjestettävän opiskeluoikeuden" in {
-        resetFixtures()
+        val oppijaHenkilö = KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus
+        def teeLähdejärjestelmäId(postfix: String) = "tpo" + oppijaHenkilö.oid + "-" + postfix
+
         val oid = setupOppijaWithAndGetOpiskeluoikeus(
           TPO.Opiskeluoikeus.hankintakoulutuksenaHyväksytystiSuoritettuLaajaOppimäärä,
-          KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus,
+          oppijaHenkilö,
           authHeaders(MockUsers.paakayttaja) ++ jsonContent
         ).oid.get
 
@@ -410,13 +412,13 @@ class OppijaValidationTaiteenPerusopetusSpec
           oid = Some(oid),
           lähdejärjestelmänId = Some(
             LähdejärjestelmäId(
-              id = Some("tpo1"),
+              id = Some(teeLähdejärjestelmäId("tpo1")),
               lähdejärjestelmä = Koodistokoodiviite("primus", "lahdejarjestelma")
             )
           )
         )
 
-        putOpiskeluoikeus(oo, henkilö = KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus, headers = authHeaders(MockUsers.paakayttaja) ++ jsonContent) {
+        putOpiskeluoikeus(oo, henkilö = oppijaHenkilö, headers = authHeaders(MockUsers.paakayttaja) ++ jsonContent) {
           verifyResponseStatusOk()
         }
         mitätöiOpiskeluoikeus(oid, user = MockUsers.varsinaisSuomiPääkäyttäjä)
@@ -900,18 +902,20 @@ class OppijaValidationTaiteenPerusopetusSpec
   }
 
   "Mitätöinti" - {
+
+
     "Opiskeluoikeuden voi mitätöidä PUT-rajapinnalla ja mitätöinti on poisto" in {
+      val lähdejärjestelmänId = Some(
+        LähdejärjestelmäId(
+          id = Some("tpo1"),
+          lähdejärjestelmä = Koodistokoodiviite("primus", "lahdejarjestelma")
+        )
+      )
       val oo = setupOppijaWithAndGetOpiskeluoikeus(
-        TPO.Opiskeluoikeus.aloitettuYleinenOppimäärä,
+        TPO.Opiskeluoikeus.aloitettuYleinenOppimäärä.copy(lähdejärjestelmänId = lähdejärjestelmänId),
         oppija,
         authHeaders(MockUsers.paakayttaja) ++ jsonContent
       ).copy(
-        lähdejärjestelmänId = Some(
-          LähdejärjestelmäId(
-            id = Some("tpo1"),
-            lähdejärjestelmä = Koodistokoodiviite("primus", "lahdejarjestelma")
-          )
-        ),
         tila = TPO.Opiskeluoikeus.tilaMitätöity()
       )
       val taiteenPerusopetusAloitettuOpiskeluoikeusOid = oo.oid.get
