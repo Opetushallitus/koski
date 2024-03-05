@@ -32,6 +32,11 @@ class FixtureServlet(implicit val application: KoskiApplication) extends KoskiSp
     "ok"
   }
 
+  post("/clear-oppijan-opiskeluoikeudet") {
+    application.fixtureCreator.clearOppijanOpiskeluoikeudet(params("oppija_oid"))
+    "ok"
+  }
+
   post("/sync-tiedonsiirrot") {
     application.tiedonsiirtoService.syncToOpenSearch(refresh = true)
     "ok"

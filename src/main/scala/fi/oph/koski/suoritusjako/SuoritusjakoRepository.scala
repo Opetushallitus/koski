@@ -52,6 +52,11 @@ class SuoritusjakoRepository(val db: DB) extends Logging with QueryMethods {
     if (deleted == 0) KoskiErrorCategory.notFound() else HttpStatus.ok
   }
 
+  def deleteAllForOppija(oppijaOid: String): HttpStatus = {
+    val deleted = runDbSync(SuoritusJako.filter(_.oppijaOid === oppijaOid).delete)
+    if (deleted == 0) KoskiErrorCategory.notFound() else HttpStatus.ok
+  }
+
   def update(oppijaOid: String, secret: String, expirationDate: LocalDate): HttpStatus = {
     val updated = runDbSync(
       SuoritusJako.filter(suoritusjakoFilter(oppijaOid, secret))

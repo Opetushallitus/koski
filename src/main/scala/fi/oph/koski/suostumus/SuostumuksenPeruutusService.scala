@@ -237,4 +237,13 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
       throw new RuntimeException("Peruutettujen suostumusten taulua ei voi tyhjentää tuotantotilassa")
     }
   }
+
+  // Kutsutaan vain fixtureita resetoitaessa
+  def deleteAllForOppija(oppijaOid: String) = {
+    if (Environment.isMockEnvironment(application.config)) {
+      runDbSync(KoskiTables.PoistetutOpiskeluoikeudet.filter(_.oppija_oid inSetBind List(oppijaOid)).delete)
+    } else {
+      throw new RuntimeException("Peruutettujen suostumusten taulua ei voi tyhjentää tuotantotilassa")
+    }
+  }
 }

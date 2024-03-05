@@ -18,6 +18,12 @@ trait HttpSpecification extends HttpTester with TestEnvironment with Assertions 
     }
   }
 
+  def clearOppijanOpiskeluoikeudet(oppijaOid: String): Unit = {
+    post("fixtures/clear-oppijan-opiskeluoikeudet", Seq(("oppija_oid", oppijaOid)), authHeaders()) {
+      verifyResponseStatus(200, Nil)
+    }
+  }
+
   def verifyResponseStatusOk(expectedStatus: Int = 200): Unit = {
     verifyResponseStatus(expectedStatus, Nil)
   }
