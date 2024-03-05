@@ -2,7 +2,7 @@ package fi.oph.koski.queuedqueries.paallekkaisetopiskeluoikeudet
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.HttpStatus
-import fi.oph.koski.koskiuser.KoskiSpecificSession
+import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.log.KoskiAuditLogMessageField.hakuEhto
 import fi.oph.koski.log.KoskiOperation.OPISKELUOIKEUS_RAPORTTI
@@ -27,7 +27,7 @@ case class QueryPaallekkaisetOpiskeluoikeudet(
   language: Option[String] = None,
   alku: LocalDate,
   loppu: LocalDate,
-  password: Option[String],
+  password: Option[String] = None,
 ) extends QueryParameters with Logging {
   override def run(application: KoskiApplication, writer: QueryResultWriter)(implicit user: KoskiSpecificSession): Either[String, Unit] =
     QueryResourceManager(logger) { mgr =>
@@ -52,7 +52,7 @@ case class QueryPaallekkaisetOpiskeluoikeudet(
     }
 
   override def queryAllowed(application: KoskiApplication)(implicit user: KoskiSpecificSession): Boolean =
-    organisaatioOids(application).nonEmpty
+    user.hasGlobalReadAccess || organisaatioOid.exists(user.organisationOids(AccessType.read).contains)
 
   override def withDefaults(implicit user: KoskiSpecificSession): Either[HttpStatus, QueryPaallekkaisetOpiskeluoikeudet] =
     for {
@@ -64,9 +64,6 @@ case class QueryPaallekkaisetOpiskeluoikeudet(
       organisaatioOid = Some(orgOid),
       language = Some(lang),
     )
-
-  private def organisaatioOids(application: KoskiApplication): Set[Oid] =
-    RaportitAccessResolver(application).kyselyOiditOrganisaatiolle(organisaatioOid.get)
 
   private def auditLog(implicit user: KoskiSpecificSession): Unit =
     AuditLog.log(KoskiAuditLogMessage(

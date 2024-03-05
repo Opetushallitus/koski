@@ -101,8 +101,8 @@ backtest:
 	fi.oph.koski.valvira,fi.oph.koski.versioning,fi.oph.koski.virta,\
 	fi.oph.koski.ytl,fi.oph.koski.ytr,fi.oph.koski.ytl,fi.oph.koski.meta,\
 	fi.oph.koski.ytl,fi.oph.koski.api,fi.oph.koski.frontendvalvonta,fi.oph.koski.tiedonsiirto\
-	fi.oph.koski.typemodel,fi.oph.koski.suoritusjako,fi.oph.koski.suoritusjako.suoritetuttutkinnot\
-	"
+	fi.oph.koski.typemodel,fi.oph.koski.suoritusjako,fi.oph.koski.suoritusjako.suoritetuttutkinnot,\
+	fi.oph.koski.queuedqueries"
 
 .PHONY: backtestnonmock
 backtestnonmock:

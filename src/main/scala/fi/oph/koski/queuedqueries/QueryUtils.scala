@@ -40,9 +40,9 @@ object QueryUtils {
   def defaultOrganisaatio(implicit user: KoskiSpecificSession): Either[HttpStatus, Oid] = {
     val organisaatiot = user.juuriOrganisaatiot
     if (organisaatiot.isEmpty) {
-      Left(KoskiErrorCategory.unauthorized("Käyttäjäoikeuksissa ei ole määritelty eksplisiittisesti lukuoikeutta yhdenkään tietyn organisaation tietoihin.")) // Mahdollista esim. pääkäyttäjän tunnuksilla
+      Left(KoskiErrorCategory.forbidden.organisaatio())
     } else if (organisaatiot.size > 1) {
-      Left(KoskiErrorCategory.unauthorized("Kenttää `organisaatioOid` ei ole annettu, eikä organisaatiota voi yksiselitteisesti päätellä käyttöoikeuksista."))
+      Left(KoskiErrorCategory.badRequest.kyselyt.eiYksiselitteinenOrganisaatio())
     } else {
       Right(user.juuriOrganisaatiot.head.oid)
     }

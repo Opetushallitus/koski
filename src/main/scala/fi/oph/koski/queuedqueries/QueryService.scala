@@ -27,7 +27,7 @@ class QueryService(application: KoskiApplication) extends Logging {
         if (query.queryAllowed(application)) {
           Right[HttpStatus, Query](queries.add(query))
         } else {
-          Left(KoskiErrorCategory.unauthorized())
+          Left(KoskiErrorCategory.forbidden())
         }
       }(Right.apply)
     }

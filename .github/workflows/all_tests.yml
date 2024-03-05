@@ -180,7 +180,8 @@ jobs:
         with:
           suites: |
             fi.oph.koski.raportit, \
-            fi.oph.koski.valpas
+            fi.oph.koski.valpas, \
+            fi.oph.koski.queuedqueries
 
   run_backend_tests_other_3:
     name: Backend (other 3/4)
