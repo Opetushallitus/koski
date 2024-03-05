@@ -4,6 +4,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.{KoskiOpiskeluoikeusRow, KoskiTables}
 import fi.oph.koski.queuedqueries.QueryUtils.QueryResourceManager
 import fi.oph.koski.queuedqueries.{QueryFormat, QueryResultWriter}
+import fi.oph.koski.schema.Organisaatio.Oid
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, KoskiSchema, Oppija, Organisaatio}
 import fi.oph.scalaschema.annotation.EnumValue
 
@@ -14,12 +15,14 @@ case class QueryOrganisaationOpiskeluoikeudetJson(
   `type`: String = "organisaationOpiskeluoikeudet",
   @EnumValue(QueryFormat.json)
   format: String = QueryFormat.json,
-  organisaatioOid: Option[Organisaatio.Oid],
+  organisaatioOid: Option[Organisaatio.Oid] = None,
   alkamispaiva: LocalDate,
-  tila: Option[String],
-  koulutusmuoto: Option[String],
-  suoritustyyppi: Option[String],
+  tila: Option[String] = None,
+  koulutusmuoto: Option[String] = None,
+  suoritustyyppi: Option[String] = None,
 ) extends QueryOrganisaationOpiskeluoikeudet {
+  def withOrganisaatioOid(organisaatioOid: Oid): QueryOrganisaationOpiskeluoikeudetJson = copy(organisaatioOid = Some(organisaatioOid))
+
   def fetchData(
     application: KoskiApplication,
     writer: QueryResultWriter,

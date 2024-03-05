@@ -14,7 +14,7 @@ import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, Logging}
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryContext
 import fi.oph.koski.queuedqueries.QueryUtils.defaultOrganisaatio
 import fi.oph.koski.queuedqueries.{QueryParameters, QueryResultWriter}
-import fi.oph.koski.schema.{Henkilö, Organisaatio}
+import fi.oph.koski.schema.Organisaatio
 import fi.oph.koski.util.ChainingSyntax.chainingOps
 import fi.oph.koski.util.Retry.retryWithInterval
 import slick.jdbc.SQLActionBuilder
@@ -48,18 +48,14 @@ trait QueryOrganisaationOpiskeluoikeudet extends QueryParameters with DatabaseCo
       )
 
   override def withDefaults(implicit user: KoskiSpecificSession): Either[HttpStatus, QueryOrganisaationOpiskeluoikeudet] = {
-    import mojave._
     if (organisaatioOid.isEmpty) {
-      defaultOrganisaatio.map { oid =>
-        shapeless
-          .lens[QueryOrganisaationOpiskeluoikeudet]
-          .field[Option[String]]("organisaatioOid")
-          .set(this)(Some(oid))
-      }
+      defaultOrganisaatio.map(withOrganisaatioOid)
     } else {
       Right(this)
     }
   }
+
+  def withOrganisaatioOid(organisaatioOid: Organisaatio.Oid): QueryOrganisaationOpiskeluoikeudet
 
   protected def auditLog(implicit user: KoskiSpecificSession): Unit = {
     AuditLog.log(KoskiAuditLogMessage(

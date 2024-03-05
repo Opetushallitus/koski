@@ -5,6 +5,7 @@ import fi.oph.koski.queuedqueries.QueryUtils.QueryResourceManager
 import fi.oph.koski.queuedqueries.{QueryFormat, QueryResultWriter}
 import fi.oph.koski.raportointikanta._
 import fi.oph.koski.schema.Organisaatio
+import fi.oph.koski.schema.Organisaatio.Oid
 import fi.oph.scalaschema.annotation.EnumValue
 
 import java.time.LocalDate
@@ -15,12 +16,14 @@ case class QueryOrganisaationOpiskeluoikeudetCsv(
   `type`: String = "organisaationOpiskeluoikeudet",
   @EnumValue(QueryFormat.csv)
   format: String = QueryFormat.csv,
-  organisaatioOid: Option[Organisaatio.Oid],
+  organisaatioOid: Option[Organisaatio.Oid] = None,
   alkamispaiva: LocalDate,
-  tila: Option[String],
-  koulutusmuoto: Option[String],
-  suoritustyyppi: Option[String],
+  tila: Option[String] = None,
+  koulutusmuoto: Option[String] = None,
+  suoritustyyppi: Option[String] = None,
 ) extends QueryOrganisaationOpiskeluoikeudet {
+
+  def withOrganisaatioOid(organisaatioOid: Oid): QueryOrganisaationOpiskeluoikeudetCsv = copy(organisaatioOid = Some(organisaatioOid))
 
   def fetchData(
     application: KoskiApplication,
