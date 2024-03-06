@@ -6,6 +6,7 @@ import fi.oph.koski.kela.KelaSchema
 import fi.oph.koski.koodisto.Koodistot
 import fi.oph.koski.koskiuser.Unauthenticated
 import fi.oph.koski.migri.MigriSchema
+import fi.oph.koski.queuedqueries.QueryResponse
 import fi.oph.koski.schema.KoskiSchema
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 import fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotSchema
@@ -92,6 +93,14 @@ class DocumentationApiServlet extends KoskiSpecificApiServlet with Unauthenticat
 
   get("/koodistot.json") {
     renderObject[List[String]](Koodistot.koodistoAsetukset.filter(_.koodistoVersio.isEmpty).map(_.toString))
+  }
+
+  get("/kyselyt-response.json") {
+    QueryResponse.responseSchemaJson
+  }
+
+  get("/kyselyt-query.json") {
+    QueryResponse.querySchemaJson
   }
 
   override def toJsonString[T: ru.TypeTag](x: T): String = JsonSerializer.writeWithRoot(x)

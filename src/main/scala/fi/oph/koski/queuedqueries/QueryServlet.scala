@@ -3,11 +3,13 @@ package fi.oph.koski.queuedqueries
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
+import fi.oph.koski.schema
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
-import fi.oph.koski.schema.annotation.EnumValues
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 import fi.oph.koski.util.UuidUtils
-import fi.oph.scalaschema.annotation.SyntheticProperty
+import fi.oph.scalaschema.annotation.{Description, SyntheticProperty, Title}
+import fi.oph.scalaschema.{AnyOfSchema, ClassSchema, SchemaToJson}
+import org.json4s.{JBool, JField, JObject, JString, JValue}
 import org.json4s.jackson.JsonMethods
 
 import java.time.LocalDateTime
@@ -65,18 +67,27 @@ class QueryServlet(implicit val application: KoskiApplication)
 }
 
 trait QueryResponse {
+  @Description("Kyselyn tunniste")
   def queryId: String
+  @Description("Kyselyn tila")
   @SyntheticProperty
   def status: String
+  @Description("Kyselyn luoman käyttäjän oid")
   def requestedBy: String
+  @Description("Määrittää tehtävän kyselyn sekä sen parametrit.")
   def query: QueryParameters
+  @Description("Kyselyn luontiaika")
+  def createdAt: LocalDateTime
 }
 
+@Title("Odottava kysely")
+@Description("Kysely on luotu, mutta sen käsittelyä ei ole vielä aloitettu.")
 case class PendingQueryResponse(
   queryId: String,
   requestedBy: String,
   query: QueryParameters,
   createdAt: LocalDateTime,
+  @Description("Osoite josta kyselyn tilaa voi kysellä")
   resultsUrl: String,
 ) extends QueryResponse {
   def status: String = QueryState.pending
@@ -87,7 +98,9 @@ case class RunningQueryResponse(
   requestedBy: String,
   query: QueryParameters,
   createdAt: LocalDateTime,
+  @Description("Kyselyn käsittelyn aloitusaika")
   startedAt: LocalDateTime,
+  @Description("Osoite josta kyselyn tilaa voi kysellä")
   resultsUrl: String,
 ) extends QueryResponse {
   def status: String = QueryState.running
@@ -98,7 +111,9 @@ case class FailedQueryResponse(
   requestedBy: String,
   query: QueryParameters,
   createdAt: LocalDateTime,
+  @Description("Kyselyn käsittelyn aloitusaika")
   startedAt: LocalDateTime,
+  @Description("Kyselyn epäonnistumisen aika")
   finishedAt: LocalDateTime,
 ) extends QueryResponse {
   def status: String = QueryState.failed
@@ -109,9 +124,13 @@ case class CompleteQueryResponse(
   requestedBy: String,
   query: QueryParameters,
   createdAt: LocalDateTime,
+  @Description("Kyselyn käsittelyn aloitusaika")
   startedAt: LocalDateTime,
+  @Description("Kyselyn valmistumisaika")
   finishedAt: LocalDateTime,
+  @Description("Lista osoitteista, joista tulostiedostot voi ladata. Tiedostojen määrä riippuu kyselyn tyypistä.")
   files: List[String],
+  @Description(s"Tiedostojen avaamiseen tarvittava salasana. Käytössä vain xlsx-tiedostojen (${QueryFormat.xlsx}) kanssa.")
   password: Option[String],
 ) extends QueryResponse {
   def status: String = QueryState.complete
@@ -153,4 +172,16 @@ object QueryResponse {
       password = q.meta.flatMap(_.password),
     )
   }
+
+  lazy val responseSchemaJson: JValue =
+    SchemaToJson.toJsonSchema(schema.KoskiSchema.createSchema(classOf[QueryResponseWrapper]).asInstanceOf[ClassSchema])
+
+  lazy val querySchemaJson: JValue =
+    SchemaToJson.toJsonSchema(schema.KoskiSchema.createSchema(classOf[QueryParametersWrapper]).asInstanceOf[ClassSchema])
 }
+
+@Title("Kyselyrajapinnasta saatava vastaus")
+case class QueryResponseWrapper(` `: QueryResponse)
+
+@Title("Kyselyrajapintaan tehtävä kysely")
+case class QueryParametersWrapper(` `: QueryParameters)

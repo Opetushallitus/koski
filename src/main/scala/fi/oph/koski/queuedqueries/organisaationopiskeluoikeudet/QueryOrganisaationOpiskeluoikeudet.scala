@@ -15,20 +15,62 @@ import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryContext
 import fi.oph.koski.queuedqueries.QueryUtils.defaultOrganisaatio
 import fi.oph.koski.queuedqueries.{QueryParameters, QueryResultWriter}
 import fi.oph.koski.schema.Organisaatio
+import fi.oph.koski.schema.annotation.EnumValues
 import fi.oph.koski.util.ChainingSyntax.chainingOps
 import fi.oph.koski.util.Retry.retryWithInterval
+import fi.oph.scalaschema.annotation.{Description, Title}
 import slick.jdbc.SQLActionBuilder
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import scala.concurrent.duration.DurationInt
 
+@Title("Organisaation opiskeluoikeudet")
+@Description("Palauttaa hakuehtojen mukaiset organisaation ja sen alaorganisaatioiden opiskeluoikeudet.")
 trait QueryOrganisaationOpiskeluoikeudet extends QueryParameters with DatabaseConverters with Logging {
+  @EnumValues(Set("organisaationOpiskeluoikeudet"))
+  def `type`: String
+  @Description("Kyselyyn otettavan organisaation oid. Jos ei ole annettu, päätellään käyttäjän käyttöoikeuksista.")
   def organisaatioOid: Option[String]
+  @Description("Palautettavien opiskeluoikeuksien pitää alkaa annettuna päivänä tai myöhemmin.")
   def alkamispaiva: LocalDate
-  def tila: Option[String] // TODO: Lisää sallitut arvot
-  def koulutusmuoto: Option[String] // TODO: Lisää sallitut arvot
-  def suoritustyyppi: Option[String] // TODO: Lisää sallitut arvot
+  @Description("Palauta vain opiskeluoikeudet, joilla on annettu tila.")
+  @EnumValues(Set(
+    "eronnut",
+    "hyvaksytystisuoritettu",
+    "katsotaaneronneeksi",
+    "keskeytynyt",
+    "lasna",
+    "loma",
+    "mitatoity",
+    "paattynyt",
+    "peruutettu",
+    "valiaikaisestikeskeytynyt",
+    "valmistunut",
+  ))
+  def tila: Option[String]
+  @Description("Palauta vain opiskeluoikeudet, joilla on annettu koulutusmuoto.")
+  @EnumValues(Set(
+    "aikuistenperusopetus",
+    "ammatillinenkoulutus",
+    "diatutkinto",
+    "ebtutkinto",
+    "esiopetus",
+    "europeanschoolofhelsinki",
+    "ibtutkinto",
+    "internationalschool",
+    "korkeakoulutus",
+    "lukiokoulutus",
+    "luva",
+    "muukuinsaanneltykoulutus",
+    "perusopetukseenvalmistavaopetus",
+    "perusopetuksenlisaopetus",
+    "perusopetus",
+    "taiteenperusopetus",
+    "tuva",
+    "vapaansivistystyonkoulutus",
+  ))
+  def koulutusmuoto: Option[String]
 
   def fetchData(application: KoskiApplication, writer: QueryResultWriter, oppilaitosOids: List[Organisaatio.Oid]): Either[String, Unit]
 
@@ -65,7 +107,6 @@ trait QueryOrganisaationOpiskeluoikeudet extends QueryParameters with DatabaseCo
         "organisaatio" -> List(organisaatioOid.get),
         "opiskeluoikeusAlkanutAikaisintaan" -> List(alkamispaiva.format(DateTimeFormatter.ISO_DATE)),
         "opiskeluoikeudenTila" -> tila.toList,
-        "suorituksenTyyppi" -> suoritustyyppi.toList,
         "koulutusmuoto" -> koulutusmuoto.toList,
       ).filter(_._2.nonEmpty))),
     ))
@@ -77,7 +118,6 @@ trait QueryOrganisaationOpiskeluoikeudet extends QueryParameters with DatabaseCo
     Some(sql"WHERE NOT poistettu AND NOT mitatoity AND oppilaitos_oid = ANY($oppilaitosOids) AND alkamispaiva >= $alkamispaiva "),
     tila.map(t => sql" AND tila = $t "),
     koulutusmuoto.map(t => sql"AND koulutusmuoto = $t "),
-    suoritustyyppi.map(t => sql"AND $t IN suoritustyypit "),
   )
 
   protected def getOppijaOids(db: DB, filters: SQLActionBuilder): Seq[String] = QueryMethods.runDbSync(

@@ -5,21 +5,23 @@ import fi.oph.koski.db.{KoskiOpiskeluoikeusRow, KoskiTables}
 import fi.oph.koski.queuedqueries.QueryUtils.QueryResourceManager
 import fi.oph.koski.queuedqueries.{QueryFormat, QueryResultWriter}
 import fi.oph.koski.schema.Organisaatio.Oid
+import fi.oph.koski.schema.annotation.EnumValues
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, KoskiSchema, Oppija, Organisaatio}
-import fi.oph.scalaschema.annotation.EnumValue
+import fi.oph.scalaschema.annotation.{Description, Title}
 
 import java.time.LocalDate
 
+@Title("(JSON)")
+@Description("Tulostiedostot sisältävät tiedot json-muodossa. Jokaista oppijaa kohden luodaan oma tiedostonsa, jonka alle opiskeluoikeudet on ryhmitelty.")
+@Description("Tiedostojen sisältö vastaa oppilashallintojärjestelmille tarkoitettua rajapintaa GET /koski/api/oppija/{oid}")
 case class QueryOrganisaationOpiskeluoikeudetJson(
-  @EnumValue("organisaationOpiskeluoikeudet")
   `type`: String = "organisaationOpiskeluoikeudet",
-  @EnumValue(QueryFormat.json)
+  @EnumValues(Set(QueryFormat.json))
   format: String = QueryFormat.json,
   organisaatioOid: Option[Organisaatio.Oid] = None,
   alkamispaiva: LocalDate,
   tila: Option[String] = None,
   koulutusmuoto: Option[String] = None,
-  suoritustyyppi: Option[String] = None,
 ) extends QueryOrganisaationOpiskeluoikeudet {
   def withOrganisaatioOid(organisaatioOid: Oid): QueryOrganisaationOpiskeluoikeudetJson = copy(organisaatioOid = Some(organisaatioOid))
 

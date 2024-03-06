@@ -6,21 +6,23 @@ import fi.oph.koski.queuedqueries.{QueryFormat, QueryResultWriter}
 import fi.oph.koski.raportointikanta._
 import fi.oph.koski.schema.Organisaatio
 import fi.oph.koski.schema.Organisaatio.Oid
-import fi.oph.scalaschema.annotation.EnumValue
+import fi.oph.koski.schema.annotation.EnumValues
+import fi.oph.scalaschema.annotation.{Description, Title}
 
 import java.time.LocalDate
 import scala.util.Using
 
+@Title("(CSV)")
+@Description("Tulostiedostot sisältävät tiedot csv-muodossa. Tiedostoja ovat opiskeluoikeus.csv, paatason_suoritus.csv, osasuoritus.csv, opiskeluoikeus_aikajakso.csv ja esiopetus_opiskeluoik_aikajakso.csv.")
+@Description("Tiedostoa ei luoda, jos se jää sisällöltään tyhjäksi.")
 case class QueryOrganisaationOpiskeluoikeudetCsv(
-  @EnumValue("organisaationOpiskeluoikeudet")
   `type`: String = "organisaationOpiskeluoikeudet",
-  @EnumValue(QueryFormat.csv)
+  @EnumValues(Set(QueryFormat.csv))
   format: String = QueryFormat.csv,
   organisaatioOid: Option[Organisaatio.Oid] = None,
   alkamispaiva: LocalDate,
   tila: Option[String] = None,
   koulutusmuoto: Option[String] = None,
-  suoritustyyppi: Option[String] = None,
 ) extends QueryOrganisaationOpiskeluoikeudet {
 
   def withOrganisaatioOid(organisaatioOid: Oid): QueryOrganisaationOpiskeluoikeudetCsv = copy(organisaatioOid = Some(organisaatioOid))
