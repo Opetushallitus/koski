@@ -1501,7 +1501,6 @@ class OppijaValidationTaiteenPerusopetusSpec
     }
 
     "suoritusjaon tekeminen onnistuu toiselle suoritukselle vaikka toiselta suoritukselta on peruttu suostumus" in {
-      resetFixtures()
       val poistettavaSuoritus = TPO.PäätasonSuoritus.yleistenYhteistenOpintojenSuoritusEiArvioituEiOsasuorituksia
       val jaettavaSuoritus = TPO.PäätasonSuoritus.yleistenTeemaopintojenSuoritusEiArvioituEiOsasuorituksia
 
@@ -1568,7 +1567,6 @@ class OppijaValidationTaiteenPerusopetusSpec
     }
 
     "suoritusjaon olemassaolon tarkistus toimii päätason suorituksen tasolla" in {
-      resetFixtures()
       val jaettavaSuoritus = TPO.PäätasonSuoritus.yleistenYhteistenOpintojenSuoritusEiArvioituEiOsasuorituksia
       val eiJaettuSuoritus = TPO.PäätasonSuoritus.yleistenTeemaopintojenSuoritusEiArvioituEiOsasuorituksia
 
