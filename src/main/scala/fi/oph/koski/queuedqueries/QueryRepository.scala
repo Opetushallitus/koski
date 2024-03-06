@@ -223,6 +223,8 @@ trait Query {
       .toOption
 
   def name: String = s"${query.getClass.getSimpleName}(${queryId})"
+
+  def externalResultsUrl(rootUrl: String): String = QueryServletUrls.query(rootUrl, queryId)
 }
 case class PendingQuery(
   queryId: String,
@@ -260,7 +262,9 @@ case class CompleteQuery(
   session: String,
   meta: Option[QueryMeta],
 ) extends Query {
-    def state: String = QueryState.complete
+  def state: String = QueryState.complete
+
+  def filesToExternal(rootUrl: String): List[String] = resultFiles.map(QueryServletUrls.file(rootUrl, queryId, _))
 }
 
 case class FailedQuery(

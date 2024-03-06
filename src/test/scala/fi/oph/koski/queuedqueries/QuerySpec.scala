@@ -16,7 +16,6 @@ import org.scalatest.matchers.should.Matchers
 import java.time.LocalDate
 
 class QuerySpec extends AnyFreeSpec with KoskiHttpSpec with Matchers {
-  /*
   "Organisaation opiskeluoikeudet" - {
     "JSON" - {
       val query = QueryOrganisaationOpiskeluoikeudetJson(
@@ -43,10 +42,10 @@ class QuerySpec extends AnyFreeSpec with KoskiHttpSpec with Matchers {
           response.queryId
         }
         waitForStateTransition(queryId, user)(QueryState.pending, QueryState.running)
-        val complete = waitForStateTransition(queryId, user)(QueryState.running, QueryState.complete)
+        val complete = waitForStateTransition(queryId, user)(QueryState.running, QueryState.complete).asInstanceOf[CompleteQueryResponse]
 
-        complete.files.get should have length 14
-        complete.files.get.foreach(verifyResult(_, user))
+        complete.files should have length 14
+        complete.files.foreach(verifyResult(_, user))
       }
 
       "Toisen käyttäjän kyselyn tietoja ei voi hakea" in {
@@ -82,10 +81,10 @@ class QuerySpec extends AnyFreeSpec with KoskiHttpSpec with Matchers {
           response.queryId
         }
         waitForStateTransition(queryId, user)(QueryState.pending, QueryState.running)
-        val complete = waitForStateTransition(queryId, user)(QueryState.running, QueryState.complete)
+        val complete = waitForStateTransition(queryId, user)(QueryState.running, QueryState.complete).asInstanceOf[CompleteQueryResponse]
 
-        complete.files.get should have length 5
-        complete.files.get.foreach(verifyResult(_, user))
+        complete.files should have length 5
+        complete.files.foreach(verifyResult(_, user))
       }
 
       "Toisen käyttäjän kyselyn tietoja ei voi hakea" in {
@@ -125,10 +124,10 @@ class QuerySpec extends AnyFreeSpec with KoskiHttpSpec with Matchers {
           response.queryId
         }
         waitForStateTransition(queryId, user)(QueryState.pending, QueryState.running)
-        val complete = waitForStateTransition(queryId, user)(QueryState.running, QueryState.complete)
+        val complete = waitForStateTransition(queryId, user)(QueryState.running, QueryState.complete).asInstanceOf[CompleteQueryResponse]
 
-        complete.files.get should have length 1
-        complete.files.get.foreach(verifyResult(_, user))
+        complete.files should have length 1
+        complete.files.foreach(verifyResult(_, user))
       }
 
       "Toisen käyttäjän kyselyn tietoja ei voi hakea" in {
@@ -154,15 +153,13 @@ class QuerySpec extends AnyFreeSpec with KoskiHttpSpec with Matchers {
           response.queryId
         }
         waitForStateTransition(queryId, user)(QueryState.pending, QueryState.running)
-        val complete = waitForStateTransition(queryId, user)(QueryState.running, QueryState.complete)
+        val complete = waitForStateTransition(queryId, user)(QueryState.running, QueryState.complete).asInstanceOf[CompleteQueryResponse]
 
-        complete.files.get should have length 1
-        complete.files.get.foreach(verifyResult(_, user))
+        complete.files should have length 1
+        complete.files.foreach(verifyResult(_, user))
       }
     }
   }
-  
-   */
 
   def addQuery[T](query: QueryParameters, user: UserWithPassword)(f: => T): T =
     post("api/kyselyt", JsonSerializer.writeWithRoot(query), headers = authHeaders(user) ++ jsonContent)(f)

@@ -7,9 +7,16 @@ import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema.annotation.EnumValues
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 import fi.oph.koski.util.UuidUtils
+import fi.oph.scalaschema.annotation.SyntheticProperty
 import org.json4s.jackson.JsonMethods
 
 import java.time.LocalDateTime
+
+object QueryServletUrls {
+  def root(rootUrl: String): String = s"$rootUrl/api/kyselyt"
+  def query(rootUrl: String, queryId: String): String = s"${root(rootUrl)}/$queryId"
+  def file(rootUrl: String, queryId: String, fileKey: String): String = s"${root(rootUrl)}/$queryId/$fileKey"
+}
 
 class QueryServlet(implicit val application: KoskiApplication)
   extends KoskiSpecificApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with JsonMethods with NoCache
@@ -24,7 +31,7 @@ class QueryServlet(implicit val application: KoskiApplication)
           .validatingAndResolvingExtractor
           .extract[QueryParameters](strictDeserialization)(body)
           .flatMap(kyselyt.add)
-          .map(q => QueryResponse(rootUrl, q).withResponseUrl(rootUrl))
+          .map(q => QueryResponse(rootUrl, q))
       }
     } (parseErrorHandler = jsonErrorHandler)
   }
@@ -57,38 +64,93 @@ class QueryServlet(implicit val application: KoskiApplication)
   }
 }
 
-case class QueryResponse(
+trait QueryResponse {
+  def queryId: String
+  @SyntheticProperty
+  def status: String
+  def requestedBy: String
+  def query: QueryParameters
+}
+
+case class PendingQueryResponse(
   queryId: String,
-  @EnumValues(QueryState.*)
-  status: String,
   requestedBy: String,
   query: QueryParameters,
-  creationTime: LocalDateTime,
-  workStartTime: Option[LocalDateTime] = None,
-  endTime: Option[LocalDateTime] = None,
-  resultsApi: Option[String] = None,
-  password: Option[String] = None,
-  files: Option[List[String]] = None,
-) {
-  def withResponseUrl(rootUrl: String): QueryResponse = copy(
-    resultsApi = Some(s"$rootUrl/api/kyselyt/${queryId}")
-  )
-  def withFiles(rootUrl: String, query: CompleteQuery): QueryResponse = copy(
-    files = Some(query.resultFiles.map(name => s"$rootUrl/api/kyselyt/${query.queryId}/$name"))
-  )
+  createdAt: LocalDateTime,
+  resultsUrl: String,
+) extends QueryResponse {
+  def status: String = QueryState.pending
+}
 
-  def withPassword(meta: Option[QueryMeta]): QueryResponse = copy(
-    password = meta.flatMap(_.password),
-  )
+case class RunningQueryResponse(
+  queryId: String,
+  requestedBy: String,
+  query: QueryParameters,
+  createdAt: LocalDateTime,
+  startedAt: LocalDateTime,
+  resultsUrl: String,
+) extends QueryResponse {
+  def status: String = QueryState.running
+}
+
+case class FailedQueryResponse(
+  queryId: String,
+  requestedBy: String,
+  query: QueryParameters,
+  createdAt: LocalDateTime,
+  startedAt: LocalDateTime,
+  finishedAt: LocalDateTime,
+) extends QueryResponse {
+  def status: String = QueryState.failed
+}
+
+case class CompleteQueryResponse(
+  queryId: String,
+  requestedBy: String,
+  query: QueryParameters,
+  createdAt: LocalDateTime,
+  startedAt: LocalDateTime,
+  finishedAt: LocalDateTime,
+  files: List[String],
+  password: Option[String],
+) extends QueryResponse {
+  def status: String = QueryState.complete
 }
 
 object QueryResponse {
   def apply(rootUrl: String, query: Query): QueryResponse = query match {
-    case q: PendingQuery => QueryResponse(q.queryId, QueryState.pending, q.userOid, q.query, q.createdAt)
-    case q: RunningQuery => QueryResponse(q.queryId, QueryState.running, q.userOid, q.query, q.createdAt, Some(q.startedAt))
-    case q: FailedQuery => QueryResponse(q.queryId, QueryState.failed, q.userOid, q.query, q.createdAt, Some(q.startedAt), Some(q.finishedAt))
-    case q: CompleteQuery => QueryResponse(q.queryId, QueryState.complete, q.userOid, q.query, q.createdAt, Some(q.startedAt), Some(q.finishedAt))
-      .withFiles(rootUrl, q)
-      .withPassword(q.meta)
+    case q: PendingQuery => PendingQueryResponse(
+      queryId = q.queryId,
+      requestedBy = q.userOid,
+      query = q.query,
+      createdAt = q.createdAt,
+      resultsUrl = q.externalResultsUrl(rootUrl),
+    )
+    case q: RunningQuery => RunningQueryResponse(
+      queryId = q.queryId,
+      requestedBy = q.userOid,
+      query = q.query,
+      createdAt = q.createdAt,
+      startedAt = q.startedAt,
+      resultsUrl = q.externalResultsUrl(rootUrl),
+    )
+    case q: FailedQuery => FailedQueryResponse(
+      queryId = q.queryId,
+      requestedBy = q.userOid,
+      query = q.query,
+      createdAt = q.createdAt,
+      startedAt = q.startedAt,
+      finishedAt = q.finishedAt,
+    )
+    case q: CompleteQuery => CompleteQueryResponse(
+      queryId = q.queryId,
+      requestedBy = q.userOid,
+      query = q.query,
+      createdAt = q.createdAt,
+      startedAt = q.startedAt,
+      finishedAt = q.finishedAt,
+      files = q.filesToExternal(rootUrl),
+      password = q.meta.flatMap(_.password),
+    )
   }
 }
