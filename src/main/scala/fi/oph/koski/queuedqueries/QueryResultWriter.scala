@@ -22,7 +22,7 @@ case class QueryResultWriter(
   var objectKeys: mutable.Queue[String] = mutable.Queue[String]()
 
   def putJson(name: String, json: String): Unit =
-    results.put(
+    results.putStream(
       queryId = queryId,
       name = newObjectKey(s"$name.json"),
       provider = StringStreamProvider(json),
@@ -33,15 +33,15 @@ case class QueryResultWriter(
     putJson(name, JsonSerializer.writeWithRoot(obj))
 
   def createCsv[T <: Product](name: String)(implicit manager: Using.Manager): CsvStream[T] =
-    manager(new CsvStream[T](s"$queryId-$name", provider => results.put(
+    manager(new CsvStream[T](s"$queryId-$name", file => results.putFile(
       queryId = queryId,
       name = newObjectKey(s"$name.csv"),
-      provider = provider,
+      file = file,
       contentType = QueryFormat.csv,
     )))
 
   def createStream(name: String, contentType: String)(implicit manager: Using.Manager): UploadStream =
-    manager(new UploadStream(s"$queryId-$name", provider => results.put(
+    manager(new UploadStream(s"$queryId-$name", provider => results.putStream(
       queryId = queryId,
       name = newObjectKey(name),
       provider = provider,
@@ -90,7 +90,7 @@ case class QueryResultWriter(
   }
 }
 
-class CsvStream[T <: Product](name: String, uploadWith: (ContentStreamProvider) => Unit) extends AutoCloseable {
+class CsvStream[T <: Product](name: String, upload: (Path) => Unit) extends AutoCloseable {
   val temporaryFile: Path = Files.createTempFile(s"$name-", ".csv")
   private val fileStream: FileOutputStream = new FileOutputStream(temporaryFile.toFile)
   private val outputStream: BufferedOutputStream = new BufferedOutputStream(fileStream)
@@ -115,12 +115,10 @@ class CsvStream[T <: Product](name: String, uploadWith: (ContentStreamProvider) 
   def save(): Unit = {
     closeIntermediateStreams()
     if (headerWritten) {
-      uploadWith(provider)
+      upload(temporaryFile)
     }
     deleteTemporaryFile()
   }
-
-  def provider: ContentStreamProvider = new FileContentStreamProvider(temporaryFile)
 
   private def closeIntermediateStreams(): Unit = {
     outputStream.close()
