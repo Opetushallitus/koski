@@ -1068,7 +1068,7 @@ class OppijaValidationTaiteenPerusopetusSpec
       opiskeluoikeuksia.length should equal(opiskeluoikeuksiaEnnenPerumistaOpenSearchissa - 1)
     }
 
-    "suostumuksen peruutus suoritukselta kun opiskeluoikeulla enemmän kuin yksi suoritus - opiskeluoikeus säilyy mutta toinen suoritus poistuu" in {
+    "suostumuksen peruutus suoritukselta kun opiskeluoikeudella enemmän kuin yksi suoritus - opiskeluoikeus säilyy mutta toinen suoritus poistuu" in {
       val poistettavaSuoritus = TPO.PäätasonSuoritus.yleistenYhteistenOpintojenSuoritusEiArvioituEiOsasuorituksia
 
       // Syötä opiskeluoikeus
