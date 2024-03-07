@@ -1,6 +1,7 @@
 package fi.oph.koski.queuedqueries.organisaationopiskeluoikeudet
 
 import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.queuedqueries.QueryUtils.QueryResourceManager
 import fi.oph.koski.queuedqueries.{QueryFormat, QueryResultWriter}
 import fi.oph.koski.raportointikanta._
@@ -13,7 +14,7 @@ import java.time.LocalDate
 import scala.util.Using
 
 @Title("(CSV)")
-@Description("Tulostiedostot sisältävät tiedot csv-muodossa. Tiedostoja ovat opiskeluoikeus.csv, paatason_suoritus.csv, osasuoritus.csv, opiskeluoikeus_aikajakso.csv ja esiopetus_opiskeluoik_aikajakso.csv.")
+@Description("Tulostiedostot sisältävät tiedot csv-muodossa.")
 @Description("Tiedostoa ei luoda, jos se jää sisällöltään tyhjäksi.")
 case class QueryOrganisaationOpiskeluoikeudetCsv(
   `type`: String = "organisaationOpiskeluoikeudet",
@@ -62,4 +63,21 @@ case class QueryOrganisaationOpiskeluoikeudetCsv(
     opiskeluoikeudenAikajaksoCsv.save()
     esiopetuksenAikajaksoCsv.save()
   }
+}
+
+object QueryOrganisaationOpiskeluoikeudetCsvDocumentation {
+  def outputFiles: List[String] = List(
+    "opiskeluoikeus.csv",
+    "paatason_suoritus.csv",
+    "osasuoritus.csv",
+    "opiskeluoikeus_aikajakso.csv",
+    "esiopetus_opiskeluoik_aikajakso.csv",
+  )
+
+  def example: QueryOrganisaationOpiskeluoikeudetCsv = QueryOrganisaationOpiskeluoikeudetCsv(
+    organisaatioOid = Some(MockOrganisaatiot.helsinginKaupunki),
+    alkamispaiva = LocalDate.of(2024, 1, 1),
+    tila = Some("eronnut"),
+    koulutusmuoto = Some("perusopetus"),
+  )
 }

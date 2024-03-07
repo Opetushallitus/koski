@@ -3,13 +3,11 @@ package fi.oph.koski.queuedqueries
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
-import fi.oph.koski.schema
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
+import fi.oph.koski.schema.annotation.EnumValues
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 import fi.oph.koski.util.UuidUtils
-import fi.oph.scalaschema.annotation.{Description, SyntheticProperty, Title}
-import fi.oph.scalaschema.{AnyOfSchema, ClassSchema, SchemaToJson}
-import org.json4s.{JBool, JField, JObject, JString, JValue}
+import fi.oph.scalaschema.annotation.{Description, EnumValue, SyntheticProperty, Title}
 import org.json4s.jackson.JsonMethods
 
 import java.time.LocalDateTime
@@ -172,16 +170,4 @@ object QueryResponse {
       password = q.meta.flatMap(_.password),
     )
   }
-
-  lazy val responseSchemaJson: JValue =
-    SchemaToJson.toJsonSchema(schema.KoskiSchema.createSchema(classOf[QueryResponseWrapper]).asInstanceOf[ClassSchema])
-
-  lazy val querySchemaJson: JValue =
-    SchemaToJson.toJsonSchema(schema.KoskiSchema.createSchema(classOf[QueryParametersWrapper]).asInstanceOf[ClassSchema])
 }
-
-@Title("Kyselyrajapinnasta saatava vastaus")
-case class QueryResponseWrapper(` `: QueryResponse)
-
-@Title("Kyselyrajapintaan tehtävä kysely")
-case class QueryParametersWrapper(` `: QueryParameters)

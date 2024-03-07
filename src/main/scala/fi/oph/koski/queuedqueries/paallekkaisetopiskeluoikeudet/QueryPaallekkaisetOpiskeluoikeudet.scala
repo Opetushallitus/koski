@@ -7,6 +7,7 @@ import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.log.KoskiAuditLogMessageField.hakuEhto
 import fi.oph.koski.log.KoskiOperation.OPISKELUOIKEUS_RAPORTTI
 import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, Logging}
+import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.queuedqueries.QueryUtils.{QueryResourceManager, defaultOrganisaatio, generatePassword}
 import fi.oph.koski.queuedqueries.{QueryFormat, QueryMeta, QueryParameters, QueryResultWriter}
 import fi.oph.koski.raportit.{AikajaksoRaporttiRequest, RaportitService}
@@ -28,6 +29,7 @@ case class QueryPaallekkaisetOpiskeluoikeudet(
   @Description("Kyselyyn otettavan organisaation oid. Jos ei ole annettu, päätellään käyttäjän käyttöoikeuksista.")
   organisaatioOid: Option[Organisaatio.Oid] = None,
   @Description("Palautettavien tuloksien kieli. CSV-muodossa vaikuttaa vain organisaatioiden nimiin.")
+  @EnumValues(Set("fi", "sv", "en"))
   language: Option[String] = None,
   @Description("Tutkittavan aikajakson alkamispäivä.")
   alku: LocalDate,
@@ -77,4 +79,23 @@ case class QueryPaallekkaisetOpiskeluoikeudet(
       OPISKELUOIKEUS_RAPORTTI,
       user,
       Map(hakuEhto -> s"raportti=paallekkaisetopiskeluoikeudet&oppilaitosOid=${organisaatioOid}&alku=${alku}&loppu=${loppu}&lang=${language.get}")))
+}
+
+object QueryPaallekkaisetOpiskeluoikeudetDocumentation {
+  def csvExample: QueryPaallekkaisetOpiskeluoikeudet = QueryPaallekkaisetOpiskeluoikeudet(
+    format = QueryFormat.csv,
+    organisaatioOid = Some(MockOrganisaatiot.helsinginKaupunki),
+    language = Some("fi"),
+    alku = LocalDate.of(2024, 1, 1),
+    loppu = LocalDate.of(2024, 3, 31),
+  )
+
+  def xlsxExample: QueryPaallekkaisetOpiskeluoikeudet = QueryPaallekkaisetOpiskeluoikeudet(
+    format = QueryFormat.xlsx,
+    organisaatioOid = Some(MockOrganisaatiot.helsinginKaupunki),
+    language = Some("fi"),
+    alku = LocalDate.of(2024, 1, 1),
+    loppu = LocalDate.of(2024, 3, 31),
+    password = Some("hunter2"),
+  )
 }

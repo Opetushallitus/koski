@@ -267,3 +267,21 @@ export const dokumentaatioPalveluväyläOmadataP = () =>
       title: 'Dokumentaatio - Rajapinnat'
     }))
   )
+
+export const dokumentaatioKyselytP = () =>
+  dokumentaatioContentP(
+    '/koski/dokumentaatio/rajapinnat/kyselyt',
+    htmlSectionsP().map((htmlSections) => ({
+      content: (
+        <div>
+          <div
+            className="markdown-content"
+            dangerouslySetInnerHTML={{
+              __html: htmlSections.kyselyt
+            }}
+          ></div>
+        </div>
+      ),
+      title: 'Dokumentaatio - Kyselyrajapinta'
+    }))
+  )

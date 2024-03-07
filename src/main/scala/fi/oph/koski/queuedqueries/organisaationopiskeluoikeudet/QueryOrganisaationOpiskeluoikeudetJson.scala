@@ -2,6 +2,7 @@ package fi.oph.koski.queuedqueries.organisaationopiskeluoikeudet
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.{KoskiOpiskeluoikeusRow, KoskiTables}
+import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.queuedqueries.QueryUtils.QueryResourceManager
 import fi.oph.koski.queuedqueries.{QueryFormat, QueryResultWriter}
 import fi.oph.koski.schema.Organisaatio.Oid
@@ -53,3 +54,11 @@ case class QueryOrganisaationOpiskeluoikeudetJson(
   }
 }
 
+object QueryOrganisaationOpiskeluoikeudetJsonDocumentation {
+  def example = QueryOrganisaationOpiskeluoikeudetJson(
+    organisaatioOid = Some(MockOrganisaatiot.helsinginKaupunki),
+    alkamispaiva = LocalDate.of(2024, 1, 1),
+    tila = Some("lasna"),
+    koulutusmuoto = Some("perusopetus"),
+  )
+}

@@ -5,11 +5,12 @@ import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.LoggerWithContext
 import fi.oph.koski.schema.Organisaatio.Oid
+import fi.oph.koski.util.TryWithLogging
 import software.amazon.awssdk.services.rds.RdsClient
 
 import java.security.SecureRandom
 import scala.jdk.CollectionConverters._
-import scala.util.{Try, Using}
+import scala.util.Using
 
 object QueryUtils {
   def isQueryWorker(application: KoskiApplication): Boolean = {
@@ -48,13 +49,8 @@ object QueryUtils {
     }
   }
 
-  def QueryResourceManager(logger: LoggerWithContext)(op: Using.Manager => Unit): Either[Oid, Unit] =
-    Using.Manager(op)
-      .toEither
-      .left.map { error =>
-        logger.error(error)("Query failed")
-        error.toString
-      }
+  def QueryResourceManager(logger: LoggerWithContext)(op: Using.Manager => Unit): Either[String, Unit] =
+    TryWithLogging.andResources(logger, op).left.map(_.getMessage)
 
   def generatePassword(length: Int): String = {
     val alphanumericChars = ('0' to '9') ++ ('A' to 'Z') ++ ('a' to 'z')

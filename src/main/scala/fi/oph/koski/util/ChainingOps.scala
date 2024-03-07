@@ -32,6 +32,11 @@ final class EitherChainingOps[S, T](private val self: Either[S, T]) extends AnyV
     self.foreach(f)
     self
   }
+
+  def tapLeft[U](f: S => U): Either[S, T] = {
+    self.left.foreach(f)
+    self
+  }
 }
 
 final class StringChainingOps(private val self: String) extends AnyVal {
