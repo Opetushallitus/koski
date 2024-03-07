@@ -1,5 +1,6 @@
 package fi.oph.koski.api.misc
 
+import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.henkilo.OppijaHenkilö
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koodisto.{KoodistoViitePalvelu, MockKoodistoViitePalvelu}
@@ -80,11 +81,14 @@ trait PutOpiskeluoikeusTestMethods[Oikeus <: Opiskeluoikeus] extends Opiskeluoik
   }
 
   def setupOppijaWithOpiskeluoikeus[A](opiskeluoikeus: Opiskeluoikeus, henkilö: Henkilö = defaultHenkilö, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
-    mitätöiOppijanKaikkiOpiskeluoikeudet(henkilö)
-    // TODO: Jos tässä siivoaisi mitätöinnin sijaan opiskeluoikeuden kaikki jäljet kaikista tauluista, resetFixtures-kutsuja voisi vähentää vielä enemmän. Esim. suostumuksen
-    // peruutuksissa yms. voisi siivota vain testioppijan datat jne.
-    putOppija(makeOppija(henkilö, List(opiskeluoikeus)), headers)(f)
+    poistaOppijanOpiskeluoikeusDatat(henkilö)
+    val result = putOppija(makeOppija(henkilö, List(opiskeluoikeus)), headers)(f)
+    KoskiApplicationForTests.perustiedotIndexer.sync(refresh = true)
+    result
   }
+
+  def poistaOppijanOpiskeluoikeusDatat(): Unit =
+    poistaOppijanOpiskeluoikeusDatat(defaultHenkilö)
 
   def mitätöiOppijanKaikkiOpiskeluoikeudet(): Unit =
     mitätöiOppijanKaikkiOpiskeluoikeudet(defaultHenkilö)
@@ -135,10 +139,13 @@ trait PutOpiskeluoikeusTestMethods[Oikeus <: Opiskeluoikeus] extends Opiskeluoik
   )
 
   def readPutOppijaResponse: PutOppijaResponse = {
-    SchemaValidatingExtractor.extract[PutOppijaResponse](JsonMethods.parse(body)).right.get
+    SchemaValidatingExtractor.extract[PutOppijaResponse](JsonMethods.parse(body)) match {
+      case Right(response) => response
+      case Left(error) => throw new RuntimeException("Put-responsen deserialisointi epäonnistui: "+ error.toString)
+    }
   }
 }
 
 case class PutOppijaResponse(henkilö: ResponseHenkilö, opiskeluoikeudet: List[ResponseOpiskeluoikeus])
 case class ResponseHenkilö(oid: String)
-case class ResponseOpiskeluoikeus(oid: String, versionumero: Int)
+case class ResponseOpiskeluoikeus(oid: String, versionumero: Int, lähdejärjestelmänId: Option[LähdejärjestelmäId])

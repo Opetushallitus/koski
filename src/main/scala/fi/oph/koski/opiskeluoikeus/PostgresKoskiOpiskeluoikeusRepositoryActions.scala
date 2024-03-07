@@ -139,14 +139,6 @@ class PostgresKoskiOpiskeluoikeusRepositoryActions(
     }
   }
 
-  private def päällekkäinenOpiskeluoikeusExists(opiskeluoikeus: PerusopetuksenOpiskeluoikeus, aiemmatSamaksiJonkinIdnPerusteellaTunnistetutOpiskeluoikeudet: List[KoskiOpiskeluoikeusRow]): Boolean = {
-    val jakso = Aikajakso(opiskeluoikeus.alkamispäivä, opiskeluoikeus.päättymispäivä)
-    aiemmatSamaksiJonkinIdnPerusteellaTunnistetutOpiskeluoikeudet.exists { row =>
-      val muuJakso = Aikajakso(row.alkamispäivä.toLocalDate, row.päättymispäivä.map(_.toLocalDate))
-      jakso.overlaps(muuJakso)
-    }
-  }
-
   private def isMuuAmmatillinenOpiskeluoikeus(opiskeluoikeus: AmmatillinenOpiskeluoikeus): Boolean =
     opiskeluoikeus.suoritukset.forall {
       case _: MuunAmmatillisenKoulutuksenSuoritus => true

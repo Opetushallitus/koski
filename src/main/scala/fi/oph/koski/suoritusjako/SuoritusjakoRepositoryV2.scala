@@ -60,6 +60,12 @@ class SuoritusjakoRepositoryV2(val db: DB) extends Logging with QueryMethods {
       .delete))
   }
 
+  def deleteAllForOppija(oppijaOid: String): HttpStatus = {
+    httpStatus(runDbSync(SuoritusJakoV2
+      .filter(_.oppijaOid === oppijaOid)
+      .delete))
+  }
+
   private def suoritusjakoCount(oppijaOid: String) = {
     runDbSync(SuoritusJakoV2.filter(_.oppijaOid === oppijaOid).length.result)
   }

@@ -265,4 +265,6 @@ class ValpasOpiskeluoikeusDatabaseFixtureCreator(application: KoskiApplication) 
     (ValpasMockOppijat.eshEbTutkinnostaEronnut, ValpasOpiskeluoikeusExampleData.ebEBTutkinnostaEronnut),
     (ValpasMockOppijat.eshKeskenEbTutkinnonAloittanut, ValpasOpiskeluoikeusExampleData.ebEBTutkinnonAloittanut),
   )
+
+  protected def thirdBatchPäivitettävätOpiskeluOikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = List.empty
 }

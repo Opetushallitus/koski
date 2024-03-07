@@ -493,9 +493,136 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
       }
     }
 
-    def valmis(suoritus: AmmatillisenTutkinnonSuoritus) = suoritus.copy(
-      vahvistus = ExampleData.vahvistus(päivä = date(2016, 10, 1), paikkakunta = Some(jyväskylä))
-    )
+    "Opiskeluoikeutta ei voi luoda suoraan mitätöitynä" in {
+      val lähdejärjestelmänId = Some(
+        LähdejärjestelmäId(
+          id = Some("tpo1"),
+          lähdejärjestelmä = Koodistokoodiviite("primus", "lahdejarjestelma")
+        )
+      )
+
+      setupOppijaWithOpiskeluoikeus(
+        ExamplesTaiteenPerusopetus.Opiskeluoikeus.aloitettuYleinenOppimäärä.copy(
+          lähdejärjestelmänId = lähdejärjestelmänId,
+          tila = ExamplesTaiteenPerusopetus.Opiskeluoikeus.tilaMitätöity()
+        ),
+        KoskiSpecificMockOppijat.taiteenPerusopetusAloitettu,
+        authHeaders(MockUsers.varsinaisSuomiPääkäyttäjä) ++ jsonContent
+      ) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.uudenOpiskeluoikeudenTallennusMitätöitynäEiSallittu())
+      }
+    }
+
+    "opiskeluoikeuteen voi lisätä lähdejärjestelmä-id:n ja sen voi vaihtaa toiseksi, mutta sitä ei voi poistaa kokonaan tai vaihtaa samaksi kuin olemassaolevalla opiskeluoikeudella" in {
+      val testiOpiskeluoikeus = ExamplesTaiteenPerusopetus.Opiskeluoikeus.aloitettuYleinenOppimäärä
+
+      val oppijaHenkilö = KoskiSpecificMockOppijat.masterYlioppilasJaAmmattilainen
+      val oppijaHenkilöSlave = KoskiSpecificMockOppijat.slaveAmmattilainen.henkilö
+
+      def teeLähdejärjestelmäId(postfix: String) = "tpo" + oppijaHenkilö.oid + "-" + postfix
+
+      val user1 = MockUsers.varsinaisSuomiOppilaitosTallentaja
+      val user2 = MockUsers.varsinaisSuomiPalvelukäyttäjä
+
+      // Luo opiskeluoikeus ilman lähdejärjestelmä-id:tä => TOIMII
+      val oo1Out = setupOppijaWithAndGetOpiskeluoikeus(
+        testiOpiskeluoikeus,
+        oppijaHenkilö,
+        authHeaders(user1) ++ jsonContent
+      )
+
+      // Luo toinen opiskeluoikeus eri lähdejärjestelmä-id:llä duplikaattitestausta varten
+      val duplikaattiLähdejärjestelmäId = Some(
+        LähdejärjestelmäId(
+          id = Some(teeLähdejärjestelmäId("dup")),
+          lähdejärjestelmä = Koodistokoodiviite("primus", "lahdejarjestelma")
+        )
+      )
+      val duplikaattiLähdejärjestelmäIdSlave = Some(
+        LähdejärjestelmäId(
+          id = Some(teeLähdejärjestelmäId("dup-slave")),
+          lähdejärjestelmä = Koodistokoodiviite("primus", "lahdejarjestelma")
+        )
+      )
+      putOpiskeluoikeus(testiOpiskeluoikeus.copy(
+        lähdejärjestelmänId = duplikaattiLähdejärjestelmäId
+      ), oppijaHenkilö, authHeaders(user2) ++ jsonContent) {
+        verifyResponseStatusOk()
+      }
+      // Myös slave-oppijalle
+      putOpiskeluoikeus(testiOpiskeluoikeus.copy(
+        lähdejärjestelmänId = duplikaattiLähdejärjestelmäIdSlave
+      ), oppijaHenkilöSlave, authHeaders(user2) ++ jsonContent) {
+        verifyResponseStatusOk()
+      }
+
+      // Lisää samaan opiskeluoikeuteen lähdejärjestelmä-id => TOIMII
+      val oo2In = oo1Out.copy(
+        lähdejärjestelmänId = Some(
+          LähdejärjestelmäId(
+            id = Some(teeLähdejärjestelmäId("tpo1")),
+            lähdejärjestelmä = Koodistokoodiviite("primus", "lahdejarjestelma")
+          )
+        )
+      )
+
+      val oo2Out = putAndGetOpiskeluoikeus(oo2In, henkilö = oppijaHenkilö, headers = authHeaders(user2) ++ jsonContent)
+
+      // Vaihda lähdejärjestelmää primus => abilita => TOIMII
+      val oo3In = oo2Out.copy(
+        lähdejärjestelmänId = Some(LähdejärjestelmäId(
+          id = Some(teeLähdejärjestelmäId("foo2")),
+          lähdejärjestelmä = Koodistokoodiviite("abilita", "lahdejarjestelma")
+        )
+        ))
+
+      val oo3Out = putAndGetOpiskeluoikeus(oo3In, henkilö = oppijaHenkilö, headers = authHeaders(user2) ++ jsonContent)
+
+      // Vaihda lähdejärjestelmä-id:tä => TOIMII
+      val oo4In = oo3Out.copy(
+        lähdejärjestelmänId = Some(LähdejärjestelmäId(
+          id = Some(teeLähdejärjestelmäId("foo3")),
+          lähdejärjestelmä = Koodistokoodiviite("abilita", "lahdejarjestelma")
+        )
+        ))
+
+      val oo4Out = putAndGetOpiskeluoikeus(oo4In, henkilö = oppijaHenkilö, headers = authHeaders(user2) ++ jsonContent)
+
+      // Yritä poistaa lähdejärjestelmä-id => EI SALLITA
+      val oo5In = oo4Out.copy(
+        lähdejärjestelmänId = None
+      )
+
+      putOpiskeluoikeus(oo5In, henkilö = oppijaHenkilö, headers = authHeaders(user1) ++ jsonContent) {
+        verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyMuutos("Opiskeluoikeuden lähdejärjestelmäId:tä ei voi poistaa."))
+      }
+
+      // Yritä vaihtaa lähdejärjestelmä-id samaksi, mikä on jo toisella opiskeluoikeudella => EI SALLITA
+      val oo6In = oo4Out.copy(
+        lähdejärjestelmänId = duplikaattiLähdejärjestelmäId
+      )
+
+      putOpiskeluoikeus(oo6In, henkilö = oppijaHenkilö, headers = authHeaders(user2) ++ jsonContent) {
+        verifyResponseStatus(409, KoskiErrorCategory.conflict.samanaikainenPäivitys("Toinen käyttäjä on päivittänyt saman opiskeluoikeuden tietoja samanaikaisesti. Yritä myöhemmin uudelleen."))
+      }
+
+      // Yritä vaihtaa lähdejärjestelmä-id samaksi, mikä on jo toisella opiskeluoikeudella mutta eri oppija-oidilla => TOIMII
+      val oo7In = oo4Out.copy(
+        lähdejärjestelmänId = duplikaattiLähdejärjestelmäIdSlave
+      )
+
+      val oo7Out = putAndGetOpiskeluoikeus(oo7In, henkilö = oppijaHenkilö, headers = authHeaders(user2) ++ jsonContent)
+
+      // Yritä muokata duplikaatti-lähdejärjestelmä-id:llistä oo:ta ilman oidia => EI TOIMI, koska ei ole yksiselitteistä muokattavaa opiskeluoikeutta.
+      val oo8In = oo7Out.copy(
+        oid = None,
+        arvioituPäättymispäivä = oo7Out.arvioituPäättymispäivä.map(_.plusDays(1))
+      )
+
+      putOpiskeluoikeus(oo8In, henkilö = oppijaHenkilö, headers = authHeaders(user2) ++ jsonContent) {
+        verifyResponseStatus(409)
+      }
+    }
 
     def verifyChange[T <: Opiskeluoikeus](original: T = defaultOpiskeluoikeus, user: UserWithPassword = defaultUser, user2: Option[UserWithPassword] = None, change: T => KoskeenTallennettavaOpiskeluoikeus)(block: => Unit) = {
       setupOppijaWithOpiskeluoikeus(original, oppija, authHeaders(user) ++ jsonContent) {
@@ -660,6 +787,32 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
           verifyResponseStatusOk()
         }
       }
+    }
+  }
+
+  "Opiskeluoikeuden mitätöinti muokattaessa" - {
+    "Opiskeluoikeuteen ei tallenneta muita muutoksia kuin mitätöinti, vaikka niitä yritettäisi samalla kertaa tehdä" in {
+      val oo = setupOppijaWithAndGetOpiskeluoikeus(makeOpiskeluoikeus(alkamispäivä = longTimeAgo))
+
+      val muokattuAlkamispäivä = longTimeAgo.plusDays(5)
+
+      val muokattuJaMitätöityOoIn =
+        oo
+          .copy(
+            tila = AmmatillinenOpiskeluoikeudenTila(
+              List(
+                AmmatillinenOpiskeluoikeusjakso(muokattuAlkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
+                AmmatillinenOpiskeluoikeusjakso(alku = LocalDate.now, ExampleData.opiskeluoikeusMitätöity)
+              )
+            )
+          )
+
+      // Muokkaa opiskeluoikeus mitätöidyksi ja varmista, että alkamispäivää ei ole muutettu
+      val mitätöityOoOut =
+        putAndGetOpiskeluoikeus(muokattuJaMitätöityOoIn, headers = authHeaders(MockUsers.paakayttajaMitatoidytJaPoistetutOpiskeluoikeudet) ++ jsonContent)
+
+      mitätöityOoOut.mitätöity should be(true)
+      mitätöityOoOut.alkamispäivä should be(Some(longTimeAgo))
     }
   }
 

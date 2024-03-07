@@ -81,6 +81,20 @@ trait OpiskeluoikeusTestMethods extends HttpSpecification with SearchTestMethods
     SchemaValidatingExtractor.extract[Opiskeluoikeus](JsonMethods.parse(body)).right.get
   }
 
+  def poistaOppijanOpiskeluoikeusDatat(henkilö: Henkilö): Unit = {
+    val user = MockUsers.paakayttaja
+
+    val henkilöOidit: Seq[Henkilö.Oid] = henkilö match {
+      case h: HenkilöWithOid => List(h.oid)
+      case uh: UusiHenkilö =>
+        searchForHenkilötiedot(uh.hetu, user).map(_.oid)
+    }
+
+    if (!henkilöOidit.isEmpty) {
+      clearOppijanOpiskeluoikeudet(henkilöOidit.head)
+    }
+  }
+
   def mitätöiOppijanKaikkiOpiskeluoikeudet(henkilö: Henkilö): Unit = {
     val user = MockUsers.paakayttaja
 
@@ -98,6 +112,7 @@ trait OpiskeluoikeusTestMethods extends HttpSpecification with SearchTestMethods
             verifyResponseStatusOk()
           }
         )
+      KoskiApplicationForTests.perustiedotIndexer.sync(refresh = true)
     }
   }
 

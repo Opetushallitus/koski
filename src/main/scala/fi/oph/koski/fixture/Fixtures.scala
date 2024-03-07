@@ -1,21 +1,25 @@
 package fi.oph.koski.fixture
 
 import fi.oph.koski.config.{Environment, KoskiApplication}
+import fi.oph.koski.db.KoskiTables.KoskiOpiskeluOikeudet
+import fi.oph.koski.db.QueryMethods
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, MockOpintopolkuHenkilöFacade, OppijaHenkilöWithMasterInfo}
+import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.localization.MockLocalizationRepository
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeushistoriaErrorRepository
 import fi.oph.koski.raportointikanta.OpiskeluoikeusLoader
-import fi.oph.koski.suostumus.SuostumuksenPeruutusService
 import fi.oph.koski.util.{Timing, Wait}
 import fi.oph.koski.valpas.opiskeluoikeusfixture.ValpasOpiskeluoikeusFixtureState
-import fi.oph.koski.ytr.MockYoTodistusService
 
 object FixtureCreator {
   def generateOppijaOid(counter: Int) = "1.2.246.562.24." + "%011d".format(counter)
 }
 
-class FixtureCreator(application: KoskiApplication) extends Logging with Timing {
+class FixtureCreator(application: KoskiApplication) extends Logging with QueryMethods with Timing {
+  val db = application.masterDatabase.db
+
   private val raportointikantaService = application.raportointikantaService
   private val ytrService = application.ytrDownloadService
   private val yoTodistusService = application.yoTodistusService
@@ -52,6 +56,32 @@ class FixtureCreator(application: KoskiApplication) extends Logging with Timing 
       }
 
       logger.info(s"Application fixtures reset to ${fixtureState.name}")
+    }
+  }
+
+  def clearOppijanOpiskeluoikeudet(oppijaOid: String): Unit = synchronized {
+    if (shouldUseFixtures) {
+      // Mitätöi opiskeluoikeudet ensin
+      implicit val user = KoskiSpecificSession.systemUser
+
+      application.oppijaFacade.findOppija(oppijaOid, findMasterIfSlaveOid = false, useVirta = false, useYtr = false).flatMap(_.warningsToLeft) match {
+        case Right(oppija) =>
+          oppija.opiskeluoikeudet.map(_.oid.get).map(application.oppijaFacade.invalidateOpiskeluoikeus)
+        case _ => Nil
+      }
+      application.perustiedotIndexer.sync(refresh = true)
+
+      // Poista mahdolliset suostumuksen peruutukset
+      application.suostumuksenPeruutusService.deleteAllForOppija(oppijaOid)
+
+      // Poista oppijan suoritusjaot
+      application.suoritusjakoRepository.deleteAllForOppija(oppijaOid)
+      application.suoritusjakoRepositoryV2.deleteAllForOppija(oppijaOid)
+
+      // VST:n yms. mitätöinnit jättävät raatoja oo-tauluun, poista nekin
+      runDbSync(DBIO.sequence(Seq(
+        KoskiOpiskeluOikeudet.filter(_.oppijaOid  inSetBind List(oppijaOid)).delete
+      )))
     }
   }
 

@@ -362,7 +362,7 @@ class KoskiOppijaFacade(
   private def cancelOpiskeluoikeus(opiskeluoikeusOid: String)(oppija: Oppija): Either[HttpStatus, Oppija] = {
     oppija.tallennettavatOpiskeluoikeudet.find(_.oid.exists(_ == opiskeluoikeusOid))
       .toRight(KoskiErrorCategory.notFound())
-      .flatMap(invalidated)
+      .map(_.invalidated)
       .map(oo => oppija.copy(opiskeluoikeudet = List(oo)))
   }
 
@@ -379,42 +379,6 @@ class KoskiOppijaFacade(
       })
       .flatMap(withoutPäätasonSuoritus(päätasonSuoritus))
       .map(oo => oppija.copy(opiskeluoikeudet = List(oo)))
-  }
-
-  private def invalidated(oo: KoskeenTallennettavaOpiskeluoikeus): Either[HttpStatus, Opiskeluoikeus] = {
-    val localDateOrdering: Ordering[LocalDate] = Ordering.by(_.toEpochDay)
-    val viimeisinTila = oo.tila.opiskeluoikeusjaksot.maxBy(f => f.alku)(localDateOrdering).alku
-    val mitatointiPvm = List(viimeisinTila, LocalDate.now()).max(localDateOrdering)
-    (oo.tila match {
-      case t: AmmatillinenOpiskeluoikeudenTila =>
-        Right(t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ AmmatillinenOpiskeluoikeusjakso(mitatointiPvm, mitätöity)))
-      case t: NuortenPerusopetuksenOpiskeluoikeudenTila =>
-        Right(t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ NuortenPerusopetuksenOpiskeluoikeusjakso(mitatointiPvm, mitätöity)))
-      case t: PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenTila =>
-        Right(t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ PerusopetukseenValmistavanOpetuksenOpiskeluoikeusJakso(mitatointiPvm, mitätöity)))
-      case t: AikuistenPerusopetuksenOpiskeluoikeudenTila =>
-        Right(t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ AikuistenPerusopetuksenOpiskeluoikeusjakso(mitatointiPvm, mitätöity)))
-      case t: LukionOpiskeluoikeudenTila =>
-        Right(t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ LukionOpiskeluoikeusjakso(mitatointiPvm, mitätöity)))
-      case t: DIAOpiskeluoikeudenTila =>
-        Right(t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ DIAOpiskeluoikeusjakso(mitatointiPvm, mitätöity)))
-      case t: InternationalSchoolOpiskeluoikeudenTila =>
-        Right(t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ InternationalSchoolOpiskeluoikeusjakso(mitatointiPvm, mitätöity)))
-      case t: VapaanSivistystyönOpiskeluoikeudenTila =>
-        Right(t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ OppivelvollisilleSuunnattuVapaanSivistystyönOpiskeluoikeusjakso(mitatointiPvm, mitätöity)))
-      case t: TutkintokoulutukseenValmentavanOpiskeluoikeudenTila =>
-        Right(t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ TutkintokoulutukseenValmentavanOpiskeluoikeusjakso(mitatointiPvm, mitätöity)))
-      case t: KorkeakoulunOpiskeluoikeudenTila => Left(KoskiErrorCategory.badRequest())
-      case t: YlioppilastutkinnonOpiskeluoikeudenTila => Left(KoskiErrorCategory.badRequest())
-      case t: EBOpiskeluoikeudenTila =>
-        Right(t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ EBOpiskeluoikeusjakso(mitatointiPvm, mitätöity)))
-      case t: EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila =>
-        Right(t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(mitatointiPvm, mitätöity)))
-      case t: MuunKuinSäännellynKoulutuksenTila =>
-        Right(t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ MuunKuinSäännellynKoulutuksenOpiskeluoikeudenJakso(mitätöity, mitatointiPvm, None)))
-      case t: TaiteenPerusopetuksenOpiskeluoikeudenTila =>
-        Right(t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ TaiteenPerusopetuksenOpiskeluoikeusjakso(mitatointiPvm, mitätöity)))
-    }).map(oo.withTila)
   }
 
   private def withoutPäätasonSuoritus
@@ -619,8 +583,6 @@ class KoskiOppijaFacade(
       )
     }))
   }
-
-  private lazy val mitätöity = Koodistokoodiviite("mitatoity", koodistoUri = "koskiopiskeluoikeudentila")
 
   def merkitseSuoritusjakoTehdyksiIlmanKäyttöoikeudenTarkastusta(opiskeluoikeusOid: String): HttpStatus = {
     opiskeluoikeusRepository.merkitseSuoritusjakoTehdyksiIlmanKäyttöoikeudenTarkastusta(opiskeluoikeusOid)

@@ -140,7 +140,7 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
   protected def defaultOpiskeluOikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = {
     List(
       (KoskiSpecificMockOppijat.eero, AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto, versio = Some(11))),
-      (KoskiSpecificMockOppijat.eero, PerusopetuksenOpiskeluoikeusTestData.mitätöityOpiskeluoikeus),
+      (KoskiSpecificMockOppijat.eero, PerusopetuksenOpiskeluoikeusTestData.mitätöitäväOpiskeluoikeus),
       (KoskiSpecificMockOppijat.eerola, AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto, versio = Some(11))),
       (KoskiSpecificMockOppijat.teija, AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto, versio = Some(11))),
       (KoskiSpecificMockOppijat.syntymäajallinen, AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto, versio = Some(11))),
@@ -169,7 +169,7 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
       (KoskiSpecificMockOppijat.kymppiluokkalainen, ExamplesPerusopetuksenLisaopetus.lisäopetuksenPäättötodistus.tallennettavatOpiskeluoikeudet.head),
       (KoskiSpecificMockOppijat.lukiolainen, PerusopetusExampleData.päättötodistusOpiskeluoikeus(luokka = "B")),
       (KoskiSpecificMockOppijat.lukiolainen, ExamplesLukio.päättötodistus()),
-      (KoskiSpecificMockOppijat.lukiolainen, AmmatillinenOpiskeluoikeusTestData.mitätöityOpiskeluoikeus),
+      (KoskiSpecificMockOppijat.lukiolainen, AmmatillinenOpiskeluoikeusTestData.mitätöitäväOpiskeluoikeus),
       (KoskiSpecificMockOppijat.lukioKesken, ExamplesLukio.lukioKesken),
       (KoskiSpecificMockOppijat.lukionAineopiskelija, ExamplesLukio.aineopiskelija),
       (KoskiSpecificMockOppijat.lukionAineopiskelijaAktiivinen, ExamplesLukio.aineOpiskelijaAktiivinen),
@@ -325,6 +325,13 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
     )
   }
 
+  protected def thirdBatchPäivitettävätOpiskeluOikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = {
+    List(
+      (KoskiSpecificMockOppijat.eero, PerusopetuksenOpiskeluoikeusTestData.mitätöityOpiskeluoikeus), // Mitätöintiä ei voi tehdä ensimmäisellä kirjoituksella
+      (KoskiSpecificMockOppijat.lukiolainen, AmmatillinenOpiskeluoikeusTestData.mitätöityOpiskeluoikeus), // Mitätöintiä ei voi tehdä ensimmäisellä kirjoituksella
+    )
+  }
+
   override def resetFixtures: Unit = {
     super.resetFixtures
     peruutaSuostumusOpiskeluoikeudelta()
@@ -404,14 +411,18 @@ object AmmatillinenOpiskeluoikeusTestData {
   lazy val lähdejärjestelmällinenOpiskeluoikeus: AmmatillinenOpiskeluoikeus =
     opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto, versio = Some(11)).copy(lähdejärjestelmänId = Some(AmmatillinenExampleData.winnovaLähdejärjestelmäId("l-050504")))
 
+  lazy val mitätöitäväOpiskeluoikeus: AmmatillinenOpiskeluoikeus =
+    opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto, versio = Some(11))
+      .copy(lähdejärjestelmänId = Some(AmmatillinenExampleData.winnovaLähdejärjestelmäId("l-010203")))
+
   lazy val mitätöityOpiskeluoikeus: AmmatillinenOpiskeluoikeus = {
-    val baseOo = opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto, versio = Some(11))
-    baseOo.copy(
-      tila = baseOo.tila.copy(
-        opiskeluoikeusjaksot = baseOo.tila.opiskeluoikeusjaksot :+ AmmatillinenOpiskeluoikeusjakso(alku = LocalDate.now, opiskeluoikeusMitätöity)
+    mitätöitäväOpiskeluoikeus.copy(
+      tila = mitätöitäväOpiskeluoikeus.tila.copy(
+        opiskeluoikeusjaksot = mitätöitäväOpiskeluoikeus.tila.opiskeluoikeusjaksot :+ AmmatillinenOpiskeluoikeusjakso(alku = LocalDate.now, opiskeluoikeusMitätöity)
       )
     )
-  }}
+  }
+}
 
 object PerusopetuksenOpiskeluoikeusTestData {
   lazy val lähdejärjestelmällinenOpiskeluoikeus: PerusopetuksenOpiskeluoikeus =
@@ -419,10 +430,15 @@ object PerusopetuksenOpiskeluoikeusTestData {
       lähdejärjestelmänId = Some(AmmatillinenExampleData.primusLähdejärjestelmäId("l-0303032"))
     )
 
+  lazy val mitätöitäväOpiskeluoikeus: PerusopetuksenOpiskeluoikeus =
+    ysinOpiskeluoikeusKesken.copy(
+      lähdejärjestelmänId = Some(AmmatillinenExampleData.primusLähdejärjestelmäId("l-010101"))
+    )
+
   lazy val mitätöityOpiskeluoikeus: PerusopetuksenOpiskeluoikeus =
-    ysinOpiskeluoikeusKesken.copy(tila =
-      ysinOpiskeluoikeusKesken.tila.copy(opiskeluoikeusjaksot =
-        ysinOpiskeluoikeusKesken.tila.opiskeluoikeusjaksot :+ NuortenPerusopetuksenOpiskeluoikeusjakso(alku = LocalDate.now, opiskeluoikeusMitätöity)
+    mitätöitäväOpiskeluoikeus.copy(tila =
+      mitätöitäväOpiskeluoikeus.tila.copy(opiskeluoikeusjaksot =
+        mitätöitäväOpiskeluoikeus.tila.opiskeluoikeusjaksot :+ NuortenPerusopetuksenOpiskeluoikeusjakso(alku = LocalDate.now, opiskeluoikeusMitätöity)
       )
     )
 }
