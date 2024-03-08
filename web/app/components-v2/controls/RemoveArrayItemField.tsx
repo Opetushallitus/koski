@@ -82,7 +82,7 @@ const RemoveArrayItemButton = <T extends any[]>(
       onClick={props.confirmation ? () => setConfirmationVisible(true) : remove}
       testId="button"
     >
-      {props.label}
+      {t(props.label)}
     </FlatButton>
   )
 }

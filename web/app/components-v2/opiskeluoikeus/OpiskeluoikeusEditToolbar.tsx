@@ -57,7 +57,7 @@ export const OpiskeluoikeusEditToolbar = (
         <RequiresWriteAccess opiskeluoikeus={props.opiskeluoikeus}>
           {!props.editMode && editable ? (
             <RaisedButton fullWidth onClick={props.onStartEdit} testId="edit">
-              {'Muokkaa'}
+              {t('Muokkaa')}
             </RaisedButton>
           ) : opiskeluoikeusOid && !hasAnyInvalidateAccess && editable ? (
             <MitätöintiButton opiskeluoikeusOid={opiskeluoikeusOid} />
@@ -88,13 +88,13 @@ const MitätöintiButton: React.FC<MitätöintiButtonProps> = (props) => {
             onClick={() => invalidate.call(props.opiskeluoikeusOid)}
             testId="confirm"
           >
-            {'Vahvista mitätöinti, operaatiota ei voi peruuttaa'}
+            {t('Vahvista mitätöinti, operaatiota ei voi peruuttaa')}
           </RaisedButton>
           <FlatButton
             onClick={() => setConfirmationVisible(false)}
             testId="cancel"
           >
-            {'Peruuta mitätöinti'}
+            {t('Peruuta mitätöinti')}
           </FlatButton>
         </>
       ) : (
@@ -102,7 +102,7 @@ const MitätöintiButton: React.FC<MitätöintiButtonProps> = (props) => {
           onClick={() => setConfirmationVisible(true)}
           testId="button"
         >
-          {'Mitätöi opiskeluoikeus'}
+          {t('Mitätöi opiskeluoikeus')}
         </FlatButton>
       )}
     </TestIdLayer>

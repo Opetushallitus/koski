@@ -111,7 +111,7 @@ const SuostumuksenPeruminen: React.FC<SuostumuksenPeruminenProps> = (props) => {
           compact
           buttonRef={peruutaSuostumusBtn}
         >
-          {'Peruuta suostumus'}
+          {t('Peruuta suostumus')}
         </FlatButton>
       )}
       {peruuttamassaSuostumusta && props.opiskeluoikeusOid && (

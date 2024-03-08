@@ -7,6 +7,7 @@ import { RaisedButton } from '../controls/RaisedButton'
 import { FormModel } from '../forms/FormModel'
 import { Trans } from '../texts/Trans'
 import { TestIdRoot, TestIdText } from '../../appstate/useTestId'
+import { t } from '../../i18n/i18n'
 
 export type EditBarProps<T extends object> = {
   form: FormModel<T>
@@ -34,7 +35,7 @@ export const EditBar = <T extends object>(props: EditBarProps<T>) => {
           onClick={cancel}
           testId="cancelEdit"
         >
-          {'Peruuta'}
+          {t('Peruuta')}
         </FlatButton>
         <RaisedButton
           disabled={
@@ -43,7 +44,7 @@ export const EditBar = <T extends object>(props: EditBarProps<T>) => {
           onClick={save}
           testId="save"
         >
-          {'Tallenna'}
+          {t('Tallenna')}
         </RaisedButton>
         {!props.form.hasChanged && (
           <TestIdText id="editStatus">

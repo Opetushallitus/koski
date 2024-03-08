@@ -49,8 +49,10 @@ export const UusiTaiteenPerusopetuksenPäätasonSuoritusModal: React.FC<
         </KeyValueTable>
       </ModalBody>
       <ModalFooter>
-        <FlatButton onClick={props.onDismiss}>{'Peruuta'}</FlatButton>
-        <RaisedButton onClick={props.onCreate}>{'Lisää suoritus'}</RaisedButton>
+        <FlatButton onClick={props.onDismiss}>{t('Peruuta')}</FlatButton>
+        <RaisedButton onClick={props.onCreate}>
+          {t('Lisää suoritus')}
+        </RaisedButton>
       </ModalFooter>
     </Modal>
   )

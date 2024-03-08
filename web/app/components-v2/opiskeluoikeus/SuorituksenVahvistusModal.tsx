@@ -3,7 +3,7 @@ import React, { useCallback, useMemo } from 'react'
 import { useChildClassName, useSchema } from '../../appstate/constraints'
 import { usePreferences } from '../../appstate/preferences'
 import { todayISODate } from '../../date/date'
-import { localize } from '../../i18n/i18n'
+import { localize, t } from '../../i18n/i18n'
 import { HenkilövahvistusPaikkakunnalla } from '../../types/fi/oph/koski/schema/HenkilovahvistusPaikkakunnalla'
 import { HenkilövahvistusValinnaisellaPaikkakunnalla } from '../../types/fi/oph/koski/schema/HenkilovahvistusValinnaisellaPaikkakunnalla'
 import { HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla } from '../../types/fi/oph/koski/schema/HenkilovahvistusValinnaisellaTittelillaJaValinnaisellaPaikkakunnalla'
@@ -205,14 +205,14 @@ export const SuorituksenVahvistusModal = <
       </ModalBody>
       <ModalFooter>
         <FlatButton onClick={props.onCancel} testId="cancel">
-          {'Peruuta'}
+          {t('Peruuta')}
         </FlatButton>
         <RaisedButton
           onClick={onSubmit}
           disabled={A.isNonEmpty(form.errors) || !vahvistus}
           testId="submit"
         >
-          {'Merkitse valmiiksi'}
+          {t('Merkitse valmiiksi')}
         </RaisedButton>
       </ModalFooter>
     </Modal>

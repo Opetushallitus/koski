@@ -137,7 +137,7 @@ export const SuorituksenVahvistusEdit = <T extends Vahvistus>({
             disabled={disableRemoval}
             testId="merkitseKeskeneräiseksi"
           >
-            {'Merkitse keskeneräiseksi'}
+            {t('Merkitse keskeneräiseksi')}
           </FlatButton>
         ) : (
           <RaisedButton
@@ -145,7 +145,7 @@ export const SuorituksenVahvistusEdit = <T extends Vahvistus>({
             disabled={disableAdd}
             testId="merkitseValmiiksi"
           >
-            {'Merkitse valmiiksi'}
+            {t('Merkitse valmiiksi')}
           </RaisedButton>
         )}
         {modalVisible && (

@@ -117,7 +117,7 @@ export const YoTodistus: React.FC<YoTodistusProps> = (props) => {
               !isYtrCertificateCompleted(state) && (
                 <>
                   <RaisedButton onClick={startGenerating} testId="start">
-                    {'Lataa todistus'}
+                    {t('Lataa todistus')}
                   </RaisedButton>
                 </>
               )}
