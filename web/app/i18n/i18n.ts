@@ -3,6 +3,7 @@ import { English } from '../types/fi/oph/koski/schema/English'
 import { Finnish } from '../types/fi/oph/koski/schema/Finnish'
 import { LocalizedString } from '../types/fi/oph/koski/schema/LocalizedString'
 import { Swedish } from '../types/fi/oph/koski/schema/Swedish'
+import { capitalize, uncapitalize } from '../util/strings'
 
 export const supportedLanguages = ['fi', 'sv', 'en'] as const
 
@@ -47,17 +48,30 @@ export function t(
   }
   if (typeof s === 'string') {
     // @ts-ignore try to find a localization from the bundle
-    const localizedString = texts[s] || {}
-    if (!localizedString[usedLanguage]) {
-      if (ignoreMissing === true) return null
-      if (!missing[usedLanguage + '.' + s]) {
-        if (usedLanguage === 'fi')
-          console.error(`Localization missing for language ${usedLanguage}:`, s)
-        missing[usedLanguage + '.' + s] = true
-      }
-      return s
+    const attemptAsSuch = texts[s] || {}
+    if (attemptAsSuch[usedLanguage]) {
+      return attemptAsSuch[usedLanguage]
     }
-    return localizedString[usedLanguage]
+
+    // @ts-ignore try to find a localization from the bundle
+    const attemptUncapitalized = texts[uncapitalize(s)] || {}
+    if (attemptUncapitalized[usedLanguage]) {
+      return capitalize(attemptUncapitalized[usedLanguage])
+    }
+
+    // @ts-ignore try to find a localization from the bundle
+    const attemptCapitalized = texts[capitalize(s)] || {}
+    if (attemptCapitalized[usedLanguage]) {
+      return uncapitalize(attemptCapitalized[usedLanguage])
+    }
+
+    if (ignoreMissing === true) return null
+    if (!missing[usedLanguage + '.' + s]) {
+      if (usedLanguage === 'fi')
+        console.error(`Localization missing for language ${usedLanguage}:`, s)
+      missing[usedLanguage + '.' + s] = true
+    }
+    return s
   }
   console.error('Trying to localize', s)
   return null

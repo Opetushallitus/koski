@@ -9,21 +9,7 @@ export type TransProps = {
 
 export const Trans = (props: TransProps) => {
   const text = useMemo(() => {
-    const key = props.children
-    if (typeof key === 'string') {
-      if (tExists(key)) {
-        return t(key)
-      }
-      const lowerKey = uncapitalize(key)
-      if (tExists(lowerKey)) {
-        return capitalize(t(lowerKey))
-      }
-      const upperKey = capitalize(key)
-      if (tExists(upperKey)) {
-        return uncapitalize(t(upperKey))
-      }
-    }
-    return t(key)
+    return t(props.children)
   }, [props.children])
 
   return <>{text || null}</>
