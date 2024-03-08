@@ -41,8 +41,7 @@ class QuerySpec extends AnyFreeSpec with KoskiHttpSpec with Matchers {
           response.query.asInstanceOf[QueryOrganisaationOpiskeluoikeudet].organisaatioOid should contain(MockOrganisaatiot.helsinginKaupunki)
           response.queryId
         }
-        waitForStateTransition(queryId, user)(QueryState.pending, QueryState.running)
-        val complete = waitForStateTransition(queryId, user)(QueryState.running, QueryState.complete).asInstanceOf[CompleteQueryResponse]
+        val complete = waitForCompletion(queryId, user)
 
         complete.files should have length 14
         complete.files.foreach(verifyResult(_, user))
@@ -80,8 +79,7 @@ class QuerySpec extends AnyFreeSpec with KoskiHttpSpec with Matchers {
           response.query.asInstanceOf[QueryOrganisaationOpiskeluoikeudet].organisaatioOid should contain(MockOrganisaatiot.helsinginKaupunki)
           response.queryId
         }
-        waitForStateTransition(queryId, user)(QueryState.pending, QueryState.running)
-        val complete = waitForStateTransition(queryId, user)(QueryState.running, QueryState.complete).asInstanceOf[CompleteQueryResponse]
+        val complete = waitForCompletion(queryId, user)
 
         complete.files should have length 5
         complete.files.foreach(verifyResult(_, user))
@@ -123,8 +121,7 @@ class QuerySpec extends AnyFreeSpec with KoskiHttpSpec with Matchers {
           response.query.asInstanceOf[QueryPaallekkaisetOpiskeluoikeudet].organisaatioOid should contain(MockOrganisaatiot.helsinginKaupunki)
           response.queryId
         }
-        waitForStateTransition(queryId, user)(QueryState.pending, QueryState.running)
-        val complete = waitForStateTransition(queryId, user)(QueryState.running, QueryState.complete).asInstanceOf[CompleteQueryResponse]
+        val complete = waitForCompletion(queryId, user)
 
         complete.files should have length 1
         complete.files.foreach(verifyResult(_, user))
@@ -152,8 +149,7 @@ class QuerySpec extends AnyFreeSpec with KoskiHttpSpec with Matchers {
           response.query.asInstanceOf[QueryPaallekkaisetOpiskeluoikeudet].organisaatioOid should contain(MockOrganisaatiot.helsinginKaupunki)
           response.queryId
         }
-        waitForStateTransition(queryId, user)(QueryState.pending, QueryState.running)
-        val complete = waitForStateTransition(queryId, user)(QueryState.running, QueryState.complete).asInstanceOf[CompleteQueryResponse]
+        val complete = waitForCompletion(queryId, user)
 
         complete.files should have length 1
         complete.files.foreach(verifyResult(_, user))
@@ -189,17 +185,20 @@ class QuerySpec extends AnyFreeSpec with KoskiHttpSpec with Matchers {
       verifyResponseStatus(302) // 302: Found (redirect)
     }
 
-  def waitForStateTransition(queryId: String, user: UserWithPassword)(from: String, to: String): QueryResponse = {
+  def waitForStateTransition(queryId: String, user: UserWithPassword)(states: String*): QueryResponse = {
     var lastResponse: Option[QueryResponse] = None
     Wait.until {
       getQuerySuccessfully(queryId, user) { response =>
-        List(from, to) should contain(response.status)
+        states should contain(response.status)
         lastResponse = Some(response)
-        response.status == to
+        response.status == states.last
       }
     }
     lastResponse.get
   }
+
+  def waitForCompletion(queryId: String, user: UserWithPassword): CompleteQueryResponse =
+    waitForStateTransition(queryId, user)(QueryState.pending, QueryState.running, QueryState.complete).asInstanceOf[CompleteQueryResponse]
 
   def parsedResponse: QueryResponse = {
     verifyResponseStatusOk()
