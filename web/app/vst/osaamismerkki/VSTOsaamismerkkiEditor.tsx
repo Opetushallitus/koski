@@ -71,7 +71,7 @@ export const VSTOsaamismerkkiEditor: React.FC<VSTOsaamismerkkiEditor> = ({
               arviointi={VapaanSivistystyönOsaamismerkinArviointi}
             />
           ) : (
-            <KeyValueRow label="Arviointi">
+            <KeyValueRow localizableLabel="Arviointi">
               <FormField
                 form={form}
                 path={päätasonSuoritus.path.prop('arviointi')}

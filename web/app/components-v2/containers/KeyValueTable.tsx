@@ -23,7 +23,7 @@ export const KeyValueTable = (props: KeyValueTableProps) => (
 )
 
 export type KeyValueRowProps = CommonPropsWithChildren<{
-  label?: string | LocalizedString
+  localizableLabel?: string | LocalizedString
   indent?: number
 }>
 
@@ -38,7 +38,7 @@ export const KeyValueRow = (props: KeyValueRowProps) => {
         valign="top"
         component="span"
       >
-        <Trans>{props.label}</Trans>
+        <Trans>{props.localizableLabel}</Trans>
       </Column>
       <Column
         className="KeyValueRow__value"
@@ -57,7 +57,7 @@ export const KeyValueRow = (props: KeyValueRowProps) => {
 }
 
 export type KeyColumnedValuesRowProps = CommonProps<{
-  name?: string | LocalizedString
+  localizableName?: string | LocalizedString
   children: React.ReactNode[]
   columnSpans?: ResponsiveValue<Array<number | '*'>>
 }>
@@ -83,7 +83,7 @@ export const KeyColumnedValuesRow = (props: KeyColumnedValuesRowProps) => {
         valign="top"
         component="span"
       >
-        <Trans>{props.name}</Trans>
+        <Trans>{props.localizableName}</Trans>
       </Column>
       {props.children.map((child, index) => (
         <Column

@@ -57,7 +57,7 @@ export const Toimipiste = <T extends VapaanSivistystyönPäätasonSuoritus>({
   form,
   suoritus: päätasonSuoritus
 }: SuoritusFieldProps<T>) => (
-  <KeyValueRow label="Oppilaitos / toimipiste">
+  <KeyValueRow localizableLabel="Oppilaitos / toimipiste">
     <FormField
       form={form}
       path={päätasonSuoritus.path.prop('toimipiste')}
@@ -75,7 +75,7 @@ export const Toimipiste = <T extends VapaanSivistystyönPäätasonSuoritus>({
 export const Koulutus = <T extends VapaanSivistystyönPäätasonSuoritus>({
   suoritus: päätasonSuoritus
 }: SuoritusFieldProps<T>) => (
-  <KeyValueRow label="Koulutus">
+  <KeyValueRow localizableLabel="Koulutus">
     <TestIdText id="tunniste.nimi">
       <Trans>{päätasonSuoritus.suoritus.koulutusmoduuli.tunniste.nimi}</Trans>
     </TestIdText>
@@ -85,7 +85,7 @@ export const Koulutus = <T extends VapaanSivistystyönPäätasonSuoritus>({
 export const Koulutusmoduuli = <T extends VapaanSivistystyönPäätasonSuoritus>({
   suoritus: päätasonSuoritus
 }: SuoritusFieldProps<T>) => (
-  <KeyValueRow label="Koulutusmoduuli">
+  <KeyValueRow localizableLabel="Koulutusmoduuli">
     <TestIdText id="tunniste.koodiarvo">
       {päätasonSuoritus.suoritus.koulutusmoduuli.tunniste.koodiarvo}
     </TestIdText>
@@ -97,7 +97,7 @@ export const Osaamismerkki = <
 >({
   suoritus: päätasonSuoritus
 }: SuoritusFieldProps<T>) => (
-  <KeyValueRow label="Osaamismerkki">
+  <KeyValueRow localizableLabel="Osaamismerkki">
     <TestIdText id="tunniste.koodiarvo-ja-nimi">
       <a
         href={`${window.ePerusteetBaseUrl}${t(
@@ -117,7 +117,7 @@ export const Peruste = <T extends VSTPäätasonSuoritusPerusteella>({
   form,
   suoritus
 }: SuoritusFieldProps<T>) => (
-  <KeyValueRow label="Peruste">
+  <KeyValueRow localizableLabel="Peruste">
     <FormField
       form={form}
       path={suoritus.path.prop('koulutusmoduuli').prop('perusteenDiaarinumero')}
@@ -136,7 +136,7 @@ export const Opintokokonaisuus = <
   form,
   suoritus
 }: SuoritusFieldProps<T>) => (
-  <KeyValueRow label="Opintokokonaisuus">
+  <KeyValueRow localizableLabel="Opintokokonaisuus">
     <FormField
       form={form}
       path={suoritus.path.prop('koulutusmoduuli').prop('opintokokonaisuus')}
@@ -156,7 +156,7 @@ export const Laajuus = <T extends VSTPäätasonSuoritusLaajuudella>({
     VSTPäätasonSuoritusLaajuudella
   >
   return (
-    <KeyValueRow label="Laajuus">
+    <KeyValueRow localizableLabel="Laajuus">
       <FormField
         form={form}
         path={suoritus.path.prop('koulutusmoduuli').prop('laajuus')}
@@ -180,7 +180,7 @@ export const Opetuskieli = <
   form,
   suoritus: päätasonSuoritus
 }: SuoritusFieldProps<T>) => (
-  <KeyValueRow label="Opetuskieli">
+  <KeyValueRow localizableLabel="Opetuskieli">
     <FormField
       form={form}
       path={päätasonSuoritus.path.prop('suorituskieli')}
@@ -196,7 +196,7 @@ export const TodistuksenLisätiedot = <
   form,
   suoritus: päätasonSuoritus
 }: SuoritusFieldProps<T>) => (
-  <KeyValueRow label="Todistuksella näkyvät lisätiedot">
+  <KeyValueRow localizableLabel="Todistuksella näkyvät lisätiedot">
     <FormField
       form={form}
       path={päätasonSuoritus.path.prop('todistuksellaNäkyvätLisätiedot')}

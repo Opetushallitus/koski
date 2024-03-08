@@ -18,7 +18,7 @@ export const VSTLaajuudetYhteensä: React.FC<VSTLaajuudetYhteensäProps> = ({
   testId
 }) => (
   <KeyValueTable>
-    <KeyValueRow label="Yhteensä">
+    <KeyValueRow localizableLabel="Yhteensä">
       <TestIdText id="yhteensa">{laajuudetYhteensä(suoritus)}</TestIdText>
     </KeyValueRow>
   </KeyValueTable>

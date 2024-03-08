@@ -87,7 +87,7 @@ export const OpiskeluoikeudenTilaView = <T extends OpiskeluoikeudenTila>(
           {sortedJaksot.map((jakso, index) => (
             <TestIdLayer key={index} id={index}>
               <KeyColumnedValuesRow
-                name={index === 0 ? 'Tila' : undefined}
+                localizableName={index === 0 ? 'Tila' : undefined}
                 className={
                   index === 0 ? 'OpiskeluoikeudenTila-viimeisin' : undefined
                 }
@@ -147,7 +147,7 @@ export const OpiskeluoikeudenTilaEdit = <T extends OpiskeluoikeudenTila>(
           {oo.jaksot.map(({ jakso, index, min, max, isLatest }, arrIndex) => (
             <TestIdLayer key={`${index}_${arrIndex}`} id={index}>
               <KeyColumnedValuesRow
-                name={arrIndex === 0 ? 'Tila' : undefined}
+                localizableName={arrIndex === 0 ? 'Tila' : undefined}
                 className={
                   isLatest ? 'OpiskeluoikeudenTila-viimeisin' : undefined
                 }
@@ -197,7 +197,7 @@ export const OpiskeluoikeudenTilaEdit = <T extends OpiskeluoikeudenTila>(
 
         {!oo.isTerminated && (
           <KeyColumnedValuesRow
-            name={A.isEmpty(oo.jaksot) ? 'Tila' : undefined}
+            localizableName={A.isEmpty(oo.jaksot) ? 'Tila' : undefined}
             columnSpans={{
               default: [6, '*'],
               small: [8, '*'],
