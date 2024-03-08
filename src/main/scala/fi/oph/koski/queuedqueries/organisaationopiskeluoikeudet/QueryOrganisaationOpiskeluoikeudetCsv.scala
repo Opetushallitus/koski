@@ -1,26 +1,31 @@
 package fi.oph.koski.queuedqueries.organisaationopiskeluoikeudet
 
 import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.queuedqueries.QueryUtils.QueryResourceManager
 import fi.oph.koski.queuedqueries.{QueryFormat, QueryResultWriter}
 import fi.oph.koski.raportointikanta._
 import fi.oph.koski.schema.Organisaatio
 import fi.oph.koski.schema.Organisaatio.Oid
-import fi.oph.scalaschema.annotation.EnumValue
+import fi.oph.koski.schema.annotation.EnumValues
+import fi.oph.scalaschema.annotation.{Description, Title}
 
-import java.time.LocalDate
+import java.time.{LocalDate, LocalDateTime}
 import scala.util.Using
 
+@Title("(CSV)")
+@Description("Tulostiedostot sisältävät tiedot csv-muodossa.")
+@Description("Tiedostoa ei luoda, jos se jää sisällöltään tyhjäksi.")
 case class QueryOrganisaationOpiskeluoikeudetCsv(
-  @EnumValue("organisaationOpiskeluoikeudet")
   `type`: String = "organisaationOpiskeluoikeudet",
-  @EnumValue(QueryFormat.csv)
+  @EnumValues(Set(QueryFormat.csv))
   format: String = QueryFormat.csv,
   organisaatioOid: Option[Organisaatio.Oid] = None,
-  alkamispaiva: LocalDate,
+  alkanutAikaisintaan: LocalDate,
+  alkanutViimeistään: Option[LocalDate] = None,
+  muuttunutJälkeen: Option[LocalDateTime] = None,
   tila: Option[String] = None,
   koulutusmuoto: Option[String] = None,
-  suoritustyyppi: Option[String] = None,
 ) extends QueryOrganisaationOpiskeluoikeudet {
 
   def withOrganisaatioOid(organisaatioOid: Oid): QueryOrganisaationOpiskeluoikeudetCsv = copy(organisaatioOid = Some(organisaatioOid))
@@ -60,4 +65,22 @@ case class QueryOrganisaationOpiskeluoikeudetCsv(
     opiskeluoikeudenAikajaksoCsv.save()
     esiopetuksenAikajaksoCsv.save()
   }
+}
+
+object QueryOrganisaationOpiskeluoikeudetCsvDocumentation {
+  def outputFiles: List[String] = List(
+    "opiskeluoikeus.csv",
+    "paatason_suoritus.csv",
+    "osasuoritus.csv",
+    "opiskeluoikeus_aikajakso.csv",
+    "esiopetus_opiskeluoik_aikajakso.csv",
+  )
+
+  def example: QueryOrganisaationOpiskeluoikeudetCsv = QueryOrganisaationOpiskeluoikeudetCsv(
+    organisaatioOid = Some(MockOrganisaatiot.helsinginKaupunki),
+    alkanutAikaisintaan = LocalDate.of(2024, 1, 1),
+    alkanutViimeistään = Some(LocalDate.of(2024, 1, 31)),
+    tila = Some("eronnut"),
+    koulutusmuoto = Some("perusopetus"),
+  )
 }

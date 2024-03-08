@@ -1,24 +1,26 @@
 package fi.oph.koski.documentation
 
+import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.kela.KelaSchema
 import fi.oph.koski.koodisto.Koodistot
 import fi.oph.koski.koskiuser.Unauthenticated
 import fi.oph.koski.migri.MigriSchema
+import fi.oph.koski.queuedqueries.{QueryDocumentation, QueryResponse}
 import fi.oph.koski.schema.KoskiSchema
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 import fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotSchema
 import fi.oph.koski.suoritusjako.suoritetuttutkinnot.SuoritetutTutkinnotSchema
-import fi.oph.koski.valvira.ValviraSchema
 import fi.oph.koski.valpas.kela.ValpasKelaSchema
 import fi.oph.koski.valpas.oppija.ValpasInternalSchema
 import fi.oph.koski.valpas.ytl.ValpasYtlSchema
+import fi.oph.koski.valvira.ValviraSchema
 import fi.oph.koski.ytl.YtlSchema
 
 import scala.reflect.runtime.{universe => ru}
 
-class DocumentationApiServlet extends KoskiSpecificApiServlet with Unauthenticated with NoCache {
+class DocumentationApiServlet(application: KoskiApplication) extends KoskiSpecificApiServlet with Unauthenticated with NoCache {
   get("/categoryNames.json") {
     KoskiTiedonSiirtoHtml.categoryNames
   }
@@ -32,7 +34,7 @@ class DocumentationApiServlet extends KoskiSpecificApiServlet with Unauthenticat
   }
 
   get("/sections.html") {
-    KoskiTiedonSiirtoHtml.htmlTextSections
+    KoskiTiedonSiirtoHtml.htmlTextSections ++ QueryDocumentation.htmlTextSections(application)
   }
 
   get("/apiOperations.json") {
@@ -92,6 +94,14 @@ class DocumentationApiServlet extends KoskiSpecificApiServlet with Unauthenticat
 
   get("/koodistot.json") {
     renderObject[List[String]](Koodistot.koodistoAsetukset.filter(_.koodistoVersio.isEmpty).map(_.toString))
+  }
+
+  get("/kyselyt-response.json") {
+    QueryDocumentation.responseSchemaJson
+  }
+
+  get("/kyselyt-query.json") {
+    QueryDocumentation.querySchemaJson
   }
 
   override def toJsonString[T: ru.TypeTag](x: T): String = JsonSerializer.writeWithRoot(x)

@@ -91,7 +91,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing with GlobalEx
     mount("/koski/eisuorituksia", new EiSuorituksiaServlet)
     mount("/koski/opinnot", new SuoritusjakoHtmlServlet)
     mount("/koski/virhesivu", new VirhesivuServlet)
-    mount("/koski/api/documentation", new DocumentationApiServlet)
+    mount("/koski/api/documentation", new DocumentationApiServlet(application))
     mount("/koski/api/editor", new EditorServlet)
     mount("/koski/api/editor/koodit", new EditorKooditServlet)
     mount("/koski/api/types", new TypeModelServlet)

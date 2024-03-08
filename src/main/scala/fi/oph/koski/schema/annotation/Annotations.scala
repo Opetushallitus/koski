@@ -2,7 +2,8 @@ package fi.oph.koski.schema.annotation
 
 import fi.oph.koski.koskiuser.Rooli.Role
 import fi.oph.scalaschema._
-import org.json4s.{JsonAST}
+import org.json4s.JsonAST
+import org.json4s.JsonAST.JObject
 
 /* This property can be used to represent the whole entity */
 case class Representative() extends RepresentationalMetadata
@@ -43,7 +44,6 @@ case class InfoLinkUrl(url: String) extends RepresentationalMetadata
 /* Numeric field should be rendered using this scale */
 case class Scale(numberOfDigits: Int) extends RepresentationalMetadata
 
-// TODO: Toteuta siistimmin suoraan scala-schemaan
 case class EnumValues(values: Set[String]) extends RepresentationalMetadata {
   override def applyMetadata(o: ObjectWithMetadata[_], schemaFactory: SchemaFactory): ObjectWithMetadata[_] = {
     val metadata = o match {
@@ -51,6 +51,11 @@ case class EnumValues(values: Set[String]) extends RepresentationalMetadata {
       case other: Any => notSupported(other)
     }
     super.applyMetadata(metadata, schemaFactory)
+  }
+
+  override def appendMetadataToJsonSchema(obj: JObject): JObject = {
+    val valuesStr = values.map('"' + _ + '"').mkString(", ")
+    appendToDescription(obj, s"${if (values.size > 1) "Sallitut arvot" else "Sallittu arvo"}: $valuesStr")
   }
 
   private def addEnumValues(property: Property): Property = {

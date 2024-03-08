@@ -14,6 +14,7 @@ import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignReques
 
 import java.io.InputStream
 import java.net.URI
+import java.nio.file.Path
 import java.time.Duration
 import java.util.UUID
 import scala.jdk.CollectionConverters._
@@ -41,18 +42,19 @@ class QueryResultsRepository(config: Config) extends Logging {
     createBucketIfDoesNotExist
   }
 
-  def put(queryId: UUID, name: String, provider: ContentStreamProvider, contentType: String): Unit = {
+  def putStream(queryId: UUID, name: String, provider: ContentStreamProvider, contentType: String): Unit = {
     val key = objectKey(queryId, name)
-    val request = PutObjectRequest.builder()
-      .bucket(bucketName)
-      .key(key)
-      .contentType(contentType)
-      .metadata(mapAsJavaMap(Map {
-        "query" -> queryId.toString
-      }))
-      .build()
+    val request = buildPutRequest(queryId, key, contentType)
     val requestBody = RequestBody.fromContentProvider(provider, contentType)
-    logger.info(s"Put result to S3: ${s3.utilities().getUrl(GetUrlRequest.builder().bucket(bucketName).key(key).build())} ($contentType)")
+    logPut(key, contentType)
+    s3.putObject(request, requestBody)
+  }
+
+  def putFile(queryId: UUID, name: String, file: Path, contentType: String): Unit = {
+    val key = objectKey(queryId, name)
+    val request = buildPutRequest(queryId, key, contentType)
+    val requestBody = RequestBody.fromFile(file)
+    logPut(key, contentType)
     s3.putObject(request, requestBody)
   }
 
@@ -96,4 +98,17 @@ class QueryResultsRepository(config: Config) extends Logging {
     .secretAccessKey("1234")
     .sessionToken("1234")
     .build()
+
+  private def buildPutRequest(queryId: UUID, key: String, contentType: String) =
+    PutObjectRequest.builder()
+      .bucket(bucketName)
+      .key(key)
+      .contentType(contentType)
+      .metadata(mapAsJavaMap(Map {
+        "query" -> queryId.toString
+      }))
+      .build()
+
+  private def logPut(key: String, contentType: String) =
+    logger.info(s"Put result to S3: ${s3.utilities().getUrl(GetUrlRequest.builder().bucket(bucketName).key(key).build())} ($contentType)")
 }

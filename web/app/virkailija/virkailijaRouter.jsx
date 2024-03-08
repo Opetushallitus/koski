@@ -12,7 +12,8 @@ import {
   dokumentaatioKoodistotP,
   dokumentaatioOppilashallintojärjestelmätP,
   dokumentaatioLuovutuspalveluP,
-  dokumentaatioPalveluväyläOmadataP
+  dokumentaatioPalveluväyläOmadataP,
+  dokumentaatioKyselytP
 } from '../dokumentaatio/Dokumentaatio'
 import { onlyIfHasReadAccess } from './accessCheck'
 import { raportitContentP } from '../raportit/Raportit'
@@ -63,6 +64,8 @@ export const routeP = locationP
       return dokumentaatioPalveluväyläOmadataP()
     } else if (path.includes('koski/kela')) {
       return kelaVirkailijaP(path)
+    } else if (path.includes('/koski/dokumentaatio/rajapinnat/kyselyt')) {
+      return dokumentaatioKyselytP(path)
     }
   })
   .toProperty()

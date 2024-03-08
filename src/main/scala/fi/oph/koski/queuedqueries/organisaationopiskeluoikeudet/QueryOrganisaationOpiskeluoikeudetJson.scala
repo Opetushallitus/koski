@@ -2,24 +2,29 @@ package fi.oph.koski.queuedqueries.organisaationopiskeluoikeudet
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.{KoskiOpiskeluoikeusRow, KoskiTables}
+import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.queuedqueries.QueryUtils.QueryResourceManager
 import fi.oph.koski.queuedqueries.{QueryFormat, QueryResultWriter}
 import fi.oph.koski.schema.Organisaatio.Oid
+import fi.oph.koski.schema.annotation.EnumValues
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, KoskiSchema, Oppija, Organisaatio}
-import fi.oph.scalaschema.annotation.EnumValue
+import fi.oph.scalaschema.annotation.{Description, Title}
 
-import java.time.LocalDate
+import java.time.{LocalDate, LocalDateTime}
 
+@Title("(JSON)")
+@Description("Tulostiedostot sisältävät tiedot json-muodossa. Jokaista oppijaa kohden luodaan oma tiedostonsa, jonka alle opiskeluoikeudet on ryhmitelty.")
+@Description("Tiedostojen sisältö vastaa oppilashallintojärjestelmille tarkoitettua rajapintaa GET /koski/api/oppija/{oid}")
 case class QueryOrganisaationOpiskeluoikeudetJson(
-  @EnumValue("organisaationOpiskeluoikeudet")
   `type`: String = "organisaationOpiskeluoikeudet",
-  @EnumValue(QueryFormat.json)
+  @EnumValues(Set(QueryFormat.json))
   format: String = QueryFormat.json,
   organisaatioOid: Option[Organisaatio.Oid] = None,
-  alkamispaiva: LocalDate,
+  alkanutAikaisintaan: LocalDate,
+  alkanutViimeistään: Option[LocalDate] = None,
+  muuttunutJälkeen: Option[LocalDateTime] = None,
   tila: Option[String] = None,
   koulutusmuoto: Option[String] = None,
-  suoritustyyppi: Option[String] = None,
 ) extends QueryOrganisaationOpiskeluoikeudet {
   def withOrganisaatioOid(organisaatioOid: Oid): QueryOrganisaationOpiskeluoikeudetJson = copy(organisaatioOid = Some(organisaatioOid))
 
@@ -51,3 +56,12 @@ case class QueryOrganisaationOpiskeluoikeudetJson(
   }
 }
 
+object QueryOrganisaationOpiskeluoikeudetJsonDocumentation {
+  def example = QueryOrganisaationOpiskeluoikeudetJson(
+    organisaatioOid = Some(MockOrganisaatiot.helsinginKaupunki),
+    alkanutAikaisintaan = LocalDate.of(2024, 1, 1),
+    alkanutViimeistään = Some(LocalDate.of(2024, 1, 31)),
+    tila = Some("lasna"),
+    koulutusmuoto = Some("perusopetus"),
+  )
+}
