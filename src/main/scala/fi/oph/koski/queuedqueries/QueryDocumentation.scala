@@ -8,8 +8,8 @@ import fi.oph.koski.queuedqueries.organisaationopiskeluoikeudet.{QueryOrganisaat
 import fi.oph.koski.queuedqueries.paallekkaisetopiskeluoikeudet.QueryPaallekkaisetOpiskeluoikeudetDocumentation
 import fi.oph.koski.schema
 import fi.oph.koski.util.TryWithLogging
-import fi.oph.scalaschema.annotation.{Description, Title}
 import fi.oph.scalaschema._
+import fi.oph.scalaschema.annotation.{Description, Title}
 import org.json4s.JValue
 
 import java.time.{Duration, LocalDateTime}
@@ -128,7 +128,12 @@ object PropertyHtmlDocs {
               </ul>
             }
         }
-      case _: DateSchema => Text("Päivämäärä (VVVV-KK-PP)")
+      case d: DateSchema => Text(
+        if (d.dateType.getSimpleName.contains("Time")) {
+          "Aikaleima (vvvv-kk-ppThh:mm:ss)"
+        } else {
+          "Päivämäärä (vvvv-kk-pp)"
+        })
       case _: NumberSchema => Text("Luku")
       case _: BooleanSchema => Text("true/false")
       case o: OptionalSchema => renderType(o.itemSchema)

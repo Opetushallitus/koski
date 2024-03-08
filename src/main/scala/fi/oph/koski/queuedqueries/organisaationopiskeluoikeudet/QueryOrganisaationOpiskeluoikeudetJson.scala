@@ -10,7 +10,7 @@ import fi.oph.koski.schema.annotation.EnumValues
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, KoskiSchema, Oppija, Organisaatio}
 import fi.oph.scalaschema.annotation.{Description, Title}
 
-import java.time.LocalDate
+import java.time.{LocalDate, LocalDateTime}
 
 @Title("(JSON)")
 @Description("Tulostiedostot sisältävät tiedot json-muodossa. Jokaista oppijaa kohden luodaan oma tiedostonsa, jonka alle opiskeluoikeudet on ryhmitelty.")
@@ -22,6 +22,7 @@ case class QueryOrganisaationOpiskeluoikeudetJson(
   organisaatioOid: Option[Organisaatio.Oid] = None,
   alkanutAikaisintaan: LocalDate,
   alkanutViimeistään: Option[LocalDate] = None,
+  muuttunutJälkeen: Option[LocalDateTime] = None,
   tila: Option[String] = None,
   koulutusmuoto: Option[String] = None,
 ) extends QueryOrganisaationOpiskeluoikeudet {

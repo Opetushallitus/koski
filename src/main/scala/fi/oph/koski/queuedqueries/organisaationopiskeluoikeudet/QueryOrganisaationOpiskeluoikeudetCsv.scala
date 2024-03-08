@@ -10,7 +10,7 @@ import fi.oph.koski.schema.Organisaatio.Oid
 import fi.oph.koski.schema.annotation.EnumValues
 import fi.oph.scalaschema.annotation.{Description, Title}
 
-import java.time.LocalDate
+import java.time.{LocalDate, LocalDateTime}
 import scala.util.Using
 
 @Title("(CSV)")
@@ -23,6 +23,7 @@ case class QueryOrganisaationOpiskeluoikeudetCsv(
   organisaatioOid: Option[Organisaatio.Oid] = None,
   alkanutAikaisintaan: LocalDate,
   alkanutViimeistään: Option[LocalDate] = None,
+  muuttunutJälkeen: Option[LocalDateTime] = None,
   tila: Option[String] = None,
   koulutusmuoto: Option[String] = None,
 ) extends QueryOrganisaationOpiskeluoikeudet {
