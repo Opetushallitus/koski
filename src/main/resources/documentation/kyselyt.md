@@ -6,7 +6,7 @@ Rajapintaa käytetään seuraavanlaisesti.
 ## Uuden kyselyn luonti
 
 Aloita kysely lähettämällä parametrit luontirajapintaan `POST /api/kyselyt`. Esimerkiksi Helsingin kaupungin
-eronnut-tilassa olevat perusopetuksen opiskeluoikeudet vuoden 2024 alusta alkaen voisi hakea
+eronnut-tilassa olevat perusopetuksen opiskeluoikeudet vuoden 2024 tammikuulta voisi hakea
 seuraavanlaisella kyselyllä.
 Eri kyselyiden skeemat esitellään myöhemmin dokumentaatiossa. Voit myös [katso kaikki skeemat graafisessa muodossa](/koski/json-schema-viewer/?schema=kyselyt-query.json).
 

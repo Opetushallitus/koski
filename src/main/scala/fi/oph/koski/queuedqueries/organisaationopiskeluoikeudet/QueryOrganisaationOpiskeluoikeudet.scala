@@ -32,8 +32,10 @@ trait QueryOrganisaationOpiskeluoikeudet extends QueryParameters with DatabaseCo
   def `type`: String
   @Description("Kyselyyn otettavan organisaation oid. Jos ei ole annettu, päätellään käyttäjän käyttöoikeuksista.")
   def organisaatioOid: Option[String]
-  @Description("Palautettavien opiskeluoikeuksien pitää alkaa annettuna päivänä tai myöhemmin.")
-  def alkamispaiva: LocalDate
+  @Description("Palauta vain opiskeluoikeudet, jotka alkavat annettuna päivänä tai myöhemmin.")
+  def alku: LocalDate
+  @Description("Palauta vain opiskeluoikeudet, jotka alkavat annettuna päivänä tai aiemmin.")
+  def loppu: Option[LocalDate]
   @Description("Palauta vain opiskeluoikeudet, joilla on annettu tila.")
   @EnumValues(Set(
     "eronnut",
@@ -105,7 +107,7 @@ trait QueryOrganisaationOpiskeluoikeudet extends QueryParameters with DatabaseCo
       user,
       Map(hakuEhto -> OpiskeluoikeusQueryContext.queryForAuditLog(Map(
         "organisaatio" -> List(organisaatioOid.get),
-        "opiskeluoikeusAlkanutAikaisintaan" -> List(alkamispaiva.format(DateTimeFormatter.ISO_DATE)),
+        "opiskeluoikeusAlkanutAikaisintaan" -> List(alku.format(DateTimeFormatter.ISO_DATE)),
         "opiskeluoikeudenTila" -> tila.toList,
         "koulutusmuoto" -> koulutusmuoto.toList,
       ).filter(_._2.nonEmpty))),
@@ -115,7 +117,8 @@ trait QueryOrganisaationOpiskeluoikeudet extends QueryParameters with DatabaseCo
   protected def getDb(application: KoskiApplication): DB = application.replicaDatabase.db
 
   protected def defaultBaseFilter(oppilaitosOids: List[Organisaatio.Oid]) = SQLHelpers.concatMany(
-    Some(sql"WHERE NOT poistettu AND NOT mitatoity AND oppilaitos_oid = ANY($oppilaitosOids) AND alkamispaiva >= $alkamispaiva "),
+    Some(sql"WHERE NOT poistettu AND NOT mitatoity AND oppilaitos_oid = ANY($oppilaitosOids) AND alkamispaiva >= $alku "),
+    loppu.map(l => sql" AND alkamispaiva <= $l "),
     tila.map(t => sql" AND tila = $t "),
     koulutusmuoto.map(t => sql"AND koulutusmuoto = $t "),
   )

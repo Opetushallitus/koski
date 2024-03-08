@@ -20,7 +20,8 @@ case class QueryOrganisaationOpiskeluoikeudetJson(
   @EnumValues(Set(QueryFormat.json))
   format: String = QueryFormat.json,
   organisaatioOid: Option[Organisaatio.Oid] = None,
-  alkamispaiva: LocalDate,
+  alku: LocalDate,
+  loppu: Option[LocalDate] = None,
   tila: Option[String] = None,
   koulutusmuoto: Option[String] = None,
 ) extends QueryOrganisaationOpiskeluoikeudet {
@@ -57,7 +58,8 @@ case class QueryOrganisaationOpiskeluoikeudetJson(
 object QueryOrganisaationOpiskeluoikeudetJsonDocumentation {
   def example = QueryOrganisaationOpiskeluoikeudetJson(
     organisaatioOid = Some(MockOrganisaatiot.helsinginKaupunki),
-    alkamispaiva = LocalDate.of(2024, 1, 1),
+    alku = LocalDate.of(2024, 1, 1),
+    loppu = Some(LocalDate.of(2024, 1, 31)),
     tila = Some("lasna"),
     koulutusmuoto = Some("perusopetus"),
   )

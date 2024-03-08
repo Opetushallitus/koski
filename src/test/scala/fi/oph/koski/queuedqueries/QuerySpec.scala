@@ -19,7 +19,7 @@ class QuerySpec extends AnyFreeSpec with KoskiHttpSpec with Matchers {
   "Organisaation opiskeluoikeudet" - {
     "JSON" - {
       val query = QueryOrganisaationOpiskeluoikeudetJson(
-        alkamispaiva = LocalDate.of(2020, 1, 1),
+        alku = LocalDate.of(2020, 1, 1),
       )
 
       "Ei onnistu väärän organisaation tietoihin" in {
@@ -58,7 +58,7 @@ class QuerySpec extends AnyFreeSpec with KoskiHttpSpec with Matchers {
 
     "CSV" - {
       val query = QueryOrganisaationOpiskeluoikeudetCsv(
-        alkamispaiva = LocalDate.of(2020, 1, 1),
+        alku = LocalDate.of(2020, 1, 1),
       )
 
       "Ei onnistu väärän organisaation tietoihin" in {
