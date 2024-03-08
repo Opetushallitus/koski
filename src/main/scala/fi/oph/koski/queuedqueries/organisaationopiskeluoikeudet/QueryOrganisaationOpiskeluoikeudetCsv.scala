@@ -21,8 +21,8 @@ case class QueryOrganisaationOpiskeluoikeudetCsv(
   @EnumValues(Set(QueryFormat.csv))
   format: String = QueryFormat.csv,
   organisaatioOid: Option[Organisaatio.Oid] = None,
-  alku: LocalDate,
-  loppu: Option[LocalDate] = None,
+  alkanutAikaisintaan: LocalDate,
+  alkanutViimeistään: Option[LocalDate] = None,
   tila: Option[String] = None,
   koulutusmuoto: Option[String] = None,
 ) extends QueryOrganisaationOpiskeluoikeudet {
@@ -77,8 +77,8 @@ object QueryOrganisaationOpiskeluoikeudetCsvDocumentation {
 
   def example: QueryOrganisaationOpiskeluoikeudetCsv = QueryOrganisaationOpiskeluoikeudetCsv(
     organisaatioOid = Some(MockOrganisaatiot.helsinginKaupunki),
-    alku = LocalDate.of(2024, 1, 1),
-    loppu = Some(LocalDate.of(2024, 1, 31)),
+    alkanutAikaisintaan = LocalDate.of(2024, 1, 1),
+    alkanutViimeistään = Some(LocalDate.of(2024, 1, 31)),
     tila = Some("eronnut"),
     koulutusmuoto = Some("perusopetus"),
   )
