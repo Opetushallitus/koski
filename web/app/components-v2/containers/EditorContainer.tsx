@@ -208,7 +208,7 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
         <EditBar form={props.form} onSave={onSave} />
         {props.form.isSaved && (
           <TestIdLayer id="saved">
-            <Snackbar>{'Tallennettu'}</Snackbar>
+            <Snackbar>{t('Tallennettu')}</Snackbar>
           </TestIdLayer>
         )}
       </TestIdRoot>

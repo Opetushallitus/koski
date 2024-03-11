@@ -23,7 +23,7 @@ export const Snackbar: React.FC<SnackbarProps> = (props) => {
       onClick={() => setVisible(false)}
       data-testid={testId}
     >
-      <Trans>{props.children}</Trans>
+      {props.children}
     </aside>
   ) : null
 }

@@ -158,14 +158,14 @@ export const UusiOsasuoritusModal: React.FC<UusiOsasuoritusModalProps> = (
       </ModalBody>
       <ModalFooter>
         <FlatButton onClick={props.onClose} testId="cancel">
-          {'Peruuta'}
+          {t('Peruuta')}
         </FlatButton>
         <RaisedButton
           disabled={!form.isValid}
           onClick={onSubmitCB}
           testId="submit"
         >
-          {'Lisää'}
+          {t('Lisää')}
         </RaisedButton>
       </ModalFooter>
     </Modal>

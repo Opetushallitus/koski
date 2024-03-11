@@ -26,6 +26,6 @@ export const FlatButton = (props: FlatButtonProps) => (
     ref={props.buttonRef}
     data-testid={useTestId(props.testId)}
   >
-    <Trans>{props.children}</Trans>
+    {props.children}
   </button>
 )

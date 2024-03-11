@@ -26,6 +26,6 @@ export const RaisedButton = (props: RaisedButtonProps) => (
     onClick={props.onClick}
     disabled={props.disabled}
   >
-    <Trans>{props.children}</Trans>
+    {props.children}
   </button>
 )

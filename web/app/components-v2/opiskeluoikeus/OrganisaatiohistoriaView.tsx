@@ -20,15 +20,17 @@ export const OrganisaatiohistoriaView: React.FC<
   }
   return (
     <KeyValueTable data-testid={testId}>
-      <KeyValueRow label={'Organisaatiohistoria'}>
+      <KeyValueRow localizableLabel={'Organisaatiohistoria'}>
         {props.value.map((row, i) => (
           <>
             <KeyValueTable key={i}>
-              <KeyValueRow label="Muutospäivä">{row.muutospäivä}</KeyValueRow>
-              <KeyValueRow label="Aikaisempi oppilaitos">
+              <KeyValueRow localizableLabel="Muutospäivä">
+                {row.muutospäivä}
+              </KeyValueRow>
+              <KeyValueRow localizableLabel="Aikaisempi oppilaitos">
                 {t(row.oppilaitos?.nimi)}
               </KeyValueRow>
-              <KeyValueRow label="Aikaisempi koulutustoimija">
+              <KeyValueRow localizableLabel="Aikaisempi koulutustoimija">
                 {t(row.koulutustoimija?.nimi)}
               </KeyValueRow>
             </KeyValueTable>

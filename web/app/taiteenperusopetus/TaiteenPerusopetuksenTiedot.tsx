@@ -41,37 +41,37 @@ export const TaiteenPerusopetuksenTiedot: React.FC<
 
   return (
     <KeyValueTable>
-      <KeyValueRow label="Taiteenala">
+      <KeyValueRow localizableLabel="Taiteenala">
         <TestIdText id="taiteenala.value">
           <Trans>
             {päätasonSuoritus.suoritus.koulutusmoduuli.taiteenala.nimi}
           </Trans>
         </TestIdText>
       </KeyValueRow>
-      <KeyValueRow label="Oppimäärä">
+      <KeyValueRow localizableLabel="Oppimäärä">
         <TestIdText id="oppimäärä.value">
           <Trans>{opiskeluoikeus.oppimäärä.nimi}</Trans>
         </TestIdText>
       </KeyValueRow>
-      <KeyValueRow label="Koulutuksen toteutustapa">
+      <KeyValueRow localizableLabel="Koulutuksen toteutustapa">
         <TestIdText id="koulutuksenToteutustapa.value">
           <Trans>{form.state.koulutuksenToteutustapa.nimi}</Trans>
         </TestIdText>
       </KeyValueRow>
       {opiskeluoikeus.koulutuksenToteutustapa.koodiarvo ===
         'hankintakoulutus' && (
-        <KeyValueRow label="Koulutuksen järjestäjä">
+        <KeyValueRow localizableLabel="Koulutuksen järjestäjä">
           <TestIdText id="koulutustoimija.value">
             <Trans>{opiskeluoikeus.koulutustoimija?.nimi}</Trans>
           </TestIdText>
         </KeyValueRow>
       )}
-      <KeyValueRow label="Oppilaitos">
+      <KeyValueRow localizableLabel="Oppilaitos">
         <TestIdText id="oppilaitos.value">
           <Trans>{opiskeluoikeus.oppilaitos?.nimi}</Trans>
         </TestIdText>
       </KeyValueRow>
-      <KeyValueRow label="Laajuus">
+      <KeyValueRow localizableLabel="Laajuus">
         <FormField
           form={form}
           path={opiskeluoikeudenLaajuusPath}

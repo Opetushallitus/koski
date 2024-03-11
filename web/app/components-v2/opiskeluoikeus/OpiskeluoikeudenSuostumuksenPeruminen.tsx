@@ -28,7 +28,7 @@ export const OpiskeluoikeudenSuostumuksenPeruminen: React.FC<
     {...common(rest, ['OpiskeluoikeudenSuostumuksenPeruminen'])}
     opiskeluoikeusOid={getOpiskeluoikeusOid(opiskeluoikeus)}
     nimi={t(opiskeluoikeus.tyyppi.nimi)}
-    text="Tämän opiskeluoikeuden tiedot näytetään antamasi suostumuksen perusteella."
+    localizationKey="Tämän opiskeluoikeuden tiedot näytetään antamasi suostumuksen perusteella."
   />
 )
 
@@ -45,7 +45,7 @@ export const PäätasonSuorituksenSuostumuksenPeruminen: React.FC<
     opiskeluoikeusOid={getOpiskeluoikeusOid(opiskeluoikeus)}
     suorituksenTyyppi={suoritus.tyyppi}
     nimi={t(suoritus.tyyppi.nimi)}
-    text="Tämän suorituksen tiedot näytetään antamasi suostumuksen perusteella."
+    localizationKey="Tämän suorituksen tiedot näytetään antamasi suostumuksen perusteella."
   />
 )
 
@@ -53,7 +53,7 @@ export type SuostumuksenPeruminenProps = CommonProps<{
   opiskeluoikeusOid?: string
   suorituksenTyyppi?: Koodistokoodiviite<'suorituksentyyppi'>
   nimi: string
-  text: string
+  localizationKey: string
 }>
 
 const suoritusjakoTehtyCache = createPreferLocalCache(fetchSuoritusjakoTehty)
@@ -86,7 +86,7 @@ const SuostumuksenPeruminen: React.FC<SuostumuksenPeruminenProps> = (props) => {
   return (
     <div {...common(props, ['SuostumuksenPeruminen'])}>
       <b>
-        <Trans>{props.text}</Trans>
+        <Trans>{props.localizationKey}</Trans>
       </b>
       <span className="infobox">
         <button
@@ -111,7 +111,7 @@ const SuostumuksenPeruminen: React.FC<SuostumuksenPeruminenProps> = (props) => {
           compact
           buttonRef={peruutaSuostumusBtn}
         >
-          {'Peruuta suostumus'}
+          {t('Peruuta suostumus')}
         </FlatButton>
       )}
       {peruuttamassaSuostumusta && props.opiskeluoikeusOid && (
