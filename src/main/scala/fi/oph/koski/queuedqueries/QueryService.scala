@@ -12,7 +12,6 @@ import java.util.UUID
 class QueryService(application: KoskiApplication) extends Logging {
   val workerId: String = InetAddress.getLocalHost.getHostName
   val metrics: CloudWatchMetricsService = CloudWatchMetricsService(application.config)
-  logger.info(s"Query worker id: $workerId")
 
   private val queries = new QueryRepository(
     db = application.masterDatabase.db,

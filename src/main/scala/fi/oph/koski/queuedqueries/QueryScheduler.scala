@@ -19,6 +19,9 @@ class QueryScheduler(application: KoskiApplication) extends Logging {
 
   def scheduler: Option[Scheduler] = {
     if (isQueryWorker) {
+      val workerId = application.kyselyService.workerId
+      logger.info(s"Starting as Query Worker. id: $workerId")
+      
       Some(new Scheduler(
         application.masterDatabase.db,
         "kysely",
