@@ -6,13 +6,13 @@ import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
 
-import java.net.InetAddress
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.UUID
 
 class QueryService(application: KoskiApplication) extends Logging {
-  val workerId: String = InetAddress.getLocalHost.getHostName
+  val workerId: String = application.ecsMetadata.taskARN.getOrElse("local")
   val metrics: CloudWatchMetricsService = CloudWatchMetricsService(application.config)
-  logger.info(s"Query worker id: $workerId")
 
   private val queries = new QueryRepository(
     db = application.masterDatabase.db,
@@ -79,6 +79,20 @@ class QueryService(application: KoskiApplication) extends Logging {
 
   def cleanup(): Unit = {
     val timeout = application.config.getDuration("kyselyt.timeout")
+
+    queries
+      .findOrphanedQueries(application.ecsMetadata.currentlyRunningKoskiInstances)
+      .foreach { query =>
+        if (query.restartCount >= 3) {
+          queries.setFailed(query.queryId, "Orphaned")
+          logger.warn(s"Orphaned query (${query.name}) detected and cancelled after ${query.restartCount} restarts")
+        } else {
+          if (queries.restart(query, s"Orphaned ${LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)}")) {
+            logger.warn(s"Orphaned query (${query.name}) detected and it has been set back to pending state")
+          }
+        }
+      }
+
     queries
       .setLongRunningQueriesFailed(timeout, "Timeout")
       .foreach(query => logger.error(s"${query.name} timeouted after $timeout"))
@@ -101,5 +115,4 @@ class QueryService(application: KoskiApplication) extends Logging {
     logger.info(s"${query.name} completed with $fileCount result files")
     metrics.putQueuedQueryMetric(QueryState.complete)
   }
-
 }

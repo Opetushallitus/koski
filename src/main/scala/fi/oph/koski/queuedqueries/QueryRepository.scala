@@ -105,6 +105,20 @@ class QueryRepository(
       WHERE id = ${id}::uuid
       """.asUpdate) != 0
 
+  def restart(query: Query, reason: String): Boolean = {
+    val meta = JsonSerializer.serializeWithRoot(query.meta.getOrElse(QueryMeta()).withRestart(reason))
+    runDbSync(
+      sql"""
+      UPDATE kysely
+      SET
+        state = ${QueryState.pending},
+        started_at = NULL,
+        meta = $meta
+      WHERE id = ${query.queryId}::uuid
+        AND state <> ${QueryState.pending}
+      """.asUpdate) != 0
+  }
+
   def setRunningTasksFailed(error: String): Boolean =
     runDbSync(
       sql"""
@@ -132,6 +146,16 @@ class QueryRepository(
       """.as[Query])
       .collect { case q: FailedQuery => q }
   }
+
+  def findOrphanedQueries(koskiInstances: Seq[String]): Seq[RunningQuery] =
+    runDbSync(
+      sql"""
+      SELECT *
+      FROM kysely
+      WHERE state = ${QueryState.running}
+        AND worker <> any($koskiInstances)
+      """.as[Query])
+      .collect { case q: RunningQuery => q }
 
   def patchMeta(id: String, meta: QueryMeta): QueryMeta = {
     val json = JsonSerializer.serializeWithRoot(meta)
@@ -215,6 +239,7 @@ trait Query {
   def state: String
   def createdAt: LocalDateTime
   def session: String
+  def meta: Option[QueryMeta]
 
   def getSession(käyttöoikeudet: KäyttöoikeusRepository): Option[KoskiSpecificSession] =
     JsonSerializer
@@ -225,6 +250,8 @@ trait Query {
   def name: String = s"${query.getClass.getSimpleName}(${queryId})"
 
   def externalResultsUrl(rootUrl: String): String = QueryServletUrls.query(rootUrl, queryId)
+
+  def restartCount: Int = meta.map(_.restarts.size).getOrElse(0)
 }
 case class PendingQuery(
   queryId: String,
@@ -334,5 +361,10 @@ object StorableSession {
 }
 
 case class QueryMeta(
-  password: Option[String],
-)
+  password: Option[String] = None,
+  restarts: Option[List[String]] = None,
+) {
+  def withRestart(reason: String): QueryMeta = copy(
+    restarts = Some(restarts.getOrElse(List.empty) :+ reason)
+  )
+}

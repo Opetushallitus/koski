@@ -212,7 +212,7 @@ class KoskiApplication(
   lazy val kyselyService: QueryService = new QueryService(this)
   lazy val kyselyScheduler: QueryScheduler = new QueryScheduler(this)
   lazy val kyselyCleanupScheduler: QueryCleanupScheduler = new QueryCleanupScheduler(this)
-  lazy val ecsMetadata: ECSMetadataClient = new ECSMetadataClient()
+  lazy val ecsMetadata: ECSMetadataClient = new ECSMetadataClient(config)
 
   def init(): Future[Any] = {
     AuditLog.startHeartbeat()

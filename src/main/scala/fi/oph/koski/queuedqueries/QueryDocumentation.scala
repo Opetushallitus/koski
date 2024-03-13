@@ -179,6 +179,7 @@ object QueryExamples {
     case "CompleteQueryResponse" => asJson(completedQuery(
       QueryOrganisaationOpiskeluoikeudetCsvDocumentation.example,
       QueryOrganisaationOpiskeluoikeudetCsvDocumentation.outputFiles,
+      application.config.getString("koski.root.url"),
       None,
     ))
     case "FailedQueryResponse" => asJson(faileddQuery(
@@ -206,7 +207,7 @@ object QueryExamples {
       resultsUrl = resultsUrl(application, queryId),
     )
 
-  def completedQuery(query: QueryParameters, files: List[String], password: Option[String]): CompleteQueryResponse =
+  def completedQuery(query: QueryParameters, files: List[String], rootUrl: String, password: Option[String]): CompleteQueryResponse =
     CompleteQueryResponse(
       queryId = queryId,
       requestedBy = "1.2.246.562.24.123123123123",
@@ -214,7 +215,7 @@ object QueryExamples {
       createdAt = createdAt,
       startedAt = startedAt,
       finishedAt = finishedAt,
-      files = files,
+      files = files.map(QueryServletUrls.file(rootUrl, queryId, _)),
       password = password,
     )
 

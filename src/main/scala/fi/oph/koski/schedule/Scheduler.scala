@@ -70,7 +70,9 @@ class Scheduler(
     val context: Option[JValue] = runDbSync(KoskiTables.Scheduler.filter(_.name === name).result.head).context
     logger.debug(s"Firing scheduled task $name ${context.map(c => s"with context ${JsonMethods.compact(c)}").mkString}")
     val newContext: Option[JValue] = task(context)
-    runDbSync(KoskiTables.Scheduler.filter(_.name === name).map(_.context).update(newContext))
+    if (newContext.isDefined) {
+      runDbSync(KoskiTables.Scheduler.filter(_.name === name).map(_.context).update(newContext))
+    }
   } finally {
     firingStrategy.endRun
   }
