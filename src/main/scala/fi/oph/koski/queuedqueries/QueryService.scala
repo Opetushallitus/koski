@@ -6,11 +6,10 @@ import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
 
-import java.net.InetAddress
 import java.util.UUID
 
 class QueryService(application: KoskiApplication) extends Logging {
-  val workerId: String = InetAddress.getLocalHost.getHostName
+  val workerId: String = application.ecsMetadata.taskARN.getOrElse("local")
   val metrics: CloudWatchMetricsService = CloudWatchMetricsService(application.config)
 
   private val queries = new QueryRepository(

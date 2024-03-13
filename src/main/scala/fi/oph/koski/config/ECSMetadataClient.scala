@@ -6,6 +6,7 @@ import fi.oph.koski.executors.Pools
 import org.http4s.blaze.client.BlazeClientBuilder
 import org.json4s.JString
 import org.json4s.jackson.JsonMethods
+import software.amazon.awssdk.services.ecs.EcsClient
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.duration.DurationInt
@@ -13,11 +14,10 @@ import scala.language.postfixOps
 
 class ECSMetadataClient {
 
-  lazy val availabilityZone: Option[String] = taskMetadata.map(_ \\ "AvailabilityZone") match {
-    case Some(JString(az)) => Some(az)
-    case _ => None
-  }
+  lazy val availabilityZone: Option[String] = getString("AvailabilityZone")
+  lazy val taskARN: Option[String] = getString("TaskARN")
 
+  // https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-metadata-endpoint-v4-fargate-response.html
   private lazy val taskMetadata =
     taskMetadataUri.map(
       httpClient
@@ -40,8 +40,10 @@ class ECSMetadataClient {
       .allocated
       .map(_._1)
       .unsafeRunSync()
-}
 
-case class ECSTaskMetadata(
-  AvailabilityZone: String,
-)
+  private def getString(key: String): Option[String] =
+    taskMetadata.map(_ \\ key) match {
+      case Some(JString(az)) => Some(az)
+      case _ => None
+    }
+}
