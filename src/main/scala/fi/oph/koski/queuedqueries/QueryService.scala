@@ -1,5 +1,6 @@
 package fi.oph.koski.queuedqueries
 
+import fi.oph.koski.cloudwatch.CloudWatchMetricsService
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
@@ -7,11 +8,10 @@ import fi.oph.koski.log.Logging
 
 import java.net.InetAddress
 import java.util.UUID
-import scala.concurrent.Await
-import scala.concurrent.duration.DurationInt
 
 class QueryService(application: KoskiApplication) extends Logging {
   val workerId: String = InetAddress.getLocalHost.getHostName
+  val metrics: CloudWatchMetricsService = CloudWatchMetricsService(application.config)
   logger.info(s"Query worker id: $workerId")
 
   private val queries = new QueryRepository(
@@ -45,23 +45,23 @@ class QueryService(application: KoskiApplication) extends Logging {
       query.getSession(application.käyttöoikeusRepository).fold {
         logger.error(s"Could not start query ${query.queryId} due to invalid session")
       } { session =>
-        logger.info(s"Starting new ${query.name} as user ${query.userOid}")
+        logStart(query)
         implicit val user: KoskiSpecificSession = session
         val writer = QueryResultWriter(UUID.fromString(query.queryId), queries, results)
         try {
           query.query.run(application, writer).fold(
             { error =>
-              logger.error(s"${query.name} failed: ${error}")
+              logFailedQuery(query, error)
               queries.setFailed(query.queryId, error)
             },
             { _ =>
-              logger.info(s"${query.name} completed with ${writer.objectKeys.size} result files")
+              logCompletedQuery(query, writer.objectKeys.size)
               queries.setComplete(query.queryId, writer.objectKeys.toList)
             }
           )
         } catch {
           case t: Throwable =>
-            logger.error(t)(s"${query.name} failed ungracefully")
+            logFailedQuery(query, t.getMessage, Some(t))
             queries.setFailed(query.queryId, t.getMessage)
         }
       }
@@ -85,4 +85,21 @@ class QueryService(application: KoskiApplication) extends Logging {
   }
 
   def cancelAllTasks(reason: String) = queries.setRunningTasksFailed(reason)
+
+  private def logStart(query: RunningQuery): Unit = {
+    logger.info(s"Starting new ${query.name} as user ${query.userOid}")
+    metrics.putQueuedQueryMetric("started")
+  }
+
+  private def logFailedQuery(query: RunningQuery, reason: String, throwable: Option[Throwable] = None): Unit = {
+    val message = s"${query.name} failed: ${reason}"
+    throwable.fold(logger.error(message))(t => logger.error(t)(message))
+    metrics.putQueuedQueryMetric(QueryState.failed)
+  }
+
+  def logCompletedQuery(query: RunningQuery, fileCount: Int): Unit = {
+    logger.info(s"${query.name} completed with $fileCount result files")
+    metrics.putQueuedQueryMetric(QueryState.complete)
+  }
+
 }

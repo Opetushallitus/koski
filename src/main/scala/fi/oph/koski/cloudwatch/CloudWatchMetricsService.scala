@@ -2,12 +2,12 @@ package fi.oph.koski.cloudwatch
 
 
 import com.typesafe.config.Config
-
-import java.sql.Timestamp
 import fi.oph.koski.config.Environment
 import fi.oph.koski.log.Logging
 import software.amazon.awssdk.services.cloudwatch.CloudWatchClient
 import software.amazon.awssdk.services.cloudwatch.model.{Dimension, MetricDatum, PutMetricDataRequest, StandardUnit}
+
+import java.sql.Timestamp
 
 object CloudWatchMetricsService {
   def apply(config: Config): CloudWatchMetricsService = {
@@ -22,6 +22,8 @@ object CloudWatchMetricsService {
 trait CloudWatchMetricsService {
   def putRaportointikantaLoadtime(start: Timestamp, end: Timestamp, succeeded: Option[Boolean]): Unit
 
+  def putQueuedQueryMetric(queryState: String): Unit
+
   protected def durationInSeconds(start: Timestamp, end: Timestamp): Double = (end.getTime - start.getTime) / 1000.0
 }
 
@@ -29,6 +31,10 @@ class MockCloudWatchMetricsService extends CloudWatchMetricsService with Logging
   def putRaportointikantaLoadtime(start: Timestamp, end: Timestamp, succeeded: Option[Boolean]): Unit = {
     val seconds = durationInSeconds(start, end)
     logger.debug(s"Mocking cloudwatch metric: raportointikanta loading took $seconds seconds. Succeeded: ${succeeded.getOrElse("None")}")
+  }
+
+  def putQueuedQueryMetric(queryState: String): Unit = {
+    logger.debug(s"Mocking cloudwatch metric: Queries -> State -> ${queryState.capitalize} with value 1.0 sent")
   }
 }
 
@@ -76,4 +82,28 @@ class AwsCloudWatchMetricsService extends CloudWatchMetricsService with Logging 
       client.putMetricData(PutMetricDataRequest.builder().metricData(metricSuccessCount).namespace(namespace).build())
     })
   }
+
+  def putQueuedQueryMetric(queryState: String): Unit = {
+    val namespace = "Queries"
+
+    val counterDimension = Dimension.builder()
+      .name("State")
+      .value("State")
+      .build()
+
+    val metric = MetricDatum.builder()
+      .metricName(queryState.toUpperCase)
+      .unit(StandardUnit.COUNT)
+      .value(1.0)
+      .dimensions(counterDimension)
+      .build()
+
+    val request = PutMetricDataRequest.builder()
+      .metricData(metric)
+      .namespace(namespace)
+      .build()
+
+    client.putMetricData(request)
+  }
+
 }
