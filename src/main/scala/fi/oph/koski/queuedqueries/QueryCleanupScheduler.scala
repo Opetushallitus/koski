@@ -7,21 +7,16 @@ import org.json4s.JValue
 
 class QueryCleanupScheduler(application: KoskiApplication) extends Logging {
   val kyselyt: QueryService = application.kyselyService
-  lazy val isQueryWorker: Boolean = QueryUtils.isQueryWorker(application)
 
   def scheduler: Option[Scheduler] = {
-    if (isQueryWorker) {
-      Some(new Scheduler(
-        application.masterDatabase.db,
-        "kysely-cleanup",
-        new IntervalSchedule(application.config.getDuration("kyselyt.cleanupInterval")),
-        None,
-        runNextQuery,
-        intervalMillis = 1000
-      ))
-    } else {
-      None
-    }
+    Some(new Scheduler(
+      application.masterDatabase.db,
+      "kysely-cleanup",
+      new IntervalSchedule(application.config.getDuration("kyselyt.cleanupInterval")),
+      None,
+      runNextQuery,
+      intervalMillis = 1000
+    ))
   }
 
   private def runNextQuery(_ignore: Option[JValue]): Option[JValue] = {
