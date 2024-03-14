@@ -5,6 +5,8 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.schedule.{IntervalSchedule, Scheduler}
 import org.json4s.JValue
 
+import java.time.Duration
+
 class QueryCleanupScheduler(application: KoskiApplication) extends Logging {
   val kyselyt: QueryService = application.kyselyService
 
@@ -21,6 +23,23 @@ class QueryCleanupScheduler(application: KoskiApplication) extends Logging {
 
   private def runNextQuery(_ignore: Option[JValue]): Option[JValue] = {
     kyselyt.cleanup()
+
+    if (kyselyt.queueStalledFor(Duration.ofMinutes(1)) && !queryWorkerIsAlive) {
+      logger.warn("Query worker is missing. Promoting this instance to process the queue.")
+      takeover()
+    }
+
     None
+  }
+
+  private def queryWorkerIsAlive: Boolean = {
+    val context = application.kyselyScheduler.getContext
+    val instances = application.ecsMetadata.currentlyRunningKoskiInstances
+    context.map(_.workerId).exists(instances.contains)
+  }
+
+  private def takeover(): Unit = {
+    application.kyselyScheduler.promote(true)
+    application.scheduledTasks.restartKyselyScheduler()
   }
 }

@@ -8,22 +8,28 @@ import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import org.json4s.JValue
 
 class QueryScheduler(application: KoskiApplication) extends Logging {
+  val schedulerName = "kysely"
+  val schedulerDb = application.masterDatabase.db
   val concurrency: Int = application.config.getInt("kyselyt.concurrency")
-  val kyselyt = application.kyselyService
+  val kyselyt: QueryService = application.kyselyService
+  private var context: QuerySchedulerContext = QuerySchedulerContext(
+    workerId = kyselyt.workerId,
+    substitute = None,
+  )
 
   sys.addShutdownHook {
     kyselyt.cancelAllTasks("Interrupted: worker shutdown")
   }
 
   def scheduler: Option[Scheduler] = {
-    val context = createContext
     if (isQueryWorker(context)) {
       val workerId = application.kyselyService.workerId
-      logger.info(s"Starting as Query Worker. id: $workerId")
+      logger.info(s"Starting as query worker (id: $workerId)")
+      overrideContext()
 
       Some(new Scheduler(
-        application.masterDatabase.db,
-        "kysely",
+        schedulerDb,
+        schedulerName,
         new IntervalSchedule(application.config.getDuration("kyselyt.checkInterval")),
         Some(context.asJson),
         runNextQuery,
@@ -32,6 +38,20 @@ class QueryScheduler(application: KoskiApplication) extends Logging {
     } else {
       None
     }
+  }
+
+  def getContext: Option[QuerySchedulerContext] =
+    Scheduler
+      .getContext(schedulerDb, schedulerName)
+      .flatMap(parseContext)
+
+  def promote(value: Boolean): Unit = {
+    context = context.copy(substitute = Some(value))
+    overrideContext()
+  }
+
+  private def overrideContext(): Unit = {
+    Scheduler.setContext(schedulerDb, schedulerName, Some(context.asJson))
   }
 
   private def runNextQuery(context: Option[JValue]): Option[JValue] = {
@@ -43,21 +63,20 @@ class QueryScheduler(application: KoskiApplication) extends Logging {
     None // QueryScheduler päivitä kontekstia vain käynnistyessään
   }
 
-  private def createContext: QuerySchedulerContext = QuerySchedulerContext(
-    workerId = kyselyt.workerId,
-  )
-
   private def parseContext(context: JValue): Option[QuerySchedulerContext] =
     application
       .validatingAndResolvingExtractor.extract[QuerySchedulerContext](context, strictDeserialization)
       .toOption
 
-  private def isQueryWorker(context: QuerySchedulerContext) =
-    QueryUtils.isQueryWorker(application) && context.workerId == kyselyt.workerId
+  private def isQueryWorker(context: QuerySchedulerContext) = {
+    (context.isSubstitute || QueryUtils.isQueryWorker(application)) && context.workerId == kyselyt.workerId
+  }
 }
 
 case class QuerySchedulerContext(
   workerId: String,
+  substitute: Option[Boolean],
 ) {
+  def isSubstitute: Boolean = substitute.contains(true)
   def asJson: JValue = JsonSerializer.serializeWithRoot(this)
 }
