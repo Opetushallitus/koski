@@ -51,6 +51,8 @@ class QueryScheduler(application: KoskiApplication) extends Logging {
     overrideContext()
   }
 
+  def resolveLock(): Boolean = Scheduler.resolveLock(schedulerDb, schedulerName)
+
   private def overrideContext(): Unit = {
     Scheduler.setContext(schedulerDb, schedulerName, Some(context.asJson))
   }

@@ -138,6 +138,9 @@ object Scheduler {
       false
     }
   }
+
+  def resolveLock(db: DB, name: String): Boolean =
+    QueryMethods.runDbSync(db, KoskiTables.Scheduler.filter(_.name === name).map(_.status).update(ScheduledTaskStatus.scheduled)) > 0
 }
 
 trait Schedule {

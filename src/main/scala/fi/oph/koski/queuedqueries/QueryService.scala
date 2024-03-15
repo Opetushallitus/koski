@@ -85,14 +85,11 @@ class QueryService(application: KoskiApplication) extends Logging {
     }
   }
 
-  def cleanup(): Unit = {
+  def cleanup(koskiInstances: Seq[String]): Unit = {
     val timeout = application.config.getDuration("kyselyt.timeout")
 
-    val instances = application.ecsMetadata.currentlyRunningKoskiInstances
-    logger.info(s"Check orphaned using instance list: $instances")
-
     queries
-      .findOrphanedQueries(application.ecsMetadata.currentlyRunningKoskiInstances)
+      .findOrphanedQueries(koskiInstances)
       .foreach { query =>
         if (query.restartCount >= 3) {
           queries.setFailed(query.queryId, "Orphaned")
@@ -108,8 +105,6 @@ class QueryService(application: KoskiApplication) extends Logging {
       .setLongRunningQueriesFailed(timeout, "Timeout")
       .foreach(query => logger.error(s"${query.name} timeouted after $timeout"))
   }
-
-  def queueStalledFor(duration: Duration): Boolean = queries.queueStalledFor(duration)
 
   def systemIsOverloaded: Boolean =
     (application.replicaDatabase.replayLag.toSeconds > maxAllowedDatabaseReplayLag.toSeconds) || databaseLoadLimiter.checkOverloading
