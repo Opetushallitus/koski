@@ -11,6 +11,7 @@ class QueryScheduler(application: KoskiApplication) extends Logging {
   val schedulerName = "kysely"
   val schedulerDb = application.masterDatabase.db
   val concurrency: Int = application.config.getInt("kyselyt.concurrency")
+  val backpressureDuration = application.config.getDuration("kyselyt.backpressureLimits.duration")
   val kyselyt: QueryService = application.kyselyService
   private var context: QuerySchedulerContext = QuerySchedulerContext(
     workerId = kyselyt.workerId,
@@ -56,7 +57,10 @@ class QueryScheduler(application: KoskiApplication) extends Logging {
 
   private def runNextQuery(context: Option[JValue]): Option[JValue] = {
     if (context.flatMap(parseContext).exists(isQueryWorker)) {
-      if (kyselyt.numberOfRunningQueries < concurrency) {
+      if (kyselyt.systemIsOverloaded) {
+        logger.info(s"System is overloaded. Postponing running the next query for $backpressureDuration")
+        Scheduler.pauseForDuration(schedulerDb, schedulerName, backpressureDuration)
+      } else if (kyselyt.numberOfRunningQueries < concurrency) {
         kyselyt.runNext()
       }
     }

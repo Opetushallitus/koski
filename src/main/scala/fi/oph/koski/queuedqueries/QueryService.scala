@@ -6,13 +6,14 @@ import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
 
-import java.time.{Duration, LocalDateTime}
 import java.time.format.DateTimeFormatter
+import java.time.{Duration, LocalDateTime}
 import java.util.UUID
 
 class QueryService(application: KoskiApplication) extends Logging {
   val workerId: String = application.ecsMetadata.taskARN.getOrElse("local")
   val metrics: CloudWatchMetricsService = CloudWatchMetricsService(application.config)
+  private val maxAllowedDatabaseReplayLag: Duration = application.config.getDuration("kyselyt.backpressureLimits.maxDatabaseReplayLag")
 
   private val queries = new QueryRepository(
     db = application.masterDatabase.db,
@@ -100,7 +101,11 @@ class QueryService(application: KoskiApplication) extends Logging {
 
   def queueStalledFor(duration: Duration): Boolean = queries.queueStalledFor(duration)
 
-  def cancelAllTasks(reason: String) = queries.setRunningTasksFailed(reason)
+  def systemIsOverloaded: Boolean = {
+    application.replicaDatabase.replayLag.toSeconds > maxAllowedDatabaseReplayLag.toSeconds
+  }
+
+  def cancelAllTasks(reason: String): Boolean = queries.setRunningTasksFailed(reason)
 
   private def logStart(query: RunningQuery): Unit = {
     logger.info(s"Starting new ${query.name} as user ${query.userOid}")
@@ -113,7 +118,7 @@ class QueryService(application: KoskiApplication) extends Logging {
     metrics.putQueuedQueryMetric(QueryState.failed)
   }
 
-  def logCompletedQuery(query: RunningQuery, fileCount: Int): Unit = {
+  private def logCompletedQuery(query: RunningQuery, fileCount: Int): Unit = {
     logger.info(s"${query.name} completed with $fileCount result files")
     metrics.putQueuedQueryMetric(QueryState.complete)
   }
