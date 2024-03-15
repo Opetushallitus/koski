@@ -175,8 +175,7 @@ class QueryRepository(
   }
 
   def queueStalledFor(duration: Duration): Boolean = {
-    val runningTasks = runDbSync(sql"SELECT COUNT(*) FROM kysely WHERE state = ${QueryState.running}".as[Int]).head
-    if (runningTasks > 0) {
+    if (numberOfRunningQueries > 0) {
       false
     } else {
       val timeLimit = Timestamp.valueOf(LocalDateTime.now().minus(duration))
