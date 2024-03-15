@@ -1,5 +1,6 @@
 package fi.oph.koski.queuedqueries
 
+import com.typesafe.config.Config
 import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
@@ -13,9 +14,11 @@ import scala.jdk.CollectionConverters._
 import scala.util.Using
 
 object QueryUtils {
+  def readDatabaseId(config: Config): String = config.getString("kyselyt.readDatabase")
+
   def isQueryWorker(application: KoskiApplication): Boolean = {
     val instanceAz = application.ecsMetadata.availabilityZone
-    val databaseAz = getDatabaseAz(application, application.config.getString("kyselyt.readDatabase"))
+    val databaseAz = getDatabaseAz(application, readDatabaseId(application.config))
 
     (instanceAz, databaseAz) match {
       case (None, None) => true // Lokaali devausinstanssi
