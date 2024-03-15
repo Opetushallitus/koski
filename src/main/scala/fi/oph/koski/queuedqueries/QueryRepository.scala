@@ -66,6 +66,13 @@ class QueryRepository(
         AND worker = $workerId
       """.as[Int]).head
 
+  def numberOfPendingQueries: Int =
+    runDbSync(sql"""
+      SELECT count(*)
+      FROM kysely
+      WHERE state = ${QueryState.pending}
+      """.as[Int]).head
+
   def takeNext: Option[RunningQuery] =
     runDbSync(sql"""
       UPDATE kysely

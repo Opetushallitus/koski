@@ -57,11 +57,13 @@ class QueryScheduler(application: KoskiApplication) extends Logging {
 
   private def runNextQuery(context: Option[JValue]): Option[JValue] = {
     if (context.flatMap(parseContext).exists(isQueryWorker)) {
-      if (kyselyt.systemIsOverloaded) {
-        logger.info(s"System is overloaded. Postponing running the next query for $backpressureDuration")
-        Scheduler.pauseForDuration(schedulerDb, schedulerName, backpressureDuration)
-      } else if (kyselyt.numberOfRunningQueries < concurrency) {
-        kyselyt.runNext()
+      if (kyselyt.hasNext) {
+        if (kyselyt.systemIsOverloaded) {
+          logger.info(s"System is overloaded. Postponing running the next query for $backpressureDuration")
+          Scheduler.pauseForDuration(schedulerDb, schedulerName, backpressureDuration)
+        } else if (kyselyt.numberOfRunningQueries < concurrency) {
+          kyselyt.runNext()
+        }
       }
     }
     None // QueryScheduler päivitä kontekstia vain käynnistyessään

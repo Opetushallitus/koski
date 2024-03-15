@@ -46,6 +46,8 @@ class QueryService(application: KoskiApplication) extends Logging {
 
   def numberOfRunningQueries: Int = queries.numberOfRunningQueries
 
+  def hasNext: Boolean = queries.numberOfPendingQueries > 0
+
   def runNext(): Unit = {
     queries.takeNext.foreach { query =>
       query.getSession(application.käyttöoikeusRepository).fold {
