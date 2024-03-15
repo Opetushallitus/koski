@@ -6,7 +6,7 @@ import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
 
-import java.time.LocalDateTime
+import java.time.{Duration, LocalDateTime}
 import java.time.format.DateTimeFormatter
 import java.util.UUID
 
@@ -97,6 +97,8 @@ class QueryService(application: KoskiApplication) extends Logging {
       .setLongRunningQueriesFailed(timeout, "Timeout")
       .foreach(query => logger.error(s"${query.name} timeouted after $timeout"))
   }
+
+  def queueStalledFor(duration: Duration): Boolean = queries.queueStalledFor(duration)
 
   def cancelAllTasks(reason: String) = queries.setRunningTasksFailed(reason)
 
