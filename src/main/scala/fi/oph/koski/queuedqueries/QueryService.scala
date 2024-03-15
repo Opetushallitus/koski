@@ -88,6 +88,9 @@ class QueryService(application: KoskiApplication) extends Logging {
   def cleanup(): Unit = {
     val timeout = application.config.getDuration("kyselyt.timeout")
 
+    val instances = application.ecsMetadata.currentlyRunningKoskiInstances
+    logger.info(s"Check orphaned using instance list: $instances")
+
     queries
       .findOrphanedQueries(application.ecsMetadata.currentlyRunningKoskiInstances)
       .foreach { query =>
@@ -96,7 +99,7 @@ class QueryService(application: KoskiApplication) extends Logging {
           logger.warn(s"Orphaned query (${query.name}) detected and cancelled after ${query.restartCount} restarts")
         } else {
           if (queries.restart(query, s"Orphaned ${LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)}")) {
-            logger.warn(s"Orphaned query (${query.name}) detected and it has been set back to pending state")
+            logger.warn(s"Orphaned query (${query.name}) detected and it has been set back to pending state $query")
           }
         }
       }

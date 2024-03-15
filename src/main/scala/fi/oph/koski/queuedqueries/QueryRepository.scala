@@ -160,7 +160,7 @@ class QueryRepository(
       SELECT *
       FROM kysely
       WHERE state = ${QueryState.running}
-        AND worker <> any($koskiInstances)
+        AND NOT worker = any($koskiInstances)
       """.as[Query])
       .collect { case q: RunningQuery => q }
 
