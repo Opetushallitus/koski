@@ -10,7 +10,6 @@ import org.json4s.JValue
 class QueryScheduler(application: KoskiApplication) extends Logging {
   val schedulerName = "kysely"
   val schedulerDb = application.masterDatabase.db
-  val concurrency: Int = application.config.getInt("kyselyt.concurrency")
   val backpressureDuration = application.config.getDuration("kyselyt.backpressureLimits.duration")
   val kyselyt: QueryService = application.kyselyService
   private var context: QuerySchedulerContext = QuerySchedulerContext(
@@ -63,7 +62,7 @@ class QueryScheduler(application: KoskiApplication) extends Logging {
         if (kyselyt.systemIsOverloaded) {
           logger.info(s"System is overloaded. Postponing running the next query for $backpressureDuration")
           Scheduler.pauseForDuration(schedulerDb, schedulerName, backpressureDuration)
-        } else if (kyselyt.numberOfRunningQueries < concurrency) {
+        } else {
           kyselyt.runNext()
         }
       }
