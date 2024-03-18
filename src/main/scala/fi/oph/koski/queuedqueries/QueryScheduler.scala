@@ -11,6 +11,7 @@ class QueryScheduler(application: KoskiApplication) extends Logging {
   val schedulerName = "kysely"
   val schedulerDb = application.masterDatabase.db
   val concurrency: Int = application.config.getInt("kyselyt.concurrency")
+  val backpressureDuration = application.config.getDuration("kyselyt.backpressureLimits.duration")
   val kyselyt: QueryService = application.kyselyService
   private var context: QuerySchedulerContext = QuerySchedulerContext(
     workerId = kyselyt.workerId,
@@ -50,14 +51,21 @@ class QueryScheduler(application: KoskiApplication) extends Logging {
     overrideContext()
   }
 
+  def resolveLock(): Boolean = Scheduler.resolveLock(schedulerDb, schedulerName)
+
   private def overrideContext(): Unit = {
     Scheduler.setContext(schedulerDb, schedulerName, Some(context.asJson))
   }
 
   private def runNextQuery(context: Option[JValue]): Option[JValue] = {
     if (context.flatMap(parseContext).exists(isQueryWorker)) {
-      if (kyselyt.numberOfRunningQueries < concurrency) {
-        kyselyt.runNext()
+      if (kyselyt.hasNext) {
+        if (kyselyt.systemIsOverloaded) {
+          logger.info(s"System is overloaded. Postponing running the next query for $backpressureDuration")
+          Scheduler.pauseForDuration(schedulerDb, schedulerName, backpressureDuration)
+        } else if (kyselyt.numberOfRunningQueries < concurrency) {
+          kyselyt.runNext()
+        }
       }
     }
     None // QueryScheduler päivitä kontekstia vain käynnistyessään

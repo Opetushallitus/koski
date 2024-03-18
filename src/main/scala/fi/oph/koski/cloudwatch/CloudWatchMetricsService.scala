@@ -5,9 +5,12 @@ import com.typesafe.config.Config
 import fi.oph.koski.config.Environment
 import fi.oph.koski.log.Logging
 import software.amazon.awssdk.services.cloudwatch.CloudWatchClient
-import software.amazon.awssdk.services.cloudwatch.model.{Dimension, MetricDatum, PutMetricDataRequest, StandardUnit}
+import software.amazon.awssdk.services.cloudwatch.model._
 
 import java.sql.Timestamp
+import java.time.Instant
+import scala.collection.JavaConverters._
+import scala.util.Try
 
 object CloudWatchMetricsService {
   def apply(config: Config): CloudWatchMetricsService = {
@@ -24,6 +27,8 @@ trait CloudWatchMetricsService {
 
   def putQueuedQueryMetric(queryState: String): Unit
 
+  def getEbsByteBalance(databaseId: String): Option[Double]
+
   protected def durationInSeconds(start: Timestamp, end: Timestamp): Double = (end.getTime - start.getTime) / 1000.0
 }
 
@@ -35,6 +40,11 @@ class MockCloudWatchMetricsService extends CloudWatchMetricsService with Logging
 
   def putQueuedQueryMetric(queryState: String): Unit = {
     logger.debug(s"Mocking cloudwatch metric: Queries -> State -> ${queryState.capitalize} with value 1.0 sent")
+  }
+
+  def getEbsByteBalance(databaseId: String): Option[Double] = {
+    logger.debug("getEbsByteBalance mock")
+    None
   }
 }
 
@@ -106,4 +116,40 @@ class AwsCloudWatchMetricsService extends CloudWatchMetricsService with Logging 
     client.putMetricData(request)
   }
 
+  def getEbsByteBalance(databaseId: String): Option[Double] = {
+    val endTime = Instant.now()
+    val startTime = endTime.minusSeconds(600)
+
+    val dimension = Dimension.builder()
+      .name("DBInstanceIdentifier")
+      .value(databaseId)
+      .build()
+
+    val metric = Metric.builder()
+      .namespace("AWS/RDS")
+      .metricName("EBSByteBalance%")
+      .dimensions(dimension)
+      .build()
+
+    val metricStat = MetricStat.builder()
+      .metric(metric)
+      .stat("Average")
+      .period(60)
+      .unit(StandardUnit.PERCENT)
+      .build()
+
+    val query = MetricDataQuery.builder()
+      .id("byteBalance")
+      .metricStat(metricStat)
+      .build()
+
+    val request = GetMetricDataRequest.builder()
+      .metricDataQueries(query)
+      .startTime(startTime)
+      .endTime(endTime)
+      .build()
+
+    val result = Try { client.getMetricData(request).metricDataResults().get(0) }
+    result.toOption.flatMap(_.values().asScala.headOption.map(_.doubleValue()))
+  }
 }

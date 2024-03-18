@@ -54,14 +54,6 @@ class YtrDownloadStatus(val db: DB) extends QueryMethods with Logging with Datab
       .getOrElse(constructStatusJson("idle", None, 0, 0))
   }
 
-  def getReplayLagSeconds: Int = {
-    runDbSync(
-      sql"""
-        select extract(epoch from replay_lag) as replay_lag from pg_stat_replication;
-      """.as[Double](GetResult(_.nextDouble))
-    ).headOption.map(_.toInt).getOrElse(0)
-  }
-
   private def rowById(id: Int): Option[YtrDownloadStatusRow] = {
     runDbSync(KoskiTables.YtrDownloadStatus.filter(_.id === id).result).headOption
   }

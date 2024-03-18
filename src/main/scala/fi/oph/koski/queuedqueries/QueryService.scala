@@ -1,18 +1,24 @@
 package fi.oph.koski.queuedqueries
 
+import fi.oph.koski.cache.GlobalCacheManager._
+import fi.oph.koski.cache.{RefreshingCache, SingleValueCache}
 import fi.oph.koski.cloudwatch.CloudWatchMetricsService
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
 
-import java.time.{Duration, LocalDateTime}
 import java.time.format.DateTimeFormatter
+import java.time.{Duration, LocalDateTime}
 import java.util.UUID
+import scala.concurrent.duration.DurationInt
 
 class QueryService(application: KoskiApplication) extends Logging {
   val workerId: String = application.ecsMetadata.taskARN.getOrElse("local")
   val metrics: CloudWatchMetricsService = CloudWatchMetricsService(application.config)
+  private val maxAllowedDatabaseReplayLag: Duration = application.config.getDuration("kyselyt.backpressureLimits.maxDatabaseReplayLag")
+  private val readDatabaseId = QueryUtils.readDatabaseId(application.config)
+  private val databaseLoadLimiter = new DatabaseLoadLimiter(application, metrics, readDatabaseId)
 
   private val queries = new QueryRepository(
     db = application.masterDatabase.db,
@@ -39,6 +45,8 @@ class QueryService(application: KoskiApplication) extends Logging {
       .toRight(KoskiErrorCategory.notFound())
 
   def numberOfRunningQueries: Int = queries.numberOfRunningQueries
+
+  def hasNext: Boolean = queries.numberOfPendingQueries > 0
 
   def runNext(): Unit = {
     queries.takeNext.foreach { query =>
@@ -77,18 +85,18 @@ class QueryService(application: KoskiApplication) extends Logging {
     }
   }
 
-  def cleanup(): Unit = {
+  def cleanup(koskiInstances: Seq[String]): Unit = {
     val timeout = application.config.getDuration("kyselyt.timeout")
 
     queries
-      .findOrphanedQueries(application.ecsMetadata.currentlyRunningKoskiInstances)
+      .findOrphanedQueries(koskiInstances)
       .foreach { query =>
         if (query.restartCount >= 3) {
           queries.setFailed(query.queryId, "Orphaned")
           logger.warn(s"Orphaned query (${query.name}) detected and cancelled after ${query.restartCount} restarts")
         } else {
           if (queries.restart(query, s"Orphaned ${LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)}")) {
-            logger.warn(s"Orphaned query (${query.name}) detected and it has been set back to pending state")
+            logger.warn(s"Orphaned query (${query.name}) detected and it has been set back to pending state $query")
           }
         }
       }
@@ -98,9 +106,10 @@ class QueryService(application: KoskiApplication) extends Logging {
       .foreach(query => logger.error(s"${query.name} timeouted after $timeout"))
   }
 
-  def queueStalledFor(duration: Duration): Boolean = queries.queueStalledFor(duration)
+  def systemIsOverloaded: Boolean =
+    (application.replicaDatabase.replayLag.toSeconds > maxAllowedDatabaseReplayLag.toSeconds) || databaseLoadLimiter.checkOverloading
 
-  def cancelAllTasks(reason: String) = queries.setRunningTasksFailed(reason)
+  def cancelAllTasks(reason: String): Boolean = queries.setRunningTasksFailed(reason)
 
   private def logStart(query: RunningQuery): Unit = {
     logger.info(s"Starting new ${query.name} as user ${query.userOid}")
@@ -113,8 +122,40 @@ class QueryService(application: KoskiApplication) extends Logging {
     metrics.putQueuedQueryMetric(QueryState.failed)
   }
 
-  def logCompletedQuery(query: RunningQuery, fileCount: Int): Unit = {
+  private def logCompletedQuery(query: RunningQuery, fileCount: Int): Unit = {
     logger.info(s"${query.name} completed with $fileCount result files")
     metrics.putQueuedQueryMetric(QueryState.complete)
   }
+}
+
+class DatabaseLoadLimiter(
+  application: KoskiApplication,
+  metrics: CloudWatchMetricsService,
+  readDatabaseId: String,
+) {
+  private val stopAt: Double = application.config.getDouble("kyselyt.backpressureLimits.ebsByteBalance.stopAt")
+  private val continueAt: Double = application.config.getDouble("kyselyt.backpressureLimits.ebsByteBalance.continueAt")
+  var limiterActive: Boolean = false
+
+  def checkOverloading: Boolean = {
+    synchronized {
+      ebsByteBalance.apply.foreach { balance =>
+        if (limiterActive) {
+          if (balance >= continueAt) {
+            limiterActive = false
+          }
+        } else {
+          if (balance <= stopAt) {
+            limiterActive = true
+          }
+        }
+      }
+      limiterActive
+    }
+  }
+
+  private val ebsByteBalance = SingleValueCache(
+    RefreshingCache(name = "DatabaseLoadLimiter.ebsByteBalance", duration = 1.minutes, maxSize = 2),
+    () => metrics.getEbsByteBalance(readDatabaseId)
+  )
 }

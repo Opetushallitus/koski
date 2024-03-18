@@ -22,12 +22,11 @@ class QueryCleanupScheduler(application: KoskiApplication) extends Logging {
   }
 
   private def runNextQuery(_ignore: Option[JValue]): Option[JValue] = {
-    kyselyt.cleanup()
+    val instances = application.ecsMetadata.currentlyRunningKoskiInstances
 
-    if (kyselyt.queueStalledFor(Duration.ofMinutes(1)) && !queryWorkerIsAlive) {
-      logger.warn("Query worker is missing. Promoting this instance to process the queue.")
-      takeover()
-    }
+    fixSchedulerLock(instances)
+    kyselyt.cleanup(instances)
+    takeoverIfQueryWorkerIsMissing()
 
     None
   }
@@ -38,8 +37,19 @@ class QueryCleanupScheduler(application: KoskiApplication) extends Logging {
     context.map(_.workerId).exists(instances.contains)
   }
 
-  private def takeover(): Unit = {
-    application.kyselyScheduler.promote(true)
-    application.scheduledTasks.restartKyselyScheduler()
+  private def takeoverIfQueryWorkerIsMissing(): Unit = {
+    if (!queryWorkerIsAlive) {
+      logger.warn("Query worker is missing. Promoting this instance to process the queue.")
+      application.kyselyScheduler.promote(true)
+      application.scheduledTasks.restartKyselyScheduler()
+    }
+  }
+
+  private def fixSchedulerLock(instances: Seq[String]): Unit = {
+    val context = application.kyselyScheduler.getContext
+    if (!context.exists(ctx => instances.contains(ctx.workerId))) {
+      logger.info("Query worker in scheduler does not exist. Releasing the scheduler lock.")
+      application.kyselyScheduler.resolveLock()
+    }
   }
 }
