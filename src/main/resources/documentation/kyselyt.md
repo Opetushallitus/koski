@@ -28,7 +28,7 @@ mutta ruuhka- ja vikatilanteissa kysely voi pysyä odottavassa tilassa pidempiä
 
 Vastauksessa mukana tulee kyselyn tunniste kentässä `queryId`, jonka perusteella kyselyn tilaa
 voi tiedustella polusta `GET /api/kyselyt/{queryId}`. Polku tilan kyselyyn löytyy myös valmiina
-kentästä `responseUrl`. Kyselyn lähtiessä pyörimään saatu vastaus on hyvin samankaltainen.
+kentästä `resultsUrl`. Kyselyn lähtiessä pyörimään saatu vastaus on hyvin samankaltainen.
 Tilaksi on vaihtunut `running` ja mukana on aloitusaika:
 
     {{json:RunningQueryResponse}}
