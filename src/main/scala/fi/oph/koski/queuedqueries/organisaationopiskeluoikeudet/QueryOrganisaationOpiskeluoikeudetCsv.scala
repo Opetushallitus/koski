@@ -46,17 +46,24 @@ case class QueryOrganisaationOpiskeluoikeudetCsv(
     val osasuoritusCsv = writer.createCsv[ROsasuoritusRow]("osasuoritus")
     val opiskeluoikeudenAikajaksoCsv = writer.createCsv[ROpiskeluoikeusAikajaksoRow]("opiskeluoikeus_aikajakso")
     val esiopetuksenAikajaksoCsv = writer.createCsv[EsiopetusOpiskeluoikeusAikajaksoRow]("esiopetus_opiskeluoik_aikajakso")
+    val mitätöityOpiskeluoikeusCsv = writer.createCsv[RMitätöityOpiskeluoikeusRow]("mitatoity_opiskeluoikeus")
 
     forEachOpiskeluoikeus(application, filters, oppijaOids) { row =>
-      OpiskeluoikeusLoaderRowBuilder
-        .buildKoskiRow(row)
-        .foreach { rows =>
-          opiskeluoikeusCsv.put(rows.rOpiskeluoikeusRow)
-          päätasonSuoritusCsv.put(rows.rPäätasonSuoritusRows)
-          osasuoritusCsv.put(rows.rOsasuoritusRows)
-          opiskeluoikeudenAikajaksoCsv.put(rows.rOpiskeluoikeusAikajaksoRows)
-          esiopetuksenAikajaksoCsv.put(rows.esiopetusOpiskeluoikeusAikajaksoRows)
-        }
+      if (row.mitätöity) {
+        OpiskeluoikeusLoaderRowBuilder
+          .buildRowMitätöity(row)
+          .foreach(mitätöityOpiskeluoikeusCsv.put)
+      } else {
+        OpiskeluoikeusLoaderRowBuilder
+          .buildKoskiRow(row)
+          .foreach { rows =>
+            opiskeluoikeusCsv.put(rows.rOpiskeluoikeusRow)
+            päätasonSuoritusCsv.put(rows.rPäätasonSuoritusRows)
+            osasuoritusCsv.put(rows.rOsasuoritusRows)
+            opiskeluoikeudenAikajaksoCsv.put(rows.rOpiskeluoikeusAikajaksoRows)
+            esiopetuksenAikajaksoCsv.put(rows.esiopetusOpiskeluoikeusAikajaksoRows)
+          }
+      }
     }
 
     opiskeluoikeusCsv.save()
@@ -64,6 +71,7 @@ case class QueryOrganisaationOpiskeluoikeudetCsv(
     osasuoritusCsv.save()
     opiskeluoikeudenAikajaksoCsv.save()
     esiopetuksenAikajaksoCsv.save()
+    mitätöityOpiskeluoikeusCsv.save()
   }
 }
 

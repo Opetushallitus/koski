@@ -571,7 +571,7 @@ object OpiskeluoikeusLoaderRowBuilder extends Logging {
       sisällytetty = sisällytetty
     )
 
-  private[raportointikanta] def buildRowMitätöity(raw: KoskiOpiskeluoikeusRow): Either[LoadErrorResult, RMitätöityOpiskeluoikeusRow] = {
+  def buildRowMitätöity(raw: KoskiOpiskeluoikeusRow): Either[LoadErrorResult, RMitätöityOpiskeluoikeusRow] = {
     for {
       oo <- raw.toOpiskeluoikeus(KoskiSpecificSession.systemUser).left.map(e => LoadErrorResult(raw.oid, mitätöityError + " " + e.toString()))
       mitätöityPvm <- oo.mitätöintiPäivä.toRight(LoadErrorResult(raw.oid, "Mitätöintipäivämäärän haku epäonnistui"))
