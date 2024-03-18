@@ -33,6 +33,9 @@ Tilaksi on vaihtunut `running` ja mukana on aloitusaika:
 
     {{json:RunningQueryResponse}}
 
+Kysely voi palata `running`-tilasta takaisin `pending`-tilaan, jos kyselyn käsittely katkeaa
+esimerkiksi sitä käsittelevän instanssin käynnistyessä uudelleen.
+
 ### Kyselyn valmistuminen
 
 Kyselyn valmistuessa tilaksi vaihtuu `completed` ja vastauksessa on mukana lista tulostiedostoista.
@@ -47,7 +50,9 @@ mutta ne ovat lähes aina palvelinpään teknisiä ongelmia (eli vertautuvat HTT
 
     {{json:FailedQueryResponse}}
 
-
+Kysely ei koskaan palaa takaisin `pending`- tai `running`-tilaan sen päädyttyä `failed`-tilaan,
+vaan kutsujan on aloitettava uusi kysely. Jos kysely päätyy jatkuvasti `failed`-tilaan, ota
+yhteyttä KOSKI-tiimiin.
 
 {{title:fi.oph.koski.queuedqueries.organisaationopiskeluoikeudet.QueryOrganisaationOpiskeluoikeudetCsv}}
 {{docs:fi.oph.koski.queuedqueries.organisaationopiskeluoikeudet.QueryOrganisaationOpiskeluoikeudetCsv}}
