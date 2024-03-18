@@ -12,7 +12,7 @@ import fi.oph.scalaschema._
 import fi.oph.scalaschema.annotation.{Description, Title}
 import org.json4s.JValue
 
-import java.time.{Duration, LocalDateTime}
+import java.time.{Duration, OffsetDateTime}
 import java.util.UUID
 import scala.io.Source
 import scala.reflect.runtime.universe.TypeTag
@@ -159,9 +159,9 @@ object PropertyHtmlDocs {
 
 object QueryExamples {
   lazy val queryId: String = UUID.randomUUID().toString
-  lazy val createdAt: LocalDateTime = LocalDateTime.now()
-  lazy val startedAt: LocalDateTime = createdAt.plus(Duration.ofSeconds(1))
-  lazy val finishedAt: LocalDateTime = startedAt.plus(Duration.ofMinutes(5))
+  lazy val createdAt: OffsetDateTime = OffsetDateTime.now()
+  lazy val startedAt: OffsetDateTime = createdAt.plus(Duration.ofSeconds(1))
+  lazy val finishedAt: OffsetDateTime = startedAt.plus(Duration.ofMinutes(5))
 
   def jsonByName(application: KoskiApplication, name: String): Option[String] = name match {
     case "OrganisaationOpiskeluoikeudetCsv" => asJson(QueryOrganisaationOpiskeluoikeudetCsvDocumentation.example)

@@ -4,13 +4,14 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
-import fi.oph.koski.schema.annotation.EnumValues
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 import fi.oph.koski.util.UuidUtils
-import fi.oph.scalaschema.annotation.{Description, EnumValue, SyntheticProperty, Title}
+import fi.oph.scalaschema.annotation.{Description, SyntheticProperty, Title}
 import org.json4s.jackson.JsonMethods
 
-import java.time.LocalDateTime
+import java.time.{LocalDateTime, OffsetDateTime}
+import java.util.TimeZone
+import scala.language.implicitConversions
 
 object QueryServletUrls {
   def root(rootUrl: String): String = s"$rootUrl/api/kyselyt"
@@ -75,7 +76,7 @@ trait QueryResponse {
   @Description("Määrittää tehtävän kyselyn sekä sen parametrit.")
   def query: QueryParameters
   @Description("Kyselyn luontiaika")
-  def createdAt: LocalDateTime
+  def createdAt: OffsetDateTime
 }
 
 @Title("Odottava kysely")
@@ -84,7 +85,7 @@ case class PendingQueryResponse(
   queryId: String,
   requestedBy: String,
   query: QueryParameters,
-  createdAt: LocalDateTime,
+  createdAt: OffsetDateTime,
   @Description("Osoite josta kyselyn tilaa voi kysellä")
   resultsUrl: String,
 ) extends QueryResponse {
@@ -95,9 +96,9 @@ case class RunningQueryResponse(
   queryId: String,
   requestedBy: String,
   query: QueryParameters,
-  createdAt: LocalDateTime,
+  createdAt: OffsetDateTime,
   @Description("Kyselyn käsittelyn aloitusaika")
-  startedAt: LocalDateTime,
+  startedAt: OffsetDateTime,
   @Description("Osoite josta kyselyn tilaa voi kysellä")
   resultsUrl: String,
 ) extends QueryResponse {
@@ -108,11 +109,11 @@ case class FailedQueryResponse(
   queryId: String,
   requestedBy: String,
   query: QueryParameters,
-  createdAt: LocalDateTime,
+  createdAt: OffsetDateTime,
   @Description("Kyselyn käsittelyn aloitusaika")
-  startedAt: LocalDateTime,
+  startedAt: OffsetDateTime,
   @Description("Kyselyn epäonnistumisen aika")
-  finishedAt: LocalDateTime,
+  finishedAt: OffsetDateTime,
 ) extends QueryResponse {
   def status: String = QueryState.failed
 }
@@ -121,11 +122,11 @@ case class CompleteQueryResponse(
   queryId: String,
   requestedBy: String,
   query: QueryParameters,
-  createdAt: LocalDateTime,
+  createdAt: OffsetDateTime,
   @Description("Kyselyn käsittelyn aloitusaika")
-  startedAt: LocalDateTime,
+  startedAt: OffsetDateTime,
   @Description("Kyselyn valmistumisaika")
-  finishedAt: LocalDateTime,
+  finishedAt: OffsetDateTime,
   @Description("Lista osoitteista, joista tulostiedostot voi ladata. Tiedostojen määrä riippuu kyselyn tyypistä.")
   files: List[String],
   @Description(s"Tiedostojen avaamiseen tarvittava salasana. Käytössä vain xlsx-tiedostojen (${QueryFormat.xlsx}) kanssa.")
@@ -169,5 +170,9 @@ object QueryResponse {
       files = q.filesToExternal(rootUrl),
       password = q.meta.flatMap(_.password),
     )
+  }
+
+  implicit def toOffsetDateTime(dt: LocalDateTime): OffsetDateTime = {
+    dt.atZone(TimeZone.getDefault.toZoneId).toOffsetDateTime
   }
 }
