@@ -119,8 +119,10 @@ trait QueryOrganisaationOpiskeluoikeudet extends QueryParameters with DatabaseCo
 
   protected def getDb(application: KoskiApplication): DB = application.replicaDatabase.db
 
-  protected def defaultBaseFilter(oppilaitosOids: List[Organisaatio.Oid]): SQLActionBuilder = SQLHelpers.concatMany(
-    Some(sql"WHERE NOT poistettu AND oppilaitos_oid = ANY($oppilaitosOids) AND alkamispaiva >= $alkanutAikaisintaan "),
+  protected def defaultBaseFilter(oppilaitosOids: List[Organisaatio.Oid])(implicit session: KoskiSpecificSession): SQLActionBuilder = SQLHelpers.concatMany(
+    Some(sql"WHERE NOT poistettu AND "),
+    if (includeMitätöidyt(session)) None else Some(sql" NOT mitatoity "),
+    Some(sql" AND oppilaitos_oid = ANY($oppilaitosOids) AND alkamispaiva >= $alkanutAikaisintaan "),
     alkanutViimeistään.map(l => sql" AND alkamispaiva <= $l "),
     muuttunutJälkeen.map(Timestamp.valueOf).map(a => sql" AND aikaleima >= $a "),
     tila.map(t => sql" AND tila = $t "),
@@ -170,4 +172,6 @@ trait QueryOrganisaationOpiskeluoikeudet extends QueryParameters with DatabaseCo
         }
     }
 
+  private def includeMitätöidyt(implicit session: KoskiSpecificSession): Boolean =
+    session.hasMitätöidytOpiskeluoikeudetAccess
 }
