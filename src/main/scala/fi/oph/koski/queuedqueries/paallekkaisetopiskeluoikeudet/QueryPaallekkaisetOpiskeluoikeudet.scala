@@ -26,7 +26,7 @@ case class QueryPaallekkaisetOpiskeluoikeudet(
   `type`: String = "paallekkaisetOpiskeluoikeudet",
   @EnumValues(Set(QueryFormat.csv, QueryFormat.xlsx))
   format: String,
-  @Description("Kyselyyn otettavan organisaation oid. Jos ei ole annettu, päätellään käyttäjän käyttöoikeuksista.")
+  @Description("Kyselyyn otettavan koulutustoimijan tai oppilaitoksen oid. Jos ei ole annettu, päätellään käyttäjän käyttöoikeuksista.")
   organisaatioOid: Option[Organisaatio.Oid] = None,
   @Description("Palautettavien tuloksien kieli. CSV-muodossa vaikuttaa vain organisaatioiden nimiin.")
   @EnumValues(Set("fi", "sv", "en"))

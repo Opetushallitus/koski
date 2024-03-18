@@ -31,7 +31,7 @@ import scala.concurrent.duration.DurationInt
 trait QueryOrganisaationOpiskeluoikeudet extends QueryParameters with DatabaseConverters with Logging {
   @EnumValues(Set("organisaationOpiskeluoikeudet"))
   def `type`: String
-  @Description("Kyselyyn otettavan organisaation oid. Jos ei ole annettu, päätellään käyttäjän käyttöoikeuksista.")
+  @Description("Kyselyyn otettavan koulutustoimijan tai oppilaitoksen oid. Jos ei ole annettu, päätellään käyttäjän käyttöoikeuksista.")
   def organisaatioOid: Option[String]
   @Description("Palauta vain opiskeluoikeudet, jotka alkavat annettuna päivänä tai myöhemmin.")
   def alkanutAikaisintaan: LocalDate
