@@ -37,7 +37,8 @@ trait QueryOrganisaationOpiskeluoikeudet extends QueryParameters with DatabaseCo
   def alkanutAikaisintaan: LocalDate
   @Description("Palauta vain opiskeluoikeudet, jotka alkavat annettuna päivänä tai aiemmin.")
   def alkanutViimeistään: Option[LocalDate]
-  @Description("Palauta vain opiskeluoikeudet, joita on päivitetty annettuna ajanhetkenä tai myöhemmin.")
+  @Description("Palauta vain opiskeluoikeudet, joita on päivitetty annetun ajanhetken jälkeen.")
+  @Description("Haettaessa muuttuneita opiskeluoikeuksia sitten viimeisen datahaun, kannattaa tätä arvoa aikaistaa tunnilla, jotta varmistaa kaikkien muutoksien osumisen tulosjoukkoon.")
   def muuttunutJälkeen: Option[LocalDateTime]
   @Description("Palauta vain opiskeluoikeudet, joilla on annettu tila.")
   @EnumValues(Set(
