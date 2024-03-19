@@ -36,7 +36,7 @@ object TutkinnonOsaaPienempiKokonaisuusExample {
     suorituskieli = suomenKieli,
     toimipiste = stadinToimipiste,
     osasuoritukset = Some(List(
-      TutkinnonOsaaPienemmänKokonaisuudenSuoritus(
+      ValtakunnallisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus(
         TutkinnonOsaaPienempiKokonaisuus(
           PaikallinenKoodi("AKTV", "Asunto- ja kiinteistöosakeyhtiön talous ja verotus"),
           None,
@@ -52,7 +52,7 @@ object TutkinnonOsaaPienempiKokonaisuusExample {
         lisätiedot = None,
         suorituskieli = None
       ),
-      TutkinnonOsaaPienemmänKokonaisuudenSuoritus(
+      ValtakunnallisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus(
         TutkinnonOsaaPienempiKokonaisuus(
           PaikallinenKoodi("ATK", "Tietokoneiden huolto"),
           Some(LaajuusKaikkiYksiköt(4, laajuusOsaamispisteissä)),
@@ -268,7 +268,7 @@ object MuunAmmatillisenKoulutuksenExample {
         PaikallinenKoodi("KISI", "KISI-tentti"),
         "Valmiudet hoitaa kiinteistöalan yrityksen sihteeri-, toimisto- ja asiakaspalvelutehtäviä, vahvistaa osallistujan ammatillisia perusvalmiuksia"
       ),
-      TutkinnonOsaaPienemmänKokonaisuudenSuoritus(
+      ValtakunnallisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus(
         TutkinnonOsaaPienempiKokonaisuus(
           PaikallinenKoodi("ATK", "ATK-Ajokortti"),
           None,
