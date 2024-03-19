@@ -3,7 +3,7 @@ package fi.oph.koski.queuedqueries
 import fi.oph.koski.cache.GlobalCacheManager._
 import fi.oph.koski.cache.{RefreshingCache, SingleValueCache}
 import fi.oph.koski.cloudwatch.CloudWatchMetricsService
-import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.config.{KoskiApplication, KoskiInstance}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
@@ -85,11 +85,12 @@ class QueryService(application: KoskiApplication) extends Logging {
     }
   }
 
-  def cleanup(koskiInstances: Seq[String]): Unit = {
+  def cleanup(koskiInstances: Seq[KoskiInstance]): Unit = {
     val timeout = application.config.getDuration("kyselyt.timeout")
+    val instanceArns = koskiInstances.map(_.taskArn)
 
     queries
-      .findOrphanedQueries(koskiInstances)
+      .findOrphanedQueries(instanceArns)
       .foreach { query =>
         if (query.restartCount >= 3) {
           queries.setFailed(query.queryId, "Orphaned")

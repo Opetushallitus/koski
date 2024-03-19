@@ -5,10 +5,9 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.schedule.{IntervalSchedule, Scheduler}
 import org.json4s.JValue
 
-import java.time.Duration
-
 class QueryCleanupScheduler(application: KoskiApplication) extends Logging {
   val kyselyt: QueryService = application.kyselyService
+  val concurrency: Int = QueryUtils.concurrency(application.config)
 
   def scheduler: Option[Scheduler] = {
     Some(new Scheduler(
@@ -24,32 +23,18 @@ class QueryCleanupScheduler(application: KoskiApplication) extends Logging {
   private def runNextQuery(_ignore: Option[JValue]): Option[JValue] = {
     val instances = application.ecsMetadata.currentlyRunningKoskiInstances
 
-    fixSchedulerLock(instances)
     kyselyt.cleanup(instances)
-    takeoverIfQueryWorkerIsMissing()
+    runAsWorkerIfWorkersMissing()
 
     None
   }
 
-  private def queryWorkerIsAlive: Boolean = {
-    val context = application.kyselyScheduler.getContext
+  private def runAsWorkerIfWorkersMissing(): Unit = {
     val instances = application.ecsMetadata.currentlyRunningKoskiInstances
-    context.map(_.workerId).exists(instances.contains)
-  }
-
-  private def takeoverIfQueryWorkerIsMissing(): Unit = {
-    if (!queryWorkerIsAlive) {
+    if (instances.size < concurrency && !QueryUtils.isQueryWorker(application, concurrency)) {
       logger.warn("Query worker is missing. Promoting this instance to process the queue.")
-      application.kyselyScheduler.promote(true)
       application.scheduledTasks.restartKyselyScheduler()
     }
-  }
 
-  private def fixSchedulerLock(instances: Seq[String]): Unit = {
-    val context = application.kyselyScheduler.getContext
-    if (!context.exists(ctx => instances.contains(ctx.workerId))) {
-      logger.info("Query worker in scheduler does not exist. Releasing the scheduler lock.")
-      application.kyselyScheduler.resolveLock()
-    }
   }
 }

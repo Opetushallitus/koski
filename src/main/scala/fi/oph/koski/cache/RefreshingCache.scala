@@ -26,7 +26,7 @@ import scala.concurrent.duration.{Duration, DurationInt}
   * - refreshScatteringRation (default 0.1): controls how much randomization will be applied to refresh intervals, to prevent huge peak loads on the services behind the cache.
   */
 object RefreshingCache {
-  def apply(name: String, duration: Duration, maxSize: Int)(implicit manager: CacheManager): RefreshingCache = new RefreshingCache(name, Params(duration, maxSize))
+  def apply(name: String, duration: Duration, maxSize: Int = 2)(implicit manager: CacheManager): RefreshingCache = new RefreshingCache(name, Params(duration, maxSize))
 
   case class Params(duration: Duration, maxSize: Int, maxExcessRatio: Double = 0.1, refreshScatteringRatio: Double = 0.1) extends CacheParams
 
