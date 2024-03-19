@@ -150,6 +150,18 @@ case class ValtakunnallisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("tutkinnonosaapienempikokonaisuus", koodistoUri = "suorituksentyyppi")
 ) extends TutkinnonOsaaPienemmänKokonaisuudenSuoritus
 
+case class PaikallisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus(
+  koulutusmoduuli: TutkinnonOsaaPienempiKokonaisuus,
+  override val alkamispäivä: Option[LocalDate],
+  arviointi: Option[List[MuunAmmatillisenKoulutuksenArviointi]],
+  näyttö: Option[Näyttö] = None,
+  lisätiedot: Option[List[MuunAmmatillisenKoulutuksenOsasuorituksenLisätieto]],
+  @Discriminator
+  liittyyTutkintoon: AmmatillinenTutkintoKoulutus,
+  suorituskieli: Option[Koodistokoodiviite],
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("tutkinnonosaapienempikokonaisuus", koodistoUri = "suorituksentyyppi")
+) extends TutkinnonOsaaPienemmänKokonaisuudenSuoritus
+
 case class TutkinnonOsaaPienempiKokonaisuus(
   tunniste: PaikallinenKoodi,
   laajuus: Option[LaajuusKaikkiYksiköt],

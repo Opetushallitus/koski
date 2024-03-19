@@ -88,6 +88,7 @@ case class KelaAmmatillinenPäätasonSuoritus(
 case class KelaAmmatillinenOsasuoritus(
   koulutusmoduuli: KelaAmmatillisenOsasuorituksenKoulutusmoduuli,
   liittyyTutkinnonOsaan: Option[KelaKoodistokoodiviite],
+  liittyyTutkintoon: Option[Tutkinto],
   arviointi: Option[List[KelaAmmatillisenOsasuorituksenArviointi]],
   toimipiste: Option[Toimipiste],
   vahvistus: Option[Vahvistus],

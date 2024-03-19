@@ -15,6 +15,7 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
   def validate(suoritus: PäätasonSuoritus, alkamispäiväLäsnä: Option[LocalDate], vaadittuPerusteenVoimassaolopäivä: LocalDate): HttpStatus = {
     validateTutkintoRakenne(suoritus, alkamispäiväLäsnä, vaadittuPerusteenVoimassaolopäivä)
       .onSuccess(validateDiaarinumerollinenAmmatillinen(suoritus, vaadittuPerusteenVoimassaolopäivä))
+      .onSuccess(validateTOPKKSPaikallinenTutkinnonOsa(suoritus, vaadittuPerusteenVoimassaolopäivä))
   }
 
   private def validateTutkintoRakenne(
@@ -192,6 +193,13 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
       validateKoulutusmoduulinTunniste(koulutusmoduuli.tunniste, koulutusmoduuli.perusteenDiaarinumero, vaadittuPerusteenVoimassaolopäivä)
     case _ => HttpStatus.ok
   }
+
+  private def validateTOPKKSPaikallinenTutkinnonOsa(suoritus: PäätasonSuoritus, vaadittuPerusteenVoimassaolopäivä: LocalDate) = HttpStatus.fold(
+    suoritus.rekursiivisetOsasuoritukset.map {
+      case os: PaikallisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus if os.liittyyTutkintoon.perusteenDiaarinumero.isDefined =>
+        validateKoulutusmoduulinTunniste(os.liittyyTutkintoon.tunniste, os.liittyyTutkintoon.perusteenDiaarinumero, vaadittuPerusteenVoimassaolopäivä)
+      case _ => HttpStatus.ok
+    })
 
   private def validateKoulutusmoduulinTunniste(tunniste: KoodiViite, diaariNumero: Option[String], vaadittuPerusteenVoimassaolopäivä: LocalDate) = diaariNumero match {
     case None => KoskiErrorCategory.badRequest.validation.rakenne.diaariPuuttuu()

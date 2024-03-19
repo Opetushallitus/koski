@@ -68,6 +68,19 @@ object TutkinnonOsaaPienempiKokonaisuusExample {
         lisätiedot = None,
         suorituskieli = None
       ),
+      PaikallisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus(
+        TutkinnonOsaaPienempiKokonaisuus(
+          PaikallinenKoodi("Ö", "Öljynvaihto kuorma-autoihin"),
+          None,
+          finnish("Öljynvaihdon suorittaminen erilaisissa kuorma-autoissa synteettisiä öljyjä käyttäen")
+        ),
+        alkamispäivä = None,
+        arviointi = None,
+        näyttö = None,
+        liittyyTutkintoon = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351301", None, "koulutus", None), Some("39/011/2014")),
+        lisätiedot = None,
+        suorituskieli = None
+      ),
       MuunAmmatillisenKoulutuksenExample.yhteisenTutkinnonOsanOsaAlueenSuoritusValtakunnallinen,
       MuunAmmatillisenKoulutuksenExample.yhteisenTutkinnonOsanOsaAlueenSuoritusPaikallinen,
       MuunAmmatillisenKoulutuksenExample.yhteisenTutkinnonOsanOsaAlueenSuoritusTunnustettuKesken,
@@ -281,6 +294,19 @@ object MuunAmmatillisenKoulutuksenExample {
           "101481",
           koodistoUri = "tutkinnonosat"
         ),
+        lisätiedot = None,
+        suorituskieli = None
+      ),
+      PaikallisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus(
+        TutkinnonOsaaPienempiKokonaisuus(
+          PaikallinenKoodi("Ö", "Öljynvaihto kuorma-autoihin"),
+          None,
+          finnish("Öljynvaihdon suorittaminen erilaisissa kuorma-autoissa synteettisiä öljyjä käyttäen")
+        ),
+        alkamispäivä = None,
+        arviointi = None,
+        näyttö = None,
+        liittyyTutkintoon = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351301", None, "koulutus", None), Some("39/011/2014")),
         lisätiedot = None,
         suorituskieli = None
       ),
