@@ -16,7 +16,7 @@ import java.time.{Duration, OffsetDateTime}
 import java.util.UUID
 import scala.io.Source
 import scala.reflect.runtime.universe.TypeTag
-import scala.xml.{Node, Text}
+import scala.xml.{Elem, Node, Text}
 
 object QueryDocumentation extends Logging {
   // Skeema-jsonit
@@ -142,8 +142,8 @@ object PropertyHtmlDocs {
       case a: Schema => Text(a.toString)
     }
 
-  private def description(metadata: List[Metadata]): String = {
-    metadata.collect { case d: Description => d.text }.mkString(" ")
+  private def description(metadata: List[Metadata]) = {
+    scala.xml.XML.loadString("<div>" + metadata.collect { case d: Description => d.text }.mkString(" ") + "</div>")
   }
 
   private def sort(properties: Seq[Property]): Seq[Property] =
