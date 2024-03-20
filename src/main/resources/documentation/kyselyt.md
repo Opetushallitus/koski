@@ -22,6 +22,8 @@ Kyselyn ollessa ok saadaan seuraavanlainen vastaus:
 
     {{json:PendingQueryResponse}}
 
+{{docs:fi.oph.koski.queuedqueries.PendingQueryResponse}}
+
 KOSKI ei aloita kyselyn prosessointia välittömästi, vaan lisää sen työjonoon.  Odottavan kyselyn
 `status`-kenttä on `pending`. Tavallisesti kyselyiden käsittely aloitetaan lähes välittömästi,
 mutta ruuhka- ja vikatilanteissa kysely voi pysyä odottavassa tilassa pidempiäkin aikoja.
@@ -33,6 +35,8 @@ Tilaksi on vaihtunut `running` ja mukana on aloitusaika:
 
     {{json:RunningQueryResponse}}
 
+{{docs:fi.oph.koski.queuedqueries.RunningQueryResponse}}
+
 Kysely voi palata `running`-tilasta takaisin `pending`-tilaan, jos kyselyn käsittely katkeaa
 esimerkiksi sitä käsittelevän instanssin käynnistyessä uudelleen.
 
@@ -43,12 +47,16 @@ Tiedostojen määrä vaihtelee tehdyn kyselyn perusteella:
 
     {{json:CompleteQueryResponse}}
 
+{{docs:fi.oph.koski.queuedqueries.CompleteQueryResponse}}
+
 ### Kyselyn epäonnistuminen
 
 Kyselyn epäonnistuessa tila on `failed`. Epäonnistumisen syytä ei tietoturvasyistä kerrota,
 mutta ne ovat lähes aina palvelinpään teknisiä ongelmia (eli vertautuvat HTTP-pyyntöjen 5xx-virheisiin):
 
     {{json:FailedQueryResponse}}
+
+{{docs:fi.oph.koski.queuedqueries.FailedQueryResponse}}
 
 Kysely ei koskaan palaa takaisin `pending`- tai `running`-tilaan sen päädyttyä `failed`-tilaan,
 vaan kutsujan on aloitettava uusi kysely. Jos kysely päätyy jatkuvasti `failed`-tilaan, ota
