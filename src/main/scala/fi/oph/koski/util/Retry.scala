@@ -16,4 +16,20 @@ object Retry extends Logging {
         throw e
     }
   }
+
+  def onStateChangeDuringCall[T, S](getState: => S, n: Int = 1)(fn: => T): T = {
+    val initialState = getState
+    val result = fn
+    val finalState = getState
+    if (finalState != initialState) {
+      if (n > 0) {
+        logger.info(s"System state change detected: $initialState --> $finalState. Retrying...")
+        onStateChangeDuringCall(getState, n - 1)(fn)
+      } else {
+        throw new RuntimeException(s"System state did not stay stabile during execution: $initialState --> $finalState")
+      }
+    } else {
+      result
+    }
+  }
 }

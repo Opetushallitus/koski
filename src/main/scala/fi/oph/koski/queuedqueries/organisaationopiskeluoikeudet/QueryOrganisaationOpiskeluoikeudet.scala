@@ -31,13 +31,14 @@ import scala.concurrent.duration.DurationInt
 trait QueryOrganisaationOpiskeluoikeudet extends QueryParameters with DatabaseConverters with Logging {
   @EnumValues(Set("organisaationOpiskeluoikeudet"))
   def `type`: String
-  @Description("Kyselyyn otettavan organisaation oid. Jos ei ole annettu, päätellään käyttäjän käyttöoikeuksista.")
+  @Description("Kyselyyn otettavan koulutustoimijan tai oppilaitoksen oid. Jos ei ole annettu, päätellään käyttäjän käyttöoikeuksista.")
   def organisaatioOid: Option[String]
   @Description("Palauta vain opiskeluoikeudet, jotka alkavat annettuna päivänä tai myöhemmin.")
   def alkanutAikaisintaan: LocalDate
   @Description("Palauta vain opiskeluoikeudet, jotka alkavat annettuna päivänä tai aiemmin.")
   def alkanutViimeistään: Option[LocalDate]
-  @Description("Palauta vain opiskeluoikeudet, joita on päivitetty annettuna ajanhetkenä tai myöhemmin.")
+  @Description("Palauta vain opiskeluoikeudet, joita on päivitetty annetun ajanhetken jälkeen.")
+  @Description("Haettaessa muuttuneita opiskeluoikeuksia sitten viimeisen datahaun, kannattaa tätä arvoa aikaistaa tunnilla, jotta varmistaa kaikkien muutoksien osumisen tulosjoukkoon.")
   def muuttunutJälkeen: Option[LocalDateTime]
   @Description("Palauta vain opiskeluoikeudet, joilla on annettu tila.")
   @EnumValues(Set(
@@ -119,8 +120,10 @@ trait QueryOrganisaationOpiskeluoikeudet extends QueryParameters with DatabaseCo
 
   protected def getDb(application: KoskiApplication): DB = application.replicaDatabase.db
 
-  protected def defaultBaseFilter(oppilaitosOids: List[Organisaatio.Oid]): SQLActionBuilder = SQLHelpers.concatMany(
-    Some(sql"WHERE NOT poistettu AND NOT mitatoity AND oppilaitos_oid = ANY($oppilaitosOids) AND alkamispaiva >= $alkanutAikaisintaan "),
+  protected def defaultBaseFilter(oppilaitosOids: List[Organisaatio.Oid])(implicit session: KoskiSpecificSession): SQLActionBuilder = SQLHelpers.concatMany(
+    Some(sql"WHERE NOT poistettu AND "),
+    if (includeMitätöidyt(session)) None else Some(sql" NOT mitatoity "),
+    Some(sql" AND oppilaitos_oid = ANY($oppilaitosOids) AND alkamispaiva >= $alkanutAikaisintaan "),
     alkanutViimeistään.map(l => sql" AND alkamispaiva <= $l "),
     muuttunutJälkeen.map(Timestamp.valueOf).map(a => sql" AND aikaleima >= $a "),
     tila.map(t => sql" AND tila = $t "),
@@ -170,4 +173,6 @@ trait QueryOrganisaationOpiskeluoikeudet extends QueryParameters with DatabaseCo
         }
     }
 
+  private def includeMitätöidyt(implicit session: KoskiSpecificSession): Boolean =
+    session.hasMitätöidytOpiskeluoikeudetAccess
 }

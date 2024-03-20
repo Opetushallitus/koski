@@ -14,6 +14,7 @@ import fi.oph.koski.raportit.perusopetus.{PerusopetuksenOppijamäärätAikajakso
 import fi.oph.koski.raportit.tuva.{TuvaPerusopetuksenOppijamäärätAikajaksovirheetRaportti, TuvaPerusopetuksenOppijamäärätRaportti, TuvaSuoritustiedotRaportti}
 import fi.oph.koski.schema.LocalizedString
 import fi.oph.koski.schema.Organisaatio.isValidOrganisaatioOid
+import fi.oph.koski.util.Retry
 
 import java.time.LocalDateTime
 
@@ -61,14 +62,16 @@ class RaportitService(application: KoskiApplication) {
     t: LocalizationReader
   ): OppilaitosRaporttiResponse = {
     val oidit = accessResolver.kyselyOiditOrganisaatiolle(request.oppilaitosOid).toSeq
-    OppilaitosRaporttiResponse(
-      sheets = Seq(
-        PaallekkaisetOpiskeluoikeudet.datasheet(request.oppilaitosOid, oidit, request.alku, request.loppu, raportointiDatabase)(t)
-      ),
-      workbookSettings = WorkbookSettings("", Some(request.password)),
-      filename = s"${t.get("raportti-excel-paallekkaiset-opiskeluoikeudet-tiedoston-etuliite")}_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx",
-      downloadToken = request.downloadToken
-    )
+    Retry.onStateChangeDuringCall(s"Raportointikanta completion time: ${raportointiDatabase.status.completionTime}") {
+      OppilaitosRaporttiResponse(
+        sheets = Seq(
+          PaallekkaisetOpiskeluoikeudet.datasheet(request.oppilaitosOid, oidit, request.alku, request.loppu, raportointiDatabase)(t)
+        ),
+        workbookSettings = WorkbookSettings("", Some(request.password)),
+        filename = s"${t.get("raportti-excel-paallekkaiset-opiskeluoikeudet-tiedoston-etuliite")}_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx",
+        downloadToken = request.downloadToken
+      )
+    }
   }
 
   def opiskelijaVuositiedot(request: AikajaksoRaporttiRequest, t: LocalizationReader): OppilaitosRaporttiResponse = {

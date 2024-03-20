@@ -1,45 +1,31 @@
 package fi.oph.koski.queuedqueries
 
 import com.typesafe.config.Config
-import fi.oph.koski.config.{Environment, KoskiApplication}
+import fi.oph.koski.config.{KoskiApplication, KoskiInstance}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.LoggerWithContext
 import fi.oph.koski.schema.Organisaatio.Oid
 import fi.oph.koski.util.TryWithLogging
-import software.amazon.awssdk.services.rds.RdsClient
 
 import java.security.SecureRandom
-import scala.jdk.CollectionConverters._
 import scala.util.Using
 
 object QueryUtils {
   def readDatabaseId(config: Config): String = config.getString("kyselyt.readDatabase")
+  def concurrency(config: Config): Int = config.getInt("kyselyt.concurrency")
 
-  def isQueryWorker(application: KoskiApplication): Boolean = {
-    val instanceAz = application.ecsMetadata.availabilityZone
-    val databaseAz = getDatabaseAz(application, readDatabaseId(application.config))
-
-    (instanceAz, databaseAz) match {
-      case (None, None) => true // Lokaali devausinstanssi
-      case (Some(a), Some(b)) if a == b => true // Serveri-instanssi, joka samassa az:ssa tietokannan kanssa
-      case _ => false
+  def isQueryWorker(application: KoskiApplication, concurrency: Int): Boolean =
+    application.ecsMetadata.taskARN.forall { myArn =>
+      workerInstances(application, concurrency).exists(_.taskArn == myArn)
     }
-  }
 
-  def getDatabaseAz(application: KoskiApplication, databaseId: String): Option[String] = {
-    if (Environment.isMockEnvironment(application.config)) {
-      None
-    } else {
-      RdsClient
-        .create()
-        .describeDBInstances()
-        .dbInstances()
-        .asScala
-        .find(_.dbInstanceIdentifier() == databaseId)
-        .map(_.availabilityZone())
-    }
-  }
+  def workerInstances(application: KoskiApplication, concurrency: Int): Seq[KoskiInstance] =
+    application.ecsMetadata
+      .currentlyRunningKoskiInstances
+      .sortBy(_.createdAt)
+      .reverse
+      .take(concurrency)
 
   def defaultOrganisaatio(implicit user: KoskiSpecificSession): Either[HttpStatus, Oid] = {
     val organisaatiot = user.juuriOrganisaatiot
