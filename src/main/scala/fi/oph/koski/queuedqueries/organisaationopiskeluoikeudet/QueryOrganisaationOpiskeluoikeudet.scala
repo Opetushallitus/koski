@@ -121,8 +121,8 @@ trait QueryOrganisaationOpiskeluoikeudet extends QueryParameters with DatabaseCo
   protected def getDb(application: KoskiApplication): DB = application.replicaDatabase.db
 
   protected def defaultBaseFilter(oppilaitosOids: List[Organisaatio.Oid])(implicit session: KoskiSpecificSession): SQLActionBuilder = SQLHelpers.concatMany(
-    Some(sql"WHERE NOT poistettu AND "),
-    if (includeMitätöidyt(session)) None else Some(sql" NOT mitatoity "),
+    Some(sql"WHERE NOT poistettu "),
+    if (includeMitätöidyt(session)) None else Some(sql" AND NOT mitatoity "),
     Some(sql" AND oppilaitos_oid = ANY($oppilaitosOids) AND alkamispaiva >= $alkanutAikaisintaan "),
     alkanutViimeistään.map(l => sql" AND alkamispaiva <= $l "),
     muuttunutJälkeen.map(Timestamp.valueOf).map(a => sql" AND aikaleima >= $a "),
