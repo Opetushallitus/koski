@@ -15,7 +15,7 @@ import fi.oph.koski.schema.Organisaatio
 import fi.oph.koski.schema.annotation.EnumValues
 import fi.oph.scalaschema.annotation.{Description, Title}
 
-import java.time.LocalDate
+import java.time.{LocalDate, LocalDateTime}
 import scala.util.Using
 
 @Title("Päällekkäiset opiskeluoikeudet")
@@ -56,6 +56,10 @@ case class QueryPaallekkaisetOpiskeluoikeudet(
       val localizationReader = new LocalizationReader(application.koskiLocalizationRepository, language.get)
       writer.putReport(raportitService.paallekkaisetOpiskeluoikeudet(request, localizationReader), format, localizationReader)
       writer.patchMeta(QueryMeta(password = Some(request.password)))
+
+      writer.patchMeta(QueryMeta(
+        raportointikantaGeneratedAt = Some(raportitService.viimeisinOpiskeluoikeuspäivitystenVastaanottoaika),
+      ))
 
       auditLog
     }

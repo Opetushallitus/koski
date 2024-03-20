@@ -217,6 +217,7 @@ object QueryExamples {
       finishedAt = finishedAt,
       files = files.map(QueryServletUrls.file(rootUrl, queryId, _)),
       password = password,
+      sourceDataUpdatedAt = Some(createdAt),
     )
 
   def faileddQuery(query: QueryParameters): FailedQueryResponse =

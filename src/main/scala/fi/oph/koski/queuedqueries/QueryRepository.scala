@@ -173,7 +173,7 @@ class QueryRepository(
       RETURNING meta
     """.as[QueryMeta]).head
   }
-  
+
   implicit private val getQueryResult: GetResult[Query] = GetResult[Query] { r =>
     val id = r.rs.getString("id")
     val userOid = r.rs.getString("user_oid")
@@ -370,6 +370,7 @@ object StorableSession {
 case class QueryMeta(
   password: Option[String] = None,
   restarts: Option[List[String]] = None,
+  raportointikantaGeneratedAt: Option[LocalDateTime] = None,
 ) {
   def withRestart(reason: String): QueryMeta = copy(
     restarts = Some(restarts.getOrElse(List.empty) :+ reason)
