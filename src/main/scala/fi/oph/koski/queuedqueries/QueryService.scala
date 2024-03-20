@@ -108,7 +108,7 @@ class QueryService(application: KoskiApplication) extends Logging {
   }
 
   def systemIsOverloaded: Boolean =
-    (application.replicaDatabase.replayLag.toSeconds > maxAllowedDatabaseReplayLag.toSeconds) || databaseLoadLimiter.checkOverloading
+    (application.replicaDatabase.replayLag.toSeconds > maxAllowedDatabaseReplayLag.getSeconds) || databaseLoadLimiter.checkOverloading
 
   def cancelAllTasks(reason: String): Boolean = queries.setRunningTasksFailed(reason)
 
