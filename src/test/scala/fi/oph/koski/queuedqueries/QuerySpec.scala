@@ -10,12 +10,17 @@ import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.util.Wait
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import org.json4s.jackson.JsonMethods
+import org.scalatest.BeforeAndAfterAll
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
 import java.time.LocalDate
 
-class QuerySpec extends AnyFreeSpec with KoskiHttpSpec with Matchers {
+class QuerySpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with BeforeAndAfterAll {
+  override protected def beforeAll(): Unit = {
+    resetFixtures()
+  }
+
   "Organisaation opiskeluoikeudet" - {
     "JSON" - {
       val query = QueryOrganisaationOpiskeluoikeudetJson(
