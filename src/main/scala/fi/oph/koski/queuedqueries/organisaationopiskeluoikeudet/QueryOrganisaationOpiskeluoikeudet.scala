@@ -173,6 +173,5 @@ trait QueryOrganisaationOpiskeluoikeudet extends QueryParameters with DatabaseCo
         }
     }
 
-  private def includeMitätöidyt(implicit session: KoskiSpecificSession): Boolean =
-    session.hasMitätöidytOpiskeluoikeudetAccess
+  private def includeMitätöidyt(implicit session: KoskiSpecificSession): Boolean = true
 }
