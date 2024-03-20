@@ -16,8 +16,6 @@ import org.scalatest.matchers.should.Matchers
 import java.time.LocalDate
 
 class QuerySpec extends AnyFreeSpec with KoskiHttpSpec with Matchers {
-  val testDownloads = false // TODO: Korjaa download-testit CI:llä. Kytketty väliaikaisesti pois käytöstä.
-
   "Organisaation opiskeluoikeudet" - {
     "JSON" - {
       val query = QueryOrganisaationOpiskeluoikeudetJson(
@@ -183,10 +181,8 @@ class QuerySpec extends AnyFreeSpec with KoskiHttpSpec with Matchers {
   }
 
   def verifyResult(url: String, user: UserWithPassword): Unit =
-    if (testDownloads) {
-      getResult(url, user) {
-        verifyResponseStatus(302) // 302: Found (redirect)
-      }
+    getResult(url, user) {
+      verifyResponseStatus(302) // 302: Found (redirect)
     }
 
   def waitForStateTransition(queryId: String, user: UserWithPassword)(states: String*): QueryResponse = {

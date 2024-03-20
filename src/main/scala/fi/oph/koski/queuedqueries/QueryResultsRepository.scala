@@ -60,7 +60,7 @@ class QueryResultsRepository(config: Config) extends Logging {
 
   def getPresignedDownloadUrl(queryId: UUID, name: String): String = {
     val key = objectKey(queryId, name)
-    val awsPresigner = S3Presigner.builder()
+    val awsPresigner = S3Presigner.builder().region(region)
     val presigner = (if (useAWS) {
       awsPresigner
     } else {
