@@ -552,9 +552,6 @@ class OppijaValidationPreIB2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
           moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("KE1", 2.0f)).copy(arviointi = sanallinenArviointi("S")),
           moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("KE2", 2.0f)).copy(arviointi = sanallinenArviointi("H"))
         ))),
-        lukioDiplomienSuoritus().copy(osasuoritukset = Some(List(
-          moduulinSuoritusMuissaOpinnoissa(muuModuuliMuissaOpinnoissa("KOLD1", 2.0f)).copy(arviointi = sanallinenArviointi("S")),
-        ))),
         muidenLukioOpintojenSuoritus().copy(osasuoritukset = Some(List(
           moduulinSuoritusMuissaOpinnoissa(vieraanKielenModuuliMuissaOpinnoissa("VKB21", 2.0f, "ET")).copy(arviointi = sanallinenArviointi("S"))
         )))
@@ -563,7 +560,6 @@ class OppijaValidationPreIB2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
           List(
             exact(KoskiErrorCategory.badRequest.validation.arviointi.epäsopivaArvosana, "Valtakunnallisen moduulin moduulikoodistolops2021/KE1 arvosanan on oltava numero"),
             exact(KoskiErrorCategory.badRequest.validation.arviointi.epäsopivaArvosana, "Valtakunnallisen moduulin moduulikoodistolops2021/KE2 arvosanan on oltava numero"),
-            exact(KoskiErrorCategory.badRequest.validation.arviointi.epäsopivaArvosana, "Valtakunnallisen moduulin moduulikoodistolops2021/KOLD1 arvosanan on oltava numero"),
             exact(KoskiErrorCategory.badRequest.validation.arviointi.epäsopivaArvosana, "Valtakunnallisen moduulin moduulikoodistolops2021/VKB21 arvosanan on oltava numero")
           )
         )

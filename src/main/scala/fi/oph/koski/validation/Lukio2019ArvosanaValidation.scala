@@ -2,6 +2,7 @@ package fi.oph.koski.validation
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.schema._
+import fi.oph.koski.validation.Lukio2019OsasuoritusValidation.lukiodiplomit
 
 object Lukio2019ArvosanaValidation {
 
@@ -58,6 +59,7 @@ object Lukio2019ArvosanaValidation {
   private def validateValtakunnallinenModuuli(suoritus: Suoritus): HttpStatus = (suoritus) match {
     case _: LukionModuulinSuoritus2019 | _: PreIBLukionModuulinSuoritus2019
       if !opintoOhjausModuulit.contains(suoritus.koulutusmoduuli.tunniste.koodiarvo) &&
+        !lukiodiplomit.contains(suoritus.koulutusmoduuli.tunniste.koodiarvo) &&
         suoritus.sortedArviointi.exists(a => kirjainarvosanat.contains(a.arvosana.koodiarvo)) =>
       KoskiErrorCategory.badRequest.validation.arviointi.epäsopivaArvosana(s"Valtakunnallisen moduulin ${suorituksenTunniste(suoritus)} arvosanan on oltava numero")
     case _: LukionModuulinSuoritus2019 | _: PreIBLukionModuulinSuoritus2019

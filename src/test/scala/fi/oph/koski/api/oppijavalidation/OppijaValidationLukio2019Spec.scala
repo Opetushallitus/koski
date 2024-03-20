@@ -440,6 +440,18 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
       }
     }
 
+    "Lukiodiplomimoduulin arvosana voi olla numeerinen tai S tai H" in {
+      setupOppijaWithOpiskeluoikeus(aktiivinenOpiskeluoikeus.copy(suoritukset = List(vahvistamatonOppimääränSuoritus.copy(osasuoritukset = Some(List(
+        lukioDiplomienSuoritus().copy(osasuoritukset = Some(List(
+          moduulinSuoritusMuissaOpinnoissa(muuModuuliMuissaOpinnoissa("KOLD1")).copy(arviointi = numeerinenArviointi(5)),
+          moduulinSuoritusMuissaOpinnoissa(muuModuuliMuissaOpinnoissa("KULD2")).copy(arviointi = sanallinenArviointi("S")),
+          moduulinSuoritusMuissaOpinnoissa(muuModuuliMuissaOpinnoissa("KÄLD3")).copy(arviointi = sanallinenArviointi("H")),
+        )))
+      )))))) {
+        verifyResponseStatusOk()
+      }
+    }
+
     "Oppiainespesifit lukiodiplomit voi siirtää kyseisiin oppiaineisiin" in {
       setupOppijaWithOpiskeluoikeus(aktiivinenOpiskeluoikeus.copy(suoritukset = List(vahvistamatonOppimääränSuoritus.copy(osasuoritukset = Some(List(
         oppiaineenSuoritus(Lukio2019ExampleData.lukionOppiaine("KU")).copy(arviointi = numeerinenLukionOppiaineenArviointi(6)).copy(osasuoritukset = Some(List(
@@ -804,9 +816,6 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
           moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("KE1", 2.0f)).copy(arviointi = sanallinenArviointi("S")),
           moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("KE2", 2.0f)).copy(arviointi = sanallinenArviointi("H"))
         ))),
-        lukioDiplomienSuoritus().copy(osasuoritukset = Some(List(
-          moduulinSuoritusMuissaOpinnoissa(muuModuuliMuissaOpinnoissa("KOLD1", 2.0f)).copy(arviointi = sanallinenArviointi("S")),
-        ))),
         muidenLukioOpintojenSuoritus().copy(osasuoritukset = Some(List(
           moduulinSuoritusMuissaOpinnoissa(vieraanKielenModuuliMuissaOpinnoissa("VKB21", 2.0f, "ET")).copy(arviointi = sanallinenArviointi("S"))
         )))
@@ -815,7 +824,6 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
           List(
             exact(KoskiErrorCategory.badRequest.validation.arviointi.epäsopivaArvosana, "Valtakunnallisen moduulin moduulikoodistolops2021/KE1 arvosanan on oltava numero"),
             exact(KoskiErrorCategory.badRequest.validation.arviointi.epäsopivaArvosana, "Valtakunnallisen moduulin moduulikoodistolops2021/KE2 arvosanan on oltava numero"),
-            exact(KoskiErrorCategory.badRequest.validation.arviointi.epäsopivaArvosana, "Valtakunnallisen moduulin moduulikoodistolops2021/KOLD1 arvosanan on oltava numero"),
             exact(KoskiErrorCategory.badRequest.validation.arviointi.epäsopivaArvosana, "Valtakunnallisen moduulin moduulikoodistolops2021/VKB21 arvosanan on oltava numero")
           )
         )

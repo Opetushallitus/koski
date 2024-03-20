@@ -1,5 +1,8 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 20.3.2024
+- Lukiodiplomeihin sallitaan numeroarvosanan lisäksi sanallinen arviointi S ja H
+
 ## 29.1.2024
 - Perusopetuksen duplikaattiopiskeluoikeuksien validaatio korjattu toimimaan myös opiskeluoikeuksia uusilla lähdejärjestelmä-id:eillä luotaessa.
 
