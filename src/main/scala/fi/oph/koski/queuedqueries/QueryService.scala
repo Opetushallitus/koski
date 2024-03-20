@@ -7,6 +7,7 @@ import fi.oph.koski.config.{KoskiApplication, KoskiInstance}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
+import fi.oph.koski.util.TryWithLogging
 
 import java.time.format.DateTimeFormatter
 import java.time.{Duration, LocalDateTime}
@@ -76,14 +77,10 @@ class QueryService(application: KoskiApplication) extends Logging {
     }
   }
 
-  def getDownloadUrl(query: CompleteQuery, name: String): Option[String] = {
-    val id = UUID.fromString(query.queryId)
-    try {
-      Some(results.getPresignedDownloadUrl(id, name))
-    } catch {
-      case t: Throwable => None
-    }
-  }
+  def getDownloadUrl(query: CompleteQuery, name: String): Either[HttpStatus, String] =
+    TryWithLogging(logger, {
+      results.getPresignedDownloadUrl(UUID.fromString(query.queryId), name)
+    }).left.map(t => KoskiErrorCategory.badRequest(s"Tiedostoa ei löydy tai tapahtui virhe sen jakamisessa"))
 
   def cleanup(koskiInstances: Seq[KoskiInstance]): Unit = {
     val timeout = application.config.getDuration("kyselyt.timeout")

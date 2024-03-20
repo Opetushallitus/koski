@@ -53,7 +53,6 @@ class QueryServlet(implicit val application: KoskiApplication)
       .flatMap {
         case q: CompleteQuery =>
           kyselyt.getDownloadUrl(q, getStringParam("file"))
-            .toRight(KoskiErrorCategory.badRequest("Tiedostoa ei löydy tai tapahtui virhe sen jakamisessa"))
         case _ =>
           Left(KoskiErrorCategory.badRequest("Tulostiedostot eivät ole vielä ladattavissa"))
       }
