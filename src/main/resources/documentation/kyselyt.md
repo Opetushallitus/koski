@@ -43,7 +43,8 @@ esimerkiksi sitä käsittelevän instanssin käynnistyessä uudelleen.
 ### Kyselyn valmistuminen
 
 Kyselyn valmistuessa tilaksi vaihtuu `completed` ja vastauksessa on mukana lista tulostiedostoista.
-Tiedostojen määrä vaihtelee tehdyn kyselyn perusteella:
+Tiedostojen määrä vaihtelee tehdyn kyselyn perusteella. Tiedostot ovat haettavissa n. kolme vuorokautta
+kyselyn valmistumisesta.
 
     {{json:CompleteQueryResponse}}
 
