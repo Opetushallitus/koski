@@ -40,6 +40,8 @@ class QueryService(application: KoskiApplication) extends Logging {
     }
   }
 
+  def addRaw(query: Query): Query = queries.addRaw(query)
+
   def get(id: UUID)(implicit user: KoskiSpecificSession): Either[HttpStatus, Query] =
     queries.get(id)
       .filter(_.userOid == user.oid)

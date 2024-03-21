@@ -3,7 +3,7 @@ package fi.oph.koski.queuedqueries
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.db.{DB, DatabaseConverters, QueryMethods}
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.{AuthenticationUser, KoskiSpecificSession, KäyttöoikeusRepository}
+import fi.oph.koski.koskiuser.{AuthenticationUser, KoskiMockUser, KoskiSpecificSession, KäyttöoikeusRepository, MockUser}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.validation.ValidatingAndResolvingExtractor
@@ -56,6 +56,50 @@ class QueryRepository(
        """.as[Query])
       .collectFirst { case q: PendingQuery => q }
       .get
+  }
+
+  def addRaw(query: Query): Query = {
+    val createdAt = Timestamp.valueOf(query.createdAt)
+    val startedAt = query match {
+      case q: QueryWithStartTime => Some(Timestamp.valueOf(q.startedAt))
+      case _ => None
+    }
+    val finishedAt = query match {
+      case q: QueryWithFinishTime => Some(Timestamp.valueOf(q.finishedAt))
+      case _ => None
+    }
+    val worker = query match {
+      case q: QueryWithWorker => Some(q.worker)
+      case _ => None
+    }
+    val resultFiles = query match {
+      case q: CompleteQuery => Some(q.resultFiles)
+      case _ => None
+    }
+    val error = query match {
+      case q: FailedQuery => Some(q.error)
+      case _ => None
+    }
+    val meta = query.meta.map(m => JsonSerializer.serializeWithRoot(m))
+
+    runDbSync(sql"""
+     INSERT INTO kysely(id, user_oid, session, query, state, created_at, started_at, finished_at, worker, result_files, error, meta)
+     VALUES(
+        ${query.queryId}::uuid,
+        ${query.userOid},
+        ${query.session},
+        ${query.query.asJson},
+        ${query.state},
+        $createdAt,
+        $startedAt,
+        $finishedAt,
+        $worker,
+        $resultFiles,
+        $error,
+        $meta
+     )
+     RETURNING *
+     """.as[Query]).head
   }
 
   def numberOfRunningQueries: Int =
@@ -177,7 +221,7 @@ class QueryRepository(
   implicit private val getQueryResult: GetResult[Query] = GetResult[Query] { r =>
     val id = r.rs.getString("id")
     val userOid = r.rs.getString("user_oid")
-    val session = r.rs.getString("session")
+    val session = r.getJson("session")
     val query = parseParameters(r.getJson("query"))
     val creationTime = r.rs.getTimestamp("created_at").toLocalDateTime
     val meta = r.getNullableJson("meta").map(parseMeta)
@@ -245,12 +289,12 @@ trait Query {
   def query: QueryParameters
   def state: String
   def createdAt: LocalDateTime
-  def session: String
+  def session: JValue
   def meta: Option[QueryMeta]
 
   def getSession(käyttöoikeudet: KäyttöoikeusRepository): Option[KoskiSpecificSession] =
     JsonSerializer
-      .validateAndExtract[StorableSession](JsonMethods.parse(session))
+      .validateAndExtract[StorableSession](session)
       .map(_.toSession(käyttöoikeudet))
       .toOption
 
@@ -258,14 +302,27 @@ trait Query {
 
   def externalResultsUrl(rootUrl: String): String = QueryServletUrls.query(rootUrl, queryId)
 
-  def restartCount: Int = meta.map(_.restarts.size).getOrElse(0)
+  def restartCount: Int = meta.flatMap(_.restarts).map(_.size).getOrElse(0)
 }
+
+trait QueryWithStartTime {
+  def startedAt: LocalDateTime
+}
+
+trait QueryWithFinishTime {
+  def finishedAt: LocalDateTime
+}
+
+trait QueryWithWorker {
+  def worker: String
+}
+
 case class PendingQuery(
   queryId: String,
   userOid: String,
   query: QueryParameters,
   createdAt: LocalDateTime,
-  session: String,
+  session: JValue,
   meta: Option[QueryMeta],
 ) extends Query {
   def state: String = QueryState.pending
@@ -278,9 +335,9 @@ case class RunningQuery(
   createdAt: LocalDateTime,
   startedAt: LocalDateTime,
   worker: String,
-  session: String,
+  session: JValue,
   meta: Option[QueryMeta],
-) extends Query {
+) extends Query with QueryWithStartTime with QueryWithWorker {
   def state: String = QueryState.running
 }
 
@@ -293,9 +350,9 @@ case class CompleteQuery(
   finishedAt: LocalDateTime,
   worker: String,
   resultFiles: List[String],
-  session: String,
+  session: JValue,
   meta: Option[QueryMeta],
-) extends Query {
+) extends Query with QueryWithStartTime with QueryWithFinishTime with QueryWithWorker  {
   def state: String = QueryState.complete
 
   def filesToExternal(rootUrl: String): List[String] = resultFiles.map(QueryServletUrls.file(rootUrl, queryId, _))
@@ -310,9 +367,9 @@ case class FailedQuery(
   finishedAt: LocalDateTime,
   worker: String,
   error: String,
-  session: String,
+  session: JValue,
   meta: Option[QueryMeta],
-) extends Query {
+) extends Query with QueryWithStartTime with QueryWithFinishTime with QueryWithWorker  {
     def state: String = QueryState.failed
 }
 
@@ -352,6 +409,8 @@ case class StorableSession(
       lähdeKäyttöoikeudet = käyttöoikeudet.käyttäjänKäyttöoikeudet(user),
     )
   }
+
+  def toJson: JValue = JsonSerializer.serializeWithRoot(this)
 }
 
 object StorableSession {
@@ -363,6 +422,17 @@ object StorableSession {
       lang = session.lang,
       clientIp = session.clientIp.getHostAddress,
       userAgent = session.userAgent,
+    )
+  }
+
+  def apply(user: MockUser): StorableSession = {
+    StorableSession(
+      oid = user.oid,
+      username = user.username,
+      name = user.username,
+      lang = user.lang,
+      clientIp = "127.0.0.1",
+      userAgent = "Test",
     )
   }
 }

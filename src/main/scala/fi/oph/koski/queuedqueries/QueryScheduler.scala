@@ -43,7 +43,11 @@ class QueryScheduler(application: KoskiApplication) extends Logging {
       None
     }
   }
-  
+
+  def pause(duration: Duration): Boolean = Scheduler.pauseForDuration(schedulerDb, schedulerName, duration)
+
+  def resume(): Boolean = Scheduler.resume(schedulerDb, schedulerName)
+
   private def runNextQuery(_context: Option[JValue]): Option[JValue] = {
     if (isQueryWorker) {
       if (kyselyt.hasNext) {

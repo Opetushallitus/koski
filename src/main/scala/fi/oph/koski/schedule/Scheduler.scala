@@ -127,11 +127,17 @@ object Scheduler {
     val currentNextFireTime = QueryMethods.runDbSync(db, KoskiTables.Scheduler.filter(_.name === name).map(_.nextFireTime).result.headOption)
     val postponedFireTime = Timestamp.valueOf(LocalDateTime.now().plus(duration))
     if (currentNextFireTime.isEmpty || currentNextFireTime.get.getTime < postponedFireTime.getTime) {
-      QueryMethods.runDbSync(db, KoskiTables.Scheduler.filter(_.name === name).map(_.nextFireTime).update(postponedFireTime)) > 0
+      setNextFireTime(db, name, postponedFireTime)
     } else {
       false
     }
   }
+
+  def resume(db: DB, name: String): Boolean =
+    setNextFireTime(db, name, Timestamp.valueOf(LocalDateTime.now()))
+
+  def setNextFireTime(db: DB, name: String, time: Timestamp): Boolean =
+    QueryMethods.runDbSync(db, KoskiTables.Scheduler.filter(_.name === name).map(_.nextFireTime).update(time)) > 0
 }
 
 trait Schedule {
