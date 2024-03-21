@@ -123,12 +123,6 @@ class Scheduler(
 }
 
 object Scheduler {
-  def getContext(db: DB, name: String): Option[JValue] =
-    QueryMethods.runDbSync(db, KoskiTables.Scheduler.filter(_.name === name).map(_.context).result.headOption).flatten
-
-  def setContext(db: DB, name: String, context: Option[JValue]): Boolean =
-    QueryMethods.runDbSync(db, KoskiTables.Scheduler.filter(_.name === name).map(_.context).update(context)) > 0
-
   def pauseForDuration(db: DB, name: String, duration: Duration): Boolean = {
     val currentNextFireTime = QueryMethods.runDbSync(db, KoskiTables.Scheduler.filter(_.name === name).map(_.nextFireTime).result.headOption)
     val postponedFireTime = Timestamp.valueOf(LocalDateTime.now().plus(duration))
@@ -138,9 +132,6 @@ object Scheduler {
       false
     }
   }
-
-  def resolveLock(db: DB, name: String): Boolean =
-    QueryMethods.runDbSync(db, KoskiTables.Scheduler.filter(_.name === name).map(_.status).update(ScheduledTaskStatus.scheduled)) > 0
 }
 
 trait Schedule {

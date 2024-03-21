@@ -43,9 +43,7 @@ class QueryScheduler(application: KoskiApplication) extends Logging {
       None
     }
   }
-
-  def resolveLock(): Boolean = Scheduler.resolveLock(schedulerDb, schedulerName)
-
+  
   private def runNextQuery(_context: Option[JValue]): Option[JValue] = {
     if (isQueryWorker) {
       if (kyselyt.hasNext) {
