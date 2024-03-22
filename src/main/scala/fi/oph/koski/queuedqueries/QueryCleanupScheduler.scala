@@ -20,6 +20,8 @@ class QueryCleanupScheduler(application: KoskiApplication) extends Logging {
     ))
   }
 
+  def trigger(): Unit = runNextQuery(None)
+
   private def runNextQuery(_ignore: Option[JValue]): Option[JValue] = {
     val instances = application.ecsMetadata.currentlyRunningKoskiInstances
 

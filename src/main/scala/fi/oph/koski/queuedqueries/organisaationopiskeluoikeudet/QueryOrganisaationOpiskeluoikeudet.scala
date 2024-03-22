@@ -7,7 +7,7 @@ import fi.oph.koski.db.KoskiOpiskeluoikeusRowImplicits._
 import fi.oph.koski.db._
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.http.HttpStatus
-import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
+import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession, Rooli}
 import fi.oph.koski.log.KoskiAuditLogMessageField.hakuEhto
 import fi.oph.koski.log.KoskiOperation.OPISKELUOIKEUS_HAKU
 import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, Logging}
@@ -93,6 +93,7 @@ trait QueryOrganisaationOpiskeluoikeudet extends QueryParameters with DatabaseCo
     user.hasGlobalReadAccess || (
       organisaatioOid.exists(user.organisationOids(AccessType.read).contains)
         && koulutusmuoto.forall(user.allowedOpiskeluoikeusTyypit.contains)
+        && user.sensitiveDataAllowed(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
       )
 
   override def withDefaults(implicit user: KoskiSpecificSession): Either[HttpStatus, QueryOrganisaationOpiskeluoikeudet] = {
@@ -121,8 +122,8 @@ trait QueryOrganisaationOpiskeluoikeudet extends QueryParameters with DatabaseCo
   protected def getDb(application: KoskiApplication): DB = application.replicaDatabase.db
 
   protected def defaultBaseFilter(oppilaitosOids: List[Organisaatio.Oid])(implicit session: KoskiSpecificSession): SQLActionBuilder = SQLHelpers.concatMany(
-    Some(sql"WHERE NOT poistettu AND "),
-    if (includeMitätöidyt(session)) None else Some(sql" NOT mitatoity "),
+    Some(sql"WHERE NOT poistettu "),
+    if (includeMitätöidyt(session)) None else Some(sql" AND NOT mitatoity "),
     Some(sql" AND oppilaitos_oid = ANY($oppilaitosOids) AND alkamispaiva >= $alkanutAikaisintaan "),
     alkanutViimeistään.map(l => sql" AND alkamispaiva <= $l "),
     muuttunutJälkeen.map(Timestamp.valueOf).map(a => sql" AND aikaleima >= $a "),
@@ -173,6 +174,5 @@ trait QueryOrganisaationOpiskeluoikeudet extends QueryParameters with DatabaseCo
         }
     }
 
-  private def includeMitätöidyt(implicit session: KoskiSpecificSession): Boolean =
-    session.hasMitätöidytOpiskeluoikeudetAccess
+  private def includeMitätöidyt(implicit session: KoskiSpecificSession): Boolean = true
 }

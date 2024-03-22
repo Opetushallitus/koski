@@ -53,7 +53,6 @@ class QueryServlet(implicit val application: KoskiApplication)
       .flatMap {
         case q: CompleteQuery =>
           kyselyt.getDownloadUrl(q, getStringParam("file"))
-            .toRight(KoskiErrorCategory.badRequest("Tiedostoa ei löydy tai tapahtui virhe sen jakamisessa"))
         case _ =>
           Left(KoskiErrorCategory.badRequest("Tulostiedostot eivät ole vielä ladattavissa"))
       }
@@ -131,6 +130,8 @@ case class CompleteQueryResponse(
   files: List[String],
   @Description(s"Tiedostojen avaamiseen tarvittava salasana. Käytössä vain xlsx-tiedostojen (${QueryFormat.xlsx}) kanssa.")
   password: Option[String],
+  @Description(s"Viimeisin opiskeluoikeuspäivitysten vastaanottoaika.")
+  sourceDataUpdatedAt: Option[OffsetDateTime],
 ) extends QueryResponse {
   def status: String = QueryState.complete
 }
@@ -169,10 +170,13 @@ object QueryResponse {
       finishedAt = q.finishedAt,
       files = q.filesToExternal(rootUrl),
       password = q.meta.flatMap(_.password),
+      sourceDataUpdatedAt = q.meta.flatMap(_.raportointikantaGeneratedAt),
     )
   }
 
-  implicit def toOffsetDateTime(dt: LocalDateTime): OffsetDateTime = {
+  implicit def toOffsetDateTime(dt: LocalDateTime): OffsetDateTime =
     dt.atZone(TimeZone.getDefault.toZoneId).toOffsetDateTime
-  }
+
+  implicit def toOffsetDateTime(dt: Option[LocalDateTime]): Option[OffsetDateTime] =
+    dt.map(toOffsetDateTime)
 }
