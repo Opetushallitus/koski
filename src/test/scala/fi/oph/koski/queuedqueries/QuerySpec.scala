@@ -96,6 +96,12 @@ class QuerySpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Before
         }
       }
 
+      "Ei onnistu ilman oikeuksia sensitiivisen datan lukemiseen" in {
+        addQuery(query.withOrganisaatioOid(MockOrganisaatiot.jyväskylänNormaalikoulu), MockUsers.tallentajaEiLuottamuksellinen) {
+          verifyResponseStatus(403, KoskiErrorCategory.forbidden())
+        }
+      }
+
       "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
         val user = MockUsers.helsinkiKatselija
         val queryId = addQuerySuccessfully(query, user) { response =>

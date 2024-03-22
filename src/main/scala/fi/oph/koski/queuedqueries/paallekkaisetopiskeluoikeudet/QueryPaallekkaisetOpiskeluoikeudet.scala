@@ -65,7 +65,7 @@ case class QueryPaallekkaisetOpiskeluoikeudet(
     }
 
   override def queryAllowed(application: KoskiApplication)(implicit user: KoskiSpecificSession): Boolean =
-    user.hasGlobalReadAccess || organisaatioOid.exists(user.organisationOids(AccessType.read).contains)
+    user.hasGlobalReadAccess || organisaatioOid.exists(user.hasRaporttiReadAccess)
 
   override def withDefaults(implicit user: KoskiSpecificSession): Either[HttpStatus, QueryPaallekkaisetOpiskeluoikeudet] =
     for {

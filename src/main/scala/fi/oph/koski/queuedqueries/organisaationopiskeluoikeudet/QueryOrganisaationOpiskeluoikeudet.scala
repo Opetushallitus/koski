@@ -7,7 +7,7 @@ import fi.oph.koski.db.KoskiOpiskeluoikeusRowImplicits._
 import fi.oph.koski.db._
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.http.HttpStatus
-import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
+import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession, Rooli}
 import fi.oph.koski.log.KoskiAuditLogMessageField.hakuEhto
 import fi.oph.koski.log.KoskiOperation.OPISKELUOIKEUS_HAKU
 import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, Logging}
@@ -93,6 +93,7 @@ trait QueryOrganisaationOpiskeluoikeudet extends QueryParameters with DatabaseCo
     user.hasGlobalReadAccess || (
       organisaatioOid.exists(user.organisationOids(AccessType.read).contains)
         && koulutusmuoto.forall(user.allowedOpiskeluoikeusTyypit.contains)
+        && user.sensitiveDataAllowed(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
       )
 
   override def withDefaults(implicit user: KoskiSpecificSession): Either[HttpStatus, QueryOrganisaationOpiskeluoikeudet] = {
