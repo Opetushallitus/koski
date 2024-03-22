@@ -239,6 +239,18 @@ test.describe('Taiteen perusopetus', () => {
         )
         expect(await page.osasuoritustieto('arvosana')).toEqual('Hyväksytty')
       })
+
+      test('Tunnustuksen asetus toimii', async ({
+        taiteenPerusopetusPage: page
+      }) => {
+        await page.addNewOsasuoritus('Säestys')
+        await page.setOsasuorituksenArvosana(
+          'arviointiasteikkotaiteenperusopetus_hyvaksytty'
+        )
+        await page.setTunnustettu('Gosh')
+        await page.tallenna()
+        expect(await page.osasuoritusProperty('tunnustettu')).toEqual('Gosh')
+      })
     })
 
     test.describe('Opiskeluoikeuden tilan muokkaus', () => {
