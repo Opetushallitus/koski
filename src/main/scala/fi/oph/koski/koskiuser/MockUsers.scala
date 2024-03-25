@@ -460,8 +460,8 @@ object MockUsers {
   )
 
   val perusopetusTallentaja = KoskiMockUser(
-    "esiopetus-tallentaja",
-    "esiopetus-tallentaja",
+    "perusopetus-tallentaja",
+    "perusopetus-tallentaja",
     "1.2.246.562.24.42042042042",
     Seq(OrganisaatioJaKäyttöoikeudet(jyväskylänNormaalikoulu, List(
       PalveluJaOikeus("KOSKI", Rooli.PERUSOPETUS),
@@ -555,6 +555,7 @@ object MockUsers {
     tilastokeskusKäyttäjä,
     valviraKäyttäjä,
     esiopetusTallentaja,
+    perusopetusTallentaja,
     oppivelvollisuutietoRajapinta,
     varsinaisSuomiPalvelukäyttäjä,
     varsinaisSuomiKoulutustoimijaKatselija,
