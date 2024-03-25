@@ -77,6 +77,8 @@ trait QueryOrganisaationOpiskeluoikeudet extends QueryParameters with DatabaseCo
     "vapaansivistystyonkoulutus",
   ))
   def koulutusmuoto: Option[String]
+  @Description("Jos true, palautetaan myös mitätöidyt opiskeluoikeudet")
+  def mitätöidyt: Option[Boolean]
 
   def fetchData(application: KoskiApplication, writer: QueryResultWriter, oppilaitosOids: List[Organisaatio.Oid]): Either[String, Unit]
 
@@ -174,5 +176,5 @@ trait QueryOrganisaationOpiskeluoikeudet extends QueryParameters with DatabaseCo
         }
     }
 
-  private def includeMitätöidyt(implicit session: KoskiSpecificSession): Boolean = true
+  private def includeMitätöidyt(implicit session: KoskiSpecificSession): Boolean = mitätöidyt.contains(true)
 }

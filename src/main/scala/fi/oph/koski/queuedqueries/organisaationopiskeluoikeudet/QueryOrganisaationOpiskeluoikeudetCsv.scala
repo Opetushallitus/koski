@@ -31,6 +31,7 @@ case class QueryOrganisaationOpiskeluoikeudetCsv(
   muuttunutJälkeen: Option[LocalDateTime] = None,
   tila: Option[String] = None,
   koulutusmuoto: Option[String] = None,
+  mitätöidyt: Option[Boolean] = None,
 ) extends QueryOrganisaationOpiskeluoikeudet {
 
   def withOrganisaatioOid(organisaatioOid: Oid): QueryOrganisaationOpiskeluoikeudetCsv = copy(organisaatioOid = Some(organisaatioOid))
