@@ -1,6 +1,7 @@
 package fi.oph.koski.queuedqueries
 
 import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.raportit.{DataSheet, ExcelWriter, OppilaitosRaporttiResponse}
 import fi.oph.koski.util.CsvFormatter
@@ -29,8 +30,8 @@ case class QueryResultWriter(
       contentType = QueryFormat.json,
     )
 
-  def putJson[T: TypeTag](name: String, obj: T): Unit =
-    putJson(name, JsonSerializer.writeWithRoot(obj))
+  def putJson[T: TypeTag](name: String, obj: T)(implicit user: KoskiSpecificSession): Unit =
+    putJson(name, JsonSerializer.write(obj))
 
   def createCsv[T <: Product](name: String)(implicit manager: Using.Manager): CsvStream[T] =
     manager(new CsvStream[T](s"$queryId-$name", file => results.putFile(

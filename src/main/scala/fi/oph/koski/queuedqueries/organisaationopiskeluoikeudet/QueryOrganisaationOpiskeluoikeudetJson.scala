@@ -25,6 +25,7 @@ case class QueryOrganisaationOpiskeluoikeudetJson(
   muuttunutJälkeen: Option[LocalDateTime] = None,
   tila: Option[String] = None,
   koulutusmuoto: Option[String] = None,
+  mitätöidyt: Option[Boolean] = None,
 ) extends QueryOrganisaationOpiskeluoikeudet {
   def withOrganisaatioOid(organisaatioOid: Oid): QueryOrganisaationOpiskeluoikeudetJson = copy(organisaatioOid = Some(organisaatioOid))
 
