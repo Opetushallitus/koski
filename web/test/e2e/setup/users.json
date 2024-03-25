@@ -221,6 +221,11 @@
       "type": "virkailija"
     },
     {
+      "username": "perusopetus-tallentaja",
+      "password": "perusopetus-tallentaja",
+      "type": "virkailija"
+    },
+    {
       "username": "oppivelvollisuustieto-rajapinnan-kutsuja",
       "password": "oppivelvollisuustieto-rajapinnan-kutsuja",
       "type": "virkailija"

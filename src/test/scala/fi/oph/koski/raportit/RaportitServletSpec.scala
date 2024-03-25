@@ -131,9 +131,16 @@ class RaportitServletSpec extends AnyFreeSpec with RaportointikantaTestMethods w
           verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio())
         }
       }
-      "ei voi ladata raporttia jos raportin opiskeluoikeuden tyyppiin ei ole oikeuksia" in {
-        authGet(s"api/raportit/lukionsuoritustietojentarkistus?oppilaitosOid=${MockOrganisaatiot.jyväskylänNormaalikoulu}&alku=2016-01-01&loppu=2016-12-31&password=dummy", user = perusopetusTallentaja) {
-          verifyResponseStatus(403, KoskiErrorCategory.forbidden.opiskeluoikeudenTyyppi())
+      "ei voi ladata raporttia jos raportin opiskeluoikeuden tyyppiin ei ole oikeuksia" - {
+        "perusopetuksen oikeuksilla yritys käyttää lukion raporttia" in {
+          authGet(s"api/raportit/lukionsuoritustietojentarkistus?oppilaitosOid=${MockOrganisaatiot.jyväskylänNormaalikoulu}&alku=2016-01-01&loppu=2016-12-31&password=dummy", user = perusopetusTallentaja) {
+            verifyResponseStatus(403, KoskiErrorCategory.forbidden.opiskeluoikeudenTyyppi())
+          }
+        }
+        "esiopetusoikeuksilla yritys käyttää lukion raporttia" in {
+          authGet(s"api/raportit/lukionsuoritustietojentarkistus?oppilaitosOid=${MockOrganisaatiot.jyväskylänNormaalikoulu}&alku=2016-01-01&loppu=2016-12-31&password=dummy", user = esiopetusTallentaja) {
+            verifyResponseStatus(403, KoskiErrorCategory.forbidden.opiskeluoikeudenTyyppi())
+          }
         }
       }
       "koulutustoimijan oikeuksilla voi ladata esiopetuksen ostopalveluiden raportin" in {
