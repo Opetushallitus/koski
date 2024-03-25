@@ -2,6 +2,7 @@ package fi.oph.koski.queuedqueries.organisaationopiskeluoikeudet
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.{KoskiOpiskeluoikeusRow, KoskiTables}
+import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.queuedqueries.QueryUtils.QueryResourceManager
 import fi.oph.koski.queuedqueries.{QueryFormat, QueryResultWriter}
@@ -33,7 +34,7 @@ case class QueryOrganisaationOpiskeluoikeudetJson(
     application: KoskiApplication,
     writer: QueryResultWriter,
     oppilaitosOids: List[Organisaatio.Oid],
-  ): Either[String, Unit] = QueryResourceManager(logger) { _ =>
+  )(implicit user: KoskiSpecificSession): Either[String, Unit] = QueryResourceManager(logger) { _ =>
     val db = getDb(application)
     val filters = defaultBaseFilter(oppilaitosOids)
     val oppijaOids = getOppijaOids(db, filters)

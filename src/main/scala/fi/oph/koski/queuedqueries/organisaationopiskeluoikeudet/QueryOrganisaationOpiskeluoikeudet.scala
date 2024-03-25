@@ -56,31 +56,12 @@ trait QueryOrganisaationOpiskeluoikeudet extends QueryParameters with DatabaseCo
   ))
   def tila: Option[String]
   @Description("Palauta vain opiskeluoikeudet, joilla on annettu koulutusmuoto.")
-  @EnumValues(Set(
-    "aikuistenperusopetus",
-    "ammatillinenkoulutus",
-    "diatutkinto",
-    "ebtutkinto",
-    "esiopetus",
-    "europeanschoolofhelsinki",
-    "ibtutkinto",
-    "internationalschool",
-    "korkeakoulutus",
-    "lukiokoulutus",
-    "luva",
-    "muukuinsaanneltykoulutus",
-    "perusopetukseenvalmistavaopetus",
-    "perusopetuksenlisaopetus",
-    "perusopetus",
-    "taiteenperusopetus",
-    "tuva",
-    "vapaansivistystyonkoulutus",
-  ))
+  @EnumValues(QueryOrganisaationOpiskeluoikeudet.allowedKoulutusmuodot)
   def koulutusmuoto: Option[String]
   @Description("Jos true, palautetaan myös mitätöidyt opiskeluoikeudet")
   def mitätöidyt: Option[Boolean]
 
-  def fetchData(application: KoskiApplication, writer: QueryResultWriter, oppilaitosOids: List[Organisaatio.Oid]): Either[String, Unit]
+  def fetchData(application: KoskiApplication, writer: QueryResultWriter, oppilaitosOids: List[Organisaatio.Oid])(implicit user: KoskiSpecificSession): Either[String, Unit]
 
   def run(application: KoskiApplication, writer: QueryResultWriter)(implicit user: KoskiSpecificSession): Either[String, Unit] = {
     val oppilaitosOids = application.organisaatioService.organisaationAlaisetOrganisaatiot(organisaatioOid.get)
@@ -130,7 +111,11 @@ trait QueryOrganisaationOpiskeluoikeudet extends QueryParameters with DatabaseCo
     alkanutViimeistään.map(l => sql" AND alkamispaiva <= $l "),
     muuttunutJälkeen.map(Timestamp.valueOf).map(a => sql" AND aikaleima >= $a "),
     tila.map(t => sql" AND tila = $t "),
-    koulutusmuoto.map(t => sql"AND koulutusmuoto = $t "),
+    if (hasAccessToAllKoulutusmuodot(session)) {
+      koulutusmuoto.map(t => sql" AND koulutusmuoto = $t ")
+    } else {
+      Some(sql" AND koulutusmuoto = any(${allowedKoulutusmuodotForUser(session)}) ")
+    },
   )
 
   protected def getOppijaOids(db: DB, filters: SQLActionBuilder): Seq[String] = QueryMethods.runDbSync(
@@ -177,4 +162,33 @@ trait QueryOrganisaationOpiskeluoikeudet extends QueryParameters with DatabaseCo
     }
 
   private def includeMitätöidyt(implicit session: KoskiSpecificSession): Boolean = mitätöidyt.contains(true)
+
+  protected def hasAccessToAllKoulutusmuodot(implicit session: KoskiSpecificSession) =
+    allowedKoulutusmuodotForUser(session).size == QueryOrganisaationOpiskeluoikeudet.allowedKoulutusmuodot.size
+
+  protected def allowedKoulutusmuodotForUser(session: KoskiSpecificSession): List[String] =
+    QueryOrganisaationOpiskeluoikeudet.allowedKoulutusmuodot.intersect(session.allowedOpiskeluoikeusTyypit).toList
+}
+
+object QueryOrganisaationOpiskeluoikeudet {
+  def allowedKoulutusmuodot: Set[String] = Set(
+    "aikuistenperusopetus",
+    "ammatillinenkoulutus",
+    "diatutkinto",
+    "ebtutkinto",
+    "esiopetus",
+    "europeanschoolofhelsinki",
+    "ibtutkinto",
+    "internationalschool",
+    "korkeakoulutus",
+    "lukiokoulutus",
+    "luva",
+    "muukuinsaanneltykoulutus",
+    "perusopetukseenvalmistavaopetus",
+    "perusopetuksenlisaopetus",
+    "perusopetus",
+    "taiteenperusopetus",
+    "tuva",
+    "vapaansivistystyonkoulutus",
+  )
 }

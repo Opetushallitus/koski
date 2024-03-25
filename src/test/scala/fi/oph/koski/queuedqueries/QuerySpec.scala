@@ -23,6 +23,7 @@ class QuerySpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Before
 
   override protected def beforeAll(): Unit = {
     resetFixtures()
+    app.kyselyService.cancelAllTasks("cleanup")
   }
 
   "Kyselyiden skedulointi" - {
@@ -121,6 +122,18 @@ class QuerySpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Before
           verifyResponseStatus(404, KoskiErrorCategory.notFound())
         }
       }
+
+      "Esiopetuksen lukuoikeuksilla saa vain esiopetuksen opiskeluoikeudet" in {
+        val user = MockUsers.esiopetusTallentaja
+        val queryId = addQuerySuccessfully(query, user) { response =>
+          response.status should equal(QueryState.pending)
+          response.query.asInstanceOf[QueryOrganisaationOpiskeluoikeudet].organisaatioOid should contain(MockOrganisaatiot.helsinginKaupunki)
+          response.queryId
+        }
+        val complete = waitForCompletion(queryId, user)
+
+        complete.files should have length 1
+      }
     }
 
     "CSV" - {
@@ -158,6 +171,19 @@ class QuerySpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Before
         getQuery(queryId, MockUsers.jyväskylänKatselijaEsiopetus) {
           verifyResponseStatus(404, KoskiErrorCategory.notFound())
         }
+      }
+
+      "Esiopetuksen lukuoikeuksilla saa vain esiopetuksen opiskeluoikeudet" in {
+        val user = MockUsers.esiopetusTallentaja
+        val queryId = addQuerySuccessfully(query, user) { response =>
+          response.status should equal(QueryState.pending)
+          response.query.asInstanceOf[QueryOrganisaationOpiskeluoikeudet].organisaatioOid should contain(MockOrganisaatiot.helsinginKaupunki)
+          response.queryId
+        }
+        val complete = waitForCompletion(queryId, user)
+
+        complete.files should have length 3
+        complete.files.foreach(verifyResult(_, user))
       }
     }
   }

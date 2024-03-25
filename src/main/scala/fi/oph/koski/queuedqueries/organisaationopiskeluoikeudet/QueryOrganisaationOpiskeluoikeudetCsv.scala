@@ -1,6 +1,7 @@
 package fi.oph.koski.queuedqueries.organisaationopiskeluoikeudet
 
 import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.queuedqueries.QueryUtils.QueryResourceManager
 import fi.oph.koski.queuedqueries.{CsvStream, QueryFormat, QueryResultWriter}
@@ -40,7 +41,7 @@ case class QueryOrganisaationOpiskeluoikeudetCsv(
     application: KoskiApplication,
     writer: QueryResultWriter,
     oppilaitosOids: List[Organisaatio.Oid],
-  ): Either[String, Unit] = QueryResourceManager(logger) { mgr =>
+  )(implicit user: KoskiSpecificSession): Either[String, Unit] = QueryResourceManager(logger) { mgr =>
     implicit val manager: Using.Manager = mgr
 
     val db = getDb(application)
