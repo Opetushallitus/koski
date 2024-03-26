@@ -85,7 +85,6 @@ class QueryService(application: KoskiApplication) extends Logging {
     }).left.map(t => KoskiErrorCategory.badRequest(s"Tiedostoa ei löydy tai tapahtui virhe sen jakamisessa"))
 
   def cleanup(koskiInstances: Seq[KoskiInstance]): Unit = {
-    val timeout = application.config.getDuration("kyselyt.timeout")
     val instanceArns = koskiInstances.map(_.taskArn)
 
     queries
@@ -100,10 +99,6 @@ class QueryService(application: KoskiApplication) extends Logging {
           }
         }
       }
-
-    queries
-      .setLongRunningQueriesFailed(timeout, "Timeout")
-      .foreach(query => logger.error(s"${query.name} timeouted after $timeout"))
   }
 
   def systemIsOverloaded: Boolean =
