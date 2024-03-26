@@ -2,11 +2,12 @@ package fi.oph.koski.queuedqueries.paallekkaisetopiskeluoikeudet
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.HttpStatus
-import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
+import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.log.KoskiAuditLogMessageField.hakuEhto
 import fi.oph.koski.log.KoskiOperation.OPISKELUOIKEUS_RAPORTTI
 import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, Logging}
+import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryContext
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.queuedqueries.QueryUtils.{QueryResourceManager, defaultOrganisaatio, generatePassword}
 import fi.oph.koski.queuedqueries.{QueryFormat, QueryMeta, QueryParameters, QueryResultWriter}
@@ -15,7 +16,8 @@ import fi.oph.koski.schema.Organisaatio
 import fi.oph.koski.schema.annotation.EnumValues
 import fi.oph.scalaschema.annotation.{Description, Title}
 
-import java.time.{LocalDate, LocalDateTime}
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import scala.util.Using
 
 @Title("Päällekkäiset opiskeluoikeudet")
@@ -82,7 +84,13 @@ case class QueryPaallekkaisetOpiskeluoikeudet(
     AuditLog.log(KoskiAuditLogMessage(
       OPISKELUOIKEUS_RAPORTTI,
       user,
-      Map(hakuEhto -> s"raportti=paallekkaisetopiskeluoikeudet&oppilaitosOid=${organisaatioOid}&alku=${alku}&loppu=${loppu}&lang=${language.get}")))
+      Map(hakuEhto -> OpiskeluoikeusQueryContext.queryForAuditLog(Map(
+        "raportti" -> List("paallekkaisetopiskeluoikeudet"),
+        "oppilaitosOid" -> organisaatioOid.toList,
+        "alku" -> List(alku.format(DateTimeFormatter.ISO_DATE)),
+        "loppu" -> List(loppu.format(DateTimeFormatter.ISO_DATE)),
+        "lang" -> language.toList,
+      ).filter(_._2.nonEmpty)))))
 }
 
 object QueryPaallekkaisetOpiskeluoikeudetDocumentation {

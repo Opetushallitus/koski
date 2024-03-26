@@ -3,7 +3,11 @@ package fi.oph.koski.queuedqueries
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{KoskiSpecificSession, MockUsers, UserWithPassword}
+import fi.oph.koski.log.AuditLogTester
+import fi.oph.koski.log.KoskiOperation.OPISKELUOIKEUS_HAKU
+import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryContext
 import fi.oph.koski.organisaatio.MockOrganisaatiot
+import fi.oph.koski.organisaatio.MockOrganisaatiot.ressunLukio
 import fi.oph.koski.queuedqueries.organisaationopiskeluoikeudet.{QueryOrganisaationOpiskeluoikeudet, QueryOrganisaationOpiskeluoikeudetCsv, QueryOrganisaationOpiskeluoikeudetCsvDocumentation, QueryOrganisaationOpiskeluoikeudetJson}
 import fi.oph.koski.queuedqueries.paallekkaisetopiskeluoikeudet.QueryPaallekkaisetOpiskeluoikeudet
 import fi.oph.koski.raportit.RaportitService
@@ -15,6 +19,7 @@ import org.scalatest.BeforeAndAfterAll
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
+import java.time.format.DateTimeFormatter
 import java.time.{Duration, LocalDate, LocalDateTime}
 import java.util.UUID
 
@@ -114,6 +119,13 @@ class QuerySpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Before
 
         complete.files should have length 14
         complete.files.foreach(verifyResult(_, user))
+
+        AuditLogTester.verifyAuditLogMessage(Map(
+          "operation" -> "OPISKELUOIKEUS_HAKU",
+          "target" -> Map(
+            "hakuEhto" -> "opiskeluoikeusAlkanutAikaisintaan=2020-01-01&organisaatio=1.2.246.562.10.346830761110",
+          ),
+        ))
       }
 
       "Toisen käyttäjän kyselyn tietoja ei voi hakea" in {
@@ -164,6 +176,13 @@ class QuerySpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Before
 
         complete.files should have length 5
         complete.files.foreach(verifyResult(_, user))
+
+        AuditLogTester.verifyAuditLogMessage(Map(
+          "operation" -> "OPISKELUOIKEUS_HAKU",
+          "target" -> Map(
+            "hakuEhto" -> "opiskeluoikeusAlkanutAikaisintaan=2020-01-01&organisaatio=1.2.246.562.10.346830761110",
+          ),
+        ))
       }
 
       "Toisen käyttäjän kyselyn tietoja ei voi hakea" in {
@@ -219,6 +238,13 @@ class QuerySpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Before
 
         complete.files should have length 1
         complete.files.foreach(verifyResult(_, user))
+
+        AuditLogTester.verifyAuditLogMessage(Map(
+          "operation" -> "OPISKELUOIKEUS_RAPORTTI",
+          "target" -> Map(
+            "hakuEhto" -> "alku=2000-01-01&lang=fi&loppu=2020-01-01&oppilaitosOid=1.2.246.562.10.346830761110&raportti=paallekkaisetopiskeluoikeudet",
+          ),
+        ))
       }
 
       "Toisen käyttäjän kyselyn tietoja ei voi hakea" in {
