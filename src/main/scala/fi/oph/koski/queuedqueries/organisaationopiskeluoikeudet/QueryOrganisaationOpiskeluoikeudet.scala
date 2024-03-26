@@ -41,20 +41,6 @@ trait QueryOrganisaationOpiskeluoikeudet extends QueryParameters with DatabaseCo
   @Description("Haettaessa muuttuneita opiskeluoikeuksia sitten viimeisen datahaun, kannattaa tätä arvoa aikaistaa tunnilla, jotta varmistaa kaikkien muutoksien osumisen tulosjoukkoon.")
   def muuttunutJälkeen: Option[LocalDateTime]
   @Description("Palauta vain opiskeluoikeudet, joilla on annettu tila.")
-  @EnumValues(Set(
-    "eronnut",
-    "hyvaksytystisuoritettu",
-    "katsotaaneronneeksi",
-    "keskeytynyt",
-    "lasna",
-    "loma",
-    "mitatoity",
-    "paattynyt",
-    "peruutettu",
-    "valiaikaisestikeskeytynyt",
-    "valmistunut",
-  ))
-  def tila: Option[String]
   @Description("Palauta vain opiskeluoikeudet, joilla on annettu koulutusmuoto.")
   @EnumValues(QueryOrganisaationOpiskeluoikeudet.allowedKoulutusmuodot)
   def koulutusmuoto: Option[String]
@@ -96,7 +82,6 @@ trait QueryOrganisaationOpiskeluoikeudet extends QueryParameters with DatabaseCo
       Map(hakuEhto -> OpiskeluoikeusQueryContext.queryForAuditLog(Map(
         "organisaatio" -> List(organisaatioOid.get),
         "opiskeluoikeusAlkanutAikaisintaan" -> List(alkanutAikaisintaan.format(DateTimeFormatter.ISO_DATE)),
-        "opiskeluoikeudenTila" -> tila.toList,
         "koulutusmuoto" -> koulutusmuoto.toList,
       ).filter(_._2.nonEmpty))),
     ))
@@ -110,7 +95,6 @@ trait QueryOrganisaationOpiskeluoikeudet extends QueryParameters with DatabaseCo
     Some(sql" AND oppilaitos_oid = ANY($oppilaitosOids) AND alkamispaiva >= $alkanutAikaisintaan "),
     alkanutViimeistään.map(l => sql" AND alkamispaiva <= $l "),
     muuttunutJälkeen.map(Timestamp.valueOf).map(a => sql" AND aikaleima >= $a "),
-    tila.map(t => sql" AND tila = $t "),
     if (hasAccessToAllKoulutusmuodot(session)) {
       koulutusmuoto.map(t => sql" AND koulutusmuoto = $t ")
     } else {

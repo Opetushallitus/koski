@@ -30,7 +30,6 @@ case class QueryOrganisaationOpiskeluoikeudetCsv(
   alkanutAikaisintaan: LocalDate,
   alkanutViimeistään: Option[LocalDate] = None,
   muuttunutJälkeen: Option[LocalDateTime] = None,
-  tila: Option[String] = None,
   koulutusmuoto: Option[String] = None,
   mitätöidyt: Option[Boolean] = None,
 ) extends QueryOrganisaationOpiskeluoikeudet {
@@ -142,7 +141,6 @@ object QueryOrganisaationOpiskeluoikeudetCsvDocumentation {
     organisaatioOid = Some(MockOrganisaatiot.helsinginKaupunki),
     alkanutAikaisintaan = LocalDate.of(2024, 1, 1),
     alkanutViimeistään = Some(LocalDate.of(2024, 1, 31)),
-    tila = Some("eronnut"),
     koulutusmuoto = Some("perusopetus"),
   )
 }
