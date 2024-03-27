@@ -40,7 +40,6 @@ trait QueryOrganisaationOpiskeluoikeudet extends QueryParameters with DatabaseCo
   @Description("Palauta vain opiskeluoikeudet, joita on päivitetty annetun ajanhetken jälkeen.")
   @Description("Haettaessa muuttuneita opiskeluoikeuksia sitten viimeisen datahaun, kannattaa tätä arvoa aikaistaa tunnilla, jotta varmistaa kaikkien muutoksien osumisen tulosjoukkoon.")
   def muuttunutJälkeen: Option[LocalDateTime]
-  @Description("Palauta vain opiskeluoikeudet, joilla on annettu tila.")
   @Description("Palauta vain opiskeluoikeudet, joilla on annettu koulutusmuoto.")
   @EnumValues(QueryOrganisaationOpiskeluoikeudet.allowedKoulutusmuodot)
   def koulutusmuoto: Option[String]
