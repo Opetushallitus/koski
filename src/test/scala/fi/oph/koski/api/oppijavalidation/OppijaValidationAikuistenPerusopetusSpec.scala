@@ -257,6 +257,33 @@ class OppijaValidationAikuistenPerusopetusSpec
     }
   }
 
+  "Duplikaattivalidaatiot" - {
+    "Samaa opiskeluoikeutta ei voi siirtää kahteen kertaan" in {
+      duplikaattiaEiSallittu(defaultOpiskeluoikeus, defaultOpiskeluoikeus)
+    }
+
+    "Samaa opiskeluoikeutta ei voi siirtää kahteen kertaan, vaikka päivämäärät ovat erilaiset (mutta päällekkäiset)" in {
+      val opiskeluoikeus = defaultOpiskeluoikeus.copy(
+        tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(List(
+          AikuistenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2014, 12, 1), opiskeluoikeusLäsnä, opintojenRahoitus = Some(valtionosuusRahoitteinen))
+        ))
+      )
+
+      duplikaattiaEiSallittu(defaultOpiskeluoikeus, opiskeluoikeus)
+    }
+  }
+
+  def duplikaattiaEiSallittu(oo1: AikuistenPerusopetuksenOpiskeluoikeus, oo2: AikuistenPerusopetuksenOpiskeluoikeus): Unit = {
+    setupOppijaWithOpiskeluoikeus(oo1, defaultHenkilö) {
+      verifyResponseStatusOk()
+    }
+    postOppija(makeOppija(defaultHenkilö, List(oo2))) {
+      verifyResponseStatus(409, KoskiErrorCategory.conflict.exists())
+    }
+  }
+
+
+
   private def setupOppijaWithAndGetOpiskeluoikeus(oo: KoskeenTallennettavaOpiskeluoikeus): AikuistenPerusopetuksenOpiskeluoikeus = setupOppijaWithOpiskeluoikeus(oo) {
     verifyResponseStatusOk()
     getOpiskeluoikeus(readPutOppijaResponse.opiskeluoikeudet.head.oid)

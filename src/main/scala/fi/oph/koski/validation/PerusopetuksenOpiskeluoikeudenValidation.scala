@@ -238,6 +238,12 @@ object PerusopetuksenOpiskeluoikeusValidation {
           case _ => HttpStatus.ok
         }
 
+      case oo: AikuistenPerusopetuksenOpiskeluoikeus =>
+        oppijanHenkilötiedot match {
+          case Some(h) => handleDuplikaattivalidaatio(oppijallaOnDuplikaatti)(h, oo)
+          case _ => HttpStatus.ok
+        }
+
       case oo: PerusopetuksenOpiskeluoikeus =>
         oppijanHenkilötiedot match {
           case Some(h) => handleDuplikaattivalidaatio(oppijallaOnDuplikaattiPerusopetus)(h, oo)
