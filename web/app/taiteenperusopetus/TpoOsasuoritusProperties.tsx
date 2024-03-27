@@ -24,6 +24,7 @@ import { TaiteenPerusopetuksenOsasuorituksenTunnustus } from '../types/fi/oph/ko
 import { TaiteenPerusopetuksenPaikallisenOpintokokonaisuudenSuoritus } from '../types/fi/oph/koski/schema/TaiteenPerusopetuksenPaikallisenOpintokokonaisuudenSuoritus'
 import { lastElement } from '../util/optics'
 import { createTpoArviointi } from './tpoCommon'
+import { finnish } from '../i18n/i18n'
 
 export type TpoOsasuoritusPropertiesProps = {
   form: FormModel<TaiteenPerusopetuksenOpiskeluoikeus>
@@ -84,6 +85,9 @@ export const TpoOsasuoritusProperties: React.FC<
               path={tunnustusPath}
               view={TunnustusView}
               edit={TunnustusEdit}
+              editProps={{
+                createEmptyTunnustus
+              }}
               testId={`${props.testId}.tunnustettu`}
             />
           </OsasuoritusPropertyValue>
@@ -91,4 +95,8 @@ export const TpoOsasuoritusProperties: React.FC<
       )}
     </div>
   )
+}
+
+function createEmptyTunnustus() {
+  return TaiteenPerusopetuksenOsasuorituksenTunnustus({ selite: finnish('') })
 }

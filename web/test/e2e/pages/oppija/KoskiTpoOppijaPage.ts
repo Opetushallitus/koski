@@ -14,6 +14,7 @@ import {
   vahvistaSuoritusTallennetullaHenkilöllä,
   vahvistaSuoritusUudellaHenkilöllä
 } from './uiV2builder/SuorituksenVahvistus'
+import { Tunnustettu } from './uiV2builder/Tunnustettu'
 
 export class KoskiTpoOppijaPage extends KoskiOppijaPageV2<
   typeof TaiteenPerusopetusTestIds
@@ -84,6 +85,15 @@ export class KoskiTpoOppijaPage extends KoskiOppijaPageV2<
       .arvosana.set(arvosana)
   }
 
+  async setTunnustettu(selite: string) {
+    await this.$.suoritukset(this.suoritusIndex)
+      .osasuoritukset(this.osasuoritusIndex)
+      .expand.click()
+    await this.$.suoritukset(this.suoritusIndex)
+      .osasuoritukset(this.osasuoritusIndex)
+      .properties.tunnustettu.set(selite)
+  }
+
   async addOpiskeluoikeudenTila(pvm: string, tila: string) {
     const editor = this.$.opiskeluoikeus.tila.edit
     await editor.add.click()
@@ -136,7 +146,7 @@ const TaiteenPerusopetusTestIds = {
       properties: {
         arvosana: FormField(Label),
         date: FormField(Label),
-        tunnustettu: FormField(Label)
+        tunnustettu: FormField(Label, Tunnustettu)
       },
       delete: Button
     }),
