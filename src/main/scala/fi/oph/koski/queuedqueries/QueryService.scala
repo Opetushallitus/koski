@@ -7,12 +7,14 @@ import fi.oph.koski.config.{KoskiApplication, KoskiInstance}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
-import fi.oph.koski.util.TryWithLogging
+import fi.oph.koski.util.{Timeout, TryWithLogging}
 
 import java.time.format.DateTimeFormatter
 import java.time.{Duration, LocalDateTime}
 import java.util.UUID
-import scala.concurrent.duration.DurationInt
+import java.util.concurrent.TimeUnit
+import scala.concurrent.duration.{DurationInt, FiniteDuration}
+
 
 class QueryService(application: KoskiApplication) extends Logging {
   val workerId: String = application.ecsMetadata.taskARN.getOrElse("local")
@@ -20,6 +22,7 @@ class QueryService(application: KoskiApplication) extends Logging {
   private val maxAllowedDatabaseReplayLag: Duration = application.config.getDuration("kyselyt.backpressureLimits.maxDatabaseReplayLag")
   private val readDatabaseId = QueryUtils.readDatabaseId(application.config)
   private val databaseLoadLimiter = new DatabaseLoadLimiter(application, metrics, readDatabaseId)
+  private val queryMaxRunningTime = FiniteDuration(application.config.getDuration("kyselyt.timeout").toSeconds, TimeUnit.SECONDS)
 
   private val queries = new QueryRepository(
     db = application.masterDatabase.db,
@@ -52,6 +55,7 @@ class QueryService(application: KoskiApplication) extends Logging {
   def hasNext: Boolean = queries.numberOfPendingQueries > 0
 
   def runNext(): Unit = {
+    import scala.concurrent.ExecutionContext.Implicits.global
     queries.takeNext.foreach { query =>
       query.getSession(application.käyttöoikeusRepository).fold {
         logger.error(s"Could not start query ${query.queryId} due to invalid session")
@@ -60,7 +64,9 @@ class QueryService(application: KoskiApplication) extends Logging {
         implicit val user: KoskiSpecificSession = session
         val writer = QueryResultWriter(UUID.fromString(query.queryId), queries, results)
         try {
-          query.query.run(application, writer).fold(
+          Timeout(queryMaxRunningTime) {
+            query.query.run(application, writer)
+          }.fold(
             { error =>
               logFailedQuery(query, error)
               queries.setFailed(query.queryId, error)
@@ -85,7 +91,6 @@ class QueryService(application: KoskiApplication) extends Logging {
     }).left.map(t => KoskiErrorCategory.badRequest(s"Tiedostoa ei löydy tai tapahtui virhe sen jakamisessa"))
 
   def cleanup(koskiInstances: Seq[KoskiInstance]): Unit = {
-    val timeout = application.config.getDuration("kyselyt.timeout")
     val instanceArns = koskiInstances.map(_.taskArn)
 
     queries
@@ -100,10 +105,6 @@ class QueryService(application: KoskiApplication) extends Logging {
           }
         }
       }
-
-    queries
-      .setLongRunningQueriesFailed(timeout, "Timeout")
-      .foreach(query => logger.error(s"${query.name} timeouted after $timeout"))
   }
 
   def systemIsOverloaded: Boolean =
