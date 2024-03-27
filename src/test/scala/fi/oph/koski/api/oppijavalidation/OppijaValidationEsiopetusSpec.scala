@@ -780,6 +780,29 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
       validate(oo).isRight should equal(true)
     }
 
+    "Samaa opiskeluoikeutta ei voi siirtää kahteen kertaan" in {
+      duplikaattiaEiSallittu(defaultOpiskeluoikeus, defaultOpiskeluoikeus)
+    }
+
+    "Samaa opiskeluoikeutta ei voi siirtää kahteen kertaan, vaikka päivämäärät ovat erilaiset (mutta päällekkäiset)" - {
+      val opiskeluoikeus = defaultOpiskeluoikeus.copy(
+        tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(
+          NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2014, 12, 1), opiskeluoikeusLäsnä)
+        ))
+      )
+
+      duplikaattiaEiSallittu(defaultOpiskeluoikeus, opiskeluoikeus)
+    }
+
+    def duplikaattiaEiSallittu(oo1: EsiopetuksenOpiskeluoikeus, oo2: EsiopetuksenOpiskeluoikeus): Unit = {
+      setupOppijaWithOpiskeluoikeus(oo1, defaultHenkilö) {
+        verifyResponseStatusOk()
+      }
+      postOppija(makeOppija(defaultHenkilö, List(oo2))) {
+        verifyResponseStatus(409, KoskiErrorCategory.conflict.exists())
+      }
+    }
+
     def validate(oo: Opiskeluoikeus, voimaanastumispäivänOffsetTästäPäivästä: Long = 0): Either[HttpStatus, Oppija] = {
       val oppija = Oppija(defaultHenkilö, List(oo))
 
