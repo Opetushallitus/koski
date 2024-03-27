@@ -1,3 +1,9 @@
+# XX.3.2024
+
+- Ammatillisen opiskeluoikeuden tutkinnon osaa pienemmistä kokonaisuuksista koostuvan suorituksen ja muun ammatillisen
+  koulutuksen osasuorituksiin lisätty oma haara paikallisille tutkinnon osaa pienempien kokonaisuuksien suorituksille.
+  Niissä tulee kirjata tutkinnon tiedot kenttään liittyyTutkintoon.
+
 ## 7.3.2024
 
 - Opiskeluoikeutta mitätöitäessä jätetään huomiotta muut opiskeluoikeuteen samalla kertaa tehdyt muutokset. Jos
