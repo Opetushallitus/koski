@@ -67,8 +67,8 @@ case class QueryOrganisaationOpiskeluoikeudetCsv(
           .buildKoskiRow(row)
           .foreach { rows =>
             opiskeluoikeusCsv.put(rows.rOpiskeluoikeusRow)
-            päätasonSuoritusCsv.put(rows.rPäätasonSuoritusRows)
-            osasuoritusCsv.put(rows.rOsasuoritusRows)
+            rows.rPäätasonSuoritusRows.foreach(row => päätasonSuoritusCsv.put(new CsvPäätasonSuoritus(row)))
+            rows.rOsasuoritusRows.foreach(row => osasuoritusCsv.put(new CsvOsauoritus(row)))
             opiskeluoikeudenAikajaksoCsv.put(rows.rOpiskeluoikeusAikajaksoRows)
             esiopetuksenAikajaksoCsv.put(rows.esiopetusOpiskeluoikeusAikajaksoRows)
           }
