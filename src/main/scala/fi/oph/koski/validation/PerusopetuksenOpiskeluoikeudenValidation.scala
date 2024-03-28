@@ -1,13 +1,16 @@
 package fi.oph.koski.validation
 
+import com.typesafe.config.Config
+import fi.oph.koski.config.Environment
 import fi.oph.koski.documentation.PerusopetusExampleData.suoritustapaErityinenTutkinto
-import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot}
+import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
-import fi.oph.koski.opiskeluoikeus.{CompositeOpiskeluoikeusRepository}
+import fi.oph.koski.log.Logging
+import fi.oph.koski.opiskeluoikeus.CompositeOpiskeluoikeusRepository
 import fi.oph.koski.schema.{Aikajakso, AikuistenPerusopetuksenOpiskeluoikeus, EsiopetuksenOpiskeluoikeus, KoskeenTallennettavaOpiskeluoikeus, NuortenPerusopetuksenOppiaineenOppimääränSuoritus, NuortenPerusopetuksenOppimääränSuoritus, Opiskeluoikeus, PerusopetukseenValmistavanOpetuksenOpiskeluoikeus, PerusopetuksenLisäopetuksenOpiskeluoikeus, PerusopetuksenOpiskeluoikeus, PerusopetuksenPäätasonSuoritus, PerusopetuksenVuosiluokanSuoritus}
 
-object PerusopetuksenOpiskeluoikeusValidation {
+object PerusopetuksenOpiskeluoikeusValidation extends Logging {
   def validatePerusopetuksenOpiskeluoikeus(
     oo: Opiskeluoikeus
   ): HttpStatus = {
@@ -168,7 +171,8 @@ object PerusopetuksenOpiskeluoikeusValidation {
   def validateDuplikaatit(
     opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
     oppijanHenkilötiedot: Option[LaajatOppijaHenkilöTiedot],
-    opiskeluoikeusRepository: CompositeOpiskeluoikeusRepository
+    opiskeluoikeusRepository: CompositeOpiskeluoikeusRepository,
+    config: Config
   ): HttpStatus = {
     def samaOidTaiLähdejärjestelmänId(oo: KoskeenTallennettavaOpiskeluoikeus)(toinenOo: Opiskeluoikeus): Boolean = {
       val samaOid = toinenOo.oid.isDefined && toinenOo.oid == oo.oid
@@ -217,8 +221,11 @@ object PerusopetuksenOpiskeluoikeusValidation {
       }
     }
 
-    def handleDuplikaattivalidaatio(validaatio: (LaajatOppijaHenkilöTiedot, KoskeenTallennettavaOpiskeluoikeus) => Either[HttpStatus, Boolean])(hlö: LaajatOppijaHenkilöTiedot, oo: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
-      validaatio(hlö, oo) match {
+    def handleValidaatio(onDuplikaatti: (LaajatOppijaHenkilöTiedot, KoskeenTallennettavaOpiskeluoikeus) => Either[HttpStatus, Boolean], hlö: LaajatOppijaHenkilöTiedot, oo: KoskeenTallennettavaOpiskeluoikeus, ignoreInProd: Boolean = false): HttpStatus = {
+      onDuplikaatti(hlö, oo) match {
+        case Right(true) if Environment.isProdEnvironment(config) && ignoreInProd =>
+          logger.warn(s"Opiskeluoikeus ${oo.oid} jäisi kiinni duplikaattivalidaatioihin")
+          HttpStatus.ok
         case Right(true) => KoskiErrorCategory.conflict.exists()
         case Right(false) => HttpStatus.ok
         case Left(error) => error
@@ -228,25 +235,25 @@ object PerusopetuksenOpiskeluoikeusValidation {
     opiskeluoikeus match {
       case oo: EsiopetuksenOpiskeluoikeus =>
         oppijanHenkilötiedot match {
-          case Some(h) => handleDuplikaattivalidaatio(oppijallaOnDuplikaatti)(h, oo)
+          case Some(h) => handleValidaatio(oppijallaOnDuplikaatti, h, oo, ignoreInProd = true)
           case _ => HttpStatus.ok
         }
 
       case oo: PerusopetukseenValmistavanOpetuksenOpiskeluoikeus =>
         oppijanHenkilötiedot match {
-          case Some(h) => handleDuplikaattivalidaatio(oppijallaOnDuplikaatti)(h, oo)
+          case Some(h) => handleValidaatio(oppijallaOnDuplikaatti, h, oo, ignoreInProd = true)
           case _ => HttpStatus.ok
         }
 
       case oo: AikuistenPerusopetuksenOpiskeluoikeus =>
         oppijanHenkilötiedot match {
-          case Some(h) => handleDuplikaattivalidaatio(oppijallaOnDuplikaatti)(h, oo)
+          case Some(h) => handleValidaatio(oppijallaOnDuplikaatti, h, oo, ignoreInProd = true)
           case _ => HttpStatus.ok
         }
 
       case oo: PerusopetuksenOpiskeluoikeus =>
         oppijanHenkilötiedot match {
-          case Some(h) => handleDuplikaattivalidaatio(oppijallaOnDuplikaattiPerusopetus)(h, oo)
+          case Some(h) => handleValidaatio(oppijallaOnDuplikaattiPerusopetus, h, oo)
           case _ => HttpStatus.ok
         }
       case _ => HttpStatus.ok
