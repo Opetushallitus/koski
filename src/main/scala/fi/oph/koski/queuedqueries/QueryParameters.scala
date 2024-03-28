@@ -25,5 +25,5 @@ trait QueryParameters {
 
   def queryAllowed(application: KoskiApplication)(implicit user: KoskiSpecificSession): Boolean
   def asJson: JValue = JsonSerializer.serializeWithRoot(this)
-  def withDefaults(implicit user: KoskiSpecificSession): Either[HttpStatus, QueryParameters] = Right(this)
+  def fillAndValidate(implicit user: KoskiSpecificSession): Either[HttpStatus, QueryParameters] = Right(this)
 }

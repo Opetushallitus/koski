@@ -108,6 +108,14 @@ class CsvStream[T <: Product](name: String, upload: (Path) => Unit) extends Auto
   def put(data: Seq[T]): Unit =
     data.foreach { put }
 
+  def put(record: CsvRecord[T]): Unit = {
+    if (!headerWritten) {
+      headerWritten = true
+      write(CsvFormatter.formatRecord(record.csvFields))
+    }
+    write(CsvFormatter.formatRecord(record.values))
+  }
+
   def close(): Unit = {
     closeIntermediateStreams()
     deleteTemporaryFile()
@@ -190,4 +198,26 @@ class ByteInputStream[T <: Byte](stream: Stream[T]) extends InputStream {
 
 object ByteInputStream {
   def apply(string: String) = new ByteInputStream(string.getBytes("UTF-8").toStream)
+}
+
+abstract class CsvRecord[T <: Product](val self: T) {
+  def get(fieldName: String): Option[Any]
+
+  lazy val fields: Seq[String] =
+    self
+      .getClass
+      .getDeclaredFields
+      .map(_.getName)
+      .toList
+
+  def csvFields: Seq[String] =
+    fields.map(CsvFormatter.snakecasify)
+
+  def values: Seq[Any] =
+    self
+      .productIterator
+      .toSeq
+      .zip(fields)
+      .map { case (default, field) => get(field).getOrElse(default) }
+      .toList
 }

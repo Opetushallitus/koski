@@ -6,7 +6,7 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.db.KoskiOpiskeluoikeusRowImplicits._
 import fi.oph.koski.db._
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
-import fi.oph.koski.http.HttpStatus
+import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession, Rooli}
 import fi.oph.koski.log.KoskiAuditLogMessageField.hakuEhto
 import fi.oph.koski.log.KoskiOperation.OPISKELUOIKEUS_HAKU
@@ -33,10 +33,20 @@ trait QueryOrganisaationOpiskeluoikeudet extends QueryParameters with DatabaseCo
   def `type`: String
   @Description("Kyselyyn otettavan koulutustoimijan tai oppilaitoksen oid. Jos ei ole annettu, päätellään käyttäjän käyttöoikeuksista.")
   def organisaatioOid: Option[String]
-  @Description("Palauta vain opiskeluoikeudet, jotka alkavat annettuna päivänä tai myöhemmin.")
+  @Description("Palauta vain opiskeluoikeudet, jotka ovat alkaneet annettuna päivänä tai myöhemmin.")
   def alkanutAikaisintaan: LocalDate
-  @Description("Palauta vain opiskeluoikeudet, jotka alkavat annettuna päivänä tai aiemmin.")
+  @Description("Palauta vain opiskeluoikeudet, jotka ovat alkaneet annettuna päivänä tai aiemmin.")
   def alkanutViimeistään: Option[LocalDate]
+
+  @Description("Palauta vain opiskeluoikeudet, jotka ovat päättyneet annettuna päivänä tai myöhemmin.")
+  def päättynytAikaisintaan: Option[LocalDate]
+
+  @Description("Palauta vain opiskeluoikeudet, jotka ovat päättyneet annettuna päivänä tai aiemmin.")
+  def päättynytViimeistään: Option[LocalDate]
+  @Description("Jos true, haetaan vain opiskeluoikeudet, jotka eivät ole päättyneet tai merkitty päättymään tulevaisuudessa.")
+  @Description("Ei voi olla asetettuna, jos päättynytAikaisintaan tai päättynytViimeistään on asetettu.")
+  def eiPäättymispäivää: Option[Boolean]
+
   @Description("Palauta vain opiskeluoikeudet, joita on päivitetty annetun ajanhetken jälkeen.")
   @Description("Haettaessa muuttuneita opiskeluoikeuksia sitten viimeisen datahaun, kannattaa tätä arvoa aikaistaa tunnilla, jotta varmistaa kaikkien muutoksien osumisen tulosjoukkoon.")
   def muuttunutJälkeen: Option[LocalDateTime]
@@ -64,12 +74,21 @@ trait QueryOrganisaationOpiskeluoikeudet extends QueryParameters with DatabaseCo
         && user.sensitiveDataAllowed(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
       )
 
-  override def withDefaults(implicit user: KoskiSpecificSession): Either[HttpStatus, QueryOrganisaationOpiskeluoikeudet] = {
-    if (organisaatioOid.isEmpty) {
-      defaultOrganisaatio.map(withOrganisaatioOid)
-    } else {
-      Right(this)
-    }
+  override def fillAndValidate(implicit user: KoskiSpecificSession): Either[HttpStatus, QueryOrganisaationOpiskeluoikeudet] = {
+    for {
+      s1 <-
+        if (organisaatioOid.isEmpty) {
+          defaultOrganisaatio.map(withOrganisaatioOid)
+        } else {
+          Right(this)
+        }
+      s2 <-
+        if (s1.eiPäättymispäivää.contains(true) && (s1.päättynytViimeistään.isDefined || s1.päättynytAikaisintaan.isDefined)) {
+          Left(KoskiErrorCategory.badRequest("eiPäättymispäivää ei voi olla true, jos päättynytAikaisintaan tai päättynysViimeistään on annettu"))
+        } else {
+          Right(s1)
+        }
+    } yield s2
   }
 
   def withOrganisaatioOid(organisaatioOid: Organisaatio.Oid): QueryOrganisaationOpiskeluoikeudet
@@ -93,6 +112,9 @@ trait QueryOrganisaationOpiskeluoikeudet extends QueryParameters with DatabaseCo
     if (includeMitätöidyt(session)) None else Some(sql" AND NOT mitatoity "),
     Some(sql" AND oppilaitos_oid = ANY($oppilaitosOids) AND alkamispaiva >= $alkanutAikaisintaan "),
     alkanutViimeistään.map(l => sql" AND alkamispaiva <= $l "),
+    päättynytAikaisintaan.map(l => sql" AND paattymispaiva >= $l"),
+    päättynytViimeistään.map(l => sql" AND paattymispaiva <= $l"),
+    eiPäättymispäivää.flatMap(b => if (b) Some(sql" AND paattymispaiva IS NULL ") else Some(sql" AND paattymispaiva IS NOT NULL ")),
     muuttunutJälkeen.map(Timestamp.valueOf).map(a => sql" AND aikaleima >= $a "),
     if (hasAccessToAllKoulutusmuodot(session)) {
       koulutusmuoto.map(t => sql" AND koulutusmuoto = $t ")

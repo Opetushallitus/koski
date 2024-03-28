@@ -32,7 +32,7 @@ class QueryService(application: KoskiApplication) extends Logging {
   private val results = new QueryResultsRepository(application.config)
 
   def add(query: QueryParameters)(implicit user: KoskiSpecificSession): Either[HttpStatus, Query] = {
-    query.withDefaults.flatMap { query =>
+    query.fillAndValidate.flatMap { query =>
       queries.getExisting(query).fold {
         if (query.queryAllowed(application)) {
           Right[HttpStatus, Query](queries.add(query))
