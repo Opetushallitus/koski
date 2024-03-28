@@ -1,5 +1,8 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 28.3.2024
+- Esiopetuksen ja perusopetukseen valmistavan opetuksen duplikaattiopiskeluoikeuksia ei sallita
+
 ## 20.3.2024
 - Lukiodiplomeihin sallitaan numeroarvosanan lisäksi sanallinen arviointi S ja H
 

@@ -1,5 +1,6 @@
 package fi.oph.koski.validation
 
+import com.typesafe.config.Config
 import fi.oph.koski.fixture.ValidationTestContext
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 
@@ -25,6 +26,7 @@ class KoskiGlobaaliValidator(
   opiskeluoikeusRepository: CompositeOpiskeluoikeusRepository,
   rajapäivät: ValpasRajapäivätService,
   validationConfig: ValidationTestContext,
+  config: Config
 ) extends Timing
 {
   def validateOpiskeluoikeus(
@@ -63,7 +65,8 @@ class KoskiGlobaaliValidator(
             PerusopetuksenOpiskeluoikeusValidation.validateDuplikaatit(
               opiskeluoikeus,
               oppijanHenkilötiedot,
-              opiskeluoikeusRepository
+              opiskeluoikeusRepository,
+              config
             )
           }
           // TODO: Siirrä EB-ESH olemassaolovalidaatio tänne
