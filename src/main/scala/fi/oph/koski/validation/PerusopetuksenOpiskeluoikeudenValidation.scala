@@ -207,6 +207,18 @@ object PerusopetuksenOpiskeluoikeusValidation extends Logging {
       vertailtavatOot.map(päällekkäinenAikajakso(oo))
     }
 
+    def oppijallaOnDuplikaattiAikuistenPerusopetus(oppijanHenkilötiedot: LaajatOppijaHenkilöTiedot, oo: KoskeenTallennettavaOpiskeluoikeus): Either[HttpStatus, Boolean] = {
+      val vertailtavatOot: Either[HttpStatus, Seq[Opiskeluoikeus]] = samaOppilaitosJaTyyppi(oo)(oppijanHenkilötiedot).map(_
+        .filter(sisältääAikuistenPerusopetuksenOppimääränSuorituksen(_) == sisältääAikuistenPerusopetuksenOppimääränSuorituksen(oo))
+      )
+
+      if (sisältääAikuistenPerusopetuksenOppimääränSuorituksen(oo)) {
+        vertailtavatOot.map(päällekkäinenAikajakso(oo))
+      } else {
+        vertailtavatOot.map(_.exists(_.päättymispäivä.isEmpty))
+      }
+    }
+
     def oppijallaOnDuplikaattiPerusopetus(oppijanHenkilötiedot: LaajatOppijaHenkilöTiedot, oo: KoskeenTallennettavaOpiskeluoikeus): Either[HttpStatus, Boolean] = {
       val vertailtavatOot: Either[HttpStatus, Seq[Opiskeluoikeus]] = samaOppilaitosJaTyyppi(oo)(oppijanHenkilötiedot).map(_
         .filter(sisältääNuortenPerusopetuksenOppimääränTaiVuosiluokanSuorituksen(_) == sisältääNuortenPerusopetuksenOppimääränTaiVuosiluokanSuorituksen(oo))
@@ -247,7 +259,7 @@ object PerusopetuksenOpiskeluoikeusValidation extends Logging {
 
       case oo: AikuistenPerusopetuksenOpiskeluoikeus =>
         oppijanHenkilötiedot match {
-          case Some(h) => handleValidaatio(oppijallaOnDuplikaatti, h, oo, ignoreInProd = true)
+          case Some(h) => handleValidaatio(oppijallaOnDuplikaattiAikuistenPerusopetus, h, oo, ignoreInProd = true)
           case _ => HttpStatus.ok
         }
 
@@ -264,6 +276,15 @@ object PerusopetuksenOpiskeluoikeusValidation extends Logging {
     oo match {
       case poo: PerusopetuksenOpiskeluoikeus
       => poo.suoritukset.map(_.tyyppi.koodiarvo).exists(Set("perusopetuksenoppimaara", "perusopetuksenvuosiluokka").contains)
+      case _
+      => false
+    }
+  }
+
+  def sisältääAikuistenPerusopetuksenOppimääränSuorituksen(oo: Opiskeluoikeus): Boolean = {
+    oo match {
+      case aipe: AikuistenPerusopetuksenOpiskeluoikeus
+      => aipe.suoritukset.map(_.tyyppi.koodiarvo).exists(Set("aikuistenperusopetuksenoppimaara").contains)
       case _
       => false
     }
