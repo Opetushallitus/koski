@@ -1,6 +1,6 @@
 {
   "koodistoUri": "osaamismerkit",
-  "resourceUri": "https://virkailija.testiopintopolku.fi/koodisto-service/rest/codes/osaamismerkit",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/osaamismerkit",
   "omistaja": "Timo Paasila",
   "organisaatioOid": "1.2.246.562.10.00000000001",
   "lukittu": null,

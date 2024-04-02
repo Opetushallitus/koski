@@ -468,6 +468,31 @@
   {
     "metadata": [
       {
+        "nimi": "Hobiver",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Hobiver",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Hobiver",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "lahdejarjestelma_hobiver",
+    "versio": 1,
+    "koodiArvo": "hobiver"
+  },
+  {
+    "metadata": [
+      {
         "nimi": "Kehätieto opintohallintojärjestelmä",
         "kuvaus": null,
         "kieli": "FI"

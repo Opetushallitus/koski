@@ -2,13 +2,13 @@
   {
     "metadata": [
       {
-        "nimi": "Digitaaliset toimintaympäristöt",
-        "kuvaus": "Digitaaliset toimintaympäristöt",
+        "nimi": "Oma osaaminen",
+        "kuvaus": "Oma osaaminen",
         "kieli": "FI"
       },
       {
-        "nimi": "-",
-        "kuvaus": "-",
+        "nimi": "Eget kunnande",
+        "kuvaus": "Eget kunnande",
         "kieli": "SV"
       },
       {
@@ -27,13 +27,13 @@
   {
     "metadata": [
       {
-        "nimi": "Digitaalinen tiedonhaku",
-        "kuvaus": "Digitaalinen tiedonhaku",
+        "nimi": "Oma osaamispolku",
+        "kuvaus": "Oma osaamispolku",
         "kieli": "FI"
       },
       {
-        "nimi": "-",
-        "kuvaus": "-",
+        "nimi": "Den egna vägen till kunnande",
+        "kuvaus": "Den egna vägen till kunnande",
         "kieli": "SV"
       },
       {
@@ -52,13 +52,13 @@
   {
     "metadata": [
       {
-        "nimi": "Vuorovaikutusmerkki 1",
-        "kuvaus": "Vuorovaikutusmerkki 1",
+        "nimi": "Oma ajankäyttö",
+        "kuvaus": "Oma ajankäyttö",
         "kieli": "FI"
       },
       {
-        "nimi": "-",
-        "kuvaus": "-",
+        "nimi": "Egen tidsanvändning",
+        "kuvaus": "Egen tidsanvändning",
         "kieli": "SV"
       },
       {
@@ -73,5 +73,730 @@
     "koodiUri": "osaamismerkit_1002",
     "versio": 1,
     "koodiArvo": "1002"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Oma oppiminen",
+        "kuvaus": "Oma oppiminen",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Eget lärande",
+        "kuvaus": "Eget lärande",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "osaamismerkit_1003",
+    "versio": 1,
+    "koodiArvo": "1003"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Tekstin sisältö",
+        "kuvaus": "Tekstin sisältö",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Textinnehåll",
+        "kuvaus": "Textinnehåll",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "osaamismerkit_1004",
+    "versio": 1,
+    "koodiArvo": "1004"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Tekstitaidot",
+        "kuvaus": "Tekstitaidot",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Textkompetens",
+        "kuvaus": "Textkompetens",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "osaamismerkit_1005",
+    "versio": 1,
+    "koodiArvo": "1005"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Viestintä",
+        "kuvaus": "Viestintä",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Kommunikation",
+        "kuvaus": "Kommunikation",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "osaamismerkit_1006",
+    "versio": 1,
+    "koodiArvo": "1006"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Lukeminen",
+        "kuvaus": "Lukeminen",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Läsfärdigheter",
+        "kuvaus": "Läsfärdigheter",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "osaamismerkit_1007",
+    "versio": 1,
+    "koodiArvo": "1007"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Peruslaskutoimitukset",
+        "kuvaus": "Peruslaskutoimitukset",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Grundläggande räkneoperationer",
+        "kuvaus": "Grundläggande räkneoperationer",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "osaamismerkit_1008",
+    "versio": 1,
+    "koodiArvo": "1008"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Arjen rahankäyttö",
+        "kuvaus": "Arjen rahankäyttö",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Att använda pengar i vardagen",
+        "kuvaus": "Att använda pengar i vardagen",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "osaamismerkit_1009",
+    "versio": 1,
+    "koodiArvo": "1009"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Oma talous",
+        "kuvaus": "Oma talous",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Min ekonomi",
+        "kuvaus": "Min ekonomi",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "osaamismerkit_1010",
+    "versio": 1,
+    "koodiArvo": "1010"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Mittayksiköt",
+        "kuvaus": "Mittayksiköt",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Måttenheter",
+        "kuvaus": "Måttenheter",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "osaamismerkit_1011",
+    "versio": 1,
+    "koodiArvo": "1011"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Kuluttajan oikeudet",
+        "kuvaus": "Kuluttajan oikeudet",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Konsumentens rättigheter",
+        "kuvaus": "Konsumentens rättigheter",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "osaamismerkit_1012",
+    "versio": 1,
+    "koodiArvo": "1012"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Palkka",
+        "kuvaus": "Palkka",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Lön",
+        "kuvaus": "Lön",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "osaamismerkit_1013",
+    "versio": 1,
+    "koodiArvo": "1013"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Julkinen talous",
+        "kuvaus": "Julkinen talous",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Offentlig ekonomi",
+        "kuvaus": "Offentlig ekonomi",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "osaamismerkit_1014",
+    "versio": 1,
+    "koodiArvo": "1014"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Oman toiminnan ohjaus",
+        "kuvaus": "Oman toiminnan ohjaus",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Egen aktivitet",
+        "kuvaus": "Egen aktivitet",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "osaamismerkit_1015",
+    "versio": 1,
+    "koodiArvo": "1015"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Oma turvallisuustoiminta",
+        "kuvaus": "Oma turvallisuustoiminta",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Trygghet och säkerhet",
+        "kuvaus": "Trygghet och säkerhet",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "osaamismerkit_1016",
+    "versio": 1,
+    "koodiArvo": "1016"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Oma työhyvinvointi",
+        "kuvaus": "Oma työhyvinvointi",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Den egna arbetshälsan",
+        "kuvaus": "Den egna arbetshälsan",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "osaamismerkit_1017",
+    "versio": 1,
+    "koodiArvo": "1017"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Vuorovaikutus",
+        "kuvaus": "Vuorovaikutus",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Kommunikation",
+        "kuvaus": "Kommunikation",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "osaamismerkit_1018",
+    "versio": 1,
+    "koodiArvo": "1018"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Ryhmässä toiminen",
+        "kuvaus": "Ryhmässä toiminen",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Delta som medlem i grupp",
+        "kuvaus": "Delta som medlem i grupp",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "osaamismerkit_1019",
+    "versio": 1,
+    "koodiArvo": "1019"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Palautteen hyödyntäminen",
+        "kuvaus": "Palautteen hyödyntäminen",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Att använda respons",
+        "kuvaus": "Att använda respons",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "osaamismerkit_1020",
+    "versio": 1,
+    "koodiArvo": "1020"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Digitaaliset toimintaympäristöt",
+        "kuvaus": "Digitaaliset toimintaympäristöt",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Digitala verksamhetsmiljöer",
+        "kuvaus": "Digitala verksamhetsmiljöer",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "osaamismerkit_1021",
+    "versio": 1,
+    "koodiArvo": "1021"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Digitaalinen tiedonhaku",
+        "kuvaus": "Digitaalinen tiedonhaku",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Digital informationssökning",
+        "kuvaus": "Digital informationssökning",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "osaamismerkit_1022",
+    "versio": 1,
+    "koodiArvo": "1022"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Digitaaliset viestintäkanavat",
+        "kuvaus": "Digitaaliset viestintäkanavat",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Digitala kommunikationskanaler",
+        "kuvaus": "Digitala kommunikationskanaler",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "osaamismerkit_1023",
+    "versio": 1,
+    "koodiArvo": "1023"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Digitaalinen sisältö",
+        "kuvaus": "Digitaalinen sisältö",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Digitalt innehåll",
+        "kuvaus": "Digitalt innehåll",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "osaamismerkit_1024",
+    "versio": 1,
+    "koodiArvo": "1024"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Digitalisaation vaikutukset",
+        "kuvaus": "Digitalisaation vaikutukset",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Digitaliseringens inverkan",
+        "kuvaus": "Digitaliseringens inverkan",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "osaamismerkit_1025",
+    "versio": 1,
+    "koodiArvo": "1025"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Digitaalinen turvallisuus",
+        "kuvaus": "Digitaalinen turvallisuus",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Digital säkerhet",
+        "kuvaus": "Digital säkerhet",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "osaamismerkit_1026",
+    "versio": 1,
+    "koodiArvo": "1026"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Digitaaliset ratkaisut",
+        "kuvaus": "Digitaaliset ratkaisut",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Digitala lösningar",
+        "kuvaus": "Digitala lösningar",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "osaamismerkit_1027",
+    "versio": 1,
+    "koodiArvo": "1027"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Digiosaamisen kehittäminen",
+        "kuvaus": "Digiosaamisen kehittäminen",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Utveckling av den digitala kompetensen",
+        "kuvaus": "Utveckling av den digitala kompetensen",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "osaamismerkit_1028",
+    "versio": 1,
+    "koodiArvo": "1028"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Kodin ympäristövastuullisuus",
+        "kuvaus": "Kodin ympäristövastuullisuus",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Miljöansvar i hemmet",
+        "kuvaus": "Miljöansvar i hemmet",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "osaamismerkit_1029",
+    "versio": 1,
+    "koodiArvo": "1029"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Toimiminen yhteiskunnassa",
+        "kuvaus": "Toimiminen yhteiskunnassa",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Att verka i samhället",
+        "kuvaus": "Att verka i samhället",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "osaamismerkit_1030",
+    "versio": 1,
+    "koodiArvo": "1030"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Kestävä tulevaisuus",
+        "kuvaus": "Kestävä tulevaisuus",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "En hållbar framtid",
+        "kuvaus": "En hållbar framtid",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "osaamismerkit_1031",
+    "versio": 1,
+    "koodiArvo": "1031"
   }
 ]

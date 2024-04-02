@@ -1218,7 +1218,7 @@ test.describe('Vapaa sivistystyö', () => {
       test('Näyttää tiedot oikein', async ({ page }) => {
         await expect(page.getByTestId('opiskeluoikeus.kuva')).toBeVisible()
         await expect(page.getByTestId('opiskeluoikeus.nimi')).toHaveText(
-          'Varsinais-Suomen kansanopisto, digitaalinen tiedonhaku(2024, hyväksytysti suoritettu)'
+          'Varsinais-Suomen kansanopisto, oma osaamispolku(2024, hyväksytysti suoritettu)'
         )
         await expect(
           page.getByTestId('opiskeluoikeus.tila.value.items.0.date')
@@ -1237,7 +1237,7 @@ test.describe('Vapaa sivistystyö', () => {
         ).toHaveText('Varsinais-Suomen kansanopisto')
         await expect(
           page.getByTestId('suoritukset.0.tunniste.koodiarvo-ja-nimi')
-        ).toHaveText('1001 Digitaalinen tiedonhaku')
+        ).toHaveText('1001 Oma osaamispolku')
         await expect(
           page.getByTestId('suoritukset.0.arviointi.0.arvosana.value')
         ).toHaveText('Hyväksytty')
@@ -2210,7 +2210,7 @@ test.describe('Vapaa sivistystyö', () => {
         kansalainenPage: KoskiKansalainenPage
       ) => {
         await expect(kansalainenPage.opiskeluoikeusTitle).toContainText(
-          'Digitaalinen tiedonhaku(2024, hyväksytysti suoritettu)Opiskeluoikeuden oid: 1.2.246.562.15'
+          'Oma osaamispolku(2024, hyväksytysti suoritettu)Opiskeluoikeuden oid: 1.2.246.562.15'
         )
         await expect(
           page.getByTestId('opiskeluoikeus.voimassaoloaika')
@@ -2226,7 +2226,7 @@ test.describe('Vapaa sivistystyö', () => {
         ).toHaveText('1.1.2024')
         await expect(
           page.getByTestId('suoritukset.0.tunniste.koodiarvo-ja-nimi')
-        ).toHaveText('1001 Digitaalinen tiedonhaku')
+        ).toHaveText('1001 Oma osaamispolku')
         await expect(
           page
             .getByTestId('suoritukset.0.tunniste.koodiarvo-ja-nimi')
