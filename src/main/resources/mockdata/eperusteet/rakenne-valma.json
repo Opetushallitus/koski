@@ -24,8 +24,8 @@
     }
   ],
   "kielet": [
-    "sv",
-    "fi"
+    "fi",
+    "sv"
   ],
   "kuvaus": {
     "_id": "4341092",
@@ -361,10 +361,10 @@
           "_tutkinnonOsa": "2952366"
         },
         {
-          "id": 3039663,
+          "id": 3039662,
           "laajuus": 0,
           "laajuusMaksimi": 20,
-          "_tutkinnonOsa": "3030619"
+          "_tutkinnonOsa": "3030618"
         },
         {
           "id": 2957231,
@@ -373,10 +373,10 @@
           "_tutkinnonOsa": "2952367"
         },
         {
-          "id": 3039662,
+          "id": 3039663,
           "laajuus": 0,
           "laajuusMaksimi": 20,
-          "_tutkinnonOsa": "3030618"
+          "_tutkinnonOsa": "3030619"
         }
       ]
     }
@@ -415,6 +415,8 @@
       },
       "koodiUri": "tutkinnonosat_400001",
       "koodiArvo": "400001",
+      "laajuus": 0,
+      "laajuusMaksimi": 10,
       "osaAlueet": [],
       "tyyppi": "normaali",
       "valmaTelmaSisalto": {
@@ -789,6 +791,8 @@
       },
       "koodiUri": "tutkinnonosat_400002",
       "koodiArvo": "400002",
+      "laajuus": 0,
+      "laajuusMaksimi": 30,
       "osaAlueet": [
         {
           "id": 2957930,
@@ -1160,6 +1164,8 @@
       },
       "koodiUri": "tutkinnonosat_400004",
       "koodiArvo": "400004",
+      "laajuus": 0,
+      "laajuusMaksimi": 20,
       "osaAlueet": [],
       "tyyppi": "normaali",
       "valmaTelmaSisalto": {
@@ -1347,6 +1353,8 @@
       },
       "koodiUri": "tutkinnonosat_400003",
       "koodiArvo": "400003",
+      "laajuus": 0,
+      "laajuusMaksimi": 20,
       "osaAlueet": [],
       "tyyppi": "normaali",
       "valmaTelmaSisalto": {
