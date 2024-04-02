@@ -1806,6 +1806,62 @@
   {
     "metadata": [
       {
+        "nimi": "Dari",
+        "kuvaus": "Dari",
+        "lyhytNimi": "Dari",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Dari",
+        "kuvaus": "Dari",
+        "lyhytNimi": "Dari",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Dari",
+        "kuvaus": "Dari",
+        "lyhytNimi": "Dari",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_prs",
+    "versio": 1,
+    "koodiArvo": "PRS"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "paštu, myös: afgaani",
+        "kuvaus": "paštu, myös: afgaani",
+        "lyhytNimi": "paštu, myös: afgaani",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "pashto",
+        "kuvaus": "pashto",
+        "lyhytNimi": "pashto",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Pashto, Pushto",
+        "kuvaus": "Pashto, Pushto",
+        "lyhytNimi": "Pashto, Pushto",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_ps",
+    "versio": 1,
+    "koodiArvo": "PS"
+  },
+  {
+    "metadata": [
+      {
         "nimi": "portugali",
         "kuvaus": "portugali",
         "lyhytNimi": "portugali",
@@ -2686,6 +2742,34 @@
     "koodiUri": "kielivalikoima_tr",
     "versio": 1,
     "koodiArvo": "TR"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "tataari",
+        "kuvaus": "tataari",
+        "lyhytNimi": "tataari",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "tatariska",
+        "kuvaus": "tatariska",
+        "lyhytNimi": "tatariska",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Tatar",
+        "kuvaus": "Tatar",
+        "lyhytNimi": "Tatar",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_tt",
+    "versio": 1,
+    "koodiArvo": "TT"
   },
   {
     "metadata": [

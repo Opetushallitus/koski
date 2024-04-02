@@ -2818,7 +2818,7 @@
   {
     "metadata": [
       {
-        "nimi": "Jatkuvaan oppimiseen suunnattu vapaan sivistystyön koulutuksen suoritus",
+        "nimi": "Jatkuvaan oppimiseen suunnattu vapaan sivistystyön koulutus",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "FI"
@@ -2830,7 +2830,7 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Jatkuvaan oppimiseen suunnattu vapaan sivistystyön koulutuksen suoritus",
+        "nimi": "Jatkuvaan oppimiseen suunnattu vapaan sivistystyön koulutus",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "EN"
@@ -3261,6 +3261,34 @@
   {
     "metadata": [
       {
+        "nimi": "Vapaan sivistystyön osaamismerkki",
+        "kuvaus": "",
+        "lyhytNimi": "Vapaan sivistystyön osaamismerkki",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Kompetensmärke inom fritt bildningsarbete",
+        "kuvaus": "",
+        "lyhytNimi": "Kompetensmärke inom fritt bildningsarbete",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Vapaan sivistystyön osaamismerkki",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "suorituksentyyppi_vstosaamismerkki",
+    "versio": 1,
+    "koodiArvo": "vstosaamismerkki"
+  },
+  {
+    "metadata": [
+      {
         "nimi": "Oppivelvollisille suunnattu vapaan sivistystyön valinnainen suuntautumisopinto",
         "kuvaus": "",
         "lyhytNimi": "",
@@ -3313,34 +3341,6 @@
     "koodiUri": "suorituksentyyppi_vstvapaatavoitteinenkoulutus",
     "versio": 1,
     "koodiArvo": "vstvapaatavoitteinenkoulutus"
-  },
-  {
-    "metadata": [
-      {
-        "nimi": "Vapaan sivistystyön osaamismerkki",
-        "kuvaus": "",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      },
-      {
-        "nimi": "Vapaan sivistystyön osaamismerkki",
-        "kuvaus": "",
-        "lyhytNimi": "",
-        "kieli": "SV"
-      },
-      {
-        "nimi": "Vapaan sivistystyön osaamismerkki",
-        "kuvaus": "",
-        "lyhytNimi": "",
-        "kieli": "EN"
-      }
-    ],
-    "withinCodeElements": [],
-    "includesCodeElements": [],
-    "levelsWithCodeElements": [],
-    "koodiUri": "suorituksentyyppi_vstosaamismerkki",
-    "versio": 1,
-    "koodiArvo": "vstosaamismerkki"
   },
   {
     "metadata": [
