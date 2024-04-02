@@ -24,8 +24,8 @@
     }
   ],
   "kielet": [
-    "sv",
-    "fi"
+    "fi",
+    "sv"
   ],
   "kuvaus": {
     "_id": "7534933",
@@ -84,6 +84,33 @@
   "suorittaneenOsaaminen": null,
   "perusteenAikataulut": [
     {
+      "id": 7792510,
+      "peruste": {
+        "id": 7534950,
+        "nimi": {
+          "_id": "7788280",
+          "_tunniste": "65bbd2eb-4e10-4ed8-b258-11d0b3003c8f",
+          "fi": "Tutkintokoulutukseen valmentava koulutus",
+          "sv": "Utbildning som handleder för examensutbildning"
+        },
+        "tila": "valmis",
+        "tyyppi": "normaali",
+        "koulutustyyppi": "koulutustyyppi_40",
+        "esikatseltavissa": false,
+        "voimassaoloAlkaa": 1659301200000,
+        "voimassaoloLoppuu": null,
+        "_perusteprojekti": null
+      },
+      "tavoite": {
+        "_id": "7792500",
+        "_tunniste": "e218ddea-44f8-45c0-a64a-46ced3e39dee",
+        "fi": "Peruste astuu voimaan"
+      },
+      "tapahtuma": "julkaisu",
+      "tapahtumapaiva": 1627765200000,
+      "julkinen": false
+    },
+    {
       "id": 7534990,
       "peruste": {
         "id": 7534950,
@@ -135,33 +162,6 @@
       },
       "tapahtuma": "tavoite",
       "tapahtumapaiva": 1659301200000,
-      "julkinen": false
-    },
-    {
-      "id": 7792510,
-      "peruste": {
-        "id": 7534950,
-        "nimi": {
-          "_id": "7788280",
-          "_tunniste": "65bbd2eb-4e10-4ed8-b258-11d0b3003c8f",
-          "fi": "Tutkintokoulutukseen valmentava koulutus",
-          "sv": "Utbildning som handleder för examensutbildning"
-        },
-        "tila": "valmis",
-        "tyyppi": "normaali",
-        "koulutustyyppi": "koulutustyyppi_40",
-        "esikatseltavissa": false,
-        "voimassaoloAlkaa": 1659301200000,
-        "voimassaoloLoppuu": null,
-        "_perusteprojekti": null
-      },
-      "tavoite": {
-        "_id": "7792500",
-        "_tunniste": "e218ddea-44f8-45c0-a64a-46ced3e39dee",
-        "fi": "Peruste astuu voimaan"
-      },
-      "tapahtuma": "julkaisu",
-      "tapahtumapaiva": 1627765200000,
       "julkinen": false
     }
   ],

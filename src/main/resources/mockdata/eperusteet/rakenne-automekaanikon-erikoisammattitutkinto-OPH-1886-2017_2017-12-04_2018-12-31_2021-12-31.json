@@ -24,8 +24,8 @@
     }
   ],
   "kielet": [
-    "sv",
-    "fi"
+    "fi",
+    "sv"
   ],
   "kuvaus": {
     "_id": "4386241",
@@ -55,17 +55,6 @@
   ],
   "osaamisalat": [
     {
-      "id": 3211290,
-      "nimi": {
-        "fi": "Kuorma- ja linja-autotekniikka",
-        "sv": "Lastbils- och bussteknik"
-      },
-      "arvo": "3095",
-      "uri": "osaamisala_3095",
-      "koodisto": "osaamisala",
-      "versio": null
-    },
-    {
       "id": 3211292,
       "nimi": {
         "fi": "Työkonetekniikka",
@@ -84,6 +73,17 @@
       },
       "arvo": "3094",
       "uri": "osaamisala_3094",
+      "koodisto": "osaamisala",
+      "versio": null
+    },
+    {
+      "id": 3211290,
+      "nimi": {
+        "fi": "Kuorma- ja linja-autotekniikka",
+        "sv": "Lastbils- och bussteknik"
+      },
+      "arvo": "3095",
+      "uri": "osaamisala_3095",
       "koodisto": "osaamisala",
       "versio": null
     }
@@ -923,14 +923,9 @@
       },
       "tutkinnonOsaViitteet": [
         {
-          "id": 2449207,
-          "jarjestys": 6,
-          "_tutkinnonOsa": "2450732"
-        },
-        {
-          "id": 2449202,
-          "jarjestys": 2,
-          "_tutkinnonOsa": "2448757"
+          "id": 2449206,
+          "jarjestys": 5,
+          "_tutkinnonOsa": "2450731"
         },
         {
           "id": 2451870,
@@ -938,14 +933,14 @@
           "_tutkinnonOsa": "2450739"
         },
         {
-          "id": 2449206,
-          "jarjestys": 5,
-          "_tutkinnonOsa": "2450731"
-        },
-        {
           "id": 2451871,
           "jarjestys": 9,
           "_tutkinnonOsa": "2452100"
+        },
+        {
+          "id": 2449205,
+          "jarjestys": 4,
+          "_tutkinnonOsa": "2450730"
         },
         {
           "id": 2448038,
@@ -953,9 +948,9 @@
           "_tutkinnonOsa": "2448751"
         },
         {
-          "id": 2449204,
-          "jarjestys": 3,
-          "_tutkinnonOsa": "2448759"
+          "id": 2449202,
+          "jarjestys": 2,
+          "_tutkinnonOsa": "2448757"
         },
         {
           "id": 2451568,
@@ -963,9 +958,14 @@
           "_tutkinnonOsa": "2450736"
         },
         {
-          "id": 2449205,
-          "jarjestys": 4,
-          "_tutkinnonOsa": "2450730"
+          "id": 2449207,
+          "jarjestys": 6,
+          "_tutkinnonOsa": "2450732"
+        },
+        {
+          "id": 2449204,
+          "jarjestys": 3,
+          "_tutkinnonOsa": "2448759"
         },
         {
           "id": 2449203,
@@ -1002,6 +1002,7 @@
       },
       "koodiUri": "tutkinnonosat_300054",
       "koodiArvo": "300054",
+      "laajuus": null,
       "osaAlueet": [],
       "tyyppi": "normaali",
       "valmaTelmaSisalto": null,
@@ -1630,6 +1631,7 @@
       },
       "koodiUri": "tutkinnonosat_300051",
       "koodiArvo": "300051",
+      "laajuus": null,
       "osaAlueet": [],
       "tyyppi": "normaali",
       "valmaTelmaSisalto": null,
@@ -2114,6 +2116,7 @@
       },
       "koodiUri": "tutkinnonosat_300057",
       "koodiArvo": "300057",
+      "laajuus": null,
       "osaAlueet": [],
       "tyyppi": "normaali",
       "valmaTelmaSisalto": null,
@@ -2434,6 +2437,7 @@
       },
       "koodiUri": "tutkinnonosat_300058",
       "koodiArvo": "300058",
+      "laajuus": null,
       "osaAlueet": [],
       "tyyppi": "normaali",
       "valmaTelmaSisalto": null,
@@ -3006,6 +3010,7 @@
       },
       "koodiUri": "tutkinnonosat_300056",
       "koodiArvo": "300056",
+      "laajuus": null,
       "osaAlueet": [],
       "tyyppi": "normaali",
       "valmaTelmaSisalto": null,
@@ -3320,6 +3325,7 @@
       },
       "koodiUri": "tutkinnonosat_300055",
       "koodiArvo": "300055",
+      "laajuus": null,
       "osaAlueet": [],
       "tyyppi": "normaali",
       "valmaTelmaSisalto": null,
@@ -3730,6 +3736,7 @@
       },
       "koodiUri": "tutkinnonosat_300052",
       "koodiArvo": "300052",
+      "laajuus": null,
       "osaAlueet": [],
       "tyyppi": "normaali",
       "valmaTelmaSisalto": null,
@@ -4116,6 +4123,7 @@
       },
       "koodiUri": "tutkinnonosat_300053",
       "koodiArvo": "300053",
+      "laajuus": null,
       "osaAlueet": [],
       "tyyppi": "normaali",
       "valmaTelmaSisalto": null,
@@ -4446,6 +4454,7 @@
       },
       "koodiUri": "tutkinnonosat_300050",
       "koodiArvo": "300050",
+      "laajuus": null,
       "osaAlueet": [],
       "tyyppi": "normaali",
       "valmaTelmaSisalto": null,
@@ -4752,6 +4761,7 @@
       },
       "koodiUri": "tutkinnonosat_300059",
       "koodiArvo": "300059",
+      "laajuus": null,
       "osaAlueet": [],
       "tyyppi": "normaali",
       "valmaTelmaSisalto": null,
