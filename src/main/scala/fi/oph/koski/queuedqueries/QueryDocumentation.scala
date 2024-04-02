@@ -12,6 +12,7 @@ import fi.oph.scalaschema._
 import fi.oph.scalaschema.annotation.{Description, Title}
 import org.json4s.JValue
 
+import java.net.URL
 import java.time.{Duration, OffsetDateTime}
 import java.util.UUID
 import scala.io.Source
@@ -32,6 +33,7 @@ object QueryDocumentation extends Logging {
   private val sectionSources = Map(
     "kyselyt" -> "documentation/kyselyt.md",
   )
+
   def htmlTextSections(application: KoskiApplication): Map[String, String] =
     sectionSources.mapValues(htmlTextSection(application))
 
@@ -39,7 +41,7 @@ object QueryDocumentation extends Logging {
     TryWithLogging.andResources(logger, { use =>
       val source = use(Source.fromResource(path)).mkString
       val html = Markdown.markdownToXhtmlString(source)
-      addClassTitles(addClassDocs(addJsonExamples(application, html)))
+      addVariableTexts(application, addClassTitles(addClassDocs(addJsonExamples(application, html))))
     }).getOrElse(missingSection(path))
 
   def missingSection(name: String): String =
@@ -69,6 +71,27 @@ object QueryDocumentation extends Logging {
         val className = m.group("name")
         PropertyHtmlDocs.headingForClass(className)
       })
+
+  def addVariableTexts(application: KoskiApplication, markdown: String): String = {
+    val rootUrl = new URL(application.config.getString("koski.root.url"))
+    val host = rootUrl.getHost
+    val baseUrl = rootUrl.getPath
+
+    val vars = Map(
+      "baseUrl" -> baseUrl,
+      "headers" ->
+        s"""|Host: $host
+          |Content-Type: application/json
+          |Accept: application/json
+          |Authorization: Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==
+          |Caller-Id: 1.2.246.562.10.00000000001.myservice
+          |CSRF: 1.2.246.562.10.00000000001.myservice""".stripMargin
+    )
+
+    "\\{\\{var:(.+?)}}"
+      .r("name")
+      .replaceAllIn(markdown, { m => vars.getOrElse(m.group("name"), "!!! NOT FOUND !!!") })
+  }
 
 }
 

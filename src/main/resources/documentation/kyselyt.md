@@ -5,12 +5,13 @@ Rajapintaa käytetään seuraavanlaisesti.
 
 ## Uuden kyselyn luonti
 
-Aloita kysely lähettämällä parametrit luontirajapintaan `POST /api/kyselyt`. Esimerkiksi Helsingin kaupungin
+Aloita kysely lähettämällä parametrit luontirajapintaan `POST {{var:baseUrl}}/api/kyselyt`. Esimerkiksi Helsingin kaupungin
 eronnut-tilassa olevat perusopetuksen opiskeluoikeudet vuoden 2024 tammikuulta voisi hakea
 seuraavanlaisella kyselyllä.
-Eri kyselyiden skeemat esitellään myöhemmin dokumentaatiossa. Voit myös [katso kaikki skeemat graafisessa muodossa](/koski/json-schema-viewer/?schema=kyselyt-query.json).
+Eri kyselyiden skeemat esitellään myöhemmin dokumentaatiossa. [Katso myös kaikki skeemat graafisessa muodossa](/koski/json-schema-viewer/?schema=kyselyt-query.json).
 
-    POST /api/kyselyt
+    POST {{var:baseUrl}}/api/kyselyt HTTP/1.1
+    {{var:headers}}
 
     {{json:OrganisaationOpiskeluoikeudetCsv}}
 
@@ -29,7 +30,7 @@ KOSKI ei aloita kyselyn prosessointia välittömästi, vaan lisää sen työjono
 mutta ruuhka- ja vikatilanteissa kysely voi pysyä odottavassa tilassa pidempiäkin aikoja.
 
 Vastauksessa mukana tulee kyselyn tunniste kentässä `queryId`, jonka perusteella kyselyn tilaa
-voi tiedustella polusta `GET /api/kyselyt/{queryId}`. Polku tilan kyselyyn löytyy myös valmiina
+voi tiedustella polusta `GET {{var:baseUrl}}/api/kyselyt/{queryId}`. Polku tilan kyselyyn löytyy myös valmiina
 kentästä `resultsUrl`. Kyselyn lähtiessä pyörimään saatu vastaus on hyvin samankaltainen.
 Tilaksi on vaihtunut `running` ja mukana on aloitusaika:
 
@@ -68,7 +69,8 @@ yhteyttä KOSKI-tiimiin.
 
 Esimerkki:
 
-    POST /api/kyselyt
+    POST {{var:baseUrl}}/api/kyselyt HTTP/1.1
+    {{var:headers}}
 
     {{json:OrganisaationOpiskeluoikeudetCsv}}
 
@@ -77,7 +79,8 @@ Esimerkki:
 
 Esimerkki:
 
-    POST /api/kyselyt
+    POST {{var:baseUrl}}/api/kyselyt HTTP/1.1
+    {{var:headers}}
 
     {{json:OrganisaationOpiskeluoikeudetJson}}
 
@@ -86,12 +89,14 @@ Esimerkki:
 
 Esimerkki CSV-datan hakemisesta:
 
-    POST /api/kyselyt
+    POST {{var:baseUrl}}/api/kyselyt HTTP/1.1
+    {{var:headers}}
 
     {{json:PaallekkaisetOpiskeluoikeudetCsv}}
 
 Esimerkki laskentataulukkomuotoisen datan hakemisesta:
 
-    POST /api/kyselyt
+    POST {{var:baseUrl}}/api/kyselyt HTTP/1.1
+    {{var:headers}}
 
     {{json:PaallekkaisetOpiskeluoikeudetXlsx}}
