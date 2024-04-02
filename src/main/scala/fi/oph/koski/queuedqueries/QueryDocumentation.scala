@@ -162,6 +162,7 @@ object PropertyHtmlDocs {
       case o: OptionalSchema => renderType(o.itemSchema)
       case c: ClassSchema => Text(s"Objekti (${c.title})")
       case c: ClassRefSchema => Text(s"Objekti (${c.title})")
+      case l: ListSchema => Text(s"${renderType(l.itemSchema)}[]")
       case a: Schema => Text(a.toString)
     }
 
