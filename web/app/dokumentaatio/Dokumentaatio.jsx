@@ -270,18 +270,18 @@ export const dokumentaatioPalveluväyläOmadataP = () =>
 
 export const dokumentaatioKyselytP = () =>
   dokumentaatioContentP(
-    '/koski/dokumentaatio/rajapinnat/kyselyt',
+    '/koski/dokumentaatio/rajapinnat/massaluovutus/koulutuksenjarjestajat',
     htmlSectionsP().map((htmlSections) => ({
       content: (
         <div>
           <div
             className="markdown-content"
             dangerouslySetInnerHTML={{
-              __html: htmlSections.kyselyt
+              __html: htmlSections.massaluovutus_koulutuksenjarjestajat
             }}
           ></div>
         </div>
       ),
-      title: 'Dokumentaatio - Kyselyrajapinta'
+      title: 'Dokumentaatio - Rajapinnat'
     }))
   )

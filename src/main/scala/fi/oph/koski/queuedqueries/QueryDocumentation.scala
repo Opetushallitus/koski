@@ -31,7 +31,7 @@ object QueryDocumentation extends Logging {
   // HTML-stringit, jotka palautetaan polusta /koski/api/documentation/sections.html
 
   private val sectionSources = Map(
-    "kyselyt" -> "documentation/kyselyt.md",
+    "massaluovutus_koulutuksenjarjestajat" -> "documentation/massaluovutus-koulutuksenjarjestajille.md",
   )
 
   def htmlTextSections(application: KoskiApplication): Map[String, String] =

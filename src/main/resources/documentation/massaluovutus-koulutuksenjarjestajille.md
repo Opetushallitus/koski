@@ -1,16 +1,16 @@
-# Kyselyrajapinta
+# Massaluovutusrajapinta koulutusjärjestäjille
 
-Kyselyrajapinta on tarkoitettu pidempikestoisten kyselyiden tekemiseen KOSKI-datasta.
+Massaluovutusrajapinta on tarkoitettu pidempikestoisten kyselyiden tekemiseen KOSKI-datasta.
 Rajapintaa käytetään seuraavanlaisesti.
 
 ## Uuden kyselyn luonti
 
-Aloita kysely lähettämällä parametrit luontirajapintaan `POST {{var:baseUrl}}/api/kyselyt`. Esimerkiksi Helsingin kaupungin
+Aloita kysely lähettämällä parametrit luontirajapintaan `POST {{var:baseUrl}}/api/massaluovutus`. Esimerkiksi Helsingin kaupungin
 eronnut-tilassa olevat perusopetuksen opiskeluoikeudet vuoden 2024 tammikuulta voisi hakea
 seuraavanlaisella kyselyllä.
-Eri kyselyiden skeemat esitellään myöhemmin dokumentaatiossa. [Katso myös kaikki skeemat graafisessa muodossa](/koski/json-schema-viewer/?schema=kyselyt-query.json).
+Eri kyselyiden skeemat esitellään myöhemmin dokumentaatiossa. [Katso myös kaikki skeemat graafisessa muodossa](/koski/json-schema-viewer/?schema=massaluovutus-query.json).
 
-    POST {{var:baseUrl}}/api/kyselyt HTTP/1.1
+    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
     {{var:headers}}
 
     {{json:OrganisaationOpiskeluoikeudetCsv}}
@@ -25,12 +25,12 @@ Kyselyn ollessa ok saadaan seuraavanlainen vastaus:
 
 {{docs:fi.oph.koski.queuedqueries.PendingQueryResponse}}
 
-KOSKI ei aloita kyselyn prosessointia välittömästi, vaan lisää sen työjonoon.  Odottavan kyselyn
+KOSKI ei aloita kyselyn prosessointia välittömästi, vaan lisää sen työjonoon. Odottavan kyselyn
 `status`-kenttä on `pending`. Tavallisesti kyselyiden käsittely aloitetaan lähes välittömästi,
 mutta ruuhka- ja vikatilanteissa kysely voi pysyä odottavassa tilassa pidempiäkin aikoja.
 
 Vastauksessa mukana tulee kyselyn tunniste kentässä `queryId`, jonka perusteella kyselyn tilaa
-voi tiedustella polusta `GET {{var:baseUrl}}/api/kyselyt/{queryId}`. Polku tilan kyselyyn löytyy myös valmiina
+voi tiedustella polusta `GET {{var:baseUrl}}/api/massaluovutus/{queryId}`. Polku tilan kyselyyn löytyy myös valmiina
 kentästä `resultsUrl`. Kyselyn lähtiessä pyörimään saatu vastaus on hyvin samankaltainen.
 Tilaksi on vaihtunut `running` ja mukana on aloitusaika:
 
@@ -69,7 +69,7 @@ yhteyttä KOSKI-tiimiin.
 
 Esimerkki:
 
-    POST {{var:baseUrl}}/api/kyselyt HTTP/1.1
+    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
     {{var:headers}}
 
     {{json:OrganisaationOpiskeluoikeudetCsv}}
@@ -79,7 +79,7 @@ Esimerkki:
 
 Esimerkki:
 
-    POST {{var:baseUrl}}/api/kyselyt HTTP/1.1
+    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
     {{var:headers}}
 
     {{json:OrganisaationOpiskeluoikeudetJson}}
@@ -89,14 +89,14 @@ Esimerkki:
 
 Esimerkki CSV-datan hakemisesta:
 
-    POST {{var:baseUrl}}/api/kyselyt HTTP/1.1
+    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
     {{var:headers}}
 
     {{json:PaallekkaisetOpiskeluoikeudetCsv}}
 
 Esimerkki laskentataulukkomuotoisen datan hakemisesta:
 
-    POST {{var:baseUrl}}/api/kyselyt HTTP/1.1
+    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
     {{var:headers}}
 
     {{json:PaallekkaisetOpiskeluoikeudetXlsx}}

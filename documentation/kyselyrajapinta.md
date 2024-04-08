@@ -1,15 +1,15 @@
-# Kyselyrajapinta
+# Massaluovutusrajapinta
 
-Kyselyrajapinta (/api/kyselyt) on tarkoitettu pitkäkestoisten ja raskaiden
+Massaluovutusrajapinta (/api/massaluovutus) on tarkoitettu pitkäkestoisten ja raskaiden
 kyselyiden ajoalustaksi. Sen idea on säädellä tietokannalle ja muille palveluille
 aiheutuvaa kuormaa rajoittamalla samaan aikaan ajossa olevien kyselyiden
 määrää, mutta samalla tarjoten käyttäjille vakaasti ja nopeasti toimivan
 rajapinnan.
 
 Kaikki kyselyt aloitetaan riippumatta niiden tyypistä samalla
-`POST /api/kyselyt` -metodilla, joka lisää kyselyn operatiivisen tietokannan
+`POST /api/massaluovutus` -metodilla, joka lisää kyselyn operatiivisen tietokannan
 `kysely`-tauluun. Käyttäjä saa linkin, josta voi kysellä kyselyn edistymistä.
-Sen osoite on muotoa `GET /api/kyselyt/[tunniste]`. Kyselyn tullessa
+Sen osoite on muotoa `GET /api/massaluovutus/[tunniste]`. Kyselyn tullessa
 valmiiksi vastaus sisältää linkkejä kyselyn tulostiedostoihin.
 Tiedostomuoto voi olla mitä tahansa csv:stä json:iin ja
 xml-muotoisiin taulukkolaskentatiedostoihin riippuen tehdystä kyselystä.
@@ -29,7 +29,7 @@ riippuen lista tulostiedostoista tai virheilmoitus.
 
 Instanssi tarkastaa aina ennen työn aloittamista, onko kyseinen instanssi enää
 query worker. Se määräytyy siten, että ECS:stä kysytään kaikki KOSKI-instanssit
-ja *n* uusinta instanssia toimivat workereina. Lukumäärä *n* määräytyy
+ja _n_ uusinta instanssia toimivat workereina. Lukumäärä _n_ määräytyy
 konfiguraation `kyselyt.concurrency` mukaan. Tämän mekanismin avulla voidaan
 estää deploymentin takia pian sammuvien instanssien aloittamasta uutta työtä.
 
@@ -49,8 +49,8 @@ käyttöönsä `QueryResultWriter`-olion, jolla luodut tiedostot siirretään
 automaattisesti oikeaan paikkaan. Tiedostojen S3-avaimet muodostuvat
 kyselyn tunnisteesta ja tiedostonimistä.
 
-Käyttäjän ladataessa tiedostoa (polku `GET /api/kyselyt/[tunniste]/[tiedosto]`)
-sille luodaan S3:n tarjoama ns. *presigned request url* ja käyttäjä ohjataan
+Käyttäjän ladataessa tiedostoa (polku `GET /api/massaluovutus/[tunniste]/[tiedosto]`)
+sille luodaan S3:n tarjoama ns. _presigned request url_ ja käyttäjä ohjataan
 kyseiseen urliin. Kyseinen url on hetken voimassa oleva osoite, jonka avulla
 tiedosto saadaan ladattua suoraan S3:n kautta. Tiedoston sisältöä ei siis
 enää siirretä KOSKI-instanssin kautta.

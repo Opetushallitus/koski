@@ -281,7 +281,7 @@ class QuerySpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Before
   }
 
   def addQuery[T](query: QueryParameters, user: UserWithPassword)(f: => T): T =
-    post("api/kyselyt", JsonSerializer.writeWithRoot(query), headers = authHeaders(user) ++ jsonContent)(f)
+    post("api/massaluovutus", JsonSerializer.writeWithRoot(query), headers = authHeaders(user) ++ jsonContent)(f)
 
   def addQuerySuccessfully[T](query: QueryParameters, user: UserWithPassword)(f: QueryResponse => T): T = {
     addQuery(query, user) {
@@ -290,7 +290,7 @@ class QuerySpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Before
   }
 
   def getQuery[T](queryId: String, user: UserWithPassword)(f: => T): T =
-    get(s"api/kyselyt/$queryId", headers = authHeaders(user) ++ jsonContent)(f)
+    get(s"api/massaluovutus/$queryId", headers = authHeaders(user) ++ jsonContent)(f)
 
   def getQuerySuccessfully[T](queryId: String, user: UserWithPassword)(f: QueryResponse => T): T = {
     getQuery(queryId, user) {

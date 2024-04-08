@@ -14,7 +14,7 @@ import java.util.TimeZone
 import scala.language.implicitConversions
 
 object QueryServletUrls {
-  def root(rootUrl: String): String = s"$rootUrl/api/kyselyt"
+  def root(rootUrl: String): String = s"$rootUrl/api/massaluovutus"
   def query(rootUrl: String, queryId: String): String = s"${root(rootUrl)}/$queryId"
   def file(rootUrl: String, queryId: String, fileKey: String): String = s"${root(rootUrl)}/$queryId/$fileKey"
 }

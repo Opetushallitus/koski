@@ -96,11 +96,11 @@ class DocumentationApiServlet(application: KoskiApplication) extends KoskiSpecif
     renderObject[List[String]](Koodistot.koodistoAsetukset.filter(_.koodistoVersio.isEmpty).map(_.toString))
   }
 
-  get("/kyselyt-response.json") {
+  get("/massaluovutus-response.json") {
     QueryDocumentation.responseSchemaJson
   }
 
-  get("/kyselyt-query.json") {
+  get("/massaluovutus-query.json") {
     QueryDocumentation.querySchemaJson
   }
 
