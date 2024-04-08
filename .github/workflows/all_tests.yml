@@ -201,7 +201,7 @@ jobs:
             fi.oph.koski.userdirectory, \
             fi.oph.koski.util, \
             fi.oph.koski.versioning, \
-            fi.oph.koski.queuedqueries
+            fi.oph.koski.massaluovutus
 
   run_backend_tests_other_4:
     name: Backend (other 4/4)

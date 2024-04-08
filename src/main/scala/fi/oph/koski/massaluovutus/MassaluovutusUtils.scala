@@ -1,4 +1,4 @@
-package fi.oph.koski.queuedqueries
+package fi.oph.koski.massaluovutus
 
 import com.typesafe.config.Config
 import fi.oph.koski.config.{KoskiApplication, KoskiInstance}
@@ -11,7 +11,7 @@ import fi.oph.koski.util.TryWithLogging
 import java.security.SecureRandom
 import scala.util.Using
 
-object QueryUtils {
+object MassaluovutusUtils {
   def readDatabaseId(config: Config): String = config.getString("kyselyt.readDatabase")
   def concurrency(config: Config): Int = config.getInt("kyselyt.concurrency")
 
@@ -32,7 +32,7 @@ object QueryUtils {
     if (organisaatiot.isEmpty) {
       Left(KoskiErrorCategory.forbidden.organisaatio())
     } else if (organisaatiot.size > 1) {
-      Left(KoskiErrorCategory.badRequest.kyselyt.eiYksiselitteinenOrganisaatio())
+      Left(KoskiErrorCategory.badRequest.massaluovutus.eiYksiselitteinenOrganisaatio())
     } else {
       Right(user.juuriOrganisaatiot.head.oid)
     }

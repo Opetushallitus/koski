@@ -1,4 +1,4 @@
-package fi.oph.koski.queuedqueries
+package fi.oph.koski.massaluovutus
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.DB
@@ -8,26 +8,26 @@ import org.json4s.JValue
 
 import java.time.Duration
 
-class QueryScheduler(application: KoskiApplication) extends Logging {
-  val schedulerName = "kysely"
+class MassaluovutusScheduler(application: KoskiApplication) extends Logging {
+  val schedulerName = "massaluovutus"
   val schedulerDb: DB = application.masterDatabase.db
   val backpressureDuration: Duration = application.config.getDuration("kyselyt.backpressureLimits.duration")
-  val concurrency: Int = QueryUtils.concurrency(application.config)
-  val kyselyt: QueryService = application.kyselyService
+  val concurrency: Int = MassaluovutusUtils.concurrency(application.config)
+  val massaluovutukset: MassaluovutusService = application.massaluovutusService
 
   sys.addShutdownHook {
-    kyselyt.cancelAllTasks("Interrupted: worker shutdown")
+    massaluovutukset.cancelAllTasks("Interrupted: worker shutdown")
   }
 
   def scheduler: Option[Scheduler] = {
     val arn = application.ecsMetadata.taskARN
     val allInstances = application.ecsMetadata.currentlyRunningKoskiInstances
-    val workerInstances = QueryUtils.workerInstances(application, concurrency)
+    val workerInstances = MassaluovutusUtils.workerInstances(application, concurrency)
 
     logger.info(s"Check eligibility for query worker: arn = ${arn.getOrElse("n/a")}, allInstances = [${allInstances.map(_.taskArn).mkString(", ")}], workerInstances = [${workerInstances.map(_.taskArn).mkString(", ")}]")
 
     if (isQueryWorker) {
-      val workerId = application.kyselyService.workerId
+      val workerId = application.massaluovutusService.workerId
       logger.info(s"Starting as query worker (id: $workerId)")
 
       Some(new Scheduler(
@@ -50,17 +50,17 @@ class QueryScheduler(application: KoskiApplication) extends Logging {
 
   private def runNextQuery(_context: Option[JValue]): Option[JValue] = {
     if (isQueryWorker) {
-      if (kyselyt.hasNext) {
-        if (kyselyt.systemIsOverloaded) {
+      if (massaluovutukset.hasNext) {
+        if (massaluovutukset.systemIsOverloaded) {
           logger.info(s"System is overloaded. Postponing running the next query for $backpressureDuration")
           Scheduler.pauseForDuration(schedulerDb, schedulerName, backpressureDuration)
         } else {
-          kyselyt.runNext()
+          massaluovutukset.runNext()
         }
       }
     }
-    None // QueryScheduler päivitä kontekstia vain käynnistyessään
+    None // MassaluovutusScheduler päivitä kontekstia vain käynnistyessään
   }
 
-  private def isQueryWorker = QueryUtils.isQueryWorker(application, concurrency)
+  private def isQueryWorker = MassaluovutusUtils.isQueryWorker(application, concurrency)
 }

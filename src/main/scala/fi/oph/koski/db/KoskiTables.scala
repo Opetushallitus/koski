@@ -398,7 +398,7 @@ object KoskiTables {
     ) <> (PäivitettyOpiskeluoikeusRow.tupled, PäivitettyOpiskeluoikeusRow.unapply)
   }
 
-  class KyselyTable(tag: Tag) extends Table[KyselyRow] (tag, "kysely") {
+  class MassaluovutusTable(tag: Tag) extends Table[MassaluovutusRow] (tag, "massaluovutus") {
     val id = column[String]("id", O.PrimaryKey)
     val userOid = column[String]("user_oid")
     val session = column[JValue]("session")
@@ -412,7 +412,7 @@ object KoskiTables {
     val error = column[Option[String]]("error")
     val meta = column[Option[JValue]]("meta")
 
-    def * : ProvenShape[KyselyRow] = (
+    def * : ProvenShape[MassaluovutusRow] = (
       id,
       userOid,
       session,
@@ -425,7 +425,7 @@ object KoskiTables {
       resultFiles,
       error,
       meta,
-    ) <> (KyselyRow.tupled, KyselyRow.unapply)
+    ) <> (MassaluovutusRow.tupled, MassaluovutusRow.unapply)
   }
 
   val Preferences = TableQuery[PreferencesTable]
@@ -468,7 +468,7 @@ object KoskiTables {
 
   val PäivitetytOpiskeluoikeudet = TableQuery[PäivitettyOpiskeluoikeusTable]
 
-  val Kyselyt = TableQuery[KyselyTable]
+  val Massaluovutukset = TableQuery[MassaluovutusTable]
 
   def KoskiOpiskeluOikeudetWithAccessCheck(implicit user: KoskiSpecificSession): Query[KoskiOpiskeluoikeusTable, KoskiOpiskeluoikeusRow, Seq] = {
     val query = if (user.hasGlobalReadAccess || user.hasGlobalKoulutusmuotoReadAccess) {
@@ -712,7 +712,7 @@ case class PäivitettyOpiskeluoikeusRow(
   prosessoitu: Boolean = false,
 )
 
-case class KyselyRow(
+case class MassaluovutusRow(
   id: String,
   userOid: String,
   session: JValue,

@@ -1,4 +1,4 @@
-package fi.oph.koski.queuedqueries
+package fi.oph.koski.massaluovutus
 
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
@@ -8,8 +8,8 @@ import fi.oph.koski.log.KoskiOperation.OPISKELUOIKEUS_HAKU
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryContext
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.organisaatio.MockOrganisaatiot.ressunLukio
-import fi.oph.koski.queuedqueries.organisaationopiskeluoikeudet.{QueryOrganisaationOpiskeluoikeudet, QueryOrganisaationOpiskeluoikeudetCsv, QueryOrganisaationOpiskeluoikeudetCsvDocumentation, QueryOrganisaationOpiskeluoikeudetJson}
-import fi.oph.koski.queuedqueries.paallekkaisetopiskeluoikeudet.QueryPaallekkaisetOpiskeluoikeudet
+import fi.oph.koski.massaluovutus.organisaationopiskeluoikeudet.{MassaluovutusQueryOrganisaationOpiskeluoikeudet, MassaluovutusQueryOrganisaationOpiskeluoikeudetCsv, QueryOrganisaationOpiskeluoikeudetCsvDocumentation, MassaluovutusQueryOrganisaationOpiskeluoikeudetJson}
+import fi.oph.koski.massaluovutus.paallekkaisetopiskeluoikeudet.MassaluovutusQueryPaallekkaisetOpiskeluoikeudet
 import fi.oph.koski.raportit.RaportitService
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.util.Wait
@@ -23,12 +23,12 @@ import java.time.format.DateTimeFormatter
 import java.time.{Duration, LocalDate, LocalDateTime}
 import java.util.UUID
 
-class QuerySpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with BeforeAndAfterAll {
+class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with BeforeAndAfterAll {
   val app = KoskiApplicationForTests
 
   override protected def beforeAll(): Unit = {
     resetFixtures()
-    app.kyselyService.cancelAllTasks("cleanup")
+    app.massaluovutusService.cancelAllTasks("cleanup")
   }
 
   "Kyselyiden skedulointi" - {
@@ -51,10 +51,10 @@ class QuerySpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Before
       withoutRunningQueryScheduler {
         val orphanedQuery = createRunningQuery("dead-worker")
 
-        app.kyselyService.addRaw(orphanedQuery)
-        app.kyselyCleanupScheduler.trigger()
+        app.massaluovutusService.addRaw(orphanedQuery)
+        app.massaluovutusCleanupScheduler.trigger()
 
-        val query = app.kyselyService.get(UUID.fromString(orphanedQuery.queryId))
+        val query = app.massaluovutusService.get(UUID.fromString(orphanedQuery.queryId))
         query.map(_.state) should equal(Right(QueryState.pending))
       }
     }
@@ -63,10 +63,10 @@ class QuerySpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Before
       val crashingQuery = createRunningQuery("dead-worker")
         .copy(meta = Some(QueryMeta(restarts = Some(List("1", "2", "3")))))
 
-      app.kyselyService.addRaw(crashingQuery)
-      app.kyselyCleanupScheduler.trigger()
+      app.massaluovutusService.addRaw(crashingQuery)
+      app.massaluovutusCleanupScheduler.trigger()
 
-      val query = app.kyselyService.get(UUID.fromString(crashingQuery.queryId))
+      val query = app.massaluovutusService.get(UUID.fromString(crashingQuery.queryId))
       query.map(_.state) should equal(Right(QueryState.failed))
     }
 
@@ -75,10 +75,10 @@ class QuerySpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Before
         val worker = app.ecsMetadata.currentlyRunningKoskiInstances.head
         val runningQuery = createRunningQuery(worker.taskArn)
 
-        app.kyselyService.addRaw(runningQuery)
-        app.kyselyCleanupScheduler.trigger()
+        app.massaluovutusService.addRaw(runningQuery)
+        app.massaluovutusCleanupScheduler.trigger()
 
-        val query = app.kyselyService.get(UUID.fromString(runningQuery.queryId))
+        val query = app.massaluovutusService.get(UUID.fromString(runningQuery.queryId))
         query.map(_.state) should equal(Right(QueryState.running))
       }
     }
@@ -86,7 +86,7 @@ class QuerySpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Before
 
   "Organisaation opiskeluoikeudet" - {
     "JSON" - {
-      val query = QueryOrganisaationOpiskeluoikeudetJson(
+      val query = MassaluovutusQueryOrganisaationOpiskeluoikeudetJson(
         alkanutAikaisintaan = LocalDate.of(2020, 1, 1),
       )
 
@@ -98,7 +98,7 @@ class QuerySpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Before
 
       "Ei onnistu, jos organisaatiota ei ole annettu, eikä sitä voida päätellä yksiselitteisesti" in {
         addQuery(query, MockUsers.kahdenOrganisaatioPalvelukäyttäjä) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.kyselyt.eiYksiselitteinenOrganisaatio())
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.massaluovutus.eiYksiselitteinenOrganisaatio())
         }
       }
 
@@ -112,7 +112,7 @@ class QuerySpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Before
         val user = MockUsers.helsinkiKatselija
         val queryId = addQuerySuccessfully(query, user) { response =>
           response.status should equal(QueryState.pending)
-          response.query.asInstanceOf[QueryOrganisaationOpiskeluoikeudet].organisaatioOid should contain(MockOrganisaatiot.helsinginKaupunki)
+          response.query.asInstanceOf[MassaluovutusQueryOrganisaationOpiskeluoikeudet].organisaatioOid should contain(MockOrganisaatiot.helsinginKaupunki)
           response.queryId
         }
         val complete = waitForCompletion(queryId, user)
@@ -139,7 +139,7 @@ class QuerySpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Before
         val user = MockUsers.esiopetusTallentaja
         val queryId = addQuerySuccessfully(query, user) { response =>
           response.status should equal(QueryState.pending)
-          response.query.asInstanceOf[QueryOrganisaationOpiskeluoikeudet].organisaatioOid should contain(MockOrganisaatiot.helsinginKaupunki)
+          response.query.asInstanceOf[MassaluovutusQueryOrganisaationOpiskeluoikeudet].organisaatioOid should contain(MockOrganisaatiot.helsinginKaupunki)
           response.queryId
         }
         val complete = waitForCompletion(queryId, user)
@@ -149,7 +149,7 @@ class QuerySpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Before
     }
 
     "CSV" - {
-      val query = QueryOrganisaationOpiskeluoikeudetCsv(
+      val query = MassaluovutusQueryOrganisaationOpiskeluoikeudetCsv(
         alkanutAikaisintaan = LocalDate.of(2020, 1, 1),
       )
 
@@ -161,7 +161,7 @@ class QuerySpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Before
 
       "Ei onnistu, jos organisaatiota ei ole annettu, eikä sitä voida päätellä yksiselitteisesti" in {
         addQuery(query, MockUsers.kahdenOrganisaatioPalvelukäyttäjä) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.kyselyt.eiYksiselitteinenOrganisaatio())
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.massaluovutus.eiYksiselitteinenOrganisaatio())
         }
       }
 
@@ -169,7 +169,7 @@ class QuerySpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Before
         val user = MockUsers.helsinkiKatselija
         val queryId = addQuerySuccessfully(query, user) { response =>
           response.status should equal(QueryState.pending)
-          response.query.asInstanceOf[QueryOrganisaationOpiskeluoikeudet].organisaatioOid should contain(MockOrganisaatiot.helsinginKaupunki)
+          response.query.asInstanceOf[MassaluovutusQueryOrganisaationOpiskeluoikeudet].organisaatioOid should contain(MockOrganisaatiot.helsinginKaupunki)
           response.queryId
         }
         val complete = waitForCompletion(queryId, user)
@@ -196,7 +196,7 @@ class QuerySpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Before
         val user = MockUsers.esiopetusTallentaja
         val queryId = addQuerySuccessfully(query, user) { response =>
           response.status should equal(QueryState.pending)
-          response.query.asInstanceOf[QueryOrganisaationOpiskeluoikeudet].organisaatioOid should contain(MockOrganisaatiot.helsinginKaupunki)
+          response.query.asInstanceOf[MassaluovutusQueryOrganisaationOpiskeluoikeudet].organisaatioOid should contain(MockOrganisaatiot.helsinginKaupunki)
           response.queryId
         }
         val complete = waitForCompletion(queryId, user)
@@ -209,7 +209,7 @@ class QuerySpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Before
 
   "Päällekkäiset opiskeluoikeudet" - {
     "CSV" - {
-      val query = QueryPaallekkaisetOpiskeluoikeudet(
+      val query = MassaluovutusQueryPaallekkaisetOpiskeluoikeudet(
         format = QueryFormat.csv,
         alku = LocalDate.of(2000, 1, 1),
         loppu = LocalDate.of(2020, 1, 1),
@@ -223,7 +223,7 @@ class QuerySpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Before
 
       "Ei onnistu, jos organisaatiota ei ole annettu, eikä sitä voida päätellä yksiselitteisesti" in {
         addQuery(query, MockUsers.kahdenOrganisaatioPalvelukäyttäjä) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.kyselyt.eiYksiselitteinenOrganisaatio())
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.massaluovutus.eiYksiselitteinenOrganisaatio())
         }
       }
 
@@ -231,7 +231,7 @@ class QuerySpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Before
         val user = MockUsers.helsinkiKatselija
         val queryId = addQuerySuccessfully(query, user) { response =>
           response.status should equal(QueryState.pending)
-          response.query.asInstanceOf[QueryPaallekkaisetOpiskeluoikeudet].organisaatioOid should contain(MockOrganisaatiot.helsinginKaupunki)
+          response.query.asInstanceOf[MassaluovutusQueryPaallekkaisetOpiskeluoikeudet].organisaatioOid should contain(MockOrganisaatiot.helsinginKaupunki)
           response.queryId
         }
         val complete = waitForCompletion(queryId, user)
@@ -256,7 +256,7 @@ class QuerySpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Before
     }
 
     "Spreadsheet" - {
-      val query = QueryPaallekkaisetOpiskeluoikeudet(
+      val query = MassaluovutusQueryPaallekkaisetOpiskeluoikeudet(
         format = QueryFormat.xlsx,
         alku = LocalDate.of(2000, 1, 1),
         loppu = LocalDate.of(2020, 1, 1),
@@ -266,7 +266,7 @@ class QuerySpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Before
         val user = MockUsers.helsinkiKatselija
         val queryId = addQuerySuccessfully(query, user) { response =>
           response.status should equal(QueryState.pending)
-          response.query.asInstanceOf[QueryPaallekkaisetOpiskeluoikeudet].organisaatioOid should contain(MockOrganisaatiot.helsinginKaupunki)
+          response.query.asInstanceOf[MassaluovutusQueryPaallekkaisetOpiskeluoikeudet].organisaatioOid should contain(MockOrganisaatiot.helsinginKaupunki)
           response.queryId
         }
         val complete = waitForCompletion(queryId, user)
@@ -280,17 +280,17 @@ class QuerySpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Before
     }
   }
 
-  def addQuery[T](query: QueryParameters, user: UserWithPassword)(f: => T): T =
-    post("api/kyselyt", JsonSerializer.writeWithRoot(query), headers = authHeaders(user) ++ jsonContent)(f)
+  def addQuery[T](query: MassaluovutusQueryParameters, user: UserWithPassword)(f: => T): T =
+    post("api/massaluovutus", JsonSerializer.writeWithRoot(query), headers = authHeaders(user) ++ jsonContent)(f)
 
-  def addQuerySuccessfully[T](query: QueryParameters, user: UserWithPassword)(f: QueryResponse => T): T = {
+  def addQuerySuccessfully[T](query: MassaluovutusQueryParameters, user: UserWithPassword)(f: QueryResponse => T): T = {
     addQuery(query, user) {
       f(parsedResponse)
     }
   }
 
   def getQuery[T](queryId: String, user: UserWithPassword)(f: => T): T =
-    get(s"api/kyselyt/$queryId", headers = authHeaders(user) ++ jsonContent)(f)
+    get(s"api/massaluovutus/$queryId", headers = authHeaders(user) ++ jsonContent)(f)
 
   def getQuerySuccessfully[T](queryId: String, user: UserWithPassword)(f: QueryResponse => T): T = {
     getQuery(queryId, user) {
@@ -333,9 +333,9 @@ class QuerySpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Before
 
   def withoutRunningQueryScheduler[T](f: => T): T =
     try {
-      app.kyselyScheduler.pause(Duration.ofDays(1))
+      app.massaluovutusScheduler.pause(Duration.ofDays(1))
       f
     } finally {
-      app.kyselyScheduler.resume()
+      app.massaluovutusScheduler.resume()
     }
 }

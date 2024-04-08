@@ -1,11 +1,11 @@
-package fi.oph.koski.queuedqueries
+package fi.oph.koski.massaluovutus
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.documentation.Markdown
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.Logging
-import fi.oph.koski.queuedqueries.organisaationopiskeluoikeudet.{QueryOrganisaationOpiskeluoikeudetCsvDocumentation, QueryOrganisaationOpiskeluoikeudetJsonDocumentation}
-import fi.oph.koski.queuedqueries.paallekkaisetopiskeluoikeudet.QueryPaallekkaisetOpiskeluoikeudetDocumentation
+import fi.oph.koski.massaluovutus.organisaationopiskeluoikeudet.{QueryOrganisaationOpiskeluoikeudetCsvDocumentation, QueryOrganisaationOpiskeluoikeudetJsonDocumentation}
+import fi.oph.koski.massaluovutus.paallekkaisetopiskeluoikeudet.QueryPaallekkaisetOpiskeluoikeudetDocumentation
 import fi.oph.koski.schema
 import fi.oph.koski.util.TryWithLogging
 import fi.oph.scalaschema._
@@ -31,7 +31,7 @@ object QueryDocumentation extends Logging {
   // HTML-stringit, jotka palautetaan polusta /koski/api/documentation/sections.html
 
   private val sectionSources = Map(
-    "kyselyt" -> "documentation/kyselyt.md",
+    "massaluovutus_koulutuksenjarjestajat" -> "documentation/massaluovutus-koulutuksenjarjestajille.md",
   )
 
   def htmlTextSections(application: KoskiApplication): Map[String, String] =
@@ -212,7 +212,7 @@ object QueryExamples {
     case _ => None
   }
 
-  def pendingQuery(application: KoskiApplication, query: QueryParameters): PendingQueryResponse =
+  def pendingQuery(application: KoskiApplication, query: MassaluovutusQueryParameters): PendingQueryResponse =
     PendingQueryResponse(
       queryId = queryId,
       requestedBy = "1.2.246.562.24.123123123123",
@@ -221,7 +221,7 @@ object QueryExamples {
       resultsUrl = resultsUrl(application, queryId),
     )
 
-  def runningQuery(application: KoskiApplication, query: QueryParameters): RunningQueryResponse =
+  def runningQuery(application: KoskiApplication, query: MassaluovutusQueryParameters): RunningQueryResponse =
     RunningQueryResponse(
       queryId = queryId,
       requestedBy = "1.2.246.562.24.123123123123",
@@ -231,7 +231,7 @@ object QueryExamples {
       resultsUrl = resultsUrl(application, queryId),
     )
 
-  def completedQuery(query: QueryParameters, files: List[String], rootUrl: String, password: Option[String]): CompleteQueryResponse =
+  def completedQuery(query: MassaluovutusQueryParameters, files: List[String], rootUrl: String, password: Option[String]): CompleteQueryResponse =
     CompleteQueryResponse(
       queryId = queryId,
       requestedBy = "1.2.246.562.24.123123123123",
@@ -239,12 +239,12 @@ object QueryExamples {
       createdAt = createdAt,
       startedAt = startedAt,
       finishedAt = finishedAt,
-      files = files.map(QueryServletUrls.file(rootUrl, queryId, _)),
+      files = files.map(MassaluovutusServletUrls.file(rootUrl, queryId, _)),
       password = password,
       sourceDataUpdatedAt = Some(createdAt),
     )
 
-  def faileddQuery(query: QueryParameters): FailedQueryResponse =
+  def faileddQuery(query: MassaluovutusQueryParameters): FailedQueryResponse =
     FailedQueryResponse(
       queryId = queryId,
       requestedBy = "1.2.246.562.24.123123123123",
@@ -255,7 +255,7 @@ object QueryExamples {
     )
 
   private def resultsUrl(application: KoskiApplication, queryId: String): String =
-    QueryServletUrls.query(
+    MassaluovutusServletUrls.query(
       application.config.getString("koski.root.url"),
       queryId,
     )
@@ -264,8 +264,8 @@ object QueryExamples {
     Some(JsonSerializer.writeWithRoot(t, pretty = true))
 }
 
-@Title("Kyselyrajapinnasta saatava vastaus")
+@Title("Massaluovutusrajapinnasta saatava vastaus")
 case class QueryResponseWrapper(` `: QueryResponse)
 
-@Title("Kyselyrajapintaan tehtävä kysely")
-case class QueryParametersWrapper(` `: QueryParameters)
+@Title("Massaluovutusrajapintaan tehtävä kysely")
+case class QueryParametersWrapper(` `: MassaluovutusQueryParameters)

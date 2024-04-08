@@ -1,16 +1,16 @@
-# Kyselyrajapinta
+# Massaluovutusrajapinta koulutusjärjestäjille
 
-Kyselyrajapinta on tarkoitettu pidempikestoisten kyselyiden tekemiseen KOSKI-datasta.
+Massaluovutusrajapinta on tarkoitettu pidempikestoisten kyselyiden tekemiseen KOSKI-datasta.
 Rajapintaa käytetään seuraavanlaisesti.
 
 ## Uuden kyselyn luonti
 
-Aloita kysely lähettämällä parametrit luontirajapintaan `POST {{var:baseUrl}}/api/kyselyt`. Esimerkiksi Helsingin kaupungin
+Aloita kysely lähettämällä parametrit luontirajapintaan `POST {{var:baseUrl}}/api/massaluovutus`. Esimerkiksi Helsingin kaupungin
 eronnut-tilassa olevat perusopetuksen opiskeluoikeudet vuoden 2024 tammikuulta voisi hakea
 seuraavanlaisella kyselyllä.
-Eri kyselyiden skeemat esitellään myöhemmin dokumentaatiossa. [Katso myös kaikki skeemat graafisessa muodossa](/koski/json-schema-viewer/?schema=kyselyt-query.json).
+Eri kyselyiden skeemat esitellään myöhemmin dokumentaatiossa. [Katso myös kaikki skeemat graafisessa muodossa](/koski/json-schema-viewer/?schema=massaluovutus-query.json).
 
-    POST {{var:baseUrl}}/api/kyselyt HTTP/1.1
+    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
     {{var:headers}}
 
     {{json:OrganisaationOpiskeluoikeudetCsv}}
@@ -23,20 +23,20 @@ Kyselyn ollessa ok saadaan seuraavanlainen vastaus:
 
     {{json:PendingQueryResponse}}
 
-{{docs:fi.oph.koski.queuedqueries.PendingQueryResponse}}
+{{docs:fi.oph.koski.massaluovutus.PendingQueryResponse}}
 
-KOSKI ei aloita kyselyn prosessointia välittömästi, vaan lisää sen työjonoon.  Odottavan kyselyn
+KOSKI ei aloita kyselyn prosessointia välittömästi, vaan lisää sen työjonoon. Odottavan kyselyn
 `status`-kenttä on `pending`. Tavallisesti kyselyiden käsittely aloitetaan lähes välittömästi,
 mutta ruuhka- ja vikatilanteissa kysely voi pysyä odottavassa tilassa pidempiäkin aikoja.
 
 Vastauksessa mukana tulee kyselyn tunniste kentässä `queryId`, jonka perusteella kyselyn tilaa
-voi tiedustella polusta `GET {{var:baseUrl}}/api/kyselyt/{queryId}`. Polku tilan kyselyyn löytyy myös valmiina
+voi tiedustella polusta `GET {{var:baseUrl}}/api/massaluovutus/{queryId}`. Polku tilan kyselyyn löytyy myös valmiina
 kentästä `resultsUrl`. Kyselyn lähtiessä pyörimään saatu vastaus on hyvin samankaltainen.
 Tilaksi on vaihtunut `running` ja mukana on aloitusaika:
 
     {{json:RunningQueryResponse}}
 
-{{docs:fi.oph.koski.queuedqueries.RunningQueryResponse}}
+{{docs:fi.oph.koski.massaluovutus.RunningQueryResponse}}
 
 Kysely voi palata `running`-tilasta takaisin `pending`-tilaan, jos kyselyn käsittely katkeaa
 esimerkiksi sitä käsittelevän instanssin käynnistyessä uudelleen.
@@ -49,7 +49,7 @@ kyselyn valmistumisesta.
 
     {{json:CompleteQueryResponse}}
 
-{{docs:fi.oph.koski.queuedqueries.CompleteQueryResponse}}
+{{docs:fi.oph.koski.massaluovutus.CompleteQueryResponse}}
 
 ### Kyselyn epäonnistuminen
 
@@ -58,45 +58,45 @@ mutta ne ovat lähes aina palvelinpään teknisiä ongelmia (eli vertautuvat HTT
 
     {{json:FailedQueryResponse}}
 
-{{docs:fi.oph.koski.queuedqueries.FailedQueryResponse}}
+{{docs:fi.oph.koski.massaluovutus.FailedQueryResponse}}
 
 Kysely ei koskaan palaa takaisin `pending`- tai `running`-tilaan sen päädyttyä `failed`-tilaan,
 vaan kutsujan on aloitettava uusi kysely. Jos kysely päätyy jatkuvasti `failed`-tilaan, ota
 yhteyttä KOSKI-tiimiin.
 
-{{title:fi.oph.koski.queuedqueries.organisaationopiskeluoikeudet.QueryOrganisaationOpiskeluoikeudetCsv}}
-{{docs:fi.oph.koski.queuedqueries.organisaationopiskeluoikeudet.QueryOrganisaationOpiskeluoikeudetCsv}}
+{{title:fi.oph.koski.massaluovutus.organisaationopiskeluoikeudet.MassaluovutusQueryOrganisaationOpiskeluoikeudetCsv}}
+{{docs:fi.oph.koski.massaluovutus.organisaationopiskeluoikeudet.MassaluovutusQueryOrganisaationOpiskeluoikeudetCsv}}
 
 Esimerkki:
 
-    POST {{var:baseUrl}}/api/kyselyt HTTP/1.1
+    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
     {{var:headers}}
 
     {{json:OrganisaationOpiskeluoikeudetCsv}}
 
-{{title:fi.oph.koski.queuedqueries.organisaationopiskeluoikeudet.QueryOrganisaationOpiskeluoikeudetJson}}
-{{docs:fi.oph.koski.queuedqueries.organisaationopiskeluoikeudet.QueryOrganisaationOpiskeluoikeudetJson}}
+{{title:fi.oph.koski.massaluovutus.organisaationopiskeluoikeudet.MassaluovutusQueryOrganisaationOpiskeluoikeudetJson}}
+{{docs:fi.oph.koski.massaluovutus.organisaationopiskeluoikeudet.MassaluovutusQueryOrganisaationOpiskeluoikeudetJson}}
 
 Esimerkki:
 
-    POST {{var:baseUrl}}/api/kyselyt HTTP/1.1
+    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
     {{var:headers}}
 
     {{json:OrganisaationOpiskeluoikeudetJson}}
 
-{{title:fi.oph.koski.queuedqueries.paallekkaisetopiskeluoikeudet.QueryPaallekkaisetOpiskeluoikeudet}}
-{{docs:fi.oph.koski.queuedqueries.paallekkaisetopiskeluoikeudet.QueryPaallekkaisetOpiskeluoikeudet}}
+{{title:fi.oph.koski.massaluovutus.paallekkaisetopiskeluoikeudet.MassaluovutusQueryPaallekkaisetOpiskeluoikeudet}}
+{{docs:fi.oph.koski.massaluovutus.paallekkaisetopiskeluoikeudet.MassaluovutusQueryPaallekkaisetOpiskeluoikeudet}}
 
 Esimerkki CSV-datan hakemisesta:
 
-    POST {{var:baseUrl}}/api/kyselyt HTTP/1.1
+    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
     {{var:headers}}
 
     {{json:PaallekkaisetOpiskeluoikeudetCsv}}
 
 Esimerkki laskentataulukkomuotoisen datan hakemisesta:
 
-    POST {{var:baseUrl}}/api/kyselyt HTTP/1.1
+    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
     {{var:headers}}
 
     {{json:PaallekkaisetOpiskeluoikeudetXlsx}}

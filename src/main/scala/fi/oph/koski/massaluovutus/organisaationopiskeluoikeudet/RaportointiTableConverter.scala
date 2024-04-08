@@ -1,6 +1,6 @@
-package fi.oph.koski.queuedqueries.organisaationopiskeluoikeudet
+package fi.oph.koski.massaluovutus.organisaationopiskeluoikeudet
 
-import fi.oph.koski.queuedqueries.CsvRecord
+import fi.oph.koski.massaluovutus.CsvRecord
 import fi.oph.koski.raportointikanta.{ROsasuoritusRow, RPäätasonSuoritusRow}
 
 object RaportointitableIds {

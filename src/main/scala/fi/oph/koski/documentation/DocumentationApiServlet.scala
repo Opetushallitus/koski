@@ -7,7 +7,7 @@ import fi.oph.koski.kela.KelaSchema
 import fi.oph.koski.koodisto.Koodistot
 import fi.oph.koski.koskiuser.Unauthenticated
 import fi.oph.koski.migri.MigriSchema
-import fi.oph.koski.queuedqueries.{QueryDocumentation, QueryResponse}
+import fi.oph.koski.massaluovutus.{QueryDocumentation, QueryResponse}
 import fi.oph.koski.schema.KoskiSchema
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 import fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotSchema
@@ -96,11 +96,11 @@ class DocumentationApiServlet(application: KoskiApplication) extends KoskiSpecif
     renderObject[List[String]](Koodistot.koodistoAsetukset.filter(_.koodistoVersio.isEmpty).map(_.toString))
   }
 
-  get("/kyselyt-response.json") {
+  get("/massaluovutus-response.json") {
     QueryDocumentation.responseSchemaJson
   }
 
-  get("/kyselyt-query.json") {
+  get("/massaluovutus-query.json") {
     QueryDocumentation.querySchemaJson
   }
 

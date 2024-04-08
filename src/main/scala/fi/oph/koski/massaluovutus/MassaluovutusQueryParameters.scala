@@ -1,4 +1,4 @@
-package fi.oph.koski.queuedqueries
+package fi.oph.koski.massaluovutus
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
@@ -13,11 +13,11 @@ import java.io.InputStream
 import java.time.LocalDate
 import scala.concurrent.Future
 
-trait QueryParameters {
-  @Description("Kyselyn tyyppi.")
+trait MassaluovutusQueryParameters {
+  @Description("Massaluovutuksen tyyppi.")
   @Discriminator
   def `type`: String
-  @Description("Kyselyn tulosten toimitusformaatti.")
+  @Description("Tulosten toimitusformaatti.")
   @Discriminator
   def format: String
 
@@ -25,5 +25,5 @@ trait QueryParameters {
 
   def queryAllowed(application: KoskiApplication)(implicit user: KoskiSpecificSession): Boolean
   def asJson: JValue = JsonSerializer.serializeWithRoot(this)
-  def fillAndValidate(implicit user: KoskiSpecificSession): Either[HttpStatus, QueryParameters] = Right(this)
+  def fillAndValidate(implicit user: KoskiSpecificSession): Either[HttpStatus, MassaluovutusQueryParameters] = Right(this)
 }

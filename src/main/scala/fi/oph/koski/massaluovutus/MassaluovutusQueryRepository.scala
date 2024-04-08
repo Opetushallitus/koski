@@ -1,4 +1,4 @@
-package fi.oph.koski.queuedqueries
+package fi.oph.koski.massaluovutus
 
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.db.{DB, DatabaseConverters, QueryMethods}
@@ -25,26 +25,26 @@ class QueryRepository(
   def get(id: UUID)(implicit user: KoskiSpecificSession): Option[Query] =
     runDbSync(sql"""
       SELECT *
-      FROM kysely
+      FROM massaluovutus
       WHERE id = ${id.toString}::uuid
         AND user_oid = ${user.oid}
       """.as[Query]
     ).headOption
 
-  def getExisting(query: QueryParameters)(implicit user: KoskiSpecificSession): Option[Query] =
+  def getExisting(query: MassaluovutusQueryParameters)(implicit user: KoskiSpecificSession): Option[Query] =
     runDbSync(sql"""
       SELECT *
-      FROM kysely
+      FROM massaluovutus
       WHERE user_oid = ${user.oid}
         AND query = ${query.asJson}
         AND state IN (${QueryState.pending}, ${QueryState.running})
      """.as[Query]
     ).headOption
 
-  def add(query: QueryParameters)(implicit user: KoskiSpecificSession): PendingQuery = {
+  def add(query: MassaluovutusQueryParameters)(implicit user: KoskiSpecificSession): PendingQuery = {
     val session = JsonSerializer.serialize(StorableSession(user))
     runDbSync(sql"""
-      INSERT INTO kysely(id, user_oid, session, query, state)
+      INSERT INTO massaluovutus(id, user_oid, session, query, state)
       VALUES (
         ${UUID.randomUUID().toString}::uuid,
         ${user.oid},
@@ -83,7 +83,7 @@ class QueryRepository(
     val meta = query.meta.map(m => JsonSerializer.serializeWithRoot(m))
 
     runDbSync(sql"""
-     INSERT INTO kysely(id, user_oid, session, query, state, created_at, started_at, finished_at, worker, result_files, error, meta)
+     INSERT INTO massaluovutus(id, user_oid, session, query, state, created_at, started_at, finished_at, worker, result_files, error, meta)
      VALUES(
         ${query.queryId}::uuid,
         ${query.userOid},
@@ -105,7 +105,7 @@ class QueryRepository(
   def numberOfRunningQueries: Int =
     runDbSync(sql"""
       SELECT count(*)
-      FROM kysely
+      FROM massaluovutus
       WHERE state = ${QueryState.running}
         AND worker = $workerId
       """.as[Int]).head
@@ -113,20 +113,20 @@ class QueryRepository(
   def numberOfPendingQueries: Int =
     runDbSync(sql"""
       SELECT count(*)
-      FROM kysely
+      FROM massaluovutus
       WHERE state = ${QueryState.pending}
       """.as[Int]).head
 
   def takeNext: Option[RunningQuery] =
     runDbSync(sql"""
-      UPDATE kysely
+      UPDATE massaluovutus
       SET
         state = ${QueryState.running},
         worker = $workerId,
         started_at = now()
       WHERE id IN (
         SELECT id
-        FROM kysely
+        FROM massaluovutus
         WHERE state = ${QueryState.pending}
         ORDER BY created_at
         LIMIT 1
@@ -137,7 +137,7 @@ class QueryRepository(
 
   def setComplete(id: String, resultFiles: List[String]): Boolean =
     runDbSync(sql"""
-      UPDATE kysely
+      UPDATE massaluovutus
       SET
         state = ${QueryState.complete},
         result_files = ${resultFiles},
@@ -148,7 +148,7 @@ class QueryRepository(
   def setFailed(id: String, error: String): Boolean =
     runDbSync(
       sql"""
-      UPDATE kysely
+      UPDATE massaluovutus
       SET
         state = ${QueryState.failed},
         error = $error,
@@ -160,7 +160,7 @@ class QueryRepository(
     val meta = JsonSerializer.serializeWithRoot(query.meta.getOrElse(QueryMeta()).withRestart(reason))
     runDbSync(
       sql"""
-      UPDATE kysely
+      UPDATE massaluovutus
       SET
         state = ${QueryState.pending},
         started_at = NULL,
@@ -173,7 +173,7 @@ class QueryRepository(
   def setRunningTasksFailed(error: String): Boolean =
     runDbSync(
       sql"""
-      UPDATE kysely
+      UPDATE massaluovutus
       SET
         state = ${QueryState.failed},
         error = $error,
@@ -186,7 +186,7 @@ class QueryRepository(
     val timeoutTime = Timestamp.valueOf(LocalDateTime.now().minus(timeout))
     runDbSync(
       sql"""
-      UPDATE kysely
+      UPDATE massaluovutus
       SET
         state = ${QueryState.failed},
         error = $error,
@@ -202,7 +202,7 @@ class QueryRepository(
     runDbSync(
       sql"""
       SELECT *
-      FROM kysely
+      FROM massaluovutus
       WHERE state = ${QueryState.running}
         AND NOT worker = any($koskiInstances)
       """.as[Query])
@@ -211,7 +211,7 @@ class QueryRepository(
   def patchMeta(id: String, meta: QueryMeta): QueryMeta = {
     val json = JsonSerializer.serializeWithRoot(meta)
     runDbSync(sql"""
-      UPDATE kysely
+      UPDATE massaluovutus
       SET meta = COALESCE(meta, '{}'::jsonb) || $json
       WHERE id = $id::uuid
       RETURNING meta
@@ -276,8 +276,8 @@ class QueryRepository(
     parseMeta(r.<<[JValue])
   }
 
-  private def parseParameters(parameters: JValue): QueryParameters =
-    extractor.extract[QueryParameters](strictDeserialization)(parameters).right.get // TODO: parempi virheenhallinta siltä varalta että parametrit eivät deserialisoidukaan
+  private def parseParameters(parameters: JValue): MassaluovutusQueryParameters =
+    extractor.extract[MassaluovutusQueryParameters](strictDeserialization)(parameters).right.get // TODO: parempi virheenhallinta siltä varalta että parametrit eivät deserialisoidukaan
 
   private def parseMeta(meta: JValue): QueryMeta =
     extractor.extract[QueryMeta](strictDeserialization)(meta).right.get // TODO: parempi virheenhallinta siltä varalta että parametrit eivät deserialisoidukaan
@@ -286,7 +286,7 @@ class QueryRepository(
 trait Query {
   def queryId: String
   def userOid: String
-  def query: QueryParameters
+  def query: MassaluovutusQueryParameters
   def state: String
   def createdAt: LocalDateTime
   def session: JValue
@@ -300,7 +300,7 @@ trait Query {
 
   def name: String = s"${query.getClass.getSimpleName}(${queryId})"
 
-  def externalResultsUrl(rootUrl: String): String = QueryServletUrls.query(rootUrl, queryId)
+  def externalResultsUrl(rootUrl: String): String = MassaluovutusServletUrls.query(rootUrl, queryId)
 
   def restartCount: Int = meta.flatMap(_.restarts).map(_.size).getOrElse(0)
 }
@@ -320,7 +320,7 @@ trait QueryWithWorker {
 case class PendingQuery(
   queryId: String,
   userOid: String,
-  query: QueryParameters,
+  query: MassaluovutusQueryParameters,
   createdAt: LocalDateTime,
   session: JValue,
   meta: Option[QueryMeta],
@@ -331,7 +331,7 @@ case class PendingQuery(
 case class RunningQuery(
   queryId: String,
   userOid: String,
-  query: QueryParameters,
+  query: MassaluovutusQueryParameters,
   createdAt: LocalDateTime,
   startedAt: LocalDateTime,
   worker: String,
@@ -344,7 +344,7 @@ case class RunningQuery(
 case class CompleteQuery(
   queryId: String,
   userOid: String,
-  query: QueryParameters,
+  query: MassaluovutusQueryParameters,
   createdAt: LocalDateTime,
   startedAt: LocalDateTime,
   finishedAt: LocalDateTime,
@@ -355,13 +355,13 @@ case class CompleteQuery(
 ) extends Query with QueryWithStartTime with QueryWithFinishTime with QueryWithWorker  {
   def state: String = QueryState.complete
 
-  def filesToExternal(rootUrl: String): List[String] = resultFiles.map(QueryServletUrls.file(rootUrl, queryId, _))
+  def filesToExternal(rootUrl: String): List[String] = resultFiles.map(MassaluovutusServletUrls.file(rootUrl, queryId, _))
 }
 
 case class FailedQuery(
   queryId: String,
   userOid: String,
-  query: QueryParameters,
+  query: MassaluovutusQueryParameters,
   createdAt: LocalDateTime,
   startedAt: LocalDateTime,
   finishedAt: LocalDateTime,

@@ -1,4 +1,4 @@
-package fi.oph.koski.queuedqueries.organisaationopiskeluoikeudet
+package fi.oph.koski.massaluovutus.organisaationopiskeluoikeudet
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api.actionBasedSQLInterpolation
@@ -12,8 +12,8 @@ import fi.oph.koski.log.KoskiAuditLogMessageField.hakuEhto
 import fi.oph.koski.log.KoskiOperation.OPISKELUOIKEUS_HAKU
 import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, Logging}
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryContext
-import fi.oph.koski.queuedqueries.QueryUtils.defaultOrganisaatio
-import fi.oph.koski.queuedqueries.{QueryParameters, QueryResultWriter}
+import fi.oph.koski.massaluovutus.MassaluovutusUtils.defaultOrganisaatio
+import fi.oph.koski.massaluovutus.{MassaluovutusQueryParameters, QueryResultWriter}
 import fi.oph.koski.schema.Organisaatio
 import fi.oph.koski.schema.annotation.EnumValues
 import fi.oph.koski.util.ChainingSyntax.chainingOps
@@ -28,7 +28,7 @@ import scala.concurrent.duration.DurationInt
 
 @Title("Organisaation opiskeluoikeudet")
 @Description("Palauttaa hakuehtojen mukaiset organisaation ja sen alaorganisaatioiden opiskeluoikeudet.")
-trait QueryOrganisaationOpiskeluoikeudet extends QueryParameters with DatabaseConverters with Logging {
+trait MassaluovutusQueryOrganisaationOpiskeluoikeudet extends MassaluovutusQueryParameters with DatabaseConverters with Logging {
   @EnumValues(Set("organisaationOpiskeluoikeudet"))
   def `type`: String
   @Description("Kyselyyn otettavan koulutustoimijan tai oppilaitoksen oid. Jos ei ole annettu, päätellään käyttäjän käyttöoikeuksista.")
@@ -51,7 +51,7 @@ trait QueryOrganisaationOpiskeluoikeudet extends QueryParameters with DatabaseCo
   @Description("Haettaessa muuttuneita opiskeluoikeuksia sitten viimeisen datahaun, kannattaa tätä arvoa aikaistaa tunnilla, jotta varmistaa kaikkien muutoksien osumisen tulosjoukkoon.")
   def muuttunutJälkeen: Option[LocalDateTime]
   @Description("Palauta vain opiskeluoikeudet, joilla on annettu koulutusmuoto.")
-  @EnumValues(QueryOrganisaationOpiskeluoikeudet.allowedKoulutusmuodot)
+  @EnumValues(MassaluovutusQueryOrganisaationOpiskeluoikeudet.allowedKoulutusmuodot)
   def koulutusmuoto: Option[String]
   @Description("Jos true, palautetaan myös mitätöidyt opiskeluoikeudet")
   def mitätöidyt: Option[Boolean]
@@ -74,7 +74,7 @@ trait QueryOrganisaationOpiskeluoikeudet extends QueryParameters with DatabaseCo
         && user.sensitiveDataAllowed(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
       )
 
-  override def fillAndValidate(implicit user: KoskiSpecificSession): Either[HttpStatus, QueryOrganisaationOpiskeluoikeudet] = {
+  override def fillAndValidate(implicit user: KoskiSpecificSession): Either[HttpStatus, MassaluovutusQueryOrganisaationOpiskeluoikeudet] = {
     for {
       s1 <-
         if (organisaatioOid.isEmpty) {
@@ -91,7 +91,7 @@ trait QueryOrganisaationOpiskeluoikeudet extends QueryParameters with DatabaseCo
     } yield s2
   }
 
-  def withOrganisaatioOid(organisaatioOid: Organisaatio.Oid): QueryOrganisaationOpiskeluoikeudet
+  def withOrganisaatioOid(organisaatioOid: Organisaatio.Oid): MassaluovutusQueryOrganisaationOpiskeluoikeudet
 
   protected def auditLog(implicit user: KoskiSpecificSession): Unit = {
     AuditLog.log(KoskiAuditLogMessage(
@@ -169,13 +169,13 @@ trait QueryOrganisaationOpiskeluoikeudet extends QueryParameters with DatabaseCo
   private def includeMitätöidyt(implicit session: KoskiSpecificSession): Boolean = mitätöidyt.contains(true)
 
   protected def hasAccessToAllKoulutusmuodot(implicit session: KoskiSpecificSession) =
-    allowedKoulutusmuodotForUser(session).size == QueryOrganisaationOpiskeluoikeudet.allowedKoulutusmuodot.size
+    allowedKoulutusmuodotForUser(session).size == MassaluovutusQueryOrganisaationOpiskeluoikeudet.allowedKoulutusmuodot.size
 
   protected def allowedKoulutusmuodotForUser(session: KoskiSpecificSession): List[String] =
-    QueryOrganisaationOpiskeluoikeudet.allowedKoulutusmuodot.intersect(session.allowedOpiskeluoikeusTyypit).toList
+    MassaluovutusQueryOrganisaationOpiskeluoikeudet.allowedKoulutusmuodot.intersect(session.allowedOpiskeluoikeusTyypit).toList
 }
 
-object QueryOrganisaationOpiskeluoikeudet {
+object MassaluovutusQueryOrganisaationOpiskeluoikeudet {
   def allowedKoulutusmuodot: Set[String] = Set(
     "aikuistenperusopetus",
     "ammatillinenkoulutus",
