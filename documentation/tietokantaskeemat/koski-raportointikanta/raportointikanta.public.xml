@@ -45,8 +45,10 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="koulutusmoduuli_koodiarvo" nullable="true" remarks="" size="2147483647" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="koulutusmoduuli_nimi" nullable="true" remarks="" size="2147483647" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="arviointi_paiva" nullable="true" remarks="" size="13" type="date" typeCode="91"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="opintojen_rahoitus" nullable="true" remarks="" size="2147483647" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="koulutusmoduuli_laajuus_arvo" nullable="true" remarks="" size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="osasuorituksen_tyyppi" nullable="true" remarks="" size="2147483647" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="opintojen_rahoitus" nullable="true" remarks="" size="2147483647" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="koulutusmoduuli_laajuus_arvo" nullable="true" remarks="" size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="oppimaara_koodiarvo" nullable="true" remarks="" size="2147483647" type="varchar" typeCode="12"/>
          <index name="lukion_aineopintojen_moduulien_rahoitusmuodo_oppilaitos_oid_idx" unique="false">
             <column ascending="true" name="oppilaitos_oid"/>
          </index>
@@ -179,6 +181,7 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="osasuorituksen_arviointi_paiva" nullable="true" remarks="" size="13" type="date" typeCode="91"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="osasuorituksen_tyyppi" nullable="true" remarks="" size="2147483647" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="paatason_suorituksen_tyyppi" nullable="true" remarks="" size="2147483647" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="oppimaara_koodiarvo" nullable="true" remarks="" size="2147483647" type="varchar" typeCode="12"/>
          <index name="osasuoritus_arvioitu_opiskeluoikeuden_ulkopu_oppilaitos_oid_idx" unique="false">
             <column ascending="true" name="oppilaitos_oid"/>
          </index>
