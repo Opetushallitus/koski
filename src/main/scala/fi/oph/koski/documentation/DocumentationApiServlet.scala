@@ -7,7 +7,7 @@ import fi.oph.koski.kela.KelaSchema
 import fi.oph.koski.koodisto.Koodistot
 import fi.oph.koski.koskiuser.Unauthenticated
 import fi.oph.koski.migri.MigriSchema
-import fi.oph.koski.queuedqueries.{QueryDocumentation, QueryResponse}
+import fi.oph.koski.massaluovutus.{QueryDocumentation, QueryResponse}
 import fi.oph.koski.schema.KoskiSchema
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 import fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotSchema

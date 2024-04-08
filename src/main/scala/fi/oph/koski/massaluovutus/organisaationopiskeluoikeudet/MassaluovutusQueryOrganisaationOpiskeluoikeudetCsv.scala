@@ -1,10 +1,10 @@
-package fi.oph.koski.queuedqueries.organisaationopiskeluoikeudet
+package fi.oph.koski.massaluovutus.organisaationopiskeluoikeudet
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.organisaatio.MockOrganisaatiot
-import fi.oph.koski.queuedqueries.QueryUtils.QueryResourceManager
-import fi.oph.koski.queuedqueries.{CsvStream, QueryFormat, QueryResultWriter}
+import fi.oph.koski.massaluovutus.MassaluovutusUtils.QueryResourceManager
+import fi.oph.koski.massaluovutus.{CsvStream, QueryFormat, QueryResultWriter}
 import fi.oph.koski.raportointikanta._
 import fi.oph.koski.schema.Organisaatio
 import fi.oph.koski.schema.Organisaatio.Oid
@@ -22,7 +22,7 @@ import scala.util.Using
 @Description("Skeema erittäin harvoin muuttuu niin, että kenttiä poistetaan tai niiden muoto muuttuu, mutta uusia kenttiä voi tulla mukaan.")
 @Description("Huom! Taulujen väliset relaatiot eivät ole stabiileja kyselyiden välillä, vaan id-kentät ovat kyselykohtaisia.")
 @Description(QueryOrganisaationOpiskeluoikeudetCsvDocumentation.fileDescriptionsAsHtml)
-case class QueryOrganisaationOpiskeluoikeudetCsv(
+case class MassaluovutusQueryOrganisaationOpiskeluoikeudetCsv(
   `type`: String = "organisaationOpiskeluoikeudet",
   @EnumValues(Set(QueryFormat.csv))
   format: String = QueryFormat.csv,
@@ -35,9 +35,9 @@ case class QueryOrganisaationOpiskeluoikeudetCsv(
   muuttunutJälkeen: Option[LocalDateTime] = None,
   koulutusmuoto: Option[String] = None,
   mitätöidyt: Option[Boolean] = None,
-) extends QueryOrganisaationOpiskeluoikeudet {
+) extends MassaluovutusQueryOrganisaationOpiskeluoikeudet {
 
-  def withOrganisaatioOid(organisaatioOid: Oid): QueryOrganisaationOpiskeluoikeudetCsv = copy(organisaatioOid = Some(organisaatioOid))
+  def withOrganisaatioOid(organisaatioOid: Oid): MassaluovutusQueryOrganisaationOpiskeluoikeudetCsv = copy(organisaatioOid = Some(organisaatioOid))
 
   def fetchData(
     application: KoskiApplication,
@@ -140,7 +140,7 @@ object QueryOrganisaationOpiskeluoikeudetCsvDocumentation {
 
   def outputFiles: List[String] = CsvResultFile.values.map(_.name).toList
 
-  def example: QueryOrganisaationOpiskeluoikeudetCsv = QueryOrganisaationOpiskeluoikeudetCsv(
+  def example: MassaluovutusQueryOrganisaationOpiskeluoikeudetCsv = MassaluovutusQueryOrganisaationOpiskeluoikeudetCsv(
     organisaatioOid = Some(MockOrganisaatiot.helsinginKaupunki),
     alkanutAikaisintaan = LocalDate.of(2024, 1, 1),
     alkanutViimeistään = Some(LocalDate.of(2024, 1, 31)),

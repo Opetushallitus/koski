@@ -1,4 +1,4 @@
-package fi.oph.koski.queuedqueries.paallekkaisetopiskeluoikeudet
+package fi.oph.koski.massaluovutus.paallekkaisetopiskeluoikeudet
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.HttpStatus
@@ -9,8 +9,8 @@ import fi.oph.koski.log.KoskiOperation.OPISKELUOIKEUS_RAPORTTI
 import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, Logging}
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryContext
 import fi.oph.koski.organisaatio.MockOrganisaatiot
-import fi.oph.koski.queuedqueries.QueryUtils.{QueryResourceManager, defaultOrganisaatio, generatePassword}
-import fi.oph.koski.queuedqueries.{QueryFormat, QueryMeta, QueryParameters, QueryResultWriter}
+import fi.oph.koski.massaluovutus.MassaluovutusUtils.{QueryResourceManager, defaultOrganisaatio, generatePassword}
+import fi.oph.koski.massaluovutus.{QueryFormat, QueryMeta, MassaluovutusQueryParameters, QueryResultWriter}
 import fi.oph.koski.raportit.{AikajaksoRaporttiRequest, RaportitService}
 import fi.oph.koski.schema.Organisaatio
 import fi.oph.koski.schema.annotation.EnumValues
@@ -23,7 +23,7 @@ import scala.util.Using
 @Title("Päällekkäiset opiskeluoikeudet")
 @Description("Palauttaa hakuehtojen mukaiset organisaation ja sen alaorganisaatioiden päällekkäiset opiskeluoikeudet.")
 @Description("Saatu tulostiedosto vastaa raporttinäkymästä ladattavaa tiedostoa, mutta se on mahdollista ladata myös paremmin koneluettavassa csv-muodossa.")
-case class QueryPaallekkaisetOpiskeluoikeudet(
+case class MassaluovutusQueryPaallekkaisetOpiskeluoikeudet(
   @EnumValues(Set("paallekkaisetOpiskeluoikeudet"))
   `type`: String = "paallekkaisetOpiskeluoikeudet",
   @EnumValues(Set(QueryFormat.csv, QueryFormat.xlsx))
@@ -39,7 +39,7 @@ case class QueryPaallekkaisetOpiskeluoikeudet(
   loppu: LocalDate,
   @Description("Salasana. Merkityksellinen vain xlsx-tiedostoille. Jos ei annettu, salasana generoidaan automaattisesti. Salasana palautetaan tulosten yhteydessä.")
   password: Option[String] = None,
-) extends QueryParameters with Logging {
+) extends MassaluovutusQueryParameters with Logging {
   override def run(application: KoskiApplication, writer: QueryResultWriter)(implicit user: KoskiSpecificSession): Either[String, Unit] =
     QueryResourceManager(logger) { mgr =>
       implicit val manager: Using.Manager = mgr
@@ -69,7 +69,7 @@ case class QueryPaallekkaisetOpiskeluoikeudet(
   override def queryAllowed(application: KoskiApplication)(implicit user: KoskiSpecificSession): Boolean =
     user.hasGlobalReadAccess || organisaatioOid.exists(user.hasRaporttiReadAccess)
 
-  override def fillAndValidate(implicit user: KoskiSpecificSession): Either[HttpStatus, QueryPaallekkaisetOpiskeluoikeudet] =
+  override def fillAndValidate(implicit user: KoskiSpecificSession): Either[HttpStatus, MassaluovutusQueryPaallekkaisetOpiskeluoikeudet] =
     for {
       orgOid <- organisaatioOid
         .toRight(defaultOrganisaatio)
@@ -94,7 +94,7 @@ case class QueryPaallekkaisetOpiskeluoikeudet(
 }
 
 object QueryPaallekkaisetOpiskeluoikeudetDocumentation {
-  def csvExample: QueryPaallekkaisetOpiskeluoikeudet = QueryPaallekkaisetOpiskeluoikeudet(
+  def csvExample: MassaluovutusQueryPaallekkaisetOpiskeluoikeudet = MassaluovutusQueryPaallekkaisetOpiskeluoikeudet(
     format = QueryFormat.csv,
     organisaatioOid = Some(MockOrganisaatiot.helsinginKaupunki),
     language = Some("fi"),
@@ -102,7 +102,7 @@ object QueryPaallekkaisetOpiskeluoikeudetDocumentation {
     loppu = LocalDate.of(2024, 3, 31),
   )
 
-  def xlsxExample: QueryPaallekkaisetOpiskeluoikeudet = QueryPaallekkaisetOpiskeluoikeudet(
+  def xlsxExample: MassaluovutusQueryPaallekkaisetOpiskeluoikeudet = MassaluovutusQueryPaallekkaisetOpiskeluoikeudet(
     format = QueryFormat.xlsx,
     organisaatioOid = Some(MockOrganisaatiot.helsinginKaupunki),
     language = Some("fi"),

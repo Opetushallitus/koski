@@ -1,4 +1,4 @@
-package fi.oph.koski.queuedqueries
+package fi.oph.koski.massaluovutus
 
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.KoskiSpecificSession
@@ -18,7 +18,7 @@ import scala.util.Using
 case class QueryResultWriter(
   queryId: UUID,
   queries: QueryRepository,
-  results: QueryResultsRepository,
+  results: MassaluovutusResultRepository,
 ) {
   var objectKeys: mutable.Queue[String] = mutable.Queue[String]()
 

@@ -42,10 +42,10 @@ object KoskiErrorCategory {
     }
     val header = new Header
 
-    class Kyselyt extends ErrorCategory(badRequest, "kyselyt", "Virheellinen kysely") {
+    class Massaluovutus extends ErrorCategory(badRequest, "massaluovutus", "Virheellinen kysely") {
       val eiYksiselitteinenOrganisaatio = subcategory("eiYksiselitteinenOrganisaatio", "Kenttää `organisaatioOid` ei ole annettu, eikä organisaatiota voi yksiselitteisesti päätellä käyttöoikeuksista.")
     }
-    val kyselyt = new Kyselyt
+    val massaluovutus = new Massaluovutus
 
     class Validation extends ErrorCategory(badRequest, "validation", "Syötteen validointi epäonnistui") {
       val jsonSchema = subcategory("jsonSchema", "JSON-schema -validointi epäonnistui. Paluuviestin sisällä virheilmoitukset JSON-muodossa.", JsonValidationErrorExample.example)

@@ -23,7 +23,7 @@ Kyselyn ollessa ok saadaan seuraavanlainen vastaus:
 
     {{json:PendingQueryResponse}}
 
-{{docs:fi.oph.koski.queuedqueries.PendingQueryResponse}}
+{{docs:fi.oph.koski.massaluovutus.PendingQueryResponse}}
 
 KOSKI ei aloita kyselyn prosessointia välittömästi, vaan lisää sen työjonoon. Odottavan kyselyn
 `status`-kenttä on `pending`. Tavallisesti kyselyiden käsittely aloitetaan lähes välittömästi,
@@ -36,7 +36,7 @@ Tilaksi on vaihtunut `running` ja mukana on aloitusaika:
 
     {{json:RunningQueryResponse}}
 
-{{docs:fi.oph.koski.queuedqueries.RunningQueryResponse}}
+{{docs:fi.oph.koski.massaluovutus.RunningQueryResponse}}
 
 Kysely voi palata `running`-tilasta takaisin `pending`-tilaan, jos kyselyn käsittely katkeaa
 esimerkiksi sitä käsittelevän instanssin käynnistyessä uudelleen.
@@ -49,7 +49,7 @@ kyselyn valmistumisesta.
 
     {{json:CompleteQueryResponse}}
 
-{{docs:fi.oph.koski.queuedqueries.CompleteQueryResponse}}
+{{docs:fi.oph.koski.massaluovutus.CompleteQueryResponse}}
 
 ### Kyselyn epäonnistuminen
 
@@ -58,14 +58,14 @@ mutta ne ovat lähes aina palvelinpään teknisiä ongelmia (eli vertautuvat HTT
 
     {{json:FailedQueryResponse}}
 
-{{docs:fi.oph.koski.queuedqueries.FailedQueryResponse}}
+{{docs:fi.oph.koski.massaluovutus.FailedQueryResponse}}
 
 Kysely ei koskaan palaa takaisin `pending`- tai `running`-tilaan sen päädyttyä `failed`-tilaan,
 vaan kutsujan on aloitettava uusi kysely. Jos kysely päätyy jatkuvasti `failed`-tilaan, ota
 yhteyttä KOSKI-tiimiin.
 
-{{title:fi.oph.koski.queuedqueries.organisaationopiskeluoikeudet.QueryOrganisaationOpiskeluoikeudetCsv}}
-{{docs:fi.oph.koski.queuedqueries.organisaationopiskeluoikeudet.QueryOrganisaationOpiskeluoikeudetCsv}}
+{{title:fi.oph.koski.massaluovutus.organisaationopiskeluoikeudet.MassaluovutusQueryOrganisaationOpiskeluoikeudetCsv}}
+{{docs:fi.oph.koski.massaluovutus.organisaationopiskeluoikeudet.MassaluovutusQueryOrganisaationOpiskeluoikeudetCsv}}
 
 Esimerkki:
 
@@ -74,8 +74,8 @@ Esimerkki:
 
     {{json:OrganisaationOpiskeluoikeudetCsv}}
 
-{{title:fi.oph.koski.queuedqueries.organisaationopiskeluoikeudet.QueryOrganisaationOpiskeluoikeudetJson}}
-{{docs:fi.oph.koski.queuedqueries.organisaationopiskeluoikeudet.QueryOrganisaationOpiskeluoikeudetJson}}
+{{title:fi.oph.koski.massaluovutus.organisaationopiskeluoikeudet.MassaluovutusQueryOrganisaationOpiskeluoikeudetJson}}
+{{docs:fi.oph.koski.massaluovutus.organisaationopiskeluoikeudet.MassaluovutusQueryOrganisaationOpiskeluoikeudetJson}}
 
 Esimerkki:
 
@@ -84,8 +84,8 @@ Esimerkki:
 
     {{json:OrganisaationOpiskeluoikeudetJson}}
 
-{{title:fi.oph.koski.queuedqueries.paallekkaisetopiskeluoikeudet.QueryPaallekkaisetOpiskeluoikeudet}}
-{{docs:fi.oph.koski.queuedqueries.paallekkaisetopiskeluoikeudet.QueryPaallekkaisetOpiskeluoikeudet}}
+{{title:fi.oph.koski.massaluovutus.paallekkaisetopiskeluoikeudet.MassaluovutusQueryPaallekkaisetOpiskeluoikeudet}}
+{{docs:fi.oph.koski.massaluovutus.paallekkaisetopiskeluoikeudet.MassaluovutusQueryPaallekkaisetOpiskeluoikeudet}}
 
 Esimerkki CSV-datan hakemisesta:
 

@@ -1,4 +1,4 @@
-package fi.oph.koski.queuedqueries
+package fi.oph.koski.massaluovutus
 
 import fi.oph.koski.cache.GlobalCacheManager._
 import fi.oph.koski.cache.{RefreshingCache, SingleValueCache}
@@ -16,11 +16,11 @@ import java.util.concurrent.TimeUnit
 import scala.concurrent.duration.{DurationInt, FiniteDuration}
 
 
-class QueryService(application: KoskiApplication) extends Logging {
+class MassaluovutusService(application: KoskiApplication) extends Logging {
   val workerId: String = application.ecsMetadata.taskARN.getOrElse("local")
   val metrics: CloudWatchMetricsService = CloudWatchMetricsService(application.config)
   private val maxAllowedDatabaseReplayLag: Duration = application.config.getDuration("kyselyt.backpressureLimits.maxDatabaseReplayLag")
-  private val readDatabaseId = QueryUtils.readDatabaseId(application.config)
+  private val readDatabaseId = MassaluovutusUtils.readDatabaseId(application.config)
   private val databaseLoadLimiter = new DatabaseLoadLimiter(application, metrics, readDatabaseId)
   private val queryMaxRunningTime = FiniteDuration(application.config.getDuration("kyselyt.timeout").toSeconds, TimeUnit.SECONDS)
 
@@ -29,9 +29,9 @@ class QueryService(application: KoskiApplication) extends Logging {
     workerId = workerId,
     extractor = application.validatingAndResolvingExtractor,
   )
-  private val results = new QueryResultsRepository(application.config)
+  private val results = new MassaluovutusResultRepository(application.config)
 
-  def add(query: QueryParameters)(implicit user: KoskiSpecificSession): Either[HttpStatus, Query] = {
+  def add(query: MassaluovutusQueryParameters)(implicit user: KoskiSpecificSession): Either[HttpStatus, Query] = {
     query.fillAndValidate.flatMap { query =>
       queries.getExisting(query).fold {
         if (query.queryAllowed(application)) {

@@ -1,4 +1,4 @@
-package fi.oph.koski.queuedqueries
+package fi.oph.koski.massaluovutus
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
@@ -13,16 +13,16 @@ import java.time.{LocalDateTime, OffsetDateTime}
 import java.util.TimeZone
 import scala.language.implicitConversions
 
-object QueryServletUrls {
+object MassaluovutusServletUrls {
   def root(rootUrl: String): String = s"$rootUrl/api/massaluovutus"
   def query(rootUrl: String, queryId: String): String = s"${root(rootUrl)}/$queryId"
   def file(rootUrl: String, queryId: String, fileKey: String): String = s"${root(rootUrl)}/$queryId/$fileKey"
 }
 
-class QueryServlet(implicit val application: KoskiApplication)
+class MassaluovutusServlet(implicit val application: KoskiApplication)
   extends KoskiSpecificApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with JsonMethods with NoCache
 {
-  val kyselyt: QueryService = application.kyselyService
+  val massaluovutukset: MassaluovutusService = application.massaluovutusService
   val rootUrl: String = application.config.getString("koski.root.url")
 
   post("/") {
@@ -30,8 +30,8 @@ class QueryServlet(implicit val application: KoskiApplication)
       renderEither {
         application
           .validatingAndResolvingExtractor
-          .extract[QueryParameters](strictDeserialization)(body)
-          .flatMap(kyselyt.add)
+          .extract[MassaluovutusQueryParameters](strictDeserialization)(body)
+          .flatMap(massaluovutukset.add)
           .map(q => QueryResponse(rootUrl, q))
       }
     } (parseErrorHandler = jsonErrorHandler)
@@ -41,7 +41,7 @@ class QueryServlet(implicit val application: KoskiApplication)
     renderEither {
       UuidUtils.optionFromString(getStringParam("id"))
         .toRight(KoskiErrorCategory.badRequest.queryParam("Epävalidi tunniste"))
-        .flatMap(kyselyt.get)
+        .flatMap(massaluovutukset.get)
         .map(q => QueryResponse(rootUrl, q))
     }
   }
@@ -49,10 +49,10 @@ class QueryServlet(implicit val application: KoskiApplication)
   get("/:id/:file") {
     UuidUtils.optionFromString(getStringParam("id"))
       .toRight(KoskiErrorCategory.badRequest.queryParam("Epävalidi tunniste"))
-      .flatMap(kyselyt.get)
+      .flatMap(massaluovutukset.get)
       .flatMap {
         case q: CompleteQuery =>
-          kyselyt.getDownloadUrl(q, getStringParam("file"))
+          massaluovutukset.getDownloadUrl(q, getStringParam("file"))
         case _ =>
           Left(KoskiErrorCategory.badRequest("Tulostiedostot eivät ole vielä ladattavissa"))
       }
@@ -65,25 +65,25 @@ class QueryServlet(implicit val application: KoskiApplication)
 }
 
 trait QueryResponse {
-  @Description("Kyselyn tunniste")
+  @Description("Massaluovutuksen tunniste")
   def queryId: String
-  @Description("Kyselyn tila")
+  @Description("Massaluovutuksen tila")
   @SyntheticProperty
   def status: String
-  @Description("Kyselyn luoman käyttäjän oid")
+  @Description("Massaluovutuksen luoman käyttäjän oid")
   def requestedBy: String
-  @Description("Määrittää tehtävän kyselyn sekä sen parametrit.")
-  def query: QueryParameters
-  @Description("Kyselyn luontiaika")
+  @Description("Määrittää tehtävän massaluovutuksen tyypin sekä sen parametrit.")
+  def query: MassaluovutusQueryParameters
+  @Description("Massaluovutuksen luontiaika")
   def createdAt: OffsetDateTime
 }
 
 @Title("Odottava kysely")
-@Description("Kysely on luotu, mutta sen käsittelyä ei ole vielä aloitettu.")
+@Description("Massaluovutuskysely on luotu, mutta sen käsittelyä ei ole vielä aloitettu.")
 case class PendingQueryResponse(
   queryId: String,
   requestedBy: String,
-  query: QueryParameters,
+  query: MassaluovutusQueryParameters,
   createdAt: OffsetDateTime,
   @Description("Osoite josta kyselyn tilaa voi kysellä")
   resultsUrl: String,
@@ -94,9 +94,9 @@ case class PendingQueryResponse(
 case class RunningQueryResponse(
   queryId: String,
   requestedBy: String,
-  query: QueryParameters,
+  query: MassaluovutusQueryParameters,
   createdAt: OffsetDateTime,
-  @Description("Kyselyn käsittelyn aloitusaika")
+  @Description("Massaluovutuskyselyn käsittelyn aloitusaika")
   startedAt: OffsetDateTime,
   @Description("Osoite josta kyselyn tilaa voi kysellä")
   resultsUrl: String,
@@ -107,11 +107,11 @@ case class RunningQueryResponse(
 case class FailedQueryResponse(
   queryId: String,
   requestedBy: String,
-  query: QueryParameters,
+  query: MassaluovutusQueryParameters,
   createdAt: OffsetDateTime,
-  @Description("Kyselyn käsittelyn aloitusaika")
+  @Description("Massaluovutuksen käsittelyn aloitusaika")
   startedAt: OffsetDateTime,
-  @Description("Kyselyn epäonnistumisen aika")
+  @Description("Massaluovutuksen epäonnistumisen aika")
   finishedAt: OffsetDateTime,
 ) extends QueryResponse {
   def status: String = QueryState.failed
@@ -120,11 +120,11 @@ case class FailedQueryResponse(
 case class CompleteQueryResponse(
   queryId: String,
   requestedBy: String,
-  query: QueryParameters,
+  query: MassaluovutusQueryParameters,
   createdAt: OffsetDateTime,
-  @Description("Kyselyn käsittelyn aloitusaika")
+  @Description("Massaluovutuksen käsittelyn aloitusaika")
   startedAt: OffsetDateTime,
-  @Description("Kyselyn valmistumisaika")
+  @Description("Massaluovutuksen valmistumisaika")
   finishedAt: OffsetDateTime,
   @Description("Lista osoitteista, joista tulostiedostot voi ladata. Tiedostojen määrä riippuu kyselyn tyypistä.")
   files: List[String],
