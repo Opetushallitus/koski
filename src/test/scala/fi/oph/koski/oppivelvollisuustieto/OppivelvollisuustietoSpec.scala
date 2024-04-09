@@ -8,7 +8,7 @@ import fi.oph.koski.documentation._
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat._
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import fi.oph.koski.schema._
-import fi.oph.koski.{DirtiesFixtures, KoskiHttpSpec}
+import fi.oph.koski.{DirtiesFixtures, KoskiApplicationForTests, KoskiHttpSpec}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -422,6 +422,25 @@ class OppivelvollisuustietoSpec
           oppivelvollisuusVoimassaAsti = date(2021, 12, 31),
           oikeusMaksuttomaanKoulutukseenVoimassaAsti = date(2024, 12, 31)
         ))
+      }
+    }
+
+    "Oppivelvollisuuden ja maksuttomuuden päättely kuntahistorian perusteella" - {
+      resetFixtures()
+
+      def isOppivelvollinen(oid: String): Boolean =
+        Oppivelvollisuustiedot.queryByOids(Seq(oid), KoskiApplicationForTests.raportointiDatabase).nonEmpty
+
+      "Suomeen täysi-ikäisenä muuttanut ei ole oppivelvollisuden alainen" in {
+        isOppivelvollinen("1.2.246.562.24.00000000166") should be(false)
+      }
+
+      "Suomeen alaikäisenä muuttanut on oppivelvollisuden alainen" in {
+        isOppivelvollinen("1.2.246.562.24.00000000167") should be(true)
+      }
+
+      "Suomesta alaikäisenä pois muuttanut ja täysi-ikäisenä takaisin muuttanut on oppivelvollisuden alainen" in {
+        isOppivelvollinen("1.2.246.562.24.00000000168") should be(true)
       }
     }
   }

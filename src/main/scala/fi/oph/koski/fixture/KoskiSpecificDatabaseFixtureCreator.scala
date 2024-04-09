@@ -316,6 +316,9 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
       (KoskiSpecificMockOppijat.moniaEriOpiskeluoikeuksia, PerusopetusExampleData.päättötodistusOpiskeluoikeus(oppilaitos = VapaaSivistystyöExampleData.varsinaisSuomenKansanopisto, toimipiste = VapaaSivistystyöExampleData.varsinaisSuomenKansanopisto)),
       (KoskiSpecificMockOppijat.moniaEriOpiskeluoikeuksia, ExamplesTaiteenPerusopetus.Opiskeluoikeus.aloitettuYleinenOppimäärä),
       (KoskiSpecificMockOppijat.moniaEriOpiskeluoikeuksia, AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.varsinaisSuomenKansanopisto)),
+      (KoskiSpecificMockOppijat.suomeenTäysiikäisenäMuuttanut, AmmatillinenReforminMukainenPerustutkinto2022Example.opiskeluoikeusJotpa),
+      (KoskiSpecificMockOppijat.suomeenAlaikäisenäMuuttanut, AmmatillinenReforminMukainenPerustutkinto2022Example.opiskeluoikeusJotpa),
+      (KoskiSpecificMockOppijat.ulkomaillaHetkenAsunut, AmmatillinenReforminMukainenPerustutkinto2022Example.opiskeluoikeusJotpa),
     )
   }
 

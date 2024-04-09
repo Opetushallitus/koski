@@ -190,7 +190,9 @@ object KoskiSpecificMockOppijat {
   val pelkkäESH = koskiSpecificOppijat.oppija("Eurooppalainen", "Eeva", "100906A5544")
   val vapaaSivistystyöOsaamismerkki = koskiSpecificOppijat.oppija("Vapaa-Sivistys", "Osaamismerkki", "050705A564B")
   val moniaEriOpiskeluoikeuksia = koskiSpecificOppijat.oppija("Monia", "Useita", "230108A744P")
-
+  val suomeenTäysiikäisenäMuuttanut = koskiSpecificOppijat.oppija("Jenkins", "Jenny", "010106A1328", kotikunta = Some("091"))
+  val suomeenAlaikäisenäMuuttanut = koskiSpecificOppijat.oppija("Anders", "Andrew", "010106A8159", kotikunta = Some("091"))
+  val ulkomaillaHetkenAsunut = koskiSpecificOppijat.oppija("Matkailija", "Matilda", "010106A604F", kotikunta = Some("091"))
 
   //Jos luot uuden oppijan voi hetun generoida täältä: http://www.lintukoto.net/muut/henkilotunnus/index.php
   //Huomaa, että hetun pitää olla oikean kaltainen

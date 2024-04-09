@@ -1,12 +1,42 @@
 [
   {
-    "oid": "1.2.246.562.24.00000000181",
+    "oid": "1.2.246.562.24.00000000166",
     "kotikunta": 200,
     "kuntaanMuuttopv": "2006-01-01",
     "kunnastaPoisMuuttopv": "2024-03-01"
   },
   {
-    "oid": "1.2.246.562.24.00000000181",
+    "oid": "1.2.246.562.24.00000000166",
+    "kotikunta": 91,
+    "kuntaanMuuttopv": "2024-03-01",
+    "kunnastaPoisMuuttopv": null
+  },
+  {
+    "oid": "1.2.246.562.24.00000000167",
+    "kotikunta": 200,
+    "kuntaanMuuttopv": "2006-01-01",
+    "kunnastaPoisMuuttopv": "2024-03-01"
+  },
+  {
+    "oid": "1.2.246.562.24.00000000167",
+    "kotikunta": 91,
+    "kuntaanMuuttopv": "2022-03-01",
+    "kunnastaPoisMuuttopv": null
+  },
+  {
+    "oid": "1.2.246.562.24.00000000168",
+    "kotikunta": 91,
+    "kuntaanMuuttopv": "2006-01-01",
+    "kunnastaPoisMuuttopv": "2024-03-01"
+  },
+  {
+    "oid": "1.2.246.562.24.00000000168",
+    "kotikunta": 200,
+    "kuntaanMuuttopv": "2022-03-01",
+    "kunnastaPoisMuuttopv": null
+  },
+  {
+    "oid": "1.2.246.562.24.00000000168",
     "kotikunta": 91,
     "kuntaanMuuttopv": "2024-03-01",
     "kunnastaPoisMuuttopv": null
