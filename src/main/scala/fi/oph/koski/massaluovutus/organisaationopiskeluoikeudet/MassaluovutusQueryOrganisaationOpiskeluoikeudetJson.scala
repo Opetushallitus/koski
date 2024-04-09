@@ -15,7 +15,7 @@ import java.time.{LocalDate, LocalDateTime}
 
 @Title("(JSON)")
 @Description("Tulostiedostot sisältävät tiedot json-muodossa. Jokaista oppijaa kohden luodaan oma tiedostonsa, jonka alle opiskeluoikeudet on ryhmitelty.")
-@Description("Tiedostojen sisältö vastaa oppilashallintojärjestelmille tarkoitettua rajapintaa GET /koski/api/oppija/{oid}")
+@Description("Tiedostojen sisältö vastaa opintohallintojärjestelmille tarkoitettua rajapintaa GET /koski/api/oppija/{oid}")
 case class MassaluovutusQueryOrganisaationOpiskeluoikeudetJson(
   `type`: String = "organisaationOpiskeluoikeudet",
   @EnumValues(Set(QueryFormat.json))

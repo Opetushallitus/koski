@@ -1,6 +1,6 @@
-## Rajapinnat oppilashallintojärjestelmille
+## Rajapinnat opintohallintojärjestelmille
 
-Tällä sivulle kuvataan rajapinnat tiedonsiirroille oppilaitoksen tietojärjestelmistä (oppilashallintojärjestelmistä) Koskeen. Rajapinnan avulla Koskeen
+Tällä sivulle kuvataan rajapinnat tiedonsiirroille oppilaitoksen tietojärjestelmistä (opintohallintojärjestelmistä) Koskeen. Rajapinnan avulla Koskeen
 voi tallentaa tietoja oppijoiden opiskeluoikeuksista, opintosuorituksista ja läsnäolosta oppilaitoksissa. Rajapinnan avulla tietoja voi myös hakea ja muokata.
 
 Tiedonsiirron rajapinta on REST-tyyppinen, ja dataformaattina on JSON.
@@ -18,7 +18,7 @@ Samaan virhevastaukseen voi liittyä useampi virhekoodi/selite.
 
 ### Cross-site Request Forgery
 
-Opintopolun rajapintoihin on lisätty Cross-site Request Forgery -hyökkäyksiltä suojaava parametri. Oppilashallintojärjestelmän tekemiin kutsuihin, jotka ovat tyypiltään muuta kuin GET tai OPTION, on lisättävä seuraavat asiat:
+Opintopolun rajapintoihin on lisätty Cross-site Request Forgery -hyökkäyksiltä suojaava parametri. Opintohallintojärjestelmän tekemiin kutsuihin, jotka ovat tyypiltään muuta kuin GET tai OPTION, on lisättävä seuraavat asiat:
 
 - HTTP-otsake nimeltä `CSRF`. Arvo on vapaasti määriteltävä. Suositeltava arvo on sama kuin käytetty `Caller-Id`.
 - Eväste, jonka nimi on `CSRF`. Arvon on oltava sama kuin ylläolevan HTTP-otsakkeen.
