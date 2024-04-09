@@ -84,6 +84,7 @@ object Oppivelvollisuustiedot {
     val maksuttomuusLoppuuIka = valpasRajapäivätService.maksuttomuusLoppuuIka
 
     val oppivelvollisuudenUlkopuolisetKunnatList = validatedUnboundCodeList(oppivelvollisuudenUlkopuolisetKunnat)
+    val ulkomaanKunnat = validatedUnboundCodeList(List(200, 999).map(_.toString)) // TODO TOR-2031: Lasketaanko Ahvenanmaan kunnat tähän mukaan?
 
     sqlu"""
       create table #${s.name}.oppivelvollisuustiedot as
@@ -131,6 +132,19 @@ object Oppivelvollisuustiedot {
                                   and koulutusmoduuli_koodiarvo = 'S4'
                                   and vahvistus_paiva < '#$valpasLakiVoimassaPeruskoulustaValmistuneilla'::date)
                 )
+                and (
+                  --- Joko: Ei Opintopolkuun tallennettua kotikuntahistoriaa alaikäisyyden ajalta
+                  (select count(*) from #${s.name}.r_kotikuntahistoria
+                    where r_kotikuntahistoria.oppija_oid = henkilo.master_oid
+                    and r_kotikuntahistoria.muutto_pvm < henkilo.syntymaaika + interval '18 years') = 0
+
+                  --- ...tai on asunut Suomessa alaikäisenä
+                  or (select count(*) from #${s.name}.r_kotikuntahistoria
+                        where r_kotikuntahistoria.oppija_oid = henkilo.master_oid
+                        and r_kotikuntahistoria.muutto_pvm < henkilo.syntymaaika + interval '18 years'
+                        and not r_kotikuntahistoria.kotikunta = any(#$ulkomaanKunnat)) > 0
+               )
+
         ),
 
         ammattitutkinto as (
