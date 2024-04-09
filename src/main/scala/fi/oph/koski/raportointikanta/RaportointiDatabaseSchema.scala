@@ -618,6 +618,21 @@ object RaportointiDatabaseSchema {
     def pk = primaryKey("r_ytr_tutkintokokonaisuuden_kokeen_suoritus_pk", (ytrTutkintokokonaisuudenSuoritusId, ytrKokeenSuoritusId))
   }
   class RYtrTutkintokokonaisuudenKokeenSuoritusTableTemp(tag: Tag) extends RYtrTutkintokokonaisuudenKokeenSuoritusTable(tag, Temp)
+
+  class RKotikuntahistoriaTable(tag: Tag, schema: Schema = Public) extends Table[RKotikuntahistoriaRow](tag, schema.nameOpt, "r_kotikuntahistoria") {
+    val oppijaOid = column[String]("oppija_oid")
+    val kotikunta = column[Long]("kotikunta")
+    val muuttoPvm = column[Date]("muutto_pvm")
+    val poismuuttoPvm = column[Option[Date]]("poismuutto_pvm")
+
+    def * = (
+      oppijaOid,
+      kotikunta,
+      muuttoPvm,
+      poismuuttoPvm,
+    ) <> (RKotikuntahistoriaRow.tupled, RKotikuntahistoriaRow.unapply)
+  }
+  class RKotikuntahistoriaTableTemp(tag: Tag) extends RKotikuntahistoriaTable(tag, Temp)
 }
 
 trait AikajaksoRow[A] {
@@ -1021,6 +1036,13 @@ case class RYtrTutkintokokonaisuudenKokeenSuoritusRow(
 
   // Tulevaisuutta varten: uuden lain myötä kokeita voi sisällyttää aiemmista tutkintokokonaisuuksista
   sisällytetty: Boolean
+)
+
+case class RKotikuntahistoriaRow(
+  oppijaOid: String,
+  kotikunta: Long,
+  muuttoPvm: Date,
+  poismuuttoPvm: Option[Date],
 )
 
 sealed trait Schema {

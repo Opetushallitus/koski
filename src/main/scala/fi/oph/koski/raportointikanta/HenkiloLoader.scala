@@ -32,6 +32,10 @@ object HenkilöLoader extends Logging {
       db.loadHenkilöt(batchRows)
       db.setLastUpdate(name)
       batchRows.foreach(masterOids += _.masterOid)
+
+      val kotikuntahistoria = opintopolkuHenkilöFacade.findKuntahistoriat(batchOids).map(_.toDbRow)
+      db.loadKotikuntahistoria(kotikuntahistoria)
+
       batchRows.size
     }).sum
 

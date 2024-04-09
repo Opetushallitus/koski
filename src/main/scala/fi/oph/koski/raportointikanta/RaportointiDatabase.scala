@@ -11,7 +11,6 @@ import fi.oph.koski.raportointikanta.RaportointiDatabaseSchema._
 import fi.oph.koski.schema.Opiskeluoikeus.Oid
 import fi.oph.koski.schema.{Opiskeluoikeus, Organisaatio}
 import fi.oph.koski.util.DateOrdering.{ascedingSqlTimestampOrdering, sqlDateOrdering}
-import fi.oph.koski.util.Retry
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
 import fi.oph.scalaschema.annotation.SyntheticProperty
 import org.postgresql.util.PSQLException
@@ -28,7 +27,7 @@ object RaportointiDatabase {
   // Jälkimmäinen arvo on skeemasta laskettu tunniste (kts. QueryMethods::getSchemaHash).
   // Testi nimeltä "Schema version has been updated" tarkastaa että versionumeroa päivitetään skeemamuutosten
   // myötä.
-  def schemaVersion: (Int, String) = (7, "529b7d674a5b4dc45d4074a50144aa44")
+  def schemaVersion: (Int, String) = (8, "57dd2abddf536ee4a00bdde7675612b2")
 }
 
 class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging with QueryMethods {
@@ -63,6 +62,7 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
     RYtrTutkintokerranSuoritukset,
     RYtrKokeenSuoritukset,
     RYtrTutkintokokonaisuudenKokeenSuoritukset,
+    RKotikuntahistoria,
   )
 
   def vacuumAnalyze(): Unit = {
@@ -378,6 +378,9 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
   def loadHenkilöt(henkilöt: Seq[RHenkilöRow]): Unit =
     runDbSync(RHenkilöt ++= henkilöt)
 
+  def loadKotikuntahistoria(historia: Seq[RKotikuntahistoriaRow]): Unit =
+    runDbSync(RKotikuntahistoria ++= historia)
+
   def loadOrganisaatiot(organisaatiot: Seq[ROrganisaatioRow]): Unit =
     runDbSync(ROrganisaatiot ++= organisaatiot)
 
@@ -588,6 +591,11 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
   lazy val RYtrTutkintokokonaisuudenKokeenSuoritukset = schema match {
     case Public => TableQuery[RYtrTutkintokokonaisuudenKokeenSuoritusTable]
     case Temp => TableQuery[RYtrTutkintokokonaisuudenKokeenSuoritusTableTemp]
+  }
+
+  lazy val RKotikuntahistoria = schema match {
+    case Public => TableQuery[RKotikuntahistoriaTable]
+    case Temp => TableQuery[RKotikuntahistoriaTableTemp]
   }
 }
 
