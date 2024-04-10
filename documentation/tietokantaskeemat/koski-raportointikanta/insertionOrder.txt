@@ -16,6 +16,7 @@ paallekkaiset_opiskeluoikeudet
 r_henkilo
 r_henkilo_vipunen
 r_koodisto_koodi
+r_kotikuntahistoria
 r_mitatoitu_opiskeluoikeus
 r_opiskeluoikeus
 r_opiskeluoikeus_aikajakso
