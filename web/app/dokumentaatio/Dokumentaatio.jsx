@@ -106,6 +106,12 @@ const dokumentaatioContentP = (location, contentP) =>
             location,
             ''
           )}
+          {naviLink(
+            '/koski/dokumentaatio/rajapinnat/massaluovutus/koulutuksenjarjestajat',
+            'Massaluovutusrajapinnat koulutuksenjärjestäjille',
+            location,
+            ''
+          )}
         </nav>
         <div className="main-content dokumentaatio-content">
           {content.content}
