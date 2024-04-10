@@ -90,7 +90,7 @@ const dokumentaatioContentP = (location, contentP) =>
           )}
           {naviLink(
             '/koski/dokumentaatio/rajapinnat/opintojarjestelmat',
-            'Rajapinnat oppilas\u00adhallintojärjestelmille',
+            'Rajapinnat opinto\u00adhallintojärjestelmille',
             location,
             ''
           )}
@@ -103,6 +103,12 @@ const dokumentaatioContentP = (location, contentP) =>
           {naviLink(
             '/koski/dokumentaatio/rajapinnat/palveluvayla-omadata',
             'Palveluväylä- ja omadata-rajapinnat',
+            location,
+            ''
+          )}
+          {naviLink(
+            '/koski/dokumentaatio/rajapinnat/massaluovutus/koulutuksenjarjestajat',
+            'Massaluovutusrajapinnat koulutuksenjärjestäjille',
             location,
             ''
           )}

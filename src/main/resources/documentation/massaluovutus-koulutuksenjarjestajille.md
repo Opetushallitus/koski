@@ -1,4 +1,4 @@
-# Massaluovutusrajapinta koulutusjärjestäjille
+# Massaluovutusrajapinta koulutuksenjärjestäjille
 
 Massaluovutusrajapinta on tarkoitettu pidempikestoisten kyselyiden tekemiseen KOSKI-datasta.
 Rajapintaa käytetään seuraavanlaisesti.
