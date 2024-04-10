@@ -90,7 +90,7 @@ const dokumentaatioContentP = (location, contentP) =>
           )}
           {naviLink(
             '/koski/dokumentaatio/rajapinnat/opintojarjestelmat',
-            'Rajapinnat oppilas\u00adhallintojärjestelmille',
+            'Rajapinnat opinto\u00adhallintojärjestelmille',
             location,
             ''
           )}
