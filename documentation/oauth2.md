@@ -182,7 +182,7 @@ Tämä kannattanee toteuttaa niin, että sallitut scope:t on sidottu tiettyihin 
 käyttäjillä on. Jos käyttöoikeusroolit ohittavaa hienojakaistamista tarvitaan, voi tutkia, saisiko listan sallituista scope:eista
 tallennettua suoraan koodiston yhteyteen (ks. H).
 
-### (N.1) Client-applikaatio varmistaa käyttäjän identiteetin datan mukana välitettävän käyttäjän tunnisteen avulla
+### (N.1) Datan saamisen jälkeen Hyödyntäjä varmistaa käyttäjän identiteetin datan mukana välitettävän käyttäjän tunnisteen avulla
 
 Tämä varmistaminen pitää tehdä, jotta käyttäjä ei voi tehdä kuvan vaiheen 2 tunnistautumista jonain muuna henkilönä kuin henkilö, jonka
 tietoja Client:ssa on tarkoitus käyttää. Eli käyttäjä ei esim. voi yrittää käyttää toisen henkilön tutkintotodistusta itse digilompakon kautta. Tämä toteutetaan niin,
@@ -192,7 +192,7 @@ voi sitten verrata näitä tietoja itsellään oleviin henkilötietoihin ja joko
 Yleiseurooppalaisen käyttäjän tunnistamishaasteeseen ei tässä ratkaisussa oteta kantaa, KOSKI-palvelu välittäisi toistaiseksi vain Opintopolun
 oppijanumerorekisterissä jo olevia henkilötietoja.
 
-(N.2) Eräs toinen vaihtoehto voisi olla, että käyttäjän tunnisteet enkoodattaisi ja kryptattaisi jossain spesifoidussa formaatissa
-osaksi code_challenge:ä vaiheissa 1 ja 3, ja KOSKI-palvelu vertailisi sitten tätä tietoa vaiheessa 4 code_verifier:in avulla. Tällöin henkilötietoja ei
+(N.2) Eräs toinen vaihtoehto voisi olla, että käyttäjän tunnisteet enkoodattaisi ja kryptattaisi jossain spesifioidussa formaatissa
+osaksi code_challenge:ä (tai sen rinnalle) vaiheissa 1 ja 3, ja KOSKI-palvelu vertailisi sitten tätä tietoa vaiheessa 4 code_verifier:in avulla. Tällöin henkilötietoja ei
 tarvitsisi välittää lainkaan itse datassa. Tämä olisi kuitenkin OAauth 2.0 -standardin authorization code flown oma laajennus, joka monimutkaistaisi toteutusta.
 Ja koska tämä on oma laajennus, pitäisi sen tietoturvavaikutukset ja mahdolliset hyökkäysvektorit pohtia tarkasti, jos tätä halutaan harkita.
