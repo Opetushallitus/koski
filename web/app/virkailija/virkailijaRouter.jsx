@@ -10,7 +10,7 @@ import {
   dokumentaatioYleistäP,
   dokumentaatioTietomalliP,
   dokumentaatioKoodistotP,
-  dokumentaatioOppilashallintojärjestelmätP,
+  dokumentaatioOpintohallintojärjestelmätP,
   dokumentaatioLuovutuspalveluP,
   dokumentaatioPalveluväyläOmadataP,
   dokumentaatioKyselytP
@@ -53,9 +53,9 @@ export const routeP = locationP
     } else if (path === '/koski/dokumentaatio/koodistot') {
       return dokumentaatioKoodistotP()
     } else if (
-      path === '/koski/dokumentaatio/rajapinnat/oppilashallintojarjestelmat'
+      path === '/koski/dokumentaatio/rajapinnat/opintohallintojarjestelmat'
     ) {
-      return dokumentaatioOppilashallintojärjestelmätP()
+      return dokumentaatioOpintohallintojärjestelmätP()
     } else if (path === '/koski/dokumentaatio/rajapinnat/luovutuspalvelu') {
       return dokumentaatioLuovutuspalveluP()
     } else if (
