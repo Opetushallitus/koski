@@ -73,7 +73,7 @@ tehdyt pyynnöt käyttävät tätä mekanismia.
 Tämä vaatii ainakin sen verran työtä nginx-luovutuspalveluumme, että muokataan virhekoodit ja -ilmoitukset OAuth 2.0:n MTLS-autentikointitavan
 (https://www.rfc-editor.org/rfc/rfc8705.html) mukaisiksi.
 
-(B.2) Kolmas vaihtoehto tähän autentikointiin olisi: Eräs OAuth 2.0 -standardin tarjoamien keinojen mukainen vaihtoehto
+(B.2) Toinen vaihtoehto tähän autentikointiin olisi: Eräs OAuth 2.0 -standardin tarjoamien keinojen mukainen vaihtoehto
 olisi tehdä Hyödyntäjä-backendin tunnistaminen KOSKI-backendissä jaetulla client secret -salaisuudella kuvan stepissä 5.
 Ja lisäksi käsitellä stepin 6 access token -pyynnöt ilman erillistä autentikointia. Se olisi luultavasti uusille hyödyntäjille
 helpompi ottaa käyttöön, koska niissä voisi käyttää mahdollisesti valmiita OAuth 2.0 -kirjastoja ilman laajennuksia sen
