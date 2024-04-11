@@ -89,7 +89,7 @@ const dokumentaatioContentP = (location, contentP) =>
             ''
           )}
           {naviLink(
-            '/koski/dokumentaatio/rajapinnat/opintojarjestelmat',
+            '/koski/dokumentaatio/rajapinnat/opintohallintojarjestelmat',
             'Rajapinnat opinto\u00adhallintojärjestelmille',
             location,
             ''
@@ -220,9 +220,9 @@ export const dokumentaatioKoodistotP = () =>
     }))
   )
 
-export const dokumentaatioOppilashallintojärjestelmätP = () =>
+export const dokumentaatioOpintohallintojärjestelmätP = () =>
   dokumentaatioContentP(
-    '/koski/dokumentaatio/rajapinnat/oppilashallintojarjestelmat',
+    '/koski/dokumentaatio/rajapinnat/opintohallintojarjestelmat',
     infoP().map(({ apiOperations, htmlSections }) => ({
       content: (
         <div>
