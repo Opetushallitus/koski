@@ -4,7 +4,7 @@ import java.time.LocalDate
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koodisto.{KoodistoViitePalvelu, MockKoodistoViitePalvelu}
 import fi.oph.koski.log.Logging
-import fi.oph.koski.oppivelvollisuustieto.Oppivelvollisuustiedot.oppivelvollisuudenUlkopuolisetKunnat
+import fi.oph.koski.oppivelvollisuustieto.Oppivelvollisuustiedot.oppivelvollisuudenUlkopuolisetKunnatTaiKuntaVirheellinen
 import fi.oph.koski.raportit.AhvenanmaanKunnat.ahvenanmaanKunnat
 import fi.oph.koski.schema._
 import fi.oph.koski.schema.annotation.KoodistoUri
@@ -40,7 +40,7 @@ case class LaajatOppijaHenkilöTiedot(
 
   def laajennetunOppivelvollisuudenUlkopuolinenKunnanPerusteella: Boolean = {
     kotikunta match {
-      case Some(k) => oppivelvollisuudenUlkopuolisetKunnat.contains(k)
+      case Some(k) => oppivelvollisuudenUlkopuolisetKunnatTaiKuntaVirheellinen.contains(k)
       case _ => true
     }
   }

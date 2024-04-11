@@ -319,6 +319,7 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
       (KoskiSpecificMockOppijat.suomeenTäysiikäisenäMuuttanut, AmmatillinenReforminMukainenPerustutkinto2022Example.opiskeluoikeusJotpa),
       (KoskiSpecificMockOppijat.suomeenAlaikäisenäMuuttanut, AmmatillinenReforminMukainenPerustutkinto2022Example.opiskeluoikeusJotpa),
       (KoskiSpecificMockOppijat.ulkomaillaHetkenAsunut, AmmatillinenReforminMukainenPerustutkinto2022Example.opiskeluoikeusJotpa),
+      (KoskiSpecificMockOppijat.suomeenAhvenanmaaltaTäysiikäisenäMuuttanut, AmmatillinenReforminMukainenPerustutkinto2022Example.opiskeluoikeusJotpa),
     )
   }
 

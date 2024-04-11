@@ -442,6 +442,10 @@ class OppivelvollisuustietoSpec
       "Suomesta alaikäisenä pois muuttanut ja täysi-ikäisenä takaisin muuttanut on oppivelvollisuden alainen" in {
         isOppivelvollinen("1.2.246.562.24.00000000168") should be(true)
       }
+
+      "Ahvenanmaalta täysi-ikäisenä Manner-Suomeen muuttanut ei ole oppivelvollisuden alainen" in {
+        isOppivelvollinen("1.2.246.562.24.00000000169") should be(false)
+      }
     }
   }
 

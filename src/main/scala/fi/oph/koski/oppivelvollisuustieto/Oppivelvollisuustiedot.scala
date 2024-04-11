@@ -11,10 +11,13 @@ import java.time.LocalDate
 
 
 object Oppivelvollisuustiedot {
-    def oppivelvollisuudenUlkopuolisetKunnat = ahvenanmaanKunnat ++ List(
-      "198",  // Ei kotikuntaa Suomessa
-      "200",  // Ulkomaat
-      "",     // Virheellinen null
+    def oppivelvollisuudenUlkopuolisetKunnatTaiKuntaVirheellinen: List[String] =
+      oppivelvollisuudenUlkopuolisetKunnat ++ List("")
+
+  def oppivelvollisuudenUlkopuolisetKunnat: List[String] =
+    ahvenanmaanKunnat ++ List(
+      "198", // Ei kotikuntaa Suomessa
+      "200", // Ulkomaat
     )
 
   def queryByOid(oid: String, db: RaportointiDatabase): Option[Oppivelvollisuustieto] = {
@@ -83,8 +86,8 @@ object Oppivelvollisuustiedot {
     val oppivelvollisuusLoppuuIka = valpasRajapäivätService.oppivelvollisuusLoppuuIka
     val maksuttomuusLoppuuIka = valpasRajapäivätService.maksuttomuusLoppuuIka
 
-    val oppivelvollisuudenUlkopuolisetKunnatList = validatedUnboundCodeList(oppivelvollisuudenUlkopuolisetKunnat)
-    val ulkomaanKunnat = validatedUnboundCodeList(List(200, 999).map(_.toString)) // TODO TOR-2031: Lasketaanko Ahvenanmaan kunnat tähän mukaan?
+    val ulkopuolisetKunnatTaiKuntaVirheellinen = validatedUnboundCodeList(oppivelvollisuudenUlkopuolisetKunnatTaiKuntaVirheellinen)
+    val ulkopuolisetKunnat = validatedUnboundCodeList(oppivelvollisuudenUlkopuolisetKunnat)
 
     sqlu"""
       create table #${s.name}.oppivelvollisuustiedot as
@@ -110,7 +113,7 @@ object Oppivelvollisuustiedot {
               where syntymaaika >= '#$valpasLakiVoimassaVanhinSyntymäaika'::date
                 and (
                   turvakielto = true
-                  or not (kotikunta is null or kotikunta = any(#$oppivelvollisuudenUlkopuolisetKunnatList))
+                  or not (kotikunta is null or kotikunta = any(#$ulkopuolisetKunnatTaiKuntaVirheellinen))
                 )
                 and master_oid not in (
                                 select
@@ -142,7 +145,7 @@ object Oppivelvollisuustiedot {
                   or (select count(*) from #${s.name}.r_kotikuntahistoria
                         where r_kotikuntahistoria.oppija_oid = henkilo.master_oid
                         and r_kotikuntahistoria.muutto_pvm < henkilo.syntymaaika + interval '18 years'
-                        and not r_kotikuntahistoria.kotikunta = any(#$ulkomaanKunnat)) > 0
+                        and not r_kotikuntahistoria.kotikunta = any(#$ulkopuolisetKunnat)) > 0
                )
 
         ),
