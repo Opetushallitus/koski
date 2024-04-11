@@ -22,7 +22,7 @@ class MassaluovutusService(application: KoskiApplication) extends Logging {
   private val maxAllowedDatabaseReplayLag: Duration = application.config.getDuration("kyselyt.backpressureLimits.maxDatabaseReplayLag")
   private val readDatabaseId = MassaluovutusUtils.readDatabaseId(application.config)
   private val databaseLoadLimiter = new DatabaseLoadLimiter(application, metrics, readDatabaseId)
-  private val queryMaxRunningTime = FiniteDuration(application.config.getDuration("kyselyt.timeout").toSeconds, TimeUnit.SECONDS)
+  private val queryMaxRunningTime = FiniteDuration(application.config.getDuration("kyselyt.timeout").getSeconds, TimeUnit.SECONDS)
 
   private val queries = new QueryRepository(
     db = application.masterDatabase.db,
