@@ -45,7 +45,7 @@ luovutuspalvelu -down-> koski_backend : 5, 6 edelleenvälitys
 client -> user_agent : 1. Avaa käyttäjälle Kosken tarjoama tietojen luovutus -sivu\n\n{client_id, redirect_uri, code_challenge, [scope]}
 user --> user_agent : 2. Tee KOSKI-login + käyttöliittymän kautta\nmahdolliset lisärajoitukset jaettavalle sisällölle\nja anna lupa clientille tietojen käyttöön\n\n{user-id, scope}
 user_agent -> koski_backend : 3. Lähetä pyyntö\n"authorization code":n luomiseksi\n\n{user-id, response_type=code, client_id, scope,\nredirect_uri, state, code_challenge, code_challenge_method=S256}
-koski_backend --> client : 4. Lähetä generoitu "authorization code"\nselaimen redirectiä käyttäen\n\n{redirect_uri, code}
+koski_backend --> client : 4. Lähetä generoitu "authorization code"\nselaimen redirectiä käyttäen\n\n{redirect_uri, state, code}
 client --> luovutuspalvelu : 5. Vaihda "authorization code"\n"access token":iin\n\n{mtls-client-cert, grant_type=authorization_code,\nclient_id, code, code_verifier}\n => {access_token, [refresh_token]}
 client --> luovutuspalvelu : 6. Hae jaetut tiedot\n"access token":lla\n\n {mtls-client-cert, access_token}\n => {data}
 
