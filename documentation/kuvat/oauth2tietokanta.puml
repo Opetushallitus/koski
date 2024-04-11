@@ -1,0 +1,30 @@
+@startuml
+
+title OAuth2 -tietokanta KOSKI-backendissä
+rectangle #White {
+
+Note as taulu
+ Access token:eille ei toistaiseksi tarvita omaa
+ taulua, koska niiden elinkaari on korkeintaan
+ sama kuin authorization code:lla.
+end note
+
+entity "authorization_code" as auth {
+  *id : int <<generated>>
+  --
+  *code : uuid
+  *oppija_oid : text <<FK>>
+  *client_id : text
+  *scope : array<text>
+  *voimassa_asti : date
+  access_token : uuid
+  code_challenge : text
+  code_challenge_method : text
+
+  *luotu : timestamp
+  *muokattu : timestamp
+}
+
+}
+
+@enduml
