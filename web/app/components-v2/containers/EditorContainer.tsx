@@ -179,8 +179,8 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
               }}
             >
               {lisatiedotOpen
-                ? 'lisatiedot:sulje_lisatiedot'
-                : 'lisatiedot:nayta_lisatiedot'}
+                ? t('lisatiedot:sulje_lisatiedot')
+                : t('lisatiedot:nayta_lisatiedot')}
             </FlatButton>
             {lisatiedotOpen && <LisätiedotContainer form={props.form} />}
             <Spacer />
