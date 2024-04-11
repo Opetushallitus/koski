@@ -37,6 +37,10 @@ olemassaolevaa KOSKI-luovutuspalvelun tukemaa Mutual TLS (MTLS) client certifica
 [png/oauth2tietokanta.png](kuvat/png/oauth2tietokanta.png)
 [svg/oauth2tietokanta.svg](kuvat/svg/oauth2tietokanta.svg)
 
+Jaetun datan sisältö (vaiheen 6. vastausviestissä) on samanmuotoinen kuin jo toteutetuissa ratkaisuissa.
+Ks. esim. https://virkailija.testiopintopolku.fi/koski/json-schema-viewer/?schema=suoritetut-tutkinnot-oppija-schema.json , mikä sopisi melkein
+sellaisenaan esim. scope:n "opiskeluoikeudet:suoritetut_tutkinnot henkilötiedot:nimi_ja_syntymäaika" mukaiseksi jaetuksi JSON-sisällöksi.
+
 ## Toteutusehdotuksen arkkitehtuuripäätökset
 
 Otsikkoina on ehdotettu päätös. Otsikossa kirjaimen lisäksi oleva numerokoodi indikoi, että dokumentoituna otsikon
