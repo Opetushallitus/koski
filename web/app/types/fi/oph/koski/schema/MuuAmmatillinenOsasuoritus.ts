@@ -3,9 +3,13 @@ import {
   isMuunAmmatillisenKoulutuksenOsasuorituksenSuoritus
 } from './MuunAmmatillisenKoulutuksenOsasuorituksenSuoritus'
 import {
-  TutkinnonOsaaPienemmänKokonaisuudenSuoritus,
-  isTutkinnonOsaaPienemmänKokonaisuudenSuoritus
-} from './TutkinnonOsaaPienemmanKokonaisuudenSuoritus'
+  PaikalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenSuoritus,
+  isPaikalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenSuoritus
+} from './PaikalliseenTutkinnonOsaanLiittyvanTutkinnonOsaaPienemmanKokonaisuudenSuoritus'
+import {
+  ValtakunnalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenSuoritus,
+  isValtakunnalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenSuoritus
+} from './ValtakunnalliseenTutkinnonOsaanLiittyvanTutkinnonOsaaPienemmanKokonaisuudenSuoritus'
 import {
   YhteisenTutkinnonOsanOsaAlueenSuoritus,
   isYhteisenTutkinnonOsanOsaAlueenSuoritus
@@ -18,12 +22,18 @@ import {
  */
 export type MuuAmmatillinenOsasuoritus =
   | MuunAmmatillisenKoulutuksenOsasuorituksenSuoritus
-  | TutkinnonOsaaPienemmänKokonaisuudenSuoritus
+  | PaikalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenSuoritus
+  | ValtakunnalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenSuoritus
   | YhteisenTutkinnonOsanOsaAlueenSuoritus
 
 export const isMuuAmmatillinenOsasuoritus = (
   a: any
 ): a is MuuAmmatillinenOsasuoritus =>
   isMuunAmmatillisenKoulutuksenOsasuorituksenSuoritus(a) ||
-  isTutkinnonOsaaPienemmänKokonaisuudenSuoritus(a) ||
+  isPaikalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenSuoritus(
+    a
+  ) ||
+  isValtakunnalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenSuoritus(
+    a
+  ) ||
   isYhteisenTutkinnonOsanOsaAlueenSuoritus(a)
