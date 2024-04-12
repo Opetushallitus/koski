@@ -39,6 +39,7 @@ describe('Muu ammatillinen koulutus', function () {
             'Tiedottaminen ja asiakaspalvelu 20 op Suoritettu\n' +
             'KISI-tentti Suoritettu\n' +
             'ATK-Ajokortti\n' +
+            'Öljynvaihto kuorma-autoihin\n' +
             'Fysiikka ja kemia Hyväksytty\n' +
             'Äidinkieli, Suomen kieli ja kirjallisuus Hyväksytty\n' +
             'Yhteensä 40 op'
@@ -263,12 +264,12 @@ describe('Muu ammatillinen koulutus', function () {
         })
       })
 
-      describe('Tutkinnon osaa pienemmän kokonaisuuden suorituksen lisääminen', function () {
+      describe('Valtakunnalliseen tutkinnon osaan liittyvän tutkinnon osaa pienemmän kokonaisuuden suorituksen lisääminen', function () {
         before(
           editor.edit,
           opinnot
             .tutkinnonOsat()
-            .lisääTutkinnonOsaaPienempiKokonaisuus(
+            .lisääValtakunnalliseenTutkinnonOsaanLiittyväTutkinnonOsaaPienempiKokonaisuus(
               'Autoalan perustutkinto',
               'Auton korjaaminen',
               'Auton tuunaus'
@@ -279,6 +280,25 @@ describe('Muu ammatillinen koulutus', function () {
         it('onnistuu', function () {
           expect(opinnot.tutkinnonOsat().osienTekstit()).to.include(
             'Auton tuunaus'
+          )
+        })
+      })
+
+      describe('Paikalliseen tutkinnon osaan liittyvän tutkinnon osaa pienemmän kokonaisuuden suorituksen lisääminen', function () {
+        before(
+          editor.edit,
+          opinnot
+            .tutkinnonOsat()
+            .lisääPaikalliseenTutkinnonOsaanLiittyväTutkinnonOsaaPienempiKokonaisuus(
+              'Sähkö- ja automaatiotekniikan perustutkinto',
+              'Automaattivaihteistot'
+            ),
+          editor.saveChangesAndWaitForSuccess
+        )
+
+        it('onnistuu', function () {
+          expect(opinnot.tutkinnonOsat().osienTekstit()).to.include(
+            'Automaattivaihteistot'
           )
         })
       })
@@ -355,6 +375,11 @@ describe('Muu ammatillinen koulutus', function () {
             .tutkinnonOsa(0)
             .liittyyTutkinnonOsaan()
             .valitseTutkinnonOsa('Varaosatyö ja varaston hallinta'),
+          opinnot
+            .tutkinnonOsat()
+            .tutkinnonOsa(2)
+            .liittyyTutkintoon()
+            .valitseTutkinto('Automekaanikon erikoisammattitutkinto'),
           editor.saveChangesAndWaitForSuccess,
           opinnot.avaaKaikki
         )
@@ -371,6 +396,10 @@ describe('Muu ammatillinen koulutus', function () {
               'Tietokoneiden huolto 4 osp\n' +
               'Kuvaus Kurssilla opitaan korjaamaan tietokoneita.\n' +
               'Liittyy tutkinnon osaan Asunto-osakeyhtiön hallinnon hoitaminen\n' +
+              '\n' +
+              'Öljynvaihto kuorma-autoihin\n' +
+              'Kuvaus Öljynvaihdon suorittaminen erilaisissa kuorma-autoissa synteettisiä öljyjä käyttäen\n' +
+              'Liittyy tutkintoon Automekaanikon erikoisammattitutkinto 357304 OPH-1886-2017\n' +
               '\n' +
               'Fysiikka ja kemia Hyväksytty\n' +
               'Pakollinen kyllä\n' +
@@ -404,15 +433,21 @@ describe('Muu ammatillinen koulutus', function () {
         })
       })
 
-      describe('Tutkinnon osaa pienemmän kokonaisuuden suorituksen lisääminen', function () {
+      describe('Tutkinnon osaan liittyvän tutkinnon osaa pienemmän kokonaisuuden suorituksen lisääminen', function () {
         before(
           editor.edit,
           opinnot
             .tutkinnonOsat()
-            .lisääTutkinnonOsaaPienempiKokonaisuus(
+            .lisääValtakunnalliseenTutkinnonOsaanLiittyväTutkinnonOsaaPienempiKokonaisuus(
               'Autoalan perustutkinto',
               'Auton korjaaminen',
               'Auton tuunaus'
+            ),
+          opinnot
+            .tutkinnonOsat()
+            .lisääPaikalliseenTutkinnonOsaanLiittyväTutkinnonOsaaPienempiKokonaisuus(
+              'Sähkö- ja automaatiotekniikan perustutkinto',
+              'Automaattivaihteistot'
             ),
           editor.saveChangesAndWaitForSuccess
         )
@@ -421,11 +456,13 @@ describe('Muu ammatillinen koulutus', function () {
           expect(opinnot.tutkinnonOsat().osienTekstit()).to.equal(
             'Asunto- ja kiinteistöosakeyhtiön talous ja verotus Hyväksytty\n' +
               '\nTietokoneiden huolto 4 osp\n' +
+              '\nÖljynvaihto kuorma-autoihin\n' +
               '\nFysiikka ja kemia Hyväksytty\n' +
               '\nÄidinkieli, Suomen kieli ja kirjallisuus Hyväksytty\n' +
               '\nEtiikka\n' +
               '\nPsykologia 5 osp Hyväksytty\n' +
-              '\nAuton tuunaus'
+              '\nAuton tuunaus\n' +
+              '\nAutomaattivaihteistot'
           )
         })
       })

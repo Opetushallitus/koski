@@ -142,7 +142,7 @@ case class MuuAmmatillinenRaporttiBuilder(db: DB) extends QueryMethods {
     ),
 
     suoritettujen_tutkinnon_osaa_pienempien_kokonaisuuksien_lukumäärä as (
-      select paatason_suoritus_id, count(*) as lkm from osasuoritukset where toteuttavan_luokan_nimi = 'tutkinnonosaapienemmänkokonaisuudensuoritus' and arviointi_hyvaksytty group by paatason_suoritus_id
+      select paatason_suoritus_id, count(*) as lkm from osasuoritukset where (toteuttavan_luokan_nimi = 'valtakunnalliseentutkinnonosaanliittyväntutkinnonosaapienemmänkokonaisuudensuoritus' or toteuttavan_luokan_nimi = 'paikalliseentutkinnonosaanliittyväntutkinnonosaapienemmänkokonaisuudensuoritus') and arviointi_hyvaksytty group by paatason_suoritus_id
     ),
 
     suoritettujen_muun_ammatillisen_koulutuksen_osasuoritusten_lukumäärä as (

@@ -87,7 +87,8 @@ export default ({
   const addTutkinnonOsa = (
     koulutusmoduuli,
     tutkinto,
-    liittyyTutkinnonOsaan
+    liittyyTutkinnonOsaan,
+    liittyyTutkintoon
   ) => {
     const group = groupId === NON_GROUPED ? undefined : groupId
     const tutkinnonOsa = createTutkinnonOsa(
@@ -96,7 +97,8 @@ export default ({
       tutkinto,
       group,
       groupTitles,
-      liittyyTutkinnonOsaan
+      liittyyTutkinnonOsaan,
+      liittyyTutkintoon
     )
     pushSuoritus(setExpanded)(tutkinnonOsa)
   }
@@ -170,7 +172,8 @@ export const createTutkinnonOsa = (
   tutkinto,
   groupId,
   groupTitles,
-  liittyyTutkinnonOsaan
+  liittyyTutkinnonOsaan,
+  liittyyTutkintoon
 ) => {
   let tutkinnonOsa = modelSet(
     suoritusPrototype,
@@ -213,6 +216,22 @@ export const createTutkinnonOsa = (
       'liittyyTutkinnonOsaan'
     )
   }
+
+  if (liittyyTutkintoon && modelLookup(tutkinnonOsa, 'liittyyTutkintoon')) {
+    tutkinnonOsa = modelSetData(
+      tutkinnonOsa,
+      {
+        tunniste: {
+          koodiarvo: liittyyTutkintoon.tutkintoKoodi,
+          nimi: liittyyTutkintoon.nimi,
+          koodistoUri: 'koulutus'
+        },
+        perusteenDiaarinumero: liittyyTutkintoon.diaarinumero
+      },
+      'liittyyTutkintoon'
+    )
+  }
+
   return tutkinnonOsa
 }
 

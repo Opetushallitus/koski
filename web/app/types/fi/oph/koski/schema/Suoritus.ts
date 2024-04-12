@@ -329,6 +329,10 @@ import {
   isPYPVuosiluokanSuoritus
 } from './PYPVuosiluokanSuoritus'
 import {
+  PaikalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenSuoritus,
+  isPaikalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenSuoritus
+} from './PaikalliseenTutkinnonOsaanLiittyvanTutkinnonOsaaPienemmanKokonaisuudenSuoritus'
+import {
   PerusopetukseenValmistavanOpetuksenOppiaineenSuoritus,
   isPerusopetukseenValmistavanOpetuksenOppiaineenSuoritus
 } from './PerusopetukseenValmistavanOpetuksenOppiaineenSuoritus'
@@ -455,10 +459,6 @@ import {
   isTutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus
 } from './TutkinnonOsaaPienemmistaKokonaisuuksistaKoostuvaSuoritus'
 import {
-  TutkinnonOsaaPienemmänKokonaisuudenSuoritus,
-  isTutkinnonOsaaPienemmänKokonaisuudenSuoritus
-} from './TutkinnonOsaaPienemmanKokonaisuudenSuoritus'
-import {
   TutkintokoulutukseenValmentavaKoulutuksenMuunOsanSuoritus,
   isTutkintokoulutukseenValmentavaKoulutuksenMuunOsanSuoritus
 } from './TutkintokoulutukseenValmentavaKoulutuksenMuunOsanSuoritus'
@@ -510,6 +510,10 @@ import {
   ValmaKoulutuksenSuoritus,
   isValmaKoulutuksenSuoritus
 } from './ValmaKoulutuksenSuoritus'
+import {
+  ValtakunnalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenSuoritus,
+  isValtakunnalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenSuoritus
+} from './ValtakunnalliseenTutkinnonOsaanLiittyvanTutkinnonOsaaPienemmanKokonaisuudenSuoritus'
 import {
   VapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus,
   isVapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus
@@ -677,6 +681,7 @@ export type Suoritus =
   | OsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus
   | PYPOppiaineenSuoritus
   | PYPVuosiluokanSuoritus
+  | PaikalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenSuoritus
   | PerusopetukseenValmistavanOpetuksenOppiaineenSuoritus
   | PerusopetukseenValmistavanOpetuksenSuoritus
   | PerusopetuksenLisäopetuksenOppiaineenSuoritus
@@ -710,7 +715,6 @@ export type Suoritus =
   | TelmaKoulutuksenOsanSuoritus
   | TelmaKoulutuksenSuoritus
   | TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus
-  | TutkinnonOsaaPienemmänKokonaisuudenSuoritus
   | TutkintokoulutukseenValmentavaKoulutuksenMuunOsanSuoritus
   | TutkintokoulutukseenValmentavanKoulutuksenSuoritus
   | TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosanOsasuorituksenSuoritus
@@ -724,6 +728,7 @@ export type Suoritus =
   | VSTKotoutumiskoulutusValinnaistenOpintojenAlaosasuoritus
   | ValmaKoulutuksenOsanSuoritus
   | ValmaKoulutuksenSuoritus
+  | ValtakunnalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenSuoritus
   | VapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus
   | VapaanSivistystyönJotpaKoulutuksenSuoritus
   | VapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus
@@ -845,6 +850,9 @@ export const isSuoritus = (a: any): a is Suoritus =>
   isOsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus(a) ||
   isPYPOppiaineenSuoritus(a) ||
   isPYPVuosiluokanSuoritus(a) ||
+  isPaikalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenSuoritus(
+    a
+  ) ||
   isPerusopetukseenValmistavanOpetuksenOppiaineenSuoritus(a) ||
   isPerusopetukseenValmistavanOpetuksenSuoritus(a) ||
   isPerusopetuksenLisäopetuksenOppiaineenSuoritus(a) ||
@@ -878,7 +886,6 @@ export const isSuoritus = (a: any): a is Suoritus =>
   isTelmaKoulutuksenOsanSuoritus(a) ||
   isTelmaKoulutuksenSuoritus(a) ||
   isTutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus(a) ||
-  isTutkinnonOsaaPienemmänKokonaisuudenSuoritus(a) ||
   isTutkintokoulutukseenValmentavaKoulutuksenMuunOsanSuoritus(a) ||
   isTutkintokoulutukseenValmentavanKoulutuksenSuoritus(a) ||
   isTutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosanOsasuorituksenSuoritus(
@@ -894,6 +901,9 @@ export const isSuoritus = (a: any): a is Suoritus =>
   isVSTKotoutumiskoulutusValinnaistenOpintojenAlaosasuoritus(a) ||
   isValmaKoulutuksenOsanSuoritus(a) ||
   isValmaKoulutuksenSuoritus(a) ||
+  isValtakunnalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenSuoritus(
+    a
+  ) ||
   isVapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus(a) ||
   isVapaanSivistystyönJotpaKoulutuksenSuoritus(a) ||
   isVapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus(a) ||

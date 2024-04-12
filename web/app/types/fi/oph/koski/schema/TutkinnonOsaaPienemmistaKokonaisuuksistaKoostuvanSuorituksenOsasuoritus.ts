@@ -1,7 +1,11 @@
 import {
-  TutkinnonOsaaPienemmänKokonaisuudenSuoritus,
-  isTutkinnonOsaaPienemmänKokonaisuudenSuoritus
-} from './TutkinnonOsaaPienemmanKokonaisuudenSuoritus'
+  PaikalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenSuoritus,
+  isPaikalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenSuoritus
+} from './PaikalliseenTutkinnonOsaanLiittyvanTutkinnonOsaaPienemmanKokonaisuudenSuoritus'
+import {
+  ValtakunnalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenSuoritus,
+  isValtakunnalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenSuoritus
+} from './ValtakunnalliseenTutkinnonOsaanLiittyvanTutkinnonOsaaPienemmanKokonaisuudenSuoritus'
 import {
   YhteisenTutkinnonOsanOsaAlueenSuoritus,
   isYhteisenTutkinnonOsanOsaAlueenSuoritus
@@ -14,12 +18,18 @@ import {
  */
 export type TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvanSuorituksenOsasuoritus =
 
-    | TutkinnonOsaaPienemmänKokonaisuudenSuoritus
+    | PaikalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenSuoritus
+    | ValtakunnalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenSuoritus
     | YhteisenTutkinnonOsanOsaAlueenSuoritus
 
 export const isTutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvanSuorituksenOsasuoritus =
   (
     a: any
   ): a is TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvanSuorituksenOsasuoritus =>
-    isTutkinnonOsaaPienemmänKokonaisuudenSuoritus(a) ||
+    isPaikalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenSuoritus(
+      a
+    ) ||
+    isValtakunnalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenSuoritus(
+      a
+    ) ||
     isYhteisenTutkinnonOsanOsaAlueenSuoritus(a)

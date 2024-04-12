@@ -77,7 +77,7 @@ class MuuAmmatillinenRaporttiSpec
         marjonRivi.suoritutettujenOsasuoritustenLkm should equal(6)
       }
       "Keskeneräisten osasuoritusten lukumäärä" in {
-        marjonRivi.keskeneräistenOsasuoritustenLkm should equal(1)
+        marjonRivi.keskeneräistenOsasuoritustenLkm should equal(2)
       }
       "Kaikkien osasuoritusten yhteislaajuus" in {
         marjonRivi.kaikkienOsasuoritustenYhteislaajuus should equal(40.0)

@@ -10,12 +10,13 @@ import {
 import TutkinnonOsaToisestaTutkinnostaPicker from './TutkinnonOsaToisestaTutkinnostaPicker'
 import { Editor } from '../editor/Editor'
 
-const LiittyyTutkinnonOsaanEditor = ({ model }) =>
-  model.context.edit ? (
+const LiittyyTutkinnonOsaanEditor = ({ model }) => {
+  return model.context.edit ? (
     <LiittyyTutkinnonOsaanPicker model={model} />
   ) : (
     <Editor model={model} />
   )
+}
 
 class LiittyyTutkinnonOsaanPicker extends React.Component {
   constructor(props) {

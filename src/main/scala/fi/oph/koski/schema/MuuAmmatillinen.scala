@@ -1,9 +1,8 @@
 package fi.oph.koski.schema
 
 import java.time.LocalDate
-
 import fi.oph.koski.schema.annotation._
-import fi.oph.scalaschema.annotation.{Description, MinItems, Title}
+import fi.oph.scalaschema.annotation.{Description, Discriminator, MinItems, Title}
 
 case class MuunAmmatillisenKoulutuksenSuoritus(
   koulutusmoduuli: MuuAmmatillinenKoulutus,
@@ -121,23 +120,47 @@ case class MuunAmmatillisenKoulutuksenOsasuorituksenLisätieto(
 )
 
 
-case class TutkinnonOsaaPienemmänKokonaisuudenSuoritus(
-  koulutusmoduuli: TutkinnonOsaaPienempiKokonaisuus,
-  override val alkamispäivä: Option[LocalDate],
-  arviointi: Option[List[MuunAmmatillisenKoulutuksenArviointi]],
+trait TutkinnonOsaaPienemmänKokonaisuudenSuoritus
+  extends MuuAmmatillinenOsasuoritus
+    with TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvanSuorituksenOsasuoritus
+{
   @Description("Osasuoritukseen liittyvän näytön tiedot")
   @Tooltip("Osasuoritukseen kuuluvan ammattiosaamisen näytön tiedot.")
   @ComplexObject
-  näyttö: Option[Näyttö] = None,
+  def näyttö: Option[Näyttö]
+
   @Tooltip("Suoritukseen liittyvät lisätiedot, kuten esimerkiksi mukautettu arviointi tai poikkeus arvioinnissa. Sisältää lisätiedon tyypin sekä vapaamuotoisen kuvauksen.")
   @ComplexObject
+  def lisätiedot: Option[List[MuunAmmatillisenKoulutuksenOsasuorituksenLisätieto]]
+
+  @KoodistoKoodiarvo("tutkinnonosaapienempikokonaisuus")
+  def tyyppi: Koodistokoodiviite
+}
+
+case class ValtakunnalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenSuoritus(
+  koulutusmoduuli: TutkinnonOsaaPienempiKokonaisuus,
+  override val alkamispäivä: Option[LocalDate],
+  arviointi: Option[List[MuunAmmatillisenKoulutuksenArviointi]],
+  näyttö: Option[Näyttö] = None,
   lisätiedot: Option[List[MuunAmmatillisenKoulutuksenOsasuorituksenLisätieto]],
   @KoodistoUri("tutkinnonosat")
+  @Discriminator
   liittyyTutkinnonOsaan: Koodistokoodiviite,
   suorituskieli: Option[Koodistokoodiviite],
-  @KoodistoKoodiarvo("tutkinnonosaapienempikokonaisuus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("tutkinnonosaapienempikokonaisuus", koodistoUri = "suorituksentyyppi")
-) extends MuuAmmatillinenOsasuoritus with TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvanSuorituksenOsasuoritus
+) extends TutkinnonOsaaPienemmänKokonaisuudenSuoritus
+
+case class PaikalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenSuoritus(
+  koulutusmoduuli: TutkinnonOsaaPienempiKokonaisuus,
+  override val alkamispäivä: Option[LocalDate],
+  arviointi: Option[List[MuunAmmatillisenKoulutuksenArviointi]],
+  näyttö: Option[Näyttö] = None,
+  lisätiedot: Option[List[MuunAmmatillisenKoulutuksenOsasuorituksenLisätieto]],
+  @Discriminator
+  liittyyTutkintoon: AmmatillinenTutkintoKoulutus,
+  suorituskieli: Option[Koodistokoodiviite],
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("tutkinnonosaapienempikokonaisuus", koodistoUri = "suorituksentyyppi")
+) extends TutkinnonOsaaPienemmänKokonaisuudenSuoritus
 
 case class TutkinnonOsaaPienempiKokonaisuus(
   tunniste: PaikallinenKoodi,

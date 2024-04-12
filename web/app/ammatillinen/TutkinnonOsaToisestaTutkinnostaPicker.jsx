@@ -13,7 +13,8 @@ const TutkinnonOsaToisestaTutkinnostaPicker = ({
   autoFocus = true,
   tutkintoTitle = 'Tutkinto',
   tutkinnonOsaTitle = 'Tutkinnon osa',
-  tutkintoPlaceholder = ''
+  tutkintoPlaceholder = '',
+  isPaikalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenSuoritus = false
 }) => (
   <div className="valinnat">
     <TutkintoAutocomplete
@@ -23,24 +24,25 @@ const TutkinnonOsaToisestaTutkinnostaPicker = ({
       title={<Text name={tutkintoTitle} />}
       placeholder={tutkintoPlaceholder}
     />
-    {tutkintoAtom.flatMapLatest((tutkinto) => {
-      const osatP = tutkinto
-        ? fetchLisättävätTutkinnonOsat(tutkinto.diaarinumero).map('.osat')
-        : Bacon.constant([])
-      return (
-        <LisaaTutkinnonOsaDropdown
-          selectedAtom={tutkinnonOsaAtom}
-          title={tutkinnonOsaTitle}
-          osat={osatP}
-          placeholder={osatP
-            .map('.length')
-            .map((len) =>
-              len === 0 ? 'Valitse ensin tutkinto' : 'Valitse tutkinnon osa'
-            )
-            .map(t)}
-        />
-      )
-    })}
+    {!isPaikalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenSuoritus &&
+      tutkintoAtom.flatMapLatest((tutkinto) => {
+        const osatP = tutkinto
+          ? fetchLisättävätTutkinnonOsat(tutkinto.diaarinumero).map('.osat')
+          : Bacon.constant([])
+        return (
+          <LisaaTutkinnonOsaDropdown
+            selectedAtom={tutkinnonOsaAtom}
+            title={tutkinnonOsaTitle}
+            osat={osatP}
+            placeholder={osatP
+              .map('.length')
+              .map((len) =>
+                len === 0 ? 'Valitse ensin tutkinto' : 'Valitse tutkinnon osa'
+              )
+              .map(t)}
+          />
+        )
+      })}
   </div>
 )
 
