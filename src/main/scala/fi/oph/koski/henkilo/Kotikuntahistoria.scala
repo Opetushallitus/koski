@@ -11,6 +11,7 @@ case class OppijanumerorekisteriKotikuntahistoriaRow(
   kotikunta: Long,
   kuntaanMuuttopv: LocalDate,
   kunnastaPoisMuuttopv: Option[LocalDate],
+  turvakielto: Option[Boolean], // TODO TOR-2031: Tästä ei ole vielä sovittu
 ) {
   def toDbRow: RKotikuntahistoriaRow =
     RKotikuntahistoriaRow(
@@ -18,5 +19,6 @@ case class OppijanumerorekisteriKotikuntahistoriaRow(
       kotikunta = kotikunta,
       muuttoPvm = Date.valueOf(kuntaanMuuttopv),
       poismuuttoPvm = kunnastaPoisMuuttopv.map(pvm => Date.valueOf(pvm)),
+      turvakielto = turvakielto.contains(true),
     )
 }

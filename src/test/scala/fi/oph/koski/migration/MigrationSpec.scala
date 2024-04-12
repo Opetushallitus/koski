@@ -37,7 +37,7 @@ class MigrationSpec extends AnyFreeSpec with Matchers {
       val dir = "./src/main/scala/fi/oph/koski/raportointikanta"
       val expectedChecksums = Map(
         "AikajaksoRowBuilder.scala"                                 -> "581190491d31f3b0d4a40c2e62579ffa",
-        "HenkiloLoader.scala"                                       -> "c59bc11832fd494a69451317b39ece3c",
+        "HenkiloLoader.scala"                                       -> "e74c00f37c3725af6b2ce884daf06955",
         "KoodistoLoader.scala"                                      -> "86c90ec069d1c5ec5ee9faa65fb1399e",
         "KoskiEventBridgeClient.scala"                              -> "f8a09d358ebb3fe2ed4d8875ccccef12",
         "LoaderUtils.scala"                                         -> "38d31b4d1cfa5e3892083bb39f7f0047",
@@ -48,9 +48,9 @@ class MigrationSpec extends AnyFreeSpec with Matchers {
         "OrganisaatioHistoriaRowBuilder.scala"                      -> "7e586d9e273a5a4ee7beae257f22c7f4",
         "OrganisaatioLoader.scala"                                  -> "4f7ce51cb922dbc11e694ebe85ab3472",
         "PäivitettyOpiskeluoikeusLoader.scala"                      -> "500545bbe7ef47dedcfdc49580b536d2",
-        "RaportointiDatabase.scala"                                 -> "ade47e14ffaa982b60a78449f67acbce",
+        "RaportointiDatabase.scala"                                 -> "f84768fae8e80c60c43c4b54bf3d4113",
         "RaportointiDatabaseCustomFunctions.scala"                  -> "956f101d1219c49ac9134b72a30caf3a",
-        "RaportointiDatabaseSchema.scala"                           -> "aa36214bc724598e664c79133728da53",
+        "RaportointiDatabaseSchema.scala"                           -> "80f699f4eaa379484ed47853349055c",
         "RaportointikantaService.scala"                             -> "451c1d9b7a3040e482ed4b4e0bf036a5",
         "RaportointikantaStatusServlet.scala"                       -> "9fd6f796adfb2034cce0151b7330cd1a",
         "RaportointikantaTestServlet.scala"                         -> "d457be86e60dd84545378ae415236d26",

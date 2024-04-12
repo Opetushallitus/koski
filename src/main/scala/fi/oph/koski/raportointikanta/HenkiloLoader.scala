@@ -35,6 +35,7 @@ object HenkilöLoader extends Logging {
 
       val kotikuntahistoria = opintopolkuHenkilöFacade.findKuntahistoriat(batchOids).map(_.toDbRow)
       db.loadKotikuntahistoria(kotikuntahistoria)
+      db.confidental.foreach(_.loadKotikuntahistoria(kotikuntahistoria))
 
       batchRows.size
     }).sum

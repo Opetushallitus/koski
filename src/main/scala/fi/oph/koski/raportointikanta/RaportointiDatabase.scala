@@ -32,6 +32,7 @@ object RaportointiDatabase {
 
 class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging with QueryMethods {
   val schema: Schema = config.schema
+  val confidental: Option[ConfidentalRaportointiDatabase] = ConfidentalRaportointiDatabase(config)
   override def defaultRetryIntervalMs = 30000
 
   logger.info(s"Instantiating RaportointiDatabase for ${schema.name}")
@@ -74,9 +75,9 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
   def moveTo(newSchema: Schema): Unit = {
     logger.info(s"Moving ${schema.name} -> ${newSchema.name}")
     runDbSync(DBIO.seq(
-      RaportointiDatabaseSchema.moveSchema(schema, newSchema),
+      schema.moveSchema(newSchema),
       RaportointiDatabaseSchema.createRolesIfNotExists,
-      RaportointiDatabaseSchema.grantPermissions(newSchema)
+      newSchema.grantPermissions()
     ))
   }
 
@@ -85,10 +86,13 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
     // hidasta raporttia. Parempi yrittää uudestaan, eikä lopettaa monen tunnin operaatiota vain tästä syystä.
     retryDbSync(
       DBIO.seq(
-        RaportointiDatabaseSchema.dropSchema(Public),
-        RaportointiDatabaseSchema.moveSchema(Temp, Public),
+        Public.dropSchema(),
+        Confidental.dropSchema(),
+        Temp.moveSchema(Public),
+        TempConfidental.moveSchema(Confidental),
         RaportointiDatabaseSchema.createRolesIfNotExists,
-        RaportointiDatabaseSchema.grantPermissions(Public)
+        Public.grantPermissions(),
+        Confidental.grantPermissions(),
       ).transactionally,
       timeout = 5.minutes
     )
@@ -99,16 +103,18 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
     logger.info(s"Creating database ${schema.name}")
     runDbSync(DBIO.sequence(
       Seq(
-        RaportointiDatabaseSchema.recreateSchema(schema),
+        schema.recreateSchema(),
       ) ++
       tables.map(_.schema.create) ++
       Seq(
         RaportointiDatabaseSchema.createRolesIfNotExists,
-        RaportointiDatabaseSchema.grantPermissions(schema),
+        schema.grantPermissions(),
       )
     ).transactionally)
     previousDataVersion.foreach(v => writeVersionInfo(v + 1))
     logger.info(s"${schema.name} created")
+
+    confidental.foreach(_.dropAndCreateObjects(previousDataVersion))
   }
 
   private def writeVersionInfo(dataVersion: Int) = {
@@ -118,23 +124,18 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
     setStatusLoadCompletedAndCount("version_data", dataVersion)
   }
 
-  // A helper to help with creating migrations: dumps the SQL DDL to create the full schema
-  def logCreateSchemaDdl(): Unit = {
-    logger.info((tables.flatMap(_.schema.createStatements) ++ "\n").mkString(";\n"))
-  }
-
   def createIndexesForIncrementalUpdate(): Unit = {
-    runDbSync(RaportointiDatabaseSchema.createIndexesForIncrementalUpdate(schema), timeout = 120.minutes)
+    runDbSync(schema.createIndexesForIncrementalUpdate(), timeout = 120.minutes)
   }
 
   def createOpiskeluoikeusIndexes(): Unit = {
-    runDbSync(RaportointiDatabaseSchema.createOpiskeluoikeusIndexes(schema), timeout = 120.minutes)
+    runDbSync(schema.createOpiskeluoikeusIndexes(), timeout = 120.minutes)
   }
 
   def createOtherIndexes(): Unit = {
     val indexStartTime = System.currentTimeMillis
     logger.info("Luodaan henkilö-, organisaatio- ja koodisto-indeksit")
-    runDbSync(RaportointiDatabaseSchema.createOtherIndexes(schema), timeout = 120.minutes)
+    runDbSync(schema.createOtherIndexes(), timeout = 120.minutes)
     val indexElapsedSeconds = (System.currentTimeMillis - indexStartTime)/1000
     logger.info(s"Luotiin henkilö-, organisaatio- ja koodisto-indeksit, ${indexElapsedSeconds} s")
   }
@@ -379,7 +380,7 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
     runDbSync(RHenkilöt ++= henkilöt)
 
   def loadKotikuntahistoria(historia: Seq[RKotikuntahistoriaRow]): Unit =
-    runDbSync(RKotikuntahistoria ++= historia)
+    runDbSync(RKotikuntahistoria ++= historia.filterNot(_.turvakielto))
 
   def loadOrganisaatiot(organisaatiot: Seq[ROrganisaatioRow]): Unit =
     runDbSync(ROrganisaatiot ++= organisaatiot)
@@ -678,4 +679,24 @@ case class RaportointikantaStatusResponse(schema: String, statuses: Seq[Raportoi
 
   @SyntheticProperty
   def dataVersion: Option[Int] = statuses.find(_.name == "version_data").map(_.count)
+}
+
+class ConfidentalRaportointiDatabase(config: RaportointiDatabaseConfigBase) extends RaportointiDatabase(config) {
+  import scala.language.existentials
+  override val tables = List(
+    RaportointikantaStatus,
+    RKotikuntahistoria,
+  )
+
+  override def loadKotikuntahistoria(historia: Seq[RKotikuntahistoriaRow]): Unit =
+    runDbSync(RKotikuntahistoria ++= historia)
+}
+
+object ConfidentalRaportointiDatabase {
+  def apply(config: RaportointiDatabaseConfigBase): Option[ConfidentalRaportointiDatabase] =
+    config.schema match {
+      case Public => Some(new ConfidentalRaportointiDatabase(config.withSchema(Confidental)))
+      case Temp => Some(new ConfidentalRaportointiDatabase(config.withSchema(TempConfidental)))
+      case _ => None
+    }
 }
