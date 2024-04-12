@@ -40,15 +40,25 @@ export const UusiTutkinnonOsaMuuAmmatillinen = ({
       isPaikallinen
     )
 
-  const tutkinnonOsaaPienemmänKokonaisuudenPrototype =
+  const valtakunnalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenPrototype =
     selectTutkinnonOsanSuoritusPrototype(
       suoritusPrototypes,
       groupId,
-      'tutkinnonosaapienemmankokonaisuudensuoritus'
+      'valtakunnalliseentutkinnonosaanliittyvantutkinnonosaapienemmankokonaisuudensuoritus'
     )
-  const tutkinnonOsaaPienemmänKokonaisuudenKoulutusmoduuli =
+  const paikalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenPrototype =
+    selectTutkinnonOsanSuoritusPrototype(
+      suoritusPrototypes,
+      groupId,
+      'paikalliseentutkinnonosaanliittyvantutkinnonosaapienemmankokonaisuudensuoritus'
+    )
+  const valtakunnalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenKoulutusmoduuli =
     koulutusModuuliprototypes(
-      tutkinnonOsaaPienemmänKokonaisuudenPrototype
+      valtakunnalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenPrototype
+    ).find(isPaikallinen)
+  const paikalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenKoulutusmoduuli =
+    koulutusModuuliprototypes(
+      paikalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenPrototype
     ).find(isPaikallinen)
 
   const muuAmmatillisenKoulutuksenOsasuoritusPrototype =
@@ -78,7 +88,7 @@ export const UusiTutkinnonOsaMuuAmmatillinen = ({
 
   const addTutkinnonOsa =
     (suoritusPrototype) =>
-    (koulutusmoduuli, tutkinto, liittyyTutkinnonOsaan) => {
+    (koulutusmoduuli, tutkinto, liittyyTutkinnonOsaan, liittyyTutkintoon) => {
       const group = groupId === NON_GROUPED ? undefined : groupId
       const tutkinnonOsa = createTutkinnonOsa(
         suoritusPrototype,
@@ -86,7 +96,8 @@ export const UusiTutkinnonOsaMuuAmmatillinen = ({
         tutkinto,
         group,
         groupTitles,
-        liittyyTutkinnonOsaan
+        liittyyTutkinnonOsaan,
+        liittyyTutkintoon
       )
       pushSuoritus(setExpanded)(tutkinnonOsa)
     }
@@ -130,18 +141,41 @@ export const UusiTutkinnonOsaMuuAmmatillinen = ({
             <LisääPaikallinenTutkinnonOsa
               lisättävätTutkinnonOsat={lisättävätTutkinnonOsat}
               paikallinenKoulutusmoduuli={
-                tutkinnonOsaaPienemmänKokonaisuudenKoulutusmoduuli
+                valtakunnalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenKoulutusmoduuli
               }
               addTutkinnonOsa={addTutkinnonOsa(
-                tutkinnonOsaaPienemmänKokonaisuudenPrototype
+                valtakunnalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenPrototype
               )}
               preferredTexts={{
                 lisääOsaLink:
-                  'Lisää tutkinnon osaa pienemmän kokonaisuuden suoritus',
-                modalHeader: 'Tutkinnon osaa pienemmän kokonaisuuden lisäys',
-                modalFieldLabel: 'Tutkinnon osaa pienemmän kokonaisuuden nimi',
-                modalOk: 'Lisää tutkinnon osaa pienempi kokonaisuus'
+                  'Lisää valtakunnalliseen tutkinnon osaan liittyvän tutkinnon osaa pienemmän kokonaisuuden suoritus',
+                modalHeader:
+                  'Valtakunnalliseen tutkinnon osaan liittyvän tutkinnon osaa pienemmän kokonaisuuden lisäys',
+                modalFieldLabel:
+                  'Valtakunnalliseen tutkinnon osaan liittyvän tutkinnon osaa pienemmän kokonaisuuden nimi',
+                modalOk: 'Lisää'
               }}
+            />
+            <LisääPaikallinenTutkinnonOsa
+              lisättävätTutkinnonOsat={lisättävätTutkinnonOsat}
+              paikallinenKoulutusmoduuli={
+                paikalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenKoulutusmoduuli
+              }
+              addTutkinnonOsa={addTutkinnonOsa(
+                paikalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenPrototype
+              )}
+              preferredTexts={{
+                lisääOsaLink:
+                  'Lisää paikalliseen tutkinnon osaan liittyvän tutkinnon osaa pienemmän kokonaisuuden suoritus',
+                modalHeader:
+                  'Paikalliseen tutkinnon osaan liittyvän tutkinnon osaa pienemmän kokonaisuuden lisäys',
+                modalFieldLabel:
+                  'Paikalliseen tutkinnon osaan liittyvän tutkinnon osaa pienemmän kokonaisuuden nimi',
+                modalOk: 'Lisää'
+              }}
+              isPaikalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenSuoritus={
+                true
+              }
             />
             {lisättävätTutkinnonOsat.muuAmmatillisenKoulutuksenOsasuoritus && (
               <LisääPaikallinenTutkinnonOsa

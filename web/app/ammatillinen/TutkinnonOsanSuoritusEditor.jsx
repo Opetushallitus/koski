@@ -17,6 +17,7 @@ import {
   isMuunAmmatillisenKoulutuksenOsasuorituksenSuoritus,
   suoritusProperties
 } from '../suoritus/SuoritustaulukkoCommon'
+import LiittyyTutkintoonEditor from './LiittyyTutkintoonEditor'
 
 export class TutkinnonOsanSuoritusEditor extends React.Component {
   render() {
@@ -86,13 +87,15 @@ export class TutkinnonOsanSuoritusEditor extends React.Component {
               <PropertiesEditor
                 model={model}
                 properties={displayProperties}
-                getValueEditor={(p, getDefault) =>
-                  p.key === 'liittyyTutkinnonOsaan' ? (
+                getValueEditor={(p, getDefault) => {
+                  return p.key === 'liittyyTutkinnonOsaan' ? (
                     <LiittyyTutkinnonOsaanEditor model={p.model} />
+                  ) : p.key === 'liittyyTutkintoon' ? (
+                    <LiittyyTutkintoonEditor model={p.model} />
                   ) : (
                     getDefault()
                   )
-                }
+                }}
               />
             </td>
           </tr>

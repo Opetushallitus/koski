@@ -15,13 +15,19 @@ export const LisääPaikallinenTutkinnonOsa = ({
   lisättävätTutkinnonOsat,
   addTutkinnonOsa,
   paikallinenKoulutusmoduuli,
-  preferredTexts
+  preferredTexts,
+  isPaikalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenSuoritus
 }) => {
   const lisääPaikallinenAtom = Atom(false)
   const lisääPaikallinenTutkinnonOsa = (osa) => {
     lisääPaikallinenAtom.set(false)
     if (osa) {
-      addTutkinnonOsa(osa, undefined, liittyyTutkinnonOsaanAtom.get())
+      addTutkinnonOsa(
+        osa,
+        undefined,
+        liittyyTutkinnonOsaanAtom.get(),
+        tutkintoAtom.get()
+      )
     }
   }
   const nameAtom = Atom('')
@@ -42,7 +48,9 @@ export const LisääPaikallinenTutkinnonOsa = ({
     paikallinenKoulutusmoduuli
   )
   const validP = tutkinnonosaaPienempiKokonaisuus
-    ? nameAtom.and(liittyyTutkinnonOsaanAtom.map('.data'))
+    ? isPaikalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenSuoritus
+      ? nameAtom.and(tutkintoAtom.map((v) => v))
+      : nameAtom.and(liittyyTutkinnonOsaanAtom.map('.data'))
     : nameAtom
 
   const texts =
@@ -77,6 +85,9 @@ export const LisääPaikallinenTutkinnonOsa = ({
               )}
               tutkintoTitle="Liittyy tutkintoon"
               tutkinnonOsaTitle="Liittyy tutkinnon osaan"
+              isPaikalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenSuoritus={
+                isPaikalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenSuoritus
+              }
             />
           )}
           <label>
@@ -138,10 +149,13 @@ const lisääTutkinnonOsaTexts = (
     )
   ) {
     return {
-      lisääOsaLink: 'Lisää tutkinnon osaa pienemmän kokonaisuuden suoritus',
-      modalHeader: 'Tutkinnon osaa pienemmän kokonaisuuden lisäys',
-      modalFieldLabel: 'Tutkinnon osaa pienemmän kokonaisuuden nimi',
-      modalOk: 'Lisää tutkinnon osaa pienempi kokonaisuus'
+      lisääOsaLink:
+        'Lisää valtakunnalliseen tutkinnon osaan liittyvän tutkinnon osaa pienemmän kokonaisuuden suoritus',
+      modalHeader:
+        'Valtakunnalliseen tutkinnon osaan liittyvän tutkinnon osaa pienemmän kokonaisuuden lisäys',
+      modalFieldLabel:
+        'Valtakunnalliseen tutkinnon osaan liittyvän tutkinnon osaa pienemmän kokonaisuuden nimi',
+      modalOk: 'Lisää'
     }
   } else {
     return {

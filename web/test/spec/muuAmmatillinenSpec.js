@@ -39,6 +39,7 @@ describe('Muu ammatillinen koulutus', function () {
             'Tiedottaminen ja asiakaspalvelu 20 op Suoritettu\n' +
             'KISI-tentti Suoritettu\n' +
             'ATK-Ajokortti\n' +
+            'Öljynvaihto kuorma-autoihin\n' +
             'Fysiikka ja kemia Hyväksytty\n' +
             'Äidinkieli, Suomen kieli ja kirjallisuus Hyväksytty\n' +
             'Yhteensä 40 op'
@@ -268,7 +269,7 @@ describe('Muu ammatillinen koulutus', function () {
           editor.edit,
           opinnot
             .tutkinnonOsat()
-            .lisääTutkinnonOsaaPienempiKokonaisuus(
+            .lisääValtakunnalliseenTutkinnonOsaanLiittyväTutkinnonOsaaPienempiKokonaisuus(
               'Autoalan perustutkinto',
               'Auton korjaaminen',
               'Auton tuunaus'
@@ -372,6 +373,10 @@ describe('Muu ammatillinen koulutus', function () {
               'Kuvaus Kurssilla opitaan korjaamaan tietokoneita.\n' +
               'Liittyy tutkinnon osaan Asunto-osakeyhtiön hallinnon hoitaminen\n' +
               '\n' +
+              'Öljynvaihto kuorma-autoihin\n' +
+              'Kuvaus Öljynvaihdon suorittaminen erilaisissa kuorma-autoissa synteettisiä öljyjä käyttäen\n' +
+              'Liittyy tutkintoon Autoalan perustutkinto 351301 39/011/2014\n' +
+              '\n' +
               'Fysiikka ja kemia Hyväksytty\n' +
               'Pakollinen kyllä\n' +
               'Arviointi Arvosana Hyväksytty\n' +
@@ -409,7 +414,7 @@ describe('Muu ammatillinen koulutus', function () {
           editor.edit,
           opinnot
             .tutkinnonOsat()
-            .lisääTutkinnonOsaaPienempiKokonaisuus(
+            .lisääValtakunnalliseenTutkinnonOsaanLiittyväTutkinnonOsaaPienempiKokonaisuus(
               'Autoalan perustutkinto',
               'Auton korjaaminen',
               'Auton tuunaus'
@@ -421,6 +426,7 @@ describe('Muu ammatillinen koulutus', function () {
           expect(opinnot.tutkinnonOsat().osienTekstit()).to.equal(
             'Asunto- ja kiinteistöosakeyhtiön talous ja verotus Hyväksytty\n' +
               '\nTietokoneiden huolto 4 osp\n' +
+              '\nÖljynvaihto kuorma-autoihin\n' +
               '\nFysiikka ja kemia Hyväksytty\n' +
               '\nÄidinkieli, Suomen kieli ja kirjallisuus Hyväksytty\n' +
               '\nEtiikka\n' +

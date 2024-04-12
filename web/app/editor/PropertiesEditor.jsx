@@ -44,10 +44,13 @@ export class PropertiesEditor extends React.Component {
       !propertyEditable(property) && context.edit
         ? { ...context, edit: false }
         : context
-    const shouldShow = (property) =>
-      (shouldShowProperty(contextForProperty(property))(property) &&
-        propertyFilter(property)) ||
-      showAnyway(property)
+    const shouldShow = (property) => {
+      return (
+        (shouldShowProperty(contextForProperty(property))(property) &&
+          propertyFilter(property)) ||
+        showAnyway(property)
+      )
+    }
 
     const munch = (prefix) => (property, i) => {
       if (

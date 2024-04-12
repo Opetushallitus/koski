@@ -885,55 +885,52 @@ function TutkinnonOsat(groupId, base) {
         '.paikallinen-tutkinnon-osa a ' + (tarkentavaSelector || '')
       )
     },
-    lisääTutkinnonOsaaPienempiKokonaisuus: function (
-      tutkinto,
-      liittyyTutkinnonOsaan,
-      nimi
-    ) {
-      return function () {
-        var modalElement = subElement(
-          uusiTutkinnonOsaElement,
-          '.lisaa-paikallinen-tutkinnon-osa-modal'
-        )
-        return click(
-          subElement(
+    lisääValtakunnalliseenTutkinnonOsaanLiittyväTutkinnonOsaaPienempiKokonaisuus:
+      function (tutkinto, liittyyTutkinnonOsaan, nimi) {
+        return function () {
+          var modalElement = subElement(
             uusiTutkinnonOsaElement,
-            '.paikallinen-tutkinnon-osa a span:contains(Lisää tutkinnon osaa pienemmän kokonaisuuden suoritus)'
+            '.lisaa-paikallinen-tutkinnon-osa-modal'
           )
-        )()
-          .then(
-            Page(modalElement).setInputValue(
-              '.tutkinto .autocomplete',
-              tutkinto
+          return click(
+            subElement(
+              uusiTutkinnonOsaElement,
+              '.paikallinen-tutkinnon-osa a span:contains(Lisää valtakunnalliseen tutkinnon osaan liittyvän tutkinnon osaa pienemmän kokonaisuuden suoritus)'
             )
-          )
-          .then(
-            wait.until(
-              Page(modalElement).button(findSingle('.vahvista')).isDisabled
+          )()
+            .then(
+              Page(modalElement).setInputValue(
+                '.tutkinto .autocomplete',
+                tutkinto
+              )
             )
-          )
-          .then(
-            Page(modalElement).setInputValue(
-              '.tutkinnon-osat .dropdown',
-              liittyyTutkinnonOsaan
+            .then(
+              wait.until(
+                Page(modalElement).button(findSingle('.vahvista')).isDisabled
+              )
             )
-          )
-          .then(
-            wait.until(
-              Page(modalElement).button(findSingle('.vahvista')).isDisabled
+            .then(
+              Page(modalElement).setInputValue(
+                '.tutkinnon-osat .dropdown',
+                liittyyTutkinnonOsaan
+              )
             )
-          )
-          .then(
-            Page(modalElement).setInputValue(
-              'input.paikallinen-koulutusmoduuli-nimi',
-              nimi
+            .then(
+              wait.until(
+                Page(modalElement).button(findSingle('.vahvista')).isDisabled
+              )
             )
-          )
-          .then(
-            click(subElement(modalElement, 'button.vahvista:not(:disabled)'))
-          )
-      }
-    },
+            .then(
+              Page(modalElement).setInputValue(
+                'input.paikallinen-koulutusmoduuli-nimi',
+                nimi
+              )
+            )
+            .then(
+              click(subElement(modalElement, 'button.vahvista:not(:disabled)'))
+            )
+        }
+      },
     lisääTutkinnonOsaToisestaTutkinnosta: function (tutkinto, nimi) {
       return function () {
         var modalElement = subElement(

@@ -258,6 +258,7 @@ export const suoritusProperties = (
           'tunnustettu',
           'lisätiedot',
           'liittyyTutkinnonOsaan',
+          'liittyyTutkintoon',
           'korotettu'
         )
       )
