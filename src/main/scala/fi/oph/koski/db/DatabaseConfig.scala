@@ -42,6 +42,8 @@ class KoskiReplicaConfig(val rootConfig: Config) extends DatabaseConfig {
 trait RaportointiDatabaseConfigBase extends DatabaseConfig {
   val rootConfig: Config
   val schema: Schema
+
+  def withSchema(schema: Schema): RaportointiDatabaseConfigBase
 }
 
 class RaportointiDatabaseConfig(val rootConfig: Config, val schema: Schema) extends RaportointiDatabaseConfigBase {
@@ -50,6 +52,8 @@ class RaportointiDatabaseConfig(val rootConfig: Config, val schema: Schema) exte
   override protected def databaseSpecificConfig: Config =
     rootConfig.getConfig("dbs.raportointi")
       .withValue("poolName", fromAnyRef(s"koskiRaportointiPool-${schema.name}"))
+
+  def withSchema(schema: Schema): RaportointiDatabaseConfig = new RaportointiDatabaseConfig(rootConfig, schema)
 }
 
 class RaportointiGenerointiDatabaseConfig(val rootConfig: Config, val schema: Schema) extends RaportointiDatabaseConfigBase {
@@ -58,6 +62,8 @@ class RaportointiGenerointiDatabaseConfig(val rootConfig: Config, val schema: Sc
   override protected def databaseSpecificConfig: Config =
     rootConfig.getConfig("dbs.raportointiGenerointi")
       .withValue("poolName", fromAnyRef(s"koskiRaportointiGenerointiPool-${schema.name}"))
+
+  def withSchema(schema: Schema): RaportointiGenerointiDatabaseConfig = new RaportointiGenerointiDatabaseConfig(rootConfig, schema)
 }
 
 class ValpasDatabaseConfig(val rootConfig: Config) extends DatabaseConfig {
