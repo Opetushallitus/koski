@@ -81,7 +81,7 @@ class TOPKSAmmatillinenRaporttiSpec
         pentinRivi.suoritutettujenOsasuoritustenLkm should equal(4)
       }
       "Keskeneräisten osasuoritusten lukumäärä" in {
-        pentinRivi.keskeneräistenOsasuoritustenLkm should equal(2)
+        pentinRivi.keskeneräistenOsasuoritustenLkm should equal(3)
       }
       "Kaikkien osasuoritusten yhteislaajuus" in {
         pentinRivi.kaikkienOsasuoritustenYhteislaajuus should equal(9.0)

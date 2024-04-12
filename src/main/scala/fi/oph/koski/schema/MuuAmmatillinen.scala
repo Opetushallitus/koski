@@ -137,7 +137,7 @@ trait TutkinnonOsaaPienemmänKokonaisuudenSuoritus
   def tyyppi: Koodistokoodiviite
 }
 
-case class ValtakunnallisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus(
+case class ValtakunnalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenSuoritus(
   koulutusmoduuli: TutkinnonOsaaPienempiKokonaisuus,
   override val alkamispäivä: Option[LocalDate],
   arviointi: Option[List[MuunAmmatillisenKoulutuksenArviointi]],
@@ -146,6 +146,18 @@ case class ValtakunnallisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus(
   @KoodistoUri("tutkinnonosat")
   @Discriminator
   liittyyTutkinnonOsaan: Koodistokoodiviite,
+  suorituskieli: Option[Koodistokoodiviite],
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("tutkinnonosaapienempikokonaisuus", koodistoUri = "suorituksentyyppi")
+) extends TutkinnonOsaaPienemmänKokonaisuudenSuoritus
+
+case class PaikalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenSuoritus(
+  koulutusmoduuli: TutkinnonOsaaPienempiKokonaisuus,
+  override val alkamispäivä: Option[LocalDate],
+  arviointi: Option[List[MuunAmmatillisenKoulutuksenArviointi]],
+  näyttö: Option[Näyttö] = None,
+  lisätiedot: Option[List[MuunAmmatillisenKoulutuksenOsasuorituksenLisätieto]],
+  @Discriminator
+  liittyyTutkintoon: AmmatillinenTutkintoKoulutus,
   suorituskieli: Option[Koodistokoodiviite],
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("tutkinnonosaapienempikokonaisuus", koodistoUri = "suorituksentyyppi")
 ) extends TutkinnonOsaaPienemmänKokonaisuudenSuoritus

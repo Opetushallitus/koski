@@ -36,7 +36,7 @@ object TutkinnonOsaaPienempiKokonaisuusExample {
     suorituskieli = suomenKieli,
     toimipiste = stadinToimipiste,
     osasuoritukset = Some(List(
-      ValtakunnallisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus(
+      ValtakunnalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenSuoritus(
         TutkinnonOsaaPienempiKokonaisuus(
           PaikallinenKoodi("AKTV", "Asunto- ja kiinteistöosakeyhtiön talous ja verotus"),
           None,
@@ -52,7 +52,7 @@ object TutkinnonOsaaPienempiKokonaisuusExample {
         lisätiedot = None,
         suorituskieli = None
       ),
-      ValtakunnallisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus(
+      ValtakunnalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenSuoritus(
         TutkinnonOsaaPienempiKokonaisuus(
           PaikallinenKoodi("ATK", "Tietokoneiden huolto"),
           Some(LaajuusKaikkiYksiköt(4, laajuusOsaamispisteissä)),
@@ -65,6 +65,19 @@ object TutkinnonOsaaPienempiKokonaisuusExample {
           "101481",
           koodistoUri = "tutkinnonosat"
         ),
+        lisätiedot = None,
+        suorituskieli = None
+      ),
+      PaikalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenSuoritus(
+        TutkinnonOsaaPienempiKokonaisuus(
+          PaikallinenKoodi("Ö", "Öljynvaihto kuorma-autoihin"),
+          None,
+          finnish("Öljynvaihdon suorittaminen erilaisissa kuorma-autoissa synteettisiä öljyjä käyttäen")
+        ),
+        alkamispäivä = None,
+        arviointi = None,
+        näyttö = None,
+        liittyyTutkintoon = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351301", None, "koulutus", None), Some("39/011/2014")),
         lisätiedot = None,
         suorituskieli = None
       ),
@@ -268,7 +281,7 @@ object MuunAmmatillisenKoulutuksenExample {
         PaikallinenKoodi("KISI", "KISI-tentti"),
         "Valmiudet hoitaa kiinteistöalan yrityksen sihteeri-, toimisto- ja asiakaspalvelutehtäviä, vahvistaa osallistujan ammatillisia perusvalmiuksia"
       ),
-      ValtakunnallisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus(
+      ValtakunnalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenSuoritus(
         TutkinnonOsaaPienempiKokonaisuus(
           PaikallinenKoodi("ATK", "ATK-Ajokortti"),
           None,
@@ -281,6 +294,19 @@ object MuunAmmatillisenKoulutuksenExample {
           "101481",
           koodistoUri = "tutkinnonosat"
         ),
+        lisätiedot = None,
+        suorituskieli = None
+      ),
+      PaikalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenSuoritus(
+        TutkinnonOsaaPienempiKokonaisuus(
+          PaikallinenKoodi("Ö", "Öljynvaihto kuorma-autoihin"),
+          None,
+          finnish("Öljynvaihdon suorittaminen erilaisissa kuorma-autoissa synteettisiä öljyjä käyttäen")
+        ),
+        alkamispäivä = None,
+        arviointi = None,
+        näyttö = None,
+        liittyyTutkintoon = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351301", None, "koulutus", None), Some("39/011/2014")),
         lisätiedot = None,
         suorituskieli = None
       ),

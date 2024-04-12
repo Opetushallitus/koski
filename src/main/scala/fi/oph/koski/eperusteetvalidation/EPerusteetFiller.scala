@@ -39,6 +39,26 @@ class EPerusteetFiller(
           s.copy(tutkinto = s.tutkinto.copy(perusteenNimi = s.tutkinto.perusteenDiaarinumero.flatMap(diaarinumero => perusteenNimi(diaarinumero, Some(oo.getVaadittuPerusteenVoimassaolopäivä)))))
         case s: AmmatillisenTutkinnonOsittainenSuoritus =>
           s.copy(koulutusmoduuli = s.koulutusmoduuli.copy(perusteenNimi = s.koulutusmoduuli.perusteenDiaarinumero.flatMap(diaarinumero => perusteenNimi(diaarinumero, Some(oo.getVaadittuPerusteenVoimassaolopäivä)))))
+        case s: TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus =>
+          s.withOsasuoritukset(s.osasuoritukset.map(_.map {
+            case os: PaikalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenSuoritus =>
+              os.copy(
+                liittyyTutkintoon = os.liittyyTutkintoon.copy(
+                  perusteenNimi = os.liittyyTutkintoon.perusteenDiaarinumero.flatMap(diaarinumero => perusteenNimi(diaarinumero, Some(oo.getVaadittuPerusteenVoimassaolopäivä)))
+                )
+              )
+            case os => os
+          }))
+        case s: MuunAmmatillisenKoulutuksenSuoritus =>
+          s.withOsasuoritukset(s.osasuoritukset.map(_.map {
+            case os: PaikalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenSuoritus =>
+              os.copy(
+                liittyyTutkintoon = os.liittyyTutkintoon.copy(
+                  perusteenNimi = os.liittyyTutkintoon.perusteenDiaarinumero.flatMap(diaarinumero => perusteenNimi(diaarinumero, Some(oo.getVaadittuPerusteenVoimassaolopäivä)))
+                )
+              )
+            case os => os
+          }))
         case o => o
       })
     case x => x
