@@ -7,9 +7,9 @@ OPH:n ulkopuolisten osapuolten backendit autentikoituvat Koskeen tällä hetkell
 - (A2) Client cert: KOSKI-luovutuspalvelu, jota käyttävät mm. Kela ja vastaavat viranomaiset
 - (A3) Palveluväylä: HSL, DVV
 
-Käyttäjä voi antaa ja tallentaa KOSKI-järjestelmään luvan kaikkiin kyseiselle osapuolelle OPH:n ja osapuolen valisessä
-tietoluovutussopimuksessa sovittuihin tietoihin:
-- (B1) HSL:n mobiili-applikaatiota varten tehtyjen käyttöliittymien ja backendin kautta
+Käyttäjä voi antaa ja tallentaa KOSKI-järjestelmään suostumuksen kaikkiin kyseiselle osapuolelle
+OPH:n ja osapuolen valisessä tietoluovutussopimuksessa sovittuihin tietoihin:
+- (B1) HSL:n mobiiliapplikaatiota varten tehtyjen käyttöliittymien ja backendin kautta
 
 Käyttäjä voi itse rajoittaa ja määritellä tarkemmin jakamansa tietosisällön osajoukoksi KOSKI-dataansa:
 - (C1) Luomalla KOSKI-järjestelmän Oma Opintopolku -käyttöliittymässä jakolinkin (URL), jonka
@@ -52,7 +52,7 @@ Tämä on yleinen OAauth 2.0 -toteutus, joka tukee useita käyttötapauksia sell
 toteuttaa haluttaessa tämän rinnalle.
 
 (A.2) Tälle toinen/lisävaihtoehto voisi olla, että käyttäjä aloittaa flown ja tekee valinnat KOSKI-palvelun käyttöliittymässä, ja luo
-KOSKI-käyttöliittymässä linkin/QR-koodin, jota voi käyttää hyödyntäjän frontendissä. Tässä on vielä seuraavat lisävaihtoehdot:
+KOSKI-käyttöliittymässä linkin/QR-koodin, jota voi käyttää hyödyntäjä-applikaatiossa. Tässä on vielä seuraavat lisävaihtoehdot:
 
 (A.2.1) Luotu linkki/QR-koodi on pohja-URL, jota Client voi käyttää kuvan vaiheessa 1. Linkki sisältää käyttäjän KOSKI-frontendissa
 tekemät scope-valinnat, ja Client lisää siihen query-parametrina oman client-id:n ja redirect-url:in.
@@ -63,7 +63,8 @@ ensimmäisenä käyttäneeseen Clientiin.
 
 (A.2.3) Kuten edellinen (A.2.2), mutta authorization code sidotaan jo KOSKI-käyttöliittymässä tehtävällä valinnalla ainoastaan yhden valitun
 client-id:n käyttöön. Jos (A.2) valitaan, tämä on se, mikä toteutetaan, koska johtaa käyttäjän kannalta kaikkein yksinkertaisimpaan
-ja tietoturvallisimpaan lopputulokseen.
+ja tietoturvallisimpaan lopputulokseen. Tämä vaihtoehto käytännössä vaatii, että KOSKI-palvelussa on rekisteri Hyödyntäjä-applikaatioiden
+URL-osoitteista, joihin luotu linkki käyttäjän selaimen/mobiilikäyttöliittymän vie.
 
 ### (B.1) Käytetään olemassaolevaa client cert + ip-rajaus -autentikointia backendien välillä
 
@@ -116,7 +117,8 @@ käyttäjän autentikointitavoilla.
 ### (E) Käytetään OAauth 2.0:n scopeja jaetun tietosisällön valitsemisessa
 
 Scope voi sisältää esim. opiskeluoikeuden/päätason suorituksen tunnistamiseen riittäviä tietoja, tai olla jokin merkkijono, jolla
-jaetaan esim. kaikki käyttäjän valmistuneet tutkinnot.
+jaetaan esim. kaikki käyttäjän suoritetut tutkinnot. Scopella voi myös hallita muita osia jaettavasta tietosisällöstä,
+esim. kuinka tarkat henkilötiedot välitetään.
 
 ### (F) Ei tueta scope:n lisärajoittamista access tokeneita pyydettäessä
 
@@ -128,13 +130,14 @@ authorization code:n avulla, mutta tämän tukeminen olisi turhaa monimutkaisuut
 Erillisiä refresh tokeneita ei käytetä, koska liikenne backendien välillä autentikoidaan aina client cert:llä (B.1):n mukaisesti.
 Jos päätetäänkin tukea muita backendien autentikointitapoja, tulee tämä kuitenkin mahdollisesti toteuttaa.
 
-Käyttäjän tehdessä revoken authorization code:lle, pitää kuitenkin poistaa kaikki sen kautta luodut access tokenit. Hyödyntäjän
-käyttöoikeudet voi myös tarvittaessa poistaa luovutuspalvelusta nopeasti muuttamalla käyttäjätunnuksen
-käyttöoikeuksia Opintopolussa.
+Käyttäjän tehdessä revoken authorization code:lle, voidaan välittömästi poistaa kaikki sen kautta luodut access tokenitkin. Yksittäisen
+hyödyntäjän käyttöoikeudet voi myös tarvittaessa poistaa nopeasti muuttamalla käyttäjätunnuksen käyttöoikeuksia Opintopolussa.
 
-### (H) client id = Hyödyntäjä-backendin client certiin + ip-osoitteisiin KOSKI-konfiguraatiossa sidottu Opintopolun käyttäjätunnus
+### (H) client id = Opintopolun käyttäjätunnus
 
-Ei tarvitse toteuttaa erillistä client id -rekisteriä, kun käytetään samaa merkkijonoa.
+Käyttäjätunnus on sidottu KOSKI-palvelun konfiguraatiossa Hyödyntäjä-backendin client certiin + sallittuihin ip-osoitteisiin.
+
+Ei tarvitse toteuttaa erillistä client id -rekisteriä, kun käytetään samaa merkkijonoa kuin Opintopolun käyttäjähallinnassa.
 
 Pitää varmistaa, että käytetään vain käyttäjätunnuksia, jotka on helppo välittää query-parametreina URL:ssa.
 
