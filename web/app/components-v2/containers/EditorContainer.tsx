@@ -140,6 +140,14 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
 
   const { lisätiedotContainer: LisätiedotContainer } = props
 
+  const hasLisätiedot = (state: undefined | { $class: string }): Boolean => {
+    if (state === undefined) {
+      return false
+    }
+    const { $class, ...otherProps } = state
+    return Object.keys(otherProps).length > 0
+  }
+
   return (
     <article {...common(props, ['EditorContainer'])}>
       <TestIdRoot id="opiskeluoikeus">
@@ -170,22 +178,25 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
           view={OrganisaatiohistoriaView}
         />
         <Spacer />
-        {LisätiedotContainer !== undefined && (
-          <>
-            <FlatButton
-              onClick={(e) => {
-                e.preventDefault()
-                setLisatiedotOpen((prev) => !prev)
-              }}
-            >
-              {lisatiedotOpen
-                ? t('lisatiedot:sulje_lisatiedot')
-                : t('lisatiedot:nayta_lisatiedot')}
-            </FlatButton>
-            {lisatiedotOpen && <LisätiedotContainer form={props.form} />}
-            <Spacer />
-          </>
-        )}
+        {LisätiedotContainer !== undefined &&
+          (props.form.editMode ||
+            ('lisätiedot' in props.form.state &&
+              hasLisätiedot(props.form.state.lisätiedot))) && (
+            <>
+              <FlatButton
+                onClick={(e) => {
+                  e.preventDefault()
+                  setLisatiedotOpen((prev) => !prev)
+                }}
+              >
+                {lisatiedotOpen
+                  ? t('lisatiedot:sulje_lisatiedot')
+                  : t('lisatiedot:nayta_lisatiedot')}
+              </FlatButton>
+              {lisatiedotOpen && <LisätiedotContainer form={props.form} />}
+              <Spacer />
+            </>
+          )}
       </TestIdRoot>
 
       <h2>
