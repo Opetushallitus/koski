@@ -145,6 +145,7 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
     val started = System.currentTimeMillis
     setStatusLoadStarted("materialized_views")
 
+    val confidentalSchema = confidental.map(_.schema).getOrElse(schema)
     val views = Seq(
       PaallekkaisetOpiskeluoikeudet.createPrecomputedTable(schema),
       PaallekkaisetOpiskeluoikeudet.createIndex(schema),
@@ -166,7 +167,7 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
       LukioOppiaineEriVuonnaKorotetutKurssit.createIndex(schema),
       Lukio2019OppiaineEriVuonnaKorotetutOpintopisteet.createPrecomputedTable(schema),
       Lukio2019OppiaineEriVuonnaKorotetutOpintopisteet.createIndex(schema),
-      Oppivelvollisuustiedot.createPrecomputedTable(schema, valpasRajapäivätService),
+      Oppivelvollisuustiedot.createPrecomputedTable(schema, confidentalSchema, valpasRajapäivätService),
       Oppivelvollisuustiedot.createIndexes(schema)
     )
     runDbSync(DBIO.seq(views: _*), timeout = 120.minutes)

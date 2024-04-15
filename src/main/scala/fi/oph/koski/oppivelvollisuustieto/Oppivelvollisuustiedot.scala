@@ -76,7 +76,7 @@ object Oppivelvollisuustiedot {
     Voimassaolojen päättelyssä otetaan ylioppilastutkinto huomioon, mikäli oppijalla ei ole ammatillista tutkintoa. Ammatillisen
     tutkinnon tapaukset on toistaiseksi jätetty pois, koska kaksois- ja kolmoistutkinnot on vaikeasti määriteltäviä.
   */
-  def createPrecomputedTable(s: Schema, valpasRajapäivätService: ValpasRajapäivätService)= {
+  def createPrecomputedTable(s: Schema, confidentalSchema: Schema, valpasRajapäivätService: ValpasRajapäivätService)= {
     val tarkastelupäivä = valpasRajapäivätService.tarkastelupäivä
     val valpasLakiVoimassaVanhinSyntymäaika = valpasRajapäivätService.lakiVoimassaVanhinSyntymäaika
     val valpasLakiVoimassaPeruskoulustaValmistuneilla = valpasRajapäivätService.lakiVoimassaPeruskoulustaValmistuneillaAlku
@@ -137,12 +137,12 @@ object Oppivelvollisuustiedot {
                 )
                 and (
                   --- Joko: Ei Opintopolkuun tallennettua kotikuntahistoriaa alaikäisyyden ajalta
-                  (select count(*) from #${s.name}.r_kotikuntahistoria
+                  (select count(*) from #${confidentalSchema.name}.r_kotikuntahistoria
                     where r_kotikuntahistoria.oppija_oid = henkilo.master_oid
                     and r_kotikuntahistoria.muutto_pvm < henkilo.syntymaaika + interval '18 years') = 0
 
                   --- ...tai on asunut Suomessa alaikäisenä
-                  or (select count(*) from #${s.name}.r_kotikuntahistoria
+                  or (select count(*) from #${confidentalSchema.name}.r_kotikuntahistoria
                         where r_kotikuntahistoria.oppija_oid = henkilo.master_oid
                         and r_kotikuntahistoria.muutto_pvm < henkilo.syntymaaika + interval '18 years'
                         and not r_kotikuntahistoria.kotikunta = any(#$ulkopuolisetKunnat)) > 0
