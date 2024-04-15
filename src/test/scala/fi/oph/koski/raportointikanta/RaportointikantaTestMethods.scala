@@ -17,10 +17,12 @@ trait RaportointikantaTestMethods extends KoskiHttpSpec {
   val ENCRYPTED_XLSX_PREFIX: Array[Byte] = Array(0xd0, 0xcf, 0x11, 0xe0, 0xa1, 0xb1, 0x1a, 0xe1).map(_.toByte)
 
   lazy val mainRaportointiDb: RaportointiDatabase = KoskiApplicationForTests.raportointiDatabase
+  lazy val confidentalRaportointiDb: ConfidentalRaportointiDatabase = mainRaportointiDb.confidental.get
 
   lazy val tempRaportointiDb: RaportointiDatabase = new RaportointiDatabase(
     new RaportointiDatabaseConfig(KoskiApplicationForTests.config, schema = Temp)
   )
+  lazy val tempConfidentalRaportointiDb: ConfidentalRaportointiDatabase = tempRaportointiDb.confidental.get
 
   def reloadRaportointikanta(): Unit = {
     authGet("api/test/raportointikanta/load?force=true&fullReload=true") { verifyResponseStatusOk() }
