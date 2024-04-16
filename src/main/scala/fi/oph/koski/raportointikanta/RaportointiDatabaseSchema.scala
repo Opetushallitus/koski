@@ -4,6 +4,7 @@ import java.sql.{Date, Timestamp}
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.koski.henkilo.Kotikuntahistoria
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.raportit.{YleissivistäväRaporttiKurssi, YleissivistäväRaporttiOppiaine, YleissivistäväRaporttiOppiaineTaiKurssi}
@@ -1066,6 +1067,8 @@ sealed trait Schema {
     sqlu"CREATE INDEX ON #${name}.r_organisaatio(oppilaitosnumero)",
 
     sqlu"CREATE UNIQUE INDEX ON #${name}.r_koodisto_koodi(koodisto_uri, koodiarvo)",
+
+    Kotikuntahistoria.createIndexes(this),
   )
 
   def grantPermissions() = DBIO.seq(actions =
@@ -1105,7 +1108,9 @@ case object Temp extends Schema {
 sealed trait ConfidentialSchema extends Schema {
   override def createIndexesForIncrementalUpdate() = DBIO.seq()
   override def createOpiskeluoikeusIndexes() = DBIO.seq()
-  override def createOtherIndexes() = DBIO.seq()
+  override def createOtherIndexes() = DBIO.seq(
+    Kotikuntahistoria.createIndexes(this),
+  )
   override def grantPermissions() = DBIO.seq()
 }
 

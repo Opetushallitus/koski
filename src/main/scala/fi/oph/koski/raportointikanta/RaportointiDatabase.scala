@@ -2,6 +2,7 @@ package fi.oph.koski.raportointikanta
 
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.{DB, DatabaseUtilQueries, QueryMethods, RaportointiDatabaseConfigBase}
+import fi.oph.koski.henkilo.Kotikuntahistoria
 import fi.oph.koski.log.Logging
 import fi.oph.koski.oppivelvollisuustieto.Oppivelvollisuustiedot
 import fi.oph.koski.raportit.PaallekkaisetOpiskeluoikeudet
@@ -126,10 +127,12 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
 
   def createIndexesForIncrementalUpdate(): Unit = {
     runDbSync(schema.createIndexesForIncrementalUpdate(), timeout = 120.minutes)
+    confidential.foreach(_.createIndexesForIncrementalUpdate())
   }
 
   def createOpiskeluoikeusIndexes(): Unit = {
     runDbSync(schema.createOpiskeluoikeusIndexes(), timeout = 120.minutes)
+    confidential.foreach(_.createOpiskeluoikeusIndexes())
   }
 
   def createOtherIndexes(): Unit = {
@@ -138,6 +141,7 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
     runDbSync(schema.createOtherIndexes(), timeout = 120.minutes)
     val indexElapsedSeconds = (System.currentTimeMillis - indexStartTime)/1000
     logger.info(s"Luotiin henkilö-, organisaatio- ja koodisto-indeksit, ${indexElapsedSeconds} s")
+    confidential.foreach(_.createOtherIndexes())
   }
 
   def createPrecomputedTables(valpasRajapäivätService: ValpasRajapäivätService): Unit = {
@@ -168,7 +172,7 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
       Lukio2019OppiaineEriVuonnaKorotetutOpintopisteet.createPrecomputedTable(schema),
       Lukio2019OppiaineEriVuonnaKorotetutOpintopisteet.createIndex(schema),
       Oppivelvollisuustiedot.createPrecomputedTable(schema, ConfidentialSchema, valpasRajapäivätService),
-      Oppivelvollisuustiedot.createIndexes(schema)
+      Oppivelvollisuustiedot.createIndexes(schema),
     )
     runDbSync(DBIO.seq(views: _*), timeout = 120.minutes)
 
