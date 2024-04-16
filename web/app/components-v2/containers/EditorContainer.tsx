@@ -184,6 +184,7 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
               hasLisätiedot(props.form.state.lisätiedot))) && (
             <>
               <FlatButton
+                testId="lisätiedotButton"
                 onClick={(e) => {
                   e.preventDefault()
                   setLisatiedotOpen((prev) => !prev)
@@ -193,7 +194,11 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
                   ? t('lisatiedot:sulje_lisatiedot')
                   : t('lisatiedot:nayta_lisatiedot')}
               </FlatButton>
-              {lisatiedotOpen && <LisätiedotContainer form={props.form} />}
+              {lisatiedotOpen && (
+                <TestIdLayer id="lisätiedot">
+                  <LisätiedotContainer form={props.form} />
+                </TestIdLayer>
+              )}
               <Spacer />
             </>
           )}

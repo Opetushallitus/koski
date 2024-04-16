@@ -1,6 +1,7 @@
 import { Button } from './Button'
 import { Label } from './Label'
 import { OpiskeluoikeudenTila } from './OpiskeluoikeudenTila'
+import { arrayOf } from './builder'
 
 export const OpiskeluoikeusHeader = () => ({
   nimi: Label,
@@ -13,5 +14,9 @@ export const OpiskeluoikeusHeader = () => ({
     confirm: Button,
     cancel: Button
   },
-  tila: OpiskeluoikeudenTila()
+  tila: OpiskeluoikeudenTila(),
+  lisätiedotButton: Button,
+  lisätiedot: {
+    maksuttomuudet: arrayOf({remove: Button})
+  }
 })

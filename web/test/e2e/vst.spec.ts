@@ -13,6 +13,7 @@ const kansanopisto = '1.2.246.562.24.00000000105'
 const vapaatavoitteinenKoulutus = '1.2.246.562.24.00000000108'
 const jotpaKoulutusTiedonsiirto = '1.2.246.562.24.00000000058'
 const osaamismerkki = '1.2.246.562.24.00000000164'
+const vstMaksuttomuus = '1.2.246.562.24.00000000170'
 
 const openOppijaPage =
   (oppijaOid: string, edit: boolean) =>
@@ -1255,6 +1256,12 @@ test.describe('Vapaa sivistystyö', () => {
         ).toHaveText('Reijo Reksi (rehtori)')
       })
     })
+    test.describe('VST maksuttomuus', () => {
+      test.beforeEach(openOppijaPage(vstMaksuttomuus, false))
+      test('Lisätiedot nappi näkyvissä', async ({ page }) => {
+        await expect(page.getByTestId("opiskeluoikeus.lisätiedotButton")).toBeVisible()
+      })
+    })
   })
 
   test.describe('Muokkausnäkymä', () => {
@@ -2122,6 +2129,20 @@ test.describe('Vapaa sivistystyö', () => {
         await vstOppijaPage.tallennaVirheellisenä(
           'lessThanMinimumNumberOfItems: opiskeluoikeudet.0.tila.opiskeluoikeusjaksot'
         )
+      })
+    })
+
+    test.describe('VST maksuttomuus', () => {
+      test.beforeEach(openOppijaPage(vstMaksuttomuus, true))
+      test('Maksuttomuuden poistaminen', async ({ page, vstOppijaPage }) => {
+        vstOppijaPage.$.opiskeluoikeus.lisätiedotButton.click()
+
+        vstOppijaPage.$.opiskeluoikeus.lisätiedot.maksuttomuudet(0).remove.click()
+        await vstOppijaPage.saveBtn.click()
+
+        await page.reload()
+
+        await expect(page.getByTestId("opiskeluoikeus.lisätiedotButton")).not.toBeVisible()
       })
     })
   })

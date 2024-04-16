@@ -115,7 +115,7 @@ object KoskiSpecificMockOppijat {
   val perusopetusOppijaMaaratRaportti_erikois = koskiSpecificOppijat.oppija("e", "erikois", "180900A2298")
   val perusopetusOppijaMaaratRaportti_virheellisestiSiirretty = koskiSpecificOppijat.oppija("v", "virheellisestiSiirretty", "050501A093H")
   val perusopetusOppijaMaaratRaportti_virheellisestiSiirrettyVieraskielinen = koskiSpecificOppijat.oppija("v", "virheellisestiSiirrettyVieraskielinen", "131100A355P", äidinkieli = Some("en"))
-  val perusopetusOppijaMaaratRaportti_kotiopetus= koskiSpecificOppijat.oppija("k", "kotiopetus", "190371-103A")
+  val perusopetusOppijaMaaratRaportti_kotiopetus = koskiSpecificOppijat.oppija("k", "kotiopetus", "190371-103A")
   val organisaatioHistoriallinen = koskiSpecificOppijat.oppija("o", "organisaatioHistoriallinen", "210728-156E")
   val lukioKurssikertymaRaportti_oppimaara = koskiSpecificOppijat.oppija("Kurssikertyma", "Oppimaara", "280900A787P")
   val lukioKurssikertymaRaportti_aineopiskelija_eronnut = koskiSpecificOppijat.oppija("Kurssikertyma", "Eronnut Aineopiskelija", "280900A323R")
@@ -194,6 +194,8 @@ object KoskiSpecificMockOppijat {
   val suomeenAlaikäisenäMuuttanut = koskiSpecificOppijat.oppija("Anderson", "Andrew", "010106A8159", kotikunta = Some("091"))
   val ulkomaillaHetkenAsunut = koskiSpecificOppijat.oppija("Matkailija", "Matilda", "010106A604F", kotikunta = Some("091"))
   val suomeenAhvenanmaaltaTäysiikäisenäMuuttanut = koskiSpecificOppijat.oppija("Anderson", "Anders", "010106A0398", kotikunta = Some("091"))
+  val vapaaSivistystyöMaksuttomuus = koskiSpecificOppijat.oppija("VST", "Maksuttomuus", "311204A059L", syntymäaika = Some(LocalDate.of(2004, 12, 31)), kotikunta = Some("091"))
+
 
   //Jos luot uuden oppijan voi hetun generoida täältä: http://www.lintukoto.net/muut/henkilotunnus/index.php
   //Huomaa, että hetun pitää olla oikean kaltainen
