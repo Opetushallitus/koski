@@ -58,5 +58,18 @@
     "kotikunta": 91,
     "kuntaanMuuttopv": "2024-03-01",
     "kunnastaPoisMuuttopv": null
+  },
+  {
+    "oid": "1.2.246.562.24.00000000071",
+    "kotikunta": 178,
+    "kuntaanMuuttopv": "2010-01-01",
+    "kunnastaPoisMuuttopv": "2024-03-01"
+  },
+  {
+    "oid": "1.2.246.562.24.00000000071",
+    "kotikunta": 91,
+    "kuntaanMuuttopv": "2024-03-01",
+    "kunnastaPoisMuuttopv": null,
+    "turvakielto": true
   }
 ]

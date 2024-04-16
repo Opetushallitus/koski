@@ -1,12 +1,14 @@
 package fi.oph.koski.oppivelvollisuustieto
 
 import fi.oph.koski.api.misc.OpiskeluoikeusTestMethodsAmmatillinen
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.api.actionBasedSQLInterpolation
+import fi.oph.koski.db.QueryMethods
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.PerusopetusExampleData.yhdeksännenLuokanSuoritus
 import fi.oph.koski.documentation._
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat._
-import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
+import fi.oph.koski.raportointikanta.{RaportointiDatabase, RaportointikantaTestMethods}
 import fi.oph.koski.schema._
 import fi.oph.koski.{DirtiesFixtures, KoskiApplicationForTests, KoskiHttpSpec}
 import org.scalatest.freespec.AnyFreeSpec
@@ -445,6 +447,18 @@ class OppivelvollisuustietoSpec
 
       "Ahvenanmaalta täysi-ikäisenä Manner-Suomeen muuttanut ei ole oppivelvollisuden alainen" in {
         isOppivelvollinen("1.2.246.562.24.00000000169") should be(false)
+      }
+
+      "Turvakiellolliset kotikuntahistoriarivit eivät päädy raportointikannan tauluun" in {
+        def getKotikuntahistoriaCount(db: RaportointiDatabase, oid: String): Int =
+          QueryMethods.runDbSync(
+            db.db,
+            sql"SELECT COUNT(*) FROM #${db.schema.name}.r_kotikuntahistoria WHERE master_oid = $oid".as[Int],
+          ).head
+
+        val oid = "1.2.246.562.24.00000000071"
+        getKotikuntahistoriaCount(KoskiApplicationForTests.raportointiDatabase, oid) should equal(1)
+        getKotikuntahistoriaCount(KoskiApplicationForTests.raportointiDatabase.confidential.get, oid) should equal(2)
       }
     }
   }
