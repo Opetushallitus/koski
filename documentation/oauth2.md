@@ -24,7 +24,7 @@ toteuttamista asioista, eli:
 ## Toteutusehdotus
 
 Ehdotus on käyttää OAuth 2.0 -standardin mukaista authorization code -flowta, käyttäen backendien väliseen autentikointiin
-olemassaolevaa KOSKI-luovutuspalvelun tukemaa Mutual TLS (MTLS) client certificate -tunnistusta:
+olemassaolevaa KOSKI-luovutuspalvelun jo tukemaa Mutual TLS (mTLS) client certificate -tunnistusta:
 
 ![OAuth 2.0 ehdotus](kuvat/png/oauth2.png)
 [oauth2.puml](kuvat/oauth2.puml)
@@ -71,7 +71,7 @@ URL-osoitteista, joihin luotu linkki käyttäjän selaimen/mobiilikäyttöliitty
 Jotta saadaan käytettyä olemassaolevaa, käytössä toimivaa ja jo ennestään auditoitua tunnistamistoteutusta. Myös access token:illa
 tehdyt pyynnöt käyttävät tätä mekanismia.
 
-Tämä vaatii ainakin sen verran työtä nginx-luovutuspalveluumme, että muokataan virhekoodit ja -ilmoitukset OAuth 2.0:n MTLS-autentikointitavan
+Tämä vaatii ainakin sen verran työtä nginx-luovutuspalveluumme, että muokataan virhekoodit ja -ilmoitukset OAuth 2.0:n mTLS-autentikointitavan
 (https://www.rfc-editor.org/rfc/rfc8705.html) mukaisiksi.
 
 (B.2) Toinen vaihtoehto tähän autentikointiin olisi: Eräs OAuth 2.0 -standardin tarjoamien keinojen mukainen vaihtoehto
