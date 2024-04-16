@@ -5,7 +5,6 @@ import fi.oph.koski.raportointikanta.RKotikuntahistoriaRow
 import java.sql.Date
 import java.time.LocalDate
 
-
 case class OppijanumerorekisteriKotikuntahistoriaRow(
   oid: String,
   kotikunta: Long,
@@ -16,9 +15,11 @@ case class OppijanumerorekisteriKotikuntahistoriaRow(
   def toDbRow: RKotikuntahistoriaRow =
     RKotikuntahistoriaRow(
       oppijaOid = oid,
-      kotikunta = kotikunta,
+      kotikunta = kotikuntaKoodiarvo,
       muuttoPvm = Date.valueOf(kuntaanMuuttopv),
       poismuuttoPvm = kunnastaPoisMuuttopv.map(pvm => Date.valueOf(pvm)),
       turvakielto = turvakielto.contains(true),
     )
+
+  def kotikuntaKoodiarvo: String = "%03d".format(kotikunta)
 }
