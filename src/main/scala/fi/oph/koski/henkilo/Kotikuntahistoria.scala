@@ -14,7 +14,7 @@ case class OppijanumerorekisteriKotikuntahistoriaRow(
 ) {
   def toDbRow: RKotikuntahistoriaRow =
     RKotikuntahistoriaRow(
-      oppijaOid = oid,
+      masterOppijaOid = oid,
       kotikunta = kotikuntaKoodiarvo,
       muuttoPvm = Date.valueOf(kuntaanMuuttopv),
       poismuuttoPvm = kunnastaPoisMuuttopv.map(pvm => Date.valueOf(pvm)),

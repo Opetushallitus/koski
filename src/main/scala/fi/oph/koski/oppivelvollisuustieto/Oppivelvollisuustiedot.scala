@@ -138,12 +138,12 @@ object Oppivelvollisuustiedot {
                 and (
                   --- Joko: Ei Opintopolkuun tallennettua kotikuntahistoriaa alaikäisyyden ajalta
                   (select count(*) from #${confidentalSchema.name}.r_kotikuntahistoria
-                    where r_kotikuntahistoria.oppija_oid = henkilo.master_oid
+                    where r_kotikuntahistoria.master_oid = henkilo.master_oid
                     and r_kotikuntahistoria.muutto_pvm < henkilo.syntymaaika + interval '18 years') = 0
 
                   --- ...tai on asunut Suomessa alaikäisenä
                   or (select count(*) from #${confidentalSchema.name}.r_kotikuntahistoria
-                        where r_kotikuntahistoria.oppija_oid = henkilo.master_oid
+                        where r_kotikuntahistoria.master_oid = henkilo.master_oid
                         and r_kotikuntahistoria.muutto_pvm < henkilo.syntymaaika + interval '18 years'
                         and not r_kotikuntahistoria.kotikunta = any(#$ulkopuolisetKunnat)) > 0
                )

@@ -555,14 +555,14 @@ object RaportointiDatabaseSchema {
   class RYtrTutkintokokonaisuudenKokeenSuoritusConfidentalTableTemp(tag: Tag) extends RYtrTutkintokokonaisuudenKokeenSuoritusTable(tag, TempConfidental)
 
   class RKotikuntahistoriaTable(tag: Tag, schema: Schema = Public) extends Table[RKotikuntahistoriaRow](tag, schema.nameOpt, "r_kotikuntahistoria") {
-    val oppijaOid = column[String]("oppija_oid")
+    val masterOppijaOid = column[String]("master_oid")
     val kotikunta = column[String]("kotikunta")
     val muuttoPvm = column[Date]("muutto_pvm")
     val poismuuttoPvm = column[Option[Date]]("poismuutto_pvm")
     val turvakielto = column[Boolean]("turvakielto")
 
     def * = (
-      oppijaOid,
+      masterOppijaOid,
       kotikunta,
       muuttoPvm,
       poismuuttoPvm,
@@ -978,7 +978,7 @@ case class RYtrTutkintokokonaisuudenKokeenSuoritusRow(
 )
 
 case class RKotikuntahistoriaRow(
-  oppijaOid: String,
+  masterOppijaOid: String,
   kotikunta: String,
   muuttoPvm: Date,
   poismuuttoPvm: Option[Date],
