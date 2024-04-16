@@ -17,7 +17,7 @@ class RaportointikantaDbSpec extends AnyFreeSpec with Matchers with Raportointik
   }
 
   "Moves schema" in {
-    dropAll(mainRaportointiDb)
+    dropAndCreateSchema(mainRaportointiDb)
     dropsAndCreatesSchemaObjects(tempRaportointiDb)
     schemaExists(tempRaportointiDb)
     tempRaportointiDb.moveTo(Public)
@@ -25,8 +25,17 @@ class RaportointikantaDbSpec extends AnyFreeSpec with Matchers with Raportointik
     schemaExists(mainRaportointiDb)
   }
 
+  "Moves confidental schema" in {
+    dropAndCreateSchema(confidentalRaportointiDb)
+    dropAndCreateSchema(tempConfidentalRaportointiDb)
+    schemaExists(tempConfidentalRaportointiDb)
+    tempConfidentalRaportointiDb.moveTo(Confidential)
+    schemaIsEmpty(tempConfidentalRaportointiDb)
+    schemaExists(confidentalRaportointiDb)
+  }
+
   private def dropsAndCreatesSchemaObjects(db: RaportointiDatabase) = {
-    dropAll(db)
+    dropAndCreateSchema(db)
     schemaExists(db)
     db.createOtherIndexes()
     db.createCustomFunctions
@@ -46,7 +55,7 @@ class RaportointikantaDbSpec extends AnyFreeSpec with Matchers with Raportointik
     }
   }
 
-  private def dropAll(db: RaportointiDatabase) {
+  private def dropAndCreateSchema(db: RaportointiDatabase) {
     db.dropAndCreateObjects()
   }
 }

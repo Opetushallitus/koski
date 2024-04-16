@@ -1,7 +1,7 @@
 package fi.oph.koski.migration
 
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.raportointikanta.{DelayedScheduler, RaportointiDatabase}
+import fi.oph.koski.raportointikanta.{DelayedScheduler, RaportointiDatabase, RaportointikantaTestMethods}
 import fi.oph.koski.util.Wait
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
@@ -9,7 +9,7 @@ import org.scalatest.matchers.should.Matchers
 import java.io.File
 import scala.io.Source
 
-class MigrationSpec extends AnyFreeSpec with Matchers {
+class MigrationSpec extends AnyFreeSpec with Matchers with RaportointikantaTestMethods {
   "Migraatiot" - {
     "Havaittiin uusi tietokannan migraatiotiedosto. Migraatiot, varsinkin jos koskevat Kosken suurimpia tauluja, on hyvä testata tietokantareplikaa vasten.\n" +
       "Korjaa tämän testin odottama tiedostomäärä, kun olet varma että migraatiot voi viedä eteenpäin.\nDokumentaatio: documentation/tietokantamigraatiot.md" in {
@@ -19,7 +19,7 @@ class MigrationSpec extends AnyFreeSpec with Matchers {
 
   "Raportointikannan skeema" - {
     "Skeema ei ole muuttunut tai skeeman versionumero on päivitetty" in {
-      KoskiApplicationForTests.raportointikantaService.loadRaportointikanta(force = false)
+      reloadRaportointikanta()
       Wait.until(KoskiApplicationForTests.raportointikantaService.isLoadComplete)
 
       val hash = KoskiApplicationForTests.raportointiDatabase.getSchemaHash("public")
@@ -37,7 +37,7 @@ class MigrationSpec extends AnyFreeSpec with Matchers {
       val dir = "./src/main/scala/fi/oph/koski/raportointikanta"
       val expectedChecksums = Map(
         "AikajaksoRowBuilder.scala"                                 -> "581190491d31f3b0d4a40c2e62579ffa",
-        "HenkiloLoader.scala"                                       -> "8bb9b09ac2dd771c741dff417b34f79e",
+        "HenkiloLoader.scala"                                       -> "2460df7aea02ab3c629993621728c82",
         "KoodistoLoader.scala"                                      -> "86c90ec069d1c5ec5ee9faa65fb1399e",
         "KoskiEventBridgeClient.scala"                              -> "f8a09d358ebb3fe2ed4d8875ccccef12",
         "LoaderUtils.scala"                                         -> "38d31b4d1cfa5e3892083bb39f7f0047",
@@ -48,10 +48,10 @@ class MigrationSpec extends AnyFreeSpec with Matchers {
         "OrganisaatioHistoriaRowBuilder.scala"                      -> "7e586d9e273a5a4ee7beae257f22c7f4",
         "OrganisaatioLoader.scala"                                  -> "4f7ce51cb922dbc11e694ebe85ab3472",
         "PäivitettyOpiskeluoikeusLoader.scala"                      -> "500545bbe7ef47dedcfdc49580b536d2",
-        "RaportointiDatabase.scala"                                 -> "8ab9050e76aa25c91803f95fbd08f400",
+        "RaportointiDatabase.scala"                                 -> "9483038d66b33dd2040673ed7b0f64d6",
         "RaportointiDatabaseCustomFunctions.scala"                  -> "956f101d1219c49ac9134b72a30caf3a",
-        "RaportointiDatabaseSchema.scala"                           -> "80bf9ac46ce362911fea08c24f83ed09",
-        "RaportointikantaService.scala"                             -> "451c1d9b7a3040e482ed4b4e0bf036a5",
+        "RaportointiDatabaseSchema.scala"                           -> "8ba79166dcb4d9b6ce6fddcb2998e391",
+        "RaportointikantaService.scala"                             -> "cfd107f8375331762389e90b7c31d43a",
         "RaportointikantaStatusServlet.scala"                       -> "9fd6f796adfb2034cce0151b7330cd1a",
         "RaportointikantaTestServlet.scala"                         -> "d457be86e60dd84545378ae415236d26",
         "RaportointikantaTableQueries.scala"                        -> "b97f971fa7a5896ec3c4d69882ca705d",

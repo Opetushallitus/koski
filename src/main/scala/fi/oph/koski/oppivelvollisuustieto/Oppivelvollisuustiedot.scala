@@ -11,10 +11,13 @@ import java.time.LocalDate
 
 
 object Oppivelvollisuustiedot {
-    def oppivelvollisuudenUlkopuolisetKunnat = ahvenanmaanKunnat ++ List(
-      "198",  // Ei kotikuntaa Suomessa
-      "200",  // Ulkomaat
-      "",     // Virheellinen null
+    def oppivelvollisuudenUlkopuolisetKunnatTaiKuntaVirheellinen: List[String] =
+      oppivelvollisuudenUlkopuolisetKunnat ++ List("")
+
+  def oppivelvollisuudenUlkopuolisetKunnat: List[String] =
+    ahvenanmaanKunnat ++ List(
+      "198", // Ei kotikuntaa Suomessa
+      "200", // Ulkomaat
     )
 
   def queryByOid(oid: String, db: RaportointiDatabase): Option[Oppivelvollisuustieto] = {
@@ -73,7 +76,7 @@ object Oppivelvollisuustiedot {
     Voimassaolojen päättelyssä otetaan ylioppilastutkinto huomioon, mikäli oppijalla ei ole ammatillista tutkintoa. Ammatillisen
     tutkinnon tapaukset on toistaiseksi jätetty pois, koska kaksois- ja kolmoistutkinnot on vaikeasti määriteltäviä.
   */
-  def createPrecomputedTable(s: Schema, valpasRajapäivätService: ValpasRajapäivätService)= {
+  def createPrecomputedTable(s: Schema, confidentalSchema: Schema, valpasRajapäivätService: ValpasRajapäivätService)= {
     val tarkastelupäivä = valpasRajapäivätService.tarkastelupäivä
     val valpasLakiVoimassaVanhinSyntymäaika = valpasRajapäivätService.lakiVoimassaVanhinSyntymäaika
     val valpasLakiVoimassaPeruskoulustaValmistuneilla = valpasRajapäivätService.lakiVoimassaPeruskoulustaValmistuneillaAlku
@@ -83,7 +86,8 @@ object Oppivelvollisuustiedot {
     val oppivelvollisuusLoppuuIka = valpasRajapäivätService.oppivelvollisuusLoppuuIka
     val maksuttomuusLoppuuIka = valpasRajapäivätService.maksuttomuusLoppuuIka
 
-    val oppivelvollisuudenUlkopuolisetKunnatList = validatedUnboundCodeList(oppivelvollisuudenUlkopuolisetKunnat)
+    val ulkopuolisetKunnatTaiKuntaVirheellinen = validatedUnboundCodeList(oppivelvollisuudenUlkopuolisetKunnatTaiKuntaVirheellinen)
+    val ulkopuolisetKunnat = validatedUnboundCodeList(oppivelvollisuudenUlkopuolisetKunnat)
 
     sqlu"""
       create table #${s.name}.oppivelvollisuustiedot as
@@ -109,7 +113,7 @@ object Oppivelvollisuustiedot {
               where syntymaaika >= '#$valpasLakiVoimassaVanhinSyntymäaika'::date
                 and (
                   turvakielto = true
-                  or not (kotikunta is null or kotikunta = any(#$oppivelvollisuudenUlkopuolisetKunnatList))
+                  or not (kotikunta is null or kotikunta = any(#$ulkopuolisetKunnatTaiKuntaVirheellinen))
                 )
                 and master_oid not in (
                                 select
@@ -131,6 +135,19 @@ object Oppivelvollisuustiedot {
                                   and koulutusmoduuli_koodiarvo = 'S4'
                                   and vahvistus_paiva < '#$valpasLakiVoimassaPeruskoulustaValmistuneilla'::date)
                 )
+                and (
+                  --- Joko: Ei Opintopolkuun tallennettua kotikuntahistoriaa alaikäisyyden ajalta
+                  (select count(*) from #${confidentalSchema.name}.r_kotikuntahistoria
+                    where r_kotikuntahistoria.master_oid = henkilo.master_oid
+                    and r_kotikuntahistoria.muutto_pvm < henkilo.syntymaaika + interval '18 years') = 0
+
+                  --- ...tai on asunut Suomessa alaikäisenä
+                  or (select count(*) from #${confidentalSchema.name}.r_kotikuntahistoria
+                        where r_kotikuntahistoria.master_oid = henkilo.master_oid
+                        and r_kotikuntahistoria.muutto_pvm < henkilo.syntymaaika + interval '18 years'
+                        and not r_kotikuntahistoria.kotikunta = any(#$ulkopuolisetKunnat)) > 0
+               )
+
         ),
 
         ammattitutkinto as (

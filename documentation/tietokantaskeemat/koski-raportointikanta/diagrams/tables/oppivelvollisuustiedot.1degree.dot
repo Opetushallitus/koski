@@ -8,7 +8,7 @@ digraph "oneDegreeRelationshipsDiagram" {
       <TR><TD PORT="oppivelvollisuusvoimassaalkaen" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="287" HEIGHT="16">oppivelvollisuusvoimassaalkaen</TD></TR></TABLE></TD><TD PORT="oppivelvollisuusvoimassaalkaen.type" ALIGN="LEFT">date[13]</TD></TR>
       <TR><TD PORT="oppivelvollisuusvoimassaasti" COLSPAN="2" BGCOLOR="#ffffff" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="287" HEIGHT="16">oppivelvollisuusvoimassaasti</TD></TR></TABLE></TD><TD PORT="oppivelvollisuusvoimassaasti.type" ALIGN="LEFT">timestamp[29,6]</TD></TR>
       <TR><TD PORT="oikeuskoulutuksenmaksuttomuuteenvoimassaasti" COLSPAN="2" BGCOLOR="#ffffff" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="287" HEIGHT="16">oikeuskoulutuksenmaksuttomuuteenvoimassaasti</TD></TR></TABLE></TD><TD PORT="oikeuskoulutuksenmaksuttomuuteenvoimassaasti.type" ALIGN="LEFT">timestamp[29,6]</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 0</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">8 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 &gt;</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 0</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">161 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 &gt;</TD></TR>
     </TABLE>>
     URL="../../tables/oppivelvollisuustiedot.html"
     target="_top"

@@ -11,6 +11,7 @@ r_oppivelvollisuudesta_vapautus
 r_opiskeluoikeus_aikajakso
 r_opiskeluoikeus
 r_mitatoitu_opiskeluoikeus
+r_kotikuntahistoria
 r_koodisto_koodi
 r_henkilo_vipunen
 r_henkilo

@@ -23,7 +23,7 @@ object HenkilöLoader extends Logging {
     val oids = db.oppijaOidsFromOpiskeluoikeudet
     logger.info(s"Löytyi ${oids.size} henkilö-OIDia")
     db.setStatusLoadStarted(name)
-    var masterOids = scala.collection.mutable.Set[String]()
+    val masterOids = scala.collection.mutable.Set[String]()
     val count = oids.toList.grouped(BatchSize).map(batchOids => {
       val batchOppijat = opintopolkuHenkilöFacade.findMasterOppijat(batchOids)
       val batchRows = batchOppijat.map { case (oid, oppija) => {
@@ -32,6 +32,11 @@ object HenkilöLoader extends Logging {
       db.loadHenkilöt(batchRows)
       db.setLastUpdate(name)
       batchRows.foreach(masterOids += _.masterOid)
+
+      val kotikuntahistoria = opintopolkuHenkilöFacade.findKuntahistoriat(batchRows.map(_.masterOid)).map(_.toDbRow)
+      db.loadKotikuntahistoria(kotikuntahistoria)
+      db.confidential.foreach(_.loadKotikuntahistoria(kotikuntahistoria))
+
       batchRows.size
     }).sum
 

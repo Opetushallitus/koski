@@ -22,6 +22,7 @@ trait OpintopolkuHenkilöFacade {
   def findOrCreate(createUserInfo: UusiOppijaHenkilö): Either[HttpStatus, OppijaHenkilö]
   def findOppijatByHetusNoSlaveOids(hetus: Seq[String]): Seq[OppijaHenkilö]
   def findSlaveOids(masterOid: String): List[Oid]
+  def findKuntahistoriat(oids: Seq[String]): Seq[OppijanumerorekisteriKotikuntahistoriaRow]
 }
 
 object OpintopolkuHenkilöFacade {
@@ -80,6 +81,8 @@ class RemoteOpintopolkuHenkilöFacade(oppijanumeroRekisteriClient: OppijanumeroR
     runIO(oppijanumeroRekisteriClient.findOppijatByHetusNoSlaveOids(hetus))
 
   def findSlaveOids(masterOid: String): List[Oid] = runIO(oppijanumeroRekisteriClient.findSlaveOids(masterOid))
+
+  def findKuntahistoriat(oids: Seq[String]): Seq[OppijanumerorekisteriKotikuntahistoriaRow] = Seq.empty // TODO TOR-2031: Toteutus
 }
 
 class RemoteOpintopolkuHenkilöFacadeWithMockOids(
