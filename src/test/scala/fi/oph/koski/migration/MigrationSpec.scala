@@ -1,7 +1,7 @@
 package fi.oph.koski.migration
 
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.raportointikanta.{DelayedScheduler, RaportointiDatabase}
+import fi.oph.koski.raportointikanta.{DelayedScheduler, RaportointiDatabase, RaportointikantaTestMethods}
 import fi.oph.koski.util.Wait
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
@@ -9,7 +9,7 @@ import org.scalatest.matchers.should.Matchers
 import java.io.File
 import scala.io.Source
 
-class MigrationSpec extends AnyFreeSpec with Matchers {
+class MigrationSpec extends AnyFreeSpec with Matchers with RaportointikantaTestMethods {
   "Migraatiot" - {
     "Havaittiin uusi tietokannan migraatiotiedosto. Migraatiot, varsinkin jos koskevat Kosken suurimpia tauluja, on hyvä testata tietokantareplikaa vasten.\n" +
       "Korjaa tämän testin odottama tiedostomäärä, kun olet varma että migraatiot voi viedä eteenpäin.\nDokumentaatio: documentation/tietokantamigraatiot.md" in {
@@ -19,7 +19,7 @@ class MigrationSpec extends AnyFreeSpec with Matchers {
 
   "Raportointikannan skeema" - {
     "Skeema ei ole muuttunut tai skeeman versionumero on päivitetty" in {
-      KoskiApplicationForTests.raportointikantaService.loadRaportointikanta(force = false)
+      reloadRaportointikanta()
       Wait.until(KoskiApplicationForTests.raportointikantaService.isLoadComplete)
 
       val hash = KoskiApplicationForTests.raportointiDatabase.getSchemaHash("public")
