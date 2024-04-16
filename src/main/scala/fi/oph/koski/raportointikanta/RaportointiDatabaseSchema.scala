@@ -57,8 +57,8 @@ object RaportointiDatabaseSchema {
       oppivelvollisuudenSuorittamiseenKelpaava :: data :: HNil).mappedWith(Generic[ROpiskeluoikeusRow])
   }
   class ROpiskeluoikeusTableTemp(tag: Tag) extends ROpiskeluoikeusTable(tag, Temp)
-  class ROpiskeluoikeusConfidentalTable(tag: Tag) extends ROpiskeluoikeusTable(tag, Confidental)
-  class ROpiskeluoikeusConfidentalTableTemp(tag: Tag) extends ROpiskeluoikeusTable(tag, TempConfidental)
+  class ROpiskeluoikeusConfidentialTable(tag: Tag) extends ROpiskeluoikeusTable(tag, Confidential)
+  class ROpiskeluoikeusConfidentialTableTemp(tag: Tag) extends ROpiskeluoikeusTable(tag, TempConfidential)
 
   class RMitätöityOpiskeluoikeusTable(tag: Tag, schema: Schema = Public)
     extends Table[RMitätöityOpiskeluoikeusRow](tag, schema.nameOpt, "r_mitatoitu_opiskeluoikeus") {
@@ -84,8 +84,8 @@ object RaportointiDatabaseSchema {
     ) <> (RMitätöityOpiskeluoikeusRow.tupled, RMitätöityOpiskeluoikeusRow.unapply)
   }
   class RMitätöityOpiskeluoikeusTableTemp(tag: Tag) extends RMitätöityOpiskeluoikeusTable(tag, Temp)
-  class RMitätöityOpiskeluoikeusConfidentalTable(tag: Tag) extends RMitätöityOpiskeluoikeusTable(tag, Confidental)
-  class RMitätöityOpiskeluoikeusConfidentalTableTemp(tag: Tag) extends RMitätöityOpiskeluoikeusTable(tag, TempConfidental)
+  class RMitätöityOpiskeluoikeusConfidentialTable(tag: Tag) extends RMitätöityOpiskeluoikeusTable(tag, Confidential)
+  class RMitätöityOpiskeluoikeusConfidentialTableTemp(tag: Tag) extends RMitätöityOpiskeluoikeusTable(tag, TempConfidential)
 
   class ROrganisaatioHistoriaTable(tag: Tag, schema: Schema = Public) extends Table[ROrganisaatioHistoriaRow](tag, schema.nameOpt, "r_organisaatiohistoria") {
     val opiskeluoikeusOid = column[String]("opiskeluoikeus_oid", StringIdentifierType)
@@ -98,8 +98,8 @@ object RaportointiDatabaseSchema {
       (ROrganisaatioHistoriaRow.tupled, ROrganisaatioHistoriaRow.unapply)
   }
   class ROrganisaatioHistoriaTableTemp(tag: Tag) extends ROrganisaatioHistoriaTable(tag, Temp)
-  class ROrganisaatioHistoriaConfidentalTable(tag: Tag) extends ROrganisaatioHistoriaTable(tag, Confidental)
-  class ROrganisaatioHistoriaConfidentalTableTemp(tag: Tag) extends ROrganisaatioHistoriaTable(tag, TempConfidental)
+  class ROrganisaatioHistoriaConfidentialTable(tag: Tag) extends ROrganisaatioHistoriaTable(tag, Confidential)
+  class ROrganisaatioHistoriaConfidentialTableTemp(tag: Tag) extends ROrganisaatioHistoriaTable(tag, TempConfidential)
 
   class ROpiskeluoikeusAikajaksoTable(tag: Tag, schema: Schema = Public) extends Table[ROpiskeluoikeusAikajaksoRow](tag, schema.nameOpt, "r_opiskeluoikeus_aikajakso") {
     val id = column[Long]("id", O.PrimaryKey, O.AutoInc)
@@ -176,8 +176,8 @@ object RaportointiDatabaseSchema {
     ).mappedWith(Generic[ROpiskeluoikeusAikajaksoRow])
   }
   class ROpiskeluoikeusAikajaksoTableTemp(tag: Tag) extends ROpiskeluoikeusAikajaksoTable(tag, Temp)
-  class ROpiskeluoikeusAikajaksoConfidentalTable(tag: Tag) extends ROpiskeluoikeusAikajaksoTable(tag, Confidental)
-  class ROpiskeluoikeusAikajaksoConfidentalTableTemp(tag: Tag) extends ROpiskeluoikeusAikajaksoTable(tag, TempConfidental)
+  class ROpiskeluoikeusAikajaksoConfidentialTable(tag: Tag) extends ROpiskeluoikeusAikajaksoTable(tag, Confidential)
+  class ROpiskeluoikeusAikajaksoConfidentialTableTemp(tag: Tag) extends ROpiskeluoikeusAikajaksoTable(tag, TempConfidential)
 
   class EsiopetusOpiskeluoikeusAikajaksoTable(tag: Tag, schema: Schema = Public) extends Table[EsiopetusOpiskeluoikeusAikajaksoRow](tag, schema.nameOpt, "esiopetus_opiskeluoik_aikajakso") {
     val opiskeluoikeusOid = column[String]("opiskeluoikeus_oid", StringIdentifierType)
@@ -204,8 +204,8 @@ object RaportointiDatabaseSchema {
       sisäoppilaitosmainenMajoitus, koulukoti) <> (EsiopetusOpiskeluoikeusAikajaksoRow.tupled, EsiopetusOpiskeluoikeusAikajaksoRow.unapply)
   }
   class EsiopetusOpiskeluoikeusAikajaksoTableTemp(tag: Tag) extends EsiopetusOpiskeluoikeusAikajaksoTable(tag, Temp)
-  class EsiopetusOpiskeluoikeusAikajaksoConfidentalTable(tag: Tag) extends EsiopetusOpiskeluoikeusAikajaksoTable(tag, Confidental)
-  class EsiopetusOpiskeluoikeusAikajaksoConfidentalTableTemp(tag: Tag) extends EsiopetusOpiskeluoikeusAikajaksoTable(tag, TempConfidental)
+  class EsiopetusOpiskeluoikeusAikajaksoConfidentialTable(tag: Tag) extends EsiopetusOpiskeluoikeusAikajaksoTable(tag, Confidential)
+  class EsiopetusOpiskeluoikeusAikajaksoConfidentialTableTemp(tag: Tag) extends EsiopetusOpiskeluoikeusAikajaksoTable(tag, TempConfidential)
 
   class RPäätasonSuoritusTable(tag: Tag, schema: Schema = Public) extends Table[RPäätasonSuoritusRow](tag, schema.nameOpt, "r_paatason_suoritus") {
     val päätasonSuoritusId = column[Long]("paatason_suoritus_id", O.PrimaryKey)
@@ -240,8 +240,8 @@ object RaportointiDatabaseSchema {
       HNil).mappedWith(Generic[RPäätasonSuoritusRow])
   }
   class RPäätasonSuoritusTableTemp(tag: Tag) extends RPäätasonSuoritusTable(tag, Temp)
-  class RPäätasonSuoritusConfidentalTable(tag: Tag) extends RPäätasonSuoritusTable(tag, Confidental)
-  class RPäätasonSuoritusConfidentalTableTemp(tag: Tag) extends RPäätasonSuoritusTable(tag, TempConfidental)
+  class RPäätasonSuoritusConfidentialTable(tag: Tag) extends RPäätasonSuoritusTable(tag, Confidential)
+  class RPäätasonSuoritusConfidentialTableTemp(tag: Tag) extends RPäätasonSuoritusTable(tag, TempConfidential)
 
   class ROsasuoritusTable(tag: Tag, schema: Schema = Public) extends Table[ROsasuoritusRow](tag, schema.nameOpt, "r_osasuoritus") {
     val osasuoritusId = column[Long]("osasuoritus_id", O.PrimaryKey)
@@ -304,8 +304,8 @@ object RaportointiDatabaseSchema {
   }
 
   class ROsasuoritusTableTemp(tag: Tag) extends ROsasuoritusTable(tag, Temp)
-  class ROsasuoritusConfidentalTable(tag: Tag) extends ROsasuoritusTable(tag, Confidental)
-  class ROsasuoritusConfidentalTableTemp(tag: Tag) extends ROsasuoritusTable(tag, TempConfidental)
+  class ROsasuoritusConfidentialTable(tag: Tag) extends ROsasuoritusTable(tag, Confidential)
+  class ROsasuoritusConfidentialTableTemp(tag: Tag) extends ROsasuoritusTable(tag, TempConfidential)
 
   class MuuAmmatillinenOsasuoritusRaportointiTable(tag: Tag, schema: Schema = Public) extends Table[MuuAmmatillinenOsasuoritusRaportointiRow](tag, schema.nameOpt, "muu_ammatillinen_raportointi") {
     val opiskeluoikeusOid = column[String]("opiskeluoikeus_oid", StringIdentifierType)
@@ -318,8 +318,8 @@ object RaportointiDatabaseSchema {
   }
 
   class MuuAmmatillinenOsasuoritusRaportointiTableTemp(tag: Tag) extends MuuAmmatillinenOsasuoritusRaportointiTable(tag, Temp)
-  class MuuAmmatillinenOsasuoritusRaportointiConfidentalTable(tag: Tag) extends MuuAmmatillinenOsasuoritusRaportointiTable(tag, Confidental)
-  class MuuAmmatillinenOsasuoritusRaportointiConfidentalTableTemp(tag: Tag) extends MuuAmmatillinenOsasuoritusRaportointiTable(tag, TempConfidental)
+  class MuuAmmatillinenOsasuoritusRaportointiConfidentialTable(tag: Tag) extends MuuAmmatillinenOsasuoritusRaportointiTable(tag, Confidential)
+  class MuuAmmatillinenOsasuoritusRaportointiConfidentialTableTemp(tag: Tag) extends MuuAmmatillinenOsasuoritusRaportointiTable(tag, TempConfidential)
 
   class TOPKSAmmatillinenOsasuoritusRaportointiTable(tag: Tag, schema: Schema = Public) extends Table[TOPKSAmmatillinenRaportointiRow](tag, schema.nameOpt, "topks_ammatillinen_raportointi") {
     val opiskeluoikeudenOid =  column[String]("opiskeluoikeus_oid", StringIdentifierType)
@@ -334,8 +334,8 @@ object RaportointiDatabaseSchema {
   }
 
   class TOPKSAmmatillinenOsasuoritusRaportointiTableTemp(tag: Tag) extends TOPKSAmmatillinenOsasuoritusRaportointiTable(tag, Temp)
-  class TOPKSAmmatillinenOsasuoritusRaportointiConfidentalTable(tag: Tag) extends TOPKSAmmatillinenOsasuoritusRaportointiTable(tag, Confidental)
-  class TOPKSAmmatillinenOsasuoritusRaportointiConfidentalTableTemp(tag: Tag) extends TOPKSAmmatillinenOsasuoritusRaportointiTable(tag, TempConfidental)
+  class TOPKSAmmatillinenOsasuoritusRaportointiConfidentialTable(tag: Tag) extends TOPKSAmmatillinenOsasuoritusRaportointiTable(tag, Confidential)
+  class TOPKSAmmatillinenOsasuoritusRaportointiConfidentialTableTemp(tag: Tag) extends TOPKSAmmatillinenOsasuoritusRaportointiTable(tag, TempConfidential)
 
   class RHenkilöTable(tag: Tag, schema: Schema = Public) extends Table[RHenkilöRow](tag, schema.nameOpt, "r_henkilo") {
     val oppijaOid = column[String]("oppija_oid", O.PrimaryKey, StringIdentifierType)
@@ -356,8 +356,8 @@ object RaportointiDatabaseSchema {
     def * = (oppijaOid, masterOid, linkitetytOidit, hetu, sukupuoli, syntymäaika, sukunimi, etunimet, äidinkieli, kansalaisuus, turvakielto, kotikunta, kotikuntaNimiFi, kotikuntaNimiSv, yksiloity) <> (RHenkilöRow.tupled, RHenkilöRow.unapply)
   }
   class RHenkilöTableTemp(tag: Tag) extends RHenkilöTable(tag, Temp)
-  class RHenkilöConfidentalTable(tag: Tag) extends RHenkilöTable(tag, Confidental)
-  class RHenkilöConfidentalTableTemp(tag: Tag) extends RHenkilöTable(tag, TempConfidental)
+  class RHenkilöConfidentialTable(tag: Tag) extends RHenkilöTable(tag, Confidential)
+  class RHenkilöConfidentialTableTemp(tag: Tag) extends RHenkilöTable(tag, TempConfidential)
 
   class ROrganisaatioTable(tag: Tag, schema: Schema = Public) extends Table[ROrganisaatioRow](tag, schema.nameOpt, "r_organisaatio") {
     val organisaatioOid = column[String]("organisaatio_oid", O.PrimaryKey, StringIdentifierType)
@@ -374,8 +374,8 @@ object RaportointiDatabaseSchema {
   }
 
   class ROrganisaatioTableTemp(tag: Tag) extends ROrganisaatioTable(tag, Temp)
-  class ROrganisaatioConfidentalTable(tag: Tag) extends ROrganisaatioTable(tag, Confidental)
-  class ROrganisaatioConfidentalTableTemp(tag: Tag) extends ROrganisaatioTable(tag, TempConfidental)
+  class ROrganisaatioConfidentialTable(tag: Tag) extends ROrganisaatioTable(tag, Confidential)
+  class ROrganisaatioConfidentialTableTemp(tag: Tag) extends ROrganisaatioTable(tag, TempConfidential)
 
   class ROrganisaatioKieliTable(tag: Tag, schema: Schema = Public) extends Table[ROrganisaatioKieliRow](tag, schema.nameOpt, "r_organisaatio_kieli") {
     val organisaatioOid = column[String]("organisaatio_oid", StringIdentifierType)
@@ -384,8 +384,8 @@ object RaportointiDatabaseSchema {
   }
 
   class ROrganisaatioKieliTableTemp(tag: Tag) extends ROrganisaatioKieliTable(tag, Temp)
-  class ROrganisaatioKieliConfidentalTable(tag: Tag) extends ROrganisaatioKieliTable(tag, Confidental)
-  class ROrganisaatioKieliConfidentalTableTemp(tag: Tag) extends ROrganisaatioKieliTable(tag, TempConfidental)
+  class ROrganisaatioKieliConfidentialTable(tag: Tag) extends ROrganisaatioKieliTable(tag, Confidential)
+  class ROrganisaatioKieliConfidentialTableTemp(tag: Tag) extends ROrganisaatioKieliTable(tag, TempConfidential)
 
   class RKoodistoKoodiTable(tag: Tag, schema: Schema = Public) extends Table[RKoodistoKoodiRow](tag, schema.nameOpt, "r_koodisto_koodi") {
     val koodistoUri = column[String]("koodisto_uri", StringIdentifierType)
@@ -395,8 +395,8 @@ object RaportointiDatabaseSchema {
     def * = (koodistoUri, koodiarvo, nimi, nimiSv) <> (RKoodistoKoodiRow.tupled, RKoodistoKoodiRow.unapply)
   }
   class RKoodistoKoodiTableTemp(tag: Tag) extends RKoodistoKoodiTable(tag, Temp)
-  class RKoodistoKoodiConfidentalTable(tag: Tag) extends RKoodistoKoodiTable(tag, Confidental)
-  class RKoodistoKoodiConfidentalTableTemp(tag: Tag) extends RKoodistoKoodiTable(tag, TempConfidental)
+  class RKoodistoKoodiConfidentialTable(tag: Tag) extends RKoodistoKoodiTable(tag, Confidential)
+  class RKoodistoKoodiConfidentialTableTemp(tag: Tag) extends RKoodistoKoodiTable(tag, TempConfidential)
 
   class RaportointikantaStatusTable(tag: Tag, schema: Schema = Public) extends Table[RaportointikantaStatusRow](tag, schema.nameOpt, "raportointikanta_status") {
     val name = column[String]("name", O.PrimaryKey)
@@ -408,8 +408,8 @@ object RaportointiDatabaseSchema {
     def * = (name, count, lastUpdate, loadStarted, loadCompleted, dueTime) <> (RaportointikantaStatusRow.tupled, RaportointikantaStatusRow.unapply)
   }
   class RaportointikantaStatusTableTemp(tag: Tag) extends RaportointikantaStatusTable(tag, Temp)
-  class RaportointikantaStatusConfidentalTable(tag: Tag) extends RaportointikantaStatusTable(tag, Confidental)
-  class RaportointikantaStatusConfidentalTableTemp(tag: Tag) extends RaportointikantaStatusTable(tag, TempConfidental)
+  class RaportointikantaStatusConfidentialTable(tag: Tag) extends RaportointikantaStatusTable(tag, Confidential)
+  class RaportointikantaStatusConfidentialTableTemp(tag: Tag) extends RaportointikantaStatusTable(tag, TempConfidential)
 
   class ROppivelvollisuudestaVapautusTable(tag: Tag, schema: Schema = Public) extends Table[ROppivelvollisuudestaVapautusRow](tag, schema.nameOpt, "r_oppivelvollisuudesta_vapautus") {
     val oppijaOid = column[String]("oppija_oid", O.PrimaryKey)
@@ -417,8 +417,8 @@ object RaportointiDatabaseSchema {
     def * = (oppijaOid, vapautettu) <> (ROppivelvollisuudestaVapautusRow.tupled, ROppivelvollisuudestaVapautusRow.unapply)
   }
   class ROppivelvollisuudestaVapautusTableTemp(tag: Tag) extends ROppivelvollisuudestaVapautusTable(tag, Temp)
-  class ROppivelvollisuudestaVapautusConfidentalTable(tag: Tag) extends ROppivelvollisuudestaVapautusTable(tag, Confidental)
-  class ROppivelvollisuudestaVapautusConfidentalTableTemp(tag: Tag) extends ROppivelvollisuudestaVapautusTable(tag, TempConfidental)
+  class ROppivelvollisuudestaVapautusConfidentialTable(tag: Tag) extends ROppivelvollisuudestaVapautusTable(tag, Confidential)
+  class ROppivelvollisuudestaVapautusConfidentialTableTemp(tag: Tag) extends ROppivelvollisuudestaVapautusTable(tag, TempConfidential)
 
   class RYtrTutkintokokonaisuudenSuoritusTable(tag: Tag, schema: Schema = Public) extends Table[RYtrTutkintokokonaisuudenSuoritusRow](tag, schema.nameOpt, "r_ytr_tutkintokokonaisuuden_suoritus") {
     val ytrTutkintokokonaisuudenSuoritusId = column[Long]("ytr_tutkintokokonaisuuden_suoritus_id", O.PrimaryKey)
@@ -446,8 +446,8 @@ object RaportointiDatabaseSchema {
     ) <> (RYtrTutkintokokonaisuudenSuoritusRow.tupled, RYtrTutkintokokonaisuudenSuoritusRow.unapply)
   }
   class RYtrTutkintokokonaisuudenSuoritusTableTemp(tag: Tag) extends RYtrTutkintokokonaisuudenSuoritusTable(tag, Temp)
-  class RYtrTutkintokokonaisuudenSuoritusConfidentalTable(tag: Tag) extends RYtrTutkintokokonaisuudenSuoritusTable(tag, Confidental)
-  class RYtrTutkintokokonaisuudenSuoritusConfidentalTableTemp(tag: Tag) extends RYtrTutkintokokonaisuudenSuoritusTable(tag, TempConfidental)
+  class RYtrTutkintokokonaisuudenSuoritusConfidentialTable(tag: Tag) extends RYtrTutkintokokonaisuudenSuoritusTable(tag, Confidential)
+  class RYtrTutkintokokonaisuudenSuoritusConfidentialTableTemp(tag: Tag) extends RYtrTutkintokokonaisuudenSuoritusTable(tag, TempConfidential)
 
   class RYtrTutkintokerranSuoritusTable(tag: Tag, schema: Schema = Public) extends Table[RYtrTutkintokerranSuoritusRow](tag, schema.nameOpt, "r_ytr_tutkintokerran_suoritus") {
     val ytrTutkintokerranSuoritusId = column[Long]("ytr_tutkintokerran_suoritus_id", O.PrimaryKey)
@@ -486,8 +486,8 @@ object RaportointiDatabaseSchema {
     ) <> (RYtrTutkintokerranSuoritusRow.tupled, RYtrTutkintokerranSuoritusRow.unapply)
   }
   class RYtrTutkintokerranSuoritusTableTemp(tag: Tag) extends RYtrTutkintokerranSuoritusTable(tag, Temp)
-  class RYtrTutkintokerranSuoritusConfidentalTable(tag: Tag) extends RYtrTutkintokerranSuoritusTable(tag, Confidental)
-  class RYtrTutkintokerranSuoritusConfidentalTableTemp(tag: Tag) extends RYtrTutkintokerranSuoritusTable(tag, TempConfidental)
+  class RYtrTutkintokerranSuoritusConfidentialTable(tag: Tag) extends RYtrTutkintokerranSuoritusTable(tag, Confidential)
+  class RYtrTutkintokerranSuoritusConfidentialTableTemp(tag: Tag) extends RYtrTutkintokerranSuoritusTable(tag, TempConfidential)
 
   class RYtrKokeenSuoritusTable(tag: Tag, schema: Schema = Public) extends Table[RYtrKokeenSuoritusRow](tag, schema.nameOpt, "r_ytr_kokeen_suoritus") {
     val ytrKokeenSuoritusId = column[Long]("ytr_kokeen_suoritus_id", O.PrimaryKey)
@@ -531,8 +531,8 @@ object RaportointiDatabaseSchema {
     ) <> (RYtrKokeenSuoritusRow.tupled, RYtrKokeenSuoritusRow.unapply)
   }
   class RYtrKokeenSuoritusTableTemp(tag: Tag) extends RYtrKokeenSuoritusTable(tag, Temp)
-  class RYtrKokeenSuoritusConfidentalTable(tag: Tag) extends RYtrKokeenSuoritusTable(tag, Confidental)
-  class RYtrKokeenSuoritusConfidentalTableTemp(tag: Tag) extends RYtrKokeenSuoritusTable(tag, TempConfidental)
+  class RYtrKokeenSuoritusConfidentialTable(tag: Tag) extends RYtrKokeenSuoritusTable(tag, Confidential)
+  class RYtrKokeenSuoritusConfidentialTableTemp(tag: Tag) extends RYtrKokeenSuoritusTable(tag, TempConfidential)
 
   class RYtrTutkintokokonaisuudenKokeenSuoritusTable(tag: Tag, schema: Schema = Public) extends Table[RYtrTutkintokokonaisuudenKokeenSuoritusRow](tag, schema.nameOpt, "r_ytr_tutkintokokonaisuuden_kokeen_suoritus") {
     val ytrTutkintokokonaisuudenSuoritusId = column[Long]("ytr_tutkintokokonaisuuden_suoritus_id")
@@ -551,8 +551,8 @@ object RaportointiDatabaseSchema {
     def pk = primaryKey("r_ytr_tutkintokokonaisuuden_kokeen_suoritus_pk", (ytrTutkintokokonaisuudenSuoritusId, ytrKokeenSuoritusId))
   }
   class RYtrTutkintokokonaisuudenKokeenSuoritusTableTemp(tag: Tag) extends RYtrTutkintokokonaisuudenKokeenSuoritusTable(tag, Temp)
-  class RYtrTutkintokokonaisuudenKokeenSuoritusConfidentalTable(tag: Tag) extends RYtrTutkintokokonaisuudenKokeenSuoritusTable(tag, Confidental)
-  class RYtrTutkintokokonaisuudenKokeenSuoritusConfidentalTableTemp(tag: Tag) extends RYtrTutkintokokonaisuudenKokeenSuoritusTable(tag, TempConfidental)
+  class RYtrTutkintokokonaisuudenKokeenSuoritusConfidentialTable(tag: Tag) extends RYtrTutkintokokonaisuudenKokeenSuoritusTable(tag, Confidential)
+  class RYtrTutkintokokonaisuudenKokeenSuoritusConfidentialTableTemp(tag: Tag) extends RYtrTutkintokokonaisuudenKokeenSuoritusTable(tag, TempConfidential)
 
   class RKotikuntahistoriaTable(tag: Tag, schema: Schema = Public) extends Table[RKotikuntahistoriaRow](tag, schema.nameOpt, "r_kotikuntahistoria") {
     val masterOppijaOid = column[String]("master_oid")
@@ -570,8 +570,8 @@ object RaportointiDatabaseSchema {
     ) <> (RKotikuntahistoriaRow.tupled, RKotikuntahistoriaRow.unapply)
   }
   class RKotikuntahistoriaTableTemp(tag: Tag) extends RKotikuntahistoriaTable(tag, Temp)
-  class RKotikuntahistoriaConfidentalTable(tag: Tag) extends RKotikuntahistoriaTable(tag, Confidental)
-  class RKotikuntahistoriaConfidentalTableTemp(tag: Tag) extends RKotikuntahistoriaTable(tag, TempConfidental)
+  class RKotikuntahistoriaConfidentialTable(tag: Tag) extends RKotikuntahistoriaTable(tag, Confidential)
+  class RKotikuntahistoriaConfidentialTableTemp(tag: Tag) extends RKotikuntahistoriaTable(tag, TempConfidential)
 }
 
 trait AikajaksoRow[A] {
@@ -1102,17 +1102,17 @@ case object Temp extends Schema {
   def name: String = "etl"
 }
 
-sealed trait ConfidentalSchema extends Schema {
+sealed trait ConfidentialSchema extends Schema {
   override def createIndexesForIncrementalUpdate() = DBIO.seq()
   override def createOpiskeluoikeusIndexes() = DBIO.seq()
   override def createOtherIndexes() = DBIO.seq()
   override def grantPermissions() = DBIO.seq()
 }
 
-case object Confidental extends ConfidentalSchema {
-  def name: String = "confidental"
+case object Confidential extends ConfidentialSchema {
+  def name: String = "confidential"
 }
 
-case object TempConfidental extends ConfidentalSchema {
-  def name: String = "etl_confidental"
+case object TempConfidential extends ConfidentialSchema {
+  def name: String = "etl_confidential"
 }

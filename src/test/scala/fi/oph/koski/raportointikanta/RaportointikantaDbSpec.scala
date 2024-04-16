@@ -29,7 +29,7 @@ class RaportointikantaDbSpec extends AnyFreeSpec with Matchers with Raportointik
     dropAndCreateSchema(confidentalRaportointiDb)
     dropAndCreateSchema(tempConfidentalRaportointiDb)
     schemaExists(tempConfidentalRaportointiDb)
-    tempConfidentalRaportointiDb.moveTo(Confidental)
+    tempConfidentalRaportointiDb.moveTo(Confidential)
     schemaIsEmpty(tempConfidentalRaportointiDb)
     schemaExists(confidentalRaportointiDb)
   }

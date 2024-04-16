@@ -32,7 +32,7 @@ object RaportointiDatabase {
 
 class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging with QueryMethods {
   val schema: Schema = config.schema
-  val confidental: Option[ConfidentalRaportointiDatabase] = ConfidentalRaportointiDatabase(config)
+  val confidential: Option[ConfidentialRaportointiDatabase] = ConfidentialRaportointiDatabase(config)
   override def defaultRetryIntervalMs = 30000
 
   logger.info(s"Instantiating RaportointiDatabase for ${schema.name}")
@@ -87,12 +87,12 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
     retryDbSync(
       DBIO.seq(
         Public.dropSchema(),
-        Confidental.dropSchema(),
+        Confidential.dropSchema(),
         Temp.moveSchema(Public),
-        TempConfidental.moveSchema(Confidental),
+        TempConfidential.moveSchema(Confidential),
         RaportointiDatabaseSchema.createRolesIfNotExists,
         Public.grantPermissions(),
-        Confidental.grantPermissions(),
+        Confidential.grantPermissions(),
       ).transactionally,
       timeout = 5.minutes
     )
@@ -114,7 +114,7 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
     previousDataVersion.foreach(v => writeVersionInfo(v + 1))
     logger.info(s"${schema.name} created")
 
-    confidental.foreach(_.dropAndCreateObjects(previousDataVersion))
+    confidential.foreach(_.dropAndCreateObjects(previousDataVersion))
   }
 
   private def writeVersionInfo(dataVersion: Int) = {
@@ -145,7 +145,7 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
     val started = System.currentTimeMillis
     setStatusLoadStarted("materialized_views")
 
-    val confidentalSchema = confidental.map(_.schema).getOrElse(schema)
+    val ConfidentialSchema = confidential.map(_.schema).getOrElse(schema)
     val views = Seq(
       PaallekkaisetOpiskeluoikeudet.createPrecomputedTable(schema),
       PaallekkaisetOpiskeluoikeudet.createIndex(schema),
@@ -167,7 +167,7 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
       LukioOppiaineEriVuonnaKorotetutKurssit.createIndex(schema),
       Lukio2019OppiaineEriVuonnaKorotetutOpintopisteet.createPrecomputedTable(schema),
       Lukio2019OppiaineEriVuonnaKorotetutOpintopisteet.createIndex(schema),
-      Oppivelvollisuustiedot.createPrecomputedTable(schema, confidentalSchema, valpasRajapäivätService),
+      Oppivelvollisuustiedot.createPrecomputedTable(schema, ConfidentialSchema, valpasRajapäivätService),
       Oppivelvollisuustiedot.createIndexes(schema)
     )
     runDbSync(DBIO.seq(views: _*), timeout = 120.minutes)
@@ -503,141 +503,141 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
   lazy val ROpiskeluoikeudet = schema match {
     case Public => TableQuery[ROpiskeluoikeusTable]
     case Temp => TableQuery[ROpiskeluoikeusTableTemp]
-    case Confidental => TableQuery[ROpiskeluoikeusConfidentalTable]
-    case TempConfidental => TableQuery[ROpiskeluoikeusConfidentalTableTemp]
+    case Confidential => TableQuery[ROpiskeluoikeusConfidentialTable]
+    case TempConfidential => TableQuery[ROpiskeluoikeusConfidentialTableTemp]
   }
 
   lazy val RMitätöidytOpiskeluoikeudet = schema match {
     case Public => TableQuery[RMitätöityOpiskeluoikeusTable]
     case Temp => TableQuery[RMitätöityOpiskeluoikeusTableTemp]
-    case Confidental => TableQuery[RMitätöityOpiskeluoikeusConfidentalTable]
-    case TempConfidental => TableQuery[RMitätöityOpiskeluoikeusConfidentalTableTemp]
+    case Confidential => TableQuery[RMitätöityOpiskeluoikeusConfidentialTable]
+    case TempConfidential => TableQuery[RMitätöityOpiskeluoikeusConfidentialTableTemp]
   }
 
   lazy val ROrganisaatioHistoriat = schema match {
     case Public => TableQuery[ROrganisaatioHistoriaTable]
     case Temp => TableQuery[ROrganisaatioHistoriaTableTemp]
-    case Confidental => TableQuery[ROrganisaatioHistoriaConfidentalTable]
-    case TempConfidental => TableQuery[ROrganisaatioHistoriaConfidentalTableTemp]
+    case Confidential => TableQuery[ROrganisaatioHistoriaConfidentialTable]
+    case TempConfidential => TableQuery[ROrganisaatioHistoriaConfidentialTableTemp]
   }
 
   lazy val ROpiskeluoikeusAikajaksot = schema match {
     case Public => TableQuery[ROpiskeluoikeusAikajaksoTable]
     case Temp => TableQuery[ROpiskeluoikeusAikajaksoTableTemp]
-    case Confidental => TableQuery[ROpiskeluoikeusAikajaksoConfidentalTable]
-    case TempConfidental => TableQuery[ROpiskeluoikeusAikajaksoConfidentalTableTemp]
+    case Confidential => TableQuery[ROpiskeluoikeusAikajaksoConfidentialTable]
+    case TempConfidential => TableQuery[ROpiskeluoikeusAikajaksoConfidentialTableTemp]
   }
 
   lazy val EsiopetusOpiskeluoikeusAikajaksot = schema match {
     case Public => TableQuery[EsiopetusOpiskeluoikeusAikajaksoTable]
     case Temp => TableQuery[EsiopetusOpiskeluoikeusAikajaksoTableTemp]
-    case Confidental => TableQuery[EsiopetusOpiskeluoikeusAikajaksoConfidentalTable]
-    case TempConfidental => TableQuery[EsiopetusOpiskeluoikeusAikajaksoConfidentalTableTemp]
+    case Confidential => TableQuery[EsiopetusOpiskeluoikeusAikajaksoConfidentialTable]
+    case TempConfidential => TableQuery[EsiopetusOpiskeluoikeusAikajaksoConfidentialTableTemp]
   }
 
   lazy val RPäätasonSuoritukset = schema match {
     case Public => TableQuery[RPäätasonSuoritusTable]
     case Temp => TableQuery[RPäätasonSuoritusTableTemp]
-    case Confidental => TableQuery[RPäätasonSuoritusConfidentalTable]
-    case TempConfidental => TableQuery[RPäätasonSuoritusConfidentalTableTemp]
+    case Confidential => TableQuery[RPäätasonSuoritusConfidentialTable]
+    case TempConfidential => TableQuery[RPäätasonSuoritusConfidentialTableTemp]
   }
 
   lazy val ROsasuoritukset = schema match {
     case Public => TableQuery[ROsasuoritusTable]
     case Temp => TableQuery[ROsasuoritusTableTemp]
-    case Confidental => TableQuery[ROsasuoritusConfidentalTable]
-    case TempConfidental => TableQuery[ROsasuoritusConfidentalTableTemp]
+    case Confidential => TableQuery[ROsasuoritusConfidentialTable]
+    case TempConfidential => TableQuery[ROsasuoritusConfidentialTableTemp]
   }
 
   lazy val RHenkilöt = schema match {
     case Public => TableQuery[RHenkilöTable]
     case Temp => TableQuery[RHenkilöTableTemp]
-    case Confidental => TableQuery[RHenkilöConfidentalTable]
-    case TempConfidental => TableQuery[RHenkilöConfidentalTableTemp]
+    case Confidential => TableQuery[RHenkilöConfidentialTable]
+    case TempConfidential => TableQuery[RHenkilöConfidentialTableTemp]
   }
 
   lazy val ROrganisaatiot = schema match {
     case Public => TableQuery[ROrganisaatioTable]
     case Temp => TableQuery[ROrganisaatioTableTemp]
-    case Confidental => TableQuery[ROrganisaatioConfidentalTable]
-    case TempConfidental => TableQuery[ROrganisaatioConfidentalTableTemp]
+    case Confidential => TableQuery[ROrganisaatioConfidentialTable]
+    case TempConfidential => TableQuery[ROrganisaatioConfidentialTableTemp]
   }
 
   lazy val RKoodistoKoodit = schema match {
     case Public => TableQuery[RKoodistoKoodiTable]
     case Temp => TableQuery[RKoodistoKoodiTableTemp]
-    case Confidental => TableQuery[RKoodistoKoodiConfidentalTable]
-    case TempConfidental => TableQuery[RKoodistoKoodiConfidentalTableTemp]
+    case Confidential => TableQuery[RKoodistoKoodiConfidentialTable]
+    case TempConfidential => TableQuery[RKoodistoKoodiConfidentialTableTemp]
   }
 
   lazy val ROrganisaatioKielet = schema match {
     case Public => TableQuery[ROrganisaatioKieliTable]
     case Temp => TableQuery[ROrganisaatioKieliTableTemp]
-    case Confidental => TableQuery[ROrganisaatioKieliConfidentalTable]
-    case TempConfidental => TableQuery[ROrganisaatioKieliConfidentalTableTemp]
+    case Confidential => TableQuery[ROrganisaatioKieliConfidentialTable]
+    case TempConfidential => TableQuery[ROrganisaatioKieliConfidentialTableTemp]
   }
 
   lazy val RaportointikantaStatus = schema match {
     case Public => TableQuery[RaportointikantaStatusTable]
     case Temp => TableQuery[RaportointikantaStatusTableTemp]
-    case Confidental => TableQuery[RaportointikantaStatusConfidentalTable]
-    case TempConfidental => TableQuery[RaportointikantaStatusConfidentalTableTemp]
+    case Confidential => TableQuery[RaportointikantaStatusConfidentialTable]
+    case TempConfidential => TableQuery[RaportointikantaStatusConfidentialTableTemp]
   }
 
   lazy val MuuAmmatillinenOsasuoritusRaportointi = schema match {
     case Public => TableQuery[MuuAmmatillinenOsasuoritusRaportointiTable]
     case Temp => TableQuery[MuuAmmatillinenOsasuoritusRaportointiTableTemp]
-    case Confidental => TableQuery[MuuAmmatillinenOsasuoritusRaportointiConfidentalTable]
-    case TempConfidental => TableQuery[MuuAmmatillinenOsasuoritusRaportointiConfidentalTableTemp]
+    case Confidential => TableQuery[MuuAmmatillinenOsasuoritusRaportointiConfidentialTable]
+    case TempConfidential => TableQuery[MuuAmmatillinenOsasuoritusRaportointiConfidentialTableTemp]
   }
 
   lazy val TOPKSAmmatillinenOsasuoritusRaportointi = schema match {
     case Public => TableQuery[TOPKSAmmatillinenOsasuoritusRaportointiTable]
     case Temp => TableQuery[TOPKSAmmatillinenOsasuoritusRaportointiTableTemp]
-    case Confidental => TableQuery[TOPKSAmmatillinenOsasuoritusRaportointiConfidentalTable]
-    case TempConfidental => TableQuery[TOPKSAmmatillinenOsasuoritusRaportointiTableTemp]
+    case Confidential => TableQuery[TOPKSAmmatillinenOsasuoritusRaportointiConfidentialTable]
+    case TempConfidential => TableQuery[TOPKSAmmatillinenOsasuoritusRaportointiTableTemp]
   }
 
   lazy val ROppivelvollisuudestaVapautukset = schema match {
     case Public => TableQuery[ROppivelvollisuudestaVapautusTable]
     case Temp => TableQuery[ROppivelvollisuudestaVapautusTableTemp]
-    case Confidental => TableQuery[ROppivelvollisuudestaVapautusConfidentalTable]
-    case TempConfidental => TableQuery[ROppivelvollisuudestaVapautusConfidentalTableTemp]
+    case Confidential => TableQuery[ROppivelvollisuudestaVapautusConfidentialTable]
+    case TempConfidential => TableQuery[ROppivelvollisuudestaVapautusConfidentialTableTemp]
   }
 
   lazy val RYtrTutkintokokonaisuudenSuoritukset = schema match {
     case Public => TableQuery[RYtrTutkintokokonaisuudenSuoritusTable]
     case Temp => TableQuery[RYtrTutkintokokonaisuudenSuoritusTableTemp]
-    case Confidental => TableQuery[RYtrTutkintokokonaisuudenSuoritusConfidentalTable]
-    case TempConfidental => TableQuery[RYtrTutkintokokonaisuudenSuoritusConfidentalTableTemp]
+    case Confidential => TableQuery[RYtrTutkintokokonaisuudenSuoritusConfidentialTable]
+    case TempConfidential => TableQuery[RYtrTutkintokokonaisuudenSuoritusConfidentialTableTemp]
   }
 
   lazy val RYtrTutkintokerranSuoritukset = schema match {
     case Public => TableQuery[RYtrTutkintokerranSuoritusTable]
     case Temp => TableQuery[RYtrTutkintokerranSuoritusTableTemp]
-    case Confidental => TableQuery[RYtrTutkintokerranSuoritusConfidentalTable]
-    case TempConfidental => TableQuery[RYtrTutkintokerranSuoritusConfidentalTableTemp]
+    case Confidential => TableQuery[RYtrTutkintokerranSuoritusConfidentialTable]
+    case TempConfidential => TableQuery[RYtrTutkintokerranSuoritusConfidentialTableTemp]
   }
 
   lazy val RYtrKokeenSuoritukset = schema match {
     case Public => TableQuery[RYtrKokeenSuoritusTable]
     case Temp => TableQuery[RYtrKokeenSuoritusTableTemp]
-    case Confidental => TableQuery[RYtrKokeenSuoritusConfidentalTable]
-    case TempConfidental => TableQuery[RYtrKokeenSuoritusConfidentalTableTemp]
+    case Confidential => TableQuery[RYtrKokeenSuoritusConfidentialTable]
+    case TempConfidential => TableQuery[RYtrKokeenSuoritusConfidentialTableTemp]
   }
 
   lazy val RYtrTutkintokokonaisuudenKokeenSuoritukset = schema match {
     case Public => TableQuery[RYtrTutkintokokonaisuudenKokeenSuoritusTable]
     case Temp => TableQuery[RYtrTutkintokokonaisuudenKokeenSuoritusTableTemp]
-    case Confidental => TableQuery[RYtrTutkintokokonaisuudenKokeenSuoritusConfidentalTable]
-    case TempConfidental => TableQuery[RYtrTutkintokokonaisuudenKokeenSuoritusConfidentalTableTemp]
+    case Confidential => TableQuery[RYtrTutkintokokonaisuudenKokeenSuoritusConfidentialTable]
+    case TempConfidential => TableQuery[RYtrTutkintokokonaisuudenKokeenSuoritusConfidentialTableTemp]
   }
 
   lazy val RKotikuntahistoria = schema match {
     case Public => TableQuery[RKotikuntahistoriaTable]
     case Temp => TableQuery[RKotikuntahistoriaTableTemp]
-    case Confidental => TableQuery[RKotikuntahistoriaConfidentalTable]
-    case TempConfidental => TableQuery[RKotikuntahistoriaConfidentalTableTemp]
+    case Confidential => TableQuery[RKotikuntahistoriaConfidentialTable]
+    case TempConfidential => TableQuery[RKotikuntahistoriaConfidentialTableTemp]
   }
 }
 
@@ -682,7 +682,7 @@ case class RaportointikantaStatusResponse(schema: String, statuses: Seq[Raportoi
   def dataVersion: Option[Int] = statuses.find(_.name == "version_data").map(_.count)
 }
 
-class ConfidentalRaportointiDatabase(config: RaportointiDatabaseConfigBase) extends RaportointiDatabase(config) {
+class ConfidentialRaportointiDatabase(config: RaportointiDatabaseConfigBase) extends RaportointiDatabase(config) {
   import scala.language.existentials
   override val tables = List(
     RaportointikantaStatus,
@@ -693,11 +693,11 @@ class ConfidentalRaportointiDatabase(config: RaportointiDatabaseConfigBase) exte
     runDbSync(RKotikuntahistoria ++= historia)
 }
 
-object ConfidentalRaportointiDatabase {
-  def apply(config: RaportointiDatabaseConfigBase): Option[ConfidentalRaportointiDatabase] =
+object ConfidentialRaportointiDatabase {
+  def apply(config: RaportointiDatabaseConfigBase): Option[ConfidentialRaportointiDatabase] =
     config.schema match {
-      case Public => Some(new ConfidentalRaportointiDatabase(config.withSchema(Confidental)))
-      case Temp => Some(new ConfidentalRaportointiDatabase(config.withSchema(TempConfidental)))
+      case Public => Some(new ConfidentialRaportointiDatabase(config.withSchema(Confidential)))
+      case Temp => Some(new ConfidentialRaportointiDatabase(config.withSchema(TempConfidential)))
       case _ => None
     }
 }
