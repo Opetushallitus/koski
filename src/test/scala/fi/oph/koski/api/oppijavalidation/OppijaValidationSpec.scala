@@ -195,7 +195,7 @@ class OppijaValidationSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluo
         "Tuntematon oid" in {
           val opiskeluoikeus = lastOpiskeluoikeus(KoskiSpecificMockOppijat.eero.oid)
           putOppija(Oppija(KoskiSpecificMockOppijat.eero, List(opiskeluoikeus.withOidAndVersion(oid = Some("1.2.246.562.15.15285175178"), versionumero = None)))) {
-            verifyResponseStatus(404, KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia("Opiskeluoikeutta 1.2.246.562.15.15285175178 ei löydy tai käyttäjällä ei ole oikeutta sen katseluun"))
+            verifyResponseStatus(409, KoskiErrorCategory.conflict.exists("Vastaava opiskeluoikeus on jo olemassa."))
           }
         }
 

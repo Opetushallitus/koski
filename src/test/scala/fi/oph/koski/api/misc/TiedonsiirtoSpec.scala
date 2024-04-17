@@ -3,7 +3,7 @@ package fi.oph.koski.api.misc
 import fi.oph.koski.documentation.AmmatillinenExampleData.{lähdeWinnova, winnovaLähdejärjestelmäId}
 import fi.oph.koski.documentation.ExamplesEsiopetus
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
-import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.eerola
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.{eero, eerola, markkanen}
 import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
@@ -22,8 +22,8 @@ class TiedonsiirtoSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
   "Automaattinen tiedonsiirto" - {
     "Palvelukäyttäjä" - {
       "onnistuneesta tiedonsiirrosta tallennetaan vain henkilö- ja oppilaitostiedot" in {
-        resetFixtures
         val henkilö = KoskiApplicationForTests.henkilöRepository.oppijaHenkilöToTäydellisetHenkilötiedot(KoskiSpecificMockOppijat.eero).copy(kansalaisuus = Some(List(Koodistokoodiviite("246", "maatjavaltiot2"))))
+        clearOppijanOpiskeluoikeudet(henkilö.oid)
         putOpiskeluoikeus(ExamplesTiedonsiirto.opiskeluoikeus, henkilö = henkilö, headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
           verifyResponseStatusOk()
         }
@@ -51,8 +51,8 @@ class TiedonsiirtoSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
   }
 
   "Tiedonsiirtojen yhteenveto" in {
-    resetFixtures
-    putOpiskeluoikeus(ExamplesTiedonsiirto.opiskeluoikeus, henkilö = defaultHenkilö, headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
+    clearOppijanOpiskeluoikeudet(eero.oid)
+    putOpiskeluoikeus(ExamplesTiedonsiirto.opiskeluoikeus, henkilö = eero, headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
       verifyResponseStatusOk()
     }
     tiedonsiirtoService.syncToOpenSearch(refresh = true)
@@ -64,8 +64,8 @@ class TiedonsiirtoSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
   }
 
   "Tiedonsiirtojen yhteenveto ei näytä muiden organisaatioiden tietoja" in {
-    resetFixtures
-    putOpiskeluoikeus(ExamplesTiedonsiirto.opiskeluoikeus, henkilö = defaultHenkilö, headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
+    clearOppijanOpiskeluoikeudet(eero.oid)
+    putOpiskeluoikeus(ExamplesTiedonsiirto.opiskeluoikeus, henkilö = eero, headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
       verifyResponseStatusOk()
     }
     authGet("api/tiedonsiirrot/yhteenveto", user = MockUsers.omniaKatselija) {
@@ -78,10 +78,11 @@ class TiedonsiirtoSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
   "Esiopetus" in {
     val stadinOpiskeluoikeus = defaultOpiskeluoikeus.copy(lähdejärjestelmänId = Some(LähdejärjestelmäId(Some("848223"), lähdeWinnova)))
     val esiopetusOpiskeluoikeus = ExamplesEsiopetus.opiskeluoikeusHelsingissä.copy(lähdejärjestelmänId = Some(LähdejärjestelmäId(Some("43349052"), lähdeWinnova)))
-    val markkanen = asUusiOppija(KoskiSpecificMockOppijat.markkanen)
 
-    resetFixtures
-    putOpiskeluoikeus(stadinOpiskeluoikeus, henkilö = defaultHenkilö, headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
+    val markkanen = asUusiOppija(KoskiSpecificMockOppijat.markkanen)
+    clearOppijanOpiskeluoikeudet(eerola.oid)
+
+    putOpiskeluoikeus(stadinOpiskeluoikeus, henkilö = eerola, headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
       verifyResponseStatusOk()
     }
     putOpiskeluoikeus(esiopetusOpiskeluoikeus, henkilö = markkanen, headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
@@ -91,7 +92,7 @@ class TiedonsiirtoSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
     getTiedonsiirrot(helsinginKaupunkiEsiopetus).length should equal(1)
     verifyTiedonsiirtoLoki(helsinginKaupunkiEsiopetus, Some(markkanen), Some(esiopetusOpiskeluoikeus), errorStored = false, dataStored = false, expectedLähdejärjestelmä = Some("winnova"))
 
-    putOpiskeluoikeus(stadinOpiskeluoikeus, henkilö = defaultHenkilö.copy(sukunimi = ""), headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
+    putOpiskeluoikeus(stadinOpiskeluoikeus, henkilö = eerola.copy(sukunimi = ""), headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
       verifyResponseStatus(400, sukunimiPuuttuu)
     }
     putOpiskeluoikeus(esiopetusOpiskeluoikeus, henkilö = markkanen.copy(sukunimi = ""), headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
@@ -105,10 +106,11 @@ class TiedonsiirtoSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
   }
 
   "Tiedonsiirtolokin katsominen" - {
+    resetFixtures
     val stadinOpiskeluoikeus = defaultOpiskeluoikeus.copy(lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId("win-304ir3")))
     "hierarkiassa ylempänä oleva käyttäjä voi katsoa hierarkiasssa alempana olevan käyttäjän luomia rivejä" in {
-      resetFixtures
-      putOpiskeluoikeus(stadinOpiskeluoikeus, henkilö = defaultHenkilö, headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
+      clearOppijanOpiskeluoikeudet(eero.oid)
+      putOpiskeluoikeus(stadinOpiskeluoikeus, henkilö = eero, headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
         verifyResponseStatusOk()
       }
 
@@ -117,14 +119,15 @@ class TiedonsiirtoSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
 
     "hierarkiassa alempana oleva käyttäjä näkee rivit, joiden oppilaitoksiin hänellä on katseluoikeus" in {
       resetFixtures
-      putOpiskeluoikeus(stadinOpiskeluoikeus, henkilö = defaultHenkilö, headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
+      clearOppijanOpiskeluoikeudet(eero.oid)
+      putOpiskeluoikeus(stadinOpiskeluoikeus, henkilö = eero, headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
         verifyResponseStatusOk()
       }
       getTiedonsiirrot(MockUsers.stadinAmmattiopistoTallentaja).length should equal(1)
     }
 
     "pääkäyttäjä näkee kaikki tiedonsiirrot" in {
-      resetFixtures
+      clearOppijanOpiskeluoikeudet(eerola.oid)
       putOpiskeluoikeus(stadinOpiskeluoikeus, henkilö = eerola, headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
         verifyResponseStatusOk()
       }
@@ -135,20 +138,17 @@ class TiedonsiirtoSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
     }
 
     "näytetään virheelliset" in {
-      resetFixtures
-      putOpiskeluoikeus(stadinOpiskeluoikeus, headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
+      clearOppijanOpiskeluoikeudet(eerola.oid)
+      putOpiskeluoikeus(stadinOpiskeluoikeus, henkilö = eerola, headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
         verifyResponseStatusOk()
       }
 
-      putOpiskeluoikeus(stadinOpiskeluoikeus, headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
-        verifyResponseStatusOk()
-      }
-
-      putOpiskeluoikeus(stadinOpiskeluoikeus, henkilö = defaultHenkilö.copy(sukunimi = ""), headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
+      putOpiskeluoikeus(stadinOpiskeluoikeus, henkilö = eerola.copy(sukunimi = ""), headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
         verifyResponseStatus(400, sukunimiPuuttuu)
       }
 
-      getVirheellisetTiedonsiirrot(helsinginKaupunkiPalvelukäyttäjä).flatMap(_.rivit) should have size 1
+      Wait.until(getVirheellisetTiedonsiirrot(helsinginKaupunkiPalvelukäyttäjä).size == 1)
+      getVirheellisetTiedonsiirrot(helsinginKaupunkiPalvelukäyttäjä).flatMap(_.oppija.flatMap(_.hetu)) should equal(List(eerola.hetu.get))
     }
 
     "oppilaitos"  - {
@@ -179,7 +179,9 @@ class TiedonsiirtoSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
 
     "onnistunut siirto poistaa virheelliset listalta" in {
       resetFixtures
-      putOpiskeluoikeus(stadinOpiskeluoikeus, henkilö = defaultHenkilö.copy(sukunimi = ""), headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
+      clearOppijanOpiskeluoikeudet(markkanen.oid)
+      clearOppijanOpiskeluoikeudet(eerola.oid)
+      putOpiskeluoikeus(stadinOpiskeluoikeus, henkilö = markkanen.copy(sukunimi = ""), headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
         verifyResponseStatus(400, sukunimiPuuttuu)
       }
 
@@ -187,12 +189,12 @@ class TiedonsiirtoSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
         verifyResponseStatus(400, sukunimiPuuttuu)
       }
 
-      putOpiskeluoikeus(stadinOpiskeluoikeus, henkilö = defaultHenkilö, headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
+      putOpiskeluoikeus(stadinOpiskeluoikeus, henkilö = eerola, headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
         verifyResponseStatusOk()
       }
 
       Wait.until(getVirheellisetTiedonsiirrot(helsinginKaupunkiPalvelukäyttäjä).size == 1)
-      getVirheellisetTiedonsiirrot(helsinginKaupunkiPalvelukäyttäjä).flatMap(_.oppija.flatMap(_.hetu)) should equal(List(eerola.hetu.get))
+      getVirheellisetTiedonsiirrot(helsinginKaupunkiPalvelukäyttäjä).flatMap(_.oppija.flatMap(_.hetu)) should equal(List(markkanen.hetu.get))
     }
   }
 
@@ -213,8 +215,8 @@ class TiedonsiirtoSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
     }
 
     "onnistuneita siirtoja ei voi poistaa" in {
-      resetFixtures
-      putOpiskeluoikeus(stadinOpiskeluoikeus, henkilö = defaultHenkilö, headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
+      clearOppijanOpiskeluoikeudet(eerola.oid)
+      putOpiskeluoikeus(stadinOpiskeluoikeus, henkilö = eerola, headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
         verifyResponseStatusOk()
       }
 
