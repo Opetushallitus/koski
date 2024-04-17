@@ -6,6 +6,7 @@ import fi.oph.koski.db.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.KoskiTables.KoskiOpiskeluOikeudetWithAccessCheck
 import fi.oph.koski.db.{PostgresDriverWithJsonSupport, QueryMethods}
+import fi.oph.koski.fixture.{FixtureCreator, KoskiSpecificFixtureState}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.KoskiSpecificSession.systemUser
@@ -13,12 +14,13 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.Koodistokoodiviite
 import fi.oph.koski.validation.ValidatingAndResolvingExtractor
+import fi.oph.koski.valpas.opiskeluoikeusfixture.ValpasOpiskeluoikeusFixtureState
 import org.json4s.jackson.JsonMethods
 
 import scala.io.Source
 import scala.util.Using
 
-class MockOpintopolkuHenkilöFacade(val hetu: Hetu) extends OpintopolkuHenkilöFacade with Logging {
+class MockOpintopolkuHenkilöFacade(val hetu: Hetu, fixtures: => FixtureCreator) extends OpintopolkuHenkilöFacade with Logging {
   private var alkuperäisetOppijat = KoskiSpecificMockOppijat.defaultOppijat
   private var oppijat = new MockOppijat(alkuperäisetOppijat)
 
@@ -136,7 +138,11 @@ class MockOpintopolkuHenkilöFacade(val hetu: Hetu) extends OpintopolkuHenkilöF
   }
 
   def findKuntahistoriat(oids: Seq[String]): Seq[OppijanumerorekisteriKotikuntahistoriaRow] =
-    kotikuntahistoriaData.filter(row => oids.contains(row.oid))
+    (fixtures.getCurrentFixtureStateName() match {
+      case KoskiSpecificFixtureState.name => Some(koskiKotikuntahistoriaData)
+      case ValpasOpiskeluoikeusFixtureState.name => Some(valpasKotikuntahistoriaData)
+      case _ => None
+    }).toList.flatten.filter(row => oids.contains(row.oid))
 
   override def findSlaveOids(masterOid: String): List[Oid] =
     alkuperäisetOppijat.filter(_.master.exists(_.oid == masterOid)).map(_.henkilö.oid)
@@ -168,18 +174,27 @@ class MockOpintopolkuHenkilöFacade(val hetu: Hetu) extends OpintopolkuHenkilöF
     kotikunta = None
   )
 
-  private lazy val kotikuntahistoriaData: List[OppijanumerorekisteriKotikuntahistoriaRow] =
+  private lazy val koskiKotikuntahistoriaData: Seq[OppijanumerorekisteriKotikuntahistoriaRow] =
+    loadKotikuntahistoria("koski-kotikuntahistoria.json")
+
+  private lazy val valpasKotikuntahistoriaData: Seq[OppijanumerorekisteriKotikuntahistoriaRow] =
+    loadKotikuntahistoria("valpas-kotikuntahistoria.json")
+
+  def loadKotikuntahistoria(resourceName: String): Seq[OppijanumerorekisteriKotikuntahistoriaRow] =
     Using.Manager { use =>
-      val source = use(Source.fromResource("mockdata/oppijanumerorekisteri/kotikuntahistoria.json"))
+      val source = use(Source.fromResource(s"mockdata/oppijanumerorekisteri/$resourceName"))
       val json = JsonMethods.parse(source.mkString)
       JsonSerializer.extract[List[OppijanumerorekisteriKotikuntahistoriaRow]](json)
     }.fold({ e =>
       logger.error(e)("Loading mockdata failed")
       List.empty
     }, identity)
+
 }
 
-class MockOpintopolkuHenkilöFacadeWithDBSupport(val db: DB, hetu: Hetu) extends MockOpintopolkuHenkilöFacade(hetu) with QueryMethods {
+class MockOpintopolkuHenkilöFacadeWithDBSupport(val db: DB, hetu: Hetu, fixtures: => FixtureCreator)
+  extends MockOpintopolkuHenkilöFacade(hetu, fixtures)
+    with QueryMethods {
   def findFromDb(oid: String): Option[LaajatOppijaHenkilöTiedot] = {
     runQuery(KoskiOpiskeluOikeudetWithAccessCheck(systemUser).filter(_.oppijaOid === oid)).headOption.map { oppijaRow =>
       LaajatOppijaHenkilöTiedot(oid, oid, oid, oid, Some(oid), None, None, None)

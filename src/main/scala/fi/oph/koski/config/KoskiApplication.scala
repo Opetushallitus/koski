@@ -79,7 +79,7 @@ class KoskiApplication(
   lazy val koodistoPalvelu = KoodistoPalvelu.apply(config)
   lazy val koodistoViitePalvelu = KoodistoViitePalvelu(config, koodistoPalvelu)
   lazy val validatingAndResolvingExtractor = new ValidatingAndResolvingExtractor(koodistoViitePalvelu, organisaatioRepository)
-  lazy val opintopolkuHenkilöFacade = OpintopolkuHenkilöFacade(config, masterDatabase.db, hetu, perustiedotRepository, perustiedotIndexer)
+  lazy val opintopolkuHenkilöFacade = OpintopolkuHenkilöFacade(config, masterDatabase.db, hetu, fixtureCreator, perustiedotRepository, perustiedotIndexer)
   lazy val käyttöoikeusRepository = new KäyttöoikeusRepository(organisaatioRepository, directoryClient)
   lazy val masterDatabase = KoskiDatabase.master(config)
   lazy val replicaDatabase = KoskiDatabase.replica(config)
