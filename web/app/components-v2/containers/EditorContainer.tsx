@@ -32,6 +32,7 @@ import { OrganisaatiohistoriaView } from '../opiskeluoikeus/Organisaatiohistoria
 import { UusiOpiskeluoikeusjakso } from '../opiskeluoikeus/UusiOpiskeluoikeudenTilaModal'
 import { CHARCODE_ADD, Icon } from '../texts/Icon'
 import { Trans } from '../texts/Trans'
+import { isEmptyModelObject } from '../../util/objects'
 
 export type EditorContainerProps<T extends Opiskeluoikeus> =
   CommonPropsWithChildren<{
@@ -140,14 +141,6 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
 
   const { lisätiedotContainer: LisätiedotContainer } = props
 
-  const hasLisätiedot = (state: undefined | { $class: string }): Boolean => {
-    if (state === undefined) {
-      return false
-    }
-    const { $class, ...otherProps } = state
-    return Object.keys(otherProps).length > 0
-  }
-
   return (
     <article {...common(props, ['EditorContainer'])}>
       <TestIdRoot id="opiskeluoikeus">
@@ -181,7 +174,7 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
         {LisätiedotContainer !== undefined &&
           (props.form.editMode ||
             ('lisätiedot' in props.form.state &&
-              hasLisätiedot(props.form.state.lisätiedot))) && (
+              !isEmptyModelObject(props.form.state.lisätiedot))) && (
             <>
               <FlatButton
                 testId="lisätiedotButton"

@@ -2139,9 +2139,6 @@ test.describe('Vapaa sivistystyö', () => {
 
         vstOppijaPage.$.opiskeluoikeus.lisätiedot.maksuttomuudet(0).remove.click()
         await vstOppijaPage.saveBtn.click()
-
-        await page.reload()
-
         await expect(page.getByTestId("opiskeluoikeus.lisätiedotButton")).not.toBeVisible()
       })
     })
