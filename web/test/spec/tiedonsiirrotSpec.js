@@ -43,7 +43,7 @@ describe('Tiedonsiirrot', function () {
           [
             '24.2.1977',
             'Hetuton, Heikki',
-            'Stadin ammatti- ja aikuisopisto',
+            'Stadin oppisopimuskeskus',
             'Autoalan perustutkinto',
             '',
             ''
@@ -51,7 +51,7 @@ describe('Tiedonsiirrot', function () {
           [
             '270303-281N',
             'Tiedonsiirto, Tiina',
-            'Stadin ammatti- ja aikuisopisto',
+            'Stadin oppisopimuskeskus',
             'Autoalan perustutkinto',
             '',
             ''
@@ -74,7 +74,8 @@ describe('Tiedonsiirrot', function () {
       ).to.deep.equal([
         'Aalto-yliopisto',
         'Helsingin kaupunki',
-        'Stadin ammatti- ja aikuisopisto'
+        'Stadin ammatti- ja aikuisopisto',
+        'Stadin oppisopimuskeskus'
       ])
     })
   })
