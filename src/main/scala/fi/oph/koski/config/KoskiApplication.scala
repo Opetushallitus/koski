@@ -204,6 +204,7 @@ class KoskiApplication(
   lazy val globaaliValidator: KoskiGlobaaliValidator = new KoskiGlobaaliValidator(
     opiskeluoikeusRepository,
     valpasRajapäivätService,
+    opintopolkuHenkilöFacade,
     validationContext,
     config
   )
