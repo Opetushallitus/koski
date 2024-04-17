@@ -9,6 +9,7 @@ import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.opiskeluoikeus.KoskiOpiskeluoikeusRepository
 import fi.oph.koski.schema._
 import fi.oph.koski.util.FinnishDateFormat.finnishDateFormat
+import fi.oph.koski.validation.DuplikaattiValidation.samaOo
 
 import java.time.LocalDate
 
@@ -206,19 +207,12 @@ object VapaaSivistystyöValidation {
     henkilöRepository: HenkilöRepository,
     koskiOpiskeluoikeudet: KoskiOpiskeluoikeusRepository
   ): HttpStatus = {
-    def samaOo(vanhaOsaamismerkkiOo: VapaanSivistystyönOpiskeluoikeus) = {
-      val samaOid = vanhaOsaamismerkkiOo.oid.isDefined && vanhaOsaamismerkkiOo.oid == opiskeluoikeus.oid
-      val samaLähdejärjestelmänId = vanhaOsaamismerkkiOo.lähdejärjestelmänId.isDefined && vanhaOsaamismerkkiOo.lähdejärjestelmänId == opiskeluoikeus.lähdejärjestelmänId
-
-      samaOid || samaLähdejärjestelmänId
-    }
-
     def oppijallaOnPäällekkäinenOsaamismerkki(oppijaOidit: List[Henkilö.Oid]) = {
       val oot = koskiOpiskeluoikeudet.findByOppijaOids(oppijaOidit)(KoskiSpecificSession.systemUser)
 
       oot.exists {
         case vanhaOsaamismerkkiOo: VapaanSivistystyönOpiskeluoikeus if
-          !samaOo(vanhaOsaamismerkkiOo) &&
+          !samaOo(vanhaOsaamismerkkiOo, opiskeluoikeus) &&
           vanhaOsaamismerkkiOo.oppilaitos.map(_.oid) == opiskeluoikeus.oppilaitos.map(_.oid) &&
           vanhaOsaamismerkkiOo.suoritukset.head.koulutusmoduuli.tunniste == opiskeluoikeus.suoritukset.head.koulutusmoduuli.tunniste &&
           vanhaOsaamismerkkiOo.päättymispäivä == opiskeluoikeus.päättymispäivä

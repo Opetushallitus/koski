@@ -1,10 +1,12 @@
 package fi.oph.koski.validation
 
+import com.typesafe.config.Config
 import fi.oph.koski.fixture.ValidationTestContext
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 
 import java.time.LocalDate
 import fi.oph.koski.http.HttpStatus
+import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.opiskeluoikeus.CompositeOpiskeluoikeusRepository
 import fi.oph.koski.raportointikanta.RaportointiDatabase
 import fi.oph.koski.schema._
@@ -25,12 +27,13 @@ class KoskiGlobaaliValidator(
   opiskeluoikeusRepository: CompositeOpiskeluoikeusRepository,
   rajapäivät: ValpasRajapäivätService,
   validationConfig: ValidationTestContext,
+  config: Config
 ) extends Timing
 {
   def validateOpiskeluoikeus(
     opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
     oppijanHenkilötiedot: Option[LaajatOppijaHenkilöTiedot],
-    oppijanOid: String): HttpStatus =
+    oppijanOid: String)(implicit user: KoskiSpecificSession): HttpStatus =
   {
     val oppijanSyntymäpäivä = oppijanHenkilötiedot.flatMap(_.syntymäaika)
 
@@ -59,12 +62,18 @@ class KoskiGlobaaliValidator(
               rajapäivät
             )
           },
-          timed(s"${timedBlockname} PerusopetuksenOpiskeluoikeusValidation.validateDuplikaatit") {
-            PerusopetuksenOpiskeluoikeusValidation.validateDuplikaatit(
-              opiskeluoikeus,
-              oppijanHenkilötiedot,
-              opiskeluoikeusRepository
-            )
+          timed(s"${timedBlockname} DuplikaattiValidation.validateDuplikaatit") {
+            oppijanHenkilötiedot match {
+              case Some(h) =>
+                DuplikaattiValidation.validateDuplikaatit(
+                  opiskeluoikeus,
+                  h,
+                  opiskeluoikeusRepository,
+                  config
+                )
+              case _ => HttpStatus.ok
+            }
+
           }
           // TODO: Siirrä EB-ESH olemassaolovalidaatio tänne
           // TODO: Siirrä osaamismerkkien duplikaattivalidaatio tänne

@@ -132,7 +132,7 @@ object MockUsers {
     "tallentaja",
     "tallentaja",
     "1.2.246.562.24.99999999995",
-    Seq(oppilaitosTallentaja(MockOrganisaatiot.stadinAmmattiopisto))
+    Seq(oppilaitosTallentaja(MockOrganisaatiot.stadinAmmattiopisto), oppilaitosTallentaja(MockOrganisaatiot.stadinOppisopimuskeskus))
   )
 
   val stadinAmmattiopistoKatselija = KoskiMockUser(
@@ -140,6 +140,13 @@ object MockUsers {
     "katselija",
     "1.2.246.562.24.99999999985",
     Seq(oppilaitosKatselija(MockOrganisaatiot.stadinAmmattiopisto))
+  )
+
+  val stadinAmmattiopistoPalvelukäyttäjä = KoskiMockUser(
+    "stadin-palvelukäyttäjä",
+    "stadin-palvelukäyttäjä",
+    "1.2.246.562.24.9999999989",
+    Seq(oppilaitosPalvelukäyttäjä(MockOrganisaatiot.stadinAmmattiopisto))
   )
 
   val jyväskylänKatselijaEsiopetus = KoskiMockUser(
@@ -525,6 +532,7 @@ object MockUsers {
     stadinAmmattiopistoPääkäyttäjä,
     stadinAmmattiopistoTallentaja,
     stadinAmmattiopistoKatselija,
+    stadinAmmattiopistoPalvelukäyttäjä,
     jyväskylänKatselijaEsiopetus,
     jyväskylänKatselijaEiLuottamuksellinen,
     kahdenOrganisaatioPalvelukäyttäjä,
