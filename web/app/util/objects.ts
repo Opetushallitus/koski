@@ -9,10 +9,13 @@ export const isEmptyModelObject = (obj: any): Boolean => {
   if (obj === undefined || obj === null) {
     return true
   }
-  if ('length' in obj && obj.length > 0) {
+  if (typeof obj === 'string' || typeof obj === 'number') {
     return false
   }
   if (typeof obj === 'object') {
+    if (Array.isArray(obj) && obj.length > 0) {
+      return false
+    }
     for (const [key, value] of Object.entries(obj)) {
       if (key === '$class') {
         continue
