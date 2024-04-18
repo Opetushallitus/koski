@@ -4,9 +4,11 @@ import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusEronnut, opiskeluoikeusLäsnä, vahvistusPaikkakunnalla}
 import fi.oph.koski.documentation.PerusopetusExampleData.{perusopetuksenOppimääränSuoritus, yhdeksännenLuokanSuoritus}
 import fi.oph.koski.documentation._
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat._
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, OppijaHenkilö}
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.schema._
+import fi.oph.koski.util.ChainingSyntax.localDateOps
 import org.scalatest.freespec.AnyFreeSpec
 
 import java.time.LocalDate
@@ -668,7 +670,6 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
       }
     }
 
-
     val jaksoAikainen = OikeuttaMaksuttomuuteenPidennetty(LocalDate.of(2020, 10, 10),
       LocalDate.of(2020, 10, 15))
     val jaksoAikainenPäällekäinen = OikeuttaMaksuttomuuteenPidennetty(LocalDate.of(2020, 10, 12),
@@ -708,6 +709,63 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
       }
       "Sama aikajakso kahdesti" in {
         OikeuttaMaksuttomuuteenPidennetty.maksuttomuusJaksojenYhteenlaskettuPituus(List(jaksoKeskimmäinen, jaksoKeskimmäinen)) should equal (37)
+      }
+    }
+  }
+
+  "Maksuttomuustietojen vaatiminen niiden puuttuessa" - {
+    resetFixtures()
+
+    val oppija = vuonna2004SyntynytPeruskouluValmis2021
+    val alkamispaiva = vuonna2004SyntynytPeruskouluValmis2021.syntymäaika.get.plusYears(20).atEndOfYear
+    val paattymispaiva = alkamispaiva.plusYears(1)
+    val opiskeluoikeus = päättymispäivällä(alkamispäivällä(defaultOpiskeluoikeus, alkamispaiva), paattymispaiva).copy(lisätiedot = None)
+
+    "Maksuttomuustiedot vaaditaan, jos kaikki tietyt oppijan ja opiskeluoikeuden ehdot täyttyvät" in {
+      putOpiskeluoikeus(opiskeluoikeus, oppija) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta vaaditaan opiskeluoikeudelle."))
+      }
+    }
+
+    "Maksuttomuustietoja ei vaadita, jos oppija on syntynyt ennen 2004" in {
+      putOpiskeluoikeus(opiskeluoikeus, vuonna2003SyntynytPeruskouluValmis2021) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "Maksuttomuustietoja ei vaadita, jos oppija on valmistunut perusopetuksesta ennen 1.1.2021" in {
+      putOpiskeluoikeus(opiskeluoikeus, vuonna2004SyntynytMuttaPeruskouluValmisEnnen2021) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "Maksuttomuustietoja ei vaadita, jos opinnot ovat alkaneet myöhemmin kuin sen vuoden lopussa, jolloin oppija täyttää 20 vuotta" in {
+      resetFixtures()
+      val alkamispäivä = oppija.syntymäaika.get.plusYears(20).atEndOfYear.plusDays(1)
+      val opiskeluoikeus = päättymispäivällä(alkamispäivällä(defaultOpiskeluoikeus, alkamispäivä), alkamispäivä.plusDays(10)).copy(lisätiedot = None)
+      putOpiskeluoikeus(opiskeluoikeus, oppija) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "Maksuttomuustietoja ei vaadita, jos koulutus ei kelpaa oppivelvollisuuden suorittamiseen" in {
+      val opiskeluoikeus = ExamplesTaiteenPerusopetus.Opiskeluoikeus.aloitettuYleinenOppimäärä
+      putOpiskeluoikeus(opiskeluoikeus, oppija) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "Maksuttomuustietoja ei vaadita, jos oppijalle ei löydy kotikuntahistoriaa" in {
+      val oppija = vuonna2004SyntynytPeruskouluValmis2021EiKotikuntahistoriaa
+      putOpiskeluoikeus(opiskeluoikeus, oppija) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "Maksuttomuustietoja ei vaadita, jos oppija ei kotikuntahistorian perusteella ole oppivelvollisuuslain alainen" in {
+      val oppija = vuonna2004SyntynytPeruskouluValmis2021MuuttanutSuomeenTäysiIkäisenä
+      putOpiskeluoikeus(opiskeluoikeus, oppija) {
+        verifyResponseStatusOk()
       }
     }
   }
