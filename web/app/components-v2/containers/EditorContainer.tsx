@@ -32,6 +32,7 @@ import { OrganisaatiohistoriaView } from '../opiskeluoikeus/Organisaatiohistoria
 import { UusiOpiskeluoikeusjakso } from '../opiskeluoikeus/UusiOpiskeluoikeudenTilaModal'
 import { CHARCODE_ADD, Icon } from '../texts/Icon'
 import { Trans } from '../texts/Trans'
+import { isEmptyModelObject } from '../../util/objects'
 
 export type EditorContainerProps<T extends Opiskeluoikeus> =
   CommonPropsWithChildren<{
@@ -170,22 +171,30 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
           view={OrganisaatiohistoriaView}
         />
         <Spacer />
-        {LisätiedotContainer !== undefined && (
-          <>
-            <FlatButton
-              onClick={(e) => {
-                e.preventDefault()
-                setLisatiedotOpen((prev) => !prev)
-              }}
-            >
-              {lisatiedotOpen
-                ? 'lisatiedot:sulje_lisatiedot'
-                : 'lisatiedot:nayta_lisatiedot'}
-            </FlatButton>
-            {lisatiedotOpen && <LisätiedotContainer form={props.form} />}
-            <Spacer />
-          </>
-        )}
+        {LisätiedotContainer !== undefined &&
+          (props.form.editMode ||
+            ('lisätiedot' in props.form.state &&
+              !isEmptyModelObject(props.form.state.lisätiedot))) && (
+            <>
+              <FlatButton
+                testId="lisätiedotButton"
+                onClick={(e) => {
+                  e.preventDefault()
+                  setLisatiedotOpen((prev) => !prev)
+                }}
+              >
+                {lisatiedotOpen
+                  ? t('lisatiedot:sulje_lisatiedot')
+                  : t('lisatiedot:nayta_lisatiedot')}
+              </FlatButton>
+              {lisatiedotOpen && (
+                <TestIdLayer id="lisätiedot">
+                  <LisätiedotContainer form={props.form} />
+                </TestIdLayer>
+              )}
+              <Spacer />
+            </>
+          )}
       </TestIdRoot>
 
       <h2>

@@ -10,6 +10,7 @@ import { OikeuttaMaksuttomuuteenPidennetty } from '../../types/fi/oph/koski/sche
 import { VapaanSivistystyönOpiskeluoikeudenLisätiedot } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeudenLisatiedot'
 import { VapaanSivistystyönOpiskeluoikeus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeus'
 import { deleteAt } from '../../util/fp/arrays'
+import { TestIdLayer } from '../../appstate/useTestId'
 
 interface VSTLisatiedotProps {
   form: FormModel<VapaanSivistystyönOpiskeluoikeus>
@@ -86,72 +87,75 @@ export const VSTLisatiedot: React.FC<VSTLisatiedotProps> = ({ form }) => {
           {isNonEmpty(maksuttomuus || []) &&
             maksuttomuus.map((m, i) => {
               return (
-                <div
-                  key={`maksuttomuus_${i}`}
-                  className="vst-lisatiedot__koulutuksen-maksuttomuus__maksuttomuus-row"
-                >
-                  <div>
-                    {form.editMode ? (
-                      <DateEdit
-                        onChange={(val) => {
+                <TestIdLayer id={`maksuttomuudet.${i}`}>
+                  <div
+                    key={`maksuttomuus_${i}`}
+                    className="vst-lisatiedot__koulutuksen-maksuttomuus__maksuttomuus-row"
+                  >
+                    <div>
+                      {form.editMode ? (
+                        <DateEdit
+                          onChange={(val) => {
+                            form.updateAt(
+                              maksuttomuusPath.at(i),
+                              (_maksuttomuus) =>
+                                Maksuttomuus({
+                                  alku: val || '',
+                                  maksuton: m.maksuton
+                                })
+                            )
+                          }}
+                          value={m.alku}
+                        />
+                      ) : (
+                        <>{m.alku}</>
+                      )}
+                    </div>
+                    <div className="vst-lisatiedot__koulutuksen-maksuttomuus__maksuttomuus-row-checkbox-container">
+                      <label htmlFor={`maksuton-${i}`}>{t('Maksuton')}</label>
+                      <input
+                        type="checkbox"
+                        disabled={!form.editMode}
+                        id={`maksuton-${i}`}
+                        checked={m.maksuton === true}
+                        onChange={(_e) => {
                           form.updateAt(
-                            maksuttomuusPath.at(i),
-                            (_maksuttomuus) =>
+                            lisatiedotPath
+                              .optional()
+                              .prop('maksuttomuus')
+                              .optional()
+                              .at(i),
+                            // eslint-disable-next-line @typescript-eslint/no-shadow
+                            (maksuttomuus) =>
                               Maksuttomuus({
-                                alku: val || '',
-                                maksuton: m.maksuton
+                                alku: maksuttomuus.alku,
+                                maksuton: !maksuttomuus.maksuton
                               })
                           )
                         }}
-                        value={m.alku}
                       />
-                    ) : (
-                      <>{m.alku}</>
-                    )}
+                    </div>
+                    <div>
+                      {form.editMode && (
+                        <RaisedButton
+                          type="dangerzone"
+                          fullWidth={false}
+                          testId="remove"
+                          onClick={(e) => {
+                            e.preventDefault()
+                            form.updateAt(lisatiedotPath.optional(), (l) => ({
+                              ...l,
+                              maksuttomuus:
+                                deleteAt(l?.maksuttomuus || [], i) || []
+                            }))
+                          }}
+                        >
+                          {t(`Poista`)}
+                        </RaisedButton>
+                      )}
+                    </div>
                   </div>
-                  <div className="vst-lisatiedot__koulutuksen-maksuttomuus__maksuttomuus-row-checkbox-container">
-                    <label htmlFor={`maksuton-${i}`}>{t('Maksuton')}</label>
-                    <input
-                      type="checkbox"
-                      disabled={!form.editMode}
-                      id={`maksuton-${i}`}
-                      checked={m.maksuton === true}
-                      onChange={(_e) => {
-                        form.updateAt(
-                          lisatiedotPath
-                            .optional()
-                            .prop('maksuttomuus')
-                            .optional()
-                            .at(i),
-                          // eslint-disable-next-line @typescript-eslint/no-shadow
-                          (maksuttomuus) =>
-                            Maksuttomuus({
-                              alku: maksuttomuus.alku,
-                              maksuton: !maksuttomuus.maksuton
-                            })
-                        )
-                      }}
-                    />
-                  </div>
-                  <div>
-                    {form.editMode && (
-                      <RaisedButton
-                        type="dangerzone"
-                        fullWidth={false}
-                        onClick={(e) => {
-                          e.preventDefault()
-                          form.updateAt(lisatiedotPath.optional(), (l) => ({
-                            ...l,
-                            maksuttomuus:
-                              deleteAt(l?.maksuttomuus || [], i) || []
-                          }))
-                        }}
-                      >
-                        {t(`Poista`)}
-                      </RaisedButton>
-                    )}
-                  </div>
-                </div>
+                </TestIdLayer>
               )
             })}
           <div>

@@ -35,6 +35,23 @@ object VapaaSivistystyöExample {
     suoritukset = List(suoritusKOPS)
   )
 
+  lazy val opiskeluoikeusKOPSMaksuttomuus = VapaanSivistystyönOpiskeluoikeus(
+    arvioituPäättymispäivä = Some(date(2022, 5, 31)),
+    tila = VapaanSivistystyönOpiskeluoikeudenTila(List(
+      OppivelvollisilleSuunnattuVapaanSivistystyönOpiskeluoikeusjakso(date(2021, 9, 1), opiskeluoikeusLäsnä)
+    )),
+    lisätiedot = Some(VapaanSivistystyönOpiskeluoikeudenLisätiedot(maksuttomuus = Some(
+      List(
+        Maksuttomuus(
+          alku = date(2021, 9, 1),
+          loppu = None,
+          maksuton = true
+        )
+      )))),
+    oppilaitos = Some(varsinaisSuomenKansanopisto),
+    suoritukset = List(suoritusKOPS)
+  )
+
   lazy val opiskeluoikeusKOTO = VapaanSivistystyönOpiskeluoikeus(
     arvioituPäättymispäivä = Some(date(2022, 5, 31)),
     tila = VapaanSivistystyönOpiskeluoikeudenTila(List(
@@ -329,7 +346,7 @@ object VapaaSivistystyöExampleData {
     )
   }
 
-  def opintokokonaisuus(koodiarvo: String = "A01", nimi: String = "Arjen rahankäyttö" , kuvaus: String = "Arjen rahankäyttö", laajuusArvo: Double = 2.0): OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus = {
+  def opintokokonaisuus(koodiarvo: String = "A01", nimi: String = "Arjen rahankäyttö", kuvaus: String = "Arjen rahankäyttö", laajuusArvo: Double = 2.0): OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus = {
     OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus(PaikallinenKoodi(koodiarvo, nimi), kuvaus, laajuus(laajuusArvo))
   }
 
@@ -338,7 +355,7 @@ object VapaaSivistystyöExampleData {
     MuuallaSuoritetutVapaanSivistystyönOpinnot(Koodistokoodiviite("lukioopinnot", "vstmuuallasuoritetutopinnot"), kuvaus, laajuus(laajuusArvo))
   }
 
-  def vstArviointi(arvosana:String = "Hyväksytty", päivä: LocalDate = date(2021, 10, 30)): OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi = {
+  def vstArviointi(arvosana: String = "Hyväksytty", päivä: LocalDate = date(2021, 10, 30)): OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi = {
     OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi(Koodistokoodiviite(arvosana, "arviointiasteikkovst"), päivä)
   }
 
@@ -494,7 +511,7 @@ object VapaaSivistystyöExampleData {
 
   def vapaanSivistystyönLukutaidonKokonaisuus(tunniste: Koodistokoodiviite, laajuus: Option[LaajuusOpintopisteissä]) = {
     VapaanSivistystyönLukutaidonKokonaisuus(
-      tunniste =  tunniste,
+      tunniste = tunniste,
       laajuus = laajuus
     )
   }
@@ -524,7 +541,7 @@ object VapaaSivistystyöExampleData {
     )
   }
 
-  def vapaanSivistystyöVapaatavoitteisenKoulutuksenArviointi(arvosana:String = "2", päivä: LocalDate = date(2021, 10, 30)): VapaanSivistystyöVapaatavoitteisenKoulutuksenArviointi = {
+  def vapaanSivistystyöVapaatavoitteisenKoulutuksenArviointi(arvosana: String = "2", päivä: LocalDate = date(2021, 10, 30)): VapaanSivistystyöVapaatavoitteisenKoulutuksenArviointi = {
     VapaanSivistystyöVapaatavoitteisenKoulutuksenArviointi(Koodistokoodiviite(arvosana, "arviointiasteikkovstvapaatavoitteinen"), päivä)
   }
 
