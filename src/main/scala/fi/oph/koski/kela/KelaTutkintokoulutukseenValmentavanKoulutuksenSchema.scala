@@ -44,7 +44,7 @@ case class KelaTuvaOpiskeluoikeudenLisätiedot(
   oikeuttaMaksuttomuuteenPidennetty: Option[List[KelaOikeuttaMaksuttomuuteenPidennetty]],
   majoitus: Option[List[KelaAikajakso]],
   sisäoppilaitosmainenMajoitus: Option[List[KelaAikajakso]],
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_SUPPEA))
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_SUPPEA, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   vaativanErityisenTuenYhteydessäJärjestettäväMajoitus: Option[List[KelaAikajakso]],
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   erityinenTuki: Option[List[KelaAikajakso]],

@@ -178,6 +178,32 @@ class KelaSpec
       }
     }
 
+    "Palauttaa vaativan erityisen tuen yhteydessä järjestettävä majoitus -tiedon" - {
+      "Kelan laajoilla oikeksilla" in {
+        postHetu(KoskiSpecificMockOppijat.amis.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+          verifyResponseStatusOk()
+          val oppija = JsonSerializer.parse[KelaOppija](body)
+          oppija.opiskeluoikeudet.length.shouldBe(1)
+          oppija.opiskeluoikeudet.head.suoritukset.length.shouldBe(1)
+          oppija.opiskeluoikeudet.head.lisätiedot.get.asInstanceOf[KelaAmmatillisenOpiskeluoikeudenLisätiedot].vaativanErityisenTuenYhteydessäJärjestettäväMajoitus shouldBe (Some(
+            List(KelaAikajakso(LocalDate.of(2012, 9, 1), Some(LocalDate.of(2013, 9, 1))))
+          ))
+        }
+      }
+
+      "Kelan suppeilla oikeksilla" in {
+        postHetu(KoskiSpecificMockOppijat.amis.hetu.get, user = MockUsers.kelaSuppeatOikeudet) {
+          verifyResponseStatusOk()
+          val oppija = JsonSerializer.parse[KelaOppija](body)
+          oppija.opiskeluoikeudet.length.shouldBe(1)
+          oppija.opiskeluoikeudet.head.suoritukset.length.shouldBe(1)
+          oppija.opiskeluoikeudet.head.lisätiedot.get.asInstanceOf[KelaAmmatillisenOpiskeluoikeudenLisätiedot].vaativanErityisenTuenYhteydessäJärjestettäväMajoitus shouldBe (Some(
+            List(KelaAikajakso(LocalDate.of(2012, 9, 1), Some(LocalDate.of(2013, 9, 1))))
+          ))
+        }
+      }
+    }
+
     "Ei palauta mitätöityä opiskeluoikeutta" in {
       postHetu(KoskiSpecificMockOppijat.lukiolainen.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
         verifyResponseStatusOk()
