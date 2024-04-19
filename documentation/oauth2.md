@@ -155,9 +155,8 @@ Java-kirjasto, jonka voisimme ottaa käyttöön.
 
 ### (J) Vaaditaan clienteilta PKCE:n toteuttaminen authorization code:n luomisessa
 
-PKCE (The Proof Key for Code Exchange) käytettäessä ei tarvitse tietoturvan vuoksi rekisteröidä Client:ien sallittuja redirect URI -parametreja
-KOSKI-backendin puolelle. Estää myös tietyt tietoturvahyökkäykset ja toteutus tukee valmiiksi mahdollista laajentamista stand-alone mobiili-
-tai web-clienteille, jos sellaisia halutaan tulevaisuudessa tukea.
+PKCE estää tietyt tietoturvahyökkäykset, ja mahdollistaa helpomman laajennatavuuden mahdollisesti jatkossa stand-alone mobiili- tai web-clienteille.
+
 
 ### (K) Ei yritetä yhdistää toteutusta OPH Yleiskäyttöisten palveluiden suunnittelemaan machine-to-machine OAuth 2.0 -autentikointiuudistukseen
 
@@ -203,3 +202,8 @@ oppijanumerorekisterissä jo olevia henkilötietoja.
 osaksi code_challenge:ä (tai sen rinnalle) vaiheissa 1 ja 3, ja KOSKI-palvelu vertailisi sitten tätä tietoa vaiheessa 4 code_verifier:in avulla. Tällöin henkilötietoja ei
 tarvitsisi välittää lainkaan itse datassa. Tämä olisi kuitenkin OAauth 2.0 -standardin authorization code flown oma laajennus, joka monimutkaistaisi toteutusta.
 Ja koska tämä on oma laajennus, pitäisi sen tietoturvavaikutukset ja mahdolliset hyökkäysvektorit pohtia tarkasti, jos tätä halutaan harkita.
+
+### (O) Sallitut redirect URI:t tallennetaan ja tarkastetaan
+
+Redirect URI -matchäys tehdään tarkkoina merkkijoinina, wildcardeja ei käytetä. Ks. https://www.ietf.org/archive/id/draft-ietf-oauth-security-topics-25.html#section-4.1.3 tarkemmat tiedot, redirect URI -matchays tarvitaan PKCE:n kanssakin tiettyjä hyökkäystyyppejä estämään.
+
