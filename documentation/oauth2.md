@@ -4,7 +4,7 @@
 
 OPH:n ulkopuolisten osapuolten backendit autentikoituvat Koskeen tällä hetkellä seuraavilla tavoilla:
 - (A1) Basic auth: opintohallintojärjestelmät
-- (A2) Client cert: KOSKI-luovutuspalvelu, jota käyttävät mm. Kela ja vastaavat viranomaiset
+- (A2) mTLS client cert: KOSKI-luovutuspalvelu, jota käyttävät mm. Kela ja vastaavat viranomaiset
 - (A3) Palveluväylä: HSL, DVV
 
 Käyttäjä voi antaa ja tallentaa KOSKI-järjestelmään suostumuksen kaikkiin kyseiselle osapuolelle
