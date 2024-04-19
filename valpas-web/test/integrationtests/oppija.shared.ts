@@ -42,6 +42,7 @@ export const oppivelvollisuustiedot = (p: {
   oppivelvollisuus?: string
   oppivelvollisuudenKeskeytykset?: string[]
   maksuttomuusoikeus?: string
+  muuttanutSuomeen?: string
   kuntailmoitusBtn?: true
   oppivelvollisuudenKeskeytysBtn?: true
   merkitseVapautusBtn?: boolean
@@ -65,6 +66,7 @@ export const oppivelvollisuustiedot = (p: {
         .join("\n"),
     ),
     ...rivi("Oikeus opintojen maksuttomuuteen", p.maksuttomuusoikeus),
+    ...rivi("Muuttanut Suomeen", p.muuttanutSuomeen),
     ...(p.oppivelvollisuudenKeskeytysBtn ? ["Keskeytä oppivelvollisuus"] : []),
     ...(p.kuntailmoitusBtn
       ? ["Tee ilmoitus valvontavastuusta", "info_outline"]

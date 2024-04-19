@@ -10,7 +10,7 @@ import fi.oph.koski.raportit.lukio.lops2021.{Lukio2019AineopintojenOpintopisteke
 import fi.oph.koski.raportit.lukio.{LukioOppiaineEriVuonnaKorotetutKurssit, LukioOppiaineRahoitusmuodonMukaan, LukioOppiaineenOppimaaranKurssikertymat, LukioOppimaaranKussikertymat}
 import fi.oph.koski.raportointikanta.RaportointiDatabaseSchema._
 import fi.oph.koski.schema.Opiskeluoikeus.Oid
-import fi.oph.koski.schema.{Opiskeluoikeus, Organisaatio}
+import fi.oph.koski.schema.{Henkilö, Opiskeluoikeus, Organisaatio}
 import fi.oph.koski.util.DateOrdering.{ascedingSqlTimestampOrdering, sqlDateOrdering}
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
 import fi.oph.scalaschema.annotation.SyntheticProperty
@@ -503,6 +503,13 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
         sisältyvätOpiskeluoikeudet.getOrElse(t._1.opiskeluoikeusOid, Seq.empty).sortBy(_.opiskeluoikeusOid)
       ))
   }
+
+  def kotikuntahistoriat(oppijaOids: Seq[Henkilö.Oid]): Seq[RKotikuntahistoriaRow] =
+    runDbSync(
+      RKotikuntahistoria
+        .filter(_.masterOppijaOid inSetBind oppijaOids)
+        .result
+    )
 
   lazy val ROpiskeluoikeudet = schema match {
     case Public => TableQuery[ROpiskeluoikeusTable]

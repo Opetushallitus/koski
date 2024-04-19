@@ -42,6 +42,7 @@ export type OppijanOppivelvollisuustiedotProps = {
   onOikeusTehdäKuntailmoitus?: boolean
   onOikeusMitätöidäOppivelvollisuudestaVapautus?: boolean
   oppivelvollisuudestaVapautus?: OppivelvollisuudestaVapautus
+  muuttanutSuomeen?: ISODate
 }
 
 export const OppijanOppivelvollisuustiedot = (
@@ -109,6 +110,12 @@ export const OppijanOppivelvollisuustiedot = (
                 props.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti,
               ),
             })}
+          />
+        )}
+        {props.muuttanutSuomeen && (
+          <InfoTableRow
+            label={t("oppija__muuttanut_suomeen")}
+            value={formatDate(props.muuttanutSuomeen)}
           />
         )}
         {!onOppivelvollisuudestaVapautettu(

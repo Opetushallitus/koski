@@ -297,6 +297,7 @@
   "oppija__vastuuilmoitus_otsikko": "Vastuuilmoitus – {{päivämäärä}}: Oppivelvollinen ilman opiskelupaikkaa",
   "oppija__maksuttomuus_voimassa_value": "{{date}} asti",
   "oppija__maksuttomuus_voimassa": "Oikeus opintojen maksuttomuuteen",
+  "oppija__muuttanut_suomeen": "Muuttanut Suomeen",
   "oppijahaku__maksuttomuutta_ei_pysty_päättelemään": "Maksuttomuutta ei pystytä päättelemään",
   "oppijahaku__validointivirhe": "Syötetty arvo ei ole validi henkilötunnus tai oppijatunnus",
   "oppijahaku__hae_hetulla_tai_oppijanumerolla": "Hae hetulla / oppijanumerolla",

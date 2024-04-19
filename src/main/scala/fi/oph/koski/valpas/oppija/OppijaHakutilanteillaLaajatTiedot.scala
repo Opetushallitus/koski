@@ -2,13 +2,17 @@ package fi.oph.koski.valpas.oppija
 
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
+import fi.oph.koski.oppivelvollisuustieto.Oppivelvollisuustiedot
+import fi.oph.koski.raportointikanta.RKotikuntahistoriaRow
 import fi.oph.koski.schema.LocalizedString
-import fi.oph.koski.util.DateOrdering.localDateTimeOrdering
+import fi.oph.koski.util.DateOrdering.{localDateOrdering, localDateTimeOrdering}
 import fi.oph.koski.valpas.db.ValpasSchema.OpiskeluoikeusLisätiedotRow
 import fi.oph.koski.valpas.hakukooste.Hakukooste
 import fi.oph.koski.valpas.opiskeluoikeusrepository._
 import fi.oph.koski.valpas.valpasrepository.{ValpasKuntailmoitusLaajatTiedot, ValpasOppivelvollisuudenKeskeytys}
 import fi.oph.koski.valpas.yhteystiedot.ValpasYhteystiedot
+
+import java.time.LocalDate
 
 case class OppijaHakutilanteillaLaajatTiedot(
   oppija: ValpasOppijaLaajatTiedot,
@@ -20,6 +24,7 @@ case class OppijaHakutilanteillaLaajatTiedot(
   onOikeusTehdäKuntailmoitus: Option[Boolean],
   onOikeusMitätöidäOppivelvollisuudestaVapautus: Option[Boolean],
   lisätiedot: Seq[OpiskeluoikeusLisätiedot],
+  muuttanutSuomeen: Option[LocalDate],
 ) {
   def validate(koodistoviitepalvelu: KoodistoViitePalvelu): OppijaHakutilanteillaLaajatTiedot =
     this.copy(hakutilanteet = hakutilanteet.map(_.validate(koodistoviitepalvelu)))
@@ -45,11 +50,34 @@ case class OppijaHakutilanteillaLaajatTiedot(
     onOikeusTehdäKuntailmoitus = Some(false),
     onOikeusMitätöidäOppivelvollisuudestaVapautus = Some(false),
     lisätiedot = Seq.empty,
+    muuttanutSuomeen = None,
   )
+
+  def withKotikuntahistoria(kotikuntahistoria: Seq[RKotikuntahistoriaRow]): OppijaHakutilanteillaLaajatTiedot =
+    copy(muuttanutSuomeen = if (kotikuntahistoria.nonEmpty) {
+      // Konvertoidaan kotikuntahistorian rivit tupleiksi: muuttopäivä, kunta ulkomailla
+      val muuttopäivät = kotikuntahistoria
+        .map(r => (
+          r.muuttoPvm.toLocalDate,
+          Oppivelvollisuustiedot.oppivelvollisuudenUlkopuolisetKunnat.contains(r.kotikunta),
+        ))
+        .sortBy(_._1)
+
+      muuttopäivät.init
+        .zip(muuttopäivät.tail)
+        .find(muutto => muutto._1._2 && !muutto._2._2)
+        .map(_._2._1)
+    } else {
+      None
+    })
 }
 
 object OppijaHakutilanteillaLaajatTiedot {
-  def apply(oppija: ValpasOppijaLaajatTiedot, yhteystietoryhmänNimi: LocalizedString, haut: Either[HttpStatus, Seq[Hakukooste]]): OppijaHakutilanteillaLaajatTiedot = {
+  def apply(
+    oppija: ValpasOppijaLaajatTiedot,
+    yhteystietoryhmänNimi: LocalizedString,
+    haut: Either[HttpStatus, Seq[Hakukooste]],
+  ): OppijaHakutilanteillaLaajatTiedot = {
     OppijaHakutilanteillaLaajatTiedot(
       oppija = oppija,
       hakutilanteet = haut.map(_.map(ValpasHakutilanneLaajatTiedot.apply)).getOrElse(Seq()),
@@ -60,11 +88,15 @@ object OppijaHakutilanteillaLaajatTiedot {
       oppivelvollisuudenKeskeytykset = Seq.empty,
       onOikeusTehdäKuntailmoitus = None,
       onOikeusMitätöidäOppivelvollisuudestaVapautus = None,
-      lisätiedot = Seq.empty
+      lisätiedot = Seq.empty,
+      muuttanutSuomeen = None,
     )
   }
 
-  def apply(oppija: ValpasOppijaLaajatTiedot, kuntailmoitukset: Seq[ValpasKuntailmoitusLaajatTiedot]): OppijaHakutilanteillaLaajatTiedot = {
+  def apply(
+    oppija: ValpasOppijaLaajatTiedot,
+    kuntailmoitukset: Seq[ValpasKuntailmoitusLaajatTiedot],
+  ): OppijaHakutilanteillaLaajatTiedot = {
     OppijaHakutilanteillaLaajatTiedot(
       oppija = oppija,
       hakutilanteet = Seq.empty,
@@ -74,7 +106,8 @@ object OppijaHakutilanteillaLaajatTiedot {
       oppivelvollisuudenKeskeytykset = Seq.empty,
       onOikeusTehdäKuntailmoitus = None,
       onOikeusMitätöidäOppivelvollisuudestaVapautus = None,
-      lisätiedot = Seq.empty
+      lisätiedot = Seq.empty,
+      muuttanutSuomeen = None,
     )
   }
 
@@ -88,7 +121,8 @@ object OppijaHakutilanteillaLaajatTiedot {
       oppivelvollisuudenKeskeytykset = Seq.empty,
       onOikeusTehdäKuntailmoitus = None,
       onOikeusMitätöidäOppivelvollisuudestaVapautus = None,
-      lisätiedot = Seq.empty
+      lisätiedot = Seq.empty,
+      muuttanutSuomeen = None,
     )
   }
 
