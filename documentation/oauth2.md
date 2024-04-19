@@ -217,9 +217,9 @@ Authorization code:n käyttö vaiheessa 5. sallitaan palvelimella vain tasan yhd
 
 Ks. https://www.ietf.org/archive/id/draft-ietf-oauth-security-topics-25.html#section-4.16 ja https://www.rfc-editor.org/rfc/rfc6819.html 5.2.2.6. .
 
-### (R) Käyttäjälle näytetää OPH:n käyttöliittymissä työkalut suostumuspyyntöjen monitorointiin ja perumiseen
+### (R) Käyttäjälle näytetään OPH:n Oma opintopolku -käyttöliittymissä työkalut suostumuspyyntöjen monitorointiin ja perumiseen
 
-Tämän käyttöliittymän pitää olla selkeä, ts. siitä pitää käyttäjän pystyä tunnistamaan, mitkä hänen sallimansa kolmannet osapuolet ovat dataa käyttäneet ja milloin. Käyttäjä pystyy myös perumaan suostumuksia, jolloin kyseiseen suostumukseen liittyvät authorization code:t, access tokenit ja mahdolliset refresh tokenit lakkaavat heti toimimasta.
+Tämän käyttöliittymän pitää olla selkeä, ts. siitä pitää käyttäjän pystyä tunnistamaan, mitkä hänen sallimansa kolmannet osapuolet ovat dataa käyttäneet ja milloin. Käyttäjä pystyy myös perumaan suostumuksia, jolloin kyseiseen suostumukseen liittyvät authorization code:t, access tokenit ja mahdolliset refresh tokenit lakkaavat heti toimimasta. Pitää olla myös keinot raportoida mahdollisista havaituista väärinkäytöistä.
 
 Tämä on tärkeää, jotta käyttäjä pystyy myös itse mahdollisimman helposti havaitsemaan, onko mahdollisia phishing tms. hyökkäyksiä tapahtunut, ja reagoimaan niihin. 
 
