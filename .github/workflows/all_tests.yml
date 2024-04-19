@@ -240,6 +240,28 @@ jobs:
           shardIndex: ${{ matrix.shardIndex }}
           shardTotal: ${{ matrix.shardTotal }}
 
+  run_frontend_unit_tests:
+    name: Frontend unit tests
+    runs-on: ${{ inputs.runs-on }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node 16
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18.18.0"
+      - name: Cache Node modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - run: |
+          cd web
+          npm ci
+          cd ..
+          make js-unit-test
+
   run_frontend_playwright_tests:
     name: Playwright ${{matrix.shardIndex}}/${{matrix.shardTotal}}
     strategy:
