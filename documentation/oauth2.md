@@ -203,7 +203,26 @@ osaksi code_challenge:ä (tai sen rinnalle) vaiheissa 1 ja 3, ja KOSKI-palvelu v
 tarvitsisi välittää lainkaan itse datassa. Tämä olisi kuitenkin OAauth 2.0 -standardin authorization code flown oma laajennus, joka monimutkaistaisi toteutusta.
 Ja koska tämä on oma laajennus, pitäisi sen tietoturvavaikutukset ja mahdolliset hyökkäysvektorit pohtia tarkasti, jos tätä halutaan harkita.
 
-### (O) Sallitut redirect URI:t tallennetaan ja tarkastetaan
+### (O) Client_id:lle sallitut redirect URI:t tallennetaan ja tarkastetaan
 
 Redirect URI -matchäys tehdään tarkkoina merkkijoinina, wildcardeja ei käytetä. Ks. https://www.ietf.org/archive/id/draft-ietf-oauth-security-topics-25.html#section-4.1.3 tarkemmat tiedot, redirect URI -matchays tarvitaan PKCE:n kanssakin tiettyjä hyökkäystyyppejä estämään.
 
+### (P) Authorization code:t ovat kertakäyttöisiä
+
+Ks. https://www.rfc-editor.org/rfc/rfc6819.html ja https://www.ietf.org/archive/id/draft-ietf-oauth-security-topics-25.html .
+
+Authorization code:n käyttö vaiheessa 5. sallitaan palvelimella vain tasan yhden kerran, ja jos sitä yritetään käyttää useammin, mitä ei normaalisti pitäisi tapahtua, kaikki kyseiseen koodiin liittyvät access tokenitkin invalidoidaan varmuuden vuoksi.
+
+### (Q) CSP:tä ja X-FRAME-OPTIONS Header:iä käytetään authorization end pointeissa ja niiden ohittamista clienteissa ei ainakaan tarkoituksella sallita
+
+Ks. https://www.ietf.org/archive/id/draft-ietf-oauth-security-topics-25.html#section-4.16 ja https://www.rfc-editor.org/rfc/rfc6819.html 5.2.2.6. .
+
+### (R) Käyttäjälle näytetää OPH:n käyttöliittymissä työkalut suostumuspyyntöjen monitorointiin ja perumiseen
+
+Tämän käyttöliittymän pitää olla selkeä, ts. siitä pitää käyttäjän pystyä tunnistamaan, mitkä hänen sallimansa kolmannet osapuolet ovat dataa käyttäneet ja milloin. Käyttäjä pystyy myös perumaan suostumuksia, jolloin kyseiseen suostumukseen liittyvät authorization code:t, access tokenit ja mahdolliset refresh tokenit lakkaavat heti toimimasta.
+
+Tämä on tärkeää, jotta käyttäjä pystyy myös itse mahdollisimman helposti havaitsemaan, onko mahdollisia phishing tms. hyökkäyksiä tapahtunut, ja reagoimaan niihin. 
+
+### TODO
+
+*TODO: Tutki, pitäisikö sallia ainoastaan POST response mode:n käyttö? https://openid.net/specs/oauth-v2-form-post-response-mode-1_0.html*
