@@ -23,7 +23,6 @@ object DuplikaattiValidation extends Logging {
      opiskeluoikeusRepository: CompositeOpiskeluoikeusRepository,
      config: Config
    ): HttpStatus = {
-
     lazy val isMuuAmmatillinenOpiskeluoikeus: Boolean =
       opiskeluoikeus.suoritukset.forall {
         case _: MuunAmmatillisenKoulutuksenSuoritus => true
@@ -44,16 +43,6 @@ object DuplikaattiValidation extends Logging {
         .filter(_.tyyppi == opiskeluoikeus.tyyppi)
       )
 
-    def päällekkäinenAikajakso(oo: Opiskeluoikeus) = {
-      Aikajakso(opiskeluoikeus.alkamispäivä, opiskeluoikeus.päättymispäivä)
-        .overlaps(Aikajakso(oo.alkamispäivä, oo.päättymispäivä))
-    }
-
-
-    def jollainPäällekkäinenAikajakso(vertailtavatOot: Seq[Opiskeluoikeus]): Boolean = {
-      vertailtavatOot.exists(päällekkäinenAikajakso)
-    }
-
     def samaDiaarinumeroAmmatillinen(a: AmmatillinenOpiskeluoikeus) = {
       def dn = (oo: Opiskeluoikeus) => oo.suoritukset
         .collectFirst { case s: AmmatillisenTutkinnonSuoritus => s }
@@ -64,64 +53,76 @@ object DuplikaattiValidation extends Logging {
       }
     }
 
-    def oppijallaOnDuplikaatti(): Either[HttpStatus, Boolean] = {
-      oppijanMuutOpiskeluoikeudetSamaOppilaitosJaTyyppi.map(jollainPäällekkäinenAikajakso)
+    def päällekkäinenAikajakso(oo: Opiskeluoikeus) = {
+      Aikajakso(opiskeluoikeus.alkamispäivä, opiskeluoikeus.päättymispäivä)
+        .overlaps(Aikajakso(oo.alkamispäivä, oo.päättymispäivä))
     }
 
-    def oppijallaOnDuplikaattiAikuistenPerusopetus(): Either[HttpStatus, Boolean] = {
+    def findPäällekkäinenAikajakso(vertailtavatOot: Seq[Opiskeluoikeus]): Option[Opiskeluoikeus] = {
+      vertailtavatOot.find(päällekkäinenAikajakso)
+    }
+
+    def findSamaOppilaitosJaTyyppiSamaanAikaan(): Either[HttpStatus, Option[Opiskeluoikeus]] = {
+      oppijanMuutOpiskeluoikeudetSamaOppilaitosJaTyyppi.map(findPäällekkäinenAikajakso)
+    }
+
+    def findConflictingAikuistenPerusopetus(): Either[HttpStatus, Option[Opiskeluoikeus]] = {
       val vertailtavatOot: Either[HttpStatus, Seq[Opiskeluoikeus]] = oppijanMuutOpiskeluoikeudetSamaOppilaitosJaTyyppi.map(_
         .filter(sisältääAikuistenPerusopetuksenOppimääränSuorituksen(_) == sisältääAikuistenPerusopetuksenOppimääränSuorituksen(opiskeluoikeus))
       )
 
       if (sisältääAikuistenPerusopetuksenOppimääränSuorituksen(opiskeluoikeus)) {
-        vertailtavatOot.map(jollainPäällekkäinenAikajakso)
+        vertailtavatOot.map(findPäällekkäinenAikajakso)
       } else {
-        vertailtavatOot.map(_.exists(_.päättymispäivä.isEmpty))
+        vertailtavatOot.map(_.find(_.päättymispäivä.isEmpty))
       }
     }
 
-    def oppijallaOnDuplikaattiPerusopetus(): Either[HttpStatus, Boolean] = {
+    def findConflictingPerusopetus(): Either[HttpStatus, Option[Opiskeluoikeus]] = {
       val vertailtavatOot: Either[HttpStatus, Seq[Opiskeluoikeus]] = oppijanMuutOpiskeluoikeudetSamaOppilaitosJaTyyppi.map(_
         .filter(sisältääNuortenPerusopetuksenOppimääränTaiVuosiluokanSuorituksen(_) == sisältääNuortenPerusopetuksenOppimääränTaiVuosiluokanSuorituksen(opiskeluoikeus))
       )
 
       if (sisältääNuortenPerusopetuksenOppimääränTaiVuosiluokanSuorituksen(opiskeluoikeus)) {
         // Oppimäärän opinnot, vain aikajaksoltaan kokonaan erillisiä saa duplikoida
-        vertailtavatOot.map(jollainPäällekkäinenAikajakso)
+        vertailtavatOot.map(findPäällekkäinenAikajakso)
       } else {
         // aineopinnot, vain päättyneitä saa duplikoida
-        vertailtavatOot.map(_.exists(_.päättymispäivä.isEmpty))
+        vertailtavatOot.map(_.find(_.päättymispäivä.isEmpty))
       }
     }
 
-    def oppijallaOnDuplikaattiAmmatillinen(): Either[HttpStatus, Boolean] = {
-      oppijanMuutOpiskeluoikeudetSamaOppilaitosJaTyyppi.map(oot => oot.exists {
+    def findConflictingAmmatillinen(): Either[HttpStatus, Option[Opiskeluoikeus]] = {
+      // sama diaarinumero ja päällekkäinen aikajakso mutta ei päättynyt
+      oppijanMuutOpiskeluoikeudetSamaOppilaitosJaTyyppi.map(_.find {
         case a: AmmatillinenOpiskeluoikeus if !a.tila.opiskeluoikeusjaksot.last.opiskeluoikeusPäättynyt => samaDiaarinumeroAmmatillinen(a) && päällekkäinenAikajakso(a)
         case _ => false
       })
     }
 
-    def throwConflictExists(
-      isConflicting: () => Either[HttpStatus, Boolean],
+    def throwIfConflictingExists(
+      isConflicting: () => Either[HttpStatus, Option[Opiskeluoikeus]],
       oo: KoskeenTallennettavaOpiskeluoikeus,
-      ignoreInProd: Boolean = false): HttpStatus =
-    {
+      ignoreInProd: Boolean = false): HttpStatus = {
+      def logWarning(conflicting: Opiskeluoikeus): Unit = logger.warn(s"Opiskeluoikeus jäisi kiinni duplikaattivalidaatioihin (${oo.getClass}, konfliktoiva: ${conflicting.oid})")
       isConflicting() match {
-        case Right(true) if Environment.isProdEnvironment(config) && ignoreInProd =>
-          logger.warn(s"Opiskeluoikeus ${oo.oid} jäisi kiinni duplikaattivalidaatioihin")
+        case Right(Some(conflicting)) if Environment.isProdEnvironment(config) && ignoreInProd =>
+          logWarning(conflicting)
           HttpStatus.ok
-        case Right(true) => KoskiErrorCategory.conflict.exists()
-        case Right(false) => HttpStatus.ok
+        case Right(Some(conflicting)) =>
+          logWarning(conflicting)
+          KoskiErrorCategory.conflict.exists()
+        case Right(None) => HttpStatus.ok
         case Left(error) => error
       }
     }
 
     opiskeluoikeus match {
-      case oo: EsiopetuksenOpiskeluoikeus => throwConflictExists(oppijallaOnDuplikaatti, oo, ignoreInProd = true)
-      case oo: PerusopetukseenValmistavanOpetuksenOpiskeluoikeus => throwConflictExists(oppijallaOnDuplikaatti, oo, ignoreInProd = true)
-      case oo: AikuistenPerusopetuksenOpiskeluoikeus => throwConflictExists(oppijallaOnDuplikaattiAikuistenPerusopetus, oo, ignoreInProd = true)
-      case oo: PerusopetuksenOpiskeluoikeus => throwConflictExists(oppijallaOnDuplikaattiPerusopetus, oo)
-      case oo: AmmatillinenOpiskeluoikeus if !isMuuAmmatillinenOpiskeluoikeus => throwConflictExists(oppijallaOnDuplikaattiAmmatillinen, oo)
+      case oo: EsiopetuksenOpiskeluoikeus => throwIfConflictingExists(findSamaOppilaitosJaTyyppiSamaanAikaan, oo, ignoreInProd = true)
+      case oo: PerusopetukseenValmistavanOpetuksenOpiskeluoikeus => throwIfConflictingExists(findSamaOppilaitosJaTyyppiSamaanAikaan, oo, ignoreInProd = true)
+      case oo: AikuistenPerusopetuksenOpiskeluoikeus => throwIfConflictingExists(findConflictingAikuistenPerusopetus, oo, ignoreInProd = true)
+      case oo: PerusopetuksenOpiskeluoikeus => throwIfConflictingExists(findConflictingPerusopetus, oo)
+      case oo: AmmatillinenOpiskeluoikeus if !isMuuAmmatillinenOpiskeluoikeus => throwIfConflictingExists(findConflictingAmmatillinen, oo)
       case _ => HttpStatus.ok
     }
   }
