@@ -98,9 +98,11 @@ class CsvStream[T <: Product](name: String, upload: (Path) => Unit) extends Auto
   private var headerWritten: Boolean = false
 
   def put(data: T): Unit = {
-    if (!headerWritten) {
-      headerWritten = true
-      write(headerOf(data))
+    synchronized {
+      if (!headerWritten) {
+        headerWritten = true
+        write(headerOf(data))
+      }
     }
     write(recordOf(data))
   }
@@ -109,9 +111,11 @@ class CsvStream[T <: Product](name: String, upload: (Path) => Unit) extends Auto
     data.foreach { put }
 
   def put(record: CsvRecord[T]): Unit = {
-    if (!headerWritten) {
-      headerWritten = true
-      write(CsvFormatter.formatRecord(record.csvFields))
+    synchronized {
+      if (!headerWritten) {
+        headerWritten = true
+        write(CsvFormatter.formatRecord(record.csvFields))
+      }
     }
     write(CsvFormatter.formatRecord(record.values))
   }
@@ -122,11 +126,13 @@ class CsvStream[T <: Product](name: String, upload: (Path) => Unit) extends Auto
   }
 
   def save(): Unit = {
-    closeIntermediateStreams()
-    if (headerWritten) {
-      upload(temporaryFile)
+    synchronized {
+      closeIntermediateStreams()
+      if (headerWritten) {
+        upload(temporaryFile)
+      }
+      deleteTemporaryFile()
     }
-    deleteTemporaryFile()
   }
 
   private def closeIntermediateStreams(): Unit = {
@@ -135,8 +141,10 @@ class CsvStream[T <: Product](name: String, upload: (Path) => Unit) extends Auto
   }
 
   private def deleteTemporaryFile(): Unit = {
-    if (Files.exists(temporaryFile)) {
-      Files.delete(temporaryFile)
+    synchronized {
+      if (Files.exists(temporaryFile)) {
+        Files.delete(temporaryFile)
+      }
     }
   }
 
