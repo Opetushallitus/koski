@@ -1,21 +1,31 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 22.4.2024
+
+- Korjattu bugi, joka virheellisesti esti opiskeluoikeuden mitätöinnin jälkeen vastaavan opiskeluoikeuden siirron vapaan sivistyön vapaatavoitteisten ja taiteen perusopetuksen koulutuksissa.
+
 ## 20.3.2024
+
 - Lukiodiplomeihin sallitaan numeroarvosanan lisäksi sanallinen arviointi S ja H
 
 ## 29.1.2024
+
 - Perusopetuksen duplikaattiopiskeluoikeuksien validaatio korjattu toimimaan myös opiskeluoikeuksia uusilla lähdejärjestelmä-id:eillä luotaessa.
 
 ## 23.1.2024
+
 - Lisätty validaatiot VST osaamismerkeille
 
 ## 17.1.2024
+
 - Perusopetuksen duplikaattiopiskeluoikeuksien validaatiota kiristetty: oppijalle ei voi viedä kahta opiskeluoikeutta, jotka ovat samassa oppilaitoksessa ja joiden alkamis- ja päättymispäivän muodostamat aikajaksot menevät päällekkäin.
 
 ## 15.12.2023
+
 - Perusopetuksen vuosiluokkien ja päättötodistuksen suorituksissa ei enää hyväksytä sekä ET- että KT-oppiaineita
 
 ## 11.12.2023
+
 - Perusopetukseen valmistavan opetuksen suorituskielen pitää olla suomi tai ruotsi.
 - Ammatillisen tutkinnon suorituksissa voi käyttää vain tutkintonimikkeitä, jotka löytyvät tutkinnon perusteesta
 

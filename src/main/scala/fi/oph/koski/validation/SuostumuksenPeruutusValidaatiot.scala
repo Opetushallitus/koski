@@ -13,14 +13,14 @@ object SuostumuksenPeruutusValidaatiot {
   }
 
   private def validateLähdejärjestelmäId(oo: KoskeenTallennettavaOpiskeluoikeus, suostumusService: SuostumuksenPeruutusService): HttpStatus = {
-    val id = oo.lähdejärjestelmänId.map(_.id).flatten
+    val id = oo.lähdejärjestelmänId.flatMap(_.id)
 
     id match {
       case Some(id) =>
-        val perutut = suostumusService.listaaPerututSuostumukset()
+        val perutut = suostumusService.listaaPerututSuostumukset(palautaMyösMitätöidyt = false)
         val koodi = oo.lähdejärjestelmänId.map(_.lähdejärjestelmä.koodiarvo).get
         perutut.exists( peruttu =>
-          peruttu.lähdejärjestelmäId.exists(_ == id) && peruttu.lähdejärjestelmäKoodi.exists(_ == koodi)
+          peruttu.lähdejärjestelmäId.contains(id) && peruttu.lähdejärjestelmäKoodi.contains(koodi)
         ) match {
           case true => KoskiErrorCategory.forbidden.suostumusPeruttu()
           case false => HttpStatus.ok
