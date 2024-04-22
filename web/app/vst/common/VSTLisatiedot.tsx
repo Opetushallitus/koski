@@ -11,6 +11,7 @@ import { VapaanSivistystyönOpiskeluoikeudenLisätiedot } from '../../types/fi/o
 import { VapaanSivistystyönOpiskeluoikeus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeus'
 import { deleteAt } from '../../util/fp/arrays'
 import { TestIdLayer } from '../../appstate/useTestId'
+import { ISO2FinnishDate } from '../../date/date'
 
 interface VSTLisatiedotProps {
   form: FormModel<VapaanSivistystyönOpiskeluoikeus>
@@ -87,7 +88,7 @@ export const VSTLisatiedot: React.FC<VSTLisatiedotProps> = ({ form }) => {
           {isNonEmpty(maksuttomuus || []) &&
             maksuttomuus.map((m, i) => {
               return (
-                <TestIdLayer id={`maksuttomuudet.${i}`}>
+                <TestIdLayer id={`maksuttomuudet.${i}`} key={i}>
                   <div
                     key={`maksuttomuus_${i}`}
                     className="vst-lisatiedot__koulutuksen-maksuttomuus__maksuttomuus-row"
@@ -108,7 +109,7 @@ export const VSTLisatiedot: React.FC<VSTLisatiedotProps> = ({ form }) => {
                           value={m.alku}
                         />
                       ) : (
-                        <>{m.alku}</>
+                        <>{ISO2FinnishDate(m.alku)}</>
                       )}
                     </div>
                     <div className="vst-lisatiedot__koulutuksen-maksuttomuus__maksuttomuus-row-checkbox-container">
