@@ -1,3 +1,6 @@
+## 22.4.2024
+- Deprekoitu ESH-opiskeluoikeuden maksuttomuuteen liittyvät kentät.
+
 ## 12.3.2024
 
 - Ammatillisen opiskeluoikeuden tutkinnon osaa pienemmistä kokonaisuuksista koostuvan suorituksen ja muun ammatillisen

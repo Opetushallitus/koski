@@ -2672,5 +2672,6 @@
   "Mikäli tiedoistasi puuttuu opintosuorituksia tai opiskeluoikeuksia, joiden kuuluisi ylläolevien tietojen perusteella näkyä Koski-palvelussa, voit ilmoittaa asiasta oppilaitoksellesi.": "Mikäli tiedoistasi tai huollettavasti tiedoista puuttuu opintosuorituksia tai opiskeluoikeuksia, joiden kuuluisi ylläolevien tietojen perusteella näkyä Oma Opintopolku -palvelussa, voit ilmoittaa asiasta oppilaitokselle.",
   "Raportille valitaan kaikki kurssisuoritukset riippumatta niiden suoritusajankohdasta": "Raportille valitaan kaikki osasuoritukset riippumatta niiden suoritusajankohdasta",
   "Raportille valitaan vain sellaiset kurssisuoritukset, joiden arviointipäivä osuu yllä määritellylle aikajaksolle": "Raportille valitaan vain sellaiset osasuoritukset, joiden arviointipäivä osuu yllä määritellylle aikajaksolle",
-  "Paikalliset opintokokonaisuudet": "Paikalliset opintokokonaisuudet"
+  "Paikalliset opintokokonaisuudet": "Paikalliset opintokokonaisuudet",
+  "deprecated:Helsingin eurooppalaisesta koulusta annetun lain..." : "Helsingin eurooppalaisesta koulusta annetun lain 15 §:ssä säädetään, että opetus kyseisessä oppilaitoksessa on osittain maksutonta.\nTästä johtuen tietoa osittaisesta maksuttomuudesta ei merkitä valtakunnallisista opinto- ja tutkintorekistereistä annetussa laissa säädetyllä tavalla Koski-järjestelmään."
 }
