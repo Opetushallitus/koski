@@ -1,7 +1,7 @@
 package fi.oph.koski.suostumus
 
 import fi.oph.koski.config.{Environment, KoskiApplication}
-import fi.oph.koski.db.{KoskiTables, PoistettuOpiskeluoikeusRow, QueryMethods}
+import fi.oph.koski.db.{KoskiTables, PoistettuOpiskeluoikeusRow, QueryMethods, SQLHelpers}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log._
@@ -25,19 +25,20 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
 
   val eiLisättyjäRivejä = 0
 
-  def listaaPerututSuostumukset() = {
+  def listaaPerututSuostumukset(palautaMyösMitätöidyt: Boolean) = {
     implicit val getResult: GetResult[PoistettuOpiskeluoikeusRow] = {
       GetResult[PoistettuOpiskeluoikeusRow](r =>
         PoistettuOpiskeluoikeusRow(r.<<,r.<<,r.<<,r.<<,r.<<,r.<<,r.<<,r.<<,r.<<,r.<<,r.nextArray[String]().toList,r.<<)
       )
     }
 
-    runDbSync(
-      sql"""
+    runDbSync(SQLHelpers.concatMany(
+        Some(sql"""
            select oid, oppija_oid, oppilaitos_nimi, oppilaitos_oid, paattymispaiva, lahdejarjestelma_koodi, lahdejarjestelma_id, mitatoity_aikaleima, suostumus_peruttu_aikaleima, koulutusmuoto, suoritustyypit, versio
-           from poistettu_opiskeluoikeus
-           order by coalesce(mitatoity_aikaleima, suostumus_peruttu_aikaleima) desc;
-         """.as[PoistettuOpiskeluoikeusRow]
+           from poistettu_opiskeluoikeus """),
+        if (palautaMyösMitätöidyt) None else Some(sql" where suostumus_peruttu_aikaleima is not null "),
+        Some(sql" order by coalesce(mitatoity_aikaleima, suostumus_peruttu_aikaleima) desc")
+    ).as[PoistettuOpiskeluoikeusRow]
     )
   }
 

@@ -36,10 +36,12 @@ class SuostumuksenPeruutusServlet(implicit val application: KoskiApplication)
     }
   }
 
+  // Tätä rajapintaa ei käytetä käyttöliittymästä, mutta se mahdollistaa asiantuntijoiden tarkastaa opiskeluoikeuden
+  // poiston syyn selviteltäessä ongelmatilanteita. Tämä palauttaa tarkoituksella myös mitätöidyt opiskeluoikeudet.
   get("/") {
     requireVirkailijaOrPalvelukäyttäjä
     if (session.hasGlobalReadAccess) {
-      val peruutetutSuostumukset = application.suostumuksenPeruutusService.listaaPerututSuostumukset()
+      val peruutetutSuostumukset = application.suostumuksenPeruutusService.listaaPerututSuostumukset(palautaMyösMitätöidyt = true)
       if (peruutetutSuostumukset.nonEmpty) {
         renderObject(
           peruutetutSuostumukset.map(peruttuOo =>

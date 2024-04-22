@@ -17,7 +17,7 @@ object SuostumuksenPeruutusValidaatiot {
 
     id match {
       case Some(id) =>
-        val perutut = suostumusService.listaaPerututSuostumukset()
+        val perutut = suostumusService.listaaPerututSuostumukset(palautaMyösMitätöidyt = false)
         val koodi = oo.lähdejärjestelmänId.map(_.lähdejärjestelmä.koodiarvo).get
         perutut.exists( peruttu =>
           peruttu.lähdejärjestelmäId.contains(id) && peruttu.lähdejärjestelmäKoodi.contains(koodi)

@@ -415,7 +415,7 @@ class SuostumuksenPeruutusSpec extends AnyFreeSpec with Matchers with Opiskeluoi
       }
     }
 
-    "Koskeen ei voida syöttää uudestaan opiskeluoikeutta, jonka lähdejärjestelmän id löytyy peruutetuista, koska se on mitätöity" in {
+    "Koskeen voi syöttää uudestaan opiskeluoikeuden, jonka lähdejärjestelmän id löytyy poistetuista opiskeluoikeuksista, koska se on mitätöity" in {
       val ooLähdejärjestelmänIdllä: VapaanSivistystyönOpiskeluoikeus = defaultOpiskeluoikeus.copy(
         lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId("win-32041")),
         oid = None,
@@ -429,10 +429,9 @@ class SuostumuksenPeruutusSpec extends AnyFreeSpec with Matchers with Opiskeluoi
       mitätöiOpiskeluoikeus(oid, MockUsers.paakayttaja)
 
       putOpiskeluoikeus(ooLähdejärjestelmänIdllä, henkilö = KoskiSpecificMockOppijat.vapaaSivistystyöVapaatavoitteinenKoulutus, headers = authHeaders(varsinaisSuomiPalvelukäyttäjä) ++ jsonContent) {
-        verifyResponseStatus(403, KoskiErrorCategory.forbidden.suostumusPeruttu())
+        verifyResponseStatusOk()
       }
     }
-
 
     "Koskeen ei voi päivittää oidin kautta samaa opiskeluoikeutta, joka on jo mitätöity" in {
       val ooOid: String = setupOppijaWithAndGetOpiskeluoikeus(
@@ -621,23 +620,15 @@ class SuostumuksenPeruutusSpec extends AnyFreeSpec with Matchers with Opiskeluoi
         versionumero = None
       )
 
+      val henkilö = KoskiSpecificMockOppijat.vapaaSivistystyöVapaatavoitteinenKoulutus
       val ooOid = setupOppijaWithAndGetOpiskeluoikeus(
         oo,
-        henkilö = KoskiSpecificMockOppijat.vapaaSivistystyöVapaatavoitteinenKoulutus,
+        henkilö = henkilö,
         headers = authHeaders(varsinaisSuomiPalvelukäyttäjä) ++ jsonContent
       ).oid.get
 
-      val ooMitätöity =  {
-        val opiskeluoikeusjaksotMitätöity = oo.tila.opiskeluoikeusjaksot ++ Seq(OppivelvollisilleSuunnattuVapaanSivistystyönOpiskeluoikeusjakso(alku = oo.tila.opiskeluoikeusjaksot.head.alku, tila = opiskeluoikeusMitätöity))
-        oo.copy(
-          oid = Some(ooOid),
-          tila = oo.tila.copy(opiskeluoikeusjaksot = opiskeluoikeusjaksotMitätöity)
-        )
-      }
-
-      putOpiskeluoikeus(ooMitätöity, henkilö = KoskiSpecificMockOppijat.vapaaSivistystyöVapaatavoitteinenKoulutus, headers = authHeaders(paakayttajaMitatoidytJaPoistetutOpiskeluoikeudet) ++ jsonContent){
-        verifyResponseStatusOk()
-      }
+      val kansalainenSession = sessio(henkilö.oid)
+      KoskiApplicationForTests.suostumuksenPeruutusService.peruutaSuostumus(ooOid, None)(kansalainenSession).statusCode should equal(200)
 
       putOpiskeluoikeus(oo, henkilö = KoskiSpecificMockOppijat.vapaaSivistystyöVapaatavoitteinenKoulutus, headers = authHeaders(varsinaisSuomiPalvelukäyttäjä) ++ jsonContent) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden.suostumusPeruttu())
