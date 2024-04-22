@@ -12,7 +12,7 @@ digraph "oneDegreeRelationshipsDiagram" {
       <TR><TD PORT="koulutusmoduuli_nimi_sv" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="334" HEIGHT="16">koulutusmoduuli_nimi_sv</TD></TR></TABLE></TD><TD PORT="koulutusmoduuli_nimi_sv.type" ALIGN="LEFT">text[2147483647]</TD></TR>
       <TR><TD PORT="arviointi_paiva" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="334" HEIGHT="16">arviointi_paiva</TD></TR></TABLE></TD><TD PORT="arviointi_paiva.type" ALIGN="LEFT">date[13]</TD></TR>
       <TR><TD PORT="opintojen_rahoitus" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="334" HEIGHT="16">opintojen_rahoitus</TD></TR></TABLE></TD><TD PORT="opintojen_rahoitus.type" ALIGN="LEFT">varchar[2147483647]</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 0</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 &gt;</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 0</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">23 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 &gt;</TD></TR>
     </TABLE>>
     URL="../../tables/lukion_oppiaineen_oppimaaran_ku_6b9ab367.html"
     target="_top"

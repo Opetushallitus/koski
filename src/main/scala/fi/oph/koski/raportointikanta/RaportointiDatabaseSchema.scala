@@ -672,7 +672,7 @@ case class ROpiskeluoikeusAikajaksoRow(
   )
   def truncateToDates(start: LocalDate, end: LocalDate): ROpiskeluoikeusAikajaksoRow =
     this.truncateToDates(Date.valueOf(start), Date.valueOf(end))
-  lazy val lengthInDays: Int = ChronoUnit.DAYS.between(alku.toLocalDate, loppu.toLocalDate).toInt + 1
+  def lengthInDays: Int = ChronoUnit.DAYS.between(alku.toLocalDate, loppu.toLocalDate).toInt + 1
 
   def withLoppu(d: Date): ROpiskeluoikeusAikajaksoRow = this.copy(loppu = d)
   def withTilaAlkanut(d: Date): ROpiskeluoikeusAikajaksoRow = this.copy(tilaAlkanut = d)
