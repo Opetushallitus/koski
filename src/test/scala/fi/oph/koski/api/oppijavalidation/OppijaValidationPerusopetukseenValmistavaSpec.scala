@@ -1,6 +1,7 @@
 package fi.oph.koski.api.oppijavalidation
 
 import fi.oph.koski.KoskiHttpSpec
+import fi.oph.koski.documentation.ExampleData.opiskeluoikeusLäsnä
 import fi.oph.koski.documentation.ExamplesPerusopetukseenValmistavaOpetus.{perusopetukseenValmistavaOpiskeluoikeus, perusopetukseenValmistavanOpetuksenSuoritus}
 import fi.oph.koski.documentation.PerusopetusExampleData
 import fi.oph.koski.documentation.PerusopetusExampleData.{arviointi, oppiaine, vuosiviikkotuntia}
@@ -8,6 +9,7 @@ import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.schema._
 import fi.oph.koski.localization.LocalizedStringImplicits._
 
+import java.time.LocalDate
 import scala.reflect.runtime.universe.TypeTag
 
 class OppijaValidationPerusopetukseenValmistavaSpec extends TutkinnonPerusteetTest[PerusopetukseenValmistavanOpetuksenOpiskeluoikeus] with KoskiHttpSpec {
@@ -68,6 +70,31 @@ class OppijaValidationPerusopetukseenValmistavaSpec extends TutkinnonPerusteetTe
 
       setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(suoritusEn))) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.virheellinenSuorituskieli("Suorituskielen tulee olla suomi tai ruotsi"))
+      }
+    }
+
+
+
+    "Samaa opiskeluoikeutta ei voi siirtää kahteen kertaan" in {
+      duplikaattiaEiSallittu(defaultOpiskeluoikeus, defaultOpiskeluoikeus)
+    }
+
+    "Samaa opiskeluoikeutta ei voi siirtää kahteen kertaan, vaikka päivämäärät ovat erilaiset (mutta päällekkäiset)" - {
+      val opiskeluoikeus = defaultOpiskeluoikeus.copy(
+        tila = PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenTila(List(
+          PerusopetukseenValmistavanOpetuksenOpiskeluoikeusJakso(LocalDate.of(2017, 9, 1), opiskeluoikeusLäsnä)
+        ))
+      )
+
+      duplikaattiaEiSallittu(defaultOpiskeluoikeus, opiskeluoikeus)
+    }
+
+    def duplikaattiaEiSallittu(oo1: PerusopetukseenValmistavanOpetuksenOpiskeluoikeus, oo2: PerusopetukseenValmistavanOpetuksenOpiskeluoikeus): Unit = {
+      setupOppijaWithOpiskeluoikeus(oo1, defaultHenkilö) {
+        verifyResponseStatusOk()
+      }
+      postOppija(makeOppija(defaultHenkilö, List(oo2))) {
+        verifyResponseStatus(409, KoskiErrorCategory.conflict.exists())
       }
     }
   }

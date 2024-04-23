@@ -14,7 +14,7 @@ import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.koululainen
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.MockUsers.{helsinginKaupunkiPalvelukäyttäjä, helsinkiTallentaja, kalle, paakayttaja}
+import fi.oph.koski.koskiuser.MockUsers.{helsinginKaupunkiPalvelukäyttäjä, helsinkiTallentaja, kalle, paakayttaja, varsinaisSuomiKoulutustoimija, varsinaisSuomiPalvelukäyttäjä}
 import fi.oph.koski.koskiuser.{MockUsers, UserWithPassword}
 import fi.oph.koski.oppija.HenkilönOpiskeluoikeusVersiot
 import fi.oph.koski.organisaatio.{MockOrganisaatioRepository, MockOrganisaatiot}
@@ -26,6 +26,12 @@ import java.time.{LocalDate, LocalDateTime, ZoneId, ZonedDateTime}
 
 class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsAmmatillinen {
   val oppija = KoskiSpecificMockOppijat.tyhjä
+
+  def mkLähdejärjestelmänId(id: String, järjestelmä: String = "primus") =
+    Some(LähdejärjestelmäId(
+      id = Some(id),
+      lähdejärjestelmä = Koodistokoodiviite("primus", "lahdejarjestelma")
+    ))
 
   "Opiskeluoikeuden lisääminen" - {
     "Palauttaa oidin ja versiot" in {
@@ -214,13 +220,23 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
         val original = setupOppija(KoskiSpecificMockOppijat.eero, defaultOpiskeluoikeus)
 
         putOpiskeluoikeus(original.copy(arvioituPäättymispäivä = Some(LocalDate.now())), oppija) {
+          verifyResponseStatus(409, KoskiErrorCategory.conflict.exists())
+        }
+      }
+
+      "Estää opiskeluoikeuden siirtymisen eri henkilölle tpo" in {
+        val oo = ExamplesTaiteenPerusopetus.Opiskeluoikeus.aloitettuYleinenOppimäärä
+        val original = setupOppija(KoskiSpecificMockOppijat.eero, oo)
+
+        putOpiskeluoikeus(original.copy(arvioituPäättymispäivä = Some(LocalDate.now())), oppija) {
           verifyResponseStatus(403, ErrorMatcher.regex(KoskiErrorCategory.forbidden.oppijaOidinMuutos, "Oppijan oid.*ei löydy opiskeluoikeuden oppijan oideista.*".r))
         }
       }
 
       "Sallii opiskeluoikeuden päivittämisen Master-henkilön oidilla" in {
-        createOpiskeluoikeus(KoskiSpecificMockOppijat.master, defaultOpiskeluoikeus)
-        val original = createOpiskeluoikeus(KoskiSpecificMockOppijat.slave.henkilö, defaultOpiskeluoikeus)
+        val oo = ExamplesTaiteenPerusopetus.Opiskeluoikeus.aloitettuYleinenOppimäärä
+        createOpiskeluoikeus(KoskiSpecificMockOppijat.master, oo)
+        val original = createOpiskeluoikeus(KoskiSpecificMockOppijat.slave.henkilö, oo)
 
         putOpiskeluoikeus(original.copy(arvioituPäättymispäivä = Some(LocalDate.now())), KoskiSpecificMockOppijat.master) {
           verifyResponseStatusOk()
@@ -328,23 +344,44 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
       }
 
       "Mahdollistaa toisen opiskeluoikeuden luonnin samalla tyypillä ja oppilaitoksella, kunhan lähdejärjestelmä-id on eri" in {
-        val lähdejärjestelmänId2 = LähdejärjestelmäId(Some("123452"), AmmatillinenExampleData.lähdeWinnova)
-        verifyChange(original = original, user = helsinginKaupunkiPalvelukäyttäjä, change = { existing: AmmatillinenOpiskeluoikeus => existing.copy(oid = None, versionumero = None, lähdejärjestelmänId = Some(lähdejärjestelmänId2))}) {
+        val lähdejärjestelmänId = mkLähdejärjestelmänId("tpo1")
+
+        val oo = ExamplesTaiteenPerusopetus.Opiskeluoikeus.aloitettuYleinenOppimäärä.copy(lähdejärjestelmänId = lähdejärjestelmänId)
+
+        val lähdejärjestelmänId2 = mkLähdejärjestelmänId("tpo2")
+
+        verifyChange(original = oo, user = varsinaisSuomiPalvelukäyttäjä, change = { existing: TaiteenPerusopetuksenOpiskeluoikeus => existing.copy(oid = None, versionumero = None, lähdejärjestelmänId = lähdejärjestelmänId2)}) {
           verifyResponseStatusOk()
           val result: KoskeenTallennettavaOpiskeluoikeus = lastOpiskeluoikeusByHetu(oppija)
-          result.lähdejärjestelmänId.map(_.id) should equal(Some(lähdejärjestelmänId2.id))
+          result.lähdejärjestelmänId.map(_.id) should equal(lähdejärjestelmänId2.map(_.id))
           result.versionumero should equal(Some(1))
         }
       }
 
       "Estää opiskeluoikeuden siirtymisen eri henkilölle" in {
-        resetFixtures
-        createOpiskeluoikeus(koululainen, original, user = helsinginKaupunkiPalvelukäyttäjä)
+        setupOppijaWithOpiskeluoikeus(original, koululainen, user = helsinginKaupunkiPalvelukäyttäjä) {
+          verifyResponseStatusOk()
+        }
         val opiskeluoikeus = createOpiskeluoikeus(oppija, defaultOpiskeluoikeus)
 
         createOrUpdate(koululainen, opiskeluoikeus.copy(lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId("win-kf040431n"))), {
-          verifyResponseStatus(403, ErrorMatcher.regex(KoskiErrorCategory.forbidden.oppijaOidinMuutos, "Oppijan oid.*ei löydy opiskeluoikeuden oppijan oideista.*".r))
+          verifyResponseStatus(409, KoskiErrorCategory.conflict.exists())
         }, helsinginKaupunkiPalvelukäyttäjä)
+      }
+
+      "Estää opiskeluoikeuden siirtymisen eri henkilölle, tpo" in {
+        val oo = ExamplesTaiteenPerusopetus.Opiskeluoikeus.aloitettuYleinenOppimäärä
+        val lähdejärjestelmänId = mkLähdejärjestelmänId("tpo1")
+        val ooWithLähdejärjestelmänId = oo.copy(lähdejärjestelmänId = lähdejärjestelmänId)
+
+        createOpiskeluoikeus(koululainen, ooWithLähdejärjestelmänId, user = varsinaisSuomiPalvelukäyttäjä)
+        val oo2 = createOpiskeluoikeus(oppija, oo)
+
+        val lähdejärjestelmänId2 = mkLähdejärjestelmänId("tpo2")
+
+        createOrUpdate(koululainen, oo2.copy(lähdejärjestelmänId = lähdejärjestelmänId2), {
+          verifyResponseStatus(403, ErrorMatcher.regex(KoskiErrorCategory.forbidden.oppijaOidinMuutos, "Oppijan oid.*ei löydy opiskeluoikeuden oppijan oideista.*".r))
+        }, varsinaisSuomiPalvelukäyttäjä)
       }
     }
 
@@ -357,8 +394,10 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
       }
 
       "Jos olemassa olevassa opiskeluoikeudessa on lähdejärjestelmä-id, ei päivitetä" in {
-        val lähdejärjestelmänId = LähdejärjestelmäId(Some("12345"), AmmatillinenExampleData.lähdeWinnova)
-        verifyChange(original = defaultOpiskeluoikeus.copy(lähdejärjestelmänId = Some(lähdejärjestelmänId)), user = helsinginKaupunkiPalvelukäyttäjä, user2 = Some(kalle), change = { existing: AmmatillinenOpiskeluoikeus => existing.copy(oid = None, lähdejärjestelmänId = None)}) {
+        val oo = ExamplesTaiteenPerusopetus.Opiskeluoikeus.aloitettuYleinenOppimäärä
+        val lähdejärjestelmänId = mkLähdejärjestelmänId("tpo")
+
+        verifyChange(original = oo.copy(lähdejärjestelmänId = lähdejärjestelmänId), user = MockUsers.varsinaisSuomiPalvelukäyttäjä, user2 = Some(varsinaisSuomiKoulutustoimija), change = { existing: TaiteenPerusopetuksenOpiskeluoikeus => existing.copy(oid = None, lähdejärjestelmänId = None)}) {
           verifyResponseStatusOk()
           val result: KoskeenTallennettavaOpiskeluoikeus = lastOpiskeluoikeusByHetu(oppija)
           result.versionumero should equal(Some(1))
@@ -494,12 +533,7 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
     }
 
     "Opiskeluoikeutta ei voi luoda suoraan mitätöitynä" in {
-      val lähdejärjestelmänId = Some(
-        LähdejärjestelmäId(
-          id = Some("tpo1"),
-          lähdejärjestelmä = Koodistokoodiviite("primus", "lahdejarjestelma")
-        )
-      )
+      val lähdejärjestelmänId = mkLähdejärjestelmänId("tpo")
 
       setupOppijaWithOpiskeluoikeus(
         ExamplesTaiteenPerusopetus.Opiskeluoikeus.aloitettuYleinenOppimäärä.copy(
@@ -624,7 +658,7 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
       }
     }
 
-    def verifyChange[T <: Opiskeluoikeus](original: T = defaultOpiskeluoikeus, user: UserWithPassword = defaultUser, user2: Option[UserWithPassword] = None, change: T => KoskeenTallennettavaOpiskeluoikeus)(block: => Unit) = {
+    def verifyChange[T <: Opiskeluoikeus](original: T = defaultOpiskeluoikeus, user: UserWithPassword = defaultUser, user2: Option[UserWithPassword] = None, change: T => KoskeenTallennettavaOpiskeluoikeus, oppija: Henkilö = oppija)(block: => Unit) = {
       setupOppijaWithOpiskeluoikeus(original, oppija, authHeaders(user) ++ jsonContent) {
         verifyResponseStatusOk()
         val existing = lastOpiskeluoikeusByHetu(oppija).asInstanceOf[T]

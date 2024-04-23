@@ -684,7 +684,7 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
   "Älä palauta kuori-opiskeluoikeuksia, ainoastaan sisältyvät" in {
     val oppija = KoskiSpecificMockOppijat.eskari
 
-    val kuori: schema.AmmatillinenOpiskeluoikeus = createOpiskeluoikeus(oppija, defaultOpiskeluoikeus, user = MockUsers.stadinAmmattiopistoTallentaja)
+    val kuori: schema.AmmatillinenOpiskeluoikeus = createOpiskeluoikeus(oppija, defaultOpiskeluoikeus, user = MockUsers.stadinAmmattiopistoJaOppisopimuskeskusTallentaja)
 
     val sisältyväInput: schema.AmmatillinenOpiskeluoikeus = defaultOpiskeluoikeus.copy(
       oppilaitos = Some(schema.Oppilaitos(MockOrganisaatiot.omnia)),

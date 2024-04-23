@@ -9,7 +9,7 @@ import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.{JsonFiles, JsonSerializer}
-import fi.oph.koski.koskiuser.MockUsers.stadinAmmattiopistoTallentaja
+import fi.oph.koski.koskiuser.MockUsers.stadinAmmattiopistoJaOppisopimuskeskusTallentaja
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
 import fi.oph.koski.oppija.HenkilönOpiskeluoikeusVersiot
 import fi.oph.koski.schema.LocalizedString.finnish
@@ -40,13 +40,13 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
       }
 
       "jaksolla pitää olla rahoitusmuoto kun tila on läsnä" in {
-        setupOppijaWithOpiskeluoikeus(ilmanRahoitusta(tuvaOpiskeluOikeusEiValmistunut, tuvaTilaLäsnä), henkilö = tuvaHenkilöValmis, headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent) {
+        setupOppijaWithOpiskeluoikeus(ilmanRahoitusta(tuvaOpiskeluOikeusEiValmistunut, tuvaTilaLäsnä), henkilö = tuvaHenkilöValmis, headers = authHeaders(stadinAmmattiopistoJaOppisopimuskeskusTallentaja) ++ jsonContent) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaltaPuuttuuRahoitusmuoto())
         }
       }
 
       "jaksolla pitää olla rahoitusmuoto kun tila on valmistunut" in {
-        setupOppijaWithOpiskeluoikeus(ilmanRahoitusta(tuvaOpiskeluOikeusValmistunut, tuvaTilaValmistunut), henkilö = tuvaHenkilöValmis, headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent) {
+        setupOppijaWithOpiskeluoikeus(ilmanRahoitusta(tuvaOpiskeluOikeusValmistunut, tuvaTilaValmistunut), henkilö = tuvaHenkilöValmis, headers = authHeaders(stadinAmmattiopistoJaOppisopimuskeskusTallentaja) ++ jsonContent) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaltaPuuttuuRahoitusmuoto())
         }
       }
@@ -54,7 +54,7 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
       "jaksolla pitää olla rahoitusmuoto kun tila on loma" in {
         setupOppijaWithOpiskeluoikeus(ilmanRahoitusta(tuvaOpiskeluOikeusLoma, tuvaTilaLoma).copy(
           järjestämislupa = Koodistokoodiviite("ammatillinen", "tuvajarjestamislupa")
-        ), henkilö = tuvaHenkilöValmis, headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent) {
+        ), henkilö = tuvaHenkilöValmis, headers = authHeaders(stadinAmmattiopistoJaOppisopimuskeskusTallentaja) ++ jsonContent) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaltaPuuttuuRahoitusmuoto())
         }
       }
@@ -62,13 +62,13 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
 
     "Suoritukset" - {
       "valmistuneen päätason suorituksen kesto ja osasuoritukset vaatimusten mukaiset" in {
-        setupOppijaWithOpiskeluoikeus(tuvaOpiskeluOikeusValmistunut, henkilö = tuvaHenkilöValmis, headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent) {
+        setupOppijaWithOpiskeluoikeus(tuvaOpiskeluOikeusValmistunut, henkilö = tuvaHenkilöValmis, headers = authHeaders(stadinAmmattiopistoJaOppisopimuskeskusTallentaja) ++ jsonContent) {
           verifyResponseStatusOk()
         }
       }
 
       "keskeneräisen päätason suorituksen kesto ja osasuoritukset vaatimusten mukaiset" in {
-        setupOppijaWithOpiskeluoikeus(tuvaOpiskeluOikeusEiValmistunut, henkilö = tuvaHenkilöEiValmis, headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent) {
+        setupOppijaWithOpiskeluoikeus(tuvaOpiskeluOikeusEiValmistunut, henkilö = tuvaHenkilöEiValmis, headers = authHeaders(stadinAmmattiopistoJaOppisopimuskeskusTallentaja) ++ jsonContent) {
           verifyResponseStatusOk()
         }
       }
@@ -321,7 +321,7 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
         setupOppijaWithOpiskeluoikeus(
           oo,
           henkilö = tuvaHenkilöValmis,
-          headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent
+          headers = authHeaders(stadinAmmattiopistoJaOppisopimuskeskusTallentaja) ++ jsonContent
         ) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.tuvaPäätasonSuoritusVääräLaajuus(), KoskiErrorCategory.badRequest.validation.laajuudet.osasuoritustenLaajuuksienSumma("Suorituksen koulutuksenosattuva/104 osasuoritusten laajuuksien summa 2.0 ei vastaa suorituksen laajuutta 1.0"))
         }
@@ -406,7 +406,7 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
           ))
         )
 
-        setupOppijaWithOpiskeluoikeus(oo, henkilö = tuvaHenkilöValmis, headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent) {
+        setupOppijaWithOpiskeluoikeus(oo, henkilö = tuvaHenkilöValmis, headers = authHeaders(stadinAmmattiopistoJaOppisopimuskeskusTallentaja) ++ jsonContent) {
           verifyResponseStatus(
             expectedStatus = 400,
             KoskiErrorCategory.badRequest.validation.laajuudet.tuvaOsaSuoritusVääräLaajuus(
@@ -436,7 +436,7 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
           ))
         )
 
-        setupOppijaWithOpiskeluoikeus(oo, henkilö = tuvaHenkilöValmis, headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent) {
+        setupOppijaWithOpiskeluoikeus(oo, henkilö = tuvaHenkilöValmis, headers = authHeaders(stadinAmmattiopistoJaOppisopimuskeskusTallentaja) ++ jsonContent) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.tuvaOpiskeluJaUrasuunnittelutaitojenOsasuoritusPuuttuu())
         }
       }
@@ -572,7 +572,7 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
         )
       )
 
-      setupOppijaWithOpiskeluoikeus(oo, henkilö = tuvaHenkilöValmis, headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent) {
+      setupOppijaWithOpiskeluoikeus(oo, henkilö = tuvaHenkilöValmis, headers = authHeaders(stadinAmmattiopistoJaOppisopimuskeskusTallentaja) ++ jsonContent) {
         verifyResponseStatus(400,
           KoskiErrorCategory.badRequest.validation.tila.eronneeksiKatsotunOpiskeluoikeudenArvioinnit(
             "Katsotaan eronneeksi -tilaan päättyvällä opiskeluoikeudella ei saa olla osasuorituksia, joista puuttuu arviointi"
@@ -588,7 +588,7 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
           tallennettuTuvaOpiskeluOikeusEiValmistunut
             .copy(järjestämislupa = Koodistokoodiviite("ammatillinen", "tuvajarjestamislupa"), lisätiedot = None),
           henkilö = tuvaHenkilöEiValmis,
-          headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent
+          headers = authHeaders(stadinAmmattiopistoJaOppisopimuskeskusTallentaja) ++ jsonContent
         ) {
           verifyResponseStatus(
             400,
@@ -612,7 +612,7 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
             )
           )),
           henkilö = tuvaHenkilöValmis,
-          headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent
+          headers = authHeaders(stadinAmmattiopistoJaOppisopimuskeskusTallentaja) ++ jsonContent
         ) {
           verifyResponseStatus(
             400,
@@ -640,7 +640,7 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
               )
             ))),
           henkilö = tuvaHenkilöLoma,
-          headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent
+          headers = authHeaders(stadinAmmattiopistoJaOppisopimuskeskusTallentaja) ++ jsonContent
         ) {
           verifyResponseStatusOk()
         }
@@ -661,7 +661,7 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
                 )
               ))),
           henkilö = tuvaHenkilöLoma,
-          headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent
+          headers = authHeaders(stadinAmmattiopistoJaOppisopimuskeskusTallentaja) ++ jsonContent
         ) {
           verifyResponseStatus(
             400,

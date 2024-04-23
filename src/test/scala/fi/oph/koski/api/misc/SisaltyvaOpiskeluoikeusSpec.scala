@@ -7,7 +7,7 @@ import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.KoskiSpecificSession.systemUser
 import fi.oph.koski.koskiuser.MockUsers
-import fi.oph.koski.koskiuser.MockUsers.stadinAmmattiopistoTallentaja
+import fi.oph.koski.koskiuser.MockUsers.stadinAmmattiopistoJaOppisopimuskeskusTallentaja
 import fi.oph.koski.organisaatio.MockOrganisaatiot.{omnia, stadinAmmattiopisto}
 import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, OidOrganisaatio, Oppilaitos, SisältäväOpiskeluoikeus}
 import fi.oph.koski.util.Wait
@@ -21,7 +21,7 @@ class SisältyväOpiskeluoikeusSpec extends AnyFreeSpec with Matchers with Opisk
   "Sisältyvä opiskeluoikeus" - {
     lazy val fixture = new {
       resetFixtures
-      val original: AmmatillinenOpiskeluoikeus = setupOppijaWithAndGetOpiskeluoikeus(defaultOpiskeluoikeus, defaultHenkilö, headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent)
+      val original: AmmatillinenOpiskeluoikeus = setupOppijaWithAndGetOpiskeluoikeus(defaultOpiskeluoikeus, defaultHenkilö, headers = authHeaders(stadinAmmattiopistoJaOppisopimuskeskusTallentaja) ++ jsonContent)
 
       val sisältyvä: AmmatillinenOpiskeluoikeus = defaultOpiskeluoikeus.copy(
         oppilaitos = Some(Oppilaitos(omnia)),
@@ -37,7 +37,7 @@ class SisältyväOpiskeluoikeusSpec extends AnyFreeSpec with Matchers with Opisk
       }
 
       "Sisältävän opiskeluoikeuden organisaatiolla on katseluoikeudet sisältyvään opiskeluoikeuteen" in {
-        val oids = getOpiskeluoikeudet(KoskiSpecificMockOppijat.eero.oid, stadinAmmattiopistoTallentaja).flatMap(_.oid)
+        val oids = getOpiskeluoikeudet(KoskiSpecificMockOppijat.eero.oid, stadinAmmattiopistoJaOppisopimuskeskusTallentaja).flatMap(_.oid)
         oids should contain(fixture.original.oid.get)
         oids should contain(sisältyvä.oid.get)
       }
@@ -49,7 +49,7 @@ class SisältyväOpiskeluoikeusSpec extends AnyFreeSpec with Matchers with Opisk
       }
 
       "Sisältävän opiskeluoikeuden organisaatiolla ei ole kirjoitusoikeuksia sisältyvään opiskeluoikeuteen" in {
-        putOpiskeluoikeus(sisältyvä, headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent) {
+        putOpiskeluoikeus(sisältyvä, headers = authHeaders(stadinAmmattiopistoJaOppisopimuskeskusTallentaja) ++ jsonContent) {
           verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon 1.2.246.562.10.51720121923"))
         }
         putOpiskeluoikeus(sisältyvä, headers = authHeaders(MockUsers.omniaTallentaja) ++ jsonContent) {
@@ -60,11 +60,11 @@ class SisältyväOpiskeluoikeusSpec extends AnyFreeSpec with Matchers with Opisk
       "Sisältävän opiskeluoikeuden organisaatio löytää sisältyvän opiskeluoikeuden hakutoiminnolla" in {
         val originalId = opiskeluoikeusId(fixture.original).get
         val sisältyväId = opiskeluoikeusId(sisältyvä).get
-        syncPerustiedotToOpenSearch(searchForPerustiedot(Map("toimipiste" -> stadinAmmattiopisto), stadinAmmattiopistoTallentaja)
-          .map(_.id).contains(originalId) && searchForPerustiedot(Map("toimipiste" -> omnia), stadinAmmattiopistoTallentaja)
+        syncPerustiedotToOpenSearch(searchForPerustiedot(Map("toimipiste" -> stadinAmmattiopisto), stadinAmmattiopistoJaOppisopimuskeskusTallentaja)
+          .map(_.id).contains(originalId) && searchForPerustiedot(Map("toimipiste" -> omnia), stadinAmmattiopistoJaOppisopimuskeskusTallentaja)
           .map(_.id).contains(sisältyväId))
-        searchForPerustiedot(Map("toimipiste" -> stadinAmmattiopisto), stadinAmmattiopistoTallentaja).map(_.id) should contain(originalId)
-        searchForPerustiedot(Map("toimipiste" -> omnia), stadinAmmattiopistoTallentaja).map(_.id) should contain(sisältyväId)
+        searchForPerustiedot(Map("toimipiste" -> stadinAmmattiopisto), stadinAmmattiopistoJaOppisopimuskeskusTallentaja).map(_.id) should contain(originalId)
+        searchForPerustiedot(Map("toimipiste" -> omnia), stadinAmmattiopistoJaOppisopimuskeskusTallentaja).map(_.id) should contain(sisältyväId)
       }
     }
 
@@ -87,7 +87,7 @@ class SisältyväOpiskeluoikeusSpec extends AnyFreeSpec with Matchers with Opisk
     }
 
     "Kun sisältävän opiskeluoikeuden henkilötieto on linkitetty -> HTTP 200" in {
-      val original = createOpiskeluoikeus(KoskiSpecificMockOppijat.master, defaultOpiskeluoikeus, user = stadinAmmattiopistoTallentaja)
+      val original = createOpiskeluoikeus(KoskiSpecificMockOppijat.master, defaultOpiskeluoikeus, user = stadinAmmattiopistoJaOppisopimuskeskusTallentaja)
       val sisältyvä: AmmatillinenOpiskeluoikeus = defaultOpiskeluoikeus.copy(
         oppilaitos = Some(Oppilaitos(omnia)),
         sisältyyOpiskeluoikeuteen = Some(SisältäväOpiskeluoikeus(original.oppilaitos.get, original.oid.get)),

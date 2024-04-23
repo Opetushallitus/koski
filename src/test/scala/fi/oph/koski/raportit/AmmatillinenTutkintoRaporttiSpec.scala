@@ -431,7 +431,11 @@ class AmmatillinenTutkintoRaporttiSpec
 
     val oppija = KoskiSpecificMockOppijat.erikoisammattitutkinto
 
-    putOpiskeluoikeus(omnianOpiskeluoikeus, oppija){}
+    clearOppijanOpiskeluoikeudet(oppija.oid)
+
+    putOpiskeluoikeus(omnianOpiskeluoikeus, oppija){
+      verifyResponseStatusOk()
+    }
 
     val stadinOpiskeluoikeus = AmmatillinenOpiskeluoikeus(
       arvioituPäättymispäivä = Some(date(2015, 5, 31)),
@@ -451,7 +455,9 @@ class AmmatillinenTutkintoRaporttiSpec
 
     val omnianOpiskeluoikeusOid = lastOpiskeluoikeus(KoskiSpecificMockOppijat.erikoisammattitutkinto.oid).oid.get
 
-    putOpiskeluoikeus(sisällytäOpiskeluoikeus(stadinOpiskeluoikeus, SisältäväOpiskeluoikeus(omnia, omnianOpiskeluoikeusOid)), oppija){}
+    putOpiskeluoikeus(sisällytäOpiskeluoikeus(stadinOpiskeluoikeus, SisältäväOpiskeluoikeus(omnia, omnianOpiskeluoikeusOid)), oppija){
+      verifyResponseStatusOk()
+    }
     reloadRaportointikanta
     (f)
   }

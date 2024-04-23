@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 24.4.2024
+
+- Duplikaattiopiskeluoikeuksia ei enää sallita esiopetuksen, perusopetukseen valmistavan, aikuisten perusopetuksen tai ammatillisen osalta
+
 ## 22.4.2024
 
 - Korjattu bugi, joka virheellisesti esti opiskeluoikeuden mitätöinnin jälkeen vastaavan opiskeluoikeuden siirron vapaan sivistyön vapaatavoitteisten ja taiteen perusopetuksen koulutuksissa.

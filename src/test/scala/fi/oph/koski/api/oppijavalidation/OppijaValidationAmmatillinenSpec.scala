@@ -12,6 +12,7 @@ import fi.oph.koski.fixture.AmmatillinenOpiskeluoikeusTestData
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.{ErrorMatcher, HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.koskiuser.MockUsers.{jyväskylänNormaalikoulunPalvelukäyttäjä, stadinAmmattiopistoPalvelukäyttäjä}
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.organisaatio.MockOrganisaatiot
@@ -1173,10 +1174,36 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
         }
       }
 
+      val lähdejärjestelmänId1 = Some(primusLähdejärjestelmäId("primus-yksi"))
+      val lähdejärjestelmänId2 = Some(primusLähdejärjestelmäId("primus-kaksi"))
+
+      def setupOppijaWithOpiskeluoikeusAsPalvelukäyttäjä(oo: KoskeenTallennettavaOpiskeluoikeus)(f: => Unit): Unit = {
+        setupOppijaWithOpiskeluoikeus(oo, defaultHenkilö, headers = authHeaders(stadinAmmattiopistoPalvelukäyttäjä) ++ jsonContent) {
+          f
+        }
+      }
+
+      def testConflictExists(opiskeluoikeus1: AmmatillinenOpiskeluoikeus, opiskeluoikeus2: AmmatillinenOpiskeluoikeus): Unit = {
+        setupOppijaWithOpiskeluoikeusAsPalvelukäyttäjä(opiskeluoikeus1) {
+          verifyResponseStatusOk()
+        }
+        postOpiskeluoikeus(opiskeluoikeus = opiskeluoikeus2, headers = authHeaders(stadinAmmattiopistoPalvelukäyttäjä)  ++ jsonContent) {
+          verifyResponseStatus(409, KoskiErrorCategory.conflict.exists())
+        }
+      }
+
       "Tutkinnon suoritus" - {
         "Duplikaatin tallennus ei onnistu, jos edellisen opiskeluoikeuden suoritus on kesken" in {
           resetFixtures()
           testDuplicates(defaultOpiskeluoikeus)
+        }
+
+
+        "Duplikaatin tallennus ei onnistu jos identtinen paitsi lähdejärjestelmän id" in {
+          testConflictExists(
+            defaultOpiskeluoikeus.copy(lähdejärjestelmänId = lähdejärjestelmänId1),
+            defaultOpiskeluoikeus.copy(lähdejärjestelmänId = lähdejärjestelmänId2)
+          )
         }
 
         "Duplikaatin tallennus ei onnistu, jos edellisen opiskeluoikeuden suoritus on päättynyt, mutta päivämäärät ovat päällekkäin" in {

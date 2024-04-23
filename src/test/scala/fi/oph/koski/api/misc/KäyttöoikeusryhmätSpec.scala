@@ -330,20 +330,25 @@ class KäyttöoikeusryhmätSpec
         ) {
           verifyResponseStatusOk()
           haeOpiskeluoikeudetHetulla(oppija.hetu, user).count(_.tyyppi.koodiarvo == "ammatillinenkoulutus") should equal(1)
-          putOpiskeluoikeus(
-            opiskeluoikeusOmnia,
-            henkilö = oppija,
-            headers = authHeaders(user) ++ jsonContent
-          ) {
-            verifyResponseStatusOk()
-            haeOpiskeluoikeudetHetulla(oppija.hetu, user).count(_.tyyppi.koodiarvo == "ammatillinenkoulutus") should equal(2)
+          // 2024-04-11 jälkeen opiskeluoikeusOmnia tulkitaan aiemman duplikaattiopiskeluoikeudeksi, joten jätetään validaatio tämän testin osalta ajamatta
+          defaultKoskiApplication.validationContext.runWithoutValidations {
+            putOpiskeluoikeus(
+              opiskeluoikeusOmnia,
+              henkilö = oppija,
+              headers = authHeaders(user) ++ jsonContent
+            ) {
+              verifyResponseStatusOk()
+              haeOpiskeluoikeudetHetulla(oppija.hetu, user).count(_.tyyppi.koodiarvo == "ammatillinenkoulutus") should equal(2)
+            }
           }
         }
       }
       "opiskeluoikeus-oid:ia käytettäessä muutos estetään" in {
         val oid = haeOpiskeluoikeudetHetulla(oppija.hetu, user).filter(_.tyyppi.koodiarvo == "ammatillinenkoulutus").filter(_.lähdejärjestelmänId.isDefined)(0).oid.get
-        putOpiskeluoikeus(opiskeluoikeusOmnia.copy(oid = Some(oid)), henkilö = oppija, headers = authHeaders(user) ++ jsonContent) {
-          verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyMuutos("Opiskeluoikeuden lähdejärjestelmäId:tä ei voi poistaa."))
+        defaultKoskiApplication.validationContext.runWithoutValidations {
+          putOpiskeluoikeus(opiskeluoikeusOmnia.copy(oid = Some(oid)), henkilö = oppija, headers = authHeaders(user) ++ jsonContent) {
+            verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyMuutos("Opiskeluoikeuden lähdejärjestelmäId:tä ei voi poistaa."))
+          }
         }
       }
     }

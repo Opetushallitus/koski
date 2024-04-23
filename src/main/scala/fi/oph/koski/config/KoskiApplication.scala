@@ -205,6 +205,7 @@ class KoskiApplication(
     opiskeluoikeusRepository,
     valpasRajapäivätService,
     validationContext,
+    config
   )
   lazy val healthMonitoring: HealthMonitoring = new HealthMonitoring()
   lazy val yoTodistusService: YoTodistusService = YoTodistusService(this)
