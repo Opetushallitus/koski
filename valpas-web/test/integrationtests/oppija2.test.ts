@@ -353,12 +353,25 @@ describe("Oppijakohtainen näkymä 2/2", () => {
     await loginAs(maksuttomuuttaPidennettyPath, "valpas-monta")
     await mainHeadingEquals("Maksuttomuutta-pidennetty Valpas (070604A200U)")
     await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000131")
+
+    await oppivelvollisuustiedotEquals(
+      oppivelvollisuustiedot({
+        opiskelutilanne: "Kyllä",
+        oppivelvollisuus: "6.6.2022 asti",
+        maksuttomuusoikeus: "30.6.2025 asti",
+        oppivelvollisuudenKeskeytysBtn: true,
+        kuntailmoitusBtn: true,
+        merkitseVapautusBtn: true,
+      }),
+    )
+
     await opiskeluhistoriaEquals(
       historiaOpintoOikeus({
         otsikko: "Ammatillinen tutkinto 2021 –",
         tila: "Läsnä",
         maksuttomuus: [
-          "Oikeutta maksuttomuuteen pidennetty 1.9.2021–31.12.2023",
+          "Oikeutta maksuttomuuteen pidennetty 1.1.2025–31.5.2025",
+          "Oikeutta maksuttomuuteen pidennetty 1.6.2025–30.6.2025",
           "1.9.2021– maksuton",
         ],
         toimipiste: "Omnia Koulutus, Arbetarinstitut",
