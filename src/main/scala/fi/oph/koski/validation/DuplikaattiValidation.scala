@@ -106,6 +106,7 @@ object DuplikaattiValidation extends Logging {
       ignoreInProd: Boolean = false): HttpStatus = {
       def logWarning(conflicting: Opiskeluoikeus): Unit = logger.warn(s"Opiskeluoikeus jäisi kiinni duplikaattivalidaatioihin (${oo.getClass}, konfliktoiva: ${conflicting.oid})")
       isConflicting() match {
+        // Tuotantokäyttöönoton yhteydessä siivoa pois aiemmat validaatiot: vastaavanRinnakkaisenOpiskeluoikeudenLisääminenSallittu
         case Right(Some(conflicting)) if Environment.isProdEnvironment(config) && ignoreInProd =>
           logWarning(conflicting)
           HttpStatus.ok
