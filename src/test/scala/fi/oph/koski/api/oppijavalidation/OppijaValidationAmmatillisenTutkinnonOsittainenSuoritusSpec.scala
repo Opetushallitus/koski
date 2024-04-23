@@ -9,7 +9,7 @@ import fi.oph.koski.documentation.{AmmatillinenExampleData, AmmattitutkintoExamp
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.{amiksenKorottaja, tyhjä}
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.MockUsers.{omniaTallentaja, stadinAmmattiopistoTallentaja}
+import fi.oph.koski.koskiuser.MockUsers.{omniaTallentaja, stadinAmmattiopistoJaOppisopimuskeskusTallentaja}
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.Organisaatio.Oid
@@ -249,7 +249,7 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
 
             "Ammatillisen tutkinnon osan suoritus puuttuu, linkitys tehty" - {
               "Samaan oppilaitokseen, palautetaan HTTP 200" in {
-                val stadinOpiskeluoikeus: AmmatillinenOpiskeluoikeus = createOpiskeluoikeus(defaultHenkilö, defaultOpiskeluoikeus, user = stadinAmmattiopistoTallentaja, resetFixtures = true)
+                val stadinOpiskeluoikeus: AmmatillinenOpiskeluoikeus = createOpiskeluoikeus(defaultHenkilö, defaultOpiskeluoikeus, user = stadinAmmattiopistoJaOppisopimuskeskusTallentaja, resetFixtures = true)
                 val kuoriOpiskeluoikeus = createLinkitetytOpiskeluoikeudet(stadinOpiskeluoikeus, MockOrganisaatiot.omnia).copy(
                   suoritukset = List(ammatillisenTutkinnonOsittainenSuoritus.copy(
                     osasuoritukset = ammatillisenTutkinnonOsittainenSuoritus.osasuoritukset.map(_.filterNot(_.isInstanceOf[MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus]))
@@ -260,7 +260,7 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
               }
 
               "Samaan oppilaitokseen valmis kuoriopiskeluoikeus ilman keskiarvoa, palautetaan HTTP 200" in {
-                val stadinOpiskeluoikeus: AmmatillinenOpiskeluoikeus = createOpiskeluoikeus(defaultHenkilö, defaultOpiskeluoikeus, user = stadinAmmattiopistoTallentaja, resetFixtures = true)
+                val stadinOpiskeluoikeus: AmmatillinenOpiskeluoikeus = createOpiskeluoikeus(defaultHenkilö, defaultOpiskeluoikeus, user = stadinAmmattiopistoJaOppisopimuskeskusTallentaja, resetFixtures = true)
                 val kuoriOpiskeluoikeus = createLinkitetytOpiskeluoikeudet(stadinOpiskeluoikeus, MockOrganisaatiot.omnia).copy(
                   suoritukset = List(ammatillisenTutkinnonOsittainenSuoritus.copy(
                     keskiarvo = None,
@@ -273,7 +273,7 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
               }
 
               "Eri oppilaitokseen, palautetaan HTTP 200" in {
-                val stadinOpiskeluoikeus: AmmatillinenOpiskeluoikeus = createOpiskeluoikeus(defaultHenkilö, defaultOpiskeluoikeus, user = stadinAmmattiopistoTallentaja, resetFixtures = true)
+                val stadinOpiskeluoikeus: AmmatillinenOpiskeluoikeus = createOpiskeluoikeus(defaultHenkilö, defaultOpiskeluoikeus, user = stadinAmmattiopistoJaOppisopimuskeskusTallentaja, resetFixtures = true)
                 val kuoriOpiskeluoikeus = createLinkitetytOpiskeluoikeudet(stadinOpiskeluoikeus, MockOrganisaatiot.omnia).copy(
                   suoritukset = List(ammatillisenTutkinnonOsittainenSuoritus.copy(
                     toimipiste = OidOrganisaatio(MockOrganisaatiot.jyväskylänNormaalikoulu),

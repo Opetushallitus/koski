@@ -7,7 +7,7 @@ import fi.oph.koski.documentation.ExampleData.{longTimeAgo, opiskeluoikeusLäsn�
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.KoskiSpecificSession.SUORITUSJAKO_KATSOMINEN_USER
-import fi.oph.koski.koskiuser.MockUsers.stadinAmmattiopistoTallentaja
+import fi.oph.koski.koskiuser.MockUsers.stadinAmmattiopistoJaOppisopimuskeskusTallentaja
 import fi.oph.koski.koskiuser.Rooli.OPHKATSELIJA
 import fi.oph.koski.koskiuser.{AuthenticationUser, KoskiSpecificSession, KäyttöoikeusGlobal, MockUsers, Palvelurooli}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
@@ -430,7 +430,7 @@ class SuoritetutTutkinnotServiceSpec
   "Älä palauta kuori-opiskeluoikeuksia, ainoastaan sisältyvät" in {
     val oppija = KoskiSpecificMockOppijat.eero
 
-    val kuori: AmmatillinenOpiskeluoikeus = createOpiskeluoikeus(oppija, defaultOpiskeluoikeus, user = stadinAmmattiopistoTallentaja)
+    val kuori: AmmatillinenOpiskeluoikeus = createOpiskeluoikeus(oppija, defaultOpiskeluoikeus, user = stadinAmmattiopistoJaOppisopimuskeskusTallentaja)
 
     val sisältyväInput: AmmatillinenOpiskeluoikeus = defaultOpiskeluoikeus.copy(
       oppilaitos = Some(schema.Oppilaitos(omnia)),

@@ -43,7 +43,7 @@ class TiedonsiirtoSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
   "Muutos käyttöliittymästä" - {
     "ei tallenneta tiedonsiirtoja" in {
       resetFixtures
-      setupOppijaWithOpiskeluoikeus(ExamplesTiedonsiirto.opiskeluoikeus.copy(lähdejärjestelmänId = None), henkilö = defaultHenkilö, headers = authHeaders(MockUsers.stadinAmmattiopistoTallentaja) ++ jsonContent) {
+      setupOppijaWithOpiskeluoikeus(ExamplesTiedonsiirto.opiskeluoikeus.copy(lähdejärjestelmänId = None), henkilö = defaultHenkilö, headers = authHeaders(MockUsers.stadinAmmattiopistoJaOppisopimuskeskusTallentaja) ++ jsonContent) {
         verifyResponseStatusOk()
       }
       getTiedonsiirrot(helsinginKaupunkiPalvelukäyttäjä) should be(empty)
@@ -123,7 +123,7 @@ class TiedonsiirtoSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
       putOpiskeluoikeus(stadinOpiskeluoikeus, henkilö = eero, headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
         verifyResponseStatusOk()
       }
-      getTiedonsiirrot(MockUsers.stadinAmmattiopistoTallentaja).length should equal(1)
+      getTiedonsiirrot(MockUsers.stadinAmmattiopistoJaOppisopimuskeskusTallentaja).length should equal(1)
     }
 
     "pääkäyttäjä näkee kaikki tiedonsiirrot" in {

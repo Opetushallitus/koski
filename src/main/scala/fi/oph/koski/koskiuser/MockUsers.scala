@@ -128,7 +128,7 @@ object MockUsers {
     Seq(oppilaitosEsiopetusKatselija(helsinginKaupunki))
   )
 
-  val stadinAmmattiopistoTallentaja = KoskiMockUser(
+  val stadinAmmattiopistoJaOppisopimuskeskusTallentaja = KoskiMockUser(
     "tallentaja",
     "tallentaja",
     "1.2.246.562.24.99999999995",
@@ -530,7 +530,7 @@ object MockUsers {
     helsinginKaupunkiPalvelukäyttäjä,
     helsinginKaupunkiEsiopetus,
     stadinAmmattiopistoPääkäyttäjä,
-    stadinAmmattiopistoTallentaja,
+    stadinAmmattiopistoJaOppisopimuskeskusTallentaja,
     stadinAmmattiopistoKatselija,
     stadinAmmattiopistoPalvelukäyttäjä,
     jyväskylänKatselijaEsiopetus,
