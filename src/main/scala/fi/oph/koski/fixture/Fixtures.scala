@@ -118,7 +118,7 @@ trait FixtureState extends Timing {
 }
 
 class NotInitializedFixtureState extends FixtureState {
-  val name = "NOT_INITIALIZED"
+  val name: String = NotInitializedFixtureState.name
 
   def defaultOppijat = {
     throw new IllegalStateException("Internal error: Fixtures not initialized correctly")
@@ -131,6 +131,10 @@ class NotInitializedFixtureState extends FixtureState {
   def oppijaOids = {
     throw new IllegalStateException("Internal error: Fixtures not initialized correctly")
   }
+}
+
+object NotInitializedFixtureState {
+  val name = "NOT_INITIALIZED"
 }
 
 abstract class DatabaseFixtureState(application: KoskiApplication) extends FixtureState {
@@ -147,9 +151,13 @@ abstract class DatabaseFixtureState(application: KoskiApplication) extends Fixtu
 }
 
 class KoskiSpecificFixtureState(application: KoskiApplication) extends DatabaseFixtureState(application)  {
-  val name = "KOSKI_SPECIFIC"
+  val name: String = KoskiSpecificFixtureState.name
 
   def defaultOppijat: List[OppijaHenkilöWithMasterInfo] = KoskiSpecificMockOppijat.defaultOppijat
 
   lazy val databaseFixtureCreator: DatabaseFixtureCreator = new KoskiSpecificDatabaseFixtureCreator(application)
+}
+
+object KoskiSpecificFixtureState {
+  val name = "KOSKI_SPECIFIC"
 }

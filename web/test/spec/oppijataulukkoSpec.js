@@ -339,7 +339,7 @@ describe('Oppijataulukko', function () {
           'Tunnustettu, Teuvo',
           'Tupla, Toivo'
         ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('117')
+        expect(page.opiskeluoikeudeTotal()).to.equal('120')
       })
     })
 
@@ -409,9 +409,12 @@ describe('Oppijataulukko', function () {
           'Tupla, Toivo',
           'v, virheellisestiSiirretty',
           'v, virheellisestiSiirrettyVieraskielinen',
+          'Vuonna 2003 syntynyt, Peruskoulu suoritettu 2021',
           'Vuonna 2004 syntynyt, Peruskoulu suoritettu 2021',
           'Vuonna 2004 syntynyt, Peruskoulu suoritettu ennen 2021',
           'Vuonna 2004 syntynyt, Peruskoulusta eronnut ennen 2021',
+          'Vuonna 2004 syntynyt (ei kotikuntahistoriaa), Peruskoulu suoritettu 2021',
+          'Vuonna 2004 syntynyt (muuttanut Suomeen täysi-ikäisenä), Peruskoulu suoritettu 2021',
           'Vuonna 2004 syntynyt ahvenanmaalle muuttanut, Peruskoulu suoritettu 2021',
           'Vuonna 2004 syntynyt maastamuuttaja, Peruskoulu suoritettu 2021',
           'Vuonna 2005 syntynyt, Peruskoulu suoritettu 2021',
@@ -429,9 +432,12 @@ describe('Oppijataulukko', function () {
               'Vuonna 2005 syntynyt, Peruskoulu suoritettu 2021',
               'Vuonna 2004 syntynyt maastamuuttaja, Peruskoulu suoritettu 2021',
               'Vuonna 2004 syntynyt ahvenanmaalle muuttanut, Peruskoulu suoritettu 2021',
+              'Vuonna 2004 syntynyt (muuttanut Suomeen täysi-ikäisenä), Peruskoulu suoritettu 2021',
+              'Vuonna 2004 syntynyt (ei kotikuntahistoriaa), Peruskoulu suoritettu 2021',
               'Vuonna 2004 syntynyt, Peruskoulusta eronnut ennen 2021',
               'Vuonna 2004 syntynyt, Peruskoulu suoritettu ennen 2021',
               'Vuonna 2004 syntynyt, Peruskoulu suoritettu 2021',
+              'Vuonna 2003 syntynyt, Peruskoulu suoritettu 2021',
               'v, virheellisestiSiirrettyVieraskielinen',
               'v, virheellisestiSiirretty',
               'Tupla, Toivo',

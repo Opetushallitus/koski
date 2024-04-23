@@ -2,7 +2,7 @@ package fi.oph.koski.validation
 
 import com.typesafe.config.Config
 import fi.oph.koski.fixture.ValidationTestContext
-import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
+import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, OpintopolkuHenkilöFacade}
 
 import java.time.LocalDate
 import fi.oph.koski.http.HttpStatus
@@ -26,6 +26,7 @@ import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
 class KoskiGlobaaliValidator(
   opiskeluoikeusRepository: CompositeOpiskeluoikeusRepository,
   rajapäivät: ValpasRajapäivätService,
+  oppijanumerorekisteri: OpintopolkuHenkilöFacade,
   validationConfig: ValidationTestContext,
   config: Config
 ) extends Timing
@@ -51,6 +52,7 @@ class KoskiGlobaaliValidator(
               oppijanOid,
               opiskeluoikeusRepository,
               rajapäivät,
+              oppijanumerorekisteri,
             )
           },
           timed(s"${timedBlockname} Lukio2015Validation.validateAlkamispäivä") {

@@ -4,6 +4,16 @@
 
 - Duplikaattiopiskeluoikeuksia ei enää sallita esiopetuksen, perusopetukseen valmistavan, aikuisten perusopetuksen tai ammatillisen osalta
 
+## 23.4.2024
+
+- Tämä validaatio on nyt toteutettu, mutta otetaan käyttöön vasta myöhemmin ilmoitettavana ajankohtana:
+  - Maksuttomuustiedot vaaditaan opiskeluoikeuden lisätietoihin seuraavien ehtojen täyttyessä:
+    - henkilö syntynyt vuonna 2004 tai sen jälkeen
+    - oppijalla ei ole valmistunut- tilaista perusopetuksen opiskeluoikeutta ennen 1.1.2021
+    - opintojen tulee olla alkanut ennen kuin oppija täyttää 20 vuotta
+    - koulutus kelpaa oppivelvollisuuden suorittamiseen
+    - oppija on kotikuntahistorian perusteella lain piirissä
+
 ## 22.4.2024
 
 - Korjattu bugi, joka virheellisesti esti opiskeluoikeuden mitätöinnin jälkeen vastaavan opiskeluoikeuden siirron vapaan sivistyön vapaatavoitteisten ja taiteen perusopetuksen koulutuksissa.
