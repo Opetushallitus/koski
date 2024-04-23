@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 date=2024-04-26 12:52:20+0300
+=======
+date=2024-04-23 13:20:20+0300
+>>>>>>> b0401242b (Päivitä tietokantadokumentaatio)
 os=Mac OS X 14.4.1
 schemaspy-version=6.2.2
 schemaspy-build=6.2.2.41 2023-03-25 21:30:30

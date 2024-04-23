@@ -52,12 +52,12 @@
 <text text-anchor="start" x="30" y="-66.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">opintojen_rahoitus</text>
 <polygon fill="none" stroke="#000000" points="365,-59.2 365,-81.2 474,-81.2 474,-59.2 365,-59.2"/>
 <text text-anchor="start" x="367.5344" y="-66.9" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">varchar[2147483647]</text>
-<polygon fill="#ffffff" stroke="transparent" points="10,-40.2 10,-59.2 176,-59.2 176,-40.2 10,-40.2"/>
-<polygon fill="none" stroke="#000000" points="10,-40.2 10,-59.2 176,-59.2 176,-40.2 10,-40.2"/>
+<polygon fill="#ffffff" stroke="transparent" points="10,-40.2 10,-59.2 179,-59.2 179,-40.2 10,-40.2"/>
+<polygon fill="none" stroke="#000000" points="10,-40.2 10,-59.2 179,-59.2 179,-40.2 10,-40.2"/>
 <text text-anchor="start" x="13" y="-46.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">&lt; 0</text>
-<polygon fill="#ffffff" stroke="transparent" points="176,-40.2 176,-59.2 365,-59.2 365,-40.2 176,-40.2"/>
-<polygon fill="none" stroke="#000000" points="176,-40.2 176,-59.2 365,-59.2 365,-40.2 176,-40.2"/>
-<text text-anchor="start" x="323.4956" y="-46.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">23 rows</text>
+<polygon fill="#ffffff" stroke="transparent" points="179,-40.2 179,-59.2 365,-59.2 365,-40.2 179,-40.2"/>
+<polygon fill="none" stroke="#000000" points="179,-40.2 179,-59.2 365,-59.2 365,-40.2 179,-40.2"/>
+<text text-anchor="start" x="329.6105" y="-46.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">0 rows</text>
 <polygon fill="#ffffff" stroke="transparent" points="365,-40.2 365,-59.2 474,-59.2 474,-40.2 365,-40.2"/>
 <polygon fill="none" stroke="#000000" points="365,-40.2 365,-59.2 474,-59.2 474,-40.2 365,-40.2"/>
 <text text-anchor="start" x="455.4053" y="-46.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">0 &gt;</text>
