@@ -37,6 +37,14 @@ class ValpasKuntailmoitusApiServlet(implicit val application: KoskiApplication)
     renderEither(result)
   }
 
+  delete("/:uuid") {
+    val result = UuidUtils.optionFromString(params("uuid"))
+      .toRight(ValpasErrorCategory.badRequest.validation.epävalidiUuid())
+      .flatMap(kuntailmoitusService.mitätöiOmaKuntailmoitus)
+      // TODO: audit log
+    renderEither(result)
+  }
+
   get("/oppijat/:kuntaOid") {
     val kuntaOid: Organisaatio.Oid = params("kuntaOid")
     renderEither(

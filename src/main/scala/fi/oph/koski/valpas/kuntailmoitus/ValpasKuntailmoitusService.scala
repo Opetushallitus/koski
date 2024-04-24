@@ -79,6 +79,11 @@ class ValpasKuntailmoitusService(
           .getOrElse(ilmoitus)
       }
 
+  def mitätöiOmaKuntailmoitus(id: UUID)(implicit session: ValpasSession): Either[HttpStatus, Unit] = {
+    repository.get(id)
+      .flatMap(accessResolver.withOmaKuntailmoitusAccess)
+      .map(_ => repository.mitätöiIlmoitus(id))
+  }
 
   def getKuntailmoitukset(
     oppija: ValpasOppijaLaajatTiedot

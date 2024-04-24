@@ -289,6 +289,15 @@ class ValpasKuntailmoitusRepository(
     )
   }
 
+  def mitätöiIlmoitus(uuid: UUID): Either[HttpStatus, Unit] = {
+    val query = for {i <- Ilmoitukset if i.uuid === uuid} yield i.mitätöity
+    runDbSync(
+      query.update(Some(LocalDateTime.now()))) match {
+      case 0 => Left(ValpasErrorCategory.notFound.kuntailmoitustaEiLöydy())
+      case _ => Right(())
+    }
+  }
+
   def truncate(): Unit = {
     if (Environment.isMockEnvironment(config)) {
       runDbSync(Ilmoitukset.delete)
