@@ -77,7 +77,9 @@ case class EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(
 case class EuropeanSchoolOfHelsinkiOpiskeluoikeudenLisätiedot(
   @Description("Rahoituksen laskennassa käytettävä tieto.")
   ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None,
+  @Deprecated("Helsingin eurooppalaisesta koulusta annetun lain 15 §:ssä säädetään, että opetus kyseisessä oppilaitoksessa on osittain maksutonta.\nTästä johtuen tietoa osittaisesta maksuttomuudesta ei merkitä valtakunnallisista opinto- ja tutkintorekistereistä annetussa laissa säädetyllä tavalla Koski-järjestelmään.")
   maksuttomuus: Option[List[Maksuttomuus]] = None,
+  @Deprecated("Helsingin eurooppalaisesta koulusta annetun lain 15 §:ssä säädetään, että opetus kyseisessä oppilaitoksessa on osittain maksutonta.\nTästä johtuen tietoa osittaisesta maksuttomuudesta ei merkitä valtakunnallisista opinto- ja tutkintorekistereistä annetussa laissa säädetyllä tavalla Koski-järjestelmään.")
   oikeuttaMaksuttomuuteenPidennetty: Option[List[OikeuttaMaksuttomuuteenPidennetty]] = None
 ) extends OpiskeluoikeudenLisätiedot with Ulkomaanjaksollinen with MaksuttomuusTieto
 
