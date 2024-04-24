@@ -86,18 +86,21 @@ object MaksuttomuusValidation {
 
     val maksuttomuustietojaSiirretty = maksuttomuustietoSiirretty || maksuttomuudenPidennysSiirretty
 
-    if (maksuttomuustietojaSiirretty) {
-      // Maksuttomuustietoja on siirretty -> tarkasta ettei ole syytä, joka kieltää niiden siirtämisen
-      HttpStatus.validate(maksuttomuustietoEiSallittuSyyt.isEmpty) {
-        val syyt = maksuttomuustietoEiSallittuSyyt.mkString(" ja ")
-        KoskiErrorCategory.badRequest.validation(s"Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä $syyt.")
+    HttpStatus.fold(
+      validateLiianVarhaisetMaksuttomuudenPidennykset(opiskeluoikeus, oppijanHenkilötiedot, rajapäivät),
+      if (maksuttomuustietojaSiirretty) {
+        // Maksuttomuustietoja on siirretty -> tarkasta ettei ole syytä, joka kieltää niiden siirtämisen
+        HttpStatus.validate(maksuttomuustietoEiSallittuSyyt.isEmpty) {
+          val syyt = maksuttomuustietoEiSallittuSyyt.mkString(" ja ")
+          KoskiErrorCategory.badRequest.validation(s"Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä $syyt.")
+        }
+      } else {
+        // Maksuttomuustietoja ei ole siirretty -> tarkasta ettei maksuttomuustietojen siirtämistä vaadita
+        HttpStatus.validate(!maksuttomuustietoVaaditaan) {
+          KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta vaaditaan opiskeluoikeudelle.")
+        }
       }
-    } else {
-      // Maksuttomuustietoja ei ole siirretty -> tarkasta ettei maksuttomuustietojen siirtämistä vaadita
-      HttpStatus.validate(!maksuttomuustietoVaaditaan) {
-        KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta vaaditaan opiskeluoikeudelle.")
-      }
-    }
+    )
   }
 
   def preIBMaksuttomuusTietoEiSallittu(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, rajapäivät: ValpasRajapäivätService): Boolean = opiskeluoikeus.suoritukset.exists {
@@ -245,10 +248,49 @@ object MaksuttomuusValidation {
       validate(voimassaolonUlkopuolella)(x => KoskiErrorCategory.badRequest.validation(s"Opiskeluoikeudella on koulutuksen maksuttomuuden pidennykseen liittyvä jakso, jonka alku- ja/tai loppupäivä ei ole opiskeluoikeuden voimassaolon (${voimassaolo(opiskeluoikeus)}) sisällä ${x.map(_.toString).mkString(", ")}")),
       validate(jaksonAlkuEnnenLoppua)(x => KoskiErrorCategory.badRequest.validation(s"Opiskeluoikeudella on koulutuksen maksuttomuuden pidennykseen liittyvä jakso, jonka loppupäivä on aikaisemmin kuin alkupäivä. ${x.map(y => s"${y.alku} (alku) - ${y.loppu} (loppu)").mkString(", ")}")),
       validate(päällekkäisiäJaksoja)(x => KoskiErrorCategory.badRequest.validation(s"Opiskeluoikeudella on koulutuksen maksuttomuuden pidennykseen liittyviä jaksoja, jotka ovat keskenään päällekkäisiä ${x.map(_.toString).mkString(", ")}")),
-      validate(pidennysMaksuttomuudenUlkopuolella)(x => KoskiErrorCategory.badRequest.validation(s"Maksuttomuutta voidaan pidetäntää vain aikavälillä jolloin koulutus on maksutontonta"))
+      validate(pidennysMaksuttomuudenUlkopuolella)(x => KoskiErrorCategory.badRequest.validation(s"Maksuttomuutta voidaan pidetäntää vain aikavälillä jolloin koulutus on maksutontonta")),
     )
 
     if (validationResult.isOk) Right(jaksot) else Left(validationResult)
+  }
+
+  private def validateLiianVarhaisetMaksuttomuudenPidennykset(
+    opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
+    oppijanHenkilötiedot: Option[LaajatOppijaHenkilöTiedot],
+    rajapäivät: ValpasRajapäivätService,
+   ): HttpStatus = {
+    val pidennykset =
+      opiskeluoikeus
+        .lisätiedot
+        .flatMap {
+          case m: MaksuttomuusTieto => Some(m)
+          case _ => None
+        }
+        .flatMap(_.oikeuttaMaksuttomuuteenPidennetty)
+        .getOrElse(List.empty)
+
+    val maksuttomuusPäättyyIänPerusteella = oppijanHenkilötiedot
+      .flatMap(_.syntymäaika)
+      .map(rajapäivät.maksuttomuusVoimassaAstiIänPerusteella)
+
+    val virheelliset =
+      maksuttomuusPäättyyIänPerusteella
+        .toList
+        .flatMap(rajapäivä => pidennykset.filter(_.alku.isEqualOrBefore(rajapäivä)))
+
+    if (virheelliset.isEmpty) {
+      HttpStatus.ok
+    } else {
+      val fmt = FinnishDateFormat.finnishDateFormat
+      val aikajaksot = virheelliset
+        .map(a => s"${a.alku.format(fmt)}–${a.loppu.format(fmt)}")
+        .mkString(", ")
+      val raja = maksuttomuusPäättyyIänPerusteella
+        .map(_.plusDays(1))
+        .map(_.format(fmt))
+        .getOrElse("???")
+      KoskiErrorCategory.badRequest.validation(s"Maksuttomuuden pidennyksen aikajakso ($aikajaksot) voi alkaa aikaisintaan ${raja}")
+    }
   }
 
   private def fillPäättymispäivät(maksuttomuus: List[Maksuttomuus]) = {
