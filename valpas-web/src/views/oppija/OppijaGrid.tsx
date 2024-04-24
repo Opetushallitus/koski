@@ -76,6 +76,7 @@ type GridProps = {
   hakutilanneError?: string
   oppivelvollisuudestaVapautus?: OppivelvollisuudestaVapautus
   onOikeusMitätöidäOppivelvollisuudestaVapautus?: boolean
+  muuttanutSuomeen?: ISODate
 }
 
 const Grid = (props: GridProps) => (
@@ -109,6 +110,7 @@ const Grid = (props: GridProps) => (
                 props.onOikeusMitätöidäOppivelvollisuudestaVapautus
               }
               oppivelvollisuudestaVapautus={props.oppivelvollisuudestaVapautus}
+              muuttanutSuomeen={props.muuttanutSuomeen}
             />
           </CardBody>
         </BorderlessCard>

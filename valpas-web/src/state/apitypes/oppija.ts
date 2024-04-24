@@ -25,6 +25,7 @@ export type OppijaHakutilanteillaLaajatTiedot = {
   kuntailmoitukset: KuntailmoitusLaajatTiedotLisätiedoilla[]
   oppivelvollisuudenKeskeytykset: OppivelvollisuudenKeskeytys[]
   onOikeusTehdäKuntailmoitus?: boolean
+  muuttanutSuomeen?: ISODate
 }
 
 export type OppijaHakutilanteillaSuppeatTiedot = {

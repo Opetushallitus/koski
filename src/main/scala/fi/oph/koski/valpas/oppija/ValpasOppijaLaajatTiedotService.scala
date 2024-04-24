@@ -141,6 +141,7 @@ class ValpasOppijaLaajatTiedotService(
       .flatMap(withKuntailmoitukset)
       .map(withOikeusTehdäKuntailmoitus)
       .map(withOikeusMitätöidäOppivelvollisuudenVapautus)
+      .map(withMuuttopäiväSuomeen)
   }
 
   def getOppijaLaajatTiedotHakuJaYhteystiedoilla
@@ -378,6 +379,21 @@ class ValpasOppijaLaajatTiedotService(
         val onOikeus = ValpasKunnat.getUserKunnat(organisaatioService).exists(_.oid == kunta.oid)
         oppija.copy(onOikeusMitätöidäOppivelvollisuudestaVapautus = Some(onOikeus))
       }
+
+  private def withMuuttopäiväSuomeen(
+    oppija: OppijaHakutilanteillaLaajatTiedot
+  ): OppijaHakutilanteillaLaajatTiedot = {
+    val oppijaOid = Seq(oppija.oppija.henkilö.oid)
+    val localKuntahistoria = application.raportointiDatabase.confidential.get.kotikuntahistoriat(oppijaOid)
+    val kuntahistoria = if (localKuntahistoria.nonEmpty) {
+      localKuntahistoria
+    } else {
+      application.opintopolkuHenkilöFacade
+        .findKuntahistoriat(oppijaOid)
+        .map(_.toDbRow)
+    }
+    oppija.withKotikuntahistoria(kuntahistoria)
+  }
 
   def setMuuHaku(key: OpiskeluoikeusLisätiedotKey, value: Boolean)(implicit session: ValpasSession): HttpStatus = {
     HttpStatus.justStatus(

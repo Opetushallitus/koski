@@ -118,6 +118,10 @@ const taiteenPerusopetusPäättynytPath = oppijaPath.href("/virkailija", {
   oppijaOid: "1.2.246.562.24.00000000180",
 })
 
+const maahanmuuttajaPath = oppijaPath.href("/virkailija", {
+  oppijaOid: "1.2.246.562.24.00000000181",
+})
+
 const mainHeadingEquals = (expected: string) =>
   textEventuallyEquals("h1.heading--primary", expected)
 const secondaryHeadingEquals = (expected: string) =>
@@ -859,6 +863,24 @@ describe("Oppijakohtainen näkymä 2/2", () => {
       await resetMockData("2021-08-15")
       await mainHeadingEquals("Taiteilija Petra (010110A955U)")
       await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000180")
+    })
+  })
+
+  describe("Muuttopäivä Suomeen", () => {
+    it("Näytetään jos muuttanut ulkomailta/Ahvenanmaalta Suomeen", async () => {
+      await loginAs(maahanmuuttajaPath, "valpas-pää")
+      await resetMockData("2021-08-15")
+      await mainHeadingEquals("Maahanmuuttaja Masa (010106A431W)")
+      await oppivelvollisuustiedotEquals(
+        oppivelvollisuustiedot({
+          opiskelutilanne: "Ei",
+          oppivelvollisuus: "31.12.2023 asti",
+          maksuttomuusoikeus: "31.12.2026 asti",
+          muuttanutSuomeen: "1.1.2014",
+          oppivelvollisuudenKeskeytysBtn: true,
+          merkitseVapautusBtn: true,
+        }),
+      )
     })
   })
 })
