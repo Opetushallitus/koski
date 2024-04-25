@@ -89,13 +89,15 @@ export const OppijaKuntailmoitus = (props: OppijaKuntailmoitusProps) => {
             </Column>
           </ColumnsContainer>
         )}
-        <RaisedButton
-          hierarchy="danger"
-          testId="mitätöi-kuntailmoitus-btn"
-          onClick={onMitätöinti}
-        >
-          {t("kuntailmoitus__mitätöinti_btn")}
-        </RaisedButton>
+        {kuntailmoitus.oikeusTekijäOrganisaatioon && (
+          <RaisedButton
+            hierarchy="danger"
+            testId="mitätöi-kuntailmoitus-btn"
+            onClick={onMitätöinti}
+          >
+            {t("kuntailmoitus__mitätöinti_btn")}
+          </RaisedButton>
+        )}
         {prompt.component}
       </Body>
     </Frame>
