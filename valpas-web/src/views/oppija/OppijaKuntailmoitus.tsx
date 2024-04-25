@@ -1,6 +1,6 @@
 import bem from "bem-ts"
 import { isEmpty } from "fp-ts/lib/Array"
-import React from "react"
+import React, { useCallback } from "react"
 import { Column, ColumnsContainer } from "../../components/containers/Columns"
 import { IlmoitusIcon } from "../../components/icons/Icon"
 import { InfoTable, InfoTableRow } from "../../components/tables/InfoTable"
@@ -21,6 +21,12 @@ import {
   isTurvakiellollinenKuntailmoitus,
   MinimiOppijaKuntailmoitus,
 } from "./typeIntersections"
+import { RaisedButton } from "../../components/buttons/RaisedButton"
+import { useApiMethod } from "../../api/apiHooks"
+import { mitätöiKuntailmoitus } from "../../api/api"
+import { usePrompt } from "../../components/containers/Prompt"
+import { pipe } from "fp-ts/lib/function"
+import * as E from "fp-ts/Either"
 
 const b = bem("kuntailmoitus")
 
@@ -31,6 +37,16 @@ export type OppijaKuntailmoitusProps = {
 export const OppijaKuntailmoitus = (props: OppijaKuntailmoitusProps) => {
   const kuntailmoitus = props.kuntailmoitus
   const turvakielto = isTurvakiellollinenKuntailmoitus(kuntailmoitus)
+  const mitätöiImoitusApi = useApiMethod(mitätöiKuntailmoitus)
+  const prompt = usePrompt()
+  const onMitätöinti = useCallback(() => {
+    prompt.show(t("kuntailmoitus__mitätöinti_varmistus"), async () => {
+      pipe(
+        await mitätöiImoitusApi.call(props.kuntailmoitus.id as string),
+        E.map(() => location.reload()),
+      )
+    })
+  }, [mitätöiImoitusApi, prompt, props.kuntailmoitus.id])
 
   return (
     <Frame>
@@ -73,6 +89,14 @@ export const OppijaKuntailmoitus = (props: OppijaKuntailmoitusProps) => {
             </Column>
           </ColumnsContainer>
         )}
+        <RaisedButton
+          hierarchy="danger"
+          testId="mitätöi-kuntailmoitus-btn"
+          onClick={onMitätöinti}
+        >
+          {t("kuntailmoitus__mitätöinti_btn")}
+        </RaisedButton>
+        {prompt.component}
       </Body>
     </Frame>
   )
