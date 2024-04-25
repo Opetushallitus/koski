@@ -233,6 +233,6 @@ class KoskiApplication(
     )
 
     // Init scheduled tasks only after ES indexes have been initialized:
-    Future.sequence(parallels).map(_ => Future(scheduledTasks.init))
+     Future.sequence(parallels).map(_ => Future("TODO"/*scheduledTasks.init*/))
   }
 }
