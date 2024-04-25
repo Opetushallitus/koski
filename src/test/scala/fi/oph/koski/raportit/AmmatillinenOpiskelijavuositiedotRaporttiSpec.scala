@@ -10,7 +10,7 @@ import fi.oph.koski.koskiuser.MockUsers._
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportointikanta.{ROpiskeluoikeusAikajaksoRow, RaportointikantaTestMethods}
-import fi.oph.koski.schema.{AmmatillisenOpiskeluoikeudenLisätiedot, Maksuttomuus, OikeuttaMaksuttomuuteenPidennetty, Oppija}
+import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeudenTila, AmmatillinenOpiskeluoikeusjakso, AmmatillisenOpiskeluoikeudenLisätiedot, Maksuttomuus, OikeuttaMaksuttomuuteenPidennetty, Oppija}
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
@@ -29,18 +29,18 @@ class AmmatillinenOpiskelijavuositiedotRaporttiSpec
 
   override protected def alterFixture(): Unit = {
     putOppija(Oppija(vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa, List(
-      AmmatillinenExampleData.perustutkintoOpiskeluoikeusValmis().copy(
-        lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(
+      AmmatillinenExampleData.perustutkintoOpiskeluoikeusValmis(valmistumispäivä = LocalDate.of(2028, 3, 1)).copy(
+          lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(
           hojks = None,
           maksuttomuus = Some(List(
-            Maksuttomuus(LocalDate.of(2014, 2, 1), Some(LocalDate.of(2015, 1, 31)), true),
-            Maksuttomuus(LocalDate.of(2015, 2, 1), Some(LocalDate.of(2016, 1, 31)), true),
-            Maksuttomuus(LocalDate.of(2016, 2, 1), None, true),
+            Maksuttomuus(LocalDate.of(2026, 2, 1), Some(LocalDate.of(2027, 1, 31)), true),
+            Maksuttomuus(LocalDate.of(2027, 2, 1), Some(LocalDate.of(2028, 1, 31)), true),
+            Maksuttomuus(LocalDate.of(2028, 2, 1), None, true),
           )),
           oikeuttaMaksuttomuuteenPidennetty = Some(List(
-            OikeuttaMaksuttomuuteenPidennetty(LocalDate.of(2014, 2, 1), LocalDate.of(2015, 1, 31)),
-            OikeuttaMaksuttomuuteenPidennetty(LocalDate.of(2015, 2, 1), LocalDate.of(2016, 1, 31)),
-            OikeuttaMaksuttomuuteenPidennetty(LocalDate.of(2016, 2, 1), LocalDate.of(2016, 3, 1)),
+            OikeuttaMaksuttomuuteenPidennetty(LocalDate.of(2026, 2, 1), LocalDate.of(2027, 1, 31)),
+            OikeuttaMaksuttomuuteenPidennetty(LocalDate.of(2027, 2, 1), LocalDate.of(2028, 1, 31)),
+            OikeuttaMaksuttomuuteenPidennetty(LocalDate.of(2028, 2, 1), LocalDate.of(2028, 3, 1)),
           ))
         ))
       )
@@ -104,15 +104,15 @@ class AmmatillinenOpiskelijavuositiedotRaporttiSpec
     }
 
     "raportti sisältää maksuttomuuden tiedot" in {
-      val result = AmmatillinenOpiskalijavuositiedotRaportti.buildRaportti(raportointiDatabase, MockOrganisaatiot.stadinAmmattiopisto, LocalDate.parse("2016-01-01"), LocalDate.parse("2016-12-31"), t)
+      val result = AmmatillinenOpiskalijavuositiedotRaportti.buildRaportti(raportointiDatabase, MockOrganisaatiot.stadinAmmattiopisto, LocalDate.parse("2028-01-01"), LocalDate.parse("2028-12-31"), t)
 
       val opiskeluoikeusOid = lastOpiskeluoikeus(KoskiSpecificMockOppijat.vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa.oid).oid.get
       val riviOpt = result.find(_.opiskeluoikeusOid == opiskeluoikeusOid)
       riviOpt shouldBe defined
       val rivi = riviOpt.get
 
-      rivi.maksuttomuus shouldBe Some("2015-02-01 – 2016-01-31, 2016-02-01 – ")
-      rivi.oikeuttaMaksuttomuuteenPidennetty shouldBe Some("2014-02-01 – 2015-01-31, 2015-02-01 – 2016-01-31, 2016-02-01 – 2016-03-01")
+      rivi.maksuttomuus shouldBe Some("2027-02-01 – 2028-01-31, 2028-02-01 – ")
+      rivi.oikeuttaMaksuttomuuteenPidennetty shouldBe Some("2026-02-01 – 2027-01-31, 2027-02-01 – 2028-01-31, 2028-02-01 – 2028-03-01")
     }
 
     "ostettu" in {

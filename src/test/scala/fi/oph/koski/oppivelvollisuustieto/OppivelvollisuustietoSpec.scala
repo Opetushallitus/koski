@@ -372,7 +372,7 @@ class OppivelvollisuustietoSpec
       }
 
       "Jos opiskeluoikeuksissa on pidennetty oikeutta maksuttomuuteen" in {
-        val alkamispaiva = date(2021, 8, 1)
+        val alkamispaiva = date(2025, 1, 1)
 
         val maksuttomuusJaksot = Some(List(
           Maksuttomuus(alkamispaiva, None, maksuton = true),
@@ -399,12 +399,12 @@ class OppivelvollisuustietoSpec
         queryResult should contain(Oppivelvollisuustieto(
           master.oid,
           oppivelvollisuusVoimassaAsti = date(2021, 12, 31),
-          oikeusMaksuttomaanKoulutukseenVoimassaAsti = date(2024, 12, 31)
+          oikeusMaksuttomaanKoulutukseenVoimassaAsti = date(2025, 1, 21)
         ))
         queryResult should contain(Oppivelvollisuustieto(
           slave1.oid,
           oppivelvollisuusVoimassaAsti = date(2021, 12, 31),
-          oikeusMaksuttomaanKoulutukseenVoimassaAsti = date(2024, 12, 31)
+          oikeusMaksuttomaanKoulutukseenVoimassaAsti = date(2025, 1, 21)
         ))
       }
     }

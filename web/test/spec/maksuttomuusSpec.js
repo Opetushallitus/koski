@@ -45,11 +45,11 @@ describe('Maksuttomuus', function () {
           editor
             .property('oikeuttaMaksuttomuuteenPidennetty')
             .propertyBySelector('.alku')
-            .setValue('11.11.2021'),
+            .setValue('1.1.2025'),
           editor
             .property('oikeuttaMaksuttomuuteenPidennetty')
             .propertyBySelector('.loppu')
-            .setValue('12.12.2021'),
+            .setValue('12.12.2025'),
           editor.saveChanges,
           wait.until(page.isSavedLabelShown)
         )
@@ -58,7 +58,7 @@ describe('Maksuttomuus', function () {
           expect(extractAsText(S('.lisätiedot'))).to.equal(
             'Lisätiedot\n' +
               'Koulutuksen maksuttomuus 10.8.2021 — Maksuton\n' +
-              'Oikeutta maksuttomuuteen pidennetty 11.11.2021 — 12.12.2021'
+              'Oikeutta maksuttomuuteen pidennetty 1.1.2025 — 12.12.2025'
           )
         })
       })
