@@ -178,6 +178,7 @@ object KoskiErrorCategory {
         val valmaTilaEiSallittu = subcategory("valmaOpiskeluoikeudenTilaEiSallittu", "Valmentavan koulutuksen opiskeluoikeudelle ei ole mahdollista merkitä uusia opiskeluoikeuden tiloja, joiden alkupäivämäärä on 1.6.2023 tai sen jälkeen.")
         val perusopetuksenLisäopetuksenTilaEiSallittu = subcategory("perusopetuksenLisäopetuksenOpiskeluoikeudenTilaEiSallittu", "Perusopetuksen lisäopetuksen opiskeluoikeudelle ei ole mahdollista merkitä uusia opiskeluoikeuden tiloja, joiden alkupäivämäärä on 1.6.2023 tai sen jälkeen.")
         val uudenOpiskeluoikeudenTallennusMitätöitynäEiSallittu = subcategory("uudenOpiskeluoikeudenTallennusMitäöitynäEiSallittu", "Uutta opiskeluoikeutta ei voi tallentaa suoraan mitätöitynä.")
+        val mitätöintiTulevaisuudessa = subcategory("mitätöintiTulevaisuudessa", "Mitätöinti ei voi merkitä tulevaisuuteen.")
       }
       val tila = new Tila
 

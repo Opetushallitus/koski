@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 26.4.2024
+
+- Mitätöitäessä opiskeluoikeutta mitätöintipäivä ei voi olla tulevaisuudessa.
+
 ## 24.4.2024
 
 - Duplikaattiopiskeluoikeuksia ei enää sallita esiopetuksen, perusopetukseen valmistavan, aikuisten perusopetuksen tai ammatillisen osalta
