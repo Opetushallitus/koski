@@ -777,7 +777,8 @@ object ValpasOpiskeluoikeusExampleData {
       hojks = None,
       maksuttomuus = Some(List(Maksuttomuus(alku = date(2021, 9, 1) , loppu = None, maksuton = true))),
       oikeuttaMaksuttomuuteenPidennetty = Some(List(
-        OikeuttaMaksuttomuuteenPidennetty(alku = date(2021, 9, 1), loppu = date(2023, 12, 31)),
+        OikeuttaMaksuttomuuteenPidennetty(alku = date(2025, 1, 1), loppu = date(2025, 5, 31)),
+        OikeuttaMaksuttomuuteenPidennetty(alku = date(2025, 6, 1), loppu = date(2025, 6, 30)),
       ))
     )),
   )

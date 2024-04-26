@@ -3,6 +3,7 @@
 ## 26.4.2024
 
 - Mitätöitäessä opiskeluoikeutta mitätöintipäivä ei voi olla tulevaisuudessa.
+- Maksuttomuuden pidennyksen jaksot voidaan merkitä vain sen jälkeiselle ajalle, mihin oikeus maksuttomaan koulutukseen olisi oppivelvollisuuslain mukaisesti päättynyt.
 
 ## 24.4.2024
 

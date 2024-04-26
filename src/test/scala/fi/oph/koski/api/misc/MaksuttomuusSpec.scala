@@ -614,19 +614,21 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
       }
     }
     "Jaksot järjestetään päivämääräjärjestykseen" in {
+      val opiskeluoikeus = päättymispäivällä(alkamispäivällä(defaultOpiskeluoikeus, alkamispaiva), date(2025, 8, 4))
+
       mitätöiOppijanKaikkiOpiskeluoikeudet(oppija)
 
       putMaksuttomuuttaPidennetty(List(
-        OikeuttaMaksuttomuuteenPidennetty(date(2021, 8, 2), date(2021, 8, 2)),
-        OikeuttaMaksuttomuuteenPidennetty(date(2021, 8, 4), date(2021, 8, 4)),
-        OikeuttaMaksuttomuuteenPidennetty(date(2021, 8, 3), date(2021, 8, 3))
+        OikeuttaMaksuttomuuteenPidennetty(date(2025, 8, 2), date(2025, 8, 2)),
+        OikeuttaMaksuttomuuteenPidennetty(date(2025, 8, 4), date(2025, 8, 4)),
+        OikeuttaMaksuttomuuteenPidennetty(date(2025, 8, 3), date(2025, 8, 3))
       ), oppija, opiskeluoikeus, maksuttomuusJakso) {
         verifyResponseStatusOk()
       }
       getTallennetutOikeuttaMaksuttomuuteenPidennettyJaksot(oppija) shouldBe(List(
-        OikeuttaMaksuttomuuteenPidennetty(date(2021, 8, 2), date(2021, 8, 2)),
-        OikeuttaMaksuttomuuteenPidennetty(date(2021, 8, 3),date(2021, 8, 3)),
-        OikeuttaMaksuttomuuteenPidennetty(date(2021, 8, 4),date(2021, 8, 4))
+        OikeuttaMaksuttomuuteenPidennetty(date(2025, 8, 2), date(2025, 8, 2)),
+        OikeuttaMaksuttomuuteenPidennetty(date(2025, 8, 3),date(2025, 8, 3)),
+        OikeuttaMaksuttomuuteenPidennetty(date(2025, 8, 4),date(2025, 8, 4))
       ))
     }
     "Jaksojen voimassaolot eivät saa olla päällekkäisiä" in {

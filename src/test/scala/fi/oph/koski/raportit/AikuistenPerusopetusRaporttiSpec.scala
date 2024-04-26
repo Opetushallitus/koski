@@ -568,7 +568,7 @@ class AikuistenPerusopetusRaporttiSpec
       lazy val sheets = buildReport(
         jyväskylänNormaalikoulu,
         date(2022, 1, 1),
-        date(2026, 1, 1),
+        date(2027, 1, 1),
         AikuistenPerusopetusOppiaineenOppimääräRaportti
       )
       lazy val titleAndRowsWithColumns = sheets.map(s => (s.title, zipRowsWithColumTitles(s)))
@@ -663,16 +663,16 @@ class AikuistenPerusopetusRaporttiSpec
             "Suorituksen tyyppi" -> "perusopetuksenoppiaineenoppimaara",
             "Suorituksen tila" -> "valmis",
             "Suorituksen vahvistuspäivä" -> None,
-            "Läsnäolopäiviä aikajakson aikana" -> 1462,
+            "Läsnäolopäiviä aikajakson aikana" -> 1827,
             "Majoitusetu" -> None,
-            "Rahoitukset" -> "1, 1",
+            "Rahoitukset" -> "1, 1, 1",
             "Läsnä/valmistunut-rahoitusmuodot syötetty" -> true,
             "Ryhmä" -> None,
             "Ulkomaanjaksot" -> None,
             "Sisäoppilaitosmainen majoitus" -> None,
-            "Maksuttomuus" -> Some("2022-01-01 – 2025-01-01"),
-            "Maksullisuus" -> Some("2025-01-02 – "),
-            "Oikeutta maksuttomuuteen pidennetty" -> Some("2022-01-01 – 2025-01-01"),
+            "Maksuttomuus" -> Some("2022-01-01 – 2026-02-01"),
+            "Maksullisuus" -> Some("2026-02-02 – "),
+            "Oikeutta maksuttomuuteen pidennetty" -> Some("2026-01-01 – 2026-02-01"),
             "hetu" -> vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa.hetu,
             "Sukunimi" -> vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa.sukunimi,
             "Etunimet" -> vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa.etunimet
@@ -833,12 +833,12 @@ class AikuistenPerusopetusRaporttiSpec
         lisätiedot = Some(AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(
           maksuttomuus = Some(List(
             Maksuttomuus(date(2021, 1, 1), Some(date(2021, 12, 31)), true),
-            Maksuttomuus(date(2022, 1, 1), Some(date(2025, 1, 1)), true),
-            Maksuttomuus(date(2025, 1, 2), None, false),
+            Maksuttomuus(date(2022, 1, 1), Some(date(2026, 2, 1)), true),
+            Maksuttomuus(date(2026, 2, 2), None, false),
           )),
           oikeuttaMaksuttomuuteenPidennetty = Some(List(OikeuttaMaksuttomuuteenPidennetty(
-            date(2022, 1, 1),
-            date(2025, 1, 1)
+            date(2026, 1, 1),
+            date(2026, 2, 1)
           )))
         )),
         suoritukset = päätasonSuoritukset ::: oo.suoritukset)))

@@ -41,7 +41,7 @@ class ValpasYtlServletSpec  extends ValpasTestBase with BeforeAndAfterEach {
   val oppijatOikeusMaksuttomuuteen = List(
     // Tuple: (oppija: LaajatOppijaHenkilöTiedot, maksuttomuusVoimassaAsti: LocalDate)
     (ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021, LocalDate.of(2025, 12, 31)),
-    (ValpasMockOppijat.maksuttomuuttaPidennetty, LocalDate.of(2024, 12, 31)),
+    (ValpasMockOppijat.maksuttomuuttaPidennetty, LocalDate.of(2025, 6, 30)),
     (ValpasMockOppijat.turvakieltoOppijaTyhjälläKotikunnalla, LocalDate.of(2025, 12, 31)),
   )
 

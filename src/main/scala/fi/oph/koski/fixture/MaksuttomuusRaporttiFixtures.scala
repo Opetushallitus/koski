@@ -20,9 +20,9 @@ object MaksuttomuusRaporttiFixtures {
 
   val maksuttomuusJakso = Maksuttomuus(alku = LocalDate.of(2021, 10, 10), loppu = None, maksuton = true)
 
-  val maksuttomuuttaPidennettyAikaisempi = OikeuttaMaksuttomuuteenPidennetty(alku = LocalDate.of(2021, 10, 10), loppu = LocalDate.of(2021, 10, 15))
-  val maksuttomuuttaPidennetty = OikeuttaMaksuttomuuteenPidennetty(alku = LocalDate.of(2021, 10, 20), loppu = LocalDate.of(2021, 10, 25))
-  val maksuttomuuttaPidennettyMyöhempi = OikeuttaMaksuttomuuteenPidennetty(alku = LocalDate.of(2021, 12, 30), loppu = LocalDate.of(2022, 1, 10))
+  val maksuttomuuttaPidennettyAikaisempi = OikeuttaMaksuttomuuteenPidennetty(alku = LocalDate.of(2025, 1, 1), loppu = LocalDate.of(2025, 10, 15))
+  val maksuttomuuttaPidennetty = OikeuttaMaksuttomuuteenPidennetty(alku = LocalDate.of(2025, 10, 20), loppu = LocalDate.of(2025, 10, 25))
+  val maksuttomuuttaPidennettyMyöhempi = OikeuttaMaksuttomuuteenPidennetty(alku = LocalDate.of(2025, 12, 30), loppu = LocalDate.of(2026, 1, 10))
 
   val lisätiedotAmmatillinen = AmmatillisenOpiskeluoikeudenLisätiedot(
     hojks = None,

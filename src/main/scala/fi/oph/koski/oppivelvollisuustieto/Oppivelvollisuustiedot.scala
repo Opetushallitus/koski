@@ -241,6 +241,22 @@ object Oppivelvollisuustiedot {
             vapautettu - interval '1 day' as oppivelvollisuudesta_vapautus
           from #${s.name}.r_oppivelvollisuudesta_vapautus
           left join #${s.name}.r_henkilo on r_oppivelvollisuudesta_vapautus.oppija_oid = r_henkilo.oppija_oid
+        ),
+
+        maksuttomuuden_pidennysjaksot as (
+          select
+            oppija_oid,
+            jsonb_array_elements(data->'lisätiedot'->'oikeuttaMaksuttomuuteenPidennetty') as jakso
+          from #${s.name}.r_opiskeluoikeus
+          where data->'lisätiedot'->'oikeuttaMaksuttomuuteenPidennetty' is not null
+        ),
+
+        maksuttomuuden_pidennysjakso as (
+          select
+            oppija_oid as master_oid,
+            max(jakso->>'loppu')::date as loppu
+          from maksuttomuuden_pidennysjaksot
+          group by oppija_oid
         )
 
         select
@@ -273,28 +289,30 @@ object Oppivelvollisuustiedot {
 
           -- Huom! Osa samasta logiikasta on myös Scala-koodina ValpasRajapäivätService-luokassa. Varmista muutosten jälkeen,
           -- että logiikka säilyy samana.
-          case
-            when suorittaa_ammattitutkintoa and (suorittaa_lukionoppimaaraa or suorittaa_lukionaineopintoja) then least(
-              oppivelvollisuudesta_vapautus,
-              dia_tutkinnon_vahvistuspaiva,
-              ebtutkinto_toisen_asteen_vahvistus_paiva,
-              #${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '#$maksuttomuusLoppuuIka year'))
+          greatest(
+            maksuttomuuden_pidennysjakso.loppu,
+            case
+              when suorittaa_ammattitutkintoa and (suorittaa_lukionoppimaaraa or suorittaa_lukionaineopintoja) then least(
+                oppivelvollisuudesta_vapautus,
+                dia_tutkinnon_vahvistuspaiva,
+                ebtutkinto_toisen_asteen_vahvistus_paiva,
+                #${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '#$maksuttomuusLoppuuIka year'))
 
-            when suorittaa_ammattitutkintoa then least(
-              oppivelvollisuudesta_vapautus,
-              dia_tutkinnon_vahvistuspaiva,
-              ebtutkinto_toisen_asteen_vahvistus_paiva,
-              ammattitutkinnon_vahvistus_paiva,
-              #${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '#$maksuttomuusLoppuuIka year'))
+              when suorittaa_ammattitutkintoa then least(
+                oppivelvollisuudesta_vapautus,
+                dia_tutkinnon_vahvistuspaiva,
+                ebtutkinto_toisen_asteen_vahvistus_paiva,
+                ammattitutkinnon_vahvistus_paiva,
+                #${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '#$maksuttomuusLoppuuIka year'))
 
-            else least(
-              oppivelvollisuudesta_vapautus,
-              dia_tutkinnon_vahvistuspaiva,
-              ebtutkinto_toisen_asteen_vahvistus_paiva,
-              ylioppilastutkinnon_vahvistus_paiva,
-              #${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '#$maksuttomuusLoppuuIka year'))
-          end
-            oikeusKoulutuksenMaksuttomuuteenVoimassaAsti
+              else least(
+                oppivelvollisuudesta_vapautus,
+                dia_tutkinnon_vahvistuspaiva,
+                ebtutkinto_toisen_asteen_vahvistus_paiva,
+                ylioppilastutkinnon_vahvistus_paiva,
+                #${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '#$maksuttomuusLoppuuIka year'))
+            end::date
+          ) as oikeusKoulutuksenMaksuttomuuteenVoimassaAsti
 
         from
           oppivelvolliset_henkilot
@@ -305,6 +323,7 @@ object Oppivelvollisuustiedot {
           left join diatutkinto on oppivelvolliset_henkilot.master_oid = diatutkinto.master_oid
           left join oppivelvollisuudesta_vapautus on oppivelvolliset_henkilot.master_oid = oppivelvollisuudesta_vapautus.master_oid
           left join ylioppilastutkinto on oppivelvolliset_henkilot.master_oid = ylioppilastutkinto.master_oid
+          left join maksuttomuuden_pidennysjakso on oppivelvolliset_henkilot.master_oid = maksuttomuuden_pidennysjakso.master_oid
       """
   }
 

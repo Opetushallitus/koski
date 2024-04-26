@@ -936,12 +936,12 @@ class YtlSpec
        |          ],
        |          "oikeuttaMaksuttomuuteenPidennetty": [
        |            {
-       |              "alku": "2021-10-10",
-       |              "loppu": "2021-10-15"
+       |              "alku": "2025-01-01",
+       |              "loppu": "2025-10-15"
        |            },
        |            {
-       |              "alku": "2021-10-20",
-       |              "loppu": "2021-10-25"
+       |              "alku": "2025-10-20",
+       |              "loppu": "2025-10-25"
        |            }
        |          ]
        |        },
@@ -1050,12 +1050,12 @@ class YtlSpec
        |          ],
        |          "oikeuttaMaksuttomuuteenPidennetty": [
        |            {
-       |              "alku": "2021-10-20",
-       |              "loppu": "2021-10-25"
+       |              "alku": "2025-10-20",
+       |              "loppu": "2025-10-25"
        |            },
        |            {
-       |              "alku": "2021-12-30",
-       |              "loppu": "2022-01-10"
+       |              "alku": "2025-12-30",
+       |              "loppu": "2026-01-10"
        |            }
        |          ]
        |        },

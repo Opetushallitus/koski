@@ -24,7 +24,7 @@ digraph "oneDegreeRelationshipsDiagram" {
       <TR><TD PORT="pakollisia_tunnustettuja_rahoituksen_piirissa" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="363" HEIGHT="16">pakollisia_tunnustettuja_rahoituksen_piirissa</TD></TR></TABLE></TD><TD PORT="pakollisia_tunnustettuja_rahoituksen_piirissa.type" ALIGN="LEFT">int8[19]</TD></TR>
       <TR><TD PORT="valtakunnallisia_syventavia_tunnustettuja_rahoituksen_piirissa" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="363" HEIGHT="16">valtakunnallisia_syventavia_tunnustettuja_rahoituksen_piirissa</TD></TR></TABLE></TD><TD PORT="valtakunnallisia_syventavia_tunnustettuja_rahoituksen_piirissa.type" ALIGN="LEFT">int8[19]</TD></TR>
       <TR><TD PORT="eri_vuonna_korotettuja" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="363" HEIGHT="16">eri_vuonna_korotettuja</TD></TR></TABLE></TD><TD PORT="eri_vuonna_korotettuja.type" ALIGN="LEFT">int8[19]</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 0</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">7 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 &gt;</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 0</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 &gt;</TD></TR>
     </TABLE>>
     URL="../../tables/lukion_oppiaineen_oppimaaran_ku_922d7fe1.html"
     target="_top"

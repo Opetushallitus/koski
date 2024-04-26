@@ -14,7 +14,7 @@ digraph "oneDegreeRelationshipsDiagram" {
       <TR><TD PORT="opintojen_rahoitus" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="285" HEIGHT="16">opintojen_rahoitus</TD></TR></TABLE></TD><TD PORT="opintojen_rahoitus.type" ALIGN="LEFT">varchar[2147483647]</TD></TR>
       <TR><TD PORT="koulutusmoduuli_laajuus_arvo" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="285" HEIGHT="16">koulutusmoduuli_laajuus_arvo</TD></TR></TABLE></TD><TD PORT="koulutusmoduuli_laajuus_arvo.type" ALIGN="LEFT">numeric[0]</TD></TR>
       <TR><TD PORT="oppimaara_koodiarvo" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="285" HEIGHT="16">oppimaara_koodiarvo</TD></TR></TABLE></TD><TD PORT="oppimaara_koodiarvo.type" ALIGN="LEFT">varchar[2147483647]</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 0</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">3 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 &gt;</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 0</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">60 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 &gt;</TD></TR>
     </TABLE>>
     URL="../../tables/lukion_aineopintojen_moduulien__90dfe69d.html"
     target="_top"
