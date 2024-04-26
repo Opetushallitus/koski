@@ -75,6 +75,18 @@ export const expectElementEventuallyNotVisible = async (selector: string) => {
   })
 }
 
+export const expectElementByTextEventuallyNotVisible = async (text: string) => {
+  await eventually(async () => {
+    const elements = await driver.findElements(
+      By.xpath(`//*[contains(text(), '${text}')]`),
+    )
+    expect(
+      elements.length === 0,
+      `Element by text "${text}" expected NOT to exist`,
+    ).toBeTruthy()
+  })
+}
+
 export const expectElementNotVisible = async (selector: string) => {
   const elements = await driver.findElements(By.css(selector))
   expect(

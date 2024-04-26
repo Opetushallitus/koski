@@ -72,6 +72,21 @@ export const $$ = async (selector: string, timeout = shortTimeout) => {
   }
 }
 
+export const findElementByText = async (
+  text: string,
+  timeout = shortTimeout,
+) => {
+  try {
+    const el = await driver.wait(
+      until.elementLocated(By.xpath(`//*[contains(text(), '${text}')]`)),
+      timeout,
+    )
+    return await driver.wait(until.elementIsVisible(el), timeout)
+  } catch (_err) {
+    throw new Error(`Could not find a visible element by text "${text}"`)
+  }
+}
+
 export const testIdIs = (testId: string) => By.css(`[data-testid="${testId}"]`)
 
 export const scrollIntoView = async (element: WebElement) => {
