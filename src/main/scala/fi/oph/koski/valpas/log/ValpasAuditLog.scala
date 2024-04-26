@@ -3,6 +3,7 @@ package fi.oph.koski.valpas.log
 import fi.oph.koski.log.{AuditLog, AuditLogMessage, AuditLogOperation, LogConfiguration}
 import fi.oph.koski.schema.Organisaatio
 import fi.oph.koski.valpas.kansalainen.{KansalainenOppijatiedot, KansalaisnäkymänTiedot}
+import fi.oph.koski.valpas.log
 import fi.oph.koski.valpas.log.ValpasOperation.ValpasOperation
 import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHenkilö, ValpasOppilaitos}
 import fi.oph.koski.valpas.oppijahaku.{ValpasHenkilöhakuResult, ValpasLöytyiHenkilöhakuResult}
@@ -87,6 +88,18 @@ object ValpasAuditLog {
       Map(
         ValpasAuditLogMessageField.oppijaHenkilöOid -> ilmoitus.oppijaOid.get,
         ValpasAuditLogMessageField.ilmoitusUuid -> ilmoitus.id.getOrElse("none"),
+      )
+    ))
+
+  def auditLogKuntailmoituksenMitätöinti
+    (ilmoitus: ValpasKuntailmoitusLaajatTiedot)(implicit session: ValpasSession)
+  : Unit =
+    AuditLog.log(ValpasAuditLogMessage(
+      ValpasOperation.VALPAS_OPPIJA_KUNTAILMOITUKSEN_POISTO,
+      session,
+      Map(
+        ValpasAuditLogMessageField.oppijaHenkilöOid -> ilmoitus.oppijaOid.get,
+        ValpasAuditLogMessageField.ilmoitusUuid -> ilmoitus.id.get
       )
     ))
 
@@ -320,6 +333,7 @@ object ValpasOperation extends Enumeration {
       VALPAS_KUNNAT_OPPIJAT_KATSOMINEN,
       VALPAS_OPPIJA_KUNTAILMOITUS,
       VALPAS_OPPIJA_KUNTAILMOITUKSEN_KATSOMINEN,
+      VALPAS_OPPIJA_KUNTAILMOITUKSEN_POISTO,
       VALPAS_OPPIJA_HAKU,
       VALPAS_OPPIVELVOLLISUUDEN_KESKEYTYS,
       VALPAS_OPPIVELVOLLISUUDEN_KESKEYTYKSEN_MUOKKAUS,

@@ -770,6 +770,14 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasTestBase with BeforeAndAft
       verifyResponseStatus(204)
     }
 
+    AuditLogTester.verifyAuditLogMessage(Map(
+      "operation" -> ValpasOperation.VALPAS_OPPIJA_KUNTAILMOITUKSEN_POISTO.toString,
+      "target" -> Map(
+        ValpasAuditLogMessageField.oppijaHenkilöOid.toString ->
+          ValpasMockOppijat.lukionAloittanutJaLopettanutJollaIlmoituksia.oid,
+        ValpasAuditLogMessageField.ilmoitusUuid.toString -> kuntailmoitus.id.get)
+    ))
+
     KoskiApplicationForTests.valpasOppijaLaajatTiedotService
       .getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(ValpasMockOppijat.lukionAloittanutJaLopettanutJollaIlmoituksia.oid)(session(tekijä))
       .right.get.kuntailmoitukset.exists(_.id.get == kuntailmoitus.id.get) should equal(false)
