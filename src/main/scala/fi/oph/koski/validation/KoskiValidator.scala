@@ -108,6 +108,7 @@ class KoskiValidator(
         (!opiskeluoikeus.isInstanceOf[YlioppilastutkinnonOpiskeluoikeus] ||
           user.hasTallennetutYlioppilastutkinnonOpiskeluoikeudetAccess) =>
         updateFields(opiskeluoikeus, lipsuTarvittaessaVirheistäMitätöinnissä = true)
+          .flatMap(validateMitätöinti)
       case opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus if
         (!opiskeluoikeus.isInstanceOf[YlioppilastutkinnonOpiskeluoikeus] ||
          user.hasTallennetutYlioppilastutkinnonOpiskeluoikeudetAccess) =>
@@ -1592,6 +1593,14 @@ class KoskiValidator(
     suoritus match {
       case k: PerusopetukseenValmistavanOpetuksenSuoritus => validateSuomiTaiRuotsi(k.suorituskieli.koodiarvo)
       case _ => HttpStatus.ok
+    }
+  }
+
+  private def validateMitätöinti(oo: KoskeenTallennettavaOpiskeluoikeus): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = {
+    if (oo.mitätöintiPäivä.exists(_.isAfter(LocalDate.now()))) {
+      Left(KoskiErrorCategory.badRequest.validation.tila.mitätöintiTulevaisuudessa())
+    } else {
+      Right(oo)
     }
   }
 }

@@ -2,6 +2,7 @@ package fi.oph.koski.raportointikanta
 
 import fi.oph.koski.db.{DB, KoskiOpiskeluoikeusRow, OpiskeluoikeusRow}
 import fi.oph.koski.opiskeluoikeus.PäivitetytOpiskeluoikeudetJonoService
+import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.schema.Opiskeluoikeus
 import fi.oph.koski.suostumus.SuostumuksenPeruutusService
 import fi.oph.koski.util.TimeConversions.toTimestamp
@@ -12,6 +13,7 @@ import scala.concurrent.duration.FiniteDuration
 
 class IncrementalUpdateOpiskeluoikeusLoader(
   suostumuksenPeruutusService: SuostumuksenPeruutusService,
+  organisaatioRepository: OrganisaatioRepository,
   val db: RaportointiDatabase,
   enableYtr: Boolean = true,
   update: RaportointiDatabaseUpdate,
@@ -124,7 +126,7 @@ class IncrementalUpdateOpiskeluoikeusLoader(
     if (oot.nonEmpty) {
       val (errors, outputRows) = suostumuksenPeruutusService
         .etsiPoistetut(oot.map(_.oid))
-        .map(OpiskeluoikeusLoaderRowBuilder.buildRowMitätöity)
+        .map(OpiskeluoikeusLoaderRowBuilder.buildRowMitätöity(organisaatioRepository))
         .partition(_.isLeft)
       db.updateMitätöidytOpiskeluoikeudet(outputRows.map(_.right.get), Seq.empty)
       db.updateStatusCount(mitätöidytStatusName, outputRows.size)

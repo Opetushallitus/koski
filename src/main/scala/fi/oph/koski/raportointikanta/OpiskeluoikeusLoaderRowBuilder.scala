@@ -1,9 +1,10 @@
 package fi.oph.koski.raportointikanta
 
 import fi.oph.koski.db.{KoskiOpiskeluoikeusRow, OpiskeluoikeusRow, PoistettuOpiskeluoikeusRow, YtrOpiskeluoikeusRow}
-import fi.oph.koski.json.JsonManipulation
+import fi.oph.koski.json.{JsonManipulation, JsonSerializer}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
+import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.raportointikanta.LoaderUtils.{convertKoodisto, convertLocalizedString}
 import fi.oph.koski.schema._
 import fi.oph.koski.validation.MaksuttomuusValidation
@@ -583,11 +584,15 @@ object OpiskeluoikeusLoaderRowBuilder extends Logging {
       mitätöity = Some(mitätöityPvm),
       suostumusPeruttu = None,
       tyyppi = raw.koulutusmuoto,
-      päätasonSuoritusTyypit = oo.suoritukset.map(_.tyyppi.koodiarvo).distinct
+      päätasonSuoritusTyypit = oo.suoritukset.map(_.tyyppi.koodiarvo).distinct,
+      oppilaitosOid = Some(raw.oppilaitosOid),
+      oppilaitoksenNimi = JsonSerializer.extract[Option[String]](raw.data \ "oppilaitos" \ "nimi" \ "fi"),
+      koulutustoimijaOid = raw.koulutustoimijaOid,
+      koulutustoimijanNimi = JsonSerializer.extract[Option[String]](raw.data \ "koulutustoimija" \ "nimi" \ "fi"),
     )
   }
 
-  private[raportointikanta] def buildRowMitätöity(row: PoistettuOpiskeluoikeusRow): Either[LoadErrorResult, RMitätöityOpiskeluoikeusRow] = {
+  private[raportointikanta] def buildRowMitätöity(organisaatiot: OrganisaatioRepository)(row: PoistettuOpiskeluoikeusRow): Either[LoadErrorResult, RMitätöityOpiskeluoikeusRow] = {
     val aikaleima = row
       .mitätöityAikaleima
       .orElse(row.suostumusPeruttuAikaleima)
@@ -596,7 +601,9 @@ object OpiskeluoikeusLoaderRowBuilder extends Logging {
         "Poistetun opiskeluoikeuden aikaleimaa ei ollut olemassa"
       ))
 
-    aikaleima.map(al =>
+    aikaleima.map { al =>
+      val oppilaitos = row.oppilaitosOid.flatMap(organisaatiot.getOrganisaatio)
+      val koulutustoimija = oppilaitos.flatMap(organisaatiot.findKoulutustoimijaForOppilaitos)
       RMitätöityOpiskeluoikeusRow(
         opiskeluoikeusOid = row.oid,
         versionumero = row.versio.getOrElse(0),
@@ -605,9 +612,13 @@ object OpiskeluoikeusLoaderRowBuilder extends Logging {
         mitätöity = row.mitätöityAikaleima.map(_.toLocalDateTime.toLocalDate),
         suostumusPeruttu = row.suostumusPeruttuAikaleima.map(_.toLocalDateTime.toLocalDate),
         tyyppi = row.koulutusmuoto,
-        päätasonSuoritusTyypit = row.suoritustyypit
+        päätasonSuoritusTyypit = row.suoritustyypit,
+        oppilaitosOid = row.oppilaitosOid,
+        oppilaitoksenNimi = row.oppilaitosNimi,
+        koulutustoimijaOid = koulutustoimija.map(_.oid),
+        koulutustoimijanNimi = koulutustoimija.flatMap(_.nimi).map(_.get("fi")),
       )
-    )
+    }
   }
 }
 

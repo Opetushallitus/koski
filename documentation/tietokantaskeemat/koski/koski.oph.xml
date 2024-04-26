@@ -25,7 +25,7 @@
             <column ascending="true" name="serviceticket"/>
          </index>
       </table>
-      <table name="henkilo" numRows="188" remarks="" schema="oph" type="TABLE">
+      <table name="henkilo" numRows="194" remarks="" schema="oph" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="oid" nullable="false" remarks="" size="2147483647" type="text" typeCode="12">
             <child column="master_oid" foreignKey="henkilo_master_oid_fkey" implied="false" onDeleteCascade="false" schema="oph" table="henkilo"/>
             <child column="oppija_oid" foreignKey="opiskeluoikeus_oppija_oid" implied="false" onDeleteCascade="false" schema="oph" table="opiskeluoikeus"/>
@@ -83,7 +83,7 @@
             <column ascending="true" name="asiakas"/>
          </index>
       </table>
-      <table name="opiskeluoikeus" numRows="170" remarks="" schema="oph" type="TABLE">
+      <table name="opiskeluoikeus" numRows="173" remarks="" schema="oph" type="TABLE">
          <column autoUpdated="true" defaultValue="nextval('opintooikeus_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="serial" typeCode="4">
             <child column="opiskeluoikeus_id" foreignKey="opiskeluoikeushistoria_opiskeluoikeus_id_fkey" implied="false" onDeleteCascade="true" schema="oph" table="opiskeluoikeushistoria"/>
             <child column="opiskeluoikeus_id" foreignKey="perustiedot_sync_opiskeluoikeus_id_fkey" implied="false" onDeleteCascade="true" schema="oph" table="perustiedot_sync"/>
@@ -156,7 +156,7 @@
          <checkConstraint constraint="((NOT (data ? 'oid'::text)))" name="no_oid_in_json"/>
          <checkConstraint constraint="((NOT (data ? 'versionumero'::text)))" name="no_versionumero_in_json"/>
       </table>
-      <table name="opiskeluoikeus_fixture" numRows="170" remarks="" schema="oph" type="TABLE">
+      <table name="opiskeluoikeus_fixture" numRows="173" remarks="" schema="oph" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="id" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="data" nullable="true" remarks="" size="2147483647" type="jsonb" typeCode="1111"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="oppija_oid" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
@@ -176,7 +176,7 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="16" name="suoritustyypit" nullable="true" remarks="" size="2147483647" type="_text" typeCode="2003"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="17" name="poistettu" nullable="true" remarks="" size="1" type="bool" typeCode="-7"/>
       </table>
-      <table name="opiskeluoikeushistoria" numRows="171" remarks="" schema="oph" type="TABLE">
+      <table name="opiskeluoikeushistoria" numRows="174" remarks="" schema="oph" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="opiskeluoikeus_id" nullable="false" remarks="" size="10" type="int4" typeCode="4">
             <parent column="id" foreignKey="opiskeluoikeushistoria_opiskeluoikeus_id_fkey" implied="false" onDeleteCascade="true" schema="oph" table="opiskeluoikeus"/>
          </column>
@@ -194,7 +194,7 @@
             <column ascending="true" name="opiskeluoikeus_id"/>
          </index>
       </table>
-      <table name="opiskeluoikeushistoria_fixture" numRows="172" remarks="" schema="oph" type="TABLE">
+      <table name="opiskeluoikeushistoria_fixture" numRows="175" remarks="" schema="oph" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="opiskeluoikeus_id" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="6" id="1" name="aikaleima" nullable="true" remarks="" size="35" type="timestamptz" typeCode="93"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="kayttaja_oid" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
@@ -391,7 +391,7 @@
             <column ascending="true" name="id"/>
          </index>
       </table>
-      <table name="ytr_opiskeluoikeus" remarks="" schema="oph" type="TABLE">
+      <table name="ytr_opiskeluoikeus" numRows="6" remarks="" schema="oph" type="TABLE">
          <column autoUpdated="true" defaultValue="nextval('opintooikeus_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="serial" typeCode="4">
             <child column="opiskeluoikeus_id" foreignKey="ytr_opiskeluoikeushistoria_ytr_opiskeluoikeus_id" implied="false" onDeleteCascade="false" schema="oph" table="ytr_opiskeluoikeushistoria"/>
          </column>
@@ -463,7 +463,7 @@
          <checkConstraint constraint="((NOT (data ? 'versionumero'::text)))" name="no_versionumero_in_json"/>
          <checkConstraint constraint="((koulutusmuoto = 'ylioppilastutkinto'::text))" name="ytr_opiskeluoikeus_only_ytr_koulutusmuoto_check"/>
       </table>
-      <table name="ytr_opiskeluoikeushistoria" remarks="" schema="oph" type="TABLE">
+      <table name="ytr_opiskeluoikeushistoria" numRows="6" remarks="" schema="oph" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="opiskeluoikeus_id" nullable="false" remarks="" size="10" type="int4" typeCode="4">
             <parent column="id" foreignKey="ytr_opiskeluoikeushistoria_ytr_opiskeluoikeus_id" implied="false" onDeleteCascade="false" schema="oph" table="ytr_opiskeluoikeus"/>
          </column>

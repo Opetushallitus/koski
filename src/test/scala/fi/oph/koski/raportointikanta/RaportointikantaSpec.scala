@@ -850,9 +850,10 @@ class RaportointikantaSpec
         mainRaportointiDb.RMitätöidytOpiskeluoikeudet.sortBy(_.opiskeluoikeusOid).result
       )
 
+      val orgs = KoskiApplicationForTests.organisaatioRepository
       val mitätöidytKoskessa =
         mitätöidytPoistamattomatKoskessa.map(OpiskeluoikeusLoaderRowBuilder.buildRowMitätöity).map(_.right.get) ++
-        mitätöidytPoistetutTaiPerututSuostumuksetKoskessa.map(OpiskeluoikeusLoaderRowBuilder.buildRowMitätöity).map(_.right.get)
+        mitätöidytPoistetutTaiPerututSuostumuksetKoskessa.map(OpiskeluoikeusLoaderRowBuilder.buildRowMitätöity(orgs)).map(_.right.get)
 
       mitätöidytKoskessa.distinct.length should equal(mitätöidytKoskessa.length)
       mitätöidytRaportointikannassa.length should equal(mitätöidytKoskessa.length)
@@ -879,6 +880,10 @@ class RaportointikantaSpec
               case KoskiSpecificMockOppijat.poistettuOpiskeluoikeus.oid => List("vstvapaatavoitteinenkoulutus")
               case _ => List("???")
             },
+            oppilaitosOid = t._1.oppilaitosOid,
+            oppilaitoksenNimi = t._1.oppilaitoksenNimi,
+            koulutustoimijaOid = t._1.koulutustoimijaOid,
+            koulutustoimijanNimi = t._1.koulutustoimijanNimi,
           ))
       )
     }

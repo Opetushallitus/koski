@@ -72,6 +72,10 @@ object RaportointiDatabaseSchema {
     val suostumusPeruttu = column[Option[LocalDate]]("suostumus_peruttu")
     val tyyppi = column[String]("tyyppi", StringIdentifierType)
     val päätasonSuoritusTyypit = column[List[String]]("paatason_suoritus_tyypit")
+    val oppilaitosOid = column[Option[String]]("oppilaitos_oid")
+    val oppilaitoksenNimi = column[Option[String]]("oppilaitos_nimi")
+    val koulutustoimijaOid = column[Option[String]]("koulutustoimija_oid")
+    val koulutustoimijanNimi = column[Option[String]]("koulutustoimija_nimi")
 
     def * = (
       opiskeluoikeusOid,
@@ -81,7 +85,11 @@ object RaportointiDatabaseSchema {
       mitätöity,
       suostumusPeruttu,
       tyyppi,
-      päätasonSuoritusTyypit
+      päätasonSuoritusTyypit,
+      oppilaitosOid,
+      oppilaitoksenNimi,
+      koulutustoimijaOid,
+      koulutustoimijanNimi,
     ) <> (RMitätöityOpiskeluoikeusRow.tupled, RMitätöityOpiskeluoikeusRow.unapply)
   }
   class RMitätöityOpiskeluoikeusTableTemp(tag: Tag) extends RMitätöityOpiskeluoikeusTable(tag, Temp)
@@ -619,7 +627,11 @@ case class RMitätöityOpiskeluoikeusRow(
   mitätöity: Option[LocalDate],
   suostumusPeruttu: Option[LocalDate],
   tyyppi: String,
-  päätasonSuoritusTyypit: List[String]
+  päätasonSuoritusTyypit: List[String],
+  oppilaitosOid: Option[String],
+  oppilaitoksenNimi: Option[String],
+  koulutustoimijaOid: Option[String],
+  koulutustoimijanNimi: Option[String],
 )
 
 case class ROrganisaatioHistoriaRow(
