@@ -2,12 +2,14 @@ package fi.oph.koski.raportointikanta
 
 import fi.oph.koski.db.{KoskiOpiskeluoikeusRow, OpiskeluoikeusRow, YtrOpiskeluoikeusRow}
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryService
+import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.suostumus.SuostumuksenPeruutusService
 import rx.lang.scala.Observable
 
 class FullReloadOpiskeluoikeusLoader(
   opiskeluoikeusQueryRepository: OpiskeluoikeusQueryService,
   suostumuksenPeruutusService: SuostumuksenPeruutusService,
+  organisaatioRepository: OrganisaatioRepository,
   val db: RaportointiDatabase,
   enableYtr: Boolean = true,
   batchSize: Int = OpiskeluoikeusLoader.DefaultBatchSize,
@@ -171,7 +173,7 @@ class FullReloadOpiskeluoikeusLoader(
       val loadBatchStartTime = System.nanoTime()
       val (errors, outputRows) = suostumuksenPeruutusService
         .etsiPoistetut(oot.map(_.oid))
-        .map(OpiskeluoikeusLoaderRowBuilder.buildRowMitätöity)
+        .map(OpiskeluoikeusLoaderRowBuilder.buildRowMitätöity(organisaatioRepository))
         .partition(_.isLeft)
       db.loadMitätöidytOpiskeluoikeudet(outputRows.map(_.right.get))
       db.updateStatusCount(mitätöidytStatusName, outputRows.size)

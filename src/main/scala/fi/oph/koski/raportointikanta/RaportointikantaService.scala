@@ -87,6 +87,7 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
     val loader = update match {
       case Some(update) => new IncrementalUpdateOpiskeluoikeusLoader(
         application.suostumuksenPeruutusService,
+        application.organisaatioRepository,
         db,
         enableYtr,
         update,
@@ -96,6 +97,7 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
       case _ => new FullReloadOpiskeluoikeusLoader(
         application.opiskeluoikeusQueryRepository,
         application.suostumuksenPeruutusService,
+        application.organisaatioRepository,
         db,
         enableYtr,
         pageSize,
