@@ -8,7 +8,7 @@ import fi.oph.koski.servlet.NoCache
 import fi.oph.koski.util.ChainingSyntax._
 import fi.oph.koski.util.UuidUtils
 import fi.oph.koski.valpas.kuntavalvonta.ValpasKuntavalvontaService
-import fi.oph.koski.valpas.log.ValpasAuditLog.{auditLogKuntaKatsominen, auditLogKuntailmoituksenKatsominen, auditLogOppijaKatsominen, auditLogOppijaKuntailmoitus}
+import fi.oph.koski.valpas.log.ValpasAuditLog.{auditLogKuntaKatsominen, auditLogKuntailmoituksenKatsominen, auditLogKuntailmoituksenMitätöinti, auditLogOppijaKatsominen, auditLogOppijaKuntailmoitus}
 import fi.oph.koski.valpas.oppija.ValpasErrorCategory
 import fi.oph.koski.valpas.servlet.ValpasApiServlet
 import fi.oph.koski.valpas.valpasrepository.{ValpasKuntailmoitusLaajatTiedot, ValpasKuntailmoitusPohjatiedot, ValpasKuntailmoitusPohjatiedotInput}
@@ -34,6 +34,15 @@ class ValpasKuntailmoitusApiServlet(implicit val application: KoskiApplication)
       .toRight(ValpasErrorCategory.badRequest.validation.epävalidiUuid())
       .flatMap(kuntailmoitusService.getOmaKuntailmoitus)
       .tap(auditLogKuntailmoituksenKatsominen)
+    renderEither(result)
+  }
+
+  delete("/:uuid") {
+    val result = UuidUtils.optionFromString(params("uuid"))
+      .toRight(ValpasErrorCategory.badRequest.validation.epävalidiUuid())
+      .flatMap(kuntailmoitusService.mitätöiOmaKuntailmoitus)
+      .tap(auditLogKuntailmoituksenMitätöinti)
+      .map(_ => ())
     renderEither(result)
   }
 

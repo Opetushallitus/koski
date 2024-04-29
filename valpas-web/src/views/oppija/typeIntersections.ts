@@ -27,6 +27,7 @@ export type MinimiOpiskeluoikeus = {
 
 // Intersektio tyypeistä KuntailmoitusLaajatTiedotLisätiedoilla ja KansalainenKuntailmoitus
 export type MinimiOppijaKuntailmoitus = {
+  id?: string
   kunta?: KuntailmoitusKunta
   aikaleima?: ISODateTime
   tekijä?: KuntailmoituksenTekijäLaajatTiedot
@@ -34,6 +35,7 @@ export type MinimiOppijaKuntailmoitus = {
   hakenutMuualle?: boolean
   tietojaKarsittu?: boolean
   aktiivinen?: boolean
+  oikeusTekijäOrganisaatioon?: Boolean
 }
 
 export const isTurvakiellollinenKuntailmoitus = (

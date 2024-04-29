@@ -37,6 +37,7 @@ case class ValpasKuntailmoitusLaajatTiedot(
   // Tietoja ilmoituksen näytettävistä tiedoista on karsittu käyttöoikeuksien perusteella
   tietojaKarsittu: Option[Boolean] = None,
 
+  oikeusTekijäOrganisaatioon: Option[Boolean] = None
 ) {
   def withOppijaOid(oppijaOid: String): ValpasKuntailmoitusLaajatTiedot =
     this.copy(oppijaOid = Some(oppijaOid))

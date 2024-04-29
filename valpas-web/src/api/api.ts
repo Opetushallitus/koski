@@ -322,6 +322,9 @@ export const fetchKuntailmoitusLaajatTiedotCache = createPreferLocalCache(
   fetchKuntailmoitusLaajatTiedot,
 )
 
+export const mitätöiKuntailmoitus = (kuntailmoitusId: string) =>
+  handleExpiredSession(apiDelete(`valpas/api/kuntailmoitus/${kuntailmoitusId}`))
+
 /**
  * Tallenna muu haku -valitsimen tila
  * @param oppijaOid

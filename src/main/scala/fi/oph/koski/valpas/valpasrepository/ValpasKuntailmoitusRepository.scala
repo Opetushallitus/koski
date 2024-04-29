@@ -17,7 +17,7 @@ import fi.oph.scalaschema.{SerializationContext, Serializer}
 import org.json4s.JValue
 import slick.jdbc.GetResult
 
-import java.time.LocalTime
+import java.time.{LocalDateTime, LocalTime}
 import java.util.UUID
 
 class ValpasKuntailmoitusRepository(
@@ -60,7 +60,8 @@ class ValpasKuntailmoitusRepository(
         oppijaOid = oppijaOid,
         kuntaOid = data.kunta.oid,
         tekijäOrganisaatioOid = data.tekijä.organisaatio.oid,
-        tekijäOid = tekijäHenkilöOid
+        tekijäOid = tekijäHenkilöOid,
+        mitätöity = None
       )
       val lisätiedot = IlmoitusLisätiedotRow(
         ilmoitusUuid = ilmoitus.uuid,
@@ -209,6 +210,7 @@ class ValpasKuntailmoitusRepository(
     HttpStatus.foldEithers(
       runDbSync(
         Ilmoitukset
+          .filter(_.mitätöity.isEmpty)
           .filter(filterFn)
           .joinLeft(IlmoitusLisätiedot).on(_.uuid === _.ilmoitusUuid)
           .sortBy(_._1.luotu.desc)
@@ -244,7 +246,9 @@ class ValpasKuntailmoitusRepository(
         (
           SELECT COUNT(*) > 0
           FROM ilmoitus AS v
-          WHERE v.oppija_oid = ilmoitus.oppija_oid
+          WHERE
+            v.mitätöity IS NULL
+            AND v.oppija_oid = ilmoitus.oppija_oid
             AND v.luotu > ilmoitus.luotu
             AND v.kunta_oid <> ilmoitus.kunta_oid
         ) as "uudempia_ilmoituksia_muualle"
@@ -283,6 +287,15 @@ class ValpasKuntailmoitusRepository(
         .filter(lt => lt.ilmoitusUuid in Ilmoitukset.filter(_.oppijaOid === oppijaOid).map(_.uuid))
         .delete
     )
+  }
+
+  def mitätöiIlmoitus(uuid: UUID): Either[HttpStatus, Unit] = {
+    val query = for {i <- Ilmoitukset if i.uuid === uuid} yield i.mitätöity
+    runDbSync(
+      query.update(Some(LocalDateTime.now()))) match {
+      case 0 => Left(ValpasErrorCategory.notFound.kuntailmoitustaEiLöydy())
+      case _ => Right(())
+    }
   }
 
   def truncate(): Unit = {

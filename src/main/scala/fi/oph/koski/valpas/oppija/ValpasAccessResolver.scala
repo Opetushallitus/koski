@@ -252,6 +252,21 @@ class ValpasAccessResolver {
     }
   }
 
+  def withKuntailmoituksenTekijäAccess(
+                                        kuntailmoitus: ValpasKuntailmoitusLaajatTiedot
+                                      )(
+                                        implicit session: ValpasSession
+                                      ): Either[HttpStatus, ValpasKuntailmoitusLaajatTiedot] = {
+    val oikeutetutOrganisaatiot = Set(kuntailmoitus.tekijä.organisaatio.oid)
+    val mahdollisetRoolit = Set(ValpasRooli.OPPILAITOS_HAKEUTUMINEN, ValpasRooli.OPPILAITOS_SUORITTAMINEN, ValpasRooli.KUNTA)
+
+    if (mahdollisetRoolit.exists(r => accessToSomeOrgs(r, oikeutetutOrganisaatiot))) {
+      Right(kuntailmoitus)
+    } else {
+      Left(ValpasErrorCategory.forbidden.toiminto())
+    }
+  }
+
   private def oppilaitosOrganisaatioOids(
     rooli: ValpasRooli.Role
   )(implicit session: ValpasSession): Set[Organisaatio.Oid] =

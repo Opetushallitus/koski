@@ -276,6 +276,8 @@
   "koulutustyyppi_aikuistenperusopetus": "Aikuisten perusopetus",
   "kuntailmoitusnäkymä__näytä_arkistoidut_ilmoitukset": "Näytä arkistoidut ilmoitukset",
   "kuntailmoitus__taulu_opiskeluoikeuksia_tooltip": "Opiskeluoikeudet- tiedoissa näkyvät vuorokauden viiveellä koulutuksen järjestäjän KOSKI-tietovarantoon oppijalle luomat opiskeluoikeudet, jotka kelpaavat perusopetuksen jälkeisen koulutuksen oppivelvollisuuden suorittamiseen.",
+  "kuntailmoitus__mitätöinti_btn": "Mitätöi ilmoitus",
+  "kuntailmoitus__mitätöinti_varmistus": "Haulatko varmasti mitätöidä ilmoituksen?",
   "koulutustyyppi_perusopetus": "Perusopetus",
   "oppija__tila_valiaikaisesti_keskeytetty": "Väliaikaisesti keskeytetty {{päivämäärä}}",
   "oppija__tila_valiaikaisesti_keskeytynyt": "Väliaikaisesti keskeytynyt {{päivämäärä}}",

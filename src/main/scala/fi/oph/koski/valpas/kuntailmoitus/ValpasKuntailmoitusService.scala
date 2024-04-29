@@ -71,6 +71,7 @@ class ValpasKuntailmoitusService(
   def getOmaKuntailmoitus(id: UUID)(implicit session: ValpasSession): Either[HttpStatus, ValpasKuntailmoitusLaajatTiedot] =
     repository.get(id)
       .flatMap(accessResolver.withOmaKuntailmoitusAccess)
+      .map(withOikeusTekijäOrganisaatioon)
       .map { ilmoitus =>
         ilmoitus.oppijaOid
           .flatMap(oppijaLaajatTiedotService.getOppijaLaajatTiedot(_, haeMyösVainOppijanumerorekisterissäOleva = false, palautaLukionAineopinnotJaYOTutkinnotJosMyösAmmatillisiaOpintoja = false).toOption)
@@ -79,12 +80,23 @@ class ValpasKuntailmoitusService(
           .getOrElse(ilmoitus)
       }
 
+  def mitätöiOmaKuntailmoitus(id: UUID)(implicit session: ValpasSession): Either[HttpStatus, ValpasKuntailmoitusLaajatTiedot] = {
+    repository.get(id)
+      .flatMap(accessResolver.withKuntailmoituksenTekijäAccess)
+      .flatMap(ilmoitus => repository.mitätöiIlmoitus(id).map(_ => ilmoitus))
+  }
+
+  def withOikeusTekijäOrganisaatioon(kuntailmoitus: ValpasKuntailmoitusLaajatTiedot)(implicit session: ValpasSession): ValpasKuntailmoitusLaajatTiedot = {
+    def oikeusTekijäOrganisaatioon = accessResolver.withKuntailmoituksenTekijäAccess(kuntailmoitus).isRight
+    kuntailmoitus.copy(oikeusTekijäOrganisaatioon = Some(oikeusTekijäOrganisaatioon))
+  }
 
   def getKuntailmoitukset(
     oppija: ValpasOppijaLaajatTiedot
   )(implicit session: ValpasSession): Either[HttpStatus, Seq[ValpasKuntailmoitusLaajatTiedot]] = {
     accessResolver.withOppijaAccess(oppija)
       .flatMap(oppija => repository.queryOppijat(oppija.henkilö.kaikkiOidit))
+      .map(_.map(withOikeusTekijäOrganisaatioon))
       .map(_.map(karsiHenkilötiedotJosEiOikeuksia))
   }
 

@@ -16,6 +16,7 @@ export type KuntailmoitusLaajatTiedot = {
   onUudempiaIlmoituksiaMuihinKuntiin?: boolean
   aktiivinen?: boolean
   tietojaKarsittu?: boolean
+  oikeusTekijäOrganisaatioon?: boolean
 }
 
 export type KuntailmoitusLaajatTiedotOppijaOidilla =

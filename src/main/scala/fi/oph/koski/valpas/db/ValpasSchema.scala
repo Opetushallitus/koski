@@ -33,6 +33,7 @@ object ValpasSchema extends Logging {
     val kuntaOid = column[String]("kunta_oid")
     val tekijäOrganisaatioOid = column[String]("tekijä_organisaatio_oid")
     val tekijäOid = column[String]("tekijä_oid")
+    val mitätöity = column[Option[LocalDateTime]]("mitätöity")
 
     def * = (
       uuid,
@@ -40,7 +41,8 @@ object ValpasSchema extends Logging {
       oppijaOid,
       kuntaOid,
       tekijäOrganisaatioOid,
-      tekijäOid
+      tekijäOid,
+      mitätöity
     ) <> (IlmoitusRow.tupled, IlmoitusRow.unapply)
   }
 
@@ -50,7 +52,8 @@ object ValpasSchema extends Logging {
     oppijaOid: String,
     kuntaOid: String,
     tekijäOrganisaatioOid: String,
-    tekijäOid: String
+    tekijäOid: String,
+    mitätöity: Option[LocalDateTime]
   )
 
   val Ilmoitukset = TableQuery[IlmoitusTable]
