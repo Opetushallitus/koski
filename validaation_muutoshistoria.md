@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 20.5.2024
+
+- Nuorten perusopetuksen opiskeluoikeudessa ei saa olla kuin enintään yksi kesken-tilainen vuosiluokan suoritus.
+
 ## 2.5.2024
 
 - Vapaan Sivistystyön Kotoutumiskoulutuksen osasuoritusten laajuusvalidaatiot purettu.
