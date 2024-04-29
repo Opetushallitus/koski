@@ -63,7 +63,11 @@ const Background = (props: BackgroundProps) => {
       className={b("background", { init: props.hidden })}
       tabIndex={0}
       role={props.onClose && "button"}
-      onClick={props.onClose}
+      onClick={(e) => {
+        if (e.target === e.currentTarget) {
+          props.onClose?.()
+        }
+      }}
       onKeyDown={onKbEscape(props.onClose)}
       ref={ref}
       aria-hidden="false"
