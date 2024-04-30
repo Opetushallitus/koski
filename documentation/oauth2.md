@@ -223,6 +223,10 @@ Tämän käyttöliittymän pitää olla selkeä, ts. siitä pitää käyttäjän
 
 Tämä on tärkeää, jotta käyttäjä pystyy myös itse mahdollisimman helposti havaitsemaan, onko mahdollisia phishing tms. hyökkäyksiä tapahtunut, ja reagoimaan niihin. 
 
+### (S) Hyödyntäjätoteutusten tietoturvallisuutta valvotaan niiltä osin kuin se on mahdollista
+
+Hyödyntäjätoteutuksen toiminta keskeytetään ainakin. jos code_challenge ei vaihdu kaikissa pyynnöissä. Muitakin vastaavia menetelmiä saattaa kannattaa toteuttaa, ks. https://www.ietf.org/archive/id/draft-ietf-oauth-security-topics-25.html ja https://www.rfc-editor.org/rfc/rfc6819.html .
+
 ### TODO
 
 *TODO: Tutki, pitäisikö sallia ainoastaan POST response mode:n käyttö? https://openid.net/specs/oauth-v2-form-post-response-mode-1_0.html*
