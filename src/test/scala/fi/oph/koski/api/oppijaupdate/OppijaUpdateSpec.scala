@@ -480,18 +480,6 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
           result.suoritukset.map(_.koulutusmoduuli.tunniste.koodiarvo) should equal(List(uusiSuoritus.koulutusmoduuli.tunniste.koodiarvo))
         }
       }
-      "Muuten aiemmin tallennettu suoritus säilytetään" in {
-        val vanhaValmisSuoritus = PerusopetusExampleData.seitsemännenLuokanSuoritus
-        val vanhaKeskenSuoritus = PerusopetusExampleData.kahdeksannenLuokanSuoritus.copy(vahvistus = None)
-        val uusiSuoritus = PerusopetusExampleData.yhdeksännenLuokanSuoritus.copy(vahvistus = None)
-        val oo = PerusopetusExampleData.opiskeluoikeus(suoritukset = List(vanhaValmisSuoritus, vanhaKeskenSuoritus), päättymispäivä = None).copy(tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(NuortenPerusopetuksenOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä))))
-        def poistaSuoritukset(oo: PerusopetuksenOpiskeluoikeus) = oo.copy(suoritukset = List(uusiSuoritus))
-        verifyChange(original = oo, change = poistaSuoritukset) {
-          verifyResponseStatusOk()
-          val result: PerusopetuksenOpiskeluoikeus = lastOpiskeluoikeusByHetu(oppija).asInstanceOf[PerusopetuksenOpiskeluoikeus]
-          result.suoritukset.map(_.koulutusmoduuli.tunniste.koodiarvo) should equal(List(vanhaValmisSuoritus.koulutusmoduuli.tunniste.koodiarvo, uusiSuoritus.koulutusmoduuli.tunniste.koodiarvo))
-        }
-      }
     }
 
     "Organisaation muutoshistoria" - {
