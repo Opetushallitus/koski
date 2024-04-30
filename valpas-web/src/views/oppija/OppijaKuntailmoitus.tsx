@@ -27,6 +27,7 @@ import { mitätöiKuntailmoitus } from "../../api/api"
 import { usePrompt } from "../../components/containers/Prompt"
 import { pipe } from "fp-ts/lib/function"
 import * as E from "fp-ts/Either"
+import { isFeatureFlagEnabled } from "../../state/featureFlags"
 
 const b = bem("kuntailmoitus")
 
@@ -89,15 +90,16 @@ export const OppijaKuntailmoitus = (props: OppijaKuntailmoitusProps) => {
             </Column>
           </ColumnsContainer>
         )}
-        {kuntailmoitus.oikeusTekijäOrganisaatioon && (
-          <RaisedButton
-            hierarchy="danger"
-            testId="mitätöi-kuntailmoitus-btn"
-            onClick={onMitätöinti}
-          >
-            {t("kuntailmoitus__mitätöinti_btn")}
-          </RaisedButton>
-        )}
+        {isFeatureFlagEnabled("kuntailmoitusMitätöinti") &&
+          kuntailmoitus.oikeusTekijäOrganisaatioon && (
+            <RaisedButton
+              hierarchy="danger"
+              testId="mitätöi-kuntailmoitus-btn"
+              onClick={onMitätöinti}
+            >
+              {t("kuntailmoitus__mitätöinti_btn")}
+            </RaisedButton>
+          )}
         {prompt.component}
       </Body>
     </Frame>

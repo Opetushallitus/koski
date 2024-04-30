@@ -72,6 +72,7 @@ import {
 import { MaksuttomuusView } from "./maksuttomuus/MaksuttomuusView"
 import { OppijaView } from "./oppija/OppijaView"
 import { Raamit } from "./Raamit"
+import { FeatureFlagEnabler } from "../state/featureFlags"
 
 const redirects: Array<[PathDeclaration<any>, PathDeclaration<any>]> = [
   [
@@ -111,6 +112,12 @@ const VirkailijaRoutes = () => {
             <Redirect to={to.href(basePath)} />
           </Route>
         ))}
+        <Route exact path={`${basePath}/enable/kuntailmoitus-mitätöinti`}>
+          <FeatureFlagEnabler
+            features={["kuntailmoitusMitätöinti"]}
+            redirectTo={rootPath.href(basePath)}
+          />
+        </Route>
         <Route
           exact
           path={hakutilannePathWithoutOrg.route(basePath)}
