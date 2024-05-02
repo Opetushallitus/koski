@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 2.5.2024
+
+- Vapaan Sivistystyön Kotoutumiskoulutuksen osasuoritusten laajuusvalidaatiot purettu.
+
 ## 26.4.2024
 
 - Mitätöitäessä opiskeluoikeutta mitätöintipäivä ei voi olla tulevaisuudessa.
