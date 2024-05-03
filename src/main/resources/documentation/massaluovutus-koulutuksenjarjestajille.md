@@ -5,9 +5,7 @@ Rajapintaa käytetään seuraavanlaisesti.
 
 ## Uuden kyselyn luonti
 
-Aloita kysely lähettämällä parametrit luontirajapintaan `POST {{var:baseUrl}}/api/massaluovutus`. Esimerkiksi Helsingin kaupungin
-eronnut-tilassa olevat perusopetuksen opiskeluoikeudet vuoden 2024 tammikuulta voisi hakea
-seuraavanlaisella kyselyllä.
+Aloita kysely lähettämällä parametrit luontirajapintaan `POST {{var:baseUrl}}/api/massaluovutus`. Esimerkiksi Helsingin kaupungin tammikuussa 2024 alkaneet perusopetuksen opiskeluoikeudet voi hakea seuraavanlaisella kyselyllä.
 Eri kyselyiden skeemat esitellään myöhemmin dokumentaatiossa. [Katso myös kaikki skeemat graafisessa muodossa](/koski/json-schema-viewer/?schema=massaluovutus-query.json).
 
     POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
