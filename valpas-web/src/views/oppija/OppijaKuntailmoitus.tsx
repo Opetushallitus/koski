@@ -21,13 +21,13 @@ import {
   isTurvakiellollinenKuntailmoitus,
   MinimiOppijaKuntailmoitus,
 } from "./typeIntersections"
-import { RaisedButton } from "../../components/buttons/RaisedButton"
 import { useApiMethod } from "../../api/apiHooks"
 import { mitätöiKuntailmoitus } from "../../api/api"
 import { usePrompt } from "../../components/containers/Prompt"
 import { pipe } from "fp-ts/lib/function"
 import * as E from "fp-ts/Either"
 import { isFeatureFlagEnabled } from "../../state/featureFlags"
+import { FlatButton } from "../../components/buttons/FlatButton"
 
 const b = bem("kuntailmoitus")
 
@@ -92,13 +92,12 @@ export const OppijaKuntailmoitus = (props: OppijaKuntailmoitusProps) => {
         )}
         {isFeatureFlagEnabled("kuntailmoitusMitätöinti") &&
           kuntailmoitus.oikeusTekijäOrganisaatioon && (
-            <RaisedButton
-              hierarchy="danger"
+            <FlatButton
               testId="mitätöi-kuntailmoitus-btn"
               onClick={onMitätöinti}
             >
               {t("kuntailmoitus__mitätöinti_btn")}
-            </RaisedButton>
+            </FlatButton>
           )}
         {prompt.component}
       </Body>
