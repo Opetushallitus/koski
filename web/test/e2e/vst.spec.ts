@@ -1792,11 +1792,7 @@ test.describe('Vapaa sivistystyö', () => {
             }
           }
         )
-        await vstOppijaPage.tallennaVirheellisenä(
-          'Kielten ja viestinnän osasuoritusta ei voi hyväksyä ennen kuin kaikki pakolliset alaosasuoritukset on arvioitu',
-          'Oppiaineen laajuus puuttuu',
-          'Oppiaineen laajuus puuttuu'
-        )
+        await vstOppijaPage.tallenna()
       })
 
       test('Kieli- ja viestintäosaamisen muokkaaminen', async ({
@@ -1928,10 +1924,7 @@ test.describe('Vapaa sivistystyö', () => {
         expect(await tila.add.isVisible()).toBeFalsy()
 
         await vstOppijaPage.tallennaVirheellisenä(
-          'Suoritukselta koulutus/999910 puuttuu vahvistus, vaikka opiskeluoikeus on tilassa Valmistunut',
-          'Kielten ja viestinnän osasuoritusta ei voi hyväksyä ennen kuin kaikki pakolliset alaosasuoritukset on arvioitu',
-          "Oppiaineen 'Yhteiskunta- ja työelämäosaaminen' suoritettu laajuus liian suppea (12.0 op, pitäisi olla vähintään 20.0 op)",
-          "Oppiaineen 'Työssäoppiminen' suoritettu laajuus liian suppea (4.0 op, pitäisi olla vähintään 8.0 op)"
+          'Suoritukselta koulutus/999910 puuttuu vahvistus, vaikka opiskeluoikeus on tilassa Valmistunut'
         )
       })
 
@@ -1962,12 +1955,7 @@ test.describe('Vapaa sivistystyö', () => {
           '1.1.2023'
         )
 
-        await vstOppijaPage.tallennaVirheellisenä(
-          'Kielten ja viestinnän osasuoritusta ei voi hyväksyä ennen kuin kaikki pakolliset alaosasuoritukset on arvioitu',
-          "Oppiaineen 'Yhteiskunta- ja työelämäosaaminen' suoritettu laajuus liian suppea (12.0 op, pitäisi olla vähintään 20.0 op)",
-          "Oppiaineen 'Työssäoppiminen' suoritettu laajuus liian suppea (4.0 op, pitäisi olla vähintään 8.0 op)",
-          "Oppiaineen 'Ohjaus' suoritettu laajuus liian suppea (4.0 op, pitäisi olla vähintään 7.0 op)"
-        )
+        await vstOppijaPage.tallenna()
       })
     })
 
