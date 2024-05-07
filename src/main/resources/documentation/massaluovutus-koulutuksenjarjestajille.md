@@ -43,7 +43,8 @@ esimerkiksi sitä käsittelevän instanssin käynnistyessä uudelleen.
 
 Kyselyn valmistuessa tilaksi vaihtuu `completed` ja vastauksessa on mukana lista tulostiedostoista.
 Tiedostojen määrä vaihtelee tehdyn kyselyn perusteella. Tiedostot ovat haettavissa n. kolme vuorokautta
-kyselyn valmistumisesta.
+kyselyn valmistumisesta. **Huom!** Tiedostonlatauslinkki vastaa uudelleenohjauspyynnöllä, joten kytke
+käyttämästäsi http-asiakasohjelmasta *follow redirects* päälle, jos saamasi tiedostot ovat tyhjiä.
 
     {{json:CompleteQueryResponse}}
 
