@@ -103,7 +103,8 @@ object OppijaEditorModel extends Timing {
       case _ => 100
     }
     val secondary = s.valmis
-    (primary, secondary)
+    val trinary = s.alkamispäivä.map(a => -a.toEpochDay.toInt).getOrElse(0)
+    (primary, secondary, trinary)
   }
 
   def ammatillisenSuoritustenJärjestysKriteeri(s: AmmatillinenPäätasonSuoritus): Int = {
