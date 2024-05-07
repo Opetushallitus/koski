@@ -44,11 +44,12 @@ object DuplikaattiValidation extends Logging {
       )
 
     def samaDiaarinumeroAmmatillinen(a: AmmatillinenOpiskeluoikeus) = {
-      def dn = (oo: Opiskeluoikeus) => oo.suoritukset
-        .collectFirst { case s: AmmatillisenTutkinnonSuoritus => s }
+      def diaarinumerot = (oo: Opiskeluoikeus) => oo.suoritukset
+        .collect { case s: AmmatillisenTutkinnonSuoritus => s }
         .flatMap(s => s.koulutusmoduuli.perusteenDiaarinumero)
+
       opiskeluoikeus match {
-        case x: AmmatillinenOpiskeluoikeus => dn(x) == dn(a)
+        case x: AmmatillinenOpiskeluoikeus => diaarinumerot(x).intersect(diaarinumerot(a)).nonEmpty
         case _ => false
       }
     }
@@ -104,14 +105,13 @@ object DuplikaattiValidation extends Logging {
       isConflicting: () => Either[HttpStatus, Option[Opiskeluoikeus]],
       oo: KoskeenTallennettavaOpiskeluoikeus,
       ignoreInProd: Boolean = false): HttpStatus = {
-      def logWarning(conflicting: Opiskeluoikeus): Unit = logger.warn(s"Opiskeluoikeus jäisi kiinni duplikaattivalidaatioihin (oppija: ${oppijanHenkilötiedot.oid}, ${oo.getClass}, konfliktoiva: ${conflicting.oid})")
+      def logWarning(conflicting: Opiskeluoikeus): Unit = logger.warn(s"Opiskeluoikeus jäisi kiinni duplikaattivalidaatioihin (${oo.getClass}, oppija: ${oppijanHenkilötiedot.oid}, ${oo.getClass}, konfliktoiva: ${conflicting.oid})")
       isConflicting() match {
         // Tuotantokäyttöönoton yhteydessä siivoa pois aiemmat validaatiot: vastaavanRinnakkaisenOpiskeluoikeudenLisääminenSallittu
         case Right(Some(conflicting)) if Environment.isProdEnvironment(config) && ignoreInProd =>
           logWarning(conflicting)
           HttpStatus.ok
-        case Right(Some(conflicting)) =>
-          logWarning(conflicting)
+        case Right(Some(_)) =>
           KoskiErrorCategory.conflict.exists()
         case Right(None) => HttpStatus.ok
         case Left(error) => error
