@@ -86,7 +86,7 @@ trait VSTKotoutumiskoulutuksenAlaosasuoritus2022
 
 trait VSTKotoutumiskoulutuksenAlasuorituksenKoulutusmoduuli2022
   extends Koulutusmoduuli
-    with OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuliLaajuusOpintopisteissä
+    with KoulutusmoduuliPakollinenLaajuusOpintopisteissä
 
 /*
   Kieli- ja viestintäosaaminen
@@ -123,7 +123,7 @@ case class VSTKotoutumiskoulutuksenKieliJaViestintäosaamisenOsasuoritus(
 case class VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenKoulutusmoduuli2022(
   @KoodistoUri("vstkoto2022kielijaviestintakoulutus")
   tunniste: Koodistokoodiviite,
-  laajuus: Option[LaajuusOpintopisteissä] = None
+  laajuus: LaajuusOpintopisteissä
 ) extends VSTKotoutumiskoulutuksenAlasuorituksenKoulutusmoduuli2022
   with KoodistostaLöytyväKoulutusmoduuli
 
@@ -187,7 +187,7 @@ case class VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenAlaosasuorit
 case class VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaamisenAlasuorituksenKoulutusmoduuli2022(
   @KoodistoUri(koodistoUri = "vstkoto2022yhteiskuntajatyoosaamiskoulutus")
   tunniste: Koodistokoodiviite,
-  laajuus: Option[LaajuusOpintopisteissä] = None
+  laajuus: LaajuusOpintopisteissä
 ) extends VSTKotoutumiskoulutuksenAlasuorituksenKoulutusmoduuli2022
   with KoodistostaLöytyväKoulutusmoduuli
 
@@ -249,7 +249,7 @@ case class VSTKotoutumiskoulutusValinnaistenOpintojenAlaosasuoritus(
 case class VSTKotoutumiskoulutuksenValinnaistenOpintojenAlasuorituksenKoulutusmoduuli2022(
   kuvaus: LocalizedString,
   tunniste: PaikallinenKoodi,
-  laajuus: Option[LaajuusOpintopisteissä] = None,
+  laajuus: LaajuusOpintopisteissä,
 ) extends VSTKotoutumiskoulutuksenAlasuorituksenKoulutusmoduuli2022
   with PaikallinenKoulutusmoduuliKuvauksella
   with StorablePreference

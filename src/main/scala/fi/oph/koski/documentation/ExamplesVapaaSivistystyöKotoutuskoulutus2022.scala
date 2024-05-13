@@ -148,7 +148,7 @@ object ExamplesVapaaSivistystyöKotoutuskoulutus2022 {
       def koulutusmoduuli(tunniste: String, laajuus: Double): VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenKoulutusmoduuli2022 =
         VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenKoulutusmoduuli2022(
           tunniste = Koodistokoodiviite(tunniste, "vstkoto2022kielijaviestintakoulutus"),
-          laajuus = Some(LaajuusOpintopisteissä(laajuus)),
+          laajuus = LaajuusOpintopisteissä(laajuus),
         )
 
       def kielitaso(taso: String): Koodistokoodiviite =
@@ -202,7 +202,7 @@ object ExamplesVapaaSivistystyöKotoutuskoulutus2022 {
         VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenAlaosasuoritus(
           koulutusmoduuli = VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaamisenAlasuorituksenKoulutusmoduuli2022(
             tunniste = Koodistokoodiviite(tunniste, "vstkoto2022yhteiskuntajatyoosaamiskoulutus"),
-            laajuus = Some(LaajuusOpintopisteissä(laajuus)),
+            laajuus = LaajuusOpintopisteissä(laajuus),
           ),
         )
     }
@@ -247,7 +247,7 @@ object ExamplesVapaaSivistystyöKotoutuskoulutus2022 {
         koulutusmoduuli = VSTKotoutumiskoulutuksenValinnaistenOpintojenAlasuorituksenKoulutusmoduuli2022(
           kuvaus = finnish(kuvaus),
           tunniste = PaikallinenKoodi(koodi, nimi = finnish(kuvaus)),
-          laajuus = Some(LaajuusOpintopisteissä(laajuus)),
+          laajuus = LaajuusOpintopisteissä(laajuus),
         ),
       )
   }
