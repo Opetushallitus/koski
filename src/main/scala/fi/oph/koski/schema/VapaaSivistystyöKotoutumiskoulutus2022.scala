@@ -29,7 +29,6 @@ case class OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuorit
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None
 ) extends VapaanSivistystyönKoulutuksenPäätasonSuoritus
   with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta
-  with OpintopistelaajuuksienYhteislaskennallinenPäätasonSuoritus[LaajuusOpintopisteissä]
   with OpintopistelaajuuksienYhteislaskennallinenSuoritus[LaajuusOpintopisteissä]
 
 @Description("Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen (OPS 2022) tunnistetiedot")
@@ -59,9 +58,7 @@ case class VSTKotoutumiskoulutuksenOsasuorituksenArviointi2022(
 @Description("Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen osasuoritus")
 trait VSTKotoutumiskoulutuksenKokonaisuudenOsasuoritus2022 extends Suoritus
   with Vahvistukseton
-  with OpintopistelaajuuksienYhteislaskennallinenSuoritus[LaajuusOpintopisteissä]
 {
-  override def koulutusmoduuli: VSTKotoutumiskoulutuksenSuorituksenKoulutusmoduuli2022
   override val arviointi: Option[List[VSTKotoutumiskoulutuksenOsasuorituksenArviointi2022]]
   override val tyyppi: Koodistokoodiviite
 }
@@ -71,6 +68,13 @@ trait VSTKotoutumiskoulutuksenSuorituksenKoulutusmoduuli2022
     with LaajuuttaEiValidoida
     with KoulutusmoduuliValinnainenLaajuus
     with OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuliLaajuusOpintopisteissä {
+  @KoodistoUri("vstkoto2022kokonaisuus")
+  def tunniste: Koodistokoodiviite
+}
+
+trait VSTKotoutumiskoulutuksenSuorituksenKoulutusmoduuli2022Ohjaus
+  extends KoodistostaLöytyväKoulutusmoduuli
+    with KoulutusmoduuliPakollinenLaajuusOpintopisteissä {
   @KoodistoUri("vstkoto2022kokonaisuus")
   def tunniste: Koodistokoodiviite
 }
@@ -211,9 +215,8 @@ case class VSTKotoutumiskoulutuksenOhjauksenSuoritus2022(
 case class VSTKotoutumiskoulutuksenOhjauksenKoulutusmoduuli2022(
   @KoodistoKoodiarvo("ohjaus")
   tunniste: Koodistokoodiviite = Koodistokoodiviite("ohjaus", "vstkoto2022kokonaisuus"),
-  laajuus: Option[LaajuusOpintopisteissä] = None
-) extends VSTKotoutumiskoulutuksenSuorituksenKoulutusmoduuli2022
-  with OpintopistelaajuuksienYhteenlaskennanOhittavaKoulutusmoduuli[LaajuusOpintopisteissä]
+  laajuus: LaajuusOpintopisteissä = LaajuusOpintopisteissä(1)
+) extends VSTKotoutumiskoulutuksenSuorituksenKoulutusmoduuli2022Ohjaus
 
 /*
   Valinnaiset opinnot

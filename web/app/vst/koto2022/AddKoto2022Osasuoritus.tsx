@@ -10,6 +10,8 @@ import { VSTKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus2022 } from '..
 import { VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenSuoritus2022 } from '../../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenYhteiskuntaJaTyoelamaosaaminenSuoritus2022'
 import { VapaanSivistystyönOpiskeluoikeus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeus'
 import { AddKoodistonOsasuoritus } from '../common/AddKoodistonOsasuoritus'
+import { laajuusOpintopisteissa } from '../common/constructors'
+import { VSTKotoutumiskoulutuksenOhjauksenKoulutusmoduuli2022 } from '../../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenOhjauksenKoulutusmoduuli2022'
 
 type AddKoto2022OsasuoritusProps = CommonProps<{
   form: FormModel<VapaanSivistystyönOpiskeluoikeus>
@@ -38,7 +40,11 @@ const createOsasuoritus = (
     case 'kielijaviestintaosaaminen':
       return VSTKotoutumiskoulutuksenKieliJaViestintäosaamisenSuoritus2022()
     case 'ohjaus':
-      return VSTKotoutumiskoulutuksenOhjauksenSuoritus2022()
+      return VSTKotoutumiskoulutuksenOhjauksenSuoritus2022({
+        koulutusmoduuli: VSTKotoutumiskoulutuksenOhjauksenKoulutusmoduuli2022({
+          laajuus: laajuusOpintopisteissa(1)
+        })
+      })
     case 'valinnaisetopinnot':
       return VSTKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus2022()
     case 'yhteiskuntajatyoelamaosaaminen':

@@ -10,15 +10,13 @@ import { LaajuusOpintopisteissä } from './LaajuusOpintopisteissa'
 export type VSTKotoutumiskoulutuksenOhjauksenKoulutusmoduuli2022 = {
   $class: 'fi.oph.koski.schema.VSTKotoutumiskoulutuksenOhjauksenKoulutusmoduuli2022'
   tunniste: Koodistokoodiviite<'vstkoto2022kokonaisuus', 'ohjaus'>
-  laajuus?: LaajuusOpintopisteissä
+  laajuus: LaajuusOpintopisteissä
 }
 
-export const VSTKotoutumiskoulutuksenOhjauksenKoulutusmoduuli2022 = (
-  o: {
-    tunniste?: Koodistokoodiviite<'vstkoto2022kokonaisuus', 'ohjaus'>
-    laajuus?: LaajuusOpintopisteissä
-  } = {}
-): VSTKotoutumiskoulutuksenOhjauksenKoulutusmoduuli2022 => ({
+export const VSTKotoutumiskoulutuksenOhjauksenKoulutusmoduuli2022 = (o: {
+  tunniste?: Koodistokoodiviite<'vstkoto2022kokonaisuus', 'ohjaus'>
+  laajuus: LaajuusOpintopisteissä
+}): VSTKotoutumiskoulutuksenOhjauksenKoulutusmoduuli2022 => ({
   $class:
     'fi.oph.koski.schema.VSTKotoutumiskoulutuksenOhjauksenKoulutusmoduuli2022',
   tunniste: Koodistokoodiviite({

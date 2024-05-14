@@ -18,23 +18,15 @@ export type VSTKotoutumiskoulutuksenOhjauksenSuoritus2022 = {
   tila?: Koodistokoodiviite<'suorituksentila', string>
 }
 
-export const VSTKotoutumiskoulutuksenOhjauksenSuoritus2022 = (
-  o: {
-    koulutusmoduuli?: VSTKotoutumiskoulutuksenOhjauksenKoulutusmoduuli2022
-    tyyppi?: Koodistokoodiviite<
-      'suorituksentyyppi',
-      'vstmaahanmuuttajienkotoutumiskoulutuksenohjauksensuoritus'
-    >
-    tila?: Koodistokoodiviite<'suorituksentila', string>
-  } = {}
-): VSTKotoutumiskoulutuksenOhjauksenSuoritus2022 => ({
+export const VSTKotoutumiskoulutuksenOhjauksenSuoritus2022 = (o: {
+  koulutusmoduuli: VSTKotoutumiskoulutuksenOhjauksenKoulutusmoduuli2022
+  tyyppi?: Koodistokoodiviite<
+    'suorituksentyyppi',
+    'vstmaahanmuuttajienkotoutumiskoulutuksenohjauksensuoritus'
+  >
+  tila?: Koodistokoodiviite<'suorituksentila', string>
+}): VSTKotoutumiskoulutuksenOhjauksenSuoritus2022 => ({
   $class: 'fi.oph.koski.schema.VSTKotoutumiskoulutuksenOhjauksenSuoritus2022',
-  koulutusmoduuli: VSTKotoutumiskoulutuksenOhjauksenKoulutusmoduuli2022({
-    tunniste: Koodistokoodiviite({
-      koodiarvo: 'ohjaus',
-      koodistoUri: 'vstkoto2022kokonaisuus'
-    })
-  }),
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'vstmaahanmuuttajienkotoutumiskoulutuksenohjauksensuoritus',
     koodistoUri: 'suorituksentyyppi'

@@ -214,12 +214,12 @@ object ExamplesVapaaSivistystyöKotoutuskoulutus2022 {
 
     lazy val keskeneräinen: VSTKotoutumiskoulutuksenOhjauksenSuoritus2022 =
       VSTKotoutumiskoulutuksenOhjauksenSuoritus2022(
-        koulutusmoduuli = VSTKotoutumiskoulutuksenOhjauksenKoulutusmoduuli2022(laajuus = Some(LaajuusOpintopisteissä(4))),
+        koulutusmoduuli = VSTKotoutumiskoulutuksenOhjauksenKoulutusmoduuli2022(laajuus = LaajuusOpintopisteissä(4)),
       )
 
     lazy val suoritettu: VSTKotoutumiskoulutuksenOhjauksenSuoritus2022 =
       VSTKotoutumiskoulutuksenOhjauksenSuoritus2022(
-        koulutusmoduuli = VSTKotoutumiskoulutuksenOhjauksenKoulutusmoduuli2022(laajuus = Some(LaajuusOpintopisteissä(7))),
+        koulutusmoduuli = VSTKotoutumiskoulutuksenOhjauksenKoulutusmoduuli2022(laajuus = LaajuusOpintopisteissä(7)),
       )
   }
 
