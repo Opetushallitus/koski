@@ -107,6 +107,9 @@ const spesificComponent = (key, value) => {
   if (key === 'tila') {
     return Tilat
   }
+  if (key === 'osaAikaisuusjaksot') {
+    return OsaAikaisuusJaksotInline
+  }
   return undefined
 }
 
@@ -179,6 +182,25 @@ const OsaamisalaJaksotInline = ({ value }) => {
         <li key={index}>
           <AikajaksoInline value={value} />
           <Koodistoviite value={jakso.osaamisala} />
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+const OsaAikaisuusJaksotInline = ({ value }) => {
+  const osaAikaisuusJaksot = value
+  return (
+    <ul>
+      {osaAikaisuusJaksot.map((jakso, index) => (
+        <li key={index}>
+          <AikajaksoInline value={jakso} />
+          <table>
+            <tr>
+              <td class="label">{t('Osa-aikaisuus')}</td>
+              <td class="value">{jakso.osaAikaisuus + ' %'}</td>
+            </tr>
+          </table>
         </li>
       ))}
     </ul>
