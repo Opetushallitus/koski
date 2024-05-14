@@ -14,13 +14,20 @@ object IBValidation {
       case _ => HttpStatus.ok
     }
 
-  private def validateIbTutkinnonSuoritus(opiskeluoikeus: IBOpiskeluoikeus, config: Config): HttpStatus =
-    opiskeluoikeus.suoritukset.headOption match {
-      case Some(s: IBTutkinnonSuoritus) if predictedArvioinninVaatiminenVoimassa(config) =>
-        suorituksenVahvistusVaatiiPredictedArvioinnin(s)
-      case _ =>
-        HttpStatus.ok
+  private def validateIbTutkinnonSuoritus(opiskeluoikeus: IBOpiskeluoikeus, config: Config): HttpStatus = {
+    // Ib-tutkinnolla voi olla 2 päätason suoritusta
+    val suoritusHttpStatus: HttpStatus = opiskeluoikeus.suoritukset.foldLeft(HttpStatus.ok) {
+      (accStatus, suoritus) =>
+        suoritus match {
+          case s: IBTutkinnonSuoritus if predictedArvioinninVaatiminenVoimassa(config) =>
+            suorituksenVahvistusVaatiiPredictedArvioinnin(s)
+          case _ =>
+            accStatus
+        }
     }
+
+    suoritusHttpStatus
+  }
 
   def suorituksenVahvistusVaatiiPredictedArvioinnin(päätasonSuoritus: IBTutkinnonSuoritus): HttpStatus =
     if (
