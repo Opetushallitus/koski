@@ -75,7 +75,6 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
       aidinkielenomainenKieliOppimaara = getOppiaineenOppimäärä("AOM", t)(pakollisetValtakunnalliset),
       uskonto = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, t, "KT")(pakollisetValtakunnalliset),
       elamankatsomustieto = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, t, "ET")(pakollisetValtakunnalliset),
-      uskonnonOppimaara = uskonnonOppimääräIfNotElämänkatsomustieto(pakollisetValtakunnalliset, t),
       historia = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, t, "HI")(pakollisetValtakunnalliset),
       yhteiskuntaoppi = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, t, "YH")(pakollisetValtakunnalliset),
       matematiikka = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, t, "MA")(pakollisetValtakunnalliset),
@@ -174,22 +173,6 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
   private def täppäIfYksilöllistetty(osasuoritus: ROsasuoritusRow): String = {
     val isYksilöllistetty = JsonSerializer.extract[Option[Boolean]](osasuoritus.data \ "yksilöllistettyOppimäärä").getOrElse(false)
     if (isYksilöllistetty) "*" else ""
-  }
-
-  private def uskonnonOppimääräIfNotElämänkatsomustieto(osasuoritukset: Seq[ROsasuoritusRow], t: LocalizationReader): String = {
-    val hasElämänkatsomustieto = osasuoritukset.exists(_.koulutusmoduuliKoodiarvo == "ET")
-    if (hasElämänkatsomustieto) "" else uskonnonOppimäärä(osasuoritukset, t)
-  }
-
-  private def uskonnonOppimäärä(osasuoritukset: Seq[ROsasuoritusRow], t: LocalizationReader): String = {
-    osasuoritukset
-      .find(_.koulutusmoduuliKoodiarvo == "KT")
-      .map { uskonto =>
-        JsonSerializer.extract[Option[Koodistokoodiviite]](uskonto.data \ "koulutusmoduuli" \ "uskonnonOppimäärä")
-          .flatMap(_.nimi.map(_.get(t.language)))
-          .getOrElse(t.get("raportti-excel-default-value-oppimäärä-puuttuu"))
-      }
-      .getOrElse(t.get("raportti-excel-default-value-oppiaine-puuttuu"))
   }
 
   private def getOppiaineenOppimäärä(koodistoKoodi: String, t: LocalizationReader)(osasuoritukset: Seq[ROsasuoritusRow]): String = {
@@ -310,7 +293,6 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
     "aidinkielenomainenKieli" -> CompactColumn(t.get("raportti-excel-kolumni-aidinkielenomainenKieli")),
     "aidinkielenomainenKieliOppimaara" -> CompactColumn(t.get("raportti-excel-kolumni-aidinkielenomainenKieliOppimaara")),
     "uskonto" -> CompactColumn(t.get("raportti-excel-kolumni-uskonto")),
-    "uskonnonOppimaara" -> CompactColumn(t.get("raportti-excel-kolumni-uskonnonOppimaara")),
     "elamankatsomustieto" -> CompactColumn(t.get("raportti-excel-kolumni-elamankatsomustieto")),
     "historia" -> CompactColumn(t.get("raportti-excel-kolumni-historia")),
     "yhteiskuntaoppi" -> CompactColumn(t.get("raportti-excel-kolumni-yhteiskuntaoppi")),
@@ -390,7 +372,6 @@ private[raportit] case class PerusopetusRow(
   aidinkielenomainenKieli: String,
   aidinkielenomainenKieliOppimaara: String,
   uskonto: String,
-  uskonnonOppimaara: String,
   elamankatsomustieto: String,
   historia: String,
   yhteiskuntaoppi: String,
