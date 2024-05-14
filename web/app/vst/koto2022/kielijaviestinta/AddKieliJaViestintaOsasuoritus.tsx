@@ -7,6 +7,7 @@ import { VSTKotoutumiskoulutuksenKieliJaViestintäosaamisenSuoritus2022 } from '
 import { VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenKoulutusmoduuli2022 } from '../../../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenKoulutusmoduuli2022'
 import { VapaanSivistystyönOpiskeluoikeus } from '../../../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeus'
 import { AddKoodistonOsasuoritus } from '../../common/AddKoodistonOsasuoritus'
+import { LaajuusOpintopisteissä } from "../../../types/fi/oph/koski/schema/LaajuusOpintopisteissa"
 
 type AddKieliJaViestintaOsasuoritus = CommonProps<{
   form: FormModel<VapaanSivistystyönOpiskeluoikeus>
@@ -34,6 +35,6 @@ const createOsasuoritus = (
   VSTKotoutumiskoulutuksenKieliJaViestintäosaamisenOsasuoritus({
     koulutusmoduuli:
       VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenKoulutusmoduuli2022(
-        { tunniste }
+        { tunniste, laajuus: LaajuusOpintopisteissä({arvo: 1}) }
       )
   })

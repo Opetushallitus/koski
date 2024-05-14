@@ -12,14 +12,14 @@ export type VSTKotoutumiskoulutuksenValinnaistenOpintojenAlasuorituksenKoulutusm
     $class: 'fi.oph.koski.schema.VSTKotoutumiskoulutuksenValinnaistenOpintojenAlasuorituksenKoulutusmoduuli2022'
     kuvaus: LocalizedString
     tunniste: PaikallinenKoodi
-    laajuus?: LaajuusOpintopisteissä
+    laajuus: LaajuusOpintopisteissä
   }
 
 export const VSTKotoutumiskoulutuksenValinnaistenOpintojenAlasuorituksenKoulutusmoduuli2022 =
   (o: {
     kuvaus: LocalizedString
     tunniste: PaikallinenKoodi
-    laajuus?: LaajuusOpintopisteissä
+    laajuus: LaajuusOpintopisteissä
   }): VSTKotoutumiskoulutuksenValinnaistenOpintojenAlasuorituksenKoulutusmoduuli2022 => ({
     $class:
       'fi.oph.koski.schema.VSTKotoutumiskoulutuksenValinnaistenOpintojenAlasuorituksenKoulutusmoduuli2022',

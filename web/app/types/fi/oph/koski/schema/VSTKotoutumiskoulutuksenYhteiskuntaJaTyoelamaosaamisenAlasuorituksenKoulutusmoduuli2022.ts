@@ -14,7 +14,7 @@ export type VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaamisenAlasuorituk
       'vstkoto2022yhteiskuntajatyoosaamiskoulutus',
       string
     >
-    laajuus?: LaajuusOpintopisteissä
+    laajuus: LaajuusOpintopisteissä
   }
 
 export const VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaamisenAlasuorituksenKoulutusmoduuli2022 =
@@ -23,7 +23,7 @@ export const VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaamisenAlasuoritu
       'vstkoto2022yhteiskuntajatyoosaamiskoulutus',
       string
     >
-    laajuus?: LaajuusOpintopisteissä
+    laajuus: LaajuusOpintopisteissä
   }): VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaamisenAlasuorituksenKoulutusmoduuli2022 => ({
     $class:
       'fi.oph.koski.schema.VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaamisenAlasuorituksenKoulutusmoduuli2022',

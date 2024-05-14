@@ -11,13 +11,13 @@ export type VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintoj
   {
     $class: 'fi.oph.koski.schema.VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenKoulutusmoduuli2022'
     tunniste: Koodistokoodiviite<'vstkoto2022kielijaviestintakoulutus', string>
-    laajuus?: LaajuusOpintopisteissä
+    laajuus: LaajuusOpintopisteissä
   }
 
 export const VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenKoulutusmoduuli2022 =
   (o: {
     tunniste: Koodistokoodiviite<'vstkoto2022kielijaviestintakoulutus', string>
-    laajuus?: LaajuusOpintopisteissä
+    laajuus: LaajuusOpintopisteissä
   }): VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenKoulutusmoduuli2022 => ({
     $class:
       'fi.oph.koski.schema.VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenKoulutusmoduuli2022',
