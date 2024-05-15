@@ -208,7 +208,7 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
                 LukionOpiskeluoikeusjakso(date(2024, 1, 1), LukioExampleData.opiskeluoikeusPäättynyt, Some(ExampleData.valtionosuusRahoitteinen))
               )
             ),
-            suoritukset = List(suoritus.copy(osasuoritukset = osasuoritukset))
+            suoritukset = List(preIBSuoritus, suoritus.copy(osasuoritukset = osasuoritukset))
           )
           setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
             verifyResponseStatus(400,
