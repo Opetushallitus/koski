@@ -140,7 +140,6 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
 
         row.elamankatsomustieto should equal("5")
         row.uskonto should equal("Oppiaine puuttuu")
-        row.uskonnonOppimaara should equal("")
       }
     }
 
@@ -300,7 +299,6 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
     aidinkielenomainenKieli = "8",
     aidinkielenomainenKieliOppimaara = "suomi",
     uskonto = "10",
-    uskonnonOppimaara = "Ortodoksinen uskonto",
     elamankatsomustieto = "Oppiaine puuttuu",
     historia = "8",
     yhteiskuntaoppi = "10",
