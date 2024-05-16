@@ -1,3 +1,6 @@
+## 16.5.2024
+- Lisättu Tunti validiksi Perusopetukseen valmistavaan opetuksen kokonaislaajuuden yksiköksi.
+
 ## 22.4.2024
 - Deprekoitu ESH-opiskeluoikeuden maksuttomuuteen liittyvät kentät.
 

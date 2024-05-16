@@ -4703,7 +4703,7 @@ describe('Perusopetus', function () {
           'Koulutus Perusopetukseen valmistava opetus 999905 57/011/2015\n' +
             'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
             'Suorituskieli suomi\n' +
-            'Kokonaislaajuus 11 vuosiviikkotuntia\n' +
+            'Kokonaislaajuus 11 tuntia\n' +
             'Suoritus valmis Vahvistus : 1.6.2018 Jyväskylä Reijo Reksi , rehtori'
         )
       })

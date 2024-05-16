@@ -4,6 +4,10 @@
 
 - Nuorten perusopetuksen opiskeluoikeudessa ei saa olla kuin enintään yksi kesken-tilainen vuosiluokan suoritus.
 
+## 17.5.2024
+
+- Tunti on ainoa validi Perusopetukseen valmistavaan opetuksen kokonaislaajuuden yksikkö (voimaantulopäivä konfiguroitavissa).
+
 ## 2.5.2024
 
 - Vapaan Sivistystyön Kotoutumiskoulutuksen osasuoritusten laajuusvalidaatiot purettu.

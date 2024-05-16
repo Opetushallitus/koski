@@ -33,7 +33,7 @@ object ExamplesPerusopetukseenValmistavaOpetus {
         suorituskieli = Some(Koodistokoodiviite("FI", "kieli"))
       )
     )),
-    kokonaislaajuus = Some(LaajuusVuosiviikkotunneissa(11))
+    kokonaislaajuus = Some(LaajuusTunneissa(11))
   )
 
   val perusopetukseenValmistavaOpiskeluoikeus = PerusopetukseenValmistavanOpetuksenOpiskeluoikeus(

@@ -50,6 +50,12 @@ class OppijaValidationPerusopetukseenValmistavaSpec extends TutkinnonPerusteetTe
       }
     }
 
+    "Kokonaislaajuuden yksikkö oltava tunneissa" in {
+      val suoritus = perusopetukseenValmistavanOpetuksenSuoritus.copy(kokonaislaajuus = Some(LaajuusVuosiviikkotunneissa(5)))
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(suoritus))) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.perusopetukseenValmistavaOpetusKokonaislaajuusYksikköEiTunneissa())
+      }
+    }
 
     "Suorituskieli vain suomi tai ruotsi" in {
       lazy val suomenKieli = Koodistokoodiviite("FI", Some("suomi"), "kieli", None)

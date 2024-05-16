@@ -46,7 +46,7 @@ case class PerusopetukseenValmistavanOpetuksenSuoritus(
   @Title("Oppiaineet")
   override val osasuoritukset: Option[List[PerusopetukseenValmistavanOpetuksenOsasuoritus]],
   @Description("Oppiaineiden kokonaislaajuus vuosiviikkotunneissa")
-  kokonaislaajuus: Option[LaajuusVuosiviikkotunneissa] = None,
+  kokonaislaajuus: Option[LaajuusVuosiviikkotunneissaTaiTunneissa] = None,
   @Tooltip("Todistuksella näkyvät lisätiedot. Esimerkiksi tieto oppilaan perusopetuksen aloittamisesta (luokkataso).")
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("perusopetukseenvalmistavaopetus")
