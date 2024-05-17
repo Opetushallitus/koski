@@ -11,7 +11,6 @@ import fi.oph.koski.schema._
 import fi.oph.koski.util.Futures
 
 import java.time.LocalDate
-import java.time.temporal.ChronoField
 import scala.concurrent.Future
 import scala.concurrent.duration.DurationInt
 
