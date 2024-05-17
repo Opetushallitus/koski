@@ -91,8 +91,12 @@ case class AikuistenPerusopetuksenOppimääränKurssikertymät(db: DB) extends Q
           --- tämän tarkoitus on saada eronnut-tilan alkamisen kanssa samana päivänä arvioidut kurssit edelliselle aikajaksolle
           and ((case when viimeisin_tila = 'eronnut' then r_opiskeluoikeus_aikajakso.loppu - interval '1 day' else r_opiskeluoikeus_aikajakso.loppu end) >= r_osasuoritus.arviointi_paiva or r_opiskeluoikeus_aikajakso.loppu = '9999-12-30')
         where (r_osasuoritus.suorituksen_tyyppi = 'aikuistenperusopetuksenkurssi' or r_osasuoritus.suorituksen_tyyppi = 'aikuistenperusopetuksenalkuvaiheenkurssi')
-          and r_osasuoritus.arviointi_paiva >= $aikaisintaan
-          and r_osasuoritus.arviointi_paiva <= $viimeistaan
+          -- jokin arviointipäivistä annetulla aikavälillä
+          and EXISTS (
+            SELECT 1
+            FROM UNNEST(r_osasuoritus.arviointi_paivat) AS arviointipvm
+            WHERE arviointipvm BETWEEN $aikaisintaan AND $viimeistaan
+          )
           and r_osasuoritus.arviointi_arvosana_koodiarvo != 'O'
        group by paatason_suoritus.oppilaitos_nimi, paatason_suoritus.oppilaitos_oid
       ) kurssikertymat
@@ -106,8 +110,11 @@ case class AikuistenPerusopetuksenOppimääränKurssikertymät(db: DB) extends Q
         join r_opiskeluoikeus_aikajakso on oo_opiskeluoikeus_oid = r_opiskeluoikeus_aikajakso.opiskeluoikeus_oid
         join r_osasuoritus on paatason_suoritus.paatason_suoritus_id = r_osasuoritus.paatason_suoritus_id or oo_opiskeluoikeus_oid = r_osasuoritus.sisaltyy_opiskeluoikeuteen_oid
         where (r_osasuoritus.suorituksen_tyyppi = 'aikuistenperusopetuksenkurssi' or r_osasuoritus.suorituksen_tyyppi = 'aikuistenperusopetuksenalkuvaiheenkurssi')
-          and r_osasuoritus.arviointi_paiva >= $aikaisintaan
-          and r_osasuoritus.arviointi_paiva <= $viimeistaan
+          and EXISTS (
+            SELECT 1
+            FROM UNNEST(r_osasuoritus.arviointi_paivat) AS arviointipvm
+            WHERE arviointipvm BETWEEN $aikaisintaan AND $viimeistaan
+          )
           and r_osasuoritus.arviointi_arvosana_koodiarvo != 'O'
           and (oo_alkamisaiva > r_osasuoritus.arviointi_paiva or oo_paattymispaiva < r_osasuoritus.arviointi_paiva)
         group by paatason_suoritus.oppilaitos_nimi, paatason_suoritus.oppilaitos_oid

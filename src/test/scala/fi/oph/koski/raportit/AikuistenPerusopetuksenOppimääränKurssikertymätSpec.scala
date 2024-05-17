@@ -15,7 +15,7 @@ import fi.oph.koski.organisaatio.MockOrganisaatiot.jyväskylänNormaalikoulu
 import fi.oph.koski.raportit.aikuistenperusopetus.{AikuistenPerusopetuksenOppimääränKurssikertymät, AikuistenPerusopetuksenOppimääränKurssikertymätRow}
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import fi.oph.koski.schema.Organisaatio.Oid
-import fi.oph.koski.schema.{Aikajakso, AikuistenPerusopetuksenAlkuvaiheenÄidinkieliJaKirjallisuus, AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot, AikuistenPerusopetuksenOpiskeluoikeudenTila, AikuistenPerusopetuksenOpiskeluoikeus, AikuistenPerusopetuksenOpiskeluoikeusjakso, Koodistokoodiviite, Oppilaitos, SisältäväOpiskeluoikeus}
+import fi.oph.koski.schema.{Aikajakso, AikuistenPerusopetuksenAlkuvaiheenÄidinkieliJaKirjallisuus, AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot, AikuistenPerusopetuksenOpiskeluoikeudenTila, AikuistenPerusopetuksenOpiskeluoikeus, AikuistenPerusopetuksenOpiskeluoikeusjakso, Koodistokoodiviite, Oppilaitos, PerusopetuksenOppiaineenArviointi, SisältäväOpiskeluoikeus}
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
@@ -34,8 +34,10 @@ class AikuistenPerusopetuksenOppimääränKurssikertymätSpec
   private val application = KoskiApplicationForTests
   private val raporttiBuilder = AikuistenPerusopetuksenOppimääränKurssikertymät(application.raportointiDatabase.db)
   private lazy val t: LocalizationReader = new LocalizationReader(KoskiApplicationForTests.koskiLocalizationRepository, "fi")
+  private val aikaisintaan: LocalDate = date(2006, 1, 1)
+  private val viimeistaan: LocalDate = date(2018, 12, 30)
   private lazy val raportti =
-    raporttiBuilder.build(List(jyväskylänNormaalikoulu), date(2006, 1, 1), date(2018, 12, 30), t)(session(defaultUser)).rows.map(_.asInstanceOf[AikuistenPerusopetuksenOppimääränKurssikertymätRow])
+    raporttiBuilder.build(List(jyväskylänNormaalikoulu), aikaisintaan, viimeistaan, t)(session(defaultUser)).rows.map(_.asInstanceOf[AikuistenPerusopetuksenOppimääränKurssikertymätRow])
 
   override protected def alterFixture(): Unit = {
     val ooEronnut = ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen.copy(
@@ -58,7 +60,35 @@ class AikuistenPerusopetuksenOppimääränKurssikertymätSpec
         )
       )
     )
+
+    val oo  = ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen.copy(
+      tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(
+        List(
+          AikuistenPerusopetuksenOpiskeluoikeusjakso(aikaisintaan.minusYears(1), opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
+        )
+      ),
+      suoritukset = List(
+        aikuistenPerusopetuksenAlkuvaiheenSuoritus.copy(
+          osasuoritukset = Some(List(
+            alkuvaiheenOppiaineenSuoritus(AikuistenPerusopetuksenAlkuvaiheenÄidinkieliJaKirjallisuus(kieli = Koodistokoodiviite(koodiarvo = "AI1", koodistoUri = "oppiaineaidinkielijakirjallisuus"))).copy(
+              arviointi = PerusopetusExampleData.arviointi(9, Some(viimeistaan.plusMonths(2))),
+              osasuoritukset = Some(List(
+                alkuvaiheenKurssinSuoritus("AÄI1").copy(arviointi = Some(List(
+                  PerusopetuksenOppiaineenArviointi(7, Some(aikaisintaan)),
+                  PerusopetuksenOppiaineenArviointi(9, Some(viimeistaan.plusMonths(1))),
+                ))),
+              ))
+            )
+          ))
+        )
+      )
+    )
+
     putOpiskeluoikeus(ooEronnut, tyhjä) {
+      verifyResponseStatusOk()
+    }
+
+    putOpiskeluoikeus(oo, tyhjä.copy(hetu = "010106A8691")) {
       verifyResponseStatusOk()
     }
 
@@ -119,22 +149,22 @@ class AikuistenPerusopetuksenOppimääränKurssikertymätSpec
       lazy val r = findSingle(raportti)
 
       r.oppilaitos should equal("Jyväskylän normaalikoulu")
-      r.yhteensäSuorituksia should equal(32)
-      r.yhteensäSuoritettujaSuorituksia should equal(26)
+      r.yhteensäSuorituksia should equal(33)
+      r.yhteensäSuoritettujaSuorituksia should equal(27)
       r.yhteensäTunnistettujaSuorituksia should equal(6)
       r.yhteensäTunnistettujaSuorituksiaRahoituksenPiirissä should equal(3)
       r.päättövaiheenSuorituksia should equal(6)
       r.päättövaiheenSuoritettujaSuorituksia should equal(2)
       r.päättövaiheenTunnistettujaSuorituksia should equal(4)
       r.päättövaiheenTunnistettujaSuorituksiaRahoituksenPiirissä should equal(2)
-      r.alkuvaiheenSuorituksia should equal(26)
-      r.alkuvaiheenSuoritettujaSuorituksia should equal(24)
+      r.alkuvaiheenSuorituksia should equal(27)
+      r.alkuvaiheenSuoritettujaSuorituksia should equal(25)
       r.alkuvaiheenTunnistettujaSuorituksia should equal(2)
       r.alkuvaiheenTunnistettujaSuorituksiaRahoituksenPiirissä should equal(1)
       r.suoritetutTaiRahoituksenPiirissäTunnustetutMuutaKauttaRahoitetut should equal(2)
       r.suoritetutTaiRahoituksenPiirissäTunnustetutEiRahoitusTietoa should equal(0)
       r.suoritetutTaiRahoituksenPiirissäTunnustetutArviointipäiväEiTiedossa should equal(2)
-      r.eriVuonnaKorotetutSuoritukset should equal(2)
+      r.eriVuonnaKorotetutSuoritukset should equal(3)
     }
   }
 
