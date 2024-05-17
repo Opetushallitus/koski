@@ -197,8 +197,8 @@ const OsaAikaisuusJaksotInline = ({ value }) => {
           <AikajaksoInline value={jakso} />
           <table>
             <tr>
-              <td class="label">{t('Osa-aikaisuus')}</td>
-              <td class="value">{jakso.osaAikaisuus + ' %'}</td>
+              <td className="label">{t('Osa-aikaisuus')}</td>
+              <td className="value">{jakso.osaAikaisuus + ' %'}</td>
             </tr>
           </table>
         </li>
