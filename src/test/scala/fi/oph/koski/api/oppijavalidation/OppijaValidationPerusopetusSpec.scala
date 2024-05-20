@@ -5,6 +5,7 @@ import fi.oph.koski.api.misc.OpiskeluoikeusTestMethodsPerusopetus
 import fi.oph.koski.documentation.AmmatillinenExampleData.primusLähdejärjestelmäId
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.ExamplesEsiopetus.osaAikainenErityisopetus
+import fi.oph.koski.documentation.ExamplesPerusopetus.ysinOpiskeluoikeusKesken
 import fi.oph.koski.documentation.OsaAikainenErityisopetusExampleData._
 import fi.oph.koski.documentation.PerusopetusExampleData._
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.{helsinginMedialukio, jyväskylänNormaalikoulu, ressunLukio}
@@ -164,6 +165,40 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
         ))
       )) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.nuortenPerusopetuksenValmistunutTilaIlmanVahvistettuaPäättötodistusta())
+      }
+    }
+
+    "Oppijalla ei voi olla kahta keskeneräistä vuosiluokan suoritusta" - {
+      "Siirrettäessä kerralla -> HTTP 400" in {
+        setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(
+          perusopetuksenOppimääränSuoritusKesken,
+          kahdeksannenLuokanSuoritus.copy(vahvistus = None),
+          yhdeksännenLuokanSuoritus.copy(vahvistus = None)
+        ))) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.useitaKeskeneräisiäVuosiluokanSuoritukia())
+        }
+      }
+
+      "Siirrettäessä erissä -> HTTP 400" in {
+        val headers = authHeaders(jyväskylänNormaalikoulunPalvelukäyttäjä) ++ jsonContent
+        val opiskeluoikeus = defaultOpiskeluoikeus.copy(
+          lähdejärjestelmänId = Some(primusLähdejärjestelmäId("primus-30405321")),
+          suoritukset = List(
+            perusopetuksenOppimääränSuoritusKesken,
+            kahdeksannenLuokanSuoritus.copy(vahvistus = None),
+          ),
+        )
+
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus, headers = headers) {
+          verifyResponseStatusOk()
+        }
+
+        putOpiskeluoikeus(
+          opiskeluoikeus = opiskeluoikeus.copy(suoritukset = List(yhdeksännenLuokanSuoritus.copy(vahvistus = None))),
+          headers = headers,
+        ) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.useitaKeskeneräisiäVuosiluokanSuoritukia())
+        }
       }
     }
 

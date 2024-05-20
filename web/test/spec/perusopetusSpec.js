@@ -3743,6 +3743,37 @@ describe('Perusopetus', function () {
                         })
                       })
 
+                      describe('Kun muutetaan tila takaisin valmiiksi', function () {
+                        before(
+                          tilaJaVahvistus.merkitseValmiiksi,
+                          dialog.editor
+                            .property('päivä')
+                            .setValue(currentDateStr),
+                          dialog.myöntäjät
+                            .itemEditor(0)
+                            .setValue('Lisää henkilö'),
+                          dialog.myöntäjät
+                            .itemEditor(0)
+                            .propertyBySelector('.nimi')
+                            .setValue('Reijo Reksi'),
+                          dialog.myöntäjät
+                            .itemEditor(0)
+                            .propertyBySelector('.titteli')
+                            .setValue('rehtori'),
+                          dialog.editor
+                            .property('paikkakunta')
+                            .setValue('Jyväskylä mlk'),
+                          dialog.merkitseValmiiksi
+                        )
+                        it('Tila on "valmis" ja vahvistus näytetään', function () {
+                          expect(tilaJaVahvistus.text()).to.equal(
+                            'Suoritus valmis Vahvistus : ' +
+                              currentDateStr +
+                              ' Jyväskylä mlk Reijo Reksi , rehtori\nSiirretään seuraavalle luokalle'
+                          )
+                        })
+                      })
+
                       describe('Lisättäessä toinen', function () {
                         before(
                           editor.edit,
@@ -3868,7 +3899,15 @@ describe('Perusopetus', function () {
                                   })
 
                                   describe('Tallennettaessa', function () {
-                                    before(editor.saveChanges)
+                                    before(
+                                      opinnot.oppiaineet.merkitseOppiaineetValmiiksi(),
+                                      opintojenTilaJaVahvistus.merkitseValmiiksi,
+                                      opintojenTilaJaVahvistus.lisääVahvistus(
+                                        date2019Str
+                                      ),
+                                      editor.saveChanges
+                                    )
+
                                     it('Uusi suoritus on edelleen valittu', function () {
                                       expect(
                                         editor.property('luokka').getValue()
@@ -3884,6 +3923,7 @@ describe('Perusopetus', function () {
                                     describe('Kun kaikki luokka-asteet on lisätty', function () {
                                       before(editor.edit)
                                       for (var i = 3; i <= 9; i++) {
+                                        const pvm = `2.1.${2015 + i}`
                                         before(
                                           lisääSuoritus.open(
                                             'lisää vuosiluokan suoritus'
@@ -3893,9 +3933,22 @@ describe('Perusopetus', function () {
                                             .setValue(i + 'a'),
                                           lisääSuoritus
                                             .property('alkamispäivä')
-                                            .setValue(currentDatePlusYears(i)),
-                                          lisääSuoritus.lisääSuoritus
+                                            .setValue(pvm),
+                                          lisääSuoritus.lisääSuoritus,
+                                          opinnot.oppiaineet.merkitseOppiaineetValmiiksi()
                                         )
+                                        if (i < 9) {
+                                          before(
+                                            opintojenTilaJaVahvistus.merkitseValmiiksi,
+                                            opintojenTilaJaVahvistus.lisääVahvistus(
+                                              pvm
+                                            ),
+                                            opinnot.avaaLisaysDialogi,
+                                            opiskeluoikeus
+                                              .tila()
+                                              .aseta('valmistunut')
+                                          )
+                                        }
                                       }
 
                                       it('Suorituksia ei voi enää lisätä', function () {
@@ -3936,6 +3989,7 @@ describe('Perusopetus', function () {
                                             '2. vuosiluokka'
                                           ),
                                           editor.edit,
+                                          tilaJaVahvistus.merkitseKeskeneräiseksi,
                                           opinnot.oppiaineet.merkitseOppiaineetValmiiksi(),
                                           opintojenTilaJaVahvistus.merkitseValmiiksi,
                                           myöntäjät.removeFromDropdown(

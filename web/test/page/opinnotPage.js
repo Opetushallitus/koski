@@ -368,6 +368,10 @@ function Oppiaineet() {
           if (arvosana.isVisible()) {
             promises.push(arvosana.selectValue(selectedArvosana)())
           }
+          var laajuus = oppiaine.propertyBySelector('.property.laajuus .value')
+          if (laajuus.isVisible()) {
+            promises.push(laajuus.setValue('3')())
+          }
         }
         return Q.all(promises)
       }
@@ -1730,6 +1734,9 @@ function Editor(elem) {
     },
     subEditor: function (selector) {
       return Editor(findSingle(selector, elem))
+    },
+    subEditors: function (selector) {
+      return S(selector, elem).map(Editor)
     },
     isEditBarVisible: function () {
       return S('#edit-bar').hasClass('visible')
