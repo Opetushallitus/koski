@@ -18,6 +18,7 @@ case class AikuistenPerusopetuksenOppimääränKurssikertymät(db: DB) extends Q
       oppilaitos =  r.rs.getString("oppilaitos_nimi"),
       yhteensäSuorituksia = r.rs.getInt("yhteensä_suorituksia"),
       yhteensäSuoritettujaSuorituksia = r.rs.getInt("yhteensä_suoritettuja_suorituksia"),
+      yhteensäSuoritettujenArviointeja = r.rs.getInt("yhteensä_suoritettujen_arviointeja"),
       yhteensäTunnistettujaSuorituksia = r.rs.getInt("yhteensä_tunnistettuja_suorituksia"),
       yhteensäTunnistettujaSuorituksiaRahoituksenPiirissä = r.rs.getInt("yhteensä_tunnistettuja_suorituksia_rahoituksen_piirissä"),
       päättövaiheenSuorituksia = r.rs.getInt("päättövaiheen_suorituksia"),
@@ -71,6 +72,7 @@ case class AikuistenPerusopetuksenOppimääränKurssikertymät(db: DB) extends Q
           oppilaitos_nimi oppilaitos_nimi,
           count(distinct r_osasuoritus.osasuoritus_id) yhteensä_suorituksia,
           count(distinct (case when tunnustettu = false then r_osasuoritus.osasuoritus_id end)) yhteensä_suoritettuja_suorituksia,
+          coalesce(sum(arviointipvm_count), 0) as yhteensä_suoritettujen_arviointeja,
           count(distinct (case when tunnustettu then r_osasuoritus.osasuoritus_id end)) yhteensä_tunnistettuja_suorituksia,
           count(distinct (case when tunnustettu_rahoituksen_piirissa then r_osasuoritus.osasuoritus_id end)) yhteensä_tunnistettuja_suorituksia_rahoituksen_piirissä,
           count(distinct (case when suorituksen_tyyppi = 'aikuistenperusopetuksenkurssi' then r_osasuoritus.osasuoritus_id end)) päättövaiheen_suorituksia,
@@ -90,14 +92,14 @@ case class AikuistenPerusopetuksenOppimääränKurssikertymät(db: DB) extends Q
           and r_opiskeluoikeus_aikajakso.alku <= r_osasuoritus.arviointi_paiva
           --- tämän tarkoitus on saada eronnut-tilan alkamisen kanssa samana päivänä arvioidut kurssit edelliselle aikajaksolle
           and ((case when viimeisin_tila = 'eronnut' then r_opiskeluoikeus_aikajakso.loppu - interval '1 day' else r_opiskeluoikeus_aikajakso.loppu end) >= r_osasuoritus.arviointi_paiva or r_opiskeluoikeus_aikajakso.loppu = '9999-12-30')
+        left join lateral (
+          select count(1) as arviointipvm_count
+          from unnest(r_osasuoritus.arviointi_paivat) as arviointipvm
+          where arviointipvm between $aikaisintaan and $viimeistaan
+        ) as subquery on true
         where (r_osasuoritus.suorituksen_tyyppi = 'aikuistenperusopetuksenkurssi' or r_osasuoritus.suorituksen_tyyppi = 'aikuistenperusopetuksenalkuvaiheenkurssi')
-          -- jokin arviointipäivistä annetulla aikavälillä
-          and EXISTS (
-            SELECT 1
-            FROM UNNEST(r_osasuoritus.arviointi_paivat) AS arviointipvm
-            WHERE arviointipvm BETWEEN $aikaisintaan AND $viimeistaan
-          )
           and r_osasuoritus.arviointi_arvosana_koodiarvo != 'O'
+          and arviointipvm_count > 0
        group by paatason_suoritus.oppilaitos_nimi, paatason_suoritus.oppilaitos_oid
       ) kurssikertymat
       --- aikajaksojen ulkopuoliset kurssit
@@ -109,14 +111,15 @@ case class AikuistenPerusopetuksenOppimääränKurssikertymät(db: DB) extends Q
         from paatason_suoritus
         join r_opiskeluoikeus_aikajakso on oo_opiskeluoikeus_oid = r_opiskeluoikeus_aikajakso.opiskeluoikeus_oid
         join r_osasuoritus on paatason_suoritus.paatason_suoritus_id = r_osasuoritus.paatason_suoritus_id or oo_opiskeluoikeus_oid = r_osasuoritus.sisaltyy_opiskeluoikeuteen_oid
+        left join lateral (
+          select count(1) as arviointipvm_count
+          from unnest(r_osasuoritus.arviointi_paivat) as arviointipvm
+          where arviointipvm between $aikaisintaan and $viimeistaan
+        ) as subquery on true
         where (r_osasuoritus.suorituksen_tyyppi = 'aikuistenperusopetuksenkurssi' or r_osasuoritus.suorituksen_tyyppi = 'aikuistenperusopetuksenalkuvaiheenkurssi')
-          and EXISTS (
-            SELECT 1
-            FROM UNNEST(r_osasuoritus.arviointi_paivat) AS arviointipvm
-            WHERE arviointipvm BETWEEN $aikaisintaan AND $viimeistaan
-          )
           and r_osasuoritus.arviointi_arvosana_koodiarvo != 'O'
           and (oo_alkamisaiva > r_osasuoritus.arviointi_paiva or oo_paattymispaiva < r_osasuoritus.arviointi_paiva)
+          and arviointipvm_count > 0
         group by paatason_suoritus.oppilaitos_nimi, paatason_suoritus.oppilaitos_oid
       ) opiskeluoikeuden_ulkopuoliset
       on opiskeluoikeuden_ulkopuoliset.oppilaitos_oid = kurssikertymat.oppilaitos_oid;
@@ -128,6 +131,7 @@ case class AikuistenPerusopetuksenOppimääränKurssikertymät(db: DB) extends Q
     "oppilaitos" -> Column(t.get("raportti-excel-kolumni-oppilaitoksenNimi")),
     "yhteensäSuorituksia" -> Column(t.get("raportti-excel-kolumni-yhteensäSuorituksia"), comment = Some(t.get("raportti-excel-kolumni-yhteensäSuorituksia-comment"))),
     "yhteensäSuoritettujaSuorituksia" -> Column(t.get("raportti-excel-kolumni-yhteensäSuoritettujaSuorituksia"), comment = Some(t.get("raportti-excel-kolumni-yhteensäSuoritettujaSuorituksia-comment"))),
+    "yhteensäSuoritettujenArviointeja" -> Column(t.get("raportti-excel-kolumni-yhteensäSuoritettujenArviointeja"), comment = Some(t.get("raportti-excel-kolumni-yhteensäSuoritettujenArviointeja-comment"))),
     "yhteensäTunnistettujaSuorituksia" -> Column(t.get("raportti-excel-kolumni-yhteensäTunnistettujaSuorituksia"), comment = Some(t.get("raportti-excel-kolumni-yhteensäTunnistettujaSuorituksia-comment"))),
     "yhteensäTunnistettujaSuorituksiaRahoituksenPiirissä" -> Column(t.get("raportti-excel-kolumni-yhteensäTunnistettujaSuorituksiaRahoituksenPiirissä"), comment = Some(t.get("raportti-excel-kolumni-yhteensäTunnistettujaSuorituksiaRahoituksenPiirissä-comment"))),
     "päättövaiheenSuorituksia" -> Column(t.get("raportti-excel-kolumni-päättövaiheenSuorituksia"), comment = Some(t.get("raportti-excel-kolumni-päättövaiheenSuorituksia-comment"))),
@@ -150,6 +154,7 @@ case class AikuistenPerusopetuksenOppimääränKurssikertymätRow(
    oppilaitos: String,
    yhteensäSuorituksia: Int,
    yhteensäSuoritettujaSuorituksia: Int,
+   yhteensäSuoritettujenArviointeja: Int,
    yhteensäTunnistettujaSuorituksia: Int,
    yhteensäTunnistettujaSuorituksiaRahoituksenPiirissä: Int,
    päättövaiheenSuorituksia: Int,

@@ -75,6 +75,7 @@ class AikuistenPerusopetuksenOppimääränKurssikertymätSpec
               osasuoritukset = Some(List(
                 alkuvaiheenKurssinSuoritus("AÄI1").copy(arviointi = Some(List(
                   PerusopetuksenOppiaineenArviointi(7, Some(aikaisintaan)),
+                  PerusopetuksenOppiaineenArviointi(8, Some(viimeistaan.minusMonths(1))),
                   PerusopetuksenOppiaineenArviointi(9, Some(viimeistaan.plusMonths(1))),
                 ))),
               ))
@@ -150,6 +151,7 @@ class AikuistenPerusopetuksenOppimääränKurssikertymätSpec
 
       r.oppilaitos should equal("Jyväskylän normaalikoulu")
       r.yhteensäSuorituksia should equal(33)
+      r.yhteensäSuoritettujenArviointeja should equal(38)
       r.yhteensäSuoritettujaSuorituksia should equal(27)
       r.yhteensäTunnistettujaSuorituksia should equal(6)
       r.yhteensäTunnistettujaSuorituksiaRahoituksenPiirissä should equal(3)
