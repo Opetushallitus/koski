@@ -113,7 +113,17 @@ object DuplikaattiValidation extends Logging {
           .size
 
       if (keskeneräisiäVuosiluokanSuorituksia > 1) {
-        Left(KoskiErrorCategory.badRequest.validation.tila.useitaKeskeneräisiäVuosiluokanSuoritukia())
+        def safeLogMsg(oo: Opiskeluoikeus) = oo match {
+          case po: PerusopetuksenOpiskeluoikeus => po.suoritukset
+            .collect { case s: PerusopetuksenVuosiluokanSuoritus if s.kesken => s }
+            .map(vls => s"tyyppi=${vls.tyyppi}, luokka=${vls.luokka}, alku=${vls.alkamispäivä}, toimipiste=${vls.toimipiste}")
+          case oo: KoskeenTallennettavaOpiskeluoikeus => s"Ei perusopetuksen opiskeluoikeus (${oo.tyyppi})"
+        }
+        val vanha = aiemminTallennettuOpiskeluoikeus.toOption.flatten.map(safeLogMsg)
+        val uusi= safeLogMsg(opiskeluoikeus)
+        logger.info(s"findNuortenPerusopetuksessaUseitaKeskeneräisiäVuosiluokanSuorituksia olisi epäonnistunut, opiskeluoikeusOid=${opiskeluoikeus.oid},\n  vanha=${vanha},\n  uusi=${uusi}")
+        // Left(KoskiErrorCategory.badRequest.validation.tila.useitaKeskeneräisiäVuosiluokanSuoritukia())
+        Right(None)
       } else {
         Right(None)
       }

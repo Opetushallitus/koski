@@ -168,6 +168,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
       }
     }
 
+    /*
     "Oppijalla ei voi olla kahta keskeneräistä vuosiluokan suoritusta" - {
       "Siirrettäessä kerralla -> HTTP 400" in {
         setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(
@@ -201,6 +202,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
         }
       }
     }
+    */
 
     "Opiskeluoikeudella ei saa olla sama alkamispäivä kahdella vuosiluokalla" - {
       "Siirto estetty" in {
