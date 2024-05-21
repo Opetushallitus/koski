@@ -26,4 +26,13 @@ trait MassaluovutusQueryParameters {
   def queryAllowed(application: KoskiApplication)(implicit user: KoskiSpecificSession): Boolean
   def asJson: JValue = JsonSerializer.serializeWithRoot(this)
   def fillAndValidate(implicit user: KoskiSpecificSession): Either[HttpStatus, MassaluovutusQueryParameters] = Right(this)
+  def priority: Int = MassaluovutusQueryPriority.normal
+}
+
+object MassaluovutusQueryPriority {
+  val highest = 1
+  val high = 3
+  val normal = 10
+  val low = 30
+  val lowest = 90
 }

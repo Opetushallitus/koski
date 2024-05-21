@@ -6,7 +6,7 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.api.actionBasedSQLInterpola
 import fi.oph.koski.db.{KoskiOpiskeluoikeusRow, KoskiTables, QueryMethods}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, KoskiAuditLogMessageField, KoskiOperation, Logging}
-import fi.oph.koski.massaluovutus.{MassaluovutusQueryParameters, QueryFormat, QueryResultWriter}
+import fi.oph.koski.massaluovutus.{MassaluovutusQueryParameters, MassaluovutusQueryPriority, QueryFormat, QueryResultWriter}
 import fi.oph.koski.schema.annotation.EnumValues
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, KoskiSchema}
 import fi.oph.scalaschema.annotation.DefaultValue
@@ -27,6 +27,9 @@ case class ValintalaskentaQuery(
   @DefaultValue(Some(ValintalaskentaQuery.defaultSuoritustyypit))
   suoritustyypit: Option[Seq[String]] = None,
 ) extends MassaluovutusQueryParameters with Logging {
+
+  override def priority: Int = MassaluovutusQueryPriority.highest
+
   override def run(application: KoskiApplication, writer: QueryResultWriter)(implicit user: KoskiSpecificSession): Either[String, Unit] = {
     oppijaOids.foreach { oid =>
       val oos = getOpiskeluoikeus(application, oid)
