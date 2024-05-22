@@ -3,7 +3,7 @@ import { Redirect } from "react-router-dom"
 import { runningLocally } from "../utils/environment"
 import { getSearchQueryEntries } from "./searchQuery"
 
-export type Feature = "dummy" | "kuntailmoitusMitätöinti"
+export type Feature = "dummy"
 
 const disabledFeatures: string[] = getSearchQueryEntries().reduce(
   (acc: string[], entry) => {
@@ -15,7 +15,6 @@ const disabledFeatures: string[] = getSearchQueryEntries().reduce(
 
 export const featureFlags: Record<Feature, string> = {
   dummy: "dummy",
-  kuntailmoitusMitätöinti: "valpas-kuntailmoitus-mitatointi",
 }
 
 const featureFlagEnabledValue = "enabled"

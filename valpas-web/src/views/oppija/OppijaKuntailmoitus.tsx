@@ -26,7 +26,6 @@ import { mitätöiKuntailmoitus } from "../../api/api"
 import { usePrompt } from "../../components/containers/Prompt"
 import { pipe } from "fp-ts/lib/function"
 import * as E from "fp-ts/Either"
-import { isFeatureFlagEnabled } from "../../state/featureFlags"
 import { FlatButton } from "../../components/buttons/FlatButton"
 
 const b = bem("kuntailmoitus")
@@ -90,15 +89,11 @@ export const OppijaKuntailmoitus = (props: OppijaKuntailmoitusProps) => {
             </Column>
           </ColumnsContainer>
         )}
-        {isFeatureFlagEnabled("kuntailmoitusMitätöinti") &&
-          kuntailmoitus.oikeusTekijäOrganisaatioon && (
-            <FlatButton
-              testId="mitätöi-kuntailmoitus-btn"
-              onClick={onMitätöinti}
-            >
-              {t("kuntailmoitus__mitätöinti_btn")}
-            </FlatButton>
-          )}
+        {kuntailmoitus.oikeusTekijäOrganisaatioon && (
+          <FlatButton testId="mitätöi-kuntailmoitus-btn" onClick={onMitätöinti}>
+            {t("kuntailmoitus__mitätöinti_btn")}
+          </FlatButton>
+        )}
         {prompt.component}
       </Body>
     </Frame>
