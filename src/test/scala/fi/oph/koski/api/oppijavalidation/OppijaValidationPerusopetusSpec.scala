@@ -5,13 +5,12 @@ import fi.oph.koski.api.misc.OpiskeluoikeusTestMethodsPerusopetus
 import fi.oph.koski.documentation.AmmatillinenExampleData.primusLähdejärjestelmäId
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.ExamplesEsiopetus.osaAikainenErityisopetus
-import fi.oph.koski.documentation.ExamplesPerusopetus.ysinOpiskeluoikeusKesken
 import fi.oph.koski.documentation.OsaAikainenErityisopetusExampleData._
 import fi.oph.koski.documentation.PerusopetusExampleData._
-import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.{helsinginMedialukio, jyväskylänNormaalikoulu, ressunLukio}
+import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.{helsinginMedialukio, jyväskylänNormaalikoulu, kulosaarenAlaAste, ressunLukio}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.koskiuser.MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä
+import fi.oph.koski.koskiuser.MockUsers.{helsinginKaupunkiPalvelukäyttäjä, jyväskylänNormaalikoulunPalvelukäyttäjä}
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.schema._
 import mojave._
@@ -168,7 +167,6 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
       }
     }
 
-    /*
     "Oppijalla ei voi olla kahta keskeneräistä vuosiluokan suoritusta" - {
       "Siirrettäessä kerralla -> HTTP 400" in {
         setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(
@@ -201,8 +199,38 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.useitaKeskeneräisiäVuosiluokanSuoritukia())
         }
       }
+
+      "Oppija vaihtanut koulua, molemmissa keskentilainen suoritus -> OK" in {
+        val headersJkl = authHeaders(jyväskylänNormaalikoulunPalvelukäyttäjä) ++ jsonContent
+        val opiskeluoikeus = defaultOpiskeluoikeus.copy(
+          lähdejärjestelmänId = Some(primusLähdejärjestelmäId("primus-30405321")),
+          suoritukset = List(
+            perusopetuksenOppimääränSuoritusKesken,
+            kahdeksannenLuokanSuoritus.copy(vahvistus = None),
+          ),
+        )
+
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus, headers = headersJkl) {
+          verifyResponseStatusOk()
+        }
+
+        val headersHki = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent
+        putOpiskeluoikeus(
+          opiskeluoikeus = opiskeluoikeus.copy(
+            koulutustoimija = None,
+            oppilaitos = Some(kulosaarenAlaAste),
+            lähdejärjestelmänId = Some(primusLähdejärjestelmäId("primus-12121212")),
+            suoritukset = List(
+              perusopetuksenOppimääränSuoritusKesken.copy(toimipiste = kulosaarenAlaAste),
+              kahdeksannenLuokanSuoritus.copy(toimipiste = kulosaarenAlaAste, vahvistus = None),
+            ),
+          ),
+          headers = headersHki,
+        ) {
+          verifyResponseStatusOk()
+        }
+      }
     }
-    */
 
     "Opiskeluoikeudella ei saa olla sama alkamispäivä kahdella vuosiluokalla" - {
       "Siirto estetty" in {
