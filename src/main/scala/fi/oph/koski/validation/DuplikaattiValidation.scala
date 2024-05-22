@@ -104,26 +104,24 @@ object DuplikaattiValidation extends Logging {
     }
 
     def findNuortenPerusopetuksessaUseitaKeskeneräisiäVuosiluokanSuorituksia(): Either[HttpStatus, Option[Opiskeluoikeus]] = {
-      val keskeneräisiäVuosiluokanSuorituksia =
+      val oppilaitosOid = opiskeluoikeus.oppilaitos.map(_.oid).getOrElse("")
+      val oppilaitoksenPerusopetuksenOpiskeluoikeudet =
         List(Some(opiskeluoikeus), aiemminTallennettuOpiskeluoikeus.toOption.flatten)
-          .collect { case Some(po: PerusopetuksenOpiskeluoikeus) => po }
+        .collect { case Some(po: PerusopetuksenOpiskeluoikeus) if po.oppilaitos.exists(_.oid == oppilaitosOid) => po }
+      val keskentilaisetVuosiluokanSuoritukset =
+        oppilaitoksenPerusopetuksenOpiskeluoikeudet
           .flatMap(_.suoritukset)
           .collect { case s: PerusopetuksenVuosiluokanSuoritus if s.kesken => s }
-          .groupBy(_.luokka).map(_._2.head) // Poista suoritukset, joita ollaan päivittämässä
-          .size
+          .groupBy(_.alkamispäivä)
 
-      if (keskeneräisiäVuosiluokanSuorituksia > 1) {
-        def safeLogMsg(oo: Opiskeluoikeus) = oo match {
-          case po: PerusopetuksenOpiskeluoikeus => po.suoritukset
-            .collect { case s: PerusopetuksenVuosiluokanSuoritus if s.kesken => s }
-            .map(vls => s"tyyppi=${vls.tyyppi}, luokka=${vls.luokka}, alku=${vls.alkamispäivä}, toimipiste=${vls.toimipiste}")
-          case oo: KoskeenTallennettavaOpiskeluoikeus => s"Ei perusopetuksen opiskeluoikeus (${oo.tyyppi})"
+      if (keskentilaisetVuosiluokanSuoritukset.size > 1) {
+        def safeLogMsg(vls: PerusopetuksenVuosiluokanSuoritus) =
+          s"tyyppi=${vls.tyyppi}, luokka=${vls.luokka}, alku=${vls.alkamispäivä}, toimipiste=${vls.toimipiste.oid}"
+        keskentilaisetVuosiluokanSuoritukset.foreach { case (_, suoritukset) =>
+          logger.info(s"findNuortenPerusopetuksessaUseitaKeskeneräisiäVuosiluokanSuorituksia olisi epäonnistunut, opiskeluoikeus=${opiskeluoikeus.oid}, suoritukset: ${suoritukset.map(safeLogMsg)}")
         }
-        val vanha = aiemminTallennettuOpiskeluoikeus.toOption.flatten.map(safeLogMsg)
-        val uusi= safeLogMsg(opiskeluoikeus)
-        logger.info(s"findNuortenPerusopetuksessaUseitaKeskeneräisiäVuosiluokanSuorituksia olisi epäonnistunut, opiskeluoikeusOid=${opiskeluoikeus.oid},\n  vanha=${vanha},\n  uusi=${uusi}")
-        // Left(KoskiErrorCategory.badRequest.validation.tila.useitaKeskeneräisiäVuosiluokanSuoritukia())
-        Right(None)
+        //Left(KoskiErrorCategory.badRequest.validation.tila.useitaKeskeneräisiäVuosiluokanSuoritukia())
+        Right(None) // väliaikainen disalointi
       } else {
         Right(None)
       }
