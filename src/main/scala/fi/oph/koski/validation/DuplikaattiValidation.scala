@@ -120,7 +120,8 @@ object DuplikaattiValidation extends Logging {
         keskentilaisetVuosiluokanSuoritukset.foreach { case (_, suoritukset) =>
           logger.info(s"findNuortenPerusopetuksessaUseitaKeskeneräisiäVuosiluokanSuorituksia olisi epäonnistunut, opiskeluoikeus=${opiskeluoikeus.oid}, suoritukset: ${suoritukset.map(safeLogMsg)}")
         }
-        Left(KoskiErrorCategory.badRequest.validation.tila.useitaKeskeneräisiäVuosiluokanSuoritukia())
+        //Left(KoskiErrorCategory.badRequest.validation.tila.useitaKeskeneräisiäVuosiluokanSuoritukia())
+        Right(None) // väliaikainen disalointi
       } else {
         Right(None)
       }
