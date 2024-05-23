@@ -6,12 +6,22 @@ import fi.oph.koski.jettylauncher.JettyLauncher
 import fi.oph.koski.log.Logging
 
 import java.io.IOException
+import java.net.URL
 
 trait LocalJettyHttpSpec extends HttpSpecification {
   LocalJettyHttpSpec.setup(defaultKoskiApplication)
+  var temporaryBaseUrl: Option[String] = None
 
-  override def baseUrl: String = LocalJettyHttpSpec.baseUrl
+  override def baseUrl: String = temporaryBaseUrl.getOrElse(LocalJettyHttpSpec.baseUrl)
   protected def defaultKoskiApplication: KoskiApplication = KoskiApplicationForTests
+
+  def withBaseUrl[A](url: URL)(f: => A): A =
+    try {
+      temporaryBaseUrl = Some(s"${url.getProtocol}://${url.getHost}:${url.getPort}")
+      f
+    } finally {
+      temporaryBaseUrl = None
+    }
 }
 
 object LocalJettyHttpSpec extends Logging {

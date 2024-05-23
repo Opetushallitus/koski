@@ -1,5 +1,8 @@
 package fi.oph.koski.massaluovutus
 
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.api.actionBasedSQLInterpolation
+import fi.oph.koski.db.QueryMethods
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{KoskiSpecificSession, MockUsers, UserWithPassword}
@@ -8,17 +11,21 @@ import fi.oph.koski.log.KoskiOperation.OPISKELUOIKEUS_HAKU
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryContext
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.organisaatio.MockOrganisaatiot.ressunLukio
-import fi.oph.koski.massaluovutus.organisaationopiskeluoikeudet.{MassaluovutusQueryOrganisaationOpiskeluoikeudet, MassaluovutusQueryOrganisaationOpiskeluoikeudetCsv, QueryOrganisaationOpiskeluoikeudetCsvDocumentation, MassaluovutusQueryOrganisaationOpiskeluoikeudetJson}
+import fi.oph.koski.massaluovutus.organisaationopiskeluoikeudet.{MassaluovutusQueryOrganisaationOpiskeluoikeudet, MassaluovutusQueryOrganisaationOpiskeluoikeudetCsv, MassaluovutusQueryOrganisaationOpiskeluoikeudetJson, QueryOrganisaationOpiskeluoikeudetCsvDocumentation}
 import fi.oph.koski.massaluovutus.paallekkaisetopiskeluoikeudet.MassaluovutusQueryPaallekkaisetOpiskeluoikeudet
+import fi.oph.koski.massaluovutus.valintalaskenta.{ValintalaskentaQuery, ValintalaskentaResult}
 import fi.oph.koski.raportit.RaportitService
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.util.Wait
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
+import org.json4s.JInt
 import org.json4s.jackson.JsonMethods
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
+import java.net.URL
+import java.sql.Timestamp
 import java.time.format.DateTimeFormatter
 import java.time.{Duration, LocalDate, LocalDateTime}
 import java.util.UUID
@@ -280,6 +287,79 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
     }
   }
 
+  "Valintalaskenta" - {
+    val user = MockUsers.paakayttaja // TODO: Vaihda sopiva palvelukäyttäjä
+    val ammattikoululainen = "1.2.246.562.24.00000000001"
+    val olematon = "1.2.246.562.25.1010101010101"
+
+    def getQuery(oid: String, rajapäivä: LocalDate = LocalDate.now()) =  ValintalaskentaQuery(
+      rajapäivä = rajapäivä,
+      oppijaOids = List(oid)
+    )
+
+    "Kysely ei palauta vastausta, jos oppijasta ei ole tietoja" in {
+      val queryId = addQuerySuccessfully(getQuery(olematon), user)(_.queryId)
+      val complete = waitForCompletion(queryId, user)
+      complete.files should have length 0
+    }
+
+    "Kysely hakee viimeisimmän opiskeluoikeusversion" in {
+      val queryId = addQuerySuccessfully(getQuery(ammattikoululainen), user) { response =>
+        response.status should equal(QueryState.pending)
+        response.query.asInstanceOf[ValintalaskentaQuery].koulutusmuoto should equal(Some("ammatillinenkoulutus"))
+        response.queryId
+      }
+      val complete = waitForCompletion(queryId, user)
+
+      complete.files should have length 1
+      complete.files.foreach(verifyResult(_, user))
+    }
+
+    "Kysely hakee opiskeluoikeusversion historiasta" in {
+      val db = KoskiApplicationForTests.masterDatabase.db
+      val id = QueryMethods.runDbSync(db, sql"""
+        UPDATE opiskeluoikeus
+        SET versionumero = 2
+        WHERE oppija_oid = '1.2.246.562.24.00000000001'
+          AND koulutusmuoto = 'ammatillinenkoulutus'
+        RETURNING id
+      """.as[Int]).head
+
+      QueryMethods.runDbSync(db, sql"""
+        INSERT INTO opiskeluoikeushistoria
+          ("opiskeluoikeus_id", "aikaleima", "kayttaja_oid", "muutos", "versionumero")
+          VALUES(
+            $id,
+            ${Timestamp.valueOf(LocalDateTime.now().plusDays(1))},
+            '1.2.246.562.10.00000000001',
+            '[]',
+            2
+          )
+      """.asUpdate)
+
+      val queryId = addQuerySuccessfully(getQuery(ammattikoululainen), user) { response =>
+        response.status should equal(QueryState.pending)
+        response.query.asInstanceOf[ValintalaskentaQuery].koulutusmuoto should equal(Some("ammatillinenkoulutus"))
+        response.queryId
+      }
+      val complete = waitForCompletion(queryId, user)
+
+      complete.files should have length 1
+      verifyResultAndContent(complete.files.head, user) {
+        val json = JsonMethods.parse(response.body)
+        (json \ "opiskeluoikeudet")(0) \ "versionumero" should equal(JInt(1))
+      }
+    }
+
+    "Kysely ei palauta opiskeluoikeutta, jos rajapäivä on sitä ennen" in {
+      val eilen = LocalDate.now().minusDays(1)
+      val queryId = addQuerySuccessfully(getQuery(ammattikoululainen, eilen), user)(_.queryId)
+      val complete = waitForCompletion(queryId, user)
+      complete.files should have length 0
+    }
+
+  }
+
   def addQuery[T](query: MassaluovutusQueryParameters, user: UserWithPassword)(f: => T): T =
     post("api/massaluovutus", JsonSerializer.writeWithRoot(query), headers = authHeaders(user) ++ jsonContent)(f)
 
@@ -307,6 +387,19 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
     getResult(url, user) {
       verifyResponseStatus(302) // 302: Found (redirect)
     }
+
+  def verifyResultAndContent(url: String, user: UserWithPassword)(f: => Unit): Unit = {
+    val location = new URL(getResult(url, user) {
+      verifyResponseStatus(302) // 302: Found (redirect)
+      response.header("Location")
+    })
+    withBaseUrl(location) {
+      get(s"${location.getPath}?${location.getQuery}") {
+        verifyResponseStatusOk()
+        f
+      }
+    }
+  }
 
   def waitForStateTransition(queryId: String, user: UserWithPassword)(states: String*): QueryResponse = {
     var lastResponse: Option[QueryResponse] = None
