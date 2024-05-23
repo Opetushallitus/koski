@@ -14,7 +14,16 @@ class VKTService(application: KoskiApplication) extends GlobalExecutionContext w
     Some(VKTKorkeakoulunOpiskeluoikeus.fromKoskiSchema)
   )
 
-  def findOppija(hetu: String)
+  def findOppija(oppijaOid: String)
+    (implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, VKTOppija] = {
+
+    val vktOppija = opiskeluoikeusFacade.haeOpiskeluoikeudet(oppijaOid, VKTSchema.schemassaTuetutOpiskeluoikeustyypit)
+      .map(teePalautettavaVKTOppija)
+
+    vktOppija
+  }
+
+  def findOppijaByHetu(hetu: String)
     (implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, VKTOppija] = {
 
     val oppijaOid = application.opintopolkuHenkilöFacade.findOppijaByHetu(hetu).map(_.oid).get // TODO: virheenkäsittely
@@ -35,10 +44,10 @@ class VKTService(application: KoskiApplication) extends GlobalExecutionContext w
   }
 
   private def suodataPalautettavat(opiskeluoikeudet: Seq[VKTOpiskeluoikeus]): Seq[VKTOpiskeluoikeus] = {
-    val kuoriOpiskeluoikeusOidit = opiskeluoikeudet.map {
+    val kuoriOpiskeluoikeusOidit = opiskeluoikeudet.flatMap {
       case oo: VKTKoskeenTallennettavaOpiskeluoikeus => oo.sisältyyOpiskeluoikeuteen.map(_.oid)
       case _ => None
-    }.flatten.toSet
+    }.toSet
 
     opiskeluoikeudet
       .filterNot(onKuoriOpiskeluoikeus(kuoriOpiskeluoikeusOidit))

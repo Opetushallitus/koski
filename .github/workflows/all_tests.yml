@@ -215,6 +215,7 @@ jobs:
             fi.oph.koski.oppivelvollisuustieto, \
             fi.oph.koski.valvira, \
             fi.oph.koski.virta, \
+            fi.oph.koski.vkt, \
             fi.oph.koski.ytl, \
             fi.oph.koski.ytr, \
             fi.oph.koski.ytl, \
