@@ -1,5 +1,8 @@
 package fi.oph.koski.massaluovutus.valintalaskenta
 
+import cats.data.NonEmptyList
+import fi.oph.koski.history.JsonPatchException
+import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.schema._
 import fi.oph.koski.suoritusjako.suoritetuttutkinnot.SuoritetutTutkinnotAmmatillisenTutkinnonOsittainenSuoritus
 
@@ -7,7 +10,8 @@ import java.time.{LocalDate, LocalDateTime}
 
 case class ValintalaskentaResult(
   oppijaOid: String,
-  opiskeluoikeudet: Seq[ValintalaskentaOpiskeluoikeus],
+  opiskeluoikeudet: Option[List[ValintalaskentaOpiskeluoikeus]],
+  virheet: Option[List[ValintalaskentaError]],
 )
 
 case class ValintalaskentaOpiskeluoikeus(
@@ -151,4 +155,23 @@ object ValintalaskentaOsasuorituksenKoulutusmoduuli {
     laajuus = km.getLaajuus.map(_.arvo),
     tunniste = km.tunniste,
   )
+}
+
+case class ValintalaskentaError(
+  id: String,
+  message: String,
+)
+
+object ValintalaskentaError {
+  def apply(status: HttpStatus): ValintalaskentaError = status match {
+    case e: HttpStatus if e.isOk => internal("Yritettiin palauttaa onnistunutta tilannetta virheenä")
+    case e: HttpStatus => ValintalaskentaError("error", e.errorString.getOrElse("Tuntematon virhe"))
+  }
+
+  def apply(error: Throwable): ValintalaskentaError = error match {
+    case e: JsonPatchException => ValintalaskentaError("brokenHistory", s"${e.getMessage}: ${e.cause.getMessage}")
+    case e: Throwable => internal(e.getMessage)
+  }
+
+  def internal(message: String): ValintalaskentaError = ValintalaskentaError("internal", message)
 }

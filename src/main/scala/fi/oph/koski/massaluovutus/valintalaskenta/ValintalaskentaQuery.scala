@@ -1,9 +1,9 @@
 package fi.oph.koski.massaluovutus.valintalaskenta
 
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.KoskiOpiskeluoikeusRowImplicits.getKoskiOpiskeluoikeusRow
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api.actionBasedSQLInterpolation
-import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.db.{DB, KoskiOpiskeluoikeusRow, KoskiTables, QueryMethods}
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koskiuser.KoskiSpecificSession
@@ -13,6 +13,7 @@ import fi.oph.koski.massaluovutus.{MassaluovutusQueryParameters, MassaluovutusQu
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryContext
 import fi.oph.koski.schema.annotation.EnumValues
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, KoskiSchema}
+import fi.oph.koski.util.Collections.asNonEmpty
 import fi.oph.scalaschema.annotation.DefaultValue
 import slick.jdbc.GetResult
 
@@ -37,9 +38,13 @@ case class ValintalaskentaQuery(
 
   override def run(application: KoskiApplication, writer: QueryResultWriter)(implicit user: KoskiSpecificSession): Either[String, Unit] = {
     oppijaOids.foreach { oid =>
-      val oos = getOpiskeluoikeus(application, oid)
-      if (oos.nonEmpty) {
-        writer.putJson(oid, ValintalaskentaResult(oid, oos))
+      val results = getOpiskeluoikeudet(application, oid)
+      if (results.nonEmpty) {
+        writer.putJson(oid, ValintalaskentaResult(
+          oid,
+          asNonEmpty(results.collect { case Right(oo) => oo }),
+          asNonEmpty(results.collect { case Left(err) => err }),
+        ))
         auditLog(oid)
       }
     }
@@ -55,35 +60,36 @@ case class ValintalaskentaQuery(
       suoritustyypit = suoritustyypit.orElse(Some(ValintalaskentaQuery.defaultSuoritustyypit)),
     ))
 
-  private def getOpiskeluoikeus(application: KoskiApplication, oppijaOid: String)(implicit user: KoskiSpecificSession): Seq[ValintalaskentaOpiskeluoikeus] =
-    getOpiskeluoikeuksienVersiot(application.masterDatabase.db, oppijaOid).flatMap { oo =>
-      if (oo.rajapäivänVersio == oo.uusinVersio) {
-        getUusinOpiskeluoikeus(application, oo.id)
-      } else if (oo.rajapäivänVersio > 0) {
-        getOpiskeluoikeusHistoriasta(application, oo.oid, oo.rajapäivänVersio)
-      } else {
-        None
-      }
+  private def getOpiskeluoikeudet(application: KoskiApplication, oppijaOid: String)(implicit user: KoskiSpecificSession): List[Either[ValintalaskentaError, ValintalaskentaOpiskeluoikeus]] =
+    try {
+      getOpiskeluoikeuksienVersiot(application.replicaDatabase.db, oppijaOid).flatMap { oo =>
+        if (oo.rajapäivänVersio == oo.uusinVersio) {
+          Some(getUusinOpiskeluoikeus(application, oo.id))
+        } else if (oo.rajapäivänVersio > 0) {
+          Some(getOpiskeluoikeusHistoriasta(application, oo.oid, oo.rajapäivänVersio))
+        } else {
+          None
+        }
+      }.toList
+    } catch {
+      case t: Throwable => List(Left(ValintalaskentaError(t)))
     }
 
-  private def getUusinOpiskeluoikeus(application: KoskiApplication, id: Int): Option[ValintalaskentaOpiskeluoikeus] =
-    QueryMethods.runDbSync(application.masterDatabase.db, sql"""
+  private def getUusinOpiskeluoikeus(application: KoskiApplication, id: Int): Either[ValintalaskentaError, ValintalaskentaOpiskeluoikeus] =
+    QueryMethods.runDbSync(application.replicaDatabase.db, sql"""
           SELECT *
           FROM opiskeluoikeus
           WHERE ID=$id
         """.as[KoskiOpiskeluoikeusRow])
       .headOption
       .flatMap(toResponse(application))
+      .toRight(ValintalaskentaError.internal(s"getUusinOpiskeluoikeus ei löytänyt opiskeluoikeutta $id"))
 
-  private def getOpiskeluoikeusHistoriasta(application: KoskiApplication, oid: String, versio: Int)(implicit user: KoskiSpecificSession): Option[ValintalaskentaOpiskeluoikeus] = {
-    (application.historyRepository.findVersion(oid, versio) match {
-      case Right(row) =>
-        Some(row)
-      case Left(error) =>
-        logger.error(s"Opiskeluoikeushistoriasta haku epäonnistui: $error")
-        None
-    }).map(ValintalaskentaOpiskeluoikeus.apply)
-  }
+  private def getOpiskeluoikeusHistoriasta(application: KoskiApplication, oid: String, versio: Int)(implicit user: KoskiSpecificSession): Either[ValintalaskentaError, ValintalaskentaOpiskeluoikeus] =
+      application.historyRepository
+        .findVersion(oid, versio)
+        .map(ValintalaskentaOpiskeluoikeus.apply)
+        .left.map(ValintalaskentaError.apply)
 
   private def getOpiskeluoikeuksienVersiot(db: DB, oppijaOid: String): Seq[OpiskeluoikeudenVersiotieto] =
     QueryMethods.runDbSync(db, sql"""
@@ -107,6 +113,7 @@ case class ValintalaskentaQuery(
         AND NOT poistettu
         AND koulutusmuoto = ${koulutusmuoto.get}
         AND suoritustyypit && ${suoritustyypit.get}
+        AND alkamispaiva < $aikaraja
       GROUP BY opiskeluoikeus.id, opiskeluoikeus.oid, opiskeluoikeus.versionumero
     """.as[OpiskeluoikeudenVersiotieto])
 
