@@ -484,6 +484,7 @@ class AmmatillinenTutkintoRaporttiSpec
       arviointiArvosanaKoodisto = None,
       arviointiHyväksytty = None,
       arviointiPäivä = None,
+      arviointiPäivät = None,
       ensimmäinenArviointiPäivä = None,
       korotettuEriVuonna = false,
       näytönArviointiPäivä = None,
