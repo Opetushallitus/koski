@@ -12,7 +12,7 @@ case class VKTDIAOpiskeluoikeus(
   koulutustoimija: Option[Koulutustoimija],
   sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus],
   tila: VKTOpiskeluoikeudenTila,
-  suoritukset: List[VKTPäätasonSuoritus],
+  suoritukset: List[VKTDIATutkinnonSuoritus],
   @KoodistoKoodiarvo(schema.OpiskeluoikeudenTyyppi.diatutkinto.koodiarvo)
   tyyppi: schema.Koodistokoodiviite,
 ) extends VKTKoskeenTallennettavaOpiskeluoikeus {
