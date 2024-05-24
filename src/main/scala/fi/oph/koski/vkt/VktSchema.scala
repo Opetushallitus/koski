@@ -22,7 +22,6 @@ object VktSchema {
 }
 
 case class VktOppija(
-  jakolinkki: Option[Jakolinkki] = None,
   henkilö: Henkilo,
   opiskeluoikeudet: List[VktOpiskeluoikeus]
 )

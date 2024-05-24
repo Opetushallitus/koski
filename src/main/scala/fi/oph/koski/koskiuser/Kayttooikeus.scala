@@ -199,13 +199,4 @@ case class KäyttöoikeusViranomainen(globalPalveluroolit: List[Palvelurooli]) e
   }
 
   override lazy val allowedOpiskeluoikeusTyypit: Set[String] = Käyttöoikeus.parseAllowedOpiskeluoikeudenTyypit(globalPalveluroolit, globalAccessType)
-
-  def isPalveluvaylaAllowed: Boolean = {
-    val palveluvaylaRoolit = List(
-      Palvelurooli("KOSKI", Rooli.HSL),
-      Palvelurooli("KOSKI", Rooli.SUOMIFI),
-    )
-    palveluvaylaRoolit.exists(globalPalveluroolit.contains)
-  }
-
 }
