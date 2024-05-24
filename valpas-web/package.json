@@ -82,7 +82,7 @@
   "dependencies": {
     "bem-ts": "^0.13.5",
     "copy-to-clipboard": "^3.3.3",
-    "date-fns": "^3.3.1",
+    "date-fns": "^3.6.0",
     "downloadjs": "^1.4.7",
     "fp-ts": "^2.16.2",
     "react": "^17.0.1",
