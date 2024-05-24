@@ -112,14 +112,14 @@ object DuplikaattiValidation extends Logging {
         oppilaitoksenPerusopetuksenOpiskeluoikeudet
           .flatMap(_.suoritukset)
           .collect { case s: PerusopetuksenVuosiluokanSuoritus if s.kesken => s }
-          .groupBy(_.alkamispäivä)
+          .groupBy(_.koulutusmoduuli.tunniste.koodiarvo)
 
       if (keskentilaisetVuosiluokanSuoritukset.size > 1) {
         def safeLogMsg(vls: PerusopetuksenVuosiluokanSuoritus) =
-          s"tyyppi=${vls.tyyppi}, luokka=${vls.luokka}, alku=${vls.alkamispäivä}, toimipiste=${vls.toimipiste.oid}"
-        keskentilaisetVuosiluokanSuoritukset.foreach { case (_, suoritukset) =>
-          logger.info(s"findNuortenPerusopetuksessaUseitaKeskeneräisiäVuosiluokanSuorituksia olisi epäonnistunut, opiskeluoikeus=${opiskeluoikeus.oid}, suoritukset: ${suoritukset.map(safeLogMsg)}")
-        }
+          s"tyyppi=${vls.tyyppi}, luokka=${vls.luokka}, tunniste=${vls.koulutusmoduuli.tunniste.koodiarvo} alku=${vls.alkamispäivä}, toimipiste=${vls.toimipiste.oid}"
+        logger.info(s"findNuortenPerusopetuksessaUseitaKeskeneräisiäVuosiluokanSuorituksia olisi epäonnistunut, opiskeluoikeus=${opiskeluoikeus.oid}, suoritukset: ${
+          keskentilaisetVuosiluokanSuoritukset.map { case (_, suoritukset) => suoritukset.map(safeLogMsg)}
+        }")
         //Left(KoskiErrorCategory.badRequest.validation.tila.useitaKeskeneräisiäVuosiluokanSuoritukia())
         Right(None) // väliaikainen disalointi
       } else {
