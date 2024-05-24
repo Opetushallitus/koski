@@ -150,7 +150,9 @@ class VktServiceSpec
     oppijat.foreach(oppija => {
       s"Tiedot palautetaan ${oppija.sukunimi} ${oppija.etunimet} (${oppija.hetu.getOrElse("EI HETUA")})" in {
         val expectedOoData = getOpiskeluoikeus(oppija.oid, schema.OpiskeluoikeudenTyyppi.diatutkinto.koodiarvo)
-        val expectedSuoritusDatat = expectedOoData.suoritukset
+        val expectedSuoritusDatat = expectedOoData.suoritukset.collect {
+          case s: schema.DIATutkinnonSuoritus => s
+        }
 
         val result = vktService.findOppija(oppija.oid)
 
@@ -244,7 +246,7 @@ class VktServiceSpec
             ) => verifyKorkeakoulu(actualOo, actualSuoritus, expectedOoData, expectedSuoritusData)
           case (
             actualOo: VktDIAOpiskeluoikeus,
-            actualSuoritus: VktPäätasonSuoritus,
+            actualSuoritus: VktDIATutkinnonSuoritus,
             expectedOoData: schema.DIAOpiskeluoikeus,
             expectedSuoritusData: schema.DIAPäätasonSuoritus
             ) => verifyDIA(actualOo, actualSuoritus, expectedOoData, expectedSuoritusData)
@@ -267,13 +269,13 @@ class VktServiceSpec
 
   private def verifyDIA(
     actualOo: VktDIAOpiskeluoikeus,
-    actualSuoritus: VktPäätasonSuoritus,
+    actualSuoritus: VktDIATutkinnonSuoritus,
     expectedOoData: schema.DIAOpiskeluoikeus,
     expectedSuoritusData: schema.DIAPäätasonSuoritus
   ): Unit = {
     verifyKoskiOpiskeluoikeudenKentät(actualOo, expectedOoData)
-
-    verifyPäätasonSuoritus(actualSuoritus, expectedSuoritusData)
+    actualSuoritus.tyyppi.koodiarvo should equal(expectedSuoritusData.tyyppi.koodiarvo)
+    actualSuoritus.koulutusmoduuli.tunniste.koodiarvo should equal(expectedSuoritusData.koulutusmoduuli.tunniste.koodiarvo)
   }
 
   private def verifyEB(
@@ -323,15 +325,6 @@ class VktServiceSpec
       case (actualSuoritus: VktKorkeakoulunOpintojaksonSuoritus, expectedSuoritusData: schema.KorkeakoulunOpintojaksonSuoritus) =>
         actualSuoritus.koulutusmoduuli.nimi should equal(expectedSuoritusData.koulutusmoduuli.nimi)
       case _ => fail(s"Palautettiin tunnistamattoman tyyppistä suoritusdataa actual: (${actualSuoritus.getClass.getName}), expected:(${expectedSuoritusData.getClass.getName})")
-    }
-  }
-
-  private def verifyPäätasonSuoritus(actualSuoritus: VktPäätasonSuoritus, expectedSuoritusData: schema.PäätasonSuoritus) = {
-    actualSuoritus.tyyppi.koodiarvo should equal(expectedSuoritusData.tyyppi.koodiarvo)
-    actualSuoritus.koulutusmoduuli.tunniste.koodiarvo should equal(expectedSuoritusData.koulutusmoduuli.tunniste.koodiarvo)
-    expectedSuoritusData match {
-      case es: schema.Suorituskielellinen => actualSuoritus.suorituskieli.koodiarvo should equal(es.suorituskieli.koodiarvo)
-      case _ => fail(s"Yritettiin tutkita suorituskieletöntä päätason suoritustyyppiä: ${expectedSuoritusData.tyyppi.koodiarvo}")
     }
   }
 
