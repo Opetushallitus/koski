@@ -298,7 +298,7 @@ Testit ajetaan headless-selaimessa. Jos haluat selainikkunan näkyviin, aja test
 
 ## CI-palvelin
 
-Koskessa on käytössä [Gitbub Actions](https://github.com/Opetushallitus/koski/actions), joka on konfiguroitu [.github hakemistossa](.github).
+Koskessa on käytössä [Github Actions](https://github.com/Opetushallitus/koski/actions), joka on konfiguroitu [.github hakemistossa](.github).
 
 CI-palvelimella sovellus testataan jokaisen commitin yhteydessä. Paikallisten testien lisäksi ajetaan pieni määrä integraatiotestejä testiympäristön REST-rajapintoja vasten.
 
