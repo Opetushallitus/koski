@@ -7,45 +7,45 @@ import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log._
 import fi.oph.koski.suoritusjako.common.{OpiskeluoikeusFacade, RawOppija}
 
-class VKTService(application: KoskiApplication) extends GlobalExecutionContext with Logging {
-  private val opiskeluoikeusFacade = new OpiskeluoikeusFacade[VKTOpiskeluoikeus](
+class VktService(application: KoskiApplication) extends GlobalExecutionContext with Logging {
+  private val opiskeluoikeusFacade = new OpiskeluoikeusFacade[VktOpiskeluoikeus](
     application,
-    Some(VKTYlioppilastutkinnonOpiskeluoikeus.fromKoskiSchema),
-    Some(VKTKorkeakoulunOpiskeluoikeus.fromKoskiSchema)
+    Some(VktYlioppilastutkinnonOpiskeluoikeus.fromKoskiSchema),
+    Some(VktKorkeakoulunOpiskeluoikeus.fromKoskiSchema)
   )
 
   def findOppija(oppijaOid: String)
-    (implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, VKTOppija] = {
+    (implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, VktOppija] = {
 
-    val vktOppija = opiskeluoikeusFacade.haeOpiskeluoikeudet(oppijaOid, VKTSchema.schemassaTuetutOpiskeluoikeustyypit)
-      .map(teePalautettavaVKTOppija)
+    val vktOppija = opiskeluoikeusFacade.haeOpiskeluoikeudet(oppijaOid, VktSchema.schemassaTuetutOpiskeluoikeustyypit)
+      .map(teePalautettavaVktOppija)
 
     vktOppija
   }
 
   def findOppijaByHetu(hetu: String)
-    (implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, VKTOppija] = {
+    (implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, VktOppija] = {
 
     val oppijaOid = application.opintopolkuHenkilöFacade.findOppijaByHetu(hetu).map(_.oid).get // TODO: virheenkäsittely
 
-    val vktOppija = opiskeluoikeusFacade.haeOpiskeluoikeudet(oppijaOid, VKTSchema.schemassaTuetutOpiskeluoikeustyypit)
-      .map(teePalautettavaVKTOppija)
+    val vktOppija = opiskeluoikeusFacade.haeOpiskeluoikeudet(oppijaOid, VktSchema.schemassaTuetutOpiskeluoikeustyypit)
+      .map(teePalautettavaVktOppija)
 
     vktOppija
   }
 
-  private def teePalautettavaVKTOppija(
-    rawOppija: RawOppija[VKTOpiskeluoikeus]
-  ): VKTOppija = {
-    VKTOppija(
+  private def teePalautettavaVktOppija(
+    rawOppija: RawOppija[VktOpiskeluoikeus]
+  ): VktOppija = {
+    VktOppija(
       henkilö = Henkilo.fromOppijaHenkilö(rawOppija.henkilö),
       opiskeluoikeudet = suodataPalautettavat(rawOppija.opiskeluoikeudet).toList
     )
   }
 
-  private def suodataPalautettavat(opiskeluoikeudet: Seq[VKTOpiskeluoikeus]): Seq[VKTOpiskeluoikeus] = {
+  private def suodataPalautettavat(opiskeluoikeudet: Seq[VktOpiskeluoikeus]): Seq[VktOpiskeluoikeus] = {
     val kuoriOpiskeluoikeusOidit = opiskeluoikeudet.flatMap {
-      case oo: VKTKoskeenTallennettavaOpiskeluoikeus => oo.sisältyyOpiskeluoikeuteen.map(_.oid)
+      case oo: VktKoskeenTallennettavaOpiskeluoikeus => oo.sisältyyOpiskeluoikeuteen.map(_.oid)
       case _ => None
     }.toSet
 
@@ -64,7 +64,7 @@ class VKTService(application: KoskiApplication) extends GlobalExecutionContext w
 
   private def josYOTutkintoNiinVahvistettu(s: Suoritus): Boolean = {
     s match {
-      case s: VKTYlioppilastutkinnonPäätasonSuoritus
+      case s: VktYlioppilastutkinnonPäätasonSuoritus
       => s.vahvistus.isDefined
       case _
       => true
@@ -73,7 +73,7 @@ class VKTService(application: KoskiApplication) extends GlobalExecutionContext w
 
   private def josEBTutkintoNiinVahvistettu(s: Suoritus): Boolean = {
     s match {
-      case s: VKTEBTutkinnonPäätasonSuoritus
+      case s: VktEBTutkinnonPäätasonSuoritus
       => s.vahvistus.isDefined
       case _
       => true
@@ -82,16 +82,16 @@ class VKTService(application: KoskiApplication) extends GlobalExecutionContext w
 
   private def josDIATutkintoNiinVahvistettu(s: Suoritus): Boolean = {
     s match {
-      case s: VKTDIATutkinnonSuoritus
+      case s: VktDIATutkinnonSuoritus
       => s.vahvistus.isDefined
       case _
       => true
     }
   }
 
-  private def onKuoriOpiskeluoikeus(kuoriOpiskeluoikeusOidit: Set[String])(o: VKTOpiskeluoikeus): Boolean = {
+  private def onKuoriOpiskeluoikeus(kuoriOpiskeluoikeusOidit: Set[String])(o: VktOpiskeluoikeus): Boolean = {
     o match {
-      case ko: VKTKoskeenTallennettavaOpiskeluoikeus => ko.oid.map(kuoriOpiskeluoikeusOidit.contains).getOrElse(false)
+      case ko: VktKoskeenTallennettavaOpiskeluoikeus => ko.oid.map(kuoriOpiskeluoikeusOidit.contains).getOrElse(false)
       case _ => false
     }
   }

@@ -5,39 +5,39 @@ import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
 import fi.oph.scalaschema.annotation.Title
 
 @Title("DIA-tutkinnon opiskeluoikeus")
-case class VKTDIAOpiskeluoikeus(
+case class VktDIAOpiskeluoikeus(
   oid: Option[String],
   versionumero: Option[Int],
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija],
   sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus],
-  tila: VKTOpiskeluoikeudenTila,
-  suoritukset: List[VKTDIATutkinnonSuoritus],
+  tila: VktOpiskeluoikeudenTila,
+  suoritukset: List[VktDIATutkinnonSuoritus],
   @KoodistoKoodiarvo(schema.OpiskeluoikeudenTyyppi.diatutkinto.koodiarvo)
   tyyppi: schema.Koodistokoodiviite,
-) extends VKTKoskeenTallennettavaOpiskeluoikeus {
+) extends VktKoskeenTallennettavaOpiskeluoikeus {
 
-  override def lisätiedot: Option[VKTOpiskeluoikeudenLisätiedot] = None
+  override def lisätiedot: Option[VktOpiskeluoikeudenLisätiedot] = None
 
-  override def withSuoritukset(suoritukset: List[Suoritus]): VKTKoskeenTallennettavaOpiskeluoikeus =
+  override def withSuoritukset(suoritukset: List[Suoritus]): VktKoskeenTallennettavaOpiskeluoikeus =
     this.copy(
-      suoritukset = suoritukset.collect { case s: VKTPäätasonSuoritus => s }
+      suoritukset = suoritukset.collect { case s: VktDIATutkinnonSuoritus => s }
     )
 
-  override def withoutSisältyyOpiskeluoikeuteen: VKTKoskeenTallennettavaOpiskeluoikeus = this.copy(sisältyyOpiskeluoikeuteen = None)
+  override def withoutSisältyyOpiskeluoikeuteen: VktKoskeenTallennettavaOpiskeluoikeus = this.copy(sisältyyOpiskeluoikeuteen = None)
 }
 
 
 @Title("DIA-tutkinnon suoritus")
-case class VKTDIATutkinnonSuoritus(
-  koulutusmoduuli: VKTDIATutkinto,
+case class VktDIATutkinnonSuoritus(
+  koulutusmoduuli: VktDIATutkinto,
   toimipiste: Option[Toimipiste],
   vahvistus: Option[Vahvistus],
-  suorituskieli: Option[VKTKoodistokoodiviite],
+  suorituskieli: Option[VktKoodistokoodiviite],
   @KoodistoKoodiarvo("diatutkintovaihe")
   tyyppi: schema.Koodistokoodiviite,
 ) extends Suoritus
 
-case class VKTDIATutkinto(
-  tunniste: VKTKoodistokoodiviite
+case class VktDIATutkinto(
+  tunniste: VktKoodistokoodiviite
 ) extends SuorituksenKoulutusmoduuli

@@ -9,9 +9,9 @@ import org.json4s.JValue
 
 import java.time.LocalDate
 
-object VKTSchema {
+object VktSchema {
   lazy val schemaJson: JValue =
-    SchemaToJson.toJsonSchema(schema.KoskiSchema.createSchema(classOf[VKTOppija]).asInstanceOf[ClassSchema])
+    SchemaToJson.toJsonSchema(schema.KoskiSchema.createSchema(classOf[VktOppija]).asInstanceOf[ClassSchema])
 
   val schemassaTuetutOpiskeluoikeustyypit: List[String] = List(
     schema.OpiskeluoikeudenTyyppi.korkeakoulutus.koodiarvo,
@@ -21,10 +21,10 @@ object VKTSchema {
   )
 }
 
-case class VKTOppija(
+case class VktOppija(
   jakolinkki: Option[Jakolinkki] = None,
   henkilö: Henkilo,
-  opiskeluoikeudet: List[VKTOpiskeluoikeus]
+  opiskeluoikeudet: List[VktOpiskeluoikeus]
 )
 
 case class Henkilo(
@@ -45,7 +45,7 @@ object Henkilo {
   )
 }
 
-trait VKTOpiskeluoikeus {
+trait VktOpiskeluoikeus {
   def oppilaitos: Option[Oppilaitos]
 
   def koulutustoimija: Option[Koulutustoimija]
@@ -62,16 +62,16 @@ trait VKTOpiskeluoikeus {
   @SyntheticProperty
   def päättymispäivä: Option[LocalDate] = schema.Opiskeluoikeus.päättymispäivä(this.tyyppi.koodiarvo, this.tila.opiskeluoikeusjaksot.map(j => (j.alku, j.tila.koodiarvo)))
 
-  def tila: VKTOpiskeluoikeudenTila
+  def tila: VktOpiskeluoikeudenTila
 
-  def lisätiedot: Option[VKTOpiskeluoikeudenLisätiedot]
+  def lisätiedot: Option[VktOpiskeluoikeudenLisätiedot]
 
-  def withSuoritukset(suoritukset: List[Suoritus]): VKTOpiskeluoikeus
+  def withSuoritukset(suoritukset: List[Suoritus]): VktOpiskeluoikeus
 
-  def withoutSisältyyOpiskeluoikeuteen: VKTOpiskeluoikeus
+  def withoutSisältyyOpiskeluoikeuteen: VktOpiskeluoikeus
 }
 
-trait VKTKoskeenTallennettavaOpiskeluoikeus extends VKTOpiskeluoikeus {
+trait VktKoskeenTallennettavaOpiskeluoikeus extends VktOpiskeluoikeus {
   def oid: Option[String]
 
   def versionumero: Option[Int]
@@ -96,21 +96,21 @@ trait Suoritus {
   def toimipiste: Option[Toimipiste]
 }
 
-trait VKTKoodiViite {
+trait VktKoodiViite {
   def koodiarvo: String
 }
 
 @Title("Koodistokoodiviite")
-case class VKTKoodistokoodiviite(
+case class VktKoodistokoodiviite(
   koodiarvo: String,
   nimi: Option[schema.LocalizedString],
   lyhytNimi: Option[schema.LocalizedString],
   koodistoUri: Option[String],
   koodistoVersio: Option[Int]
-) extends VKTKoodiViite
+) extends VktKoodiViite
 
-object VKTKoodistokoodiviite {
-  def fromKoskiSchema(kv: schema.Koodistokoodiviite) = VKTKoodistokoodiviite(
+object VktKoodistokoodiviite {
+  def fromKoskiSchema(kv: schema.Koodistokoodiviite) = VktKoodistokoodiviite(
     kv.koodiarvo,
     kv.nimi,
     kv.lyhytNimi,
@@ -120,14 +120,14 @@ object VKTKoodistokoodiviite {
 }
 
 @Title("Paikallinen koodi")
-case class VKTPaikallinenKoodi(
+case class VktPaikallinenKoodi(
   koodiarvo: String,
   nimi: schema.LocalizedString,
   koodistoUri: Option[String]
-) extends VKTKoodiViite
+) extends VktKoodiViite
 
-object VKTPaikallinenKoodi {
-  def fromKoskiSchema(kv: schema.PaikallinenKoodi) = VKTPaikallinenKoodi(
+object VktPaikallinenKoodi {
+  def fromKoskiSchema(kv: schema.PaikallinenKoodi) = VktPaikallinenKoodi(
     kv.koodiarvo,
     kv.nimi,
     kv.koodistoUri
@@ -136,57 +136,57 @@ object VKTPaikallinenKoodi {
 
 case class Oppilaitos(
   oid: String,
-  oppilaitosnumero: Option[VKTKoodistokoodiviite],
+  oppilaitosnumero: Option[VktKoodistokoodiviite],
   nimi: Option[schema.LocalizedString],
-  kotipaikka: Option[VKTKoodistokoodiviite]
+  kotipaikka: Option[VktKoodistokoodiviite]
 )
 
 case class Koulutustoimija(
   oid: String,
   nimi: Option[schema.LocalizedString],
   yTunnus: Option[String],
-  kotipaikka: Option[VKTKoodistokoodiviite]
+  kotipaikka: Option[VktKoodistokoodiviite]
 )
 
 @Title("Opiskeluoikeuden tila")
-case class VKTOpiskeluoikeudenTila(
+case class VktOpiskeluoikeudenTila(
   @Representative
-  opiskeluoikeusjaksot: List[VKTOpiskeluoikeusjakso]
+  opiskeluoikeusjaksot: List[VktOpiskeluoikeusjakso]
 )
 
 @Title("Opiskeluoikeusjakso")
-case class VKTOpiskeluoikeusjakso(
+case class VktOpiskeluoikeusjakso(
   alku: LocalDate,
-  tila: VKTKoodistokoodiviite,
-  opintojenRahoitus: Option[VKTKoodistokoodiviite]
+  tila: VktKoodistokoodiviite,
+  opintojenRahoitus: Option[VktKoodistokoodiviite]
 )
 
 @Title("Opiskeluoikeuden lisätiedot")
-trait VKTOpiskeluoikeudenLisätiedot
+trait VktOpiskeluoikeudenLisätiedot
 
 
 trait SuorituksenKoulutusmoduuli {
-  def tunniste: VKTKoodiViite
+  def tunniste: VktKoodiViite
 }
 
 trait SuorituksenKooditettuKoulutusmoduuli extends SuorituksenKoulutusmoduuli {
-  def tunniste: VKTKoodistokoodiviite
+  def tunniste: VktKoodistokoodiviite
 }
 
 @Title("Päätason suoritus")
-case class VKTPäätasonSuoritus(
-  koulutusmoduuli: VKTPäätasonKoulutusmoduuli,
-  suorituskieli: VKTKoodistokoodiviite,
+case class VktPäätasonSuoritus(
+  koulutusmoduuli: VktPäätasonKoulutusmoduuli,
+  suorituskieli: VktKoodistokoodiviite,
   tyyppi: schema.Koodistokoodiviite,
   vahvistus: Option[Vahvistus],
   toimipiste: Option[Toimipiste]
 ) extends Suoritus
 
 @Title("Päätason koulutusmoduuli")
-case class VKTPäätasonKoulutusmoduuli(
-  tunniste: VKTKoodistokoodiviite,
+case class VktPäätasonKoulutusmoduuli(
+  tunniste: VktKoodistokoodiviite,
   perusteenDiaarinumero: Option[String],
-  koulutustyyppi: Option[VKTKoodistokoodiviite],
+  koulutustyyppi: Option[VktKoodistokoodiviite],
 ) extends SuorituksenKooditettuKoulutusmoduuli
 
 case class Vahvistus(päivä: LocalDate)
@@ -194,5 +194,5 @@ case class Vahvistus(päivä: LocalDate)
 case class Toimipiste(
   oid: String,
   nimi: Option[schema.LocalizedString] = None,
-  kotipaikka: Option[VKTKoodistokoodiviite] = None
+  kotipaikka: Option[VktKoodistokoodiviite] = None
 )

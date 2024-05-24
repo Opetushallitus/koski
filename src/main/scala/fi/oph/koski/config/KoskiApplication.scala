@@ -49,7 +49,7 @@ import fi.oph.koski.valpas.oppivelvollisuudestavapautus.ValpasOppivelvollisuudes
 import fi.oph.koski.valpas.rouhinta.ValpasRouhintaOppivelvollisuudenKeskeytysService
 import fi.oph.koski.valpas.valpasrepository.{OpiskeluoikeusLisätiedotRepository, OppivelvollisuudenKeskeytysRepository, OppivelvollisuudenKeskeytysRepositoryService, ValpasKuntailmoitusRepository}
 import fi.oph.koski.virta.{VirtaAccessChecker, VirtaClient, VirtaOpiskeluoikeusRepository}
-import fi.oph.koski.vkt.VKTService
+import fi.oph.koski.vkt.VktService
 import fi.oph.koski.ytr.YoTodistusService
 import fi.oph.koski.ytr.download.YtrDownloadService
 import fi.oph.koski.ytr.{YtrAccessChecker, YtrClient, YtrOpiskeluoikeusRepository, YtrRepository}
@@ -178,7 +178,7 @@ class KoskiApplication(
   lazy val päivitetytOpiskeluoikeudetJono = new PäivitetytOpiskeluoikeudetJonoService(this)
   lazy val suoritetutTutkinnotService = new SuoritetutTutkinnotService(this)
   lazy val aktiivisetJaPäättyneetOpinnotService = new AktiivisetJaPäättyneetOpinnotService(this)
-  lazy val vktService = new VKTService(this)
+  lazy val vktService = new VktService(this)
 
   lazy val valpasLocalizationRepository = LocalizationRepository(config, new ValpasLocalizationConfig)
   lazy val valpasRajapäivätService = ValpasRajapäivätService(config)

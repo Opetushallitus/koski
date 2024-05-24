@@ -16,7 +16,7 @@ import fi.oph.koski.valpas.kela.ValpasKelaSchema
 import fi.oph.koski.valpas.oppija.ValpasInternalSchema
 import fi.oph.koski.valpas.ytl.ValpasYtlSchema
 import fi.oph.koski.valvira.ValviraSchema
-import fi.oph.koski.vkt.VKTSchema
+import fi.oph.koski.vkt.VktSchema
 import fi.oph.koski.ytl.YtlSchema
 
 import scala.reflect.runtime.{universe => ru}
@@ -66,7 +66,7 @@ class DocumentationApiServlet(application: KoskiApplication) extends KoskiSpecif
   }
 
   get("/vkt-oppija-schema.json") {
-    VKTSchema.schemaJson
+    VktSchema.schemaJson
   }
 
   get("/ytl-oppija-schema.json") {
