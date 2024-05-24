@@ -1061,12 +1061,12 @@
 <text text-anchor="start" x="161.5" y="-4733.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">nimi_sv</text>
 <polygon fill="none" stroke="#000000" points="262.5,-4726 262.5,-4748 371.5,-4748 371.5,-4726 262.5,-4726"/>
 <text text-anchor="start" x="265.0344" y="-4733.7" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">varchar[2147483647]</text>
-<polygon fill="#ffffff" stroke="transparent" points="141.5,-4707 141.5,-4726 182.5,-4726 182.5,-4707 141.5,-4707"/>
-<polygon fill="none" stroke="#000000" points="141.5,-4707 141.5,-4726 182.5,-4726 182.5,-4707 141.5,-4707"/>
+<polygon fill="#ffffff" stroke="transparent" points="141.5,-4707 141.5,-4726 180.5,-4726 180.5,-4707 141.5,-4707"/>
+<polygon fill="none" stroke="#000000" points="141.5,-4707 141.5,-4726 180.5,-4726 180.5,-4707 141.5,-4707"/>
 <text text-anchor="start" x="144.5" y="-4713.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">&lt; 0</text>
-<polygon fill="#ffffff" stroke="transparent" points="182.5,-4707 182.5,-4726 262.5,-4726 262.5,-4707 182.5,-4707"/>
-<polygon fill="none" stroke="#000000" points="182.5,-4707 182.5,-4726 262.5,-4726 262.5,-4707 182.5,-4707"/>
-<text text-anchor="start" x="205.7089" y="-4713.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">1,046 rows</text>
+<polygon fill="#ffffff" stroke="transparent" points="180.5,-4707 180.5,-4726 262.5,-4726 262.5,-4707 180.5,-4707"/>
+<polygon fill="none" stroke="#000000" points="180.5,-4707 180.5,-4726 262.5,-4726 262.5,-4707 180.5,-4707"/>
+<text text-anchor="start" x="202.047" y="-4713.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">1 046 rows</text>
 <polygon fill="#ffffff" stroke="transparent" points="262.5,-4707 262.5,-4726 371.5,-4726 371.5,-4707 262.5,-4707"/>
 <polygon fill="none" stroke="#000000" points="262.5,-4707 262.5,-4726 371.5,-4726 371.5,-4707 262.5,-4707"/>
 <text text-anchor="start" x="352.9053" y="-4713.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">0 &gt;</text>
@@ -1590,12 +1590,12 @@
 <text text-anchor="start" x="155.5" y="-7204.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">kielikoodi</text>
 <polygon fill="none" stroke="#000000" points="268.5,-7197 268.5,-7219 377.5,-7219 377.5,-7197 268.5,-7197"/>
 <text text-anchor="start" x="271.0344" y="-7204.7" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">varchar[2147483647]</text>
-<polygon fill="#ffffff" stroke="transparent" points="135.5,-7178 135.5,-7197 182.5,-7197 182.5,-7178 135.5,-7178"/>
-<polygon fill="none" stroke="#000000" points="135.5,-7178 135.5,-7197 182.5,-7197 182.5,-7178 135.5,-7178"/>
+<polygon fill="#ffffff" stroke="transparent" points="135.5,-7178 135.5,-7197 180.5,-7197 180.5,-7178 135.5,-7178"/>
+<polygon fill="none" stroke="#000000" points="135.5,-7178 135.5,-7197 180.5,-7197 180.5,-7178 135.5,-7178"/>
 <text text-anchor="start" x="138.5" y="-7184.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">&lt; 0</text>
-<polygon fill="#ffffff" stroke="transparent" points="182.5,-7178 182.5,-7197 268.5,-7197 268.5,-7178 182.5,-7178"/>
-<polygon fill="none" stroke="#000000" points="182.5,-7178 182.5,-7197 268.5,-7197 268.5,-7178 182.5,-7178"/>
-<text text-anchor="start" x="211.7089" y="-7184.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">1,059 rows</text>
+<polygon fill="#ffffff" stroke="transparent" points="180.5,-7178 180.5,-7197 268.5,-7197 268.5,-7178 180.5,-7178"/>
+<polygon fill="none" stroke="#000000" points="180.5,-7178 180.5,-7197 268.5,-7197 268.5,-7178 180.5,-7178"/>
+<text text-anchor="start" x="208.047" y="-7184.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">1 059 rows</text>
 <polygon fill="#ffffff" stroke="transparent" points="268.5,-7178 268.5,-7197 377.5,-7197 377.5,-7178 268.5,-7178"/>
 <polygon fill="none" stroke="#000000" points="268.5,-7178 268.5,-7197 377.5,-7197 377.5,-7178 268.5,-7178"/>
 <text text-anchor="start" x="358.9053" y="-7184.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">0 &gt;</text>
@@ -1778,12 +1778,12 @@
 <text text-anchor="start" x="114.5" y="-7492.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">sisaltyy_opiskeluoikeuteen_oid</text>
 <polygon fill="none" stroke="#000000" points="310.5,-7485 310.5,-7507 419.5,-7507 419.5,-7485 310.5,-7485"/>
 <text text-anchor="start" x="313.0344" y="-7492.7" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">varchar[2147483647]</text>
-<polygon fill="#ffffff" stroke="transparent" points="94.5,-7466 94.5,-7485 183.5,-7485 183.5,-7466 94.5,-7466"/>
-<polygon fill="none" stroke="#000000" points="94.5,-7466 94.5,-7485 183.5,-7485 183.5,-7466 94.5,-7466"/>
+<polygon fill="#ffffff" stroke="transparent" points="94.5,-7466 94.5,-7485 181.5,-7485 181.5,-7466 94.5,-7466"/>
+<polygon fill="none" stroke="#000000" points="94.5,-7466 94.5,-7485 181.5,-7485 181.5,-7466 94.5,-7466"/>
 <text text-anchor="start" x="97.5" y="-7472.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">&lt; 0</text>
-<polygon fill="#ffffff" stroke="transparent" points="183.5,-7466 183.5,-7485 310.5,-7485 310.5,-7466 183.5,-7466"/>
-<polygon fill="none" stroke="#000000" points="183.5,-7466 183.5,-7485 310.5,-7485 310.5,-7466 183.5,-7466"/>
-<text text-anchor="start" x="253.7089" y="-7472.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">4,837 rows</text>
+<polygon fill="#ffffff" stroke="transparent" points="181.5,-7466 181.5,-7485 310.5,-7485 310.5,-7466 181.5,-7466"/>
+<polygon fill="none" stroke="#000000" points="181.5,-7466 181.5,-7485 310.5,-7485 310.5,-7466 181.5,-7466"/>
+<text text-anchor="start" x="250.047" y="-7472.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">4 837 rows</text>
 <polygon fill="#ffffff" stroke="transparent" points="310.5,-7466 310.5,-7485 419.5,-7485 419.5,-7466 310.5,-7466"/>
 <polygon fill="none" stroke="#000000" points="310.5,-7466 310.5,-7485 419.5,-7485 419.5,-7466 310.5,-7466"/>
 <text text-anchor="start" x="400.9053" y="-7472.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">0 &gt;</text>
