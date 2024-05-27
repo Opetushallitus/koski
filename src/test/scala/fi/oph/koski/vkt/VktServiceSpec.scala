@@ -5,8 +5,7 @@ import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.documentation.ExampleData.{longTimeAgo, opiskeluoikeusLäsnä, valtionosuusRahoitteinen}
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.koskiuser.KoskiSpecificSession.SUORITUSJAKO_KATSOMINEN_USER
-import fi.oph.koski.koskiuser.Rooli.OPHKATSELIJA
+import fi.oph.koski.koskiuser.Rooli.{OPHKATSELIJA, VKT}
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.virta.MockVirtaClient
@@ -35,11 +34,11 @@ class VktServiceSpec
 
   val vktService = KoskiApplicationForTests.vktService
 
-  private val suoritusjakoKatsominenTestUser = new KoskiSpecificSession(
+  private val vktTestUser = new KoskiSpecificSession(
     AuthenticationUser(
-      SUORITUSJAKO_KATSOMINEN_USER,
-      SUORITUSJAKO_KATSOMINEN_USER,
-      SUORITUSJAKO_KATSOMINEN_USER, None
+      VKT,
+      VKT,
+      VKT, None
     ),
     "fi",
     InetAddress.getLoopbackAddress,
@@ -47,7 +46,7 @@ class VktServiceSpec
     Set(KäyttöoikeusGlobal(List(Palvelurooli(OPHKATSELIJA))))
   )
 
-  implicit val koskiSession = suoritusjakoKatsominenTestUser
+  implicit val koskiSession = vktTestUser
 
   override def afterEach(): Unit = {
     MockYtrClient.reset()
