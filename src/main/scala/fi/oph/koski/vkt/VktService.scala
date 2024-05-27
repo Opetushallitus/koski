@@ -44,14 +44,7 @@ class VktService(application: KoskiApplication) extends GlobalExecutionContext w
   }
 
   private def suodataPalautettavat(opiskeluoikeudet: Seq[VktOpiskeluoikeus]): Seq[VktOpiskeluoikeus] = {
-    val kuoriOpiskeluoikeusOidit = opiskeluoikeudet.flatMap {
-      case oo: VktKoskeenTallennettavaOpiskeluoikeus => oo.sisältyyOpiskeluoikeuteen.map(_.oid)
-      case _ => None
-    }.toSet
-
     opiskeluoikeudet
-      .filterNot(onKuoriOpiskeluoikeus(kuoriOpiskeluoikeusOidit))
-      .map(_.withoutSisältyyOpiskeluoikeuteen)
       .map { opiskeluoikeus =>
         opiskeluoikeus.withSuoritukset(
           opiskeluoikeus.suoritukset
@@ -86,13 +79,6 @@ class VktService(application: KoskiApplication) extends GlobalExecutionContext w
       => s.vahvistus.isDefined
       case _
       => true
-    }
-  }
-
-  private def onKuoriOpiskeluoikeus(kuoriOpiskeluoikeusOidit: Set[String])(o: VktOpiskeluoikeus): Boolean = {
-    o match {
-      case ko: VktKoskeenTallennettavaOpiskeluoikeus => ko.oid.map(kuoriOpiskeluoikeusOidit.contains).getOrElse(false)
-      case _ => false
     }
   }
 }

@@ -64,8 +64,6 @@ case class VktYlioppilastutkinnonOpiskeluoikeus(
     this.copy(
       suoritukset = suoritukset.collect { case s: VktYlioppilastutkinnonPäätasonSuoritus => s }
     )
-
-  override def withoutSisältyyOpiskeluoikeuteen: VktOpiskeluoikeus = this
 }
 
 @Title("Ylioppilastutkinnon suoritus")

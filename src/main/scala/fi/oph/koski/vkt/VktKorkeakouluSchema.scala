@@ -57,22 +57,7 @@ object VktKorkeakoulunOpiskeluoikeus {
       )
     )),
     suoritukset = kk.suoritukset
-      .map {
-        case s: schema.KorkeakoulunOpintojaksonSuoritus =>
-          VktKorkeakoulunOpintojaksonSuoritus(
-            koulutusmoduuli = VktKorkeakoulunOpintojakso(
-              tunniste = VktPaikallinenKoodi.fromKoskiSchema(s.koulutusmoduuli.tunniste),
-              nimi = s.koulutusmoduuli.nimi,
-            ),
-            vahvistus = s.vahvistus.map(v => Vahvistus(v.päivä)),
-            suorituskieli = s.suorituskieli.map(VktKoodistokoodiviite.fromKoskiSchema),
-            toimipiste = Some(Toimipiste(
-              s.toimipiste.oid,
-              s.toimipiste.nimi,
-              s.toimipiste.kotipaikka.map(VktKoodistokoodiviite.fromKoskiSchema)
-            )),
-            tyyppi = s.tyyppi
-          )
+      .collect {
         case s: schema.KorkeakoulututkinnonSuoritus =>
           VktKorkeakoulututkinnonSuoritus(
             koulutusmoduuli = VktKorkeakoulututkinto(
@@ -81,28 +66,12 @@ object VktKorkeakoulunOpiskeluoikeus {
               virtaNimi = s.koulutusmoduuli.virtaNimi
             ),
             vahvistus = s.vahvistus.map(v => Vahvistus(v.päivä)),
-            suorituskieli = s.suorituskieli.map(VktKoodistokoodiviite.fromKoskiSchema),
             toimipiste = Some(Toimipiste(
               s.toimipiste.oid,
               s.toimipiste.nimi,
               s.toimipiste.kotipaikka.map(VktKoodistokoodiviite.fromKoskiSchema)
             )),
             tyyppi = s.tyyppi
-          )
-        case s: schema.MuuKorkeakoulunSuoritus =>
-          VktMuuKorkeakoulunSuoritus(
-            koulutusmoduuli = VktMuuKorkeakoulunOpinto(
-              tunniste = VktKoodistokoodiviite.fromKoskiSchema(s.koulutusmoduuli.tunniste),
-              nimi = s.koulutusmoduuli.nimi,
-            ),
-            vahvistus = s.vahvistus.map(v => Vahvistus(v.päivä)),
-            suorituskieli = s.suorituskieli.map(VktKoodistokoodiviite.fromKoskiSchema),
-            toimipiste = Some(Toimipiste(
-              s.toimipiste.oid,
-              s.toimipiste.nimi,
-              s.toimipiste.kotipaikka.map(VktKoodistokoodiviite.fromKoskiSchema)
-            )),
-            tyyppi = s.tyyppi,
           )
       },
     tyyppi = kk.tyyppi,
@@ -117,7 +86,7 @@ case class VktKorkeakoulunOpiskeluoikeus(
   override val päättymispäivä: Option[LocalDate],
   tila: VktOpiskeluoikeudenTila,
   lisätiedot: Option[VktKorkeakoulunOpiskeluoikeudenLisätiedot],
-  suoritukset: List[VktKorkeakouluSuoritus],
+  suoritukset: List[VktKorkeakoulututkinnonSuoritus],
   @KoodistoKoodiarvo(schema.OpiskeluoikeudenTyyppi.korkeakoulutus.koodiarvo)
   tyyppi: schema.Koodistokoodiviite,
   luokittelu: Option[List[VktKoodistokoodiviite]],
@@ -125,40 +94,18 @@ case class VktKorkeakoulunOpiskeluoikeus(
 
   override def withSuoritukset(suoritukset: List[Suoritus]): VktOpiskeluoikeus =
     this.copy(
-      suoritukset = suoritukset.collect { case s: VktKorkeakouluSuoritus => s }
+      suoritukset = suoritukset.collect { case s: VktKorkeakoulututkinnonSuoritus => s }
     )
-
-  override def withoutSisältyyOpiskeluoikeuteen: VktOpiskeluoikeus = this
 }
 
-trait VktKorkeakouluSuoritus extends Suoritus
-
-case class VktKorkeakoulunOpintojaksonSuoritus(
-  koulutusmoduuli: VktKorkeakoulunOpintojakso,
-  vahvistus: Option[Vahvistus],
-  suorituskieli: Option[VktKoodistokoodiviite],
-  toimipiste: Option[Toimipiste],
-  @KoodistoKoodiarvo("korkeakoulunopintojakso")
-  tyyppi: schema.Koodistokoodiviite
-) extends VktKorkeakouluSuoritus
-
+@Title("Korkeakoulututkinnon päätason suoritus")
 case class VktKorkeakoulututkinnonSuoritus(
   koulutusmoduuli: VktKorkeakoulututkinto,
   @KoodistoKoodiarvo("korkeakoulututkinto")
   tyyppi: schema.Koodistokoodiviite,
   vahvistus: Option[Vahvistus],
-  suorituskieli: Option[VktKoodistokoodiviite],
   toimipiste: Option[Toimipiste],
-) extends VktKorkeakouluSuoritus
-
-case class VktMuuKorkeakoulunSuoritus(
-  koulutusmoduuli: VktMuuKorkeakoulunOpinto,
-  vahvistus: Option[Vahvistus],
-  suorituskieli: Option[VktKoodistokoodiviite],
-  toimipiste: Option[Toimipiste],
-  @KoodistoKoodiarvo("muukorkeakoulunsuoritus")
-  tyyppi: schema.Koodistokoodiviite
-) extends VktKorkeakouluSuoritus
+) extends Suoritus
 
 case class VktKorkeakoulunOpiskeluoikeudenLisätiedot(
   virtaOpiskeluoikeudenTyyppi: Option[VktKoodistokoodiviite],

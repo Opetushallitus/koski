@@ -10,7 +10,6 @@ case class VktEBTutkinnonOpiskeluoikeus(
   versionumero: Option[Int],
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija],
-  sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus],
   tila: VktOpiskeluoikeudenTila,
   suoritukset: List[VktEBTutkinnonPäätasonSuoritus],
   @KoodistoKoodiarvo(schema.OpiskeluoikeudenTyyppi.ebtutkinto.koodiarvo)
@@ -23,8 +22,6 @@ case class VktEBTutkinnonOpiskeluoikeus(
     this.copy(
       suoritukset = suoritukset.collect { case s: VktEBTutkinnonPäätasonSuoritus => s }
     )
-
-  override def withoutSisältyyOpiskeluoikeuteen: VktKoskeenTallennettavaOpiskeluoikeus = this.copy(sisältyyOpiskeluoikeuteen = None)
 }
 
 @Title("EB-tutkinnon päätason suoritus")

@@ -66,17 +66,12 @@ trait VktOpiskeluoikeus {
   def lisätiedot: Option[VktOpiskeluoikeudenLisätiedot]
 
   def withSuoritukset(suoritukset: List[Suoritus]): VktOpiskeluoikeus
-
-  def withoutSisältyyOpiskeluoikeuteen: VktOpiskeluoikeus
 }
 
 trait VktKoskeenTallennettavaOpiskeluoikeus extends VktOpiskeluoikeus {
   def oid: Option[String]
 
   def versionumero: Option[Int]
-
-  @Deprecated("Ei palauteta. Kenttä on näkyvissä skeemassa vain teknisistä syistä.")
-  def sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus]
 }
 
 case class SisältäväOpiskeluoikeus(

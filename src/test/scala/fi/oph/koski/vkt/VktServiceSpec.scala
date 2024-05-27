@@ -78,7 +78,11 @@ class VktServiceSpec
 
     oppijat.foreach(oppija => {
       s"Tiedot palautetaan ${oppija.sukunimi} ${oppija.etunimet} (${oppija.hetu.getOrElse("EI HETUA")})" in {
-        val expectedOoDatat = getOpiskeluoikeudet(oppija.oid).filter(_.tyyppi.koodiarvo == schema.OpiskeluoikeudenTyyppi.korkeakoulutus.koodiarvo)
+        val expectedOoDatat = getOpiskeluoikeudet(oppija.oid)
+          .filter(_.tyyppi.koodiarvo == schema.OpiskeluoikeudenTyyppi.korkeakoulutus.koodiarvo)
+          .filter(_.suoritukset.collect {
+            case s: schema.KorkeakoulututkinnonSuoritus => s
+          }.nonEmpty)
 
         val result = vktService.findOppija(oppija.oid)
 
@@ -93,7 +97,9 @@ class VktServiceSpec
 
           actualOotSorted.zip(expectedOoDatatSorted).foreach {
             case (actualOo, expectedOoData) =>
-              val expectedSuoritusDatat = expectedOoData.suoritukset
+              val expectedSuoritusDatat = expectedOoData.suoritukset.collect {
+                case s: schema.KorkeakoulututkinnonSuoritus => s
+              }
               val actualSuoritukset = actualOo.suoritukset
 
               verifyOpiskeluoikeusJaSuoritus(actualOo, actualSuoritukset, expectedOoData, expectedSuoritusDatat)
@@ -239,7 +245,7 @@ class VktServiceSpec
         (actualOo, actualSuoritus, expectedOoData, expectedSuoritusData) match {
           case (
             actualOo: VktKorkeakoulunOpiskeluoikeus,
-            actualSuoritus: VktKorkeakouluSuoritus,
+            actualSuoritus: VktKorkeakoulututkinnonSuoritus,
             expectedOoData: schema.KorkeakoulunOpiskeluoikeus,
             expectedSuoritusData: schema.KorkeakouluSuoritus
             ) => verifyKorkeakoulu(actualOo, actualSuoritus, expectedOoData, expectedSuoritusData)
@@ -305,7 +311,7 @@ class VktServiceSpec
 
   private def verifyKorkeakoulu(
     actualOo: VktKorkeakoulunOpiskeluoikeus,
-    actualSuoritus: VktKorkeakouluSuoritus,
+    actualSuoritus: VktKorkeakoulututkinnonSuoritus,
     expectedOoData: schema.KorkeakoulunOpiskeluoikeus,
     expectedSuoritusData: schema.KorkeakouluSuoritus
   ): Unit = {
@@ -316,13 +322,8 @@ class VktServiceSpec
 
     (actualSuoritus, expectedSuoritusData) match {
       case (actualSuoritus: VktKorkeakoulututkinnonSuoritus, expectedSuoritusData: schema.KorkeakoulututkinnonSuoritus) =>
-        actualSuoritus.suorituskieli.map(_.koodiarvo) should equal(expectedSuoritusData.suorituskieli.map(_.koodiarvo))
         actualSuoritus.koulutusmoduuli.koulutustyyppi should equal(expectedSuoritusData.koulutusmoduuli.koulutustyyppi)
         actualSuoritus.koulutusmoduuli.virtaNimi should equal(expectedSuoritusData.koulutusmoduuli.virtaNimi)
-      case (actualSuoritus: VktMuuKorkeakoulunSuoritus, expectedSuoritusData: schema.MuuKorkeakoulunSuoritus) =>
-        actualSuoritus.koulutusmoduuli.nimi should equal(expectedSuoritusData.koulutusmoduuli.nimi)
-      case (actualSuoritus: VktKorkeakoulunOpintojaksonSuoritus, expectedSuoritusData: schema.KorkeakoulunOpintojaksonSuoritus) =>
-        actualSuoritus.koulutusmoduuli.nimi should equal(expectedSuoritusData.koulutusmoduuli.nimi)
       case _ => fail(s"Palautettiin tunnistamattoman tyyppistä suoritusdataa actual: (${actualSuoritus.getClass.getName}), expected:(${expectedSuoritusData.getClass.getName})")
     }
   }
@@ -335,8 +336,6 @@ class VktServiceSpec
 
     actualOo.luokittelu.map(_.length) should equal(expectedOoData.luokittelu.map(_.length))
     actualOo.luokittelu.map(_.map(_.koodiarvo)) should equal(expectedOoData.luokittelu.map(_.map(_.koodiarvo)))
-
-    actualOo.suoritukset.length should equal(expectedOoData.suoritukset.length)
 
     actualOo.lisätiedot.map(_.virtaOpiskeluoikeudenTyyppi.map(_.koodiarvo)) should equal(expectedOoData.lisätiedot.map(_.virtaOpiskeluoikeudenTyyppi.map(_.koodiarvo)))
     actualOo.lisätiedot.map(_.lukukausiIlmoittautuminen.map(_.ilmoittautumisjaksot.length)) should equal(expectedOoData.lisätiedot.map(_.lukukausiIlmoittautuminen.map(_.ilmoittautumisjaksot.length)))
@@ -356,7 +355,6 @@ class VktServiceSpec
     verifyOpiskeluoikeudenKentät(actualOo, expectedOoData)
 
     actualOo.oid should be(expectedOoData.oid)
-    actualOo.sisältyyOpiskeluoikeuteen.map(_.oid) should equal(None)
     actualOo.versionumero should be(expectedOoData.versionumero)
 
     actualOo.tila.opiskeluoikeusjaksot.zip(expectedOoData.tila.opiskeluoikeusjaksot).foreach {

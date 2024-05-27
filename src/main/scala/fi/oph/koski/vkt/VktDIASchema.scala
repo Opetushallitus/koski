@@ -10,7 +10,6 @@ case class VktDIAOpiskeluoikeus(
   versionumero: Option[Int],
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija],
-  sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus],
   tila: VktOpiskeluoikeudenTila,
   suoritukset: List[VktDIATutkinnonSuoritus],
   @KoodistoKoodiarvo(schema.OpiskeluoikeudenTyyppi.diatutkinto.koodiarvo)
@@ -23,8 +22,6 @@ case class VktDIAOpiskeluoikeus(
     this.copy(
       suoritukset = suoritukset.collect { case s: VktDIATutkinnonSuoritus => s }
     )
-
-  override def withoutSisältyyOpiskeluoikeuteen: VktKoskeenTallennettavaOpiskeluoikeus = this.copy(sisältyyOpiskeluoikeuteen = None)
 }
 
 
@@ -33,7 +30,6 @@ case class VktDIATutkinnonSuoritus(
   koulutusmoduuli: VktDIATutkinto,
   toimipiste: Option[Toimipiste],
   vahvistus: Option[Vahvistus],
-  suorituskieli: Option[VktKoodistokoodiviite],
   @KoodistoKoodiarvo("diatutkintovaihe")
   tyyppi: schema.Koodistokoodiviite,
 ) extends Suoritus
