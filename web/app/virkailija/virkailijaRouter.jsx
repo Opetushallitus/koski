@@ -64,11 +64,7 @@ export const routeP = locationP
       return dokumentaatioPalveluväyläOmadataP()
     } else if (path.includes('koski/kela')) {
       return kelaVirkailijaP(path)
-    } else if (
-      path.includes(
-        '/koski/dokumentaatio/rajapinnat/massaluovutus/koulutuksenjarjestajat'
-      )
-    ) {
+    } else if (path.includes('/koski/dokumentaatio/rajapinnat/massaluovutus')) {
       return dokumentaatioKyselytP(path)
     }
   })

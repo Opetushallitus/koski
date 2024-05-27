@@ -14,21 +14,27 @@ import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryContext
 import fi.oph.koski.schema.annotation.EnumValues
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, KoskiSchema}
 import fi.oph.koski.util.Collections.asNonEmpty
-import fi.oph.scalaschema.annotation.DefaultValue
+import fi.oph.scalaschema.annotation.{DefaultValue, Description, Title}
+import org.json4s.jackson.JsonMethods
 import slick.jdbc.GetResult
 
 import java.sql.Timestamp
 import java.time.LocalDate
 
+@Title("Valintalaskennan kysely")
 case class ValintalaskentaQuery(
   @EnumValues(Set("valintalaskenta"))
   `type`: String = "valintalaskenta",
   @EnumValues(Set(QueryFormat.json))
   format: String = QueryFormat.json,
+  @Description("Leikkuripäivä, johon mennessä toimitetut tiedot KOSKI-palveluun haetaan.")
   rajapäivä: LocalDate,
+  @Description("Lista oppija-oideista, joiden opiskeluoikeudet haetaan. Rajapinta hyväksyy sekä master- että slave-oidit.")
   oppijaOids: Seq[String],
+  @Description(s"Haettavat koulutusmuoto. Oletuksena ammatillinenkoulutus")
   @DefaultValue(Some(ValintalaskentaQuery.defaultKoulutusmuoto))
   koulutusmuoto: Option[String] = None,
+  @Description(s"Haettavat suoritustyypit. Oletuksena [ammatillinentutkinto, ammatillinentutkintoosittainen]]")
   @DefaultValue(Some(ValintalaskentaQuery.defaultSuoritustyypit))
   suoritustyypit: Option[Seq[String]] = None,
 ) extends MassaluovutusQueryParameters with Logging {
@@ -163,4 +169,17 @@ case class OpiskeluoikeudenVersiotieto(
 object ValintalaskentaQuery {
   val defaultKoulutusmuoto = "ammatillinenkoulutus"
   val defaultSuoritustyypit = Seq("ammatillinentutkinto", "ammatillinentutkintoosittainen")
+}
+
+object ValintalaskentaQueryDocumentation {
+  def example = ValintalaskentaQuery(
+    oppijaOids = oppijaOids,
+    rajapäivä = LocalDate.now(),
+  )
+
+  def outputFiles: List[String] =
+    oppijaOids.map(oid => s"$oid.json")
+
+  def oppijaOids: List[String] =
+    List("1.2.246.562.24.37998958910", "1.2.246.562.24.62432463004")
 }

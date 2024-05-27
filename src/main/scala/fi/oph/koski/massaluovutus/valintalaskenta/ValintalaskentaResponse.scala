@@ -173,5 +173,4 @@ object ValintalaskentaError {
     case e: Throwable => internal(e.getMessage)
   }
 
-  def internal(message: String): ValintalaskentaError = ValintalaskentaError("internal", message)
-}
+  def internal(message: String): ValintalaskentaError = ValintalaskentaError("internal", message)}
