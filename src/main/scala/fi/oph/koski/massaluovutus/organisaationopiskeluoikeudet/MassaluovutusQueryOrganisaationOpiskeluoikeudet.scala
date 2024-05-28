@@ -99,7 +99,12 @@ trait MassaluovutusQueryOrganisaationOpiskeluoikeudet extends MassaluovutusQuery
       user,
       Map(hakuEhto -> OpiskeluoikeusQueryContext.queryForAuditLog(Map(
         "organisaatio" -> List(organisaatioOid.get),
-        "opiskeluoikeusAlkanutAikaisintaan" -> List(alkanutAikaisintaan.format(DateTimeFormatter.ISO_DATE)),
+        "alkanutAikaisintaan" -> List(alkanutAikaisintaan.format(DateTimeFormatter.ISO_DATE)),
+        "alkanutViimeistään" -> alkanutViimeistään.toList.map(_.format(DateTimeFormatter.ISO_DATE)),
+        "päättynytAikaisintaan" -> päättynytAikaisintaan.toList.map(_.format(DateTimeFormatter.ISO_DATE)),
+        "päättynytViimeistään" -> päättynytViimeistään.toList.map(_.format(DateTimeFormatter.ISO_DATE)),
+        "eiPäättymispäivää" -> eiPäättymispäivää.toList.map(_.toString),
+        "muuttunutJälkeen" -> muuttunutJälkeen.toList.map(_.format(DateTimeFormatter.ISO_DATE)),
         "koulutusmuoto" -> koulutusmuoto.toList,
       ).filter(_._2.nonEmpty))),
     ))

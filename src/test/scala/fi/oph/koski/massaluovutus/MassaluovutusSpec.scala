@@ -129,7 +129,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
         AuditLogTester.verifyAuditLogMessage(Map(
           "operation" -> "OPISKELUOIKEUS_HAKU",
           "target" -> Map(
-            "hakuEhto" -> "opiskeluoikeusAlkanutAikaisintaan=2020-01-01&organisaatio=1.2.246.562.10.346830761110",
+            "hakuEhto" -> "alkanutAikaisintaan=2020-01-01&organisaatio=1.2.246.562.10.346830761110",
           ),
         ))
       }
@@ -187,7 +187,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
         AuditLogTester.verifyAuditLogMessage(Map(
           "operation" -> "OPISKELUOIKEUS_HAKU",
           "target" -> Map(
-            "hakuEhto" -> "opiskeluoikeusAlkanutAikaisintaan=2020-01-01&organisaatio=1.2.246.562.10.346830761110",
+            "hakuEhto" -> "alkanutAikaisintaan=2020-01-01&organisaatio=1.2.246.562.10.346830761110",
           ),
         ))
       }
@@ -430,6 +430,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
       app.massaluovutusScheduler.pause(Duration.ofDays(1))
       f
     } finally {
+      app.massaluovutusService.cancelAllTasks("cancelled")
       app.massaluovutusScheduler.resume()
     }
 }
