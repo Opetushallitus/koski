@@ -132,7 +132,8 @@ object KoskiOperation extends Enumeration {
   YTR_OPISKELUOIKEUS_MUUTOS,
   YTR_OPISKELUOIKEUS_KATSOMINEN,
   YTR_YOTODISTUKSEN_LUONTI,
-  YTR_YOTODISTUKSEN_LATAAMINEN = Value
+  YTR_YOTODISTUKSEN_LATAAMINEN,
+  VALINTAPALVELU_OPISKELUOIKEUS_HAKU = Value
 }
 
 private class KoskiAuditLogOperation(op: KoskiOperation) extends AuditLogOperation(op)

@@ -6,6 +6,7 @@ import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.Logging
 import fi.oph.koski.massaluovutus.organisaationopiskeluoikeudet.{QueryOrganisaationOpiskeluoikeudetCsvDocumentation, QueryOrganisaationOpiskeluoikeudetJsonDocumentation}
 import fi.oph.koski.massaluovutus.paallekkaisetopiskeluoikeudet.QueryPaallekkaisetOpiskeluoikeudetDocumentation
+import fi.oph.koski.massaluovutus.valintalaskenta.ValintalaskentaQueryDocumentation
 import fi.oph.koski.schema
 import fi.oph.koski.util.TryWithLogging
 import fi.oph.scalaschema._
@@ -32,6 +33,7 @@ object QueryDocumentation extends Logging {
 
   private val sectionSources = Map(
     "massaluovutus_koulutuksenjarjestajat" -> "documentation/massaluovutus-koulutuksenjarjestajille.md",
+    "massaluovutus_oph" -> "documentation/massaluovutus-oph.md",
   )
 
   def htmlTextSections(application: KoskiApplication): Map[String, String] =
@@ -208,6 +210,24 @@ object QueryExamples {
     ))
     case "FailedQueryResponse" => asJson(faileddQuery(
       QueryOrganisaationOpiskeluoikeudetCsvDocumentation.example,
+    ))
+    case "Valintalaskenta" => asJson(ValintalaskentaQueryDocumentation.example)
+    case "ValintalaskentaPendingQueryResponse" => asJson(pendingQuery(
+      application,
+      ValintalaskentaQueryDocumentation.example,
+    ))
+    case "ValintalaskentaRunningQueryResponse" => asJson(runningQuery(
+      application,
+      ValintalaskentaQueryDocumentation.example,
+    ))
+    case "ValintalaskentaCompleteQueryResponse" => asJson(completedQuery(
+      ValintalaskentaQueryDocumentation.example,
+      ValintalaskentaQueryDocumentation.outputFiles,
+      application.config.getString("koski.root.url"),
+      None,
+    ))
+    case "ValintalaskentaFailedQueryResponse" => asJson(faileddQuery(
+      ValintalaskentaQueryDocumentation.example,
     ))
     case _ => None
   }

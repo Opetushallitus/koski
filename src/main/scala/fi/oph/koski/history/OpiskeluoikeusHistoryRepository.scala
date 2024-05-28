@@ -119,7 +119,7 @@ case class OpiskeluoikeusHistory(oid: String, version: Int, patches: List[Opiske
   }
 }
 
-class JsonPatchException(msg: String, cause: Throwable) extends Exception(msg, cause)
+class JsonPatchException(msg: String, val cause: Throwable) extends Exception(msg, cause)
 
 case class RawOpiskeluoikeusData(
   data: JValue,

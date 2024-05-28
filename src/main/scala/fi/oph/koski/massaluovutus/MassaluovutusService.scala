@@ -113,7 +113,7 @@ class MassaluovutusService(application: KoskiApplication) extends Logging {
   def cancelAllTasks(reason: String): Boolean = queries.setRunningTasksFailed(reason)
 
   private def logStart(query: RunningQuery): Unit = {
-    logger.info(s"Starting new ${query.name} as user ${query.userOid}")
+    logger.info(s"Starting new ${query.name} (priority ${query.priority})  as user ${query.userOid}")
     metrics.putQueuedQueryMetric("started")
   }
 

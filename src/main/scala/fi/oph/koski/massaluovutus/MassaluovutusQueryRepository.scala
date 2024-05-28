@@ -44,13 +44,14 @@ class QueryRepository(
   def add(query: MassaluovutusQueryParameters)(implicit user: KoskiSpecificSession): PendingQuery = {
     val session = JsonSerializer.serialize(StorableSession(user))
     runDbSync(sql"""
-      INSERT INTO massaluovutus(id, user_oid, session, query, state)
+      INSERT INTO massaluovutus(id, user_oid, session, query, state, priority)
       VALUES (
         ${UUID.randomUUID().toString}::uuid,
         ${user.oid},
         $session,
         ${query.asJson},
-        ${QueryState.pending}
+        ${QueryState.pending},
+        ${query.priority}
        )
        RETURNING *
        """.as[Query])
@@ -81,9 +82,10 @@ class QueryRepository(
       case _ => None
     }
     val meta = query.meta.map(m => JsonSerializer.serializeWithRoot(m))
+    val priority = query.priority
 
     runDbSync(sql"""
-     INSERT INTO massaluovutus(id, user_oid, session, query, state, created_at, started_at, finished_at, worker, result_files, error, meta)
+     INSERT INTO massaluovutus(id, user_oid, session, query, state, created_at, started_at, finished_at, worker, result_files, error, meta, priority)
      VALUES(
         ${query.queryId}::uuid,
         ${query.userOid},
@@ -96,7 +98,8 @@ class QueryRepository(
         $worker,
         $resultFiles,
         $error,
-        $meta
+        $meta,
+        $priority
      )
      RETURNING *
      """.as[Query]).head
@@ -128,7 +131,7 @@ class QueryRepository(
         SELECT id
         FROM massaluovutus
         WHERE state = ${QueryState.pending}
-        ORDER BY created_at
+        ORDER BY (now() - created_at) * priority
         LIMIT 1
       )
       RETURNING *
@@ -303,6 +306,7 @@ trait Query {
   def externalResultsUrl(rootUrl: String): String = MassaluovutusServletUrls.query(rootUrl, queryId)
 
   def restartCount: Int = meta.flatMap(_.restarts).map(_.size).getOrElse(0)
+  def priority: Int = query.priority
 }
 
 trait QueryWithStartTime {
