@@ -16,7 +16,7 @@ import fi.oph.koski.util.Wait
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import org.json4s.JInt
 import org.json4s.jackson.JsonMethods
-import org.scalatest.BeforeAndAfterAll
+import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -25,12 +25,15 @@ import java.sql.Timestamp
 import java.time.{Duration, LocalDate, LocalDateTime}
 import java.util.UUID
 
-class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with BeforeAndAfterAll {
+class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with BeforeAndAfterAll with BeforeAndAfterEach {
   val app = KoskiApplicationForTests
 
   override protected def beforeAll(): Unit = {
     resetFixtures()
-    app.massaluovutusService.cancelAllTasks("cleanup")
+  }
+
+  override protected def afterEach(): Unit = {
+    Wait.until { !app.massaluovutusService.hasWork }
   }
 
   "Kyselyiden skedulointi" - {
@@ -126,7 +129,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
         AuditLogTester.verifyAuditLogMessage(Map(
           "operation" -> "OPISKELUOIKEUS_HAKU",
           "target" -> Map(
-            "hakuEhto" -> "opiskeluoikeusAlkanutAikaisintaan=2020-01-01&organisaatio=1.2.246.562.10.346830761110",
+            "hakuEhto" -> "alkanutAikaisintaan=2020-01-01&organisaatio=1.2.246.562.10.346830761110",
           ),
         ))
       }
@@ -184,7 +187,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
         AuditLogTester.verifyAuditLogMessage(Map(
           "operation" -> "OPISKELUOIKEUS_HAKU",
           "target" -> Map(
-            "hakuEhto" -> "opiskeluoikeusAlkanutAikaisintaan=2020-01-01&organisaatio=1.2.246.562.10.346830761110",
+            "hakuEhto" -> "alkanutAikaisintaan=2020-01-01&organisaatio=1.2.246.562.10.346830761110",
           ),
         ))
       }
@@ -427,6 +430,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
       app.massaluovutusScheduler.pause(Duration.ofDays(1))
       f
     } finally {
+      app.massaluovutusService.cancelAllTasks("cancelled")
       app.massaluovutusScheduler.resume()
     }
 }

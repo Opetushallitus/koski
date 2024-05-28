@@ -54,6 +54,8 @@ class MassaluovutusService(application: KoskiApplication) extends Logging {
 
   def hasNext: Boolean = queries.numberOfPendingQueries > 0
 
+  def hasWork: Boolean = queries.numberOfRunningQueries > 0 || queries.numberOfPendingQueries > 0
+
   def runNext(): Unit = {
     import scala.concurrent.ExecutionContext.Implicits.global
     queries.takeNext.foreach { query =>
