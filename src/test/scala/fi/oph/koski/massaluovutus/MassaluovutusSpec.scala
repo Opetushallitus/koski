@@ -16,7 +16,7 @@ import fi.oph.koski.util.Wait
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import org.json4s.JInt
 import org.json4s.jackson.JsonMethods
-import org.scalatest.BeforeAndAfterAll
+import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -25,12 +25,15 @@ import java.sql.Timestamp
 import java.time.{Duration, LocalDate, LocalDateTime}
 import java.util.UUID
 
-class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with BeforeAndAfterAll {
+class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with BeforeAndAfterAll with BeforeAndAfterEach {
   val app = KoskiApplicationForTests
 
   override protected def beforeAll(): Unit = {
     resetFixtures()
-    app.massaluovutusService.cancelAllTasks("cleanup")
+  }
+
+  override protected def afterEach(): Unit = {
+    Wait.until { !app.massaluovutusService.hasWork }
   }
 
   "Kyselyiden skedulointi" - {
