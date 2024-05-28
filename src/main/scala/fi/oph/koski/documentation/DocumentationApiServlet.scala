@@ -16,6 +16,7 @@ import fi.oph.koski.valpas.kela.ValpasKelaSchema
 import fi.oph.koski.valpas.oppija.ValpasInternalSchema
 import fi.oph.koski.valpas.ytl.ValpasYtlSchema
 import fi.oph.koski.valvira.ValviraSchema
+import fi.oph.koski.vkt.VktSchema
 import fi.oph.koski.ytl.YtlSchema
 
 import scala.reflect.runtime.{universe => ru}
@@ -62,6 +63,10 @@ class DocumentationApiServlet(application: KoskiApplication) extends KoskiSpecif
 
   get("/aktiiviset-ja-paattyneet-opinnot-oppija-schema.json") {
     AktiivisetJaPäättyneetOpinnotSchema.schemaJson
+  }
+
+  get("/vkt-oppija-schema.json") {
+    VktSchema.schemaJson
   }
 
   get("/ytl-oppija-schema.json") {

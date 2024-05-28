@@ -26,6 +26,7 @@ object Rooli {
   val VALVIRA = "VALVIRA"
   val MIGRI = "MIGRI"
   val YTL = "YTL"
+  val VKT = "VKT"
   val HSL = "HSL"
   val SUOMIFI = "SUOMIFI"
   val OPPIVELVOLLISUUSTIETO_RAJAPINTA = "OPPIVELVOLLISUUSTIETO_RAJAPINTA"
@@ -199,13 +200,4 @@ case class KäyttöoikeusViranomainen(globalPalveluroolit: List[Palvelurooli]) e
   }
 
   override lazy val allowedOpiskeluoikeusTyypit: Set[String] = Käyttöoikeus.parseAllowedOpiskeluoikeudenTyypit(globalPalveluroolit, globalAccessType)
-
-  def isPalveluvaylaAllowed: Boolean = {
-    val palveluvaylaRoolit = List(
-      Palvelurooli("KOSKI", Rooli.HSL),
-      Palvelurooli("KOSKI", Rooli.SUOMIFI),
-    )
-    palveluvaylaRoolit.exists(globalPalveluroolit.contains)
-  }
-
 }
