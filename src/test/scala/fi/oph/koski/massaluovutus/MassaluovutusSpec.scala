@@ -1,19 +1,15 @@
 package fi.oph.koski.massaluovutus
 
-import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api.actionBasedSQLInterpolation
 import fi.oph.koski.db.QueryMethods
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{KoskiSpecificSession, MockUsers, UserWithPassword}
 import fi.oph.koski.log.AuditLogTester
-import fi.oph.koski.log.KoskiOperation.OPISKELUOIKEUS_HAKU
-import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryContext
-import fi.oph.koski.organisaatio.MockOrganisaatiot
-import fi.oph.koski.organisaatio.MockOrganisaatiot.ressunLukio
 import fi.oph.koski.massaluovutus.organisaationopiskeluoikeudet.{MassaluovutusQueryOrganisaationOpiskeluoikeudet, MassaluovutusQueryOrganisaationOpiskeluoikeudetCsv, MassaluovutusQueryOrganisaationOpiskeluoikeudetJson, QueryOrganisaationOpiskeluoikeudetCsvDocumentation}
 import fi.oph.koski.massaluovutus.paallekkaisetopiskeluoikeudet.MassaluovutusQueryPaallekkaisetOpiskeluoikeudet
-import fi.oph.koski.massaluovutus.valintalaskenta.{ValintalaskentaQuery, ValintalaskentaResult}
+import fi.oph.koski.massaluovutus.valintalaskenta.ValintalaskentaQuery
+import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportit.RaportitService
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.util.Wait
@@ -26,7 +22,6 @@ import org.scalatest.matchers.should.Matchers
 
 import java.net.URL
 import java.sql.Timestamp
-import java.time.format.DateTimeFormatter
 import java.time.{Duration, LocalDate, LocalDateTime}
 import java.util.UUID
 
@@ -116,6 +111,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
       }
 
       "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
+        AuditLogTester.clearMessages()
         val user = MockUsers.helsinkiKatselija
         val queryId = addQuerySuccessfully(query, user) { response =>
           response.status should equal(QueryState.pending)
@@ -173,6 +169,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
       }
 
       "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
+        AuditLogTester.clearMessages()
         val user = MockUsers.helsinkiKatselija
         val queryId = addQuerySuccessfully(query, user) { response =>
           response.status should equal(QueryState.pending)
@@ -235,6 +232,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
       }
 
       "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
+        AuditLogTester.clearMessages()
         val user = MockUsers.helsinkiKatselija
         val queryId = addQuerySuccessfully(query, user) { response =>
           response.status should equal(QueryState.pending)
