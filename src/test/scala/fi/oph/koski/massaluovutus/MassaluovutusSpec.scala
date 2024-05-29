@@ -359,6 +359,19 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
       complete.files should have length 0
     }
 
+    "Duplikaattioidit siivotaan kyselystä pois" in {
+      val query = ValintalaskentaQuery(
+        rajapäivä = LocalDate.now(),
+        oppijaOids = List(ammattikoululainen, olematon, olematon, ammattikoululainen)
+      )
+
+      val storedQuery = addQuerySuccessfully(query, user) { response =>
+        response.status should equal(QueryState.pending)
+        response.query.asInstanceOf[ValintalaskentaQuery]
+      }
+
+      storedQuery.oppijaOids should equal(List(ammattikoululainen, olematon))
+    }
   }
 
   def addQuery[T](query: MassaluovutusQueryParameters, user: UserWithPassword)(f: => T): T =

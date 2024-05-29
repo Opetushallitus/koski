@@ -47,12 +47,12 @@ case class ValintalaskentaQuery(
     oppijaOids.foreach { oid =>
       val results = getOpiskeluoikeudet(application, oid)
       if (results.nonEmpty) {
-        writer.putJson(oid, ValintalaskentaResult(
-          oid,
-          asNonEmpty(results.collect { case Right(oo) => oo }),
-          asNonEmpty(results.collect { case Left(err) => err }),
-        ))
-        auditLog(oid)
+        val opiskeluoikeudet = asNonEmpty(results.collect { case Right(oo) => oo })
+        val virheet = asNonEmpty(results.collect { case Left(err) => err })
+        writer.putJson(oid, ValintalaskentaResult(oid, opiskeluoikeudet, virheet))
+        if (opiskeluoikeudet.nonEmpty) {
+          auditLog(oid)
+        }
       }
     }
     Right(())
@@ -65,6 +65,7 @@ case class ValintalaskentaQuery(
     Right(copy(
       koulutusmuoto = koulutusmuoto.orElse(Some(ValintalaskentaQuery.defaultKoulutusmuoto)),
       suoritustyypit = suoritustyypit.orElse(Some(ValintalaskentaQuery.defaultSuoritustyypit)),
+      oppijaOids = oppijaOids.distinct,
     ))
 
   private def getOpiskeluoikeudet(application: KoskiApplication, oppijaOid: String)(implicit user: KoskiSpecificSession): List[Either[ValintalaskentaError, ValintalaskentaOpiskeluoikeus]] =
