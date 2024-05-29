@@ -126,7 +126,7 @@
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td class='indexedColumn' title='Indexed'><i class='fa fa-sitemap fa-rotate-120' style='padding-right: 5px;'></i><span id="user_oid">user_oid</span></td>
+                                    <td><span id="user_oid">user_oid</span></td>
                                     <td>text</td>
                                     <td>2147483647</td>
                                     <td title=''></td>
@@ -160,7 +160,7 @@
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td class='indexedColumn' title='Indexed'><i class='fa fa-sitemap fa-rotate-120' style='padding-right: 5px;'></i><span id="query">query</span></td>
+                                    <td><span id="query">query</span></td>
                                     <td>jsonb</td>
                                     <td>2147483647</td>
                                     <td title=''></td>
@@ -364,12 +364,6 @@
                                     <td>Primary key</td>
                                     <td><span title='Ascending'>Asc</span></td>
                                     <td>id</td>
-                                </tr>
-                                <tr>
-                                    <td title='Indexed'>kysely_index_for_get_existing</td>
-                                    <td>Performance</td>
-                                    <td><span title='Ascending'>Asc</span>/<span title='Ascending'>Asc</span></td>
-                                    <td>user_oid + query</td>
                                 </tr>
                                 <tr>
                                     <td title='Indexed'>kysely_index_for_take_next</td>

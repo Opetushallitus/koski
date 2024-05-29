@@ -76,7 +76,6 @@
 <text text-anchor="start" x="103" y="-517.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">id</text>
 <polygon fill="none" stroke="#000000" points="191,-510 191,-532 290,-532 290,-510 191,-510"/>
 <text text-anchor="start" x="194" y="-517.7" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">uuid[2147483647]</text>
-<polygon fill="#ffffff" stroke="transparent" points="83,-488 83,-510 191,-510 191,-488 83,-488"/>
 <polygon fill="none" stroke="#000000" points="83,-488 83,-510 191,-510 191,-488 83,-488"/>
 <text text-anchor="start" x="103" y="-495.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">user_oid</text>
 <polygon fill="none" stroke="#000000" points="191,-488 191,-510 290,-510 290,-488 191,-488"/>
@@ -85,7 +84,6 @@
 <text text-anchor="start" x="103" y="-473.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">session</text>
 <polygon fill="none" stroke="#000000" points="191,-466 191,-488 290,-488 290,-466 191,-466"/>
 <text text-anchor="start" x="193.7258" y="-473.7" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">jsonb[2147483647]</text>
-<polygon fill="#ffffff" stroke="transparent" points="83,-444 83,-466 191,-466 191,-444 83,-444"/>
 <polygon fill="none" stroke="#000000" points="83,-444 83,-466 191,-466 191,-444 83,-444"/>
 <text text-anchor="start" x="103" y="-451.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">query</text>
 <polygon fill="none" stroke="#000000" points="191,-444 191,-466 290,-466 290,-444 191,-444"/>

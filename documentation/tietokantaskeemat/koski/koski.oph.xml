@@ -64,10 +64,6 @@
          <index name="kysely_pkey" unique="true">
             <column ascending="true" name="id"/>
          </index>
-         <index name="kysely_index_for_get_existing" unique="false">
-            <column ascending="true" name="user_oid"/>
-            <column ascending="true" name="query"/>
-         </index>
          <index name="kysely_index_for_take_next" unique="false">
             <column ascending="true" name="state"/>
          </index>
