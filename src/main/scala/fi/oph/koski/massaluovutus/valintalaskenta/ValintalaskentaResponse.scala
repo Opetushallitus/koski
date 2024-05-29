@@ -5,6 +5,8 @@ import fi.oph.koski.history.JsonPatchException
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.schema._
 import fi.oph.koski.suoritusjako.suoritetuttutkinnot.SuoritetutTutkinnotAmmatillisenTutkinnonOsittainenSuoritus
+import fi.oph.scalaschema.{ClassSchema, SchemaToJson}
+import org.json4s.JValue
 
 import java.time.{LocalDate, LocalDateTime}
 
@@ -13,6 +15,11 @@ case class ValintalaskentaResult(
   opiskeluoikeudet: Option[List[ValintalaskentaOpiskeluoikeus]],
   virheet: Option[List[ValintalaskentaError]],
 )
+
+object ValintalaskentaResult {
+  lazy val schemaJson: JValue =
+    SchemaToJson.toJsonSchema(KoskiSchema.createSchema(classOf[ValintalaskentaResult]).asInstanceOf[ClassSchema])
+}
 
 case class ValintalaskentaOpiskeluoikeus(
   tyyppi: Koodistokoodiviite,

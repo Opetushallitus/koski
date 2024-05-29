@@ -15,13 +15,14 @@ import fi.oph.koski.schema.annotation.EnumValues
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, KoskiSchema}
 import fi.oph.koski.util.Collections.asNonEmpty
 import fi.oph.scalaschema.annotation.{DefaultValue, Description, Title}
-import org.json4s.jackson.JsonMethods
 import slick.jdbc.GetResult
 
 import java.sql.Timestamp
 import java.time.LocalDate
 
 @Title("Valintalaskennan kysely")
+@Description("Palauttaa valintalaskentaa varten räätälöidyt tiedot annettujen oppijoiden ja koulutusmuodon mukaisista opiskeluoikeuksista.")
+@Description("Vastauksen skeema on saatavana <a href=\"/koski/json-schema-viewer/?schema=valintalaskenta-result.json\">täältä.</a>")
 case class ValintalaskentaQuery(
   @EnumValues(Set("valintalaskenta"))
   `type`: String = "valintalaskenta",
