@@ -65,6 +65,7 @@ case class ValintalaskentaQuery(
     Right(copy(
       koulutusmuoto = koulutusmuoto.orElse(Some(ValintalaskentaQuery.defaultKoulutusmuoto)),
       suoritustyypit = suoritustyypit.orElse(Some(ValintalaskentaQuery.defaultSuoritustyypit)),
+      oppijaOids = oppijaOids.distinct,
     ))
 
   private def getOpiskeluoikeudet(application: KoskiApplication, oppijaOid: String)(implicit user: KoskiSpecificSession): List[Either[ValintalaskentaError, ValintalaskentaOpiskeluoikeus]] =
