@@ -87,7 +87,6 @@ class KoskiSpecificSession(
   def hasMigriAccess: Boolean = globalViranomaisKäyttöoikeudet.flatMap(_.globalPalveluroolit).contains(Palvelurooli("KOSKI", MIGRI))
   def hasKelaAccess: Boolean = !globalViranomaisKäyttöoikeudet.flatMap(_.globalPalveluroolit).intersect(Set(Palvelurooli("KOSKI", LUOTTAMUKSELLINEN_KELA_LAAJA), Palvelurooli("KOSKI", LUOTTAMUKSELLINEN_KELA_SUPPEA))).isEmpty
   def hasYtlAccess: Boolean = globalViranomaisKäyttöoikeudet.flatMap(_.globalPalveluroolit).contains(Palvelurooli("KOSKI", YTL))
-  def hasVktAccess: Boolean = globalViranomaisKäyttöoikeudet.flatMap(_.globalPalveluroolit).contains(Palvelurooli("KOSKI", VKT))
   // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   // HUOM!
   // Kun lisäät uuden luovutuspalvelukäyttöoikeuden ylle, muista lisätä se myös
@@ -102,6 +101,8 @@ class KoskiSpecificSession(
 
   def hasTallennetutYlioppilastutkinnonOpiskeluoikeudetAccess: Boolean =
     globalKäyttöoikeudet.exists(_.globalPalveluroolit.contains(Palvelurooli(TALLENNETUT_YLIOPPILASTUTKINNON_OPISKELUOIKEUDET)))
+
+  def hasVktAccess: Boolean = globalKäyttöoikeudet.exists(_.globalPalveluroolit.contains(Palvelurooli(VKT)))
 
   def getKoulutustoimijatWithWriteAccess: List[Oid] = orgKäyttöoikeudet
     .filter(_.organisaatioAccessType.contains(AccessType.write))

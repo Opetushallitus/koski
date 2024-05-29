@@ -8,6 +8,8 @@ import fi.oph.koski.koskiuser.RequiresVkt
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 import org.json4s.JValue
 
+case class OidRequest(oid: String)
+
 class VktServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with RequiresVkt with NoCache {
   post("/oid") {
     withJsonBody { json =>
@@ -19,6 +21,4 @@ class VktServlet(implicit val application: KoskiApplication) extends KoskiSpecif
     JsonSerializer.validateAndExtract[OidRequest](json)
       .left.map(errors => KoskiErrorCategory.badRequest.validation.jsonSchema(JsonErrorMessage(errors)))
       .flatMap(req => HenkilöOid.validateHenkilöOid(req.oid))
-
-  private case class OidRequest(oid: String)
 }
