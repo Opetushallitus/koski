@@ -1022,6 +1022,9 @@ class KoskiValidator(
     def osasuoritustenLaajuudet: List[Laajuus] = suoritus.osasuoritusLista.map(_.koulutusmoduuli).flatMap(_.getLaajuus)
     def osasuoritustenLaajuudetHyväksytty: List[Laajuus] = suoritus.osasuoritusLista.filter(os => os.viimeisinArviointi.exists(_.hyväksytty)).map(_.koulutusmoduuli).flatMap(_.getLaajuus)
 
+    val perusopetukseenValmistavaOpetusKokonaislaajuusYksikköTunneissaAlkaa = LocalDate.parse(config.getString("validaatiot.perusopetukseenValmistavaOpetusKokonaislaajuusYksikköTunneissaAlkaa")).minusDays(1)
+    val perusopetukseenValmistavaOpetusKokonaislaajuusYksikköTunneissaVoimassa = LocalDate.now().isAfter(perusopetukseenValmistavaOpetusKokonaislaajuusYksikköTunneissaAlkaa)
+
     (suoritus.koulutusmoduuli.getLaajuus, suoritus) match {
       case (Some(laajuus: Laajuus), _) =>
         val yksikköValidaatio = HttpStatus.fold(suoritus.osasuoritusLista.map { case osasuoritus =>
@@ -1055,6 +1058,8 @@ class KoskiValidator(
       case (laajuus, s: Laajuudellinen) if laajuus.isEmpty =>
         KoskiErrorCategory.badRequest.validation.laajuudet.oppiaineenLaajuusPuuttuu(s"Oppiaineen ${suorituksenTunniste(suoritus)} laajuus puuttuu")
 
+      case (_, o: PerusopetukseenValmistavanOpetuksenSuoritus) if perusopetukseenValmistavaOpetusKokonaislaajuusYksikköTunneissaVoimassa && o.kokonaislaajuus.exists(l => l.yksikkö.koodiarvo != "5") =>
+        KoskiErrorCategory.badRequest.validation.laajuudet.perusopetukseenValmistavaOpetusKokonaislaajuusYksikköEiTunneissa()
       case _ => HttpStatus.ok
     }
   }

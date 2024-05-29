@@ -1,4 +1,4 @@
-import { LaajuusVuosiviikkotunneissa } from './LaajuusVuosiviikkotunneissa'
+import { LaajuusVuosiviikkotunneissaTaiTunneissa } from './LaajuusVuosiviikkotunneissaTaiTunneissa'
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
 import { OmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina } from './OmanAidinkielenOpinnotLaajuusVuosiviikkotunteina'
@@ -14,7 +14,7 @@ import { HenkilövahvistusPaikkakunnalla } from './HenkilovahvistusPaikkakunnall
  */
 export type PerusopetukseenValmistavanOpetuksenSuoritus = {
   $class: 'fi.oph.koski.schema.PerusopetukseenValmistavanOpetuksenSuoritus'
-  kokonaislaajuus?: LaajuusVuosiviikkotunneissa
+  kokonaislaajuus?: LaajuusVuosiviikkotunneissaTaiTunneissa
   muutSuorituskielet?: Array<Koodistokoodiviite<'kieli', string>>
   tyyppi: Koodistokoodiviite<
     'suorituksentyyppi',
@@ -31,7 +31,7 @@ export type PerusopetukseenValmistavanOpetuksenSuoritus = {
 }
 
 export const PerusopetukseenValmistavanOpetuksenSuoritus = (o: {
-  kokonaislaajuus?: LaajuusVuosiviikkotunneissa
+  kokonaislaajuus?: LaajuusVuosiviikkotunneissaTaiTunneissa
   muutSuorituskielet?: Array<Koodistokoodiviite<'kieli', string>>
   tyyppi?: Koodistokoodiviite<
     'suorituksentyyppi',

@@ -36,7 +36,7 @@ case class LaajuusVuosiviikkotunneissa(
   arvo: Double,
   @KoodistoKoodiarvo("3")
   yksikkö: Koodistokoodiviite = laajuusVuosiviikkotunneissa
-) extends LaajuusVuosiviikkotunneissaTaiKursseissa
+) extends LaajuusVuosiviikkotunneissaTaiKursseissa with LaajuusVuosiviikkotunneissaTaiTunneissa
 
 case class LaajuusKursseissa(
   arvo: Double,
@@ -49,11 +49,13 @@ trait LaajuusOpintopisteissäTaiKursseissa extends Laajuus
 // TODO: tarvitaan aikuisten perusopetuksessa jotta voidaan siirtymäaikana käyttää useita laajuusyksiköitä, poistetaan siirtymäajan jälkeen
 trait LaajuusVuosiviikkotunneissaTaiKursseissa extends Laajuus
 
+trait LaajuusVuosiviikkotunneissaTaiTunneissa extends Laajuus
+
 case class LaajuusTunneissa(
   arvo: Double,
   @KoodistoKoodiarvo("5")
   yksikkö: Koodistokoodiviite = laajuusTunneissa
-) extends Laajuus
+) extends LaajuusVuosiviikkotunneissaTaiTunneissa
 
 case class LaajuusOsaamispisteissä(
   arvo: Double,
