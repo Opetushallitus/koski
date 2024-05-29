@@ -115,12 +115,12 @@ object DuplikaattiValidation extends Logging {
           .groupBy(_.koulutusmoduuli.tunniste.koodiarvo)
 
       if (keskentilaisetVuosiluokanSuoritukset.size > 1) {
-        def safeLogMsg(vls: PerusopetuksenVuosiluokanSuoritus) =
-          s"tyyppi=${vls.tyyppi}, luokka=${vls.luokka}, tunniste=${vls.koulutusmoduuli.tunniste.koodiarvo} alku=${vls.alkamispäivä}, toimipiste=${vls.toimipiste.oid}"
-        logger.info(s"findNuortenPerusopetuksessaUseitaKeskeneräisiäVuosiluokanSuorituksia olisi epäonnistunut, opiskeluoikeus=${opiskeluoikeus.oid}, suoritukset: ${
-          keskentilaisetVuosiluokanSuoritukset.map { case (_, suoritukset) => suoritukset.map(safeLogMsg)}
-        }")
-        Left(KoskiErrorCategory.badRequest.validation.tila.useitaKeskeneräisiäVuosiluokanSuoritukia())
+        val luokat = keskentilaisetVuosiluokanSuoritukset
+          .values
+          .map(_.head.koulutusmoduuli.tunniste.koodiarvo)
+          .mkString(" ja ")
+        val message = s"Nuorten perusopetuksen opiskeluoikeudessa ei saa olla kuin enintään yksi kesken-tilainen vuosiluokan suoritus. Siirron jälkeen kesken olisivat perusopetuksen luokka-asteet $luokat."
+        Left(KoskiErrorCategory.badRequest.validation.tila.useitaKeskeneräisiäVuosiluokanSuoritukia(message))
       } else {
         Right(None)
       }
