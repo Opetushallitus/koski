@@ -23,10 +23,8 @@ const JsonExample = ({ category, example }) => {
 
   return (
     <li className="example-item">
-
       <a className="example-link" onClick={() => expandedA.modify((v) => !v)}>
-                {example.description}
-
+        {example.description}
       </a>
 
       <a
@@ -35,9 +33,7 @@ const JsonExample = ({ category, example }) => {
         target="_blank"
         rel="noopener noreferrer"
       >
-
         {'lataa JSON'}
-
       </a>
 
       {expandedA.flatMap((v) =>
@@ -51,7 +47,6 @@ const JsonExample = ({ category, example }) => {
             ).map((c) => <JsonExampleTable contents={c} />)
           : null
       )}
-
     </li>
   )
 }
@@ -70,13 +65,9 @@ const naviLink = (
   }`
   return (
     <span className={className}>
-
       <Link href={path} className={linkClassName}>
-
         <Text name={textKey} />
-
       </Link>
-
     </span>
   )
 }
@@ -85,9 +76,7 @@ const dokumentaatioContentP = (location, contentP) =>
   contentWithLoadingIndicator(contentP).map((content) => ({
     content: (
       <div className="content-area dokumentaatio">
-
         <nav className="sidebar dokumentaatio-navi">
-
           {naviLink('/koski/dokumentaatio', 'Yleistä', location, '')}
 
           {naviLink(
@@ -131,14 +120,11 @@ const dokumentaatioContentP = (location, contentP) =>
             location,
             ''
           )}
-
         </nav>
 
         <div className="main-content dokumentaatio-content">
-                              {content.content}
-
+          {content.content}
         </div>
-
       </div>
     ),
     title: content.title
@@ -153,11 +139,9 @@ export const dokumentaatioYleistäP = () =>
     htmlSectionsP().map((htmlSections) => ({
       content: (
         <div>
-
           <section
             dangerouslySetInnerHTML={{ __html: htmlSections.yleista }}
           ></section>
-
         </div>
       ),
       title: 'Dokumentaatio'
@@ -183,13 +167,11 @@ export const dokumentaatioTietomalliP = () =>
     infoP().map(({ categories, examples, htmlSections }) => ({
       content: (
         <div>
-
           <section
             dangerouslySetInnerHTML={{ __html: htmlSections.tietomalli }}
           ></section>
 
           <section>
-
             <div
               dangerouslySetInnerHTML={{
                 __html: htmlSections.tietomalli_esimerkit
@@ -199,26 +181,21 @@ export const dokumentaatioTietomalliP = () =>
             {R.map(
               (c) => (
                 <div key={c}>
-                                                      <h4>{c}</h4>
+                  <h4>{c}</h4>
 
                   <ul className="example-list">
-
                     {R.addIndex(R.map)(
                       (e, idx) => (
                         <JsonExample key={idx} category={c} example={e} />
                       ),
                       examples[c]
                     )}
-
                   </ul>
-
                 </div>
               ),
               categories
             )}
-
           </section>
-
         </div>
       ),
       title: 'Dokumentaatio - Tietomalli'
@@ -231,16 +208,13 @@ export const dokumentaatioKoodistotP = () =>
     infoP().map(({ koodistot, htmlSections }) => ({
       content: (
         <div>
-
           <div
             dangerouslySetInnerHTML={{ __html: htmlSections.koodistot }}
           ></div>
 
           <ul>
-
             {koodistot.map((koodistoUri) => (
               <li>
-
                 <a
                   href={
                     '/koski/dokumentaatio/koodisto/' + koodistoUri + '/latest'
@@ -248,15 +222,11 @@ export const dokumentaatioKoodistotP = () =>
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                                                      {koodistoUri}
-
+                  {koodistoUri}
                 </a>
-
               </li>
             ))}
-
           </ul>
-
         </div>
       ),
       title: 'Dokumentaatio - Koodistot'
@@ -269,7 +239,6 @@ export const dokumentaatioOpintohallintojärjestelmätP = () =>
     infoP().map(({ apiOperations, htmlSections }) => ({
       content: (
         <div>
-
           <section
             dangerouslySetInnerHTML={{
               __html: htmlSections.rajapinnat_oppilashallintojarjestelmat
@@ -277,7 +246,6 @@ export const dokumentaatioOpintohallintojärjestelmätP = () =>
           ></section>
 
           <ApiOperations operations={apiOperations} />
-
         </div>
       ),
       title: 'Dokumentaatio - Rajapinnat '
@@ -290,14 +258,12 @@ export const dokumentaatioLuovutuspalveluP = () =>
     htmlSectionsP().map((htmlSections) => ({
       content: (
         <div>
-
           <div
             className="markdown-content"
             dangerouslySetInnerHTML={{
               __html: htmlSections.rajapinnat_luovutuspalvelu
             }}
           ></div>
-
         </div>
       ),
       title: 'Dokumentaatio - Rajapinnat'
@@ -310,14 +276,12 @@ export const dokumentaatioPalveluväyläOmadataP = () =>
     htmlSectionsP().map((htmlSections) => ({
       content: (
         <div>
-
           <div
             className="markdown-content"
             dangerouslySetInnerHTML={{
               __html: htmlSections.rajapinnat_palveluvayla_omadata
             }}
           ></div>
-
         </div>
       ),
       title: 'Dokumentaatio - Rajapinnat'
@@ -339,14 +303,12 @@ export const dokumentaatioKyselytP = (path) => {
       htmlSectionsP().map((htmlSections) => ({
         content: (
           <div>
-
             <div
               className="markdown-content"
               dangerouslySetInnerHTML={{
                 __html: htmlSections[sections[match]]
               }}
             ></div>
-
           </div>
         ),
         title: 'Dokumentaatio - Rajapinnat'
