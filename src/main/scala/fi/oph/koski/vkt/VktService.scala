@@ -2,7 +2,7 @@ package fi.oph.koski.vkt
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.executors.GlobalExecutionContext
-import fi.oph.koski.http.HttpStatus
+import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log._
 import fi.oph.koski.suoritusjako.common.{OpiskeluoikeusFacade, RawOppija}
@@ -26,12 +26,12 @@ class VktService(application: KoskiApplication) extends GlobalExecutionContext w
   def findOppijaByHetu(hetu: String)
     (implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, VktOppija] = {
 
-    val oppijaOid = application.opintopolkuHenkilöFacade.findOppijaByHetu(hetu).map(_.oid).get // TODO: virheenkäsittely
+    val oppijaResult = application.opintopolkuHenkilöFacade.findOppijaByHetu(hetu)
 
-    val vktOppija = opiskeluoikeusFacade.haeOpiskeluoikeudet(oppijaOid, VktSchema.schemassaTuetutOpiskeluoikeustyypit)
-      .map(teePalautettavaVktOppija)
-
-    vktOppija
+    oppijaResult match {
+      case Some(o) => findOppija(o.oid)
+      case None => Left(KoskiErrorCategory.notFound.oppijaaEiLöydyHetulla())
+    }
   }
 
   private def teePalautettavaVktOppija(
