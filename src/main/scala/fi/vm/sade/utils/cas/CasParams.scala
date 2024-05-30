@@ -13,11 +13,14 @@ case class CasParams(service: CasService, user: CasUser) {
 
 object CasParams {
   def apply(servicePath: String, securityUriSuffix: String, username: String, password: String): CasParams = {
-    Uri.fromString(ensureTrailingSlash(ensureLeadingSlash(servicePath))).fold(
+    Uri.fromString(removeTrailingSlash(ensureLeadingSlash(servicePath))).fold(
       (e: ParseFailure) => throw new IllegalArgumentException(e),
-      (service: Uri) => CasParams(CasService(Uri.resolve(service / "", Uri.fromString(securityUriSuffix).getOrElse {
-        throw new IllegalArgumentException(s"Could not parse securityUriSuffix $securityUriSuffix")
-      })), CasUser(username, password)))
+      (service: Uri) => {
+        CasParams(CasService(Uri.resolve(service / "", Uri.fromString(securityUriSuffix).getOrElse {
+          throw new IllegalArgumentException(s"Could not parse securityUriSuffix $securityUriSuffix")
+        })), CasUser(username, password))
+      }
+    )
   }
 
   def apply(servicePath: String, username: String, password: String): CasParams = apply(
@@ -27,9 +30,9 @@ object CasParams {
     password = password
   )
 
-  private def ensureTrailingSlash(servicePath: String): String = servicePath.last match {
-    case '/' => servicePath
-    case _ => servicePath + "/"
+  private def removeTrailingSlash(servicePath: String): String = servicePath.last match {
+    case '/' => servicePath.dropRight(1)
+    case _ => servicePath
   }
 
   private def ensureLeadingSlash(servicePath: String): String = servicePath.head match {
