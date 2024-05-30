@@ -476,6 +476,9 @@ object AmmatillinenReforminMukainenPerustutkinto2022Example {
   lazy val opiskeluoikeusJotpa = opiskeluoikeus.copy(
     tila = AmmatillinenOpiskeluoikeudenTila(List(
       AmmatillinenOpiskeluoikeusjakso(date(2022, 1, 8), opiskeluoikeusLäsnä, Some(ExampleData.jatkuvanOppimisenRahoitus))
+    )),
+    lisätiedot = Some(opiskeluoikeus.lisätiedot.get.copy(
+      jotpaAsianumero = Some(Koodistokoodiviite("01/5848/2023", "jotpaasianumero"))
     ))
   )
 

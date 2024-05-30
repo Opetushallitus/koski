@@ -33,7 +33,10 @@ export const AddKoodistonOsasuoritus = <
   const fillKoodistot = useKoodistoFiller()
 
   const onSelect = useCallback(
-    async (koodiviite: Koodistokoodiviite<URI>) => {
+    async (koodiviite: Koodistokoodiviite<URI> | undefined) => {
+      if (koodiviite === undefined) {
+        return
+      }
       const osasuorituksetPath = path.prop(
         'osasuoritukset'
       ) as any as FormOptic<

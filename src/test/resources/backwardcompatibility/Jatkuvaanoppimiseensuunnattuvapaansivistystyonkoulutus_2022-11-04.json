@@ -33,6 +33,12 @@
         }
       } ]
     },
+    "lisätiedot" : {
+      "jotpaAsianumero" : {
+        "koodiarvo" : "01/5848/2023",
+        "koodistoUri" : "jotpaasianumero"
+      }
+    },
     "suoritukset" : [ {
       "toimipiste" : {
         "oid" : "1.2.246.562.10.78513447389"

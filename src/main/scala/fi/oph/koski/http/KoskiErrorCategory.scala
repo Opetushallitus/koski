@@ -180,6 +180,8 @@ object KoskiErrorCategory {
         val uudenOpiskeluoikeudenTallennusMitätöitynäEiSallittu = subcategory("uudenOpiskeluoikeudenTallennusMitäöitynäEiSallittu", "Uutta opiskeluoikeutta ei voi tallentaa suoraan mitätöitynä.")
         val mitätöintiTulevaisuudessa = subcategory("mitätöintiTulevaisuudessa", "Mitätöintiä ei voi merkitä tulevaisuuteen.")
         val useitaKeskeneräisiäVuosiluokanSuoritukia = subcategory("useitaKeskeneräisiäVuosiluokanSuoritukia", "Nuorten perusopetuksen opiskeluoikeudessa ei saa olla kuin enintään yksi kesken-tilainen vuosiluokan suoritus.")
+        val vaatiiJotpaAsianumeron = subcategory("vaatiiJotpaAsianumeron", "JOTPA-rahoitteinen opiskeluoikeus vaatii JOTPA asianumeron lisätiedoissa")
+        val jotpaAsianumeroAnnettuVaikkeiJotpaRahoitteinen = subcategory("jotpaAsianumeroAnnettuVaikkeiJotpaRahoitteinen", "JOTPA asianumero annettu vaikka opiskeluoikeus ei ole JOTPA-rahoitteinen")
       }
       val tila = new Tila
 

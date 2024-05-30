@@ -1,0 +1,63 @@
+{
+  "koodistoUri": "jotpaasianumero",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/jotpaasianumero",
+  "omistaja": "Mikko Mähönen",
+  "organisaatioOid": "1.2.246.562.10.91180885203",
+  "lukittu": null,
+  "withinCodes": [],
+  "includesCodes": [],
+  "levelsWithCodes": [],
+  "codesGroupUri": "muutkoodistot",
+  "version": 1,
+  "versio": 1,
+  "paivitysPvm": "2024-04-29",
+  "paivittajaOid": "1.2.246.562.24.45354023031",
+  "voimassaAlkuPvm": "2024-04-29",
+  "voimassaLoppuPvm": null,
+  "tila": "LUONNOS",
+  "metadata": [
+    {
+      "kieli": "EN",
+      "nimi": "Jotpa case number",
+      "kuvaus": "Case numbers and names of Jotpa-financed educational units",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    },
+    {
+      "kieli": "FI",
+      "nimi": "Jotpa asianumero",
+      "kuvaus": "Jotpa-rahoitteisten koulutusten asianumerot ja nimet",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    },
+    {
+      "kieli": "SV",
+      "nimi": "Jotpa ärendenummer",
+      "kuvaus": "Ärendenummer och namn på Jotpa-finansierade utbildningar",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    }
+  ],
+  "codesVersions": []
+}

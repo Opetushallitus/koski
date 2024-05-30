@@ -18,13 +18,13 @@ case class MuunKuinSäännellynKoulutuksenOpiskeluoikeus (
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.muukuinsaanneltykoulutus.koodiarvo)
   tyyppi: Koodistokoodiviite = OpiskeluoikeudenTyyppi.muukuinsaanneltykoulutus,
   organisaatiohistoria: Option[List[OpiskeluoikeudenOrganisaatiohistoria]] = None,
+  lisätiedot: Option[MuunKuinSäännellynKoulutuksenLisätiedot] = None
 ) extends KoskeenTallennettavaOpiskeluoikeus {
   override def sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus] = None
   override def withKoulutustoimija(koulutustoimija: Koulutustoimija): KoskeenTallennettavaOpiskeluoikeus =
     this.copy(koulutustoimija = Some(koulutustoimija))
   override def withOppilaitos(oppilaitos: Oppilaitos): KoskeenTallennettavaOpiskeluoikeus =
     this.copy(oppilaitos = Some(oppilaitos))
-  override def lisätiedot = None
 }
 
 case class MuunKuinSäännellynKoulutuksenTila(
@@ -42,6 +42,10 @@ case class MuunKuinSäännellynKoulutuksenOpiskeluoikeudenJakso(
   @KoodistoKoodiarvo("15")
   override val opintojenRahoitus: Option[Koodistokoodiviite],
 ) extends KoskiOpiskeluoikeusjakso
+
+case class MuunKuinSäännellynKoulutuksenLisätiedot(
+  jotpaAsianumero: Option[Koodistokoodiviite] = None
+) extends OpiskeluoikeudenLisätiedot with JotpaAsianumero
 
 case class MuunKuinSäännellynKoulutuksenPäätasonSuoritus(
   @Title("Koulutus")

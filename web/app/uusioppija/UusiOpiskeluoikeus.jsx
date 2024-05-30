@@ -117,6 +117,8 @@ export default ({ opiskeluoikeusAtom }) => {
   const rahoituksetP = koodistoValues('opintojenrahoitus').map(
     R.sortBy(R.compose(parseInt, R.prop('koodiarvo')))
   )
+  const jotpaAsianumerotP = koodistoValues('jotpaasianumero')
+  const jotpaAsianumeroAtom = Atom()
   const opiskeluoikeudenTilatP = opiskeluoikeudentTilat(
     tyyppiAtom,
     suoritusAtom,
@@ -172,6 +174,11 @@ export default ({ opiskeluoikeusAtom }) => {
   )
 
   rahoitusmuotoChanges.onValue(autoFillRahoitusmuoto)
+  rahoitusAtom.onValue((r) => {
+    if (!jotpaSallitutRahoituskoodiarvot.includes(r?.koodiarvo)) {
+      jotpaAsianumeroAtom.set(undefined)
+    }
+  })
 
   const tuvaJärjestämislupaP = koodistoValues('tuvajarjestamislupa')
 
@@ -202,6 +209,7 @@ export default ({ opiskeluoikeusAtom }) => {
     suoritusP,
     tilaAtom,
     rahoitusAtom,
+    jotpaAsianumeroAtom,
     varhaiskasvatusOrganisaationUlkopuoleltaAtom,
     varhaiskasvatusJärjestämismuotoAtom,
     maksuttomuusAtom,
@@ -445,6 +453,15 @@ export default ({ opiskeluoikeusAtom }) => {
         />
       )}
 
+      {ift(
+        rahoitusAtom.map((r) =>
+          jotpaSallitutRahoituskoodiarvot.includes(r?.koodiarvo)
+        ),
+        <JotpaAsianumero
+          jotpaAsianumeroAtom={jotpaAsianumeroAtom}
+          jotpaAsianumerotP={jotpaAsianumerotP}
+        />
+      )}
       {ift(
         maksuttomuusTiedonVoiValitaP,
         <MaksuttomuusRadioButtons maksuttomuusAtom={maksuttomuusAtom} />
@@ -740,6 +757,18 @@ const OpintojenRahoitus = ({
   )
 }
 
+const JotpaAsianumero = ({ jotpaAsianumeroAtom, jotpaAsianumerotP }) => {
+  return (
+    <KoodistoDropdown
+      className="jotpaasianumero"
+      title={'JOTPA asianumero'}
+      options={jotpaAsianumerotP}
+      selected={jotpaAsianumeroAtom}
+      enableFilter
+    />
+  )
+}
+
 const MaksuttomuusRadioButtons = ({ maksuttomuusAtom }) => {
   return (
     <RadioButtons
@@ -822,6 +851,7 @@ const makeOpiskeluoikeus = (
   suoritus,
   tila,
   opintojenRahoitus,
+  jotpaAsianumero,
   varhaiskasvatusOrganisaationUlkopuolelta,
   varhaiskasvatusJärjestämismuoto,
   maksuttomuus,
@@ -866,6 +896,12 @@ const makeOpiskeluoikeus = (
       ? !!opintokokonaisuus
       : true)
 
+  const jotpaAsianumeroOk = jotpaSallitutRahoituskoodiarvot.includes(
+    opintojenRahoitus?.koodiarvo
+  )
+    ? jotpaAsianumero
+    : !jotpaAsianumero
+
   if (
     alkamispäivä &&
     oppilaitos &&
@@ -880,7 +916,8 @@ const makeOpiskeluoikeus = (
     vstOsaamismerkkiOk &&
     muksOpintokokonaisuusOk &&
     (!onTaiteenPerusopetusOpiskeluoikeus ||
-      (tpoOppimäärä && tpoToteutustapa && tpoTaiteenala))
+      (tpoOppimäärä && tpoToteutustapa && tpoTaiteenala)) &&
+    jotpaAsianumeroOk
   ) {
     const järjestämismuoto =
       tyyppi.koodiarvo === 'esiopetus'
@@ -896,6 +933,9 @@ const makeOpiskeluoikeus = (
             }
           }
         : {}
+    const jotpaAsianumeroLisätieto = jotpaAsianumero
+      ? { lisätiedot: { jotpaAsianumero } }
+      : {}
     const järjestämislupa = onTuvaOpiskeluoikeus
       ? { järjestämislupa: tuvaJärjestämislupa || {} }
       : {}
@@ -939,7 +979,11 @@ const makeOpiskeluoikeus = (
     return R.mergeAll([
       opiskeluoikeus,
       järjestämismuoto,
-      R.mergeDeepLeft(maksuttomuusLisätieto, tuvaOletusLisätiedot),
+      R.mergeAll([
+        maksuttomuusLisätieto,
+        tuvaOletusLisätiedot,
+        jotpaAsianumeroLisätieto
+      ]),
       järjestämislupa,
       oppimäärä,
       toteutustapa

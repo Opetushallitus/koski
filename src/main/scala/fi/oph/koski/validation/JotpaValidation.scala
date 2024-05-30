@@ -10,16 +10,18 @@ import java.time.LocalDate
 object JotpaValidation {
   def JOTPARAHOITUS_KOODIARVOT = List("14", "15")
 
-  def jotpaRahoitusVoimassaAlkaen(config: Config): LocalDate =
-    LocalDate.parse(config.getString("validaatiot.jatkuvaanOppimiseenSuunnatutKoulutusmuodotAstuvatVoimaan"))
+  def validateOpiskeluoikeus(oo: KoskeenTallennettavaOpiskeluoikeus, config: Config): HttpStatus = {
+    val jotpaRahoituksenRajapäivä = LocalDate.parse(config.getString("validaatiot.jatkuvaanOppimiseenSuunnatutKoulutusmuodotAstuvatVoimaan"))
+    val jotpaAsianumeroVaatimusAlkaa = LocalDate.parse(config.getString("validaatiot.jotpaAsianumeroVaatimusAlkaa")).minusDays(1)
 
-  def validateOpiskeluoikeus(oo: KoskeenTallennettavaOpiskeluoikeus, jotpaRahoituksenRajapäivä: LocalDate): HttpStatus =
     HttpStatus.fold(
       oo.tila.opiskeluoikeusjaksot.map(validateOpiskeluoikeusjaksonRahoitusmuoto)
       :+ validateJaksojenRahoituksenYhtenäisyys(oo.tila.opiskeluoikeusjaksot)
       :+ validateJotpaRahoituksenAlkamispäivä(oo, jotpaRahoituksenRajapäivä)
       :+ validateLaajuudet(oo)
+      :+ validateJotpaAsianumero(oo, jotpaAsianumeroVaatimusAlkaa)
     )
+  }
 
   private def validateLaajuudet(oo: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
     HttpStatus.fold(
@@ -82,6 +84,27 @@ object JotpaValidation {
       } else {
         HttpStatus.ok
       }
+
+  def validateJotpaAsianumero(oo: KoskeenTallennettavaOpiskeluoikeus, jotpaAsianumeroVaatimusAlkaa: LocalDate): HttpStatus = {
+    val jotpaAsianumeroVaatimusVoimassa = LocalDate.now().isAfter(jotpaAsianumeroVaatimusAlkaa)
+
+    val jotpaRahoitteinen = oo.tila.opiskeluoikeusjaksot.flatMap(rahoitusmuoto).exists(JOTPARAHOITUS_KOODIARVOT.contains)
+    val asianumeroOlemassa = oo match {
+      case a: AmmatillinenOpiskeluoikeus => a.lisätiedot.exists(_.jotpaAsianumero.isDefined)
+      case v: VapaanSivistystyönOpiskeluoikeus => v.lisätiedot.exists(_.jotpaAsianumero.isDefined)
+      case m: MuunKuinSäännellynKoulutuksenOpiskeluoikeus => m.lisätiedot.exists(_.jotpaAsianumero.isDefined)
+      case _ => false
+    }
+    if (jotpaRahoitteinen) {
+      if (jotpaAsianumeroVaatimusVoimassa) {
+        HttpStatus.validate(asianumeroOlemassa)(KoskiErrorCategory.badRequest.validation.tila.vaatiiJotpaAsianumeron())
+      } else {
+        HttpStatus.ok
+      }
+    } else {
+      HttpStatus.validate(!asianumeroOlemassa)(KoskiErrorCategory.badRequest.validation.tila.jotpaAsianumeroAnnettuVaikkeiJotpaRahoitteinen())
+    }
+  }
 
   private def rahoitusmuoto(jakso: Opiskeluoikeusjakso): Option[String] =
     Option(jakso)

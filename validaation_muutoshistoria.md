@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 30.5.2024
+
+- JOTPA-rahoitteisissa opiskeluoikeuksissa vaaditaan JOTA asianumero
+
 ## 20.5.2024
 
 - Nuorten perusopetuksen opiskeluoikeudessa ei saa olla kuin enintään yksi kesken-tilainen vuosiluokan suoritus.

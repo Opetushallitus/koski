@@ -48,8 +48,9 @@ trait VapaanSivistystyönOpiskeluoikeusjakso extends Opiskeluoikeusjakso {
 
 case class VapaanSivistystyönOpiskeluoikeudenLisätiedot(
   maksuttomuus: Option[List[Maksuttomuus]] = None,
-  oikeuttaMaksuttomuuteenPidennetty: Option[List[OikeuttaMaksuttomuuteenPidennetty]] = None
-) extends OpiskeluoikeudenLisätiedot with MaksuttomuusTieto
+  oikeuttaMaksuttomuuteenPidennetty: Option[List[OikeuttaMaksuttomuuteenPidennetty]] = None,
+  jotpaAsianumero: Option[Koodistokoodiviite] = None
+) extends OpiskeluoikeudenLisätiedot with MaksuttomuusTieto with JotpaAsianumero
 
 trait VapaanSivistystyönPäätasonSuoritus extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen {
   def koulutusmoduuli: Koulutusmoduuli

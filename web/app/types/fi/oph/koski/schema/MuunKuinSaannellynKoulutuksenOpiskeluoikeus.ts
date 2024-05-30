@@ -3,6 +3,7 @@ import { LocalizedString } from './LocalizedString'
 import { MuunKuinSäännellynKoulutuksenTila } from './MuunKuinSaannellynKoulutuksenTila'
 import { OpiskeluoikeudenOrganisaatiohistoria } from './OpiskeluoikeudenOrganisaatiohistoria'
 import { Koulutustoimija } from './Koulutustoimija'
+import { MuunKuinSäännellynKoulutuksenLisätiedot } from './MuunKuinSaannellynKoulutuksenLisatiedot'
 import { MuunKuinSäännellynKoulutuksenPäätasonSuoritus } from './MuunKuinSaannellynKoulutuksenPaatasonSuoritus'
 import { LähdejärjestelmäId } from './LahdejarjestelmaId'
 import { Oppilaitos } from './Oppilaitos'
@@ -23,6 +24,7 @@ export type MuunKuinSäännellynKoulutuksenOpiskeluoikeus = {
   organisaatiohistoria?: Array<OpiskeluoikeudenOrganisaatiohistoria>
   oid?: string
   koulutustoimija?: Koulutustoimija
+  lisätiedot?: MuunKuinSäännellynKoulutuksenLisätiedot
   versionumero?: number
   suoritukset: Array<MuunKuinSäännellynKoulutuksenPäätasonSuoritus>
   aikaleima?: string
@@ -43,6 +45,7 @@ export const MuunKuinSäännellynKoulutuksenOpiskeluoikeus = (
     organisaatiohistoria?: Array<OpiskeluoikeudenOrganisaatiohistoria>
     oid?: string
     koulutustoimija?: Koulutustoimija
+    lisätiedot?: MuunKuinSäännellynKoulutuksenLisätiedot
     versionumero?: number
     suoritukset?: Array<MuunKuinSäännellynKoulutuksenPäätasonSuoritus>
     aikaleima?: string

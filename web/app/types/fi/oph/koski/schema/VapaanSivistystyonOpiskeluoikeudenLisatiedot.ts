@@ -1,5 +1,7 @@
 import { Maksuttomuus } from './Maksuttomuus'
 import { OikeuttaMaksuttomuuteenPidennetty } from './OikeuttaMaksuttomuuteenPidennetty'
+import { Koodistokoodiviite } from './Koodistokoodiviite'
+import { LocalizedString } from './LocalizedString'
 
 /**
  * VapaanSivistystyönOpiskeluoikeudenLisätiedot
@@ -10,12 +12,14 @@ export type VapaanSivistystyönOpiskeluoikeudenLisätiedot = {
   $class: 'fi.oph.koski.schema.VapaanSivistystyönOpiskeluoikeudenLisätiedot'
   maksuttomuus?: Array<Maksuttomuus>
   oikeuttaMaksuttomuuteenPidennetty?: Array<OikeuttaMaksuttomuuteenPidennetty>
+  jotpaAsianumero?: Koodistokoodiviite<'jotpaasianumero', string>
 }
 
 export const VapaanSivistystyönOpiskeluoikeudenLisätiedot = (
   o: {
     maksuttomuus?: Array<Maksuttomuus>
     oikeuttaMaksuttomuuteenPidennetty?: Array<OikeuttaMaksuttomuuteenPidennetty>
+    jotpaAsianumero?: Koodistokoodiviite<'jotpaasianumero', string>
   } = {}
 ): VapaanSivistystyönOpiskeluoikeudenLisätiedot => ({
   $class: 'fi.oph.koski.schema.VapaanSivistystyönOpiskeluoikeudenLisätiedot',
