@@ -32,17 +32,6 @@
   <dependencies>
     <!-- OPH internal deps -->
     <dependency>
-      <groupId>fi.vm.sade</groupId>
-      <artifactId>scala-cas_2.12</artifactId>
-      <version>3.0.2-SNAPSHOT</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.http4s</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
       <groupId>com.github.Opetushallitus</groupId>
       <artifactId>auditlogger</artifactId>
       <version>9af4229c97fadb2f81b53d62d78073d141ea9baa</version>
