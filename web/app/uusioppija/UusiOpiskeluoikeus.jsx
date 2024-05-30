@@ -227,6 +227,7 @@ export default ({ opiskeluoikeusAtom }) => {
         taiteenPerusopetusAtom={taiteenPerusopetusOrganisaationUlkopuoleltaAtom}
         järjestämismuotoAtom={varhaiskasvatusJärjestämismuotoAtom}
       />
+
       <Oppilaitos
         showVarhaiskasvatusToimipisteetP={
           varhaiskasvatusOrganisaationUlkopuoleltaAtom
@@ -237,6 +238,7 @@ export default ({ opiskeluoikeusAtom }) => {
         oppilaitosAtom={oppilaitosAtom}
         organisaatiotyypitAtom={organisaatiotyypitAtom}
       />
+
       {ift(
         oppilaitosAtom,
         <OpiskeluoikeudenTyyppi
@@ -244,6 +246,7 @@ export default ({ opiskeluoikeusAtom }) => {
           opiskeluoikeustyypitP={opiskeluoikeustyypitP}
         />
       )}
+
       {ift(
         suorituskielenVoiValitaP,
         <Suorituskieli
@@ -251,6 +254,7 @@ export default ({ opiskeluoikeusAtom }) => {
           suorituskieletP={suorituskieletP}
         />
       )}
+
       {ift(
         tyyppiAtom.map((tyyppi) => tyyppi && tyyppi.koodiarvo === 'tuva'),
         <TuvaJärjestämisLupa
@@ -258,12 +262,14 @@ export default ({ opiskeluoikeusAtom }) => {
           tuvaJärjestämislupaP={tuvaJärjestämislupaP}
         />
       )}
+
       {ift(
         tyyppiAtom.map(
           (tyyppi) => tyyppi && tyyppi.koodiarvo === 'taiteenperusopetus'
         ),
         <TaiteenPerusopetuksenOppimäärä tpoOppimääräAtom={tpoOppimääräAtom} />
       )}
+
       {ift(
         tyyppiAtom.map(
           (tyyppi) => tyyppi && tyyppi.koodiarvo === 'taiteenperusopetus'
@@ -273,6 +279,7 @@ export default ({ opiskeluoikeusAtom }) => {
           hankintakoulutusAtom={taiteenPerusopetusOrganisaationUlkopuoleltaAtom}
         />
       )}
+
       {tyyppiAtom.map('.koodiarvo').map((tyyppi) => {
         if (tyyppi === 'perusopetus')
           return (
@@ -420,11 +427,14 @@ export default ({ opiskeluoikeusAtom }) => {
             />
           )
       })}
+
       <Aloituspäivä dateAtom={dateAtom} />
+
       <OpiskeluoikeudenTila
         tilaAtom={tilaAtom}
         opiskeluoikeudenTilatP={opiskeluoikeudenTilatP}
       />
+
       {ift(
         rahoitusmuotoChanges.map((x) => x.vaatiiRahoituksen),
         <OpintojenRahoitus
@@ -434,6 +444,7 @@ export default ({ opiskeluoikeusAtom }) => {
           suoritystyyppiP={suoritustyyppiAtom}
         />
       )}
+
       {ift(
         maksuttomuusTiedonVoiValitaP,
         <MaksuttomuusRadioButtons maksuttomuusAtom={maksuttomuusAtom} />
@@ -492,6 +503,7 @@ const OmanOrganisaationUlkopuolinenOppilaitosPicker = ({
           <VarhaiskasvatusCheckbox varhaiskasvatusAtom={varhaiskasvatusAtom} />
         )
       )}
+
       {fromBacon(
         ift(
           showTaiteenPerusopetusCheckbox,
@@ -500,6 +512,7 @@ const OmanOrganisaationUlkopuolinenOppilaitosPicker = ({
           />
         )
       )}
+
       {fromBacon(
         ift(
           varhaiskasvatusAtom,
@@ -517,6 +530,7 @@ const VarhaiskasvatusCheckbox = ({ varhaiskasvatusAtom }) => {
   return (
     <label className="varhaiskasvatus-checkbox">
       <Text name="Päiväkodin esiopetus ostopalveluna tai palvelusetelinä" />
+
       <Checkbox
         id="varhaiskasvatus-checkbox"
         onChange={varhaiskasvatusOnChange}
@@ -536,6 +550,7 @@ const TaiteenPerusopetusHankintakoulutusCheckbox = ({
   return (
     <label className="tpo-hankintakoulutus-checkbox">
       <Text name="Taiteen perusopetus hankintakoulutuksena järjestettynä" />
+
       <Checkbox
         id="hankintakoulutus-checkbox"
         onChange={hankintakoulutusOnChange}
@@ -574,6 +589,7 @@ const Oppilaitos = ({
   return (
     <label className="oppilaitos">
       <Text name="Oppilaitos" />
+
       {Bacon.combineWith(
         oppilaitosAtom,
         showVarhaiskasvatusToimipisteetP,
@@ -647,6 +663,7 @@ const Aloituspäivä = ({ dateAtom }) => {
   return (
     <label className="aloituspaiva">
       <Text name="Aloituspäivä" />
+
       <DateInput
         value={dateAtom.get()}
         valueCallback={(value) => dateAtom.set(value)}

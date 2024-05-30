@@ -9,7 +9,7 @@ import {
 } from './EditorModel'
 import Text from '../i18n/Text'
 
-export const ArrayEditor = ({ model, reverse }) => {
+export const ArrayEditor = ({ model, reverse, getValueEditor }) => {
   const wrappedModel = wrapOptional(model)
 
   let items = modelItems(wrappedModel)
@@ -47,7 +47,7 @@ export const ArrayEditor = ({ model, reverse }) => {
       {items.map((item) => {
         return (
           <li key={item.arrayKey}>
-            <Editor model={item} />
+            {getValueEditor ? getValueEditor(item) : <Editor model={item} />}
             {item.context.edit && items.length > minItems && (
               <a className="remove-item" onClick={() => pushRemoval(item)} />
             )}

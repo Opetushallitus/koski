@@ -37,6 +37,7 @@ export const SelectableSuoritusList = ({
         return [
           <li className="oppilaitos-group" key={groupTitle}>
             <h3 className="oppilaitos-group__header">{groupTitle}</h3>
+
             <ul className="oppilaitos-group__list">
               {Bacon.combineWith(
                 oppilaitoksenOpiskeluoikeudet,
@@ -101,7 +102,8 @@ const withIdentifiers = (opiskeluoikeus) => (suoritukset) => {
             id: SuoritusIdentifier(opiskeluoikeus, opintojaksot[0]),
             Title: () => (
               <span>
-                {opintojaksot.length} <Text name="opintojaksoa" />
+                {opintojaksot.length}
+                <Text name="opintojaksoa" />
               </span>
             )
           }

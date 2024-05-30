@@ -24,6 +24,7 @@ export const UusiOpiskeluoikeusPopup = ({ resultCallback }) => {
         <h2>
           <Text name="Opiskeluoikeuden lisäys" />
         </h2>
+
         <UusiOpiskeluoikeus opiskeluoikeusAtom={opiskeluoikeusAtom} />
       </ModalDialog>
     </form>
