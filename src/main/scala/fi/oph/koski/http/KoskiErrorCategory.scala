@@ -317,6 +317,7 @@ object KoskiErrorCategory {
   object notFound extends ErrorCategory("notFound", 404, "Not found") {
     val oppijaaEiLöydyTaiEiOikeuksia = subcategory("oppijaaEiLöydyTaiEiOikeuksia", "Oppijaa ei löydy annetulla oidilla tai käyttäjällä ei ole oikeuksia tietojen katseluun.")
     val oppijaaEiLöydy = subcategory("oppijaaEiLöydy", "Oppijaa ei löydy annetulla oidilla.")
+    val oppijaaEiLöydyHetulla = subcategory("oppijaaEiLöydyHetulla", "Oppijaa ei löydy annetulla hetulla.")
     val opiskeluoikeuttaEiLöydyTaiEiOikeuksia = subcategory("opiskeluoikeuttaEiLöydyTaiEiOikeuksia", "Opiskeluoikeutta ei löydy annetulla oid:llä tai käyttäjällä ei ole siihen oikeuksia")
     val opiskeluoikeuttaOppilaitoksessaEiLöydy = subcategory("opiskeluoikeuttaOppilaitoksessaEiLöydy", "Oppijalla ei ole opiskeluoikeutta oppilaitoksessa tai käyttäjällä ei ole siihen oikeuksia")
     val versiotaEiLöydy = subcategory("versiotaEiLöydy", "Haettua versiota ei löydy")
