@@ -26,6 +26,7 @@ object SureOpiskeluoikeus {
   def apply(oo: KoskeenTallennettavaOpiskeluoikeus): Option[SureOpiskeluoikeus] =
     (oo match {
       case o: PerusopetuksenOpiskeluoikeus => Some(SurePerusopetuksenOpiskeluoikeus(o))
+      case o: AikuistenPerusopetuksenOpiskeluoikeus => Some(SureAikuistenPerusopetuksenOpiskeluoikeus(o))
       case _ => None
     }).filter(_.suoritukset.nonEmpty)
 }
