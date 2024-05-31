@@ -1,9 +1,9 @@
 package fi.oph.koski.massaluovutus.suoritusrekisteri.opiskeluoikeus
 
 import fi.oph.koski.massaluovutus.suoritusrekisteri.SureOpiskeluoikeus
-import fi.oph.koski.schema.{Aikajakso, ErityisenTuenPäätös, Koodistokoodiviite, NuortenPerusopetuksenOpiskeluoikeudenTila, NuortenPerusopetuksenOppiaineenSuoritus, NuortenPerusopetuksenOppimääränSuoritus, NuortenPerusopetus, Oppilaitos, PerusopetuksenLuokkaAste, PerusopetuksenOpiskeluoikeudenLisätiedot, PerusopetuksenOpiskeluoikeus, PerusopetuksenPäätasonSuoritus, PerusopetuksenVuosiluokanSuoritus}
-import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, OksaUri, Tooltip}
-import fi.oph.scalaschema.annotation.Description
+import fi.oph.koski.schema.annotation._
+import fi.oph.koski.schema._
+import fi.oph.scalaschema.annotation.{Description, OnlyWhen, Title}
 
 import java.time.LocalDate
 
@@ -31,7 +31,6 @@ object SurePerusopetuksenOpiskeluoikeus {
 
 sealed trait SureNuortenPerusopetuksenSuoritus extends SurePäätasonSuoritus {
   def tyyppi: Koodistokoodiviite
-  def vahvistuspäivä: Option[LocalDate]
   def suorituskieli: Koodistokoodiviite
 }
 
@@ -42,6 +41,8 @@ object SureNuortenPerusopetuksenSuoritus {
         Some(SureNuortenPerusopetuksenOppimäärä(s))
       case s: PerusopetuksenVuosiluokanSuoritus if s.koulutusmoduuli.tunniste.koodiarvo == "9" =>
         Some(SureNuortenPerusopetuksenYhdeksäsLuokka(s))
+      case s: NuortenPerusopetuksenOppiaineenOppimääränSuoritus =>
+        Some(SureNuortenPerusopetusAineopetus(s))
       case _ => None
     }
 }
@@ -84,6 +85,45 @@ object SureNuortenPerusopetuksenYhdeksäsLuokka {
     )
 }
 
+case class SureNuortenPerusopetusAineopetus(
+  @Description("Päättötodistukseen liittyvät oppiaineen suoritukset.")
+  @Tooltip("Päättötodistukseen liittyvät oppiaineen suoritukset.")
+  @Title("Oppiaine")
+  @FlattenInUI
+  koulutusmoduuli: NuortenPerusopetuksenOppiainenTaiEiTiedossaOppiaine,
+  toimipiste: OrganisaatioWithOid,
+  arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,
+  vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
+  suoritustapa: Koodistokoodiviite,
+  @Description("Luokka-asteen tunniste (1-9). Minkä vuosiluokan mukaisesta oppiainesuorituksesta on kyse.")
+  @Tooltip("Minkä vuosiluokan mukaisesta oppiainesuorituksesta on kyse")
+  @Title("Luokka-aste")
+  @KoodistoUri("perusopetuksenluokkaaste")
+  @OnlyWhen("suoritustapa/koodiarvo", "erityinentutkinto")
+  luokkaAste: Option[Koodistokoodiviite] = None,
+  suorituskieli: Koodistokoodiviite,
+  muutSuorituskielet: Option[List[Koodistokoodiviite]] = None,
+  todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
+  @KoodistoKoodiarvo("nuortenperusopetuksenoppiaineenoppimaara")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("nuortenperusopetuksenoppiaineenoppimaara", koodistoUri = "suorituksentyyppi")
+) extends SureNuortenPerusopetuksenSuoritus
+
+object SureNuortenPerusopetusAineopetus {
+  def apply(s: NuortenPerusopetuksenOppiaineenOppimääränSuoritus): SureNuortenPerusopetusAineopetus =
+    SureNuortenPerusopetusAineopetus(
+      koulutusmoduuli = s.koulutusmoduuli,
+      toimipiste = s.toimipiste,
+      arviointi = s.arviointi,
+      vahvistus = s.vahvistus,
+      suoritustapa = s.suoritustapa,
+      luokkaAste = s.luokkaAste,
+      suorituskieli = s.suorituskieli,
+      muutSuorituskielet = s.muutSuorituskielet,
+      todistuksellaNäkyvätLisätiedot = s.todistuksellaNäkyvätLisätiedot,
+      tyyppi = s.tyyppi,
+    )
+}
+
 case class SureNuortenPerusopetuksenLisätiedot(
   @Description("Kotiopetusjaksot huoltajan päätöksestä alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole kotiopetuksessa. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Kotiopetusjaksot huoltajan päätöksestä alkamis- ja päättymispäivineen. Rahoituksen laskennassa käytettävä tieto.")
@@ -113,3 +153,4 @@ object SureNuortenPerusopetuksenLisätiedot {
       None
     }
 }
+
