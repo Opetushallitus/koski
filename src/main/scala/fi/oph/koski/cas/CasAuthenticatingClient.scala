@@ -1,9 +1,9 @@
-package fi.vm.sade.utils.cas
+package fi.oph.koski.cas
 
 import cats.effect.IO
 import cats.effect.kernel.Resource
 import cats.effect.std.Hotswap
-import fi.vm.sade.utils.cas.CasClient.SessionCookie
+import fi.oph.koski.cas.CasClient.SessionCookie
 import org.http4s.client.Client
 import org.http4s.{Request, Response, Status}
 import org.typelevel.ci.CIString

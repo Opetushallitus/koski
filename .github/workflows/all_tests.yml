@@ -153,6 +153,8 @@ jobs:
             fi.oph.koski.henkilo, \
             fi.oph.koski.http, \
             fi.oph.koski.integrationtest, \
+            fi.oph.koski.cas, \
+            fi.oph.koski.casintegration, \
             fi.oph.koski.json, \
             fi.oph.koski.kela, \
             fi.oph.koski.koodisto, \

@@ -4,7 +4,7 @@ import cats.effect.IO
 import com.typesafe.config.Config
 import fi.oph.koski.config.{Environment, SecretsManager}
 import fi.oph.koski.log.NotLoggable
-import fi.vm.sade.utils.cas.{CasAuthenticatingClient, CasClient, CasParams}
+import fi.oph.koski.cas.{CasAuthenticatingClient, CasClient, CasParams}
 import org.http4s.client.Client
 
 case class VirkailijaCredentials(username: String, password: String) extends NotLoggable

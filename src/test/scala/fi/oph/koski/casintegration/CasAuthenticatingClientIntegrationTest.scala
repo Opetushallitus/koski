@@ -1,7 +1,8 @@
-package fi.vm.sade.utils.cas
+package fi.oph.koski.casintegration
 
 import cats.effect.IO
 import cats.effect.unsafe.IORuntime
+import fi.oph.koski.cas.{CasAuthenticatingClient, CasClient, CasParams}
 import org.http4s.Status.Ok
 import org.http4s._
 import org.http4s.blaze.client.BlazeClientBuilder
@@ -21,7 +22,7 @@ class CasAuthenticatingClientIntegrationTest extends AnyFreeSpec with Matchers {
       case Left(failure) => throw new IllegalArgumentException("Cannot create URI: " + uri + ": " + failure)
     }
   }
-  private def requiredEnv(name: String) = scala.util.Properties.envOrNone(name).getOrElse(throw new IllegalStateException("Environment property " + name + " missing"))
+  private def requiredEnv(name: String) = sys.env.getOrElse(name, throw new RuntimeException("Environment property " + name + " missing"))
 
   "CasAuthenticatingClient integration test" taggedAs(IntegrationTestTag) in {
     val virkailijaUrl: String = requiredEnv("VIRKAILIJA_ROOT")
@@ -45,4 +46,4 @@ class CasAuthenticatingClientIntegrationTest extends AnyFreeSpec with Matchers {
   }
 }
 
-object IntegrationTestTag extends Tag("integrationtest")
+object IntegrationTestTag extends Tag("casintegration")

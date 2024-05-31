@@ -629,7 +629,7 @@
             <groupId>org.scalatest</groupId>
             <artifactId>scalatest-maven-plugin</artifactId>
             <configuration>
-              <tagsToExclude>koskidev,browserstack,localization,mocha,parallelmocha,valpasfront</tagsToExclude>
+              <tagsToExclude>koskidev,browserstack,localization,mocha,parallelmocha,valpasfront,casintegration</tagsToExclude>
             </configuration>
           </plugin>
         </plugins>
@@ -658,6 +658,20 @@
             <artifactId>scalatest-maven-plugin</artifactId>
             <configuration>
               <wildcardSuites>fi.oph.koski.localization</wildcardSuites>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>casintegration</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.scalatest</groupId>
+            <artifactId>scalatest-maven-plugin</artifactId>
+            <configuration>
+              <wildcardSuites>fi.oph.koski.casintegration</wildcardSuites>
             </configuration>
           </plugin>
         </plugins>

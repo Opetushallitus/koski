@@ -1,10 +1,11 @@
-package fi.vm.sade.utils.cas
+package fi.oph.koski.cas
 
 import cats.effect.IO
 import cats.effect.unsafe.IORuntime
+import fi.oph.koski.TestEnvironment
+import fi.oph.koski.cas.CasAuthenticatingClient.DefaultSessionCookieName
+import fi.oph.koski.cas.CasClient.SessionCookie
 import fi.vm.sade.utils.tcp.PortChecker
-import fi.vm.sade.utils.cas.CasAuthenticatingClient.DefaultSessionCookieName
-import fi.vm.sade.utils.cas.CasClient.SessionCookie
 import org.http4s.blaze.client.BlazeClientBuilder
 import org.http4s.client.ConnectionFailure
 import org.scalatest.freespec.AnyFreeSpec
@@ -14,7 +15,7 @@ import scala.concurrent.ExecutionContext.global
 import scala.util.{Failure, Try}
 
 
-class CasClientSmokeTest extends AnyFreeSpec with Matchers {
+class CasClientSmokeTest extends AnyFreeSpec with TestEnvironment with Matchers {
   implicit val runtime: IORuntime = cats.effect.unsafe.IORuntime.global
 
   val params: CasParams = CasParams("http://service", "suffix", "u", "pw")

@@ -1,4 +1,4 @@
-package fi.vm.sade.utils.cas
+package fi.oph.koski.cas
 
 import cats.data.EitherT
 import cats.effect.IO
