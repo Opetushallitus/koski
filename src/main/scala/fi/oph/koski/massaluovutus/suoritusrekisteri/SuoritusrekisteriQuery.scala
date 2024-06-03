@@ -78,5 +78,6 @@ object SuoritusrekisteriQuery {
     "perusopetus",
     "aikuistenperusopetus",
     "ammatillinenkoulutus",
+    "tuva",
   )
 }
