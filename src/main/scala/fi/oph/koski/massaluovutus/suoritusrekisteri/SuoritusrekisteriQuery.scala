@@ -77,5 +77,6 @@ object SuoritusrekisteriQuery {
   def opiskeluoikeudenTyypit: List[String] = List(
     "perusopetus",
     "aikuistenperusopetus",
+    "ammatillinenkoulutus",
   )
 }
