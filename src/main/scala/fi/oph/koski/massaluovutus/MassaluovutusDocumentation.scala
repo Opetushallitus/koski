@@ -201,6 +201,8 @@ object QueryExamples {
     case "RunningQueryResponse" => asJson(runningQuery(
       application,
       QueryOrganisaationOpiskeluoikeudetCsvDocumentation.example,
+      QueryOrganisaationOpiskeluoikeudetCsvDocumentation.outputFiles.take(1),
+      application.config.getString("koski.root.url"),
     ))
     case "CompleteQueryResponse" => asJson(completedQuery(
       QueryOrganisaationOpiskeluoikeudetCsvDocumentation.example,
@@ -219,6 +221,8 @@ object QueryExamples {
     case "ValintalaskentaRunningQueryResponse" => asJson(runningQuery(
       application,
       ValintalaskentaQueryDocumentation.example,
+      ValintalaskentaQueryDocumentation.outputFiles.take(1),
+      application.config.getString("koski.root.url"),
     ))
     case "ValintalaskentaCompleteQueryResponse" => asJson(completedQuery(
       ValintalaskentaQueryDocumentation.example,
@@ -241,13 +245,14 @@ object QueryExamples {
       resultsUrl = resultsUrl(application, queryId),
     )
 
-  def runningQuery(application: KoskiApplication, query: MassaluovutusQueryParameters): RunningQueryResponse =
+  def runningQuery(application: KoskiApplication, query: MassaluovutusQueryParameters, files: List[String], rootUrl: String): RunningQueryResponse =
     RunningQueryResponse(
       queryId = queryId,
       requestedBy = "1.2.246.562.24.123123123123",
       query = query,
       createdAt = createdAt,
       startedAt = startedAt,
+      files = files.map(MassaluovutusServletUrls.file(rootUrl, queryId, _)),
       resultsUrl = resultsUrl(application, queryId),
     )
 

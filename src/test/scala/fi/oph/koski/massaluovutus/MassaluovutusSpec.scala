@@ -48,6 +48,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
         createdAt = LocalDateTime.now().minusMinutes(1),
         startedAt = LocalDateTime.now(),
         worker = worker,
+        resultFiles = List.empty,
         session = StorableSession(user).toJson,
         meta = None,
       )

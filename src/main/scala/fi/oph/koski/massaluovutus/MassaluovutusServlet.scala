@@ -98,6 +98,8 @@ case class RunningQueryResponse(
   createdAt: OffsetDateTime,
   @Description("Massaluovutuskyselyn käsittelyn aloitusaika")
   startedAt: OffsetDateTime,
+  @Description("Lista osoitteista, joista valmistuneet tulostiedostot voi ladata. Tiedostojen määrä kasvaa kyselyn edetessä.")
+  files: List[String],
   @Description("Osoite josta kyselyn tilaa voi kysellä")
   resultsUrl: String,
 ) extends QueryResponse {
@@ -151,6 +153,7 @@ object QueryResponse {
       query = q.query,
       createdAt = q.createdAt,
       startedAt = q.startedAt,
+      files = q.filesToExternal(rootUrl),
       resultsUrl = q.externalResultsUrl(rootUrl),
     )
     case q: FailedQuery => FailedQueryResponse(

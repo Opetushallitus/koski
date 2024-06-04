@@ -137,6 +137,15 @@ class QueryRepository(
       """.as[Query])
       .collectFirst { case q: RunningQuery => q }
 
+  def setProgress(id: String, resultFiles: List[String]): Boolean =
+    runDbSync(
+      sql"""
+        UPDATE massaluovutus
+        SET
+          result_files = ${resultFiles}
+        WHERE id = ${id}::uuid
+        """.asUpdate) != 0
+
   def setComplete(id: String, resultFiles: List[String]): Boolean =
     runDbSync(sql"""
       UPDATE massaluovutus
@@ -245,6 +254,7 @@ class QueryRepository(
         createdAt = creationTime,
         startedAt = r.rs.getTimestamp("started_at").toLocalDateTime,
         worker = r.rs.getString("worker"),
+        resultFiles = r.getArraySafe("result_files").toList,
         meta = meta,
       )
       case QueryState.complete => CompleteQuery(
@@ -320,6 +330,11 @@ trait QueryWithWorker {
   def worker: String
 }
 
+trait QueryWithResultFiles extends Query {
+  def resultFiles: List[String]
+  def filesToExternal(rootUrl: String): List[String] = resultFiles.map(MassaluovutusServletUrls.file(rootUrl, queryId, _))
+}
+
 case class PendingQuery(
   queryId: String,
   userOid: String,
@@ -338,9 +353,10 @@ case class RunningQuery(
   createdAt: LocalDateTime,
   startedAt: LocalDateTime,
   worker: String,
+  resultFiles: List[String],
   session: JValue,
   meta: Option[QueryMeta],
-) extends Query with QueryWithStartTime with QueryWithWorker {
+) extends QueryWithResultFiles with QueryWithStartTime with QueryWithWorker {
   def state: String = QueryState.running
 }
 
@@ -355,10 +371,8 @@ case class CompleteQuery(
   resultFiles: List[String],
   session: JValue,
   meta: Option[QueryMeta],
-) extends Query with QueryWithStartTime with QueryWithFinishTime with QueryWithWorker  {
+) extends QueryWithResultFiles with QueryWithStartTime with QueryWithFinishTime with QueryWithWorker  {
   def state: String = QueryState.complete
-
-  def filesToExternal(rootUrl: String): List[String] = resultFiles.map(MassaluovutusServletUrls.file(rootUrl, queryId, _))
 }
 
 case class FailedQuery(

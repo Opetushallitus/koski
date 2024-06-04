@@ -39,6 +39,13 @@ trait PostgresDriverWithJsonSupport extends PostgresProfile
 
       def getArray[T](columnName: String): IndexedSeq[T] = r.rs.getArray(columnName).getArray.asInstanceOf[Array[T]]
 
+      def getArraySafe[T](columnName: String): IndexedSeq[T] =
+        try {
+          getArray(columnName)
+        } catch {
+          case _: NullPointerException => IndexedSeq.empty
+        }
+
       def getJson(columnName: String): JValue = jsonMethods.parse(r.rs.getString(columnName))
 
       def getNullableJson(columnName: String): Option[JValue] = Option(r.rs.getString(columnName)).map(j => jsonMethods.parse(j))

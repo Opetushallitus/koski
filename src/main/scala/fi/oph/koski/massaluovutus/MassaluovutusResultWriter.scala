@@ -22,32 +22,40 @@ case class QueryResultWriter(
 ) {
   var objectKeys: mutable.Queue[String] = mutable.Queue[String]()
 
-  def putJson(name: String, json: String): Unit =
+  def putJson(name: String, json: String): Unit = {
     results.putStream(
       queryId = queryId,
       name = newObjectKey(s"$name.json"),
       provider = StringStreamProvider(json),
       contentType = QueryFormat.json,
     )
+    updateProgress()
+  }
 
   def putJson[T: TypeTag](name: String, obj: T)(implicit user: KoskiSpecificSession): Unit =
     putJson(name, JsonSerializer.write(obj))
 
   def createCsv[T <: Product](name: String)(implicit manager: Using.Manager): CsvStream[T] =
-    manager(new CsvStream[T](s"$queryId-$name", file => results.putFile(
-      queryId = queryId,
-      name = newObjectKey(s"$name.csv"),
-      file = file,
-      contentType = QueryFormat.csv,
-    )))
+    manager(new CsvStream[T](s"$queryId-$name", { file =>
+      results.putFile(
+        queryId = queryId,
+        name = newObjectKey(s"$name.csv"),
+        file = file,
+        contentType = QueryFormat.csv,
+      )
+      updateProgress()
+    }))
 
   def createStream(name: String, contentType: String)(implicit manager: Using.Manager): UploadStream =
-    manager(new UploadStream(s"$queryId-$name", provider => results.putStream(
-      queryId = queryId,
-      name = newObjectKey(name),
-      provider = provider,
-      contentType = contentType,
-    )))
+    manager(new UploadStream(s"$queryId-$name", { provider =>
+      results.putStream(
+        queryId = queryId,
+        name = newObjectKey(name),
+        provider = provider,
+        contentType = contentType,
+      )
+      updateProgress()
+    }))
 
   def putReport(report: OppilaitosRaporttiResponse, format: String, localizationReader: LocalizationReader)(implicit manager: Using.Manager): Unit = {
     format match {
@@ -89,6 +97,8 @@ case class QueryResultWriter(
     objectKeys += objectKey
     objectKey
   }
+
+  private def updateProgress() = queries.setProgress(queryId.toString, objectKeys.toList)
 }
 
 class CsvStream[T <: Product](name: String, upload: (Path) => Unit) extends AutoCloseable {
