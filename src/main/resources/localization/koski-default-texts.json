@@ -2484,6 +2484,7 @@
   "raportti-excel-kolumni-alkuvaiheenTunnistettujaSuorituksia": "Tunnustetut kurssit - alkuvaihe",
   "raportti-excel-kolumni-päivitetty": "Päivitetty",
   "raportti-excel-oppimäärä-sheet-name": "Oppimäärä",
+  "raportti-excel-arvioinnit-sheet-name": "Arvioinnit",
   "raportti-excel-kolumni-sisäoppilaitosmainenMajoitus-count-comment": "Kuinka monta päivää oppija on ollut KOSKI-datan mukaan sisäoppilaitosmaisessa majoituksessa raportin tulostusparametreissa määritellyllä aikajaksolla.",
   "raportti-excel-kolumni-aineopiskelijoitaYhteensä-AikuistenPerusopetus-comment": "\"Läsnä\"-tilaisista opiskeluoikeuksista ne, joissa suoritetaan aikuisten perusopetuksen aineopintoja.",
   "raportti-excel-kolumni-yhteensäTunnistettujaSuorituksiaRahoituksenPiirissä": "Tunnustetut kurssit - rahoituksen piirissä",
