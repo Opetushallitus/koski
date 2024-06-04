@@ -30,7 +30,9 @@ case class SuoritusrekisteriQuery(
   override def run(application: KoskiApplication, writer: QueryResultWriter)(implicit user: KoskiSpecificSession): Either[String, Unit] = {
     muuttuneetOpiskeluoikeudet(application.replicaDatabase.db).foreach { oid =>
       getOpiskeluoikeus(application, oid).foreach { response =>
-        writer.putJson(response.opiskeluoikeus.oid, response)
+        val ooTyyppi = response.opiskeluoikeus.tyyppi.koodiarvo
+        val ptsTyyppi = response.opiskeluoikeus.suoritukset.map(_.tyyppi.koodiarvo).mkString("-")
+        writer.putJson(s"$ooTyyppi-$ptsTyyppi-${response.opiskeluoikeus.oid}", response)
       }
     }
     Right(())
@@ -80,5 +82,6 @@ object SuoritusrekisteriQuery {
     "ammatillinenkoulutus",
     "tuva",
     "vapaansivistystyonkoulutus",
+    "diatutkinto",
   )
 }
