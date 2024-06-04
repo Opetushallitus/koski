@@ -30,6 +30,7 @@ object SureOpiskeluoikeus {
       case o: AmmatillinenOpiskeluoikeus => Some(SureAmmatillinenTutkinto(o))
       case o: TutkintokoulutukseenValmentavanOpiskeluoikeus => Some(SureTuvaOpiskeluoikeus(o))
       case o: VapaanSivistystyönOpiskeluoikeus => Some(SureVapaanSivistystyönOpiskeluoikeus(o))
+      case o: DIAOpiskeluoikeus => SureDiaOpiskeluoikeus(o)
       case _ => None
     }).filter(_.suoritukset.nonEmpty)
 }
