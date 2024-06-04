@@ -3,12 +3,11 @@ package fi.oph.koski.massaluovutus
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.db.{DB, DatabaseConverters, QueryMethods}
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.{AuthenticationUser, KoskiMockUser, KoskiSpecificSession, KäyttöoikeusRepository, MockUser}
+import fi.oph.koski.koskiuser.{AuthenticationUser, KoskiSpecificSession, KäyttöoikeusRepository, MockUser}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.validation.ValidatingAndResolvingExtractor
 import org.json4s.JValue
-import org.json4s.jackson.JsonMethods
 import slick.jdbc.GetResult
 
 import java.net.InetAddress
