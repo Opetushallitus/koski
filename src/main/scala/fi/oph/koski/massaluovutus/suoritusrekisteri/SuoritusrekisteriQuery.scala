@@ -84,5 +84,6 @@ object SuoritusrekisteriQuery {
     "vapaansivistystyonkoulutus",
     "diatutkinto",
     "ebtutkinto",
+    "ibtutkinto",
   )
 }
