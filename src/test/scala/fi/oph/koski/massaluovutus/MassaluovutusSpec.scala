@@ -51,6 +51,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
         resultFiles = List.empty,
         session = StorableSession(user).toJson,
         meta = None,
+        progress = None,
       )
 
     "Orpo kysely vapautetaan takaisin jonoon" in {

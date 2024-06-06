@@ -14,7 +14,7 @@ import fi.oph.scalaschema.annotation.{Description, Title}
 import org.json4s.JValue
 
 import java.net.URL
-import java.time.{Duration, OffsetDateTime}
+import java.time.{Duration, LocalDateTime, OffsetDateTime}
 import java.util.UUID
 import scala.io.Source
 import scala.reflect.runtime.universe.TypeTag
@@ -254,6 +254,7 @@ object QueryExamples {
       startedAt = startedAt,
       files = files.map(MassaluovutusServletUrls.file(rootUrl, queryId, _)),
       resultsUrl = resultsUrl(application, queryId),
+      progress = Some(QueryProgress.from(75, startedAt.toLocalDateTime))
     )
 
   def completedQuery(query: MassaluovutusQueryParameters, files: List[String], rootUrl: String, password: Option[String]): CompleteQueryResponse =

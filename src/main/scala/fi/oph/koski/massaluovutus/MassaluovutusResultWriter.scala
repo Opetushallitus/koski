@@ -21,6 +21,16 @@ case class QueryResultWriter(
   results: MassaluovutusResultRepository,
 ) {
   var objectKeys: mutable.Queue[String] = mutable.Queue[String]()
+  private var predictedFileCount: Option[Int] = None
+
+  def predictFileCount(count: Int): Unit = {
+    predictedFileCount = Some(count)
+  }
+
+  def skipFile(): Unit = {
+    predictedFileCount = predictedFileCount.map(_ - 1)
+    updateProgress()
+  }
 
   def putJson(name: String, json: String): Unit = {
     results.putStream(
@@ -98,7 +108,15 @@ case class QueryResultWriter(
     objectKey
   }
 
-  private def updateProgress() = queries.setProgress(queryId.toString, objectKeys.toList)
+  private def updateProgress(): Boolean = {
+    queries.setProgress(
+      id = queryId.toString,
+      resultFiles = objectKeys.toList,
+      progress = predictedFileCount
+        .filter(_ > 0)
+        .map(100 * objectKeys.size / _)
+    )
+  }
 }
 
 class CsvStream[T <: Product](name: String, upload: (Path) => Unit) extends AutoCloseable {

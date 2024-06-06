@@ -102,6 +102,8 @@ case class RunningQueryResponse(
   files: List[String],
   @Description("Osoite josta kyselyn tilaa voi kysellä")
   resultsUrl: String,
+  @Description("Tietoa kyselyn etenemisestä")
+  progress: Option[QueryProgress],
 ) extends QueryResponse {
   def status: String = QueryState.running
 }
@@ -155,6 +157,7 @@ object QueryResponse {
       startedAt = q.startedAt,
       files = q.filesToExternal(rootUrl),
       resultsUrl = q.externalResultsUrl(rootUrl),
+      progress = q.progress,
     )
     case q: FailedQuery => FailedQueryResponse(
       queryId = q.queryId,

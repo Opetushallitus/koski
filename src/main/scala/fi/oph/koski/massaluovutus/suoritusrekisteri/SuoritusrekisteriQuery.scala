@@ -28,11 +28,16 @@ case class SuoritusrekisteriQuery(
   override def priority: Int = MassaluovutusQueryPriority.high
 
   override def run(application: KoskiApplication, writer: QueryResultWriter)(implicit user: KoskiSpecificSession): Either[String, Unit] = {
-    muuttuneetOpiskeluoikeudet(application.replicaDatabase.db).foreach { oid =>
-      getOpiskeluoikeus(application, oid).foreach { response =>
-        val ooTyyppi = response.opiskeluoikeus.tyyppi.koodiarvo
-        val ptsTyyppi = response.opiskeluoikeus.suoritukset.map(_.tyyppi.koodiarvo).mkString("-")
-        writer.putJson(s"$ooTyyppi-$ptsTyyppi-${response.opiskeluoikeus.oid}", response)
+    val opiskeluoikeudet = muuttuneetOpiskeluoikeudet(application.replicaDatabase.db)
+    writer.predictFileCount(opiskeluoikeudet.size)
+    opiskeluoikeudet.foreach { oid =>
+      getOpiskeluoikeus(application, oid) match {
+        case Some(response) =>
+          val ooTyyppi = response.opiskeluoikeus.tyyppi.koodiarvo
+          val ptsTyyppi = response.opiskeluoikeus.suoritukset.map(_.tyyppi.koodiarvo).mkString("-")
+          writer.putJson(s"$ooTyyppi-$ptsTyyppi-${response.opiskeluoikeus.oid}", response)
+        case None =>
+          writer.skipFile()
       }
     }
     Right(())
