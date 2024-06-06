@@ -104,22 +104,24 @@ object DuplikaattiValidation extends Logging {
     }
 
     def findNuortenPerusopetuksessaUseitaKeskeneräisiäVuosiluokanSuorituksia(): Either[HttpStatus, Option[Opiskeluoikeus]] = {
-      val oppilaitosOid = opiskeluoikeus.oppilaitos.map(_.oid).getOrElse("")
-      val oppilaitoksenPerusopetuksenOpiskeluoikeudet =
-        List(Some(opiskeluoikeus), aiemminTallennettuOpiskeluoikeus.toOption.flatten)
-        .collect { case Some(po: PerusopetuksenOpiskeluoikeus) if po.oppilaitos.exists(_.oid == oppilaitosOid) => po }
+      def getLuokkaAste(s: Suoritus) = s.koulutusmoduuli.tunniste.koodiarvo
+      def getVuosiluokat(oo: Opiskeluoikeus) = oo.suoritukset.collect { case s: PerusopetuksenVuosiluokanSuoritus => s }
+      def getSuoritetutLuokkaAsteet(oo: Opiskeluoikeus): List[String] = getVuosiluokat(oo).filterNot(_.kesken).map(getLuokkaAste)
+      def getKeskeneräisetLuokkaAsteet(oo: Opiskeluoikeus): List[String] = getVuosiluokat(oo).filter(_.kesken).map(getLuokkaAste)
+
+      val aiemminTallennetutKeskeneräisetLuokkaAsteet =
+        aiemminTallennettuOpiskeluoikeus
+          .toOption.flatten.toList
+          .flatMap(getKeskeneräisetLuokkaAsteet)
+
+      val uudetkeskeneräisetLuokkaAsteet = getKeskeneräisetLuokkaAsteet(opiskeluoikeus)
+      val suoritetutLuokkaAsteet = getSuoritetutLuokkaAsteet(opiskeluoikeus)
+
       val keskentilaisetVuosiluokanSuoritukset =
-        oppilaitoksenPerusopetuksenOpiskeluoikeudet
-          .flatMap(_.suoritukset)
-          .collect { case s: PerusopetuksenVuosiluokanSuoritus if s.kesken => s }
-          .groupBy(_.koulutusmoduuli.tunniste.koodiarvo)
-          .filter { case (_, suoritukset) => suoritukset.head.kesken }
+        (aiemminTallennetutKeskeneräisetLuokkaAsteet.diff(suoritetutLuokkaAsteet) ++ uudetkeskeneräisetLuokkaAsteet).distinct
 
       if (keskentilaisetVuosiluokanSuoritukset.size > 1) {
-        val luokat = keskentilaisetVuosiluokanSuoritukset
-          .values
-          .map(_.head.koulutusmoduuli.tunniste.koodiarvo)
-          .mkString(" ja ")
+        val luokat = keskentilaisetVuosiluokanSuoritukset.mkString(" ja ")
         val message = s"Nuorten perusopetuksen opiskeluoikeudessa ei saa olla kuin enintään yksi kesken-tilainen vuosiluokan suoritus. Siirron jälkeen kesken olisivat perusopetuksen luokka-asteet $luokat."
         Left(KoskiErrorCategory.badRequest.validation.tila.useitaKeskeneräisiäVuosiluokanSuoritukia(message))
       } else {
