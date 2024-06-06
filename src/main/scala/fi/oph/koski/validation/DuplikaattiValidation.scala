@@ -113,6 +113,7 @@ object DuplikaattiValidation extends Logging {
           .flatMap(_.suoritukset)
           .collect { case s: PerusopetuksenVuosiluokanSuoritus if s.kesken => s }
           .groupBy(_.koulutusmoduuli.tunniste.koodiarvo)
+          .filter { case (_, suoritukset) => suoritukset.head.kesken }
 
       if (keskentilaisetVuosiluokanSuoritukset.size > 1) {
         val luokat = keskentilaisetVuosiluokanSuoritukset
