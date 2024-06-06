@@ -85,5 +85,6 @@ object SuoritusrekisteriQuery {
     "diatutkinto",
     "ebtutkinto",
     "ibtutkinto",
+    "internationalschool",
   )
 }

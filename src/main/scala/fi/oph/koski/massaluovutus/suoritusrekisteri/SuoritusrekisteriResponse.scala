@@ -33,6 +33,7 @@ object SureOpiskeluoikeus {
       case o: DIAOpiskeluoikeus => SureDiaOpiskeluoikeus(o)
       case o: EBOpiskeluoikeus => Some(SureEBOpiskeluoikeus(o))
       case o: IBOpiskeluoikeus => SureIBOpiskeluoikeus(o)
+      case o: InternationalSchoolOpiskeluoikeus => SureInternationalSchoolOpiskeluoikeus(o)
       case _ => None
     }).filter(_.suoritukset.nonEmpty)
 }
