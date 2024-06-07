@@ -1,14 +1,14 @@
 package fi.oph.koski.massaluovutus.suoritusrekisteri.opiskeluoikeus
 
-import fi.oph.koski.massaluovutus.suoritusrekisteri.SureOpiskeluoikeus
 import fi.oph.koski.massaluovutus.suoritusrekisteri.SureUtils.isValmistunut
 import fi.oph.koski.schema._
-import fi.oph.koski.util.Option.when
+import fi.oph.koski.util.Optional.when
+import fi.oph.scalaschema.annotation.Title
 
 object SureDiaOpiskeluoikeus {
   def apply(oo: DIAOpiskeluoikeus): Option[SureOpiskeluoikeus] =
     when (isValmistunut(oo)) {
-      SureDefaultOpiskeluoikeus(
+      SureOpiskeluoikeus(
         oo,
         oo.suoritukset.collect {
           case tutkinnonSuoritus: DIATutkinnonSuoritus if tutkinnonSuoritus.valmis =>
@@ -21,6 +21,7 @@ object SureDiaOpiskeluoikeus {
     }
 }
 
+@Title("DIA-oppiaine")
 case class SureDIAOppiaine(
   koulutusmoduuli: DIAOppiaine,
   suorituskieli: Option[Koodistokoodiviite] = None,

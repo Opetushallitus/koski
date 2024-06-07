@@ -2,8 +2,8 @@ package fi.oph.koski.massaluovutus.suoritusrekisteri
 
 import fi.oph.koski.massaluovutus.suoritusrekisteri.opiskeluoikeus._
 import fi.oph.koski.schema._
-import fi.oph.koski.schema.annotation.KoodistoUri
-import fi.oph.scalaschema.annotation.Discriminator
+import fi.oph.scalaschema.{ClassSchema, SchemaToJson}
+import org.json4s.JValue
 
 import java.time.LocalDateTime
 
@@ -13,13 +13,9 @@ case class SureResponse(
   opiskeluoikeus: SureOpiskeluoikeus,
 )
 
-trait SureOpiskeluoikeus {
-  @KoodistoUri("opiskeluoikeudentyyppi")
-  @Discriminator
-  def tyyppi: Koodistokoodiviite
-  def oid: String
-  def tila: OpiskeluoikeudenTila
-  def suoritukset: List[SurePäätasonSuoritus]
+object SureResponse {
+  lazy val schemaJson: JValue =
+    SchemaToJson.toJsonSchema(KoskiSchema.createSchema(classOf[SureResponse]).asInstanceOf[ClassSchema])
 }
 
 object SureOpiskeluoikeus {
@@ -37,4 +33,3 @@ object SureOpiskeluoikeus {
       case _ => None
     }).filter(_.suoritukset.nonEmpty)
 }
-

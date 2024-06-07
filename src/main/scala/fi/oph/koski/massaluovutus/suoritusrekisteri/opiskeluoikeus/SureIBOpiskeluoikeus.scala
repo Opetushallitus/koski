@@ -1,22 +1,23 @@
 package fi.oph.koski.massaluovutus.suoritusrekisteri.opiskeluoikeus
 
-import fi.oph.koski.massaluovutus.suoritusrekisteri.SureOpiskeluoikeus
 import fi.oph.koski.massaluovutus.suoritusrekisteri.SureUtils.isValmistunut
 import fi.oph.koski.schema._
-import fi.oph.koski.util.Option.when
+import fi.oph.koski.util.Optional.when
+import fi.oph.scalaschema.annotation.Title
 
 import java.time.LocalDate
 
 object SureIBOpiskeluoikeus {
   def apply(oo: IBOpiskeluoikeus): Option[SureOpiskeluoikeus] =
     when(isValmistunut(oo)) {
-      SureDefaultOpiskeluoikeus(
+      SureOpiskeluoikeus(
         oo,
         oo.suoritukset.collect { case s: IBTutkinnonSuoritus => SureIBTutkinnonSuoritus(s) }
       )
     }
 }
 
+@Title("IB-tutkinnon päätason suoritus")
 case class SureIBTutkinnonSuoritus(
   tyyppi: Koodistokoodiviite,
   alkamispäivä: Option[LocalDate],
@@ -46,6 +47,7 @@ object SureIBTutkinnonSuoritus {
     )
 }
 
+@Title("IB-tutkinnon oppiaineen suoritus")
 case class SureIBOppiaineenSuoritus(
   tyyppi: Koodistokoodiviite,
   koulutusmoduuli: IBAineRyhmäOppiaine,

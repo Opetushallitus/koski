@@ -1,42 +1,52 @@
 package fi.oph.koski.massaluovutus.suoritusrekisteri.opiskeluoikeus
 
-import fi.oph.koski.massaluovutus.suoritusrekisteri.SureOpiskeluoikeus
 import fi.oph.koski.schema._
-import fi.oph.koski.util.DateOrdering.localDateOrdering
 import fi.oph.koski.util.CaseClass
+import fi.oph.koski.util.DateOrdering.localDateOrdering
+import fi.oph.scalaschema.annotation.Title
 
 import java.time.LocalDate
 
 
-case class SureDefaultOpiskeluoikeus(
+@Title("Opiskeluoikeus")
+case class SureOpiskeluoikeus(
   tyyppi: Koodistokoodiviite,
   oid: String,
   koulutustoimija: Option[Koulutustoimija],
   oppilaitos: Option[Oppilaitos],
   tila: OpiskeluoikeudenTila,
   suoritukset: List[SurePäätasonSuoritus],
-) extends SureOpiskeluoikeus
+  lisätiedot: Option[SureOpiskeluoikeudenLisätiedot],
+)
 
-object SureDefaultOpiskeluoikeus {
-  def apply(oo: KoskeenTallennettavaOpiskeluoikeus): SureDefaultOpiskeluoikeus =
-    SureDefaultOpiskeluoikeus(oo, oo.suoritukset.map(SureDefaultPäätasonSuoritus.apply))
+object SureOpiskeluoikeus {
+  def apply(oo: KoskeenTallennettavaOpiskeluoikeus): SureOpiskeluoikeus =
+    SureOpiskeluoikeus(oo, oo.suoritukset.map(SureDefaultPäätasonSuoritus.apply))
 
-  def apply(oo: KoskeenTallennettavaOpiskeluoikeus, suoritukset: List[SurePäätasonSuoritus]): SureDefaultOpiskeluoikeus =
-    SureDefaultOpiskeluoikeus(
+  def apply(
+    oo: KoskeenTallennettavaOpiskeluoikeus,
+    suoritukset: List[SurePäätasonSuoritus],
+    lisätiedot: Option[SureOpiskeluoikeudenLisätiedot] = None,
+  ): SureOpiskeluoikeus =
+    SureOpiskeluoikeus(
       tyyppi = oo.tyyppi,
       oid = oo.oid.get,
       koulutustoimija = oo.koulutustoimija,
       oppilaitos = oo.oppilaitos,
       tila = oo.tila,
       suoritukset = suoritukset,
+      lisätiedot = lisätiedot,
     )
 }
+
+trait SureOpiskeluoikeudenLisätiedot
 
 trait SurePäätasonSuoritus {
   def tyyppi: Koodistokoodiviite
   def koulutusmoduuli: Koulutusmoduuli
 }
 
+@Title("Muu päätason suoritus")
 case class SureDefaultPäätasonSuoritus(
   tyyppi: Koodistokoodiviite,
   alkamispäivä: Option[LocalDate],
@@ -63,6 +73,7 @@ object SureDefaultPäätasonSuoritus {
 
 trait SureOsasuoritus
 
+@Title("Muu osasuoritus")
 case class SureDefaultOsasuoritus(
   tyyppi: Koodistokoodiviite,
   koulutusmoduuli: Koulutusmoduuli,

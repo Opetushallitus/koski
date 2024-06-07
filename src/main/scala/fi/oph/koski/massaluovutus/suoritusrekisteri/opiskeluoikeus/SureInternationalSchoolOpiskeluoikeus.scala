@@ -1,16 +1,16 @@
 package fi.oph.koski.massaluovutus.suoritusrekisteri.opiskeluoikeus
 
-import fi.oph.koski.massaluovutus.suoritusrekisteri.SureOpiskeluoikeus
 import fi.oph.koski.massaluovutus.suoritusrekisteri.SureUtils.isValmistunut
 import fi.oph.koski.schema._
-import fi.oph.koski.util.Option.when
+import fi.oph.koski.util.Optional.when
+import fi.oph.scalaschema.annotation.Title
 
 import java.time.LocalDate
 
 object SureInternationalSchoolOpiskeluoikeus {
   def apply(oo: InternationalSchoolOpiskeluoikeus): Option[SureOpiskeluoikeus] =
     when(isValmistunut(oo)) {
-      SureDefaultOpiskeluoikeus(
+      SureOpiskeluoikeus(
         oo,
         oo.suoritukset.collect {
           case s: DiplomaVuosiluokanSuoritus if s.koulutusmoduuli.tunniste.koodiarvo == "12" => SureDiplomaVuosiluokanSuoritus(s)
@@ -19,27 +19,15 @@ object SureInternationalSchoolOpiskeluoikeus {
     }
 }
 
-case class SureDiplomaVuosiluokanSuoritus(
-  tyyppi: Koodistokoodiviite,
-  alkamispäivä: Option[LocalDate],
-  vahvistuspäivä: Option[LocalDate],
-  koulutusmoduuli: DiplomaLuokkaAste,
-  suorituskieli: Koodistokoodiviite,
-  osasuoritukset: Option[List[SureDiplomaIBOppiaineenSuoritus]],
-) extends SurePäätasonSuoritus
-
 object SureDiplomaVuosiluokanSuoritus {
-  def apply(s: DiplomaVuosiluokanSuoritus): SureDiplomaVuosiluokanSuoritus =
-    SureDiplomaVuosiluokanSuoritus(
-      tyyppi = s.tyyppi,
-      alkamispäivä = s.alkamispäivä,
-      vahvistuspäivä = s.vahvistus.map(_.päivä),
-      koulutusmoduuli = s.koulutusmoduuli,
-      suorituskieli = s.suorituskieli,
+  def apply(s: DiplomaVuosiluokanSuoritus): SurePäätasonSuoritus =
+    SureDefaultPäätasonSuoritus(
+      s,
       osasuoritukset = s.osasuoritukset.map(_.map(SureDiplomaIBOppiaineenSuoritus.apply)),
     )
 }
 
+@Title("International School Diploma-vuosiluokan oppiaineen suoritus")
 case class SureDiplomaIBOppiaineenSuoritus(
   tyyppi: Koodistokoodiviite,
   koulutusmoduuli: Koulutusmoduuli,

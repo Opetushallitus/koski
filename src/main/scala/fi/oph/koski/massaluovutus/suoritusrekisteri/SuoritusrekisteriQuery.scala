@@ -19,6 +19,7 @@ import scala.concurrent.duration.DurationInt
 
 @Title("Suoritusrekisterin kysely")
 @Description("Palauttaa Suoritusrekisteriä varten räätälöidyt tiedot annettujen oppijoiden ja koulutusmuodon mukaisista opiskeluoikeuksista.")
+@Description("Vastauksen skeema on saatavana <a href=\"/koski/json-schema-viewer/?schema=suoritusrekisteri-result.json\">täältä.</a>")
 case class SuoritusrekisteriQuery(
   @EnumValues(Set("sure"))
   `type`: String = "sure",

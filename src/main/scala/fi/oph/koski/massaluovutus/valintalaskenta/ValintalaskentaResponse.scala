@@ -1,10 +1,8 @@
 package fi.oph.koski.massaluovutus.valintalaskenta
 
-import cats.data.NonEmptyList
 import fi.oph.koski.history.JsonPatchException
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.schema._
-import fi.oph.koski.suoritusjako.suoritetuttutkinnot.SuoritetutTutkinnotAmmatillisenTutkinnonOsittainenSuoritus
 import fi.oph.scalaschema.{ClassSchema, SchemaToJson}
 import org.json4s.JValue
 

@@ -1,29 +1,15 @@
 package fi.oph.koski.massaluovutus.suoritusrekisteri.opiskeluoikeus
 
-import fi.oph.koski.massaluovutus.suoritusrekisteri.SureOpiskeluoikeus
-import fi.oph.koski.schema.annotation._
 import fi.oph.koski.schema._
+import fi.oph.koski.schema.annotation._
 import fi.oph.scalaschema.annotation.{Description, OnlyWhen, Title}
 
 import java.time.LocalDate
 
-case class SurePerusopetuksenOpiskeluoikeus(
-  @KoodistoKoodiarvo("perusopetus")
-  tyyppi: Koodistokoodiviite,
-  oid: String,
-  oppilaitos: Option[Oppilaitos],
-  tila: NuortenPerusopetuksenOpiskeluoikeudenTila,
-  suoritukset: List[SureNuortenPerusopetuksenSuoritus],
-  lisätiedot: Option[SureNuortenPerusopetuksenLisätiedot],
-) extends SureOpiskeluoikeus
-
 object SurePerusopetuksenOpiskeluoikeus {
-  def apply(oo: PerusopetuksenOpiskeluoikeus): SurePerusopetuksenOpiskeluoikeus =
-    SurePerusopetuksenOpiskeluoikeus(
-      tyyppi = oo.tyyppi,
-      oid = oo.oid.get,
-      oppilaitos = oo.oppilaitos,
-      tila = oo.tila,
+  def apply(oo: PerusopetuksenOpiskeluoikeus): SureOpiskeluoikeus =
+    SureOpiskeluoikeus(
+      oo = oo,
       suoritukset = oo.suoritukset.flatMap(SureNuortenPerusopetuksenSuoritus.apply),
       lisätiedot = oo.lisätiedot.flatMap(SureNuortenPerusopetuksenLisätiedot.apply),
     )
@@ -47,6 +33,7 @@ object SureNuortenPerusopetuksenSuoritus {
     }
 }
 
+@Title("Nuorten perusopetuksen oppimäärä")
 case class SureNuortenPerusopetuksenOppimäärä(
   tyyppi: Koodistokoodiviite,
   koulutusmoduuli: NuortenPerusopetus,
@@ -64,6 +51,7 @@ object SureNuortenPerusopetuksenOppimäärä {
     )
 }
 
+@Title("Nuorten perusopetuksen yhdeksäs luokka")
 case class SureNuortenPerusopetuksenYhdeksäsLuokka(
   tyyppi: Koodistokoodiviite,
   koulutusmoduuli: PerusopetuksenLuokkaAste,
@@ -85,6 +73,7 @@ object SureNuortenPerusopetuksenYhdeksäsLuokka {
     )
 }
 
+@Title("Nuorten perusopetuksen aineopetus")
 case class SureNuortenPerusopetusAineopetus(
   @Description("Päättötodistukseen liittyvät oppiaineen suoritukset.")
   @Tooltip("Päättötodistukseen liittyvät oppiaineen suoritukset.")
@@ -124,6 +113,7 @@ object SureNuortenPerusopetusAineopetus {
     )
 }
 
+@Title("Nuorten perusopetuksen lisätiedot")
 case class SureNuortenPerusopetuksenLisätiedot(
   @Description("Kotiopetusjaksot huoltajan päätöksestä alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole kotiopetuksessa. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Kotiopetusjaksot huoltajan päätöksestä alkamis- ja päättymispäivineen. Rahoituksen laskennassa käytettävä tieto.")
@@ -133,7 +123,7 @@ case class SureNuortenPerusopetuksenLisätiedot(
   @Tooltip("Mahdollisen erityisen tuen päätösten alkamis- ja päättymispäivät. Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
   @OksaUri("tmpOKSAID281", "henkilökohtainen opetuksen järjestämistä koskeva suunnitelma")
   erityisenTuenPäätökset: Option[List[ErityisenTuenPäätös]] = None,
-)
+) extends SureOpiskeluoikeudenLisätiedot
 
 object SureNuortenPerusopetuksenLisätiedot {
   def apply(lt: PerusopetuksenOpiskeluoikeudenLisätiedot): Option[SureNuortenPerusopetuksenLisätiedot] =
