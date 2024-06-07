@@ -175,7 +175,8 @@ class KoskiOppijaFacade(
   def createOrUpdate(
     oppija: Oppija,
     allowUpdate: Boolean,
-    allowDeleteCompleted: Boolean = false
+    allowDeleteCompleted: Boolean = false,
+    skipGlobaaliValidation: Boolean = false,
   )(implicit user: KoskiSpecificSession): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = {
     val timedBlockname = s"createOrUpdate ${oppija.opiskeluoikeudet.map(_.tyyppi.koodiarvo).mkString(",")}"
     timed(timedBlockname) {
@@ -191,6 +192,7 @@ class KoskiOppijaFacade(
       }
 
       val globaaliValidatorCheck = oppijaOid.map(_.verified).flatMap {
+        case _ if skipGlobaaliValidation => Right(Unit)
         case Some(henkilö) =>
           val henkilöMaster = henkilöRepository.findByOid(henkilö.oid, findMasterIfSlaveOid = true)
           val validation = HttpStatus.fold(oppija.tallennettavatOpiskeluoikeudet.map(opiskeluoikeus => {
@@ -270,7 +272,7 @@ class KoskiOppijaFacade(
     invalidate(
       opiskeluoikeusOid,
       cancelPäätasonSuoritus(opiskeluoikeusOid, päätasonSuoritus, versionumero),
-      oppija => createOrUpdate(oppija, allowUpdate = true, allowDeleteCompleted = true)
+      oppija => createOrUpdate(oppija, allowUpdate = true, allowDeleteCompleted = true, skipGlobaaliValidation = true)
     )
 
   private def createOrUpdateOpiskeluoikeus(
