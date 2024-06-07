@@ -5,8 +5,8 @@ import fi.oph.koski.config.Environment
 import fi.oph.koski.http.{Http, OpintopolkuCallerId}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.userdirectory.Password
-import fi.vm.sade.utils.cas.CasClient.Username
-import fi.vm.sade.utils.cas.{CasAuthenticationException, CasClient, CasUser}
+import fi.oph.koski.cas.CasClient.Username
+import fi.oph.koski.cas.{CasAuthenticationException, CasClient, CasUser}
 
 import scala.concurrent.duration.DurationInt
 

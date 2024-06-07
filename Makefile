@@ -90,7 +90,7 @@ backtest:
 	fi.oph.koski.cache,fi.oph.koski.editor,fi.oph.koski.environment,\
 	fi.oph.koski.etk,fi.oph.koski.henkilo,fi.oph.koski.http,\
 	fi.oph.koski.integrationtest,fi.oph.koski.json,fi.oph.koski.kela,fi.oph.koski.koodisto,\
-	fi.oph.koski.koskiuser,fi.oph.koski.localization,fi.oph.koski.log,\
+	fi.oph.koski.koskiuser,fi.oph.koski.localization,fi.oph.koski.cas,fi.oph.koski.casintegration,fi.oph.koski.log,\
 	fi.oph.koski.luovutuspalvelu,fi.oph.koski.migration,fi.oph.koski.migri,\
 	fi.oph.koski.mocha,fi.oph.koski.mydata,fi.oph.koski.omaopintopolkuloki,\
 	fi.oph.koski.opiskeluoikeus,fi.oph.koski.oppilaitos,fi.oph.koski.oppivelvollisuustieto,\

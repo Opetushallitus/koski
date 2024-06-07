@@ -7,7 +7,7 @@ import fi.oph.koski.json.JsonSerializer.writeWithRoot
 import fi.oph.koski.koskiuser.{AuthenticationUser, DirectoryClientLogin, KoskiSpecificAuthenticationSupport, UserLanguage}
 import fi.oph.koski.log.LogUserContext
 import fi.oph.koski.servlet.{NoCache, VirkailijaHtmlServlet}
-import fi.vm.sade.utils.cas.CasLogout
+import fi.oph.koski.cas.CasLogout
 import org.scalatra.{Cookie, CookieOptions}
 
 import java.net.URLEncoder.encode
