@@ -36,6 +36,7 @@ case class SuoritusrekisteriQuery(
           val ooTyyppi = response.opiskeluoikeus.tyyppi.koodiarvo
           val ptsTyyppi = response.opiskeluoikeus.suoritukset.map(_.tyyppi.koodiarvo).mkString("-")
           writer.putJson(s"$ooTyyppi-$ptsTyyppi-${response.opiskeluoikeus.oid}", response)
+          auditLog(response.oppijaOid, response.opiskeluoikeus.oid)
         case None =>
           writer.skipFile()
       }
@@ -78,6 +79,18 @@ case class SuoritusrekisteriQuery(
     }
   }
 
+  private def auditLog(oppijaOid: String, opiskeluoikeusOid: String)(implicit user: KoskiSpecificSession): Unit =
+    AuditLog
+      .log(
+        KoskiAuditLogMessage(
+          KoskiOperation.SUORITUSREKISTERI_OPISKELUOIKEUS_HAKU,
+          user,
+          Map(
+            KoskiAuditLogMessageField.oppijaHenkiloOid -> oppijaOid,
+            KoskiAuditLogMessageField.opiskeluoikeusOid -> opiskeluoikeusOid,
+          )
+        )
+      )
 }
 
 object SuoritusrekisteriQuery {
