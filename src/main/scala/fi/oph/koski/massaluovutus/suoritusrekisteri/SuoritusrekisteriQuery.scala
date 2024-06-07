@@ -15,6 +15,7 @@ import fi.oph.scalaschema.annotation.{Description, Title}
 
 import java.sql.Timestamp
 import java.time.LocalDateTime
+import scala.concurrent.duration.DurationInt
 
 @Title("Suoritusrekisterin kysely")
 @Description("Palauttaa Suoritusrekisteriä varten räätälöidyt tiedot annettujen oppijoiden ja koulutusmuodon mukaisista opiskeluoikeuksista.")
@@ -28,17 +29,20 @@ case class SuoritusrekisteriQuery(
   override def priority: Int = MassaluovutusQueryPriority.high
 
   override def run(application: KoskiApplication, writer: QueryResultWriter)(implicit user: KoskiSpecificSession): Either[String, Unit] = {
-    val opiskeluoikeudet = muuttuneetOpiskeluoikeudet(application.replicaDatabase.db)
+    val opiskeluoikeudet = muuttuneetOpiskeluoikeudet(application.masterDatabase.db)
     writer.predictFileCount(opiskeluoikeudet.size)
-    opiskeluoikeudet.foreach { oid =>
-      getOpiskeluoikeus(application, oid) match {
-        case Some(response) =>
-          val ooTyyppi = response.opiskeluoikeus.tyyppi.koodiarvo
-          val ptsTyyppi = response.opiskeluoikeus.suoritukset.map(_.tyyppi.koodiarvo).mkString("-")
-          writer.putJson(s"$ooTyyppi-$ptsTyyppi-${response.opiskeluoikeus.oid}", response)
-          auditLog(response.oppijaOid, response.opiskeluoikeus.oid)
-        case None =>
-          writer.skipFile()
+    opiskeluoikeudet.grouped(100).foreach { groupedOpiskeluoikeudet =>
+      val db = selectDbByLag(application, groupedOpiskeluoikeudet.head._2)
+      groupedOpiskeluoikeudet.foreach { case (oid, _) =>
+        getOpiskeluoikeus(application, db, oid) match {
+          case Some(response) =>
+            val ooTyyppi = response.opiskeluoikeus.tyyppi.koodiarvo
+            val ptsTyyppi = response.opiskeluoikeus.suoritukset.map(_.tyyppi.koodiarvo).mkString("-")
+            writer.putJson(s"$ooTyyppi-$ptsTyyppi-${response.opiskeluoikeus.oid}", response)
+            auditLog(response.oppijaOid, response.opiskeluoikeus.oid)
+          case None =>
+            writer.skipFile()
+        }
       }
     }
     Right(())
@@ -48,25 +52,38 @@ case class SuoritusrekisteriQuery(
     user.hasRole(OPHKATSELIJA) || user.hasRole(OPHPAAKAYTTAJA)
 
 
-  private def muuttuneetOpiskeluoikeudet(db: DB): Seq[Int] =
+  private def muuttuneetOpiskeluoikeudet(db: DB): Seq[(Int, Timestamp)] =
     QueryMethods.runDbSync(
       db,
       sql"""
-        SELECT id
+        SELECT id, aikaleima
         FROM opiskeluoikeus
         WHERE aikaleima >= ${Timestamp.valueOf(muuttuneetJälkeen)}
           AND koulutusmuoto = any(${SuoritusrekisteriQuery.opiskeluoikeudenTyypit})
-      """.as[Int])
+        ORDER BY aikaleima
+      """.as[(Int, Timestamp)])
 
-  private def getOpiskeluoikeus(application: KoskiApplication, id: Int): Option[SureResponse] =
+  private def getOpiskeluoikeus(application: KoskiApplication, db: DB, id: Int): Option[SureResponse] =
     QueryMethods.runDbSync(
-      application.replicaDatabase.db,
+      db,
       sql"""
          SELECT *
          FROM opiskeluoikeus
          WHERE id = $id
       """.as[KoskiOpiskeluoikeusRow]
     ).headOption.flatMap(toResponse(application))
+
+  private def selectDbByLag(application: KoskiApplication, opiskeluoikeusAikaleima: Timestamp): DB = {
+    val safetyLimit = 15.seconds
+    val replicaLag = application.replicaDatabase.replayLag
+    val totalLagSeconds = safetyLimit.toSeconds + replicaLag.toSeconds
+    if (opiskeluoikeusAikaleima.toLocalDateTime.plusSeconds(totalLagSeconds).isAfter(LocalDateTime.now())) {
+      logger.warn(s"Using master database for query due to replica lag of $replicaLag")
+      application.masterDatabase.db
+    } else {
+      application.replicaDatabase.db
+    }
+  }
 
   private def toResponse(application: KoskiApplication)(row: KoskiOpiskeluoikeusRow): Option[SureResponse] = {
     val json = KoskiTables.KoskiOpiskeluoikeusTable.readAsJValue(row.data, row.oid, row.versionumero, row.aikaleima)
