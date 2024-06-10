@@ -87,7 +87,7 @@ object JotpaValidation {
 
   def validateJotpaAsianumero(oo: KoskeenTallennettavaOpiskeluoikeus, jotpaAsianumeroVaatimusAlkaa: LocalDate): HttpStatus = {
     val jotpaAsianumeroVaatimusVoimassa = LocalDate.now().isAfter(jotpaAsianumeroVaatimusAlkaa)
-
+    val käyttöliittymästä = oo.lähdejärjestelmänId.isEmpty
     val jotpaRahoitteinen = oo.tila.opiskeluoikeusjaksot.flatMap(rahoitusmuoto).exists(JOTPARAHOITUS_KOODIARVOT.contains)
     val asianumeroOlemassa = oo match {
       case a: AmmatillinenOpiskeluoikeus => a.lisätiedot.exists(_.jotpaAsianumero.isDefined)
@@ -96,7 +96,7 @@ object JotpaValidation {
       case _ => false
     }
     if (jotpaRahoitteinen) {
-      if (jotpaAsianumeroVaatimusVoimassa) {
+      if (käyttöliittymästä || jotpaAsianumeroVaatimusVoimassa) {
         HttpStatus.validate(asianumeroOlemassa)(KoskiErrorCategory.badRequest.validation.tila.vaatiiJotpaAsianumeron())
       } else {
         HttpStatus.ok

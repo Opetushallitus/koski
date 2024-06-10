@@ -4,7 +4,7 @@ import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.documentation.AmmattitutkintoExample
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeudenTila, AmmatillinenOpiskeluoikeus, AmmatillinenOpiskeluoikeusjakso, AmmatillisenOpiskeluoikeudenLisätiedot, Koodistokoodiviite, KoskeenTallennettavaOpiskeluoikeus}
+import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeudenTila, AmmatillinenOpiskeluoikeus, AmmatillinenOpiskeluoikeusjakso, AmmatillisenOpiskeluoikeudenLisätiedot, Koodistokoodiviite, LähdejärjestelmäId}
 import fi.oph.koski.validation.JotpaValidation
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
@@ -51,24 +51,50 @@ class JotpaValidationSpec extends AnyFreeSpec with Matchers {
   }
 
   "JOTPA asianumero" - {
-    val config = KoskiApplicationForTests.config.withValue("validaatiot.jatkuvaanOppimiseenSuunnatutKoulutusmuodotAstuvatVoimaan", fromAnyRef("2000-01-01"))
-    val configEiVoimassa = config.withValue("validaatiot.jotpaAsianumeroVaatimusAlkaa", fromAnyRef("2999-01-01"))
+    val configVoimassa = KoskiApplicationForTests.config.withValue("validaatiot.jatkuvaanOppimiseenSuunnatutKoulutusmuodotAstuvatVoimaan", fromAnyRef("2000-01-01"))
+    val configEiVoimassa = configVoimassa.withValue("validaatiot.jotpaAsianumeroVaatimusAlkaa", fromAnyRef("2999-01-01"))
 
-    "JOTPA-rahotteinen opiskeluoikeus vaatii JOTPA asianumeron kun validaatio on voimassa" in {
-      val opiskeluoikeus = getOpiskeluoikeus(List(jatkuvanOppimisenRahoitus)).copy(lisätiedot = None)
-      JotpaValidation.validateOpiskeluoikeus(opiskeluoikeus, config) should equal(
+    "Lähdejärjestelmästä tuleva JOTPA-rahoitteinen opiskeluoikeus vaatii JOTPA asianumeron kun validaatio on voimassa" in {
+      val opiskeluoikeus = getOpiskeluoikeus(List(jatkuvanOppimisenRahoitus)).copy(
+        lisätiedot = None,
+        lähdejärjestelmänId = Some(LähdejärjestelmäId(Some("12345"), Koodistokoodiviite("primus", "lahdejarjestelma")))
+      )
+      JotpaValidation.validateOpiskeluoikeus(opiskeluoikeus, configVoimassa) should equal(
         KoskiErrorCategory.badRequest.validation.tila.vaatiiJotpaAsianumeron()
       )
     }
 
-    "JOTPA-rahotteinen opiskeluoikeus ei vaadi JOTPA asianumeroa ennen kuin validaatio on voimassa" in {
-      val opiskeluoikeus = getOpiskeluoikeus(List(jatkuvanOppimisenRahoitus)).copy(lisätiedot = None)
-      JotpaValidation.validateOpiskeluoikeus(opiskeluoikeus, configEiVoimassa) should equal(HttpStatus.ok)
+    "Lähdejärjestelmästä tuleva JOTPA-rahoitteinen opiskeluoikeus ei vaadi JOTPA asianumeroa ennen kuin validaatio on voimassa" in {
+      val opiskeluoikeus = getOpiskeluoikeus(List(jatkuvanOppimisenRahoitus)).copy(
+        lisätiedot = None,
+        lähdejärjestelmänId = Some(LähdejärjestelmäId(Some("12345"), Koodistokoodiviite("primus", "lahdejarjestelma")))
+      )
+      JotpaValidation.validateOpiskeluoikeus(opiskeluoikeus, configEiVoimassa) should equal(
+        HttpStatus.ok
+      )
     }
 
-    "Ei-JOTPA-rahotteinen opiskeluoikeus ei saa sisältää JOTPA asianumeroa" in {
+    "Käyttöliittymästä tuleva JOTPA-rahoitteinen opiskeluoikeus vaatii JOTPA asianumeron kun validaatio on voimassa" in {
+      val opiskeluoikeus = getOpiskeluoikeus(List(jatkuvanOppimisenRahoitus)).copy(
+        lisätiedot = None,
+        lähdejärjestelmänId = None
+      )
+      JotpaValidation.validateOpiskeluoikeus(opiskeluoikeus, configVoimassa) should equal(
+        KoskiErrorCategory.badRequest.validation.tila.vaatiiJotpaAsianumeron())
+    }
+
+    "Käyttöliittymästä tuleva JOTPA-rahoitteinen opiskeluoikeus vaatii JOTPA asianumeron ennen kuin validaatio on voimassa" in {
+      val opiskeluoikeus = getOpiskeluoikeus(List(jatkuvanOppimisenRahoitus)).copy(
+        lisätiedot = None,
+        lähdejärjestelmänId = None
+      )
+      JotpaValidation.validateOpiskeluoikeus(opiskeluoikeus, configEiVoimassa) should equal(
+        KoskiErrorCategory.badRequest.validation.tila.vaatiiJotpaAsianumeron())
+    }
+
+    "Ei-JOTPA-rahoitteinen opiskeluoikeus ei saa sisältää JOTPA asianumeroa" in {
       val opiskeluoikeus = getOpiskeluoikeus(List(valtionosuusRahoitteinen))
-      JotpaValidation.validateOpiskeluoikeus(opiskeluoikeus, config) should equal(
+      JotpaValidation.validateOpiskeluoikeus(opiskeluoikeus, configVoimassa) should equal(
         KoskiErrorCategory.badRequest.validation.tila.jotpaAsianumeroAnnettuVaikkeiJotpaRahoitteinen()
       )
     }
@@ -79,7 +105,6 @@ class JotpaValidationSpec extends AnyFreeSpec with Matchers {
         KoskiErrorCategory.badRequest.validation.tila.jotpaAsianumeroAnnettuVaikkeiJotpaRahoitteinen()
       )
     }
-
   }
 
   def getOpiskeluoikeus(rahoitukset: List[Koodistokoodiviite]): AmmatillinenOpiskeluoikeus = {
