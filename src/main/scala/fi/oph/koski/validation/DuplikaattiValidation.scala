@@ -109,23 +109,23 @@ object DuplikaattiValidation extends Logging {
       def getSuoritetutLuokkaAsteet(oo: Opiskeluoikeus): List[String] = getVuosiluokat(oo).filterNot(_.kesken).map(getLuokkaAste)
       def getKeskeneräisetLuokkaAsteet(oo: Opiskeluoikeus): List[String] = getVuosiluokat(oo).filter(_.kesken).map(getLuokkaAste)
 
-      val aiemminTallennetutKeskeneräisetLuokkaAsteet =
-        aiemminTallennettuOpiskeluoikeus
-          .toOption.flatten.toList
-          .flatMap(getKeskeneräisetLuokkaAsteet)
+      aiemminTallennettuOpiskeluoikeus match {
+        case Right(Some(aiempi)) if aiempi.oid == opiskeluoikeus.oid =>
+          val aiemminTallennetutKeskeneräisetLuokkaAsteet = getKeskeneräisetLuokkaAsteet(aiempi)
+          val uudetkeskeneräisetLuokkaAsteet = getKeskeneräisetLuokkaAsteet(opiskeluoikeus)
+          val suoritetutLuokkaAsteet = getSuoritetutLuokkaAsteet(opiskeluoikeus)
 
-      val uudetkeskeneräisetLuokkaAsteet = getKeskeneräisetLuokkaAsteet(opiskeluoikeus)
-      val suoritetutLuokkaAsteet = getSuoritetutLuokkaAsteet(opiskeluoikeus)
+          val keskentilaisetVuosiluokanSuoritukset =
+            (aiemminTallennetutKeskeneräisetLuokkaAsteet.diff(suoritetutLuokkaAsteet) ++ uudetkeskeneräisetLuokkaAsteet).distinct
 
-      val keskentilaisetVuosiluokanSuoritukset =
-        (aiemminTallennetutKeskeneräisetLuokkaAsteet.diff(suoritetutLuokkaAsteet) ++ uudetkeskeneräisetLuokkaAsteet).distinct
-
-      if (keskentilaisetVuosiluokanSuoritukset.size > 1) {
-        val luokat = keskentilaisetVuosiluokanSuoritukset.mkString(" ja ")
-        val message = s"Nuorten perusopetuksen opiskeluoikeudessa ei saa olla kuin enintään yksi kesken-tilainen vuosiluokan suoritus. Siirron jälkeen kesken olisivat perusopetuksen luokka-asteet $luokat."
-        Left(KoskiErrorCategory.badRequest.validation.tila.useitaKeskeneräisiäVuosiluokanSuoritukia(message))
-      } else {
-        Right(None)
+          if (keskentilaisetVuosiluokanSuoritukset.size > 1) {
+            val luokat = keskentilaisetVuosiluokanSuoritukset.mkString(" ja ")
+            val message = s"Nuorten perusopetuksen opiskeluoikeudessa ei saa olla kuin enintään yksi kesken-tilainen vuosiluokan suoritus. Siirron jälkeen kesken olisivat perusopetuksen luokka-asteet $luokat."
+            Left(KoskiErrorCategory.badRequest.validation.tila.useitaKeskeneräisiäVuosiluokanSuoritukia(message))
+          } else {
+            Right(None)
+          }
+        case _ => Right(None)
       }
     }
 
