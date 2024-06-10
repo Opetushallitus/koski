@@ -8,17 +8,19 @@ import fi.oph.koski.koskiuser.{KoskiSpecificSession, MockUsers, UserWithPassword
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.massaluovutus.organisaationopiskeluoikeudet.{MassaluovutusQueryOrganisaationOpiskeluoikeudet, MassaluovutusQueryOrganisaationOpiskeluoikeudetCsv, MassaluovutusQueryOrganisaationOpiskeluoikeudetJson, QueryOrganisaationOpiskeluoikeudetCsvDocumentation}
 import fi.oph.koski.massaluovutus.paallekkaisetopiskeluoikeudet.MassaluovutusQueryPaallekkaisetOpiskeluoikeudet
+import fi.oph.koski.massaluovutus.suoritusrekisteri.SuoritusrekisteriQuery
 import fi.oph.koski.massaluovutus.valintalaskenta.ValintalaskentaQuery
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportit.RaportitService
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.util.Wait
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
-import org.json4s.JInt
+import fi.oph.scalaschema.Serializer.format
 import org.json4s.jackson.JsonMethods
-import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
+import org.json4s.{JArray, JInt, JNothing, JValue}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
+import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 
 import java.net.URL
 import java.sql.Timestamp
@@ -291,7 +293,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
   }
 
   "Valintalaskenta" - {
-    val user = MockUsers.paakayttaja // TODO: Vaihda sopiva palvelukäyttäjä
+    val user = MockUsers.paakayttaja
     val ammattikoululainen = "1.2.246.562.24.00000000001"
     val olematon = "1.2.246.562.25.1010101010101"
 
@@ -376,6 +378,177 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
     }
   }
 
+  "Sure" - {
+    val user = MockUsers.paakayttaja
+
+    def getQuery(muuttuneetJälkeen: LocalDateTime) = SuoritusrekisteriQuery(
+      muuttuneetJälkeen = muuttuneetJälkeen
+    )
+
+    "Käyttöoikeudet ja logitus" - {
+      val query = getQuery(LocalDateTime.now().plusHours(1))
+
+      "Kyselyä voi käyttää pääkäyttäjänä" in {
+        addQuerySuccessfully(query, MockUsers.paakayttaja) {
+          _.status should equal(QueryState.pending)
+        }
+      }
+
+      "Kyselyä voi käyttää oph-palvelukäyttäjänä" in {
+        addQuerySuccessfully(query, MockUsers.ophkatselija) {
+          _.status should equal(QueryState.pending)
+        }
+      }
+
+      "Kyselyä ei voi käyttää muuna palvelukäyttäjänä" in {
+        addQuery(query, MockUsers.omniaPalvelukäyttäjä) {
+          verifyResponseStatus(403, KoskiErrorCategory.forbidden())
+        }
+      }
+
+      "Kyselystä jää audit log -merkinnät" in {
+        AuditLogTester.clearMessages()
+        val queryId = addQuerySuccessfully(getQuery(LocalDateTime.now().minusHours(1)), user) { response =>
+          response.status should equal(QueryState.pending)
+          response.queryId
+        }
+        val complete = waitForCompletion(queryId, user)
+
+        val (oppijaOid, opiskeluoikeusOid) = verifyResultAndContent(complete.files.last, user) {
+          val json = JsonMethods.parse(response.body)
+          (
+            (json \ "oppijaOid").extract[String],
+            (json \ "opiskeluoikeus" \ "oid").extract[String],
+          )
+        }
+
+        AuditLogTester.verifyAuditLogMessage(Map(
+          "operation" -> "SUORITUSREKISTERI_OPISKELUOIKEUS_HAKU",
+          "target" -> Map(
+            "oppijaHenkiloOid" -> oppijaOid,
+            "opiskeluoikeusOid" -> opiskeluoikeusOid,
+          ),
+        ))
+
+      }
+    }
+
+    "Palautuneen datan filtteröinti" - {
+      val query = getQuery(LocalDateTime.now().minusHours(1))
+      val queryId = addQuerySuccessfully(query, user) { response =>
+        response.status should equal(QueryState.pending)
+        response.queryId
+      }
+      val complete = waitForCompletion(queryId, user)
+
+      val jsonFiles = complete.files.map { file =>
+        verifyResultAndContent(file, user) {
+          JsonMethods.parse(response.body)
+        }
+      }
+
+      def getOpiskeluoikeudet(tyyppi: Option[String] = None): List[JValue] = {
+        val oos = jsonFiles.map(_ \ "opiskeluoikeus")
+        tyyppi match {
+          case Some(t) => oos.filter(oo => (oo \ "tyyppi" \ "koodiarvo").extract[String] == t)
+          case None => oos
+        }
+      }
+
+      def getSuoritukset(ooTyyppi: Option[String] = None): List[JValue] =
+        getOpiskeluoikeudet(ooTyyppi)
+          .map(_ \ "suoritukset")
+          .collect { case JArray(list) => list }
+          .flatten
+
+      def extractStrings(values: List[JValue], path: JValue => JValue): List[String] =
+        values
+          .map(path(_).extract[String])
+          .distinct
+          .sorted
+
+      def tyyppi(v: JValue) = v \ "tyyppi" \ "koodiarvo"
+      def suorituksenTunniste(v: JValue) = v \ "koulutusmoduuli" \ "tunniste" \ "koodiarvo"
+      def viimeisinTila(v: JValue) = v \ "tila" \ "opiskeluoikeusjaksot" \ "tila" \ "koodiarvo" match {
+        case JArray(list) => list.last
+        case _ => JNothing
+      }
+
+      "Sisältää kaikkia tuettuja suoritustyyppejä" in {
+        extractStrings(
+          getSuoritukset(),
+          tyyppi
+        ) should equal(List(
+          "aikuistenperusopetuksenoppimaara",
+          "ammatillinentutkinto",
+          "diatutkintovaihe",
+          "ebtutkinto",
+          "ibtutkinto",
+          "internationalschooldiplomavuosiluokka",
+          "nuortenperusopetuksenoppiaineenoppimaara",
+          "perusopetuksenoppiaineenoppimaara",
+          "perusopetuksenoppimaara",
+          "perusopetuksenvuosiluokka",
+          "telma",
+          "tuvakoulutuksensuoritus",
+          "vstjotpakoulutus",
+          "vstlukutaitokoulutus",
+          "vstmaahanmuuttajienkotoutumiskoulutus",
+          "vstoppivelvollisillesuunnattukoulutus",
+          "vstosaamismerkki",
+          "vstvapaatavoitteinenkoulutus",
+        ))
+      }
+
+      "Nuorten perusopetuksesta palautetaan vain perusopetuksen päättötodistus" in {
+        extractStrings(
+          getSuoritukset(Some("perusopetus")).filterNot(s => tyyppi(s).extract[String] == "nuortenperusopetuksenoppiaineenoppimaara"),
+          suorituksenTunniste
+        ) should equal(List(
+          "201101", // Oppimäärän suoritus
+          "9", // Ysiluokka
+        ))
+      }
+
+      "Ammatillisesta koulutuksesta ei palautetaan vain kokonainen ammatillinen tutkinto ja telma" in {
+        extractStrings(
+          getSuoritukset(Some("ammatillinenkoulutus")),
+          tyyppi
+        ) should equal(List(
+          "ammatillinentutkinto",
+          "telma"
+        ))
+      }
+
+      "DIA-tutkinnoista palautetaan vain valmistuneet tutkinnot" in {
+        extractStrings(
+          getOpiskeluoikeudet(Some("diatutkinto")),
+          viimeisinTila
+        ) should equal(List(
+          "valmistunut"
+        ))
+      }
+
+      "EB-tutkinnoista palautetaan vain valmistuneet tutkinnot" in {
+        extractStrings(
+          getOpiskeluoikeudet(Some("ebtutkinto")),
+          viimeisinTila
+        ) should equal(List(
+          "valmistunut"
+        ))
+      }
+
+      "IB-tutkinnoista palautetaan vain valmistuneet tutkinnot" in {
+        extractStrings(
+          getOpiskeluoikeudet(Some("ibtutkinto")),
+          viimeisinTila
+        ) should equal(List(
+          "valmistunut"
+        ))
+     }
+    }
+  }
+
   def addQuery[T](query: MassaluovutusQueryParameters, user: UserWithPassword)(f: => T): T =
     post("api/massaluovutus", JsonSerializer.writeWithRoot(query), headers = authHeaders(user) ++ jsonContent)(f)
 
@@ -404,7 +577,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
       verifyResponseStatus(302) // 302: Found (redirect)
     }
 
-  def verifyResultAndContent(url: String, user: UserWithPassword)(f: => Unit): Unit = {
+  def verifyResultAndContent[T](url: String, user: UserWithPassword)(f: => T): T = {
     val location = new URL(getResult(url, user) {
       verifyResponseStatus(302) // 302: Found (redirect)
       response.header("Location")
