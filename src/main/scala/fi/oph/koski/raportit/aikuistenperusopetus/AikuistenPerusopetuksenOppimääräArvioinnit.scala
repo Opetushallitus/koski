@@ -56,9 +56,27 @@ case class AikuistenPerusopetuksenOppimääräArvioinnit(db: DB) extends QueryMe
         r_osasuoritus.arviointi_paiva, -- arviointipaiva
         r_osasuoritus.arviointi_arvosana_koodiarvo, -- arvosana
         r_osasuoritus.ensimmainen_arviointi_paiva, -- ensimmäinen arviointi vai ei
-        false,
-        false,
-        array_length(r_osasuoritus.arviointi_paivat, 1) as arviointipaivienlkm -- useampi kuin yksi arviointi vai ei,
+        CASE
+          WHEN EXISTS (
+            SELECT 1
+            FROM (
+                SELECT
+                    elem ->> 'arvosana' AS arvosana
+                FROM
+                    jsonb_array_elements(r_osasuoritus.arvioinnit) AS elem
+                WHERE
+                    (elem ->> 'date')::date < r_osasuoritus.arviointi_paiva::date
+                ORDER BY
+                    (elem ->> 'date')::date DESC
+                LIMIT 1
+            ) subquery
+            WHERE
+              arvosana = '4'
+          ) THEN true
+          ELSE false
+        END AS hylatyn_korotus, -- hylätyn korotus
+        false, -- hyväksytyn korotus
+        array_length(r_osasuoritus.arviointi_paivat, 1) as arviointipaivienlkm
       from r_opiskeluoikeus
         join r_paatason_suoritus on r_opiskeluoikeus.opiskeluoikeus_oid = r_paatason_suoritus.opiskeluoikeus_oid
           and r_opiskeluoikeus.sisaltyy_opiskeluoikeuteen_oid is null

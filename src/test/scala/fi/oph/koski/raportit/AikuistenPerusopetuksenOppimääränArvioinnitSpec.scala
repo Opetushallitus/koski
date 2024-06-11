@@ -6,14 +6,11 @@ import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus._
 import fi.oph.koski.documentation.{ExamplesAikuistenPerusopetus, PerusopetusExampleData}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.tyhjä
 import fi.oph.koski.koskiuser.KoskiMockUser
-import fi.oph.koski.koskiuser.MockUsers.paakayttaja
 import fi.oph.koski.localization.LocalizationReader
-import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.organisaatio.MockOrganisaatiot.jyväskylänNormaalikoulu
-import fi.oph.koski.raportit.aikuistenperusopetus.{AikuistenPerusopetuksenOppimääräArvioinnit, AikuistenPerusopetuksenOppimääränArvioinnitRow, AikuistenPerusopetuksenOppimääränKurssikertymät, AikuistenPerusopetuksenOppimääränKurssikertymätRow}
+import fi.oph.koski.raportit.aikuistenperusopetus.{AikuistenPerusopetuksenOppimääräArvioinnit, AikuistenPerusopetuksenOppimääränArvioinnitRow}
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
-import fi.oph.koski.schema.Organisaatio.Oid
 import fi.oph.koski.schema._
 import fi.oph.koski.{DirtiesFixtures, KoskiApplicationForTests}
 import org.scalatest.BeforeAndAfterAll
@@ -22,7 +19,6 @@ import org.scalatest.matchers.should.Matchers
 
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
-import scala.{List, Seq}
 
 class AikuistenPerusopetuksenOppimääränArvioinnitSpec
   extends AnyFreeSpec
@@ -41,6 +37,34 @@ class AikuistenPerusopetuksenOppimääränArvioinnitSpec
   private lazy val raporttiRows = raportti.rows.map(_.asInstanceOf[AikuistenPerusopetuksenOppimääränArvioinnitRow])
 
   override protected def alterFixture(): Unit = {
+    val oo  = ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen.copy(
+      tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(
+        List(
+          AikuistenPerusopetuksenOpiskeluoikeusjakso(aikaisintaan.minusYears(1), opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
+        )
+      ),
+      suoritukset = List(
+        aikuistenPerusopetuksenAlkuvaiheenSuoritus.copy(
+          osasuoritukset = Some(List(
+            alkuvaiheenOppiaineenSuoritus(AikuistenPerusopetuksenAlkuvaiheenÄidinkieliJaKirjallisuus(kieli = Koodistokoodiviite(koodiarvo = "AI1", koodistoUri = "oppiaineaidinkielijakirjallisuus"))).copy(
+              arviointi = PerusopetusExampleData.arviointi(9, Some(viimeistaan.plusMonths(2))),
+              osasuoritukset = Some(List(
+                alkuvaiheenKurssinSuoritus("AÄI1").copy(arviointi = Some(List(
+                  PerusopetuksenOppiaineenArviointi(4, Some(aikaisintaan)),
+                  PerusopetuksenOppiaineenArviointi(9, Some(viimeistaan.minusMonths(1))),
+                  PerusopetuksenOppiaineenArviointi(8, Some(viimeistaan.plusMonths(1))),
+                ))),
+              ))
+            )
+          ))
+        )
+      )
+    )
+
+    putOpiskeluoikeus(oo, tyhjä.copy(hetu = "010106A8691")) {
+      verifyResponseStatusOk()
+    }
+
     reloadRaportointikanta
   }
 
@@ -81,6 +105,13 @@ class AikuistenPerusopetuksenOppimääränArvioinnitSpec
         "hyvaksytynKorotus",
         "arviointienlkm"
       ))
+    }
+
+    "Raportin rivit" in {
+      val rs = raportti.rows.map(_.asInstanceOf[AikuistenPerusopetuksenOppimääränArvioinnitRow])
+      val hylatynKorotus = rs.find(p => p.hylatynKorotus.contains(true))
+      hylatynKorotus.isDefined should be (true)
+      hylatynKorotus.get.arviointienlkm should be(3)
     }
   }
 

@@ -6,7 +6,6 @@ import java.time.temporal.ChronoUnit
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.henkilo.Kotikuntahistoria
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.raportit.{YleissivistäväRaporttiKurssi, YleissivistäväRaporttiOppiaine, YleissivistäväRaporttiOppiaineTaiKurssi}
 import fi.oph.koski.schema.LocalizedString
 import org.json4s.JValue
@@ -274,6 +273,7 @@ object RaportointiDatabaseSchema {
     val arviointiHyväksytty = column[Option[Boolean]]("arviointi_hyvaksytty")
     val arviointiPäivä = column[Option[Date]]("arviointi_paiva")
     val arviointiPäivät = column[Option[List[Date]]]("arviointi_paivat")
+    val arvioinnit = column[JValue]("arvioinnit")
     val ensimmäinenArviointiPäivä  = column[Option[Date]]("ensimmainen_arviointi_paiva")
     val korotettuEriVuonna  = column[Boolean]("korotettu_eri_vuonna")
     val näytönArviointiPäivä = column[Option[Date]]("nayton_arviointi_paiva")
@@ -303,6 +303,7 @@ object RaportointiDatabaseSchema {
       arviointiHyväksytty ::
       arviointiPäivä ::
       arviointiPäivät ::
+      arvioinnit ::
       ensimmäinenArviointiPäivä ::
       korotettuEriVuonna ::
       näytönArviointiPäivä ::
@@ -803,6 +804,7 @@ case class ROsasuoritusRow(
   arviointiHyväksytty: Option[Boolean],
   arviointiPäivä: Option[Date],
   arviointiPäivät: Option[List[Date]],
+  arvioinnit: JValue,
   ensimmäinenArviointiPäivä: Option[Date],
   korotettuEriVuonna: Boolean,
   näytönArviointiPäivä: Option[Date],
