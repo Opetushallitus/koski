@@ -44,6 +44,7 @@ case class ValintalaskentaQuery(
   override def priority: Int = MassaluovutusQueryPriority.highest
 
   override def run(application: KoskiApplication, writer: QueryResultWriter)(implicit user: KoskiSpecificSession): Either[String, Unit] = {
+    writer.predictFileCount(oppijaOids.size)
     oppijaOids.foreach { oid =>
       val results = getOpiskeluoikeudet(application, oid)
       if (results.nonEmpty) {
@@ -53,6 +54,8 @@ case class ValintalaskentaQuery(
         if (opiskeluoikeudet.nonEmpty) {
           auditLog(oid)
         }
+      } else {
+        writer.skipFile()
       }
     }
     Right(())

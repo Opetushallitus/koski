@@ -14,7 +14,7 @@ import fi.oph.scalaschema.annotation.{Description, Title}
 import org.json4s.JValue
 
 import java.net.URL
-import java.time.{Duration, OffsetDateTime}
+import java.time.{Duration, LocalDateTime, OffsetDateTime}
 import java.util.UUID
 import scala.io.Source
 import scala.reflect.runtime.universe.TypeTag
@@ -201,6 +201,8 @@ object QueryExamples {
     case "RunningQueryResponse" => asJson(runningQuery(
       application,
       QueryOrganisaationOpiskeluoikeudetCsvDocumentation.example,
+      QueryOrganisaationOpiskeluoikeudetCsvDocumentation.outputFiles.take(1),
+      application.config.getString("koski.root.url"),
     ))
     case "CompleteQueryResponse" => asJson(completedQuery(
       QueryOrganisaationOpiskeluoikeudetCsvDocumentation.example,
@@ -219,6 +221,8 @@ object QueryExamples {
     case "ValintalaskentaRunningQueryResponse" => asJson(runningQuery(
       application,
       ValintalaskentaQueryDocumentation.example,
+      ValintalaskentaQueryDocumentation.outputFiles.take(1),
+      application.config.getString("koski.root.url"),
     ))
     case "ValintalaskentaCompleteQueryResponse" => asJson(completedQuery(
       ValintalaskentaQueryDocumentation.example,
@@ -241,14 +245,16 @@ object QueryExamples {
       resultsUrl = resultsUrl(application, queryId),
     )
 
-  def runningQuery(application: KoskiApplication, query: MassaluovutusQueryParameters): RunningQueryResponse =
+  def runningQuery(application: KoskiApplication, query: MassaluovutusQueryParameters, files: List[String], rootUrl: String): RunningQueryResponse =
     RunningQueryResponse(
       queryId = queryId,
       requestedBy = "1.2.246.562.24.123123123123",
       query = query,
       createdAt = createdAt,
       startedAt = startedAt,
+      files = files.map(MassaluovutusServletUrls.file(rootUrl, queryId, _)),
       resultsUrl = resultsUrl(application, queryId),
+      progress = Some(QueryProgress.from(75, startedAt.toLocalDateTime))
     )
 
   def completedQuery(query: MassaluovutusQueryParameters, files: List[String], rootUrl: String, password: Option[String]): CompleteQueryResponse =

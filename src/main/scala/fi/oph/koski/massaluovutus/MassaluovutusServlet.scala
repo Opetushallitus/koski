@@ -98,8 +98,12 @@ case class RunningQueryResponse(
   createdAt: OffsetDateTime,
   @Description("Massaluovutuskyselyn käsittelyn aloitusaika")
   startedAt: OffsetDateTime,
+  @Description("Lista osoitteista, joista valmistuneet tulostiedostot voi ladata. Tiedostojen määrä kasvaa kyselyn edetessä.")
+  files: List[String],
   @Description("Osoite josta kyselyn tilaa voi kysellä")
   resultsUrl: String,
+  @Description("Tietoa kyselyn etenemisestä")
+  progress: Option[QueryProgress],
 ) extends QueryResponse {
   def status: String = QueryState.running
 }
@@ -151,7 +155,9 @@ object QueryResponse {
       query = q.query,
       createdAt = q.createdAt,
       startedAt = q.startedAt,
+      files = q.filesToExternal(rootUrl),
       resultsUrl = q.externalResultsUrl(rootUrl),
+      progress = q.progress,
     )
     case q: FailedQuery => FailedQueryResponse(
       queryId = q.queryId,

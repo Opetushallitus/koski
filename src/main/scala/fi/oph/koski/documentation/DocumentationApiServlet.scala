@@ -6,6 +6,7 @@ import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.kela.KelaSchema
 import fi.oph.koski.koodisto.Koodistot
 import fi.oph.koski.koskiuser.Unauthenticated
+import fi.oph.koski.massaluovutus.suoritusrekisteri.SureResponse
 import fi.oph.koski.massaluovutus.valintalaskenta.ValintalaskentaResult
 import fi.oph.koski.migri.MigriSchema
 import fi.oph.koski.massaluovutus.{QueryDocumentation, QueryResponse}
@@ -112,6 +113,10 @@ class DocumentationApiServlet(application: KoskiApplication) extends KoskiSpecif
 
   get("/valintalaskenta-result.json") {
     ValintalaskentaResult.schemaJson
+  }
+
+  get("/suoritusrekisteri-result.json") {
+    SureResponse.schemaJson
   }
 
   override def toJsonString[T: ru.TypeTag](x: T): String = JsonSerializer.writeWithRoot(x)

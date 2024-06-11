@@ -3,16 +3,18 @@ package fi.oph.koski.massaluovutus
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.db.{DB, DatabaseConverters, QueryMethods}
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.{AuthenticationUser, KoskiMockUser, KoskiSpecificSession, KäyttöoikeusRepository, MockUser}
+import fi.oph.koski.koskiuser.{AuthenticationUser, KoskiSpecificSession, KäyttöoikeusRepository, MockUser}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
+import fi.oph.koski.util.Optional.when
 import fi.oph.koski.validation.ValidatingAndResolvingExtractor
+import fi.oph.scalaschema.annotation.Description
 import org.json4s.JValue
-import org.json4s.jackson.JsonMethods
 import slick.jdbc.GetResult
 
 import java.net.InetAddress
 import java.sql.Timestamp
+import java.time.temporal.ChronoUnit
 import java.time.{Duration, LocalDateTime}
 import java.util.UUID
 
@@ -138,6 +140,16 @@ class QueryRepository(
       """.as[Query])
       .collectFirst { case q: RunningQuery => q }
 
+  def setProgress(id: String, resultFiles: List[String], progress: Option[Int]): Boolean =
+    runDbSync(
+      sql"""
+        UPDATE massaluovutus
+        SET
+          result_files = $resultFiles,
+          progress = $progress
+        WHERE id = ${id}::uuid
+        """.asUpdate) != 0
+
   def setComplete(id: String, resultFiles: List[String]): Boolean =
     runDbSync(sql"""
       UPDATE massaluovutus
@@ -238,16 +250,20 @@ class QueryRepository(
         createdAt = creationTime,
         meta = meta,
       )
-      case QueryState.running => RunningQuery(
-        queryId = id,
-        userOid = userOid,
-        session = session,
-        query = query,
-        createdAt = creationTime,
-        startedAt = r.rs.getTimestamp("started_at").toLocalDateTime,
-        worker = r.rs.getString("worker"),
-        meta = meta,
-      )
+      case QueryState.running =>
+        val startTime = r.rs.getTimestamp("started_at").toLocalDateTime
+        RunningQuery(
+          queryId = id,
+          userOid = userOid,
+          session = session,
+          query = query,
+          createdAt = creationTime,
+          startedAt = startTime,
+          worker = r.rs.getString("worker"),
+          resultFiles = r.getArraySafe("result_files").toList,
+          meta = meta,
+          progress = Option(r.rs.getInt("progress")).map(QueryProgress.from(_, startTime)),
+        )
       case QueryState.complete => CompleteQuery(
         queryId = id,
         userOid = userOid,
@@ -321,6 +337,11 @@ trait QueryWithWorker {
   def worker: String
 }
 
+trait QueryWithResultFiles extends Query {
+  def resultFiles: List[String]
+  def filesToExternal(rootUrl: String): List[String] = resultFiles.map(MassaluovutusServletUrls.file(rootUrl, queryId, _))
+}
+
 case class PendingQuery(
   queryId: String,
   userOid: String,
@@ -339,9 +360,11 @@ case class RunningQuery(
   createdAt: LocalDateTime,
   startedAt: LocalDateTime,
   worker: String,
+  resultFiles: List[String],
   session: JValue,
   meta: Option[QueryMeta],
-) extends Query with QueryWithStartTime with QueryWithWorker {
+  progress: Option[QueryProgress],
+) extends QueryWithResultFiles with QueryWithStartTime with QueryWithWorker {
   def state: String = QueryState.running
 }
 
@@ -356,10 +379,8 @@ case class CompleteQuery(
   resultFiles: List[String],
   session: JValue,
   meta: Option[QueryMeta],
-) extends Query with QueryWithStartTime with QueryWithFinishTime with QueryWithWorker  {
+) extends QueryWithResultFiles with QueryWithStartTime with QueryWithFinishTime with QueryWithWorker  {
   def state: String = QueryState.complete
-
-  def filesToExternal(rootUrl: String): List[String] = resultFiles.map(MassaluovutusServletUrls.file(rootUrl, queryId, _))
 }
 
 case class FailedQuery(
@@ -449,4 +470,23 @@ case class QueryMeta(
   def withRestart(reason: String): QueryMeta = copy(
     restarts = Some(restarts.getOrElse(List.empty) :+ reason)
   )
+}
+
+case class QueryProgress(
+  @Description("Kyselyn eteneminen prosentteina")
+  percentage: Int,
+  @Description("Arvioitu kyselyn valmistumisaika")
+  estimatedCompletionTime: Option[LocalDateTime],
+)
+
+object QueryProgress {
+  def from(progress: Int, startTime: LocalDateTime): QueryProgress = {
+    val estimatedRunTime = when(progress > 0) {
+      ChronoUnit.SECONDS.between(startTime, LocalDateTime.now()) * 100 / progress
+    }
+    QueryProgress(
+      percentage = progress,
+      estimatedCompletionTime = estimatedRunTime.map(startTime.plusSeconds),
+    )
+  }
 }
