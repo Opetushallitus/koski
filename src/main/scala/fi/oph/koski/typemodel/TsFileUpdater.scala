@@ -63,9 +63,10 @@ case class AdditionalExports(
   suoritetutTutkinnotOppija: SuoritetutTutkinnotOppija,
   aktiivisetOpinnotOppija: AktiivisetJaPäättyneetOpinnotOppija,
   osaamismerkkikuva: Osaamismerkkikuva,
+  opiskeluoikeusClass: OpiskeluoikeusClass,
 
   // Traitit jotka eivät automaattisesti exporttaudu skeemasta, koska ne eivät sellaisenaan
-  // ole minkään tietomallin jäseniä (ainoastaan niistä periytyvät luokat on mainittu).
+  // ole minkään tietomallin jäseniä (ainoastaan traitista periintyvät konkreettiset luokat exportataan automaattisesti).
   opiskeluoikeudenTila: OpiskeluoikeudenTila,
   opiskeluoikeusjakso: Opiskeluoikeusjakso,
   koskiOpiskeluoikeusjakso: KoskiOpiskeluoikeusjakso,
@@ -75,5 +76,6 @@ case class AdditionalExports(
   suoritetutTutkinnotKoskeenTallennettavaOpiskeluoikeus: SuoritetutTutkinnotKoskeenTallennettavaOpiskeluoikeus,
   aktiivisetJaPäättyneetOpinnotKoskeenTallennettavaOpiskeluoikeus: AktiivisetJaPäättyneetOpinnotKoskeenTallennettavaOpiskeluoikeus,
   paikallinenKoulutusmoduuli: PaikallinenKoulutusmoduuli,
-  vapaanSivistystyönKoulutuksenPäätasonSuoritus: VapaanSivistystyönKoulutuksenPäätasonSuoritus
+  vapaanSivistystyönKoulutuksenPäätasonSuoritus: VapaanSivistystyönKoulutuksenPäätasonSuoritus,
+  suorituskielellinen: Suorituskielellinen,
 )

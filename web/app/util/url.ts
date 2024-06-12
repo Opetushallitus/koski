@@ -8,6 +8,7 @@ export const queryString = (query: LocationQueryIn) =>
     ? ''
     : '?' +
       Object.entries(query)
+        .filter(([_, value]) => value !== undefined)
         .map(([key, value]) =>
           value !== null
             ? `${encodeURIComponent(key)}=${encodeURIComponent(value)}`

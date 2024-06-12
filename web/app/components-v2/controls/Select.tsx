@@ -20,6 +20,8 @@ import {
   useParentTestId,
   useTestId
 } from '../../appstate/useTestId'
+import { koodistokoodiviiteId } from '../../util/koodisto'
+import { Peruste } from '../../appstate/peruste'
 
 export type SelectProps<T> = CommonProps<{
   initialValue?: OptionKey
@@ -62,10 +64,28 @@ export type SelectOption<T> = FlatOption<T> & {
 
 export type OptionKey = string
 
+const optionExists = <T,>(options: OptionList<T>, key: string): boolean =>
+  !!options.find(
+    (o) =>
+      o.key === key ||
+      (o.children !== undefined && optionExists(o.children, key))
+  )
+
 export const Select = <T,>(props: SelectProps<T>) => {
   const inputTestId = useTestId(props.testId, 'input')
   const select = useSelectState(props)
   const input = useRef<HTMLInputElement>(null)
+
+  const { options, onChange, value, initialValue } = props
+  useEffect(() => {
+    if (options.length === 0) {
+      onChange(undefined)
+    } else if (value === undefined && initialValue) {
+      onChange(options.find((o) => o.key === initialValue))
+    } else if (value !== undefined && !optionExists(options, value)) {
+      onChange(undefined)
+    }
+  }, [initialValue, onChange, options, value])
 
   return (
     <TestIdLayer id={props.testId}>
@@ -363,6 +383,20 @@ export const groupKoodistoToOptions: <T extends string>(
       )
     }))
 )
+
+export const koodiviiteToOption = <T extends string>(
+  koodiviite: Koodistokoodiviite<T>
+): SelectOption<Koodistokoodiviite<T>> => ({
+  key: koodistokoodiviiteId(koodiviite),
+  value: koodiviite,
+  label: t(koodiviite.nimi) || koodiviite.koodiarvo
+})
+
+export const perusteToOption = (peruste: Peruste): SelectOption<Peruste> => ({
+  key: peruste.koodiarvo,
+  value: peruste,
+  label: [peruste.koodiarvo, t(peruste.nimi)].filter(nonNull).join(' ')
+})
 
 // Internal utils
 

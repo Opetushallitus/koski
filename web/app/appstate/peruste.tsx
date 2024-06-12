@@ -19,11 +19,16 @@ export type Peruste = Omit<
 /**
  * Palauttaa annetun diaarinumeron mukaiset perusteet.
  */
-export function usePeruste(diaariNumero: string): Peruste[] | null {
+export function usePeruste(diaariNumero?: string): Peruste[] | null {
   const perusteet = usePerusteet(diaariNumero)
 
   return useMemo(
-    () => (perusteet[diaariNumero] ? perusteet[diaariNumero] : null),
+    () =>
+      diaariNumero
+        ? perusteet[diaariNumero]
+          ? perusteet[diaariNumero]
+          : null
+        : [],
     [diaariNumero, perusteet]
   )
 }

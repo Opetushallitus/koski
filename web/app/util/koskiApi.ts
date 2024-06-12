@@ -18,6 +18,7 @@ import { AktiivisetJaPäättyneetOpinnotOppija } from '../types/fi/oph/koski/suo
 import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { Osaamismerkkikuva } from '../types/fi/oph/koski/servlet/Osaamismerkkikuva'
 import { lang } from '../i18n/i18n'
+import { OpiskeluoikeusClass } from '../types/fi/oph/koski/typemodel/OpiskeluoikeusClass'
 
 const apiUrl = (path: string, query?: object): string =>
   `/koski/api/${path}${queryString({ class_refs: 'true', ...query })}`
@@ -113,14 +114,25 @@ export const fetchConstraint = (schemaClass: string) =>
     apiGet<Constraint>(apiUrl(`types/constraints/${schemaClass}`))
   )
 
-export const fetchOrganisaatioHierarkia = () =>
+export type OrgTypesToShow =
+  | 'vainOmatOrganisaatiot'
+  | 'vainVarhaiskasvatusToimipisteet'
+
+export const fetchOrganisaatioHierarkia = (orgTypesToShow?: OrgTypesToShow) =>
   handleExpiredSession(
-    apiGet<OrganisaatioHierarkia[]>(apiUrl(`organisaatio/hierarkia`))
+    apiGet<OrganisaatioHierarkia[]>(
+      apiUrl(`organisaatio/hierarkia`, { orgTypesToShow })
+    )
   )
 
-export const queryOrganisaatioHierarkia = (query: string) =>
+export const queryOrganisaatioHierarkia = (
+  query: string,
+  orgTypesToShow?: OrgTypesToShow
+) =>
   handleExpiredSession(
-    apiGet<OrganisaatioHierarkia[]>(apiUrl(`organisaatio/hierarkia`, { query }))
+    apiGet<OrganisaatioHierarkia[]>(
+      apiUrl(`organisaatio/hierarkia`, { query, orgTypesToShow })
+    )
   )
 
 export const fetchPreferences = <T extends StorablePreference>(
@@ -223,6 +235,22 @@ export const fetchOsaamismerkkikuva = (koodiarvo: string) =>
     apiGet<Osaamismerkkikuva>(
       apiUrl(`osaamismerkkiperusteet/kuva/${koodiarvo}`)
     )
+  )
+
+export const fetchOrganisaationOpiskeluoikeustyypit = <
+  T extends string = string
+>(
+  oid: string
+) =>
+  handleExpiredSession(
+    apiGet<Koodistokoodiviite<T>[]>(
+      apiUrl(`oppilaitos/opiskeluoikeustyypit/${oid}`)
+    )
+  )
+
+export const fetchOpiskeluoikeusClassMapping = () =>
+  handleExpiredSession(
+    apiGet<OpiskeluoikeusClass[]>(apiUrl('types/opiskeluoikeustyypit'))
   )
 
 // Virhetilanteiden hallinta

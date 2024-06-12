@@ -9,6 +9,7 @@ import Highlight from 'react-highlighter'
 import { t } from '../i18n/i18n'
 import Text from '../i18n/Text'
 import { userP } from '../util/user.js'
+import { UusiOpiskeluoikeusButton } from '../uusiopiskeluoikeus/UusiOpiskeluoikeusButton'
 
 export const searchStringAtom = Atom('')
 const oppijaHakuE = searchStringAtom.changes()
@@ -200,6 +201,7 @@ export const OppijaHaku = () => {
           }
         )}
       </div>
+      <UusiOpiskeluoikeusButton />
     </div>
   )
 }
