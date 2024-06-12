@@ -50,9 +50,10 @@ class AikuistenPerusopetuksenOppimääränArvioinnitSpec
               arviointi = PerusopetusExampleData.arviointi(9, Some(viimeistaan.plusMonths(2))),
               osasuoritukset = Some(List(
                 alkuvaiheenKurssinSuoritus("AÄI1").copy(arviointi = Some(List(
-                  PerusopetuksenOppiaineenArviointi(4, Some(aikaisintaan)),
-                  PerusopetuksenOppiaineenArviointi(9, Some(viimeistaan.minusMonths(1))),
-                  PerusopetuksenOppiaineenArviointi(8, Some(viimeistaan.plusMonths(1))),
+                  PerusopetuksenOppiaineenArviointi(4, Some(aikaisintaan.minusMonths(1))),
+                  PerusopetuksenOppiaineenArviointi(6, Some(viimeistaan.minusMonths(2))),
+                  PerusopetuksenOppiaineenArviointi(5, Some(viimeistaan.minusMonths(1))),
+                  PerusopetuksenOppiaineenArviointi(9, Some(viimeistaan.plusMonths(1))),
                 ))),
               ))
             )
@@ -98,20 +99,38 @@ class AikuistenPerusopetuksenOppimääränArvioinnitSpec
         "kurssinKoodi",
         "kurssinNimi",
         "paikallinenModuuli",
-        "arviointiPvm",
-        "arviointiKoodiarvo",
+        "arviointienlkm",
         "ensimmainenArviointiPvm",
+        "parasArviointiPvm",
+        "parasArviointiArvosana",
+        "arviointiPvm",
+        "arviointiArvosana",
         "hylatynKorotus",
         "hyvaksytynKorotus",
-        "arviointienlkm"
       ))
     }
 
     "Raportin rivit" in {
-      val rs = raportti.rows.map(_.asInstanceOf[AikuistenPerusopetuksenOppimääränArvioinnitRow])
-      val hylatynKorotus = rs.find(p => p.hylatynKorotus.contains(true))
-      hylatynKorotus.isDefined should be (true)
-      hylatynKorotus.get.arviointienlkm should be(3)
+      val rows = raportti.rows.map(_.asInstanceOf[AikuistenPerusopetuksenOppimääränArvioinnitRow])
+      val hylatynKorotusRowOpt = rows.find(_.hylatynKorotus.contains(true))
+
+      hylatynKorotusRowOpt should be (defined)
+      hylatynKorotusRowOpt.get.arviointienlkm should be(4)
+
+      val opiskeluoikeusOid = hylatynKorotusRowOpt.get.opiskeluoikeusOid
+      val arviointiRivit = rows.filter(_.opiskeluoikeusOid == opiskeluoikeusOid)
+
+      arviointiRivit should have size 2
+
+      val firstRow = arviointiRivit.head
+      firstRow.hylatynKorotus should be (Some(true))
+      firstRow.hyvaksytynKorotus should be (Some(false))
+      firstRow.arviointiArvosana should be ("6")
+
+      val lastRow = arviointiRivit.last
+      lastRow.hylatynKorotus should be (Some(false))
+      lastRow.hyvaksytynKorotus should be (Some(true))
+      lastRow.arviointiArvosana should be ("5")
     }
   }
 
