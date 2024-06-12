@@ -439,14 +439,6 @@ object OpiskeluoikeusLoaderRowBuilder extends Logging {
       arviointiArvosanaKoodisto = os.parasArviointi.flatMap(a => convertKoodisto(a.arvosana)),
       arviointiHyväksytty = os.parasArviointi.map(_.hyväksytty),
       arviointiPäivä = os.parasArviointi.flatMap(_.arviointipäivä).map(v => Date.valueOf(v)),
-      arviointiPäivät = os.arviointi.map(_.flatMap(_.arviointipäivä).map(v => Date.valueOf(v))),
-      arvioinnit = JArray(os.arviointi.toList.flatten.flatMap { arviointi =>
-        arviointi.arviointipäivä.map { päivä =>
-          (Date.valueOf(päivä), arviointi.arvosana.koodiarvo)
-        }
-      }.map { case (date, arvosana) =>
-        JObject("date" -> JString(date.toString), "arvosana" -> JString(arvosana))
-      }),
       ensimmäinenArviointiPäivä = os.sortedArviointi.flatMap(_.arviointipäivä).headOption.map(Date.valueOf),
       korotettuEriVuonna = (os.ensimmäinenArviointiPäivä, os.parasArviointiPäivä) match {
         case (Some(eka), Some(paras)) => {
