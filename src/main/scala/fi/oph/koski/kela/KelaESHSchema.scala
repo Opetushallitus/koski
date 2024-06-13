@@ -40,6 +40,7 @@ trait KelaESHPäätasonSuoritus extends Suoritus {
 
 @Title("Secondary lower vuosiluokan suoritus")
 case class KelaESHSecondaryLowerVuosiluokanSuoritus(
+  alkamispäivä: Option[LocalDate] = None,
   koulutusmoduuli: KelaESHSecondaryLuokkaAste,
   toimipiste: Toimipiste,
   vahvistus: Option[Vahvistus],
@@ -70,6 +71,7 @@ case class KelaESHSecondaryLowerOppiaineenSuoritus(
 
 @Title("Secondary upper vuosiluokan suoritus")
 case class KelaESHSecondaryUpperVuosiluokanSuoritus(
+  alkamispäivä: Option[LocalDate] = None,
   koulutusmoduuli: KelaESHSecondaryLuokkaAste,
   toimipiste: Toimipiste,
   vahvistus: Option[Vahvistus],
