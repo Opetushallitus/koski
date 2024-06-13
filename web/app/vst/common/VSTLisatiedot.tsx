@@ -271,7 +271,7 @@ export const VSTLisatiedot: React.FC<VSTLisatiedotProps> = ({ form }) => {
             testId="jotpaasianumero"
           />
         ) : (
-          (getValue(jotpaPath)(form.state)?.nimi as Finnish).fi
+          (getValue(jotpaPath)(form.state)?.nimi as Finnish | undefined)?.fi
         )}
       </div>
     </div>
