@@ -1,7 +1,8 @@
 package fi.oph.koski.schema
 
 import fi.oph.koski.koodisto.MockKoodistoViitePalvelu
-import fi.oph.koski.schema.annotation.{Deprecated, KoodistoUri}
+import fi.oph.koski.koskiuser.Rooli
+import fi.oph.koski.schema.annotation.{Deprecated, KoodistoUri, SensitiveData}
 import fi.oph.scalaschema.annotation.{Description, Title}
 
 trait OpiskeluoikeudenLisätiedot
@@ -137,5 +138,6 @@ trait MaksuttomuusTieto extends OpiskeluoikeudenLisätiedot {
 trait JotpaAsianumero {
   @Title("JOTPA asianumero")
   @KoodistoUri("jotpaasianumero")
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   def jotpaAsianumero: Option[Koodistokoodiviite]
 }
