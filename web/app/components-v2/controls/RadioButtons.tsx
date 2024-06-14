@@ -35,6 +35,10 @@ export const RadioButtons = <T,>(
               'RadioButtons__option',
               opt.disabled && 'RadioButtons__option--disabled'
             )}
+            onClick={
+              !opt.disabled ? () => props.onChange(opt.value) : undefined
+            }
+            data-testid={testId && `${testId}.options.${opt.key}`}
           >
             <input
               id={id}
@@ -43,16 +47,8 @@ export const RadioButtons = <T,>(
               checked={opt.key === props.value}
               onChange={() => props.onChange(opt.value)}
               disabled={opt.disabled}
-              data-testid={testId && `${testId}.options.${opt.key}`}
             />
-            <label
-              htmlFor={id}
-              onClick={
-                !opt.disabled ? () => props.onChange(opt.value) : undefined
-              }
-            >
-              {opt.label}
-            </label>
+            <label htmlFor={id}>{opt.label}</label>
           </li>
         )
       })}

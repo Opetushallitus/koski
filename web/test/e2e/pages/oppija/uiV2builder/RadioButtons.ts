@@ -5,7 +5,7 @@ export const RadioButtons = createControl((_self, child) => {
 
   return {
     set: async (key: string) => {
-      await option(key).click()
+      await option(key).click({ force: true })
     },
     value: async () => {
       throw new Error('TODO')
