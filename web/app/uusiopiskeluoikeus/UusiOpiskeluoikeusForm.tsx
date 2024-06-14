@@ -1,10 +1,14 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { isSuccess, useApiOnce, useApiWithParams } from '../api-fetch'
-import { useChildSchema } from '../appstate/constraints'
+import { useChildSchema, useChildSchemaSafe } from '../appstate/constraints'
 import { useKoodisto, useKoodistoOfConstraint } from '../appstate/koodisto'
 import { Peruste } from '../appstate/peruste'
 import { DateEdit } from '../components-v2/controls/DateField'
 import { KieliSelect } from '../components-v2/controls/KieliSelect'
+import {
+  RadioButtonOption,
+  RadioButtons
+} from '../components-v2/controls/RadioButtons'
 import {
   Select,
   SelectOption,
@@ -114,9 +118,43 @@ export const UusiOpiskeluoikeusForm = (props: UusiOpiskeluoikeusFormProps) => {
           />
         </>
       )}
+
+      {state.maksuton.visible && (
+        <>
+          <RadioButtons
+            options={maksuttomuusOptions}
+            value={maksuttomuusKey(state.maksuton.value)}
+            onChange={state.maksuton.set}
+            testId="maksuton"
+          />
+        </>
+      )}
     </section>
   )
 }
+
+const maksuttomuusKey = (value?: boolean | null): string | undefined =>
+  maksuttomuusOptions.find((o) => o.value === value)?.key
+
+const maksuttomuusOptions: Array<RadioButtonOption<boolean | null>> = [
+  {
+    key: 'eiOvlPiirissä',
+    value: null,
+    label: t(
+      'Henkilö on syntynyt ennen vuotta 2004 ja ei ole laajennetun oppivelvollisuuden piirissä'
+    )
+  },
+  {
+    key: 'maksuton',
+    value: true,
+    label: t('Koulutus on maksutonta')
+  },
+  {
+    key: 'maksullinen',
+    value: false,
+    label: t('Koulutus on maksullista')
+  }
+]
 
 export type UusiOpiskeluoikeusDialogState = {
   oppilaitos: DialogField<OrganisaatioHierarkia>
@@ -126,6 +164,7 @@ export type UusiOpiskeluoikeusDialogState = {
   suorituskieli: DialogField<Koodistokoodiviite<'kieli'>>
   aloituspäivä: DialogField<string>
   tila: DialogField<Koodistokoodiviite<'koskiopiskeluoikeudentila'>>
+  maksuton: DialogField<boolean | null>
   ooMapping?: OpiskeluoikeusClass[]
   result?: Opiskeluoikeus
 }
@@ -148,6 +187,10 @@ const useUusiOpiskeluoikeusDialogState = (): UusiOpiskeluoikeusDialogState => {
       oppilaitosValittu
     )
   const opiskeluoikeusValittu = opiskeluoikeus.value !== undefined
+  const opiskeluoikeusClass = opiskeluoikeustyyppiToClassName(
+    ooMapping,
+    opiskeluoikeus.value?.koodiarvo
+  )
 
   // Päätason suoritus
   const päätasonSuoritus = useDialogField<
@@ -177,6 +220,13 @@ const useUusiOpiskeluoikeusDialogState = (): UusiOpiskeluoikeusDialogState => {
     opiskeluoikeusValittu
   )
 
+  // Opiskelun maksuttomuus
+  const maksuttomuustiedollinen = !!useChildSchemaSafe(
+    opiskeluoikeusClass,
+    'lisätiedot.maksuttomuus'
+  )
+  const maksuton = useDialogField<boolean | null>(maksuttomuustiedollinen)
+
   // Validi opiskeluoikeus
   const result = useMemo(
     () =>
@@ -193,11 +243,13 @@ const useUusiOpiskeluoikeusDialogState = (): UusiOpiskeluoikeusDialogState => {
             peruste.value,
             aloituspäivä.value,
             tila.value,
-            suorituskieli.value
+            suorituskieli.value,
+            maksuton.value
           )
         : undefined,
     [
       aloituspäivä.value,
+      maksuton.value,
       opiskeluoikeus.value,
       oppilaitos.value,
       peruste.value,
@@ -215,6 +267,7 @@ const useUusiOpiskeluoikeusDialogState = (): UusiOpiskeluoikeusDialogState => {
     suorituskieli,
     aloituspäivä,
     tila,
+    maksuton,
     ooMapping,
     result
   }

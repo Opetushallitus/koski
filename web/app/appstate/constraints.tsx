@@ -90,6 +90,26 @@ export const useChildSchema = (
 }
 
 /**
+ * Palauttaa luokan nimen ja polun osoittaman constraintin.
+ *
+ * Palauttaa false, jos polkua ei löydy skeemasta
+ *
+ * @param className skeemaluokan nimi pitkässä tai lyhyessä muodossa (esim. "fi.oph.koski.schema.Vahvistus" tai pelkkä "Vahvistus")
+ * @param path merkkijonoon osoittava polku, esim. "tila.opiskeluoikeusjaksot.[].tila.koodiarvo"
+ * @returns Constraint[] jos luokka löytyi ja lataaminen onnistui, null jos haku kesken tai tietojen lataaminen epäonnistui.
+ */
+export const useChildSchemaSafe = (
+  className: string | null | undefined,
+  path: string
+): Constraint | null | false => {
+  try {
+    return useChildSchema(className, path)
+  } catch (e) {
+    return false
+  }
+}
+
+/**
  * Palauttaa luokan nimen ja polun osoittaman merkkijonon (tavallisesti koodiviitteen uri tai koodiarvo) sallitut arvot.
  * Jos arvoja ei ole rajattu, palautettu lista on tyhjä.
  *

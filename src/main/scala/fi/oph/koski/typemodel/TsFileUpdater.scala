@@ -78,4 +78,5 @@ case class AdditionalExports(
   paikallinenKoulutusmoduuli: PaikallinenKoulutusmoduuli,
   vapaanSivistystyönKoulutuksenPäätasonSuoritus: VapaanSivistystyönKoulutuksenPäätasonSuoritus,
   suorituskielellinen: Suorituskielellinen,
+  maksuttomuustieto: MaksuttomuusTieto,
 )

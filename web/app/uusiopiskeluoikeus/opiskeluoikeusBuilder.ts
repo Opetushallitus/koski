@@ -23,7 +23,8 @@ export const createOpiskeluoikeus = (
   peruste: Peruste | undefined,
   alku: string,
   tila: Koodistokoodiviite<'koskiopiskeluoikeudentila', any>,
-  suorituskieli: Koodistokoodiviite<'kieli'>
+  suorituskieli: Koodistokoodiviite<'kieli'>,
+  maksuton?: boolean | null
 ): Opiskeluoikeus | undefined => {
   switch (opiskeluoikeudenTyyppi.koodiarvo) {
     case 'perusopetus':
