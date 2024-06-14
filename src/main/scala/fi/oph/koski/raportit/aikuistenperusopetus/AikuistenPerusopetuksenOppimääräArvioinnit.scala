@@ -71,7 +71,7 @@ case class AikuistenPerusopetuksenOppimääräArvioinnit(db: DB) extends QueryMe
               ORDER BY (elem ->> 'päivä')::date DESC
               LIMIT 1
             ) subquery
-            WHERE arvosana = '4'
+            WHERE arvosana in ('4', 'H')
           ) THEN true
           ELSE false
         END AS hylatyn_korotus,
@@ -85,7 +85,7 @@ case class AikuistenPerusopetuksenOppimääräArvioinnit(db: DB) extends QueryMe
               ORDER BY (elem ->> 'päivä')::date DESC
               LIMIT 1
             ) subquery
-            WHERE arvosana != '4'
+            WHERE arvosana not in ('4', 'H')
           ) THEN true
           ELSE false
         END AS hyvaksytyn_korotus
