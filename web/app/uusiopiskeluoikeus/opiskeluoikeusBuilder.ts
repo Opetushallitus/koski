@@ -1,7 +1,16 @@
 import { Peruste } from '../appstate/peruste'
+import { OrganisaatioHierarkia } from '../types/fi/oph/koski/organisaatio/OrganisaatioHierarkia'
+import { AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot } from '../types/fi/oph/koski/schema/AikuistenPerusopetuksenOpiskeluoikeudenLisatiedot'
+import { AikuistenPerusopetuksenOpiskeluoikeudenTila } from '../types/fi/oph/koski/schema/AikuistenPerusopetuksenOpiskeluoikeudenTila'
+import { AikuistenPerusopetuksenOpiskeluoikeus } from '../types/fi/oph/koski/schema/AikuistenPerusopetuksenOpiskeluoikeus'
+import { AikuistenPerusopetuksenOpiskeluoikeusjakso } from '../types/fi/oph/koski/schema/AikuistenPerusopetuksenOpiskeluoikeusjakso'
+import { AikuistenPerusopetuksenOppiaineenOppimääränSuoritus } from '../types/fi/oph/koski/schema/AikuistenPerusopetuksenOppiaineenOppimaaranSuoritus'
+import { AikuistenPerusopetuksenOppimääränSuoritus } from '../types/fi/oph/koski/schema/AikuistenPerusopetuksenOppimaaranSuoritus'
+import { AikuistenPerusopetus } from '../types/fi/oph/koski/schema/AikuistenPerusopetus'
 import { EiTiedossaOppiaine } from '../types/fi/oph/koski/schema/EiTiedossaOppiaine'
 import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { Maksuttomuus } from '../types/fi/oph/koski/schema/Maksuttomuus'
+import { MaksuttomuusTieto } from '../types/fi/oph/koski/schema/MaksuttomuusTieto'
 import { NuortenPerusopetuksenOpiskeluoikeudenTila } from '../types/fi/oph/koski/schema/NuortenPerusopetuksenOpiskeluoikeudenTila'
 import { NuortenPerusopetuksenOpiskeluoikeusjakso } from '../types/fi/oph/koski/schema/NuortenPerusopetuksenOpiskeluoikeusjakso'
 import { NuortenPerusopetuksenOppiaineenOppimääränSuoritus } from '../types/fi/oph/koski/schema/NuortenPerusopetuksenOppiaineenOppimaaranSuoritus'
@@ -29,7 +38,8 @@ export const createOpiskeluoikeus = (
   alku: string,
   tila: Koodistokoodiviite<'koskiopiskeluoikeudentila', any>,
   suorituskieli: Koodistokoodiviite<'kieli'>,
-  maksuton?: boolean | null
+  maksuton?: boolean | null,
+  opintojenRahoitus?: Koodistokoodiviite<'opintojenrahoitus'>
 ): Opiskeluoikeus | undefined => {
   switch (opiskeluoikeudenTyyppi.koodiarvo) {
     case 'perusopetus':
@@ -62,6 +72,31 @@ export const createOpiskeluoikeus = (
         maksuton
       )
 
+    case 'aikuistenperusopetus':
+      if (!peruste || maksuton === undefined || !opintojenRahoitus) {
+        return undefined
+      }
+      return createAikuistenPerusopetuksenOpiskeluoikeus(
+        suorituksenTyyppi,
+        peruste,
+        organisaatio,
+        alku,
+        tila,
+        suorituskieli,
+        maksuton,
+        opintojenRahoitus
+      )
+
+    case 'esiopetus':
+      if (!peruste) return undefined
+      return createEsiopetuksenOpiskeluoikeus(
+        peruste,
+        organisaatio,
+        alku,
+        tila,
+        suorituskieli
+      )
+
     default:
       console.error(
         'createOpiskeluoikeus does not support',
@@ -86,6 +121,17 @@ const toOppilaitos = (org: OrganisaatioHierarkia): Oppilaitos =>
   Oppilaitos({
     oid: org.oid
   })
+
+const maksuttomuuslisätiedot = <T extends MaksuttomuusTieto>(
+  alku: string,
+  maksuton: boolean | null,
+  lisätietoCtor: (p: { maksuttomuus: Maksuttomuus[] }) => T
+): T | undefined =>
+  maksuton === null
+    ? undefined
+    : lisätietoCtor({
+        maksuttomuus: [Maksuttomuus({ alku, maksuton })]
+      })
 
 // Perusopetus
 
@@ -184,15 +230,64 @@ const createPerusopetuksenLisäopetuksenOpiskeluoikeus = (
         toimipiste: toToimipiste(organisaatio)
       })
     ],
-    lisätiedot:
-      maksuton === null
-        ? undefined
-        : PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot({
-            maksuttomuus: [
-              Maksuttomuus({
-                alku,
-                maksuton
-              })
-            ]
+    lisätiedot: maksuttomuuslisätiedot(
+      alku,
+      maksuton,
+      PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot
+    )
+  })
+
+// Aikuisten perusopetus
+
+const createAikuistenPerusopetuksenOpiskeluoikeus = (
+  suorituksenTyyppi: Koodistokoodiviite<'suorituksentyyppi'>,
+  peruste: Peruste,
+  organisaatio: OrganisaatioHierarkia,
+  alku: string,
+  tila: NuortenPerusopetuksenOpiskeluoikeusjakso['tila'],
+  suorituskieli: Koodistokoodiviite<'kieli'>,
+  maksuton: boolean | null,
+  opintojenRahoitus: Koodistokoodiviite<'opintojenrahoitus', any>
+) =>
+  AikuistenPerusopetuksenOpiskeluoikeus({
+    oppilaitos: toOppilaitos(organisaatio),
+    tila: AikuistenPerusopetuksenOpiskeluoikeudenTila({
+      opiskeluoikeusjaksot: [
+        AikuistenPerusopetuksenOpiskeluoikeusjakso({
+          alku,
+          tila,
+          opintojenRahoitus
+        })
+      ]
+    }),
+    suoritukset: [
+      isKoodiarvo(suorituksenTyyppi, 'aikuistenperusopetuksenoppimaara')
+        ? AikuistenPerusopetuksenOppimääränSuoritus({
+            koulutusmoduuli: AikuistenPerusopetus({
+              perusteenDiaarinumero: peruste.koodiarvo
+            }),
+            suorituskieli,
+            suoritustapa: Koodistokoodiviite({
+              koodiarvo: 'koulutus',
+              koodistoUri: 'perusopetuksensuoritustapa'
+            }),
+            toimipiste: toToimipiste(organisaatio)
           })
+        : AikuistenPerusopetuksenOppiaineenOppimääränSuoritus({
+            koulutusmoduuli: EiTiedossaOppiaine({
+              perusteenDiaarinumero: peruste.koodiarvo
+            }),
+            suorituskieli,
+            suoritustapa: Koodistokoodiviite({
+              koodiarvo: 'koulutus',
+              koodistoUri: 'perusopetuksensuoritustapa'
+            }),
+            toimipiste: toToimipiste(organisaatio)
+          })
+    ],
+    lisätiedot: maksuttomuuslisätiedot(
+      alku,
+      maksuton,
+      AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot
+    )
   })
