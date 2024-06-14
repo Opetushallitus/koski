@@ -1,6 +1,7 @@
 import { Peruste } from '../appstate/peruste'
 import { EiTiedossaOppiaine } from '../types/fi/oph/koski/schema/EiTiedossaOppiaine'
 import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
+import { Maksuttomuus } from '../types/fi/oph/koski/schema/Maksuttomuus'
 import { NuortenPerusopetuksenOpiskeluoikeudenTila } from '../types/fi/oph/koski/schema/NuortenPerusopetuksenOpiskeluoikeudenTila'
 import { NuortenPerusopetuksenOpiskeluoikeusjakso } from '../types/fi/oph/koski/schema/NuortenPerusopetuksenOpiskeluoikeusjakso'
 import { NuortenPerusopetuksenOppiaineenOppimääränSuoritus } from '../types/fi/oph/koski/schema/NuortenPerusopetuksenOppiaineenOppimaaranSuoritus'
@@ -14,6 +15,10 @@ import { PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenTila } from '../type
 import { PerusopetukseenValmistavanOpetuksenOpiskeluoikeus } from '../types/fi/oph/koski/schema/PerusopetukseenValmistavanOpetuksenOpiskeluoikeus'
 import { PerusopetukseenValmistavanOpetuksenOpiskeluoikeusJakso } from '../types/fi/oph/koski/schema/PerusopetukseenValmistavanOpetuksenOpiskeluoikeusJakso'
 import { PerusopetukseenValmistavanOpetuksenSuoritus } from '../types/fi/oph/koski/schema/PerusopetukseenValmistavanOpetuksenSuoritus'
+import { PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot } from '../types/fi/oph/koski/schema/PerusopetuksenLisaopetuksenOpiskeluoikeudenLisatiedot'
+import { PerusopetuksenLisäopetuksenOpiskeluoikeus } from '../types/fi/oph/koski/schema/PerusopetuksenLisaopetuksenOpiskeluoikeus'
+import { PerusopetuksenLisäopetuksenSuoritus } from '../types/fi/oph/koski/schema/PerusopetuksenLisaopetuksenSuoritus'
+import { PerusopetuksenLisäopetus } from '../types/fi/oph/koski/schema/PerusopetuksenLisaopetus'
 import { PerusopetuksenOpiskeluoikeus } from '../types/fi/oph/koski/schema/PerusopetuksenOpiskeluoikeus'
 
 export const createOpiskeluoikeus = (
@@ -46,6 +51,17 @@ export const createOpiskeluoikeus = (
         tila,
         suorituskieli
       )
+    case 'perusopetuksenlisaopetus':
+      if (!peruste || maksuton === undefined) return undefined
+      return createPerusopetuksenLisäopetuksenOpiskeluoikeus(
+        peruste,
+        organisaatio,
+        alku,
+        tila,
+        suorituskieli,
+        maksuton
+      )
+
     default:
       console.error(
         'createOpiskeluoikeus does not support',
@@ -140,4 +156,43 @@ const createPerusopetukseenValmistavaOpiskeluoikeus = (
         toimipiste: toToimipiste(organisaatio)
       })
     ]
+  })
+
+// Perusopetuksen lisäopetus
+
+const createPerusopetuksenLisäopetuksenOpiskeluoikeus = (
+  peruste: Peruste,
+  organisaatio: OrganisaatioHierarkia,
+  alku: string,
+  tila: NuortenPerusopetuksenOpiskeluoikeusjakso['tila'],
+  suorituskieli: Koodistokoodiviite<'kieli'>,
+  maksuton: boolean | null
+) =>
+  PerusopetuksenLisäopetuksenOpiskeluoikeus({
+    oppilaitos: toOppilaitos(organisaatio),
+    tila: NuortenPerusopetuksenOpiskeluoikeudenTila({
+      opiskeluoikeusjaksot: [
+        NuortenPerusopetuksenOpiskeluoikeusjakso({ alku, tila })
+      ]
+    }),
+    suoritukset: [
+      PerusopetuksenLisäopetuksenSuoritus({
+        koulutusmoduuli: PerusopetuksenLisäopetus({
+          perusteenDiaarinumero: peruste.koodiarvo
+        }),
+        suorituskieli,
+        toimipiste: toToimipiste(organisaatio)
+      })
+    ],
+    lisätiedot:
+      maksuton === null
+        ? undefined
+        : PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot({
+            maksuttomuus: [
+              Maksuttomuus({
+                alku,
+                maksuton
+              })
+            ]
+          })
   })
