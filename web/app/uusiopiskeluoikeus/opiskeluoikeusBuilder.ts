@@ -9,6 +9,11 @@ import { NuortenPerusopetus } from '../types/fi/oph/koski/schema/NuortenPerusope
 import { OidOrganisaatio } from '../types/fi/oph/koski/schema/OidOrganisaatio'
 import { Opiskeluoikeus } from '../types/fi/oph/koski/schema/Opiskeluoikeus'
 import { Oppilaitos } from '../types/fi/oph/koski/schema/Oppilaitos'
+import { PerusopetukseenValmistavaOpetus } from '../types/fi/oph/koski/schema/PerusopetukseenValmistavaOpetus'
+import { PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenTila } from '../types/fi/oph/koski/schema/PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenTila'
+import { PerusopetukseenValmistavanOpetuksenOpiskeluoikeus } from '../types/fi/oph/koski/schema/PerusopetukseenValmistavanOpetuksenOpiskeluoikeus'
+import { PerusopetukseenValmistavanOpetuksenOpiskeluoikeusJakso } from '../types/fi/oph/koski/schema/PerusopetukseenValmistavanOpetuksenOpiskeluoikeusJakso'
+import { PerusopetukseenValmistavanOpetuksenSuoritus } from '../types/fi/oph/koski/schema/PerusopetukseenValmistavanOpetuksenSuoritus'
 import { PerusopetuksenOpiskeluoikeus } from '../types/fi/oph/koski/schema/PerusopetuksenOpiskeluoikeus'
 
 export const createOpiskeluoikeus = (
@@ -25,6 +30,15 @@ export const createOpiskeluoikeus = (
       if (!peruste) return undefined
       return createPerusopetuksenOpiskeluoikeus(
         suorituksenTyyppi,
+        peruste,
+        organisaatio,
+        alku,
+        tila,
+        suorituskieli
+      )
+    case 'perusopetukseenvalmistavaopetus':
+      if (!peruste) return undefined
+      return createPerusopetukseenValmistavaOpiskeluoikeus(
         peruste,
         organisaatio,
         alku,
@@ -97,5 +111,32 @@ const createPerusopetuksenOpiskeluoikeus = (
             }),
             toimipiste: toToimipiste(organisaatio)
           })
+    ]
+  })
+
+// Perusopetukseen valmistava opetus
+
+const createPerusopetukseenValmistavaOpiskeluoikeus = (
+  peruste: Peruste,
+  organisaatio: OrganisaatioHierarkia,
+  alku: string,
+  tila: NuortenPerusopetuksenOpiskeluoikeusjakso['tila'],
+  suorituskieli: Koodistokoodiviite<'kieli'>
+) =>
+  PerusopetukseenValmistavanOpetuksenOpiskeluoikeus({
+    oppilaitos: toOppilaitos(organisaatio),
+    tila: PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenTila({
+      opiskeluoikeusjaksot: [
+        PerusopetukseenValmistavanOpetuksenOpiskeluoikeusJakso({ alku, tila })
+      ]
+    }),
+    suoritukset: [
+      PerusopetukseenValmistavanOpetuksenSuoritus({
+        koulutusmoduuli: PerusopetukseenValmistavaOpetus({
+          perusteenDiaarinumero: peruste.koodiarvo
+        }),
+        suorituskieli,
+        toimipiste: toToimipiste(organisaatio)
+      })
     ]
   })
