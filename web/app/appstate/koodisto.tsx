@@ -21,6 +21,7 @@ import { mapObjectValues } from '../util/fp/objects'
 import { fetchKoodistot } from '../util/koskiApi'
 import * as Ord from 'fp-ts/Ord'
 import { t } from '../i18n/i18n'
+import { unbox } from '../util/constraints'
 
 /**
  * Palauttaa annetun koodiston koodiarvot. Jos koodiarvot-argumentti on annettu,
@@ -88,7 +89,7 @@ export const useKoodistoOfConstraint = <T extends string = string>(
   constraint: Constraint | null
 ): KoodistokoodiviiteKoodistonNimellä<T>[] | null => {
   const koodistoSchemas = useMemo(
-    () => C.koodiviite<T>(constraint)?.filter(nonNull) || [],
+    () => C.koodiviite<T>(unbox(constraint))?.filter(nonNull) || [],
     [constraint]
   )
   const koodistot = useKoodistot<T>(

@@ -278,6 +278,20 @@ export const koodiviite = <T extends string>(
 }
 
 /**
+ * Poistaa constraintin ympäriltä käärivät constraintit (esim. taulukko tai optional).
+ * Jos sen ympärillä ei ole käärettä, palautetaan annettu malli sellaisenaan.
+ */
+export const unbox = (constraint: Constraint | null): Constraint | null => {
+  if (isArrayConstraint(constraint)) {
+    return unbox(constraint.items)
+  }
+  if (isOptionalConstraint(constraint)) {
+    return unbox(constraint.optional)
+  }
+  return constraint
+}
+
+/**
  * Tekee constraintista ihmisystävällisen merkkijonon. Käytetään lähinnä virheilmoituksiin kehittäjille.
  */
 export const toString = (constraint: Constraint | null): string => {
