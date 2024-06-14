@@ -1,21 +1,17 @@
-import React, { useEffect, useMemo } from 'react'
-import { usePeruste } from '../../appstate/peruste'
-import { Select, perusteToOption } from '../../components-v2/controls/Select'
+import React, { useEffect } from 'react'
+import { usePerusteSelectOptions } from '../../appstate/peruste'
+import { Select } from '../../components-v2/controls/Select'
 import { t } from '../../i18n/i18n'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
-import { OppimääräFieldsProps } from './OppimaaraFields'
+import { SuoritusFieldsProps } from './SuoritusFields'
 
 const päätasonSuoritus = Koodistokoodiviite({
-  koodiarvo: 'perusopetuksenlisaopetus',
+  koodiarvo: 'perusopetukseenvalmistavaopetus',
   koodistoUri: 'suorituksentyyppi'
 })
 
-export const PerusopetuksenLisäopetusFields = (props: OppimääräFieldsProps) => {
-  const perusteet = usePeruste(päätasonSuoritus.koodiarvo)
-  const perusteOptions = useMemo(
-    () => perusteet?.map(perusteToOption) || [],
-    [perusteet]
-  )
+export const PerusopetukseenValmistavaFields = (props: SuoritusFieldsProps) => {
+  const perusteOptions = usePerusteSelectOptions(päätasonSuoritus.koodiarvo)
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => props.state.päätasonSuoritus.set(päätasonSuoritus), [])
@@ -27,7 +23,7 @@ export const PerusopetuksenLisäopetusFields = (props: OppimääräFieldsProps) 
           {t('Peruste')}
           <Select
             options={perusteOptions}
-            initialValue="105/011/2014"
+            initialValue="57/011/2015"
             value={props.state.peruste.value?.koodiarvo}
             onChange={(opt) => props.state.peruste.set(opt?.value)}
             disabled={perusteOptions.length < 2}

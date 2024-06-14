@@ -10,6 +10,7 @@ import React, {
 import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { nonNull } from '../util/fp/arrays'
 import { fetchPeruste } from '../util/koskiApi'
+import { SelectOption, perusteToOption } from '../components-v2/controls/Select'
 
 export type Peruste = Omit<
   Koodistokoodiviite<string, string>,
@@ -31,6 +32,16 @@ export function usePeruste(diaariNumero?: string): Peruste[] | null {
         : [],
     [diaariNumero, perusteet]
   )
+}
+
+/**
+ * Palauttaa annetun diaarinumeron mukaiset perusteet Select-komponentin käyttämässä muodossa.
+ */
+export function usePerusteSelectOptions(
+  diaarinumero?: string
+): SelectOption<Peruste>[] {
+  const perusteet = usePeruste(diaarinumero)
+  return useMemo(() => perusteet?.map(perusteToOption) || [], [perusteet])
 }
 
 /**

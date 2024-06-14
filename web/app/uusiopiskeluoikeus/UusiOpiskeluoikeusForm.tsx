@@ -29,7 +29,7 @@ import {
 import { ClassOf } from '../util/types'
 import { OppilaitosSelect, OrgType } from './OppilaitosSelect'
 import { createOpiskeluoikeus } from './opiskeluoikeusBuilder'
-import { OppimääräFields } from './oppimaara/OppimaaraFields'
+import { SuoritusFields } from './suoritus/SuoritusFields'
 
 export type UusiOpiskeluoikeusFormProps = {
   onResult: (opiskeluoikeus?: Opiskeluoikeus) => void
@@ -79,7 +79,7 @@ export const UusiOpiskeluoikeusForm = (props: UusiOpiskeluoikeusFormProps) => {
         </>
       )}
 
-      {state.päätasonSuoritus.visible && <OppimääräFields state={state} />}
+      {state.päätasonSuoritus.visible && <SuoritusFields state={state} />}
 
       {state.suorituskieli.visible && (
         <>

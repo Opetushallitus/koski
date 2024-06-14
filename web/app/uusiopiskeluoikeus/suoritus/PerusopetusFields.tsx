@@ -1,21 +1,19 @@
-import React, { useMemo } from 'react'
-import { Select, perusteToOption } from '../../components-v2/controls/Select'
+import React from 'react'
+import { usePerusteSelectOptions } from '../../appstate/peruste'
+import { Select } from '../../components-v2/controls/Select'
 import { t } from '../../i18n/i18n'
 import { koodistokoodiviiteId } from '../../util/koodisto'
 import { usePäätasonSuoritustyypit } from '../UusiOpiskeluoikeusForm'
-import { OppimääräFieldsProps } from './OppimaaraFields'
-import { usePeruste } from '../../appstate/peruste'
+import { SuoritusFieldsProps } from './SuoritusFields'
 
 const piilotettavatPtsTyypit = ['perusopetuksenvuosiluokka']
 
-export const PerusopetusFields = (props: OppimääräFieldsProps) => {
+export const PerusopetusFields = (props: SuoritusFieldsProps) => {
   const options = usePäätasonSuoritustyypit(props.state).filter(
     (opt) => !piilotettavatPtsTyypit.includes(opt.value!.koodiarvo)
   )
-  const perusteet = usePeruste(props.state.päätasonSuoritus.value?.koodiarvo)
-  const perusteOptions = useMemo(
-    () => perusteet?.map(perusteToOption) || [],
-    [perusteet]
+  const perusteOptions = usePerusteSelectOptions(
+    props.state.päätasonSuoritus.value?.koodiarvo
   )
 
   return (

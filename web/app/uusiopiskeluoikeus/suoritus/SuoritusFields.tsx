@@ -4,11 +4,11 @@ import { PerusopetusFields } from './PerusopetusFields'
 import { PerusopetukseenValmistavaFields } from './PerusopetukseenValmistavaFields'
 import { PerusopetuksenLisäopetusFields } from './PerusopetuksenLisaopetusFields'
 
-export type OppimääräFieldsProps = {
+export type SuoritusFieldsProps = {
   state: UusiOpiskeluoikeusDialogState
 }
 
-export const OppimääräFields = (props: OppimääräFieldsProps) => {
+export const SuoritusFields = (props: SuoritusFieldsProps) => {
   switch (props.state.opiskeluoikeus.value?.koodiarvo) {
     case 'perusopetus':
       return <PerusopetusFields {...props} />
