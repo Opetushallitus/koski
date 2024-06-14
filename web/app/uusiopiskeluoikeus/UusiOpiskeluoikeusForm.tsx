@@ -45,6 +45,7 @@ export const UusiOpiskeluoikeusForm = (props: UusiOpiskeluoikeusFormProps) => {
   const state = useUusiOpiskeluoikeusDialogState()
   const opiskeluoikeustyypit = useOpiskeluoikeustyypit(state.oppilaitos.value)
   const tilat = useOpiskeluoikeudenTilat(state)
+  const opintojenRahoitukset = useOpintojenRahoitus(state)
 
   useEffect(() => props.onResult(state.result), [props, state.result])
 
@@ -119,6 +120,22 @@ export const UusiOpiskeluoikeusForm = (props: UusiOpiskeluoikeusFormProps) => {
         </>
       )}
 
+      {opintojenRahoitukset.options.length > 0 && (
+        <>
+          {t('Opintojen rahoitus')}
+          <Select
+            options={opintojenRahoitukset.options}
+            initialValue={opintojenRahoitukset.initialValue}
+            value={
+              state.opintojenRahoitus.value &&
+              koodistokoodiviiteId(state.opintojenRahoitus.value)
+            }
+            onChange={(opt) => state.opintojenRahoitus.set(opt?.value)}
+            testId="opintojenRahoitus"
+          />
+        </>
+      )}
+
       {state.maksuton.visible && (
         <>
           <RadioButtons
@@ -165,6 +182,7 @@ export type UusiOpiskeluoikeusDialogState = {
   aloituspäivä: DialogField<string>
   tila: DialogField<Koodistokoodiviite<'koskiopiskeluoikeudentila'>>
   maksuton: DialogField<boolean | null>
+  opintojenRahoitus: DialogField<Koodistokoodiviite<'opintojenrahoitus'>>
   ooMapping?: OpiskeluoikeusClass[]
   result?: Opiskeluoikeus
 }
@@ -227,6 +245,11 @@ const useUusiOpiskeluoikeusDialogState = (): UusiOpiskeluoikeusDialogState => {
   )
   const maksuton = useDialogField<boolean | null>(maksuttomuustiedollinen)
 
+  // Opintojen rahoitus
+  const opintojenRahoitus = useDialogField<
+    Koodistokoodiviite<'opintojenrahoitus'>
+  >(päätasonSuoritusValittu)
+
   // Validi opiskeluoikeus
   const result = useMemo(
     () =>
@@ -244,12 +267,14 @@ const useUusiOpiskeluoikeusDialogState = (): UusiOpiskeluoikeusDialogState => {
             aloituspäivä.value,
             tila.value,
             suorituskieli.value,
-            maksuton.value
+            maksuton.value,
+            opintojenRahoitus.value
           )
         : undefined,
     [
       aloituspäivä.value,
       maksuton.value,
+      opintojenRahoitus.value,
       opiskeluoikeus.value,
       oppilaitos.value,
       peruste.value,
@@ -268,6 +293,7 @@ const useUusiOpiskeluoikeusDialogState = (): UusiOpiskeluoikeusDialogState => {
     aloituspäivä,
     tila,
     maksuton,
+    opintojenRahoitus,
     ooMapping,
     result
   }
@@ -367,6 +393,34 @@ const useOpiskeluoikeudenTilat = (
     ]
     return defaults.find((tila) => options.find((tt) => tt.key === tila))
   }, [options])
+
+  return { options, initialValue }
+}
+
+const useOpintojenRahoitus = (state: UusiOpiskeluoikeusDialogState) => {
+  const className = opiskeluoikeustyyppiToClassName(
+    state.ooMapping,
+    state.opiskeluoikeus?.value?.koodiarvo
+  )
+
+  const opiskelujaksonTila = useChildSchemaSafe(
+    className,
+    'tila.opiskeluoikeusjaksot.[].opintojenRahoitus'
+  )
+
+  const koodistot = useKoodistoOfConstraint<'opintojenrahoitus'>(
+    opiskelujaksonTila ? opiskelujaksonTila : null
+  )
+
+  const options = useMemo(
+    () =>
+      koodistot
+        ? koodistot.flatMap((k) => k.koodiviite).map(koodiviiteToOption)
+        : [],
+    [koodistot]
+  )
+
+  const initialValue = useMemo(() => options[0]?.value?.koodiarvo, [options])
 
   return { options, initialValue }
 }
