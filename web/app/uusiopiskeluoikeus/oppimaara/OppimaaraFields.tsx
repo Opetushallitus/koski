@@ -1,5 +1,5 @@
 import React from 'react'
-import { UusiOpiskeluoikeusDialogState } from '../UusiOpiskeluoikeusDialog'
+import { UusiOpiskeluoikeusDialogState } from '../UusiOpiskeluoikeusForm'
 import { PerusopetusFields } from './PerusopetusFields'
 
 export type OppimääräFieldsProps = {

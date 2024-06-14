@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import { Select, perusteToOption } from '../../components-v2/controls/Select'
 import { t } from '../../i18n/i18n'
 import { koodistokoodiviiteId } from '../../util/koodisto'
-import { usePäätasonSuoritustyypit } from '../UusiOpiskeluoikeusDialog'
+import { usePäätasonSuoritustyypit } from '../UusiOpiskeluoikeusForm'
 import { OppimääräFieldsProps } from './OppimaaraFields'
 import { usePeruste } from '../../appstate/peruste'
 

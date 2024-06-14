@@ -4,7 +4,7 @@ import Atom from 'bacon.atom'
 import Http from '../util/http'
 import { navigateToOppija, showError } from '../util/location'
 import { searchStringAtom } from '../virkailija/OppijaHaku'
-import UusiOpiskeluoikeus from './UusiOpiskeluoikeus'
+import { UusiOpiskeluoikeusForm } from '../uusiopiskeluoikeus/UusiOpiskeluoikeusForm'
 import UusiHenkilö from './UusiHenkilo'
 import Text from '../i18n/Text'
 
@@ -49,7 +49,7 @@ export const UusiOppija = ({ hetu, oid }) => {
         </h2>
         <UusiHenkilö {...{ hetu, oid, henkilöAtom, henkilöValidAtom }} />
         <hr />
-        <UusiOpiskeluoikeus opiskeluoikeusAtom={opiskeluoikeusAtom} />
+        <UusiOpiskeluoikeusForm onResult={(oo) => opiskeluoikeusAtom.set(oo)} />
         <button
           type="button"
           className="koski-button"
