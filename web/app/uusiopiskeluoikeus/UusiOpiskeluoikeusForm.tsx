@@ -183,6 +183,7 @@ export type UusiOpiskeluoikeusDialogState = {
   tila: DialogField<Koodistokoodiviite<'koskiopiskeluoikeudentila'>>
   maksuton: DialogField<boolean | null>
   opintojenRahoitus: DialogField<Koodistokoodiviite<'opintojenrahoitus'>>
+  tuvaJärjestämislupa: DialogField<Koodistokoodiviite<'tuvajarjestamislupa'>>
   ooMapping?: OpiskeluoikeusClass[]
   result?: Opiskeluoikeus
 }
@@ -250,6 +251,10 @@ const useUusiOpiskeluoikeusDialogState = (): UusiOpiskeluoikeusDialogState => {
     Koodistokoodiviite<'opintojenrahoitus'>
   >(päätasonSuoritusValittu)
 
+  // Tuva-järjestämislupa
+  const tuvaJärjestämislupa =
+    useDialogField<Koodistokoodiviite<'tuvajarjestamislupa'>>(true)
+
   // Validi opiskeluoikeus
   const result = useMemo(
     () =>
@@ -268,7 +273,8 @@ const useUusiOpiskeluoikeusDialogState = (): UusiOpiskeluoikeusDialogState => {
             tila.value,
             suorituskieli.value,
             maksuton.value,
-            opintojenRahoitus.value
+            opintojenRahoitus.value,
+            tuvaJärjestämislupa.value
           )
         : undefined,
     [
@@ -280,7 +286,8 @@ const useUusiOpiskeluoikeusDialogState = (): UusiOpiskeluoikeusDialogState => {
       peruste.value,
       päätasonSuoritus.value,
       suorituskieli.value,
-      tila.value
+      tila.value,
+      tuvaJärjestämislupa.value
     ]
   )
 
@@ -295,6 +302,7 @@ const useUusiOpiskeluoikeusDialogState = (): UusiOpiskeluoikeusDialogState => {
     maksuton,
     opintojenRahoitus,
     ooMapping,
+    tuvaJärjestämislupa,
     result
   }
 }
@@ -370,13 +378,14 @@ const useOpiskeluoikeudenTilat = (
     state.opiskeluoikeus?.value?.koodiarvo
   )
 
-  const opiskelujaksonTila = useChildSchema(
+  const opiskelujaksonTila = useChildSchemaSafe(
     className,
     'tila.opiskeluoikeusjaksot.[].tila'
   )
 
-  const koodistot =
-    useKoodistoOfConstraint<'koskiopiskeluoikeudentila'>(opiskelujaksonTila)
+  const koodistot = useKoodistoOfConstraint<'koskiopiskeluoikeudentila'>(
+    opiskelujaksonTila || null
+  )
 
   const options = useMemo(
     () =>

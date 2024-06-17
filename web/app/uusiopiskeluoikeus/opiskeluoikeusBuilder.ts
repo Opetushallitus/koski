@@ -19,7 +19,6 @@ import { NuortenPerusopetuksenOpiskeluoikeusjakso } from '../types/fi/oph/koski/
 import { NuortenPerusopetuksenOppiaineenOppimääränSuoritus } from '../types/fi/oph/koski/schema/NuortenPerusopetuksenOppiaineenOppimaaranSuoritus'
 import { NuortenPerusopetuksenOppimääränSuoritus } from '../types/fi/oph/koski/schema/NuortenPerusopetuksenOppimaaranSuoritus'
 import { NuortenPerusopetus } from '../types/fi/oph/koski/schema/NuortenPerusopetus'
-import { OidOrganisaatio } from '../types/fi/oph/koski/schema/OidOrganisaatio'
 import { Opiskeluoikeus } from '../types/fi/oph/koski/schema/Opiskeluoikeus'
 import { Oppilaitos } from '../types/fi/oph/koski/schema/Oppilaitos'
 import { PerusopetukseenValmistavaOpetus } from '../types/fi/oph/koski/schema/PerusopetukseenValmistavaOpetus'
@@ -33,6 +32,11 @@ import { PerusopetuksenLisäopetuksenSuoritus } from '../types/fi/oph/koski/sche
 import { PerusopetuksenLisäopetus } from '../types/fi/oph/koski/schema/PerusopetuksenLisaopetus'
 import { PerusopetuksenOpiskeluoikeus } from '../types/fi/oph/koski/schema/PerusopetuksenOpiskeluoikeus'
 import { Toimipiste } from '../types/fi/oph/koski/schema/Toimipiste'
+import { TutkintokoulutukseenValmentavanKoulutuksenSuoritus } from '../types/fi/oph/koski/schema/TutkintokoulutukseenValmentavanKoulutuksenSuoritus'
+import { TutkintokoulutukseenValmentavanKoulutus } from '../types/fi/oph/koski/schema/TutkintokoulutukseenValmentavanKoulutus'
+import { TutkintokoulutukseenValmentavanOpiskeluoikeudenTila } from '../types/fi/oph/koski/schema/TutkintokoulutukseenValmentavanOpiskeluoikeudenTila'
+import { TutkintokoulutukseenValmentavanOpiskeluoikeus } from '../types/fi/oph/koski/schema/TutkintokoulutukseenValmentavanOpiskeluoikeus'
+import { TutkintokoulutukseenValmentavanOpiskeluoikeusjakso } from '../types/fi/oph/koski/schema/TutkintokoulutukseenValmentavanOpiskeluoikeusjakso'
 import { VARHAISKASVATUKSEN_TOIMIPAIKKA } from '../uusioppija/esiopetuksenSuoritus'
 
 export const createOpiskeluoikeus = (
@@ -44,7 +48,8 @@ export const createOpiskeluoikeus = (
   tila: Koodistokoodiviite<'koskiopiskeluoikeudentila', any>,
   suorituskieli: Koodistokoodiviite<'kieli'>,
   maksuton?: boolean | null,
-  opintojenRahoitus?: Koodistokoodiviite<'opintojenrahoitus'>
+  opintojenRahoitus?: Koodistokoodiviite<'opintojenrahoitus'>,
+  tuvaJärjestämislupa?: Koodistokoodiviite<'tuvajarjestamislupa'>
 ): Opiskeluoikeus | undefined => {
   switch (opiskeluoikeudenTyyppi.koodiarvo) {
     case 'perusopetus':
@@ -100,6 +105,20 @@ export const createOpiskeluoikeus = (
         alku,
         tila,
         suorituskieli
+      )
+
+    case 'tuva':
+      if (!peruste || !tuvaJärjestämislupa || !opintojenRahoitus) {
+        return undefined
+      }
+      return createTutkintokoulutukseenValmentavanOpiskeluoikeus(
+        peruste,
+        organisaatio,
+        alku,
+        tila,
+        opintojenRahoitus,
+        suorituskieli,
+        tuvaJärjestämislupa
       )
 
     default:
@@ -326,6 +345,40 @@ const createEsiopetuksenOpiskeluoikeus = (
             koodistoUri: 'koulutus'
           })
         }),
+        toimipiste: toToimipiste(organisaatio)
+      })
+    ]
+  })
+
+// Tutkintokoulutukseen valmentava koulutus
+
+const createTutkintokoulutukseenValmentavanOpiskeluoikeus = (
+  peruste: Peruste,
+  organisaatio: OrganisaatioHierarkia,
+  alku: string,
+  tila: TutkintokoulutukseenValmentavanOpiskeluoikeusjakso['tila'],
+  opintojenRahoitus: Koodistokoodiviite<'opintojenrahoitus', any>,
+  suorituskieli: Koodistokoodiviite<'kieli'>,
+  tuvaJärjestämislupa: Koodistokoodiviite<'tuvajarjestamislupa'>
+) =>
+  TutkintokoulutukseenValmentavanOpiskeluoikeus({
+    oppilaitos: toOppilaitos(organisaatio),
+    tila: TutkintokoulutukseenValmentavanOpiskeluoikeudenTila({
+      opiskeluoikeusjaksot: [
+        TutkintokoulutukseenValmentavanOpiskeluoikeusjakso({
+          alku,
+          tila,
+          opintojenRahoitus
+        })
+      ]
+    }),
+    järjestämislupa: tuvaJärjestämislupa,
+    suoritukset: [
+      TutkintokoulutukseenValmentavanKoulutuksenSuoritus({
+        koulutusmoduuli: TutkintokoulutukseenValmentavanKoulutus({
+          perusteenDiaarinumero: peruste.koodiarvo
+        }),
+        suorituskieli,
         toimipiste: toToimipiste(organisaatio)
       })
     ]
