@@ -4,6 +4,7 @@ import { PerusopetusFields } from './PerusopetusFields'
 import { PerusopetukseenValmistavaFields } from './PerusopetukseenValmistavaFields'
 import { PerusopetuksenLisäopetusFields } from './PerusopetuksenLisaopetusFields'
 import { AikuistenPerusopetusFields } from './AikuistenPerusopetusFields'
+import { EsiopetusFields } from './EsiopetusFields'
 
 export type SuoritusFieldsProps = {
   state: UusiOpiskeluoikeusDialogState
@@ -19,6 +20,8 @@ export const SuoritusFields = (props: SuoritusFieldsProps) => {
       return <PerusopetuksenLisäopetusFields {...props} />
     case 'aikuistenperusopetus':
       return <AikuistenPerusopetusFields {...props} />
+    case 'esiopetus':
+      return <EsiopetusFields {...props} />
     default:
       return null
   }

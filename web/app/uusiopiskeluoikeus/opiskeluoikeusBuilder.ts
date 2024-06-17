@@ -8,6 +8,9 @@ import { AikuistenPerusopetuksenOppiaineenOppimääränSuoritus } from '../types
 import { AikuistenPerusopetuksenOppimääränSuoritus } from '../types/fi/oph/koski/schema/AikuistenPerusopetuksenOppimaaranSuoritus'
 import { AikuistenPerusopetus } from '../types/fi/oph/koski/schema/AikuistenPerusopetus'
 import { EiTiedossaOppiaine } from '../types/fi/oph/koski/schema/EiTiedossaOppiaine'
+import { EsiopetuksenOpiskeluoikeus } from '../types/fi/oph/koski/schema/EsiopetuksenOpiskeluoikeus'
+import { EsiopetuksenSuoritus } from '../types/fi/oph/koski/schema/EsiopetuksenSuoritus'
+import { Esiopetus } from '../types/fi/oph/koski/schema/Esiopetus'
 import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { Maksuttomuus } from '../types/fi/oph/koski/schema/Maksuttomuus'
 import { MaksuttomuusTieto } from '../types/fi/oph/koski/schema/MaksuttomuusTieto'
@@ -29,6 +32,8 @@ import { PerusopetuksenLisäopetuksenOpiskeluoikeus } from '../types/fi/oph/kosk
 import { PerusopetuksenLisäopetuksenSuoritus } from '../types/fi/oph/koski/schema/PerusopetuksenLisaopetuksenSuoritus'
 import { PerusopetuksenLisäopetus } from '../types/fi/oph/koski/schema/PerusopetuksenLisaopetus'
 import { PerusopetuksenOpiskeluoikeus } from '../types/fi/oph/koski/schema/PerusopetuksenOpiskeluoikeus'
+import { Toimipiste } from '../types/fi/oph/koski/schema/Toimipiste'
+import { VARHAISKASVATUKSEN_TOIMIPAIKKA } from '../uusioppija/esiopetuksenSuoritus'
 
 export const createOpiskeluoikeus = (
   organisaatio: OrganisaatioHierarkia,
@@ -290,4 +295,38 @@ const createAikuistenPerusopetuksenOpiskeluoikeus = (
       maksuton,
       AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot
     )
+  })
+
+// Esiopetus
+const createEsiopetuksenOpiskeluoikeus = (
+  peruste: Peruste,
+  organisaatio: OrganisaatioHierarkia,
+  alku: string,
+  tila: NuortenPerusopetuksenOpiskeluoikeusjakso['tila'],
+  suorituskieli: Koodistokoodiviite<'kieli'>
+) =>
+  EsiopetuksenOpiskeluoikeus({
+    oppilaitos: toOppilaitos(organisaatio),
+    tila: NuortenPerusopetuksenOpiskeluoikeudenTila({
+      opiskeluoikeusjaksot: [
+        NuortenPerusopetuksenOpiskeluoikeusjakso({ alku, tila })
+      ]
+    }),
+    suoritukset: [
+      EsiopetuksenSuoritus({
+        suorituskieli,
+        koulutusmoduuli: Esiopetus({
+          perusteenDiaarinumero: peruste.koodiarvo,
+          tunniste: Koodistokoodiviite({
+            koodiarvo: organisaatio.oppilaitostyyppi?.includes(
+              VARHAISKASVATUKSEN_TOIMIPAIKKA
+            )
+              ? '001102'
+              : '001101',
+            koodistoUri: 'koulutus'
+          })
+        }),
+        toimipiste: toToimipiste(organisaatio)
+      })
+    ]
   })
