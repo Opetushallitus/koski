@@ -76,6 +76,8 @@ case class OpiskeluoikeusClass(
   className: String,
   tyyppi: String,
   suoritukset: List[SuoritusClass],
+  opiskeluoikeusjaksot: List[String],
+  lisätiedot: List[String],
 )
 
 object OpiskeluoikeusClass {
@@ -87,6 +89,12 @@ object OpiskeluoikeusClass {
         className = cname,
         tyyppi = tyyppi,
         suoritukset = SuoritusClass(oo),
+        opiskeluoikeusjaksot = oo
+          .zoom(Seq("tila", "opiskeluoikeusjaksot", "[]"))
+          .map(_.asInstanceOf[ObjectType].fullClassName).toList,
+        lisätiedot = oo
+          .zoom(Seq("lisätiedot"))
+          .map(_.asInstanceOf[ObjectType].fullClassName).toList,
       ) }
   }
 

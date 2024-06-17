@@ -1,6 +1,12 @@
+import * as A from 'fp-ts/Array'
+import { pipe } from 'fp-ts/lib/function'
 import React, { useEffect, useMemo, useState } from 'react'
 import { isSuccess, useApiOnce, useApiWithParams } from '../api-fetch'
-import { useChildSchema, useChildSchemaSafe } from '../appstate/constraints'
+import {
+  useChildSchema,
+  useChildSchemaSafe,
+  useSchema
+} from '../appstate/constraints'
 import { useKoodisto, useKoodistoOfConstraint } from '../appstate/koodisto'
 import { Peruste } from '../appstate/peruste'
 import { DateEdit } from '../components-v2/controls/DateField'
@@ -21,6 +27,7 @@ import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodivi
 import { Opiskeluoikeus } from '../types/fi/oph/koski/schema/Opiskeluoikeus'
 import { isSuorituskielellinen } from '../types/fi/oph/koski/schema/Suorituskielellinen'
 import { OpiskeluoikeusClass } from '../types/fi/oph/koski/typemodel/OpiskeluoikeusClass'
+import * as C from '../util/constraints'
 import { koodistokoodiviiteId } from '../util/koodisto'
 import {
   fetchOpiskeluoikeusClassMapping,
@@ -30,6 +37,7 @@ import { ClassOf } from '../util/types'
 import { OppilaitosSelect, OrgType } from './OppilaitosSelect'
 import { createOpiskeluoikeus } from './opiskeluoikeusBuilder'
 import { SuoritusFields } from './suoritus/SuoritusFields'
+import { OpiskeluoikeudenTila } from '../types/fi/oph/koski/schema/OpiskeluoikeudenTila'
 
 export type UusiOpiskeluoikeusFormProps = {
   onResult: (opiskeluoikeus?: Opiskeluoikeus) => void
@@ -206,10 +214,11 @@ const useUusiOpiskeluoikeusDialogState = (): UusiOpiskeluoikeusDialogState => {
       oppilaitosValittu
     )
   const opiskeluoikeusValittu = opiskeluoikeus.value !== undefined
-  const opiskeluoikeusClass = opiskeluoikeustyyppiToClassName(
+  const opiskeluoikeusClass = opiskeluoikeustyyppiToClassNames(
     ooMapping,
     opiskeluoikeus.value?.koodiarvo
   )
+  const opiskeluoikeudenLisätiedot = useSchema(opiskeluoikeusClass?.lisätiedot)
 
   // Päätason suoritus
   const päätasonSuoritus = useDialogField<
@@ -240,9 +249,9 @@ const useUusiOpiskeluoikeusDialogState = (): UusiOpiskeluoikeusDialogState => {
   )
 
   // Opiskelun maksuttomuus
-  const maksuttomuustiedollinen = !!useChildSchemaSafe(
-    opiskeluoikeusClass,
-    'lisätiedot.maksuttomuus'
+  const maksuttomuustiedollinen = C.hasProp(
+    opiskeluoikeudenLisätiedot,
+    'maksuttomuus'
   )
   const maksuton = useDialogField<boolean | null>(maksuttomuustiedollinen)
 
@@ -373,19 +382,18 @@ const useOpiskeluoikeudenTilat = (
   options: Array<SelectOption<Koodistokoodiviite<'koskiopiskeluoikeudentila'>>>
   initialValue?: string
 } => {
-  const className = opiskeluoikeustyyppiToClassName(
+  const className = opiskeluoikeustyyppiToClassNames(
     state.ooMapping,
     state.opiskeluoikeus?.value?.koodiarvo
   )
 
-  const opiskelujaksonTila = useChildSchemaSafe(
-    className,
-    'tila.opiskeluoikeusjaksot.[].tila'
+  const opiskelujaksonTila = useChildSchema(
+    className?.opiskeluoikeusjaksot,
+    'tila'
   )
 
-  const koodistot = useKoodistoOfConstraint<'koskiopiskeluoikeudentila'>(
-    opiskelujaksonTila || null
-  )
+  const koodistot =
+    useKoodistoOfConstraint<'koskiopiskeluoikeudentila'>(opiskelujaksonTila)
 
   const options = useMemo(
     () =>
@@ -407,14 +415,14 @@ const useOpiskeluoikeudenTilat = (
 }
 
 const useOpintojenRahoitus = (state: UusiOpiskeluoikeusDialogState) => {
-  const className = opiskeluoikeustyyppiToClassName(
+  const className = opiskeluoikeustyyppiToClassNames(
     state.ooMapping,
     state.opiskeluoikeus?.value?.koodiarvo
   )
 
   const opiskelujaksonTila = useChildSchemaSafe(
-    className,
-    'tila.opiskeluoikeusjaksot.[].opintojenRahoitus'
+    className?.opiskeluoikeusjaksot,
+    'opintojenRahoitus'
   )
 
   const koodistot = useKoodistoOfConstraint<'opintojenrahoitus'>(
@@ -444,5 +452,14 @@ const opiskeluoikeustyyppiToClassName = (
   return tyyppi !== undefined && ooMapping
     ? (ooMapping.find((c) => c.tyyppi === tyyppi)
         ?.className as ClassOf<Opiskeluoikeus>)
+    : undefined
+}
+
+const opiskeluoikeustyyppiToClassNames = (
+  ooMapping?: OpiskeluoikeusClass[],
+  tyyppi?: string
+): OpiskeluoikeusClass | undefined => {
+  return tyyppi !== undefined && ooMapping
+    ? ooMapping.find((c) => c.tyyppi === tyyppi)
     : undefined
 }

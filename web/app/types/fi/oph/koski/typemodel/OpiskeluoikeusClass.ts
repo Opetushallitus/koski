@@ -7,18 +7,24 @@ import { SuoritusClass } from './SuoritusClass'
  */
 export type OpiskeluoikeusClass = {
   $class: 'fi.oph.koski.typemodel.OpiskeluoikeusClass'
-  className: string
   tyyppi: string
+  lisätiedot: Array<string>
   suoritukset: Array<SuoritusClass>
+  className: string
+  opiskeluoikeusjaksot: Array<string>
 }
 
 export const OpiskeluoikeusClass = (o: {
-  className: string
   tyyppi: string
+  lisätiedot?: Array<string>
   suoritukset?: Array<SuoritusClass>
+  className: string
+  opiskeluoikeusjaksot?: Array<string>
 }): OpiskeluoikeusClass => ({
   $class: 'fi.oph.koski.typemodel.OpiskeluoikeusClass',
+  lisätiedot: [],
   suoritukset: [],
+  opiskeluoikeusjaksot: [],
   ...o
 })
 
