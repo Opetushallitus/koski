@@ -14,6 +14,12 @@ import { Esiopetus } from '../types/fi/oph/koski/schema/Esiopetus'
 import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { Maksuttomuus } from '../types/fi/oph/koski/schema/Maksuttomuus'
 import { MaksuttomuusTieto } from '../types/fi/oph/koski/schema/MaksuttomuusTieto'
+import { MuuKuinSäänneltyKoulutus } from '../types/fi/oph/koski/schema/MuuKuinSaanneltyKoulutus'
+import { MuunKuinSäännellynKoulutuksenLisätiedot } from '../types/fi/oph/koski/schema/MuunKuinSaannellynKoulutuksenLisatiedot'
+import { MuunKuinSäännellynKoulutuksenOpiskeluoikeudenJakso } from '../types/fi/oph/koski/schema/MuunKuinSaannellynKoulutuksenOpiskeluoikeudenJakso'
+import { MuunKuinSäännellynKoulutuksenOpiskeluoikeus } from '../types/fi/oph/koski/schema/MuunKuinSaannellynKoulutuksenOpiskeluoikeus'
+import { MuunKuinSäännellynKoulutuksenPäätasonSuoritus } from '../types/fi/oph/koski/schema/MuunKuinSaannellynKoulutuksenPaatasonSuoritus'
+import { MuunKuinSäännellynKoulutuksenTila } from '../types/fi/oph/koski/schema/MuunKuinSaannellynKoulutuksenTila'
 import { NuortenPerusopetuksenOpiskeluoikeudenTila } from '../types/fi/oph/koski/schema/NuortenPerusopetuksenOpiskeluoikeudenTila'
 import { NuortenPerusopetuksenOpiskeluoikeusjakso } from '../types/fi/oph/koski/schema/NuortenPerusopetuksenOpiskeluoikeusjakso'
 import { NuortenPerusopetuksenOppiaineenOppimääränSuoritus } from '../types/fi/oph/koski/schema/NuortenPerusopetuksenOppiaineenOppimaaranSuoritus'
@@ -49,7 +55,9 @@ export const createOpiskeluoikeus = (
   suorituskieli: Koodistokoodiviite<'kieli'>,
   maksuton?: boolean | null,
   opintojenRahoitus?: Koodistokoodiviite<'opintojenrahoitus'>,
-  tuvaJärjestämislupa?: Koodistokoodiviite<'tuvajarjestamislupa'>
+  tuvaJärjestämislupa?: Koodistokoodiviite<'tuvajarjestamislupa'>,
+  opintokokonaisuus?: Koodistokoodiviite<'opintokokonaisuudet'>,
+  jotpaAsianumero?: Koodistokoodiviite<'jotpaasianumero'>
 ): Opiskeluoikeus | undefined => {
   switch (opiskeluoikeudenTyyppi.koodiarvo) {
     case 'perusopetus':
@@ -119,6 +127,26 @@ export const createOpiskeluoikeus = (
         opintojenRahoitus,
         suorituskieli,
         tuvaJärjestämislupa
+      )
+
+    case 'muukuinsaanneltykoulutus':
+      if (
+        !peruste ||
+        !opintojenRahoitus ||
+        !opintokokonaisuus ||
+        !jotpaAsianumero
+      ) {
+        return undefined
+      }
+      return createMuunKuinSäännellynKoulutuksenOpiskeluoikeus(
+        peruste,
+        organisaatio,
+        alku,
+        tila,
+        opintojenRahoitus,
+        suorituskieli,
+        opintokokonaisuus,
+        jotpaAsianumero
       )
 
     default:
@@ -379,6 +407,43 @@ const createTutkintokoulutukseenValmentavanOpiskeluoikeus = (
           perusteenDiaarinumero: peruste.koodiarvo
         }),
         suorituskieli,
+        toimipiste: toToimipiste(organisaatio)
+      })
+    ]
+  })
+
+// Muu kuin säännelty koulutus
+
+const createMuunKuinSäännellynKoulutuksenOpiskeluoikeus = (
+  peruste: Peruste,
+  organisaatio: OrganisaatioHierarkia,
+  alku: string,
+  tila: MuunKuinSäännellynKoulutuksenOpiskeluoikeudenJakso['tila'],
+  opintojenRahoitus: Koodistokoodiviite<'opintojenrahoitus', any>,
+  suorituskieli: Koodistokoodiviite<'kieli'>,
+  opintokokonaisuus: Koodistokoodiviite<'opintokokonaisuudet'>,
+  jotpaAsianumero: Koodistokoodiviite<'jotpaasianumero'>
+) =>
+  MuunKuinSäännellynKoulutuksenOpiskeluoikeus({
+    oppilaitos: toOppilaitos(organisaatio),
+    tila: MuunKuinSäännellynKoulutuksenTila({
+      opiskeluoikeusjaksot: [
+        MuunKuinSäännellynKoulutuksenOpiskeluoikeudenJakso({
+          alku,
+          tila,
+          opintojenRahoitus
+        })
+      ]
+    }),
+    lisätiedot: MuunKuinSäännellynKoulutuksenLisätiedot({
+      jotpaAsianumero
+    }),
+    suoritukset: [
+      MuunKuinSäännellynKoulutuksenPäätasonSuoritus({
+        suorituskieli,
+        koulutusmoduuli: MuuKuinSäänneltyKoulutus({
+          opintokokonaisuus: opintokokonaisuus
+        }),
         toimipiste: toToimipiste(organisaatio)
       })
     ]

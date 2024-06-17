@@ -1,5 +1,3 @@
-import * as A from 'fp-ts/Array'
-import { pipe } from 'fp-ts/lib/function'
 import React, { useEffect, useMemo, useState } from 'react'
 import { isSuccess, useApiOnce, useApiWithParams } from '../api-fetch'
 import {
@@ -33,11 +31,9 @@ import {
   fetchOpiskeluoikeusClassMapping,
   fetchOrganisaationOpiskeluoikeustyypit
 } from '../util/koskiApi'
-import { ClassOf } from '../util/types'
 import { OppilaitosSelect, OrgType } from './OppilaitosSelect'
 import { createOpiskeluoikeus } from './opiskeluoikeusBuilder'
 import { SuoritusFields } from './suoritus/SuoritusFields'
-import { OpiskeluoikeudenTila } from '../types/fi/oph/koski/schema/OpiskeluoikeudenTila'
 
 export type UusiOpiskeluoikeusFormProps = {
   onResult: (opiskeluoikeus?: Opiskeluoikeus) => void
@@ -54,6 +50,7 @@ export const UusiOpiskeluoikeusForm = (props: UusiOpiskeluoikeusFormProps) => {
   const opiskeluoikeustyypit = useOpiskeluoikeustyypit(state.oppilaitos.value)
   const tilat = useOpiskeluoikeudenTilat(state)
   const opintojenRahoitukset = useOpintojenRahoitus(state)
+  const jotpaAsianumerot = useJotpaAsianumero(state)
 
   useEffect(() => props.onResult(state.result), [props, state.result])
 
@@ -144,6 +141,22 @@ export const UusiOpiskeluoikeusForm = (props: UusiOpiskeluoikeusFormProps) => {
         </>
       )}
 
+      {jotpaAsianumerot.options.length > 0 && (
+        <>
+          {t('JOTPA asianumero')}
+          <Select
+            options={jotpaAsianumerot.options}
+            initialValue={jotpaAsianumerot.initialValue}
+            value={
+              state.jotpaAsianumero.value &&
+              koodistokoodiviiteId(state.jotpaAsianumero.value)
+            }
+            onChange={(opt) => state.jotpaAsianumero.set(opt?.value)}
+            testId="jotpaAsianumero"
+          />
+        </>
+      )}
+
       {state.maksuton.visible && (
         <>
           <RadioButtons
@@ -192,6 +205,8 @@ export type UusiOpiskeluoikeusDialogState = {
   maksuton: DialogField<boolean | null>
   opintojenRahoitus: DialogField<Koodistokoodiviite<'opintojenrahoitus'>>
   tuvaJärjestämislupa: DialogField<Koodistokoodiviite<'tuvajarjestamislupa'>>
+  jotpaAsianumero: DialogField<Koodistokoodiviite<'jotpaasianumero'>>
+  opintokokonaisuus: DialogField<Koodistokoodiviite<'opintokokonaisuudet'>>
   ooMapping?: OpiskeluoikeusClass[]
   result?: Opiskeluoikeus
 }
@@ -264,6 +279,15 @@ const useUusiOpiskeluoikeusDialogState = (): UusiOpiskeluoikeusDialogState => {
   const tuvaJärjestämislupa =
     useDialogField<Koodistokoodiviite<'tuvajarjestamislupa'>>(true)
 
+  // Opintokokonaisuus (muu kuin säännelty koulutus)
+  const opintokokonaisuus =
+    useDialogField<Koodistokoodiviite<'opintokokonaisuudet'>>(true)
+
+  // Jotpa-asianumerollinen
+  const jotpaAsianumero = useDialogField<Koodistokoodiviite<'jotpaasianumero'>>(
+    C.hasProp(opiskeluoikeudenLisätiedot, 'jotpaAsianumero')
+  )
+
   // Validi opiskeluoikeus
   const result = useMemo(
     () =>
@@ -283,13 +307,17 @@ const useUusiOpiskeluoikeusDialogState = (): UusiOpiskeluoikeusDialogState => {
             suorituskieli.value,
             maksuton.value,
             opintojenRahoitus.value,
-            tuvaJärjestämislupa.value
+            tuvaJärjestämislupa.value,
+            opintokokonaisuus.value,
+            jotpaAsianumero.value
           )
         : undefined,
     [
       aloituspäivä.value,
+      jotpaAsianumero.value,
       maksuton.value,
       opintojenRahoitus.value,
+      opintokokonaisuus.value,
       opiskeluoikeus.value,
       oppilaitos.value,
       peruste.value,
@@ -310,8 +338,10 @@ const useUusiOpiskeluoikeusDialogState = (): UusiOpiskeluoikeusDialogState => {
     tila,
     maksuton,
     opintojenRahoitus,
-    ooMapping,
     tuvaJärjestämislupa,
+    jotpaAsianumero,
+    opintokokonaisuus,
+    ooMapping,
     result
   }
 }
@@ -442,18 +472,36 @@ const useOpintojenRahoitus = (state: UusiOpiskeluoikeusDialogState) => {
   return { options, initialValue }
 }
 
+const useJotpaAsianumero = (state: UusiOpiskeluoikeusDialogState) => {
+  const className = opiskeluoikeustyyppiToClassNames(
+    state.ooMapping,
+    state.opiskeluoikeus?.value?.koodiarvo
+  )
+
+  const asianumeroSchema = useChildSchemaSafe(
+    className?.lisätiedot,
+    'jotpaAsianumero'
+  )
+
+  const koodistot = useKoodistoOfConstraint<'jotpaasianumero'>(
+    asianumeroSchema ? asianumeroSchema : null
+  )
+
+  const options = useMemo(
+    () =>
+      koodistot
+        ? koodistot.flatMap((k) => k.koodiviite).map(koodiviiteToOption)
+        : [],
+    [koodistot]
+  )
+
+  const initialValue = useMemo(() => options[0]?.value?.koodiarvo, [options])
+
+  return { options, initialValue }
+}
+
 const asObject = (className?: string) =>
   className ? { $class: className } : undefined
-
-const opiskeluoikeustyyppiToClassName = (
-  ooMapping?: OpiskeluoikeusClass[],
-  tyyppi?: string
-): ClassOf<Opiskeluoikeus> | undefined => {
-  return tyyppi !== undefined && ooMapping
-    ? (ooMapping.find((c) => c.tyyppi === tyyppi)
-        ?.className as ClassOf<Opiskeluoikeus>)
-    : undefined
-}
 
 const opiskeluoikeustyyppiToClassNames = (
   ooMapping?: OpiskeluoikeusClass[],
