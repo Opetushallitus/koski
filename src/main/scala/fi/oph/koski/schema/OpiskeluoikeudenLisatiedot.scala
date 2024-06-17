@@ -1,7 +1,8 @@
 package fi.oph.koski.schema
 
 import fi.oph.koski.koodisto.MockKoodistoViitePalvelu
-import fi.oph.koski.schema.annotation.Deprecated
+import fi.oph.koski.koskiuser.Rooli
+import fi.oph.koski.schema.annotation.{Deprecated, KoodistoUri, SensitiveData}
 import fi.oph.scalaschema.annotation.{Description, Title}
 
 trait OpiskeluoikeudenLisätiedot
@@ -132,4 +133,11 @@ trait MaksuttomuusTieto extends OpiskeluoikeudenLisätiedot {
 
   final def withOikeuttaMaksuttomuuteenPidennetty(oikeuttaMaksuttomuuteenPidennetty: Option[List[OikeuttaMaksuttomuuteenPidennetty]]): MaksuttomuusTieto =
     shapeless.lens[MaksuttomuusTieto].field[Option[List[OikeuttaMaksuttomuuteenPidennetty]]]("oikeuttaMaksuttomuuteenPidennetty").set(this)(oikeuttaMaksuttomuuteenPidennetty)
+}
+
+trait JotpaAsianumero {
+  @Title("JOTPA asianumero")
+  @KoodistoUri("jotpaasianumero")
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+  def jotpaAsianumero: Option[Koodistokoodiviite]
 }

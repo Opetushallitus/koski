@@ -30,9 +30,10 @@ export const Select = createControl((self, child) => {
     },
     options: async () => {
       await showOptions()
-      return await child('options')
+      const options = await child('options')
         .locator('.Select__optionLabel')
         .allInnerTexts()
+      return options.filter((o) => o !== 'Ei valintaa')
     },
     delete: async (key: string) => {
       await showOptions()

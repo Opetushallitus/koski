@@ -3,7 +3,7 @@ package fi.oph.koski.documentation
 import fi.oph.koski.documentation.ExampleData.opiskeluoikeusLäsnä
 import fi.oph.koski.documentation.VapaaSivistystyöExample.opiskeluoikeusHyväksytystiSuoritettu
 import fi.oph.koski.organisaatio.MockOrganisaatiot
-import fi.oph.koski.schema.{Koodistokoodiviite, Koulutustoimija, LaajuusTunneissa, MuuKuinSäänneltyKoulutus, MuunKuinSäännellynKoulutuksenArviointi, MuunKuinSäännellynKoulutuksenOpiskeluoikeudenJakso, MuunKuinSäännellynKoulutuksenOpiskeluoikeus, MuunKuinSäännellynKoulutuksenOsasuorituksenKoulutusmoduuli, MuunKuinSäännellynKoulutuksenOsasuoritus, MuunKuinSäännellynKoulutuksenPäätasonSuoritus, MuunKuinSäännellynKoulutuksenTila, OidOrganisaatio, Oppilaitos, PaikallinenKoodi}
+import fi.oph.koski.schema.{Koodistokoodiviite, Koulutustoimija, LaajuusTunneissa, MuuKuinSäänneltyKoulutus, MuunKuinSäännellynKoulutuksenArviointi, MuunKuinSäännellynKoulutuksenLisätiedot, MuunKuinSäännellynKoulutuksenOpiskeluoikeudenJakso, MuunKuinSäännellynKoulutuksenOpiskeluoikeus, MuunKuinSäännellynKoulutuksenOsasuorituksenKoulutusmoduuli, MuunKuinSäännellynKoulutuksenOsasuoritus, MuunKuinSäännellynKoulutuksenPäätasonSuoritus, MuunKuinSäännellynKoulutuksenTila, OidOrganisaatio, Oppilaitos, PaikallinenKoodi}
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.schema.LocalizedString.finnish
 
@@ -27,6 +27,9 @@ object ExamplesMuuKuinSäänneltyKoulutus {
         OpiskeluoikeudenJakso.läsnä(LocalDate.of(2023, 1, 1)),
       )),
       suoritukset = List(PäätasonSuoritus.suoritusIlmanOsasuorituksia),
+      lisätiedot = Some(MuunKuinSäännellynKoulutuksenLisätiedot(
+        jotpaAsianumero = Some(Koodistokoodiviite("01/5848/2023", "jotpaasianumero"))
+      ))
     )
 
     lazy val suoritettu: MuunKuinSäännellynKoulutuksenOpiskeluoikeus = MuunKuinSäännellynKoulutuksenOpiskeluoikeus(
@@ -37,6 +40,9 @@ object ExamplesMuuKuinSäänneltyKoulutus {
         OpiskeluoikeudenJakso.suoritettu(LocalDate.of(2023, 2, 1)),
       )),
       suoritukset = List(PäätasonSuoritus.suoritusOsasuorituksilla),
+      lisätiedot = Some(MuunKuinSäännellynKoulutuksenLisätiedot(
+        jotpaAsianumero = Some(Koodistokoodiviite("01/5848/2023", "jotpaasianumero"))
+      ))
     )
 
     object OpiskeluoikeudenJakso {

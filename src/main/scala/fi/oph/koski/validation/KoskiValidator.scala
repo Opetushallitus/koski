@@ -159,7 +159,7 @@ class KoskiValidator(
           ePerusteetLops2019Validator.validate(opiskeluoikeus),
           VSTKotoutumiskoulutus2022Validation.validate(opiskeluoikeus),
           VapaaSivistystyöValidation.validateVapaanSivistystyönPäätasonOpintokokonaisuus(opiskeluoikeus),
-          JotpaValidation.validateOpiskeluoikeus(opiskeluoikeus, JotpaValidation.jotpaRahoitusVoimassaAlkaen(config)),
+          JotpaValidation.validateOpiskeluoikeus(opiskeluoikeus, config),
           TutkintokoulutukseenValmentavaKoulutusValidation.validateOpiskeluoikeus(opiskeluoikeus),
           EuropeanSchoolOfHelsinkiValidation.validateOpiskeluoikeus(config)(henkilöRepository, koskiOpiskeluoikeudet, henkilö, opiskeluoikeus),
           TaiteenPerusopetusValidation.validateOpiskeluoikeus(config)(opiskeluoikeus, suostumuksenPeruutusService),

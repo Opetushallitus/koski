@@ -4,6 +4,8 @@ import { Ulkomaanjakso } from './Ulkomaanjakso'
 import { OikeuttaMaksuttomuuteenPidennetty } from './OikeuttaMaksuttomuuteenPidennetty'
 import { Maksuttomuus } from './Maksuttomuus'
 import { OpiskeluvalmiuksiaTukevienOpintojenJakso } from './OpiskeluvalmiuksiaTukevienOpintojenJakso'
+import { Koodistokoodiviite } from './Koodistokoodiviite'
+import { LocalizedString } from './LocalizedString'
 import { Hojks } from './Hojks'
 
 /**
@@ -28,6 +30,7 @@ export type AmmatillisenOpiskeluoikeudenLisätiedot = {
   erityinenTuki?: Array<Aikajakso>
   koulutusvienti: boolean
   opiskeluvalmiuksiaTukevatOpinnot?: Array<OpiskeluvalmiuksiaTukevienOpintojenJakso>
+  jotpaAsianumero?: Koodistokoodiviite<'jotpaasianumero', string>
   hojks?: Hojks
   sisäoppilaitosmainenMajoitus?: Array<Aikajakso>
 }
@@ -49,6 +52,7 @@ export const AmmatillisenOpiskeluoikeudenLisätiedot = (
     erityinenTuki?: Array<Aikajakso>
     koulutusvienti?: boolean
     opiskeluvalmiuksiaTukevatOpinnot?: Array<OpiskeluvalmiuksiaTukevienOpintojenJakso>
+    jotpaAsianumero?: Koodistokoodiviite<'jotpaasianumero', string>
     hojks?: Hojks
     sisäoppilaitosmainenMajoitus?: Array<Aikajakso>
   } = {}

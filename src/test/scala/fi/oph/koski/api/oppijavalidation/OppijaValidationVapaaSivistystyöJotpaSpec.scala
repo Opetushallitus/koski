@@ -199,14 +199,14 @@ class OppijaValidationVapaaSivistystyöJotpaSpec extends AnyFreeSpec with PutOpi
 
     "Rahoitus" - {
       "Rahoitusmuoto pitää olla ilmoitettu opiskeluoikeuden tilalle läsnä" in {
-        val oo = ExamplesVapaaSivistystyöJotpa.Opiskeluoikeus.keskeneräinen.copy(tila = opiskeluoikeudenTila(List(opiskeluoikeusLäsnä), None))
+        val oo = ExamplesVapaaSivistystyöJotpa.Opiskeluoikeus.keskeneräinen.copy(tila = opiskeluoikeudenTila(List(opiskeluoikeusLäsnä), None), lisätiedot = None)
         setupOppijaWithOpiskeluoikeus(oo) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaltaPuuttuuRahoitusmuoto())
         }
       }
 
       "Rahoitusmuoto pitää olla ilmoitettu opiskeluoikeuden tilalle hyväksytysti suoritettu" in {
-        val oo = ExamplesVapaaSivistystyöJotpa.Opiskeluoikeus.suoritettu.copy(tila = opiskeluoikeudenTila(List(opiskeluoikeusHyväksytystiSuoritettu), None, LocalDate.of(2023, 2, 1)))
+        val oo = ExamplesVapaaSivistystyöJotpa.Opiskeluoikeus.suoritettu.copy(tila = opiskeluoikeudenTila(List(opiskeluoikeusHyväksytystiSuoritettu), None, LocalDate.of(2023, 2, 1)), lisätiedot = None)
         setupOppijaWithOpiskeluoikeus(oo) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaltaPuuttuuRahoitusmuoto())
         }

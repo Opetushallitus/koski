@@ -19,6 +19,7 @@ interface BaseOppija {
   rahoitus?: string
   suoritustyyppi?: string
   taiteenala?: string
+  jotpaAsianumero?: string
 }
 
 type ESHOppija =
@@ -49,6 +50,7 @@ export class KoskiUusiOppijaPage {
   readonly oppilaitosHakuInput: Locator
   readonly suoritustyyppi: Dropdown
   readonly taiteenala: Dropdown
+  readonly jotpaAsianumero: Dropdown
 
   constructor(page: Page) {
     this.page = page
@@ -89,6 +91,7 @@ export class KoskiUusiOppijaPage {
       'Suoritustyyppi-koodisto-dropdown'
     )
     this.taiteenala = Dropdown.fromTestId(page, 'Taiteenala-koodisto-dropdown')
+    this.jotpaAsianumero = Dropdown.fromTestId(page, 'JOTPA asianumero-koodisto-dropdown')
   }
 
   async goTo(hetu: Oppija['hetu']) {
@@ -164,6 +167,9 @@ export class KoskiUusiOppijaPage {
       await this.opiskeluoikeudenTila.selectOptionByClick(
         oppija.opiskeluoikeudenTila
       )
+    }
+    if (oppija.jotpaAsianumero) {
+      await this.jotpaAsianumero.selectOptionByClick(oppija.jotpaAsianumero)
     }
   }
 

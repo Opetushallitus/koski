@@ -159,6 +159,7 @@ object Koodistot {
     KoodistoAsetus("opintokokonaisuudet"),
     KoodistoAsetus("koulutuksenosattuva"),
     KoodistoAsetus("osaamismerkit"),
+    KoodistoAsetus("jotpaasianumero"),
   )
   val muutKoodistot = muutKoodistoAsetukset.map(_.toString)
 
@@ -168,12 +169,8 @@ object Koodistot {
   /*
     Uuden koodiston lisäys:
 
-    1) Lisää koodisto tähän repositorioon
-
-    1a) Olemassa oleva koodisto QA-ympäristöstä: Aja KoodistoMockDataUpdater -Dconfig.resource=qa.conf, jolloin koodiston sisältö haetaan qa-ympäristöstä paikallisiin json-fileisiin.
-        Lisää koodiston nimi yllä olevaan muutKoodistot-listaan
-    1b) Olemassa oleva koodisto tuotantoympäristöstä: Lisää koodiston nimi ylläolevaan muutKoodistot listaan, ja aja
-        mvn exec:java -Dexec.mainClass=fi.oph.koski.koodisto.KoodistoMockDataUpdater -Dopintopolku.virkailija.url=https://virkailija.opintopolku.fi -DkoskiKoodistot=false -DmuutKoodistot=true
+    1a) Olemassa oleva koodisto tuotantoympäristöstä: Lisää koodiston nimi ylläolevaan muutKoodistot listaan, ja aja
+        ./scripts/fetch_prod_koodistot.sh
     1c) Uusi Koski-spesifinen koodisto: Tee käsin koodistofileet src/main/resources/koodisto
         Lisää koodiston nimi yllä olevaan koskiKoodistot-listaan
     1d) Koodiston versiointi: Jos haluat lisätä jostain koodistosta kokonaan eri version, niin lisää koodisto ja koodit json-tiedostojen loppuun koodiston versio alaviivalla erotettuna.

@@ -1,3 +1,7 @@
+## 30.5.2024
+
+- JOTPA-rahoitettujen opiskeluoikeuksien lisätietoihin lisätty JOTPA-asianumero kenttä.
+
 ## 16.5.2024
 - Lisättu Tunti validiksi Perusopetukseen valmistavaan opetuksen kokonaislaajuuden yksiköksi.
 

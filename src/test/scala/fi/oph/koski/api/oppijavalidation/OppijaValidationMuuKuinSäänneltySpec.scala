@@ -44,6 +44,7 @@ class OppijaValidationMuuKuinSäänneltySpec extends AnyFreeSpec with PutOpiskel
       "Läsnä-tilaista opiskeluoikeutta ei voi tallentaa ilman rahoitusmuotoa" in {
         val oo = ExamplesMuuKuinSäänneltyKoulutus.Opiskeluoikeus.kesken.copy(
           tila = opiskeluoikeudenTila(List(opiskeluoikeusLäsnä), None),
+          lisätiedot = None,
         )
         setupOppijaWithOpiskeluoikeus(oo) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaltaPuuttuuRahoitusmuoto("Opiskeluoikeuden tilalta lasna puuttuu rahoitusmuoto"))
@@ -53,6 +54,7 @@ class OppijaValidationMuuKuinSäänneltySpec extends AnyFreeSpec with PutOpiskel
       "Suoritettu-tilaista opiskeluoikeutta ei voi tallentaa ilman rahoitusmuotoa" in {
         val oo = ExamplesMuuKuinSäänneltyKoulutus.Opiskeluoikeus.suoritettu.copy(
           tila = opiskeluoikeudenTila(List(opiskeluoikeusHyväksytystiSuoritettu), None),
+          lisätiedot = None,
         )
         setupOppijaWithOpiskeluoikeus(oo) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaltaPuuttuuRahoitusmuoto("Opiskeluoikeuden tilalta hyvaksytystisuoritettu puuttuu rahoitusmuoto"))

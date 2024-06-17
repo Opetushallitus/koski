@@ -33,7 +33,10 @@ object ExamplesVapaaSivistystyöJotpa {
         tila = VapaanSivistystyönOpiskeluoikeudenTila(List(
           VapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso(LocalDate.of(2023, 1, 1), opiskeluoikeusLäsnä, Some(rahoitusJotpa))
         )),
-        suoritukset = List(PäätasonSuoritus.juuriAloittanut)
+        suoritukset = List(PäätasonSuoritus.juuriAloittanut),
+        lisätiedot = Some(VapaanSivistystyönOpiskeluoikeudenLisätiedot(
+          jotpaAsianumero = Some(Koodistokoodiviite("01/5848/2023", "jotpaasianumero"))
+        ))
       )
 
     lazy val suoritettu: VapaanSivistystyönOpiskeluoikeus =
@@ -44,6 +47,7 @@ object ExamplesVapaaSivistystyöJotpa {
           VapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso(LocalDate.of(2023, 2, 1), opiskeluoikeusHyväksytystiSuoritettu, Some(rahoitusJotpa)),
         )),
         suoritukset = List(PäätasonSuoritus.suoritettu),
+        lisätiedot = Some(VapaanSivistystyönOpiskeluoikeudenLisätiedot(jotpaAsianumero = Some(Koodistokoodiviite("01/5848/2023", "jotpaasianumero"))))
       )
 
     lazy val keskeneräinenLähdejärjestelmästä: VapaanSivistystyönOpiskeluoikeus =

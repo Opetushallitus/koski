@@ -112,7 +112,8 @@ case class AmmatillisenOpiskeluoikeudenLisätiedot(
   @DefaultValue(false)
   koulutusvienti: Boolean = false,
   maksuttomuus: Option[List[Maksuttomuus]] = None,
-  oikeuttaMaksuttomuuteenPidennetty: Option[List[OikeuttaMaksuttomuuteenPidennetty]] = None
+  oikeuttaMaksuttomuuteenPidennetty: Option[List[OikeuttaMaksuttomuuteenPidennetty]] = None,
+  jotpaAsianumero: Option[Koodistokoodiviite] = None,
 ) extends OpiskeluoikeudenLisätiedot
   with Ulkomaanjaksollinen
   with SisäoppilaitosmainenMajoitus
@@ -125,6 +126,7 @@ case class AmmatillisenOpiskeluoikeudenLisätiedot(
   with VaativanErityisenTuenYhteydessäJärjestettävänMajoituksenSisältäväLisätieto
   with Vankilaopetuksessa
   with VammainenJaAvustaja
+  with JotpaAsianumero
 
 @Title("Osa-aikaisuusjakso")
 @Description("Osa-aikaisuusjakson kesto ja suuruus")

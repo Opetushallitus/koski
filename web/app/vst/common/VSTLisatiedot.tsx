@@ -12,6 +12,8 @@ import { VapaanSivistystyönOpiskeluoikeus } from '../../types/fi/oph/koski/sche
 import { deleteAt } from '../../util/fp/arrays'
 import { TestIdLayer } from '../../appstate/useTestId'
 import { ISO2FinnishDate } from '../../date/date'
+import { KoodistoSelect } from '../../components-v2/opiskeluoikeus/KoodistoSelect'
+import { Finnish } from '../../types/fi/oph/koski/schema/Finnish'
 
 interface VSTLisatiedotProps {
   form: FormModel<VapaanSivistystyönOpiskeluoikeus>
@@ -79,6 +81,8 @@ export const VSTLisatiedot: React.FC<VSTLisatiedotProps> = ({ form }) => {
     .optional()
     .prop('oikeuttaMaksuttomuuteenPidennetty')
     .optional()
+
+  const jotpaPath = lisatiedotPath.optional().prop('jotpaAsianumero').optional()
 
   return (
     <div className={'vst-lisatiedot'}>
@@ -246,6 +250,29 @@ export const VSTLisatiedot: React.FC<VSTLisatiedotProps> = ({ form }) => {
             )}
           </div>
         </div>
+      </div>
+      <div className="vst-lisatiedot__jotpaasianumero">
+        <div>{t('JOTPA asianumero')}</div>
+        {form.editMode ? (
+          <KoodistoSelect
+            koodistoUri="jotpaasianumero"
+            addNewText={t('Ei valintaa')}
+            zeroValueOption
+            onSelect={(koodiviite) => {
+              form.updateAt(lisatiedotPath, (lisatiedot) => {
+                return lisatiedot === undefined
+                  ? VapaanSivistystyönOpiskeluoikeudenLisätiedot({
+                      jotpaAsianumero: koodiviite
+                    })
+                  : { ...lisatiedot, jotpaAsianumero: koodiviite }
+              })
+            }}
+            value={getValue(jotpaPath)(form.state)?.koodiarvo}
+            testId="jotpaasianumero"
+          />
+        ) : (
+          (getValue(jotpaPath)(form.state)?.nimi as Finnish | undefined)?.fi
+        )}
       </div>
     </div>
   )
