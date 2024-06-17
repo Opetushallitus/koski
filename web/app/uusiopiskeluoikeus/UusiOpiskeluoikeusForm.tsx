@@ -207,6 +207,7 @@ export type UusiOpiskeluoikeusDialogState = {
   tuvaJärjestämislupa: DialogField<Koodistokoodiviite<'tuvajarjestamislupa'>>
   jotpaAsianumero: DialogField<Koodistokoodiviite<'jotpaasianumero'>>
   opintokokonaisuus: DialogField<Koodistokoodiviite<'opintokokonaisuudet'>>
+  tpoOppimäärä: DialogField<Koodistokoodiviite<'taiteenperusopetusoppimaara'>>
   ooMapping?: OpiskeluoikeusClass[]
   result?: Opiskeluoikeus
 }
@@ -288,6 +289,10 @@ const useUusiOpiskeluoikeusDialogState = (): UusiOpiskeluoikeusDialogState => {
     C.hasProp(opiskeluoikeudenLisätiedot, 'jotpaAsianumero')
   )
 
+  // Taiteen perusopetuksen oppimäärä
+  const tpoOppimäärä =
+    useDialogField<Koodistokoodiviite<'taiteenperusopetusoppimaara'>>(true)
+
   // Validi opiskeluoikeus
   const result = useMemo(
     () =>
@@ -341,6 +346,7 @@ const useUusiOpiskeluoikeusDialogState = (): UusiOpiskeluoikeusDialogState => {
     tuvaJärjestämislupa,
     jotpaAsianumero,
     opintokokonaisuus,
+    tpoOppimäärä,
     ooMapping,
     result
   }
