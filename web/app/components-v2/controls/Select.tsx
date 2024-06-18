@@ -96,7 +96,9 @@ export const Select = <T,>(props: SelectProps<T>) => {
           value={select.filter === null ? select.displayValue : select.filter}
           type="search"
           autoComplete="off"
-          disabled={props.disabled || props.options.length === 0}
+          disabled={
+            props.disabled || (!props.onSearch && props.options.length === 0)
+          }
           {...select.inputEventListeners}
           data-testid={inputTestId}
           ref={input}
@@ -340,27 +342,41 @@ const useSelectState = <T,>(props: SelectProps<T>) => {
     [flatOptions.arr, hideEmpty, onSearch]
   )
 
-  return {
-    displayValue,
-    options,
-    hoveredOption,
-    filter,
-    dropdownVisible,
-    containerEventListeners: {
-      ref: selectContainer,
+  return useMemo(
+    () => ({
+      displayValue,
+      options,
+      hoveredOption,
+      filter,
+      dropdownVisible,
+      containerEventListeners: {
+        ref: selectContainer,
+        onFocus,
+        onKeyDown,
+        onBlur
+      },
+      inputEventListeners: {
+        onChange: onUserType,
+        onClick: onFocus
+      },
+      dropdownEventListeners: {
+        onClick: onClickOption,
+        onMouseOver: onMouseOverOption
+      }
+    }),
+    [
+      displayValue,
+      dropdownVisible,
+      filter,
+      hoveredOption,
+      onBlur,
+      onClickOption,
       onFocus,
       onKeyDown,
-      onBlur
-    },
-    inputEventListeners: {
-      onChange: onUserType,
-      onClick: onFocus
-    },
-    dropdownEventListeners: {
-      onClick: onClickOption,
-      onMouseOver: onMouseOverOption
-    }
-  }
+      onUserType,
+      options
+    ]
+  )
 }
 
 // Exported utils
