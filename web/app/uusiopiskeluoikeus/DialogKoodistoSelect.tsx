@@ -10,6 +10,7 @@ import { DialogField } from './UusiOpiskeluoikeusForm'
 
 export type DialogKoodistoSelectProps<U extends string> = {
   state: DialogField<Koodistokoodiviite<U>>
+  default?: string
   koodistoUri: U
   koodiarvot?: string[]
   testId: string
@@ -27,6 +28,7 @@ export const DialogKoodistoSelect = <U extends string>(
   return (
     <Select
       options={options}
+      initialValue={props.default && `${props.koodistoUri}_${props.default}`}
       value={props.state.value && koodistokoodiviiteId(props.state.value)}
       onChange={(opt) => props.state.set(opt?.value)}
       testId={props.testId}

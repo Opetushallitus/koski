@@ -12,24 +12,14 @@ import {
 } from '../UusiOpiskeluoikeusForm'
 import { SuoritusFieldsProps } from './SuoritusFields'
 import { TextEdit } from '../../components-v2/controls/TextField'
+import { DialogKoodistoSelect } from '../DialogKoodistoSelect'
 
 export const TaiteenPerusopetusFields = (props: SuoritusFieldsProps) => {
-  const oppimäärät = useKoodisto('taiteenperusopetusoppimaara')
-  const oppimääräOptions = useMemo(
-    () => (oppimäärät ? groupKoodistoToOptions(oppimäärät) : []),
-    [oppimäärät]
-  )
-
   const { suoritustyypit, perusteenDiaarinumero } =
     useTpoSuorituksetJaPerusteenDiaarinumero(props.state)
 
-  const taiteenalat = useKoodisto('taiteenperusopetustaiteenala')
-  const taiteenalaOptions = useMemo(
-    () => (taiteenalat ? groupKoodistoToOptions(taiteenalat) : []),
-    [taiteenalat]
-  )
-
   const hankintakoulutus = props.state.hankintakoulutus.value === 'tpo'
+
   const toteutustavat = useKoodisto('taiteenperusopetuskoulutuksentoteutustapa')
   const toteutustavatOptions = useMemo(
     () => (toteutustavat ? groupKoodistoToOptions(toteutustavat) : []),
@@ -50,14 +40,10 @@ export const TaiteenPerusopetusFields = (props: SuoritusFieldsProps) => {
   return (
     <>
       {t('Oppimäärä')}
-      <Select
-        options={oppimääräOptions}
-        initialValue="taiteenperusopetusoppimaara_yleinenoppimaara"
-        value={
-          props.state.tpoOppimäärä.value &&
-          koodistokoodiviiteId(props.state.tpoOppimäärä.value)
-        }
-        onChange={(opt) => props.state.tpoOppimäärä.set(opt?.value)}
+      <DialogKoodistoSelect
+        state={props.state.tpoOppimäärä}
+        koodistoUri="taiteenperusopetusoppimaara"
+        default="yleinenoppimaara"
         testId="oppimäärä"
       />
 
@@ -105,13 +91,9 @@ export const TaiteenPerusopetusFields = (props: SuoritusFieldsProps) => {
       )}
 
       {t('Taiteenala')}
-      <Select
-        options={taiteenalaOptions}
-        value={
-          props.state.tpoTaiteenala.value &&
-          koodistokoodiviiteId(props.state.tpoTaiteenala.value)
-        }
-        onChange={(opt) => props.state.tpoTaiteenala.set(opt?.value)}
+      <DialogKoodistoSelect
+        state={props.state.tpoTaiteenala}
+        koodistoUri="taiteenperusopetustaiteenala"
         testId="taiteenala"
       />
     </>
