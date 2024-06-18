@@ -76,7 +76,8 @@ export const createOpiskeluoikeus = (
   jotpaAsianumero?: Koodistokoodiviite<'jotpaasianumero'>,
   tpoOppimäärä?: Koodistokoodiviite<'taiteenperusopetusoppimaara'>,
   tpoTaiteenala?: Koodistokoodiviite<'taiteenperusopetustaiteenala'>,
-  tpoToteutustapa?: Koodistokoodiviite<'taiteenperusopetuskoulutuksentoteutustapa'>
+  tpoToteutustapa?: Koodistokoodiviite<'taiteenperusopetuskoulutuksentoteutustapa'>,
+  varhaiskasvatuksenJärjestämismuoto?: Koodistokoodiviite<'vardajarjestamismuoto'>
 ): Opiskeluoikeus | undefined => {
   switch (opiskeluoikeudenTyyppi.koodiarvo) {
     case 'perusopetus':
@@ -130,13 +131,15 @@ export const createOpiskeluoikeus = (
       )
 
     case 'esiopetus':
-      if (!peruste || !suorituskieli) return undefined
+      if (!peruste || !suorituskieli || !varhaiskasvatuksenJärjestämismuoto)
+        return undefined
       return createEsiopetuksenOpiskeluoikeus(
         peruste,
         organisaatio,
         alku,
         tila,
-        suorituskieli
+        suorituskieli,
+        varhaiskasvatuksenJärjestämismuoto
       )
 
     case 'tuva':
@@ -393,7 +396,8 @@ const createEsiopetuksenOpiskeluoikeus = (
   organisaatio: OrganisaatioHierarkia,
   alku: string,
   tila: NuortenPerusopetuksenOpiskeluoikeusjakso['tila'],
-  suorituskieli: Koodistokoodiviite<'kieli'>
+  suorituskieli: Koodistokoodiviite<'kieli'>,
+  järjestämismuoto: Koodistokoodiviite<'vardajarjestamismuoto', any>
 ) =>
   EsiopetuksenOpiskeluoikeus({
     oppilaitos: toOppilaitos(organisaatio),
@@ -402,6 +406,7 @@ const createEsiopetuksenOpiskeluoikeus = (
         NuortenPerusopetuksenOpiskeluoikeusjakso({ alku, tila })
       ]
     }),
+    järjestämismuoto,
     suoritukset: [
       EsiopetuksenSuoritus({
         suorituskieli,

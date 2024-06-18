@@ -36,6 +36,7 @@ import { createOpiskeluoikeus } from './opiskeluoikeusBuilder'
 import { SuoritusFields } from './suoritus/SuoritusFields'
 import { Checkbox } from '../components-v2/controls/Checkbox'
 import { OppilaitosSearch } from './OppilaitosSearch'
+import { DialogKoodistoSelect } from './DialogKoodistoSelect'
 
 export type UusiOpiskeluoikeusFormProps = {
   onResult: (opiskeluoikeus?: Opiskeluoikeus) => void
@@ -60,20 +61,7 @@ export const UusiOpiskeluoikeusForm = (props: UusiOpiskeluoikeusFormProps) => {
     <section>
       {state.oppilaitos.visible && (
         <>
-          {t('Oppilaitos')}
-          {state.hankintakoulutus.value ? (
-            <OppilaitosSearch
-              value={state.oppilaitos.value}
-              onChange={state.oppilaitos.set}
-              orgTypes={valittavatOrganisaatiotyypit}
-            />
-          ) : (
-            <OppilaitosSelect
-              value={state.oppilaitos.value}
-              onChange={state.oppilaitos.set}
-              orgTypes={valittavatOrganisaatiotyypit}
-            />
-          )}
+          {t('Hankintakoulutus')}
           {state.hankintakoulutus.value !== 'tpo' && (
             <Checkbox
               label={t(
@@ -94,6 +82,32 @@ export const UusiOpiskeluoikeusForm = (props: UusiOpiskeluoikeusFormProps) => {
               onChange={(opt) =>
                 state.hankintakoulutus.set(opt ? 'tpo' : undefined)
               }
+            />
+          )}
+          {state.varhaiskasvatuksenJärjestämistapa.visible && (
+            <>
+              {t('Varhaiskasvatuksen järjestämismuoto')}
+              <DialogKoodistoSelect
+                state={state.varhaiskasvatuksenJärjestämistapa}
+                koodistoUri="vardajarjestamismuoto"
+                koodiarvot={['JM02', 'JM03']}
+                testId="varhaiskasvatuksenJärjestämismuoto"
+              />
+            </>
+          )}
+
+          {t('Oppilaitos')}
+          {state.hankintakoulutus.value ? (
+            <OppilaitosSearch
+              value={state.oppilaitos.value}
+              onChange={state.oppilaitos.set}
+              orgTypes={valittavatOrganisaatiotyypit}
+            />
+          ) : (
+            <OppilaitosSelect
+              value={state.oppilaitos.value}
+              onChange={state.oppilaitos.set}
+              orgTypes={valittavatOrganisaatiotyypit}
             />
           )}
         </>
@@ -245,6 +259,9 @@ export type UusiOpiskeluoikeusDialogState = {
   tpoToteutustapa: DialogField<
     Koodistokoodiviite<'taiteenperusopetuskoulutuksentoteutustapa'>
   >
+  varhaiskasvatuksenJärjestämistapa: DialogField<
+    Koodistokoodiviite<'vardajarjestamismuoto'>
+  >
   ooMapping?: OpiskeluoikeusClass[]
   result?: Opiskeluoikeus
 }
@@ -337,6 +354,11 @@ const useUusiOpiskeluoikeusDialogState = (): UusiOpiskeluoikeusDialogState => {
       Koodistokoodiviite<'taiteenperusopetuskoulutuksentoteutustapa'>
     >(true)
 
+  // Varhaiskasvatuksen järjestämistapa
+  const varhaiskasvatuksenJärjestämistapa = useDialogField<
+    Koodistokoodiviite<'vardajarjestamismuoto'>
+  >(hankintakoulutus.value === 'esiopetus')
+
   // Validi opiskeluoikeus
   const result = useMemo(
     () =>
@@ -360,7 +382,8 @@ const useUusiOpiskeluoikeusDialogState = (): UusiOpiskeluoikeusDialogState => {
             jotpaAsianumero.value,
             tpoOppimäärä.value,
             tpoTaiteenala.value,
-            tpoToteutustapa.value
+            tpoToteutustapa.value,
+            varhaiskasvatuksenJärjestämistapa.value
           )
         : undefined,
     [
@@ -378,7 +401,8 @@ const useUusiOpiskeluoikeusDialogState = (): UusiOpiskeluoikeusDialogState => {
       tpoOppimäärä.value,
       tpoTaiteenala.value,
       tpoToteutustapa.value,
-      tuvaJärjestämislupa.value
+      tuvaJärjestämislupa.value,
+      varhaiskasvatuksenJärjestämistapa.value
     ]
   )
 
@@ -399,12 +423,13 @@ const useUusiOpiskeluoikeusDialogState = (): UusiOpiskeluoikeusDialogState => {
     tpoOppimäärä,
     tpoTaiteenala,
     tpoToteutustapa,
+    varhaiskasvatuksenJärjestämistapa,
     ooMapping,
     result
   }
 }
 
-type DialogField<T> = {
+export type DialogField<T> = {
   value?: T
   set: (t?: T) => void
   visible: boolean
