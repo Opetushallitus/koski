@@ -1188,7 +1188,7 @@ class KoskiValidator(
     case s: PerusopetuksenOppimääränSuoritus =>
       KoskiErrorCategory.badRequest.validation.tila.oppiaineetPuuttuvat("Suorituksella ei ole osasuorituksena yhtään oppiainetta, vaikka sillä on vahvistus")
     case s: PerusopetuksenVuosiluokanSuoritus =>
-      KoskiErrorCategory.badRequest.validation.tila.oppiaineetPuuttuvat("Suorituksella ei ole osasuorituksena yhtään oppiainetta, vaikka sillä on vahvistus, eikä oppija ole vuosiluokkiin sitomattomassa opetuksessa.")
+      KoskiErrorCategory.badRequest.validation.tila.oppiaineetPuuttuvat(s"Suorituksella ei ole osasuorituksena yhtään oppiainetta, vaikka sillä on vahvistus, eikä oppija ole vuosiluokkiin sitomattomassa opetuksessa (vuosiluokka ${s.koulutusmoduuli.luokkaAste}).")
     case s: LukionOppimääränSuoritus2019 if s.oppimäärä.koodiarvo == "nuortenops" =>
       KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia(s"Suoritus ${suorituksenTunniste(suoritus)} on merkitty valmiiksi tai opiskeluoikeuden tiedoissa oppimäärä on merkitty suoritetuksi, mutta sillä ei ole 150 op osasuorituksia, joista vähintään 20 op valinnaisia, tai opiskeluoikeudelta puuttuu linkitys")
     case s: LukionOppimääränSuoritus2019 if s.oppimäärä.koodiarvo == "aikuistenops" =>
