@@ -18,6 +18,8 @@ export type OrgType =
   | 'OPPILAITOS'
   | 'OPPISOPIMUSTOIMIPISTE'
   | 'VARHAISKASVATUKSEN_TOIMIPAIKKA'
+  | 'HANKINTAKOULUTUS'
+  | 'OSTOPALVELUTAIPALVELUSETELI'
 
 export const OppilaitosSelect = (props: OppilaitosSelectProps) => {
   const options = useOrganisaatioOptions(props.orgTypes)
@@ -48,7 +50,7 @@ const useOrganisaatioOptions = (
   }, [orgTypes, organisaatiot])
 }
 
-const filterOrgsByType = (
+export const filterOrgsByType = (
   orgs: OrganisaatioHierarkia[],
   orgTypes: OrgType[]
 ): OrganisaatioHierarkia[] =>
@@ -59,7 +61,7 @@ const filterOrgsByType = (
       : []
   })
 
-const organisaatiohierarkiaToOption =
+export const organisaatiohierarkiaToOption =
   (orgTypes?: OrgType[]) =>
   (org: OrganisaatioHierarkia): SelectOption<OrganisaatioHierarkia> => ({
     key: org.oid,

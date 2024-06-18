@@ -34,12 +34,14 @@ import {
 import { OppilaitosSelect, OrgType } from './OppilaitosSelect'
 import { createOpiskeluoikeus } from './opiskeluoikeusBuilder'
 import { SuoritusFields } from './suoritus/SuoritusFields'
+import { Checkbox } from '../components-v2/controls/Checkbox'
+import { OppilaitosSearch } from './OppilaitosSearch'
 
 export type UusiOpiskeluoikeusFormProps = {
   onResult: (opiskeluoikeus?: Opiskeluoikeus) => void
 }
 
-const organisaatiotyypit: OrgType[] = [
+const valittavatOrganisaatiotyypit: OrgType[] = [
   'OPPILAITOS',
   'OPPISOPIMUSTOIMIPISTE',
   'VARHAISKASVATUKSEN_TOIMIPAIKKA'
@@ -59,13 +61,41 @@ export const UusiOpiskeluoikeusForm = (props: UusiOpiskeluoikeusFormProps) => {
       {state.oppilaitos.visible && (
         <>
           {t('Oppilaitos')}
-          <div>
+          {state.hankintakoulutus.value ? (
+            <OppilaitosSearch
+              value={state.oppilaitos.value}
+              onChange={state.oppilaitos.set}
+              orgTypes={valittavatOrganisaatiotyypit}
+            />
+          ) : (
             <OppilaitosSelect
               value={state.oppilaitos.value}
               onChange={state.oppilaitos.set}
-              orgTypes={organisaatiotyypit}
+              orgTypes={valittavatOrganisaatiotyypit}
             />
-          </div>
+          )}
+          {state.hankintakoulutus.value !== 'tpo' && (
+            <Checkbox
+              label={t(
+                'Esiopetus ostetaan oman organisaation ulkopuolelta ostopalveluna tai palvelusetelinä'
+              )}
+              checked={state.hankintakoulutus.value === 'esiopetus'}
+              onChange={(opt) =>
+                state.hankintakoulutus.set(opt ? 'esiopetus' : undefined)
+              }
+            />
+          )}
+          {state.hankintakoulutus.value !== 'esiopetus' && (
+            <Checkbox
+              label={t(
+                'Taiteen perusopetus hankintakoulutuksena järjestetään oman organisaation ulkopuolelta'
+              )}
+              checked={state.hankintakoulutus.value === 'tpo'}
+              onChange={(opt) =>
+                state.hankintakoulutus.set(opt ? 'tpo' : undefined)
+              }
+            />
+          )}
         </>
       )}
 
@@ -194,7 +224,10 @@ const maksuttomuusOptions: Array<RadioButtonOption<boolean | null>> = [
   }
 ]
 
+export type Hankintakoulutus = 'esiopetus' | 'tpo' | undefined
+
 export type UusiOpiskeluoikeusDialogState = {
+  hankintakoulutus: DialogField<Hankintakoulutus>
   oppilaitos: DialogField<OrganisaatioHierarkia>
   opiskeluoikeus: DialogField<Koodistokoodiviite<'opiskeluoikeudentyyppi'>>
   päätasonSuoritus: DialogField<Koodistokoodiviite<'suorituksentyyppi'>>
@@ -208,6 +241,10 @@ export type UusiOpiskeluoikeusDialogState = {
   jotpaAsianumero: DialogField<Koodistokoodiviite<'jotpaasianumero'>>
   opintokokonaisuus: DialogField<Koodistokoodiviite<'opintokokonaisuudet'>>
   tpoOppimäärä: DialogField<Koodistokoodiviite<'taiteenperusopetusoppimaara'>>
+  tpoTaiteenala: DialogField<Koodistokoodiviite<'taiteenperusopetustaiteenala'>>
+  tpoToteutustapa: DialogField<
+    Koodistokoodiviite<'taiteenperusopetuskoulutuksentoteutustapa'>
+  >
   ooMapping?: OpiskeluoikeusClass[]
   result?: Opiskeluoikeus
 }
@@ -221,6 +258,7 @@ const useUusiOpiskeluoikeusDialogState = (): UusiOpiskeluoikeusDialogState => {
   )
 
   // Oppilaitos
+  const hankintakoulutus = useDialogField<Hankintakoulutus>(true)
   const oppilaitos = useDialogField<OrganisaatioHierarkia>(true)
   const oppilaitosValittu = oppilaitos.value !== undefined
 
@@ -289,9 +327,15 @@ const useUusiOpiskeluoikeusDialogState = (): UusiOpiskeluoikeusDialogState => {
     C.hasProp(opiskeluoikeudenLisätiedot, 'jotpaAsianumero')
   )
 
-  // Taiteen perusopetuksen oppimäärä
+  // Taiteen perusopetuksen oppimäärä, taiteenala ja koulutuksen toteutustapa
   const tpoOppimäärä =
     useDialogField<Koodistokoodiviite<'taiteenperusopetusoppimaara'>>(true)
+  const tpoTaiteenala =
+    useDialogField<Koodistokoodiviite<'taiteenperusopetustaiteenala'>>(true)
+  const tpoToteutustapa =
+    useDialogField<
+      Koodistokoodiviite<'taiteenperusopetuskoulutuksentoteutustapa'>
+    >(true)
 
   // Validi opiskeluoikeus
   const result = useMemo(
@@ -300,8 +344,7 @@ const useUusiOpiskeluoikeusDialogState = (): UusiOpiskeluoikeusDialogState => {
       opiskeluoikeus.value &&
       päätasonSuoritus.value &&
       aloituspäivä.value &&
-      tila.value &&
-      suorituskieli.value
+      tila.value
         ? createOpiskeluoikeus(
             oppilaitos.value,
             opiskeluoikeus.value,
@@ -314,7 +357,10 @@ const useUusiOpiskeluoikeusDialogState = (): UusiOpiskeluoikeusDialogState => {
             opintojenRahoitus.value,
             tuvaJärjestämislupa.value,
             opintokokonaisuus.value,
-            jotpaAsianumero.value
+            jotpaAsianumero.value,
+            tpoOppimäärä.value,
+            tpoTaiteenala.value,
+            tpoToteutustapa.value
           )
         : undefined,
     [
@@ -329,11 +375,15 @@ const useUusiOpiskeluoikeusDialogState = (): UusiOpiskeluoikeusDialogState => {
       päätasonSuoritus.value,
       suorituskieli.value,
       tila.value,
+      tpoOppimäärä.value,
+      tpoTaiteenala.value,
+      tpoToteutustapa.value,
       tuvaJärjestämislupa.value
     ]
   )
 
   return {
+    hankintakoulutus,
     oppilaitos,
     opiskeluoikeus,
     päätasonSuoritus,
@@ -347,6 +397,8 @@ const useUusiOpiskeluoikeusDialogState = (): UusiOpiskeluoikeusDialogState => {
     jotpaAsianumero,
     opintokokonaisuus,
     tpoOppimäärä,
+    tpoTaiteenala,
+    tpoToteutustapa,
     ooMapping,
     result
   }

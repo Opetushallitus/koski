@@ -1,25 +1,17 @@
-import React, { useMemo } from 'react'
-import { usePerusteSelectOptions } from '../../appstate/peruste'
+import React, { useMemo, useEffect } from 'react'
+import { useKoodisto } from '../../appstate/koodisto'
 import {
   Select,
   groupKoodistoToOptions
 } from '../../components-v2/controls/Select'
 import { t } from '../../i18n/i18n'
 import { koodistokoodiviiteId } from '../../util/koodisto'
-import { usePäätasonSuoritustyypit } from '../UusiOpiskeluoikeusForm'
+import {
+  UusiOpiskeluoikeusDialogState,
+  usePäätasonSuoritustyypit
+} from '../UusiOpiskeluoikeusForm'
 import { SuoritusFieldsProps } from './SuoritusFields'
-import { useKoodisto } from '../../appstate/koodisto'
-
-const tpoSuoritustyypit = {
-  taiteenperusopetusoppimaara_yleinenoppimaara: [
-    'suorituksentyyppi_taiteenperusopetuksenyleisenoppimaaranyhteisetopinnot',
-    'suorituksentyyppi_taiteenperusopetuksenyleisenoppimaaranteemaopinnot'
-  ],
-  taiteenperusopetusoppimaara_laajaoppimaara: [
-    'suorituksentyyppi_taiteenperusopetuksenlaajanoppimaaranperusopinnot',
-    'suorituksentyyppi_taiteenperusopetuksenlaajanoppimaaransyventavatopinnot'
-  ]
-}
+import { TextEdit } from '../../components-v2/controls/TextField'
 
 export const TaiteenPerusopetusFields = (props: SuoritusFieldsProps) => {
   const oppimäärät = useKoodisto('taiteenperusopetusoppimaara')
@@ -28,18 +20,32 @@ export const TaiteenPerusopetusFields = (props: SuoritusFieldsProps) => {
     [oppimäärät]
   )
 
-  const suoritustyypit = usePäätasonSuoritustyypit(props.state)
-  const filteredSuoritustyypit = useMemo(() => {
-    const oppimäärä = props.state.tpoOppimäärä.value?.koodiarvo as
-      | keyof typeof tpoSuoritustyypit
-      | undefined
-    const tyypit = (oppimäärä && tpoSuoritustyypit[oppimäärä]) || []
-    return suoritustyypit.filter((st) => tyypit.includes(st.key))
-  }, [props.state.tpoOppimäärä.value?.koodiarvo, suoritustyypit])
+  const { suoritustyypit, perusteenDiaarinumero } =
+    useTpoSuorituksetJaPerusteenDiaarinumero(props.state)
 
-  const perusteOptions = usePerusteSelectOptions(
-    props.state.päätasonSuoritus.value?.koodiarvo
+  const taiteenalat = useKoodisto('taiteenperusopetustaiteenala')
+  const taiteenalaOptions = useMemo(
+    () => (taiteenalat ? groupKoodistoToOptions(taiteenalat) : []),
+    [taiteenalat]
   )
+
+  const hankintakoulutus = props.state.hankintakoulutus.value === 'tpo'
+  const toteutustavat = useKoodisto('taiteenperusopetuskoulutuksentoteutustapa')
+  const toteutustavatOptions = useMemo(
+    () => (toteutustavat ? groupKoodistoToOptions(toteutustavat) : []),
+    [toteutustavat]
+  )
+  useEffect(() => {
+    const koodiarvo = hankintakoulutus
+      ? 'hankintakoulutus'
+      : 'itsejarjestettykoulutus'
+
+    const toteutustapa = toteutustavat
+      ?.map((k) => k.koodiviite)
+      .find((k) => k.koodiarvo === koodiarvo)
+
+    props.state.tpoToteutustapa.set(toteutustapa)
+  }, [hankintakoulutus, props.state.tpoToteutustapa, toteutustavat])
 
   return (
     <>
@@ -55,34 +61,114 @@ export const TaiteenPerusopetusFields = (props: SuoritusFieldsProps) => {
         testId="oppimäärä"
       />
 
-      {/* TODO: Koulutuksen toteutustapa */}
+      {props.state.tpoOppimäärä.value && (
+        <>
+          {t('Suoritustyyppi')}
+          <Select
+            options={suoritustyypit}
+            value={
+              props.state.päätasonSuoritus.value &&
+              koodistokoodiviiteId(props.state.päätasonSuoritus.value)
+            }
+            onChange={(opt) => props.state.päätasonSuoritus.set(opt?.value)}
+            testId="suoritustyyppi"
+          />
+        </>
+      )}
 
-      {t('Suoritustyyppi')}
-      <Select
-        options={filteredSuoritustyypit}
-        value={
-          props.state.päätasonSuoritus.value &&
-          koodistokoodiviiteId(props.state.päätasonSuoritus.value)
-        }
-        onChange={(opt) => props.state.päätasonSuoritus.set(opt?.value)}
-        testId="suoritustyyppi"
-      />
+      {props.state.tpoToteutustapa.value && (
+        <>
+          {t('Koulutuksen toteutustapa')}
+          <Select
+            options={toteutustavatOptions}
+            value={
+              props.state.tpoToteutustapa.value &&
+              koodistokoodiviiteId(props.state.tpoToteutustapa.value)
+            }
+            onChange={() => {}}
+            disabled
+            testId="toteutustapa"
+          />
+        </>
+      )}
 
-      {props.state.peruste.visible && (
+      {props.state.päätasonSuoritus.value && (
         <>
           {t('Peruste')}
-          <Select
-            options={perusteOptions}
-            initialValue="104/011/2014"
-            value={props.state.peruste.value?.koodiarvo}
-            onChange={(opt) => props.state.peruste.set(opt?.value)}
-            disabled={perusteOptions.length < 2}
+          <TextEdit
+            value={perusteenDiaarinumero}
+            disabled
+            onChange={() => {}}
             testId="peruste"
           />
         </>
       )}
 
-      {/* TODO: Taiteenala */}
+      {t('Taiteenala')}
+      <Select
+        options={taiteenalaOptions}
+        value={
+          props.state.tpoTaiteenala.value &&
+          koodistokoodiviiteId(props.state.tpoTaiteenala.value)
+        }
+        onChange={(opt) => props.state.tpoTaiteenala.set(opt?.value)}
+        testId="taiteenala"
+      />
     </>
   )
+}
+
+type TpoOppimäärä = {
+  suoritustyypit: string[]
+  perusteenDiaarinumero: string
+}
+
+const tpoSuoritustyypit: Record<string, TpoOppimäärä> = {
+  yleinenoppimaara: {
+    suoritustyypit: [
+      'suorituksentyyppi_taiteenperusopetuksenyleisenoppimaaranyhteisetopinnot',
+      'suorituksentyyppi_taiteenperusopetuksenyleisenoppimaaranteemaopinnot'
+    ],
+    perusteenDiaarinumero: 'OPH-2069-2017'
+  },
+  laajaoppimaara: {
+    suoritustyypit: [
+      'suorituksentyyppi_taiteenperusopetuksenlaajanoppimaaranperusopinnot',
+      'suorituksentyyppi_taiteenperusopetuksenlaajanoppimaaransyventavatopinnot'
+    ],
+    perusteenDiaarinumero: 'OPH-2068-2017'
+  }
+}
+
+const useTpoSuorituksetJaPerusteenDiaarinumero = (
+  state: UusiOpiskeluoikeusDialogState
+) => {
+  const suoritustyypit = usePäätasonSuoritustyypit(state)
+  const result = useMemo(() => {
+    const oppimäärä = state.tpoOppimäärä.value?.koodiarvo as
+      | keyof typeof tpoSuoritustyypit
+      | undefined
+    const op = oppimäärä ? tpoSuoritustyypit[oppimäärä] : undefined
+
+    return {
+      suoritustyypit: suoritustyypit.filter((st) =>
+        op?.suoritustyypit.includes(st.key)
+      ),
+      perusteenDiaarinumero: op?.perusteenDiaarinumero
+    }
+  }, [state.tpoOppimäärä.value?.koodiarvo, suoritustyypit])
+
+  const peruste = useMemo(
+    () =>
+      result.perusteenDiaarinumero
+        ? { koodiarvo: result.perusteenDiaarinumero, koodistoUri: 'peruste' }
+        : undefined,
+    [result.perusteenDiaarinumero]
+  )
+
+  useEffect(() => {
+    state.peruste.set(peruste)
+  }, [peruste, state.peruste])
+
+  return result
 }

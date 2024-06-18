@@ -127,11 +127,12 @@ export const fetchOrganisaatioHierarkia = (orgTypesToShow?: OrgTypesToShow) =>
 
 export const queryOrganisaatioHierarkia = (
   query: string,
-  orgTypesToShow?: OrgTypesToShow
+  orgTypesToShow?: OrgTypesToShow,
+  all?: boolean
 ) =>
   handleExpiredSession(
     apiGet<OrganisaatioHierarkia[]>(
-      apiUrl(`organisaatio/hierarkia`, { query, orgTypesToShow })
+      apiUrl(`organisaatio/hierarkia`, { query, orgTypesToShow, all })
     )
   )
 
