@@ -109,7 +109,7 @@ case class AikuistenPerusopetuksenOppimääräArvioinnit(db: DB) extends QueryMe
   def columnSettings(t: LocalizationReader): Seq[(String, Column)] = Seq(
     "opiskeluoikeusOid" -> Column(t.get("raportti-excel-kolumni-opiskeluoikeusOid")),
     "alkamispaiva" -> Column(t.get("raportti-excel-kolumni-alkamispaiva")),
-    "paattymispaiva" -> Column(t.get("raportti-excelalkamispaivakolumni-paattymispaiva"), comment = Some(t.get("raportti-excel-kolumni-paattymispaiva-comment"))),
+    "paattymispaiva" -> Column(t.get("raportti-excel-kolumni-paattymispaiva"), comment = Some(t.get("raportti-excel-kolumni-paattymispaiva-comment"))),
     "viimeisinTila" -> Column(t.get("raportti-excel-kolumni-viimeisinTila"), comment = Some(t.get("raportti-excel-kolumni-viimeisinTila-comment"))),
     "suorituksenTyyppi" -> Column(t.get("raportti-excel-kolumni-suorituksenTyyppi"), comment = Some(t.get("raportti-excel-kolumni-suorituksenTyyppi-comment"))),
     "kurssinKoodi" -> Column(t.get("raportti-excel-kolumni-kurssinKoodi"), comment = Some(t.get("raportti-excel-kolumni-kurssinKoodi-comment"))),
