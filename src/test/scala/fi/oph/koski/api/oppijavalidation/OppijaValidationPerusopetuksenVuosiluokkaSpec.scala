@@ -63,7 +63,7 @@ class OppijaValidationPerusopetuksenVuosiluokkaSpec extends TutkinnonPerusteetTe
         vuosiluokkiinSitoutumatonOpetus = false
       ))
     )) {
-      verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.oppiaineetPuuttuvat("Suorituksella ei ole osasuorituksena yhtään oppiainetta, vaikka sillä on vahvistus, eikä oppija ole vuosiluokkiin sitomattomassa opetuksessa."))
+      verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.oppiaineetPuuttuvat("Suorituksella ei ole osasuorituksena yhtään oppiainetta, vaikka sillä on vahvistus, eikä oppija ole vuosiluokkiin sitomattomassa opetuksessa (vuosiluokka 7)."))
     }
   }
 }
