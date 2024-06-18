@@ -60,15 +60,46 @@ class ValpasKelaServletSpec extends ValpasTestBase with BeforeAndAfterEach {
         }
       }
 
-      "Palautetaan 404 jos on ohitettu vuosi, jolloin oppija täyttää 20" in {
+      "Palautetaan riisuttu data jos maksuttomuusoikeus ei ole voimassa mutta sen päättymisestä on alle 5 vuotta" in {
         KoskiApplicationForTests.valpasRajapäivätService.asInstanceOf[MockValpasRajapäivätService]
-          .asetaMockTarkastelupäivä(date(2026, 1, 1))
+          .asetaMockTarkastelupäivä(date(2030, 12, 31))
 
-        AuditLogTester.clearMessages
+        postHetu(ValpasMockOppijat.oppivelvollisuusKeskeytetty.hetu.get) {
+          verifyResponseStatusOk()
+          val response = JsonSerializer.parse[ValpasKelaOppija](body)
+          response.henkilö.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti should equal(Some(date(2025, 12, 31)))
+          response.oppivelvollisuudenKeskeytykset should have length 0
+        }
+      }
 
-        postHetu(ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021.hetu.get) {
+      "Palautetaan 404 jos on yli 5 vuotta maksuttomuusoikeuden päättymisestä" in {
+        KoskiApplicationForTests.valpasRajapäivätService.asInstanceOf[MockValpasRajapäivätService]
+          .asetaMockTarkastelupäivä(date(2031, 1, 1))
+
+        postHetu(ValpasMockOppijat.oppivelvollisuusKeskeytetty.hetu.get) {
           verifyResponseStatus(404, ValpasErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia("Oppijaa (hetu) ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun."))
           AuditLogTester.verifyNoAuditLogMessages()
+        }
+      }
+
+      "Oikeus maksuttomuuteen palautetaan jos oikeuden päättymisestä on alle 5 vuotta" in {
+        val rajapäiväService = KoskiApplicationForTests.valpasRajapäivätService.asInstanceOf[MockValpasRajapäivätService]
+
+        rajapäiväService.asetaMockTarkastelupäivä(date(2025, 12, 31))
+
+        val oppija = ValpasMockOppijat.eiKoskessaOppivelvollinen
+
+        postHetu(oppija.hetu.get) {
+          verifyResponseStatusOk()
+          val response = JsonSerializer.parse[ValpasKelaOppija](body)
+          response.henkilö.hetu should equal(oppija.hetu)
+          response.henkilö.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti should equal(Some(date(2025, 12, 31)))
+        }
+
+        rajapäiväService.asetaMockTarkastelupäivä(date(2026, 1, 1))
+
+        postHetu(oppija.hetu.get) {
+          verifyResponseStatus(404, ValpasErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia("Oppijaa (hetu) ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun."))
         }
       }
 
