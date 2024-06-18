@@ -32,7 +32,7 @@ import {
   fetchOrganisaationOpiskeluoikeustyypit
 } from '../util/koskiApi'
 import { OppilaitosSelect, OrgType } from './OppilaitosSelect'
-import { createOpiskeluoikeus } from './opiskeluoikeusBuilder'
+import { createOpiskeluoikeus } from './opintooikeus/createOpiskeluoikeus'
 import { SuoritusFields } from './suoritus/SuoritusFields'
 import { Checkbox } from '../components-v2/controls/Checkbox'
 import { OppilaitosSearch } from './OppilaitosSearch'
