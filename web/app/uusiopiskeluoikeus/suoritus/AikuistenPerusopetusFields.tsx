@@ -5,6 +5,7 @@ import { t } from '../../i18n/i18n'
 import { koodistokoodiviiteId } from '../../util/koodisto'
 import { usePäätasonSuoritustyypit } from '../UusiOpiskeluoikeusForm'
 import { SuoritusFieldsProps } from './SuoritusFields'
+import { DialogPerusteSelect } from '../DialogPerusteSelect'
 
 export const AikuistenPerusopetusFields = (props: SuoritusFieldsProps) => {
   const options = usePäätasonSuoritustyypit(props.state)
@@ -23,19 +24,7 @@ export const AikuistenPerusopetusFields = (props: SuoritusFieldsProps) => {
         testId="oppimäärä"
       />
 
-      {props.state.peruste.visible && (
-        <>
-          {t('Peruste')}
-          <Select
-            options={perusteOptions}
-            initialValue="OPH-1280-2017"
-            value={props.state.peruste.value?.koodiarvo}
-            onChange={(opt) => props.state.peruste.set(opt?.value)}
-            disabled={perusteOptions.length < 2}
-            testId="peruste"
-          />
-        </>
-      )}
+      <DialogPerusteSelect state={props.state} default="OPH-1280-2017" />
     </>
   )
 }

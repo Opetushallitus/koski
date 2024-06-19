@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { useKoodisto } from '../../appstate/koodisto'
 import {
   Select,
@@ -6,13 +6,13 @@ import {
 } from '../../components-v2/controls/Select'
 import { t } from '../../i18n/i18n'
 import { koodistokoodiviiteId } from '../../util/koodisto'
+import { DialogKoodistoSelect } from '../DialogKoodistoSelect'
+import { DialogPerusteSelect } from '../DialogPerusteSelect'
 import {
   UusiOpiskeluoikeusDialogState,
   usePäätasonSuoritustyypit
 } from '../UusiOpiskeluoikeusForm'
 import { SuoritusFieldsProps } from './SuoritusFields'
-import { TextEdit } from '../../components-v2/controls/TextField'
-import { DialogKoodistoSelect } from '../DialogKoodistoSelect'
 
 export const TaiteenPerusopetusFields = (props: SuoritusFieldsProps) => {
   const { suoritustyypit, perusteenDiaarinumero } =
@@ -78,17 +78,10 @@ export const TaiteenPerusopetusFields = (props: SuoritusFieldsProps) => {
         </>
       )}
 
-      {props.state.päätasonSuoritus.value && (
-        <>
-          {t('Peruste')}
-          <TextEdit
-            value={perusteenDiaarinumero}
-            disabled
-            onChange={() => {}}
-            testId="peruste"
-          />
-        </>
-      )}
+      <DialogPerusteSelect
+        state={props.state}
+        default={perusteenDiaarinumero}
+      />
 
       {t('Taiteenala')}
       <DialogKoodistoSelect
