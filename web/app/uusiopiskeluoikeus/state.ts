@@ -10,12 +10,8 @@ import { isSuorituskielellinen } from '../types/fi/oph/koski/schema/Suorituskiel
 import { OpiskeluoikeusClass } from '../types/fi/oph/koski/typemodel/OpiskeluoikeusClass'
 import * as C from '../util/constraints'
 import { fetchOpiskeluoikeusClassMapping } from '../util/koskiApi'
+import { opiskeluoikeudenLisätiedotClass } from './hooks'
 import { createOpiskeluoikeus } from './opintooikeus/createOpiskeluoikeus'
-import {
-  opiskeluoikeustyyppiToClassNames,
-  opiskeluoikeudenLisätiedotClass,
-  asObject
-} from './UusiOpiskeluoikeusForm'
 
 export type UusiOpiskeluoikeusDialogState = {
   hankintakoulutus: DialogField<Hankintakoulutus>
@@ -251,4 +247,16 @@ export const useDialogField = <T>(
   }, [isVisible])
 
   return { value, set, visible }
+}
+
+export const asObject = (className?: string) =>
+  className ? { $class: className } : undefined
+
+export const opiskeluoikeustyyppiToClassNames = (
+  ooMapping?: OpiskeluoikeusClass[],
+  tyyppi?: string
+): OpiskeluoikeusClass | undefined => {
+  return tyyppi !== undefined && ooMapping
+    ? ooMapping.find((c) => c.tyyppi === tyyppi)
+    : undefined
 }

@@ -2,15 +2,14 @@ import * as A from 'fp-ts/Array'
 import * as Eq from 'fp-ts/Eq'
 import * as string from 'fp-ts/string'
 import React, { useMemo } from 'react'
-import { usePerusteSelectOptions } from '../../appstate/peruste'
 import { Select, SelectOption } from '../../components-v2/controls/Select'
 import { t } from '../../i18n/i18n'
 import { koodistokoodiviiteId } from '../../util/koodisto'
-import { usePäätasonSuoritustyypit } from '../UusiOpiskeluoikeusForm'
+import { DialogKoodistoSelect } from '../DialogKoodistoSelect'
+import { DialogPerusteSelect } from '../DialogPerusteSelect'
+import { usePäätasonSuoritustyypit } from '../hooks'
 import { UusiOpiskeluoikeusDialogState } from '../state'
 import { SuoritusFieldsProps } from './SuoritusFields'
-import { DialogPerusteSelect } from '../DialogPerusteSelect'
-import { DialogKoodistoSelect } from '../DialogKoodistoSelect'
 
 export const VapaaSivistystyöFields = (props: SuoritusFieldsProps) => {
   const options = useVstSuoritustyypit(props.state)

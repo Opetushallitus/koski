@@ -8,7 +8,7 @@ import { t } from '../../i18n/i18n'
 import { koodistokoodiviiteId } from '../../util/koodisto'
 import { DialogKoodistoSelect } from '../DialogKoodistoSelect'
 import { DialogPerusteSelect } from '../DialogPerusteSelect'
-import { usePäätasonSuoritustyypit } from '../UusiOpiskeluoikeusForm'
+import { usePäätasonSuoritustyypit } from '../hooks'
 import { UusiOpiskeluoikeusDialogState } from '../state'
 import { SuoritusFieldsProps } from './SuoritusFields'
 
