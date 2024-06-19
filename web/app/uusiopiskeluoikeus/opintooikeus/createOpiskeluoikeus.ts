@@ -10,6 +10,7 @@ import { createPerusopetuksenLisäopetuksenOpiskeluoikeus } from './createPeruso
 import { createPerusopetuksenOpiskeluoikeus } from './createPerusopetuksenOpiskeluoikeus'
 import { createTaiteenPerusopetuksenOpiskeluoikeus } from './createTaiteenPerusopetuksenOpiskeluoikeus'
 import { createTutkintokoulutukseenValmentavanOpiskeluoikeus } from './createTutkintokoulutukseenValmentavanOpiskeluoikeus'
+import { createVapaanSivistystyönOpiskeluoikeus } from './createVapaanSivistystyonOpiskeluoikeus'
 
 export const createOpiskeluoikeus = (
   organisaatio: OrganisaatioHierarkia,
@@ -27,7 +28,8 @@ export const createOpiskeluoikeus = (
   tpoOppimäärä?: Koodistokoodiviite<'taiteenperusopetusoppimaara'>,
   tpoTaiteenala?: Koodistokoodiviite<'taiteenperusopetustaiteenala'>,
   tpoToteutustapa?: Koodistokoodiviite<'taiteenperusopetuskoulutuksentoteutustapa'>,
-  varhaiskasvatuksenJärjestämismuoto?: Koodistokoodiviite<'vardajarjestamismuoto'>
+  varhaiskasvatuksenJärjestämismuoto?: Koodistokoodiviite<'vardajarjestamismuoto'>,
+  osaamismerkki?: Koodistokoodiviite<'osaamismerkit'>
 ): Opiskeluoikeus | undefined => {
   switch (opiskeluoikeudenTyyppi.koodiarvo) {
     case 'perusopetus':
@@ -142,6 +144,21 @@ export const createOpiskeluoikeus = (
         tpoOppimäärä,
         tpoTaiteenala,
         tpoToteutustapa
+      )
+
+    case 'vapaansivistystyonkoulutus':
+      return createVapaanSivistystyönOpiskeluoikeus(
+        organisaatio,
+        suorituksenTyyppi,
+        alku,
+        tila,
+        peruste,
+        opintojenRahoitus,
+        suorituskieli,
+        opintokokonaisuus,
+        osaamismerkki,
+        maksuton,
+        jotpaAsianumero
       )
 
     default:

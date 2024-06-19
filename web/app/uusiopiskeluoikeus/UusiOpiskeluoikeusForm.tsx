@@ -7,6 +7,7 @@ import {
 } from '../appstate/constraints'
 import { useKoodisto, useKoodistoOfConstraint } from '../appstate/koodisto'
 import { Peruste } from '../appstate/peruste'
+import { Checkbox } from '../components-v2/controls/Checkbox'
 import { DateEdit } from '../components-v2/controls/DateField'
 import { KieliSelect } from '../components-v2/controls/KieliSelect'
 import {
@@ -20,10 +21,16 @@ import {
 } from '../components-v2/controls/Select'
 import { todayISODate } from '../date/date'
 import { t } from '../i18n/i18n'
+import { isJotpaRahoituksenKoodistoviite } from '../jotpa/jotpa'
 import { OrganisaatioHierarkia } from '../types/fi/oph/koski/organisaatio/OrganisaatioHierarkia'
 import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { Opiskeluoikeus } from '../types/fi/oph/koski/schema/Opiskeluoikeus'
+import { OppivelvollisilleSuunnattuVapaanSivistystyönOpiskeluoikeusjakso } from '../types/fi/oph/koski/schema/OppivelvollisilleSuunnattuVapaanSivistystyonOpiskeluoikeusjakso'
 import { isSuorituskielellinen } from '../types/fi/oph/koski/schema/Suorituskielellinen'
+import { VapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso } from '../types/fi/oph/koski/schema/VapaanSivistystyonJotpaKoulutuksenOpiskeluoikeusjakso'
+import { VapaanSivistystyönOpiskeluoikeus } from '../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeus'
+import { VapaanSivistystyönOsaamismerkinOpiskeluoikeusjakso } from '../types/fi/oph/koski/schema/VapaanSivistystyonOsaamismerkinOpiskeluoikeusjakso'
+import { VapaanSivistystyönVapaatavoitteisenKoulutuksenOpiskeluoikeusjakso } from '../types/fi/oph/koski/schema/VapaanSivistystyonVapaatavoitteisenKoulutuksenOpiskeluoikeusjakso'
 import { OpiskeluoikeusClass } from '../types/fi/oph/koski/typemodel/OpiskeluoikeusClass'
 import * as C from '../util/constraints'
 import { koodistokoodiviiteId } from '../util/koodisto'
@@ -31,12 +38,11 @@ import {
   fetchOpiskeluoikeusClassMapping,
   fetchOrganisaationOpiskeluoikeustyypit
 } from '../util/koskiApi'
-import { OppilaitosSelect, OrgType } from './OppilaitosSelect'
+import { DialogKoodistoSelect } from './components/DialogKoodistoSelect'
+import { OppilaitosSearch } from './components/OppilaitosSearch'
+import { OppilaitosSelect, OrgType } from './components/OppilaitosSelect'
 import { createOpiskeluoikeus } from './opintooikeus/createOpiskeluoikeus'
 import { SuoritusFields } from './suoritus/SuoritusFields'
-import { Checkbox } from '../components-v2/controls/Checkbox'
-import { OppilaitosSearch } from './OppilaitosSearch'
-import { DialogKoodistoSelect } from './DialogKoodistoSelect'
 
 export type UusiOpiskeluoikeusFormProps = {
   onResult: (opiskeluoikeus?: Opiskeluoikeus) => void
@@ -262,6 +268,7 @@ export type UusiOpiskeluoikeusDialogState = {
   varhaiskasvatuksenJärjestämistapa: DialogField<
     Koodistokoodiviite<'vardajarjestamismuoto'>
   >
+  osaamismerkki: DialogField<Koodistokoodiviite<'osaamismerkit'>>
   ooMapping?: OpiskeluoikeusClass[]
   result?: Opiskeluoikeus
 }
@@ -289,7 +296,9 @@ const useUusiOpiskeluoikeusDialogState = (): UusiOpiskeluoikeusDialogState => {
     ooMapping,
     opiskeluoikeus.value?.koodiarvo
   )
-  const opiskeluoikeudenLisätiedot = useSchema(opiskeluoikeusClass?.lisätiedot)
+  const opiskeluoikeudenLisätiedot = useSchema(
+    opiskeluoikeudenLisätiedotClass(opiskeluoikeusClass)
+  )
 
   // Päätason suoritus
   const päätasonSuoritus = useDialogField<
@@ -324,7 +333,16 @@ const useUusiOpiskeluoikeusDialogState = (): UusiOpiskeluoikeusDialogState => {
     opiskeluoikeudenLisätiedot,
     'maksuttomuus'
   )
-  const maksuton = useDialogField<boolean | null>(maksuttomuustiedollinen)
+  const maksuton = useDialogField<boolean | null>(
+    maksuttomuustiedollinen && päätasonSuoritus.value
+      ? ![
+          // Päätason suoritukset, joille maksuttomuusvalintaa ei näytetä, vaikka se opiskeluoikeuden tiedoista löytyykin:
+          'vstjotpakoulutus',
+          'vstosaamismerkki',
+          'vstvapaatavoitteinenkoulutus'
+        ].includes(päätasonSuoritus.value?.koodiarvo)
+      : false
+  )
 
   // Opintojen rahoitus
   const opintojenRahoitus = useDialogField<
@@ -335,7 +353,7 @@ const useUusiOpiskeluoikeusDialogState = (): UusiOpiskeluoikeusDialogState => {
   const tuvaJärjestämislupa =
     useDialogField<Koodistokoodiviite<'tuvajarjestamislupa'>>(true)
 
-  // Opintokokonaisuus (muu kuin säännelty koulutus)
+  // Opintokokonaisuus (vst jotpa, vst vapaatavoitteinen, sekä muu kuin säännelty koulutus)
   const opintokokonaisuus =
     useDialogField<Koodistokoodiviite<'opintokokonaisuudet'>>(true)
 
@@ -358,6 +376,10 @@ const useUusiOpiskeluoikeusDialogState = (): UusiOpiskeluoikeusDialogState => {
   const varhaiskasvatuksenJärjestämistapa = useDialogField<
     Koodistokoodiviite<'vardajarjestamismuoto'>
   >(hankintakoulutus.value === 'esiopetus')
+
+  // Vapaan sivistystyön koulutuksen osaamismerkki
+  const osaamismerkki =
+    useDialogField<Koodistokoodiviite<'osaamismerkit'>>(true)
 
   // Validi opiskeluoikeus
   const result = useMemo(
@@ -383,7 +405,8 @@ const useUusiOpiskeluoikeusDialogState = (): UusiOpiskeluoikeusDialogState => {
             tpoOppimäärä.value,
             tpoTaiteenala.value,
             tpoToteutustapa.value,
-            varhaiskasvatuksenJärjestämistapa.value
+            varhaiskasvatuksenJärjestämistapa.value,
+            osaamismerkki.value
           )
         : undefined,
     [
@@ -394,6 +417,7 @@ const useUusiOpiskeluoikeusDialogState = (): UusiOpiskeluoikeusDialogState => {
       opintokokonaisuus.value,
       opiskeluoikeus.value,
       oppilaitos.value,
+      osaamismerkki.value,
       peruste.value,
       päätasonSuoritus.value,
       suorituskieli.value,
@@ -424,6 +448,7 @@ const useUusiOpiskeluoikeusDialogState = (): UusiOpiskeluoikeusDialogState => {
     tpoTaiteenala,
     tpoToteutustapa,
     varhaiskasvatuksenJärjestämistapa,
+    osaamismerkki,
     ooMapping,
     result
   }
@@ -489,6 +514,50 @@ export const usePäätasonSuoritustyypit = (
   }, [koodisto, ooMapping, ooTyyppi])
 }
 
+const opiskeluoikeudenTilaClass = (
+  ooClass?: OpiskeluoikeusClass,
+  suoritustyyppi?: string
+): string | undefined => {
+  switch (ooClass?.className) {
+    case VapaanSivistystyönOpiskeluoikeus.className:
+      switch (suoritustyyppi) {
+        case 'vstoppivelvollisillesuunnattukoulutus':
+        case 'vstmaahanmuuttajienkotoutumiskoulutus':
+        case 'vstlukutaitokoulutus':
+          return OppivelvollisilleSuunnattuVapaanSivistystyönOpiskeluoikeusjakso.className
+        case 'vstjotpakoulutus':
+          return VapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso.className
+        case 'vstosaamismerkki':
+          return VapaanSivistystyönOsaamismerkinOpiskeluoikeusjakso.className
+        case 'vstvapaatavoitteinenkoulutus':
+          return VapaanSivistystyönVapaatavoitteisenKoulutuksenOpiskeluoikeusjakso.className
+        default:
+          return undefined
+      }
+    default: {
+      const jaksot = ooClass?.opiskeluoikeusjaksot || []
+      if (jaksot.length > 1) {
+        throw new Error(
+          `Epäselvä tilanne: useampi kuin yksi mahdollinen opiskeluoikeuden tilan luokka mahdollinen: ${ooClass?.className}: ${jaksot.join(', ')}`
+        )
+      }
+      return jaksot[0]
+    }
+  }
+}
+
+const opiskeluoikeudenLisätiedotClass = (
+  ooClass?: OpiskeluoikeusClass
+): string | undefined => {
+  const lisätiedot = ooClass?.lisätiedot || []
+  if (lisätiedot.length > 1) {
+    throw new Error(
+      `Epäselvä tilanne: useampi kuin yksi mahdollinen opiskeluoikeuden lisätietoluokka mahdollinen: ${lisätiedot.join(', ')}`
+    )
+  }
+  return lisätiedot[0]
+}
+
 const useOpiskeluoikeudenTilat = (
   state: UusiOpiskeluoikeusDialogState
 ): {
@@ -501,7 +570,10 @@ const useOpiskeluoikeudenTilat = (
   )
 
   const opiskelujaksonTila = useChildSchema(
-    className?.opiskeluoikeusjaksot,
+    opiskeluoikeudenTilaClass(
+      className,
+      state.päätasonSuoritus.value?.koodiarvo
+    ),
     'tila'
   )
 
@@ -511,7 +583,11 @@ const useOpiskeluoikeudenTilat = (
   const options = useMemo(
     () =>
       koodistot
-        ? koodistot.flatMap((k) => k.koodiviite).map(koodiviiteToOption)
+        ? koodistot
+            .flatMap((k) =>
+              k.koodiviite.koodiarvo !== 'mitatoity' ? [k.koodiviite] : []
+            )
+            .map(koodiviiteToOption)
         : [],
     [koodistot]
   )
@@ -519,7 +595,8 @@ const useOpiskeluoikeudenTilat = (
   const initialValue = useMemo(() => {
     const defaults = [
       'koskiopiskeluoikeudentila_lasna',
-      'koskiopiskeluoikeudentila_valmistunut' // Opiskeluoikeus halutaan merkitä tavallisesti suoraan valmistuneeksi, jolla sillä ei ole läsnä-tilaa
+      'koskiopiskeluoikeudentila_valmistunut', // Opiskeluoikeus halutaan merkitä tavallisesti suoraan valmistuneeksi, jolla sillä ei ole läsnä-tilaa
+      'koskiopiskeluoikeudentila_hyvaksytystisuoritettu'
     ]
     return defaults.find((tila) => options.find((tt) => tt.key === tila))
   }, [options])
@@ -534,7 +611,10 @@ const useOpintojenRahoitus = (state: UusiOpiskeluoikeusDialogState) => {
   )
 
   const opiskelujaksonTila = useChildSchemaSafe(
-    className?.opiskeluoikeusjaksot,
+    opiskeluoikeudenTilaClass(
+      className,
+      state.päätasonSuoritus.value?.koodiarvo
+    ),
     'opintojenRahoitus'
   )
 
@@ -562,12 +642,16 @@ const useJotpaAsianumero = (state: UusiOpiskeluoikeusDialogState) => {
   )
 
   const asianumeroSchema = useChildSchemaSafe(
-    className?.lisätiedot,
+    opiskeluoikeudenLisätiedotClass(className),
     'jotpaAsianumero'
   )
 
   const koodistot = useKoodistoOfConstraint<'jotpaasianumero'>(
-    asianumeroSchema ? asianumeroSchema : null
+    asianumeroSchema &&
+      state.opintojenRahoitus.value &&
+      isJotpaRahoituksenKoodistoviite(state.opintojenRahoitus.value)
+      ? asianumeroSchema
+      : null
   )
 
   const options = useMemo(
