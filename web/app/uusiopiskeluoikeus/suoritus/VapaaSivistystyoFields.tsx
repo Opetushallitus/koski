@@ -6,10 +6,8 @@ import { usePerusteSelectOptions } from '../../appstate/peruste'
 import { Select, SelectOption } from '../../components-v2/controls/Select'
 import { t } from '../../i18n/i18n'
 import { koodistokoodiviiteId } from '../../util/koodisto'
-import {
-  UusiOpiskeluoikeusDialogState,
-  usePäätasonSuoritustyypit
-} from '../UusiOpiskeluoikeusForm'
+import { usePäätasonSuoritustyypit } from '../UusiOpiskeluoikeusForm'
+import { UusiOpiskeluoikeusDialogState } from '../state'
 import { SuoritusFieldsProps } from './SuoritusFields'
 import { DialogPerusteSelect } from '../DialogPerusteSelect'
 import { DialogKoodistoSelect } from '../DialogKoodistoSelect'
