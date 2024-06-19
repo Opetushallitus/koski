@@ -6,10 +6,10 @@ import {
 } from '../../components-v2/controls/Select'
 import { t } from '../../i18n/i18n'
 import { koodistokoodiviiteId } from '../../util/koodisto'
-import { DialogKoodistoSelect } from '../DialogKoodistoSelect'
-import { DialogPerusteSelect } from '../DialogPerusteSelect'
-import { usePäätasonSuoritustyypit } from '../hooks'
-import { UusiOpiskeluoikeusDialogState } from '../state'
+import { DialogKoodistoSelect } from '../components/DialogKoodistoSelect'
+import { DialogPerusteSelect } from '../components/DialogPerusteSelect'
+import { usePäätasonSuoritustyypit } from '../state/hooks'
+import { UusiOpiskeluoikeusDialogState } from '../state/state'
 import { SuoritusFieldsProps } from './SuoritusFields'
 
 export const TaiteenPerusopetusFields = (props: SuoritusFieldsProps) => {

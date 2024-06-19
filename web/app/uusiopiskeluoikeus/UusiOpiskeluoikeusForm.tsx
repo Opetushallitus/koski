@@ -6,7 +6,7 @@ import { Select } from '../components-v2/controls/Select'
 import { t } from '../i18n/i18n'
 import { Opiskeluoikeus } from '../types/fi/oph/koski/schema/Opiskeluoikeus'
 import { koodistokoodiviiteId } from '../util/koodisto'
-import { DialogMaksuttomuusSelect } from './DialogMaksuttomuusSelect'
+import { DialogMaksuttomuusSelect } from './components/DialogMaksuttomuusSelect'
 import { DialogKoodistoSelect } from './components/DialogKoodistoSelect'
 import { OppilaitosSearch } from './components/OppilaitosSearch'
 import { OppilaitosSelect, OrgType } from './components/OppilaitosSelect'
@@ -15,8 +15,8 @@ import {
   useOpintojenRahoitus,
   useOpiskeluoikeudenTilat,
   useOpiskeluoikeustyypit
-} from './hooks'
-import { useUusiOpiskeluoikeusDialogState } from './state'
+} from './state/hooks'
+import { useUusiOpiskeluoikeusDialogState } from './state/state'
 import { SuoritusFields } from './suoritus/SuoritusFields'
 
 export type UusiOpiskeluoikeusFormProps = {

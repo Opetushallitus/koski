@@ -1,8 +1,8 @@
 import React from 'react'
-import { usePerusteSelectOptions } from '../appstate/peruste'
-import { Select } from '../components-v2/controls/Select'
-import { UusiOpiskeluoikeusDialogState } from './state'
-import { t } from '../i18n/i18n'
+import { usePerusteSelectOptions } from '../../appstate/peruste'
+import { Select } from '../../components-v2/controls/Select'
+import { UusiOpiskeluoikeusDialogState } from '../state/state'
+import { t } from '../../i18n/i18n'
 
 export type DialogPerusteSelectProps = {
   state: UusiOpiskeluoikeusDialogState

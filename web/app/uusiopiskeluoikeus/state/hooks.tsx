@@ -1,21 +1,21 @@
 import { useMemo } from 'react'
-import { isSuccess, useApiWithParams } from '../api-fetch'
-import { useChildSchema, useChildSchemaSafe } from '../appstate/constraints'
-import { useKoodisto, useKoodistoOfConstraint } from '../appstate/koodisto'
+import { isSuccess, useApiWithParams } from '../../api-fetch'
+import { useChildSchema, useChildSchemaSafe } from '../../appstate/constraints'
+import { useKoodisto, useKoodistoOfConstraint } from '../../appstate/koodisto'
 import {
   SelectOption,
   koodiviiteToOption
-} from '../components-v2/controls/Select'
-import { isJotpaRahoituksenKoodistoviite } from '../jotpa/jotpa'
-import { OrganisaatioHierarkia } from '../types/fi/oph/koski/organisaatio/OrganisaatioHierarkia'
-import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
-import { OppivelvollisilleSuunnattuVapaanSivistystyönOpiskeluoikeusjakso } from '../types/fi/oph/koski/schema/OppivelvollisilleSuunnattuVapaanSivistystyonOpiskeluoikeusjakso'
-import { VapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso } from '../types/fi/oph/koski/schema/VapaanSivistystyonJotpaKoulutuksenOpiskeluoikeusjakso'
-import { VapaanSivistystyönOpiskeluoikeus } from '../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeus'
-import { VapaanSivistystyönOsaamismerkinOpiskeluoikeusjakso } from '../types/fi/oph/koski/schema/VapaanSivistystyonOsaamismerkinOpiskeluoikeusjakso'
-import { VapaanSivistystyönVapaatavoitteisenKoulutuksenOpiskeluoikeusjakso } from '../types/fi/oph/koski/schema/VapaanSivistystyonVapaatavoitteisenKoulutuksenOpiskeluoikeusjakso'
-import { OpiskeluoikeusClass } from '../types/fi/oph/koski/typemodel/OpiskeluoikeusClass'
-import { fetchOrganisaationOpiskeluoikeustyypit } from '../util/koskiApi'
+} from '../../components-v2/controls/Select'
+import { isJotpaRahoituksenKoodistoviite } from '../../jotpa/jotpa'
+import { OrganisaatioHierarkia } from '../../types/fi/oph/koski/organisaatio/OrganisaatioHierarkia'
+import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
+import { OppivelvollisilleSuunnattuVapaanSivistystyönOpiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/OppivelvollisilleSuunnattuVapaanSivistystyonOpiskeluoikeusjakso'
+import { VapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/VapaanSivistystyonJotpaKoulutuksenOpiskeluoikeusjakso'
+import { VapaanSivistystyönOpiskeluoikeus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeus'
+import { VapaanSivistystyönOsaamismerkinOpiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOsaamismerkinOpiskeluoikeusjakso'
+import { VapaanSivistystyönVapaatavoitteisenKoulutuksenOpiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/VapaanSivistystyonVapaatavoitteisenKoulutuksenOpiskeluoikeusjakso'
+import { OpiskeluoikeusClass } from '../../types/fi/oph/koski/typemodel/OpiskeluoikeusClass'
+import { fetchOrganisaationOpiskeluoikeustyypit } from '../../util/koskiApi'
 import {
   UusiOpiskeluoikeusDialogState,
   opiskeluoikeustyyppiToClassNames

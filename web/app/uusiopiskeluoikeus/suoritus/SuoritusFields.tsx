@@ -1,5 +1,5 @@
 import React from 'react'
-import { UusiOpiskeluoikeusDialogState } from '../state'
+import { UusiOpiskeluoikeusDialogState } from '../state/state'
 import { PerusopetusFields } from './PerusopetusFields'
 import { PerusopetukseenValmistavaFields } from './PerusopetukseenValmistavaFields'
 import { PerusopetuksenLisäopetusFields } from './PerusopetuksenLisaopetusFields'

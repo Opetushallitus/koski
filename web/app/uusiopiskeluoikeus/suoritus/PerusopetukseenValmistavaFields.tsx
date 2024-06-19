@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
-import { DialogPerusteSelect } from '../DialogPerusteSelect'
+import { DialogPerusteSelect } from '../components/DialogPerusteSelect'
 import { SuoritusFieldsProps } from './SuoritusFields'
 
 const päätasonSuoritus = Koodistokoodiviite({

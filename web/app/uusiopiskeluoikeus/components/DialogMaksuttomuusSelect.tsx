@@ -2,9 +2,9 @@ import React from 'react'
 import {
   RadioButtonOption,
   RadioButtons
-} from '../components-v2/controls/RadioButtons'
-import { UusiOpiskeluoikeusDialogState } from './state'
-import { t } from '../i18n/i18n'
+} from '../../components-v2/controls/RadioButtons'
+import { UusiOpiskeluoikeusDialogState } from '../state/state'
+import { t } from '../../i18n/i18n'
 
 export type DialogMaksuttomuusSelectProps = {
   state: UusiOpiskeluoikeusDialogState

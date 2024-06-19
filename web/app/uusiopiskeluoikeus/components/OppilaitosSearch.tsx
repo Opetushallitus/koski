@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react'
-import { useOrganisaatioHierarkiaSearch } from '../appstate/organisaatioHierarkia'
-import { Select, SelectOption } from '../components-v2/controls/Select'
-import { OrganisaatioHierarkia } from '../types/fi/oph/koski/organisaatio/OrganisaatioHierarkia'
+import { useOrganisaatioHierarkiaSearch } from '../../appstate/organisaatioHierarkia'
+import { Select, SelectOption } from '../../components-v2/controls/Select'
+import { OrganisaatioHierarkia } from '../../types/fi/oph/koski/organisaatio/OrganisaatioHierarkia'
 import {
   OrgType,
   filterOrgsByType,
@@ -42,12 +42,6 @@ const useOrganisaatioOptions = (
     const filtered = orgTypes
       ? filterOrgsByType(organisaatiot, orgTypes)
       : organisaatiot
-    console.log({
-      orgTypes,
-      organisaatiot,
-      filtered,
-      options: filtered.map(organisaatiohierarkiaToOption(orgTypes))
-    })
     return filtered.map(organisaatiohierarkiaToOption(orgTypes))
   }, [orgTypes, organisaatiot])
 }

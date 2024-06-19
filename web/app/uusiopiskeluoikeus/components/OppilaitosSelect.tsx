@@ -1,10 +1,10 @@
 import { isEmpty } from 'fp-ts/lib/Array'
 import React, { useCallback, useMemo } from 'react'
-import { useOrganisaatioHierarkia } from '../appstate/organisaatioHierarkia'
-import { Select, SelectOption } from '../components-v2/controls/Select'
-import { t } from '../i18n/i18n'
-import { OrganisaatioHierarkia } from '../types/fi/oph/koski/organisaatio/OrganisaatioHierarkia'
-import { intersects } from '../util/array'
+import { useOrganisaatioHierarkia } from '../../appstate/organisaatioHierarkia'
+import { Select, SelectOption } from '../../components-v2/controls/Select'
+import { t } from '../../i18n/i18n'
+import { OrganisaatioHierarkia } from '../../types/fi/oph/koski/organisaatio/OrganisaatioHierarkia'
+import { intersects } from '../../util/array'
 
 export type OppilaitosSelectProps = {
   value?: OrganisaatioHierarkia
