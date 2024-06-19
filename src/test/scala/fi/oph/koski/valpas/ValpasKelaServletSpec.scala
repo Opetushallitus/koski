@@ -179,7 +179,7 @@ class ValpasKelaServletSpec extends ValpasTestBase with BeforeAndAfterEach {
         }
       }
 
-      "Yhden oppijan hakeminen palauttaa oppijan, joka on vain opppijanumerorekisterissä, jos on ikänsä puolesta ovl-lain piirissä" in {
+      "Yhden oppijan hakeminen palauttaa oppijan, joka on vain oppijanumerorekisterissä, jos on ikänsä puolesta ovl-lain piirissä" in {
         val oppija = ValpasMockOppijat.eiKoskessaOppivelvollinen
 
         postHetu(oppija.hetu.get) {
@@ -194,7 +194,7 @@ class ValpasKelaServletSpec extends ValpasTestBase with BeforeAndAfterEach {
         }
       }
 
-      "Yhden oppijan hakeminen palauttaa oppijan, joka on vain opppijanumerorekisterissä, jos on ikänsä puolesta ovl-lain piirissä, vaikka olisi yli 18-vuotias" in {
+      "Yhden oppijan hakeminen palauttaa oppijan, joka on vain oppijanumerorekisterissä, jos on ikänsä puolesta ovl-lain piirissä, vaikka olisi yli 18-vuotias" in {
         KoskiApplicationForTests.valpasRajapäivätService.asInstanceOf[MockValpasRajapäivätService]
           .asetaMockTarkastelupäivä(date(2023, 1, 25))
 
