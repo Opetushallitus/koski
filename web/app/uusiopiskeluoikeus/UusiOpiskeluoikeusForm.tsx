@@ -11,10 +11,6 @@ import { Checkbox } from '../components-v2/controls/Checkbox'
 import { DateEdit } from '../components-v2/controls/DateField'
 import { KieliSelect } from '../components-v2/controls/KieliSelect'
 import {
-  RadioButtonOption,
-  RadioButtons
-} from '../components-v2/controls/RadioButtons'
-import {
   Select,
   SelectOption,
   koodiviiteToOption
@@ -38,6 +34,7 @@ import {
   fetchOpiskeluoikeusClassMapping,
   fetchOrganisaationOpiskeluoikeustyypit
 } from '../util/koskiApi'
+import { DialogMaksuttomuusSelect } from './DialogMaksuttomuusSelect'
 import { DialogKoodistoSelect } from './components/DialogKoodistoSelect'
 import { OppilaitosSearch } from './components/OppilaitosSearch'
 import { OppilaitosSelect, OrgType } from './components/OppilaitosSelect'
@@ -207,42 +204,10 @@ export const UusiOpiskeluoikeusForm = (props: UusiOpiskeluoikeusFormProps) => {
         </>
       )}
 
-      {state.maksuton.visible && (
-        <>
-          <RadioButtons
-            options={maksuttomuusOptions}
-            value={maksuttomuusKey(state.maksuton.value)}
-            onChange={state.maksuton.set}
-            testId="maksuton"
-          />
-        </>
-      )}
+      {state.maksuton.visible && <DialogMaksuttomuusSelect state={state} />}
     </section>
   )
 }
-
-const maksuttomuusKey = (value?: boolean | null): string | undefined =>
-  maksuttomuusOptions.find((o) => o.value === value)?.key
-
-const maksuttomuusOptions: Array<RadioButtonOption<boolean | null>> = [
-  {
-    key: 'eiOvlPiirissä',
-    value: null,
-    label: t(
-      'Henkilö on syntynyt ennen vuotta 2004 ja ei ole laajennetun oppivelvollisuuden piirissä'
-    )
-  },
-  {
-    key: 'maksuton',
-    value: true,
-    label: t('Koulutus on maksutonta')
-  },
-  {
-    key: 'maksullinen',
-    value: false,
-    label: t('Koulutus on maksullista')
-  }
-]
 
 export type Hankintakoulutus = 'esiopetus' | 'tpo' | undefined
 
