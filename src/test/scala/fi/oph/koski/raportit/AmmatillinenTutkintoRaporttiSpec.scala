@@ -10,6 +10,7 @@ import fi.oph.koski.organisaatio.{MockOrganisaatioRepository, MockOrganisaatiot}
 import fi.oph.koski.raportointikanta.{ROsasuoritusRow, RaportointikantaTestMethods}
 import fi.oph.koski.schema._
 import fi.oph.koski.{DirtiesFixtures, KoskiApplicationForTests}
+import org.json4s.JArray
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
@@ -484,7 +485,6 @@ class AmmatillinenTutkintoRaporttiSpec
       arviointiArvosanaKoodisto = None,
       arviointiHyväksytty = None,
       arviointiPäivä = None,
-      arviointiPäivät = None,
       ensimmäinenArviointiPäivä = None,
       korotettuEriVuonna = false,
       näytönArviointiPäivä = None,

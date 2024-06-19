@@ -93,9 +93,9 @@ case class AikuistenPerusopetuksenOppimääränKurssikertymät(db: DB) extends Q
           --- tämän tarkoitus on saada eronnut-tilan alkamisen kanssa samana päivänä arvioidut kurssit edelliselle aikajaksolle
           and ((case when viimeisin_tila = 'eronnut' then r_opiskeluoikeus_aikajakso.loppu - interval '1 day' else r_opiskeluoikeus_aikajakso.loppu end) >= r_osasuoritus.arviointi_paiva or r_opiskeluoikeus_aikajakso.loppu = '9999-12-30')
         left join lateral (
-          select count(1) as arviointipvm_count
-          from unnest(r_osasuoritus.arviointi_paivat) as arviointipvm
-          where arviointipvm between $aikaisintaan and $viimeistaan
+          SELECT count(1) AS arviointipvm_count
+          FROM jsonb_array_elements(r_osasuoritus.data->'arviointi') AS arviointipvm
+          WHERE (arviointipvm->>'päivä')::date BETWEEN $aikaisintaan AND $viimeistaan
         ) as subquery on true
         where (r_osasuoritus.suorituksen_tyyppi = 'aikuistenperusopetuksenkurssi' or r_osasuoritus.suorituksen_tyyppi = 'aikuistenperusopetuksenalkuvaiheenkurssi')
           and r_osasuoritus.arviointi_arvosana_koodiarvo != 'O'
@@ -112,9 +112,9 @@ case class AikuistenPerusopetuksenOppimääränKurssikertymät(db: DB) extends Q
         join r_opiskeluoikeus_aikajakso on oo_opiskeluoikeus_oid = r_opiskeluoikeus_aikajakso.opiskeluoikeus_oid
         join r_osasuoritus on paatason_suoritus.paatason_suoritus_id = r_osasuoritus.paatason_suoritus_id or oo_opiskeluoikeus_oid = r_osasuoritus.sisaltyy_opiskeluoikeuteen_oid
         left join lateral (
-          select count(1) as arviointipvm_count
-          from unnest(r_osasuoritus.arviointi_paivat) as arviointipvm
-          where arviointipvm between $aikaisintaan and $viimeistaan
+          SELECT count(1) AS arviointipvm_count
+          FROM jsonb_array_elements(r_osasuoritus.data->'arviointi') AS arviointipvm
+          WHERE (arviointipvm->>'päivä')::date BETWEEN $aikaisintaan AND $viimeistaan
         ) as subquery on true
         where (r_osasuoritus.suorituksen_tyyppi = 'aikuistenperusopetuksenkurssi' or r_osasuoritus.suorituksen_tyyppi = 'aikuistenperusopetuksenalkuvaiheenkurssi')
           and r_osasuoritus.arviointi_arvosana_koodiarvo != 'O'

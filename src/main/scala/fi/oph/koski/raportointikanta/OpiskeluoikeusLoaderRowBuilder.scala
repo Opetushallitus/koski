@@ -8,7 +8,7 @@ import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.raportointikanta.LoaderUtils.{convertKoodisto, convertLocalizedString}
 import fi.oph.koski.schema._
 import fi.oph.koski.validation.MaksuttomuusValidation
-import org.json4s.JValue
+import org.json4s.{JArray, JString, JValue, JObject}
 
 import java.sql.{Date, Timestamp}
 import java.time.temporal.ChronoField
@@ -439,7 +439,6 @@ object OpiskeluoikeusLoaderRowBuilder extends Logging {
       arviointiArvosanaKoodisto = os.parasArviointi.flatMap(a => convertKoodisto(a.arvosana)),
       arviointiHyväksytty = os.parasArviointi.map(_.hyväksytty),
       arviointiPäivä = os.parasArviointi.flatMap(_.arviointipäivä).map(v => Date.valueOf(v)),
-      arviointiPäivät = os.arviointi.map(_.flatMap(_.arviointipäivä).map(v => Date.valueOf(v))),
       ensimmäinenArviointiPäivä = os.sortedArviointi.flatMap(_.arviointipäivä).headOption.map(Date.valueOf),
       korotettuEriVuonna = (os.ensimmäinenArviointiPäivä, os.parasArviointiPäivä) match {
         case (Some(eka), Some(paras)) => {

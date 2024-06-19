@@ -34,6 +34,7 @@ class RaportitService(application: KoskiApplication) {
   private val esiopetuksenOppijamäärätAikajaksovirheetRaportti = EsiopetuksenOppijamäärätAikajaksovirheetRaportti(raportointiDatabase.db, application.organisaatioService)
   private val aikuistenPerusopetuksenOppijamäärätRaportti = AikuistenPerusopetuksenOppijamäärätRaportti(raportointiDatabase.db, application.organisaatioService)
   private val aikuistenPerusopetuksenOppimääränKurssikertymätRaportti = AikuistenPerusopetuksenOppimääränKurssikertymät(raportointiDatabase.db)
+  private val aikuistenPerusopetuksenOppimääränArvioinnitRaportti = AikuistenPerusopetuksenOppimääräArvioinnit(raportointiDatabase.db)
   private val aikuistenPerusopetuksenAineopiskelijoidenKurssikertymätRaportti = AikuistenPerusopetuksenAineopiskelijoidenKurssikertymät(raportointiDatabase.db)
   private val aikuistenPerusopetuksenMuutaKauttaRahoitetutKurssitRaportti = AikuistenPerusopetuksenMuutaKauttaRahoitetutKurssit(raportointiDatabase.db)
   private val aikuistenPerusopetuksenEiRahoitustietoaKurssitRaportti = AikuistenPerusopetuksenEiRahoitustietoaKurssit(raportointiDatabase.db)
@@ -288,6 +289,7 @@ class RaportitService(application: KoskiApplication) {
     OppilaitosRaporttiResponse(
       sheets = Seq(
         aikuistenPerusopetuksenOppimääränKurssikertymätRaportti.build(oppilaitosOids, request.alku, request.loppu, t),
+        aikuistenPerusopetuksenOppimääränArvioinnitRaportti.build(oppilaitosOids, request.alku, request.loppu, t),
         aikuistenPerusopetuksenAineopiskelijoidenKurssikertymätRaportti.build(oppilaitosOids, request.alku, request.loppu, t),
         aikuistenPerusopetuksenMuutaKauttaRahoitetutKurssitRaportti.build(oppilaitosOids, request.alku, request.loppu, t),
         aikuistenPerusopetuksenEiRahoitustietoaKurssitRaportti.build(oppilaitosOids, request.alku, request.loppu, t),
