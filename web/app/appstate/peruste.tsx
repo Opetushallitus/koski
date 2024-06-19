@@ -109,7 +109,10 @@ class PerusteLoader {
       unfetchedPerusteet.forEach(({ perusteRequest, diaarinumero }) => {
         if (E.isRight(perusteRequest)) {
           // @ts-expect-error TODO: Tyypitys kuntoon, fp-ts käyttöön
-          this.perusteet[diaarinumero] = perusteRequest.right.data
+          this.perusteet = {
+            ...this.perusteet,
+            [diaarinumero]: perusteRequest.right.data
+          }
         }
       })
 
