@@ -1,3 +1,6 @@
+import * as A from 'fp-ts/Array'
+import * as Eq from 'fp-ts/Eq'
+import * as string from 'fp-ts/string'
 import { useMemo } from 'react'
 import { isSuccess, useApiWithParams } from '../../api-fetch'
 import { useChildSchema, useChildSchemaSafe } from '../../appstate/constraints'
@@ -53,9 +56,16 @@ export const usePäätasonSuoritustyypit = (
           return viite ? [viite] : []
         })
       : []
-    return koodit.map(koodiviiteToOption)
+    return distinctKeys(koodit.map(koodiviiteToOption))
   }, [koodisto, ooMapping, ooTyyppi])
 }
+
+const SelectOptionKeyEq = <O extends SelectOption<any>>() =>
+  Eq.contramap((o: O) => o.key)(string.Eq)
+
+const distinctKeys = <O extends SelectOption<any>>(os: O[]) =>
+  A.uniq(SelectOptionKeyEq<O>())(os)
+
 const opiskeluoikeudenTilaClass = (
   ooClass?: OpiskeluoikeusClass,
   suoritustyyppi?: string

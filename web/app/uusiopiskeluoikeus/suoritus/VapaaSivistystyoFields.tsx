@@ -1,18 +1,14 @@
-import * as A from 'fp-ts/Array'
-import * as Eq from 'fp-ts/Eq'
-import * as string from 'fp-ts/string'
-import React, { useMemo } from 'react'
-import { Select, SelectOption } from '../../components-v2/controls/Select'
+import React from 'react'
+import { Select } from '../../components-v2/controls/Select'
 import { t } from '../../i18n/i18n'
 import { koodistokoodiviiteId } from '../../util/koodisto'
 import { DialogKoodistoSelect } from '../components/DialogKoodistoSelect'
 import { DialogPerusteSelect } from '../components/DialogPerusteSelect'
 import { usePäätasonSuoritustyypit } from '../state/hooks'
-import { UusiOpiskeluoikeusDialogState } from '../state/state'
 import { SuoritusFieldsProps } from './SuoritusFields'
 
 export const VapaaSivistystyöFields = (props: SuoritusFieldsProps) => {
-  const options = useVstSuoritustyypit(props.state)
+  const options = usePäätasonSuoritustyypit(props.state)
   const suoritustyyppi = props.state.päätasonSuoritus.value
 
   return (
@@ -47,17 +43,6 @@ const VstSuoritusFields = (props: SuoritusFieldsProps) => {
     default:
       return null
   }
-}
-
-const SelectOptionKeyEq = <O extends SelectOption<any>>() =>
-  Eq.contramap((o: O) => o.key)(string.Eq)
-
-const distinctKeys = <O extends SelectOption<any>>(os: O[]) =>
-  A.uniq(SelectOptionKeyEq<O>())(os)
-
-const useVstSuoritustyypit = (state: UusiOpiskeluoikeusDialogState) => {
-  const options = usePäätasonSuoritustyypit(state)
-  return useMemo(() => distinctKeys(options), [options])
 }
 
 const VstKotoFields = (props: SuoritusFieldsProps) => {
