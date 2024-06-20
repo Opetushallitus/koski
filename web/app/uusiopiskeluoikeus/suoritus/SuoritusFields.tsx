@@ -9,6 +9,7 @@ import { TutkintokoulutukseenValmentavaFields } from './TutkintokoulutukseenValm
 import { MuuKuinSäänneltyKoulutusFields } from './MuuKuinSaanneltyKoulutusFields'
 import { TaiteenPerusopetusFields } from './TaiteenPerusopetusFields'
 import { VapaaSivistystyöFields } from './VapaaSivistystyoFields'
+import { LukioonValmistavaFields } from './LukioonValmistavaFields'
 
 export type SuoritusFieldsProps = {
   state: UusiOpiskeluoikeusDialogState
@@ -34,6 +35,8 @@ export const SuoritusFields = (props: SuoritusFieldsProps) => {
       return <TaiteenPerusopetusFields {...props} />
     case 'vapaansivistystyonkoulutus':
       return <VapaaSivistystyöFields {...props} />
+    case 'luva':
+      return <LukioonValmistavaFields {...props} />
     default:
       return null
   }
