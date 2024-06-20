@@ -11,7 +11,7 @@ import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokood
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
 import { nonNull } from '../../util/fp/arrays'
 import { pluck } from '../../util/fp/objects'
-import { clamp } from '../../util/numbers'
+import { clamp, sum } from '../../util/numbers'
 import { textSearch } from '../../util/strings'
 import { common, CommonProps, cx } from '../CommonProps'
 import { Removable } from './Removable'
@@ -78,8 +78,8 @@ export const Select = <T,>(props: SelectProps<T>) => {
 
   const { options, onChange, value, initialValue } = props
   useEffect(() => {
-    if (options.length === 0) {
-      onChange(undefined)
+    if (optionsCount(options) < 2) {
+      onChange(firstOption(options))
     } else if (value === undefined && initialValue) {
       onChange(options.find((o) => o.key === initialValue))
     } else if (value !== undefined && !optionExists(options, value)) {
@@ -465,4 +465,28 @@ const scrollHoveredIntoView = (
       ?.querySelector('.Select__optionLabel--hover')
       ?.scrollIntoView({ block: 'nearest' })
   }, 0)
+}
+
+const optionCount = (option: SelectOption<any>): number => {
+  const childCount = option.children ? optionsCount(option.children) : 0
+  const selfCount = option.isGroup ? 0 : 1
+  return selfCount + childCount
+}
+
+const optionsCount = (options: OptionList<any>): number =>
+  sum(options.map(optionCount))
+
+const firstOption = <T,>(
+  options: OptionList<T>
+): SelectOption<T> | undefined => {
+  for (const option of options) {
+    if (!option.isGroup) {
+      return option
+    } else if (option.children) {
+      const child = firstOption(option.children)
+      if (child) {
+        return child
+      }
+    }
+  }
 }

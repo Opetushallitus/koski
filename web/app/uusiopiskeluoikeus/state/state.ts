@@ -1,17 +1,20 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { isSuccess, useApiOnce } from '../../api-fetch'
 import { useSchema } from '../../appstate/constraints'
 import { Peruste } from '../../appstate/peruste'
 import { todayISODate } from '../../date/date'
 import { OrganisaatioHierarkia } from '../../types/fi/oph/koski/organisaatio/OrganisaatioHierarkia'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
+import { MuuAmmatillinenKoulutus } from '../../types/fi/oph/koski/schema/MuuAmmatillinenKoulutus'
 import { Opiskeluoikeus } from '../../types/fi/oph/koski/schema/Opiskeluoikeus'
 import { isSuorituskielellinen } from '../../types/fi/oph/koski/schema/Suorituskielellinen'
+import { TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus } from '../../types/fi/oph/koski/schema/TutkinnonOsaaPienemmistaKokonaisuuksistaKoostuvaKoulutus'
+import { TutkintoPeruste } from '../../types/fi/oph/koski/tutkinto/TutkintoPeruste'
 import { OpiskeluoikeusClass } from '../../types/fi/oph/koski/typemodel/OpiskeluoikeusClass'
 import * as C from '../../util/constraints'
 import { fetchOpiskeluoikeusClassMapping } from '../../util/koskiApi'
-import { opiskeluoikeudenLisätiedotClass } from './hooks'
 import { createOpiskeluoikeus } from '../opintooikeus/createOpiskeluoikeus'
+import { opiskeluoikeudenLisätiedotClass } from './hooks'
 
 export type UusiOpiskeluoikeusDialogState = {
   hankintakoulutus: DialogField<Hankintakoulutus>
@@ -42,6 +45,9 @@ export type UusiOpiskeluoikeusDialogState = {
   >
   muuAmmatillinenKoulutus: DialogField<MuuAmmatillinenKoulutus>
   tutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus: DialogField<TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus>
+  curriculum: DialogField<
+    Koodistokoodiviite<'europeanschoolofhelsinkicurriculum'>
+  >
   ooMapping?: OpiskeluoikeusClass[]
   result?: Opiskeluoikeus
 }
@@ -133,13 +139,13 @@ export const useUusiOpiskeluoikeusDialogState =
       'maksuttomuus'
     )
     const maksuton = useDialogField<boolean | null>(
-      maksuttomuustiedollinen && päätasonSuoritus.value
-        ? !päätasonSuoritukseksiValittu(
-            'vstjotpakoulutus',
-            'vstosaamismerkki',
-            'vstvapaatavoitteinenkoulutus'
-          )
-        : false
+      maksuttomuustiedollinen &&
+        !päätasonSuoritukseksiValittu(
+          'vstjotpakoulutus',
+          'vstosaamismerkki',
+          'vstvapaatavoitteinenkoulutus'
+        ) &&
+        !opiskeluoikeudeksiValittu('europeanschoolofhelsinki')
     )
 
     // Opintojen rahoitus
@@ -214,6 +220,11 @@ export const useUusiOpiskeluoikeusDialogState =
         )
       )
 
+    // European School of Helsinki
+    const curriculum = useDialogField<
+      Koodistokoodiviite<'europeanschoolofhelsinkicurriculum'>
+    >(opiskeluoikeudeksiValittu('europeanschoolofhelsinki'))
+
     // Validi opiskeluoikeus
     const result = useMemo(
       () =>
@@ -243,11 +254,13 @@ export const useUusiOpiskeluoikeusDialogState =
               tutkinto.value,
               suoritustapa.value,
               muuAmmatillinenKoulutus.value,
-              tutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus.value
+              tutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus.value,
+              curriculum.value
             )
           : undefined,
       [
         aloituspäivä.value,
+        curriculum.value,
         jotpaAsianumero.value,
         maksuton.value,
         muuAmmatillinenKoulutus.value,
@@ -294,16 +307,11 @@ export const useUusiOpiskeluoikeusDialogState =
       suoritustapa,
       muuAmmatillinenKoulutus,
       tutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus,
+      curriculum,
       ooMapping,
       result
     }
   }
-
-import { useEffect, useState } from 'react'
-import { TutkintoPeruste } from '../../types/fi/oph/koski/tutkinto/TutkintoPeruste'
-import { MuuAmmatillinenKoulutus } from '../../types/fi/oph/koski/schema/MuuAmmatillinenKoulutus'
-import { PaikallinenKoodi } from '../../types/fi/oph/koski/schema/PaikallinenKoodi'
-import { TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus } from '../../types/fi/oph/koski/schema/TutkinnonOsaaPienemmistaKokonaisuuksistaKoostuvaKoulutus'
 
 export type DialogField<T> = {
   value?: T

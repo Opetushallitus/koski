@@ -8,6 +8,7 @@ import { TutkintoPeruste } from '../../types/fi/oph/koski/tutkinto/TutkintoPerus
 import { createAikuistenPerusopetuksenOpiskeluoikeus } from './createAikuistenPerusopetuksenOpiskeluoikeus'
 import { createAmmatillinenOpiskeluoikeus } from './createAmmatillinenTutkintoOpiskeluoikeus'
 import { createEsiopetuksenOpiskeluoikeus } from './createEsiopetuksenOpiskeluoikeus'
+import { createEuropeanSchoolOfHelsinkiOpiskeluoikeus } from './createEuropeanSchoolOfHelsinkiOpiskeluoikeus'
 import { createLukionOpiskeluoikeus } from './createLukiokoulutuksenOpiskeluoikeus'
 import { createLukioonValmistavanKoulutuksenOpiskeluoikeus } from './createLukioonValmistavaOpiskeluoikeus'
 import { createMuunKuinSäännellynKoulutuksenOpiskeluoikeus } from './createMuunKuinSäännellynKoulutuksenOpiskeluoikeus'
@@ -39,7 +40,8 @@ export const createOpiskeluoikeus = (
   tutkinto?: TutkintoPeruste,
   suoritustapa?: Koodistokoodiviite<'ammatillisentutkinnonsuoritustapa'>,
   muuAmmatillinenKoulutus?: MuuAmmatillinenKoulutus,
-  tutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus?: TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus
+  tutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus?: TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus,
+  curriculum?: Koodistokoodiviite<'europeanschoolofhelsinkicurriculum'>
 ): Opiskeluoikeus | undefined => {
   switch (opiskeluoikeudenTyyppi.koodiarvo) {
     case 'perusopetus':
@@ -227,6 +229,16 @@ export const createOpiskeluoikeus = (
         tutkinto,
         peruste,
         tutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus
+      )
+
+    case 'europeanschoolofhelsinki':
+      if (!opintojenRahoitus || !curriculum) return undefined
+      return createEuropeanSchoolOfHelsinkiOpiskeluoikeus(
+        organisaatio,
+        alku,
+        tila,
+        opintojenRahoitus,
+        curriculum
       )
 
     default:
