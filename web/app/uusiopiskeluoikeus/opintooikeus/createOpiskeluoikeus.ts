@@ -4,6 +4,7 @@ import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokood
 import { Opiskeluoikeus } from '../../types/fi/oph/koski/schema/Opiskeluoikeus'
 import { createAikuistenPerusopetuksenOpiskeluoikeus } from './createAikuistenPerusopetuksenOpiskeluoikeus'
 import { createEsiopetuksenOpiskeluoikeus } from './createEsiopetuksenOpiskeluoikeus'
+import { createLukionOpiskeluoikeus } from './createLukiokoulutuksenOpiskeluoikeus'
 import { createLukioonValmistavanKoulutuksenOpiskeluoikeus } from './createLukioonValmistavaOpiskeluoikeus'
 import { createMuunKuinSäännellynKoulutuksenOpiskeluoikeus } from './createMuunKuinSäännellynKoulutuksenOpiskeluoikeus'
 import { createPerusopetukseenValmistavaOpiskeluoikeus } from './createPerusopetukseenValmistavaOpiskeluoikeus'
@@ -172,6 +173,26 @@ export const createOpiskeluoikeus = (
         return undefined
       }
       return createLukioonValmistavanKoulutuksenOpiskeluoikeus(
+        peruste,
+        organisaatio,
+        alku,
+        tila,
+        suorituskieli,
+        opintojenRahoitus,
+        maksuton
+      )
+
+    case 'lukiokoulutus':
+      if (
+        !peruste ||
+        !suorituskieli ||
+        !opintojenRahoitus ||
+        maksuton === undefined
+      ) {
+        return undefined
+      }
+      return createLukionOpiskeluoikeus(
+        suorituksenTyyppi,
         peruste,
         organisaatio,
         alku,

@@ -7,6 +7,7 @@ import { LukioonValmistavaKoulutus } from '../../types/fi/oph/koski/schema/Lukio
 import { LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot } from '../../types/fi/oph/koski/schema/LukioonValmistavanKoulutuksenOpiskeluoikeudenLisatiedot'
 import { LukioonValmistavanKoulutuksenOpiskeluoikeus } from '../../types/fi/oph/koski/schema/LukioonValmistavanKoulutuksenOpiskeluoikeus'
 import { LukioonValmistavanKoulutuksenSuoritus } from '../../types/fi/oph/koski/schema/LukioonValmistavanKoulutuksenSuoritus'
+import { perusteToOppimäärä } from './createLukiokoulutuksenOpiskeluoikeus'
 import { maksuttomuuslisätiedot, toOppilaitos, toToimipiste } from './utils'
 
 export const createLukioonValmistavanKoulutuksenOpiskeluoikeus = (
@@ -50,27 +51,4 @@ export const createLukioonValmistavanKoulutuksenOpiskeluoikeus = (
       )
     })
   )
-}
-
-const perusteToOppimäärä = (
-  peruste: Peruste
-): Koodistokoodiviite<'lukionoppimaara'> | undefined => {
-  switch (peruste.koodiarvo) {
-    case '60/011/2015':
-    case '33/011/2003':
-    case 'OPH-2263-2019':
-    case '56/011/2015':
-    case 'OPH-4958-2020':
-      return Koodistokoodiviite({
-        koodiarvo: 'nuortenops',
-        koodistoUri: 'lukionoppimaara'
-      })
-    case '70/011/2015':
-    case '4/011/2004':
-    case 'OPH-2267-2019':
-      return Koodistokoodiviite({
-        koodiarvo: 'aikuistenops',
-        koodistoUri: 'lukionoppimaara'
-      })
-  }
 }
