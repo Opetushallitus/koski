@@ -9,6 +9,7 @@ import fi.oph.koski.schema._
 import fi.oph.koski.servlet.Osaamismerkkikuva
 import fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.{AktiivisetJaPäättyneetOpinnotKoskeenTallennettavaOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotOppija}
 import fi.oph.koski.suoritusjako.suoritetuttutkinnot.{SuoritetutTutkinnotKoskeenTallennettavaOpiskeluoikeus, SuoritetutTutkinnotOppija}
+import fi.oph.koski.tutkinto.TutkintoPeruste
 import fi.oph.koski.typemodel.TypescriptTypes.Options
 import fi.oph.koski.ytr.YtrCertificateResponse
 
@@ -64,6 +65,7 @@ case class AdditionalExports(
   aktiivisetOpinnotOppija: AktiivisetJaPäättyneetOpinnotOppija,
   osaamismerkkikuva: Osaamismerkkikuva,
   opiskeluoikeusClass: OpiskeluoikeusClass,
+  tutkintoperuste: TutkintoPeruste,
 
   // Traitit jotka eivät automaattisesti exporttaudu skeemasta, koska ne eivät sellaisenaan
   // ole minkään tietomallin jäseniä (ainoastaan traitista periintyvät konkreettiset luokat exportataan automaattisesti).

@@ -36,6 +36,12 @@ export type UusiOpiskeluoikeusDialogState = {
     Koodistokoodiviite<'vardajarjestamismuoto'>
   >
   osaamismerkki: DialogField<Koodistokoodiviite<'osaamismerkit'>>
+  tutkinto: DialogField<TutkintoPeruste>
+  suoritustapa: DialogField<
+    Koodistokoodiviite<'ammatillisentutkinnonsuoritustapa'>
+  >
+  muuAmmatillinenKoulutus: DialogField<MuuAmmatillinenKoulutus>
+  tutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus: DialogField<TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus>
   ooMapping?: OpiskeluoikeusClass[]
   result?: Opiskeluoikeus
 }
@@ -61,6 +67,8 @@ export const useUusiOpiskeluoikeusDialogState =
         oppilaitosValittu
       )
     const opiskeluoikeusValittu = opiskeluoikeus.value !== undefined
+    const opiskeluoikeudeksiValittu = (...tyypit: string[]): boolean =>
+      !!opiskeluoikeus.value && tyypit.includes(opiskeluoikeus.value.koodiarvo)
     const opiskeluoikeusClass = opiskeluoikeustyyppiToClassNames(
       ooMapping,
       opiskeluoikeus.value?.koodiarvo
@@ -77,9 +85,31 @@ export const useUusiOpiskeluoikeusDialogState =
       (s) => s.tyyppi === päätasonSuoritus.value?.koodiarvo
     )?.className
     const päätasonSuoritusValittu = päätasonSuoritus.value !== undefined
+    const päätasonSuoritukseksiValittu = (...tyypit: string[]): boolean =>
+      !!päätasonSuoritus.value &&
+      tyypit.includes(päätasonSuoritus.value.koodiarvo)
 
     // Peruste
-    const peruste = useDialogField<Peruste>(päätasonSuoritusValittu)
+    const peruste = useDialogField<Peruste>(
+      opiskeluoikeudeksiValittu(
+        'perusopetus',
+        'perusopetukseenvalmistavaopetus',
+        'perusopetuksenlisaopetus',
+        'aikuistenperusopetus',
+        'esiopetus',
+        'tuva',
+        'taiteenperusopetus',
+        'luva',
+        'lukiokoulutus'
+      ) ||
+        päätasonSuoritukseksiValittu(
+          'telma',
+          'valma',
+          'vstoppivelvollisillesuunnattukoulutus',
+          'vstmaahanmuuttajienkotoutumiskoulutus',
+          'vstlukutaitokoulutus'
+        )
+    )
 
     // Suorituskieli
     const suorituskieli = useDialogField<Koodistokoodiviite<'kieli'>>(
@@ -104,12 +134,11 @@ export const useUusiOpiskeluoikeusDialogState =
     )
     const maksuton = useDialogField<boolean | null>(
       maksuttomuustiedollinen && päätasonSuoritus.value
-        ? ![
-            // Päätason suoritukset, joille maksuttomuusvalintaa ei näytetä, vaikka se opiskeluoikeuden tiedoista löytyykin:
+        ? !päätasonSuoritukseksiValittu(
             'vstjotpakoulutus',
             'vstosaamismerkki',
             'vstvapaatavoitteinenkoulutus'
-          ].includes(päätasonSuoritus.value?.koodiarvo)
+          )
         : false
     )
 
@@ -150,6 +179,41 @@ export const useUusiOpiskeluoikeusDialogState =
     const osaamismerkki =
       useDialogField<Koodistokoodiviite<'osaamismerkit'>>(true)
 
+    // Ammattikoulutun tutkinto
+    // const ammatillinenTutkintoValittu =
+    !!päätasonSuoritus.value &&
+      ['ammatillinentutkinto', 'ammatillinentutkintoosittainen'].includes(
+        päätasonSuoritus.value?.koodiarvo
+      )
+
+    const tutkinto = useDialogField<TutkintoPeruste>(
+      päätasonSuoritukseksiValittu(
+        'ammatillinentutkinto',
+        'ammatillinentutkintoosittainen',
+        'nayttotutkintoonvalmistavakoulutus'
+      )
+    )
+
+    const suoritustapa = useDialogField<
+      Koodistokoodiviite<'ammatillisentutkinnonsuoritustapa'>
+    >(
+      päätasonSuoritukseksiValittu(
+        'ammatillinentutkinto',
+        'ammatillinentutkintoosittainen'
+      )
+    )
+
+    const muuAmmatillinenKoulutus = useDialogField<MuuAmmatillinenKoulutus>(
+      päätasonSuoritukseksiValittu('muuammatillinenkoulutus')
+    )
+
+    const tutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus =
+      useDialogField<TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus>(
+        päätasonSuoritukseksiValittu(
+          'tutkinnonosaapienemmistäkokonaisuuksistakoostuvasuoritus'
+        )
+      )
+
     // Validi opiskeluoikeus
     const result = useMemo(
       () =>
@@ -175,13 +239,18 @@ export const useUusiOpiskeluoikeusDialogState =
               tpoTaiteenala.value,
               tpoToteutustapa.value,
               varhaiskasvatuksenJärjestämistapa.value,
-              osaamismerkki.value
+              osaamismerkki.value,
+              tutkinto.value,
+              suoritustapa.value,
+              muuAmmatillinenKoulutus.value,
+              tutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus.value
             )
           : undefined,
       [
         aloituspäivä.value,
         jotpaAsianumero.value,
         maksuton.value,
+        muuAmmatillinenKoulutus.value,
         opintojenRahoitus.value,
         opintokokonaisuus.value,
         opiskeluoikeus.value,
@@ -190,10 +259,13 @@ export const useUusiOpiskeluoikeusDialogState =
         peruste.value,
         päätasonSuoritus.value,
         suorituskieli.value,
+        suoritustapa.value,
         tila.value,
         tpoOppimäärä.value,
         tpoTaiteenala.value,
         tpoToteutustapa.value,
+        tutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus.value,
+        tutkinto.value,
         tuvaJärjestämislupa.value,
         varhaiskasvatuksenJärjestämistapa.value
       ]
@@ -218,12 +290,20 @@ export const useUusiOpiskeluoikeusDialogState =
       tpoToteutustapa,
       varhaiskasvatuksenJärjestämistapa,
       osaamismerkki,
+      tutkinto,
+      suoritustapa,
+      muuAmmatillinenKoulutus,
+      tutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus,
       ooMapping,
       result
     }
   }
 
 import { useEffect, useState } from 'react'
+import { TutkintoPeruste } from '../../types/fi/oph/koski/tutkinto/TutkintoPeruste'
+import { MuuAmmatillinenKoulutus } from '../../types/fi/oph/koski/schema/MuuAmmatillinenKoulutus'
+import { PaikallinenKoodi } from '../../types/fi/oph/koski/schema/PaikallinenKoodi'
+import { TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus } from '../../types/fi/oph/koski/schema/TutkinnonOsaaPienemmistaKokonaisuuksistaKoostuvaKoulutus'
 
 export type DialogField<T> = {
   value?: T

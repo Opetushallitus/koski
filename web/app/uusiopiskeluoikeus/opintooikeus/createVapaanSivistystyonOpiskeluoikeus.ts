@@ -131,7 +131,7 @@ const createVapaanSivistystyönPäätasonSuoritus = (
 
   switch (suorituksenTyyppi.koodiarvo) {
     case 'vstoppivelvollisillesuunnattukoulutus':
-      if (!suorituskieli) return undefined
+      if (!suorituskieli || !perusteenDiaarinumero) return undefined
       return OppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus({
         suorituskieli,
         toimipiste,
@@ -140,7 +140,7 @@ const createVapaanSivistystyönPäätasonSuoritus = (
         })
       })
     case 'vstmaahanmuuttajienkotoutumiskoulutus':
-      if (!suorituskieli) return undefined
+      if (!suorituskieli || !perusteenDiaarinumero) return undefined
       switch (perusteenDiaarinumero) {
         case 'OPH-649-2022':
           return OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus2022(
@@ -168,7 +168,7 @@ const createVapaanSivistystyönPäätasonSuoritus = (
           return undefined
       }
     case 'vstlukutaitokoulutus':
-      if (!suorituskieli) return undefined
+      if (!suorituskieli || !perusteenDiaarinumero) return undefined
       return VapaanSivistystyönLukutaitokoulutuksenSuoritus({
         suorituskieli,
         toimipiste,

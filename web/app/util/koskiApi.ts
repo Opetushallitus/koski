@@ -19,6 +19,7 @@ import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodivi
 import { Osaamismerkkikuva } from '../types/fi/oph/koski/servlet/Osaamismerkkikuva'
 import { lang } from '../i18n/i18n'
 import { OpiskeluoikeusClass } from '../types/fi/oph/koski/typemodel/OpiskeluoikeusClass'
+import { TutkintoPeruste } from '../types/fi/oph/koski/tutkinto/TutkintoPeruste'
 
 const apiUrl = (path: string, query?: object): string =>
   `/koski/api/${path}${queryString({ class_refs: 'true', ...query })}`
@@ -91,6 +92,16 @@ export const fetchPeruste = (diaarinumero: string) =>
       apiUrl(
         `tutkinnonperusteet/diaarinumerot/suorituksentyyppi/${diaarinumero}`
       )
+    )
+  )
+
+export const fetchOppilaitoksenPerusteet = (
+  oppilaitosOid: string,
+  query?: string
+) =>
+  handleExpiredSession(
+    apiGet<TutkintoPeruste[]>(
+      apiUrl(`tutkinnonperusteet/oppilaitos/${oppilaitosOid}`, { query })
     )
   )
 

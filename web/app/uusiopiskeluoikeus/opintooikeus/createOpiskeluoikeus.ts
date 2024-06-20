@@ -1,8 +1,12 @@
 import { Peruste } from '../../appstate/peruste'
 import { OrganisaatioHierarkia } from '../../types/fi/oph/koski/organisaatio/OrganisaatioHierarkia'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
+import { MuuAmmatillinenKoulutus } from '../../types/fi/oph/koski/schema/MuuAmmatillinenKoulutus'
 import { Opiskeluoikeus } from '../../types/fi/oph/koski/schema/Opiskeluoikeus'
+import { TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus } from '../../types/fi/oph/koski/schema/TutkinnonOsaaPienemmistaKokonaisuuksistaKoostuvaKoulutus'
+import { TutkintoPeruste } from '../../types/fi/oph/koski/tutkinto/TutkintoPeruste'
 import { createAikuistenPerusopetuksenOpiskeluoikeus } from './createAikuistenPerusopetuksenOpiskeluoikeus'
+import { createAmmatillinenOpiskeluoikeus } from './createAmmatillinenTutkintoOpiskeluoikeus'
 import { createEsiopetuksenOpiskeluoikeus } from './createEsiopetuksenOpiskeluoikeus'
 import { createLukionOpiskeluoikeus } from './createLukiokoulutuksenOpiskeluoikeus'
 import { createLukioonValmistavanKoulutuksenOpiskeluoikeus } from './createLukioonValmistavaOpiskeluoikeus'
@@ -31,7 +35,11 @@ export const createOpiskeluoikeus = (
   tpoTaiteenala?: Koodistokoodiviite<'taiteenperusopetustaiteenala'>,
   tpoToteutustapa?: Koodistokoodiviite<'taiteenperusopetuskoulutuksentoteutustapa'>,
   varhaiskasvatuksenJärjestämismuoto?: Koodistokoodiviite<'vardajarjestamismuoto'>,
-  osaamismerkki?: Koodistokoodiviite<'osaamismerkit'>
+  osaamismerkki?: Koodistokoodiviite<'osaamismerkit'>,
+  tutkinto?: TutkintoPeruste,
+  suoritustapa?: Koodistokoodiviite<'ammatillisentutkinnonsuoritustapa'>,
+  muuAmmatillinenKoulutus?: MuuAmmatillinenKoulutus,
+  tutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus?: TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus
 ): Opiskeluoikeus | undefined => {
   switch (opiskeluoikeudenTyyppi.koodiarvo) {
     case 'perusopetus':
@@ -200,6 +208,25 @@ export const createOpiskeluoikeus = (
         suorituskieli,
         opintojenRahoitus,
         maksuton
+      )
+
+    case 'ammatillinenkoulutus':
+      if (!suorituskieli || !opintojenRahoitus || maksuton === undefined) {
+        return undefined
+      }
+      return createAmmatillinenOpiskeluoikeus(
+        suorituksenTyyppi,
+        suorituskieli,
+        organisaatio,
+        alku,
+        tila,
+        opintojenRahoitus,
+        maksuton,
+        muuAmmatillinenKoulutus,
+        suoritustapa,
+        tutkinto,
+        peruste,
+        tutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus
       )
 
     default:
