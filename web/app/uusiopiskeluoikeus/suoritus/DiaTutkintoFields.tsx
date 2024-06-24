@@ -14,13 +14,13 @@ export const DiaTutkintoFields = (props: SuoritusFieldsProps) => {
   useEffect(() => props.state.suorituskieli.set(saksa), [])
 
   return (
-    <>
+    <label>
       {t('Oppimäärä')}
       <DialogPäätasonSuoritusSelect
         state={props.state}
         default="diatutkintovaihe"
         testId="oppimäärä"
       />
-    </>
+    </label>
   )
 }

@@ -7,8 +7,13 @@ import { SuoritusFieldsProps } from './SuoritusFields'
 
 export const VapaaSivistystyöFields = (props: SuoritusFieldsProps) => (
   <>
-    {t('Suoritustyyppi')}
-    <DialogPäätasonSuoritusSelect state={props.state} testId="suoritustyyppi" />
+    <label>
+      {t('Suoritustyyppi')}
+      <DialogPäätasonSuoritusSelect
+        state={props.state}
+        testId="suoritustyyppi"
+      />
+    </label>
     <VstSuoritusFields {...props} />
   </>
 )
@@ -42,14 +47,14 @@ const VstOvlFields = (props: SuoritusFieldsProps) => {
 
 const VstJotpaFields = (props: SuoritusFieldsProps) => {
   return (
-    <>
+    <label>
       {t('Opintokokonaisuus')}
       <DialogKoodistoSelect
         state={props.state.opintokokonaisuus}
         koodistoUri="opintokokonaisuudet"
         testId="opintokokonaisuus"
       />
-    </>
+    </label>
   )
 }
 
@@ -59,26 +64,26 @@ const VstLukutaitoFields = (props: SuoritusFieldsProps) => {
 
 const VstOsaamismerkkiFields = (props: SuoritusFieldsProps) => {
   return (
-    <>
+    <label>
       {t('Osaamismerkki')}
       <DialogKoodistoSelect
         state={props.state.osaamismerkki}
         koodistoUri="osaamismerkit"
         testId="osaamismerkki"
       />
-    </>
+    </label>
   )
 }
 
 const VstVapaatavoitteinenFields = (props: SuoritusFieldsProps) => {
   return (
-    <>
+    <label>
       {t('Opintokokonaisuus')}
       <DialogKoodistoSelect
         state={props.state.opintokokonaisuus}
         koodistoUri="opintokokonaisuudet"
         testId="opintokokonaisuus"
       />
-    </>
+    </label>
   )
 }

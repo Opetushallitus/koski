@@ -24,7 +24,7 @@ export const DialogPerusteSelect = <U extends string>(
   }, [options, props.filter])
 
   return (
-    <>
+    <label>
       {t('Peruste')}
       <Select
         options={filtered}
@@ -34,6 +34,6 @@ export const DialogPerusteSelect = <U extends string>(
         disabled={options.length < 2}
         testId="peruste"
       />
-    </>
+    </label>
   )
 }

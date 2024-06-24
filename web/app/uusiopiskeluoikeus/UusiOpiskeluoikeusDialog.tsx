@@ -26,7 +26,7 @@ export const UusiOpiskeluoikeusDialog = (
   }, [props, result])
 
   return (
-    <Modal>
+    <Modal className="UusiOpiskeluoikeusDialog">
       <ModalTitle>{t('Opiskeluoikeuden lisäys')}</ModalTitle>
       <ModalBody>
         <UusiOpiskeluoikeusForm onResult={setResult} />

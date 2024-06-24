@@ -1,13 +1,12 @@
 import React, { useEffect } from 'react'
-import { Checkbox } from '../components-v2/controls/Checkbox'
 import { DateEdit } from '../components-v2/controls/DateField'
 import { KieliSelect } from '../components-v2/controls/KieliSelect'
 import { Select } from '../components-v2/controls/Select'
 import { t } from '../i18n/i18n'
 import { Opiskeluoikeus } from '../types/fi/oph/koski/schema/Opiskeluoikeus'
 import { koodistokoodiviiteId } from '../util/koodisto'
-import { DialogKoodistoSelect } from './components/DialogKoodistoSelect'
 import { DialogMaksuttomuusSelect } from './components/DialogMaksuttomuusSelect'
+import { HankintakoulutusSelect } from './components/HankintakoulutusSelect'
 import { OppilaitosSearch } from './components/OppilaitosSearch'
 import { OppilaitosSelect, OrgType } from './components/OppilaitosSelect'
 import {
@@ -41,63 +40,32 @@ export const UusiOpiskeluoikeusForm = (props: UusiOpiskeluoikeusFormProps) => {
   useEffect(() => props.onResult(state.result), [props, state.result])
 
   return (
-    <section>
+    <section className="UusiOppijaForm">
       {state.oppilaitos.visible && (
         <>
-          {t('Hankintakoulutus')}
-          {state.hankintakoulutus.value !== 'tpo' && (
-            <Checkbox
-              label={t(
-                'Esiopetus ostetaan oman organisaation ulkopuolelta ostopalveluna tai palvelusetelinä'
-              )}
-              checked={state.hankintakoulutus.value === 'esiopetus'}
-              onChange={(opt) =>
-                state.hankintakoulutus.set(opt ? 'esiopetus' : undefined)
-              }
-            />
-          )}
-          {state.hankintakoulutus.value !== 'esiopetus' && (
-            <Checkbox
-              label={t(
-                'Taiteen perusopetus hankintakoulutuksena järjestetään oman organisaation ulkopuolelta'
-              )}
-              checked={state.hankintakoulutus.value === 'tpo'}
-              onChange={(opt) =>
-                state.hankintakoulutus.set(opt ? 'tpo' : undefined)
-              }
-            />
-          )}
-          {state.varhaiskasvatuksenJärjestämistapa.visible && (
-            <>
-              {t('Varhaiskasvatuksen järjestämismuoto')}
-              <DialogKoodistoSelect
-                state={state.varhaiskasvatuksenJärjestämistapa}
-                koodistoUri="vardajarjestamismuoto"
-                koodiarvot={['JM02', 'JM03']}
-                testId="varhaiskasvatuksenJärjestämismuoto"
-              />
-            </>
-          )}
+          <HankintakoulutusSelect state={state} />
 
-          {t('Oppilaitos')}
-          {state.hankintakoulutus.value ? (
-            <OppilaitosSearch
-              value={state.oppilaitos.value}
-              onChange={state.oppilaitos.set}
-              orgTypes={valittavatOrganisaatiotyypit}
-            />
-          ) : (
-            <OppilaitosSelect
-              value={state.oppilaitos.value}
-              onChange={state.oppilaitos.set}
-              orgTypes={valittavatOrganisaatiotyypit}
-            />
-          )}
+          <label>
+            {t('Oppilaitos')}
+            {state.hankintakoulutus.value ? (
+              <OppilaitosSearch
+                value={state.oppilaitos.value}
+                onChange={state.oppilaitos.set}
+                orgTypes={valittavatOrganisaatiotyypit}
+              />
+            ) : (
+              <OppilaitosSelect
+                value={state.oppilaitos.value}
+                onChange={state.oppilaitos.set}
+                orgTypes={valittavatOrganisaatiotyypit}
+              />
+            )}
+          </label>
         </>
       )}
 
       {state.opiskeluoikeus.visible && (
-        <>
+        <label>
           {t('Opiskeluoikeus')}
           <Select
             options={opiskeluoikeustyypit}
@@ -109,13 +77,13 @@ export const UusiOpiskeluoikeusForm = (props: UusiOpiskeluoikeusFormProps) => {
             onChange={(opt) => state.opiskeluoikeus.set(opt?.value)}
             testId="opiskeluoikeus"
           />
-        </>
+        </label>
       )}
 
       {state.päätasonSuoritus.visible && <SuoritusFields state={state} />}
 
       {state.suorituskieli.visible && (
-        <>
+        <label>
           {t('Suorituskieli')}
           <KieliSelect
             initialValue={defaultKieli}
@@ -126,21 +94,21 @@ export const UusiOpiskeluoikeusForm = (props: UusiOpiskeluoikeusFormProps) => {
             onChange={(opt) => state.suorituskieli.set(opt?.value)}
             testId="suorituskieli"
           />
-        </>
+        </label>
       )}
 
       {state.aloituspäivä.visible && (
-        <>
+        <label>
           {'Aloituspäivä'}
           <DateEdit
             value={state.aloituspäivä.value}
             onChange={state.aloituspäivä.set}
           />
-        </>
+        </label>
       )}
 
       {state.tila.visible && (
-        <>
+        <label>
           {t('Opiskeluoikeuden tila')}
           <Select
             options={tilat.options}
@@ -149,11 +117,11 @@ export const UusiOpiskeluoikeusForm = (props: UusiOpiskeluoikeusFormProps) => {
             onChange={(opt) => state.tila.set(opt?.value)}
             testId="tila"
           />
-        </>
+        </label>
       )}
 
       {opintojenRahoitukset.options.length > 0 && (
-        <>
+        <label>
           {t('Opintojen rahoitus')}
           <Select
             options={opintojenRahoitukset.options}
@@ -165,11 +133,11 @@ export const UusiOpiskeluoikeusForm = (props: UusiOpiskeluoikeusFormProps) => {
             onChange={(opt) => state.opintojenRahoitus.set(opt?.value)}
             testId="opintojenRahoitus"
           />
-        </>
+        </label>
       )}
 
       {jotpaAsianumerot.options.length > 0 && (
-        <>
+        <label>
           {t('JOTPA asianumero')}
           <Select
             options={jotpaAsianumerot.options}
@@ -181,7 +149,7 @@ export const UusiOpiskeluoikeusForm = (props: UusiOpiskeluoikeusFormProps) => {
             onChange={(opt) => state.jotpaAsianumero.set(opt?.value)}
             testId="jotpaAsianumero"
           />
-        </>
+        </label>
       )}
 
       {state.maksuton.visible && <DialogMaksuttomuusSelect state={state} />}

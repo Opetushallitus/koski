@@ -8,14 +8,16 @@ const piilotettavatPtsTyypit = ['perusopetuksenvuosiluokka']
 
 export const PerusopetusFields = (props: SuoritusFieldsProps) => (
   <>
-    {t('Oppimäärä')}
-    <DialogPäätasonSuoritusSelect
-      state={props.state}
-      default="perusopetuksenoppimaara"
-      hiddenOptions={piilotettavatPtsTyypit}
-      testId="oppimäärä"
-    />
+    <label>
+      {t('Oppimäärä')}
+      <DialogPäätasonSuoritusSelect
+        state={props.state}
+        default="perusopetuksenoppimaara"
+        hiddenOptions={piilotettavatPtsTyypit}
+        testId="oppimäärä"
+      />
+    </label>
 
-    <DialogPerusteSelect state={props.state} default="105/011/2014" />
+    <DialogPerusteSelect state={props.state} default="104/011/2014" />
   </>
 )

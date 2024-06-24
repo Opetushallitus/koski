@@ -14,7 +14,7 @@ export const EuropeanSchoolOfHelsinkiFields = (props: SuoritusFieldsProps) => {
   useEffect(() => props.state.päätasonSuoritus.set(päätasonSuoritus), [])
 
   return (
-    <>
+    <label>
       {t('Curriculum')}
       <DialogKoodistoSelect
         state={props.state.curriculum}
@@ -22,6 +22,6 @@ export const EuropeanSchoolOfHelsinkiFields = (props: SuoritusFieldsProps) => {
         default="2023"
         testId="curriculum"
       />
-    </>
+    </label>
   )
 }

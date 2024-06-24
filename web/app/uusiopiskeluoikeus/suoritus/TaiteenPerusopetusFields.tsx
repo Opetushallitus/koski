@@ -37,16 +37,18 @@ export const TaiteenPerusopetusFields = (props: SuoritusFieldsProps) => {
 
   return (
     <>
-      {t('Oppimäärä')}
-      <DialogKoodistoSelect
-        state={props.state.tpoOppimäärä}
-        koodistoUri="taiteenperusopetusoppimaara"
-        default="yleinenoppimaara"
-        testId="oppimäärä"
-      />
+      <label>
+        {t('Oppimäärä')}
+        <DialogKoodistoSelect
+          state={props.state.tpoOppimäärä}
+          koodistoUri="taiteenperusopetusoppimaara"
+          default="yleinenoppimaara"
+          testId="oppimäärä"
+        />
+      </label>
 
       {props.state.tpoOppimäärä.value && (
-        <>
+        <label>
           {t('Suoritustyyppi')}
           <Select
             options={suoritustyypit}
@@ -57,11 +59,11 @@ export const TaiteenPerusopetusFields = (props: SuoritusFieldsProps) => {
             onChange={(opt) => props.state.päätasonSuoritus.set(opt?.value)}
             testId="suoritustyyppi"
           />
-        </>
+        </label>
       )}
 
       {props.state.tpoToteutustapa.value && (
-        <>
+        <label>
           {t('Koulutuksen toteutustapa')}
           <Select
             options={toteutustavatOptions}
@@ -73,7 +75,7 @@ export const TaiteenPerusopetusFields = (props: SuoritusFieldsProps) => {
             disabled
             testId="toteutustapa"
           />
-        </>
+        </label>
       )}
 
       <DialogPerusteSelect
@@ -81,12 +83,14 @@ export const TaiteenPerusopetusFields = (props: SuoritusFieldsProps) => {
         default={perusteenDiaarinumero}
       />
 
-      {t('Taiteenala')}
-      <DialogKoodistoSelect
-        state={props.state.tpoTaiteenala}
-        koodistoUri="taiteenperusopetustaiteenala"
-        testId="taiteenala"
-      />
+      <label>
+        {t('Taiteenala')}
+        <DialogKoodistoSelect
+          state={props.state.tpoTaiteenala}
+          koodistoUri="taiteenperusopetustaiteenala"
+          testId="taiteenala"
+        />
+      </label>
     </>
   )
 }

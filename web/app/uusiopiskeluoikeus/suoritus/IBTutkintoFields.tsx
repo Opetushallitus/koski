@@ -5,13 +5,13 @@ import { SuoritusFieldsProps } from './SuoritusFields'
 
 export const IBTutkintoFields = (props: SuoritusFieldsProps) => {
   return (
-    <>
+    <label>
       {t('Oppimäärä')}
       <DialogPäätasonSuoritusSelect
         state={props.state}
         default="ibtutkinto"
         testId="oppimäärä"
       />
-    </>
+    </label>
   )
 }

@@ -1,0 +1,46 @@
+.UusiOpiskeluoikeusDialog {
+  .Modal__content {
+    width: 80%;
+    max-width: 1400px;
+  }
+}
+
+.UusiOppijaForm {
+  label {
+    display: block;
+    padding-bottom: @baseline;
+  }
+
+  .labelgroup {
+    padding-bottom: @baseline;
+
+    .labelgroup--head {
+      display: block;
+      line-height: 3 * @baseline;
+    }
+
+    label {
+      min-height: auto;
+      padding-bottom: @baseline;
+    }
+  }
+
+  .RadioButtons__option label,
+  .DateEdit {
+    padding-bottom: 0;
+  }
+
+  .LakkautettuOrganisaatio {
+    color: @color-darkgray-text;
+    font-style: italic;
+  }
+
+  .PaikallinenKoulutus {
+    padding: @baseline @h-padding;
+    border-left: 2px solid @color-medium-blue;
+
+    label:last-child {
+      padding-bottom: 0;
+    }
+  }
+}

@@ -4,7 +4,7 @@ import { DialogKoodistoSelect } from '../components/DialogKoodistoSelect'
 import { SuoritusFieldsProps } from './SuoritusFields'
 
 export const EBTutkintoFields = (props: SuoritusFieldsProps) => (
-  <>
+  <label>
     {t('Curriculum')}
     <DialogKoodistoSelect
       state={props.state.curriculum}
@@ -12,5 +12,5 @@ export const EBTutkintoFields = (props: SuoritusFieldsProps) => (
       default="2023"
       testId="curriculum"
     />
-  </>
+  </label>
 )

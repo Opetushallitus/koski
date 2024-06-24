@@ -42,21 +42,23 @@ export const AmmatillinenKoulutusFields = (props: SuoritusFieldsProps) => {
 
   return (
     <>
-      {t('Suoritustyyppi')}
-      <DialogPäätasonSuoritusSelect
-        state={props.state}
-        testId="suoritustyyppi"
-      />
+      <label>
+        {t('Suoritustyyppi')}
+        <DialogPäätasonSuoritusSelect
+          state={props.state}
+          testId="suoritustyyppi"
+        />
+      </label>
 
       {props.state.suoritustapa.visible && (
-        <>
+        <label>
           {t('Suoritustapa')}
           <DialogKoodistoSelect
             state={props.state.suoritustapa}
             koodistoUri="ammatillisentutkinnonsuoritustapa"
             testId="suoritustapa"
           />
-        </>
+        </label>
       )}
 
       {props.state.muuAmmatillinenKoulutus.visible && (
@@ -64,7 +66,7 @@ export const AmmatillinenKoulutusFields = (props: SuoritusFieldsProps) => {
       )}
 
       {props.state.tutkinto.visible && (
-        <>
+        <label>
           {t('Tutkinto')}
           <Select
             options={tutkinnot.options}
@@ -76,7 +78,7 @@ export const AmmatillinenKoulutusFields = (props: SuoritusFieldsProps) => {
             onSearch={tutkinnot.setQuery}
             testId="tutkinto"
           />
-        </>
+        </label>
       )}
 
       {props.state.tutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus
@@ -167,20 +169,22 @@ const MuuAmmatillinenKoulutusFields = (props: SuoritusFieldsProps) => {
 
   return (
     <>
-      {t('Koulutusmoduuli')}
-      <Select
-        options={muuAmmatillinenKoulutusOptions}
-        value={koulutusmoduuli}
-        onChange={(opt) => setKoulutusmoduuli(opt?.value)}
-        testId="koulutusmoduuli"
-      />
+      <label>
+        {t('Koulutusmoduuli')}
+        <Select
+          options={muuAmmatillinenKoulutusOptions}
+          value={koulutusmoduuli}
+          onChange={(opt) => setKoulutusmoduuli(opt?.value)}
+          testId="koulutusmoduuli"
+        />
+      </label>
 
       {koulutusmoduuli === 'paikallinen' && (
         <PaikallinenKoulutusFields onChange={onPaikallinenKoulutus} />
       )}
 
       {koulutusmoduuli === 'ammatilliseentehtavaanvalmistavakoulutus' && (
-        <>
+        <label>
           {t('Ammatilliseen tehtävään valmistava koulutus')}
           <Select
             options={tunnisteOptions}
@@ -188,7 +192,7 @@ const MuuAmmatillinenKoulutusFields = (props: SuoritusFieldsProps) => {
             onChange={onAmmatilliseenTehtäväänValmistavaKoulutus}
             testId="ammatilliseentehtavaanvalmistavakoulutus"
           />
-        </>
+        </label>
       )}
     </>
   )
@@ -224,14 +228,20 @@ const PaikallinenKoulutusFields = (props: PaikallinenKoulutusFieldsProps) => {
   }
 
   return (
-    <>
-      {t('Nimi')}
-      <TextEdit value={koulutus.nimi} onChange={update('nimi')} />
-      {t('Koodiarvo')}
-      <TextEdit value={koulutus.koodiarvo} onChange={update('koodiarvo')} />
-      {t('Kuvaus')}
-      <TextEdit value={koulutus.kuvaus} onChange={update('kuvaus')} />
-    </>
+    <section className="PaikallinenKoulutus">
+      <label>
+        {t('Nimi')}
+        <TextEdit value={koulutus.nimi} onChange={update('nimi')} />
+      </label>
+      <label>
+        {t('Koodiarvo')}
+        <TextEdit value={koulutus.koodiarvo} onChange={update('koodiarvo')} />
+      </label>
+      <label>
+        {t('Kuvaus')}
+        <TextEdit value={koulutus.kuvaus} onChange={update('kuvaus')} />
+      </label>
+    </section>
   )
 }
 

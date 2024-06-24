@@ -19,14 +19,14 @@ export const TutkintokoulutukseenValmentavaFields = (
   return (
     <>
       {props.state.tuvaJärjestämislupa.visible && (
-        <>
+        <label>
           {t('Järjestämislupa')}
           <DialogKoodistoSelect
             state={props.state.tuvaJärjestämislupa}
             koodistoUri="tuvajarjestamislupa"
             testId="järjestämislupa"
           />
-        </>
+        </label>
       )}
 
       <DialogPerusteSelect state={props.state} default="OPH-1488-2021" />

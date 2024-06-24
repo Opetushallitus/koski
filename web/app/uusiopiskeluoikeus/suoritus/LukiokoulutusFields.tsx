@@ -19,8 +19,10 @@ export const LukioKoulutusFields = (props: SuoritusFieldsProps) => {
 
   return (
     <>
-      {t('Oppimäärä')}
-      <DialogPäätasonSuoritusSelect state={props.state} testId="oppimäärä" />
+      <label>
+        {t('Oppimäärä')}
+        <DialogPäätasonSuoritusSelect state={props.state} testId="oppimäärä" />
+      </label>
 
       <DialogPerusteSelect
         state={props.state}

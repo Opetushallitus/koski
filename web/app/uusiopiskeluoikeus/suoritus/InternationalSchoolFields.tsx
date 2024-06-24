@@ -5,13 +5,13 @@ import { SuoritusFieldsProps } from './SuoritusFields'
 
 export const InternationalSchoolFields = (props: SuoritusFieldsProps) => {
   return (
-    <>
+    <label>
       {t('Grade')}
       <DialogKoodistoSelect
         state={props.state.internationalSchoolGrade}
         koodistoUri="internationalschoolluokkaaste"
         testId="grade"
       />
-    </>
+    </label>
   )
 }
