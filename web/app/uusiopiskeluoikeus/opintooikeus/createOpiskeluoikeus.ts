@@ -10,6 +10,7 @@ import { createAmmatillinenOpiskeluoikeus } from './createAmmatillinenTutkintoOp
 import { createDIAOpiskeluoikeus } from './createDiaTutkintoOpiskeluoikeus'
 import { createEsiopetuksenOpiskeluoikeus } from './createEsiopetuksenOpiskeluoikeus'
 import { createEuropeanSchoolOfHelsinkiOpiskeluoikeus } from './createEuropeanSchoolOfHelsinkiOpiskeluoikeus'
+import { createIBOpiskeluoikeus } from './createIBTutkintoOpiskeluoikeus'
 import { createLukionOpiskeluoikeus } from './createLukiokoulutuksenOpiskeluoikeus'
 import { createLukioonValmistavanKoulutuksenOpiskeluoikeus } from './createLukioonValmistavaOpiskeluoikeus'
 import { createMuunKuinSäännellynKoulutuksenOpiskeluoikeus } from './createMuunKuinSäännellynKoulutuksenOpiskeluoikeus'
@@ -247,6 +248,20 @@ export const createOpiskeluoikeus = (
         return undefined
       }
       return createDIAOpiskeluoikeus(
+        suorituksenTyyppi,
+        organisaatio,
+        alku,
+        tila,
+        opintojenRahoitus,
+        suorituskieli,
+        maksuton
+      )
+
+    case 'ibtutkinto':
+      if (!opintojenRahoitus || !suorituskieli || maksuton === undefined) {
+        return undefined
+      }
+      return createIBOpiskeluoikeus(
         suorituksenTyyppi,
         organisaatio,
         alku,

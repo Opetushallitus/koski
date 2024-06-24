@@ -14,6 +14,7 @@ import { LukioKoulutusFields } from './LukiokoulutusFields'
 import { AmmatillinenKoulutusFields } from './AmmatillinenKoulutusFields'
 import { EuropeanSchoolOfHelsinkiFields } from './EuropeanSchoolOfHelsinkiFields'
 import { DiaTutkintoFields } from './DiaTutkintoFields'
+import { IBTutkintoFields } from './IBTutkintoFields'
 
 export type SuoritusFieldsProps = {
   state: UusiOpiskeluoikeusDialogState
@@ -49,6 +50,8 @@ export const SuoritusFields = (props: SuoritusFieldsProps) => {
       return <EuropeanSchoolOfHelsinkiFields {...props} />
     case 'diatutkinto':
       return <DiaTutkintoFields {...props} />
+    case 'ibtutkinto':
+      return <IBTutkintoFields {...props} />
     default:
       return null
   }
