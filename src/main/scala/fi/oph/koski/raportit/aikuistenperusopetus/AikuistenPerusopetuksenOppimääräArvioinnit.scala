@@ -28,6 +28,7 @@ case class AikuistenPerusopetuksenOppimääräArvioinnit(db: DB) extends QueryMe
       parasArviointiArvosana = r.<<,
       arviointiPvm = r.nextDateOption.map(_.toLocalDate),
       arviointiArvosana = r.<<,
+      ensimmainenArviointi = r.<<,
       hylatynKorotus = r.nextBooleanOption,
       hyvaksytynKorotus = r.nextBooleanOption,
     )
@@ -46,28 +47,29 @@ case class AikuistenPerusopetuksenOppimääräArvioinnit(db: DB) extends QueryMe
 
   private def query(oppilaitosOidit: List[String], aikaisintaan: LocalDate, viimeistaan: LocalDate, lang: String)(implicit u: KoskiSpecificSession) = {
     sql"""
-      SELECT
-        r_opiskeluoikeus.opiskeluoikeus_oid AS oo_opiskeluoikeus_oid,
-        r_opiskeluoikeus.alkamispaiva AS oo_alkamispaiva,
-        r_opiskeluoikeus.paattymispaiva AS oo_paattymispaiva,
-        r_opiskeluoikeus.viimeisin_tila,
-        r_paatason_suoritus.suorituksen_tyyppi,
-        r_osasuoritus.koulutusmoduuli_koodiarvo,
-        r_osasuoritus.koulutusmoduuli_nimi,
-        r_osasuoritus.koulutusmoduuli_paikallinen,
-        jsonb_array_length(r_osasuoritus.data->'arviointi') AS arviointien_lkm,
-        r_osasuoritus.ensimmainen_arviointi_paiva,
-        r_osasuoritus.arviointi_paiva AS paras_arviointi_pvm,
-        r_osasuoritus.arviointi_arvosana_koodiarvo AS paras_arviointi_arvosana,
-        arviointi_element ->> 'päivä' AS arviointi_pvm,
-        arviointi_element -> 'arvosana' ->> 'koodiarvo' AS arviointi_arvosana,
+      SELECT DISTINCT
+        oo.opiskeluoikeus_oid AS oo_opiskeluoikeus_oid,
+        oo.alkamispaiva AS oo_alkamispaiva,
+        oo.paattymispaiva AS oo_paattymispaiva,
+        oo.viimeisin_tila,
+        ps.suorituksen_tyyppi,
+        os.koulutusmoduuli_koodiarvo,
+        os.koulutusmoduuli_nimi,
+        os.koulutusmoduuli_paikallinen,
+        jsonb_array_length(os.data->'arviointi') AS arviointien_lkm,
+        os.ensimmainen_arviointi_paiva,
+        os.arviointi_paiva AS paras_arviointi_pvm,
+        os.arviointi_arvosana_koodiarvo AS paras_arviointi_arvosana,
+        ae.arviointi_pvm,
+        ae.arviointi_arvosana,
+        (ae.arviointi_pvm)::date = os.ensimmainen_arviointi_paiva AS ensimmainen_arviointi,
         CASE
           WHEN EXISTS (
             SELECT 1
             FROM (
               SELECT elem -> 'arvosana' ->> 'koodiarvo' AS arvosana
-              FROM jsonb_array_elements(r_osasuoritus.data->'arviointi') AS elem
-              WHERE (elem ->> 'päivä')::date < (arviointi_element ->> 'päivä')::date
+              FROM jsonb_array_elements(os.data->'arviointi') AS elem
+              WHERE (elem ->> 'päivä')::date < (ae.arviointi_pvm)::date
               ORDER BY (elem ->> 'päivä')::date DESC
               LIMIT 1
             ) subquery
@@ -80,8 +82,8 @@ case class AikuistenPerusopetuksenOppimääräArvioinnit(db: DB) extends QueryMe
             SELECT 1
             FROM (
               SELECT elem -> 'arvosana' ->> 'koodiarvo' AS arvosana
-              FROM jsonb_array_elements(r_osasuoritus.data->'arviointi') AS elem
-              WHERE (elem ->> 'päivä')::date < (arviointi_element ->> 'päivä')::date
+              FROM jsonb_array_elements(os.data->'arviointi') AS elem
+              WHERE (elem ->> 'päivä')::date < (ae.arviointi_pvm)::date
               ORDER BY (elem ->> 'päivä')::date DESC
               LIMIT 1
             ) subquery
@@ -89,20 +91,25 @@ case class AikuistenPerusopetuksenOppimääräArvioinnit(db: DB) extends QueryMe
           ) THEN true
           ELSE false
         END AS hyvaksytyn_korotus
-      FROM r_opiskeluoikeus
-      JOIN r_paatason_suoritus
-        ON r_opiskeluoikeus.opiskeluoikeus_oid = r_paatason_suoritus.opiskeluoikeus_oid
-        AND r_opiskeluoikeus.sisaltyy_opiskeluoikeuteen_oid IS NULL
-      JOIN r_opiskeluoikeus_aikajakso
-        ON r_opiskeluoikeus.opiskeluoikeus_oid = r_opiskeluoikeus_aikajakso.opiskeluoikeus_oid
-      JOIN r_osasuoritus
-        ON r_paatason_suoritus.paatason_suoritus_id = r_osasuoritus.paatason_suoritus_id
-        OR r_opiskeluoikeus.opiskeluoikeus_oid = r_osasuoritus.sisaltyy_opiskeluoikeuteen_oid,
-      jsonb_array_elements(r_osasuoritus.data->'arviointi') AS arviointi_element
+      FROM r_opiskeluoikeus oo
+      JOIN r_paatason_suoritus ps
+        ON oo.opiskeluoikeus_oid = ps.opiskeluoikeus_oid
+        AND oo.sisaltyy_opiskeluoikeuteen_oid IS NULL
+      JOIN r_opiskeluoikeus_aikajakso oa
+        ON oo.opiskeluoikeus_oid = oa.opiskeluoikeus_oid
+      JOIN r_osasuoritus os
+        ON ps.paatason_suoritus_id = os.paatason_suoritus_id
+        OR oo.opiskeluoikeus_oid = os.sisaltyy_opiskeluoikeuteen_oid
+      JOIN LATERAL (
+        SELECT
+          (elem ->> 'päivä') AS arviointi_pvm,
+          (elem -> 'arvosana' ->> 'koodiarvo') AS arviointi_arvosana
+        FROM jsonb_array_elements(os.data->'arviointi') AS elem
+      ) ae ON true
       WHERE (oppilaitos_oid = ANY($oppilaitosOidit) OR koulutustoimija_oid = ANY($oppilaitosOidit))
-        AND (r_paatason_suoritus.suorituksen_tyyppi = 'aikuistenperusopetuksenoppimaara'
-          OR r_paatason_suoritus.suorituksen_tyyppi = 'aikuistenperusopetuksenoppimaaranalkuvaihe')
-        AND (arviointi_element ->> 'päivä')::date BETWEEN $aikaisintaan AND $viimeistaan;
+        AND (ps.suorituksen_tyyppi = 'aikuistenperusopetuksenoppimaara'
+          OR ps.suorituksen_tyyppi = 'aikuistenperusopetuksenoppimaaranalkuvaihe')
+        AND (ae.arviointi_pvm)::date BETWEEN $aikaisintaan AND $viimeistaan;
   """
   }
 
@@ -121,6 +128,7 @@ case class AikuistenPerusopetuksenOppimääräArvioinnit(db: DB) extends QueryMe
     "parasArviointiArvosana" -> Column(t.get("raportti-excel-kolumni-parasArviointiArvosana"), comment = Some(t.get("raportti-excel-kolumni-parasArviointiArvosana-comment"))),
     "arviointiPvm" -> Column(t.get("raportti-excel-kolumni-arviointiPvm"), comment = Some(t.get("raportti-excel-kolumni-arviointiPvm-comment"))),
     "arviointiArvosana" -> Column(t.get("raportti-excel-kolumni-arviointiArvosana"), comment = Some(t.get("raportti-excel-kolumni-arviointiArvosana-comment"))),
+    "ensimmainenArviointi" -> Column(t.get("raportti-excel-kolumni-ensimmainenArviointi"), comment = Some(t.get("raportti-excel-kolumni-ensimmainenArviointi-comment"))),
     "hylatynKorotus" -> Column(t.get("raportti-excel-kolumni-hylatynKorotus"), comment = Some(t.get("raportti-excel-kolumni-hylatynKorotus-comment"))),
     "hyvaksytynKorotus" -> Column(t.get("raportti-excel-kolumni-hyvaksytynKorotus"), comment = Some(t.get("raportti-excel-kolumni-hyvaksytynKorotus-comment"))),
   )
@@ -134,13 +142,14 @@ case class AikuistenPerusopetuksenOppimääränArvioinnitRow(
   suorituksenTyyppi: String,
   kurssinKoodi: String,
   kurssinNimi: String,
-  paikallinenModuuli: String,
+  paikallinenModuuli: Boolean,
   arviointienlkm: Int,
   ensimmainenArviointiPvm: Option[LocalDate],
   parasArviointiPvm: Option[LocalDate],
   parasArviointiArvosana: String,
   arviointiPvm: Option[LocalDate],
   arviointiArvosana: String,
+  ensimmainenArviointi: Boolean,
   hylatynKorotus: Option[Boolean],
   hyvaksytynKorotus: Option[Boolean],
 )

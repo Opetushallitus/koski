@@ -68,7 +68,10 @@ class AikuistenPerusopetuksenOppimääränArvioinnitSpec
                     PerusopetuksenOppiaineenArviointi("H", None, Some(aikaisintaan.plusWeeks(3))), // hylätyn korotus
                     PerusopetuksenOppiaineenArviointi(5, Some(aikaisintaan.plusWeeks(4))), // hylätyn korotus
                     PerusopetuksenOppiaineenArviointi(5, Some(aikaisintaan.plusWeeks(5))), // hyväksytyn korotus
-                  )))
+                  ))),
+                  alkuvaiheenKurssinSuoritus("AÄI4").copy(arviointi = Some(List(
+                    PerusopetuksenOppiaineenArviointi(10, Some(aikaisintaan.plusWeeks(4)))
+                  ))),
                 ))
               )
             ))
@@ -102,6 +105,7 @@ class AikuistenPerusopetuksenOppimääränArvioinnitSpec
         "parasArviointiArvosana",
         "arviointiPvm",
         "arviointiArvosana",
+        "ensimmainenArviointi",
         "hylatynKorotus",
         "hyvaksytynKorotus",
       ))
@@ -176,6 +180,20 @@ class AikuistenPerusopetuksenOppimääränArvioinnitSpec
       val lastRow = arviointiRivit.last
       lastRow.hylatynKorotus should be (Some(false))
       lastRow.hyvaksytynKorotus should be (Some(true))
+    }
+
+    "Raportin rivit ÄI4" in {
+      val rows = raportti.rows.map(_.asInstanceOf[AikuistenPerusopetuksenOppimääränArvioinnitRow])
+      val arviointiRivit = rows
+        .filter(_.opiskeluoikeusOid == resultOo.oid.get)
+        .filter(_.kurssinKoodi == "AÄI4")
+
+      arviointiRivit should have size 1
+
+      val firstRow = arviointiRivit.head
+      firstRow.ensimmainenArviointi should be (true)
+      firstRow.hylatynKorotus should be (Some(false))
+      firstRow.hyvaksytynKorotus should be (Some(false))
     }
   }
 
