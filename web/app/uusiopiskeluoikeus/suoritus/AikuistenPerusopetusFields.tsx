@@ -1,30 +1,18 @@
 import React from 'react'
-import { usePerusteSelectOptions } from '../../appstate/peruste'
-import { Select } from '../../components-v2/controls/Select'
 import { t } from '../../i18n/i18n'
-import { koodistokoodiviiteId } from '../../util/koodisto'
+import { DialogPäätasonSuoritusSelect } from '../components/DialogPaatasonSuoritusSelect'
 import { DialogPerusteSelect } from '../components/DialogPerusteSelect'
-import { usePäätasonSuoritustyypit } from '../state/hooks'
 import { SuoritusFieldsProps } from './SuoritusFields'
 
-export const AikuistenPerusopetusFields = (props: SuoritusFieldsProps) => {
-  const options = usePäätasonSuoritustyypit(props.state)
+export const AikuistenPerusopetusFields = (props: SuoritusFieldsProps) => (
+  <>
+    {t('Oppimäärä')}
+    <DialogPäätasonSuoritusSelect
+      state={props.state}
+      default="aikuistenperusopetuksenoppimaara"
+      testId="oppimäärä"
+    />
 
-  return (
-    <>
-      {t('Oppimäärä')}
-      <Select
-        options={options}
-        initialValue="suorituksentyyppi_aikuistenperusopetuksenoppimaara"
-        value={
-          props.state.päätasonSuoritus.value &&
-          koodistokoodiviiteId(props.state.päätasonSuoritus.value)
-        }
-        onChange={(opt) => props.state.päätasonSuoritus.set(opt?.value)}
-        testId="oppimäärä"
-      />
-
-      <DialogPerusteSelect state={props.state} default="OPH-1280-2017" />
-    </>
-  )
-}
+    <DialogPerusteSelect state={props.state} default="OPH-1280-2017" />
+  </>
+)

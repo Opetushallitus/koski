@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState, useEffect } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { isSuccess, useApiWithParams } from '../../api-fetch'
 import { useKoodisto } from '../../appstate/koodisto'
 import {
@@ -8,24 +8,23 @@ import {
 } from '../../components-v2/controls/Select'
 import { TextEdit } from '../../components-v2/controls/TextField'
 import { t } from '../../i18n/i18n'
+import { isAmmatilliseenTehtäväänValmistavaKoulutus } from '../../types/fi/oph/koski/schema/AmmatilliseenTehtavaanValmistavaKoulutus'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { TutkintoPeruste } from '../../types/fi/oph/koski/tutkinto/TutkintoPeruste'
 import { koodistokoodiviiteId } from '../../util/koodisto'
 import { fetchOppilaitoksenPerusteet } from '../../util/koskiApi'
 import { DialogKoodistoSelect } from '../components/DialogKoodistoSelect'
+import { DialogPäätasonSuoritusSelect } from '../components/DialogPaatasonSuoritusSelect'
 import { DialogPerusteSelect } from '../components/DialogPerusteSelect'
 import {
   createAmmatilliseenTehtäväänValmistavaKoulutus,
   createPaikallinenMuuAmmatillinenKoulutus,
   createTutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus
 } from '../opintooikeus/createAmmatillinenTutkintoOpiskeluoikeus'
-import { usePäätasonSuoritustyypit } from '../state/hooks'
 import { UusiOpiskeluoikeusDialogState } from '../state/state'
 import { SuoritusFieldsProps } from './SuoritusFields'
-import { isAmmatilliseenTehtäväänValmistavaKoulutus } from '../../types/fi/oph/koski/schema/AmmatilliseenTehtavaanValmistavaKoulutus'
 
 export const AmmatillinenKoulutusFields = (props: SuoritusFieldsProps) => {
-  const suoritusOptions = usePäätasonSuoritustyypit(props.state)
   const tutkinnot = useTutkinnot(props.state)
 
   const onTOPKS = useCallback(
@@ -44,13 +43,8 @@ export const AmmatillinenKoulutusFields = (props: SuoritusFieldsProps) => {
   return (
     <>
       {t('Suoritustyyppi')}
-      <Select
-        options={suoritusOptions}
-        value={
-          props.state.päätasonSuoritus.value &&
-          koodistokoodiviiteId(props.state.päätasonSuoritus.value)
-        }
-        onChange={(opt) => props.state.päätasonSuoritus.set(opt?.value)}
+      <DialogPäätasonSuoritusSelect
+        state={props.state}
         testId="suoritustyyppi"
       />
 

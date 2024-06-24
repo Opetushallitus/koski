@@ -1,30 +1,17 @@
 import React from 'react'
-import { Select } from '../../components-v2/controls/Select'
 import { t } from '../../i18n/i18n'
-import { koodistokoodiviiteId } from '../../util/koodisto'
 import { DialogKoodistoSelect } from '../components/DialogKoodistoSelect'
+import { DialogPäätasonSuoritusSelect } from '../components/DialogPaatasonSuoritusSelect'
 import { DialogPerusteSelect } from '../components/DialogPerusteSelect'
-import { usePäätasonSuoritustyypit } from '../state/hooks'
 import { SuoritusFieldsProps } from './SuoritusFields'
 
-export const VapaaSivistystyöFields = (props: SuoritusFieldsProps) => {
-  const options = usePäätasonSuoritustyypit(props.state)
-  const suoritustyyppi = props.state.päätasonSuoritus.value
-
-  return (
-    <>
-      {t('Suoritustyyppi')}
-      <Select
-        options={options}
-        value={suoritustyyppi && koodistokoodiviiteId(suoritustyyppi)}
-        onChange={(opt) => props.state.päätasonSuoritus.set(opt?.value)}
-        testId="suoritustyyppi"
-      />
-
-      <VstSuoritusFields {...props} />
-    </>
-  )
-}
+export const VapaaSivistystyöFields = (props: SuoritusFieldsProps) => (
+  <>
+    {t('Suoritustyyppi')}
+    <DialogPäätasonSuoritusSelect state={props.state} testId="suoritustyyppi" />
+    <VstSuoritusFields {...props} />
+  </>
+)
 
 const VstSuoritusFields = (props: SuoritusFieldsProps) => {
   switch (props.state.päätasonSuoritus.value?.koodiarvo) {
