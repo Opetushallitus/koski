@@ -8,6 +8,7 @@ import { TutkintoPeruste } from '../../types/fi/oph/koski/tutkinto/TutkintoPerus
 import { createAikuistenPerusopetuksenOpiskeluoikeus } from './createAikuistenPerusopetuksenOpiskeluoikeus'
 import { createAmmatillinenOpiskeluoikeus } from './createAmmatillinenTutkintoOpiskeluoikeus'
 import { createDIAOpiskeluoikeus } from './createDiaTutkintoOpiskeluoikeus'
+import { createEBOpiskeluoikeus } from './createEBTutkintoOpiskeluoikeus'
 import { createEsiopetuksenOpiskeluoikeus } from './createEsiopetuksenOpiskeluoikeus'
 import { createEuropeanSchoolOfHelsinkiOpiskeluoikeus } from './createEuropeanSchoolOfHelsinkiOpiskeluoikeus'
 import { createIBOpiskeluoikeus } from './createIBTutkintoOpiskeluoikeus'
@@ -242,6 +243,10 @@ export const createOpiskeluoikeus = (
         opintojenRahoitus,
         curriculum
       )
+
+    case 'ebtutkinto':
+      if (!curriculum) return undefined
+      return createEBOpiskeluoikeus(organisaatio, alku, tila, curriculum)
 
     case 'diatutkinto':
       if (!opintojenRahoitus || !suorituskieli || maksuton === undefined) {
