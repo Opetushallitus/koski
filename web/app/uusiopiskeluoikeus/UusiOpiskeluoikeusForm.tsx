@@ -11,6 +11,7 @@ import { DialogMaksuttomuusSelect } from './components/DialogMaksuttomuusSelect'
 import { OppilaitosSearch } from './components/OppilaitosSearch'
 import { OppilaitosSelect, OrgType } from './components/OppilaitosSelect'
 import {
+  useDefaultKieli,
   useJotpaAsianumero,
   useOpintojenRahoitus,
   useOpiskeluoikeudenTilat,
@@ -35,6 +36,7 @@ export const UusiOpiskeluoikeusForm = (props: UusiOpiskeluoikeusFormProps) => {
   const tilat = useOpiskeluoikeudenTilat(state)
   const opintojenRahoitukset = useOpintojenRahoitus(state)
   const jotpaAsianumerot = useJotpaAsianumero(state)
+  const defaultKieli = useDefaultKieli(state)
 
   useEffect(() => props.onResult(state.result), [props, state.result])
 
@@ -116,7 +118,7 @@ export const UusiOpiskeluoikeusForm = (props: UusiOpiskeluoikeusFormProps) => {
         <>
           {t('Suorituskieli')}
           <KieliSelect
-            initialValue="kieli_FI"
+            initialValue={defaultKieli}
             value={
               state.suorituskieli.value &&
               koodistokoodiviiteId(state.suorituskieli.value)

@@ -7,6 +7,7 @@ import { TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus } from '../..
 import { TutkintoPeruste } from '../../types/fi/oph/koski/tutkinto/TutkintoPeruste'
 import { createAikuistenPerusopetuksenOpiskeluoikeus } from './createAikuistenPerusopetuksenOpiskeluoikeus'
 import { createAmmatillinenOpiskeluoikeus } from './createAmmatillinenTutkintoOpiskeluoikeus'
+import { createDIAOpiskeluoikeus } from './createDiaTutkintoOpiskeluoikeus'
 import { createEsiopetuksenOpiskeluoikeus } from './createEsiopetuksenOpiskeluoikeus'
 import { createEuropeanSchoolOfHelsinkiOpiskeluoikeus } from './createEuropeanSchoolOfHelsinkiOpiskeluoikeus'
 import { createLukionOpiskeluoikeus } from './createLukiokoulutuksenOpiskeluoikeus'
@@ -239,6 +240,20 @@ export const createOpiskeluoikeus = (
         tila,
         opintojenRahoitus,
         curriculum
+      )
+
+    case 'diatutkinto':
+      if (!opintojenRahoitus || !suorituskieli || maksuton === undefined) {
+        return undefined
+      }
+      return createDIAOpiskeluoikeus(
+        suorituksenTyyppi,
+        organisaatio,
+        alku,
+        tila,
+        opintojenRahoitus,
+        suorituskieli,
+        maksuton
       )
 
     default:
