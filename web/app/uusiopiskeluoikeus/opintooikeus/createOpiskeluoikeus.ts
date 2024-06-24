@@ -12,6 +12,7 @@ import { createEBOpiskeluoikeus } from './createEBTutkintoOpiskeluoikeus'
 import { createEsiopetuksenOpiskeluoikeus } from './createEsiopetuksenOpiskeluoikeus'
 import { createEuropeanSchoolOfHelsinkiOpiskeluoikeus } from './createEuropeanSchoolOfHelsinkiOpiskeluoikeus'
 import { createIBOpiskeluoikeus } from './createIBTutkintoOpiskeluoikeus'
+import { createInternationalSchoolOpiskeluoikeus } from './createInternationalSchoolOpiskeluoikeus'
 import { createLukionOpiskeluoikeus } from './createLukiokoulutuksenOpiskeluoikeus'
 import { createLukioonValmistavanKoulutuksenOpiskeluoikeus } from './createLukioonValmistavaOpiskeluoikeus'
 import { createMuunKuinSäännellynKoulutuksenOpiskeluoikeus } from './createMuunKuinSäännellynKoulutuksenOpiskeluoikeus'
@@ -44,7 +45,8 @@ export const createOpiskeluoikeus = (
   suoritustapa?: Koodistokoodiviite<'ammatillisentutkinnonsuoritustapa'>,
   muuAmmatillinenKoulutus?: MuuAmmatillinenKoulutus,
   tutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus?: TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus,
-  curriculum?: Koodistokoodiviite<'europeanschoolofhelsinkicurriculum'>
+  curriculum?: Koodistokoodiviite<'europeanschoolofhelsinkicurriculum'>,
+  internationalSchoolGrade?: Koodistokoodiviite<'internationalschoolluokkaaste'>
 ): Opiskeluoikeus | undefined => {
   switch (opiskeluoikeudenTyyppi.koodiarvo) {
     case 'perusopetus':
@@ -272,6 +274,19 @@ export const createOpiskeluoikeus = (
         alku,
         tila,
         opintojenRahoitus,
+        suorituskieli,
+        maksuton
+      )
+
+    case 'internationalschool':
+      if (!opintojenRahoitus || !internationalSchoolGrade || !suorituskieli)
+        return undefined
+      return createInternationalSchoolOpiskeluoikeus(
+        organisaatio,
+        alku,
+        tila,
+        opintojenRahoitus,
+        internationalSchoolGrade,
         suorituskieli,
         maksuton
       )

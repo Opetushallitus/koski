@@ -16,6 +16,7 @@ import { EuropeanSchoolOfHelsinkiFields } from './EuropeanSchoolOfHelsinkiFields
 import { DiaTutkintoFields } from './DiaTutkintoFields'
 import { IBTutkintoFields } from './IBTutkintoFields'
 import { EBTutkintoFields } from './EBTutkintoFields'
+import { InternationalSchoolFields } from './InternationalSchoolFields'
 
 export type SuoritusFieldsProps = {
   state: UusiOpiskeluoikeusDialogState
@@ -55,6 +56,8 @@ export const SuoritusFields = (props: SuoritusFieldsProps) => {
       return <DiaTutkintoFields {...props} />
     case 'ibtutkinto':
       return <IBTutkintoFields {...props} />
+    case 'internationalschool':
+      return <InternationalSchoolFields {...props} />
     default:
       return null
   }

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { isSuccess, useApiOnce } from '../../api-fetch'
 import { useSchema } from '../../appstate/constraints'
 import { Peruste } from '../../appstate/peruste'
@@ -48,6 +48,9 @@ export type UusiOpiskeluoikeusDialogState = {
   curriculum: DialogField<
     Koodistokoodiviite<'europeanschoolofhelsinkicurriculum'>
   >
+  internationalSchoolGrade: DialogField<
+    Koodistokoodiviite<'internationalschoolluokkaaste'>
+  >
   ooMapping?: OpiskeluoikeusClass[]
   result?: Opiskeluoikeus
 }
@@ -73,8 +76,12 @@ export const useUusiOpiskeluoikeusDialogState =
         oppilaitosValittu
       )
     const opiskeluoikeusValittu = opiskeluoikeus.value !== undefined
-    const opiskeluoikeudeksiValittu = (...tyypit: string[]): boolean =>
-      !!opiskeluoikeus.value && tyypit.includes(opiskeluoikeus.value.koodiarvo)
+    const opiskeluoikeudeksiValittu = useCallback(
+      (...tyypit: string[]): boolean =>
+        !!opiskeluoikeus.value &&
+        tyypit.includes(opiskeluoikeus.value.koodiarvo),
+      [opiskeluoikeus.value]
+    )
     const opiskeluoikeusClass = opiskeluoikeustyyppiToClassNames(
       ooMapping,
       opiskeluoikeus.value?.koodiarvo
@@ -91,9 +98,12 @@ export const useUusiOpiskeluoikeusDialogState =
       (s) => s.tyyppi === päätasonSuoritus.value?.koodiarvo
     )?.className
     const päätasonSuoritusValittu = päätasonSuoritus.value !== undefined
-    const päätasonSuoritukseksiValittu = (...tyypit: string[]): boolean =>
-      !!päätasonSuoritus.value &&
-      tyypit.includes(päätasonSuoritus.value.koodiarvo)
+    const päätasonSuoritukseksiValittu = useCallback(
+      (...tyypit: string[]): boolean =>
+        !!päätasonSuoritus.value &&
+        tyypit.includes(päätasonSuoritus.value.koodiarvo),
+      [päätasonSuoritus.value]
+    )
 
     // Peruste
     const peruste = useDialogField<Peruste>(
@@ -133,21 +143,6 @@ export const useUusiOpiskeluoikeusDialogState =
       Koodistokoodiviite<'koskiopiskeluoikeudentila'>
     >(opiskeluoikeusValittu)
 
-    // Opiskelun maksuttomuus
-    const maksuttomuustiedollinen = C.hasProp(
-      opiskeluoikeudenLisätiedot,
-      'maksuttomuus'
-    )
-    const maksuton = useDialogField<boolean | null>(
-      maksuttomuustiedollinen &&
-        !päätasonSuoritukseksiValittu(
-          'vstjotpakoulutus',
-          'vstosaamismerkki',
-          'vstvapaatavoitteinenkoulutus'
-        ) &&
-        !opiskeluoikeudeksiValittu('europeanschoolofhelsinki')
-    )
-
     // Opintojen rahoitus
     const opintojenRahoitus = useDialogField<
       Koodistokoodiviite<'opintojenrahoitus'>
@@ -186,7 +181,6 @@ export const useUusiOpiskeluoikeusDialogState =
       useDialogField<Koodistokoodiviite<'osaamismerkit'>>(true)
 
     // Ammattikoulutun tutkinto
-    // const ammatillinenTutkintoValittu =
     !!päätasonSuoritus.value &&
       ['ammatillinentutkinto', 'ammatillinentutkintoosittainen'].includes(
         päätasonSuoritus.value?.koodiarvo
@@ -225,6 +219,48 @@ export const useUusiOpiskeluoikeusDialogState =
       Koodistokoodiviite<'europeanschoolofhelsinkicurriculum'>
     >(opiskeluoikeudeksiValittu('europeanschoolofhelsinki'))
 
+    // International School
+    const internationalSchoolGrade = useDialogField<
+      Koodistokoodiviite<'internationalschoolluokkaaste'>
+    >(opiskeluoikeudeksiValittu('internationalschool'))
+
+    // Opiskelun maksuttomuus
+    const maksuttomuustiedollinen = useMemo(() => {
+      // Tarkista ensin onko koko maksuttomuustietoa edes valitun opiskeluoikeuden tietomallissa
+      if (!C.hasProp(opiskeluoikeudenLisätiedot, 'maksuttomuus')) return false
+
+      // Osalle vst-opiskeluoikeuksista maksuttomuustietoa ei käytetä päätason suorituksen perusteella
+      if (
+        päätasonSuoritukseksiValittu(
+          'vstjotpakoulutus',
+          'vstosaamismerkki',
+          'vstvapaatavoitteinenkoulutus'
+        )
+      ) {
+        return false
+      }
+
+      // European School of Helsingille maksuttomuustieto on virheellisesti tietomallissa
+      if (opiskeluoikeudeksiValittu('europeanschoolofhelsinki')) return false
+
+      // International School of Helsingille maksuttomuustieto valitaan vain diploma-tason vuosiluokille
+      if (opiskeluoikeudeksiValittu('internationalschool')) {
+        return (
+          !!internationalSchoolGrade?.value &&
+          ['11', '12'].includes(internationalSchoolGrade?.value?.koodiarvo)
+        )
+      }
+
+      return true
+    }, [
+      internationalSchoolGrade?.value,
+      opiskeluoikeudeksiValittu,
+      opiskeluoikeudenLisätiedot,
+      päätasonSuoritukseksiValittu
+    ])
+
+    const maksuton = useDialogField<boolean | null>(maksuttomuustiedollinen)
+
     // Validi opiskeluoikeus
     const result = useMemo(
       () =>
@@ -255,12 +291,14 @@ export const useUusiOpiskeluoikeusDialogState =
               suoritustapa.value,
               muuAmmatillinenKoulutus.value,
               tutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus.value,
-              curriculum.value
+              curriculum.value,
+              internationalSchoolGrade.value
             )
           : undefined,
       [
         aloituspäivä.value,
         curriculum.value,
+        internationalSchoolGrade.value,
         jotpaAsianumero.value,
         maksuton.value,
         muuAmmatillinenKoulutus.value,
@@ -308,6 +346,7 @@ export const useUusiOpiskeluoikeusDialogState =
       muuAmmatillinenKoulutus,
       tutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus,
       curriculum,
+      internationalSchoolGrade,
       ooMapping,
       result
     }
