@@ -86,9 +86,6 @@ export const useUusiOpiskeluoikeusDialogState =
       ooMapping,
       opiskeluoikeus.value?.koodiarvo
     )
-    const opiskeluoikeudenLisätiedot = useSchema(
-      opiskeluoikeudenLisätiedotClass(opiskeluoikeusClass)
-    )
 
     // Päätason suoritus
     const päätasonSuoritus = useDialogField<
@@ -151,6 +148,13 @@ export const useUusiOpiskeluoikeusDialogState =
     // Tuva-järjestämislupa
     const tuvaJärjestämislupa =
       useDialogField<Koodistokoodiviite<'tuvajarjestamislupa'>>(true)
+
+    const opiskeluoikeudenLisätiedot = useSchema(
+      opiskeluoikeudenLisätiedotClass(
+        opiskeluoikeusClass,
+        tuvaJärjestämislupa.value
+      )
+    )
 
     // Opintokokonaisuus (vst jotpa, vst vapaatavoitteinen, sekä muu kuin säännelty koulutus)
     const opintokokonaisuus =

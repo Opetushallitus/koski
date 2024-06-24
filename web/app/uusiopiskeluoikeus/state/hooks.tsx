@@ -23,6 +23,10 @@ import {
   UusiOpiskeluoikeusDialogState,
   opiskeluoikeustyyppiToClassNames
 } from './state'
+import { TutkintokoulutukseenValmentavanOpiskeluoikeus } from '../../types/fi/oph/koski/schema/TutkintokoulutukseenValmentavanOpiskeluoikeus'
+import { TutkintokoulutukseenValmentavanOpiskeluoikeudenAmmatillisenLuvanLisätiedot } from '../../types/fi/oph/koski/schema/TutkintokoulutukseenValmentavanOpiskeluoikeudenAmmatillisenLuvanLisatiedot'
+import { TutkintokoulutukseenValmentavanOpiskeluoikeudenLukiokoulutuksenLuvanLisätiedot } from '../../types/fi/oph/koski/schema/TutkintokoulutukseenValmentavanOpiskeluoikeudenLukiokoulutuksenLuvanLisatiedot'
+import { TutkintokoulutukseenValmentavanOpiskeluoikeudenPerusopetuksenLuvanLisätiedot } from '../../types/fi/oph/koski/schema/TutkintokoulutukseenValmentavanOpiskeluoikeudenPerusopetuksenLuvanLisatiedot'
 
 export const useOpiskeluoikeustyypit = (
   organisaatio?: OrganisaatioHierarkia
@@ -99,8 +103,25 @@ const opiskeluoikeudenTilaClass = (
 }
 
 export const opiskeluoikeudenLisätiedotClass = (
-  ooClass?: OpiskeluoikeusClass
+  ooClass?: OpiskeluoikeusClass,
+  tuvaJärjestämislupa?: Koodistokoodiviite<'tuvajarjestamislupa'>
 ): string | undefined => {
+  if (
+    ooClass?.className ===
+    TutkintokoulutukseenValmentavanOpiskeluoikeus.className
+  ) {
+    switch (tuvaJärjestämislupa?.koodiarvo) {
+      case 'ammatillinen':
+        return TutkintokoulutukseenValmentavanOpiskeluoikeudenAmmatillisenLuvanLisätiedot.className
+      case 'lukio':
+        return TutkintokoulutukseenValmentavanOpiskeluoikeudenLukiokoulutuksenLuvanLisätiedot.className
+      case 'perusopetus':
+        return TutkintokoulutukseenValmentavanOpiskeluoikeudenPerusopetuksenLuvanLisätiedot.className
+      default:
+        return undefined
+    }
+  }
+
   const lisätiedot = ooClass?.lisätiedot || []
   if (lisätiedot.length > 1) {
     throw new Error(
