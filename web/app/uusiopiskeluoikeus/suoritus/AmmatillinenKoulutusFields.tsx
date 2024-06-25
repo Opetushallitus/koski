@@ -20,7 +20,7 @@ import {
   createAmmatilliseenTehtäväänValmistavaKoulutus,
   createPaikallinenMuuAmmatillinenKoulutus,
   createTutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus
-} from '../opintooikeus/createAmmatillinenTutkintoOpiskeluoikeus'
+} from '../opintooikeus/ammatillinenTutkinto'
 import { UusiOpiskeluoikeusDialogState } from '../state/state'
 import { SuoritusFieldsProps } from './SuoritusFields'
 

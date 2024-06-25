@@ -7,7 +7,7 @@ import { LukioonValmistavaKoulutus } from '../../types/fi/oph/koski/schema/Lukio
 import { LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot } from '../../types/fi/oph/koski/schema/LukioonValmistavanKoulutuksenOpiskeluoikeudenLisatiedot'
 import { LukioonValmistavanKoulutuksenOpiskeluoikeus } from '../../types/fi/oph/koski/schema/LukioonValmistavanKoulutuksenOpiskeluoikeus'
 import { LukioonValmistavanKoulutuksenSuoritus } from '../../types/fi/oph/koski/schema/LukioonValmistavanKoulutuksenSuoritus'
-import { perusteToOppimäärä } from './createLukiokoulutuksenOpiskeluoikeus'
+import { perusteToOppimäärä } from './lukio'
 import { maksuttomuuslisätiedot, toOppilaitos, toToimipiste } from './utils'
 
 export const createLukioonValmistavanKoulutuksenOpiskeluoikeus = (
