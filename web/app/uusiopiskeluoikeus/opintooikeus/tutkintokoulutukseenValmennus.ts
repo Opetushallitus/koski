@@ -3,10 +3,13 @@ import { OrganisaatioHierarkia } from '../../types/fi/oph/koski/organisaatio/Org
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { TutkintokoulutukseenValmentavanKoulutuksenSuoritus } from '../../types/fi/oph/koski/schema/TutkintokoulutukseenValmentavanKoulutuksenSuoritus'
 import { TutkintokoulutukseenValmentavanKoulutus } from '../../types/fi/oph/koski/schema/TutkintokoulutukseenValmentavanKoulutus'
+import { TutkintokoulutukseenValmentavanOpiskeluoikeudenAmmatillisenLuvanLisätiedot } from '../../types/fi/oph/koski/schema/TutkintokoulutukseenValmentavanOpiskeluoikeudenAmmatillisenLuvanLisatiedot'
+import { TutkintokoulutukseenValmentavanOpiskeluoikeudenLukiokoulutuksenLuvanLisätiedot } from '../../types/fi/oph/koski/schema/TutkintokoulutukseenValmentavanOpiskeluoikeudenLukiokoulutuksenLuvanLisatiedot'
+import { TutkintokoulutukseenValmentavanOpiskeluoikeudenPerusopetuksenLuvanLisätiedot } from '../../types/fi/oph/koski/schema/TutkintokoulutukseenValmentavanOpiskeluoikeudenPerusopetuksenLuvanLisatiedot'
 import { TutkintokoulutukseenValmentavanOpiskeluoikeudenTila } from '../../types/fi/oph/koski/schema/TutkintokoulutukseenValmentavanOpiskeluoikeudenTila'
 import { TutkintokoulutukseenValmentavanOpiskeluoikeus } from '../../types/fi/oph/koski/schema/TutkintokoulutukseenValmentavanOpiskeluoikeus'
 import { TutkintokoulutukseenValmentavanOpiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/TutkintokoulutukseenValmentavanOpiskeluoikeusjakso'
-import { toOppilaitos, toToimipiste } from './utils'
+import { maksuttomuuslisätiedot, toOppilaitos, toToimipiste } from './utils'
 
 // Tutkintokoulutukseen valmentava koulutus
 export const createTutkintokoulutukseenValmentavanOpiskeluoikeus = (
@@ -16,7 +19,8 @@ export const createTutkintokoulutukseenValmentavanOpiskeluoikeus = (
   tila: TutkintokoulutukseenValmentavanOpiskeluoikeusjakso['tila'],
   opintojenRahoitus: Koodistokoodiviite<'opintojenrahoitus', any>,
   suorituskieli: Koodistokoodiviite<'kieli'>,
-  tuvaJärjestämislupa: Koodistokoodiviite<'tuvajarjestamislupa'>
+  tuvaJärjestämislupa: Koodistokoodiviite<'tuvajarjestamislupa'>,
+  maksuton: boolean | null
 ) =>
   TutkintokoulutukseenValmentavanOpiskeluoikeus({
     oppilaitos: toOppilaitos(organisaatio),
@@ -38,5 +42,39 @@ export const createTutkintokoulutukseenValmentavanOpiskeluoikeus = (
         suorituskieli,
         toimipiste: toToimipiste(organisaatio)
       })
-    ]
+    ],
+    lisätiedot: createTutkintokoulutukseenValmentavanOpiskeluoikeudenLisätiedot(
+      tuvaJärjestämislupa,
+      alku,
+      maksuton
+    )
   })
+
+const createTutkintokoulutukseenValmentavanOpiskeluoikeudenLisätiedot = (
+  järjestämislupa: Koodistokoodiviite<'tuvajarjestamislupa'>,
+  alku: string,
+  maksuton: boolean | null
+) => {
+  switch (järjestämislupa.koodiarvo) {
+    case 'ammatillinen':
+      return maksuttomuuslisätiedot(
+        alku,
+        maksuton,
+        TutkintokoulutukseenValmentavanOpiskeluoikeudenAmmatillisenLuvanLisätiedot
+      )
+    case 'lukio':
+      return maksuttomuuslisätiedot(
+        alku,
+        maksuton,
+        TutkintokoulutukseenValmentavanOpiskeluoikeudenLukiokoulutuksenLuvanLisätiedot
+      )
+    case 'perusopetus':
+      return maksuttomuuslisätiedot(
+        alku,
+        maksuton,
+        TutkintokoulutukseenValmentavanOpiskeluoikeudenPerusopetuksenLuvanLisätiedot
+      )
+    default:
+      return undefined
+  }
+}

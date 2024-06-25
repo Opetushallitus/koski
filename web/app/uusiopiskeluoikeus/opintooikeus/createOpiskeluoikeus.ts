@@ -115,7 +115,8 @@ export const createOpiskeluoikeus = (
         !peruste ||
         !tuvaJärjestämislupa ||
         !opintojenRahoitus ||
-        !suorituskieli
+        !suorituskieli ||
+        maksuton === undefined
       ) {
         return undefined
       }
@@ -126,7 +127,8 @@ export const createOpiskeluoikeus = (
         tila,
         opintojenRahoitus,
         suorituskieli,
-        tuvaJärjestämislupa
+        tuvaJärjestämislupa,
+        maksuton
       )
 
     case 'muukuinsaanneltykoulutus':
