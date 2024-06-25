@@ -1,4 +1,5 @@
 import React from 'react'
+import { useVirkailijaUser } from '../../appstate/user'
 import { Checkbox } from '../../components-v2/controls/Checkbox'
 import { t } from '../../i18n/i18n'
 import { UusiOpiskeluoikeusDialogState } from '../state/state'
@@ -8,41 +9,53 @@ export type HankintakoulutusSelectProps = {
   state: UusiOpiskeluoikeusDialogState
 }
 
-export const HankintakoulutusSelect = (props: HankintakoulutusSelectProps) => (
-  <>
-    <section className="labelgroup">
-      <span className="labelgroup--head">{t('Hankintakoulutus')}</span>
+export const HankintakoulutusSelect = (props: HankintakoulutusSelectProps) => {
+  const user = useVirkailijaUser()
+  const isVarhaiskasvatusKoulutustoimija =
+    (user?.varhaiskasvatuksenJärjestäjäKoulutustoimijat.length || 0) > 0
+  const isTPOKoulutustoimija = user?.hasOneKoulutustoimijaWriteAccess || false
 
-      <HankintakoulutusCheckbox
-        state={props.state}
-        label={t(
-          'Esiopetus ostetaan oman organisaation ulkopuolelta ostopalveluna tai palvelusetelinä'
+  return isVarhaiskasvatusKoulutustoimija || isTPOKoulutustoimija ? (
+    <>
+      <section className="labelgroup">
+        <span className="labelgroup--head">{t('Hankintakoulutus')}</span>
+
+        {isVarhaiskasvatusKoulutustoimija && (
+          <HankintakoulutusCheckbox
+            state={props.state}
+            label={t(
+              'Esiopetus ostetaan oman organisaation ulkopuolelta ostopalveluna tai palvelusetelinä'
+            )}
+            value="esiopetus"
+          />
         )}
-        value="esiopetus"
-      />
 
-      <HankintakoulutusCheckbox
-        state={props.state}
-        label={t(
-          'Taiteen perusopetus hankintakoulutuksena järjestetään oman organisaation ulkopuolelta'
+        {isTPOKoulutustoimija && (
+          <HankintakoulutusCheckbox
+            state={props.state}
+            label={t(
+              'Taiteen perusopetus hankintakoulutuksena järjestetään oman organisaation ulkopuolelta'
+            )}
+            value="tpo"
+          />
         )}
-        value="tpo"
-      />
-    </section>
+      </section>
 
-    {props.state.varhaiskasvatuksenJärjestämistapa.visible && (
-      <label>
-        {t('Varhaiskasvatuksen järjestämismuoto')}
-        <DialogKoodistoSelect
-          state={props.state.varhaiskasvatuksenJärjestämistapa}
-          koodistoUri="vardajarjestamismuoto"
-          koodiarvot={['JM02', 'JM03']}
-          testId="varhaiskasvatuksenJärjestämismuoto"
-        />
-      </label>
-    )}
-  </>
-)
+      {props.state.varhaiskasvatuksenJärjestämistapa.visible &&
+        isVarhaiskasvatusKoulutustoimija && (
+          <label>
+            {t('Varhaiskasvatuksen järjestämismuoto')}
+            <DialogKoodistoSelect
+              state={props.state.varhaiskasvatuksenJärjestämistapa}
+              koodistoUri="vardajarjestamismuoto"
+              koodiarvot={['JM02', 'JM03']}
+              testId="varhaiskasvatuksenJärjestämismuoto"
+            />
+          </label>
+        )}
+    </>
+  ) : null
+}
 
 type HankintakoulutusCheckboxProps = {
   state: UusiOpiskeluoikeusDialogState
