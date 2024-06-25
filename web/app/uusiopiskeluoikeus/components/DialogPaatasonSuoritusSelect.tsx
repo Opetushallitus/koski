@@ -29,6 +29,7 @@ export const DialogPäätasonSuoritusSelect = (
 
   return (
     <Select
+      autoselect
       options={filtered}
       initialValue={props.default && `suorituksentyyppi_${props.default}`}
       value={

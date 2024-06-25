@@ -27,6 +27,7 @@ export const DialogKoodistoSelect = <U extends string>(
 
   return (
     <Select
+      autoselect
       options={options}
       initialValue={props.default && `${props.koodistoUri}_${props.default}`}
       value={props.state.value && koodistokoodiviiteId(props.state.value)}

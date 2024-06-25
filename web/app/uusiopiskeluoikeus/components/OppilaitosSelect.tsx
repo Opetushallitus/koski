@@ -31,6 +31,7 @@ export const OppilaitosSelect = (props: OppilaitosSelectProps) => {
 
   return (
     <Select
+      autoselect
       options={options}
       value={props.value?.oid}
       onChange={onChange}

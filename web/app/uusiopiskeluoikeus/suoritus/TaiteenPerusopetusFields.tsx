@@ -51,6 +51,7 @@ export const TaiteenPerusopetusFields = (props: SuoritusFieldsProps) => {
         <label>
           {t('Suoritustyyppi')}
           <Select
+            autoselect
             options={suoritustyypit}
             value={
               props.state.päätasonSuoritus.value &&
@@ -66,6 +67,7 @@ export const TaiteenPerusopetusFields = (props: SuoritusFieldsProps) => {
         <label>
           {t('Koulutuksen toteutustapa')}
           <Select
+            autoselect
             options={toteutustavatOptions}
             value={
               props.state.tpoToteutustapa.value &&

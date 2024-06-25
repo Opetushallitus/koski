@@ -111,6 +111,7 @@ export const UusiOpiskeluoikeusForm = (props: UusiOpiskeluoikeusFormProps) => {
         <label>
           {t('Opiskeluoikeuden tila')}
           <Select
+            autoselect
             options={tilat.options}
             initialValue={tilat.initialValue}
             value={state.tila.value && koodistokoodiviiteId(state.tila.value)}
@@ -124,6 +125,7 @@ export const UusiOpiskeluoikeusForm = (props: UusiOpiskeluoikeusFormProps) => {
         <label>
           {t('Opintojen rahoitus')}
           <Select
+            autoselect
             options={opintojenRahoitukset.options}
             initialValue={opintojenRahoitukset.initialValue}
             value={
@@ -140,6 +142,7 @@ export const UusiOpiskeluoikeusForm = (props: UusiOpiskeluoikeusFormProps) => {
         <label>
           {t('JOTPA asianumero')}
           <Select
+            autoselect
             options={jotpaAsianumerot.options}
             initialValue={jotpaAsianumerot.initialValue}
             value={

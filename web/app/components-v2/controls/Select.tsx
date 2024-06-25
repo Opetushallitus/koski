@@ -33,6 +33,7 @@ export type SelectProps<T> = CommonProps<{
   placeholder?: string | LocalizedString
   hideEmpty?: boolean
   disabled?: boolean
+  autoselect?: boolean
   testId: string | number
 }>
 
@@ -76,16 +77,21 @@ export const Select = <T,>(props: SelectProps<T>) => {
   const select = useSelectState(props)
   const input = useRef<HTMLInputElement>(null)
 
-  const { options, onChange, value, initialValue } = props
+  const { options, onChange, value, initialValue, autoselect } = props
   useEffect(() => {
-    if (optionsCount(options) < 2) {
-      onChange(firstOption(options))
-    } else if (value === undefined && initialValue) {
-      onChange(options.find((o) => o.key === initialValue))
-    } else if (value !== undefined && !optionExists(options, value)) {
-      onChange(undefined)
+    if (autoselect) {
+      if (optionsCount(options) < 2) {
+        const first = firstOption(options)
+        if (first?.key !== value) {
+          onChange(first)
+        }
+      } else if (value === undefined && initialValue) {
+        onChange(options.find((o) => o.key === initialValue))
+      } else if (value !== undefined && !optionExists(options, value)) {
+        onChange(undefined)
+      }
     }
-  }, [initialValue, onChange, options, value])
+  }, [autoselect, initialValue, onChange, options, value])
 
   return (
     <TestIdLayer id={props.testId}>

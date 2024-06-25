@@ -172,6 +172,7 @@ const MuuAmmatillinenKoulutusFields = (props: SuoritusFieldsProps) => {
       <label>
         {t('Koulutusmoduuli')}
         <Select
+          autoselect
           options={muuAmmatillinenKoulutusOptions}
           value={koulutusmoduuli}
           onChange={(opt) => setKoulutusmoduuli(opt?.value)}
@@ -187,6 +188,7 @@ const MuuAmmatillinenKoulutusFields = (props: SuoritusFieldsProps) => {
         <label>
           {t('Ammatilliseen tehtävään valmistava koulutus')}
           <Select
+            autoselect
             options={tunnisteOptions}
             value={tunniste}
             onChange={onAmmatilliseenTehtäväänValmistavaKoulutus}

@@ -27,6 +27,7 @@ export const DialogPerusteSelect = <U extends string>(
     <label>
       {t('Peruste')}
       <Select
+        autoselect
         options={filtered}
         initialValue={props.default || options[0]?.value?.koodiarvo}
         value={props.state.peruste.value?.koodiarvo}
