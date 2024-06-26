@@ -18,6 +18,7 @@ export type TextEditProps = CommonProps<
       placeholder?: string
       autoFocus?: boolean
       testId?: string
+      disabled?: boolean
     }
   >
 >
@@ -48,6 +49,7 @@ export const TextEdit: React.FC<TextEditProps> = (props) => {
         value={internalValue}
         onChange={onChangeCB}
         autoFocus={props.autoFocus}
+        disabled={props.disabled}
         data-testid={testId}
       />
       <FieldErrors errors={props.errors} />

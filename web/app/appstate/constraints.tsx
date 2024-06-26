@@ -69,6 +69,47 @@ export const useSchema = (className?: string | null): Constraint | null => {
 }
 
 /**
+ * Palauttaa luokan nimen ja polun osoittaman constraintin.
+ *
+ * Heittää poikkeuksen, jos:
+ *    - polun osoittamaa kenttää ei löydy
+ *
+ * @param className skeemaluokan nimi pitkässä tai lyhyessä muodossa (esim. "fi.oph.koski.schema.Vahvistus" tai pelkkä "Vahvistus")
+ * @param path merkkijonoon osoittava polku, esim. "tila.opiskeluoikeusjaksot.[].tila.koodiarvo"
+ * @returns Constraint[] jos luokka löytyi ja lataaminen onnistui, null jos haku kesken tai tietojen lataaminen epäonnistui.
+ */
+export const useChildSchema = (
+  className: string | null | undefined,
+  path: string
+): Constraint | null => {
+  const c = useSchema(className)
+  return useMemo(
+    () => pipe(c, C.asList, C.path(path), (cs) => cs?.[0] || null),
+    [c, path]
+  )
+}
+
+/**
+ * Palauttaa luokan nimen ja polun osoittaman constraintin.
+ *
+ * Palauttaa false, jos polkua ei löydy skeemasta
+ *
+ * @param className skeemaluokan nimi pitkässä tai lyhyessä muodossa (esim. "fi.oph.koski.schema.Vahvistus" tai pelkkä "Vahvistus")
+ * @param path merkkijonoon osoittava polku, esim. "tila.opiskeluoikeusjaksot.[].tila.koodiarvo"
+ * @returns Constraint[] jos luokka löytyi ja lataaminen onnistui, null jos haku kesken tai tietojen lataaminen epäonnistui.
+ */
+export const useChildSchemaSafe = (
+  className: string | null | undefined,
+  path: string
+): Constraint | null | false => {
+  try {
+    return useChildSchema(className, path)
+  } catch (e) {
+    return false
+  }
+}
+
+/**
  * Palauttaa luokan nimen ja polun osoittaman merkkijonon (tavallisesti koodiviitteen uri tai koodiarvo) sallitut arvot.
  * Jos arvoja ei ole rajattu, palautettu lista on tyhjä.
  *

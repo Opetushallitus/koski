@@ -35,6 +35,14 @@ trait TypeModel {
   def unambigiousDefaultValue: Option[Any] = None
   def dependencies: Seq[String] = Seq.empty
 
+  def child(key: String): Seq[TypeModel] = Seq.empty
+
+  def zoom(path: Seq[String]): Seq[TypeModel] =
+    path match {
+      case Seq() => Seq(this)
+      case head :: rest => child(head).flatMap(_.zoom(rest))
+    }
+
   protected def dependenciesFrom(model: TypeModel): Seq[String] = model match {
     case t: TypeModelWithClassName => Seq(t.fullClassName)
     case _ => Seq.empty
@@ -117,6 +125,8 @@ case class OptionalType(
     case InfoLinkUrl(url) => this.copy(infoLinkUrl = (infoLinkUrl :+ url).distinct)
     case _ => this
   }
+
+  override def zoom(path: Seq[String]): Seq[TypeModel] = item.zoom(path)
 }
 
 case class ArrayType(
@@ -125,6 +135,11 @@ case class ArrayType(
   def `type`: DataType = DataTypes.Array
   override def unambigiousDefaultValue: Option[List[_]] = Some(List())
   override def dependencies: Seq[String] = items.dependencies
+  override def zoom(path: Seq[String]): Seq[TypeModel] =
+    path match {
+      case "[]" :: rest => items.zoom(rest)
+      case _ => Seq.empty
+    }
 }
 
 case class RecordType(
@@ -175,6 +190,8 @@ case class ObjectType(
   }
 
   override def dependencies: Seq[String] = Seq(fullClassName) ++ properties.values.flatMap(_.dependencies).toSeq.distinct
+
+  override def child(key: String): Seq[TypeModel] = properties.get(key).toSeq
 }
 
 object ObjectType {
@@ -199,6 +216,11 @@ case class ClassRef(
   def resolve(types: Seq[TypeModelWithClassName]): Option[TypeModelWithClassName] =
     types.find(_.fullClassName == fullClassName)
   override def dependencies: Seq[String] = Seq(fullClassName)
+
+  override def zoom(path: Seq[String]): Seq[TypeModel] =
+    TypeExport
+      .getObjectModels(Class.forName(fullClassName))
+      .flatMap(_.zoom(path))
 }
 
 // Composition types
@@ -209,6 +231,8 @@ case class UnionType(
 ) extends TypeModelWithClassName {
   def `type`: DataType = DataTypes.Union
   override def dependencies: Seq[String] = Seq(fullClassName) ++ anyOf.flatMap(_.dependencies).distinct
+
+  override def child(key: String): Seq[TypeModel] = anyOf.flatMap(_.child(key))
 }
 
 case class EnumType[T](

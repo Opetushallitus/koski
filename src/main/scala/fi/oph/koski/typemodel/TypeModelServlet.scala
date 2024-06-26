@@ -1,15 +1,12 @@
 package fi.oph.koski.typemodel
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.editor.{EnumValue, KoodistoEnumModelBuilder, LocalizedHtml}
+import fi.oph.koski.editor.{KoodistoEnumModelBuilder, LocalizedHtml}
 import fi.oph.koski.koodisto.KoodistoViite
 import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
 import fi.oph.koski.schema.Koodistokoodiviite
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
-import fi.oph.scalaschema.annotation.SyntheticProperty
 import org.scalatra.ContentEncodingSupport
-
-import scala.collection.immutable
 
 class TypeModelServlet(implicit val application: KoskiApplication)
   extends KoskiSpecificApiServlet
@@ -30,6 +27,10 @@ class TypeModelServlet(implicit val application: KoskiApplication)
 
   get[GroupedKoodistot]("/koodisto/:koodistoUri") {
     toGroupedKoodistoValues(getKooditFromRequestParams)
+  }
+
+  get("/opiskeluoikeustyypit") {
+    opiskeluoikeustyypitToClassnames
   }
 
   private def localization: LocalizedHtml =
@@ -57,8 +58,64 @@ class TypeModelServlet(implicit val application: KoskiApplication)
       application.koodistoViitePalvelu.getLatestVersionOptional(part)
     }
   }
+
+  private lazy val opiskeluoikeustyypitToClassnames: List[OpiskeluoikeusClass] = TypeExport
+    .toTypeDef(Class.forName("fi.oph.koski.schema.KoskeenTallennettavaOpiskeluoikeus"))
+    .head
+    .asInstanceOf[UnionType]
+    .anyOf
+    .collect { case ClassRef(c) => c }
+    .flatMap(OpiskeluoikeusClass.apply)
 }
 
 case class GroupedKoodistot(
   koodistot: Map[String, List[Koodistokoodiviite]],
 )
+
+case class OpiskeluoikeusClass(
+  className: String,
+  tyyppi: String,
+  suoritukset: List[SuoritusClass],
+  opiskeluoikeusjaksot: List[String],
+  lisätiedot: List[String],
+)
+
+object OpiskeluoikeusClass {
+  def apply(cname: String): List[OpiskeluoikeusClass] = {
+    TypeExport
+      .getObjectModels(Class.forName(cname))
+      .flatMap(o => getTyyppi(o).map((o, _)))
+      .map { case (oo, tyyppi) => OpiskeluoikeusClass(
+        className = cname,
+        tyyppi = tyyppi,
+        suoritukset = SuoritusClass(oo),
+        opiskeluoikeusjaksot = oo
+          .zoom(Seq("tila", "opiskeluoikeusjaksot", "[]"))
+          .map(_.asInstanceOf[ObjectType].fullClassName).toList,
+        lisätiedot = oo
+          .zoom(Seq("lisätiedot"))
+          .map(_.asInstanceOf[ObjectType].fullClassName).toList,
+      ) }
+  }
+
+  def getTyyppi(o: ObjectType): Option[String] =
+    (o.properties("tyyppi") match {
+      case tyyppi: ObjectType => tyyppi.properties("koodiarvo") match {
+        case e: EnumType[_] => e.enumValues.headOption
+        case _ => None
+      }
+      case _ => None
+    }).asInstanceOf[Option[String]]
+}
+
+case class SuoritusClass(
+  className: String,
+  tyyppi: String,
+)
+
+object SuoritusClass {
+  def apply(ooTypeDef: ObjectType): List[SuoritusClass] =
+    TypeExport
+      .getObjectModels(ooTypeDef.properties("suoritukset"))
+      .flatMap(o => OpiskeluoikeusClass.getTyyppi(o).map(SuoritusClass(o.fullClassName, _)))
+}

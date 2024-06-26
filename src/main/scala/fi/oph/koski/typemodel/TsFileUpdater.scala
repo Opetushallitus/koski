@@ -9,6 +9,7 @@ import fi.oph.koski.schema._
 import fi.oph.koski.servlet.Osaamismerkkikuva
 import fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.{AktiivisetJaPäättyneetOpinnotKoskeenTallennettavaOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotOppija}
 import fi.oph.koski.suoritusjako.suoritetuttutkinnot.{SuoritetutTutkinnotKoskeenTallennettavaOpiskeluoikeus, SuoritetutTutkinnotOppija}
+import fi.oph.koski.tutkinto.TutkintoPeruste
 import fi.oph.koski.typemodel.TypescriptTypes.Options
 import fi.oph.koski.ytr.YtrCertificateResponse
 
@@ -63,9 +64,11 @@ case class AdditionalExports(
   suoritetutTutkinnotOppija: SuoritetutTutkinnotOppija,
   aktiivisetOpinnotOppija: AktiivisetJaPäättyneetOpinnotOppija,
   osaamismerkkikuva: Osaamismerkkikuva,
+  opiskeluoikeusClass: OpiskeluoikeusClass,
+  tutkintoperuste: TutkintoPeruste,
 
   // Traitit jotka eivät automaattisesti exporttaudu skeemasta, koska ne eivät sellaisenaan
-  // ole minkään tietomallin jäseniä (ainoastaan niistä periytyvät luokat on mainittu).
+  // ole minkään tietomallin jäseniä (ainoastaan traitista periintyvät konkreettiset luokat exportataan automaattisesti).
   opiskeluoikeudenTila: OpiskeluoikeudenTila,
   opiskeluoikeusjakso: Opiskeluoikeusjakso,
   koskiOpiskeluoikeusjakso: KoskiOpiskeluoikeusjakso,
@@ -75,5 +78,7 @@ case class AdditionalExports(
   suoritetutTutkinnotKoskeenTallennettavaOpiskeluoikeus: SuoritetutTutkinnotKoskeenTallennettavaOpiskeluoikeus,
   aktiivisetJaPäättyneetOpinnotKoskeenTallennettavaOpiskeluoikeus: AktiivisetJaPäättyneetOpinnotKoskeenTallennettavaOpiskeluoikeus,
   paikallinenKoulutusmoduuli: PaikallinenKoulutusmoduuli,
-  vapaanSivistystyönKoulutuksenPäätasonSuoritus: VapaanSivistystyönKoulutuksenPäätasonSuoritus
+  vapaanSivistystyönKoulutuksenPäätasonSuoritus: VapaanSivistystyönKoulutuksenPäätasonSuoritus,
+  suorituskielellinen: Suorituskielellinen,
+  maksuttomuustieto: MaksuttomuusTieto,
 )

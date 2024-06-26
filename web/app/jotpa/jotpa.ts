@@ -18,3 +18,7 @@ export const isJotpaRahoitteinenKoodiarvo = (
   opiskeluoikeudenTyyppiKoodiarvo === 'muukuinsaanneltykoulutus' ||
   (opiskeluoikeudenTyyppiKoodiarvo === 'vapaansivistystyonkoulutus' &&
     suoritustyyppiKoodiarvo === 'vstjotpakoulutus')
+
+export const isJotpaRahoituksenKoodistoviite = (
+  opintojenRahoitus: Koodistokoodiviite<'opintojenrahoitus'>
+): boolean => ['14', '15'].includes(opintojenRahoitus.koodiarvo)

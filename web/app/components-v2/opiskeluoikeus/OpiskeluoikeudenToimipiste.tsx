@@ -18,7 +18,8 @@ import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
 
 export type Suorituskielikoodiviite = Koodistokoodiviite<'kieli'>
 
-type KoskiToimipiste = Opiskeluoikeus['suoritukset'][number]['toimipiste']
+export type KoskiToimipiste =
+  Opiskeluoikeus['suoritukset'][number]['toimipiste']
 export type ToimipisteViewProps = CommonProps<
   FieldViewerProps<KoskiToimipiste, {}>
 >

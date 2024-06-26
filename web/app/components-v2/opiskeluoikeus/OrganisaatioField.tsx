@@ -30,6 +30,7 @@ export type OrganisaatioEditProps<T extends Organisaatio> = CommonProps<
     T,
     {
       include?: Organisaatio[]
+      organisaatiotyypit?: string[]
     }
   >
 >
@@ -39,6 +40,7 @@ export const OrganisaatioEdit = <T extends Organisaatio>(
 ): React.ReactElement => {
   const [query, setQuery] = useState('')
   const queriedOrganisaatiot = useOrganisaatioHierarkia(query)
+
   const organisaatiot = useMemo(
     () => [
       ...queriedOrganisaatiot,

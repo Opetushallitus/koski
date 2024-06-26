@@ -31,6 +31,23 @@ export const useOrganisaatioHierarkia = (
 }
 
 /**
+ * Palauttaa käyttäjälle organisaatiohierarkian kaikista organisaatioista
+ *
+ * @param queryText Optionaalinen sanahaku
+ * @returns OrganisaatioHierarkia[]
+ */
+export const useOrganisaatioHierarkiaSearch = (
+  queryText?: string
+): OrganisaatioHierarkia[] => {
+  const { queryFromAll, searchQueries } = useContext(
+    OrganisaatioHierarkiaContext
+  )
+  useDebounce(200, (text) => text && queryFromAll(text), [queryText])
+
+  return searchQueries[asQueryKey(queryText)] || emptyResult
+}
+
+/**
  * Palauttaa true, jos käyttäjälle palautuu yksikin organisaatio sanahaun ollessa tyhjä.
  *
  * @returns boolean
@@ -52,11 +69,14 @@ const ROOT_QUERY = ''
 export type OrganisaatioHierarkiaContext = {
   load: () => Promise<void>
   query: (searchText: string) => Promise<void>
+  queryFromAll: (searchText: string) => Promise<void>
   queries: Record<string, OrganisaatioHierarkia[]>
+  searchQueries: Record<string, OrganisaatioHierarkia[]>
 }
 
 class OrganisaatioHierarkiaLoader {
   cache: Record<string, OrganisaatioHierarkia[]> = {}
+  cacheAll: Record<string, OrganisaatioHierarkia[]> = {}
 
   async query(queryText?: string): Promise<void> {
     const key = asQueryKey(queryText)
@@ -69,6 +89,20 @@ class OrganisaatioHierarkiaLoader {
           : fetchOrganisaatioHierarkia()),
         E.map((response) => {
           this.cache[key] = response.data
+        })
+      )
+    }
+  }
+
+  async queryFromAll(queryText: string): Promise<void> {
+    const key = asQueryKey(queryText)
+    const cached = this.cacheAll[key]
+    if (!cached && key.length >= 3) {
+      this.cacheAll[key] = []
+      pipe(
+        await queryOrganisaatioHierarkia(key, undefined, true),
+        E.map((response) => {
+          this.cacheAll[key] = response.data
         })
       )
     }
@@ -88,13 +122,18 @@ const OrganisaatioHierarkiaContext =
   React.createContext<OrganisaatioHierarkiaContext>({
     load: providerMissing,
     query: providerMissing,
-    queries: {}
+    queryFromAll: providerMissing,
+    queries: {},
+    searchQueries: {}
   })
 
 export const OrganisaatioHierarkiaProvider: React.FC<
   React.PropsWithChildren<{}>
 > = (props) => {
   const [queries, setQueries] = useState<
+    Record<string, OrganisaatioHierarkia[]>
+  >({})
+  const [searchQueries, setSearchQueries] = useState<
     Record<string, OrganisaatioHierarkia[]>
   >({})
 
@@ -110,13 +149,20 @@ export const OrganisaatioHierarkiaProvider: React.FC<
     setQueries({ ...organisaatioLoader.cache })
   }, [])
 
+  const queryFromAll = useCallback(async (searchText: string) => {
+    await organisaatioLoader.queryFromAll(searchText)
+    setSearchQueries({ ...organisaatioLoader.cacheAll })
+  }, [])
+
   const contextValue = useMemo(
     () => ({
       queries,
+      searchQueries,
       load,
-      query
+      query,
+      queryFromAll
     }),
-    [load, queries, query]
+    [load, queries, query, queryFromAll, searchQueries]
   )
 
   return (

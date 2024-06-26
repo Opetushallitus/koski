@@ -11,7 +11,7 @@ import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokood
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
 import { nonNull } from '../../util/fp/arrays'
 import { pluck } from '../../util/fp/objects'
-import { clamp } from '../../util/numbers'
+import { clamp, sum } from '../../util/numbers'
 import { textSearch } from '../../util/strings'
 import { common, CommonProps, cx } from '../CommonProps'
 import { Removable } from './Removable'
@@ -20,6 +20,8 @@ import {
   useParentTestId,
   useTestId
 } from '../../appstate/useTestId'
+import { koodistokoodiviiteId } from '../../util/koodisto'
+import { Peruste } from '../../appstate/peruste'
 
 export type SelectProps<T> = CommonProps<{
   initialValue?: OptionKey
@@ -31,6 +33,7 @@ export type SelectProps<T> = CommonProps<{
   placeholder?: string | LocalizedString
   hideEmpty?: boolean
   disabled?: boolean
+  autoselect?: boolean
   testId: string | number
 }>
 
@@ -62,10 +65,33 @@ export type SelectOption<T> = FlatOption<T> & {
 
 export type OptionKey = string
 
+const optionExists = <T,>(options: OptionList<T>, key: string): boolean =>
+  !!options.find(
+    (o) =>
+      o.key === key ||
+      (o.children !== undefined && optionExists(o.children, key))
+  )
+
 export const Select = <T,>(props: SelectProps<T>) => {
   const inputTestId = useTestId(props.testId, 'input')
   const select = useSelectState(props)
   const input = useRef<HTMLInputElement>(null)
+
+  const { options, onChange, value, initialValue, autoselect } = props
+  useEffect(() => {
+    if (autoselect) {
+      if (optionsCount(options) < 2) {
+        const first = firstOption(options)
+        if (first?.key !== value) {
+          onChange(first)
+        }
+      } else if (value === undefined && initialValue) {
+        onChange(options.find((o) => o.key === initialValue))
+      } else if (value !== undefined && !optionExists(options, value)) {
+        onChange(undefined)
+      }
+    }
+  }, [autoselect, initialValue, onChange, options, value])
 
   return (
     <TestIdLayer id={props.testId}>
@@ -76,7 +102,9 @@ export const Select = <T,>(props: SelectProps<T>) => {
           value={select.filter === null ? select.displayValue : select.filter}
           type="search"
           autoComplete="off"
-          disabled={props.disabled || props.options.length === 0}
+          disabled={
+            props.disabled || (!props.onSearch && props.options.length === 0)
+          }
           {...select.inputEventListeners}
           data-testid={inputTestId}
           ref={input}
@@ -320,27 +348,41 @@ const useSelectState = <T,>(props: SelectProps<T>) => {
     [flatOptions.arr, hideEmpty, onSearch]
   )
 
-  return {
-    displayValue,
-    options,
-    hoveredOption,
-    filter,
-    dropdownVisible,
-    containerEventListeners: {
-      ref: selectContainer,
+  return useMemo(
+    () => ({
+      displayValue,
+      options,
+      hoveredOption,
+      filter,
+      dropdownVisible,
+      containerEventListeners: {
+        ref: selectContainer,
+        onFocus,
+        onKeyDown,
+        onBlur
+      },
+      inputEventListeners: {
+        onChange: onUserType,
+        onClick: onFocus
+      },
+      dropdownEventListeners: {
+        onClick: onClickOption,
+        onMouseOver: onMouseOverOption
+      }
+    }),
+    [
+      displayValue,
+      dropdownVisible,
+      filter,
+      hoveredOption,
+      onBlur,
+      onClickOption,
       onFocus,
       onKeyDown,
-      onBlur
-    },
-    inputEventListeners: {
-      onChange: onUserType,
-      onClick: onFocus
-    },
-    dropdownEventListeners: {
-      onClick: onClickOption,
-      onMouseOver: onMouseOverOption
-    }
-  }
+      onUserType,
+      options
+    ]
+  )
 }
 
 // Exported utils
@@ -363,6 +405,20 @@ export const groupKoodistoToOptions: <T extends string>(
       )
     }))
 )
+
+export const koodiviiteToOption = <T extends string>(
+  koodiviite: Koodistokoodiviite<T>
+): SelectOption<Koodistokoodiviite<T>> => ({
+  key: koodistokoodiviiteId(koodiviite),
+  value: koodiviite,
+  label: t(koodiviite.nimi) || koodiviite.koodiarvo
+})
+
+export const perusteToOption = (peruste: Peruste): SelectOption<Peruste> => ({
+  key: peruste.koodiarvo,
+  value: peruste,
+  label: [peruste.koodiarvo, t(peruste.nimi)].filter(nonNull).join(' ')
+})
 
 // Internal utils
 
@@ -415,4 +471,28 @@ const scrollHoveredIntoView = (
       ?.querySelector('.Select__optionLabel--hover')
       ?.scrollIntoView({ block: 'nearest' })
   }, 0)
+}
+
+const optionCount = (option: SelectOption<any>): number => {
+  const childCount = option.children ? optionsCount(option.children) : 0
+  const selfCount = option.isGroup ? 0 : 1
+  return selfCount + childCount
+}
+
+const optionsCount = (options: OptionList<any>): number =>
+  sum(options.map(optionCount))
+
+const firstOption = <T,>(
+  options: OptionList<T>
+): SelectOption<T> | undefined => {
+  for (const option of options) {
+    if (!option.isGroup) {
+      return option
+    } else if (option.children) {
+      const child = firstOption(option.children)
+      if (child) {
+        return child
+      }
+    }
+  }
 }
