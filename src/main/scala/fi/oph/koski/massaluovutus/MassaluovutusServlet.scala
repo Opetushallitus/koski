@@ -51,7 +51,7 @@ class MassaluovutusServlet(implicit val application: KoskiApplication)
       .toRight(KoskiErrorCategory.badRequest.queryParam("Epävalidi tunniste"))
       .flatMap(massaluovutukset.get)
       .flatMap {
-        case q: CompleteQuery =>
+        case q: QueryWithResultFiles =>
           massaluovutukset.getDownloadUrl(q, getStringParam("file"))
         case _ =>
           Left(KoskiErrorCategory.badRequest("Tulostiedostot eivät ole vielä ladattavissa"))
