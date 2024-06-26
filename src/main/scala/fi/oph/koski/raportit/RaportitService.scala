@@ -285,7 +285,7 @@ class RaportitService(application: KoskiApplication) {
 
   def aikuistenperusopetuksenKurssikertymä(request: AikajaksoRaporttiRequest, t: LocalizationReader)(implicit u: KoskiSpecificSession) = {
     val oppilaitosOids = validateOids(List(request.oppilaitosOid))
-
+    val documentationSheet = DocumentationSheet(t.get("raportti-excel-ohjeet-sheet-name"), t.get("raportti-excel-aikuisten-perusopetus-kurssikertymät-ohje-body"))
     OppilaitosRaporttiResponse(
       sheets = Seq(
         aikuistenPerusopetuksenOppimääränKurssikertymätRaportti.build(oppilaitosOids, request.alku, request.loppu, t),
@@ -295,6 +295,7 @@ class RaportitService(application: KoskiApplication) {
         aikuistenPerusopetuksenEiRahoitustietoaKurssitRaportti.build(oppilaitosOids, request.alku, request.loppu, t),
         aikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetRaportti.build(oppilaitosOids, request.alku, request.loppu, t),
         aikuistenPerusopetuksenEriVuonnaKorotetutKurssitRaportti.build(oppilaitosOids, request.alku, request.loppu, t),
+        documentationSheet
       ),
       workbookSettings = WorkbookSettings(t.get("raportti-excel-aikuistenperusopetus-kurssikertymä-title-etuliite"), Some(request.password)),
       filename = s"${t.get("raportti-excel-aikuistenperusopetus-kurssikertymä-tiedoston-etuliite")}-${request.alku.toString.replaceAll("-", "")}-${request.loppu.toString.replaceAll("-", "")}.xlsx",
