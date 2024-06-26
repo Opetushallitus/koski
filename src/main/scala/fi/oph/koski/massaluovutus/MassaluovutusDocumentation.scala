@@ -212,6 +212,8 @@ object QueryExamples {
     ))
     case "FailedQueryResponse" => asJson(faileddQuery(
       QueryOrganisaationOpiskeluoikeudetCsvDocumentation.example,
+      QueryOrganisaationOpiskeluoikeudetCsvDocumentation.outputFiles,
+      application.config.getString("koski.root.url"),
     ))
     case "Valintalaskenta" => asJson(ValintalaskentaQueryDocumentation.example)
     case "ValintalaskentaPendingQueryResponse" => asJson(pendingQuery(
@@ -232,6 +234,8 @@ object QueryExamples {
     ))
     case "ValintalaskentaFailedQueryResponse" => asJson(faileddQuery(
       ValintalaskentaQueryDocumentation.example,
+      ValintalaskentaQueryDocumentation.outputFiles,
+      application.config.getString("koski.root.url"),
     ))
     case _ => None
   }
@@ -270,7 +274,7 @@ object QueryExamples {
       sourceDataUpdatedAt = Some(createdAt),
     )
 
-  def faileddQuery(query: MassaluovutusQueryParameters): FailedQueryResponse =
+  def faileddQuery(query: MassaluovutusQueryParameters, files: List[String], rootUrl: String): FailedQueryResponse =
     FailedQueryResponse(
       queryId = queryId,
       requestedBy = "1.2.246.562.24.123123123123",
@@ -278,6 +282,7 @@ object QueryExamples {
       createdAt = createdAt,
       startedAt = startedAt,
       finishedAt = finishedAt,
+      files = files.map(MassaluovutusServletUrls.file(rootUrl, queryId, _)),
     )
 
   private def resultsUrl(application: KoskiApplication, queryId: String): String =

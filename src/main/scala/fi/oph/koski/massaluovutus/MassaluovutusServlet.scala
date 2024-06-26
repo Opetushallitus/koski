@@ -117,6 +117,8 @@ case class FailedQueryResponse(
   startedAt: OffsetDateTime,
   @Description("Massaluovutuksen epäonnistumisen aika")
   finishedAt: OffsetDateTime,
+  @Description("Lista ennen kyselyn epäonnistumista saaduista tulostiedostoista.")
+  files: List[String],
 ) extends QueryResponse {
   def status: String = QueryState.failed
 }
@@ -166,6 +168,7 @@ object QueryResponse {
       createdAt = q.createdAt,
       startedAt = q.startedAt,
       finishedAt = q.finishedAt,
+      files = q.filesToExternal(rootUrl),
     )
     case q: CompleteQuery => CompleteQueryResponse(
       queryId = q.queryId,
