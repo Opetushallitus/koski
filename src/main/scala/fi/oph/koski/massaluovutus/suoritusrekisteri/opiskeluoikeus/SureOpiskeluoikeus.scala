@@ -1,90 +1,37 @@
 package fi.oph.koski.massaluovutus.suoritusrekisteri.opiskeluoikeus
 
 import fi.oph.koski.schema._
-import fi.oph.koski.util.CaseClass
-import fi.oph.koski.util.DateOrdering.localDateOrdering
-import fi.oph.scalaschema.annotation.Title
+import fi.oph.koski.schema.annotation.KoodistoUri
+import fi.oph.scalaschema.annotation.{Description, Discriminator, Title}
 
 import java.time.LocalDate
 
+trait SureOpiskeluoikeus {
+  @Description("Opiskeluoikeuden tyyppi, jolla erotellaan eri koulutusmuotoihin (perusopetus, lukio, ammatillinen...) liittyvät opiskeluoikeudet")
+  @KoodistoUri("opiskeluoikeudentyyppi")
+  @Discriminator
+  def tyyppi: Koodistokoodiviite
 
-@Title("Opiskeluoikeus")
-case class SureOpiskeluoikeus(
-  tyyppi: Koodistokoodiviite,
-  oid: String,
-  koulutustoimija: Option[Koulutustoimija],
-  oppilaitos: Option[Oppilaitos],
-  tila: OpiskeluoikeudenTila,
-  suoritukset: List[SurePäätasonSuoritus],
-  lisätiedot: Option[SureOpiskeluoikeudenLisätiedot],
-)
-
-object SureOpiskeluoikeus {
-  def apply(oo: KoskeenTallennettavaOpiskeluoikeus): SureOpiskeluoikeus =
-    SureOpiskeluoikeus(oo, oo.suoritukset.map(SureDefaultPäätasonSuoritus.apply))
-
-  def apply(
-    oo: KoskeenTallennettavaOpiskeluoikeus,
-    suoritukset: List[SurePäätasonSuoritus],
-    lisätiedot: Option[SureOpiskeluoikeudenLisätiedot] = None,
-  ): SureOpiskeluoikeus =
-    SureOpiskeluoikeus(
-      tyyppi = oo.tyyppi,
-      oid = oo.oid.get,
-      koulutustoimija = oo.koulutustoimija,
-      oppilaitos = oo.oppilaitos,
-      tila = oo.tila,
-      suoritukset = suoritukset,
-      lisätiedot = lisätiedot,
-    )
+  @Description("Opiskeluoikeuden yksilöivä tunniste.")
+  def oid: String
+  def koulutustoimija: Option[Koulutustoimija]
+  def oppilaitos: Option[Oppilaitos]
+  @Description("Opiskeluoikeuden tila, joka muodostuu opiskeluoikeusjaksoista")
+  def tila: OpiskeluoikeudenTila
+  @Description("Opiskeluoikeuteen liittyvien tutkinto- ja muiden suoritusten tiedot")
+  def suoritukset: List[SureSuoritus]
 }
 
-trait SureOpiskeluoikeudenLisätiedot
-
-trait SurePäätasonSuoritus {
+trait SureSuoritus {
+  @Description("Suorituksen tyyppi, jolla erotellaan eri koulutusmuotoihin (perusopetus, lukio, ammatillinen...) ja eri tasoihin (tutkinto, tutkinnon osa, kurssi, oppiaine...) liittyvät suoritukset")
+  @KoodistoUri("suorituksentyyppi")
+  @Discriminator
   def tyyppi: Koodistokoodiviite
   def koulutusmoduuli: Koulutusmoduuli
 }
 
-@Title("Muu päätason suoritus")
-case class SureDefaultPäätasonSuoritus(
-  tyyppi: Koodistokoodiviite,
-  alkamispäivä: Option[LocalDate],
-  vahvistuspäivä: Option[LocalDate],
-  koulutusmoduuli: Koulutusmoduuli,
-  suorituskieli: Option[Koodistokoodiviite],
-  osasuoritukset: Option[List[SureOsasuoritus]],
-) extends SurePäätasonSuoritus
+trait Vahvistuspäivällinen {
+  @Description("Tutkinnon tai tutkinnon osan vahvistettu suorituspäivämäärä, eli päivämäärä jolloin suoritus on hyväksyttyä todennettua osaamista. Muoto YYYY-MM-DD")
+  def vahvistuspäivä: Option[LocalDate]
 
-object SureDefaultPäätasonSuoritus {
-  def apply(s: Suoritus): SureDefaultPäätasonSuoritus =
-    SureDefaultPäätasonSuoritus(s, s.osasuoritukset.map(_.map(SureDefaultOsasuoritus.apply)))
-
-  def apply(s: Suoritus, osasuoritukset: Option[List[SureOsasuoritus]]): SureDefaultPäätasonSuoritus =
-    SureDefaultPäätasonSuoritus(
-      tyyppi = s.tyyppi,
-      alkamispäivä = s.alkamispäivä,
-      vahvistuspäivä = s.vahvistus.map(_.päivä),
-      koulutusmoduuli = s.koulutusmoduuli,
-      suorituskieli = CaseClass.getFieldValue(s, "suorituskieli"),
-      osasuoritukset = osasuoritukset,
-    )
-}
-
-trait SureOsasuoritus
-
-@Title("Muu osasuoritus")
-case class SureDefaultOsasuoritus(
-  tyyppi: Koodistokoodiviite,
-  koulutusmoduuli: Koulutusmoduuli,
-  arviointi: Option[List[Arviointi]],
-) extends SureOsasuoritus
-
-object SureDefaultOsasuoritus {
-  def apply(os: Suoritus): SureDefaultOsasuoritus =
-    SureDefaultOsasuoritus(
-      tyyppi = os.tyyppi,
-      koulutusmoduuli = os.koulutusmoduuli,
-      arviointi = os.arviointi.map(_.sortBy(a => a.arviointipäivä)),
-    )
 }

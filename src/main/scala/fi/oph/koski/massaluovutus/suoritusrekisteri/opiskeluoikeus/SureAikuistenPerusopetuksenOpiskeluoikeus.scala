@@ -2,32 +2,73 @@ package fi.oph.koski.massaluovutus.suoritusrekisteri.opiskeluoikeus
 
 import fi.oph.koski.schema._
 import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
+import fi.oph.koski.util.CaseClass
 import fi.oph.scalaschema.annotation.{Description, Title}
 
+import java.time.LocalDate
+
+@Title("Aikuisten perusopetus")
+case class SureAikuistenPerusopetuksenOpiskeluoikeus(
+  @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.aikuistenperusopetus.koodiarvo)
+  tyyppi: Koodistokoodiviite,
+  oid: String,
+  koulutustoimija: Option[Koulutustoimija],
+  oppilaitos: Option[Oppilaitos],
+  tila: AikuistenPerusopetuksenOpiskeluoikeudenTila,
+  suoritukset: List[SureAikuistenPerusopetuksenSuoritus],
+) extends SureOpiskeluoikeus
+
 object SureAikuistenPerusopetuksenOpiskeluoikeus {
-  def apply(oo: AikuistenPerusopetuksenOpiskeluoikeus): SureOpiskeluoikeus =
-    SureOpiskeluoikeus(
-      oo,
-      suoritukset = oo.suoritukset.flatMap(SureAikuistenPerusopetuksenSuoritus.apply)
+  def apply(oo: AikuistenPerusopetuksenOpiskeluoikeus): SureAikuistenPerusopetuksenOpiskeluoikeus =
+    SureAikuistenPerusopetuksenOpiskeluoikeus(
+      tyyppi = oo.tyyppi,
+      oid = oo.oid.get,
+      koulutustoimija = oo.koulutustoimija,
+      oppilaitos = oo.oppilaitos,
+      tila = oo.tila,
+      suoritukset = oo.suoritukset.flatMap(SureAikuistenPerusopetuksenSuoritus.apply),
     )
 }
 
-sealed trait SureAikuistenPerusopetuksenSuoritus extends SurePäätasonSuoritus
+sealed trait SureAikuistenPerusopetuksenSuoritus extends SureSuoritus
 
 object SureAikuistenPerusopetuksenSuoritus {
-  def apply(pts: AikuistenPerusopetuksenPäätasonSuoritus): Option[SurePäätasonSuoritus] =
+  def apply(pts: AikuistenPerusopetuksenPäätasonSuoritus): Option[SureAikuistenPerusopetuksenSuoritus] =
     pts match {
       case s: AikuistenPerusopetuksenOppimääränSuoritus =>
-        Some(SureDefaultPäätasonSuoritus(s))
+        Some(SureAikuistenPerusopetuksenOppimääränSuoritus(s))
       case s: AikuistenPerusopetuksenOppiaineenOppimääränSuoritus =>
-        Some(SureAikusitenPerusopetuksenOppiaineenOppimääränSuoritus(s))
+        Some(SureAikuistenPerusopetuksenOppiaineenOppimääränSuoritus(s))
       case _ =>
         None
     }
 }
 
-@Title("Aikuisten perusopetuksen oppiaineen oppimäärän suoritus")
-case class SureAikusitenPerusopetuksenOppiaineenOppimääränSuoritus(
+@Title("Päättövaiheen suoritus")
+case class SureAikuistenPerusopetuksenOppimääränSuoritus(
+  @KoodistoKoodiarvo("aikuistenperusopetuksenoppimaara")
+  tyyppi: Koodistokoodiviite,
+  alkamispäivä: Option[LocalDate],
+  vahvistuspäivä: Option[LocalDate],
+  koulutusmoduuli: AikuistenPerusopetus,
+  suorituskieli: Koodistokoodiviite,
+  osasuoritukset: List[AikuistenPerusopetuksenOppiaineenSuoritus],
+) extends SureAikuistenPerusopetuksenSuoritus
+
+object SureAikuistenPerusopetuksenOppimääränSuoritus {
+  def apply(s: AikuistenPerusopetuksenOppimääränSuoritus): SureAikuistenPerusopetuksenOppimääränSuoritus =
+    SureAikuistenPerusopetuksenOppimääränSuoritus(
+      tyyppi = s.tyyppi,
+      alkamispäivä = s.alkamispäivä,
+      vahvistuspäivä = s.vahvistus.map(_.päivä),
+      koulutusmoduuli = s.koulutusmoduuli,
+      suorituskieli = s.suorituskieli,
+      osasuoritukset = s.osasuoritukset.toList.flatten,
+    )
+}
+
+@Title("Aineopintojen suoritus")
+case class SureAikuistenPerusopetuksenOppiaineenOppimääränSuoritus(
   @Description("Päättötodistukseen liittyvät oppiaineen suoritukset.")
   koulutusmoduuli: AikuistenPerusopetuksenOppiainenTaiEiTiedossaOppiaine,
   toimipiste: OrganisaatioWithOid,
@@ -42,9 +83,9 @@ case class SureAikusitenPerusopetuksenOppiaineenOppimääränSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenoppiaineenoppimaara", koodistoUri = "suorituksentyyppi")
 ) extends SureAikuistenPerusopetuksenSuoritus
 
-object SureAikusitenPerusopetuksenOppiaineenOppimääränSuoritus {
-  def apply(s: AikuistenPerusopetuksenOppiaineenOppimääränSuoritus): SureAikusitenPerusopetuksenOppiaineenOppimääränSuoritus =
-    SureAikusitenPerusopetuksenOppiaineenOppimääränSuoritus(
+object SureAikuistenPerusopetuksenOppiaineenOppimääränSuoritus {
+  def apply(s: AikuistenPerusopetuksenOppiaineenOppimääränSuoritus): SureAikuistenPerusopetuksenOppiaineenOppimääränSuoritus =
+    SureAikuistenPerusopetuksenOppiaineenOppimääränSuoritus(
       koulutusmoduuli = s.koulutusmoduuli,
       toimipiste = s.toimipiste,
       arviointi = s.arviointi,
