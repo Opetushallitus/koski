@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import { useHasOwnOrganisaatiot } from '../appstate/organisaatioHierarkia'
 import { DateEdit } from '../components-v2/controls/DateField'
 import { KieliSelect } from '../components-v2/controls/KieliSelect'
 import { Select } from '../components-v2/controls/Select'
@@ -6,6 +7,7 @@ import { t } from '../i18n/i18n'
 import { Opiskeluoikeus } from '../types/fi/oph/koski/schema/Opiskeluoikeus'
 import { koodistokoodiviiteId } from '../util/koodisto'
 import { DialogMaksuttomuusSelect } from './components/DialogMaksuttomuusSelect'
+import { DialogSelect } from './components/DialogSelect'
 import { HankintakoulutusSelect } from './components/HankintakoulutusSelect'
 import { OppilaitosSearch } from './components/OppilaitosSearch'
 import { OppilaitosSelect, OrgType } from './components/OppilaitosSelect'
@@ -18,7 +20,6 @@ import {
 } from './state/hooks'
 import { useUusiOpiskeluoikeusDialogState } from './state/state'
 import { SuoritusFields } from './suoritus/SuoritusFields'
-import { useHasOwnOrganisaatiot } from '../appstate/organisaatioHierarkia'
 
 export type UusiOpiskeluoikeusFormProps = {
   onResult: (opiskeluoikeus?: Opiskeluoikeus) => void
@@ -70,6 +71,7 @@ export const UusiOpiskeluoikeusForm = (props: UusiOpiskeluoikeusFormProps) => {
         <label>
           {t('Opiskeluoikeus')}
           <Select
+            inlineOptions
             options={opiskeluoikeustyypit}
             initialValue={opiskeluoikeustyypit[0]?.key}
             value={
@@ -112,8 +114,7 @@ export const UusiOpiskeluoikeusForm = (props: UusiOpiskeluoikeusFormProps) => {
       {state.tila.visible && (
         <label>
           {t('Opiskeluoikeuden tila')}
-          <Select
-            autoselect
+          <DialogSelect
             options={tilat.options}
             initialValue={tilat.initialValue}
             value={state.tila.value && koodistokoodiviiteId(state.tila.value)}
@@ -126,8 +127,7 @@ export const UusiOpiskeluoikeusForm = (props: UusiOpiskeluoikeusFormProps) => {
       {opintojenRahoitukset.options.length > 0 && (
         <label>
           {t('Opintojen rahoitus')}
-          <Select
-            autoselect
+          <DialogSelect
             options={opintojenRahoitukset.options}
             initialValue={opintojenRahoitukset.initialValue}
             value={
@@ -143,8 +143,7 @@ export const UusiOpiskeluoikeusForm = (props: UusiOpiskeluoikeusFormProps) => {
       {jotpaAsianumerot.options.length > 0 && (
         <label>
           {t('JOTPA asianumero')}
-          <Select
-            autoselect
+          <DialogSelect
             options={jotpaAsianumerot.options}
             initialValue={jotpaAsianumerot.initialValue}
             value={

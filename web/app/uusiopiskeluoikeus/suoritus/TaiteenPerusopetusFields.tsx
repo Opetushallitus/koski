@@ -1,13 +1,11 @@
 import React, { useEffect, useMemo } from 'react'
 import { useKoodisto } from '../../appstate/koodisto'
-import {
-  Select,
-  groupKoodistoToOptions
-} from '../../components-v2/controls/Select'
+import { groupKoodistoToOptions } from '../../components-v2/controls/Select'
 import { t } from '../../i18n/i18n'
 import { koodistokoodiviiteId } from '../../util/koodisto'
 import { DialogKoodistoSelect } from '../components/DialogKoodistoSelect'
 import { DialogPerusteSelect } from '../components/DialogPerusteSelect'
+import { DialogSelect } from '../components/DialogSelect'
 import { usePäätasonSuoritustyypit } from '../state/hooks'
 import { UusiOpiskeluoikeusDialogState } from '../state/state'
 import { SuoritusFieldsProps } from './SuoritusFields'
@@ -50,8 +48,7 @@ export const TaiteenPerusopetusFields = (props: SuoritusFieldsProps) => {
       {props.state.tpoOppimäärä.value && (
         <label>
           {t('Suoritustyyppi')}
-          <Select
-            autoselect
+          <DialogSelect
             options={suoritustyypit}
             value={
               props.state.päätasonSuoritus.value &&
@@ -66,8 +63,7 @@ export const TaiteenPerusopetusFields = (props: SuoritusFieldsProps) => {
       {props.state.tpoToteutustapa.value && (
         <label>
           {t('Koulutuksen toteutustapa')}
-          <Select
-            autoselect
+          <DialogSelect
             options={toteutustavatOptions}
             value={
               props.state.tpoToteutustapa.value &&

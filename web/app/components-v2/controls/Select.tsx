@@ -1,27 +1,27 @@
 import * as A from 'fp-ts/Array'
-import { flow } from 'fp-ts/lib/function'
 import * as NEA from 'fp-ts/NonEmptyArray'
+import { flow } from 'fp-ts/lib/function'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
   KoodistokoodiviiteKoodistonNimellä,
   KoodistokoodiviiteKoodistonNimelläOrd
 } from '../../appstate/koodisto'
-import { t } from '../../i18n/i18n'
-import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
-import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
-import { nonNull } from '../../util/fp/arrays'
-import { pluck } from '../../util/fp/objects'
-import { clamp, sum } from '../../util/numbers'
-import { textSearch } from '../../util/strings'
-import { common, CommonProps, cx } from '../CommonProps'
-import { Removable } from './Removable'
+import { Peruste } from '../../appstate/peruste'
 import {
   TestIdLayer,
   useParentTestId,
   useTestId
 } from '../../appstate/useTestId'
+import { t } from '../../i18n/i18n'
+import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
+import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
+import { nonNull } from '../../util/fp/arrays'
+import { pluck } from '../../util/fp/objects'
 import { koodistokoodiviiteId } from '../../util/koodisto'
-import { Peruste } from '../../appstate/peruste'
+import { clamp, sum } from '../../util/numbers'
+import { textSearch } from '../../util/strings'
+import { CommonProps, common, cx } from '../CommonProps'
+import { Removable } from './Removable'
 
 export type SelectProps<T> = CommonProps<{
   initialValue?: OptionKey
@@ -34,6 +34,7 @@ export type SelectProps<T> = CommonProps<{
   hideEmpty?: boolean
   disabled?: boolean
   autoselect?: boolean
+  inlineOptions?: boolean
   testId: string | number
 }>
 
@@ -117,6 +118,7 @@ export const Select = <T,>(props: SelectProps<T>) => {
                 options={select.options}
                 hoveredOption={select.hoveredOption}
                 onRemove={props.onRemove}
+                inlineOptions={props.inlineOptions}
                 {...select.dropdownEventListeners}
               />
             </TestIdLayer>
@@ -134,6 +136,7 @@ type OptionListProps<T> = CommonProps<{
   onClick: (o: SelectOption<T>, event: React.MouseEvent) => void
   onMouseOver: (o: SelectOption<T>, event: React.MouseEvent) => void
   onRemove?: (o: SelectOption<T>) => void
+  inlineOptions?: boolean
 }>
 
 const OptionList = <T,>(props: OptionListProps<T>): React.ReactElement => {
@@ -147,7 +150,9 @@ const OptionList = <T,>(props: OptionListProps<T>): React.ReactElement => {
 
   const { options, onRemove, ...rest } = props
 
-  const [maxHeight, setMaxHeight] = useState(300)
+  const [maxHeight, setMaxHeight] = useState(
+    props.inlineOptions ? undefined : 300
+  )
   useEffect(() => {
     const updateMaxHeight = () => {
       if (props.inputRef.current) {
@@ -168,7 +173,13 @@ const OptionList = <T,>(props: OptionListProps<T>): React.ReactElement => {
   }, [props.inputRef])
 
   return (
-    <ul {...common(props, ['Select__optionList'])} style={{ maxHeight }}>
+    <ul
+      {...common(props, [
+        'Select__optionList',
+        props.inlineOptions && 'Select__optionList--inline'
+      ])}
+      style={{ maxHeight }}
+    >
       {options.map((opt) => (
         <TestIdLayer key={opt.key} id={opt.key}>
           <li

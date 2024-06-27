@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react'
 import { usePerusteSelectOptions } from '../../appstate/peruste'
 import { Select } from '../../components-v2/controls/Select'
-import { UusiOpiskeluoikeusDialogState } from '../state/state'
 import { t } from '../../i18n/i18n'
+import { UusiOpiskeluoikeusDialogState } from '../state/state'
 
 export type DialogPerusteSelectProps = {
   state: UusiOpiskeluoikeusDialogState
@@ -27,6 +27,7 @@ export const DialogPerusteSelect = <U extends string>(
     <label>
       {t('Peruste')}
       <Select
+        inlineOptions
         autoselect
         options={filtered}
         initialValue={props.default || options[0]?.value?.koodiarvo}

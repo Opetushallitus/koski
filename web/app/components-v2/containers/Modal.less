@@ -16,6 +16,7 @@
   .Modal__content {
     background: white;
     max-width: 90%;
+    max-height: 90vh;
     min-width: 500px;
     box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2);
   }
@@ -38,6 +39,8 @@
 
 .ModalBody {
   padding: @padding;
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
 }
 
 .ModalFooter {
