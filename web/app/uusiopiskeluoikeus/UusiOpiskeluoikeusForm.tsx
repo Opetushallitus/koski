@@ -18,6 +18,7 @@ import {
 } from './state/hooks'
 import { useUusiOpiskeluoikeusDialogState } from './state/state'
 import { SuoritusFields } from './suoritus/SuoritusFields'
+import { useHasOwnOrganisaatiot } from '../appstate/organisaatioHierarkia'
 
 export type UusiOpiskeluoikeusFormProps = {
   onResult: (opiskeluoikeus?: Opiskeluoikeus) => void
@@ -36,6 +37,7 @@ export const UusiOpiskeluoikeusForm = (props: UusiOpiskeluoikeusFormProps) => {
   const opintojenRahoitukset = useOpintojenRahoitus(state)
   const jotpaAsianumerot = useJotpaAsianumero(state)
   const defaultKieli = useDefaultKieli(state)
+  const spesifienOppilaitostenKäyttäjä = useHasOwnOrganisaatiot()
 
   useEffect(() => props.onResult(state.result), [props, state.result])
 
@@ -47,7 +49,7 @@ export const UusiOpiskeluoikeusForm = (props: UusiOpiskeluoikeusFormProps) => {
 
           <label>
             {t('Oppilaitos')}
-            {state.hankintakoulutus.value ? (
+            {state.hankintakoulutus.value || !spesifienOppilaitostenKäyttäjä ? (
               <OppilaitosSearch
                 value={state.oppilaitos.value}
                 onChange={state.oppilaitos.set}
