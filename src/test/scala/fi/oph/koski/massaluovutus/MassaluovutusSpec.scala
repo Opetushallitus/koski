@@ -491,12 +491,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
           "perusopetuksenvuosiluokka",
           "telma",
           "tuvakoulutuksensuoritus",
-          "vstjotpakoulutus",
-          "vstlukutaitokoulutus",
-          "vstmaahanmuuttajienkotoutumiskoulutus",
           "vstoppivelvollisillesuunnattukoulutus",
-          "vstosaamismerkki",
-          "vstvapaatavoitteinenkoulutus",
         ))
       }
 
