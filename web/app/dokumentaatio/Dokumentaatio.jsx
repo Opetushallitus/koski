@@ -120,6 +120,13 @@ const dokumentaatioContentP = (location, contentP) =>
             location,
             ''
           )}
+
+          {naviLink(
+            '/koski/dokumentaatio/rajapinnat/massaluovutus/oph',
+            'Rajapinnat Opetushallituksen palveluille',
+            location,
+            ''
+          )}
         </nav>
 
         <div className="main-content dokumentaatio-content">
