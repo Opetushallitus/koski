@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react'
-import { Select } from '../../components-v2/controls/Select'
 import { koodistokoodiviiteId } from '../../util/koodisto'
 import { usePäätasonSuoritustyypit } from '../state/hooks'
 import { UusiOpiskeluoikeusDialogState } from '../state/state'
+import { DialogSelect } from './DialogSelect'
 
 export type DialogPäätasonSuoritusSelectProps = {
   state: UusiOpiskeluoikeusDialogState
@@ -28,8 +28,7 @@ export const DialogPäätasonSuoritusSelect = (
   )
 
   return (
-    <Select
-      autoselect
+    <DialogSelect
       options={filtered}
       initialValue={props.default && `suorituksentyyppi_${props.default}`}
       value={

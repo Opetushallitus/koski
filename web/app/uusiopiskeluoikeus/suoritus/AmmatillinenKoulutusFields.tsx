@@ -2,7 +2,6 @@ import React, { useCallback, useMemo, useState } from 'react'
 import { isSuccess, useApiWithParams } from '../../api-fetch'
 import { useKoodisto } from '../../appstate/koodisto'
 import {
-  Select,
   SelectOption,
   groupKoodistoToOptions
 } from '../../components-v2/controls/Select'
@@ -16,6 +15,7 @@ import { fetchOppilaitoksenPerusteet } from '../../util/koskiApi'
 import { DialogKoodistoSelect } from '../components/DialogKoodistoSelect'
 import { DialogPäätasonSuoritusSelect } from '../components/DialogPaatasonSuoritusSelect'
 import { DialogPerusteSelect } from '../components/DialogPerusteSelect'
+import { DialogSelect } from '../components/DialogSelect'
 import {
   createAmmatilliseenTehtäväänValmistavaKoulutus,
   createPaikallinenMuuAmmatillinenKoulutus,
@@ -68,7 +68,7 @@ export const AmmatillinenKoulutusFields = (props: SuoritusFieldsProps) => {
       {props.state.tutkinto.visible && (
         <label>
           {t('Tutkinto')}
-          <Select
+          <DialogSelect
             options={tutkinnot.options}
             value={
               props.state.tutkinto.value &&
@@ -171,8 +171,7 @@ const MuuAmmatillinenKoulutusFields = (props: SuoritusFieldsProps) => {
     <>
       <label>
         {t('Koulutusmoduuli')}
-        <Select
-          autoselect
+        <DialogSelect
           options={muuAmmatillinenKoulutusOptions}
           value={koulutusmoduuli}
           onChange={(opt) => setKoulutusmoduuli(opt?.value)}
@@ -187,8 +186,7 @@ const MuuAmmatillinenKoulutusFields = (props: SuoritusFieldsProps) => {
       {koulutusmoduuli === 'ammatilliseentehtavaanvalmistavakoulutus' && (
         <label>
           {t('Ammatilliseen tehtävään valmistava koulutus')}
-          <Select
-            autoselect
+          <DialogSelect
             options={tunnisteOptions}
             value={tunniste}
             onChange={onAmmatilliseenTehtäväänValmistavaKoulutus}

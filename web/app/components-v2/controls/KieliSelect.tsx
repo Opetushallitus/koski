@@ -17,7 +17,15 @@ export type KieliSelectProps = Omit<
 
 export const KieliSelect = (props: KieliSelectProps) => {
   const options = useSuorituskielet()
-  return <Select options={options} {...props} />
+  const { initialValue, ...rest } = props
+  return (
+    <Select
+      autoselect
+      options={options}
+      initialValue={initialValue || 'kieli_FI'}
+      {...rest}
+    />
+  )
 }
 
 const useSuorituskielet = () => {

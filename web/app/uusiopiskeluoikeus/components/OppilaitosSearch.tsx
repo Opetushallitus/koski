@@ -24,6 +24,7 @@ export const OppilaitosSearch = (props: OppilaitosSearchProps) => {
 
   return (
     <Select
+      inlineOptions
       options={options}
       value={props.value?.oid}
       onChange={onChange}

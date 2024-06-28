@@ -8,7 +8,9 @@
 .UusiOppijaForm {
   label {
     display: block;
-    padding-bottom: @baseline;
+    @media screen and (min-height: 1200px) {
+      padding-bottom: @baseline;
+    }
   }
 
   .labelgroup {
@@ -21,7 +23,9 @@
 
     label {
       min-height: auto;
-      padding-bottom: @baseline;
+      @media screen and (min-height: 1200px) {
+        padding-bottom: @baseline;
+      }
     }
   }
 
