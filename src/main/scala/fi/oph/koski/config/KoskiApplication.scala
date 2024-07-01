@@ -8,6 +8,7 @@ import fi.oph.koski.eperusteet.EPerusteetRepository
 import fi.oph.koski.eperusteetvalidation.{EPerusteetFiller, EPerusteetLops2019Validator, EPerusteetOpiskeluoikeusChangeValidator, EPerusteisiinPerustuvaValidator}
 import fi.oph.koski.executors.GlobalExecutionContext
 import fi.oph.koski.fixture.{FixtureCreator, ValidationTestContext}
+import fi.oph.koski.hakemuspalvelu.HakemuspalveluService
 import fi.oph.koski.healthcheck.{HealthCheck, HealthMonitoring}
 import fi.oph.koski.henkilo.{HenkilöRepository, Hetu, KoskiHenkilöCache, OpintopolkuHenkilöFacade}
 import fi.oph.koski.history.{KoskiOpiskeluoikeusHistoryRepository, YtrOpiskeluoikeusHistoryRepository}
@@ -179,6 +180,7 @@ class KoskiApplication(
   lazy val suoritetutTutkinnotService = new SuoritetutTutkinnotService(this)
   lazy val aktiivisetJaPäättyneetOpinnotService = new AktiivisetJaPäättyneetOpinnotService(this)
   lazy val vktService = new VktService(this)
+  lazy val hakemuspalveluService = new HakemuspalveluService(this)
 
   lazy val valpasLocalizationRepository = LocalizationRepository(config, new ValpasLocalizationConfig)
   lazy val valpasRajapäivätService = ValpasRajapäivätService(config)
