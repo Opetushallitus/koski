@@ -3,9 +3,11 @@
   <suppress>
     <cve>CVE-2023-4586</cve>
     <cve>CVE-2023-44487</cve>
+    <cve>CVE-2021-32816</cve>
   </suppress>
   <suppress until="2024-02-15">
-    <notes>ion-java-1.0.2.jar (osa aws-java-sdk:ta, ei päivitystä hälytyshetkellä – postponattu kuukaudella)</notes>
+    <notes>ion-java-1.0.2.jar (osa aws-java-sdk:ta, ei päivitystä hälytyshetkellä – postponattu
+      kuukaudella)</notes>
     <packageUrl regex="true">^pkg:maven/software\.amazon\.ion/ion\-java@.*$</packageUrl>
     <cve>CVE-2024-21634</cve>
   </suppress>
