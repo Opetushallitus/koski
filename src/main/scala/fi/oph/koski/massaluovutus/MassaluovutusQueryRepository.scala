@@ -285,6 +285,7 @@ class QueryRepository(
         startedAt = r.rs.getTimestamp("started_at").toLocalDateTime,
         finishedAt = r.rs.getTimestamp("finished_at").toLocalDateTime,
         worker = r.rs.getString("worker"),
+        resultFiles = r.getArraySafe("result_files").toList,
         error = r.rs.getString("error"),
         meta = meta,
       )
@@ -391,10 +392,11 @@ case class FailedQuery(
   startedAt: LocalDateTime,
   finishedAt: LocalDateTime,
   worker: String,
+  resultFiles: List[String],
   error: String,
   session: JValue,
   meta: Option[QueryMeta],
-) extends Query with QueryWithStartTime with QueryWithFinishTime with QueryWithWorker  {
+) extends QueryWithResultFiles with QueryWithStartTime with QueryWithFinishTime with QueryWithWorker  {
     def state: String = QueryState.failed
 }
 

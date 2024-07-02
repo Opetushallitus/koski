@@ -87,7 +87,7 @@ class MassaluovutusService(application: KoskiApplication) extends Logging {
     }
   }
 
-  def getDownloadUrl(query: CompleteQuery, name: String): Either[HttpStatus, String] =
+  def getDownloadUrl(query: QueryWithResultFiles, name: String): Either[HttpStatus, String] =
     TryWithLogging(logger, {
       results.getPresignedDownloadUrl(UUID.fromString(query.queryId), name)
     }).left.map(t => KoskiErrorCategory.badRequest(s"Tiedostoa ei löydy tai tapahtui virhe sen jakamisessa"))
