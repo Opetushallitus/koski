@@ -17,7 +17,7 @@ class HakemuspalveluService(application: KoskiApplication) extends GlobalExecuti
   def findOppija(oppijaOid: String)
     (implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, HakemuspalveluOppija] = {
 
-    val oppija = opiskeluoikeusFacade.haeOpiskeluoikeudet(oppijaOid, HakemuspalveluSchema.schemassaTuetutOpiskeluoikeustyypit)
+    val oppija = opiskeluoikeusFacade.haeOpiskeluoikeudet(oppijaOid, HakemuspalveluSchema.schemassaTuetutOpiskeluoikeustyypit, useDownloadedYtr = true)
       .map(teePalautettavaHakemuspalveluOppija)
 
     oppija
