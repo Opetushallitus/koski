@@ -6,6 +6,7 @@ import fi.oph.scalaschema.annotation.{Description, Title}
 
 object HakemuspalveluYlioppilastutkinnonOpiskeluoikeus {
   def fromKoskiSchema(yo: schema.YlioppilastutkinnonOpiskeluoikeus): HakemuspalveluOpiskeluoikeus = HakemuspalveluYlioppilastutkinnonOpiskeluoikeus(
+    oid = yo.oid,
     oppilaitos = yo.oppilaitos.map(ol =>
       HakemuspalveluOppilaitos(
         ol.oid,
@@ -50,6 +51,7 @@ object HakemuspalveluYlioppilastutkinnonOpiskeluoikeus {
 @Title("Ylioppilastutkinnon opiskeluoikeus")
 @Description("Ylioppilastutkinnon opiskeluoikeus")
 case class HakemuspalveluYlioppilastutkinnonOpiskeluoikeus(
+  oid: Option[String],
   oppilaitos: Option[HakemuspalveluOppilaitos],
   koulutustoimija: Option[HakemuspalveluKoulutustoimija],
   tila: HakemuspalveluOpiskeluoikeudenTila,
