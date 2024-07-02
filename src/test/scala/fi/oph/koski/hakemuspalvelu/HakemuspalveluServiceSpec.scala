@@ -69,11 +69,8 @@ class HakemuspalveluServiceSpec
   "Korkeakoulu" - {
     val oppijat = Seq(
       KoskiSpecificMockOppijat.dippainssi,
-      KoskiSpecificMockOppijat.korkeakoululainen,
       KoskiSpecificMockOppijat.amkValmistunut,
       KoskiSpecificMockOppijat.opintojaksotSekaisin,
-      KoskiSpecificMockOppijat.amkKesken,
-      KoskiSpecificMockOppijat.amkKeskeytynyt
     )
 
     oppijat.foreach(oppija => {
@@ -107,7 +104,26 @@ class HakemuspalveluServiceSpec
         })
       }
     })
+
+    Seq(
+      KoskiSpecificMockOppijat.korkeakoululainen,
+      KoskiSpecificMockOppijat.amkKesken,
+      KoskiSpecificMockOppijat.amkKeskeytynyt
+    ).foreach(oppija =>
+      s"Keskeneräisen tietoja ei palauteta ${oppija.sukunimi} ${oppija.etunimet} (${oppija.hetu.getOrElse("EI HETUA")})" in {
+        val result = hakemuspalveluService.findOppija(oppija.oid)
+
+        result.isRight should be(true)
+
+        result.foreach(o => {
+          verifyOppija(oppija, o)
+          o.opiskeluoikeudet.length should be(0)
+        })
+      }
+    )
   }
+
+
 
   "Ylioppilastutkinto" - {
     s"Keskeneräisen tietoja ei palauteta" in {
@@ -143,6 +159,18 @@ class HakemuspalveluServiceSpec
         val actualSuoritukset = actualOo.suoritukset
 
         verifyOpiskeluoikeusJaSuoritus(actualOo, actualSuoritukset, expectedOoData, expectedSuoritusDatat)
+      })
+    }
+
+    s"Palautetaan omasta kannasta" in {
+      val oppija = KoskiSpecificMockOppijat.ylioppilasUusiApi
+      val result = hakemuspalveluService.findOppija(oppija.oid)
+
+      result.isRight should be(true)
+
+      result.foreach(o => {
+        verifyOppija(oppija, o)
+        o.opiskeluoikeudet.length should be(1)
       })
     }
   }

@@ -25,7 +25,11 @@ class OpiskeluoikeusFacade[OPISKELUOIKEUS: TypeTag](
     application.validatingAndResolvingExtractor
   )
 
-  def haeOpiskeluoikeudet(oppijaOid: String, palautettavatOpiskeluoikeudenTyypit: Seq[String])(
+  def haeOpiskeluoikeudet(
+    oppijaOid: String,
+    palautettavatOpiskeluoikeudenTyypit: Seq[String],
+    useDownloadedYtr: Boolean = false
+  )(
     implicit user: KoskiSpecificSession
   ): Either[HttpStatus, RawOppija[OPISKELUOIKEUS]] = {
 
@@ -42,19 +46,11 @@ class OpiskeluoikeusFacade[OPISKELUOIKEUS: TypeTag](
       val ytrResultFut: Future[Either[HttpStatus, Seq[OPISKELUOIKEUS]]] = {
         masterHenkilöFut
           .map(_.flatMap(masterHenkilö =>
-            try {
-              Right(fetchYtrWithConverter match {
-                case Some(converter) =>
-                  application.ytr.findByOppija(masterHenkilö).map {
-                    case yo: schema.YlioppilastutkinnonOpiskeluoikeus => converter(yo)
-                  }
-                case _ =>
-                  Seq.empty
-              })
-            } catch {
-              case NonFatal(e) =>
-                logger.warn(e)("Failed to fetch data from YTR")
-                Left(KoskiErrorCategory.unavailable.ytr())
+            fetchYtrWithConverter match {
+              case Some(converter) =>
+                fetchYtrData(masterHenkilö, useDownloadedYtr, converter)
+              case None =>
+                Right(Seq.empty)
             }
           ))
       }
@@ -105,6 +101,48 @@ class OpiskeluoikeusFacade[OPISKELUOIKEUS: TypeTag](
       }
     } else {
       Left(notFoundResult)
+    }
+  }
+
+
+  def fetchYtrData(
+    masterHenkilö: LaajatOppijaHenkilöTiedot,
+    useDownloadedYtr: Boolean,
+    converter: schema.YlioppilastutkinnonOpiskeluoikeus => OPISKELUOIKEUS
+  ): Either[HttpStatus, Seq[OPISKELUOIKEUS]] = {
+    try {
+      val opiskeluoikeudet: Seq[schema.YlioppilastutkinnonOpiskeluoikeus] =
+        if (useDownloadedYtr) {
+          fetchDownloadedYtrOpiskeluoikeudet(masterHenkilö)
+        } else {
+          fetchYtrOpiskeluoikeudet(masterHenkilö)
+        }
+
+      Right(opiskeluoikeudet.map(converter))
+    } catch {
+      case NonFatal(e) =>
+        logger.warn(e)("Failed to fetch data from YTR")
+        Left(KoskiErrorCategory.unavailable.ytr())
+    }
+  }
+
+  def fetchDownloadedYtrOpiskeluoikeudet(
+    masterHenkilö: LaajatOppijaHenkilöTiedot
+  ): Seq[schema.YlioppilastutkinnonOpiskeluoikeus] = {
+    application.oppijaFacade.findYtrDownloadedOppija(
+        masterHenkilö.oid,
+        findMasterIfSlaveOid = true
+      )(KoskiSpecificSession.systemUserTallennetutYlioppilastutkinnonOpiskeluoikeudet)
+      .flatMap(_.warningsToLeft)
+      .map(_.opiskeluoikeudet.collect { case yo: schema.YlioppilastutkinnonOpiskeluoikeus => yo })
+      .getOrElse(fetchYtrOpiskeluoikeudet(masterHenkilö))
+  }
+
+  def fetchYtrOpiskeluoikeudet(
+    masterHenkilö: LaajatOppijaHenkilöTiedot
+  ): Seq[schema.YlioppilastutkinnonOpiskeluoikeus] = {
+    application.ytr.findByOppija(masterHenkilö)(KoskiSpecificSession.systemUserTallennetutYlioppilastutkinnonOpiskeluoikeudet).collect {
+      case yo: schema.YlioppilastutkinnonOpiskeluoikeus => yo
     }
   }
 }
