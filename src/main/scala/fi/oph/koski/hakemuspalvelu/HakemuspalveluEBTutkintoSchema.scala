@@ -8,8 +8,8 @@ import fi.oph.scalaschema.annotation.Title
 case class HakemuspalveluEBTutkinnonOpiskeluoikeus(
   oid: Option[String],
   versionumero: Option[Int],
-  oppilaitos: Option[Oppilaitos],
-  koulutustoimija: Option[Koulutustoimija],
+  oppilaitos: Option[HakemuspalveluOppilaitos],
+  koulutustoimija: Option[HakemuspalveluKoulutustoimija],
   tila: HakemuspalveluOpiskeluoikeudenTila,
   suoritukset: List[HakemuspalveluEBTutkinnonPäätasonSuoritus],
   @KoodistoKoodiarvo(schema.OpiskeluoikeudenTyyppi.ebtutkinto.koodiarvo)
@@ -18,7 +18,7 @@ case class HakemuspalveluEBTutkinnonOpiskeluoikeus(
 
   override def lisätiedot: Option[HakemuspalveluOpiskeluoikeudenLisätiedot] = None
 
-  override def withSuoritukset(suoritukset: List[Suoritus]): HakemuspalveluKoskeenTallennettavaOpiskeluoikeus =
+  override def withSuoritukset(suoritukset: List[HakemuspalveluSuoritus]): HakemuspalveluKoskeenTallennettavaOpiskeluoikeus =
     this.copy(
       suoritukset = suoritukset.collect { case s: HakemuspalveluEBTutkinnonPäätasonSuoritus => s }
     )
@@ -27,14 +27,14 @@ case class HakemuspalveluEBTutkinnonOpiskeluoikeus(
 @Title("EB-tutkinnon päätason suoritus")
 case class HakemuspalveluEBTutkinnonPäätasonSuoritus(
   koulutusmoduuli: HakemuspalveluEBTutkinnonKoulutusmoduuli,
-  vahvistus: Option[Vahvistus],
-  toimipiste: Option[Toimipiste],
+  vahvistus: Option[HakemuspalveluVahvistus],
+  toimipiste: Option[HakemuspalveluToimipiste],
   @KoodistoKoodiarvo("ebtutkinto")
   tyyppi: schema.Koodistokoodiviite,
-) extends Suoritus
+) extends HakemuspalveluSuoritus
 
 case class HakemuspalveluEBTutkinnonKoulutusmoduuli(
   tunniste: HakemuspalveluKoodistokoodiviite,
   curriculum: HakemuspalveluKoodistokoodiviite,
   koulutustyyppi: Option[HakemuspalveluKoodistokoodiviite]
-) extends SuorituksenKooditettuKoulutusmoduuli
+) extends HakemuspalveluSuorituksenKooditettuKoulutusmoduuli

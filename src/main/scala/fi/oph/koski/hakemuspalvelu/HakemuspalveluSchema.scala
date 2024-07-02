@@ -21,11 +21,11 @@ object HakemuspalveluSchema {
 }
 
 case class HakemuspalveluOppija(
-  henkilö: Henkilo,
+  henkilö: HakemuspalveluHenkilo,
   opiskeluoikeudet: List[HakemuspalveluOpiskeluoikeus]
 )
 
-case class Henkilo(
+case class HakemuspalveluHenkilo(
   oid: String,
   syntymäaika: Option[LocalDate],
   etunimet: String,
@@ -33,8 +33,8 @@ case class Henkilo(
   kutsumanimi: String
 )
 
-object Henkilo {
-  def fromOppijaHenkilö(oppijaHenkilö: fi.oph.koski.henkilo.OppijaHenkilö) = Henkilo(
+object HakemuspalveluHenkilo {
+  def fromOppijaHenkilö(oppijaHenkilö: fi.oph.koski.henkilo.OppijaHenkilö) = HakemuspalveluHenkilo(
     oid = oppijaHenkilö.oid,
     syntymäaika = oppijaHenkilö.syntymäaika,
     etunimet = oppijaHenkilö.etunimet,
@@ -44,11 +44,11 @@ object Henkilo {
 }
 
 trait HakemuspalveluOpiskeluoikeus {
-  def oppilaitos: Option[Oppilaitos]
+  def oppilaitos: Option[HakemuspalveluOppilaitos]
 
-  def koulutustoimija: Option[Koulutustoimija]
+  def koulutustoimija: Option[HakemuspalveluKoulutustoimija]
 
-  def suoritukset: List[Suoritus]
+  def suoritukset: List[HakemuspalveluSuoritus]
 
   @KoodistoUri("opiskeluoikeudentyyppi")
   @Discriminator
@@ -64,7 +64,7 @@ trait HakemuspalveluOpiskeluoikeus {
 
   def lisätiedot: Option[HakemuspalveluOpiskeluoikeudenLisätiedot]
 
-  def withSuoritukset(suoritukset: List[Suoritus]): HakemuspalveluOpiskeluoikeus
+  def withSuoritukset(suoritukset: List[HakemuspalveluSuoritus]): HakemuspalveluOpiskeluoikeus
 }
 
 trait HakemuspalveluKoskeenTallennettavaOpiskeluoikeus extends HakemuspalveluOpiskeluoikeus {
@@ -73,20 +73,20 @@ trait HakemuspalveluKoskeenTallennettavaOpiskeluoikeus extends HakemuspalveluOpi
   def versionumero: Option[Int]
 }
 
-case class SisältäväOpiskeluoikeus(
+case class HakemuspalveluSisältäväOpiskeluoikeus(
   oid: String,
-  oppilaitos: Oppilaitos
+  oppilaitos: HakemuspalveluOppilaitos
 )
 
-trait Suoritus {
-  def koulutusmoduuli: SuorituksenKoulutusmoduuli
+trait HakemuspalveluSuoritus {
+  def koulutusmoduuli: HakemuspalveluSuorituksenKoulutusmoduuli
 
   @Discriminator
   def tyyppi: schema.Koodistokoodiviite
 
-  def vahvistus: Option[Vahvistus]
+  def vahvistus: Option[HakemuspalveluVahvistus]
 
-  def toimipiste: Option[Toimipiste]
+  def toimipiste: Option[HakemuspalveluToimipiste]
 }
 
 trait HakemuspalveluKoodiViite {
@@ -119,22 +119,14 @@ case class HakemuspalveluPaikallinenKoodi(
   koodistoUri: Option[String]
 ) extends HakemuspalveluKoodiViite
 
-object HakemuspalveluPaikallinenKoodi {
-  def fromKoskiSchema(kv: schema.PaikallinenKoodi) = HakemuspalveluPaikallinenKoodi(
-    kv.koodiarvo,
-    kv.nimi,
-    kv.koodistoUri
-  )
-}
-
-case class Oppilaitos(
+case class HakemuspalveluOppilaitos(
   oid: String,
   oppilaitosnumero: Option[HakemuspalveluKoodistokoodiviite],
   nimi: Option[schema.LocalizedString],
   kotipaikka: Option[HakemuspalveluKoodistokoodiviite]
 )
 
-case class Koulutustoimija(
+case class HakemuspalveluKoulutustoimija(
   oid: String,
   nimi: Option[schema.LocalizedString],
   yTunnus: Option[String],
@@ -157,34 +149,17 @@ case class HakemuspalveluOpiskeluoikeusjakso(
 @Title("Opiskeluoikeuden lisätiedot")
 trait HakemuspalveluOpiskeluoikeudenLisätiedot
 
-
-trait SuorituksenKoulutusmoduuli {
+trait HakemuspalveluSuorituksenKoulutusmoduuli {
   def tunniste: HakemuspalveluKoodiViite
 }
 
-trait SuorituksenKooditettuKoulutusmoduuli extends SuorituksenKoulutusmoduuli {
+trait HakemuspalveluSuorituksenKooditettuKoulutusmoduuli extends HakemuspalveluSuorituksenKoulutusmoduuli {
   def tunniste: HakemuspalveluKoodistokoodiviite
 }
 
-@Title("Päätason suoritus")
-case class HakemuspalveluPäätasonSuoritus(
-  koulutusmoduuli: HakemuspalveluPäätasonKoulutusmoduuli,
-  suorituskieli: HakemuspalveluKoodistokoodiviite,
-  tyyppi: schema.Koodistokoodiviite,
-  vahvistus: Option[Vahvistus],
-  toimipiste: Option[Toimipiste]
-) extends Suoritus
+case class HakemuspalveluVahvistus(päivä: LocalDate)
 
-@Title("Päätason koulutusmoduuli")
-case class HakemuspalveluPäätasonKoulutusmoduuli(
-  tunniste: HakemuspalveluKoodistokoodiviite,
-  perusteenDiaarinumero: Option[String],
-  koulutustyyppi: Option[HakemuspalveluKoodistokoodiviite],
-) extends SuorituksenKooditettuKoulutusmoduuli
-
-case class Vahvistus(päivä: LocalDate)
-
-case class Toimipiste(
+case class HakemuspalveluToimipiste(
   oid: String,
   nimi: Option[schema.LocalizedString] = None,
   kotipaikka: Option[HakemuspalveluKoodistokoodiviite] = None

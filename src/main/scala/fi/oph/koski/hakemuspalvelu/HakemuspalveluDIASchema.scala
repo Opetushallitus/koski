@@ -8,8 +8,8 @@ import fi.oph.scalaschema.annotation.Title
 case class HakemuspalveluDIAOpiskeluoikeus(
   oid: Option[String],
   versionumero: Option[Int],
-  oppilaitos: Option[Oppilaitos],
-  koulutustoimija: Option[Koulutustoimija],
+  oppilaitos: Option[HakemuspalveluOppilaitos],
+  koulutustoimija: Option[HakemuspalveluKoulutustoimija],
   tila: HakemuspalveluOpiskeluoikeudenTila,
   suoritukset: List[HakemuspalveluDIATutkinnonSuoritus],
   @KoodistoKoodiarvo(schema.OpiskeluoikeudenTyyppi.diatutkinto.koodiarvo)
@@ -18,7 +18,7 @@ case class HakemuspalveluDIAOpiskeluoikeus(
 
   override def lisätiedot: Option[HakemuspalveluOpiskeluoikeudenLisätiedot] = None
 
-  override def withSuoritukset(suoritukset: List[Suoritus]): HakemuspalveluKoskeenTallennettavaOpiskeluoikeus =
+  override def withSuoritukset(suoritukset: List[HakemuspalveluSuoritus]): HakemuspalveluKoskeenTallennettavaOpiskeluoikeus =
     this.copy(
       suoritukset = suoritukset.collect { case s: HakemuspalveluDIATutkinnonSuoritus => s }
     )
@@ -28,12 +28,12 @@ case class HakemuspalveluDIAOpiskeluoikeus(
 @Title("DIA-tutkinnon suoritus")
 case class HakemuspalveluDIATutkinnonSuoritus(
   koulutusmoduuli: HakemuspalveluDIATutkinto,
-  toimipiste: Option[Toimipiste],
-  vahvistus: Option[Vahvistus],
+  toimipiste: Option[HakemuspalveluToimipiste],
+  vahvistus: Option[HakemuspalveluVahvistus],
   @KoodistoKoodiarvo("diatutkintovaihe")
   tyyppi: schema.Koodistokoodiviite,
-) extends Suoritus
+) extends HakemuspalveluSuoritus
 
 case class HakemuspalveluDIATutkinto(
   tunniste: HakemuspalveluKoodistokoodiviite
-) extends SuorituksenKoulutusmoduuli
+) extends HakemuspalveluSuorituksenKoulutusmoduuli

@@ -1,9 +1,8 @@
-package fi.oph.koski.Hakemuspalvelu
+package fi.oph.koski.hakemuspalvelu
 
 import fi.oph.koski.api.misc.{OpiskeluoikeusTestMethods, PutOpiskeluoikeusTestMethods}
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.documentation.ExampleData.{longTimeAgo, opiskeluoikeusLäsnä, valtionosuusRahoitteinen}
-import fi.oph.koski.hakemuspalvelu.{HakemuspalveluDIAOpiskeluoikeus, HakemuspalveluDIATutkinnonSuoritus, HakemuspalveluEBTutkinnonOpiskeluoikeus, HakemuspalveluEBTutkinnonPäätasonSuoritus, HakemuspalveluKorkeakoulunOpiskeluoikeus, HakemuspalveluKorkeakoulututkinnonSuoritus, HakemuspalveluKoskeenTallennettavaOpiskeluoikeus, HakemuspalveluOpiskeluoikeus, HakemuspalveluOppija, HakemuspalveluYlioppilastutkinnonOpiskeluoikeus, HakemuspalveluYlioppilastutkinnonPäätasonSuoritus, Suoritus}
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.Rooli.{OPHKATSELIJA, VKT}
@@ -235,7 +234,7 @@ class HakemuspalveluServiceSpec
 
   private def verifyOpiskeluoikeusJaSuoritus(
     actualOo: HakemuspalveluOpiskeluoikeus,
-    actualSuoritukset: Seq[Suoritus],
+    actualSuoritukset: Seq[HakemuspalveluSuoritus],
     expectedOoData: schema.Opiskeluoikeus,
     expectedSuoritusDatat: Seq[schema.Suoritus]
   ): Unit = {

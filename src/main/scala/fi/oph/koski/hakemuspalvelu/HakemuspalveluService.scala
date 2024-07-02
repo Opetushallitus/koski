@@ -38,7 +38,7 @@ class HakemuspalveluService(application: KoskiApplication) extends GlobalExecuti
     rawOppija: RawOppija[HakemuspalveluOpiskeluoikeus]
   ): HakemuspalveluOppija = {
     HakemuspalveluOppija(
-      henkilö = Henkilo.fromOppijaHenkilö(rawOppija.henkilö),
+      henkilö = HakemuspalveluHenkilo.fromOppijaHenkilö(rawOppija.henkilö),
       opiskeluoikeudet = suodataPalautettavat(rawOppija.opiskeluoikeudet).toList
     )
   }
@@ -56,7 +56,7 @@ class HakemuspalveluService(application: KoskiApplication) extends GlobalExecuti
       }.filter(_.suoritukset.nonEmpty)
   }
 
-  private def josKKTutkintoNiinVahvistettu(s: Suoritus): Boolean = {
+  private def josKKTutkintoNiinVahvistettu(s: HakemuspalveluSuoritus): Boolean = {
     s match {
       case s: HakemuspalveluKorkeakoulututkinnonSuoritus
       => s.vahvistus.isDefined
@@ -65,7 +65,7 @@ class HakemuspalveluService(application: KoskiApplication) extends GlobalExecuti
     }
   }
 
-  private def josYOTutkintoNiinVahvistettu(s: Suoritus): Boolean = {
+  private def josYOTutkintoNiinVahvistettu(s: HakemuspalveluSuoritus): Boolean = {
     s match {
       case s: HakemuspalveluYlioppilastutkinnonPäätasonSuoritus
       => s.vahvistus.isDefined
@@ -74,7 +74,7 @@ class HakemuspalveluService(application: KoskiApplication) extends GlobalExecuti
     }
   }
 
-  private def josEBTutkintoNiinVahvistettu(s: Suoritus): Boolean = {
+  private def josEBTutkintoNiinVahvistettu(s: HakemuspalveluSuoritus): Boolean = {
     s match {
       case s: HakemuspalveluEBTutkinnonPäätasonSuoritus
       => s.vahvistus.isDefined
@@ -83,7 +83,7 @@ class HakemuspalveluService(application: KoskiApplication) extends GlobalExecuti
     }
   }
 
-  private def josDIATutkintoNiinVahvistettu(s: Suoritus): Boolean = {
+  private def josDIATutkintoNiinVahvistettu(s: HakemuspalveluSuoritus): Boolean = {
     s match {
       case s: HakemuspalveluDIATutkinnonSuoritus
       => s.vahvistus.isDefined
