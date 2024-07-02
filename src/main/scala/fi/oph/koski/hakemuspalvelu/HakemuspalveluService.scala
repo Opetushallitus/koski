@@ -20,6 +20,13 @@ class HakemuspalveluService(application: KoskiApplication) extends GlobalExecuti
     val oppija = opiskeluoikeusFacade.haeOpiskeluoikeudet(oppijaOid, HakemuspalveluSchema.schemassaTuetutOpiskeluoikeustyypit, useDownloadedYtr = true)
       .map(teePalautettavaHakemuspalveluOppija)
 
+    oppija.map(o => o.opiskeluoikeudet.foreach {
+      case x: HakemuspalveluDIAOpiskeluoikeus if x.oid.isDefined => auditLog(o.henkilö.oid, opiskeluoikeusOid = x.oid.get)
+      case x: HakemuspalveluEBTutkinnonOpiskeluoikeus if x.oid.isDefined => auditLog(o.henkilö.oid, opiskeluoikeusOid = x.oid.get)
+      case x: HakemuspalveluYlioppilastutkinnonOpiskeluoikeus if x.oid.isDefined => auditLog(o.henkilö.oid, opiskeluoikeusOid = x.oid.get)
+      case _ => // Do nothing for other types
+    })
+
     oppija
   }
 
@@ -91,4 +98,17 @@ class HakemuspalveluService(application: KoskiApplication) extends GlobalExecuti
       => true
     }
   }
+
+  private def auditLog(oppijaOid: String, opiskeluoikeusOid: String)(implicit user: KoskiSpecificSession): Unit =
+    AuditLog
+      .log(
+        KoskiAuditLogMessage(
+          KoskiOperation.HAKEMUSPALVELU_OPISKELUOIKEUS_HAKU,
+          user,
+          Map(
+            KoskiAuditLogMessageField.oppijaHenkiloOid -> oppijaOid,
+            KoskiAuditLogMessageField.opiskeluoikeusOid -> opiskeluoikeusOid,
+          )
+        )
+      )
 }
