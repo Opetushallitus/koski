@@ -4,9 +4,10 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
+import fi.oph.koski.schema.annotation.EnumValues
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 import fi.oph.koski.util.UuidUtils
-import fi.oph.scalaschema.annotation.{Description, SyntheticProperty, Title}
+import fi.oph.scalaschema.annotation.{Description, Discriminator, SyntheticProperty, Title}
 import org.json4s.jackson.JsonMethods
 
 import java.time.{LocalDateTime, OffsetDateTime}
@@ -68,6 +69,7 @@ trait QueryResponse {
   @Description("Massaluovutuksen tunniste")
   def queryId: String
   @Description("Massaluovutuksen tila")
+  @Discriminator
   @SyntheticProperty
   def status: String
   @Description("Massaluovutuksen luoman käyttäjän oid")
@@ -87,9 +89,9 @@ case class PendingQueryResponse(
   createdAt: OffsetDateTime,
   @Description("Osoite josta kyselyn tilaa voi kysellä")
   resultsUrl: String,
-) extends QueryResponse {
-  def status: String = QueryState.pending
-}
+  @EnumValues(Set(QueryState.pending))
+  status: String = QueryState.pending,
+) extends QueryResponse
 
 case class RunningQueryResponse(
   queryId: String,
@@ -104,9 +106,9 @@ case class RunningQueryResponse(
   resultsUrl: String,
   @Description("Tietoa kyselyn etenemisestä")
   progress: Option[QueryProgress],
-) extends QueryResponse {
-  def status: String = QueryState.running
-}
+  @EnumValues(Set(QueryState.running))
+  status: String = QueryState.running,
+) extends QueryResponse
 
 case class FailedQueryResponse(
   queryId: String,
@@ -119,9 +121,9 @@ case class FailedQueryResponse(
   finishedAt: OffsetDateTime,
   @Description("Lista ennen kyselyn epäonnistumista saaduista tulostiedostoista.")
   files: List[String],
-) extends QueryResponse {
-  def status: String = QueryState.failed
-}
+  @EnumValues(Set(QueryState.failed))
+  status: String = QueryState.failed,
+) extends QueryResponse
 
 case class CompleteQueryResponse(
   queryId: String,
@@ -138,9 +140,9 @@ case class CompleteQueryResponse(
   password: Option[String],
   @Description(s"Viimeisin opiskeluoikeuspäivitysten vastaanottoaika.")
   sourceDataUpdatedAt: Option[OffsetDateTime],
-) extends QueryResponse {
-  def status: String = QueryState.complete
-}
+  @EnumValues(Set(QueryState.complete))
+  status: String = QueryState.complete,
+) extends QueryResponse
 
 object QueryResponse {
   def apply(rootUrl: String, query: Query): QueryResponse = query match {
