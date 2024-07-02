@@ -7,7 +7,7 @@ import fi.oph.scalaschema.annotation.{Description, Title}
 object HakemuspalveluYlioppilastutkinnonOpiskeluoikeus {
   def fromKoskiSchema(yo: schema.YlioppilastutkinnonOpiskeluoikeus): HakemuspalveluOpiskeluoikeus = HakemuspalveluYlioppilastutkinnonOpiskeluoikeus(
     oppilaitos = yo.oppilaitos.map(ol =>
-      Oppilaitos(
+      HakemuspalveluOppilaitos(
         ol.oid,
         ol.oppilaitosnumero.map(HakemuspalveluKoodistokoodiviite.fromKoskiSchema),
         ol.nimi,
@@ -15,7 +15,7 @@ object HakemuspalveluYlioppilastutkinnonOpiskeluoikeus {
       )
     ),
     koulutustoimija = yo.koulutustoimija.map(kt =>
-      Koulutustoimija(
+      HakemuspalveluKoulutustoimija(
         kt.oid,
         kt.nimi,
         kt.yTunnus,
@@ -35,12 +35,12 @@ object HakemuspalveluYlioppilastutkinnonOpiskeluoikeus {
       HakemuspalveluYlioppilastutkinnonSuorituksenKoulutusmoduuli(
         HakemuspalveluKoodistokoodiviite.fromKoskiSchema(s.koulutusmoduuli.tunniste)
       ),
-      Some(Toimipiste(
+      Some(HakemuspalveluToimipiste(
         s.toimipiste.oid,
         s.toimipiste.nimi,
         s.toimipiste.kotipaikka.map(HakemuspalveluKoodistokoodiviite.fromKoskiSchema)
       )),
-      vahvistus = s.vahvistus.map(v => Vahvistus(v.päivä)),
+      vahvistus = s.vahvistus.map(v => HakemuspalveluVahvistus(v.päivä)),
       tyyppi = s.tyyppi,
     )),
     tyyppi = yo.tyyppi
@@ -50,8 +50,8 @@ object HakemuspalveluYlioppilastutkinnonOpiskeluoikeus {
 @Title("Ylioppilastutkinnon opiskeluoikeus")
 @Description("Ylioppilastutkinnon opiskeluoikeus")
 case class HakemuspalveluYlioppilastutkinnonOpiskeluoikeus(
-  oppilaitos: Option[Oppilaitos],
-  koulutustoimija: Option[Koulutustoimija],
+  oppilaitos: Option[HakemuspalveluOppilaitos],
+  koulutustoimija: Option[HakemuspalveluKoulutustoimija],
   tila: HakemuspalveluOpiskeluoikeudenTila,
   suoritukset: List[HakemuspalveluYlioppilastutkinnonPäätasonSuoritus],
   @KoodistoKoodiarvo(schema.OpiskeluoikeudenTyyppi.ylioppilastutkinto.koodiarvo)
@@ -60,7 +60,7 @@ case class HakemuspalveluYlioppilastutkinnonOpiskeluoikeus(
 
   override def lisätiedot: Option[HakemuspalveluOpiskeluoikeudenLisätiedot] = None
 
-  override def withSuoritukset(suoritukset: List[Suoritus]): HakemuspalveluOpiskeluoikeus =
+  override def withSuoritukset(suoritukset: List[HakemuspalveluSuoritus]): HakemuspalveluOpiskeluoikeus =
     this.copy(
       suoritukset = suoritukset.collect { case s: HakemuspalveluYlioppilastutkinnonPäätasonSuoritus => s }
     )
@@ -69,12 +69,12 @@ case class HakemuspalveluYlioppilastutkinnonOpiskeluoikeus(
 @Title("Ylioppilastutkinnon suoritus")
 case class HakemuspalveluYlioppilastutkinnonPäätasonSuoritus(
   koulutusmoduuli: HakemuspalveluYlioppilastutkinnonSuorituksenKoulutusmoduuli,
-  toimipiste: Option[Toimipiste],
-  vahvistus: Option[Vahvistus],
+  toimipiste: Option[HakemuspalveluToimipiste],
+  vahvistus: Option[HakemuspalveluVahvistus],
   tyyppi: schema.Koodistokoodiviite,
-) extends Suoritus
+) extends HakemuspalveluSuoritus
 
 case class HakemuspalveluYlioppilastutkinnonSuorituksenKoulutusmoduuli(
   tunniste: HakemuspalveluKoodistokoodiviite,
-) extends SuorituksenKoulutusmoduuli
+) extends HakemuspalveluSuorituksenKoulutusmoduuli
 

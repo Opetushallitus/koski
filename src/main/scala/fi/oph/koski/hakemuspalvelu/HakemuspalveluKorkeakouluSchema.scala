@@ -9,7 +9,7 @@ import java.time.LocalDate
 object HakemuspalveluKorkeakoulunOpiskeluoikeus {
   def fromKoskiSchema(kk: schema.KorkeakoulunOpiskeluoikeus) = HakemuspalveluKorkeakoulunOpiskeluoikeus(
     oppilaitos = kk.oppilaitos.map(ol =>
-      Oppilaitos(
+      HakemuspalveluOppilaitos(
         ol.oid,
         ol.oppilaitosnumero.map(HakemuspalveluKoodistokoodiviite.fromKoskiSchema),
         ol.nimi,
@@ -17,7 +17,7 @@ object HakemuspalveluKorkeakoulunOpiskeluoikeus {
       )
     ),
     koulutustoimija = kk.koulutustoimija.map(kt =>
-      Koulutustoimija(
+      HakemuspalveluKoulutustoimija(
         kt.oid,
         kt.nimi,
         kt.yTunnus,
@@ -65,8 +65,8 @@ object HakemuspalveluKorkeakoulunOpiskeluoikeus {
               koulutustyyppi = s.koulutusmoduuli.koulutustyyppi.map(HakemuspalveluKoodistokoodiviite.fromKoskiSchema),
               virtaNimi = s.koulutusmoduuli.virtaNimi
             ),
-            vahvistus = s.vahvistus.map(v => Vahvistus(v.päivä)),
-            toimipiste = Some(Toimipiste(
+            vahvistus = s.vahvistus.map(v => HakemuspalveluVahvistus(v.päivä)),
+            toimipiste = Some(HakemuspalveluToimipiste(
               s.toimipiste.oid,
               s.toimipiste.nimi,
               s.toimipiste.kotipaikka.map(HakemuspalveluKoodistokoodiviite.fromKoskiSchema)
@@ -81,8 +81,8 @@ object HakemuspalveluKorkeakoulunOpiskeluoikeus {
 
 @Title("Korkeakoulun opiskeluoikeus")
 case class HakemuspalveluKorkeakoulunOpiskeluoikeus(
-  oppilaitos: Option[Oppilaitos],
-  koulutustoimija: Option[Koulutustoimija],
+  oppilaitos: Option[HakemuspalveluOppilaitos],
+  koulutustoimija: Option[HakemuspalveluKoulutustoimija],
   override val päättymispäivä: Option[LocalDate],
   tila: HakemuspalveluOpiskeluoikeudenTila,
   lisätiedot: Option[HakemuspalveluKorkeakoulunOpiskeluoikeudenLisätiedot],
@@ -92,7 +92,7 @@ case class HakemuspalveluKorkeakoulunOpiskeluoikeus(
   luokittelu: Option[List[HakemuspalveluKoodistokoodiviite]],
 ) extends HakemuspalveluOpiskeluoikeus {
 
-  override def withSuoritukset(suoritukset: List[Suoritus]): HakemuspalveluOpiskeluoikeus =
+  override def withSuoritukset(suoritukset: List[HakemuspalveluSuoritus]): HakemuspalveluOpiskeluoikeus =
     this.copy(
       suoritukset = suoritukset.collect { case s: HakemuspalveluKorkeakoulututkinnonSuoritus => s }
     )
@@ -103,9 +103,9 @@ case class HakemuspalveluKorkeakoulututkinnonSuoritus(
   koulutusmoduuli: HakemuspalveluKorkeakoulututkinto,
   @KoodistoKoodiarvo("korkeakoulututkinto")
   tyyppi: schema.Koodistokoodiviite,
-  vahvistus: Option[Vahvistus],
-  toimipiste: Option[Toimipiste],
-) extends Suoritus
+  vahvistus: Option[HakemuspalveluVahvistus],
+  toimipiste: Option[HakemuspalveluToimipiste],
+) extends HakemuspalveluSuoritus
 
 case class HakemuspalveluKorkeakoulunOpiskeluoikeudenLisätiedot(
   virtaOpiskeluoikeudenTyyppi: Option[HakemuspalveluKoodistokoodiviite],
@@ -133,21 +133,10 @@ case class HakemuspalveluLukuvuosi_IlmoittautumisjaksonLukuvuosiMaksu(
   apuraha: Option[Int]
 )
 
-@Title("Muu korkeakoulun opinto")
-case class HakemuspalveluMuuKorkeakoulunOpinto(
-  tunniste: HakemuspalveluKoodistokoodiviite,
-  nimi: schema.LocalizedString,
-) extends SuorituksenKoulutusmoduuli
-
 @Title("Korkeakoulututkinto")
 case class HakemuspalveluKorkeakoulututkinto(
   tunniste: HakemuspalveluKoodistokoodiviite,
   koulutustyyppi: Option[HakemuspalveluKoodistokoodiviite],
   virtaNimi: Option[schema.LocalizedString]
-) extends SuorituksenKoulutusmoduuli
+) extends HakemuspalveluSuorituksenKoulutusmoduuli
 
-@Title("Korkeakoulun opintojakso")
-case class HakemuspalveluKorkeakoulunOpintojakso(
-  tunniste: HakemuspalveluPaikallinenKoodi,
-  nimi: schema.LocalizedString,
-) extends SuorituksenKoulutusmoduuli
