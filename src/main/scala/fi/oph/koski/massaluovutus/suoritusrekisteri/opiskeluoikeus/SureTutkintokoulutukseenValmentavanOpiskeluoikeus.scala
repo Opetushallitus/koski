@@ -14,7 +14,7 @@ case class SureTutkintokoulutukseenValmentavanOpiskeluoikeus(
   oid: String,
   koulutustoimija: Option[Koulutustoimija],
   oppilaitos: Option[Oppilaitos],
-  tila: OpiskeluoikeudenTila,
+  tila: TutkintokoulutukseenValmentavanOpiskeluoikeudenTila,
   suoritukset: List[SureTutkintokoulutukseenValmentavanKoulutuksenSuoritus]
 ) extends SureOpiskeluoikeus
 

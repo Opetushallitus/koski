@@ -15,7 +15,7 @@ case class SureInternationalSchoolOpiskeluoikeus(
   oid: String,
   koulutustoimija: Option[Koulutustoimija],
   oppilaitos: Option[Oppilaitos],
-  tila: OpiskeluoikeudenTila,
+  tila: InternationalSchoolOpiskeluoikeudenTila,
   suoritukset: List[SureDiplomaVuosiluokanSuoritus],
 ) extends SureOpiskeluoikeus
 

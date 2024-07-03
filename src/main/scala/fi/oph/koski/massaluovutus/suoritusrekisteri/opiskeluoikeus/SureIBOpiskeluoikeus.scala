@@ -15,7 +15,7 @@ case class SureIBOpiskeluoikeus(
   oid: String,
   koulutustoimija: Option[Koulutustoimija],
   oppilaitos: Option[Oppilaitos],
-  tila: OpiskeluoikeudenTila,
+  tila: LukionOpiskeluoikeudenTila,
   suoritukset: List[SureIBTutkinnonSuoritus],
 ) extends SureOpiskeluoikeus
 
