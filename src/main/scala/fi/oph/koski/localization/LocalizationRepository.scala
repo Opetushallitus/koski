@@ -55,10 +55,14 @@ abstract class CachedLocalizationService(localizationConfig: LocalizationConfig)
 
     defaultLocalizations.defaultFinnishTexts.map {
       case (key, finnishDefaultText) =>
-        inLocalizationService.get(key).map(l => (key, sanitize(l).get)).getOrElse {
-          reportMissingLocalization(key)
-          (key, Finnish(finnishDefaultText))
-        }
+        inLocalizationService
+          .get(key)
+          .flatMap(sanitize)
+          .map((key, _))
+          .getOrElse {
+            reportMissingLocalization(key)
+            (key, Finnish(finnishDefaultText))
+          }
     }
   }
 
