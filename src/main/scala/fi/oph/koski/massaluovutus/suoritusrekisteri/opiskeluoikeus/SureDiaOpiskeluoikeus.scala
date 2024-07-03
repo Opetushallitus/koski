@@ -15,7 +15,7 @@ case class SureDIAOpiskeluoikeus(
   oid: String,
   koulutustoimija: Option[Koulutustoimija],
   oppilaitos: Option[Oppilaitos],
-  tila: OpiskeluoikeudenTila,
+  tila: DIAOpiskeluoikeudenTila,
   suoritukset: List[SureDIATutkinnonSuoritus],
 ) extends SureOpiskeluoikeus
 

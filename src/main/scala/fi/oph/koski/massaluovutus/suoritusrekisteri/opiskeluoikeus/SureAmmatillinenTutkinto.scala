@@ -13,7 +13,7 @@ case class SureAmmatillinenOpiskeluoikeus(
   oid: String,
   koulutustoimija: Option[Koulutustoimija],
   oppilaitos: Option[Oppilaitos],
-  tila: OpiskeluoikeudenTila,
+  tila: AmmatillinenOpiskeluoikeudenTila,
   suoritukset: List[SureAmmatillinenPäätasonSuoritus],
 ) extends SureOpiskeluoikeus
 

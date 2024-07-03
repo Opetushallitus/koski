@@ -13,7 +13,7 @@ case class SureVapaanSivistystyönOpiskeluoikeus(
   oid: String,
   koulutustoimija: Option[Koulutustoimija],
   oppilaitos: Option[Oppilaitos],
-  tila: OpiskeluoikeudenTila,
+  tila: VapaanSivistystyönOpiskeluoikeudenTila,
   suoritukset: List[SureVapaanSivistystyönPäätasonSuoritus],
 ) extends SureOpiskeluoikeus
 
