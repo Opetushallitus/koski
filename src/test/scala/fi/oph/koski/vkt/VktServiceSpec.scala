@@ -34,19 +34,7 @@ class VktServiceSpec
 
   val vktService = KoskiApplicationForTests.vktService
 
-  private val vktTestUser = new KoskiSpecificSession(
-    AuthenticationUser(
-      VKT,
-      VKT,
-      VKT, None
-    ),
-    "fi",
-    InetAddress.getLoopbackAddress,
-    "",
-    Set(KäyttöoikeusGlobal(List(Palvelurooli(OPHKATSELIJA))))
-  )
-
-  implicit val koskiSession = vktTestUser
+  implicit val koskiSession = MockUsers.vktKäyttäjä.toKoskiSpecificSession(KoskiApplicationForTests.käyttöoikeusRepository)
 
   override def afterEach(): Unit = {
     MockYtrClient.reset()

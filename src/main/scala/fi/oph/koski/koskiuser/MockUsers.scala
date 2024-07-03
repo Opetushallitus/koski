@@ -2,6 +2,7 @@ package fi.oph.koski.koskiuser
 
 import fi.oph.koski.koskiuser.AuthenticationUser.fromDirectoryUser
 import fi.oph.koski.koskiuser.MockKäyttöoikeusryhmät._
+import fi.oph.koski.koskiuser.Rooli.OPHKATSELIJA
 import fi.oph.koski.organisaatio.MockOrganisaatiot._
 import fi.oph.koski.organisaatio.{MockOrganisaatiot, Opetushallitus}
 import fi.oph.koski.userdirectory._
@@ -498,9 +499,9 @@ object MockUsers {
     "VKT-virkailija",
     "valeria",
     "1.2.246.562.24.42042042058",
-    Seq(OrganisaatioJaKäyttöoikeudet(MockOrganisaatiot.ytl, List(
+    Seq(OrganisaatioJaKäyttöoikeudet(Opetushallitus.organisaatioOid, List(
       PalveluJaOikeus("KOSKI", Rooli.VKT),
-      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_TOINEN_ASTE)
+      PalveluJaOikeus("KOSKI", Rooli.OPHKATSELIJA)
     )))
   )
 
