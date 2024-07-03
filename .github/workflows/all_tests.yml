@@ -150,6 +150,7 @@ jobs:
             fi.oph.koski.editor, \
             fi.oph.koski.environment, \
             fi.oph.koski.etk, \
+            fi.oph.koski.hakemuspalvelu, \
             fi.oph.koski.henkilo, \
             fi.oph.koski.http, \
             fi.oph.koski.integrationtest, \
