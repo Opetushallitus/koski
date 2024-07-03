@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 4.7.2024
+
+- EB-tutkintoa ei voi merkitä valmistuneeksi jos oppijalla ei ole valmistunutta European School of Helsinki -opiskeluoikeutta
+
 ## 30.5.2024
 
 - JOTPA-rahoitteisissa opiskeluoikeuksissa vaaditaan JOTA asianumero
