@@ -2698,5 +2698,18 @@
   "Lisää JOTPA asianumero": "Lisää JOTPA asianumero",
   "Taiteen perusopetus hankintakoulutuksena järjestetään oman organisaation ulkopuolelta": "Taiteen perusopetus hankintakoulutuksena järjestetään oman organisaation ulkopuolelta",
   "Esiopetus ostetaan oman organisaation ulkopuolelta ostopalveluna tai palvelusetelinä": "Esiopetus ostetaan oman organisaation ulkopuolelta ostopalveluna tai palvelusetelinä",
-  "Hankintakoulutus": "Hankintakoulutus"
+  "Hankintakoulutus": "Hankintakoulutus",
+  "raportti-excel-kolumni-arviointiPvm-comment": "",
+  "raportti-excel-kolumni-arviointiArvosana-comment": "",
+  "raportti-excel-kolumni-ensimmainenArviointi-comment": "",
+  "raportti-excel-kolumni-hylatynKorotus-comment": "",
+  "raportti-excel-kolumni-hyvaksytynKorotus-comment": "",
+  "raportti-excel-kolumni-kurssinKoodi-comment": "",
+  "raportti-excel-kolumni-kurssinNimi-comment": "",
+  "raportti-excel-kolumni-paikallinenModuuli-comment": "",
+  "raportti-excel-kolumni-arviointienlkm-comment": "",
+  "raportti-excel-kolumni-ensimmainenArviointiPvm-comment": "",
+  "raportti-excel-kolumni-parasArviointiPvm-comment": "",
+  "raportti-excel-kolumni-parasArviointiArvosana-comment": "",
+  "raportti-excel-kolumni-paattymispaiva-comment": ""
 }
