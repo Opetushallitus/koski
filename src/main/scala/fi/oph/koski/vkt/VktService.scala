@@ -17,7 +17,7 @@ class VktService(application: KoskiApplication) extends GlobalExecutionContext w
   def findOppija(oppijaOid: String)
     (implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, VktOppija] = {
 
-    val vktOppija = opiskeluoikeusFacade.haeOpiskeluoikeudet(oppijaOid, VktSchema.schemassaTuetutOpiskeluoikeustyypit)
+    val vktOppija = opiskeluoikeusFacade.haeOpiskeluoikeudet(oppijaOid, VktSchema.schemassaTuetutOpiskeluoikeustyypit, useDownloadedYtr = true)
       .map(teePalautettavaVktOppija)
 
     vktOppija
