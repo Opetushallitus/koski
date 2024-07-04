@@ -35,7 +35,7 @@ object EuropeanSchoolOfHelsinkiValidation {
             ebOo,
             LocalDate.parse(config.getString("validaatiot.europeanSchoolOfHelsinkiAikaisinSallittuPaattymispaiva")),
           ),
-          validateESHS7SamallaOppijalla(henkilöRepository, koskiOpiskeluoikeudet, henkilö)
+          validateESHS7SamallaOppijalla(henkilöRepository, koskiOpiskeluoikeudet, henkilö, ebOo)
         )
       case _ => HttpStatus.ok
     }
@@ -57,14 +57,25 @@ object EuropeanSchoolOfHelsinkiValidation {
     }
   }
 
-  private def validateESHS7SamallaOppijalla(henkilöRepository: HenkilöRepository, koskiOpiskeluoikeudet: KoskiOpiskeluoikeusRepository, henkilö: Option[Henkilö]): HttpStatus = {
+  private def validateESHS7SamallaOppijalla(henkilöRepository: HenkilöRepository, koskiOpiskeluoikeudet: KoskiOpiskeluoikeusRepository, henkilö: Option[Henkilö], ebOo: EBOpiskeluoikeus): HttpStatus = {
     def oppijallaOnESHS7(oppijaOidit: List[Henkilö.Oid]) = {
       val oot = koskiOpiskeluoikeudet.findByOppijaOids(oppijaOidit)(KoskiSpecificSession.systemUser)
 
-      oot.exists {
-        case eshOo: EuropeanSchoolOfHelsinkiOpiskeluoikeus if eshOo.suoritukset.exists(_.koulutusmoduuli.tunniste.koodiarvo == "S7") => true
-        case _ => false
+      val eshOo = oot.collectFirst {
+        case eshOo: EuropeanSchoolOfHelsinkiOpiskeluoikeus if eshOo.suoritukset.exists(_.koulutusmoduuli.tunniste.koodiarvo == "S7") => eshOo
       }
+
+      eshOo match {
+        case Some(eshOo: EuropeanSchoolOfHelsinkiOpiskeluoikeus) =>
+          if (ebOo.tila.opiskeluoikeusjaksot.lastOption.exists(_.tila.koodiarvo == "valmistunut") && !eshOo.tila.opiskeluoikeusjaksot.lastOption.exists(_.tila.koodiarvo == "valmistunut")) {
+            KoskiErrorCategory.badRequest.validation.eb.eshEiValmistunut()
+          }
+          else {
+            HttpStatus.ok
+          }
+        case None => KoskiErrorCategory.badRequest.validation.eb.puuttuvaESHS7()
+      }
+
     }
 
     val henkilöOid = henkilö match {
@@ -80,8 +91,8 @@ object EuropeanSchoolOfHelsinkiValidation {
       .flatMap(henkilöOid => henkilöRepository.findByOid(henkilöOid, findMasterIfSlaveOid = true))
       .map(hlö => oppijallaOnESHS7(hlö.kaikkiOidit))
     match {
-        case Some(true) => HttpStatus.ok
-        case _ => KoskiErrorCategory.badRequest.validation.eb.puuttuvaESHS7()
+        case Some(h: HttpStatus) => h
+        case None => KoskiErrorCategory.badRequest.validation.eb.puuttuvaESHS7()
     }
   }
 

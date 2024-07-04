@@ -3,6 +3,7 @@ package fi.oph.koski.api.oppijavalidation
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigValueFactory.fromAnyRef
 import fi.oph.koski.api.misc.PutOpiskeluoikeusTestMethods
+import fi.oph.koski.documentation.ExamplesEuropeanSchoolOfHelsinki.alkamispäivä
 import fi.oph.koski.documentation.{ExampleData, ExamplesEB, ExamplesEuropeanSchoolOfHelsinki, LukioExampleData}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
@@ -232,6 +233,22 @@ class OppijaValidationEBTutkintoSpec
 
       putOpiskeluoikeus(oo, henkilö = eshHenkilö) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.eb.yleisarvosana())
+      }
+    }
+
+    "ei voi tehdä, jos ESH opiskeluoikeus ei ole merkitty valmistuneeksi" in {
+      setupOppijaWithOpiskeluoikeus(ExamplesEuropeanSchoolOfHelsinki.opiskeluoikeus.copy(
+        tila = EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila(
+          List(
+            EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(alkamispäivä, LukioExampleData.opiskeluoikeusAktiivinen),
+          )
+        )
+      ), henkilö = eshHenkilö) {
+        verifyResponseStatusOk()
+      }
+
+      putOpiskeluoikeus(defaultOpiskeluoikeus, henkilö = eshHenkilö) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.eb.eshEiValmistunut())
       }
     }
   }
