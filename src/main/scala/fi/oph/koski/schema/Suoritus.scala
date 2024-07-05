@@ -209,6 +209,17 @@ trait PäätasonSuoritus extends Suoritus {
     import mojave._
     shapeless.lens[PäätasonSuoritus].field[Koulutusmoduuli]("koulutusmoduuli").set(this)(km)
   }
+
+  def withAlkamispäivä(p: LocalDate): PäätasonSuoritus = {
+    import mojave._
+    shapeless.lens[PäätasonSuoritus].field[Option[LocalDate]]("alkamispäivä").set(this)(Some(p))
+  }
+
+  def withVahvistus(v: Vahvistus): PäätasonSuoritus = {
+    import mojave._
+    shapeless.lens[PäätasonSuoritus].field[Option[Vahvistus]]("vahvistus").set(this)(Some(v))
+  }
+
 }
 
 trait KoskeenTallennettavaPäätasonSuoritus extends PäätasonSuoritus with Toimipisteellinen

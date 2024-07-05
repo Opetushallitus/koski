@@ -1,5 +1,8 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 8.7.2024
+- Päätason suoritusten oppilaitosten nimet haetaan erikseen vahvistuspäivän mukaan
+
 ## 4.7.2024
 
 - EB-tutkintoa ei voi merkitä valmistuneeksi jos oppijalla ei ole valmistunutta European School of Helsinki -opiskeluoikeutta

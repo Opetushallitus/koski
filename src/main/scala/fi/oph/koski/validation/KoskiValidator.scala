@@ -14,7 +14,7 @@ import fi.oph.koski.opiskeluoikeus.KoskiOpiskeluoikeusRepository
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
-import fi.oph.koski.schema.Opiskeluoikeus.{koulutustoimijaTraversal, oppilaitosTraversal, toimipisteetTraversal}
+import fi.oph.koski.schema.Opiskeluoikeus.{koulutustoimijaTraversal}
 import fi.oph.koski.schema._
 import fi.oph.koski.suostumus.SuostumuksenPeruutusService
 import fi.oph.koski.tutkinto.Koulutustyyppi._
@@ -293,19 +293,24 @@ class KoskiValidator(
   }
 
   private def setOrganizationNames(oo: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus = {
-    def modifyName[O <: OrganisaatioWithOid](org: O): O = {
-      val nimiPäättymispäivänä = organisaatioRepository.getOrganisaationNimiHetkellä(org.oid, oo.päättymispäivä.getOrElse(LocalDate.now()))
+    def modifyName[O <: OrganisaatioWithOid](org: O, päivä: LocalDate): O = {
+      val nimiPäättymispäivänä = organisaatioRepository.getOrganisaationNimiHetkellä(org.oid, päivä)
       traversal[OrganisaatioWithOid].field[Option[LocalizedString]]("nimi").modify(org)(nimi => nimiPäättymispäivänä.orElse(nimi)).asInstanceOf[O]
     }
     // Opiskeluoikeus on päättynyt, asetetaan organisaation nimi siksi, kuin mitä se oli päättymishetkellä.
     // Tämä siksi, ettei mahdollinen organisaation nimenmuutos opiskeluoikeuden päättymisen jälkeen vaikuttaisi näytettävään nimeen
-    if (oo.tila.opiskeluoikeusjaksot.lastOption.exists(_.opiskeluoikeusPäättynyt)) {
-      val ooWithModifiedOppilaitos = oppilaitosTraversal.modify(oo)(modifyName)
-      val ooWithModifiedKoulutustoimija = koulutustoimijaTraversal.modify(ooWithModifiedOppilaitos)(modifyName)
-      toimipisteetTraversal.modify(ooWithModifiedKoulutustoimija)(modifyName)
-    } else {
-      oo
+
+    val ooWithModifiedOppilaitos = oo.oppilaitos match {
+      case Some(ol) => oo.withOppilaitos(modifyName(ol, oo.päättymispäivä.getOrElse(LocalDate.now())))
+      case _ => oo
     }
+    val ooWithModifiedKoulutustoimija = koulutustoimijaTraversal.modify(ooWithModifiedOppilaitos)(org => modifyName(org, oo.päättymispäivä.getOrElse(LocalDate.now())))
+
+    val ooWithModifiedSuoritukset = ooWithModifiedKoulutustoimija.withSuoritukset(ooWithModifiedKoulutustoimija.suoritukset.map(s => {
+      val päivä = s.vahvistus.map(v => v.päivä).getOrElse(LocalDate.now())
+      Suoritus.toimipisteetTraversal.modify(s)(org => modifyName(org, päivä))
+    }))
+    ooWithModifiedSuoritukset
   }
 
   private def addOppilaitos(oo: KoskeenTallennettavaOpiskeluoikeus): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = {

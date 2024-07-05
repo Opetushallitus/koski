@@ -3,11 +3,11 @@ package fi.oph.koski.api.oppijaupdate
 import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.api.misc.{OpiskeluoikeusTestMethodsAmmatillinen, TestMethodsLukio}
 import fi.oph.koski.documentation.AmmatillinenExampleData._
-import fi.oph.koski.documentation.ExampleData.{jyväskylä, longTimeAgo, opiskeluoikeusLäsnä, valtionosuusRahoitteinen}
+import fi.oph.koski.documentation.ExampleData.{jyväskylä, longTimeAgo, opiskeluoikeusLäsnä, vahvistusPaikkakunnalla, valtionosuusRahoitteinen}
 import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.{aikuistenPerusopetukseOppimääränSuoritus, aikuistenPerusopetus2017, oppiaineidenSuoritukset2017}
 import fi.oph.koski.documentation.ExamplesEsiopetus.{päiväkodinEsiopetuksenTunniste, suoritus}
 import fi.oph.koski.documentation.ExamplesTutkintokoulutukseenValmentavaKoulutus.tuvaOpiskeluOikeusEiValmistunut
-import fi.oph.koski.documentation.PerusopetusExampleData.{perusopetuksenOppimääränSuoritus, yhdeksännenLuokanSuoritus}
+import fi.oph.koski.documentation.PerusopetusExampleData.{perusopetuksenOppimääränSuoritus, perusopetus, päättötodistusOpiskeluoikeus, yhdeksännenLuokanSuoritus}
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu
 import fi.oph.koski.documentation._
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
@@ -158,6 +158,19 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
         nimi(tutkinnonSuoritus(opiskeluoikeus).toimipiste) should equal("Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka -vanha")
         nimi(osasuoritus(opiskeluoikeus).toimipiste.get) should equal("Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka -vanha")
       }
+
+      "Aimmin hyväksytty päätason suoritus merkitään vanhalla nimellä, vaikka opiskeluoikeus on päättynyt uudella" in {
+        val perusOo = setupOppija(oppija, päättötodistusOpiskeluoikeus().withSuoritukset(
+          päättötodistusOpiskeluoikeus().suoritukset.zipWithIndex.map {
+            case (s, 0) => s.withAlkamispäivä(LocalDate.of(2009, 1, 1))
+              .withVahvistus(vahvistusPaikkakunnalla(LocalDate.of(2010, 10, 10)).get)
+            case (s, _) => s
+          }))
+        nimi(perusOo.getOppilaitos) should equal("Jyväskylän normaalikoulu")
+        nimi(perusOo.suoritukset.head.toimipiste) should equal("Jyväskylän normaalikoulu -vanha")
+        nimi(perusOo.suoritukset.last.toimipiste) should equal("Jyväskylän normaalikoulu")
+      }
+
     }
   }
 

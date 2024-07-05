@@ -140,8 +140,8 @@ trait Opiskeluoikeus extends Lähdejärjestelmällinen with OrganisaatioonLiitty
     tila.opiskeluoikeusjaksot.filter(_.tila.koodiarvo == "mitatoity").lastOption.map(_.alku)
 
   import mojave._
-  def withSuoritukset(suoritukset: List[PäätasonSuoritus]): Opiskeluoikeus = {
-    shapeless.lens[Opiskeluoikeus].field[List[PäätasonSuoritus]]("suoritukset").set(this)(suoritukset)
+  def withSuoritukset(suoritukset: List[Suoritus]): Opiskeluoikeus = {
+    shapeless.lens[Opiskeluoikeus].field[List[Suoritus]]("suoritukset").set(this)(suoritukset)
   }
   def aktiivinen = {
     !tila.opiskeluoikeusjaksot.exists(_.opiskeluoikeusPäättynyt)
@@ -196,9 +196,10 @@ trait KoskeenTallennettavaOpiskeluoikeus extends Opiskeluoikeus {
     val withOid = shapeless.lens[KoskeenTallennettavaOpiskeluoikeus].field[Option[String]]("oid").set(this)(oid)
     shapeless.lens[KoskeenTallennettavaOpiskeluoikeus].field[Option[Int]]("versionumero").set(withOid)(versionumero)
   }
-  override final def withSuoritukset(suoritukset: List[PäätasonSuoritus]): KoskeenTallennettavaOpiskeluoikeus = {
-    shapeless.lens[KoskeenTallennettavaOpiskeluoikeus].field[List[PäätasonSuoritus]]("suoritukset").set(this)(suoritukset)
+  override final def withSuoritukset(suoritukset: List[Suoritus]): KoskeenTallennettavaOpiskeluoikeus = {
+    shapeless.lens[KoskeenTallennettavaOpiskeluoikeus].field[List[Suoritus]]("suoritukset").set(this)(suoritukset)
   }
+
   final def withHistoria(historia: Option[List[OpiskeluoikeudenOrganisaatiohistoria]]): KoskeenTallennettavaOpiskeluoikeus = {
     shapeless.lens[KoskeenTallennettavaOpiskeluoikeus].field[Option[List[OpiskeluoikeudenOrganisaatiohistoria]]]("organisaatiohistoria").set(this)(historia)
   }

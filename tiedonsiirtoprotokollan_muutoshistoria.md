@@ -1,3 +1,6 @@
+## 8.7.2024
+- Päätason suoritusten oppilaitosten nimet haetaan erikseen vahvistuspäivän mukaan
+
 ## 30.5.2024
 
 - JOTPA-rahoitettujen opiskeluoikeuksien lisätietoihin lisätty JOTPA-asianumero kenttä.
