@@ -18,7 +18,7 @@ case class KelaDIAOpiskeluoikeus(
   koulutustoimija: Option[Koulutustoimija],
   sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus],
   arvioituPäättymispäivä: Option[LocalDate],
-  tila: KelaOpiskeluoikeudenTila,
+  tila: KelaOpiskeluoikeudenTilaRahoitustiedoilla,
   suoritukset: List[KelaDIAPäätasonSuoritus],
   lisätiedot: Option[KelaDIAOpiskeluoikeudenLisätiedot],
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.diatutkinto.koodiarvo)
