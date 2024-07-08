@@ -505,6 +505,17 @@ object MockUsers {
     )))
   )
 
+
+  val hakemuspalveluKäyttäjä = KoskiMockUser(
+    "Hakemuspalvelu-virkailija",
+    "virpiina",
+    "1.2.246.562.24.42042042058",
+    Seq(OrganisaatioJaKäyttöoikeudet(Opetushallitus.organisaatioOid, List(
+      PalveluJaOikeus("KOSKI", Rooli.HAKEMUSPALVELU_API),
+      PalveluJaOikeus("KOSKI", Rooli.OPHKATSELIJA)
+    )))
+  )
+
   val xssHyökkääjä = KoskiMockUser(
     "Paha Hakkeri</script><script>alert(1);",
     "xss-hakkeri",
@@ -584,6 +595,7 @@ object MockUsers {
     varsinaisSuomiHankintakoulutusOppilaitosTallentaja,
     ytlKäyttäjä,
     vktKäyttäjä,
+    hakemuspalveluKäyttäjä,
     xssHyökkääjä,
     muuKuinSäänneltyKoulutusYritys,
     pohjoiskalotinKoulutussäätiöKäyttäjä,

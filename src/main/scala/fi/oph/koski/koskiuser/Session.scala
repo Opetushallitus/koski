@@ -103,6 +103,7 @@ class KoskiSpecificSession(
     globalKäyttöoikeudet.exists(_.globalPalveluroolit.contains(Palvelurooli(TALLENNETUT_YLIOPPILASTUTKINNON_OPISKELUOIKEUDET)))
 
   def hasVktAccess: Boolean = globalKäyttöoikeudet.exists(_.globalPalveluroolit.contains(Palvelurooli(VKT)))
+  def hasHakemuspalveluAccess: Boolean = globalKäyttöoikeudet.exists(_.globalPalveluroolit.contains(Palvelurooli(HAKEMUSPALVELU_API)))
 
   def getKoulutustoimijatWithWriteAccess: List[Oid] = orgKäyttöoikeudet
     .filter(_.organisaatioAccessType.contains(AccessType.write))

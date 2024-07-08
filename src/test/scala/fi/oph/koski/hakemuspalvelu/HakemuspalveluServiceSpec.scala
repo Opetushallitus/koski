@@ -34,7 +34,7 @@ class HakemuspalveluServiceSpec
 
   val hakemuspalveluService = KoskiApplicationForTests.hakemuspalveluService
 
-  implicit val koskiSession = MockUsers.vktKäyttäjä.toKoskiSpecificSession(KoskiApplicationForTests.käyttöoikeusRepository)
+  implicit val koskiSession = MockUsers.hakemuspalveluKäyttäjä.toKoskiSpecificSession(KoskiApplicationForTests.käyttöoikeusRepository)
 
   override def afterEach(): Unit = {
     MockYtrClient.reset()
