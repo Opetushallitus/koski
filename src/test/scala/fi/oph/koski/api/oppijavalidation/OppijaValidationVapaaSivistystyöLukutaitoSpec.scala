@@ -23,6 +23,19 @@ class OppijaValidationVapaaSivistystyöLukutaitoSpec extends TutkinnonPerusteetT
       result.suoritukset.head.koulutusmoduuli.laajuusArvo(0) shouldBe(69)
     }
 
+    "Vahvistettua päätason suoritusta ei voi tallentaa jos sen kokonaislaajuus on alle 53 op" in {
+      val opiskeluoikeus = opiskeluoikeusLukutaito.withSuoritukset(List(
+        suoritusLukutaito.withOsasuoritukset(Some(List(
+          vapaanSivistystyönLukutaitokoulutuksenVuorovaikutustilanteissaToimimisenSuoritus(laajuus = LaajuusOpintopisteissä(5)),
+          vapaanSivistystyönLukutaitokoulutuksenTekstienLukeminenJaTulkitseminenSuoritus(laajuus = LaajuusOpintopisteissä(5))
+        )))
+      ))
+
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönVahvistetunPäätasonSuorituksenLaajuus())
+      }
+    }
+
     "Opiskeluoikeus ei voi käyttää tilaa 'hyvaksytystisuoritettu'" in {
       val opiskeluoikeus = opiskeluoikeusLukutaito.withSuoritukset(List(
         suoritusLukutaito.withOsasuoritukset(Some(List(

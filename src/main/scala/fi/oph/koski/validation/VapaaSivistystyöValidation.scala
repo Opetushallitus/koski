@@ -27,6 +27,8 @@ object VapaaSivistystyöValidation {
       case suoritus:VapaanSivistystyönPäätasonSuoritus => {
         HttpStatus.fold(List(
           suoritus match {
+            case luki: VapaanSivistystyönLukutaitokoulutuksenSuoritus =>
+              validateLukutaitokoulutuksenLaajuus(luki)
             case kops: OppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus if suoritus.vahvistettu =>
               HttpStatus.fold(List(
                 validateVapaanSivistystyönPäätasonKOPSSuorituksenLaajuus(kops),
@@ -236,6 +238,14 @@ object VapaaSivistystyöValidation {
     match {
       case Some(true) => KoskiErrorCategory.badRequest.validation.vapaaSivistystyö.duplikaattiOsaamismerkki()
       case _ => HttpStatus.ok
+    }
+  }
+
+  private def validateLukutaitokoulutuksenLaajuus(suoritus: VapaanSivistystyönLukutaitokoulutuksenSuoritus): HttpStatus = {
+    if (suoritus.vahvistettu && suoritus.koulutusmoduuli.laajuusArvo(0.0) < 53.0) {
+      KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönVahvistetunPäätasonSuorituksenLaajuus()
+    } else {
+      HttpStatus.ok
     }
   }
 }
