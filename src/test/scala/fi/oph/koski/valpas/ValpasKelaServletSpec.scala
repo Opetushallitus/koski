@@ -68,7 +68,19 @@ class ValpasKelaServletSpec extends ValpasTestBase with BeforeAndAfterEach {
           verifyResponseStatusOk()
           val response = JsonSerializer.parse[ValpasKelaOppija](body)
           response.henkilö.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti should equal(Some(date(2025, 12, 31)))
-          response.oppivelvollisuudenKeskeytykset should have length 0
+          response.oppivelvollisuudenKeskeytykset should be(Seq.empty)
+        }
+      }
+
+      "Palautetaan riisuttu data jos pidennetty maksuttomuusoikeus ei ole voimassa mutta sen päättymisestä on alle 5 vuotta" in {
+        KoskiApplicationForTests.valpasRajapäivätService.asInstanceOf[MockValpasRajapäivätService]
+          .asetaMockTarkastelupäivä(date(2030, 6, 30))
+
+        postHetu(ValpasMockOppijat.maksuttomuuttaPidennetty.hetu.get) {
+          verifyResponseStatusOk()
+          val response = JsonSerializer.parse[ValpasKelaOppija](body)
+          response.henkilö.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti should equal(Some(date(2025, 6, 30)))
+          response.oppivelvollisuudenKeskeytykset should be(Seq.empty)
         }
       }
 
