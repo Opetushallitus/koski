@@ -8,6 +8,8 @@ import fi.oph.koski.util.Timing
 import fi.oph.koski.valpas.db.ValpasSchema.OppivelvollisuudenKeskeytysRow
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasOppivelvollisuustiedotRow
 
+import java.time.LocalDate
+
 class ValpasKelaService(application: KoskiApplication) extends Logging with Timing {
   val henkilöRepository = application.henkilöRepository
   val oppijaLaajatTiedotService = application.valpasOppijaLaajatTiedotService
@@ -35,14 +37,22 @@ class ValpasKelaService(application: KoskiApplication) extends Logging with Timi
 
       val onrPalautettavatOppijat = tiedotAsValpasKelaOppijatWithOppivelvollisuudenKeskeytykset(oppijatJotkaLöytyvätOnrstä)
 
-      val oppijatJoidenMaksuttomuusoikeusOnVieläVoimassa = (koskeenTallennetutPalautettavatOppijat ++ onrPalautettavatOppijat)
+      def tarkastelupäiväAiemminKuin(d: LocalDate) = !rajapäivätService.tarkastelupäivä.isAfter(d)
+
+      // Kelan kanssa sovittu 2024 että tieto maksuttomuusoikeuden päättymisajankohdasta palautetaan 5 vuoden ajan oikeuden päättymisestä
+      val oppijatMaksuttomuusoikeudenVoimassaolonMukaan = (koskeenTallennetutPalautettavatOppijat ++ onrPalautettavatOppijat)
         .filter(_.henkilö.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti match {
-          case Some(d) if !rajapäivätService.tarkastelupäivä.isAfter(d) => true
+          case Some(d) if tarkastelupäiväAiemminKuin(d.plusYears(5)) => true
           case None => true
           case _ => false
         })
+        .map(x => x.henkilö.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti match {
+          case Some(d) if tarkastelupäiväAiemminKuin(d) => x
+          case Some(d) if tarkastelupäiväAiemminKuin(d.plusYears(5)) => x.copy(oppivelvollisuudenKeskeytykset = Seq())
+          case _ => x
+        })
 
-      Right(oppijatJoidenMaksuttomuusoikeusOnVieläVoimassa)
+      Right(oppijatMaksuttomuusoikeudenVoimassaolonMukaan)
     }
   }
 
@@ -71,7 +81,7 @@ class ValpasKelaService(application: KoskiApplication) extends Logging with Timi
         oid = dbRow.oppijaOid,
         hetu = dbRow.hetu,
         oppivelvollisuusVoimassaAsti = dbRow.oppivelvollisuusVoimassaAsti,
-        oikeusKoulutuksenMaksuttomuuteenVoimassaAsti = Some(dbRow.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti)
+        oikeusKoulutuksenMaksuttomuuteenVoimassaAsti = Option(dbRow.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti)
       ),
       oppivelvollisuudenKeskeytykset = keskeytykset.map(asValpasKelaOppivelvollisuudenKeskeytys)
     )
