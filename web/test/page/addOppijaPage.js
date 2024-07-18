@@ -1,12 +1,12 @@
 function AddOppijaPage() {
   function form() {
-    return S('form.uusi-oppija')
+    return S('.UusiOpiskeluoikeusDialog')
   }
   function button() {
     return form().find('button')
   }
   function modalButton() {
-    return form().find('button.vahvista')
+    return form().find('button.vahvista, .RaisedButton')
   }
   function selectedOppilaitos() {
     return form().find('.oppilaitos .selected')
@@ -39,7 +39,9 @@ function AddOppijaPage() {
       )
     },
     rahoitusIsVisible: function () {
-      return isElementVisible(S('.opintojenrahoitus'))
+      return isElementVisible(
+        S('[data-testid="uusiOpiskeluoikeus.modal.opintojenRahoitus"')
+      )
     },
     enterValidDataInternationalSchool: function (params) {
       params = _.merge(
@@ -507,14 +509,14 @@ function AddOppijaPage() {
       }
     },
     enterOppilaitos: function (name) {
-      return OrganisaatioHaku(form).enter(name)
+      return UusiOpiskeluoikeusOppilaitosSelect(form).enter(name)
     },
     selectOppilaitos: function (name) {
-      return OrganisaatioHaku(form).select(name)
+      return UusiOpiskeluoikeusOppilaitosSelect(form).select(name)
     },
-    oppilaitokset: OrganisaatioHaku(form).oppilaitokset,
-    toimipisteet: OrganisaatioHaku(form).toimipisteet,
-    oppilaitos: OrganisaatioHaku(form).oppilaitos,
+    oppilaitokset: UusiOpiskeluoikeusOppilaitosSelect(form).oppilaitokset,
+    toimipisteet: UusiOpiskeluoikeusOppilaitosSelect(form).toimipisteet,
+    oppilaitos: UusiOpiskeluoikeusOppilaitosSelect(form).oppilaitos,
     selectTutkinto: function (name) {
       if (!name) {
         return wait.forAjax
@@ -537,7 +539,10 @@ function AddOppijaPage() {
       } else return function () {}
     },
     selectAloituspäivä: function (date) {
-      return pageApi.setInputValue('.aloituspaiva input', date)
+      return pageApi.setInputValue(
+        '[data-testid="uusiOpiskeluoikeus.modal.date.edit.input"]',
+        date
+      )
     },
     selectOpiskeluoikeudenTila: function (tila) {
       if (tila) {
@@ -623,7 +628,9 @@ function AddOppijaPage() {
       return pageApi.getInputValue('.opiskeluoikeudentyyppi input')
     },
     selectOpiskeluoikeudenTyyppi: function (tyyppi) {
-      return pageApi.setInputValue('.opiskeluoikeudentyyppi .dropdown', tyyppi)
+      return Select('uusiOpiskeluoikeus.modal.opiskeluoikeus', form).select(
+        tyyppi
+      )
     },
     selectOpintokokonaisuus: function (kokonaisuus) {
       return selectFromDropdown('.opintokokonaisuus .dropdown', kokonaisuus)
@@ -655,7 +662,9 @@ function AddOppijaPage() {
         : function () {}
     },
     opiskeluoikeudenTilat: function () {
-      return pageApi.getInputOptions('.opiskeluoikeudentila .dropdown')
+      const s = Select('uusiOpiskeluoikeus.modal.tila', form)
+      s.openSync()
+      return s.optionTexts()
     },
     tutkinnot: function () {
       return extractAsText(
@@ -701,6 +710,106 @@ function AddOppijaPage() {
         .until(pageApi.getInput(selector).isVisible)()
         .then(wait.forAjax)
         .then(pageApi.setInputValue(selector, value))
+    }
+  }
+  return api
+}
+
+// Uuden opiskeluoikeuden organisaatiovalitsin
+
+function Select(testId, base) {
+  const baseElem = () => base()[0]
+  const input = () => Page(findByTestId(testId, baseElem())).getInput('input')
+  const findByTestId = (id, baseE) => {
+    const elem = $(baseE.querySelector(`[data-testid="${id}"]`))
+    if (!elem) {
+      throw new Error(`Test id "${id}" does not exist on dom`)
+    }
+    return elem
+  }
+  const sleep = () => new Promise((r) => setTimeout(r, 100)) // TODO: Tutki, miten tästä päästäisiin eroon
+
+  const api = {
+    select: function (value) {
+      return async function () {
+        await api.open()
+        const opts = api.options()
+        const target = opts.find(`:contains("${value}")`)
+        target.click()
+        await sleep()
+      }
+    },
+    search: function (value) {
+      return async function () {
+        try {
+          return await api
+            .enter(value)()
+            .then(async () => {
+              api.options().click()
+              await sleep()
+            })
+        } catch (er) {
+          console.error('UusiOpiskeluoikeusOppilaitosSelect.select failed:', er)
+          throw er
+        }
+      }
+    },
+    enter: function (value) {
+      return async function () {
+        try {
+          await sleep()
+          return input().setValue(value)
+        } catch (er) {
+          console.error('UusiOpiskeluoikeusOppilaitosSelect.enter failed:', er)
+          throw er
+        }
+      }
+    },
+    open: async function () {
+      await sleep()
+      const target = findByTestId(`${testId}.input`, baseElem())
+      target.click()
+    },
+    openSync: function () {
+      const target = findByTestId(`${testId}.input`, baseElem())
+      target.click()
+    },
+    options: function () {
+      return findByTestId(`${testId}.options`, baseElem()).find(
+        '.Select__option'
+      )
+    },
+    optionTexts: function () {
+      return api
+        .options()
+        .map((_, o) => $(o).text())
+        .get()
+    }
+  }
+  return api
+}
+
+function UusiOpiskeluoikeusOppilaitosSelect(base) {
+  const select = Select('uusiOpiskeluoikeus.modal.oppilaitos', base)
+
+  const api = {
+    select: function (value) {
+      return select.search(value)
+    },
+    enter: function (value) {
+      return select.enter(value)
+    },
+    open: function () {
+      return select.open()
+    },
+    oppilaitokset: function () {
+      return ['TODO: oppilaitokset()']
+    },
+    toimipisteet: function () {
+      return ['TODO: toimipisteet()']
+    },
+    oppilaitos: function () {
+      return 'TODO: oppilaitos()'
     }
   }
   return api

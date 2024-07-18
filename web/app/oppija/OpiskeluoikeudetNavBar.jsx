@@ -1,31 +1,24 @@
-import React from 'baret'
 import Atom from 'bacon.atom'
-import { modelData, modelTitle, modelItems } from '../editor/EditorModel'
+import React from 'baret'
 import Link from '../components/Link'
-import { currentLocation, navigateTo } from '../util/location.js'
 import { yearFromIsoDateString } from '../date/date'
-import { UusiOpiskeluoikeusPopup } from './UusiOpiskeluoikeusPopup'
-import { postNewOppija } from '../uusioppija/UusiOppija'
-import { reloadOppija } from '../virkailija/VirkailijaOppijaView'
-import { userP } from '../util/user'
+import { modelData, modelItems, modelTitle } from '../editor/EditorModel'
 import Text from '../i18n/Text'
 import { t } from '../i18n/i18n'
+import { currentLocation, navigateTo } from '../util/location.js'
+import { userP } from '../util/user'
 import { UusiOpiskeluoikeusDialog } from '../uusiopiskeluoikeus/UusiOpiskeluoikeusDialog'
+import { postNewOppija } from '../uusioppija/UusiOppija'
+import { reloadOppija } from '../virkailija/VirkailijaOppijaView'
 
 export default ({ oppijaOid, opiskeluoikeusTyypit, selectedIndex }) => {
   const addingAtom = Atom(false)
-  const addingAtom2 = Atom(false)
   const toggleAdd = (event) => {
-    if (event.metaKey) {
-      addingAtom2.modify((x) => !x)
-    } else {
-      addingAtom.modify((x) => !x)
-    }
+    addingAtom.modify((x) => !x)
   }
   const addOpiskeluoikeus = (opiskeluoikeus) => {
     if (!opiskeluoikeus) {
       addingAtom.set(false)
-      addingAtom2.set(false)
     } else {
       const oppija = {
         henkilö: { oid: oppijaOid },
@@ -143,16 +136,8 @@ export default ({ oppijaOid, opiskeluoikeusTyypit, selectedIndex }) => {
               {addingAtom.map(
                 (adding) =>
                   adding && (
-                    <UusiOpiskeluoikeusPopup
-                      resultCallback={addOpiskeluoikeus}
-                    />
-                  )
-              )}
-              {addingAtom2.map(
-                (adding) =>
-                  adding && (
                     <UusiOpiskeluoikeusDialog
-                      onClose={() => addingAtom2.set(false)}
+                      onClose={() => addingAtom.set(false)}
                       onSubmit={addOpiskeluoikeus}
                     />
                   )
