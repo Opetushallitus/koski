@@ -48,7 +48,7 @@ class OpiskeluoikeusFacade[OPISKELUOIKEUS: TypeTag](
           .map(_.flatMap(masterHenkilö =>
             fetchYtrWithConverter match {
               case Some(converter) =>
-                fetchYtrData(masterHenkilö, useDownloadedYtr, converter)
+                getAndConvertYtrData(masterHenkilö, useDownloadedYtr, converter)
               case None =>
                 Right(Seq.empty)
             }
@@ -104,25 +104,35 @@ class OpiskeluoikeusFacade[OPISKELUOIKEUS: TypeTag](
     }
   }
 
-
-  def fetchYtrData(
+  def getAndConvertYtrData(
     masterHenkilö: LaajatOppijaHenkilöTiedot,
     useDownloadedYtr: Boolean,
     converter: schema.YlioppilastutkinnonOpiskeluoikeus => OPISKELUOIKEUS
   ): Either[HttpStatus, Seq[OPISKELUOIKEUS]] = {
     try {
-      val opiskeluoikeudet: Seq[schema.YlioppilastutkinnonOpiskeluoikeus] =
-        if (useDownloadedYtr) {
-          fetchDownloadedYtrOpiskeluoikeudet(masterHenkilö)
-        } else {
-          fetchYtrOpiskeluoikeudet(masterHenkilö)
-        }
-
+      val opiskeluoikeudet = fetchYtrOpiskeluoikeudet(masterHenkilö, useDownloadedYtr)
       Right(opiskeluoikeudet.map(converter))
     } catch {
       case NonFatal(e) =>
         logger.warn(e)("Failed to fetch data from YTR")
         Left(KoskiErrorCategory.unavailable.ytr())
+    }
+  }
+
+  def fetchYtrOpiskeluoikeudet(
+    masterHenkilö: LaajatOppijaHenkilöTiedot,
+    useDownloadedYtr: Boolean)
+  : Seq[schema.YlioppilastutkinnonOpiskeluoikeus] = {
+    def fetchDownloaded: Seq[schema.YlioppilastutkinnonOpiskeluoikeus] = fetchDownloadedYtrOpiskeluoikeudet(masterHenkilö)
+    def fetchFromRemote: Seq[schema.YlioppilastutkinnonOpiskeluoikeus] = fetchYtrOpiskeluoikeudet(masterHenkilö)
+
+    if (useDownloadedYtr) {
+      fetchDownloaded match {
+        case xs: Seq[schema.YlioppilastutkinnonOpiskeluoikeus] if xs.nonEmpty => xs
+        case _ => fetchFromRemote
+      }
+    } else {
+      fetchFromRemote
     }
   }
 
@@ -135,7 +145,7 @@ class OpiskeluoikeusFacade[OPISKELUOIKEUS: TypeTag](
       )(KoskiSpecificSession.systemUserTallennetutYlioppilastutkinnonOpiskeluoikeudet)
       .flatMap(_.warningsToLeft)
       .map(_.opiskeluoikeudet.collect { case yo: schema.YlioppilastutkinnonOpiskeluoikeus => yo })
-      .getOrElse(fetchYtrOpiskeluoikeudet(masterHenkilö))
+      .getOrElse(Seq.empty)
   }
 
   def fetchYtrOpiskeluoikeudet(
