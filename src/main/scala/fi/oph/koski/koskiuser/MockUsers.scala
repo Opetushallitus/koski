@@ -500,8 +500,7 @@ object MockUsers {
     "valeria",
     "1.2.246.562.24.42042042058",
     Seq(OrganisaatioJaKäyttöoikeudet(Opetushallitus.organisaatioOid, List(
-      PalveluJaOikeus("KOSKI", Rooli.VKT),
-      PalveluJaOikeus("KOSKI", Rooli.OPHKATSELIJA)
+      PalveluJaOikeus("KOSKI", Rooli.VKT)
     )))
   )
 
@@ -509,10 +508,9 @@ object MockUsers {
   val hakemuspalveluKäyttäjä = KoskiMockUser(
     "Hakemuspalvelu-virkailija",
     "virpiina",
-    "1.2.246.562.24.42042042058",
+    "1.2.246.562.24.42042042069",
     Seq(OrganisaatioJaKäyttöoikeudet(Opetushallitus.organisaatioOid, List(
       PalveluJaOikeus("KOSKI", Rooli.HAKEMUSPALVELU_API),
-      PalveluJaOikeus("KOSKI", Rooli.OPHKATSELIJA)
     )))
   )
 

@@ -7,6 +7,7 @@ import fi.oph.koski.etk.ElaketurvakeskusServlet
 import fi.oph.koski.executors.GlobalExecutionContext
 import fi.oph.koski.fixture.FixtureServlet
 import fi.oph.koski.frontendvalvonta.{FrontendValvontaMode, FrontendValvontaRaportointiServlet}
+import fi.oph.koski.hakemuspalvelu.HakemuspalveluServlet
 import fi.oph.koski.healthcheck.{HealthCheckApiServlet, HealthCheckHtmlServlet}
 import fi.oph.koski.henkilo.HenkilötiedotServlet
 import fi.oph.koski.history.KoskiHistoryServlet
@@ -140,6 +141,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing with GlobalEx
 
     if (!Environment.isProdEnvironment(application.config)) {
       mount("/koski/api/vkt", new VktServlet)
+      mount("/koski/api/hakemuspalvelu", new HakemuspalveluServlet)
     }
 
     mount("/koski/omadata", new MyDataReactServlet)
