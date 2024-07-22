@@ -4,7 +4,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.{HenkilöOid, Hetu}
 import fi.oph.koski.http.{HttpStatus, JsonErrorMessage, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.RequiresVkt
+import fi.oph.koski.koskiuser.{KoskiSpecificSession, RequiresVkt}
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 import org.json4s.JValue
 
@@ -13,14 +13,16 @@ case class HetuRequest(hetu: String)
 
 class VktServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with RequiresVkt with NoCache {
   post("/oid") {
+    val ophKatselijaUser = KoskiSpecificSession.ophKatselijaUser(request)
     withJsonBody { json =>
-      renderEither(extractAndValidateOid(json).flatMap(application.vktService.findOppija))
+      renderEither(extractAndValidateOid(json).flatMap(oid => application.vktService.findOppija(oid)(ophKatselijaUser)))
     }()
   }
 
   post("/hetu") {
+    val ophKatselijaUser = KoskiSpecificSession.ophKatselijaUser(request)
     withJsonBody { json =>
-      renderEither(extractAndValidateHetu(json).flatMap(application.vktService.findOppijaByHetu))
+      renderEither(extractAndValidateHetu(json).flatMap(hetu => application.vktService.findOppijaByHetu(hetu)(ophKatselijaUser)))
     }()
   }
 

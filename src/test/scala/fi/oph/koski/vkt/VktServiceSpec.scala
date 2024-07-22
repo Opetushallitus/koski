@@ -5,6 +5,9 @@ import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.documentation.ExampleData.{longTimeAgo, opiskeluoikeusLäsnä, valtionosuusRahoitteinen}
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
 import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.koskiuser.KoskiSpecificSession.OPH_KATSELIJA_USER
+import fi.oph.koski.koskiuser.MockUsers.{hakemuspalveluKäyttäjä, vktKäyttäjä}
 import fi.oph.koski.koskiuser.Rooli.{OPHKATSELIJA, VKT}
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.organisaatio.MockOrganisaatiot
@@ -34,11 +37,31 @@ class VktServiceSpec
 
   val vktService = KoskiApplicationForTests.vktService
 
-  implicit val koskiSession = MockUsers.vktKäyttäjä.toKoskiSpecificSession(KoskiApplicationForTests.käyttöoikeusRepository)
+  implicit val koskiSession =  new KoskiSpecificSession(
+    AuthenticationUser(
+      vktKäyttäjä.oid,
+      OPH_KATSELIJA_USER,
+      OPH_KATSELIJA_USER, None
+    ),
+    "fi",
+    InetAddress.getLoopbackAddress,
+    "",
+    Set(KäyttöoikeusGlobal(List(Palvelurooli(OPHKATSELIJA))))
+  )
 
   override def afterEach(): Unit = {
     MockYtrClient.reset()
     super.afterEach()
+  }
+
+  "Access control toimii oikein" in {
+    post("/api/vkt/oid", JsonSerializer.writeWithRoot(OidRequest(oid = KoskiSpecificMockOppijat.dippainssi.oid)), headers = authHeaders(vktKäyttäjä) ++ jsonContent){
+      verifyResponseStatusOk()
+    }
+
+    post("/api/vkt/oid", JsonSerializer.writeWithRoot(OidRequest(oid = KoskiSpecificMockOppijat.dippainssi.oid)), headers = authHeaders(hakemuspalveluKäyttäjä) ++ jsonContent){
+      verifyResponseStatus(403, KoskiErrorCategory.forbidden("Käyttäjällä ei ole oikeuksia annetun organisaation tietoihin."))
+    }
   }
 
   "Kosken testioppijoiden tiedot voi hakea ilman virheitä" in {
