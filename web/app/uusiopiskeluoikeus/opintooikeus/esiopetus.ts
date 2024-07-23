@@ -32,7 +32,7 @@ export const createEsiopetuksenOpiskeluoikeus = (
         koulutusmoduuli: Esiopetus({
           perusteenDiaarinumero: peruste.koodiarvo,
           tunniste: Koodistokoodiviite({
-            koodiarvo: organisaatio.oppilaitostyyppi?.includes(
+            koodiarvo: organisaatio.organisaatiotyypit?.includes(
               VARHAISKASVATUKSEN_TOIMIPAIKKA
             )
               ? '001102'
