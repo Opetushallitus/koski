@@ -5,6 +5,7 @@ import { MuuAmmatillinenKoulutus } from '../../types/fi/oph/koski/schema/MuuAmma
 import { Opiskeluoikeus } from '../../types/fi/oph/koski/schema/Opiskeluoikeus'
 import { TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus } from '../../types/fi/oph/koski/schema/TutkinnonOsaaPienemmistaKokonaisuuksistaKoostuvaKoulutus'
 import { TutkintoPeruste } from '../../types/fi/oph/koski/tutkinto/TutkintoPeruste'
+import { Hankintakoulutus } from '../state/state'
 import { createAikuistenPerusopetuksenOpiskeluoikeus } from './aikuistenPerusopetus'
 import { createAmmatillinenOpiskeluoikeus } from './ammatillinenTutkinto'
 import { createDIAOpiskeluoikeus } from './diaTutkinto'
@@ -40,6 +41,7 @@ export const createOpiskeluoikeus = (
   tpoTaiteenala?: Koodistokoodiviite<'taiteenperusopetustaiteenala'>,
   tpoToteutustapa?: Koodistokoodiviite<'taiteenperusopetuskoulutuksentoteutustapa'>,
   varhaiskasvatuksenJärjestämismuoto?: Koodistokoodiviite<'vardajarjestamismuoto'>,
+  hankintakoulutus?: Hankintakoulutus,
   osaamismerkki?: Koodistokoodiviite<'osaamismerkit'>,
   tutkinto?: TutkintoPeruste,
   suoritustapa?: Koodistokoodiviite<'ammatillisentutkinnonsuoritustapa'>,
@@ -107,7 +109,8 @@ export const createOpiskeluoikeus = (
         alku,
         tila,
         suorituskieli,
-        varhaiskasvatuksenJärjestämismuoto
+        varhaiskasvatuksenJärjestämismuoto,
+        hankintakoulutus
       )
 
     case 'tuva':

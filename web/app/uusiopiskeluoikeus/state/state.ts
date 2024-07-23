@@ -290,6 +290,7 @@ export const useUusiOpiskeluoikeusDialogState =
               tpoTaiteenala.value,
               tpoToteutustapa.value,
               varhaiskasvatuksenJärjestämistapa.value,
+              hankintakoulutus.value,
               osaamismerkki.value,
               tutkinto.value,
               suoritustapa.value,
@@ -302,6 +303,7 @@ export const useUusiOpiskeluoikeusDialogState =
       [
         aloituspäivä.value,
         curriculum.value,
+        hankintakoulutus.value,
         internationalSchoolGrade.value,
         jotpaAsianumero.value,
         maksuton.value,

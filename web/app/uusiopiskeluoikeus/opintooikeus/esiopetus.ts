@@ -7,6 +7,7 @@ import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokood
 import { NuortenPerusopetuksenOpiskeluoikeudenTila } from '../../types/fi/oph/koski/schema/NuortenPerusopetuksenOpiskeluoikeudenTila'
 import { NuortenPerusopetuksenOpiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/NuortenPerusopetuksenOpiskeluoikeusjakso'
 import { VARHAISKASVATUKSEN_TOIMIPAIKKA } from '../../uusioppija/esiopetuksenSuoritus'
+import { Hankintakoulutus } from '../state/state'
 import { toOppilaitos, toToimipiste } from './utils'
 
 // Esiopetus
@@ -16,9 +17,12 @@ export const createEsiopetuksenOpiskeluoikeus = (
   alku: string,
   tila: NuortenPerusopetuksenOpiskeluoikeusjakso['tila'],
   suorituskieli: Koodistokoodiviite<'kieli'>,
-  järjestämismuoto?: Koodistokoodiviite<'vardajarjestamismuoto', any>
-) =>
-  EsiopetuksenOpiskeluoikeus({
+  järjestämismuoto?: Koodistokoodiviite<'vardajarjestamismuoto', any>,
+  hankintakoulutus?: Hankintakoulutus
+) => {
+  if (hankintakoulutus && !järjestämismuoto) return undefined
+
+  return EsiopetuksenOpiskeluoikeus({
     oppilaitos: toOppilaitos(organisaatio),
     tila: NuortenPerusopetuksenOpiskeluoikeudenTila({
       opiskeluoikeusjaksot: [
@@ -44,3 +48,4 @@ export const createEsiopetuksenOpiskeluoikeus = (
       })
     ]
   })
+}
