@@ -55,6 +55,7 @@ export const UusiOpiskeluoikeusForm = (props: UusiOpiskeluoikeusFormProps) => {
                 value={state.oppilaitos.value}
                 onChange={state.oppilaitos.set}
                 orgTypes={valittavatOrganisaatiotyypit}
+                hankintakoulutus={state.hankintakoulutus.value}
               />
             ) : (
               <OppilaitosSelect

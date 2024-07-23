@@ -14,6 +14,10 @@ function AddOppijaPage() {
   function selectedTutkinto() {
     return form().find('.tutkinto .selected')
   }
+  function selectValue(field, value) {
+    return Select(`uusiOpiskeluoikeus.modal.${field}`, form).select(value)
+  }
+
   var pageApi = Page(form)
   var api = {
     addNewOppija: function (username, hetu, oppijaData) {
@@ -116,18 +120,25 @@ function AddOppijaPage() {
       }
     },
     enterValidDataEsiopetus: function (params) {
-      params = _.merge({ oppilaitos: 'Jyväskylän normaalikoulu' }, {}, params)
-      return function () {
-        return api
-          .enterData(params)()
-          .then(api.selectOpiskeluoikeudenTyyppi('Esiopetus'))
-      }
+      return api.enterData(
+        _.merge(
+          {
+            oppilaitos: 'Jyväskylän normaalikoulu',
+            opiskeluoikeudenTyyppi: 'Esiopetus'
+          },
+          {},
+          params
+        )
+      )
     },
     enterValidDataPäiväkodinEsiopetus: function (params) {
-      params = _.merge({ oppilaitos: 'PK Vironniemi' }, {}, params)
-      return function () {
-        return api.enterData(params)()
-      }
+      return api.enterData(
+        _.merge(
+          { oppilaitos: 'PK Vironniemi', opiskeluoikeudenTyyppi: 'Esiopetus' },
+          {},
+          params
+        )
+      )
     },
     enterHenkilötiedot: function (params) {
       params = _.merge(
@@ -490,6 +501,13 @@ function AddOppijaPage() {
           .enterHenkilötiedot(params)()
           .then(api.selectOppilaitos(params.oppilaitos))
           .then(function () {
+            if (params.opiskeluoikeudenTyyppi) {
+              return api.selectOpiskeluoikeudenTyyppi(
+                params.opiskeluoikeudenTyyppi
+              )()
+            }
+          })
+          .then(function () {
             if (params.suorituskieli) {
               return api.selectSuorituskieli(params.suorituskieli)()
             }
@@ -641,7 +659,7 @@ function AddOppijaPage() {
       return selectFromDropdown('.oppiaine .dropdown', oppiaine)
     },
     selectSuorituskieli: function (kieli) {
-      return selectFromDropdown('.suorituskieli .dropdown', kieli)
+      return selectValue('suorituskieli', kieli)
     },
     selectJärjestämislupa: function (järjestämislupa) {
       return selectFromDropdown('.järjestämislupa .dropdown', järjestämislupa)
@@ -686,11 +704,14 @@ function AddOppijaPage() {
     goBack: click(findSingle('h1 a')),
     selectFromDropdown,
     selectVarhaiskasvatusOrganisaationUlkopuolelta: function (checked) {
-      return pageApi.setInputValue('#varhaiskasvatus-checkbox', checked)
+      return pageApi.setInputValue(
+        '[data-testid="uusiOpiskeluoikeus.modal.hankintakoulutus.esiopetus"]',
+        checked
+      )
     },
     selectJärjestämismuoto: function (järjestämismuoto) {
-      return selectFromDropdown(
-        '#varhaiskasvatus-jarjestamismuoto .dropdown',
+      return selectValue(
+        'hankintakoulutus.varhaiskasvatuksenJärjestämismuoto',
         järjestämismuoto
       )
     }
