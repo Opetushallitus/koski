@@ -1,6 +1,6 @@
 function AddOppijaPage() {
   function form() {
-    return S('.UusiOpiskeluoikeusDialog')
+    return S('form.uusi-oppija, .UusiOpiskeluoikeusDialog')
   }
   function button() {
     return form().find('button')
@@ -14,6 +14,10 @@ function AddOppijaPage() {
   function selectedTutkinto() {
     return form().find('.tutkinto .selected')
   }
+  function selectValue(field, value) {
+    return Select(`uusiOpiskeluoikeus.modal.${field}`, form).select(value)
+  }
+
   var pageApi = Page(form)
   var api = {
     addNewOppija: function (username, hetu, oppijaData) {
@@ -118,18 +122,25 @@ function AddOppijaPage() {
       }
     },
     enterValidDataEsiopetus: function (params) {
-      params = _.merge({ oppilaitos: 'Jyväskylän normaalikoulu' }, {}, params)
-      return function () {
-        return api
-          .enterData(params)()
-          .then(api.selectOpiskeluoikeudenTyyppi('Esiopetus'))
-      }
+      return api.enterData(
+        _.merge(
+          {
+            oppilaitos: 'Jyväskylän normaalikoulu',
+            opiskeluoikeudenTyyppi: 'Esiopetus'
+          },
+          {},
+          params
+        )
+      )
     },
     enterValidDataPäiväkodinEsiopetus: function (params) {
-      params = _.merge({ oppilaitos: 'PK Vironniemi' }, {}, params)
-      return function () {
-        return api.enterData(params)()
-      }
+      return api.enterData(
+        _.merge(
+          { oppilaitos: 'PK Vironniemi', opiskeluoikeudenTyyppi: 'Esiopetus' },
+          {},
+          params
+        )
+      )
     },
     enterHenkilötiedot: function (params) {
       params = _.merge(
@@ -492,6 +503,13 @@ function AddOppijaPage() {
           .enterHenkilötiedot(params)()
           .then(api.selectOppilaitos(params.oppilaitos))
           .then(function () {
+            if (params.opiskeluoikeudenTyyppi) {
+              return api.selectOpiskeluoikeudenTyyppi(
+                params.opiskeluoikeudenTyyppi
+              )()
+            }
+          })
+          .then(function () {
             if (params.suorituskieli) {
               return api.selectSuorituskieli(params.suorituskieli)()
             }
@@ -628,9 +646,7 @@ function AddOppijaPage() {
       return pageApi.getInputValue('.opiskeluoikeudentyyppi input')
     },
     selectOpiskeluoikeudenTyyppi: function (tyyppi) {
-      return Select('uusiOpiskeluoikeus.modal.opiskeluoikeus', form).select(
-        tyyppi
-      )
+      return selectValue('opiskeluoikeus', tyyppi)
     },
     selectOpintokokonaisuus: function (kokonaisuus) {
       return selectFromDropdown('.opintokokonaisuus .dropdown', kokonaisuus)
@@ -648,7 +664,7 @@ function AddOppijaPage() {
       return selectFromDropdown('.oppiaine .dropdown', oppiaine)
     },
     selectSuorituskieli: function (kieli) {
-      return selectFromDropdown('.suorituskieli .dropdown', kieli)
+      return selectValue('suorituskieli', kieli)
     },
     selectJärjestämislupa: function (järjestämislupa) {
       return selectFromDropdown('.järjestämislupa .dropdown', järjestämislupa)
@@ -695,11 +711,14 @@ function AddOppijaPage() {
     goBack: click(findSingle('h1 a')),
     selectFromDropdown,
     selectVarhaiskasvatusOrganisaationUlkopuolelta: function (checked) {
-      return pageApi.setInputValue('#varhaiskasvatus-checkbox', checked)
+      return pageApi.setInputValue(
+        '[data-testid="uusiOpiskeluoikeus.modal.hankintakoulutus.esiopetus"]',
+        checked
+      )
     },
     selectJärjestämismuoto: function (järjestämismuoto) {
-      return selectFromDropdown(
-        '#varhaiskasvatus-jarjestamismuoto .dropdown',
+      return selectValue(
+        'hankintakoulutus.varhaiskasvatuksenJärjestämismuoto',
         järjestämismuoto
       )
     }
@@ -727,20 +746,35 @@ function Select(testId, base) {
     }
     return elem
   }
-  const sleep = () => new Promise((r) => setTimeout(r, 100)) // TODO: Tutki, miten tästä päästäisiin eroon
+  const sleep = (time = 100) => new Promise((r) => setTimeout(r, time))
+  const assertVisibility = () => {
+    if (!input().isVisible()) {
+      throw new Error(`${testId} is not visible`)
+    }
+  }
 
   const api = {
     select: function (value) {
-      return async function () {
+      return eventually(async () => {
+        assertVisibility()
         await api.open()
-        const opts = api.options()
-        const target = opts.find(`:contains("${value}")`)
-        target.click()
+        let clicked = false
+        api.options().map((_, o) => {
+          const $o = $(o)
+          if ($o.text() === value) {
+            $o.click()
+            clicked = true
+          }
+        })
+        if (!clicked) {
+          throw new Error(`Value '${value}' does not exist in ${testId}`)
+        }
         await sleep()
-      }
+      })
     },
     search: function (value) {
-      return async function () {
+      return eventually(async () => {
+        assertVisibility()
         try {
           return await api
             .enter(value)()
@@ -752,34 +786,44 @@ function Select(testId, base) {
           console.error('UusiOpiskeluoikeusOppilaitosSelect.select failed:', er)
           throw er
         }
-      }
+      })
     },
     enter: function (value) {
-      return async function () {
+      return eventually(async () => {
+        assertVisibility()
         try {
           await sleep()
-          return input().setValue(value)
+          const result = input().setValue(value)
+          await sleep(500)
+          await wait.forAjax()
+          return result
         } catch (er) {
           console.error('UusiOpiskeluoikeusOppilaitosSelect.enter failed:', er)
           throw er
         }
-      }
+      })
     },
     open: async function () {
-      await sleep()
-      const target = findByTestId(`${testId}.input`, baseElem())
-      target.click()
+      return eventually(async () => {
+        assertVisibility()
+        await sleep()
+        const target = findByTestId(`${testId}.input`, baseElem())
+        target.click()
+      })()
     },
     openSync: function () {
+      assertVisibility()
       const target = findByTestId(`${testId}.input`, baseElem())
       target.click()
     },
     options: function () {
+      assertVisibility()
       return findByTestId(`${testId}.options`, baseElem()).find(
-        '.Select__option'
+        '.Select__optionLabel:not(.Select__optionGroup)'
       )
     },
     optionTexts: function () {
+      assertVisibility()
       return api
         .options()
         .map((_, o) => $(o).text())
@@ -806,7 +850,7 @@ function UusiOpiskeluoikeusOppilaitosSelect(base) {
       return ['TODO: oppilaitokset()']
     },
     toimipisteet: function () {
-      return ['TODO: toimipisteet()']
+      return select.optionTexts()
     },
     oppilaitos: function () {
       return 'TODO: oppilaitos()'

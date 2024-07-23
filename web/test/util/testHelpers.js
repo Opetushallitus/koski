@@ -485,3 +485,23 @@ function setInputValue(elementOrSelector, value) {
   nativeInputValueSetter.call(input, value)
   input.dispatchEvent(new Event('input', { bubbles: true }))
 }
+
+function sleep(time) {
+  return () => new Promise((resolve) => setTimeout(resolve, time))
+}
+
+function eventually(fn, timeout = 5000) {
+  return async () => {
+    const startTime = new Date().getTime()
+    let error = null
+    while (new Date().getTime() - startTime < timeout) {
+      try {
+        return await fn()
+      } catch (err) {
+        error = err
+        await sleep(250)()
+      }
+    }
+    throw error
+  }
+}
