@@ -173,6 +173,7 @@ const SuostumuksenPeruutusPopup: React.FC<SuostumuksenPeruutusPopupProps> = ({
           label="Ymmärrän, että suostumuksen peruutus on lopullinen. Kyseisen koulutuksen tiedot poistuvat Opintopolun suoritustiedoistani välittömästi."
           checked={accepted}
           onChange={setAccepted}
+          testId="suostumuksenPeruminen"
         />
       </ModalBody>
       <ModalFooter>
