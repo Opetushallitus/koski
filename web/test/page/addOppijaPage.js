@@ -338,6 +338,7 @@ function AddOppijaPage() {
       params = _.merge(
         {
           oppilaitos: 'Ressun',
+          opiskeluoikeudenTyyppi: 'IB-tutkinto',
           oppimäärä: 'IB-tutkinto',
           opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus',
           alkamispäivä: '1.1.2018'
@@ -348,16 +349,17 @@ function AddOppijaPage() {
       return function () {
         return api
           .enterData(params)()
-          .then(api.selectOpiskeluoikeudenTyyppi('IB-tutkinto'))
           .then(api.selectOppimäärä(params.oppimäärä))
           .then(api.selectAloituspäivä(params.alkamispäivä))
           .then(api.selectOpintojenRahoitus(params.opintojenRahoitus))
+          .then(api.selectMaksuttomuus(0))
       }
     },
     enterValidDataPreIB: function (params) {
       params = _.merge(
         {
           oppilaitos: 'Ressun',
+          opiskeluoikeudenTyyppi: 'IB-tutkinto',
           oppimäärä: 'Pre-IB',
           opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus',
           alkamispäivä: '1.1.2018'
@@ -368,10 +370,10 @@ function AddOppijaPage() {
       return function () {
         return api
           .enterData(params)()
-          .then(api.selectOpiskeluoikeudenTyyppi('IB-tutkinto'))
           .then(api.selectOppimäärä(params.oppimäärä))
           .then(api.selectAloituspäivä(params.alkamispäivä))
           .then(api.selectOpintojenRahoitus(params.opintojenRahoitus))
+          .then(api.selectMaksuttomuus(0))
       }
     },
     enterValidDataDIA: function (params) {
