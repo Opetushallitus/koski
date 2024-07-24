@@ -12,7 +12,7 @@ import org.scalatest.BeforeAndAfterAll
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
-import scala.xml.{NodeSeq, Utility, XML}
+import scala.xml.{Utility, XML}
 
 class HslSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethods with Matchers with BeforeAndAfterAll {
   val opiskelija = KoskiSpecificMockOppijat.markkanen
@@ -20,10 +20,15 @@ class HslSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMeth
   "Hsl" - {
     "vaatii HSL käyttäjän" in {
       KoskiApplicationForTests.mydataRepository.create(opiskelija.oid, "hsl")
-      MockUsers.users.diff(List(MockUsers.hslKäyttäjä)).foreach { user =>
-        postHsl(user, opiskelija.hetu.get) {
-          verifySOAPError("forbidden.vainHSL", "Sallittu vain HSL:lle")
+      MockUsers.users
+        .diff(List(MockUsers.hslKäyttäjä, MockUsers.suomiFiKäyttäjä))
+        .foreach { user =>
+          postHsl(user, opiskelija.hetu.get) {
+            verifySOAPError("forbidden.vainPalveluvayla", "Sallittu vain palveluväylän kautta")
+          }
         }
+      postHsl(MockUsers.suomiFiKäyttäjä, opiskelija.hetu.get) {
+        verifySOAPError("forbidden.kiellettyKäyttöoikeus", "Ei sallittu näillä käyttöoikeuksilla")
       }
       postHsl(MockUsers.hslKäyttäjä, opiskelija.hetu.get) {
         verifyResponseStatusOk()
@@ -107,7 +112,7 @@ class HslSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMeth
   }
 
   private def postHsl[A](user: MockUser, hetu: String)(fn: => A): A = {
-    post("api/hsl", body = soapRequest(hetu), headers = authHeaders(user) ++ Map(("Content-type" -> "text/xml")))(fn)
+    post("api/palveluvayla/hsl", body = soapRequest(hetu), headers = authHeaders(user) ++ Map(("Content-type" -> "text/xml")))(fn)
   }
 
   private def verifySOAPError(faultstring: String, message: String): Unit = {
