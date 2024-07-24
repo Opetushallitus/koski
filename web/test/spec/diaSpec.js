@@ -1298,7 +1298,15 @@ describe('DIA', function () {
         )
 
         it('muuttaa automaattisesti suorituskieleksi saksan', function () {
-          expect(extractAsText(S('.suorituskieli .select'))).to.equal('saksa')
+          eventually(() => {
+            expect(
+              extractAsText(
+                S(
+                  '[data-testid="uusiOpiskeluoikeus.modal.suorituskieli.input"]'
+                )
+              )
+            ).to.equal('saksa')
+          })
         })
       })
     })
@@ -1309,7 +1317,8 @@ describe('DIA', function () {
         addOppija.enterValidDataDIA({
           etunimet: 'Doris',
           kutsumanimi: 'Doris',
-          sukunimi: 'Dia'
+          sukunimi: 'Dia',
+          opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus'
         }),
         addOppija.submitAndExpectSuccess(
           'Dia, Doris (020782-5339)',
@@ -1439,7 +1448,8 @@ describe('DIA', function () {
         addOppija.enterValidDataDIAValmistavaVaihe({
           etunimet: 'Doris',
           kutsumanimi: 'Doris',
-          sukunimi: 'Dia'
+          sukunimi: 'Dia',
+          opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus'
         }),
         addOppija.submitAndExpectSuccess(
           'Dia, Doris (020782-5339)',

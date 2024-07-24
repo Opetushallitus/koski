@@ -378,7 +378,8 @@ function AddOppijaPage() {
       params = _.merge(
         {
           oppilaitos: 'Helsingin',
-          oppimäärä: 'DIA-tutkinto',
+          opiskeluoikeudenTyyppi: 'DIA-tutkinto',
+          oppimäärä: 'DIA-tutkintovaihe',
           alkamispäivä: '1.1.2018'
         },
         {},
@@ -387,16 +388,17 @@ function AddOppijaPage() {
       return function () {
         return api
           .enterData(params)()
-          .then(api.selectOpiskeluoikeudenTyyppi('DIA-tutkinto'))
           .then(api.selectOppimäärä(params.oppimäärä))
           .then(api.selectAloituspäivä(params.alkamispäivä))
           .then(api.selectOpintojenRahoitus(params.opintojenRahoitus))
+          .then(api.selectMaksuttomuus(0))
       }
     },
     enterValidDataDIAValmistavaVaihe: function (params) {
       params = _.merge(
         {
           oppilaitos: 'Helsingin',
+          opiskeluoikeudenTyyppi: 'DIA-tutkinto',
           oppimäärä: 'Valmistava DIA-vaihe',
           alkamispäivä: '1.1.2018'
         },
@@ -406,10 +408,10 @@ function AddOppijaPage() {
       return function () {
         return api
           .enterData(params)()
-          .then(api.selectOpiskeluoikeudenTyyppi('DIA-tutkinto'))
           .then(api.selectOppimäärä(params.oppimäärä))
           .then(api.selectAloituspäivä(params.alkamispäivä))
           .then(api.selectOpintojenRahoitus(params.opintojenRahoitus))
+          .then(api.selectMaksuttomuus(0))
       }
     },
     enterValidDataTUVA: function (params) {
@@ -643,7 +645,7 @@ function AddOppijaPage() {
       return pageApi.getInputOptions('.oppiaine .dropdown')
     },
     selectOppimäärä: function (oppimäärä) {
-      return selectFromDropdown('.oppimaara .dropdown', oppimäärä)
+      return selectValue('oppimäärä', oppimäärä)
     },
     selectOppiaine: function (oppiaine) {
       return selectFromDropdown('.oppiaine .dropdown', oppiaine)
