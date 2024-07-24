@@ -415,6 +415,7 @@ function AddOppijaPage() {
     enterValidDataTUVA: function (params) {
       params = _.merge({
         oppilaitos: 'Ressun',
+        opiskeluoikeudenTyyppi: 'Tutkintokoulutukseen valmentava koulutus',
         järjestämislupa: 'Perusopetuksen järjestämislupa (TUVA)',
         suorituskieli: 'suomi',
         alkamispäivä: '1.8.2021',
@@ -423,11 +424,6 @@ function AddOppijaPage() {
       return function () {
         return api
           .enterData(params)()
-          .then(
-            api.selectOpiskeluoikeudenTyyppi(
-              'Tutkintokoulutukseen valmentava koulutus'
-            )
-          )
           .then(api.selectJärjestämislupa(params.järjestämislupa))
           .then(api.selectAloituspäivä(params.alkamispäivä))
           .then(api.selectOpintojenRahoitus(params.opintojenRahoitus))
@@ -437,6 +433,7 @@ function AddOppijaPage() {
     enterValidDataTUVAAmmatillinen: function (params) {
       params = _.merge({
         oppilaitos: 'Ressun',
+        opiskeluoikeudenTyyppi: 'Tutkintokoulutukseen valmentava koulutus',
         järjestämislupa: 'Ammatillisen koulutuksen järjestämislupa (TUVA)',
         suorituskieli: 'suomi',
         alkamispäivä: '1.8.2021',
@@ -446,11 +443,6 @@ function AddOppijaPage() {
       return function () {
         return api
           .enterData(params)()
-          .then(
-            api.selectOpiskeluoikeudenTyyppi(
-              'Tutkintokoulutukseen valmentava koulutus'
-            )
-          )
           .then(api.selectJärjestämislupa(params.järjestämislupa))
           .then(api.selectAloituspäivä(params.alkamispäivä))
           .then(api.selectOpiskeluoikeudenTila(params.tila))
@@ -558,15 +550,13 @@ function AddOppijaPage() {
       return pageApi.setInputValue('.aloituspaiva input', date)
     },
     selectOpiskeluoikeudenTila: function (tila) {
-      if (tila) {
-        return selectFromDropdown('.opiskeluoikeudentila .dropdown', tila)
-      } else return function () {}
+      return tila ? selectValue('tila', tila) : function () {}
     },
     selectMaksuttomuus: function (index) {
       return function () {
         return click(
           S(
-            '[data-testid="maksuttomuus-radio-buttons"] .radio-option-container'
+            '[data-testid="uusiOpiskeluoikeus.modal.maksuton"] .RadioButtons__option'
           )[index]
         )()
       }
@@ -662,14 +652,14 @@ function AddOppijaPage() {
       return selectValue('suorituskieli', kieli)
     },
     selectJärjestämislupa: function (järjestämislupa) {
-      return selectFromDropdown('.järjestämislupa .dropdown', järjestämislupa)
+      return selectValue('järjestämislupa', järjestämislupa)
     },
     opintojenRahoitukset: function () {
       return pageApi.getInputOptions('.opintojenrahoitus .dropdown')
     },
     selectOpintojenRahoitus: function (rahoitus) {
       return rahoitus
-        ? selectFromDropdown('.opintojenrahoitus .dropdown', rahoitus)
+        ? selectValue('opintojenRahoitus', rahoitus)
         : function () {}
     },
     opiskeluoikeudenTilat: function () {

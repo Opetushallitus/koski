@@ -1,6 +1,7 @@
 import { Peruste } from '../../appstate/peruste'
 import { OrganisaatioHierarkia } from '../../types/fi/oph/koski/organisaatio/OrganisaatioHierarkia'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
+import { Maksuttomuus } from '../../types/fi/oph/koski/schema/Maksuttomuus'
 import { TutkintokoulutukseenValmentavanKoulutuksenSuoritus } from '../../types/fi/oph/koski/schema/TutkintokoulutukseenValmentavanKoulutuksenSuoritus'
 import { TutkintokoulutukseenValmentavanKoulutus } from '../../types/fi/oph/koski/schema/TutkintokoulutukseenValmentavanKoulutus'
 import { TutkintokoulutukseenValmentavanOpiskeluoikeudenAmmatillisenLuvanLisätiedot } from '../../types/fi/oph/koski/schema/TutkintokoulutukseenValmentavanOpiskeluoikeudenAmmatillisenLuvanLisatiedot'
@@ -9,7 +10,7 @@ import { TutkintokoulutukseenValmentavanOpiskeluoikeudenPerusopetuksenLuvanLisä
 import { TutkintokoulutukseenValmentavanOpiskeluoikeudenTila } from '../../types/fi/oph/koski/schema/TutkintokoulutukseenValmentavanOpiskeluoikeudenTila'
 import { TutkintokoulutukseenValmentavanOpiskeluoikeus } from '../../types/fi/oph/koski/schema/TutkintokoulutukseenValmentavanOpiskeluoikeus'
 import { TutkintokoulutukseenValmentavanOpiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/TutkintokoulutukseenValmentavanOpiskeluoikeusjakso'
-import { maksuttomuuslisätiedot, toOppilaitos, toToimipiste } from './utils'
+import { toOppilaitos, toToimipiste } from './utils'
 
 // Tutkintokoulutukseen valmentava koulutus
 export const createTutkintokoulutukseenValmentavanOpiskeluoikeus = (
@@ -55,24 +56,23 @@ const createTutkintokoulutukseenValmentavanOpiskeluoikeudenLisätiedot = (
   alku: string,
   maksuton: boolean | null
 ) => {
+  const lisätiedot =
+    maksuton === null
+      ? {}
+      : { maksuttomuus: [Maksuttomuus({ alku, maksuton })] }
+
   switch (järjestämislupa.koodiarvo) {
     case 'ammatillinen':
-      return maksuttomuuslisätiedot(
-        alku,
-        maksuton,
-        TutkintokoulutukseenValmentavanOpiskeluoikeudenAmmatillisenLuvanLisätiedot
+      return TutkintokoulutukseenValmentavanOpiskeluoikeudenAmmatillisenLuvanLisätiedot(
+        lisätiedot
       )
     case 'lukio':
-      return maksuttomuuslisätiedot(
-        alku,
-        maksuton,
-        TutkintokoulutukseenValmentavanOpiskeluoikeudenLukiokoulutuksenLuvanLisätiedot
+      return TutkintokoulutukseenValmentavanOpiskeluoikeudenLukiokoulutuksenLuvanLisätiedot(
+        lisätiedot
       )
     case 'perusopetus':
-      return maksuttomuuslisätiedot(
-        alku,
-        maksuton,
-        TutkintokoulutukseenValmentavanOpiskeluoikeudenPerusopetuksenLuvanLisätiedot
+      return TutkintokoulutukseenValmentavanOpiskeluoikeudenPerusopetuksenLuvanLisätiedot(
+        lisätiedot
       )
     default:
       return undefined
