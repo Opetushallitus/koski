@@ -12,7 +12,9 @@ function AddOppijaPage() {
     return form().find('.oppilaitos .selected')
   }
   function selectedTutkinto() {
-    return form().find('.tutkinto .selected')
+    return form().find(
+      `[data-testid="uusiOpiskeluoikeus.modal.tutkinto"] .Select__option`
+    )
   }
   function selectValue(field, value) {
     return Select(`uusiOpiskeluoikeus.modal.${field}`, form).select(value)
@@ -248,8 +250,10 @@ function AddOppijaPage() {
       params = _.merge(
         {
           oppilaitos: 'Stadin',
-          tutkinto: 'Autoalan perust',
+          opiskeluoikeudenTyyppi: 'Ammatillinen koulutus',
+          suoritustyyppi: 'Ammatillinen tutkinto',
           suoritustapa: 'Ammatillinen perustutkinto',
+          tutkinto: 'Autoalan perust',
           opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus',
           alkamispäivä: '1.1.2018'
         },
@@ -259,9 +263,9 @@ function AddOppijaPage() {
       return function () {
         return api
           .enterData(params)()
-          .then(api.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'))
-          .then(api.selectTutkinto(params.tutkinto))
+          .then(api.selectSuoritustyyppi(params.suoritustyyppi))
           .then(api.selectSuoritustapa(params.suoritustapa))
+          .then(api.selectTutkinto(params.tutkinto))
           .then(api.selectAloituspäivä(params.alkamispäivä))
           .then(api.selectOpintojenRahoitus(params.opintojenRahoitus))
       }
@@ -270,6 +274,7 @@ function AddOppijaPage() {
       params = _.merge(
         {
           oppilaitos: 'Stadin',
+          opiskeluoikeudenTyyppi: 'Ammatillinen koulutus',
           oppimäärä: 'Muun ammatillisen koulutuksen suoritus',
           opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus'
         },
@@ -279,8 +284,7 @@ function AddOppijaPage() {
       return function () {
         return api
           .enterData(params)()
-          .then(api.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'))
-          .then(api.selectOppimäärä(params.oppimäärä))
+          .then(api.selectSuoritustyyppi(params.oppimäärä))
           .then(function () {
             if (params.koulutusmoduuli) {
               return api.selectKoulutusmoduuli(params.koulutusmoduuli)()
@@ -533,10 +537,12 @@ function AddOppijaPage() {
       if (!name) {
         return wait.forAjax
       }
+      const tutkintoSelector =
+        '[data-testid="uusiOpiskeluoikeus.modal.tutkinto.input"]'
       return function () {
         return wait
-          .until(pageApi.getInput('.tutkinto input').isVisible)()
-          .then(pageApi.setInputValue('.tutkinto input', name))
+          .until(pageApi.getInput(tutkintoSelector).isVisible)()
+          .then(pageApi.setInputValue(tutkintoSelector, name))
           .then(
             wait.until(function () {
               return isElementVisible(selectedTutkinto())
@@ -545,10 +551,15 @@ function AddOppijaPage() {
           .then(click(selectedTutkinto))
       }
     },
+    selectSuoritustyyppi: function (suoritustyyppi) {
+      return suoritustyyppi
+        ? selectValue('suoritustyyppi', suoritustyyppi)
+        : function () {}
+    },
     selectSuoritustapa: function (suoritustapa) {
-      if (suoritustapa) {
-        return selectFromDropdown('.suoritustapa .dropdown', suoritustapa)
-      } else return function () {}
+      return suoritustapa
+        ? selectValue('suoritustapa', suoritustapa)
+        : function () {}
     },
     selectAloituspäivä: function (date) {
       return pageApi.setInputValue('.aloituspaiva input', date)
@@ -693,7 +704,7 @@ function AddOppijaPage() {
       return selectFromDropdown('.kieli .dropdown', kieli)
     },
     selectKoulutusmoduuli: function (koulutusmoduuli) {
-      return selectFromDropdown('.koulutusmoduuli .dropdown', koulutusmoduuli)
+      return selectValue('koulutusmoduuli', koulutusmoduuli)
     },
     goBack: click(findSingle('h1 a')),
     selectFromDropdown,
