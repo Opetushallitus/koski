@@ -14,6 +14,7 @@ import { OpiskeluoikeusClass } from '../../types/fi/oph/koski/typemodel/Opiskelu
 import * as C from '../../util/constraints'
 import { fetchOpiskeluoikeusClassMapping } from '../../util/koskiApi'
 import { createOpiskeluoikeus } from '../opintooikeus/createOpiskeluoikeus'
+import { hackSuoritusMappingForPreIB2019 } from '../opintooikeus/ibTutkinto'
 import { opiskeluoikeudenLisätiedotClass } from './hooks'
 
 export type UusiOpiskeluoikeusDialogState = {
@@ -61,7 +62,10 @@ export const useUusiOpiskeluoikeusDialogState =
     const ooMappingCall = useApiOnce(fetchOpiskeluoikeusClassMapping)
     const ooMapping = isSuccess(ooMappingCall) ? ooMappingCall.data : undefined
     const suoritusMapping = useMemo(
-      () => (ooMapping || []).flatMap((oo) => oo.suoritukset),
+      () =>
+        hackSuoritusMappingForPreIB2019(
+          (ooMapping || []).flatMap((oo) => oo.suoritukset)
+        ),
       [ooMapping]
     )
 
