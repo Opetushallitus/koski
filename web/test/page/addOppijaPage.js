@@ -324,6 +324,7 @@ function AddOppijaPage() {
       params = _.merge(
         {
           oppilaitos: 'Ressun',
+          opiskeluoikeudenTyyppi: 'Lukioon valmistava koulutus (LUVA)',
           peruste: '56/011/2015',
           opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus',
           alkamispäivä: '1.1.2018'
@@ -334,13 +335,9 @@ function AddOppijaPage() {
       return function () {
         return api
           .enterData(params)()
-          .then(
-            api.selectOpiskeluoikeudenTyyppi(
-              'Lukioon valmistava koulutus (LUVA)'
-            )
-          )
           .then(api.selectAloituspäivä(params.alkamispäivä))
           .then(api.selectOpintojenRahoitus(params.opintojenRahoitus))
+          .then(api.selectMaksuttomuus(0))
       }
     },
     enterValidDataIB: function (params) {
