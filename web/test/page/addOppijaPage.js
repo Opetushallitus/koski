@@ -19,6 +19,11 @@ function AddOppijaPage() {
   function selectValue(field, value) {
     return Select(`uusiOpiskeluoikeus.modal.${field}`, form).select(value)
   }
+  function selectOptions(field) {
+    const select = Select(`uusiOpiskeluoikeus.modal.${field}`, form)
+    select.openSync()
+    return select.optionTexts()
+  }
 
   var pageApi = Page(form)
   var api = {
@@ -53,6 +58,7 @@ function AddOppijaPage() {
       params = _.merge(
         {
           oppilaitos: 'International School of Helsinki',
+          opiskeluoikeudenTyyppi: 'International school',
           grade: 'Grade explorer',
           opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus',
           alkamispäivä: '1.1.2018'
@@ -63,15 +69,14 @@ function AddOppijaPage() {
       return function () {
         return api
           .enterData(params)()
-          .then(api.selectOpiskeluoikeudenTyyppi('International school'))
-          .then(
-            api.selectFromDropdown(
-              '.international-school-grade .dropdown',
-              params.grade
-            )
-          )
+          .then(api.selectGrade(params.grade))
           .then(api.selectAloituspäivä(params.alkamispäivä))
           .then(api.selectOpintojenRahoitus(params.opintojenRahoitus))
+          .then(() => {
+            if (params.maksuttomuus !== undefined) {
+              return api.selectMaksuttomuus(params.maksuttomuus)()
+            }
+          })
           .then(wait.forAjax)
       }
     },
@@ -569,13 +574,14 @@ function AddOppijaPage() {
       return tila ? selectValue('tila', tila) : function () {}
     },
     selectMaksuttomuus: function (index) {
-      return function () {
-        return click(
-          S(
-            '[data-testid="uusiOpiskeluoikeus.modal.maksuton"] .RadioButtons__option'
-          )[index]
-        )()
-      }
+      return eventually(async () => {
+        const selector =
+          '[data-testid="uusiOpiskeluoikeus.modal.maksuton"] .RadioButtons__option'
+        return click(S(selector)[index])()
+      })
+    },
+    selectGrade: function (grade) {
+      return selectValue('grade', grade)
     },
     henkilötiedot: function () {
       return [
@@ -671,7 +677,7 @@ function AddOppijaPage() {
       return selectValue('järjestämislupa', järjestämislupa)
     },
     opintojenRahoitukset: function () {
-      return pageApi.getInputOptions('.opintojenrahoitus .dropdown')
+      return selectOptions('opintojenRahoitus')
     },
     selectOpintojenRahoitus: function (rahoitus) {
       return rahoitus
@@ -679,9 +685,7 @@ function AddOppijaPage() {
         : function () {}
     },
     opiskeluoikeudenTilat: function () {
-      const s = Select('uusiOpiskeluoikeus.modal.tila', form)
-      s.openSync()
-      return s.optionTexts()
+      return selectOptions('tila')
     },
     tutkinnot: function () {
       return extractAsText(
