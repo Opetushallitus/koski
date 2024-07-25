@@ -115,7 +115,11 @@ function AddOppijaPage() {
     },
     enterValidDataPerusopetus: function (params) {
       params = _.merge(
-        { oppilaitos: 'Jyväskylän normaalikoulu', alkamispäivä: '1.1.2018' },
+        {
+          oppilaitos: 'Jyväskylän normaalikoulu',
+          opiskeluoikeudenTyyppi: 'Perusopetus',
+          alkamispäivä: '1.1.2018'
+        },
         {},
         params
       )

@@ -2836,8 +2836,8 @@ describe('Perusopetus', function () {
               'Katsotaan eronneeksi',
               'Läsnä',
               'Peruutettu',
-              'Valmistunut',
-              'Väliaikaisesti keskeytynyt'
+              'Väliaikaisesti keskeytynyt',
+              'Valmistunut'
             ])
           })
         })
@@ -2994,6 +2994,7 @@ describe('Perusopetus', function () {
             before(
               opinnot.opiskeluoikeudet.lisääOpiskeluoikeus,
               addOppija.selectOppilaitos('Jyväskylän normaalikoulu'),
+              addOppija.selectOpiskeluoikeudenTyyppi('Perusopetus'),
               addOppija.submitModal,
               wait.until(page.isErrorShown)
             )
@@ -3015,6 +3016,7 @@ describe('Perusopetus', function () {
               editor.saveChanges,
               opinnot.opiskeluoikeudet.lisääOpiskeluoikeus,
               addOppija.selectOppilaitos('Jyväskylän normaalikoulu'),
+              addOppija.selectOpiskeluoikeudenTyyppi('Perusopetus'),
               addOppija.submitAndExpectSuccessModal(
                 'Tyhjä, Tero (230872-7258)',
                 'Päättötodistus'
@@ -3033,12 +3035,14 @@ describe('Perusopetus', function () {
               opinnot.opiskeluoikeudet.lisääOpiskeluoikeus,
               addOppija.selectOppilaitos('Omnia'),
               addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'),
-              addOppija.selectTutkinto('Autoalan perustutkinto'),
+              addOppija.selectSuoritustyyppi('Ammatillinen tutkinto'),
               addOppija.selectSuoritustapa('Ammatillinen perustutkinto'),
+              addOppija.selectTutkinto('Autoalan perustutkinto'),
               addOppija.selectAloituspäivä('1.1.2018'),
               addOppija.selectOpintojenRahoitus(
                 'Valtionosuusrahoitteinen koulutus'
               ),
+              addOppija.selectMaksuttomuus(0),
               addOppija.submitAndExpectSuccessModal(
                 'Tyhjä, Tero (230872-7258)',
                 'Autoalan perustutkinto'

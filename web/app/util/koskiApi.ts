@@ -20,6 +20,7 @@ import { Osaamismerkkikuva } from '../types/fi/oph/koski/servlet/Osaamismerkkiku
 import { lang } from '../i18n/i18n'
 import { OpiskeluoikeusClass } from '../types/fi/oph/koski/typemodel/OpiskeluoikeusClass'
 import { TutkintoPeruste } from '../types/fi/oph/koski/tutkinto/TutkintoPeruste'
+import { Suoritus } from '../types/fi/oph/koski/schema/Suoritus'
 
 const apiUrl = (path: string, query?: object): string =>
   `/koski/api/${path}${queryString({ class_refs: 'true', ...query })}`
@@ -263,6 +264,21 @@ export const fetchOrganisaationOpiskeluoikeustyypit = <
 export const fetchOpiskeluoikeusClassMapping = () =>
   handleExpiredSession(
     apiGet<OpiskeluoikeusClass[]>(apiUrl('types/opiskeluoikeustyypit'))
+  )
+
+export const fetchSuoritusPrefill = (
+  koodistoUri: string,
+  koodiarvo: string,
+  tyyppi?: string,
+  toimintaAlueittain?: boolean
+) =>
+  handleExpiredSession(
+    apiGet<Suoritus[]>(
+      apiUrl(`types/prefill/suoritukset/${koodistoUri}/${koodiarvo}`, {
+        tyyppi,
+        toimintaAlueittain
+      })
+    )
   )
 
 // Virhetilanteiden hallinta

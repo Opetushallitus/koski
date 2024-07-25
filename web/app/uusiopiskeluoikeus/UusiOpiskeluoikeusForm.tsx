@@ -20,6 +20,7 @@ import {
 } from './state/hooks'
 import { useUusiOpiskeluoikeusDialogState } from './state/state'
 import { SuoritusFields } from './suoritus/SuoritusFields'
+import { prefillOsasuoritukset } from './opintooikeus/createOpiskeluoikeus'
 
 export type UusiOpiskeluoikeusFormProps = {
   onResult: (opiskeluoikeus?: Opiskeluoikeus) => void
@@ -40,7 +41,13 @@ export const UusiOpiskeluoikeusForm = (props: UusiOpiskeluoikeusFormProps) => {
   const defaultKieli = useDefaultKieli(state)
   const spesifienOppilaitostenKäyttäjä = useHasOwnOrganisaatiot()
 
-  useEffect(() => props.onResult(state.result), [props, state.result])
+  useEffect(() => {
+    if (state.result) {
+      prefillOsasuoritukset(state.result).then(props.onResult)
+    } else {
+      props.onResult(undefined)
+    }
+  }, [props, state.result])
 
   return (
     <section className="UusiOppijaForm">

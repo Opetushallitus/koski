@@ -24,7 +24,7 @@ export const DialogPäätasonSuoritusSelect = (
         ? options.filter(
             (opt) =>
               opt.value?.koodiarvo &&
-              props.hiddenOptions?.includes(opt.value?.koodiarvo)
+              !props.hiddenOptions?.includes(opt.value?.koodiarvo)
           )
         : options),
       ...(props.extraOptions || [])

@@ -8,7 +8,7 @@ import { NuortenPerusopetuksenOppiaineenOppimääränSuoritus } from '../../type
 import { NuortenPerusopetuksenOppimääränSuoritus } from '../../types/fi/oph/koski/schema/NuortenPerusopetuksenOppimaaranSuoritus'
 import { NuortenPerusopetus } from '../../types/fi/oph/koski/schema/NuortenPerusopetus'
 import { PerusopetuksenOpiskeluoikeus } from '../../types/fi/oph/koski/schema/PerusopetuksenOpiskeluoikeus'
-import { toOppilaitos, isKoodiarvo, toToimipiste } from './utils'
+import { toOppilaitos, toToimipiste } from './utils'
 
 // Perusopetus
 export const createPerusopetuksenOpiskeluoikeus = (
@@ -18,37 +18,60 @@ export const createPerusopetuksenOpiskeluoikeus = (
   alku: string,
   tila: NuortenPerusopetuksenOpiskeluoikeusjakso['tila'],
   suorituskieli: Koodistokoodiviite<'kieli'>
-) =>
-  PerusopetuksenOpiskeluoikeus({
-    oppilaitos: toOppilaitos(organisaatio),
-    tila: NuortenPerusopetuksenOpiskeluoikeudenTila({
-      opiskeluoikeusjaksot: [
-        NuortenPerusopetuksenOpiskeluoikeusjakso({ alku, tila })
-      ]
-    }),
-    suoritukset: [
-      isKoodiarvo(suorituksenTyyppi, 'perusopetuksenoppimaara')
-        ? NuortenPerusopetuksenOppimääränSuoritus({
-            koulutusmoduuli: NuortenPerusopetus({
-              perusteenDiaarinumero: peruste.koodiarvo
-            }),
-            suorituskieli,
-            suoritustapa: Koodistokoodiviite({
-              koodiarvo: 'koulutus',
-              koodistoUri: 'perusopetuksensuoritustapa'
-            }),
-            toimipiste: toToimipiste(organisaatio)
-          })
-        : NuortenPerusopetuksenOppiaineenOppimääränSuoritus({
-            koulutusmoduuli: EiTiedossaOppiaine({
-              perusteenDiaarinumero: peruste.koodiarvo
-            }),
-            suorituskieli,
-            suoritustapa: Koodistokoodiviite({
-              koodiarvo: 'koulutus',
-              koodistoUri: 'perusopetuksensuoritustapa'
-            }),
-            toimipiste: toToimipiste(organisaatio)
-          })
-    ]
-  })
+) => {
+  const suoritus = createPerusopetuksenSuoritus(
+    suorituksenTyyppi,
+    peruste,
+    organisaatio,
+    suorituskieli
+  )
+
+  return (
+    suoritus &&
+    PerusopetuksenOpiskeluoikeus({
+      oppilaitos: toOppilaitos(organisaatio),
+      tila: NuortenPerusopetuksenOpiskeluoikeudenTila({
+        opiskeluoikeusjaksot: [
+          NuortenPerusopetuksenOpiskeluoikeusjakso({ alku, tila })
+        ]
+      }),
+      suoritukset: [suoritus]
+    })
+  )
+}
+
+const createPerusopetuksenSuoritus = (
+  suorituksenTyyppi: Koodistokoodiviite<'suorituksentyyppi'>,
+  peruste: Peruste,
+  organisaatio: OrganisaatioHierarkia,
+  suorituskieli: Koodistokoodiviite<'kieli'>
+) => {
+  switch (suorituksenTyyppi.koodiarvo) {
+    case 'perusopetuksenoppimaara':
+      return NuortenPerusopetuksenOppimääränSuoritus({
+        koulutusmoduuli: NuortenPerusopetus({
+          perusteenDiaarinumero: peruste.koodiarvo
+        }),
+        suorituskieli,
+        suoritustapa: Koodistokoodiviite({
+          koodiarvo: 'koulutus',
+          koodistoUri: 'perusopetuksensuoritustapa'
+        }),
+        toimipiste: toToimipiste(organisaatio)
+      })
+    case 'nuortenperusopetuksenoppiaineenoppimaara':
+      return NuortenPerusopetuksenOppiaineenOppimääränSuoritus({
+        koulutusmoduuli: EiTiedossaOppiaine({
+          perusteenDiaarinumero: peruste.koodiarvo
+        }),
+        suorituskieli,
+        suoritustapa: Koodistokoodiviite({
+          koodiarvo: 'koulutus',
+          koodistoUri: 'perusopetuksensuoritustapa'
+        }),
+        toimipiste: toToimipiste(organisaatio)
+      })
+    default:
+      return undefined
+  }
+}

@@ -1,10 +1,11 @@
 package fi.oph.koski.typemodel
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.editor.{KoodistoEnumModelBuilder, LocalizedHtml}
+import fi.oph.koski.editor.{EuropeanSchoolOfHelsinkiOppiaineet, KoodistoEnumModelBuilder, LocalizedHtml, NuortenPerusopetusPakollisetOppiaineet}
+import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koodisto.KoodistoViite
 import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
-import fi.oph.koski.schema.Koodistokoodiviite
+import fi.oph.koski.schema.{Koodistokoodiviite, Suoritus}
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 import org.scalatra.ContentEncodingSupport
 
@@ -31,6 +32,24 @@ class TypeModelServlet(implicit val application: KoskiApplication)
 
   get("/opiskeluoikeustyypit") {
     opiskeluoikeustyypitToClassnames
+  }
+
+  get("/prefill/suoritukset/:koodistoUri/:koodiarvo") {
+    val luokkaAstePattern = """(\d)""".r
+    val eshLuokkaAstePattern = """^((?:N[1-2])|(?:P[1-5])|(?:S[1-7]))$""".r
+    val toimintaAlueittain = params.get("toimintaAlueittain").map(_.toBoolean).getOrElse(false)
+
+    (params("koodistoUri"), params("koodiarvo")) match {
+      case ("perusopetuksenluokkaaste", luokkaAstePattern(luokkaAste)) =>
+        NuortenPerusopetusPakollisetOppiaineet(application.koodistoViitePalvelu).pakollistenOppiaineidenTaiToimintaAlueidenSuoritukset(luokkaAste.toInt, toimintaAlueittain)
+      case ("europeanschoolofhelsinkiluokkaaste", eshLuokkaAstePattern(luokkaAste)) =>
+        EuropeanSchoolOfHelsinkiOppiaineet(application.koodistoViitePalvelu).eshOsaSuoritukset(luokkaAste)
+      case ("koulutus", "201101") =>
+        NuortenPerusopetusPakollisetOppiaineet(application.koodistoViitePalvelu).päättötodistuksenSuoritukset(params("tyyppi"), toimintaAlueittain)
+      case _ =>
+        logger.error(s"Prefill failed for unexpected code ${params("koodistoUri")}/${params("koodiarvo")}")
+        haltWithStatus(KoskiErrorCategory.notFound())
+    }
   }
 
   private def localization: LocalizedHtml =
