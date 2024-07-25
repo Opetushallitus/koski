@@ -66,7 +66,7 @@ class HslSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMeth
       }
     }
 
-    "verify tila & oppilaitos" in {
+    "verify tila" in {
       postHsl(MockUsers.hslKäyttäjä, opiskelija.hetu.get) {
         verifyResponseStatusOk()
         val actualJson = parseOpintoOikeudetJson()
@@ -74,14 +74,22 @@ class HslSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMeth
 
         opiskeluoikeudet should not be empty
 
-        val firstOpiskeluoikeus = opiskeluoikeudet.head
-
-        val tila = firstOpiskeluoikeus \ "tila" \ "opiskeluoikeusjaksot"
+        val tila = opiskeluoikeudet.head \ "tila" \ "opiskeluoikeusJaksot"
 
         (tila(0) \ "tila" \ "koodiarvo").extract[String] should equal("lasna")
         (tila(0) \ "alku").extract[String] should equal("2019-05-30")
+      }
+    }
 
-        val oppilaitos = firstOpiskeluoikeus \ "oppilaitos"
+    "verify oppilaitos" in {
+      postHsl(MockUsers.hslKäyttäjä, opiskelija.hetu.get) {
+        verifyResponseStatusOk()
+        val actualJson = parseOpintoOikeudetJson()
+        val opiskeluoikeudet = (actualJson \ "opiskeluoikeudet").children
+
+        opiskeluoikeudet should not be empty
+
+        val oppilaitos = opiskeluoikeudet.head \ "oppilaitos"
         (oppilaitos \ "nimi" \ "fi").extract[String] should equal("Omnia")
         (oppilaitos \ "oppilaitosnumero" \ "koodiarvo").extract[String] should equal("10054")
       }
@@ -226,6 +234,26 @@ class HslSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMeth
         val expectedObject = JsonMethods.parse(expectedOppimääräJson)
 
         oppimääränSuoritus.get should equal(expectedObject)
+      }
+    }
+
+    "tarkista ettei tietoa toimiteta: opintojenRahoitus" in {
+      KoskiApplicationForTests.mydataRepository.create(aikuisOpiskelijaMuuRahoitus.oid, "hsl")
+      postHsl(MockUsers.hslKäyttäjä, opiskelija.hetu.get) {
+        verifyResponseStatusOk()
+        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN"))
+        val opintoOikeudetXml = soapResponse() \ "Body" \ "opintoOikeudetServiceResponse" \ "opintoOikeudet"
+        val opintoOikeudetJsonString = (opintoOikeudetXml.text)
+        val actualJson = JsonMethods.parse(opintoOikeudetJsonString)
+        val opiskeluoikeudet = (actualJson \ "opiskeluoikeudet").children
+
+        val rahoitukset = opiskeluoikeudet.flatMap { oikeus =>
+          (oikeus \ "tila" \ "opiskeluoikeusjaksot").children.flatMap { jakso =>
+            (jakso \ "opintojenRahoitus").children
+          }
+        }
+
+        rahoitukset should have size 0
       }
     }
   }

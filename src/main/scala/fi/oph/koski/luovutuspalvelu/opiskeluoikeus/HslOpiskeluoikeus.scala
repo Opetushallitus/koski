@@ -3,7 +3,6 @@ package fi.oph.koski.luovutuspalvelu.opiskeluoikeus
 import fi.oph.koski.henkilo.OppijaHenkilö
 import fi.oph.koski.schema._
 import fi.oph.koski.schema.annotation.KoodistoUri
-import fi.oph.koski.util.CaseClass
 import fi.oph.scalaschema.annotation.Title
 
 import java.time.LocalDate
@@ -30,10 +29,20 @@ case class HslOpiskeluoikeus(
   tyyppi: Koodistokoodiviite,
   oid: String,
   oppilaitos: Option[Oppilaitos],
-  tila: OpiskeluoikeudenTila,
+  tila: HslOpiskeluoikeudenTila,
   suoritukset: List[HslPäätasonSuoritus],
   lisätiedot: Option[HslOpiskeluoikeudenLisätiedot],
   arvioituPäättymispäivä: Option[LocalDate]
+)
+
+case class HslOpiskeluoikeudenTila(
+  opiskeluoikeusJaksot: Option[List[HslOpiskeluoikeusJakso]]
+)
+
+case class HslOpiskeluoikeusJakso(
+  tila: Koodistokoodiviite,
+  alku: LocalDate,
+  opiskeluoikeusPäättynyt: Boolean
 )
 
 object HslOpiskeluoikeus {
@@ -48,16 +57,25 @@ object HslOpiskeluoikeus {
     oo: Opiskeluoikeus,
     suoritukset: List[HslPäätasonSuoritus],
     lisätiedot: Option[HslOpiskeluoikeudenLisätiedot] = None,
-  ): HslOpiskeluoikeus =
+  ): HslOpiskeluoikeus = {
+    val opiskeluoikeusJaksot = oo.tila.opiskeluoikeusjaksot.map { j =>
+      HslOpiskeluoikeusJakso(
+        tila = j.tila,
+        alku = j.alku,
+        opiskeluoikeusPäättynyt = j.opiskeluoikeusPäättynyt
+      )
+    }
+
     new HslOpiskeluoikeus(
       tyyppi = oo.tyyppi,
       oid = oo.oid.getOrElse(""),
       oppilaitos = oo.oppilaitos,
-      tila = oo.tila,
+      tila = HslOpiskeluoikeudenTila(opiskeluoikeusJaksot = Some(opiskeluoikeusJaksot)),
       suoritukset = suoritukset,
       lisätiedot = lisätiedot,
       arvioituPäättymispäivä = oo.arvioituPäättymispäivä
     )
+  }
 }
 
 trait HslPäätasonSuoritus {
@@ -75,7 +93,7 @@ object HslDefaultPäätasonSuoritus {
   )
 }
 
-case class HslAmmatillinenPäätasonSuoritus (
+case class HslAmmatillinenPäätasonSuoritus(
   tyyppi: Koodistokoodiviite,
   osaamisenHankkimistavat: Option[List[HslOsaamisenHankkimistapajakso]],
   koulutussopimukset: Option[List[HslKoulutussopimusjakso]],
@@ -92,11 +110,11 @@ object HslOsaamisenHankkimistapajakso {
   def apply(o: OsaamisenHankkimistapajakso): HslOsaamisenHankkimistapajakso = new HslOsaamisenHankkimistapajakso(o.alku, o.loppu, HslOsaamisenHankkimistapa(o.osaamisenHankkimistapa.tunniste))
 }
 
-case class HslOsaamisenHankkimistapa (
+case class HslOsaamisenHankkimistapa(
   tunniste: Koodistokoodiviite
 )
 
-case class HslKoulutussopimusjakso (
+case class HslKoulutussopimusjakso(
   alku: LocalDate,
   loppu: Option[LocalDate],
   paikkakunta: Koodistokoodiviite,
@@ -121,7 +139,7 @@ object HslJärjestämismuotojakso {
   )
 }
 
-case class HslJärjestämismuoto (
+case class HslJärjestämismuoto(
   tunniste: Koodistokoodiviite
 )
 
