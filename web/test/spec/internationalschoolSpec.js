@@ -275,8 +275,8 @@ describe('International school', function () {
           expect(addOppija.opiskeluoikeudenTilat()).to.deep.equal([
             'Eronnut',
             'Läsnä',
-            'Valmistunut',
-            'Väliaikaisesti keskeytynyt'
+            'Väliaikaisesti keskeytynyt',
+            'Valmistunut'
           ])
         })
       })
@@ -306,7 +306,10 @@ describe('International school', function () {
   describe('Opiskeluoikeuden lisääminen diplomaluokalle', function () {
     before(
       prepareForNewOppija('kalle', '230872-7258'),
-      addOppija.enterValidDataInternationalSchool({ grade: 'Grade 12' }),
+      addOppija.enterValidDataInternationalSchool({
+        grade: 'Grade 12',
+        maksuttomuus: 0
+      }),
       addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Grade 12')
     )
 
