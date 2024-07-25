@@ -53,7 +53,10 @@ export const createOpiskeluoikeus = (
   muuAmmatillinenKoulutus?: MuuAmmatillinenKoulutus,
   tutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus?: TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus,
   curriculum?: Koodistokoodiviite<'europeanschoolofhelsinkicurriculum'>,
-  internationalSchoolGrade?: Koodistokoodiviite<'internationalschoolluokkaaste'>
+  internationalSchoolGrade?: Koodistokoodiviite<'internationalschoolluokkaaste'>,
+  oppiaine?: Koodistokoodiviite<'koskioppiaineetyleissivistava'>,
+  kieliaineenKieli?: Koodistokoodiviite<'kielivalikoima'>,
+  äidinkielenKieli?: Koodistokoodiviite<'oppiaineaidinkielijakirjallisuus'>
 ): Opiskeluoikeus | undefined => {
   switch (opiskeluoikeudenTyyppi.koodiarvo) {
     case 'perusopetus':
@@ -64,7 +67,10 @@ export const createOpiskeluoikeus = (
         organisaatio,
         alku,
         tila,
-        suorituskieli
+        suorituskieli,
+        oppiaine,
+        kieliaineenKieli,
+        äidinkielenKieli
       )
     case 'perusopetukseenvalmistavaopetus':
       if (!peruste || !suorituskieli) return undefined
