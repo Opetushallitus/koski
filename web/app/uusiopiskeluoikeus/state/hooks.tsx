@@ -130,6 +130,12 @@ export const opiskeluoikeudenLisätiedotClass = (
   }
   return lisätiedot[0]
 }
+
+const excludedOpiskeluoikeudenTilat: Record<string, string[]> = {
+  default: ['mitatoity'],
+  internationalschool: ['mitatoity', 'katsotaaneronneeksi', 'peruutettu']
+}
+
 export const useOpiskeluoikeudenTilat = (
   state: UusiOpiskeluoikeusDialogState
 ): {
@@ -152,17 +158,21 @@ export const useOpiskeluoikeudenTilat = (
   const koodistot =
     useKoodistoOfConstraint<'koskiopiskeluoikeudentila'>(opiskelujaksonTila)
 
-  const options = useMemo(
-    () =>
-      koodistot
-        ? koodistot
-            .flatMap((k) =>
-              k.koodiviite.koodiarvo !== 'mitatoity' ? [k.koodiviite] : []
-            )
-            .map(koodiviiteToOption)
-        : [],
-    [koodistot]
-  )
+  const options = useMemo(() => {
+    const excludedOptions =
+      excludedOpiskeluoikeudenTilat[
+        state.opiskeluoikeus.value?.koodiarvo || 'default'
+      ] || excludedOpiskeluoikeudenTilat.default
+    return koodistot
+      ? koodistot
+          .flatMap((k) =>
+            excludedOptions.includes(k.koodiviite.koodiarvo)
+              ? []
+              : [k.koodiviite]
+          )
+          .map(koodiviiteToOption)
+      : []
+  }, [koodistot])
 
   const initialValue = useMemo(() => {
     const defaults = [
