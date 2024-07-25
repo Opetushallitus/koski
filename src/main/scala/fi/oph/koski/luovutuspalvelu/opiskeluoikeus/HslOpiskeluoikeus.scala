@@ -32,7 +32,8 @@ case class HslOpiskeluoikeus(
   oppilaitos: Option[Oppilaitos],
   tila: OpiskeluoikeudenTila,
   suoritukset: List[HslPäätasonSuoritus],
-  lisätiedot: Option[HslOpiskeluoikeudenLisätiedot]
+  lisätiedot: Option[HslOpiskeluoikeudenLisätiedot],
+  arvioituPäättymispäivä: Option[LocalDate]
 )
 
 object HslOpiskeluoikeus {
@@ -55,6 +56,7 @@ object HslOpiskeluoikeus {
       tila = oo.tila,
       suoritukset = suoritukset,
       lisätiedot = lisätiedot,
+      arvioituPäättymispäivä = oo.arvioituPäättymispäivä
     )
 }
 

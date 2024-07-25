@@ -355,7 +355,7 @@ object AmmatillinenExampleData {
     vaativanErityisenTuenYhteydessäJärjestettäväMajoitus = Some(List(Aikajakso(date(2012, 9, 1), Some(date(2013, 9, 1))))),
     henkilöstökoulutus = true,
     vankilaopetuksessa = Some(List(Aikajakso(date(2013, 9, 2), None))),
-    osaAikaisuusjaksot = Some(List(OsaAikaisuusJakso(date(2012, 9, 1), None, 80))),
+    osaAikaisuusjaksot = Some(List(OsaAikaisuusJakso(date(2012, 9, 1), None, 80), OsaAikaisuusJakso(date(2019, 5, 8), None, 60))),
     opiskeluvalmiuksiaTukevatOpinnot = Some(List(OpiskeluvalmiuksiaTukevienOpintojenJakso(date(2013, 10, 1), date(2013, 10, 31), "Opiskeluvalmiuksia tukevia opintoja")))
   )
 
