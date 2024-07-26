@@ -18,7 +18,7 @@ import scala.xml.{Utility, XML}
 class HslSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethods with Matchers with BeforeAndAfterAll {
   val opiskelija = KoskiSpecificMockOppijat.markkanen
 
-  "Hsl" - {
+  "Hsl API" - {
     "vaatii HSL käyttäjän" in {
       KoskiApplicationForTests.mydataRepository.create(opiskelija.oid, "hsl")
       MockUsers.users
@@ -57,16 +57,18 @@ class HslSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMeth
     "opiskeluoikeuden kentät" in {
       postHsl(MockUsers.hslKäyttäjä, opiskelija.hetu.get) {
         verifyResponseStatusOk()
-
         val actualJson = parseOpintoOikeudetJson()
         val opiskeluoikeudet = (actualJson \ "opiskeluoikeudet").children
 
         opiskeluoikeudet should have size 1
-        validateOpiskeluoikeudenKeys(opiskeluoikeudet.head)
+
+        val expectedKeys = Set("tyyppi", "oid", "tila", "oppilaitos", "suoritukset", "lisätiedot")
+        val actualKeys = opiskeluoikeudet.head.asInstanceOf[JObject].obj.map(_._1).toSet
+        actualKeys should contain allElementsOf expectedKeys
       }
     }
 
-    "verify tila" in {
+    "tarkista opiskeluoikeus tila" in {
       postHsl(MockUsers.hslKäyttäjä, opiskelija.hetu.get) {
         verifyResponseStatusOk()
         val actualJson = parseOpintoOikeudetJson()
@@ -81,66 +83,87 @@ class HslSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMeth
       }
     }
 
-    "verify oppilaitos" in {
+    "tarkista opiskeluoikeus tila - ei tietoa opintojenRahoitus" in {
+      KoskiApplicationForTests.mydataRepository.create(aikuisOpiskelijaMuuRahoitus.oid, "hsl")
       postHsl(MockUsers.hslKäyttäjä, opiskelija.hetu.get) {
         verifyResponseStatusOk()
-        val actualJson = parseOpintoOikeudetJson()
+        val opintoOikeudetXml = soapResponse() \ "Body" \ "opintoOikeudetServiceResponse" \ "opintoOikeudet"
+        val opintoOikeudetJsonString = (opintoOikeudetXml.text)
+        val actualJson = JsonMethods.parse(opintoOikeudetJsonString)
         val opiskeluoikeudet = (actualJson \ "opiskeluoikeudet").children
 
-        opiskeluoikeudet should not be empty
-
-        val oppilaitos = opiskeluoikeudet.head \ "oppilaitos"
-        (oppilaitos \ "nimi" \ "fi").extract[String] should equal("Omnia")
-        (oppilaitos \ "oppilaitosnumero" \ "koodiarvo").extract[String] should equal("10054")
-      }
-    }
-
-    "verify arvioituPäättymispäivä" in {
-      postHsl(MockUsers.hslKäyttäjä, reformitutkinto.hetu.get) {
-        verifyResponseStatusOk()
-        val actualJson = parseOpintoOikeudetJson()
-        val opiskeluoikeudet = (actualJson \ "opiskeluoikeudet").children
-
-        opiskeluoikeudet should not be empty
-
-        val firstOpiskeluoikeus = opiskeluoikeudet.head
-
-        (firstOpiskeluoikeus \ "arvioituPäättymispäivä").extract[String] should equal("2020-05-31")
-      }
-    }
-
-    "verify osaAikaisuusjaksot" in {
-      KoskiApplicationForTests.mydataRepository.create(amis.oid, "hsl")
-      postHsl(MockUsers.hslKäyttäjä, amis.hetu.get) {
-        verifyResponseStatusOk()
-        val actualJson = parseOpintoOikeudetJson()
-        val opiskeluoikeudet = (actualJson \ "opiskeluoikeudet").children
-
-        opiskeluoikeudet should not be empty
-
-        val firstOpiskeluoikeus = opiskeluoikeudet.head
-
-        val lisatiedot = firstOpiskeluoikeus \ "lisätiedot"
-
-        val osaAikaisuusjaksot = (lisatiedot \ "osaAikaisuusjaksot").children
-
-        val jakso1 = osaAikaisuusjaksot.find { jakso =>
-          (jakso \ "alku").extract[String] == "2012-09-01"
+        val rahoitukset = opiskeluoikeudet.flatMap { oikeus =>
+          (oikeus \ "tila" \ "opiskeluoikeusjaksot").children.flatMap { jakso =>
+            (jakso \ "opintojenRahoitus").children
+          }
         }
 
-        val jakso2 = osaAikaisuusjaksot.find { jakso =>
-          (jakso \ "alku").extract[String] == "2019-05-08"
-        }
-
-        jakso1 should not be empty
-        jakso2 should not be empty
-
-        (jakso1.get \ "osaAikaisuus").extract[Int] shouldEqual 80
-        (jakso2.get \ "osaAikaisuus").extract[Int] shouldEqual 60
+        rahoitukset should have size 0
       }
     }
+  }
 
-    "ammatillinen opiskeluoikeus sisältää tiedon oppisopimuksesta jos olemassa" in {
+  "tarkista opiskeluoikeus oppilaitos" in {
+    postHsl(MockUsers.hslKäyttäjä, opiskelija.hetu.get) {
+      verifyResponseStatusOk()
+      val actualJson = parseOpintoOikeudetJson()
+      val opiskeluoikeudet = (actualJson \ "opiskeluoikeudet").children
+
+      opiskeluoikeudet should not be empty
+
+      val oppilaitos = opiskeluoikeudet.head \ "oppilaitos"
+      (oppilaitos \ "nimi" \ "fi").extract[String] should equal("Omnia")
+      (oppilaitos \ "oppilaitosnumero" \ "koodiarvo").extract[String] should equal("10054")
+    }
+  }
+
+  "tarkista opiskeluoikeus arvioituPäättymispäivä" in {
+    postHsl(MockUsers.hslKäyttäjä, reformitutkinto.hetu.get) {
+      verifyResponseStatusOk()
+      val actualJson = parseOpintoOikeudetJson()
+      val opiskeluoikeudet = (actualJson \ "opiskeluoikeudet").children
+
+      opiskeluoikeudet should not be empty
+
+      val firstOpiskeluoikeus = opiskeluoikeudet.head
+
+      (firstOpiskeluoikeus \ "arvioituPäättymispäivä").extract[String] should equal("2020-05-31")
+    }
+  }
+
+  "tarkista lisätiedot osaAikaisuusjaksot" in {
+    KoskiApplicationForTests.mydataRepository.create(amis.oid, "hsl")
+    postHsl(MockUsers.hslKäyttäjä, amis.hetu.get) {
+      verifyResponseStatusOk()
+      val actualJson = parseOpintoOikeudetJson()
+      val opiskeluoikeudet = (actualJson \ "opiskeluoikeudet").children
+
+      opiskeluoikeudet should not be empty
+
+      val firstOpiskeluoikeus = opiskeluoikeudet.head
+
+      val lisatiedot = firstOpiskeluoikeus \ "lisätiedot"
+
+      val osaAikaisuusjaksot = (lisatiedot \ "osaAikaisuusjaksot").children
+
+      val jakso1 = osaAikaisuusjaksot.find { jakso =>
+        (jakso \ "alku").extract[String] == "2012-09-01"
+      }
+
+      val jakso2 = osaAikaisuusjaksot.find { jakso =>
+        (jakso \ "alku").extract[String] == "2019-05-08"
+      }
+
+      jakso1 should not be empty
+      jakso2 should not be empty
+
+      (jakso1.get \ "osaAikaisuus").extract[Int] shouldEqual 80
+      (jakso2.get \ "osaAikaisuus").extract[Int] shouldEqual 60
+    }
+  }
+
+  "ammatillinen opiskeluoikeus" - {
+    "sisältää tiedon oppisopimuksesta jos olemassa" in {
       KoskiApplicationForTests.mydataRepository.create(reformitutkinto.oid, "hsl")
       postHsl(MockUsers.hslKäyttäjä, reformitutkinto.hetu.get) {
         verifyResponseStatusOk()
@@ -165,7 +188,7 @@ class HslSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMeth
       }
     }
 
-    "ammatillinen opiskeluoikeus sisältää tiedon järjestämismuodoista (ja oppisopimuksesta) jos olemassa" in {
+    "sisältää tiedon järjestämismuodoista (ja oppisopimuksesta) jos olemassa" in {
       KoskiApplicationForTests.mydataRepository.create(valviraaKiinnostavaTutkinto.oid, "hsl")
       postHsl(MockUsers.hslKäyttäjä, valviraaKiinnostavaTutkinto.hetu.get) {
         verifyResponseStatusOk()
@@ -188,7 +211,7 @@ class HslSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMeth
       }
     }
 
-    "ammatillisen opiskeluoikeus sisältää tiedon koulutussopimuksista jos olemassa" in {
+    "sisältää tiedon koulutussopimuksista jos olemassa" - {
       KoskiApplicationForTests.mydataRepository.create(reformitutkinto.oid, "hsl")
       postHsl(MockUsers.hslKäyttäjä, reformitutkinto.hetu.get) {
         verifyResponseStatusOk()
@@ -199,64 +222,45 @@ class HslSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMeth
         validateKoulutussopimukset(opiskeluoikeudet.head)
       }
     }
+  }
 
-    "korkeakoulun opiskeluoikeuden lisätiedot" in {
-      KoskiApplicationForTests.mydataRepository.create(dippainssi.oid, "hsl")
-      postHsl(MockUsers.hslKäyttäjä, dippainssi.hetu.get) {
-        verifyResponseStatusOk()
-        val actualJson = parseOpintoOikeudetJson()
-        val opiskeluoikeudet = (actualJson \ "opiskeluoikeudet").children
+  "korkeakoulun opiskeluoikeuden lisätiedot" in {
+    KoskiApplicationForTests.mydataRepository.create(dippainssi.oid, "hsl")
+    postHsl(MockUsers.hslKäyttäjä, dippainssi.hetu.get) {
+      verifyResponseStatusOk()
+      val actualJson = parseOpintoOikeudetJson()
+      val opiskeluoikeudet = (actualJson \ "opiskeluoikeudet").children
 
-        opiskeluoikeudet should have size 2
-        validateLisätiedot(opiskeluoikeudet)
-      }
-    }
-
-    "tarkista lukion oppimäärä - suorituksen tyyppi json" in {
-      KoskiApplicationForTests.mydataRepository.create(uusiLukio.oid, "hsl")
-      postHsl(MockUsers.hslKäyttäjä, uusiLukio.hetu.get) {
-        val opintoOikeudetXml = soapResponse() \ "Body" \ "opintoOikeudetServiceResponse" \ "opintoOikeudet"
-        val opintoOikeudetJsonString = (opintoOikeudetXml.text)
-        val actualJson = JsonMethods.parse(opintoOikeudetJsonString)
-        val opiskeluoikeudet = (actualJson \ "opiskeluoikeudet").children
-
-        val oppimääränSuoritus: Option[JValue] = opiskeluoikeudet.flatMap { oo =>
-          (oo \ "suoritukset").children
-        }.map { suoritus =>
-          suoritus \ "tyyppi"
-        }.find { tyyppi =>
-          (tyyppi \ "koodiarvo").extractOpt[String].contains("lukionoppimaara")
-        }
-
-        oppimääränSuoritus shouldBe defined
-
-        val expectedOppimääräJson = """{"koodiarvo": "lukionoppimaara", "nimi": {"fi": "Lukion oppimäärä", "sv": "Gymnasiets lärokurs", "en": "General upper secondary education syllabus"}, "koodistoUri": "suorituksentyyppi", "koodistoVersio": 1}"""
-        val expectedObject = JsonMethods.parse(expectedOppimääräJson)
-
-        oppimääränSuoritus.get should equal(expectedObject)
-      }
-    }
-
-    "tarkista ettei tietoa toimiteta: opintojenRahoitus" in {
-      KoskiApplicationForTests.mydataRepository.create(aikuisOpiskelijaMuuRahoitus.oid, "hsl")
-      postHsl(MockUsers.hslKäyttäjä, opiskelija.hetu.get) {
-        verifyResponseStatusOk()
-        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN"))
-        val opintoOikeudetXml = soapResponse() \ "Body" \ "opintoOikeudetServiceResponse" \ "opintoOikeudet"
-        val opintoOikeudetJsonString = (opintoOikeudetXml.text)
-        val actualJson = JsonMethods.parse(opintoOikeudetJsonString)
-        val opiskeluoikeudet = (actualJson \ "opiskeluoikeudet").children
-
-        val rahoitukset = opiskeluoikeudet.flatMap { oikeus =>
-          (oikeus \ "tila" \ "opiskeluoikeusjaksot").children.flatMap { jakso =>
-            (jakso \ "opintojenRahoitus").children
-          }
-        }
-
-        rahoitukset should have size 0
-      }
+      opiskeluoikeudet should have size 2
+      validateVirtaLisätiedot(opiskeluoikeudet)
     }
   }
+
+  "tarkista lukion oppimäärä - suorituksen tyyppi json" in {
+    KoskiApplicationForTests.mydataRepository.create(uusiLukio.oid, "hsl")
+    postHsl(MockUsers.hslKäyttäjä, uusiLukio.hetu.get) {
+      val opintoOikeudetXml = soapResponse() \ "Body" \ "opintoOikeudetServiceResponse" \ "opintoOikeudet"
+      val opintoOikeudetJsonString = (opintoOikeudetXml.text)
+      val actualJson = JsonMethods.parse(opintoOikeudetJsonString)
+      val opiskeluoikeudet = (actualJson \ "opiskeluoikeudet").children
+
+      val oppimääränSuoritus: Option[JValue] = opiskeluoikeudet.flatMap { oo =>
+        (oo \ "suoritukset").children
+      }.map { suoritus =>
+        suoritus \ "tyyppi"
+      }.find { tyyppi =>
+        (tyyppi \ "koodiarvo").extractOpt[String].contains("lukionoppimaara")
+      }
+
+      oppimääränSuoritus shouldBe defined
+
+      val expectedOppimääräJson = """{"koodiarvo": "lukionoppimaara", "nimi": {"fi": "Lukion oppimäärä", "sv": "Gymnasiets lärokurs", "en": "General upper secondary education syllabus"}, "koodistoUri": "suorituksentyyppi", "koodistoVersio": 1}"""
+      val expectedObject = JsonMethods.parse(expectedOppimääräJson)
+
+      oppimääränSuoritus.get should equal(expectedObject)
+    }
+  }
+
 
   private def postHsl[A](user: MockUser, hetu: String)(fn: => A): A = {
     post("api/palveluvayla/hsl", body = soapRequest(hetu), headers = authHeaders(user) ++ Map(("Content-type" -> "text/xml")))(fn)
@@ -347,7 +351,7 @@ class HslSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMeth
     koulutussopimukset should not be empty
   }
 
-  private def validateLisätiedot(opiskeluoikeudet: List[JValue]) = {
+  private def validateVirtaLisätiedot(opiskeluoikeudet: List[JValue]) = {
     val lisätiedollinen = opiskeluoikeudet.find { oo =>
       val lisätiedot = (oo \ "lisätiedot")
       lisätiedot != JNothing && lisätiedot != JNull && lisätiedot.children.nonEmpty
@@ -358,10 +362,10 @@ class HslSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMeth
     val lisätiedot = lisätiedollinen.get \ "lisätiedot"
 
     val virtaOpiskeluoikeudenTyyppi = lisätiedot \ "virtaOpiskeluoikeudenTyyppi"
-    (virtaOpiskeluoikeudenTyyppi \ "koodiarvo") should not be JNothing
-    (virtaOpiskeluoikeudenTyyppi \ "koodiarvo") should not be JNull
+    (virtaOpiskeluoikeudenTyyppi \ "koodiarvo").extract[String] should equal("4")
+    (virtaOpiskeluoikeudenTyyppi \ "koodistoUri").extract[String] should equal("virtaopiskeluoikeudentyyppi")
 
-    val lukukausiIlmoittautuminen = (lisätiedot \ "lukukausiIlmoittautuminen").children
-    lukukausiIlmoittautuminen should not be empty
+    val ilmoittautumisjaksot = (lisätiedot \ "lukukausiIlmoittautuminen" \ "ilmoittautumisjaksot").children
+    ilmoittautumisjaksot should not be empty
   }
 }

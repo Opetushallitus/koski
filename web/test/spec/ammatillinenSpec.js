@@ -2943,6 +2943,7 @@ describe('Ammatillinen koulutus', function () {
             'Vaikeasti vammaisille järjestetty opetus 1.9.2012 — 1.9.2013\n' +
             'Vammainen ja avustaja 1.9.2012 — 1.9.2013\n' +
             'Osa-aikaisuusjaksot 1.9.2012 — Osa-aikaisuus 80 %\n' +
+            '8.5.2019 — Osa-aikaisuus 60 %\n' +
             'Opiskeluvalmiuksia tukevat opinnot 1.10.2013 — 31.10.2013 Kuvaus Opiskeluvalmiuksia tukevia opintoja\n' +
             'Henkilöstökoulutus kyllä\n' +
             'Vankilaopetuksessa 2.9.2013 —'
