@@ -9,6 +9,7 @@ import { isStringConstraint } from '../types/fi/oph/koski/typemodel/StringConstr
 import { isUnionConstraint } from '../types/fi/oph/koski/typemodel/UnionConstraint'
 import { nonNull } from './fp/arrays'
 import { ClassOf, ObjWithClass, schemaClassName, shortClassName } from './types'
+import { isAnyConstraint } from '../types/fi/oph/koski/typemodel/AnyConstraint'
 
 /**
  * Muuta yksittäinen constraint listaksi. Palauttaa null, jos annettu arvo on null.
@@ -68,16 +69,18 @@ export const path =
   (pathStr: string) =>
   (constraints: Constraint[] | null): Constraint[] | null => {
     if (constraints) {
-      const fns = pathStr
+      const fns: Array<
+        [string, (cs: Constraint[] | null) => Constraint[] | null]
+      > = pathStr
         .split('.')
-        .map((key) => (key === '[]' ? elems : props(key)))
+        .map((key) => (key === '[]' ? [key, elems] : [key, props(key)]))
       return flatMap((constraint: Constraint | null): Constraint[] | null =>
-        fns.reduce((acc, fn) => {
+        fns.reduce((acc, [key, fn]) => {
           try {
             return fn(acc)
           } catch (err) {
             throw new Error(
-              `Invalid ${toString(constraint)} path '${pathStr}': ${err}`
+              `Invalid ${toString(constraint)} path '${pathStr}' at ${key}: ${err}`
             )
           }
         }, asList(constraint))
@@ -136,6 +139,9 @@ export const prop =
     }
     if (isOptionalConstraint(constraint)) {
       return prop(...propNamePath)(constraint.optional)
+    }
+    if (isAnyConstraint(constraint)) {
+      return []
     }
     throw new Error(`${toString(constraint)} cannot have any properties`)
   }

@@ -17,7 +17,7 @@ class TypeModelServlet(implicit val application: KoskiApplication)
 {
   get("/constraints/:schemaClass") {
     val className = s"fi.oph.koski.schema.${params("schemaClass").replaceAll("[^\\w\\däÄöÖ]", "")}"
-    val typeAndSubtypes = TypeExport.toTypeDef(Class.forName(className))
+    val typeAndSubtypes = TypeExport.toTypeDef(Class.forName(className), followClassRefs = true)
     val requestedType = typeAndSubtypes.find(_.fullClassName == className)
     val constraint = requestedType
       .map(t => Constraints.build(t, typeAndSubtypes))
