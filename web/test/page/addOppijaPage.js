@@ -707,7 +707,7 @@ function AddOppijaPage() {
       )
     },
     selectPeruste: function (peruste) {
-      return selectFromDropdown("[data-testid='peruste-dropdown']", peruste)
+      return selectValue('peruste', peruste)
     },
     perusteet: function () {
       return extractAsText(S("[data-testid='peruste-dropdown'] .options"))
