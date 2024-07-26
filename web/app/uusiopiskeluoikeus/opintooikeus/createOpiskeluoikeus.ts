@@ -345,13 +345,13 @@ const fetchPerusopetuksenOsasuoritukset = memoize(
       await fetchSuoritusPrefill(
         'koulutus',
         suoritus.koulutusmoduuli.tunniste.koodiarvo,
-        'perusopetuksenoppimaara',
         suoritus.tyyppi.koodiarvo,
+        false
       ),
       E.fold(
         () => [],
         (response) => response.data
       )
     ),
-  (s) => s.koulutusmoduuli.tunniste.koodiarvo
   (s) => [s.koulutusmoduuli.tunniste.koodiarvo, s.tyyppi.koodiarvo].join('_')
+)

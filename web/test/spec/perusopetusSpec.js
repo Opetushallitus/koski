@@ -3124,7 +3124,7 @@ describe('Perusopetus', function () {
 
         describe('Kun valitaan kieli ja lisätään oppiaine', function () {
           before(
-            addOppija.selectKieli('englanti'),
+            addOppija.selectKieliaineenKieli('englanti'),
             wait.forMilliseconds(1000),
             addOppija.submitAndExpectSuccess(
               'Tyhjä, Tero (230872-7258)',
@@ -3202,6 +3202,7 @@ describe('Perusopetus', function () {
         addOppija.selectOpiskeluoikeudenTyyppi('Aikuisten perusopetus'),
         addOppija.selectOppimäärä('Aikuisten perusopetuksen oppimäärä'),
         addOppija.selectOpintojenRahoitus('Valtionosuusrahoitteinen koulutus'),
+        addOppija.selectMaksuttomuus(0),
         addOppija.submitAndExpectSuccess(
           'Tyhjä, Tero (230872-7258)',
           'Aikuisten perusopetuksen oppimäärä'
@@ -3303,6 +3304,7 @@ describe('Perusopetus', function () {
           'Aikuisten perusopetuksen oppimäärän alkuvaihe'
         ),
         addOppija.selectOpintojenRahoitus('Valtionosuusrahoitteinen koulutus'),
+        addOppija.selectMaksuttomuus(0),
         addOppija.submitAndExpectSuccess(
           'Tyhjä, Tero (230872-7258)',
           'Aikuisten perusopetuksen oppimäärän alkuvaihe'
@@ -3396,9 +3398,9 @@ describe('Perusopetus', function () {
       describe('Käyttöliittymän tila', function () {
         it('Näytetään oppimäärävaihtoehdot', function () {
           expect(addOppija.oppimäärät()).to.deep.equal([
-            'Aikuisten perusopetuksen oppimäärä',
             'Aikuisten perusopetuksen oppimäärän alkuvaihe',
-            'Perusopetuksen oppiaineen oppimäärä'
+            'Perusopetuksen oppiaineen oppimäärä',
+            'Aikuisten perusopetuksen oppimäärä'
           ])
         })
       })
@@ -3426,11 +3428,12 @@ describe('Perusopetus', function () {
         describe('Kun valitaan kieli ja lisätään oppiaine', function () {
           before(
             timeout.overrideWaitTime(20000),
-            addOppija.selectKieli('englanti'),
+            addOppija.selectKieliaineenKieli('englanti'),
             wait.forMilliseconds(1000),
             addOppija.selectOpintojenRahoitus(
               'Valtionosuusrahoitteinen koulutus'
             ),
+            addOppija.selectMaksuttomuus(0),
             addOppija.submitAndExpectSuccess(
               'Tyhjä, Tero (230872-7258)',
               'A1-kieli'
@@ -4659,8 +4662,10 @@ describe('Perusopetus', function () {
     describe('Opiskeluoikeuden lisääminen', function () {
       before(prepareForNewOppija('kalle', '230872-7258'))
       before(
-        addOppija.enterValidDataPerusopetus(),
-        addOppija.selectOpiskeluoikeudenTyyppi('Perusopetuksen lisäopetus')
+        addOppija.enterValidDataPerusopetus({
+          opiskeluoikeudenTyyppi: 'Perusopetuksen lisäopetus',
+          maksuttomuus: 0
+        })
       )
       before(
         addOppija.submitAndExpectSuccess(
@@ -4851,11 +4856,11 @@ describe('Perusopetus', function () {
           expect(addOppija.opiskeluoikeudenTilat()).to.deep.equal([
             'Eronnut',
             'Katsotaan eronneeksi',
-            'Loma',
             'Läsnä',
+            'Loma',
             'Peruutettu',
-            'Valmistunut',
-            'Väliaikaisesti keskeytynyt'
+            'Väliaikaisesti keskeytynyt',
+            'Valmistunut'
           ])
         })
 
