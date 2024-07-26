@@ -24,6 +24,7 @@ describe('Opiskeluoikeuden sisältyvyys', function () {
       page.oppijaHaku.search('280618-402H', page.oppijaHaku.canAddNewOppija),
       page.oppijaHaku.addNewOppija,
       addOppija.enterValidDataAmmatillinen({ oppilaitos: 'Omnia' }),
+      addOppija.selectMaksuttomuus(0),
       addOppija.submitAndExpectSuccess('280618-402H', 'Autoalan perustutkinto'),
       editor.edit,
       editor.property('sisältyyOpiskeluoikeuteen').addValue,
