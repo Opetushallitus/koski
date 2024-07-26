@@ -3066,6 +3066,7 @@ describe('Perusopetus', function () {
                 addOppija.selectOpintojenRahoitus(
                   'Valtionosuusrahoitteinen koulutus'
                 ),
+                addOppija.selectMaksuttomuus(0),
                 addOppija.submitAndExpectSuccessModal(
                   'Tyhjä, Tero (230872-7258)',
                   'Fysiikka'

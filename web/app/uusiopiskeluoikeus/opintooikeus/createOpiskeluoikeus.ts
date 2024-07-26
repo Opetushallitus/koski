@@ -109,7 +109,10 @@ export const createOpiskeluoikeus = (
         tila,
         suorituskieli,
         maksuton,
-        opintojenRahoitus
+        opintojenRahoitus,
+        oppiaine,
+        kieliaineenKieli,
+        äidinkielenKieli
       )
 
     case 'esiopetus':

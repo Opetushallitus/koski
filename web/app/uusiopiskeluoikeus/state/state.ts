@@ -244,7 +244,12 @@ export const useUusiOpiskeluoikeusDialogState =
     // Perusopetuksen oppiaineen koulutus
     const oppiaine = useDialogField<
       Koodistokoodiviite<'koskioppiaineetyleissivistava'>
-    >(päätasonSuoritukseksiValittu('nuortenperusopetuksenoppiaineenoppimaara'))
+    >(
+      päätasonSuoritukseksiValittu(
+        'nuortenperusopetuksenoppiaineenoppimaara',
+        'perusopetuksenoppiaineenoppimaara'
+      )
+    )
 
     const kieliaineenKieli = useDialogField<
       Koodistokoodiviite<'kielivalikoima'>

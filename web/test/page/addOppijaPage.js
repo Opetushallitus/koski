@@ -668,7 +668,7 @@ function AddOppijaPage() {
       return selectValue('oppimäärä', oppimäärä)
     },
     selectOppiaine: function (oppiaine) {
-      return selectFromDropdown('.oppiaine .dropdown', oppiaine)
+      return selectValue('oppiaine', oppiaine)
     },
     selectSuorituskieli: function (kieli) {
       return selectValue('suorituskieli', kieli)
