@@ -300,7 +300,10 @@ export const useUusiOpiskeluoikeusDialogState =
       päätasonSuoritukseksiValittu
     ])
 
-    const maksuton = useDialogField<boolean | null>(maksuttomuustiedollinen)
+    const maksuton = useDialogField<boolean | null>(
+      maksuttomuustiedollinen,
+      () => null
+    )
 
     // Validi opiskeluoikeus
     const result = useMemo(

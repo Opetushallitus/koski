@@ -117,7 +117,11 @@ function AddOppijaPage() {
     },
     enterValidDataPerusopetus: function (params) {
       params = _.merge(
-        { oppilaitos: 'Jyväskylän normaalikoulu', alkamispäivä: '1.1.2018' },
+        {
+          oppilaitos: 'Jyväskylän normaalikoulu',
+          opiskeluoikeudenTyyppi: 'Perusopetus',
+          alkamispäivä: '1.1.2018'
+        },
         {},
         params
       )
@@ -125,6 +129,11 @@ function AddOppijaPage() {
         return api
           .enterData(params)()
           .then(api.selectAloituspäivä(params.alkamispäivä))
+          .then(() => {
+            if (params.maksuttomuus !== undefined) {
+              return api.selectMaksuttomuus(params.maksuttomuus)()
+            }
+          })
           .then(wait.forAjax)
       }
     },
@@ -656,13 +665,13 @@ function AddOppijaPage() {
       return selectValue('opiskeluoikeus', tyyppi)
     },
     selectOpintokokonaisuus: function (kokonaisuus) {
-      return selectFromDropdown('.opintokokonaisuus .dropdown', kokonaisuus)
+      return selectValue('opintokokonaisuus', kokonaisuus)
     },
     oppimäärät: function () {
-      return pageApi.getInputOptions('.oppimaara .dropdown')
+      return selectOptions('oppimäärä')
     },
     oppiaineet: function () {
-      return pageApi.getInputOptions('.oppiaine .dropdown')
+      return selectOptions('oppiaine')
     },
     selectOppimäärä: function (oppimäärä) {
       return selectFromDropdown('.oppimaara .dropdown', oppimäärä)
@@ -707,8 +716,8 @@ function AddOppijaPage() {
     perusteet: function () {
       return extractAsText(S("[data-testid='peruste-dropdown'] .options"))
     },
-    selectKieli: function (kieli) {
-      return selectFromDropdown('.kieli .dropdown', kieli)
+    selectKieliaineenKieli: function (kieli) {
+      return selectValue('kieliaineenKieli', kieli)
     },
     selectKoulutusmoduuli: function (koulutusmoduuli) {
       return selectValue('koulutusmoduuli', koulutusmoduuli)

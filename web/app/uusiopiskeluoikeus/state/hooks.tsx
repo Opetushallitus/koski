@@ -7,7 +7,8 @@ import { useChildSchema, useChildSchemaSafe } from '../../appstate/constraints'
 import { useKoodisto, useKoodistoOfConstraint } from '../../appstate/koodisto'
 import {
   SelectOption,
-  koodiviiteToOption
+  koodiviiteToOption,
+  sortOptions
 } from '../../components-v2/controls/Select'
 import { isJotpaRahoituksenKoodistoviite } from '../../jotpa/jotpa'
 import { OrganisaatioHierarkia } from '../../types/fi/oph/koski/organisaatio/OrganisaatioHierarkia'
@@ -165,16 +166,19 @@ export const useOpiskeluoikeudenTilat = (
       excludedOpiskeluoikeudenTilat[
         state.opiskeluoikeus.value?.koodiarvo || 'default'
       ] || excludedOpiskeluoikeudenTilat.default
+
     return koodistot
-      ? koodistot
-          .flatMap((k) =>
-            excludedOptions.includes(k.koodiviite.koodiarvo)
-              ? []
-              : [k.koodiviite]
-          )
-          .map(koodiviiteToOption)
+      ? sortOptions(
+          koodistot
+            .flatMap((k) =>
+              excludedOptions.includes(k.koodiviite.koodiarvo)
+                ? []
+                : [k.koodiviite]
+            )
+            .map(koodiviiteToOption)
+        )
       : []
-  }, [koodistot])
+  }, [koodistot, state.opiskeluoikeus.value?.koodiarvo])
 
   const initialValue = useMemo(() => {
     const defaults = [
