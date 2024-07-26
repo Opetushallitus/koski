@@ -21,7 +21,7 @@ import {
   isUskonnonOppiaine,
   isVieraanKielenOppiaine,
   isÄidinkielenOppiaine
-} from './perusopetus'
+} from './yleissivistavat'
 import { maksuttomuuslisätiedot, toOppilaitos, toToimipiste } from './utils'
 
 // Aikuisten perusopetus

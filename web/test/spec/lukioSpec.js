@@ -683,6 +683,7 @@ describe('Lukiokoulutus', function () {
           prepareForNewOppija('kalle', '230872-7258'),
           addOppija.enterValidDataLukio(),
           addOppija.selectOppimäärä('Lukion oppimäärä'),
+          addOppija.selectMaksuttomuus(0),
           addOppija.submitAndExpectSuccess(
             'Tyhjä, Tero (230872-7258)',
             'Lukion oppimäärä'
@@ -723,7 +724,10 @@ describe('Lukiokoulutus', function () {
           prepareForNewOppija('kalle', '230872-7258'),
           addOppija.enterValidDataLukio(),
           addOppija.selectOppimäärä('Lukion oppimäärä'),
-          addOppija.selectPeruste('70/011/2015'),
+          addOppija.selectPeruste(
+            '70/011/2015 Aikuisten lukiokoulutuksen opetussuunnitelman perusteet 2015'
+          ),
+          addOppija.selectMaksuttomuus(0),
           addOppija.submitAndExpectSuccess(
             'Tyhjä, Tero (230872-7258)',
             'Lukion oppimäärä'
@@ -758,7 +762,10 @@ describe('Lukiokoulutus', function () {
           prepareForNewOppija('kalle', '230872-7258'),
           addOppija.enterValidDataLukio(),
           addOppija.selectOppimäärä('Lukion oppimäärä'),
-          addOppija.selectPeruste('33/011/2003'),
+          addOppija.selectPeruste(
+            '33/011/2003 Lukion opetussuunnitelman perusteet 2003'
+          ),
+          addOppija.selectMaksuttomuus(0),
           addOppija.submitAndExpectSuccess(
             'Tyhjä, Tero (230872-7258)',
             'Lukion oppimäärä'
@@ -791,7 +798,10 @@ describe('Lukiokoulutus', function () {
           prepareForNewOppija('kalle', '230872-7258'),
           addOppija.enterValidDataLukio(),
           addOppija.selectOppimäärä('Lukion oppimäärä'),
-          addOppija.selectPeruste('4/011/2004'),
+          addOppija.selectPeruste(
+            '4/011/2004 Aikuisten perusopetus ja lukiokoulutus 2004'
+          ),
+          addOppija.selectMaksuttomuus(0),
           addOppija.submitAndExpectSuccess(
             'Tyhjä, Tero (230872-7258)',
             'Lukion oppimäärä'
@@ -827,11 +837,14 @@ describe('Lukiokoulutus', function () {
         before(
           prepareForNewOppija('kalle', '230872-7258'),
           addOppija.enterValidDataLukio(),
+          addOppija.selectMaksuttomuus(0),
           addOppija.selectOppimäärä('Lukion oppiaineen oppimäärä')
         )
 
         it('Ei-tiedossa oppiaine on valittavissa', function () {
-          expect(addOppija.oppiaineet()).to.contain('Ei tiedossa')
+          eventually(() =>
+            expect(addOppija.oppiaineet()).to.contain('Ei tiedossa')
+          )
         })
 
         it('Ei näytä lukion 2019 OPS:n diaarinumeroita', function () {
@@ -846,6 +859,10 @@ describe('Lukiokoulutus', function () {
         describe('Lisäyksen jälkeen', function () {
           before(
             addOppija.selectOppiaine('Biologia'),
+            addOppija.selectPeruste(
+              '60/011/2015 Lukion opetussuunnitelman perusteet 2015'
+            ),
+            addOppija.selectMaksuttomuus(0),
             addOppija.submitAndExpectSuccess(
               'Tyhjä, Tero (230872-7258)',
               'Biologia'
@@ -882,7 +899,10 @@ describe('Lukiokoulutus', function () {
           prepareForNewOppija('kalle', '230872-7258'),
           addOppija.enterValidDataLukio(),
           addOppija.selectOppimäärä('Lukion oppiaineen oppimäärä'),
-          addOppija.selectPeruste('70/011/2015')
+          addOppija.selectPeruste(
+            '70/011/2015 Aikuisten lukiokoulutuksen opetussuunnitelman perusteet 2015'
+          ),
+          addOppija.selectMaksuttomuus(0)
         )
 
         it('Ei-tiedossa oppiaine on valittavissa', function () {
@@ -919,8 +939,11 @@ describe('Lukiokoulutus', function () {
           prepareForNewOppija('kalle', '230872-7258'),
           addOppija.enterValidDataLukio(),
           addOppija.selectOppimäärä('Lukion oppiaineen oppimäärä'),
-          addOppija.selectPeruste('33/011/2003'),
+          addOppija.selectPeruste(
+            '33/011/2003 Lukion opetussuunnitelman perusteet 2003'
+          ),
           addOppija.selectOppiaine('Biologia'),
+          addOppija.selectMaksuttomuus(0),
           addOppija.submitAndExpectSuccess(
             'Tyhjä, Tero (230872-7258)',
             'Biologia'
@@ -950,8 +973,11 @@ describe('Lukiokoulutus', function () {
           prepareForNewOppija('kalle', '230872-7258'),
           addOppija.enterValidDataLukio(),
           addOppija.selectOppimäärä('Lukion oppiaineen oppimäärä'),
-          addOppija.selectPeruste('4/011/2004'),
+          addOppija.selectPeruste(
+            '4/011/2004 Aikuisten perusopetus ja lukiokoulutus 2004'
+          ),
           addOppija.selectOppiaine('Biologia'),
+          addOppija.selectMaksuttomuus(0),
           addOppija.submitAndExpectSuccess(
             'Tyhjä, Tero (230872-7258)',
             'Biologia'
@@ -1054,6 +1080,7 @@ describe('Lukiokoulutus', function () {
           addOppija.selectOpintojenRahoitus(
             'Valtionosuusrahoitteinen koulutus'
           ),
+          addOppija.selectMaksuttomuus(0),
           addOppija.submitAndExpectSuccess(
             'Tyhjä, Tero (230872-7258)',
             'Lukion oppimäärä'
@@ -1072,6 +1099,7 @@ describe('Lukiokoulutus', function () {
           prepareForNewOppija('kalle', '230872-7258'),
           addOppija.enterValidDataLukio(),
           addOppija.selectOpintojenRahoitus('Muuta kautta rahoitettu'),
+          addOppija.selectMaksuttomuus(0),
           addOppija.submitAndExpectSuccess(
             'Tyhjä, Tero (230872-7258)',
             'Lukion oppimäärä'

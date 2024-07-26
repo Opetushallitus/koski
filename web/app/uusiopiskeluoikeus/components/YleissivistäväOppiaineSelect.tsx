@@ -8,7 +8,7 @@ import * as C from '../../util/constraints'
 import { koodistokoodiviiteId } from '../../util/koodisto'
 import { DialogKoodistoSelect } from '../components/DialogKoodistoSelect'
 import { DialogSelect } from '../components/DialogSelect'
-import { SuoritusFieldsProps } from './SuoritusFields'
+import { SuoritusFieldsProps } from '../suoritus/SuoritusFields'
 
 export type YleissivistäväOppiaineSelectProps = SuoritusFieldsProps & {
   koulutusmoduuliClassName: string

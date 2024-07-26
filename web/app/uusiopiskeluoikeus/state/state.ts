@@ -19,7 +19,7 @@ import { opiskeluoikeudenLisätiedotClass } from './hooks'
 import {
   isVieraanKielenOppiaine,
   isÄidinkielenOppiaine
-} from '../opintooikeus/perusopetus'
+} from '../opintooikeus/yleissivistavat'
 
 export type UusiOpiskeluoikeusDialogState = {
   hankintakoulutus: DialogField<Hankintakoulutus>
@@ -241,13 +241,16 @@ export const useUusiOpiskeluoikeusDialogState =
       Koodistokoodiviite<'internationalschoolluokkaaste'>
     >(opiskeluoikeudeksiValittu('internationalschool'))
 
-    // Perusopetuksen oppiaineen koulutus
+    // Perusopetuksen ja lukion oppiaineen koulutus
     const oppiaine = useDialogField<
       Koodistokoodiviite<'koskioppiaineetyleissivistava'>
     >(
       päätasonSuoritukseksiValittu(
         'nuortenperusopetuksenoppiaineenoppimaara',
-        'perusopetuksenoppiaineenoppimaara'
+        'perusopetuksenoppiaineenoppimaara',
+        'lukionoppiaineenoppimaara',
+        'luvalukionoppiaine',
+        'preiboppiaine'
       )
     )
 

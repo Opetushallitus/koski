@@ -12,6 +12,12 @@ import { NuortenPerusopetuksenUskonto } from '../../types/fi/oph/koski/schema/Nu
 import { NuortenPerusopetuksenVierasTaiToinenKotimainenKieli } from '../../types/fi/oph/koski/schema/NuortenPerusopetuksenVierasTaiToinenKotimainenKieli'
 import { NuortenPerusopetus } from '../../types/fi/oph/koski/schema/NuortenPerusopetus'
 import { PerusopetuksenOpiskeluoikeus } from '../../types/fi/oph/koski/schema/PerusopetuksenOpiskeluoikeus'
+import {
+  isEiTiedossaOlevaOppiaine,
+  isUskonnonOppiaine,
+  isVieraanKielenOppiaine,
+  isÄidinkielenOppiaine
+} from './yleissivistavat'
 import { toOppilaitos, toToimipiste } from './utils'
 
 // Perusopetus
@@ -144,25 +150,3 @@ const createOppiaineenKoulutusmoduuli = (
     })
   }
 }
-
-const contains =
-  (...as: string[]) =>
-  (a?: string): boolean =>
-    a !== undefined && as.includes(a)
-
-export const isUskonnonOppiaine = contains('KT')
-export const isVieraanKielenOppiaine = contains(
-  'A1',
-  'A2',
-  'B1',
-  'B2',
-  'B3',
-  'AOM'
-)
-export const isÄidinkielenOppiaine = contains('AI')
-export const isEiTiedossaOlevaOppiaine = contains('XX')
-export const isMuuOppiaine = (koodiarvo: string) =>
-  !isUskonnonOppiaine(koodiarvo) &&
-  !isVieraanKielenOppiaine(koodiarvo) &&
-  !isÄidinkielenOppiaine(koodiarvo) &&
-  !isEiTiedossaOlevaOppiaine(koodiarvo)
