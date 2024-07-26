@@ -2,8 +2,8 @@ import React from 'react'
 import { t } from '../../i18n/i18n'
 import { DialogPäätasonSuoritusSelect } from '../components/DialogPaatasonSuoritusSelect'
 import { DialogPerusteSelect } from '../components/DialogPerusteSelect'
-import { PerusopetuksenOppiaineSelect } from './PerusopetusFields'
 import { SuoritusFieldsProps } from './SuoritusFields'
+import { YleissivistäväOppiaineSelect } from '../components/YleissivistäväOppiaineSelect'
 
 export const AikuistenPerusopetusFields = (props: SuoritusFieldsProps) => (
   <>
@@ -17,7 +17,7 @@ export const AikuistenPerusopetusFields = (props: SuoritusFieldsProps) => (
     </label>
 
     {props.state.oppiaine.visible && (
-      <PerusopetuksenOppiaineSelect
+      <YleissivistäväOppiaineSelect
         state={props.state}
         koulutusmoduuliClassName="AikuistenPerusopetuksenOppiainenTaiEiTiedossaOppiaine"
       />
