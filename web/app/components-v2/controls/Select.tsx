@@ -1,7 +1,8 @@
 import * as A from 'fp-ts/Array'
 import * as NEA from 'fp-ts/NonEmptyArray'
 import * as Ord from 'fp-ts/Ord'
-import { flow, pipe } from 'fp-ts/lib/function'
+import * as string from 'fp-ts/string'
+import { pipe } from 'fp-ts/lib/function'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
   KoodistokoodiviiteKoodistonNimellä,
@@ -435,6 +436,13 @@ export const perusteToOption = (peruste: Peruste): SelectOption<Peruste> => ({
   value: peruste,
   label: [peruste.koodiarvo, t(peruste.nimi)].filter(nonNull).join(' ')
 })
+
+export const SelectOptionOrd = Ord.contramap((o: SelectOption<any>) => o.label)(
+  string.Ord
+)
+
+export const sortOptions = <T,>(options: Array<SelectOption<T>>) =>
+  A.sort(SelectOptionOrd)(options)
 
 // Internal utils
 
