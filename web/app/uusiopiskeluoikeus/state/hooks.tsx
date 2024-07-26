@@ -27,6 +27,7 @@ import { TutkintokoulutukseenValmentavanOpiskeluoikeus } from '../../types/fi/op
 import { TutkintokoulutukseenValmentavanOpiskeluoikeudenAmmatillisenLuvanLisätiedot } from '../../types/fi/oph/koski/schema/TutkintokoulutukseenValmentavanOpiskeluoikeudenAmmatillisenLuvanLisatiedot'
 import { TutkintokoulutukseenValmentavanOpiskeluoikeudenLukiokoulutuksenLuvanLisätiedot } from '../../types/fi/oph/koski/schema/TutkintokoulutukseenValmentavanOpiskeluoikeudenLukiokoulutuksenLuvanLisatiedot'
 import { TutkintokoulutukseenValmentavanOpiskeluoikeudenPerusopetuksenLuvanLisätiedot } from '../../types/fi/oph/koski/schema/TutkintokoulutukseenValmentavanOpiskeluoikeudenPerusopetuksenLuvanLisatiedot'
+import { koodistokoodiviiteId } from '../../util/koodisto'
 
 export const useOpiskeluoikeustyypit = (
   organisaatio?: OrganisaatioHierarkia
@@ -211,7 +212,10 @@ export const useOpintojenRahoitus = (state: UusiOpiskeluoikeusDialogState) => {
     [koodistot]
   )
 
-  const initialValue = useMemo(() => options[0]?.value?.koodiarvo, [options])
+  const initialValue = useMemo(
+    () => options[0]?.value && koodistokoodiviiteId(options[0]?.value),
+    [options]
+  )
 
   return { options, initialValue }
 }
