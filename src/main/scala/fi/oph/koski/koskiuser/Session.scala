@@ -103,6 +103,7 @@ class KoskiSpecificSession(
     globalKäyttöoikeudet.exists(_.globalPalveluroolit.contains(Palvelurooli(TALLENNETUT_YLIOPPILASTUTKINNON_OPISKELUOIKEUDET)))
 
   def hasVktAccess: Boolean = globalKäyttöoikeudet.exists(_.globalPalveluroolit.contains(Palvelurooli(VKT)))
+  def hasHakemuspalveluAccess: Boolean = globalKäyttöoikeudet.exists(_.globalPalveluroolit.contains(Palvelurooli(HAKEMUSPALVELU_API)))
 
   def getKoulutustoimijatWithWriteAccess: List[Oid] = orgKäyttöoikeudet
     .filter(_.organisaatioAccessType.contains(AccessType.write))
@@ -192,6 +193,7 @@ object KoskiSpecificSession {
   private val KOSKI_SYSTEM_USER_MITÄTÖIDYT_JA_POISTETUT: String = "Koski system user mitätöidyt ja poistetut"
   private val UNTRUSTED_SYSTEM_USER = "Koski untrusted system user"
   val SUORITUSJAKO_KATSOMINEN_USER = "Koski suoritusjako katsominen"
+  val OPH_KATSELIJA_USER = "Koski OPH katselija"
   // Internal user with root access
   val systemUser = new KoskiSpecificSession(
     AuthenticationUser(
@@ -234,5 +236,6 @@ object KoskiSpecificSession {
   val untrustedUser = new KoskiSpecificSession(AuthenticationUser(UNTRUSTED_SYSTEM_USER, UNTRUSTED_SYSTEM_USER, UNTRUSTED_SYSTEM_USER, None), "fi", InetAddress.getLoopbackAddress, "", Set())
 
   def suoritusjakoKatsominenUser(request: RichRequest) = new KoskiSpecificSession(AuthenticationUser(SUORITUSJAKO_KATSOMINEN_USER, SUORITUSJAKO_KATSOMINEN_USER, SUORITUSJAKO_KATSOMINEN_USER, None), UserLanguage.getLanguageFromCookie(request), LogUserContext.clientIpFromRequest(request), LogUserContext.userAgent(request), Set(KäyttöoikeusGlobal(List(Palvelurooli(OPHKATSELIJA)))))
+  def ophKatselijaUser(request: RichRequest) = new KoskiSpecificSession(AuthenticationUser(OPH_KATSELIJA_USER, OPH_KATSELIJA_USER, OPH_KATSELIJA_USER, None), UserLanguage.getLanguageFromCookie(request), LogUserContext.clientIpFromRequest(request), LogUserContext.userAgent(request), Set(KäyttöoikeusGlobal(List(Palvelurooli(OPHKATSELIJA)))))
 }
 

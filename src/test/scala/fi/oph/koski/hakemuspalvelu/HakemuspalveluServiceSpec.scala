@@ -1,4 +1,4 @@
-package fi.oph.koski.vkt
+package fi.oph.koski.hakemuspalvelu
 
 import fi.oph.koski.api.misc.{OpiskeluoikeusTestMethods, PutOpiskeluoikeusTestMethods}
 import fi.oph.koski.documentation.AmmatillinenExampleData._
@@ -23,7 +23,7 @@ import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 import scala.reflect.runtime.universe
 
-class VktServiceSpec
+class HakemuspalveluServiceSpec
   extends AnyFreeSpec
     with KoskiHttpSpec
     with Matchers
@@ -35,11 +35,11 @@ class VktServiceSpec
 
   override def defaultOpiskeluoikeus = makeOpiskeluoikeus(alkamispäivä = longTimeAgo, suoritus = ammatillisenTutkinnonOsittainenSuoritus)
 
-  val vktService = KoskiApplicationForTests.vktService
+  val hakemuspalveluService = KoskiApplicationForTests.hakemuspalveluService
 
   implicit val koskiSession =  new KoskiSpecificSession(
     AuthenticationUser(
-      vktKäyttäjä.oid,
+      hakemuspalveluKäyttäjä.oid,
       OPH_KATSELIJA_USER,
       OPH_KATSELIJA_USER, None
     ),
@@ -55,11 +55,11 @@ class VktServiceSpec
   }
 
   "Access control toimii oikein" in {
-    post("/api/vkt/oid", JsonSerializer.writeWithRoot(OidRequest(oid = KoskiSpecificMockOppijat.dippainssi.oid)), headers = authHeaders(vktKäyttäjä) ++ jsonContent){
+    post("/api/hakemuspalvelu/oid", JsonSerializer.writeWithRoot(OidRequest(oid = KoskiSpecificMockOppijat.dippainssi.oid)), headers = authHeaders(hakemuspalveluKäyttäjä) ++ jsonContent){
       verifyResponseStatusOk()
     }
 
-    post("/api/vkt/oid", JsonSerializer.writeWithRoot(OidRequest(oid = KoskiSpecificMockOppijat.dippainssi.oid)), headers = authHeaders(hakemuspalveluKäyttäjä) ++ jsonContent){
+    post("/api/hakemuspalvelu/oid", JsonSerializer.writeWithRoot(OidRequest(oid = KoskiSpecificMockOppijat.dippainssi.oid)), headers = authHeaders(vktKäyttäjä) ++ jsonContent){
       verifyResponseStatus(403, KoskiErrorCategory.forbidden("Käyttäjällä ei ole oikeuksia annetun organisaation tietoihin."))
     }
   }
@@ -72,7 +72,7 @@ class VktServiceSpec
     oppijaOidit.length should be > 100
 
     oppijaOidit.foreach(oppijaOid => {
-      val result = vktService.findOppija(oppijaOid)
+      val result = hakemuspalveluService.findOppija(oppijaOid)
       result.isRight should be(true)
     })
   }
@@ -80,11 +80,8 @@ class VktServiceSpec
   "Korkeakoulu" - {
     val oppijat = Seq(
       KoskiSpecificMockOppijat.dippainssi,
-      KoskiSpecificMockOppijat.korkeakoululainen,
       KoskiSpecificMockOppijat.amkValmistunut,
       KoskiSpecificMockOppijat.opintojaksotSekaisin,
-      KoskiSpecificMockOppijat.amkKesken,
-      KoskiSpecificMockOppijat.amkKeskeytynyt
     )
 
     oppijat.foreach(oppija => {
@@ -95,7 +92,7 @@ class VktServiceSpec
             case s: schema.KorkeakoulututkinnonSuoritus => s
           }.nonEmpty)
 
-        val result = vktService.findOppija(oppija.oid)
+        val result = hakemuspalveluService.findOppija(oppija.oid)
 
         result.isRight should be(true)
 
@@ -118,13 +115,32 @@ class VktServiceSpec
         })
       }
     })
+
+    Seq(
+      KoskiSpecificMockOppijat.korkeakoululainen,
+      KoskiSpecificMockOppijat.amkKesken,
+      KoskiSpecificMockOppijat.amkKeskeytynyt
+    ).foreach(oppija =>
+      s"Keskeneräisen tietoja ei palauteta ${oppija.sukunimi} ${oppija.etunimet} (${oppija.hetu.getOrElse("EI HETUA")})" in {
+        val result = hakemuspalveluService.findOppija(oppija.oid)
+
+        result.isRight should be(true)
+
+        result.foreach(o => {
+          verifyOppija(oppija, o)
+          o.opiskeluoikeudet.length should be(0)
+        })
+      }
+    )
   }
+
+
 
   "Ylioppilastutkinto" - {
     s"Keskeneräisen tietoja ei palauteta" in {
       val oppija = KoskiSpecificMockOppijat.ylioppilasEiValmistunut
 
-      val result = vktService.findOppija(oppija.oid)
+      val result = hakemuspalveluService.findOppija(oppija.oid)
 
       result.isRight should be(true)
 
@@ -140,7 +156,7 @@ class VktServiceSpec
       val expectedOoData = getOpiskeluoikeus(oppija.oid, schema.OpiskeluoikeudenTyyppi.ylioppilastutkinto.koodiarvo)
       val expectedSuoritusDatat = expectedOoData.suoritukset
 
-      val result = vktService.findOppija(oppija.oid)
+      val result = hakemuspalveluService.findOppija(oppija.oid)
 
       result.isRight should be(true)
 
@@ -148,12 +164,24 @@ class VktServiceSpec
         verifyOppija(oppija, o)
 
         o.opiskeluoikeudet should have length 1
-        o.opiskeluoikeudet.head shouldBe a[VktYlioppilastutkinnonOpiskeluoikeus]
+        o.opiskeluoikeudet.head shouldBe a[HakemuspalveluYlioppilastutkinnonOpiskeluoikeus]
 
         val actualOo = o.opiskeluoikeudet.head
         val actualSuoritukset = actualOo.suoritukset
 
         verifyOpiskeluoikeusJaSuoritus(actualOo, actualSuoritukset, expectedOoData, expectedSuoritusDatat)
+      })
+    }
+
+    s"Palautetaan omasta kannasta" in {
+      val oppija = KoskiSpecificMockOppijat.ylioppilasUusiApi
+      val result = hakemuspalveluService.findOppija(oppija.oid)
+
+      result.isRight should be(true)
+
+      result.foreach(o => {
+        verifyOppija(oppija, o)
+        o.opiskeluoikeudet.length should be(1)
       })
     }
   }
@@ -170,7 +198,7 @@ class VktServiceSpec
           case s: schema.DIATutkinnonSuoritus => s
         }
 
-        val result = vktService.findOppija(oppija.oid)
+        val result = hakemuspalveluService.findOppija(oppija.oid)
 
         result.isRight should be(true)
 
@@ -178,7 +206,7 @@ class VktServiceSpec
           verifyOppija(oppija, o)
 
           o.opiskeluoikeudet should have length 1
-          o.opiskeluoikeudet.head shouldBe a[VktDIAOpiskeluoikeus]
+          o.opiskeluoikeudet.head shouldBe a[HakemuspalveluDIAOpiskeluoikeus]
 
           val actualOo = o.opiskeluoikeudet.head
           val actualSuoritukset = actualOo.suoritukset
@@ -202,7 +230,7 @@ class VktServiceSpec
           case s: schema.EBTutkinnonSuoritus => s
         }
 
-        val result = vktService.findOppija(oppija.oid)
+        val result = hakemuspalveluService.findOppija(oppija.oid)
 
         result.isRight should be(true)
 
@@ -211,7 +239,7 @@ class VktServiceSpec
 
           o.opiskeluoikeudet should have length 1
 
-          val actualEbOo = o.opiskeluoikeudet.collectFirst { case eb: VktEBTutkinnonOpiskeluoikeus => eb }.get
+          val actualEbOo = o.opiskeluoikeudet.collectFirst { case eb: HakemuspalveluEBTutkinnonOpiskeluoikeus => eb }.get
           val actualEbSuoritukset = actualEbOo.suoritukset
 
           verifyOpiskeluoikeusJaSuoritus(actualEbOo, actualEbSuoritukset, expectedEbOoData, expectedEbSuoritusDatat)
@@ -235,7 +263,7 @@ class VktServiceSpec
     suoritukset = List(suoritus)
   )
 
-  private def verifyOppija(expected: LaajatOppijaHenkilöTiedot, actual: VktOppija) = {
+  private def verifyOppija(expected: LaajatOppijaHenkilöTiedot, actual: HakemuspalveluOppija) = {
     actual.henkilö.oid should be(expected.oid)
     actual.henkilö.etunimet should be(expected.etunimet)
     actual.henkilö.kutsumanimi should be(expected.kutsumanimi)
@@ -244,8 +272,8 @@ class VktServiceSpec
   }
 
   private def verifyOpiskeluoikeusJaSuoritus(
-    actualOo: VktOpiskeluoikeus,
-    actualSuoritukset: Seq[Suoritus],
+    actualOo: HakemuspalveluOpiskeluoikeus,
+    actualSuoritukset: Seq[HakemuspalveluSuoritus],
     expectedOoData: schema.Opiskeluoikeus,
     expectedSuoritusDatat: Seq[schema.Suoritus]
   ): Unit = {
@@ -255,26 +283,26 @@ class VktServiceSpec
       case (actualSuoritus, expectedSuoritusData) =>
         (actualOo, actualSuoritus, expectedOoData, expectedSuoritusData) match {
           case (
-            actualOo: VktKorkeakoulunOpiskeluoikeus,
-            actualSuoritus: VktKorkeakoulututkinnonSuoritus,
+            actualOo: HakemuspalveluKorkeakoulunOpiskeluoikeus,
+            actualSuoritus: HakemuspalveluKorkeakoulututkinnonSuoritus,
             expectedOoData: schema.KorkeakoulunOpiskeluoikeus,
             expectedSuoritusData: schema.KorkeakouluSuoritus
             ) => verifyKorkeakoulu(actualOo, actualSuoritus, expectedOoData, expectedSuoritusData)
           case (
-            actualOo: VktDIAOpiskeluoikeus,
-            actualSuoritus: VktDIATutkinnonSuoritus,
+            actualOo: HakemuspalveluDIAOpiskeluoikeus,
+            actualSuoritus: HakemuspalveluDIATutkinnonSuoritus,
             expectedOoData: schema.DIAOpiskeluoikeus,
             expectedSuoritusData: schema.DIAPäätasonSuoritus
             ) => verifyDIA(actualOo, actualSuoritus, expectedOoData, expectedSuoritusData)
           case (
-            actualOo: VktEBTutkinnonOpiskeluoikeus,
-            actualSuoritus: VktEBTutkinnonPäätasonSuoritus,
+            actualOo: HakemuspalveluEBTutkinnonOpiskeluoikeus,
+            actualSuoritus: HakemuspalveluEBTutkinnonPäätasonSuoritus,
             expectedOoData: schema.EBOpiskeluoikeus,
             expectedSuoritusData: schema.EBTutkinnonSuoritus,
             ) => verifyEB(actualOo, actualSuoritus, expectedOoData, expectedSuoritusData)
           case (
-            actualOo: VktYlioppilastutkinnonOpiskeluoikeus,
-            actualSuoritus: VktYlioppilastutkinnonPäätasonSuoritus,
+            actualOo: HakemuspalveluYlioppilastutkinnonOpiskeluoikeus,
+            actualSuoritus: HakemuspalveluYlioppilastutkinnonPäätasonSuoritus,
             expectedOoData: schema.YlioppilastutkinnonOpiskeluoikeus,
             expectedSuoritusData: schema.YlioppilastutkinnonSuoritus
             ) => verifyYO(actualOo, actualSuoritus, expectedOoData, expectedSuoritusData)
@@ -284,8 +312,8 @@ class VktServiceSpec
   }
 
   private def verifyDIA(
-    actualOo: VktDIAOpiskeluoikeus,
-    actualSuoritus: VktDIATutkinnonSuoritus,
+    actualOo: HakemuspalveluDIAOpiskeluoikeus,
+    actualSuoritus: HakemuspalveluDIATutkinnonSuoritus,
     expectedOoData: schema.DIAOpiskeluoikeus,
     expectedSuoritusData: schema.DIAPäätasonSuoritus
   ): Unit = {
@@ -295,8 +323,8 @@ class VktServiceSpec
   }
 
   private def verifyEB(
-    actualOo: VktEBTutkinnonOpiskeluoikeus,
-    actualSuoritus: VktEBTutkinnonPäätasonSuoritus,
+    actualOo: HakemuspalveluEBTutkinnonOpiskeluoikeus,
+    actualSuoritus: HakemuspalveluEBTutkinnonPäätasonSuoritus,
     expectedOoData: schema.EBOpiskeluoikeus,
     expectedSuoritusData: schema.EBTutkinnonSuoritus
   ): Unit = {
@@ -307,8 +335,8 @@ class VktServiceSpec
   }
 
   private def verifyYO(
-    actualOo: VktYlioppilastutkinnonOpiskeluoikeus,
-    actualSuoritus: VktYlioppilastutkinnonPäätasonSuoritus,
+    actualOo: HakemuspalveluYlioppilastutkinnonOpiskeluoikeus,
+    actualSuoritus: HakemuspalveluYlioppilastutkinnonPäätasonSuoritus,
     expectedOoData: schema.YlioppilastutkinnonOpiskeluoikeus,
     expectedSuoritusData: schema.YlioppilastutkinnonSuoritus
   ): Unit = {
@@ -321,8 +349,8 @@ class VktServiceSpec
   }
 
   private def verifyKorkeakoulu(
-    actualOo: VktKorkeakoulunOpiskeluoikeus,
-    actualSuoritus: VktKorkeakoulututkinnonSuoritus,
+    actualOo: HakemuspalveluKorkeakoulunOpiskeluoikeus,
+    actualSuoritus: HakemuspalveluKorkeakoulututkinnonSuoritus,
     expectedOoData: schema.KorkeakoulunOpiskeluoikeus,
     expectedSuoritusData: schema.KorkeakouluSuoritus
   ): Unit = {
@@ -332,7 +360,7 @@ class VktServiceSpec
     actualSuoritus.koulutusmoduuli.tunniste.koodiarvo should equal(expectedSuoritusData.koulutusmoduuli.tunniste.koodiarvo)
 
     (actualSuoritus, expectedSuoritusData) match {
-      case (actualSuoritus: VktKorkeakoulututkinnonSuoritus, expectedSuoritusData: schema.KorkeakoulututkinnonSuoritus) =>
+      case (actualSuoritus: HakemuspalveluKorkeakoulututkinnonSuoritus, expectedSuoritusData: schema.KorkeakoulututkinnonSuoritus) =>
         actualSuoritus.koulutusmoduuli.koulutustyyppi should equal(expectedSuoritusData.koulutusmoduuli.koulutustyyppi)
         actualSuoritus.koulutusmoduuli.virtaNimi should equal(expectedSuoritusData.koulutusmoduuli.virtaNimi)
       case _ => fail(s"Palautettiin tunnistamattoman tyyppistä suoritusdataa actual: (${actualSuoritus.getClass.getName}), expected:(${expectedSuoritusData.getClass.getName})")
@@ -340,7 +368,7 @@ class VktServiceSpec
   }
 
   private def verifyKorkeakouluOpiskeluoikeudenKentät(
-    actualOo: VktKorkeakoulunOpiskeluoikeus,
+    actualOo: HakemuspalveluKorkeakoulunOpiskeluoikeus,
     expectedOoData: schema.KorkeakoulunOpiskeluoikeus
   ): Unit = {
     verifyOpiskeluoikeudenKentät(actualOo, expectedOoData)
@@ -360,7 +388,7 @@ class VktServiceSpec
   }
 
   private def verifyKoskiOpiskeluoikeudenKentät(
-    actualOo: VktKoskeenTallennettavaOpiskeluoikeus,
+    actualOo: HakemuspalveluKoskeenTallennettavaOpiskeluoikeus,
     expectedOoData: schema.KoskeenTallennettavaOpiskeluoikeus
   ): Unit = {
     verifyOpiskeluoikeudenKentät(actualOo, expectedOoData)
@@ -377,7 +405,7 @@ class VktServiceSpec
   }
 
   private def verifyOpiskeluoikeudenKentät(
-    actualOo: VktOpiskeluoikeus,
+    actualOo: HakemuspalveluOpiskeluoikeus,
     expectedOoData: schema.Opiskeluoikeus
   ): Unit = {
     actualOo.oppilaitos.map(_.oid) should equal(expectedOoData.oppilaitos.map(_.oid))
@@ -393,7 +421,7 @@ class VktServiceSpec
   }
 
   private def verifyEiOpiskeluoikeuksia(oppija: LaajatOppijaHenkilöTiedot) = {
-    val result = vktService.findOppija(oppija.oid)
+    val result = hakemuspalveluService.findOppija(oppija.oid)
 
     result.isRight should be(true)
 
@@ -405,7 +433,7 @@ class VktServiceSpec
   }
 
   private def verifyEiLöydyTaiEiKäyttöoikeuksia(oppijaOid: String)(implicit user: KoskiSpecificSession): Unit = {
-    val result = vktService.findOppija(oppijaOid)(user)
+    val result = hakemuspalveluService.findOppija(oppijaOid)(user)
 
     result.isLeft should be(true)
     result should equal(Left(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia("Oppijaa ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun.")))
