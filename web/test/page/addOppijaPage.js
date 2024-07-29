@@ -278,8 +278,12 @@ function AddOppijaPage() {
         return api
           .enterData(params)()
           .then(api.selectSuoritustyyppi(params.suoritustyyppi))
-          .then(api.selectSuoritustapa(params.suoritustapa))
-          .then(api.selectTutkinto(params.tutkinto))
+          .then(
+            () =>
+              params.suoritustapa &&
+              api.selectSuoritustapa(params.suoritustapa)()
+          )
+          .then(() => params.tutkinto && api.selectTutkinto(params.tutkinto)())
           .then(api.selectAloituspäivä(params.alkamispäivä))
           .then(api.selectOpintojenRahoitus(params.opintojenRahoitus))
       }
@@ -290,7 +294,8 @@ function AddOppijaPage() {
           oppilaitos: 'Stadin',
           opiskeluoikeudenTyyppi: 'Ammatillinen koulutus',
           oppimäärä: 'Muun ammatillisen koulutuksen suoritus',
-          opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus'
+          opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus',
+          maksuttomuus: 0
         },
         {},
         params
@@ -305,6 +310,7 @@ function AddOppijaPage() {
             }
           })
           .then(api.selectOpintojenRahoitus(params.opintojenRahoitus))
+          .then(api.selectMaksuttomuus(params.maksuttomuus))
       }
     },
     enterValidDataLukio: function (params) {
@@ -483,16 +489,19 @@ function AddOppijaPage() {
 
       return function () {
         return pageApi
-          .setInputValue('.koulutusmoduuli .nimi input', params.nimi)()
+          .setInputValue(
+            '[data-testid="uusiOpiskeluoikeus.modal.paikallinenKoulutus.nimi.input"]',
+            params.nimi
+          )()
           .then(
             pageApi.setInputValue(
-              '.koulutusmoduuli .koodiarvo input',
+              '[data-testid="uusiOpiskeluoikeus.modal.paikallinenKoulutus.koodiarvo.input"]',
               params.koodi
             )
           )
           .then(
             pageApi.setInputValue(
-              '.koulutusmoduuli .kuvaus textarea',
+              '[data-testid="uusiOpiskeluoikeus.modal.paikallinenKoulutus.kuvaus.input"]',
               params.kuvaus
             )
           )
@@ -501,8 +510,8 @@ function AddOppijaPage() {
     enterAmmatilliseenTehtäväänvalmistava: function (
       ammatilliseentehtäväänvalmistavakoulutus
     ) {
-      return selectFromDropdown(
-        '.ammatilliseentehtäväänvalmistavakoulutus .dropdown',
+      return selectValue(
+        'ammatilliseentehtavaanvalmistavakoulutus',
         ammatilliseentehtäväänvalmistavakoulutus
       )
     },

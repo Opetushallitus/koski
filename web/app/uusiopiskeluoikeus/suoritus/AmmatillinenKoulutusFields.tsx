@@ -23,6 +23,7 @@ import {
 } from '../opintooikeus/ammatillinenTutkinto'
 import { UusiOpiskeluoikeusDialogState } from '../state/state'
 import { SuoritusFieldsProps } from './SuoritusFields'
+import { TestIdLayer } from '../../appstate/useTestId'
 
 export const AmmatillinenKoulutusFields = (props: SuoritusFieldsProps) => {
   const tutkinnot = useTutkinnot(props.state)
@@ -228,20 +229,34 @@ const PaikallinenKoulutusFields = (props: PaikallinenKoulutusFieldsProps) => {
   }
 
   return (
-    <section className="PaikallinenKoulutus">
-      <label>
-        {t('Nimi')}
-        <TextEdit value={koulutus.nimi} onChange={update('nimi')} />
-      </label>
-      <label>
-        {t('Koodiarvo')}
-        <TextEdit value={koulutus.koodiarvo} onChange={update('koodiarvo')} />
-      </label>
-      <label>
-        {t('Kuvaus')}
-        <TextEdit value={koulutus.kuvaus} onChange={update('kuvaus')} />
-      </label>
-    </section>
+    <TestIdLayer id="paikallinenKoulutus">
+      <section className="PaikallinenKoulutus">
+        <label>
+          {t('Nimi')}
+          <TextEdit
+            value={koulutus.nimi}
+            onChange={update('nimi')}
+            testId="nimi"
+          />
+        </label>
+        <label>
+          {t('Koodiarvo')}
+          <TextEdit
+            value={koulutus.koodiarvo}
+            onChange={update('koodiarvo')}
+            testId="koodiarvo"
+          />
+        </label>
+        <label>
+          {t('Kuvaus')}
+          <TextEdit
+            value={koulutus.kuvaus}
+            onChange={update('kuvaus')}
+            testId="kuvaus"
+          />
+        </label>
+      </section>
+    </TestIdLayer>
   )
 }
 

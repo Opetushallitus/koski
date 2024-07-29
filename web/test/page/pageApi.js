@@ -20,7 +20,7 @@ function Page(mainElement) {
       })
     },
     setInputValue: function (selector, value, index) {
-      return function () {
+      return eventually(() => {
         var input = api.getInput(selector)
         var isRadio = input.attr('type') === 'radio'
         var visibleElement = isRadio ? api.getRadioLabel(selector) : input
@@ -30,7 +30,7 @@ function Page(mainElement) {
             return input.setValue(value, index)
           })
           .then(wait.forAjax)
-      }
+      })
     },
     getInputValue: function (selector) {
       return api.getInput(selector).value()
