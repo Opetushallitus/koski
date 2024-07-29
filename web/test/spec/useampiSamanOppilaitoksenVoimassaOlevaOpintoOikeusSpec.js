@@ -10,6 +10,7 @@ describe('Useampi voimassa oleva opinto oikeus samassa oppilaitoksessa', functio
     page.oppijaHaku.searchAndSelect('130320-899Y'),
     prepareForNewOppija('kalle', '230872-7258'),
     addOppija.enterValidDataMuuAmmatillinen(),
+    addOppija.selectKoulutusmoduuli('Paikallinen koulutus'),
     addOppija.enterPaikallinenKoulutusmoduuliData(),
     addOppija.submitAndExpectSuccess(
       'Tyhjä, Tero (230872-7258)',
@@ -39,18 +40,22 @@ describe('Useampi voimassa oleva opinto oikeus samassa oppilaitoksessa', functio
       opinnot.opiskeluoikeudet.lisääOpiskeluoikeus,
       addOppija.selectOppilaitos('Stadin ammatti- ja aikuisopisto'),
       addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'),
+      addOppija.selectSuoritustyyppi('Ammatillinen tutkinto'),
       addOppija.selectTutkinto('Autoalan perustutkinto'),
       addOppija.selectSuoritustapa('Ammatillinen perustutkinto'),
       addOppija.selectAloituspäivä('1.1.2018'),
       addOppija.selectOpintojenRahoitus('Valtionosuusrahoitteinen koulutus'),
+      addOppija.selectMaksuttomuus(0),
       addOppija.submitModal,
       opinnot.opiskeluoikeudet.lisääOpiskeluoikeus,
       addOppija.selectOppilaitos('Stadin ammatti- ja aikuisopisto'),
       addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'),
+      addOppija.selectSuoritustyyppi('Ammatillinen tutkinto'),
       addOppija.selectTutkinto('Autoalan perustutkinto'),
       addOppija.selectSuoritustapa('Ammatillinen perustutkinto'),
       addOppija.selectAloituspäivä('1.1.2018'),
       addOppija.selectOpintojenRahoitus('Valtionosuusrahoitteinen koulutus'),
+      addOppija.selectMaksuttomuus(0),
       addOppija.submitModal
     )
     it('ei ole sallittu', function () {
@@ -63,10 +68,12 @@ describe('Useampi voimassa oleva opinto oikeus samassa oppilaitoksessa', functio
         opinnot.opiskeluoikeudet.lisääOpiskeluoikeus,
         addOppija.selectOppilaitos('Stadin ammatti- ja aikuisopisto'),
         addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'),
-        addOppija.selectOppimäärä('Ammatillinen tutkinto'),
+        addOppija.selectSuoritustyyppi('Ammatillinen tutkinto'),
+        addOppija.selectSuoritustapa('Ammatillinen perustutkinto'),
         addOppija.selectTutkinto('Autoalan työnjohdon erikoisammattitutkinto'),
         addOppija.selectAloituspäivä('1.1.2018'),
         addOppija.selectOpintojenRahoitus('Valtionosuusrahoitteinen koulutus'),
+        addOppija.selectMaksuttomuus(0),
         addOppija.submitModal
       )
       it('on sallittu', function () {
@@ -79,7 +86,7 @@ describe('Useampi voimassa oleva opinto oikeus samassa oppilaitoksessa', functio
       opinnot.opiskeluoikeudet.lisääOpiskeluoikeus,
       addOppija.selectOppilaitos('Stadin ammatti- ja aikuisopisto'),
       addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'),
-      addOppija.selectOppimäärä('Muun ammatillisen koulutuksen suoritus'),
+      addOppija.selectSuoritustyyppi('Muun ammatillisen koulutuksen suoritus'),
       addOppija.selectKoulutusmoduuli(
         'Ammatilliseen tehtävään valmistava koulutus'
       ),
@@ -87,11 +94,13 @@ describe('Useampi voimassa oleva opinto oikeus samassa oppilaitoksessa', functio
         'Ansio- ja liikennelentäjä'
       ),
       addOppija.selectOpintojenRahoitus('Valtionosuusrahoitteinen koulutus'),
+      addOppija.selectMaksuttomuus(0),
       addOppija.submitModal,
+
       opinnot.opiskeluoikeudet.lisääOpiskeluoikeus,
       addOppija.selectOppilaitos('Stadin ammatti- ja aikuisopisto'),
       addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'),
-      addOppija.selectOppimäärä('Muun ammatillisen koulutuksen suoritus'),
+      addOppija.selectSuoritustyyppi('Muun ammatillisen koulutuksen suoritus'),
       addOppija.selectKoulutusmoduuli(
         'Ammatilliseen tehtävään valmistava koulutus'
       ),
@@ -99,6 +108,7 @@ describe('Useampi voimassa oleva opinto oikeus samassa oppilaitoksessa', functio
         'Ansio- ja liikennelentäjä'
       ),
       addOppija.selectOpintojenRahoitus('Valtionosuusrahoitteinen koulutus'),
+      addOppija.selectMaksuttomuus(0),
       addOppija.submitModal
     )
     it('on sallittu', function () {
