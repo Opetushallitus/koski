@@ -1,7 +1,6 @@
 package fi.oph.koski.luovutuspalvelu
 
 import fi.oph.koski.schema
-import fi.oph.koski.schema._
 import fi.oph.koski.luovutuspalvelu.opiskeluoikeus._
 import fi.oph.scalaschema.{ClassSchema, SchemaToJson}
 import org.json4s.JValue
@@ -39,23 +38,4 @@ object HslResponse {
     // schema.OpiskeluoikeudenTyyppi.vapaansivistystyonkoulutus.koodiarvo,
     schema.OpiskeluoikeudenTyyppi.ylioppilastutkinto.koodiarvo
   )
-}
-
-object HslOpiskeluoikeus {
-  def apply(oo: Opiskeluoikeus): Option[HslOpiskeluoikeus] =
-    (oo match {
-      case o: AikuistenPerusopetuksenOpiskeluoikeus => Some(HslAikuistenPerusopetuksenOpiskeluoikeus(o))
-      case o: AmmatillinenOpiskeluoikeus => Some(HslAmmatillinenOpiskeluoikeus(o))
-      case o: DIAOpiskeluoikeus => Some(HslDiaOpiskeluoikeus(o))
-      case o: IBOpiskeluoikeus => Some(HslIBOpiskeluoikeus(o))
-      case o: InternationalSchoolOpiskeluoikeus => Some(HslInternationalSchoolOpiskeluoikeus(o))
-      case o: KorkeakoulunOpiskeluoikeus => Some(HslKorkeakoulunOpiskeluoikeus(o))
-      case o: LukionOpiskeluoikeus => Some(HslLukionOpiskeluoikeus(o))
-      case o: LukioonValmistavanKoulutuksenOpiskeluoikeus => Some(HslLukioonValmistavaKoulutus(o))
-      case o: PerusopetukseenValmistavanOpetuksenOpiskeluoikeus => Some(HslPerusopetukseenValmistavanOpetuksenOpiskeluoikeus(o))
-      case o: PerusopetuksenLisäopetuksenOpiskeluoikeus => Some(HslPerusopetuksenLisäopetuksenOpiskeluoikeus(o))
-      case o: PerusopetuksenOpiskeluoikeus => Some(HslPerusopetuksenOpiskeluoikeus(o))
-      case o: YlioppilastutkinnonOpiskeluoikeus => Some(HslYlioppilastutkinnonOpiskeluoikeus(o))
-      case _ => None
-    })
 }

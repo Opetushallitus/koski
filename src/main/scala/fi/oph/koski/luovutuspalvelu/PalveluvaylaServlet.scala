@@ -11,7 +11,7 @@ import scala.xml.{Elem, Node, NodeSeq}
 
 class PalveluvaylaServlet(implicit val application: KoskiApplication) extends SoapServlet with RequiresSuomiFiOrHsl with NoCache {
   private val suomiFiService = new SuomiFiService(application)
-  private val HSLService = new HSLService(application)
+  private val hslService = new HslService(application)
 
   post("/suomi-fi-rekisteritiedot") {
     requireSuomiFiUser
@@ -33,7 +33,7 @@ class PalveluvaylaServlet(implicit val application: KoskiApplication) extends So
       val soapResp = (for {
         xml <- xmlBody
         hetu <- extractHetuHsl(xml)
-        opiskeluoikeudet <- HSLService.HSLOpiskeluoikeudet(hetu)
+        opiskeluoikeudet <- hslService.HslOpiskeluoikeudet(hetu)
       } yield hslBody(xml, opiskeluoikeudet)) match {
         case Right(soap) => soap
         case Left(status) => haltWithStatus(status)
