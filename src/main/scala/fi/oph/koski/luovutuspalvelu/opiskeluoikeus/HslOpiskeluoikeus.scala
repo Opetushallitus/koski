@@ -83,7 +83,7 @@ object HslDefaultPäätasonSuoritus {
   )
 }
 
-@Title("Ammatillinen päätason suoritus")
+@Title("Ammatillisen opiskeluoikeuden päätason suoritus")
 case class HslAmmatillinenPäätasonSuoritus(
   tyyppi: Koodistokoodiviite,
   osaamisenHankkimistavat: Option[List[HslOsaamisenHankkimistapajakso]],
