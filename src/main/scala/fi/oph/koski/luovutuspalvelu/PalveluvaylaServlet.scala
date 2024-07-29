@@ -30,6 +30,7 @@ class PalveluvaylaServlet(implicit val application: KoskiApplication) extends So
   if (!Environment.isProdEnvironment(application.config)) {
     post("/hsl") {
       requireHslUser
+      logger.info("begin handle hsl soap request")
       val soapResp = (for {
         xml <- xmlBody
         hetu <- extractHetuHsl(xml)
