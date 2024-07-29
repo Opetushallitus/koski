@@ -1,6 +1,7 @@
 import * as A from 'fp-ts/Array'
 import * as NEA from 'fp-ts/NonEmptyArray'
-import { flow } from 'fp-ts/lib/function'
+import * as Ord from 'fp-ts/Ord'
+import { flow, pipe } from 'fp-ts/lib/function'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
   KoodistokoodiviiteKoodistonNimellä,
@@ -398,24 +399,24 @@ const useSelectState = <T,>(props: SelectProps<T>) => {
 
 // Exported utils
 
-export const groupKoodistoToOptions: <T extends string>(
-  koodit: KoodistokoodiviiteKoodistonNimellä<T>[]
-) => Array<SelectOption<Koodistokoodiviite<T>>> = flow(
-  NEA.groupBy(pluck('koodistoNimi')),
-  (grouped) =>
+export const groupKoodistoToOptions = <T extends string>(
+  koodit: KoodistokoodiviiteKoodistonNimellä<T>[],
+  ords?: Array<Ord.Ord<KoodistokoodiviiteKoodistonNimellä>>
+): Array<SelectOption<Koodistokoodiviite<T>>> =>
+  pipe(koodit, NEA.groupBy(pluck('koodistoNimi')), (grouped) =>
     Object.entries(grouped).map(([groupName, koodit]) => ({
       key: groupName,
       label: groupName,
       isGroup: true,
-      children: A.sort(KoodistokoodiviiteKoodistonNimelläOrd)(koodit).map(
-        (k) => ({
-          key: k.id,
-          label: t(k.koodiviite.nimi) || k.koodiviite.koodiarvo,
-          value: k.koodiviite
-        })
-      )
+      children: A.sortBy(ords || [KoodistokoodiviiteKoodistonNimelläOrd])(
+        koodit
+      ).map((k) => ({
+        key: k.id,
+        label: t(k.koodiviite.nimi) || k.koodiviite.koodiarvo,
+        value: k.koodiviite
+      }))
     }))
-)
+  )
 
 export const koodiviiteToOption = <T extends string>(
   koodiviite: Koodistokoodiviite<T>
