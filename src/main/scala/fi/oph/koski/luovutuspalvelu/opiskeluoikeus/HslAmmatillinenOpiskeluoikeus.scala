@@ -1,6 +1,6 @@
 package fi.oph.koski.luovutuspalvelu.opiskeluoikeus
 
-import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, AmmatillinenPäätasonSuoritus, Järjestämismuodollinen, Järjestämismuotojakso, Koodistokoodiviite, Koulutussopimusjakso, Oppilaitos, OsaamisenHankkimistapajakso, OsaamisenHankkimistavallinen}
+import fi.oph.koski.schema._
 import fi.oph.scalaschema.annotation.Title
 
 import java.time.LocalDate

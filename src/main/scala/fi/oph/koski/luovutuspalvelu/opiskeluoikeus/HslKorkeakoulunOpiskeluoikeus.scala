@@ -1,7 +1,7 @@
 package fi.oph.koski.luovutuspalvelu.opiskeluoikeus
 
 import fi.oph.koski.schema.annotation.KoodistoUri
-import fi.oph.koski.schema.{Jakso, Koodistokoodiviite, KorkeakoulunOpiskeluoikeudenLisätiedot, KorkeakoulunOpiskeluoikeus, Lukukausi_Ilmoittautuminen, Lukukausi_Ilmoittautumisjakso, Lukuvuosi_IlmoittautumisjaksonLukuvuosiMaksu, Oppilaitos, OsaAikaisuusJakso}
+import fi.oph.koski.schema._
 import fi.oph.scalaschema.annotation.Title
 
 import java.time.LocalDate

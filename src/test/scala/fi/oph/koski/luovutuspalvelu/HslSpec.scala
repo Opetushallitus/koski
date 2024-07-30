@@ -349,6 +349,7 @@ class HslSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMeth
 
     val koulutussopimukset = (suoritukset.head \ "koulutussopimukset").children
     koulutussopimukset should not be empty
+    koulutussopimukset.head shouldEqual (JsonMethods.parse("""{"alku":"2018-08-01","paikkakunta":{"koodiarvo":"179","nimi":{"fi":"Jyväskylä","sv":"Jyväskylä"},"koodistoUri":"kunta","koodistoVersio":2},"maa":{"koodiarvo":"246","nimi":{"fi":"Suomi","sv":"Finland","en":"Finland"},"lyhytNimi":{"fi":"FI","sv":"FI","en":"FI"},"koodistoUri":"maatjavaltiot2","koodistoVersio":2}}"""))
   }
 
   private def validateVirtaLisätiedot(opiskeluoikeudet: List[JValue]) = {

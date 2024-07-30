@@ -1,7 +1,8 @@
 package fi.oph.koski.luovutuspalvelu
 
-import fi.oph.koski.schema
+import fi.oph.koski.henkilo.OppijaHenkilö
 import fi.oph.koski.luovutuspalvelu.opiskeluoikeus._
+import fi.oph.koski.schema
 import fi.oph.scalaschema.{ClassSchema, SchemaToJson}
 import org.json4s.JValue
 
@@ -15,7 +16,7 @@ case class HslResponse(
 
 object HslResponse {
   lazy val schemaJson: JValue =
-    SchemaToJson.toJsonSchema(schema.KoskiSchema.createSchema(classOf[HslOppija]).asInstanceOf[ClassSchema])
+    SchemaToJson.toJsonSchema(schema.KoskiSchema.createSchema(classOf[HslResponse]).asInstanceOf[ClassSchema])
 
   val schemassaTuetutOpiskeluoikeustyypit: List[String] = List(
     schema.OpiskeluoikeudenTyyppi.aikuistenperusopetus.koodiarvo,
@@ -37,5 +38,17 @@ object HslResponse {
     // schema.OpiskeluoikeudenTyyppi.tuva.koodiarvo,
     // schema.OpiskeluoikeudenTyyppi.vapaansivistystyonkoulutus.koodiarvo,
     schema.OpiskeluoikeudenTyyppi.ylioppilastutkinto.koodiarvo
+  )
+}
+
+case class HslHenkilo(
+  oid: String,
+  syntymäaika: Option[LocalDate]
+)
+
+object HslHenkilo {
+  def fromOppija(oppija: OppijaHenkilö): HslHenkilo = HslHenkilo(
+    oid = oppija.oid,
+    syntymäaika = oppija.syntymäaika
   )
 }

@@ -1,36 +1,23 @@
 package fi.oph.koski.luovutuspalvelu.opiskeluoikeus
 
-import fi.oph.koski.henkilo.OppijaHenkilö
 import fi.oph.koski.schema._
 import fi.oph.scalaschema.annotation.Title
 
 import java.time.LocalDate
 
-case class HslOppija(
-  henkilö: HslHenkilo,
-  opiskeluoikeudet: Seq[HslOpiskeluoikeus],
-  suostumuksenPaattymispaiva: Option[LocalDate]
-)
-
-case class HslHenkilo(
-  oid: String,
-  syntymäaika: Option[LocalDate]
-)
-
-object HslHenkilo {
-  def fromOppija(oppija: OppijaHenkilö): HslHenkilo = HslHenkilo(
-    oid = oppija.oid,
-    syntymäaika = oppija.syntymäaika
-  )
-}
-
 trait HslOpiskeluoikeus {
   def tyyppi: Koodistokoodiviite
+
   def oid: String
+
   def oppilaitos: Option[Oppilaitos]
+
   def tila: HslOpiskeluoikeudenTila
+
   def suoritukset: List[HslPäätasonSuoritus]
+
   def lisätiedot: Option[HslOpiskeluoikeudenLisätiedot]
+
   def arvioituPäättymispäivä: Option[LocalDate]
 }
 
@@ -58,7 +45,7 @@ case class HslOpiskeluoikeudenTila(
 )
 
 object HslOpiskeluoikeudenTila {
-  def apply (t: OpiskeluoikeudenTila): HslOpiskeluoikeudenTila = HslOpiskeluoikeudenTila(Some(t.opiskeluoikeusjaksot.map(j => HslOpiskeluoikeusJakso(j.tila, j.alku, j.opiskeluoikeusPäättynyt))))
+  def apply(t: OpiskeluoikeudenTila): HslOpiskeluoikeudenTila = HslOpiskeluoikeudenTila(Some(t.opiskeluoikeusjaksot.map(j => HslOpiskeluoikeusJakso(j.tila, j.alku, j.opiskeluoikeusPäättynyt))))
 }
 
 case class HslOpiskeluoikeusJakso(
