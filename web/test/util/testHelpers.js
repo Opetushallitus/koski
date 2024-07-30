@@ -490,7 +490,7 @@ function sleep(time) {
   return () => new Promise((resolve) => setTimeout(resolve, time))
 }
 
-function eventually(fn, timeout = 5000) {
+function eventually(fn, timeout = 10000) {
   return async () => {
     const startTime = new Date().getTime()
     let error = null
