@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:tns="http://docs.koski-xroad.fi/producer"
+                  xmlns:xrd="http://x-road.eu/xsd/xroad.xsd"
+                  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                  xmlns:id="http://x-road.eu/xsd/identifiers"
+                  name="opintoOikeudetService"
+                  targetNamespace="http://docs.koski-xroad.fi/producer">
+
+    <wsdl:types>
+        <xsd:schema elementFormDefault="qualified" targetNamespace="http://docs.koski-xroad.fi/producer">
+            <xsd:import id="xrd" namespace="http://x-road.eu/xsd/xroad.xsd" schemaLocation="http://x-road.eu/xsd/xroad.xsd"/>
+            <xsd:element name="opintoOikeudetService">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="hetu" type="xsd:string">
+                            <xsd:annotation>
+                                <xsd:documentation>Name</xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="opintoOikeudetServiceResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="opintoOikeudet" type="xsd:string">
+                            <xsd:annotation>
+                                <xsd:documentation>Service response</xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:schema>
+    </wsdl:types>
+
+    <wsdl:message name="requestheader">
+        <wsdl:part name="client" element="xrd:client"/>
+        <wsdl:part name="service" element="xrd:service"/>
+        <wsdl:part name="userId" element="xrd:userId"/>
+        <wsdl:part name="id" element="xrd:id"/>
+        <wsdl:part name="issue" element="xrd:issue"/>
+        <wsdl:part name="protocolVersion" element="xrd:protocolVersion"/>
+    </wsdl:message>
+
+    <wsdl:message name="opintoOikeudetService">
+        <wsdl:part name="body" element="tns:opintoOikeudetService"/>
+    </wsdl:message>
+
+    <wsdl:message name="opintoOikeudetServiceResponse">
+        <wsdl:part name="body" element="tns:opintoOikeudetServiceResponse"/>
+    </wsdl:message>
+
+    <wsdl:portType name="opintoOikeudetServicePortType">
+        <wsdl:operation name="opintoOikeudetService">
+            <wsdl:input message="tns:opintoOikeudetService"/>
+            <wsdl:output message="tns:opintoOikeudetServiceResponse"/>
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <wsdl:binding name="opintoOikeudetServiceBinding" type="tns:opintoOikeudetServicePortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="opintoOikeudetService">
+            <soap:operation soapAction="" style="document"/>
+            <xrd:version>v1</xrd:version>
+            <wsdl:input>
+                <soap:body parts="body" use="literal"/>
+                <soap:header message="tns:requestheader" part="client" use="literal"/>
+                <soap:header message="tns:requestheader" part="service" use="literal"/>
+                <soap:header message="tns:requestheader" part="userId" use="literal"/>
+                <soap:header message="tns:requestheader" part="id" use="literal"/>
+                <soap:header message="tns:requestheader" part="issue" use="literal"/>
+                <soap:header message="tns:requestheader" part="protocolVersion" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="body" use="literal"/>
+                <soap:header message="tns:requestheader" part="client" use="literal"/>
+                <soap:header message="tns:requestheader" part="service" use="literal"/>
+                <soap:header message="tns:requestheader" part="userId" use="literal"/>
+                <soap:header message="tns:requestheader" part="id" use="literal"/>
+                <soap:header message="tns:requestheader" part="issue" use="literal"/>
+                <soap:header message="tns:requestheader" part="protocolVersion" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+
+    <wsdl:service name="opintoOikeudetService">
+        <wsdl:port name="opintoOikeudetServicePort" binding="tns:opintoOikeudetServiceBinding">
+            <soap:address location="http://localhost/to-be-replaced-with-actual-service-address"/>
+        </wsdl:port>
+    </wsdl:service>
+
+</wsdl:definitions>

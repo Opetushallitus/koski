@@ -1,7 +1,6 @@
 package fi.oph.koski.schema.filter
 
 import java.time.LocalDate
-
 import fi.oph.koski.schema.{Opiskeluoikeus, TäydellisetHenkilötiedot}
 import fi.oph.scalaschema.annotation._
 

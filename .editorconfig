@@ -44,3 +44,7 @@ indent_size = 2
 [*.xml]
 indent_style = space
 indent_size = 2
+
+[*.wsdl]
+indent_style = space
+indent_size = 2

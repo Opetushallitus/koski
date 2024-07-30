@@ -6,6 +6,7 @@ import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.kela.KelaSchema
 import fi.oph.koski.koodisto.Koodistot
 import fi.oph.koski.koskiuser.Unauthenticated
+import fi.oph.koski.luovutuspalvelu.HslResponse
 import fi.oph.koski.massaluovutus.suoritusrekisteri.SureResponse
 import fi.oph.koski.massaluovutus.valintalaskenta.ValintalaskentaResult
 import fi.oph.koski.migri.MigriSchema
@@ -53,6 +54,10 @@ class DocumentationApiServlet(application: KoskiApplication) extends KoskiSpecif
 
   get("/valvira-oppija-schema.json") {
     ValviraSchema.schemaJson
+  }
+
+  get("/hsl-oppija-schema.json") {
+    HslResponse.schemaJson
   }
 
   get("/kela-oppija-schema.json") {
