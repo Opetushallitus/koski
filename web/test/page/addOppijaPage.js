@@ -11,10 +11,12 @@ function AddOppijaPage() {
   function selectedOppilaitos() {
     return form().find('.oppilaitos .selected')
   }
-  function selectedTutkinto() {
-    return form().find(
+  function selectedTutkinto(index) {
+    const ts = form().find(
       `[data-testid="uusiOpiskeluoikeus.modal.tutkinto"] .Select__option`
     )
+    const i = index !== undefined ? (index < 0 ? ts.length + index : index) : 0
+    return S(ts[i])
   }
   function selectValue(field, value) {
     return Select(`uusiOpiskeluoikeus.modal.${field}`, form).select(value)
@@ -44,10 +46,8 @@ function AddOppijaPage() {
       return modalButton().is(':visible') && !modalButton().is(':disabled')
     },
     tutkintoIsEnabled: function () {
-      return (
-        S('.tutkinto input').is(':visible') &&
-        !S('.tutkinto input').is(':disabled')
-      )
+      const selector = '[data-testid="uusiOpiskeluoikeus.modal.tutkinto.input"]'
+      return S(selector).is(':visible') && !S(selector).is(':disabled')
     },
     rahoitusIsVisible: function () {
       return isElementVisible(S('.opintojenrahoitus'))
@@ -269,15 +269,18 @@ function AddOppijaPage() {
           suoritustapa: 'Ammatillinen perustutkinto',
           tutkinto: 'Autoalan perust',
           opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus',
-          alkamispäivä: '1.1.2018'
+          alkamispäivä: '1.1.2018',
+          suorituskieli: 'suomi',
+          maksuttomuus: 0
         },
         {},
         params
       )
       return function () {
         return api
-          .enterData(params)()
+          .enterData({ ...params, suorituskieli: undefined })()
           .then(api.selectSuoritustyyppi(params.suoritustyyppi))
+          .then(api.selectSuorituskieli(params.suorituskieli))
           .then(
             () =>
               params.suoritustapa &&
@@ -286,6 +289,11 @@ function AddOppijaPage() {
           .then(() => params.tutkinto && api.selectTutkinto(params.tutkinto)())
           .then(api.selectAloituspäivä(params.alkamispäivä))
           .then(api.selectOpintojenRahoitus(params.opintojenRahoitus))
+          .then(
+            () =>
+              params.maksuttomuus !== undefined &&
+              api.selectMaksuttomuus(params.maksuttomuus)()
+          )
       }
     },
     enterValidDataMuuAmmatillinen: function (params) {
@@ -541,7 +549,10 @@ function AddOppijaPage() {
     },
     enterTutkinto: function (name) {
       return function () {
-        return pageApi.setInputValue('.tutkinto input', name)()
+        return pageApi.setInputValue(
+          '[data-testid="uusiOpiskeluoikeus.modal.tutkinto.input"]',
+          name
+        )()
       }
     },
     enterOppilaitos: function (name) {
@@ -565,10 +576,10 @@ function AddOppijaPage() {
           .then(pageApi.setInputValue(tutkintoSelector, name))
           .then(
             wait.until(function () {
-              return isElementVisible(selectedTutkinto())
+              return isElementVisible(selectedTutkinto(index))
             })
           )
-          .then(click(selectedTutkinto))
+          .then(click(() => selectedTutkinto(index)))
       }
     },
     selectSuoritustyyppi: function (suoritustyyppi) {
@@ -702,17 +713,11 @@ function AddOppijaPage() {
       return pageApi.getInputOptions('.opiskeluoikeudentila .dropdown')
     },
     tutkinnot: function () {
-      return extractAsText(
-        S(
-          "[data-testid='tutkinto-autocomplete'] [data-testid='autocomplete-results']"
-        )
-      )
+      return selectOptions('tutkinto')
     },
     tutkinnotIsVisible: function () {
       return isElementVisible(
-        S(
-          "[data-testid='tutkinto-autocomplete'] [data-testid='autocomplete-results']"
-        )
+        S('[data-testid="uusiOpiskeluoikeus.modal.tutkinto"]')
       )
     },
     selectPeruste: function (peruste) {
