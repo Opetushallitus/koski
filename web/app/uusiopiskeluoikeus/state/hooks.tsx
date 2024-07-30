@@ -134,7 +134,8 @@ export const opiskeluoikeudenLisätiedotClass = (
 
 const excludedOpiskeluoikeudenTilat: Record<string, string[]> = {
   default: ['mitatoity'],
-  internationalschool: ['mitatoity', 'katsotaaneronneeksi', 'peruutettu']
+  internationalschool: ['mitatoity', 'katsotaaneronneeksi', 'peruutettu'],
+  ammatillinenkoulutus: ['mitatoity', 'eronnut']
 }
 
 export const useOpiskeluoikeudenTilat = (
