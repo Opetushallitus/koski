@@ -349,7 +349,7 @@ class HslSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMeth
 
     val koulutussopimukset = (suoritukset.head \ "koulutussopimukset").children
     koulutussopimukset should not be empty
-    koulutussopimukset.head shouldEqual (JsonMethods.parse("""{"alku":"2018-08-01","paikkakunta":{"koodiarvo":"179","nimi":{"fi":"Jyväskylä","sv":"Jyväskylä"},"koodistoUri":"kunta","koodistoVersio":2},"maa":{"koodiarvo":"246","nimi":{"fi":"Suomi","sv":"Finland","en":"Finland"},"lyhytNimi":{"fi":"FI","sv":"FI","en":"FI"},"koodistoUri":"maatjavaltiot2","koodistoVersio":2}}"""))
+    koulutussopimukset.head shouldEqual JsonMethods.parse("""{"alku":"2018-08-01","paikkakunta":{"koodiarvo":"179","nimi":{"fi":"Jyväskylä","sv":"Jyväskylä"},"koodistoUri":"kunta","koodistoVersio":2},"maa":{"koodiarvo":"246","nimi":{"fi":"Suomi","sv":"Finland","en":"Finland"},"lyhytNimi":{"fi":"FI","sv":"FI","en":"FI"},"koodistoUri":"maatjavaltiot2","koodistoVersio":2}}""")
   }
 
   private def validateVirtaLisätiedot(opiskeluoikeudet: List[JValue]) = {
@@ -368,5 +368,6 @@ class HslSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMeth
 
     val ilmoittautumisjaksot = (lisätiedot \ "lukukausiIlmoittautuminen" \ "ilmoittautumisjaksot").children
     ilmoittautumisjaksot should not be empty
+    ilmoittautumisjaksot.head shouldEqual JsonMethods.parse("""{"alku":"2013-08-01","loppu":"2013-12-31","tila":{"koodiarvo":"1","nimi":{"fi":"Läsnä","sv":"Närvarande"},"koodistoUri":"virtalukukausiilmtila","koodistoVersio":1},"ylioppilaskunnanJäsen":true}""")
   }
 }
