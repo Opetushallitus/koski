@@ -10,13 +10,10 @@ describe('VALMA koulutus', function () {
     before(
       prepareForNewOppija('kalle', '230872-7258'),
       addOppija.enterValidDataAmmatillinen(),
-      addOppija.selectSuoritustyyppi(
+      addOppija.selectOppimäärä(
         'Ammatilliseen peruskoulutukseen valmentava koulutus (VALMA)'
       ),
-      addOppija.selectPeruste(
-        '5/011/2015 Ammatilliseen peruskoulutukseen valmentava koulutus'
-      ),
-      addOppija.selectMaksuttomuus(0),
+      addOppija.selectPeruste('5/011/2015'),
       addOppija.submitAndExpectSuccess(
         'Tyhjä, Tero (230872-7258)',
         'Ammatilliseen koulutukseen valmentava koulutus (VALMA)'
@@ -42,10 +39,9 @@ describe('VALMA koulutus', function () {
       resetFixtures,
       prepareForNewOppija('kalle', '230872-7258'),
       addOppija.enterValidDataAmmatillinen(),
-      addOppija.selectSuoritustyyppi(
+      addOppija.selectOppimäärä(
         'Ammatilliseen peruskoulutukseen valmentava koulutus (VALMA)'
       ),
-      addOppija.selectMaksuttomuus(0),
       addOppija.submitAndExpectSuccess(
         'Tyhjä, Tero (230872-7258)',
         'Ammatilliseen koulutukseen valmentava koulutus (VALMA)'

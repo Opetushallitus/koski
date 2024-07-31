@@ -2836,8 +2836,8 @@ describe('Perusopetus', function () {
               'Katsotaan eronneeksi',
               'Läsnä',
               'Peruutettu',
-              'Väliaikaisesti keskeytynyt',
-              'Valmistunut'
+              'Valmistunut',
+              'Väliaikaisesti keskeytynyt'
             ])
           })
         })
@@ -2994,7 +2994,6 @@ describe('Perusopetus', function () {
             before(
               opinnot.opiskeluoikeudet.lisääOpiskeluoikeus,
               addOppija.selectOppilaitos('Jyväskylän normaalikoulu'),
-              addOppija.selectOpiskeluoikeudenTyyppi('Perusopetus'),
               addOppija.submitModal,
               wait.until(page.isErrorShown)
             )
@@ -3016,7 +3015,6 @@ describe('Perusopetus', function () {
               editor.saveChanges,
               opinnot.opiskeluoikeudet.lisääOpiskeluoikeus,
               addOppija.selectOppilaitos('Jyväskylän normaalikoulu'),
-              addOppija.selectOpiskeluoikeudenTyyppi('Perusopetus'),
               addOppija.submitAndExpectSuccessModal(
                 'Tyhjä, Tero (230872-7258)',
                 'Päättötodistus'
@@ -3035,14 +3033,12 @@ describe('Perusopetus', function () {
               opinnot.opiskeluoikeudet.lisääOpiskeluoikeus,
               addOppija.selectOppilaitos('Omnia'),
               addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'),
-              addOppija.selectSuoritustyyppi('Ammatillinen tutkinto'),
-              addOppija.selectSuoritustapa('Ammatillinen perustutkinto'),
               addOppija.selectTutkinto('Autoalan perustutkinto'),
+              addOppija.selectSuoritustapa('Ammatillinen perustutkinto'),
               addOppija.selectAloituspäivä('1.1.2018'),
               addOppija.selectOpintojenRahoitus(
                 'Valtionosuusrahoitteinen koulutus'
               ),
-              addOppija.selectMaksuttomuus(0),
               addOppija.submitAndExpectSuccessModal(
                 'Tyhjä, Tero (230872-7258)',
                 'Autoalan perustutkinto'
@@ -3066,7 +3062,6 @@ describe('Perusopetus', function () {
                 addOppija.selectOpintojenRahoitus(
                   'Valtionosuusrahoitteinen koulutus'
                 ),
-                addOppija.selectMaksuttomuus(0),
                 addOppija.submitAndExpectSuccessModal(
                   'Tyhjä, Tero (230872-7258)',
                   'Fysiikka'
@@ -3124,7 +3119,7 @@ describe('Perusopetus', function () {
 
         describe('Kun valitaan kieli ja lisätään oppiaine', function () {
           before(
-            addOppija.selectKieliaineenKieli('englanti'),
+            addOppija.selectKieli('englanti'),
             wait.forMilliseconds(1000),
             addOppija.submitAndExpectSuccess(
               'Tyhjä, Tero (230872-7258)',
@@ -3202,7 +3197,6 @@ describe('Perusopetus', function () {
         addOppija.selectOpiskeluoikeudenTyyppi('Aikuisten perusopetus'),
         addOppija.selectOppimäärä('Aikuisten perusopetuksen oppimäärä'),
         addOppija.selectOpintojenRahoitus('Valtionosuusrahoitteinen koulutus'),
-        addOppija.selectMaksuttomuus(0),
         addOppija.submitAndExpectSuccess(
           'Tyhjä, Tero (230872-7258)',
           'Aikuisten perusopetuksen oppimäärä'
@@ -3304,7 +3298,6 @@ describe('Perusopetus', function () {
           'Aikuisten perusopetuksen oppimäärän alkuvaihe'
         ),
         addOppija.selectOpintojenRahoitus('Valtionosuusrahoitteinen koulutus'),
-        addOppija.selectMaksuttomuus(0),
         addOppija.submitAndExpectSuccess(
           'Tyhjä, Tero (230872-7258)',
           'Aikuisten perusopetuksen oppimäärän alkuvaihe'
@@ -3398,9 +3391,9 @@ describe('Perusopetus', function () {
       describe('Käyttöliittymän tila', function () {
         it('Näytetään oppimäärävaihtoehdot', function () {
           expect(addOppija.oppimäärät()).to.deep.equal([
+            'Aikuisten perusopetuksen oppimäärä',
             'Aikuisten perusopetuksen oppimäärän alkuvaihe',
-            'Perusopetuksen oppiaineen oppimäärä',
-            'Aikuisten perusopetuksen oppimäärä'
+            'Perusopetuksen oppiaineen oppimäärä'
           ])
         })
       })
@@ -3428,12 +3421,11 @@ describe('Perusopetus', function () {
         describe('Kun valitaan kieli ja lisätään oppiaine', function () {
           before(
             timeout.overrideWaitTime(20000),
-            addOppija.selectKieliaineenKieli('englanti'),
+            addOppija.selectKieli('englanti'),
             wait.forMilliseconds(1000),
             addOppija.selectOpintojenRahoitus(
               'Valtionosuusrahoitteinen koulutus'
             ),
-            addOppija.selectMaksuttomuus(0),
             addOppija.submitAndExpectSuccess(
               'Tyhjä, Tero (230872-7258)',
               'A1-kieli'
@@ -4662,10 +4654,8 @@ describe('Perusopetus', function () {
     describe('Opiskeluoikeuden lisääminen', function () {
       before(prepareForNewOppija('kalle', '230872-7258'))
       before(
-        addOppija.enterValidDataPerusopetus({
-          opiskeluoikeudenTyyppi: 'Perusopetuksen lisäopetus',
-          maksuttomuus: 0
-        })
+        addOppija.enterValidDataPerusopetus(),
+        addOppija.selectOpiskeluoikeudenTyyppi('Perusopetuksen lisäopetus')
       )
       before(
         addOppija.submitAndExpectSuccess(
@@ -4856,11 +4846,11 @@ describe('Perusopetus', function () {
           expect(addOppija.opiskeluoikeudenTilat()).to.deep.equal([
             'Eronnut',
             'Katsotaan eronneeksi',
-            'Läsnä',
             'Loma',
+            'Läsnä',
             'Peruutettu',
-            'Väliaikaisesti keskeytynyt',
-            'Valmistunut'
+            'Valmistunut',
+            'Väliaikaisesti keskeytynyt'
           ])
         })
 

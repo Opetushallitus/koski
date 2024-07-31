@@ -53,46 +53,41 @@ describe('Ammatillinen koulutus', function () {
       describe('Kun valitaan opiskeluoikeudeksi Ammatillinen koulutus', function () {
         before(
           addOppija.selectOppilaitos('Stadin'),
-          addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'),
-          addOppija.selectSuoritustyyppi('Ammatillinen tutkinto')
+          addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen')
         )
 
         it('Näytetään opintojen rahoitus -kenttä', function () {
-          eventually(() => expect(addOppija.rahoitusIsVisible()).to.equal(true))
+          expect(addOppija.rahoitusIsVisible()).to.equal(true)
         })
 
         it('Vaihtoehtoina on kaikki opintojenRahoitus-vaihtoehdot', function () {
-          eventually(() =>
-            expect(addOppija.opintojenRahoitukset()).to.deep.equal([
-              'Valtionosuusrahoitteinen koulutus',
-              'Työvoimakoulutus (OKM rahoitus)',
-              'Ammatillisen osaamisen pilotit 2019',
-              'Ammatillisen osaamisen pilotit 2019 (työvoimakoulutus)',
-              'Työvoimakoulutus (valtiosopimukseen perustuva rahoitus)',
-              'Jatkuvan oppimisen ja työllisyyden palvelukeskuksen rahoitus',
-              'Jatkuvan oppimisen ja työllisyyden palvelukeskuksen rahoitus (RRF)',
-              'Työvoimakoulutus ely-keskukset ja työ- ja elinkeinotoimistot (kansallinen rahoitus)',
-              'Työvoimakoulutus (ESR-rahoitteinen)',
-              'Työnantajan kokonaan rahoittama',
-              'Muuta kautta rahoitettu',
-              'Nuorten aikuisten osaamisohjelma',
-              'Aikuisten osaamisperustan vahvistaminen',
-              'Maahanmuuttajien ammatillinen koulutus (valtionavustus)'
-            ])
-          )
+          expect(addOppija.opintojenRahoitukset()).to.deep.equal([
+            'Valtionosuusrahoitteinen koulutus',
+            'Työvoimakoulutus ely-keskukset ja työ- ja elinkeinotoimistot (kansallinen rahoitus)',
+            'Työvoimakoulutus (ESR-rahoitteinen)',
+            'Työnantajan kokonaan rahoittama',
+            'Muuta kautta rahoitettu',
+            'Nuorten aikuisten osaamisohjelma',
+            'Aikuisten osaamisperustan vahvistaminen',
+            'Maahanmuuttajien ammatillinen koulutus (valtionavustus)',
+            'Työvoimakoulutus (OKM rahoitus)',
+            'Ammatillisen osaamisen pilotit 2019',
+            'Ammatillisen osaamisen pilotit 2019 (työvoimakoulutus)',
+            'Työvoimakoulutus (valtiosopimukseen perustuva rahoitus)',
+            'Jatkuvan oppimisen ja työllisyyden palvelukeskuksen rahoitus',
+            'Jatkuvan oppimisen ja työllisyyden palvelukeskuksen rahoitus (RRF)'
+          ])
         })
 
         it('Näytetään tilavaihtoehdoissa loma-tila, mutta ei eronnut-tilaa', function () {
-          eventually(() =>
-            expect(addOppija.opiskeluoikeudenTilat()).to.deep.equal([
-              'Katsotaan eronneeksi',
-              'Loma',
-              'Läsnä',
-              'Peruutettu',
-              'Valmistunut',
-              'Väliaikaisesti keskeytynyt'
-            ])
-          )
+          expect(addOppija.opiskeluoikeudenTilat()).to.deep.equal([
+            'Katsotaan eronneeksi',
+            'Loma',
+            'Läsnä',
+            'Peruutettu',
+            'Valmistunut',
+            'Väliaikaisesti keskeytynyt'
+          ])
         })
 
         describe('Koulutusvienti', () => {
@@ -103,10 +98,8 @@ describe('Ammatillinen koulutus', function () {
               .then(done)
           })
           it('Näytetään myös koulutusviennin kautta tuodut tutkinnot', function () {
-            eventually(() =>
-              expect(addOppija.tutkinnot()).to.equal(
-                'Autoalan perustutkinto 39/011/2014 Autoalan työnjohdon erikoisammattitutkinto 40/011/2001 Auto- ja kuljetusalan työnjohdon ammattitutkinto 30/011/2015 Automaatioasentajan ammattitutkinto 3/011/2013 Automaatioyliasentajan erikoisammattitutkinto 9/011/2008 Puutavaran autokuljetuksen ammattitutkinto 27/011/2008 Sähkö- ja automaatiotekniikan perustutkinto 77/011/2014 Autoalan perustutkinto OPH-2762-2017 Automekaanikon erikoisammattitutkinto OPH-1886-2017 Autoalan perustutkinto, Koulutusvientikokeilu OPH-4792-2017'
-              )
+            expect(addOppija.tutkinnot()).to.equal(
+              'Autoalan perustutkinto 39/011/2014 Autoalan työnjohdon erikoisammattitutkinto 40/011/2001 Auto- ja kuljetusalan työnjohdon ammattitutkinto 30/011/2015 Automaatioasentajan ammattitutkinto 3/011/2013 Automaatioyliasentajan erikoisammattitutkinto 9/011/2008 Puutavaran autokuljetuksen ammattitutkinto 27/011/2008 Sähkö- ja automaatiotekniikan perustutkinto 77/011/2014 Autoalan perustutkinto OPH-2762-2017 Automekaanikon erikoisammattitutkinto OPH-1886-2017 Autoalan perustutkinto, Koulutusvientikokeilu OPH-4792-2017'
             )
           })
         })
@@ -330,11 +323,9 @@ describe('Ammatillinen koulutus', function () {
               prepareForNewOppija('omnia-palvelukäyttäjä', '230872-7258'),
               addOppija.enterHenkilötiedot(),
               addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'),
-              addOppija.selectSuoritustyyppi('Ammatillinen tutkinto'),
-              addOppija.selectSuoritustapa('Ammatillinen perustutkinto'),
               addOppija.selectTutkinto('auto'),
-              addOppija.selectAloituspäivä('1.1.2018'),
-              addOppija.selectMaksuttomuus(0)
+              addOppija.selectSuoritustapa('Ammatillinen perustutkinto'),
+              addOppija.selectAloituspäivä('1.1.2018')
             )
             it('Vaihtoehto on valmiiksi valittu', function () {
               expect(addOppija.oppilaitos()).to.deep.equal('Omnia')
@@ -352,17 +343,14 @@ describe('Ammatillinen koulutus', function () {
             )
             it('Mahdollistetaan valinta', function () {
               expect(addOppija.oppilaitokset()).to.deep.equal([
-                'Lahden ammattikorkeakoulu (lakkautettu)',
+                'Lahden ammattikorkeakoulu  (lakkautettu)',
                 'Stadin ammatti- ja aikuisopisto'
               ])
             })
           })
         })
         describe('Kun oppilaitosta ei olla valittu', function () {
-          before(
-            prepareForNewOppija('kalle', '230872-7258'),
-            addOppija.enterData({ oppilaitos: undefined })
-          )
+          before(addOppija.enterData({ oppilaitos: undefined }))
           it('Lisää-nappi on disabloitu', function () {
             expect(addOppija.isEnabled()).to.equal(false)
           })
@@ -387,10 +375,8 @@ describe('Ammatillinen koulutus', function () {
           })
           describe('Tutkinnon valinnan jälkeen', function () {
             before(
-              addOppija.selectSuoritustyyppi('Ammatillinen tutkinto'),
-              addOppija.selectSuoritustapa('Ammatillinen perustutkinto'),
               addOppija.selectTutkinto('auto'),
-              addOppija.selectMaksuttomuus(0)
+              addOppija.selectSuoritustapa('Ammatillinen perustutkinto')
             )
             it('Lisää-nappi on enabloitu', function () {
               expect(addOppija.isEnabled()).to.equal(true)
@@ -470,11 +456,11 @@ describe('Ammatillinen koulutus', function () {
         before(
           prepareForNewOppija('kalle', '230872-7258'),
           addOppija.enterValidDataAmmatillinen({
-            suoritustyyppi: 'Näyttötutkintoon valmistava koulutus',
             suorituskieli: 'ruotsi',
             tutkinto: 'Autoalan työnjoh',
             suoritustapa: ''
           }),
+          addOppija.selectOppimäärä('Näyttötutkintoon valmistava koulutus'),
           addOppija.submitAndExpectSuccess(
             'Tyhjä, Tero (230872-7258)',
             'Näyttötutkintoon valmistava koulutus'
@@ -529,7 +515,7 @@ describe('Ammatillinen koulutus', function () {
           prepareForNewOppija('kalle', '230872-7258'),
           addOppija.enterValidDataAmmatillinen({
             suorituskieli: 'ruotsi',
-            suoritustapa: 'Näyttötutkinto',
+            suoritustapa: '',
             tutkinto: 'Autoalan työnjohd'
           }),
           addOppija.submitAndExpectSuccess(
@@ -577,12 +563,10 @@ describe('Ammatillinen koulutus', function () {
 
         before(
           prepareForNewOppija('kalle', '230872-7258'),
-          addOppija.enterValidDataAmmatillinen({
-            suoritustyyppi:
-              'Ammatilliseen peruskoulutukseen valmentava koulutus (VALMA)',
-            suoritustapa: '',
-            tutkinto: ''
-          }),
+          addOppija.enterValidDataAmmatillinen(),
+          addOppija.selectOppimäärä(
+            'Ammatilliseen peruskoulutukseen valmentava koulutus (VALMA)'
+          ),
           addOppija.submitAndExpectSuccess(
             'Tyhjä, Tero (230872-7258)',
             'Ammatilliseen koulutukseen valmentava koulutus (VALMA)'
@@ -698,14 +682,21 @@ describe('Ammatillinen koulutus', function () {
           }),
           addOppija.selectOppilaitos('Stadin'),
           addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'),
-          addOppija.selectSuoritustyyppi('Ammatillinen tutkinto'),
-          addOppija.selectSuoritustapa('Reformin mukainen näyttö'),
-          addOppija.selectTutkinto('Autoalan perustutkinto', 1),
+          function () {
+            return wait
+              .until(Page().getInput('.tutkinto input').isVisible)()
+              .then(
+                Page().setInputValue(
+                  '.tutkinto input',
+                  'Autoalan perustutkinto'
+                )
+              )
+              .then(click('.results li:last()'))
+          },
           addOppija.selectAloituspäivä('1.1.2018'),
           addOppija.selectOpintojenRahoitus(
             'Valtionosuusrahoitteinen koulutus'
           ),
-          addOppija.selectMaksuttomuus(0),
           addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)'),
           editor.edit
         )
@@ -1071,9 +1062,9 @@ describe('Ammatillinen koulutus', function () {
         }),
         addOppija.selectOppilaitos('Stadin'),
         addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'),
-        addOppija.selectSuoritustyyppi('Ammatillisen tutkinnon osa/osia'),
-        addOppija.selectSuoritustapa('Ammatillinen perustutkinto'),
+        addOppija.selectOppimäärä('Ammatillisen tutkinnon osa/osia'),
         addOppija.selectTutkinto('Autoalan perust'),
+        addOppija.selectSuoritustapa('Ammatillinen perustutkinto'),
         addOppija.selectOpintojenRahoitus('Valtionosuusrahoitteinen koulutus'),
         addOppija.selectMaksuttomuus(0),
         addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)')
@@ -1166,12 +1157,10 @@ describe('Ammatillinen koulutus', function () {
     describe('TELMA suoritus', function () {
       before(
         prepareForNewOppija('kalle', '230872-7258'),
-        addOppija.enterValidDataAmmatillinen({
-          suoritustyyppi:
-            'Työhön ja itsenäiseen elämään valmentava koulutus (TELMA)',
-          suoritustapa: '',
-          tutkinto: ''
-        }),
+        addOppija.enterValidDataAmmatillinen(),
+        addOppija.selectOppimäärä(
+          'Työhön ja itsenäiseen elämään valmentava koulutus (TELMA)'
+        ),
         addOppija.submitAndExpectSuccess(
           'Tyhjä, Tero (230872-7258)',
           'Työhön ja itsenäiseen elämään valmentava koulutus (TELMA)'
@@ -2335,7 +2324,7 @@ describe('Ammatillinen koulutus', function () {
           before(
             prepareForNewOppija('kalle', '230872-7258'),
             addOppija.enterValidDataAmmatillinen(),
-            addOppija.selectSuoritustyyppi(
+            addOppija.selectOppimäärä(
               'Ammatilliseen peruskoulutukseen valmentava koulutus (VALMA)'
             ),
             addOppija.submitAndExpectSuccess(
@@ -2408,7 +2397,7 @@ describe('Ammatillinen koulutus', function () {
       describe('Kun suoritustapana on näyttö', function () {
         before(
           addOppija.addNewOppija('kalle', '280608-6619', {
-            suoritustapa: 'Näyttötutkinto'
+            suoritustapa: 'Näyttö'
           }),
           editor.edit
         )
@@ -2481,14 +2470,21 @@ describe('Ammatillinen koulutus', function () {
           }),
           addOppija.selectOppilaitos('Stadin'),
           addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'),
-          addOppija.selectSuoritustyyppi('Ammatillinen tutkinto'),
-          addOppija.selectSuoritustapa('Reformin mukainen näyttö'),
-          addOppija.selectTutkinto('Autoalan perustutkinto', 2),
+          function () {
+            return wait
+              .until(Page().getInput('.tutkinto input').isVisible)()
+              .then(
+                Page().setInputValue(
+                  '.tutkinto input',
+                  'Autoalan perustutkinto'
+                )
+              )
+              .then(click('.results li:last()'))
+          },
           addOppija.selectAloituspäivä('1.1.2018'),
           addOppija.selectOpintojenRahoitus(
             'Valtionosuusrahoitteinen koulutus'
           ),
-          addOppija.selectMaksuttomuus(0),
           addOppija.submitAndExpectSuccess('Tyhjä, Tero (060918-7919)'),
           editor.edit,
           opinnot.tutkinnonOsat('1').tutkinnonOsa(0).poistaTutkinnonOsa,
@@ -2943,10 +2939,14 @@ describe('Ammatillinen koulutus', function () {
             'Sisäoppilaitosmainen majoitus 1.9.2012 — 1.9.2013\n' +
             'Vaativan erityisen tuen yhteydessä järjestettävä majoitus 1.9.2012 — 1.9.2013\n' +
             'Ulkomaanjaksot 1.9.2012 — 1.9.2013 Maa Ruotsi Kuvaus Harjoittelua ulkomailla\n' +
-            'Hojks Opetusryhmä Yleinen opetusryhmä\nVaikeasti vammaisille järjestetty opetus 1.9.2012 — 1.9.2013\n' +
-            'Vammainen ja avustaja 1.9.2012 — 1.9.2013\nOsa-aikaisuusjaksot 1.9.2012 — Osa-aikaisuus 80 %\n' +
+            'Hojks Opetusryhmä Yleinen opetusryhmä\n' +
+            'Vaikeasti vammaisille järjestetty opetus 1.9.2012 — 1.9.2013\n' +
+            'Vammainen ja avustaja 1.9.2012 — 1.9.2013\n' +
+            'Osa-aikaisuusjaksot 1.9.2012 — Osa-aikaisuus 80 %\n' +
+            '8.5.2019 — Osa-aikaisuus 60 %\n' +
             'Opiskeluvalmiuksia tukevat opinnot 1.10.2013 — 31.10.2013 Kuvaus Opiskeluvalmiuksia tukevia opintoja\n' +
-            'Henkilöstökoulutus kyllä\nVankilaopetuksessa 2.9.2013 —'
+            'Henkilöstökoulutus kyllä\n' +
+            'Vankilaopetuksessa 2.9.2013 —'
         )
       })
     })
@@ -3276,7 +3276,7 @@ describe('Ammatillinen koulutus', function () {
         addOppija.addNewOppija('kalle', '250858-5188', {
           oppilaitos: 'Stadin',
           tutkinto: 'Autoalan työnjohdon erikoisammattitutkinto',
-          suoritustapa: 'Näyttötutkinto'
+          suoritustapa: ''
         })
       )
       describe('Uuden tutkinnonosan lisääminen', function () {
@@ -3439,16 +3439,16 @@ describe('Ammatillinen koulutus', function () {
 
         before(
           clickLisääOpiskeluoikeus,
+          waitAjax,
+          clickValitseOppilaitosDropdown,
           addOppija.selectOppilaitos('Omnia'),
-          addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'),
-          addOppija.selectSuoritustyyppi('Ammatillinen tutkinto'),
-          addOppija.selectSuoritustapa('Ammatillinen perustutkinto'),
+          addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen'),
           addOppija.selectTutkinto('Autoalan perustutkinto'),
+          addOppija.selectSuoritustapa('Ammatillinen perustutkinto'),
           addOppija.selectAloituspäivä('1.1.2018'),
           addOppija.selectOpintojenRahoitus(
             'Valtionosuusrahoitteinen koulutus'
           ),
-          addOppija.selectMaksuttomuus(0),
           addOppija.submitModal,
 
           clickMuokkaaOpiskeluoikeus,

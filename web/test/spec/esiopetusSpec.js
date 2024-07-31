@@ -3,8 +3,6 @@ describe('Esiopetus', function () {
   var opinnot = OpinnotPage()
   var addOppija = AddOppijaPage()
   var editor = opinnot.opiskeluoikeusEditor()
-  const varhaiskasvatusOrganisaationUlkopuolellaCbSelector =
-    '[data-testid="uusiOpiskeluoikeus.modal.hankintakoulutus.esiopetus"]'
 
   before(Authentication().login(), resetFixtures)
 
@@ -74,9 +72,7 @@ describe('Esiopetus', function () {
     describe('Kun kyseessä on tavallinen oppilaitostallentaja', function () {
       it('Varhaiskasvatus organisaatiohierarkian ulkopuolelle valitsinta ei näytetä', function () {
         expect(
-          isElementVisible(
-            findSingle(varhaiskasvatusOrganisaationUlkopuolellaCbSelector)
-          )
+          isElementVisible(findSingle('#varhaiskasvatus-checkbox'))
         ).to.equal(false)
       })
     })
@@ -140,9 +136,7 @@ describe('Esiopetus', function () {
       describe('Kun kyseessä on koulutustoimija joka on myös varhaiskasvatuksen järjestäjä', function () {
         it('Varhaiskasvatus organisaatiohierarkian ulkopuolelle valitsin näytetään', function () {
           expect(
-            isElementVisible(
-              findSingle(varhaiskasvatusOrganisaationUlkopuolellaCbSelector)
-            )
+            isElementVisible(findSingle('#varhaiskasvatus-checkbox'))
           ).to.equal(true)
         })
       })
@@ -150,51 +144,79 @@ describe('Esiopetus', function () {
       describe('Kun valitaan oman organisaatiohierarkian ulkopuolelle tallentaminen', function () {
         before(
           addOppija.selectVarhaiskasvatusOrganisaationUlkopuolelta(true),
-          addOppija.enterOppilaitos('kou')
+          addOppija.enterOppilaitos('')
         )
 
-        it('vain oman organisaation ulkopuolisia varhaiskasvatustoimipisteitä näytetään', function () {
+        it('vain oman organisaation ulkopuoliset varhaiskasvatustoimipisteet näytetään', function () {
           expect(addOppija.toimipisteet()).to.deep.equal([
+            'Helsingin normaalilyseo',
             'Helsingin yliopiston Viikin normaalikoulu',
             'Helsingin eurooppalainen koulu',
             'International School of Helsinki',
-            'Joensuun normaalikoulu (lakkautettu)',
+            'Joensuun normaalikoulu  (lakkautettu)',
             'Rantakylän normaalikoulu',
-            'Savonlinnan normaalikoulu (lakkautettu)',
+            'Savonlinnan normaalikoulu  (lakkautettu)',
             'Tulliportin normaalikoulu',
             'Jyväskylän normaalikoulu',
             'Helsingin Saksalainen koulu',
+            'Tarina',
+            'Heinlahden ala-aste  (lakkautettu)',
             'Hirvikosken koulu',
             'Huutjärven koulu',
-            'Purolan koulu (lakkautettu)',
+            'Ip-Huutjärvi',
+            'Ip-Suur-Ahvenkoski',
+            'Purolan koulu  (lakkautettu)',
+            'Pyttis svenska skola',
+            'Päiväkoti Majakka',
+            'Päiväkoti Måsarna',
+            'Päiväkoti Touhula',
+            'Siltakylän ala-aste  (lakkautettu)',
             'Suur-Ahvenkosken koulu',
-            'Hämeenlinnan normaalikoulu (lakkautettu)',
-            'Aapajoen koulu (lakkautettu)',
-            'Aapajärven koulu (lakkautettu)',
+            'Hämeenlinnan normaalikoulu  (lakkautettu)',
+            'ARPELAN ESIOPETUS',
+            'ARPELAN PÄIVÄKOTI',
+            'Aapajoen koulu  (lakkautettu)',
+            'Aapajärven koulu  (lakkautettu)',
             'Arpelan koulu',
             'HANNULAN KOULUN ESKARI',
             'Hannulan koulu',
+            'ISOPALON PÄIVÄKOTI',
+            'JUHANNUSSAAREN PÄIVÄKOTI',
+            'KAAKAMON PÄIVÄKOTI',
+            'KALLIOPUTAAN PÄIVÄKOTI',
+            'KARUNGIN PÄIVÄKOTI',
+            'KIVIRANNAN ESKARI',
+            'KIVIRANNAN PÄIVÄKOTI',
+            'KOIVUJEN PÄIVÄKOTI',
+            'KOKKOKANKAAN ESKRI',
+            'KOKKOKANKAAN PÄIVÄKOTI',
+            'KYLÄJOEN ESIOPETUS POIKKIKAIRA',
             'Kaakamon koulu',
-            'Kantojärven koulu (lakkautettu)',
+            'Kantojärven koulu  (lakkautettu)',
             'Karungin koulu',
             'Kivirannan koulu',
             'Kokkokankaan koulu',
-            'Kukkolan koulu (lakkautettu)',
+            'Kukkolan koulu  (lakkautettu)',
             'Kyläjoen koulu',
-            'Liakan koulu (lakkautettu)',
-            'Mustarannan koulu (lakkautettu)',
-            'Nikunmäen koulu (lakkautettu)',
+            'Liakan koulu  (lakkautettu)',
+            'Mustarannan koulu  (lakkautettu)',
+            'Nikunmäen koulu  (lakkautettu)',
+            'NÄÄTSAAREN ESKARI',
             'Näätsaaren koulu',
+            'PIRKKIÖN ESKARI',
+            'PIRKKIÖN PÄIVÄKOTI',
+            'PUTAAN VUOROPÄIVÄKOTI',
             'Pirkkiön koulu',
             'Putaan koulu',
             'Raumon koulu',
-            'Sattajärven koulu (lakkautettu)',
-            'Suensaaren koulu (lakkautettu)',
+            'SEMINAARIN ESKARI',
+            'Sattajärven koulu  (lakkautettu)',
+            'Suensaaren koulu  (lakkautettu)',
             'Tornion Seminaarin koulu',
-            'Tornionseudun koulu (lakkautettu)',
-            'Vojakkalan koulu (lakkautettu)',
-            'Yliliakan koulu (lakkautettu)',
-            'Yliraumon koulu (lakkautettu)'
+            'Tornionseudun koulu  (lakkautettu)',
+            'Vojakkalan koulu  (lakkautettu)',
+            'Yliliakan koulu  (lakkautettu)',
+            'Yliraumon koulu  (lakkautettu)'
           ])
         })
 
@@ -316,9 +338,7 @@ describe('Esiopetus', function () {
       describe('Kun kyseessä on koulutustoimija joka on myös varhaiskasvatuksen järjestäjä', function () {
         it('Varhaiskasvatus organisaatiohierarkian ulkopuolelle valitsin näytetään', function () {
           expect(
-            isElementVisible(
-              findSingle(varhaiskasvatusOrganisaationUlkopuolellaCbSelector)
-            )
+            isElementVisible(findSingle('#varhaiskasvatus-checkbox'))
           ).to.equal(true)
         })
       })
