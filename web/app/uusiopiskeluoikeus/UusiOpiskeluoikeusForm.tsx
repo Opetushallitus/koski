@@ -132,21 +132,22 @@ export const UusiOpiskeluoikeusForm = (props: UusiOpiskeluoikeusFormProps) => {
         </label>
       )}
 
-      {opintojenRahoitukset.options.length > 0 && (
-        <label>
-          {t('Opintojen rahoitus')}
-          <DialogSelect
-            options={opintojenRahoitukset.options}
-            initialValue={opintojenRahoitukset.initialValue}
-            value={
-              state.opintojenRahoitus.value &&
-              koodistokoodiviiteId(state.opintojenRahoitus.value)
-            }
-            onChange={(opt) => state.opintojenRahoitus.set(opt?.value)}
-            testId="opintojenRahoitus"
-          />
-        </label>
-      )}
+      {state.opintojenRahoitus.visible &&
+        opintojenRahoitukset.options.length > 0 && (
+          <label>
+            {t('Opintojen rahoitus')}
+            <DialogSelect
+              options={opintojenRahoitukset.options}
+              initialValue={opintojenRahoitukset.initialValue}
+              value={
+                state.opintojenRahoitus.value &&
+                koodistokoodiviiteId(state.opintojenRahoitus.value)
+              }
+              onChange={(opt) => state.opintojenRahoitus.set(opt?.value)}
+              testId="opintojenRahoitus"
+            />
+          </label>
+        )}
 
       {jotpaAsianumerot.options.length > 0 && (
         <label>

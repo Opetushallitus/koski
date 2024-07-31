@@ -156,7 +156,10 @@ export const useUusiOpiskeluoikeusDialogState =
     // Opintojen rahoitus
     const opintojenRahoitus = useDialogField<
       Koodistokoodiviite<'opintojenrahoitus'>
-    >(päätasonSuoritusValittu)
+    >(
+      päätasonSuoritusValittu &&
+        opiskeluoikeus.value?.koodiarvo !== 'europeanschoolofhelsinki'
+    )
 
     // Tuva-järjestämislupa
     const tuvaJärjestämislupa =

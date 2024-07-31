@@ -259,12 +259,11 @@ export const createOpiskeluoikeus = (
       )
 
     case 'europeanschoolofhelsinki':
-      if (!opintojenRahoitus || !curriculum) return undefined
+      if (!curriculum) return undefined
       return createEuropeanSchoolOfHelsinkiOpiskeluoikeus(
         organisaatio,
         alku,
         tila,
-        opintojenRahoitus,
         curriculum
       )
 
