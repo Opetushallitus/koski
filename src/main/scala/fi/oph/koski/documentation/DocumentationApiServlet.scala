@@ -1,6 +1,7 @@
 package fi.oph.koski.documentation
 
 import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.hakemuspalvelu.HakemuspalveluSchema
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.kela.KelaSchema
@@ -54,6 +55,10 @@ class DocumentationApiServlet(application: KoskiApplication) extends KoskiSpecif
 
   get("/valvira-oppija-schema.json") {
     ValviraSchema.schemaJson
+  }
+
+  get("/hakemuspalvelu-oppija-schema.json") {
+    HakemuspalveluSchema.schemaJson
   }
 
   get("/hsl-oppija-schema.json") {
