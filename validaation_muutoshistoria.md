@@ -1,6 +1,11 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 11.7.2024
+
+- Lisätty Vapaan Sivistystön Kotoutumis- ja Lukutaitokoulutuksille 53op:n yhteislaajuusvalidaatio
+
 ## 8.7.2024
+
 - Päätason suoritusten oppilaitosten nimet haetaan erikseen vahvistuspäivän mukaan
 
 ## 4.7.2024

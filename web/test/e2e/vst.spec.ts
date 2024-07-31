@@ -1459,11 +1459,11 @@ test.describe('Vapaa sivistystyö', () => {
         await foreachAsync(Object.values(kokonaisuudet))(async (nimi, i) => {
           const kokonaisuus = vstOppijaPage.osasuoritus(i)
           expect(await kokonaisuus.nimi()).toEqual(nimi)
-          await kokonaisuus.setLaajuus(2)
-          expect(await kokonaisuus.laajuus()).toEqual('2')
+          await kokonaisuus.setLaajuus(20)
+          expect(await kokonaisuus.laajuus()).toEqual('20')
         })
         expect(await vstOppijaPage.suorituksenLaajuus()).toEqual(
-          `${Object.values(kokonaisuudet).length * 2} op`
+          `${Object.values(kokonaisuudet).length * 20} op`
         )
 
         await vstOppijaPage.tallenna()
@@ -1471,7 +1471,7 @@ test.describe('Vapaa sivistystyö', () => {
         await foreachAsync(Object.values(kokonaisuudet))(async (nimi, i) => {
           const kokonaisuus = vstOppijaPage.osasuoritus(i)
           expect(await kokonaisuus.nimi()).toEqual(nimi)
-          expect(await kokonaisuus.laajuus()).toEqual('2 op')
+          expect(await kokonaisuus.laajuus()).toEqual('20 op')
         })
       })
 
@@ -1479,19 +1479,24 @@ test.describe('Vapaa sivistystyö', () => {
         vstOppijaPage
       }) => {
         await poistaKaikkiKokonaisuudet(vstOppijaPage)
-        await vstOppijaPage.addOsasuoritus(
-          'vstlukutaitokoulutuksenvuorovaikutustilannekokonaisuudensuoritus'
-        )
+        for (const koodi of Object.keys(kokonaisuudet)) {
+          await vstOppijaPage.addOsasuoritus(koodi)
+        }
+        await foreachAsync(Object.values(kokonaisuudet))(async (nimi, i) => {
+          const kokonaisuus = vstOppijaPage.osasuoritus(i)
+          expect(await kokonaisuus.nimi()).toEqual(nimi)
+          expect(await kokonaisuus.laajuus()).toEqual('1')
+          expect(await kokonaisuus.arvosana()).toEqual('')
+          expect(await kokonaisuus.taitotaso()).toEqual('')
+          await kokonaisuus.setLaajuus(20)
+          expect(await kokonaisuus.laajuus()).toEqual('20')
+        })
 
-        const osasuoritus = vstOppijaPage.osasuoritus(0)
+        const osasuoritus = vstOppijaPage.osasuoritus(3)
         expect(await osasuoritus.nimi()).toEqual(
           'Vuorovaikutustilanteissa toimiminen'
         )
-        expect(await osasuoritus.laajuus()).toEqual('1')
-        expect(await osasuoritus.arvosana()).toEqual('')
-        expect(await osasuoritus.taitotaso()).toEqual('')
 
-        await osasuoritus.setLaajuus(20)
         await osasuoritus.setSuoritusarvosana(true)
         await osasuoritus.setKielenTaitotaso('C1.1')
 
@@ -1501,7 +1506,7 @@ test.describe('Vapaa sivistystyö', () => {
 
         await vstOppijaPage.tallenna()
 
-        const tallennettu = vstOppijaPage.osasuoritus(0)
+        const tallennettu = vstOppijaPage.osasuoritus(3)
         expect(await tallennettu.laajuus()).toEqual('20 op')
         expect(await tallennettu.arvosana()).toEqual('Hyväksytty')
         expect(await tallennettu.taitotaso()).toEqual('C1.1')
@@ -1955,7 +1960,7 @@ test.describe('Vapaa sivistystyö', () => {
           '1.1.2023'
         )
 
-        await vstOppijaPage.tallenna()
+        await vstOppijaPage.tallennaVirheellisenä('Vahvistetuksi merkatun vapaan sivistyöstyön koulutuksen laajuuden tulee olla 53')
       })
     })
 
@@ -1979,8 +1984,8 @@ test.describe('Vapaa sivistystyö', () => {
           const osasuoritus = vstOppijaPage.osasuoritus(i)
           expect(await osasuoritus.nimi()).toEqual(nimi)
 
-          await osasuoritus.setLaajuus(1 + i)
-          expect(await osasuoritus.laajuus()).toEqual(`${i + 1}`)
+          await osasuoritus.setLaajuus(20 + i)
+          expect(await osasuoritus.laajuus()).toEqual(`${20 + i}`)
 
           await osasuoritus.setJotpaArvosana(4 + i)
           expect(await osasuoritus.arvosana()).toEqual(`${4 + i}`)
@@ -1993,14 +1998,14 @@ test.describe('Vapaa sivistystyö', () => {
           'Lisää osasuoritus',
           ...osasuoritukset
         ])
-        expect(await vstOppijaPage.laajuudetYhteensä()).toEqual('6 op')
+        expect(await vstOppijaPage.laajuudetYhteensä()).toEqual('63 op')
 
         await vstOppijaPage.tallenna()
 
         await foreachAsync(osasuoritukset)(async (nimi, i) => {
           const osasuoritus = vstOppijaPage.osasuoritus(i)
           expect(await osasuoritus.nimi()).toEqual(nimi)
-          expect(await osasuoritus.laajuus()).toEqual(`${i + 1} op`)
+          expect(await osasuoritus.laajuus()).toEqual(`${i + 20} op`)
           expect(await osasuoritus.arvosana()).toEqual('Hyväksytty')
         })
       })

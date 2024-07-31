@@ -6,9 +6,8 @@ import fi.oph.koski.documentation.ExampleData.opiskeluoikeusLäsnä
 import fi.oph.koski.documentation.VapaaSivistystyöExample._
 import fi.oph.koski.documentation.VapaaSivistystyöExampleData._
 import fi.oph.koski.documentation.{ExamplesVapaaSivistystyöKotoutuskoulutus2022 => Koto2022}
-import fi.oph.koski.http.{ErrorMatcher, HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.schema._
-import fi.oph.koski.validation.VSTKotoutumiskoulutus2022Validation
 import org.scalatest.freespec.AnyFreeSpec
 
 import java.time.LocalDate
@@ -58,6 +57,15 @@ class OppijaValidationVapaaSivistystyöKOTOSpec extends AnyFreeSpec with PutOpis
       ohjaus.koulutusmoduuli.laajuusArvo(0) shouldBe (7)
       valinnaiset.koulutusmoduuli.laajuusArvo(0) shouldBe (8)
       suoritus.koulutusmoduuli.laajuusArvo(0) shouldBe (75)
+    }
+
+    "Vahvistettua päätason suoritusta ei voi tallentaa jos sen kokonaislaajuus on alle 53 op" in {
+      val opiskeluoikeus = Koto2022.Opiskeluoikeus.suoritettu.withSuoritukset(
+        List(Koto2022.PäätasonSuoritus.keskeneräinen.withVahvistus(Koto2022.PäätasonSuoritus.suoritettu.vahvistus.get))
+      )
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönVahvistetunPäätasonSuorituksenLaajuus())
+      }
     }
 
     "Automaattinen opintopisteiden laskenta ylikirjoittaa ylemmän osasuoritustason virheellisen opintopistemäärän" in {
