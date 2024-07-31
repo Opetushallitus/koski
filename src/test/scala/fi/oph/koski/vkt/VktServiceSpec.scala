@@ -10,6 +10,7 @@ import fi.oph.koski.koskiuser.KoskiSpecificSession.OPH_KATSELIJA_USER
 import fi.oph.koski.koskiuser.MockUsers.{hakemuspalveluKäyttäjä, vktKäyttäjä}
 import fi.oph.koski.koskiuser.Rooli.{OPHKATSELIJA, VKT}
 import fi.oph.koski.koskiuser._
+import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.virta.MockVirtaClient
 import fi.oph.koski.ytr.MockYtrClient
@@ -57,6 +58,7 @@ class VktServiceSpec
   "Access control toimii oikein" in {
     post("/api/vkt/oid", JsonSerializer.writeWithRoot(OidRequest(oid = KoskiSpecificMockOppijat.dippainssi.oid)), headers = authHeaders(vktKäyttäjä) ++ jsonContent){
       verifyResponseStatusOk()
+      AuditLogTester.verifyAuditLogMessage(Map("operation" -> "VKT_OPISKELUOIKEUS_HAKU"))
     }
 
     post("/api/vkt/oid", JsonSerializer.writeWithRoot(OidRequest(oid = KoskiSpecificMockOppijat.dippainssi.oid)), headers = authHeaders(hakemuspalveluKäyttäjä) ++ jsonContent){
