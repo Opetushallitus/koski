@@ -1298,7 +1298,11 @@ describe('DIA', function () {
         )
 
         it('muuttaa automaattisesti suorituskieleksi saksan', function () {
-          expect(extractAsText(S('.suorituskieli .select'))).to.equal('saksa')
+          expect(
+            S(
+              '[data-testid="uusiOpiskeluoikeus.modal.suorituskieli.input"]'
+            ).val()
+          ).to.equal('saksa')
         })
       })
     })
@@ -1311,6 +1315,7 @@ describe('DIA', function () {
           kutsumanimi: 'Doris',
           sukunimi: 'Dia'
         }),
+        addOppija.selectMaksuttomuus(0),
         addOppija.submitAndExpectSuccess(
           'Dia, Doris (020782-5339)',
           'Deutsche Internationale Abitur'
@@ -1441,6 +1446,7 @@ describe('DIA', function () {
           kutsumanimi: 'Doris',
           sukunimi: 'Dia'
         }),
+        addOppija.selectMaksuttomuus(0),
         addOppija.submitAndExpectSuccess(
           'Dia, Doris (020782-5339)',
           'Valmistava DIA-vaihe'
