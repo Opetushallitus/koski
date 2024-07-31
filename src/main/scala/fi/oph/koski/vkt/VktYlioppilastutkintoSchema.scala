@@ -6,6 +6,7 @@ import fi.oph.scalaschema.annotation.{Description, Title}
 
 object VktYlioppilastutkinnonOpiskeluoikeus {
   def fromKoskiSchema(yo: schema.YlioppilastutkinnonOpiskeluoikeus): VktOpiskeluoikeus = VktYlioppilastutkinnonOpiskeluoikeus(
+    oid = yo.oid,
     oppilaitos = yo.oppilaitos.map(ol =>
       Oppilaitos(
         ol.oid,
@@ -50,13 +51,15 @@ object VktYlioppilastutkinnonOpiskeluoikeus {
 @Title("Ylioppilastutkinnon opiskeluoikeus")
 @Description("Ylioppilastutkinnon opiskeluoikeus")
 case class VktYlioppilastutkinnonOpiskeluoikeus(
+  oid: Option[String],
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija],
   tila: VktOpiskeluoikeudenTila,
   suoritukset: List[VktYlioppilastutkinnonPäätasonSuoritus],
   @KoodistoKoodiarvo(schema.OpiskeluoikeudenTyyppi.ylioppilastutkinto.koodiarvo)
   tyyppi: schema.Koodistokoodiviite,
-) extends VktOpiskeluoikeus {
+  versionumero: Option[Int] = None
+) extends VktKoskeenTallennettavaOpiskeluoikeus {
 
   override def lisätiedot: Option[VktOpiskeluoikeudenLisätiedot] = None
 
