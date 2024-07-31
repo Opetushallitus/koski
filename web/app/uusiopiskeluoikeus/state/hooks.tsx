@@ -27,6 +27,7 @@ import { TutkintokoulutukseenValmentavanOpiskeluoikeus } from '../../types/fi/op
 import { TutkintokoulutukseenValmentavanOpiskeluoikeudenAmmatillisenLuvanLisätiedot } from '../../types/fi/oph/koski/schema/TutkintokoulutukseenValmentavanOpiskeluoikeudenAmmatillisenLuvanLisatiedot'
 import { TutkintokoulutukseenValmentavanOpiskeluoikeudenLukiokoulutuksenLuvanLisätiedot } from '../../types/fi/oph/koski/schema/TutkintokoulutukseenValmentavanOpiskeluoikeudenLukiokoulutuksenLuvanLisatiedot'
 import { TutkintokoulutukseenValmentavanOpiskeluoikeudenPerusopetuksenLuvanLisätiedot } from '../../types/fi/oph/koski/schema/TutkintokoulutukseenValmentavanOpiskeluoikeudenPerusopetuksenLuvanLisatiedot'
+import { koodistokoodiviiteId } from '../../util/koodisto'
 
 export const useOpiskeluoikeustyypit = (
   organisaatio?: OrganisaatioHierarkia
@@ -130,6 +131,13 @@ export const opiskeluoikeudenLisätiedotClass = (
   }
   return lisätiedot[0]
 }
+
+const excludedOpiskeluoikeudenTilat: Record<string, string[]> = {
+  default: ['mitatoity'],
+  internationalschool: ['mitatoity', 'katsotaaneronneeksi', 'peruutettu'],
+  ammatillinenkoulutus: ['mitatoity', 'eronnut']
+}
+
 export const useOpiskeluoikeudenTilat = (
   state: UusiOpiskeluoikeusDialogState
 ): {
@@ -152,17 +160,21 @@ export const useOpiskeluoikeudenTilat = (
   const koodistot =
     useKoodistoOfConstraint<'koskiopiskeluoikeudentila'>(opiskelujaksonTila)
 
-  const options = useMemo(
-    () =>
-      koodistot
-        ? koodistot
-            .flatMap((k) =>
-              k.koodiviite.koodiarvo !== 'mitatoity' ? [k.koodiviite] : []
-            )
-            .map(koodiviiteToOption)
-        : [],
-    [koodistot]
-  )
+  const options = useMemo(() => {
+    const excludedOptions =
+      excludedOpiskeluoikeudenTilat[
+        state.opiskeluoikeus.value?.koodiarvo || 'default'
+      ] || excludedOpiskeluoikeudenTilat.default
+    return koodistot
+      ? koodistot
+          .flatMap((k) =>
+            excludedOptions.includes(k.koodiviite.koodiarvo)
+              ? []
+              : [k.koodiviite]
+          )
+          .map(koodiviiteToOption)
+      : []
+  }, [koodistot])
 
   const initialValue = useMemo(() => {
     const defaults = [
@@ -201,7 +213,10 @@ export const useOpintojenRahoitus = (state: UusiOpiskeluoikeusDialogState) => {
     [koodistot]
   )
 
-  const initialValue = useMemo(() => options[0]?.value?.koodiarvo, [options])
+  const initialValue = useMemo(
+    () => options[0]?.value && koodistokoodiviiteId(options[0]?.value),
+    [options]
+  )
 
   return { options, initialValue }
 }

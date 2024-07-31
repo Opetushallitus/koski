@@ -1,6 +1,7 @@
 import * as A from 'fp-ts/Array'
 import * as O from 'fp-ts/Option'
-import { flow, pipe } from 'fp-ts/lib/function'
+import * as Ord from 'fp-ts/Ord'
+import { pipe } from 'fp-ts/lib/function'
 
 export const intersects = <T>(as: T[], bs: T[]): boolean =>
   as.find((a) => bs.includes(a)) !== undefined
@@ -27,3 +28,8 @@ export const appendOptional =
   <T>(t: T) =>
   (ts: T[] | undefined): T[] =>
     ts ? [...ts, t] : [t]
+
+export const valuesFirst = <T>(...ts: T[]) =>
+  Ord.fromCompare((a: T, b: T) =>
+    ts.includes(a) ? (ts.includes(b) ? 0 : -1) : ts.includes(b) ? 1 : 0
+  )

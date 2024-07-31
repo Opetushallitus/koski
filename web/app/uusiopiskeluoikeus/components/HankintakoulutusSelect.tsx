@@ -4,6 +4,7 @@ import { Checkbox } from '../../components-v2/controls/Checkbox'
 import { t } from '../../i18n/i18n'
 import { UusiOpiskeluoikeusDialogState } from '../state/state'
 import { DialogKoodistoSelect } from './DialogKoodistoSelect'
+import { TestIdLayer } from '../../appstate/useTestId'
 
 export type HankintakoulutusSelectProps = {
   state: UusiOpiskeluoikeusDialogState
@@ -16,7 +17,7 @@ export const HankintakoulutusSelect = (props: HankintakoulutusSelectProps) => {
   const isTPOKoulutustoimija = user?.hasOneKoulutustoimijaWriteAccess || false
 
   return isVarhaiskasvatusKoulutustoimija || isTPOKoulutustoimija ? (
-    <>
+    <TestIdLayer id="hankintakoulutus">
       <section className="labelgroup">
         <span className="labelgroup--head">{t('Hankintakoulutus')}</span>
 
@@ -27,6 +28,7 @@ export const HankintakoulutusSelect = (props: HankintakoulutusSelectProps) => {
               'Esiopetus ostetaan oman organisaation ulkopuolelta ostopalveluna tai palvelusetelinä'
             )}
             value="esiopetus"
+            testId="esiopetus"
           />
         )}
 
@@ -37,6 +39,7 @@ export const HankintakoulutusSelect = (props: HankintakoulutusSelectProps) => {
               'Taiteen perusopetus hankintakoulutuksena järjestetään oman organisaation ulkopuolelta'
             )}
             value="tpo"
+            testId="tpo"
           />
         )}
       </section>
@@ -53,7 +56,7 @@ export const HankintakoulutusSelect = (props: HankintakoulutusSelectProps) => {
             />
           </label>
         )}
-    </>
+    </TestIdLayer>
   ) : null
 }
 
@@ -61,6 +64,7 @@ type HankintakoulutusCheckboxProps = {
   state: UusiOpiskeluoikeusDialogState
   value: UusiOpiskeluoikeusDialogState['hankintakoulutus']['value']
   label: string
+  testId: string
 }
 
 const HankintakoulutusCheckbox = (props: HankintakoulutusCheckboxProps) =>
@@ -71,5 +75,6 @@ const HankintakoulutusCheckbox = (props: HankintakoulutusCheckboxProps) =>
       onChange={(opt) =>
         props.state.hankintakoulutus.set(opt ? props.value : undefined)
       }
+      testId={props.testId}
     />
   ) : null

@@ -4,6 +4,7 @@ import { DialogPäätasonSuoritusSelect } from '../components/DialogPaatasonSuor
 import { DialogPerusteSelect } from '../components/DialogPerusteSelect'
 import { lukionDiaarinumerot2019 } from '../opintooikeus/lukio'
 import { SuoritusFieldsProps } from './SuoritusFields'
+import { YleissivistäväOppiaineSelect } from '../components/YleissivistäväOppiaineSelect'
 
 export const LukioKoulutusFields = (props: SuoritusFieldsProps) => {
   const suorituksenTyyppi = props.state.päätasonSuoritus.value?.koodiarvo
@@ -23,6 +24,13 @@ export const LukioKoulutusFields = (props: SuoritusFieldsProps) => {
         {t('Oppimäärä')}
         <DialogPäätasonSuoritusSelect state={props.state} testId="oppimäärä" />
       </label>
+
+      {props.state.oppiaine.visible && (
+        <YleissivistäväOppiaineSelect
+          state={props.state}
+          koulutusmoduuliClassName="LukionOppiaineTaiEiTiedossaOppiaine2015"
+        />
+      )}
 
       <DialogPerusteSelect
         state={props.state}

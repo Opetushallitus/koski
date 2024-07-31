@@ -11,7 +11,6 @@ export const createEuropeanSchoolOfHelsinkiOpiskeluoikeus = (
   organisaatio: OrganisaatioHierarkia,
   alku: string,
   tila: EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso['tila'],
-  opintojenRahoitus: Koodistokoodiviite<'opintojenrahoitus', any>,
   curriculum: Koodistokoodiviite<'europeanschoolofhelsinkicurriculum'>
 ) =>
   EuropeanSchoolOfHelsinkiOpiskeluoikeus({
@@ -20,8 +19,7 @@ export const createEuropeanSchoolOfHelsinkiOpiskeluoikeus = (
       opiskeluoikeusjaksot: [
         EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso({
           alku,
-          tila,
-          opintojenRahoitus
+          tila
         })
       ]
     }),

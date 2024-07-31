@@ -25,7 +25,7 @@ export const RadioButtons = <T,>(
   const testId = useTestId(props.testId)
 
   return props.options ? (
-    <ul {...common(props, ['RadioButtons'])}>
+    <ul {...common(props, ['RadioButtons'])} data-testid={testId}>
       {props.options.map((opt, i) => {
         const id = `RadioButton_${i}_${opt.key}`
         return (

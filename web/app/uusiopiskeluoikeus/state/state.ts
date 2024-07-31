@@ -14,7 +14,12 @@ import { OpiskeluoikeusClass } from '../../types/fi/oph/koski/typemodel/Opiskelu
 import * as C from '../../util/constraints'
 import { fetchOpiskeluoikeusClassMapping } from '../../util/koskiApi'
 import { createOpiskeluoikeus } from '../opintooikeus/createOpiskeluoikeus'
+import { hackSuoritusMappingForPreIB2019 } from '../opintooikeus/ibTutkinto'
 import { opiskeluoikeudenLisätiedotClass } from './hooks'
+import {
+  isVieraanKielenOppiaine,
+  isÄidinkielenOppiaine
+} from '../opintooikeus/yleissivistavat'
 
 export type UusiOpiskeluoikeusDialogState = {
   hankintakoulutus: DialogField<Hankintakoulutus>
@@ -51,6 +56,11 @@ export type UusiOpiskeluoikeusDialogState = {
   internationalSchoolGrade: DialogField<
     Koodistokoodiviite<'internationalschoolluokkaaste'>
   >
+  oppiaine: DialogField<Koodistokoodiviite<'koskioppiaineetyleissivistava'>>
+  kieliaineenKieli: DialogField<Koodistokoodiviite<'kielivalikoima'>>
+  äidinkielenKieli: DialogField<
+    Koodistokoodiviite<'oppiaineaidinkielijakirjallisuus'>
+  >
   ooMapping?: OpiskeluoikeusClass[]
   result?: Opiskeluoikeus
 }
@@ -61,7 +71,10 @@ export const useUusiOpiskeluoikeusDialogState =
     const ooMappingCall = useApiOnce(fetchOpiskeluoikeusClassMapping)
     const ooMapping = isSuccess(ooMappingCall) ? ooMappingCall.data : undefined
     const suoritusMapping = useMemo(
-      () => (ooMapping || []).flatMap((oo) => oo.suoritukset),
+      () =>
+        hackSuoritusMappingForPreIB2019(
+          (ooMapping || []).flatMap((oo) => oo.suoritukset)
+        ),
       [ooMapping]
     )
 
@@ -143,7 +156,10 @@ export const useUusiOpiskeluoikeusDialogState =
     // Opintojen rahoitus
     const opintojenRahoitus = useDialogField<
       Koodistokoodiviite<'opintojenrahoitus'>
-    >(päätasonSuoritusValittu)
+    >(
+      päätasonSuoritusValittu &&
+        opiskeluoikeus.value?.koodiarvo !== 'europeanschoolofhelsinki'
+    )
 
     // Tuva-järjestämislupa
     const tuvaJärjestämislupa =
@@ -228,6 +244,27 @@ export const useUusiOpiskeluoikeusDialogState =
       Koodistokoodiviite<'internationalschoolluokkaaste'>
     >(opiskeluoikeudeksiValittu('internationalschool'))
 
+    // Perusopetuksen ja lukion oppiaineen koulutus
+    const oppiaine = useDialogField<
+      Koodistokoodiviite<'koskioppiaineetyleissivistava'>
+    >(
+      päätasonSuoritukseksiValittu(
+        'nuortenperusopetuksenoppiaineenoppimaara',
+        'perusopetuksenoppiaineenoppimaara',
+        'lukionoppiaineenoppimaara',
+        'luvalukionoppiaine',
+        'preiboppiaine'
+      )
+    )
+
+    const kieliaineenKieli = useDialogField<
+      Koodistokoodiviite<'kielivalikoima'>
+    >(isVieraanKielenOppiaine(oppiaine.value?.koodiarvo))
+
+    const äidinkielenKieli = useDialogField<
+      Koodistokoodiviite<'oppiaineaidinkielijakirjallisuus'>
+    >(isÄidinkielenOppiaine(oppiaine.value?.koodiarvo))
+
     // Opiskelun maksuttomuus
     const maksuttomuustiedollinen = useMemo(() => {
       // Tarkista ensin onko koko maksuttomuustietoa edes valitun opiskeluoikeuden tietomallissa
@@ -290,25 +327,32 @@ export const useUusiOpiskeluoikeusDialogState =
               tpoTaiteenala.value,
               tpoToteutustapa.value,
               varhaiskasvatuksenJärjestämistapa.value,
+              hankintakoulutus.value,
               osaamismerkki.value,
               tutkinto.value,
               suoritustapa.value,
               muuAmmatillinenKoulutus.value,
               tutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus.value,
               curriculum.value,
-              internationalSchoolGrade.value
+              internationalSchoolGrade.value,
+              oppiaine.value,
+              kieliaineenKieli.value,
+              äidinkielenKieli.value
             )
           : undefined,
       [
         aloituspäivä.value,
         curriculum.value,
+        hankintakoulutus.value,
         internationalSchoolGrade.value,
         jotpaAsianumero.value,
+        kieliaineenKieli.value,
         maksuton.value,
         muuAmmatillinenKoulutus.value,
         opintojenRahoitus.value,
         opintokokonaisuus.value,
         opiskeluoikeus.value,
+        oppiaine.value,
         oppilaitos.value,
         osaamismerkki.value,
         peruste.value,
@@ -322,7 +366,8 @@ export const useUusiOpiskeluoikeusDialogState =
         tutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus.value,
         tutkinto.value,
         tuvaJärjestämislupa.value,
-        varhaiskasvatuksenJärjestämistapa.value
+        varhaiskasvatuksenJärjestämistapa.value,
+        äidinkielenKieli.value
       ]
     )
 
@@ -351,6 +396,9 @@ export const useUusiOpiskeluoikeusDialogState =
       tutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus,
       curriculum,
       internationalSchoolGrade,
+      oppiaine,
+      kieliaineenKieli,
+      äidinkielenKieli,
       ooMapping,
       result
     }

@@ -5,10 +5,12 @@ import { pipe } from 'fp-ts/lib/function'
 import { useEffect } from 'react'
 import { OrganisaatioHierarkia } from '../types/fi/oph/koski/organisaatio/OrganisaatioHierarkia'
 import {
+  OrgTypesToShow,
   fetchOrganisaatioHierarkia,
   queryOrganisaatioHierarkia
 } from '../util/koskiApi'
 import { useDebounce } from '../util/useDebounce'
+import { nonNull } from '../util/fp/arrays'
 
 /**
  * Palauttaa käyttäjälle organisaatiohierarkian.
@@ -37,14 +39,17 @@ export const useOrganisaatioHierarkia = (
  * @returns OrganisaatioHierarkia[]
  */
 export const useOrganisaatioHierarkiaSearch = (
-  queryText?: string
+  queryText?: string,
+  orgTypesToShow?: OrgTypesToShow
 ): OrganisaatioHierarkia[] => {
   const { queryFromAll, searchQueries } = useContext(
     OrganisaatioHierarkiaContext
   )
-  useDebounce(200, (text) => text && queryFromAll(text), [queryText])
+  useDebounce(200, (text) => text && queryFromAll(text, orgTypesToShow), [
+    queryText
+  ])
 
-  return searchQueries[asQueryKey(queryText)] || emptyResult
+  return searchQueries[asQueryKey(queryText, orgTypesToShow)] || emptyResult
 }
 
 /**
@@ -69,7 +74,10 @@ const ROOT_QUERY = ''
 export type OrganisaatioHierarkiaContext = {
   load: () => Promise<void>
   query: (searchText: string) => Promise<void>
-  queryFromAll: (searchText: string) => Promise<void>
+  queryFromAll: (
+    searchText: string,
+    orgTypesToShow?: OrgTypesToShow
+  ) => Promise<void>
   queries: Record<string, OrganisaatioHierarkia[]>
   searchQueries: Record<string, OrganisaatioHierarkia[]>
 }
@@ -94,23 +102,36 @@ class OrganisaatioHierarkiaLoader {
     }
   }
 
-  async queryFromAll(queryText: string): Promise<void> {
-    const key = asQueryKey(queryText)
-    const cached = this.cacheAll[key]
-    if (!cached && key.length >= 3) {
-      this.cacheAll[key] = []
+  async queryFromAll(
+    queryText: string,
+    orgTypesToShow?: OrgTypesToShow
+  ): Promise<void> {
+    const searchKey = asQueryKey(queryText)
+    const cacheKey = asQueryKey(queryText, orgTypesToShow)
+
+    const cached = this.cacheAll[cacheKey]
+    if (!cached && searchKey.length >= 3) {
+      this.cacheAll[cacheKey] = []
       pipe(
-        await queryOrganisaatioHierarkia(key, undefined, true),
+        await queryOrganisaatioHierarkia(
+          searchKey,
+          orgTypesToShow,
+          orgTypesToShow === undefined
+        ),
         E.map((response) => {
-          this.cacheAll[key] = response.data
+          this.cacheAll[cacheKey] = response.data
         })
       )
     }
   }
 }
 
-const asQueryKey = (queryText?: string) =>
-  queryText?.trim().toLowerCase() || ROOT_QUERY
+const queryKeyDelimiter = '///'
+
+const asQueryKey = (queryText?: string, orgTypesToShow?: OrgTypesToShow) =>
+  [queryText?.trim().toLowerCase() || ROOT_QUERY, orgTypesToShow]
+    .filter(nonNull)
+    .join(queryKeyDelimiter)
 
 const organisaatioLoader = new OrganisaatioHierarkiaLoader()
 
@@ -149,10 +170,13 @@ export const OrganisaatioHierarkiaProvider: React.FC<
     setQueries({ ...organisaatioLoader.cache })
   }, [])
 
-  const queryFromAll = useCallback(async (searchText: string) => {
-    await organisaatioLoader.queryFromAll(searchText)
-    setSearchQueries({ ...organisaatioLoader.cacheAll })
-  }, [])
+  const queryFromAll = useCallback(
+    async (searchText: string, orgTypesToShow?: OrgTypesToShow) => {
+      await organisaatioLoader.queryFromAll(searchText, orgTypesToShow)
+      setSearchQueries({ ...organisaatioLoader.cacheAll })
+    },
+    []
+  )
 
   const contextValue = useMemo(
     () => ({

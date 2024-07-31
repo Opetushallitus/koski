@@ -132,7 +132,7 @@ const useDateEditState = (props: DateEditProps) => {
       setInternalFinnishDate(newFinnishDate)
       const date = parseFinnishDate(newFinnishDate)
       const isoDate = date && formatISODate(date)
-      onChange(isoDate || `not parseable to ISO: ${newFinnishDate}`)
+      onChange(isoDate)
     },
     [onChange]
   )

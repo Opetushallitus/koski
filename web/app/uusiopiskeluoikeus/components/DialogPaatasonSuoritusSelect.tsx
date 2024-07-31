@@ -3,10 +3,13 @@ import { koodistokoodiviiteId } from '../../util/koodisto'
 import { usePäätasonSuoritustyypit } from '../state/hooks'
 import { UusiOpiskeluoikeusDialogState } from '../state/state'
 import { DialogSelect } from './DialogSelect'
+import { SelectOption } from '../../components-v2/controls/Select'
+import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
 
 export type DialogPäätasonSuoritusSelectProps = {
   state: UusiOpiskeluoikeusDialogState
   hiddenOptions?: string[]
+  extraOptions?: Array<SelectOption<Koodistokoodiviite<'suorituksentyyppi'>>>
   default?: string
   testId: string
 }
@@ -16,15 +19,17 @@ export const DialogPäätasonSuoritusSelect = (
 ) => {
   const options = usePäätasonSuoritustyypit(props.state)
   const filtered = useMemo(
-    () =>
-      props.hiddenOptions
+    () => [
+      ...(props.hiddenOptions
         ? options.filter(
             (opt) =>
               opt.value?.koodiarvo &&
-              props.hiddenOptions?.includes(opt.value?.koodiarvo)
+              !props.hiddenOptions?.includes(opt.value?.koodiarvo)
           )
-        : options,
-    [options, props.hiddenOptions]
+        : options),
+      ...(props.extraOptions || [])
+    ],
+    [options, props.extraOptions, props.hiddenOptions]
   )
 
   return (

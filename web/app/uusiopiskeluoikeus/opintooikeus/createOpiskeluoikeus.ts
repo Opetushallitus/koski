@@ -1,10 +1,16 @@
+import * as E from 'fp-ts/Either'
+import { pipe } from 'fp-ts/lib/function'
 import { Peruste } from '../../appstate/peruste'
 import { OrganisaatioHierarkia } from '../../types/fi/oph/koski/organisaatio/OrganisaatioHierarkia'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { MuuAmmatillinenKoulutus } from '../../types/fi/oph/koski/schema/MuuAmmatillinenKoulutus'
 import { Opiskeluoikeus } from '../../types/fi/oph/koski/schema/Opiskeluoikeus'
+import { Suoritus } from '../../types/fi/oph/koski/schema/Suoritus'
 import { TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus } from '../../types/fi/oph/koski/schema/TutkinnonOsaaPienemmistaKokonaisuuksistaKoostuvaKoulutus'
 import { TutkintoPeruste } from '../../types/fi/oph/koski/tutkinto/TutkintoPeruste'
+import { fetchSuoritusPrefill } from '../../util/koskiApi'
+import { memoize } from '../../util/util'
+import { Hankintakoulutus } from '../state/state'
 import { createAikuistenPerusopetuksenOpiskeluoikeus } from './aikuistenPerusopetus'
 import { createAmmatillinenOpiskeluoikeus } from './ammatillinenTutkinto'
 import { createDIAOpiskeluoikeus } from './diaTutkinto'
@@ -40,13 +46,17 @@ export const createOpiskeluoikeus = (
   tpoTaiteenala?: Koodistokoodiviite<'taiteenperusopetustaiteenala'>,
   tpoToteutustapa?: Koodistokoodiviite<'taiteenperusopetuskoulutuksentoteutustapa'>,
   varhaiskasvatuksenJärjestämismuoto?: Koodistokoodiviite<'vardajarjestamismuoto'>,
+  hankintakoulutus?: Hankintakoulutus,
   osaamismerkki?: Koodistokoodiviite<'osaamismerkit'>,
   tutkinto?: TutkintoPeruste,
   suoritustapa?: Koodistokoodiviite<'ammatillisentutkinnonsuoritustapa'>,
   muuAmmatillinenKoulutus?: MuuAmmatillinenKoulutus,
   tutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus?: TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus,
   curriculum?: Koodistokoodiviite<'europeanschoolofhelsinkicurriculum'>,
-  internationalSchoolGrade?: Koodistokoodiviite<'internationalschoolluokkaaste'>
+  internationalSchoolGrade?: Koodistokoodiviite<'internationalschoolluokkaaste'>,
+  oppiaine?: Koodistokoodiviite<'koskioppiaineetyleissivistava'>,
+  kieliaineenKieli?: Koodistokoodiviite<'kielivalikoima'>,
+  äidinkielenKieli?: Koodistokoodiviite<'oppiaineaidinkielijakirjallisuus'>
 ): Opiskeluoikeus | undefined => {
   switch (opiskeluoikeudenTyyppi.koodiarvo) {
     case 'perusopetus':
@@ -57,7 +67,10 @@ export const createOpiskeluoikeus = (
         organisaatio,
         alku,
         tila,
-        suorituskieli
+        suorituskieli,
+        oppiaine,
+        kieliaineenKieli,
+        äidinkielenKieli
       )
     case 'perusopetukseenvalmistavaopetus':
       if (!peruste || !suorituskieli) return undefined
@@ -96,7 +109,10 @@ export const createOpiskeluoikeus = (
         tila,
         suorituskieli,
         maksuton,
-        opintojenRahoitus
+        opintojenRahoitus,
+        oppiaine,
+        kieliaineenKieli,
+        äidinkielenKieli
       )
 
     case 'esiopetus':
@@ -107,7 +123,8 @@ export const createOpiskeluoikeus = (
         alku,
         tila,
         suorituskieli,
-        varhaiskasvatuksenJärjestämismuoto
+        varhaiskasvatuksenJärjestämismuoto,
+        hankintakoulutus
       )
 
     case 'tuva':
@@ -216,7 +233,10 @@ export const createOpiskeluoikeus = (
         tila,
         suorituskieli,
         opintojenRahoitus,
-        maksuton
+        maksuton,
+        oppiaine,
+        kieliaineenKieli,
+        äidinkielenKieli
       )
 
     case 'ammatillinenkoulutus':
@@ -239,12 +259,11 @@ export const createOpiskeluoikeus = (
       )
 
     case 'europeanschoolofhelsinki':
-      if (!opintojenRahoitus || !curriculum) return undefined
+      if (!curriculum) return undefined
       return createEuropeanSchoolOfHelsinkiOpiskeluoikeus(
         organisaatio,
         alku,
         tila,
-        opintojenRahoitus,
         curriculum
       )
 
@@ -300,3 +319,41 @@ export const createOpiskeluoikeus = (
       )
   }
 }
+
+export const prefillOsasuoritukset = async <T extends Opiskeluoikeus>(
+  oo: T
+): Promise<T> => ({
+  ...oo,
+  suoritukset: await Promise.all(
+    oo.suoritukset.map(async (s) => {
+      switch (s.tyyppi.koodiarvo) {
+        case 'perusopetuksenoppimaara':
+        case 'aikuistenperusopetuksenoppimaara': {
+          return {
+            ...s,
+            osasuoritukset: await fetchPerusopetuksenOsasuoritukset(s)
+          }
+        }
+        default:
+          return s
+      }
+    })
+  )
+})
+
+const fetchPerusopetuksenOsasuoritukset = memoize(
+  async (suoritus: Suoritus) =>
+    pipe(
+      await fetchSuoritusPrefill(
+        'koulutus',
+        suoritus.koulutusmoduuli.tunniste.koodiarvo,
+        suoritus.tyyppi.koodiarvo,
+        false
+      ),
+      E.fold(
+        () => [],
+        (response) => response.data
+      )
+    ),
+  (s) => [s.koulutusmoduuli.tunniste.koodiarvo, s.tyyppi.koodiarvo].join('_')
+)

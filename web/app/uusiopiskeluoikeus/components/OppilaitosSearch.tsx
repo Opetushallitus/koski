@@ -7,16 +7,22 @@ import {
   filterOrgsByType,
   organisaatiohierarkiaToOption
 } from './OppilaitosSelect'
+import { Hankintakoulutus } from '../state/state'
 
 export type OppilaitosSearchProps = {
   value?: OrganisaatioHierarkia
   onChange: (org?: OrganisaatioHierarkia) => void
   orgTypes?: OrgType[]
+  hankintakoulutus: Hankintakoulutus
 }
 
 export const OppilaitosSearch = (props: OppilaitosSearchProps) => {
   const [query, setQuery] = useState<string>()
-  const options = useOrganisaatioOptions(props.orgTypes, query)
+  const options = useOrganisaatioOptions(
+    props.orgTypes,
+    query,
+    props.hankintakoulutus
+  )
   const onChange = useCallback(
     (opt?: SelectOption<OrganisaatioHierarkia>) => props.onChange(opt?.value),
     [props]
@@ -36,9 +42,15 @@ export const OppilaitosSearch = (props: OppilaitosSearchProps) => {
 
 const useOrganisaatioOptions = (
   orgTypes?: OrgType[],
-  query?: string
+  query?: string,
+  hankintakoulutus?: Hankintakoulutus
 ): Array<SelectOption<OrganisaatioHierarkia>> => {
-  const organisaatiot = useOrganisaatioHierarkiaSearch(query)
+  const organisaatiot = useOrganisaatioHierarkiaSearch(
+    query,
+    hankintakoulutus === 'esiopetus'
+      ? 'vainVarhaiskasvatusToimipisteet'
+      : undefined
+  )
   return useMemo(() => {
     const filtered = orgTypes
       ? filterOrgsByType(organisaatiot, orgTypes)

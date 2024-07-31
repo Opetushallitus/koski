@@ -20,6 +20,7 @@ import {
 } from './state/hooks'
 import { useUusiOpiskeluoikeusDialogState } from './state/state'
 import { SuoritusFields } from './suoritus/SuoritusFields'
+import { prefillOsasuoritukset } from './opintooikeus/createOpiskeluoikeus'
 
 export type UusiOpiskeluoikeusFormProps = {
   onResult: (opiskeluoikeus?: Opiskeluoikeus) => void
@@ -40,7 +41,13 @@ export const UusiOpiskeluoikeusForm = (props: UusiOpiskeluoikeusFormProps) => {
   const defaultKieli = useDefaultKieli(state)
   const spesifienOppilaitostenKäyttäjä = useHasOwnOrganisaatiot()
 
-  useEffect(() => props.onResult(state.result), [props, state.result])
+  useEffect(() => {
+    if (state.result) {
+      prefillOsasuoritukset(state.result).then(props.onResult)
+    } else {
+      props.onResult(undefined)
+    }
+  }, [props, state.result])
 
   return (
     <section className="UusiOppijaForm">
@@ -55,6 +62,7 @@ export const UusiOpiskeluoikeusForm = (props: UusiOpiskeluoikeusFormProps) => {
                 value={state.oppilaitos.value}
                 onChange={state.oppilaitos.set}
                 orgTypes={valittavatOrganisaatiotyypit}
+                hankintakoulutus={state.hankintakoulutus.value}
               />
             ) : (
               <OppilaitosSelect
@@ -124,21 +132,22 @@ export const UusiOpiskeluoikeusForm = (props: UusiOpiskeluoikeusFormProps) => {
         </label>
       )}
 
-      {opintojenRahoitukset.options.length > 0 && (
-        <label>
-          {t('Opintojen rahoitus')}
-          <DialogSelect
-            options={opintojenRahoitukset.options}
-            initialValue={opintojenRahoitukset.initialValue}
-            value={
-              state.opintojenRahoitus.value &&
-              koodistokoodiviiteId(state.opintojenRahoitus.value)
-            }
-            onChange={(opt) => state.opintojenRahoitus.set(opt?.value)}
-            testId="opintojenRahoitus"
-          />
-        </label>
-      )}
+      {state.opintojenRahoitus.visible &&
+        opintojenRahoitukset.options.length > 0 && (
+          <label>
+            {t('Opintojen rahoitus')}
+            <DialogSelect
+              options={opintojenRahoitukset.options}
+              initialValue={opintojenRahoitukset.initialValue}
+              value={
+                state.opintojenRahoitus.value &&
+                koodistokoodiviiteId(state.opintojenRahoitus.value)
+              }
+              onChange={(opt) => state.opintojenRahoitus.set(opt?.value)}
+              testId="opintojenRahoitus"
+            />
+          </label>
+        )}
 
       {jotpaAsianumerot.options.length > 0 && (
         <label>
