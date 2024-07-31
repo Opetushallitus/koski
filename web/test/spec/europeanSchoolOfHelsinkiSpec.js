@@ -52,8 +52,8 @@ describe('Helsingin eurooppalainen koulu', function () {
             expect(addOppija.opiskeluoikeudenTilat()).to.deep.equal([
               'Eronnut',
               'Läsnä',
-              'Valmistunut',
-              'Väliaikaisesti keskeytynyt'
+              'Väliaikaisesti keskeytynyt',
+              'Valmistunut'
             ])
           })
         })
