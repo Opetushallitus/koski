@@ -8,8 +8,9 @@ import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.KoskiSpecificSession.OPH_KATSELIJA_USER
 import fi.oph.koski.koskiuser.MockUsers.{hakemuspalveluKäyttäjä, vktKäyttäjä}
-import fi.oph.koski.koskiuser.Rooli.{OPHKATSELIJA, VKT}
+import fi.oph.koski.koskiuser.Rooli.OPHKATSELIJA
 import fi.oph.koski.koskiuser._
+import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.virta.MockVirtaClient
 import fi.oph.koski.ytr.MockYtrClient
@@ -37,7 +38,7 @@ class HakemuspalveluServiceSpec
 
   val hakemuspalveluService = KoskiApplicationForTests.hakemuspalveluService
 
-  implicit val koskiSession =  new KoskiSpecificSession(
+  implicit val koskiSession = new KoskiSpecificSession(
     AuthenticationUser(
       hakemuspalveluKäyttäjä.oid,
       OPH_KATSELIJA_USER,
@@ -55,11 +56,12 @@ class HakemuspalveluServiceSpec
   }
 
   "Access control toimii oikein" in {
-    post("/api/hakemuspalvelu/oid", JsonSerializer.writeWithRoot(OidRequest(oid = KoskiSpecificMockOppijat.dippainssi.oid)), headers = authHeaders(hakemuspalveluKäyttäjä) ++ jsonContent){
+    post("/api/hakemuspalvelu/oid", JsonSerializer.writeWithRoot(OidRequest(oid = KoskiSpecificMockOppijat.dippainssi.oid)), headers = authHeaders(hakemuspalveluKäyttäjä) ++ jsonContent) {
       verifyResponseStatusOk()
+      AuditLogTester.verifyAuditLogMessage(Map("operation" -> "HAKEMUSPALVELU_OPISKELUOIKEUS_HAKU"))
     }
 
-    post("/api/hakemuspalvelu/oid", JsonSerializer.writeWithRoot(OidRequest(oid = KoskiSpecificMockOppijat.dippainssi.oid)), headers = authHeaders(vktKäyttäjä) ++ jsonContent){
+    post("/api/hakemuspalvelu/oid", JsonSerializer.writeWithRoot(OidRequest(oid = KoskiSpecificMockOppijat.dippainssi.oid)), headers = authHeaders(vktKäyttäjä) ++ jsonContent) {
       verifyResponseStatus(403, KoskiErrorCategory.forbidden("Käyttäjällä ei ole oikeuksia annetun organisaation tietoihin."))
     }
   }
@@ -133,7 +135,6 @@ class HakemuspalveluServiceSpec
       }
     )
   }
-
 
 
   "Ylioppilastutkinto" - {
