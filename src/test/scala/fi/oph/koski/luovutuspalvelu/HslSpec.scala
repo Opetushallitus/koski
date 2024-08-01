@@ -31,6 +31,12 @@ class HslSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMeth
       postHsl(MockUsers.suomiFiKäyttäjä, opiskelija.hetu.get) {
         verifySOAPError("forbidden.kiellettyKäyttöoikeus", "Ei sallittu näillä käyttöoikeuksilla")
       }
+      postHsl(MockUsers.hslKäyttäjä, ammattilainen.hetu.get) {
+        verifySOAPError("forbidden.vainSallittuKumppani", "X-ROAD-MEMBER:llä ei ole lupaa hakea opiskelijan tietoja")
+      }
+      postHsl(MockUsers.hslKäyttäjä, "150966-5900") {
+        verifySOAPError("notFound.oppijaaEiLöydyTaiEiOikeuksia", "Oppijaa ei löydy annetulla oidilla tai käyttäjällä ei ole oikeuksia tietojen katseluun.")
+      }
       postHsl(MockUsers.hslKäyttäjä, opiskelija.hetu.get) {
         verifyResponseStatusOk()
       }
