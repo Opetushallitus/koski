@@ -23,7 +23,7 @@
     "element-closest": "^3.0.2",
     "es6-promise": "^4.2.8",
     "fecha": "^2.3.3",
-    "fp-ts": "^2.16.2",
+    "fp-ts": "^2.16.8",
     "js-cookie": "^3.0.5",
     "optics-ts": "^2.4.1",
     "partial.lenses": "^9.8.0",
