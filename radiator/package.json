@@ -16,7 +16,7 @@
   "dependencies": {
     "fp-ts": "^2.16.6",
     "tail": "^2.2.6",
-    "ts-node": "^10.9.1"
+    "ts-node": "^10.9.2"
   },
   "devDependencies": {
     "@types/node": "^20.10.0",
