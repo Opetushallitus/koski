@@ -520,9 +520,9 @@ function Oppiaine(oppiaineElem) {
           return kurssiDropdown().setValue(kurssi)
         },
         valitseKurssinTyyppi: function (tyyppi) {
-          return function () {
+          return async function () {
             try {
-              return kurssinTyyppiDropdown().setValue(tyyppi)()
+              return await kurssinTyyppiDropdown().setValue(tyyppi)()
             } catch (e) {
               // valitaan tyyppi vain kun se on mahdollista
             }
