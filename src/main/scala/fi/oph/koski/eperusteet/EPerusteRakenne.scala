@@ -212,7 +212,19 @@ case class EOsaamisalaViite(
 case class ETutkinnonOsa(
   id: Long,
   nimi: Map[String, String],
-  koodiArvo: String
+  koodiArvo: String,
+  osaAlueet: List[EOsaAlue]
+)
+
+case class EOsaAlue(
+  pakollisetOsaamistavoitteet: Option[EOsaamistavoite],
+  valinnaisetOsaamistavoitteet: Option[EOsaamistavoite],
+  osaamistavoitteet: Option[List[EOsaamistavoite]]
+)
+
+case class EOsaamistavoite(
+  pakollinen: Boolean,
+  laajuus: Option[Long]
 )
 
 case class ELukiokoulutus(
