@@ -1,7 +1,6 @@
 import React from 'baret'
 import Atom from 'bacon.atom'
 import { logout } from './user'
-import { trackRuntimeError } from '../tracking/piwikTracking'
 import * as R from 'ramda'
 import Bacon from 'baconjs'
 import Text from '../i18n/Text'
@@ -11,7 +10,6 @@ import { GlobalErrors } from '../components-v2/messages/GlobalErrors'
 
 export const logError = (error) => {
   console.log('ERROR', error)
-  trackRuntimeError(R.assoc('location', '' + document.location, error))
 }
 
 export const errorP = (stateP, routeErrorP) => {

@@ -1,7 +1,6 @@
 import Bacon from 'baconjs'
 import * as R from 'ramda'
 import { checkExitHook, removeExitHook } from './exitHook'
-import { trackPageView } from '../tracking/piwikTracking'
 
 const locationBus = new Bacon.Bus()
 let previousLocation = currentLocation()
@@ -16,7 +15,6 @@ export const navigateTo = function (path, event) {
   const nextLoc = parsePath(path)
   previousLocation = nextLoc
   history.pushState(null, null, path)
-  if (nextLoc.path !== prevLoc.path) trackPageView(nextLoc.toString())
   locationBus.push(nextLoc)
   if (event) event.preventDefault()
 }
@@ -26,7 +24,6 @@ export const replaceLocation = (path) => {
   const nextLoc = parsePath(path)
   previousLocation = nextLoc
   history.replaceState(null, null, path)
-  if (nextLoc.path !== prevLoc.path) trackPageView(nextLoc.toString())
 }
 
 window.onpopstate = function () {
@@ -38,7 +35,6 @@ window.onpopstate = function () {
   const prevLoc = previousLocation
   const nextLoc = currentLocation()
   previousLocation = nextLoc
-  if (nextLoc.path !== prevLoc.path) trackPageView(nextLoc.toString())
   locationBus.push(nextLoc)
 }
 

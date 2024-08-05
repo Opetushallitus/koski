@@ -15,7 +15,6 @@ import {
   OppilaitosOption,
   OtherOppilaitosValue
 } from './RadioOption'
-import { trackEvent } from '../../tracking/piwikTracking'
 import Checkbox from '../../components/Checkbox'
 
 const resolveResponsibleOrganization = (opiskeluoikeus) =>
@@ -88,16 +87,6 @@ export const RaportoiVirheestäForm = ({ henkilö, opiskeluoikeudet }) => {
     .toProperty()
 
   yhteystietoP.onValue(() => isLoadingA.set(false))
-
-  yhteystietoP
-    .filter(R.identity)
-    .skipDuplicates(R.equals)
-    .onValue((v) => {
-      trackEvent(
-        'virheraportointi',
-        (v.organisaationNimi && v.organisaationNimi.fi) || '-'
-      )
-    })
 
   const isOtherOptionSelectedA = selectedOppilaitosA.map((selectedOption) =>
     selectedOption

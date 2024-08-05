@@ -14,18 +14,18 @@ import java.net.URLDecoder
 import scala.xml.NodeSeq.Empty
 import scala.xml.{Elem, NodeSeq}
 
-trait HtmlNodes extends KoskiSpecificBaseServlet with PiwikNodes with LanguageSupport {
+trait HtmlNodes extends KoskiSpecificBaseServlet with LanguageSupport {
   def application: KoskiApplication
   def buildVersion: Option[String]
   def localizations: LocalizationRepository = application.koskiLocalizationRepository
 
-  def htmlIndex(scriptBundleName: String, piwikHttpStatusCode: Option[Int] = None, raamit: Raamit = EiRaameja, scripts: NodeSeq = Empty, responsive: Boolean = false, allowIndexing: Boolean = false,
+  def htmlIndex(scriptBundleName: String, raamit: Raamit = EiRaameja, scripts: NodeSeq = Empty, responsive: Boolean = false, allowIndexing: Boolean = false,
     nonce: String
   ): Elem = {
     val bodyClasses = scriptBundleName.replace("koski-", "").replace(".js", "") + "-page"
     <html lang={lang}>
       <head>
-        {commonHead(responsive, allowIndexing, nonce) ++ windowNonce(nonce) ++ raamit.script(nonce) ++ piwikTrackingScriptLoader(nonce, piwikHttpStatusCode)}
+        {commonHead(responsive, allowIndexing, nonce) ++ windowNonce(nonce) ++ raamit.script(nonce)}
         <script nonce={nonce}>
           {setWindowVar("ePerusteetBaseUrl", application.config.getString("eperusteet.baseUrl"))}
         </script>
