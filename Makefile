@@ -5,7 +5,7 @@ cleandist = true
 mvn_argline =
 mvn_opts =
 
-DOCKER_COMPOSE = docker-compose
+DOCKER_COMPOSE = docker compose
 DOCKER_COMPOSE_OPTS = --force-recreate --renew-anon-volumes --build
 
 .PHONY: help
@@ -15,7 +15,7 @@ help:
 	@echo "make front	- Build front end"
 	@echo "make test	- Run unit tests"
 	@echo "make run	- Run previously built application in local environment"
-	@echo "make docker-dbs	- Start databases with docker-compose"
+	@echo "make docker-dbs	- Start databases with docker compose"
 	@echo "make watch	- Watch for changes in webapp files"
 	@echo "make clean	- Remove generated build data"
 	@echo "make dist version=<version> - Builds and verifies application version"

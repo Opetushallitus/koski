@@ -22,7 +22,7 @@ jobs:
       contents: read
       packages: write
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Configure AWS credentials for artifact upload
         uses: aws-actions/configure-aws-credentials@v1-node16
@@ -92,7 +92,7 @@ jobs:
       contents: read
       packages: write
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Configure AWS credentials for DEV environment
         uses: aws-actions/configure-aws-credentials@v1-node16
@@ -209,7 +209,7 @@ jobs:
       contents: read
       packages: write
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Configure AWS credentials for QA environment
         uses: aws-actions/configure-aws-credentials@v1-node16
@@ -327,7 +327,7 @@ jobs:
       contents: read
       packages: write
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Configure AWS credentials for PROD environment
         uses: aws-actions/configure-aws-credentials@v1-node16

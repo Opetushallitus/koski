@@ -78,7 +78,7 @@ Valppaan testikäyttäjistä on tietoa Valppaan käyttöliittymän [README.md:ss
 Nämä ovat keskeiset Koski-järjestelmässä käytettävät teknologiat. Lista kuvaa järjestelmän nykytilaa ja muuttuu matkan varrella
 tarpeen mukaan.
 
-- PostgreSQL 12.5 -tietokanta
+- PostgreSQL 15 -tietokanta
 - OpenSearch -hakuindeksi
 - Palvelinteknologiat
   - Scala 2.12 -ohjelmointikieli ja kääntäjä
@@ -111,6 +111,7 @@ Minimissään tarvitset nämä:
 - Maven 3 (osx: `brew install maven`)
 - Node.js (`.nvmrc`-tiedoston mukainen versio)
 - Docker PostgreSQL:n ja OpenSearchin ajamiseen konteissa
+- Docker compose (https://docs.docker.com/compose/install/)
 - Tekstieditori (kehitystiimi käyttää IntelliJ IDEA)
 
 ### Scala-kääntäjän konfiguraatio
@@ -154,7 +155,7 @@ make run
 
 Avaa selaimessa [http://localhost:7021/koski/virkailija](http://localhost:7021/koski/virkailija). Selaimeen avautuu login-sivu, josta pääset eteenpäin käyttäjätunnuksella "kalle". Salasana on sama kuin käyttäjätunnus.
 
-Näin ajettuna sovellus käyttää paikallista PostgreSQL-kantaa ja OpenSearch-hakuindeksiä, jotka voi käynnistää docker-composella. Sovellus ei myöskään käytä mitään ulkoisia palveluja. Sillä on siis turvallista leikkiä.
+Näin ajettuna sovellus käyttää paikallista PostgreSQL-kantaa ja OpenSearch-hakuindeksiä, jotka voi käynnistää `docker compose`:lla. Sovellus ei myöskään käytä mitään ulkoisia palveluja. Sillä on siis turvallista leikkiä.
 
 Paikallisesti ajettaessa Jetty lataa resurssit hakemistosta `target/webapp`, jonka sisältö luodaan webpack-buildilla ([webpack.config.js](web/webpack.config.js)). Webpack-build muun muassa kopioi staattisia resursseja paikoilleen
 hakemistosta [`web/`](web/) ja sen alihakemistoista.
@@ -193,7 +194,7 @@ aja `make ts-types` uudelleen. Samoin voit lisätä käyttämiesi rajapintojen p
 
 Kehityskäyttöön tarvitaan PostgreSQL-tietokanta ja OpenSearch-hakuindeksi.
 
-Kehitystietokannat käynnistetään docker-composella. Tämän voi tehdä seuraavalla
+Kehitystietokannat käynnistetään `docker compose`:lla. Tämän voi tehdä seuraavalla
 komennolla:
 
 ```shell
