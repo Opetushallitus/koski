@@ -84,10 +84,22 @@ object EPerusteetTutkintoRakenneConverter extends Logging {
           case None => throw new RuntimeException("Tutkinnon osaa ei löydy koodistosta: " + eTutkinnonOsa.koodiArvo)
           case Some(tutkinnonosaKoodi) => TutkinnonOsa(
             tutkinnonosaKoodi,
-            LocalizedString.sanitizeRequired(eTutkinnonOsa.nimi, eTutkinnonOsa.koodiArvo)
-          )
+            LocalizedString.sanitizeRequired(eTutkinnonOsa.nimi, eTutkinnonOsa.koodiArvo),
+            tutkinnonOsaViite.laajuus,
+            eTutkinnonOsa.osaAlueet.collect({ case o: EOsaAlue if o.koodiArvo.isDefined =>
+              val laajuudet = getOsaAluuenLaajuudet(o)
+              TutkinnonOsanOsaAlue(o.id, o.koodiArvo.get, laajuudet._1, laajuudet._2)
+            }))
         }
     }
+
+  private def getOsaAluuenLaajuudet(eOsaAlue: EOsaAlue) : (Option[Long], Option[Long]) = {
+    eOsaAlue.osaamistavoitteet match {
+      // TODO onko järkevää tehdä näin vai pitäisikö vaan skipata validointi vanhan mallin perusteita vastaan? datan näyttää olevan aika sekavassa tilassa-
+      case Some(tavoitteet) => (tavoitteet.find(t => t.pakollinen && t.laajuus.isDefined).flatMap(_.laajuus), tavoitteet.find(t => !t.pakollinen && t.laajuus.isDefined).flatMap(_.laajuus))
+      case _ => (eOsaAlue.pakollisetOsaamistavoitteet.flatMap(_.laajuus), eOsaAlue.valinnaisetOsaamistavoitteet.flatMap(_.laajuus))
+    }
+  }
 
   private def convertKoulutusTyyppi(ePerusteetKoulutustyyppi: String, suoritustapa: String): Koulutustyyppi = {
     val tyyppi: Koulutustyyppi = parseKoulutustyyppi(ePerusteetKoulutustyyppi)

@@ -192,6 +192,7 @@ case class EKokoSuoritustapa(
 
 case class ETutkinnonOsaViite(
   id: Long,
+  laajuus: Option[Long],
   _tutkinnonOsa: String
 )
 
@@ -217,6 +218,8 @@ case class ETutkinnonOsa(
 )
 
 case class EOsaAlue(
+  id: Long,
+  koodiArvo: Option[String],
   pakollisetOsaamistavoitteet: Option[EOsaamistavoite],
   valinnaisetOsaamistavoitteet: Option[EOsaamistavoite],
   osaamistavoitteet: Option[List[EOsaamistavoite]]
