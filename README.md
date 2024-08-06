@@ -78,7 +78,7 @@ Valppaan testikäyttäjistä on tietoa Valppaan käyttöliittymän [README.md:ss
 Nämä ovat keskeiset Koski-järjestelmässä käytettävät teknologiat. Lista kuvaa järjestelmän nykytilaa ja muuttuu matkan varrella
 tarpeen mukaan.
 
-- PostgreSQL 12.5 -tietokanta
+- PostgreSQL 15 -tietokanta
 - OpenSearch -hakuindeksi
 - Palvelinteknologiat
   - Scala 2.12 -ohjelmointikieli ja kääntäjä
@@ -111,6 +111,7 @@ Minimissään tarvitset nämä:
 - Maven 3 (osx: `brew install maven`)
 - Node.js (`.nvmrc`-tiedoston mukainen versio)
 - Docker PostgreSQL:n ja OpenSearchin ajamiseen konteissa
+- Docker compose (https://docs.docker.com/compose/install/)
 - Tekstieditori (kehitystiimi käyttää IntelliJ IDEA)
 
 ### Scala-kääntäjän konfiguraatio
