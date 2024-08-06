@@ -38,7 +38,7 @@ runs:
       shell: bash
 
     - name: Start Postgres and OS containers
-      run: docker-compose up -d
+      run: docker compose up -d
       shell: bash
 
     - name: Compile tests

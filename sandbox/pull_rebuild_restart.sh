@@ -18,9 +18,9 @@ cd /home/ubuntu && \
 git clone https://github.com/Opetushallitus/koski.git && \
 cd /home/ubuntu/koski && \
 make build && \
-docker-compose down && \
+docker compose down && \
 docker volume ls -q | xargs docker volume rm && \
-docker-compose up -d && \
+docker compose up -d && \
 rm -rf /home/ubuntu/koski/log && \
 ln -s /home/ubuntu/log/ /home/ubuntu/koski/ && \
 sleep 30 && \
