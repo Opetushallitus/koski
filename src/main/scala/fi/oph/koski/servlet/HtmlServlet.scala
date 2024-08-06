@@ -19,8 +19,6 @@ trait HtmlServlet extends KoskiSpecificBaseServlet with AuthenticationSupport wi
 
   lazy val buildVersion: Option[String] = buildVersionProperties.map(_.getProperty("vcsRevision", null))
 
-  lazy val piwikSiteId: String = application.config.getString("piwik.siteId")
-
   override def haltWithStatus(status: HttpStatus): Nothing = status.statusCode match {
     case 401 => redirectToVirkailijaLogin
     case _ => super.haltWithStatus(status)

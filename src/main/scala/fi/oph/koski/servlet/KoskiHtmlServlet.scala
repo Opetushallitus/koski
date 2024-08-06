@@ -19,9 +19,9 @@ trait KoskiHtmlServlet extends HtmlServlet with KoskiSpecificAuthenticationSuppo
   }
 
   def renderStatus(status: HttpStatus, nonce: String): Unit = {
-    val html = XML.transform(htmlIndex("koski-main.js", piwikHttpStatusCode = Some(status.statusCode), raamit = virkailijaRaamit, nonce = nonce)) {
+    val html = XML.transform(htmlIndex("koski-main.js", raamit = virkailijaRaamit, nonce = nonce)) {
       case e: Elem if e.label == "head" =>
-        e copy (child = (e.child :+ htmlErrorObjectScript(nonce, status)) ++ piwikTrackErrorObject(nonce))
+        e copy (child = e.child :+ htmlErrorObjectScript(nonce, status))
     }
 
     response.setStatus(status.statusCode)
