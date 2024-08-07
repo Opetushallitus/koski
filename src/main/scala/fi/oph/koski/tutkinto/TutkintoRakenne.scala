@@ -42,4 +42,4 @@ case class TutkinnonOsa(tunniste: Koodistokoodiviite, nimi: LocalizedString, laa
   // TODO add laajuus (from viite) + osa-alueet (+ thier laajuus + pakollisuus)
 }
 
-case class TutkinnonOsanOsaAlue(id: Long, koodiarvo: String, pakollisenOsanLaajuus: Option[Long], valinnaisenOsanLaajuus: Option[Long])
+case class TutkinnonOsanOsaAlue(id: Long, nimi: LocalizedString, koodiarvo: String, kieliKoodiarvo: Option[String], pakollisenOsanLaajuus: Option[Long], valinnaisenOsanLaajuus: Option[Long])

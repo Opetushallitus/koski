@@ -86,20 +86,20 @@ object EPerusteetTutkintoRakenneConverter extends Logging {
             tutkinnonosaKoodi,
             LocalizedString.sanitizeRequired(eTutkinnonOsa.nimi, eTutkinnonOsa.koodiArvo),
             tutkinnonOsaViite.laajuus,
-            eTutkinnonOsa.osaAlueet.collect({ case o: EOsaAlue if o.koodiArvo.isDefined =>
-              val laajuudet = getOsaAluuenLaajuudet(o)
-              TutkinnonOsanOsaAlue(o.id, o.koodiArvo.get, laajuudet._1, laajuudet._2)
+            eTutkinnonOsa.osaAlueet.collect({
+              // parsitaan ja validoidaan osa-alueiden laajuudet vain uudemman mallin perusteissa ("OSAALUE2020")
+              case o: EOsaAlue if o.koodiArvo.isDefined && o.pakollisetOsaamistavoitteet.isDefined =>
+              TutkinnonOsanOsaAlue(
+                id = o.id,
+                nimi = LocalizedString.sanitizeRequired(o.nimi, LocalizedString.missingString),
+                koodiarvo = o.koodiArvo.get,
+                kieliKoodiarvo = o.kielikoodi.map(_.arvo),
+                pakollisenOsanLaajuus = o.pakollisetOsaamistavoitteet.flatMap(_.laajuus),
+                valinnaisenOsanLaajuus = o.valinnaisetOsaamistavoitteet.flatMap(_.laajuus)
+              )
             }))
         }
     }
-
-  private def getOsaAluuenLaajuudet(eOsaAlue: EOsaAlue) : (Option[Long], Option[Long]) = {
-    eOsaAlue.osaamistavoitteet match {
-      // TODO onko järkevää tehdä näin vai pitäisikö vaan skipata validointi vanhan mallin perusteita vastaan? datan näyttää olevan aika sekavassa tilassa-
-      case Some(tavoitteet) => (tavoitteet.find(t => t.pakollinen && t.laajuus.isDefined).flatMap(_.laajuus), tavoitteet.find(t => !t.pakollinen && t.laajuus.isDefined).flatMap(_.laajuus))
-      case _ => (eOsaAlue.pakollisetOsaamistavoitteet.flatMap(_.laajuus), eOsaAlue.valinnaisetOsaamistavoitteet.flatMap(_.laajuus))
-    }
-  }
 
   private def convertKoulutusTyyppi(ePerusteetKoulutustyyppi: String, suoritustapa: String): Koulutustyyppi = {
     val tyyppi: Koulutustyyppi = parseKoulutustyyppi(ePerusteetKoulutustyyppi)

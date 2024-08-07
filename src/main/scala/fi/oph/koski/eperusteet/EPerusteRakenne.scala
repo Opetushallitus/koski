@@ -219,15 +219,20 @@ case class ETutkinnonOsa(
 
 case class EOsaAlue(
   id: Long,
+  nimi: Map[String, String],
   koodiArvo: Option[String],
+  kielikoodi: Option[EKielikoodi],
   pakollisetOsaamistavoitteet: Option[EOsaamistavoite],
-  valinnaisetOsaamistavoitteet: Option[EOsaamistavoite],
-  osaamistavoitteet: Option[List[EOsaamistavoite]]
+  valinnaisetOsaamistavoitteet: Option[EOsaamistavoite]
 )
 
 case class EOsaamistavoite(
   pakollinen: Boolean,
   laajuus: Option[Long]
+)
+
+case class EKielikoodi(
+  arvo: String
 )
 
 case class ELukiokoulutus(
