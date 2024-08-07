@@ -460,10 +460,10 @@ object AmmatillinenReforminMukainenPerustutkinto2022Example {
               )
             )
           ),
-          yhteisenTutkinnonOsanSuoritus("106727", "Viestintä- ja vuorovaikutusosaaminen", arvosanaViisi, 8).copy(
+          yhteisenTutkinnonOsanSuoritus("106727", "Viestintä- ja vuorovaikutusosaaminen", arvosanaViisi, 7).copy(
             osasuoritukset = Some(List(
-              YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonÄidinkieli(Koodistokoodiviite("AI", "ammatillisenoppiaineet"), pakollinen = true, kieli = Koodistokoodiviite("AI1", "oppiaineaidinkielijakirjallisuus"), laajuus = Some(LaajuusOsaamispisteissä(5))), arviointi = arviointiViisi, näyttö = Some(näyttö(date(2023, 5, 18), "Kirjaesitelmä", "Stadin ammattiopisto"))),
-              YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonÄidinkieli(Koodistokoodiviite("AI", "ammatillisenoppiaineet"), pakollinen = false, kieli = Koodistokoodiviite("AI1", "oppiaineaidinkielijakirjallisuus"), laajuus = Some(LaajuusOsaamispisteissä(3))), arviointi = arviointiViisi)
+              YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonÄidinkieli(Koodistokoodiviite("VVAI22", "ammatillisenoppiaineet"), pakollinen = true, kieli = Koodistokoodiviite("FI", "kielivalikoima"), laajuus = Some(LaajuusOsaamispisteissä(4))), arviointi = arviointiViisi, näyttö = Some(näyttö(date(2023, 5, 18), "Kirjaesitelmä", "Stadin ammattiopisto"))),
+              YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonÄidinkieli(Koodistokoodiviite("VVAI22", "ammatillisenoppiaineet"), pakollinen = false, kieli = Koodistokoodiviite("FI", "kielivalikoima"), laajuus = Some(LaajuusOsaamispisteissä(3))), arviointi = arviointiViisi)
             ))
           ).copy(arviointi = None).copy(vahvistus = None),
           AmmatillinenReforminMukainenPerustutkintoExample.korkeakouluopintoSuoritus,

@@ -298,7 +298,7 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
                 KoskiErrorCategory.badRequest.validation.rakenne.tuntematonTutkinnonOsa(
                   s"Tutkinnon osa ${osa.tunniste} ei löydy tutkintorakenteesta opiskeluoikeuden voimassaoloaikana voimassaolleelle perusteelle ${rakenne.diaarinumero} (${rakenne.id}) - suoritustapa ${suoritustapaJaRakenne.suoritustapa.koodiarvo}")
               case Some(tutkinnonOsa) =>
-                HttpStatus.ok
+                validateLaajuus(suoritus, tutkinnonOsa)
             }
         }
       case None =>
@@ -319,6 +319,39 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
   private def findOsaamisala(rakenne: TutkintoRakenne, osaamisAlaKoodi: String) = rakenne.osaamisalat.find(_.koodiarvo == osaamisAlaKoodi)
 
   private def findTutkintonimike(rakenne: TutkintoRakenne, tutkintonimikeKoodi: String) = rakenne.tutkintonimikkeet.find(_.koodiarvo == tutkintonimikeKoodi)
+
+  private def validateLaajuus(suoritus: AmmatillisenTutkinnonOsanSuoritus, tutkinnonOsa: TutkinnonOsa): HttpStatus = {
+
+    val osaStatus = tutkinnonOsa.laajuus match {
+      case Some(perusteenLaajuus) if suoritus.vahvistettu && suoritus.koulutusmoduuli.laajuus.exists(_.arvo < perusteenLaajuus) =>
+        KoskiErrorCategory.badRequest.validation(s"Suorituksen ${suoritus.koulutusmoduuli.nimi.get("fi")} laajuus oltava perusteen mukaan vähintään ${perusteenLaajuus}") // TODO error category
+      case _ => HttpStatus.ok
+    }
+
+    val osaAlueStatuses = suoritus.osasuoritusLista.map(osaAlueSuoritus => tutkinnonOsa.osaAlueet.find(perusteOsaAlue =>
+      osaAlueSuoritus.koulutusmoduuli.tunniste.koodiarvo == perusteOsaAlue.koodiarvo && (perusteOsaAlue.kieliKoodiarvo.isEmpty || {
+        osaAlueSuoritus.koulutusmoduuli match {
+          case mod: Kieliaine => perusteOsaAlue.kieliKoodiarvo.contains(mod.kieli.koodiarvo)
+          case _ => false
+        }
+      })).map(perusteOsaAlue => osaAlueSuoritus.koulutusmoduuli match {
+      case mod: Valinnaisuus => mod.pakollinen match {
+        case true if mod.getLaajuus.map(_.arvo) != perusteOsaAlue.pakollisenOsanLaajuus =>
+          KoskiErrorCategory.badRequest.validation(
+            s"Osa-alueen ${mod.nimi.get("fi")}${perusteOsaAlue.kieliKoodiarvo.map(k => s" ($k)").getOrElse("")} pakollisen osan laajuus oltava perusteen mukaan ${perusteOsaAlue.pakollisenOsanLaajuus.get}"
+          )
+        case false if mod.getLaajuus.map(_.arvo) != perusteOsaAlue.valinnaisenOsanLaajuus =>
+          KoskiErrorCategory.badRequest.validation(
+            s"Osa-alueen ${mod.nimi.get("fi")}${perusteOsaAlue.kieliKoodiarvo.map(k => s" ($k)").getOrElse("")} valinnaisen osan laajuus oltava perusteen mukaan ${perusteOsaAlue.valinnaisenOsanLaajuus.get}"
+          )
+        case _ => HttpStatus.ok
+      }
+      case _ => HttpStatus.ok
+    }).getOrElse(HttpStatus.ok))
+
+    HttpStatus.fold(List(osaStatus) ++ osaAlueStatuses)
+
+  }
 
   private def validateLukio2019Diaarinumero(s: LukionPäätasonSuoritus2019) = {
     val diaarinumerorajaus = s.oppimäärä.koodiarvo match {
