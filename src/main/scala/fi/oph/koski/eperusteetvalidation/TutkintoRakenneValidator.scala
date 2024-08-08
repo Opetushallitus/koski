@@ -324,7 +324,9 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
 
     val osaStatus = tutkinnonOsa.laajuus match {
       case Some(perusteenLaajuus) if suoritus.vahvistettu && suoritus.koulutusmoduuli.laajuus.exists(_.arvo < perusteenLaajuus) =>
-        KoskiErrorCategory.badRequest.validation(s"Suorituksen ${suoritus.koulutusmoduuli.nimi.get("fi")} laajuus oltava perusteen mukaan vähintään ${perusteenLaajuus}") // TODO error category
+        KoskiErrorCategory.badRequest.validation(
+          s"Vahvistetun suorituksen ${suoritus.koulutusmoduuli.nimi.get("fi")} (${suoritus.koulutusmoduuli.tunniste.koodiarvo}) laajuus oltava perusteen mukaan vähintään ${perusteenLaajuus}"
+        ) // TODO error category
       case _ => HttpStatus.ok
     }
 
@@ -334,19 +336,25 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
           case mod: Kieliaine => perusteOsaAlue.kieliKoodiarvo.contains(mod.kieli.koodiarvo)
           case _ => false
         }
-      })).map(perusteOsaAlue => osaAlueSuoritus.koulutusmoduuli match {
-      case mod: Valinnaisuus => mod.pakollinen match {
-        case true if mod.getLaajuus.map(_.arvo) != perusteOsaAlue.pakollisenOsanLaajuus =>
-          KoskiErrorCategory.badRequest.validation(
-            s"Osa-alueen ${mod.nimi.get("fi")}${perusteOsaAlue.kieliKoodiarvo.map(k => s" ($k)").getOrElse("")} pakollisen osan laajuus oltava perusteen mukaan ${perusteOsaAlue.pakollisenOsanLaajuus.get}"
-          )
-        case false if mod.getLaajuus.map(_.arvo) != perusteOsaAlue.valinnaisenOsanLaajuus =>
-          KoskiErrorCategory.badRequest.validation(
-            s"Osa-alueen ${mod.nimi.get("fi")}${perusteOsaAlue.kieliKoodiarvo.map(k => s" ($k)").getOrElse("")} valinnaisen osan laajuus oltava perusteen mukaan ${perusteOsaAlue.valinnaisenOsanLaajuus.get}"
-          )
+      })).map(perusteOsaAlue => {
+      val kieliStr = osaAlueSuoritus.koulutusmoduuli match {
+        case k: Kieliaine => k.kieli.nimi.map(_.get("fi")).map(str => s", $str").getOrElse("")
+        case _ => ""
+      }
+      osaAlueSuoritus.koulutusmoduuli match {
+        case mod: Valinnaisuus => mod.pakollinen match {
+          case true if mod.getLaajuus.map(_.arvo) != perusteOsaAlue.pakollisenOsanLaajuus =>
+            KoskiErrorCategory.badRequest.validation(
+              s"Osa-alueen ${mod.nimi.get("fi")}${kieliStr} pakollisen osan laajuus oltava perusteen mukaan ${perusteOsaAlue.pakollisenOsanLaajuus.get}"
+            )
+          case false if mod.getLaajuus.map(_.arvo) != perusteOsaAlue.valinnaisenOsanLaajuus =>
+            KoskiErrorCategory.badRequest.validation(
+              s"Osa-alueen ${mod.nimi.get("fi")}${kieliStr} valinnaisen osan laajuus oltava perusteen mukaan ${perusteOsaAlue.valinnaisenOsanLaajuus.get}"
+            )
+          case _ => HttpStatus.ok
+        }
         case _ => HttpStatus.ok
       }
-      case _ => HttpStatus.ok
     }).getOrElse(HttpStatus.ok))
 
     HttpStatus.fold(List(osaStatus) ++ osaAlueStatuses)
