@@ -84,8 +84,20 @@ object EPerusteetTutkintoRakenneConverter extends Logging {
           case None => throw new RuntimeException("Tutkinnon osaa ei löydy koodistosta: " + eTutkinnonOsa.koodiArvo)
           case Some(tutkinnonosaKoodi) => TutkinnonOsa(
             tutkinnonosaKoodi,
-            LocalizedString.sanitizeRequired(eTutkinnonOsa.nimi, eTutkinnonOsa.koodiArvo)
-          )
+            LocalizedString.sanitizeRequired(eTutkinnonOsa.nimi, eTutkinnonOsa.koodiArvo),
+            tutkinnonOsaViite.laajuus,
+            eTutkinnonOsa.osaAlueet.collect({
+              // parsitaan ja validoidaan osa-alueiden laajuudet vain uudemman mallin perusteissa ("OSAALUE2020")
+              case o: EOsaAlue if o.koodiArvo.isDefined && o.pakollisetOsaamistavoitteet.isDefined =>
+              TutkinnonOsanOsaAlue(
+                id = o.id,
+                nimi = LocalizedString.sanitizeRequired(o.nimi, LocalizedString.missingString),
+                koodiarvo = o.koodiArvo.get,
+                kieliKoodiarvo = o.kielikoodi.map(_.arvo),
+                pakollisenOsanLaajuus = o.pakollisetOsaamistavoitteet.flatMap(_.laajuus),
+                valinnaisenOsanLaajuus = o.valinnaisetOsaamistavoitteet.flatMap(_.laajuus)
+              )
+            }))
         }
     }
 

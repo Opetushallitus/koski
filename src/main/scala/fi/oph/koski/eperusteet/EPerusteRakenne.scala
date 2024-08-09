@@ -192,6 +192,7 @@ case class EKokoSuoritustapa(
 
 case class ETutkinnonOsaViite(
   id: Long,
+  laajuus: Option[Long],
   _tutkinnonOsa: String
 )
 
@@ -212,7 +213,26 @@ case class EOsaamisalaViite(
 case class ETutkinnonOsa(
   id: Long,
   nimi: Map[String, String],
-  koodiArvo: String
+  koodiArvo: String,
+  osaAlueet: List[EOsaAlue]
+)
+
+case class EOsaAlue(
+  id: Long,
+  nimi: Map[String, String],
+  koodiArvo: Option[String],
+  kielikoodi: Option[EKielikoodi],
+  pakollisetOsaamistavoitteet: Option[EOsaamistavoite],
+  valinnaisetOsaamistavoitteet: Option[EOsaamistavoite]
+)
+
+case class EOsaamistavoite(
+  pakollinen: Boolean,
+  laajuus: Option[Long]
+)
+
+case class EKielikoodi(
+  arvo: String
 )
 
 case class ELukiokoulutus(
