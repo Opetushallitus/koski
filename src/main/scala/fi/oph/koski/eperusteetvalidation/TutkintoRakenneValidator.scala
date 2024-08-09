@@ -323,9 +323,9 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
   private def validateLaajuus(suoritus: AmmatillisenTutkinnonOsanSuoritus, tutkinnonOsa: TutkinnonOsa): HttpStatus = {
 
     val osaStatus = tutkinnonOsa.laajuus match {
-      case Some(perusteenLaajuus) if suoritus.vahvistettu && suoritus.koulutusmoduuli.laajuus.exists(_.arvo < perusteenLaajuus) =>
+      case Some(perusteenLaajuus) if suoritus.arvioitu && suoritus.koulutusmoduuli.laajuus.exists(_.arvo < perusteenLaajuus) =>
         KoskiErrorCategory.badRequest.validation.laajuudet.suorituksenLaajuusEiVastaaRakennetta(
-          s"Vahvistetun suorituksen ${suoritus.koulutusmoduuli.nimi.get("fi")} (${suoritus.koulutusmoduuli.tunniste.koodiarvo}) laajuus oltava perusteen mukaan vähintään ${perusteenLaajuus}"
+          s"Arvioidun suorituksen ${suoritus.koulutusmoduuli.nimi.get("fi")} (${suoritus.koulutusmoduuli.tunniste.koodiarvo}) laajuus oltava perusteen mukaan vähintään ${perusteenLaajuus}"
         )
       case _ => HttpStatus.ok
     }

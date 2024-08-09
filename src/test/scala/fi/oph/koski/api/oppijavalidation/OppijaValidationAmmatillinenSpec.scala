@@ -147,14 +147,14 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
                 )
             }
 
-            "Vahvistetun osan laajuus ei perusteen mukainen" - {
+            "Arvioidun osan laajuus ei perusteen mukainen" - {
               "Palautetaan HTTP 400" in (
                 setupTutkinnonOsaSuoritus(yhtTutkinnonOsanSuoritus.copy(
                   koulutusmoduuli = yhtTutkinnonOsanSuoritus.koulutusmoduuli.copy(laajuus = Some(LaajuusOsaamispisteissä(10)))
                 ), tutkinnonSuoritustapaOps)(
                   verifyResponseStatus(400,
                     KoskiErrorCategory.badRequest.validation.laajuudet.suorituksenLaajuusEiVastaaRakennetta
-                    ("Vahvistetun suorituksen Viestintä- ja vuorovaikutusosaaminen (101053) laajuus oltava perusteen mukaan vähintään 11")))
+                    ("Arvioidun suorituksen Viestintä- ja vuorovaikutusosaaminen (101053) laajuus oltava perusteen mukaan vähintään 11")))
                 )
             }
 
@@ -193,7 +193,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
                       YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonViestintäJaVuorovaikutusKielivalinnalla(Koodistokoodiviite("VVAI22", "ammatillisenoppiaineet"), Koodistokoodiviite("EN", "kielivalikoima"), pakollinen = true, Some(LaajuusOsaamispisteissä(3))), arviointi = Some(List(arviointiKiitettävä))),
                       YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonViestintäJaVuorovaikutusKielivalinnalla(Koodistokoodiviite("VVAI22", "ammatillisenoppiaineet"), Koodistokoodiviite("EN", "kielivalikoima"), pakollinen = false, Some(LaajuusOsaamispisteissä(2))), arviointi = Some(List(arviointiKiitettävä)))
                     )),
-                    arviointi = arviointiHyvä(),
+                    arviointi = None,
                     vahvistus = None,
                   )))
               )
@@ -217,7 +217,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
                     osasuoritukset = Some(List(
                       YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("MLMA", "ammatillisenoppiaineet"), pakollinen = true, Some(LaajuusOsaamispisteissä(5)))),
                     )),
-                    arviointi = arviointiHyvä(),
+                    arviointi = None,
                     vahvistus = None,
                   )))
               )
@@ -257,12 +257,14 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
                 val yhtSuoritukset = List(
                   yhteisenTutkinnonOsanSuoritus("400012", "Viestintä- ja vuorovaikutusosaaminen", k3, 5).copy(
                     vahvistus = None,
+                    arviointi = None,
                     osasuoritukset = Some(List(
                       YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonViestintäJaVuorovaikutusKielivalinnalla(Koodistokoodiviite("VVAI", "ammatillisenoppiaineet"), pakollinen = true, kieli = Koodistokoodiviite("FI", "kielivalikoima"), laajuus = Some(LaajuusOsaamispisteissä(5))), arviointi = Some(List(arviointiKiitettävä))),
                     ))
                   ),
                   yhteisenTutkinnonOsanSuoritus("400013", "Matemaattis-luonnontieteellinen osaaminen", k3, 30).copy(
                     vahvistus = None,
+                    arviointi = None,
                     osasuoritukset = Some(List(
                       YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = PaikallinenAmmatillisenTutkinnonOsanOsaAlue(PaikallinenKoodi("MA", "Matematiikka"), "Matematiikan opinnot", pakollinen = true, Some(LaajuusOsaamispisteissä(30))), arviointi = Some(List(arviointiKiitettävä))),
                     ))
@@ -271,8 +273,8 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
                   osasuoritukset = Some(yhtSuoritukset))
                 val suoritus = reformiSuoritus.copy(
                   osaamisenHankkimistavat = Some(List(OsaamisenHankkimistapajakso(date(2018, 1, 1), None, osaamisenHankkimistapaOppilaitos))),
-                  vahvistus = vahvistus(date(2018, 1, 1)),
-                  keskiarvo = Some(4.0)
+                  vahvistus = None,
+                  keskiarvo = None
                 )
                 "Palautetaan HTTP 200" in (
                   setupTutkintoSuoritus(suoritus)(verifyResponseStatusOk())
@@ -1351,7 +1353,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
 
   lazy val laajuus = LaajuusOsaamispisteissä(11)
 
-  lazy val tutkinnonOsa: MuuValtakunnallinenTutkinnonOsa = MuuValtakunnallinenTutkinnonOsa(Koodistokoodiviite("100023", "tutkinnonosat"), true, Some(laajuus))
+  lazy val tutkinnonOsa: MuuValtakunnallinenTutkinnonOsa = MuuValtakunnallinenTutkinnonOsa(Koodistokoodiviite("100023", "tutkinnonosat"), true, Some(LaajuusOsaamispisteissä(30)))
   lazy val yhteinenTutkinnonOsa: YhteinenTutkinnonOsa = YhteinenTutkinnonOsa(Koodistokoodiviite("100023", "tutkinnonosat"), true, Some(laajuus))
 
   lazy val tutkinnonSuoritustapaNäyttönä = Koodistokoodiviite("naytto", "ammatillisentutkinnonsuoritustapa")
@@ -1380,8 +1382,8 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
     osasuoritukset = Some(List(
       YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonViestintäJaVuorovaikutusKielivalinnalla(Koodistokoodiviite("VVAI22", "ammatillisenoppiaineet"), Koodistokoodiviite("EN", "kielivalikoima"), pakollinen = true, Some(LaajuusOsaamispisteissä(4))), arviointi = Some(List(arviointiKiitettävä)))
     )),
-    arviointi = arviointiHyvä(),
     vahvistus = None,
+    arviointi = None,
   )
 
   lazy val paikallinenTutkinnonOsa = PaikallinenTutkinnonOsa(
