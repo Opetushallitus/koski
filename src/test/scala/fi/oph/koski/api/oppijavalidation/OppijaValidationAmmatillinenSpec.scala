@@ -154,7 +154,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
                 ), tutkinnonSuoritustapaOps)(
                   verifyResponseStatus(400,
                     KoskiErrorCategory.badRequest.validation.laajuudet.suorituksenLaajuusEiVastaaRakennetta
-                    ("Arvioidun suorituksen Viestintä- ja vuorovaikutusosaaminen (101053) laajuus oltava perusteen mukaan vähintään 11")))
+                    ("Arvioidun suorituksen 'Viestintä- ja vuorovaikutusosaaminen' laajuus oltava perusteen mukaan vähintään 11")))
                 )
             }
 
@@ -173,7 +173,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
                 setupOppijaWithOpiskeluoikeus(henkilö = KoskiSpecificMockOppijat.tyhjä, opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(suoritus))) {
                   verifyResponseStatus(400,
                     KoskiErrorCategory.badRequest.validation.rakenne(
-                      "Osa-alue Matematiikka ja matematiikan soveltaminen (MLMA) ei kuulu perusteen mukaan tutkinnon osaan Viestintä- ja vuorovaikutusosaaminen")
+                      "Osa-alue 'Matematiikka ja matematiikan soveltaminen' (MLMA) ei kuulu perusteen mukaan tutkinnon osaan 'Viestintä- ja vuorovaikutusosaaminen'")
                   )
                 })
             }
@@ -222,10 +222,10 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
                   verifyResponseStatus(400, List(
                     ErrorMatcher.exact(
                       KoskiErrorCategory.badRequest.validation.laajuudet.suorituksenLaajuusEiVastaaRakennetta,
-                      "Osa-alueen Viestintä ja vuorovaikutus äidinkielellä, englanti (VVAI22) pakollisen osan laajuus oltava perusteen mukaan 4"),
+                      "Osa-alueen 'Viestintä ja vuorovaikutus äidinkielellä, englanti' (VVAI22) pakollisen osan laajuus oltava perusteen mukaan 4"),
                     ErrorMatcher.exact(
                       KoskiErrorCategory.badRequest.validation.laajuudet.suorituksenLaajuusEiVastaaRakennetta,
-                      "Osa-alueen Viestintä ja vuorovaikutus äidinkielellä, englanti (VVAI22) valinnaisen osan laajuus oltava perusteen mukaan 3")
+                      "Osa-alueen 'Viestintä ja vuorovaikutus äidinkielellä, englanti' (VVAI22) valinnaisen osan laajuus oltava perusteen mukaan 3")
                   ))
                 })
             }
@@ -245,7 +245,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
                 setupOppijaWithOpiskeluoikeus(henkilö = KoskiSpecificMockOppijat.tyhjä, opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(suoritus))) {
                   verifyResponseStatus(400,
                     KoskiErrorCategory.badRequest.validation.laajuudet.suorituksenLaajuusEiVastaaRakennetta(
-                      "Osa-alueen Matematiikka ja matematiikan soveltaminen (MLMA) pakollisen osan laajuus oltava perusteen mukaan 4")
+                      "Osa-alueen 'Matematiikka ja matematiikan soveltaminen' (MLMA) pakollisen osan laajuus oltava perusteen mukaan 4")
                   )
                 })
             }

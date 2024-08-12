@@ -326,7 +326,7 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
     val osaStatus = tutkinnonOsa.laajuus match {
       case Some(perusteenLaajuus) if suoritus.arvioitu && suoritus.koulutusmoduuli.laajuus.exists(_.arvo < perusteenLaajuus) =>
         KoskiErrorCategory.badRequest.validation.laajuudet.suorituksenLaajuusEiVastaaRakennetta(
-          s"Arvioidun suorituksen ${suoritus.koulutusmoduuli.nimi.get("fi")} (${suoritus.koulutusmoduuli.tunniste.koodiarvo}) laajuus oltava perusteen mukaan vähintään ${perusteenLaajuus}"
+          s"Arvioidun suorituksen '${suoritus.koulutusmoduuli.nimi.get("fi")}' laajuus oltava perusteen mukaan vähintään ${perusteenLaajuus}"
         )
       case _ => HttpStatus.ok
     }
@@ -342,11 +342,11 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
           case mod: Valinnaisuus => mod.pakollinen match {
             case true if perusteOsaAlue.pakollisenOsanLaajuus.isDefined && mod.getLaajuus.map(_.arvo) != perusteOsaAlue.pakollisenOsanLaajuus =>
               KoskiErrorCategory.badRequest.validation.laajuudet.suorituksenLaajuusEiVastaaRakennetta(
-                s"Osa-alueen ${mod.nimi.get("fi")}${kieliStr} (${osaAlueSuoritus.koulutusmoduuli.tunniste.koodiarvo}) pakollisen osan laajuus oltava perusteen mukaan ${perusteOsaAlue.pakollisenOsanLaajuus.get}"
+                s"Osa-alueen '${mod.nimi.get("fi")}${kieliStr}' (${osaAlueSuoritus.koulutusmoduuli.tunniste.koodiarvo}) pakollisen osan laajuus oltava perusteen mukaan ${perusteOsaAlue.pakollisenOsanLaajuus.get}"
               )
             case false if perusteOsaAlue.valinnaisenOsanLaajuus.isDefined && mod.getLaajuus.map(_.arvo) != perusteOsaAlue.valinnaisenOsanLaajuus =>
               KoskiErrorCategory.badRequest.validation.laajuudet.suorituksenLaajuusEiVastaaRakennetta(
-                s"Osa-alueen ${mod.nimi.get("fi")}${kieliStr} (${osaAlueSuoritus.koulutusmoduuli.tunniste.koodiarvo}) valinnaisen osan laajuus oltava perusteen mukaan ${perusteOsaAlue.valinnaisenOsanLaajuus.get}"
+                s"Osa-alueen '${mod.nimi.get("fi")}${kieliStr}' (${osaAlueSuoritus.koulutusmoduuli.tunniste.koodiarvo}) valinnaisen osan laajuus oltava perusteen mukaan ${perusteOsaAlue.valinnaisenOsanLaajuus.get}"
               )
             case _ => HttpStatus.ok
           }
@@ -356,7 +356,7 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
         osaAlueSuoritus match {
           case p: PaikallinenTutkinnonOsa => HttpStatus.ok
           case _ if tutkinnonOsa.osaAlueet.isEmpty => HttpStatus.ok // Jos osa-alueita ei ole parsittu vanhan mallisesta perusteesta (ennen "OSAALUE2020") niin skipataan tämä validaatio.
-          case _ => KoskiErrorCategory.badRequest.validation.rakenne(s"Osa-alue ${osaAlueSuoritus.koulutusmoduuli.nimi.get("fi")} (${osaAlueSuoritus.koulutusmoduuli.tunniste.koodiarvo}) ei kuulu perusteen mukaan tutkinnon osaan ${tutkinnonOsa.nimi.get("fi")}")
+          case _ => KoskiErrorCategory.badRequest.validation.rakenne(s"Osa-alue '${osaAlueSuoritus.koulutusmoduuli.nimi.get("fi")}' (${osaAlueSuoritus.koulutusmoduuli.tunniste.koodiarvo}) ei kuulu perusteen mukaan tutkinnon osaan '${tutkinnonOsa.nimi.get("fi")}'")
         }
       ))
       HttpStatus.fold(List(osaStatus) ++ osaAlueStatuses)
