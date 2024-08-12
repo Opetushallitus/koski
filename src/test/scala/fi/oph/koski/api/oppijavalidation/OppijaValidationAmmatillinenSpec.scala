@@ -158,6 +158,26 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
                 )
             }
 
+            "Osa-alue ei kuulu osaan" - {
+              val suoritus = ajoneuvoalanPerustutkinnonSuoritus().copy(
+                osasuoritukset = Some(List(
+                  yhteisenTutkinnonOsanSuoritus("106727", "Viestintä- ja vuorovaikutusosaaminen", k3, 3).copy(
+                    osasuoritukset = Some(List(
+                      YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("MLMA", "ammatillisenoppiaineet"), pakollinen = true, Some(LaajuusOsaamispisteissä(4)))),
+                    )),
+                    arviointi = None,
+                    vahvistus = None,
+                  )))
+              )
+              "Palautetaan HTTP 400" in (
+                setupOppijaWithOpiskeluoikeus(henkilö = KoskiSpecificMockOppijat.tyhjä, opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(suoritus))) {
+                  verifyResponseStatus(400,
+                    KoskiErrorCategory.badRequest.validation.rakenne(
+                      "Osa-alue Matematiikka ja matematiikan soveltaminen (MLMA) ei kuulu perusteen mukaan tutkinnon osaan Viestintä- ja vuorovaikutusosaaminen")
+                  )
+                })
+            }
+
             "Osa-alueella ei osasuorituksia, suoritustapa reformi" - {
               val yhtSuoritus = yhteisenTutkinnonOsanSuoritus("400012", "Viestintä- ja vuorovaikutusosaaminen", k3, 35).copy(
                 osasuoritukset = Some(List())
