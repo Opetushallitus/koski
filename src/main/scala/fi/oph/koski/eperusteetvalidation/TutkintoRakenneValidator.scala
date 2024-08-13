@@ -353,10 +353,10 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
           case _ => HttpStatus.ok
         }
       }).getOrElse(
-        osaAlueSuoritus match {
-          case p: PaikallinenTutkinnonOsa => HttpStatus.ok
+        osaAlueSuoritus.koulutusmoduuli.tunniste match {
           case _ if tutkinnonOsa.osaAlueet.isEmpty => HttpStatus.ok // Jos osa-alueita ei ole parsittu vanhan mallisesta perusteesta (ennen "OSAALUE2020") niin skipataan tämä validaatio.
-          case _ => KoskiErrorCategory.badRequest.validation.rakenne(s"Osa-alue '${osaAlueSuoritus.koulutusmoduuli.nimi.get("fi")}' (${osaAlueSuoritus.koulutusmoduuli.tunniste.koodiarvo}) ei kuulu perusteen mukaan tutkinnon osaan '${tutkinnonOsa.nimi.get("fi")}'")
+          case t: Koodistokoodiviite if t.koodistoUri == "ammatillisenoppiaineet" => KoskiErrorCategory.badRequest.validation.rakenne(s"Osa-alue '${osaAlueSuoritus.koulutusmoduuli.nimi.get("fi")}' (${osaAlueSuoritus.koulutusmoduuli.tunniste.koodiarvo}) ei kuulu perusteen mukaan tutkinnon osaan '${tutkinnonOsa.nimi.get("fi")}'")
+          case _ => HttpStatus.ok // mm. paikalliset tutkinnon osat
         }
       ))
       HttpStatus.fold(List(osaStatus) ++ osaAlueStatuses)
