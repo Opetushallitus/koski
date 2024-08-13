@@ -13,7 +13,7 @@ import fi.oph.koski.koskiuser.MockUsers.{omniaTallentaja, stadinAmmattiopistoJaO
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.Organisaatio.Oid
-import fi.oph.koski.schema._
+import fi.oph.koski.schema.{YhteisenTutkinnonOsanOsaAlueenSuoritus, _}
 
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
@@ -380,12 +380,22 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
 
       val defaultOsanOsaAlueenSuoritukset = List(
         YhteisenTutkinnonOsanOsaAlueenSuoritus(
-          koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("FK", "ammatillisenoppiaineet"), pakollinen = true, Some(LaajuusOsaamispisteissä(3))),
+          koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("MA", "ammatillisenoppiaineet"), pakollinen = false, Some(LaajuusOsaamispisteissä(3))),
           arviointi = Some(List(arviointiKiitettävä)),
           tunnustettu = Some(tunnustettu)
         ),
         YhteisenTutkinnonOsanOsaAlueenSuoritus(
-          koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("TVT", "ammatillisenoppiaineet"), pakollinen = true, Some(LaajuusOsaamispisteissä(3))),
+          koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("FK", "ammatillisenoppiaineet"), pakollinen = true, Some(LaajuusOsaamispisteissä(2))),
+          arviointi = Some(List(arviointiKiitettävä)),
+          tunnustettu = Some(tunnustettu)
+        ),
+        YhteisenTutkinnonOsanOsaAlueenSuoritus(
+          koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("FK", "ammatillisenoppiaineet"), pakollinen = false, Some(LaajuusOsaamispisteissä(3))),
+          arviointi = Some(List(arviointiKiitettävä)),
+          tunnustettu = Some(tunnustettu)
+        ),
+        YhteisenTutkinnonOsanOsaAlueenSuoritus(
+          koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("TVT", "ammatillisenoppiaineet"), pakollinen = true, Some(LaajuusOsaamispisteissä(1))),
           arviointi = Some(List(arviointiKiitettävä.copy(päivä = date(2015, 1, 1)))),
           alkamispäivä = Some(date(2014, 1, 1)),
           tunnustettu = Some(tunnustettu),
@@ -393,7 +403,7 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
         )
       )
 
-      val korotettuYhteisenTutkinnonOsanSuoritus = yhteisenOsittaisenTutkinnonTutkinnonOsansuoritus(k3, yhteisetTutkinnonOsat, "101054", "Matemaattis-luonnontieteellinen osaaminen", 9).copy(
+      val korotettuYhteisenTutkinnonOsanSuoritus = yhteisenOsittaisenTutkinnonTutkinnonOsansuoritus(k3, yhteisetTutkinnonOsat, "101054", "Matemaattis-luonnontieteellinen osaaminen", 12).copy(
         osasuoritukset = Some(List(
           korotettuYhteisenOsanOsaAlueenSuoritus,
         ) ++ defaultOsanOsaAlueenSuoritukset)
@@ -546,15 +556,40 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
               korotettuTutkinnonOsanSuoritus.copy(korotettu = Some(korotuksenYritys)),
               korotettuYhteisenTutkinnonOsanSuoritus.copy(
                 osasuoritukset = Some(List(
-                  korotettuYhteisenOsanOsaAlueenSuoritus.copy(
-                    korotettu = Some(korotuksenYritys)
+
+                  YhteisenTutkinnonOsanOsaAlueenSuoritus(
+                    koulutusmoduuli = PaikallinenAmmatillisenTutkinnonOsanOsaAlue(
+                      PaikallinenKoodi("MA", "Matematiikka"), "Matematiikan opinnot", pakollinen = true, Some(LaajuusOsaamispisteissä(3))
+                    ),
+                    arviointi = Some(List(arviointiKiitettävä)),
+                    korotettu = Some(korotettu)
                   ),
-                  korotettuYhteisenOsanOsaAlueenSuoritus.copy(
+
+                  YhteisenTutkinnonOsanOsaAlueenSuoritus(
+                    koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("MA", "ammatillisenoppiaineet"), pakollinen = false, Some(LaajuusOsaamispisteissä(3))),
+                    arviointi = Some(List(arviointiKiitettävä)),
+                    tunnustettu = Some(tunnustettu),
                     korotettu = None,
-                    tunnustettu = Some(OsaamisenTunnustaminen(None, Finnish("Tunnustettu")))
                   ),
-                  korotettuYhteisenOsanOsaAlueenSuoritus.copy(
-                    korotettu = Some(korotuksenYritys)
+                  YhteisenTutkinnonOsanOsaAlueenSuoritus(
+                    koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("FK", "ammatillisenoppiaineet"), pakollinen = true, Some(LaajuusOsaamispisteissä(2))),
+                    arviointi = Some(List(arviointiKiitettävä)),
+                    tunnustettu = Some(tunnustettu),
+                    korotettu = Some(korotettu)
+                  ),
+                  YhteisenTutkinnonOsanOsaAlueenSuoritus(
+                    koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("FK", "ammatillisenoppiaineet"), pakollinen = false, Some(LaajuusOsaamispisteissä(3))),
+                    arviointi = Some(List(arviointiKiitettävä)),
+                    tunnustettu = Some(tunnustettu),
+                    korotettu = Some(korotettu)
+                  ),
+                  YhteisenTutkinnonOsanOsaAlueenSuoritus(
+                    koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("TVT", "ammatillisenoppiaineet"), pakollinen = true, Some(LaajuusOsaamispisteissä(1))),
+                    arviointi = Some(List(arviointiKiitettävä.copy(päivä = date(2015, 1, 1)))),
+                    alkamispäivä = Some(date(2014, 1, 1)),
+                    tunnustettu = Some(tunnustettu),
+                    lisätiedot = Some(List(lisätietoOsaamistavoitteet)),
+                    korotettu = Some(korotettu)
                   )
                 ))
               )
@@ -595,13 +630,40 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
               korotettuTutkinnonOsanSuoritus,
               korotettuYhteisenTutkinnonOsanSuoritus.copy(
                 osasuoritukset = Some(List(
-                  korotettuYhteisenOsanOsaAlueenSuoritus,
-                  korotettuYhteisenOsanOsaAlueenSuoritus.copy(
-                    korotettu = None,
-                    tunnustettu = Some(OsaamisenTunnustaminen(None, Finnish("Tunnustettu")))
+
+                  YhteisenTutkinnonOsanOsaAlueenSuoritus(
+                    koulutusmoduuli = PaikallinenAmmatillisenTutkinnonOsanOsaAlue(
+                      PaikallinenKoodi("MA", "Matematiikka"), "Matematiikan opinnot", pakollinen = true, Some(LaajuusOsaamispisteissä(3))
+                    ),
+                    arviointi = Some(List(arviointiKiitettävä)),
+                    korotettu = Some(korotettu)
                   ),
-                  korotettuYhteisenOsanOsaAlueenSuoritus.copy(
-                    korotettu = None
+
+                  YhteisenTutkinnonOsanOsaAlueenSuoritus(
+                    koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("MA", "ammatillisenoppiaineet"), pakollinen = false, Some(LaajuusOsaamispisteissä(3))),
+                    arviointi = Some(List(arviointiKiitettävä)),
+                    tunnustettu = None,
+                    korotettu = None,
+                  ),
+                  YhteisenTutkinnonOsanOsaAlueenSuoritus(
+                    koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("FK", "ammatillisenoppiaineet"), pakollinen = true, Some(LaajuusOsaamispisteissä(2))),
+                    arviointi = Some(List(arviointiKiitettävä)),
+                    tunnustettu = None,
+                    korotettu = Some(korotettu)
+                  ),
+                  YhteisenTutkinnonOsanOsaAlueenSuoritus(
+                    koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("FK", "ammatillisenoppiaineet"), pakollinen = false, Some(LaajuusOsaamispisteissä(3))),
+                    arviointi = Some(List(arviointiKiitettävä)),
+                    tunnustettu = None,
+                    korotettu = Some(korotettu)
+                  ),
+                  YhteisenTutkinnonOsanOsaAlueenSuoritus(
+                    koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("TVT", "ammatillisenoppiaineet"), pakollinen = true, Some(LaajuusOsaamispisteissä(1))),
+                    arviointi = Some(List(arviointiKiitettävä.copy(päivä = date(2015, 1, 1)))),
+                    alkamispäivä = Some(date(2014, 1, 1)),
+                    tunnustettu = None,
+                    lisätiedot = Some(List(lisätietoOsaamistavoitteet)),
+                    korotettu = Some(korotettu)
                   )
                 ))
               )
@@ -671,22 +733,9 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
             korotettuKeskiarvoSisältääMukautettujaArvosanoja = Some(false),
             osasuoritukset = Some(List(
               korotettuTutkinnonOsanSuoritus.copy(korotettu = Some(korotuksenYritys)),
-              korotettuYhteisenTutkinnonOsanSuoritus.copy(
-                osasuoritukset = Some(List(
-                  korotettuYhteisenOsanOsaAlueenSuoritus.copy(
-                    korotettu = Some(korotettu)
-                  ),
-                  korotettuYhteisenOsanOsaAlueenSuoritus.copy(
-                    korotettu = None,
-                    tunnustettu = Some(OsaamisenTunnustaminen(None, Finnish("Tunnustettu")))
-                  ),
-                  korotettuYhteisenOsanOsaAlueenSuoritus.copy(
-                    korotettu = Some(korotuksenYritys)
-                  )
-                ))
-              )
-            ))
-          )
+              korotettuYhteisenTutkinnonOsanSuoritus
+            )))
+
           val korotettuOo = makeOpiskeluoikeus(suoritus = korotettuSuoritus, tila = Some(opiskeluoikeusValmistunut), alkamispäivä = alkamispäivä)
 
           putOpiskeluoikeus(korotettuOo, amiksenKorottaja) {
@@ -720,14 +769,39 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
               korotettuTutkinnonOsanSuoritus.copy(korotettu = Some(korotuksenYritys)),
               korotettuYhteisenTutkinnonOsanSuoritus.copy(
                 osasuoritukset = Some(List(
-                  korotettuYhteisenOsanOsaAlueenSuoritus.copy(
+
+                  YhteisenTutkinnonOsanOsaAlueenSuoritus(
+                    koulutusmoduuli = PaikallinenAmmatillisenTutkinnonOsanOsaAlue(
+                      PaikallinenKoodi("MA", "Matematiikka"), "Matematiikan opinnot", pakollinen = true, Some(LaajuusOsaamispisteissä(3))
+                    ),
+                    arviointi = Some(List(arviointiKiitettävä)),
                     korotettu = Some(korotuksenYritys)
                   ),
-                  korotettuYhteisenOsanOsaAlueenSuoritus.copy(
+
+                  YhteisenTutkinnonOsanOsaAlueenSuoritus(
+                    koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("MA", "ammatillisenoppiaineet"), pakollinen = false, Some(LaajuusOsaamispisteissä(3))),
+                    arviointi = Some(List(arviointiKiitettävä)),
+                    tunnustettu = Some(OsaamisenTunnustaminen(None, Finnish("Tunnustettu"))),
                     korotettu = None,
-                    tunnustettu = Some(OsaamisenTunnustaminen(None, Finnish("Tunnustettu")))
                   ),
-                  korotettuYhteisenOsanOsaAlueenSuoritus.copy(
+                  YhteisenTutkinnonOsanOsaAlueenSuoritus(
+                    koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("FK", "ammatillisenoppiaineet"), pakollinen = true, Some(LaajuusOsaamispisteissä(2))),
+                    arviointi = Some(List(arviointiKiitettävä)),
+                    tunnustettu = None,
+                    korotettu = Some(korotuksenYritys)
+                  ),
+                  YhteisenTutkinnonOsanOsaAlueenSuoritus(
+                    koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("FK", "ammatillisenoppiaineet"), pakollinen = false, Some(LaajuusOsaamispisteissä(3))),
+                    arviointi = Some(List(arviointiKiitettävä)),
+                    tunnustettu = None,
+                    korotettu = Some(korotuksenYritys)
+                  ),
+                  YhteisenTutkinnonOsanOsaAlueenSuoritus(
+                    koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("TVT", "ammatillisenoppiaineet"), pakollinen = true, Some(LaajuusOsaamispisteissä(1))),
+                    arviointi = Some(List(arviointiKiitettävä.copy(päivä = date(2015, 1, 1)))),
+                    alkamispäivä = Some(date(2014, 1, 1)),
+                    tunnustettu = None,
+                    lisätiedot = Some(List(lisätietoOsaamistavoitteet)),
                     korotettu = Some(korotuksenYritys)
                   )
                 ))
@@ -751,14 +825,39 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
               korotettuTutkinnonOsanSuoritus.copy(korotettu = Some(korotuksenYritys)),
               korotettuYhteisenTutkinnonOsanSuoritus.copy(
                 osasuoritukset = Some(List(
-                  korotettuYhteisenOsanOsaAlueenSuoritus.copy(
+
+                  YhteisenTutkinnonOsanOsaAlueenSuoritus(
+                    koulutusmoduuli = PaikallinenAmmatillisenTutkinnonOsanOsaAlue(
+                      PaikallinenKoodi("MA", "Matematiikka"), "Matematiikan opinnot", pakollinen = true, Some(LaajuusOsaamispisteissä(3))
+                    ),
+                    arviointi = Some(List(arviointiKiitettävä)),
                     korotettu = Some(korotuksenYritys)
                   ),
-                  korotettuYhteisenOsanOsaAlueenSuoritus.copy(
+
+                  YhteisenTutkinnonOsanOsaAlueenSuoritus(
+                    koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("MA", "ammatillisenoppiaineet"), pakollinen = false, Some(LaajuusOsaamispisteissä(3))),
+                    arviointi = Some(List(arviointiKiitettävä)),
+                    tunnustettu = Some(OsaamisenTunnustaminen(None, Finnish("Tunnustettu"))),
                     korotettu = None,
-                    tunnustettu = Some(OsaamisenTunnustaminen(None, Finnish("Tunnustettu")))
                   ),
-                  korotettuYhteisenOsanOsaAlueenSuoritus.copy(
+                  YhteisenTutkinnonOsanOsaAlueenSuoritus(
+                    koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("FK", "ammatillisenoppiaineet"), pakollinen = true, Some(LaajuusOsaamispisteissä(2))),
+                    arviointi = Some(List(arviointiKiitettävä)),
+                    tunnustettu = None,
+                    korotettu = Some(korotuksenYritys)
+                  ),
+                  YhteisenTutkinnonOsanOsaAlueenSuoritus(
+                    koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("FK", "ammatillisenoppiaineet"), pakollinen = false, Some(LaajuusOsaamispisteissä(3))),
+                    arviointi = Some(List(arviointiKiitettävä)),
+                    tunnustettu = None,
+                    korotettu = Some(korotuksenYritys)
+                  ),
+                  YhteisenTutkinnonOsanOsaAlueenSuoritus(
+                    koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("TVT", "ammatillisenoppiaineet"), pakollinen = true, Some(LaajuusOsaamispisteissä(1))),
+                    arviointi = Some(List(arviointiKiitettävä.copy(päivä = date(2015, 1, 1)))),
+                    alkamispäivä = Some(date(2014, 1, 1)),
+                    tunnustettu = None,
+                    lisätiedot = Some(List(lisätietoOsaamistavoitteet)),
                     korotettu = Some(korotuksenYritys)
                   )
                 ))
@@ -1088,7 +1187,7 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
         "korotuksella tyhjä aliosasuoritusten lista, vaikka alkuperäisellä on aliosasuorituksia" in {
           val alkuperäinen = setupAndGetAlkuperäinen
 
-          val yhteisenTutkinnonOsanSuoritusIlmanOsaAlueita = yhteisenOsittaisenTutkinnonTutkinnonOsansuoritus(k3, yhteisetTutkinnonOsat, "101054", "Matemaattis-luonnontieteellinen osaaminen", 9).copy(
+          val yhteisenTutkinnonOsanSuoritusIlmanOsaAlueita = yhteisenOsittaisenTutkinnonTutkinnonOsansuoritus(k3, yhteisetTutkinnonOsat, "101054", "Matemaattis-luonnontieteellinen osaaminen", 12).copy(
             osasuoritukset = None
           )
           val korotettuSuoritusIlmanOsanOsaAlueita = ammatillisenTutkinnonOsittainenSuoritus.copy(
@@ -1114,7 +1213,7 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
             arviointi = Some(List(arviointiKiitettävä)),
             korotettu = Some(korotettu)
           )
-          val korotettuYhteisenTutkinnonOsanSuoritus = yhteisenOsittaisenTutkinnonTutkinnonOsansuoritus(k3, yhteisetTutkinnonOsat, "101054", "Matemaattis-luonnontieteellinen osaaminen", 9).copy(
+          val korotettuYhteisenTutkinnonOsanSuoritus = yhteisenOsittaisenTutkinnonTutkinnonOsansuoritus(k3, yhteisetTutkinnonOsat, "101054", "Matemaattis-luonnontieteellinen osaaminen", 12).copy(
             osasuoritukset = Some(List(
               korotettuYhteisenOsanOsaAlueenSuoritusVääräTutkinnonOsanOsaAlue
             ) ++ defaultOsanOsaAlueenSuoritukset)
@@ -1144,7 +1243,7 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
             arviointi = Some(List(arviointiKiitettävä)),
             korotettu = Some(korotettu)
           )
-          val korotettuYhteisenTutkinnonOsanSuoritus = yhteisenOsittaisenTutkinnonTutkinnonOsansuoritus(k3, yhteisetTutkinnonOsat, "101054", "Matemaattis-luonnontieteellinen osaaminen", 9).copy(
+          val korotettuYhteisenTutkinnonOsanSuoritus = yhteisenOsittaisenTutkinnonTutkinnonOsansuoritus(k3, yhteisetTutkinnonOsat, "101054", "Matemaattis-luonnontieteellinen osaaminen", 12).copy(
             osasuoritukset = Some(List(
               korotettuYhteisenOsanOsaAlueenSuoritusVääräLaajuus
             ) ++ defaultOsanOsaAlueenSuoritukset)
@@ -1165,7 +1264,7 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
             )
           }
 
-          val korotettuYhteisenTutkinnonOsanSuoritusVääräLaajuus = yhteisenOsittaisenTutkinnonTutkinnonOsansuoritus(k3, yhteisetTutkinnonOsat, "101054", "Matemaattis-luonnontieteellinen osaaminen", 9).copy(
+          val korotettuYhteisenTutkinnonOsanSuoritusVääräLaajuus = yhteisenOsittaisenTutkinnonTutkinnonOsansuoritus(k3, yhteisetTutkinnonOsat, "101054", "Matemaattis-luonnontieteellinen osaaminen", 12).copy(
             osasuoritukset = Some(List(
               korotettuYhteisenOsanOsaAlueenSuoritus
             ))
@@ -1187,17 +1286,33 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
 
         "aliosasuorituksella väärä pakollisuus" in {
           val alkuperäinen = setupAndGetAlkuperäinen
-          val korotettuYhteisenOsanOsaAlueenSuoritusVääräPakollisuus = YhteisenTutkinnonOsanOsaAlueenSuoritus(
-            koulutusmoduuli = PaikallinenAmmatillisenTutkinnonOsanOsaAlue(
-              PaikallinenKoodi("MA", "Matematiikka"), "Matematiikan opinnot", pakollinen = false, Some(LaajuusOsaamispisteissä(3))
-            ),
-            arviointi = Some(List(arviointiKiitettävä)),
-            korotettu = Some(korotettu)
-          )
           val korotettuYhteisenTutkinnonOsanSuoritus = yhteisenOsittaisenTutkinnonTutkinnonOsansuoritus(k3, yhteisetTutkinnonOsat, "101054", "Matemaattis-luonnontieteellinen osaaminen", 9).copy(
             osasuoritukset = Some(List(
-              korotettuYhteisenOsanOsaAlueenSuoritusVääräPakollisuus
-            ) ++ defaultOsanOsaAlueenSuoritukset)
+              YhteisenTutkinnonOsanOsaAlueenSuoritus(
+                koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("MA", "ammatillisenoppiaineet"), pakollinen = false, Some(LaajuusOsaamispisteissä(3))),
+                arviointi = Some(List(arviointiKiitettävä)),
+                tunnustettu = Some(tunnustettu),
+                korotettu = Some(korotettu)
+              ),
+              YhteisenTutkinnonOsanOsaAlueenSuoritus(
+                koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("FK", "ammatillisenoppiaineet"), pakollinen = true, Some(LaajuusOsaamispisteissä(2))),
+                arviointi = Some(List(arviointiKiitettävä)),
+                tunnustettu = Some(tunnustettu)
+              ),
+              YhteisenTutkinnonOsanOsaAlueenSuoritus(
+                koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("FK", "ammatillisenoppiaineet"), pakollinen = false, Some(LaajuusOsaamispisteissä(3))),
+                arviointi = Some(List(arviointiKiitettävä)),
+                tunnustettu = Some(tunnustettu)
+              ),
+              YhteisenTutkinnonOsanOsaAlueenSuoritus(
+                koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("TVT", "ammatillisenoppiaineet"), pakollinen = true, Some(LaajuusOsaamispisteissä(1))),
+                arviointi = Some(List(arviointiKiitettävä.copy(päivä = date(2015, 1, 1)))),
+                alkamispäivä = Some(date(2014, 1, 1)),
+                tunnustettu = Some(tunnustettu),
+                lisätiedot = Some(List(lisätietoOsaamistavoitteet))
+              )
+            )
+            )
           )
           val korotettuSuoritusVääräLaajuus = ammatillisenTutkinnonOsittainenSuoritus.copy(
             korotettuOpiskeluoikeusOid = alkuperäinen.oid,

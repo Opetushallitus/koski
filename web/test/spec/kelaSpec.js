@@ -85,6 +85,8 @@ describe('Kela', function () {
     var osasuorituksenSisältö =
       'Osasuoritukset Laajuus (osaamispistettä) Arviointipäivä Hyväksytty\n' +
       'Matematiikka 3 20.10.2014 kyllä\n' +
+      'Matematiikka 3 20.10.2014 kyllä\n' +
+      'Fysiikka ja kemia 2 20.10.2014 kyllä\n' +
       'Fysiikka ja kemia 3 20.10.2014 kyllä\n'
 
     describe('Osasuorituksen osasuoritukset on valmiiksi auki', function () {

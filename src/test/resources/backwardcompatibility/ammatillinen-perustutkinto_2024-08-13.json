@@ -37,7 +37,7 @@
           "koodistoUri" : "opintojenrahoitus"
         }
       }, {
-        "alku" : "2016-05-31",
+        "alku" : "2016-08-31",
         "tila" : {
           "koodiarvo" : "valmistunut",
           "nimi" : {
@@ -97,7 +97,7 @@
         }
       },
       "vahvistus" : {
-        "päivä" : "2016-05-31",
+        "päivä" : "2016-08-31",
         "paikkakunta" : {
           "koodiarvo" : "091",
           "nimi" : {
@@ -1379,7 +1379,7 @@
           },
           "pakollinen" : true,
           "laajuus" : {
-            "arvo" : 9.0,
+            "arvo" : 12.0,
             "yksikkö" : {
               "koodiarvo" : "6",
               "nimi" : {
@@ -1503,10 +1503,95 @@
         }, {
           "koulutusmoduuli" : {
             "tunniste" : {
+              "koodiarvo" : "MA",
+              "nimi" : {
+                "fi" : "Matematiikka"
+              }
+            },
+            "kuvaus" : {
+              "fi" : "Matematiikan opinnot"
+            },
+            "pakollinen" : false,
+            "laajuus" : {
+              "arvo" : 3.0,
+              "yksikkö" : {
+                "koodiarvo" : "6",
+                "nimi" : {
+                  "fi" : "osaamispistettä",
+                  "sv" : "kompetenspoäng",
+                  "en" : "ECVET competence points"
+                },
+                "lyhytNimi" : {
+                  "fi" : "osp",
+                  "sv" : "kp",
+                  "en" : "competence points"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "3",
+              "nimi" : {
+                "fi" : "K3"
+              },
+              "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+            },
+            "päivä" : "2014-10-20",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ammatillisentutkinnonosanosaalue",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
               "koodiarvo" : "FK",
               "koodistoUri" : "ammatillisenoppiaineet"
             },
             "pakollinen" : true,
+            "laajuus" : {
+              "arvo" : 2.0,
+              "yksikkö" : {
+                "koodiarvo" : "6",
+                "nimi" : {
+                  "fi" : "osaamispistettä",
+                  "sv" : "kompetenspoäng",
+                  "en" : "ECVET competence points"
+                },
+                "lyhytNimi" : {
+                  "fi" : "osp",
+                  "sv" : "kp",
+                  "en" : "competence points"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "3",
+              "nimi" : {
+                "fi" : "K3"
+              },
+              "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+            },
+            "päivä" : "2014-10-20",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ammatillisentutkinnonosanosaalue",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "FK",
+              "koodistoUri" : "ammatillisenoppiaineet"
+            },
+            "pakollinen" : false,
             "laajuus" : {
               "arvo" : 3.0,
               "yksikkö" : {
@@ -1548,7 +1633,7 @@
             },
             "pakollinen" : true,
             "laajuus" : {
-              "arvo" : 3.0,
+              "arvo" : 1.0,
               "yksikkö" : {
                 "koodiarvo" : "6",
                 "nimi" : {
@@ -2054,7 +2139,6 @@
       "koodistoUri" : "opiskeluoikeudentyyppi"
     },
     "alkamispäivä" : "2012-09-01",
-    "päättymispäivä" : "2016-05-31"
-  } ],
-  "ignoreKoskiValidator" : true
+    "päättymispäivä" : "2016-08-31"
+  } ]
 }

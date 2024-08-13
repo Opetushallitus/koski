@@ -665,8 +665,7 @@ describe('Ammatillinen koulutus', function () {
               'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
               'Avaa kaikki\n' +
               'Osa-alue Laajuus (osp) Arvosana\n' +
-              'Äidinkieli, Suomen kieli ja kirjallisuus 5 5\n' +
-              'Äidinkieli, Suomen kieli ja kirjallisuus 3 5\n' +
+              'Viestintä ja vuorovaikutus äidinkielellä, suomi, suomi 4 5\n' +
               'Yhteensä 0 / 35 osp'
           )
         })
@@ -1848,18 +1847,19 @@ describe('Ammatillinen koulutus', function () {
                 describe('Lisäyksen jälkeen', function () {
                   var tutkinnonOsienOsat = opinnot.tutkinnonOsat('999999')
                   before(
-                    tutkinnonOsienOsat.lisääTutkinnonOsa('Äidinkieli'),
-                    tutkinnonOsienOsat
+                    tutkinnonOsienOsat.lisääTutkinnonOsa('MA Matematiikka'),
+                    opinnot
+                      .tutkinnonOsat('999999')
                       .tutkinnonOsa(0)
-                      .propertyBySelector('.kieli')
-                      .selectValue('Ruotsi saamenkielisille'),
+                      .property('laajuus')
+                      .setValue('3'),
                     editor.saveChanges,
                     opinnot.avaaKaikki
                   )
                   it('lisätty osa näytetään', function () {
                     expect(
                       opinnot.tutkinnonOsat('999999').tutkinnonOsa(0).nimi()
-                    ).to.equal('Äidinkieli, Ruotsi saamenkielisille')
+                    ).to.equal('Matematiikka')
                   })
 
                   describe('Paikallinen tutkinnon osan osa-alue', function () {
@@ -2783,7 +2783,7 @@ describe('Ammatillinen koulutus', function () {
               'Pakollinen kyllä\n' +
               'Arviointi Arvosana 3\n' +
               'Arviointipäivä 20.10.2014\n' +
-              'Matemaattis-luonnontieteellinen osaaminen 9 3\n' +
+              'Matemaattis-luonnontieteellinen osaaminen 12 3\n' +
               'Pakollinen kyllä\n' +
               'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
               'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
@@ -2799,18 +2799,28 @@ describe('Ammatillinen koulutus', function () {
               'Pakollinen kyllä\n' +
               'Arviointi Arvosana 3\n' +
               'Arviointipäivä 20.10.2014\n' +
-              'Fysiikka ja kemia 3 3\n' +
+              'Matematiikka 3 3\n' +
+              'Kuvaus Matematiikan opinnot\n' +
+              'Pakollinen ei\n' +
+              'Arviointi Arvosana 3\n' +
+              'Arviointipäivä 20.10.2014\n' +
+              'Fysiikka ja kemia 2 3\n' +
               'Pakollinen kyllä\n' +
               'Arviointi Arvosana 3\n' +
               'Arviointipäivä 20.10.2014\n' +
-              'Tieto- ja viestintätekniikka sekä sen hyödyntäminen 3 3\n' +
+              'Fysiikka ja kemia 3 3\n' +
+              'Pakollinen ei\n' +
+              'Arviointi Arvosana 3\n' +
+              'Arviointipäivä 20.10.2014\n' +
+              'Tieto- ja viestintätekniikka sekä sen hyödyntäminen 1 3\n' +
               'Pakollinen kyllä\n' +
               'Alkamispäivä 1.1.2014\n' +
               'Tunnustettu\n' +
               'Tutkinnon osa Asennushitsaus\n' +
               'Selite Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta\n' +
               'Rahoituksen piirissä ei\n' +
-              'Lisätiedot Osaamisen arvioinnin mukauttaminen\n' +
+              'Lisätiedot\n' +
+              'Osaamisen arvioinnin mukauttaminen\n' +
               'Tutkinnon osan ammattitaitovaatimuksia tai osaamistavoitteita ja osaamisen arviointia on mukautettu ammatillisesta peruskoulutuksesta annetun lain (630/1998, muutos 246/2015) 19 a tai 21 §:n perusteella\n' +
               'Arviointi Arvosana 3\n' +
               'Arviointipäivä 1.1.2015\n' +
@@ -2840,7 +2850,7 @@ describe('Ammatillinen koulutus', function () {
               'Pakollinen kyllä\n' +
               'Arviointi Arvosana 3\n' +
               'Arviointipäivä 20.10.2014\n' +
-              'Yhteensä 35 / 35 osp\n' +
+              'Yhteensä 38 / 35 osp\n' +
               'Vapaasti valittavat tutkinnon osat Laajuus (osp) Arvosana\n' +
               'Sosiaalinen ja kulttuurinen osaaminen 5 3\n' +
               'Kuvaus Sosiaalinen ja kulttuurinen osaaminen\n' +

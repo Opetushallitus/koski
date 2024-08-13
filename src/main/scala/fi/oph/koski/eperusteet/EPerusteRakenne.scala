@@ -222,6 +222,7 @@ case class EOsaAlue(
   nimi: Map[String, String],
   koodiArvo: Option[String],
   kielikoodi: Option[EKielikoodi],
+  osaamistavoitteet: Option[List[EOsaamistavoite]],
   pakollisetOsaamistavoitteet: Option[EOsaamistavoite],
   valinnaisetOsaamistavoitteet: Option[EOsaamistavoite]
 )
