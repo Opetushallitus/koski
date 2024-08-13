@@ -178,6 +178,23 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
                 })
             }
 
+            "Sallitaan paikallinen osa-alue" - {
+              val suoritus = ajoneuvoalanPerustutkinnonSuoritus().copy(
+                osasuoritukset = Some(List(
+                  yhteisenTutkinnonOsanSuoritus("106727", "Viestintä- ja vuorovaikutusosaaminen", k3, 5).copy(
+                    osasuoritukset = Some(List(
+                      YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = PaikallinenAmmatillisenTutkinnonOsanOsaAlue(PaikallinenKoodi("paikallinen", "paikallinen"), "paikallinen", pakollinen = true, Some(LaajuusOsaamispisteissä(5)))),
+                    )),
+                    arviointi = None,
+                    vahvistus = None,
+                  )))
+              )
+              "Palautetaan HTTP 200" in (
+                setupOppijaWithOpiskeluoikeus(henkilö = KoskiSpecificMockOppijat.tyhjä, opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(suoritus))) {
+                  verifyResponseStatusOk()
+                })
+            }
+
             "Osa-alueella ei osasuorituksia, suoritustapa reformi" - {
               val yhtSuoritus = yhteisenTutkinnonOsanSuoritus("400012", "Viestintä- ja vuorovaikutusosaaminen", k3, 35).copy(
                 osasuoritukset = Some(List())
