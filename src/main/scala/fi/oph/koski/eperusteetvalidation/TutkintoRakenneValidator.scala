@@ -4,6 +4,7 @@ import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema._
+import fi.oph.koski.schema
 import fi.oph.koski.tutkinto.Koulutustyyppi._
 import fi.oph.koski.tutkinto.{Koulutustyyppi, _}
 
@@ -298,7 +299,7 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
                 KoskiErrorCategory.badRequest.validation.rakenne.tuntematonTutkinnonOsa(
                   s"Tutkinnon osa ${osa.tunniste} ei löydy tutkintorakenteesta opiskeluoikeuden voimassaoloaikana voimassaolleelle perusteelle ${rakenne.diaarinumero} (${rakenne.id}) - suoritustapa ${suoritustapaJaRakenne.suoritustapa.koodiarvo}")
               case Some(tutkinnonOsa) =>
-                HttpStatus.ok
+                validateLaajuusJaOsaAlueet(suoritus, tutkinnonOsa)
             }
         }
       case None =>
@@ -319,6 +320,47 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
   private def findOsaamisala(rakenne: TutkintoRakenne, osaamisAlaKoodi: String) = rakenne.osaamisalat.find(_.koodiarvo == osaamisAlaKoodi)
 
   private def findTutkintonimike(rakenne: TutkintoRakenne, tutkintonimikeKoodi: String) = rakenne.tutkintonimikkeet.find(_.koodiarvo == tutkintonimikeKoodi)
+
+  private def validateLaajuusJaOsaAlueet(suoritus: AmmatillisenTutkinnonOsanSuoritus, tutkinnonOsa: TutkinnonOsa): HttpStatus = {
+
+    val osaStatus = tutkinnonOsa.laajuus match {
+      case Some(perusteenLaajuus) if suoritus.arvioitu && suoritus.koulutusmoduuli.laajuus.exists(_.arvo < perusteenLaajuus) =>
+        KoskiErrorCategory.badRequest.validation.laajuudet.suorituksenLaajuusEiVastaaRakennetta(
+          s"Arvioidun suorituksen '${suoritus.koulutusmoduuli.nimi.get("fi")}' laajuus oltava perusteen mukaan vähintään ${perusteenLaajuus}"
+        )
+      case _ => HttpStatus.ok
+    }
+
+    val osaAlueStatuses = suoritus.osasuoritusLista.map(osaAlueSuoritus => tutkinnonOsa.osaAlueet.find(perusteOsaAlue =>
+        osaAlueSuoritus.koulutusmoduuli.tunniste.koodiarvo == perusteOsaAlue.koodiarvo)
+      .map(perusteOsaAlue => {
+        val kieliStr = osaAlueSuoritus.koulutusmoduuli match {
+          case k: Kieliaine => k.kieli.nimi.map(_.get("fi")).map(str => s", $str").getOrElse("")
+          case _ => ""
+        }
+        osaAlueSuoritus.koulutusmoduuli match {
+          case mod: Valinnaisuus => mod.pakollinen match {
+            case true if perusteOsaAlue.pakollisenOsanLaajuus.isDefined && mod.getLaajuus.map(_.arvo) != perusteOsaAlue.pakollisenOsanLaajuus =>
+              KoskiErrorCategory.badRequest.validation.laajuudet.suorituksenLaajuusEiVastaaRakennetta(
+                s"Osa-alueen '${mod.nimi.get("fi")}${kieliStr}' (${osaAlueSuoritus.koulutusmoduuli.tunniste.koodiarvo}) pakollisen osan laajuus oltava perusteen mukaan ${perusteOsaAlue.pakollisenOsanLaajuus.get}"
+              )
+            case false if perusteOsaAlue.valinnaisenOsanLaajuus.isDefined && mod.getLaajuus.map(_.arvo) != perusteOsaAlue.valinnaisenOsanLaajuus =>
+              KoskiErrorCategory.badRequest.validation.laajuudet.suorituksenLaajuusEiVastaaRakennetta(
+                s"Osa-alueen '${mod.nimi.get("fi")}${kieliStr}' (${osaAlueSuoritus.koulutusmoduuli.tunniste.koodiarvo}) valinnaisen osan laajuus oltava perusteen mukaan ${perusteOsaAlue.valinnaisenOsanLaajuus.get}"
+              )
+            case _ => HttpStatus.ok
+          }
+          case _ => HttpStatus.ok
+        }
+      }).getOrElse(
+        osaAlueSuoritus.koulutusmoduuli.tunniste match {
+          case _ if tutkinnonOsa.osaAlueet.isEmpty => HttpStatus.ok // Jos osa-alueita ei ole parsittu vanhan mallisesta perusteesta (ennen "OSAALUE2020") niin skipataan tämä validaatio.
+          case t: Koodistokoodiviite if t.koodistoUri == "ammatillisenoppiaineet" => KoskiErrorCategory.badRequest.validation.rakenne(s"Osa-alue '${osaAlueSuoritus.koulutusmoduuli.nimi.get("fi")}' (${osaAlueSuoritus.koulutusmoduuli.tunniste.koodiarvo}) ei kuulu perusteen mukaan tutkinnon osaan '${tutkinnonOsa.nimi.get("fi")}'")
+          case _ => HttpStatus.ok // mm. paikalliset tutkinnon osat
+        }
+      ))
+      HttpStatus.fold(List(osaStatus) ++ osaAlueStatuses)
+  }
 
   private def validateLukio2019Diaarinumero(s: LukionPäätasonSuoritus2019) = {
     val diaarinumerorajaus = s.oppimäärä.koodiarvo match {

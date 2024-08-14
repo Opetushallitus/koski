@@ -36,7 +36,9 @@ case class RakenneModuuli(nimi: LocalizedString, osat: List[RakenneOsa], määri
 
   override def sisältääMäärittelemättömiäOsia: Boolean = määrittelemätön || osat.exists(_.sisältääMäärittelemättömiäOsia)
 }
-case class TutkinnonOsa(tunniste: Koodistokoodiviite, nimi: LocalizedString) extends RakenneOsa {
+case class TutkinnonOsa(tunniste: Koodistokoodiviite, nimi: LocalizedString, laajuus: Option[Long], osaAlueet: List[TutkinnonOsanOsaAlue]) extends RakenneOsa {
   override def tutkinnonOsat: List[TutkinnonOsa] = List(this)
   override def sisältääMäärittelemättömiäOsia: Boolean = false
 }
+
+case class TutkinnonOsanOsaAlue(id: Long, nimi: LocalizedString, koodiarvo: String, kieliKoodiarvo: Option[String], pakollisenOsanLaajuus: Option[Long], valinnaisenOsanLaajuus: Option[Long])

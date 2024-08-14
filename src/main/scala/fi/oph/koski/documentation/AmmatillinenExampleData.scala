@@ -811,7 +811,7 @@ object AmmatillinenExampleData {
       vahvistus = vahvistus(date(2016, 1, 1), stadinAmmattiopisto, Some(helsinki)),
       keskiarvo = Some(4.0),
       osasuoritukset = Some(List(
-        pakollinenTutkinnonOsanSuoritus("100832", "Kasvun tukeminen ja ohjaus", ammatillisetTutkinnonOsat, hylätty, 2).copy(
+        pakollinenTutkinnonOsanSuoritus("100832", "Kasvun tukeminen ja ohjaus", ammatillisetTutkinnonOsat, hylätty, 20).copy(
           arviointi = Some(List(
             AmmatillinenArviointi(arvosana = hylätty, date(2015, 1, 1)),
             AmmatillinenArviointi(arvosana = hyväksytty, date(2016, 1, 1))
@@ -824,7 +824,7 @@ object AmmatillinenExampleData {
             näyttö(date(2016, 1, 1), "Muksulan päiväkodin ympäristövaikutusten arvioiminen ja ympäristön kunnostustöiden\ntekeminen sekä mittauksien tekeminen ja näytteiden ottaminen", "Muksulan päiväkoti, Kaarinan kunta", Some(näytönArviointi))
           )
         ),
-        tutkinnonOsanSuoritus("100833", "Hoito ja huolenpito", ammatillisetTutkinnonOsat, hylätty, laajuus = Some(2.0f), pakollinen = false).copy(
+        tutkinnonOsanSuoritus("100833", "Hoito ja huolenpito", ammatillisetTutkinnonOsat, hylätty, laajuus = Some(30), pakollinen = false).copy(
           arviointi = Some(List(
             AmmatillinenArviointi(arvosana = hylätty, date(2015, 1, 1)),
             AmmatillinenArviointi(arvosana = hyväksytty, date(2016, 1, 1))
@@ -845,9 +845,10 @@ object AmmatillinenExampleData {
           )),
           vahvistus = vahvistusValinnaisellaTittelillä(date(2016, 1, 1), stadinAmmattiopisto)
         ),
-        yhteisenTutkinnonOsanSuoritus("101053", "Viestintä- ja vuorovaikutusosaaminen", k3, 10).copy(
+        yhteisenTutkinnonOsanSuoritus("101053", "Viestintä- ja vuorovaikutusosaaminen", k3, 11).copy(
           osasuoritukset = Some(List(
-            YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonÄidinkieli(Koodistokoodiviite("AI", "ammatillisenoppiaineet"),
+            YhteisenTutkinnonOsanOsaAlueenSuoritus(
+              koulutusmoduuli = AmmatillisenTutkinnonÄidinkieli(Koodistokoodiviite("AI", "ammatillisenoppiaineet"),
               pakollinen = true,
               kieli = Koodistokoodiviite("AI1", "oppiaineaidinkielijakirjallisuus"),
               laajuus = Some(LaajuusOsaamispisteissä(5))),
@@ -855,10 +856,35 @@ object AmmatillinenExampleData {
                 AmmatillinenArviointi(arvosana = hylätty, date(2015, 1, 1)),
                 AmmatillinenArviointi(arvosana = hyväksytty, date(2016, 1, 1))
               ))),
-            YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonÄidinkieli(Koodistokoodiviite("AI", "ammatillisenoppiaineet"),
+            YhteisenTutkinnonOsanOsaAlueenSuoritus(
+              koulutusmoduuli = AmmatillisenTutkinnonÄidinkieli(Koodistokoodiviite("AI", "ammatillisenoppiaineet"),
               pakollinen = false,
               kieli = Koodistokoodiviite("AI1", "oppiaineaidinkielijakirjallisuus"),
-              laajuus = Some(LaajuusOsaamispisteissä(5))),
+              laajuus = Some(LaajuusOsaamispisteissä(3))),
+              arviointi = Some(List(
+                AmmatillinenArviointi(arvosana = hylätty, date(2015, 1, 1)),
+                AmmatillinenArviointi(arvosana = hyväksytty, date(2016, 1, 1))
+              )),
+              tunnustettu = Some(tunnustettu.copy(
+                rahoituksenPiirissä = true
+              ))),
+            YhteisenTutkinnonOsanOsaAlueenSuoritus(
+              koulutusmoduuli = AmmatillisenTutkinnonVierasTaiToinenKotimainenKieli(Koodistokoodiviite("TK1", "ammatillisenoppiaineet"),
+                pakollinen = true,
+                kieli = Koodistokoodiviite("SV", "kielivalikoima"),
+                laajuus = Some(LaajuusOsaamispisteissä(1))),
+              arviointi = Some(List(
+                AmmatillinenArviointi(arvosana = hylätty, date(2015, 1, 1)),
+                AmmatillinenArviointi(arvosana = hyväksytty, date(2016, 1, 1))
+              )),
+              tunnustettu = Some(tunnustettu.copy(
+                rahoituksenPiirissä = true
+              ))),
+            YhteisenTutkinnonOsanOsaAlueenSuoritus(
+              koulutusmoduuli = AmmatillisenTutkinnonVierasTaiToinenKotimainenKieli(Koodistokoodiviite("VK", "ammatillisenoppiaineet"),
+                pakollinen = true,
+                kieli = Koodistokoodiviite("EN", "kielivalikoima"),
+                laajuus = Some(LaajuusOsaamispisteissä(2))),
               arviointi = Some(List(
                 AmmatillinenArviointi(arvosana = hylätty, date(2015, 1, 1)),
                 AmmatillinenArviointi(arvosana = hyväksytty, date(2016, 1, 1))

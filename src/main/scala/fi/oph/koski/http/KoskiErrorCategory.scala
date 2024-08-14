@@ -198,6 +198,7 @@ object KoskiErrorCategory {
         val oppiaineenLaajuusLiianSuppea = subcategory("oppiaineenLaajuusLiianSuppea", "Oppiaineen laajuus liian suppea")
         val taiteenPerusopetuksenLaajuus = subcategory("taiteenPerusopetuksenLaajuus", "Taiteen perusopetuksen suorituksen laajuus on liian pieni")
         val perusopetukseenValmistavaOpetusKokonaislaajuusYksikköEiTunneissa = subcategory("perusopetukseenValmistavaOpetusKokonaislaajuusYksikköEiTunneissa", "Peruskoulutukseen valmistavan opetuksen kokonaislaajuus yksikkö on oltava tunneissa")
+        val suorituksenLaajuusEiVastaaRakennetta = subcategory("suorituksenLaajuusEiVastaaRakennetta", "Suorituksen laajuus ei vastaa rakennetta")
       }
       val laajuudet = new Laajuudet
 

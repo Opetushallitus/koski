@@ -147,6 +147,54 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
                 )
             }
 
+            "Arvioidun osan laajuus ei perusteen mukainen" - {
+              "Palautetaan HTTP 400" in (
+                setupTutkinnonOsaSuoritus(yhtTutkinnonOsanSuoritus.copy(
+                  koulutusmoduuli = yhtTutkinnonOsanSuoritus.koulutusmoduuli.copy(laajuus = Some(LaajuusOsaamispisteissä(10)))
+                ), tutkinnonSuoritustapaOps)(
+                  verifyResponseStatus(400,
+                    KoskiErrorCategory.badRequest.validation.laajuudet.suorituksenLaajuusEiVastaaRakennetta
+                    ("Arvioidun suorituksen 'Viestintä- ja vuorovaikutusosaaminen' laajuus oltava perusteen mukaan vähintään 11")))
+                )
+            }
+
+            "Osa-alue ei kuulu osaan" - {
+              val suoritus = ajoneuvoalanPerustutkinnonSuoritus().copy(
+                osasuoritukset = Some(List(
+                  yhteisenTutkinnonOsanSuoritus("106727", "Viestintä- ja vuorovaikutusosaaminen", k3, 3).copy(
+                    osasuoritukset = Some(List(
+                      YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("MLMA", "ammatillisenoppiaineet"), pakollinen = true, Some(LaajuusOsaamispisteissä(4)))),
+                    )),
+                    arviointi = None,
+                    vahvistus = None,
+                  )))
+              )
+              "Palautetaan HTTP 400" in (
+                setupOppijaWithOpiskeluoikeus(henkilö = KoskiSpecificMockOppijat.tyhjä, opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(suoritus))) {
+                  verifyResponseStatus(400,
+                    KoskiErrorCategory.badRequest.validation.rakenne(
+                      "Osa-alue 'Matematiikka ja matematiikan soveltaminen' (MLMA) ei kuulu perusteen mukaan tutkinnon osaan 'Viestintä- ja vuorovaikutusosaaminen'")
+                  )
+                })
+            }
+
+            "Sallitaan paikallinen osa-alue" - {
+              val suoritus = ajoneuvoalanPerustutkinnonSuoritus().copy(
+                osasuoritukset = Some(List(
+                  yhteisenTutkinnonOsanSuoritus("106727", "Viestintä- ja vuorovaikutusosaaminen", k3, 5).copy(
+                    osasuoritukset = Some(List(
+                      YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = PaikallinenAmmatillisenTutkinnonOsanOsaAlue(PaikallinenKoodi("paikallinen", "paikallinen"), "paikallinen", pakollinen = true, Some(LaajuusOsaamispisteissä(5)))),
+                    )),
+                    arviointi = None,
+                    vahvistus = None,
+                  )))
+              )
+              "Palautetaan HTTP 200" in (
+                setupOppijaWithOpiskeluoikeus(henkilö = KoskiSpecificMockOppijat.tyhjä, opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(suoritus))) {
+                  verifyResponseStatusOk()
+                })
+            }
+
             "Osa-alueella ei osasuorituksia, suoritustapa reformi" - {
               val yhtSuoritus = yhteisenTutkinnonOsanSuoritus("400012", "Viestintä- ja vuorovaikutusosaaminen", k3, 35).copy(
                 osasuoritukset = Some(List())
@@ -173,12 +221,61 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
                 ))
             }
 
+
+            "Osa-alueen laajuus ei perusteen mukainen, VVAI22 pakollinen + valinnainen" - {
+              val suoritus = ajoneuvoalanPerustutkinnonSuoritus().copy(
+                osasuoritukset = Some(List(
+                  yhteisenTutkinnonOsanSuoritus("106727", "Viestintä- ja vuorovaikutusosaaminen", k3, 3).copy(
+                    osasuoritukset = Some(List(
+                      YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonViestintäJaVuorovaikutusKielivalinnalla(Koodistokoodiviite("VVAI22", "ammatillisenoppiaineet"), Koodistokoodiviite("EN", "kielivalikoima"), pakollinen = true, Some(LaajuusOsaamispisteissä(3))), arviointi = Some(List(arviointiKiitettävä))),
+                      YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonViestintäJaVuorovaikutusKielivalinnalla(Koodistokoodiviite("VVAI22", "ammatillisenoppiaineet"), Koodistokoodiviite("EN", "kielivalikoima"), pakollinen = false, Some(LaajuusOsaamispisteissä(2))), arviointi = Some(List(arviointiKiitettävä)))
+                    )),
+                    arviointi = None,
+                    vahvistus = None,
+                  )))
+              )
+              "Palautetaan HTTP 400" in (
+                setupOppijaWithOpiskeluoikeus(henkilö = KoskiSpecificMockOppijat.tyhjä, opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(suoritus))) {
+                  verifyResponseStatus(400, List(
+                    ErrorMatcher.exact(
+                      KoskiErrorCategory.badRequest.validation.laajuudet.suorituksenLaajuusEiVastaaRakennetta,
+                      "Osa-alueen 'Viestintä ja vuorovaikutus äidinkielellä, englanti' (VVAI22) pakollisen osan laajuus oltava perusteen mukaan 4"),
+                    ErrorMatcher.exact(
+                      KoskiErrorCategory.badRequest.validation.laajuudet.suorituksenLaajuusEiVastaaRakennetta,
+                      "Osa-alueen 'Viestintä ja vuorovaikutus äidinkielellä, englanti' (VVAI22) valinnaisen osan laajuus oltava perusteen mukaan 3")
+                  ))
+                })
+            }
+
+            "Osa-alueen laajuus ei perusteen mukainen, MLMA" - {
+              val suoritus = ajoneuvoalanPerustutkinnonSuoritus().copy(
+                osasuoritukset = Some(List(
+                  yhteisenTutkinnonOsanSuoritus("106728", "Matemaattis-luonnontieteellinen osaaminen", k3, 3).copy(
+                    osasuoritukset = Some(List(
+                      YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("MLMA", "ammatillisenoppiaineet"), pakollinen = true, Some(LaajuusOsaamispisteissä(5)))),
+                    )),
+                    arviointi = None,
+                    vahvistus = None,
+                  )))
+              )
+              "Palautetaan HTTP 400" in (
+                setupOppijaWithOpiskeluoikeus(henkilö = KoskiSpecificMockOppijat.tyhjä, opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(suoritus))) {
+                  verifyResponseStatus(400,
+                    KoskiErrorCategory.badRequest.validation.laajuudet.suorituksenLaajuusEiVastaaRakennetta(
+                      "Osa-alueen 'Matematiikka ja matematiikan soveltaminen' (MLMA) pakollisen osan laajuus oltava perusteen mukaan 4")
+                  )
+                })
+            }
+
             "Osa-alueiden yhteenlaskettu laajuus" - {
               "On alle 35" - {
-                val yhtSuoritus = yhteisenTutkinnonOsanSuoritus("400012", "Viestintä- ja vuorovaikutusosaaminen", k3, 8).copy(
+                val yhtSuoritus = yhteisenTutkinnonOsanSuoritus("400012", "Viestintä- ja vuorovaikutusosaaminen", k3, 11).copy(
                   osasuoritukset = Some(List(
-                    YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonÄidinkieli(Koodistokoodiviite("AI", "ammatillisenoppiaineet"), pakollinen = true, kieli = Koodistokoodiviite("AI1", "oppiaineaidinkielijakirjallisuus"), laajuus = Some(LaajuusOsaamispisteissä(5))), arviointi = Some(List(arviointiKiitettävä))),
-                    YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonÄidinkieli(Koodistokoodiviite("AI", "ammatillisenoppiaineet"), pakollinen = false, kieli = Koodistokoodiviite("AI1", "oppiaineaidinkielijakirjallisuus"), laajuus = Some(LaajuusOsaamispisteissä(3))), arviointi = Some(List(arviointiKiitettävä))),
+                    YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonViestintäJaVuorovaikutusKielivalinnalla(Koodistokoodiviite("VVAI", "ammatillisenoppiaineet"), pakollinen = true, kieli = Koodistokoodiviite("FI", "kielivalikoima"), laajuus = Some(LaajuusOsaamispisteissä(4))), arviointi = Some(List(arviointiKiitettävä))),
+                    YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonViestintäJaVuorovaikutusKielivalinnalla(Koodistokoodiviite("VVTK", "ammatillisenoppiaineet"), pakollinen = true, kieli = Koodistokoodiviite("SV", "kielivalikoima"), laajuus = Some(LaajuusOsaamispisteissä(1))), arviointi = Some(List(arviointiKiitettävä))),
+                    YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonViestintäJaVuorovaikutusKielivalinnalla(Koodistokoodiviite("VVVK", "ammatillisenoppiaineet"), pakollinen = true, kieli = Koodistokoodiviite("EN", "kielivalikoima"), laajuus = Some(LaajuusOsaamispisteissä(3))), arviointi = Some(List(arviointiKiitettävä))),
+                    YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("VVTD", "ammatillisenoppiaineet"), pakollinen = true, laajuus = Some(LaajuusOsaamispisteissä(2))), arviointi = Some(List(arviointiKiitettävä))),
+                    YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("VVTL", "ammatillisenoppiaineet"), pakollinen = true, laajuus = Some(LaajuusOsaamispisteissä(1))), arviointi = Some(List(arviointiKiitettävä))),
                   ))
                 )
                 val reformiSuoritus = puuteollisuudenPerustutkinnonSuoritus().copy(suoritustapa = suoritustapaReformi,
@@ -196,11 +293,15 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
               "On 35" - {
                 val yhtSuoritukset = List(
                   yhteisenTutkinnonOsanSuoritus("400012", "Viestintä- ja vuorovaikutusosaaminen", k3, 5).copy(
+                    vahvistus = None,
+                    arviointi = None,
                     osasuoritukset = Some(List(
-                      YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonÄidinkieli(Koodistokoodiviite("AI", "ammatillisenoppiaineet"), pakollinen = true, kieli = Koodistokoodiviite("AI1", "oppiaineaidinkielijakirjallisuus"), laajuus = Some(LaajuusOsaamispisteissä(5))), arviointi = Some(List(arviointiKiitettävä))),
+                      YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonViestintäJaVuorovaikutusKielivalinnalla(Koodistokoodiviite("VVAI", "ammatillisenoppiaineet"), pakollinen = true, kieli = Koodistokoodiviite("FI", "kielivalikoima"), laajuus = Some(LaajuusOsaamispisteissä(5))), arviointi = Some(List(arviointiKiitettävä))),
                     ))
                   ),
                   yhteisenTutkinnonOsanSuoritus("400013", "Matemaattis-luonnontieteellinen osaaminen", k3, 30).copy(
+                    vahvistus = None,
+                    arviointi = None,
                     osasuoritukset = Some(List(
                       YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = PaikallinenAmmatillisenTutkinnonOsanOsaAlue(PaikallinenKoodi("MA", "Matematiikka"), "Matematiikan opinnot", pakollinen = true, Some(LaajuusOsaamispisteissä(30))), arviointi = Some(List(arviointiKiitettävä))),
                     ))
@@ -209,8 +310,8 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
                   osasuoritukset = Some(yhtSuoritukset))
                 val suoritus = reformiSuoritus.copy(
                   osaamisenHankkimistavat = Some(List(OsaamisenHankkimistapajakso(date(2018, 1, 1), None, osaamisenHankkimistapaOppilaitos))),
-                  vahvistus = vahvistus(date(2018, 1, 1)),
-                  keskiarvo = Some(4.0)
+                  vahvistus = None,
+                  keskiarvo = None
                 )
                 "Palautetaan HTTP 200" in (
                   setupTutkintoSuoritus(suoritus)(verifyResponseStatusOk())
@@ -1289,7 +1390,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
 
   lazy val laajuus = LaajuusOsaamispisteissä(11)
 
-  lazy val tutkinnonOsa: MuuValtakunnallinenTutkinnonOsa = MuuValtakunnallinenTutkinnonOsa(Koodistokoodiviite("100023", "tutkinnonosat"), true, Some(laajuus))
+  lazy val tutkinnonOsa: MuuValtakunnallinenTutkinnonOsa = MuuValtakunnallinenTutkinnonOsa(Koodistokoodiviite("100023", "tutkinnonosat"), true, Some(LaajuusOsaamispisteissä(30)))
   lazy val yhteinenTutkinnonOsa: YhteinenTutkinnonOsa = YhteinenTutkinnonOsa(Koodistokoodiviite("100023", "tutkinnonosat"), true, Some(laajuus))
 
   lazy val tutkinnonSuoritustapaNäyttönä = Koodistokoodiviite("naytto", "ammatillisentutkinnonsuoritustapa")
@@ -1314,11 +1415,12 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
     arviointi = arviointiHyvä(),
   )
 
-  def yhtTutkinnonOsanSuoritusVVAI22(koodiArvo: String = "101053") = yhteisenTutkinnonOsanSuoritus(koodiArvo, "Viestintä- ja vuorovaikutusosaaminen", k3, 2).copy(
+  def yhtTutkinnonOsanSuoritusVVAI22(koodiArvo: String = "101053") = yhteisenTutkinnonOsanSuoritus(koodiArvo, "Viestintä- ja vuorovaikutusosaaminen", k3, 4).copy(
     osasuoritukset = Some(List(
-      YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonViestintäJaVuorovaikutusKielivalinnalla(Koodistokoodiviite("VVAI22", "ammatillisenoppiaineet"), Koodistokoodiviite("EN", "kielivalikoima"), pakollinen = true, Some(LaajuusOsaamispisteissä(2))), arviointi = Some(List(arviointiKiitettävä)))
+      YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonViestintäJaVuorovaikutusKielivalinnalla(Koodistokoodiviite("VVAI22", "ammatillisenoppiaineet"), Koodistokoodiviite("EN", "kielivalikoima"), pakollinen = true, Some(LaajuusOsaamispisteissä(4))), arviointi = Some(List(arviointiKiitettävä)))
     )),
-    arviointi = arviointiHyvä(),
+    vahvistus = None,
+    arviointi = None,
   )
 
   lazy val paikallinenTutkinnonOsa = PaikallinenTutkinnonOsa(

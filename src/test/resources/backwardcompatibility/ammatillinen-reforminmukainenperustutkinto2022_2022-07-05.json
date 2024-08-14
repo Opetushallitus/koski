@@ -496,7 +496,7 @@
           },
           "pakollinen" : true,
           "laajuus" : {
-            "arvo" : 8.0,
+            "arvo" : 7.0,
             "yksikkö" : {
               "koodiarvo" : "6",
               "nimi" : {
@@ -526,16 +526,16 @@
         "osasuoritukset" : [ {
           "koulutusmoduuli" : {
             "tunniste" : {
-              "koodiarvo" : "AI",
+              "koodiarvo" : "VVAI22",
               "koodistoUri" : "ammatillisenoppiaineet"
             },
             "kieli" : {
-              "koodiarvo" : "AI1",
-              "koodistoUri" : "oppiaineaidinkielijakirjallisuus"
+              "koodiarvo" : "FI",
+              "koodistoUri" : "kielivalikoima"
             },
             "pakollinen" : true,
             "laajuus" : {
-              "arvo" : 5.0,
+              "arvo" : 4.0,
               "yksikkö" : {
                 "koodiarvo" : "6",
                 "nimi" : {
@@ -594,12 +594,12 @@
         }, {
           "koulutusmoduuli" : {
             "tunniste" : {
-              "koodiarvo" : "AI",
+              "koodiarvo" : "VVAI22",
               "koodistoUri" : "ammatillisenoppiaineet"
             },
             "kieli" : {
-              "koodiarvo" : "AI1",
-              "koodistoUri" : "oppiaineaidinkielijakirjallisuus"
+              "koodiarvo" : "FI",
+              "koodistoUri" : "kielivalikoima"
             },
             "pakollinen" : false,
             "laajuus" : {

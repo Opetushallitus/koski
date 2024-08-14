@@ -1688,7 +1688,7 @@ describe('Ammatillinen koulutus', function () {
                             .tutkinnonOsat(1)
                             .tutkinnonOsa(0)
                             .property('laajuus')
-                            .setValue('10'),
+                            .setValue('30'),
                           opinnot
                             .tutkinnonOsat('1')
                             .tutkinnonOsa(0)
@@ -1702,7 +1702,7 @@ describe('Ammatillinen koulutus', function () {
                           ).to.equal('Laajuus (osp)')
                           expect(
                             opinnot.tutkinnonOsat().laajuudetYhteensä()
-                          ).to.equal('10')
+                          ).to.equal('30')
                         })
 
                         describe('Kun poistetaan arvosana ja tallennetaan', function () {

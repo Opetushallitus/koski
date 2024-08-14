@@ -39,7 +39,8 @@
       "koulutusmoduuli" : {
         "tunniste" : {
           "koodiarvo" : "351301",
-          "koodistoUri" : "koulutus"
+          "koodistoUri" : "koulutus",
+          "koodistoVersio" : 12
         },
         "perusteenDiaarinumero" : "OPH-5410-2021"
       },
@@ -492,8 +493,7 @@
             "nimi" : {
               "fi" : "Viestintä- ja vuorovaikutusosaaminen"
             },
-            "koodistoUri" : "tutkinnonosat",
-            "koodistoVersio" : 1
+            "koodistoUri" : "tutkinnonosat"
           },
           "pakollinen" : true,
           "laajuus" : {
