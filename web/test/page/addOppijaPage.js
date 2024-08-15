@@ -495,17 +495,23 @@ function AddOppijaPage() {
       )
 
       return function () {
-        return pageApi
-          .setInputValue('.koulutusmoduuli .nimi input', params.nimi)()
+        return api
+          .selectKoulutusmoduuli('Paikallinen koulutus')()
           .then(
             pageApi.setInputValue(
-              '.koulutusmoduuli .koodiarvo input',
+              '[data-testid="uusiOpiskeluoikeus.modal.paikallinenKoulutus.nimi.input"]',
+              params.nimi
+            )
+          )
+          .then(
+            pageApi.setInputValue(
+              '[data-testid="uusiOpiskeluoikeus.modal.paikallinenKoulutus.koodiarvo.input"]',
               params.koodi
             )
           )
           .then(
             pageApi.setInputValue(
-              '.koulutusmoduuli .kuvaus textarea',
+              '[data-testid="uusiOpiskeluoikeus.modal.paikallinenKoulutus.kuvaus.input"]',
               params.kuvaus
             )
           )
@@ -514,8 +520,8 @@ function AddOppijaPage() {
     enterAmmatilliseenTehtäväänvalmistava: function (
       ammatilliseentehtäväänvalmistavakoulutus
     ) {
-      return selectFromDropdown(
-        '.ammatilliseentehtäväänvalmistavakoulutus .dropdown',
+      return selectValue(
+        'ammatilliseentehtavaanvalmistavakoulutus',
         ammatilliseentehtäväänvalmistavakoulutus
       )
     },

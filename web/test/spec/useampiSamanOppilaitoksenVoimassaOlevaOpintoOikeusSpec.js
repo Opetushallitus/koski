@@ -39,16 +39,18 @@ describe('Useampi voimassa oleva opinto oikeus samassa oppilaitoksessa', functio
       opinnot.opiskeluoikeudet.lisääOpiskeluoikeus,
       addOppija.selectOppilaitos('Stadin ammatti- ja aikuisopisto'),
       addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'),
-      addOppija.selectTutkinto('Autoalan perustutkinto'),
+      addOppija.selectSuoritustyyppi('Ammatillinen tutkinto'),
       addOppija.selectSuoritustapa('Ammatillinen perustutkinto'),
+      addOppija.selectTutkinto('Autoalan perustutkinto'),
       addOppija.selectAloituspäivä('1.1.2018'),
       addOppija.selectOpintojenRahoitus('Valtionosuusrahoitteinen koulutus'),
       addOppija.submitModal,
       opinnot.opiskeluoikeudet.lisääOpiskeluoikeus,
       addOppija.selectOppilaitos('Stadin ammatti- ja aikuisopisto'),
       addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'),
-      addOppija.selectTutkinto('Autoalan perustutkinto'),
+      addOppija.selectSuoritustyyppi('Ammatillinen tutkinto'),
       addOppija.selectSuoritustapa('Ammatillinen perustutkinto'),
+      addOppija.selectTutkinto('Autoalan perustutkinto'),
       addOppija.selectAloituspäivä('1.1.2018'),
       addOppija.selectOpintojenRahoitus('Valtionosuusrahoitteinen koulutus'),
       addOppija.submitModal
@@ -63,7 +65,8 @@ describe('Useampi voimassa oleva opinto oikeus samassa oppilaitoksessa', functio
         opinnot.opiskeluoikeudet.lisääOpiskeluoikeus,
         addOppija.selectOppilaitos('Stadin ammatti- ja aikuisopisto'),
         addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'),
-        addOppija.selectOppimäärä('Ammatillinen tutkinto'),
+        addOppija.selectSuoritustyyppi('Ammatillinen tutkinto'),
+        addOppija.selectSuoritustapa('Ammatillinen perustutkinto'),
         addOppija.selectTutkinto('Autoalan työnjohdon erikoisammattitutkinto'),
         addOppija.selectAloituspäivä('1.1.2018'),
         addOppija.selectOpintojenRahoitus('Valtionosuusrahoitteinen koulutus'),
@@ -79,7 +82,7 @@ describe('Useampi voimassa oleva opinto oikeus samassa oppilaitoksessa', functio
       opinnot.opiskeluoikeudet.lisääOpiskeluoikeus,
       addOppija.selectOppilaitos('Stadin ammatti- ja aikuisopisto'),
       addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'),
-      addOppija.selectOppimäärä('Muun ammatillisen koulutuksen suoritus'),
+      addOppija.selectSuoritustyyppi('Muun ammatillisen koulutuksen suoritus'),
       addOppija.selectKoulutusmoduuli(
         'Ammatilliseen tehtävään valmistava koulutus'
       ),
@@ -91,7 +94,7 @@ describe('Useampi voimassa oleva opinto oikeus samassa oppilaitoksessa', functio
       opinnot.opiskeluoikeudet.lisääOpiskeluoikeus,
       addOppija.selectOppilaitos('Stadin ammatti- ja aikuisopisto'),
       addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'),
-      addOppija.selectOppimäärä('Muun ammatillisen koulutuksen suoritus'),
+      addOppija.selectSuoritustyyppi('Muun ammatillisen koulutuksen suoritus'),
       addOppija.selectKoulutusmoduuli(
         'Ammatilliseen tehtävään valmistava koulutus'
       ),
