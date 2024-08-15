@@ -320,26 +320,27 @@ export const createOpiskeluoikeus = (
   }
 }
 
-export const prefillOsasuoritukset = async <T extends Opiskeluoikeus>(
-  oo: T
-): Promise<T> => ({
-  ...oo,
-  suoritukset: await Promise.all(
-    oo.suoritukset.map(async (s) => {
-      switch (s.tyyppi.koodiarvo) {
-        case 'perusopetuksenoppimaara':
-        case 'aikuistenperusopetuksenoppimaara': {
-          return {
-            ...s,
-            osasuoritukset: await fetchPerusopetuksenOsasuoritukset(s)
+export const prefillOsasuoritukset = memoize(
+  async <T extends Opiskeluoikeus>(oo: T): Promise<T> => ({
+    ...oo,
+    suoritukset: await Promise.all(
+      oo.suoritukset.map(async (s) => {
+        switch (s.tyyppi.koodiarvo) {
+          case 'perusopetuksenoppimaara':
+          case 'aikuistenperusopetuksenoppimaara': {
+            return {
+              ...s,
+              osasuoritukset: await fetchPerusopetuksenOsasuoritukset(s)
+            }
           }
+          default:
+            return s
         }
-        default:
-          return s
-      }
-    })
-  )
-})
+      })
+    )
+  }),
+  JSON.stringify
+)
 
 const fetchPerusopetuksenOsasuoritukset = memoize(
   async (suoritus: Suoritus) =>
