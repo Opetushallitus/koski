@@ -1478,7 +1478,8 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
       new EPerusteisiinPerustuvaValidator(
         KoskiApplicationForTests.ePerusteet,
         KoskiApplicationForTests.tutkintoRepository,
-        KoskiApplicationForTests.koodistoViitePalvelu
+        KoskiApplicationForTests.koodistoViitePalvelu,
+        config
       ),
       new EPerusteetLops2019Validator(KoskiApplicationForTests.config, KoskiApplicationForTests.ePerusteet),
       new EPerusteetFiller(

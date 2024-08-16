@@ -1,5 +1,6 @@
 package fi.oph.koski.eperusteetvalidation
 
+import com.typesafe.config.Config
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.log.Logging
@@ -10,7 +11,7 @@ import fi.oph.koski.tutkinto.{Koulutustyyppi, _}
 
 import java.time.LocalDate
 
-case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, koodistoViitePalvelu: KoodistoViitePalvelu)
+case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, koodistoViitePalvelu: KoodistoViitePalvelu, config: Config)
   extends EPerusteetValidationUtils(tutkintoRepository, koodistoViitePalvelu) with Logging {
 
   def validate(suoritus: PäätasonSuoritus, alkamispäiväLäsnä: Option[LocalDate], vaadittuPerusteenVoimassaolopäivä: LocalDate): HttpStatus = {
@@ -359,7 +360,17 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
           case _ => HttpStatus.ok // mm. paikalliset tutkinnon osat
         }
       ))
-      HttpStatus.fold(List(osaStatus) ++ osaAlueStatuses)
+      val result = HttpStatus.fold(List(osaStatus) ++ osaAlueStatuses)
+
+      val validaatioPäällä = config.getBoolean("validaatiot.ammatillinenEPerusteValidaatio")
+      if (validaatioPäällä) {
+        result
+      } else {
+        if (result.isError) {
+          logger.warn(s"Ammatillisen suoritusken E-peruste validaatio poissa päältä mutta epäonnistuisi virheillä: ${result.errorString.getOrElse("")}")
+        }
+        HttpStatus.ok
+      }
   }
 
   private def validateLukio2019Diaarinumero(s: LukionPäätasonSuoritus2019) = {
