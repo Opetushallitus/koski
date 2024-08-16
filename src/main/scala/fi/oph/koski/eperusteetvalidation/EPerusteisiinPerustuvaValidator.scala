@@ -1,5 +1,6 @@
 package fi.oph.koski.eperusteetvalidation
 
+import com.typesafe.config.Config
 import fi.oph.koski.eperusteet.{EPerusteRakenne, EPerusteetRepository}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
@@ -13,9 +14,10 @@ import java.time.LocalDate
 class EPerusteisiinPerustuvaValidator(
   ePerusteet: EPerusteetRepository,
   tutkintoRepository: TutkintoRepository,
-  koodistoViitePalvelu: KoodistoViitePalvelu
+  koodistoViitePalvelu: KoodistoViitePalvelu,
+  config: Config
 ) extends EPerusteetValidationUtils(tutkintoRepository, koodistoViitePalvelu) with Logging {
-  private val tutkintorakenneValidator: TutkintoRakenneValidator = TutkintoRakenneValidator(tutkintoRepository, koodistoViitePalvelu)
+  private val tutkintorakenneValidator: TutkintoRakenneValidator = TutkintoRakenneValidator(tutkintoRepository, koodistoViitePalvelu, config)
 
   def validateTutkintorakenne(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = HttpStatus.fold(
     opiskeluoikeus.suoritukset.map(
