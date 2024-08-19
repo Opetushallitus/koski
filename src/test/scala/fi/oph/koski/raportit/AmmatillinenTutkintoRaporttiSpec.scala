@@ -68,7 +68,7 @@ class AmmatillinenTutkintoRaporttiSpec
 
     "Laskenta" - {
       "Suorituksia yhteesä" in {
-        rivi.suoritettujenOpintojenYhteislaajuus should equal("180.0")
+        rivi.suoritettujenOpintojenYhteislaajuus should equal("183.0")
       }
       "Ammatilliset tutkinnon osat" - {
         "Valmiiden ammatillisten tutkinnon osien lukumäärä" in {
@@ -110,7 +110,7 @@ class AmmatillinenTutkintoRaporttiSpec
           rivi.pakollisetYhteistenTutkinnonOsienOsaalueidenLkm should equal("8")
         }
         "Valinnaisten yhteisten tutkinnon osien osa-alueiden lukumäärä" in {
-          rivi.valinnaistenYhteistenTutkinnonOsienOsaalueidenLKm should equal("1")
+          rivi.valinnaistenYhteistenTutkinnonOsienOsaalueidenLKm should equal("3")
         }
         "Tunnustettuja yhteisten tutkinnon osan osa-alueita valmiista yhteisen tutkinnon osa-alueista" in {
           rivi.tunnustettujaTukinnonOsanOsaalueitaValmiissaTutkinnonOsanOsalueissaLkm should equal("1")
@@ -125,19 +125,19 @@ class AmmatillinenTutkintoRaporttiSpec
           rivi.rahoituksenPiirissäTunnustetuistaYhteisenTutkinnonOsistaLkm should equal("0")
         }
         "Suoritettuja yhteisten tutkinnon osien yhteislaajuus" in {
-          rivi.suoritettujenYhteistenTutkinnonOsienYhteislaajuus should equal("35.0")
+          rivi.suoritettujenYhteistenTutkinnonOsienYhteislaajuus should equal("38.0")
         }
         "Suoritettujen yhteisten tutkinnon osien osa-alueiden yhteislaajuus" in {
-          rivi.suoritettujenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus should equal("35.0")
+          rivi.suoritettujenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus should equal("38.0")
         }
         "Tunnustettujen yhteisten tutkinnon osien osuus valmiista yhteisistä tutkinnon osista" in {
           rivi.tunnustettujaYhteistenTutkinnonOsienValmiistaOsistaYhteislaajuus should equal("0.0")
         }
         "Pakollisten yhteisten tutkinnon osioen osa-alueiden yhteislaajuus" in {
-          rivi.pakollistenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus should equal("32.0")
+          rivi.pakollistenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus should equal("29.0")
         }
         "Valinnaisten yhteisten tutkinnon osien osa-alueiden yhteislaajuus" in {
-          rivi.valinnaistenYhteistenTutkinnonOsienOsaalueidenYhteisLaajuus should equal("3.0")
+          rivi.valinnaistenYhteistenTutkinnonOsienOsaalueidenYhteisLaajuus should equal("9.0")
         }
       }
       "Valmiit vapaavalintaiset tutkinnon osat lukumäärä" in {
@@ -311,7 +311,7 @@ class AmmatillinenTutkintoRaporttiSpec
           aarnenRivit.length should equal(2)
           val stadinLinkitettyOpiskeluoikeus = aarnenRivit.find(_.linkitetynOpiskeluoikeudenOppilaitos == "Stadin ammatti- ja aikuisopisto")
           stadinLinkitettyOpiskeluoikeus shouldBe defined
-          stadinLinkitettyOpiskeluoikeus.get.suoritettujenOpintojenYhteislaajuus should equal("180.0")
+          stadinLinkitettyOpiskeluoikeus.get.suoritettujenOpintojenYhteislaajuus should equal("183.0")
         }
       }
       "Sisältävä opiskeluoikeus ei tule sisällytetyn opiskeluoikeuden oppilaitoksen raportille" in {
@@ -328,7 +328,7 @@ class AmmatillinenTutkintoRaporttiSpec
       }
       "Tutkinnon osiat jotka arvioitu jälkeen aikavälin, ei oteta mukaan raportille" in {
         val rows = testiHenkilöRaporttiRows(defaultRequest.copy(alku = date(2014, 1, 1), loppu = date(2014, 12, 12), osasuoritustenAikarajaus = true))
-        rows.map(_.suoritettujenOpintojenYhteislaajuus) should equal(List("140.0"))
+        rows.map(_.suoritettujenOpintojenYhteislaajuus) should equal(List("143.0"))
       }
     }
 

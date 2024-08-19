@@ -42,7 +42,8 @@
           "nimi" : {
             "fi" : "Autoalan perustutkinto"
           },
-          "koodistoUri" : "koulutus"
+          "koodistoUri" : "koulutus",
+          "koodistoVersio" : 11
         },
         "perusteenDiaarinumero" : "OPH-2762-2017"
       },
@@ -495,8 +496,7 @@
             "nimi" : {
               "fi" : "Viestintä- ja vuorovaikutusosaaminen"
             },
-            "koodistoUri" : "tutkinnonosat",
-            "koodistoVersio" : 1
+            "koodistoUri" : "tutkinnonosat"
           },
           "pakollinen" : true,
           "laajuus" : {
@@ -530,84 +530,16 @@
         "osasuoritukset" : [ {
           "koulutusmoduuli" : {
             "tunniste" : {
-              "koodiarvo" : "AI",
+              "koodiarvo" : "VVAI",
               "koodistoUri" : "ammatillisenoppiaineet"
             },
             "kieli" : {
-              "koodiarvo" : "AI1",
-              "koodistoUri" : "oppiaineaidinkielijakirjallisuus"
+              "koodiarvo" : "FI",
+              "koodistoUri" : "kielivalikoima"
             },
             "pakollinen" : true,
             "laajuus" : {
-              "arvo" : 5.0,
-              "yksikkö" : {
-                "koodiarvo" : "6",
-                "nimi" : {
-                  "fi" : "osaamispistettä",
-                  "sv" : "kompetenspoäng",
-                  "en" : "ECVET competence points"
-                },
-                "lyhytNimi" : {
-                  "fi" : "osp",
-                  "sv" : "kp",
-                  "en" : "competence points"
-                },
-                "koodistoUri" : "opintojenlaajuusyksikko"
-              }
-            }
-          },
-          "arviointi" : [ {
-            "arvosana" : {
-              "koodiarvo" : "5",
-              "nimi" : {
-                "fi" : "5"
-              },
-              "koodistoUri" : "arviointiasteikkoammatillinen15",
-              "koodistoVersio" : 1
-            },
-            "päivä" : "2014-10-20",
-            "hyväksytty" : true
-          } ],
-          "näyttö" : {
-            "kuvaus" : {
-              "fi" : "Kirjaesitelmä"
-            },
-            "suorituspaikka" : {
-              "tunniste" : {
-                "koodiarvo" : "1",
-                "nimi" : {
-                  "fi" : "työpaikka"
-                },
-                "koodistoUri" : "ammatillisennaytonsuorituspaikka",
-                "koodistoVersio" : 1
-              },
-              "kuvaus" : {
-                "fi" : "Stadin ammattiopisto"
-              }
-            },
-            "suoritusaika" : {
-              "alku" : "2014-05-18",
-              "loppu" : "2014-05-18"
-            },
-            "työssäoppimisenYhteydessä" : false
-          },
-          "tyyppi" : {
-            "koodiarvo" : "ammatillisentutkinnonosanosaalue",
-            "koodistoUri" : "suorituksentyyppi"
-          }
-        }, {
-          "koulutusmoduuli" : {
-            "tunniste" : {
-              "koodiarvo" : "AI",
-              "koodistoUri" : "ammatillisenoppiaineet"
-            },
-            "kieli" : {
-              "koodiarvo" : "AI1",
-              "koodistoUri" : "oppiaineaidinkielijakirjallisuus"
-            },
-            "pakollinen" : false,
-            "laajuus" : {
-              "arvo" : 3.0,
+              "arvo" : 4.0,
               "yksikkö" : {
                 "koodiarvo" : "6",
                 "nimi" : {
@@ -887,6 +819,5 @@
       "koodistoUri" : "opiskeluoikeudentyyppi"
     },
     "alkamispäivä" : "2018-01-01"
-  } ],
-  "ignoreKoskiValidator" : true
+  } ]
 }

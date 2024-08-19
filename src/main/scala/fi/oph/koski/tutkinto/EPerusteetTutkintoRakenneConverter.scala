@@ -87,7 +87,7 @@ object EPerusteetTutkintoRakenneConverter extends Logging {
             LocalizedString.sanitizeRequired(eTutkinnonOsa.nimi, eTutkinnonOsa.koodiArvo),
             tutkinnonOsaViite.laajuus,
             eTutkinnonOsa.osaAlueet.collect({
-              // parsitaan ja validoidaan osa-alueiden laajuudet vain uudemman mallin perusteissa ("OSAALUE2020")
+              // parsitaan ja validoidaan osa-alueiden laajuudet uudemman mallin perusteissa ("OSAALUE2020")
               case o: EOsaAlue if o.koodiArvo.isDefined && o.pakollisetOsaamistavoitteet.isDefined =>
               TutkinnonOsanOsaAlue(
                 id = o.id,
@@ -97,6 +97,16 @@ object EPerusteetTutkintoRakenneConverter extends Logging {
                 pakollisenOsanLaajuus = o.pakollisetOsaamistavoitteet.flatMap(_.laajuus),
                 valinnaisenOsanLaajuus = o.valinnaisetOsaamistavoitteet.flatMap(_.laajuus)
               )
+              // vanhempi malli
+              case o: EOsaAlue if o.koodiArvo.isDefined && o.osaamistavoitteet.exists(_.length == 2) =>
+                TutkinnonOsanOsaAlue(
+                  id = o.id,
+                  nimi = LocalizedString.sanitizeRequired(o.nimi, LocalizedString.missingString),
+                  koodiarvo = o.koodiArvo.get,
+                  kieliKoodiarvo = o.kielikoodi.map(_.arvo),
+                  pakollisenOsanLaajuus = o.osaamistavoitteet.flatMap(_.find(_.pakollinen).flatMap(_.laajuus)),
+                  valinnaisenOsanLaajuus = o.osaamistavoitteet.flatMap(_.find(!_.pakollinen).flatMap(_.laajuus))
+                )
             }))
         }
     }
