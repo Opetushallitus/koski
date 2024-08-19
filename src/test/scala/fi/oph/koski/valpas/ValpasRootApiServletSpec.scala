@@ -359,11 +359,11 @@ class ValpasRootApiServletSpec extends ValpasTestBase with BeforeAndAfterEach {
     "Palauttaa ammatillisesta tutkinnosta valmistuneen oppijan jolla on oikeutta maksuttomuuteen jäljellä" in {
       FixtureUtil.resetMockData(KoskiApplicationForTests, date(2023, 5, 2))
 
-      authGet(getHenkilöhakuMaksuttomuusUrl(ValpasMockOppijat.amisValmistunutEronnutValmasta.oid), ValpasMockUsers.valpasMonta) {
+      authGet(getHenkilöhakuMaksuttomuusUrl(ValpasMockOppijat.kolmoistutkinnostaValmistunutOpiskelija.oid), ValpasMockUsers.valpasMonta) {
         verifyResponseStatusOk()
         val res = JsonSerializer.parse[ValpasLöytyiHenkilöhakuResult](response.body)
         res.ok shouldBe true
-        res.oid shouldBe ValpasMockOppijat.amisValmistunutEronnutValmasta.oid
+        res.oid shouldBe ValpasMockOppijat.kolmoistutkinnostaValmistunutOpiskelija.oid
       }
     }
 

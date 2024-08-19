@@ -40,7 +40,7 @@ class YtrAuditLogSpec
     downloadYtrData(birthmonthStart, birthmonthEnd, force = true)
 
     verifyAuditLogs(
-      List.fill(6)(
+      List.fill(7)(
         Map(
           "operation" -> KoskiOperation.YTR_OPISKELUOIKEUS_LISAYS.toString,
           "user" -> Map(

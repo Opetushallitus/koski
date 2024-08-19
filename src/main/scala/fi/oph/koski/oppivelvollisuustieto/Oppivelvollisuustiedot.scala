@@ -72,10 +72,6 @@ object Oppivelvollisuustiedot {
       """.as[OptionalOppivelvollisuustieto]
     )
 
-  /*
-    Voimassaolojen päättelyssä otetaan ylioppilastutkinto huomioon, mikäli oppijalla ei ole ammatillista tutkintoa. Ammatillisen
-    tutkinnon tapaukset on toistaiseksi jätetty pois, koska kaksois- ja kolmoistutkinnot on vaikeasti määriteltäviä.
-  */
   def createPrecomputedTable(s: Schema, confidentalSchema: Schema, valpasRajapäivätService: ValpasRajapäivätService)= {
     val tarkastelupäivä = valpasRajapäivätService.tarkastelupäivä
     val valpasLakiVoimassaVanhinSyntymäaika = valpasRajapäivätService.lakiVoimassaVanhinSyntymäaika
@@ -154,6 +150,8 @@ object Oppivelvollisuustiedot {
 
             select
               distinct master_oid,
+              first_value(opiskeluoikeus.alkamispaiva) over (partition by master_oid order by opiskeluoikeus.alkamispaiva asc nulls last) ammattitutkinnon_alkamispaiva,
+              first_value(opiskeluoikeus.paattymispaiva) over (partition by master_oid order by opiskeluoikeus.paattymispaiva asc nulls last) ammattitutkinnon_paattymispaiva,
               first_value(vahvistus_paiva) over (partition by master_oid order by vahvistus_paiva asc nulls last) ammattitutkinnon_vahvistus_paiva,
               true suorittaa_ammattitutkintoa
             from
@@ -168,6 +166,8 @@ object Oppivelvollisuustiedot {
 
             select
               distinct master_oid,
+              first_value(opiskeluoikeus.alkamispaiva) over (partition by master_oid order by opiskeluoikeus.alkamispaiva asc nulls last) lukion_oppimaaraan_alkamispaiva,
+              first_value(opiskeluoikeus.paattymispaiva) over (partition by master_oid order by opiskeluoikeus.paattymispaiva asc nulls last) lukion_oppimaaraan_paattymispaiva,
               first_value(vahvistus_paiva) over (partition by master_oid order by vahvistus_paiva asc nulls last) lukion_oppimaaraan_vahvistus_paiva,
               true suorittaa_lukionoppimaaraa
             from
@@ -182,6 +182,9 @@ object Oppivelvollisuustiedot {
 
             select
               distinct master_oid,
+              first_value(opiskeluoikeus.alkamispaiva) over (partition by master_oid order by opiskeluoikeus.alkamispaiva asc nulls last) lukion_aineopintojen_alkamispaiva,
+              first_value(opiskeluoikeus.paattymispaiva) over (partition by master_oid order by opiskeluoikeus.paattymispaiva asc nulls last) lukion_aineopintojen_paattymispaiva,
+              first_value(vahvistus_paiva) over (partition by master_oid order by vahvistus_paiva asc nulls last) lukion_aineopintojen_vahvistus_paiva,
               true suorittaa_lukionaineopintoja
             from
               oppivelvolliset_henkilot
@@ -202,6 +205,20 @@ object Oppivelvollisuustiedot {
               join #${s.name}.r_opiskeluoikeus opiskeluoikeus on oppivelvolliset_henkilot.oppija_oid = opiskeluoikeus.oppija_oid
               join #${s.name}.r_paatason_suoritus paatason_suoritus on opiskeluoikeus.opiskeluoikeus_oid = paatason_suoritus.opiskeluoikeus_oid
             where paatason_suoritus.suorituksen_tyyppi = 'ylioppilastutkinto'
+
+        ),
+
+        amis_ja_lukio_samanaikaisuus as (
+          select
+            distinct ammattitutkinto.master_oid as master_oid,
+            true as amis_ja_lukio_samaan_aikaan
+          from
+            ammattitutkinto
+            left join lukionoppimaara on ammattitutkinto.master_oid = lukionoppimaara.master_oid
+            left join lukionaineopinnot on ammattitutkinto.master_oid = lukionaineopinnot.master_oid
+          where
+            (ammattitutkinnon_alkamispaiva, coalesce(ammattitutkinnon_paattymispaiva, now())) overlaps (lukion_oppimaaraan_alkamispaiva, coalesce(lukion_oppimaaraan_paattymispaiva, now()))
+            or (ammattitutkinnon_alkamispaiva, coalesce(ammattitutkinnon_paattymispaiva, now())) overlaps (lukion_aineopintojen_alkamispaiva, coalesce(lukion_aineopintojen_paattymispaiva, now()))
 
         ),
 
@@ -270,39 +287,32 @@ object Oppivelvollisuustiedot {
 
           -- Huom! Osa samasta logiikasta on myös Scala-koodina ValpasRajapäivätService-luokassa. Varmista muutosten jälkeen,
           -- että logiikka säilyy samana.
-          case
-            when suorittaa_ammattitutkintoa then least(
-              oppivelvollisuudesta_vapautus,
-              dia_tutkinnon_vahvistuspaiva,
-              ebtutkinto_toisen_asteen_vahvistus_paiva,
-              ammattitutkinnon_vahvistus_paiva,
-              (syntymaaika + interval '#$oppivelvollisuusLoppuuIka year' - interval '1 day')::date)
 
-            else least(
+          least(
               oppivelvollisuudesta_vapautus,
               dia_tutkinnon_vahvistuspaiva,
               ebtutkinto_toisen_asteen_vahvistus_paiva,
               ylioppilastutkinnon_vahvistus_paiva,
+              ammattitutkinnon_vahvistus_paiva,
               (syntymaaika + interval '#$oppivelvollisuusLoppuuIka year' - interval '1 day')::date)
-          end
-            oppivelvollisuusVoimassaAsti,
+            as oppivelvollisuusVoimassaAsti,
 
           -- Huom! Osa samasta logiikasta on myös Scala-koodina ValpasRajapäivätService-luokassa. Varmista muutosten jälkeen,
           -- että logiikka säilyy samana.
           greatest(
             maksuttomuuden_pidennysjakso.loppu,
             case
-              when suorittaa_ammattitutkintoa and (suorittaa_lukionoppimaaraa or suorittaa_lukionaineopintoja) then least(
+              when amis_ja_lukio_samaan_aikaan and ylioppilastutkinnon_vahvistus_paiva is not null and ammattitutkinnon_vahvistus_paiva is not null then least(
                 oppivelvollisuudesta_vapautus,
                 dia_tutkinnon_vahvistuspaiva,
                 ebtutkinto_toisen_asteen_vahvistus_paiva,
+                greatest(ylioppilastutkinnon_vahvistus_paiva, ammattitutkinnon_vahvistus_paiva),
                 #${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '#$maksuttomuusLoppuuIka year'))
 
-              when suorittaa_ammattitutkintoa then least(
+             when amis_ja_lukio_samaan_aikaan then least(
                 oppivelvollisuudesta_vapautus,
                 dia_tutkinnon_vahvistuspaiva,
                 ebtutkinto_toisen_asteen_vahvistus_paiva,
-                ammattitutkinnon_vahvistus_paiva,
                 #${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '#$maksuttomuusLoppuuIka year'))
 
               else least(
@@ -310,6 +320,7 @@ object Oppivelvollisuustiedot {
                 dia_tutkinnon_vahvistuspaiva,
                 ebtutkinto_toisen_asteen_vahvistus_paiva,
                 ylioppilastutkinnon_vahvistus_paiva,
+                ammattitutkinnon_vahvistus_paiva,
                 #${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '#$maksuttomuusLoppuuIka year'))
             end::date
           ) as oikeusKoulutuksenMaksuttomuuteenVoimassaAsti
@@ -324,6 +335,7 @@ object Oppivelvollisuustiedot {
           left join oppivelvollisuudesta_vapautus on oppivelvolliset_henkilot.master_oid = oppivelvollisuudesta_vapautus.master_oid
           left join ylioppilastutkinto on oppivelvolliset_henkilot.master_oid = ylioppilastutkinto.master_oid
           left join maksuttomuuden_pidennysjakso on oppivelvolliset_henkilot.master_oid = maksuttomuuden_pidennysjakso.master_oid
+          left join amis_ja_lukio_samanaikaisuus on oppivelvolliset_henkilot.master_oid = amis_ja_lukio_samanaikaisuus.master_oid
       """
   }
 
