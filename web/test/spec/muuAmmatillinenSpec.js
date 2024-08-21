@@ -107,7 +107,7 @@ describe('Muu ammatillinen koulutus', function () {
               addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus')
             )
             .then(
-              addOppija.selectOppimäärä(
+              addOppija.selectSuoritustyyppi(
                 'Muun ammatillisen koulutuksen suoritus'
               )
             )
@@ -309,11 +309,15 @@ describe('Muu ammatillinen koulutus', function () {
     describe('Opiskeluoikeuden lisääminen', function () {
       before(
         prepareForNewOppija('kalle', '230872-7258'),
-        addOppija.enterValidDataAmmatillinen(),
-        addOppija.selectOppimäärä(
-          'Tutkinnon osaa pienemmistä kokonaisuuksista koostuva suoritus'
-        ),
-        addOppija.enterPaikallinenKoulutusmoduuliData(),
+        addOppija.enterValidDataAmmatillinen({
+          suoritustyyppi:
+            'Tutkinnon osaa pienemmistä kokonaisuuksista koostuva suoritus',
+          suoritustapa: null,
+          tutkinto: null
+        }),
+        addOppija.enterPaikallinenKoulutusmoduuliData({
+          koulutusmoduuli: null
+        }),
         addOppija.submitAndExpectSuccess(
           'Tyhjä, Tero (230872-7258)',
           'Varaston täyttäminen'

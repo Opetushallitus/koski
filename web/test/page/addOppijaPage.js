@@ -485,6 +485,7 @@ function AddOppijaPage() {
     enterPaikallinenKoulutusmoduuliData: function (params) {
       params = _.merge(
         {
+          koulutusmoduuli: 'Paikallinen koulutus',
           nimi: 'Varaston täyttäminen',
           koodi: 'vrs-t-2019-k',
           kuvaus:
@@ -495,8 +496,11 @@ function AddOppijaPage() {
       )
 
       return function () {
-        return api
-          .selectKoulutusmoduuli('Paikallinen koulutus')()
+        return (
+          params.koulutusmoduuli
+            ? api.selectKoulutusmoduuli(params.koulutusmoduuli)()
+            : Promise.resolve()
+        )
           .then(
             pageApi.setInputValue(
               '[data-testid="uusiOpiskeluoikeus.modal.paikallinenKoulutus.nimi.input"]',
