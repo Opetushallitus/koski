@@ -38,6 +38,10 @@ class HakemuspalveluService(application: KoskiApplication) extends GlobalExecuti
             .filter(josYOTutkintoNiinVahvistettu)
             .filter(josEBTutkintoNiinVahvistettu)
             .filter(josDIATutkintoNiinVahvistettu)
+            .filter(josPerusopetusNiinVahvistettu)
+            .filter(josAikuistenPerusopetusNiinVahvistettu)
+            .filter(josLukionOppimääräNiinVahvistettu)
+            .filter(josAmmatillinenTutkintoNiinVahvistettu)
         )
       }.filter(_.suoritukset.nonEmpty)
   }
@@ -72,6 +76,44 @@ class HakemuspalveluService(application: KoskiApplication) extends GlobalExecuti
   private def josDIATutkintoNiinVahvistettu(s: HakemuspalveluSuoritus): Boolean = {
     s match {
       case s: HakemuspalveluDIATutkinnonSuoritus
+      => s.vahvistus.isDefined
+      case _
+      => true
+    }
+  }
+
+  private def josPerusopetusNiinVahvistettu(s: HakemuspalveluSuoritus): Boolean = {
+    s match {
+      case s: HakemuspalveluPerusopetuksenOppimääränSuoritus
+      => s.vahvistus.isDefined
+      case _
+      => true
+    }
+  }
+
+  private def josAikuistenPerusopetusNiinVahvistettu(s: HakemuspalveluSuoritus): Boolean = {
+    s match {
+      case s: HakemuspalveluAikuistenPerusopetuksenOppimääränSuoritus
+      => s.vahvistus.isDefined
+      case _
+      => true
+    }
+  }
+
+
+  private def josLukionOppimääräNiinVahvistettu(s: HakemuspalveluSuoritus): Boolean = {
+    s match {
+      case s: HakemuspalveluLukionOppimääränSuoritus
+      => s.vahvistus.isDefined
+      case _
+      => true
+    }
+  }
+
+
+  private def josAmmatillinenTutkintoNiinVahvistettu(s: HakemuspalveluSuoritus): Boolean = {
+    s match {
+      case s: HakemuspalveluAmmatillisenTutkinnonSuoritus
       => s.vahvistus.isDefined
       case _
       => true
