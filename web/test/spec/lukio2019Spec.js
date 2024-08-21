@@ -617,7 +617,7 @@ describe('Lukiokoulutus2019', function () {
           addOppija.enterValidDataLukio({
             oppilaitos: 'Ressun',
             oppimäärä: 'Lukion oppimäärä',
-            peruste: 'OPH-2263-2019',
+            peruste: 'OPH-2263-2019 Lukion opetussuunnitelman perusteet 2019',
             opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus'
           }),
           addOppija.selectOppimäärä('Lukion oppimäärä'),
@@ -662,11 +662,11 @@ describe('Lukiokoulutus2019', function () {
           addOppija.enterValidDataLukio({
             oppilaitos: 'Ressun',
             oppimäärä: 'Lukion oppimäärä',
-            peruste: 'OPH-2263-2019',
+            peruste:
+              'OPH-2267-2019 Aikuisten lukiokoulutuksen opetussuunnitelman perusteet 2019',
             opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus'
           }),
           addOppija.selectOppimäärä('Lukion oppimäärä'),
-          addOppija.selectPeruste('OPH-2267-2019'),
           addOppija.submitAndExpectSuccess(
             'Tyhjä, Tero (170491-517B)',
             'Lukion oppimäärä'
@@ -704,7 +704,7 @@ describe('Lukiokoulutus2019', function () {
           addOppija.enterValidDataLukio({
             oppilaitos: 'Ressun',
             oppimäärä: 'Lukion aineopinnot',
-            peruste: 'OPH-2263-2019',
+            peruste: 'OPH-2263-2019 Lukion opetussuunnitelman perusteet 2019',
             opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus'
           }),
           addOppija.selectOppimäärä('Lukion aineopinnot'),
@@ -738,11 +738,11 @@ describe('Lukiokoulutus2019', function () {
           addOppija.enterValidDataLukio({
             oppilaitos: 'Ressun',
             oppimäärä: 'Lukion aineopinnot',
-            peruste: 'OPH-2267-2019',
+            peruste:
+              'OPH-2267-2019 Aikuisten lukiokoulutuksen opetussuunnitelman perusteet 2019',
             opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus'
           }),
           addOppija.selectOppimäärä('Lukion aineopinnot'),
-          addOppija.selectPeruste('OPH-2267-2019'),
           addOppija.submitAndExpectSuccess(
             'Tyhjä, Tero (051009-409T)',
             'Lukion aineopinnot'
