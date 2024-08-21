@@ -326,7 +326,7 @@ function AddOppijaPage() {
         {
           oppilaitos: 'Ressun',
           oppimäärä: 'Lukion oppimäärä',
-          peruste: '60/011/2015',
+          peruste: '60/011/2015 Lukion opetussuunnitelman perusteet 2015',
           opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus',
           alkamispäivä: '1.1.2018'
         },
@@ -733,7 +733,7 @@ function AddOppijaPage() {
       return selectValue('peruste', peruste)
     },
     perusteet: function () {
-      return extractAsText(S("[data-testid='peruste-dropdown'] .options"))
+      return selectOptions('peruste')
     },
     selectKieliaineenKieli: function (kieli) {
       return selectValue('kieliaineenKieli', kieli)
