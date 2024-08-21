@@ -84,6 +84,7 @@ function AddOppijaPage() {
       params = _.merge(
         {
           oppilaitos: 'Helsingin eurooppalainen koulu',
+          opiskeluoikeudenTyyppi: 'European School of Helsinki',
           luokkaaste: 'N1',
           alkamispäivä: '1.1.2022'
         },
