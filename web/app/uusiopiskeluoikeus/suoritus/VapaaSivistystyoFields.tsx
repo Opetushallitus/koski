@@ -4,6 +4,7 @@ import { DialogKoodistoSelect } from '../components/DialogKoodistoSelect'
 import { DialogPäätasonSuoritusSelect } from '../components/DialogPaatasonSuoritusSelect'
 import { DialogPerusteSelect } from '../components/DialogPerusteSelect'
 import { SuoritusFieldsProps } from './SuoritusFields'
+import { KoodistokoodiviiteKoodistonNimellä } from '../../appstate/koodisto'
 
 export const VapaaSivistystyöFields = (props: SuoritusFieldsProps) => (
   <>
@@ -70,10 +71,15 @@ const VstOsaamismerkkiFields = (props: SuoritusFieldsProps) => {
         state={props.state.osaamismerkki}
         koodistoUri="osaamismerkit"
         testId="osaamismerkki"
+        formatLabel={formatOsaamismerkkiName}
       />
     </label>
   )
 }
+
+const formatOsaamismerkkiName = (
+  koodi: KoodistokoodiviiteKoodistonNimellä
+): string => `${koodi.koodiviite.koodiarvo} ${t(koodi.koodiviite.nimi)}`
 
 const VstVapaatavoitteinenFields = (props: SuoritusFieldsProps) => {
   return (

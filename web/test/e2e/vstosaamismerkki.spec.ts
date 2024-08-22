@@ -17,15 +17,18 @@ test.describe('Vapaan sivistyön VST osaamismerkki', () => {
     // Luonti
     const uusiOppijaPage = new KoskiUusiOppijaPage(page)
     await uusiOppijaPage.goTo('210610A426P')
-    await uusiOppijaPage.fill({
-      oppilaitos: 'Varsinais-Suomen kansanopisto',
-      etunimet: 'Merkki',
-      sukunimi: 'Merkkimestari',
-      opiskeluoikeus: 'Vapaan sivistystyön koulutus',
-      suoritustyyppi: 'Vapaan sivistystyön osaamismerkki',
-      osaamismerkki: '1001 Digitaalinen tiedonhaku',
-      opiskeluoikeudenTila: 'Hyväksytysti suoritettu'
-    })
+    await uusiOppijaPage.fill(
+      {
+        oppilaitos: 'Varsinais-Suomen kansanopisto',
+        etunimet: 'Merkki',
+        sukunimi: 'Merkkimestari',
+        opiskeluoikeus: 'Vapaan sivistystyön koulutus',
+        suoritustyyppi: 'Vapaan sivistystyön osaamismerkki',
+        osaamismerkki: '1022 Digitaalinen tiedonhaku',
+        opiskeluoikeudenTila: 'Hyväksytysti suoritettu'
+      },
+      true
+    )
     await uusiOppijaPage.submitAndExpectSuccess()
 
     // Ensimuokkaus

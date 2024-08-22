@@ -66,7 +66,10 @@ export class KoskiUusiOppijaPage extends KoskiOppijaPageV2<
    * Testaa ensin luoda käyttöliittymän kautta opiskeluoikeus ja tarkista, mitkä kentät käyttöliittymässä näkyvät.
    * @param oppija Oppijan tiedot
    */
-  async fill(oppija: Partial<BaseOppija> & { hankintakoulutus?: 'tpo' }) {
+  async fill(
+    oppija: Partial<BaseOppija> & { hankintakoulutus?: 'tpo' },
+    pääkäyttäjä: boolean = false
+  ) {
     const $ = this.$.uusiOpiskeluoikeus.modal
 
     if (oppija.hankintakoulutus === 'tpo') {
@@ -80,7 +83,7 @@ export class KoskiUusiOppijaPage extends KoskiOppijaPageV2<
     }
 
     if (oppija.oppilaitos) {
-      if (oppija.hankintakoulutus) {
+      if (oppija.hankintakoulutus || pääkäyttäjä) {
         await $.oppilaitos.type(oppija.oppilaitos)
         await $.oppilaitos.selectFirstOption()
       } else {
@@ -119,9 +122,9 @@ export class KoskiUusiOppijaPage extends KoskiOppijaPageV2<
       console.log('oppija.taiteenala', oppija.taiteenala)
       await $.taiteenala.setByLabel(oppija.taiteenala)
     }
-    // if (oppija.osaamismerkki) {
-    //   await this.osaamismerkki.search(oppija.osaamismerkki)
-    // }
+    if (oppija.osaamismerkki) {
+      await $.osaamismerkki.setByLabel(oppija.osaamismerkki)
+    }
     // if (oppija.opiskeluoikeudenTila) {
     //   await this.opiskeluoikeudenTila.selectOptionByClick(
     //     oppija.opiskeluoikeudenTila
@@ -155,6 +158,7 @@ const UusiOpiskeluoikeusFormControls = {
   peruste: Select,
   taiteenala: Select,
   opintokokonaisuus: Select,
+  osaamismerkki: Select,
   suorituskieli: Select,
   tila: Select,
   opintojenRahoitus: Select,
