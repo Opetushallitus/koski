@@ -413,6 +413,7 @@ test.describe('European School of Helsinki', () => {
       const hetu = '110363-155S'
       const oppija = {
         oppilaitos: 'Helsingin eurooppalainen koulu',
+        opiskeluoikeus: 'European School of Helsinki',
         etunimet: 'Ella',
         sukunimi: 'European'
       }
@@ -425,25 +426,20 @@ test.describe('European School of Helsinki', () => {
         }
       )
 
-      test('Lisäys ei onnistu ilman valittua opiskeluoikeutta', async ({
-        uusiOppijaPage
-      }) => {
-        await expect(uusiOppijaPage.submitBtn).toBeDisabled()
-      })
-
       test('Vain oikeat opiskeluoikeuden tilat valittavissa', async ({
         uusiOppijaPage
       }) => {
         await uusiOppijaPage.fill({
-          oppilaitos: 'Helsingin eurooppalainen koulu'
+          oppilaitos: 'Helsingin eurooppalainen koulu',
+          opiskeluoikeus: 'European School of Helsinki'
         })
 
-        await expect(
-          await uusiOppijaPage.opiskeluoikeudenTila.getOptions()
-        ).toHaveText(
-          ['Eronnut', 'Läsnä', 'Valmistunut', 'Väliaikaisesti keskeytynyt'],
-          { timeout: 5000 }
-        )
+        await expect(await uusiOppijaPage.controls.tila.options()).toEqual([
+          'Eronnut',
+          'Läsnä',
+          'Valmistunut',
+          'Väliaikaisesti keskeytynyt'
+        ])
       })
 
       test('Opiskeluoikeuden luonti onnistuu ja luo uuden opiskeluoikeuden tyhjällä N1-suorituksella', async ({

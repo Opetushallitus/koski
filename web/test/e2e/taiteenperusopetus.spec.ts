@@ -29,40 +29,44 @@ test.describe('Taiteen perusopetus', () => {
       test('Lisäys ei onnistu ilman puuttuvien tietojen syöttämistä', async ({
         uusiOppijaPage
       }) => {
-        await expect(uusiOppijaPage.submitBtn).toBeDisabled()
+        await expect(uusiOppijaPage.controls.submit.button).toBeDisabled()
       })
 
       test('Vain oikeat opiskeluoikeuden tilat valittavissa', async ({
         uusiOppijaPage
       }) => {
-        await expect(
-          await uusiOppijaPage.opiskeluoikeudenTila.getOptions()
-        ).toHaveText(['Läsnä', 'Päättynyt'])
+        await expect(await uusiOppijaPage.controls.tila.options()).toEqual([
+          'Läsnä',
+          'Päättynyt'
+        ])
       })
 
-      test('Oppimäärä on esivalittu ja oikeat suorituksen tyypit ovat valittavissa', async ({
+      test('Valittavat oppimäärät ovat oikein ja valinnan jälkeen oikeat suorituksen tyypit ovat valittavissa', async ({
         uusiOppijaPage
       }) => {
-        expect(await uusiOppijaPage.oppimäärä.textInput.textContent()).toBe(
+        const oppimäärä = uusiOppijaPage.controls.oppimäärä
+        await expect(await oppimäärä.options()).toEqual([
+          'Taiteen perusopetuksen laaja oppimäärä',
           'Taiteen perusopetuksen yleinen oppimäärä'
-        )
+        ])
+        await oppimäärä.set('taiteenperusopetusoppimaara_yleinenoppimaara')
         await expect(
-          await uusiOppijaPage.suoritustyyppi.getOptions()
-        ).toHaveText([
-          'Taiteen perusopetuksen yleisen oppimäärän yhteisten opintojen suoritus',
-          'Taiteen perusopetuksen yleisen oppimäärän teemaopintojen suoritus'
+          await uusiOppijaPage.controls.suoritustyyppi.options()
+        ).toEqual([
+          'Taiteen perusopetuksen yleisen oppimäärän teemaopintojen suoritus',
+          'Taiteen perusopetuksen yleisen oppimäärän yhteisten opintojen suoritus'
         ])
       })
 
       test('Oppimäärän voi vaihtaa ja suoritustyypit näytetään oikein', async ({
         uusiOppijaPage
       }) => {
-        await uusiOppijaPage.fill({
-          oppimäärä: 'Taiteen perusopetuksen laaja oppimäärä'
-        })
+        await uusiOppijaPage.controls.oppimäärä.set(
+          'taiteenperusopetusoppimaara_laajaoppimaara'
+        )
         await expect(
-          await uusiOppijaPage.suoritustyyppi.getOptions()
-        ).toHaveText([
+          await uusiOppijaPage.controls.suoritustyyppi.options()
+        ).toEqual([
           'Taiteen perusopetuksen laajan oppimäärän perusopintojen suoritus',
           'Taiteen perusopetuksen laajan oppimäärän syventävien opintojen suoritus'
         ])
@@ -76,18 +80,26 @@ test.describe('Taiteen perusopetus', () => {
           suoritustyyppi:
             'Taiteen perusopetuksen laajan oppimäärän perusopintojen suoritus'
         })
-        await expect(
-          uusiOppijaPage.page.getByTestId('tpo-peruste-input')
-        ).toHaveValue('OPH-2068-2017')
+        await expect(uusiOppijaPage.controls.peruste.input).toHaveValue(
+          'OPH-2068-2017 Taiteen perusopetuksen laajan oppimäärän opetussuunnitelman perusteet 2017'
+        )
       })
 
-      test('Opiskeluoikeuden luonti onnistuu', async ({ uusiOppijaPage }) => {
+      test('Opiskeluoikeuden luonti onnistuu', async ({
+        uusiOppijaPage,
+        taiteenPerusopetusPage
+      }) => {
         await uusiOppijaPage.fill({
           oppimäärä: 'Taiteen perusopetuksen laaja oppimäärä',
           suoritustyyppi:
             'Taiteen perusopetuksen laajan oppimäärän perusopintojen suoritus',
           taiteenala: 'Tanssi'
         })
+        await uusiOppijaPage.controls.submit.click()
+
+        await expect(
+          await taiteenPerusopetusPage.suoritustieto('taiteenala')
+        ).toEqual('Tanssi')
       })
     })
   })
@@ -98,10 +110,8 @@ test.describe('Taiteen perusopetus', () => {
     test.describe('Uuden opiskeluoikeuden luonti', () => {
       test.beforeEach(async ({ uusiOppijaPage }) => {
         await uusiOppijaPage.goTo('230872-7258')
-        await uusiOppijaPage.page
-          .getByTestId('hankintakoulutus-checkbox__label')
-          .click()
         await uusiOppijaPage.fill({
+          hankintakoulutus: 'tpo',
           etunimet: 'Tero',
           sukunimi: 'Taiteilija',
           oppilaitos: 'Varsinais-Suomen kansanopisto',
