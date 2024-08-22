@@ -13,26 +13,31 @@ test.describe('Muu kuin säännelty koulutus', () => {
   test.describe('Uuden opiskeluoikeuden luonti', () => {
     test.beforeEach(async ({ uusiOppijaPage }) => {
       await uusiOppijaPage.goTo('260200A256M')
+      await uusiOppijaPage.controls.opiskeluoikeus.setByLabel(
+        'Muu kuin säännelty koulutus'
+      )
     })
 
     test('Lisäys ei onnistu ilman valittua opiskeluoikeutta', async ({
       uusiOppijaPage
     }) => {
-      await expect(uusiOppijaPage.submitBtn).toBeDisabled()
+      await expect(uusiOppijaPage.controls.submit.button).toBeDisabled()
     })
 
     test('Vain oikeat opiskeluoikeuden tilat valittavissa', async ({
       uusiOppijaPage
     }) => {
-      await expect(
-        await uusiOppijaPage.opiskeluoikeudenTila.getOptions()
-      ).toHaveText(['Hyväksytysti suoritettu', 'Keskeytynyt', 'Läsnä'])
+      await expect(await uusiOppijaPage.controls.tila.options()).toEqual([
+        'Hyväksytysti suoritettu',
+        'Keskeytynyt',
+        'Läsnä'
+      ])
     })
 
     test('Vain jotpa-rahoitukset valittavissa', async ({ uusiOppijaPage }) => {
       await expect(
-        await uusiOppijaPage.opintojenRahoitus.getOptions()
-      ).toHaveText([
+        await uusiOppijaPage.controls.opintojenRahoitus.options()
+      ).toEqual([
         'Jatkuvan oppimisen ja työllisyyden palvelukeskuksen rahoitus',
         'Jatkuvan oppimisen ja työllisyyden palvelukeskuksen rahoitus (RRF)'
       ])
@@ -43,7 +48,8 @@ test.describe('Muu kuin säännelty koulutus', () => {
         etunimet: 'Jonna',
         sukunimi: 'Muksunen',
         opintokokonaisuus: '2319 21VF2 Valaisu',
-        jotpaAsianumero: '01/5848/2023 - TTS Kehitys Oy - Pientalojen kestävien energiaratkaisujen suunnitteluosaaminen'
+        jotpaAsianumero:
+          '01/5848/2023 - TTS Kehitys Oy - Pientalojen kestävien energiaratkaisujen suunnitteluosaaminen'
       })
       await uusiOppijaPage.submitAndExpectSuccess()
     })

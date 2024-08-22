@@ -93,9 +93,9 @@ export class KoskiUusiOppijaPage extends KoskiOppijaPageV2<
     if (oppija.suorituskieli) {
       await $.suorituskieli.setByLabel(oppija.suorituskieli)
     }
-    // if (oppija.opintokokonaisuus) {
-    //   await this.opintokokonaisuus.search(oppija.opintokokonaisuus)
-    // }
+    if (oppija.opintokokonaisuus) {
+      await $.opintokokonaisuus.setByLabel(oppija.opintokokonaisuus)
+    }
     // TODO: Aloituspäivä
     // if (oppija.aloituspäivä) {
     //  ...
@@ -127,9 +127,9 @@ export class KoskiUusiOppijaPage extends KoskiOppijaPageV2<
     //     oppija.opiskeluoikeudenTila
     //   )
     // }
-    // if (oppija.jotpaAsianumero) {
-    //   await this.jotpaAsianumero.selectOptionByClick(oppija.jotpaAsianumero)
-    // }
+    if (oppija.jotpaAsianumero) {
+      await $.jotpaAsianumero.setByLabel(oppija.jotpaAsianumero)
+    }
   }
 
   async submitAndExpectSuccess() {
@@ -154,8 +154,11 @@ const UusiOpiskeluoikeusFormControls = {
   suoritustyyppi: Select,
   peruste: Select,
   taiteenala: Select,
+  opintokokonaisuus: Select,
   suorituskieli: Select,
   tila: Select,
+  opintojenRahoitus: Select,
+  jotpaAsianumero: Select,
   submit: Button
 }
 
