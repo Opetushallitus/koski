@@ -3,6 +3,7 @@ import { t } from '../../i18n/i18n'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { DialogKoodistoSelect } from '../components/DialogKoodistoSelect'
 import { SuoritusFieldsProps } from './SuoritusFields'
+import { KoodistokoodiviiteKoodistonNimellä } from '../../appstate/koodisto'
 
 const päätasonSuoritus = Koodistokoodiviite({
   koodiarvo: 'muukuinsaanneltykoulutus',
@@ -19,8 +20,13 @@ export const MuuKuinSäänneltyKoulutusFields = (props: SuoritusFieldsProps) => 
       <DialogKoodistoSelect
         state={props.state.opintokokonaisuus}
         koodistoUri="opintokokonaisuudet"
+        formatLabel={formatOpintokokonaisuusName}
         testId="opintokokonaisuus"
       />
     </label>
   ) : null
 }
+
+const formatOpintokokonaisuusName = (
+  koodi: KoodistokoodiviiteKoodistonNimellä
+): string => `${koodi.koodiviite.koodiarvo} ${t(koodi.koodiviite.nimi)}`

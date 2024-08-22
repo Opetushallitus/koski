@@ -406,7 +406,8 @@ const useSelectState = <T,>(props: SelectProps<T>) => {
 
 export const groupKoodistoToOptions = <T extends string>(
   koodit: KoodistokoodiviiteKoodistonNimellä<T>[],
-  ords?: Array<Ord.Ord<KoodistokoodiviiteKoodistonNimellä>>
+  ords?: Array<Ord.Ord<KoodistokoodiviiteKoodistonNimellä>>,
+  format?: (koodi: KoodistokoodiviiteKoodistonNimellä) => string
 ): Array<SelectOption<Koodistokoodiviite<T>>> =>
   pipe(koodit, NEA.groupBy(pluck('koodistoNimi')), (grouped) =>
     Object.entries(grouped).map(([groupName, koodit]) => ({
@@ -417,7 +418,9 @@ export const groupKoodistoToOptions = <T extends string>(
         koodit
       ).map((k) => ({
         key: k.id,
-        label: t(k.koodiviite.nimi) || k.koodiviite.koodiarvo,
+        label: format
+          ? format(k)
+          : t(k.koodiviite.nimi) || k.koodiviite.koodiarvo,
         value: k.koodiviite
       }))
     }))

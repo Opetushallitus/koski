@@ -1,5 +1,8 @@
 import React, { useMemo } from 'react'
-import { useKoodisto } from '../../appstate/koodisto'
+import {
+  KoodistokoodiviiteKoodistonNimellä,
+  useKoodisto
+} from '../../appstate/koodisto'
 import { groupKoodistoToOptions } from '../../components-v2/controls/Select'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { koodistokoodiviiteId } from '../../util/koodisto'
@@ -11,6 +14,7 @@ export type DialogKoodistoSelectProps<U extends string> = {
   default?: string
   koodistoUri: U
   koodiarvot?: string[]
+  formatLabel?: (koodi: KoodistokoodiviiteKoodistonNimellä) => string
   testId: string
 }
 
@@ -19,8 +23,11 @@ export const DialogKoodistoSelect = <U extends string>(
 ) => {
   const koodisto = useKoodisto<U>(props.koodistoUri, props.koodiarvot)
   const options = useMemo(
-    () => (koodisto ? groupKoodistoToOptions(koodisto) : []),
-    [koodisto]
+    () =>
+      koodisto
+        ? groupKoodistoToOptions(koodisto, undefined, props.formatLabel)
+        : [],
+    [koodisto, props.formatLabel]
   )
 
   return (
