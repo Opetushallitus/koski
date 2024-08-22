@@ -12,6 +12,7 @@ import fi.oph.koski.koskiuser.Rooli.OPHKATSELIJA
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
+import fi.oph.koski.schema.{LukionOppimääränSuoritus2015, LukionOppimääränSuoritus2019}
 import fi.oph.koski.virta.MockVirtaClient
 import fi.oph.koski.ytr.MockYtrClient
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec, schema}
@@ -249,6 +250,126 @@ class HakemuspalveluServiceSpec
     })
   }
 
+  "Peruskoulu" - {
+    val oppijat = Seq(
+      KoskiSpecificMockOppijat.koululainen,
+    )
+
+    oppijat.foreach(oppija => {
+      s"Tiedot oppijasta, jolla peruskoulun oppimäärän opiskeluoikeus, palautetaan ${oppija.sukunimi} ${oppija.etunimet} (${oppija.hetu.getOrElse("EI HETUA")})" in {
+        val expectedOoData = getOpiskeluoikeus(oppija.oid, schema.OpiskeluoikeudenTyyppi.perusopetus.koodiarvo)
+
+        val expectedSuoritusDatat = expectedOoData.suoritukset.collect {
+          case s: schema.NuortenPerusopetuksenOppimääränSuoritus => s
+        }
+
+        val result = hakemuspalveluService.findOppija(oppija.oid)
+
+        result.isRight should be(true)
+
+        result.map(o => {
+          verifyOppija(oppija, o)
+
+          o.opiskeluoikeudet should have length 1
+
+          val actualPeruskouluOo = o.opiskeluoikeudet.collectFirst { case pk: HakemuspalveluPerusopetuksenOppimääränOpiskeluoikeus => pk }.get
+          val actualPeruskouluSuoritukset = actualPeruskouluOo.suoritukset
+
+          verifyOpiskeluoikeusJaSuoritus(actualPeruskouluOo, actualPeruskouluSuoritukset, expectedOoData, expectedSuoritusDatat)
+        })
+      }
+    })
+  }
+
+  "Aikuisten perusopetus" - {
+    val oppijat = Seq(
+      KoskiSpecificMockOppijat.aikuisOpiskelija,
+    )
+
+    oppijat.foreach(oppija => {
+      s"Tiedot oppijasta, jolla aikuisten perusopetuksen oppimäärän opiskeluoikeus, palautetaan ${oppija.sukunimi} ${oppija.etunimet} (${oppija.hetu.getOrElse("EI HETUA")})" in {
+        val expectedOoData = getOpiskeluoikeus(oppija.oid, schema.OpiskeluoikeudenTyyppi.aikuistenperusopetus.koodiarvo)
+
+        val expectedSuoritusDatat = expectedOoData.suoritukset.collect {
+          case s: schema.AikuistenPerusopetuksenOppimääränSuoritus => s
+        }
+
+        val result = hakemuspalveluService.findOppija(oppija.oid)
+
+        result.isRight should be(true)
+
+        result.map(o => {
+          verifyOppija(oppija, o)
+
+          o.opiskeluoikeudet should have length 1
+
+          val actualOo = o.opiskeluoikeudet.collectFirst { case pk: HakemuspalveluAikuistenPerusopetuksenOppimääränOpiskeluoikeus => pk }.get
+          val actualSuoritukset = actualOo.suoritukset
+
+          verifyOpiskeluoikeusJaSuoritus(actualOo, actualSuoritukset, expectedOoData, expectedSuoritusDatat)
+        })
+      }
+    })
+  }
+
+  "Lukio" - {
+    val oppijat = Seq(
+      KoskiSpecificMockOppijat.lukiolainen,
+    )
+
+    oppijat.foreach(oppija => {
+      s"Tiedot oppijasta, jolla lukion oppimäärän opiskeluoikeus, palautetaan ${oppija.sukunimi} ${oppija.etunimet} (${oppija.hetu.getOrElse("EI HETUA")})" in {
+        val expectedOoData = getOpiskeluoikeus(oppija.oid, schema.OpiskeluoikeudenTyyppi.lukiokoulutus.koodiarvo)
+
+        val expectedSuoritusDatat = expectedOoData.suoritukset.collect {
+          case s: schema.LukionOppimääränSuoritus => s
+        }
+
+        val result = hakemuspalveluService.findOppija(oppija.oid)
+
+        result.isRight should be(true)
+
+        result.map(o => {
+          verifyOppija(oppija, o)
+
+          val actualOo = o.opiskeluoikeudet.collectFirst { case pk: HakemuspalveluLukionOppimääränOpiskeluoikeus => pk }.get
+          val actualSuoritukset = actualOo.suoritukset
+
+          verifyOpiskeluoikeusJaSuoritus(actualOo, actualSuoritukset, expectedOoData, expectedSuoritusDatat)
+        })
+      }
+    })
+  }
+
+  "Ammatillinen" - {
+    val oppijat = Seq(
+      KoskiSpecificMockOppijat.ammattilainen,
+    )
+
+    oppijat.foreach(oppija => {
+      s"Tiedot oppijasta, jolla lukion oppimäärän opiskeluoikeus, palautetaan ${oppija.sukunimi} ${oppija.etunimet} (${oppija.hetu.getOrElse("EI HETUA")})" in {
+        val expectedOoData = getOpiskeluoikeus(oppija.oid, schema.OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo)
+
+        val expectedSuoritusDatat = expectedOoData.suoritukset.collect {
+          case s: schema.AmmatillisenTutkinnonSuoritus => s
+        }
+
+        val result = hakemuspalveluService.findOppija(oppija.oid)
+
+        result.isRight should be(true)
+
+        result.map(o => {
+          verifyOppija(oppija, o)
+
+          val actualOo = o.opiskeluoikeudet.collectFirst { case pk: HakemuspalveluAmmatillinenTutkintoOpiskeluoikeus => pk }.get
+          val actualSuoritukset = actualOo.suoritukset
+
+          verifyOpiskeluoikeusJaSuoritus(actualOo, actualSuoritukset, expectedOoData, expectedSuoritusDatat)
+        })
+      }
+    })
+  }
+
   private def makeOpiskeluoikeus(
     alkamispäivä: LocalDate = longTimeAgo,
     oppilaitos: schema.Oppilaitos = schema.Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto),
@@ -307,6 +428,30 @@ class HakemuspalveluServiceSpec
             expectedOoData: schema.YlioppilastutkinnonOpiskeluoikeus,
             expectedSuoritusData: schema.YlioppilastutkinnonSuoritus
             ) => verifyYO(actualOo, actualSuoritus, expectedOoData, expectedSuoritusData)
+          case (
+            actualOo: HakemuspalveluPerusopetuksenOppimääränOpiskeluoikeus,
+            actualSuoritus: HakemuspalveluPerusopetuksenOppimääränSuoritus,
+            expectedOoData: schema.PerusopetuksenOpiskeluoikeus,
+            expectedSuoritusData: schema.PerusopetuksenOppimääränSuoritus
+            ) => verifyPeruskoulu(actualOo, actualSuoritus, expectedOoData, expectedSuoritusData)
+          case (
+            actualOo: HakemuspalveluAikuistenPerusopetuksenOppimääränOpiskeluoikeus,
+            actualSuoritus: HakemuspalveluAikuistenPerusopetuksenOppimääränSuoritus,
+            expectedOoData: schema.AikuistenPerusopetuksenOpiskeluoikeus,
+            expectedSuoritusData: schema.AikuistenPerusopetuksenOppimääränSuoritus
+            ) => verifyAikuistenPerusopetus(actualOo, actualSuoritus, expectedOoData, expectedSuoritusData)
+          case (
+            actualOo: HakemuspalveluLukionOppimääränOpiskeluoikeus,
+            actualSuoritus: HakemuspalveluLukionOppimääränSuoritus,
+            expectedOoData: schema.LukionOpiskeluoikeus,
+            expectedSuoritusData: schema.LukionOppimääränSuoritus
+            ) => verifyLukio(actualOo, actualSuoritus, expectedOoData, expectedSuoritusData)
+          case (
+            actualOo: HakemuspalveluAmmatillinenTutkintoOpiskeluoikeus,
+            actualSuoritus: HakemuspalveluAmmatillisenTutkinnonSuoritus,
+            expectedOoData: schema.AmmatillinenOpiskeluoikeus,
+            expectedSuoritusData: schema.AmmatillisenTutkinnonSuoritus
+            ) => verifyAmmatillinen(actualOo, actualSuoritus, expectedOoData, expectedSuoritusData)
           case _ => fail(s"Palautettiin tunnistamattoman tyyppistä dataa actual: (${actualOo.getClass.getName},${actualSuoritus.getClass.getName}), expected:(${expectedOoData.getClass.getName},${expectedSuoritusData.getClass.getName})")
         }
     }
@@ -357,15 +502,108 @@ class HakemuspalveluServiceSpec
   ): Unit = {
     verifyKorkeakouluOpiskeluoikeudenKentät(actualOo, expectedOoData)
 
-    actualSuoritus.tyyppi.koodiarvo should equal(expectedSuoritusData.tyyppi.koodiarvo)
-    actualSuoritus.koulutusmoduuli.tunniste.koodiarvo should equal(expectedSuoritusData.koulutusmoduuli.tunniste.koodiarvo)
-
     (actualSuoritus, expectedSuoritusData) match {
       case (actualSuoritus: HakemuspalveluKorkeakoulututkinnonSuoritus, expectedSuoritusData: schema.KorkeakoulututkinnonSuoritus) =>
         actualSuoritus.koulutusmoduuli.koulutustyyppi should equal(expectedSuoritusData.koulutusmoduuli.koulutustyyppi)
         actualSuoritus.koulutusmoduuli.virtaNimi should equal(expectedSuoritusData.koulutusmoduuli.virtaNimi)
       case _ => fail(s"Palautettiin tunnistamattoman tyyppistä suoritusdataa actual: (${actualSuoritus.getClass.getName}), expected:(${expectedSuoritusData.getClass.getName})")
     }
+  }
+
+  private def verifyPeruskoulu(
+    actualOo: HakemuspalveluPerusopetuksenOppimääränOpiskeluoikeus,
+    actualSuoritus: HakemuspalveluPerusopetuksenOppimääränSuoritus,
+    expectedOoData: schema.PerusopetuksenOpiskeluoikeus,
+    expectedSuoritusData: schema.PerusopetuksenOppimääränSuoritus
+  ): Unit = {
+    verifyPeruskouluOpiskeluoikeudenKentät(actualOo, expectedOoData)
+
+    (actualSuoritus, expectedSuoritusData) match {
+      case (actualSuoritus: HakemuspalveluPerusopetuksenOppimääränSuoritus, expectedSuoritusData: schema.PerusopetuksenOppimääränSuoritus) =>
+        actualSuoritus.tyyppi.koodiarvo should equal(expectedSuoritusData.tyyppi.koodiarvo)
+        actualSuoritus.koulutusmoduuli.tunniste.koodiarvo should equal(expectedSuoritusData.koulutusmoduuli.tunniste.koodiarvo)
+      case _ => fail(s"Palautettiin tunnistamattoman tyyppistä suoritusdataa actual: (${actualSuoritus.getClass.getName}), expected:(${expectedSuoritusData.getClass.getName})")
+    }
+  }
+
+
+  private def verifyAikuistenPerusopetus(
+    actualOo: HakemuspalveluAikuistenPerusopetuksenOppimääränOpiskeluoikeus,
+    actualSuoritus: HakemuspalveluAikuistenPerusopetuksenOppimääränSuoritus,
+    expectedOoData: schema.AikuistenPerusopetuksenOpiskeluoikeus,
+    expectedSuoritusData: schema.AikuistenPerusopetuksenOppimääränSuoritus
+  ): Unit = {
+    verifyAikuistenPeruskouluOpiskeluoikeudenKentät(actualOo, expectedOoData)
+
+    (actualSuoritus, expectedSuoritusData) match {
+      case (actualSuoritus: HakemuspalveluAikuistenPerusopetuksenOppimääränSuoritus, expectedSuoritusData: schema.PerusopetuksenOppimääränSuoritus) =>
+        actualSuoritus.tyyppi.koodiarvo should equal(expectedSuoritusData.tyyppi.koodiarvo)
+        actualSuoritus.koulutusmoduuli.tunniste.koodiarvo should equal(expectedSuoritusData.koulutusmoduuli.tunniste.koodiarvo)
+      case _ => fail(s"Palautettiin tunnistamattoman tyyppistä suoritusdataa actual: (${actualSuoritus.getClass.getName}), expected:(${expectedSuoritusData.getClass.getName})")
+    }
+  }
+
+  private def verifyLukio(
+    actualOo: HakemuspalveluLukionOppimääränOpiskeluoikeus,
+    actualSuoritus: HakemuspalveluLukionOppimääränSuoritus,
+    expectedOoData: schema.LukionOpiskeluoikeus,
+    expectedSuoritusData: schema.LukionOppimääränSuoritus
+  ): Unit = {
+    verifyLukionOpiskeluoikeudenKentät(actualOo, expectedOoData)
+
+    (actualSuoritus, expectedSuoritusData) match {
+      case (actualSuoritus: HakemuspalveluLukionOppimääränSuoritus, expectedSuoritusData: schema.LukionOppimääränSuoritus2015) =>
+        actualSuoritus.tyyppi.koodiarvo shouldEqual expectedSuoritusData.tyyppi.koodiarvo
+        actualSuoritus.koulutusmoduuli.tunniste.koodiarvo should equal(expectedSuoritusData.koulutusmoduuli.tunniste.koodiarvo)
+      case (actualSuoritus: HakemuspalveluLukionOppimääränSuoritus, expectedSuoritusData: schema.LukionOppimääränSuoritus2019) =>
+        actualSuoritus.tyyppi.koodiarvo should equal(expectedSuoritusData.tyyppi.koodiarvo)
+        actualSuoritus.koulutusmoduuli.tunniste.koodiarvo should equal(expectedSuoritusData.koulutusmoduuli.tunniste.koodiarvo)
+      case _ => fail(s"Palautettiin tunnistamattoman tyyppistä suoritusdataa actual: (${actualSuoritus.getClass.getName}), expected:(${expectedSuoritusData.getClass.getName})")
+    }
+  }
+
+  private def verifyAmmatillinen(
+    actualOo: HakemuspalveluAmmatillinenTutkintoOpiskeluoikeus,
+    actualSuoritus: HakemuspalveluAmmatillisenTutkinnonSuoritus,
+    expectedOoData: schema.AmmatillinenOpiskeluoikeus,
+    expectedSuoritusData: schema.AmmatillisenTutkinnonSuoritus
+  ): Unit = {
+    verifyAmmatillisenOpiskeluoikeudenKentät(actualOo, expectedOoData)
+
+    (actualSuoritus, expectedSuoritusData) match {
+      case (actualSuoritus: HakemuspalveluAmmatillisenTutkinnonSuoritus, expectedSuoritusData: schema.AmmatillisenTutkinnonSuoritus) =>
+        actualSuoritus.koulutusmoduuli.tunniste.koodiarvo should equal(expectedSuoritusData.koulutusmoduuli.tunniste.koodiarvo)
+        actualSuoritus.koulutusmoduuli.koulutustyyppi should equal(expectedSuoritusData.koulutusmoduuli.koulutustyyppi)
+      case _ => fail(s"Palautettiin tunnistamattoman tyyppistä suoritusdataa actual: (${actualSuoritus.getClass.getName}), expected:(${expectedSuoritusData.getClass.getName})")
+    }
+  }
+
+  private def verifyPeruskouluOpiskeluoikeudenKentät(
+    actualOo: HakemuspalveluPerusopetuksenOppimääränOpiskeluoikeus,
+    expectedOoData: schema.PerusopetuksenOpiskeluoikeus
+  ): Unit = {
+    verifyOpiskeluoikeudenKentät(actualOo, expectedOoData)
+  }
+
+  private def verifyAikuistenPeruskouluOpiskeluoikeudenKentät(
+    actualOo: HakemuspalveluAikuistenPerusopetuksenOppimääränOpiskeluoikeus,
+    expectedOoData: schema.AikuistenPerusopetuksenOpiskeluoikeus
+  ): Unit = {
+    verifyOpiskeluoikeudenKentät(actualOo, expectedOoData)
+  }
+
+  private def verifyLukionOpiskeluoikeudenKentät(
+    actualOo: HakemuspalveluLukionOppimääränOpiskeluoikeus,
+    expectedOoData: schema.LukionOpiskeluoikeus
+  ): Unit = {
+    verifyOpiskeluoikeudenKentät(actualOo, expectedOoData)
+  }
+
+  private def verifyAmmatillisenOpiskeluoikeudenKentät(
+    actualOo: HakemuspalveluAmmatillinenTutkintoOpiskeluoikeus,
+    expectedOoData: schema.AmmatillinenOpiskeluoikeus
+  ): Unit = {
+    verifyOpiskeluoikeudenKentät(actualOo, expectedOoData)
   }
 
   private def verifyKorkeakouluOpiskeluoikeudenKentät(

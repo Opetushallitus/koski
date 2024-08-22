@@ -12,7 +12,7 @@ case class HakemuspalveluAmmatillinenTutkintoOpiskeluoikeus(
   koulutustoimija: Option[HakemuspalveluKoulutustoimija],
   tila: HakemuspalveluOpiskeluoikeudenTila,
   suoritukset: List[HakemuspalveluAmmatillisenTutkinnonSuoritus],
-  @KoodistoKoodiarvo(schema.OpiskeluoikeudenTyyppi.perusopetus.koodiarvo)
+  @KoodistoKoodiarvo(schema.OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo)
   tyyppi: schema.Koodistokoodiviite,
 ) extends HakemuspalveluKoskeenTallennettavaOpiskeluoikeus {
 
@@ -30,10 +30,11 @@ case class HakemuspalveluAmmatillisenTutkinnonSuoritus(
   koulutusmoduuli: HakemuspalveluAmmatillinenTutkinto,
   toimipiste: Option[HakemuspalveluToimipiste],
   vahvistus: Option[HakemuspalveluVahvistus],
-  @KoodistoKoodiarvo("perusopetuksenoppimaara")
+  @KoodistoKoodiarvo("ammatillinentutkinto")
   tyyppi: schema.Koodistokoodiviite,
 ) extends HakemuspalveluSuoritus
 
 case class HakemuspalveluAmmatillinenTutkinto(
-  tunniste: HakemuspalveluKoodistokoodiviite
+  tunniste: HakemuspalveluKoodistokoodiviite,
+  koulutustyyppi: Option[schema.Koodistokoodiviite]
 ) extends HakemuspalveluSuorituksenKoulutusmoduuli
