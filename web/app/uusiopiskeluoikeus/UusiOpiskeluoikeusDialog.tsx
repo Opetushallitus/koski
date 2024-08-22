@@ -34,8 +34,10 @@ export const UusiOpiskeluoikeusDialog = (
           <UusiOpiskeluoikeusForm onResult={setResult} />
         </ModalBody>
         <ModalFooter>
-          <FlatButton onClick={props.onClose}>{t('Peruuta')}</FlatButton>
-          <RaisedButton onClick={onSubmit} disabled={!result}>
+          <FlatButton onClick={props.onClose} testId="cancel">
+            {t('Peruuta')}
+          </FlatButton>
+          <RaisedButton onClick={onSubmit} disabled={!result} testId="submit">
             {t('Lisää opiskeluoikeus')}
           </RaisedButton>
         </ModalFooter>

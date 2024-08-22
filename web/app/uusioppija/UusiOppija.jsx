@@ -60,6 +60,7 @@ export const UusiOppija = ({ hetu, oid }) => {
           className="koski-button"
           disabled={submitEnabledP.not()}
           onClick={() => submitBus.push()}
+          data-testid="uusiOpiskeluoikeus.modal.submit"
         >
           {buttonTextP}
         </button>
