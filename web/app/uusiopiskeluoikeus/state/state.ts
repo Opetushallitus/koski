@@ -13,13 +13,13 @@ import { TutkintoPeruste } from '../../types/fi/oph/koski/tutkinto/TutkintoPerus
 import { OpiskeluoikeusClass } from '../../types/fi/oph/koski/typemodel/OpiskeluoikeusClass'
 import * as C from '../../util/constraints'
 import { fetchOpiskeluoikeusClassMapping } from '../../util/koskiApi'
-import { createOpiskeluoikeus } from '../opintooikeus/createOpiskeluoikeus'
-import { hackSuoritusMappingForPreIB2019 } from '../opintooikeus/ibTutkinto'
-import { opiskeluoikeudenLisätiedotClass } from './hooks'
+import { createOpiskeluoikeus } from '../opiskeluoikeusCreator'
+import { hackSuoritusMappingForPreIB2019 } from '../opiskeluoikeusCreator/ibTutkinto'
 import {
   isVieraanKielenOppiaine,
   isÄidinkielenOppiaine
-} from '../opintooikeus/yleissivistavat'
+} from '../opiskeluoikeusCreator/yleissivistavat'
+import { opiskeluoikeudenLisätiedotClass } from './opiskeluoikeudenLisätiedotClass'
 
 export type UusiOpiskeluoikeusDialogState = {
   hankintakoulutus: DialogField<Hankintakoulutus>

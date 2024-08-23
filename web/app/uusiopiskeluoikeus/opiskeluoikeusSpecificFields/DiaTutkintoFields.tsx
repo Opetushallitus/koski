@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { t } from '../../i18n/i18n'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { DialogPäätasonSuoritusSelect } from '../components/DialogPaatasonSuoritusSelect'
-import { SuoritusFieldsProps } from './SuoritusFields'
+import { SuoritusFieldsProps } from '.'
 
 const saksa = Koodistokoodiviite({
   koodistoUri: 'kieli',

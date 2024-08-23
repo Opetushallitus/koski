@@ -3,7 +3,7 @@ import { t } from '../../i18n/i18n'
 import { DialogPäätasonSuoritusSelect } from '../components/DialogPaatasonSuoritusSelect'
 import { DialogPerusteSelect } from '../components/DialogPerusteSelect'
 import { YleissivistäväOppiaineSelect } from '../components/YleissivistäväOppiaineSelect'
-import { SuoritusFieldsProps } from './SuoritusFields'
+import { SuoritusFieldsProps } from '.'
 
 const piilotettavatPtsTyypit = ['perusopetuksenvuosiluokka']
 

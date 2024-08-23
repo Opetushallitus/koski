@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react'
-import { DialogPerusteSelect } from '../components/DialogPerusteSelect'
-import { SuoritusFieldsProps } from './SuoritusFields'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
+import { DialogPerusteSelect } from '../components/DialogPerusteSelect'
+import { SuoritusFieldsProps } from '.'
 
 const päätasonSuoritus = Koodistokoodiviite({
-  koodiarvo: 'luva',
+  koodiarvo: 'perusopetuksenlisaopetus',
   koodistoUri: 'suorituksentyyppi'
 })
 
-export const LukioonValmistavaFields = (props: SuoritusFieldsProps) => {
+export const PerusopetuksenLisäopetusFields = (props: SuoritusFieldsProps) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => props.state.päätasonSuoritus.set(päätasonSuoritus), [])
-  return <DialogPerusteSelect state={props.state} default="OPH-4958-2020" />
+  return <DialogPerusteSelect state={props.state} default="105/011/2014" />
 }

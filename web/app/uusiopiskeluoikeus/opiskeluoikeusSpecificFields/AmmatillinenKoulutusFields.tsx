@@ -20,9 +20,9 @@ import {
   createAmmatilliseenTehtäväänValmistavaKoulutus,
   createPaikallinenMuuAmmatillinenKoulutus,
   createTutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus
-} from '../opintooikeus/ammatillinenTutkinto'
+} from '../opiskeluoikeusCreator/ammatillinenTutkinto'
 import { UusiOpiskeluoikeusDialogState } from '../state/state'
-import { SuoritusFieldsProps } from './SuoritusFields'
+import { SuoritusFieldsProps } from '.'
 import { TestIdLayer } from '../../appstate/useTestId'
 
 export const AmmatillinenKoulutusFields = (props: SuoritusFieldsProps) => {

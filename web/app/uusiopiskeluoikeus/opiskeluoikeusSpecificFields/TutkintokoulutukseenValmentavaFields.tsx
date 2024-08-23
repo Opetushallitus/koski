@@ -3,7 +3,7 @@ import { t } from '../../i18n/i18n'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { DialogKoodistoSelect } from '../components/DialogKoodistoSelect'
 import { DialogPerusteSelect } from '../components/DialogPerusteSelect'
-import { SuoritusFieldsProps } from './SuoritusFields'
+import { SuoritusFieldsProps } from '.'
 
 const päätasonSuoritus = Koodistokoodiviite({
   koodiarvo: 'tuvakoulutuksensuoritus',

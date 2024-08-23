@@ -11,16 +11,14 @@ import { DialogSelect } from './components/DialogSelect'
 import { HankintakoulutusSelect } from './components/HankintakoulutusSelect'
 import { OppilaitosSearch } from './components/OppilaitosSearch'
 import { OppilaitosSelect, OrgType } from './components/OppilaitosSelect'
-import {
-  useDefaultKieli,
-  useJotpaAsianumero,
-  useOpintojenRahoitus,
-  useOpiskeluoikeudenTilat,
-  useOpiskeluoikeustyypit
-} from './state/hooks'
+import { prefillOsasuoritukset } from './opiskeluoikeusCreator'
+import { useDefaultKieli } from './state/defaultKieli'
+import { useJotpaAsianumero } from './state/jotpaAsianumero'
+import { useOpintojenRahoitus } from './state/opintojenRahoitus'
+import { useOpiskeluoikeudenTilat } from './state/opiskeluoikeudenTilat'
+import { useOpiskeluoikeustyypit } from './state/opiskeluoikeustyypit'
 import { useUusiOpiskeluoikeusDialogState } from './state/state'
-import { SuoritusFields } from './suoritus/SuoritusFields'
-import { prefillOsasuoritukset } from './opintooikeus/createOpiskeluoikeus'
+import { SuoritusFields } from './opiskeluoikeusSpecificFields'
 
 export type UusiOpiskeluoikeusFormProps = {
   onResult: (opiskeluoikeus?: Opiskeluoikeus) => void

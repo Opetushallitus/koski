@@ -2,8 +2,8 @@ import React, { useCallback } from 'react'
 import { t } from '../../i18n/i18n'
 import { DialogPäätasonSuoritusSelect } from '../components/DialogPaatasonSuoritusSelect'
 import { DialogPerusteSelect } from '../components/DialogPerusteSelect'
-import { lukionDiaarinumerot2019 } from '../opintooikeus/lukio'
-import { SuoritusFieldsProps } from './SuoritusFields'
+import { lukionDiaarinumerot2019 } from '../opiskeluoikeusCreator/lukio'
+import { SuoritusFieldsProps } from '.'
 import { YleissivistäväOppiaineSelect } from '../components/YleissivistäväOppiaineSelect'
 
 export const LukioKoulutusFields = (props: SuoritusFieldsProps) => {

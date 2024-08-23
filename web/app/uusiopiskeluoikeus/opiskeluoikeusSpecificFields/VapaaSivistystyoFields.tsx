@@ -3,7 +3,7 @@ import { t } from '../../i18n/i18n'
 import { DialogKoodistoSelect } from '../components/DialogKoodistoSelect'
 import { DialogPäätasonSuoritusSelect } from '../components/DialogPaatasonSuoritusSelect'
 import { DialogPerusteSelect } from '../components/DialogPerusteSelect'
-import { SuoritusFieldsProps } from './SuoritusFields'
+import { SuoritusFieldsProps } from '.'
 import { KoodistokoodiviiteKoodistonNimellä } from '../../appstate/koodisto'
 
 export const VapaaSivistystyöFields = (props: SuoritusFieldsProps) => (

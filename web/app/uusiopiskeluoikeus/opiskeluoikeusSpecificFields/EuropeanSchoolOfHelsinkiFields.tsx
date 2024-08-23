@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { DialogKoodistoSelect } from '../components/DialogKoodistoSelect'
-import { SuoritusFieldsProps } from './SuoritusFields'
+import { SuoritusFieldsProps } from '.'
 import { t } from '../../i18n/i18n'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
 

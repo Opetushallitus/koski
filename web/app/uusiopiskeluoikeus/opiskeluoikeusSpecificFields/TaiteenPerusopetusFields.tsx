@@ -6,9 +6,9 @@ import { koodistokoodiviiteId } from '../../util/koodisto'
 import { DialogKoodistoSelect } from '../components/DialogKoodistoSelect'
 import { DialogPerusteSelect } from '../components/DialogPerusteSelect'
 import { DialogSelect } from '../components/DialogSelect'
-import { usePäätasonSuoritustyypit } from '../state/hooks'
+import { usePäätasonSuoritustyypit } from '../state/päätasonSuoritustyypit'
 import { UusiOpiskeluoikeusDialogState } from '../state/state'
-import { SuoritusFieldsProps } from './SuoritusFields'
+import { SuoritusFieldsProps } from '.'
 
 export const TaiteenPerusopetusFields = (props: SuoritusFieldsProps) => {
   const { suoritustyypit, perusteenDiaarinumero } =
