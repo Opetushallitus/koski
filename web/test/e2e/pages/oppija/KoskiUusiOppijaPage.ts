@@ -5,6 +5,9 @@ import { Button } from './uiV2builder/Button'
 import { Checkbox } from './uiV2builder/Checkbox'
 import { Input } from './uiV2builder/Input'
 import { Select } from './uiV2builder/Select'
+import { formatFinnishDate } from '../../../../app/date/date'
+import { RadioButtons } from './uiV2builder/RadioButtons'
+import { DateInput } from './uiV2builder/DateInput'
 
 interface BaseOppija {
   etunimet: string
@@ -18,7 +21,7 @@ interface BaseOppija {
   opintokokonaisuus?: string
   osaamismerkki?: string
   oppimäärä?: string
-  opintojenMaksuttomuus?: string
+  opintojenMaksuttomuus?: 'eiOvlPiirissä' | 'maksuton' | 'maksullinen'
   peruste?: string
   rahoitus?: string
   suoritustyyppi?: string
@@ -99,22 +102,21 @@ export class KoskiUusiOppijaPage extends KoskiOppijaPageV2<
     if (oppija.opintokokonaisuus) {
       await $.opintokokonaisuus.setByLabel(oppija.opintokokonaisuus)
     }
-    // TODO: Aloituspäivä
-    // if (oppija.aloituspäivä) {
-    //  ...
-    // }
+    if (oppija.aloituspäivä) {
+      await $.aloituspäivä.set(formatFinnishDate(oppija.aloituspäivä)!)
+    }
     if (oppija.oppimäärä) {
       await $.oppimäärä.setByLabel(oppija.oppimäärä)
     }
-    // if (oppija.peruste) {
-    //   await this.peruste.selectOptionByClick(oppija.peruste)
-    // }
-    // if (oppija.rahoitus) {
-    //   await this.opintojenRahoitus.selectOptionByClick(oppija.rahoitus)
-    // }
-    // if (oppija.opintojenMaksuttomuus) {
-    //   await this.maksuttomuus.selectOptionByLabel(oppija.opintojenMaksuttomuus)
-    // }
+    if (oppija.peruste) {
+      await $.peruste.setByLabel(oppija.peruste)
+    }
+    if (oppija.rahoitus) {
+      await $.opintojenRahoitus.setByLabel(oppija.rahoitus)
+    }
+    if (oppija.opintojenMaksuttomuus) {
+      await $.maksuton.set(oppija.opintojenMaksuttomuus)
+    }
     if (oppija.suoritustyyppi) {
       await $.suoritustyyppi.setByLabel(oppija.suoritustyyppi)
     }
@@ -125,11 +127,9 @@ export class KoskiUusiOppijaPage extends KoskiOppijaPageV2<
     if (oppija.osaamismerkki) {
       await $.osaamismerkki.setByLabel(oppija.osaamismerkki)
     }
-    // if (oppija.opiskeluoikeudenTila) {
-    //   await this.opiskeluoikeudenTila.selectOptionByClick(
-    //     oppija.opiskeluoikeudenTila
-    //   )
-    // }
+    if (oppija.opiskeluoikeudenTila) {
+      await $.tila.setByLabel(oppija.opiskeluoikeudenTila)
+    }
     if (oppija.jotpaAsianumero) {
       await $.jotpaAsianumero.setByLabel(oppija.jotpaAsianumero)
     }
@@ -163,6 +163,8 @@ const UusiOpiskeluoikeusFormControls = {
   tila: Select,
   opintojenRahoitus: Select,
   jotpaAsianumero: Select,
+  aloituspäivä: DateInput,
+  maksuton: RadioButtons('eiOvlPiirissä', 'maksuton', 'maksullinen'),
   submit: Button
 }
 

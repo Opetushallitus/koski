@@ -601,7 +601,7 @@ function AddOppijaPage() {
     },
     selectAloituspäivä: function (date) {
       return pageApi.setInputValue(
-        '[data-testid="uusiOpiskeluoikeus.modal.date.edit.input"]',
+        '[data-testid="uusiOpiskeluoikeus.modal.aloituspäivä.edit.input"]',
         date
       )
     },

@@ -115,6 +115,7 @@ export const UusiOpiskeluoikeusForm = (props: UusiOpiskeluoikeusFormProps) => {
           <DateEdit
             value={state.aloituspäivä.value}
             onChange={state.aloituspäivä.set}
+            testId="aloituspäivä"
           />
         </label>
       )}

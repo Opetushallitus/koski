@@ -150,8 +150,7 @@ test.describe('Perusopetus', () => {
         )
       })
     })
-    // TODO: Skipattu, koska todella flakyt testit ilmeisesti prefill-apin hitauden ja palauttaman ison datan takia
-    test.describe.skip('Päättövaiheen opinnot', async () => {
+    test.describe('Päättövaiheen opinnot', async () => {
       test.beforeEach(async ({ perusopetusOppijaPage, page }) => {
         await perusopetusOppijaPage.avaaMuokkausnäkymä()
         await page.waitForLoadState('networkidle')
