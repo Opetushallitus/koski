@@ -6,9 +6,10 @@ import { Esiopetus } from '../../types/fi/oph/koski/schema/Esiopetus'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { NuortenPerusopetuksenOpiskeluoikeudenTila } from '../../types/fi/oph/koski/schema/NuortenPerusopetuksenOpiskeluoikeudenTila'
 import { NuortenPerusopetuksenOpiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/NuortenPerusopetuksenOpiskeluoikeusjakso'
-import { VARHAISKASVATUKSEN_TOIMIPAIKKA } from '../../uusioppija/esiopetuksenSuoritus'
 import { Hankintakoulutus } from '../state/state'
 import { toOppilaitos, toToimipiste } from './utils'
+
+export const VARHAISKASVATUKSEN_TOIMIPAIKKA = 'VARHAISKASVATUKSEN_TOIMIPAIKKA'
 
 // Esiopetus
 export const createEsiopetuksenOpiskeluoikeus = (
