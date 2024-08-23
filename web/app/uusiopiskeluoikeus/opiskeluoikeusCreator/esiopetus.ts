@@ -13,14 +13,15 @@ export const VARHAISKASVATUKSEN_TOIMIPAIKKA = 'VARHAISKASVATUKSEN_TOIMIPAIKKA'
 
 // Esiopetus
 export const createEsiopetuksenOpiskeluoikeus = (
-  peruste: Peruste,
+  peruste: Peruste | undefined,
   organisaatio: OrganisaatioHierarkia,
   alku: string,
   tila: NuortenPerusopetuksenOpiskeluoikeusjakso['tila'],
-  suorituskieli: Koodistokoodiviite<'kieli'>,
+  suorituskieli?: Koodistokoodiviite<'kieli'>,
   järjestämismuoto?: Koodistokoodiviite<'vardajarjestamismuoto', any>,
   hankintakoulutus?: Hankintakoulutus
 ) => {
+  if (!peruste || !suorituskieli) return undefined
   if (hankintakoulutus && !järjestämismuoto) return undefined
 
   return EsiopetuksenOpiskeluoikeus({

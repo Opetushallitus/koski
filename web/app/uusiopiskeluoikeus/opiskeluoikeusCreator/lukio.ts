@@ -31,17 +31,26 @@ export const lukionDiaarinumerot2019 = ['OPH-2263-2019', 'OPH-2267-2019']
 
 export const createLukionOpiskeluoikeus = (
   suorituksenTyyppi: Koodistokoodiviite<'suorituksentyyppi'>,
-  peruste: Peruste,
+  peruste: Peruste | undefined,
   organisaatio: OrganisaatioHierarkia,
   alku: string,
   tila: LukionOpiskeluoikeusjakso['tila'],
-  suorituskieli: Koodistokoodiviite<'kieli'>,
-  opintojenRahoitus: Koodistokoodiviite<'opintojenrahoitus', any>,
-  maksuton: boolean | null,
+  suorituskieli?: Koodistokoodiviite<'kieli'>,
+  opintojenRahoitus?: Koodistokoodiviite<'opintojenrahoitus', any>,
+  maksuton?: boolean | null,
   oppiaine?: Koodistokoodiviite<'koskioppiaineetyleissivistava', any>,
   kieliaineenKieli?: Koodistokoodiviite<'kielivalikoima'>,
   äidinkielenKieli?: Koodistokoodiviite<'oppiaineaidinkielijakirjallisuus'>
 ) => {
+  if (
+    !peruste ||
+    !suorituskieli ||
+    !opintojenRahoitus ||
+    maksuton === undefined
+  ) {
+    return undefined
+  }
+
   const suoritus = createLukionPäätasonSuoritus(
     suorituksenTyyppi,
     peruste,

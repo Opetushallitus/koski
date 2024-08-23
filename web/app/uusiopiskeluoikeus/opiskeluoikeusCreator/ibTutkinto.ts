@@ -16,10 +16,14 @@ export const createIBOpiskeluoikeus = (
   organisaatio: OrganisaatioHierarkia,
   alku: string,
   tila: DIAOpiskeluoikeusjakso['tila'],
-  opintojenRahoitus: Koodistokoodiviite<'opintojenrahoitus', any>,
-  suorituskieli: Koodistokoodiviite<'kieli'>,
-  maksuton: boolean | null
+  opintojenRahoitus?: Koodistokoodiviite<'opintojenrahoitus', any>,
+  suorituskieli?: Koodistokoodiviite<'kieli'>,
+  maksuton?: boolean | null
 ) => {
+  if (!opintojenRahoitus || !suorituskieli || maksuton === undefined) {
+    return undefined
+  }
+
   const suoritus = createIBPäätasonSuoritus(
     suorituksenTyyppi,
     suorituskieli,

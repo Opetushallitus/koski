@@ -11,14 +11,16 @@ import { toOppilaitos, toToimipiste, maksuttomuuslisätiedot } from './utils'
 
 // Perusopetuksen lisäopetus
 export const createPerusopetuksenLisäopetuksenOpiskeluoikeus = (
-  peruste: Peruste,
+  peruste: Peruste | undefined,
   organisaatio: OrganisaatioHierarkia,
   alku: string,
   tila: NuortenPerusopetuksenOpiskeluoikeusjakso['tila'],
-  suorituskieli: Koodistokoodiviite<'kieli'>,
-  maksuton: boolean | null
-) =>
-  PerusopetuksenLisäopetuksenOpiskeluoikeus({
+  suorituskieli?: Koodistokoodiviite<'kieli'>,
+  maksuton?: boolean | null
+) => {
+  if (!peruste || maksuton === undefined || !suorituskieli) return undefined
+
+  return PerusopetuksenLisäopetuksenOpiskeluoikeus({
     oppilaitos: toOppilaitos(organisaatio),
     tila: NuortenPerusopetuksenOpiskeluoikeudenTila({
       opiskeluoikeusjaksot: [
@@ -40,3 +42,4 @@ export const createPerusopetuksenLisäopetuksenOpiskeluoikeus = (
       PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot
     )
   })
+}

@@ -22,15 +22,19 @@ import { toOppilaitos, toToimipiste } from './utils'
 // Taiteen perusopetus
 export const createTaiteenPerusopetuksenOpiskeluoikeus = (
   suorituksenTyyppi: Koodistokoodiviite<'suorituksentyyppi'>,
-  peruste: Peruste,
+  peruste: Peruste | undefined,
   organisaatio: OrganisaatioHierarkia,
   alku: string,
   tila: TaiteenPerusopetuksenOpiskeluoikeusjakso['tila'],
-  oppimäärä: Koodistokoodiviite<'taiteenperusopetusoppimaara'>,
-  taiteenala: Koodistokoodiviite<'taiteenperusopetustaiteenala'>,
-  koulutuksenToteutustapa: Koodistokoodiviite<'taiteenperusopetuskoulutuksentoteutustapa'>
-) =>
-  TaiteenPerusopetuksenOpiskeluoikeus({
+  oppimäärä?: Koodistokoodiviite<'taiteenperusopetusoppimaara'>,
+  taiteenala?: Koodistokoodiviite<'taiteenperusopetustaiteenala'>,
+  koulutuksenToteutustapa?: Koodistokoodiviite<'taiteenperusopetuskoulutuksentoteutustapa'>
+) => {
+  if (!peruste || !oppimäärä || !taiteenala || !koulutuksenToteutustapa) {
+    return undefined
+  }
+
+  return TaiteenPerusopetuksenOpiskeluoikeus({
     oppilaitos: toOppilaitos(organisaatio),
     oppimäärä,
     koulutuksenToteutustapa,
@@ -48,6 +52,7 @@ export const createTaiteenPerusopetuksenOpiskeluoikeus = (
       )
     ]
   })
+}
 
 export const createTaiteenPerusopetuksenPäätasonSuoritus = (
   suorituksenTyyppi: Koodistokoodiviite<'suorituksentyyppi'>,

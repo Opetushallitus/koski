@@ -11,9 +11,11 @@ export const createEuropeanSchoolOfHelsinkiOpiskeluoikeus = (
   organisaatio: OrganisaatioHierarkia,
   alku: string,
   tila: EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso['tila'],
-  curriculum: Koodistokoodiviite<'europeanschoolofhelsinkicurriculum'>
-) =>
-  EuropeanSchoolOfHelsinkiOpiskeluoikeus({
+  curriculum?: Koodistokoodiviite<'europeanschoolofhelsinkicurriculum'>
+) => {
+  if (!curriculum) return undefined
+
+  return EuropeanSchoolOfHelsinkiOpiskeluoikeus({
     oppilaitos: toOppilaitos(organisaatio),
     tila: EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila({
       opiskeluoikeusjaksot: [
@@ -37,3 +39,4 @@ export const createEuropeanSchoolOfHelsinkiOpiskeluoikeus = (
       })
     ]
   })
+}

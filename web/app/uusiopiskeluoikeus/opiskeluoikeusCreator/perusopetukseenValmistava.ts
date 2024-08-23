@@ -11,13 +11,15 @@ import { toOppilaitos, toToimipiste } from './utils'
 
 // Perusopetukseen valmistava opetus
 export const createPerusopetukseenValmistavaOpiskeluoikeus = (
-  peruste: Peruste,
+  peruste: Peruste | undefined,
   organisaatio: OrganisaatioHierarkia,
   alku: string,
   tila: NuortenPerusopetuksenOpiskeluoikeusjakso['tila'],
-  suorituskieli: Koodistokoodiviite<'kieli'>
-) =>
-  PerusopetukseenValmistavanOpetuksenOpiskeluoikeus({
+  suorituskieli: Koodistokoodiviite<'kieli'> | undefined
+) => {
+  if (!peruste || !suorituskieli) return undefined
+
+  return PerusopetukseenValmistavanOpetuksenOpiskeluoikeus({
     oppilaitos: toOppilaitos(organisaatio),
     tila: PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenTila({
       opiskeluoikeusjaksot: [
@@ -34,3 +36,4 @@ export const createPerusopetukseenValmistavaOpiskeluoikeus = (
       })
     ]
   })
+}

@@ -14,16 +14,26 @@ import { toOppilaitos, toToimipiste } from './utils'
 
 // Tutkintokoulutukseen valmentava koulutus
 export const createTutkintokoulutukseenValmentavanOpiskeluoikeus = (
-  peruste: Peruste,
+  peruste: Peruste | undefined,
   organisaatio: OrganisaatioHierarkia,
   alku: string,
   tila: TutkintokoulutukseenValmentavanOpiskeluoikeusjakso['tila'],
-  opintojenRahoitus: Koodistokoodiviite<'opintojenrahoitus', any>,
-  suorituskieli: Koodistokoodiviite<'kieli'>,
-  tuvaJärjestämislupa: Koodistokoodiviite<'tuvajarjestamislupa'>,
-  maksuton: boolean | null
-) =>
-  TutkintokoulutukseenValmentavanOpiskeluoikeus({
+  opintojenRahoitus?: Koodistokoodiviite<'opintojenrahoitus', any>,
+  suorituskieli?: Koodistokoodiviite<'kieli'>,
+  tuvaJärjestämislupa?: Koodistokoodiviite<'tuvajarjestamislupa'>,
+  maksuton?: boolean | null
+) => {
+  if (
+    !peruste ||
+    !tuvaJärjestämislupa ||
+    !opintojenRahoitus ||
+    !suorituskieli ||
+    maksuton === undefined
+  ) {
+    return undefined
+  }
+
+  return TutkintokoulutukseenValmentavanOpiskeluoikeus({
     oppilaitos: toOppilaitos(organisaatio),
     tila: TutkintokoulutukseenValmentavanOpiskeluoikeudenTila({
       opiskeluoikeusjaksot: [
@@ -50,6 +60,7 @@ export const createTutkintokoulutukseenValmentavanOpiskeluoikeus = (
       maksuton
     )
   })
+}
 
 const createTutkintokoulutukseenValmentavanOpiskeluoikeudenLisätiedot = (
   järjestämislupa: Koodistokoodiviite<'tuvajarjestamislupa'>,

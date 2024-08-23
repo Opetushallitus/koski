@@ -60,7 +60,6 @@ export const createOpiskeluoikeus = (
 ): Opiskeluoikeus | undefined => {
   switch (opiskeluoikeudenTyyppi.koodiarvo) {
     case 'perusopetus':
-      if (!peruste || !suorituskieli) return undefined
       return createPerusopetuksenOpiskeluoikeus(
         suorituksenTyyppi,
         peruste,
@@ -73,7 +72,6 @@ export const createOpiskeluoikeus = (
         äidinkielenKieli
       )
     case 'perusopetukseenvalmistavaopetus':
-      if (!peruste || !suorituskieli) return undefined
       return createPerusopetukseenValmistavaOpiskeluoikeus(
         peruste,
         organisaatio,
@@ -82,7 +80,6 @@ export const createOpiskeluoikeus = (
         suorituskieli
       )
     case 'perusopetuksenlisaopetus':
-      if (!peruste || maksuton === undefined || !suorituskieli) return undefined
       return createPerusopetuksenLisäopetuksenOpiskeluoikeus(
         peruste,
         organisaatio,
@@ -93,14 +90,6 @@ export const createOpiskeluoikeus = (
       )
 
     case 'aikuistenperusopetus':
-      if (
-        !peruste ||
-        maksuton === undefined ||
-        !opintojenRahoitus ||
-        !suorituskieli
-      ) {
-        return undefined
-      }
       return createAikuistenPerusopetuksenOpiskeluoikeus(
         suorituksenTyyppi,
         peruste,
@@ -116,7 +105,6 @@ export const createOpiskeluoikeus = (
       )
 
     case 'esiopetus':
-      if (!peruste || !suorituskieli) return undefined
       return createEsiopetuksenOpiskeluoikeus(
         peruste,
         organisaatio,
@@ -128,15 +116,6 @@ export const createOpiskeluoikeus = (
       )
 
     case 'tuva':
-      if (
-        !peruste ||
-        !tuvaJärjestämislupa ||
-        !opintojenRahoitus ||
-        !suorituskieli ||
-        maksuton === undefined
-      ) {
-        return undefined
-      }
       return createTutkintokoulutukseenValmentavanOpiskeluoikeus(
         peruste,
         organisaatio,
@@ -149,14 +128,6 @@ export const createOpiskeluoikeus = (
       )
 
     case 'muukuinsaanneltykoulutus':
-      if (
-        !opintojenRahoitus ||
-        !opintokokonaisuus ||
-        !jotpaAsianumero ||
-        !suorituskieli
-      ) {
-        return undefined
-      }
       return createMuunKuinSäännellynKoulutuksenOpiskeluoikeus(
         organisaatio,
         alku,
@@ -168,9 +139,6 @@ export const createOpiskeluoikeus = (
       )
 
     case 'taiteenperusopetus':
-      if (!peruste || !tpoOppimäärä || !tpoTaiteenala || !tpoToteutustapa) {
-        return undefined
-      }
       return createTaiteenPerusopetuksenOpiskeluoikeus(
         suorituksenTyyppi,
         peruste,
@@ -198,14 +166,6 @@ export const createOpiskeluoikeus = (
       )
 
     case 'luva':
-      if (
-        !peruste ||
-        !suorituskieli ||
-        !opintojenRahoitus ||
-        maksuton === undefined
-      ) {
-        return undefined
-      }
       return createLukioonValmistavanKoulutuksenOpiskeluoikeus(
         peruste,
         organisaatio,
@@ -217,14 +177,6 @@ export const createOpiskeluoikeus = (
       )
 
     case 'lukiokoulutus':
-      if (
-        !peruste ||
-        !suorituskieli ||
-        !opintojenRahoitus ||
-        maksuton === undefined
-      ) {
-        return undefined
-      }
       return createLukionOpiskeluoikeus(
         suorituksenTyyppi,
         peruste,
@@ -240,9 +192,6 @@ export const createOpiskeluoikeus = (
       )
 
     case 'ammatillinenkoulutus':
-      if (!suorituskieli || !opintojenRahoitus || maksuton === undefined) {
-        return undefined
-      }
       return createAmmatillinenOpiskeluoikeus(
         suorituksenTyyppi,
         suorituskieli,
@@ -259,7 +208,6 @@ export const createOpiskeluoikeus = (
       )
 
     case 'europeanschoolofhelsinki':
-      if (!curriculum) return undefined
       return createEuropeanSchoolOfHelsinkiOpiskeluoikeus(
         organisaatio,
         alku,
@@ -268,13 +216,9 @@ export const createOpiskeluoikeus = (
       )
 
     case 'ebtutkinto':
-      if (!curriculum) return undefined
       return createEBOpiskeluoikeus(organisaatio, alku, tila, curriculum)
 
     case 'diatutkinto':
-      if (!opintojenRahoitus || !suorituskieli || maksuton === undefined) {
-        return undefined
-      }
       return createDIAOpiskeluoikeus(
         suorituksenTyyppi,
         organisaatio,
@@ -286,9 +230,6 @@ export const createOpiskeluoikeus = (
       )
 
     case 'ibtutkinto':
-      if (!opintojenRahoitus || !suorituskieli || maksuton === undefined) {
-        return undefined
-      }
       return createIBOpiskeluoikeus(
         suorituksenTyyppi,
         organisaatio,
@@ -300,8 +241,6 @@ export const createOpiskeluoikeus = (
       )
 
     case 'internationalschool':
-      if (!opintojenRahoitus || !internationalSchoolGrade || !suorituskieli)
-        return undefined
       return createInternationalSchoolOpiskeluoikeus(
         organisaatio,
         alku,

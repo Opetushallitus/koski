@@ -13,12 +13,21 @@ export const createMuunKuinSäännellynKoulutuksenOpiskeluoikeus = (
   organisaatio: OrganisaatioHierarkia,
   alku: string,
   tila: MuunKuinSäännellynKoulutuksenOpiskeluoikeudenJakso['tila'],
-  opintojenRahoitus: Koodistokoodiviite<'opintojenrahoitus', any>,
-  suorituskieli: Koodistokoodiviite<'kieli'>,
-  opintokokonaisuus: Koodistokoodiviite<'opintokokonaisuudet'>,
-  jotpaAsianumero: Koodistokoodiviite<'jotpaasianumero'>
-) =>
-  MuunKuinSäännellynKoulutuksenOpiskeluoikeus({
+  opintojenRahoitus?: Koodistokoodiviite<'opintojenrahoitus', any>,
+  suorituskieli?: Koodistokoodiviite<'kieli'>,
+  opintokokonaisuus?: Koodistokoodiviite<'opintokokonaisuudet'>,
+  jotpaAsianumero?: Koodistokoodiviite<'jotpaasianumero'>
+) => {
+  if (
+    !opintojenRahoitus ||
+    !opintokokonaisuus ||
+    !jotpaAsianumero ||
+    !suorituskieli
+  ) {
+    return undefined
+  }
+
+  return MuunKuinSäännellynKoulutuksenOpiskeluoikeus({
     oppilaitos: toOppilaitos(organisaatio),
     tila: MuunKuinSäännellynKoulutuksenTila({
       opiskeluoikeusjaksot: [
@@ -42,3 +51,4 @@ export const createMuunKuinSäännellynKoulutuksenOpiskeluoikeus = (
       })
     ]
   })
+}

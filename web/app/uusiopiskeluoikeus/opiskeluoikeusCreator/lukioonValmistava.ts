@@ -11,14 +11,23 @@ import { perusteToOppimäärä } from './lukio'
 import { maksuttomuuslisätiedot, toOppilaitos, toToimipiste } from './utils'
 
 export const createLukioonValmistavanKoulutuksenOpiskeluoikeus = (
-  peruste: Peruste,
+  peruste: Peruste | undefined,
   organisaatio: OrganisaatioHierarkia,
   alku: string,
   tila: LukionOpiskeluoikeusjakso['tila'],
-  suorituskieli: Koodistokoodiviite<'kieli'>,
-  opintojenRahoitus: Koodistokoodiviite<'opintojenrahoitus', any>,
-  maksuton: boolean | null
+  suorituskieli?: Koodistokoodiviite<'kieli'>,
+  opintojenRahoitus?: Koodistokoodiviite<'opintojenrahoitus', any>,
+  maksuton?: boolean | null
 ) => {
+  if (
+    !peruste ||
+    !suorituskieli ||
+    !opintojenRahoitus ||
+    maksuton === undefined
+  ) {
+    return undefined
+  }
+
   const oppimäärä = perusteToOppimäärä(peruste)
 
   return (

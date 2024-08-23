@@ -27,18 +27,22 @@ import { maksuttomuuslisätiedot, toOppilaitos, toToimipiste } from './utils'
 
 export const createAmmatillinenOpiskeluoikeus = (
   suorituksenTyyppi: Koodistokoodiviite<'suorituksentyyppi'>,
-  suorituskieli: Koodistokoodiviite<'kieli'>,
+  suorituskieli: Koodistokoodiviite<'kieli'> | undefined,
   organisaatio: OrganisaatioHierarkia,
   alku: string,
   tila: Koodistokoodiviite<'koskiopiskeluoikeudentila', any>,
-  opintojenRahoitus: Koodistokoodiviite<'opintojenrahoitus'>,
-  maksuton: boolean | null,
+  opintojenRahoitus?: Koodistokoodiviite<'opintojenrahoitus'>,
+  maksuton?: boolean | null,
   muuAmmatillinenKoulutus?: MuuAmmatillinenKoulutus,
   suoritustapa?: Koodistokoodiviite<'ammatillisentutkinnonsuoritustapa'>,
   tutkinto?: TutkintoPeruste,
   peruste?: Peruste,
   tutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus?: TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus
 ) => {
+  if (!suorituskieli || !opintojenRahoitus || maksuton === undefined) {
+    return undefined
+  }
+
   const suoritus = createAmmatillinenPäätasonSuoritus(
     suorituksenTyyppi,
     suorituskieli,

@@ -27,17 +27,26 @@ import { maksuttomuuslisätiedot, toOppilaitos, toToimipiste } from './utils'
 // Aikuisten perusopetus
 export const createAikuistenPerusopetuksenOpiskeluoikeus = (
   suorituksenTyyppi: Koodistokoodiviite<'suorituksentyyppi'>,
-  peruste: Peruste,
+  peruste: Peruste | undefined,
   organisaatio: OrganisaatioHierarkia,
   alku: string,
   tila: NuortenPerusopetuksenOpiskeluoikeusjakso['tila'],
-  suorituskieli: Koodistokoodiviite<'kieli'>,
-  maksuton: boolean | null,
-  opintojenRahoitus: Koodistokoodiviite<'opintojenrahoitus', any>,
+  suorituskieli?: Koodistokoodiviite<'kieli'>,
+  maksuton?: boolean | null,
+  opintojenRahoitus?: Koodistokoodiviite<'opintojenrahoitus', any>,
   oppiaine?: Koodistokoodiviite<'koskioppiaineetyleissivistava'>,
   kieliaineenKieli?: Koodistokoodiviite<'kielivalikoima'>,
   äidinkielenKieli?: Koodistokoodiviite<'oppiaineaidinkielijakirjallisuus'>
 ) => {
+  if (
+    !peruste ||
+    maksuton === undefined ||
+    !opintojenRahoitus ||
+    !suorituskieli
+  ) {
+    return undefined
+  }
+
   const suoritus = createSuoritus(
     suorituksenTyyppi,
     peruste,

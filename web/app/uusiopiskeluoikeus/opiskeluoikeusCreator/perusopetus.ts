@@ -23,15 +23,17 @@ import { toOppilaitos, toToimipiste } from './utils'
 // Perusopetus
 export const createPerusopetuksenOpiskeluoikeus = (
   suorituksenTyyppi: Koodistokoodiviite<'suorituksentyyppi'>,
-  peruste: Peruste,
+  peruste: Peruste | undefined,
   organisaatio: OrganisaatioHierarkia,
   alku: string,
   tila: NuortenPerusopetuksenOpiskeluoikeusjakso['tila'],
-  suorituskieli: Koodistokoodiviite<'kieli'>,
+  suorituskieli: Koodistokoodiviite<'kieli'> | undefined,
   oppiaine?: Koodistokoodiviite<'koskioppiaineetyleissivistava'>,
   kieliaineenKieli?: Koodistokoodiviite<'kielivalikoima'>,
   äidinkielenKieli?: Koodistokoodiviite<'oppiaineaidinkielijakirjallisuus'>
 ) => {
+  if (!peruste || !suorituskieli) return undefined
+
   const suoritus = createPerusopetuksenSuoritus(
     suorituksenTyyppi,
     peruste,

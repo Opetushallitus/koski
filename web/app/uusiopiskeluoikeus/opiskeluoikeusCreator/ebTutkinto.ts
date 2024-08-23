@@ -11,9 +11,11 @@ export const createEBOpiskeluoikeus = (
   organisaatio: OrganisaatioHierarkia,
   alku: string,
   tila: EBOpiskeluoikeusjakso['tila'],
-  curriculum: Koodistokoodiviite<'europeanschoolofhelsinkicurriculum'>
-) =>
-  EBOpiskeluoikeus({
+  curriculum?: Koodistokoodiviite<'europeanschoolofhelsinkicurriculum'>
+) => {
+  if (!curriculum) return undefined
+
+  return EBOpiskeluoikeus({
     oppilaitos: toOppilaitos(organisaatio),
     tila: EBOpiskeluoikeudenTila({
       opiskeluoikeusjaksot: [
@@ -32,3 +34,4 @@ export const createEBOpiskeluoikeus = (
       })
     ]
   })
+}

@@ -20,11 +20,13 @@ export const createInternationalSchoolOpiskeluoikeus = (
   organisaatio: OrganisaatioHierarkia,
   alku: string,
   tila: InternationalSchoolOpiskeluoikeusjakso['tila'],
-  opintojenRahoitus: Koodistokoodiviite<'opintojenrahoitus', any>,
-  grade: Koodistokoodiviite<'internationalschoolluokkaaste'>,
-  suorituskieli: Koodistokoodiviite<'kieli'>,
+  opintojenRahoitus?: Koodistokoodiviite<'opintojenrahoitus', any>,
+  grade?: Koodistokoodiviite<'internationalschoolluokkaaste'>,
+  suorituskieli?: Koodistokoodiviite<'kieli'>,
   maksuton?: boolean | null
 ) => {
+  if (!opintojenRahoitus || !grade || !suorituskieli) return undefined
+
   const suoritus = createInternationalSchoolVuosiluokanSuoritus(
     grade,
     organisaatio,
