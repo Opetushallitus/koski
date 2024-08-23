@@ -16,7 +16,11 @@ object HakemuspalveluSchema {
     schema.OpiskeluoikeudenTyyppi.korkeakoulutus.koodiarvo,
     schema.OpiskeluoikeudenTyyppi.diatutkinto.koodiarvo,
     schema.OpiskeluoikeudenTyyppi.ebtutkinto.koodiarvo,
-    schema.OpiskeluoikeudenTyyppi.ylioppilastutkinto.koodiarvo
+    schema.OpiskeluoikeudenTyyppi.ylioppilastutkinto.koodiarvo,
+    schema.OpiskeluoikeudenTyyppi.perusopetus.koodiarvo,
+    schema.OpiskeluoikeudenTyyppi.aikuistenperusopetus.koodiarvo,
+    schema.OpiskeluoikeudenTyyppi.lukiokoulutus.koodiarvo,
+    schema.OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo
   )
 }
 
