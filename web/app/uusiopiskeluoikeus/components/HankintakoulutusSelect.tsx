@@ -35,9 +35,7 @@ export const HankintakoulutusSelect = (props: HankintakoulutusSelectProps) => {
         {isTPOKoulutustoimija && (
           <HankintakoulutusCheckbox
             state={props.state}
-            label={t(
-              'Taiteen perusopetus hankintakoulutuksena järjestetään oman organisaation ulkopuolelta'
-            )}
+            label={t('Taiteen perusopetus hankintakoulutuksena')}
             value="tpo"
             testId="tpo"
           />
