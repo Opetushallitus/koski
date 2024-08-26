@@ -27,20 +27,18 @@ class PalveluvaylaServlet(implicit val application: KoskiApplication) extends So
     writeXml(soapResp)
   }
 
-  if (!Environment.isProdEnvironment(application.config)) {
-    post("/hsl") {
-      requireHslUser
-      val soapResp = (for {
-        xml <- xmlBody
-        hetu <- extractHetuHsl(xml)
-        opiskeluoikeudet <- hslService.HslOpiskeluoikeudet(hetu)
-      } yield hslBody(xml, opiskeluoikeudet)) match {
-        case Right(soap) => soap
-        case Left(status) => haltWithStatus(status)
-      }
-
-      writeXml(soapResp)
+  post("/hsl") {
+    requireHslUser
+    val soapResp = (for {
+      xml <- xmlBody
+      hetu <- extractHetuHsl(xml)
+      opiskeluoikeudet <- hslService.HslOpiskeluoikeudet(hetu)
+    } yield hslBody(xml, opiskeluoikeudet)) match {
+      case Right(soap) => soap
+      case Left(status) => haltWithStatus(status)
     }
+
+    writeXml(soapResp)
   }
 
   private def requireSuomiFiUser =
