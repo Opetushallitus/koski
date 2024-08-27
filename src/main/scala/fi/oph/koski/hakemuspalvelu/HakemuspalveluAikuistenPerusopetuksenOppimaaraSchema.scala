@@ -4,7 +4,7 @@ import fi.oph.koski.schema
 import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
 import fi.oph.scalaschema.annotation.Title
 
-@Title("Aikuisten perusopetuksen oppimäärän opiskeluoikeus")
+@Title("Aikuisten perusopetuksen opiskeluoikeus")
 case class HakemuspalveluAikuistenPerusopetuksenOppimääränOpiskeluoikeus(
   oid: Option[String],
   versionumero: Option[Int],

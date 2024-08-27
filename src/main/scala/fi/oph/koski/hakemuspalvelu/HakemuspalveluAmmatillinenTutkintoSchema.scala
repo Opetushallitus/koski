@@ -4,7 +4,7 @@ import fi.oph.koski.schema
 import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
 import fi.oph.scalaschema.annotation.Title
 
-@Title("Ammatillisen tutkinnon opiskeluoikeus")
+@Title("Ammatillinen opiskeluoikeus")
 case class HakemuspalveluAmmatillinenTutkintoOpiskeluoikeus(
   oid: Option[String],
   versionumero: Option[Int],
@@ -25,7 +25,7 @@ case class HakemuspalveluAmmatillinenTutkintoOpiskeluoikeus(
 }
 
 
-@Title("Ammatillisen oppimäärän suoritus")
+@Title("Ammatillisen tutkinnon suoritus")
 case class HakemuspalveluAmmatillisenTutkinnonSuoritus(
   koulutusmoduuli: HakemuspalveluAmmatillinenTutkinto,
   toimipiste: Option[HakemuspalveluToimipiste],
