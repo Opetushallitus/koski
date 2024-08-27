@@ -154,7 +154,7 @@ describe('Omat tiedot', function () {
               '2012 kevät Matematiikan koe, lyhyt oppimäärä 59 Laudatur Näytä koesuoritus'
           )
           expect(findFirst('.koesuoritus a')().attr('href')).to.equal(
-            '/koski/koesuoritus/2345K_XX_12345.pdf'
+            '/koski/koesuoritus/2345K/pdf/2345K_XX_12345.pdf'
           )
         })
       })

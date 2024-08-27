@@ -122,7 +122,7 @@ describe('Huollettavien tiedot', function () {
 
         it('koesuoritus linkissä on huollettavan oid', function () {
           expect(findFirst('.koesuoritus a')().attr('href')).to.includes(
-            '/koski/koesuoritus/2345K_XX_12345.pdf?huollettava=1.2.246.562.24.'
+            '/koski/koesuoritus/2345K/pdf/2345K_XX_12345.pdf?huollettava=1.2.246.562.24.'
           )
         })
       })

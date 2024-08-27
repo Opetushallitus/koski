@@ -15,11 +15,11 @@ class YtrKoesuoritusApiSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskelu
     SchemaValidatingExtractor.extract[List[ExamResponse]](JsonMethods.parse(body)).right.get
 
   private val expected = List(
-    ExamResponse(period = "2012K", examId = "A", copyOfExamPaper = Some("2345K_XX_12345.pdf")),
+    ExamResponse(period = "2012K", examId = "A", copyOfExamPaper = Some("2345K/pdf/2345K_XX_12345.pdf")),
     ExamResponse(period = "2012K", examId = "BB", copyOfExamPaper = Some("not-found-from-s3.pdf")),
     ExamResponse(period = "2012K", examId = "EA", copyOfExamPaper = Some("1.pdf")),
     ExamResponse(period = "2012K", examId = "GE", copyOfExamPaper = Some("2.pdf")),
-    ExamResponse(period = "2012K", examId = "N", copyOfExamPaper = Some("1234S_YY_420.html"))
+    ExamResponse(period = "2012K", examId = "N", copyOfExamPaper = Some("1234S/html/1234S_YY_420.html"))
   )
 
   "Kansalainen" - {

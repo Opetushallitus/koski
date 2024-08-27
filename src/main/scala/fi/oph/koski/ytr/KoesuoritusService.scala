@@ -42,12 +42,15 @@ object MockKoesuoritusService extends KoesuoritusService with EnvVariables {
     .getOrElse(new ClasspathResource("/mockdata/ytr"))
 
   override def writeKoesuoritus(key: String, outputStream: OutputStream): Unit =
-    resource.resourceSerializer(key)(writeTo(outputStream))
+    resource.resourceSerializer(stripKey(key))(writeTo(outputStream))
 
-  override def koesuoritusExists(key: String): Boolean = resource.exists(key)
+  override def koesuoritusExists(key: String): Boolean = resource.exists(stripKey(key))
 
   private def writeTo(os: OutputStream) = (is: InputStream) =>
     Streams.pipeTo(is, os)
+
+  private def stripKey(key: String): String =
+    key.split("/").lastOption.getOrElse("")
 }
 
 object KoesuoritusService {
