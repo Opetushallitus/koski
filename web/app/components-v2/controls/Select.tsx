@@ -410,12 +410,12 @@ export const groupKoodistoToOptions = <T extends string>(
   format?: (koodi: KoodistokoodiviiteKoodistonNimellä) => string
 ): Array<SelectOption<Koodistokoodiviite<T>>> =>
   pipe(koodit, NEA.groupBy(pluck('koodistoNimi')), (grouped) =>
-    Object.entries(grouped).map(([groupName, koodit]) => ({
+    Object.entries(grouped).map(([groupName, groupKoodit]) => ({
       key: groupName,
       label: groupName,
       isGroup: true,
       children: A.sortBy(ords || [KoodistokoodiviiteKoodistonNimelläOrd])(
-        koodit
+        groupKoodit
       ).map((k) => ({
         key: k.id,
         label: format
